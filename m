@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-75149-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 625FC97331E
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:29:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A5A63973460
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:40:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 27CB0287D7F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:29:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69B3E28DF1F
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:40:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 551C119644C;
-	Tue, 10 Sep 2024 10:24:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 653231917C6;
+	Tue, 10 Sep 2024 10:37:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wMCN5vgW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IIiwlysA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13D1B1922F6;
-	Tue, 10 Sep 2024 10:24:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FE4E19149F;
+	Tue, 10 Sep 2024 10:37:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963893; cv=none; b=KlKJdSo085XNE5nDTwAAuDDV/0EFwBAl55p9Le7paIHlapTVz/g13yoqyL28rjy4QFjuc3uU74uHjbwNfBGrYvXCIDHO27EGUx1v3N1F8q0F+wMF0JG2bZyjQk50ji5tfC1j08H3rnEcPY1jkTAQKaqIpRM2XOkN3t4+U2bCc9g=
+	t=1725964630; cv=none; b=T0wytDm9O56+ONdvXxsKmWD8i8KVzT2F073Ii5eqNSvMQQ2xWTCSrbI1B4SJH+HIe+uZSVhMHt1/J9dH1eVt9qJ0aowif2b60bj6lxhJYY3dpfr8NXmhEnFpXIvDMXiHQlnLDMshzhes92sXF7b+g7Q15rNQJ9M+LJQsKegg3yI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963893; c=relaxed/simple;
-	bh=zJXunxBpMRtw0sq6cq0lpBHZXvD6JONIyg1Fy+avn3Y=;
+	s=arc-20240116; t=1725964630; c=relaxed/simple;
+	bh=bf1froL2q4pepmdjIWJFtfC9d+3sSYsVmwuXwZUMSTw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VSaoSb2EE9VzHftqf42PRTl8ZzUA9GqCTCStYaG2rvaqG1EwSACGj9qzjU3kdYPXdM0BoFL78u5grwXyBjKHVL8pEhPA5Z6ZFZXyGh7ySb1qS+X215LvQb91SW6iJkI0HOM+bztELMnV9bKK4JoC4z7saONb+1OiVii9wkjcnZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wMCN5vgW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F2B4C4CEC6;
-	Tue, 10 Sep 2024 10:24:52 +0000 (UTC)
+	 MIME-Version; b=k3frBwbF/gs/FEIs3OgeiMlnszDuvf9cpOheOtJfJokFhYpJq4G6KGCqO6qbreZG9yHJXcx9hYZ+MXo7UAcVnq3vM9KnlYtPow8Z5vw4APDorLPmuOA25FX6x0Y9l82wBcAuSZoRhxZdAuV/7gKuH/w7NEUQ2MbShy7pAfIPIV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IIiwlysA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C1A1C4CEC3;
+	Tue, 10 Sep 2024 10:37:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963893;
-	bh=zJXunxBpMRtw0sq6cq0lpBHZXvD6JONIyg1Fy+avn3Y=;
+	s=korg; t=1725964630;
+	bh=bf1froL2q4pepmdjIWJFtfC9d+3sSYsVmwuXwZUMSTw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wMCN5vgWD7Dz3vWN7BOqfS8JvSPfefLp6Kb6F4gB11+fu3ycEiydVK3DeFRZAWm9E
-	 ER+OSbZCF4i0jGOgl8CN81SJatAYL4+x18/5qQ/hHUaSRb1JWKqdY9MAUY70BWx9/Q
-	 XLWAt33TK5C5xvVPGItUPTfRb79Dy3e9e+/If+Yw=
+	b=IIiwlysAtT4mLzN/Vp0um8qlWBYe8Mr3jxq2v9+2lgG1qRutJAvggUm5kunxau7Rs
+	 bFK9bdHeOwTV/oycitwnJTqNKyIvDiOOUNAlTkEBBxI2FOENZAqObIdVqJpVBvpLYK
+	 XTUVrWxUOF4f8NKS3hyBaAzLyeHuCuEkYKYRGmAs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@suse.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Tomas Krcka <krckatom@amazon.de>
-Subject: [PATCH 5.15 213/214] memcg: protect concurrent access to mem_cgroup_idr
+	Mohan Kumar <mkumard@nvidia.com>,
+	Ritu Chaudhary <rituc@nvidia.com>,
+	Sameer Pujar <spujar@nvidia.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 248/269] ASoC: tegra: Fix CBB error during probe()
 Date: Tue, 10 Sep 2024 11:33:55 +0200
-Message-ID: <20240910092607.208781850@linuxfoundation.org>
+Message-ID: <20240910092616.659042728@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,114 +64,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shakeel Butt <shakeel.butt@linux.dev>
+From: Mohan Kumar <mkumard@nvidia.com>
 
-commit 9972605a238339b85bd16b084eed5f18414d22db upstream.
+[ Upstream commit 6781b962d97bc52715a8db8cc17278cc3c23ebe8 ]
 
-Commit 73f576c04b94 ("mm: memcontrol: fix cgroup creation failure after
-many small jobs") decoupled the memcg IDs from the CSS ID space to fix the
-cgroup creation failures.  It introduced IDR to maintain the memcg ID
-space.  The IDR depends on external synchronization mechanisms for
-modifications.  For the mem_cgroup_idr, the idr_alloc() and idr_replace()
-happen within css callback and thus are protected through cgroup_mutex
-from concurrent modifications.  However idr_remove() for mem_cgroup_idr
-was not protected against concurrency and can be run concurrently for
-different memcgs when they hit their refcnt to zero.  Fix that.
+When Tegra audio drivers are built as part of the kernel image,
+TIMEOUT_ERR is observed from cbb-fabric. Following is seen on
+Jetson AGX Orin during boot:
 
-We have been seeing list_lru based kernel crashes at a low frequency in
-our fleet for a long time.  These crashes were in different part of
-list_lru code including list_lru_add(), list_lru_del() and reparenting
-code.  Upon further inspection, it looked like for a given object (dentry
-and inode), the super_block's list_lru didn't have list_lru_one for the
-memcg of that object.  The initial suspicions were either the object is
-not allocated through kmem_cache_alloc_lru() or somehow
-memcg_list_lru_alloc() failed to allocate list_lru_one() for a memcg but
-returned success.  No evidence were found for these cases.
+[    8.012482] **************************************
+[    8.017423] CPU:0, Error:cbb-fabric, Errmon:2
+[    8.021922]    Error Code            : TIMEOUT_ERR
+[    8.025966]    Overflow              : Multiple TIMEOUT_ERR
+[    8.030644]
+[    8.032175]    Error Code            : TIMEOUT_ERR
+[    8.036217]    MASTER_ID             : CCPLEX
+[    8.039722]    Address               : 0x290a0a8
+[    8.043318]    Cache                 : 0x1 -- Bufferable
+[    8.047630]    Protection            : 0x2 -- Unprivileged, Non-Secure, Data Access
+[    8.054628]    Access_Type           : Write
 
-Looking more deeply, we started seeing situations where valid memcg's id
-is not present in mem_cgroup_idr and in some cases multiple valid memcgs
-have same id and mem_cgroup_idr is pointing to one of them.  So, the most
-reasonable explanation is that these situations can happen due to race
-between multiple idr_remove() calls or race between
-idr_alloc()/idr_replace() and idr_remove().  These races are causing
-multiple memcgs to acquire the same ID and then offlining of one of them
-would cleanup list_lrus on the system for all of them.  Later access from
-other memcgs to the list_lru cause crashes due to missing list_lru_one.
+[    8.106130] WARNING: CPU: 0 PID: 124 at drivers/soc/tegra/cbb/tegra234-cbb.c:604 tegra234_cbb_isr+0x134/0x178
 
-Link: https://lkml.kernel.org/r/20240802235822.1830976-1-shakeel.butt@linux.dev
-Fixes: 73f576c04b94 ("mm: memcontrol: fix cgroup creation failure after many small jobs")
-Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
-Acked-by: Muchun Song <muchun.song@linux.dev>
-Reviewed-by: Roman Gushchin <roman.gushchin@linux.dev>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ Adapted over commit be740503ed03 ("mm: memcontrol: fix cannot alloc the
-  maximum memcg ID") and 6f0df8e16eb5 ("memcontrol: ensure memcg acquired by id
-  is properly set up") both are not in the tree ]
-Signed-off-by: Tomas Krcka <krckatom@amazon.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[    8.240602] Call trace:
+[    8.243126]  tegra234_cbb_isr+0x134/0x178
+[    8.247261]  __handle_irq_event_percpu+0x60/0x238
+[    8.252132]  handle_irq_event+0x54/0xb8
+
+These errors happen when MVC device, which is a child of AHUB
+device, tries to access its device registers. This happens as
+part of call tegra210_mvc_reset_vol_settings() in MVC device
+probe().
+
+The root cause of this problem is, the child MVC device gets
+probed before the AHUB clock gets enabled. The AHUB clock is
+enabled in runtime PM resume of parent AHUB device and due to
+the wrong sequence of pm_runtime_enable() in AHUB driver,
+runtime PM resume doesn't happen for AHUB device when MVC makes
+register access.
+
+Fix this by calling pm_runtime_enable() for parent AHUB device
+before of_platform_populate() in AHUB driver. This ensures that
+clock becomes available when MVC makes register access.
+
+Fixes: 16e1bcc2caf4 ("ASoC: tegra: Add Tegra210 based AHUB driver")
+Signed-off-by: Mohan Kumar <mkumard@nvidia.com>
+Signed-off-by: Ritu Chaudhary <rituc@nvidia.com>
+Signed-off-by: Sameer Pujar <spujar@nvidia.com>
+Link: https://patch.msgid.link/20240823144342.4123814-3-spujar@nvidia.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/memcontrol.c |   23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
+ sound/soc/tegra/tegra210_ahub.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -5083,11 +5083,28 @@ static struct cftype mem_cgroup_legacy_f
-  */
+diff --git a/sound/soc/tegra/tegra210_ahub.c b/sound/soc/tegra/tegra210_ahub.c
+index 3f114a2adfce..ab3c6b2544d2 100644
+--- a/sound/soc/tegra/tegra210_ahub.c
++++ b/sound/soc/tegra/tegra210_ahub.c
+@@ -2,7 +2,7 @@
+ //
+ // tegra210_ahub.c - Tegra210 AHUB driver
+ //
+-// Copyright (c) 2020-2022, NVIDIA CORPORATION.  All rights reserved.
++// Copyright (c) 2020-2024, NVIDIA CORPORATION.  All rights reserved.
  
- static DEFINE_IDR(mem_cgroup_idr);
-+static DEFINE_SPINLOCK(memcg_idr_lock);
-+
-+static int mem_cgroup_alloc_id(void)
-+{
-+	int ret;
-+
-+	idr_preload(GFP_KERNEL);
-+	spin_lock(&memcg_idr_lock);
-+	ret = idr_alloc(&mem_cgroup_idr, NULL, 1, MEM_CGROUP_ID_MAX + 1,
-+			GFP_NOWAIT);
-+	spin_unlock(&memcg_idr_lock);
-+	idr_preload_end();
-+	return ret;
-+}
- 
- static void mem_cgroup_id_remove(struct mem_cgroup *memcg)
- {
- 	if (memcg->id.id > 0) {
-+		spin_lock(&memcg_idr_lock);
- 		idr_remove(&mem_cgroup_idr, memcg->id.id);
-+		spin_unlock(&memcg_idr_lock);
-+
- 		memcg->id.id = 0;
+ #include <linux/clk.h>
+ #include <linux/device.h>
+@@ -1391,11 +1391,13 @@ static int tegra_ahub_probe(struct platform_device *pdev)
+ 		return err;
  	}
- }
-@@ -5201,9 +5218,7 @@ static struct mem_cgroup *mem_cgroup_all
- 	if (!memcg)
- 		return ERR_PTR(error);
  
--	memcg->id.id = idr_alloc(&mem_cgroup_idr, NULL,
--				 1, MEM_CGROUP_ID_MAX,
--				 GFP_KERNEL);
-+	memcg->id.id = mem_cgroup_alloc_id();
- 	if (memcg->id.id < 0) {
- 		error = memcg->id.id;
- 		goto fail;
-@@ -5244,7 +5259,9 @@ static struct mem_cgroup *mem_cgroup_all
- 	INIT_LIST_HEAD(&memcg->deferred_split_queue.split_queue);
- 	memcg->deferred_split_queue.split_queue_len = 0;
- #endif
-+	spin_lock(&memcg_idr_lock);
- 	idr_replace(&mem_cgroup_idr, memcg, memcg->id.id);
-+	spin_unlock(&memcg_idr_lock);
- 	return memcg;
- fail:
- 	mem_cgroup_id_remove(memcg);
++	pm_runtime_enable(&pdev->dev);
++
+ 	err = of_platform_populate(pdev->dev.of_node, NULL, NULL, &pdev->dev);
+-	if (err)
++	if (err) {
++		pm_runtime_disable(&pdev->dev);
+ 		return err;
+-
+-	pm_runtime_enable(&pdev->dev);
++	}
+ 
+ 	return 0;
+ }
+-- 
+2.43.0
+
 
 
 
