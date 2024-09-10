@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-75309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC1E59733E1
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:36:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4CEB9731CA
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:15:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87C1F28A883
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:36:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97EE91F29467
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:15:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7697D1917E5;
-	Tue, 10 Sep 2024 10:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2FB21917CB;
+	Tue, 10 Sep 2024 10:10:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jgqMLw9o"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VdsoQKaZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BC991917DE;
-	Tue, 10 Sep 2024 10:32:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FC88188A0C;
+	Tue, 10 Sep 2024 10:10:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964359; cv=none; b=Upg6mwLdmxtwa9cRCfjgPadG6bXDdMe1bxruoLbVZhT8y6hmJlqFviQ4Po5nwfaulijQeLhRaRQWvMy09pPnNrNKB8yGOKN/kVAV5zcRVNhuRztMsC4MS8XmNHT+sxhRjLvailRf+uauZ5gIaev8gf7UqHQQ3rtbrIzZTsxZgto=
+	t=1725963050; cv=none; b=J72TCPvkqxUIftQZErImyB5qndDGrLRPsqZMs/j7vnOa6e3yI1iIoeiAwplVNsGuDcVb9U2mCUzw0Zepn0wy0eyLr94uMgSoLQX07aC+h27fBZ/kEcTNQ990JZTvG+SqoyVFDiqyvvhmq6XM/iIeOaF1OuogdsIW3iEL104Ist8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964359; c=relaxed/simple;
-	bh=5a/2U4nAVDoJBZ6qcqfdF19s9JcZULs9xepZPdcCrRg=;
+	s=arc-20240116; t=1725963050; c=relaxed/simple;
+	bh=gEtCaaFQ4cpM/tGJVl1dtzTWN+U1YJK01a+1gU+QrVs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ccGPrB+wX3IAfLzJm2XU8YNpln3fTJxhFkvIg/p+OClDQfb/5ZNT3xgKo2OxjoasG2A5UiqMKygUkMBiRfMfwS/r7JYGVmceFt6uT+aoSIr4jwDtGs1JlK+Th2j0XCtXBMl8Fd1FDjKVABXnHFLlttgTcB96DwvNvRwG1PznoYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jgqMLw9o; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49465C4CEC3;
-	Tue, 10 Sep 2024 10:32:38 +0000 (UTC)
+	 MIME-Version; b=FqZq+y2c+2GdgZgU6l9XJ+9O87jO0TsmGj8Iq6QCvJWyIdo+QRvh6demv9TS3yq8iz4thR6RKw+Gr6QJ2p3TozqRr1n+G3Lr4dAbkgzI7JqaI8gSFFRt9/GJGuetfypk0oUl14hVBxsN+AMgYfg27xLq7zZfA1WrWNPdr0o+pZs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VdsoQKaZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18234C4CECD;
+	Tue, 10 Sep 2024 10:10:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964358;
-	bh=5a/2U4nAVDoJBZ6qcqfdF19s9JcZULs9xepZPdcCrRg=;
+	s=korg; t=1725963050;
+	bh=gEtCaaFQ4cpM/tGJVl1dtzTWN+U1YJK01a+1gU+QrVs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jgqMLw9ojpnekH8Q2hXdIp6b4ICPBeMLbaYxfdEWwwRXao8X2e9KzUWgwBocXIa7C
-	 3tQUzXVmAJGDjTR5hhMshzWp8rzoMkaZwjMT/wkNIRo/NWB1IHQNESBhbGBSaLwlp1
-	 vwdO2rDHOnws97M1bUk7kzHqp+3Ar8ZugJshdcQo=
+	b=VdsoQKaZN3IgTALaiBMkcF2xt1pbnpgPifOWnoI2ygkH8d7L6pGiyPvv5Il2oAPgX
+	 RBYcvoENnCTLA37mjZHo3pvFJ7ohlmt2CcJJ5sv7U7gMiw1tJ02SVP9Z3jJ3jvK6yy
+	 9o4DlC8pnJBghdcG4GIf1bWRDBW8Soqy12uDFoPI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shenghao Ding <shenghao-ding@ti.com>,
-	Mark Brown <broonie@kernel.org>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 156/269] ASoc: TAS2781: replace beXX_to_cpup with get_unaligned_beXX for potentially broken alignment
+Subject: [PATCH 6.1 119/192] s390/vmlinux.lds.S: Move ro_after_init section behind rodata section
 Date: Tue, 10 Sep 2024 11:32:23 +0200
-Message-ID: <20240910092613.756698051@linuxfoundation.org>
+Message-ID: <20240910092602.919868041@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,313 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shenghao Ding <shenghao-ding@ti.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit 1cc509edbe23b61e8c245611bd15d88edb635a38 ]
+[ Upstream commit 75c10d5377d8821efafed32e4d72068d9c1f8ec0 ]
 
-Use get_unaligned_be16 instead of be16_to_cpup and get_unaligned_be32
-instead of be32_to_cpup for potentially broken alignment.
+The .data.rel.ro and .got section were added between the rodata and
+ro_after_init data section, which adds an RW mapping in between all RO
+mapping of the kernel image:
 
-Signed-off-by: Shenghao Ding <shenghao-ding@ti.com>
-Link: https://patch.msgid.link/20240707083011.98-1-shenghao-ding@ti.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+---[ Kernel Image Start ]---
+0x000003ffe0000000-0x000003ffe0e00000        14M PMD RO X
+0x000003ffe0e00000-0x000003ffe0ec7000       796K PTE RO X
+0x000003ffe0ec7000-0x000003ffe0f00000       228K PTE RO NX
+0x000003ffe0f00000-0x000003ffe1300000         4M PMD RO NX
+0x000003ffe1300000-0x000003ffe1331000       196K PTE RO NX
+0x000003ffe1331000-0x000003ffe13b3000       520K PTE RW NX <---
+0x000003ffe13b3000-0x000003ffe13d5000       136K PTE RO NX
+0x000003ffe13d5000-0x000003ffe1400000       172K PTE RW NX
+0x000003ffe1400000-0x000003ffe1500000         1M PMD RW NX
+0x000003ffe1500000-0x000003ffe1700000         2M PTE RW NX
+0x000003ffe1700000-0x000003ffe1800000         1M PMD RW NX
+0x000003ffe1800000-0x000003ffe187e000       504K PTE RW NX
+---[ Kernel Image End ]---
+
+Move the ro_after_init data section again right behind the rodata
+section to prevent interleaving RO and RW mappings:
+
+---[ Kernel Image Start ]---
+0x000003ffe0000000-0x000003ffe0e00000        14M PMD RO X
+0x000003ffe0e00000-0x000003ffe0ec7000       796K PTE RO X
+0x000003ffe0ec7000-0x000003ffe0f00000       228K PTE RO NX
+0x000003ffe0f00000-0x000003ffe1300000         4M PMD RO NX
+0x000003ffe1300000-0x000003ffe1353000       332K PTE RO NX
+0x000003ffe1353000-0x000003ffe1400000       692K PTE RW NX
+0x000003ffe1400000-0x000003ffe1500000         1M PMD RW NX
+0x000003ffe1500000-0x000003ffe1700000         2M PTE RW NX
+0x000003ffe1700000-0x000003ffe1800000         1M PMD RW NX
+0x000003ffe1800000-0x000003ffe187e000       504K PTE RW NX
+---[ Kernel Image End ]---
+
+Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/tas2781-fmwlib.c | 71 +++++++++++++++----------------
- 1 file changed, 35 insertions(+), 36 deletions(-)
+ arch/s390/kernel/vmlinux.lds.S | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/sound/soc/codecs/tas2781-fmwlib.c b/sound/soc/codecs/tas2781-fmwlib.c
-index 41ad82a42916..3639dcd0bbb2 100644
---- a/sound/soc/codecs/tas2781-fmwlib.c
-+++ b/sound/soc/codecs/tas2781-fmwlib.c
-@@ -21,7 +21,7 @@
- #include <sound/soc.h>
- #include <sound/tlv.h>
- #include <sound/tas2781.h>
--
-+#include <asm/unaligned.h>
+diff --git a/arch/s390/kernel/vmlinux.lds.S b/arch/s390/kernel/vmlinux.lds.S
+index 729d4f949cfe..52d6e5d1b453 100644
+--- a/arch/s390/kernel/vmlinux.lds.S
++++ b/arch/s390/kernel/vmlinux.lds.S
+@@ -71,6 +71,15 @@ SECTIONS
+ 	. = ALIGN(PAGE_SIZE);
+ 	__end_ro_after_init = .;
  
- #define ERROR_PRAM_CRCCHK			0x0000000
- #define ERROR_YRAM_CRCCHK			0x0000001
-@@ -125,8 +125,7 @@ static struct tasdevice_config_info *tasdevice_add_config(
- 	/* convert data[offset], data[offset + 1], data[offset + 2] and
- 	 * data[offset + 3] into host
- 	 */
--	cfg_info->nblocks =
--		be32_to_cpup((__be32 *)&config_data[config_offset]);
-+	cfg_info->nblocks = get_unaligned_be32(&config_data[config_offset]);
- 	config_offset += 4;
++	.data.rel.ro : {
++		*(.data.rel.ro .data.rel.ro.*)
++	}
++	.got : {
++		__got_start = .;
++		*(.got)
++		__got_end = .;
++	}
++
+ 	RW_DATA(0x100, PAGE_SIZE, THREAD_SIZE)
+ 	BOOT_DATA_PRESERVED
  
- 	/* Several kinds of dsp/algorithm firmwares can run on tas2781,
-@@ -170,14 +169,14 @@ static struct tasdevice_config_info *tasdevice_add_config(
- 
- 		}
- 		bk_da[i]->yram_checksum =
--			be16_to_cpup((__be16 *)&config_data[config_offset]);
-+			get_unaligned_be16(&config_data[config_offset]);
- 		config_offset += 2;
- 		bk_da[i]->block_size =
--			be32_to_cpup((__be32 *)&config_data[config_offset]);
-+			get_unaligned_be32(&config_data[config_offset]);
- 		config_offset += 4;
- 
- 		bk_da[i]->n_subblks =
--			be32_to_cpup((__be32 *)&config_data[config_offset]);
-+			get_unaligned_be32(&config_data[config_offset]);
- 
- 		config_offset += 4;
- 
-@@ -227,7 +226,7 @@ int tasdevice_rca_parser(void *context, const struct firmware *fmw)
- 	}
- 	buf = (unsigned char *)fmw->data;
- 
--	fw_hdr->img_sz = be32_to_cpup((__be32 *)&buf[offset]);
-+	fw_hdr->img_sz = get_unaligned_be32(&buf[offset]);
- 	offset += 4;
- 	if (fw_hdr->img_sz != fmw->size) {
- 		dev_err(tas_priv->dev,
-@@ -238,9 +237,9 @@ int tasdevice_rca_parser(void *context, const struct firmware *fmw)
- 		goto out;
- 	}
- 
--	fw_hdr->checksum = be32_to_cpup((__be32 *)&buf[offset]);
-+	fw_hdr->checksum = get_unaligned_be32(&buf[offset]);
- 	offset += 4;
--	fw_hdr->binary_version_num = be32_to_cpup((__be32 *)&buf[offset]);
-+	fw_hdr->binary_version_num = get_unaligned_be32(&buf[offset]);
- 	if (fw_hdr->binary_version_num < 0x103) {
- 		dev_err(tas_priv->dev, "File version 0x%04x is too low",
- 			fw_hdr->binary_version_num);
-@@ -249,7 +248,7 @@ int tasdevice_rca_parser(void *context, const struct firmware *fmw)
- 		goto out;
- 	}
- 	offset += 4;
--	fw_hdr->drv_fw_version = be32_to_cpup((__be32 *)&buf[offset]);
-+	fw_hdr->drv_fw_version = get_unaligned_be32(&buf[offset]);
- 	offset += 8;
- 	fw_hdr->plat_type = buf[offset];
- 	offset += 1;
-@@ -277,11 +276,11 @@ int tasdevice_rca_parser(void *context, const struct firmware *fmw)
- 	for (i = 0; i < TASDEVICE_DEVICE_SUM; i++, offset++)
- 		fw_hdr->devs[i] = buf[offset];
- 
--	fw_hdr->nconfig = be32_to_cpup((__be32 *)&buf[offset]);
-+	fw_hdr->nconfig = get_unaligned_be32(&buf[offset]);
- 	offset += 4;
- 
- 	for (i = 0; i < TASDEVICE_CONFIG_SUM; i++) {
--		fw_hdr->config_size[i] = be32_to_cpup((__be32 *)&buf[offset]);
-+		fw_hdr->config_size[i] = get_unaligned_be32(&buf[offset]);
- 		offset += 4;
- 		total_config_sz += fw_hdr->config_size[i];
- 	}
-@@ -330,7 +329,7 @@ static int fw_parse_block_data_kernel(struct tasdevice_fw *tas_fmw,
- 	/* convert data[offset], data[offset + 1], data[offset + 2] and
- 	 * data[offset + 3] into host
- 	 */
--	block->type = be32_to_cpup((__be32 *)&data[offset]);
-+	block->type = get_unaligned_be32(&data[offset]);
- 	offset += 4;
- 
- 	block->is_pchksum_present = data[offset];
-@@ -345,10 +344,10 @@ static int fw_parse_block_data_kernel(struct tasdevice_fw *tas_fmw,
- 	block->ychksum = data[offset];
- 	offset++;
- 
--	block->blk_size = be32_to_cpup((__be32 *)&data[offset]);
-+	block->blk_size = get_unaligned_be32(&data[offset]);
- 	offset += 4;
- 
--	block->nr_subblocks = be32_to_cpup((__be32 *)&data[offset]);
-+	block->nr_subblocks = get_unaligned_be32(&data[offset]);
- 	offset += 4;
- 
- 	if (offset + block->blk_size > fmw->size) {
-@@ -381,7 +380,7 @@ static int fw_parse_data_kernel(struct tasdevice_fw *tas_fmw,
- 		offset = -EINVAL;
- 		goto out;
- 	}
--	img_data->nr_blk = be32_to_cpup((__be32 *)&data[offset]);
-+	img_data->nr_blk = get_unaligned_be32(&data[offset]);
- 	offset += 4;
- 
- 	img_data->dev_blks = kcalloc(img_data->nr_blk,
-@@ -477,14 +476,14 @@ static int fw_parse_variable_header_kernel(
- 		offset = -EINVAL;
- 		goto out;
- 	}
--	fw_hdr->device_family = be16_to_cpup((__be16 *)&buf[offset]);
-+	fw_hdr->device_family = get_unaligned_be16(&buf[offset]);
- 	if (fw_hdr->device_family != 0) {
- 		dev_err(tas_priv->dev, "%s:not TAS device\n", __func__);
- 		offset = -EINVAL;
- 		goto out;
- 	}
- 	offset += 2;
--	fw_hdr->device = be16_to_cpup((__be16 *)&buf[offset]);
-+	fw_hdr->device = get_unaligned_be16(&buf[offset]);
- 	if (fw_hdr->device >= TASDEVICE_DSP_TAS_MAX_DEVICE ||
- 		fw_hdr->device == 6) {
- 		dev_err(tas_priv->dev, "Unsupported dev %d\n", fw_hdr->device);
-@@ -502,7 +501,7 @@ static int fw_parse_variable_header_kernel(
- 		goto out;
- 	}
- 
--	tas_fmw->nr_programs = be32_to_cpup((__be32 *)&buf[offset]);
-+	tas_fmw->nr_programs = get_unaligned_be32(&buf[offset]);
- 	offset += 4;
- 
- 	if (tas_fmw->nr_programs == 0 || tas_fmw->nr_programs >
-@@ -521,14 +520,14 @@ static int fw_parse_variable_header_kernel(
- 
- 	for (i = 0; i < tas_fmw->nr_programs; i++) {
- 		program = &(tas_fmw->programs[i]);
--		program->prog_size = be32_to_cpup((__be32 *)&buf[offset]);
-+		program->prog_size = get_unaligned_be32(&buf[offset]);
- 		offset += 4;
- 	}
- 
- 	/* Skip the unused prog_size */
- 	offset += 4 * (TASDEVICE_MAXPROGRAM_NUM_KERNEL - tas_fmw->nr_programs);
- 
--	tas_fmw->nr_configurations = be32_to_cpup((__be32 *)&buf[offset]);
-+	tas_fmw->nr_configurations = get_unaligned_be32(&buf[offset]);
- 	offset += 4;
- 
- 	/* The max number of config in firmware greater than 4 pieces of
-@@ -560,7 +559,7 @@ static int fw_parse_variable_header_kernel(
- 
- 	for (i = 0; i < tas_fmw->nr_programs; i++) {
- 		config = &(tas_fmw->configs[i]);
--		config->cfg_size = be32_to_cpup((__be32 *)&buf[offset]);
-+		config->cfg_size = get_unaligned_be32(&buf[offset]);
- 		offset += 4;
- 	}
- 
-@@ -598,7 +597,7 @@ static int tasdevice_process_block(void *context, unsigned char *data,
- 		switch (subblk_typ) {
- 		case TASDEVICE_CMD_SING_W: {
- 			int i;
--			unsigned short len = be16_to_cpup((__be16 *)&data[2]);
-+			unsigned short len = get_unaligned_be16(&data[2]);
- 
- 			subblk_offset += 2;
- 			if (subblk_offset + 4 * len > sublocksize) {
-@@ -624,7 +623,7 @@ static int tasdevice_process_block(void *context, unsigned char *data,
- 		}
- 			break;
- 		case TASDEVICE_CMD_BURST: {
--			unsigned short len = be16_to_cpup((__be16 *)&data[2]);
-+			unsigned short len = get_unaligned_be16(&data[2]);
- 
- 			subblk_offset += 2;
- 			if (subblk_offset + 4 + len > sublocksize) {
-@@ -665,7 +664,7 @@ static int tasdevice_process_block(void *context, unsigned char *data,
- 				is_err = true;
- 				break;
- 			}
--			sleep_time = be16_to_cpup((__be16 *)&data[2]) * 1000;
-+			sleep_time = get_unaligned_be16(&data[2]) * 1000;
- 			usleep_range(sleep_time, sleep_time + 50);
- 			subblk_offset += 2;
- 		}
-@@ -940,7 +939,7 @@ static int fw_parse_variable_hdr(struct tasdevice_priv
- 
- 	offset += len;
- 
--	fw_hdr->device_family = be32_to_cpup((__be32 *)&buf[offset]);
-+	fw_hdr->device_family = get_unaligned_be32(&buf[offset]);
- 	if (fw_hdr->device_family != 0) {
- 		dev_err(tas_priv->dev, "%s: not TAS device\n", __func__);
- 		offset = -EINVAL;
-@@ -948,7 +947,7 @@ static int fw_parse_variable_hdr(struct tasdevice_priv
- 	}
- 	offset += 4;
- 
--	fw_hdr->device = be32_to_cpup((__be32 *)&buf[offset]);
-+	fw_hdr->device = get_unaligned_be32(&buf[offset]);
- 	if (fw_hdr->device >= TASDEVICE_DSP_TAS_MAX_DEVICE ||
- 		fw_hdr->device == 6) {
- 		dev_err(tas_priv->dev, "Unsupported dev %d\n", fw_hdr->device);
-@@ -993,7 +992,7 @@ static int fw_parse_block_data(struct tasdevice_fw *tas_fmw,
- 		offset = -EINVAL;
- 		goto out;
- 	}
--	block->type = be32_to_cpup((__be32 *)&data[offset]);
-+	block->type = get_unaligned_be32(&data[offset]);
- 	offset += 4;
- 
- 	if (tas_fmw->fw_hdr.fixed_hdr.drv_ver >= PPC_DRIVER_CRCCHK) {
-@@ -1018,7 +1017,7 @@ static int fw_parse_block_data(struct tasdevice_fw *tas_fmw,
- 		block->is_ychksum_present = 0;
- 	}
- 
--	block->nr_cmds = be32_to_cpup((__be32 *)&data[offset]);
-+	block->nr_cmds = get_unaligned_be32(&data[offset]);
- 	offset += 4;
- 
- 	n = block->nr_cmds * 4;
-@@ -1069,7 +1068,7 @@ static int fw_parse_data(struct tasdevice_fw *tas_fmw,
- 		goto out;
- 	}
- 	offset += n;
--	img_data->nr_blk = be16_to_cpup((__be16 *)&data[offset]);
-+	img_data->nr_blk = get_unaligned_be16(&data[offset]);
- 	offset += 2;
- 
- 	img_data->dev_blks = kcalloc(img_data->nr_blk,
-@@ -1106,7 +1105,7 @@ static int fw_parse_program_data(struct tasdevice_priv *tas_priv,
- 		offset = -EINVAL;
- 		goto out;
- 	}
--	tas_fmw->nr_programs = be16_to_cpup((__be16 *)&buf[offset]);
-+	tas_fmw->nr_programs = get_unaligned_be16(&buf[offset]);
- 	offset += 2;
- 
- 	if (tas_fmw->nr_programs == 0) {
-@@ -1173,7 +1172,7 @@ static int fw_parse_configuration_data(
- 		offset = -EINVAL;
- 		goto out;
- 	}
--	tas_fmw->nr_configurations = be16_to_cpup((__be16 *)&data[offset]);
-+	tas_fmw->nr_configurations = get_unaligned_be16(&data[offset]);
- 	offset += 2;
- 
- 	if (tas_fmw->nr_configurations == 0) {
-@@ -1805,7 +1804,7 @@ static int fw_parse_header(struct tasdevice_priv *tas_priv,
- 	/* Convert data[offset], data[offset + 1], data[offset + 2] and
- 	 * data[offset + 3] into host
- 	 */
--	fw_fixed_hdr->fwsize = be32_to_cpup((__be32 *)&buf[offset]);
-+	fw_fixed_hdr->fwsize = get_unaligned_be32(&buf[offset]);
- 	offset += 4;
- 	if (fw_fixed_hdr->fwsize != fmw->size) {
- 		dev_err(tas_priv->dev, "File size not match, %lu %u",
-@@ -1814,9 +1813,9 @@ static int fw_parse_header(struct tasdevice_priv *tas_priv,
- 		goto out;
- 	}
- 	offset += 4;
--	fw_fixed_hdr->ppcver = be32_to_cpup((__be32 *)&buf[offset]);
-+	fw_fixed_hdr->ppcver = get_unaligned_be32(&buf[offset]);
- 	offset += 8;
--	fw_fixed_hdr->drv_ver = be32_to_cpup((__be32 *)&buf[offset]);
-+	fw_fixed_hdr->drv_ver = get_unaligned_be32(&buf[offset]);
- 	offset += 72;
- 
-  out:
-@@ -1858,7 +1857,7 @@ static int fw_parse_calibration_data(struct tasdevice_priv *tas_priv,
- 		offset = -EINVAL;
- 		goto out;
- 	}
--	tas_fmw->nr_calibrations = be16_to_cpup((__be16 *)&data[offset]);
-+	tas_fmw->nr_calibrations = get_unaligned_be16(&data[offset]);
- 	offset += 2;
- 
- 	if (tas_fmw->nr_calibrations != 1) {
 -- 
 2.43.0
 
