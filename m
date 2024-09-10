@@ -1,66 +1,61 @@
-Return-Path: <stable+bounces-75684-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5DE5973F6C
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 19:27:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F36D1973F6E
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 19:27:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E8DCD1C251FC
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 17:27:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2421E1C218F6
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 17:27:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B72B1AE86E;
-	Tue, 10 Sep 2024 17:22:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37E361AF4D8;
+	Tue, 10 Sep 2024 17:22:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cbtJ6Ap9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qTApukG6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F8041AE875;
-	Tue, 10 Sep 2024 17:22:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E424D1AED46;
+	Tue, 10 Sep 2024 17:22:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725988964; cv=none; b=tHoPufD/CuzCY5xT5Szitx49OpYpBImG+Q87HlXuuPv/SKfvY5zaTI52tIyhChoFtmknJK0uGmgj1eG4vGJV9xj4QCh2mq3WMOIWg27HXfB3XFc875xytW3Yr3WGOLCQ6TEB3grd20M+6FZTq5M57x9UwTo50evM4Fl0rdoYjUg=
+	t=1725988966; cv=none; b=M7lX9KJtKqmnNK+RRXBU4FJ+DiYVsHFIswYxWIZ6baVTReAmuDOV+dLOubKGHhLb3JvSXiSHjIBa8kbNX85SrNUFr9MXTUFdiF1S3jITeCeJKJNCja/+HJmHjj7hG7SddX9RuPb3u2qcyI3EwcgBVsO4QInv9TEbOABSwCfPI0g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725988964; c=relaxed/simple;
-	bh=vQadkgjZQx99d+8j3SsgDZ53axAUqvMJGu7+4Unrd9U=;
+	s=arc-20240116; t=1725988966; c=relaxed/simple;
+	bh=HUiUjdpQf5J1UXmQlO/iOnVbESqvUog/Syz4KStGozo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d8qXA/34jiwufySACku0g3qWNSLsTLXvMqh8jZU8UYXZ3sN870u85GPr9gF7Rk8mju2IiT5VCCVIl199xzy9EFuL52iouww8ZaS2KUK4e4s51rNvbx7NqF4UPGS2r+9mwW28bvzHJscVG1xgHxTIv+Vxpu6okP+x6mTbw0hLjFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cbtJ6Ap9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 427C2C4CECE;
-	Tue, 10 Sep 2024 17:22:42 +0000 (UTC)
+	 MIME-Version; b=FWNShvnKRCxy2iu8SClv9uo8uVCVKTS+e4qocUVuwWqeDMnKad728XKOTlDxaubF5g7MBXctyAQHsxHZKAfpUSZZAnnqBfCRnZeN/AcerpW572CRf9BVSuP0Syemjf8xiJEzPWa+2UhrVvMJi3Uzr1f/LFdvJIhdwzPrp/l3fv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qTApukG6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54C01C4CEC3;
+	Tue, 10 Sep 2024 17:22:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725988963;
-	bh=vQadkgjZQx99d+8j3SsgDZ53axAUqvMJGu7+4Unrd9U=;
+	s=k20201202; t=1725988965;
+	bh=HUiUjdpQf5J1UXmQlO/iOnVbESqvUog/Syz4KStGozo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cbtJ6Ap9X9BSROj0C4i3cH+F8Rg94BR5/m67tSXo/nOLNDjyk258z1fZpgKiEkyHE
-	 05vhLFz5ZYTzrDne0th9YlDKqkwF9lv1isY0pJHw06km6ofF8252CvOgeS3mAz088I
-	 1qTvNXCpiMNSpcknNuEgU135ngYdMfmDgLWwCfL4OBrZ3NJFHhb92CjkTcezQTI2wP
-	 ZIvBaVXOYnKJUxVPR/kzNzjZV6DG6T7oDKgEE6O/VBQnu88wfVzA0JiJTWWSRCS6BH
-	 AoxGzZT5Rg2k0QJQbaPukUPXkFJ/hSjwuWGY9a5/0flE+4naf3cBvNV11Q77s8DFKo
-	 36HBgax9aTbUw==
+	b=qTApukG6cewEx/NLxogio0Hmb3fmTJf0c/ge4L4Dtmr13lqDAyaRnPJChpPAMmJWq
+	 Y8Ckb7aH/xe1TwjMTtE+JLGNrlKBN6hb5LWEP1wkmdFNDVjbzN0BX1Maih5hel5EPG
+	 ICGYw1UEx9Mbzp6JKZKP52m1wBq+J+faaF4JGpfEcNB0A7gNdHFON/bd0VGcVXn+pB
+	 ha+8G6uf3Fvtd5r21vnMU8bRGSmWUu2dk/LWRZeseEC+kZycwiACc+T3ioPZysxJTg
+	 2HGB03yqdv4dy3Cz8h3plv5T3z/JBfeuM/+mSPyIBEImfrzkrzfCkBgeqg1wFWedDH
+	 zsZIJMKt2YwhA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Takashi Iwai <tiwai@suse.de>,
+Cc: "hongchi.peng" <hongchi.peng@siengine.com>,
+	Liviu Dudau <liviu.dudau@arm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	perex@perex.cz,
-	tiwai@suse.com,
-	cezary.rojewski@intel.com,
-	chaitanya.kumar.borah@intel.com,
-	skend@chromium.org,
-	amadeuszx.slawinski@linux.intel.com,
-	pierre-louis.bossart@linux.intel.com,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 12/18] ALSA: hda: add HDMI codec ID for Intel PTL
-Date: Tue, 10 Sep 2024 13:21:57 -0400
-Message-ID: <20240910172214.2415568-12-sashal@kernel.org>
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	daniel@ffwll.ch,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.10 13/18] drm: komeda: Fix an issue related to normalized zpos
+Date: Tue, 10 Sep 2024 13:21:58 -0400
+Message-ID: <20240910172214.2415568-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240910172214.2415568-1-sashal@kernel.org>
 References: <20240910172214.2415568-1-sashal@kernel.org>
@@ -70,41 +65,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.9
 Content-Transfer-Encoding: 8bit
 
-From: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+From: "hongchi.peng" <hongchi.peng@siengine.com>
 
-[ Upstream commit e9481d9b83f8d9b3251aa428b02d8eba89d839ff ]
+[ Upstream commit 258905cb9a6414be5c9ca4aa20ef855f8dc894d4 ]
 
-Add HDMI codec ID for Intel Panther Lake platform.
+We use komeda_crtc_normalize_zpos to normalize zpos of affected planes
+to their blending zorder in CU. If there's only one slave plane in
+affected planes and its layer_split property is enabled, order++ for
+its split layer, so that when calculating the normalized_zpos
+of master planes, the split layer of the slave plane is included, but
+the max_slave_zorder does not include the split layer and keep zero
+because there's only one slave plane in affacted planes, although we
+actually use two slave layers in this commit.
 
-Signed-off-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Link: https://patch.msgid.link/20240830072458.110831-1-yung-chuan.liao@linux.intel.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+In most cases, this bug does not result in a commit failure, but assume
+the following situation:
+    slave_layer 0: zpos = 0, layer split enabled, normalized_zpos =
+    0;(use slave_layer 2 as its split layer)
+    master_layer 0: zpos = 2, layer_split enabled, normalized_zpos =
+    2;(use master_layer 2 as its split layer)
+    master_layer 1: zpos = 4, normalized_zpos = 4;
+    master_layer 3: zpos = 5, normalized_zpos = 5;
+    kcrtc_st->max_slave_zorder = 0;
+When we use master_layer 3 as a input of CU in function
+komeda_compiz_set_input and check it with function
+komeda_component_check_input, the parameter idx is equal to
+normailzed_zpos minus max_slave_zorder, the value of idx is 5
+and is euqal to CU's max_active_inputs, so that
+komeda_component_check_input returns a -EINVAL value.
+
+To fix the bug described above, when calculating the max_slave_zorder
+with the layer_split enabled, count the split layer in this calculation
+directly.
+
+Signed-off-by: hongchi.peng <hongchi.peng@siengine.com>
+Acked-by: Liviu Dudau <liviu.dudau@arm.com>
+Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240826024517.3739-1-hongchi.peng@siengine.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_hdmi.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/arm/display/komeda/komeda_kms.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/sound/pci/hda/patch_hdmi.c b/sound/pci/hda/patch_hdmi.c
-index 78042ac2b71f..643e0496b093 100644
---- a/sound/pci/hda/patch_hdmi.c
-+++ b/sound/pci/hda/patch_hdmi.c
-@@ -4639,6 +4639,7 @@ HDA_CODEC_ENTRY(0x8086281d, "Meteor Lake HDMI",	patch_i915_adlp_hdmi),
- HDA_CODEC_ENTRY(0x8086281e, "Battlemage HDMI",	patch_i915_adlp_hdmi),
- HDA_CODEC_ENTRY(0x8086281f, "Raptor Lake P HDMI",	patch_i915_adlp_hdmi),
- HDA_CODEC_ENTRY(0x80862820, "Lunar Lake HDMI",	patch_i915_adlp_hdmi),
-+HDA_CODEC_ENTRY(0x80862822, "Panther Lake HDMI",	patch_i915_adlp_hdmi),
- HDA_CODEC_ENTRY(0x80862880, "CedarTrail HDMI",	patch_generic_hdmi),
- HDA_CODEC_ENTRY(0x80862882, "Valleyview2 HDMI",	patch_i915_byt_hdmi),
- HDA_CODEC_ENTRY(0x80862883, "Braswell HDMI",	patch_i915_byt_hdmi),
+diff --git a/drivers/gpu/drm/arm/display/komeda/komeda_kms.c b/drivers/gpu/drm/arm/display/komeda/komeda_kms.c
+index fe46b0ebefea..e5eb5d672bcd 100644
+--- a/drivers/gpu/drm/arm/display/komeda/komeda_kms.c
++++ b/drivers/gpu/drm/arm/display/komeda/komeda_kms.c
+@@ -160,6 +160,7 @@ static int komeda_crtc_normalize_zpos(struct drm_crtc *crtc,
+ 	struct drm_plane *plane;
+ 	struct list_head zorder_list;
+ 	int order = 0, err;
++	u32 slave_zpos = 0;
+ 
+ 	DRM_DEBUG_ATOMIC("[CRTC:%d:%s] calculating normalized zpos values\n",
+ 			 crtc->base.id, crtc->name);
+@@ -199,10 +200,13 @@ static int komeda_crtc_normalize_zpos(struct drm_crtc *crtc,
+ 				 plane_st->zpos, plane_st->normalized_zpos);
+ 
+ 		/* calculate max slave zorder */
+-		if (has_bit(drm_plane_index(plane), kcrtc->slave_planes))
++		if (has_bit(drm_plane_index(plane), kcrtc->slave_planes)) {
++			slave_zpos = plane_st->normalized_zpos;
++			if (to_kplane_st(plane_st)->layer_split)
++				slave_zpos++;
+ 			kcrtc_st->max_slave_zorder =
+-				max(plane_st->normalized_zpos,
+-				    kcrtc_st->max_slave_zorder);
++				max(slave_zpos, kcrtc_st->max_slave_zorder);
++		}
+ 	}
+ 
+ 	crtc_st->zpos_changed = true;
 -- 
 2.43.0
 
