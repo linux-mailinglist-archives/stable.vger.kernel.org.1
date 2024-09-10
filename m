@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-74581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12E4797300E
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:57:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 795AD9730B9
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:04:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 858A8B270BB
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:57:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2F9F01F25C61
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:04:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CE65188921;
-	Tue, 10 Sep 2024 09:57:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F1A718FDB9;
+	Tue, 10 Sep 2024 10:02:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JM27ekyd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="09muwfgp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEE31EEC9;
-	Tue, 10 Sep 2024 09:57:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5613218FDB0;
+	Tue, 10 Sep 2024 10:02:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962223; cv=none; b=NkzX5eaEMVvu2cM4iDq+87tVilFasJpGpb/nycF8QOsPwcvlj9oBB4NsLXtbw8qKElqho4n7PPqtNVdSDXShYV6tB//yaGJgKMK9C132gQBOrlAjJyQ7zJ27SZsFEr73EFEW9VdP5YIFnmaJqZ54kZalhGYwma5gB3beNE0HGuc=
+	t=1725962532; cv=none; b=VRazgigyrccICpf1NYF3OGOLfH4uIoCRHgedJ5QsfHQFRzQjO2pbuAiS62JwsARKcBid+EYCBdPSCC3uwoqk9SIbUKSmTf9eHBZX5RzhrgHF68mlUN/GB6ZCyaugzdf/+fbDxPEdW/Ut0Pdr2TfkWAj6zQK8eXT/7GzvabTD2wM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962223; c=relaxed/simple;
-	bh=nTHfO+Zk6Of+NGJHwDtkPlYhO06Vot0y0g8+7r3M1Dw=;
+	s=arc-20240116; t=1725962532; c=relaxed/simple;
+	bh=1RCGrKyY03JM1dpr8uTmlqCXS6KKh/zegw/MiAUnbBM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sWcww/McGqlglqvJxTCokQ4jaUEb2H4gcdha6IB9VPZOpyozmR6LnOfEQdxHL3m7juF6r0sF7jy+FQcj6Mm5IZqGBrumnMgiiqQP2M6XjZMKsbEyJ/f3A+jS6uHpyL7tR9BsL+ZhpOLjlX9sGyQQKzsT9hejUJzH0cJmRYOltos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JM27ekyd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12FCBC4CEC3;
-	Tue, 10 Sep 2024 09:57:01 +0000 (UTC)
+	 MIME-Version; b=jsEfpIq9+XFRt51IQr5EPzEL5X9xS6UCtBClcad0o1nyIkMbF1Qht32HoxQIa+7Qs2pcADaK8YHWNlsyBpPaxeliHy30tjdPbQ53t5WuZiQBzzhlSRN6dHY+VJw5e57G5lTau1t5Iae0ccPx1xjzxravV+3JXe/7XpJYaw1BTiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=09muwfgp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDA3CC4CEC3;
+	Tue, 10 Sep 2024 10:02:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962222;
-	bh=nTHfO+Zk6Of+NGJHwDtkPlYhO06Vot0y0g8+7r3M1Dw=;
+	s=korg; t=1725962532;
+	bh=1RCGrKyY03JM1dpr8uTmlqCXS6KKh/zegw/MiAUnbBM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JM27ekydcX4qMiN7pNuaf4sqHCRaG5mNvPwCcrYJYOYCdvly3YGgON1fxVU45DqyF
-	 rL4ZbuqEsvAqqAQ/L+VpUwU3nwzz7l/9XoDG0+//UmAWStshZvk72tlIuW47DBTqY7
-	 d6KDgVceJx0hJglI5tfG+lcMiJh+iSr77OhJDQ/c=
+	b=09muwfgpvYZqFEP7QdoOOFpX8Gps0SnljX56lI0uB5nV4QrVbe7lCgYlNDwBlyRgE
+	 i6VfsZN6sPHxzhfjj0KFNBUCz01XMNaU7soGO2mML3jK1KvLTOhUetl1fWWf5z1qiy
+	 jO4de6sfAJGEQiHNfuNEboBAv33kymey865+dI/c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abel Vesa <abel.vesa@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Ondrej Zary <linux@zary.sk>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 336/375] clk: qcom: gcc-x1e80100: Fix USB 0 and 1 PHY GDSC pwrsts flags
+Subject: [PATCH 5.4 058/121] cx82310_eth: re-enable ethernet mode after router reboot
 Date: Tue, 10 Sep 2024 11:32:13 +0200
-Message-ID: <20240910092633.868832545@linuxfoundation.org>
+Message-ID: <20240910092548.577297718@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
-References: <20240910092622.245959861@linuxfoundation.org>
+In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
+References: <20240910092545.737864202@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,148 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abel Vesa <abel.vesa@linaro.org>
+From: Ondrej Zary <linux@zary.sk>
 
-[ Upstream commit f4c16a7cdbd2edecdb854f2ce0ef07c6263c5379 ]
+[ Upstream commit ca139d76b0d9e59d18f2d2ec8f0d81b82acd6808 ]
 
-Allowing these GDSCs to collapse makes the QMP combo PHYs lose their
-configuration on machine suspend. Currently, the QMP combo PHY driver
-doesn't reinitialise the HW on resume. Under such conditions, the USB
-SuperSpeed support is broken. To avoid this, mark the pwrsts flags with
-RET_ON. This is in line with USB 2 PHY GDSC config.
+When the router is rebooted without a power cycle, the USB device
+remains connected but its configuration is reset. This results in
+a non-working ethernet connection with messages like this in syslog:
+	usb 2-2: RX packet too long: 65535 B
 
-Fixes: 161b7c401f4b ("clk: qcom: Add Global Clock controller (GCC) driver for X1E80100")
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
-Link: https://lore.kernel.org/r/20240801-x1e80100-clk-gcc-fix-usb-phy-gdscs-pwrsts-v1-1-8df016768a0f@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Re-enable ethernet mode when receiving a packet with invalid size of
+0xffff.
+
+Signed-off-by: Ondrej Zary <linux@zary.sk>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: bab8eb0dd4cb ("usbnet: modern method to get random MAC")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-x1e80100.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/usb/cx82310_eth.c | 50 ++++++++++++++++++++++++++++++-----
+ 1 file changed, 44 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/clk/qcom/gcc-x1e80100.c b/drivers/clk/qcom/gcc-x1e80100.c
-index a263f0c412f5..24f84c6705e5 100644
---- a/drivers/clk/qcom/gcc-x1e80100.c
-+++ b/drivers/clk/qcom/gcc-x1e80100.c
-@@ -6203,7 +6203,7 @@ static struct gdsc gcc_usb_0_phy_gdsc = {
- 	.pd = {
- 		.name = "gcc_usb_0_phy_gdsc",
- 	},
--	.pwrsts = PWRSTS_OFF_ON,
-+	.pwrsts = PWRSTS_RET_ON,
- 	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
- };
+diff --git a/drivers/net/usb/cx82310_eth.c b/drivers/net/usb/cx82310_eth.c
+index 32b08b18e120..043679311399 100644
+--- a/drivers/net/usb/cx82310_eth.c
++++ b/drivers/net/usb/cx82310_eth.c
+@@ -40,6 +40,11 @@ enum cx82310_status {
+ #define CX82310_MTU	1514
+ #define CMD_EP		0x01
  
-@@ -6215,7 +6215,7 @@ static struct gdsc gcc_usb_1_phy_gdsc = {
- 	.pd = {
- 		.name = "gcc_usb_1_phy_gdsc",
- 	},
--	.pwrsts = PWRSTS_OFF_ON,
-+	.pwrsts = PWRSTS_RET_ON,
- 	.flags = POLL_CFG_GDSCR | RETAIN_FF_ENABLE,
- };
++struct cx82310_priv {
++	struct work_struct reenable_work;
++	struct usbnet *dev;
++};
++
+ /*
+  * execute control command
+  *  - optionally send some data (command parameters)
+@@ -115,6 +120,23 @@ static int cx82310_cmd(struct usbnet *dev, enum cx82310_cmd cmd, bool reply,
+ 	return ret;
+ }
  
++static int cx82310_enable_ethernet(struct usbnet *dev)
++{
++	int ret = cx82310_cmd(dev, CMD_ETHERNET_MODE, true, "\x01", 1, NULL, 0);
++
++	if (ret)
++		netdev_err(dev->net, "unable to enable ethernet mode: %d\n",
++			   ret);
++	return ret;
++}
++
++static void cx82310_reenable_work(struct work_struct *work)
++{
++	struct cx82310_priv *priv = container_of(work, struct cx82310_priv,
++						 reenable_work);
++	cx82310_enable_ethernet(priv->dev);
++}
++
+ #define partial_len	data[0]		/* length of partial packet data */
+ #define partial_rem	data[1]		/* remaining (missing) data length */
+ #define partial_data	data[2]		/* partial packet data */
+@@ -126,6 +148,7 @@ static int cx82310_bind(struct usbnet *dev, struct usb_interface *intf)
+ 	struct usb_device *udev = dev->udev;
+ 	u8 link[3];
+ 	int timeout = 50;
++	struct cx82310_priv *priv;
+ 
+ 	/* avoid ADSL modems - continue only if iProduct is "USB NET CARD" */
+ 	if (usb_string(udev, udev->descriptor.iProduct, buf, sizeof(buf)) > 0
+@@ -152,6 +175,15 @@ static int cx82310_bind(struct usbnet *dev, struct usb_interface *intf)
+ 	if (!dev->partial_data)
+ 		return -ENOMEM;
+ 
++	priv = kzalloc(sizeof(*priv), GFP_KERNEL);
++	if (!priv) {
++		ret = -ENOMEM;
++		goto err_partial;
++	}
++	dev->driver_priv = priv;
++	INIT_WORK(&priv->reenable_work, cx82310_reenable_work);
++	priv->dev = dev;
++
+ 	/* wait for firmware to become ready (indicated by the link being up) */
+ 	while (--timeout) {
+ 		ret = cx82310_cmd(dev, CMD_GET_LINK_STATUS, true, NULL, 0,
+@@ -168,12 +200,8 @@ static int cx82310_bind(struct usbnet *dev, struct usb_interface *intf)
+ 	}
+ 
+ 	/* enable ethernet mode (?) */
+-	ret = cx82310_cmd(dev, CMD_ETHERNET_MODE, true, "\x01", 1, NULL, 0);
+-	if (ret) {
+-		dev_err(&udev->dev, "unable to enable ethernet mode: %d\n",
+-			ret);
++	if (cx82310_enable_ethernet(dev))
+ 		goto err;
+-	}
+ 
+ 	/* get the MAC address */
+ 	ret = cx82310_cmd(dev, CMD_GET_MAC_ADDR, true, NULL, 0,
+@@ -190,13 +218,19 @@ static int cx82310_bind(struct usbnet *dev, struct usb_interface *intf)
+ 
+ 	return 0;
+ err:
++	kfree(dev->driver_priv);
++err_partial:
+ 	kfree((void *)dev->partial_data);
+ 	return ret;
+ }
+ 
+ static void cx82310_unbind(struct usbnet *dev, struct usb_interface *intf)
+ {
++	struct cx82310_priv *priv = dev->driver_priv;
++
+ 	kfree((void *)dev->partial_data);
++	cancel_work_sync(&priv->reenable_work);
++	kfree(dev->driver_priv);
+ }
+ 
+ /*
+@@ -211,6 +245,7 @@ static int cx82310_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
+ {
+ 	int len;
+ 	struct sk_buff *skb2;
++	struct cx82310_priv *priv = dev->driver_priv;
+ 
+ 	/*
+ 	 * If the last skb ended with an incomplete packet, this skb contains
+@@ -245,7 +280,10 @@ static int cx82310_rx_fixup(struct usbnet *dev, struct sk_buff *skb)
+ 			break;
+ 		}
+ 
+-		if (len > CX82310_MTU) {
++		if (len == 0xffff) {
++			netdev_info(dev->net, "router was rebooted, re-enabling ethernet mode");
++			schedule_work(&priv->reenable_work);
++		} else if (len > CX82310_MTU) {
+ 			dev_err(&dev->udev->dev, "RX packet too long: %d B\n",
+ 				len);
+ 			return 0;
 -- 
 2.43.0
 
