@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-75412-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75575-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33D5B973470
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:40:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 590DC973540
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:47:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D2EB21F25ABF
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:40:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8BFB81C23CDA
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:47:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D301A18F2E3;
-	Tue, 10 Sep 2024 10:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A71F518C912;
+	Tue, 10 Sep 2024 10:45:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tc06llRU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GiFPWrE5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9121B18E77C;
-	Tue, 10 Sep 2024 10:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6413217A589;
+	Tue, 10 Sep 2024 10:45:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964656; cv=none; b=BKwzAZAvOLFMW8686wcfpl5wE9jzJoCGuxwHRcOZp9zq+KI908+EDpH8LIRnrlSA0fYr3CcitUk+c5KIm1WfzP4uqVvGCRhtlEXHe0D1ljKJYqX+2pdtuBouPbVIgqnVYIIoDWlCxYLNdplWC1Br0zH9aUCL+kRPxLHWGhWEwOg=
+	t=1725965134; cv=none; b=OMpMomjTPyRFph/iuEXY3cSFGKEPkJC4xqpzvI0rE3XUGx6Ot2rVZ7P4vWZ7zjpBxqbYVHPG6KyFxlrKyvf6NTyK2Ajtj+2c4Hu3FZeSzeowRbpnwhk9KbUdIksgRGAw6oh86jpW9xCdkMlq+VY5AQUmQGqaN+qMY2IdaDqzERY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964656; c=relaxed/simple;
-	bh=PXLuZsEujAFBMnqSH30UEDDDZrLrXjKPLMEY2UZg5jI=;
+	s=arc-20240116; t=1725965134; c=relaxed/simple;
+	bh=9FIMi/lSVXmrHASRyPiRd2Rngb6W+O3A44i6Lo42F3M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GMwwVN6IFxQOb14dmmuFIdISr5t+u14BNtqdf27KsMp3C99NkIfsgngPKqypKuUJxxZi1u7hUljf2vmXJcst0vFktmfDwfRCvWS0/kR1v59lVtsZYrlchqZZtbT6AWBsk5hGnzT3jCr8sJ4/A6pG36ASbtSMxBlsJRkTNoqo5iQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tc06llRU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A41BC4CEC3;
-	Tue, 10 Sep 2024 10:37:35 +0000 (UTC)
+	 MIME-Version; b=DrtECU+FaXn2qxXTE7cAGjD647kbeAt/l5oMdVVqN5wp0P7MCmNlThZyZPS7nklkqCiQY7hXc2i9xlFsBpMRun85o/tWiGH7y1SP4Icwkj7uL2pk3IVUueg9jyOsrAg1P5SnWP4bPH/c3mjnAc/lOG+DwdqGPLxws89QZ8EJseA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GiFPWrE5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF140C4CEC3;
+	Tue, 10 Sep 2024 10:45:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964656;
-	bh=PXLuZsEujAFBMnqSH30UEDDDZrLrXjKPLMEY2UZg5jI=;
+	s=korg; t=1725965134;
+	bh=9FIMi/lSVXmrHASRyPiRd2Rngb6W+O3A44i6Lo42F3M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tc06llRUSbVYfyfmxTvvf3HiCuo7FzyYe8BVUoijU8G5uTtW0XH99XQ7RVR8MQbOe
-	 XUTx+zJYB75KyiJIbvPfPmk5cBLxo1g+n7cBM6P1Us7MVH4zNAnXlgEsS++IZpVZCz
-	 xR/qnXySpvyB8yX+iomCI2irNvO9syXAiKIkWXVM=
+	b=GiFPWrE5FljRJ0uKnuVhvhliyL3w5X0REU3qD67bnxXu8EXVAoPMkZ4b0fRwCLurp
+	 XUdu6G++zGnwQw0b4sT1GvY3UVROw5KkGZWuruFZxmnhO5QNSz8SX0fXkETRqdV6i7
+	 uofvbaK1KFFpQR+TfFCdwlJwgMT283Evzm39GmNM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 256/269] drm/i915/fence: Mark debug_fence_free() with __maybe_unused
+Subject: [PATCH 5.10 148/186] s390/vmlinux.lds.S: Move ro_after_init section behind rodata section
 Date: Tue, 10 Sep 2024 11:34:03 +0200
-Message-ID: <20240910092616.913431520@linuxfoundation.org>
+Message-ID: <20240910092600.698314049@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +63,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-[ Upstream commit f99999536128b14b5d765a9982763b5134efdd79 ]
+[ Upstream commit 75c10d5377d8821efafed32e4d72068d9c1f8ec0 ]
 
-When debug_fence_free() is unused
-(CONFIG_DRM_I915_SW_FENCE_DEBUG_OBJECTS=n), it prevents kernel builds
-with clang, `make W=1` and CONFIG_WERROR=y:
+The .data.rel.ro and .got section were added between the rodata and
+ro_after_init data section, which adds an RW mapping in between all RO
+mapping of the kernel image:
 
-.../i915_sw_fence.c:118:20: error: unused function 'debug_fence_free' [-Werror,-Wunused-function]
-  118 | static inline void debug_fence_free(struct i915_sw_fence *fence)
-      |                    ^~~~~~~~~~~~~~~~
+---[ Kernel Image Start ]---
+0x000003ffe0000000-0x000003ffe0e00000        14M PMD RO X
+0x000003ffe0e00000-0x000003ffe0ec7000       796K PTE RO X
+0x000003ffe0ec7000-0x000003ffe0f00000       228K PTE RO NX
+0x000003ffe0f00000-0x000003ffe1300000         4M PMD RO NX
+0x000003ffe1300000-0x000003ffe1331000       196K PTE RO NX
+0x000003ffe1331000-0x000003ffe13b3000       520K PTE RW NX <---
+0x000003ffe13b3000-0x000003ffe13d5000       136K PTE RO NX
+0x000003ffe13d5000-0x000003ffe1400000       172K PTE RW NX
+0x000003ffe1400000-0x000003ffe1500000         1M PMD RW NX
+0x000003ffe1500000-0x000003ffe1700000         2M PTE RW NX
+0x000003ffe1700000-0x000003ffe1800000         1M PMD RW NX
+0x000003ffe1800000-0x000003ffe187e000       504K PTE RW NX
+---[ Kernel Image End ]---
 
-Fix this by marking debug_fence_free() with __maybe_unused.
+Move the ro_after_init data section again right behind the rodata
+section to prevent interleaving RO and RW mappings:
 
-See also commit 6863f5643dd7 ("kbuild: allow Clang to find unused static
-inline functions for W=1 build").
+---[ Kernel Image Start ]---
+0x000003ffe0000000-0x000003ffe0e00000        14M PMD RO X
+0x000003ffe0e00000-0x000003ffe0ec7000       796K PTE RO X
+0x000003ffe0ec7000-0x000003ffe0f00000       228K PTE RO NX
+0x000003ffe0f00000-0x000003ffe1300000         4M PMD RO NX
+0x000003ffe1300000-0x000003ffe1353000       332K PTE RO NX
+0x000003ffe1353000-0x000003ffe1400000       692K PTE RW NX
+0x000003ffe1400000-0x000003ffe1500000         1M PMD RW NX
+0x000003ffe1500000-0x000003ffe1700000         2M PTE RW NX
+0x000003ffe1700000-0x000003ffe1800000         1M PMD RW NX
+0x000003ffe1800000-0x000003ffe187e000       504K PTE RW NX
+---[ Kernel Image End ]---
 
-Fixes: fc1584059d6c ("drm/i915: Integrate i915_sw_fence with debugobjects")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240829155950.1141978-3-andriy.shevchenko@linux.intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-(cherry picked from commit 8be4dce5ea6f2368cc25edc71989c4690fa66964)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/i915_sw_fence.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/s390/kernel/vmlinux.lds.S | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/gpu/drm/i915/i915_sw_fence.c b/drivers/gpu/drm/i915/i915_sw_fence.c
-index d4020ff3549a..1d4cc91c0e40 100644
---- a/drivers/gpu/drm/i915/i915_sw_fence.c
-+++ b/drivers/gpu/drm/i915/i915_sw_fence.c
-@@ -77,7 +77,7 @@ static inline void debug_fence_destroy(struct i915_sw_fence *fence)
- 	debug_object_destroy(fence, &i915_sw_fence_debug_descr);
- }
+diff --git a/arch/s390/kernel/vmlinux.lds.S b/arch/s390/kernel/vmlinux.lds.S
+index 1c65c38ec9a3..c4bf95371f49 100644
+--- a/arch/s390/kernel/vmlinux.lds.S
++++ b/arch/s390/kernel/vmlinux.lds.S
+@@ -69,6 +69,15 @@ SECTIONS
+ 	. = ALIGN(PAGE_SIZE);
+ 	__end_ro_after_init = .;
  
--static inline void debug_fence_free(struct i915_sw_fence *fence)
-+static inline __maybe_unused void debug_fence_free(struct i915_sw_fence *fence)
- {
- 	debug_object_free(fence, &i915_sw_fence_debug_descr);
- 	smp_wmb(); /* flush the change in state before reallocation */
-@@ -115,7 +115,7 @@ static inline void debug_fence_destroy(struct i915_sw_fence *fence)
- {
- }
- 
--static inline void debug_fence_free(struct i915_sw_fence *fence)
-+static inline __maybe_unused void debug_fence_free(struct i915_sw_fence *fence)
- {
- }
++	.data.rel.ro : {
++		*(.data.rel.ro .data.rel.ro.*)
++	}
++	.got : {
++		__got_start = .;
++		*(.got)
++		__got_end = .;
++	}
++
+ 	RW_DATA(0x100, PAGE_SIZE, THREAD_SIZE)
+ 	BOOT_DATA_PRESERVED
  
 -- 
 2.43.0
