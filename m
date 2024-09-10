@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-75546-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DADC7973518
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:45:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EF4197323A
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:20:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6802B1F24AD8
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:45:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C10A61C231AC
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:20:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 461BD18DF9E;
-	Tue, 10 Sep 2024 10:44:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54CCD18DF97;
+	Tue, 10 Sep 2024 10:14:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ejk/yDys"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T0ujwJUO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 041245381A;
-	Tue, 10 Sep 2024 10:44:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 122AF186615;
+	Tue, 10 Sep 2024 10:14:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725965052; cv=none; b=gfWPuW+E6XFDD9uNUEJ0Mr3zJcjA0tIoUBHVz8OJP9c9p1e5cYAaA3zaMEPKl2eCg0Kb3eBxQ4xMJNqp9tTTClAjR3nJsOTT9L96qkwz0o+xC7u9wFKjXo2Q6YLkauxIebM37wD55yytjUE8Xu9ZhnL+SSp9viQjKiCAB0nAfDI=
+	t=1725963292; cv=none; b=Mqyom8JmCEtprU64+3ofqMS0s4CTiScjWjuctbv58T4slwjyMKdKq0L0NIsSeSoqCy4nB0ftbcqoRmbYTgZPftIvBX9optP5FsPWWeJXn7ad4+HMOpQpq3hNRwswP8MbI7/eqccoBmnRhV2Vfe8U1HQ9+xx2WIaXVDzKgPLSzmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725965052; c=relaxed/simple;
-	bh=KEwczddBmS4U2QDjgIGTCl4OfgUd9bZ3NMdCyCWULYk=;
+	s=arc-20240116; t=1725963292; c=relaxed/simple;
+	bh=9klHJAiXqqsYLVqqousCHzOfrjs6r3i/HzFRXsemJuI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fpNSUl3T7qGp1ZhYeUlJj0sOIxeQ+iylwAg9zFNFSwx2SVk5lCrBJPhSdm268D+tvsz0gMg+SlLuGm8Upqy+aA7YuHL9fQtFeK46p4VmOty+cJGvgJ37PLWUHaSK5f2KyDmcc+TEguvd72/x5OK//7es4wPTaTEf6sUnYn4ikaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ejk/yDys; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A3BCC4CEC3;
-	Tue, 10 Sep 2024 10:44:11 +0000 (UTC)
+	 MIME-Version; b=L9MQi+0L3BLetPOjStjeWZj65A/tqWrh98T/Dl7j2mx60Lh8DVyIkI2oeiCntHr/cCoE0I4EtuUgzrKRMfJc6ejrNLbo4cbsEtpbPe+6HGPJd1HBuLjTDEAx+Eh233rEqlBANh6WeSgWUj6RdnVGsgQZu8Xac3kcxBWhplmTubQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T0ujwJUO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B2FAC4CECF;
+	Tue, 10 Sep 2024 10:14:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725965051;
-	bh=KEwczddBmS4U2QDjgIGTCl4OfgUd9bZ3NMdCyCWULYk=;
+	s=korg; t=1725963291;
+	bh=9klHJAiXqqsYLVqqousCHzOfrjs6r3i/HzFRXsemJuI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ejk/yDysT7Vr4Vmx8nKEGbfd15pVwOwiW5KkkLeAZdzTnL/4EnCT/XArMg652SIgQ
-	 HBtoNG/vSJUPyMyXBIhEX0urEcsj89xVvyIkUK4N7n8rbsSmaTSKYFXmI9CuhZmb8R
-	 e7FkGKelrJgXYHrTMbI7ja5aa0PKEAj77RAnG8V8=
+	b=T0ujwJUOEvyvmNtrhivuQFP0w1Bi1DHOeNKxO6y2XBbq0XIP8QipO2ZJQhuhDPOI8
+	 ffk+Gjtf78hlgRMe35JUqGbtuvwr4crK8zC46WXoJyZbYWNmhWei/nnTp5JW41DRiM
+	 BpJhJg3lWkaXNgclC1H3/X3UGeSN7BVVjcvbHuNY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.10 093/186] nfsd: expose /proc/net/sunrpc/nfsd in net namespaces
+	Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 164/192] workqueue: Improve scalability of workqueue watchdog touch
 Date: Tue, 10 Sep 2024 11:33:08 +0200
-Message-ID: <20240910092558.335138508@linuxfoundation.org>
+Message-ID: <20240910092604.678233735@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,138 +64,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Nicholas Piggin <npiggin@gmail.com>
 
-[ Upstream commit 93483ac5fec62cc1de166051b219d953bb5e4ef4 ]
+[ Upstream commit 98f887f820c993e05a12e8aa816c80b8661d4c87 ]
 
-We are running nfsd servers inside of containers with their own network
-namespace, and we want to monitor these services using the stats found
-in /proc.  However these are not exposed in the proc inside of the
-container, so we have to bind mount the host /proc into our containers
-to get at this information.
+On a ~2000 CPU powerpc system, hard lockups have been observed in the
+workqueue code when stop_machine runs (in this case due to CPU hotplug).
+This is due to lots of CPUs spinning in multi_cpu_stop, calling
+touch_nmi_watchdog() which ends up calling wq_watchdog_touch().
+wq_watchdog_touch() writes to the global variable wq_watchdog_touched,
+and that can find itself in the same cacheline as other important
+workqueue data, which slows down operations to the point of lockups.
 
-Separate out the stat counters init and the proc registration, and move
-the proc registration into the pernet operations entry and exit points
-so that these stats can be exposed inside of network namespaces.
+In the case of the following abridged trace, worker_pool_idr was in
+the hot line, causing the lockups to always appear at idr_find.
 
-This is an intermediate step, this just exposes the global counters in
-the network namespace.  Subsequent patches will move these counters into
-the per-network namespace container.
+  watchdog: CPU 1125 self-detected hard LOCKUP @ idr_find
+  Call Trace:
+  get_work_pool
+  __queue_work
+  call_timer_fn
+  run_timer_softirq
+  __do_softirq
+  do_softirq_own_stack
+  irq_exit
+  timer_interrupt
+  decrementer_common_virt
+  * interrupt: 900 (timer) at multi_cpu_stop
+  multi_cpu_stop
+  cpu_stopper_thread
+  smpboot_thread_fn
+  kthread
 
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by having wq_watchdog_touch() only write to the line if the
+last time a touch was recorded exceeds 1/4 of the watchdog threshold.
+
+Reported-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
+Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
+Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfsctl.c |    8 +++++---
- fs/nfsd/stats.c  |   21 ++++++---------------
- fs/nfsd/stats.h  |    6 ++++--
- 3 files changed, 15 insertions(+), 20 deletions(-)
+ kernel/workqueue.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/fs/nfsd/nfsctl.c
-+++ b/fs/nfsd/nfsctl.c
-@@ -1466,6 +1466,7 @@ static __net_init int nfsd_init_net(stru
- 	nfsd4_init_leases_net(nn);
- 	get_random_bytes(&nn->siphash_key, sizeof(nn->siphash_key));
- 	seqlock_init(&nn->writeverf_lock);
-+	nfsd_proc_stat_init(net);
+diff --git a/kernel/workqueue.c b/kernel/workqueue.c
+index 4da8a5e702f8..93303148a434 100644
+--- a/kernel/workqueue.c
++++ b/kernel/workqueue.c
+@@ -5891,12 +5891,18 @@ static void wq_watchdog_timer_fn(struct timer_list *unused)
  
- 	return 0;
- 
-@@ -1481,6 +1482,7 @@ static __net_exit void nfsd_exit_net(str
+ notrace void wq_watchdog_touch(int cpu)
  {
- 	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
++	unsigned long thresh = READ_ONCE(wq_watchdog_thresh) * HZ;
++	unsigned long touch_ts = READ_ONCE(wq_watchdog_touched);
++	unsigned long now = jiffies;
++
+ 	if (cpu >= 0)
+-		per_cpu(wq_watchdog_touched_cpu, cpu) = jiffies;
++		per_cpu(wq_watchdog_touched_cpu, cpu) = now;
+ 	else
+ 		WARN_ONCE(1, "%s should be called with valid CPU", __func__);
  
-+	nfsd_proc_stat_shutdown(net);
- 	nfsd_net_reply_cache_destroy(nn);
- 	nfsd_idmap_shutdown(net);
- 	nfsd_export_shutdown(net);
-@@ -1504,7 +1506,7 @@ static int __init init_nfsd(void)
- 	retval = nfsd4_init_pnfs();
- 	if (retval)
- 		goto out_free_slabs;
--	retval = nfsd_stat_init();	/* Statistics */
-+	retval = nfsd_stat_counters_init();	/* Statistics */
- 	if (retval)
- 		goto out_free_pnfs;
- 	retval = nfsd_drc_slab_create();
-@@ -1540,7 +1542,7 @@ out_free_lockd:
- 	nfsd_lockd_shutdown();
- 	nfsd_drc_slab_free();
- out_free_stat:
--	nfsd_stat_shutdown();
-+	nfsd_stat_counters_destroy();
- out_free_pnfs:
- 	nfsd4_exit_pnfs();
- out_free_slabs:
-@@ -1557,7 +1559,7 @@ static void __exit exit_nfsd(void)
- 	nfsd_drc_slab_free();
- 	remove_proc_entry("fs/nfs/exports", NULL);
- 	remove_proc_entry("fs/nfs", NULL);
--	nfsd_stat_shutdown();
-+	nfsd_stat_counters_destroy();
- 	nfsd_lockd_shutdown();
- 	nfsd4_free_slabs();
- 	nfsd4_exit_pnfs();
---- a/fs/nfsd/stats.c
-+++ b/fs/nfsd/stats.c
-@@ -106,31 +106,22 @@ void nfsd_percpu_counters_destroy(struct
- 		percpu_counter_destroy(&counters[i]);
+-	wq_watchdog_touched = jiffies;
++	/* Don't unnecessarily store to global cacheline */
++	if (time_after(now, touch_ts + thresh / 4))
++		WRITE_ONCE(wq_watchdog_touched, jiffies);
  }
  
--static int nfsd_stat_counters_init(void)
-+int nfsd_stat_counters_init(void)
- {
- 	return nfsd_percpu_counters_init(nfsdstats.counter, NFSD_STATS_COUNTERS_NUM);
- }
- 
--static void nfsd_stat_counters_destroy(void)
-+void nfsd_stat_counters_destroy(void)
- {
- 	nfsd_percpu_counters_destroy(nfsdstats.counter, NFSD_STATS_COUNTERS_NUM);
- }
- 
--int nfsd_stat_init(void)
-+void nfsd_proc_stat_init(struct net *net)
- {
--	int err;
--
--	err = nfsd_stat_counters_init();
--	if (err)
--		return err;
--
--	svc_proc_register(&init_net, &nfsd_svcstats, &nfsd_proc_ops);
--
--	return 0;
-+	svc_proc_register(net, &nfsd_svcstats, &nfsd_proc_ops);
- }
- 
--void nfsd_stat_shutdown(void)
-+void nfsd_proc_stat_shutdown(struct net *net)
- {
--	nfsd_stat_counters_destroy();
--	svc_proc_unregister(&init_net, "nfsd");
-+	svc_proc_unregister(net, "nfsd");
- }
---- a/fs/nfsd/stats.h
-+++ b/fs/nfsd/stats.h
-@@ -39,8 +39,10 @@ extern struct svc_stat		nfsd_svcstats;
- int nfsd_percpu_counters_init(struct percpu_counter *counters, int num);
- void nfsd_percpu_counters_reset(struct percpu_counter *counters, int num);
- void nfsd_percpu_counters_destroy(struct percpu_counter *counters, int num);
--int nfsd_stat_init(void);
--void nfsd_stat_shutdown(void);
-+int nfsd_stat_counters_init(void);
-+void nfsd_stat_counters_destroy(void);
-+void nfsd_proc_stat_init(struct net *net);
-+void nfsd_proc_stat_shutdown(struct net *net);
- 
- static inline void nfsd_stats_rc_hits_inc(void)
- {
+ static void wq_watchdog_set_thresh(unsigned long thresh)
+-- 
+2.43.0
+
 
 
 
