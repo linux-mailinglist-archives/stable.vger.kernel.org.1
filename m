@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-75330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B69D5973405
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:37:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5EE49732D4
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:26:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6CB931F25B82
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:37:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E659289859
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:26:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 858A2192B8F;
-	Tue, 10 Sep 2024 10:33:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C644619067A;
+	Tue, 10 Sep 2024 10:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jPAbGIuF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YEkZJXM8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 421FB188CC1;
-	Tue, 10 Sep 2024 10:33:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83D0F18B49E;
+	Tue, 10 Sep 2024 10:21:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964420; cv=none; b=JXLeE7Hi3nRO99Lo3qiRY3e9A7PSV1/baJb2qUC286TYYDAvEy97c8SU7iuVBNjHxfcWb2haPYpNitF3VbXnb5RcWKGzhiZqv72qLxqQ34ONQOF51lDIvFGhvYiR7Vzai3cci15p9/TzF+cvLsviB684aE13lUfljzMQB2mSXUc=
+	t=1725963688; cv=none; b=K52KlnLrfXUMdrVkNBOuPOoS8L0gO3jBZBZbvl2f36ZGHBAKvKGWmm8MLTkrdHsfSBpIX6UlyYCaSQzBTvNWRJjy/xZtRiDu0452aUpBynWL4YLA5N27LjpAdy4IyxgOYRu2x00F4EzrlSZcWMrgyOwM9fAWjSSB9ZRImA2mAxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964420; c=relaxed/simple;
-	bh=/2bwFQU0qcwQi/ESdckhZgNcnQM/IPc7hMcfOzrdbzs=;
+	s=arc-20240116; t=1725963688; c=relaxed/simple;
+	bh=Jj/MCZQXIgVDnNYWjCQLWnxsDcDpbUSdoS35l4afo6A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BSywDMCC/FOnkcFKFwoLNeBkt9unKs7/fxbsxfeW49W+SWw2sjED6NzTqUCrhtQ0B/9/2N9eAadVAYio5qpWFsCjgFyEaHHE0e82WhSEyd2YkkZqgQg/zY19/LxcUOyCrDXpIakJVUnDYfWYkPnowQryAe6BZs+6i/hMNFbAh2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jPAbGIuF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC048C4CEC3;
-	Tue, 10 Sep 2024 10:33:39 +0000 (UTC)
+	 MIME-Version; b=qwPgL5p8wrq2z7Dag+S0muRdrc30wOKPg74mqu4tiyHZWTe1jxDcqh7kGauM13MlYhQXS9L3EOzp8GJjrHgjtx7AMIcSNUJRHeVwG/KRlLl/6fiG1hVNC/PfwJMCcQXo0rilkNW8/mZ/AGdjXVkDQmpXnx2VF9KN6EsumGxcOUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YEkZJXM8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B0EFC4CEC3;
+	Tue, 10 Sep 2024 10:21:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964420;
-	bh=/2bwFQU0qcwQi/ESdckhZgNcnQM/IPc7hMcfOzrdbzs=;
+	s=korg; t=1725963688;
+	bh=Jj/MCZQXIgVDnNYWjCQLWnxsDcDpbUSdoS35l4afo6A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jPAbGIuFMDP1St7gSQW8SqYITWEH5VX2uIId+Tk6Yo8mU0nSiQ4yGbSa4ZujiD/Xu
-	 fLc7vDuSpNeJQbQ83L1RFpC2bgxdxtO2dCbC93m/tZIkSLtywoafcFn3QVCBqLiSCu
-	 KIa3rYWG21GUA0UPJrMtL/zwa0VYJVPH6zmYfCTI=
+	b=YEkZJXM87J+IYyrkZ8vw+iVqRo3ynjubOeZQ2YMeQq8w877voC3je+a6AgpsBIo6W
+	 maUwJ/31YVfDPOSJ+5RU213uxgXdXMv4w0IztY3+yby6rw7zolZa9hrx65dGQeo71S
+	 KoA2+c7oNAfGyoiMNurV0R9xZKBcIJEpZA0xE03w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Igor Pylypiv <ipylypiv@google.com>,
-	Terrence Adams <tadamsjr@google.com>,
-	Jack Wang <jinpu.wang@ionos.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 150/269] scsi: pm80xx: Set phy->enable_completion only when we wait for it
+Subject: [PATCH 5.15 115/214] media: vivid: dont set HDMI TX controls if there are no HDMI outputs
 Date: Tue, 10 Sep 2024 11:32:17 +0200
-Message-ID: <20240910092613.572411854@linuxfoundation.org>
+Message-ID: <20240910092603.501901257@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +61,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Igor Pylypiv <ipylypiv@google.com>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-[ Upstream commit e4f949ef1516c0d74745ee54a0f4882c1f6c7aea ]
+[ Upstream commit 17763960b1784578e8fe915304b330922f646209 ]
 
-pm8001_phy_control() populates the enable_completion pointer with a stack
-address, sends a PHY_LINK_RESET / PHY_HARD_RESET, waits 300 ms, and
-returns. The problem arises when a phy control response comes late.  After
-300 ms the pm8001_phy_control() function returns and the passed
-enable_completion stack address is no longer valid. Late phy control
-response invokes complete() on a dangling enable_completion pointer which
-leads to a kernel crash.
+When setting the EDID it would attempt to update two controls
+that are only present if there is an HDMI output configured.
 
-Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
-Signed-off-by: Terrence Adams <tadamsjr@google.com>
-Link: https://lore.kernel.org/r/20240627155924.2361370-2-tadamsjr@google.com
-Acked-by: Jack Wang <jinpu.wang@ionos.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+If there isn't any (e.g. when the vivid module is loaded with
+node_types=1), then calling VIDIOC_S_EDID would crash.
+
+Fix this by first checking if outputs are present.
+
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/pm8001/pm8001_sas.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/media/test-drivers/vivid/vivid-vid-cap.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/scsi/pm8001/pm8001_sas.c b/drivers/scsi/pm8001/pm8001_sas.c
-index a5a31dfa4512..ee2da8e49d4c 100644
---- a/drivers/scsi/pm8001/pm8001_sas.c
-+++ b/drivers/scsi/pm8001/pm8001_sas.c
-@@ -166,7 +166,6 @@ int pm8001_phy_control(struct asd_sas_phy *sas_phy, enum phy_func func,
- 	unsigned long flags;
- 	pm8001_ha = sas_phy->ha->lldd_ha;
- 	phy = &pm8001_ha->phy[phy_id];
--	pm8001_ha->phy[phy_id].enable_completion = &completion;
+diff --git a/drivers/media/test-drivers/vivid/vivid-vid-cap.c b/drivers/media/test-drivers/vivid/vivid-vid-cap.c
+index af0ca7366abf..c663daedb82c 100644
+--- a/drivers/media/test-drivers/vivid/vivid-vid-cap.c
++++ b/drivers/media/test-drivers/vivid/vivid-vid-cap.c
+@@ -1798,8 +1798,10 @@ int vidioc_s_edid(struct file *file, void *_fh,
+ 		return -EINVAL;
+ 	if (edid->blocks == 0) {
+ 		dev->edid_blocks = 0;
+-		v4l2_ctrl_s_ctrl(dev->ctrl_tx_edid_present, 0);
+-		v4l2_ctrl_s_ctrl(dev->ctrl_tx_hotplug, 0);
++		if (dev->num_outputs) {
++			v4l2_ctrl_s_ctrl(dev->ctrl_tx_edid_present, 0);
++			v4l2_ctrl_s_ctrl(dev->ctrl_tx_hotplug, 0);
++		}
+ 		phys_addr = CEC_PHYS_ADDR_INVALID;
+ 		goto set_phys_addr;
+ 	}
+@@ -1823,8 +1825,10 @@ int vidioc_s_edid(struct file *file, void *_fh,
+ 			display_present |=
+ 				dev->display_present[i] << j++;
  
- 	if (PM8001_CHIP_DISP->fatal_errors(pm8001_ha)) {
- 		/*
-@@ -190,6 +189,7 @@ int pm8001_phy_control(struct asd_sas_phy *sas_phy, enum phy_func func,
- 				rates->maximum_linkrate;
- 		}
- 		if (pm8001_ha->phy[phy_id].phy_state ==  PHY_LINK_DISABLE) {
-+			pm8001_ha->phy[phy_id].enable_completion = &completion;
- 			PM8001_CHIP_DISP->phy_start_req(pm8001_ha, phy_id);
- 			wait_for_completion(&completion);
- 		}
-@@ -198,6 +198,7 @@ int pm8001_phy_control(struct asd_sas_phy *sas_phy, enum phy_func func,
- 		break;
- 	case PHY_FUNC_HARD_RESET:
- 		if (pm8001_ha->phy[phy_id].phy_state == PHY_LINK_DISABLE) {
-+			pm8001_ha->phy[phy_id].enable_completion = &completion;
- 			PM8001_CHIP_DISP->phy_start_req(pm8001_ha, phy_id);
- 			wait_for_completion(&completion);
- 		}
-@@ -206,6 +207,7 @@ int pm8001_phy_control(struct asd_sas_phy *sas_phy, enum phy_func func,
- 		break;
- 	case PHY_FUNC_LINK_RESET:
- 		if (pm8001_ha->phy[phy_id].phy_state == PHY_LINK_DISABLE) {
-+			pm8001_ha->phy[phy_id].enable_completion = &completion;
- 			PM8001_CHIP_DISP->phy_start_req(pm8001_ha, phy_id);
- 			wait_for_completion(&completion);
- 		}
+-	v4l2_ctrl_s_ctrl(dev->ctrl_tx_edid_present, display_present);
+-	v4l2_ctrl_s_ctrl(dev->ctrl_tx_hotplug, display_present);
++	if (dev->num_outputs) {
++		v4l2_ctrl_s_ctrl(dev->ctrl_tx_edid_present, display_present);
++		v4l2_ctrl_s_ctrl(dev->ctrl_tx_hotplug, display_present);
++	}
+ 
+ set_phys_addr:
+ 	/* TODO: a proper hotplug detect cycle should be emulated here */
 -- 
 2.43.0
 
