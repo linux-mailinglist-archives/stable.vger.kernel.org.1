@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-75702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 172AD973FB0
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 19:32:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0378973FB4
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 19:32:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 75882B286BC
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 17:31:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 72F7E1C20C82
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 17:32:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 775051BDA8F;
-	Tue, 10 Sep 2024 17:23:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C8F91BDAB4;
+	Tue, 10 Sep 2024 17:23:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lreYfj9K"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lbhNdog6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 335E31BB69F;
-	Tue, 10 Sep 2024 17:23:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F1811BB6A9;
+	Tue, 10 Sep 2024 17:23:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725989008; cv=none; b=ZRnRWX1E0yuEGxdwEKY1U/0PHmejYTUmeEw54nl2mlWEOLvX8WgxRnJfjZqsDMJTrNNzIDzHgD4gfXDqPO27cfPnUBI9RnPGbx5K8p5pRVU5HFkqgj/k9TzTYqqcN7qKqGGvxQ3KexBvp1jlB9T7CnNTTSdSztVgtHdBxx8NUYY=
+	t=1725989015; cv=none; b=qB1WgfwnvtLaJ9D56skkBzvar8iEiKvsE3m1PSk1RHov+Kf3pQS0TEm0GY7Z7UhLS3FUX3cJYHDIT2Gp30aoSPVPC63cfpk3w54KWefYkF5zNhmlJ5bWhP4p1V1D5V1+gqkZ756pLZrzTR5Ncl6n7nPj0+v/nKoNkQ+HtXP6FHs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725989008; c=relaxed/simple;
-	bh=PeLBCaC4W0vGegOjs1rbN7MoUicwWj/JzycTr/0ekiw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cUAn1VieBf8Hbqn1EZPoY4HPQUj8ht6kVyouer3djgVuAQ9UnnijGkgMc/jainjiqJxlU6cEcR+UASLmwSH/5NVuIOpKLWevvDF3tssG80UcYWU6NoX8hS0p3GFJkLDiGmhNoYARsia3N/qOFHqG7XusuYa4AnmamJBFGG5nSB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lreYfj9K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7047C4CECE;
-	Tue, 10 Sep 2024 17:23:26 +0000 (UTC)
+	s=arc-20240116; t=1725989015; c=relaxed/simple;
+	bh=wcksTIayPbC7R4ptNyxPgKHrUtQgD0J2DgCH9JdxTz0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fqimtjqzPGTBT6W4U1tDvpiolboE3SSINDnod9BdY154AO6/c8CvPhFM7wmm9FV0Wg0eAWwm0VoNKmb7vGwJ0pUPcqZJFzrbnaROZEmuIXTUGHb0WY8nOLRe8veOa+xD0ZQBYlqNuNgQzOb9nJUFSTqb5yCYfJCrLog2Dz9q7kU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lbhNdog6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74E50C4CEC3;
+	Tue, 10 Sep 2024 17:23:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725989007;
-	bh=PeLBCaC4W0vGegOjs1rbN7MoUicwWj/JzycTr/0ekiw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lreYfj9KBc6ISby1KdAVbSpIJvd956ilwZWyTh1138uVQmoRMjeKQObGNtmDVmfbv
-	 Kww0QGjlHvr77qhNNcQJZUczR343ehqSgmPAHc10jBzJ5dEuBSGThCWrZ2ETwXPcmb
-	 UM3WryjfX1ekO7DwJ6wFIChjFQ3s3kRbHV1pUkMw7K/rZBNTLBmTvZ5Fc/qtKadpFc
-	 EGaKKrZNfdk+5FjRKmZlvlME5bLKDcVi0oqEVR8xR2S7UeHtvpZt0cuJNbhZKQJ78h
-	 A6s0ZtQHcYQuupTAzE54+3CHiZttpuk73GsqSD5TQIckuQhq2boN7L6ZCjK3aSR3EC
-	 DTGPkkGOxLdvg==
+	s=k20201202; t=1725989014;
+	bh=wcksTIayPbC7R4ptNyxPgKHrUtQgD0J2DgCH9JdxTz0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=lbhNdog6UxYIEN8QQEJxu8C3q9Zek0PcIytI6gtQCWHJ5uziBBQm8wJ68snUMcEG+
+	 CjTmM7uFrflSSaCnDepiuLmb/sgHoURiPgovVvnFqPlrLsOJYaCYDjmEucIPNrJpsR
+	 1pMUTTF4xx128hNEgtVIYoTh3mQ/IsZ8EOygAvNeRx1QKb/uhBzWMwcEkSKuCF0Wy6
+	 xUZ+gn0OEOk73Z3yaEBCVRyvrk6nVvvjDc4jwCBiVI6fHKtBaUsI/IoIsJtdZaxKp0
+	 H2Kouog3rdhdpBohY9FNXYNlXSGIhu3w7ypMCG3I86gQPJZOiiUrSjOCAtABbtH45Y
+	 VWTyhnlHLATCg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Paulo Alcantara <pc@manguebit.com>,
-	Rickard Andersson <rickaran@axis.com>,
-	Steve French <stfrench@microsoft.com>,
+Cc: Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>,
-	sfrench@samba.org,
-	linux-cifs@vger.kernel.org,
-	samba-technical@lists.samba.org
-Subject: [PATCH AUTOSEL 6.6 12/12] smb: client: fix hang in wait_for_response() for negproto
-Date: Tue, 10 Sep 2024 13:22:54 -0400
-Message-ID: <20240910172301.2415973-12-sashal@kernel.org>
+	manivannan.sadhasivam@linaro.org,
+	mailhol.vincent@wanadoo.fr,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	linux-can@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 1/8] can: mcp251xfd: mcp251xfd_ring_init(): check TX-coalescing configuration
+Date: Tue, 10 Sep 2024 13:23:21 -0400
+Message-ID: <20240910172332.2416254-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240910172301.2415973-1-sashal@kernel.org>
-References: <20240910172301.2415973-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,62 +65,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.50
+X-stable-base: Linux 6.1.109
 Content-Transfer-Encoding: 8bit
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit 7ccc1465465d78e6411b7bd730d06e7435802b5c ]
+[ Upstream commit ac2b81eb8b2d104033560daea886ee84531e3d0a ]
 
-Call cifs_reconnect() to wake up processes waiting on negotiate
-protocol to handle the case where server abruptly shut down and had no
-chance to properly close the socket.
+When changing the interface from CAN-CC to CAN-FD mode the old
+coalescing parameters are re-used. This might cause problem, as the
+configured parameters are too big for CAN-FD mode.
 
-Simple reproducer:
+During testing an invalid TX coalescing configuration has been seen.
+The problem should be been fixed in the previous patch, but add a
+safeguard here to ensure that the number of TEF coalescing buffers (if
+configured) is exactly the half of all TEF buffers.
 
-  ssh 192.168.2.100 pkill -STOP smbd
-  mount.cifs //192.168.2.100/test /mnt -o ... [never returns]
-
-Cc: Rickard Andersson <rickaran@axis.com>
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Link: https://lore.kernel.org/all/20240805-mcp251xfd-fix-ringconfig-v1-2-72086f0ca5ee@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/connect.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
-index d2307162a2de..e325e06357ff 100644
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -656,6 +656,19 @@ allocate_buffers(struct TCP_Server_Info *server)
- static bool
- server_unresponsive(struct TCP_Server_Info *server)
- {
-+	/*
-+	 * If we're in the process of mounting a share or reconnecting a session
-+	 * and the server abruptly shut down (e.g. socket wasn't closed, packet
-+	 * had been ACK'ed but no SMB response), don't wait longer than 20s to
-+	 * negotiate protocol.
-+	 */
-+	spin_lock(&server->srv_lock);
-+	if (server->tcpStatus == CifsInNegotiate &&
-+	    time_after(jiffies, server->lstrp + 20 * HZ)) {
-+		spin_unlock(&server->srv_lock);
-+		cifs_reconnect(server, false);
-+		return true;
+diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
+index 4d0246a0779a..f677a4cd00f3 100644
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
+@@ -279,7 +279,7 @@ int mcp251xfd_ring_init(struct mcp251xfd_priv *priv)
+ 	const struct mcp251xfd_rx_ring *rx_ring;
+ 	u16 base = 0, ram_used;
+ 	u8 fifo_nr = 1;
+-	int i;
++	int err = 0, i;
+ 
+ 	netdev_reset_queue(priv->ndev);
+ 
+@@ -375,10 +375,18 @@ int mcp251xfd_ring_init(struct mcp251xfd_priv *priv)
+ 		netdev_err(priv->ndev,
+ 			   "Error during ring configuration, using more RAM (%u bytes) than available (%u bytes).\n",
+ 			   ram_used, MCP251XFD_RAM_SIZE);
+-		return -ENOMEM;
++		err = -ENOMEM;
+ 	}
+ 
+-	return 0;
++	if (priv->tx_obj_num_coalesce_irq &&
++	    priv->tx_obj_num_coalesce_irq * 2 != priv->tx->obj_num) {
++		netdev_err(priv->ndev,
++			   "Error during ring configuration, number of TEF coalescing buffers (%u) must be half of TEF buffers (%u).\n",
++			   priv->tx_obj_num_coalesce_irq, priv->tx->obj_num);
++		err = -EINVAL;
 +	}
- 	/*
- 	 * We need to wait 3 echo intervals to make sure we handle such
- 	 * situations right:
-@@ -667,7 +680,6 @@ server_unresponsive(struct TCP_Server_Info *server)
- 	 * 65s kernel_recvmsg times out, and we see that we haven't gotten
- 	 *     a response in >60s.
- 	 */
--	spin_lock(&server->srv_lock);
- 	if ((server->tcpStatus == CifsGood ||
- 	    server->tcpStatus == CifsNeedNegotiate) &&
- 	    (!server->ops->can_echo || server->ops->can_echo(server)) &&
++
++	return err;
+ }
+ 
+ void mcp251xfd_ring_free(struct mcp251xfd_priv *priv)
 -- 
 2.43.0
 
