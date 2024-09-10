@@ -1,98 +1,196 @@
-Return-Path: <stable+bounces-75669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DBE17973D13
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 18:21:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A677973D62
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 18:36:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 98849287765
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 16:21:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3DDD8287D85
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 16:36:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CEAA1459EA;
-	Tue, 10 Sep 2024 16:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D07F1A38F0;
+	Tue, 10 Sep 2024 16:32:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nRkHSmZW"
+	dkim=pass (2048-bit key) header.d=csie.ntu.edu.tw header.i=@csie.ntu.edu.tw header.b="QeyiS+5A"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F408B2AE69;
-	Tue, 10 Sep 2024 16:21:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97A991A01D3
+	for <stable@vger.kernel.org>; Tue, 10 Sep 2024 16:32:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725985264; cv=none; b=b4JqlWHx/i4joWmJLM3oHv0ve3cFP+mzLlZkdYTSnuJxPOKkVb0bCoxSjpC1A7LMBXUe7/EnYAMyFnKf1YlcEqgsT4ZebW5BBx+q0F9RoxQRwrukaILhHB7bF2TRMsNwERThgL74310ZduB4Bd2eh4SktZgxnsIGsQsyWchTqOE=
+	t=1725985960; cv=none; b=jAVueACjyWaXKhqYyNMcG76lfbeVokFuWf/BaGyBXGg9MGXVm0SxLc+Si/sLIi/ClfZ2JOSmj3Hy0hndKRYvJzbTgkhQOJ4vhMYuqrZ5T4ekf9yN8nKyJKx2mVP1pxrAnqKNiKwj5wEsBDj3JPuduggNjilLMnCLIZEPlDABdFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725985264; c=relaxed/simple;
-	bh=n2/Gy+qHm8w2K7V0ozom/cyardgewtVWUCqsx5HiEHM=;
+	s=arc-20240116; t=1725985960; c=relaxed/simple;
+	bh=4iPN/fsCe14wfGYSYCjynyR282sYt9ED2Ow9xIF9vkM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SYEidk+6SKcmnoNTrqn3cUeoYUsGdFvfxX2olw6Z8GMH528vj4crXTlvCcz9CqiIoe8BKZAF02PsdYXnZ2xqXfJ9qO7j/RJhkgQpxR5Lk6diwZnrbNMdAF0RiUxcZT9GYUfLcrWg9tfRgSeysKqTNmLneDLhgLchUBHyWiXWUpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nRkHSmZW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09867C4CEC3;
-	Tue, 10 Sep 2024 16:20:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725985263;
-	bh=n2/Gy+qHm8w2K7V0ozom/cyardgewtVWUCqsx5HiEHM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nRkHSmZWRQoptxGP5UzyxO2ywgBGzeRqewWWgE5Sm9H6G9Tdq9wXds0mAS8OTLM0x
-	 LWt3Vap2Nt61Xk/Iy2VVvcQK0XiBUh4atVvhlSGkWZXZzq/h7zi4ggfca7FnLdT/3G
-	 CEZrLStoujkUbWA+h8pwg2yhDq7o5ZMrk+4l3hOX+V8NFx1GLEj5PtbvFrAmTcRCnV
-	 eq6/tYIpbxQALUyLkxGezXIgt0S/f4ipRC2fy+sUe7UZEMyMqnc+pENDaT0astLfig
-	 JmhJjvpkWnz2mCLsSbb+HDAmHYKAPnHrcoS/Wg8J5FFLml8ezQ0oBt6S8T99riaE4H
-	 QyPj5ce6lGGWw==
-Date: Tue, 10 Sep 2024 17:20:57 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com
-Subject: Re: [PATCH 5.15 000/214] 5.15.167-rc1 review
-Message-ID: <a7d6949c-fd1a-42e2-bf5b-9cca34a680a2@sirena.org.uk>
-References: <20240910092558.714365667@linuxfoundation.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=fTeyRpax5ME9soRdGcGpVbQ5jTEV3J5zf1SvM/nWmH1ExmjFYfSv5frK95ApkiIkUeIqgzv6N5TAf4kL+DFZyvCZxyvEAC3j4XTbgENiX6thfJ9hD2ajDksW1u5p+PXnTkuMJKBsjqfGhgo2dC0Yv9RfnvlPIiQlRQIO4EJhWxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=csie.ntu.edu.tw; spf=pass smtp.mailfrom=csie.ntu.edu.tw; dkim=pass (2048-bit key) header.d=csie.ntu.edu.tw header.i=@csie.ntu.edu.tw header.b=QeyiS+5A; arc=none smtp.client-ip=209.85.215.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=csie.ntu.edu.tw
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=csie.ntu.edu.tw
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-7c6b4222fe3so3853980a12.3
+        for <stable@vger.kernel.org>; Tue, 10 Sep 2024 09:32:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=csie.ntu.edu.tw; s=google; t=1725985956; x=1726590756; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ELTwotHVw2kePUAUYWtO4H0shRoEHF3K5HxUF2BgZ5g=;
+        b=QeyiS+5ACmGi+c4mTvU9kta+d+9EcD2aNX72XkVinadbAVJWQS2idKdhIFUtxYaTDn
+         oNLrYRcYpdx2DWOrK8StpFlO5FLuI3J8mrReP/g5MK0HPU/bEPAsy5Kuq1QcS/d0uw/p
+         NZVmYt/1Z/hF3S+3mI77HxuL8bQ7Ud2C8YnXZy0gE2U4zTg9ufiijimmmFtqpnywQ1Ud
+         9dp+Nf37eYlbU63UYkipmttPpHigJKpJjB3SIqEE/y4rkhNq3cOZd6w7l/eeL2LP8atG
+         NkplvAsSe5sjg6JUNeQfC65dLcUfv/UWa2UmY64dA9WZzsBqNc+gfSgxcf7CNU6tuPhy
+         /2Ow==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725985956; x=1726590756;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ELTwotHVw2kePUAUYWtO4H0shRoEHF3K5HxUF2BgZ5g=;
+        b=QsDD4IhMnAFvglEGO9x4QKxQp4J5dufEBBREYVNHDSQ94uGS5HSoB+GdsgdxL79cU5
+         9twiJ1gesIdzJto2w0zMy9Xxt6iQKF/01rRYqcdmi0fJcugjhi6R7H/fZzhJXIkvx7vu
+         Q7L/4V3N6soonKAgpB+9AOGtNFFPfjm4FFMYnXYgNpKvY51VdquqfUvOH+Dfm5OSXtm/
+         QB6s7gzj9DutqlxnvJc4I+iFbEEiqX6YC0+kNzlM+SLNFbmkwsRR47vzHIiUekJ5Q3AP
+         NHkZ6TMtQcQ/AUYMVtBF4htAstxlV9yzwrHMN5llxdmYRb+wN0rJpYsQq1UrHQYB7j/F
+         I3mA==
+X-Forwarded-Encrypted: i=1; AJvYcCUQdGypM/Ep0REMJNrEKKgGU3tk2YpZtUV0LweVREUoPfVoajmHY3ItfpXsrGAFr2WNlrCGEF8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyIquj3Fz84tkECUGvML95Vmz10L9ohq4E3AzTNGJXfUZKO5y4M
+	Xa9bij3wJFX27lmAUG75z/VNJC+U90Yt5BeBWNDy4O46QIgjxYay74dUgXM+r1LNx9gcwVcktsv
+	OJyMZfzKOHOnghrKAaNfi+en/6RpDuYaPNvkhGQHtmoCsdZc=
+X-Google-Smtp-Source: AGHT+IGsiPCMyX4DWKfV2C1n/j0UcYNxDwTcJHn00avqUPc5NDXLo/1FuFWLrpMOciYip064UpmfsA==
+X-Received: by 2002:a17:90a:ee8f:b0:2d3:c892:9607 with SMTP id 98e67ed59e1d1-2dad4ef4a6amr16294517a91.12.1725985955738;
+        Tue, 10 Sep 2024 09:32:35 -0700 (PDT)
+Received: from zenbook (2001-b011-3808-5e10-d66e-1c97-ed92-266b.dynamic-ip6.hinet.net. [2001:b011:3808:5e10:d66e:1c97:ed92:266b])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2db04966b6asm6636022a91.39.2024.09.10.09.32.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Sep 2024 09:32:35 -0700 (PDT)
+Date: Wed, 11 Sep 2024 00:32:29 +0800
+From: Wei-Lin Chang <r09922117@csie.ntu.edu.tw>
+To: Snehal Koukuntla <snehalreddy@google.com>, 
+	Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>
+Cc: James Morse <james.morse@arm.com>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Sudeep Holla <sudeep.holla@arm.com>, Sebastian Ene <sebastianene@google.com>, 
+	Vincent Donnefort <vdonnefort@google.com>, Jean-Philippe Brucker <jean-philippe@linaro.org>, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, r09922117@csie.ntu.edu.tw
+Subject: Re: [PATCH v3] KVM: arm64: Add memory length checks and remove
+ inline in do_ffa_mem_xfer
+Message-ID: <rm2pihr27elmdf4zcgrv5khs7qluhn77tkivkr6xkvqcybtl4m@7hesctcacm4h>
+References: <20240909180154.3267939-1-snehalreddy@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="o+joFcAd0/MUrjNu"
-Content-Disposition: inline
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-X-Cookie: You're not Dave.  Who are you?
-
-
---o+joFcAd0/MUrjNu
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <20240909180154.3267939-1-snehalreddy@google.com>
+X-Gm-Spam: 0
+X-Gm-Phishy: 0
 
-On Tue, Sep 10, 2024 at 11:30:22AM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.167 release.
-> There are 214 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Hi everyone,
 
-Tested-by: Mark Brown <broonie@kernel.org>
+On Mon, Sep 09, 2024 at 06:01:54PM GMT, Snehal Koukuntla wrote:
+> When we share memory through FF-A and the description of the buffers
+> exceeds the size of the mapped buffer, the fragmentation API is used.
+> The fragmentation API allows specifying chunks of descriptors in subsequent
+> FF-A fragment calls and no upper limit has been established for this.
+> The entire memory region transferred is identified by a handle which can be
+> used to reclaim the transferred memory.
+> To be able to reclaim the memory, the description of the buffers has to fit
+> in the ffa_desc_buf.
+> Add a bounds check on the FF-A sharing path to prevent the memory reclaim
+> from failing.
+> 
+> Also do_ffa_mem_xfer() does not need __always_inline
+> 
+> Fixes: 634d90cf0ac65 ("KVM: arm64: Handle FFA_MEM_LEND calls from the host")
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Sebastian Ene <sebastianene@google.com>
+> Signed-off-by: Snehal Koukuntla <snehalreddy@google.com>
+> ---
+>  arch/arm64/kvm/hyp/nvhe/ffa.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/arm64/kvm/hyp/nvhe/ffa.c b/arch/arm64/kvm/hyp/nvhe/ffa.c
+> index e715c157c2c4..637425f63fd1 100644
+> --- a/arch/arm64/kvm/hyp/nvhe/ffa.c
+> +++ b/arch/arm64/kvm/hyp/nvhe/ffa.c
+> @@ -426,7 +426,7 @@ static void do_ffa_mem_frag_tx(struct arm_smccc_res *res,
+>  	return;
+>  }
+>  
+> -static __always_inline void do_ffa_mem_xfer(const u64 func_id,
+> +static void do_ffa_mem_xfer(const u64 func_id,
 
---o+joFcAd0/MUrjNu
-Content-Type: application/pgp-signature; name="signature.asc"
+I am seeing a compilation error because of this.
 
------BEGIN PGP SIGNATURE-----
+----- LOG START -----
+$ clang --version 
+clang version 18.1.8
+Target: x86_64-pc-linux-gnu
+Thread model: posix
+InstalledDir: /usr/bin
+$ make LLVM=1 ARCH=arm64 defconfig
+$ make LLVM=1 ARCH=arm64 Image
+...
+arch/arm64/kvm/hyp/nvhe/ffa.c:443:2: error: call to '__compiletime_assert_776' declared with 'error' attribute: BUILD_BUG_ON failed: func_id != FFA_FN64_MEM_SHARE && func_id != FFA_FN64_MEM_LEND
+  443 |         BUILD_BUG_ON(func_id != FFA_FN64_MEM_SHARE &&
+      |         ^
+./include/linux/build_bug.h:50:2: note: expanded from macro 'BUILD_BUG_ON'
+   50 |         BUILD_BUG_ON_MSG(condition, "BUILD_BUG_ON failed: " #condition)
+      |         ^
+./include/linux/build_bug.h:39:37: note: expanded from macro 'BUILD_BUG_ON_MSG'
+   39 | #define BUILD_BUG_ON_MSG(cond, msg) compiletime_assert(!(cond), msg)
+      |                                     ^
+././include/linux/compiler_types.h:510:2: note: expanded from macro 'compiletime_assert'
+  510 |         _compiletime_assert(condition, msg, __compiletime_assert_, __COUNTER__)
+      |         ^
+././include/linux/compiler_types.h:498:2: note: expanded from macro '_compiletime_assert'
+  498 |         __compiletime_assert(condition, msg, prefix, suffix)
+      |         ^
+././include/linux/compiler_types.h:491:4: note: expanded from macro '__compiletime_assert'
+  491 |                         prefix ## suffix();                             \
+      |                         ^
+<scratch space>:66:1: note: expanded from here
+   66 | __compiletime_assert_776
+      | ^
+1 error generated.
+make[6]: *** [arch/arm64/kvm/hyp/nvhe/Makefile:46: arch/arm64/kvm/hyp/nvhe/ffa.nvhe.o] Error 1
+make[5]: *** [scripts/Makefile.build:485: arch/arm64/kvm/hyp/nvhe] Error 2
+make[4]: *** [scripts/Makefile.build:485: arch/arm64/kvm/hyp] Error 2
+make[3]: *** [scripts/Makefile.build:485: arch/arm64/kvm] Error 2
+make[3]: *** Waiting for unfinished jobs....
+----- LOG END -----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmbgcegACgkQJNaLcl1U
-h9CYzQf9Fznt5eM8GrbiC9QBSNUf5uhyHpERn2Yh1+h3CngZP9/jQ3lrjQuDEhy3
-Am4rgiBoU+m66sWEIvC2zoQv+PBpdozEGDKgtdJc/O1ifG3bXrxPrZQXXjRj6JLV
-YW9SjTekrD+kPKm1Is7dtWIHsg4gKs5Z4Sv0Y5rS2NSlTIIUGM2q9NdwMwSt4QI7
-TvCIB7qSN07foV1K5FQbPzxLO5i8qAJ+uAr09ruLBQm/e5CC4+5qfWGc6yuYWHT4
-LrRYDlfwku5O3+OUw/Phpfo9U1N5sgXpCRdMK3hHdytucAc3wV/WG5XjMn45gMAq
-A4mME1BNBKCbt8urHUoPuNuJc4TyPA==
-=owi7
------END PGP SIGNATURE-----
+Is this expected? Because when I add back the __always_inline, or change the
+BUILD_BUG_ON to BUG_ON, it compiles successfully.
 
---o+joFcAd0/MUrjNu--
+Thanks,
+Wei-Lin Chang
+
+>  					    struct arm_smccc_res *res,
+>  					    struct kvm_cpu_context *ctxt)
+>  {
+> @@ -461,6 +461,11 @@ static __always_inline void do_ffa_mem_xfer(const u64 func_id,
+>  		goto out_unlock;
+>  	}
+>  
+> +	if (len > ffa_desc_buf.len) {
+> +		ret = FFA_RET_NO_MEMORY;
+> +		goto out_unlock;
+> +	}
+> +
+>  	buf = hyp_buffers.tx;
+>  	memcpy(buf, host_buffers.tx, fraglen);
+>  
+> -- 
+> 2.46.0.598.g6f2099f65c-goog
+> 
 
