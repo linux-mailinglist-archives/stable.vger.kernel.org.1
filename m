@@ -1,60 +1,58 @@
-Return-Path: <stable+bounces-75271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75009-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04B7E9733BC
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:35:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2BB89732CB
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:26:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B2DC0289E16
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:35:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B3C7B24A99
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:23:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F0431990C3;
-	Tue, 10 Sep 2024 10:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2A5F1940B3;
+	Tue, 10 Sep 2024 10:18:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H5dkhrTC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rOujIPwQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CDD318E77F;
-	Tue, 10 Sep 2024 10:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 801E7190664;
+	Tue, 10 Sep 2024 10:18:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964247; cv=none; b=f/d/6SEU/yhXD4yFVqwSdjfOGKU5wgiTJBJNvgcnnPWq3D+fj1ZKNYjOFTK90ipPPLhxNnjxOGf0++C8YqIVR6o+kssY9kZy3uIf5qnM8IQgCMbEuU7Cy7Kr8y6nqw1asrGmH2DiE6YgdTPMSEmf9GjaHJb4QwMI3dNaVaDNxDE=
+	t=1725963482; cv=none; b=Ggr1MRa3j7dquJliB2tKY3feO47JLaX0QOquFtcSt/SNiFxBqTcYf3+i6+YYttyo4TCg0iecG5rNpdt0IOdfZJG7ASedITDESkEx+yBLWIc2Q3Gn6hBoQHl3KnHDdIhVf/WgryEtYQ9N44p8Bw6PH+npluSNuWNvrTwznC9Nqo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964247; c=relaxed/simple;
-	bh=QXDAlI1niB9yDU1m/XbtamtCBtlRh8zPwLR3k12av8Y=;
+	s=arc-20240116; t=1725963482; c=relaxed/simple;
+	bh=vTl3M/eKCFdE2xx4iycU6AHeYbqykOSatZW5x/Jr7QU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OSSCDDHYEFNYzkIVkoZVDV7wVYHPr9Gvck40OvYE9BSyR+b2CsWXQ5Otz1ohNdjlOO5Iv7JNRHBrUE9PB/gtnuSpm5/pZGhX/trDZ5ClmB2m5V1DvbXZI/VpSV7l7nQB3ptlyO6m4iEsm0A/+RVgDzUB91P3WJSOg6ARRCKfwjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H5dkhrTC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 979FFC4CEC3;
-	Tue, 10 Sep 2024 10:30:46 +0000 (UTC)
+	 MIME-Version; b=X4TyezmWSbrN+X0FEiAjYfTF5v1YXZg8vrxTWABh9KduJBIZhhNcEM94L4wX2uxAzgIQuDm5XWMGWrhUjjchQ+elpA+WEbSeCMwI3njuw+N22AqBSEGVgHLGS4KujHlpfUGioMQg+JAtXdgPy2MxM4EEPxDqdwyGiAkp645FYU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rOujIPwQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0507AC4CEC3;
+	Tue, 10 Sep 2024 10:18:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964247;
-	bh=QXDAlI1niB9yDU1m/XbtamtCBtlRh8zPwLR3k12av8Y=;
+	s=korg; t=1725963482;
+	bh=vTl3M/eKCFdE2xx4iycU6AHeYbqykOSatZW5x/Jr7QU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H5dkhrTCGf2NRUsuC5N4h4uGOhaaK87oH/jSXAIHhFEBfQpIZ4gAvp077YOjF9qhW
-	 2fMzd5fdP1d0a4uh4L4gWoCLKm0ezlCIUDSMEGHXAUN2nVg9sCi2sdM5cq+ibpWXNR
-	 GL71psGOikSNBBMO3ZC8jVbfhoVchVDoPvUYnY6U=
+	b=rOujIPwQb0z0ZAaIX8tq/CDqnK2g5eaEWKMuZ0a6TMp2i9hIAFQ1jgAGscRsMn6Ok
+	 qtqiUgzG1NsVfxOAV2KjqjM6FZgR8/j5SEh4KBtP5QcAxSuMg+2DUmIncFx6i0Ddqb
+	 MgzY785xhLchliTMXhEF3qLvIZ4V0AIlXR1hYMjA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kishon Vijay Abraham I <kishon@ti.com>,
-	Achal Verma <a-verma1@ti.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Jan Kiszka <jan.kiszka@siemens.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 090/269] PCI: keystone: Add workaround for Errata #i2037 (AM65x SR 1.0)
+	Bob Zhou <bob.zhou@amd.com>,
+	Tim Huang <Tim.Huang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Mukul Sikka <mukul.sikka@broadcom.com>
+Subject: [PATCH 5.15 055/214] drm/amd/pm: Fix the null pointer dereference for vega10_hwmgr
 Date: Tue, 10 Sep 2024 11:31:17 +0200
-Message-ID: <20240910092611.419283817@linuxfoundation.org>
+Message-ID: <20240910092601.012024452@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,134 +62,119 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kishon Vijay Abraham I <kishon@ti.com>
+From: Bob Zhou <bob.zhou@amd.com>
 
-[ Upstream commit 86f271f22bbb6391410a07e08d6ca3757fda01fa ]
+commit 50151b7f1c79a09117837eb95b76c2de76841dab upstream.
 
-Errata #i2037 in AM65x/DRA80xM Processors Silicon Revision 1.0
-(SPRZ452D_July 2018_Revised December 2019 [1]) mentions when an
-inbound PCIe TLP spans more than two internal AXI 128-byte bursts,
-the bus may corrupt the packet payload and the corrupt data may
-cause associated applications or the processor to hang.
+Check return value and conduct null pointer handling to avoid null pointer dereference.
 
-The workaround for Errata #i2037 is to limit the maximum read
-request size and maximum payload size to 128 bytes. Add workaround
-for Errata #i2037 here.
-
-The errata and workaround is applicable only to AM65x SR 1.0 and
-later versions of the silicon will have this fixed.
-
-[1] -> https://www.ti.com/lit/er/sprz452i/sprz452i.pdf
-
-Link: https://lore.kernel.org/linux-pci/16e1fcae-1ea7-46be-b157-096e05661b15@siemens.com
-Signed-off-by: Kishon Vijay Abraham I <kishon@ti.com>
-Signed-off-by: Achal Verma <a-verma1@ti.com>
-Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
-Signed-off-by: Jan Kiszka <jan.kiszka@siemens.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Signed-off-by: Bob Zhou <bob.zhou@amd.com>
+Reviewed-by: Tim Huang <Tim.Huang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Mukul Sikka <mukul.sikka@broadcom.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/dwc/pci-keystone.c | 44 ++++++++++++++++++++++-
- 1 file changed, 43 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c |   30 +++++++++++++++---
+ 1 file changed, 26 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pci-keystone.c b/drivers/pci/controller/dwc/pci-keystone.c
-index 54a3c7f29f78..c1dedc83759c 100644
---- a/drivers/pci/controller/dwc/pci-keystone.c
-+++ b/drivers/pci/controller/dwc/pci-keystone.c
-@@ -34,6 +34,11 @@
- #define PCIE_DEVICEID_SHIFT	16
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
+@@ -3415,13 +3415,17 @@ static int vega10_find_dpm_states_clocks
+ 	const struct vega10_power_state *vega10_ps =
+ 			cast_const_phw_vega10_power_state(states->pnew_state);
+ 	struct vega10_single_dpm_table *sclk_table = &(data->dpm_table.gfx_table);
+-	uint32_t sclk = vega10_ps->performance_levels
+-			[vega10_ps->performance_level_count - 1].gfx_clock;
+ 	struct vega10_single_dpm_table *mclk_table = &(data->dpm_table.mem_table);
+-	uint32_t mclk = vega10_ps->performance_levels
+-			[vega10_ps->performance_level_count - 1].mem_clock;
++	uint32_t sclk, mclk;
+ 	uint32_t i;
  
- /* Application registers */
-+#define PID				0x000
-+#define RTL				GENMASK(15, 11)
-+#define RTL_SHIFT			11
-+#define AM6_PCI_PG1_RTL_VER		0x15
++	if (vega10_ps == NULL)
++		return -EINVAL;
++	sclk = vega10_ps->performance_levels
++			[vega10_ps->performance_level_count - 1].gfx_clock;
++	mclk = vega10_ps->performance_levels
++			[vega10_ps->performance_level_count - 1].mem_clock;
 +
- #define CMD_STATUS			0x004
- #define LTSSM_EN_VAL		        BIT(0)
- #define OB_XLAT_EN_VAL		        BIT(1)
-@@ -104,6 +109,8 @@
+ 	for (i = 0; i < sclk_table->count; i++) {
+ 		if (sclk == sclk_table->dpm_levels[i].value)
+ 			break;
+@@ -3728,6 +3732,9 @@ static int vega10_generate_dpm_level_ena
+ 			cast_const_phw_vega10_power_state(states->pnew_state);
+ 	int i;
  
- #define to_keystone_pcie(x)		dev_get_drvdata((x)->dev)
++	if (vega10_ps == NULL)
++		return -EINVAL;
++
+ 	PP_ASSERT_WITH_CODE(!vega10_trim_dpm_states(hwmgr, vega10_ps),
+ 			"Attempt to Trim DPM States Failed!",
+ 			return -1);
+@@ -4865,6 +4872,9 @@ static int vega10_check_states_equal(str
  
-+#define PCI_DEVICE_ID_TI_AM654X		0xb00c
+ 	psa = cast_const_phw_vega10_power_state(pstate1);
+ 	psb = cast_const_phw_vega10_power_state(pstate2);
++	if (psa == NULL || psb == NULL)
++		return -EINVAL;
 +
- struct ks_pcie_of_data {
- 	enum dw_pcie_device_mode mode;
- 	const struct dw_pcie_host_ops *host_ops;
-@@ -518,7 +525,11 @@ static int ks_pcie_start_link(struct dw_pcie *pci)
- static void ks_pcie_quirk(struct pci_dev *dev)
- {
- 	struct pci_bus *bus = dev->bus;
-+	struct keystone_pcie *ks_pcie;
-+	struct device *bridge_dev;
- 	struct pci_dev *bridge;
-+	u32 val;
-+
- 	static const struct pci_device_id rc_pci_devids[] = {
- 		{ PCI_DEVICE(PCI_VENDOR_ID_TI, PCIE_RC_K2HK),
- 		 .class = PCI_CLASS_BRIDGE_PCI_NORMAL, .class_mask = ~0, },
-@@ -530,6 +541,11 @@ static void ks_pcie_quirk(struct pci_dev *dev)
- 		 .class = PCI_CLASS_BRIDGE_PCI_NORMAL, .class_mask = ~0, },
- 		{ 0, },
- 	};
-+	static const struct pci_device_id am6_pci_devids[] = {
-+		{ PCI_DEVICE(PCI_VENDOR_ID_TI, PCI_DEVICE_ID_TI_AM654X),
-+		 .class = PCI_CLASS_BRIDGE_PCI << 8, .class_mask = ~0, },
-+		{ 0, },
-+	};
+ 	/* If the two states don't even have the same number of performance levels they cannot be the same state. */
+ 	if (psa->performance_level_count != psb->performance_level_count) {
+ 		*equal = false;
+@@ -4990,6 +5000,8 @@ static int vega10_set_sclk_od(struct pp_
+ 		return -EINVAL;
  
- 	if (pci_is_root_bus(bus))
- 		bridge = dev;
-@@ -551,10 +567,36 @@ static void ks_pcie_quirk(struct pci_dev *dev)
- 	 */
- 	if (pci_match_id(rc_pci_devids, bridge)) {
- 		if (pcie_get_readrq(dev) > 256) {
--			dev_info(&dev->dev, "limiting MRRS to 256\n");
-+			dev_info(&dev->dev, "limiting MRRS to 256 bytes\n");
- 			pcie_set_readrq(dev, 256);
- 		}
- 	}
-+
-+	/*
-+	 * Memory transactions fail with PCI controller in AM654 PG1.0
-+	 * when MRRS is set to more than 128 bytes. Force the MRRS to
-+	 * 128 bytes in all downstream devices.
-+	 */
-+	if (pci_match_id(am6_pci_devids, bridge)) {
-+		bridge_dev = pci_get_host_bridge_device(dev);
-+		if (!bridge_dev && !bridge_dev->parent)
-+			return;
-+
-+		ks_pcie = dev_get_drvdata(bridge_dev->parent);
-+		if (!ks_pcie)
-+			return;
-+
-+		val = ks_pcie_app_readl(ks_pcie, PID);
-+		val &= RTL;
-+		val >>= RTL_SHIFT;
-+		if (val != AM6_PCI_PG1_RTL_VER)
-+			return;
-+
-+		if (pcie_get_readrq(dev) > 128) {
-+			dev_info(&dev->dev, "limiting MRRS to 128 bytes\n");
-+			pcie_set_readrq(dev, 128);
-+		}
-+	}
- }
- DECLARE_PCI_FIXUP_ENABLE(PCI_ANY_ID, PCI_ANY_ID, ks_pcie_quirk);
+ 	vega10_ps = cast_phw_vega10_power_state(&ps->hardware);
++	if (vega10_ps == NULL)
++		return -EINVAL;
  
--- 
-2.43.0
-
+ 	vega10_ps->performance_levels
+ 	[vega10_ps->performance_level_count - 1].gfx_clock =
+@@ -5041,6 +5053,8 @@ static int vega10_set_mclk_od(struct pp_
+ 		return -EINVAL;
+ 
+ 	vega10_ps = cast_phw_vega10_power_state(&ps->hardware);
++	if (vega10_ps == NULL)
++		return -EINVAL;
+ 
+ 	vega10_ps->performance_levels
+ 	[vega10_ps->performance_level_count - 1].mem_clock =
+@@ -5278,6 +5292,9 @@ static void vega10_odn_update_power_stat
+ 		return;
+ 
+ 	vega10_ps = cast_phw_vega10_power_state(&ps->hardware);
++	if (vega10_ps == NULL)
++		return;
++
+ 	max_level = vega10_ps->performance_level_count - 1;
+ 
+ 	if (vega10_ps->performance_levels[max_level].gfx_clock !=
+@@ -5300,6 +5317,9 @@ static void vega10_odn_update_power_stat
+ 
+ 	ps = (struct pp_power_state *)((unsigned long)(hwmgr->ps) + hwmgr->ps_size * (hwmgr->num_ps - 1));
+ 	vega10_ps = cast_phw_vega10_power_state(&ps->hardware);
++	if (vega10_ps == NULL)
++		return;
++
+ 	max_level = vega10_ps->performance_level_count - 1;
+ 
+ 	if (vega10_ps->performance_levels[max_level].gfx_clock !=
+@@ -5490,6 +5510,8 @@ static int vega10_get_performance_level(
+ 		return -EINVAL;
+ 
+ 	ps = cast_const_phw_vega10_power_state(state);
++	if (ps == NULL)
++		return -EINVAL;
+ 
+ 	i = index > ps->performance_level_count - 1 ?
+ 			ps->performance_level_count - 1 : index;
 
 
 
