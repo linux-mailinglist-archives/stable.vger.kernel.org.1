@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-74559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86EF3972FF0
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:56:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8DBF97305B
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:01:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DCF1DB28972
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:56:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CD9C1F256EB
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:01:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 022A018BC3F;
-	Tue, 10 Sep 2024 09:56:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 108EC18C03C;
+	Tue, 10 Sep 2024 09:59:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hHXHyOI0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vs/nL9DC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2EAB188A1E;
-	Tue, 10 Sep 2024 09:56:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE66118C038;
+	Tue, 10 Sep 2024 09:59:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962160; cv=none; b=ZMz+cX9tcWN+dedM/VTAbXPEzGQOWYZLWnnwpK8BKitMyGol7yCnWbj0kvOgnbugHHnk8KVoZnBNQxBn9jcto60E/c0tjMigH+DCbSj4B7/iYnf/XnY73MrpTAcN++YMg3Vi6VFB/mAGfjx2mX0KKK8uIJ7w5UHFvhNj2Djl0YE=
+	t=1725962366; cv=none; b=Q0M5xmABd7Fvto8NSyUwme8gdUZ0nwy8ukC6D2ziOQPq/99fmgqxG/pFR7vKj/w5mZbRnNXVZ5nEVRITDP9giXGOPh38zSYjmMiYOCK7+rqBoCaDsQaEnlOXbO+V635pPuCfHZNcOwYHfgy4oM0yJ5Q9dRa4dBeGKngHCr4nNGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962160; c=relaxed/simple;
-	bh=kOPQjb6pc+ktcEkrSlHu5deqeMFbi/hX00r4mZ6rWTA=;
+	s=arc-20240116; t=1725962366; c=relaxed/simple;
+	bh=jC/qTTzhdmO1S/KRr9FoBm33yzZKXUz8cjzYSip5Qxs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K2OiObJIooIi5ZtOr2Biw+to4BxILo04Evd/dLd0JJpyGYPrEsMnjxvOkm5ZcZzhzMuyZsbNFNGOvOMDIfMWY7LelCULQdAvtyMm09ZbWTWWRw8laidf3VnNIbec6jHQgYB/kW+Mf3XDZKmDEbHotPW6mGUHnUSLqQ1JLVqIaEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hHXHyOI0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37A3CC4CEC3;
-	Tue, 10 Sep 2024 09:56:00 +0000 (UTC)
+	 MIME-Version; b=TxXgvlSpUikgkwVoyjUNAUbfYcJiABltMlGH92d4ceD3FXj7DlWpiLFyprBdk6CstSAZAzvLcqceIjozlpJJOq2lYELchUewvbzOkDkBMLv0zCR3GIX0VjBToKAk+Fp/j9YMjnuN0ZA5fQsZILb2wsPMXXTJdAI/kOITcZRpMtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vs/nL9DC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD1A7C4CEC6;
+	Tue, 10 Sep 2024 09:59:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962160;
-	bh=kOPQjb6pc+ktcEkrSlHu5deqeMFbi/hX00r4mZ6rWTA=;
+	s=korg; t=1725962366;
+	bh=jC/qTTzhdmO1S/KRr9FoBm33yzZKXUz8cjzYSip5Qxs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hHXHyOI0Ww4UjAPJhmQh0ACQJuO4WBxWToKPzNKWQYANNVChtipyYGbo66XGNKeT/
-	 0MZ3F1txBkNKGIm2xd/xg4rEQcKLU426BWbeHbjvNGvBJdv8fFV7imtFV5Hq+1A74x
-	 LcYmUQZWySfR6jZUDPkPmVFmgXxmkrJz18iMckxo=
+	b=Vs/nL9DC6P3sHMa236wbpzrE9ycXkqlwJu7HE59EfSaoQfjP9ucAlIaighFRnO4fp
+	 gHCNFKr83dwLoApKt4nyiZCaGBNy4vYI0OQseSGCWMbpZwaNHOOG4uHkMghn1WovmD
+	 YQGuyYOitevYL/VnNdw/ADQtstIF5eJQaDjKeiT8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dumitru Ceclan <dumitru.ceclan@analog.com>,
-	Nuno Sa <nuno.sa@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.10 288/375] iio: adc: ad7124: fix config comparison
+	Tim Huang <Tim.Huang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 010/121] drm/amdgpu: fix ucode out-of-bounds read warning
 Date: Tue, 10 Sep 2024 11:31:25 +0200
-Message-ID: <20240910092632.243598077@linuxfoundation.org>
+Message-ID: <20240910092546.236888823@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
-References: <20240910092622.245959861@linuxfoundation.org>
+In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
+References: <20240910092545.737864202@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dumitru Ceclan <mitrutzceclan@gmail.com>
+From: Tim Huang <Tim.Huang@amd.com>
 
-commit 2f6b92d0f69f04d9e2ea0db1228ab7f82f3173af upstream.
+[ Upstream commit 8944acd0f9db33e17f387fdc75d33bb473d7936f ]
 
-The ad7124_find_similar_live_cfg() computes the compare size by
-substracting the address of the cfg struct from the address of the live
-field. Because the live field is the first field in the struct, the
-result is 0.
+Clear warning that read ucode[] may out-of-bounds.
 
-Also, the memcmp() call is made from the start of the cfg struct, which
-includes the live and cfg_slot fields, which are not relevant for the
-comparison.
-
-Fix by grouping the relevant fields with struct_group() and use the
-size of the group to compute the compare size; make the memcmp() call
-from the address of the group.
-
-Fixes: 7b8d045e497a ("iio: adc: ad7124: allow more than 8 channels")
-Signed-off-by: Dumitru Ceclan <dumitru.ceclan@analog.com>
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://patch.msgid.link/20240731-ad7124-fix-v1-2-46a76aa4b9be@analog.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Tim Huang <Tim.Huang@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7124.c |   26 +++++++++++++++-----------
- 1 file changed, 15 insertions(+), 11 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_cgs.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/iio/adc/ad7124.c
-+++ b/drivers/iio/adc/ad7124.c
-@@ -147,15 +147,18 @@ struct ad7124_chip_info {
- struct ad7124_channel_config {
- 	bool live;
- 	unsigned int cfg_slot;
--	enum ad7124_ref_sel refsel;
--	bool bipolar;
--	bool buf_positive;
--	bool buf_negative;
--	unsigned int vref_mv;
--	unsigned int pga_bits;
--	unsigned int odr;
--	unsigned int odr_sel_bits;
--	unsigned int filter_type;
-+	/* Following fields are used to compare equality. */
-+	struct_group(config_props,
-+		enum ad7124_ref_sel refsel;
-+		bool bipolar;
-+		bool buf_positive;
-+		bool buf_negative;
-+		unsigned int vref_mv;
-+		unsigned int pga_bits;
-+		unsigned int odr;
-+		unsigned int odr_sel_bits;
-+		unsigned int filter_type;
-+	);
- };
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cgs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cgs.c
+index 031b094607bd..3ce4447052b9 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cgs.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cgs.c
+@@ -213,6 +213,9 @@ static int amdgpu_cgs_get_firmware_info(struct cgs_device *cgs_device,
+ 		struct amdgpu_firmware_info *ucode;
  
- struct ad7124_channel {
-@@ -334,11 +337,12 @@ static struct ad7124_channel_config *ad7
- 	ptrdiff_t cmp_size;
- 	int i;
- 
--	cmp_size = (u8 *)&cfg->live - (u8 *)cfg;
-+	cmp_size = sizeof_field(struct ad7124_channel_config, config_props);
- 	for (i = 0; i < st->num_channels; i++) {
- 		cfg_aux = &st->channels[i].cfg;
- 
--		if (cfg_aux->live && !memcmp(cfg, cfg_aux, cmp_size))
-+		if (cfg_aux->live &&
-+		    !memcmp(&cfg->config_props, &cfg_aux->config_props, cmp_size))
- 			return cfg_aux;
- 	}
- 
+ 		id = fw_type_convert(cgs_device, type);
++		if (id >= AMDGPU_UCODE_ID_MAXIMUM)
++			return -EINVAL;
++
+ 		ucode = &adev->firmware.ucode[id];
+ 		if (ucode->fw == NULL)
+ 			return -EINVAL;
+-- 
+2.43.0
+
 
 
 
