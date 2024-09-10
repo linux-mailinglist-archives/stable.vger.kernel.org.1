@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-74910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A08D9973230
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:20:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1A129734F9
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:44:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4F9B6B22310
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:18:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 571B31F224A4
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:44:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8582D194C88;
-	Tue, 10 Sep 2024 10:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83F13190492;
+	Tue, 10 Sep 2024 10:42:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="piCdoV6r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lyrTmcl8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 430E9183CB0;
-	Tue, 10 Sep 2024 10:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42978190056;
+	Tue, 10 Sep 2024 10:42:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963192; cv=none; b=F2wC5uYFepM8526jLBENH+uU7fklD7LCLKZIm0TUCzv7qorsGoAOODbsaOF8lEmwiz7WyIRC2EiNvmhiy0giPTyiP7t4YNDcpibLdlgSNvv3dWVySFq60S3duLK1iQhSokC42pvzia3QCSFLo7skftuLW0SP9+ZksAbI5zM6dhw=
+	t=1725964975; cv=none; b=QRr0JHV+DDAdBCnrNh+7xBaMQcCunfiwMIGZC1ugP6/Mc2v3phdysnvXuU3kQRzhzkaZl131uK3gEMX0mPsSvskXoWGqxzXcqr6XNcZDI2lardpGxEkky7bajQs1Afrp2RXPOC8/l/ythK4mosN56qtk6Q/a323GGzW1wHWOn6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963192; c=relaxed/simple;
-	bh=V1lwqFmjD5w9CWac8U9TO3/d1xT2OXpNZ9RCGurnM9I=;
+	s=arc-20240116; t=1725964975; c=relaxed/simple;
+	bh=bvHJhM4Uo+v6b0R695grgetmIQ8bjbkR4XgxXY9T6Yc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=afWPnjYRto+5F/eYAXeZbafIJ1WRsEpQYy/w3A8V7YHwKGUKP5nXETZXcL+6ra6Zgp6k9LZhofV74iE6B65f1R4MTQ8mQSVd3MfPrLwqEOZtk8TPAd0LYkfgSTX06gmWygnyNJBugAsU0h/axf1Sp8a0Bcranqxrtf6IGjbk/Kk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=piCdoV6r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE3BDC4CEC3;
-	Tue, 10 Sep 2024 10:13:11 +0000 (UTC)
+	 MIME-Version; b=ClDeSZ5tyzxpTRl84aFPAk8xOPuE0JafiBD7ZZrgDn+TiGNZpb0zqtv8kKbgNIWWJHyUbzsWeCbnGp1xDFsgBcegExlVopj01NwcYR6tEjlzCf3cCt3wQ5/UOSM8Fng3n2t48HzJvvht+zNcwRzlvxxoUFEB5wevvfYEi+4ulGY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lyrTmcl8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCD14C4CEC3;
+	Tue, 10 Sep 2024 10:42:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963192;
-	bh=V1lwqFmjD5w9CWac8U9TO3/d1xT2OXpNZ9RCGurnM9I=;
+	s=korg; t=1725964975;
+	bh=bvHJhM4Uo+v6b0R695grgetmIQ8bjbkR4XgxXY9T6Yc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=piCdoV6rb2eNt/vAZql/ZONsrWk6oSO34OzTfCr64c1N6wdDOAMVTTexNxHd58y7g
-	 45jQi/bcRkuDnf399OiGA0VDK4NbQg5D/f9zcHoY3SAGY5KZtiiDzKN89YBqpApiOy
-	 JzcTo2UBgH4efjhWeWb/1ZuJCspR7Z362uidHFao=
+	b=lyrTmcl85QB8+p1s6ksOD5+tnNSLKNdtlWzG6otYIVzb2l71mfetHAvX+O8l33zdO
+	 y/nxXg8CzaDnwqC8oVAL6ppQDrM/ZWET6Y32S7VWxl8jaZ8NNR4fbpJY7yOxC3Tkfc
+	 U2CS4iSj6yaboEsn+GWZyOwCadgclASP4Z+uRbtI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dumitru Ceclan <dumitru.ceclan@analog.com>,
-	Nuno Sa <nuno.sa@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 139/192] iio: adc: ad7124: fix config comparison
+	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 5.10 068/186] clk: qcom: clk-alpha-pll: Fix the trion pll postdiv set rate API
 Date: Tue, 10 Sep 2024 11:32:43 +0200
-Message-ID: <20240910092603.710851638@linuxfoundation.org>
+Message-ID: <20240910092557.314570475@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,83 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dumitru Ceclan <mitrutzceclan@gmail.com>
+From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
 
-commit 2f6b92d0f69f04d9e2ea0db1228ab7f82f3173af upstream.
+commit 4ad1ed6ef27cab94888bb3c740c14042d5c0dff2 upstream.
 
-The ad7124_find_similar_live_cfg() computes the compare size by
-substracting the address of the cfg struct from the address of the live
-field. Because the live field is the first field in the struct, the
-result is 0.
+Correct the pll postdiv shift used in clk_trion_pll_postdiv_set_rate
+API. The shift value is not same for different types of plls and
+should be taken from the pll's .post_div_shift member.
 
-Also, the memcmp() call is made from the start of the cfg struct, which
-includes the live and cfg_slot fields, which are not relevant for the
-comparison.
-
-Fix by grouping the relevant fields with struct_group() and use the
-size of the group to compute the compare size; make the memcmp() call
-from the address of the group.
-
-Fixes: 7b8d045e497a ("iio: adc: ad7124: allow more than 8 channels")
-Signed-off-by: Dumitru Ceclan <dumitru.ceclan@analog.com>
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://patch.msgid.link/20240731-ad7124-fix-v1-2-46a76aa4b9be@analog.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 548a909597d5 ("clk: qcom: clk-alpha-pll: Add support for Trion PLLs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20240731062916.2680823-3-quic_skakitap@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/ad7124.c |   26 +++++++++++++++-----------
- 1 file changed, 15 insertions(+), 11 deletions(-)
+ drivers/clk/qcom/clk-alpha-pll.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/iio/adc/ad7124.c
-+++ b/drivers/iio/adc/ad7124.c
-@@ -146,15 +146,18 @@ struct ad7124_chip_info {
- struct ad7124_channel_config {
- 	bool live;
- 	unsigned int cfg_slot;
--	enum ad7124_ref_sel refsel;
--	bool bipolar;
--	bool buf_positive;
--	bool buf_negative;
--	unsigned int vref_mv;
--	unsigned int pga_bits;
--	unsigned int odr;
--	unsigned int odr_sel_bits;
--	unsigned int filter_type;
-+	/* Following fields are used to compare equality. */
-+	struct_group(config_props,
-+		enum ad7124_ref_sel refsel;
-+		bool bipolar;
-+		bool buf_positive;
-+		bool buf_negative;
-+		unsigned int vref_mv;
-+		unsigned int pga_bits;
-+		unsigned int odr;
-+		unsigned int odr_sel_bits;
-+		unsigned int filter_type;
-+	);
- };
- 
- struct ad7124_channel {
-@@ -333,11 +336,12 @@ static struct ad7124_channel_config *ad7
- 	ptrdiff_t cmp_size;
- 	int i;
- 
--	cmp_size = (u8 *)&cfg->live - (u8 *)cfg;
-+	cmp_size = sizeof_field(struct ad7124_channel_config, config_props);
- 	for (i = 0; i < st->num_channels; i++) {
- 		cfg_aux = &st->channels[i].cfg;
- 
--		if (cfg_aux->live && !memcmp(cfg, cfg_aux, cmp_size))
-+		if (cfg_aux->live &&
-+		    !memcmp(&cfg->config_props, &cfg_aux->config_props, cmp_size))
- 			return cfg_aux;
+--- a/drivers/clk/qcom/clk-alpha-pll.c
++++ b/drivers/clk/qcom/clk-alpha-pll.c
+@@ -1321,8 +1321,8 @@ clk_trion_pll_postdiv_set_rate(struct cl
  	}
  
+ 	return regmap_update_bits(regmap, PLL_USER_CTL(pll),
+-				  PLL_POST_DIV_MASK(pll) << PLL_POST_DIV_SHIFT,
+-				  val << PLL_POST_DIV_SHIFT);
++				  PLL_POST_DIV_MASK(pll) << pll->post_div_shift,
++				  val << pll->post_div_shift);
+ }
+ 
+ const struct clk_ops clk_alpha_pll_postdiv_trion_ops = {
 
 
 
