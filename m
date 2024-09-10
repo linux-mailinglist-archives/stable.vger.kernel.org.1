@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-75376-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F0B097343E
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:39:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5385697355F
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:48:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C129B1C248DC
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:39:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9B82EB2F38D
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:45:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 922131991A3;
-	Tue, 10 Sep 2024 10:35:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8804E18C33D;
+	Tue, 10 Sep 2024 10:43:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZND6M/42"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TzT0PKT8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FFAD18FC74;
-	Tue, 10 Sep 2024 10:35:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4522518C03E;
+	Tue, 10 Sep 2024 10:43:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964552; cv=none; b=eDDXuPTxAzzWvxpY8jLuMa/ocWI8SAspHaAk1zKMK9CgL1JgDye+8DfWLXyl/Or4k3JI1SHrUzRROQOXNAzIxuR/f/MccCnCpRnIQZSDYJzE5zIEmQXJdki/3GfUhh1vbZAJdDo/2Cw6r0vy9sSWuFyNiGdKPiHFnpehV4C0CEU=
+	t=1725965037; cv=none; b=cgybJJceG5cWQxBvFbFYzamSONvHkD16Bt2BEfF/8SHKZocywgadc6zQf9qP6RTtPtFo+iAUaZkDiy54daXE84USOhiPcjoFG1CYGSF1yR/SzXq9PAsmwDCx8QtUUP6G4DtvoEtUKRrnIJVtn5EOKl+IaHONWs9eCgGaSvn2vCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964552; c=relaxed/simple;
-	bh=bhYxGShTmx3bBbxaIojCFh38/LSNQI/Zgsh+7gSEef0=;
+	s=arc-20240116; t=1725965037; c=relaxed/simple;
+	bh=/MYLThAjdu3gS2LPxeBvoycl1ceGsdpAwrnV4DDzn0w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O+wHGySY3eO4X8+yRLwFj9pjE5gRU0+j4kC+cOtNi/XsPipvcVPrri/hL4XCwZ7+1hVmK+2slVUpHmQ8tTAVdGGvVY3ptjQsjecEjyhuLk3dtDi7CSp0v2fNu5L2cHWSL+iVY2uDraI7xZUCdYvR9U9e4ndmsqC+EPXistVgQlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZND6M/42; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA19EC4CEC3;
-	Tue, 10 Sep 2024 10:35:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CeBy8i8Lu5PwYwn/mtNdWc6XomjyqPPBgVrkURyaYwNagENFWZWMI+R7gvyhR6uFdncLc5e2b+tz8Dcj9T4GUaBp8NNn+UiHbrInvpkFkR1qCT2419fi9H1qEpoDeGiOX5vHSyf4v57fMmwJ05VqRj5axtF2Wc23jDTwj4svX9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TzT0PKT8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAF8AC4CED3;
+	Tue, 10 Sep 2024 10:43:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964552;
-	bh=bhYxGShTmx3bBbxaIojCFh38/LSNQI/Zgsh+7gSEef0=;
+	s=korg; t=1725965037;
+	bh=/MYLThAjdu3gS2LPxeBvoycl1ceGsdpAwrnV4DDzn0w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZND6M/42O/v9AfFQyeFrbOipkTvHvAo+ZH9lBcjgX7eiLtXxRUGKyJDyahwJNocDO
-	 PhZIQ9nhAkFP0IvKqAe1UtI2tGRbe6BTufS53ABpfnKPnLSad4zHW/JTTAdGpXaaBC
-	 RQzYH36ZwrEBIj2yk5iHXi//f8KGIxg6/SofUIPU=
+	b=TzT0PKT8I3i8oMuSVX3nRaq1DRLv5e40eBsXpQoJDDWVhcJTvSa7NWnXD6xAGdghg
+	 a1Xwb2g1brcuInvKx9jJGLpaA2+KG9EItiE25E1VBuk53Ddg4xLcKv6dw11RKxI1/y
+	 WXRuFDJ77rDlpgCpxLR33NJIbzgeky8bpkXDkEGc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Uros Bizjak <ubizjak@gmail.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>
-Subject: [PATCH 6.6 222/269] clocksource/drivers/timer-of: Remove percpu irq related code
-Date: Tue, 10 Sep 2024 11:33:29 +0200
-Message-ID: <20240910092615.874468038@linuxfoundation.org>
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 115/186] platform/x86: dell-smbios: Fix error path in dell_smbios_init()
+Date: Tue, 10 Sep 2024 11:33:30 +0200
+Message-ID: <20240910092559.267893302@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,115 +63,56 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Lezcano <daniel.lezcano@linaro.org>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-commit 471ef0b5a8aaca4296108e756b970acfc499ede4 upstream.
+[ Upstream commit ffc17e1479e8e9459b7afa80e5d9d40d0dd78abb ]
 
-GCC's named address space checks errors out with:
+In case of error in build_tokens_sysfs(), all the memory that has been
+allocated is freed at end of this function. But then free_group() is
+called which performs memory deallocation again.
 
-drivers/clocksource/timer-of.c: In function ‘timer_of_irq_exit’:
-drivers/clocksource/timer-of.c:29:46: error: passing argument 2 of
-‘free_percpu_irq’ from pointer to non-enclosed address space
-  29 |                 free_percpu_irq(of_irq->irq, clkevt);
-     |                                              ^~~~~~
-In file included from drivers/clocksource/timer-of.c:8:
-./include/linux/interrupt.h:201:43: note: expected ‘__seg_gs void *’
-but argument is of type ‘struct clock_event_device *’
- 201 | extern void free_percpu_irq(unsigned int, void __percpu *);
-     |                                           ^~~~~~~~~~~~~~~
-drivers/clocksource/timer-of.c: In function ‘timer_of_irq_init’:
-drivers/clocksource/timer-of.c:74:51: error: passing argument 4 of
-‘request_percpu_irq’ from pointer to non-enclosed address space
-  74 |                                    np->full_name, clkevt) :
-     |                                                   ^~~~~~
-./include/linux/interrupt.h:190:56: note: expected ‘__seg_gs void *’
-but argument is of type ‘struct clock_event_device *’
- 190 |                    const char *devname, void __percpu *percpu_dev_id)
+Also, instead of free_group() call, there should be exit_dell_smbios_smm()
+and exit_dell_smbios_wmi() calls, since there is initialization, but there
+is no release of resources in case of an error.
 
-Sparse warns about:
+Fix these issues by replacing free_group() call with
+exit_dell_smbios_wmi() and exit_dell_smbios_smm().
 
-timer-of.c:29:46: warning: incorrect type in argument 2 (different address spaces)
-timer-of.c:29:46:    expected void [noderef] __percpu *
-timer-of.c:29:46:    got struct clock_event_device *clkevt
-timer-of.c:74:51: warning: incorrect type in argument 4 (different address spaces)
-timer-of.c:74:51:    expected void [noderef] __percpu *percpu_dev_id
-timer-of.c:74:51:    got struct clock_event_device *clkevt
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-It appears the code is incorrect as reported by Uros Bizjak:
-
-"The referred code is questionable as it tries to reuse
-the clkevent pointer once as percpu pointer and once as generic
-pointer, which should be avoided."
-
-This change removes the percpu related code as no drivers is using it.
-
-[Daniel: Fixed the description]
-
-Fixes: dc11bae785295 ("clocksource/drivers: Add timer-of common init routine")
-Reported-by: Uros Bizjak <ubizjak@gmail.com>
-Tested-by: Uros Bizjak <ubizjak@gmail.com>
-Link: https://lore.kernel.org/r/20240819100335.2394751-1-daniel.lezcano@linaro.org
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 33b9ca1e53b4 ("platform/x86: dell-smbios: Add a sysfs interface for SMBIOS tokens")
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Link: https://lore.kernel.org/r/20240830065428.9544-1-amishin@t-argos.ru
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clocksource/timer-of.c |   17 ++++-------------
- drivers/clocksource/timer-of.h |    1 -
- 2 files changed, 4 insertions(+), 14 deletions(-)
+ drivers/platform/x86/dell-smbios-base.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/drivers/clocksource/timer-of.c
-+++ b/drivers/clocksource/timer-of.c
-@@ -25,10 +25,7 @@ static __init void timer_of_irq_exit(str
+diff --git a/drivers/platform/x86/dell-smbios-base.c b/drivers/platform/x86/dell-smbios-base.c
+index 3a1dbf199441..98e77cb210b7 100644
+--- a/drivers/platform/x86/dell-smbios-base.c
++++ b/drivers/platform/x86/dell-smbios-base.c
+@@ -610,7 +610,10 @@ static int __init dell_smbios_init(void)
+ 	return 0;
  
- 	struct clock_event_device *clkevt = &to->clkevt;
+ fail_sysfs:
+-	free_group(platform_device);
++	if (!wmi)
++		exit_dell_smbios_wmi();
++	if (!smm)
++		exit_dell_smbios_smm();
  
--	if (of_irq->percpu)
--		free_percpu_irq(of_irq->irq, clkevt);
--	else
--		free_irq(of_irq->irq, clkevt);
-+	free_irq(of_irq->irq, clkevt);
- }
- 
- /**
-@@ -42,9 +39,6 @@ static __init void timer_of_irq_exit(str
-  * - Get interrupt number by name
-  * - Get interrupt number by index
-  *
-- * When the interrupt is per CPU, 'request_percpu_irq()' is called,
-- * otherwise 'request_irq()' is used.
-- *
-  * Returns 0 on success, < 0 otherwise
-  */
- static __init int timer_of_irq_init(struct device_node *np,
-@@ -69,12 +63,9 @@ static __init int timer_of_irq_init(stru
- 		return -EINVAL;
- 	}
- 
--	ret = of_irq->percpu ?
--		request_percpu_irq(of_irq->irq, of_irq->handler,
--				   np->full_name, clkevt) :
--		request_irq(of_irq->irq, of_irq->handler,
--			    of_irq->flags ? of_irq->flags : IRQF_TIMER,
--			    np->full_name, clkevt);
-+	ret = request_irq(of_irq->irq, of_irq->handler,
-+			  of_irq->flags ? of_irq->flags : IRQF_TIMER,
-+			  np->full_name, clkevt);
- 	if (ret) {
- 		pr_err("Failed to request irq %d for %pOF\n", of_irq->irq, np);
- 		return ret;
---- a/drivers/clocksource/timer-of.h
-+++ b/drivers/clocksource/timer-of.h
-@@ -11,7 +11,6 @@
- struct of_timer_irq {
- 	int irq;
- 	int index;
--	int percpu;
- 	const char *name;
- 	unsigned long flags;
- 	irq_handler_t handler;
+ fail_create_group:
+ 	platform_device_del(platform_device);
+-- 
+2.43.0
+
 
 
 
