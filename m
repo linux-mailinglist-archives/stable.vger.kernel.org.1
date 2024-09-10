@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-74871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E229A9731D2
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:15:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C09B79732CD
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:26:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F8FC28C7CE
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:15:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F40DA1C20E82
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:26:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA7C2191F82;
-	Tue, 10 Sep 2024 10:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4A0818C913;
+	Tue, 10 Sep 2024 10:20:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mh4Lbori"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DJ8QBZl1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 795A318FC99;
-	Tue, 10 Sep 2024 10:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3E9C17BEAD;
+	Tue, 10 Sep 2024 10:20:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963077; cv=none; b=isbV3xRK5YpEclvwkNy4U+niaF/ifiKuzWgnar1y3oRTkiaBwI2W/6byU54or4sOq6oyRoya+DvBDY53vBg/v77BQLXmiX64AkcoTyzbk8Zux/AM54r6o5Rx6zOxsMyzRL4QC/DgMNKyC1E8ftCmHgY8O1L4eyVo34GtwjmnFy0=
+	t=1725963646; cv=none; b=CQh7KiLSzgfSGLaPAe1ss4pu4yQ2g/l7YYeZs+7wFjgRjhrGlelOoqcioKTFkfabZylgrEP3JQFBiKnSstCPO8nHFZ6yC33JY0EL06eKgN2JqoeTR5FFrTd5K+67bpOYU2l0+DkfdyYBePaiDaiQ55rhgEfuTgRZh5jRymSQKpw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963077; c=relaxed/simple;
-	bh=a4Wy4s8f8V0kNF6bjoYKzk8HZtLkTl3PSRHTLvI3EHo=;
+	s=arc-20240116; t=1725963646; c=relaxed/simple;
+	bh=US75updc8WxL8RVUWtmwIDAeYO1ZYmLY31XhjjlA9pA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=O0D8IbIBTnQqM5NCOF4x0fMr4fGzKniC11hDGfXuCsfihbvdIawIyeA1Z0ZERXoutp5abqJq7pn1CvJM24ccRy3MCCMxkwSxwKUTyzP3RzyL6ZjHb4taZYprvU6/P5fzXAA7SzLImeUMMR/TavWFqXCsST7t7BzhfhEt1sYpdGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mh4Lbori; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 011A9C4CEC3;
-	Tue, 10 Sep 2024 10:11:16 +0000 (UTC)
+	 MIME-Version; b=AQrpA2U0ld3EpDU/F/p4KkQYTPbdqhk8gZq+/3PN7i3iIY5ylph+dJDaxBK8I9nO+AXqp5skcqu0UP5VRkmjQNEaXGEqcibjfVM2qxvVsitaVbXCj2pOeCrec7ZXH1TT/acEdFUMCKdmCq+wtF5OEDUG8Ml4J+yG0q7fOi9kprc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DJ8QBZl1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A3ECC4CEC3;
+	Tue, 10 Sep 2024 10:20:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963077;
-	bh=a4Wy4s8f8V0kNF6bjoYKzk8HZtLkTl3PSRHTLvI3EHo=;
+	s=korg; t=1725963646;
+	bh=US75updc8WxL8RVUWtmwIDAeYO1ZYmLY31XhjjlA9pA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mh4LboriCh/ZXMVHbxeB0oAJetavVZh0wip9lHPqx2zd2pSkWsJlPSo8QUFUIuQSJ
-	 UesxnvCThzBdCS+LGTFiHlGblaYuCRFCfHST0GWQi7wPGvNDsu+e/Jq7vdMj6CyoAZ
-	 3neBPIOOuXI2sK91b1ZyOYoaGL+KRhDVtW9b5SeY=
+	b=DJ8QBZl1B5cz5Vy2I8eL8K29oiAyjtK4flET2gdELpoBgTo/iQM+eZxrJsms8u4/1
+	 GjCPDbfKNkB4OVa7Odf2Yo4lhhLlDARXIOtQlIeiEb6cQWE7CB33Gfq7lypWu3E8id
+	 E6ezV/1OaYt1DdeRmQgFNeHwRJwzjqnH5/5zN63A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Serge Semin <fancer.lancer@gmail.com>,
-	Jiaxun Yang <jiaxun.yang@flygoat.com>,
-	=?UTF-8?q?Philippe=20Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Guillaume Nault <gnault@redhat.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 127/192] MIPS: cevt-r4k: Dont call get_c0_compare_int if timer irq is installed
+Subject: [PATCH 5.15 129/214] bareudp: Fix device stats updates.
 Date: Tue, 10 Sep 2024 11:32:31 +0200
-Message-ID: <20240910092603.243896967@linuxfoundation.org>
+Message-ID: <20240910092604.017805880@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,79 +61,110 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+From: Guillaume Nault <gnault@redhat.com>
 
-[ Upstream commit 50f2b98dc83de7809a5c5bf0ccf9af2e75c37c13 ]
+[ Upstream commit 4963d2343af81f493519f9c3ea9f2169eaa7353a ]
 
-This avoids warning:
+Bareudp devices update their stats concurrently.
+Therefore they need proper atomic increments.
 
-[    0.118053] BUG: sleeping function called from invalid context at kernel/locking/mutex.c:283
-
-Caused by get_c0_compare_int on secondary CPU.
-
-We also skipped saving IRQ number to struct clock_event_device *cd as
-it's never used by clockevent core, as per comments it's only meant
-for "non CPU local devices".
-
-Reported-by: Serge Semin <fancer.lancer@gmail.com>
-Closes: https://lore.kernel.org/linux-mips/6szkkqxpsw26zajwysdrwplpjvhl5abpnmxgu2xuj3dkzjnvsf@4daqrz4mf44k/
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Reviewed-by: Philippe Mathieu-Daudé <philmd@linaro.org>
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
-Tested-by: Serge Semin <fancer.lancer@gmail.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Fixes: 571912c69f0e ("net: UDP tunnel encapsulation module for tunnelling different protocols like MPLS, IP, NSH etc.")
+Signed-off-by: Guillaume Nault <gnault@redhat.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/04b7b9d0b480158eb3ab4366ec80aa2ab7e41fcb.1725031794.git.gnault@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/kernel/cevt-r4k.c | 15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ drivers/net/bareudp.c | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/arch/mips/kernel/cevt-r4k.c b/arch/mips/kernel/cevt-r4k.c
-index 32ec67c9ab67..77028aa8c107 100644
---- a/arch/mips/kernel/cevt-r4k.c
-+++ b/arch/mips/kernel/cevt-r4k.c
-@@ -303,13 +303,6 @@ int r4k_clockevent_init(void)
- 	if (!c0_compare_int_usable())
- 		return -ENXIO;
+diff --git a/drivers/net/bareudp.c b/drivers/net/bareudp.c
+index 98c915943f32..43d038a5123e 100644
+--- a/drivers/net/bareudp.c
++++ b/drivers/net/bareudp.c
+@@ -75,7 +75,7 @@ static int bareudp_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
  
--	/*
--	 * With vectored interrupts things are getting platform specific.
--	 * get_c0_compare_int is a hook to allow a platform to return the
--	 * interrupt number of its liking.
--	 */
--	irq = get_c0_compare_int();
--
- 	cd = &per_cpu(mips_clockevent_device, cpu);
+ 		if (skb_copy_bits(skb, BAREUDP_BASE_HLEN, &ipversion,
+ 				  sizeof(ipversion))) {
+-			bareudp->dev->stats.rx_dropped++;
++			DEV_STATS_INC(bareudp->dev, rx_dropped);
+ 			goto drop;
+ 		}
+ 		ipversion >>= 4;
+@@ -85,7 +85,7 @@ static int bareudp_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
+ 		} else if (ipversion == 6 && bareudp->multi_proto_mode) {
+ 			proto = htons(ETH_P_IPV6);
+ 		} else {
+-			bareudp->dev->stats.rx_dropped++;
++			DEV_STATS_INC(bareudp->dev, rx_dropped);
+ 			goto drop;
+ 		}
+ 	} else if (bareudp->ethertype == htons(ETH_P_MPLS_UC)) {
+@@ -99,7 +99,7 @@ static int bareudp_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
+ 				   ipv4_is_multicast(tunnel_hdr->daddr)) {
+ 				proto = htons(ETH_P_MPLS_MC);
+ 			} else {
+-				bareudp->dev->stats.rx_dropped++;
++				DEV_STATS_INC(bareudp->dev, rx_dropped);
+ 				goto drop;
+ 			}
+ 		} else {
+@@ -115,7 +115,7 @@ static int bareudp_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
+ 				   (addr_type & IPV6_ADDR_MULTICAST)) {
+ 				proto = htons(ETH_P_MPLS_MC);
+ 			} else {
+-				bareudp->dev->stats.rx_dropped++;
++				DEV_STATS_INC(bareudp->dev, rx_dropped);
+ 				goto drop;
+ 			}
+ 		}
+@@ -127,12 +127,12 @@ static int bareudp_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
+ 				 proto,
+ 				 !net_eq(bareudp->net,
+ 				 dev_net(bareudp->dev)))) {
+-		bareudp->dev->stats.rx_dropped++;
++		DEV_STATS_INC(bareudp->dev, rx_dropped);
+ 		goto drop;
+ 	}
+ 	tun_dst = udp_tun_rx_dst(skb, family, TUNNEL_KEY, 0, 0);
+ 	if (!tun_dst) {
+-		bareudp->dev->stats.rx_dropped++;
++		DEV_STATS_INC(bareudp->dev, rx_dropped);
+ 		goto drop;
+ 	}
+ 	skb_dst_set(skb, &tun_dst->dst);
+@@ -158,8 +158,8 @@ static int bareudp_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
+ 						     &((struct ipv6hdr *)oiph)->saddr);
+ 		}
+ 		if (err > 1) {
+-			++bareudp->dev->stats.rx_frame_errors;
+-			++bareudp->dev->stats.rx_errors;
++			DEV_STATS_INC(bareudp->dev, rx_frame_errors);
++			DEV_STATS_INC(bareudp->dev, rx_errors);
+ 			goto drop;
+ 		}
+ 	}
+@@ -455,11 +455,11 @@ static netdev_tx_t bareudp_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	dev_kfree_skb(skb);
  
- 	cd->name		= "MIPS";
-@@ -320,7 +313,6 @@ int r4k_clockevent_init(void)
- 	min_delta		= calculate_min_delta();
+ 	if (err == -ELOOP)
+-		dev->stats.collisions++;
++		DEV_STATS_INC(dev, collisions);
+ 	else if (err == -ENETUNREACH)
+-		dev->stats.tx_carrier_errors++;
++		DEV_STATS_INC(dev, tx_carrier_errors);
  
- 	cd->rating		= 300;
--	cd->irq			= irq;
- 	cd->cpumask		= cpumask_of(cpu);
- 	cd->set_next_event	= mips_next_event;
- 	cd->event_handler	= mips_event_handler;
-@@ -332,6 +324,13 @@ int r4k_clockevent_init(void)
+-	dev->stats.tx_errors++;
++	DEV_STATS_INC(dev, tx_errors);
+ 	return NETDEV_TX_OK;
+ }
  
- 	cp0_timer_irq_installed = 1;
- 
-+	/*
-+	 * With vectored interrupts things are getting platform specific.
-+	 * get_c0_compare_int is a hook to allow a platform to return the
-+	 * interrupt number of its liking.
-+	 */
-+	irq = get_c0_compare_int();
-+
- 	if (request_irq(irq, c0_compare_interrupt, flags, "timer",
- 			c0_compare_interrupt))
- 		pr_err("Failed to request irq %d (timer)\n", irq);
 -- 
 2.43.0
 
