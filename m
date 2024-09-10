@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-74793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75241-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B309973176
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:12:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 11C7B973397
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:34:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 067F62896EF
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:12:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA39A28476A
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:34:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E5FA193067;
-	Tue, 10 Sep 2024 10:07:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC9D21946BA;
+	Tue, 10 Sep 2024 10:29:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qxVxHFm9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0agtqKqa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B71C188A38;
-	Tue, 10 Sep 2024 10:07:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AEDD18A6B9;
+	Tue, 10 Sep 2024 10:29:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962846; cv=none; b=JeJnO9ZHQkI7pOcn7lgWtNl1H5wbrtV2xwo1SNSoC1n0kc8iQIx3RKgspcz5qna+PqSL5RHkk50lyqei/4F76+A0pU245AfpeizQD3qVC2EAeXDZdR6LlsH3wRbIUPShyGWboDz2Wp2kO6eCatvLWf2cAfyfMS+1yAhVtiZH8k4=
+	t=1725964158; cv=none; b=rsu0HcdNr6UwXLsBTGg90j0bbjfawKO8oQG3fxuWLQbD1gWuVliMFDF+A1lBUnAIbQRFmUcyrVN83XHXyv8txVbJn07VCj5AuTiMxQvsGHlR83DUzuTuMHmOAYNYM/UWT6VovlEVbrW/G+P95D2NQmHFioMQD04ombq4B90IJtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962846; c=relaxed/simple;
-	bh=NgfRirdUCHD54WZjiy63vyyQrJysMqlG3Xvon72csSY=;
+	s=arc-20240116; t=1725964158; c=relaxed/simple;
+	bh=38P6p5QSr/IVGHipU3lSmKGEn+0SyLpy/+Ex5TCQWqI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MSnl6jhKmYsuSQdBgSjOk7LURmvccAbrD8T0kLLxkuI9RvO5AC/w+WiXka/fa7Ao/Up9vUr6fFGOtLNjS04R9D2jhsuzE3aXm/WSkc9qcMwll/4CjcHpqLnC2GUOOnbzs0DGR1HUhNd32Lcm1z7UL8YKJiyQ6qSMGX/I2ECKNpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qxVxHFm9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E03DC4CEC3;
-	Tue, 10 Sep 2024 10:07:25 +0000 (UTC)
+	 MIME-Version; b=hMwYKYQ9xJOYgf/UFqU2bMDJs8B4PBIXFKNoO68lSZxF+ixSxYNFMzvnC2658t45zTZXoxDPraq/hyZsjyOaQZQ5ymI3LEiSOg39ibHmqp4zRt9XDWqdOLEYUsY+l4GZ6viRy3nX2zdnvxyt8kCEfOuPg/3QdczS9rZIzLNBvZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0agtqKqa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24773C4CEC3;
+	Tue, 10 Sep 2024 10:29:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962845;
-	bh=NgfRirdUCHD54WZjiy63vyyQrJysMqlG3Xvon72csSY=;
+	s=korg; t=1725964158;
+	bh=38P6p5QSr/IVGHipU3lSmKGEn+0SyLpy/+Ex5TCQWqI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qxVxHFm9vpdTvfrkPp5dD60+HMTiZqY5CJ4lXKzG5gwxLIzaJLvqF0ncmW4+IUgd6
-	 KC3EefdFB2z10Hj1GcEvxCpE+VAcZ+s6gaoRn+XSdLSB4J4DkLbRawBkPbKz1kgc6K
-	 hPy+YMbQiYazmYT1RhanNV/W1qRZSqbaeSlLUT8Q=
+	b=0agtqKqaCFRVoe/4XARogU+86hn6kYD1F+zj8swSBz6k/Pkdb1Tge2xutBSBGQHWM
+	 Dqjb+nauVcDz9IeyuxqahRPqavGTb9FFZlAEUbtnLQmhy1dILLno2zjYWGFr/jWrhG
+	 ONJ7NXJoFCZnWqJddazBxmYlsj6QKcYhfwNx9VIE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Seunghwan Baek <sh8267.baek@samsung.com>,
-	Ritesh Harjani <ritesh.list@gmail.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.1 023/192] mmc: cqhci: Fix checking of CQHCI_HALT state
+	Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>,
+	Alan Previn <alan.previn.teres.alexis@intel.com>,
+	John Harrison <John.C.Harrison@Intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Jonathan Cavitt <jonathan.cavitt@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Subject: [PATCH 6.6 060/269] drm/i915: Do not attempt to load the GSC multiple times
 Date: Tue, 10 Sep 2024 11:30:47 +0200
-Message-ID: <20240910092558.918816271@linuxfoundation.org>
+Message-ID: <20240910092610.347593550@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +65,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Seunghwan Baek <sh8267.baek@samsung.com>
+From: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
 
-commit aea62c744a9ae2a8247c54ec42138405216414da upstream.
+commit 59d3cfdd7f9655a0400ac453bf92199204f8b2a1 upstream.
 
-To check if mmc cqe is in halt state, need to check set/clear of CQHCI_HALT
-bit. At this time, we need to check with &, not &&.
+If the GSC FW fails to load the GSC HW hangs permanently; the only ways
+to recover it are FLR or D3cold entry, with the former only being
+supported on driver unload and the latter only on DGFX, for which we
+don't need to load the GSC. Therefore, if GSC fails to load there is no
+need to try again because the HW is stuck in the error state and the
+submission to load the FW would just hang the GSCCS.
 
-Fixes: a4080225f51d ("mmc: cqhci: support for command queue enabled host")
-Cc: stable@vger.kernel.org
-Signed-off-by: Seunghwan Baek <sh8267.baek@samsung.com>
-Reviewed-by: Ritesh Harjani <ritesh.list@gmail.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20240829061823.3718-2-sh8267.baek@samsung.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Note that, due to wa_14015076503, on MTL the GuC escalates all GSCCS
+hangs to full GT resets, which would trigger a new attempt to load the
+GSC FW in the post-reset HW re-init; this issue is also fixed by not
+attempting to load the GSC FW after an error.
+
+Fixes: 15bd4a67e914 ("drm/i915/gsc: GSC firmware loading")
+Signed-off-by: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+Cc: Daniele Ceraolo Spurio <daniele.ceraolospurio@intel.com>
+Cc: Alan Previn <alan.previn.teres.alexis@intel.com>
+Cc: John Harrison <John.C.Harrison@Intel.com>
+Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: <stable@vger.kernel.org> # v6.3+
+Reviewed-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240820215952.2290807-1-daniele.ceraolospurio@intel.com
+(cherry picked from commit 03ded4d432a1fb7bb6c44c5856d14115f6f6c3b9)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/cqhci-core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/i915/gt/uc/intel_gsc_uc.c |    2 +-
+ drivers/gpu/drm/i915/gt/uc/intel_uc_fw.h  |    5 +++++
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/mmc/host/cqhci-core.c
-+++ b/drivers/mmc/host/cqhci-core.c
-@@ -612,7 +612,7 @@ static int cqhci_request(struct mmc_host
- 		cqhci_writel(cq_host, 0, CQHCI_CTL);
- 		mmc->cqe_on = true;
- 		pr_debug("%s: cqhci: CQE on\n", mmc_hostname(mmc));
--		if (cqhci_readl(cq_host, CQHCI_CTL) && CQHCI_HALT) {
-+		if (cqhci_readl(cq_host, CQHCI_CTL) & CQHCI_HALT) {
- 			pr_err("%s: cqhci: CQE failed to exit halt state\n",
- 			       mmc_hostname(mmc));
- 		}
+--- a/drivers/gpu/drm/i915/gt/uc/intel_gsc_uc.c
++++ b/drivers/gpu/drm/i915/gt/uc/intel_gsc_uc.c
+@@ -304,7 +304,7 @@ void intel_gsc_uc_load_start(struct inte
+ {
+ 	struct intel_gt *gt = gsc_uc_to_gt(gsc);
+ 
+-	if (!intel_uc_fw_is_loadable(&gsc->fw))
++	if (!intel_uc_fw_is_loadable(&gsc->fw) || intel_uc_fw_is_in_error(&gsc->fw))
+ 		return;
+ 
+ 	if (intel_gsc_uc_fw_init_done(gsc))
+--- a/drivers/gpu/drm/i915/gt/uc/intel_uc_fw.h
++++ b/drivers/gpu/drm/i915/gt/uc/intel_uc_fw.h
+@@ -258,6 +258,11 @@ static inline bool intel_uc_fw_is_runnin
+ 	return __intel_uc_fw_status(uc_fw) == INTEL_UC_FIRMWARE_RUNNING;
+ }
+ 
++static inline bool intel_uc_fw_is_in_error(struct intel_uc_fw *uc_fw)
++{
++	return intel_uc_fw_status_to_error(__intel_uc_fw_status(uc_fw)) != 0;
++}
++
+ static inline bool intel_uc_fw_is_overridden(const struct intel_uc_fw *uc_fw)
+ {
+ 	return uc_fw->user_overridden;
 
 
 
