@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-74869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75480-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68C4A9731D0
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:15:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A16199734D8
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:43:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B6431C2565F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:15:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D4EAE1C24F0C
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:43:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7CBA191F7B;
-	Tue, 10 Sep 2024 10:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2FE518C025;
+	Tue, 10 Sep 2024 10:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E00DiJnb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="quiVIiS7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95E1518F2FF;
-	Tue, 10 Sep 2024 10:11:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71407143880;
+	Tue, 10 Sep 2024 10:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963071; cv=none; b=sKE6HYlLOgQNsKA7SKfroMiLt7log2C1N7DD5NSuy/0zSNULGRP2aDisMblEbLRp4eFD5MyAHx6J4zkK0roIv2Jrn76qDimuUPv2EIjbofKrdTtq7mqTPFutOKFJR9bi4K/mzk300cV9D8fNxju20njdoxkxPZWQ3C7vGNxPfZw=
+	t=1725964856; cv=none; b=MsjsHUK7Q8Pji5/D/edULmrEFdLnudtrC8AlKupiLc+K7zilLWq/OhLv/ox5N/vLsVxgdlHKXWPXwdf1rD8/4RL5N4CTur/3C186syiD/Aqm5m1Fj22YvpXE/i7tYVfns5uy5f6zEjDBvznyj/+GVzO85E05dbN5XNd+ikX1vMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963071; c=relaxed/simple;
-	bh=y61qqBGNqeuM3ULx9gmzUmj5K4j4ybDN0+fLd9prTVg=;
+	s=arc-20240116; t=1725964856; c=relaxed/simple;
+	bh=v6cFdsjkX9u6spYtB8cPbuyFv2k354SP5LgR0A+8K+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gBJwO+1RcAgsmsrrifiSVLdvM+nYySRAIhQ/TNL0S1zWuOUZtbI94feN4351d3495StO6oXMYFvhkKwOL/IWyFkS66lSu3XFSz+F8rGVjNYox/KQrcVafRLpbAZ6SR3c8mT1mKU6BkysQc72dVs7RnqJNiM7az76VOtoPctVo0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E00DiJnb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AD5DC4CEC3;
-	Tue, 10 Sep 2024 10:11:10 +0000 (UTC)
+	 MIME-Version; b=e82k8CQEL+afsNdiOibctvc7qUbFp+E23GViIE2GbbZxbf8Kg/LIQ24zCqMlwpFb0tifhF85AZCc0sgFqFYVFqDcLIf1R3R+x3CXkzo+dUz5KpFf4AuQeA8Jj/HnRchdY3irbEYpZ7re63aK20kgucHCD+BCnt6M23nhDxdwnes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=quiVIiS7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA87CC4CEC3;
+	Tue, 10 Sep 2024 10:40:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963071;
-	bh=y61qqBGNqeuM3ULx9gmzUmj5K4j4ybDN0+fLd9prTVg=;
+	s=korg; t=1725964856;
+	bh=v6cFdsjkX9u6spYtB8cPbuyFv2k354SP5LgR0A+8K+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E00DiJnbzqwIqRmceCYNwKuwhtonYDBKj6ECZ/Q82MfkccFUusnfl08Zz2/xRaE5o
-	 wISd3fcd9RrtJTiRVUQ/NZ0s6pDX0tAY83+KtBKYTM3EEtWgw81NRA822l2cAjtblM
-	 tBDFeQohyhwoxr2i/zBiU1lQWRP98N41FSxJlzzE=
+	b=quiVIiS7U3U4/mVbLGpbA16UQcgjHBtE4OZdChP2g07lFUrP8ConDRhfVWLMfmJ6c
+	 AvzARuP2a9UXOP4acWQa/iTy3IZrOHY7Ujk+IXq0kerEUQnXOZCaIL1RQveLhLMz0p
+	 +xV5fRqfM1n+X2twrNbBA5bNCQbJXtjktQuOPXmQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Wiehler <stefan.wiehler@nokia.com>,
-	"Rob Herring (Arm)" <robh@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 125/192] of/irq: Prevent device address out-of-bounds read in interrupt map walk
+	Budimir Markovic <markovicbudimir@gmail.com>,
+	Stephen Hemminger <stephen@networkplumber.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10 054/186] sch/netem: fix use after free in netem_dequeue
 Date: Tue, 10 Sep 2024 11:32:29 +0200
-Message-ID: <20240910092603.173468518@linuxfoundation.org>
+Message-ID: <20240910092556.720444753@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,135 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Wiehler <stefan.wiehler@nokia.com>
+From: Stephen Hemminger <stephen@networkplumber.org>
 
-[ Upstream commit b739dffa5d570b411d4bdf4bb9b8dfd6b7d72305 ]
+commit 3b3a2a9c6349e25a025d2330f479bc33a6ccb54a upstream.
 
-When of_irq_parse_raw() is invoked with a device address smaller than
-the interrupt parent node (from #address-cells property), KASAN detects
-the following out-of-bounds read when populating the initial match table
-(dyndbg="func of_irq_parse_* +p"):
+If netem_dequeue() enqueues packet to inner qdisc and that qdisc
+returns __NET_XMIT_STOLEN. The packet is dropped but
+qdisc_tree_reduce_backlog() is not called to update the parent's
+q.qlen, leading to the similar use-after-free as Commit
+e04991a48dbaf382 ("netem: fix return value if duplicate enqueue
+fails")
 
-  OF: of_irq_parse_one: dev=/soc@0/picasso/watchdog, index=0
-  OF:  parent=/soc@0/pci@878000000000/gpio0@17,0, intsize=2
-  OF:  intspec=4
-  OF: of_irq_parse_raw: ipar=/soc@0/pci@878000000000/gpio0@17,0, size=2
-  OF:  -> addrsize=3
-  ==================================================================
-  BUG: KASAN: slab-out-of-bounds in of_irq_parse_raw+0x2b8/0x8d0
-  Read of size 4 at addr ffffff81beca5608 by task bash/764
+Commands to trigger KASAN UaF:
 
-  CPU: 1 PID: 764 Comm: bash Tainted: G           O       6.1.67-484c613561-nokia_sm_arm64 #1
-  Hardware name: Unknown Unknown Product/Unknown Product, BIOS 2023.01-12.24.03-dirty 01/01/2023
-  Call trace:
-   dump_backtrace+0xdc/0x130
-   show_stack+0x1c/0x30
-   dump_stack_lvl+0x6c/0x84
-   print_report+0x150/0x448
-   kasan_report+0x98/0x140
-   __asan_load4+0x78/0xa0
-   of_irq_parse_raw+0x2b8/0x8d0
-   of_irq_parse_one+0x24c/0x270
-   parse_interrupts+0xc0/0x120
-   of_fwnode_add_links+0x100/0x2d0
-   fw_devlink_parse_fwtree+0x64/0xc0
-   device_add+0xb38/0xc30
-   of_device_add+0x64/0x90
-   of_platform_device_create_pdata+0xd0/0x170
-   of_platform_bus_create+0x244/0x600
-   of_platform_notify+0x1b0/0x254
-   blocking_notifier_call_chain+0x9c/0xd0
-   __of_changeset_entry_notify+0x1b8/0x230
-   __of_changeset_apply_notify+0x54/0xe4
-   of_overlay_fdt_apply+0xc04/0xd94
-   ...
+ip link add type dummy
+ip link set lo up
+ip link set dummy0 up
+tc qdisc add dev lo parent root handle 1: drr
+tc filter add dev lo parent 1: basic classid 1:1
+tc class add dev lo classid 1:1 drr
+tc qdisc add dev lo parent 1:1 handle 2: netem
+tc qdisc add dev lo parent 2: handle 3: drr
+tc filter add dev lo parent 3: basic classid 3:1 action mirred egress
+redirect dev dummy0
+tc class add dev lo classid 3:1 drr
+ping -c1 -W0.01 localhost # Trigger bug
+tc class del dev lo classid 1:1
+tc class add dev lo classid 1:1 drr
+ping -c1 -W0.01 localhost # UaF
 
-  The buggy address belongs to the object at ffffff81beca5600
-   which belongs to the cache kmalloc-128 of size 128
-  The buggy address is located 8 bytes inside of
-   128-byte region [ffffff81beca5600, ffffff81beca5680)
-
-  The buggy address belongs to the physical page:
-  page:00000000230d3d03 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x1beca4
-  head:00000000230d3d03 order:1 compound_mapcount:0 compound_pincount:0
-  flags: 0x8000000000010200(slab|head|zone=2)
-  raw: 8000000000010200 0000000000000000 dead000000000122 ffffff810000c300
-  raw: 0000000000000000 0000000000200020 00000001ffffffff 0000000000000000
-  page dumped because: kasan: bad access detected
-
-  Memory state around the buggy address:
-   ffffff81beca5500: 04 fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-   ffffff81beca5580: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-  >ffffff81beca5600: 00 fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-                        ^
-   ffffff81beca5680: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-   ffffff81beca5700: 00 00 00 00 00 00 fc fc fc fc fc fc fc fc fc fc
-  ==================================================================
-  OF:  -> got it !
-
-Prevent the out-of-bounds read by copying the device address into a
-buffer of sufficient size.
-
-Signed-off-by: Stefan Wiehler <stefan.wiehler@nokia.com>
-Link: https://lore.kernel.org/r/20240812100652.3800963-1-stefan.wiehler@nokia.com
-Signed-off-by: Rob Herring (Arm) <robh@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 50612537e9ab ("netem: fix classful handling")
+Reported-by: Budimir Markovic <markovicbudimir@gmail.com>
+Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
+Link: https://patch.msgid.link/20240901182438.4992-1-stephen@networkplumber.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/of/irq.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ net/sched/sch_netem.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/of/irq.c b/drivers/of/irq.c
-index 88c24d88c4b9..a8e306606c4b 100644
---- a/drivers/of/irq.c
-+++ b/drivers/of/irq.c
-@@ -344,7 +344,8 @@ int of_irq_parse_one(struct device_node *device, int index, struct of_phandle_ar
- 	struct device_node *p;
- 	const __be32 *addr;
- 	u32 intsize;
--	int i, res;
-+	int i, res, addr_len;
-+	__be32 addr_buf[3] = { 0 };
+--- a/net/sched/sch_netem.c
++++ b/net/sched/sch_netem.c
+@@ -733,11 +733,10 @@ deliver:
  
- 	pr_debug("of_irq_parse_one: dev=%pOF, index=%d\n", device, index);
- 
-@@ -353,13 +354,19 @@ int of_irq_parse_one(struct device_node *device, int index, struct of_phandle_ar
- 		return of_irq_parse_oldworld(device, index, out_irq);
- 
- 	/* Get the reg property (if any) */
--	addr = of_get_property(device, "reg", NULL);
-+	addr = of_get_property(device, "reg", &addr_len);
-+
-+	/* Prevent out-of-bounds read in case of longer interrupt parent address size */
-+	if (addr_len > (3 * sizeof(__be32)))
-+		addr_len = 3 * sizeof(__be32);
-+	if (addr)
-+		memcpy(addr_buf, addr, addr_len);
- 
- 	/* Try the new-style interrupts-extended first */
- 	res = of_parse_phandle_with_args(device, "interrupts-extended",
- 					"#interrupt-cells", index, out_irq);
- 	if (!res)
--		return of_irq_parse_raw(addr, out_irq);
-+		return of_irq_parse_raw(addr_buf, out_irq);
- 
- 	/* Look for the interrupt parent. */
- 	p = of_irq_find_parent(device);
-@@ -389,7 +396,7 @@ int of_irq_parse_one(struct device_node *device, int index, struct of_phandle_ar
- 
- 
- 	/* Check if there are any interrupt-map translations to process */
--	res = of_irq_parse_raw(addr, out_irq);
-+	res = of_irq_parse_raw(addr_buf, out_irq);
-  out:
- 	of_node_put(p);
- 	return res;
--- 
-2.43.0
-
+ 				err = qdisc_enqueue(skb, q->qdisc, &to_free);
+ 				kfree_skb_list(to_free);
+-				if (err != NET_XMIT_SUCCESS &&
+-				    net_xmit_drop_count(err)) {
+-					qdisc_qstats_drop(sch);
+-					qdisc_tree_reduce_backlog(sch, 1,
+-								  pkt_len);
++				if (err != NET_XMIT_SUCCESS) {
++					if (net_xmit_drop_count(err))
++						qdisc_qstats_drop(sch);
++					qdisc_tree_reduce_backlog(sch, 1, pkt_len);
+ 				}
+ 				goto tfifo_dequeue;
+ 			}
 
 
 
