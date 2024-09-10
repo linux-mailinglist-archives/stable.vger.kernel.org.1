@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-74635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92CC597305F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:01:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CC8A972DDE
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:37:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C46A61C249D6
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:01:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ACFE61F256BD
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:37:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D2DE188A28;
-	Tue, 10 Sep 2024 09:59:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3958D188A17;
+	Tue, 10 Sep 2024 09:37:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MGXccNRw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SoA9HeZS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16E4518C35F;
-	Tue, 10 Sep 2024 09:59:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA13C46444;
+	Tue, 10 Sep 2024 09:37:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962378; cv=none; b=u8DtzRxy2OWE1j4S6WMVYapHZHSNSPcgU4qrXruJSmzi6TJ3JOY7MecnhZOnCo86KqEcSze3Elm64LkB21O5vMNYlfMtoWMzYMGA7WuSquuIy6R3FMt8rB9w74flRpOFjQBlZGa+EkVnBA8MnHoSrBDiRwX7LvDwq5BagZ85spU=
+	t=1725961028; cv=none; b=iUEMeFhqDibxK3VEYdpwfGVU3o0HKrLqyzmRqwGhoHB0reRXiL/CJ70YBlcUEDVfwkA9FwX/7+6vecs5r4vvg30g6VCtUibzIxg9iqoO/95OSvMLFcmGCIzj0pI/dzd9EkmmLFCWupVvd9I9xzcwQiOF+exjFqDY2W/GjQ7br54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962378; c=relaxed/simple;
-	bh=s7K0ZvOhzvG8y3YWXvRYdhlXTzpWIpndfu5LfePIJhE=;
+	s=arc-20240116; t=1725961028; c=relaxed/simple;
+	bh=7a9fyK9EcE1I98iR4H4tKRfED4FIv/vRd044KLVJWzo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CMoZ/FRQPXoqRcKs/ig8q4yAYTktueh48DG3EGKJzZPGk/AB6tWuXQai7YJpqhX4iKJZmWFjnXW3Hfk6B38++LjUFeJsL1NvRd+k5ftfw5Usgd4PJGRaXpSrU4DHXIYdyuD4+4jZT4Tvtan5lY5u08oSzKIcayv/wjvzlJbDwO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MGXccNRw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F4A2C4CED4;
-	Tue, 10 Sep 2024 09:59:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tYJIWdDqMwW/ndcA56W4QH0GXxIsuZ/nLko2CzX9qppzsNBpDxC1Q221ubYdm7xF+8JRGhyrjs+syquUKxXVhPBAsczWs5MbvmrqqOwNavAAe1DbXpVyGJq4gDX/CnixqDwwvo27MZBoZ8tlEDnuJ6aiKZhR8g/JKnN/VcMAaDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SoA9HeZS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71ECFC4CEC3;
+	Tue, 10 Sep 2024 09:37:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962377;
-	bh=s7K0ZvOhzvG8y3YWXvRYdhlXTzpWIpndfu5LfePIJhE=;
+	s=korg; t=1725961027;
+	bh=7a9fyK9EcE1I98iR4H4tKRfED4FIv/vRd044KLVJWzo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MGXccNRwIaFoCCgnUHqkDBVxDSmO6avndbF2X1yVpK4uh9EKuw/BbM96Iyadow581
-	 CpTQxoptcNgtf9LoF7ZgqkAiuJYMAzLswq3NyjMO7GQwu4ix256dWEV2A20+02SlBR
-	 EzjcKrS+x1KBgg7btczV3Qonvrtj8R+CREXwgLfc=
+	b=SoA9HeZSKjaEa6pnjr71NoJ3FLyrmTHV4ExgzzXSRiowKlDbORgn1dPSj6lMPAk6Q
+	 w1hjzcK3c1XUh3Mo03ciROnlqT79isSoK8YDDEwKnMN+JknP3AmbKT/eKLsuviFigU
+	 Qi0xBCjxiZnrU1eAx7jyonMa1XW+3zmsg8ALI37k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shannon Nelson <shannon.nelson@amd.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	=?UTF-8?q?Pali=20Roh=C3=A1r?= <pali@kernel.org>,
+	=?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Andrew Lunn <andrew@lunn.ch>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 014/121] ionic: fix potential irq name truncation
-Date: Tue, 10 Sep 2024 11:31:29 +0200
-Message-ID: <20240910092546.426265960@linuxfoundation.org>
+Subject: [PATCH 4.19 28/96] irqchip/armada-370-xp: Do not allow mapping IRQ 0 and 1
+Date: Tue, 10 Sep 2024 11:31:30 +0200
+Message-ID: <20240910092542.720162599@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
-References: <20240910092545.737864202@linuxfoundation.org>
+In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
+References: <20240910092541.383432924@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +62,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shannon Nelson <shannon.nelson@amd.com>
+From: Pali Rohár <pali@kernel.org>
 
-[ Upstream commit 3eb76e71b16e8ba5277bf97617aef51f5e64dbe4 ]
+[ Upstream commit 3cef738208e5c3cb7084e208caf9bbf684f24feb ]
 
-Address a warning about potential string truncation based on the
-string buffer sizes.  We can add some hints to the string format
-specifier to set limits on the resulting possible string to
-squelch the complaints.
+IRQs 0 (IPI) and 1 (MSI) are handled internally by this driver,
+generic_handle_domain_irq() is never called for these IRQs.
 
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Link: https://lore.kernel.org/r/20240529000259.25775-2-shannon.nelson@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Disallow mapping these IRQs.
+
+[ Marek: changed commit message ]
+
+Signed-off-by: Pali Rohár <pali@kernel.org>
+Signed-off-by: Marek Behún <kabel@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/pensando/ionic/ionic_lif.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/irqchip/irq-armada-370-xp.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/net/ethernet/pensando/ionic/ionic_lif.c b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-index 7adad91617d8..20e5e0406c88 100644
---- a/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-+++ b/drivers/net/ethernet/pensando/ionic/ionic_lif.c
-@@ -143,7 +143,7 @@ static int ionic_request_irq(struct ionic_lif *lif, struct ionic_qcq *qcq)
- 		name = dev_name(dev);
- 
- 	snprintf(intr->name, sizeof(intr->name),
--		 "%s-%s-%s", IONIC_DRV_NAME, name, q->name);
-+		 "%.5s-%.16s-%.8s", IONIC_DRV_NAME, name, q->name);
- 
- 	return devm_request_irq(dev, intr->vector, ionic_isr,
- 				0, intr->name, &qcq->napi);
+diff --git a/drivers/irqchip/irq-armada-370-xp.c b/drivers/irqchip/irq-armada-370-xp.c
+index 0fd428db3aa4..73c386aba368 100644
+--- a/drivers/irqchip/irq-armada-370-xp.c
++++ b/drivers/irqchip/irq-armada-370-xp.c
+@@ -346,6 +346,10 @@ static struct irq_chip armada_370_xp_irq_chip = {
+ static int armada_370_xp_mpic_irq_map(struct irq_domain *h,
+ 				      unsigned int virq, irq_hw_number_t hw)
+ {
++	/* IRQs 0 and 1 cannot be mapped, they are handled internally */
++	if (hw <= 1)
++		return -EINVAL;
++
+ 	armada_370_xp_irq_mask(irq_get_irq_data(virq));
+ 	if (!is_percpu_irq(hw))
+ 		writel(hw, per_cpu_int_base +
 -- 
 2.43.0
 
