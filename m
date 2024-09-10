@@ -1,173 +1,142 @@
-Return-Path: <stable+bounces-75632-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 196C497377F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 14:36:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A52C9737AA
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 14:40:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7A94288B6F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:36:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F81A288E2A
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:40:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D00B5191F9B;
-	Tue, 10 Sep 2024 12:35:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6BB91917C4;
+	Tue, 10 Sep 2024 12:40:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="B7MlcYJy"
 X-Original-To: stable@vger.kernel.org
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 119D51917E2;
-	Tue, 10 Sep 2024 12:35:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CE70184522;
+	Tue, 10 Sep 2024 12:40:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725971718; cv=none; b=apwGqdv0V9S7i+CegfIislCRmfO096DQZZnpvxsWhMob+UtUQWIbXHZROiT4HVdAQxEf8zFXi0MIHoGARlyqdXcxKE81hWwd7RO+pCenWIheN/m0Ol63bWpsni5+WKynkjGnZyG+hq7TYiq5PTcq6x7MVHpyxE2avbF9whG3ayg=
+	t=1725972007; cv=none; b=gZnpMKb/V2s/9jgyN+/ZYcjkzRLeFWmE4N2KJ/Mu7TxPDrQrGsNRPgGXnPXwnBTETbC0qQfpmM5NymbIhml2HgJHTOdNt36nnlF2gHECAxrLhJMUS3eljqW6+rmv64/u91bxCm6KHi+lcrI6nhXddrDii3ODIN0DU28vXe1Z72c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725971718; c=relaxed/simple;
-	bh=OQ+Vs2QCCA6pe2c7oQq1SazHpCwagUDdfVm4Y+oDTQ4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=b4HhfbGzab6fuOKSLdxCYv6con8imcS67LqYTXFndC/CSCScP70wARDyC2M4HHte1+iijOnTo+/EqPXudj1kUr1YqlY9lDHC1j58zKiT5KIOa5rOqopcZ5pDjgy6lKBpSXECaUW7HJWsUyvG2K4WQXmqYazQQW3qed14giLvYt8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr; spf=pass smtp.mailfrom=ghiti.fr; arc=none smtp.client-ip=217.70.183.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ghiti.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ghiti.fr
-Received: by mail.gandi.net (Postfix) with ESMTPSA id BCA02FF809;
-	Tue, 10 Sep 2024 12:35:06 +0000 (UTC)
-Message-ID: <5d486ff8-2ab5-4ed5-a1da-c2817927b3a2@ghiti.fr>
-Date: Tue, 10 Sep 2024 14:35:06 +0200
+	s=arc-20240116; t=1725972007; c=relaxed/simple;
+	bh=7o36PvgCdrSW8nk+DV+ultIJNeDQiKY0NK8w0v6rQOM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sEbVzfFOh4elyREP29hPy2YaG5Kv36jsYblDj7VKOhHC6/zjQxtULaJcTBdRVXq8GP4Hb0M2WKdNv7hY/hkCwUfHk5niy4kw94eeov/8KaINgxv97r3r303nJRWB2++uhJ/6TPZip37TkEes7NmcYwiGRpjww3vpuZV7onqoNuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=B7MlcYJy; arc=none smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1725972006; x=1757508006;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=7o36PvgCdrSW8nk+DV+ultIJNeDQiKY0NK8w0v6rQOM=;
+  b=B7MlcYJyu/CafkIedw5EvSiYOloN1f02JpLO950Dm00EagW/fJ1ellJ7
+   9miFVa2Zelzau323r8Pp5MXkAzPW5O59zGgg8e5ROyTQF3ptj0LF7DuWN
+   zDjWDOpaVQXVDIh4AhZXTk91Sv1VZC+5ARfcM3Q3G9QqYfUFA4D3xpKcE
+   UET0QMwiF9VcPjaW1l4bwwpmFhqGQ+hqw5Li1j2PJQdmZYDMNwnRu90y5
+   MiiT648qi4a0tmaq6HS5qHg1pCZoLXsYGF+26sAV3GJQb8AkVZod+0qjT
+   mr2uUCqSJG+0z4jhKswbxNmTJ0kv7XWev3bn69ZxgewFZOaf5jb6Qq6Y3
+   w==;
+X-CSE-ConnectionGUID: vaxrBaUxQDmF00uzab6KpA==
+X-CSE-MsgGUID: qpQMghIKTxeRKnxZFolfWQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11190"; a="28605854"
+X-IronPort-AV: E=Sophos;i="6.10,217,1719903600"; 
+   d="scan'208";a="28605854"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2024 05:40:05 -0700
+X-CSE-ConnectionGUID: 2jmppOX+Ty+/TnGLgBojPA==
+X-CSE-MsgGUID: jsKw4KNuR/yTnGgG0wVynQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,217,1719903600"; 
+   d="scan'208";a="67260782"
+Received: from maurocar-mobl2.ger.corp.intel.com (HELO pujfalus-desk.intel.com) ([10.245.245.155])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2024 05:40:01 -0700
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+To: vkoul@kernel.org,
+	yung-chuan.liao@linux.intel.com,
+	pierre-louis.bossart@linux.intel.com,
+	krzysztof.kozlowski@linaro.org
+Cc: alsa-devel@alsa-project.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Subject: [PATCH stable-6.10 regression] Revert "soundwire: stream: fix programming slave ports for non-continous port maps"
+Date: Tue, 10 Sep 2024 15:40:09 +0300
+Message-ID: <20240910124009.10183-1-peter.ujfalusi@linux.intel.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6] membarrier: riscv: Add full memory barrier in
- switch_mm()
-Content-Language: en-US
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: WangYuli <wangyuli@uniontech.com>, stable@vger.kernel.org,
- sashal@kernel.org, parri.andrea@gmail.com, mathieu.desnoyers@efficios.com,
- palmer@rivosinc.com, linux-kernel@vger.kernel.org, paul.walmsley@sifive.com,
- palmer@dabbelt.com, aou@eecs.berkeley.edu, nathan@kernel.org,
- ndesaulniers@google.com, trix@redhat.com, linux-riscv@lists.infradead.org,
- llvm@lists.linux.dev, paulmck@kernel.org, mingo@redhat.com,
- peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org,
- dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
- mgorman@suse.de, bristot@redhat.com, vschneid@redhat.com,
- brauner@kernel.org, arnd@arndb.de
-References: <10F34E3A3BFBC534+20240909025701.1101397-1-wangyuli@uniontech.com>
- <2024091002-caution-tinderbox-a847@gregkh>
- <364e0e33-68ad-4f0c-86f1-f6a95def9a30@ghiti.fr>
- <2024091037-errant-countdown-4928@gregkh>
-From: Alexandre Ghiti <alex@ghiti.fr>
-In-Reply-To: <2024091037-errant-countdown-4928@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-GND-Sasl: alex@ghiti.fr
 
+The prop->src_dpn_prop and prop.sink_dpn_prop is allocated for the _number_
+of ports and it is forced as 0 index based.
 
-On 10/09/2024 13:58, Greg KH wrote:
-> On Tue, Sep 10, 2024 at 01:31:04PM +0200, Alexandre Ghiti wrote:
->> Hi Greg,
->>
->> On 10/09/2024 09:32, Greg KH wrote:
->>> On Mon, Sep 09, 2024 at 10:57:01AM +0800, WangYuli wrote:
->>>> From: Andrea Parri <parri.andrea@gmail.com>
->>>>
->>>> [ Upstream commit d6cfd1770f20392d7009ae1fdb04733794514fa9 ]
->>>>
->>>> The membarrier system call requires a full memory barrier after storing
->>>> to rq->curr, before going back to user-space.  The barrier is only
->>>> needed when switching between processes: the barrier is implied by
->>>> mmdrop() when switching from kernel to userspace, and it's not needed
->>>> when switching from userspace to kernel.
->>>>
->>>> Rely on the feature/mechanism ARCH_HAS_MEMBARRIER_CALLBACKS and on the
->>>> primitive membarrier_arch_switch_mm(), already adopted by the PowerPC
->>>> architecture, to insert the required barrier.
->>>>
->>>> Fixes: fab957c11efe2f ("RISC-V: Atomic and Locking Code")
->>>> Signed-off-by: Andrea Parri <parri.andrea@gmail.com>
->>>> Reviewed-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
->>>> Link: https://lore.kernel.org/r/20240131144936.29190-2-parri.andrea@gmail.com
->>>> Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
->>>> Signed-off-by: WangYuli <wangyuli@uniontech.com>
->>>> ---
->>>>    MAINTAINERS                         |  2 +-
->>>>    arch/riscv/Kconfig                  |  1 +
->>>>    arch/riscv/include/asm/membarrier.h | 31 +++++++++++++++++++++++++++++
->>>>    arch/riscv/mm/context.c             |  2 ++
->>>>    kernel/sched/core.c                 |  5 +++--
->>>>    5 files changed, 38 insertions(+), 3 deletions(-)
->>>>    create mode 100644 arch/riscv/include/asm/membarrier.h
->>> Now queued up, thanks.
->>
->> The original patch was merged in 6.9 and the Fixes tag points to a commit
->> introduced in v4.15. So IIUC, this patch should have been backported
->> "automatically" to the releases < 6.9 right? As stated in the documentation
->> (process/stable-kernel-rules.html):
->>
->> "Note, such tagging is unnecessary if the stable team can derive the
->> appropriate versions from Fixes: tags."
->>
->> Or did we miss something?
-> Yes, you didn't tag cc: stable at all in this commit, which is why we
-> did not see it.  The documentation says that :)
+The original code was correct while the change to walk the bits and use
+their position as index into the arrays is not correct.
 
+For exmple we can have the prop.source_ports=0x2, which means we have one
+port, but the prop.src_dpn_prop[1] is accessing outside of the allocated
+memory.
 
-Ok, some patches seem to make it to stable without the cc: stable tag 
-(like the one below for example), so I thought it was not necessary.
+This reverts commit 6fa78e9c41471fe43052cd6feba6eae1b0277ae3.
 
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
-
-[ Upstream commit 1ff95eb2bebda50c4c5406caaf201e0fcb24cc8f ]
-
-RISCV_ALTERNATIVE_EARLY will issue sbi_ecall() very early in the boot
-process, before the first memory mapping is setup so we can't have any
-instrumentation happening here.
-
-In addition, when the kernel is relocatable, we must also not issue any
-relocation this early since they would have been patched virtually only.
-
-So, instead of disabling instrumentation for the whole kernel/sbi.c file
-and compiling it with -fno-pie, simply move __sbi_ecall() and
-__sbi_base_ecall() into their own file where this is fixed.
-
-Reported-by: Conor Dooley <conor.dooley@microchip.com>
-Closes:https://lore.kernel.org/linux-riscv/20240813-pony-truck-3e7a83e9759e@spud/
-Reported-by 
-<https://lore.kernel.org/linux-riscv/20240813-pony-truck-3e7a83e9759e@spud/Reported-by>:syzbot+cfbcb82adf6d7279fd35@syzkaller.appspotmail.com 
-<mailto:syzbot%2Bcfbcb82adf6d7279fd35@syzkaller.appspotmail.com>
-Closes:https://lore.kernel.org/linux-riscv/00000000000065062c061fcec37b@google.com/ 
-<https://lore.kernel.org/linux-riscv/00000000000065062c061fcec37b@google.com/>
-Fixes: 1745cfafebdf ("riscv: don't use global static vars to store 
-alternative data")
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link:https://lore.kernel.org/r/20240829165048.49756-1-alexghiti@rivosinc.com 
-<https://lore.kernel.org/r/20240829165048.49756-1-alexghiti@rivosinc.com>
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # 6.10.y
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 ---
-  arch/riscv/include/asm/sbi.h | 20 ++++++++++-
-  arch/riscv/kernel/Makefile   |  6 +++-
-  arch/riscv/kernel/sbi.c      | 63 -----------------------------------
-  arch/riscv/kernel/sbi_ecall.c | 48 ++++++++++++++++++++++++++
-  4 files changed, 72 insertions(+), 65 deletions(-)
-  create mode 100644 arch/riscv/kernel/sbi_ecall.c
+Hi,
 
-I'll pay attention to that from now on.
+The reverted patch causes major regression on soundwire causing all audio
+to fail.
+Interestingly the patch is only in 6.10.8 and 6.10.9, not in mainline or linux-next.
 
-Thanks,
+soundwire sdw-master-0-1: Program transport params failed: -22
+soundwire sdw-master-0-1: Program params failed: -22
+SDW1-Playback: ASoC: error at snd_soc_link_prepare on SDW1-Playback: -22
 
-Alex
+Regards,
+Peter 
 
+ drivers/soundwire/stream.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
->
-> thanks,
->
-> greg k-h
->
-> _______________________________________________
-> linux-riscv mailing list
-> linux-riscv@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-riscv
+diff --git a/drivers/soundwire/stream.c b/drivers/soundwire/stream.c
+index 00191b1d2260..4e9e7d2a942d 100644
+--- a/drivers/soundwire/stream.c
++++ b/drivers/soundwire/stream.c
+@@ -1286,18 +1286,18 @@ struct sdw_dpn_prop *sdw_get_slave_dpn_prop(struct sdw_slave *slave,
+ 					    unsigned int port_num)
+ {
+ 	struct sdw_dpn_prop *dpn_prop;
+-	unsigned long mask;
++	u8 num_ports;
+ 	int i;
+ 
+ 	if (direction == SDW_DATA_DIR_TX) {
+-		mask = slave->prop.source_ports;
++		num_ports = hweight32(slave->prop.source_ports);
+ 		dpn_prop = slave->prop.src_dpn_prop;
+ 	} else {
+-		mask = slave->prop.sink_ports;
++		num_ports = hweight32(slave->prop.sink_ports);
+ 		dpn_prop = slave->prop.sink_dpn_prop;
+ 	}
+ 
+-	for_each_set_bit(i, &mask, 32) {
++	for (i = 0; i < num_ports; i++) {
+ 		if (dpn_prop[i].num == port_num)
+ 			return &dpn_prop[i];
+ 	}
+-- 
+2.46.0
+
 
