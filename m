@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-74179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36E6C972DE4
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:37:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FB38972FB9
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:54:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6358B1C21591
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:37:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BB286B27DA9
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:54:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE4131891A1;
-	Tue, 10 Sep 2024 09:37:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6AAE18E756;
+	Tue, 10 Sep 2024 09:53:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zzL2JkXS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="whVtLuwo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A7A246444;
-	Tue, 10 Sep 2024 09:37:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83FD918C347;
+	Tue, 10 Sep 2024 09:53:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961045; cv=none; b=NbOM6TLIw0E6HLxblEmdBDsuS0UsJxF7b2hLSukyq9WYrNO7GuDedB7nWe86YrPRZSUXo555CIhFdO3ejaLxEpJz/lsofJPUDhDNuP5OPN0El/tKwFNX0FHjJK2iqcIt5LzuHX//gbbDypbVpGsoDnByVfreVTVXRMTQ8IVoGo0=
+	t=1725962034; cv=none; b=QBlGMnbI29l2oIA2dX4ftbKT/HHGIxSMu+Z7UB1QdOVHRd45CwsDFZ+w4YjMRz3hI3kOIkPLPjclNvZoC7ujMZjjMMTywD2rMEkFMLL5hqFstLNl/ExFDSDhtkVDf9K6lMEIuHduHU9XXgi59lQlKCOGHbOxfOQ2ns2YPklx5JU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961045; c=relaxed/simple;
-	bh=XqqqsLzzSdaqmUmmc2l8itT18AieNLq2hkbL32iptHY=;
+	s=arc-20240116; t=1725962034; c=relaxed/simple;
+	bh=5uFF/TJuFz8lDbKG6MwTTnVK5ZxF/p2p8fxgEmQU3GQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QMxV2urayhZzrjzc2tlN49Vh6I8MSoxYTaNVQDiO5ZCPhmH2QidLXXvfhMSi7I0aTKDCorok+H7PzfUWLpsFZk2bHz7lVNYC5irhZQXtsZPG+tCdwBYD8JmwtSSNqkUg11+0dBl9W78hNfgbMaHrixPtBTDO+Wm1ghMU8XxvQjM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zzL2JkXS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7D90C4CEC3;
-	Tue, 10 Sep 2024 09:37:24 +0000 (UTC)
+	 MIME-Version; b=VMVrFpzhBIoIZIRcmUSRXfrIYR9wsnDdJc7vZWz+8bGKbxp2vR1Mn7PVXJl22xhAz8i+Kk8EO7gcPSR2Pp+eIb6oOQ+l7LATraog7KhEKF5GIHSMGFmHV7AUbZDjvtSLO3bj6VEdcPVe8/NYO/E2RY43H36xyBDgBgfEqt7eMOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=whVtLuwo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09B9EC4CECD;
+	Tue, 10 Sep 2024 09:53:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961045;
-	bh=XqqqsLzzSdaqmUmmc2l8itT18AieNLq2hkbL32iptHY=;
+	s=korg; t=1725962034;
+	bh=5uFF/TJuFz8lDbKG6MwTTnVK5ZxF/p2p8fxgEmQU3GQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zzL2JkXSo4wM2PBt0R27MoLDMu/GlssaQjvTaAAncSPe6348mn4bo3m4vbaEuzJRP
-	 S10CzwPf/v3Q6eu0LnJzSoFzazjfRWI+xrkWFiAfax5OCZ+eFhLxS7Of/qyqZrnW8K
-	 zCFv6auw8iCnRtYTaaysNRQAK4O+0laJFCEG5lS8=
+	b=whVtLuwoFTZue9HnhA2xjj5sMt2JlkETka0Gy8thgLlEph3DB97otw5l+Ws2POA9i
+	 i2AM3Oa2EdOgvll2ELJ5c1082yQmzOIhmrv7IbhFvSCE5epVxWw9O7QojSqEacmU87
+	 UHyRHddlmSvnaBEunRAxRk1U1FHBJ1Y016thSvpY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Huang <Tim.Huang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Peiyang Wang <wangpeiyang1@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 07/96] drm/amdgpu: fix mc_data out-of-bounds read warning
+Subject: [PATCH 6.10 272/375] net: hns3: void array out of bound when loop tnl_num
 Date: Tue, 10 Sep 2024 11:31:09 +0200
-Message-ID: <20240910092541.711486948@linuxfoundation.org>
+Message-ID: <20240910092631.694890256@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
-References: <20240910092541.383432924@linuxfoundation.org>
+In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
+References: <20240910092622.245959861@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Huang <Tim.Huang@amd.com>
+From: Peiyang Wang <wangpeiyang1@huawei.com>
 
-[ Upstream commit 51dfc0a4d609fe700750a62f41447f01b8c9ea50 ]
+[ Upstream commit 86db7bfb06704ef17340eeae71c832f21cfce35c ]
 
-Clear warning that read mc_data[i-1] may out-of-bounds.
+When query reg inf of SSU, it loops tnl_num times. However, tnl_num comes
+from hardware and the length of array is a fixed value. To void array out
+of bound, make sure the loop time is not greater than the length of array
 
-Signed-off-by: Tim Huang <Tim.Huang@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Peiyang Wang <wangpeiyang1@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_atombios.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_err.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_atombios.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_atombios.c
-index 95f7bb22402f..fe01df99445d 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_atombios.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_atombios.c
-@@ -1625,6 +1625,8 @@ int amdgpu_atombios_init_mc_reg_table(struct amdgpu_device *adev,
- 										(u32)le32_to_cpu(*((u32 *)reg_data + j));
- 									j++;
- 								} else if ((reg_table->mc_reg_address[i].pre_reg_data & LOW_NIBBLE_MASK) == DATA_EQU_PREV) {
-+									if (i == 0)
-+										continue;
- 									reg_table->mc_reg_table_entry[num_ranges].mc_data[i] =
- 										reg_table->mc_reg_table_entry[num_ranges].mc_data[i - 1];
- 								}
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_err.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_err.c
+index e132c2f09560..cc7f46c0b35f 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_err.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_err.c
+@@ -1598,8 +1598,7 @@ static void hclge_query_reg_info_of_ssu(struct hclge_dev *hdev)
+ {
+ 	u32 loop_para[HCLGE_MOD_MSG_PARA_ARRAY_MAX_SIZE] = {0};
+ 	struct hclge_mod_reg_common_msg msg;
+-	u8 i, j, num;
+-	u32 loop_time;
++	u8 i, j, num, loop_time;
+ 
+ 	num = ARRAY_SIZE(hclge_ssu_reg_common_msg);
+ 	for (i = 0; i < num; i++) {
+@@ -1609,7 +1608,8 @@ static void hclge_query_reg_info_of_ssu(struct hclge_dev *hdev)
+ 		loop_time = 1;
+ 		loop_para[0] = 0;
+ 		if (msg.need_para) {
+-			loop_time = hdev->ae_dev->dev_specs.tnl_num;
++			loop_time = min(hdev->ae_dev->dev_specs.tnl_num,
++					HCLGE_MOD_MSG_PARA_ARRAY_MAX_SIZE);
+ 			for (j = 0; j < loop_time; j++)
+ 				loop_para[j] = j + 1;
+ 		}
 -- 
 2.43.0
 
