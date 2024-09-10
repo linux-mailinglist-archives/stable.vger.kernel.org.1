@@ -1,92 +1,117 @@
-Return-Path: <stable+bounces-74113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACEF6972996
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 08:33:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E0B69729A5
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 08:38:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D8FD1F25412
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 06:33:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0CCC1C23F29
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 06:38:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BAA9136358;
-	Tue, 10 Sep 2024 06:33:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09043178CDE;
+	Tue, 10 Sep 2024 06:38:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=theune.cc header.i=@theune.cc header.b="v9BsMLbd"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="QodAntrm"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.theune.cc (mail.theune.cc [212.122.41.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C901171088;
-	Tue, 10 Sep 2024 06:33:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.122.41.141
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7339E1741FE;
+	Tue, 10 Sep 2024 06:38:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725949987; cv=none; b=tH3NMY6NGtcPtnpe0n5q5sVgMW1zSy+Q7Ehvk9g9sW74m7bH0v6CEqNP7/CtyV+hrn7WkZmzGOWwUQCXWnfd1CT/5cW6Wn51bkgadHHqI4Tkl5AKMYPai4C9+d7k+cUkP/Xbcmo4J8+6RtODKLJ9x8AUAd+nnIwUwz6+ClBbqg4=
+	t=1725950286; cv=none; b=IX56RFazWouSzY5baQQ5sDRTrK4JGC6pgrIy7vbfwfC2gnuEkFKUfRZfEoWRgkHl9WoLCokkMyZeFmjsdI0hoAsT0Bd69E0oyp0+MctBH+fBrueCA3C/2dTKh1Sw1lreZUQ4hoCxPYzspGWRkxu6yhvXSUmqX+3ckSCg1zyrefs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725949987; c=relaxed/simple;
-	bh=JjY69W8Ant6AxwIhWcvkeaHDnbwAevcS9ooCv5+tFak=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=HfRjoXOiu5AXCXk8i83nRlWMEXaHRjGW2IPinJcXText+bvuS2+VAeL3xViEo8aUZCSeDiEbsS7iCSUGVfoasJs7PEn0GcH4n39JDNhRJUUaQdAnyimoDqG8pWTMasqQ4nq6UV05W6eQH4BTpMSyyqKYUzmbUAbL3w3gJzDKzz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=theune.cc; spf=pass smtp.mailfrom=theune.cc; dkim=pass (1024-bit key) header.d=theune.cc header.i=@theune.cc header.b=v9BsMLbd; arc=none smtp.client-ip=212.122.41.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=theune.cc
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=theune.cc
-Content-Type: text/plain;
-	charset=utf-8
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=theune.cc; s=mail;
-	t=1725949979; bh=JjY69W8Ant6AxwIhWcvkeaHDnbwAevcS9ooCv5+tFak=;
-	h=Subject:From:In-Reply-To:Date:Cc:References:To;
-	b=v9BsMLbduWWWKYlzuzVSKQ/eyj5ynKOKIKECE9eE42//4bhQxDWUjsqSpNdzTMBvb
-	 BdgsNexPh3pbWQs10fXwdqHDOf6TM1+f3Cf6EaPJzYF8/tMbtG8Zp8izzBK62w7ChC
-	 uRi8NF4Z+L5uOY3HFNEolO8cSgSpURCG725h8Pws=
+	s=arc-20240116; t=1725950286; c=relaxed/simple;
+	bh=VjEIbjqPBq3Lp/fNF9Xa+R+uI/8Mp6sw85Dh8NFlIB8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tONcdZSXUQrsTP/LClrnTCd8MrD0zkS9zFFg2NAGOrkXvcOanC+APb+bZO8+C+dK8Zlj/dCvRwuV9jAxXuRYpPA0K+hp0UA6SDOBBqb3duGUkTSVptqh9ZSwuY0aBeEGEzJ/OMfiwYw33KuVl2JlXBIFBChwP8pbgxAqUkJWKuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=QodAntrm; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: from [100.79.224.114] (unknown [4.194.122.170])
+	by linux.microsoft.com (Postfix) with ESMTPSA id 8E01320B9A6A;
+	Mon,  9 Sep 2024 23:37:56 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 8E01320B9A6A
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1725950279;
+	bh=jQczYn4IGDpSbJMWUYwJY7GUd+3u9rqMfdxFfIyCuZM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=QodAntrm/M+rGXnVAIDrpNgDFRklZCJG34eYYhdCqhPwx1sYzQwYjN8pkVZZ69I7x
+	 YLIBEw+ZUiYP2aXvrFrqetk9A3V02Cd3Rveiw9l+AzshSXV4RGA7O0NyZPZrTjqGN0
+	 UNG+zKE7ukm15BRcjHFFM7kOHRkP8PCTOyOBuYaU=
+Message-ID: <f982f176-c171-44db-b86c-f91b7d926949@linux.microsoft.com>
+Date: Tue, 10 Sep 2024 12:07:53 +0530
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51\))
-Subject: Re: Follow-up to "net: drop bad gso csum_start and offset in
- virtio_net_hdr" - backport for 5.15 needed
-From: Christian Theune <christian@theune.cc>
-In-Reply-To: <66df5b684b1ea_7296f29460@willemb.c.googlers.com.notmuch>
-Date: Tue, 10 Sep 2024 08:32:38 +0200
-Cc: Greg KH <gregkh@linuxfoundation.org>,
- Willem de Bruijn <willemb@google.com>,
- regressions@lists.linux.dev,
- stable@vger.kernel.org,
- netdev@vger.kernel.org,
- mathieu.tortuyaux@gmail.com
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <8348AEDD-236F-49E3-B2E3-FFD81F757DD9@theune.cc>
-References: <89503333-86C5-4E1E-8CD8-3B882864334A@theune.cc>
- <2024090309-affair-smitten-1e62@gregkh>
- <CA+FuTSdqnNq1sPMOUZAtH+zZy+Fx-z3pL-DUBcVbhc0DZmRWGQ@mail.gmail.com>
- <2024090952-grope-carol-537b@gregkh>
- <66df3fb5a228e_3d03029498@willemb.c.googlers.com.notmuch>
- <0B75F6BF-0E0E-4BCC-8557-95A5D8D80038@theune.cc>
- <66df5b684b1ea_7296f29460@willemb.c.googlers.com.notmuch>
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-
-Happy to do that. I=E2=80=99ve blocked time tomorrow morning.
-
-> On 9. Sep 2024, at 22:32, Willem de Bruijn =
-<willemdebruijn.kernel@gmail.com> wrote:
->=20
-> Christian Theune wrote:
->> I can contribute live testing and can quickly reproduce the issue.
->>=20
->> If anything is there that should be tested for apart from verifying =
-the fix, I=E2=80=99d be happy to try.
->=20
-> If you perform the repro steps and verify that this solves the issue,
-> that would be helpful, thanks.
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: RE: [PATCH] clocksource: hyper-v: Fix hv tsc page based
+ sched_clock for hibernation
+To: Michael Kelley <mhklinux@outlook.com>,
+ "K . Y . Srinivasan" <kys@microsoft.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+ Dexuan Cui <decui@microsoft.com>, Daniel Lezcano
+ <daniel.lezcano@linaro.org>, Thomas Gleixner <tglx@linutronix.de>
+Cc: "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20240909053923.8512-1-namjain@linux.microsoft.com>
+ <SN6PR02MB4157141DD58FD6EAE96C7CABD4992@SN6PR02MB4157.namprd02.prod.outlook.com>
+Content-Language: en-US
+From: Naman Jain <namjain@linux.microsoft.com>
+In-Reply-To: <SN6PR02MB4157141DD58FD6EAE96C7CABD4992@SN6PR02MB4157.namprd02.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
 
-Liebe Gr=C3=BC=C3=9Fe,
-Christian
 
--- =20
-Christian Theune - A97C62CE - 0179 7808366
-@theuni - christian@theune.cc
+On 9/9/2024 9:16 PM, Michael Kelley wrote:
+> From: Naman Jain <namjain@linux.microsoft.com> Sent: Sunday, September 8, 2024 10:39 PM
+>>
+>> read_hv_sched_clock_tsc() assumes that the Hyper-V clock counter is
+>> bigger than the variable hv_sched_clock_offset, which is cached during
+>> early boot, but depending on the timing this assumption may be false
+
+..
+
+>> +	old_save_sched_clock_state = x86_platform.save_sched_clock_state;
+>> +	x86_platform.save_sched_clock_state = hv_save_sched_clock_state;
+>> +	old_restore_sched_clock_state = x86_platform.restore_sched_clock_state;
+>> +	x86_platform.restore_sched_clock_state = hv_restore_sched_clock_state;
+> 
+> This Hyper-V clocksource/timer driver has intentionally been kept
+> instruction set architecture independent.  See the comment at the top
+> of the source code file. We've also avoided any "#ifdef x86" or similar, though
+> it's OK to have #ifdef's on specific clock-related functionality like
+> GENERIC_SCHED_CLOCK.
+> 
+> The reference to "x86_platform" violates the intended independence. The
+> code to save-on-suspend and update-on-resume can probably stay in this
+> module in generic form, but hooking the functions into the x86_platform
+> function call mechanism should move to x86-specific code.
+> 
+> Michael
+> 
+
+Thanks for the review and guidance Michael. I'll take care of it in v2.
+
+
+Regards,
+Naman
+
+
+>> +
+>>   	/*
+>>   	 * TSC page mapping works differently in root compared to guest.
+>>   	 * - In guest partition the guest PFN has to be passed to the
+>>
+>> base-commit: da3ea35007d0af457a0afc87e84fddaebc4e0b63
+>> --
+>> 2.25.1
+> 
 
 
