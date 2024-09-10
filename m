@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-74680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C65B097309A
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:02:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED9AE972FF2
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:56:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 707381F233D6
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:02:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1FB61F24E1C
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:56:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C41018B488;
-	Tue, 10 Sep 2024 10:01:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C5FE18C037;
+	Tue, 10 Sep 2024 09:56:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Ow24pNT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OU35Mxwl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F4225170A01;
-	Tue, 10 Sep 2024 10:01:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A682171671;
+	Tue, 10 Sep 2024 09:56:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962511; cv=none; b=FcqpwNMXahLfRZMnkxDEUqRvjfv7qS8apFMdZHL5cjMd554V9V44T81aFVY7m9A8sNfQE/i3THml7zDdguZmgTlMOq/+BP9E3jFF9TmOMbKqLFTsVCEPMOZcJO2fSF7EUysYMMjHgwreHduYt3dSRHa0sitG9/zP082DRENDmuw=
+	t=1725962167; cv=none; b=dWL7gesSFeK8VpC1uhCxuevIC6gzcbsJ5UuFGIZS1F0PL8r9WlqqeSjQXVjLfEX+8knKsJW08mItm9spnL/cmtLfiIltyWPQ3SV5/DYJWzcVs+P2NnM17YLvOBed7Ff6GEH0PBXfHvdjoR6gcsR/S1Ck4sOMX9khU/YadJl/95g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962511; c=relaxed/simple;
-	bh=+BcMrBDMBeaQN63nvaT9mh5ju/FG+ZEO4QnePL4yDAo=;
+	s=arc-20240116; t=1725962167; c=relaxed/simple;
+	bh=Vu2F6JzTJ8TQa2cmHgF3mcnigWr2Oz0lqBxwEIGbrsM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jl4JDINhx5DgrnPuo+H5Cw8OS1iFlSoC1R6QTfjCTgGDInsHkZ9ZU4iHjhlDQL2a3+5tkLmovdkqNrXaolzKJOKtIviDZgKZS+vxpG5+8MpC1JvDKOwua/7bsFd/W1W3SGF0iIPZtf0Lqh1djDbSZX4u3ju2UhKo6JXlT4fTwaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Ow24pNT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73212C4CEC3;
-	Tue, 10 Sep 2024 10:01:50 +0000 (UTC)
+	 MIME-Version; b=Rh+R22nVcI0wPy0KwvfpMLys8slvE3bKaNti8ibNoJTNclUv3Zw9wLmtUxKy0oXnlyr3iLyB6JD/wSvLM/Q/LM6XKSRI14XTgyF1F5GMg60ZKPG7SXJXzscdU3oqU0D7BOr8Q8Sm6r/sqjz6fOjaImFxUF6Kls1XbfUhz7XqZdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OU35Mxwl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8685DC4CEC3;
+	Tue, 10 Sep 2024 09:56:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962510;
-	bh=+BcMrBDMBeaQN63nvaT9mh5ju/FG+ZEO4QnePL4yDAo=;
+	s=korg; t=1725962166;
+	bh=Vu2F6JzTJ8TQa2cmHgF3mcnigWr2Oz0lqBxwEIGbrsM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Ow24pNTqdDNTpgJG2Dips69UHoziv+0XRhgRZzSJmGvAuIpwLCOdT2x6qSi1JQz8
-	 tiCyZfMJSUtMVuAej3m17HL8RtpHAsKWb/HECWiRpxkc54fRTzqKEHrYvwk/o/JZuF
-	 wewPrtH6prkX7AAc/Fas1buoEesBadnP3coVZeqg=
+	b=OU35Mxwlb7RKSm5w/z91sOOY2kE5KDletLh6/EHBp9QCeB0cWw4xDW/s3vLJ7G3/a
+	 yx0MhyxqQPo9g7fDv4cGUAg92Ik/ZI2HuGw7mpRURu7dBeUyXOjfo8yJ4nTAn5JiSg
+	 EE3cM4Z+44p6JeJXUizxgcxYhauHUNlGn9rfY6R0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liao Chen <liaochen4@huawei.com>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.4 032/121] mmc: sdhci-of-aspeed: fix module autoloading
+	Yosry Ahmed <yosryahmed@google.com>,
+	Barry Song <baohua@kernel.org>,
+	Nhat Pham <nphamcs@gmail.com>,
+	Chengming Zhou <chengming.zhou@linux.dev>,
+	Chris Li <chrisl@kernel.org>,
+	David Hildenbrand <david@redhat.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 310/375] mm: zswap: rename is_zswap_enabled() to zswap_is_enabled()
 Date: Tue, 10 Sep 2024 11:31:47 +0200
-Message-ID: <20240910092547.253298862@linuxfoundation.org>
+Message-ID: <20240910092632.977465674@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
-References: <20240910092545.737864202@linuxfoundation.org>
+In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
+References: <20240910092622.245959861@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +69,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liao Chen <liaochen4@huawei.com>
+From: Yosry Ahmed <yosryahmed@google.com>
 
-commit 6e540da4c1db7b840e347c4dfe48359b18b7e376 upstream.
+[ Upstream commit 2b33a97c94bc44468fc1d54b745269c0cf0b7bb2 ]
 
-Add MODULE_DEVICE_TABLE(), so modules could be properly autoloaded
-based on the alias from of_device_id table.
+In preparation for introducing a similar function, rename
+is_zswap_enabled() to use zswap_* prefix like other zswap functions.
 
-Signed-off-by: Liao Chen <liaochen4@huawei.com>
-Acked-by: Andrew Jeffery <andrew@codeconstruct.com.au>
-Fixes: bb7b8ec62dfb ("mmc: sdhci-of-aspeed: Add support for the ASPEED SD controller")
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240826124851.379759-1-liaochen4@huawei.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lkml.kernel.org/r/20240611024516.1375191-1-yosryahmed@google.com
+Signed-off-by: Yosry Ahmed <yosryahmed@google.com>
+Reviewed-by: Barry Song <baohua@kernel.org>
+Reviewed-by: Nhat Pham <nphamcs@gmail.com>
+Cc: Chengming Zhou <chengming.zhou@linux.dev>
+Cc: Chris Li <chrisl@kernel.org>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: e39925734909 ("mm/memcontrol: respect zswap.writeback setting from parent cg too")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-of-aspeed.c |    1 +
- 1 file changed, 1 insertion(+)
+ include/linux/zswap.h | 4 ++--
+ mm/memcontrol.c       | 2 +-
+ mm/zswap.c            | 2 +-
+ 3 files changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/mmc/host/sdhci-of-aspeed.c
-+++ b/drivers/mmc/host/sdhci-of-aspeed.c
-@@ -224,6 +224,7 @@ static const struct of_device_id aspeed_
- 	{ .compatible = "aspeed,ast2600-sdhci", },
- 	{ }
- };
-+MODULE_DEVICE_TABLE(of, aspeed_sdhci_of_match);
+diff --git a/include/linux/zswap.h b/include/linux/zswap.h
+index 2a85b941db97..ce5e7bfe8f1e 100644
+--- a/include/linux/zswap.h
++++ b/include/linux/zswap.h
+@@ -35,7 +35,7 @@ void zswap_swapoff(int type);
+ void zswap_memcg_offline_cleanup(struct mem_cgroup *memcg);
+ void zswap_lruvec_state_init(struct lruvec *lruvec);
+ void zswap_folio_swapin(struct folio *folio);
+-bool is_zswap_enabled(void);
++bool zswap_is_enabled(void);
+ #else
  
- static struct platform_driver aspeed_sdhci_driver = {
- 	.driver		= {
+ struct zswap_lruvec_state {};
+@@ -60,7 +60,7 @@ static inline void zswap_memcg_offline_cleanup(struct mem_cgroup *memcg) {}
+ static inline void zswap_lruvec_state_init(struct lruvec *lruvec) {}
+ static inline void zswap_folio_swapin(struct folio *folio) {}
+ 
+-static inline bool is_zswap_enabled(void)
++static inline bool zswap_is_enabled(void)
+ {
+ 	return false;
+ }
+diff --git a/mm/memcontrol.c b/mm/memcontrol.c
+index 332f190bf3d6..ff1e7d2260ab 100644
+--- a/mm/memcontrol.c
++++ b/mm/memcontrol.c
+@@ -8444,7 +8444,7 @@ void obj_cgroup_uncharge_zswap(struct obj_cgroup *objcg, size_t size)
+ bool mem_cgroup_zswap_writeback_enabled(struct mem_cgroup *memcg)
+ {
+ 	/* if zswap is disabled, do not block pages going to the swapping device */
+-	return !is_zswap_enabled() || !memcg || READ_ONCE(memcg->zswap_writeback);
++	return !zswap_is_enabled() || !memcg || READ_ONCE(memcg->zswap_writeback);
+ }
+ 
+ static u64 zswap_current_read(struct cgroup_subsys_state *css,
+diff --git a/mm/zswap.c b/mm/zswap.c
+index a50e2986cd2f..ac65758dd2af 100644
+--- a/mm/zswap.c
++++ b/mm/zswap.c
+@@ -131,7 +131,7 @@ static bool zswap_shrinker_enabled = IS_ENABLED(
+ 		CONFIG_ZSWAP_SHRINKER_DEFAULT_ON);
+ module_param_named(shrinker_enabled, zswap_shrinker_enabled, bool, 0644);
+ 
+-bool is_zswap_enabled(void)
++bool zswap_is_enabled(void)
+ {
+ 	return zswap_enabled;
+ }
+-- 
+2.43.0
+
 
 
 
