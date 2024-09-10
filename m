@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-75296-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1ACDD9733D4
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:36:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0E6F9731F9
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:17:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0FDA28A4FF
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:36:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A1BF1B2642E
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:16:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF8E5191478;
-	Tue, 10 Sep 2024 10:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6328B1922E1;
+	Tue, 10 Sep 2024 10:11:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zwv6yRc0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mGbHw45O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DA6119068E;
-	Tue, 10 Sep 2024 10:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B82C190068;
+	Tue, 10 Sep 2024 10:11:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964320; cv=none; b=FrPgyF920s20GyBs0fd686d92Ezoj77TLd4n7PgYm31Gf2o3UmaFg3VlqFSERVkOC39yooWJQwZLpWVGO1nkmzrQoDNEZjkX6TLd/xsAkoUhtutb61rlTTRTN+d4UxJut1rN0XP6P0OnXs0o28mQ8hvcFvIUk1cyIyMCN01RUw4=
+	t=1725963119; cv=none; b=pqelc/7NvJgEm7hDdriBx9Kbeoxcamp7E7iLJP8EsGroXqqY33np5rGLEfVuSjNkKbKp0Eq2ksW1CQKc7+w1GDap/MyxPN/JuBMiPVI2o8ciSIi2M4NInQtV5hM9T6F3Grs/EaLM1Km54GvTjfB1h72E+kVC/pM8s69viahv8Rc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964320; c=relaxed/simple;
-	bh=mFFshYL3NTitb6Ej9eISvbAzfD+a9z2QfdgKHMpMu64=;
+	s=arc-20240116; t=1725963119; c=relaxed/simple;
+	bh=FBOvexl4TaI4UyEM+y5/Z9V63jjH0+q/68MYLTS7RHA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DH7vsuS9QSQS3TE9kg74I2JnnAUTip14pthlcgFegokl6ECOjprL4JHtKuC/l4ez/kdVZEs434XKfbEFc/ie1GVR8buw2oyUJkopwzHa7xy6+XkOsJfWGpmrqlKVWtk/Cz/SE9S/753qAEfYjwAGLGnDmWDh1TxZDhtDGEvjskk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zwv6yRc0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06A3CC4CEC3;
-	Tue, 10 Sep 2024 10:31:59 +0000 (UTC)
+	 MIME-Version; b=tsgiPp42T4NIDiwa99/BLIhX0g5CuJhSqsrrp2HjGdaMTSDEQOPbfHlN5BQP75gmixiFE+IY6fY2vMhq/i/osGmQ/c4TIEc4QTiCIRLk2PdT1EZIxWnkIQ9guxKOgBROr4I10xIMZIMg16G0EteyvzW2ENn61f+OZnUNRIreILw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mGbHw45O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56233C4CEC3;
+	Tue, 10 Sep 2024 10:11:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964320;
-	bh=mFFshYL3NTitb6Ej9eISvbAzfD+a9z2QfdgKHMpMu64=;
+	s=korg; t=1725963118;
+	bh=FBOvexl4TaI4UyEM+y5/Z9V63jjH0+q/68MYLTS7RHA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zwv6yRc0/0gXf+Dm2FOP2ClTu0VtNxxwltvlcya5tPwdkh+eFzqSkE25pHRRk09XW
-	 Ia+Sh5/9YPAAp8rophKFBDd46h5gzqwgGUZFY41KZiYMKacs7VEqL+6i+xPFh2cdAr
-	 S3GRJ9EIOuFIgaV8bNOYg4ANXDTgmFk+FJndIhkc=
+	b=mGbHw45O8ekjHtYCFcHMdNdAUxabJp+9DiluAP3tQBJpqCBrL2tNa20shrUT3ri+T
+	 CFmbb5X2VCg04DP8+m6Zocxou3zTG+GniiIgBQUJwKM8p2pOC0ztpugsq0Badx7sG5
+	 BS6/t6SL5HoL/aFpg1KuCCsolYbt/RU2rBPdCOJo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Pan <jacob.jun.pan@linux.intel.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Yi Liu <yi.l.liu@intel.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Will Deacon <will@kernel.org>,
+	Yicong Yang <yangyicong@hisilicon.com>,
+	Barry Song <baohua@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 142/269] iommu/vt-d: Handle volatile descriptor status read
+Subject: [PATCH 6.1 105/192] dma-mapping: benchmark: Dont starve others when doing the test
 Date: Tue, 10 Sep 2024 11:32:09 +0200
-Message-ID: <20240910092613.268656017@linuxfoundation.org>
+Message-ID: <20240910092602.318737629@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,58 +63,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Pan <jacob.jun.pan@linux.intel.com>
+From: Yicong Yang <yangyicong@hisilicon.com>
 
-[ Upstream commit b5e86a95541cea737394a1da967df4cd4d8f7182 ]
+[ Upstream commit 54624acf8843375a6de3717ac18df3b5104c39c5 ]
 
-Queued invalidation wait descriptor status is volatile in that IOMMU
-hardware writes the data upon completion.
+The test thread will start N benchmark kthreads and then schedule out
+until the test time finished and notify the benchmark kthreads to stop.
+The benchmark kthreads will keep running until notified to stop.
+There's a problem with current implementation when the benchmark
+kthreads number is equal to the CPUs on a non-preemptible kernel:
+since the scheduler will balance the kthreads across the CPUs and
+when the test time's out the test thread won't get a chance to be
+scheduled on any CPU then cannot notify the benchmark kthreads to stop.
 
-Use READ_ONCE() to prevent compiler optimizations which ensures memory
-reads every time. As a side effect, READ_ONCE() also enforces strict
-types and may add an extra instruction. But it should not have negative
-performance impact since we use cpu_relax anyway and the extra time(by
-adding an instruction) may allow IOMMU HW request cacheline ownership
-easier.
+This can be easily reproduced on a VM (simulated with 16 CPUs) with
+PREEMPT_VOLUNTARY:
+estuary:/mnt$ ./dma_map_benchmark -t 16 -s 1
+ rcu: INFO: rcu_sched self-detected stall on CPU
+ rcu:     10-...!: (5221 ticks this GP) idle=ed24/1/0x4000000000000000 softirq=142/142 fqs=0
+ rcu:     (t=5254 jiffies g=-559 q=45 ncpus=16)
+ rcu: rcu_sched kthread starved for 5255 jiffies! g-559 f0x0 RCU_GP_WAIT_FQS(5) ->state=0x0 ->cpu=12
+ rcu:     Unless rcu_sched kthread gets sufficient CPU time, OOM is now expected behavior.
+ rcu: RCU grace-period kthread stack dump:
+ task:rcu_sched       state:R  running task     stack:0     pid:16    tgid:16    ppid:2      flags:0x00000008
+ Call trace
+  __switch_to+0xec/0x138
+  __schedule+0x2f8/0x1080
+  schedule+0x30/0x130
+  schedule_timeout+0xa0/0x188
+  rcu_gp_fqs_loop+0x128/0x528
+  rcu_gp_kthread+0x1c8/0x208
+  kthread+0xec/0xf8
+  ret_from_fork+0x10/0x20
+ Sending NMI from CPU 10 to CPUs 0:
+ NMI backtrace for cpu 0
+ CPU: 0 PID: 332 Comm: dma-map-benchma Not tainted 6.10.0-rc1-vanilla-LSE #8
+ Hardware name: QEMU KVM Virtual Machine, BIOS 0.0.0 02/06/2015
+ pstate: 20400005 (nzCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+ pc : arm_smmu_cmdq_issue_cmdlist+0x218/0x730
+ lr : arm_smmu_cmdq_issue_cmdlist+0x488/0x730
+ sp : ffff80008748b630
+ x29: ffff80008748b630 x28: 0000000000000000 x27: ffff80008748b780
+ x26: 0000000000000000 x25: 000000000000bc70 x24: 000000000001bc70
+ x23: ffff0000c12af080 x22: 0000000000010000 x21: 000000000000ffff
+ x20: ffff80008748b700 x19: ffff0000c12af0c0 x18: 0000000000010000
+ x17: 0000000000000001 x16: 0000000000000040 x15: ffffffffffffffff
+ x14: 0001ffffffffffff x13: 000000000000ffff x12: 00000000000002f1
+ x11: 000000000001ffff x10: 0000000000000031 x9 : ffff800080b6b0b8
+ x8 : ffff0000c2a48000 x7 : 000000000001bc71 x6 : 0001800000000000
+ x5 : 00000000000002f1 x4 : 01ffffffffffffff x3 : 000000000009aaf1
+ x2 : 0000000000000018 x1 : 000000000000000f x0 : ffff0000c12af18c
+ Call trace:
+  arm_smmu_cmdq_issue_cmdlist+0x218/0x730
+  __arm_smmu_tlb_inv_range+0xe0/0x1a8
+  arm_smmu_iotlb_sync+0xc0/0x128
+  __iommu_dma_unmap+0x248/0x320
+  iommu_dma_unmap_page+0x5c/0xe8
+  dma_unmap_page_attrs+0x38/0x1d0
+  map_benchmark_thread+0x118/0x2c0
+  kthread+0xec/0xf8
+  ret_from_fork+0x10/0x20
 
-e.g. gcc 12.3
-BEFORE:
-	81 38 ad de 00 00       cmpl   $0x2,(%rax)
+Solve this by adding scheduling point in the kthread loop,
+so if there're other threads in the system they may have
+a chance to run, especially the thread to notify the test
+end. However this may degrade the test concurrency so it's
+recommended to run this on an idle system.
 
-AFTER (with READ_ONCE())
-    772f:       8b 00                   mov    (%rax),%eax
-    7731:       3d ad de 00 00          cmp    $0x2,%eax
-                                        //status data is 32 bit
-
-Signed-off-by: Jacob Pan <jacob.jun.pan@linux.intel.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Reviewed-by: Yi Liu <yi.l.liu@intel.com>
-Link: https://lore.kernel.org/r/20240607173817.3914600-1-jacob.jun.pan@linux.intel.com
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Link: https://lore.kernel.org/r/20240702130839.108139-2-baolu.lu@linux.intel.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
+Acked-by: Barry Song <baohua@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/intel/dmar.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/dma/map_benchmark.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/drivers/iommu/intel/dmar.c b/drivers/iommu/intel/dmar.c
-index 23cb80d62a9a..84f0459e503c 100644
---- a/drivers/iommu/intel/dmar.c
-+++ b/drivers/iommu/intel/dmar.c
-@@ -1422,7 +1422,7 @@ int qi_submit_sync(struct intel_iommu *iommu, struct qi_desc *desc,
- 	 */
- 	writel(qi->free_head << shift, iommu->reg + DMAR_IQT_REG);
+diff --git a/kernel/dma/map_benchmark.c b/kernel/dma/map_benchmark.c
+index dafdc47ae5fc..3efdc5cfe390 100644
+--- a/kernel/dma/map_benchmark.c
++++ b/kernel/dma/map_benchmark.c
+@@ -89,6 +89,22 @@ static int map_benchmark_thread(void *data)
+ 		atomic64_add(map_sq, &map->sum_sq_map);
+ 		atomic64_add(unmap_sq, &map->sum_sq_unmap);
+ 		atomic64_inc(&map->loops);
++
++		/*
++		 * We may test for a long time so periodically check whether
++		 * we need to schedule to avoid starving the others. Otherwise
++		 * we may hangup the kernel in a non-preemptible kernel when
++		 * the test kthreads number >= CPU number, the test kthreads
++		 * will run endless on every CPU since the thread resposible
++		 * for notifying the kthread stop (in do_map_benchmark())
++		 * could not be scheduled.
++		 *
++		 * Note this may degrade the test concurrency since the test
++		 * threads may need to share the CPU time with other load
++		 * in the system. So it's recommended to run this benchmark
++		 * on an idle system.
++		 */
++		cond_resched();
+ 	}
  
--	while (qi->desc_status[wait_index] != QI_DONE) {
-+	while (READ_ONCE(qi->desc_status[wait_index]) != QI_DONE) {
- 		/*
- 		 * We will leave the interrupts disabled, to prevent interrupt
- 		 * context to queue another cmd while a cmd is already submitted
+ out:
 -- 
 2.43.0
 
