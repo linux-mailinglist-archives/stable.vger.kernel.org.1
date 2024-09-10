@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-74164-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96747972DD5
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:36:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6370972FEE
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:56:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56C57283E20
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:36:42 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8D207B28825
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:56:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DA36188CDC;
-	Tue, 10 Sep 2024 09:36:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3CB718B46D;
+	Tue, 10 Sep 2024 09:55:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o7WrehUi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m4ovg0d1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52FEF188A17;
-	Tue, 10 Sep 2024 09:36:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B25D9172BAE;
+	Tue, 10 Sep 2024 09:55:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961001; cv=none; b=NFQu2k33NuDxPQp/cRj3bYB3113bAlY/udgXqvrysRYXIe1Vg6IBYEcMw4XJqxYqbgVL1UCpE2aaiJSxX0YjLUNSXB+amoqf8MS6nEXGoFV5WkNUbj/0dxOHefeszTiqJNNFmF5hjnRafVgfavIK4Dp30vZrcAVnLZs9oex2y0U=
+	t=1725962151; cv=none; b=ckqQJvOBfs5VtrqBTx8LCq6oFguqt9Q0CVuMiyp9xg6O+M3fxvUW8LoNp8b1z2gmgUhavrkM2V27rpVa9VfiYdmVsez9LlZdAxb9A7J/yI6E9Rjkv3feWmvqou2CIuKscE5IMyJS6opHEgFmbxbgEFpy4EKj0O9rvWoVbYRQTaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961001; c=relaxed/simple;
-	bh=sye5gregCQ/jsQZGpUyuvTqO4cDsSutJyzK7+pbjnkM=;
+	s=arc-20240116; t=1725962151; c=relaxed/simple;
+	bh=GVmueibNSKdZFHBRtI1SjHK1jAqEyfP5VW2JWpFqItg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l7jnkvrBr4sXzyKo4FbRbG9vRMnIyhw9lX4/IaARgRwLo0AV3eKlvuCMa7SIFBTSoLyUMY8j441kNRmwIjtoQ0Nd1/LEqE4uLi/Firo71acqe21FcgETvnEiagT6NMIYleonYY6zB2ldXDXiStu5sXxWQa8NvRjHJLjmZ9GLtdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o7WrehUi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D5ABC4CEC3;
-	Tue, 10 Sep 2024 09:36:40 +0000 (UTC)
+	 MIME-Version; b=ip0AXmM6SoK6ikHpCZJQb+fQn7EoLofUNoyToIUqGmtJYDz/sAj46uCGP/q5A6aEbc3rQniBE/j631TRWTVjmQZ18TTApvP7eutTZH5S28Z6Xls5L0KnCWhCUNkN6NAmS/K8LYSxUhYaR0QX9YjcFzeyb0Jhbmk7/2goLRAH8Zk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m4ovg0d1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AE53C4CEC3;
+	Tue, 10 Sep 2024 09:55:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961001;
-	bh=sye5gregCQ/jsQZGpUyuvTqO4cDsSutJyzK7+pbjnkM=;
+	s=korg; t=1725962151;
+	bh=GVmueibNSKdZFHBRtI1SjHK1jAqEyfP5VW2JWpFqItg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o7WrehUiMoe7P2JMCTyImlKr3UgRFHDGk74S5DWyfnUMWWCwKBiyWJsL5CTUeZ0b2
-	 8CmbO5xEWypY8B6No3KDcS8mGdIf33KkmbdNSNTBDbgCkz2pJjzy4OJerQaaJFBhFS
-	 OIa+LfimsixMirq6/HVZsUTzzX/4G+t4y/Txzpeo=
+	b=m4ovg0d1erjFmffInmSi8+7ulBsB/9bzs6NFXEM0k6hNVgur/7ofpHYBya1GcznUD
+	 4OfvN+nz4mSAkzA26ac36ILAznJKvqRvLgSaMqUZWF1NloZkOiYccKDgrFA8Yk8pFs
+	 lp0xqQLIS70DcX2JPqpIapM689dUxpPILDLf+c8c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Qixing <zhengqixing@huawei.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Damien Le Moal <dlemoal@kernel.org>
-Subject: [PATCH 4.19 20/96] ata: libata: Fix memory leak for error path in ata_host_alloc()
+	David Lechner <dlechner@baylibre.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.10 285/375] iio: buffer-dmaengine: fix releasing dma channel on error
 Date: Tue, 10 Sep 2024 11:31:22 +0200
-Message-ID: <20240910092542.311379721@linuxfoundation.org>
+Message-ID: <20240910092632.141881654@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
-References: <20240910092541.383432924@linuxfoundation.org>
+In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
+References: <20240910092622.245959861@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Qixing <zhengqixing@huawei.com>
+From: David Lechner <dlechner@baylibre.com>
 
-commit 284b75a3d83c7631586d98f6dede1d90f128f0db upstream.
+commit 84c65d8008764a8fb4e627ff02de01ec4245f2c4 upstream.
 
-In ata_host_alloc(), if devres_alloc() fails to allocate the device host
-resource data pointer, the already allocated ata_host structure is not
-freed before returning from the function. This results in a potential
-memory leak.
+If dma_get_slave_caps() fails, we need to release the dma channel before
+returning an error to avoid leaking the channel.
 
-Call kfree(host) before jumping to the error handling path to ensure
-that the ata_host structure is properly freed if devres_alloc() fails.
-
-Fixes: 2623c7a5f279 ("libata: add refcounting to ata_host")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Fixes: 2d6ca60f3284 ("iio: Add a DMAengine framework based buffer")
+Signed-off-by: David Lechner <dlechner@baylibre.com>
+Link: https://patch.msgid.link/20240723-iio-fix-dmaengine-free-on-error-v1-1-2c7cbc9b92ff@baylibre.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/libata-core.c |    4 +++-
+ drivers/iio/buffer/industrialio-buffer-dmaengine.c |    4 +++-
  1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -6221,8 +6221,10 @@ struct ata_host *ata_host_alloc(struct d
- 	}
+--- a/drivers/iio/buffer/industrialio-buffer-dmaengine.c
++++ b/drivers/iio/buffer/industrialio-buffer-dmaengine.c
+@@ -193,7 +193,7 @@ static struct iio_buffer *iio_dmaengine_
  
- 	dr = devres_alloc(ata_devres_release, 0, GFP_KERNEL);
--	if (!dr)
-+	if (!dr) {
-+		kfree(host);
- 		goto err_out;
-+	}
+ 	ret = dma_get_slave_caps(chan, &caps);
+ 	if (ret < 0)
+-		goto err_free;
++		goto err_release;
  
- 	devres_add(dev, dr);
- 	dev_set_drvdata(dev, host);
+ 	/* Needs to be aligned to the maximum of the minimums */
+ 	if (caps.src_addr_widths)
+@@ -219,6 +219,8 @@ static struct iio_buffer *iio_dmaengine_
+ 
+ 	return &dmaengine_buffer->queue.buffer;
+ 
++err_release:
++	dma_release_channel(chan);
+ err_free:
+ 	kfree(dmaengine_buffer);
+ 	return ERR_PTR(ret);
 
 
 
