@@ -1,74 +1,62 @@
-Return-Path: <stable+bounces-75690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 821AC973F7E
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 19:28:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12DBD973F85
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 19:29:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B4DB71C256C7
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 17:28:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 463311C25802
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 17:29:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70DC01B5804;
-	Tue, 10 Sep 2024 17:22:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDC581B78F6;
+	Tue, 10 Sep 2024 17:23:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ln4xrwHL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kn05P4rS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 269CB1A2C00;
-	Tue, 10 Sep 2024 17:22:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2E451A4F19;
+	Tue, 10 Sep 2024 17:23:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725988974; cv=none; b=IydZ3m334lSePeCWS7y3V75TRJZtF4cJ8/rBvsfwTy3oHSnNwrm87A7pQBD8t8jrJCx8vx9vA/aRAxuVcH56F3tWuicuypqd68d8l/b0pxyNamk6FDeJ9QIAeqOCvRHMM8mLJInLZh/Q2t/jgG2hz2jG9yb/kZrmPsS8BHv01Pw=
+	t=1725988984; cv=none; b=cKscEzWfAx1HLdzC063JetoEHiyXAVXGjfOnxBC5scngwUZjXZnhmgAeLvwR3bj+7ptag3lLd1fkueYmMrv15baSmEyafAhVvfCl72+rQC2s0sQQ83KK84iV6XLUTBD2EzxUHk/4tP9E+4ycvhclN8cDTkkQgNpPPCmzP09V5D8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725988974; c=relaxed/simple;
-	bh=BkY5Luu0WhLdsyeuGQ+H6TC8pg0hNLFLBkB8fjvJxX4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tG01vgdMBbDZOBnj4wUACz5naox7dK4kTvAmSmaqEPYmv895N6/2wy5/j8IqA4+HWZyDGBjDA9QTV4zkWzS1LAHpTPvkJFXq3WbKokcKb857Rl/JMIqxrVEwDyjTEJSpUTvcdGy8dv1IaiSTFz4mZDkGMon5JNn/0OdZr/1httM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ln4xrwHL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BEDBC4CEC3;
-	Tue, 10 Sep 2024 17:22:51 +0000 (UTC)
+	s=arc-20240116; t=1725988984; c=relaxed/simple;
+	bh=co+0/b4aRDm6iCVskWeVHG7wwfqak69YUvWTAJJ1DXc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Zxpd3nSmKZzD//F1WK6/y5eyP5UGfUe5nL+RMT0kgXzjAFRFbhk2axYQdN+i00dK/bT//E8SRR5QyzDFfgIloN5T1QVE3izXqnNdLYodyyucJ9tRXmi2vcfur3loVg4BiYkAdE5+xJBfBNKVQfGNCXgEZrXYCj4UDscmgDSDz8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kn05P4rS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0260BC4CEC4;
+	Tue, 10 Sep 2024 17:23:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725988973;
-	bh=BkY5Luu0WhLdsyeuGQ+H6TC8pg0hNLFLBkB8fjvJxX4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ln4xrwHLb9dTP1GWSiLYmtZWK1n4SOwR0gKS4AVCN6ed5fZsJRB1GPUSYZQm6V12N
-	 zSU9Fju2idL7wBLvRfCPpegdLLEIcPgyBV/LPVTvcNUkBeBMjYa9W0H7PawUxrL/sy
-	 UXvDjp4L5QBKYeR0WhdRWrr4LocANTXqJi5DpA7h4SNYU0YDkuPLBHVG3pcJKBYs0b
-	 UNchPRC01lWAHW+aN0Q1tVwg/1avCHE4N3/RIjIKYKLbPdHouMLrlr38utZV1usSTe
-	 bPtVE05Zz17iEWDU6dYaRfr+crCC85cT8JxTnRA5V+YCoRtHsmQWr1jn8zLYpjNc4R
-	 RgCPKdGfyIBbQ==
+	s=k20201202; t=1725988984;
+	bh=co+0/b4aRDm6iCVskWeVHG7wwfqak69YUvWTAJJ1DXc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=kn05P4rSDEzw5iwg/iNH+7IccpH4G5uBqcjT/cVex/9h5CpF0YISg8gTjJw3Cpx2Z
+	 snj8rWuxM/crAXZA6oUDV8gkysPzki+hhhobxNTqab3z0lEO9MLhW3CDiOj1DhWfDB
+	 AjPogMjfjeeqDboA1WaINoHpQVFLvxhVeP39zh9dsTyCmRZPNoF+meaErY3EQv8/ta
+	 AZZ8FAXQY8XR9XiZshMOPOjc/ELI97RMZHx0MTe/hrQxYi5hwHZXAed56NtBajGvu9
+	 Kz62pqZHAJ+cLZbNu9syUQQ3X7KvPwysRBfdpKZuKFKslcMg7dN5p/HAlhNp+JBaPQ
+	 ppkn0XWkTEVgg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Larysa Zaremba <larysa.zaremba@intel.com>,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Chandan Kumar Rout <chandanx.rout@intel.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+Cc: Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>,
-	przemyslaw.kitszel@intel.com,
+	manivannan.sadhasivam@linaro.org,
+	mailhol.vincent@wanadoo.fr,
 	davem@davemloft.net,
 	edumazet@google.com,
 	kuba@kernel.org,
 	pabeni@redhat.com,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	hawk@kernel.org,
-	john.fastabend@gmail.com,
-	intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org,
-	bpf@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 18/18] ice: check for XDP rings instead of bpf program when unconfiguring
-Date: Tue, 10 Sep 2024 13:22:03 -0400
-Message-ID: <20240910172214.2415568-18-sashal@kernel.org>
+	linux-can@vger.kernel.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 01/12] can: mcp251xfd: mcp251xfd_ring_init(): check TX-coalescing configuration
+Date: Tue, 10 Sep 2024 13:22:43 -0400
+Message-ID: <20240910172301.2415973-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240910172214.2415568-1-sashal@kernel.org>
-References: <20240910172214.2415568-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,111 +65,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.10.9
+X-stable-base: Linux 6.6.50
 Content-Transfer-Encoding: 8bit
 
-From: Larysa Zaremba <larysa.zaremba@intel.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit f50c68763436bc8f805712a7c5ceaf58cfcf5f07 ]
+[ Upstream commit ac2b81eb8b2d104033560daea886ee84531e3d0a ]
 
-If VSI rebuild is pending, .ndo_bpf() can attach/detach the XDP program on
-VSI without applying new ring configuration. When unconfiguring the VSI, we
-can encounter the state in which there is an XDP program but no XDP rings
-to destroy or there will be XDP rings that need to be destroyed, but no XDP
-program to indicate their presence.
+When changing the interface from CAN-CC to CAN-FD mode the old
+coalescing parameters are re-used. This might cause problem, as the
+configured parameters are too big for CAN-FD mode.
 
-When unconfiguring, rely on the presence of XDP rings rather then XDP
-program, as they better represent the current state that has to be
-destroyed.
+During testing an invalid TX coalescing configuration has been seen.
+The problem should be been fixed in the previous patch, but add a
+safeguard here to ensure that the number of TEF coalescing buffers (if
+configured) is exactly the half of all TEF buffers.
 
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Tested-by: Chandan Kumar Rout <chandanx.rout@intel.com>
-Acked-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://lore.kernel.org/all/20240805-mcp251xfd-fix-ringconfig-v1-2-72086f0ca5ee@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_lib.c  | 4 ++--
- drivers/net/ethernet/intel/ice/ice_main.c | 4 ++--
- drivers/net/ethernet/intel/ice/ice_xsk.c  | 6 +++---
- 3 files changed, 7 insertions(+), 7 deletions(-)
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
-index 7629b0190578..73d03535561a 100644
---- a/drivers/net/ethernet/intel/ice/ice_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_lib.c
-@@ -2426,7 +2426,7 @@ void ice_vsi_decfg(struct ice_vsi *vsi)
- 		dev_err(ice_pf_to_dev(pf), "Failed to remove RDMA scheduler config for VSI %u, err %d\n",
- 			vsi->vsi_num, err);
+diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
+index 4cb79a4f2461..489d1439563a 100644
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
+@@ -289,7 +289,7 @@ int mcp251xfd_ring_init(struct mcp251xfd_priv *priv)
+ 	const struct mcp251xfd_rx_ring *rx_ring;
+ 	u16 base = 0, ram_used;
+ 	u8 fifo_nr = 1;
+-	int i;
++	int err = 0, i;
  
--	if (ice_is_xdp_ena_vsi(vsi))
-+	if (vsi->xdp_rings)
- 		/* return value check can be skipped here, it always returns
- 		 * 0 if reset is in progress
- 		 */
-@@ -2528,7 +2528,7 @@ static void ice_vsi_release_msix(struct ice_vsi *vsi)
- 		for (q = 0; q < q_vector->num_ring_tx; q++) {
- 			ice_write_itr(&q_vector->tx, 0);
- 			wr32(hw, QINT_TQCTL(vsi->txq_map[txq]), 0);
--			if (ice_is_xdp_ena_vsi(vsi)) {
-+			if (vsi->xdp_rings) {
- 				u32 xdp_txq = txq + vsi->num_xdp_txq;
+ 	netdev_reset_queue(priv->ndev);
  
- 				wr32(hw, QINT_TQCTL(vsi->txq_map[xdp_txq]), 0);
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index f16d13e9ff6e..448b854d1128 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -7222,7 +7222,7 @@ int ice_down(struct ice_vsi *vsi)
- 	if (tx_err)
- 		netdev_err(vsi->netdev, "Failed stop Tx rings, VSI %d error %d\n",
- 			   vsi->vsi_num, tx_err);
--	if (!tx_err && ice_is_xdp_ena_vsi(vsi)) {
-+	if (!tx_err && vsi->xdp_rings) {
- 		tx_err = ice_vsi_stop_xdp_tx_rings(vsi);
- 		if (tx_err)
- 			netdev_err(vsi->netdev, "Failed stop XDP rings, VSI %d error %d\n",
-@@ -7239,7 +7239,7 @@ int ice_down(struct ice_vsi *vsi)
- 	ice_for_each_txq(vsi, i)
- 		ice_clean_tx_ring(vsi->tx_rings[i]);
+@@ -385,10 +385,18 @@ int mcp251xfd_ring_init(struct mcp251xfd_priv *priv)
+ 		netdev_err(priv->ndev,
+ 			   "Error during ring configuration, using more RAM (%u bytes) than available (%u bytes).\n",
+ 			   ram_used, MCP251XFD_RAM_SIZE);
+-		return -ENOMEM;
++		err = -ENOMEM;
+ 	}
  
--	if (ice_is_xdp_ena_vsi(vsi))
-+	if (vsi->xdp_rings)
- 		ice_for_each_xdp_txq(vsi, i)
- 			ice_clean_tx_ring(vsi->xdp_rings[i]);
- 
-diff --git a/drivers/net/ethernet/intel/ice/ice_xsk.c b/drivers/net/ethernet/intel/ice/ice_xsk.c
-index 240a7bec242b..c2aa6f589937 100644
---- a/drivers/net/ethernet/intel/ice/ice_xsk.c
-+++ b/drivers/net/ethernet/intel/ice/ice_xsk.c
-@@ -39,7 +39,7 @@ static void ice_qp_reset_stats(struct ice_vsi *vsi, u16 q_idx)
- 	       sizeof(vsi_stat->rx_ring_stats[q_idx]->rx_stats));
- 	memset(&vsi_stat->tx_ring_stats[q_idx]->stats, 0,
- 	       sizeof(vsi_stat->tx_ring_stats[q_idx]->stats));
--	if (ice_is_xdp_ena_vsi(vsi))
-+	if (vsi->xdp_rings)
- 		memset(&vsi->xdp_rings[q_idx]->ring_stats->stats, 0,
- 		       sizeof(vsi->xdp_rings[q_idx]->ring_stats->stats));
+-	return 0;
++	if (priv->tx_obj_num_coalesce_irq &&
++	    priv->tx_obj_num_coalesce_irq * 2 != priv->tx->obj_num) {
++		netdev_err(priv->ndev,
++			   "Error during ring configuration, number of TEF coalescing buffers (%u) must be half of TEF buffers (%u).\n",
++			   priv->tx_obj_num_coalesce_irq, priv->tx->obj_num);
++		err = -EINVAL;
++	}
++
++	return err;
  }
-@@ -52,7 +52,7 @@ static void ice_qp_reset_stats(struct ice_vsi *vsi, u16 q_idx)
- static void ice_qp_clean_rings(struct ice_vsi *vsi, u16 q_idx)
- {
- 	ice_clean_tx_ring(vsi->tx_rings[q_idx]);
--	if (ice_is_xdp_ena_vsi(vsi))
-+	if (vsi->xdp_rings)
- 		ice_clean_tx_ring(vsi->xdp_rings[q_idx]);
- 	ice_clean_rx_ring(vsi->rx_rings[q_idx]);
- }
-@@ -194,7 +194,7 @@ static int ice_qp_dis(struct ice_vsi *vsi, u16 q_idx)
- 	err = ice_vsi_stop_tx_ring(vsi, ICE_NO_RESET, 0, tx_ring, &txq_meta);
- 	if (!fail)
- 		fail = err;
--	if (ice_is_xdp_ena_vsi(vsi)) {
-+	if (vsi->xdp_rings) {
- 		struct ice_tx_ring *xdp_ring = vsi->xdp_rings[q_idx];
  
- 		memset(&txq_meta, 0, sizeof(txq_meta));
+ void mcp251xfd_ring_free(struct mcp251xfd_priv *priv)
 -- 
 2.43.0
 
