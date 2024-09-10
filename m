@@ -1,63 +1,56 @@
-Return-Path: <stable+bounces-74562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED9AE972FF2
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:56:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5029C972DF5
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:38:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A1FB61F24E1C
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:56:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0B7B72871BD
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:38:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C5FE18C037;
-	Tue, 10 Sep 2024 09:56:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41FCB18C320;
+	Tue, 10 Sep 2024 09:37:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OU35Mxwl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vbI+0uuG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A682171671;
-	Tue, 10 Sep 2024 09:56:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0E8918C03C;
+	Tue, 10 Sep 2024 09:37:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962167; cv=none; b=dWL7gesSFeK8VpC1uhCxuevIC6gzcbsJ5UuFGIZS1F0PL8r9WlqqeSjQXVjLfEX+8knKsJW08mItm9spnL/cmtLfiIltyWPQ3SV5/DYJWzcVs+P2NnM17YLvOBed7Ff6GEH0PBXfHvdjoR6gcsR/S1Ck4sOMX9khU/YadJl/95g=
+	t=1725961078; cv=none; b=m7dyeIMEtpvan1irsCejkSaV9KKKJiGZx5igUzM3LLJ00fR9xibkhLJf+HZ7x7nPfO1uhiasj0bHJvFOF3iA80/hLbibP3CIfwaIp+7iDsdzXH0EhVTB8Ocr2vJabClJertXL8Uip1VJi/44s6jXyYVfqpvbLM6cvZNxyJI7omQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962167; c=relaxed/simple;
-	bh=Vu2F6JzTJ8TQa2cmHgF3mcnigWr2Oz0lqBxwEIGbrsM=;
+	s=arc-20240116; t=1725961078; c=relaxed/simple;
+	bh=6nscplTUxtWYHgpFn68VFFt3QWWxu79tEsDt2jpQo2I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Rh+R22nVcI0wPy0KwvfpMLys8slvE3bKaNti8ibNoJTNclUv3Zw9wLmtUxKy0oXnlyr3iLyB6JD/wSvLM/Q/LM6XKSRI14XTgyF1F5GMg60ZKPG7SXJXzscdU3oqU0D7BOr8Q8Sm6r/sqjz6fOjaImFxUF6Kls1XbfUhz7XqZdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OU35Mxwl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8685DC4CEC3;
-	Tue, 10 Sep 2024 09:56:06 +0000 (UTC)
+	 MIME-Version; b=YyatQKYimgAApiwLi/GuETMU3ZGbHjekuDCO3dRoYYWbw2PDXB+gWh7B6KAW+zK+Kv8a+L8QzZMvH711iVHhayRR0TyY+VGXo8t8qFqXTzUSipRbxWszIpT+gfZ5MeNuv7ftJfCePrLpuZQVEdq1aU6QH6dAuR/fxZbTgw8RSzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vbI+0uuG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C7E5C4CEC6;
+	Tue, 10 Sep 2024 09:37:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962166;
-	bh=Vu2F6JzTJ8TQa2cmHgF3mcnigWr2Oz0lqBxwEIGbrsM=;
+	s=korg; t=1725961077;
+	bh=6nscplTUxtWYHgpFn68VFFt3QWWxu79tEsDt2jpQo2I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OU35Mxwlb7RKSm5w/z91sOOY2kE5KDletLh6/EHBp9QCeB0cWw4xDW/s3vLJ7G3/a
-	 yx0MhyxqQPo9g7fDv4cGUAg92Ik/ZI2HuGw7mpRURu7dBeUyXOjfo8yJ4nTAn5JiSg
-	 EE3cM4Z+44p6JeJXUizxgcxYhauHUNlGn9rfY6R0=
+	b=vbI+0uuGDaCkFAN/A+S7Nm4BISQ5AVzXJQC+7W3Hdy2OCspz1dcXrup+TR32KFXJK
+	 bBx2jAvYz1g/hb92htGnpcfcREPqkGVkYEM8Q2lWN0xoenp5+XsRUXSLKfcQeVhaDo
+	 Y+rlFAAGmQS3aESLxH7MKYVm7w4sklciU8LppsV4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yosry Ahmed <yosryahmed@google.com>,
-	Barry Song <baohua@kernel.org>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Chris Li <chrisl@kernel.org>,
-	David Hildenbrand <david@redhat.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Nikolay Aleksandrov <nikolay@cumulusnetworks.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 310/375] mm: zswap: rename is_zswap_enabled() to zswap_is_enabled()
-Date: Tue, 10 Sep 2024 11:31:47 +0200
-Message-ID: <20240910092632.977465674@linuxfoundation.org>
+Subject: [PATCH 4.19 46/96] net: bridge: fdb: convert is_static to bitops
+Date: Tue, 10 Sep 2024 11:31:48 +0200
+Message-ID: <20240910092543.562920679@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
-References: <20240910092622.245959861@linuxfoundation.org>
+In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
+References: <20240910092541.383432924@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,83 +62,183 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yosry Ahmed <yosryahmed@google.com>
+From: Nikolay Aleksandrov <nikolay@cumulusnetworks.com>
 
-[ Upstream commit 2b33a97c94bc44468fc1d54b745269c0cf0b7bb2 ]
+[ Upstream commit 29e63fffd666f1945756882d4b02bc7bec132101 ]
 
-In preparation for introducing a similar function, rename
-is_zswap_enabled() to use zswap_* prefix like other zswap functions.
+Convert the is_static to bitops, make use of the combined
+test_and_set/clear_bit to simplify expressions in fdb_add_entry.
 
-Link: https://lkml.kernel.org/r/20240611024516.1375191-1-yosryahmed@google.com
-Signed-off-by: Yosry Ahmed <yosryahmed@google.com>
-Reviewed-by: Barry Song <baohua@kernel.org>
-Reviewed-by: Nhat Pham <nphamcs@gmail.com>
-Cc: Chengming Zhou <chengming.zhou@linux.dev>
-Cc: Chris Li <chrisl@kernel.org>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: e39925734909 ("mm/memcontrol: respect zswap.writeback setting from parent cg too")
+Signed-off-by: Nikolay Aleksandrov <nikolay@cumulusnetworks.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: bee2ef946d31 ("net: bridge: br_fdb_external_learn_add(): always set EXT_LEARN")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/zswap.h | 4 ++--
- mm/memcontrol.c       | 2 +-
- mm/zswap.c            | 2 +-
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ net/bridge/br_fdb.c     | 40 +++++++++++++++++++---------------------
+ net/bridge/br_private.h |  4 ++--
+ 2 files changed, 21 insertions(+), 23 deletions(-)
 
-diff --git a/include/linux/zswap.h b/include/linux/zswap.h
-index 2a85b941db97..ce5e7bfe8f1e 100644
---- a/include/linux/zswap.h
-+++ b/include/linux/zswap.h
-@@ -35,7 +35,7 @@ void zswap_swapoff(int type);
- void zswap_memcg_offline_cleanup(struct mem_cgroup *memcg);
- void zswap_lruvec_state_init(struct lruvec *lruvec);
- void zswap_folio_swapin(struct folio *folio);
--bool is_zswap_enabled(void);
-+bool zswap_is_enabled(void);
- #else
- 
- struct zswap_lruvec_state {};
-@@ -60,7 +60,7 @@ static inline void zswap_memcg_offline_cleanup(struct mem_cgroup *memcg) {}
- static inline void zswap_lruvec_state_init(struct lruvec *lruvec) {}
- static inline void zswap_folio_swapin(struct folio *folio) {}
- 
--static inline bool is_zswap_enabled(void)
-+static inline bool zswap_is_enabled(void)
+diff --git a/net/bridge/br_fdb.c b/net/bridge/br_fdb.c
+index f01ccf6ca4f4..2639cc744bca 100644
+--- a/net/bridge/br_fdb.c
++++ b/net/bridge/br_fdb.c
+@@ -80,8 +80,9 @@ static inline unsigned long hold_time(const struct net_bridge *br)
+ static inline int has_expired(const struct net_bridge *br,
+ 				  const struct net_bridge_fdb_entry *fdb)
  {
- 	return false;
- }
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index 332f190bf3d6..ff1e7d2260ab 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -8444,7 +8444,7 @@ void obj_cgroup_uncharge_zswap(struct obj_cgroup *objcg, size_t size)
- bool mem_cgroup_zswap_writeback_enabled(struct mem_cgroup *memcg)
- {
- 	/* if zswap is disabled, do not block pages going to the swapping device */
--	return !is_zswap_enabled() || !memcg || READ_ONCE(memcg->zswap_writeback);
-+	return !zswap_is_enabled() || !memcg || READ_ONCE(memcg->zswap_writeback);
+-	return !fdb->is_static && !fdb->added_by_external_learn &&
+-		time_before_eq(fdb->updated + hold_time(br), jiffies);
++	return !test_bit(BR_FDB_STATIC, &fdb->flags) &&
++	       !fdb->added_by_external_learn &&
++	       time_before_eq(fdb->updated + hold_time(br), jiffies);
  }
  
- static u64 zswap_current_read(struct cgroup_subsys_state *css,
-diff --git a/mm/zswap.c b/mm/zswap.c
-index a50e2986cd2f..ac65758dd2af 100644
---- a/mm/zswap.c
-+++ b/mm/zswap.c
-@@ -131,7 +131,7 @@ static bool zswap_shrinker_enabled = IS_ENABLED(
- 		CONFIG_ZSWAP_SHRINKER_DEFAULT_ON);
- module_param_named(shrinker_enabled, zswap_shrinker_enabled, bool, 0644);
- 
--bool is_zswap_enabled(void)
-+bool zswap_is_enabled(void)
+ static void fdb_rcu_free(struct rcu_head *head)
+@@ -202,7 +203,7 @@ static void fdb_delete(struct net_bridge *br, struct net_bridge_fdb_entry *f,
  {
- 	return zswap_enabled;
- }
+ 	trace_fdb_delete(br, f);
+ 
+-	if (f->is_static)
++	if (test_bit(BR_FDB_STATIC, &f->flags))
+ 		fdb_del_hw_addr(br, f->key.addr.addr);
+ 
+ 	hlist_del_init_rcu(&f->fdb_node);
+@@ -355,7 +356,8 @@ void br_fdb_cleanup(struct work_struct *work)
+ 	hlist_for_each_entry_rcu(f, &br->fdb_list, fdb_node) {
+ 		unsigned long this_timer;
+ 
+-		if (f->is_static || f->added_by_external_learn)
++		if (test_bit(BR_FDB_STATIC, &f->flags) ||
++		    f->added_by_external_learn)
+ 			continue;
+ 		this_timer = f->updated + delay;
+ 		if (time_after(this_timer, now)) {
+@@ -382,7 +384,7 @@ void br_fdb_flush(struct net_bridge *br)
+ 
+ 	spin_lock_bh(&br->hash_lock);
+ 	hlist_for_each_entry_safe(f, tmp, &br->fdb_list, fdb_node) {
+-		if (!f->is_static)
++		if (!test_bit(BR_FDB_STATIC, &f->flags))
+ 			fdb_delete(br, f, true);
+ 	}
+ 	spin_unlock_bh(&br->hash_lock);
+@@ -406,7 +408,8 @@ void br_fdb_delete_by_port(struct net_bridge *br,
+ 			continue;
+ 
+ 		if (!do_all)
+-			if (f->is_static || (vid && f->key.vlan_id != vid))
++			if (test_bit(BR_FDB_STATIC, &f->flags) ||
++			    (vid && f->key.vlan_id != vid))
+ 				continue;
+ 
+ 		if (test_bit(BR_FDB_LOCAL, &f->flags))
+@@ -479,7 +482,7 @@ int br_fdb_fillbuf(struct net_bridge *br, void *buf,
+ 		fe->port_hi = f->dst->port_no >> 8;
+ 
+ 		fe->is_local = test_bit(BR_FDB_LOCAL, &f->flags);
+-		if (!f->is_static)
++		if (!test_bit(BR_FDB_STATIC, &f->flags))
+ 			fe->ageing_timer_value = jiffies_delta_to_clock_t(jiffies - f->updated);
+ 		++fe;
+ 		++num;
+@@ -506,7 +509,8 @@ static struct net_bridge_fdb_entry *fdb_create(struct net_bridge *br,
+ 		fdb->flags = 0;
+ 		if (is_local)
+ 			set_bit(BR_FDB_LOCAL, &fdb->flags);
+-		fdb->is_static = is_static;
++		if (is_static)
++			set_bit(BR_FDB_STATIC, &fdb->flags);
+ 		fdb->added_by_user = 0;
+ 		fdb->added_by_external_learn = 0;
+ 		fdb->offloaded = 0;
+@@ -628,7 +632,7 @@ static int fdb_to_nud(const struct net_bridge *br,
+ {
+ 	if (test_bit(BR_FDB_LOCAL, &fdb->flags))
+ 		return NUD_PERMANENT;
+-	else if (fdb->is_static)
++	else if (test_bit(BR_FDB_STATIC, &fdb->flags))
+ 		return NUD_NOARP;
+ 	else if (has_expired(br, fdb))
+ 		return NUD_STALE;
+@@ -825,22 +829,16 @@ static int fdb_add_entry(struct net_bridge *br, struct net_bridge_port *source,
+ 	if (fdb_to_nud(br, fdb) != state) {
+ 		if (state & NUD_PERMANENT) {
+ 			set_bit(BR_FDB_LOCAL, &fdb->flags);
+-			if (!fdb->is_static) {
+-				fdb->is_static = 1;
++			if (!test_and_set_bit(BR_FDB_STATIC, &fdb->flags))
+ 				fdb_add_hw_addr(br, addr);
+-			}
+ 		} else if (state & NUD_NOARP) {
+ 			clear_bit(BR_FDB_LOCAL, &fdb->flags);
+-			if (!fdb->is_static) {
+-				fdb->is_static = 1;
++			if (!test_and_set_bit(BR_FDB_STATIC, &fdb->flags))
+ 				fdb_add_hw_addr(br, addr);
+-			}
+ 		} else {
+ 			clear_bit(BR_FDB_LOCAL, &fdb->flags);
+-			if (fdb->is_static) {
+-				fdb->is_static = 0;
++			if (test_and_clear_bit(BR_FDB_STATIC, &fdb->flags))
+ 				fdb_del_hw_addr(br, addr);
+-			}
+ 		}
+ 
+ 		modified = true;
+@@ -1047,7 +1045,7 @@ int br_fdb_sync_static(struct net_bridge *br, struct net_bridge_port *p)
+ 	rcu_read_lock();
+ 	hlist_for_each_entry_rcu(f, &br->fdb_list, fdb_node) {
+ 		/* We only care for static entries */
+-		if (!f->is_static)
++		if (!test_bit(BR_FDB_STATIC, &f->flags))
+ 			continue;
+ 		err = dev_uc_add(p->dev, f->key.addr.addr);
+ 		if (err)
+@@ -1061,7 +1059,7 @@ int br_fdb_sync_static(struct net_bridge *br, struct net_bridge_port *p)
+ rollback:
+ 	hlist_for_each_entry_rcu(tmp, &br->fdb_list, fdb_node) {
+ 		/* We only care for static entries */
+-		if (!tmp->is_static)
++		if (!test_bit(BR_FDB_STATIC, &tmp->flags))
+ 			continue;
+ 		if (tmp == f)
+ 			break;
+@@ -1080,7 +1078,7 @@ void br_fdb_unsync_static(struct net_bridge *br, struct net_bridge_port *p)
+ 	rcu_read_lock();
+ 	hlist_for_each_entry_rcu(f, &br->fdb_list, fdb_node) {
+ 		/* We only care for static entries */
+-		if (!f->is_static)
++		if (!test_bit(BR_FDB_STATIC, &f->flags))
+ 			continue;
+ 
+ 		dev_uc_del(p->dev, f->key.addr.addr);
+diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
+index 6a38ea247a9e..c3160d73e6ed 100644
+--- a/net/bridge/br_private.h
++++ b/net/bridge/br_private.h
+@@ -171,6 +171,7 @@ struct net_bridge_vlan_group {
+ /* bridge fdb flags */
+ enum {
+ 	BR_FDB_LOCAL,
++	BR_FDB_STATIC,
+ };
+ 
+ struct net_bridge_fdb_key {
+@@ -185,8 +186,7 @@ struct net_bridge_fdb_entry {
+ 	struct net_bridge_fdb_key	key;
+ 	struct hlist_node		fdb_node;
+ 	unsigned long			flags;
+-	unsigned char			is_static:1,
+-					is_sticky:1,
++	unsigned char			is_sticky:1,
+ 					added_by_user:1,
+ 					added_by_external_learn:1,
+ 					offloaded:1;
 -- 
 2.43.0
 
