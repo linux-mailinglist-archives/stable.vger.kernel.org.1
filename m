@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-75235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74826-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85F68973391
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:34:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9E4897319C
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:13:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C5541F2533C
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:34:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B38B91F28913
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:13:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4868A19413F;
-	Tue, 10 Sep 2024 10:29:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63FA4194A42;
+	Tue, 10 Sep 2024 10:09:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MCdEISzX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="imisfRa3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 053911940B5;
-	Tue, 10 Sep 2024 10:29:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20B5018C02F;
+	Tue, 10 Sep 2024 10:09:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964141; cv=none; b=bFWyawMAxpKjh7HODlLCfO6E2UjsrX6QhO24nJqG994FG21+Y+6183JoVhMhteK1nOhWh9LV8/M+8a6VS+wFBvC4ehLFrJM/aITt/hIka19w7kcWEBGro1SGhyKOdI8GnsIZ44FfNV0QrBPt2pReCQxVY6Uh05s9Rp0yPHMihJI=
+	t=1725962943; cv=none; b=Kextqvww+ybrn1CeA4JCO9eSIPabg7YWevqUk6ig20gpzhd4k+v4iFTxmmlxpMmHlYFa2rJN1XsZO2uG5/Cse3IKYgw+nZ7AjrggGxYfBkF3K7CA+34JBHqqaxrHwBIt4KbMsfWfbOjfzmBuWgnztX/FBlbyW2+gniMrQA7JNnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964141; c=relaxed/simple;
-	bh=WVBdfIXqA37TAQKxPishu3WdOPBmYMvXlTsVlqS/X2g=;
+	s=arc-20240116; t=1725962943; c=relaxed/simple;
+	bh=6v/sqXENfCyxxAzpVn/30tb/CP8FcQo7sfEBYkndsHY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oNCvpLlTw+XB9DcqqHxXkASuWxG8gUh5uHjGvyjIlFBEyb6/xwzsTY4yU5Bb70ituGERWEWiOu8hBgoj36/qdv5KmfE3d+RLn8T5mk6rd6MCIivp64rR3vS7SdG3SacoQJrWa9CKJcJMLmVl4WxcDjZC/yBtrXX9/2vdw/VCd24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MCdEISzX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A0A8C4CEC3;
-	Tue, 10 Sep 2024 10:29:00 +0000 (UTC)
+	 MIME-Version; b=OohSwTfYlrruB73SXl4s06UlMPr3x9VLlkb0kPbzvPcryf/t4l4MJrApWiARdoCDRDO1PDi0ttTaIjWNsPfo4nCQN/rChEB1hPQqAuAUcTARIgVfWUQV9wHWJ9qbaCcZNsRVGMSfo2U4ZNSMwnn1N7jdPTXycmQmIaDBNOtk0sI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=imisfRa3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B06DC4CEC3;
+	Tue, 10 Sep 2024 10:09:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964140;
-	bh=WVBdfIXqA37TAQKxPishu3WdOPBmYMvXlTsVlqS/X2g=;
+	s=korg; t=1725962942;
+	bh=6v/sqXENfCyxxAzpVn/30tb/CP8FcQo7sfEBYkndsHY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MCdEISzXJXeTx33mi4TNoOamQKru6d8eEIHgfjMdqwdUi4/czfznt9mp6O6v2DhVY
-	 0EJR8r72VpNzEaKpYnpehiYmLApPgWqplur1dx8oDAL94szJ/pn3wOHq2cEqKkoCGV
-	 WXKtYB18iNHa+JwwAmHyLw2VxEJ7wNwOBk9unL1A=
+	b=imisfRa3g2F5AsktqbBeevFvKDkj7ZzIWV0Eob5zCPBKKPssZa3qdBE74YqL/tV4b
+	 myP0EFZ1BPCvwNnaGRd7qRK/chzwX3C8RkyV79PaiGXAONdYzBplEg0xEuGBpRtmaA
+	 E3L0sojXoNTvXac4Y4tOZ+wNJU6AnTGKM5SvDp60=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shantanu Goel <sgoel01@yahoo.com>,
-	Oliver Neukum <oneukum@suse.com>,
+	Alexey Dobriyan <adobriyan@gmail.com>,
+	Kees Cook <kees@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 081/269] usb: uas: set host status byte on data completion error
-Date: Tue, 10 Sep 2024 11:31:08 +0200
-Message-ID: <20240910092611.082473962@linuxfoundation.org>
+Subject: [PATCH 6.1 045/192] ELF: fix kernel.randomize_va_space double read
+Date: Tue, 10 Sep 2024 11:31:09 +0200
+Message-ID: <20240910092559.857086406@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shantanu Goel <sgoel01@yahoo.com>
+From: Alexey Dobriyan <adobriyan@gmail.com>
 
-[ Upstream commit 9d32685a251a754f1823d287df233716aa23bcb9 ]
+[ Upstream commit 2a97388a807b6ab5538aa8f8537b2463c6988bd2 ]
 
-Set the host status byte when a data completion error is encountered
-otherwise the upper layer may end up using the invalid zero'ed data.
-The following output was observed from scsi/sd.c prior to this fix.
+ELF loader uses "randomize_va_space" twice. It is sysctl and can change
+at any moment, so 2 loads could see 2 different values in theory with
+unpredictable consequences.
 
-[   11.872824] sd 0:0:0:1: [sdf] tag#9 data cmplt err -75 uas-tag 1 inflight:
-[   11.872826] sd 0:0:0:1: [sdf] tag#9 CDB: Read capacity(16) 9e 10 00 00 00 00 00 00 00 00 00 00 00 20 00 00
-[   11.872830] sd 0:0:0:1: [sdf] Sector size 0 reported, assuming 512.
+Issue exactly one load for consistent value across one exec.
 
-Signed-off-by: Shantanu Goel <sgoel01@yahoo.com>
-Acked-by: Oliver Neukum <oneukum@suse.com>
-Link: https://lore.kernel.org/r/87msnx4ec6.fsf@yahoo.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
+Link: https://lore.kernel.org/r/3329905c-7eb8-400a-8f0a-d87cff979b5b@p183
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/storage/uas.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/binfmt_elf.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/usb/storage/uas.c b/drivers/usb/storage/uas.c
-index 451d9569163a..f794cb39cc31 100644
---- a/drivers/usb/storage/uas.c
-+++ b/drivers/usb/storage/uas.c
-@@ -422,6 +422,7 @@ static void uas_data_cmplt(struct urb *urb)
- 			uas_log_cmd_state(cmnd, "data cmplt err", status);
- 		/* error: no data transfered */
- 		scsi_set_resid(cmnd, sdb->length);
-+		set_host_byte(cmnd, DID_ERROR);
- 	} else {
- 		scsi_set_resid(cmnd, sdb->length - urb->actual_length);
- 	}
+diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
+index e6c9c0e08448..89e7e4826efc 100644
+--- a/fs/binfmt_elf.c
++++ b/fs/binfmt_elf.c
+@@ -1009,7 +1009,8 @@ static int load_elf_binary(struct linux_binprm *bprm)
+ 	if (elf_read_implies_exec(*elf_ex, executable_stack))
+ 		current->personality |= READ_IMPLIES_EXEC;
+ 
+-	if (!(current->personality & ADDR_NO_RANDOMIZE) && randomize_va_space)
++	const int snapshot_randomize_va_space = READ_ONCE(randomize_va_space);
++	if (!(current->personality & ADDR_NO_RANDOMIZE) && snapshot_randomize_va_space)
+ 		current->flags |= PF_RANDOMIZE;
+ 
+ 	setup_new_exec(bprm);
+@@ -1301,7 +1302,7 @@ static int load_elf_binary(struct linux_binprm *bprm)
+ 	mm->end_data = end_data;
+ 	mm->start_stack = bprm->p;
+ 
+-	if ((current->flags & PF_RANDOMIZE) && (randomize_va_space > 1)) {
++	if ((current->flags & PF_RANDOMIZE) && (snapshot_randomize_va_space > 1)) {
+ 		/*
+ 		 * For architectures with ELF randomization, when executing
+ 		 * a loader directly (i.e. no interpreter listed in ELF
 -- 
 2.43.0
 
