@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-74231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95E5D972E2C
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:40:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEF429730CA
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:04:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7AEC1C24916
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:40:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1DC0F1C24AEF
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:04:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AB1C18C03D;
-	Tue, 10 Sep 2024 09:39:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 112E5190472;
+	Tue, 10 Sep 2024 10:02:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bMF1JbhH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EPTY9AZH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE16718C030;
-	Tue, 10 Sep 2024 09:39:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFAC819005B;
+	Tue, 10 Sep 2024 10:02:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961198; cv=none; b=iMyQ/TWQw0b7+yKrhkWhpPYSr/LVFsV2tpUCoVyUw73GUYyl9gBWD/1rxtV37Ohak767vsQBn90U190VXtKSWl+YWwHz4n5triYss5gpTzz869WUdYhrZQtt1Vv9Y0Ea/yLlb5HbzE3GbXO9bbE+Q4czJCY/J88KgsBgJfjKN4U=
+	t=1725962555; cv=none; b=q6MPlgGbtY+6caWI8EIW1y3ZMXcLu+sTZl57ayimLYjUYB/03/O8RFpV/EkDFuu8me029ntu8uPbmaXTIQV5yX3bMZR9yBn793wEuCRzSdcEN4PmA4Q5gS0yQdSKbCtJmxBW9CoHwOUBofM72DjbeTFhAYoPUZJtAK0K0r8RoqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961198; c=relaxed/simple;
-	bh=kyy/790lIBs5YW4W2PX9HpmyuiL/84qg79n3iA3SEVQ=;
+	s=arc-20240116; t=1725962555; c=relaxed/simple;
+	bh=p91ECu1hXXC6sNqXKQ2rWbaOx2oiIbfdclGqxcJkhZU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d1YrrTJx4PFfHe0joRRGqk9cAAcOkLix2gFsczNScNtR50aKndCdWGFY9RdpngxB9ZLXpGDNca2asnegqL12l6paQseyUsyfEIwAPC8VZ37QZTMO7IiNABzaOAFVIFOseJIFh9puFSbiwf7ar9gfcjMxoD5dijoJLgz7VLbNmdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bMF1JbhH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56053C4CEC3;
-	Tue, 10 Sep 2024 09:39:58 +0000 (UTC)
+	 MIME-Version; b=IFBqpheN5TjJF1f80Z5h9usZfErelKaCeG0XYOpW/Xo5ArEhhR4OoQFm8V44lXzg+xftwjQsS8XkrMk+1mrBdwKcIjZsXTGA0x5L/87+u+d/m+WGEdfWfcGtaeyF+jNnjBzNJQzoOuQXOfs51LuEfk8iVtVDfDx9Zo9Knu4Nv4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EPTY9AZH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44BC3C4CEC6;
+	Tue, 10 Sep 2024 10:02:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961198;
-	bh=kyy/790lIBs5YW4W2PX9HpmyuiL/84qg79n3iA3SEVQ=;
+	s=korg; t=1725962555;
+	bh=p91ECu1hXXC6sNqXKQ2rWbaOx2oiIbfdclGqxcJkhZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bMF1JbhHMVB4e33rZBw3QaCKIfMIZrvyDAfkHH2zzO3uld1wq5pSB25dQHMzxV335
-	 XA3b0k1kUWxPkEXC1SHt9YW9QfK4nN7PQJcOJZrvFzLQl96kqtTVly35+XYPyCW7H9
-	 SpGltRhU3GTOQpVnm5tCTEI8eblgxbdXJxK1SlWc=
+	b=EPTY9AZHmuAS1RIC5hlt5wgaTV5psZIImfjLAV4BnVmnNm9eUh7TJ2zOKc2KvJ6dm
+	 Bh5HzlVrCD3uy/Axx5Gho/8w0kFKndEOQ6wClzI1v2wROqU3tqndNtAwAqUEwKn6g8
+	 WkTZeFSqn4Pkx1+N4JQ602cxTzszkwrz99SFAgUw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 4.19 86/96] netns: add pre_exit method to struct pernet_operations
-Date: Tue, 10 Sep 2024 11:32:28 +0200
-Message-ID: <20240910092545.321536832@linuxfoundation.org>
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 074/121] devres: Initialize an uninitialized struct member
+Date: Tue, 10 Sep 2024 11:32:29 +0200
+Message-ID: <20240910092549.410938486@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
-References: <20240910092541.383432924@linuxfoundation.org>
+In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
+References: <20240910092545.737864202@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,138 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-commit d7d99872c144a2c2f5d9c9d83627fa833836cba5 upstream.
+[ Upstream commit 56a20ad349b5c51909cf8810f7c79b288864ad33 ]
 
-Current struct pernet_operations exit() handlers are highly
-discouraged to call synchronize_rcu().
+Initialize an uninitialized struct member for driver API
+devres_open_group().
 
-There are cases where we need them, and exit_batch() does
-not help the common case where a single netns is dismantled.
-
-This patch leverages the existing synchronize_rcu() call
-in cleanup_net()
-
-Calling optional ->pre_exit() method before ->exit() or
-->exit_batch() allows to benefit from a single synchronize_rcu()
-call.
-
-Note that the synchronize_rcu() calls added in this patch
-are only in error paths or slow paths.
-
-Tested:
-
-$ time for i in {1..1000}; do unshare -n /bin/false;done
-
-real	0m2.612s
-user	0m0.171s
-sys	0m2.216s
-
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/1719931914-19035-4-git-send-email-quic_zijuhu@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/net_namespace.h |    5 +++++
- net/core/net_namespace.c    |   28 ++++++++++++++++++++++++++++
- 2 files changed, 33 insertions(+)
+ drivers/base/devres.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/include/net/net_namespace.h
-+++ b/include/net/net_namespace.h
-@@ -353,8 +353,13 @@ struct pernet_operations {
- 	 * synchronize_rcu() related to these pernet_operations,
- 	 * instead of separate synchronize_rcu() for every net.
- 	 * Please, avoid synchronize_rcu() at all, where it's possible.
-+	 *
-+	 * Note that a combination of pre_exit() and exit() can
-+	 * be used, since a synchronize_rcu() is guaranteed between
-+	 * the calls.
- 	 */
- 	int (*init)(struct net *net);
-+	void (*pre_exit)(struct net *net);
- 	void (*exit)(struct net *net);
- 	void (*exit_batch)(struct list_head *net_exit_list);
- 	unsigned int *id;
---- a/net/core/net_namespace.c
-+++ b/net/core/net_namespace.c
-@@ -154,6 +154,17 @@ static void ops_free(const struct pernet
- 	}
- }
+diff --git a/drivers/base/devres.c b/drivers/base/devres.c
+index 5a84bafae328..be87133d2cf1 100644
+--- a/drivers/base/devres.c
++++ b/drivers/base/devres.c
+@@ -561,6 +561,7 @@ void * devres_open_group(struct device *dev, void *id, gfp_t gfp)
+ 	grp->id = grp;
+ 	if (id)
+ 		grp->id = id;
++	grp->color = 0;
  
-+static void ops_pre_exit_list(const struct pernet_operations *ops,
-+			      struct list_head *net_exit_list)
-+{
-+	struct net *net;
-+
-+	if (ops->pre_exit) {
-+		list_for_each_entry(net, net_exit_list, exit_list)
-+			ops->pre_exit(net);
-+	}
-+}
-+
- static void ops_exit_list(const struct pernet_operations *ops,
- 			  struct list_head *net_exit_list)
- {
-@@ -342,6 +353,12 @@ out_undo:
- 	list_add(&net->exit_list, &net_exit_list);
- 	saved_ops = ops;
- 	list_for_each_entry_continue_reverse(ops, &pernet_list, list)
-+		ops_pre_exit_list(ops, &net_exit_list);
-+
-+	synchronize_rcu();
-+
-+	saved_ops = ops;
-+	list_for_each_entry_continue_reverse(ops, &pernet_list, list)
- 		ops_exit_list(ops, &net_exit_list);
- 
- 	ops = saved_ops;
-@@ -554,10 +571,15 @@ static void cleanup_net(struct work_stru
- 		list_add_tail(&net->exit_list, &net_exit_list);
- 	}
- 
-+	/* Run all of the network namespace pre_exit methods */
-+	list_for_each_entry_reverse(ops, &pernet_list, list)
-+		ops_pre_exit_list(ops, &net_exit_list);
-+
- 	/*
- 	 * Another CPU might be rcu-iterating the list, wait for it.
- 	 * This needs to be before calling the exit() notifiers, so
- 	 * the rcu_barrier() below isn't sufficient alone.
-+	 * Also the pre_exit() and exit() methods need this barrier.
- 	 */
- 	synchronize_rcu();
- 
-@@ -977,6 +999,8 @@ static int __register_pernet_operations(
- out_undo:
- 	/* If I have an error cleanup all namespaces I initialized */
- 	list_del(&ops->list);
-+	ops_pre_exit_list(ops, &net_exit_list);
-+	synchronize_rcu();
- 	ops_exit_list(ops, &net_exit_list);
- 	ops_free_list(ops, &net_exit_list);
- 	return error;
-@@ -991,6 +1015,8 @@ static void __unregister_pernet_operatio
- 	/* See comment in __register_pernet_operations() */
- 	for_each_net(net)
- 		list_add_tail(&net->exit_list, &net_exit_list);
-+	ops_pre_exit_list(ops, &net_exit_list);
-+	synchronize_rcu();
- 	ops_exit_list(ops, &net_exit_list);
- 	ops_free_list(ops, &net_exit_list);
- }
-@@ -1015,6 +1041,8 @@ static void __unregister_pernet_operatio
- 	} else {
- 		LIST_HEAD(net_exit_list);
- 		list_add(&init_net.exit_list, &net_exit_list);
-+		ops_pre_exit_list(ops, &net_exit_list);
-+		synchronize_rcu();
- 		ops_exit_list(ops, &net_exit_list);
- 		ops_free_list(ops, &net_exit_list);
- 	}
+ 	spin_lock_irqsave(&dev->devres_lock, flags);
+ 	add_dr(dev, &grp->node[0]);
+-- 
+2.43.0
+
 
 
 
