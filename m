@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-75572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75408-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BABA997353D
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:47:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D03EE97346B
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:40:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C0111F22009
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:47:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 519B21F23802
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:40:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D303018C90B;
-	Tue, 10 Sep 2024 10:45:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 147A21922C4;
+	Tue, 10 Sep 2024 10:37:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KuysmPQ+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ujJfmSJm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 920AB1DA4C;
-	Tue, 10 Sep 2024 10:45:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C35F414D280;
+	Tue, 10 Sep 2024 10:37:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725965125; cv=none; b=iCRQ2nE0SP1ojRKUiyIm/k++m49YvMz8rop1Xni/IVDjFEJiru013Hv9EHjZtenkTT5zKZ6GBdKMmMthqbIh4kAujzvJEkyS8zYcDBp3Gn5XRhDFrPY9leK4cSIpIIjLW2IOqWCHvmuv+y4S0XZbYjjJPoAG7WTQEGV+fty3UYQ=
+	t=1725964644; cv=none; b=LfH3Sb3NHp7P9rx6sFtoWMNDmHEu13QI8+J2Ub7i81LDvzm+pxJQjn5n8rZtQxCdQaOm/agsrjWiYIOaUpz+GeQ0zsjrCyt4xt9YYMzyy7a635m2iwHUPxiQFcn027PCvCD1OhIE8OA6EBOJXliJ6UsTRIoXUOZ1Cv0fK07ccmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725965125; c=relaxed/simple;
-	bh=XMskYKe1tnMhpIqz8vemvOpzB7jIWP44iHpQB2bBPPQ=;
+	s=arc-20240116; t=1725964644; c=relaxed/simple;
+	bh=gWc/R6S/t8Pme/AvQg9rgckVsWtbn0WKB6HMoG6IqtQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I84kAVgkKafKgkZ8vFU4baTfxj9+dX/SfaKwLmkBh+LBRSUJ+Qpv5VlpPxOqGiKD3PNjL3hsWaRu1qzHmquLNlZxA+A5ccFOFMGjHfXLPQgCkVV1cgv7lyN87fzyp+NjypVSD7xCMp3YnhSqA9gnZzSSBaF8VjG3I70sGGdjLM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KuysmPQ+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13F04C4CEC3;
-	Tue, 10 Sep 2024 10:45:24 +0000 (UTC)
+	 MIME-Version; b=lnVqYS8rhwGLqjnQtMy/n0EphO7/BomEPv5hc5KPR+I2KR+nFMiC6bFDbhfsTOBBI84Fo5d39EPmHZrtSrkwrF57oi/kP8NIzU7yrp2BSdmsBrreojOi8RZB9McFJw+xqWfqc9stZIKrvYgaGACSfxkDRb5wtkYGR0DWKI9GOOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ujJfmSJm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C022C4CEC3;
+	Tue, 10 Sep 2024 10:37:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725965125;
-	bh=XMskYKe1tnMhpIqz8vemvOpzB7jIWP44iHpQB2bBPPQ=;
+	s=korg; t=1725964644;
+	bh=gWc/R6S/t8Pme/AvQg9rgckVsWtbn0WKB6HMoG6IqtQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KuysmPQ+uhwXJsR8oQEc+J+vsdQf/uglI9buAnrAeIagICVMtPSxEor2EvJla8Fb3
-	 OxU99Tk1++bGqreeE74l8DrDoFNq102Rn0HcoUY0+3wBNhgWebUgx9ercnfsYZk2SB
-	 GY1q79aAK+NciIvIIvq2PQduzWrA3zvxcba8T6Cs=
+	b=ujJfmSJmiAVA3HJcN26qsJOoIhiGXSa9uBHraFs+YH7VFORyVbEbJPkVV5XNB6MWg
+	 OUcHp8FmZ6fFHXvtyFSJu6pQbRoPlVaR1k+yFpvMDeNagSnEZr0qu0bNz3MKwcyvw0
+	 elpnJg6+n5pzJ7WaZ10cTmmuUSxlvE29sMYJfarI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Breno Leitao <leitao@debian.org>,
-	Madalin Bucur <madalin.bucur@oss.nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 145/186] net: dpaa: avoid on-stack arrays of NR_CPUS elements
+	Konrad Dybcio <konradybcio@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Taniya Das <quic_tdas@quicinc.com>,
+	Amit Pundir <amit.pundir@linaro.org>,
+	Stephen Boyd <swboyd@chromium.org>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 6.6 253/269] clk: qcom: gcc-sm8550: Dont use parking clk_ops for QUPs
 Date: Tue, 10 Sep 2024 11:34:00 +0200
-Message-ID: <20240910092600.569817625@linuxfoundation.org>
+Message-ID: <20240910092616.821050549@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,134 +67,287 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Stephen Boyd <swboyd@chromium.org>
 
-[ Upstream commit 555a05d84ca2c587e2d4777006e2c2fb3dfbd91d ]
+[ Upstream commit d10eeb75168b84ed9559c58efe2756c2e0bc052a ]
 
-The dpaa-eth driver is written for PowerPC and Arm SoCs which have 1-24
-CPUs. It depends on CONFIG_NR_CPUS having a reasonably small value in
-Kconfig. Otherwise, there are 2 functions which allocate on-stack arrays
-of NR_CPUS elements, and these can quickly explode in size, leading to
-warnings such as:
+The QUPs aren't shared in a way that requires parking the RCG at an
+always on parent in case some other entity turns on the clk. The
+hardware is capable of setting a new frequency itself with the DFS mode,
+so parking is unnecessary. Furthermore, there aren't any GDSCs for these
+devices, so there isn't a possibility of the GDSC turning on the clks
+for housekeeping purposes.
 
-  drivers/net/ethernet/freescale/dpaa/dpaa_eth.c:3280:12: warning:
-  stack frame size (16664) exceeds limit (2048) in 'dpaa_eth_probe' [-Wframe-larger-than]
+This wasn't a problem to mark these clks shared until we started parking
+shared RCGs at clk registration time in commit 01a0a6cc8cfd ("clk: qcom:
+Park shared RCGs upon registration"). Parking at init is actually
+harmful to the UART when earlycon is used. If the device is pumping out
+data while the frequency changes you'll see garbage on the serial
+console until the driver can probe and actually set a proper frequency.
 
-The problem is twofold:
-- Reducing the array size to the boot-time num_possible_cpus() (rather
-  than the compile-time NR_CPUS) creates a variable-length array,
-  which should be avoided in the Linux kernel.
-- Using NR_CPUS as an array size makes the driver blow up in stack
-  consumption with generic, as opposed to hand-crafted, .config files.
+Revert the QUP part of commit 929c75d57566 ("clk: qcom: gcc-sm8550: Mark
+RCGs shared where applicable") so that the QUPs don't get parked during
+clk registration and break UART operations.
 
-A simple solution is to use dynamic allocation for num_possible_cpus()
-elements (aka a small number determined at runtime).
-
-Link: https://lore.kernel.org/all/202406261920.l5pzM1rj-lkp@intel.com/
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Breno Leitao <leitao@debian.org>
-Acked-by: Madalin Bucur <madalin.bucur@oss.nxp.com>
-Link: https://patch.msgid.link/20240713225336.1746343-2-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 01a0a6cc8cfd ("clk: qcom: Park shared RCGs upon registration")
+Fixes: 929c75d57566 ("clk: qcom: gcc-sm8550: Mark RCGs shared where applicable")
+Cc: Konrad Dybcio <konradybcio@kernel.org>
+Cc: Bjorn Andersson <andersson@kernel.org>
+Cc: Taniya Das <quic_tdas@quicinc.com>
+Reported-by: Amit Pundir <amit.pundir@linaro.org>
+Closes: https://lore.kernel.org/CAMi1Hd1KQBE4kKUdAn8E5FV+BiKzuv+8FoyWQrrTHPDoYTuhgA@mail.gmail.com
+Signed-off-by: Stephen Boyd <swboyd@chromium.org>
+Link: https://lore.kernel.org/r/20240819233628.2074654-2-swboyd@chromium.org
+Tested-by: Amit Pundir <amit.pundir@linaro.org>
+Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on SM8550-QRD
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/freescale/dpaa/dpaa_eth.c    | 20 ++++++++++++++-----
- .../ethernet/freescale/dpaa/dpaa_ethtool.c    | 10 +++++++++-
- 2 files changed, 24 insertions(+), 6 deletions(-)
+ drivers/clk/qcom/gcc-sm8550.c | 52 +++++++++++++++++------------------
+ 1 file changed, 26 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c b/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
-index cb7c028b1bf5..90bd5583ac34 100644
---- a/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
-+++ b/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
-@@ -908,14 +908,18 @@ static inline void dpaa_setup_egress(const struct dpaa_priv *priv,
- 	}
- }
+diff --git a/drivers/clk/qcom/gcc-sm8550.c b/drivers/clk/qcom/gcc-sm8550.c
+index b883dffe5f7a..bf7b7c5d4606 100644
+--- a/drivers/clk/qcom/gcc-sm8550.c
++++ b/drivers/clk/qcom/gcc-sm8550.c
+@@ -536,7 +536,7 @@ static struct clk_rcg2 gcc_qupv3_i2c_s0_clk_src = {
+ 		.parent_data = gcc_parent_data_0,
+ 		.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+ 		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_shared_ops,
++		.ops = &clk_rcg2_ops,
+ 	},
+ };
  
--static void dpaa_fq_setup(struct dpaa_priv *priv,
--			  const struct dpaa_fq_cbs *fq_cbs,
--			  struct fman_port *tx_port)
-+static int dpaa_fq_setup(struct dpaa_priv *priv,
-+			 const struct dpaa_fq_cbs *fq_cbs,
-+			 struct fman_port *tx_port)
- {
- 	int egress_cnt = 0, conf_cnt = 0, num_portals = 0, portal_cnt = 0, cpu;
- 	const cpumask_t *affine_cpus = qman_affine_cpus();
--	u16 channels[NR_CPUS];
- 	struct dpaa_fq *fq;
-+	u16 *channels;
-+
-+	channels = kcalloc(num_possible_cpus(), sizeof(u16), GFP_KERNEL);
-+	if (!channels)
-+		return -ENOMEM;
+@@ -551,7 +551,7 @@ static struct clk_rcg2 gcc_qupv3_i2c_s1_clk_src = {
+ 		.parent_data = gcc_parent_data_0,
+ 		.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+ 		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_shared_ops,
++		.ops = &clk_rcg2_ops,
+ 	},
+ };
  
- 	for_each_cpu_and(cpu, affine_cpus, cpu_online_mask)
- 		channels[num_portals++] = qman_affine_channel(cpu);
-@@ -974,6 +978,10 @@ static void dpaa_fq_setup(struct dpaa_priv *priv,
- 				break;
- 		}
- 	}
-+
-+	kfree(channels);
-+
-+	return 0;
- }
+@@ -566,7 +566,7 @@ static struct clk_rcg2 gcc_qupv3_i2c_s2_clk_src = {
+ 		.parent_data = gcc_parent_data_0,
+ 		.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+ 		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_shared_ops,
++		.ops = &clk_rcg2_ops,
+ 	},
+ };
  
- static inline int dpaa_tx_fq_to_id(const struct dpaa_priv *priv,
-@@ -3015,7 +3023,9 @@ static int dpaa_eth_probe(struct platform_device *pdev)
- 	 */
- 	dpaa_eth_add_channel(priv->channel, &pdev->dev);
+@@ -581,7 +581,7 @@ static struct clk_rcg2 gcc_qupv3_i2c_s3_clk_src = {
+ 		.parent_data = gcc_parent_data_0,
+ 		.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+ 		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_shared_ops,
++		.ops = &clk_rcg2_ops,
+ 	},
+ };
  
--	dpaa_fq_setup(priv, &dpaa_fq_cbs, priv->mac_dev->port[TX]);
-+	err = dpaa_fq_setup(priv, &dpaa_fq_cbs, priv->mac_dev->port[TX]);
-+	if (err)
-+		goto free_dpaa_bps;
+@@ -596,7 +596,7 @@ static struct clk_rcg2 gcc_qupv3_i2c_s4_clk_src = {
+ 		.parent_data = gcc_parent_data_0,
+ 		.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+ 		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_shared_ops,
++		.ops = &clk_rcg2_ops,
+ 	},
+ };
  
- 	/* Create a congestion group for this netdev, with
- 	 * dynamically-allocated CGR ID.
-diff --git a/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c b/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c
-index 2f9075429c43..d8cb0b99684a 100644
---- a/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c
-+++ b/drivers/net/ethernet/freescale/dpaa/dpaa_ethtool.c
-@@ -537,12 +537,16 @@ static int dpaa_set_coalesce(struct net_device *dev,
- 			     struct ethtool_coalesce *c)
- {
- 	const cpumask_t *cpus = qman_affine_cpus();
--	bool needs_revert[NR_CPUS] = {false};
- 	struct qman_portal *portal;
- 	u32 period, prev_period;
- 	u8 thresh, prev_thresh;
-+	bool *needs_revert;
- 	int cpu, res;
+@@ -611,7 +611,7 @@ static struct clk_rcg2 gcc_qupv3_i2c_s5_clk_src = {
+ 		.parent_data = gcc_parent_data_0,
+ 		.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+ 		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_shared_ops,
++		.ops = &clk_rcg2_ops,
+ 	},
+ };
  
-+	needs_revert = kcalloc(num_possible_cpus(), sizeof(bool), GFP_KERNEL);
-+	if (!needs_revert)
-+		return -ENOMEM;
-+
- 	period = c->rx_coalesce_usecs;
- 	thresh = c->rx_max_coalesced_frames;
+@@ -626,7 +626,7 @@ static struct clk_rcg2 gcc_qupv3_i2c_s6_clk_src = {
+ 		.parent_data = gcc_parent_data_0,
+ 		.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+ 		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_shared_ops,
++		.ops = &clk_rcg2_ops,
+ 	},
+ };
  
-@@ -565,6 +569,8 @@ static int dpaa_set_coalesce(struct net_device *dev,
- 		needs_revert[cpu] = true;
- 	}
+@@ -641,7 +641,7 @@ static struct clk_rcg2 gcc_qupv3_i2c_s7_clk_src = {
+ 		.parent_data = gcc_parent_data_0,
+ 		.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+ 		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_shared_ops,
++		.ops = &clk_rcg2_ops,
+ 	},
+ };
  
-+	kfree(needs_revert);
-+
- 	return 0;
+@@ -656,7 +656,7 @@ static struct clk_rcg2 gcc_qupv3_i2c_s8_clk_src = {
+ 		.parent_data = gcc_parent_data_0,
+ 		.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+ 		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_shared_ops,
++		.ops = &clk_rcg2_ops,
+ 	},
+ };
  
- revert_values:
-@@ -578,6 +584,8 @@ static int dpaa_set_coalesce(struct net_device *dev,
- 		qman_dqrr_set_ithresh(portal, prev_thresh);
- 	}
+@@ -671,7 +671,7 @@ static struct clk_rcg2 gcc_qupv3_i2c_s9_clk_src = {
+ 		.parent_data = gcc_parent_data_0,
+ 		.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+ 		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_shared_ops,
++		.ops = &clk_rcg2_ops,
+ 	},
+ };
  
-+	kfree(needs_revert);
-+
- 	return res;
- }
+@@ -700,7 +700,7 @@ static struct clk_init_data gcc_qupv3_wrap1_s0_clk_src_init = {
+ 	.parent_data = gcc_parent_data_0,
+ 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+ 	.flags = CLK_SET_RATE_PARENT,
+-	.ops = &clk_rcg2_shared_ops,
++	.ops = &clk_rcg2_ops,
+ };
  
+ static struct clk_rcg2 gcc_qupv3_wrap1_s0_clk_src = {
+@@ -717,7 +717,7 @@ static struct clk_init_data gcc_qupv3_wrap1_s1_clk_src_init = {
+ 	.parent_data = gcc_parent_data_0,
+ 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+ 	.flags = CLK_SET_RATE_PARENT,
+-	.ops = &clk_rcg2_shared_ops,
++	.ops = &clk_rcg2_ops,
+ };
+ 
+ static struct clk_rcg2 gcc_qupv3_wrap1_s1_clk_src = {
+@@ -750,7 +750,7 @@ static struct clk_init_data gcc_qupv3_wrap1_s2_clk_src_init = {
+ 	.parent_data = gcc_parent_data_0,
+ 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+ 	.flags = CLK_SET_RATE_PARENT,
+-	.ops = &clk_rcg2_shared_ops,
++	.ops = &clk_rcg2_ops,
+ };
+ 
+ static struct clk_rcg2 gcc_qupv3_wrap1_s2_clk_src = {
+@@ -767,7 +767,7 @@ static struct clk_init_data gcc_qupv3_wrap1_s3_clk_src_init = {
+ 	.parent_data = gcc_parent_data_0,
+ 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+ 	.flags = CLK_SET_RATE_PARENT,
+-	.ops = &clk_rcg2_shared_ops,
++	.ops = &clk_rcg2_ops,
+ };
+ 
+ static struct clk_rcg2 gcc_qupv3_wrap1_s3_clk_src = {
+@@ -784,7 +784,7 @@ static struct clk_init_data gcc_qupv3_wrap1_s4_clk_src_init = {
+ 	.parent_data = gcc_parent_data_0,
+ 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+ 	.flags = CLK_SET_RATE_PARENT,
+-	.ops = &clk_rcg2_shared_ops,
++	.ops = &clk_rcg2_ops,
+ };
+ 
+ static struct clk_rcg2 gcc_qupv3_wrap1_s4_clk_src = {
+@@ -801,7 +801,7 @@ static struct clk_init_data gcc_qupv3_wrap1_s5_clk_src_init = {
+ 	.parent_data = gcc_parent_data_0,
+ 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+ 	.flags = CLK_SET_RATE_PARENT,
+-	.ops = &clk_rcg2_shared_ops,
++	.ops = &clk_rcg2_ops,
+ };
+ 
+ static struct clk_rcg2 gcc_qupv3_wrap1_s5_clk_src = {
+@@ -818,7 +818,7 @@ static struct clk_init_data gcc_qupv3_wrap1_s6_clk_src_init = {
+ 	.parent_data = gcc_parent_data_0,
+ 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+ 	.flags = CLK_SET_RATE_PARENT,
+-	.ops = &clk_rcg2_shared_ops,
++	.ops = &clk_rcg2_ops,
+ };
+ 
+ static struct clk_rcg2 gcc_qupv3_wrap1_s6_clk_src = {
+@@ -835,7 +835,7 @@ static struct clk_init_data gcc_qupv3_wrap1_s7_clk_src_init = {
+ 	.parent_data = gcc_parent_data_0,
+ 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+ 	.flags = CLK_SET_RATE_PARENT,
+-	.ops = &clk_rcg2_shared_ops,
++	.ops = &clk_rcg2_ops,
+ };
+ 
+ static struct clk_rcg2 gcc_qupv3_wrap1_s7_clk_src = {
+@@ -852,7 +852,7 @@ static struct clk_init_data gcc_qupv3_wrap2_s0_clk_src_init = {
+ 	.parent_data = gcc_parent_data_0,
+ 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+ 	.flags = CLK_SET_RATE_PARENT,
+-	.ops = &clk_rcg2_shared_ops,
++	.ops = &clk_rcg2_ops,
+ };
+ 
+ static struct clk_rcg2 gcc_qupv3_wrap2_s0_clk_src = {
+@@ -869,7 +869,7 @@ static struct clk_init_data gcc_qupv3_wrap2_s1_clk_src_init = {
+ 	.parent_data = gcc_parent_data_0,
+ 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+ 	.flags = CLK_SET_RATE_PARENT,
+-	.ops = &clk_rcg2_shared_ops,
++	.ops = &clk_rcg2_ops,
+ };
+ 
+ static struct clk_rcg2 gcc_qupv3_wrap2_s1_clk_src = {
+@@ -886,7 +886,7 @@ static struct clk_init_data gcc_qupv3_wrap2_s2_clk_src_init = {
+ 	.parent_data = gcc_parent_data_0,
+ 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+ 	.flags = CLK_SET_RATE_PARENT,
+-	.ops = &clk_rcg2_shared_ops,
++	.ops = &clk_rcg2_ops,
+ };
+ 
+ static struct clk_rcg2 gcc_qupv3_wrap2_s2_clk_src = {
+@@ -903,7 +903,7 @@ static struct clk_init_data gcc_qupv3_wrap2_s3_clk_src_init = {
+ 	.parent_data = gcc_parent_data_0,
+ 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+ 	.flags = CLK_SET_RATE_PARENT,
+-	.ops = &clk_rcg2_shared_ops,
++	.ops = &clk_rcg2_ops,
+ };
+ 
+ static struct clk_rcg2 gcc_qupv3_wrap2_s3_clk_src = {
+@@ -920,7 +920,7 @@ static struct clk_init_data gcc_qupv3_wrap2_s4_clk_src_init = {
+ 	.parent_data = gcc_parent_data_0,
+ 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+ 	.flags = CLK_SET_RATE_PARENT,
+-	.ops = &clk_rcg2_shared_ops,
++	.ops = &clk_rcg2_ops,
+ };
+ 
+ static struct clk_rcg2 gcc_qupv3_wrap2_s4_clk_src = {
+@@ -937,7 +937,7 @@ static struct clk_init_data gcc_qupv3_wrap2_s5_clk_src_init = {
+ 	.parent_data = gcc_parent_data_0,
+ 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+ 	.flags = CLK_SET_RATE_PARENT,
+-	.ops = &clk_rcg2_shared_ops,
++	.ops = &clk_rcg2_ops,
+ };
+ 
+ static struct clk_rcg2 gcc_qupv3_wrap2_s5_clk_src = {
+@@ -975,7 +975,7 @@ static struct clk_init_data gcc_qupv3_wrap2_s6_clk_src_init = {
+ 	.parent_data = gcc_parent_data_8,
+ 	.num_parents = ARRAY_SIZE(gcc_parent_data_8),
+ 	.flags = CLK_SET_RATE_PARENT,
+-	.ops = &clk_rcg2_shared_ops,
++	.ops = &clk_rcg2_ops,
+ };
+ 
+ static struct clk_rcg2 gcc_qupv3_wrap2_s6_clk_src = {
+@@ -992,7 +992,7 @@ static struct clk_init_data gcc_qupv3_wrap2_s7_clk_src_init = {
+ 	.parent_data = gcc_parent_data_0,
+ 	.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+ 	.flags = CLK_SET_RATE_PARENT,
+-	.ops = &clk_rcg2_shared_ops,
++	.ops = &clk_rcg2_ops,
+ };
+ 
+ static struct clk_rcg2 gcc_qupv3_wrap2_s7_clk_src = {
 -- 
 2.43.0
 
