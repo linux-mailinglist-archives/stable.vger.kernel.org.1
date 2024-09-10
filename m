@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-74683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BC569730B1
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:03:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5727C972DF6
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:38:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 268DA2864F2
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:03:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7B8051C24513
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:38:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ABDF18FC81;
-	Tue, 10 Sep 2024 10:02:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF35718A6B9;
+	Tue, 10 Sep 2024 09:38:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kLmELxPw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iqcuKDVy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4269170A01;
-	Tue, 10 Sep 2024 10:01:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C4A1189F58;
+	Tue, 10 Sep 2024 09:38:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962520; cv=none; b=t1k43pkcAB25sarP8+LF6jyT3hDCkYNzZma4mVIOKhp31hk6iDDMM0tNsjlFMXoom1ONDn0D3nqC43HI2aL/ONfQ2na+DqgexaKTfU2Xl5NxjMULRbpLDFZ/Rk+AgCNaytj0P8fbJy8s+vUl/f+vWz+BSX0T38sPs1/6rzJ3RAI=
+	t=1725961083; cv=none; b=fiXFYN1hVYdJF2stglF472/rR1WJMw1OBsyTdXhroZpI4P1JeQo3FtmangDVcyIJRN24qHivIqt/c1IqRac8doSnCsg/SgvJWmKC3DVKaRXkPFyMrUMxwYPVdZrGy/r+ghz+YdwpWT2aBBdcqA/+tq7McmGJqPOSyCihpeZtrws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962520; c=relaxed/simple;
-	bh=Psy4wPDpR+1X9ryyWvasRW9Mak9cBpIWZPI3KXPYcko=;
+	s=arc-20240116; t=1725961083; c=relaxed/simple;
+	bh=HDirkgMuhnQr3zSGDspZ65vRHFJYzbjTdttwimAd8Fs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kfe1nkIKIpdY1G12TtS7kZFntIxMupaEqdLoOyeuWBa01MVO9KUMsvjHvv+shmzL6DkqN8WdxnpQLErVJe5gGtRdIU06UguP1y+MDM14EPuGemPzXua5pP4+/RQSSD7Yh3iAVXhFxxpKGVrEYTcCbNhJ5/v+FfA6O/61drhtQCE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kLmELxPw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54053C4CEC3;
-	Tue, 10 Sep 2024 10:01:59 +0000 (UTC)
+	 MIME-Version; b=L37Fto8E9KOIIXz6IExEL7vyoXvgWXaqvQe0A1MAS7pdYrEErlrP5c5Wq0Ok7MlA8cJCC3ywySKi/9Ttn9FFdI2lL5Uy6GTNrxwwxZjaj1h7PZU6rPGR4A8lHKRRDD2NfjJPEg2KdQtpBIvrqW9OQLj2VclxZLfXwoZWTDmBCMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iqcuKDVy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03CF6C4CEC3;
+	Tue, 10 Sep 2024 09:38:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962519;
-	bh=Psy4wPDpR+1X9ryyWvasRW9Mak9cBpIWZPI3KXPYcko=;
+	s=korg; t=1725961083;
+	bh=HDirkgMuhnQr3zSGDspZ65vRHFJYzbjTdttwimAd8Fs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kLmELxPwhspVYX4YH9dAzm/qg3GIKyx0VY52sM4nq6UIzDdxsWt4L3IZeY9wOXPaO
-	 phbWFC2/OHi6f4RODTRkhN92LAaFqYHg8WP49NmBYKGL6aEPTMBYiAz5ai9aSgbLbN
-	 A3LYqroay6pRaDzdIr5pfhqMyF6GvXdLJP5eGFHI=
+	b=iqcuKDVySmAgK9Utdk069sVAO567uoaZE98ltxIDHyWxYNzocJJzM6iY2xZp3dmyn
+	 psnFvVCUJsg5yuIrcYEtv2w3E0hVJxy5eWWRqih0B48Dd4J5OTexTnjVOZa2TaLI1k
+	 1BXwX9UyDf3FLmPtHPerVZ4kPCOi6VbeiBZe2DQQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Griffin <peter.griffin@linaro.org>,
-	Enrico Weigelt <info@metux.net>,
-	John Stultz <john.stultz@linaro.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Yongqin Liu <yongqin.liu@linaro.org>,
-	kbuild test robot <lkp@intel.com>
-Subject: [PATCH 5.4 035/121] reset: hi6220: Add support for AO reset controller
+	Nikolay Aleksandrov <nikolay@cumulusnetworks.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 48/96] net: bridge: fdb: convert added_by_user to bitops
 Date: Tue, 10 Sep 2024 11:31:50 +0200
-Message-ID: <20240910092547.394437541@linuxfoundation.org>
+Message-ID: <20240910092543.637295133@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
-References: <20240910092545.737864202@linuxfoundation.org>
+In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
+References: <20240910092541.383432924@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,130 +62,193 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Griffin <peter.griffin@linaro.org>
+From: Nikolay Aleksandrov <nikolay@cumulusnetworks.com>
 
-commit 697fa27dc5fb4c669471e728e97f176687982f95 upstream.
+[ Upstream commit ac3ca6af443aa495c7907e5010ac77fbd2450eaa ]
 
-This is required to bring Mali450 gpu out of reset.
+Straight-forward convert of the added_by_user field to bitops.
 
-Cc: Peter Griffin <peter.griffin@linaro.org>
-Cc: Enrico Weigelt <info@metux.net>
-Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
-[jstultz: Added comment, Fix void return build issue
-Reported-by: kbuild test robot <lkp@intel.com>]
-Signed-off-by: John Stultz <john.stultz@linaro.org>
-Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
-Cc: Yongqin Liu <yongqin.liu@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Nikolay Aleksandrov <nikolay@cumulusnetworks.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: bee2ef946d31 ("net: bridge: br_fdb_external_learn_add(): always set EXT_LEARN")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/reset/hisilicon/hi6220_reset.c |   69 ++++++++++++++++++++++++++++++++-
- 1 file changed, 68 insertions(+), 1 deletion(-)
+ net/bridge/br_fdb.c       | 25 ++++++++++++-------------
+ net/bridge/br_private.h   |  4 ++--
+ net/bridge/br_switchdev.c |  6 ++++--
+ 3 files changed, 18 insertions(+), 17 deletions(-)
 
---- a/drivers/reset/hisilicon/hi6220_reset.c
-+++ b/drivers/reset/hisilicon/hi6220_reset.c
-@@ -33,6 +33,7 @@
- enum hi6220_reset_ctrl_type {
- 	PERIPHERAL,
- 	MEDIA,
-+	AO,
- };
- 
- struct hi6220_reset_data {
-@@ -92,6 +93,65 @@ static const struct reset_control_ops hi
- 	.deassert = hi6220_media_deassert,
- };
- 
-+#define AO_SCTRL_SC_PW_CLKEN0     0x800
-+#define AO_SCTRL_SC_PW_CLKDIS0    0x804
-+
-+#define AO_SCTRL_SC_PW_RSTEN0     0x810
-+#define AO_SCTRL_SC_PW_RSTDIS0    0x814
-+
-+#define AO_SCTRL_SC_PW_ISOEN0     0x820
-+#define AO_SCTRL_SC_PW_ISODIS0    0x824
-+#define AO_MAX_INDEX              12
-+
-+static int hi6220_ao_assert(struct reset_controller_dev *rc_dev,
-+			       unsigned long idx)
-+{
-+	struct hi6220_reset_data *data = to_reset_data(rc_dev);
-+	struct regmap *regmap = data->regmap;
-+	int ret;
-+
-+	ret = regmap_write(regmap, AO_SCTRL_SC_PW_RSTEN0, BIT(idx));
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_write(regmap, AO_SCTRL_SC_PW_ISOEN0, BIT(idx));
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_write(regmap, AO_SCTRL_SC_PW_CLKDIS0, BIT(idx));
-+	return ret;
-+}
-+
-+static int hi6220_ao_deassert(struct reset_controller_dev *rc_dev,
-+				 unsigned long idx)
-+{
-+	struct hi6220_reset_data *data = to_reset_data(rc_dev);
-+	struct regmap *regmap = data->regmap;
-+	int ret;
-+
-+	/*
-+	 * It was suggested to disable isolation before enabling
-+	 * the clocks and deasserting reset, to avoid glitches.
-+	 * But this order is preserved to keep it matching the
-+	 * vendor code.
-+	 */
-+	ret = regmap_write(regmap, AO_SCTRL_SC_PW_RSTDIS0, BIT(idx));
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_write(regmap, AO_SCTRL_SC_PW_ISODIS0, BIT(idx));
-+	if (ret)
-+		return ret;
-+
-+	ret = regmap_write(regmap, AO_SCTRL_SC_PW_CLKEN0, BIT(idx));
-+	return ret;
-+}
-+
-+static const struct reset_control_ops hi6220_ao_reset_ops = {
-+	.assert = hi6220_ao_assert,
-+	.deassert = hi6220_ao_deassert,
-+};
-+
- static int hi6220_reset_probe(struct platform_device *pdev)
- {
- 	struct device_node *np = pdev->dev.of_node;
-@@ -117,9 +177,12 @@ static int hi6220_reset_probe(struct pla
- 	if (type == MEDIA) {
- 		data->rc_dev.ops = &hi6220_media_reset_ops;
- 		data->rc_dev.nr_resets = MEDIA_MAX_INDEX;
--	} else {
-+	} else if (type == PERIPHERAL) {
- 		data->rc_dev.ops = &hi6220_peripheral_reset_ops;
- 		data->rc_dev.nr_resets = PERIPH_MAX_INDEX;
-+	} else {
-+		data->rc_dev.ops = &hi6220_ao_reset_ops;
-+		data->rc_dev.nr_resets = AO_MAX_INDEX;
+diff --git a/net/bridge/br_fdb.c b/net/bridge/br_fdb.c
+index 25aeaedce762..7ae27569ced9 100644
+--- a/net/bridge/br_fdb.c
++++ b/net/bridge/br_fdb.c
+@@ -230,7 +230,7 @@ static void fdb_delete_local(struct net_bridge *br,
+ 		if (op != p && ether_addr_equal(op->dev->dev_addr, addr) &&
+ 		    (!vid || br_vlan_find(vg, vid))) {
+ 			f->dst = op;
+-			f->added_by_user = 0;
++			clear_bit(BR_FDB_ADDED_BY_USER, &f->flags);
+ 			return;
+ 		}
+ 	}
+@@ -241,7 +241,7 @@ static void fdb_delete_local(struct net_bridge *br,
+ 	if (p && ether_addr_equal(br->dev->dev_addr, addr) &&
+ 	    (!vid || (v && br_vlan_should_use(v)))) {
+ 		f->dst = NULL;
+-		f->added_by_user = 0;
++		clear_bit(BR_FDB_ADDED_BY_USER, &f->flags);
+ 		return;
  	}
  
- 	return reset_controller_register(&data->rc_dev);
-@@ -134,6 +197,10 @@ static const struct of_device_id hi6220_
- 		.compatible = "hisilicon,hi6220-mediactrl",
- 		.data = (void *)MEDIA,
- 	},
-+	{
-+		.compatible = "hisilicon,hi6220-aoctrl",
-+		.data = (void *)AO,
-+	},
- 	{ /* sentinel */ },
+@@ -257,7 +257,7 @@ void br_fdb_find_delete_local(struct net_bridge *br,
+ 	spin_lock_bh(&br->hash_lock);
+ 	f = br_fdb_find(br, addr, vid);
+ 	if (f && test_bit(BR_FDB_LOCAL, &f->flags) &&
+-	    !f->added_by_user && f->dst == p)
++	    !test_bit(BR_FDB_ADDED_BY_USER, &f->flags) && f->dst == p)
+ 		fdb_delete_local(br, p, f);
+ 	spin_unlock_bh(&br->hash_lock);
+ }
+@@ -273,7 +273,7 @@ void br_fdb_changeaddr(struct net_bridge_port *p, const unsigned char *newaddr)
+ 	vg = nbp_vlan_group(p);
+ 	hlist_for_each_entry(f, &br->fdb_list, fdb_node) {
+ 		if (f->dst == p && test_bit(BR_FDB_LOCAL, &f->flags) &&
+-		    !f->added_by_user) {
++		    !test_bit(BR_FDB_ADDED_BY_USER, &f->flags)) {
+ 			/* delete old one */
+ 			fdb_delete_local(br, p, f);
+ 
+@@ -315,7 +315,7 @@ void br_fdb_change_mac_address(struct net_bridge *br, const u8 *newaddr)
+ 	/* If old entry was unassociated with any port, then delete it. */
+ 	f = br_fdb_find(br, br->dev->dev_addr, 0);
+ 	if (f && test_bit(BR_FDB_LOCAL, &f->flags) &&
+-	    !f->dst && !f->added_by_user)
++	    !f->dst && !test_bit(BR_FDB_ADDED_BY_USER, &f->flags))
+ 		fdb_delete_local(br, NULL, f);
+ 
+ 	fdb_insert(br, NULL, newaddr, 0);
+@@ -331,7 +331,7 @@ void br_fdb_change_mac_address(struct net_bridge *br, const u8 *newaddr)
+ 			continue;
+ 		f = br_fdb_find(br, br->dev->dev_addr, v->vid);
+ 		if (f && test_bit(BR_FDB_LOCAL, &f->flags) &&
+-		    !f->dst && !f->added_by_user)
++		    !f->dst && !test_bit(BR_FDB_ADDED_BY_USER, &f->flags))
+ 			fdb_delete_local(br, NULL, f);
+ 		fdb_insert(br, NULL, newaddr, v->vid);
+ 	}
+@@ -511,7 +511,6 @@ static struct net_bridge_fdb_entry *fdb_create(struct net_bridge *br,
+ 			set_bit(BR_FDB_LOCAL, &fdb->flags);
+ 		if (is_static)
+ 			set_bit(BR_FDB_STATIC, &fdb->flags);
+-		fdb->added_by_user = 0;
+ 		fdb->added_by_external_learn = 0;
+ 		fdb->offloaded = 0;
+ 		fdb->updated = fdb->used = jiffies;
+@@ -605,7 +604,7 @@ void br_fdb_update(struct net_bridge *br, struct net_bridge_port *source,
+ 			if (now != fdb->updated)
+ 				fdb->updated = now;
+ 			if (unlikely(added_by_user))
+-				fdb->added_by_user = 1;
++				set_bit(BR_FDB_ADDED_BY_USER, &fdb->flags);
+ 			if (unlikely(fdb_modified)) {
+ 				trace_br_fdb_update(br, source, addr, vid, added_by_user);
+ 				fdb_notify(br, fdb, RTM_NEWNEIGH, true);
+@@ -616,7 +615,7 @@ void br_fdb_update(struct net_bridge *br, struct net_bridge_port *source,
+ 		fdb = fdb_create(br, source, addr, vid, 0, 0);
+ 		if (fdb) {
+ 			if (unlikely(added_by_user))
+-				fdb->added_by_user = 1;
++				set_bit(BR_FDB_ADDED_BY_USER, &fdb->flags);
+ 			trace_br_fdb_update(br, source, addr, vid,
+ 					    added_by_user);
+ 			fdb_notify(br, fdb, RTM_NEWNEIGH, true);
+@@ -850,7 +849,7 @@ static int fdb_add_entry(struct net_bridge *br, struct net_bridge_port *source,
+ 		modified = true;
+ 	}
+ 
+-	fdb->added_by_user = 1;
++	set_bit(BR_FDB_ADDED_BY_USER, &fdb->flags);
+ 
+ 	fdb->used = jiffies;
+ 	if (modified) {
+@@ -1107,7 +1106,7 @@ int br_fdb_external_learn_add(struct net_bridge *br, struct net_bridge_port *p,
+ 			goto err_unlock;
+ 		}
+ 		if (swdev_notify)
+-			fdb->added_by_user = 1;
++			set_bit(BR_FDB_ADDED_BY_USER, &fdb->flags);
+ 		fdb->added_by_external_learn = 1;
+ 		fdb_notify(br, fdb, RTM_NEWNEIGH, swdev_notify);
+ 	} else {
+@@ -1121,14 +1120,14 @@ int br_fdb_external_learn_add(struct net_bridge *br, struct net_bridge_port *p,
+ 		if (fdb->added_by_external_learn) {
+ 			/* Refresh entry */
+ 			fdb->used = jiffies;
+-		} else if (!fdb->added_by_user) {
++		} else if (!test_bit(BR_FDB_ADDED_BY_USER, &fdb->flags)) {
+ 			/* Take over SW learned entry */
+ 			fdb->added_by_external_learn = 1;
+ 			modified = true;
+ 		}
+ 
+ 		if (swdev_notify)
+-			fdb->added_by_user = 1;
++			set_bit(BR_FDB_ADDED_BY_USER, &fdb->flags);
+ 
+ 		if (modified)
+ 			fdb_notify(br, fdb, RTM_NEWNEIGH, swdev_notify);
+diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
+index 131e5be58468..9132f11db683 100644
+--- a/net/bridge/br_private.h
++++ b/net/bridge/br_private.h
+@@ -173,6 +173,7 @@ enum {
+ 	BR_FDB_LOCAL,
+ 	BR_FDB_STATIC,
+ 	BR_FDB_STICKY,
++	BR_FDB_ADDED_BY_USER,
  };
- MODULE_DEVICE_TABLE(of, hi6220_reset_match);
+ 
+ struct net_bridge_fdb_key {
+@@ -187,8 +188,7 @@ struct net_bridge_fdb_entry {
+ 	struct net_bridge_fdb_key	key;
+ 	struct hlist_node		fdb_node;
+ 	unsigned long			flags;
+-	unsigned char			added_by_user:1,
+-					added_by_external_learn:1,
++	unsigned char			added_by_external_learn:1,
+ 					offloaded:1;
+ 
+ 	/* write-heavy members should not affect lookups */
+diff --git a/net/bridge/br_switchdev.c b/net/bridge/br_switchdev.c
+index b993df770675..e8948d49e5fc 100644
+--- a/net/bridge/br_switchdev.c
++++ b/net/bridge/br_switchdev.c
+@@ -127,14 +127,16 @@ br_switchdev_fdb_notify(const struct net_bridge_fdb_entry *fdb, int type)
+ 		br_switchdev_fdb_call_notifiers(false, fdb->key.addr.addr,
+ 						fdb->key.vlan_id,
+ 						fdb->dst->dev,
+-						fdb->added_by_user,
++						test_bit(BR_FDB_ADDED_BY_USER,
++							 &fdb->flags),
+ 						fdb->offloaded);
+ 		break;
+ 	case RTM_NEWNEIGH:
+ 		br_switchdev_fdb_call_notifiers(true, fdb->key.addr.addr,
+ 						fdb->key.vlan_id,
+ 						fdb->dst->dev,
+-						fdb->added_by_user,
++						test_bit(BR_FDB_ADDED_BY_USER,
++							 &fdb->flags),
+ 						fdb->offloaded);
+ 		break;
+ 	}
+-- 
+2.43.0
+
 
 
 
