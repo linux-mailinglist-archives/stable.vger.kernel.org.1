@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-74599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15A80973022
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:58:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC7949730DB
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:05:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CB43C2866F0
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:58:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E3AB28676B
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:05:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAE1A18C002;
-	Tue, 10 Sep 2024 09:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 740DA18C912;
+	Tue, 10 Sep 2024 10:02:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dXFlKYtb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GD1OsV43"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7393017BEAE;
-	Tue, 10 Sep 2024 09:57:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 301D318C347;
+	Tue, 10 Sep 2024 10:02:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962275; cv=none; b=Fd6q6BOZIfC9nG5mRD2wTx6ikeudA2Q5XeF4dEmyDu7Pa/RmHyyitDqEX/oGs1Yz/Xe9o8JjEWResH4cp9t84oX+xiLdPojfbatSv9cv9P14WWH2smh2BOh0udNRF2sGsIPQ06GAvnesnDm5WqwvBxKh6kPAI2vyDtVuSM5cI2w=
+	t=1725962568; cv=none; b=ImjQvGssj6PI8QOb2DVgB6Fp6898tl5BDCcNRqDidBVE8xjYRhsCWaZeA67eHxZfuIh1Qpbwr+zikDyZAafr7smf47dqIslmSgr6zF5ohjsuTevfzSECRzJYRA95wCO8AZBaUytf0wp0IYcjuOGahB7n05puUlxwZBYP98+lDBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962275; c=relaxed/simple;
-	bh=KqMJub701axtq+9xYqB6y7zvgyNB7bQHPKBqkUkDq7w=;
+	s=arc-20240116; t=1725962568; c=relaxed/simple;
+	bh=nZLa2a58Pj0/r/7wSqiy/8jum1ATH3ijcW8WzPq8d4c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jb2F8JSqOUKEeXHip9GJ52wxLb3CBcVMOZPxY1SIodzhfAi9yg6dlUYDYC9IQF+WPWrpqX3GJyhFP5y+Ei7VO43J5PefojyA+mpdUDBSVOJD4ujXb3OFSo4KX9qCsBmU5Wu/7Nzl/BKbrjUvjF+3/qeNHUxiEae1aFKByuJrfiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dXFlKYtb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB41FC4CEC3;
-	Tue, 10 Sep 2024 09:57:54 +0000 (UTC)
+	 MIME-Version; b=ZG5IQ9xf/AExHAWY3SPiskUqEA5DwWqmIz+a74wu2WrLOqLLgNWM4iU9HIKTBTg4D5gnOw00DW/9w+dQpVXPBRg7AUDO72zZhrwOB7uIXV//pm7qQln3GbFPKA6Cn+O1MqKUc1WYoArrhR5QzdeOeTc2a0/7KW+krDd81H/87bA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GD1OsV43; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24A70C4CEC3;
+	Tue, 10 Sep 2024 10:02:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962275;
-	bh=KqMJub701axtq+9xYqB6y7zvgyNB7bQHPKBqkUkDq7w=;
+	s=korg; t=1725962567;
+	bh=nZLa2a58Pj0/r/7wSqiy/8jum1ATH3ijcW8WzPq8d4c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dXFlKYtbyXxTcuOJMUbZVHTq7HUMzybwslA2ve80CEUZPRkK+QYBEN3dt8sQKH/h2
-	 EKTlFSyGl8FhW3XIgJT5hAjCTUDY9JJfd4n9xgJwVZM/zVGmjn1XWkcH2Cl78dx8Oz
-	 +90Dn7uRdie23w+tuQ2axVBxTL1vK7g0rR72OH9c=
+	b=GD1OsV43YO7aGJrTPPM8wNcHu8j3s4t8bKf+q5KamiL1ZYaW66HFeM6TYGwVcEk9L
+	 3CfurOFPuDit7YF40JEd2ZZMnXA4dvZOs4uWqbXFrITgYRG46BkkviM4QBKTxhZ/qL
+	 l6vlrjuo6H92pbSUeZd8WWv01JJHeoZIKUxA2RBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 355/375] gpio: rockchip: fix OF node leak in probe()
+Subject: [PATCH 5.4 077/121] hwmon: (lm95234) Fix underflows seen when writing limit attributes
 Date: Tue, 10 Sep 2024 11:32:32 +0200
-Message-ID: <20240910092634.522934141@linuxfoundation.org>
+Message-ID: <20240910092549.556227780@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
-References: <20240910092622.245959861@linuxfoundation.org>
+In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
+References: <20240910092545.737864202@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,40 +61,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit adad2e460e505a556f5ea6f0dc16fe95e62d5d76 ]
+[ Upstream commit af64e3e1537896337405f880c1e9ac1f8c0c6198 ]
 
-Driver code is leaking OF node reference from of_get_parent() in
-probe().
+DIV_ROUND_CLOSEST() after kstrtol() results in an underflow if a large
+negative number such as -9223372036854775808 is provided by the user.
+Fix it by reordering clamp_val() and DIV_ROUND_CLOSEST() operations.
 
-Fixes: 936ee2675eee ("gpio/rockchip: add driver for rockchip gpio")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Reviewed-by: Shawn Lin <shawn.lin@rock-chips.com>
-Link: https://lore.kernel.org/r/20240826150832.65657-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-rockchip.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/hwmon/lm95234.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpio/gpio-rockchip.c b/drivers/gpio/gpio-rockchip.c
-index 0bd339813110..365ab947983c 100644
---- a/drivers/gpio/gpio-rockchip.c
-+++ b/drivers/gpio/gpio-rockchip.c
-@@ -713,6 +713,7 @@ static int rockchip_gpio_probe(struct platform_device *pdev)
- 		return -ENODEV;
+diff --git a/drivers/hwmon/lm95234.c b/drivers/hwmon/lm95234.c
+index 8a2a2a490496..c49aaf0d710f 100644
+--- a/drivers/hwmon/lm95234.c
++++ b/drivers/hwmon/lm95234.c
+@@ -301,7 +301,8 @@ static ssize_t tcrit2_store(struct device *dev, struct device_attribute *attr,
+ 	if (ret < 0)
+ 		return ret;
  
- 	pctldev = of_pinctrl_get(pctlnp);
-+	of_node_put(pctlnp);
- 	if (!pctldev)
- 		return -EPROBE_DEFER;
+-	val = clamp_val(DIV_ROUND_CLOSEST(val, 1000), 0, index ? 255 : 127);
++	val = DIV_ROUND_CLOSEST(clamp_val(val, 0, (index ? 255 : 127) * 1000),
++				1000);
  
+ 	mutex_lock(&data->update_lock);
+ 	data->tcrit2[index] = val;
+@@ -350,7 +351,7 @@ static ssize_t tcrit1_store(struct device *dev, struct device_attribute *attr,
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	val = clamp_val(DIV_ROUND_CLOSEST(val, 1000), 0, 255);
++	val = DIV_ROUND_CLOSEST(clamp_val(val, 0, 255000), 1000);
+ 
+ 	mutex_lock(&data->update_lock);
+ 	data->tcrit1[index] = val;
+@@ -391,7 +392,7 @@ static ssize_t tcrit1_hyst_store(struct device *dev,
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	val = DIV_ROUND_CLOSEST(val, 1000);
++	val = DIV_ROUND_CLOSEST(clamp_val(val, -255000, 255000), 1000);
+ 	val = clamp_val((int)data->tcrit1[index] - val, 0, 31);
+ 
+ 	mutex_lock(&data->update_lock);
+@@ -431,7 +432,7 @@ static ssize_t offset_store(struct device *dev, struct device_attribute *attr,
+ 		return ret;
+ 
+ 	/* Accuracy is 1/2 degrees C */
+-	val = clamp_val(DIV_ROUND_CLOSEST(val, 500), -128, 127);
++	val = DIV_ROUND_CLOSEST(clamp_val(val, -64000, 63500), 500);
+ 
+ 	mutex_lock(&data->update_lock);
+ 	data->toffset[index] = val;
 -- 
 2.43.0
 
