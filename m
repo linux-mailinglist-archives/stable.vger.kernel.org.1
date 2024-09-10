@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-74922-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F8B597325B
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:22:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC1B1973432
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:38:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 85D9FB28D34
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:18:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 565421F25C96
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:38:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19F4C196434;
-	Tue, 10 Sep 2024 10:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0654818F2D8;
+	Tue, 10 Sep 2024 10:35:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C5lxoc4m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X6l7ypwY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDC4C46444;
-	Tue, 10 Sep 2024 10:13:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B730517B50F;
+	Tue, 10 Sep 2024 10:35:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963227; cv=none; b=t7294xaDi2rD7nu/KIjNqGqmSTsHrBINMmhUMoD0Bz/+lGVND0Yze9B1JwA0t1O5jMwbjWY1miiF4a0/SA9eFXALIGboNE2IGnYpSx9TLfN9b2mqBx/OxtZEnXTmfHMgHrlxgjXk6sHA8QIOf/RQu48vlboph4qRGhW9OAqH2ww=
+	t=1725964534; cv=none; b=cbhiImXHKcbLHuFTGvPnue8Hz5XfZGnhVzudwSsB41OYZk8gcK1IuSo/KMz97yy4vthE2j9W+ARWmxO+WBvGwp4JaISHv7UhVPisKSpS0e7iqtYBApeS02o9yuDXBBxDAw166CzhXsMdABE9T0zF8xyrKVUBaS3YiY6GsqRaEKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963227; c=relaxed/simple;
-	bh=7ehMe4ImqruXCoz6HHNH5B+Haw0yH5Dus3C/JVGkLMs=;
+	s=arc-20240116; t=1725964534; c=relaxed/simple;
+	bh=He4qJXx1y3Z37yMCQ90ekQi8Sa1fkuGVP7eMrbMhrl4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jGPpJ1gU/YmFko/R1UFcwduvGsPrsF6JlqHb2aPODSnG09aJmxF4yTVrfUIfkKpmoj7xJoRiPyHTbJtWsckRndeiecAZdmqLseLFwkpZK2RvKbBaLazGXV821HrNmJkufUDOtyDgevPaDwiCdPv7Cpc/U9L3yRMYVnJy3HeiEG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C5lxoc4m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10CA4C4CEC3;
-	Tue, 10 Sep 2024 10:13:46 +0000 (UTC)
+	 MIME-Version; b=o8Cs38oOD+AK+JcADnoIegGI9ZzbFhE5nSIsMHH3gzfYRD3oGAf7+d52eXDdb+GEMy1Za5Q4UGnYnAs/ZDGmotjKG7zPixsv0xCabykVW1QeGkJVBm5zG6FCEzRDon69aIsx92KBJnn41LNWAvMK7JnCOd4OQtmYacqrdCvwlLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X6l7ypwY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4101AC4CEC3;
+	Tue, 10 Sep 2024 10:35:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963227;
-	bh=7ehMe4ImqruXCoz6HHNH5B+Haw0yH5Dus3C/JVGkLMs=;
+	s=korg; t=1725964534;
+	bh=He4qJXx1y3Z37yMCQ90ekQi8Sa1fkuGVP7eMrbMhrl4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C5lxoc4mbJVH608SyMCLBbea03Xd6ZTw4r6kLMyd358Gs6lP+T6KVwImygShsnzwS
-	 n8r2EACbuJXtSDquhcLPOUgCuGXSmux70/9ICBhtkvClF0voMB1+lxXq1CDr5Xhk3g
-	 eLQQvmMDyXTnUg9T0+UPfRGKN/pGEa2ROZwJBfJA=
+	b=X6l7ypwYM1xPWifIGuk/MeAAWHSSqelgqoq3Dl1JeUnAD1gOuLJcbTghXXaidBwCz
+	 5IhXtfwDTDBMksHyVIyM7Av2fVyt4KINtZD1Z7y0jMH/6YvMEBZBEb4DhmXQkYkTqF
+	 QjZv1x1jLD6jYDvt7jAlAgKkduvv3Fh0CTj5xVyY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maurizio Lombardi <mlombard@redhat.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 179/192] nvmet-tcp: fix kernel crash if commands allocation fails
+	stable <stable@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Subject: [PATCH 6.6 216/269] nvmem: Fix return type of devm_nvmem_device_get() in kerneldoc
 Date: Tue, 10 Sep 2024 11:33:23 +0200
-Message-ID: <20240910092605.211954442@linuxfoundation.org>
+Message-ID: <20240910092615.693107066@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maurizio Lombardi <mlombard@redhat.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 5572a55a6f830ee3f3a994b6b962a5c327d28cb3 ]
+commit c69f37f6559a8948d70badd2b179db7714dedd62 upstream.
 
-If the commands allocation fails in nvmet_tcp_alloc_cmds()
-the kernel crashes in nvmet_tcp_release_queue_work() because of
-a NULL pointer dereference.
+devm_nvmem_device_get() returns an nvmem device, not an nvmem cell.
 
-  nvmet: failed to install queue 0 cntlid 1 ret 6
-  Unable to handle kernel NULL pointer dereference at
-         virtual address 0000000000000008
-
-Fix the bug by setting queue->nr_cmds to zero in case
-nvmet_tcp_alloc_cmd() fails.
-
-Fixes: 872d26a391da ("nvmet-tcp: add NVMe over TCP target driver")
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e2a5402ec7c6d044 ("nvmem: Add nvmem_device based consumer apis.")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20240902142510.71096-3-srinivas.kandagatla@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvme/target/tcp.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/nvmem/core.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
-index 76b9eb438268..81574500a57c 100644
---- a/drivers/nvme/target/tcp.c
-+++ b/drivers/nvme/target/tcp.c
-@@ -1816,8 +1816,10 @@ static u16 nvmet_tcp_install_queue(struct nvmet_sq *sq)
- 	}
+--- a/drivers/nvmem/core.c
++++ b/drivers/nvmem/core.c
+@@ -1253,13 +1253,13 @@ void nvmem_device_put(struct nvmem_devic
+ EXPORT_SYMBOL_GPL(nvmem_device_put);
  
- 	queue->nr_cmds = sq->size * 2;
--	if (nvmet_tcp_alloc_cmds(queue))
-+	if (nvmet_tcp_alloc_cmds(queue)) {
-+		queue->nr_cmds = 0;
- 		return NVME_SC_INTERNAL;
-+	}
- 	return 0;
- }
- 
--- 
-2.43.0
-
+ /**
+- * devm_nvmem_device_get() - Get nvmem cell of device form a given id
++ * devm_nvmem_device_get() - Get nvmem device of device form a given id
+  *
+  * @dev: Device that requests the nvmem device.
+  * @id: name id for the requested nvmem device.
+  *
+- * Return: ERR_PTR() on error or a valid pointer to a struct nvmem_cell
+- * on success.  The nvmem_cell will be freed by the automatically once the
++ * Return: ERR_PTR() on error or a valid pointer to a struct nvmem_device
++ * on success.  The nvmem_device will be freed by the automatically once the
+  * device is freed.
+  */
+ struct nvmem_device *devm_nvmem_device_get(struct device *dev, const char *id)
 
 
 
