@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-75455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48FF097357C
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:50:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EDA19733D1
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:35:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 43901B2888C
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:41:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 422501C24E35
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:35:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B264192D90;
-	Tue, 10 Sep 2024 10:39:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5029E18FDA7;
+	Tue, 10 Sep 2024 10:31:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ba1L9/9t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BIeom02c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A6E117A589;
-	Tue, 10 Sep 2024 10:39:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F02E18C02E;
+	Tue, 10 Sep 2024 10:31:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964783; cv=none; b=eMTV04imPpFqq2bHkxKNz9tmEP03ry66/N475cV2GWZFRqWA+2/9n2H7TdBbHdINf0xhmgxLbg44nRiwH0g3vLMaOfIL74T+lRqH4C04K3Jt5aUxyweSuPbAQD0kJsTH3uTJqknIME5t6b3W/6XiDFlKPB2mnuki09w35RZpPHk=
+	t=1725964309; cv=none; b=hwri6OtGwMu9UmWyaC0ikwBjoZXjcx4SrmaskyIoTqgaTmgUCnkufXCA1kwHRg28C7eXn2mYzhd6F/UOg8qvXQKRk2rceg4CNXaFvq8H/Q05iM4bB2iykQ402PrviCNuPH04XxByHfddRPFA6T8sCvyPTrKa2LZGUbz/hii6Shk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964783; c=relaxed/simple;
-	bh=uKZ4Mf4tyOda3Xpt9QCkFJl718zRGsto1sAXwid/JLI=;
+	s=arc-20240116; t=1725964309; c=relaxed/simple;
+	bh=b4z6qL0jXogsBKdpVO6zXYlFZSzKUvun+WjlbpZpjdY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O2SRBenGavWLKb9lB4DVlm764+j2U/2RcW/R1YvSkGXppQiW6f52d2xt3dPFaYv/3GOcLp/AbQ6U/J/WCVt5k6vzP36e+WMqTShyP1lFKHJQk1tDaat4M78gPc45pdnOTaIcom0Bu5H6L7S33KKf4KLXnW5lCY3RdHHfsY7WiGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ba1L9/9t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7289CC4CED2;
-	Tue, 10 Sep 2024 10:39:42 +0000 (UTC)
+	 MIME-Version; b=bDQPMNEK+4qxEufOuLwKTvr+1/F3e1Wu9vwtSgaVaiZ+uEWR0Ga+cZgTdoZsuFfiebUwUFmjZ7CeLoiT+uQZsKnKMMQAcm+3a1fOpWCw/ovrcC27xsioQT/waPOofJLVt6CO26+tHOqU5az/zBgRg5lriyVl+QkFV9JK79/G2aM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BIeom02c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4070EC4CEC3;
+	Tue, 10 Sep 2024 10:31:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964782;
-	bh=uKZ4Mf4tyOda3Xpt9QCkFJl718zRGsto1sAXwid/JLI=;
+	s=korg; t=1725964308;
+	bh=b4z6qL0jXogsBKdpVO6zXYlFZSzKUvun+WjlbpZpjdY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ba1L9/9tGj0mDJBzk9LuVaKFdsWq3NRS75sHad2aLT2sHcUX3TbU3Un4DYco9nuO6
-	 wTBke/invHwXm6rX7BRZp3s65JpKQuGpaMRFzep0Gl+tAWWJdGSAZ90Hph1bhPxsTU
-	 UoIPQrvDbIV/epbBq+z79WjEbc74/gSHG8DkPKcE=
+	b=BIeom02csTyzY0218307UT4iU3IC0DMi/xntep27woAv6x9lgrFDYjmHxEjjw9LhP
+	 iNrkTenTNg4p+gCbbBXAeZsldKhUOLERLjz1FJUrdb9SRl2KKALlmM5cxI4eeqPmBS
+	 oVJx9gfN63JhfrKio9kTv+fkOez+64DVSejUUL9o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesse Zhang <Jesse.Zhang@amd.com>,
-	Tim Huang <Tim.Huang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 029/186] drm/amdgpu: the warning dereferencing obj for nbio_v7_4
-Date: Tue, 10 Sep 2024 11:32:04 +0200
-Message-ID: <20240910092555.785653857@linuxfoundation.org>
+Subject: [PATCH 6.6 138/269] firmware: cs_dsp: Dont allow writes to read-only controls
+Date: Tue, 10 Sep 2024 11:32:05 +0200
+Message-ID: <20240910092613.124756603@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesse Zhang <jesse.zhang@amd.com>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit d190b459b2a4304307c3468ed97477b808381011 ]
+[ Upstream commit 62412a9357b16a4e39dc582deb2e2a682b92524c ]
 
-if ras_manager obj null, don't print NBIO err data
+Add a check to cs_dsp_coeff_write_ctrl() to abort if the control
+is not writeable.
 
-Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
-Suggested-by: Tim Huang <Tim.Huang@amd.com>
-Reviewed-by: Tim Huang <Tim.Huang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+The cs_dsp code originated as an ASoC driver (wm_adsp) where all
+controls were exported as ALSA controls. It relied on ALSA to
+enforce the read-only permission. Now that the code has been
+separated from ALSA/ASoC it must perform its own permission check.
+
+This isn't currently causing any problems so there shouldn't be any
+need to backport this. If the client of cs_dsp exposes the control as
+an ALSA control, it should set permissions on that ALSA control to
+protect it. The few uses of cs_dsp_coeff_write_ctrl() inside drivers
+are for writable controls.
+
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Link: https://patch.msgid.link/20240702110809.16836-1-rf@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/nbio_v7_4.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/firmware/cirrus/cs_dsp.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/nbio_v7_4.c b/drivers/gpu/drm/amd/amdgpu/nbio_v7_4.c
-index eadc9526d33f..b81572dc115f 100644
---- a/drivers/gpu/drm/amd/amdgpu/nbio_v7_4.c
-+++ b/drivers/gpu/drm/amd/amdgpu/nbio_v7_4.c
-@@ -313,7 +313,7 @@ static void nbio_v7_4_handle_ras_controller_intr_no_bifring(struct amdgpu_device
- 						RAS_CNTLR_INTERRUPT_CLEAR, 1);
- 		WREG32_SOC15(NBIO, 0, mmBIF_DOORBELL_INT_CNTL, bif_doorbell_intr_cntl);
+diff --git a/drivers/firmware/cirrus/cs_dsp.c b/drivers/firmware/cirrus/cs_dsp.c
+index a1da7581adb0..e62ffffe5fb8 100644
+--- a/drivers/firmware/cirrus/cs_dsp.c
++++ b/drivers/firmware/cirrus/cs_dsp.c
+@@ -796,6 +796,9 @@ int cs_dsp_coeff_write_ctrl(struct cs_dsp_coeff_ctl *ctl,
  
--		if (!ras->disable_ras_err_cnt_harvest) {
-+		if (ras && !ras->disable_ras_err_cnt_harvest && obj) {
- 			/*
- 			 * clear error status after ras_controller_intr
- 			 * according to hw team and count ue number
+ 	lockdep_assert_held(&ctl->dsp->pwr_lock);
+ 
++	if (ctl->flags && !(ctl->flags & WMFW_CTL_FLAG_WRITEABLE))
++		return -EPERM;
++
+ 	if (len + off * sizeof(u32) > ctl->len)
+ 		return -EINVAL;
+ 
 -- 
 2.43.0
 
