@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-75359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72879973425
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:38:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8A08A973127
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:09:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A60371C24E22
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:38:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2ACC71F26CDC
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:09:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95EC618C928;
-	Tue, 10 Sep 2024 10:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D5E919DF92;
+	Tue, 10 Sep 2024 10:04:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VQYHCiVw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MQNzAgpL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 537DA17B50F;
-	Tue, 10 Sep 2024 10:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AE3E19DF44;
+	Tue, 10 Sep 2024 10:04:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964502; cv=none; b=tZwEhNHoq1F9GEYDbFFbcTgiSHn0oF2TySncWP+i9z1UlfhbJQ1BvcbuMirHMMnzK48fchcH/es21gYA211NzBAl5j1nW3bmIkNF2HrOMH1t8wycj44Tbvjv4QPkLWWSdokyKXUr6z0Mg7hJ+YBxF2cxcs5Z54fcM+AgL1r6U/E=
+	t=1725962684; cv=none; b=gCpEErPqEGynEvkQr6st+6RNE4URblLaHyEE7aTeInb0c93RpGcqZ/8mZebE1eR7yzltc5l7ErkhGKzWU5R+Q5Ar30Bd0if4cClLERC0QW6HXpdK+SEJKkZZScaafzHYMpbbMnaSwWPR/ak6S297t2cmO0CJwI27u2fWCecfiL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964502; c=relaxed/simple;
-	bh=vIScGY4OZ7lUDO9QuwLczAst8ZXHdWN5n1dhcRZ2axE=;
+	s=arc-20240116; t=1725962684; c=relaxed/simple;
+	bh=fNu5J9oT4NvD8TH9s+8Z1s7xu+k73yEO9Osbk9+NnhU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YSYvjc9gK2j6iuQa89Hv7yuXQP2d4/2Kk7dhDn1FFDyj2WdZYwyaMbaJi/O6VI62xzaeAbhTWFS9e83r19puByWcWk2FMVeE9JcdK60dT1KQJrK2vd8foyb4KDzuvJUEUZcww+gZF4mNhxHvpG/ezEZPp9b8MZZqH0OoBURzSJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VQYHCiVw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE2DAC4CEC3;
-	Tue, 10 Sep 2024 10:35:01 +0000 (UTC)
+	 MIME-Version; b=ZaeOo/mF5NeJb9nesPyYQvOSj5jLi5J0piqQpCHnH4XOQ67ajKwzpqlJUDfDnhT6xZGPqXo1qiwk4a6rzYPG+j3nCtQI77iRwknkxU2iz1FvmNXnaik4jiPd9vY6qpojRgsq1JvENiXnaILL3nGb5Yh5WCTjNN0QpHr2T9JnHXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MQNzAgpL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5FADC4CEC3;
+	Tue, 10 Sep 2024 10:04:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964502;
-	bh=vIScGY4OZ7lUDO9QuwLczAst8ZXHdWN5n1dhcRZ2axE=;
+	s=korg; t=1725962684;
+	bh=fNu5J9oT4NvD8TH9s+8Z1s7xu+k73yEO9Osbk9+NnhU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VQYHCiVwQMlq59Kg4tpvIIHBnQ05v6IIetp6335dqqUdnt2zyByqsjAQXQ22IfqPi
-	 K1HQLdab0gdn83qVXZHmU8PbJDyGxge9U9bSqM4A9H1ZCuVeIHcf8MrSmyVAb4koGQ
-	 lP/tR3hE+ed8c6F/CEcQflTMTRvAh7DbLl0yv/7I=
+	b=MQNzAgpLY9IKMQkX8pi0ZEDusycdga4Vut0LpZNcFiLSda7muSKlQEUHuV5pqI+LD
+	 +bgDA7/dZj2Gx5poIJlrI3d/DoW7pKaLpwb1sOTnzeQ2YB3UAs8kQHlNgnGX0ReABI
+	 o5rVSKKdHblInGdTyDz6alHagPRuOCF/5gz7do44=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vitaly Lifshits <vitaly.lifshits@intel.com>,
-	Sasha Neftin <sasha.neftin@intel.com>,
-	Naama Meir <naamax.meir@linux.intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Florian Larysch <fl@n621.de>
-Subject: [PATCH 6.6 204/269] intel: legacy: Partial revert of field get conversion
+	Maurizio Lombardi <mlombard@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 116/121] nvmet-tcp: fix kernel crash if commands allocation fails
 Date: Tue, 10 Sep 2024 11:33:11 +0200
-Message-ID: <20240910092615.342279444@linuxfoundation.org>
+Message-ID: <20240910092551.307928586@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
+References: <20240910092545.737864202@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,40 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sasha Neftin <sasha.neftin@intel.com>
+From: Maurizio Lombardi <mlombard@redhat.com>
 
-commit ba54b1a276a6b69d80649942fe5334d19851443e upstream.
+[ Upstream commit 5572a55a6f830ee3f3a994b6b962a5c327d28cb3 ]
 
-Refactoring of the field get conversion introduced a regression in the
-legacy Wake On Lan from a magic packet with i219 devices. Rx address
-copied not correctly from MAC to PHY with FIELD_GET macro.
+If the commands allocation fails in nvmet_tcp_alloc_cmds()
+the kernel crashes in nvmet_tcp_release_queue_work() because of
+a NULL pointer dereference.
 
-Fixes: b9a452545075 ("intel: legacy: field get conversion")
-Suggested-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-Signed-off-by: Sasha Neftin <sasha.neftin@intel.com>
-Tested-by: Naama Meir <naamax.meir@linux.intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Cc: Florian Larysch <fl@n621.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  nvmet: failed to install queue 0 cntlid 1 ret 6
+  Unable to handle kernel NULL pointer dereference at
+         virtual address 0000000000000008
+
+Fix the bug by setting queue->nr_cmds to zero in case
+nvmet_tcp_alloc_cmd() fails.
+
+Fixes: 872d26a391da ("nvmet-tcp: add NVMe over TCP target driver")
+Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/e1000e/ich8lan.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/nvme/target/tcp.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/intel/e1000e/ich8lan.c
-+++ b/drivers/net/ethernet/intel/e1000e/ich8lan.c
-@@ -2573,7 +2573,7 @@ void e1000_copy_rx_addrs_to_phy_ich8lan(
- 		hw->phy.ops.write_reg_page(hw, BM_RAR_H(i),
- 					   (u16)(mac_reg & 0xFFFF));
- 		hw->phy.ops.write_reg_page(hw, BM_RAR_CTRL(i),
--					   FIELD_GET(E1000_RAH_AV, mac_reg));
-+					   (u16)((mac_reg & E1000_RAH_AV) >> 16));
+diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
+index fa6e7fbf356e..11c8506e04ca 100644
+--- a/drivers/nvme/target/tcp.c
++++ b/drivers/nvme/target/tcp.c
+@@ -1751,8 +1751,10 @@ static u16 nvmet_tcp_install_queue(struct nvmet_sq *sq)
  	}
  
- 	e1000_disable_phy_wakeup_reg_access_bm(hw, &phy_reg);
+ 	queue->nr_cmds = sq->size * 2;
+-	if (nvmet_tcp_alloc_cmds(queue))
++	if (nvmet_tcp_alloc_cmds(queue)) {
++		queue->nr_cmds = 0;
+ 		return NVME_SC_INTERNAL;
++	}
+ 	return 0;
+ }
+ 
+-- 
+2.43.0
+
 
 
 
