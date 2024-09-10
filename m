@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-74239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 665A0972E36
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:40:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B3F3973097
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:02:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 98F031C24908
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:40:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F176E288342
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:02:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25B3718C00E;
-	Tue, 10 Sep 2024 09:40:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C6D918C03E;
+	Tue, 10 Sep 2024 10:01:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TNBV2488"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ktpb47TI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D637918A950;
-	Tue, 10 Sep 2024 09:40:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B52A188A0C;
+	Tue, 10 Sep 2024 10:01:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961222; cv=none; b=ACwMBtRR+MMwEGp3HYc/YV1zKKGLymyW1U4nhwFiUSimEWYuZsYF8zd3v91Ond/+bURr1o0BO9CvQ4MEy9WVg6bXVY7hxwh60pxJq/XQTO+tiNliHB/hCdynXa+OywptxeGpAIugGs2b2Q82/puNRUz3mcqXQMjvg4VcyNUnsAE=
+	t=1725962502; cv=none; b=g2umtav0x3J1IZdOONpw+3ByCws3PMVv9fUHb5NHqC89+PW8gH+MGxAFbBbhWMB7shHHUMQI6U/DULfuu7X/mNfYeP3YAlMtcR5s16SO4ZvshZsSuZeqcAKJbVGd2NUkFPwqMZFxfpHK1BTtTBx/4dvndXOyTBzYC0xlnPF/t6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961222; c=relaxed/simple;
-	bh=Alsbsj9QM8Yb4ioBRYgeyFCxjoBgJwNowsSz29aZumk=;
+	s=arc-20240116; t=1725962502; c=relaxed/simple;
+	bh=6Qzv4oKzCerCRDAFSNO1qfDcimomR2blLxXJHBc3d9Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oKzRhKIB9iE2WeZBS3nVvDYlWogvoIyLwdmVmWWO5RMtuqTCdjA7pRfnXt10lhYYwcu5kbr/+vfE4ZV9Asvxz/SHZ9vJb2EDlq2r62RBJj6eMyhq1/oIKYJ9HWTegJDKN+3SugBE7FCwsi+dxSEWMD7g+i6z/7JEe5FCUmTiUbA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TNBV2488; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D265C4CEC3;
-	Tue, 10 Sep 2024 09:40:22 +0000 (UTC)
+	 MIME-Version; b=bUrfzM7tBcak1JQ5cAFR/UZ/2tlHt9k3U8eFoWfs4z70RybuqDFnAE4xwasJ9u+D09vAq2wrYSXusHQsvXI3DqvKZkzj/eYfWXiLd5C874fyuactmbL28UyTigwDy+5cIXaXrJWcjWdlPSMHLTJyRNfORj7N2z3o9FfkpFLAWWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ktpb47TI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B04BAC4CEC3;
+	Tue, 10 Sep 2024 10:01:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961222;
-	bh=Alsbsj9QM8Yb4ioBRYgeyFCxjoBgJwNowsSz29aZumk=;
+	s=korg; t=1725962502;
+	bh=6Qzv4oKzCerCRDAFSNO1qfDcimomR2blLxXJHBc3d9Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TNBV2488j1mKlCXtiegQXCvsnEVusKhMKmRGXAiLtN5zN6n69kZNKvv+Ywkws0fbB
-	 2pbqRuofUZyhNqhxhqK3mM7Lkx9hdWCAUCZuOqIPIQDr/t8B8+Meelu1fMgwDCgx63
-	 LIt0GW6mUHniGkHt49Ow3U2dz5hiGrzvFoaEfnEs=
+	b=Ktpb47TIrULyQP0DqrtTiyVQpvXUCZouCSFNjZZCT80zAwkKD1tXIgHx6Qu7LmGCi
+	 2MmtJuxeJlJogYT2yDfcw+gXjKCxVPYmdfIIrgrFxp42hIgqbL1AH5/UY7GjpBg/9i
+	 vlEzhcf/hW7ZuapIckKlYz1URbUNTmEEx7PSjzI0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	syzbot <syzbot+0122fa359a69694395d5@syzkaller.appspotmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 68/96] Input: uinput - reject requests with unreasonable number of slots
+	Daiwei Li <daiweili@google.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Kurt Kanzenbach <kurt@linutronix.de>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 5.4 055/121] igb: Fix not clearing TimeSync interrupts for 82580
 Date: Tue, 10 Sep 2024 11:32:10 +0200
-Message-ID: <20240910092544.530729806@linuxfoundation.org>
+Message-ID: <20240910092548.424293830@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
-References: <20240910092541.383432924@linuxfoundation.org>
+In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
+References: <20240910092545.737864202@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,61 +65,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+From: Daiwei Li <daiweili@google.com>
 
-[ Upstream commit 206f533a0a7c683982af473079c4111f4a0f9f5e ]
+[ Upstream commit ba8cf80724dbc09825b52498e4efacb563935408 ]
 
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+82580 NICs have a hardware bug that makes it
+necessary to write into the TSICR (TimeSync Interrupt Cause) register
+to clear it:
+https://lore.kernel.org/all/CDCB8BE0.1EC2C%25matthew.vick@intel.com/
 
-When exercising uinput interface syzkaller may try setting up device
-with a really large number of slots, which causes memory allocation
-failure in input_mt_init_slots(). While this allocation failure is
-handled properly and request is rejected, it results in syzkaller
-reports. Additionally, such request may put undue burden on the
-system which will try to free a lot of memory for a bogus request.
+Add a conditional so only for 82580 we write into the TSICR register,
+so we don't risk losing events for other models.
 
-Fix it by limiting allowed number of slots to 100. This can easily
-be extended if we see devices that can track more than 100 contacts.
+Without this change, when running ptp4l with an Intel 82580 card,
+I get the following output:
 
-Reported-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Reported-by: syzbot <syzbot+0122fa359a69694395d5@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=0122fa359a69694395d5
-Link: https://lore.kernel.org/r/Zqgi7NYEbpRsJfa2@google.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+> timed out while polling for tx timestamp increasing tx_timestamp_timeout or
+> increasing kworker priority may correct this issue, but a driver bug likely
+> causes it
+
+This goes away with this change.
+
+This (partially) reverts commit ee14cc9ea19b ("igb: Fix missing time sync events").
+
+Fixes: ee14cc9ea19b ("igb: Fix missing time sync events")
+Closes: https://lore.kernel.org/intel-wired-lan/CAN0jFd1kO0MMtOh8N2Ztxn6f7vvDKp2h507sMryobkBKe=xk=w@mail.gmail.com/
+Tested-by: Daiwei Li <daiweili@google.com>
+Suggested-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Signed-off-by: Daiwei Li <daiweili@google.com>
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Reviewed-by: Kurt Kanzenbach <kurt@linutronix.de>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/misc/uinput.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/net/ethernet/intel/igb/igb_main.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/input/misc/uinput.c b/drivers/input/misc/uinput.c
-index e746920872a4..50839c902518 100644
---- a/drivers/input/misc/uinput.c
-+++ b/drivers/input/misc/uinput.c
-@@ -429,6 +429,20 @@ static int uinput_validate_absinfo(struct input_dev *dev, unsigned int code,
- 		return -EINVAL;
- 	}
+diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
+index cceff1515ea1..884beeb67a1f 100644
+--- a/drivers/net/ethernet/intel/igb/igb_main.c
++++ b/drivers/net/ethernet/intel/igb/igb_main.c
+@@ -6522,10 +6522,20 @@ static void igb_extts(struct igb_adapter *adapter, int tsintr_tt)
  
-+	/*
-+	 * Limit number of contacts to a reasonable value (100). This
-+	 * ensures that we need less than 2 pages for struct input_mt
-+	 * (we are not using in-kernel slot assignment so not going to
-+	 * allocate memory for the "red" table), and we should have no
-+	 * trouble getting this much memory.
-+	 */
-+	if (code == ABS_MT_SLOT && max > 99) {
-+		printk(KERN_DEBUG
-+		       "%s: unreasonably large number of slots requested: %d\n",
-+		       UINPUT_NAME, max);
-+		return -EINVAL;
+ static void igb_tsync_interrupt(struct igb_adapter *adapter)
+ {
++	const u32 mask = (TSINTR_SYS_WRAP | E1000_TSICR_TXTS |
++			  TSINTR_TT0 | TSINTR_TT1 |
++			  TSINTR_AUTT0 | TSINTR_AUTT1);
+ 	struct e1000_hw *hw = &adapter->hw;
+ 	u32 tsicr = rd32(E1000_TSICR);
+ 	struct ptp_clock_event event;
+ 
++	if (hw->mac.type == e1000_82580) {
++		/* 82580 has a hardware bug that requires an explicit
++		 * write to clear the TimeSync interrupt cause.
++		 */
++		wr32(E1000_TSICR, tsicr & mask);
 +	}
 +
- 	return 0;
- }
- 
+ 	if (tsicr & TSINTR_SYS_WRAP) {
+ 		event.type = PTP_CLOCK_PPS;
+ 		if (adapter->ptp_caps.pps)
 -- 
 2.43.0
 
