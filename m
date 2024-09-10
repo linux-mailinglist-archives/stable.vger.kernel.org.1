@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-75327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75075-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43802973401
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:37:32 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C594D973301
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:28:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E1DF51F25C33
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:37:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A53C0B2AF1F
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:26:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B14C718FC73;
-	Tue, 10 Sep 2024 10:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 285B118FC84;
+	Tue, 10 Sep 2024 10:21:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qf3k2+aQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Q4E1qxV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EC0A172BA8;
-	Tue, 10 Sep 2024 10:33:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCFC518C02E;
+	Tue, 10 Sep 2024 10:21:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964411; cv=none; b=jBE7b69jKs82jPZHL9pVkMqpOJ3F4BYo/0k1bulWPipi+i64w17o8FI59Q3WGiJV2JlAtYlGJ5vSjRLvQN8JhjIrzlZHPfpol5FMpZzr+vyL0YayUucL3ISVcLhfhTWxcjUDre2ws2JVrWeLItwxp9pi51Eg2QpzZMW41Jmw0Dw=
+	t=1725963676; cv=none; b=HIGtnIUCNSZlbfW7En6a/2qw6Gknr+yJIGbsP7z/uubMrIE3FQ9Bamcn1EtobGRLCV/gX3l2TEL6WhuAy2s8JgLrr2cigHWlkkTkIEeIb6j/v2pu/Cjsewb/OdxR1Z1OJxj9Ce18cJgNnZjCE+JiUQxSeMI/gA/JA72OJsed2PI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964411; c=relaxed/simple;
-	bh=hYKaeq6mQun0qPhmmKR9esSrGJdN1xeggk9VCnYY14o=;
+	s=arc-20240116; t=1725963676; c=relaxed/simple;
+	bh=dVt0NO9tZD3K4q+v82cHq0/xfa2m9E3/klYDLk7QZSI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FEwOMPtu6cOQ95uB6/NhVyflC4pPV2g8mJoyY6WdZFveXq9lCBNpyXWEMRxWRe/SAFVY16Lgz+mb2mIbxsNQDqD/hUgfjozW3PanfDAehFN6jUDZkOY/OAO54nPuMSDo//L1eQ3sNuVMYcmBe0BMtEXaseTUD4AZRjbbEiB/1Jo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qf3k2+aQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8C56C4CEC3;
-	Tue, 10 Sep 2024 10:33:30 +0000 (UTC)
+	 MIME-Version; b=Pemws3FChdJhk1tPYZ1pqd9nIHjlF6CtqSmrjX4qXinspxO/BJDIEuRy+Q3rxKyOQc/Q+H//GLuxpEqL0aZvrelUk321yhJ9IwmzzOJpx0IpeKyLtXpi8v6u5txPCQicehIyrR6R7RBOaQKP7a/k5HWQYnVpBJqRTDEHEtMgCy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Q4E1qxV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 676A9C4CEC3;
+	Tue, 10 Sep 2024 10:21:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964411;
-	bh=hYKaeq6mQun0qPhmmKR9esSrGJdN1xeggk9VCnYY14o=;
+	s=korg; t=1725963676;
+	bh=dVt0NO9tZD3K4q+v82cHq0/xfa2m9E3/klYDLk7QZSI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qf3k2+aQDAVavY+QIppyC1ZeLzZRq38yPIIIpsfqjdwtVd8anDZkdwmaQHiMN58Cx
-	 0Kk4vT8x0hO86UfiG6aS9qnMpgPYPVfj2DHCWz5r1j7hXFGNSQLqVFsd9Gxzt9RCgS
-	 qQMk87XVOcMxjKmyH1JTnjIz6VnTzPwq2g+wg2Jc=
+	b=2Q4E1qxVH1w33O3LlfWERL7pAmsxne0FXTC/8uOb8nxXXK9EZNTRPa+ssG8Po6IlA
+	 6TTOSoIGrL9XjT8YzGqVG0Ti8eiaetCLHjAru5U4gfkvdZ57x9FMSNuqxWMoMt2UME
+	 atHHd5o8shA3TKFqB/VRk8X4IFFKy4Y2fOVw3XEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neeraj Sanjay Kale <neeraj.sanjaykale@nxp.com>,
-	Guillaume Legoupil <guillaume.legoupil@nxp.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Waiman Long <longman@redhat.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 173/269] Bluetooth: btnxpuart: Fix Null pointer dereference in btnxpuart_flush()
+Subject: [PATCH 5.15 138/214] cgroup: Protect css->cgroup write under css_set_lock
 Date: Tue, 10 Sep 2024 11:32:40 +0200
-Message-ID: <20240910092614.342874670@linuxfoundation.org>
+Message-ID: <20240910092604.392064377@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,101 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neeraj Sanjay Kale <neeraj.sanjaykale@nxp.com>
+From: Waiman Long <longman@redhat.com>
 
-[ Upstream commit c68bbf5e334b35b36ac5b9f0419f1f93f796bad1 ]
+[ Upstream commit 57b56d16800e8961278ecff0dc755d46c4575092 ]
 
-This adds a check before freeing the rx->skb in flush and close
-functions to handle the kernel crash seen while removing driver after FW
-download fails or before FW download completes.
+The writing of css->cgroup associated with the cgroup root in
+rebind_subsystems() is currently protected only by cgroup_mutex.
+However, the reading of css->cgroup in both proc_cpuset_show() and
+proc_cgroup_show() is protected just by css_set_lock. That makes the
+readers susceptible to racing problems like data tearing or caching.
+It is also a problem that can be reported by KCSAN.
 
-dmesg log:
-[   54.634586] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000080
-[   54.643398] Mem abort info:
-[   54.646204]   ESR = 0x0000000096000004
-[   54.649964]   EC = 0x25: DABT (current EL), IL = 32 bits
-[   54.655286]   SET = 0, FnV = 0
-[   54.658348]   EA = 0, S1PTW = 0
-[   54.661498]   FSC = 0x04: level 0 translation fault
-[   54.666391] Data abort info:
-[   54.669273]   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
-[   54.674768]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-[   54.674771]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-[   54.674775] user pgtable: 4k pages, 48-bit VAs, pgdp=0000000048860000
-[   54.674780] [0000000000000080] pgd=0000000000000000, p4d=0000000000000000
-[   54.703880] Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
-[   54.710152] Modules linked in: btnxpuart(-) overlay fsl_jr_uio caam_jr caamkeyblob_desc caamhash_desc caamalg_desc crypto_engine authenc libdes crct10dif_ce polyval_ce polyval_generic snd_soc_imx_spdif snd_soc_imx_card snd_soc_ak5558 snd_soc_ak4458 caam secvio error snd_soc_fsl_micfil snd_soc_fsl_spdif snd_soc_fsl_sai snd_soc_fsl_utils imx_pcm_dma gpio_ir_recv rc_core sch_fq_codel fuse
-[   54.744357] CPU: 3 PID: 72 Comm: kworker/u9:0 Not tainted 6.6.3-otbr-g128004619037 #2
-[   54.744364] Hardware name: FSL i.MX8MM EVK board (DT)
-[   54.744368] Workqueue: hci0 hci_power_on
-[   54.757244] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[   54.757249] pc : kfree_skb_reason+0x18/0xb0
-[   54.772299] lr : btnxpuart_flush+0x40/0x58 [btnxpuart]
-[   54.782921] sp : ffff8000805ebca0
-[   54.782923] x29: ffff8000805ebca0 x28: ffffa5c6cf1869c0 x27: ffffa5c6cf186000
-[   54.782931] x26: ffff377b84852400 x25: ffff377b848523c0 x24: ffff377b845e7230
-[   54.782938] x23: ffffa5c6ce8dbe08 x22: ffffa5c6ceb65410 x21: 00000000ffffff92
-[   54.782945] x20: ffffa5c6ce8dbe98 x19: ffffffffffffffac x18: ffffffffffffffff
-[   54.807651] x17: 0000000000000000 x16: ffffa5c6ce2824ec x15: ffff8001005eb857
-[   54.821917] x14: 0000000000000000 x13: ffffa5c6cf1a02e0 x12: 0000000000000642
-[   54.821924] x11: 0000000000000040 x10: ffffa5c6cf19d690 x9 : ffffa5c6cf19d688
-[   54.821931] x8 : ffff377b86000028 x7 : 0000000000000000 x6 : 0000000000000000
-[   54.821938] x5 : ffff377b86000000 x4 : 0000000000000000 x3 : 0000000000000000
-[   54.843331] x2 : 0000000000000000 x1 : 0000000000000002 x0 : ffffffffffffffac
-[   54.857599] Call trace:
-[   54.857601]  kfree_skb_reason+0x18/0xb0
-[   54.863878]  btnxpuart_flush+0x40/0x58 [btnxpuart]
-[   54.863888]  hci_dev_open_sync+0x3a8/0xa04
-[   54.872773]  hci_power_on+0x54/0x2e4
-[   54.881832]  process_one_work+0x138/0x260
-[   54.881842]  worker_thread+0x32c/0x438
-[   54.881847]  kthread+0x118/0x11c
-[   54.881853]  ret_from_fork+0x10/0x20
-[   54.896406] Code: a9be7bfd 910003fd f9000bf3 aa0003f3 (b940d400)
-[   54.896410] ---[ end trace 0000000000000000 ]---
+This can be fixed by using READ_ONCE() and WRITE_ONCE() to access
+css->cgroup. Alternatively, the writing of css->cgroup can be moved
+under css_set_lock as well which is done by this patch.
 
-Signed-off-by: Neeraj Sanjay Kale <neeraj.sanjaykale@nxp.com>
-Tested-by: Guillaume Legoupil <guillaume.legoupil@nxp.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btnxpuart.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ kernel/cgroup/cgroup.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/bluetooth/btnxpuart.c b/drivers/bluetooth/btnxpuart.c
-index 814dd966b1a4..5ee9a8b8dcfd 100644
---- a/drivers/bluetooth/btnxpuart.c
-+++ b/drivers/bluetooth/btnxpuart.c
-@@ -1326,8 +1326,10 @@ static int btnxpuart_close(struct hci_dev *hdev)
+diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
+index be467aea457e..84e85561a87c 100644
+--- a/kernel/cgroup/cgroup.c
++++ b/kernel/cgroup/cgroup.c
+@@ -1802,9 +1802,9 @@ int rebind_subsystems(struct cgroup_root *dst_root, u16 ss_mask)
+ 		RCU_INIT_POINTER(scgrp->subsys[ssid], NULL);
+ 		rcu_assign_pointer(dcgrp->subsys[ssid], css);
+ 		ss->root = dst_root;
+-		css->cgroup = dcgrp;
  
- 	serdev_device_close(nxpdev->serdev);
- 	skb_queue_purge(&nxpdev->txq);
--	kfree_skb(nxpdev->rx_skb);
--	nxpdev->rx_skb = NULL;
-+	if (!IS_ERR_OR_NULL(nxpdev->rx_skb)) {
-+		kfree_skb(nxpdev->rx_skb);
-+		nxpdev->rx_skb = NULL;
-+	}
- 	clear_bit(BTNXPUART_SERDEV_OPEN, &nxpdev->tx_state);
- 	return 0;
- }
-@@ -1342,8 +1344,10 @@ static int btnxpuart_flush(struct hci_dev *hdev)
- 
- 	cancel_work_sync(&nxpdev->tx_work);
- 
--	kfree_skb(nxpdev->rx_skb);
--	nxpdev->rx_skb = NULL;
-+	if (!IS_ERR_OR_NULL(nxpdev->rx_skb)) {
-+		kfree_skb(nxpdev->rx_skb);
-+		nxpdev->rx_skb = NULL;
-+	}
- 
- 	return 0;
- }
+ 		spin_lock_irq(&css_set_lock);
++		css->cgroup = dcgrp;
+ 		WARN_ON(!list_empty(&dcgrp->e_csets[ss->id]));
+ 		list_for_each_entry_safe(cset, cset_pos, &scgrp->e_csets[ss->id],
+ 					 e_cset_node[ss->id]) {
 -- 
 2.43.0
 
