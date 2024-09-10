@@ -1,148 +1,129 @@
-Return-Path: <stable+bounces-74106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD5A39726A4
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 03:34:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCBAE972705
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 04:10:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4D2C9B22D46
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 01:34:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 87D8B1F24B8D
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 02:10:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B733E139D1A;
-	Tue, 10 Sep 2024 01:34:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56644142904;
+	Tue, 10 Sep 2024 02:10:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dICHMSqb"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hs19t8ta"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A02AB37165;
-	Tue, 10 Sep 2024 01:34:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1FF71DFD1;
+	Tue, 10 Sep 2024 02:10:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725932073; cv=none; b=jXc0cLTfaXZsbR/udru5Qy88KkjEy8fnl0cjjA6NHNCMZhYw6SWcT9toSLGwkjzcdP7gwRTAWfH0CTfijWg9sD0mDjF5lxnvYY5B85bR0Jlm/Ac+7oDFqsYgyjigIkUeqRPhvYsMxp9ac+zzfub8vi5aMVlcMNhW9rlEmi3VmsM=
+	t=1725934210; cv=none; b=pGQTi/4v3ZjQTKSTGGS8YQTj2xfaVJ/UYZTUiN69lYETddyQ/7cYsgIu2mEqVQ4kmcQJUnDevGJA4A9CI+WswLw/7tqhxCtHtf+RJa3loLbczDLUFDdgYP2NQOzO9EOVt/NmpqB5Reyh6nKT7f29fMnqiZFsaDTWuAPUyXIMD6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725932073; c=relaxed/simple;
-	bh=e1rVwTMNq7di54sGOAsuF2je2ceVH7dA0EPFlPu/fPU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Jgw6xf6WC7uVbFtjCbhqMNkOGCR+2sT3yC0GleUuytkG3mv1PxxeoBOi0Ukr4OIvGBQuNSTMIk/jg9KJEWJNGt/F33SSUaIWywIpOaV20zT3vsPN93lqZ+z2u4ZptZD1pfrm2tyLNoAqBqS2dSyLQF189lJg/A7gaKw+5+c3buU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dICHMSqb; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1725932072; x=1757468072;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=e1rVwTMNq7di54sGOAsuF2je2ceVH7dA0EPFlPu/fPU=;
-  b=dICHMSqb83SSaPdnmqqMykmCJ07QRKwxpFamc81LY2A2oyiwZob9voEs
-   Pu5Ev7HOUQ63fSqdhSq76EQt+IXlQv3FqX6thTQ8rHrdwU2XziGr5r32J
-   HKBA7Bcw5dXg/12LMc/HNN+05V8VvHCSRSwVVhq/tttbD54cPOubdRQ8b
-   uoh8aR/3kb1SCr2N0mB1xx52m/fY8mICmWs9cQ69EW7a/HlIBYqPIWIDg
-   f5Z5HImTyLW5PfyGM8iqZRHNt7EqzVzKyhT7RdX9dH63HA+JgpnUqI0Rj
-   Ff/SAsGZVPXXCAcDZvsa3Y53d/LYFyAxntEb1f08z2TiWC6sTihYLxxst
-   Q==;
-X-CSE-ConnectionGUID: HoaH4PFzRViKmfAF/4zTLA==
-X-CSE-MsgGUID: yF55tJ8LRaa8FFC6NeYeDg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11190"; a="24767202"
-X-IronPort-AV: E=Sophos;i="6.10,215,1719903600"; 
-   d="scan'208";a="24767202"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Sep 2024 18:34:31 -0700
-X-CSE-ConnectionGUID: YJEpADTRS9exfSCUvCWxzA==
-X-CSE-MsgGUID: JSwMfiM8Qe2M1xL8UpcOYQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,215,1719903600"; 
-   d="scan'208";a="71828488"
-Received: from lkp-server01.sh.intel.com (HELO 9c6b1c7d3b50) ([10.239.97.150])
-  by orviesa004.jf.intel.com with ESMTP; 09 Sep 2024 18:34:26 -0700
-Received: from kbuild by 9c6b1c7d3b50 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1snplv-000FSW-0o;
-	Tue, 10 Sep 2024 01:34:23 +0000
-Date: Tue, 10 Sep 2024 09:33:49 +0800
-From: kernel test robot <lkp@intel.com>
-To: peter.wang@mediatek.com, linux-scsi@vger.kernel.org,
-	martin.petersen@oracle.com, avri.altman@wdc.com,
-	alim.akhtar@samsung.com, jejb@linux.ibm.com
-Cc: oe-kbuild-all@lists.linux.dev, wsd_upstream@mediatek.com,
-	linux-mediatek@lists.infradead.org, peter.wang@mediatek.com,
-	chun-hung.wu@mediatek.com, alice.chao@mediatek.com,
-	cc.chou@mediatek.com, chaotian.jing@mediatek.com,
-	jiajie.hao@mediatek.com, powen.kao@mediatek.com,
-	qilin.tan@mediatek.com, lin.gui@mediatek.com,
-	tun-yu.yu@mediatek.com, eddie.huang@mediatek.com,
-	naomi.chu@mediatek.com, ed.tsai@mediatek.com, bvanassche@acm.org,
-	quic_nguyenb@quicinc.com, stable@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] ufs: core: requeue aborted request
-Message-ID: <202409100826.Iql38Ss9-lkp@intel.com>
-References: <20240909082100.24019-3-peter.wang@mediatek.com>
+	s=arc-20240116; t=1725934210; c=relaxed/simple;
+	bh=2RuHSTo8UTZTwr+IP/0p9+lQ/zEI0R5deN5YL9deaWA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PsJq9+3llLZr3+xah6OHP3tO2psLUPcTKtkuV7jNP7ld9hE0weSRB1qznxGv6cIUdy8b2E/qTgiabdm+1LuFhXJ2XJWcNSl66On9n9BI7kfbWHT+0bcQcaH0pu3SQ91K28cFq37dB5bCjZFROCkUkCpPDkmEjL7xlvriqanywJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hs19t8ta; arc=none smtp.client-ip=209.85.160.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-45765a0811aso30235861cf.2;
+        Mon, 09 Sep 2024 19:10:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1725934207; x=1726539007; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=dUxVq/uYkeEKFMBzDLEyObgx5MyTJN7izveNlmy8shU=;
+        b=hs19t8tatA8RfXiUfFwhACZX4E6lqJYfmvopOCllCRAaxysYKHLF/CTbocDSJZ7XUy
+         MDU/e6/M2aSA0FK5W12QS3rHytqLwq2C8yY1fTjae+10oC2kxY5kyncr5ueqmk4BNZJf
+         i+ZxpJkOIZ7UdLyZWczF5zBW5euuCDmT6diFMlRHlHYNEyOqgVG44HgqYuuPc5bBERL1
+         e2LTw8MqHhJGlCeLhEiAsb2mqKbmd5IAKKR3YC+B+1cnw39uDpQfVFuGgIdUUcWeQ7Gk
+         1+MGWlTIi8g/1iQDOeYs9jDMOAHdQsBPzos9wn7DiEjZTPrLYxI0qLbxGpWVPDsxa/Nv
+         TT1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725934207; x=1726539007;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=dUxVq/uYkeEKFMBzDLEyObgx5MyTJN7izveNlmy8shU=;
+        b=nzFQg6StECWFQk8a3846vZLpz7LpYmqT4fc0vgKGyinMBNqEz24eLre/gRPbqK3O5G
+         xuYi4pKvGGvBup5OLkVjqlzTJDYGWCApJCSatxnsyldo2wRt95RmDtw+uJX2Hxn+btVB
+         7I9EErAZT1/J985PgHZ+vDVCF4lzL7W4iuBd6fQpNDdwdz2c8KeuPiYVT4JX5u7qL4gA
+         iKqY6av4g90zMeyoKax+TOc+7T0VYtbm+j/U7+ZJdmt7KEKgtqUa8/IITcqTydG2anC3
+         F+z+Ozeg9jiRh7fb/iENIdXPDkieNHnmapAbJ6Xk4A57GeRCOss/OlR3gHuI0Nr+7lDs
+         Z1QA==
+X-Forwarded-Encrypted: i=1; AJvYcCUVTHiAcMpmM8rG1V/+nqoiVnqZWx7yhdTOIH1rA0l7LDX/Vkkz2wlJsVpLC4I2FnJwf2tZ4K63@vger.kernel.org, AJvYcCV8w0gJDurTU+ML2umBDg/nGQHAQWmVaXIPH889t49nob/d0U3zXfKHMZMbmHvogWByKEXSHlXXOY+9G0B9@vger.kernel.org, AJvYcCWNktQ+phAOFGeIVCl54Y9JV0jEXWjs8/tAzEmUqJcu9+BslKUE0qjX/cYA/QzAfp3kxfsJzROZkd0akQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwoemLbOZrnGj5fKPl/VqwUv+paNa5kn1Ep1pniEqQwU1QGYLI+
+	zXMg9kv1TXyBhMCCw74VxjCC/JJYtMagiOd9d7KnMieMOeB5a1Mk
+X-Google-Smtp-Source: AGHT+IGmeDSS1xPUmyjEW8yUJFMAPO/V2CCsh6Yw95JK0OmbyicAdVkM/O8FfObtrVcamHw/ybV/0Q==
+X-Received: by 2002:a05:622a:144c:b0:457:c776:e350 with SMTP id d75a77b69052e-4580c75a11dmr124180981cf.46.1725934207271;
+        Mon, 09 Sep 2024 19:10:07 -0700 (PDT)
+Received: from shine.lan (216-15-0-36.s8994.c3-0.slvr-cbr1.lnh-slvr.md.cable.rcncustomer.com. [216.15.0.36])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-45822f6097fsm25377241cf.63.2024.09.09.19.10.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 09 Sep 2024 19:10:06 -0700 (PDT)
+From: Jason Andryuk <jandryuk@gmail.com>
+To: Helge Deller <deller@gmx.de>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Sam Ravnborg <sam@ravnborg.org>
+Cc: xen-devel@lists.xenproject.org,
+	Jason Andryuk <jason.andryuk@amd.com>,
+	Arthur Borsboom <arthurborsboom@gmail.com>,
+	stable@vger.kernel.org,
+	linux-fbdev@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] fbdev/xen-fbfront: Assign fb_info->device
+Date: Mon,  9 Sep 2024 22:09:16 -0400
+Message-ID: <20240910020919.5757-1-jandryuk@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240909082100.24019-3-peter.wang@mediatek.com>
+Content-Transfer-Encoding: 8bit
 
-Hi,
+From: Jason Andryuk <jason.andryuk@amd.com>
 
-kernel test robot noticed the following build warnings:
+Probing xen-fbfront faults in video_is_primary_device().  The passed-in
+struct device is NULL since xen-fbfront doesn't assign it and the
+memory is kzalloc()-ed.  Assign fb_info->device to avoid this.
 
-[auto build test WARNING on jejb-scsi/for-next]
-[also build test WARNING on mkp-scsi/for-next linus/master v6.11-rc7 next-20240909]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+This was exposed by the conversion of fb_is_primary_device() to
+video_is_primary_device() which dropped a NULL check for struct device.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/peter-wang-mediatek-com/ufs-core-fix-the-issue-of-ICU-failure/20240909-163021
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/jejb/scsi.git for-next
-patch link:    https://lore.kernel.org/r/20240909082100.24019-3-peter.wang%40mediatek.com
-patch subject: [PATCH v3 2/2] ufs: core: requeue aborted request
-config: i386-buildonly-randconfig-002-20240910 (https://download.01.org/0day-ci/archive/20240910/202409100826.Iql38Ss9-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240910/202409100826.Iql38Ss9-lkp@intel.com/reproduce)
+Fixes: f178e96de7f0 ("arch: Remove struct fb_info from video helpers")
+Reported-by: Arthur Borsboom <arthurborsboom@gmail.com>
+Closes: https://lore.kernel.org/xen-devel/CALUcmUncX=LkXWeiSiTKsDY-cOe8QksWhFvcCneOKfrKd0ZajA@mail.gmail.com/
+Tested-by: Arthur Borsboom <arthurborsboom@gmail.com>
+CC: stable@vger.kernel.org
+Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
+---
+The other option would be to re-instate the NULL check in
+video_is_primary_device()
+---
+ drivers/video/fbdev/xen-fbfront.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202409100826.Iql38Ss9-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
-   drivers/ufs/core/ufshcd.c: In function 'ufshcd_abort_one':
->> drivers/ufs/core/ufshcd.c:6491:28: warning: unused variable 'lrbp' [-Wunused-variable]
-    6491 |         struct ufshcd_lrb *lrbp = &hba->lrb[tag];
-         |                            ^~~~
-
-
-vim +/lrbp +6491 drivers/ufs/core/ufshcd.c
-
-2355b66ed20ce4 drivers/scsi/ufs/ufshcd.c Can Guo         2020-08-24  6482  
-f9c028e7415a5b drivers/ufs/core/ufshcd.c Bart Van Assche 2023-07-27  6483  static bool ufshcd_abort_one(struct request *rq, void *priv)
-b817e6ffbad7a1 drivers/ufs/core/ufshcd.c Bart Van Assche 2022-10-31  6484  {
-f9c028e7415a5b drivers/ufs/core/ufshcd.c Bart Van Assche 2023-07-27  6485  	int *ret = priv;
-f9c028e7415a5b drivers/ufs/core/ufshcd.c Bart Van Assche 2023-07-27  6486  	u32 tag = rq->tag;
-f9c028e7415a5b drivers/ufs/core/ufshcd.c Bart Van Assche 2023-07-27  6487  	struct scsi_cmnd *cmd = blk_mq_rq_to_pdu(rq);
-f9c028e7415a5b drivers/ufs/core/ufshcd.c Bart Van Assche 2023-07-27  6488  	struct scsi_device *sdev = cmd->device;
-f9c028e7415a5b drivers/ufs/core/ufshcd.c Bart Van Assche 2023-07-27  6489  	struct Scsi_Host *shost = sdev->host;
-f9c028e7415a5b drivers/ufs/core/ufshcd.c Bart Van Assche 2023-07-27  6490  	struct ufs_hba *hba = shost_priv(shost);
-93e6c0e19d5bb1 drivers/ufs/core/ufshcd.c Peter Wang      2023-11-15 @6491  	struct ufshcd_lrb *lrbp = &hba->lrb[tag];
-ab248643d3d68b drivers/ufs/core/ufshcd.c Bao D. Nguyen   2023-05-29  6492  
-f9c028e7415a5b drivers/ufs/core/ufshcd.c Bart Van Assche 2023-07-27  6493  	*ret = ufshcd_try_to_abort_task(hba, tag);
-ab248643d3d68b drivers/ufs/core/ufshcd.c Bao D. Nguyen   2023-05-29  6494  	dev_err(hba->dev, "Aborting tag %d / CDB %#02x %s\n", tag,
-ab248643d3d68b drivers/ufs/core/ufshcd.c Bao D. Nguyen   2023-05-29  6495  		hba->lrb[tag].cmd ? hba->lrb[tag].cmd->cmnd[0] : -1,
-f9c028e7415a5b drivers/ufs/core/ufshcd.c Bart Van Assche 2023-07-27  6496  		*ret ? "failed" : "succeeded");
-93e6c0e19d5bb1 drivers/ufs/core/ufshcd.c Peter Wang      2023-11-15  6497  
-f9c028e7415a5b drivers/ufs/core/ufshcd.c Bart Van Assche 2023-07-27  6498  	return *ret == 0;
-ab248643d3d68b drivers/ufs/core/ufshcd.c Bao D. Nguyen   2023-05-29  6499  }
-f9c028e7415a5b drivers/ufs/core/ufshcd.c Bart Van Assche 2023-07-27  6500  
-
+diff --git a/drivers/video/fbdev/xen-fbfront.c b/drivers/video/fbdev/xen-fbfront.c
+index 66d4628a96ae..c90f48ebb15e 100644
+--- a/drivers/video/fbdev/xen-fbfront.c
++++ b/drivers/video/fbdev/xen-fbfront.c
+@@ -407,6 +407,7 @@ static int xenfb_probe(struct xenbus_device *dev,
+ 	/* complete the abuse: */
+ 	fb_info->pseudo_palette = fb_info->par;
+ 	fb_info->par = info;
++	fb_info->device = &dev->dev;
+ 
+ 	fb_info->screen_buffer = info->fb;
+ 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.43.0
+
 
