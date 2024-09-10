@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-75519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6BD09734F8
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:44:43 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 02D3897334F
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:31:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 610411F2362F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:44:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 465DDB2989C
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:26:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B7281922C4;
-	Tue, 10 Sep 2024 10:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DDC218FDA7;
+	Tue, 10 Sep 2024 10:21:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KsdjU8MU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="grqTFZJc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A99317A924;
-	Tue, 10 Sep 2024 10:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C3B918B49E;
+	Tue, 10 Sep 2024 10:21:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964972; cv=none; b=q/omfc+MAsvMgZDz4s+Mt6mDGAQWNHF9tBgxP9dBFAVyIDKLayD4UtosoTmwYXwMyfvogrNUkRXyTg/dKl+wWCjYpTkc3HwNf8rW5RmadJaQw61pM+JSSjmgkmTcSzIk1ek68LdLr1orPxkuFH1WUOdfwgjK8u/wA5rHhJoWYqg=
+	t=1725963683; cv=none; b=ro8pbKbfvsQ3XKgc82eSaE6EQgMKtITh3VSJ3DoyZ+7WEu1E453NWYcBTZMqpoF8FuBHNrdXxvU5spCpns3XJR0JtXAUZ7bMs3am2HnsKA5KJcLnP/DRj2G2P//VnTSnTtLa34NhDRZtVYLWs87rg4s6iWx7xcap0YUeapruGhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964972; c=relaxed/simple;
-	bh=MJfOqn3LEn+DLbrZKo8KJDQLNX8Al+jccapmDtvF018=;
+	s=arc-20240116; t=1725963683; c=relaxed/simple;
+	bh=VH43cKNXBiCALqv+thLTN0zRwpNypn4g8wyZDK85kyE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sSLFeOIREhpjB//rIjrxk2KhE3VP69orqp7+iORdlaUbDtLqCYly2OdM+3yXbbzRufhSqD1tVVz3yzQMw7nnYCAmQ1GsHnQH985s+SKMJFSHX5Wevt0x9TxsDR33O3MoLM6XR6Jd0DB07BuP9+Z8ZbpTcsnp9fYjktk0xW2Rz2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KsdjU8MU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB088C4CEC3;
-	Tue, 10 Sep 2024 10:42:51 +0000 (UTC)
+	 MIME-Version; b=ErArQ+8ElpPJ2pVZD/fBdjWuM0qSTz8L+mYtrnNMQe1DoFJ4Q4w/RPYeQ5WNzLevPJhy3vm1aKB7McHlXnTNIYivqHDjh3hgW5R/p6uCddrdxceXepVNtxUw/I8jKjEGNkP2ljPD54i7EQBAsIdReD2Ua6YPnuiKrRDgXVoV42I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=grqTFZJc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42BF2C4CEC3;
+	Tue, 10 Sep 2024 10:21:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964972;
-	bh=MJfOqn3LEn+DLbrZKo8KJDQLNX8Al+jccapmDtvF018=;
+	s=korg; t=1725963682;
+	bh=VH43cKNXBiCALqv+thLTN0zRwpNypn4g8wyZDK85kyE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KsdjU8MUG3y5BnV8o5a5xklykMUQihfm2omNOcq+Y7QBnYfgziRrxQCSS9n5nAWC1
-	 gVgLI/fDAqXbj7Fy8JrobV+NxEgJzfRq/NtDhKBuwnTysjSRyzHgCJDygjg2IKqt1D
-	 bpJUGH6r2u4VhVGky6Q7sEpoecKVElvvTzN3ry80=
+	b=grqTFZJcRyC4s3iJuIrcmcenm8bG3pXE9savvOZlUSmbrAOMTuAtA9pFot6qSkFDi
+	 dsYM7HslsJlm+7C37grUvTk3LLG4irdH+9iURdcG7xcOxrD3F0+fSdzthz6V9ras28
+	 D6EA3QXRHGiDom/Htu7ZndqlElyCwykiJ73GtBWE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 5.10 067/186] clk: qcom: clk-alpha-pll: Fix the pll post div mask
+	Zijun Hu <quic_zijuhu@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 140/214] devres: Initialize an uninitialized struct member
 Date: Tue, 10 Sep 2024 11:32:42 +0200
-Message-ID: <20240910092557.267954245@linuxfoundation.org>
+Message-ID: <20240910092604.480162082@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-commit 2c4553e6c485a96b5d86989eb9654bf20e51e6dd upstream.
+[ Upstream commit 56a20ad349b5c51909cf8810f7c79b288864ad33 ]
 
-The PLL_POST_DIV_MASK should be 0 to (width - 1) bits. Fix it.
+Initialize an uninitialized struct member for driver API
+devres_open_group().
 
-Fixes: 1c3541145cbf ("clk: qcom: support for 2 bit PLL post divider")
-Cc: stable@vger.kernel.org
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
-Link: https://lore.kernel.org/r/20240731062916.2680823-2-quic_skakitap@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/1719931914-19035-4-git-send-email-quic_zijuhu@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/clk-alpha-pll.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/base/devres.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/clk/qcom/clk-alpha-pll.c
-+++ b/drivers/clk/qcom/clk-alpha-pll.c
-@@ -38,7 +38,7 @@
+diff --git a/drivers/base/devres.c b/drivers/base/devres.c
+index 27a43b4960f5..d3f59028dec7 100644
+--- a/drivers/base/devres.c
++++ b/drivers/base/devres.c
+@@ -562,6 +562,7 @@ void * devres_open_group(struct device *dev, void *id, gfp_t gfp)
+ 	grp->id = grp;
+ 	if (id)
+ 		grp->id = id;
++	grp->color = 0;
  
- #define PLL_USER_CTL(p)		((p)->offset + (p)->regs[PLL_OFF_USER_CTL])
- # define PLL_POST_DIV_SHIFT	8
--# define PLL_POST_DIV_MASK(p)	GENMASK((p)->width, 0)
-+# define PLL_POST_DIV_MASK(p)	GENMASK((p)->width - 1, 0)
- # define PLL_ALPHA_EN		BIT(24)
- # define PLL_ALPHA_MODE		BIT(25)
- # define PLL_VCO_SHIFT		20
+ 	spin_lock_irqsave(&dev->devres_lock, flags);
+ 	add_dr(dev, &grp->node[0]);
+-- 
+2.43.0
+
 
 
 
