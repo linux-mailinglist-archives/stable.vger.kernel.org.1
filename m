@@ -1,118 +1,75 @@
-Return-Path: <stable+bounces-74148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A878C972CFD
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:09:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D2AB972D6B
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:23:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E29A7B26CA4
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:09:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7C607B226C1
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:23:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DF5018893C;
-	Tue, 10 Sep 2024 09:08:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DF33188012;
+	Tue, 10 Sep 2024 09:23:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cObyiDRb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xHfuLcWQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 239C01885AA;
-	Tue, 10 Sep 2024 09:08:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D22291862B8
+	for <stable@vger.kernel.org>; Tue, 10 Sep 2024 09:23:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725959333; cv=none; b=SA1aGra1zb4I/iT/VeqA+PsrVxmI9Wr847hkj/0xGMaRYhcmBZZWQIuVH1eMAq2XRyhMj9UULvxzdGUdZ8p1tOY6oLKlc1d7tme8M9+K5EWiWKB45O+qPp0SPaYELQpDQoqghVFsBNeoA+VV+bX1aHyS1auGXlwdJUuKIUFs/uo=
+	t=1725960196; cv=none; b=mB6vmMJiMyaxgvpPfpU7+iD112PXN8ifhie0mXMSf5S4jwe2hqH1GhgY/DPada1x0ZpJrX3ssVLiSeIUaYLNxAezlM9ky7oTWBUma6C3ZrS8Q6rMp1flQKt2WD+2RmJ9cB/yJU+KO1k5h9dnddMq+yb14u/TCiYZmJPeZuXOjvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725959333; c=relaxed/simple;
-	bh=T/HKp5JbA0TTvWWFoCQ/ayf2yy3UYyJBk7cb6yAQ8wc=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TbWj7kMOgoqC62fvHST4NP5QAe9cJPQJKH86nMXxmS9/MQJ1jEvUsxWjdkTeUy0ZSXjAPEmwWHRSY0V7CO0hirS8aj7KBecy45nYDzcUntIb1Sf35sJW/97+/IWAtqLwAp3npEDq8xTUG6LIh0gE+63u2JXZ8RyyPxzXHQyRlIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cObyiDRb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72A11C4CEC3;
-	Tue, 10 Sep 2024 09:08:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725959332;
-	bh=T/HKp5JbA0TTvWWFoCQ/ayf2yy3UYyJBk7cb6yAQ8wc=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=cObyiDRb4NHLiFz1ocLk8sYrWXRftoejhpEa3/CbdSGHkE0LKfV8ZVaFQNFhBy+mj
-	 brdOsuvmmnRGhoYH94/GPx1anwbKmSTb1EwhDB2Cy5fHnY8DDjw2HAsllCb+F6i20+
-	 syTH/VCqrz6QAgMMe943ipoGOxxWoUj1cUJcmJgoStvi942uKFuP/s4udIIipWgm+y
-	 X3Pvy+Nz8boAV5pD2RhGudxwvK8hFqhGNqB9KsWl1XyGAJr/nS4GB5uK989VRYAUFb
-	 p33/CLtx6MNqiLk9blYcNlewQi9jaKKYPCSY5BUtvU/ssPn5f3jFLlLQAhQ9f+WDP9
-	 Hxcs+r5JFxPMg==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <maz@kernel.org>)
-	id 1snwri-00Bfjh-3y;
-	Tue, 10 Sep 2024 10:08:50 +0100
-Date: Tue, 10 Sep 2024 10:08:49 +0100
-Message-ID: <86v7z37u5a.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: 	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Anastasia Belova <abelova@astralinux.ru>
-Cc: Oliver Upton <oliver.upton@linux.dev>,
-	James Morse <james.morse@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2] arm64: KVM: define ESR_ELx_EC_* constants as UL
-In-Reply-To: <20240910085016.32120-1-abelova@astralinux.ru>
-References: <865xr5856r.wl-maz@kernel.org>
-	<20240910085016.32120-1-abelova@astralinux.ru>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/29.4
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	s=arc-20240116; t=1725960196; c=relaxed/simple;
+	bh=vMojZjgYjXqc6slb0V2+tBHjGuo9cqgYxfczasD1iBY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uG+kTGfyZjsIctWTXbHEY7M+Be1ZN1Spu2fxNwmCsJwRigMLQTrS6G9smmH7lbLDK2X/yiZY+50YKeI9FRuqOW2jK4PCGtjuqZxRE4QffaAuOTzUINkJzJ60k5VcbRtdUEjUtbcQUdFmnZJAY6S1U5H5i0ga0K70l/MWo4P9w4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xHfuLcWQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB54AC4CEC3;
+	Tue, 10 Sep 2024 09:23:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1725960196;
+	bh=vMojZjgYjXqc6slb0V2+tBHjGuo9cqgYxfczasD1iBY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=xHfuLcWQ0O9PRnypaZ55gRmYzNp50W8AUHHZ2aJDsDVPb1ZxN273ach4l2J1oFca+
+	 pQFFs+1hcFytbpMkuwENYiUDG+2PFivWNgcixgrhRwM3TVVOEoA+ZQIW1sskGjNGH/
+	 Vmo75yw0nwDtYkRGj61VPOSTvf3XvnLiAaOSkdTg=
+Date: Tue, 10 Sep 2024 11:23:13 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: He Lugang <helugang@uniontech.com>
+Cc: stable@vger.kernel.org, Dumitru Ceclan <mitrutzceclan@gmail.com>,
+	Dumitru Ceclan <dumitru.ceclan@analog.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: Re: [PATCH 6.6.y 2/2] iio: adc: ad7124: fix DT configuration parsing
+Message-ID: <2024091053-boundless-blob-20bd@gregkh>
+References: <2024090914-province-underdone-1eea@gregkh>
+ <20240910090757.649865-1-helugang@uniontech.com>
+ <0ACF46DADA3C2900+20240910090757.649865-2-helugang@uniontech.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: catalin.marinas@arm.com, will@kernel.org, abelova@astralinux.ru, oliver.upton@linux.dev, james.morse@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, lvc-project@linuxtesting.org, stable@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0ACF46DADA3C2900+20240910090757.649865-2-helugang@uniontech.com>
 
-On Tue, 10 Sep 2024 09:50:16 +0100,
-Anastasia Belova <abelova@astralinux.ru> wrote:
+On Tue, Sep 10, 2024 at 05:07:57PM +0800, He Lugang wrote:
+> From: Dumitru Ceclan <mitrutzceclan@gmail.com>
 > 
-> Add explicit casting to prevent expantion of 32th bit of
-> u32 into highest half of u64 in several places.
-> 
-> For example, in inject_abt64:
-> ESR_ELx_EC_DABT_LOW << ESR_ELx_EC_SHIFT = 0x24 << 26.
-> This operation's result is int with 1 in 32th bit.
-> While casting this value into u64 (esr is u64) 1
-> fills 32 highest bits.
-> 
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
-> 
-> Fixes: aa8eff9bfbd5 ("arm64: KVM: fault injection into a guest")
-> Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
+> From: Dumitru Ceclan <dumitru.ceclan@analog.com>
 
-nit: the subject line is misleading, as this doesn't only affect KVM,
-but the whole of the arm64 port (the exception classes form a generic
-architectural construct).
+Why is this 2 different addresses?
 
-This also probably deserve a Cc stable.
+And why was this sent twice?
 
-Will, Catalin: I'm happy to queue this in the KVM tree, but if you are
-taking it directly:
+confused,
 
-Acked-by: Marc Zyngier <maz@kernel.org>
-
-Thanks,
-
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
+greg k-h
 
