@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-74845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A2399731AF
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:13:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07C629734E2
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:44:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABBB11C2567A
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:13:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF0652868DF
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:43:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 490CB19259E;
-	Tue, 10 Sep 2024 10:10:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89E8F2AF15;
+	Tue, 10 Sep 2024 10:41:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RNPsnCOt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qs3h6uI3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0815519066D;
-	Tue, 10 Sep 2024 10:10:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48D3818A6AA;
+	Tue, 10 Sep 2024 10:41:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963001; cv=none; b=Q3VtJvtVCT80l+zP9HqGSbqeZ3uTzeTbObzBhgjuOrCDWMKz68Su0/+zO82I2SRvsIu7r9qbJznB6NAJU0lbvcA4J5iD5hWuar3Xjs3AAY8bcKAWKRPVB0zLJDoNXMrF7Y6swg9EOLs+MsrY0bz4TtXcNhNKQYQ6OLzoOQYPHDQ=
+	t=1725964895; cv=none; b=SQikftjyF5AAiKZJ5w0odn21Kk7I37GyWGGB+71TS2CI8JyBhoPrfnwc59MGY9C5WVHzR4UBJLkKvw8Ne8Nt2ajRyQ9uLx6qiUrzriQIvfJ80eRz+pWXrVKGIIBNHVWbiwStHxe+KsUxHklOvt6v/zrWb5ifmKIvzxTUGa2Mv9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963001; c=relaxed/simple;
-	bh=8qFtgVPolKBnxIoRbAcYSzBdafvtVIojNKWqZE0h2B8=;
+	s=arc-20240116; t=1725964895; c=relaxed/simple;
+	bh=s1iQGj9y/azcqLEG1F5C5Wy00Ytl69BFFtcwR2iLgCk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VUCsjrdCc4veVar4hgVp1XQELLTQMRT/WaAwErexiz6ihhXv+ZgJC5crUwrdfb4c9u6YXak1jZnfrZ+BEY2WFrjpjZRh2FlNOjjdAhLFEX4RLmZpHa4FqMEiaeykn9LjJMU80tn4A4DgxwIKwhmN9PSfp2lRAYlK0rLH9q2wRm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RNPsnCOt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D42EC4CEC6;
-	Tue, 10 Sep 2024 10:10:00 +0000 (UTC)
+	 MIME-Version; b=sFAnwJgXyiYbCbEgtY+gyCby1mBWeb7h7vooJF/Hj/cJ3fIzJ4ufKSJFMGIlFWZC8bs2VZr2IbzfOoIf1JxiAYIEXaJd6PErcpGJyrmCP7L3DOAe7a6c66BXzscgGzUSSuyq790YZwXb8ec1Db4yTOCWMOb4QIJxqXVipEhzh1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qs3h6uI3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C85F3C4CEC3;
+	Tue, 10 Sep 2024 10:41:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963000;
-	bh=8qFtgVPolKBnxIoRbAcYSzBdafvtVIojNKWqZE0h2B8=;
+	s=korg; t=1725964895;
+	bh=s1iQGj9y/azcqLEG1F5C5Wy00Ytl69BFFtcwR2iLgCk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RNPsnCOtRCRNBDSPMfDxvJ8rglqOaA0xe6oNzLKdLOf87mFyNTa8SXxZKbAx+oEyr
-	 tKC/vhTQrlxeO2y2VlLETkNev+n8hYPcq+ohdvIeEmfaOXD+TC1HQz4LTv6UaFq2jN
-	 N3bJPW84/QHajWbbwKH7XbIB2k1u/eWhdvUZgTVI=
+	b=Qs3h6uI3+9pl7CaHzIR8d4EVzDxsUDYV9VZnIWBHUCtn7WBmj2vkUaCVR0ahOHToV
+	 5wdBH7VyKIC30gwFLPtxXeiRFezqSTS4USnAKrO7gJ2MOOTMjZLBbA54bDqeBFvzhJ
+	 RF2cmwzaP+38678JegNfKm7Fq8v6D1Fu+fJpirDY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
+	Jesse Zhang <Jesse.Zhang@amd.com>,
+	Tim Huang <Tim.Huang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 101/192] hwmon: (w83627ehf) Fix underflows seen when writing limit attributes
+Subject: [PATCH 5.10 030/186] drm/amd/pm: check negtive return for table entries
 Date: Tue, 10 Sep 2024 11:32:05 +0200
-Message-ID: <20240910092602.172300246@linuxfoundation.org>
+Message-ID: <20240910092555.826214443@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Jesse Zhang <jesse.zhang@amd.com>
 
-[ Upstream commit 5c1de37969b7bc0abcb20b86e91e70caebbd4f89 ]
+[ Upstream commit f76059fe14395b37ba8d997eb0381b1b9e80a939 ]
 
-DIV_ROUND_CLOSEST() after kstrtol() results in an underflow if a large
-negative number such as -9223372036854775808 is provided by the user.
-Fix it by reordering clamp_val() and DIV_ROUND_CLOSEST() operations.
+Function hwmgr->hwmgr_func->get_num_of_pp_table_entries(hwmgr) returns a negative number
 
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
+Suggested-by: Tim Huang <Tim.Huang@amd.com>
+Reviewed-by: Tim Huang <Tim.Huang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/w83627ehf.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/pm/powerplay/hwmgr/pp_psm.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/hwmon/w83627ehf.c b/drivers/hwmon/w83627ehf.c
-index 939d4c35e713..66d71aba4171 100644
---- a/drivers/hwmon/w83627ehf.c
-+++ b/drivers/hwmon/w83627ehf.c
-@@ -895,7 +895,7 @@ store_target_temp(struct device *dev, struct device_attribute *attr,
- 	if (err < 0)
- 		return err;
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/pp_psm.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/pp_psm.c
+index 31a32a79cfc2..fe70ab4e65bb 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/pp_psm.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/pp_psm.c
+@@ -30,9 +30,8 @@ int psm_init_power_state_table(struct pp_hwmgr *hwmgr)
+ {
+ 	int result;
+ 	unsigned int i;
+-	unsigned int table_entries;
+ 	struct pp_power_state *state;
+-	int size;
++	int size, table_entries;
  
--	val = clamp_val(DIV_ROUND_CLOSEST(val, 1000), 0, 127);
-+	val = DIV_ROUND_CLOSEST(clamp_val(val, 0, 127000), 1000);
+ 	if (hwmgr->hwmgr_func->get_num_of_pp_table_entries == NULL)
+ 		return 0;
+@@ -40,15 +39,19 @@ int psm_init_power_state_table(struct pp_hwmgr *hwmgr)
+ 	if (hwmgr->hwmgr_func->get_power_state_size == NULL)
+ 		return 0;
  
- 	mutex_lock(&data->update_lock);
- 	data->target_temp[nr] = val;
-@@ -920,7 +920,7 @@ store_tolerance(struct device *dev, struct device_attribute *attr,
- 		return err;
+-	hwmgr->num_ps = table_entries = hwmgr->hwmgr_func->get_num_of_pp_table_entries(hwmgr);
++	table_entries = hwmgr->hwmgr_func->get_num_of_pp_table_entries(hwmgr);
  
- 	/* Limit the temp to 0C - 15C */
--	val = clamp_val(DIV_ROUND_CLOSEST(val, 1000), 0, 15);
-+	val = DIV_ROUND_CLOSEST(clamp_val(val, 0, 15000), 1000);
+-	hwmgr->ps_size = size = hwmgr->hwmgr_func->get_power_state_size(hwmgr) +
++	size = hwmgr->hwmgr_func->get_power_state_size(hwmgr) +
+ 					  sizeof(struct pp_power_state);
  
- 	mutex_lock(&data->update_lock);
- 	reg = w83627ehf_read_value(data, W83627EHF_REG_TOLERANCE[nr]);
+-	if (table_entries == 0 || size == 0) {
++	if (table_entries <= 0 || size == 0) {
+ 		pr_warn("Please check whether power state management is supported on this asic\n");
++		hwmgr->num_ps = 0;
++		hwmgr->ps_size = 0;
+ 		return 0;
+ 	}
++	hwmgr->num_ps = table_entries;
++	hwmgr->ps_size = size;
+ 
+ 	hwmgr->ps = kcalloc(table_entries, size, GFP_KERNEL);
+ 	if (hwmgr->ps == NULL)
 -- 
 2.43.0
 
