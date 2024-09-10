@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-74533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 458FF972FD2
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:55:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07173972DDC
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:37:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78AEE1C24963
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:55:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A76A81F2547F
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:37:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC76618C340;
-	Tue, 10 Sep 2024 09:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 338FC188CDC;
+	Tue, 10 Sep 2024 09:37:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yrswbbb+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nc3p4gyJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B79B18B48A;
-	Tue, 10 Sep 2024 09:54:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E787246444;
+	Tue, 10 Sep 2024 09:37:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962084; cv=none; b=OIq3VZaQjp9xZW8dHqghzHcGkKvMZsE5+tY2uyXBFk2I/O/knF7wFwq59zzXpKNBmUAQhHfS5TDfqlpMFy3IY39PL7z7wx2H3RIPfa/xE1P7votdotIvpfTIAF+cIOehDanKjkRrbzak6myM9zn10Ig35Gfpr8t/OK33lAcdtEY=
+	t=1725961022; cv=none; b=tZzUVQAAmoDggKRJid0rtGsCVrhJxT9FaNUiOj6DdfisYlQQq7IFTDgvimNNqnL8uU09wYhYPy1DiEVPArbf/xgnvOzOQfdvyEb1QA2SAB6W+7PEYkd/W/O9KVk7XM2iTJ1k2XPikPHx4UuZo5icog4h3AMjvAsyvS91n49ogFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962084; c=relaxed/simple;
-	bh=lobsw704lsCjqHGl9qujPZBnasEcR0YJJP0TSFaoqyQ=;
+	s=arc-20240116; t=1725961022; c=relaxed/simple;
+	bh=4RQvCVcYNcI4nNjjkVTnanfvL/yDeeNpXcdey3q9u9I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zeni5kO/C4V8VdvJZDeBTlM1GD55M5n65E8JWwtKveQW+CtpmMp/qkLrBs2H4uGoycSkVqeB7eL1TcOCnP7UgZn8SC8vaaL4ktkE+1wBGb2gF/uVRBXwh0tjXjt8Zcy7mXKj5szXXGVRxeToB2BLAoglO6THm0o7Si/BYtFpNbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yrswbbb+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 000F9C4CEC3;
-	Tue, 10 Sep 2024 09:54:43 +0000 (UTC)
+	 MIME-Version; b=EcwOHvaDH0adpYE7XM+hBhg2uLGwq2iH8mHplx2B6hN6qTBy0guKJ7VJLGrsaCJ3vwCFEFTsA0Sa0/MHS3P4fC94xNt1XGiCKe61xsSgAtct1H4YGB417fwbPgiwactdgALp3fowLXVcer8UHbrbbvFqDpebJ5aI3qurjlj97FY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nc3p4gyJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F1A6C4CEC3;
+	Tue, 10 Sep 2024 09:37:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962084;
-	bh=lobsw704lsCjqHGl9qujPZBnasEcR0YJJP0TSFaoqyQ=;
+	s=korg; t=1725961021;
+	bh=4RQvCVcYNcI4nNjjkVTnanfvL/yDeeNpXcdey3q9u9I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yrswbbb+mxXIvV7WzX0Jp7CK1E9MiAA0hSs2yiHTpYHh7gGetiXB81fk12m0L4IPs
-	 iXAoMmJ6NAOpGz1bN4uZbySQVMIm433M5q0yCXpWnt4kme6FOuWeOOal8mbugpplNq
-	 tKYhzR9mTinxxlE0C6UjjrUYdccLn7ddXkl8phRw=
+	b=nc3p4gyJlS/y1NGjXGOQxkQmrZEabmOUQ1AEmxMAZ0iZ4nDRmXYtmnVvR/HZNc4se
+	 So3j6Ut3CQNp2dPR3XLaqBGF2qJOeLYRE9pUMMp3Drb8RBFqalKaS/1Okw+a2nmgXW
+	 Z1NNmQtvkIb6ubby831rGJcHT3BNT336S9x+tfUM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nuno Sa <nuno.sa@analog.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.10 290/375] iio: adc: ad_sigma_delta: fix irq_flags on irq request
-Date: Tue, 10 Sep 2024 11:31:27 +0200
-Message-ID: <20240910092632.310240423@linuxfoundation.org>
+	Jaroslav Kysela <perex@perex.cz>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 26/96] ALSA: hda: Add input value sanity checks to HDMI channel map controls
+Date: Tue, 10 Sep 2024 11:31:28 +0200
+Message-ID: <20240910092542.607009783@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
-References: <20240910092622.245959861@linuxfoundation.org>
+In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
+References: <20240910092541.383432924@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nuno Sa <nuno.sa@analog.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit e81bb580ec08d7503c14c92157d810d306290003 upstream.
+[ Upstream commit 6278056e42d953e207e2afd416be39d09ed2d496 ]
 
-With commit 7b0c9f8fa3d2 ("iio: adc: ad_sigma_delta: Add optional irq
-selection"), we can get the irq line from struct ad_sigma_delta_info
-instead of the spi device. However, in devm_ad_sd_probe_trigger(), when
-getting the irq_flags with irq_get_trigger_type() we are still using
-the spi device irq instead of the one used for devm_request_irq().
+Add a simple sanity check to HD-audio HDMI Channel Map controls.
+Although the value might not be accepted for the actual connection, we
+can filter out some bogus values beforehand, and that should be enough
+for making kselftest happier.
 
-Fixes: 7b0c9f8fa3d2 ("iio: adc: ad_sigma_delta: Add optional irq selection")
-Signed-off-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://patch.msgid.link/20240806-dev-fix-ad-sigma-delta-v1-1-aa25b173c063@analog.com
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Jaroslav Kysela <perex@perex.cz>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lore.kernel.org/20240616073454.16512-7-tiwai@suse.de
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad_sigma_delta.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/hda/hdmi_chmap.c | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
 
---- a/drivers/iio/adc/ad_sigma_delta.c
-+++ b/drivers/iio/adc/ad_sigma_delta.c
-@@ -568,7 +568,7 @@ EXPORT_SYMBOL_NS_GPL(ad_sd_validate_trig
- static int devm_ad_sd_probe_trigger(struct device *dev, struct iio_dev *indio_dev)
- {
- 	struct ad_sigma_delta *sigma_delta = iio_device_get_drvdata(indio_dev);
--	unsigned long irq_flags = irq_get_trigger_type(sigma_delta->spi->irq);
-+	unsigned long irq_flags = irq_get_trigger_type(sigma_delta->irq_line);
- 	int ret;
+diff --git a/sound/hda/hdmi_chmap.c b/sound/hda/hdmi_chmap.c
+index acbe61b8db7b..4463992d2102 100644
+--- a/sound/hda/hdmi_chmap.c
++++ b/sound/hda/hdmi_chmap.c
+@@ -752,6 +752,20 @@ static int hdmi_chmap_ctl_get(struct snd_kcontrol *kcontrol,
+ 	return 0;
+ }
  
- 	if (dev != &sigma_delta->spi->dev) {
++/* a simple sanity check for input values to chmap kcontrol */
++static int chmap_value_check(struct hdac_chmap *hchmap,
++			     const struct snd_ctl_elem_value *ucontrol)
++{
++	int i;
++
++	for (i = 0; i < hchmap->channels_max; i++) {
++		if (ucontrol->value.integer.value[i] < 0 ||
++		    ucontrol->value.integer.value[i] > SNDRV_CHMAP_LAST)
++			return -EINVAL;
++	}
++	return 0;
++}
++
+ static int hdmi_chmap_ctl_put(struct snd_kcontrol *kcontrol,
+ 			      struct snd_ctl_elem_value *ucontrol)
+ {
+@@ -763,6 +777,10 @@ static int hdmi_chmap_ctl_put(struct snd_kcontrol *kcontrol,
+ 	unsigned char chmap[8], per_pin_chmap[8];
+ 	int i, err, ca, prepared = 0;
+ 
++	err = chmap_value_check(hchmap, ucontrol);
++	if (err < 0)
++		return err;
++
+ 	/* No monitor is connected in dyn_pcm_assign.
+ 	 * It's invalid to setup the chmap
+ 	 */
+-- 
+2.43.0
+
 
 
 
