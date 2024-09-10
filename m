@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-74707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74609-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 149AC9730E7
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:05:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2617E973030
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:58:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6A8E9B24EE4
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:05:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93D58B25F3E
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:58:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31B4A18E754;
-	Tue, 10 Sep 2024 10:03:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3B2618B491;
+	Tue, 10 Sep 2024 09:58:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qyERyydD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u2JIBnPw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E323B18787E;
-	Tue, 10 Sep 2024 10:03:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8080617BEAE;
+	Tue, 10 Sep 2024 09:58:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962592; cv=none; b=jexZvXt7kXly0NddMNIuTDp/Lir72h80C+ubKZ5Z5YUs/LRjOJMlXYl2YOk0104qsNuBfsW5tE1vetrpYArbngvlz56JY3tSwYHpjEND/2JSRdSO0ZtllKLYIfwnUD6gOeDEkKe235cbuANqXYbXCR6vYSS9N6J6pxjNY+VOYJA=
+	t=1725962304; cv=none; b=layV1HzaaFqaEgNsSPKfL/NrnylCHngfG8Ep5j6Bbdw5mbwfEmtjQ9lkmmRYJaJAmRz4mmc6n25PcvWKbOI4q5qmQiDw6LIa2f5Fr59dVd9aRVAozIEeFxDbCadhWIYPyNr2tn5CwkOy/3H/hwARL2BuqHG7s1yM6agGeOwLmuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962592; c=relaxed/simple;
-	bh=pQRARi3k0Nx9luEnlg2ZkluTpMoia+nGDp7YN3wSiMM=;
+	s=arc-20240116; t=1725962304; c=relaxed/simple;
+	bh=9Ww1WAp4VlxtTS4UdwlfJGyCK/nU2KHWk2hi7/D/Ckc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DaKpldCDSJTq8QD1AJpOwczP6znvuhU+cas6wpqcEckloq2DuOS+ZvO9CWxZW8e8U7PDU2hC/WULDMXQIbWz7A55Ibzp8kULPnskTaN4n7+0pwtieefyrJF8ds8/rL/TQgDyMLTDgZZJ/z3cmcDR49MtwIC/NJwyJKtQeh/nxOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qyERyydD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DFDDC4CEC3;
-	Tue, 10 Sep 2024 10:03:11 +0000 (UTC)
+	 MIME-Version; b=u5uMu/mTwK35i5EaK12u6eTrlJuhln57fUmYxwCoE9vhQ8cQI3MnPiWUYagZ1WSrlJr7XSvPM7Fm/hfn/D6eY08km4jwE9t2906HWLNA6FsTr2cDtQ1dJ8sMSELpcgDZZqNf01FKqktspJUhWPSHd2KT016ehV71UPAoqt6iUcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u2JIBnPw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05240C4CEC3;
+	Tue, 10 Sep 2024 09:58:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962591;
-	bh=pQRARi3k0Nx9luEnlg2ZkluTpMoia+nGDp7YN3wSiMM=;
+	s=korg; t=1725962304;
+	bh=9Ww1WAp4VlxtTS4UdwlfJGyCK/nU2KHWk2hi7/D/Ckc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qyERyydDMjO2TFLNwPeMssn5i4g1Fe2AM1/WbhrCxm5jhPJ+wKKPKu8DWnQtOpmP+
-	 13HoeO8Z+xh4fiUKpQ2CxDKlwK3nFsQhFxrP0vv6DvU/ummsQzpMPQKn2CNFgIahxy
-	 tiY3rvJdDDaGAiFEoVOxNOSKtEaPzLVv2DM+FIbA=
+	b=u2JIBnPwYa6RbDChZOw8kewW/k7P78zfHQQ8xf4UBBeiu9OQj6AgDFw3ONh1iZKyP
+	 vNuTtfEY+QP2nQoFu5rkvS5dKRA5ElYJuikkksmKnfu1S5L6lZXnXjszuxjkKo/wsf
+	 dH1E0ng3hZFnRsCYRmXaAVbntzj+h+wV61L5DlSI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Imre Deak <imre.deak@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Keith Busch <kbusch@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Dave Jiang <dave.jiang@intel.com>,
+	David Howells <dhowells@redhat.com>,
+	Steve French <stfrench@microsoft.com>,
+	Paulo Alcantara <pc@manguebit.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	linux-cifs@vger.kernel.org,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 085/121] PCI: Add missing bridge lock to pci_bus_lock()
-Date: Tue, 10 Sep 2024 11:32:40 +0200
-Message-ID: <20240910092549.923386286@linuxfoundation.org>
+Subject: [PATCH 6.10 364/375] cifs: Fix SMB1 readv/writev callback in the same way as SMB2/3
+Date: Tue, 10 Sep 2024 11:32:41 +0200
+Message-ID: <20240910092634.852621735@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
-References: <20240910092545.737864202@linuxfoundation.org>
+In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
+References: <20240910092622.245959861@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,165 +67,147 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Williams <dan.j.williams@intel.com>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit a4e772898f8bf2e7e1cf661a12c60a5612c4afab ]
+[ Upstream commit a68c74865f517e26728735aba0ae05055eaff76c ]
 
-One of the true positives that the cfg_access_lock lockdep effort
-identified is this sequence:
+Port a number of SMB2/3 async readv/writev fixes to the SMB1 transport:
 
-  WARNING: CPU: 14 PID: 1 at drivers/pci/pci.c:4886 pci_bridge_secondary_bus_reset+0x5d/0x70
-  RIP: 0010:pci_bridge_secondary_bus_reset+0x5d/0x70
-  Call Trace:
-   <TASK>
-   ? __warn+0x8c/0x190
-   ? pci_bridge_secondary_bus_reset+0x5d/0x70
-   ? report_bug+0x1f8/0x200
-   ? handle_bug+0x3c/0x70
-   ? exc_invalid_op+0x18/0x70
-   ? asm_exc_invalid_op+0x1a/0x20
-   ? pci_bridge_secondary_bus_reset+0x5d/0x70
-   pci_reset_bus+0x1d8/0x270
-   vmd_probe+0x778/0xa10
-   pci_device_probe+0x95/0x120
+    commit a88d60903696c01de577558080ec4fc738a70475
+    cifs: Don't advance the I/O iterator before terminating subrequest
 
-Where pci_reset_bus() users are triggering unlocked secondary bus resets.
-Ironically pci_bus_reset(), several calls down from pci_reset_bus(), uses
-pci_bus_lock() before issuing the reset which locks everything *but* the
-bridge itself.
+    commit ce5291e56081730ec7d87bc9aa41f3de73ff3256
+    cifs: Defer read completion
 
-For the same motivation as adding:
+    commit 1da29f2c39b67b846b74205c81bf0ccd96d34727
+    netfs, cifs: Fix handling of short DIO read
 
-  bridge = pci_upstream_bridge(dev);
-  if (bridge)
-    pci_dev_lock(bridge);
-
-to pci_reset_function() for the "bus" and "cxl_bus" reset cases, add
-pci_dev_lock() for @bus->self to pci_bus_lock().
-
-Link: https://lore.kernel.org/r/171711747501.1628941.15217746952476635316.stgit@dwillia2-xfh.jf.intel.com
-Reported-by: Imre Deak <imre.deak@intel.com>
-Closes: http://lore.kernel.org/r/6657833b3b5ae_14984b29437@dwillia2-xfh.jf.intel.com.notmuch
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-[bhelgaas: squash in recursive locking deadlock fix from Keith Busch:
-https://lore.kernel.org/r/20240711193650.701834-1-kbusch@meta.com]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Hans de Goede <hdegoede@redhat.com>
-Tested-by: Kalle Valo <kvalo@kernel.org>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Fixes: 3ee1a1fc3981 ("cifs: Cut over to using netfslib")
+Signed-off-by: David Howells <dhowells@redhat.com>
+Reported-by: Steve French <stfrench@microsoft.com>
+Reviewed-by: Paulo Alcantara <pc@manguebit.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: linux-cifs@vger.kernel.org
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci.c | 35 +++++++++++++++++++++--------------
- 1 file changed, 21 insertions(+), 14 deletions(-)
+ fs/smb/client/cifssmb.c | 54 +++++++++++++++++++++++++++++++++++------
+ 1 file changed, 46 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index deafd229ef8b..41050a35631f 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -5200,10 +5200,12 @@ static void pci_bus_lock(struct pci_bus *bus)
- {
- 	struct pci_dev *dev;
- 
-+	pci_dev_lock(bus->self);
- 	list_for_each_entry(dev, &bus->devices, bus_list) {
--		pci_dev_lock(dev);
- 		if (dev->subordinate)
- 			pci_bus_lock(dev->subordinate);
-+		else
-+			pci_dev_lock(dev);
- 	}
+diff --git a/fs/smb/client/cifssmb.c b/fs/smb/client/cifssmb.c
+index 6dce70f17208..cfae2e918209 100644
+--- a/fs/smb/client/cifssmb.c
++++ b/fs/smb/client/cifssmb.c
+@@ -1261,16 +1261,32 @@ CIFS_open(const unsigned int xid, struct cifs_open_parms *oparms, int *oplock,
+ 	return rc;
  }
  
-@@ -5215,8 +5217,10 @@ static void pci_bus_unlock(struct pci_bus *bus)
- 	list_for_each_entry(dev, &bus->devices, bus_list) {
- 		if (dev->subordinate)
- 			pci_bus_unlock(dev->subordinate);
--		pci_dev_unlock(dev);
-+		else
-+			pci_dev_unlock(dev);
- 	}
-+	pci_dev_unlock(bus->self);
- }
- 
- /* Return 1 on successful lock, 0 on contention */
-@@ -5224,15 +5228,15 @@ static int pci_bus_trylock(struct pci_bus *bus)
- {
- 	struct pci_dev *dev;
- 
-+	if (!pci_dev_trylock(bus->self))
-+		return 0;
++static void cifs_readv_worker(struct work_struct *work)
++{
++	struct cifs_io_subrequest *rdata =
++		container_of(work, struct cifs_io_subrequest, subreq.work);
 +
- 	list_for_each_entry(dev, &bus->devices, bus_list) {
--		if (!pci_dev_trylock(dev))
--			goto unlock;
- 		if (dev->subordinate) {
--			if (!pci_bus_trylock(dev->subordinate)) {
--				pci_dev_unlock(dev);
-+			if (!pci_bus_trylock(dev->subordinate))
- 				goto unlock;
--			}
--		}
-+		} else if (!pci_dev_trylock(dev))
-+			goto unlock;
- 	}
- 	return 1;
++	netfs_subreq_terminated(&rdata->subreq,
++				(rdata->result == 0 || rdata->result == -EAGAIN) ?
++				rdata->got_bytes : rdata->result, true);
++}
++
+ static void
+ cifs_readv_callback(struct mid_q_entry *mid)
+ {
+ 	struct cifs_io_subrequest *rdata = mid->callback_data;
++	struct netfs_inode *ictx = netfs_inode(rdata->rreq->inode);
+ 	struct cifs_tcon *tcon = tlink_tcon(rdata->req->cfile->tlink);
+ 	struct TCP_Server_Info *server = tcon->ses->server;
+ 	struct smb_rqst rqst = { .rq_iov = rdata->iov,
+ 				 .rq_nvec = 2,
+ 				 .rq_iter = rdata->subreq.io_iter };
+-	struct cifs_credits credits = { .value = 1, .instance = 0 };
++	struct cifs_credits credits = {
++		.value = 1,
++		.instance = 0,
++		.rreq_debug_id = rdata->rreq->debug_id,
++		.rreq_debug_index = rdata->subreq.debug_index,
++	};
  
-@@ -5240,8 +5244,10 @@ static int pci_bus_trylock(struct pci_bus *bus)
- 	list_for_each_entry_continue_reverse(dev, &bus->devices, bus_list) {
- 		if (dev->subordinate)
- 			pci_bus_unlock(dev->subordinate);
--		pci_dev_unlock(dev);
-+		else
-+			pci_dev_unlock(dev);
+ 	cifs_dbg(FYI, "%s: mid=%llu state=%d result=%d bytes=%zu\n",
+ 		 __func__, mid->mid, mid->mid_state, rdata->result,
+@@ -1282,6 +1298,7 @@ cifs_readv_callback(struct mid_q_entry *mid)
+ 		if (server->sign) {
+ 			int rc = 0;
+ 
++			iov_iter_truncate(&rqst.rq_iter, rdata->got_bytes);
+ 			rc = cifs_verify_signature(&rqst, server,
+ 						  mid->sequence_number);
+ 			if (rc)
+@@ -1306,13 +1323,21 @@ cifs_readv_callback(struct mid_q_entry *mid)
+ 		rdata->result = -EIO;
  	}
-+	pci_dev_unlock(bus->self);
- 	return 0;
+ 
+-	if (rdata->result == 0 || rdata->result == -EAGAIN)
+-		iov_iter_advance(&rdata->subreq.io_iter, rdata->got_bytes);
++	if (rdata->result == -ENODATA) {
++		__set_bit(NETFS_SREQ_HIT_EOF, &rdata->subreq.flags);
++		rdata->result = 0;
++	} else {
++		if (rdata->got_bytes < rdata->actual_len &&
++		    rdata->subreq.start + rdata->subreq.transferred + rdata->got_bytes ==
++		    ictx->remote_i_size) {
++			__set_bit(NETFS_SREQ_HIT_EOF, &rdata->subreq.flags);
++			rdata->result = 0;
++		}
++	}
++
+ 	rdata->credits.value = 0;
+-	netfs_subreq_terminated(&rdata->subreq,
+-				(rdata->result == 0 || rdata->result == -EAGAIN) ?
+-				rdata->got_bytes : rdata->result,
+-				false);
++	INIT_WORK(&rdata->subreq.work, cifs_readv_worker);
++	queue_work(cifsiod_wq, &rdata->subreq.work);
+ 	release_mid(mid);
+ 	add_credits(server, &credits, 0);
+ }
+@@ -1619,9 +1644,15 @@ static void
+ cifs_writev_callback(struct mid_q_entry *mid)
+ {
+ 	struct cifs_io_subrequest *wdata = mid->callback_data;
++	struct TCP_Server_Info *server = wdata->server;
+ 	struct cifs_tcon *tcon = tlink_tcon(wdata->req->cfile->tlink);
+ 	WRITE_RSP *smb = (WRITE_RSP *)mid->resp_buf;
+-	struct cifs_credits credits = { .value = 1, .instance = 0 };
++	struct cifs_credits credits = {
++		.value = 1,
++		.instance = 0,
++		.rreq_debug_id = wdata->rreq->debug_id,
++		.rreq_debug_index = wdata->subreq.debug_index,
++	};
+ 	ssize_t result;
+ 	size_t written;
+ 
+@@ -1657,9 +1688,16 @@ cifs_writev_callback(struct mid_q_entry *mid)
+ 		break;
+ 	}
+ 
++	trace_smb3_rw_credits(credits.rreq_debug_id, credits.rreq_debug_index,
++			      wdata->credits.value,
++			      server->credits, server->in_flight,
++			      0, cifs_trace_rw_credits_write_response_clear);
+ 	wdata->credits.value = 0;
+ 	cifs_write_subrequest_terminated(wdata, result, true);
+ 	release_mid(mid);
++	trace_smb3_rw_credits(credits.rreq_debug_id, credits.rreq_debug_index, 0,
++			      server->credits, server->in_flight,
++			      credits.value, cifs_trace_rw_credits_write_response_add);
+ 	add_credits(tcon->ses->server, &credits, 0);
  }
  
-@@ -5273,9 +5279,10 @@ static void pci_slot_lock(struct pci_slot *slot)
- 	list_for_each_entry(dev, &slot->bus->devices, bus_list) {
- 		if (!dev->slot || dev->slot != slot)
- 			continue;
--		pci_dev_lock(dev);
- 		if (dev->subordinate)
- 			pci_bus_lock(dev->subordinate);
-+		else
-+			pci_dev_lock(dev);
- 	}
- }
- 
-@@ -5301,14 +5308,13 @@ static int pci_slot_trylock(struct pci_slot *slot)
- 	list_for_each_entry(dev, &slot->bus->devices, bus_list) {
- 		if (!dev->slot || dev->slot != slot)
- 			continue;
--		if (!pci_dev_trylock(dev))
--			goto unlock;
- 		if (dev->subordinate) {
- 			if (!pci_bus_trylock(dev->subordinate)) {
- 				pci_dev_unlock(dev);
- 				goto unlock;
- 			}
--		}
-+		} else if (!pci_dev_trylock(dev))
-+			goto unlock;
- 	}
- 	return 1;
- 
-@@ -5319,7 +5325,8 @@ static int pci_slot_trylock(struct pci_slot *slot)
- 			continue;
- 		if (dev->subordinate)
- 			pci_bus_unlock(dev->subordinate);
--		pci_dev_unlock(dev);
-+		else
-+			pci_dev_unlock(dev);
- 	}
- 	return 0;
- }
 -- 
 2.43.0
 
