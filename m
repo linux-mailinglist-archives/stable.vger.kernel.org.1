@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-74638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74175-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74B3097306B
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:01:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1619C972DE0
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:37:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A61F01C24B05
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:01:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C302228524D
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:37:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D87918E773;
-	Tue, 10 Sep 2024 09:59:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EE0E46444;
+	Tue, 10 Sep 2024 09:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="phfrlFCG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OXKLKDGn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C2FB18E754;
-	Tue, 10 Sep 2024 09:59:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D3A7188CC1;
+	Tue, 10 Sep 2024 09:37:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962387; cv=none; b=JBW9+G+v8oUtBzxEPF+p01HdnF3RGjYoy+fj/9d82cUjatwvYeK3+c7SkLdWLd45F4xxwP7NFxY+MsRd5dQMwIb6vyZM0Ev37CXdhoSK77Lb82j6vxQKeTi5IHwhunX984lAqoxNPyDCZOV240YaVTjfprEAoTITvbNtebXNfdY=
+	t=1725961034; cv=none; b=N9ZmBnN3QZSR4X4XAHJZelvK4J+EMXmAjrxs3vVpa+S6q/anLGbnc/a9zhoD/DwiX9SVFYd4XDzvRPrtmN33VpnYk3XUyxLl7f67hsLYLX6ivAja1t38VWblwuq6qrtr/CudGMQyfRu9A8+RzCQBKCl3H15TJkaT+7QIo4Hkc1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962387; c=relaxed/simple;
-	bh=29dBkXU4A/NlltPgdZTeSneE7XFsqDZSMrvVDi2Adw8=;
+	s=arc-20240116; t=1725961034; c=relaxed/simple;
+	bh=CeidDjqvh8AE7DiULYlFgfxAEN0q8MSoGx9+9aP4bK4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aaojkp2h6NKuUk7DXak7Uzs4kwal2j1YP3x5tl/2KbVBCAWGe8nnUnG7OB+SRTpFreoALxAaTGBILVuX+/cRqFe1vQsNs2+CgzT72mOBDXvszXa5AxY04PI2sbM1F9GGGpA1zk3aQ5qL/uVhm1B7eL+HfiOGK7MpM6Cr+G3WgsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=phfrlFCG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D398C4CEC6;
-	Tue, 10 Sep 2024 09:59:46 +0000 (UTC)
+	 MIME-Version; b=ZYYwMGFq+LSf2lMS+Y9B86MeEt+3hCh9pPMIoe9AS/1NtXNkXKEtXLxyGZMkgtMptw23V16B4WEM2olBzQ+2+A7nun5IKnwS6xBuWzoJhIiiaPfo4rqPafB7JkxUBBtGNz0x9FxctVzRKidgMdGTT/Qh8GYzQ8uDb2xI2Quy3tE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OXKLKDGn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B036C4CEC3;
+	Tue, 10 Sep 2024 09:37:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962386;
-	bh=29dBkXU4A/NlltPgdZTeSneE7XFsqDZSMrvVDi2Adw8=;
+	s=korg; t=1725961033;
+	bh=CeidDjqvh8AE7DiULYlFgfxAEN0q8MSoGx9+9aP4bK4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=phfrlFCGLeULtqTau6aPZmeUq9zdQnDX33ukJN0EO7wE6hSsKqbp0k851/bffXuK6
-	 SVlC8ex8jhq1akRc4YTVmK92VGZ+Spd5tGHJD3XwC2Nk3n6OMpzkLqQQ372Vr4dvz+
-	 nS6ZtPdXV5O5x/HcXOFdTQx5AQMGEK46CKLz9DTw=
+	b=OXKLKDGnF5L6f+tnKN6IJwM4Hm7ocmfC5sd8RP4s6BHNguI44A7B1udKJ2TBvXUPZ
+	 wWmHO4zlP7RYzTvCGpkhuGiEP9933TT3qIkQI4E7EflvqCK+uhJhwCpoWsUA5rof2n
+	 9sgF1h5aOHvoN0cUPZ/Y1E7+HI28v2KoyJCq4/8g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Andreev <andreev@swemel.ru>,
-	Casey Schaufler <casey@schaufler-ca.com>,
+	Yunjian Wang <wangyunjian@huawei.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 017/121] smack: tcp: ipv4, fix incorrect labeling
+Subject: [PATCH 4.19 30/96] netfilter: nf_conncount: fix wrong variable type
 Date: Tue, 10 Sep 2024 11:31:32 +0200
-Message-ID: <20240910092546.560501695@linuxfoundation.org>
+Message-ID: <20240910092542.817712898@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
-References: <20240910092545.737864202@linuxfoundation.org>
+In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
+References: <20240910092541.383432924@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Casey Schaufler <casey@schaufler-ca.com>
+From: Yunjian Wang <wangyunjian@huawei.com>
 
-[ Upstream commit 2fe209d0ad2e2729f7e22b9b31a86cc3ff0db550 ]
+[ Upstream commit 0b88d1654d556264bcd24a9cb6383f0888e30131 ]
 
-Currently, Smack mirrors the label of incoming tcp/ipv4 connections:
-when a label 'foo' connects to a label 'bar' with tcp/ipv4,
-'foo' always gets 'foo' in returned ipv4 packets. So,
-1) returned packets are incorrectly labeled ('foo' instead of 'bar')
-2) 'bar' can write to 'foo' without being authorized to write.
+Now there is a issue is that code checks reports a warning: implicit
+narrowing conversion from type 'unsigned int' to small type 'u8' (the
+'keylen' variable). Fix it by removing the 'keylen' variable.
 
-Here is a scenario how to see this:
-
-* Take two machines, let's call them C and S,
-   with active Smack in the default state
-   (no settings, no rules, no labeled hosts, only builtin labels)
-
-* At S, add Smack rule 'foo bar w'
-   (labels 'foo' and 'bar' are instantiated at S at this moment)
-
-* At S, at label 'bar', launch a program
-   that listens for incoming tcp/ipv4 connections
-
-* From C, at label 'foo', connect to the listener at S.
-   (label 'foo' is instantiated at C at this moment)
-   Connection succeedes and works.
-
-* Send some data in both directions.
-* Collect network traffic of this connection.
-
-All packets in both directions are labeled with the CIPSO
-of the label 'foo'. Hence, label 'bar' writes to 'foo' without
-being authorized, and even without ever being known at C.
-
-If anybody cares: exactly the same happens with DCCP.
-
-This behavior 1st manifested in release 2.6.29.4 (see Fixes below)
-and it looks unintentional. At least, no explanation was provided.
-
-I changed returned packes label into the 'bar',
-to bring it into line with the Smack documentation claims.
-
-Signed-off-by: Konstantin Andreev <andreev@swemel.ru>
-Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
+Signed-off-by: Yunjian Wang <wangyunjian@huawei.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/smack/smack_lsm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nf_conncount.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
-index 072ce1ef6efb..7d04b21737cf 100644
---- a/security/smack/smack_lsm.c
-+++ b/security/smack/smack_lsm.c
-@@ -4196,7 +4196,7 @@ static int smack_inet_conn_request(struct sock *sk, struct sk_buff *skb,
- 	rcu_read_unlock();
+diff --git a/net/netfilter/nf_conncount.c b/net/netfilter/nf_conncount.c
+index 7554c56b2e63..d189ca7c2c02 100644
+--- a/net/netfilter/nf_conncount.c
++++ b/net/netfilter/nf_conncount.c
+@@ -309,7 +309,6 @@ insert_tree(struct net *net,
+ 	struct nf_conncount_rb *rbconn;
+ 	struct nf_conncount_tuple *conn;
+ 	unsigned int count = 0, gc_count = 0;
+-	u8 keylen = data->keylen;
+ 	bool do_gc = true;
  
- 	if (hskp == NULL)
--		rc = netlbl_req_setattr(req, &skp->smk_netlabel);
-+		rc = netlbl_req_setattr(req, &ssp->smk_out->smk_netlabel);
- 	else
- 		netlbl_req_delattr(req);
+ 	spin_lock_bh(&nf_conncount_locks[hash]);
+@@ -321,7 +320,7 @@ insert_tree(struct net *net,
+ 		rbconn = rb_entry(*rbnode, struct nf_conncount_rb, node);
  
+ 		parent = *rbnode;
+-		diff = key_diff(key, rbconn->key, keylen);
++		diff = key_diff(key, rbconn->key, data->keylen);
+ 		if (diff < 0) {
+ 			rbnode = &((*rbnode)->rb_left);
+ 		} else if (diff > 0) {
+@@ -366,7 +365,7 @@ insert_tree(struct net *net,
+ 
+ 	conn->tuple = *tuple;
+ 	conn->zone = *zone;
+-	memcpy(rbconn->key, key, sizeof(u32) * keylen);
++	memcpy(rbconn->key, key, sizeof(u32) * data->keylen);
+ 
+ 	nf_conncount_list_init(&rbconn->list);
+ 	list_add(&conn->node, &rbconn->list.head);
+@@ -391,7 +390,6 @@ count_tree(struct net *net,
+ 	struct rb_node *parent;
+ 	struct nf_conncount_rb *rbconn;
+ 	unsigned int hash;
+-	u8 keylen = data->keylen;
+ 
+ 	hash = jhash2(key, data->keylen, conncount_rnd) % CONNCOUNT_SLOTS;
+ 	root = &data->root[hash];
+@@ -402,7 +400,7 @@ count_tree(struct net *net,
+ 
+ 		rbconn = rb_entry(parent, struct nf_conncount_rb, node);
+ 
+-		diff = key_diff(key, rbconn->key, keylen);
++		diff = key_diff(key, rbconn->key, data->keylen);
+ 		if (diff < 0) {
+ 			parent = rcu_dereference_raw(parent->rb_left);
+ 		} else if (diff > 0) {
 -- 
 2.43.0
 
