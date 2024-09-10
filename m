@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-74161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EF49972DD2
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:36:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F052E97307A
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:01:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4160D1C248A4
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:36:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 994151F255AC
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:01:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAFF0189BBA;
-	Tue, 10 Sep 2024 09:36:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C371B18FC73;
+	Tue, 10 Sep 2024 10:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ej2oApHw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g5O0AcXP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81BE0188CDC;
-	Tue, 10 Sep 2024 09:36:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A9AB18FC72;
+	Tue, 10 Sep 2024 10:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725960992; cv=none; b=fB5e/LzmG3oFHUyh9AzV9GGfRFqcx1E7LpgKVV/Z93b3pv93iY2igTPgylxR1fJplDo7dyHUNLPkziEM+A01nuZfALE9XX846idan++4NRCAA73Ndw5vyfoaRFUiBceaFH2z5FPDTfBmJP2yBUbYlcYLg29qess8OS9pGTlr7DQ=
+	t=1725962428; cv=none; b=sJBbhjjtJG5gD+bOjpUwC1CYjM3jSx8YRMgFYoNPVYr9v40cyYD25OGfRiJCLqQAf7ilZFjhe129ars2x2FnBKnaYAkVU9C3eqh828aEhsnm9U3rYQsFFbmsIZyyKG0qQwr4T9CYY6PxQ+ZoYCu09+pRAYdIN8Xm13aV979zc5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725960992; c=relaxed/simple;
-	bh=4FbHFZt06MYGnYBe21kyRV6Zl3gr7la7zTwk+mPXcok=;
+	s=arc-20240116; t=1725962428; c=relaxed/simple;
+	bh=4MtkY8I8sa/M9c1vgPpx6t8C7wCBNnogDphprVvR4ls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fxYoiMAPBeAdjIOsYLa2XuFTGbrsJTHruV7QIihjewIHvPNQPjRi+kos0ikKxyh+ogEaplDEMZH5qBEWOqJ04V8tLNVVbjGIr/fTTMOHwc1P3cfTj96otJwWjEb9Nr1HNA3r61iK90oqPZvidF9Yf6lDDs8RKVaO93/ZMdvC0xs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ej2oApHw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5C13C4CEC3;
-	Tue, 10 Sep 2024 09:36:31 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mZfRiEVndX/Q/p5dWPeZYN3+8hrIDcKVyW8uq0WS4ig+R33f8TlvEzGTuLL3XUU11vpXDXxrbkG/uCqmImo9YI7HQkD48Vk9G1ZHVTPvwJjV6Xk90IYKS3tWAXP8ngGXum+no0P03syi56o2bG5aPxdcnbRG2tnsXOhkWX17AM4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g5O0AcXP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AFB0C4CEC3;
+	Tue, 10 Sep 2024 10:00:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725960992;
-	bh=4FbHFZt06MYGnYBe21kyRV6Zl3gr7la7zTwk+mPXcok=;
+	s=korg; t=1725962427;
+	bh=4MtkY8I8sa/M9c1vgPpx6t8C7wCBNnogDphprVvR4ls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ej2oApHw+UGbaCcbJacQSHOTei0uqLutUhpNV5h3/q8ieJldmYutQlmilJ6WA73xE
-	 L2ZYruxr9KzpTevX+BRBxKGasTdlB2mScUBd5cIWHInWIPXjr2yMHubte4qQ5btxPA
-	 6Ur50ObvEVKSIstSt5R0BxzpYPLE/yCUaMDCvJCc=
+	b=g5O0AcXP4DO00Z/AjHve09d9BQopElZ4XcHEhlHi+at478rWkhDrKj0QVapW30gxe
+	 xg6wxgXmigB51P8q60R9LXGgf7QZ2ikLvDQ5qcH9z061RvlGVy7LGvIDBKFcsb2xOA
+	 q2AQg6RZ3jmrAlyS3aDQ36Q0pkcHMxGmp5RZSIXU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	Takashi Iwai <tiwai@suse.de>
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+d59c4387bfb6eced94e2@syzkaller.appspotmail.com>,
-	Andrey Konovalov <andreyknvl@google.com>,
-	Hillf Danton <hdanton@sina.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>
-Subject: [PATCH 4.19 17/96] ALSA: usb-audio: Fix gpf in snd_usb_pipe_sanity_check
-Date: Tue, 10 Sep 2024 11:31:19 +0200
-Message-ID: <20240910092542.171362807@linuxfoundation.org>
+	Tim Huang <Tim.Huang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 005/121] drm/amdgpu: fix overflowed array index read warning
+Date: Tue, 10 Sep 2024 11:31:20 +0200
+Message-ID: <20240910092545.994088407@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
-References: <20240910092541.383432924@linuxfoundation.org>
+In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
+References: <20240910092545.737864202@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +61,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hillf Danton <hdanton@sina.com>
+From: Tim Huang <Tim.Huang@amd.com>
 
-[ Upstream commit 5d78e1c2b7f4be00bbe62141603a631dc7812f35 ]
+[ Upstream commit ebbc2ada5c636a6a63d8316a3408753768f5aa9f ]
 
-syzbot found the following crash on:
+Clear overflowed array index read warning by cast operation.
 
-  general protection fault: 0000 [#1] SMP KASAN
-  RIP: 0010:snd_usb_pipe_sanity_check+0x80/0x130 sound/usb/helper.c:75
-  Call Trace:
-    snd_usb_motu_microbookii_communicate.constprop.0+0xa0/0x2fb  sound/usb/quirks.c:1007
-    snd_usb_motu_microbookii_boot_quirk sound/usb/quirks.c:1051 [inline]
-    snd_usb_apply_boot_quirk.cold+0x163/0x370 sound/usb/quirks.c:1280
-    usb_audio_probe+0x2ec/0x2010 sound/usb/card.c:576
-    usb_probe_interface+0x305/0x7a0 drivers/usb/core/driver.c:361
-    really_probe+0x281/0x650 drivers/base/dd.c:548
-    ....
-
-It was introduced in commit 801ebf1043ae for checking pipe and endpoint
-types. It is fixed by adding a check of the ep pointer in question.
-
-BugLink: https://syzkaller.appspot.com/bug?extid=d59c4387bfb6eced94e2
-Reported-by: syzbot <syzbot+d59c4387bfb6eced94e2@syzkaller.appspotmail.com>
-Fixes: 801ebf1043ae ("ALSA: usb-audio: Sanity checks for each pipe and EP types")
-Cc: Andrey Konovalov <andreyknvl@google.com>
-Signed-off-by: Hillf Danton <hdanton@sina.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Tim Huang <Tim.Huang@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/helper.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/sound/usb/helper.c
-+++ b/sound/usb/helper.c
-@@ -85,7 +85,7 @@ int snd_usb_pipe_sanity_check(struct usb
- 	struct usb_host_endpoint *ep;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
+index e5c83e164d82..8fafda87d4ce 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
+@@ -437,8 +437,9 @@ static ssize_t amdgpu_debugfs_ring_read(struct file *f, char __user *buf,
+ 					size_t size, loff_t *pos)
+ {
+ 	struct amdgpu_ring *ring = file_inode(f)->i_private;
+-	int r, i;
+ 	uint32_t value, result, early[3];
++	loff_t i;
++	int r;
  
- 	ep = usb_pipe_endpoint(dev, pipe);
--	if (usb_pipetype(pipe) != pipetypes[usb_endpoint_type(&ep->desc)])
-+	if (!ep || usb_pipetype(pipe) != pipetypes[usb_endpoint_type(&ep->desc)])
+ 	if (*pos & 3 || size & 3)
  		return -EINVAL;
- 	return 0;
- }
+-- 
+2.43.0
+
 
 
 
