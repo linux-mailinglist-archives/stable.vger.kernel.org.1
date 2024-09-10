@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-74802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75025-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 782B197317F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:12:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EE649732B8
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:26:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2311A1F282F2
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:12:17 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2AF6EB2179A
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:24:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A43FA193439;
-	Tue, 10 Sep 2024 10:07:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B53451922EF;
+	Tue, 10 Sep 2024 10:18:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CIZCi21l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F9hbXMuE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6005C18C331;
-	Tue, 10 Sep 2024 10:07:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73324172BAE;
+	Tue, 10 Sep 2024 10:18:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962872; cv=none; b=evI47PCKqFbXymw00MKPIPwBwZNmvsM+WEPYUpnxkIHXtcxgQK4fk3MvcXnSFrOmwyEhWpWyR2BNHcY7vM7kMIaC6Ge9f4e+dRwy01tI51Lr2f/IUH5Xmsr7IFSsEILC77HIbAN/bFJUQVnXd9Mj6ppwvSe4StpO6uf9Y2GQT6w=
+	t=1725963529; cv=none; b=rj34UaUe5N+aF4oekWhQbTJi3NN9GcYMVlGAZRGulmk8uGvb88xB9NQxLSZ7cI8nzkR4iE1mxnC8SXbc2DC9Qx+50iPLeKYul+KuMUMIYRGtIZa0ARWaIvlncPmlqzvdhNdcWCkj27Mrlfnj+FNNyY4KJLgo/K5y8rALlyNXDqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962872; c=relaxed/simple;
-	bh=Wr+SzdIvNrXuXiP0MF0itxeo51LqNaA/gCPxHBWUEsY=;
+	s=arc-20240116; t=1725963529; c=relaxed/simple;
+	bh=YRRO+M0oLbR4ioU2mslAHWQoVaKELPMTVjdfquHMNnc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ab9hFLkfxSnnANea0GH4Tn4saWR8IBIvPk7R2HfETa3YQ581h+5Jb4gQVafQdT9ZYZl4L6RweM4Hs74lc2bKo7s7BgxdCC4Z9QH54TrfC48nGhxL4ZL42rBupMcDhQiIjverm74OmC7/xRl+h3tuj0Mqsko6jNCleoPrfLJtTFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CIZCi21l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0316C4CEC3;
-	Tue, 10 Sep 2024 10:07:51 +0000 (UTC)
+	 MIME-Version; b=tzqcuybNiKCNHzweBDuBY6LRP7QUhoTO8rJnxF0PYJ7M1P2D0uPoAbOgkPOIM4NrXzIQ6Ew+b0dN+mzvNQ+wDij7jiUQ1s1QXreb3icknMCuh7TJB8n1QLD3aWQJAhnuyLO2DQ1iibq4J/EwpeMUG4XJYRzmtzTyqyeA39iLE98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F9hbXMuE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E48EEC4CEC6;
+	Tue, 10 Sep 2024 10:18:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962872;
-	bh=Wr+SzdIvNrXuXiP0MF0itxeo51LqNaA/gCPxHBWUEsY=;
+	s=korg; t=1725963529;
+	bh=YRRO+M0oLbR4ioU2mslAHWQoVaKELPMTVjdfquHMNnc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CIZCi21lXFd1JqQK+VrxHeqKQobejzVwZtrrx9Tgl7VNp7/2QXndIZv+DQVE2EY3F
-	 wyPpFEmGBQmlkXhKdEmzZr2aLuo1W6oxKe6g79Hu0oOXPfZtGUrXvg94YUoUR3hfKS
-	 5Z+36QB+Abg130UKfSdl9LvC87ksUBUhTAJPQISA=
+	b=F9hbXMuEj9XblNBdob6rKEtm1/DRgD8GojJyMBt3Lt3ApMVlNjnHcETR5/gimlvl1
+	 3tlRwcco5oaMKlGpRGyWoJ/q6lrS3u0AYTlhwx5Ga7u+xLs36/mUTaArjaR4/yzc5p
+	 WtNpi/EF1HSnFPb2MmL9H+b2SWiagO/XiQfM4oLo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Likun Gao <Likun.Gao@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 059/192] drm/amdgpu: Fix smatch static checker warning
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	kernel test robot <lkp@intel.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>
+Subject: [PATCH 5.15 061/214] i2c: Use IS_REACHABLE() for substituting empty ACPI functions
 Date: Tue, 10 Sep 2024 11:31:23 +0200
-Message-ID: <20240910092600.404961357@linuxfoundation.org>
+Message-ID: <20240910092601.265077999@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hawking Zhang <Hawking.Zhang@amd.com>
+From: Richard Fitzgerald <rf@opensource.cirrus.com>
 
-[ Upstream commit bdbdc7cecd00305dc844a361f9883d3a21022027 ]
+commit 71833e79a42178d8a50b5081c98c78ace9325628 upstream.
 
-adev->gfx.imu.funcs could be NULL
+Replace IS_ENABLED() with IS_REACHABLE() to substitute empty stubs for:
+    i2c_acpi_get_i2c_resource()
+    i2c_acpi_client_count()
+    i2c_acpi_find_bus_speed()
+    i2c_acpi_new_device_by_fwnode()
+    i2c_adapter *i2c_acpi_find_adapter_by_handle()
+    i2c_acpi_waive_d0_probe()
 
-Signed-off-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Reviewed-by: Likun Gao <Likun.Gao@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+commit f17c06c6608a ("i2c: Fix conditional for substituting empty ACPI
+functions") partially fixed this conditional to depend on CONFIG_I2C,
+but used IS_ENABLED(), which is wrong since CONFIG_I2C is tristate.
+
+CONFIG_ACPI is boolean but let's also change it to use IS_REACHABLE()
+to future-proof it against becoming tristate.
+
+Somehow despite testing various combinations of CONFIG_I2C and CONFIG_ACPI
+we missed the combination CONFIG_I2C=m, CONFIG_ACPI=y.
+
+Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Fixes: f17c06c6608a ("i2c: Fix conditional for substituting empty ACPI functions")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202408141333.gYnaitcV-lkp@intel.com/
+Reviewed-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ include/linux/i2c.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-index 1f9f7fdd4b8e..c76895cca4d9 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v11_0.c
-@@ -4330,11 +4330,11 @@ static int gfx_v11_0_hw_init(void *handle)
- 			/* RLC autoload sequence 1: Program rlc ram */
- 			if (adev->gfx.imu.funcs->program_rlc_ram)
- 				adev->gfx.imu.funcs->program_rlc_ram(adev);
-+			/* rlc autoload firmware */
-+			r = gfx_v11_0_rlc_backdoor_autoload_enable(adev);
-+			if (r)
-+				return r;
- 		}
--		/* rlc autoload firmware */
--		r = gfx_v11_0_rlc_backdoor_autoload_enable(adev);
--		if (r)
--			return r;
- 	} else {
- 		if (adev->firmware.load_type == AMDGPU_FW_LOAD_DIRECT) {
- 			if (adev->gfx.imu.funcs && (amdgpu_dpm > 0)) {
--- 
-2.43.0
-
+--- a/include/linux/i2c.h
++++ b/include/linux/i2c.h
+@@ -1025,7 +1025,7 @@ static inline int of_i2c_get_board_info(
+ struct acpi_resource;
+ struct acpi_resource_i2c_serialbus;
+ 
+-#if IS_ENABLED(CONFIG_ACPI) && IS_ENABLED(CONFIG_I2C)
++#if IS_REACHABLE(CONFIG_ACPI) && IS_REACHABLE(CONFIG_I2C)
+ bool i2c_acpi_get_i2c_resource(struct acpi_resource *ares,
+ 			       struct acpi_resource_i2c_serialbus **i2c);
+ int i2c_acpi_client_count(struct acpi_device *adev);
 
 
 
