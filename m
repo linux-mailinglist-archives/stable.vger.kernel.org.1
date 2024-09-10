@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-75401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E68F97345C
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:40:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B83D097336A
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:32:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 292641F25DD7
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:40:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A2413B2D361
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:29:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C49A191476;
-	Tue, 10 Sep 2024 10:37:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71B88195FF0;
+	Tue, 10 Sep 2024 10:24:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uySGrs7R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qvDXFFmr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49DB25381A;
-	Tue, 10 Sep 2024 10:37:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EEBD1922F6;
+	Tue, 10 Sep 2024 10:24:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964624; cv=none; b=XbkP4BH9kpIQOklG9LhqYA9ILig/GGrrtcDzh45+r4RNSb0M0vZOfyKFj71FNd51hXFSwOVLFLZi5KiV6URKLhDIfORGUZBlgxGAJGXue11ko3VHQDvGbjeTVkoqJWXBIiEg++papuMTh4KZIhmnSIZhbS7tnqlF8rFaZ762OIk=
+	t=1725963887; cv=none; b=amqltmOGR5gVwvXBe1KTTOo9971wr2A5Q3ZAK/y2INAhwOZxpa4iUARTxbDymV/DxoEVmWuzEhi95LmZqpHeLyjMVQ5QupMvuu89KDkKCk2AChNpX7eRCt56Uxf3y+LL+cAd3zEWva31Y9TJpCrMZMGZiqYJn2hV8TeaPl4Je74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964624; c=relaxed/simple;
-	bh=iAFiErD9U2gxLZFmNGfvXdjsx4WTgw462COKJklc14M=;
+	s=arc-20240116; t=1725963887; c=relaxed/simple;
+	bh=YuSnyHu9AdsyBSa2CMSzK+jZhmOaPo2gkPu7MRHnD0E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u41j+n5+D7uzzJ9ZC+HJplQgXPrYeatpF0i0nxs+ke3i5bKDmePrF6YCO6DjyeXikyUXY5tvyh/fTB9BJ4uOkeckzuhiTrofIr0w4SZ+OYlnM/kDummzBE1WQJ3n4w0NCIvr/8G5bwuNFWjBSgBZ+pKa/sg+/n/XCfdJ7ZsQZkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uySGrs7R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4936C4CEC3;
-	Tue, 10 Sep 2024 10:37:03 +0000 (UTC)
+	 MIME-Version; b=KSQjdmBJY74amVNfhsjiVU/VvN4yZ7HmXp0J6rlPgRGkHeCsKtM067+dI0+N93nYjOvIYweTIOkJPamGhIIqg/cQdZKY23Z33XT37cRKvMDdCwpH8671kOAcBHy1/s7PJzb0g1L7uOZP/6SGhg0XIpnIIcCy4AhmGvS8lAw/FF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qvDXFFmr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5C84C4CEC3;
+	Tue, 10 Sep 2024 10:24:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964624;
-	bh=iAFiErD9U2gxLZFmNGfvXdjsx4WTgw462COKJklc14M=;
+	s=korg; t=1725963887;
+	bh=YuSnyHu9AdsyBSa2CMSzK+jZhmOaPo2gkPu7MRHnD0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uySGrs7RlTxV+E+F+j86ijsRKOO4EXNyzcBODdvP/zMl6XRZYXCjJluALdmJsuerS
-	 xQl/xUvyZmhP9hX1YLvnXeCrOtEILZGnUZGmrEU4Up/s3+CVKl6XQxFJsfiuY5Ef9X
-	 f0QyCNBl8NeRQzvZn5U9GMejo8ijQca5MUu+vIrA=
+	b=qvDXFFmrd4wa3KlqtgoxBQ36d/chwUX6kdzGWtYCgTmbjIXiwLYxnmWLY+LrDqxcL
+	 mvCWctZqXq5iSOoEUso8EfB+ZGBixYjqiwaN1fpQGNsU3MqAAdR2HkkRtESsZkblj7
+	 zqV928amAwKK/VPxtROkQuBC91BzhgSpvmu+UG0g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 246/269] powerpc/64e: Define mmu_pte_psize static
+	Lex Siegel <usiegl00@gmail.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Neil Brown <neilb@suse.de>,
+	Trond Myklebust <trondmy@kernel.org>,
+	Anna Schumaker <anna@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
+Subject: [PATCH 5.15 211/214] net, sunrpc: Remap EPERM in case of connection failure in xs_tcp_setup_socket
 Date: Tue, 10 Sep 2024 11:33:53 +0200
-Message-ID: <20240910092616.607821233@linuxfoundation.org>
+Message-ID: <20240910092607.116325048@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +66,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Daniel Borkmann <daniel@iogearbox.net>
 
-[ Upstream commit d92b5cc29c792f1d3f0aaa3b29dddfe816c03e88 ]
+commit 626dfed5fa3bfb41e0dffd796032b555b69f9cde upstream.
 
-mmu_pte_psize is only used in the tlb_64e.c, define it static.
+When using a BPF program on kernel_connect(), the call can return -EPERM. This
+causes xs_tcp_setup_socket() to loop forever, filling up the syslog and causing
+the kernel to potentially freeze up.
 
-Fixes: 25d21ad6e799 ("powerpc: Add TLB management code for 64-bit Book3E")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202408011256.1O99IB0s-lkp@intel.com/
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/beb30d280eaa5d857c38a0834b147dffd6b28aa9.1724157750.git.christophe.leroy@csgroup.eu
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Neil suggested:
+
+  This will propagate -EPERM up into other layers which might not be ready
+  to handle it. It might be safer to map EPERM to an error we would be more
+  likely to expect from the network system - such as ECONNREFUSED or ENETDOWN.
+
+ECONNREFUSED as error seems reasonable. For programs setting a different error
+can be out of reach (see handling in 4fbac77d2d09) in particular on kernels
+which do not have f10d05966196 ("bpf: Make BPF_PROG_RUN_ARRAY return -err
+instead of allow boolean"), thus given that it is better to simply remap for
+consistent behavior. UDP does handle EPERM in xs_udp_send_request().
+
+Fixes: d74bad4e74ee ("bpf: Hooks for sys_connect")
+Fixes: 4fbac77d2d09 ("bpf: Hooks for sys_bind")
+Co-developed-by: Lex Siegel <usiegl00@gmail.com>
+Signed-off-by: Lex Siegel <usiegl00@gmail.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Cc: Neil Brown <neilb@suse.de>
+Cc: Trond Myklebust <trondmy@kernel.org>
+Cc: Anna Schumaker <anna@kernel.org>
+Link: https://github.com/cilium/cilium/issues/33395
+Link: https://lore.kernel.org/bpf/171374175513.12877.8993642908082014881@noble.neil.brown.name
+Link: https://patch.msgid.link/9069ec1d59e4b2129fc23433349fd5580ad43921.1720075070.git.daniel@iogearbox.net
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Hugo SIMELIERE <hsimeliere.opensource@witekio.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/mm/nohash/tlb_64e.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/sunrpc/xprtsock.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/arch/powerpc/mm/nohash/tlb_64e.c b/arch/powerpc/mm/nohash/tlb_64e.c
-index 1dcda261554c..b6af3ec4d001 100644
---- a/arch/powerpc/mm/nohash/tlb_64e.c
-+++ b/arch/powerpc/mm/nohash/tlb_64e.c
-@@ -33,7 +33,7 @@
-  * though this will probably be made common with other nohash
-  * implementations at some point
-  */
--int mmu_pte_psize;		/* Page size used for PTE pages */
-+static int mmu_pte_psize;	/* Page size used for PTE pages */
- int mmu_vmemmap_psize;		/* Page size used for the virtual mem map */
- int book3e_htw_mode;		/* HW tablewalk?  Value is PPC_HTW_* */
- unsigned long linear_map_top;	/* Top of linear mapping */
--- 
-2.43.0
-
+--- a/net/sunrpc/xprtsock.c
++++ b/net/sunrpc/xprtsock.c
+@@ -2335,6 +2335,13 @@ static void xs_tcp_setup_socket(struct w
+ 	case -EALREADY:
+ 		xprt_unlock_connect(xprt, transport);
+ 		return;
++	case -EPERM:
++		/* Happens, for instance, if a BPF program is preventing
++		 * the connect. Remap the error so upper layers can better
++		 * deal with it.
++		 */
++		status = -ECONNREFUSED;
++		fallthrough;
+ 	case -EINVAL:
+ 		/* Happens, for instance, if the user specified a link
+ 		 * local IPv6 address without a scope-id.
 
 
 
