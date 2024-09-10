@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-75435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 831C9973489
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:41:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFDAB9731BB
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:14:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4587C28E1C6
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:41:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71F6128BC0B
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:14:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31E5618C913;
-	Tue, 10 Sep 2024 10:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83FF519ABAC;
+	Tue, 10 Sep 2024 10:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mg4+Tyyw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ylhLEaUb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E579817C220;
-	Tue, 10 Sep 2024 10:38:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40E74188A0C;
+	Tue, 10 Sep 2024 10:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964724; cv=none; b=BLbSfXNJDQtaiBdrOc21LZ7fNlxReVFjfll7ALHs+bDYrJKxwzMiQDQwQMKLZVSnpBoLRORNsQP8AHxtu2KjoO3ONEIE55K2A4iCdqvHTQG3nQ3+dR52ork/Rlc6bghYT0BreSkCzqbp9ublNSU00mjjSp9twLpwo94vjJE+NF8=
+	t=1725963021; cv=none; b=CqHcEn3socOzp0d9+MGgRqKSBcIiIv4Jo+uVSpjIy00eKu5IUD15JalqcUR6dDcjKBhD/tDdw9hbAbHj26zUEmjtKI5Fx0piuB3OOYN6sfrJs0xDhPiKp/Bv5U7wljSQ9yP6OSitSnAdWD4+o42rGHEorQIJdnBpX6mqW4KN65o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964724; c=relaxed/simple;
-	bh=0coZBcE/4g7HhRNS4dr/Lh3HWkdqEW2s42f8OGqkiX8=;
+	s=arc-20240116; t=1725963021; c=relaxed/simple;
+	bh=YxJS8bTn3aPEUe6n6GXhXzJD/ZHM+31RpdbSj0J66tE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fPfX3tvOua/mZLFM2q7y0ZESes0y8BSELlmJEh0rDr146KORG6MmGRANud1oFzH6sdxYH9/brKBkdT4rIm7OxrgrAx8qzWXosj6lc8k6Ai4mfMMmx8F8j3eUiwGluv5Oy3EoxOfu3i4nRiDUslFhUVJxDUWbbHiQd3+SO1QPE9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mg4+Tyyw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E01EC4CEC3;
-	Tue, 10 Sep 2024 10:38:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=iMRa42gXb0oh7Aq07TyslCYEl0LDcc4FU62F2LIb2pEQaAhbRE4STmCc+APtcDHFIl6TvdbGzaI8ai+T91t/X+UjOOI2vFlJMc6dCmfigmobeTA548sxRw7jMCbt+ArkUfCzzc/aa997otInNErue8/kw6SMwqTRW9/Pfhd6jt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ylhLEaUb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B398AC4CEC3;
+	Tue, 10 Sep 2024 10:10:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964723;
-	bh=0coZBcE/4g7HhRNS4dr/Lh3HWkdqEW2s42f8OGqkiX8=;
+	s=korg; t=1725963021;
+	bh=YxJS8bTn3aPEUe6n6GXhXzJD/ZHM+31RpdbSj0J66tE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mg4+Tyyw+uvQdM07dqufdOJCTDmqiO7A51hvaMhUC6gnDPuJy5WG0PAQ48dmWx0YR
-	 9NnFfQkYheY4KJVsOZnmqafFNtd01UUzOeel0/99AuxPs+2laZ8kDAriIcrKGV5XaA
-	 9U0Ejpv997eLgRWP0PkKnkJx8j8bnkt5PyG1kHQE=
+	b=ylhLEaUbaP/tlcezWojLU2/5GNiCtIC1HYYEgcdqMczVo1F/OVCkUFGp4NcxyQd5r
+	 nN75AfhVFgSCnEaT30ytGzIakd+GKQBpK4YyDvdS4za5ATswsqOnG1vWnEfdNPfRS6
+	 y3ezocF0p3yCHXJ1aTv6TrTAvGMsdaLw5LfhXCts=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesse Zhang <Jesse.Zhang@amd.com>,
-	Tim Huang <Tim.Huang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 010/186] drm/amd/pm: fix warning using uninitialized value of max_vid_step
+	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Chandan Kumar Rout <chandanx.rout@intel.com>
+Subject: [PATCH 6.1 081/192] ice: allow hot-swapping XDP programs
 Date: Tue, 10 Sep 2024 11:31:45 +0200
-Message-ID: <20240910092555.082127237@linuxfoundation.org>
+Message-ID: <20240910092601.324897521@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +63,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesse Zhang <jesse.zhang@amd.com>
+From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
 
-[ Upstream commit 17e3bea65cdc453695b2fe4ff26d25d17f5339e9 ]
+[ Upstream commit 469748429ac81f0a6a344637fc9d3b1d16a9f3d8 ]
 
-Check the return of pp_atomfwctrl_get_Voltage_table_v4
-as it may fail to initialize max_vid_step
-V2: change the check condition (Tim Huang)
+Currently ice driver's .ndo_bpf callback brings interface down and up
+independently of XDP resources' presence. This is only needed when
+either these resources have to be configured or removed. It means that
+if one is switching XDP programs on-the-fly with running traffic,
+packets will be dropped.
 
-Signed-off-by: Jesse Zhang <Jesse.Zhang@amd.com>
-Reviewed-by: Tim Huang <Tim.Huang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+To avoid this, compare early on ice_xdp_setup_prog() state of incoming
+bpf_prog pointer vs the bpf_prog pointer that is already assigned to
+VSI. Do the swap in case VSI has bpf_prog and incoming one are non-NULL.
+
+Lastly, while at it, put old bpf_prog *after* the update of Rx ring's
+bpf_prog pointer. In theory previous code could expose us to a state
+where Rx ring's bpf_prog would still be referring to old_prog that got
+released with earlier bpf_prog_put().
+
+Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+Acked-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
+Tested-by: Chandan Kumar Rout <chandanx.rout@intel.com> (A Contingent Worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Stable-dep-of: 04c7e14e5b0b ("ice: do not bring the VSI up, if it was down before the XDP setup")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_main.c | 19 +++++++++----------
+ 1 file changed, 9 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
-index 10678b519995..e4a8f1aabd78 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
-@@ -2572,8 +2572,11 @@ static int vega10_init_smc_table(struct pp_hwmgr *hwmgr)
- 		}
+diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
+index cd9bcc3536fb..1973b032fe05 100644
+--- a/drivers/net/ethernet/intel/ice/ice_main.c
++++ b/drivers/net/ethernet/intel/ice/ice_main.c
+@@ -2633,11 +2633,11 @@ static void ice_vsi_assign_bpf_prog(struct ice_vsi *vsi, struct bpf_prog *prog)
+ 	int i;
+ 
+ 	old_prog = xchg(&vsi->xdp_prog, prog);
+-	if (old_prog)
+-		bpf_prog_put(old_prog);
+-
+ 	ice_for_each_rxq(vsi, i)
+ 		WRITE_ONCE(vsi->rx_rings[i]->xdp_prog, vsi->xdp_prog);
++
++	if (old_prog)
++		bpf_prog_put(old_prog);
+ }
+ 
+ /**
+@@ -2917,6 +2917,12 @@ ice_xdp_setup_prog(struct ice_vsi *vsi, struct bpf_prog *prog,
+ 		return -EOPNOTSUPP;
  	}
  
--	pp_atomfwctrl_get_voltage_table_v4(hwmgr, VOLTAGE_TYPE_VDDC,
-+	result = pp_atomfwctrl_get_voltage_table_v4(hwmgr, VOLTAGE_TYPE_VDDC,
- 			VOLTAGE_OBJ_SVID2,  &voltage_table);
-+	PP_ASSERT_WITH_CODE(!result,
-+			"Failed to get voltage table!",
-+			return result);
- 	pp_table->MaxVidStep = voltage_table.max_vid_step;
++	/* hot swap progs and avoid toggling link */
++	if (ice_is_xdp_ena_vsi(vsi) == !!prog) {
++		ice_vsi_assign_bpf_prog(vsi, prog);
++		return 0;
++	}
++
+ 	/* need to stop netdev while setting up the program for Rx rings */
+ 	if (if_running && !test_and_set_bit(ICE_VSI_DOWN, vsi->state)) {
+ 		ret = ice_down(vsi);
+@@ -2947,13 +2953,6 @@ ice_xdp_setup_prog(struct ice_vsi *vsi, struct bpf_prog *prog,
+ 		xdp_ring_err = ice_realloc_zc_buf(vsi, false);
+ 		if (xdp_ring_err)
+ 			NL_SET_ERR_MSG_MOD(extack, "Freeing XDP Rx resources failed");
+-	} else {
+-		/* safe to call even when prog == vsi->xdp_prog as
+-		 * dev_xdp_install in net/core/dev.c incremented prog's
+-		 * refcount so corresponding bpf_prog_put won't cause
+-		 * underflow
+-		 */
+-		ice_vsi_assign_bpf_prog(vsi, prog);
+ 	}
  
- 	pp_table->GfxDpmVoltageMode =
+ 	if (if_running)
 -- 
 2.43.0
 
