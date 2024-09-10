@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-75188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72FE9973364
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:32:31 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2930A97335D
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:32:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E6AB2B28308
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:30:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E006C287F24
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:32:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A12D18CBE9;
-	Tue, 10 Sep 2024 10:26:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EDA118CBE6;
+	Tue, 10 Sep 2024 10:27:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DWdBSSOh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V+ZTaQua"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4872918C913;
-	Tue, 10 Sep 2024 10:26:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CA9918C003;
+	Tue, 10 Sep 2024 10:27:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964006; cv=none; b=Ty7k98C3nUOJ90VM2e0DnJdmlIYBGNwjU+mILFG2+m/p9KTCM39l6VOVGUoweBjqrcQgc7FkEgVe75X/ACq7xhaClQTaHPeR/OhNSJcWV6N9VTIhdx1imlrE7dDdk0oUaduopkppRaVjHxTkRzf/SiBLHl8ylB0Ubq+WYe7kSlQ=
+	t=1725964038; cv=none; b=LCzIG7Qw0f+JYpncd1HTZHOCnv2l2qTkGpmr/57BAn8H9S97Yfc+hOhuz9N6zedlxxzNzBn4jtTDzra4wKwB3qbuvKtUzhxjREoUqLJED+mQ38vhG+FHqWVhzWd6nB1uL58ZBbHd4NhsrY9FC4bD5poazvVShdxH/wYt+GqjfHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964006; c=relaxed/simple;
-	bh=dikGOPWw4M4+fBRSiw3PXGNwgbCNEGRNUVOjt1jST5I=;
+	s=arc-20240116; t=1725964038; c=relaxed/simple;
+	bh=HwLIAOoK0yOLGF8uD2dBidu0r87RxlK1eVFzj4Z7YGg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d2ZIIFSbQo4AsY2yKtntLynVU6klbDdfLlj5kTDCkUy0topJmWF17ByFPu4Hz8ko0JsKPEqrd+rIsUhvV1BHqse/7yQ6i62IUGiy10wElIl7hWOzEu6d/iuR+tmWKokU7ZcBgQ9qgtYUgijy6V3PKPj8DK2tptx1xsUvcgZCpJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DWdBSSOh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69586C4CECD;
-	Tue, 10 Sep 2024 10:26:45 +0000 (UTC)
+	 MIME-Version; b=Q5ZWMbmtuPOGVdnI+0Nu3owK6HpA0X8smyY24w1P0QzinhW8U/oFa7m9CdTdAfDBB/deE0aEHjpUKYw7uVF5lDSbNps0Y1IjV6llohR7GojNlTO+4TjGXrhGDl6GdgV0PlG3Lhf22YyNy9ISF4DtNc1wAwvsjkCNRy5dHJEz+bk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V+ZTaQua; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A51D7C4CEC3;
+	Tue, 10 Sep 2024 10:27:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964005;
-	bh=dikGOPWw4M4+fBRSiw3PXGNwgbCNEGRNUVOjt1jST5I=;
+	s=korg; t=1725964038;
+	bh=HwLIAOoK0yOLGF8uD2dBidu0r87RxlK1eVFzj4Z7YGg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DWdBSSOhZsjfNJwyqnv5gktroD5JCqw7TLnp7fLlbAqzz0GDgZrkM5eLhQh3XE8cN
-	 oyL6q83dLnGbXBKIXkFWUxFtmYm7QSkA2n/I1y7M8LQujbAOtjR0ua5y7+dyYXUXw3
-	 X3CixfvSsBaXrP+h1BUfbiltdi1vKAai6weAlIHI=
+	b=V+ZTaQuaw824Jnf+RTAiUSPkdXPS0/SlZI1STGqqKhwYLr7ny16D16OmMzSkw8dvQ
+	 4JmwVzNwbJrQbrb5VaZKi+rjgBAqPk/eoJubgMAB1rVGN84IAgQ8ilNsYxjOYcYVDj
+	 nKiWaNEzBvluzcxemktej7SgQImFEOw7pt1GaeAY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Seunghwan Baek <sh8267.baek@samsung.com>,
-	Ritesh Harjani <ritesh.list@gmail.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.6 028/269] mmc: cqhci: Fix checking of CQHCI_HALT state
-Date: Tue, 10 Sep 2024 11:30:15 +0200
-Message-ID: <20240910092609.245756028@linuxfoundation.org>
+	Joanne Koong <joannelkoong@gmail.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Miklos Szeredi <mszeredi@redhat.com>
+Subject: [PATCH 6.6 029/269] fuse: update stats for pages in dropped aux writeback list
+Date: Tue, 10 Sep 2024 11:30:16 +0200
+Message-ID: <20240910092609.277248473@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
 References: <20240910092608.225137854@linuxfoundation.org>
@@ -67,36 +66,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Seunghwan Baek <sh8267.baek@samsung.com>
+From: Joanne Koong <joannelkoong@gmail.com>
 
-commit aea62c744a9ae2a8247c54ec42138405216414da upstream.
+commit f7790d67785302b3116bbbfda62a5a44524601a3 upstream.
 
-To check if mmc cqe is in halt state, need to check set/clear of CQHCI_HALT
-bit. At this time, we need to check with &, not &&.
+In the case where the aux writeback list is dropped (e.g. the pages
+have been truncated or the connection is broken), the stats for
+its pages and backing device info need to be updated as well.
 
-Fixes: a4080225f51d ("mmc: cqhci: support for command queue enabled host")
-Cc: stable@vger.kernel.org
-Signed-off-by: Seunghwan Baek <sh8267.baek@samsung.com>
-Reviewed-by: Ritesh Harjani <ritesh.list@gmail.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20240829061823.3718-2-sh8267.baek@samsung.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fixes: e2653bd53a98 ("fuse: fix leaked aux requests")
+Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Cc: <stable@vger.kernel.org> # v5.1
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/cqhci-core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/fuse/file.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/mmc/host/cqhci-core.c
-+++ b/drivers/mmc/host/cqhci-core.c
-@@ -612,7 +612,7 @@ static int cqhci_request(struct mmc_host
- 		cqhci_writel(cq_host, 0, CQHCI_CTL);
- 		mmc->cqe_on = true;
- 		pr_debug("%s: cqhci: CQE on\n", mmc_hostname(mmc));
--		if (cqhci_readl(cq_host, CQHCI_CTL) && CQHCI_HALT) {
-+		if (cqhci_readl(cq_host, CQHCI_CTL) & CQHCI_HALT) {
- 			pr_err("%s: cqhci: CQE failed to exit halt state\n",
- 			       mmc_hostname(mmc));
- 		}
+--- a/fs/fuse/file.c
++++ b/fs/fuse/file.c
+@@ -1735,10 +1735,16 @@ __acquires(fi->lock)
+ 	fuse_writepage_finish(fm, wpa);
+ 	spin_unlock(&fi->lock);
+ 
+-	/* After fuse_writepage_finish() aux request list is private */
++	/* After rb_erase() aux request list is private */
+ 	for (aux = wpa->next; aux; aux = next) {
++		struct backing_dev_info *bdi = inode_to_bdi(aux->inode);
++
+ 		next = aux->next;
+ 		aux->next = NULL;
++
++		dec_wb_stat(&bdi->wb, WB_WRITEBACK);
++		dec_node_page_state(aux->ia.ap.pages[0], NR_WRITEBACK_TEMP);
++		wb_writeout_inc(&bdi->wb);
+ 		fuse_writepage_free(aux);
+ 	}
+ 
 
 
 
