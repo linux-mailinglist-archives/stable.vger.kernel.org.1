@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-74671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BC69973091
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:02:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0FA0972FFD
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:56:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 43B5B1F233D6
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:02:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8C23288BA7
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:56:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C9D218C347;
-	Tue, 10 Sep 2024 10:01:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0EF018A6B9;
+	Tue, 10 Sep 2024 09:56:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WB+kkuBC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p1XXPQR3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B70818B46D;
-	Tue, 10 Sep 2024 10:01:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F0AB18595E;
+	Tue, 10 Sep 2024 09:56:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962484; cv=none; b=RzergeV1hJTOjiYaewTBFxEJ5Bp8u7NI3bJk3X5yINO4XN9cyu0IFaP6q4DBT3dDilHJpiyvX+nDMukEDrBj02ZlFTzcLil+kjmNw/eVvlq8xSrvLHWlOKslWwTh9lUTk15bS+aC5YjiGO0vhEQb++EXRm6GuuMLgpWGvGkLnLE=
+	t=1725962193; cv=none; b=K/YrsYUcYz/t8WXUqJGXJB796ZU1xdPqBC4nKA4z7sdRfYP9Ihafyax1keoNuJf8SxmTEhR+bIkV9sV7a5DeBRpul8Xuyu59hwdAI8qxRCGQmbFcxbF66Q94ZaowuaC/KhGUH6x2YRa/R0/VvUdKz4eqbajSdtQIX91b2oVwjyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962484; c=relaxed/simple;
-	bh=RY3bD0uShHWVdAgz9NyHz1v9/ben1FHkgD9qDOUu7to=;
+	s=arc-20240116; t=1725962193; c=relaxed/simple;
+	bh=3KJO7d9h/csOxD2D0LwetUX14rStCoxR05IGQ+l5Y7g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EwH5LEx98gN8HlcXwiXP4lMIMqsLD9CXq/DT9BoQVAp7Vk83qjhB0+NE+sJBgsCL0tt1fzcl0UXM5N+3vn1gV0CD0J5lGgGj5UtLaWbfqMsVYMvfPgDGRz8psNqLMQFqP0M0wh1LvdVgu62bkb/206RJ6Unjd29M2zJJyG5aDe0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WB+kkuBC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5308C4CEC3;
-	Tue, 10 Sep 2024 10:01:23 +0000 (UTC)
+	 MIME-Version; b=pCcb7S/kqEaB7imNBb4MvES+S9vLDett1WNUGLJ/wzWMmDD/y2d2/Hw5TJ5BXNgoff+973iRYd5Q9Pkgn9rwx7aK4eHl7DRcHHL5hC25rGEY3/rf5moC5e7GF2SiE3Hkv5t6o1o8y69BeQTtl/6AXWGbtQS/uE/g7Vcgg+5JfmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p1XXPQR3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C413FC4CEC3;
+	Tue, 10 Sep 2024 09:56:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962484;
-	bh=RY3bD0uShHWVdAgz9NyHz1v9/ben1FHkgD9qDOUu7to=;
+	s=korg; t=1725962193;
+	bh=3KJO7d9h/csOxD2D0LwetUX14rStCoxR05IGQ+l5Y7g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WB+kkuBC8CY0PQbsxi+a96JXCIo8yWNuOZP2m0u1+WfbgkF5vgq7HmLAtFYM0YIm3
-	 1TnP3OCEy474Y/ZuUKwWc5uBnP6/Fr2Gl1eBVJBS8nqskw7Xo6CsZVszeF/MjzASqS
-	 G4UTzOnGLOeHwxsdlpnXpFPw4CoRPSqofXio/ZEM=
+	b=p1XXPQR3HR7pcevtfPtCZoyghBMdXTd9igGTXwt+0YQyoVJo8vlyIW+iHZeKyRRfQ
+	 0Wq+u5DY4SFKHZta8PjgafK05rYGRSSK/VgjaxFDnQx1SrTuqnQlPYV9dbHOz0iPOR
+	 rbsP7h6X1LT24OLSB6FumLAmY2mafX9Ih3nXFxu0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Reijer Boekhoff <reijerboekhoff@protonmail.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Hannes Reinecke <hare@suse.de>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Niklas Cassel <cassel@kernel.org>,
+	Igor Pylypiv <ipylypiv@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 049/121] wifi: brcmsmac: advertise MFP_CAPABLE to enable WPA3
+Subject: [PATCH 6.10 327/375] ata: libata-scsi: Remove redundant sense_buffer memsets
 Date: Tue, 10 Sep 2024 11:32:04 +0200
-Message-ID: <20240910092548.090220212@linuxfoundation.org>
+Message-ID: <20240910092633.554109230@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
-References: <20240910092545.737864202@linuxfoundation.org>
+In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
+References: <20240910092622.245959861@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arend van Spriel <arend.vanspriel@broadcom.com>
+From: Igor Pylypiv <ipylypiv@google.com>
 
-[ Upstream commit dbb5265a5d7cca1cdba7736dba313ab7d07bc19d ]
+[ Upstream commit 3f6d903b54a137e9e438d9c3b774b5d0432917bc ]
 
-After being asked about support for WPA3 for BCM43224 chipset it
-was found that all it takes is setting the MFP_CAPABLE flag and
-mac80211 will take care of all that is needed [1].
+SCSI layer clears sense_buffer in scsi_queue_rq() so there is no need for
+libata to clear it again.
 
-Link: https://lore.kernel.org/linux-wireless/20200526155909.5807-2-Larry.Finger@lwfinger.net/ [1]
-Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Tested-by: Reijer Boekhoff <reijerboekhoff@protonmail.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20240617122609.349582-1-arend.vanspriel@broadcom.com
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
+Link: https://lore.kernel.org/r/20240702024735.1152293-5-ipylypiv@google.com
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Stable-dep-of: 816be86c7993 ("ata: libata-scsi: Check ATA_QCFLAG_RTF_FILLED before using result_tf")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/ata/libata-scsi.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
-index 288d4d4d4454..eb735b054790 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
-@@ -1091,6 +1091,7 @@ static int ieee_hw_init(struct ieee80211_hw *hw)
- 	ieee80211_hw_set(hw, AMPDU_AGGREGATION);
- 	ieee80211_hw_set(hw, SIGNAL_DBM);
- 	ieee80211_hw_set(hw, REPORTS_TX_ACK_STATUS);
-+	ieee80211_hw_set(hw, MFP_CAPABLE);
+diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
+index 4e0847601103..4deee71006ef 100644
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -926,11 +926,8 @@ static void ata_gen_passthru_sense(struct ata_queued_cmd *qc)
+ {
+ 	struct scsi_cmnd *cmd = qc->scsicmd;
+ 	struct ata_taskfile *tf = &qc->result_tf;
+-	unsigned char *sb = cmd->sense_buffer;
+ 	u8 sense_key, asc, ascq;
  
- 	hw->extra_tx_headroom = brcms_c_get_header_len();
- 	hw->queues = N_TX_QUEUES;
+-	memset(sb, 0, SCSI_SENSE_BUFFERSIZE);
+-
+ 	/*
+ 	 * Use ata_to_sense_error() to map status register bits
+ 	 * onto sense key, asc & ascq.
+@@ -976,8 +973,6 @@ static void ata_gen_ata_sense(struct ata_queued_cmd *qc)
+ 	u64 block;
+ 	u8 sense_key, asc, ascq;
+ 
+-	memset(sb, 0, SCSI_SENSE_BUFFERSIZE);
+-
+ 	if (ata_dev_disabled(dev)) {
+ 		/* Device disabled after error recovery */
+ 		/* LOGICAL UNIT NOT READY, HARD RESET REQUIRED */
 -- 
 2.43.0
 
