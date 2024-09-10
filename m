@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-74820-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AAB6973197
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:13:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 041DE973270
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:22:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C36A28ACA4
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:12:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A36B21F21F4C
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:22:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAB5318C90E;
-	Tue, 10 Sep 2024 10:08:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD508192D75;
+	Tue, 10 Sep 2024 10:17:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1qBH5kLr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="il9xR86w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8643F18C038;
-	Tue, 10 Sep 2024 10:08:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C886192D6D;
+	Tue, 10 Sep 2024 10:17:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962925; cv=none; b=Ji2voBv2M39Vdi2vzLkctB0FAquQAnRThOR7UOTm/6M1bRStFMIyDElqRPEsary94sd7RMaBYth5KKSLsmrxUOJGCK8KLUbybwbiizy6bue3m0EeQE0KdN/EsPEvZLTsqd+72AwdpKawiFZ+iL40H9//NncK6JW7iO4ZckmArBg=
+	t=1725963421; cv=none; b=gD79PN7cSzekO1qKnb3GsQVZBJas+88HVyU4C3ISH7id0/1RE1hNxZ5wrqn2xSo7n++thjd2+5HWJ/XP6uCo9JCdDnXVRRWKrvHTJ944uyCMdfQe4Jso7PFj21/F3xZm+wQ0weJG9JRKwTjG0jalTD7JqkpnVV2XByG/8rPBnd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962925; c=relaxed/simple;
-	bh=m/P5SNrjUvuq5PblokvqbjuI77DaDS/4lZr0bkZECXY=;
+	s=arc-20240116; t=1725963421; c=relaxed/simple;
+	bh=dDX0dNOmhq7wKWm4x0Y0PpKXNbk5WIRiJbJcDLd+QVQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qTCGdYlsAfW82i1x55sy74xnDD1330xeEC/WZqt+sKfI9S3w4Rs/UxV6ebKsHUaK0tr8UvRy7dzUnodYZhypcYM1svYpLRVYQ/9wfjHcpPnoN7zo//saYx2foi3OwwYA0zzfR0qGGSsc0839iXNB8X6CKXwKx7p1dNwB+i6wt2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1qBH5kLr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA86EC4CEC6;
-	Tue, 10 Sep 2024 10:08:44 +0000 (UTC)
+	 MIME-Version; b=ZL1D+Jl5BuTLZx0ep/2TmN4SElNe/e+1qgMq+c4MzLPdAQqGhUc9nSd0EMgOhs5FStYhAeBlbGUTMSRRGyt6p0h2D1nWY2mpRGlSovIdIo9Kjow391MwoVrs1/9IJE+HuorBgNV9rL34/zUGBAKpcbPd63u7gKqQgt3O5nbbKb8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=il9xR86w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99F1BC4CEC3;
+	Tue, 10 Sep 2024 10:17:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962925;
-	bh=m/P5SNrjUvuq5PblokvqbjuI77DaDS/4lZr0bkZECXY=;
+	s=korg; t=1725963421;
+	bh=dDX0dNOmhq7wKWm4x0Y0PpKXNbk5WIRiJbJcDLd+QVQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1qBH5kLrvK4hFj+bOnX9EC7NLZLKXlDnrsOnnpoq704rCOUnNHJZ4vDJQHXyyz5bN
-	 0gbvUvX3YfxFNMp5NvQBg9G+I2K2CjJ023e+5ensBU4BL+xeSlz8uH+iO97BR6nf1k
-	 paY1KJtmXWuiw/2YU50WT5qRZDl8wkvpURwqtdnA=
+	b=il9xR86wJ16Qb18kFbbhB5aeg0cbvda1+Md0wAiSrS+rnRNMs+4AXSwy3MpLvq8Cg
+	 J1eHf1v+i+vcFsC+DKWMVBxD8zHzwT9kIQSRvgdQCpSH9X07IBlBZT6dIi1jGjEarU
+	 Aw5hytHnjrlbGhLg0khDGcqZ7XdDDxk8YA0Od50A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Andre Przywara <andre.przywara@arm.com>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Joerg Roedel <jroedel@suse.de>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 049/192] iommu: sun50i: clear bypass register
+Subject: [PATCH 5.15 051/214] wifi: cfg80211: make hash table duplicates more survivable
 Date: Tue, 10 Sep 2024 11:31:13 +0200
-Message-ID: <20240910092600.016217329@linuxfoundation.org>
+Message-ID: <20240910092600.849098839@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +61,133 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jernej Skrabec <jernej.skrabec@gmail.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 927c70c93d929f4c2dcaf72f51b31bb7d118a51a ]
+[ Upstream commit 7f12e26a194d0043441f870708093d9c2c3bad7d ]
 
-The Allwinner H6 IOMMU has a bypass register, which allows to circumvent
-the page tables for each possible master. The reset value for this
-register is 0, which disables the bypass.
-The Allwinner H616 IOMMU resets this register to 0x7f, which activates
-the bypass for all masters, which is not what we want.
+Jiazi Li reported that they occasionally see hash table duplicates
+as evidenced by the WARN_ON() in rb_insert_bss() in this code.  It
+isn't clear how that happens, nor have I been able to reproduce it,
+but if it does happen, the kernel crashes later, when it tries to
+unhash the entry that's now not hashed.
 
-Always clear this register to 0, to enforce the usage of page tables,
-and make this driver compatible with the H616 in this respect.
+Try to make this situation more survivable by removing the BSS from
+the list(s) as well, that way it's fully leaked here (as had been
+the intent in the hash insert error path), and no longer reachable
+through the list(s) so it shouldn't be unhashed again later.
 
-Signed-off-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-Signed-off-by: Andre Przywara <andre.przywara@arm.com>
-Reviewed-by: Chen-Yu Tsai <wens@csie.org>
-Link: https://lore.kernel.org/r/20240616224056.29159-2-andre.przywara@arm.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Link: https://lore.kernel.org/r/20231026013528.GA24122@Jiazi.Li
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Link: https://msgid.link/20240607181726.36835-2-johannes@sipsolutions.net
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/sun50i-iommu.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/wireless/scan.c | 46 +++++++++++++++++++++++++++++++++------------
+ 1 file changed, 34 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/iommu/sun50i-iommu.c b/drivers/iommu/sun50i-iommu.c
-index 5b585eace3d4..e8dc1a7d9491 100644
---- a/drivers/iommu/sun50i-iommu.c
-+++ b/drivers/iommu/sun50i-iommu.c
-@@ -449,6 +449,7 @@ static int sun50i_iommu_enable(struct sun50i_iommu *iommu)
- 		    IOMMU_TLB_PREFETCH_MASTER_ENABLE(3) |
- 		    IOMMU_TLB_PREFETCH_MASTER_ENABLE(4) |
- 		    IOMMU_TLB_PREFETCH_MASTER_ENABLE(5));
-+	iommu_write(iommu, IOMMU_BYPASS_REG, 0);
- 	iommu_write(iommu, IOMMU_INT_ENABLE_REG, IOMMU_INT_MASK);
- 	iommu_write(iommu, IOMMU_DM_AUT_CTRL_REG(SUN50I_IOMMU_ACI_NONE),
- 		    IOMMU_DM_AUT_CTRL_RD_UNAVAIL(SUN50I_IOMMU_ACI_NONE, 0) |
+diff --git a/net/wireless/scan.c b/net/wireless/scan.c
+index a444eb84d621..b8e28025710d 100644
+--- a/net/wireless/scan.c
++++ b/net/wireless/scan.c
+@@ -1517,7 +1517,7 @@ struct cfg80211_bss *cfg80211_get_bss(struct wiphy *wiphy,
+ }
+ EXPORT_SYMBOL(cfg80211_get_bss);
+ 
+-static void rb_insert_bss(struct cfg80211_registered_device *rdev,
++static bool rb_insert_bss(struct cfg80211_registered_device *rdev,
+ 			  struct cfg80211_internal_bss *bss)
+ {
+ 	struct rb_node **p = &rdev->bss_tree.rb_node;
+@@ -1533,7 +1533,7 @@ static void rb_insert_bss(struct cfg80211_registered_device *rdev,
+ 
+ 		if (WARN_ON(!cmp)) {
+ 			/* will sort of leak this BSS */
+-			return;
++			return false;
+ 		}
+ 
+ 		if (cmp < 0)
+@@ -1544,6 +1544,7 @@ static void rb_insert_bss(struct cfg80211_registered_device *rdev,
+ 
+ 	rb_link_node(&bss->rbn, parent, p);
+ 	rb_insert_color(&bss->rbn, &rdev->bss_tree);
++	return true;
+ }
+ 
+ static struct cfg80211_internal_bss *
+@@ -1570,6 +1571,34 @@ rb_find_bss(struct cfg80211_registered_device *rdev,
+ 	return NULL;
+ }
+ 
++static void cfg80211_insert_bss(struct cfg80211_registered_device *rdev,
++				struct cfg80211_internal_bss *bss)
++{
++	lockdep_assert_held(&rdev->bss_lock);
++
++	if (!rb_insert_bss(rdev, bss))
++		return;
++	list_add_tail(&bss->list, &rdev->bss_list);
++	rdev->bss_entries++;
++}
++
++static void cfg80211_rehash_bss(struct cfg80211_registered_device *rdev,
++                                struct cfg80211_internal_bss *bss)
++{
++	lockdep_assert_held(&rdev->bss_lock);
++
++	rb_erase(&bss->rbn, &rdev->bss_tree);
++	if (!rb_insert_bss(rdev, bss)) {
++		list_del(&bss->list);
++		if (!list_empty(&bss->hidden_list))
++			list_del_init(&bss->hidden_list);
++		if (!list_empty(&bss->pub.nontrans_list))
++			list_del_init(&bss->pub.nontrans_list);
++		rdev->bss_entries--;
++	}
++	rdev->bss_generation++;
++}
++
+ static bool cfg80211_combine_bsses(struct cfg80211_registered_device *rdev,
+ 				   struct cfg80211_internal_bss *new)
+ {
+@@ -1845,9 +1874,7 @@ cfg80211_bss_update(struct cfg80211_registered_device *rdev,
+ 			bss_ref_get(rdev, pbss);
+ 		}
+ 
+-		list_add_tail(&new->list, &rdev->bss_list);
+-		rdev->bss_entries++;
+-		rb_insert_bss(rdev, new);
++		cfg80211_insert_bss(rdev, new);
+ 		found = new;
+ 	}
+ 
+@@ -2712,10 +2739,7 @@ void cfg80211_update_assoc_bss_entry(struct wireless_dev *wdev,
+ 		if (!WARN_ON(!__cfg80211_unlink_bss(rdev, new)))
+ 			rdev->bss_generation++;
+ 	}
+-
+-	rb_erase(&cbss->rbn, &rdev->bss_tree);
+-	rb_insert_bss(rdev, cbss);
+-	rdev->bss_generation++;
++	cfg80211_rehash_bss(rdev, cbss);
+ 
+ 	list_for_each_entry_safe(nontrans_bss, tmp,
+ 				 &cbss->pub.nontrans_list,
+@@ -2723,9 +2747,7 @@ void cfg80211_update_assoc_bss_entry(struct wireless_dev *wdev,
+ 		bss = container_of(nontrans_bss,
+ 				   struct cfg80211_internal_bss, pub);
+ 		bss->pub.channel = chan;
+-		rb_erase(&bss->rbn, &rdev->bss_tree);
+-		rb_insert_bss(rdev, bss);
+-		rdev->bss_generation++;
++		cfg80211_rehash_bss(rdev, bss);
+ 	}
+ 
+ done:
 -- 
 2.43.0
 
