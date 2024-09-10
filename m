@@ -1,68 +1,60 @@
-Return-Path: <stable+bounces-75676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75677-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBA51973F54
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 19:25:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0907E973F57
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 19:26:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D69828CD3A
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 17:25:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B48021F27831
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 17:26:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9D6F1AB51E;
-	Tue, 10 Sep 2024 17:22:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AAF21AB535;
+	Tue, 10 Sep 2024 17:22:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GkbsCnCn"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TsO/RL6O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93D301AB510;
-	Tue, 10 Sep 2024 17:22:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D90761AB52B;
+	Tue, 10 Sep 2024 17:22:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725988945; cv=none; b=CYBRP9Q3hFfBlHifonJ2d1IRf+PdAoFqZZbV2loj7+7ETer0bBctIibWMjlaoyiA83x8mCSmqt43KwPHL/eQph4Isr+wrGqaoATq+zIYzvQNLRXUl62G1kYF/lPSWHc8+YxhegsjG6wVeHQ0hMZFJTcoSkX2A7wk8GLGAtHfAME=
+	t=1725988947; cv=none; b=Ws6eyA27fjgstOB15aVNuv4+0b9D0DC/06DYVGdB5lbMINQXRhqycbp+UuWKUwbpKkPMyYGxhkCW4xSOpJvcJFAwHXtn0tg5KTl7FD9jcmIQZQaYAwVPhn0g4oUR+ym99pFSGyGjTCABfyLbMX9tUONB6CLoMho3j7y+E1HPyDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725988945; c=relaxed/simple;
-	bh=raDMnFp+N3hv/o1TlM4If1mKOgWKbnER8dzm/gLbS94=;
+	s=arc-20240116; t=1725988947; c=relaxed/simple;
+	bh=82MapHR5wb5BF6hn0KKiM1uIKRu/vTCh5scMiJ49uLk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KP6CPep36j6SkhVaddaS6c+fBqGBXhj2C7z8eizCwNFIirxco43hlmXO6VqhatuGgCBG2Po9u4oqbjrGABh43YbKERdAdZEh5SE6tN+PbOTLL2BFR7Obj+vnfhatmkdMxOfEW1B0emTmrGGVaBX9Pm3ZKgWovptVfR+8LBUaZn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GkbsCnCn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 504E9C4CECD;
-	Tue, 10 Sep 2024 17:22:23 +0000 (UTC)
+	 MIME-Version; b=fidijl2vmJLe+kz892FaXqzJVS+EOnX1xdYPoJgYncRX25uewAg8tTVyM7LeY0b7yzPhGGhuVdKIJ54EzbSy0CUevawJHhV/Mb9Kh9Ol5dZSJz1xnzaIpgL/You+ZKGiqes40W/lmm6RbcWzhDbG8D+BhGmT2wx0SyqPdaod3+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TsO/RL6O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 651E6C4CEC4;
+	Tue, 10 Sep 2024 17:22:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725988945;
-	bh=raDMnFp+N3hv/o1TlM4If1mKOgWKbnER8dzm/gLbS94=;
+	s=k20201202; t=1725988947;
+	bh=82MapHR5wb5BF6hn0KKiM1uIKRu/vTCh5scMiJ49uLk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GkbsCnCnOOgcoVS5n4mh17bqTb81wl12VfwZVaMafckxjn/didbdOeMZ+pQ47nivj
-	 J8UKcD+1SEqvwOwOPdyqXFGcmCpFOjLuhtdCK0bRdIaiamtvRqgZOZ5CXGgv57Q7/C
-	 HiuMHyQZMIWeGnlqLfYdUP4/fNWUd18vxXm5spbaJmz+D/UpC6cvbjMFvEOqSIlMZE
-	 7LcunHFHXyd6tFZ0oZMvZu7nQmSMmGrorLB5jh2IcT6u0ZRYcEglB5Yuh8fQZaP8qE
-	 XjHK7FE//aZ1ghukCnCrd365Xi1JuI6MeZYpXCJFLhOrmytpgIrf3xUVB05LTmoO74
-	 QXhtOV8391XoQ==
+	b=TsO/RL6OHzuG5cz1bxX/r+Gwz6WPp/A/Li6+UuglMra8+UD05fm/SFlZ39z2WNb54
+	 xrJG5K+JLAGkow/LM4RuaOZasi4zmWp4Ztkoq+9XNaFj/KRP6JFAWJfYNQWO3GCGDT
+	 qyqndjJBMwwAg4/+YUeVArg30nlyvO7CFJV29ASy8T2BaZRTk7p6IRibFHSw/MEAmJ
+	 kgrc4nFduJNnwyvxNxPpV9ok/oZz0XCFcPNj/NhdCalm54AMYxkkXIraMfaATcLVHV
+	 kSrpRVqIihBhnjKA/R+1AX7xoEjj/o934yt9HsKV1c03NGV66SounGK7wIpil/5K/J
+	 CuQVim6rNzlPA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Liao Chen <liaochen4@huawei.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	cezary.rojewski@intel.com,
-	pierre-louis.bossart@linux.intel.com,
-	liam.r.girdwood@linux.intel.com,
-	peter.ujfalusi@linux.intel.com,
-	yung-chuan.liao@linux.intel.com,
-	ranjani.sridharan@linux.intel.com,
-	kai.vehmanen@linux.intel.com,
+	lgirdwood@gmail.com,
 	perex@perex.cz,
 	tiwai@suse.com,
 	kuninori.morimoto.gx@renesas.com,
-	robh@kernel.org,
-	alsa-devel@alsa-project.org,
 	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 04/18] ASoC: intel: fix module autoloading
-Date: Tue, 10 Sep 2024 13:21:49 -0400
-Message-ID: <20240910172214.2415568-4-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.10 05/18] ASoC: google: fix module autoloading
+Date: Tue, 10 Sep 2024 13:21:50 -0400
+Message-ID: <20240910172214.2415568-5-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240910172214.2415568-1-sashal@kernel.org>
 References: <20240910172214.2415568-1-sashal@kernel.org>
@@ -79,31 +71,31 @@ Content-Transfer-Encoding: 8bit
 
 From: Liao Chen <liaochen4@huawei.com>
 
-[ Upstream commit ae61a3391088d29aa8605c9f2db84295ab993a49 ]
+[ Upstream commit 8e1bb4a41aa78d6105e59186af3dcd545fc66e70 ]
 
 Add MODULE_DEVICE_TABLE(), so modules could be properly autoloaded
 based on the alias from of_device_id table.
 
 Signed-off-by: Liao Chen <liaochen4@huawei.com>
-Link: https://patch.msgid.link/20240826084924.368387-2-liaochen4@huawei.com
+Link: https://patch.msgid.link/20240826084924.368387-3-liaochen4@huawei.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/keembay/kmb_platform.c | 1 +
+ sound/soc/google/chv3-i2s.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/intel/keembay/kmb_platform.c b/sound/soc/intel/keembay/kmb_platform.c
-index 37ea2e1d2e92..aa5de167e790 100644
---- a/sound/soc/intel/keembay/kmb_platform.c
-+++ b/sound/soc/intel/keembay/kmb_platform.c
-@@ -814,6 +814,7 @@ static const struct of_device_id kmb_plat_of_match[] = {
- 	{ .compatible = "intel,keembay-tdm", .data = &intel_kmb_tdm_dai},
- 	{}
+diff --git a/sound/soc/google/chv3-i2s.c b/sound/soc/google/chv3-i2s.c
+index 08e558f24af8..0ff24653d49f 100644
+--- a/sound/soc/google/chv3-i2s.c
++++ b/sound/soc/google/chv3-i2s.c
+@@ -322,6 +322,7 @@ static const struct of_device_id chv3_i2s_of_match[] = {
+ 	{ .compatible = "google,chv3-i2s" },
+ 	{},
  };
-+MODULE_DEVICE_TABLE(of, kmb_plat_of_match);
++MODULE_DEVICE_TABLE(of, chv3_i2s_of_match);
  
- static int kmb_plat_dai_probe(struct platform_device *pdev)
- {
+ static struct platform_driver chv3_i2s_driver = {
+ 	.probe = chv3_i2s_probe,
 -- 
 2.43.0
 
