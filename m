@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-74978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A896A973267
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:22:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C447097338E
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:34:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 652B12886E9
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:22:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 83A0A283CD8
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:34:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EB101922E2;
-	Tue, 10 Sep 2024 10:16:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AC3C1940B0;
+	Tue, 10 Sep 2024 10:28:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K/Bfrn8D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="orlqYm6q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD848188A1E;
-	Tue, 10 Sep 2024 10:16:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 486DD194088;
+	Tue, 10 Sep 2024 10:28:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963391; cv=none; b=XS6Q2/0zj1PCo/RkvCmexqNR8zJ6pSFbAihp8xV2enn8jKNZMMlaFvddxECt+89+ifFVMag8+pknaiDF54482vM8QySX8QMkU2Dxetl+YWYB4GVokJtYNcRVGCmesMinnoozeAuraV+M37A6/izpGBOPYgne2FlmsFuWDAayNJc=
+	t=1725964132; cv=none; b=Ij/1zpkuZ30NxTy42rVkinGuCRDyxnOyva8CjiHQRLSaUWe/oSF9mFEdqwzbJPw88F9FsjseLBNU+HnRijMPXB0YmitTYnYSBAyVRnspheKsehCKQu7DrJg/Q7GdTnNvuEBAq1JwSQrqfycufZINfQm+pbeP9XJzXqPN/MfQ/yA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963391; c=relaxed/simple;
-	bh=ih7ZT4Ahup+jXCo+Bl8zlbyuvUKnoOCLFAwzjHRv3ns=;
+	s=arc-20240116; t=1725964132; c=relaxed/simple;
+	bh=3gGF9F7gRSFmIndZ+a/F7FJI/SCRgSohGnTCcoMHxA8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ITjHx6Xt0ag2iFlm4EsQ9Yc+n+ZivWnWi4SJkWmZmf6UNPJE5el2wnHMugtTQP1DSbL8rfcebuLYEF487mtmy3nFqpxJfLxM6X2m3K8hWlhvt8Z3ECh/ebeuJOO9KNwOHTg6Rj8z3sI68nDOrmE6lMJIrjRdWeh0JH4CPXy+fpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K/Bfrn8D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 555D8C4CEC3;
-	Tue, 10 Sep 2024 10:16:31 +0000 (UTC)
+	 MIME-Version; b=jlsJaFnBNlr/37WrZ5nzguuzW2QrvN0Ct7RbXMsnPDETF+nXvxtX3BKxAYwXtIG37qtDihMWvxcRBPIEfreQOL6cjEENW/xAh7SJDneBZgQlUSAvrUSU2tEfd2nbHahda8aDdb6W/P0CM4oUA2nGqb2r48GktjztMAigQ1OM1OA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=orlqYm6q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C43FFC4CEC3;
+	Tue, 10 Sep 2024 10:28:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963391;
-	bh=ih7ZT4Ahup+jXCo+Bl8zlbyuvUKnoOCLFAwzjHRv3ns=;
+	s=korg; t=1725964132;
+	bh=3gGF9F7gRSFmIndZ+a/F7FJI/SCRgSohGnTCcoMHxA8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K/Bfrn8DKwA8aaiVTD6WAzo+R/XMm8x+IzmAMWNGv2f6q12N4nQuc2qWt6h51dTo8
-	 5UUWLJxRLwg1O7v4MjMjFD7p9AQ83keNxX/fYMrNzhzrLE9P1YrRQr4H72BXxqw8gY
-	 eglphQ7WZib5cztha+JONJwYrOTOMgSliftXIs04=
+	b=orlqYm6q0O15fxiJpEa9BkJ1o+SpJCnSOkf9RrQPN6tTtRvXavHwpHNiTTTm17O4X
+	 2iCkKKGAVRjRPXo1Zpz7KTAib0P+PFuEmxorYanJ0vkYpPou0DDUWlNwgOZCKq7Wjr
+	 GoOcm07zW1uwPCducF/Fs58IWdF/SulPgvYjvioQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Firas Jahjah <firasj@amazon.com>,
-	Yehuda Yitschak <yehuday@amazon.com>,
-	Michael Margolin <mrgolin@amazon.com>,
-	Gal Pressman <gal.pressman@linux.dev>,
-	Leon Romanovsky <leon@kernel.org>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 042/214] RDMA/efa: Properly handle unexpected AQ completions
-Date: Tue, 10 Sep 2024 11:31:04 +0200
-Message-ID: <20240910092600.490113711@linuxfoundation.org>
+Subject: [PATCH 6.6 078/269] media: vivid: fix wrong sizeimage value for mplane
+Date: Tue, 10 Sep 2024 11:31:05 +0200
+Message-ID: <20240910092610.973448898@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,114 +61,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Margolin <mrgolin@amazon.com>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-[ Upstream commit 2d0e7ba468eae365f3c4bc9266679e1f8dd405f0 ]
+[ Upstream commit 0fd7c0c2c156270dceb8c15fad3120cdce03e539 ]
 
-Do not try to handle admin command completion if it has an unexpected
-command id and print a relevant error message.
+In several places a division by fmt->vdownsampling[p] was
+missing in the sizeimage[p] calculation, causing incorrect
+behavior for multiplanar formats were some planes are smaller
+than the first plane.
 
-Reviewed-by: Firas Jahjah <firasj@amazon.com>
-Reviewed-by: Yehuda Yitschak <yehuday@amazon.com>
-Signed-off-by: Michael Margolin <mrgolin@amazon.com>
-Link: https://lore.kernel.org/r/20240513064630.6247-1-mrgolin@amazon.com
-Reviewed-by: Gal Pressman <gal.pressman@linux.dev>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Found by new v4l2-compliance tests.
+
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/efa/efa_com.c | 30 ++++++++++++++++-------------
- 1 file changed, 17 insertions(+), 13 deletions(-)
+ drivers/media/test-drivers/vivid/vivid-vid-cap.c |  5 +++--
+ drivers/media/test-drivers/vivid/vivid-vid-out.c | 16 +++++++++-------
+ 2 files changed, 12 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/infiniband/hw/efa/efa_com.c b/drivers/infiniband/hw/efa/efa_com.c
-index 0d523ad736c7..462908022091 100644
---- a/drivers/infiniband/hw/efa/efa_com.c
-+++ b/drivers/infiniband/hw/efa/efa_com.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
- /*
-- * Copyright 2018-2021 Amazon.com, Inc. or its affiliates. All rights reserved.
-+ * Copyright 2018-2024 Amazon.com, Inc. or its affiliates. All rights reserved.
-  */
- 
- #include "efa_com.h"
-@@ -398,8 +398,8 @@ static struct efa_comp_ctx *efa_com_submit_admin_cmd(struct efa_com_admin_queue
- 	return comp_ctx;
- }
- 
--static void efa_com_handle_single_admin_completion(struct efa_com_admin_queue *aq,
--						   struct efa_admin_acq_entry *cqe)
-+static int efa_com_handle_single_admin_completion(struct efa_com_admin_queue *aq,
-+						  struct efa_admin_acq_entry *cqe)
- {
- 	struct efa_comp_ctx *comp_ctx;
- 	u16 cmd_id;
-@@ -408,11 +408,11 @@ static void efa_com_handle_single_admin_completion(struct efa_com_admin_queue *a
- 			 EFA_ADMIN_ACQ_COMMON_DESC_COMMAND_ID);
- 
- 	comp_ctx = efa_com_get_comp_ctx(aq, cmd_id, false);
--	if (!comp_ctx) {
-+	if (comp_ctx->status != EFA_CMD_SUBMITTED) {
- 		ibdev_err(aq->efa_dev,
--			  "comp_ctx is NULL. Changing the admin queue running state\n");
--		clear_bit(EFA_AQ_STATE_RUNNING_BIT, &aq->state);
--		return;
-+			  "Received completion with unexpected command id[%d], sq producer: %d, sq consumer: %d, cq consumer: %d\n",
-+			  cmd_id, aq->sq.pc, aq->sq.cc, aq->cq.cc);
-+		return -EINVAL;
+diff --git a/drivers/media/test-drivers/vivid/vivid-vid-cap.c b/drivers/media/test-drivers/vivid/vivid-vid-cap.c
+index 3a06df35a2d7..a81c17634daa 100644
+--- a/drivers/media/test-drivers/vivid/vivid-vid-cap.c
++++ b/drivers/media/test-drivers/vivid/vivid-vid-cap.c
+@@ -106,8 +106,9 @@ static int vid_cap_queue_setup(struct vb2_queue *vq,
+ 		if (*nplanes != buffers)
+ 			return -EINVAL;
+ 		for (p = 0; p < buffers; p++) {
+-			if (sizes[p] < tpg_g_line_width(&dev->tpg, p) * h +
+-						dev->fmt_cap->data_offset[p])
++			if (sizes[p] < tpg_g_line_width(&dev->tpg, p) * h /
++					dev->fmt_cap->vdownsampling[p] +
++					dev->fmt_cap->data_offset[p])
+ 				return -EINVAL;
+ 		}
+ 	} else {
+diff --git a/drivers/media/test-drivers/vivid/vivid-vid-out.c b/drivers/media/test-drivers/vivid/vivid-vid-out.c
+index 184a6df2c29f..d05f547a587c 100644
+--- a/drivers/media/test-drivers/vivid/vivid-vid-out.c
++++ b/drivers/media/test-drivers/vivid/vivid-vid-out.c
+@@ -63,14 +63,16 @@ static int vid_out_queue_setup(struct vb2_queue *vq,
+ 		if (sizes[0] < size)
+ 			return -EINVAL;
+ 		for (p = 1; p < planes; p++) {
+-			if (sizes[p] < dev->bytesperline_out[p] * h +
+-				       vfmt->data_offset[p])
++			if (sizes[p] < dev->bytesperline_out[p] * h /
++					vfmt->vdownsampling[p] +
++					vfmt->data_offset[p])
+ 				return -EINVAL;
+ 		}
+ 	} else {
+ 		for (p = 0; p < planes; p++)
+-			sizes[p] = p ? dev->bytesperline_out[p] * h +
+-				       vfmt->data_offset[p] : size;
++			sizes[p] = p ? dev->bytesperline_out[p] * h /
++					vfmt->vdownsampling[p] +
++					vfmt->data_offset[p] : size;
  	}
  
- 	comp_ctx->status = EFA_CMD_COMPLETED;
-@@ -420,14 +420,17 @@ static void efa_com_handle_single_admin_completion(struct efa_com_admin_queue *a
+ 	if (vq->num_buffers + *nbuffers < 2)
+@@ -127,7 +129,7 @@ static int vid_out_buf_prepare(struct vb2_buffer *vb)
  
- 	if (!test_bit(EFA_AQ_STATE_POLLING_BIT, &aq->state))
- 		complete(&comp_ctx->wait_event);
-+
-+	return 0;
- }
+ 	for (p = 0; p < planes; p++) {
+ 		if (p)
+-			size = dev->bytesperline_out[p] * h;
++			size = dev->bytesperline_out[p] * h / vfmt->vdownsampling[p];
+ 		size += vb->planes[p].data_offset;
  
- static void efa_com_handle_admin_completion(struct efa_com_admin_queue *aq)
- {
- 	struct efa_admin_acq_entry *cqe;
- 	u16 queue_size_mask;
--	u16 comp_num = 0;
-+	u16 comp_cmds = 0;
- 	u8 phase;
-+	int err;
- 	u16 ci;
- 
- 	queue_size_mask = aq->depth - 1;
-@@ -445,10 +448,12 @@ static void efa_com_handle_admin_completion(struct efa_com_admin_queue *aq)
- 		 * phase bit was validated
- 		 */
- 		dma_rmb();
--		efa_com_handle_single_admin_completion(aq, cqe);
-+		err = efa_com_handle_single_admin_completion(aq, cqe);
-+		if (!err)
-+			comp_cmds++;
- 
-+		aq->cq.cc++;
- 		ci++;
--		comp_num++;
- 		if (ci == aq->depth) {
- 			ci = 0;
- 			phase = !phase;
-@@ -457,10 +462,9 @@ static void efa_com_handle_admin_completion(struct efa_com_admin_queue *aq)
- 		cqe = &aq->cq.entries[ci];
+ 		if (vb2_get_plane_payload(vb, p) < size) {
+@@ -334,8 +336,8 @@ int vivid_g_fmt_vid_out(struct file *file, void *priv,
+ 	for (p = 0; p < mp->num_planes; p++) {
+ 		mp->plane_fmt[p].bytesperline = dev->bytesperline_out[p];
+ 		mp->plane_fmt[p].sizeimage =
+-			mp->plane_fmt[p].bytesperline * mp->height +
+-			fmt->data_offset[p];
++			mp->plane_fmt[p].bytesperline * mp->height /
++			fmt->vdownsampling[p] + fmt->data_offset[p];
  	}
- 
--	aq->cq.cc += comp_num;
- 	aq->cq.phase = phase;
--	aq->sq.cc += comp_num;
--	atomic64_add(comp_num, &aq->stats.completed_cmd);
-+	aq->sq.cc += comp_cmds;
-+	atomic64_add(comp_cmds, &aq->stats.completed_cmd);
- }
- 
- static int efa_com_comp_status_to_errno(u8 comp_status)
+ 	for (p = fmt->buffers; p < fmt->planes; p++) {
+ 		unsigned stride = dev->bytesperline_out[p];
 -- 
 2.43.0
 
