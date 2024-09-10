@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-74615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4849973037
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:58:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E5219730F0
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:05:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2E3BBB237C8
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:58:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C230D1F25946
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:05:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81A2414D431;
-	Tue, 10 Sep 2024 09:58:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA61818E779;
+	Tue, 10 Sep 2024 10:03:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RR7VCpey"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DY9e7ACA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41BF6EEC9;
-	Tue, 10 Sep 2024 09:58:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67CF419068E;
+	Tue, 10 Sep 2024 10:03:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962322; cv=none; b=FQDEQB+4tSaEmy+bPhzGlsmdDzsdwnj4Y9mPLF4Vks2G9siFgRHljsq3IEHqVBbvONFBU+aTxF5SE0UJkNmvnfvfT9y2aBU6D1LHMxL+uxdPPif1OHFOcntCjzqpPHl5NHHstziqg8z2WZLqSDiYcDv+unZ71eqa9w9tk+ug5zE=
+	t=1725962615; cv=none; b=NYX60BJjvp4q2Y+Wl5nBDBArQbpY3MR7Cl3Jmgom/hs8pG8kc7+81CulWqhyi/Hyu0o4XGQQ+WrjLBLwVpdAMzTyAnQrxFggrKPcX0XPcKteaV7xCQUWA8yGkSIwfHwf086R5jc6wVYnAquFtH7hqvRJMc0vySqXYiksCu57DvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962322; c=relaxed/simple;
-	bh=aoCFucY+AEJbQCr9aJNBJuISKOQU3KQv5OuRVEn5bpI=;
+	s=arc-20240116; t=1725962615; c=relaxed/simple;
+	bh=zS5Lpxm3XjKGERTiklaQ/mn3k+nNidP9A3HM+EKW4AA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PKzV0jmJi65RAQ+R3QTm4bSUa4gLdaegOujmjUfa6idLKacBqrZcyUIBiajcw2QErAvNXEALImA9aR6JWx79nTrq5HeIDE4pDFYyjLr8MpVmOfG6jO47Tnp5XSnWJnb7jqm0HwKmyTvvJ1NZ+OfQ7ZUZCQ4+tO5MaingEDUF0v4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RR7VCpey; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD7F2C4CEC3;
-	Tue, 10 Sep 2024 09:58:41 +0000 (UTC)
+	 MIME-Version; b=YK3kmK+iUpOAN6oSZX7QYPNKoJyL9GdmFygDkyWntb8t7y+eC5BeJ+yOsGpZQ6+Sad7RDYh8wRYCvo+OhI7jaT+/r+odl6vIyCMzboicK+5eBzSeJEvFNgEkDm/GxSRCAaLvkejOVLmh5mzZQhdT7eo6i5XBLFFkW00zSrECMNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DY9e7ACA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E54F0C4CEC3;
+	Tue, 10 Sep 2024 10:03:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962322;
-	bh=aoCFucY+AEJbQCr9aJNBJuISKOQU3KQv5OuRVEn5bpI=;
+	s=korg; t=1725962615;
+	bh=zS5Lpxm3XjKGERTiklaQ/mn3k+nNidP9A3HM+EKW4AA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RR7VCpeygBfkfaUrX3DWpEB6Ujn3EreAdx+iy8K2vzZU8+m3+ak0a5oIu05nDcMQH
-	 82hfO4Gfpf3qoLll/8XMjAW2PenAENewHyvO1B324VFerSeJ4Bof7trxbwzA7Akbo7
-	 F1fplfbPX6d3gst8ubbFa2AYC60T+9dIuPQbtih0=
+	b=DY9e7ACA3ALYmaCp0a6oLzUgV0A8tbxMK9UZEtAiJ4bIO+++yQ72Nts3+y92ad/B9
+	 IIjjsz1N+YAKE7DzQoF2RoEC9I3TvZ+jzczfTzGie3jfV1hzngF0se3F9J0UQIrcA1
+	 WUpThvIKXCO3N8alfVRMeUrExs+lKF7LGoTEEcj8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sagi Grimberg <sagi@grimberg.me>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Nikolay Aleksandrov <nikolay@cumulusnetworks.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 344/375] nvme-pci: allocate tagset on reset if necessary
+Subject: [PATCH 5.4 066/121] net: bridge: fdb: convert added_by_external_learn to use bitops
 Date: Tue, 10 Sep 2024 11:32:21 +0200
-Message-ID: <20240910092634.145022697@linuxfoundation.org>
+Message-ID: <20240910092548.986198995@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
-References: <20240910092622.245959861@linuxfoundation.org>
+In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
+References: <20240910092545.737864202@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Nikolay Aleksandrov <nikolay@cumulusnetworks.com>
 
-[ Upstream commit 6f01bdbfef3b62955cf6503a8425d527b3a5cf94 ]
+[ Upstream commit b5cd9f7c42480ede119a390607a9dbe6263f6795 ]
 
-If a drive is unable to create IO queues on the initial probe, a
-subsequent reset will need to allocate the tagset if IO queue creation
-is successful. Without this, blk_mq_update_nr_hw_queues will crash on a
-bad pointer due to the invalid tagset.
+Convert the added_by_external_learn field to a flag and use bitops.
 
-Fixes: eac3ef262941f62 ("nvme-pci: split the initial probe from the rest path")
-Reviewed-by: Sagi Grimberg <sagi@grimberg.me>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Nikolay Aleksandrov <nikolay@cumulusnetworks.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: bee2ef946d31 ("net: bridge: br_fdb_external_learn_add(): always set EXT_LEARN")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/pci.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ net/bridge/br_fdb.c     | 19 +++++++++----------
+ net/bridge/br_private.h |  4 ++--
+ 2 files changed, 11 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 146d33c4839f..18d85575cdb4 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -2473,6 +2473,12 @@ static unsigned int nvme_pci_nr_maps(struct nvme_dev *dev)
- 
- static void nvme_pci_update_nr_queues(struct nvme_dev *dev)
+diff --git a/net/bridge/br_fdb.c b/net/bridge/br_fdb.c
+index 6f00cca4afc8..83d6be3f87f1 100644
+--- a/net/bridge/br_fdb.c
++++ b/net/bridge/br_fdb.c
+@@ -76,7 +76,7 @@ static inline int has_expired(const struct net_bridge *br,
+ 				  const struct net_bridge_fdb_entry *fdb)
  {
-+	if (!dev->ctrl.tagset) {
-+		nvme_alloc_io_tag_set(&dev->ctrl, &dev->tagset, &nvme_mq_ops,
-+				nvme_pci_nr_maps(dev), sizeof(struct nvme_iod));
-+		return;
-+	}
-+
- 	blk_mq_update_nr_hw_queues(&dev->tagset, dev->online_queues - 1);
- 	/* free previously allocated queues that are no longer usable */
- 	nvme_free_queues(dev, dev->online_queues);
+ 	return !test_bit(BR_FDB_STATIC, &fdb->flags) &&
+-	       !fdb->added_by_external_learn &&
++	       !test_bit(BR_FDB_ADDED_BY_EXT_LEARN, &fdb->flags) &&
+ 	       time_before_eq(fdb->updated + hold_time(br), jiffies);
+ }
+ 
+@@ -352,7 +352,7 @@ void br_fdb_cleanup(struct work_struct *work)
+ 		unsigned long this_timer;
+ 
+ 		if (test_bit(BR_FDB_STATIC, &f->flags) ||
+-		    f->added_by_external_learn)
++		    test_bit(BR_FDB_ADDED_BY_EXT_LEARN, &f->flags))
+ 			continue;
+ 		this_timer = f->updated + delay;
+ 		if (time_after(this_timer, now)) {
+@@ -506,7 +506,6 @@ static struct net_bridge_fdb_entry *fdb_create(struct net_bridge *br,
+ 			set_bit(BR_FDB_LOCAL, &fdb->flags);
+ 		if (is_static)
+ 			set_bit(BR_FDB_STATIC, &fdb->flags);
+-		fdb->added_by_external_learn = 0;
+ 		fdb->offloaded = 0;
+ 		fdb->updated = fdb->used = jiffies;
+ 		if (rhashtable_lookup_insert_fast(&br->fdb_hash_tbl,
+@@ -593,8 +592,8 @@ void br_fdb_update(struct net_bridge *br, struct net_bridge_port *source,
+ 				fdb->dst = source;
+ 				fdb_modified = true;
+ 				/* Take over HW learned entry */
+-				if (unlikely(fdb->added_by_external_learn))
+-					fdb->added_by_external_learn = 0;
++				test_and_clear_bit(BR_FDB_ADDED_BY_EXT_LEARN,
++						   &fdb->flags);
+ 			}
+ 			if (now != fdb->updated)
+ 				fdb->updated = now;
+@@ -659,7 +658,7 @@ static int fdb_fill_info(struct sk_buff *skb, const struct net_bridge *br,
+ 
+ 	if (fdb->offloaded)
+ 		ndm->ndm_flags |= NTF_OFFLOADED;
+-	if (fdb->added_by_external_learn)
++	if (test_bit(BR_FDB_ADDED_BY_EXT_LEARN, &fdb->flags))
+ 		ndm->ndm_flags |= NTF_EXT_LEARNED;
+ 	if (test_bit(BR_FDB_STICKY, &fdb->flags))
+ 		ndm->ndm_flags |= NTF_STICKY;
+@@ -1129,7 +1128,7 @@ int br_fdb_external_learn_add(struct net_bridge *br, struct net_bridge_port *p,
+ 		}
+ 		if (swdev_notify)
+ 			set_bit(BR_FDB_ADDED_BY_USER, &fdb->flags);
+-		fdb->added_by_external_learn = 1;
++		set_bit(BR_FDB_ADDED_BY_EXT_LEARN, &fdb->flags);
+ 		fdb_notify(br, fdb, RTM_NEWNEIGH, swdev_notify);
+ 	} else {
+ 		fdb->updated = jiffies;
+@@ -1139,12 +1138,12 @@ int br_fdb_external_learn_add(struct net_bridge *br, struct net_bridge_port *p,
+ 			modified = true;
+ 		}
+ 
+-		if (fdb->added_by_external_learn) {
++		if (test_bit(BR_FDB_ADDED_BY_EXT_LEARN, &fdb->flags)) {
+ 			/* Refresh entry */
+ 			fdb->used = jiffies;
+ 		} else if (!test_bit(BR_FDB_ADDED_BY_USER, &fdb->flags)) {
+ 			/* Take over SW learned entry */
+-			fdb->added_by_external_learn = 1;
++			set_bit(BR_FDB_ADDED_BY_EXT_LEARN, &fdb->flags);
+ 			modified = true;
+ 		}
+ 
+@@ -1171,7 +1170,7 @@ int br_fdb_external_learn_del(struct net_bridge *br, struct net_bridge_port *p,
+ 	spin_lock_bh(&br->hash_lock);
+ 
+ 	fdb = br_fdb_find(br, addr, vid);
+-	if (fdb && fdb->added_by_external_learn)
++	if (fdb && test_bit(BR_FDB_ADDED_BY_EXT_LEARN, &fdb->flags))
+ 		fdb_delete(br, fdb, swdev_notify);
+ 	else
+ 		err = -ENOENT;
+diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
+index a439e0cfc686..5ba4620727a7 100644
+--- a/net/bridge/br_private.h
++++ b/net/bridge/br_private.h
+@@ -178,6 +178,7 @@ enum {
+ 	BR_FDB_STATIC,
+ 	BR_FDB_STICKY,
+ 	BR_FDB_ADDED_BY_USER,
++	BR_FDB_ADDED_BY_EXT_LEARN,
+ };
+ 
+ struct net_bridge_fdb_key {
+@@ -192,8 +193,7 @@ struct net_bridge_fdb_entry {
+ 	struct net_bridge_fdb_key	key;
+ 	struct hlist_node		fdb_node;
+ 	unsigned long			flags;
+-	unsigned char			added_by_external_learn:1,
+-					offloaded:1;
++	unsigned char			offloaded:1;
+ 
+ 	/* write-heavy members should not affect lookups */
+ 	unsigned long			updated ____cacheline_aligned_in_smp;
 -- 
 2.43.0
 
