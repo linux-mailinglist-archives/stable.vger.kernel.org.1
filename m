@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-75450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75703973499
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:41:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55D889731AA
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:13:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A86CD1C25004
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:41:22 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E9C2288DCC
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:13:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 870BE1925B4;
-	Tue, 10 Sep 2024 10:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D105519995B;
+	Tue, 10 Sep 2024 10:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RbgeD30m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X79sejM6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 437F8190676;
-	Tue, 10 Sep 2024 10:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E49919066D;
+	Tue, 10 Sep 2024 10:09:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964768; cv=none; b=a4NeG8/WppXB1BA6vDlklxUMQ9zvBpizKhWaUhDNAiCiuQ/FdueJpM4xIl+4aNbJ2cqq63vbjBRATh6nrf++nUvynC0Yd5L5urwXO7AxZ+2/5T+zZs6exiDKe5LpwX5l/MaHDBy7bGDyZvLoh0Z6pRcMrCqKjDF02cqxu7kcyPk=
+	t=1725962983; cv=none; b=eieZpF13ILMN8p7vN8d8uq5HBlwo8s4XN8MuuST3f/eyIC20dAo1Yxeevz19ohJjfofYSZ1Mxa2Q1HDaHksYiCRz4KIBh/mUERpFrE2NwAtFCBGit5yH9WxkXTRc+8ngYS3P7p/re0+SosMJSroBrc8xqdt0E/MlFXbJTync0tM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964768; c=relaxed/simple;
-	bh=PI9Tp2IBAG0PPDErlX0JYOep7t8/TsSShR7O/2lNkIY=;
+	s=arc-20240116; t=1725962983; c=relaxed/simple;
+	bh=rM3UsZyV8fySNnhhMDT3+QpsyFB4rmmivwvM9FggxAk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iFRRyMaoaCEBFz6+hSnoy0x/YU+1WzYdpTMITZlLX0hipMzusgdyDa3uULcmKV8tyov42KKcw+3VI5YlpSbVRucOvK6Dy6PYnV/6x1gZecSixz9EpVZFeZ3+8koJRaqdGK0fgzFI1TZUVEmqRbuLXXKHqv35o61a0nPrf3eNBbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RbgeD30m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2FF2C4CEC6;
-	Tue, 10 Sep 2024 10:39:27 +0000 (UTC)
+	 MIME-Version; b=Zydk+y/HuHgLBQFVMjI+N73u9bcURDVBklejE9CJMdJ+gVRhfpqwtsqX/n010KGLg9voZksTEo18L92FVC+2F5HP8SNhXVGs31YfTLR5+g2+AITYMZmsuRtOYdBTkDGzY0d0998JVX5+Vfs5iFSLj6Fato0UVIuTqefnAQcLWRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X79sejM6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9455C4CECF;
+	Tue, 10 Sep 2024 10:09:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964768;
-	bh=PI9Tp2IBAG0PPDErlX0JYOep7t8/TsSShR7O/2lNkIY=;
+	s=korg; t=1725962983;
+	bh=rM3UsZyV8fySNnhhMDT3+QpsyFB4rmmivwvM9FggxAk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RbgeD30muVDjdxswYiPWURh1YS921fY9ZW7eODoIMizxoFNIPGvmucMwVkZpKkUX2
-	 oPXKam2yLZFsc5ENOSahE+pji+EYEwuXOiA9ACkFviNDVdTe93WoP8NNL83blteQom
-	 obMzMDXuLNw9dK2hHP68buaY23QMatmse8J3ADCk=
+	b=X79sejM6J9EaQv/zNJX96Hy1akBLP/KD+LNcsgWEg4GoTqzn3g3D/p5UHkieDv+wO
+	 fLXWAKeU799PuCI09x6SdHF0kdicCSJtLfSDfr9dxcMDkV2pqD47rG/vg75m9XMaAm
+	 zzpmjX2x3BXfhvzDfq4TdnGiYkpkvpFhf9xd5Ie0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Huang <Tim.Huang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Zijun Hu <quic_zijuhu@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 024/186] drm/amdgpu: fix ucode out-of-bounds read warning
+Subject: [PATCH 6.1 095/192] devres: Initialize an uninitialized struct member
 Date: Tue, 10 Sep 2024 11:31:59 +0200
-Message-ID: <20240910092555.611086972@linuxfoundation.org>
+Message-ID: <20240910092601.924426361@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Huang <Tim.Huang@amd.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-[ Upstream commit 8944acd0f9db33e17f387fdc75d33bb473d7936f ]
+[ Upstream commit 56a20ad349b5c51909cf8810f7c79b288864ad33 ]
 
-Clear warning that read ucode[] may out-of-bounds.
+Initialize an uninitialized struct member for driver API
+devres_open_group().
 
-Signed-off-by: Tim Huang <Tim.Huang@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
+Link: https://lore.kernel.org/r/1719931914-19035-4-git-send-email-quic_zijuhu@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_cgs.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/base/devres.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cgs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cgs.c
-index 78ac6dbe70d8..854b21860257 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cgs.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cgs.c
-@@ -213,6 +213,9 @@ static int amdgpu_cgs_get_firmware_info(struct cgs_device *cgs_device,
- 		struct amdgpu_firmware_info *ucode;
+diff --git a/drivers/base/devres.c b/drivers/base/devres.c
+index f9add2ecdc55..35d1e2864696 100644
+--- a/drivers/base/devres.c
++++ b/drivers/base/devres.c
+@@ -564,6 +564,7 @@ void * devres_open_group(struct device *dev, void *id, gfp_t gfp)
+ 	grp->id = grp;
+ 	if (id)
+ 		grp->id = id;
++	grp->color = 0;
  
- 		id = fw_type_convert(cgs_device, type);
-+		if (id >= AMDGPU_UCODE_ID_MAXIMUM)
-+			return -EINVAL;
-+
- 		ucode = &adev->firmware.ucode[id];
- 		if (ucode->fw == NULL)
- 			return -EINVAL;
+ 	spin_lock_irqsave(&dev->devres_lock, flags);
+ 	add_dr(dev, &grp->node[0]);
 -- 
 2.43.0
 
