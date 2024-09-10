@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-75355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4479D973421
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:38:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97B409732EE
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:27:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F00461F25AFD
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:38:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB35E1C2167E
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:27:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C65BF188A09;
-	Tue, 10 Sep 2024 10:34:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC1B4188A1E;
+	Tue, 10 Sep 2024 10:22:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="huXK2+XQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HswHnPs8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8457E17B50F;
-	Tue, 10 Sep 2024 10:34:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 931335381A;
+	Tue, 10 Sep 2024 10:22:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964490; cv=none; b=uvNEDJxtA6qSuIkrR7NI2fRSfMSzjZGD1plRmqrx/0d7uq5GskrM9Tllz4hqFgHHPeOA/Pgkxg4cxFZ+JWbJzDhINF5l4JXFTfFd9+qMiNzDvrigYwVDfvjxM1RlnaU9q9qi6jiv9wGMvAyTFbHJMWrSQZs/WzLh8v5Mv8+mD+E=
+	t=1725963755; cv=none; b=f8ke+Cst6+Y61bD0GmaPk1sqf2e5b1x7x1i3pNCmEIsIPtEHZ8yKNIS0NwnF4cE2ZwTuEdX202glnk5RcWRAqh+68ssJrgC9N8UPJfIpeh+nXx8pZdi8KNqLM9ArDwDhKGG8FSOq5Slnp/aLANWaLDj9jKlSSMXhtLGTXQA0trQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964490; c=relaxed/simple;
-	bh=hJaUYokpM3wyQifpccXI1kJJi/wgoEO/VUVGTfgRTj0=;
+	s=arc-20240116; t=1725963755; c=relaxed/simple;
+	bh=TUr8Dguy8zKljBj1W54ktRXm+Z/3kQhi9F3a7TbIr/s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tmdpx9iZDrpKCjrWINpcxRtZ+ClxAhT9+Fy+hBazOiFhG3LEsFoQYfHscl3V2vbQiQRBX6FMAGGyY/rwrxzVqku/GvhBgLAQ8XU1q20s+NoTxWTHfwbv9hYHHNgsx05lLnu+ThAAKoIJM+kjXk/rEzmTkA1e26u6W5WBT61IEB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=huXK2+XQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09AEEC4CEC3;
-	Tue, 10 Sep 2024 10:34:49 +0000 (UTC)
+	 MIME-Version; b=UFyRNKs6QePfwJcq7jln8Yxi9/f/tBpnsUqMAMP/RMVx8PIBVFCuYLtInfQWCNNJMla1jmQqtnxK4rf2/nkV7JEEuxY4tRWJCSknY9e9SfC8W4ismRDTeDqU1FjPjE5d+rCgyKNPqsORCAn2ZOZiLfHMR9ygJnAe8dSqoO9K3n0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HswHnPs8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A1E4C4CEC3;
+	Tue, 10 Sep 2024 10:22:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964490;
-	bh=hJaUYokpM3wyQifpccXI1kJJi/wgoEO/VUVGTfgRTj0=;
+	s=korg; t=1725963755;
+	bh=TUr8Dguy8zKljBj1W54ktRXm+Z/3kQhi9F3a7TbIr/s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=huXK2+XQoHgVEzVeKJES5JY1IbTj/kOZn0+Fllf0YFUCAUxy/Z6Zyy2qqbzaz4dCs
-	 sJqhQ5BoMD78cn2YjxEUOaRQT8Clv+zqMonqOLrij0NIWc8Zp8qFuwGgLMYgcx8HQE
-	 AbCkZrEdb0tyaO+i23hbublFqzCC6+nMWVPWbVA0=
+	b=HswHnPs8vGACK4YCPvxWHNXMHAA1MkcpNqVj1FZF6JVhg1IOxYbpiloyQ78mtcXb+
+	 r61EFY2jIyrzZLkdss2sPwUrN/Xb1TLzI/Gi21flrPAzgWRjy+rYFpOXRbfInmrjZ/
+	 L39DGo6sspEeFM5zOA71TLgYfFvHGCNbuw0XY03k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oleksandr Natalenko <oleksandr@natalenko.name>,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Wyes Karny <wyes.karny@amd.com>,
-	Perry Yuan <perry.yuan@amd.com>,
-	Huang Rui <ray.huang@amd.com>,
-	Meng Li <li.meng@amd.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.6 200/269] ACPI: CPPC: Add helper to get the highest performance value
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	syzbot <syzbot+0122fa359a69694395d5@syzkaller.appspotmail.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 165/214] Input: uinput - reject requests with unreasonable number of slots
 Date: Tue, 10 Sep 2024 11:33:07 +0200
-Message-ID: <20240910092615.221447454@linuxfoundation.org>
+Message-ID: <20240910092605.439479284@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,80 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Meng Li <li.meng@amd.com>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-commit 12753d71e8c5c3e716cedba23ddeed508da0bdc4 upstream.
+[ Upstream commit 206f533a0a7c683982af473079c4111f4a0f9f5e ]
 
-Add support for getting the highest performance to the
-generic CPPC driver. This enables downstream drivers
-such as amd-pstate to discover and use these values.
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-Refer to Chapter 8.4.6.1.1.1. Highest Performance of ACPI
-Specification 6.5 for details on continuous performance control
-of CPPC (linked below).
+When exercising uinput interface syzkaller may try setting up device
+with a really large number of slots, which causes memory allocation
+failure in input_mt_init_slots(). While this allocation failure is
+handled properly and request is rejected, it results in syzkaller
+reports. Additionally, such request may put undue burden on the
+system which will try to free a lot of memory for a bogus request.
 
-Tested-by: Oleksandr Natalenko <oleksandr@natalenko.name>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Wyes Karny <wyes.karny@amd.com>
-Reviewed-by: Perry Yuan <perry.yuan@amd.com>
-Acked-by: Huang Rui <ray.huang@amd.com>
-Signed-off-by: Meng Li <li.meng@amd.com>
-Link: https://uefi.org/specs/ACPI/6.5/08_Processor_Configuration_and_Control.html?highlight=cppc#highest-performance
-[ rjw: Subject and changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix it by limiting allowed number of slots to 100. This can easily
+be extended if we see devices that can track more than 100 contacts.
+
+Reported-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Reported-by: syzbot <syzbot+0122fa359a69694395d5@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=0122fa359a69694395d5
+Link: https://lore.kernel.org/r/Zqgi7NYEbpRsJfa2@google.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/cppc_acpi.c |   13 +++++++++++++
- include/acpi/cppc_acpi.h |    5 +++++
- 2 files changed, 18 insertions(+)
+ drivers/input/misc/uinput.c | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
 
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -1197,6 +1197,19 @@ int cppc_get_nominal_perf(int cpunum, u6
+diff --git a/drivers/input/misc/uinput.c b/drivers/input/misc/uinput.c
+index f2593133e524..790db3ceb208 100644
+--- a/drivers/input/misc/uinput.c
++++ b/drivers/input/misc/uinput.c
+@@ -416,6 +416,20 @@ static int uinput_validate_absinfo(struct input_dev *dev, unsigned int code,
+ 		return -EINVAL;
+ 	}
+ 
++	/*
++	 * Limit number of contacts to a reasonable value (100). This
++	 * ensures that we need less than 2 pages for struct input_mt
++	 * (we are not using in-kernel slot assignment so not going to
++	 * allocate memory for the "red" table), and we should have no
++	 * trouble getting this much memory.
++	 */
++	if (code == ABS_MT_SLOT && max > 99) {
++		printk(KERN_DEBUG
++		       "%s: unreasonably large number of slots requested: %d\n",
++		       UINPUT_NAME, max);
++		return -EINVAL;
++	}
++
+ 	return 0;
  }
  
- /**
-+ * cppc_get_highest_perf - Get the highest performance register value.
-+ * @cpunum: CPU from which to get highest performance.
-+ * @highest_perf: Return address.
-+ *
-+ * Return: 0 for success, -EIO otherwise.
-+ */
-+int cppc_get_highest_perf(int cpunum, u64 *highest_perf)
-+{
-+	return cppc_get_perf(cpunum, HIGHEST_PERF, highest_perf);
-+}
-+EXPORT_SYMBOL_GPL(cppc_get_highest_perf);
-+
-+/**
-  * cppc_get_epp_perf - Get the epp register value.
-  * @cpunum: CPU from which to get epp preference value.
-  * @epp_perf: Return address.
---- a/include/acpi/cppc_acpi.h
-+++ b/include/acpi/cppc_acpi.h
-@@ -139,6 +139,7 @@ struct cppc_cpudata {
- #ifdef CONFIG_ACPI_CPPC_LIB
- extern int cppc_get_desired_perf(int cpunum, u64 *desired_perf);
- extern int cppc_get_nominal_perf(int cpunum, u64 *nominal_perf);
-+extern int cppc_get_highest_perf(int cpunum, u64 *highest_perf);
- extern int cppc_get_perf_ctrs(int cpu, struct cppc_perf_fb_ctrs *perf_fb_ctrs);
- extern int cppc_set_perf(int cpu, struct cppc_perf_ctrls *perf_ctrls);
- extern int cppc_set_enable(int cpu, bool enable);
-@@ -165,6 +166,10 @@ static inline int cppc_get_nominal_perf(
- {
- 	return -ENOTSUPP;
- }
-+static inline int cppc_get_highest_perf(int cpunum, u64 *highest_perf)
-+{
-+	return -ENOTSUPP;
-+}
- static inline int cppc_get_perf_ctrs(int cpu, struct cppc_perf_fb_ctrs *perf_fb_ctrs)
- {
- 	return -ENOTSUPP;
+-- 
+2.43.0
+
 
 
 
