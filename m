@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-74810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA1BA973188
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:12:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46B769733A7
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:34:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9990D28A7C9
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:12:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 762551C243BD
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:34:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54B4D192D9D;
-	Tue, 10 Sep 2024 10:08:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEBCC195985;
+	Tue, 10 Sep 2024 10:30:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kLqHMtLp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ys/AQIoP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF07919308E;
-	Tue, 10 Sep 2024 10:08:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D77F18B474;
+	Tue, 10 Sep 2024 10:30:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962896; cv=none; b=VYgLf/mvYsOu1/y97R6SvF56CazAGmknb8HW9Bo56Ecx5b/MUy833kPVk7Of/lYQGR6XydsxGwaoD0DUID3IoKtfV3C3X6JXjstQudkyVqJBexQHpeFjqPBm29e5XrvP7YsE1HLy2FNCLOsCizQ7CqFLOcL5h9XdDPXilxiDBB8=
+	t=1725964205; cv=none; b=LbJjd01+48o/TtBETVpbCis+V0QyRuvBXicCAe3zB3aHvg6XD3J3c6mXBeHFV7VwI6RZV8RjRHj1/hrhac6ZX5Gvo8m+aXbz7HrHcABBfzGfN4LYQVUgXGYuhyfDKKncf9+CGZlpfWUp1R5yNPXdBg1NMDmfyjVwP8bHRw/l56s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962896; c=relaxed/simple;
-	bh=hHEYz3eJFDuXIWGm/n/EaFNJUhdQH2VTC2XCM0kcs5o=;
+	s=arc-20240116; t=1725964205; c=relaxed/simple;
+	bh=SnTxI0bf3H6hGhffUQx5U4oEekziEaHxV16L4T0a6Us=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a1hMFprU9qg6F0UD3eMgQLKir4RQ9RgJPp4cd5ANnw7CPMwmqoUoAdMkQTOY3FGvJI0ovlM97zc+HO1KoZg3SqTLN5F9Q6TJfylkMc6GKlbFbetPKq0zZ5Tiq6tQ2XFlC2FRu7tKcOyqpqzheNj5mDz2u46nvxklqwM5fNoZt0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kLqHMtLp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 728E5C4CEC3;
-	Tue, 10 Sep 2024 10:08:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=XyM3epf9fxG5+IsXacIqPYbuJQJRu8GECR4ZxLYEevxWcgJnl/JFU6B9sYUci6gsBrYjI0KZV+4FyGOuyPryiT5dpiNVSWU5P28QLJt0X2ICOFMQ1Y6FNsK4M0UaAg5eIrKuBOXcVfMk/0yn9c8/IfAWHsOmkbjs5cgEuuja+Po=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ys/AQIoP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 129BEC4CEC3;
+	Tue, 10 Sep 2024 10:30:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962895;
-	bh=hHEYz3eJFDuXIWGm/n/EaFNJUhdQH2VTC2XCM0kcs5o=;
+	s=korg; t=1725964205;
+	bh=SnTxI0bf3H6hGhffUQx5U4oEekziEaHxV16L4T0a6Us=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kLqHMtLp9zth3Cd1x28t49peaKTNlqgFCk2JjBPJDYqCGcl13I3OLXvLUYvr0VgC2
-	 CDkA6c3griKNf/sPRlr//+8HHS+kaVrz6IcUPvTGm7JC2wWSIA7CYhIz8RYAnTPkNU
-	 1nnfMotci1wxKj7J4OcOJXr4B9c1ygmYRY9weQy0=
+	b=ys/AQIoPK40XzMsgi51rBNzmN8yVIddMgocONcURdcfLm5ngbYNoBBd1l5hvzzyNH
+	 L+EwqX44gb9Qd8otqNfYsJumAcvjEWNX1B1GJZee/6DOIAUpu4u4pUGFkG2J4PJN3D
+	 V7TIv8y4sFgq5DdKdI8xdkqcYiETHDcGOxg+fUVw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Jerry Zuo <jerry.zuo@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 066/192] drm/amd/display: Check denominator pbn_div before used
-Date: Tue, 10 Sep 2024 11:31:30 +0200
-Message-ID: <20240910092600.719870874@linuxfoundation.org>
+Subject: [PATCH 6.6 104/269] platform/x86: dell-smbios: Fix error path in dell_smbios_init()
+Date: Tue, 10 Sep 2024 11:31:31 +0200
+Message-ID: <20240910092611.919999635@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +60,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit 116a678f3a9abc24f5c9d2525b7393d18d9eb58e ]
+[ Upstream commit ffc17e1479e8e9459b7afa80e5d9d40d0dd78abb ]
 
-[WHAT & HOW]
-A denominator cannot be 0, and is checked before used.
+In case of error in build_tokens_sysfs(), all the memory that has been
+allocated is freed at end of this function. But then free_group() is
+called which performs memory deallocation again.
 
-This fixes 1 DIVIDE_BY_ZERO issue reported by Coverity.
+Also, instead of free_group() call, there should be exit_dell_smbios_smm()
+and exit_dell_smbios_wmi() calls, since there is initialization, but there
+is no release of resources in case of an error.
 
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Jerry Zuo <jerry.zuo@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fix these issues by replacing free_group() call with
+exit_dell_smbios_wmi() and exit_dell_smbios_smm().
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: 33b9ca1e53b4 ("platform/x86: dell-smbios: Add a sysfs interface for SMBIOS tokens")
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Link: https://lore.kernel.org/r/20240830065428.9544-1-amishin@t-argos.ru
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/dell/dell-smbios-base.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 0be1a1149a3f..393e32259a77 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -6767,7 +6767,7 @@ static int dm_update_mst_vcpi_slots_for_dsc(struct drm_atomic_state *state,
- 			}
- 		}
+diff --git a/drivers/platform/x86/dell/dell-smbios-base.c b/drivers/platform/x86/dell/dell-smbios-base.c
+index 86b95206cb1b..6fb538a13868 100644
+--- a/drivers/platform/x86/dell/dell-smbios-base.c
++++ b/drivers/platform/x86/dell/dell-smbios-base.c
+@@ -590,7 +590,10 @@ static int __init dell_smbios_init(void)
+ 	return 0;
  
--		if (j == dc_state->stream_count)
-+		if (j == dc_state->stream_count || pbn_div == 0)
- 			continue;
+ fail_sysfs:
+-	free_group(platform_device);
++	if (!wmi)
++		exit_dell_smbios_wmi();
++	if (!smm)
++		exit_dell_smbios_smm();
  
- 		slot_num = DIV_ROUND_UP(pbn, pbn_div);
+ fail_create_group:
+ 	platform_device_del(platform_device);
 -- 
 2.43.0
 
