@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-75439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 561A597348D
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:41:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B63899733DC
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:36:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1221B28E1CD
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:41:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7A95128A6E2
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:36:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 234A918DF97;
-	Tue, 10 Sep 2024 10:38:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EB8A18FDAF;
+	Tue, 10 Sep 2024 10:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jw2Exs8z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w5T8P291"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D296517C220;
-	Tue, 10 Sep 2024 10:38:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CBB07581D;
+	Tue, 10 Sep 2024 10:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964735; cv=none; b=Ku/5BR5ULnmy4b0/TvwYehoijRXxl8iOCP/WTMq/uga1POX/XRmbbzTeCySkxlCAUuxzyGUtAl8RD5kxxBn1m/i9tBe/k9FeEZpBRJJHfiG1fvQngv9q1RSIkX9W4xYEv7SCuYm/SmY2ZgzMrW4mM7D3/2pu+zcCT3+rub9tp4g=
+	t=1725964341; cv=none; b=sdj9tZgg99hgaSki4E+1mduegL6RxjFqrKDJntd7sV58NjbW6tkjIP3SBkHRMc+SRu5AfwR/C34iC8u5zAtraFGZXswSwNyXsv4varR6U/4hTh1IdyOSILL4ROt18q+kujWyukqbYQvhV9VhVHcAuXsjorTxYspHqtO5JO1rshI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964735; c=relaxed/simple;
-	bh=+W/7LiUc4oixau43JKVlzi46EAIgt5jvP0TQ+EOH8t8=;
+	s=arc-20240116; t=1725964341; c=relaxed/simple;
+	bh=/tNEC6dWs9w4qbISY4/pRT2RKGc6UK70mT6C6xQUAjw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RONJHYxuUndDfnWEOPOKiWDN0gJT/0tPyTqYHjtQSX8JpvjFwJDYJ7QqGYNv9uAyJjqiDwmKYuNuP6+waDNg2R0dRazlUziezOTJFfkLpEhYQQgh8TYBrelf3p7gNcOVMNwtvT1B0VodVRwnVV1QpN8Hn/JIjG9XoJnDJ02p4lM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jw2Exs8z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A6DCC4CEC3;
-	Tue, 10 Sep 2024 10:38:55 +0000 (UTC)
+	 MIME-Version; b=ldpZSKi0avg+ZQpxpZ0hnV2gkYTkPKANITd3S408dQrr9gzbAGFbI4FyWtwwVG2M4drowctOOI+wEEQsL8SGc9GkyxDCxiEenGbkbqAP7Gb0c6E1swUzDbrQA1+zW/4YI0+xuPeoylyNlLlq5FFI1gcCtDSKL3x8kEONq6grX2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w5T8P291; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F321C4CEC3;
+	Tue, 10 Sep 2024 10:32:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964735;
-	bh=+W/7LiUc4oixau43JKVlzi46EAIgt5jvP0TQ+EOH8t8=;
+	s=korg; t=1725964341;
+	bh=/tNEC6dWs9w4qbISY4/pRT2RKGc6UK70mT6C6xQUAjw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jw2Exs8zOaF8B2gZnccJHGZAXyHMZLx/BO7FcCq/R7J7rlrGMImLiYMKpC7gX919h
-	 B5Ve+OczNzT/N7bWz0mv+Awazaf+kIQnaXf7gbe4QHbZYkj5w2uUtESnDcuo0iEMiz
-	 v3Kg1Chakrf7/4yKeu2aaA76vMOd5ssafNb0GYX0=
+	b=w5T8P291b/tVuG7PsOgRMRZM9ENDaHS00r5GE1wiPYTniOM9Fc9JmTyf9Gilhz2Xn
+	 oTX/NqBUjZQKRgAVeuY24fimolse0lqhfK79RqVaI06AZFjAy7hYeMNU+uWcvMWX/w
+	 aU9gg3jmePKJ4LLmpOj7H4gx9GxJaIQZLjiT0TD0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhigang Luo <Zhigang.Luo@amd.com>,
-	Hawking Zhang <Hawking.Zhang@amd.com>,
-	Lijo Lazar <lijo.lazar@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 014/186] drm/amdgpu: avoid reading vf2pf info size from FB
+Subject: [PATCH 6.6 122/269] net: phy: Fix missing of_node_put() for leds
 Date: Tue, 10 Sep 2024 11:31:49 +0200
-Message-ID: <20240910092555.240350403@linuxfoundation.org>
+Message-ID: <20240910092612.523898755@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,39 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhigang Luo <Zhigang.Luo@amd.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 3bcc0ee14768d886cedff65da72d83d375a31a56 ]
+[ Upstream commit 2560db6ede1aaf162a73b2df43e0b6c5ed8819f7 ]
 
-VF can't access FB when host is doing mode1 reset. Using sizeof to get
-vf2pf info size, instead of reading it from vf2pf header stored in FB.
+The call of of_get_child_by_name() will cause refcount incremented
+for leds, if it succeeds, it should call of_node_put() to decrease
+it, fix it.
 
-Signed-off-by: Zhigang Luo <Zhigang.Luo@amd.com>
-Reviewed-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 01e5b728e9e4 ("net: phy: Add a binding for PHY LEDs")
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20240830022025.610844-1-ruanjinjie@huawei.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/phy/phy_device.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
-index bd53844a8ba4..ca4c915e3a6c 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
-@@ -552,7 +552,7 @@ static int amdgpu_virt_write_vf2pf_data(struct amdgpu_device *adev)
+diff --git a/drivers/net/phy/phy_device.c b/drivers/net/phy/phy_device.c
+index c895cd178e6a..2e4bff6055e2 100644
+--- a/drivers/net/phy/phy_device.c
++++ b/drivers/net/phy/phy_device.c
+@@ -3164,11 +3164,13 @@ static int of_phy_leds(struct phy_device *phydev)
+ 		err = of_phy_led(phydev, led);
+ 		if (err) {
+ 			of_node_put(led);
++			of_node_put(leds);
+ 			phy_leds_unregister(phydev);
+ 			return err;
+ 		}
+ 	}
  
- 	vf2pf_info->checksum =
- 		amd_sriov_msg_checksum(
--		vf2pf_info, vf2pf_info->header.size, 0, 0);
-+		vf2pf_info, sizeof(*vf2pf_info), 0, 0);
- 
++	of_node_put(leds);
  	return 0;
  }
+ 
 -- 
 2.43.0
 
