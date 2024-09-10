@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-75315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75063-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AFC69733E7
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:36:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF53E973385
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:33:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CB0541F214AF
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:36:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4D0B9B2BC49
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:26:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9438C191F7A;
-	Tue, 10 Sep 2024 10:32:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 177B5178364;
+	Tue, 10 Sep 2024 10:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S9sVSxkl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rnWIgBtc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 454A71917FF;
-	Tue, 10 Sep 2024 10:32:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8FAF187FF9;
+	Tue, 10 Sep 2024 10:20:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964376; cv=none; b=YOv7AyH+5+0dwhkcqNKzQD8d1R51Tpcez4Qn0uHnVhgSPvbbuRN86qzIvdOTWXmLzQAhI1Bh9oBKGb3ejEgWBXsfXmkFLi1ieblcuDPUHNU5AgqUsR28Mha3Ll1i3aQFe6YIyJAEHCDi8EScnm45B91Ymh3M/bAwKqe5ddDID8Y=
+	t=1725963640; cv=none; b=PmaAGsokTAOmGR4fzxLh/cIhlj7CpecRLoWgTlb1Ckb5Ok/fzriV7S/6SkwGTs3zIMbehV2zXtjv1WLZT6DVTllt/QbYOrc4uVDiKoAMGrBGkX6HLcSWGFGR3t/Bh8dw+Sz6RgNHVHy/n2ZqIu/t0T7tITon3qxD14zNNRP0L+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964376; c=relaxed/simple;
-	bh=t7V2U4P57YXtTOQQ68am/rVeGUaQWxzZm+mqhhGd/6Q=;
+	s=arc-20240116; t=1725963640; c=relaxed/simple;
+	bh=Q6KHA/b+AuMhfpkNOhZwA0oJrqkO2KjKIfEGrp1LDrI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lbUdT60spsTBBrvxfJRk/smkEJiGulVxFuAni+OqEfIvaOqCKpFMLKjL/EVwyfc+AozX1s3fYn2fPf5z+hRbcqtTmSj+yrcAVzTTDbTeOImKASIPRD4QahXIqN8ct50rhlWo+TCjkqjNIOQWNKWxiKBQdCiUbCHOZK7gGWngg+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S9sVSxkl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFCF7C4CEC3;
-	Tue, 10 Sep 2024 10:32:55 +0000 (UTC)
+	 MIME-Version; b=kBx9zChU8g0KHpnwfaGqYBRqXtl9JpHC+LmwqgCzEBEO8E783lchA9fUge1Cb/1cwFLB7menD/gFKL6NfgaYUKqdAfP0pLNbjmsqc+xJwVmvW7IYlGWR5+U7st3VePyYfDhPMDNQp0pHFNhV/MHTJRgLcrGtRofnyL+W9a6vc34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rnWIgBtc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F843C4CEC3;
+	Tue, 10 Sep 2024 10:20:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964376;
-	bh=t7V2U4P57YXtTOQQ68am/rVeGUaQWxzZm+mqhhGd/6Q=;
+	s=korg; t=1725963640;
+	bh=Q6KHA/b+AuMhfpkNOhZwA0oJrqkO2KjKIfEGrp1LDrI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S9sVSxkluefeoztFnjFAa80/Fgtyv/qR2qUt68HS1Gp5uSOAiqCPf79t6HKIMFE3q
-	 liES09znTCYG8EPLh8TnIc9tm6uaYxe2IQGTplLM2kCVDA4+HS9Q3ghGAmHLPOiNqS
-	 uNuZHz/RX3duuPPMPD817exzamTOYCPc2Qok6120=
+	b=rnWIgBtclppDrMTzvC4MBHTzqWr1sQzpr4hajl2GlwWriU+ew7oniOQ4z4y+0dwud
+	 cQnf/uXCHXJRjhfwtIUuyQvPMbczXsC9NuCDnZ+HCLT7qy/ELwKcd8XMPK9rmLHyTk
+	 Ogd5e+6PCGlhm8nQd+VDzTo8IvmK3/XLPzBl9y00=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Brian Norris <briannorris@chromium.org>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 162/269] wifi: mwifiex: Do not return unused priv in mwifiex_get_priv_by_id()
+Subject: [PATCH 5.15 127/214] net: usb: dont write directly to netdev->dev_addr
 Date: Tue, 10 Sep 2024 11:32:29 +0200
-Message-ID: <20240910092613.940682732@linuxfoundation.org>
+Message-ID: <20240910092603.943476501@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,114 +61,238 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit c145eea2f75ff7949392aebecf7ef0a81c1f6c14 ]
+[ Upstream commit 2674e7ea22ba0e22a2d1603bd51e0b8f6442a267 ]
 
-mwifiex_get_priv_by_id() returns the priv pointer corresponding to
-the bss_num and bss_type, but without checking if the priv is actually
-currently in use.
-Unused priv pointers do not have a wiphy attached to them which can
-lead to NULL pointer dereferences further down the callstack.  Fix
-this by returning only used priv pointers which have priv->bss_mode
-set to something else than NL80211_IFTYPE_UNSPECIFIED.
+Commit 406f42fa0d3c ("net-next: When a bond have a massive amount
+of VLANs...") introduced a rbtree for faster Ethernet address look
+up. To maintain netdev->dev_addr in this tree we need to make all
+the writes to it got through appropriate helpers.
 
-Said NULL pointer dereference happened when an Accesspoint was started
-with wpa_supplicant -i mlan0 with this config:
+Manually fix all net/usb drivers without separate maintainers.
 
-network={
-        ssid="somessid"
-        mode=2
-        frequency=2412
-        key_mgmt=WPA-PSK WPA-PSK-SHA256
-        proto=RSN
-        group=CCMP
-        pairwise=CCMP
-        psk="12345678"
-}
+v2: catc does DMA to the buffer, leave the conversion to Oliver
 
-When waiting for the AP to be established, interrupting wpa_supplicant
-with <ctrl-c> and starting it again this happens:
-
-| Unable to handle kernel NULL pointer dereference at virtual address 0000000000000140
-| Mem abort info:
-|   ESR = 0x0000000096000004
-|   EC = 0x25: DABT (current EL), IL = 32 bits
-|   SET = 0, FnV = 0
-|   EA = 0, S1PTW = 0
-|   FSC = 0x04: level 0 translation fault
-| Data abort info:
-|   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
-|   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-|   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-| user pgtable: 4k pages, 48-bit VAs, pgdp=0000000046d96000
-| [0000000000000140] pgd=0000000000000000, p4d=0000000000000000
-| Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
-| Modules linked in: caam_jr caamhash_desc spidev caamalg_desc crypto_engine authenc libdes mwifiex_sdio
-+mwifiex crct10dif_ce cdc_acm onboard_usb_hub fsl_imx8_ddr_perf imx8m_ddrc rtc_ds1307 lm75 rtc_snvs
-+imx_sdma caam imx8mm_thermal spi_imx error imx_cpufreq_dt fuse ip_tables x_tables ipv6
-| CPU: 0 PID: 8 Comm: kworker/0:1 Not tainted 6.9.0-00007-g937242013fce-dirty #18
-| Hardware name: somemachine (DT)
-| Workqueue: events sdio_irq_work
-| pstate: 00000005 (nzcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-| pc : mwifiex_get_cfp+0xd8/0x15c [mwifiex]
-| lr : mwifiex_get_cfp+0x34/0x15c [mwifiex]
-| sp : ffff8000818b3a70
-| x29: ffff8000818b3a70 x28: ffff000006bfd8a5 x27: 0000000000000004
-| x26: 000000000000002c x25: 0000000000001511 x24: 0000000002e86bc9
-| x23: ffff000006bfd996 x22: 0000000000000004 x21: ffff000007bec000
-| x20: 000000000000002c x19: 0000000000000000 x18: 0000000000000000
-| x17: 000000040044ffff x16: 00500072b5503510 x15: ccc283740681e517
-| x14: 0201000101006d15 x13: 0000000002e8ff43 x12: 002c01000000ffb1
-| x11: 0100000000000000 x10: 02e8ff43002c0100 x9 : 0000ffb100100157
-| x8 : ffff000003d20000 x7 : 00000000000002f1 x6 : 00000000ffffe124
-| x5 : 0000000000000001 x4 : 0000000000000003 x3 : 0000000000000000
-| x2 : 0000000000000000 x1 : 0001000000011001 x0 : 0000000000000000
-| Call trace:
-|  mwifiex_get_cfp+0xd8/0x15c [mwifiex]
-|  mwifiex_parse_single_response_buf+0x1d0/0x504 [mwifiex]
-|  mwifiex_handle_event_ext_scan_report+0x19c/0x2f8 [mwifiex]
-|  mwifiex_process_sta_event+0x298/0xf0c [mwifiex]
-|  mwifiex_process_event+0x110/0x238 [mwifiex]
-|  mwifiex_main_process+0x428/0xa44 [mwifiex]
-|  mwifiex_sdio_interrupt+0x64/0x12c [mwifiex_sdio]
-|  process_sdio_pending_irqs+0x64/0x1b8
-|  sdio_irq_work+0x4c/0x7c
-|  process_one_work+0x148/0x2a0
-|  worker_thread+0x2fc/0x40c
-|  kthread+0x110/0x114
-|  ret_from_fork+0x10/0x20
-| Code: a94153f3 a8c37bfd d50323bf d65f03c0 (f940a000)
-| ---[ end trace 0000000000000000 ]---
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Acked-by: Brian Norris <briannorris@chromium.org>
-Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20240703072409.556618-1-s.hauer@pengutronix.de
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: bab8eb0dd4cb ("usbnet: modern method to get random MAC")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwifiex/main.h | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/usb/ch9200.c      | 4 +++-
+ drivers/net/usb/cx82310_eth.c | 5 +++--
+ drivers/net/usb/kaweth.c      | 3 +--
+ drivers/net/usb/mcs7830.c     | 4 +++-
+ drivers/net/usb/sierra_net.c  | 6 ++++--
+ drivers/net/usb/sr9700.c      | 4 +++-
+ drivers/net/usb/sr9800.c      | 5 +++--
+ drivers/net/usb/usbnet.c      | 6 ++++--
+ 8 files changed, 24 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/main.h b/drivers/net/wireless/marvell/mwifiex/main.h
-index 7bdec6c62248..dc6b4cf616be 100644
---- a/drivers/net/wireless/marvell/mwifiex/main.h
-+++ b/drivers/net/wireless/marvell/mwifiex/main.h
-@@ -1290,6 +1290,9 @@ mwifiex_get_priv_by_id(struct mwifiex_adapter *adapter,
+diff --git a/drivers/net/usb/ch9200.c b/drivers/net/usb/ch9200.c
+index d7f3b70d5477..f69d9b902da0 100644
+--- a/drivers/net/usb/ch9200.c
++++ b/drivers/net/usb/ch9200.c
+@@ -336,6 +336,7 @@ static int ch9200_bind(struct usbnet *dev, struct usb_interface *intf)
+ {
+ 	int retval = 0;
+ 	unsigned char data[2];
++	u8 addr[ETH_ALEN];
  
- 	for (i = 0; i < adapter->priv_num; i++) {
- 		if (adapter->priv[i]) {
-+			if (adapter->priv[i]->bss_mode == NL80211_IFTYPE_UNSPECIFIED)
-+				continue;
-+
- 			if ((adapter->priv[i]->bss_num == bss_num) &&
- 			    (adapter->priv[i]->bss_type == bss_type))
- 				break;
+ 	retval = usbnet_get_endpoints(dev, intf);
+ 	if (retval)
+@@ -383,7 +384,8 @@ static int ch9200_bind(struct usbnet *dev, struct usb_interface *intf)
+ 	retval = control_write(dev, REQUEST_WRITE, 0, MAC_REG_CTRL, data, 0x02,
+ 			       CONTROL_TIMEOUT_MS);
+ 
+-	retval = get_mac_address(dev, dev->net->dev_addr);
++	retval = get_mac_address(dev, addr);
++	eth_hw_addr_set(dev->net, addr);
+ 
+ 	return retval;
+ }
+diff --git a/drivers/net/usb/cx82310_eth.c b/drivers/net/usb/cx82310_eth.c
+index c4568a491dc4..79a47e2fd437 100644
+--- a/drivers/net/usb/cx82310_eth.c
++++ b/drivers/net/usb/cx82310_eth.c
+@@ -146,6 +146,7 @@ static int cx82310_bind(struct usbnet *dev, struct usb_interface *intf)
+ 	u8 link[3];
+ 	int timeout = 50;
+ 	struct cx82310_priv *priv;
++	u8 addr[ETH_ALEN];
+ 
+ 	/* avoid ADSL modems - continue only if iProduct is "USB NET CARD" */
+ 	if (usb_string(udev, udev->descriptor.iProduct, buf, sizeof(buf)) > 0
+@@ -202,12 +203,12 @@ static int cx82310_bind(struct usbnet *dev, struct usb_interface *intf)
+ 		goto err;
+ 
+ 	/* get the MAC address */
+-	ret = cx82310_cmd(dev, CMD_GET_MAC_ADDR, true, NULL, 0,
+-			  dev->net->dev_addr, ETH_ALEN);
++	ret = cx82310_cmd(dev, CMD_GET_MAC_ADDR, true, NULL, 0, addr, ETH_ALEN);
+ 	if (ret) {
+ 		netdev_err(dev->net, "unable to read MAC address: %d\n", ret);
+ 		goto err;
+ 	}
++	eth_hw_addr_set(dev->net, addr);
+ 
+ 	/* start (does not seem to have any effect?) */
+ 	ret = cx82310_cmd(dev, CMD_START, false, NULL, 0, NULL, 0);
+diff --git a/drivers/net/usb/kaweth.c b/drivers/net/usb/kaweth.c
+index 144c686b4333..9b2bc1993ece 100644
+--- a/drivers/net/usb/kaweth.c
++++ b/drivers/net/usb/kaweth.c
+@@ -1044,8 +1044,7 @@ static int kaweth_probe(
+ 		goto err_all_but_rxbuf;
+ 
+ 	memcpy(netdev->broadcast, &bcast_addr, sizeof(bcast_addr));
+-	memcpy(netdev->dev_addr, &kaweth->configuration.hw_addr,
+-               sizeof(kaweth->configuration.hw_addr));
++	eth_hw_addr_set(netdev, (u8 *)&kaweth->configuration.hw_addr);
+ 
+ 	netdev->netdev_ops = &kaweth_netdev_ops;
+ 	netdev->watchdog_timeo = KAWETH_TX_TIMEOUT;
+diff --git a/drivers/net/usb/mcs7830.c b/drivers/net/usb/mcs7830.c
+index 8f484c4949d9..f62169216d8c 100644
+--- a/drivers/net/usb/mcs7830.c
++++ b/drivers/net/usb/mcs7830.c
+@@ -481,17 +481,19 @@ static const struct net_device_ops mcs7830_netdev_ops = {
+ static int mcs7830_bind(struct usbnet *dev, struct usb_interface *udev)
+ {
+ 	struct net_device *net = dev->net;
++	u8 addr[ETH_ALEN];
+ 	int ret;
+ 	int retry;
+ 
+ 	/* Initial startup: Gather MAC address setting from EEPROM */
+ 	ret = -EINVAL;
+ 	for (retry = 0; retry < 5 && ret; retry++)
+-		ret = mcs7830_hif_get_mac_address(dev, net->dev_addr);
++		ret = mcs7830_hif_get_mac_address(dev, addr);
+ 	if (ret) {
+ 		dev_warn(&dev->udev->dev, "Cannot read MAC address\n");
+ 		goto out;
+ 	}
++	eth_hw_addr_set(net, addr);
+ 
+ 	mcs7830_data_set_multicast(net);
+ 
+diff --git a/drivers/net/usb/sierra_net.c b/drivers/net/usb/sierra_net.c
+index 55025202dc4f..bb4cbe8fc846 100644
+--- a/drivers/net/usb/sierra_net.c
++++ b/drivers/net/usb/sierra_net.c
+@@ -669,6 +669,7 @@ static int sierra_net_bind(struct usbnet *dev, struct usb_interface *intf)
+ 		0x00, 0x00, SIERRA_NET_HIP_MSYNC_ID, 0x00};
+ 	static const u8 shdwn_tmplate[sizeof(priv->shdwn_msg)] = {
+ 		0x00, 0x00, SIERRA_NET_HIP_SHUTD_ID, 0x00};
++	u8 mod[2];
+ 
+ 	dev_dbg(&dev->udev->dev, "%s", __func__);
+ 
+@@ -698,8 +699,9 @@ static int sierra_net_bind(struct usbnet *dev, struct usb_interface *intf)
+ 	dev->net->netdev_ops = &sierra_net_device_ops;
+ 
+ 	/* change MAC addr to include, ifacenum, and to be unique */
+-	dev->net->dev_addr[ETH_ALEN-2] = atomic_inc_return(&iface_counter);
+-	dev->net->dev_addr[ETH_ALEN-1] = ifacenum;
++	mod[0] = atomic_inc_return(&iface_counter);
++	mod[1] = ifacenum;
++	dev_addr_mod(dev->net, ETH_ALEN - 2, mod, 2);
+ 
+ 	/* prepare shutdown message template */
+ 	memcpy(priv->shdwn_msg, shdwn_tmplate, sizeof(priv->shdwn_msg));
+diff --git a/drivers/net/usb/sr9700.c b/drivers/net/usb/sr9700.c
+index 3cff3c9d7b89..5b29da399d95 100644
+--- a/drivers/net/usb/sr9700.c
++++ b/drivers/net/usb/sr9700.c
+@@ -327,6 +327,7 @@ static int sr9700_bind(struct usbnet *dev, struct usb_interface *intf)
+ {
+ 	struct net_device *netdev;
+ 	struct mii_if_info *mii;
++	u8 addr[ETH_ALEN];
+ 	int ret;
+ 
+ 	ret = usbnet_get_endpoints(dev, intf);
+@@ -357,11 +358,12 @@ static int sr9700_bind(struct usbnet *dev, struct usb_interface *intf)
+ 	 * EEPROM automatically to PAR. In case there is no EEPROM externally,
+ 	 * a default MAC address is stored in PAR for making chip work properly.
+ 	 */
+-	if (sr_read(dev, SR_PAR, ETH_ALEN, netdev->dev_addr) < 0) {
++	if (sr_read(dev, SR_PAR, ETH_ALEN, addr) < 0) {
+ 		netdev_err(netdev, "Error reading MAC address\n");
+ 		ret = -ENODEV;
+ 		goto out;
+ 	}
++	eth_hw_addr_set(netdev, addr);
+ 
+ 	/* power up and reset phy */
+ 	sr_write_reg(dev, SR_PRR, PRR_PHY_RST);
+diff --git a/drivers/net/usb/sr9800.c b/drivers/net/usb/sr9800.c
+index 79358369c456..2d553604f179 100644
+--- a/drivers/net/usb/sr9800.c
++++ b/drivers/net/usb/sr9800.c
+@@ -731,6 +731,7 @@ static int sr9800_bind(struct usbnet *dev, struct usb_interface *intf)
+ 	struct sr_data *data = (struct sr_data *)&dev->data;
+ 	u16 led01_mux, led23_mux;
+ 	int ret, embd_phy;
++	u8 addr[ETH_ALEN];
+ 	u32 phyid;
+ 	u16 rx_ctl;
+ 
+@@ -756,12 +757,12 @@ static int sr9800_bind(struct usbnet *dev, struct usb_interface *intf)
+ 	}
+ 
+ 	/* Get the MAC address */
+-	ret = sr_read_cmd(dev, SR_CMD_READ_NODE_ID, 0, 0, ETH_ALEN,
+-			  dev->net->dev_addr);
++	ret = sr_read_cmd(dev, SR_CMD_READ_NODE_ID, 0, 0, ETH_ALEN, addr);
+ 	if (ret < 0) {
+ 		netdev_dbg(dev->net, "Failed to read MAC address: %d\n", ret);
+ 		return ret;
+ 	}
++	eth_hw_addr_set(dev->net, addr);
+ 	netdev_dbg(dev->net, "mac addr : %pM\n", dev->net->dev_addr);
+ 
+ 	/* Initialize MII structure */
+diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+index 566aa01ad281..95b8c612a179 100644
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -165,12 +165,13 @@ EXPORT_SYMBOL_GPL(usbnet_get_endpoints);
+ 
+ int usbnet_get_ethernet_addr(struct usbnet *dev, int iMACAddress)
+ {
++	u8		addr[ETH_ALEN];
+ 	int 		tmp = -1, ret;
+ 	unsigned char	buf [13];
+ 
+ 	ret = usb_string(dev->udev, iMACAddress, buf, sizeof buf);
+ 	if (ret == 12)
+-		tmp = hex2bin(dev->net->dev_addr, buf, 6);
++		tmp = hex2bin(addr, buf, 6);
+ 	if (tmp < 0) {
+ 		dev_dbg(&dev->udev->dev,
+ 			"bad MAC string %d fetch, %d\n", iMACAddress, tmp);
+@@ -178,6 +179,7 @@ int usbnet_get_ethernet_addr(struct usbnet *dev, int iMACAddress)
+ 			ret = -EINVAL;
+ 		return ret;
+ 	}
++	eth_hw_addr_set(dev->net, addr);
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(usbnet_get_ethernet_addr);
+@@ -1727,7 +1729,7 @@ usbnet_probe (struct usb_interface *udev, const struct usb_device_id *prod)
+ 
+ 	dev->net = net;
+ 	strscpy(net->name, "usb%d", sizeof(net->name));
+-	memcpy (net->dev_addr, node_id, sizeof node_id);
++	eth_hw_addr_set(net, node_id);
+ 
+ 	/* rx and tx sides can use different message sizes;
+ 	 * bind() should set rx_urb_size in that case.
 -- 
 2.43.0
 
