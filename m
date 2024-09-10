@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-75411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4C0B97346F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:40:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A353E97353F
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:47:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 03F3D1C24ED2
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:40:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A8771F26055
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:47:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2876D18FC73;
-	Tue, 10 Sep 2024 10:37:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B95F918CBE0;
+	Tue, 10 Sep 2024 10:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="USag/dtH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0sxe+fb7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9BF914D280;
-	Tue, 10 Sep 2024 10:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7668A1DA4C;
+	Tue, 10 Sep 2024 10:45:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964653; cv=none; b=Mx6UPKNsnX9wQxD1aACkqfY9AkrRlVYqG/xfzAevy/WvfT9BXwQm8YBd1GNEjpgmqwAAA4PiRvJbdz2bXDxpT1iJmqqiQ2P6pApx8C/3oCCoGZVgmji6zRvPnanVELJf0fNoOvQk0J/BnggvCYs9UKMuy0Jzo8NGp9gJscpkH+8=
+	t=1725965131; cv=none; b=GFzSco5Rj/89z4+FFgafBzHO9ok9//dQg4J588q1dP5IgHtzRNzGH9Cy+g47rtLrr0hzTf3Ip4NDxnTE99qnR2etUKBCtS1zDXxsaNzoJRxITweL2HAB4krQ8xIeXlwNdnHOseN7s9RjP0dNDmK9Gg6wETGg52elmCW39TWbjcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964653; c=relaxed/simple;
-	bh=KcvamTlO8D40B+Bgs/rLyASDPFiG9Tfqm7FUgn/l9mo=;
+	s=arc-20240116; t=1725965131; c=relaxed/simple;
+	bh=q0AennzIc/1s39LuIGlQ0iX9gCNjSfzA10/kSlf2SzM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oHoEIrNRPIkBjsOntfUphl56KFFUfSH/OUksV8uheV09hTEFS0OsN+E2Y0N701Kp8oQofd0t/Lz1tU5SL6MfAKg1m3PigTqV+0flszYHKi2FjsQjX2eOKFoJD7TRGNdOqi+bt4HlU/Y+lRYK2h9pOhU2DP+JDt7O01tGW/8adCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=USag/dtH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 272A6C4CEC3;
-	Tue, 10 Sep 2024 10:37:32 +0000 (UTC)
+	 MIME-Version; b=MvRwG/isfjegeOlwiEATFxV5uxnX+lce+h6RXSLOetvAfveZh9SoyNyBGWeCvkBtohnFIXIsmMy4O2RqCp5qvSDir7emruIPsCgw4RHEplz6TU7tD5cn0rCk64K72dANiOFKMaP1+ltHdxiqOoOaWCdtr4QQ7u+PZhDrnVwpaU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0sxe+fb7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F24A8C4CEC3;
+	Tue, 10 Sep 2024 10:45:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964653;
-	bh=KcvamTlO8D40B+Bgs/rLyASDPFiG9Tfqm7FUgn/l9mo=;
+	s=korg; t=1725965131;
+	bh=q0AennzIc/1s39LuIGlQ0iX9gCNjSfzA10/kSlf2SzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=USag/dtHe/adVoz574Q2kc2BPRTO5jIHPrcncHEpNYyYbvZkXjdBRxxQ+ek4FhUla
-	 Y69jn9M9Bo9+plRRLpVTyQB300XNcBY3EqaH2d2JvOvbGF4TQfX0Qen8MCLw+PryKf
-	 QIwbQRaJUG1VRZUly1cPNxqMtT/Yx9QXXn3E1Vmg=
+	b=0sxe+fb78csD2yaif75gN8ipZ4HSb8PFskblUKzBhHYywA2vjUmqA2W5e21d1bfa5
+	 2ed5JNAwO9wfot6ipThm5loEhkhOM9VDEGtn5r8cfO4USSswCmIFibixOnvwbx8zwB
+	 0KK00MIcZRM6P8vwgSc7u89Bu49ZPpsOVbu0NazE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 255/269] drm/i915/fence: Mark debug_fence_init_onstack() with __maybe_unused
+Subject: [PATCH 5.10 147/186] btrfs: initialize location to fix -Wmaybe-uninitialized in btrfs_lookup_dentry()
 Date: Tue, 10 Sep 2024 11:34:02 +0200
-Message-ID: <20240910092616.884580558@linuxfoundation.org>
+Message-ID: <20240910092600.655505758@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,59 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: David Sterba <dsterba@suse.com>
 
-[ Upstream commit fcd9e8afd546f6ced378d078345a89bf346d065e ]
+[ Upstream commit b8e947e9f64cac9df85a07672b658df5b2bcff07 ]
 
-When debug_fence_init_onstack() is unused (CONFIG_DRM_I915_SELFTEST=n),
-it prevents kernel builds with clang, `make W=1` and CONFIG_WERROR=y:
+Some arch + compiler combinations report a potentially unused variable
+location in btrfs_lookup_dentry(). This is a false alert as the variable
+is passed by value and always valid or there's an error. The compilers
+cannot probably reason about that although btrfs_inode_by_name() is in
+the same file.
 
-.../i915_sw_fence.c:97:20: error: unused function 'debug_fence_init_onstack' [-Werror,-Wunused-function]
-   97 | static inline void debug_fence_init_onstack(struct i915_sw_fence *fence)
-      |                    ^~~~~~~~~~~~~~~~~~~~~~~~
+   >  + /kisskb/src/fs/btrfs/inode.c: error: 'location.objectid' may be used
+   +uninitialized in this function [-Werror=maybe-uninitialized]:  => 5603:9
+   >  + /kisskb/src/fs/btrfs/inode.c: error: 'location.type' may be used
+   +uninitialized in this function [-Werror=maybe-uninitialized]:  => 5674:5
 
-Fix this by marking debug_fence_init_onstack() with __maybe_unused.
+   m68k-gcc8/m68k-allmodconfig
+   mips-gcc8/mips-allmodconfig
+   powerpc-gcc5/powerpc-all{mod,yes}config
+   powerpc-gcc5/ppc64_defconfig
 
-See also commit 6863f5643dd7 ("kbuild: allow Clang to find unused static
-inline functions for W=1 build").
+Initialize it to zero, this should fix the warnings and won't change the
+behaviour as btrfs_inode_by_name() accepts only a root or inode item
+types, otherwise returns an error.
 
-Fixes: 214707fc2ce0 ("drm/i915/selftests: Wrap a timer into a i915_sw_fence")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240829155950.1141978-2-andriy.shevchenko@linux.intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-(cherry picked from commit 5bf472058ffb43baf6a4cdfe1d7f58c4c194c688)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Tested-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/linux-btrfs/bd4e9928-17b3-9257-8ba7-6b7f9bbb639a@linux-m68k.org/
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/i915_sw_fence.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/btrfs/inode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_sw_fence.c b/drivers/gpu/drm/i915/i915_sw_fence.c
-index 8a9aad523eec..d4020ff3549a 100644
---- a/drivers/gpu/drm/i915/i915_sw_fence.c
-+++ b/drivers/gpu/drm/i915/i915_sw_fence.c
-@@ -51,7 +51,7 @@ static inline void debug_fence_init(struct i915_sw_fence *fence)
- 	debug_object_init(fence, &i915_sw_fence_debug_descr);
- }
- 
--static inline void debug_fence_init_onstack(struct i915_sw_fence *fence)
-+static inline __maybe_unused void debug_fence_init_onstack(struct i915_sw_fence *fence)
- {
- 	debug_object_init_on_stack(fence, &i915_sw_fence_debug_descr);
- }
-@@ -94,7 +94,7 @@ static inline void debug_fence_init(struct i915_sw_fence *fence)
- {
- }
- 
--static inline void debug_fence_init_onstack(struct i915_sw_fence *fence)
-+static inline __maybe_unused void debug_fence_init_onstack(struct i915_sw_fence *fence)
- {
- }
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index 4bf28f74605f..cd3156a9a268 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -5527,7 +5527,7 @@ struct inode *btrfs_lookup_dentry(struct inode *dir, struct dentry *dentry)
+ 	struct inode *inode;
+ 	struct btrfs_root *root = BTRFS_I(dir)->root;
+ 	struct btrfs_root *sub_root = root;
+-	struct btrfs_key location;
++	struct btrfs_key location = { 0 };
+ 	u8 di_type = 0;
+ 	int ret = 0;
  
 -- 
 2.43.0
