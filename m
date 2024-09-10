@@ -1,173 +1,121 @@
-Return-Path: <stable+bounces-75644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D53AF973855
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 15:12:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 820D9973883
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 15:22:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 134021C2442D
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 13:12:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CBDB1F252AD
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 13:22:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C08D9192B84;
-	Tue, 10 Sep 2024 13:12:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8A281922F4;
+	Tue, 10 Sep 2024 13:22:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DN8rgVCN"
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="UdWazahL"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7FCD192B74
-	for <stable@vger.kernel.org>; Tue, 10 Sep 2024 13:12:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB33D18D640;
+	Tue, 10 Sep 2024 13:22:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725973924; cv=none; b=Rg4llLkHoEoUWlTogYNfITKVKS0AwvqdZX6U88ncunRJXxq2XRNwvH0aUjBeWCmoN+G7eYyAfTAsaXFl+v1Gm+1PN1hPvNvkXc1Wguan77FKZBlzXbSHEFb+oLFIEtxXPDNTgGd/ygLXKTembBZv+9aU+b3UMPQZH1oPX9Q4bJw=
+	t=1725974564; cv=none; b=HRn9WbdV6azFSq1G6zmPZGZiXNIWuszj/HijgTZqbBO+W3+4CYBeCnEfIN7eEgkvO+B1HzwHVa/faPrlHVGqdkBM27WDdzwHPfxdJOESiPJrTDPa8NuFfuHas77+obFNSz3UZJqOOP4B5iL4l9lTaDost09nh8kSJD8TgHRMj9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725973924; c=relaxed/simple;
-	bh=iF8axzE/QId4a9qor3MI0r+CUtkHeMhF23cw9uLx2k0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cR/6LctCaONGwxnpWvBzCFBkEa7qt0/Mrsqjsv8dnogevnfJN/6X21zzEE6RRCu3W+9ZquXsycvRRV/tumjRlU8rOQNrPgAMY8PIQy2JAb2leEuFKPFEWVLCU6KinzZ8JCttJUnePaHkKnnyij5y3cWLZzQsbOj5gpjJvRvwK+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DN8rgVCN; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1725973922; x=1757509922;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=iF8axzE/QId4a9qor3MI0r+CUtkHeMhF23cw9uLx2k0=;
-  b=DN8rgVCNLIA/ZQ/JDDQS8vRcoi/xTbi/+kl+Q8yYshrkN5bS34ksVv+o
-   HKt2PofBywX4ackNFn2iF0jBQ02rpzHasobXL+uossa33o005ro9tOXSS
-   qB2O+i2tEOCAXcfXb1fpp4mdhrsM9rzKnzDskpdM5tT22AM0jOgm4rR8W
-   xbtnyr3mMQUIFUCoYLJpXf03yZzRdzvSCXgTQr/q33C7H/yQvKQVS/JlS
-   oGGy6Njj3Cx6edbMCp+uWItjV/3lAAp+4iJnomn+K3IETHWNzOqmXCQzl
-   YcfSwxDVwqnyTxLNDeN0K0rmpq6VPl7d7dbE16T1ZVioMDmk2GvrgOER/
-   w==;
-X-CSE-ConnectionGUID: pn0hW/QSTLql9iudJjUYUg==
-X-CSE-MsgGUID: w9qM8SdSSY2+o0h10CnqHg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11191"; a="24861236"
-X-IronPort-AV: E=Sophos;i="6.10,217,1719903600"; 
-   d="scan'208";a="24861236"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2024 06:12:02 -0700
-X-CSE-ConnectionGUID: rakxbUf7QXed6xkgU4tIFQ==
-X-CSE-MsgGUID: dnG7sOfIRo6sJxwVKi7JWQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,217,1719903600"; 
-   d="scan'208";a="67037944"
-Received: from oandoniu-mobl3.ger.corp.intel.com (HELO mwauld-desk.intel.com) ([10.245.245.215])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2024 06:11:59 -0700
-From: Matthew Auld <matthew.auld@intel.com>
-To: intel-xe@lists.freedesktop.org
-Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
-	Tejas Upadhyay <tejas.upadhyay@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
+	s=arc-20240116; t=1725974564; c=relaxed/simple;
+	bh=lTnyoQDuv759vI/z0pNzng3k3Ma4g/Yf8S5lEgGDePU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DbZGU/X/t3ueFgUVaNKrbhMCcE83yVHKGY4+XfRm5NQ5atrKeICsTOSdzVVWe8Q68Y+st3qM/RoaJIN67cjG2odEVVE6L6UFl1Ghz3J+4MS8xBtYd1qBaBXNB6NPq7CD7NyLlTviOluk1W+cZjZTEXSdv3NT47WMU7jDWHaBAsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=UdWazahL; arc=none smtp.client-ip=83.149.199.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
+Received: from fpc.intra.ispras.ru (unknown [10.10.165.13])
+	by mail.ispras.ru (Postfix) with ESMTPSA id 21D4D407616B;
+	Tue, 10 Sep 2024 13:15:25 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 21D4D407616B
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+	s=default; t=1725974125;
+	bh=CDgc+4/+yTLA5VMZMTPWvHO3TmDO3b0Moiwhby7NsIo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=UdWazahLN+THZdmKuFxLLtL/m97/YdD1RWdsaHDeslHWoJaqhEXdvRX+0fiOHSmzz
+	 96u2XcYkx+JYq+9Omy7wcgI5uz7XGxLM7cV/TlHnoSOSBck659OKJVWcMW3pTElQmY
+	 pb6wRoi++c2laLByuY/tfwK/A8ovVxIcihr7TLS8=
+From: Fedor Pchelkin <pchelkin@ispras.ru>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	stable@vger.kernel.org
-Subject: [PATCH 2/4] drm/xe/client: add missing bo locking in show_meminfo()
-Date: Tue, 10 Sep 2024 14:11:47 +0100
-Message-ID: <20240910131145.136984-6-matthew.auld@intel.com>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910131145.136984-5-matthew.auld@intel.com>
-References: <20240910131145.136984-5-matthew.auld@intel.com>
+Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Johan Hedberg <johan.hedberg@gmail.com>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	linux-bluetooth@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 5.10/5.15] Bluetooth: hci_core: Fix unbalanced unlock in set_device_flags()
+Date: Tue, 10 Sep 2024 16:15:03 +0300
+Message-Id: <20240910131503.146688-1-pchelkin@ispras.ru>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-bo_meminfo() wants to inspect bo state like tt and the ttm resource,
-however this state can change at any point leading to stuff like NPD and
-UAF, if the bo lock is not held. Grab the bo lock when calling
-bo_meminfo(), ensuring we drop any spinlocks first. In the case of
-object_idr we now also need to hold a ref.
+From: Hans de Goede <hdegoede@redhat.com>
 
-Fixes: 0845233388f8 ("drm/xe: Implement fdinfo memory stats printing")
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-Cc: Tejas Upadhyay <tejas.upadhyay@intel.com>
-Cc: "Thomas Hellström" <thomas.hellstrom@linux.intel.com>
-Cc: <stable@vger.kernel.org> # v6.8+
+commit 815d5121927093017947fd76e627da03f0f70be7 upstream.
+
+There is only one "goto done;" in set_device_flags() and this happens
+*before* hci_dev_lock() is called, move the done label to after the
+hci_dev_unlock() to fix the following unlock balance:
+
+[   31.493567] =====================================
+[   31.493571] WARNING: bad unlock balance detected!
+[   31.493576] 5.17.0-rc2+ #13 Tainted: G         C  E
+[   31.493581] -------------------------------------
+[   31.493584] bluetoothd/685 is trying to release lock (&hdev->lock) at:
+[   31.493594] [<ffffffffc07603f5>] set_device_flags+0x65/0x1f0 [bluetooth]
+[   31.493684] but there are no more locks to release!
+
+Note this bug has been around for a couple of years, but before
+commit fe92ee6425a2 ("Bluetooth: hci_core: Rework hci_conn_params flags")
+supported_flags was hardcoded to "((1U << HCI_CONN_FLAG_MAX) - 1)" so
+the check for unsupported flags which does the "goto done;" never
+triggered.
+
+Fixes: fe92ee6425a2 ("Bluetooth: hci_core: Rework hci_conn_params flags")
+Cc: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Marcel Holtmann <marcel@holtmann.org>
+[fp: the check for unsupported flags can actually be triggered before
+ commit fe92ee6425a2 ("Bluetooth: hci_core: Rework hci_conn_params
+ flags") by "Set Device Flags - Invalid Parameter 2" Bluez test as
+ current_flags value comes from userspace]
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
 ---
- drivers/gpu/drm/xe/xe_drm_client.c | 37 +++++++++++++++++++++++++++---
- 1 file changed, 34 insertions(+), 3 deletions(-)
+ net/bluetooth/mgmt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/xe_drm_client.c b/drivers/gpu/drm/xe/xe_drm_client.c
-index badfa045ead8..3cca741c500c 100644
---- a/drivers/gpu/drm/xe/xe_drm_client.c
-+++ b/drivers/gpu/drm/xe/xe_drm_client.c
-@@ -10,6 +10,7 @@
- #include <linux/slab.h>
- #include <linux/types.h>
- 
-+#include "xe_assert.h"
- #include "xe_bo.h"
- #include "xe_bo_types.h"
- #include "xe_device_types.h"
-@@ -151,10 +152,13 @@ void xe_drm_client_add_bo(struct xe_drm_client *client,
-  */
- void xe_drm_client_remove_bo(struct xe_bo *bo)
- {
-+	struct xe_device *xe = ttm_to_xe_device(bo->ttm.bdev);
- 	struct xe_drm_client *client = bo->client;
- 
-+	xe_assert(xe, !kref_read(&bo->ttm.base.refcount));
-+
- 	spin_lock(&client->bos_lock);
--	list_del(&bo->client_link);
-+	list_del_init(&bo->client_link);
- 	spin_unlock(&client->bos_lock);
- 
- 	xe_drm_client_put(client);
-@@ -207,7 +211,20 @@ static void show_meminfo(struct drm_printer *p, struct drm_file *file)
- 	idr_for_each_entry(&file->object_idr, obj, id) {
- 		struct xe_bo *bo = gem_to_xe_bo(obj);
- 
--		bo_meminfo(bo, stats);
-+		if (dma_resv_trylock(bo->ttm.base.resv)) {
-+			bo_meminfo(bo, stats);
-+			xe_bo_unlock(bo);
-+		} else {
-+			xe_bo_get(bo);
-+			spin_unlock(&file->table_lock);
-+
-+			xe_bo_lock(bo, false);
-+			bo_meminfo(bo, stats);
-+			xe_bo_unlock(bo);
-+
-+			xe_bo_put(bo);
-+			spin_lock(&file->table_lock);
-+		}
+diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
+index 0078e33e12ba..5d2289cf2bb1 100644
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -4138,9 +4138,9 @@ static int set_device_flags(struct sock *sk, struct hci_dev *hdev, void *data,
+ 		}
  	}
- 	spin_unlock(&file->table_lock);
  
-@@ -217,7 +234,21 @@ static void show_meminfo(struct drm_printer *p, struct drm_file *file)
- 		if (!kref_get_unless_zero(&bo->ttm.base.refcount))
- 			continue;
+-done:
+ 	hci_dev_unlock(hdev);
  
--		bo_meminfo(bo, stats);
-+		if (dma_resv_trylock(bo->ttm.base.resv)) {
-+			bo_meminfo(bo, stats);
-+			xe_bo_unlock(bo);
-+		} else {
-+			spin_unlock(&client->bos_lock);
-+
-+			xe_bo_lock(bo, false);
-+			bo_meminfo(bo, stats);
-+			xe_bo_unlock(bo);
-+
-+			spin_lock(&client->bos_lock);
-+			/* The bo ref will prevent this bo from being removed from the list */
-+			xe_assert(xef->xe, !list_empty(&bo->client_link));
-+		}
-+
- 		xe_bo_put_deferred(bo, &deferred);
- 	}
- 	spin_unlock(&client->bos_lock);
++done:
+ 	if (status == MGMT_STATUS_SUCCESS)
+ 		device_flags_changed(sk, hdev, &cp->addr.bdaddr, cp->addr.type,
+ 				     supported_flags, current_flags);
 -- 
-2.46.0
+2.39.2
 
 
