@@ -1,54 +1,59 @@
-Return-Path: <stable+bounces-75023-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD06597337F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:33:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C42D9733C0
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:35:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE36EB2BD66
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:24:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AF5581C24204
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:35:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2E13195FF1;
-	Tue, 10 Sep 2024 10:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06E2D1991D9;
+	Tue, 10 Sep 2024 10:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lex87/4W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UXoClQJh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 924C5195FD1;
-	Tue, 10 Sep 2024 10:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAFFF17BEAD;
+	Tue, 10 Sep 2024 10:30:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963523; cv=none; b=dxOj3GKQh3oa2EEM6ezlZfcWBXAfZLLnZ24xfxcqCoBR6wqa2PeXzbTowIxWcgPh5L55XkcYvkMXbT9aLsqsMnLyqHrSWSPa3NR1pc9Ek5iiFOGVHcoLUSUVtsXb7jfn3iNWeOE9hxZwgIActLCJKdGD9PBUhI8dKB9a3yoeyxo=
+	t=1725964258; cv=none; b=jIjYkIJ+HnIXMM0DRooEznNUVUdLuJnAH//5+2oncdoy5Bymqed0gWS8dsyHK6AbP/7U1nWF9jW6ECJ4BJNXN2ikgibZYDDiGEJZBMC8xW9jbh4n7bz36sdBs1qhX/R3YlSMe0GtCMfdDpBTXCkLV251wN5UrBL9QAhZrabY9qE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963523; c=relaxed/simple;
-	bh=NVZlz9Kh5NkBrzGoIFH4N6bdFa5m5640RLflj1O1l5A=;
+	s=arc-20240116; t=1725964258; c=relaxed/simple;
+	bh=K6dGNg+dGOe4KxJIGneD24U+KrzDF4fKIOl4BhvmYxI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BxZ4zq4FgiudB6x5tl9qzSPbpH/ZcAMZXtZQjTGbhBP+1GrdV0+H1HODVm84FB47yxRFo3hFzQXWU0sZ70nta/4hZHfipt0hLnbc2lHQyBDTmwFtx90kmOLRYF+6cY/M1o+c2oD9dVQr5Bg9AuJNB1cScJVd45kk77nMshNT/0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lex87/4W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19773C4CEC3;
-	Tue, 10 Sep 2024 10:18:42 +0000 (UTC)
+	 MIME-Version; b=UtQ0nvZGrp8ki3on3qd4WmQEzUfC6dPDTry9GYEcwRFKWN/QD15DZ+lpoexCs2hg6Sp7csVOfvc4pFcCPhabr88Ota71ghp2MjRF6pj+htHAopm3ldext/hcrryS86IUAGYXKLqLTzcRuYn4+qgtWJl2ketbxvKCV6xRhCwe6Bk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UXoClQJh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45DA9C4CEC3;
+	Tue, 10 Sep 2024 10:30:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963523;
-	bh=NVZlz9Kh5NkBrzGoIFH4N6bdFa5m5640RLflj1O1l5A=;
+	s=korg; t=1725964258;
+	bh=K6dGNg+dGOe4KxJIGneD24U+KrzDF4fKIOl4BhvmYxI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Lex87/4W1FuODCjDkW6+26OjTbpzeclFIWLeM9UWjFwv+DWzhDkWkFZbLXyJ7lUY4
-	 n8cAEztvCsg6O5xY0OpDUX7t0DH8DjONpC9B8+PoTFj+nK3BgOami0Ps+llP0kCLJP
-	 K1WvVs5rWx0LvB9AaWmYhM9BT+NkHzrnLcSFN3yI=
+	b=UXoClQJhtP52FciZlctEEVlkMHidYGXu/hYFiI7oo6sNZDm/2bBSqHEWrrN5L/kyF
+	 QpBjTCmzrgwviUcbmPlDksxhQuLwgp7l+gw3y7zj5MgmpzA8+0aeKQi7+1gxn11jvG
+	 yu3XQkx5oSH1o1kdLV6zPF+qgxnZX5dQBKwshNrs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH 5.15 059/214] udf: Limit file size to 4TB
+	Harry Wentland <harry.wentland@amd.com>,
+	Jerry Zuo <jerry.zuo@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 094/269] drm/amd/display: Check denominator pbn_div before used
 Date: Tue, 10 Sep 2024 11:31:21 +0200
-Message-ID: <20240910092601.183874021@linuxfoundation.org>
+Message-ID: <20240910092611.559619329@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +65,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Alex Hung <alex.hung@amd.com>
 
-commit c2efd13a2ed4f29bf9ef14ac2fbb7474084655f8 upstream.
+[ Upstream commit 116a678f3a9abc24f5c9d2525b7393d18d9eb58e ]
 
-UDF disk format supports in principle file sizes up to 1<<64-1. However
-the file space (including holes) is described by a linked list of
-extents, each of which can have at most 1GB. Thus the creation and
-handling of extents gets unusably slow beyond certain point. Limit the
-file size to 4TB to avoid locking up the kernel too easily.
+[WHAT & HOW]
+A denominator cannot be 0, and is checked before used.
 
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This fixes 1 DIVIDE_BY_ZERO issue reported by Coverity.
+
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Jerry Zuo <jerry.zuo@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/udf/super.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/udf/super.c
-+++ b/fs/udf/super.c
-@@ -86,6 +86,13 @@ enum {
- #define UDF_MAX_LVID_NESTING 1000
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 44c155683824..f0ebf686b06f 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -6937,7 +6937,7 @@ static int dm_update_mst_vcpi_slots_for_dsc(struct drm_atomic_state *state,
+ 			}
+ 		}
  
- enum { UDF_MAX_LINKS = 0xffff };
-+/*
-+ * We limit filesize to 4TB. This is arbitrary as the on-disk format supports
-+ * more but because the file space is described by a linked list of extents,
-+ * each of which can have at most 1GB, the creation and handling of extents
-+ * gets unusably slow beyond certain point...
-+ */
-+#define UDF_MAX_FILESIZE (1ULL << 42)
+-		if (j == dc_state->stream_count)
++		if (j == dc_state->stream_count || pbn_div == 0)
+ 			continue;
  
- /* These are the "meat" - everything else is stuffing */
- static int udf_fill_super(struct super_block *, void *, int);
-@@ -2302,7 +2309,7 @@ static int udf_fill_super(struct super_b
- 		ret = -ENOMEM;
- 		goto error_out;
- 	}
--	sb->s_maxbytes = MAX_LFS_FILESIZE;
-+	sb->s_maxbytes = UDF_MAX_FILESIZE;
- 	sb->s_max_links = UDF_MAX_LINKS;
- 	return 0;
- 
+ 		slot_num = DIV_ROUND_UP(pbn, pbn_div);
+-- 
+2.43.0
+
 
 
 
