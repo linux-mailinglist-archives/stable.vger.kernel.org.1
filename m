@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-74585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 333E3973012
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:57:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 446619730B7
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:04:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA4532841D1
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:57:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D194FB24E28
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:03:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7D6A18B485;
-	Tue, 10 Sep 2024 09:57:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D008818FDA5;
+	Tue, 10 Sep 2024 10:02:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k6SFvOKR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oMHJ4Dpw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FA1F18A94C;
-	Tue, 10 Sep 2024 09:57:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2FA18595E;
+	Tue, 10 Sep 2024 10:02:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962234; cv=none; b=DOU1Rlyk0PwRBuGZNKH25fHMzHcUDOi7G1OvxfcsZ9A5pXuRFi5UQWd0dTEInwv41w4cvWnmhC1cMuWE9u5SccPCwJRcFvcQHpkosoarcOAaZ2jET6TioXA/aDafOE6Z23y1SOF1BFpP9y2hPwZuKEiJ57T/0EYyN+DWazjUX6w=
+	t=1725962523; cv=none; b=YF/6eOAc0+fgRtbcLfRawqxTvyntQfX5qs8usZYaWOl9zbtQmNYWB2lWVe5pHhKDhfCcdWCZLPVw1tjRO1qSlSwLY7tCtNY3JSlap1OFD66OQMUGJmSWA7TtieP0iFviaYTT4Hg4oPtlaUht6SZq2ftsMOr1i5UnG+UsE7onsRI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962234; c=relaxed/simple;
-	bh=ciWfcBY3RrcPUPKQeT778n6gUYhfsybJLBbuL5f7DOI=;
+	s=arc-20240116; t=1725962523; c=relaxed/simple;
+	bh=3pR5qFbMDZp7RMD8CVZfO6mHmCVoboCDIu0tJQtJAKM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gRe+dAJ4lKO7B2oHJyvypf6u3QzKNtM9fu+JgPuMGz5VINEfpI9SvtoUx6rbWxjwhDEnfkvObVxEOfnZqoVYMnZD3Pd1hSId/Mr4npyvPi+TgwPJB+bRHotiPdtxb+p/yVGRx+IKQhcSCXlw9mcBO1JL+mnpNd3JXA+RqVj4pZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k6SFvOKR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D80EFC4CEC3;
-	Tue, 10 Sep 2024 09:57:13 +0000 (UTC)
+	 MIME-Version; b=HI7IXh8Am1uUD1Nl5/lTejHa8FUvO1nSifQZNezbyac5sSLyCrL65BTbLRlQKW/9srhrkVSOZ7stJy2zgFY8kKrDLthiZbPhMbgBhWYka9h47XvJNkJwB3NrX2caCCv8/IYgOt7k4dha0St4R0TArIedkTqTdNKRfEaGC+y+F3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oMHJ4Dpw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D736FC4CEC3;
+	Tue, 10 Sep 2024 10:02:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962234;
-	bh=ciWfcBY3RrcPUPKQeT778n6gUYhfsybJLBbuL5f7DOI=;
+	s=korg; t=1725962523;
+	bh=3pR5qFbMDZp7RMD8CVZfO6mHmCVoboCDIu0tJQtJAKM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k6SFvOKRSEgYbDywVo0Yor1eE+waTA9hzXuDwf6jbh0QviwO8Ooj68J/0IHttSQJW
-	 Dwe20XDZC1hxpg5c9vw2m5QFJeqz8JmW9UvBbzRWYSlVMptX4yMaQ+ctW0NSgjs05k
-	 tqgwCNZ36h5/NuT4oAbcLCzTfuvQGoBX9rrWcLgw=
+	b=oMHJ4Dpw9mc5GOgQeb3NdCiALwd77hNLUeWiuN0lAhq9dXk0nlaMRxhj12UebQlhT
+	 iNKtG1iY3RAdChXudKfRQxS6GFVvWp9jqVyPnln7MOIClJ16cTwl2nx5BgvgWXYt94
+	 bXFQ+uzc+L0q3zgW68qdHF6Lst1dWk4vG2GnNuzc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Srikar Dronamraju <srikar@linux.vnet.ibm.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Tejun Heo <tj@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 313/375] workqueue: Improve scalability of workqueue watchdog touch
-Date: Tue, 10 Sep 2024 11:31:50 +0200
-Message-ID: <20240910092633.074799577@linuxfoundation.org>
+	Michael Turquette <mturquette@baylibre.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Allison Randal <allison@lohutok.net>,
+	Peter Griffin <peter.griffin@linaro.org>,
+	linux-clk@vger.kernel.org,
+	John Stultz <john.stultz@linaro.org>,
+	Yongqin Liu <yongqin.liu@linaro.org>
+Subject: [PATCH 5.4 036/121] clk: hi6220: use CLK_OF_DECLARE_DRIVER
+Date: Tue, 10 Sep 2024 11:31:51 +0200
+Message-ID: <20240910092547.439507139@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
-References: <20240910092622.245959861@linuxfoundation.org>
+In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
+References: <20240910092545.737864202@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,82 +66,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicholas Piggin <npiggin@gmail.com>
+From: Peter Griffin <peter.griffin@linaro.org>
 
-[ Upstream commit 98f887f820c993e05a12e8aa816c80b8661d4c87 ]
+commit f1edb498bd9f25936ae3540a8dbd86e6019fdb95 upstream.
 
-On a ~2000 CPU powerpc system, hard lockups have been observed in the
-workqueue code when stop_machine runs (in this case due to CPU hotplug).
-This is due to lots of CPUs spinning in multi_cpu_stop, calling
-touch_nmi_watchdog() which ends up calling wq_watchdog_touch().
-wq_watchdog_touch() writes to the global variable wq_watchdog_touched,
-and that can find itself in the same cacheline as other important
-workqueue data, which slows down operations to the point of lockups.
+As now we also need to probe in the reset driver as well.
 
-In the case of the following abridged trace, worker_pool_idr was in
-the hot line, causing the lockups to always appear at idr_find.
-
-  watchdog: CPU 1125 self-detected hard LOCKUP @ idr_find
-  Call Trace:
-  get_work_pool
-  __queue_work
-  call_timer_fn
-  run_timer_softirq
-  __do_softirq
-  do_softirq_own_stack
-  irq_exit
-  timer_interrupt
-  decrementer_common_virt
-  * interrupt: 900 (timer) at multi_cpu_stop
-  multi_cpu_stop
-  cpu_stopper_thread
-  smpboot_thread_fn
-  kthread
-
-Fix this by having wq_watchdog_touch() only write to the line if the
-last time a touch was recorded exceeds 1/4 of the watchdog threshold.
-
-Reported-by: Srikar Dronamraju <srikar@linux.vnet.ibm.com>
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Michael Turquette <mturquette@baylibre.com>
+Cc: Stephen Boyd <sboyd@kernel.org>
+Cc: Allison Randal <allison@lohutok.net>
+Cc: Peter Griffin <peter.griffin@linaro.org>
+Cc: linux-clk@vger.kernel.org
+Signed-off-by: Peter Griffin <peter.griffin@linaro.org>
+Signed-off-by: John Stultz <john.stultz@linaro.org>
+Link: https://lkml.kernel.org/r/20191001182546.70090-1-john.stultz@linaro.org
+[sboyd@kernel.org: Add comment about reset driver]
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Cc: Yongqin Liu <yongqin.liu@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/workqueue.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/clk/hisilicon/clk-hi6220.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/workqueue.c b/kernel/workqueue.c
-index f26b0511b023..ffbf99fb53bf 100644
---- a/kernel/workqueue.c
-+++ b/kernel/workqueue.c
-@@ -7586,12 +7586,18 @@ static void wq_watchdog_timer_fn(struct timer_list *unused)
- 
- notrace void wq_watchdog_touch(int cpu)
- {
-+	unsigned long thresh = READ_ONCE(wq_watchdog_thresh) * HZ;
-+	unsigned long touch_ts = READ_ONCE(wq_watchdog_touched);
-+	unsigned long now = jiffies;
-+
- 	if (cpu >= 0)
--		per_cpu(wq_watchdog_touched_cpu, cpu) = jiffies;
-+		per_cpu(wq_watchdog_touched_cpu, cpu) = now;
- 	else
- 		WARN_ONCE(1, "%s should be called with valid CPU", __func__);
- 
--	wq_watchdog_touched = jiffies;
-+	/* Don't unnecessarily store to global cacheline */
-+	if (time_after(now, touch_ts + thresh / 4))
-+		WRITE_ONCE(wq_watchdog_touched, jiffies);
+--- a/drivers/clk/hisilicon/clk-hi6220.c
++++ b/drivers/clk/hisilicon/clk-hi6220.c
+@@ -86,7 +86,8 @@ static void __init hi6220_clk_ao_init(st
+ 	hisi_clk_register_gate_sep(hi6220_separated_gate_clks_ao,
+ 				ARRAY_SIZE(hi6220_separated_gate_clks_ao), clk_data_ao);
  }
+-CLK_OF_DECLARE(hi6220_clk_ao, "hisilicon,hi6220-aoctrl", hi6220_clk_ao_init);
++/* Allow reset driver to probe as well */
++CLK_OF_DECLARE_DRIVER(hi6220_clk_ao, "hisilicon,hi6220-aoctrl", hi6220_clk_ao_init);
  
- static void wq_watchdog_set_thresh(unsigned long thresh)
--- 
-2.43.0
-
+ 
+ /* clocks in sysctrl */
 
 
 
