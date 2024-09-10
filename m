@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-75704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F869973FC4
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 19:32:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4078B973FD3
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 19:32:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F0A43B288FB
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 17:32:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00664289608
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 17:32:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01A451BB684;
-	Tue, 10 Sep 2024 17:23:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E5231BE840;
+	Tue, 10 Sep 2024 17:23:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="u/tl3XqZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AZNH7bQq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABE421BE235;
-	Tue, 10 Sep 2024 17:23:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE891BE235;
+	Tue, 10 Sep 2024 17:23:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725989017; cv=none; b=ovWLVoLyNtO50ncfeTqhEvQoHkKeVUbQ+scPTwKd/pCi3D4DPvpM1m8xDYLCNsnlbrNPjO2yiqeG/LNyy7+D19Ql3IEZdVJe1LgCHJ4FkYE97gRpvKy79YUyqPy7LvaKFnFoXM1ClXc4Z4ROMVIRYaM+gcqObhsHeBwziyT3T4w=
+	t=1725989021; cv=none; b=XdVpK455q8Ff1sOWT1S4ctykUf/N1LdO1VAyCTK1UiYH9uYWiYvzPKfNFnFlfo/wlt4bTob4Xj5fPpPY/TJQITKzj0gciml0q4KCavG74SW4JeRBjVN5r2o4Ihy462tar0Iogr5E/CqA/1vS+ZhsToNi0UXj/3M1Jtsogim3OYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725989017; c=relaxed/simple;
-	bh=NeZBarf5sytU+4tlKJN+FOzynrWMMCnZ2J23Xvo9Q78=;
+	s=arc-20240116; t=1725989021; c=relaxed/simple;
+	bh=6Iv7JVQx9bVwxMpEDS5nzTO1tdlTzFidyglg+NVlm8M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uGSfaZHozU0lQxA6WtFZj3oGgQRl5lysTVeKBwWTbyyUxBDIr/BpmjmxyRDe4hfbPmaQxs2iQcNXuuXRhBUx0peoWmAbgIWa5oWkgfDxNlW5LnPGOU24oYddSkuZWq2Cq8S3RaNB37Ud7b6WC2kgxMkOl1BgwzYc1/8lXzSw04g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=u/tl3XqZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBC04C4CED0;
-	Tue, 10 Sep 2024 17:23:35 +0000 (UTC)
+	 MIME-Version; b=RYnPD2slJT4gDV3zx0wkCzvedswUg3akEjurXX7ZE9V5bJRw0GU6Xrd/B0H07ywEJy86Hw7Ki7CCcVS1fnSF5ejfkbgD0sg1CCUPMz5gKSRPEXB/p0fJfCHeZs1yzzAlGBrqCIojgE87e4Y3qD/anj8TKA/GEwBhHxrwFmIQa6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AZNH7bQq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8FF1C4CEC4;
+	Tue, 10 Sep 2024 17:23:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725989017;
-	bh=NeZBarf5sytU+4tlKJN+FOzynrWMMCnZ2J23Xvo9Q78=;
+	s=k20201202; t=1725989020;
+	bh=6Iv7JVQx9bVwxMpEDS5nzTO1tdlTzFidyglg+NVlm8M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u/tl3XqZI7zftomv4KfPGxny7gLOlT3h7mWbBcCIsuOAfA3/69dEYiJUF9rKjEKaQ
-	 tm92gvt4bHK9ewOJEEUz7r0eb6okkJjO9mpf24O5D5Za3AS9not1XTbCAKe9kiNcPr
-	 W7YFEP9T94D+bw0o0Nv6AcdE9BnZf4egigCF4t5x/ckgZZKx2d2MdsMJi8xQecAqIo
-	 Cy1PzFo+gL296InPhcGSMcPTspyBrjQrZtFlb+zdxrk3oeyWMjIur9rXmCMmj3FqO+
-	 5Q66sMLXrEKojCsWUpykQKJnx9QGoIubjNPxxrOcU7irmbXQgDgvqDzIuWX66nDCi+
-	 QJxdyq6UjzWYQ==
+	b=AZNH7bQqj5gNK9K4ZCXlh954Uo/EC4kkphna+yA2i/K6EWfaKEPnolAjXDurKcBoe
+	 8LrHL4CDcXvqqrL42N6MWOk0VPeo42sFON0DjGu1keHZWgpyGqZY3mjkCA+reJ8Yxr
+	 pUv1broLNCEI2rByIgjm0uqErwrlZevbw3NFlhHLhOt1r2sMhl7NVfSvvu6dWZ2D9d
+	 PKdHhvDuUDKwQmbeFnu01C7M7Rt0iR7CkCItkfX6n4TDFhoULHYV+jxZJxbIVPuzlH
+	 wRn+LX2dH72ktiDC44zqMONnwyacd7OBxQ3aorT2N0cSb0u8cNaRfZ6REA241eKwIq
+	 Jrf6vqQicNyhQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hans de Goede <hdegoede@redhat.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+Cc: Liao Chen <liaochen4@huawei.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
 	cezary.rojewski@intel.com,
+	pierre-louis.bossart@linux.intel.com,
 	liam.r.girdwood@linux.intel.com,
 	peter.ujfalusi@linux.intel.com,
 	yung-chuan.liao@linux.intel.com,
@@ -56,11 +56,13 @@ Cc: Hans de Goede <hdegoede@redhat.com>,
 	kai.vehmanen@linux.intel.com,
 	perex@perex.cz,
 	tiwai@suse.com,
+	robh@kernel.org,
+	kuninori.morimoto.gx@renesas.com,
 	alsa-devel@alsa-project.org,
 	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 2/8] ASoC: Intel: soc-acpi-cht: Make Lenovo Yoga Tab 3 X90F DMI match less strict
-Date: Tue, 10 Sep 2024 13:23:22 -0400
-Message-ID: <20240910172332.2416254-2-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.1 3/8] ASoC: intel: fix module autoloading
+Date: Tue, 10 Sep 2024 13:23:23 -0400
+Message-ID: <20240910172332.2416254-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240910172332.2416254-1-sashal@kernel.org>
 References: <20240910172332.2416254-1-sashal@kernel.org>
@@ -75,40 +77,33 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.1.109
 Content-Transfer-Encoding: 8bit
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Liao Chen <liaochen4@huawei.com>
 
-[ Upstream commit 839a4ec06f75cec8fec2cc5fc14e921d0c3f7369 ]
+[ Upstream commit ae61a3391088d29aa8605c9f2db84295ab993a49 ]
 
-There are 2G and 4G RAM versions of the Lenovo Yoga Tab 3 X90F and it
-turns out that the 2G version has a DMI product name of
-"CHERRYVIEW D1 PLATFORM" where as the 4G version has
-"CHERRYVIEW C0 PLATFORM". The sys-vendor + product-version check are
-unique enough that the product-name check is not necessary.
+Add MODULE_DEVICE_TABLE(), so modules could be properly autoloaded
+based on the alias from of_device_id table.
 
-Drop the product-name check so that the existing DMI match for the 4G
-RAM version also matches the 2G RAM version.
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://patch.msgid.link/20240823074305.16873-1-hdegoede@redhat.com
+Signed-off-by: Liao Chen <liaochen4@huawei.com>
+Link: https://patch.msgid.link/20240826084924.368387-2-liaochen4@huawei.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/common/soc-acpi-intel-cht-match.c | 1 -
- 1 file changed, 1 deletion(-)
+ sound/soc/intel/keembay/kmb_platform.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/intel/common/soc-acpi-intel-cht-match.c b/sound/soc/intel/common/soc-acpi-intel-cht-match.c
-index 5e2ec60e2954..e4c3492a0c28 100644
---- a/sound/soc/intel/common/soc-acpi-intel-cht-match.c
-+++ b/sound/soc/intel/common/soc-acpi-intel-cht-match.c
-@@ -84,7 +84,6 @@ static const struct dmi_system_id lenovo_yoga_tab3_x90[] = {
- 		/* Lenovo Yoga Tab 3 Pro YT3-X90, codec missing from DSDT */
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Intel Corporation"),
--			DMI_MATCH(DMI_PRODUCT_NAME, "CHERRYVIEW D1 PLATFORM"),
- 			DMI_MATCH(DMI_PRODUCT_VERSION, "Blade3-10A-001"),
- 		},
- 	},
+diff --git a/sound/soc/intel/keembay/kmb_platform.c b/sound/soc/intel/keembay/kmb_platform.c
+index b4893365d01d..d5c48bed7a25 100644
+--- a/sound/soc/intel/keembay/kmb_platform.c
++++ b/sound/soc/intel/keembay/kmb_platform.c
+@@ -817,6 +817,7 @@ static const struct of_device_id kmb_plat_of_match[] = {
+ 	{ .compatible = "intel,keembay-tdm", .data = &intel_kmb_tdm_dai},
+ 	{}
+ };
++MODULE_DEVICE_TABLE(of, kmb_plat_of_match);
+ 
+ static int kmb_plat_dai_probe(struct platform_device *pdev)
+ {
 -- 
 2.43.0
 
