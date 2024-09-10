@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-74801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5213697317E
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:12:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA05B9733C1
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:35:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F10011F282AF
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:12:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9247D1F21E5A
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:35:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C71E7190493;
-	Tue, 10 Sep 2024 10:07:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0A7118EFEE;
+	Tue, 10 Sep 2024 10:31:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qU+Ei57y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BHTDi7RI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81A3618C32F;
-	Tue, 10 Sep 2024 10:07:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F2C219923A;
+	Tue, 10 Sep 2024 10:31:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962869; cv=none; b=Z7aa1zSv31x/2guu5OmE686S7D97LunffJpnFLquf2Ww8KMPFZ0+6zSYhSwM0ldzllFwgZlFtUWDkvUsjd4FRSMDbFbBGflM5RC3JMrFSurK/k2tqpPaZ+iESJqNtX6bA1QHCqkx1r2Cg8jFS9+vzySj+AZkhwTvAsKri6gVk3A=
+	t=1725964261; cv=none; b=DVPSK95NxAETaI+Fg+vmNFSm+sHduzYEhzjgpY9gcxQPi3zXZ55uJ+2KvHvJ/0nGRLu7yOCcDod2kJq8L3zdtdJodSTR33I0qvSyV2D8EZi5wz/yN9sAaArXYxMl8KBPjigRFzmSlzTd15OgcFk2BJ7DIfjS8m0i0PAceNyEbOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962869; c=relaxed/simple;
-	bh=B0z/GThXao3MHHbtzZzA2vhcfySkr1jzj7vKe9SuvS8=;
+	s=arc-20240116; t=1725964261; c=relaxed/simple;
+	bh=/AGYgotNZikr+BjL6vNXBV1T7DiloU13tIgQoUIA/iM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V926JBLMOVelEQI0uU0PUoNoJGCNiGyQ/ZLDU34J4VU/geiAI8SnDQe4DE5NlC4jYnBBRRhS80ZaPwhtBIcl/2rjp0Dv44rUiL0HHGXMmWlxnwBK1+7vQv6Jf5yeVjllYMwQREB/vAyqB9J2NBht2eNz5aWE9DLcc//sqQChRvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qU+Ei57y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 067F9C4CEC3;
-	Tue, 10 Sep 2024 10:07:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dTPBhlDGRj/qTnQQGgCi3Kej3XQrgszvVG6ULEk8XdUkpjH/9QC/3DV9J0zf9SbWN1Kp54sPnrZRsK/pfC1nvv0loomRS1pa3vyXVawYo91AXHeEUJcEBfiCcNMvNoh2dJj6hMqLFQby0EP3IKblXvAu1jyDngeP8kL5/LdB3bg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BHTDi7RI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29580C4CEC3;
+	Tue, 10 Sep 2024 10:31:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962869;
-	bh=B0z/GThXao3MHHbtzZzA2vhcfySkr1jzj7vKe9SuvS8=;
+	s=korg; t=1725964261;
+	bh=/AGYgotNZikr+BjL6vNXBV1T7DiloU13tIgQoUIA/iM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qU+Ei57yq2f8oXcviCQdG8BS1FdT5KYoOE3lB6XNCBj1FazaurW6ucnQ9dd5sOucV
-	 ujq5MNRKYJRAxVJl8sqTIenjGwUVxiOPT0thIChPZ21hZUGABEEHKpLf34E0VU09q1
-	 eP1Nmu2GGoElxShqG8HqIHysatgKJmIyvQK4A3Mo=
+	b=BHTDi7RIhhL7YHjhBKTZZQLekbHxJbG//P/TAut1HJYrU2e8iKjcK/OCj/Qn85C7I
+	 TOv9Vhk7OH0R+CulHMczs7akDU1hnl+Fr8fPPVJF7qcX8w26rsqTZ/h2A7wUKtT5MG
+	 pLQMPjcLMAEB+mgl5yZ7Lv2vCRDUr3VVrggZ1xac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+	=?UTF-8?q?Marek=20Ol=C5=A1=C3=A1k?= <marek.olsak@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 058/192] drm/amd/display: Check HDCP returned status
+Subject: [PATCH 6.6 095/269] drm/amdgpu: check for LINEAR_ALIGNED correctly in check_tiling_flags_gfx6
 Date: Tue, 10 Sep 2024 11:31:22 +0200
-Message-ID: <20240910092600.361951045@linuxfoundation.org>
+Message-ID: <20240910092611.594865843@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +60,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Marek Olšák <marek.olsak@amd.com>
 
-[ Upstream commit 5d93060d430b359e16e7c555c8f151ead1ac614b ]
+[ Upstream commit 11317d2963fa79767cd7c6231a00a9d77f2e0f54 ]
 
-[WHAT & HOW]
-Check mod_hdcp_execute_and_set() return values in authenticated_dp.
+Fix incorrect check.
 
-This fixes 3 CHECKED_RETURN issues reported by Coverity.
-
-Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Marek Olšák <marek.olsak@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../amd/display/modules/hdcp/hdcp1_execution.c    | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_display.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp1_execution.c b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp1_execution.c
-index 1ddb4f5eac8e..93c0455766dd 100644
---- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp1_execution.c
-+++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp1_execution.c
-@@ -433,17 +433,20 @@ static enum mod_hdcp_status authenticated_dp(struct mod_hdcp *hdcp,
- 	}
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
+index 578aeba49ea8..82ad2b01f2e9 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
+@@ -909,8 +909,7 @@ static int check_tiling_flags_gfx6(struct amdgpu_framebuffer *afb)
+ {
+ 	u64 micro_tile_mode;
  
- 	if (status == MOD_HDCP_STATUS_SUCCESS)
--		mod_hdcp_execute_and_set(mod_hdcp_read_bstatus,
-+		if (!mod_hdcp_execute_and_set(mod_hdcp_read_bstatus,
- 				&input->bstatus_read, &status,
--				hdcp, "bstatus_read");
-+				hdcp, "bstatus_read"))
-+			goto out;
- 	if (status == MOD_HDCP_STATUS_SUCCESS)
--		mod_hdcp_execute_and_set(check_link_integrity_dp,
-+		if (!mod_hdcp_execute_and_set(check_link_integrity_dp,
- 				&input->link_integrity_check, &status,
--				hdcp, "link_integrity_check");
-+				hdcp, "link_integrity_check"))
-+			goto out;
- 	if (status == MOD_HDCP_STATUS_SUCCESS)
--		mod_hdcp_execute_and_set(check_no_reauthentication_request_dp,
-+		if (!mod_hdcp_execute_and_set(check_no_reauthentication_request_dp,
- 				&input->reauth_request_check, &status,
--				hdcp, "reauth_request_check");
-+				hdcp, "reauth_request_check"))
-+			goto out;
- out:
- 	return status;
- }
+-	/* Zero swizzle mode means linear */
+-	if (AMDGPU_TILING_GET(afb->tiling_flags, SWIZZLE_MODE) == 0)
++	if (AMDGPU_TILING_GET(afb->tiling_flags, ARRAY_MODE) == 1) /* LINEAR_ALIGNED */
+ 		return 0;
+ 
+ 	micro_tile_mode = AMDGPU_TILING_GET(afb->tiling_flags, MICRO_TILE_MODE);
 -- 
 2.43.0
 
