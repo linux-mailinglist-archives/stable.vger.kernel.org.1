@@ -1,59 +1,55 @@
-Return-Path: <stable+bounces-74852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFDAB9731BB
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:14:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 469A297349E
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:41:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 71F6128BC0B
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:14:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 88F4CB27557
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:35:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83FF519ABAC;
-	Tue, 10 Sep 2024 10:10:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3629019994A;
+	Tue, 10 Sep 2024 10:31:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ylhLEaUb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b25GSfsf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40E74188A0C;
-	Tue, 10 Sep 2024 10:10:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E568318FC9F;
+	Tue, 10 Sep 2024 10:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963021; cv=none; b=CqHcEn3socOzp0d9+MGgRqKSBcIiIv4Jo+uVSpjIy00eKu5IUD15JalqcUR6dDcjKBhD/tDdw9hbAbHj26zUEmjtKI5Fx0piuB3OOYN6sfrJs0xDhPiKp/Bv5U7wljSQ9yP6OSitSnAdWD4+o42rGHEorQIJdnBpX6mqW4KN65o=
+	t=1725964300; cv=none; b=oKcb02Z/IbDEAJIYvgUAUOITVr6GKBLyAKGTyMwdWhniBJ473+/rppP6Ngjft0nKyLVpBJdbIcQKwpEfA5UArTY+frynb4xVZQ1QSlPyB5cLk0+987kAnQ+oF3YmBXBVCMwFtapcas41BvhO6NbBlV8qYAb0yBd+V+qlHZUl9cY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963021; c=relaxed/simple;
-	bh=YxJS8bTn3aPEUe6n6GXhXzJD/ZHM+31RpdbSj0J66tE=;
+	s=arc-20240116; t=1725964300; c=relaxed/simple;
+	bh=duOsC8rhc0JHWKooyEnSKRwKU6mbo33+IBoDkIrt6WM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iMRa42gXb0oh7Aq07TyslCYEl0LDcc4FU62F2LIb2pEQaAhbRE4STmCc+APtcDHFIl6TvdbGzaI8ai+T91t/X+UjOOI2vFlJMc6dCmfigmobeTA548sxRw7jMCbt+ArkUfCzzc/aa997otInNErue8/kw6SMwqTRW9/Pfhd6jt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ylhLEaUb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B398AC4CEC3;
-	Tue, 10 Sep 2024 10:10:20 +0000 (UTC)
+	 MIME-Version; b=G0aH0SiDcGjRZC/TAfeTKtDZdb51rxyEJmNfdvXOpB1er6MVbBNMmnyskIKzRo2ctFBV++UbFxhnffkG5GG3w+q3moDDvtlvQ+0w7dTo3ShLPIxocV5YCtA3jGRc5XPH3buxR+1muaZjTCo3vHEBDZVRmc4Z7q6zIkWdhZ9mL+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b25GSfsf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67A4FC4CEC3;
+	Tue, 10 Sep 2024 10:31:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963021;
-	bh=YxJS8bTn3aPEUe6n6GXhXzJD/ZHM+31RpdbSj0J66tE=;
+	s=korg; t=1725964299;
+	bh=duOsC8rhc0JHWKooyEnSKRwKU6mbo33+IBoDkIrt6WM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ylhLEaUbaP/tlcezWojLU2/5GNiCtIC1HYYEgcdqMczVo1F/OVCkUFGp4NcxyQd5r
-	 nN75AfhVFgSCnEaT30ytGzIakd+GKQBpK4YyDvdS4za5ATswsqOnG1vWnEfdNPfRS6
-	 y3ezocF0p3yCHXJ1aTv6TrTAvGMsdaLw5LfhXCts=
+	b=b25GSfsfENHPH+hy9TtR+QwE0TmOuB8R66pWhdcizSHUHcAZ1WWDu3CO/4IRe9b4i
+	 n3FDFfBqcujWlX5SG/JC+s9FDsLZJGX7tOkNpowWA2fw4/5eNXHCPmBpvRPHnxFjvO
+	 03q12V52aAvDa6pBloLwrBqTZWxcr22q/m8wXbFA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Chandan Kumar Rout <chandanx.rout@intel.com>
-Subject: [PATCH 6.1 081/192] ice: allow hot-swapping XDP programs
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 118/269] Bluetooth: hci_sync: Introduce hci_cmd_sync_run/hci_cmd_sync_run_once
 Date: Tue, 10 Sep 2024 11:31:45 +0200
-Message-ID: <20240910092601.324897521@linuxfoundation.org>
+Message-ID: <20240910092612.389657662@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +59,110 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 469748429ac81f0a6a344637fc9d3b1d16a9f3d8 ]
+[ Upstream commit c898f6d7b093bd71e66569cd6797c87d4056f44b ]
 
-Currently ice driver's .ndo_bpf callback brings interface down and up
-independently of XDP resources' presence. This is only needed when
-either these resources have to be configured or removed. It means that
-if one is switching XDP programs on-the-fly with running traffic,
-packets will be dropped.
+This introduces hci_cmd_sync_run/hci_cmd_sync_run_once which acts like
+hci_cmd_sync_queue/hci_cmd_sync_queue_once but runs immediately when
+already on hdev->cmd_sync_work context.
 
-To avoid this, compare early on ice_xdp_setup_prog() state of incoming
-bpf_prog pointer vs the bpf_prog pointer that is already assigned to
-VSI. Do the swap in case VSI has bpf_prog and incoming one are non-NULL.
-
-Lastly, while at it, put old bpf_prog *after* the update of Rx ring's
-bpf_prog pointer. In theory previous code could expose us to a state
-where Rx ring's bpf_prog would still be referring to old_prog that got
-released with earlier bpf_prog_put().
-
-Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Acked-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Reviewed-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Tested-by: Chandan Kumar Rout <chandanx.rout@intel.com> (A Contingent Worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Stable-dep-of: 04c7e14e5b0b ("ice: do not bring the VSI up, if it was down before the XDP setup")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Stable-dep-of: 227a0cdf4a02 ("Bluetooth: MGMT: Fix not generating command complete for MGMT_OP_DISCONNECT")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_main.c | 19 +++++++++----------
- 1 file changed, 9 insertions(+), 10 deletions(-)
+ include/net/bluetooth/hci_sync.h |  4 +++
+ net/bluetooth/hci_sync.c         | 42 ++++++++++++++++++++++++++++++--
+ 2 files changed, 44 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index cd9bcc3536fb..1973b032fe05 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -2633,11 +2633,11 @@ static void ice_vsi_assign_bpf_prog(struct ice_vsi *vsi, struct bpf_prog *prog)
- 	int i;
- 
- 	old_prog = xchg(&vsi->xdp_prog, prog);
--	if (old_prog)
--		bpf_prog_put(old_prog);
--
- 	ice_for_each_rxq(vsi, i)
- 		WRITE_ONCE(vsi->rx_rings[i]->xdp_prog, vsi->xdp_prog);
-+
-+	if (old_prog)
-+		bpf_prog_put(old_prog);
+diff --git a/include/net/bluetooth/hci_sync.h b/include/net/bluetooth/hci_sync.h
+index 534c3386e714..3cb2d10cac93 100644
+--- a/include/net/bluetooth/hci_sync.h
++++ b/include/net/bluetooth/hci_sync.h
+@@ -52,6 +52,10 @@ int hci_cmd_sync_queue(struct hci_dev *hdev, hci_cmd_sync_work_func_t func,
+ 		       void *data, hci_cmd_sync_work_destroy_t destroy);
+ int hci_cmd_sync_queue_once(struct hci_dev *hdev, hci_cmd_sync_work_func_t func,
+ 			    void *data, hci_cmd_sync_work_destroy_t destroy);
++int hci_cmd_sync_run(struct hci_dev *hdev, hci_cmd_sync_work_func_t func,
++		     void *data, hci_cmd_sync_work_destroy_t destroy);
++int hci_cmd_sync_run_once(struct hci_dev *hdev, hci_cmd_sync_work_func_t func,
++			  void *data, hci_cmd_sync_work_destroy_t destroy);
+ struct hci_cmd_sync_work_entry *
+ hci_cmd_sync_lookup_entry(struct hci_dev *hdev, hci_cmd_sync_work_func_t func,
+ 			  void *data, hci_cmd_sync_work_destroy_t destroy);
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index 3131daff56f4..f3c51315eb16 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -114,7 +114,7 @@ static void hci_cmd_sync_add(struct hci_request *req, u16 opcode, u32 plen,
+ 	skb_queue_tail(&req->cmd_q, skb);
  }
  
- /**
-@@ -2917,6 +2917,12 @@ ice_xdp_setup_prog(struct ice_vsi *vsi, struct bpf_prog *prog,
- 		return -EOPNOTSUPP;
- 	}
+-static int hci_cmd_sync_run(struct hci_request *req)
++static int hci_req_sync_run(struct hci_request *req)
+ {
+ 	struct hci_dev *hdev = req->hdev;
+ 	struct sk_buff *skb;
+@@ -164,7 +164,7 @@ struct sk_buff *__hci_cmd_sync_sk(struct hci_dev *hdev, u16 opcode, u32 plen,
  
-+	/* hot swap progs and avoid toggling link */
-+	if (ice_is_xdp_ena_vsi(vsi) == !!prog) {
-+		ice_vsi_assign_bpf_prog(vsi, prog);
-+		return 0;
-+	}
+ 	hdev->req_status = HCI_REQ_PEND;
+ 
+-	err = hci_cmd_sync_run(&req);
++	err = hci_req_sync_run(&req);
+ 	if (err < 0)
+ 		return ERR_PTR(err);
+ 
+@@ -800,6 +800,44 @@ int hci_cmd_sync_queue_once(struct hci_dev *hdev, hci_cmd_sync_work_func_t func,
+ }
+ EXPORT_SYMBOL(hci_cmd_sync_queue_once);
+ 
++/* Run HCI command:
++ *
++ * - hdev must be running
++ * - if on cmd_sync_work then run immediately otherwise queue
++ */
++int hci_cmd_sync_run(struct hci_dev *hdev, hci_cmd_sync_work_func_t func,
++		     void *data, hci_cmd_sync_work_destroy_t destroy)
++{
++	/* Only queue command if hdev is running which means it had been opened
++	 * and is either on init phase or is already up.
++	 */
++	if (!test_bit(HCI_RUNNING, &hdev->flags))
++		return -ENETDOWN;
 +
- 	/* need to stop netdev while setting up the program for Rx rings */
- 	if (if_running && !test_and_set_bit(ICE_VSI_DOWN, vsi->state)) {
- 		ret = ice_down(vsi);
-@@ -2947,13 +2953,6 @@ ice_xdp_setup_prog(struct ice_vsi *vsi, struct bpf_prog *prog,
- 		xdp_ring_err = ice_realloc_zc_buf(vsi, false);
- 		if (xdp_ring_err)
- 			NL_SET_ERR_MSG_MOD(extack, "Freeing XDP Rx resources failed");
--	} else {
--		/* safe to call even when prog == vsi->xdp_prog as
--		 * dev_xdp_install in net/core/dev.c incremented prog's
--		 * refcount so corresponding bpf_prog_put won't cause
--		 * underflow
--		 */
--		ice_vsi_assign_bpf_prog(vsi, prog);
- 	}
- 
- 	if (if_running)
++	/* If on cmd_sync_work then run immediately otherwise queue */
++	if (current_work() == &hdev->cmd_sync_work)
++		return func(hdev, data);
++
++	return hci_cmd_sync_submit(hdev, func, data, destroy);
++}
++EXPORT_SYMBOL(hci_cmd_sync_run);
++
++/* Run HCI command entry once:
++ *
++ * - Lookup if an entry already exist and only if it doesn't creates a new entry
++ *   and run it.
++ * - if on cmd_sync_work then run immediately otherwise queue
++ */
++int hci_cmd_sync_run_once(struct hci_dev *hdev, hci_cmd_sync_work_func_t func,
++			  void *data, hci_cmd_sync_work_destroy_t destroy)
++{
++	if (hci_cmd_sync_lookup_entry(hdev, func, data, destroy))
++		return 0;
++
++	return hci_cmd_sync_run(hdev, func, data, destroy);
++}
++EXPORT_SYMBOL(hci_cmd_sync_run_once);
++
+ /* Lookup HCI command entry:
+  *
+  * - Return first entry that matches by function callback or data or
 -- 
 2.43.0
 
