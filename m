@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-75049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B5A6973368
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:32:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FDE497348C
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:41:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E81FCB267B9
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:26:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 081FC28E1E5
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:41:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AD03199FC6;
-	Tue, 10 Sep 2024 10:20:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1071B18DF72;
+	Tue, 10 Sep 2024 10:38:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B3NPz+tD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="osbuSxBW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBF16199FA0;
-	Tue, 10 Sep 2024 10:19:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C227D17C220;
+	Tue, 10 Sep 2024 10:38:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963599; cv=none; b=h2y/2/Uo5IQMRUyd90ChVmL5v4npX11xJX4mhctbj84wpXocMpwU8gnsJtx7S0tYXm+k8M7ZU0sg8nPdZ5+y8aexugeq81r4WsU2oiWrwQf+DfyMpvC/O5B65wAWZvKbac07W/8Nqw48RVeij8Z731J4Oeke/VIgRBXUf3OalMo=
+	t=1725964732; cv=none; b=QqeHQYXaBb2jxJeDPR5XSFAdh6iGiXt1cZNZjdTF6xwuh2gXfgc1+IRzBgrLjY8fkpioEb103wqmeq31i2v3oh3EamwVCIyCqBHa0zt5ewrbXpgnhkj+jRUe3wIEWQ+vpXY4DVX2gqwKZ3x2QTnjS2cBJQ05N5mzgSb1aeQhK0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963599; c=relaxed/simple;
-	bh=lqohw9Yyj3HEnNXHS88+nbMJxFxBn5Rdb9Xjf1QPuTw=;
+	s=arc-20240116; t=1725964732; c=relaxed/simple;
+	bh=sjFIGA2v9zf7QjDWU1AwVhUAr9W0MFpC6E0ccNTSB1s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mxPr4MiNR0OpBsR4e+HVE6LiQT2r6nVGfDN3Xq5hg7LM3ZPeTLP2CqjIgAezaX1mHlNpbvLWMHB2ZYFgwkoIBlTMUHQiNuWFYGSsQK5TjSWkZDavvmvhE+uNgywZzSBOBXJr81CbWfafZ0E7SgojE8oDIZUA0XBY+yQOZbh2a0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B3NPz+tD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 424F5C4CEC3;
-	Tue, 10 Sep 2024 10:19:59 +0000 (UTC)
+	 MIME-Version; b=uFRsAIBtuUKYD8lnUnGyCXOxkaCzowSknSLnwbZWaRLlBYqGPGuHEXCucMOxm9aQBiYsVJq7G2Wa5U4xThXvhZRY7CiZnuK7VMJ/x/3izvYPUqoXxgmJXgmhVGfWBeH0gSpyMB9HeCvHDkdrSXu5CMA9EhaEhLoYd4XFdfghNqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=osbuSxBW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CA71C4CEC3;
+	Tue, 10 Sep 2024 10:38:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963599;
-	bh=lqohw9Yyj3HEnNXHS88+nbMJxFxBn5Rdb9Xjf1QPuTw=;
+	s=korg; t=1725964732;
+	bh=sjFIGA2v9zf7QjDWU1AwVhUAr9W0MFpC6E0ccNTSB1s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B3NPz+tDRxuTSaI4Olr7iFHigAHKRANjvGeGvOQalfmFFpawjN4AKBkH+MYGg4/Dt
-	 RKZgkmKaqAaINFkvHT9isE12Z2sPWdtBBtLG+f6a3T8kvHq+7wMWQyHqYzCdVeNaW2
-	 4b4Pl3BI2+In3ahENJFowVPikiE2Ndgu0znhDFqU=
+	b=osbuSxBWohwh2oacP6SP8TmNE/LOz/81VtivorGV5YInyvtsZzbudhD8UamPoaRqd
+	 uVLdkGhkRZVV3gkJbiUo+6t43LI9jIrlUocodbXADKPWmdvpQgJ/vC5b/3fdCKrMqz
+	 eWvBSbrsBkW0Qfo75eWLaSWl/fHN+1EKNakxEzCM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Tom Herbert <tom@herbertland.com>,
-	Florian Westphal <fw@strlen.de>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.15 086/214] ila: call nf_unregister_net_hooks() sooner
+	Tim Huang <Tim.Huang@amd.com>,
+	Yang Wang <kevinyang.wang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 013/186] drm/amd/pm: fix uninitialized variable warnings for vega10_hwmgr
 Date: Tue, 10 Sep 2024 11:31:48 +0200
-Message-ID: <20240910092602.271372448@linuxfoundation.org>
+Message-ID: <20240910092555.197210832@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,199 +63,185 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Tim Huang <Tim.Huang@amd.com>
 
-commit 031ae72825cef43e4650140b800ad58bf7a6a466 upstream.
+[ Upstream commit 5fa7d540d95d97ddc021a74583f6b3da4df9c93a ]
 
-syzbot found an use-after-free Read in ila_nf_input [1]
+Clear warnings that using uninitialized variable when fails
+to get the valid value from SMU.
 
-Issue here is that ila_xlat_exit_net() frees the rhashtable,
-then call nf_unregister_net_hooks().
-
-It should be done in the reverse way, with a synchronize_rcu().
-
-This is a good match for a pre_exit() method.
-
-[1]
- BUG: KASAN: use-after-free in rht_key_hashfn include/linux/rhashtable.h:159 [inline]
- BUG: KASAN: use-after-free in __rhashtable_lookup include/linux/rhashtable.h:604 [inline]
- BUG: KASAN: use-after-free in rhashtable_lookup include/linux/rhashtable.h:646 [inline]
- BUG: KASAN: use-after-free in rhashtable_lookup_fast+0x77a/0x9b0 include/linux/rhashtable.h:672
-Read of size 4 at addr ffff888064620008 by task ksoftirqd/0/16
-
-CPU: 0 UID: 0 PID: 16 Comm: ksoftirqd/0 Not tainted 6.11.0-rc4-syzkaller-00238-g2ad6d23f465a #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/06/2024
-Call Trace:
- <TASK>
-  __dump_stack lib/dump_stack.c:93 [inline]
-  dump_stack_lvl+0x241/0x360 lib/dump_stack.c:119
-  print_address_description mm/kasan/report.c:377 [inline]
-  print_report+0x169/0x550 mm/kasan/report.c:488
-  kasan_report+0x143/0x180 mm/kasan/report.c:601
-  rht_key_hashfn include/linux/rhashtable.h:159 [inline]
-  __rhashtable_lookup include/linux/rhashtable.h:604 [inline]
-  rhashtable_lookup include/linux/rhashtable.h:646 [inline]
-  rhashtable_lookup_fast+0x77a/0x9b0 include/linux/rhashtable.h:672
-  ila_lookup_wildcards net/ipv6/ila/ila_xlat.c:132 [inline]
-  ila_xlat_addr net/ipv6/ila/ila_xlat.c:652 [inline]
-  ila_nf_input+0x1fe/0x3c0 net/ipv6/ila/ila_xlat.c:190
-  nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]
-  nf_hook_slow+0xc3/0x220 net/netfilter/core.c:626
-  nf_hook include/linux/netfilter.h:269 [inline]
-  NF_HOOK+0x29e/0x450 include/linux/netfilter.h:312
-  __netif_receive_skb_one_core net/core/dev.c:5661 [inline]
-  __netif_receive_skb+0x1ea/0x650 net/core/dev.c:5775
-  process_backlog+0x662/0x15b0 net/core/dev.c:6108
-  __napi_poll+0xcb/0x490 net/core/dev.c:6772
-  napi_poll net/core/dev.c:6841 [inline]
-  net_rx_action+0x89b/0x1240 net/core/dev.c:6963
-  handle_softirqs+0x2c4/0x970 kernel/softirq.c:554
-  run_ksoftirqd+0xca/0x130 kernel/softirq.c:928
-  smpboot_thread_fn+0x544/0xa30 kernel/smpboot.c:164
-  kthread+0x2f0/0x390 kernel/kthread.c:389
-  ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
-  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
- </TASK>
-
-The buggy address belongs to the physical page:
-page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x64620
-flags: 0xfff00000000000(node=0|zone=1|lastcpupid=0x7ff)
-page_type: 0xbfffffff(buddy)
-raw: 00fff00000000000 ffffea0000959608 ffffea00019d9408 0000000000000000
-raw: 0000000000000000 0000000000000003 00000000bfffffff 0000000000000000
-page dumped because: kasan: bad access detected
-page_owner tracks the page as freed
-page last allocated via order 3, migratetype Unmovable, gfp_mask 0x52dc0(GFP_KERNEL|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_ZERO), pid 5242, tgid 5242 (syz-executor), ts 73611328570, free_ts 618981657187
-  set_page_owner include/linux/page_owner.h:32 [inline]
-  post_alloc_hook+0x1f3/0x230 mm/page_alloc.c:1493
-  prep_new_page mm/page_alloc.c:1501 [inline]
-  get_page_from_freelist+0x2e4c/0x2f10 mm/page_alloc.c:3439
-  __alloc_pages_noprof+0x256/0x6c0 mm/page_alloc.c:4695
-  __alloc_pages_node_noprof include/linux/gfp.h:269 [inline]
-  alloc_pages_node_noprof include/linux/gfp.h:296 [inline]
-  ___kmalloc_large_node+0x8b/0x1d0 mm/slub.c:4103
-  __kmalloc_large_node_noprof+0x1a/0x80 mm/slub.c:4130
-  __do_kmalloc_node mm/slub.c:4146 [inline]
-  __kmalloc_node_noprof+0x2d2/0x440 mm/slub.c:4164
-  __kvmalloc_node_noprof+0x72/0x190 mm/util.c:650
-  bucket_table_alloc lib/rhashtable.c:186 [inline]
-  rhashtable_init_noprof+0x534/0xa60 lib/rhashtable.c:1071
-  ila_xlat_init_net+0xa0/0x110 net/ipv6/ila/ila_xlat.c:613
-  ops_init+0x359/0x610 net/core/net_namespace.c:139
-  setup_net+0x515/0xca0 net/core/net_namespace.c:343
-  copy_net_ns+0x4e2/0x7b0 net/core/net_namespace.c:508
-  create_new_namespaces+0x425/0x7b0 kernel/nsproxy.c:110
-  unshare_nsproxy_namespaces+0x124/0x180 kernel/nsproxy.c:228
-  ksys_unshare+0x619/0xc10 kernel/fork.c:3328
-  __do_sys_unshare kernel/fork.c:3399 [inline]
-  __se_sys_unshare kernel/fork.c:3397 [inline]
-  __x64_sys_unshare+0x38/0x40 kernel/fork.c:3397
-page last free pid 11846 tgid 11846 stack trace:
-  reset_page_owner include/linux/page_owner.h:25 [inline]
-  free_pages_prepare mm/page_alloc.c:1094 [inline]
-  free_unref_page+0xd22/0xea0 mm/page_alloc.c:2612
-  __folio_put+0x2c8/0x440 mm/swap.c:128
-  folio_put include/linux/mm.h:1486 [inline]
-  free_large_kmalloc+0x105/0x1c0 mm/slub.c:4565
-  kfree+0x1c4/0x360 mm/slub.c:4588
-  rhashtable_free_and_destroy+0x7c6/0x920 lib/rhashtable.c:1169
-  ila_xlat_exit_net+0x55/0x110 net/ipv6/ila/ila_xlat.c:626
-  ops_exit_list net/core/net_namespace.c:173 [inline]
-  cleanup_net+0x802/0xcc0 net/core/net_namespace.c:640
-  process_one_work kernel/workqueue.c:3231 [inline]
-  process_scheduled_works+0xa2c/0x1830 kernel/workqueue.c:3312
-  worker_thread+0x86d/0xd40 kernel/workqueue.c:3390
-  kthread+0x2f0/0x390 kernel/kthread.c:389
-  ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
-  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
-
-Memory state around the buggy address:
- ffff88806461ff00: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
- ffff88806461ff80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
->ffff888064620000: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-                      ^
- ffff888064620080: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
- ffff888064620100: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-
-Fixes: 7f00feaf1076 ("ila: Add generic ILA translation facility")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Tom Herbert <tom@herbertland.com>
-Reviewed-by: Florian Westphal <fw@strlen.de>
-Link: https://patch.msgid.link/20240904144418.1162839-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Tim Huang <Tim.Huang@amd.com>
+Reviewed-by: Yang Wang <kevinyang.wang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ila/ila.h      |    1 +
- net/ipv6/ila/ila_main.c |    6 ++++++
- net/ipv6/ila/ila_xlat.c |   13 +++++++++----
- 3 files changed, 16 insertions(+), 4 deletions(-)
+ .../drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c | 46 ++++++++++++++-----
+ .../amd/pm/powerplay/smumgr/vega10_smumgr.c   |  6 ++-
+ 2 files changed, 39 insertions(+), 13 deletions(-)
 
---- a/net/ipv6/ila/ila.h
-+++ b/net/ipv6/ila/ila.h
-@@ -108,6 +108,7 @@ int ila_lwt_init(void);
- void ila_lwt_fini(void);
- 
- int ila_xlat_init_net(struct net *net);
-+void ila_xlat_pre_exit_net(struct net *net);
- void ila_xlat_exit_net(struct net *net);
- 
- int ila_xlat_nl_cmd_add_mapping(struct sk_buff *skb, struct genl_info *info);
---- a/net/ipv6/ila/ila_main.c
-+++ b/net/ipv6/ila/ila_main.c
-@@ -71,6 +71,11 @@ ila_xlat_init_fail:
- 	return err;
- }
- 
-+static __net_exit void ila_pre_exit_net(struct net *net)
-+{
-+	ila_xlat_pre_exit_net(net);
-+}
-+
- static __net_exit void ila_exit_net(struct net *net)
- {
- 	ila_xlat_exit_net(net);
-@@ -78,6 +83,7 @@ static __net_exit void ila_exit_net(stru
- 
- static struct pernet_operations ila_net_ops = {
- 	.init = ila_init_net,
-+	.pre_exit = ila_pre_exit_net,
- 	.exit = ila_exit_net,
- 	.id   = &ila_net_id,
- 	.size = sizeof(struct ila_net),
---- a/net/ipv6/ila/ila_xlat.c
-+++ b/net/ipv6/ila/ila_xlat.c
-@@ -616,6 +616,15 @@ int ila_xlat_init_net(struct net *net)
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
+index e4a8f1aabd78..91fefaeaf47d 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/vega10_hwmgr.c
+@@ -355,13 +355,13 @@ static int vega10_odn_initial_default_setting(struct pp_hwmgr *hwmgr)
  	return 0;
  }
  
-+void ila_xlat_pre_exit_net(struct net *net)
-+{
-+	struct ila_net *ilan = net_generic(net, ila_net_id);
-+
-+	if (ilan->xlat.hooks_registered)
-+		nf_unregister_net_hooks(net, ila_nf_hook_ops,
-+					ARRAY_SIZE(ila_nf_hook_ops));
-+}
-+
- void ila_xlat_exit_net(struct net *net)
+-static void vega10_init_dpm_defaults(struct pp_hwmgr *hwmgr)
++static int vega10_init_dpm_defaults(struct pp_hwmgr *hwmgr)
  {
- 	struct ila_net *ilan = net_generic(net, ila_net_id);
-@@ -623,10 +632,6 @@ void ila_xlat_exit_net(struct net *net)
- 	rhashtable_free_and_destroy(&ilan->xlat.rhash_table, ila_free_cb, NULL);
+ 	struct vega10_hwmgr *data = hwmgr->backend;
+-	int i;
+ 	uint32_t sub_vendor_id, hw_revision;
+ 	uint32_t top32, bottom32;
+ 	struct amdgpu_device *adev = hwmgr->adev;
++	int ret, i;
  
- 	free_bucket_spinlocks(ilan->xlat.locks);
--
--	if (ilan->xlat.hooks_registered)
--		nf_unregister_net_hooks(net, ila_nf_hook_ops,
--					ARRAY_SIZE(ila_nf_hook_ops));
+ 	vega10_initialize_power_tune_defaults(hwmgr);
+ 
+@@ -486,9 +486,12 @@ static void vega10_init_dpm_defaults(struct pp_hwmgr *hwmgr)
+ 	if (data->registry_data.vr0hot_enabled)
+ 		data->smu_features[GNLD_VR0HOT].supported = true;
+ 
+-	smum_send_msg_to_smc(hwmgr,
++	ret = smum_send_msg_to_smc(hwmgr,
+ 			PPSMC_MSG_GetSmuVersion,
+ 			&hwmgr->smu_version);
++	if (ret)
++		return ret;
++
+ 		/* ACG firmware has major version 5 */
+ 	if ((hwmgr->smu_version & 0xff000000) == 0x5000000)
+ 		data->smu_features[GNLD_ACG].supported = true;
+@@ -506,10 +509,16 @@ static void vega10_init_dpm_defaults(struct pp_hwmgr *hwmgr)
+ 		data->smu_features[GNLD_PCC_LIMIT].supported = true;
+ 
+ 	/* Get the SN to turn into a Unique ID */
+-	smum_send_msg_to_smc(hwmgr, PPSMC_MSG_ReadSerialNumTop32, &top32);
+-	smum_send_msg_to_smc(hwmgr, PPSMC_MSG_ReadSerialNumBottom32, &bottom32);
++	ret = smum_send_msg_to_smc(hwmgr, PPSMC_MSG_ReadSerialNumTop32, &top32);
++	if (ret)
++		return ret;
++
++	ret = smum_send_msg_to_smc(hwmgr, PPSMC_MSG_ReadSerialNumBottom32, &bottom32);
++	if (ret)
++		return ret;
+ 
+ 	adev->unique_id = ((uint64_t)bottom32 << 32) | top32;
++	return 0;
  }
  
- static int ila_xlat_addr(struct sk_buff *skb, bool sir2ila)
+ #ifdef PPLIB_VEGA10_EVV_SUPPORT
+@@ -883,7 +892,9 @@ static int vega10_hwmgr_backend_init(struct pp_hwmgr *hwmgr)
+ 
+ 	vega10_set_features_platform_caps(hwmgr);
+ 
+-	vega10_init_dpm_defaults(hwmgr);
++	result = vega10_init_dpm_defaults(hwmgr);
++	if (result)
++		return result;
+ 
+ #ifdef PPLIB_VEGA10_EVV_SUPPORT
+ 	/* Get leakage voltage based on leakage ID. */
+@@ -3879,11 +3890,14 @@ static int vega10_get_gpu_power(struct pp_hwmgr *hwmgr,
+ 		uint32_t *query)
+ {
+ 	uint32_t value;
++	int ret;
+ 
+ 	if (!query)
+ 		return -EINVAL;
+ 
+-	smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetCurrPkgPwr, &value);
++	ret = smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetCurrPkgPwr, &value);
++	if (ret)
++		return ret;
+ 
+ 	/* SMC returning actual watts, keep consistent with legacy asics, low 8 bit as 8 fractional bits */
+ 	*query = value << 8;
+@@ -4636,14 +4650,16 @@ static int vega10_print_clock_levels(struct pp_hwmgr *hwmgr,
+ 	uint32_t gen_speed, lane_width, current_gen_speed, current_lane_width;
+ 	PPTable_t *pptable = &(data->smc_state_table.pp_table);
+ 
+-	int i, now, size = 0, count = 0;
++	int i, ret, now,  size = 0, count = 0;
+ 
+ 	switch (type) {
+ 	case PP_SCLK:
+ 		if (data->registry_data.sclk_dpm_key_disabled)
+ 			break;
+ 
+-		smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetCurrentGfxclkIndex, &now);
++		ret = smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetCurrentGfxclkIndex, &now);
++		if (ret)
++			break;
+ 
+ 		if (hwmgr->pp_one_vf &&
+ 		    (hwmgr->dpm_level == AMD_DPM_FORCED_LEVEL_PROFILE_PEAK))
+@@ -4659,7 +4675,9 @@ static int vega10_print_clock_levels(struct pp_hwmgr *hwmgr,
+ 		if (data->registry_data.mclk_dpm_key_disabled)
+ 			break;
+ 
+-		smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetCurrentUclkIndex, &now);
++		ret = smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetCurrentUclkIndex, &now);
++		if (ret)
++			break;
+ 
+ 		for (i = 0; i < mclk_table->count; i++)
+ 			size += sprintf(buf + size, "%d: %uMhz %s\n",
+@@ -4670,7 +4688,9 @@ static int vega10_print_clock_levels(struct pp_hwmgr *hwmgr,
+ 		if (data->registry_data.socclk_dpm_key_disabled)
+ 			break;
+ 
+-		smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetCurrentSocclkIndex, &now);
++		ret = smum_send_msg_to_smc(hwmgr, PPSMC_MSG_GetCurrentSocclkIndex, &now);
++		if (ret)
++			break;
+ 
+ 		for (i = 0; i < soc_table->count; i++)
+ 			size += sprintf(buf + size, "%d: %uMhz %s\n",
+@@ -4681,8 +4701,10 @@ static int vega10_print_clock_levels(struct pp_hwmgr *hwmgr,
+ 		if (data->registry_data.dcefclk_dpm_key_disabled)
+ 			break;
+ 
+-		smum_send_msg_to_smc_with_parameter(hwmgr,
++		ret = smum_send_msg_to_smc_with_parameter(hwmgr,
+ 				PPSMC_MSG_GetClockFreqMHz, CLK_DCEFCLK, &now);
++		if (ret)
++			break;
+ 
+ 		for (i = 0; i < dcef_table->count; i++)
+ 			size += sprintf(buf + size, "%d: %uMhz %s\n",
+diff --git a/drivers/gpu/drm/amd/pm/powerplay/smumgr/vega10_smumgr.c b/drivers/gpu/drm/amd/pm/powerplay/smumgr/vega10_smumgr.c
+index daf122f24f23..ae8305a1ff05 100644
+--- a/drivers/gpu/drm/amd/pm/powerplay/smumgr/vega10_smumgr.c
++++ b/drivers/gpu/drm/amd/pm/powerplay/smumgr/vega10_smumgr.c
+@@ -131,13 +131,17 @@ int vega10_get_enabled_smc_features(struct pp_hwmgr *hwmgr,
+ 			    uint64_t *features_enabled)
+ {
+ 	uint32_t enabled_features;
++	int ret;
+ 
+ 	if (features_enabled == NULL)
+ 		return -EINVAL;
+ 
+-	smum_send_msg_to_smc(hwmgr,
++	ret = smum_send_msg_to_smc(hwmgr,
+ 			PPSMC_MSG_GetEnabledSmuFeatures,
+ 			&enabled_features);
++	if (ret)
++		return ret;
++
+ 	*features_enabled = enabled_features;
+ 
+ 	return 0;
+-- 
+2.43.0
+
 
 
 
