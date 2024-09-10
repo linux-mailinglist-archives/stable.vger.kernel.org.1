@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-75466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A254A9734C9
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:43:10 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 355F49731EB
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:16:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6177F28E23F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:43:09 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 493BF1C20D76
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:16:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9679198853;
-	Tue, 10 Sep 2024 10:40:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 587F419E81F;
+	Tue, 10 Sep 2024 10:11:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TuIjn3s/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WYYjYf7g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65934191466;
-	Tue, 10 Sep 2024 10:40:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1843119E80F;
+	Tue, 10 Sep 2024 10:11:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964815; cv=none; b=M1mckQmFwIu+lEj74LTBt2wOKbqN/p+tOd1TXkWRAX8LySiWr7m6tUWBbWS6E5QzBYGGxa/rbTgmILSr1rsfcOqFJg4rmPERT6rbk50vcJMpiIM9UolF7wAjwPc+I6GygnwKbGAiH3Pfysn5EGeTHTp0isR3xR6pgOpmqwn3I3E=
+	t=1725963110; cv=none; b=uGxWXHonMbtQHSLCLCH06OTlXNAQ2BZlQYU+arl0iWGBQSUe36faqtsM+EJ/AT1k13r4bxcwg6XAO2VoBQoB+y8NW7beBRU4gZhQwyC+C5aDDqFxBm0YRs1Caxa+1ptsw9NYVZflxuhL28rurCueLfJOoh9LYsruXtfpmuSkJy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964815; c=relaxed/simple;
-	bh=0wOdwaxe5s3CAKor/0KwkdnDEh5pxIMf1SG9Z6Cg4Xo=;
+	s=arc-20240116; t=1725963110; c=relaxed/simple;
+	bh=jCElq4Dg1bTLdDjFN66NfanFsSARB+WP82RTPerkUmQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ALGI63H0lCxNb/G7atZbL545vOkOAU39dFmYXbWm7+evkEIIQzd1Y7SMqNJDAc3W7t89qSWxpL3r2+3FlGQDwxOhGUw9mRHqz/J4XhVn1zwjMGIgicBgKUYsQszN2SZ6TtK6vhPzv76j1ewz3ZvGTcxYpvR/Y8EzOcotW7r3PIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TuIjn3s/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E06DFC4CEC3;
-	Tue, 10 Sep 2024 10:40:14 +0000 (UTC)
+	 MIME-Version; b=tRze/4JsYDSv3G/aR044NyjR3IB22F6QS/bYJZxw/4h2/YzwIpfdF5VBVLghNFn9vuXpbEjs45QVN2PyYduc/WItMSR8H0EuMSiNY1ADvF+Dq2ocJZmTTyDLSs1Hf7XfWTd47+gZ76/3eiz8WiVzFjBxH9w1T2MTHYosvcjkmVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WYYjYf7g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92B78C4CEC3;
+	Tue, 10 Sep 2024 10:11:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964815;
-	bh=0wOdwaxe5s3CAKor/0KwkdnDEh5pxIMf1SG9Z6Cg4Xo=;
+	s=korg; t=1725963110;
+	bh=jCElq4Dg1bTLdDjFN66NfanFsSARB+WP82RTPerkUmQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TuIjn3s/XZ3YPSQyh2+rAuePRB35Gbak33Lecj129ju/G/OoDScED/ym6vTMczOOw
-	 IGFtCkLVeC8Dfrmtl5isfQ2feItaUEs1WFS2uRkigTcI9cz4KVsjYKx2G9qeQ68yXk
-	 aW7IEvOGBUj9CVStPA40P2JsP6/XAi5gfULB0FI8=
+	b=WYYjYf7gXYee087ko3gkaCWrC5oz71JIiyGPE8NMynVuz0HndA5AyZOCGtpzKZGbk
+	 tSuOLo5SITVpv0+IWV5sxkZulFVHcsFjhq8yRicdrtV6x20OSxrv1aswrhRJ2Yilkf
+	 Sa/0jjeSbNjxajP1LaliBwLJy8QpxPUqnF6LrWFg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Hannes Reinecke <hare@suse.de>,
-	Jens Axboe <axboe@kernel.dk>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	"yang.zhang" <yang.zhang@hexintek.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 041/186] block: remove the blk_flush_integrity call in blk_integrity_unregister
+Subject: [PATCH 6.1 112/192] riscv: set trap vector earlier
 Date: Tue, 10 Sep 2024 11:32:16 +0200
-Message-ID: <20240910092556.221403309@linuxfoundation.org>
+Message-ID: <20240910092602.617994109@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: yang.zhang <yang.zhang@hexintek.com>
 
-[ Upstream commit e8bc14d116aeac8f0f133ec8d249acf4e0658da7 ]
+[ Upstream commit 6ad8735994b854b23c824dd6b1dd2126e893a3b4 ]
 
-Now that there are no indirect calls for PI processing there is no
-way to dereference a NULL pointer here.  Additionally drivers now always
-freeze the queue (or in case of stacking drivers use their internal
-equivalent) around changing the integrity profile.
+The exception vector of the booting hart is not set before enabling
+the mmu and then still points to the value of the previous firmware,
+typically _start. That makes it hard to debug setup_vm() when bad
+things happen. So fix that by setting the exception vector earlier.
 
-This is effectively a revert of commit 3df49967f6f1 ("block: flush the
-integrity workqueue in blk_integrity_unregister").
-
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Martin K. Petersen <martin.petersen@oracle.com>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Link: https://lore.kernel.org/r/20240613084839.1044015-7-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Signed-off-by: yang.zhang <yang.zhang@hexintek.com>
+Link: https://lore.kernel.org/r/20240508022445.6131-1-gaoshanliukou@163.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-integrity.c | 2 --
- 1 file changed, 2 deletions(-)
+ arch/riscv/kernel/head.S | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/block/blk-integrity.c b/block/blk-integrity.c
-index 9e83159f5a52..2bcf3760538c 100644
---- a/block/blk-integrity.c
-+++ b/block/blk-integrity.c
-@@ -431,8 +431,6 @@ void blk_integrity_unregister(struct gendisk *disk)
- 	if (!bi->profile)
- 		return;
- 
--	/* ensure all bios are off the integrity workqueue */
--	blk_flush_integrity();
- 	blk_queue_flag_clear(QUEUE_FLAG_STABLE_WRITES, disk->queue);
- 	memset(bi, 0, sizeof(*bi));
- }
+diff --git a/arch/riscv/kernel/head.S b/arch/riscv/kernel/head.S
+index 4bf6c449d78b..1a017ad53343 100644
+--- a/arch/riscv/kernel/head.S
++++ b/arch/riscv/kernel/head.S
+@@ -307,6 +307,9 @@ clear_bss_done:
+ #else
+ 	mv a0, s1
+ #endif /* CONFIG_BUILTIN_DTB */
++	/* Set trap vector to spin forever to help debug */
++	la a3, .Lsecondary_park
++	csrw CSR_TVEC, a3
+ 	call setup_vm
+ #ifdef CONFIG_MMU
+ 	la a0, early_pg_dir
 -- 
 2.43.0
 
