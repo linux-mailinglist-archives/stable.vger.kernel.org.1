@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-75234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F28AE973390
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:34:06 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12F1E97326B
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:22:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 318C31C23783
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:34:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 374701C20EEB
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:22:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 580B318F2FF;
-	Tue, 10 Sep 2024 10:28:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C948219047F;
+	Tue, 10 Sep 2024 10:16:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ydqAmSaY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QpXMwN+s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14C041940B5;
-	Tue, 10 Sep 2024 10:28:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8720C188921;
+	Tue, 10 Sep 2024 10:16:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964138; cv=none; b=lNECBfomYvGzvaZ3kc+MNed7it2Gj4qwnEVaC8l6vM6D5VKlfmQsg4y7N7t4Lyw5jIaAARQ5uM2bktdxdGMvtPSc4i3kEVgVWIFOqQWTm1wbDvot1HZQlrFf+Vz4SCMFPzH+5yjU4ZnQFK3Ap3vj7QatN5z6PTb7Ug5fsl18nxw=
+	t=1725963403; cv=none; b=DHmhvVK+iUyFcqJL6thMc35VXW8nB+giH/+SGwyAqu6/G0ewfyjt4rkkFu3My3JSDSGqVhDvDhxcrbQUANNS7mKHZT2el1y7to4EP9aiDoW1AYKHM43G+vDdnkaRd0+5JD+kk4+y2i/baZW+3/R5mwg+7v2bE/eC6jn2js9Hj8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964138; c=relaxed/simple;
-	bh=S5SkFz4R1ynHMb+JCX416P9IYCEDi2hLUYRfS9udJjk=;
+	s=arc-20240116; t=1725963403; c=relaxed/simple;
+	bh=i5hJrVI20VNtGYCZYI7SOV55fNENm9dkkB6scHw+haI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ItyrxwFY79+yvwt3D7RjGowT3IQot5+0Mv1zUo1qQkkUIsZE5YPEJfyKBzaCq7uFqlKX/C6srge4oZZ2kK+NaV7I3P88Tcx8YaJZ90jU69NggBYo1AUhgn6LD9/R9L43h+So1dMtNw4VxwLqVhg9q02VCn7uEIB2Q45S6sesk8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ydqAmSaY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F945C4CEC3;
-	Tue, 10 Sep 2024 10:28:57 +0000 (UTC)
+	 MIME-Version; b=XKjPlrzeAAUxhxIaXuT++ipP8eaWRuw/3o3JDJDlg/j9hna8frqiEE2j+ma2IN/ZowQOcwyJ2Bqfi17cnnJ+No9YHEy5WX+FX0BxC7n1vVQHtg+Oew/eI3Nt5TamrSARBNqNH18tpJsYJR3emidYsQ2nzC3kXRLGaJoIYaPYiyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QpXMwN+s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D1B6C4CEC3;
+	Tue, 10 Sep 2024 10:16:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964138;
-	bh=S5SkFz4R1ynHMb+JCX416P9IYCEDi2hLUYRfS9udJjk=;
+	s=korg; t=1725963403;
+	bh=i5hJrVI20VNtGYCZYI7SOV55fNENm9dkkB6scHw+haI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ydqAmSaY7qIeYAQs6iLkJvn6kvLmi7VF2fLs3UsFPVuejFFOkHjIC8Oz1KaXTRmo9
-	 skHuwop0THbDzO8Bn5XwflE39elJ7Cn3duaNytvYDxIqHBpsR4anr5smb31dqonyNM
-	 r9Oa6PchRbGKdp/9rB1/jPIyD4Itj2vAWPrv49zU=
+	b=QpXMwN+sb9ehpA/u2W4DY+0tXPahiy7FgrJ4qFkmNffpthKcX6hwI9gscaTl1NSDZ
+	 +QbtZomNeESFgAqYz6vvpJvYg/pq02LDc3Zb/BN+qGKxEKJm0WjLjC250LHq9ovQJT
+	 N8oPFde1c/Way36P9MSblIDHBNidKcBwZQpj9uys=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Reijer Boekhoff <reijerboekhoff@protonmail.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Simon Holesch <simon@holesch.de>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Hongren Zheng <i@zenithal.me>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 080/269] wifi: brcmsmac: advertise MFP_CAPABLE to enable WPA3
+Subject: [PATCH 5.15 045/214] usbip: Dont submit special requests twice
 Date: Tue, 10 Sep 2024 11:31:07 +0200
-Message-ID: <20240910092611.046406761@linuxfoundation.org>
+Message-ID: <20240910092600.619460135@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +63,185 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arend van Spriel <arend.vanspriel@broadcom.com>
+From: Simon Holesch <simon@holesch.de>
 
-[ Upstream commit dbb5265a5d7cca1cdba7736dba313ab7d07bc19d ]
+[ Upstream commit 8b6b386f9aa936ed0c190446c71cf59d4a507690 ]
 
-After being asked about support for WPA3 for BCM43224 chipset it
-was found that all it takes is setting the MFP_CAPABLE flag and
-mac80211 will take care of all that is needed [1].
+Skip submitting URBs, when identical requests were already sent in
+tweak_special_requests(). Instead call the completion handler directly
+to return the result of the URB.
 
-Link: https://lore.kernel.org/linux-wireless/20200526155909.5807-2-Larry.Finger@lwfinger.net/ [1]
-Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Tested-by: Reijer Boekhoff <reijerboekhoff@protonmail.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20240617122609.349582-1-arend.vanspriel@broadcom.com
+Even though submitting those requests twice should be harmless, there
+are USB devices that react poorly to some duplicated requests.
+
+One example is the ChipIdea controller implementation in U-Boot: The
+second SET_CONFIGURATION request makes U-Boot disable and re-enable all
+endpoints. Re-enabling an endpoint in the ChipIdea controller, however,
+was broken until U-Boot commit b272c8792502 ("usb: ci: Fix gadget
+reinit").
+
+Signed-off-by: Simon Holesch <simon@holesch.de>
+Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+Reviewed-by: Hongren Zheng <i@zenithal.me>
+Tested-by: Hongren Zheng <i@zenithal.me>
+Link: https://lore.kernel.org/r/20240519141922.171460-1-simon@holesch.de
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/usbip/stub_rx.c | 77 ++++++++++++++++++++++++-------------
+ 1 file changed, 50 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
-index 543e93ec49d2..9ab669487de4 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
-@@ -1086,6 +1086,7 @@ static int ieee_hw_init(struct ieee80211_hw *hw)
- 	ieee80211_hw_set(hw, AMPDU_AGGREGATION);
- 	ieee80211_hw_set(hw, SIGNAL_DBM);
- 	ieee80211_hw_set(hw, REPORTS_TX_ACK_STATUS);
-+	ieee80211_hw_set(hw, MFP_CAPABLE);
+diff --git a/drivers/usb/usbip/stub_rx.c b/drivers/usb/usbip/stub_rx.c
+index 5dd41e8215e0..bb34d647cf13 100644
+--- a/drivers/usb/usbip/stub_rx.c
++++ b/drivers/usb/usbip/stub_rx.c
+@@ -144,53 +144,62 @@ static int tweak_set_configuration_cmd(struct urb *urb)
+ 	if (err && err != -ENODEV)
+ 		dev_err(&sdev->udev->dev, "can't set config #%d, error %d\n",
+ 			config, err);
+-	return 0;
++	return err;
+ }
  
- 	hw->extra_tx_headroom = brcms_c_get_header_len();
- 	hw->queues = N_TX_QUEUES;
+ static int tweak_reset_device_cmd(struct urb *urb)
+ {
+ 	struct stub_priv *priv = (struct stub_priv *) urb->context;
+ 	struct stub_device *sdev = priv->sdev;
++	int err;
+ 
+ 	dev_info(&urb->dev->dev, "usb_queue_reset_device\n");
+ 
+-	if (usb_lock_device_for_reset(sdev->udev, NULL) < 0) {
++	err = usb_lock_device_for_reset(sdev->udev, NULL);
++	if (err < 0) {
+ 		dev_err(&urb->dev->dev, "could not obtain lock to reset device\n");
+-		return 0;
++		return err;
+ 	}
+-	usb_reset_device(sdev->udev);
++	err = usb_reset_device(sdev->udev);
+ 	usb_unlock_device(sdev->udev);
+ 
+-	return 0;
++	return err;
+ }
+ 
+ /*
+  * clear_halt, set_interface, and set_configuration require special tricks.
++ * Returns 1 if request was tweaked, 0 otherwise.
+  */
+-static void tweak_special_requests(struct urb *urb)
++static int tweak_special_requests(struct urb *urb)
+ {
++	int err;
++
+ 	if (!urb || !urb->setup_packet)
+-		return;
++		return 0;
+ 
+ 	if (usb_pipetype(urb->pipe) != PIPE_CONTROL)
+-		return;
++		return 0;
+ 
+ 	if (is_clear_halt_cmd(urb))
+ 		/* tweak clear_halt */
+-		 tweak_clear_halt_cmd(urb);
++		err = tweak_clear_halt_cmd(urb);
+ 
+ 	else if (is_set_interface_cmd(urb))
+ 		/* tweak set_interface */
+-		tweak_set_interface_cmd(urb);
++		err = tweak_set_interface_cmd(urb);
+ 
+ 	else if (is_set_configuration_cmd(urb))
+ 		/* tweak set_configuration */
+-		tweak_set_configuration_cmd(urb);
++		err = tweak_set_configuration_cmd(urb);
+ 
+ 	else if (is_reset_device_cmd(urb))
+-		tweak_reset_device_cmd(urb);
+-	else
++		err = tweak_reset_device_cmd(urb);
++	else {
+ 		usbip_dbg_stub_rx("no need to tweak\n");
++		return 0;
++	}
++
++	return !err;
+ }
+ 
+ /*
+@@ -468,6 +477,7 @@ static void stub_recv_cmd_submit(struct stub_device *sdev,
+ 	int support_sg = 1;
+ 	int np = 0;
+ 	int ret, i;
++	int is_tweaked;
+ 
+ 	if (pipe == -1)
+ 		return;
+@@ -580,8 +590,11 @@ static void stub_recv_cmd_submit(struct stub_device *sdev,
+ 		priv->urbs[i]->pipe = pipe;
+ 		priv->urbs[i]->complete = stub_complete;
+ 
+-		/* no need to submit an intercepted request, but harmless? */
+-		tweak_special_requests(priv->urbs[i]);
++		/*
++		 * all URBs belong to a single PDU, so a global is_tweaked flag is
++		 * enough
++		 */
++		is_tweaked = tweak_special_requests(priv->urbs[i]);
+ 
+ 		masking_bogus_flags(priv->urbs[i]);
+ 	}
+@@ -594,22 +607,32 @@ static void stub_recv_cmd_submit(struct stub_device *sdev,
+ 
+ 	/* urb is now ready to submit */
+ 	for (i = 0; i < priv->num_urbs; i++) {
+-		ret = usb_submit_urb(priv->urbs[i], GFP_KERNEL);
++		if (!is_tweaked) {
++			ret = usb_submit_urb(priv->urbs[i], GFP_KERNEL);
+ 
+-		if (ret == 0)
+-			usbip_dbg_stub_rx("submit urb ok, seqnum %u\n",
+-					pdu->base.seqnum);
+-		else {
+-			dev_err(&udev->dev, "submit_urb error, %d\n", ret);
+-			usbip_dump_header(pdu);
+-			usbip_dump_urb(priv->urbs[i]);
++			if (ret == 0)
++				usbip_dbg_stub_rx("submit urb ok, seqnum %u\n",
++						pdu->base.seqnum);
++			else {
++				dev_err(&udev->dev, "submit_urb error, %d\n", ret);
++				usbip_dump_header(pdu);
++				usbip_dump_urb(priv->urbs[i]);
+ 
++				/*
++				 * Pessimistic.
++				 * This connection will be discarded.
++				 */
++				usbip_event_add(ud, SDEV_EVENT_ERROR_SUBMIT);
++				break;
++			}
++		} else {
+ 			/*
+-			 * Pessimistic.
+-			 * This connection will be discarded.
++			 * An identical URB was already submitted in
++			 * tweak_special_requests(). Skip submitting this URB to not
++			 * duplicate the request.
+ 			 */
+-			usbip_event_add(ud, SDEV_EVENT_ERROR_SUBMIT);
+-			break;
++			priv->urbs[i]->status = 0;
++			stub_complete(priv->urbs[i]);
+ 		}
+ 	}
+ 
 -- 
 2.43.0
 
