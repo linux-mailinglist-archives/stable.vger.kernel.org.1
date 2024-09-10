@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-74889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B5659731F2
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:16:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DE4F97342D
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:38:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 565C91C24F14
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:16:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 141121F25BF9
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:38:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDC90190077;
-	Tue, 10 Sep 2024 10:12:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50B6719309D;
+	Tue, 10 Sep 2024 10:35:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f+W3tRCc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0xOL3pGe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73CA3188A38;
-	Tue, 10 Sep 2024 10:12:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D7EA18DF99;
+	Tue, 10 Sep 2024 10:35:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963130; cv=none; b=g/+DcfYp10N9Yp6u3sCKP3hS1BPk/Izqkn0j67gb20zXgwFHShulnd1j00woIPb26ChYF7joEY14msMKT3rBI8prArpTcACl6n3LjVENIZAheDcb8f3jxLid6TPKolOMFU25zfijQecyDntVPw7ISfyy/+WQoV4v3qVljjX9Ldo=
+	t=1725964520; cv=none; b=FuKPZkx70ESClRd0/IYXoXUHg/aedl7LVC4J8Poh/0OxUSCzCUZL/Gf0CMNvqhZ/pfHJDPgs62xLSVi0AGemLfVcqwpBnTEINFOM3B4YelsqMg5URirVGq1FygZm0fY+7lOoaiwA+AST89hlF3A0mKk7y8PmWpYgnSAcqJWBhsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963130; c=relaxed/simple;
-	bh=Nj3/sxM3Bgyc66Bn3sf2vsYNpm9zFzs4byduH7vFsxY=;
+	s=arc-20240116; t=1725964520; c=relaxed/simple;
+	bh=s7nAmrtQzImERpgjUVsyJPW8v61QYNXxzDB0zapdd7w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b//Oy9ORKXb2IhkHmSHn0wJmC7BTatr9RXGaifyV3Ita9GQzWv+siUQoNzJWZGvrYY8T/EHH/z7FKXqQAkgh9fz5lMW1Hd2R64MgmZqE8PxywUOUjp+mmNMrPlfNfI2Hoa3Xt+CC3xqN/X6m94aAOTCZh9oqv8UqM1cuMNMoHAM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f+W3tRCc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E66B9C4CEC3;
-	Tue, 10 Sep 2024 10:12:09 +0000 (UTC)
+	 MIME-Version; b=mM7oPgQo08NOT5a0TwBKx62/M1rciiQARkjCWVPNq7nBWs/v8oJOlcgbQQRPUgN/dhbhFpRYSqsVo83gT1rT3Eoe33diPj0nrtt7ghM+zPdCrq92zKabzWQ7ZhCqLvr/kVS3IXwS4c3sG88bXyNdwZ8exfpPmxEY5vey9N5hyiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0xOL3pGe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 830C1C4CEC3;
+	Tue, 10 Sep 2024 10:35:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963130;
-	bh=Nj3/sxM3Bgyc66Bn3sf2vsYNpm9zFzs4byduH7vFsxY=;
+	s=korg; t=1725964519;
+	bh=s7nAmrtQzImERpgjUVsyJPW8v61QYNXxzDB0zapdd7w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f+W3tRCcr0WXJc3pOZ24nkgcbA0Pkoz9UuaHyZ9Ju2DOctWVJMDK9lMt3ZcQ3+Lh2
-	 8Eft6uVUfRpr7lH1ydt0MTHoLlF/NIN5zrHOG2CgOXSmwKADgolQtFersnmGaqCEZw
-	 F4ssu0j28xcfGI/H6MelM59ScGJ4icrf6cEgEsYk=
+	b=0xOL3pGerIkvyPxOkOyA1NRrKcdFvTblt5OG3ICZ8zZ54Ej4dTHp1rGJsdtC64yKu
+	 dLv5PTBXQZ9TZQEaDnwk9Vyhp65sDzrlOaXRHh2/JyVlRsFk9Mquh6+sfYp5hjen8b
+	 z4adSyexmVOnCSo4F7mFS+GagawCORMXjiYSYsmw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naman Jain <namjain@linux.microsoft.com>,
-	Saurabh Sengar <ssengar@linux.microsoft.com>
-Subject: [PATCH 6.1 146/192] Drivers: hv: vmbus: Fix rescind handling in uio_hv_generic
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 183/269] s390/vmlinux.lds.S: Move ro_after_init section behind rodata section
 Date: Tue, 10 Sep 2024 11:32:50 +0200
-Message-ID: <20240910092603.980857261@linuxfoundation.org>
+Message-ID: <20240910092614.659715593@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +63,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naman Jain <namjain@linux.microsoft.com>
+From: Heiko Carstens <hca@linux.ibm.com>
 
-commit 6fd28941447bf2c8ca0f26fda612a1cabc41663f upstream.
+[ Upstream commit 75c10d5377d8821efafed32e4d72068d9c1f8ec0 ]
 
-Rescind offer handling relies on rescind callbacks for some of the
-resources cleanup, if they are registered. It does not unregister
-vmbus device for the primary channel closure, when callback is
-registered. Without it, next onoffer does not come, rescind flag
-remains set and device goes to unusable state.
+The .data.rel.ro and .got section were added between the rodata and
+ro_after_init data section, which adds an RW mapping in between all RO
+mapping of the kernel image:
 
-Add logic to unregister vmbus for the primary channel in rescind callback
-to ensure channel removal and relid release, and to ensure that next
-onoffer can be received and handled properly.
+---[ Kernel Image Start ]---
+0x000003ffe0000000-0x000003ffe0e00000        14M PMD RO X
+0x000003ffe0e00000-0x000003ffe0ec7000       796K PTE RO X
+0x000003ffe0ec7000-0x000003ffe0f00000       228K PTE RO NX
+0x000003ffe0f00000-0x000003ffe1300000         4M PMD RO NX
+0x000003ffe1300000-0x000003ffe1331000       196K PTE RO NX
+0x000003ffe1331000-0x000003ffe13b3000       520K PTE RW NX <---
+0x000003ffe13b3000-0x000003ffe13d5000       136K PTE RO NX
+0x000003ffe13d5000-0x000003ffe1400000       172K PTE RW NX
+0x000003ffe1400000-0x000003ffe1500000         1M PMD RW NX
+0x000003ffe1500000-0x000003ffe1700000         2M PTE RW NX
+0x000003ffe1700000-0x000003ffe1800000         1M PMD RW NX
+0x000003ffe1800000-0x000003ffe187e000       504K PTE RW NX
+---[ Kernel Image End ]---
 
-Cc: stable@vger.kernel.org
-Fixes: ca3cda6fcf1e ("uio_hv_generic: add rescind support")
-Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
-Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-Link: https://lore.kernel.org/r/20240829071312.1595-3-namjain@linux.microsoft.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Move the ro_after_init data section again right behind the rodata
+section to prevent interleaving RO and RW mappings:
+
+---[ Kernel Image Start ]---
+0x000003ffe0000000-0x000003ffe0e00000        14M PMD RO X
+0x000003ffe0e00000-0x000003ffe0ec7000       796K PTE RO X
+0x000003ffe0ec7000-0x000003ffe0f00000       228K PTE RO NX
+0x000003ffe0f00000-0x000003ffe1300000         4M PMD RO NX
+0x000003ffe1300000-0x000003ffe1353000       332K PTE RO NX
+0x000003ffe1353000-0x000003ffe1400000       692K PTE RW NX
+0x000003ffe1400000-0x000003ffe1500000         1M PMD RW NX
+0x000003ffe1500000-0x000003ffe1700000         2M PTE RW NX
+0x000003ffe1700000-0x000003ffe1800000         1M PMD RW NX
+0x000003ffe1800000-0x000003ffe187e000       504K PTE RW NX
+---[ Kernel Image End ]---
+
+Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hv/vmbus_drv.c       |    1 +
- drivers/uio/uio_hv_generic.c |    8 ++++++++
- 2 files changed, 9 insertions(+)
+ arch/s390/kernel/vmlinux.lds.S | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/hv/vmbus_drv.c
-+++ b/drivers/hv/vmbus_drv.c
-@@ -1977,6 +1977,7 @@ static umode_t vmbus_chan_attr_is_visibl
+diff --git a/arch/s390/kernel/vmlinux.lds.S b/arch/s390/kernel/vmlinux.lds.S
+index 2ae201ebf90b..de5f9f623f5b 100644
+--- a/arch/s390/kernel/vmlinux.lds.S
++++ b/arch/s390/kernel/vmlinux.lds.S
+@@ -71,6 +71,15 @@ SECTIONS
+ 	. = ALIGN(PAGE_SIZE);
+ 	__end_ro_after_init = .;
  
- 	return attr->mode;
- }
-+EXPORT_SYMBOL_GPL(vmbus_device_unregister);
- 
- static struct attribute_group vmbus_chan_group = {
- 	.attrs = vmbus_chan_attrs,
---- a/drivers/uio/uio_hv_generic.c
-+++ b/drivers/uio/uio_hv_generic.c
-@@ -119,6 +119,14 @@ static void hv_uio_rescind(struct vmbus_
- 
- 	/* Wake up reader */
- 	uio_event_notify(&pdata->info);
++	.data.rel.ro : {
++		*(.data.rel.ro .data.rel.ro.*)
++	}
++	.got : {
++		__got_start = .;
++		*(.got)
++		__got_end = .;
++	}
 +
-+	/*
-+	 * With rescind callback registered, rescind path will not unregister the device
-+	 * from vmbus when the primary channel is rescinded.
-+	 * Without it, rescind handling is incomplete and next onoffer msg does not come.
-+	 * Unregister the device from vmbus here.
-+	 */
-+	vmbus_device_unregister(channel->device_obj);
- }
+ 	RW_DATA(0x100, PAGE_SIZE, THREAD_SIZE)
+ 	BOOT_DATA_PRESERVED
  
- /* Sysfs API to allow mmap of the ring buffers
+-- 
+2.43.0
+
 
 
 
