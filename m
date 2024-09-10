@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-74942-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75392-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01EEF973238
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:20:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E82D9735B4
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:56:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD8C1289825
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:20:28 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4C1A6B2D381
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:40:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA6D718E756;
-	Tue, 10 Sep 2024 10:14:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48E7518FC7B;
+	Tue, 10 Sep 2024 10:36:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c+tc9Jsq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ECSKlTk1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7747F18C039;
-	Tue, 10 Sep 2024 10:14:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03D0A7581D;
+	Tue, 10 Sep 2024 10:36:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963286; cv=none; b=IxydcopsyFtrCRnAAFyo7N4cHdczQ5zBHdzE81LPkNS3iwOnZ4dwNmVE/lAdirmJnjfIB6exZ9zI8bey18hbinOhFqzh6oksoyC6xdqDrBswPliVMNcAo4BZPAggalvq1Jutaz+qy382QBurP3YlPIOvWUKp693xgipJI7z+a9c=
+	t=1725964598; cv=none; b=dGOGQ3p7FqyfH6k5LZfNDc24bWj8usbbm2x1HgMC+cC+YShIhwB59u0USzwk5vFqp/P/j/hfGeU2ZWFyEDP0IM52rixb+nprdtOaoGB2uMGCGPdEQcMWmfJT3oWnC1F5FlI62ycP0/zOstewDKTvb322hKNBa8aDQaYvs6VTZgY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963286; c=relaxed/simple;
-	bh=viYraXsgSnAOAl+865IGUKQRRROzcw9Jzm6CK73JH3E=;
+	s=arc-20240116; t=1725964598; c=relaxed/simple;
+	bh=peVc3cJyyWZnW4DC6SuL9ZmKIhjI9m3lWdpPryCNUI8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q8eKKK03q353Pj/rVZHh5/YcpbxyBwW/uVvDbHs4KyEyKvIyZgWHBOeFgxsDg9khU5Y+ajKBW8GcdpSW3j7757Ow2un6CJrgeQKKZwW+4O3uQnjgan+jDO6e0u5cXkPFK16/+3+H7rbH8dDwJHv5ZS3ZWaSfSy28Hg/eOczmZYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c+tc9Jsq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8F06C4CEC3;
-	Tue, 10 Sep 2024 10:14:45 +0000 (UTC)
+	 MIME-Version; b=msSbucQ0g56LPaj+UI9x0IBPCBPCzUi3yzKIF6ELbGiSGsYcjjAooR6WPAvWyp448OtRKiq5dPnXJ+nKSXkuvslhlu5/BpvYR0EycXy1J/SMi7wEO87BMgXYKYvuHM0C3fPE8oZ6kFikD9H8DgmyPzVEPcArsGLMbXW+j++55i8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ECSKlTk1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46564C4CEC3;
+	Tue, 10 Sep 2024 10:36:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963286;
-	bh=viYraXsgSnAOAl+865IGUKQRRROzcw9Jzm6CK73JH3E=;
+	s=korg; t=1725964597;
+	bh=peVc3cJyyWZnW4DC6SuL9ZmKIhjI9m3lWdpPryCNUI8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c+tc9JsqpMl90YkWUodAkntAEb7X0aQlvZJJWHDDwyAsMeJbBdRLL6ORZV2gFQuS/
-	 LnvWJsmek4VPUWtQ5mPhteatMzvRCU2Wfk8VXbHgijK7cZ4+05dkNpwVGoaRgusKuA
-	 hf2Im1FslBA6EqWElaxn6Yl4kmkRoCsb3hWSK3S0=
+	b=ECSKlTk1ByY/7lYNXXpmqb5a7h2JAuBHMYIX3KpHkQ33f6JXWxOBm+sqHnnZPCgtI
+	 qfABcWUGa18WtnxBy7lVak/ftBg11eH0cm3FWI2OItZk+D1lYd9yEw+MZlpeK11C/3
+	 c1av9SQF1g/IyihYCqruSVfwB4RQi82YAIhSaqik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Stefan=20Alth=C3=B6fer?= <Stefan.Althoefer@janztec.com>,
-	Thomas Kopp <thomas.kopp@microchip.com>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 172/192] can: mcp251xfd: rx: add workaround for erratum DS80000789E 6 of mcp2518fd
+	Guillaume Stols <gstols@baylibre.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6 209/269] iio: adc: ad7606: remove frstdata check for serial mode
 Date: Tue, 10 Sep 2024 11:33:16 +0200
-Message-ID: <20240910092604.949452428@linuxfoundation.org>
+Message-ID: <20240910092615.487653189@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,150 +61,180 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Guillaume Stols <gstols@baylibre.com>
 
-[ Upstream commit 24436be590c6fbb05f6161b0dfba7d9da60214aa ]
+commit 90826e08468ba7fb35d8b39645b22d9e80004afe upstream.
 
-This patch tries to works around erratum DS80000789E 6 of the
-mcp2518fd, the other variants of the chip family (mcp2517fd and
-mcp251863) are probably also affected.
+The current implementation attempts to recover from an eventual glitch
+in the clock by checking frstdata state after reading the first
+channel's sample: If frstdata is low, it will reset the chip and
+return -EIO.
 
-In the bad case, the driver reads a too large head index. In the
-original code, the driver always trusted the read value, which caused
-old, already processed CAN frames or new, incompletely written CAN
-frames to be (re-)processed.
+This will only work in parallel mode, where frstdata pin is set low
+after the 2nd sample read starts.
 
-To work around this issue, keep a per FIFO timestamp [1] of the last
-valid received CAN frame and compare against the timestamp of every
-received CAN frame. If an old CAN frame is detected, abort the
-iteration and mark the number of valid CAN frames as processed in the
-chip by incrementing the FIFO's tail index.
+For the serial mode, according to the datasheet, "The FRSTDATA output
+returns to a logic low following the 16th SCLK falling edge.", thus
+after the Xth pulse, X being the number of bits in a sample, the check
+will always be true, and the driver will not work at all in serial
+mode if frstdata(optional) is defined in the devicetree as it will
+reset the chip, and return -EIO every time read_sample is called.
 
-Further tests showed that this workaround can recognize old CAN
-frames, but a small time window remains in which partially written CAN
-frames [2] are not recognized but then processed. These CAN frames
-have the correct data and time stamps, but the DLC has not yet been
-updated.
+Hence, this check must be removed for serial mode.
 
-[1] As the raw timestamp overflows every 107 seconds (at the usual
-    clock rate of 40 MHz) convert it to nanoseconds with the
-    timecounter framework and use this to detect stale CAN frames.
-
-Link: https://lore.kernel.org/all/BL3PR11MB64844C1C95CA3BDADAE4D8CCFBC99@BL3PR11MB6484.namprd11.prod.outlook.com [2]
-Reported-by: Stefan Althöfer <Stefan.Althoefer@janztec.com>
-Closes: https://lore.kernel.org/all/FR0P281MB1966273C216630B120ABB6E197E89@FR0P281MB1966.DEUP281.PROD.OUTLOOK.COM
-Tested-by: Stefan Althöfer <Stefan.Althoefer@janztec.com>
-Tested-by: Thomas Kopp <thomas.kopp@microchip.com>
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b9618c0cacd7 ("staging: IIO: ADC: New driver for AD7606/AD7606-6/AD7606-4")
+Signed-off-by: Guillaume Stols <gstols@baylibre.com>
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://patch.msgid.link/20240702-cleanup-ad7606-v3-1-18d5ea18770e@baylibre.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/can/spi/mcp251xfd/mcp251xfd-ring.c    |  1 +
- drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c  | 32 +++++++++++++++++--
- drivers/net/can/spi/mcp251xfd/mcp251xfd.h     |  3 ++
- 3 files changed, 33 insertions(+), 3 deletions(-)
+ drivers/iio/adc/ad7606.c     |   28 +------------------------
+ drivers/iio/adc/ad7606.h     |    2 +
+ drivers/iio/adc/ad7606_par.c |   48 ++++++++++++++++++++++++++++++++++++++++---
+ 3 files changed, 49 insertions(+), 29 deletions(-)
 
-diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
-index 5ed0cd62f4f8..0fde8154a649 100644
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
-@@ -196,6 +196,7 @@ mcp251xfd_ring_init_rx(struct mcp251xfd_priv *priv, u16 *base, u8 *fifo_nr)
- 	int i, j;
+--- a/drivers/iio/adc/ad7606.c
++++ b/drivers/iio/adc/ad7606.c
+@@ -49,7 +49,7 @@ static const unsigned int ad7616_oversam
+ 	1, 2, 4, 8, 16, 32, 64, 128,
+ };
  
- 	mcp251xfd_for_each_rx_ring(priv, rx_ring, i) {
-+		rx_ring->last_valid = timecounter_read(&priv->tc);
- 		rx_ring->head = 0;
- 		rx_ring->tail = 0;
- 		rx_ring->base = *base;
-diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c
-index a79e6c661ecc..fe897f3e4c12 100644
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c
-@@ -159,8 +159,6 @@ mcp251xfd_hw_rx_obj_to_skb(const struct mcp251xfd_priv *priv,
+-static int ad7606_reset(struct ad7606_state *st)
++int ad7606_reset(struct ad7606_state *st)
+ {
+ 	if (st->gpio_reset) {
+ 		gpiod_set_value(st->gpio_reset, 1);
+@@ -60,6 +60,7 @@ static int ad7606_reset(struct ad7606_st
  
- 	if (!(hw_rx_obj->flags & MCP251XFD_OBJ_FLAGS_RTR))
- 		memcpy(cfd->data, hw_rx_obj->data, cfd->len);
+ 	return -ENODEV;
+ }
++EXPORT_SYMBOL_NS_GPL(ad7606_reset, IIO_AD7606);
+ 
+ static int ad7606_reg_access(struct iio_dev *indio_dev,
+ 			     unsigned int reg,
+@@ -88,31 +89,6 @@ static int ad7606_read_samples(struct ad
+ {
+ 	unsigned int num = st->chip_info->num_channels - 1;
+ 	u16 *data = st->data;
+-	int ret;
 -
--	mcp251xfd_skb_set_timestamp_raw(priv, skb, hw_rx_obj->ts);
+-	/*
+-	 * The frstdata signal is set to high while and after reading the sample
+-	 * of the first channel and low for all other channels. This can be used
+-	 * to check that the incoming data is correctly aligned. During normal
+-	 * operation the data should never become unaligned, but some glitch or
+-	 * electrostatic discharge might cause an extra read or clock cycle.
+-	 * Monitoring the frstdata signal allows to recover from such failure
+-	 * situations.
+-	 */
+-
+-	if (st->gpio_frstdata) {
+-		ret = st->bops->read_block(st->dev, 1, data);
+-		if (ret)
+-			return ret;
+-
+-		if (!gpiod_get_value(st->gpio_frstdata)) {
+-			ad7606_reset(st);
+-			return -EIO;
+-		}
+-
+-		data++;
+-		num--;
+-	}
+ 
+ 	return st->bops->read_block(st->dev, num, data);
+ }
+--- a/drivers/iio/adc/ad7606.h
++++ b/drivers/iio/adc/ad7606.h
+@@ -151,6 +151,8 @@ int ad7606_probe(struct device *dev, int
+ 		 const char *name, unsigned int id,
+ 		 const struct ad7606_bus_ops *bops);
+ 
++int ad7606_reset(struct ad7606_state *st);
++
+ enum ad7606_supported_device_ids {
+ 	ID_AD7605_4,
+ 	ID_AD7606_8,
+--- a/drivers/iio/adc/ad7606_par.c
++++ b/drivers/iio/adc/ad7606_par.c
+@@ -7,6 +7,7 @@
+ 
+ #include <linux/mod_devicetable.h>
+ #include <linux/module.h>
++#include <linux/gpio/consumer.h>
+ #include <linux/platform_device.h>
+ #include <linux/types.h>
+ #include <linux/err.h>
+@@ -21,8 +22,29 @@ static int ad7606_par16_read_block(struc
+ 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+ 	struct ad7606_state *st = iio_priv(indio_dev);
+ 
+-	insw((unsigned long)st->base_address, buf, count);
+ 
++	/*
++	 * On the parallel interface, the frstdata signal is set to high while
++	 * and after reading the sample of the first channel and low for all
++	 * other channels.  This can be used to check that the incoming data is
++	 * correctly aligned.  During normal operation the data should never
++	 * become unaligned, but some glitch or electrostatic discharge might
++	 * cause an extra read or clock cycle.  Monitoring the frstdata signal
++	 * allows to recover from such failure situations.
++	 */
++	int num = count;
++	u16 *_buf = buf;
++
++	if (st->gpio_frstdata) {
++		insw((unsigned long)st->base_address, _buf, 1);
++		if (!gpiod_get_value(st->gpio_frstdata)) {
++			ad7606_reset(st);
++			return -EIO;
++		}
++		_buf++;
++		num--;
++	}
++	insw((unsigned long)st->base_address, _buf, num);
+ 	return 0;
  }
  
- static int
-@@ -171,8 +169,26 @@ mcp251xfd_handle_rxif_one(struct mcp251xfd_priv *priv,
- 	struct net_device_stats *stats = &priv->ndev->stats;
- 	struct sk_buff *skb;
- 	struct canfd_frame *cfd;
-+	u64 timestamp;
- 	int err;
- 
-+	/* According to mcp2518fd erratum DS80000789E 6. the FIFOCI
-+	 * bits of a FIFOSTA register, here the RX FIFO head index
-+	 * might be corrupted and we might process past the RX FIFO's
-+	 * head into old CAN frames.
-+	 *
-+	 * Compare the timestamp of currently processed CAN frame with
-+	 * last valid frame received. Abort with -EBADMSG if an old
-+	 * CAN frame is detected.
+@@ -35,8 +57,28 @@ static int ad7606_par8_read_block(struct
+ {
+ 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
+ 	struct ad7606_state *st = iio_priv(indio_dev);
+-
+-	insb((unsigned long)st->base_address, buf, count * 2);
++	/*
++	 * On the parallel interface, the frstdata signal is set to high while
++	 * and after reading the sample of the first channel and low for all
++	 * other channels.  This can be used to check that the incoming data is
++	 * correctly aligned.  During normal operation the data should never
++	 * become unaligned, but some glitch or electrostatic discharge might
++	 * cause an extra read or clock cycle.  Monitoring the frstdata signal
++	 * allows to recover from such failure situations.
 +	 */
-+	timestamp = timecounter_cyc2time(&priv->tc, hw_rx_obj->ts);
-+	if (timestamp <= ring->last_valid) {
-+		stats->rx_fifo_errors++;
++	int num = count;
++	u16 *_buf = buf;
 +
-+		return -EBADMSG;
++	if (st->gpio_frstdata) {
++		insb((unsigned long)st->base_address, _buf, 2);
++		if (!gpiod_get_value(st->gpio_frstdata)) {
++			ad7606_reset(st);
++			return -EIO;
++		}
++		_buf++;
++		num--;
 +	}
-+	ring->last_valid = timestamp;
-+
- 	if (hw_rx_obj->flags & MCP251XFD_OBJ_FLAGS_FDF)
- 		skb = alloc_canfd_skb(priv->ndev, &cfd);
- 	else
-@@ -183,6 +199,7 @@ mcp251xfd_handle_rxif_one(struct mcp251xfd_priv *priv,
- 		return 0;
- 	}
++	insb((unsigned long)st->base_address, _buf, num * 2);
  
-+	mcp251xfd_skb_set_timestamp(skb, timestamp);
- 	mcp251xfd_hw_rx_obj_to_skb(priv, hw_rx_obj, skb);
- 	err = can_rx_offload_queue_timestamp(&priv->offload, skb, hw_rx_obj->ts);
- 	if (err)
-@@ -265,7 +282,16 @@ mcp251xfd_handle_rxif_ring(struct mcp251xfd_priv *priv,
- 			err = mcp251xfd_handle_rxif_one(priv, ring,
- 							(void *)hw_rx_obj +
- 							i * ring->obj_size);
--			if (err)
-+
-+			/* -EBADMSG means we're affected by mcp2518fd
-+			 * erratum DS80000789E 6., i.e. the timestamp
-+			 * in the RX object is older that the last
-+			 * valid received CAN frame. Don't process any
-+			 * further and mark processed frames as good.
-+			 */
-+			if (err == -EBADMSG)
-+				return mcp251xfd_handle_rxif_ring_uinc(priv, ring, i);
-+			else if (err)
- 				return err;
- 		}
- 
-diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd.h b/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
-index 7713c9264fb5..c07300443c6a 100644
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
-@@ -549,6 +549,9 @@ struct mcp251xfd_rx_ring {
- 	unsigned int head;
- 	unsigned int tail;
- 
-+	/* timestamp of the last valid received CAN frame */
-+	u64 last_valid;
-+
- 	u16 base;
- 	u8 nr;
- 	u8 fifo_nr;
--- 
-2.43.0
-
+ 	return 0;
+ }
 
 
 
