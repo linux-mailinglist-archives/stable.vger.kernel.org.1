@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-74838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 548AD9731BE
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:14:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF6FD9733B7
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:35:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1AF1FB29EE9
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:13:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2E56A1C24C48
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:35:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 893CE199FAC;
-	Tue, 10 Sep 2024 10:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87F88190676;
+	Tue, 10 Sep 2024 10:30:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qbhCFjCD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OTHx0cO1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46B29199953;
-	Tue, 10 Sep 2024 10:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45C54144D1A;
+	Tue, 10 Sep 2024 10:30:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962980; cv=none; b=C0oakOWDgplbAKqYS4DUMCacJpVlj6RTewXfyucwm0YbVVeRgnNDnEFGkj6MrGLjQhSlOYxvEK/UNMDsUO0mQ/ZyQREvwji4WzvQZvARe8KTk7yrOshIGd3Fn+1jtNAs9A6vrulfN9RHbFtp2EWLkY8od+itF6R9oYh30Y/EVP0=
+	t=1725964238; cv=none; b=BGV5Ah+l0/jBe1jp+I8Ao0AP0Edli5btlAvS14kEm/qqF+j+TjoiP+1xFoTqQxF10x/b8vIvYlS+zDurL9qAD+CWwHjPWA6VU3JigJsueBuv5jMNICDykyi4NNTpXccgn8HfFbgpMPJzdZ7BuE4LB26AIGqT0mQ+sOrKcazrVgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962980; c=relaxed/simple;
-	bh=JYawUfj5gmK6ulpQxhez81vH9+n7pi6G5wDp5wLWmDo=;
+	s=arc-20240116; t=1725964238; c=relaxed/simple;
+	bh=bo9euLSEawJtzimmu20ZIihWo0QjqfXiPGDlvu71WT4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rB2AgXAzyQWMwBivBLfZl7+q/JM34WYdOyDwEMVwKZO8xXzfZKEdakR0MukX+fzEs13fgYz6To5CzxWI3iEM0XGqNrXOIIksZNFT8U2vYcWGWPlj9pdi/BF7k8e3XDhPpTyCFHd9OrcQonRJ7irUa0M99I1pJvTUZamBMC8Eyns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qbhCFjCD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE15AC4CEC6;
-	Tue, 10 Sep 2024 10:09:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=chhOnexHypfKPLqrXefs2YzxqlradvaCxNQAPDhyj36PCkVyWXGN1JpZt/rFLEnnvDaTesZArMy+OnDjAhW1I4bqtf6zYqx0DHXA+qR9wetTubH5tNyz9HycaZpv+aiZ+eeXEfpvagPQ5SGXlJq/JCT/PQlw9bwjiJmviBtLlJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OTHx0cO1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFB2DC4CEC3;
+	Tue, 10 Sep 2024 10:30:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962980;
-	bh=JYawUfj5gmK6ulpQxhez81vH9+n7pi6G5wDp5wLWmDo=;
+	s=korg; t=1725964238;
+	bh=bo9euLSEawJtzimmu20ZIihWo0QjqfXiPGDlvu71WT4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qbhCFjCDx4mTUgILNrKRjCx5bIWi71fGAhtznUZlfzxa1LVVKSgmlk3vrk/UR2plH
-	 bT0NmPCxZkBmsQIum3T53ykV6xAybIL57UK8RGe0An9yuZzaLkvr6Fva09eytb6yrw
-	 RAM4nFS5w/jLBX9UpAZepMR969c86uc+TN7KFwF0=
+	b=OTHx0cO1JbMiue1BBX2T3kXegWeIGnXyvJF/cdQFbLCcj1+HdUl15JqUB7f97dIYa
+	 iVrxEqj2TrxXNW++oZ7Pow0CbyVIXjQXo5rRXv9h1hBqYgrGhcuZqKrqM+YLtC3u/M
+	 KEMLdp3PPSb2eFyyDZuijXMPty03yNGsSHGZRLuQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Corentin Labbe <clabbe@baylibre.com>,
-	Mark Brown <broonie@kernel.org>,
+	=?UTF-8?q?Jonas=20Dre=C3=9Fler?= <verdre@v0yd.nl>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 077/192] regulator: Add of_regulator_bulk_get_all
+Subject: [PATCH 6.6 114/269] Bluetooth: Remove pending ACL connection attempts
 Date: Tue, 10 Sep 2024 11:31:41 +0200
-Message-ID: <20240910092601.148076324@linuxfoundation.org>
+Message-ID: <20240910092612.258483803@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,156 +60,154 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Corentin Labbe <clabbe@baylibre.com>
+From: Jonas Dreßler <verdre@v0yd.nl>
 
-[ Upstream commit 27b9ecc7a9ba1d0014779bfe5a6dbf630899c6e7 ]
+[ Upstream commit 4aa42119d971603dc9e4d8cf4f53d5fcf082ea7d ]
 
-It work exactly like regulator_bulk_get() but instead of working on a
-provided list of names, it seek all consumers properties matching
-xxx-supply.
+With the last commit we moved to using the hci_sync queue for "Create
+Connection" requests, removing the need for retrying the paging after
+finished/failed "Create Connection" requests and after the end of
+inquiries.
 
-Signed-off-by: Corentin Labbe <clabbe@baylibre.com>
-Link: https://lore.kernel.org/r/20221115073603.3425396-2-clabbe@baylibre.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 1a5caec7f80c ("regulator: core: Stub devm_regulator_bulk_get_const() if !CONFIG_REGULATOR")
+hci_conn_check_pending() was used to trigger this retry, we can remove it
+now.
+
+Note that we can also remove the special handling for COMMAND_DISALLOWED
+errors in the completion handler of "Create Connection", because "Create
+Connection" requests are now always serialized.
+
+This is somewhat reverting commit 4c67bc74f016 ("[Bluetooth] Support
+concurrent connect requests").
+
+With this, the BT_CONNECT2 state of ACL hci_conn objects should now be
+back to meaning only one thing: That we received a "Connection Request"
+from another device (see hci_conn_request_evt), but the response to that
+is going to be deferred.
+
+Signed-off-by: Jonas Dreßler <verdre@v0yd.nl>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Stable-dep-of: 227a0cdf4a02 ("Bluetooth: MGMT: Fix not generating command complete for MGMT_OP_DISCONNECT")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/of_regulator.c   | 92 ++++++++++++++++++++++++++++++
- include/linux/regulator/consumer.h |  8 +++
- 2 files changed, 100 insertions(+)
+ include/net/bluetooth/hci_core.h |  1 -
+ net/bluetooth/hci_conn.c         | 16 ----------------
+ net/bluetooth/hci_event.c        | 21 ++++-----------------
+ 3 files changed, 4 insertions(+), 34 deletions(-)
 
-diff --git a/drivers/regulator/of_regulator.c b/drivers/regulator/of_regulator.c
-index cd726d4e8fbf..c3571781a8cc 100644
---- a/drivers/regulator/of_regulator.c
-+++ b/drivers/regulator/of_regulator.c
-@@ -701,3 +701,95 @@ struct regulator_dev *of_parse_coupled_regulator(struct regulator_dev *rdev,
+diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
+index 070c794e6a42..850f0e46aecf 100644
+--- a/include/net/bluetooth/hci_core.h
++++ b/include/net/bluetooth/hci_core.h
+@@ -1417,7 +1417,6 @@ struct hci_conn *hci_conn_add_unset(struct hci_dev *hdev, int type,
+ 				    bdaddr_t *dst, u8 role);
+ void hci_conn_del(struct hci_conn *conn);
+ void hci_conn_hash_flush(struct hci_dev *hdev);
+-void hci_conn_check_pending(struct hci_dev *hdev);
  
- 	return c_rdev;
- }
-+
-+/*
-+ * Check if name is a supply name according to the '*-supply' pattern
-+ * return 0 if false
-+ * return length of supply name without the -supply
-+ */
-+static int is_supply_name(const char *name)
-+{
-+	int strs, i;
-+
-+	strs = strlen(name);
-+	/* string need to be at minimum len(x-supply) */
-+	if (strs < 8)
-+		return 0;
-+	for (i = strs - 6; i > 0; i--) {
-+		/* find first '-' and check if right part is supply */
-+		if (name[i] != '-')
-+			continue;
-+		if (strcmp(name + i + 1, "supply") != 0)
-+			return 0;
-+		return i;
-+	}
-+	return 0;
-+}
-+
-+/*
-+ * of_regulator_bulk_get_all - get multiple regulator consumers
-+ *
-+ * @dev:	Device to supply
-+ * @np:		device node to search for consumers
-+ * @consumers:  Configuration of consumers; clients are stored here.
-+ *
-+ * @return number of regulators on success, an errno on failure.
-+ *
-+ * This helper function allows drivers to get several regulator
-+ * consumers in one operation.  If any of the regulators cannot be
-+ * acquired then any regulators that were allocated will be freed
-+ * before returning to the caller.
-+ */
-+int of_regulator_bulk_get_all(struct device *dev, struct device_node *np,
-+			      struct regulator_bulk_data **consumers)
-+{
-+	int num_consumers = 0;
-+	struct regulator *tmp;
-+	struct property *prop;
-+	int i, n = 0, ret;
-+	char name[64];
-+
-+	*consumers = NULL;
-+
-+	/*
-+	 * first pass: get numbers of xxx-supply
-+	 * second pass: fill consumers
-+	 */
-+restart:
-+	for_each_property_of_node(np, prop) {
-+		i = is_supply_name(prop->name);
-+		if (i == 0)
-+			continue;
-+		if (!*consumers) {
-+			num_consumers++;
-+			continue;
-+		} else {
-+			memcpy(name, prop->name, i);
-+			name[i] = '\0';
-+			tmp = regulator_get(dev, name);
-+			if (!tmp) {
-+				ret = -EINVAL;
-+				goto error;
-+			}
-+			(*consumers)[n].consumer = tmp;
-+			n++;
-+			continue;
-+		}
-+	}
-+	if (*consumers)
-+		return num_consumers;
-+	if (num_consumers == 0)
-+		return 0;
-+	*consumers = kmalloc_array(num_consumers,
-+				   sizeof(struct regulator_bulk_data),
-+				   GFP_KERNEL);
-+	if (!*consumers)
-+		return -ENOMEM;
-+	goto restart;
-+
-+error:
-+	while (--n >= 0)
-+		regulator_put(consumers[n]->consumer);
-+	return ret;
-+}
-+EXPORT_SYMBOL_GPL(of_regulator_bulk_get_all);
-diff --git a/include/linux/regulator/consumer.h b/include/linux/regulator/consumer.h
-index a9ca87a8f4e6..40c80c844ce5 100644
---- a/include/linux/regulator/consumer.h
-+++ b/include/linux/regulator/consumer.h
-@@ -244,6 +244,8 @@ int regulator_disable_deferred(struct regulator *regulator, int ms);
- 
- int __must_check regulator_bulk_get(struct device *dev, int num_consumers,
- 				    struct regulator_bulk_data *consumers);
-+int __must_check of_regulator_bulk_get_all(struct device *dev, struct device_node *np,
-+					   struct regulator_bulk_data **consumers);
- int __must_check devm_regulator_bulk_get(struct device *dev, int num_consumers,
- 					 struct regulator_bulk_data *consumers);
- void devm_regulator_bulk_put(struct regulator_bulk_data *consumers);
-@@ -479,6 +481,12 @@ static inline int devm_regulator_bulk_get(struct device *dev, int num_consumers,
- 	return 0;
+ struct hci_chan *hci_chan_create(struct hci_conn *conn);
+ void hci_chan_del(struct hci_chan *chan);
+diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
+index 04fe901a47f7..36731d047f16 100644
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -2565,22 +2565,6 @@ void hci_conn_hash_flush(struct hci_dev *hdev)
+ 	}
  }
  
-+static inline int of_regulator_bulk_get_all(struct device *dev, struct device_node *np,
-+					    struct regulator_bulk_data **consumers)
-+{
-+	return 0;
-+}
-+
- static inline int regulator_bulk_enable(int num_consumers,
- 					struct regulator_bulk_data *consumers)
+-/* Check pending connect attempts */
+-void hci_conn_check_pending(struct hci_dev *hdev)
+-{
+-	struct hci_conn *conn;
+-
+-	BT_DBG("hdev %s", hdev->name);
+-
+-	hci_dev_lock(hdev);
+-
+-	conn = hci_conn_hash_lookup_state(hdev, ACL_LINK, BT_CONNECT2);
+-	if (conn)
+-		hci_acl_create_connection_sync(hdev, conn);
+-
+-	hci_dev_unlock(hdev);
+-}
+-
+ static u32 get_link_mode(struct hci_conn *conn)
  {
+ 	u32 link_mode = 0;
+diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
+index dc80c1560357..d81c7fccdd40 100644
+--- a/net/bluetooth/hci_event.c
++++ b/net/bluetooth/hci_event.c
+@@ -118,8 +118,6 @@ static u8 hci_cc_inquiry_cancel(struct hci_dev *hdev, void *data,
+ 		hci_discovery_set_state(hdev, DISCOVERY_STOPPED);
+ 	hci_dev_unlock(hdev);
+ 
+-	hci_conn_check_pending(hdev);
+-
+ 	return rp->status;
+ }
+ 
+@@ -150,8 +148,6 @@ static u8 hci_cc_exit_periodic_inq(struct hci_dev *hdev, void *data,
+ 
+ 	hci_dev_clear_flag(hdev, HCI_PERIODIC_INQ);
+ 
+-	hci_conn_check_pending(hdev);
+-
+ 	return rp->status;
+ }
+ 
+@@ -2257,10 +2253,8 @@ static void hci_cs_inquiry(struct hci_dev *hdev, __u8 status)
+ {
+ 	bt_dev_dbg(hdev, "status 0x%2.2x", status);
+ 
+-	if (status) {
+-		hci_conn_check_pending(hdev);
++	if (status)
+ 		return;
+-	}
+ 
+ 	if (hci_sent_cmd_data(hdev, HCI_OP_INQUIRY))
+ 		set_bit(HCI_INQUIRY, &hdev->flags);
+@@ -2285,12 +2279,9 @@ static void hci_cs_create_conn(struct hci_dev *hdev, __u8 status)
+ 
+ 	if (status) {
+ 		if (conn && conn->state == BT_CONNECT) {
+-			if (status != HCI_ERROR_COMMAND_DISALLOWED || conn->attempt > 2) {
+-				conn->state = BT_CLOSED;
+-				hci_connect_cfm(conn, status);
+-				hci_conn_del(conn);
+-			} else
+-				conn->state = BT_CONNECT2;
++			conn->state = BT_CLOSED;
++			hci_connect_cfm(conn, status);
++			hci_conn_del(conn);
+ 		}
+ 	} else {
+ 		if (!conn) {
+@@ -2980,8 +2971,6 @@ static void hci_inquiry_complete_evt(struct hci_dev *hdev, void *data,
+ 
+ 	bt_dev_dbg(hdev, "status 0x%2.2x", ev->status);
+ 
+-	hci_conn_check_pending(hdev);
+-
+ 	if (!test_and_clear_bit(HCI_INQUIRY, &hdev->flags))
+ 		return;
+ 
+@@ -3228,8 +3217,6 @@ static void hci_conn_complete_evt(struct hci_dev *hdev, void *data,
+ 
+ unlock:
+ 	hci_dev_unlock(hdev);
+-
+-	hci_conn_check_pending(hdev);
+ }
+ 
+ static void hci_reject_conn(struct hci_dev *hdev, bdaddr_t *bdaddr)
 -- 
 2.43.0
 
