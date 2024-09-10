@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-74841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75288-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99BF09731AC
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:13:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C1C39733CF
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:35:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CBB661C25646
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:13:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3D89D28A2D9
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:35:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD2B7199FB9;
-	Tue, 10 Sep 2024 10:09:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 424EA19994B;
+	Tue, 10 Sep 2024 10:31:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VGvmASen"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A42nvrtC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B9BB190678;
-	Tue, 10 Sep 2024 10:09:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F183118FDA3;
+	Tue, 10 Sep 2024 10:31:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962989; cv=none; b=apXfqKfgoHlR3+ZdXDBgsQ0L++HxH5EzqiVPbMr5tfPhsvIfYO3pfM7rfIZgYDneed3QNP2MbRzS35e3HI4RRgoXFzlad5MbrYQlA8myNdaFPQvgPt4Ipj3YsZSsXoTyKX8P27PBgARIPM9yjqVQW6SCkF9ugiFQp2PbHjot+ow=
+	t=1725964297; cv=none; b=jnwI0vHdS4Z8rmvvwsxn74mZXH7MhcnsSOSmn7ICSvMMFOVTt5X/M/D0tJtE2ExOVqGRz2elgKX+egIrmBNW7yk01r9Kh+Hc1YaNoRszrh1OIk7rdj7PTwm2bbhSFS1XkOtaIJtJx3j9KHygBvtix1YA24964BaRdaduYMzoyuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962989; c=relaxed/simple;
-	bh=oGxvXzLw55o2zr+Ry8u3IIbuv8GzF0Jvd0J1n2BI/kk=;
+	s=arc-20240116; t=1725964297; c=relaxed/simple;
+	bh=/7m3Qpw1+wxJydJkwUzv/Jm4T7qbR90/N/C5EQXSMsM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tdflrqEP2PTT+ibyVKfM3eX1LJ+4pcv40Q5qo0WXFjoGrwTwPsZ0IRDFM+c2kTi/m/q0zVZfsJjseZcbOo4DXzdFYmppS0u4swmXYASXwOqI0+TuTEmTs2d8g1Q5OENtrjyx6BBoOkXSOolGlAxrRL4BeMNv+np50bn5+tFVBzw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VGvmASen; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87FF7C4CEC3;
-	Tue, 10 Sep 2024 10:09:48 +0000 (UTC)
+	 MIME-Version; b=kNwLFmAo9enwXAOtFIhEDYp3OOAb7i3T05GSUTZL4UzGFj78o9NLLV596u2ylujp8/gNK7S/XItdSr4mYsADhiFjg0yh3IsAXwCiRPbflZrRuIMUe0jR/W79QCUsbFA/xKuu2Zrq9bheYY6M091cGyNBZtiy6eb+byTLwv5lmCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A42nvrtC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77D12C4CEC3;
+	Tue, 10 Sep 2024 10:31:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962988;
-	bh=oGxvXzLw55o2zr+Ry8u3IIbuv8GzF0Jvd0J1n2BI/kk=;
+	s=korg; t=1725964296;
+	bh=/7m3Qpw1+wxJydJkwUzv/Jm4T7qbR90/N/C5EQXSMsM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VGvmASenfenwP/4FhIVKdnIsDtCuA2SieXaZKYSfjU+9Ff78hZcqqoLEvPHCZWnu8
-	 PnYmSIT9zrUZuWdXenNH8xApMm2aDv/AnWUAsjmmocG0315dVb7F1uTbwScJGvV+/h
-	 GkhLXPRLPzKXz7xDUCeBsnJGQGxG5zi4qJa0Ah30=
+	b=A42nvrtCqudDUqDFPvRSNA68ufooXnyQOa2Vto8DVZ4/XEyBGzRDwWRFB1u6e/S08
+	 4sYahqPf/bUwePUDd+j3bc9NvvyNIb4L6jZpBtsL+3/Dd4XtZDhjOfTb03ECagiM7n
+	 zffVNJ0H6gFBztZ6AWEu1QQoIKmwh6eFYxIyCu0c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hareshx Sankar Raj <hareshx.sankar.raj@intel.com>,
-	Damian Muszynski <damian.muszynski@intel.com>,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Pawel Dembicki <paweldembicki@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 097/192] crypto: qat - fix unintentional re-enabling of error interrupts
-Date: Tue, 10 Sep 2024 11:32:01 +0200
-Message-ID: <20240910092602.018944253@linuxfoundation.org>
+Subject: [PATCH 6.6 135/269] net: dsa: vsc73xx: fix possible subblocks range of CAPT block
+Date: Tue, 10 Sep 2024 11:32:02 +0200
+Message-ID: <20240910092613.023787070@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,67 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hareshx Sankar Raj <hareshx.sankar.raj@intel.com>
+From: Pawel Dembicki <paweldembicki@gmail.com>
 
-[ Upstream commit f0622894c59458fceb33c4197462bc2006f3fc6b ]
+[ Upstream commit 8e69c96df771ab469cec278edb47009351de4da6 ]
 
-The logic that detects pending VF2PF interrupts unintentionally clears
-the section of the error mask register(s) not related to VF2PF.
-This might cause interrupts unrelated to VF2PF, reported through
-errsou3 and errsou5, to be reported again after the execution
-of the function disable_pending_vf2pf_interrupts() in dh895xcc
-and GEN2 devices.
+CAPT block (CPU Capture Buffer) have 7 sublocks: 0-3, 4, 6, 7.
+Function 'vsc73xx_is_addr_valid' allows to use only block 0 at this
+moment.
 
-Fix by updating only section of errmsk3 and errmsk5 related to VF2PF.
+This patch fix it.
 
-Signed-off-by: Hareshx Sankar Raj <hareshx.sankar.raj@intel.com>
-Reviewed-by: Damian Muszynski <damian.muszynski@intel.com>
-Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 05bd97fc559d ("net: dsa: Add Vitesse VSC73xx DSA router driver")
+Signed-off-by: Pawel Dembicki <paweldembicki@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20240903203340.1518789-1-paweldembicki@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/qat/qat_common/adf_gen2_pfvf.c          | 4 +++-
- drivers/crypto/qat/qat_dh895xcc/adf_dh895xcc_hw_data.c | 8 ++++++--
- 2 files changed, 9 insertions(+), 3 deletions(-)
+ drivers/net/dsa/vitesse-vsc73xx-core.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/crypto/qat/qat_common/adf_gen2_pfvf.c b/drivers/crypto/qat/qat_common/adf_gen2_pfvf.c
-index 70ef11963938..43af81fcab86 100644
---- a/drivers/crypto/qat/qat_common/adf_gen2_pfvf.c
-+++ b/drivers/crypto/qat/qat_common/adf_gen2_pfvf.c
-@@ -100,7 +100,9 @@ static u32 adf_gen2_disable_pending_vf2pf_interrupts(void __iomem *pmisc_addr)
- 	errmsk3 |= ADF_GEN2_ERR_MSK_VF2PF(ADF_GEN2_VF_MSK);
- 	ADF_CSR_WR(pmisc_addr, ADF_GEN2_ERRMSK3, errmsk3);
+diff --git a/drivers/net/dsa/vitesse-vsc73xx-core.c b/drivers/net/dsa/vitesse-vsc73xx-core.c
+index 23bd8b3f8993..a28bf5433ea7 100644
+--- a/drivers/net/dsa/vitesse-vsc73xx-core.c
++++ b/drivers/net/dsa/vitesse-vsc73xx-core.c
+@@ -34,7 +34,7 @@
+ #define VSC73XX_BLOCK_ANALYZER	0x2 /* Only subblock 0 */
+ #define VSC73XX_BLOCK_MII	0x3 /* Subblocks 0 and 1 */
+ #define VSC73XX_BLOCK_MEMINIT	0x3 /* Only subblock 2 */
+-#define VSC73XX_BLOCK_CAPTURE	0x4 /* Only subblock 2 */
++#define VSC73XX_BLOCK_CAPTURE	0x4 /* Subblocks 0-4, 6, 7 */
+ #define VSC73XX_BLOCK_ARBITER	0x5 /* Only subblock 0 */
+ #define VSC73XX_BLOCK_SYSTEM	0x7 /* Only subblock 0 */
  
--	errmsk3 &= ADF_GEN2_ERR_MSK_VF2PF(sources | disabled);
-+	/* Update only section of errmsk3 related to VF2PF */
-+	errmsk3 &= ~ADF_GEN2_ERR_MSK_VF2PF(ADF_GEN2_VF_MSK);
-+	errmsk3 |= ADF_GEN2_ERR_MSK_VF2PF(sources | disabled);
- 	ADF_CSR_WR(pmisc_addr, ADF_GEN2_ERRMSK3, errmsk3);
+@@ -370,13 +370,19 @@ int vsc73xx_is_addr_valid(u8 block, u8 subblock)
+ 		break;
  
- 	/* Return the sources of the (new) interrupt(s) */
-diff --git a/drivers/crypto/qat/qat_dh895xcc/adf_dh895xcc_hw_data.c b/drivers/crypto/qat/qat_dh895xcc/adf_dh895xcc_hw_data.c
-index cb3bdd3618fb..85295c7ee0e0 100644
---- a/drivers/crypto/qat/qat_dh895xcc/adf_dh895xcc_hw_data.c
-+++ b/drivers/crypto/qat/qat_dh895xcc/adf_dh895xcc_hw_data.c
-@@ -180,8 +180,12 @@ static u32 disable_pending_vf2pf_interrupts(void __iomem *pmisc_addr)
- 	ADF_CSR_WR(pmisc_addr, ADF_GEN2_ERRMSK3, errmsk3);
- 	ADF_CSR_WR(pmisc_addr, ADF_GEN2_ERRMSK5, errmsk5);
+ 	case VSC73XX_BLOCK_MII:
+-	case VSC73XX_BLOCK_CAPTURE:
+ 	case VSC73XX_BLOCK_ARBITER:
+ 		switch (subblock) {
+ 		case 0 ... 1:
+ 			return 1;
+ 		}
+ 		break;
++	case VSC73XX_BLOCK_CAPTURE:
++		switch (subblock) {
++		case 0 ... 4:
++		case 6 ... 7:
++			return 1;
++		}
++		break;
+ 	}
  
--	errmsk3 &= ADF_DH895XCC_ERR_MSK_VF2PF_L(sources | disabled);
--	errmsk5 &= ADF_DH895XCC_ERR_MSK_VF2PF_U(sources | disabled);
-+	/* Update only section of errmsk3 and errmsk5 related to VF2PF */
-+	errmsk3 &= ~ADF_DH895XCC_ERR_MSK_VF2PF_L(ADF_DH895XCC_VF_MSK);
-+	errmsk5 &= ~ADF_DH895XCC_ERR_MSK_VF2PF_U(ADF_DH895XCC_VF_MSK);
-+
-+	errmsk3 |= ADF_DH895XCC_ERR_MSK_VF2PF_L(sources | disabled);
-+	errmsk5 |= ADF_DH895XCC_ERR_MSK_VF2PF_U(sources | disabled);
- 	ADF_CSR_WR(pmisc_addr, ADF_GEN2_ERRMSK3, errmsk3);
- 	ADF_CSR_WR(pmisc_addr, ADF_GEN2_ERRMSK5, errmsk5);
- 
+ 	return 0;
 -- 
 2.43.0
 
