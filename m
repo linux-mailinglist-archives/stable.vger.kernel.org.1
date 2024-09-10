@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-74640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A48197306D
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:01:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D02D0972E12
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:39:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BCB4B283BB6
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:01:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4AFC9B255FA
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:39:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61B4D18DF88;
-	Tue, 10 Sep 2024 09:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13F021891A1;
+	Tue, 10 Sep 2024 09:39:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZSXBgSty"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I+rSCQNG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E5BE18E021;
-	Tue, 10 Sep 2024 09:59:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C67D4187560;
+	Tue, 10 Sep 2024 09:39:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962393; cv=none; b=Jq9u6fADGtSVH7nMIWHQev6BZmA/8jhnlJASTJeMnw5rDRWN2pxGigx+KHxv8BdGdYNpsA8IApxccM399eF23fJOiok8cM2uQumq6HB7qT+7cuMe6Lf+AfxPe0MJYkIuWsEq+9mIpAQ9b16mtw6/3QDWvIAhlGwOVlvpIUJRK6A=
+	t=1725961148; cv=none; b=C6vExvLGNMGxwyJZ/3esTZaeEPHgKpZwNYOjBm4k4DZ7rQNvSmNh0qhq3c+1Cxs8L44HHRhjoEt6y2TjDxlC5XTamIyAiO/1fWqasRixeztlwwWUCEN7lV9S39UExeB57v/4yuBMxfRje4YdTo6WjgPuhRbI/tqiOA5cOkKEVgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962393; c=relaxed/simple;
-	bh=y+CqunXr7QOfN9uC5L3r5y4Ai9Eb5aYgPue6cEisr7Q=;
+	s=arc-20240116; t=1725961148; c=relaxed/simple;
+	bh=w17ntVGz14HRrY+1Cs/npkzqbSnTrZqsN2Rz9tzb9lg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pm6uxHPSYtdrjdH+5F4LWsXoeMRjmV8mKdMn0yzIFGLjNUMdOBcUW2joyRJplC0l7seGX1buSlZdiaueiWBJUP5IA63TkEtMESHsn7eK5RGfcSaFffWZYNhjb8LWnxrVD4Rzj9Tp3VVhhqNGULOP/wdpeIs4Tm1Rsu5FMB3iLaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZSXBgSty; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50357C4CEC3;
-	Tue, 10 Sep 2024 09:59:52 +0000 (UTC)
+	 MIME-Version; b=T6YSag/ELEzQN9shvGGeUvRkWdK4eM5pPXj1Q7xPN7PP3E/IfUNy9tOVFLhCYR/FuqsBB1hg3Aej8n1m8pDbPmXM05/YCNZqTU6iDmTRP/576eqfCAgqdXCEtRK6V5xnP4w9yl86ABViugylXiAqrVbt/fDvLntZnYNvEq/Ju1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I+rSCQNG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CA30C4CEC3;
+	Tue, 10 Sep 2024 09:39:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962392;
-	bh=y+CqunXr7QOfN9uC5L3r5y4Ai9Eb5aYgPue6cEisr7Q=;
+	s=korg; t=1725961148;
+	bh=w17ntVGz14HRrY+1Cs/npkzqbSnTrZqsN2Rz9tzb9lg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZSXBgStydrBO4CqOm7ckSjOHQpA7umMw8ZYNGbfH7Vxn4h+ygjytr2+l6nJZfqfKo
-	 v9NI0veJWOt/ryqoJSDBFcJvCQ46IJ5+aMjePtiMl3winld7xJ/YWhPxWl3LsjUaNF
-	 PiftXzvmniyTB5bnaouo31jw1W6AUX2xhkzfdyWY=
+	b=I+rSCQNGF2uGuIhH6IDIlnf7RUplTc2zPxw59Y0v3Q64eC2Ey9iHfMQvP8dBF28Bf
+	 N33WwFoV0sZ+OZam3BaCAJ47jozpwtRmoQ/gdyV0/X0sS51rWDvzoGn4U7tb+6mAMX
+	 w+nUeI8u4W+Fgz4j1WbTrtuUuGyLkzrNVunT6LXI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Reijer Boekhoff <reijerboekhoff@protonmail.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 019/121] drm/amd/display: Skip wbscl_set_scaler_filter if filter is null
+Subject: [PATCH 4.19 32/96] wifi: brcmsmac: advertise MFP_CAPABLE to enable WPA3
 Date: Tue, 10 Sep 2024 11:31:34 +0200
-Message-ID: <20240910092546.638691438@linuxfoundation.org>
+Message-ID: <20240910092542.918594069@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
-References: <20240910092545.737864202@linuxfoundation.org>
+In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
+References: <20240910092541.383432924@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Hung <alex.hung@amd.com>
+From: Arend van Spriel <arend.vanspriel@broadcom.com>
 
-[ Upstream commit c4d31653c03b90e51515b1380115d1aedad925dd ]
+[ Upstream commit dbb5265a5d7cca1cdba7736dba313ab7d07bc19d ]
 
-Callers can pass null in filter (i.e. from returned from the function
-wbscl_get_filter_coeffs_16p) and a null check is added to ensure that is
-not the case.
+After being asked about support for WPA3 for BCM43224 chipset it
+was found that all it takes is setting the MFP_CAPABLE flag and
+mac80211 will take care of all that is needed [1].
 
-This fixes 4 NULL_RETURNS issues reported by Coverity.
-
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Link: https://lore.kernel.org/linux-wireless/20200526155909.5807-2-Larry.Finger@lwfinger.net/ [1]
+Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Tested-by: Reijer Boekhoff <reijerboekhoff@protonmail.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20240617122609.349582-1-arend.vanspriel@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn20/dcn20_dwb_scl.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_dwb_scl.c b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_dwb_scl.c
-index cd8bc92ce3ba..4058a4fd6b22 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_dwb_scl.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_dwb_scl.c
-@@ -690,6 +690,9 @@ static void wbscl_set_scaler_filter(
- 	int pair;
- 	uint16_t odd_coef, even_coef;
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
+index 288d4d4d4454..eb735b054790 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
+@@ -1091,6 +1091,7 @@ static int ieee_hw_init(struct ieee80211_hw *hw)
+ 	ieee80211_hw_set(hw, AMPDU_AGGREGATION);
+ 	ieee80211_hw_set(hw, SIGNAL_DBM);
+ 	ieee80211_hw_set(hw, REPORTS_TX_ACK_STATUS);
++	ieee80211_hw_set(hw, MFP_CAPABLE);
  
-+	if (!filter)
-+		return;
-+
- 	for (phase = 0; phase < (NUM_PHASES / 2 + 1); phase++) {
- 		for (pair = 0; pair < tap_pairs; pair++) {
- 			even_coef = filter[phase * taps + 2 * pair];
+ 	hw->extra_tx_headroom = brcms_c_get_header_len();
+ 	hw->queues = N_TX_QUEUES;
 -- 
 2.43.0
 
