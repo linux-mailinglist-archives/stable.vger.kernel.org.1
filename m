@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-74569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88574972FFA
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:56:45 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57F2997308E
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:02:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B69AD1C24160
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:56:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 04D561F25926
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:02:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4E7D189F52;
-	Tue, 10 Sep 2024 09:56:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC76218C925;
+	Tue, 10 Sep 2024 10:01:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h/7o/P2M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zrbr62JN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74CB814F12C;
-	Tue, 10 Sep 2024 09:56:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B39318C913;
+	Tue, 10 Sep 2024 10:01:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962187; cv=none; b=uLUfNmVS5Ipq82MwLLH2R0rM132BBC/pJcleMwIHiestp0Fe9i1MRK8xeY3P/OFSRshdWHFt6QbcjxWyC+/hHCrfvH0rurj7iZ6ItWY/ksw3myWm7rF0T6eg4cxuinVHbFXvX64IzhpGQqVWJs2KR/g69R5It9VXw2f58nug6vA=
+	t=1725962475; cv=none; b=WMaPu385z6Gcj8EcCBEVTtq8FC70xbfFmSu2NjP3xLsseJJVF6BY3IznxvC44JOkvIe/DuDg1JcjjH9txty5mjPGQ1Orw5zotZHeFaeI4O+CBhSuLbKYFjNdmMGFk9dQicOVawkhQ+3yVvCf38jwN72uVg+1rYiy4hA7muQ2l0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962187; c=relaxed/simple;
-	bh=VuKdw/tokpOU8m426p/4bjrWyVgudQzfmbv2YJz5ly8=;
+	s=arc-20240116; t=1725962475; c=relaxed/simple;
+	bh=iBwZtdmiQXlPE+BZaiD/71IUwRtE7Rrz0UTsSS6mRqI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KLLEYpYGVptTUZogtYjEIiHzgA9RlpZXGu8/OriDATAINyQcjqhdDml5IB5kzuNy0n72Z5m/cSPZqWV1hlY6lpPRTM+xhQKoZKDu/dQn1GoJuDKPm2cWcA73d8FnXZ5GfvSVnBJEKtAeBGYr/wP8vnXLwhF+xVVpM8NCGUzgCaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h/7o/P2M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF0FCC4CEC3;
-	Tue, 10 Sep 2024 09:56:26 +0000 (UTC)
+	 MIME-Version; b=ejoTX1IkjHZU4H0DdM3cmWjc63PfkyS3ncOLLnm43867kLtnAQzOVKzX1ea1l3wpuE/OmB1YIJ1Jk37xnoTjAe1E4mr41EAsKQgZJFUDqcLZBUgmQj85PBAyEgE6fJRfmHiWOA2A++e0TyThNRAnH8D60QcGBxsVJZXH9JjjqjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zrbr62JN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1320C4CEC3;
+	Tue, 10 Sep 2024 10:01:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962187;
-	bh=VuKdw/tokpOU8m426p/4bjrWyVgudQzfmbv2YJz5ly8=;
+	s=korg; t=1725962475;
+	bh=iBwZtdmiQXlPE+BZaiD/71IUwRtE7Rrz0UTsSS6mRqI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h/7o/P2MaHvYfyeTH+0JRIBSmmmiQHiiKUeOxJiF+HIJ8Ma1YifWsZTxL4eSoNYq4
-	 NwdGM9E/oWXyh0kXTKenuyu6ogjZiZn7WlUu7453yMTUjQpR48H2nOqISjRx9lWGBc
-	 c4/9nyysL45zy4czIk/JLpbv2ATUtd+Kxrb0Z+Vo=
+	b=Zrbr62JNPwf818UcN+7J7UHK/CyLfWVDyV26keI2dCKwNYKok2vGyZIx76jzQhEle
+	 2953uPUxuHuF+pHTPFBATu0ZJUokIvQ6HNn+rZgx/VpZnbjrd7cDlafWrxZEdCI4t8
+	 siX60ItWeTej2ssycbd/5odR0vI4Kdar+vmnlwos=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Yunjian Wang <wangyunjian@huawei.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 325/375] drm/amd: Add gfx12 swizzle mode defs
+Subject: [PATCH 5.4 047/121] netfilter: nf_conncount: fix wrong variable type
 Date: Tue, 10 Sep 2024 11:32:02 +0200
-Message-ID: <20240910092633.485738288@linuxfoundation.org>
+Message-ID: <20240910092548.005097498@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
-References: <20240910092622.245959861@linuxfoundation.org>
+In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
+References: <20240910092545.737864202@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,66 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aurabindo Pillai <aurabindo.pillai@amd.com>
+From: Yunjian Wang <wangyunjian@huawei.com>
 
-[ Upstream commit 7ceb94e87bffff7c12b61eb29749e1d8ac976896 ]
+[ Upstream commit 0b88d1654d556264bcd24a9cb6383f0888e30131 ]
 
-Add GFX12 swizzle mode definitions for use with DCN401
+Now there is a issue is that code checks reports a warning: implicit
+narrowing conversion from type 'unsigned int' to small type 'u8' (the
+'keylen' variable). Fix it by removing the 'keylen' variable.
 
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Acked-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: 8dd1426e2c80 ("drm/amdgpu: handle gfx12 in amdgpu_display_verify_sizes")
+Signed-off-by: Yunjian Wang <wangyunjian@huawei.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/drm/drm_fourcc.h | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ net/netfilter/nf_conncount.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/include/uapi/drm/drm_fourcc.h b/include/uapi/drm/drm_fourcc.h
-index 84d502e42961..4168445fbb8b 100644
---- a/include/uapi/drm/drm_fourcc.h
-+++ b/include/uapi/drm/drm_fourcc.h
-@@ -1476,6 +1476,7 @@ drm_fourcc_canonicalize_nvidia_format_mod(__u64 modifier)
- #define AMD_FMT_MOD_TILE_VER_GFX10 2
- #define AMD_FMT_MOD_TILE_VER_GFX10_RBPLUS 3
- #define AMD_FMT_MOD_TILE_VER_GFX11 4
-+#define AMD_FMT_MOD_TILE_VER_GFX12 5
+diff --git a/net/netfilter/nf_conncount.c b/net/netfilter/nf_conncount.c
+index 82f36beb2e76..0ce12a33ffda 100644
+--- a/net/netfilter/nf_conncount.c
++++ b/net/netfilter/nf_conncount.c
+@@ -310,7 +310,6 @@ insert_tree(struct net *net,
+ 	struct nf_conncount_rb *rbconn;
+ 	struct nf_conncount_tuple *conn;
+ 	unsigned int count = 0, gc_count = 0;
+-	u8 keylen = data->keylen;
+ 	bool do_gc = true;
  
- /*
-  * 64K_S is the same for GFX9/GFX10/GFX10_RBPLUS and hence has GFX9 as canonical
-@@ -1486,6 +1487,8 @@ drm_fourcc_canonicalize_nvidia_format_mod(__u64 modifier)
- /*
-  * 64K_D for non-32 bpp is the same for GFX9/GFX10/GFX10_RBPLUS and hence has
-  * GFX9 as canonical version.
-+ *
-+ * 64K_D_2D on GFX12 is identical to 64K_D on GFX11.
-  */
- #define AMD_FMT_MOD_TILE_GFX9_64K_D 10
- #define AMD_FMT_MOD_TILE_GFX9_64K_S_X 25
-@@ -1493,6 +1496,19 @@ drm_fourcc_canonicalize_nvidia_format_mod(__u64 modifier)
- #define AMD_FMT_MOD_TILE_GFX9_64K_R_X 27
- #define AMD_FMT_MOD_TILE_GFX11_256K_R_X 31
+ 	spin_lock_bh(&nf_conncount_locks[hash]);
+@@ -322,7 +321,7 @@ insert_tree(struct net *net,
+ 		rbconn = rb_entry(*rbnode, struct nf_conncount_rb, node);
  
-+/* Gfx12 swizzle modes:
-+ *    0 - LINEAR
-+ *    1 - 256B_2D  - 2D block dimensions
-+ *    2 - 4KB_2D
-+ *    3 - 64KB_2D
-+ *    4 - 256KB_2D
-+ *    5 - 4KB_3D   - 3D block dimensions
-+ *    6 - 64KB_3D
-+ *    7 - 256KB_3D
-+ */
-+#define AMD_FMT_MOD_TILE_GFX12_64K_2D 3
-+#define AMD_FMT_MOD_TILE_GFX12_256K_2D 4
-+
- #define AMD_FMT_MOD_DCC_BLOCK_64B 0
- #define AMD_FMT_MOD_DCC_BLOCK_128B 1
- #define AMD_FMT_MOD_DCC_BLOCK_256B 2
+ 		parent = *rbnode;
+-		diff = key_diff(key, rbconn->key, keylen);
++		diff = key_diff(key, rbconn->key, data->keylen);
+ 		if (diff < 0) {
+ 			rbnode = &((*rbnode)->rb_left);
+ 		} else if (diff > 0) {
+@@ -367,7 +366,7 @@ insert_tree(struct net *net,
+ 
+ 	conn->tuple = *tuple;
+ 	conn->zone = *zone;
+-	memcpy(rbconn->key, key, sizeof(u32) * keylen);
++	memcpy(rbconn->key, key, sizeof(u32) * data->keylen);
+ 
+ 	nf_conncount_list_init(&rbconn->list);
+ 	list_add(&conn->node, &rbconn->list.head);
+@@ -392,7 +391,6 @@ count_tree(struct net *net,
+ 	struct rb_node *parent;
+ 	struct nf_conncount_rb *rbconn;
+ 	unsigned int hash;
+-	u8 keylen = data->keylen;
+ 
+ 	hash = jhash2(key, data->keylen, conncount_rnd) % CONNCOUNT_SLOTS;
+ 	root = &data->root[hash];
+@@ -403,7 +401,7 @@ count_tree(struct net *net,
+ 
+ 		rbconn = rb_entry(parent, struct nf_conncount_rb, node);
+ 
+-		diff = key_diff(key, rbconn->key, keylen);
++		diff = key_diff(key, rbconn->key, data->keylen);
+ 		if (diff < 0) {
+ 			parent = rcu_dereference_raw(parent->rb_left);
+ 		} else if (diff > 0) {
 -- 
 2.43.0
 
