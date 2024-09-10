@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-75220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C8A4973383
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:33:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3424E97315F
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:11:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4F66E1C2441D
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:33:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DE0401F27BFF
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:11:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66EA2192D6D;
-	Tue, 10 Sep 2024 10:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00E5B18C01F;
+	Tue, 10 Sep 2024 10:06:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C7dqIcNW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hAJLpBQL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 265EB18A950;
-	Tue, 10 Sep 2024 10:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3A6118B491;
+	Tue, 10 Sep 2024 10:06:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964097; cv=none; b=ZicjrbSH20iJsYc0xxKGRcaIkkDXnSCXC+EnohnJrx+CCzPKsmiznF6pcyAcGtYqzCuY+HeyvQJEKIvd6/qEmB4IIzlboqeFWw9qRpzUvGO6UvHYgUIKW+GaTcSuK9eLydLb4ywqaLRH3ZH63oOgfM8SQLjD9aWHDRDrK8NPp1A=
+	t=1725962787; cv=none; b=SSD+jka6ODRfV73AxDTUCMxNhxLpJI/XmWR3wW4JUs7bCgeLwYNb0QLBTf1TsJ20i2b/wUAPioUeVi8kGD5i5OSRcSGuku4jWWb/Gim37J5lBWC4XzEHMxfPzF+fnIYi5W0+gwJQnwVXa49h7dSEaY3OCJuqPjFnA7sgsSLL5xM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964097; c=relaxed/simple;
-	bh=DCs2NxwlgTsHqXxYmSyg5uT2Fjso/4A3pIx3v12NhQk=;
+	s=arc-20240116; t=1725962787; c=relaxed/simple;
+	bh=2cdPaha8tvOjkzVeNbcwbwtRkYpkZJilQwu4rzGM7JM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L6eLJtzI+jaO+8PMVV+MNjq/nNJfyb9EkfD/oLLucD2tkWcsLFaNQxYVTj9iBkPHIcBK5kSr34TZJxXJ4euyKLN3kmvSnlFoQkee8DbXWZOuNJgzpMFNLFlj6cowy33MzcwWPdFiXvl43HkPQBLKQocHKjXdLGJET3PAPBvrtyM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C7dqIcNW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1BF8C4CEC3;
-	Tue, 10 Sep 2024 10:28:16 +0000 (UTC)
+	 MIME-Version; b=XkseJPGtdUasYypIPZB9mu2Q+2gVwiRELdJd1tOxb7u4MInNMN9+ON6fbbUzh5B1dLxD2eaShuqRcpkaOOxxa9+aGN2tg/WxluZxGXPKKXpixmLiGDrGdlqGGSJiVIQRbhb0ufkLHc19La9VxQyfZnleE1i6vU29/Lf2Ox6nUJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hAJLpBQL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A999C4CEC3;
+	Tue, 10 Sep 2024 10:06:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964097;
-	bh=DCs2NxwlgTsHqXxYmSyg5uT2Fjso/4A3pIx3v12NhQk=;
+	s=korg; t=1725962787;
+	bh=2cdPaha8tvOjkzVeNbcwbwtRkYpkZJilQwu4rzGM7JM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C7dqIcNWV2q8pNnTk0+MxXzccgSdGcVvBRWtu+VPCb2P9PCaaGKZPOzcqVm2grNDZ
-	 f0iAD1l1oiFeytsiUa/h+PsNE3sOqgiHjU/NAccr8TJztciexN5YU/OpFKldObUTrE
-	 D4vIaT1cfh29eGTyW8hloxQCuVJHVz/DJg6njzAE=
+	b=hAJLpBQLRg5BM5mhk1IRswiyiUTUHBLF3uqp9GS+jf6e2mBUJ74qWijcxe4rWz/L+
+	 k5n7ivmmG19G4E22IVEJKxQE4jiNHBzuZMhJ+9qbFgieg4KkA4F45PCpL+PrslZa2C
+	 j9O+CSGA3YRZi4W3f0sZZu9AfjJJdcfeHaz9dXkg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	Kees Cook <kees@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 067/269] ELF: fix kernel.randomize_va_space double read
+	Simon Arlott <simon@octiron.net>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH 6.1 030/192] can: mcp251x: fix deadlock if an interrupt occurs during mcp251x_open
 Date: Tue, 10 Sep 2024 11:30:54 +0200
-Message-ID: <20240910092610.583985324@linuxfoundation.org>
+Message-ID: <20240910092559.192256351@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Dobriyan <adobriyan@gmail.com>
+From: Simon Arlott <simon@octiron.net>
 
-[ Upstream commit 2a97388a807b6ab5538aa8f8537b2463c6988bd2 ]
+commit 7dd9c26bd6cf679bcfdef01a8659791aa6487a29 upstream.
 
-ELF loader uses "randomize_va_space" twice. It is sysctl and can change
-at any moment, so 2 loads could see 2 different values in theory with
-unpredictable consequences.
+The mcp251x_hw_wake() function is called with the mpc_lock mutex held and
+disables the interrupt handler so that no interrupts can be processed while
+waking the device. If an interrupt has already occurred then waiting for
+the interrupt handler to complete will deadlock because it will be trying
+to acquire the same mutex.
 
-Issue exactly one load for consistent value across one exec.
+CPU0                           CPU1
+----                           ----
+mcp251x_open()
+ mutex_lock(&priv->mcp_lock)
+  request_threaded_irq()
+                               <interrupt>
+                               mcp251x_can_ist()
+                                mutex_lock(&priv->mcp_lock)
+  mcp251x_hw_wake()
+   disable_irq() <-- deadlock
 
-Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
-Link: https://lore.kernel.org/r/3329905c-7eb8-400a-8f0a-d87cff979b5b@p183
-Signed-off-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Use disable_irq_nosync() instead because the interrupt handler does
+everything while holding the mutex so it doesn't matter if it's still
+running.
+
+Fixes: 8ce8c0abcba3 ("can: mcp251x: only reset hardware as required")
+Signed-off-by: Simon Arlott <simon@octiron.net>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/4fc08687-1d80-43fe-9f0d-8ef8475e75f6@0882a8b5-c6c3-11e9-b005-00805fc181fe.uuid.home.arpa
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/binfmt_elf.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/can/spi/mcp251x.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/binfmt_elf.c b/fs/binfmt_elf.c
-index 7b3d2d491407..fb2c8d14327a 100644
---- a/fs/binfmt_elf.c
-+++ b/fs/binfmt_elf.c
-@@ -1008,7 +1008,8 @@ static int load_elf_binary(struct linux_binprm *bprm)
- 	if (elf_read_implies_exec(*elf_ex, executable_stack))
- 		current->personality |= READ_IMPLIES_EXEC;
+--- a/drivers/net/can/spi/mcp251x.c
++++ b/drivers/net/can/spi/mcp251x.c
+@@ -753,7 +753,7 @@ static int mcp251x_hw_wake(struct spi_de
+ 	int ret;
  
--	if (!(current->personality & ADDR_NO_RANDOMIZE) && randomize_va_space)
-+	const int snapshot_randomize_va_space = READ_ONCE(randomize_va_space);
-+	if (!(current->personality & ADDR_NO_RANDOMIZE) && snapshot_randomize_va_space)
- 		current->flags |= PF_RANDOMIZE;
+ 	/* Force wakeup interrupt to wake device, but don't execute IST */
+-	disable_irq(spi->irq);
++	disable_irq_nosync(spi->irq);
+ 	mcp251x_write_2regs(spi, CANINTE, CANINTE_WAKIE, CANINTF_WAKIF);
  
- 	setup_new_exec(bprm);
-@@ -1300,7 +1301,7 @@ static int load_elf_binary(struct linux_binprm *bprm)
- 	mm->end_data = end_data;
- 	mm->start_stack = bprm->p;
- 
--	if ((current->flags & PF_RANDOMIZE) && (randomize_va_space > 1)) {
-+	if ((current->flags & PF_RANDOMIZE) && (snapshot_randomize_va_space > 1)) {
- 		/*
- 		 * For architectures with ELF randomization, when executing
- 		 * a loader directly (i.e. no interpreter listed in ELF
--- 
-2.43.0
-
+ 	/* Wait for oscillator startup timer after wake up */
 
 
 
