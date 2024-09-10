@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-75044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75296-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 409609732B2
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:25:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ACDD9733D4
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:36:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F11EE288DC2
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:25:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0FDA28A4FF
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:36:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57BC719993B;
-	Tue, 10 Sep 2024 10:19:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF8E5191478;
+	Tue, 10 Sep 2024 10:32:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rjur5Fm+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zwv6yRc0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 178A1199920;
-	Tue, 10 Sep 2024 10:19:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DA6119068E;
+	Tue, 10 Sep 2024 10:32:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963585; cv=none; b=fJ4s3XK7BZ8pBMBpUbGL5IccemoFT5J7/YGfRmKtSeyOhicDkjwWCIbVZiLZC1UtAk/sv6emHTYYIkQx/71Zeaf8WEfmi72/2M2UbZAY0x5lu6grIID8rQRTP9WwxAKlEcNxxmVkImvnQ20DyE9wGhkXZy/vscCc5RUf7xX5iys=
+	t=1725964320; cv=none; b=FrPgyF920s20GyBs0fd686d92Ezoj77TLd4n7PgYm31Gf2o3UmaFg3VlqFSERVkOC39yooWJQwZLpWVGO1nkmzrQoDNEZjkX6TLd/xsAkoUhtutb61rlTTRTN+d4UxJut1rN0XP6P0OnXs0o28mQ8hvcFvIUk1cyIyMCN01RUw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963585; c=relaxed/simple;
-	bh=rRlUq/FbnfStU1QqmCm4TPvwSWJACGpJWUFSuaxFMSU=;
+	s=arc-20240116; t=1725964320; c=relaxed/simple;
+	bh=mFFshYL3NTitb6Ej9eISvbAzfD+a9z2QfdgKHMpMu64=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ft/rRoStcpWRlNhl55LJT8+sEDBc7Se9Snj0puhDI7KKSqwz4Iqb7CZfg7fJirnL6a5T0FoNxNHq+fvB6k3PQFjEX1sZCDGvK5nqSovLKFo603CKezfPxQgbBep6PEti9mvG/qWzlI1EglFshvMrqmpSPJeMARe+x4AXPVk4uFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rjur5Fm+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92AF3C4CEC3;
-	Tue, 10 Sep 2024 10:19:44 +0000 (UTC)
+	 MIME-Version; b=DH7vsuS9QSQS3TE9kg74I2JnnAUTip14pthlcgFegokl6ECOjprL4JHtKuC/l4ez/kdVZEs434XKfbEFc/ie1GVR8buw2oyUJkopwzHa7xy6+XkOsJfWGpmrqlKVWtk/Cz/SE9S/753qAEfYjwAGLGnDmWDh1TxZDhtDGEvjskk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zwv6yRc0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06A3CC4CEC3;
+	Tue, 10 Sep 2024 10:31:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963585;
-	bh=rRlUq/FbnfStU1QqmCm4TPvwSWJACGpJWUFSuaxFMSU=;
+	s=korg; t=1725964320;
+	bh=mFFshYL3NTitb6Ej9eISvbAzfD+a9z2QfdgKHMpMu64=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rjur5Fm+iZuNy6tGuVRxyfsj77Ebsg/N+i/X2xCHmM7mBKRMHqo3Ba0NGewSNlgln
-	 jxPvjA7qeABH6eVp96oT51bMuX1BIFXV6NRHyluWYOcQ3Jx2PBJChkowGZtymq5uZY
-	 jB5C7hrjvmpNVOcN9BHvZbNKIaEq91mQTjlNGCLw=
+	b=zwv6yRc0/0gXf+Dm2FOP2ClTu0VtNxxwltvlcya5tPwdkh+eFzqSkE25pHRRk09XW
+	 Ia+Sh5/9YPAAp8rophKFBDd46h5gzqwgGUZFY41KZiYMKacs7VEqL+6i+xPFh2cdAr
+	 S3GRJ9EIOuFIgaV8bNOYg4ANXDTgmFk+FJndIhkc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jernej Skrabec <jernej.skrabec@gmail.com>,
-	Andre Przywara <andre.przywara@arm.com>,
-	Chen-Yu Tsai <wens@csie.org>,
-	Joerg Roedel <jroedel@suse.de>,
+	Jacob Pan <jacob.jun.pan@linux.intel.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Yi Liu <yi.l.liu@intel.com>,
+	Lu Baolu <baolu.lu@linux.intel.com>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 107/214] iommu: sun50i: clear bypass register
+Subject: [PATCH 6.6 142/269] iommu/vt-d: Handle volatile descriptor status read
 Date: Tue, 10 Sep 2024 11:32:09 +0200
-Message-ID: <20240910092603.176402879@linuxfoundation.org>
+Message-ID: <20240910092613.268656017@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +65,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jernej Skrabec <jernej.skrabec@gmail.com>
+From: Jacob Pan <jacob.jun.pan@linux.intel.com>
 
-[ Upstream commit 927c70c93d929f4c2dcaf72f51b31bb7d118a51a ]
+[ Upstream commit b5e86a95541cea737394a1da967df4cd4d8f7182 ]
 
-The Allwinner H6 IOMMU has a bypass register, which allows to circumvent
-the page tables for each possible master. The reset value for this
-register is 0, which disables the bypass.
-The Allwinner H616 IOMMU resets this register to 0x7f, which activates
-the bypass for all masters, which is not what we want.
+Queued invalidation wait descriptor status is volatile in that IOMMU
+hardware writes the data upon completion.
 
-Always clear this register to 0, to enforce the usage of page tables,
-and make this driver compatible with the H616 in this respect.
+Use READ_ONCE() to prevent compiler optimizations which ensures memory
+reads every time. As a side effect, READ_ONCE() also enforces strict
+types and may add an extra instruction. But it should not have negative
+performance impact since we use cpu_relax anyway and the extra time(by
+adding an instruction) may allow IOMMU HW request cacheline ownership
+easier.
 
-Signed-off-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-Signed-off-by: Andre Przywara <andre.przywara@arm.com>
-Reviewed-by: Chen-Yu Tsai <wens@csie.org>
-Link: https://lore.kernel.org/r/20240616224056.29159-2-andre.przywara@arm.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+e.g. gcc 12.3
+BEFORE:
+	81 38 ad de 00 00       cmpl   $0x2,(%rax)
+
+AFTER (with READ_ONCE())
+    772f:       8b 00                   mov    (%rax),%eax
+    7731:       3d ad de 00 00          cmp    $0x2,%eax
+                                        //status data is 32 bit
+
+Signed-off-by: Jacob Pan <jacob.jun.pan@linux.intel.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reviewed-by: Yi Liu <yi.l.liu@intel.com>
+Link: https://lore.kernel.org/r/20240607173817.3914600-1-jacob.jun.pan@linux.intel.com
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Link: https://lore.kernel.org/r/20240702130839.108139-2-baolu.lu@linux.intel.com
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/sun50i-iommu.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/iommu/intel/dmar.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/sun50i-iommu.c b/drivers/iommu/sun50i-iommu.c
-index ed3574195599..8593c79cfaeb 100644
---- a/drivers/iommu/sun50i-iommu.c
-+++ b/drivers/iommu/sun50i-iommu.c
-@@ -379,6 +379,7 @@ static int sun50i_iommu_enable(struct sun50i_iommu *iommu)
- 		    IOMMU_TLB_PREFETCH_MASTER_ENABLE(3) |
- 		    IOMMU_TLB_PREFETCH_MASTER_ENABLE(4) |
- 		    IOMMU_TLB_PREFETCH_MASTER_ENABLE(5));
-+	iommu_write(iommu, IOMMU_BYPASS_REG, 0);
- 	iommu_write(iommu, IOMMU_INT_ENABLE_REG, IOMMU_INT_MASK);
- 	iommu_write(iommu, IOMMU_DM_AUT_CTRL_REG(SUN50I_IOMMU_ACI_NONE),
- 		    IOMMU_DM_AUT_CTRL_RD_UNAVAIL(SUN50I_IOMMU_ACI_NONE, 0) |
+diff --git a/drivers/iommu/intel/dmar.c b/drivers/iommu/intel/dmar.c
+index 23cb80d62a9a..84f0459e503c 100644
+--- a/drivers/iommu/intel/dmar.c
++++ b/drivers/iommu/intel/dmar.c
+@@ -1422,7 +1422,7 @@ int qi_submit_sync(struct intel_iommu *iommu, struct qi_desc *desc,
+ 	 */
+ 	writel(qi->free_head << shift, iommu->reg + DMAR_IQT_REG);
+ 
+-	while (qi->desc_status[wait_index] != QI_DONE) {
++	while (READ_ONCE(qi->desc_status[wait_index]) != QI_DONE) {
+ 		/*
+ 		 * We will leave the interrupts disabled, to prevent interrupt
+ 		 * context to queue another cmd while a cmd is already submitted
 -- 
 2.43.0
 
