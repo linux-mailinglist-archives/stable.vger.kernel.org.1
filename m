@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-75228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33B939733A6
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:34:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7828973266
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:22:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2B48FB2B35A
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:33:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA0301C20E3D
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:22:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C154F190493;
-	Tue, 10 Sep 2024 10:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40012192B96;
+	Tue, 10 Sep 2024 10:16:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1xl1kDof"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O12Pv5aZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E85918C336;
-	Tue, 10 Sep 2024 10:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB849190496;
+	Tue, 10 Sep 2024 10:16:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964120; cv=none; b=cirQFp1c350Vl/MP9Z/Wb/AUOp5d7Jvl1fRXOzDeFcpcCZVQou7Yl9nvxGJSwyTES7JlAZEw+S1vLLb+uZTHahj48syN8faKVauZ3HxyITpXPOz4idmkrIYdasHW3zmjSIR/vw/uHCfi0BIgC4IbpnxJwWAwWwH0mroO2c6ncpM=
+	t=1725963386; cv=none; b=W5BJ7G/yKTxKFa7/pvxJGNOzY2ocwkDjwDKKGUKxfYs9RPbIgRYpxwkJoEUZFKWBIAZA82GgCnCt4PliShGYWLdrydPV/Wwy6VxvGzaRDd/RHK2zdeKizhNxBXh0NiJ0dJWK3IOo2zTCIoUMZdmKJ4ZMRgyB6fV98jEvbSwryr8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964120; c=relaxed/simple;
-	bh=3KT11esrjMtMlfo/2XRK74pS4LjnUtMv3VDK7Ihx3Po=;
+	s=arc-20240116; t=1725963386; c=relaxed/simple;
+	bh=SbM5QXbHwyVJ1VsDbSv6Vwl7uVigReiXGdVQIz13A/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RAvEcBGbtzN1vIVdGzt5ukj/fo1wgVH8WAFLfwlE1Avvdlz2bRH4fKP6pNf7DcoJ+PMSdkdbd9QfawhsrKZ6NqYs+vacCITLD+ERE27u+jYnVnDQlZFJiMOqxFHY5fDw7ndF+Q3N4cDnRh0qp8A5BMb8So8J0shM73CQ7kjVhRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1xl1kDof; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03DC6C4CEC3;
-	Tue, 10 Sep 2024 10:28:39 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pn0XBBHCuFHGlxxQ3qklgpV2mbE5mrDKJ+tKDJI1nLvSALZzA5UEb6RLoWIwzj7UxvMWQM4zfBOaxAZcIRxB9cUhsSwH+OHFjV8MdMkBywNt2RUB1n38rG27O3C7YBvfD0aX1ayyk8UUuCw675gn3/H8Q4zJ2Gy89oretLxexR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O12Pv5aZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F391C4CEC3;
+	Tue, 10 Sep 2024 10:16:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964120;
-	bh=3KT11esrjMtMlfo/2XRK74pS4LjnUtMv3VDK7Ihx3Po=;
+	s=korg; t=1725963385;
+	bh=SbM5QXbHwyVJ1VsDbSv6Vwl7uVigReiXGdVQIz13A/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1xl1kDofOnNRM0TdjNJL/5Rs80hnRj71oTH5Ob/na2BG40VDGwbCkr3AtmviJ0f5v
-	 PT/W7nhkEt3sUzDQhMGzDZ1laALwClB9IyMDI+eNeQeKMhccYwLoF+BHR9U5waErN+
-	 RTpSXt+drDdOHNBYdh9MrPVVgqmYICUOmuWPtl3Y=
+	b=O12Pv5aZL1MZ4VLJ6c0Cbtf98Ae8TPEM9WPDemXx6MvMh50G1ilX1jfGOHW+N7PK9
+	 EMvbWWjM+0A5s2q9N7aE/CJqdbGK3rKU4Z1BAmzigd5oFFbqrzFk5PkV8rUiL6Sz30
+	 Xv1pyY7LX6uB4syn735j72L0v43IvA1ewTOD34YU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Kara <jack@suse.cz>,
+	Bjorn Helgaas <helgaas@kernel.org>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 075/269] udf: Avoid excessive partition lengths
+Subject: [PATCH 5.15 040/214] PCI: al: Check IORESOURCE_BUS existence during probe
 Date: Tue, 10 Sep 2024 11:31:02 +0200
-Message-ID: <20240910092610.876306741@linuxfoundation.org>
+Message-ID: <20240910092600.414330920@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,67 +62,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit ebbe26fd54a9621994bc16b14f2ba8f84c089693 ]
+[ Upstream commit a9927c2cac6e9831361e43a14d91277818154e6a ]
 
-Avoid mounting filesystems where the partition would overflow the
-32-bits used for block number. Also refuse to mount filesystems where
-the partition length is so large we cannot safely index bits in a
-block bitmap.
+If IORESOURCE_BUS is not provided in Device Tree it will be fabricated in
+of_pci_parse_bus_range(), so NULL pointer dereference should not happen
+here.
 
-Link: https://patch.msgid.link/20240620130403.14731-1-jack@suse.cz
-Signed-off-by: Jan Kara <jack@suse.cz>
+But that's hard to verify, so check for NULL anyway.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Link: https://lore.kernel.org/linux-pci/20240503125705.46055-1-amishin@t-argos.ru
+Suggested-by: Bjorn Helgaas <helgaas@kernel.org>
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+[bhelgaas: commit log]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/udf/super.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ drivers/pci/controller/dwc/pcie-al.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/fs/udf/super.c b/fs/udf/super.c
-index e0080fda2526..3c78535f406b 100644
---- a/fs/udf/super.c
-+++ b/fs/udf/super.c
-@@ -1080,12 +1080,19 @@ static int udf_fill_partdesc_info(struct super_block *sb,
- 	struct udf_part_map *map;
- 	struct udf_sb_info *sbi = UDF_SB(sb);
- 	struct partitionHeaderDesc *phd;
-+	u32 sum;
- 	int err;
+diff --git a/drivers/pci/controller/dwc/pcie-al.c b/drivers/pci/controller/dwc/pcie-al.c
+index e8afa50129a8..60a0d59a533f 100644
+--- a/drivers/pci/controller/dwc/pcie-al.c
++++ b/drivers/pci/controller/dwc/pcie-al.c
+@@ -242,18 +242,24 @@ static struct pci_ops al_child_pci_ops = {
+ 	.write = pci_generic_config_write,
+ };
  
- 	map = &sbi->s_partmaps[p_index];
+-static void al_pcie_config_prepare(struct al_pcie *pcie)
++static int al_pcie_config_prepare(struct al_pcie *pcie)
+ {
+ 	struct al_pcie_target_bus_cfg *target_bus_cfg;
+ 	struct pcie_port *pp = &pcie->pci->pp;
+ 	unsigned int ecam_bus_mask;
++	struct resource_entry *ft;
+ 	u32 cfg_control_offset;
++	struct resource *bus;
+ 	u8 subordinate_bus;
+ 	u8 secondary_bus;
+ 	u32 cfg_control;
+ 	u32 reg;
+-	struct resource *bus = resource_list_first_type(&pp->bridge->windows, IORESOURCE_BUS)->res;
  
- 	map->s_partition_len = le32_to_cpu(p->partitionLength); /* blocks */
- 	map->s_partition_root = le32_to_cpu(p->partitionStartingLocation);
-+	if (check_add_overflow(map->s_partition_root, map->s_partition_len,
-+			       &sum)) {
-+		udf_err(sb, "Partition %d has invalid location %u + %u\n",
-+			p_index, map->s_partition_root, map->s_partition_len);
-+		return -EFSCORRUPTED;
-+	}
++	ft = resource_list_first_type(&pp->bridge->windows, IORESOURCE_BUS);
++	if (!ft)
++		return -ENODEV;
++
++	bus = ft->res;
+ 	target_bus_cfg = &pcie->target_bus_cfg;
  
- 	if (p->accessType == cpu_to_le32(PD_ACCESS_TYPE_READ_ONLY))
- 		map->s_partition_flags |= UDF_PART_FLAG_READ_ONLY;
-@@ -1141,6 +1148,14 @@ static int udf_fill_partdesc_info(struct super_block *sb,
- 		bitmap->s_extPosition = le32_to_cpu(
- 				phd->unallocSpaceBitmap.extPosition);
- 		map->s_partition_flags |= UDF_PART_FLAG_UNALLOC_BITMAP;
-+		/* Check whether math over bitmap won't overflow. */
-+		if (check_add_overflow(map->s_partition_len,
-+				       sizeof(struct spaceBitmapDesc) << 3,
-+				       &sum)) {
-+			udf_err(sb, "Partition %d is too long (%u)\n", p_index,
-+				map->s_partition_len);
-+			return -EFSCORRUPTED;
-+		}
- 		udf_debug("unallocSpaceBitmap (part %d) @ %u\n",
- 			  p_index, bitmap->s_extPosition);
- 	}
+ 	ecam_bus_mask = (pcie->ecam_size >> PCIE_ECAM_BUS_SHIFT) - 1;
+@@ -287,6 +293,8 @@ static void al_pcie_config_prepare(struct al_pcie *pcie)
+ 	       FIELD_PREP(CFG_CONTROL_SEC_BUS_MASK, secondary_bus);
+ 
+ 	al_pcie_controller_writel(pcie, cfg_control_offset, reg);
++
++	return 0;
+ }
+ 
+ static int al_pcie_host_init(struct pcie_port *pp)
+@@ -305,7 +313,9 @@ static int al_pcie_host_init(struct pcie_port *pp)
+ 	if (rc)
+ 		return rc;
+ 
+-	al_pcie_config_prepare(pcie);
++	rc = al_pcie_config_prepare(pcie);
++	if (rc)
++		return rc;
+ 
+ 	return 0;
+ }
 -- 
 2.43.0
 
