@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-74714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1DCD9730EE
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:05:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B625972E1E
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:39:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 207961C24AD4
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:05:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E0D91C23DF3
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:39:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5C5C190698;
-	Tue, 10 Sep 2024 10:03:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8F2B18C325;
+	Tue, 10 Sep 2024 09:39:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cN4LkHCp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xrGpxRLx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D3A119066C;
-	Tue, 10 Sep 2024 10:03:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63A7A1891A1;
+	Tue, 10 Sep 2024 09:39:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962612; cv=none; b=Z9FA8tedzLSsljCd/vkUiv21YSPizQdVwhPkfgZbfGqek0dJRT2k7JGa3mN35jcZAf4GLJ70Ckae/jqnJgHbqOuNsLjyaBd5/JY8srNp76Oor23dmjxu4dtIGO7EPGbfy9NNeLYsZ6MxTRU1KrxzWbH9Jq2dVK10mxXGHvQGWSs=
+	t=1725961172; cv=none; b=Xzq/0ZtJTPvreWxES/rPniOr3nOHMmRiGqPxY5FB855pui8lBXT2TERWciBESgvp9cBglMlpf75jy/AMSiu5lPjH9LaTVnDbBipgxpee0UddT6mis4EtojyYh+N5UMYh+NaqE0MHCmgSmVV86KnCft9bqPmM5kpkL3zpgqcMMkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962612; c=relaxed/simple;
-	bh=fVsWifwhvbNhVtKhlFkwtBI5zTcWYXpDDnyNPFMJ/80=;
+	s=arc-20240116; t=1725961172; c=relaxed/simple;
+	bh=lQwfQPtdqe+gtZVDPWM5TAFH7olvz8wcrwp+3fB1G/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EKwtFEFkxj1moYwIIosnAoiWJSCFp//dNTARYd+76N3BN6F0Sy28YFaeZqQrmKjbWqOGEpdHvX3d5v96ig7pWg47OafJtPDbqt7bz6TE3jR4cKt6AHvhGL4xZZX2C1f/8mUcgeMiXFSd6ReUv3OKQZ8m0pU/SSY85QOR32Uz+48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cN4LkHCp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 028FEC4CEC3;
-	Tue, 10 Sep 2024 10:03:31 +0000 (UTC)
+	 MIME-Version; b=V7s4pobbzM05oBHfCwRMJWyq8NH5F+ZtddZdOmc1SstFkP02GDm7kzSha+CKOQOq1FArQh7rqGBwH429gJjnEe0MB5ejS9kqAamvlNRrApEMt7RHQgQuMq0uywpYFCK2EXsbKRq8lIvnJAad9iT82ogJqFwN+oP7ea6KENQQN5I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xrGpxRLx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDF10C4CEC6;
+	Tue, 10 Sep 2024 09:39:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962612;
-	bh=fVsWifwhvbNhVtKhlFkwtBI5zTcWYXpDDnyNPFMJ/80=;
+	s=korg; t=1725961172;
+	bh=lQwfQPtdqe+gtZVDPWM5TAFH7olvz8wcrwp+3fB1G/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cN4LkHCpPkVN2yM7LMDBzc/AIzQnIemsIiwRjllMGPBRDdn64SjdGoSmoYnLsYNvo
-	 e5zcEHP6Wie7dJ+X7dNqR+/t+iI7JrmCksFItgv7Ybr+NCGxNXCNftHUS6Y+866psu
-	 GAHEVhnfiDqmtq00lQR8w9sQ2dbdRzdbj4YpNrRQ=
+	b=xrGpxRLxsrft2j69WEOICfmtWk29j5BExAuU8edihJDh169nnpCt7KlF2PyflTjPV
+	 p/ryOb/CkSVu9cjfKivSpcal3oQk7DPt8+hyk+tFUevlR20M9b61Oj/TlJu3ZU8VIo
+	 LJadJa7LhUvqpFPLsaOxOJC/WKDO4I0dcHEn4uPU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikolay Aleksandrov <nikolay@cumulusnetworks.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 065/121] net: bridge: fdb: convert added_by_user to bitops
+	George Kennedy <george.kennedy@oracle.com>,
+	David Fernandez Gonzalez <david.fernandez.gonzalez@oracle.com>
+Subject: [PATCH 4.19 78/96] VMCI: Fix use-after-free when removing resource in vmci_resource_remove()
 Date: Tue, 10 Sep 2024 11:32:20 +0200
-Message-ID: <20240910092548.945785594@linuxfoundation.org>
+Message-ID: <20240910092544.971990791@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
-References: <20240910092545.737864202@linuxfoundation.org>
+In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
+References: <20240910092541.383432924@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,193 +61,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikolay Aleksandrov <nikolay@cumulusnetworks.com>
+From: David Fernandez Gonzalez <david.fernandez.gonzalez@oracle.com>
 
-[ Upstream commit ac3ca6af443aa495c7907e5010ac77fbd2450eaa ]
+commit 48b9a8dabcc3cf5f961b2ebcd8933bf9204babb7 upstream.
 
-Straight-forward convert of the added_by_user field to bitops.
+When removing a resource from vmci_resource_table in
+vmci_resource_remove(), the search is performed using the resource
+handle by comparing context and resource fields.
 
-Signed-off-by: Nikolay Aleksandrov <nikolay@cumulusnetworks.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: bee2ef946d31 ("net: bridge: br_fdb_external_learn_add(): always set EXT_LEARN")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+It is possible though to create two resources with different types
+but same handle (same context and resource fields).
+
+When trying to remove one of the resources, vmci_resource_remove()
+may not remove the intended one, but the object will still be freed
+as in the case of the datagram type in vmci_datagram_destroy_handle().
+vmci_resource_table will still hold a pointer to this freed resource
+leading to a use-after-free vulnerability.
+
+BUG: KASAN: use-after-free in vmci_handle_is_equal include/linux/vmw_vmci_defs.h:142 [inline]
+BUG: KASAN: use-after-free in vmci_resource_remove+0x3a1/0x410 drivers/misc/vmw_vmci/vmci_resource.c:147
+Read of size 4 at addr ffff88801c16d800 by task syz-executor197/1592
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x82/0xa9 lib/dump_stack.c:106
+ print_address_description.constprop.0+0x21/0x366 mm/kasan/report.c:239
+ __kasan_report.cold+0x7f/0x132 mm/kasan/report.c:425
+ kasan_report+0x38/0x51 mm/kasan/report.c:442
+ vmci_handle_is_equal include/linux/vmw_vmci_defs.h:142 [inline]
+ vmci_resource_remove+0x3a1/0x410 drivers/misc/vmw_vmci/vmci_resource.c:147
+ vmci_qp_broker_detach+0x89a/0x11b9 drivers/misc/vmw_vmci/vmci_queue_pair.c:2182
+ ctx_free_ctx+0x473/0xbe1 drivers/misc/vmw_vmci/vmci_context.c:444
+ kref_put include/linux/kref.h:65 [inline]
+ vmci_ctx_put drivers/misc/vmw_vmci/vmci_context.c:497 [inline]
+ vmci_ctx_destroy+0x170/0x1d6 drivers/misc/vmw_vmci/vmci_context.c:195
+ vmci_host_close+0x125/0x1ac drivers/misc/vmw_vmci/vmci_host.c:143
+ __fput+0x261/0xa34 fs/file_table.c:282
+ task_work_run+0xf0/0x194 kernel/task_work.c:164
+ tracehook_notify_resume include/linux/tracehook.h:189 [inline]
+ exit_to_user_mode_loop+0x184/0x189 kernel/entry/common.c:187
+ exit_to_user_mode_prepare+0x11b/0x123 kernel/entry/common.c:220
+ __syscall_exit_to_user_mode_work kernel/entry/common.c:302 [inline]
+ syscall_exit_to_user_mode+0x18/0x42 kernel/entry/common.c:313
+ do_syscall_64+0x41/0x85 arch/x86/entry/common.c:86
+ entry_SYSCALL_64_after_hwframe+0x6e/0x0
+
+This change ensures the type is also checked when removing
+the resource from vmci_resource_table in vmci_resource_remove().
+
+Fixes: bc63dedb7d46 ("VMCI: resource object implementation.")
+Cc: stable@vger.kernel.org
+Reported-by: George Kennedy <george.kennedy@oracle.com>
+Signed-off-by: David Fernandez Gonzalez <david.fernandez.gonzalez@oracle.com>
+Link: https://lore.kernel.org/r/20240828154338.754746-1-david.fernandez.gonzalez@oracle.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bridge/br_fdb.c       | 25 ++++++++++++-------------
- net/bridge/br_private.h   |  4 ++--
- net/bridge/br_switchdev.c |  6 ++++--
- 3 files changed, 18 insertions(+), 17 deletions(-)
+ drivers/misc/vmw_vmci/vmci_resource.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/bridge/br_fdb.c b/net/bridge/br_fdb.c
-index 3645c1172b50..6f00cca4afc8 100644
---- a/net/bridge/br_fdb.c
-+++ b/net/bridge/br_fdb.c
-@@ -225,7 +225,7 @@ static void fdb_delete_local(struct net_bridge *br,
- 		if (op != p && ether_addr_equal(op->dev->dev_addr, addr) &&
- 		    (!vid || br_vlan_find(vg, vid))) {
- 			f->dst = op;
--			f->added_by_user = 0;
-+			clear_bit(BR_FDB_ADDED_BY_USER, &f->flags);
- 			return;
+--- a/drivers/misc/vmw_vmci/vmci_resource.c
++++ b/drivers/misc/vmw_vmci/vmci_resource.c
+@@ -152,7 +152,8 @@ void vmci_resource_remove(struct vmci_re
+ 	spin_lock(&vmci_resource_table.lock);
+ 
+ 	hlist_for_each_entry(r, &vmci_resource_table.entries[idx], node) {
+-		if (vmci_handle_is_equal(r->handle, resource->handle)) {
++		if (vmci_handle_is_equal(r->handle, resource->handle) &&
++		    resource->type == r->type) {
+ 			hlist_del_init_rcu(&r->node);
+ 			break;
  		}
- 	}
-@@ -236,7 +236,7 @@ static void fdb_delete_local(struct net_bridge *br,
- 	if (p && ether_addr_equal(br->dev->dev_addr, addr) &&
- 	    (!vid || (v && br_vlan_should_use(v)))) {
- 		f->dst = NULL;
--		f->added_by_user = 0;
-+		clear_bit(BR_FDB_ADDED_BY_USER, &f->flags);
- 		return;
- 	}
- 
-@@ -252,7 +252,7 @@ void br_fdb_find_delete_local(struct net_bridge *br,
- 	spin_lock_bh(&br->hash_lock);
- 	f = br_fdb_find(br, addr, vid);
- 	if (f && test_bit(BR_FDB_LOCAL, &f->flags) &&
--	    !f->added_by_user && f->dst == p)
-+	    !test_bit(BR_FDB_ADDED_BY_USER, &f->flags) && f->dst == p)
- 		fdb_delete_local(br, p, f);
- 	spin_unlock_bh(&br->hash_lock);
- }
-@@ -268,7 +268,7 @@ void br_fdb_changeaddr(struct net_bridge_port *p, const unsigned char *newaddr)
- 	vg = nbp_vlan_group(p);
- 	hlist_for_each_entry(f, &br->fdb_list, fdb_node) {
- 		if (f->dst == p && test_bit(BR_FDB_LOCAL, &f->flags) &&
--		    !f->added_by_user) {
-+		    !test_bit(BR_FDB_ADDED_BY_USER, &f->flags)) {
- 			/* delete old one */
- 			fdb_delete_local(br, p, f);
- 
-@@ -310,7 +310,7 @@ void br_fdb_change_mac_address(struct net_bridge *br, const u8 *newaddr)
- 	/* If old entry was unassociated with any port, then delete it. */
- 	f = br_fdb_find(br, br->dev->dev_addr, 0);
- 	if (f && test_bit(BR_FDB_LOCAL, &f->flags) &&
--	    !f->dst && !f->added_by_user)
-+	    !f->dst && !test_bit(BR_FDB_ADDED_BY_USER, &f->flags))
- 		fdb_delete_local(br, NULL, f);
- 
- 	fdb_insert(br, NULL, newaddr, 0);
-@@ -326,7 +326,7 @@ void br_fdb_change_mac_address(struct net_bridge *br, const u8 *newaddr)
- 			continue;
- 		f = br_fdb_find(br, br->dev->dev_addr, v->vid);
- 		if (f && test_bit(BR_FDB_LOCAL, &f->flags) &&
--		    !f->dst && !f->added_by_user)
-+		    !f->dst && !test_bit(BR_FDB_ADDED_BY_USER, &f->flags))
- 			fdb_delete_local(br, NULL, f);
- 		fdb_insert(br, NULL, newaddr, v->vid);
- 	}
-@@ -506,7 +506,6 @@ static struct net_bridge_fdb_entry *fdb_create(struct net_bridge *br,
- 			set_bit(BR_FDB_LOCAL, &fdb->flags);
- 		if (is_static)
- 			set_bit(BR_FDB_STATIC, &fdb->flags);
--		fdb->added_by_user = 0;
- 		fdb->added_by_external_learn = 0;
- 		fdb->offloaded = 0;
- 		fdb->updated = fdb->used = jiffies;
-@@ -600,7 +599,7 @@ void br_fdb_update(struct net_bridge *br, struct net_bridge_port *source,
- 			if (now != fdb->updated)
- 				fdb->updated = now;
- 			if (unlikely(added_by_user))
--				fdb->added_by_user = 1;
-+				set_bit(BR_FDB_ADDED_BY_USER, &fdb->flags);
- 			if (unlikely(fdb_modified)) {
- 				trace_br_fdb_update(br, source, addr, vid, added_by_user);
- 				fdb_notify(br, fdb, RTM_NEWNEIGH, true);
-@@ -611,7 +610,7 @@ void br_fdb_update(struct net_bridge *br, struct net_bridge_port *source,
- 		fdb = fdb_create(br, source, addr, vid, 0, 0);
- 		if (fdb) {
- 			if (unlikely(added_by_user))
--				fdb->added_by_user = 1;
-+				set_bit(BR_FDB_ADDED_BY_USER, &fdb->flags);
- 			trace_br_fdb_update(br, source, addr, vid,
- 					    added_by_user);
- 			fdb_notify(br, fdb, RTM_NEWNEIGH, true);
-@@ -871,7 +870,7 @@ static int fdb_add_entry(struct net_bridge *br, struct net_bridge_port *source,
- 		modified = true;
- 	}
- 
--	fdb->added_by_user = 1;
-+	set_bit(BR_FDB_ADDED_BY_USER, &fdb->flags);
- 
- 	fdb->used = jiffies;
- 	if (modified) {
-@@ -1129,7 +1128,7 @@ int br_fdb_external_learn_add(struct net_bridge *br, struct net_bridge_port *p,
- 			goto err_unlock;
- 		}
- 		if (swdev_notify)
--			fdb->added_by_user = 1;
-+			set_bit(BR_FDB_ADDED_BY_USER, &fdb->flags);
- 		fdb->added_by_external_learn = 1;
- 		fdb_notify(br, fdb, RTM_NEWNEIGH, swdev_notify);
- 	} else {
-@@ -1143,14 +1142,14 @@ int br_fdb_external_learn_add(struct net_bridge *br, struct net_bridge_port *p,
- 		if (fdb->added_by_external_learn) {
- 			/* Refresh entry */
- 			fdb->used = jiffies;
--		} else if (!fdb->added_by_user) {
-+		} else if (!test_bit(BR_FDB_ADDED_BY_USER, &fdb->flags)) {
- 			/* Take over SW learned entry */
- 			fdb->added_by_external_learn = 1;
- 			modified = true;
- 		}
- 
- 		if (swdev_notify)
--			fdb->added_by_user = 1;
-+			set_bit(BR_FDB_ADDED_BY_USER, &fdb->flags);
- 
- 		if (modified)
- 			fdb_notify(br, fdb, RTM_NEWNEIGH, swdev_notify);
-diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
-index b495778911a2..a439e0cfc686 100644
---- a/net/bridge/br_private.h
-+++ b/net/bridge/br_private.h
-@@ -177,6 +177,7 @@ enum {
- 	BR_FDB_LOCAL,
- 	BR_FDB_STATIC,
- 	BR_FDB_STICKY,
-+	BR_FDB_ADDED_BY_USER,
- };
- 
- struct net_bridge_fdb_key {
-@@ -191,8 +192,7 @@ struct net_bridge_fdb_entry {
- 	struct net_bridge_fdb_key	key;
- 	struct hlist_node		fdb_node;
- 	unsigned long			flags;
--	unsigned char			added_by_user:1,
--					added_by_external_learn:1,
-+	unsigned char			added_by_external_learn:1,
- 					offloaded:1;
- 
- 	/* write-heavy members should not affect lookups */
-diff --git a/net/bridge/br_switchdev.c b/net/bridge/br_switchdev.c
-index 921310d3cbae..5010fbf74778 100644
---- a/net/bridge/br_switchdev.c
-+++ b/net/bridge/br_switchdev.c
-@@ -129,14 +129,16 @@ br_switchdev_fdb_notify(const struct net_bridge_fdb_entry *fdb, int type)
- 		br_switchdev_fdb_call_notifiers(false, fdb->key.addr.addr,
- 						fdb->key.vlan_id,
- 						fdb->dst->dev,
--						fdb->added_by_user,
-+						test_bit(BR_FDB_ADDED_BY_USER,
-+							 &fdb->flags),
- 						fdb->offloaded);
- 		break;
- 	case RTM_NEWNEIGH:
- 		br_switchdev_fdb_call_notifiers(true, fdb->key.addr.addr,
- 						fdb->key.vlan_id,
- 						fdb->dst->dev,
--						fdb->added_by_user,
-+						test_bit(BR_FDB_ADDED_BY_USER,
-+							 &fdb->flags),
- 						fdb->offloaded);
- 		break;
- 	}
--- 
-2.43.0
-
 
 
 
