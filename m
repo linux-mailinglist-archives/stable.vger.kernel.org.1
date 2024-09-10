@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-75270-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2AA99733B9
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:35:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8360697327F
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:23:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7E200289D8B
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:35:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 410E22876F6
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:23:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70C8B198E69;
-	Tue, 10 Sep 2024 10:30:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BADA11A00F5;
+	Tue, 10 Sep 2024 10:17:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vwQ1km/g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wydP23Rf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 308AD18CBE2;
-	Tue, 10 Sep 2024 10:30:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71FFE1A00CF;
+	Tue, 10 Sep 2024 10:17:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964244; cv=none; b=TRp7rt609JJF5qAWI9UVVsw7tgLwBmU+hNT/sQHdSafqv+lUa7mgoSgSZMnFU8r7pgNuV5ZIrkR9PAxQercW4Rqi/3KpKj24smQo3BM9IqjcOQxr1hjO1EvGch8MlI8RL5Lz1xVPu1uM1CntLD2Dou7sJRSWBDtJYKuIRcfdayE=
+	t=1725963450; cv=none; b=Hi4r1fhCwCXuB5iDg1aoRBIh0Md2WE7iH1th7wQPhmE+lGJRyq937D3+XUTaxeOkueZqDqa0MQGTXZBR7qv7r5C1+GEG2V/gQXm5yRt1bnNoU27j9smgHsn3in21x8lBmk5ClN2DQMRqr0/7OQFJUd+IijAdE3AcVTWr/zlCx7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964244; c=relaxed/simple;
-	bh=oG+QFfNEUs3AeIl8dOcpR9Yn4Nd1uyj0eoTVUnPUnSw=;
+	s=arc-20240116; t=1725963450; c=relaxed/simple;
+	bh=AkqDv6iQwvq74hDAOYoxTeJVLHVDX/8BF6konN3OOs0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LO90x3l/MA7JKZVGlxO7nzQASpeu4ZDL9i2d/JSrjbPTVisVqLrNiw8s5yuKQr6P2E42IyXOGwi1ssgUe3+H9LlIomRzZSoG8TDMmvcC/O0k+Sdz6Eysj4d6FSQ+9EBNw0iZ9h/z/rm0YkJ20MNf/QETbDb+CkrqxGH48L4MUXY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vwQ1km/g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A718FC4CEC3;
-	Tue, 10 Sep 2024 10:30:43 +0000 (UTC)
+	 MIME-Version; b=df9J2/Eo0z8K8QlMk+figjorVDsYmPVayRedvLuNcBm6CitvdlQkkkWAOyF8SKXK9w7seBWls1ahBfG+6+1VH1n5eKtS+0ch0ySAo5xNCbkXuiOThMZ3TNbca3vRsDjxQNiFtOEnuDt36bOYZ8Ox+5m91bVP+lVH8fILjexy3mw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wydP23Rf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC80CC4CEC3;
+	Tue, 10 Sep 2024 10:17:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964244;
-	bh=oG+QFfNEUs3AeIl8dOcpR9Yn4Nd1uyj0eoTVUnPUnSw=;
+	s=korg; t=1725963450;
+	bh=AkqDv6iQwvq74hDAOYoxTeJVLHVDX/8BF6konN3OOs0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vwQ1km/gXo2G0GHBwy9XS9uZthhPgOgKWOma8H2Gt+gBZh3kbUqECNU6wTe+U58Tr
-	 aZ1k3VQkJfZn4NFEI0avNDQFIWmFzF88a7Wrr/qQSF7QfpQHuJBSl93OyKEWZ60cW+
-	 QPPSX4yEnJEVnPbHrGSi9dMmHqFaQdYyHYf7wUQE=
+	b=wydP23RfkEU0dEhjdgRuALQlIbMxAZgMpi4d6Nq7p9tJKCMxSYOdSQVljT5tMdcHv
+	 uGllV+/yL0dt7LoHk9LI+Gp/lsKRYnhvKAJum3EkuESZXtiF1ZuBzY1+lUvmMyNGdJ
+	 +ULvi4FdNQo+88c4GCrGrnT0nt3LIaLwE/BogPQQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Swiatkowski <michal.swiatkowski@linux.intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Eric Joyner <eric.joyner@intel.com>,
-	Karen Ostrowska <karen.ostrowska@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 6.6 089/269] ice: Check all ice_vsi_rebuild() errors in function
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 054/214] media: uvcvideo: Enforce alignment of frame and interval
 Date: Tue, 10 Sep 2024 11:31:16 +0200
-Message-ID: <20240910092611.382528218@linuxfoundation.org>
+Message-ID: <20240910092600.971564051@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,67 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Joyner <eric.joyner@intel.com>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit d47bf9a495cf424fad674321d943123dc12b926d ]
+[ Upstream commit c8931ef55bd325052ec496f242aea7f6de47dc9c ]
 
-Check the return value from ice_vsi_rebuild() and prevent the usage of
-incorrectly configured VSI.
+Struct uvc_frame and interval (u32*) are packaged together on
+streaming->formats on a single contiguous allocation.
 
-Reviewed-by: Michal Swiatkowski <michal.swiatkowski@linux.intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Eric Joyner <eric.joyner@intel.com>
-Signed-off-by: Karen Ostrowska <karen.ostrowska@intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Right now they are allocated right after uvc_format, without taking into
+consideration their required alignment.
+
+This is working fine because both structures have a field with a
+pointer, but it will stop working when the sizeof() of any of those
+structs is not a multiple of the sizeof(void*).
+
+Enforce that alignment during the allocation.
+
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Link: https://lore.kernel.org/r/20240404-uvc-align-v2-1-9e104b0ecfbd@chromium.org
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_main.c | 13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ drivers/media/usb/uvc/uvc_driver.c |   18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index b168a37a5dff..3f254ce0d6db 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -3979,13 +3979,17 @@ int ice_vsi_recfg_qs(struct ice_vsi *vsi, int new_rx, int new_tx, bool locked)
- 
- 	/* set for the next time the netdev is started */
- 	if (!netif_running(vsi->netdev)) {
--		ice_vsi_rebuild(vsi, ICE_VSI_FLAG_NO_INIT);
-+		err = ice_vsi_rebuild(vsi, ICE_VSI_FLAG_NO_INIT);
-+		if (err)
-+			goto rebuild_err;
- 		dev_dbg(ice_pf_to_dev(pf), "Link is down, queue count change happens when link is brought up\n");
- 		goto done;
+--- a/drivers/media/usb/uvc/uvc_driver.c
++++ b/drivers/media/usb/uvc/uvc_driver.c
+@@ -936,16 +936,26 @@ static int uvc_parse_streaming(struct uv
+ 		goto error;
  	}
  
- 	ice_vsi_close(vsi);
--	ice_vsi_rebuild(vsi, ICE_VSI_FLAG_NO_INIT);
-+	err = ice_vsi_rebuild(vsi, ICE_VSI_FLAG_NO_INIT);
-+	if (err)
-+		goto rebuild_err;
- 
- 	ice_for_each_traffic_class(i) {
- 		if (vsi->tc_cfg.ena_tc & BIT(i))
-@@ -3996,6 +4000,11 @@ int ice_vsi_recfg_qs(struct ice_vsi *vsi, int new_rx, int new_tx, bool locked)
- 	}
- 	ice_pf_dcb_recfg(pf, locked);
- 	ice_vsi_open(vsi);
-+	goto done;
+-	size = nformats * sizeof(*format) + nframes * sizeof(*frame)
++	/*
++	 * Allocate memory for the formats, the frames and the intervals,
++	 * plus any required padding to guarantee that everything has the
++	 * correct alignment.
++	 */
++	size = nformats * sizeof(*format);
++	size = ALIGN(size, __alignof__(*frame)) + nframes * sizeof(*frame);
++	size = ALIGN(size, __alignof__(*interval))
+ 	     + nintervals * sizeof(*interval);
 +
-+rebuild_err:
-+	dev_err(ice_pf_to_dev(pf), "Error during VSI rebuild: %d. Unload and reload the driver.\n",
-+		err);
- done:
- 	clear_bit(ICE_CFG_BUSY, pf->state);
- 	return err;
--- 
-2.43.0
-
+ 	format = kzalloc(size, GFP_KERNEL);
+-	if (format == NULL) {
++	if (!format) {
+ 		ret = -ENOMEM;
+ 		goto error;
+ 	}
+ 
+-	frame = (struct uvc_frame *)&format[nformats];
+-	interval = (u32 *)&frame[nframes];
++	frame = (void *)format + nformats * sizeof(*format);
++	frame = PTR_ALIGN(frame, __alignof__(*frame));
++	interval = (void *)frame + nframes * sizeof(*frame);
++	interval = PTR_ALIGN(interval, __alignof__(*interval));
+ 
+ 	streaming->format = format;
+ 	streaming->nformats = 0;
 
 
 
