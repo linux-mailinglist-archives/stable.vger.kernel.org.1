@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-75329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75068-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37DEE973403
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:37:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51B8697342C
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:38:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B59B1C24D6D
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:37:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B4695B2980D
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:26:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C9C3191F72;
-	Tue, 10 Sep 2024 10:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0E6E18B48A;
+	Tue, 10 Sep 2024 10:20:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BIeSnWjS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OmVnXW/5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A36A172BA8;
-	Tue, 10 Sep 2024 10:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0ECC17A589;
+	Tue, 10 Sep 2024 10:20:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964417; cv=none; b=O/vhQKVCXtUjm9K0c9Uj5K0k9T55Fg//VsM9MaWmnLbF+MxQql/Y0Us0Ik9ZMpJUjwyJjjkgn9uSqCpA2UH1O29/2yBpuS4D8FGI+gQJLOAtAXfIQqU14UuQhE44bRXmCw6PMgoasWQYEj4l52UqJuBpg4MpsfsayvKWo9Zd/vI=
+	t=1725963655; cv=none; b=tDANbzwu1h4xbvCge6eb68bDj4xHIJU/2EnDTo6HysWLegetcPs4mi0U4L5A9ODYDMq1q4FqQhcW8PW5P9RFTLn3AkcsGlDvLBZNcEYc26WmuSG7vrUvPs6x/T9y+6nfvNhtyaAYdl1XFtwnLDQ7lbrG7Bb0KOuwxMfYsVPD1vI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964417; c=relaxed/simple;
-	bh=8sR/ZKlXwE/+JaKqBjwsF7PhUHRl3jFA7WfXIBIBZz4=;
+	s=arc-20240116; t=1725963655; c=relaxed/simple;
+	bh=L9G8To2nme6T/QzSjXXigPZIukAhUuWnJMW82dzes2U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jm7V4/+7ACslzo4Id4BX1ZgO0vLpEyB+IiQRaslibI4ZF0znvEZL1rJHOG6tlOgY2xOTBARebkc34aaIHsmGSVV0pxLaU5pC5b+QMPNZ0e5FOQof5E6zRpnFhX3/5NUUyAeLhifelqYchmNnsGWOcgLdkFBfpFDnPsIgnqsyZ9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BIeSnWjS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6983C4CEC3;
-	Tue, 10 Sep 2024 10:33:36 +0000 (UTC)
+	 MIME-Version; b=gd9cWsJcQ0ZFqYLPaZJ+KwmL8b7C5t66K5NGYstmMlhJyA3EkuTyyiMBGPUEIfCEusj0YE6qbm2gEo+XMAM0d8uQcX+n6RCq3a3ZztDHicrSzXZh6APjL+yWWTkGLuvQzVmhe/NPEjaV4vG8hvjEXln89N3cOtq54dYJWDJAyC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OmVnXW/5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 270A0C4CEC3;
+	Tue, 10 Sep 2024 10:20:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964417;
-	bh=8sR/ZKlXwE/+JaKqBjwsF7PhUHRl3jFA7WfXIBIBZz4=;
+	s=korg; t=1725963655;
+	bh=L9G8To2nme6T/QzSjXXigPZIukAhUuWnJMW82dzes2U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BIeSnWjSTPMSgR7C+NWzh+UiLhvt3IP5ehk6QJ7B1Wn/NOCm7KVMTSuXnDBthNubA
-	 qhW9o+dAMjxGKFSkffuBfIbfIOy/6V9GTrD+PlUECJesDN6MLEdGLzGbN3ITHJXtL5
-	 6hWudkqO5v7AppCmvPXfgFFhCBZUk5mPph/6/rLE=
+	b=OmVnXW/5oSuL61931k1sB+h0rBZTzyZ2JJFi83mzwF9qMltUFLo1wBQUJTsNQgRvH
+	 0SlLj/Ps2HOh4qYo01Tv3kVlyBKkx7DDtQuQvli18W3BYvMxF4aACfRXnbter9AHVV
+	 rMVzKKCo8huVrs3bWCGvw8X7AjKiI+l9lSCO6hpk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kyoungrul Kim <k831.kim@samsung.com>,
-	Minwoo Im <minwoo.im@samsung.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 149/269] scsi: ufs: core: Remove SCSI host only if added
+Subject: [PATCH 5.15 114/214] drm/amd/display: Check HDCP returned status
 Date: Tue, 10 Sep 2024 11:32:16 +0200
-Message-ID: <20240910092613.535498551@linuxfoundation.org>
+Message-ID: <20240910092603.463225907@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,66 +64,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kyoungrul Kim <k831.kim@samsung.com>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit 7cbff570dbe8907e23bba06f6414899a0fbb2fcc ]
+[ Upstream commit 5d93060d430b359e16e7c555c8f151ead1ac614b ]
 
-If host tries to remove ufshcd driver from a UFS device it would cause a
-kernel panic if ufshcd_async_scan fails during ufshcd_probe_hba before
-adding a SCSI host with scsi_add_host and MCQ is enabled since SCSI host
-has been defered after MCQ configuration introduced by commit 0cab4023ec7b
-("scsi: ufs: core: Defer adding host to SCSI if MCQ is supported").
+[WHAT & HOW]
+Check mod_hdcp_execute_and_set() return values in authenticated_dp.
 
-To guarantee that SCSI host is removed only if it has been added, set the
-scsi_host_added flag to true after adding a SCSI host and check whether it
-is set or not before removing it.
+This fixes 3 CHECKED_RETURN issues reported by Coverity.
 
-Signed-off-by: Kyoungrul Kim <k831.kim@samsung.com>
-Signed-off-by: Minwoo Im <minwoo.im@samsung.com>
-Link: https://lore.kernel.org/r/20240627085104epcms2p5897a3870ea5c6416aa44f94df6c543d7@epcms2p5
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ .../amd/display/modules/hdcp/hdcp1_execution.c    | 15 +++++++++------
+ 1 file changed, 9 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index ad0ef5b6b8cf..ed59d2367a4e 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -10130,7 +10130,8 @@ void ufshcd_remove(struct ufs_hba *hba)
- 	blk_mq_destroy_queue(hba->tmf_queue);
- 	blk_put_queue(hba->tmf_queue);
- 	blk_mq_free_tag_set(&hba->tmf_tag_set);
--	scsi_remove_host(hba->host);
-+	if (hba->scsi_host_added)
-+		scsi_remove_host(hba->host);
- 	/* disable interrupts */
- 	ufshcd_disable_intr(hba, hba->intr_mask);
- 	ufshcd_hba_stop(hba);
-@@ -10408,6 +10409,7 @@ int ufshcd_init(struct ufs_hba *hba, void __iomem *mmio_base, unsigned int irq)
- 			dev_err(hba->dev, "scsi_add_host failed\n");
- 			goto out_disable;
- 		}
-+		hba->scsi_host_added = true;
+diff --git a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp1_execution.c b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp1_execution.c
+index 6ec918af3bff..119b00aadd9a 100644
+--- a/drivers/gpu/drm/amd/display/modules/hdcp/hdcp1_execution.c
++++ b/drivers/gpu/drm/amd/display/modules/hdcp/hdcp1_execution.c
+@@ -433,17 +433,20 @@ static enum mod_hdcp_status authenticated_dp(struct mod_hdcp *hdcp,
  	}
  
- 	hba->tmf_tag_set = (struct blk_mq_tag_set) {
-@@ -10489,7 +10491,8 @@ int ufshcd_init(struct ufs_hba *hba, void __iomem *mmio_base, unsigned int irq)
- free_tmf_tag_set:
- 	blk_mq_free_tag_set(&hba->tmf_tag_set);
- out_remove_scsi_host:
--	scsi_remove_host(hba->host);
-+	if (hba->scsi_host_added)
-+		scsi_remove_host(hba->host);
- out_disable:
- 	hba->is_irq_enabled = false;
- 	ufshcd_hba_exit(hba);
+ 	if (status == MOD_HDCP_STATUS_SUCCESS)
+-		mod_hdcp_execute_and_set(mod_hdcp_read_bstatus,
++		if (!mod_hdcp_execute_and_set(mod_hdcp_read_bstatus,
+ 				&input->bstatus_read, &status,
+-				hdcp, "bstatus_read");
++				hdcp, "bstatus_read"))
++			goto out;
+ 	if (status == MOD_HDCP_STATUS_SUCCESS)
+-		mod_hdcp_execute_and_set(check_link_integrity_dp,
++		if (!mod_hdcp_execute_and_set(check_link_integrity_dp,
+ 				&input->link_integrity_check, &status,
+-				hdcp, "link_integrity_check");
++				hdcp, "link_integrity_check"))
++			goto out;
+ 	if (status == MOD_HDCP_STATUS_SUCCESS)
+-		mod_hdcp_execute_and_set(check_no_reauthentication_request_dp,
++		if (!mod_hdcp_execute_and_set(check_no_reauthentication_request_dp,
+ 				&input->reauth_request_check, &status,
+-				hdcp, "reauth_request_check");
++				hdcp, "reauth_request_check"))
++			goto out;
+ out:
+ 	return status;
+ }
 -- 
 2.43.0
 
