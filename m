@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-74553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56780972FE8
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:56:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id ABB83973078
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:01:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1F5A5286403
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:56:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70F722870EE
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:01:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 363C417C22F;
-	Tue, 10 Sep 2024 09:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CB2318FC65;
+	Tue, 10 Sep 2024 10:00:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tg+A3/j0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BrLAEizY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E859C188921;
-	Tue, 10 Sep 2024 09:55:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B3ED17BEAE;
+	Tue, 10 Sep 2024 10:00:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962143; cv=none; b=JaRqHSk57U2wrxf0DIgGkUdd9C9FMQ+0L5C/5I10Hvff5/d1wg976OhtrXy6XrVwJKyLhCtIw9JSWFpdci4XTNTyMV7GpBr6jyUCLTp3oHr1/ROiMpH+F0Yri0j9ZouhSwBKqINH9RkIBX+ekVpc2Hq1OXbHZ1RrxiVYItnap1o=
+	t=1725962425; cv=none; b=o9H89SLielXhYwJByT+9CFZqqfciwRVT6h7pHOABmpBXgxL1swGEeXXgS1CymiST6geQLnuJp4dc/4Ziq2O4GU5ExRiajoxYqNamBU43nO5gmfujIdVVUH8jOIgIHSUAP0Wym1oc0Y9WeELiOzFQkdygXpcxjRWV2iUXDccL2zw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962143; c=relaxed/simple;
-	bh=Gi6SYc9H+cSIdPnf/kUY1tQ+6ZQKEUvgHxCCO0BOGfM=;
+	s=arc-20240116; t=1725962425; c=relaxed/simple;
+	bh=FQkBVqotzXFodUmxtmpK9GcowS0LTATdBVmhgM0SVlc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HT4EJAWrZwxOo4y6q12dnFJz09yAf4LhyK2U65c86yNBXB6wK5OwBPOpqZnCVLGW7GX4nu4DO+gYlUaT1htVr3d1zVhaJgcx8Mp9YZJjc9M2aMBQK2asX//0478WBgcrqruZ+J+DV2ZtJ2gCIx4IWhZ7AFdycbdIBoCDDAHKTy0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tg+A3/j0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FA35C4CEC3;
-	Tue, 10 Sep 2024 09:55:42 +0000 (UTC)
+	 MIME-Version; b=iA5V1A9hC6o4Vxz6uHixD4H77RZvo8BTU+KQmtZSNtq0YoJuG3sZS/D2if0vT31Q3nEqHP/CZ+p9+dIOf9rqyM7/VHH3O6cIOkGfuqlzow23aXQrDz1HdnCia1b4MfvqulkG2xT361Nnt8bljljrbgyq/rYVIzcb7y7/Dfx6D1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BrLAEizY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A417CC4CEC3;
+	Tue, 10 Sep 2024 10:00:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962142;
-	bh=Gi6SYc9H+cSIdPnf/kUY1tQ+6ZQKEUvgHxCCO0BOGfM=;
+	s=korg; t=1725962425;
+	bh=FQkBVqotzXFodUmxtmpK9GcowS0LTATdBVmhgM0SVlc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tg+A3/j0yNuXsMpjLXZ01CJiJDQ4GHYa6RKACSvlXDQLvM989Sv5i76kU9UzC6Wlm
-	 5vzK2CpzkBKqdBoUsGXcRa+HZBH14eHeu4e//+7lVOXLgqJLARH3f8h1wgRYfAy65C
-	 sr8AALLf0rjVe+NGsFwJfvTaWnk8Y4AUlSqhEVzI=
+	b=BrLAEizYBiCvmSC70pzq3Ky9meZx74bdatfMrzkV2ZwBFzFAekyRAluyRzUCceeM+
+	 +D+gnXKbqShPV/E9d6yaJ2zREl7FSueWhgVE78DcGuugtL5Xb3T00HDp7Gblq0kMk+
+	 rnXNsRe4iqRHSsS7jfVEMqxjoZb7zm4hGaKlMqrk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.10 282/375] fs: only copy to userspace on success in listmount()
+	Ma Jun <Jun.Ma2@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 004/121] drm/amdgpu: Fix uninitialized variable warning in amdgpu_afmt_acr
 Date: Tue, 10 Sep 2024 11:31:19 +0200
-Message-ID: <20240910092632.032191224@linuxfoundation.org>
+Message-ID: <20240910092545.950523471@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
-References: <20240910092622.245959861@linuxfoundation.org>
+In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
+References: <20240910092545.737864202@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,34 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Ma Jun <Jun.Ma2@amd.com>
 
-commit 8d42877ad65b02741c9099392a001b7209baa5d4 upstream.
+[ Upstream commit c0d6bd3cd209419cc46ac49562bef1db65d90e70 ]
 
-Avoid copying when we failed to, or didn't have any mounts to list.
+Assign value to clock to fix the warning below:
+"Using uninitialized value res. Field res.clock is uninitialized"
 
-Fixes: cb54ef4f050e ("fs: don't copy to userspace under namespace semaphore") # mainline only
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/namespace.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_afmt.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/namespace.c
-+++ b/fs/namespace.c
-@@ -5138,6 +5138,8 @@ SYSCALL_DEFINE4(listmount, const struct
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_afmt.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_afmt.c
+index a4d65973bf7c..80771b1480ff 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_afmt.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_afmt.c
+@@ -100,6 +100,7 @@ struct amdgpu_afmt_acr amdgpu_afmt_acr(uint32_t clock)
+ 	amdgpu_afmt_calc_cts(clock, &res.cts_32khz, &res.n_32khz, 32000);
+ 	amdgpu_afmt_calc_cts(clock, &res.cts_44_1khz, &res.n_44_1khz, 44100);
+ 	amdgpu_afmt_calc_cts(clock, &res.cts_48khz, &res.n_48khz, 48000);
++	res.clock = clock;
  
- 	scoped_guard(rwsem_read, &namespace_sem)
- 		ret = do_listmount(kreq.mnt_id, kreq.param, kmnt_ids, nr_mnt_ids);
-+	if (ret <= 0)
-+		return ret;
- 
- 	if (copy_to_user(mnt_ids, kmnt_ids, ret * sizeof(*mnt_ids)))
- 		return -EFAULT;
+ 	return res;
+ }
+-- 
+2.43.0
+
 
 
 
