@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-74166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 29772972DD6
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:36:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DFA6D972DE2
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:37:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E0EC4283FB0
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:36:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A0FC0285516
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:37:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95283188CC1;
-	Tue, 10 Sep 2024 09:36:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6A871891A1;
+	Tue, 10 Sep 2024 09:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GomO0VBp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WHs8Qem7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52FA846444;
-	Tue, 10 Sep 2024 09:36:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A45B014F12C;
+	Tue, 10 Sep 2024 09:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961007; cv=none; b=YGx3jaDH0MmhIGVPQHrOqT2/3sL2m5UkXjdFOSsIokmIwFyScGDkeefJDnDFJNJa5Y14ueHB8bPCZ4sLRcIOAT/CDk4mrkdXTl3JYWfG3vkKyfF/svnlI+uV488cKkG3ObgUN/veSnBkaPB3/AsULOYhrrl3cdfRj4JSaR81cA4=
+	t=1725961039; cv=none; b=f70MU8o+r+ZQ6h1Ve85uO4ZjHpp7mJROxf+HDdlULqhT6Cb6tpIqzNegYeHvKOy/IXpDHAbaAZ3nNeVyvxJztUZFT03CGXh9i5bvWTCaBCkTwGVRTe/8MlCCpz9klNYqTMcL8hwRR7xFDfWf4wzo5QCCf8mSMzQpxjzK0iFES1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961007; c=relaxed/simple;
-	bh=6Z2vtakT2vBUDIcntVSRLaE9xLstPxW6gXKXiFh4jQ4=;
+	s=arc-20240116; t=1725961039; c=relaxed/simple;
+	bh=6O98lpNwImYTZ1PySULLJVbr8Xj5h77Z/Nuo2GoNXok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J2zygxb0Sz8dTZgdU1U3UOtOPNYpUijv7lwgfe8kyO6hawVFr0/mxKdIVKnv4X/297nBQDIw43o+Ye6Y+Dzs3oafncDNfsEEGIhhd0vGB3H8EHCe85yu5sAod2Kg0LLd1Hj5LkcOfzflCmdX3kI65dwjxy4OV+cckWqo2UMSEdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GomO0VBp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E7DEC4CEC3;
-	Tue, 10 Sep 2024 09:36:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lRzP/IIht/GCIZ6t/ooknckCnLyujsK0fIndIku7vn4Rp3BUopFrDEZ90vnhZqMyCS2SqjZ99cWmPVVoq3mthsvSH23rjVDTf8FeKBiwKTsXV74vKmmP8QDbrXn/WZh7S34RrL9UPh2xONwwTufj92HaqGhMQR574qebF6qb2YI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WHs8Qem7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27986C4CEC3;
+	Tue, 10 Sep 2024 09:37:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961007;
-	bh=6Z2vtakT2vBUDIcntVSRLaE9xLstPxW6gXKXiFh4jQ4=;
+	s=korg; t=1725961039;
+	bh=6O98lpNwImYTZ1PySULLJVbr8Xj5h77Z/Nuo2GoNXok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GomO0VBp2zrm4IgKIqu92yXGVJM5q6T9xWm2jBCHlSRlkCYo93aY5Aljam4UiLQo3
-	 jqglwZMs4khJcANGpm+6kcPC8gFYoQmTGDujaCtPXKCoBxqUzS3STlZn4NvXrRtM4v
-	 pX00Q4odL0i+Bl0jtrDkhUV7Qyr/8PkfWpz/F9Ws=
+	b=WHs8Qem7NXmvLV7ebUc8569s0pTP1S7Tl4eGA9T+9+WHfRZfedWpQkL2WORFfKhA9
+	 sQ9/3e992KRA2ilG0JYGB8ybh06iez8XGGADdNtIvPV9xkXNTnGhGXXL2xdp+IXmAS
+	 q0OMxxlPXuDd60br4B+aWbnxy5BAzhFWUD1pYod0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Jun <Jun.Ma2@amd.com>,
+	Tim Huang <Tim.Huang@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 04/96] drm/amdgpu: Fix uninitialized variable warning in amdgpu_afmt_acr
-Date: Tue, 10 Sep 2024 11:31:06 +0200
-Message-ID: <20240910092541.576143289@linuxfoundation.org>
+Subject: [PATCH 4.19 05/96] drm/amdgpu: fix overflowed array index read warning
+Date: Tue, 10 Sep 2024 11:31:07 +0200
+Message-ID: <20240910092541.622841666@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
 References: <20240910092541.383432924@linuxfoundation.org>
@@ -60,39 +61,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Jun <Jun.Ma2@amd.com>
+From: Tim Huang <Tim.Huang@amd.com>
 
-[ Upstream commit c0d6bd3cd209419cc46ac49562bef1db65d90e70 ]
+[ Upstream commit ebbc2ada5c636a6a63d8316a3408753768f5aa9f ]
 
-Assign value to clock to fix the warning below:
-"Using uninitialized value res. Field res.clock is uninitialized"
+Clear overflowed array index read warning by cast operation.
 
-Signed-off-by: Ma Jun <Jun.Ma2@amd.com>
+Signed-off-by: Tim Huang <Tim.Huang@amd.com>
 Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_afmt.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_afmt.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_afmt.c
-index 3889486f71fe..5272cf1708cd 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_afmt.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_afmt.c
-@@ -100,6 +100,7 @@ struct amdgpu_afmt_acr amdgpu_afmt_acr(uint32_t clock)
- 	amdgpu_afmt_calc_cts(clock, &res.cts_32khz, &res.n_32khz, 32000);
- 	amdgpu_afmt_calc_cts(clock, &res.cts_44_1khz, &res.n_44_1khz, 44100);
- 	amdgpu_afmt_calc_cts(clock, &res.cts_48khz, &res.n_48khz, 48000);
-+	res.clock = clock;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
+index 93794a85f83d..d1efab227034 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ring.c
+@@ -497,8 +497,9 @@ static ssize_t amdgpu_debugfs_ring_read(struct file *f, char __user *buf,
+ 					size_t size, loff_t *pos)
+ {
+ 	struct amdgpu_ring *ring = file_inode(f)->i_private;
+-	int r, i;
+ 	uint32_t value, result, early[3];
++	loff_t i;
++	int r;
  
- 	return res;
- }
+ 	if (*pos & 3 || size & 3)
+ 		return -EINVAL;
 -- 
 2.43.0
 
