@@ -1,57 +1,53 @@
-Return-Path: <stable+bounces-74441-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74413-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F774972F51
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:50:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 236C2972F2E
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:49:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5247B1C24AB7
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:50:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 560341C2438D
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:49:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E8E618A6D2;
-	Tue, 10 Sep 2024 09:50:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 592BA18E778;
+	Tue, 10 Sep 2024 09:48:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ghZdS47y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eZaqRe26"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D63946444;
-	Tue, 10 Sep 2024 09:50:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10544183CB0;
+	Tue, 10 Sep 2024 09:48:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961814; cv=none; b=ENNdTAbeShpVTVfB0wRuIglDIGWdk8dzBtedhHSqizswU0UHkgE72ZDFjP0q9oKrhh12HUHRrdJunEDTJIAKO+7A/Jd50DaSpj6REGRSRlH5h6olbfNOw4dVqHSQbOtN/yArD6KbF6YnNOmmah7lVoq0NfRp0nUwOlQktvI5b1E=
+	t=1725961732; cv=none; b=UdPN1sWJK9DRGHC1PtlMLsMGI6c8qMUzapBr3UVOqBwKCa6IvevsxgDToI/UmWOSts1aSwpDs12OWsU/LggMbfBEfmpgqhYx+/GvqOa3fcZhDUCGtgQzQPVXxNPeA5eoso/QQCumRc2+Vp8oelOtwVUPpYyhj4zdy6Xs7TmCQ3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961814; c=relaxed/simple;
-	bh=obSTcqWTZG8PJs9675NmCDrpMBbi/rjtp6zoWKrER6I=;
+	s=arc-20240116; t=1725961732; c=relaxed/simple;
+	bh=28v6gDaSp6X+/5EeHY82md46qaVMuRxGW5jfqWkfqxQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BW5NqWqZaEXsqrAuHAo4e2IhlJOJz+JJLT/bXSSzXD01Lw38LkWd6+ahGrxAAHLKsSugZvSZ2jMyE4pu3vyh5L/+OjGtWYb/PUr9reobsl9i327B0zFX6VgPz01rpzsktJ46eZlCTileYO44Lqsxtpayfsb06Tem2dc3iAGCcP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ghZdS47y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B79FDC4CEC3;
-	Tue, 10 Sep 2024 09:50:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=E7IratmayKjdOn6dB6cGo4eQbMywUQd+KlWW7HlJ8cfNldPPKPjV9GBu+ZTysmDSiaAFsaqMtfi5xSxu6ZUsRpxgO9+4K76gG8fM0ojj/0m+wvyF2zNhFJEQv9xi+7F6ntQVHdFvfyv6hIgSeYS7fD28oLs/oP7QgNQt8Kzi55g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eZaqRe26; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AE55C4CEC3;
+	Tue, 10 Sep 2024 09:48:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961814;
-	bh=obSTcqWTZG8PJs9675NmCDrpMBbi/rjtp6zoWKrER6I=;
+	s=korg; t=1725961731;
+	bh=28v6gDaSp6X+/5EeHY82md46qaVMuRxGW5jfqWkfqxQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ghZdS47yVZPBsE3tMNNoCxEbk12wl/ntFONTdagtbHIqTu4koKLdbfi/0Jv3AxwI0
-	 PBSf9rangSQn8DKxBJ07xExmvsk5QiM5XBlVlrVb2U8+Awd0+z7MwSuNfneVeo4MGg
-	 ltyvPupu3gqFyPpLL/vY7eCGnLR7YfGUZQm0qAjk=
+	b=eZaqRe26f8LZZoBr7rAGB3KwwSYwqdL8yLDZWcw/HoHyGOcCGUi9eYXPv++cWsfjd
+	 AEdl3McAVgMUEuRMqcoVwkjCqKHf4Zm06h4oqmCBLEbup4DkJ5IvAUIj+aakpyNoed
+	 sArS+DKfQy4yyHM56Ctu3K0fMQSmiOhI1nAbFhsY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Igor Bagnucki <igor.bagnucki@intel.com>,
-	Dawid Osuchowski <dawid.osuchowski@linux.intel.com>,
-	Michal Schmidt <mschmidt@redhat.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 6.10 161/375] ice: Add netif_device_attach/detach into PF reset flow
-Date: Tue, 10 Sep 2024 11:29:18 +0200
-Message-ID: <20240910092627.887058566@linuxfoundation.org>
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 162/375] platform/x86: dell-smbios: Fix error path in dell_smbios_init()
+Date: Tue, 10 Sep 2024 11:29:19 +0200
+Message-ID: <20240910092627.925328825@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
 References: <20240910092622.245959861@linuxfoundation.org>
@@ -64,111 +60,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit d11a67634227f9f9da51938af085fb41a733848f ]
+[ Upstream commit ffc17e1479e8e9459b7afa80e5d9d40d0dd78abb ]
 
-Ethtool callbacks can be executed while reset is in progress and try to
-access deleted resources, e.g. getting coalesce settings can result in a
-NULL pointer dereference seen below.
+In case of error in build_tokens_sysfs(), all the memory that has been
+allocated is freed at end of this function. But then free_group() is
+called which performs memory deallocation again.
 
-Reproduction steps:
-Once the driver is fully initialized, trigger reset:
-	# echo 1 > /sys/class/net/<interface>/device/reset
-when reset is in progress try to get coalesce settings using ethtool:
-	# ethtool -c <interface>
+Also, instead of free_group() call, there should be exit_dell_smbios_smm()
+and exit_dell_smbios_wmi() calls, since there is initialization, but there
+is no release of resources in case of an error.
 
-BUG: kernel NULL pointer dereference, address: 0000000000000020
-PGD 0 P4D 0
-Oops: Oops: 0000 [#1] PREEMPT SMP PTI
-CPU: 11 PID: 19713 Comm: ethtool Tainted: G S                 6.10.0-rc7+ #7
-RIP: 0010:ice_get_q_coalesce+0x2e/0xa0 [ice]
-RSP: 0018:ffffbab1e9bcf6a8 EFLAGS: 00010206
-RAX: 000000000000000c RBX: ffff94512305b028 RCX: 0000000000000000
-RDX: 0000000000000000 RSI: ffff9451c3f2e588 RDI: ffff9451c3f2e588
-RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-R10: ffff9451c3f2e580 R11: 000000000000001f R12: ffff945121fa9000
-R13: ffffbab1e9bcf760 R14: 0000000000000013 R15: ffffffff9e65dd40
-FS:  00007faee5fbe740(0000) GS:ffff94546fd80000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000020 CR3: 0000000106c2e005 CR4: 00000000001706f0
-Call Trace:
-<TASK>
-ice_get_coalesce+0x17/0x30 [ice]
-coalesce_prepare_data+0x61/0x80
-ethnl_default_doit+0xde/0x340
-genl_family_rcv_msg_doit+0xf2/0x150
-genl_rcv_msg+0x1b3/0x2c0
-netlink_rcv_skb+0x5b/0x110
-genl_rcv+0x28/0x40
-netlink_unicast+0x19c/0x290
-netlink_sendmsg+0x222/0x490
-__sys_sendto+0x1df/0x1f0
-__x64_sys_sendto+0x24/0x30
-do_syscall_64+0x82/0x160
-entry_SYSCALL_64_after_hwframe+0x76/0x7e
-RIP: 0033:0x7faee60d8e27
+Fix these issues by replacing free_group() call with
+exit_dell_smbios_wmi() and exit_dell_smbios_smm().
 
-Calling netif_device_detach() before reset makes the net core not call
-the driver when ethtool command is issued, the attempt to execute an
-ethtool command during reset will result in the following message:
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-    netlink error: No such device
-
-instead of NULL pointer dereference. Once reset is done and
-ice_rebuild() is executing, the netif_device_attach() is called to allow
-for ethtool operations to occur again in a safe manner.
-
-Fixes: fcea6f3da546 ("ice: Add stats and ethtool support")
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Igor Bagnucki <igor.bagnucki@intel.com>
-Signed-off-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Reviewed-by: Michal Schmidt <mschmidt@redhat.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 33b9ca1e53b4 ("platform/x86: dell-smbios: Add a sysfs interface for SMBIOS tokens")
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Link: https://lore.kernel.org/r/20240830065428.9544-1-amishin@t-argos.ru
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_main.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/platform/x86/dell/dell-smbios-base.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index 253689dbf6c3..209bfd70c430 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -609,6 +609,9 @@ ice_prepare_for_reset(struct ice_pf *pf, enum ice_reset_req reset_type)
- 			memset(&vsi->mqprio_qopt, 0, sizeof(vsi->mqprio_qopt));
- 		}
- 	}
-+
-+	if (vsi->netdev)
-+		netif_device_detach(vsi->netdev);
- skip:
+diff --git a/drivers/platform/x86/dell/dell-smbios-base.c b/drivers/platform/x86/dell/dell-smbios-base.c
+index b562ed99ec4e..4702669dbb60 100644
+--- a/drivers/platform/x86/dell/dell-smbios-base.c
++++ b/drivers/platform/x86/dell/dell-smbios-base.c
+@@ -587,7 +587,10 @@ static int __init dell_smbios_init(void)
+ 	return 0;
  
- 	/* clear SW filtering DB */
-@@ -7590,6 +7593,7 @@ static void ice_update_pf_netdev_link(struct ice_pf *pf)
-  */
- static void ice_rebuild(struct ice_pf *pf, enum ice_reset_req reset_type)
- {
-+	struct ice_vsi *vsi = ice_get_main_vsi(pf);
- 	struct device *dev = ice_pf_to_dev(pf);
- 	struct ice_hw *hw = &pf->hw;
- 	bool dvm;
-@@ -7734,6 +7738,9 @@ static void ice_rebuild(struct ice_pf *pf, enum ice_reset_req reset_type)
- 		ice_rebuild_arfs(pf);
- 	}
+ fail_sysfs:
+-	free_group(platform_device);
++	if (!wmi)
++		exit_dell_smbios_wmi();
++	if (!smm)
++		exit_dell_smbios_smm();
  
-+	if (vsi && vsi->netdev)
-+		netif_device_attach(vsi->netdev);
-+
- 	ice_update_pf_netdev_link(pf);
- 
- 	/* tell the firmware we are up */
+ fail_create_group:
+ 	platform_device_del(platform_device);
 -- 
 2.43.0
 
