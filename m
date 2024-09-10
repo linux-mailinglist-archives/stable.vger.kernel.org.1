@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-74232-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA0F9972E2F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:40:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B9D5973021
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:58:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1F933B21B0B
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:40:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AB7C9B264F7
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:58:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E59B18C32F;
-	Tue, 10 Sep 2024 09:40:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E994218A6B9;
+	Tue, 10 Sep 2024 09:57:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v+4y4iMH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WaWUIFMr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF92518B477;
-	Tue, 10 Sep 2024 09:40:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7E1414F12C;
+	Tue, 10 Sep 2024 09:57:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961201; cv=none; b=AX7qLrAIiLRDVNFqqIpAZSrXMfeWy4ufU7Oa+ZiipCZnKraJnyzV7i7PnqYHBOeSiuG49vb8h4pjLiEC5+ereKlgYc/UOP80Bckm1Ukop93IF7z6o2owj6rQeXaLDRqcuhSmEbzFt5gHL35L2xuZ++kBPN58nlW1A6+rWttRMA8=
+	t=1725962266; cv=none; b=LHsikfwm5Dt2xtQsSkVj3snipQVA2uxpcZ88Cd2eRFOdZMX1oCipxkASygWAo30ve+lkcZYcVDPQuthpNn7DBHKeQLMsZ8hZnyr+YkZMdYMAad8hH3jZf+yQF6coev0qmeZkKE1HcCYIqYzyaGy/DLpDc9K/Jh0i/4LuRIkvNyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961201; c=relaxed/simple;
-	bh=iPnfE2qCYAlZNzJV4yDXTW6N+patMhlrRzd0ZNlXR2k=;
+	s=arc-20240116; t=1725962266; c=relaxed/simple;
+	bh=60xRO7hxe1iMOUNs62cZZsPC9RBXWk1jD/NRAppYMRc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R5kEeikfvzTmpSzxwe9YQrn4jOWUoVXbIPwUdnAIlk1ixzXY68TXZrZ6WIrLJXm7vTNit1CkbiVckHFzI4bzgYwYL3HiwcFK+JaEgJNeIeGTBDNgPK2Y6PQLnzx6eWY0bHAhouHFaYdM7CYeNEIlYtp8TzHHOasY4lJXNHb2YfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v+4y4iMH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 459ACC4CEC3;
-	Tue, 10 Sep 2024 09:40:01 +0000 (UTC)
+	 MIME-Version; b=rhSphyFlOL006Yikm6MHkLStZn3FqJKm69UUGpkPUElsYdSErQbHOTWCr5dApTsDdRI7FmEBobsKD4Lv09igH7HI6Yhjp/EBjka5B7Gip825eEdQie1ZKpOI/KSCyr6QKIotz1QQlITC+m9GpH6N4q+/HR/NGrglrb7VtrlXYyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WaWUIFMr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E2FFC4CEC3;
+	Tue, 10 Sep 2024 09:57:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961201;
-	bh=iPnfE2qCYAlZNzJV4yDXTW6N+patMhlrRzd0ZNlXR2k=;
+	s=korg; t=1725962266;
+	bh=60xRO7hxe1iMOUNs62cZZsPC9RBXWk1jD/NRAppYMRc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v+4y4iMHclwlbnCTYrAImqsoGIP3jJYqDHiQnJbVCSJf4xASP1jaEqr0DLDlTM1oH
-	 iqckDYtlyQj7FoXt+8KnNFu3+gfzq/3ztGOY4rHsM2cMCwttV9ovrr869PnexjD/cp
-	 2nPR5l1lo0K4d9wPUPpbOwuJE2NUGJeZ4mP2cH0o=
+	b=WaWUIFMrhmOPQg5UiLYHTTQMEj0u6QQ+FF12gr1HSh1UJgS3BJaVLLSjX4/q3lL/i
+	 L2jJAEQuf1xSAGLc66tUMhBbJCI+rG2QHVTJNDP0AfbobAyfGsAg/2VxEYBGt2ffhc
+	 9aANNv0IKbqT6tOg335oOO7wXH0seJmRfdYufHnc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzkaller@googlegroups.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Tom Herbert <tom@herbertland.com>,
-	Florian Westphal <fw@strlen.de>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 4.19 87/96] ila: call nf_unregister_net_hooks() sooner
+	Ben Skeggs <bskeggs@nvidia.com>,
+	Dave Airlie <airlied@redhat.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 352/375] nouveau: fix the fwsec sb verification register.
 Date: Tue, 10 Sep 2024 11:32:29 +0200
-Message-ID: <20240910092545.360249777@linuxfoundation.org>
+Message-ID: <20240910092634.419678524@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
-References: <20240910092541.383432924@linuxfoundation.org>
+In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
+References: <20240910092622.245959861@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,199 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Dave Airlie <airlied@redhat.com>
 
-commit 031ae72825cef43e4650140b800ad58bf7a6a466 upstream.
+[ Upstream commit f33b9ab0495b7e3bb01bf6d76045f078e20ada65 ]
 
-syzbot found an use-after-free Read in ila_nf_input [1]
+This aligns with what open gpu does, the 0x15 hex is just to trick you.
 
-Issue here is that ila_xlat_exit_net() frees the rhashtable,
-then call nf_unregister_net_hooks().
-
-It should be done in the reverse way, with a synchronize_rcu().
-
-This is a good match for a pre_exit() method.
-
-[1]
- BUG: KASAN: use-after-free in rht_key_hashfn include/linux/rhashtable.h:159 [inline]
- BUG: KASAN: use-after-free in __rhashtable_lookup include/linux/rhashtable.h:604 [inline]
- BUG: KASAN: use-after-free in rhashtable_lookup include/linux/rhashtable.h:646 [inline]
- BUG: KASAN: use-after-free in rhashtable_lookup_fast+0x77a/0x9b0 include/linux/rhashtable.h:672
-Read of size 4 at addr ffff888064620008 by task ksoftirqd/0/16
-
-CPU: 0 UID: 0 PID: 16 Comm: ksoftirqd/0 Not tainted 6.11.0-rc4-syzkaller-00238-g2ad6d23f465a #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/06/2024
-Call Trace:
- <TASK>
-  __dump_stack lib/dump_stack.c:93 [inline]
-  dump_stack_lvl+0x241/0x360 lib/dump_stack.c:119
-  print_address_description mm/kasan/report.c:377 [inline]
-  print_report+0x169/0x550 mm/kasan/report.c:488
-  kasan_report+0x143/0x180 mm/kasan/report.c:601
-  rht_key_hashfn include/linux/rhashtable.h:159 [inline]
-  __rhashtable_lookup include/linux/rhashtable.h:604 [inline]
-  rhashtable_lookup include/linux/rhashtable.h:646 [inline]
-  rhashtable_lookup_fast+0x77a/0x9b0 include/linux/rhashtable.h:672
-  ila_lookup_wildcards net/ipv6/ila/ila_xlat.c:132 [inline]
-  ila_xlat_addr net/ipv6/ila/ila_xlat.c:652 [inline]
-  ila_nf_input+0x1fe/0x3c0 net/ipv6/ila/ila_xlat.c:190
-  nf_hook_entry_hookfn include/linux/netfilter.h:154 [inline]
-  nf_hook_slow+0xc3/0x220 net/netfilter/core.c:626
-  nf_hook include/linux/netfilter.h:269 [inline]
-  NF_HOOK+0x29e/0x450 include/linux/netfilter.h:312
-  __netif_receive_skb_one_core net/core/dev.c:5661 [inline]
-  __netif_receive_skb+0x1ea/0x650 net/core/dev.c:5775
-  process_backlog+0x662/0x15b0 net/core/dev.c:6108
-  __napi_poll+0xcb/0x490 net/core/dev.c:6772
-  napi_poll net/core/dev.c:6841 [inline]
-  net_rx_action+0x89b/0x1240 net/core/dev.c:6963
-  handle_softirqs+0x2c4/0x970 kernel/softirq.c:554
-  run_ksoftirqd+0xca/0x130 kernel/softirq.c:928
-  smpboot_thread_fn+0x544/0xa30 kernel/smpboot.c:164
-  kthread+0x2f0/0x390 kernel/kthread.c:389
-  ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
-  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
- </TASK>
-
-The buggy address belongs to the physical page:
-page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x64620
-flags: 0xfff00000000000(node=0|zone=1|lastcpupid=0x7ff)
-page_type: 0xbfffffff(buddy)
-raw: 00fff00000000000 ffffea0000959608 ffffea00019d9408 0000000000000000
-raw: 0000000000000000 0000000000000003 00000000bfffffff 0000000000000000
-page dumped because: kasan: bad access detected
-page_owner tracks the page as freed
-page last allocated via order 3, migratetype Unmovable, gfp_mask 0x52dc0(GFP_KERNEL|__GFP_NOWARN|__GFP_NORETRY|__GFP_COMP|__GFP_ZERO), pid 5242, tgid 5242 (syz-executor), ts 73611328570, free_ts 618981657187
-  set_page_owner include/linux/page_owner.h:32 [inline]
-  post_alloc_hook+0x1f3/0x230 mm/page_alloc.c:1493
-  prep_new_page mm/page_alloc.c:1501 [inline]
-  get_page_from_freelist+0x2e4c/0x2f10 mm/page_alloc.c:3439
-  __alloc_pages_noprof+0x256/0x6c0 mm/page_alloc.c:4695
-  __alloc_pages_node_noprof include/linux/gfp.h:269 [inline]
-  alloc_pages_node_noprof include/linux/gfp.h:296 [inline]
-  ___kmalloc_large_node+0x8b/0x1d0 mm/slub.c:4103
-  __kmalloc_large_node_noprof+0x1a/0x80 mm/slub.c:4130
-  __do_kmalloc_node mm/slub.c:4146 [inline]
-  __kmalloc_node_noprof+0x2d2/0x440 mm/slub.c:4164
-  __kvmalloc_node_noprof+0x72/0x190 mm/util.c:650
-  bucket_table_alloc lib/rhashtable.c:186 [inline]
-  rhashtable_init_noprof+0x534/0xa60 lib/rhashtable.c:1071
-  ila_xlat_init_net+0xa0/0x110 net/ipv6/ila/ila_xlat.c:613
-  ops_init+0x359/0x610 net/core/net_namespace.c:139
-  setup_net+0x515/0xca0 net/core/net_namespace.c:343
-  copy_net_ns+0x4e2/0x7b0 net/core/net_namespace.c:508
-  create_new_namespaces+0x425/0x7b0 kernel/nsproxy.c:110
-  unshare_nsproxy_namespaces+0x124/0x180 kernel/nsproxy.c:228
-  ksys_unshare+0x619/0xc10 kernel/fork.c:3328
-  __do_sys_unshare kernel/fork.c:3399 [inline]
-  __se_sys_unshare kernel/fork.c:3397 [inline]
-  __x64_sys_unshare+0x38/0x40 kernel/fork.c:3397
-page last free pid 11846 tgid 11846 stack trace:
-  reset_page_owner include/linux/page_owner.h:25 [inline]
-  free_pages_prepare mm/page_alloc.c:1094 [inline]
-  free_unref_page+0xd22/0xea0 mm/page_alloc.c:2612
-  __folio_put+0x2c8/0x440 mm/swap.c:128
-  folio_put include/linux/mm.h:1486 [inline]
-  free_large_kmalloc+0x105/0x1c0 mm/slub.c:4565
-  kfree+0x1c4/0x360 mm/slub.c:4588
-  rhashtable_free_and_destroy+0x7c6/0x920 lib/rhashtable.c:1169
-  ila_xlat_exit_net+0x55/0x110 net/ipv6/ila/ila_xlat.c:626
-  ops_exit_list net/core/net_namespace.c:173 [inline]
-  cleanup_net+0x802/0xcc0 net/core/net_namespace.c:640
-  process_one_work kernel/workqueue.c:3231 [inline]
-  process_scheduled_works+0xa2c/0x1830 kernel/workqueue.c:3312
-  worker_thread+0x86d/0xd40 kernel/workqueue.c:3390
-  kthread+0x2f0/0x390 kernel/kthread.c:389
-  ret_from_fork+0x4b/0x80 arch/x86/kernel/process.c:147
-  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
-
-Memory state around the buggy address:
- ffff88806461ff00: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
- ffff88806461ff80: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
->ffff888064620000: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-                      ^
- ffff888064620080: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
- ffff888064620100: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-
-Fixes: 7f00feaf1076 ("ila: Add generic ILA translation facility")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Tom Herbert <tom@herbertland.com>
-Reviewed-by: Florian Westphal <fw@strlen.de>
-Link: https://patch.msgid.link/20240904144418.1162839-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 176fdcbddfd2 ("drm/nouveau/gsp/r535: add support for booting GSP-RM")
+Reviewed-by: Ben Skeggs <bskeggs@nvidia.com>
+Signed-off-by: Dave Airlie <airlied@redhat.com>
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240828023720.1596602-1-airlied@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ila/ila.h      |    1 +
- net/ipv6/ila/ila_main.c |    6 ++++++
- net/ipv6/ila/ila_xlat.c |   13 +++++++++----
- 3 files changed, 16 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/nouveau/nvkm/subdev/gsp/fwsec.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/ipv6/ila/ila.h
-+++ b/net/ipv6/ila/ila.h
-@@ -118,6 +118,7 @@ int ila_lwt_init(void);
- void ila_lwt_fini(void);
+diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/fwsec.c b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/fwsec.c
+index 330d72b1a4af..52412965fac1 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/fwsec.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/gsp/fwsec.c
+@@ -324,7 +324,7 @@ nvkm_gsp_fwsec_sb(struct nvkm_gsp *gsp)
+ 		return ret;
  
- int ila_xlat_init_net(struct net *net);
-+void ila_xlat_pre_exit_net(struct net *net);
- void ila_xlat_exit_net(struct net *net);
- 
- int ila_xlat_nl_cmd_add_mapping(struct sk_buff *skb, struct genl_info *info);
---- a/net/ipv6/ila/ila_main.c
-+++ b/net/ipv6/ila/ila_main.c
-@@ -70,6 +70,11 @@ ila_xlat_init_fail:
- 	return err;
- }
- 
-+static __net_exit void ila_pre_exit_net(struct net *net)
-+{
-+	ila_xlat_pre_exit_net(net);
-+}
-+
- static __net_exit void ila_exit_net(struct net *net)
- {
- 	ila_xlat_exit_net(net);
-@@ -77,6 +82,7 @@ static __net_exit void ila_exit_net(stru
- 
- static struct pernet_operations ila_net_ops = {
- 	.init = ila_init_net,
-+	.pre_exit = ila_pre_exit_net,
- 	.exit = ila_exit_net,
- 	.id   = &ila_net_id,
- 	.size = sizeof(struct ila_net),
---- a/net/ipv6/ila/ila_xlat.c
-+++ b/net/ipv6/ila/ila_xlat.c
-@@ -627,6 +627,15 @@ int ila_xlat_init_net(struct net *net)
- 	return 0;
- }
- 
-+void ila_xlat_pre_exit_net(struct net *net)
-+{
-+	struct ila_net *ilan = net_generic(net, ila_net_id);
-+
-+	if (ilan->xlat.hooks_registered)
-+		nf_unregister_net_hooks(net, ila_nf_hook_ops,
-+					ARRAY_SIZE(ila_nf_hook_ops));
-+}
-+
- void ila_xlat_exit_net(struct net *net)
- {
- 	struct ila_net *ilan = net_generic(net, ila_net_id);
-@@ -634,10 +643,6 @@ void ila_xlat_exit_net(struct net *net)
- 	rhashtable_free_and_destroy(&ilan->xlat.rhash_table, ila_free_cb, NULL);
- 
- 	free_bucket_spinlocks(ilan->xlat.locks);
--
--	if (ilan->xlat.hooks_registered)
--		nf_unregister_net_hooks(net, ila_nf_hook_ops,
--					ARRAY_SIZE(ila_nf_hook_ops));
- }
- 
- static int ila_xlat_addr(struct sk_buff *skb, bool sir2ila)
+ 	/* Verify. */
+-	err = nvkm_rd32(device, 0x001400 + (0xf * 4)) & 0x0000ffff;
++	err = nvkm_rd32(device, 0x001400 + (0x15 * 4)) & 0x0000ffff;
+ 	if (err) {
+ 		nvkm_error(subdev, "fwsec-sb: 0x%04x\n", err);
+ 		return -EIO;
+-- 
+2.43.0
+
 
 
 
