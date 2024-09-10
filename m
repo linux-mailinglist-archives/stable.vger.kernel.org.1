@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-75364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10EDB973429
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:38:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4073997313D
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:10:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2C2421C24DBE
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:38:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 62A85B2848F
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:10:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5776819309B;
-	Tue, 10 Sep 2024 10:35:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C36B4192B74;
+	Tue, 10 Sep 2024 10:04:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TwNRuFcv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qjv/Y84v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1503317B50F;
-	Tue, 10 Sep 2024 10:35:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80D54192581;
+	Tue, 10 Sep 2024 10:04:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964517; cv=none; b=cmrFCnIFgDI9FUT3bHfgwHMG//qa4LMFqLy3MBk22RzXcvVam/wNDgtYqDGuvgiVQ9AIUs7mE4YjK9llcmHway7j06WJZeHZKo3SNHveB/p2+mHnITe//G25fDxakM9DmqGAd3xFlAC/JKpAF+flMslxlefI1qEYYIQeV4hutnI=
+	t=1725962699; cv=none; b=Hs22GLaL+gpeenLIhKFpT97CarxyjMkEsJiwBGBGXxiE08bFUQFS7ZSSQRw4VcKNeTWuZrKeKiRxHhZsk6AM02Vl60pl8zqNYDKBdl5OaqGRRD3Ug5soXn4r0H1VfcEjj4RuKUarj6fRUMKzxAX6FiQbw58l1D0fGERDwP8843U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964517; c=relaxed/simple;
-	bh=h4XlKSG3G9KAC/CJTCwp5HyqR18KdgyyEACZPh59cRA=;
+	s=arc-20240116; t=1725962699; c=relaxed/simple;
+	bh=tAPfoqS4TtI5qJjxu/6jrIfOZzIvcfKjxWD5mx/T//M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KB1h7078q8rIawebW192+ep3azclOCcG60JdQ7ZTPHqi+bn33VAqy4YcI4qbKY/VnViS8h6O5u6zRn5W7s/yE2TYVa8z+N7hBT7iEfKMAikj44DjYBDzeHtYppKrtMLSnrFT5/y/mX8LvE05f8HOxhjYNwIKA26MHx4ydTRQB6Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TwNRuFcv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C016C4CEC3;
-	Tue, 10 Sep 2024 10:35:16 +0000 (UTC)
+	 MIME-Version; b=sOvEp9uujZkde0FuwrMYQaHjfkGiaWDCzhyPkT5BIAKkCbPS+oIfXPF7V2WTXlYF812duaBFzYaUpw1RyeP6GcGMGBE4uI05KE0UjGAyijUCvFiES0/BdytXTehdFHX1TINJitplX1ILTt1IBnIlj/83KdXeJQGR2Y0N0sjTHdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qjv/Y84v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2BCEC4CEC3;
+	Tue, 10 Sep 2024 10:04:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964517;
-	bh=h4XlKSG3G9KAC/CJTCwp5HyqR18KdgyyEACZPh59cRA=;
+	s=korg; t=1725962699;
+	bh=tAPfoqS4TtI5qJjxu/6jrIfOZzIvcfKjxWD5mx/T//M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TwNRuFcvGhD6oL/O8B5/bFJk/cYXW6U4ZYK52vFLesdXWmHIlCaf9W5lbE0Mgd9L8
-	 b/PbDAUJ4oYpnzZj++oZgeRUGz0itEL2pMRJ32b8yH//gVUBgHZ4ig42PC/WJEb+R3
-	 KQDuhEyEMr+5WwNoFtOeV2eBYn9i/l9Bl7HKfppM=
+	b=Qjv/Y84v3lLnYJCKZ8xw5dVTuZVlY08dYZbpVu2qvzSl3wl6yj3yLiTytD2CXKZJ5
+	 nhH2BYQ+XqlM4DMr+jpFJUvzKYzH2jEKTpnKFae6ZRTfXKgQw0RfKwMq1ZBlPzk4xJ
+	 8lzkHMoFdHKOm9Fo/PPHIqNhvSDiNmAlvynB3cGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert@linux-m68k.org>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Anna Schumaker <Anna.Schumaker@Netapp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 182/269] btrfs: initialize location to fix -Wmaybe-uninitialized in btrfs_lookup_dentry()
+Subject: [PATCH 5.4 094/121] NFSv4: Add missing rescheduling points in nfs_client_return_marked_delegations
 Date: Tue, 10 Sep 2024 11:32:49 +0200
-Message-ID: <20240910092614.628618536@linuxfoundation.org>
+Message-ID: <20240910092550.312265443@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
+References: <20240910092545.737864202@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +63,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Sterba <dsterba@suse.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit b8e947e9f64cac9df85a07672b658df5b2bcff07 ]
+[ Upstream commit a017ad1313fc91bdf235097fd0a02f673fc7bb11 ]
 
-Some arch + compiler combinations report a potentially unused variable
-location in btrfs_lookup_dentry(). This is a false alert as the variable
-is passed by value and always valid or there's an error. The compilers
-cannot probably reason about that although btrfs_inode_by_name() is in
-the same file.
+We're seeing reports of soft lockups when iterating through the loops,
+so let's add rescheduling points.
 
-   >  + /kisskb/src/fs/btrfs/inode.c: error: 'location.objectid' may be used
-   +uninitialized in this function [-Werror=maybe-uninitialized]:  => 5603:9
-   >  + /kisskb/src/fs/btrfs/inode.c: error: 'location.type' may be used
-   +uninitialized in this function [-Werror=maybe-uninitialized]:  => 5674:5
-
-   m68k-gcc8/m68k-allmodconfig
-   mips-gcc8/mips-allmodconfig
-   powerpc-gcc5/powerpc-all{mod,yes}config
-   powerpc-gcc5/ppc64_defconfig
-
-Initialize it to zero, this should fix the warnings and won't change the
-behaviour as btrfs_inode_by_name() accepts only a root or inode item
-types, otherwise returns an error.
-
-Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Tested-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Link: https://lore.kernel.org/linux-btrfs/bd4e9928-17b3-9257-8ba7-6b7f9bbb639a@linux-m68k.org/
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/inode.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfs/super.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index 18ce5353092d..a42238211887 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -5668,7 +5668,7 @@ struct inode *btrfs_lookup_dentry(struct inode *dir, struct dentry *dentry)
- 	struct inode *inode;
- 	struct btrfs_root *root = BTRFS_I(dir)->root;
- 	struct btrfs_root *sub_root = root;
--	struct btrfs_key location;
-+	struct btrfs_key location = { 0 };
- 	u8 di_type = 0;
- 	int ret = 0;
- 
+diff --git a/fs/nfs/super.c b/fs/nfs/super.c
+index c7ca8cdc8801..98fbd2c5d7b7 100644
+--- a/fs/nfs/super.c
++++ b/fs/nfs/super.c
+@@ -47,6 +47,7 @@
+ #include <linux/vfs.h>
+ #include <linux/inet.h>
+ #include <linux/in6.h>
++#include <linux/sched.h>
+ #include <linux/slab.h>
+ #include <net/ipv6.h>
+ #include <linux/netdevice.h>
+@@ -454,6 +455,7 @@ static int __nfs_list_for_each_server(struct list_head *head,
+ 		ret = fn(server, data);
+ 		if (ret)
+ 			goto out;
++		cond_resched();
+ 		rcu_read_lock();
+ 	}
+ 	rcu_read_unlock();
 -- 
 2.43.0
 
