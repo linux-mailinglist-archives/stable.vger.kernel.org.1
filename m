@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-75070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 735FE9732D0
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:26:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A3AD9733FD
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:37:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1DFEE1F2123F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:26:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1DCC528B8B3
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:37:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1509418EFE4;
-	Tue, 10 Sep 2024 10:21:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11186199FC0;
+	Tue, 10 Sep 2024 10:33:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XsHu7gSy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="APosx2eY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C89D017A589;
-	Tue, 10 Sep 2024 10:21:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C57C71922D6;
+	Tue, 10 Sep 2024 10:33:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963661; cv=none; b=TVNm5fmv4QhQwlvv2reY6o0gR/+ds24VUMahiM4DYWEZPL9XzUE0hPK9e0Id+HYcPwh3lRbeMTvbcQ2FtvPzUSdyvd9TsfpXJNDf7N6wQIQ+NJNxUX88eWN1EG6EUGx6jJpR2CY5LO7msxTEgKAXvlktiCQmgnf76HW3IulEWEc=
+	t=1725964396; cv=none; b=ewweL6oCWsIKUNyyjG64ZX4FbAytXuJNd3ZQwdNLOGqDp2Xbfq6WmUJRAbavwiDer8GbRo8/nhkX0UCObNwMoNWTytkaacdRBcrr2aXeEGiy3v6tay+ViuW2WGGEmzCHMxG5Gx/MHLepHtJSEu3ScV06dGoii2Z8sUX/SySEExk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963661; c=relaxed/simple;
-	bh=ai5HHTH90gtrD6G74tFKM9Woahg0YhasIztoLCGIMq0=;
+	s=arc-20240116; t=1725964396; c=relaxed/simple;
+	bh=X7P6mGIhtpkZL2SnuW163H2P6YWCc0A3g33NmJyeAI4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=leEona1HmUOzLv5MelZyZd1j/Xsc3RdgYsPvmaVuMVqeRiAyui9QOG2EbrvZZSHGzd+P/FcxmhjUlms4ozHhfl44Su2pc+beip9HbnyrXCFLPGXd5J9P2UJEnvUNr8WDimtF17KGyNBiglMuJSeqa/mVGlGmdZoJqQM9mau2MSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XsHu7gSy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F174EC4CEC3;
-	Tue, 10 Sep 2024 10:21:00 +0000 (UTC)
+	 MIME-Version; b=P613xndRwT1WeOAADH/7htr01pieZqT8LFAPcTlYhJX9cLCvYxtPeKDvqwmseecGbw8X3Xj2WGWrCzkb5UID8RHyfZH47iYqq3gVlA4XUZGrX0ABJN8+stiMcFzbV1g5Pdzf38lDKvtvw4ATYJf1ilCIkITNsKE/dPUD9mhu1SU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=APosx2eY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C643C4CEC6;
+	Tue, 10 Sep 2024 10:33:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963661;
-	bh=ai5HHTH90gtrD6G74tFKM9Woahg0YhasIztoLCGIMq0=;
+	s=korg; t=1725964396;
+	bh=X7P6mGIhtpkZL2SnuW163H2P6YWCc0A3g33NmJyeAI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XsHu7gSy0L0TpnJOnkpGaIWB4uOkAkiicCDxGNVH7+Kc0kUTKxzXfWxlHJg67T2uT
-	 Z0UzqUgYIb6PQBfGvdsjdfNi9/xG01pi9WcVBKwsfTzLw/vIxuUulN+KZZwJytrke0
-	 /hmu/fIJykmvDpxuzY2JALhj9Ihg0umreqENxHx0=
+	b=APosx2eYKcqz8dCV4pzVir3qa5LhJFA3Fp/ALKf+ZLRURhPgjhNpRe1k4ZXYXETNs
+	 hWf1aK1uKsxsC+M2IlbOxeMQfI6lG3eFziNulTwCH/xIvM0uOILqNUnlbvxj3TNoY3
+	 Qo/VLNBVd9U0w9rscEpMsHbpzhjVmQa0IcM/k5FY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@bisdn.de>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Qu Wenruo <wqu@suse.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 133/214] net: bridge: br_fdb_external_learn_add(): always set EXT_LEARN
+Subject: [PATCH 6.6 168/269] btrfs: replace BUG_ON() with error handling at update_ref_for_cow()
 Date: Tue, 10 Sep 2024 11:32:35 +0200
-Message-ID: <20240910092604.189661937@linuxfoundation.org>
+Message-ID: <20240910092614.146011126@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@bisdn.de>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit bee2ef946d3184e99077be526567d791c473036f ]
+[ Upstream commit b56329a782314fde5b61058e2a25097af7ccb675 ]
 
-When userspace wants to take over a fdb entry by setting it as
-EXTERN_LEARNED, we set both flags BR_FDB_ADDED_BY_EXT_LEARN and
-BR_FDB_ADDED_BY_USER in br_fdb_external_learn_add().
+Instead of a BUG_ON() just return an error, log an error message and
+abort the transaction in case we find an extent buffer belonging to the
+relocation tree that doesn't have the full backref flag set. This is
+unexpected and should never happen (save for bugs or a potential bad
+memory).
 
-If the bridge updates the entry later because its port changed, we clear
-the BR_FDB_ADDED_BY_EXT_LEARN flag, but leave the BR_FDB_ADDED_BY_USER
-flag set.
-
-If userspace then wants to take over the entry again,
-br_fdb_external_learn_add() sees that BR_FDB_ADDED_BY_USER and skips
-setting the BR_FDB_ADDED_BY_EXT_LEARN flags, thus silently ignores the
-update.
-
-Fix this by always allowing to set BR_FDB_ADDED_BY_EXT_LEARN regardless
-if this was a user fdb entry or not.
-
-Fixes: 710ae7287737 ("net: bridge: Mark FDB entries that were added by user as such")
-Signed-off-by: Jonas Gorski <jonas.gorski@bisdn.de>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20240903081958.29951-1-jonas.gorski@bisdn.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_fdb.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ fs/btrfs/ctree.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/net/bridge/br_fdb.c b/net/bridge/br_fdb.c
-index 46812b659710..83ec74b67340 100644
---- a/net/bridge/br_fdb.c
-+++ b/net/bridge/br_fdb.c
-@@ -1299,12 +1299,10 @@ int br_fdb_external_learn_add(struct net_bridge *br, struct net_bridge_port *p,
- 			modified = true;
- 		}
+diff --git a/fs/btrfs/ctree.c b/fs/btrfs/ctree.c
+index 118ad4d2cbbe..2eb4e03080ac 100644
+--- a/fs/btrfs/ctree.c
++++ b/fs/btrfs/ctree.c
+@@ -451,8 +451,16 @@ static noinline int update_ref_for_cow(struct btrfs_trans_handle *trans,
+ 	}
  
--		if (test_bit(BR_FDB_ADDED_BY_EXT_LEARN, &fdb->flags)) {
-+		if (test_and_set_bit(BR_FDB_ADDED_BY_EXT_LEARN, &fdb->flags)) {
- 			/* Refresh entry */
- 			fdb->used = jiffies;
--		} else if (!test_bit(BR_FDB_ADDED_BY_USER, &fdb->flags)) {
--			/* Take over SW learned entry */
--			set_bit(BR_FDB_ADDED_BY_EXT_LEARN, &fdb->flags);
-+		} else {
- 			modified = true;
- 		}
+ 	owner = btrfs_header_owner(buf);
+-	BUG_ON(owner == BTRFS_TREE_RELOC_OBJECTID &&
+-	       !(flags & BTRFS_BLOCK_FLAG_FULL_BACKREF));
++	if (unlikely(owner == BTRFS_TREE_RELOC_OBJECTID &&
++		     !(flags & BTRFS_BLOCK_FLAG_FULL_BACKREF))) {
++		btrfs_crit(fs_info,
++"found tree block at bytenr %llu level %d root %llu refs %llu flags %llx without full backref flag set",
++			   buf->start, btrfs_header_level(buf),
++			   btrfs_root_id(root), refs, flags);
++		ret = -EUCLEAN;
++		btrfs_abort_transaction(trans, ret);
++		return ret;
++	}
  
+ 	if (refs > 1) {
+ 		if ((owner == root->root_key.objectid ||
 -- 
 2.43.0
 
