@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-75380-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E61AF973444
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:39:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69F7197331B
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:29:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1FA6E1C24EF3
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:39:52 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C62D287315
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:29:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 661961991B5;
-	Tue, 10 Sep 2024 10:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 979A9194C6A;
+	Tue, 10 Sep 2024 10:24:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="anAV+GbU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vvqT3RID"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24F4419993F;
-	Tue, 10 Sep 2024 10:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 324791922F6;
+	Tue, 10 Sep 2024 10:24:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964561; cv=none; b=iZ1XDLKrVVjiL4ShUdPR9/bz+HhaExJd7mDZbX46qJ8yVGxGQ8+RsRfHz5yR35TSq1eh3+CbofSxndmKKmucOisRZY4b+AX7ZpOslupPZHUw/iohu5Unm73rdNh9QIOaGhKtqwtxHZ+9hPVfmcfORVVM51mWNlFPAZAY2OZoYX4=
+	t=1725963881; cv=none; b=aKywUxrvn9DlywFOWIuYmgM7AYUcw6s9W65aBPsAC2lPg9PFEqtey1bmg1x83dVeDvyNg5KTO2Ka+ybo+9wxd/UMD9v7yd/3GzuTjS38S+M2ZPhgfRF7xN0yEJyuTWoauXLk98XILoS5DyTmIctlWp5sye7XHUnScGbAfpyfku0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964561; c=relaxed/simple;
-	bh=q4mXKdFRSGXwTnA1aCHMjeaNzAF3Lt293G3b4M9VfGc=;
+	s=arc-20240116; t=1725963881; c=relaxed/simple;
+	bh=Aa6VdyvlzcSUkI/8rXvOK9k8pNJU3kldM5zwOFZvytY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IDfZydjpHAvs42aiZPKr9Xs+q9rS93Vfd/e02xwe51aCaS0ksN+dPFbYhpZ9k4yPET879rVwm4ZJ4s2lELVDGpK4RJOhSV8lOFF0pXqbQ1fo5w+W5NSbra4TodFh06AapGblbd3WWPYYFRSy8A1grIC84Ks4WMnLscbH+87M56Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=anAV+GbU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EB48C4CEC3;
-	Tue, 10 Sep 2024 10:36:00 +0000 (UTC)
+	 MIME-Version; b=HXymOWEgr0H5FO0/HxYrcQjYGccM3ZfXs6SWWrZ4lbD9A38zb3nGYwOaVXHNsOFSvPgr7QNBZzjtIXeVzeOYSU108XibLWVBlXMmpkUnS0sab5qgzDpTZLS7IX2/XvhK9+IqGeLbDzDkK1jDwazS2uZ7h7NlQOgm5NLYq0fdvx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vvqT3RID; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD984C4CEC3;
+	Tue, 10 Sep 2024 10:24:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964561;
-	bh=q4mXKdFRSGXwTnA1aCHMjeaNzAF3Lt293G3b4M9VfGc=;
+	s=korg; t=1725963881;
+	bh=Aa6VdyvlzcSUkI/8rXvOK9k8pNJU3kldM5zwOFZvytY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=anAV+GbUTla1rcKdjBO/ZaBLYtQHOEES+wh+dC41BCHInd2sWGbTTELBBgsl5DYFB
-	 WfzYBwYsZfFN/PhKdCjjKjcydwj9y7g2ig1DMd7R5g6UPzeZ9+4kZfYE8QFEI1rWo7
-	 +V396uJY4FBtO4p7nOK+ICXBkL1zG3sJWI857CAY=
+	b=vvqT3RIDHLt8MNry4a+pBiwJPUIblPwCtidcbxq+gGoZmyc8Ohhaf51P+vLJ5LSLA
+	 wo9imHkeVLLRPzU2TXxy44Wb/1exZxLiXoiV6zPQ4BL18z6T7ZRrZpEMi9+d0eBU4Z
+	 04mQOLbQsVqBca281zzeBh9JzjNNLbyeXHnWmMsQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matteo Martelli <matteomartelli3@gmail.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 207/269] iio: fix scale application in iio_convert_raw_to_processed_unlocked
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Anna Schumaker <Anna.Schumaker@Netapp.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 172/214] NFSv4: Add missing rescheduling points in nfs_client_return_marked_delegations
 Date: Tue, 10 Sep 2024 11:33:14 +0200
-Message-ID: <20240910092615.426080781@linuxfoundation.org>
+Message-ID: <20240910092605.706772156@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matteo Martelli <matteomartelli3@gmail.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-commit 8a3dcc970dc57b358c8db2702447bf0af4e0d83a upstream.
+[ Upstream commit a017ad1313fc91bdf235097fd0a02f673fc7bb11 ]
 
-When the scale_type is IIO_VAL_INT_PLUS_MICRO or IIO_VAL_INT_PLUS_NANO
-the scale passed as argument is only applied to the fractional part of
-the value. Fix it by also multiplying the integer part by the scale
-provided.
+We're seeing reports of soft lockups when iterating through the loops,
+so let's add rescheduling points.
 
-Fixes: 48e44ce0f881 ("iio:inkern: Add function to read the processed value")
-Signed-off-by: Matteo Martelli <matteomartelli3@gmail.com>
-Link: https://patch.msgid.link/20240730-iio-fix-scale-v1-1-6246638c8daa@gmail.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/inkern.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/nfs/super.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/iio/inkern.c
-+++ b/drivers/iio/inkern.c
-@@ -680,17 +680,17 @@ static int iio_convert_raw_to_processed_
- 		break;
- 	case IIO_VAL_INT_PLUS_MICRO:
- 		if (scale_val2 < 0)
--			*processed = -raw64 * scale_val;
-+			*processed = -raw64 * scale_val * scale;
- 		else
--			*processed = raw64 * scale_val;
-+			*processed = raw64 * scale_val * scale;
- 		*processed += div_s64(raw64 * (s64)scale_val2 * scale,
- 				      1000000LL);
- 		break;
- 	case IIO_VAL_INT_PLUS_NANO:
- 		if (scale_val2 < 0)
--			*processed = -raw64 * scale_val;
-+			*processed = -raw64 * scale_val * scale;
- 		else
--			*processed = raw64 * scale_val;
-+			*processed = raw64 * scale_val * scale;
- 		*processed += div_s64(raw64 * (s64)scale_val2 * scale,
- 				      1000000000LL);
- 		break;
+diff --git a/fs/nfs/super.c b/fs/nfs/super.c
+index a847011f36c9..9e672aed3590 100644
+--- a/fs/nfs/super.c
++++ b/fs/nfs/super.c
+@@ -47,6 +47,7 @@
+ #include <linux/vfs.h>
+ #include <linux/inet.h>
+ #include <linux/in6.h>
++#include <linux/sched.h>
+ #include <linux/slab.h>
+ #include <net/ipv6.h>
+ #include <linux/netdevice.h>
+@@ -219,6 +220,7 @@ static int __nfs_list_for_each_server(struct list_head *head,
+ 		ret = fn(server, data);
+ 		if (ret)
+ 			goto out;
++		cond_resched();
+ 		rcu_read_lock();
+ 	}
+ 	rcu_read_unlock();
+-- 
+2.43.0
+
 
 
 
