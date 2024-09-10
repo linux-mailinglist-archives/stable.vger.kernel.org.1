@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-75233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1792D9734AE
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:42:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75B5D97316E
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:11:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E9F91B2DE06
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:34:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38205289483
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:11:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78B1D1940B3;
-	Tue, 10 Sep 2024 10:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D10CE192D95;
+	Tue, 10 Sep 2024 10:07:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fhLg5w1y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Etwe+0+d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35F0818F2FF;
-	Tue, 10 Sep 2024 10:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C189192D8E;
+	Tue, 10 Sep 2024 10:07:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964135; cv=none; b=hBzZ8ozzqIrQ5y9Qm3vFVxUAepP+XqIJU6x2oQYuo3M3gloMxEyGqo4wLV0NX5QLGoyrefR8pf+uYm6rUMGaaNsu+/Fr8N8m1QlMKnDVDRkXhGfd7sTyTOFKE4kSqBGWVO17EnallXmvBqfU90UvK63t8UFLhAtcM9W4pS+49Hs=
+	t=1725962825; cv=none; b=AKW+Byk5tqnTXNAAzJE0b4l2zLBDB9/kfIC+7DogDfWbdk9Bh7dA5fOIqfb4zDoduQqK0P1mBye+hmc14+aPFcnyzhX52YknQXeCX+fcsdkP64Hrtxp3bs/mGVFPOEhOYwvvpY6+8o/Fmzdk4zHINyh3H1Q97DKSSgL7kdyVbqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964135; c=relaxed/simple;
-	bh=5wbYMewsyoqFOGakh4MPtl/1IGiPHLkBjtdNFBdqckk=;
+	s=arc-20240116; t=1725962825; c=relaxed/simple;
+	bh=ihI0pEvX6qb1KNwTVs8fGhGmSAgSb7PNnK5YXprGLKk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BR3S/PZwjCB3R7j8jldHqlVTbJGu9izUpf3EGqkIi2x/1lnOpxFw20fYPQVgKDw/gr0FrkCEGbXJ0iQ6CdP23Tty9ERRYSPGZgIc2yDHZNPJ1J9HYIolxMgOeKnFfwWPdWDOsZvM69p2yCDa0dzXAVyongI1i3WBDBdTBIZsCkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fhLg5w1y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA7C7C4CEC3;
-	Tue, 10 Sep 2024 10:28:54 +0000 (UTC)
+	 MIME-Version; b=q8jC2nlr+8FZrJ4dK6q4ZSGPKNxROL/pIUSYcpM31ZraEQrlXUkrfM+VnkUxOFp4opB0fFVGXiefecQiL6TkwwM5tKXIxyyxRtQUrIkgn8/j9hPBo4fNKhl1yLHlcdmphQFmOUq00z2NQ1esjoGtKUvR+HuCjJm+Bh6rEgfDR9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Etwe+0+d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 141C5C4CEC3;
+	Tue, 10 Sep 2024 10:07:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964135;
-	bh=5wbYMewsyoqFOGakh4MPtl/1IGiPHLkBjtdNFBdqckk=;
+	s=korg; t=1725962825;
+	bh=ihI0pEvX6qb1KNwTVs8fGhGmSAgSb7PNnK5YXprGLKk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fhLg5w1yfDqvCBwys25arf3jI7IpZIX04zxOXlkFckwzqmIio7rbdl8BkxhkLnBcl
-	 lLbqALtrCU+zJd0B7O8RmEp6yhjxTsuRlLDMqV4qszj5/eFpQ1y4/NKoyJtgU8ITNK
-	 m2ImGfScMeOt3hx3cVRgt1hxnQG12CdXBf4g0il0=
+	b=Etwe+0+dVs0u+JQoN6/k0+01yc+twZruF9sdu+g88tL06D8jWEDEMQ87BiONCzBzS
+	 BZ+QuC4hsA1eR0Kg9Dz+9JkIDwdJXwyC3m+dnLCC45Zl2Zv9Ap3hQH2jja4h3Ow7EC
+	 74Cpr6vDFgSJyQ8GIFj57Z5+yeDrof1KY9ev1glA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Lee Jones <lee@kernel.org>,
+	Paul Menzel <pmenzel@molgen.mpg.de>,
+	Jaroslav Kysela <perex@perex.cz>,
+	Mark Brown <broonie@kernel.org>,
+	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 079/269] leds: spi-byte: Call of_node_put() on error path
+Subject: [PATCH 6.1 042/192] ALSA: control: Apply sanity check of input values for user elements
 Date: Tue, 10 Sep 2024 11:31:06 +0200
-Message-ID: <20240910092611.007980114@linuxfoundation.org>
+Message-ID: <20240910092559.733901739@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +65,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 7f9ab862e05c5bc755f65bf6db7edcffb3b49dfc ]
+[ Upstream commit 50ed081284fe2bfd1f25e8b92f4f6a4990e73c0a ]
 
-Add a missing call to of_node_put(np) on error.
+Although we have already a mechanism for sanity checks of input values
+for control writes, it's not applied unless the kconfig
+CONFIG_SND_CTL_INPUT_VALIDATION is set due to the performance reason.
+Nevertheless, it still makes sense to apply the same check for user
+elements despite of its cost, as that's the only way to filter out the
+invalid values; the user controls are handled solely in ALSA core
+code, and there is no corresponding driver, after all.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20240606173037.3091598-2-andriy.shevchenko@linux.intel.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+This patch adds the same input value validation for user control
+elements at its put callback.  The kselftest will be happier with this
+change, as the incorrect values will be bailed out now with errors.
+
+For other normal controls, the check is applied still only when
+CONFIG_SND_CTL_INPUT_VALIDATION is set.
+
+Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
+Closes: https://lore.kernel.org/r/1d44be36-9bb9-4d82-8953-5ae2a4f09405@molgen.mpg.de
+Reviewed-by: Jaroslav Kysela <perex@perex.cz>
+Reviewed-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lore.kernel.org/20240616073454.16512-4-tiwai@suse.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/leds-spi-byte.c | 6 +++++-
+ sound/core/control.c | 6 +++++-
  1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/leds/leds-spi-byte.c b/drivers/leds/leds-spi-byte.c
-index 9d91f21842f2..afe9bff7c7c1 100644
---- a/drivers/leds/leds-spi-byte.c
-+++ b/drivers/leds/leds-spi-byte.c
-@@ -91,7 +91,6 @@ static int spi_byte_probe(struct spi_device *spi)
- 		dev_err(dev, "Device must have exactly one LED sub-node.");
- 		return -EINVAL;
- 	}
--	child = of_get_next_available_child(dev_of_node(dev), NULL);
+diff --git a/sound/core/control.c b/sound/core/control.c
+index 82aa1af1d1d8..92266c97238d 100644
+--- a/sound/core/control.c
++++ b/sound/core/control.c
+@@ -1477,12 +1477,16 @@ static int snd_ctl_elem_user_get(struct snd_kcontrol *kcontrol,
+ static int snd_ctl_elem_user_put(struct snd_kcontrol *kcontrol,
+ 				 struct snd_ctl_elem_value *ucontrol)
+ {
+-	int change;
++	int err, change;
+ 	struct user_element *ue = kcontrol->private_data;
+ 	unsigned int size = ue->elem_data_size;
+ 	char *dst = ue->elem_data +
+ 			snd_ctl_get_ioff(kcontrol, &ucontrol->id) * size;
  
- 	led = devm_kzalloc(dev, sizeof(*led), GFP_KERNEL);
- 	if (!led)
-@@ -107,11 +106,13 @@ static int spi_byte_probe(struct spi_device *spi)
- 	led->ldev.max_brightness = led->cdef->max_value - led->cdef->off_value;
- 	led->ldev.brightness_set_blocking = spi_byte_brightness_set_blocking;
- 
-+	child = of_get_next_available_child(dev_of_node(dev), NULL);
- 	state = of_get_property(child, "default-state", NULL);
- 	if (state) {
- 		if (!strcmp(state, "on")) {
- 			led->ldev.brightness = led->ldev.max_brightness;
- 		} else if (strcmp(state, "off")) {
-+			of_node_put(child);
- 			/* all other cases except "off" */
- 			dev_err(dev, "default-state can only be 'on' or 'off'");
- 			return -EINVAL;
-@@ -122,9 +123,12 @@ static int spi_byte_probe(struct spi_device *spi)
- 
- 	ret = devm_led_classdev_register(&spi->dev, &led->ldev);
- 	if (ret) {
-+		of_node_put(child);
- 		mutex_destroy(&led->mutex);
- 		return ret;
- 	}
++	err = sanity_check_input_values(ue->card, ucontrol, &ue->info, false);
++	if (err < 0)
++		return err;
 +
-+	of_node_put(child);
- 	spi_set_drvdata(spi, led);
- 
- 	return 0;
+ 	change = memcmp(&ucontrol->value, dst, size) != 0;
+ 	if (change)
+ 		memcpy(dst, &ucontrol->value, size);
 -- 
 2.43.0
 
