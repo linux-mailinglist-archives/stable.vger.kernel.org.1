@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-74862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4CEB9731CA
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:15:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38E3C9732C2
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:26:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 97EE91F29467
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:15:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C45E1C24A9A
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:26:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2FB21917CB;
-	Tue, 10 Sep 2024 10:10:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF8DD18C914;
+	Tue, 10 Sep 2024 10:20:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VdsoQKaZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="evHrReCR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FC88188A0C;
-	Tue, 10 Sep 2024 10:10:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EBD818C03E;
+	Tue, 10 Sep 2024 10:20:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963050; cv=none; b=J72TCPvkqxUIftQZErImyB5qndDGrLRPsqZMs/j7vnOa6e3yI1iIoeiAwplVNsGuDcVb9U2mCUzw0Zepn0wy0eyLr94uMgSoLQX07aC+h27fBZ/kEcTNQ990JZTvG+SqoyVFDiqyvvhmq6XM/iIeOaF1OuogdsIW3iEL104Ist8=
+	t=1725963626; cv=none; b=oiB2onGbeZuh3PRugTQtutFNygHPU0kIDZiMjmoCoL3OyNMGISch1bAKzxpkgcXMkSHA1S5lnrIEtWTXY9z4bhB1inHdfhjbZeLDhbS+j3ZMvZfpQ4dbP2z/nCuwPVZYkbY7yV22nCQztpgCOMFuevUhTOPjlheLO/L2zFVJZFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963050; c=relaxed/simple;
-	bh=gEtCaaFQ4cpM/tGJVl1dtzTWN+U1YJK01a+1gU+QrVs=;
+	s=arc-20240116; t=1725963626; c=relaxed/simple;
+	bh=UD0K6R2CdVjfn+fPLkLgoicTPmHSDBIOAFQvwNshDhM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FqZq+y2c+2GdgZgU6l9XJ+9O87jO0TsmGj8Iq6QCvJWyIdo+QRvh6demv9TS3yq8iz4thR6RKw+Gr6QJ2p3TozqRr1n+G3Lr4dAbkgzI7JqaI8gSFFRt9/GJGuetfypk0oUl14hVBxsN+AMgYfg27xLq7zZfA1WrWNPdr0o+pZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VdsoQKaZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18234C4CECD;
-	Tue, 10 Sep 2024 10:10:49 +0000 (UTC)
+	 MIME-Version; b=MXiih8okzkQoqjvxj2oDBz32qRvqukVf9fmBP29PB9vXyWUrCUCwdg3sV8dHQYdfmdTb1FUUakQnpEv64UnbKND+gSkZbKfTGlVzMzcc1tsU5Sf+mCd3e3jaj6wq4ww1yeAAwG7JELXOrG+dXbzqx63sCWiIAqFKAtCSiPlf8UM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=evHrReCR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC7FFC4CEC3;
+	Tue, 10 Sep 2024 10:20:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963050;
-	bh=gEtCaaFQ4cpM/tGJVl1dtzTWN+U1YJK01a+1gU+QrVs=;
+	s=korg; t=1725963626;
+	bh=UD0K6R2CdVjfn+fPLkLgoicTPmHSDBIOAFQvwNshDhM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VdsoQKaZN3IgTALaiBMkcF2xt1pbnpgPifOWnoI2ygkH8d7L6pGiyPvv5Il2oAPgX
-	 RBYcvoENnCTLA37mjZHo3pvFJ7ohlmt2CcJJ5sv7U7gMiw1tJ02SVP9Z3jJ3jvK6yy
-	 9o4DlC8pnJBghdcG4GIf1bWRDBW8Soqy12uDFoPI=
+	b=evHrReCRehXwzr8iS37h5UBXdD1Xu/5R6HWlQceniLUWQsD9R0ExOTjqiR0Mhw2jW
+	 92ZZpwtJP467JjDqkn5wTnxXNWRZPs4ZiViTKt/QRmaKJNN1JdPnervnme78LbIoge
+	 k3LOigejUymZqg4DC3tvn96FzXNZcS2Y1sHc2SZ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 119/192] s390/vmlinux.lds.S: Move ro_after_init section behind rodata section
-Date: Tue, 10 Sep 2024 11:32:23 +0200
-Message-ID: <20240910092602.919868041@linuxfoundation.org>
+	Daiwei Li <daiweili@google.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Kurt Kanzenbach <kurt@linutronix.de>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 5.15 122/214] igb: Fix not clearing TimeSync interrupts for 82580
+Date: Tue, 10 Sep 2024 11:32:24 +0200
+Message-ID: <20240910092603.757086070@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,77 +65,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Daiwei Li <daiweili@google.com>
 
-[ Upstream commit 75c10d5377d8821efafed32e4d72068d9c1f8ec0 ]
+[ Upstream commit ba8cf80724dbc09825b52498e4efacb563935408 ]
 
-The .data.rel.ro and .got section were added between the rodata and
-ro_after_init data section, which adds an RW mapping in between all RO
-mapping of the kernel image:
+82580 NICs have a hardware bug that makes it
+necessary to write into the TSICR (TimeSync Interrupt Cause) register
+to clear it:
+https://lore.kernel.org/all/CDCB8BE0.1EC2C%25matthew.vick@intel.com/
 
----[ Kernel Image Start ]---
-0x000003ffe0000000-0x000003ffe0e00000        14M PMD RO X
-0x000003ffe0e00000-0x000003ffe0ec7000       796K PTE RO X
-0x000003ffe0ec7000-0x000003ffe0f00000       228K PTE RO NX
-0x000003ffe0f00000-0x000003ffe1300000         4M PMD RO NX
-0x000003ffe1300000-0x000003ffe1331000       196K PTE RO NX
-0x000003ffe1331000-0x000003ffe13b3000       520K PTE RW NX <---
-0x000003ffe13b3000-0x000003ffe13d5000       136K PTE RO NX
-0x000003ffe13d5000-0x000003ffe1400000       172K PTE RW NX
-0x000003ffe1400000-0x000003ffe1500000         1M PMD RW NX
-0x000003ffe1500000-0x000003ffe1700000         2M PTE RW NX
-0x000003ffe1700000-0x000003ffe1800000         1M PMD RW NX
-0x000003ffe1800000-0x000003ffe187e000       504K PTE RW NX
----[ Kernel Image End ]---
+Add a conditional so only for 82580 we write into the TSICR register,
+so we don't risk losing events for other models.
 
-Move the ro_after_init data section again right behind the rodata
-section to prevent interleaving RO and RW mappings:
+Without this change, when running ptp4l with an Intel 82580 card,
+I get the following output:
 
----[ Kernel Image Start ]---
-0x000003ffe0000000-0x000003ffe0e00000        14M PMD RO X
-0x000003ffe0e00000-0x000003ffe0ec7000       796K PTE RO X
-0x000003ffe0ec7000-0x000003ffe0f00000       228K PTE RO NX
-0x000003ffe0f00000-0x000003ffe1300000         4M PMD RO NX
-0x000003ffe1300000-0x000003ffe1353000       332K PTE RO NX
-0x000003ffe1353000-0x000003ffe1400000       692K PTE RW NX
-0x000003ffe1400000-0x000003ffe1500000         1M PMD RW NX
-0x000003ffe1500000-0x000003ffe1700000         2M PTE RW NX
-0x000003ffe1700000-0x000003ffe1800000         1M PMD RW NX
-0x000003ffe1800000-0x000003ffe187e000       504K PTE RW NX
----[ Kernel Image End ]---
+> timed out while polling for tx timestamp increasing tx_timestamp_timeout or
+> increasing kworker priority may correct this issue, but a driver bug likely
+> causes it
 
-Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+This goes away with this change.
+
+This (partially) reverts commit ee14cc9ea19b ("igb: Fix missing time sync events").
+
+Fixes: ee14cc9ea19b ("igb: Fix missing time sync events")
+Closes: https://lore.kernel.org/intel-wired-lan/CAN0jFd1kO0MMtOh8N2Ztxn6f7vvDKp2h507sMryobkBKe=xk=w@mail.gmail.com/
+Tested-by: Daiwei Li <daiweili@google.com>
+Suggested-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Signed-off-by: Daiwei Li <daiweili@google.com>
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Reviewed-by: Kurt Kanzenbach <kurt@linutronix.de>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/vmlinux.lds.S | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/net/ethernet/intel/igb/igb_main.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/arch/s390/kernel/vmlinux.lds.S b/arch/s390/kernel/vmlinux.lds.S
-index 729d4f949cfe..52d6e5d1b453 100644
---- a/arch/s390/kernel/vmlinux.lds.S
-+++ b/arch/s390/kernel/vmlinux.lds.S
-@@ -71,6 +71,15 @@ SECTIONS
- 	. = ALIGN(PAGE_SIZE);
- 	__end_ro_after_init = .;
+diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
+index 03a4da6a1447..420bc34fb8c1 100644
+--- a/drivers/net/ethernet/intel/igb/igb_main.c
++++ b/drivers/net/ethernet/intel/igb/igb_main.c
+@@ -6799,10 +6799,20 @@ static void igb_extts(struct igb_adapter *adapter, int tsintr_tt)
  
-+	.data.rel.ro : {
-+		*(.data.rel.ro .data.rel.ro.*)
-+	}
-+	.got : {
-+		__got_start = .;
-+		*(.got)
-+		__got_end = .;
+ static void igb_tsync_interrupt(struct igb_adapter *adapter)
+ {
++	const u32 mask = (TSINTR_SYS_WRAP | E1000_TSICR_TXTS |
++			  TSINTR_TT0 | TSINTR_TT1 |
++			  TSINTR_AUTT0 | TSINTR_AUTT1);
+ 	struct e1000_hw *hw = &adapter->hw;
+ 	u32 tsicr = rd32(E1000_TSICR);
+ 	struct ptp_clock_event event;
+ 
++	if (hw->mac.type == e1000_82580) {
++		/* 82580 has a hardware bug that requires an explicit
++		 * write to clear the TimeSync interrupt cause.
++		 */
++		wr32(E1000_TSICR, tsicr & mask);
 +	}
 +
- 	RW_DATA(0x100, PAGE_SIZE, THREAD_SIZE)
- 	BOOT_DATA_PRESERVED
- 
+ 	if (tsicr & TSINTR_SYS_WRAP) {
+ 		event.type = PTP_CLOCK_PPS;
+ 		if (adapter->ptp_caps.pps)
 -- 
 2.43.0
 
