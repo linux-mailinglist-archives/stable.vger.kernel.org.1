@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-75464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75294-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72B669734C2
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:42:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41430973468
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:40:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D94151C24F2B
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:42:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B57B7B2E989
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:36:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA415196446;
-	Tue, 10 Sep 2024 10:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A5EF19066C;
+	Tue, 10 Sep 2024 10:31:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OWQbOEmE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l0q5cT5z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85286195FEC;
-	Tue, 10 Sep 2024 10:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09244184549;
+	Tue, 10 Sep 2024 10:31:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964809; cv=none; b=ovy69u/8/ZJvaFBYpa6Om3zHIBxrGHwXRZ7s5qrNP6VKMW5ROLJAf12H2jknYUaoC+LbWFIjqywMLifc40ifAsOy3TIuYROJv1K2d07GGrCNOi5rzMCoOsRAaXKnwjdNx3lTVhmxi/UjW1Je5Vnqwi/2YDSTMIley66GFUYuprY=
+	t=1725964315; cv=none; b=UHSygjqSYJ0l5rzHl5ZeTR0LrkCxunPPPSdLFuPQmwxHP+5zDw7zkdoi0zg59xCK0/+PM6wtLZXd1UiL8aWNv0+JNHTOMGYqPDrqvOd3d/x/UkVpvaj2/FI9Eim9G7kGTNYbCRy086Ob/RXDRRsBXb0Evv/eCNDtO68DFYZRmC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964809; c=relaxed/simple;
-	bh=0oD+sOOU1ujLzpS7wdVLh0AGrU4kABLv7dFOmYzRMmQ=;
+	s=arc-20240116; t=1725964315; c=relaxed/simple;
+	bh=0qrXdo0Tzow7S5x9S462ds8Q9bjJgs1eXtwppFhYxxc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U/sD0RAgpkyGCxwxeLtGjjOGiQe6M3VNSLS+rUglgu3re8suNOjhnHF+m9wIzv5F/lFMgFnXHA1hY+bh0cR6g2+tLc+HH/fxVv0OxjIRV7k+QCffb5BlBd9GpXHYSzE54CUeBfAAEGNjFv7MiAze7eCscK+r9Xhn0vwnutTDdMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OWQbOEmE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DAF0C4CEC3;
-	Tue, 10 Sep 2024 10:40:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=s5taAtVZ2txC7ZaR7ptzLw9IStAZcRrCJN62RTTmM34bvgZaN5mU0pPFfyhd7Qi91zZPrIs1HaeAIRX+FZcG9Cp9uVIf/YkLg+zanSUMlVXktQh1JV4X5zXulWFangDGyJulfuAfGzvgyddyzjO9eU5ooL7sxOtFxz0WVhaJExU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l0q5cT5z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23E80C4CEC3;
+	Tue, 10 Sep 2024 10:31:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964809;
-	bh=0oD+sOOU1ujLzpS7wdVLh0AGrU4kABLv7dFOmYzRMmQ=;
+	s=korg; t=1725964314;
+	bh=0qrXdo0Tzow7S5x9S462ds8Q9bjJgs1eXtwppFhYxxc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OWQbOEmEnkiiFjLW3N6PzmsU4bDHp8wXWC+9ufpIxC4ooAw6Yia0tZ8BxloJaOdf/
-	 zlLE+OTp5X8LYk8q43BkZnhoiDLFgtrmVakzahe1mY7gimU1GZ0GjAoED5viHQ/BVz
-	 YYVWchMkuzt4iDpoXWz6E2W//7LoYJ1MRLRBa0tw=
+	b=l0q5cT5zLkxVlrKFjkuOAOkL83gVITb/XFSZ8jOdtjXvfY9++j7OB+5O0MVba2bAe
+	 zzraby5qbUltExWP0+DB8U+c9UbqwEaT2ltEgh4PtHNcnAeTM1HL37puuTj1vukm4o
+	 JAJnbR3ckK84OmMGH+iUiuKnPD5hXawqja5QQZa0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shahar S Matityahu <shahar.s.matityahu@intel.com>,
-	Luciano Coelho <luciano.coelho@intel.com>,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	=?UTF-8?q?Amadeusz=20S=C5=82awi=C5=84ski?= <amadeuszx.slawinski@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 031/186] wifi: iwlwifi: remove fw_running op
-Date: Tue, 10 Sep 2024 11:32:06 +0200
-Message-ID: <20240910092555.858943065@linuxfoundation.org>
+Subject: [PATCH 6.6 140/269] ASoC: topology: Properly initialize soc_enum values
+Date: Tue, 10 Sep 2024 11:32:07 +0200
+Message-ID: <20240910092613.198937809@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +60,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shahar S Matityahu <shahar.s.matityahu@intel.com>
+From: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
 
-[ Upstream commit 37733bffda3285d18bd1d72c14b3a1cf39c56a5e ]
+[ Upstream commit 8ec2a2643544ce352f012ad3d248163199d05dfc ]
 
-fw_running assumes that memory can be retrieved only after alive.
-This assumption is no longer true as we support dump before alive.
-To avoid invalid access to the NIC, check that STATUS_DEVICE_ENABLED
-bit in trans status is set before dumping instead of the prior check.
+soc_tplg_denum_create_values() should properly set its values field.
 
-Signed-off-by: Shahar S Matityahu <shahar.s.matityahu@intel.com>
-Reviewed-by: Luciano Coelho <luciano.coelho@intel.com>
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://msgid.link/20240510170500.ca07138cedeb.I090e31d3eaeb4ba19f5f84aba997ccd36927e9ac@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Amadeusz Sławiński <amadeuszx.slawinski@linux.intel.com>
+Link: https://patch.msgid.link/20240627101850.2191513-4-amadeuszx.slawinski@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/debugfs.c | 3 +--
- drivers/net/wireless/intel/iwlwifi/fw/runtime.h | 1 -
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c    | 6 ------
- 3 files changed, 1 insertion(+), 9 deletions(-)
+ sound/soc/soc-topology.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c b/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
-index 24d6ed3513ce..c09a736f87e6 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/debugfs.c
-@@ -275,8 +275,7 @@ static ssize_t iwl_dbgfs_send_hcmd_write(struct iwl_fw_runtime *fwrt, char *buf,
- 		.data = { NULL, },
- 	};
+diff --git a/sound/soc/soc-topology.c b/sound/soc/soc-topology.c
+index 7e8fca0b0662..a643ef654b9d 100644
+--- a/sound/soc/soc-topology.c
++++ b/sound/soc/soc-topology.c
+@@ -851,6 +851,8 @@ static int soc_tplg_denum_create_values(struct soc_tplg *tplg, struct soc_enum *
+ 		se->dobj.control.dvalues[i] = le32_to_cpu(ec->values[i]);
+ 	}
  
--	if (fwrt->ops && fwrt->ops->fw_running &&
--	    !fwrt->ops->fw_running(fwrt->ops_ctx))
-+	if (!iwl_trans_fw_running(fwrt->trans))
- 		return -EIO;
- 
- 	if (count < header_size + 1 || count > 1024 * 4)
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/runtime.h b/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
-index cddcb4d9a264..79ab8ef78f67 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/runtime.h
-@@ -72,7 +72,6 @@
- struct iwl_fw_runtime_ops {
- 	int (*dump_start)(void *ctx);
- 	void (*dump_end)(void *ctx);
--	bool (*fw_running)(void *ctx);
- 	int (*send_hcmd)(void *ctx, struct iwl_host_cmd *host_cmd);
- 	bool (*d3_debug_enable)(void *ctx);
- };
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-index 3548eb57f1f3..9b1a1455a7d5 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-@@ -577,11 +577,6 @@ static void iwl_mvm_fwrt_dump_end(void *ctx)
- 	mutex_unlock(&mvm->mutex);
++	se->items = le32_to_cpu(ec->items);
++	se->values = (const unsigned int *)se->dobj.control.dvalues;
+ 	return 0;
  }
  
--static bool iwl_mvm_fwrt_fw_running(void *ctx)
--{
--	return iwl_mvm_firmware_running(ctx);
--}
--
- static int iwl_mvm_fwrt_send_hcmd(void *ctx, struct iwl_host_cmd *host_cmd)
- {
- 	struct iwl_mvm *mvm = (struct iwl_mvm *)ctx;
-@@ -602,7 +597,6 @@ static bool iwl_mvm_d3_debug_enable(void *ctx)
- static const struct iwl_fw_runtime_ops iwl_mvm_fwrt_ops = {
- 	.dump_start = iwl_mvm_fwrt_dump_start,
- 	.dump_end = iwl_mvm_fwrt_dump_end,
--	.fw_running = iwl_mvm_fwrt_fw_running,
- 	.send_hcmd = iwl_mvm_fwrt_send_hcmd,
- 	.d3_debug_enable = iwl_mvm_d3_debug_enable,
- };
 -- 
 2.43.0
 
