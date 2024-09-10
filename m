@@ -1,55 +1,61 @@
-Return-Path: <stable+bounces-75529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 855DF973503
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:44:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8323C973211
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:18:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B828E1C250BF
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:44:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3FEF828DEEB
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:18:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2A28190692;
-	Tue, 10 Sep 2024 10:43:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F15FD195980;
+	Tue, 10 Sep 2024 10:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tiWogUql"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cCz+WHPH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FE185381A;
-	Tue, 10 Sep 2024 10:43:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACA53195FCE;
+	Tue, 10 Sep 2024 10:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725965001; cv=none; b=pw9u2jWxhd62JDSLC8eGjUWT5T3JmvdXyBZtu7lScu9L2uZcDR3cStDWYWWFDTLP8uolcTwDZBH18Wb6MMU70TOJJ4r9cw4gdO+0Bgh3NMSVgkkX9qzjYI/G7fBETBP09wF2KMS8sXdQDz8miWkW2UNcqwiE8LgkFi1Kxld8Uio=
+	t=1725963218; cv=none; b=btGt/kl6RcKqM49+GmMmwXvhBh0g5CuW5tI9/H6kbjV3oO4PpUw1Bj5kMqikkx3xvMq2LAOoxWNyc8/tKpxLiZq9aDc26loKml/R6dniR+py6xASYm4vyhq3qtcT5dnFhqSfd7rp+nQfckHkrwfR4bY+VUcq7Nkkl6xS7P2iLRo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725965001; c=relaxed/simple;
-	bh=WhOpEI6ntfl8bt5IEXnwnpY9AP1IfcWSu1wdZhp/KvI=;
+	s=arc-20240116; t=1725963218; c=relaxed/simple;
+	bh=rbePCl+wKlm592sGQBcwEnuCpse2qqMYCHgBk6FCK08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XaR12lfUgZ2/qg5t3zyI06skD5ieF216lv/iULhiRwE+KwEsMPW2qjmybNxFYbBW78qUV24UKMIyPErb0ATYMoTnExv4TheqWTZBZ+kDHqLqkJX2lvwbm4vCMu86hXGQzOkg+r77mDTLcfM61FIF2w8cpTEJSgpOGyVQi53UXDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tiWogUql; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17018C4CEC3;
-	Tue, 10 Sep 2024 10:43:20 +0000 (UTC)
+	 MIME-Version; b=hVDzvVAPCnTfCsEQELvJfiDAUwLXdpjYP/oMHCDGdITJG6pAoIfBDI2dyxzVsgc+av7YK7sr97RYirmw0bDfq8/EP20bxgMQGg1yVcNz9By7A4eO9ZoP1u+1e3NzGV6WuR734ZjXUAfvk9t+Dffz+WZ2lL8yR5Z7m0K/L2LZmBU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cCz+WHPH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28298C4CEC3;
+	Tue, 10 Sep 2024 10:13:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725965001;
-	bh=WhOpEI6ntfl8bt5IEXnwnpY9AP1IfcWSu1wdZhp/KvI=;
+	s=korg; t=1725963218;
+	bh=rbePCl+wKlm592sGQBcwEnuCpse2qqMYCHgBk6FCK08=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tiWogUqlmVriLxNOhrnIRHIYyojBbuxPIjbT5kCDKvGCLMawGSqpZV/LWoNPNIraN
-	 8FA1JvuNMGpQKc94ErpeaTsIYSICM3wg3UHKpgX7k0FOdX+8SySa/wouePOFBSeXL/
-	 5gyUjHhDLL5DhiTWyjraJdHutC7T41Ocenq97/1M=
+	b=cCz+WHPH5DhDjSz143+JMUQm39mCrqr1213uta4++hyb0EhcLUzhGunBIIriIFsbj
+	 g1pBqrb3gS1aVXjfHCmioyPnWNjl690Z8EaNgWsb/Fz8spSM4JgOvNT82QbXj465vV
+	 8rf+ExXKvRCPqrD+EicEMXOBcUab1b0JXWCuztAY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Oscar Salvador <osalvador@suse.de>,
+	Peter Xu <peterx@redhat.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 104/186] media: vivid: fix wrong sizeimage value for mplane
-Date: Tue, 10 Sep 2024 11:33:19 +0200
-Message-ID: <20240910092558.814410506@linuxfoundation.org>
+Subject: [PATCH 6.1 176/192] powerpc/64e: split out nohash Book3E 64-bit code
+Date: Tue, 10 Sep 2024 11:33:20 +0200
+Message-ID: <20240910092605.097221209@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,89 +67,775 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-[ Upstream commit 0fd7c0c2c156270dceb8c15fad3120cdce03e539 ]
+[ Upstream commit a898530eea3d0ba08c17a60865995a3bb468d1bc ]
 
-In several places a division by fmt->vdownsampling[p] was
-missing in the sizeimage[p] calculation, causing incorrect
-behavior for multiplanar formats were some planes are smaller
-than the first plane.
+A reasonable chunk of nohash/tlb.c is 64-bit only code, split it out into
+a separate file.
 
-Found by new v4l2-compliance tests.
-
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Link: https://lkml.kernel.org/r/cb2b118f9d8a86f82d01bfb9ad309d1d304480a1.1719928057.git.christophe.leroy@csgroup.eu
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Peter Xu <peterx@redhat.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: d92b5cc29c79 ("powerpc/64e: Define mmu_pte_psize static")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/test-drivers/vivid/vivid-vid-cap.c |  5 +++--
- drivers/media/test-drivers/vivid/vivid-vid-out.c | 16 +++++++++-------
- 2 files changed, 12 insertions(+), 9 deletions(-)
+ arch/powerpc/mm/nohash/Makefile  |   2 +-
+ arch/powerpc/mm/nohash/tlb.c     | 343 +----------------------------
+ arch/powerpc/mm/nohash/tlb_64e.c | 361 +++++++++++++++++++++++++++++++
+ 3 files changed, 363 insertions(+), 343 deletions(-)
+ create mode 100644 arch/powerpc/mm/nohash/tlb_64e.c
 
-diff --git a/drivers/media/test-drivers/vivid/vivid-vid-cap.c b/drivers/media/test-drivers/vivid/vivid-vid-cap.c
-index 437889e51ca0..907781c2e613 100644
---- a/drivers/media/test-drivers/vivid/vivid-vid-cap.c
-+++ b/drivers/media/test-drivers/vivid/vivid-vid-cap.c
-@@ -113,8 +113,9 @@ static int vid_cap_queue_setup(struct vb2_queue *vq,
- 		if (*nplanes != buffers)
- 			return -EINVAL;
- 		for (p = 0; p < buffers; p++) {
--			if (sizes[p] < tpg_g_line_width(&dev->tpg, p) * h +
--						dev->fmt_cap->data_offset[p])
-+			if (sizes[p] < tpg_g_line_width(&dev->tpg, p) * h /
-+					dev->fmt_cap->vdownsampling[p] +
-+					dev->fmt_cap->data_offset[p])
- 				return -EINVAL;
- 		}
- 	} else {
-diff --git a/drivers/media/test-drivers/vivid/vivid-vid-out.c b/drivers/media/test-drivers/vivid/vivid-vid-out.c
-index cd6c247547d6..9038be90ab35 100644
---- a/drivers/media/test-drivers/vivid/vivid-vid-out.c
-+++ b/drivers/media/test-drivers/vivid/vivid-vid-out.c
-@@ -63,14 +63,16 @@ static int vid_out_queue_setup(struct vb2_queue *vq,
- 		if (sizes[0] < size)
- 			return -EINVAL;
- 		for (p = 1; p < planes; p++) {
--			if (sizes[p] < dev->bytesperline_out[p] * h +
--				       vfmt->data_offset[p])
-+			if (sizes[p] < dev->bytesperline_out[p] * h /
-+					vfmt->vdownsampling[p] +
-+					vfmt->data_offset[p])
- 				return -EINVAL;
- 		}
- 	} else {
- 		for (p = 0; p < planes; p++)
--			sizes[p] = p ? dev->bytesperline_out[p] * h +
--				       vfmt->data_offset[p] : size;
-+			sizes[p] = p ? dev->bytesperline_out[p] * h /
-+					vfmt->vdownsampling[p] +
-+					vfmt->data_offset[p] : size;
- 	}
+diff --git a/arch/powerpc/mm/nohash/Makefile b/arch/powerpc/mm/nohash/Makefile
+index f3894e79d5f7..24b445a5fcac 100644
+--- a/arch/powerpc/mm/nohash/Makefile
++++ b/arch/powerpc/mm/nohash/Makefile
+@@ -3,7 +3,7 @@
+ ccflags-$(CONFIG_PPC64)	:= $(NO_MINIMAL_TOC)
  
- 	if (vq->num_buffers + *nbuffers < 2)
-@@ -127,7 +129,7 @@ static int vid_out_buf_prepare(struct vb2_buffer *vb)
+ obj-y				+= mmu_context.o tlb.o tlb_low.o kup.o
+-obj-$(CONFIG_PPC_BOOK3E_64)  	+= tlb_low_64e.o book3e_pgtable.o
++obj-$(CONFIG_PPC_BOOK3E_64)  	+= tlb_64e.o tlb_low_64e.o book3e_pgtable.o
+ obj-$(CONFIG_40x)		+= 40x.o
+ obj-$(CONFIG_44x)		+= 44x.o
+ obj-$(CONFIG_PPC_8xx)		+= 8xx.o
+diff --git a/arch/powerpc/mm/nohash/tlb.c b/arch/powerpc/mm/nohash/tlb.c
+index 19df1e13fe0e..c0b643d30fcc 100644
+--- a/arch/powerpc/mm/nohash/tlb.c
++++ b/arch/powerpc/mm/nohash/tlb.c
+@@ -110,28 +110,6 @@ struct mmu_psize_def mmu_psize_defs[MMU_PAGE_COUNT] = {
+ };
+ #endif
  
- 	for (p = 0; p < planes; p++) {
- 		if (p)
--			size = dev->bytesperline_out[p] * h;
-+			size = dev->bytesperline_out[p] * h / vfmt->vdownsampling[p];
- 		size += vb->planes[p].data_offset;
+-/* The variables below are currently only used on 64-bit Book3E
+- * though this will probably be made common with other nohash
+- * implementations at some point
+- */
+-#ifdef CONFIG_PPC64
+-
+-int mmu_pte_psize;		/* Page size used for PTE pages */
+-int mmu_vmemmap_psize;		/* Page size used for the virtual mem map */
+-int book3e_htw_mode;		/* HW tablewalk?  Value is PPC_HTW_* */
+-unsigned long linear_map_top;	/* Top of linear mapping */
+-
+-
+-/*
+- * Number of bytes to add to SPRN_SPRG_TLB_EXFRAME on crit/mcheck/debug
+- * exceptions.  This is used for bolted and e6500 TLB miss handlers which
+- * do not modify this SPRG in the TLB miss code; for other TLB miss handlers,
+- * this is set to zero.
+- */
+-int extlb_level_exc;
+-
+-#endif /* CONFIG_PPC64 */
+-
+ #ifdef CONFIG_PPC_E500
+ /* next_tlbcam_idx is used to round-robin tlbcam entry assignment */
+ DEFINE_PER_CPU(int, next_tlbcam_idx);
+@@ -361,326 +339,7 @@ void tlb_flush(struct mmu_gather *tlb)
+ 	flush_tlb_mm(tlb->mm);
+ }
  
- 		if (vb2_get_plane_payload(vb, p) < size) {
-@@ -334,8 +336,8 @@ int vivid_g_fmt_vid_out(struct file *file, void *priv,
- 	for (p = 0; p < mp->num_planes; p++) {
- 		mp->plane_fmt[p].bytesperline = dev->bytesperline_out[p];
- 		mp->plane_fmt[p].sizeimage =
--			mp->plane_fmt[p].bytesperline * mp->height +
--			fmt->data_offset[p];
-+			mp->plane_fmt[p].bytesperline * mp->height /
-+			fmt->vdownsampling[p] + fmt->data_offset[p];
- 	}
- 	for (p = fmt->buffers; p < fmt->planes; p++) {
- 		unsigned stride = dev->bytesperline_out[p];
+-/*
+- * Below are functions specific to the 64-bit variant of Book3E though that
+- * may change in the future
+- */
+-
+-#ifdef CONFIG_PPC64
+-
+-/*
+- * Handling of virtual linear page tables or indirect TLB entries
+- * flushing when PTE pages are freed
+- */
+-void tlb_flush_pgtable(struct mmu_gather *tlb, unsigned long address)
+-{
+-	int tsize = mmu_psize_defs[mmu_pte_psize].enc;
+-
+-	if (book3e_htw_mode != PPC_HTW_NONE) {
+-		unsigned long start = address & PMD_MASK;
+-		unsigned long end = address + PMD_SIZE;
+-		unsigned long size = 1UL << mmu_psize_defs[mmu_pte_psize].shift;
+-
+-		/* This isn't the most optimal, ideally we would factor out the
+-		 * while preempt & CPU mask mucking around, or even the IPI but
+-		 * it will do for now
+-		 */
+-		while (start < end) {
+-			__flush_tlb_page(tlb->mm, start, tsize, 1);
+-			start += size;
+-		}
+-	} else {
+-		unsigned long rmask = 0xf000000000000000ul;
+-		unsigned long rid = (address & rmask) | 0x1000000000000000ul;
+-		unsigned long vpte = address & ~rmask;
+-
+-		vpte = (vpte >> (PAGE_SHIFT - 3)) & ~0xffful;
+-		vpte |= rid;
+-		__flush_tlb_page(tlb->mm, vpte, tsize, 0);
+-	}
+-}
+-
+-static void __init setup_page_sizes(void)
+-{
+-	unsigned int tlb0cfg;
+-	unsigned int eptcfg;
+-	int psize;
+-
+-#ifdef CONFIG_PPC_E500
+-	unsigned int mmucfg = mfspr(SPRN_MMUCFG);
+-	int fsl_mmu = mmu_has_feature(MMU_FTR_TYPE_FSL_E);
+-
+-	if (fsl_mmu && (mmucfg & MMUCFG_MAVN) == MMUCFG_MAVN_V1) {
+-		unsigned int tlb1cfg = mfspr(SPRN_TLB1CFG);
+-		unsigned int min_pg, max_pg;
+-
+-		min_pg = (tlb1cfg & TLBnCFG_MINSIZE) >> TLBnCFG_MINSIZE_SHIFT;
+-		max_pg = (tlb1cfg & TLBnCFG_MAXSIZE) >> TLBnCFG_MAXSIZE_SHIFT;
+-
+-		for (psize = 0; psize < MMU_PAGE_COUNT; ++psize) {
+-			struct mmu_psize_def *def;
+-			unsigned int shift;
+-
+-			def = &mmu_psize_defs[psize];
+-			shift = def->shift;
+-
+-			if (shift == 0 || shift & 1)
+-				continue;
+-
+-			/* adjust to be in terms of 4^shift Kb */
+-			shift = (shift - 10) >> 1;
+-
+-			if ((shift >= min_pg) && (shift <= max_pg))
+-				def->flags |= MMU_PAGE_SIZE_DIRECT;
+-		}
+-
+-		goto out;
+-	}
+-
+-	if (fsl_mmu && (mmucfg & MMUCFG_MAVN) == MMUCFG_MAVN_V2) {
+-		u32 tlb1cfg, tlb1ps;
+-
+-		tlb0cfg = mfspr(SPRN_TLB0CFG);
+-		tlb1cfg = mfspr(SPRN_TLB1CFG);
+-		tlb1ps = mfspr(SPRN_TLB1PS);
+-		eptcfg = mfspr(SPRN_EPTCFG);
+-
+-		if ((tlb1cfg & TLBnCFG_IND) && (tlb0cfg & TLBnCFG_PT))
+-			book3e_htw_mode = PPC_HTW_E6500;
+-
+-		/*
+-		 * We expect 4K subpage size and unrestricted indirect size.
+-		 * The lack of a restriction on indirect size is a Freescale
+-		 * extension, indicated by PSn = 0 but SPSn != 0.
+-		 */
+-		if (eptcfg != 2)
+-			book3e_htw_mode = PPC_HTW_NONE;
+-
+-		for (psize = 0; psize < MMU_PAGE_COUNT; ++psize) {
+-			struct mmu_psize_def *def = &mmu_psize_defs[psize];
+-
+-			if (!def->shift)
+-				continue;
+-
+-			if (tlb1ps & (1U << (def->shift - 10))) {
+-				def->flags |= MMU_PAGE_SIZE_DIRECT;
+-
+-				if (book3e_htw_mode && psize == MMU_PAGE_2M)
+-					def->flags |= MMU_PAGE_SIZE_INDIRECT;
+-			}
+-		}
+-
+-		goto out;
+-	}
+-#endif
+-out:
+-	/* Cleanup array and print summary */
+-	pr_info("MMU: Supported page sizes\n");
+-	for (psize = 0; psize < MMU_PAGE_COUNT; ++psize) {
+-		struct mmu_psize_def *def = &mmu_psize_defs[psize];
+-		const char *__page_type_names[] = {
+-			"unsupported",
+-			"direct",
+-			"indirect",
+-			"direct & indirect"
+-		};
+-		if (def->flags == 0) {
+-			def->shift = 0;	
+-			continue;
+-		}
+-		pr_info("  %8ld KB as %s\n", 1ul << (def->shift - 10),
+-			__page_type_names[def->flags & 0x3]);
+-	}
+-}
+-
+-static void __init setup_mmu_htw(void)
+-{
+-	/*
+-	 * If we want to use HW tablewalk, enable it by patching the TLB miss
+-	 * handlers to branch to the one dedicated to it.
+-	 */
+-
+-	switch (book3e_htw_mode) {
+-#ifdef CONFIG_PPC_E500
+-	case PPC_HTW_E6500:
+-		extlb_level_exc = EX_TLB_SIZE;
+-		patch_exception(0x1c0, exc_data_tlb_miss_e6500_book3e);
+-		patch_exception(0x1e0, exc_instruction_tlb_miss_e6500_book3e);
+-		break;
+-#endif
+-	}
+-	pr_info("MMU: Book3E HW tablewalk %s\n",
+-		book3e_htw_mode != PPC_HTW_NONE ? "enabled" : "not supported");
+-}
+-
+-/*
+- * Early initialization of the MMU TLB code
+- */
+-static void early_init_this_mmu(void)
+-{
+-	unsigned int mas4;
+-
+-	/* Set MAS4 based on page table setting */
+-
+-	mas4 = 0x4 << MAS4_WIMGED_SHIFT;
+-	switch (book3e_htw_mode) {
+-	case PPC_HTW_E6500:
+-		mas4 |= MAS4_INDD;
+-		mas4 |= BOOK3E_PAGESZ_2M << MAS4_TSIZED_SHIFT;
+-		mas4 |= MAS4_TLBSELD(1);
+-		mmu_pte_psize = MMU_PAGE_2M;
+-		break;
+-
+-	case PPC_HTW_NONE:
+-		mas4 |=	BOOK3E_PAGESZ_4K << MAS4_TSIZED_SHIFT;
+-		mmu_pte_psize = mmu_virtual_psize;
+-		break;
+-	}
+-	mtspr(SPRN_MAS4, mas4);
+-
+-#ifdef CONFIG_PPC_E500
+-	if (mmu_has_feature(MMU_FTR_TYPE_FSL_E)) {
+-		unsigned int num_cams;
+-		bool map = true;
+-
+-		/* use a quarter of the TLBCAM for bolted linear map */
+-		num_cams = (mfspr(SPRN_TLB1CFG) & TLBnCFG_N_ENTRY) / 4;
+-
+-		/*
+-		 * Only do the mapping once per core, or else the
+-		 * transient mapping would cause problems.
+-		 */
+-#ifdef CONFIG_SMP
+-		if (hweight32(get_tensr()) > 1)
+-			map = false;
+-#endif
+-
+-		if (map)
+-			linear_map_top = map_mem_in_cams(linear_map_top,
+-							 num_cams, false, true);
+-	}
+-#endif
+-
+-	/* A sync won't hurt us after mucking around with
+-	 * the MMU configuration
+-	 */
+-	mb();
+-}
+-
+-static void __init early_init_mmu_global(void)
+-{
+-	/* XXX This should be decided at runtime based on supported
+-	 * page sizes in the TLB, but for now let's assume 16M is
+-	 * always there and a good fit (which it probably is)
+-	 *
+-	 * Freescale booke only supports 4K pages in TLB0, so use that.
+-	 */
+-	if (mmu_has_feature(MMU_FTR_TYPE_FSL_E))
+-		mmu_vmemmap_psize = MMU_PAGE_4K;
+-	else
+-		mmu_vmemmap_psize = MMU_PAGE_16M;
+-
+-	/* XXX This code only checks for TLB 0 capabilities and doesn't
+-	 *     check what page size combos are supported by the HW. It
+-	 *     also doesn't handle the case where a separate array holds
+-	 *     the IND entries from the array loaded by the PT.
+-	 */
+-	/* Look for supported page sizes */
+-	setup_page_sizes();
+-
+-	/* Look for HW tablewalk support */
+-	setup_mmu_htw();
+-
+-#ifdef CONFIG_PPC_E500
+-	if (mmu_has_feature(MMU_FTR_TYPE_FSL_E)) {
+-		if (book3e_htw_mode == PPC_HTW_NONE) {
+-			extlb_level_exc = EX_TLB_SIZE;
+-			patch_exception(0x1c0, exc_data_tlb_miss_bolted_book3e);
+-			patch_exception(0x1e0,
+-				exc_instruction_tlb_miss_bolted_book3e);
+-		}
+-	}
+-#endif
+-
+-	/* Set the global containing the top of the linear mapping
+-	 * for use by the TLB miss code
+-	 */
+-	linear_map_top = memblock_end_of_DRAM();
+-
+-	ioremap_bot = IOREMAP_BASE;
+-}
+-
+-static void __init early_mmu_set_memory_limit(void)
+-{
+-#ifdef CONFIG_PPC_E500
+-	if (mmu_has_feature(MMU_FTR_TYPE_FSL_E)) {
+-		/*
+-		 * Limit memory so we dont have linear faults.
+-		 * Unlike memblock_set_current_limit, which limits
+-		 * memory available during early boot, this permanently
+-		 * reduces the memory available to Linux.  We need to
+-		 * do this because highmem is not supported on 64-bit.
+-		 */
+-		memblock_enforce_memory_limit(linear_map_top);
+-	}
+-#endif
+-
+-	memblock_set_current_limit(linear_map_top);
+-}
+-
+-/* boot cpu only */
+-void __init early_init_mmu(void)
+-{
+-	early_init_mmu_global();
+-	early_init_this_mmu();
+-	early_mmu_set_memory_limit();
+-}
+-
+-void early_init_mmu_secondary(void)
+-{
+-	early_init_this_mmu();
+-}
+-
+-void setup_initial_memory_limit(phys_addr_t first_memblock_base,
+-				phys_addr_t first_memblock_size)
+-{
+-	/* On non-FSL Embedded 64-bit, we adjust the RMA size to match
+-	 * the bolted TLB entry. We know for now that only 1G
+-	 * entries are supported though that may eventually
+-	 * change.
+-	 *
+-	 * on FSL Embedded 64-bit, usually all RAM is bolted, but with
+-	 * unusual memory sizes it's possible for some RAM to not be mapped
+-	 * (such RAM is not used at all by Linux, since we don't support
+-	 * highmem on 64-bit).  We limit ppc64_rma_size to what would be
+-	 * mappable if this memblock is the only one.  Additional memblocks
+-	 * can only increase, not decrease, the amount that ends up getting
+-	 * mapped.  We still limit max to 1G even if we'll eventually map
+-	 * more.  This is due to what the early init code is set up to do.
+-	 *
+-	 * We crop it to the size of the first MEMBLOCK to
+-	 * avoid going over total available memory just in case...
+-	 */
+-#ifdef CONFIG_PPC_E500
+-	if (early_mmu_has_feature(MMU_FTR_TYPE_FSL_E)) {
+-		unsigned long linear_sz;
+-		unsigned int num_cams;
+-
+-		/* use a quarter of the TLBCAM for bolted linear map */
+-		num_cams = (mfspr(SPRN_TLB1CFG) & TLBnCFG_N_ENTRY) / 4;
+-
+-		linear_sz = map_mem_in_cams(first_memblock_size, num_cams,
+-					    true, true);
+-
+-		ppc64_rma_size = min_t(u64, linear_sz, 0x40000000);
+-	} else
+-#endif
+-		ppc64_rma_size = min_t(u64, first_memblock_size, 0x40000000);
+-
+-	/* Finally limit subsequent allocations */
+-	memblock_set_current_limit(first_memblock_base + ppc64_rma_size);
+-}
+-#else /* ! CONFIG_PPC64 */
++#ifndef CONFIG_PPC64
+ void __init early_init_mmu(void)
+ {
+ #ifdef CONFIG_PPC_47x
+diff --git a/arch/powerpc/mm/nohash/tlb_64e.c b/arch/powerpc/mm/nohash/tlb_64e.c
+new file mode 100644
+index 000000000000..1dcda261554c
+--- /dev/null
++++ b/arch/powerpc/mm/nohash/tlb_64e.c
+@@ -0,0 +1,361 @@
++// SPDX-License-Identifier: GPL-2.0-or-later
++/*
++ * Copyright 2008,2009 Ben Herrenschmidt <benh@kernel.crashing.org>
++ *                     IBM Corp.
++ *
++ *  Derived from arch/ppc/mm/init.c:
++ *    Copyright (C) 1995-1996 Gary Thomas (gdt@linuxppc.org)
++ *
++ *  Modifications by Paul Mackerras (PowerMac) (paulus@cs.anu.edu.au)
++ *  and Cort Dougan (PReP) (cort@cs.nmt.edu)
++ *    Copyright (C) 1996 Paul Mackerras
++ *
++ *  Derived from "arch/i386/mm/init.c"
++ *    Copyright (C) 1991, 1992, 1993, 1994  Linus Torvalds
++ */
++
++#include <linux/kernel.h>
++#include <linux/export.h>
++#include <linux/mm.h>
++#include <linux/init.h>
++#include <linux/pagemap.h>
++#include <linux/memblock.h>
++
++#include <asm/pgalloc.h>
++#include <asm/tlbflush.h>
++#include <asm/tlb.h>
++#include <asm/code-patching.h>
++#include <asm/cputhreads.h>
++
++#include <mm/mmu_decl.h>
++
++/* The variables below are currently only used on 64-bit Book3E
++ * though this will probably be made common with other nohash
++ * implementations at some point
++ */
++int mmu_pte_psize;		/* Page size used for PTE pages */
++int mmu_vmemmap_psize;		/* Page size used for the virtual mem map */
++int book3e_htw_mode;		/* HW tablewalk?  Value is PPC_HTW_* */
++unsigned long linear_map_top;	/* Top of linear mapping */
++
++
++/*
++ * Number of bytes to add to SPRN_SPRG_TLB_EXFRAME on crit/mcheck/debug
++ * exceptions.  This is used for bolted and e6500 TLB miss handlers which
++ * do not modify this SPRG in the TLB miss code; for other TLB miss handlers,
++ * this is set to zero.
++ */
++int extlb_level_exc;
++
++/*
++ * Handling of virtual linear page tables or indirect TLB entries
++ * flushing when PTE pages are freed
++ */
++void tlb_flush_pgtable(struct mmu_gather *tlb, unsigned long address)
++{
++	int tsize = mmu_psize_defs[mmu_pte_psize].enc;
++
++	if (book3e_htw_mode != PPC_HTW_NONE) {
++		unsigned long start = address & PMD_MASK;
++		unsigned long end = address + PMD_SIZE;
++		unsigned long size = 1UL << mmu_psize_defs[mmu_pte_psize].shift;
++
++		/* This isn't the most optimal, ideally we would factor out the
++		 * while preempt & CPU mask mucking around, or even the IPI but
++		 * it will do for now
++		 */
++		while (start < end) {
++			__flush_tlb_page(tlb->mm, start, tsize, 1);
++			start += size;
++		}
++	} else {
++		unsigned long rmask = 0xf000000000000000ul;
++		unsigned long rid = (address & rmask) | 0x1000000000000000ul;
++		unsigned long vpte = address & ~rmask;
++
++		vpte = (vpte >> (PAGE_SHIFT - 3)) & ~0xffful;
++		vpte |= rid;
++		__flush_tlb_page(tlb->mm, vpte, tsize, 0);
++	}
++}
++
++static void __init setup_page_sizes(void)
++{
++	unsigned int tlb0cfg;
++	unsigned int eptcfg;
++	int psize;
++
++#ifdef CONFIG_PPC_E500
++	unsigned int mmucfg = mfspr(SPRN_MMUCFG);
++	int fsl_mmu = mmu_has_feature(MMU_FTR_TYPE_FSL_E);
++
++	if (fsl_mmu && (mmucfg & MMUCFG_MAVN) == MMUCFG_MAVN_V1) {
++		unsigned int tlb1cfg = mfspr(SPRN_TLB1CFG);
++		unsigned int min_pg, max_pg;
++
++		min_pg = (tlb1cfg & TLBnCFG_MINSIZE) >> TLBnCFG_MINSIZE_SHIFT;
++		max_pg = (tlb1cfg & TLBnCFG_MAXSIZE) >> TLBnCFG_MAXSIZE_SHIFT;
++
++		for (psize = 0; psize < MMU_PAGE_COUNT; ++psize) {
++			struct mmu_psize_def *def;
++			unsigned int shift;
++
++			def = &mmu_psize_defs[psize];
++			shift = def->shift;
++
++			if (shift == 0 || shift & 1)
++				continue;
++
++			/* adjust to be in terms of 4^shift Kb */
++			shift = (shift - 10) >> 1;
++
++			if ((shift >= min_pg) && (shift <= max_pg))
++				def->flags |= MMU_PAGE_SIZE_DIRECT;
++		}
++
++		goto out;
++	}
++
++	if (fsl_mmu && (mmucfg & MMUCFG_MAVN) == MMUCFG_MAVN_V2) {
++		u32 tlb1cfg, tlb1ps;
++
++		tlb0cfg = mfspr(SPRN_TLB0CFG);
++		tlb1cfg = mfspr(SPRN_TLB1CFG);
++		tlb1ps = mfspr(SPRN_TLB1PS);
++		eptcfg = mfspr(SPRN_EPTCFG);
++
++		if ((tlb1cfg & TLBnCFG_IND) && (tlb0cfg & TLBnCFG_PT))
++			book3e_htw_mode = PPC_HTW_E6500;
++
++		/*
++		 * We expect 4K subpage size and unrestricted indirect size.
++		 * The lack of a restriction on indirect size is a Freescale
++		 * extension, indicated by PSn = 0 but SPSn != 0.
++		 */
++		if (eptcfg != 2)
++			book3e_htw_mode = PPC_HTW_NONE;
++
++		for (psize = 0; psize < MMU_PAGE_COUNT; ++psize) {
++			struct mmu_psize_def *def = &mmu_psize_defs[psize];
++
++			if (!def->shift)
++				continue;
++
++			if (tlb1ps & (1U << (def->shift - 10))) {
++				def->flags |= MMU_PAGE_SIZE_DIRECT;
++
++				if (book3e_htw_mode && psize == MMU_PAGE_2M)
++					def->flags |= MMU_PAGE_SIZE_INDIRECT;
++			}
++		}
++
++		goto out;
++	}
++#endif
++out:
++	/* Cleanup array and print summary */
++	pr_info("MMU: Supported page sizes\n");
++	for (psize = 0; psize < MMU_PAGE_COUNT; ++psize) {
++		struct mmu_psize_def *def = &mmu_psize_defs[psize];
++		const char *__page_type_names[] = {
++			"unsupported",
++			"direct",
++			"indirect",
++			"direct & indirect"
++		};
++		if (def->flags == 0) {
++			def->shift = 0;
++			continue;
++		}
++		pr_info("  %8ld KB as %s\n", 1ul << (def->shift - 10),
++			__page_type_names[def->flags & 0x3]);
++	}
++}
++
++static void __init setup_mmu_htw(void)
++{
++	/*
++	 * If we want to use HW tablewalk, enable it by patching the TLB miss
++	 * handlers to branch to the one dedicated to it.
++	 */
++
++	switch (book3e_htw_mode) {
++#ifdef CONFIG_PPC_E500
++	case PPC_HTW_E6500:
++		extlb_level_exc = EX_TLB_SIZE;
++		patch_exception(0x1c0, exc_data_tlb_miss_e6500_book3e);
++		patch_exception(0x1e0, exc_instruction_tlb_miss_e6500_book3e);
++		break;
++#endif
++	}
++	pr_info("MMU: Book3E HW tablewalk %s\n",
++		book3e_htw_mode != PPC_HTW_NONE ? "enabled" : "not supported");
++}
++
++/*
++ * Early initialization of the MMU TLB code
++ */
++static void early_init_this_mmu(void)
++{
++	unsigned int mas4;
++
++	/* Set MAS4 based on page table setting */
++
++	mas4 = 0x4 << MAS4_WIMGED_SHIFT;
++	switch (book3e_htw_mode) {
++	case PPC_HTW_E6500:
++		mas4 |= MAS4_INDD;
++		mas4 |= BOOK3E_PAGESZ_2M << MAS4_TSIZED_SHIFT;
++		mas4 |= MAS4_TLBSELD(1);
++		mmu_pte_psize = MMU_PAGE_2M;
++		break;
++
++	case PPC_HTW_NONE:
++		mas4 |=	BOOK3E_PAGESZ_4K << MAS4_TSIZED_SHIFT;
++		mmu_pte_psize = mmu_virtual_psize;
++		break;
++	}
++	mtspr(SPRN_MAS4, mas4);
++
++#ifdef CONFIG_PPC_E500
++	if (mmu_has_feature(MMU_FTR_TYPE_FSL_E)) {
++		unsigned int num_cams;
++		bool map = true;
++
++		/* use a quarter of the TLBCAM for bolted linear map */
++		num_cams = (mfspr(SPRN_TLB1CFG) & TLBnCFG_N_ENTRY) / 4;
++
++		/*
++		 * Only do the mapping once per core, or else the
++		 * transient mapping would cause problems.
++		 */
++#ifdef CONFIG_SMP
++		if (hweight32(get_tensr()) > 1)
++			map = false;
++#endif
++
++		if (map)
++			linear_map_top = map_mem_in_cams(linear_map_top,
++							 num_cams, false, true);
++	}
++#endif
++
++	/* A sync won't hurt us after mucking around with
++	 * the MMU configuration
++	 */
++	mb();
++}
++
++static void __init early_init_mmu_global(void)
++{
++	/* XXX This should be decided at runtime based on supported
++	 * page sizes in the TLB, but for now let's assume 16M is
++	 * always there and a good fit (which it probably is)
++	 *
++	 * Freescale booke only supports 4K pages in TLB0, so use that.
++	 */
++	if (mmu_has_feature(MMU_FTR_TYPE_FSL_E))
++		mmu_vmemmap_psize = MMU_PAGE_4K;
++	else
++		mmu_vmemmap_psize = MMU_PAGE_16M;
++
++	/* XXX This code only checks for TLB 0 capabilities and doesn't
++	 *     check what page size combos are supported by the HW. It
++	 *     also doesn't handle the case where a separate array holds
++	 *     the IND entries from the array loaded by the PT.
++	 */
++	/* Look for supported page sizes */
++	setup_page_sizes();
++
++	/* Look for HW tablewalk support */
++	setup_mmu_htw();
++
++#ifdef CONFIG_PPC_E500
++	if (mmu_has_feature(MMU_FTR_TYPE_FSL_E)) {
++		if (book3e_htw_mode == PPC_HTW_NONE) {
++			extlb_level_exc = EX_TLB_SIZE;
++			patch_exception(0x1c0, exc_data_tlb_miss_bolted_book3e);
++			patch_exception(0x1e0,
++				exc_instruction_tlb_miss_bolted_book3e);
++		}
++	}
++#endif
++
++	/* Set the global containing the top of the linear mapping
++	 * for use by the TLB miss code
++	 */
++	linear_map_top = memblock_end_of_DRAM();
++
++	ioremap_bot = IOREMAP_BASE;
++}
++
++static void __init early_mmu_set_memory_limit(void)
++{
++#ifdef CONFIG_PPC_E500
++	if (mmu_has_feature(MMU_FTR_TYPE_FSL_E)) {
++		/*
++		 * Limit memory so we dont have linear faults.
++		 * Unlike memblock_set_current_limit, which limits
++		 * memory available during early boot, this permanently
++		 * reduces the memory available to Linux.  We need to
++		 * do this because highmem is not supported on 64-bit.
++		 */
++		memblock_enforce_memory_limit(linear_map_top);
++	}
++#endif
++
++	memblock_set_current_limit(linear_map_top);
++}
++
++/* boot cpu only */
++void __init early_init_mmu(void)
++{
++	early_init_mmu_global();
++	early_init_this_mmu();
++	early_mmu_set_memory_limit();
++}
++
++void early_init_mmu_secondary(void)
++{
++	early_init_this_mmu();
++}
++
++void setup_initial_memory_limit(phys_addr_t first_memblock_base,
++				phys_addr_t first_memblock_size)
++{
++	/* On non-FSL Embedded 64-bit, we adjust the RMA size to match
++	 * the bolted TLB entry. We know for now that only 1G
++	 * entries are supported though that may eventually
++	 * change.
++	 *
++	 * on FSL Embedded 64-bit, usually all RAM is bolted, but with
++	 * unusual memory sizes it's possible for some RAM to not be mapped
++	 * (such RAM is not used at all by Linux, since we don't support
++	 * highmem on 64-bit).  We limit ppc64_rma_size to what would be
++	 * mappable if this memblock is the only one.  Additional memblocks
++	 * can only increase, not decrease, the amount that ends up getting
++	 * mapped.  We still limit max to 1G even if we'll eventually map
++	 * more.  This is due to what the early init code is set up to do.
++	 *
++	 * We crop it to the size of the first MEMBLOCK to
++	 * avoid going over total available memory just in case...
++	 */
++#ifdef CONFIG_PPC_E500
++	if (early_mmu_has_feature(MMU_FTR_TYPE_FSL_E)) {
++		unsigned long linear_sz;
++		unsigned int num_cams;
++
++		/* use a quarter of the TLBCAM for bolted linear map */
++		num_cams = (mfspr(SPRN_TLB1CFG) & TLBnCFG_N_ENTRY) / 4;
++
++		linear_sz = map_mem_in_cams(first_memblock_size, num_cams,
++					    true, true);
++
++		ppc64_rma_size = min_t(u64, linear_sz, 0x40000000);
++	} else
++#endif
++		ppc64_rma_size = min_t(u64, first_memblock_size, 0x40000000);
++
++	/* Finally limit subsequent allocations */
++	memblock_set_current_limit(first_memblock_base + ppc64_rma_size);
++}
 -- 
 2.43.0
 
