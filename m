@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-75378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFF77973440
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:39:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B886973222
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:19:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA67328D996
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:39:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1EE631F23C28
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:19:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 775AD1991D9;
-	Tue, 10 Sep 2024 10:35:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44C8A188A28;
+	Tue, 10 Sep 2024 10:14:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EBol7TfC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AyTpJKt8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35A8E18C324;
-	Tue, 10 Sep 2024 10:35:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0183218C925;
+	Tue, 10 Sep 2024 10:14:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964558; cv=none; b=UpKELm07eV0VarKNQ+cvtJh2G/UulzuQTp4ZP6fV7B5BihCfoY/3cJ/JVmNrXB6FDvGYeXwlMpw4ztltJPMTkLuErRPFwrgUpciiycYTWyQQAkMui3WD+3L4pK+C2XySfTVm+0Xk4I8744o73lPXDV3fPn/hHV6L46Eojwe4GJA=
+	t=1725963254; cv=none; b=ou+J4zTDMQ90H4t7jPiqNQ3m4gMnLsdzRguJUz3c3Ik6Jq74O9hqY/Y61d0/viLB80ZuTvME9/dXSt1EpQzjS18lTX+qrfbz4fgfBk8otGtaGkXux3rQW/sSVPsK7kZF0bDRs2emhRIXa9AP/kyc0ZfyqE/fl/tW4cF7DY7wdQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964558; c=relaxed/simple;
-	bh=R0LHvsQwowd7ebHltVA7QMmbf3v6OsD23Eo2DMxZIW8=;
+	s=arc-20240116; t=1725963254; c=relaxed/simple;
+	bh=C0HItraWQo2cKwoxjU9UyXMZiy27iVZ5MG6reerC8jE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q/d7P8w1e8/O3v3uxLQkGjUcNdY4k0TB82YlA9+IYDlAE+gVbsHxaLpzLJpkcA/1IDRryFovKJO8adZt8v0b5/Xh1qx3Gc1Vpqdlfy9KBfzKRNxJnKtwKztub13sRKDKHoBUgp7rRve+YaSbpgB2UK+stR+BzcRuOVQE/PuCWgk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EBol7TfC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5BB6C4CEC6;
-	Tue, 10 Sep 2024 10:35:57 +0000 (UTC)
+	 MIME-Version; b=p/ylMRKtPEvc5e6ZC9CuTvcCHEQJkKzhhSeAZMrPYdVxulvKlmJoqS2+LVr8Au5nmcFYiF5+GSHDG58Sdt1WSkgGaAcUd5JLld/EmwEDI/y6vwsKvlBafH1Tr7CJeZqXKJqhEXYTwnZscyrCWS93HXiLySFBOoncWLFTv1BtfVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AyTpJKt8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B61FC4CEC3;
+	Tue, 10 Sep 2024 10:14:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964558;
-	bh=R0LHvsQwowd7ebHltVA7QMmbf3v6OsD23Eo2DMxZIW8=;
+	s=korg; t=1725963253;
+	bh=C0HItraWQo2cKwoxjU9UyXMZiy27iVZ5MG6reerC8jE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EBol7TfCefi87q8ZO2s80nWAh0NdvX4C17PfRZVfXdn5vFxDW4qW5V5T296Kd+GCY
-	 iP2MD5/K1ABkeQXOrmU4GvjE92TaikrwS7d9MeXgHnH0xnEiKm7CfchQVBSfhx1Wcp
-	 2hHCRqNwYq/yk+V60FQTCj6bNZ3PTAm0O43GbrfY=
+	b=AyTpJKt8QkQPuSTh7/jaDSn5nKF+V67RGIzMS0RuwQy10IOZz+Jxs3VvtIX97aU70
+	 Bx1K1wdFYQAtRqJmfy75p9qwPuwCRY2/MZqCKElej4iPjlqwUhyXDddpaGTqXJgQqM
+	 cxP6PuqjygkYqNdN7TK3sMwHMNKZsD6+Vg1TBD28=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ole <ole@binarygecko.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>
-Subject: [PATCH 6.6 224/269] perf/aux: Fix AUX buffer serialization
+	Guenter Roeck <linux@roeck-us.net>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 6.1 187/192] x86/mm: Fix PTI for i386 some more
 Date: Tue, 10 Sep 2024 11:33:31 +0200
-Message-ID: <20240910092615.940498550@linuxfoundation.org>
+Message-ID: <20240910092605.506280450@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,118 +62,165 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-commit 2ab9d830262c132ab5db2f571003d80850d56b2a upstream.
+commit c48b5a4cf3125adb679e28ef093f66ff81368d05 upstream.
 
-Ole reported that event->mmap_mutex is strictly insufficient to
-serialize the AUX buffer, add a per RB mutex to fully serialize it.
+So it turns out that we have to do two passes of
+pti_clone_entry_text(), once before initcalls, such that device and
+late initcalls can use user-mode-helper / modprobe and once after
+free_initmem() / mark_readonly().
 
-Note that in the lock order comment the perf_event::mmap_mutex order
-was already wrong, that is, it nesting under mmap_lock is not new with
-this patch.
+Now obviously mark_readonly() can cause PMD splits, and
+pti_clone_pgtable() doesn't like that much.
 
-Fixes: 45bfb2e50471 ("perf: Add AUX area to ring buffer for raw data streams")
-Reported-by: Ole <ole@binarygecko.com>
+Allow the late clone to split PMDs so that pagetables stay in sync.
+
+[peterz: Changelog and comments]
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lkml.kernel.org/r/20240806184843.GX37996@noisy.programming.kicks-ass.net
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/events/core.c        |   18 ++++++++++++------
- kernel/events/internal.h    |    1 +
- kernel/events/ring_buffer.c |    2 ++
- 3 files changed, 15 insertions(+), 6 deletions(-)
+ arch/x86/mm/pti.c |   45 +++++++++++++++++++++++++++++----------------
+ 1 file changed, 29 insertions(+), 16 deletions(-)
 
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -1255,8 +1255,9 @@ static void put_ctx(struct perf_event_co
-  *	  perf_event_context::mutex
-  *	    perf_event::child_mutex;
-  *	      perf_event_context::lock
-- *	    perf_event::mmap_mutex
-  *	    mmap_lock
-+ *	      perf_event::mmap_mutex
-+ *	        perf_buffer::aux_mutex
-  *	      perf_addr_filters_head::lock
+--- a/arch/x86/mm/pti.c
++++ b/arch/x86/mm/pti.c
+@@ -241,7 +241,7 @@ static pmd_t *pti_user_pagetable_walk_pm
   *
-  *    cpu_hotplug_lock
-@@ -6352,12 +6353,11 @@ static void perf_mmap_close(struct vm_ar
- 		event->pmu->event_unmapped(event, vma->vm_mm);
+  * Returns a pointer to a PTE on success, or NULL on failure.
+  */
+-static pte_t *pti_user_pagetable_walk_pte(unsigned long address)
++static pte_t *pti_user_pagetable_walk_pte(unsigned long address, bool late_text)
+ {
+ 	gfp_t gfp = (GFP_KERNEL | __GFP_NOTRACK | __GFP_ZERO);
+ 	pmd_t *pmd;
+@@ -251,10 +251,15 @@ static pte_t *pti_user_pagetable_walk_pt
+ 	if (!pmd)
+ 		return NULL;
  
- 	/*
--	 * rb->aux_mmap_count will always drop before rb->mmap_count and
--	 * event->mmap_count, so it is ok to use event->mmap_mutex to
--	 * serialize with perf_mmap here.
-+	 * The AUX buffer is strictly a sub-buffer, serialize using aux_mutex
-+	 * to avoid complications.
- 	 */
- 	if (rb_has_aux(rb) && vma->vm_pgoff == rb->aux_pgoff &&
--	    atomic_dec_and_mutex_lock(&rb->aux_mmap_count, &event->mmap_mutex)) {
-+	    atomic_dec_and_mutex_lock(&rb->aux_mmap_count, &rb->aux_mutex)) {
- 		/*
- 		 * Stop all AUX events that are writing to this buffer,
- 		 * so that we can free its AUX pages and corresponding PMU
-@@ -6374,7 +6374,7 @@ static void perf_mmap_close(struct vm_ar
- 		rb_free_aux(rb);
- 		WARN_ON_ONCE(refcount_read(&rb->aux_refcount));
- 
--		mutex_unlock(&event->mmap_mutex);
-+		mutex_unlock(&rb->aux_mutex);
+-	/* We can't do anything sensible if we hit a large mapping. */
++	/* Large PMD mapping found */
+ 	if (pmd_large(*pmd)) {
+-		WARN_ON(1);
+-		return NULL;
++		/* Clear the PMD if we hit a large mapping from the first round */
++		if (late_text) {
++			set_pmd(pmd, __pmd(0));
++		} else {
++			WARN_ON_ONCE(1);
++			return NULL;
++		}
  	}
  
- 	if (atomic_dec_and_test(&rb->mmap_count))
-@@ -6462,6 +6462,7 @@ static int perf_mmap(struct file *file,
- 	struct perf_event *event = file->private_data;
- 	unsigned long user_locked, user_lock_limit;
- 	struct user_struct *user = current_user();
-+	struct mutex *aux_mutex = NULL;
- 	struct perf_buffer *rb = NULL;
- 	unsigned long locked, lock_limit;
- 	unsigned long vma_size;
-@@ -6510,6 +6511,9 @@ static int perf_mmap(struct file *file,
- 		if (!rb)
- 			goto aux_unlock;
+ 	if (pmd_none(*pmd)) {
+@@ -283,7 +288,7 @@ static void __init pti_setup_vsyscall(vo
+ 	if (!pte || WARN_ON(level != PG_LEVEL_4K) || pte_none(*pte))
+ 		return;
  
-+		aux_mutex = &rb->aux_mutex;
-+		mutex_lock(aux_mutex);
-+
- 		aux_offset = READ_ONCE(rb->user_page->aux_offset);
- 		aux_size = READ_ONCE(rb->user_page->aux_size);
+-	target_pte = pti_user_pagetable_walk_pte(VSYSCALL_ADDR);
++	target_pte = pti_user_pagetable_walk_pte(VSYSCALL_ADDR, false);
+ 	if (WARN_ON(!target_pte))
+ 		return;
  
-@@ -6660,6 +6664,8 @@ unlock:
- 		atomic_dec(&rb->mmap_count);
- 	}
- aux_unlock:
-+	if (aux_mutex)
-+		mutex_unlock(aux_mutex);
- 	mutex_unlock(&event->mmap_mutex);
+@@ -301,7 +306,7 @@ enum pti_clone_level {
  
- 	/*
---- a/kernel/events/internal.h
-+++ b/kernel/events/internal.h
-@@ -40,6 +40,7 @@ struct perf_buffer {
- 	struct user_struct		*mmap_user;
+ static void
+ pti_clone_pgtable(unsigned long start, unsigned long end,
+-		  enum pti_clone_level level)
++		  enum pti_clone_level level, bool late_text)
+ {
+ 	unsigned long addr;
  
- 	/* AUX area */
-+	struct mutex			aux_mutex;
- 	long				aux_head;
- 	unsigned int			aux_nest;
- 	long				aux_wakeup;	/* last aux_watermark boundary crossed by aux_head */
---- a/kernel/events/ring_buffer.c
-+++ b/kernel/events/ring_buffer.c
-@@ -333,6 +333,8 @@ ring_buffer_init(struct perf_buffer *rb,
- 	 */
- 	if (!rb->nr_pages)
- 		rb->paused = 1;
-+
-+	mutex_init(&rb->aux_mutex);
+@@ -390,7 +395,7 @@ pti_clone_pgtable(unsigned long start, u
+ 				return;
+ 
+ 			/* Allocate PTE in the user page-table */
+-			target_pte = pti_user_pagetable_walk_pte(addr);
++			target_pte = pti_user_pagetable_walk_pte(addr, late_text);
+ 			if (WARN_ON(!target_pte))
+ 				return;
+ 
+@@ -452,7 +457,7 @@ static void __init pti_clone_user_shared
+ 		phys_addr_t pa = per_cpu_ptr_to_phys((void *)va);
+ 		pte_t *target_pte;
+ 
+-		target_pte = pti_user_pagetable_walk_pte(va);
++		target_pte = pti_user_pagetable_walk_pte(va, false);
+ 		if (WARN_ON(!target_pte))
+ 			return;
+ 
+@@ -475,7 +480,7 @@ static void __init pti_clone_user_shared
+ 	start = CPU_ENTRY_AREA_BASE;
+ 	end   = start + (PAGE_SIZE * CPU_ENTRY_AREA_PAGES);
+ 
+-	pti_clone_pgtable(start, end, PTI_CLONE_PMD);
++	pti_clone_pgtable(start, end, PTI_CLONE_PMD, false);
+ }
+ #endif /* CONFIG_X86_64 */
+ 
+@@ -492,11 +497,11 @@ static void __init pti_setup_espfix64(vo
+ /*
+  * Clone the populated PMDs of the entry text and force it RO.
+  */
+-static void pti_clone_entry_text(void)
++static void pti_clone_entry_text(bool late)
+ {
+ 	pti_clone_pgtable((unsigned long) __entry_text_start,
+ 			  (unsigned long) __entry_text_end,
+-			  PTI_LEVEL_KERNEL_IMAGE);
++			  PTI_LEVEL_KERNEL_IMAGE, late);
  }
  
- void perf_aux_output_flag(struct perf_output_handle *handle, u64 flags)
+ /*
+@@ -571,7 +576,7 @@ static void pti_clone_kernel_text(void)
+ 	 * pti_set_kernel_image_nonglobal() did to clear the
+ 	 * global bit.
+ 	 */
+-	pti_clone_pgtable(start, end_clone, PTI_LEVEL_KERNEL_IMAGE);
++	pti_clone_pgtable(start, end_clone, PTI_LEVEL_KERNEL_IMAGE, false);
+ 
+ 	/*
+ 	 * pti_clone_pgtable() will set the global bit in any PMDs
+@@ -638,8 +643,15 @@ void __init pti_init(void)
+ 
+ 	/* Undo all global bits from the init pagetables in head_64.S: */
+ 	pti_set_kernel_image_nonglobal();
++
+ 	/* Replace some of the global bits just for shared entry text: */
+-	pti_clone_entry_text();
++	/*
++	 * This is very early in boot. Device and Late initcalls can do
++	 * modprobe before free_initmem() and mark_readonly(). This
++	 * pti_clone_entry_text() allows those user-mode-helpers to function,
++	 * but notably the text is still RW.
++	 */
++	pti_clone_entry_text(false);
+ 	pti_setup_espfix64();
+ 	pti_setup_vsyscall();
+ }
+@@ -656,10 +668,11 @@ void pti_finalize(void)
+ 	if (!boot_cpu_has(X86_FEATURE_PTI))
+ 		return;
+ 	/*
+-	 * We need to clone everything (again) that maps parts of the
+-	 * kernel image.
++	 * This is after free_initmem() (all initcalls are done) and we've done
++	 * mark_readonly(). Text is now NX which might've split some PMDs
++	 * relative to the early clone.
+ 	 */
+-	pti_clone_entry_text();
++	pti_clone_entry_text(true);
+ 	pti_clone_kernel_text();
+ 
+ 	debug_checkwx_user();
 
 
 
