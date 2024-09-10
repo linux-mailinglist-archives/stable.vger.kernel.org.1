@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-74250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14DD1972E48
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:41:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3FBE972E50
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:42:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BEC311F23752
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:41:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 29666B26836
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:42:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22DDD18EFDA;
-	Tue, 10 Sep 2024 09:40:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE17218FC8F;
+	Tue, 10 Sep 2024 09:41:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ekcCYS3X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DW/duXMy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D458718B493;
-	Tue, 10 Sep 2024 09:40:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D33718BC3F;
+	Tue, 10 Sep 2024 09:41:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961255; cv=none; b=qQKlRoHyl+DhJrM5Iylh2iOO89JYq7jSTeQhBEQfV9nNeMBlms/12WWp8SQfHOEoomr77kzW+APwTvTyUZi8bVnm4LJgsSOvU1RUnprv6M59dw93l8OwIjEn7zfi0LI/j0WRKoyP4yQKojNJyadUCrvjtHoG9Xziz5pJIjXXLXQ=
+	t=1725961264; cv=none; b=T7pGbTU2nNTUA/uWYICn1tlOykNrihVs1GEfruKGXXNMufGxOmnsIOqE7OvOHFjgwCKdoepMgbbZOMaljAF89XvqMTurD2Zfm5TtMQYbf2vuH4PsqHt4mzky/9pdt24PVui2he8QETPvk/XPVk+PKiFsM8wY18/o3eYMxDbR5cU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961255; c=relaxed/simple;
-	bh=VP0n9nwxSb46ztnMTL+ivCYO9ptZdBO9zfzEBggPeoA=;
+	s=arc-20240116; t=1725961264; c=relaxed/simple;
+	bh=BS7t31bScJUiJVp3UeC/yjbOCh+TM0XYw0Ur7PdFcTs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PTCJq+W4U4rlGM1fVo884hSEXHeZLcVPLrWL+nyO6f3YWbzk/VHrvQpYQK/AJlM/yxCPO3COLO1gOTktGk3muVUOrLi8nErVzJUt7nj+ZDoAVRYdxVOMgbvWuVMuSUuj23EP0KZRMlhR2qFy+ZSWM6pgv16nhha8WkkijXQ5e7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ekcCYS3X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C49EC4CEC3;
-	Tue, 10 Sep 2024 09:40:55 +0000 (UTC)
+	 MIME-Version; b=Xs2tlKQ0C+fufo9N2GhsXRJXSq5Cbwmf2pugRehYgvEJkhH73a2X+dFVhTtQi6+RwziZ0RmU0d8uyibwpiK6DYI8pzfSAy6IqOfVtVX4I0XMlgKle/5Ced0B/YV5wacOLv9p28pjwreCpM1L8GY2ilokoAdKX3kZKNRLcKI32eA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DW/duXMy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20007C4CEC6;
+	Tue, 10 Sep 2024 09:41:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961255;
-	bh=VP0n9nwxSb46ztnMTL+ivCYO9ptZdBO9zfzEBggPeoA=;
+	s=korg; t=1725961264;
+	bh=BS7t31bScJUiJVp3UeC/yjbOCh+TM0XYw0Ur7PdFcTs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ekcCYS3X1qqwfibpTZLZVduFmqNGRbqS9BGoFK7dAYH7zn14OeFfdcvbMiUglr3gP
-	 GKzqayh+LsK7igSVrMgibB+RtPiDj7SZbjE9VsqRFQsnvFnLhxLLsHT+1Xqo2RP1gw
-	 LB6QZvFcf2LxPu1BcBN5Eiyc3CF+wxBtEygokbA0=
+	b=DW/duXMyldzDDgUuMEXYiVhRjbHjk1ZXJo0ej/ilEVo3mq87pu+C5qTlF96l4rZCp
+	 v+j1Y2Ivg/jmmTHNvEIA2j+Tub6tUZPiypwemjxBlhFXphKQxD7OcIEnCNoyZXa/q2
+	 pjxVq0mItvw4qYzgd33uXiIyIG0khZwKUzMYi/qI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+f82b36bffae7ef78b6a7@syzkaller.appspotmail.com,
-	syzbot+cbe4b96e1194b0e34db6@syzkaller.appspotmail.com,
-	Christian Brauner <brauner@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.10 001/375] libfs: fix get_stashed_dentry()
-Date: Tue, 10 Sep 2024 11:26:38 +0200
-Message-ID: <20240910092622.311269822@linuxfoundation.org>
+	Budimir Markovic <markovicbudimir@gmail.com>,
+	Stephen Hemminger <stephen@networkplumber.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.10 002/375] sch/netem: fix use after free in netem_dequeue
+Date: Tue, 10 Sep 2024 11:26:39 +0200
+Message-ID: <20240910092622.345291144@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
 References: <20240910092622.245959861@linuxfoundation.org>
@@ -67,56 +66,63 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Stephen Hemminger <stephen@networkplumber.org>
 
-commit 4e32c25b58b945f976435bbe51f39b32d714052e upstream.
+commit 3b3a2a9c6349e25a025d2330f479bc33a6ccb54a upstream.
 
-get_stashed_dentry() tries to optimistically retrieve a stashed dentry
-from a provided location.  It needs to ensure to hold rcu lock before it
-dereference the stashed location to prevent UAF issues.  Use
-rcu_dereference() instead of READ_ONCE() it's effectively equivalent
-with some lockdep bells and whistles and it communicates clearly that
-this expects rcu protection.
+If netem_dequeue() enqueues packet to inner qdisc and that qdisc
+returns __NET_XMIT_STOLEN. The packet is dropped but
+qdisc_tree_reduce_backlog() is not called to update the parent's
+q.qlen, leading to the similar use-after-free as Commit
+e04991a48dbaf382 ("netem: fix return value if duplicate enqueue
+fails")
 
-Link: https://lore.kernel.org/r/20240906-vfs-hotfix-5959800ffa68@brauner
-Fixes: 07fd7c329839 ("libfs: add path_from_stashed()")
-Reported-by: syzbot+f82b36bffae7ef78b6a7@syzkaller.appspotmail.com
-Fixes: syzbot+f82b36bffae7ef78b6a7@syzkaller.appspotmail.com
-Reported-by: syzbot+cbe4b96e1194b0e34db6@syzkaller.appspotmail.com
-Fixes: syzbot+cbe4b96e1194b0e34db6@syzkaller.appspotmail.com
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Commands to trigger KASAN UaF:
+
+ip link add type dummy
+ip link set lo up
+ip link set dummy0 up
+tc qdisc add dev lo parent root handle 1: drr
+tc filter add dev lo parent 1: basic classid 1:1
+tc class add dev lo classid 1:1 drr
+tc qdisc add dev lo parent 1:1 handle 2: netem
+tc qdisc add dev lo parent 2: handle 3: drr
+tc filter add dev lo parent 3: basic classid 3:1 action mirred egress
+redirect dev dummy0
+tc class add dev lo classid 3:1 drr
+ping -c1 -W0.01 localhost # Trigger bug
+tc class del dev lo classid 1:1
+tc class add dev lo classid 1:1 drr
+ping -c1 -W0.01 localhost # UaF
+
+Fixes: 50612537e9ab ("netem: fix classful handling")
+Reported-by: Budimir Markovic <markovicbudimir@gmail.com>
+Signed-off-by: Stephen Hemminger <stephen@networkplumber.org>
+Link: https://patch.msgid.link/20240901182438.4992-1-stephen@networkplumber.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/libfs.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/sched/sch_netem.c |    9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
---- a/fs/libfs.c
-+++ b/fs/libfs.c
-@@ -2043,12 +2043,12 @@ struct timespec64 simple_inode_init_ts(s
- }
- EXPORT_SYMBOL(simple_inode_init_ts);
+--- a/net/sched/sch_netem.c
++++ b/net/sched/sch_netem.c
+@@ -742,11 +742,10 @@ deliver:
  
--static inline struct dentry *get_stashed_dentry(struct dentry *stashed)
-+static inline struct dentry *get_stashed_dentry(struct dentry **stashed)
- {
- 	struct dentry *dentry;
- 
- 	guard(rcu)();
--	dentry = READ_ONCE(stashed);
-+	dentry = rcu_dereference(*stashed);
- 	if (!dentry)
- 		return NULL;
- 	if (!lockref_get_not_dead(&dentry->d_lockref))
-@@ -2145,7 +2145,7 @@ int path_from_stashed(struct dentry **st
- 	const struct stashed_operations *sops = mnt->mnt_sb->s_fs_info;
- 
- 	/* See if dentry can be reused. */
--	path->dentry = get_stashed_dentry(*stashed);
-+	path->dentry = get_stashed_dentry(stashed);
- 	if (path->dentry) {
- 		sops->put_data(data);
- 		goto out_path;
+ 				err = qdisc_enqueue(skb, q->qdisc, &to_free);
+ 				kfree_skb_list(to_free);
+-				if (err != NET_XMIT_SUCCESS &&
+-				    net_xmit_drop_count(err)) {
+-					qdisc_qstats_drop(sch);
+-					qdisc_tree_reduce_backlog(sch, 1,
+-								  pkt_len);
++				if (err != NET_XMIT_SUCCESS) {
++					if (net_xmit_drop_count(err))
++						qdisc_qstats_drop(sch);
++					qdisc_tree_reduce_backlog(sch, 1, pkt_len);
+ 				}
+ 				goto tfifo_dequeue;
+ 			}
 
 
 
