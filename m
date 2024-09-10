@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-75141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B70A9733E0
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:36:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AF87973541
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:47:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E81F5B2D2A0
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:28:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 14D0CB26D86
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:44:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B76731940B3;
-	Tue, 10 Sep 2024 10:24:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC70519149F;
+	Tue, 10 Sep 2024 10:43:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NGbNbGS5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JF3KYPL3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 764E719412C;
-	Tue, 10 Sep 2024 10:24:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8239C19148D;
+	Tue, 10 Sep 2024 10:43:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963869; cv=none; b=Mst0pkRA0IHCu/7dccL+qfHG7GnLh4gSpLGuaMy6ZwCEwXrDBE/YSdFtOsBjsBdZfonikRbhGgjkIokXShIyo12ob4BjDB8Lecm/XSu37HNs8URwCvm4qO9oTLNLGtkqSdjpM0fjGkpCm6z0Iyv1szOXM8coaQgMlXg1NMv5Snc=
+	t=1725965004; cv=none; b=ASXa+aMLpo1duD1CWd/6bTh5Fo4wtDDNmiS+krxqfcRNz66v1ddlTMlHuJRYdajyRDJF+laN2hEwF/DsUizg95fYLJ9On3jxiimfko4jJDt2jMexak+tPrUuBRxMcyzredAzcNYYQ3WvuUk1MuSjAkjHBVZMAsCchM23X2yfeS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963869; c=relaxed/simple;
-	bh=0iwi/pGjp5D9g7qXW1t05H0khbxJAepWtHfTS2fivBY=;
+	s=arc-20240116; t=1725965004; c=relaxed/simple;
+	bh=IsCdSFpDrhkXwqpXSXTL543kMcYwxA2JixTM7BZIN00=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GatDxbozdWaAaq/LdoPU9kHKctk0GlQ8c8jGK6VMePRPAEwkjE3kS60+GsCG3GDsjmRahGZfWlKCSGe/T9RScFv4uwcaseffHGN1y0KL3ycB8yUvLUtR0Ma9lWIHeAt4qJQeiL3AOFTB3TDJ9Va/WjklwlaY0IvC7If1MmJTX8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NGbNbGS5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0BA2C4CEC3;
-	Tue, 10 Sep 2024 10:24:28 +0000 (UTC)
+	 MIME-Version; b=ZQkVa9KhgR90hodOQY/RRvt60msyHvWbGOPWaR7FNx7AjgflDTQsN+wdOGyIpisSwBAXN7GfFAZK2OcSO66y8Hf4OdDQjOuflYIlcjVFNVupOyqFfZ417QjyKuJQACzwQ4yaQ+yFIIp/f16qmvZZdTSvBBQkJTh9tfEiOhvNZl4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JF3KYPL3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 093AAC4CEC3;
+	Tue, 10 Sep 2024 10:43:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963869;
-	bh=0iwi/pGjp5D9g7qXW1t05H0khbxJAepWtHfTS2fivBY=;
+	s=korg; t=1725965004;
+	bh=IsCdSFpDrhkXwqpXSXTL543kMcYwxA2JixTM7BZIN00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NGbNbGS5ANy6b2uVGNf9oJ36IN2kjajLhWtfnFn6KmnLw8BuR6lUPRvLhMVQR1+GJ
-	 gYVEFrAqeXE7O5S81sf9YNFAyWAju5D6Z3zm11iKRwL3FJqimMfo0eB4e78ACEhfAy
-	 e2A1CscwS+HjbGo02L1JWjgLD+tY02u+4V55POp0=
+	b=JF3KYPL3Hdhq7MSra0mrKq1otLlhbrtYkhm0z1LHMuEcVmGt2bVXaJj0MXPDwyG5L
+	 5cqLO3JggzybMK6OhKuUfQeaRVwQ1VnIqCcJGFr8DSokINeC16iAHKOOihrqgQL6lS
+	 iX1NCE0ULG0YzTAej7/A3XZZpJ/9j9IqvCu7f69Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guillaume Stols <gstols@baylibre.com>,
-	Nuno Sa <nuno.sa@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.15 178/214] iio: adc: ad7606: remove frstdata check for serial mode
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Lee Jones <lee@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 105/186] leds: spi-byte: Call of_node_put() on error path
 Date: Tue, 10 Sep 2024 11:33:20 +0200
-Message-ID: <20240910092605.974403428@linuxfoundation.org>
+Message-ID: <20240910092558.864611843@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,178 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guillaume Stols <gstols@baylibre.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit 90826e08468ba7fb35d8b39645b22d9e80004afe upstream.
+[ Upstream commit 7f9ab862e05c5bc755f65bf6db7edcffb3b49dfc ]
 
-The current implementation attempts to recover from an eventual glitch
-in the clock by checking frstdata state after reading the first
-channel's sample: If frstdata is low, it will reset the chip and
-return -EIO.
+Add a missing call to of_node_put(np) on error.
 
-This will only work in parallel mode, where frstdata pin is set low
-after the 2nd sample read starts.
-
-For the serial mode, according to the datasheet, "The FRSTDATA output
-returns to a logic low following the 16th SCLK falling edge.", thus
-after the Xth pulse, X being the number of bits in a sample, the check
-will always be true, and the driver will not work at all in serial
-mode if frstdata(optional) is defined in the devicetree as it will
-reset the chip, and return -EIO every time read_sample is called.
-
-Hence, this check must be removed for serial mode.
-
-Fixes: b9618c0cacd7 ("staging: IIO: ADC: New driver for AD7606/AD7606-6/AD7606-4")
-Signed-off-by: Guillaume Stols <gstols@baylibre.com>
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://patch.msgid.link/20240702-cleanup-ad7606-v3-1-18d5ea18770e@baylibre.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20240606173037.3091598-2-andriy.shevchenko@linux.intel.com
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ad7606.c     |   28 +------------------------
- drivers/iio/adc/ad7606.h     |    2 +
- drivers/iio/adc/ad7606_par.c |   48 ++++++++++++++++++++++++++++++++++++++++---
- 3 files changed, 49 insertions(+), 29 deletions(-)
+ drivers/leds/leds-spi-byte.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/iio/adc/ad7606.c
-+++ b/drivers/iio/adc/ad7606.c
-@@ -48,7 +48,7 @@ static const unsigned int ad7616_oversam
- 	1, 2, 4, 8, 16, 32, 64, 128,
- };
+diff --git a/drivers/leds/leds-spi-byte.c b/drivers/leds/leds-spi-byte.c
+index f1964c96fb15..82696e0607a5 100644
+--- a/drivers/leds/leds-spi-byte.c
++++ b/drivers/leds/leds-spi-byte.c
+@@ -91,7 +91,6 @@ static int spi_byte_probe(struct spi_device *spi)
+ 		dev_err(dev, "Device must have exactly one LED sub-node.");
+ 		return -EINVAL;
+ 	}
+-	child = of_get_next_available_child(dev_of_node(dev), NULL);
  
--static int ad7606_reset(struct ad7606_state *st)
-+int ad7606_reset(struct ad7606_state *st)
- {
- 	if (st->gpio_reset) {
- 		gpiod_set_value(st->gpio_reset, 1);
-@@ -59,6 +59,7 @@ static int ad7606_reset(struct ad7606_st
+ 	led = devm_kzalloc(dev, sizeof(*led), GFP_KERNEL);
+ 	if (!led)
+@@ -107,11 +106,13 @@ static int spi_byte_probe(struct spi_device *spi)
+ 	led->ldev.max_brightness = led->cdef->max_value - led->cdef->off_value;
+ 	led->ldev.brightness_set_blocking = spi_byte_brightness_set_blocking;
  
- 	return -ENODEV;
- }
-+EXPORT_SYMBOL_NS_GPL(ad7606_reset, IIO_AD7606);
++	child = of_get_next_available_child(dev_of_node(dev), NULL);
+ 	state = of_get_property(child, "default-state", NULL);
+ 	if (state) {
+ 		if (!strcmp(state, "on")) {
+ 			led->ldev.brightness = led->ldev.max_brightness;
+ 		} else if (strcmp(state, "off")) {
++			of_node_put(child);
+ 			/* all other cases except "off" */
+ 			dev_err(dev, "default-state can only be 'on' or 'off'");
+ 			return -EINVAL;
+@@ -122,9 +123,12 @@ static int spi_byte_probe(struct spi_device *spi)
  
- static int ad7606_reg_access(struct iio_dev *indio_dev,
- 			     unsigned int reg,
-@@ -87,31 +88,6 @@ static int ad7606_read_samples(struct ad
- {
- 	unsigned int num = st->chip_info->num_channels - 1;
- 	u16 *data = st->data;
--	int ret;
--
--	/*
--	 * The frstdata signal is set to high while and after reading the sample
--	 * of the first channel and low for all other channels. This can be used
--	 * to check that the incoming data is correctly aligned. During normal
--	 * operation the data should never become unaligned, but some glitch or
--	 * electrostatic discharge might cause an extra read or clock cycle.
--	 * Monitoring the frstdata signal allows to recover from such failure
--	 * situations.
--	 */
--
--	if (st->gpio_frstdata) {
--		ret = st->bops->read_block(st->dev, 1, data);
--		if (ret)
--			return ret;
--
--		if (!gpiod_get_value(st->gpio_frstdata)) {
--			ad7606_reset(st);
--			return -EIO;
--		}
--
--		data++;
--		num--;
--	}
- 
- 	return st->bops->read_block(st->dev, num, data);
- }
---- a/drivers/iio/adc/ad7606.h
-+++ b/drivers/iio/adc/ad7606.h
-@@ -153,6 +153,8 @@ int ad7606_probe(struct device *dev, int
- 		 const char *name, unsigned int id,
- 		 const struct ad7606_bus_ops *bops);
- 
-+int ad7606_reset(struct ad7606_state *st);
+ 	ret = devm_led_classdev_register(&spi->dev, &led->ldev);
+ 	if (ret) {
++		of_node_put(child);
+ 		mutex_destroy(&led->mutex);
+ 		return ret;
+ 	}
 +
- enum ad7606_supported_device_ids {
- 	ID_AD7605_4,
- 	ID_AD7606_8,
---- a/drivers/iio/adc/ad7606_par.c
-+++ b/drivers/iio/adc/ad7606_par.c
-@@ -6,6 +6,7 @@
-  */
- 
- #include <linux/module.h>
-+#include <linux/gpio/consumer.h>
- #include <linux/platform_device.h>
- #include <linux/types.h>
- #include <linux/err.h>
-@@ -20,8 +21,29 @@ static int ad7606_par16_read_block(struc
- 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
- 	struct ad7606_state *st = iio_priv(indio_dev);
- 
--	insw((unsigned long)st->base_address, buf, count);
- 
-+	/*
-+	 * On the parallel interface, the frstdata signal is set to high while
-+	 * and after reading the sample of the first channel and low for all
-+	 * other channels.  This can be used to check that the incoming data is
-+	 * correctly aligned.  During normal operation the data should never
-+	 * become unaligned, but some glitch or electrostatic discharge might
-+	 * cause an extra read or clock cycle.  Monitoring the frstdata signal
-+	 * allows to recover from such failure situations.
-+	 */
-+	int num = count;
-+	u16 *_buf = buf;
-+
-+	if (st->gpio_frstdata) {
-+		insw((unsigned long)st->base_address, _buf, 1);
-+		if (!gpiod_get_value(st->gpio_frstdata)) {
-+			ad7606_reset(st);
-+			return -EIO;
-+		}
-+		_buf++;
-+		num--;
-+	}
-+	insw((unsigned long)st->base_address, _buf, num);
- 	return 0;
- }
- 
-@@ -34,8 +56,28 @@ static int ad7606_par8_read_block(struct
- {
- 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
- 	struct ad7606_state *st = iio_priv(indio_dev);
--
--	insb((unsigned long)st->base_address, buf, count * 2);
-+	/*
-+	 * On the parallel interface, the frstdata signal is set to high while
-+	 * and after reading the sample of the first channel and low for all
-+	 * other channels.  This can be used to check that the incoming data is
-+	 * correctly aligned.  During normal operation the data should never
-+	 * become unaligned, but some glitch or electrostatic discharge might
-+	 * cause an extra read or clock cycle.  Monitoring the frstdata signal
-+	 * allows to recover from such failure situations.
-+	 */
-+	int num = count;
-+	u16 *_buf = buf;
-+
-+	if (st->gpio_frstdata) {
-+		insb((unsigned long)st->base_address, _buf, 2);
-+		if (!gpiod_get_value(st->gpio_frstdata)) {
-+			ad7606_reset(st);
-+			return -EIO;
-+		}
-+		_buf++;
-+		num--;
-+	}
-+	insb((unsigned long)st->base_address, _buf, num * 2);
++	of_node_put(child);
+ 	spi_set_drvdata(spi, led);
  
  	return 0;
- }
+-- 
+2.43.0
+
 
 
 
