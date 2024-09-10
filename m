@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-75575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75614-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 590DC973540
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:47:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AF88973565
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:48:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8BFB81C23CDA
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:47:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B43361F2615C
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:48:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A71F518C912;
-	Tue, 10 Sep 2024 10:45:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C484F18B491;
+	Tue, 10 Sep 2024 10:47:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GiFPWrE5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CvyEx9AI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6413217A589;
-	Tue, 10 Sep 2024 10:45:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F71C8DF;
+	Tue, 10 Sep 2024 10:47:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725965134; cv=none; b=OMpMomjTPyRFph/iuEXY3cSFGKEPkJC4xqpzvI0rE3XUGx6Ot2rVZ7P4vWZ7zjpBxqbYVHPG6KyFxlrKyvf6NTyK2Ajtj+2c4Hu3FZeSzeowRbpnwhk9KbUdIksgRGAw6oh86jpW9xCdkMlq+VY5AQUmQGqaN+qMY2IdaDqzERY=
+	t=1725965246; cv=none; b=bzWmxms2qp2EmoGjxMw5lCrevsI6D1sKttN57p4+UxXNDepqFby26rIzT+DVpTpLzNTbIZJpM6/14kfVbVyiR35OR40t9lQzU3Ni2NQBGKg4Yo7/o2zRP2vZung3ucMmarQUSvzpYZxIHfwRjyaaWYhTSSMEzln1kpINV6IEhGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725965134; c=relaxed/simple;
-	bh=9FIMi/lSVXmrHASRyPiRd2Rngb6W+O3A44i6Lo42F3M=;
+	s=arc-20240116; t=1725965246; c=relaxed/simple;
+	bh=tS+YvTVGb5P0KzSKKUgGVd+DnrFATzKWEL71Fd9JN/0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DrtECU+FaXn2qxXTE7cAGjD647kbeAt/l5oMdVVqN5wp0P7MCmNlThZyZPS7nklkqCiQY7hXc2i9xlFsBpMRun85o/tWiGH7y1SP4Icwkj7uL2pk3IVUueg9jyOsrAg1P5SnWP4bPH/c3mjnAc/lOG+DwdqGPLxws89QZ8EJseA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GiFPWrE5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF140C4CEC3;
-	Tue, 10 Sep 2024 10:45:33 +0000 (UTC)
+	 MIME-Version; b=QiPZ4x7eYcELp+m1yWoZAF3cYiVO4GpwGssS3+PM98X1vuQ/AAI2I9LSGEZgrgrp9hJn1Nw0CG534R7BnGxvV3CDImpqk5grJhA25XmaXj+vbyjs6ShoHvoRnZ0QYwiVrAma28Dc/zAjMeFvcFuA7jM3q+Q+4wAt5NFgu81j3Qs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CvyEx9AI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0063C4CEC3;
+	Tue, 10 Sep 2024 10:47:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725965134;
-	bh=9FIMi/lSVXmrHASRyPiRd2Rngb6W+O3A44i6Lo42F3M=;
+	s=korg; t=1725965246;
+	bh=tS+YvTVGb5P0KzSKKUgGVd+DnrFATzKWEL71Fd9JN/0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GiFPWrE5FljRJ0uKnuVhvhliyL3w5X0REU3qD67bnxXu8EXVAoPMkZ4b0fRwCLurp
-	 XUdu6G++zGnwQw0b4sT1GvY3UVROw5KkGZWuruFZxmnhO5QNSz8SX0fXkETRqdV6i7
-	 uofvbaK1KFFpQR+TfFCdwlJwgMT283Evzm39GmNM=
+	b=CvyEx9AI/0W8ZL7EJjz4Vz8deaSddE/GyXOikEw3qifHXhMpki3xDRmDw55xWzYZo
+	 mpEekYfKR1hIT1bpqPeDhVlACs5PUWoyyomvrjxKOpGkvMMIH6s8yXuhB6mJ56KBIs
+	 UGftqbnoKcn6ehYYWljg8dVNFFyFT/mbtVoCuaeM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
-	Vasily Gorbik <gor@linux.ibm.com>,
+	syzbot+24c0361074799d02c452@syzkaller.appspotmail.com,
+	Camila Alvarez <cam.alvarez.i@gmail.com>,
+	Silvan Jegen <s.jegen@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 148/186] s390/vmlinux.lds.S: Move ro_after_init section behind rodata section
-Date: Tue, 10 Sep 2024 11:34:03 +0200
-Message-ID: <20240910092600.698314049@linuxfoundation.org>
+Subject: [PATCH 5.10 149/186] HID: cougar: fix slab-out-of-bounds Read in cougar_report_fixup
+Date: Tue, 10 Sep 2024 11:34:04 +0200
+Message-ID: <20240910092600.731700703@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
 References: <20240910092554.645718780@linuxfoundation.org>
@@ -67,73 +68,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Camila Alvarez <cam.alvarez.i@gmail.com>
 
-[ Upstream commit 75c10d5377d8821efafed32e4d72068d9c1f8ec0 ]
+[ Upstream commit a6e9c391d45b5865b61e569146304cff72821a5d ]
 
-The .data.rel.ro and .got section were added between the rodata and
-ro_after_init data section, which adds an RW mapping in between all RO
-mapping of the kernel image:
+report_fixup for the Cougar 500k Gaming Keyboard was not verifying
+that the report descriptor size was correct before accessing it
 
----[ Kernel Image Start ]---
-0x000003ffe0000000-0x000003ffe0e00000        14M PMD RO X
-0x000003ffe0e00000-0x000003ffe0ec7000       796K PTE RO X
-0x000003ffe0ec7000-0x000003ffe0f00000       228K PTE RO NX
-0x000003ffe0f00000-0x000003ffe1300000         4M PMD RO NX
-0x000003ffe1300000-0x000003ffe1331000       196K PTE RO NX
-0x000003ffe1331000-0x000003ffe13b3000       520K PTE RW NX <---
-0x000003ffe13b3000-0x000003ffe13d5000       136K PTE RO NX
-0x000003ffe13d5000-0x000003ffe1400000       172K PTE RW NX
-0x000003ffe1400000-0x000003ffe1500000         1M PMD RW NX
-0x000003ffe1500000-0x000003ffe1700000         2M PTE RW NX
-0x000003ffe1700000-0x000003ffe1800000         1M PMD RW NX
-0x000003ffe1800000-0x000003ffe187e000       504K PTE RW NX
----[ Kernel Image End ]---
-
-Move the ro_after_init data section again right behind the rodata
-section to prevent interleaving RO and RW mappings:
-
----[ Kernel Image Start ]---
-0x000003ffe0000000-0x000003ffe0e00000        14M PMD RO X
-0x000003ffe0e00000-0x000003ffe0ec7000       796K PTE RO X
-0x000003ffe0ec7000-0x000003ffe0f00000       228K PTE RO NX
-0x000003ffe0f00000-0x000003ffe1300000         4M PMD RO NX
-0x000003ffe1300000-0x000003ffe1353000       332K PTE RO NX
-0x000003ffe1353000-0x000003ffe1400000       692K PTE RW NX
-0x000003ffe1400000-0x000003ffe1500000         1M PMD RW NX
-0x000003ffe1500000-0x000003ffe1700000         2M PTE RW NX
-0x000003ffe1700000-0x000003ffe1800000         1M PMD RW NX
-0x000003ffe1800000-0x000003ffe187e000       504K PTE RW NX
----[ Kernel Image End ]---
-
-Reviewed-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+Reported-by: syzbot+24c0361074799d02c452@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=24c0361074799d02c452
+Signed-off-by: Camila Alvarez <cam.alvarez.i@gmail.com>
+Reviewed-by: Silvan Jegen <s.jegen@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/kernel/vmlinux.lds.S | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/hid/hid-cougar.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/s390/kernel/vmlinux.lds.S b/arch/s390/kernel/vmlinux.lds.S
-index 1c65c38ec9a3..c4bf95371f49 100644
---- a/arch/s390/kernel/vmlinux.lds.S
-+++ b/arch/s390/kernel/vmlinux.lds.S
-@@ -69,6 +69,15 @@ SECTIONS
- 	. = ALIGN(PAGE_SIZE);
- 	__end_ro_after_init = .;
- 
-+	.data.rel.ro : {
-+		*(.data.rel.ro .data.rel.ro.*)
-+	}
-+	.got : {
-+		__got_start = .;
-+		*(.got)
-+		__got_end = .;
-+	}
-+
- 	RW_DATA(0x100, PAGE_SIZE, THREAD_SIZE)
- 	BOOT_DATA_PRESERVED
- 
+diff --git a/drivers/hid/hid-cougar.c b/drivers/hid/hid-cougar.c
+index 28d671c5e0ca..d173b13ff198 100644
+--- a/drivers/hid/hid-cougar.c
++++ b/drivers/hid/hid-cougar.c
+@@ -106,7 +106,7 @@ static void cougar_fix_g6_mapping(void)
+ static __u8 *cougar_report_fixup(struct hid_device *hdev, __u8 *rdesc,
+ 				 unsigned int *rsize)
+ {
+-	if (rdesc[2] == 0x09 && rdesc[3] == 0x02 &&
++	if (*rsize >= 117 && rdesc[2] == 0x09 && rdesc[3] == 0x02 &&
+ 	    (rdesc[115] | rdesc[116] << 8) >= HID_MAX_USAGES) {
+ 		hid_info(hdev,
+ 			"usage count exceeds max: fixing up report descriptor\n");
 -- 
 2.43.0
 
