@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-75277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C2CC9733C2
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:35:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BE27973198
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:13:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3EF081C247CA
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:35:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6FA5D1C2495D
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:13:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CD6B199389;
-	Tue, 10 Sep 2024 10:31:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69D62196D81;
+	Tue, 10 Sep 2024 10:08:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jOB4FSX5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="okTpL3FV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEB6717BEAD;
-	Tue, 10 Sep 2024 10:31:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2757A196C86;
+	Tue, 10 Sep 2024 10:08:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964265; cv=none; b=c9pEsxN8KmXup73ti0U3A6vceNEXkM6P18P7J55U/yzsnsHSxG43YYsJ/PE8d0Ezsv1Tj++STHcmPDrUnU6hf6haJgOTIN83/n32sUjvfsmLTykvP5Wn4TxasEpFzq/PzAOjEp7gxVVRa0VMg6v3uYxiNcyBCPmlgDmGotZNbSI=
+	t=1725962928; cv=none; b=W95IIgiH5gSiopcRhZPkyRxXpc3OPez97cq5J+h72epY5OkOQpR3KzWSovhJmOPfvV6wNlP9qr4nuncRbm1uEKqxJGNz5mKq83X4xfvV8q9YPgl0dkJQmWfZ4o2tSthJJ045OT0fPZXwrRVAzUM0oSkQ1q5u1I1fNcdQ9EwGAc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964265; c=relaxed/simple;
-	bh=/ydgUjfA9bNMOp4j5zqEKDHRHzigMLQ2wQWhQ9RdJl0=;
+	s=arc-20240116; t=1725962928; c=relaxed/simple;
+	bh=qgNdGUUpxD+lBo2U51A/iC16fhzVwRnBDhoaF3sCiio=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DmgmJqmXgYNdz0uyCoKgVH08XEMKXrk51gXOT5QOzOr7mGHqSpGxsBMG2PZRWoPt62oUjp2/x7Q9smUuyKBsBNVpemwJBYbayK2vGpPF/atxYcRCjBbI8rQCFtxbjYek3Njz0Puo4uvmrYi5UqS1BL0cAc9tB/1Xc/CwXnlKBQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jOB4FSX5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AFCFC4CEC3;
-	Tue, 10 Sep 2024 10:31:03 +0000 (UTC)
+	 MIME-Version; b=CE+3DWYb8n6TtiTpoTuwjxs/pNcZwO7viZ5wXk7vXxII34qWR5rAWZ/2WHv1TsQdMngYzOmlnv6FgNu8wd4bxXDv/WB/oIe41O+K4XWUbdF451qRP1homFGWi01dcDok4+iL4phS1LGi7FHPfpw2603QGgX8Tj4PrWeO9BehA4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=okTpL3FV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A181DC4CEC3;
+	Tue, 10 Sep 2024 10:08:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964264;
-	bh=/ydgUjfA9bNMOp4j5zqEKDHRHzigMLQ2wQWhQ9RdJl0=;
+	s=korg; t=1725962928;
+	bh=qgNdGUUpxD+lBo2U51A/iC16fhzVwRnBDhoaF3sCiio=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jOB4FSX57VMVqm0Wk2/Iz3SdLj1AZVbHJ00wXwVK8ud40BJcsOp5Kb97mvvT2K50H
-	 NRUKi8Bc6BLfmJHp7Cu1YNWsEDlnLWbS9iZPquUGY0VViUispRsjP4EycRhVWIcr9d
-	 NLb0ovkQ3dxAu/T8CaNsoiv3H7OEMaOhBAq5bPLM=
+	b=okTpL3FVOZ2d2dD74TUzT2qHrzkA0+ownWlIlJ36wuE9dYl4DEL/hxzU7+qGOH+I+
+	 PLJGlmwvWyzoU/EWTtipKiO+hjawBHYnWMMS8wpjzHwvPuyZixCuWiS/UIcbNLtclA
+	 8H/CCTF+EXTAhIXEgdflRCWh8l2oksfq/WRlQ1io=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Danijel Slivka <danijel.slivka@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Yunjian Wang <wangyunjian@huawei.com>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 086/269] drm/amdgpu: clear RB_OVERFLOW bit when enabling interrupts
-Date: Tue, 10 Sep 2024 11:31:13 +0200
-Message-ID: <20240910092611.271682738@linuxfoundation.org>
+Subject: [PATCH 6.1 050/192] netfilter: nf_conncount: fix wrong variable type
+Date: Tue, 10 Sep 2024 11:31:14 +0200
+Message-ID: <20240910092600.051848595@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +60,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Danijel Slivka <danijel.slivka@amd.com>
+From: Yunjian Wang <wangyunjian@huawei.com>
 
-[ Upstream commit afbf7955ff01e952dbdd465fa25a2ba92d00291c ]
+[ Upstream commit 0b88d1654d556264bcd24a9cb6383f0888e30131 ]
 
-Why:
-Setting IH_RB_WPTR register to 0 will not clear the RB_OVERFLOW bit
-if RB_ENABLE is not set.
+Now there is a issue is that code checks reports a warning: implicit
+narrowing conversion from type 'unsigned int' to small type 'u8' (the
+'keylen' variable). Fix it by removing the 'keylen' variable.
 
-How to fix:
-Set WPTR_OVERFLOW_CLEAR bit after RB_ENABLE bit is set.
-The RB_ENABLE bit is required to be set, together with
-WPTR_OVERFLOW_ENABLE bit so that setting WPTR_OVERFLOW_CLEAR bit
-would clear the RB_OVERFLOW.
-
-Signed-off-by: Danijel Slivka <danijel.slivka@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Yunjian Wang <wangyunjian@huawei.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/ih_v6_0.c | 28 ++++++++++++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ net/netfilter/nf_conncount.c | 8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/ih_v6_0.c b/drivers/gpu/drm/amd/amdgpu/ih_v6_0.c
-index f432dc72df6a..725b1a585088 100644
---- a/drivers/gpu/drm/amd/amdgpu/ih_v6_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/ih_v6_0.c
-@@ -135,6 +135,34 @@ static int ih_v6_0_toggle_ring_interrupts(struct amdgpu_device *adev,
+diff --git a/net/netfilter/nf_conncount.c b/net/netfilter/nf_conncount.c
+index 5d8ed6c90b7e..5885810da412 100644
+--- a/net/netfilter/nf_conncount.c
++++ b/net/netfilter/nf_conncount.c
+@@ -321,7 +321,6 @@ insert_tree(struct net *net,
+ 	struct nf_conncount_rb *rbconn;
+ 	struct nf_conncount_tuple *conn;
+ 	unsigned int count = 0, gc_count = 0;
+-	u8 keylen = data->keylen;
+ 	bool do_gc = true;
  
- 	tmp = RREG32(ih_regs->ih_rb_cntl);
- 	tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, RB_ENABLE, (enable ? 1 : 0));
-+
-+	if (enable) {
-+		/* Unset the CLEAR_OVERFLOW bit to make sure the next step
-+		 * is switching the bit from 0 to 1
-+		 */
-+		tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 0);
-+		if (amdgpu_sriov_vf(adev) && amdgpu_sriov_reg_indirect_ih(adev)) {
-+			if (psp_reg_program(&adev->psp, ih_regs->psp_reg_id, tmp))
-+				return -ETIMEDOUT;
-+		} else {
-+			WREG32_NO_KIQ(ih_regs->ih_rb_cntl, tmp);
-+		}
-+
-+		/* Clear RB_OVERFLOW bit */
-+		tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 1);
-+		if (amdgpu_sriov_vf(adev) && amdgpu_sriov_reg_indirect_ih(adev)) {
-+			if (psp_reg_program(&adev->psp, ih_regs->psp_reg_id, tmp))
-+				return -ETIMEDOUT;
-+		} else {
-+			WREG32_NO_KIQ(ih_regs->ih_rb_cntl, tmp);
-+		}
-+
-+		/* Unset the CLEAR_OVERFLOW bit immediately so new overflows
-+		 * can be detected.
-+		 */
-+		tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 0);
-+	}
-+
- 	/* enable_intr field is only valid in ring0 */
- 	if (ih == &adev->irq.ih)
- 		tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, ENABLE_INTR, (enable ? 1 : 0));
+ 	spin_lock_bh(&nf_conncount_locks[hash]);
+@@ -333,7 +332,7 @@ insert_tree(struct net *net,
+ 		rbconn = rb_entry(*rbnode, struct nf_conncount_rb, node);
+ 
+ 		parent = *rbnode;
+-		diff = key_diff(key, rbconn->key, keylen);
++		diff = key_diff(key, rbconn->key, data->keylen);
+ 		if (diff < 0) {
+ 			rbnode = &((*rbnode)->rb_left);
+ 		} else if (diff > 0) {
+@@ -378,7 +377,7 @@ insert_tree(struct net *net,
+ 
+ 	conn->tuple = *tuple;
+ 	conn->zone = *zone;
+-	memcpy(rbconn->key, key, sizeof(u32) * keylen);
++	memcpy(rbconn->key, key, sizeof(u32) * data->keylen);
+ 
+ 	nf_conncount_list_init(&rbconn->list);
+ 	list_add(&conn->node, &rbconn->list.head);
+@@ -403,7 +402,6 @@ count_tree(struct net *net,
+ 	struct rb_node *parent;
+ 	struct nf_conncount_rb *rbconn;
+ 	unsigned int hash;
+-	u8 keylen = data->keylen;
+ 
+ 	hash = jhash2(key, data->keylen, conncount_rnd) % CONNCOUNT_SLOTS;
+ 	root = &data->root[hash];
+@@ -414,7 +412,7 @@ count_tree(struct net *net,
+ 
+ 		rbconn = rb_entry(parent, struct nf_conncount_rb, node);
+ 
+-		diff = key_diff(key, rbconn->key, keylen);
++		diff = key_diff(key, rbconn->key, data->keylen);
+ 		if (diff < 0) {
+ 			parent = rcu_dereference_raw(parent->rb_left);
+ 		} else if (diff > 0) {
 -- 
 2.43.0
 
