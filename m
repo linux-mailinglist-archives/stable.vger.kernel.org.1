@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-74206-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84B42972E08
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:38:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3079972FFB
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:56:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F8F4284607
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:38:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E20CD1C24B69
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:56:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A154189B9C;
-	Tue, 10 Sep 2024 09:38:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E813188A28;
+	Tue, 10 Sep 2024 09:56:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m99vDUXA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zfqbm1/b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA91D46444;
-	Tue, 10 Sep 2024 09:38:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E19B14F12C;
+	Tue, 10 Sep 2024 09:56:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961124; cv=none; b=EaPRCpmGVy2LwsVgIwjTNaM9Win07y3Czl5+as1gts78uiEVY7Wn/DSm54FTnjVd8ah8lIJcaUjw6OOJ+ySjxBIfy0sgtB4/BI3TF+r8M+HWLLRN+87OLBdn3zqk7nVubryltxYTvWzapPBJqU+29bPbBHmEhnEvITqSQApjXIE=
+	t=1725962190; cv=none; b=mp4x79a/6XDFaIHpWj1qARclZTFQI5woK5Ek5kuaogrwuF1coS62GQ8BW6bnxgYobuCGZX5DSxtlaJXBI1UIiQQH4sEYPKIpxN0wiebpAtf80woG4z5tcoFzMqBYH4C6gqrUbnPu9e9sybus1Gm/uBRy5RSv6u14LjLw9wWts+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961124; c=relaxed/simple;
-	bh=ixVdmBMq5+57P5jrZwrjW6EasJMu+adBRtiDlMi2EYk=;
+	s=arc-20240116; t=1725962190; c=relaxed/simple;
+	bh=BdldfbQFOPAjrFPHWQ3tKMAImLJxM9UBFoZJpyXP7NA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XjqUWpNg4G8a2nIJSGNIac6kjGiaB66R++5ORzGo4aSwfCVuvZ3CudAz3tjjUkBAbFSssetEkLpKoFbnq8DWcy+R82Jo5BbRSTSt1MpVKHOyjMTzK89s6MiVtv5Utsf6CQ+U3DzXyIsuJEtnOOWtf5g7v8Y5X97ebixyOqq+vOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m99vDUXA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D655C4CEC3;
-	Tue, 10 Sep 2024 09:38:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=inoJTCZq8oX2/o+zKJ5hwHoxogMwQZmAlS642AAkuxvHP39sroooz5lyLmQT3/qzX5B8XK7hvh2zYZVmCB8XN4M4G7bwG+YSqYSApgaPZ2bgW+XxFLgtjelNxfryfm9xK9mEaxZ9nHSiG4jDKzwoimwDIgJYIvN+eA8MJhvQUp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zfqbm1/b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD151C4CEC3;
+	Tue, 10 Sep 2024 09:56:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961124;
-	bh=ixVdmBMq5+57P5jrZwrjW6EasJMu+adBRtiDlMi2EYk=;
+	s=korg; t=1725962190;
+	bh=BdldfbQFOPAjrFPHWQ3tKMAImLJxM9UBFoZJpyXP7NA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m99vDUXAmPNt6550fC72wku+OJ+Kvkmb4v0MTzKPz/4obwDiZXKJwxY1ESXItt3AW
-	 nQCGhBssE+20yKCFyjogrWxYuFXlp2orcGtiUcXFKwQYCqk/qkE3/qIqo44u/Vzr1g
-	 cHedpsgSVDy/Bdyf4Ept8RpF5L9+gkfuIsCQ3Cfc=
+	b=Zfqbm1/bTvecid90D3r4/t2S0Tv3Gt9EPqRPfXCX9UPVVazNMTKk/FzbLesU31luY
+	 VnSh+N+I3UcBG235edtOe6YVy4rC4KRqsMeLIkgVyG/ovpyQo4vBLLFWin+ABgCbFw
+	 xsHH9qrxK/C5odaJiwywI/Y2H6Kll6Eza7tqf9No=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Brian Norris <briannorris@chromium.org>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	=?UTF-8?q?Marek=20Ol=C5=A1=C3=A1k?= <marek.olsak@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 61/96] wifi: mwifiex: Do not return unused priv in mwifiex_get_priv_by_id()
+Subject: [PATCH 6.10 326/375] drm/amdgpu: handle gfx12 in amdgpu_display_verify_sizes
 Date: Tue, 10 Sep 2024 11:32:03 +0200
-Message-ID: <20240910092544.223114552@linuxfoundation.org>
+Message-ID: <20240910092633.522728504@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
-References: <20240910092541.383432924@linuxfoundation.org>
+In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
+References: <20240910092622.245959861@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,116 +60,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+From: Marek Olšák <marek.olsak@amd.com>
 
-[ Upstream commit c145eea2f75ff7949392aebecf7ef0a81c1f6c14 ]
+[ Upstream commit 8dd1426e2c80e32ac1995007330c8f95ffa28ebb ]
 
-mwifiex_get_priv_by_id() returns the priv pointer corresponding to
-the bss_num and bss_type, but without checking if the priv is actually
-currently in use.
-Unused priv pointers do not have a wiphy attached to them which can
-lead to NULL pointer dereferences further down the callstack.  Fix
-this by returning only used priv pointers which have priv->bss_mode
-set to something else than NL80211_IFTYPE_UNSPECIFIED.
+It verified GFX9-11 swizzle modes on GFX12, which has undefined behavior.
 
-Said NULL pointer dereference happened when an Accesspoint was started
-with wpa_supplicant -i mlan0 with this config:
-
-network={
-        ssid="somessid"
-        mode=2
-        frequency=2412
-        key_mgmt=WPA-PSK WPA-PSK-SHA256
-        proto=RSN
-        group=CCMP
-        pairwise=CCMP
-        psk="12345678"
-}
-
-When waiting for the AP to be established, interrupting wpa_supplicant
-with <ctrl-c> and starting it again this happens:
-
-| Unable to handle kernel NULL pointer dereference at virtual address 0000000000000140
-| Mem abort info:
-|   ESR = 0x0000000096000004
-|   EC = 0x25: DABT (current EL), IL = 32 bits
-|   SET = 0, FnV = 0
-|   EA = 0, S1PTW = 0
-|   FSC = 0x04: level 0 translation fault
-| Data abort info:
-|   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
-|   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-|   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-| user pgtable: 4k pages, 48-bit VAs, pgdp=0000000046d96000
-| [0000000000000140] pgd=0000000000000000, p4d=0000000000000000
-| Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
-| Modules linked in: caam_jr caamhash_desc spidev caamalg_desc crypto_engine authenc libdes mwifiex_sdio
-+mwifiex crct10dif_ce cdc_acm onboard_usb_hub fsl_imx8_ddr_perf imx8m_ddrc rtc_ds1307 lm75 rtc_snvs
-+imx_sdma caam imx8mm_thermal spi_imx error imx_cpufreq_dt fuse ip_tables x_tables ipv6
-| CPU: 0 PID: 8 Comm: kworker/0:1 Not tainted 6.9.0-00007-g937242013fce-dirty #18
-| Hardware name: somemachine (DT)
-| Workqueue: events sdio_irq_work
-| pstate: 00000005 (nzcv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-| pc : mwifiex_get_cfp+0xd8/0x15c [mwifiex]
-| lr : mwifiex_get_cfp+0x34/0x15c [mwifiex]
-| sp : ffff8000818b3a70
-| x29: ffff8000818b3a70 x28: ffff000006bfd8a5 x27: 0000000000000004
-| x26: 000000000000002c x25: 0000000000001511 x24: 0000000002e86bc9
-| x23: ffff000006bfd996 x22: 0000000000000004 x21: ffff000007bec000
-| x20: 000000000000002c x19: 0000000000000000 x18: 0000000000000000
-| x17: 000000040044ffff x16: 00500072b5503510 x15: ccc283740681e517
-| x14: 0201000101006d15 x13: 0000000002e8ff43 x12: 002c01000000ffb1
-| x11: 0100000000000000 x10: 02e8ff43002c0100 x9 : 0000ffb100100157
-| x8 : ffff000003d20000 x7 : 00000000000002f1 x6 : 00000000ffffe124
-| x5 : 0000000000000001 x4 : 0000000000000003 x3 : 0000000000000000
-| x2 : 0000000000000000 x1 : 0001000000011001 x0 : 0000000000000000
-| Call trace:
-|  mwifiex_get_cfp+0xd8/0x15c [mwifiex]
-|  mwifiex_parse_single_response_buf+0x1d0/0x504 [mwifiex]
-|  mwifiex_handle_event_ext_scan_report+0x19c/0x2f8 [mwifiex]
-|  mwifiex_process_sta_event+0x298/0xf0c [mwifiex]
-|  mwifiex_process_event+0x110/0x238 [mwifiex]
-|  mwifiex_main_process+0x428/0xa44 [mwifiex]
-|  mwifiex_sdio_interrupt+0x64/0x12c [mwifiex_sdio]
-|  process_sdio_pending_irqs+0x64/0x1b8
-|  sdio_irq_work+0x4c/0x7c
-|  process_one_work+0x148/0x2a0
-|  worker_thread+0x2fc/0x40c
-|  kthread+0x110/0x114
-|  ret_from_fork+0x10/0x20
-| Code: a94153f3 a8c37bfd d50323bf d65f03c0 (f940a000)
-| ---[ end trace 0000000000000000 ]---
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Acked-by: Brian Norris <briannorris@chromium.org>
-Reviewed-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20240703072409.556618-1-s.hauer@pengutronix.de
+Signed-off-by: Marek Olšák <marek.olsak@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwifiex/main.h | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_display.c | 27 ++++++++++++++++++++-
+ include/uapi/drm/drm_fourcc.h               |  2 ++
+ 2 files changed, 28 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/main.h b/drivers/net/wireless/marvell/mwifiex/main.h
-index 7e526014b638..89774e0316bd 100644
---- a/drivers/net/wireless/marvell/mwifiex/main.h
-+++ b/drivers/net/wireless/marvell/mwifiex/main.h
-@@ -1306,6 +1306,9 @@ mwifiex_get_priv_by_id(struct mwifiex_adapter *adapter,
- 
- 	for (i = 0; i < adapter->priv_num; i++) {
- 		if (adapter->priv[i]) {
-+			if (adapter->priv[i]->bss_mode == NL80211_IFTYPE_UNSPECIFIED)
-+				continue;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
+index 4fcc227db00b..30755ce4002d 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
+@@ -1041,6 +1041,30 @@ static int amdgpu_display_verify_sizes(struct amdgpu_framebuffer *rfb)
+ 			block_width = 256 / format_info->cpp[i];
+ 			block_height = 1;
+ 			block_size_log2 = 8;
++		} else if (AMD_FMT_MOD_GET(TILE_VERSION, modifier) >= AMD_FMT_MOD_TILE_VER_GFX12) {
++			int swizzle = AMD_FMT_MOD_GET(TILE, modifier);
 +
- 			if ((adapter->priv[i]->bss_num == bss_num) &&
- 			    (adapter->priv[i]->bss_type == bss_type))
- 				break;
++			switch (swizzle) {
++			case AMD_FMT_MOD_TILE_GFX12_256B_2D:
++				block_size_log2 = 8;
++				break;
++			case AMD_FMT_MOD_TILE_GFX12_4K_2D:
++				block_size_log2 = 12;
++				break;
++			case AMD_FMT_MOD_TILE_GFX12_64K_2D:
++				block_size_log2 = 16;
++				break;
++			case AMD_FMT_MOD_TILE_GFX12_256K_2D:
++				block_size_log2 = 18;
++				break;
++			default:
++				drm_dbg_kms(rfb->base.dev,
++					    "Gfx12 swizzle mode with unknown block size: %d\n", swizzle);
++				return -EINVAL;
++			}
++
++			get_block_dimensions(block_size_log2, format_info->cpp[i],
++					     &block_width, &block_height);
+ 		} else {
+ 			int swizzle = AMD_FMT_MOD_GET(TILE, modifier);
+ 
+@@ -1076,7 +1100,8 @@ static int amdgpu_display_verify_sizes(struct amdgpu_framebuffer *rfb)
+ 			return ret;
+ 	}
+ 
+-	if (AMD_FMT_MOD_GET(DCC, modifier)) {
++	if (AMD_FMT_MOD_GET(TILE_VERSION, modifier) <= AMD_FMT_MOD_TILE_VER_GFX11 &&
++	    AMD_FMT_MOD_GET(DCC, modifier)) {
+ 		if (AMD_FMT_MOD_GET(DCC_RETILE, modifier)) {
+ 			block_size_log2 = get_dcc_block_size(modifier, false, false);
+ 			get_block_dimensions(block_size_log2 + 8, format_info->cpp[0],
+diff --git a/include/uapi/drm/drm_fourcc.h b/include/uapi/drm/drm_fourcc.h
+index 4168445fbb8b..2d84a8052b15 100644
+--- a/include/uapi/drm/drm_fourcc.h
++++ b/include/uapi/drm/drm_fourcc.h
+@@ -1506,6 +1506,8 @@ drm_fourcc_canonicalize_nvidia_format_mod(__u64 modifier)
+  *    6 - 64KB_3D
+  *    7 - 256KB_3D
+  */
++#define AMD_FMT_MOD_TILE_GFX12_256B_2D 1
++#define AMD_FMT_MOD_TILE_GFX12_4K_2D 2
+ #define AMD_FMT_MOD_TILE_GFX12_64K_2D 3
+ #define AMD_FMT_MOD_TILE_GFX12_256K_2D 4
+ 
 -- 
 2.43.0
 
