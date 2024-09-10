@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-75607-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75416-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AB4997355D
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:48:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52300973474
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:40:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E554C1F26187
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:48:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 15C4A28DD5F
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:40:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 024A619049E;
-	Tue, 10 Sep 2024 10:47:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 873C818F2F7;
+	Tue, 10 Sep 2024 10:37:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yM2DPyaF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BHa+QIaC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B440B188A38;
-	Tue, 10 Sep 2024 10:47:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4630B14D280;
+	Tue, 10 Sep 2024 10:37:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725965225; cv=none; b=fCgdhWzCgvPOz4Lom5QRSfA+8aXEMSDimDkKkuLjW4NwO4y+7aL/8/7ZZFPerTjDWyfatv5GK2/TG6By9XevRSBhGdKUbfpTBfi37MTI0lR+V526yCYj+VTg6lO85xNItOAN8Ft7B4DJ77RMuxvNZrjpXjXlU86s4XJ/5oOsQTg=
+	t=1725964668; cv=none; b=inZaUqnskkJhbZZ02B6+FBYrcBbInDgR8IfKe0dvY6JzXMUV2J9x/pmqZmEnUCZReHpfRv7U83sEnAvnKaMAMpgxflzYr+/yw7Calx3WD5wcHD5Vq0i22orJcyD8YZtXuKJ6rGzoUxuFhofcPbaDjaRYGG5fYF+V9EOIK0yOpaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725965225; c=relaxed/simple;
-	bh=32FaESccwiLB++tW4MmvIrTArl6OrfUsZcF0AgrnDkQ=;
+	s=arc-20240116; t=1725964668; c=relaxed/simple;
+	bh=sCrs1z6vTtAnWtAGl6uQ+6lnafSpVHRo6X4KtMZ0lPE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hjvLhdmSUP74RwdSicwTxkFnhig3cZmxKvQ+iVWuHHc3bE200QNOgW9/mabl22BvHKhC9DWgikLv3dznb3EDIYsJW8hoKHiJgnlw15ubMwDWKUJwFtgPLpSz8WXZsu1ynhQYYlp2MGVFLctu9P2dHwpxpUGyYK8BhykjD5yc07k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yM2DPyaF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B47BC4CEC3;
-	Tue, 10 Sep 2024 10:47:05 +0000 (UTC)
+	 MIME-Version; b=dNyb+wNyFQfDXlJbzSio2ct4+snlkXDjZxA8ylvsLNPD60mpeeaUMZOK7e+4KXJnyhKrB9J01NUpyS4hTsTcePzsvrKkigp0Pi9nS6UTb54b7Fwl7GbPQbdB0nMpAGk0fj2ShuOCYLPs+0JD88htcDwqLE9F/0S0fKIaiBmZ41s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BHa+QIaC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3CF1C4CEC3;
+	Tue, 10 Sep 2024 10:37:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725965225;
-	bh=32FaESccwiLB++tW4MmvIrTArl6OrfUsZcF0AgrnDkQ=;
+	s=korg; t=1725964668;
+	bh=sCrs1z6vTtAnWtAGl6uQ+6lnafSpVHRo6X4KtMZ0lPE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yM2DPyaFI1bT+5nxB0/6/PKcpRwG/YvpfsFLMsiyyJtjXN28zBqqlHwTecKU6frW6
-	 Bx61U3OVq3hwsbK4qDrFHC43YGozQuWU9k9gBjil2/JcGBpjjmL3tNtLUqnsVUet1T
-	 WeTohyTdmj9S8eHJUO9D+N8xRvcYPG6i6bx2pxu8=
+	b=BHa+QIaCPB5nrLbKihxiGtFB/M6sIJaP+hfzW/cC/1aYe88wCmwLTDJXjQQzHsT/x
+	 fHZmORNtfFgN1TepFxLTNSz8tsJO2tiCK+3+HP2rnqwHgUtWOCLu9ogPrQjEaj4650
+	 elNTjEfOVRLaoGfoXuZvWwPFrA3s2od8KIb4jXHU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phillip Lougher <phillip@squashfs.org.uk>,
-	Lizhi Xu <lizhi.xu@windriver.com>,
-	syzbot+24ac24ff58dc5b0d26b9@syzkaller.appspotmail.com,
-	Christian Brauner <brauner@kernel.org>,
+	Anton Blanchard <antonb@tenstorrent.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 152/186] Squashfs: sanity check symbolic link size
+Subject: [PATCH 6.6 260/269] riscv: Fix toolchain vector detection
 Date: Tue, 10 Sep 2024 11:34:07 +0200
-Message-ID: <20240910092600.845007512@linuxfoundation.org>
+Message-ID: <20240910092617.039728312@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,70 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phillip Lougher <phillip@squashfs.org.uk>
+From: Anton Blanchard <antonb@tenstorrent.com>
 
-[ Upstream commit 810ee43d9cd245d138a2733d87a24858a23f577d ]
+[ Upstream commit 5ba7a75a53dffbf727e842b5847859bb482ac4aa ]
 
-Syzkiller reports a "KMSAN: uninit-value in pick_link" bug.
+A recent change to gcc flags rv64iv as no longer valid:
 
-This is caused by an uninitialised page, which is ultimately caused
-by a corrupted symbolic link size read from disk.
+   cc1: sorry, unimplemented: Currently the 'V' implementation
+   requires the 'M' extension
 
-The reason why the corrupted symlink size causes an uninitialised
-page is due to the following sequence of events:
+and as a result vector support is disabled. Fix this by adding m
+to our toolchain vector detection code.
 
-1. squashfs_read_inode() is called to read the symbolic
-   link from disk.  This assigns the corrupted value
-   3875536935 to inode->i_size.
-
-2. Later squashfs_symlink_read_folio() is called, which assigns
-   this corrupted value to the length variable, which being a
-   signed int, overflows producing a negative number.
-
-3. The following loop that fills in the page contents checks that
-   the copied bytes is less than length, which being negative means
-   the loop is skipped, producing an uninitialised page.
-
-This patch adds a sanity check which checks that the symbolic
-link size is not larger than expected.
-
---
-
-Signed-off-by: Phillip Lougher <phillip@squashfs.org.uk>
-Link: https://lore.kernel.org/r/20240811232821.13903-1-phillip@squashfs.org.uk
-Reported-by: Lizhi Xu <lizhi.xu@windriver.com>
-Reported-by: syzbot+24ac24ff58dc5b0d26b9@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/000000000000a90e8c061e86a76b@google.com/
-V2: fix spelling mistake.
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Anton Blanchard <antonb@tenstorrent.com>
+Fixes: fa8e7cce55da ("riscv: Enable Vector code to be built")
+Link: https://lore.kernel.org/r/20240819001131.1738806-1-antonb@tenstorrent.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/squashfs/inode.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/riscv/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/squashfs/inode.c b/fs/squashfs/inode.c
-index 24463145b351..f31649080a88 100644
---- a/fs/squashfs/inode.c
-+++ b/fs/squashfs/inode.c
-@@ -276,8 +276,13 @@ int squashfs_read_inode(struct inode *inode, long long ino)
- 		if (err < 0)
- 			goto failed_read;
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index c785a0200573..d5d70dc5656e 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -489,8 +489,8 @@ config RISCV_ISA_SVPBMT
+ config TOOLCHAIN_HAS_V
+ 	bool
+ 	default y
+-	depends on !64BIT || $(cc-option,-mabi=lp64 -march=rv64iv)
+-	depends on !32BIT || $(cc-option,-mabi=ilp32 -march=rv32iv)
++	depends on !64BIT || $(cc-option,-mabi=lp64 -march=rv64imv)
++	depends on !32BIT || $(cc-option,-mabi=ilp32 -march=rv32imv)
+ 	depends on LLD_VERSION >= 140000 || LD_VERSION >= 23800
+ 	depends on AS_HAS_OPTION_ARCH
  
--		set_nlink(inode, le32_to_cpu(sqsh_ino->nlink));
- 		inode->i_size = le32_to_cpu(sqsh_ino->symlink_size);
-+		if (inode->i_size > PAGE_SIZE) {
-+			ERROR("Corrupted symlink\n");
-+			return -EINVAL;
-+		}
-+
-+		set_nlink(inode, le32_to_cpu(sqsh_ino->nlink));
- 		inode->i_op = &squashfs_symlink_inode_ops;
- 		inode_nohighmem(inode);
- 		inode->i_data.a_ops = &squashfs_symlink_aops;
 -- 
 2.43.0
 
