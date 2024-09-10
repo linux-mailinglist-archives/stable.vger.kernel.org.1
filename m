@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-74658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12D13973082
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:02:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 925EB972DEF
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:37:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C908A287317
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:02:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52E1B285F0D
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:37:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46FF718FDB1;
-	Tue, 10 Sep 2024 10:00:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54E3818B488;
+	Tue, 10 Sep 2024 09:37:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jIPQTCM3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lx60brSW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02D5818FDB7;
-	Tue, 10 Sep 2024 10:00:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1103018B481;
+	Tue, 10 Sep 2024 09:37:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962446; cv=none; b=oP5L3YzYbsMywkrvPXesQoFmj9PQgPjGdZFKrIjlebTfSV4Vhdm9pFL5diN0/yUWIN13v5naB9uTYj7uI4L7LbBgPX45amE9X2Ms4gIEZ1KNXi74cWj1W7O4XrQz5l9+7X4jdu+sIHMVv5HRwaestiF3e25CrRI4SrNG9vF8ALQ=
+	t=1725961066; cv=none; b=krlLUdwOi5L8cUL26JkcuT16YC7kM9u7+akVjqFFct1oNuzq1Lq49rDo8MSE4eFNWr+N4l8hWCKq5myRIAKdj0AH4QbrVP6a2eYmkpQP2kelWIunzTZFSZ2CqsvimVJdNkBiXr1Ds1SZ5x0BljcAxAssx6LCCVQC6iR2ynCNZaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962446; c=relaxed/simple;
-	bh=H3L/+09se/XgLSoPILaCkBh5hrRqJpJNyDf4GG/iqkg=;
+	s=arc-20240116; t=1725961066; c=relaxed/simple;
+	bh=0umO2WCWfdfvx/UiVh9cnJ4Xu2JvW1IgoJ7EJbnx/Ik=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QeTsNehJRKQ6MZZYVGBX3Neq9hAk8KfQc9J1SEFg10CJFn0Q+Qvprq4oRimHwJuLjReMUuSdNFhfls+hTxTUbJTN4pAkjV9Qaqw5D8JmI6HsPzlRaIfDc3c1rdY0Yr6CgyV8xJ0DL58ojDntWG3cJgLEaeswUKdnWGOSUZG2uCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jIPQTCM3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 269AEC4CEC3;
-	Tue, 10 Sep 2024 10:00:44 +0000 (UTC)
+	 MIME-Version; b=Xhn9064zUDgDmDwl3fNHXBCsIt8k7Jt54XRzRQ90f4k0Y00rzHxb00ajfEyKw6SADBJ8AHDKoJAxN/xQWswgtZs1l7/qdJZjDpYz1M3CkupUab6lc+geCJgsrbhUXru59ZyBwsB+GOjSpLR7fXIpW8scwYR9V9+FCBnC6yL7WU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lx60brSW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BBA7C4CEC3;
+	Tue, 10 Sep 2024 09:37:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962445;
-	bh=H3L/+09se/XgLSoPILaCkBh5hrRqJpJNyDf4GG/iqkg=;
+	s=korg; t=1725961065;
+	bh=0umO2WCWfdfvx/UiVh9cnJ4Xu2JvW1IgoJ7EJbnx/Ik=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jIPQTCM3DGJrrGX0ymadvYEFcb1hN6uJOrq2AB9xTwfJSkrNrFwIjllr01RYUObTz
-	 6QFAyIxUQGIwZ1gpMCfc4SMbaAnq4lJ4DkOP5yRPH6lLv7moHpWAcsIFlO7/tpk8C/
-	 uzXZ9ufS5xuzb0r7IpI9+lIirE3EkKWH9H7v2V5A=
+	b=lx60brSW2x87IBGG3GYnG+jceKLXC+AtNjMpmGGWuy1ctThpD6D33+1SpJ8ftfBIX
+	 2UPHMDl7j7E850kcy3Gb75kL4Dfx2SHdC832VQz1HYlGs0dLo6KGw2OIEkHudvIA/J
+	 xfmCpVzAYsXIdxFWlbu7tX3qYuhNXyTCSSktVaLw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Qixing <zhengqixing@huawei.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Damien Le Moal <dlemoal@kernel.org>
-Subject: [PATCH 5.4 029/121] ata: libata: Fix memory leak for error path in ata_host_alloc()
+	Richard Guy Briggs <rgb@redhat.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 42/96] rfkill: fix spelling mistake contidion to condition
 Date: Tue, 10 Sep 2024 11:31:44 +0200
-Message-ID: <20240910092547.118298534@linuxfoundation.org>
+Message-ID: <20240910092543.391136197@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
-References: <20240910092545.737864202@linuxfoundation.org>
+In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
+References: <20240910092541.383432924@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Qixing <zhengqixing@huawei.com>
+From: Richard Guy Briggs <rgb@redhat.com>
 
-commit 284b75a3d83c7631586d98f6dede1d90f128f0db upstream.
+[ Upstream commit f404c3ecc401b3617c454c06a3d36a43a01f1aaf ]
 
-In ata_host_alloc(), if devres_alloc() fails to allocate the device host
-resource data pointer, the already allocated ata_host structure is not
-freed before returning from the function. This results in a potential
-memory leak.
+This came about while trying to determine if there would be any pattern
+match on contid, a new audit container identifier internal variable.
+This was the only one.
 
-Call kfree(host) before jumping to the error handling path to ensure
-that the ata_host structure is properly freed if devres_alloc() fails.
-
-Fixes: 2623c7a5f279 ("libata: add refcounting to ata_host")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Richard Guy Briggs <rgb@redhat.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Stable-dep-of: bee2ef946d31 ("net: bridge: br_fdb_external_learn_add(): always set EXT_LEARN")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-core.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/rfkill/core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -6203,8 +6203,10 @@ struct ata_host *ata_host_alloc(struct d
- 	}
- 
- 	dr = devres_alloc(ata_devres_release, 0, GFP_KERNEL);
--	if (!dr)
-+	if (!dr) {
-+		kfree(host);
- 		goto err_out;
-+	}
- 
- 	devres_add(dev, dr);
- 	dev_set_drvdata(dev, host);
+diff --git a/net/rfkill/core.c b/net/rfkill/core.c
+index d6467cbf5c4f..d138a2123d70 100644
+--- a/net/rfkill/core.c
++++ b/net/rfkill/core.c
+@@ -510,8 +510,8 @@ void rfkill_remove_epo_lock(void)
+ /**
+  * rfkill_is_epo_lock_active - returns true EPO is active
+  *
+- * Returns 0 (false) if there is NOT an active EPO contidion,
+- * and 1 (true) if there is an active EPO contition, which
++ * Returns 0 (false) if there is NOT an active EPO condition,
++ * and 1 (true) if there is an active EPO condition, which
+  * locks all radios in one of the BLOCKED states.
+  *
+  * Can be called in atomic context.
+-- 
+2.43.0
+
 
 
 
