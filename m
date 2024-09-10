@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-75391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75117-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 07772973553
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:47:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83C51973321
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:29:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0DFDBB26F30
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:40:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EFE7CB2CD78
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:28:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18F7A18C00C;
-	Tue, 10 Sep 2024 10:36:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09D6F192D75;
+	Tue, 10 Sep 2024 10:23:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HOjriLI6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TfNf93lh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB0A046444;
-	Tue, 10 Sep 2024 10:36:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5C56191F72;
+	Tue, 10 Sep 2024 10:23:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964594; cv=none; b=UE3Pc1SeNpslRmIc169BrDnLc1SMevbGRaCAAr/KifWGL99xmfRGiORJjTZBb5oKdzfxxGubnk1K6Nmf6O83dIwm+c4oxH4ay50uprQQzDEmiQOaOCcNXrDYRdvtAjrdvXAzAoXFRtX7LXCJBulYwPL3r9jy0dDKMNXGj5x4kQA=
+	t=1725963799; cv=none; b=lJ0LBO2Y7GR2g5A1lI0C2V40IWgQZoQ/WFAl3foZM2v1tO99Z9rHELfYxkX94+9KOj2PNP8X1hIk+AXH6x/bErZGlCAv+zs5mG3CCzUEwUeczW5Eh1cHTDTd+M/QbkmjU3mGgwXowb9jKXtYjKh+XZv2Me1vjVhbE/ma/VmSscU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964594; c=relaxed/simple;
-	bh=Nto8s5FmooZs9x9l6oh6pAiyL5mEBcw8xa7TpZHXxis=;
+	s=arc-20240116; t=1725963799; c=relaxed/simple;
+	bh=8wQxykYQ19is8JR7BljfQNPayLQ8XHTgNFs2mo+Xl0o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=amRwobOTEDzT+vxhqdsPnBPs/7ylJmXjyAR+8Lpa4/Cif4+8VgmC1nAixtGOoSf9XkxBkHUqW4m37af+aCQ242utgzU2QCPOKJCCLkVAEo0GXc68FKxi4peKwq+Na9iLG7DTLe6IsE7vKQVMATVg09cuWPxQOTkiTA3MpLffvY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HOjriLI6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50545C4CECD;
-	Tue, 10 Sep 2024 10:36:34 +0000 (UTC)
+	 MIME-Version; b=mArFSqSytxpKF5+sUn2bvVsFEZ2Ee7TMU/w5HKB9MLDHQ2gYNBLjk483x//xg8tr2LJasVuPtd4ezPKjmCbZU9d7yM9irvktlte037PP05XWke0I9MS/Pf8SnkUiCj1RaX9ASrlIC14d7KVLJ0u1z7+K+sIShwa9pRkXpYkdKWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TfNf93lh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2648C4CEC3;
+	Tue, 10 Sep 2024 10:23:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964594;
-	bh=Nto8s5FmooZs9x9l6oh6pAiyL5mEBcw8xa7TpZHXxis=;
+	s=korg; t=1725963799;
+	bh=8wQxykYQ19is8JR7BljfQNPayLQ8XHTgNFs2mo+Xl0o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HOjriLI6gi8G4oZvqvaKB313SdQuA77cklG0VMxzN7ObBvqi9gIikofcW2PAShTBU
-	 K2c9vvNi+YcR4T0j6RsVsEufzmXrfR1v0iGUFbyljcbz5f0iu3J+/TIPFuhRgawWJh
-	 IVTPkXUeM4B+5+oCMjbrmyHelUZFIqcE8p6CJuhE=
+	b=TfNf93lhbpZlCZLTpGoxucY4MC9+rIQNiGU+blamgnd731GpOmZ/Pehh0ACW/a4Tw
+	 W8oLWv2BI4P2eJr34kuml6q8v9YMj53T87Ji5poWXltoIlVwzjWYGxngsZzV4Nq0iV
+	 iM0ZeBoRWCTBXZii32/BZeOHf7mNgRgLSJ3S08PE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dumitru Ceclan <dumitru.ceclan@analog.com>,
-	Nuno Sa <nuno.sa@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 208/269] iio: adc: ad7124: fix config comparison
+	Ronnie Sahlberg <lsahlber@redhat.com>,
+	Bharath SM <bharathsm@microsoft.com>,
+	"Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
+	Meetakshi Setiya <msetiya@microsoft.com>
+Subject: [PATCH 5.15 173/214] cifs: Check the lease context if we actually got a lease
 Date: Tue, 10 Sep 2024 11:33:15 +0200
-Message-ID: <20240910092615.458038290@linuxfoundation.org>
+Message-ID: <20240910092605.755228910@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,82 +64,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dumitru Ceclan <mitrutzceclan@gmail.com>
+From: Ronnie Sahlberg <lsahlber@redhat.com>
 
-commit 2f6b92d0f69f04d9e2ea0db1228ab7f82f3173af upstream.
+commit 66d45ca1350a3bb8d5f4db8879ccad3ed492337a upstream.
 
-The ad7124_find_similar_live_cfg() computes the compare size by
-substracting the address of the cfg struct from the address of the live
-field. Because the live field is the first field in the struct, the
-result is 0.
+Some servers may return that we got a lease in rsp->OplockLevel
+but then in the lease context contradict this and say we got no lease
+at all.  Thus we need to check the context if we have a lease.
+Additionally, If we do not get a lease we need to make sure we close
+the handle before we return an error to the caller.
 
-Also, the memcmp() call is made from the start of the cfg struct, which
-includes the live and cfg_slot fields, which are not relevant for the
-comparison.
-
-Fix by grouping the relevant fields with struct_group() and use the
-size of the group to compute the compare size; make the memcmp() call
-from the address of the group.
-
-Fixes: 7b8d045e497a ("iio: adc: ad7124: allow more than 8 channels")
-Signed-off-by: Dumitru Ceclan <dumitru.ceclan@analog.com>
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://patch.msgid.link/20240731-ad7124-fix-v1-2-46a76aa4b9be@analog.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Ronnie Sahlberg <lsahlber@redhat.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Bharath SM <bharathsm@microsoft.com>
+Reviewed-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Meetakshi Setiya <msetiya@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/ad7124.c |   26 +++++++++++++++-----------
- 1 file changed, 15 insertions(+), 11 deletions(-)
+ fs/cifs/smb2ops.c |   24 ++++++++++++++++--------
+ 1 file changed, 16 insertions(+), 8 deletions(-)
 
---- a/drivers/iio/adc/ad7124.c
-+++ b/drivers/iio/adc/ad7124.c
-@@ -146,15 +146,18 @@ struct ad7124_chip_info {
- struct ad7124_channel_config {
- 	bool live;
- 	unsigned int cfg_slot;
--	enum ad7124_ref_sel refsel;
--	bool bipolar;
--	bool buf_positive;
--	bool buf_negative;
--	unsigned int vref_mv;
--	unsigned int pga_bits;
--	unsigned int odr;
--	unsigned int odr_sel_bits;
--	unsigned int filter_type;
-+	/* Following fields are used to compare equality. */
-+	struct_group(config_props,
-+		enum ad7124_ref_sel refsel;
-+		bool bipolar;
-+		bool buf_positive;
-+		bool buf_negative;
-+		unsigned int vref_mv;
-+		unsigned int pga_bits;
-+		unsigned int odr;
-+		unsigned int odr_sel_bits;
-+		unsigned int filter_type;
-+	);
- };
- 
- struct ad7124_channel {
-@@ -333,11 +336,12 @@ static struct ad7124_channel_config *ad7
- 	ptrdiff_t cmp_size;
- 	int i;
- 
--	cmp_size = (u8 *)&cfg->live - (u8 *)cfg;
-+	cmp_size = sizeof_field(struct ad7124_channel_config, config_props);
- 	for (i = 0; i < st->num_channels; i++) {
- 		cfg_aux = &st->channels[i].cfg;
- 
--		if (cfg_aux->live && !memcmp(cfg, cfg_aux, cmp_size))
-+		if (cfg_aux->live &&
-+		    !memcmp(&cfg->config_props, &cfg_aux->config_props, cmp_size))
- 			return cfg_aux;
+--- a/fs/cifs/smb2ops.c
++++ b/fs/cifs/smb2ops.c
+@@ -886,8 +886,6 @@ int open_cached_dir(unsigned int xid, st
+ 		goto oshr_exit;
  	}
+ 
+-	atomic_inc(&tcon->num_remote_opens);
+-
+ 	o_rsp = (struct smb2_create_rsp *)rsp_iov[0].iov_base;
+ 	oparms.fid->persistent_fid = o_rsp->PersistentFileId;
+ 	oparms.fid->volatile_fid = o_rsp->VolatileFileId;
+@@ -897,8 +895,6 @@ int open_cached_dir(unsigned int xid, st
+ 
+ 	tcon->crfid.tcon = tcon;
+ 	tcon->crfid.is_valid = true;
+-	tcon->crfid.dentry = dentry;
+-	dget(dentry);
+ 	kref_init(&tcon->crfid.refcount);
+ 
+ 	/* BB TBD check to see if oplock level check can be removed below */
+@@ -907,14 +903,16 @@ int open_cached_dir(unsigned int xid, st
+ 		 * See commit 2f94a3125b87. Increment the refcount when we
+ 		 * get a lease for root, release it if lease break occurs
+ 		 */
+-		kref_get(&tcon->crfid.refcount);
+-		tcon->crfid.has_lease = true;
+ 		rc = smb2_parse_contexts(server, rsp_iov,
+ 				&oparms.fid->epoch,
+ 				    oparms.fid->lease_key, &oplock,
+ 				    NULL, NULL);
+ 		if (rc)
+ 			goto oshr_exit;
++
++		if (!(oplock & SMB2_LEASE_READ_CACHING_HE))
++			goto oshr_exit;
++
+ 	} else
+ 		goto oshr_exit;
+ 
+@@ -928,7 +926,10 @@ int open_cached_dir(unsigned int xid, st
+ 				(char *)&tcon->crfid.file_all_info))
+ 		tcon->crfid.file_all_info_is_valid = true;
+ 	tcon->crfid.time = jiffies;
+-
++	tcon->crfid.dentry = dentry;
++	dget(dentry);
++	kref_get(&tcon->crfid.refcount);
++	tcon->crfid.has_lease = true;
+ 
+ oshr_exit:
+ 	mutex_unlock(&tcon->crfid.fid_mutex);
+@@ -937,8 +938,15 @@ oshr_free:
+ 	SMB2_query_info_free(&rqst[1]);
+ 	free_rsp_buf(resp_buftype[0], rsp_iov[0].iov_base);
+ 	free_rsp_buf(resp_buftype[1], rsp_iov[1].iov_base);
+-	if (rc == 0)
++	if (rc) {
++		if (tcon->crfid.is_valid)
++			SMB2_close(0, tcon, oparms.fid->persistent_fid,
++				   oparms.fid->volatile_fid);
++	}
++	if (rc == 0) {
+ 		*cfid = &tcon->crfid;
++		atomic_inc(&tcon->num_remote_opens);
++	}
+ 	return rc;
+ }
  
 
 
