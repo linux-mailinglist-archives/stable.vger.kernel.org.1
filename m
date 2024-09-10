@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-75510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E91129734F1
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:44:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8FD5C97322E
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:20:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE826287D32
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:44:18 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 354C2B26409
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:18:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDC9318C021;
-	Tue, 10 Sep 2024 10:42:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3602D1946B5;
+	Tue, 10 Sep 2024 10:12:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="toKrH3dQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="STZsXinB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABE0C14B06C;
-	Tue, 10 Sep 2024 10:42:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E87F8192D9D;
+	Tue, 10 Sep 2024 10:12:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964945; cv=none; b=ISf3N0WKU5H1AAJ9kBJ7s+T+89UvFz5YW6rWoqb7/3PloY6M7P176Ec54ZgjS39FigGzczAItovBP6eCrg9XDCag/VcrjMp7i3qbS+SY3u2MHu/EM/3Yse+/PwTTs+YEal4JT13fZKeCdsM8d+/RQahuRSC+hcC5CyOclNvG4I8=
+	t=1725963160; cv=none; b=LMU3yuh53++bhuOXAdg0yJDk6NNmxpPT8wKcBWqAY81K3/6qj+RZlJ7hA63FRBJgY7aPw1inYdyxJvyf9I6v3pGwDzuM6aU7jMebSt0GuI1BO/5bs731UEfa8ufYrcYQRpr3c/EOtxul0rtBeYDk39MHdIRw+r3j4DiLqCIfBG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964945; c=relaxed/simple;
-	bh=a2sEPcO0pnf5BtHIg3EvSU9ZN5iNeMXoU0fYQmVss0g=;
+	s=arc-20240116; t=1725963160; c=relaxed/simple;
+	bh=nEGrovzd/8APHaaWD1alTOfKOyIvYFMegYoRkPSWAOU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g/Zj8Z1rCwTGHRvIFtjI/00MYc61kQcodqhf5QLEa4HmXAOCuXeLQgyu7eKGZ+RXfh+zTQYqBGJgU7GGstf0onsPcFLkVQzOVu4rP4sWCNNvnENqjLpZiTraobps9298eSVW2td325904uuQVpUS6YEFexebzQCOKXUUcHjf2fY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=toKrH3dQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EF38C4CEC3;
-	Tue, 10 Sep 2024 10:42:25 +0000 (UTC)
+	 MIME-Version; b=fupMAm523AqmigcryIUIPAJq1+Yv/5IhfRsVcrMtl4LHiRn5/9NPgiqvZc5wEYPQDB95DzYVUxmKZ0TfxW5bDL/oknN6vlNI3fUFZwVqzwTGRvXdGCeehbDR8yLLUTeSgOR+oOR/o+INXnpINw2PvPoxavLXnGj38XUOYOxl/Fg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=STZsXinB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6634AC4CEC3;
+	Tue, 10 Sep 2024 10:12:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964945;
-	bh=a2sEPcO0pnf5BtHIg3EvSU9ZN5iNeMXoU0fYQmVss0g=;
+	s=korg; t=1725963159;
+	bh=nEGrovzd/8APHaaWD1alTOfKOyIvYFMegYoRkPSWAOU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=toKrH3dQQCtTcnFpUq7Ti+3m30vjJgCF+0Gea4Ffp5oGo6gsUIapJEMjN/0T9/tgL
-	 MGMb1wwjNjITBhRPki7y36rfQT/jvgGOCkB2l8faJ2E768fe+hPTVmPXFOZxbAXre9
-	 gWmyIKlVbVOMVxagbg9xyIIL5bf/wKaDYYz3xdd4=
+	b=STZsXinB9QWknsD+UU6ascc2p6bTqqRo3rwJ4YxyA+I+xtXgTm2xCCfPTQM+FbG3D
+	 TTb0IpAiGwY863UtlzlE1e3tlrIpKbNqv9KBrjHppMlLiSy7/mAXM80gACDYM3oRcN
+	 XboYXdvtPOqk0+zlVlNeLOm3JVOAsE+CBqq+wv1c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neilb@suse.de>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.10 084/186] NFSD: simplify error paths in nfsd_svc()
+	Dharmendra Singh <dsingh@ddn.com>,
+	Bernd Schubert <bschubert@ddn.com>,
+	Miklos Szeredi <mszeredi@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 155/192] fuse: allow non-extending parallel direct writes on the same file
 Date: Tue, 10 Sep 2024 11:32:59 +0200
-Message-ID: <20240910092557.973203067@linuxfoundation.org>
+Message-ID: <20240910092604.341975706@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,90 +63,173 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neilb@suse.de>
+From: Dharmendra Singh <dsingh@ddn.com>
 
-[ Upstream commit bf32075256e9dd9c6b736859e2c5813981339908 ]
+[ Upstream commit 153524053bbb0d27bb2e0be36d1b46862e9ce74c ]
 
-The error paths in nfsd_svc() are needlessly complex and can result in a
-final call to svc_put() without nfsd_last_thread() being called.  This
-results in the listening sockets not being closed properly.
+In general, as of now, in FUSE, direct writes on the same file are
+serialized over inode lock i.e we hold inode lock for the full duration of
+the write request.  I could not find in fuse code and git history a comment
+which clearly explains why this exclusive lock is taken for direct writes.
+Following might be the reasons for acquiring an exclusive lock but not be
+limited to
 
-The per-netns setup provided by nfsd_startup_new() and removed by
-nfsd_shutdown_net() is needed precisely when there are running threads.
-So we don't need nfsd_up_before.  We don't need to know if it *was* up.
-We only need to know if any threads are left.  If none are, then we must
-call nfsd_shutdown_net().  But we don't need to do that explicitly as
-nfsd_last_thread() does that for us.
+ 1) Our guess is some USER space fuse implementations might be relying on
+    this lock for serialization.
 
-So simply call nfsd_last_thread() before the last svc_put() if there are
-no running threads.  That will always do the right thing.
+ 2) The lock protects against file read/write size races.
 
-Also discard:
- pr_info("nfsd: last server has exited, flushing export cache\n");
-It may not be true if an attempt to start the first server failed, and
-it isn't particularly helpful and it simply reports normal behaviour.
+ 3) Ruling out any issues arising from partial write failures.
 
-Signed-off-by: NeilBrown <neilb@suse.de>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This patch relaxes the exclusive lock for direct non-extending writes only.
+File size extending writes might not need the lock either, but we are not
+entirely sure if there is a risk to introduce any kind of regression.
+Furthermore, benchmarking with fio does not show a difference between patch
+versions that take on file size extension a) an exclusive lock and b) a
+shared lock.
+
+A possible example of an issue with i_size extending writes are write error
+cases.  Some writes might succeed and others might fail for file system
+internal reasons - for example ENOSPACE.  With parallel file size extending
+writes it _might_ be difficult to revert the action of the failing write,
+especially to restore the right i_size.
+
+With these changes, we allow non-extending parallel direct writes on the
+same file with the help of a flag called FOPEN_PARALLEL_DIRECT_WRITES.  If
+this flag is set on the file (flag is passed from libfuse to fuse kernel as
+part of file open/create), we do not take exclusive lock anymore, but
+instead use a shared lock that allows non-extending writes to run in
+parallel.  FUSE implementations which rely on this inode lock for
+serialization can continue to do so and serialized direct writes are still
+the default.  Implementations that do not do write serialization need to be
+updated and need to set the FOPEN_PARALLEL_DIRECT_WRITES flag in their file
+open/create reply.
+
+On patch review there were concerns that network file systems (or vfs
+multiple mounts of the same file system) might have issues with parallel
+writes.  We believe this is not the case, as this is just a local lock,
+which network file systems could not rely on anyway.  I.e. this lock is
+just for local consistency.
+
+Signed-off-by: Dharmendra Singh <dsingh@ddn.com>
+Signed-off-by: Bernd Schubert <bschubert@ddn.com>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Stable-dep-of: 3002240d1649 ("fuse: fix memory leak in fuse_create_open")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfssvc.c |   14 ++++----------
- 1 file changed, 4 insertions(+), 10 deletions(-)
+ fs/fuse/file.c            | 43 ++++++++++++++++++++++++++++++++++++---
+ include/uapi/linux/fuse.h |  3 +++
+ 2 files changed, 43 insertions(+), 3 deletions(-)
 
---- a/fs/nfsd/nfssvc.c
-+++ b/fs/nfsd/nfssvc.c
-@@ -567,7 +567,6 @@ void nfsd_last_thread(struct net *net)
- 		return;
- 
- 	nfsd_shutdown_net(net);
--	pr_info("nfsd: last server has exited, flushing export cache\n");
- 	nfsd_export_flush(net);
+diff --git a/fs/fuse/file.c b/fs/fuse/file.c
+index e6ec4338a9c5..0df1311afb87 100644
+--- a/fs/fuse/file.c
++++ b/fs/fuse/file.c
+@@ -1563,14 +1563,47 @@ static ssize_t fuse_direct_read_iter(struct kiocb *iocb, struct iov_iter *to)
+ 	return res;
  }
  
-@@ -782,7 +781,6 @@ int
- nfsd_svc(int nrservs, struct net *net, const struct cred *cred)
- {
- 	int	error;
--	bool	nfsd_up_before;
- 	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
- 	struct svc_serv *serv;
- 
-@@ -802,8 +800,6 @@ nfsd_svc(int nrservs, struct net *net, c
- 	error = nfsd_create_serv(net);
- 	if (error)
- 		goto out;
--
--	nfsd_up_before = nn->nfsd_net_up;
- 	serv = nn->nfsd_serv;
- 
- 	error = nfsd_startup_net(net, cred);
-@@ -811,17 +807,15 @@ nfsd_svc(int nrservs, struct net *net, c
- 		goto out_put;
- 	error = svc_set_num_threads(serv, NULL, nrservs);
- 	if (error)
--		goto out_shutdown;
-+		goto out_put;
- 	error = serv->sv_nrthreads;
--	if (error == 0)
--		nfsd_last_thread(net);
--out_shutdown:
--	if (error < 0 && !nfsd_up_before)
--		nfsd_shutdown_net(net);
- out_put:
- 	/* Threads now hold service active */
- 	if (xchg(&nn->keep_active, 0))
- 		svc_put(serv);
++static bool fuse_direct_write_extending_i_size(struct kiocb *iocb,
++					       struct iov_iter *iter)
++{
++	struct inode *inode = file_inode(iocb->ki_filp);
 +
-+	if (serv->sv_nrthreads == 0)
-+		nfsd_last_thread(net);
- 	svc_put(serv);
- out:
- 	mutex_unlock(&nfsd_mutex);
++	return iocb->ki_pos + iov_iter_count(iter) > i_size_read(inode);
++}
++
+ static ssize_t fuse_direct_write_iter(struct kiocb *iocb, struct iov_iter *from)
+ {
+ 	struct inode *inode = file_inode(iocb->ki_filp);
++	struct file *file = iocb->ki_filp;
++	struct fuse_file *ff = file->private_data;
+ 	struct fuse_io_priv io = FUSE_IO_PRIV_SYNC(iocb);
+ 	ssize_t res;
++	bool exclusive_lock =
++		!(ff->open_flags & FOPEN_PARALLEL_DIRECT_WRITES) ||
++		iocb->ki_flags & IOCB_APPEND ||
++		fuse_direct_write_extending_i_size(iocb, from);
++
++	/*
++	 * Take exclusive lock if
++	 * - Parallel direct writes are disabled - a user space decision
++	 * - Parallel direct writes are enabled and i_size is being extended.
++	 *   This might not be needed at all, but needs further investigation.
++	 */
++	if (exclusive_lock)
++		inode_lock(inode);
++	else {
++		inode_lock_shared(inode);
++
++		/* A race with truncate might have come up as the decision for
++		 * the lock type was done without holding the lock, check again.
++		 */
++		if (fuse_direct_write_extending_i_size(iocb, from)) {
++			inode_unlock_shared(inode);
++			inode_lock(inode);
++			exclusive_lock = true;
++		}
++	}
+ 
+-	/* Don't allow parallel writes to the same file */
+-	inode_lock(inode);
+ 	res = generic_write_checks(iocb, from);
+ 	if (res > 0) {
+ 		if (!is_sync_kiocb(iocb) && iocb->ki_flags & IOCB_DIRECT) {
+@@ -1581,7 +1614,10 @@ static ssize_t fuse_direct_write_iter(struct kiocb *iocb, struct iov_iter *from)
+ 			fuse_write_update_attr(inode, iocb->ki_pos, res);
+ 		}
+ 	}
+-	inode_unlock(inode);
++	if (exclusive_lock)
++		inode_unlock(inode);
++	else
++		inode_unlock_shared(inode);
+ 
+ 	return res;
+ }
+@@ -2937,6 +2973,7 @@ fuse_direct_IO(struct kiocb *iocb, struct iov_iter *iter)
+ 
+ 	if (iov_iter_rw(iter) == WRITE) {
+ 		fuse_write_update_attr(inode, pos, ret);
++		/* For extending writes we already hold exclusive lock */
+ 		if (ret < 0 && offset + count > i_size)
+ 			fuse_do_truncate(file);
+ 	}
+diff --git a/include/uapi/linux/fuse.h b/include/uapi/linux/fuse.h
+index 39cfb343faa8..e3c54109bae9 100644
+--- a/include/uapi/linux/fuse.h
++++ b/include/uapi/linux/fuse.h
+@@ -200,6 +200,7 @@
+  *
+  *  7.38
+  *  - add FUSE_EXPIRE_ONLY flag to fuse_notify_inval_entry
++ *  - add FOPEN_PARALLEL_DIRECT_WRITES
+  */
+ 
+ #ifndef _LINUX_FUSE_H
+@@ -307,6 +308,7 @@ struct fuse_file_lock {
+  * FOPEN_CACHE_DIR: allow caching this directory
+  * FOPEN_STREAM: the file is stream-like (no file position at all)
+  * FOPEN_NOFLUSH: don't flush data cache on close (unless FUSE_WRITEBACK_CACHE)
++ * FOPEN_PARALLEL_DIRECT_WRITES: Allow concurrent direct writes on the same inode
+  */
+ #define FOPEN_DIRECT_IO		(1 << 0)
+ #define FOPEN_KEEP_CACHE	(1 << 1)
+@@ -314,6 +316,7 @@ struct fuse_file_lock {
+ #define FOPEN_CACHE_DIR		(1 << 3)
+ #define FOPEN_STREAM		(1 << 4)
+ #define FOPEN_NOFLUSH		(1 << 5)
++#define FOPEN_PARALLEL_DIRECT_WRITES	(1 << 6)
+ 
+ /**
+  * INIT request/reply flags
+-- 
+2.43.0
+
 
 
 
