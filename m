@@ -1,210 +1,130 @@
-Return-Path: <stable+bounces-75759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8558297448F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 23:08:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15A8D97449F
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 23:12:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C7C00B2319E
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 21:08:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 48ED91C251FD
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 21:12:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E7261A4E93;
-	Tue, 10 Sep 2024 21:08:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36D671AAE3F;
+	Tue, 10 Sep 2024 21:12:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HRR034iT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gc6Ucx6s"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-io1-f49.google.com (mail-io1-f49.google.com [209.85.166.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D52B17622D
-	for <stable@vger.kernel.org>; Tue, 10 Sep 2024 21:08:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38AAF1AAE08
+	for <stable@vger.kernel.org>; Tue, 10 Sep 2024 21:12:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726002520; cv=none; b=Mx81yc4halowTgXgEFGsFBvoeEVK7xqlFidxbPTylD+y3me2IZuY3vQQZy+hIZ14V7SMarH4MhsR0rR9X9eQxmoXXTTfkMK0RlR0rBO0VGQZk0QwHRjIUSbj4ECdMdON87mOrOwtsKcRTWO393Ke9C8gCXtqmqbkegreTjaQM/4=
+	t=1726002742; cv=none; b=uxKDnMKRha3NE+AGop+FdHXveCYlaqKPWMmWpKdvPMC8jYlpUP1SqQNnnarMROYKGkHzxm4XAfRZfNM/+c604NH8SQboI7IdQqfyV21H/ZjiM/K+aiwR2HWd2FF7U8mbyP8TSIMenaQPriDptCD/oKkXXMguPmlY6duKej/tz8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726002520; c=relaxed/simple;
-	bh=+Fk9UzrrxgDtzk9tBnqOZptBV+x80xDALxfGAbo/iTI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kNtFXEKxkz6jLiwUTOWC4ZD9CsAp7VLy33Lulwc72+VNCJu5GOmoFoe5I381lLmvw86Y6bFJHWbf4R1kGq8OYU83Ew2PiCbG0NQ144B2iPqjfgpN7W8D2x4sLW+wTIw5RitLbnPmCOkrpcZuwq8PEKt76+RdWIT+ButEgATIJFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HRR034iT; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2056aa5cefcso261805ad.0
-        for <stable@vger.kernel.org>; Tue, 10 Sep 2024 14:08:39 -0700 (PDT)
+	s=arc-20240116; t=1726002742; c=relaxed/simple;
+	bh=ik3UKsltknlff9FD/NaLT46PtwDaXCHPQhKMj6WoIpU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=QiPOb7eEawlEJWanQ8h+5X7jIgii6q8JOuPRJeDraeHC9is2vDVLrWGgl0hPAgGPMTkGq4mxpe0U26WhOATLErmj2kGo0i/oxkWPrWI1WUwr0i0ajQ/NhTfWTEJafG2m0QbOSFUpowU/eccGud8pyJvTtG8W491jeoeIHuAOxqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gc6Ucx6s; arc=none smtp.client-ip=209.85.166.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-io1-f49.google.com with SMTP id ca18e2360f4ac-82aa7c3b3dbso206358939f.2
+        for <stable@vger.kernel.org>; Tue, 10 Sep 2024 14:12:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1726002518; x=1726607318; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BveGV6iRF9zFVjpBi+nwgxW4944d2bGaHruQFFGYVJk=;
-        b=HRR034iTaxRUQE+UvHN6nf4awSdi3SCvhTO/WHc8uIl5yQ5SOr/ZUP8OT2VRZhQUEw
-         TpDHlLpjsRsM0/EPTCZ8B5IG7uu7QeKdkykIJZZ8yAyS6IqshFFc1J+uNVGv6NZdOzwS
-         tUf349mwJ0MSGS1grZKgDbn6068uNc6cEuWRDG6mul+A4YE9o2/UPn91DbWr/8z3QEVU
-         Qu8i4mjE3I2scknJcZ4HUB6461OswKMop1B4eQpcU8o+d+42yyGxz5nktIZv/VIp6L6M
-         QON3+M/e5LPHhHmEf+Sz9S1zgGX5QB7okmbSQ0WkrGa4ysGoZd0v4mkcIk9gQn4JkeAv
-         ystQ==
+        d=linuxfoundation.org; s=google; t=1726002739; x=1726607539; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=7rPGjGCzv+oasSI6pVCkPDSWf7w4QJh8MFoceYLzhS4=;
+        b=gc6Ucx6sw+nXlHdj5XKtTZRxbWiiCgEpQJZKirbbIho8/gEDgg7K7jaVd34cJ+/NjB
+         tb2Le5jJDLYbL2WegJcQwxSLEW3BotGYFVdYzrJYk34qF3lnQvE3maNAhBDmS9P89/iB
+         7gasOlN/b+pic1ddr7Fy5KZ8dc0srEyXkkYsk=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726002518; x=1726607318;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BveGV6iRF9zFVjpBi+nwgxW4944d2bGaHruQFFGYVJk=;
-        b=ZlSisi/NfVvgoKOyME4wtsGQTkf+ytf4kdyxQabYcz5a+bH4R778swwJP+f0VhQLMS
-         dt93+Qo79AqB7lf91AUtB7uuoxM69ce4T42YojkfwzE82rVybOu+F2lITKjbETQggamR
-         IeynH9G7FdmFnsAQfrSRX9n4gPqeM/JHdMwatb7IAtl47FgvJNS6NI+1Y0INRozUCy8t
-         KIfzF/ll2rvSJWngh+8WNtvWbHrZtokUwVTAsXVrCCjH/XJdu/Y5i22ZJzXAN71Gplje
-         QyRlKsEwOzkQ1Kry7k5K+BZMHkz6HHynbaWMAIPcRDlYs6DgBo9jikzaDePLrPmNpSGP
-         4CXw==
-X-Forwarded-Encrypted: i=1; AJvYcCXvYMdaTFkNoLy8s0WNZlp+uRjsnokyGhbiNMVHG6QVuwcQM3FT0H+rx8Tfdk75Cv9FcDP5Q7I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxBGRoh7bX6aD19Q8J8PbqpuwXQRuUqSUld6ObEUWBM4GcsGOnX
-	mfGClBdj22P7RoJTZRe3Cejx9B1ypnE3+CD6tmwwWjdFCgJ0s22mxSBH7ju4yT3XLvasvRboRRY
-	XlO8TNwFZ9QIsvKD2/3C/tFVEU82/TbcR0hSeWjzRENiXZvA59g==
-X-Google-Smtp-Source: AGHT+IFC9yDBHadulsKhLHkQ8edvdmasODgKlo+OL0JfS70ItBNSRIPdBzMcm3B167u4esU1PZxmDa/fInewSmUZgQw=
-X-Received: by 2002:a17:902:d4cd:b0:206:ad19:c0fa with SMTP id
- d9443c01a7336-20753a1237cmr886275ad.0.1726002518392; Tue, 10 Sep 2024
- 14:08:38 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1726002739; x=1726607539;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7rPGjGCzv+oasSI6pVCkPDSWf7w4QJh8MFoceYLzhS4=;
+        b=Np7u88sHCQXfvhJGptDtB5Bcu6TlCFBGk/bz+DRcpA5qwjhvVSF0mq34YiFVIYGDFu
+         PybLjVgYhMc9pEwmS0CjdOvMSrk/IVTIQz+xGfnHmthyoR9HGFq4znPD1IXmJx1Fbbfn
+         USLGkuPdVC5WiML5lCS70zVG0sHKKYZFWFM0oNrw9Rg8SbdsNC4+ox+1RJ/GQSXEmn2D
+         R5YRVl2MLMxxrZoNw8QRNSqBszqcfpT4g4tzEvr9OyJVyeypE9Zq9t9HOgf1inX2gNwR
+         ertgv9MYwqu8XpfBgCeobpR0h/afPI/BdiX8NmOLA87c9hRIROW6bdHO4wPHOFzRBfKS
+         OtHw==
+X-Forwarded-Encrypted: i=1; AJvYcCWctNidRyFT5OKjaZfDlO2RBW+EOqMDxcp0z51HpN9CWTQAbydHtviH3KdyMsdVzv9uV2WTk7Q=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywuw7k0kyMVd1U9+M51fI4vscB8EKukVcLJmNeRDvv3sPRsL83F
+	uvzE9l0m/bWvyM83NLfBiYSAK95nHYaMF9cJLE5idYekmPh68Jgv6qUknYGYBXg=
+X-Google-Smtp-Source: AGHT+IEBXCGJfpx6uQrNCJWbyWaXdkVnusVExeZjTk7LweFyaAVp0ZTqw7/koXWoG3nviMKixvHXGQ==
+X-Received: by 2002:a05:6602:1583:b0:82a:ab20:f4bf with SMTP id ca18e2360f4ac-82aab20f590mr1225176939f.1.1726002739074;
+        Tue, 10 Sep 2024 14:12:19 -0700 (PDT)
+Received: from [192.168.1.128] ([38.175.170.29])
+        by smtp.gmail.com with ESMTPSA id ca18e2360f4ac-82aa77b5ed4sm220908339f.53.2024.09.10.14.12.17
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 10 Sep 2024 14:12:18 -0700 (PDT)
+Message-ID: <cb8e0e51-a934-4aaa-91dc-c4530ece99c7@linuxfoundation.org>
+Date: Tue, 10 Sep 2024 15:12:17 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <8f2e20f2fc894398da371517c6c8111aba072fb1.camel@kernel.org>
- <20240909163610.2148932-1-ovt@google.com> <84f2415b4d5bb42dc7e26518983f53a997647130.camel@hammerspace.com>
- <CACGj0ChtssX4hCCEnD9hah+-ioxmAB8SzFjJR3Uk1FEWMizv-A@mail.gmail.com> <8d95e5334c664d10a751e5791c8291959217524e.camel@hammerspace.com>
-In-Reply-To: <8d95e5334c664d10a751e5791c8291959217524e.camel@hammerspace.com>
-From: Oleksandr Tymoshenko <ovt@google.com>
-Date: Tue, 10 Sep 2024 14:08:25 -0700
-Message-ID: <CACGj0CgobBUv9CgpAhw+XWFwJY7+A0MryOTyukXz8Jsoc9hdQw@mail.gmail.com>
-Subject: Re: [PATCH] NFSv4: fix a mount deadlock in NFS v4.1 client
-To: Trond Myklebust <trondmy@hammerspace.com>
-Cc: "anna@kernel.org" <anna@kernel.org>, "jbongio@google.com" <jbongio@google.com>, 
-	"linux-nfs@vger.kernel.org" <linux-nfs@vger.kernel.org>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.15 000/214] 5.15.167-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org,
+ Shuah Khan <skhan@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
+Content-Language: en-US
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Sep 9, 2024 at 5:22=E2=80=AFPM Trond Myklebust <trondmy@hammerspace=
-.com> wrote:
->
-> On Mon, 2024-09-09 at 16:06 -0700, Oleksandr Tymoshenko wrote:
-> > On Mon, Sep 9, 2024 at 10:56=E2=80=AFAM Trond Myklebust
-> > <trondmy@hammerspace.com> wrote:
-> > >
-> > > On Mon, 2024-09-09 at 16:36 +0000, Oleksandr Tymoshenko wrote:
-> > > > > > nfs41_init_clientid does not signal a failure condition from
-> > > > > > nfs4_proc_exchange_id and nfs4_proc_create_session to a
-> > > > > > client
-> > > > > > which
-> > > > > > may
-> > > > > > lead to mount syscall indefinitely blocked in the following
-> > > > > > stack
-> > > >
-> > > > > NACK. This will break all sorts of recovery scenarios, because
-> > > > > it
-> > > > > doesn't distinguish between an initial 'mount' and a server
-> > > > > reboot
-> > > > > recovery situation.
-> > > > > Even in the case where we are in the initial mount, it also
-> > > > > doesn't
-> > > > > distinguish between transient errors such as NFS4ERR_DELAY or
-> > > > > reboot
-> > > > > errors such as NFS4ERR_STALE_CLIENTID, etc.
-> > > >
-> > > > > Exactly what is the scenario that is causing your hang? Let's
-> > > > > try
-> > > > > to
-> > > > > address that with a more targeted fix.
-> > > >
-> > > > The scenario is as follows: there are several NFS servers and
-> > > > several
-> > > > production machines with multiple NFS mounts. This is a
-> > > > containerized
-> > > > multi-tennant workflow so every tennant gets its own NFS mount to
-> > > > access their
-> > > > data. At some point nfs41_init_clientid fails in the initial
-> > > > mount.nfs call
-> > > > and all subsequent mount.nfs calls just hang in
-> > > > nfs_wait_client_init_complete
-> > > > until the original one, where nfs4_proc_exchange_id has failed,
-> > > > is
-> > > > killed.
-> > > >
-> > > > The cause of the nfs41_init_clientid failure in the production
-> > > > case
-> > > > is a timeout.
-> > > > The following error message is observed in logs:
-> > > >   NFS: state manager: lease expired failed on NFSv4 server <ip>
-> > > > with
-> > > > error 110
-> > > >
-> > >
-> > > How about something like the following fix then?
-> > > 8<-----------------------------------------------
-> > > From eb402b489bb0d0ada1a3dd9101d4d7e193402e46 Mon Sep 17 00:00:00
-> > > 2001
-> > > Message-ID:
-> > > <eb402b489bb0d0ada1a3dd9101d4d7e193402e46.1725904471.git.trond.mykl
-> > > ebust@hammerspace.com>
-> > > From: Trond Myklebust <trond.myklebust@hammerspace.com>
-> > > Date: Mon, 9 Sep 2024 13:47:07 -0400
-> > > Subject: [PATCH] NFSv4: Fail mounts if the lease setup times out
-> > >
-> > > If the server is down when the client is trying to mount, so that
-> > > the
-> > > calls to exchange_id or create_session fail, then we should allow
-> > > the
-> > > mount system call to fail rather than hang and block other
-> > > mount/umount
-> > > calls.
-> > >
-> > > Reported-by: Oleksandr Tymoshenko <ovt@google.com>
-> > > Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-> > > ---
-> > >  fs/nfs/nfs4state.c | 6 ++++++
-> > >  1 file changed, 6 insertions(+)
-> > >
-> > > diff --git a/fs/nfs/nfs4state.c b/fs/nfs/nfs4state.c
-> > > index 30aba1dedaba..59dcdf9bc7b4 100644
-> > > --- a/fs/nfs/nfs4state.c
-> > > +++ b/fs/nfs/nfs4state.c
-> > > @@ -2024,6 +2024,12 @@ static int
-> > > nfs4_handle_reclaim_lease_error(struct nfs_client *clp, int status)
-> > >                 nfs_mark_client_ready(clp, -EPERM);
-> > >                 clear_bit(NFS4CLNT_LEASE_CONFIRM, &clp->cl_state);
-> > >                 return -EPERM;
-> > > +       case -ETIMEDOUT:
-> > > +               if (clp->cl_cons_state =3D=3D NFS_CS_SESSION_INITING)=
- {
-> > > +                       nfs_mark_client_ready(clp, -EIO);
-> > > +                       return -EIO;
-> > > +               }
-> > > +               fallthrough;
-> > >         case -EACCES:
-> > >         case -NFS4ERR_DELAY:
-> > >         case -EAGAIN:
-> > > --
-> >
-> > This patch fixes the issue in my simulated environment. ETIMEDOUT is
-> > the error code that
-> > was observed in the production env but I guess it's not the only
-> > possible one. Would it make
-> > sense to handle all error conditions in the NFS_CS_SESSION_INITING
-> > state or are there
-> > some others that are recoverable?
-> >
->
-> The only other one that I'm thinking might want to be treated similarly
-> is the above EACCES error. That's because that is only returned if
-> there is a problem with your RPCSEC_GSS/krb5 credential. I was thinking
-> of changing that one too in the same patch, but came to the conclusion
-> it would be better to treat the two issues with separate fixes.
->
-> The other error conditions are all supposed to be transient NFS level
-> errors. They should not be treated as fatal.
+On 9/10/24 03:30, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.15.167 release.
+> There are 214 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Thu, 12 Sep 2024 09:25:22 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.167-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
+> 
 
-Sounds good. Will you submit this patch to the mainline kernel? If so
-please add me to Cc. Thanks for looking into this.
+I am seeing a modpost error when I install the kernel. Looks
+ERROR: modpost: module ad7606_par uses symbol ad7606_reset from namespace IIO_AD7606, but does not import it.
+make[1]: *** [scripts/Makefile.modpost:133: modules-only.symvers] Error 1
+make[1]: *** Deleting file 'modules-only.symvers'
+make: *** [Makefile:1825: modules] Error 2
+
+I am seeing a modpost error when I install the kernel. Looks
+like thge following commit is the problem.
+
+> 
+> Guillaume Stols <gstols@baylibre.com>
+>      iio: adc: ad7606: remove frstdata check for serial mode
+> 
+
+thanks,
+-- Shuah
+
+
 
