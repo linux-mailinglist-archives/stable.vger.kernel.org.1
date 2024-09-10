@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-74170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C29F972DDB
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:37:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BA0597305C
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:01:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D816F1F25393
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:37:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 790C71C249D6
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:01:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E0B11891A1;
-	Tue, 10 Sep 2024 09:36:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DEB418C331;
+	Tue, 10 Sep 2024 09:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TVxrCNhM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jRRsUJYT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A95746444;
-	Tue, 10 Sep 2024 09:36:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CD9418C32F;
+	Tue, 10 Sep 2024 09:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961019; cv=none; b=ETvuKnzu/SiChfR79KlGTNm394h8v7dNUdUgQZaYbjWyAGguMDKIgidpNUjcwW0vMa3uSXgg4mGI/5PoaAcm16Xqp/2/XpCE1M5OBkiJqsejuH0B1zbocwAOfII9XXscqoYDu1mJnrReRRkiGqi6cV6tqF7rnkeVsiseZE0H12k=
+	t=1725962372; cv=none; b=kpWCFKGirIoJB2lDM5jyRAhC4QGR4NXZaVMUsV3v4g4yztYM+aLueDX9DPJJODgIJuVSprxXDN4TsKgLE/h+cVU6uKp32m+FVhMSBfgyOnPgUwcECKTgYJkHpQGNhv91TEgypx+QiH9XbfnMvTYvTsGj+xh1EG5sBQKyqhLqUIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961019; c=relaxed/simple;
-	bh=c6Wi75THa7bMcuRRpvuVh3no7h31K2jJ7vtfwTs8v1E=;
+	s=arc-20240116; t=1725962372; c=relaxed/simple;
+	bh=QuXOG6ysEopYTkM3XFEUqI4Ny0S1N9StyTkudo/GvkY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fQyXF6uh8K4MA3SEKYI+ix7/f26n2O+c2os8Sg4O20efwUyRR/ek/hwfQFr8VxXlTVllEUNMj9UAqtYKqi0PmC/kgEFMuHgPR2I0X7EZClWcKBZ24AzaCKn0goR2SB9GgQaekYMUeBuV7qsEGIJFRD0trYgortlgoonkl1mFBZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TVxrCNhM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83E93C4CEC3;
-	Tue, 10 Sep 2024 09:36:58 +0000 (UTC)
+	 MIME-Version; b=uBiWp/gWpSR/NaadQg6tcbb8mmTSSx7UpwOhj/doHP18UFYPqNIkQ5jMgiJSHP/1EI0ZcJzXRydC3qqpoyb9JX7NX89KhX/WgXKNUIaCncB6NC93VuAOLl1au0IxYYbwlsty1QvNgOfqw+ENoFUzEuvZZZydzpu3P7bHrId3de4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jRRsUJYT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8990C4CEC3;
+	Tue, 10 Sep 2024 09:59:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961018;
-	bh=c6Wi75THa7bMcuRRpvuVh3no7h31K2jJ7vtfwTs8v1E=;
+	s=korg; t=1725962372;
+	bh=QuXOG6ysEopYTkM3XFEUqI4Ny0S1N9StyTkudo/GvkY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TVxrCNhMaaha8Mpi+GtzxuMhtUzTrW/3FIjRsIVgE8ycvRIMgF/iEqasQnjodD+MI
-	 QsVmDjJgy+8rfu/sWqO1L2KH7fjckfgH8G1YhFcAbRpDfuHv8ce7rQDSrndvdcQg0G
-	 9EsFeS+XUq6/IpsqIfxD6BFDnKEi8xPE9w4/IhS8=
+	b=jRRsUJYTZHSwq87ox6k/7MVIvG28GuxAOgjvEQmulipknZ0CcXBA7Nc11at1yQIVu
+	 oO5qz2wqf/jNp76uL4FWxJ3DtPOcVYm+nkCtFAkkJkVzrsqR9n32TN4fbewgJ3mSGO
+	 3wO7voSH4/4bHjnET0KL3nWga2mPkdHIhpkPRiws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 4.19 25/96] nilfs2: fix state management in error path of log writing function
+	Michael Chen <michael.chen@amd.com>,
+	Felix Kuehling <felix.kuehling@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 012/121] drm/amdkfd: Reconcile the definition and use of oem_id in struct kfd_topology_device
 Date: Tue, 10 Sep 2024 11:31:27 +0200
-Message-ID: <20240910092542.551035492@linuxfoundation.org>
+Message-ID: <20240910092546.328847663@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
-References: <20240910092541.383432924@linuxfoundation.org>
+In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
+References: <20240910092545.737864202@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,86 +63,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Michael Chen <michael.chen@amd.com>
 
-commit 6576dd6695f2afca3f4954029ac4a64f82ba60ab upstream.
+[ Upstream commit 10f624ef239bd136cdcc5bbc626157a57b938a31 ]
 
-After commit a694291a6211 ("nilfs2: separate wait function from
-nilfs_segctor_write") was applied, the log writing function
-nilfs_segctor_do_construct() was able to issue I/O requests continuously
-even if user data blocks were split into multiple logs across segments,
-but two potential flaws were introduced in its error handling.
+Currently oem_id is defined as uint8_t[6] and casted to uint64_t*
+in some use case. This would lead code scanner to complain about
+access beyond. Re-define it in union to enforce 8-byte size and
+alignment to avoid potential issue.
 
-First, if nilfs_segctor_begin_construction() fails while creating the
-second or subsequent logs, the log writing function returns without
-calling nilfs_segctor_abort_construction(), so the writeback flag set on
-pages/folios will remain uncleared.  This causes page cache operations to
-hang waiting for the writeback flag.  For example,
-truncate_inode_pages_final(), which is called via nilfs_evict_inode() when
-an inode is evicted from memory, will hang.
-
-Second, the NILFS_I_COLLECTED flag set on normal inodes remain uncleared.
-As a result, if the next log write involves checkpoint creation, that's
-fine, but if a partial log write is performed that does not, inodes with
-NILFS_I_COLLECTED set are erroneously removed from the "sc_dirty_files"
-list, and their data and b-tree blocks may not be written to the device,
-corrupting the block mapping.
-
-Fix these issues by uniformly calling nilfs_segctor_abort_construction()
-on failure of each step in the loop in nilfs_segctor_do_construct(),
-having it clean up logs and segment usages according to progress, and
-correcting the conditions for calling nilfs_redirty_inodes() to ensure
-that the NILFS_I_COLLECTED flag is cleared.
-
-Link: https://lkml.kernel.org/r/20240814101119.4070-1-konishi.ryusuke@gmail.com
-Fixes: a694291a6211 ("nilfs2: separate wait function from nilfs_segctor_write")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Michael Chen <michael.chen@amd.com>
+Reviewed-by: Felix Kuehling <felix.kuehling@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/segment.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/amd/amdkfd/kfd_crat.h     | 2 --
+ drivers/gpu/drm/amd/amdkfd/kfd_topology.c | 3 +--
+ drivers/gpu/drm/amd/amdkfd/kfd_topology.h | 5 ++++-
+ 3 files changed, 5 insertions(+), 5 deletions(-)
 
---- a/fs/nilfs2/segment.c
-+++ b/fs/nilfs2/segment.c
-@@ -1828,6 +1828,9 @@ static void nilfs_segctor_abort_construc
- 	nilfs_abort_logs(&logs, ret ? : err);
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_crat.h b/drivers/gpu/drm/amd/amdkfd/kfd_crat.h
+index d54ceebd346b..30c70b3ab17f 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_crat.h
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_crat.h
+@@ -42,8 +42,6 @@
+ #define CRAT_OEMTABLEID_LENGTH	8
+ #define CRAT_RESERVED_LENGTH	6
  
- 	list_splice_tail_init(&sci->sc_segbufs, &logs);
-+	if (list_empty(&logs))
-+		return; /* if the first segment buffer preparation failed */
-+
- 	nilfs_cancel_segusage(&logs, nilfs->ns_sufile);
- 	nilfs_free_incomplete_logs(&logs, nilfs);
- 
-@@ -2072,7 +2075,7 @@ static int nilfs_segctor_do_construct(st
- 
- 		err = nilfs_segctor_begin_construction(sci, nilfs);
- 		if (unlikely(err))
--			goto out;
-+			goto failed;
- 
- 		/* Update time stamp */
- 		sci->sc_seg_ctime = ktime_get_real_seconds();
-@@ -2135,10 +2138,9 @@ static int nilfs_segctor_do_construct(st
- 	return err;
- 
-  failed_to_write:
--	if (sci->sc_stage.flags & NILFS_CF_IFILE_STARTED)
--		nilfs_redirty_inodes(&sci->sc_dirty_files);
+-#define CRAT_OEMID_64BIT_MASK ((1ULL << (CRAT_OEMID_LENGTH * 8)) - 1)
 -
-  failed:
-+	if (mode == SC_LSEG_SR && nilfs_sc_cstage_get(sci) >= NILFS_ST_IFILE)
-+		nilfs_redirty_inodes(&sci->sc_dirty_files);
- 	if (nilfs_doing_gc())
- 		nilfs_redirty_inodes(&sci->sc_gc_inodes);
- 	nilfs_segctor_abort_construction(sci, nilfs, err);
+ /* Compute Unit flags */
+ #define COMPUTE_UNIT_CPU	(1 << 0)  /* Create Virtual CRAT for CPU */
+ #define COMPUTE_UNIT_GPU	(1 << 1)  /* Create Virtual CRAT for GPU */
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
+index a49e2ab071d6..de892ee147de 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_topology.c
+@@ -883,8 +883,7 @@ static void kfd_update_system_properties(void)
+ 	dev = list_last_entry(&topology_device_list,
+ 			struct kfd_topology_device, list);
+ 	if (dev) {
+-		sys_props.platform_id =
+-			(*((uint64_t *)dev->oem_id)) & CRAT_OEMID_64BIT_MASK;
++		sys_props.platform_id = dev->oem_id64;
+ 		sys_props.platform_oem = *((uint64_t *)dev->oem_table_id);
+ 		sys_props.platform_rev = dev->oem_revision;
+ 	}
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_topology.h b/drivers/gpu/drm/amd/amdkfd/kfd_topology.h
+index d4718d58d0f2..7230b5b5bfe5 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_topology.h
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_topology.h
+@@ -172,7 +172,10 @@ struct kfd_topology_device {
+ 	struct attribute		attr_gpuid;
+ 	struct attribute		attr_name;
+ 	struct attribute		attr_props;
+-	uint8_t				oem_id[CRAT_OEMID_LENGTH];
++	union {
++		uint8_t				oem_id[CRAT_OEMID_LENGTH];
++		uint64_t			oem_id64;
++	};
+ 	uint8_t				oem_table_id[CRAT_OEMTABLEID_LENGTH];
+ 	uint32_t			oem_revision;
+ };
+-- 
+2.43.0
+
 
 
 
