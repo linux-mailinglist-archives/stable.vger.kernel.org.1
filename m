@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-75398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74751-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9964F973458
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:40:12 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9490B973144
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:10:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C84028D94F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:40:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 454CA1F2731A
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:10:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F3C8919068E;
-	Tue, 10 Sep 2024 10:36:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B12C18B488;
+	Tue, 10 Sep 2024 10:05:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T6myK+4u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZvqOfV1B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC023190072;
-	Tue, 10 Sep 2024 10:36:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDF8D1885A5;
+	Tue, 10 Sep 2024 10:05:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964615; cv=none; b=qGGhZYst6kilXfGwBo8Ks1j0mwFArrLjja4eFz7F/aBOnQa6DNgQkl54oepNqQFjjN1LL1N9Rl79DFrTFxuz2EnG1UoEywHRlpttzaPlvINecrTtdea0fn3eEiaAtBgE52sNnaZEZ3XF+uuguwiL79rR6dhcads2PMBJHNYumIM=
+	t=1725962723; cv=none; b=Zt3Oq8wwbQI5PpfrYhHQ/L1TMOz1ff9fHmEYOsbIUQZVmqvnjWAyyMWvuDtX+hGN06q1FnzVPxED5n93evvLC+FCcKKd5JRBfvhw1D9zjMqAGSVA6AJTgIAWgQXMkj0Y295uSLXXTp9Bdjr52MzVWq9QpHRcH3RUTdJvk4hpqoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964615; c=relaxed/simple;
-	bh=x4hu3FWnrFDJSFLfYLJ5AF3+KAnfePZDTv7+vtsC5nM=;
+	s=arc-20240116; t=1725962723; c=relaxed/simple;
+	bh=qI9xEda6GTNWaOUjwjob4rGrxLZLEIakXBvjrsPuJAA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lfck+wxh7clMztGBuyUvc+/MXWZ7OCWVj96zyWRnBoHOgIa1N2rZBFPWd50j1mtNM8UMyccirFBNFfEDQNmLToydrFALaeYpOYxYXtto7cCabWU6OV9BJ0UOxWH2Nn3y5+iC/lS+tmYpTxfnoeEsn4xzpPRMuphOTJHY0Jgod/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T6myK+4u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E15E9C4CEC6;
-	Tue, 10 Sep 2024 10:36:54 +0000 (UTC)
+	 MIME-Version; b=lOWGM6BgycOinGT1oFo3+j3cR++PpF/umnzOIr76+o4JZKmOhHrnBpsWv04/jbbIHqBRbRkCbUnGexFi3HHgDnmp5OYjuEmlCf7/+TJwwLJwjBsNOlbLHKIydRWWaOLRo1lHiGN4kzsYk3Vct1bD7EGAatCZ1jl2EhvqBZ5ZeCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZvqOfV1B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D921C4CEC3;
+	Tue, 10 Sep 2024 10:05:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964615;
-	bh=x4hu3FWnrFDJSFLfYLJ5AF3+KAnfePZDTv7+vtsC5nM=;
+	s=korg; t=1725962722;
+	bh=qI9xEda6GTNWaOUjwjob4rGrxLZLEIakXBvjrsPuJAA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T6myK+4urpccgdI29P09XviRTzjZrmYOUn+xMZfB8Vzs5/gHLLfa4a4u4nqahZzTR
-	 xG4cOtkThgd4imFlplXVG2K8xDbbJU62WeJe95nEvuelXBqKWrxXq6LCDzkPcoS4xE
-	 H5byEZTLHnv/h+8JkuxHD6H4WX3xd5urUH4TeRIQ=
+	b=ZvqOfV1BT9oujhhqfvPMFQ2gzlB8W+jUhheQV0sLsH2dWQosxhM97+1vbfzGKPqP4
+	 CJUUFde7+WCaZ3qsvVb077tn5dcMiMJAffF1E+TpgYl2xgLuN23rChSea/+EdGuKDo
+	 UJ+Fg5/ndq/JcJfxsgK+QsqT5LWrPCac956gb3+E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.6 205/269] staging: iio: frequency: ad9834: Validate frequency parameter value
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 117/121] drm/i915/fence: Mark debug_fence_init_onstack() with __maybe_unused
 Date: Tue, 10 Sep 2024 11:33:12 +0200
-Message-ID: <20240910092615.366668309@linuxfoundation.org>
+Message-ID: <20240910092551.353143466@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
+References: <20240910092545.737864202@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-commit b48aa991758999d4e8f9296c5bbe388f293ef465 upstream.
+[ Upstream commit fcd9e8afd546f6ced378d078345a89bf346d065e ]
 
-In ad9834_write_frequency() clk_get_rate() can return 0. In such case
-ad9834_calc_freqreg() call will lead to division by zero. Checking
-'if (fout > (clk_freq / 2))' doesn't protect in case of 'fout' is 0.
-ad9834_write_frequency() is called from ad9834_write(), where fout is
-taken from text buffer, which can contain any value.
+When debug_fence_init_onstack() is unused (CONFIG_DRM_I915_SELFTEST=n),
+it prevents kernel builds with clang, `make W=1` and CONFIG_WERROR=y:
 
-Modify parameters checking.
+.../i915_sw_fence.c:97:20: error: unused function 'debug_fence_init_onstack' [-Werror,-Wunused-function]
+   97 | static inline void debug_fence_init_onstack(struct i915_sw_fence *fence)
+      |                    ^~~~~~~~~~~~~~~~~~~~~~~~
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Fix this by marking debug_fence_init_onstack() with __maybe_unused.
 
-Fixes: 12b9d5bf76bf ("Staging: IIO: DDS: AD9833 / AD9834 driver")
-Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/20240703154506.25584-1-amishin@t-argos.ru
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+See also commit 6863f5643dd7 ("kbuild: allow Clang to find unused static
+inline functions for W=1 build").
+
+Fixes: 214707fc2ce0 ("drm/i915/selftests: Wrap a timer into a i915_sw_fence")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240829155950.1141978-2-andriy.shevchenko@linux.intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+(cherry picked from commit 5bf472058ffb43baf6a4cdfe1d7f58c4c194c688)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/iio/frequency/ad9834.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/i915/i915_sw_fence.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/staging/iio/frequency/ad9834.c
-+++ b/drivers/staging/iio/frequency/ad9834.c
-@@ -114,7 +114,7 @@ static int ad9834_write_frequency(struct
+diff --git a/drivers/gpu/drm/i915/i915_sw_fence.c b/drivers/gpu/drm/i915/i915_sw_fence.c
+index b3fd6ff665da..475e4b9485af 100644
+--- a/drivers/gpu/drm/i915/i915_sw_fence.c
++++ b/drivers/gpu/drm/i915/i915_sw_fence.c
+@@ -38,7 +38,7 @@ static inline void debug_fence_init(struct i915_sw_fence *fence)
+ 	debug_object_init(fence, &i915_sw_fence_debug_descr);
+ }
  
- 	clk_freq = clk_get_rate(st->mclk);
+-static inline void debug_fence_init_onstack(struct i915_sw_fence *fence)
++static inline __maybe_unused void debug_fence_init_onstack(struct i915_sw_fence *fence)
+ {
+ 	debug_object_init_on_stack(fence, &i915_sw_fence_debug_descr);
+ }
+@@ -81,7 +81,7 @@ static inline void debug_fence_init(struct i915_sw_fence *fence)
+ {
+ }
  
--	if (fout > (clk_freq / 2))
-+	if (!clk_freq || fout > (clk_freq / 2))
- 		return -EINVAL;
+-static inline void debug_fence_init_onstack(struct i915_sw_fence *fence)
++static inline __maybe_unused void debug_fence_init_onstack(struct i915_sw_fence *fence)
+ {
+ }
  
- 	regval = ad9834_calc_freqreg(clk_freq, fout);
+-- 
+2.43.0
+
 
 
 
