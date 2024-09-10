@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-75335-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F9E597340B
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:37:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46AC09731CF
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:15:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2C3B1C24E56
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:37:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 72CDFB21312
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:15:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FC13190667;
-	Tue, 10 Sep 2024 10:33:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA048192B84;
+	Tue, 10 Sep 2024 10:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="csMx+VBj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BE3AE59t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1892172BA8;
-	Tue, 10 Sep 2024 10:33:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A26AC1917C2;
+	Tue, 10 Sep 2024 10:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964434; cv=none; b=rlB7Wda1dJmHQhkwXmyTQEe7vVbeIExDEtOwn66sjBECmvpJbqFnehrjX7au27KGjBUVwq1yTHP7LDvuomgCtWXpnCMKETml798giPdQHqx0iajUg8radTjpeQ6tHwzSLW4atoDy152kz0zIZLuZHtHd2DKnwBLhom8xf5UzIqA=
+	t=1725963047; cv=none; b=okH4cNA1K+4wf63VvD5DIM6OT+ZhImqRHh0NMEXhec41vgoRGUOCfzlFKythwGPGODSa8WgNF8ESs3SaOkrziIKZR3wAAEKn+p4kzCN2oCQKbEHOangYHDR6pjNcVoYv0XMnSQTq5n6zIX21ob4mo4fQi+qclTOkZgzt5CUoiLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964434; c=relaxed/simple;
-	bh=wSbXyWWdt33nIdDWSXRdQF8aB0ORh0Dk5br/SKVeqA0=;
+	s=arc-20240116; t=1725963047; c=relaxed/simple;
+	bh=tuIfdRGyTpQPzHt71V1QvkvXBHGXQGL9Jllltqv7Ti0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TRgS6dc10Br17ngrurzLmR8xcGlWYk76Had/2Ty0EyOvISXrl2KGtryfqa7oM1dNC+x62UjGONJ/DjxeRGWeiNUWgwK8iWFAj84I14Cm1BByaZpvOc1pc8hB1KACdY1R/DLFvdNEsJzwviLJ/GsL+RmYKVbiPC+G4AofYO1wtug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=csMx+VBj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47F68C4CEC6;
-	Tue, 10 Sep 2024 10:33:54 +0000 (UTC)
+	 MIME-Version; b=FK/hPHFtY+gCFtDinNvNhV318PZQXK0rfKZI0PE1/UkXL2gxux97HWF5bXMABk7M7g9V40H0tHLBlCAc+7luqVh3HYSZrLkqXz5gajVKzuDZCb9b/KCHAR5mFYOGpMDdvULV1NmstrOPWTLa+dqGCo3f8j3BMRDPPjFh/4+g4iU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BE3AE59t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2869CC4CEC6;
+	Tue, 10 Sep 2024 10:10:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964434;
-	bh=wSbXyWWdt33nIdDWSXRdQF8aB0ORh0Dk5br/SKVeqA0=;
+	s=korg; t=1725963047;
+	bh=tuIfdRGyTpQPzHt71V1QvkvXBHGXQGL9Jllltqv7Ti0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=csMx+VBjHmNRg+zpG5/kihgrc8VDjIIubccp/1hdKANU85BptMG6umQpwTNq34MPW
-	 2DkOMwY21jNmBSJYYcQmyYnTxSD0KP4jf5Uu3UPQ5RQsoSeTf4X2rmYYqkgqR4vHqY
-	 /7KjBOR4Nd4ti11ZvwWkmgTpj8iaoorva23QHgnw=
+	b=BE3AE59tmXOZhwmcxPVB2ohi17A8Mg6W4zwbdFzYCia0DMNOLUH47QoHPQ8r+Cz/y
+	 MjuMJgOXCuf5ra6WCOH3//zfXUE/UflAk+CfstWQeA1ZKxvQYSwr+CtLgGv2V5k5p6
+	 3qqu3eWAHmsY4fFXpPDoCb2qU+IDf6s3108SA1dM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 155/269] hwmon: (w83627ehf) Fix underflows seen when writing limit attributes
+Subject: [PATCH 6.1 118/192] btrfs: initialize location to fix -Wmaybe-uninitialized in btrfs_lookup_dentry()
 Date: Tue, 10 Sep 2024 11:32:22 +0200
-Message-ID: <20240910092613.726163423@linuxfoundation.org>
+Message-ID: <20240910092602.880633000@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: David Sterba <dsterba@suse.com>
 
-[ Upstream commit 5c1de37969b7bc0abcb20b86e91e70caebbd4f89 ]
+[ Upstream commit b8e947e9f64cac9df85a07672b658df5b2bcff07 ]
 
-DIV_ROUND_CLOSEST() after kstrtol() results in an underflow if a large
-negative number such as -9223372036854775808 is provided by the user.
-Fix it by reordering clamp_val() and DIV_ROUND_CLOSEST() operations.
+Some arch + compiler combinations report a potentially unused variable
+location in btrfs_lookup_dentry(). This is a false alert as the variable
+is passed by value and always valid or there's an error. The compilers
+cannot probably reason about that although btrfs_inode_by_name() is in
+the same file.
 
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+   >  + /kisskb/src/fs/btrfs/inode.c: error: 'location.objectid' may be used
+   +uninitialized in this function [-Werror=maybe-uninitialized]:  => 5603:9
+   >  + /kisskb/src/fs/btrfs/inode.c: error: 'location.type' may be used
+   +uninitialized in this function [-Werror=maybe-uninitialized]:  => 5674:5
+
+   m68k-gcc8/m68k-allmodconfig
+   mips-gcc8/mips-allmodconfig
+   powerpc-gcc5/powerpc-all{mod,yes}config
+   powerpc-gcc5/ppc64_defconfig
+
+Initialize it to zero, this should fix the warnings and won't change the
+behaviour as btrfs_inode_by_name() accepts only a root or inode item
+types, otherwise returns an error.
+
+Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Tested-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/linux-btrfs/bd4e9928-17b3-9257-8ba7-6b7f9bbb639a@linux-m68k.org/
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/w83627ehf.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/btrfs/inode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/w83627ehf.c b/drivers/hwmon/w83627ehf.c
-index fe960c0a624f..7d7d70afde65 100644
---- a/drivers/hwmon/w83627ehf.c
-+++ b/drivers/hwmon/w83627ehf.c
-@@ -895,7 +895,7 @@ store_target_temp(struct device *dev, struct device_attribute *attr,
- 	if (err < 0)
- 		return err;
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index 934e360d1aef..e5017b2ade57 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -5890,7 +5890,7 @@ struct inode *btrfs_lookup_dentry(struct inode *dir, struct dentry *dentry)
+ 	struct inode *inode;
+ 	struct btrfs_root *root = BTRFS_I(dir)->root;
+ 	struct btrfs_root *sub_root = root;
+-	struct btrfs_key location;
++	struct btrfs_key location = { 0 };
+ 	u8 di_type = 0;
+ 	int ret = 0;
  
--	val = clamp_val(DIV_ROUND_CLOSEST(val, 1000), 0, 127);
-+	val = DIV_ROUND_CLOSEST(clamp_val(val, 0, 127000), 1000);
- 
- 	mutex_lock(&data->update_lock);
- 	data->target_temp[nr] = val;
-@@ -920,7 +920,7 @@ store_tolerance(struct device *dev, struct device_attribute *attr,
- 		return err;
- 
- 	/* Limit the temp to 0C - 15C */
--	val = clamp_val(DIV_ROUND_CLOSEST(val, 1000), 0, 15);
-+	val = DIV_ROUND_CLOSEST(clamp_val(val, 0, 15000), 1000);
- 
- 	mutex_lock(&data->update_lock);
- 	reg = w83627ehf_read_value(data, W83627EHF_REG_TOLERANCE[nr]);
 -- 
 2.43.0
 
