@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-75140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C37A973316
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:28:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1CA2973455
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:40:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2BE0287DA8
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:28:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5CED41F25BB6
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:40:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6945194132;
-	Tue, 10 Sep 2024 10:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE59219048A;
+	Tue, 10 Sep 2024 10:36:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TpM5CZx6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="piFDSyvT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84B3418A6B9;
-	Tue, 10 Sep 2024 10:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 945A146444;
+	Tue, 10 Sep 2024 10:36:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963866; cv=none; b=Z7Vcm4Lggh+C/W4ySBgPsqJWK5zI6h2mMJn30OWePWM6eJqP88yLfeHWBpnzvwkNscNxJcAbeJRGxowoh1qWmzbfIxZMK7aP2tjzpNQlkfyT+fHRheRV74DMx5MfSaW4ga3nDH+mBldxY4irzwhFhmDVjqrINqKXdYXDzWHe45o=
+	t=1725964606; cv=none; b=LGBj4u93OyvNRNirtd5I0318+ZoCyjNMFZmxHRaKT9Tr2PCakfieI5aa7F1HbgyM7kEgXoXLKY3ChBnFn/ymOEZaj/7mXXMkMPbjIRAfGQkoWIGeefiS9/KTslhdbVzm1qcpmBXLKFwqtQN4sYjLOfvqu2dbriMxVsozWR8b0aM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963866; c=relaxed/simple;
-	bh=TnxmHITbposWjpjPuawTjYV2IwF2/MUTwWEUt+gUteM=;
+	s=arc-20240116; t=1725964606; c=relaxed/simple;
+	bh=5RdPCRze4CaUIs7aKPY9ci1qrsRtgUPvjsdjxHCfebs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Td4yO8YXVwiIAqSU7rj2sxCnVzQs/qQ2TQKrPXtTll9k+gKunFnnYuk6raiumNKlLA/OlbHjRrVKYhsCTfdrp2KDiQ4TfKenEcMrFm3DYHKjenIFvyqifs1OGBrPWBd1xKqveqv9R16peRWW7to1OQEHV/TtVXu7Oyj9p6I71yk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TpM5CZx6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DEF2C4CEC3;
-	Tue, 10 Sep 2024 10:24:25 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NTc/stbTLmx8z7xTc5jAxv8gAb1/A2NqfyzZO2mocYvJEx4hzdm6FsJoBsE1vhzlrHW3klcunMjHTjBzncoizdOdGRzzkoemh9NbNXDBKQ10MuBAFrW/H/iRCzPMhVTf95kegRvtXtTXbruX95EoNnCTkloKNVLXQZ1GsyJBX6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=piFDSyvT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C87BC4CECF;
+	Tue, 10 Sep 2024 10:36:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963866;
-	bh=TnxmHITbposWjpjPuawTjYV2IwF2/MUTwWEUt+gUteM=;
+	s=korg; t=1725964606;
+	bh=5RdPCRze4CaUIs7aKPY9ci1qrsRtgUPvjsdjxHCfebs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TpM5CZx6/1m5F5GWsYXSQ4oyHVSUarkUsdo9G8To++MlQGHLdwLfsAkfBuZ9/FwLQ
-	 H6hSsl6HuquloJFGx/lldoLteufvkcAxQYSuJAeteH0ZTcanGNOfoFYWKSgrXv+Avh
-	 CYhSDgLHynfmZDSnDiUttyfsH3j3eTzpltxaa+3o=
+	b=piFDSyvTMX6kPTLgonr9ISBS6xy1uwR9MsO4APGD57bjNLxy8/rCjDhlcfdxrbTfC
+	 qTJLzSmwKKkzoNOjZrP8TQG0w4UgM29SzOiElTKVyaC6YaBITr5SLv0YLdQGHPhX1U
+	 hEQiY5bQgS9pss3zhanyQj09wNNOSAawFAvsomTM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dumitru Ceclan <dumitru.ceclan@analog.com>,
-	Nuno Sa <nuno.sa@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.15 177/214] iio: adc: ad7124: fix config comparison
+	Pawel Laszczak <pawell@cadence.com>
+Subject: [PATCH 6.6 212/269] usb: cdns2: Fix controller reset issue
 Date: Tue, 10 Sep 2024 11:33:19 +0200
-Message-ID: <20240910092605.937336185@linuxfoundation.org>
+Message-ID: <20240910092615.570161730@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,85 +58,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dumitru Ceclan <mitrutzceclan@gmail.com>
+From: Pawel Laszczak <pawell@cadence.com>
 
-commit 2f6b92d0f69f04d9e2ea0db1228ab7f82f3173af upstream.
+commit e2940928115e83d707b21bf00b0db7d6c15f8341 upstream.
 
-The ad7124_find_similar_live_cfg() computes the compare size by
-substracting the address of the cfg struct from the address of the live
-field. Because the live field is the first field in the struct, the
-result is 0.
+Patch fixes the procedure of resetting controller.
+The CPUCTRL register is write only and reading returns 0.
+Waiting for reset to complite is incorrect.
 
-Also, the memcmp() call is made from the start of the cfg struct, which
-includes the live and cfg_slot fields, which are not relevant for the
-comparison.
-
-Fix by grouping the relevant fields with struct_group() and use the
-size of the group to compute the compare size; make the memcmp() call
-from the address of the group.
-
-Fixes: 7b8d045e497a ("iio: adc: ad7124: allow more than 8 channels")
-Signed-off-by: Dumitru Ceclan <dumitru.ceclan@analog.com>
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://patch.msgid.link/20240731-ad7124-fix-v1-2-46a76aa4b9be@analog.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 3eb1f1efe204 ("usb: cdns2: Add main part of Cadence USBHS driver")
+cc: stable@vger.kernel.org
+Signed-off-by: Pawel Laszczak <pawell@cadence.com>
+Link: https://lore.kernel.org/r/PH7PR07MB9538D56D75F1F399D0BB96F0DD922@PH7PR07MB9538.namprd07.prod.outlook.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/ad7124.c |   26 +++++++++++++++-----------
- 1 file changed, 15 insertions(+), 11 deletions(-)
+ drivers/usb/gadget/udc/cdns2/cdns2-gadget.c |   12 +++---------
+ drivers/usb/gadget/udc/cdns2/cdns2-gadget.h |    9 +++++++++
+ 2 files changed, 12 insertions(+), 9 deletions(-)
 
---- a/drivers/iio/adc/ad7124.c
-+++ b/drivers/iio/adc/ad7124.c
-@@ -144,15 +144,18 @@ struct ad7124_chip_info {
- struct ad7124_channel_config {
- 	bool live;
- 	unsigned int cfg_slot;
--	enum ad7124_ref_sel refsel;
--	bool bipolar;
--	bool buf_positive;
--	bool buf_negative;
--	unsigned int vref_mv;
--	unsigned int pga_bits;
--	unsigned int odr;
--	unsigned int odr_sel_bits;
--	unsigned int filter_type;
-+	/* Following fields are used to compare equality. */
-+	struct_group(config_props,
-+		enum ad7124_ref_sel refsel;
-+		bool bipolar;
-+		bool buf_positive;
-+		bool buf_negative;
-+		unsigned int vref_mv;
-+		unsigned int pga_bits;
-+		unsigned int odr;
-+		unsigned int odr_sel_bits;
-+		unsigned int filter_type;
-+	);
- };
+--- a/drivers/usb/gadget/udc/cdns2/cdns2-gadget.c
++++ b/drivers/usb/gadget/udc/cdns2/cdns2-gadget.c
+@@ -2251,7 +2251,6 @@ static int cdns2_gadget_start(struct cdn
+ {
+ 	u32 max_speed;
+ 	void *buf;
+-	int val;
+ 	int ret;
  
- struct ad7124_channel {
-@@ -331,11 +334,12 @@ static struct ad7124_channel_config *ad7
- 	ptrdiff_t cmp_size;
- 	int i;
+ 	pdev->usb_regs = pdev->regs;
+@@ -2261,14 +2260,9 @@ static int cdns2_gadget_start(struct cdn
+ 	pdev->adma_regs = pdev->regs + CDNS2_ADMA_REGS_OFFSET;
  
--	cmp_size = (u8 *)&cfg->live - (u8 *)cfg;
-+	cmp_size = sizeof_field(struct ad7124_channel_config, config_props);
- 	for (i = 0; i < st->num_channels; i++) {
- 		cfg_aux = &st->channels[i].cfg;
+ 	/* Reset controller. */
+-	set_reg_bit_8(&pdev->usb_regs->cpuctrl, CPUCTRL_SW_RST);
+-
+-	ret = readl_poll_timeout_atomic(&pdev->usb_regs->cpuctrl, val,
+-					!(val & CPUCTRL_SW_RST), 1, 10000);
+-	if (ret) {
+-		dev_err(pdev->dev, "Error: reset controller timeout\n");
+-		return -EINVAL;
+-	}
++	writeb(CPUCTRL_SW_RST | CPUCTRL_UPCLK | CPUCTRL_WUEN,
++	       &pdev->usb_regs->cpuctrl);
++	usleep_range(5, 10);
  
--		if (cfg_aux->live && !memcmp(cfg, cfg_aux, cmp_size))
-+		if (cfg_aux->live &&
-+		    !memcmp(&cfg->config_props, &cfg_aux->config_props, cmp_size))
- 			return cfg_aux;
- 	}
+ 	usb_initialize_gadget(pdev->dev, &pdev->gadget, NULL);
  
+--- a/drivers/usb/gadget/udc/cdns2/cdns2-gadget.h
++++ b/drivers/usb/gadget/udc/cdns2/cdns2-gadget.h
+@@ -292,8 +292,17 @@ struct cdns2_usb_regs {
+ #define SPEEDCTRL_HSDISABLE	BIT(7)
+ 
+ /* CPUCTRL- bitmasks. */
++/* UP clock enable */
++#define CPUCTRL_UPCLK		BIT(0)
+ /* Controller reset bit. */
+ #define CPUCTRL_SW_RST		BIT(1)
++/**
++ * If the wuen bit is ‘1’, the upclken is automatically set to ‘1’ after
++ * detecting rising edge of wuintereq interrupt. If the wuen bit is ‘0’,
++ * the wuintereq interrupt is ignored.
++ */
++#define CPUCTRL_WUEN		BIT(7)
++
+ 
+ /**
+  * struct cdns2_adma_regs - ADMA controller registers.
 
 
 
