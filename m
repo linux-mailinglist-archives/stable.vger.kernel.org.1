@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-75481-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D40079734D9
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:43:47 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0696C9733E8
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:36:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7FC4A1F25EB5
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:43:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C2EE528AA5F
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:36:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A627B186619;
-	Tue, 10 Sep 2024 10:40:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E2C2190056;
+	Tue, 10 Sep 2024 10:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0vSAGrWz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wDpn9H8p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64F33144D1A;
-	Tue, 10 Sep 2024 10:40:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34E2D46444;
+	Tue, 10 Sep 2024 10:32:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964859; cv=none; b=NF7fxFzOiBTypEsfGI/YV7SIbVndbKlyC5jcFRMSzuiXRBUIq+J+9J6bT1PJ5TyS9D0NbrCkjkc94eWqFNy+F60Sa2LrCQz56Og6UR9BUJyc1j4Yey5W0Ej4MRaqUGwiXASq2+Q9x06RaPt5sdJdmFWTFWlNUn/hlMOHd7SrKPc=
+	t=1725964379; cv=none; b=MCWYwGy4khGlufk6/KDid1oLGfReagL0TwFzyPRgYJLdt8ltjoDD3vQ9VYec8ww4r5FSGjYMO6tE9LFt6v7ysGCJ075gRExPpVc3PujNBc3yzzv13tXWmxHtVJQg/FIbvShH0GDpB6Jrwoz7ypJfXw6qTHGjsEFvpNZF0qs3LJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964859; c=relaxed/simple;
-	bh=+uN8OgFFcrNlQlimxVoJJw6wcmV998Z7OLfM/iyJxkA=;
+	s=arc-20240116; t=1725964379; c=relaxed/simple;
+	bh=+IWDEtNMz4KeJNUhQq+trDrStaz5ByKIEvqpoBVC6So=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G+YtsrNsqSaM9OVIlC9flsI4M4ecn8mmol3MF47HbzbjMGjGK0E6EAZ1LOqHPeigfMMF6QOQFBc9E2etZVFMW2tUn6wS2xkwLl0RmZEphPIlsw7Ir6nkpi/6Mn7fBofWTIKax3eXKmu73R5cV6FR2XSxUPhAJNu6N9yUiyzSbQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0vSAGrWz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE846C4CEC3;
-	Tue, 10 Sep 2024 10:40:58 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BC3tdlBtGbEbv6rYtbEOQsbz/KqGOTY6czRhlckPTl6jVoX5YP8lPguN6wX9PatW3NRlNztl19BVR/BUSZa45MhEMe9YG1U3gMYo4peeMv9xibzM80lSRMQOp0U1ZgP3DG9Ekd9Yjsaisn4sJX2XCO6DvzIco4ObOfpsZ2BCioY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wDpn9H8p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFDF7C4CEC3;
+	Tue, 10 Sep 2024 10:32:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964859;
-	bh=+uN8OgFFcrNlQlimxVoJJw6wcmV998Z7OLfM/iyJxkA=;
+	s=korg; t=1725964379;
+	bh=+IWDEtNMz4KeJNUhQq+trDrStaz5ByKIEvqpoBVC6So=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0vSAGrWzWkX6SqwuVBQjQiUWA35rKEjo9yNbNTh4qHNeXrDLQLLsAO3YG/UvIEx1h
-	 /uErmTD7UA6rutnuTVvVw4XWA1ik+1OGHoeGPlO8oSWunZ6ZoyjZ4akrRYViwode+a
-	 jQz58ku6KiaDzZ0XVgCumlwuiSAKJizuBc9Q6mqU=
+	b=wDpn9H8pDBZ4MaDcHCA/zfiZRJM15oLoiP5mwqBOrTO6/AIIdhScD6j/aXIpUeGGg
+	 m8jz31NSQnvJe/HVzPpBTMT2N57iPdT0MZPK+h/0hBmRnHt85gPx/6wbEDtPTPwjJ2
+	 DrdJqu8BwtCsM0c0J1XFVRramcfZ0l9bqw5tXI/w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	robelin <robelin@nvidia.com>,
-	Sameer Pujar <spujar@nvidia.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.10 055/186] ASoC: dapm: Fix UAF for snd_soc_pcm_runtime object
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 163/269] drm/amdgpu: reject gang submit on reserved VMIDs
 Date: Tue, 10 Sep 2024 11:32:30 +0200
-Message-ID: <20240910092556.755092812@linuxfoundation.org>
+Message-ID: <20240910092613.974457197@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,65 +60,104 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: robelin <robelin@nvidia.com>
+From: Christian König <christian.koenig@amd.com>
 
-commit b4a90b543d9f62d3ac34ec1ab97fc5334b048565 upstream.
+[ Upstream commit 320debca1ba3a81c87247eac84eff976ead09ee0 ]
 
-When using kernel with the following extra config,
+A gang submit won't work if the VMID is reserved and we can't flush out
+VM changes from multiple engines at the same time.
 
-  - CONFIG_KASAN=y
-  - CONFIG_KASAN_GENERIC=y
-  - CONFIG_KASAN_INLINE=y
-  - CONFIG_KASAN_VMALLOC=y
-  - CONFIG_FRAME_WARN=4096
-
-kernel detects that snd_pcm_suspend_all() access a freed
-'snd_soc_pcm_runtime' object when the system is suspended, which
-leads to a use-after-free bug:
-
-[   52.047746] BUG: KASAN: use-after-free in snd_pcm_suspend_all+0x1a8/0x270
-[   52.047765] Read of size 1 at addr ffff0000b9434d50 by task systemd-sleep/2330
-
-[   52.047785] Call trace:
-[   52.047787]  dump_backtrace+0x0/0x3c0
-[   52.047794]  show_stack+0x34/0x50
-[   52.047797]  dump_stack_lvl+0x68/0x8c
-[   52.047802]  print_address_description.constprop.0+0x74/0x2c0
-[   52.047809]  kasan_report+0x210/0x230
-[   52.047815]  __asan_report_load1_noabort+0x3c/0x50
-[   52.047820]  snd_pcm_suspend_all+0x1a8/0x270
-[   52.047824]  snd_soc_suspend+0x19c/0x4e0
-
-The snd_pcm_sync_stop() has a NULL check on 'substream->runtime' before
-making any access. So we need to always set 'substream->runtime' to NULL
-everytime we kfree() it.
-
-Fixes: a72706ed8208 ("ASoC: codec2codec: remove ephemeral variables")
-Signed-off-by: robelin <robelin@nvidia.com>
-Signed-off-by: Sameer Pujar <spujar@nvidia.com>
-Link: https://patch.msgid.link/20240823144342.4123814-2-spujar@nvidia.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/soc-dapm.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c  | 15 +++++++++++++++
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c | 15 ++++++++++++++-
+ drivers/gpu/drm/amd/amdgpu/amdgpu_ids.h |  1 +
+ 3 files changed, 30 insertions(+), 1 deletion(-)
 
---- a/sound/soc/soc-dapm.c
-+++ b/sound/soc/soc-dapm.c
-@@ -4014,6 +4014,7 @@ static int snd_soc_dai_link_event(struct
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
+index 61668a784315..e361dc37a089 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
+@@ -1096,6 +1096,21 @@ static int amdgpu_cs_vm_handling(struct amdgpu_cs_parser *p)
+ 	unsigned int i;
+ 	int r;
  
- 	case SND_SOC_DAPM_POST_PMD:
- 		kfree(substream->runtime);
-+		substream->runtime = NULL;
- 		break;
++	/*
++	 * We can't use gang submit on with reserved VMIDs when the VM changes
++	 * can't be invalidated by more than one engine at the same time.
++	 */
++	if (p->gang_size > 1 && !p->adev->vm_manager.concurrent_flush) {
++		for (i = 0; i < p->gang_size; ++i) {
++			struct drm_sched_entity *entity = p->entities[i];
++			struct drm_gpu_scheduler *sched = entity->rq->sched;
++			struct amdgpu_ring *ring = to_amdgpu_ring(sched);
++
++			if (amdgpu_vmid_uses_reserved(vm, ring->vm_hub))
++				return -EINVAL;
++		}
++	}
++
+ 	r = amdgpu_vm_clear_freed(adev, vm, NULL);
+ 	if (r)
+ 		return r;
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c
+index ff1ea99292fb..69dfc699d78b 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.c
+@@ -409,7 +409,7 @@ int amdgpu_vmid_grab(struct amdgpu_vm *vm, struct amdgpu_ring *ring,
+ 	if (r || !idle)
+ 		goto error;
  
- 	default:
+-	if (vm->reserved_vmid[vmhub] || (enforce_isolation && (vmhub == AMDGPU_GFXHUB(0)))) {
++	if (amdgpu_vmid_uses_reserved(vm, vmhub)) {
+ 		r = amdgpu_vmid_grab_reserved(vm, ring, job, &id, fence);
+ 		if (r || !id)
+ 			goto error;
+@@ -459,6 +459,19 @@ int amdgpu_vmid_grab(struct amdgpu_vm *vm, struct amdgpu_ring *ring,
+ 	return r;
+ }
+ 
++/*
++ * amdgpu_vmid_uses_reserved - check if a VM will use a reserved VMID
++ * @vm: the VM to check
++ * @vmhub: the VMHUB which will be used
++ *
++ * Returns: True if the VM will use a reserved VMID.
++ */
++bool amdgpu_vmid_uses_reserved(struct amdgpu_vm *vm, unsigned int vmhub)
++{
++	return vm->reserved_vmid[vmhub] ||
++		(enforce_isolation && (vmhub == AMDGPU_GFXHUB(0)));
++}
++
+ int amdgpu_vmid_alloc_reserved(struct amdgpu_device *adev,
+ 			       unsigned vmhub)
+ {
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.h b/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.h
+index fa8c42c83d5d..240fa6751260 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.h
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_ids.h
+@@ -78,6 +78,7 @@ void amdgpu_pasid_free_delayed(struct dma_resv *resv,
+ 
+ bool amdgpu_vmid_had_gpu_reset(struct amdgpu_device *adev,
+ 			       struct amdgpu_vmid *id);
++bool amdgpu_vmid_uses_reserved(struct amdgpu_vm *vm, unsigned int vmhub);
+ int amdgpu_vmid_alloc_reserved(struct amdgpu_device *adev,
+ 				unsigned vmhub);
+ void amdgpu_vmid_free_reserved(struct amdgpu_device *adev,
+-- 
+2.43.0
+
 
 
 
