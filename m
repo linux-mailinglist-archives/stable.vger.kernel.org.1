@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-74642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19FE797306F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:01:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEA78972FDA
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:55:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA35E287301
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:01:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 96FC628535F
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:55:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBB3218E77F;
-	Tue, 10 Sep 2024 09:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D2E318CBE2;
+	Tue, 10 Sep 2024 09:55:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FIcVK0Mn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NfFBsUQo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9B7518E021;
-	Tue, 10 Sep 2024 09:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D207118C928;
+	Tue, 10 Sep 2024 09:55:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962398; cv=none; b=mxV/v2fltq42A3gmlVIqexN0imwOGFrMX87Kz3xcfnQ2vYr39vqIBFjTrBtSZ1iHLogwATUu0BQyrnj5PfpOmfuD3ruouHdhc5n1LTOsxQcHLcdxp8CsE7AHyfy1GoCnA967/PZVyk1tC0sv8Dp0TmYxAxgcyaaQ1JSpwGR3Rj4=
+	t=1725962107; cv=none; b=M2BU1cSlhSYAUh8PjtNwkG9P4K99/yUyWBhxIPA7XTRmeJgpUYJnpz5GPUalm8XOWzd0AtebMYAG+lqbTV7hvui6iAgrkxlRwb+HNg3xiVdYxZ4WDfxr2XCBmY+yAwlyqoYZ+AH/GkRethzUyQj5yZfiN90eODGzqPsC6xvg5wA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962398; c=relaxed/simple;
-	bh=2MNBayd7k/krtv4P9T6ziOF6hv01GZIEk8QTClsV35U=;
+	s=arc-20240116; t=1725962107; c=relaxed/simple;
+	bh=bJ0G7uSSYEp5biKNqH7G63BtGYlPkCEmZ9mm7MHChbw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZONI4dB5n+aqISM6ODOr2rVnOznD2GMBnowhdt5WFScCAZIOlFPi0pMPjwQuIoAT9vls092/SZFdbzsuzjXfqInL2dRh4xHqKBGucBtX+0OGMbAT03BB7TgPKPT+IGu6TRjGjSNcm/N4vw8gL1PMZtjthytQrp13G4yjAKD3ltk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FIcVK0Mn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EE87C4CEC3;
-	Tue, 10 Sep 2024 09:59:58 +0000 (UTC)
+	 MIME-Version; b=mI2IMFm4hN7Q1Ln5i4vqmRerlnIzjHTOKuW+IXbF5G9U+yOjd8d4u8lKnBjvbdO16TfB0qbW8qzcz4dhDdLfbbLGkcThtRS+jr6ksMYpSIQEHV7o9yyaTWaNRmA2luOpvkv+J75ZG0gFfX+3aScJLxB7+QlDlhT3MFT9uy08fGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NfFBsUQo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58A8BC4CEC3;
+	Tue, 10 Sep 2024 09:55:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962398;
-	bh=2MNBayd7k/krtv4P9T6ziOF6hv01GZIEk8QTClsV35U=;
+	s=korg; t=1725962107;
+	bh=bJ0G7uSSYEp5biKNqH7G63BtGYlPkCEmZ9mm7MHChbw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FIcVK0Mnhzundg1rS56SCDXDfqi0fFlRInYL0PmTF49uSBvjMjy4yH5IZjwH9E+KT
-	 uUn7dNl8NPRwCUBbTF43Pjvtd/YNKuYGaA9jeHR44RCfnAJhGZLS8XvAGdLgQjCVbn
-	 R+HPvMbhHy/+twR8hieL7Iem+149lAHtCEsN3xso=
+	b=NfFBsUQoBuWTfcOT4KcuLVP+cJbj5oW3cALNjEQ8r8/uQ78G0wRqlhau51T2LDKs5
+	 a1b7QjKbqYGxKlopaQPnT1MwWl0uT41QVatgxcxHG/CO9mcN3Jiwr+KBtM7mUIhBeN
+	 pjO0iJk11R1eVRqqje0jjQreq6JnIE/DVe6/97ro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 020/121] media: uvcvideo: Enforce alignment of frame and interval
+	Todd Kjos <tkjos@google.com>,
+	Carlos Llamas <cmllamas@google.com>
+Subject: [PATCH 6.10 298/375] binder: fix UAF caused by offsets overwrite
 Date: Tue, 10 Sep 2024 11:31:35 +0200
-Message-ID: <20240910092546.690404259@linuxfoundation.org>
+Message-ID: <20240910092632.569255280@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
-References: <20240910092545.737864202@linuxfoundation.org>
+In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
+References: <20240910092622.245959861@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +61,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Carlos Llamas <cmllamas@google.com>
 
-[ Upstream commit c8931ef55bd325052ec496f242aea7f6de47dc9c ]
+commit 4df153652cc46545722879415937582028c18af5 upstream.
 
-Struct uvc_frame and interval (u32*) are packaged together on
-streaming->formats on a single contiguous allocation.
+Binder objects are processed and copied individually into the target
+buffer during transactions. Any raw data in-between these objects is
+copied as well. However, this raw data copy lacks an out-of-bounds
+check. If the raw data exceeds the data section size then the copy
+overwrites the offsets section. This eventually triggers an error that
+attempts to unwind the processed objects. However, at this point the
+offsets used to index these objects are now corrupted.
 
-Right now they are allocated right after uvc_format, without taking into
-consideration their required alignment.
+Unwinding with corrupted offsets can result in decrements of arbitrary
+nodes and lead to their premature release. Other users of such nodes are
+left with a dangling pointer triggering a use-after-free. This issue is
+made evident by the following KASAN report (trimmed):
 
-This is working fine because both structures have a field with a
-pointer, but it will stop working when the sizeof() of any of those
-structs is not a multiple of the sizeof(void*).
+  ==================================================================
+  BUG: KASAN: slab-use-after-free in _raw_spin_lock+0xe4/0x19c
+  Write of size 4 at addr ffff47fc91598f04 by task binder-util/743
 
-Enforce that alignment during the allocation.
+  CPU: 9 UID: 0 PID: 743 Comm: binder-util Not tainted 6.11.0-rc4 #1
+  Hardware name: linux,dummy-virt (DT)
+  Call trace:
+   _raw_spin_lock+0xe4/0x19c
+   binder_free_buf+0x128/0x434
+   binder_thread_write+0x8a4/0x3260
+   binder_ioctl+0x18f0/0x258c
+  [...]
 
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Link: https://lore.kernel.org/r/20240404-uvc-align-v2-1-9e104b0ecfbd@chromium.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  Allocated by task 743:
+   __kmalloc_cache_noprof+0x110/0x270
+   binder_new_node+0x50/0x700
+   binder_transaction+0x413c/0x6da8
+   binder_thread_write+0x978/0x3260
+   binder_ioctl+0x18f0/0x258c
+  [...]
+
+  Freed by task 745:
+   kfree+0xbc/0x208
+   binder_thread_read+0x1c5c/0x37d4
+   binder_ioctl+0x16d8/0x258c
+  [...]
+  ==================================================================
+
+To avoid this issue, let's check that the raw data copy is within the
+boundaries of the data section.
+
+Fixes: 6d98eb95b450 ("binder: avoid potential data leakage when copying txn")
+Cc: Todd Kjos <tkjos@google.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Link: https://lore.kernel.org/r/20240822182353.2129600-1-cmllamas@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/usb/uvc/uvc_driver.c | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ drivers/android/binder.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
-index 0caa57a6782a..6d1a7e02da51 100644
---- a/drivers/media/usb/uvc/uvc_driver.c
-+++ b/drivers/media/usb/uvc/uvc_driver.c
-@@ -887,16 +887,26 @@ static int uvc_parse_streaming(struct uvc_device *dev,
- 		goto error;
- 	}
- 
--	size = nformats * sizeof(*format) + nframes * sizeof(*frame)
-+	/*
-+	 * Allocate memory for the formats, the frames and the intervals,
-+	 * plus any required padding to guarantee that everything has the
-+	 * correct alignment.
-+	 */
-+	size = nformats * sizeof(*format);
-+	size = ALIGN(size, __alignof__(*frame)) + nframes * sizeof(*frame);
-+	size = ALIGN(size, __alignof__(*interval))
- 	     + nintervals * sizeof(*interval);
-+
- 	format = kzalloc(size, GFP_KERNEL);
--	if (format == NULL) {
-+	if (!format) {
- 		ret = -ENOMEM;
- 		goto error;
- 	}
- 
--	frame = (struct uvc_frame *)&format[nformats];
--	interval = (u32 *)&frame[nframes];
-+	frame = (void *)format + nformats * sizeof(*format);
-+	frame = PTR_ALIGN(frame, __alignof__(*frame));
-+	interval = (void *)frame + nframes * sizeof(*frame);
-+	interval = PTR_ALIGN(interval, __alignof__(*interval));
- 
- 	streaming->format = format;
- 	streaming->nformats = nformats;
--- 
-2.43.0
-
+--- a/drivers/android/binder.c
++++ b/drivers/android/binder.c
+@@ -3342,6 +3342,7 @@ static void binder_transaction(struct bi
+ 		 */
+ 		copy_size = object_offset - user_offset;
+ 		if (copy_size && (user_offset > object_offset ||
++				object_offset > tr->data_size ||
+ 				binder_alloc_copy_user_to_buffer(
+ 					&target_proc->alloc,
+ 					t->buffer, user_offset,
 
 
 
