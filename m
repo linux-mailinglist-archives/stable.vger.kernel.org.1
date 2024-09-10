@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-75065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C09B79732CD
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:26:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39790973451
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:40:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F40DA1C20E82
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:26:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0ED80B29D7C
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:36:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4A0818C913;
-	Tue, 10 Sep 2024 10:20:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EFA7188A1E;
+	Tue, 10 Sep 2024 10:33:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DJ8QBZl1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HeqsI6Ge"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3E9C17BEAD;
-	Tue, 10 Sep 2024 10:20:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DE1146444;
+	Tue, 10 Sep 2024 10:33:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963646; cv=none; b=CQh7KiLSzgfSGLaPAe1ss4pu4yQ2g/l7YYeZs+7wFjgRjhrGlelOoqcioKTFkfabZylgrEP3JQFBiKnSstCPO8nHFZ6yC33JY0EL06eKgN2JqoeTR5FFrTd5K+67bpOYU2l0+DkfdyYBePaiDaiQ55rhgEfuTgRZh5jRymSQKpw=
+	t=1725964382; cv=none; b=DfuE5yvn+KcUgv+PKZ6M0RjLDnPoKaSYBjAAaoJPRmSrdviYtIWvgsgYCmE07VcrsyehhZSw52/d5GvdxMEwioXRGJVSTzvwr3gafZIv5uUtn8pfLE4gGJThG0UE2AJbbMBdCIdWcxwKxIrAijsQJ+Kr25ueC1sFSKNbQQIFkd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963646; c=relaxed/simple;
-	bh=US75updc8WxL8RVUWtmwIDAeYO1ZYmLY31XhjjlA9pA=;
+	s=arc-20240116; t=1725964382; c=relaxed/simple;
+	bh=ymDXVLKQCOrqer94bUifh5jfcbA9hBNgygrtS4PxVq4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AQrpA2U0ld3EpDU/F/p4KkQYTPbdqhk8gZq+/3PN7i3iIY5ylph+dJDaxBK8I9nO+AXqp5skcqu0UP5VRkmjQNEaXGEqcibjfVM2qxvVsitaVbXCj2pOeCrec7ZXH1TT/acEdFUMCKdmCq+wtF5OEDUG8Ml4J+yG0q7fOi9kprc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DJ8QBZl1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A3ECC4CEC3;
-	Tue, 10 Sep 2024 10:20:45 +0000 (UTC)
+	 MIME-Version; b=ogvcOnrk9MVkvBDcbsP/eMZkjF3RGCiTIN+s2QhadweVhyhZcu8agbIBYeKupR4DuLT8JvY6B/vQUUbuEeJo6d2jrQ3idabxJtgvUC5k69ZuSEj02dSShB6tjhkTnht+DgSu8shOBQ4aILQGpCb962IDC0ax2hYB8PeohCv8n4o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HeqsI6Ge; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1806C4CEC3;
+	Tue, 10 Sep 2024 10:33:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963646;
-	bh=US75updc8WxL8RVUWtmwIDAeYO1ZYmLY31XhjjlA9pA=;
+	s=korg; t=1725964382;
+	bh=ymDXVLKQCOrqer94bUifh5jfcbA9hBNgygrtS4PxVq4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DJ8QBZl1B5cz5Vy2I8eL8K29oiAyjtK4flET2gdELpoBgTo/iQM+eZxrJsms8u4/1
-	 GjCPDbfKNkB4OVa7Odf2Yo4lhhLlDARXIOtQlIeiEb6cQWE7CB33Gfq7lypWu3E8id
-	 E6ezV/1OaYt1DdeRmQgFNeHwRJwzjqnH5/5zN63A=
+	b=HeqsI6Ge+pFi7lGlEPel2rbNRYFtjf2GpiqB8a0IydTGhNe1gsEV2siXw9+xkq3dC
+	 qaVfGP2a0i0wuoETUb0G4Z3z6zhD0dVuA8rlequmCBnRpTMAn7Tw4P1hPP4yYigRL6
+	 XQ6ri0d/Be8vbyPIZwuCholcCimz2UIVdFJcQ+Jw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guillaume Nault <gnault@redhat.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Zqiang <qiang.zhang1211@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 129/214] bareudp: Fix device stats updates.
+Subject: [PATCH 6.6 164/269] smp: Add missing destroy_work_on_stack() call in smp_call_on_cpu()
 Date: Tue, 10 Sep 2024 11:32:31 +0200
-Message-ID: <20240910092604.017805880@linuxfoundation.org>
+Message-ID: <20240910092614.009855695@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,108 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guillaume Nault <gnault@redhat.com>
+From: Zqiang <qiang.zhang1211@gmail.com>
 
-[ Upstream commit 4963d2343af81f493519f9c3ea9f2169eaa7353a ]
+[ Upstream commit 77aeb1b685f9db73d276bad4bb30d48505a6fd23 ]
 
-Bareudp devices update their stats concurrently.
-Therefore they need proper atomic increments.
+For CONFIG_DEBUG_OBJECTS_WORK=y kernels sscs.work defined by
+INIT_WORK_ONSTACK() is initialized by debug_object_init_on_stack() for
+the debug check in __init_work() to work correctly.
 
-Fixes: 571912c69f0e ("net: UDP tunnel encapsulation module for tunnelling different protocols like MPLS, IP, NSH etc.")
-Signed-off-by: Guillaume Nault <gnault@redhat.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/04b7b9d0b480158eb3ab4366ec80aa2ab7e41fcb.1725031794.git.gnault@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+But this lacks the counterpart to remove the tracked object from debug
+objects again, which will cause a debug object warning once the stack is
+freed.
+
+Add the missing destroy_work_on_stack() invocation to cure that.
+
+[ tglx: Massaged changelog ]
+
+Signed-off-by: Zqiang <qiang.zhang1211@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Paul E. McKenney <paulmck@kernel.org>
+Link: https://lore.kernel.org/r/20240704065213.13559-1-qiang.zhang1211@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/bareudp.c | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ kernel/smp.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/bareudp.c b/drivers/net/bareudp.c
-index 98c915943f32..43d038a5123e 100644
---- a/drivers/net/bareudp.c
-+++ b/drivers/net/bareudp.c
-@@ -75,7 +75,7 @@ static int bareudp_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
+diff --git a/kernel/smp.c b/kernel/smp.c
+index 695eb13a276d..3eeffeaf5450 100644
+--- a/kernel/smp.c
++++ b/kernel/smp.c
+@@ -1119,6 +1119,7 @@ int smp_call_on_cpu(unsigned int cpu, int (*func)(void *), void *par, bool phys)
  
- 		if (skb_copy_bits(skb, BAREUDP_BASE_HLEN, &ipversion,
- 				  sizeof(ipversion))) {
--			bareudp->dev->stats.rx_dropped++;
-+			DEV_STATS_INC(bareudp->dev, rx_dropped);
- 			goto drop;
- 		}
- 		ipversion >>= 4;
-@@ -85,7 +85,7 @@ static int bareudp_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
- 		} else if (ipversion == 6 && bareudp->multi_proto_mode) {
- 			proto = htons(ETH_P_IPV6);
- 		} else {
--			bareudp->dev->stats.rx_dropped++;
-+			DEV_STATS_INC(bareudp->dev, rx_dropped);
- 			goto drop;
- 		}
- 	} else if (bareudp->ethertype == htons(ETH_P_MPLS_UC)) {
-@@ -99,7 +99,7 @@ static int bareudp_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
- 				   ipv4_is_multicast(tunnel_hdr->daddr)) {
- 				proto = htons(ETH_P_MPLS_MC);
- 			} else {
--				bareudp->dev->stats.rx_dropped++;
-+				DEV_STATS_INC(bareudp->dev, rx_dropped);
- 				goto drop;
- 			}
- 		} else {
-@@ -115,7 +115,7 @@ static int bareudp_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
- 				   (addr_type & IPV6_ADDR_MULTICAST)) {
- 				proto = htons(ETH_P_MPLS_MC);
- 			} else {
--				bareudp->dev->stats.rx_dropped++;
-+				DEV_STATS_INC(bareudp->dev, rx_dropped);
- 				goto drop;
- 			}
- 		}
-@@ -127,12 +127,12 @@ static int bareudp_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
- 				 proto,
- 				 !net_eq(bareudp->net,
- 				 dev_net(bareudp->dev)))) {
--		bareudp->dev->stats.rx_dropped++;
-+		DEV_STATS_INC(bareudp->dev, rx_dropped);
- 		goto drop;
- 	}
- 	tun_dst = udp_tun_rx_dst(skb, family, TUNNEL_KEY, 0, 0);
- 	if (!tun_dst) {
--		bareudp->dev->stats.rx_dropped++;
-+		DEV_STATS_INC(bareudp->dev, rx_dropped);
- 		goto drop;
- 	}
- 	skb_dst_set(skb, &tun_dst->dst);
-@@ -158,8 +158,8 @@ static int bareudp_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
- 						     &((struct ipv6hdr *)oiph)->saddr);
- 		}
- 		if (err > 1) {
--			++bareudp->dev->stats.rx_frame_errors;
--			++bareudp->dev->stats.rx_errors;
-+			DEV_STATS_INC(bareudp->dev, rx_frame_errors);
-+			DEV_STATS_INC(bareudp->dev, rx_errors);
- 			goto drop;
- 		}
- 	}
-@@ -455,11 +455,11 @@ static netdev_tx_t bareudp_xmit(struct sk_buff *skb, struct net_device *dev)
- 	dev_kfree_skb(skb);
+ 	queue_work_on(cpu, system_wq, &sscs.work);
+ 	wait_for_completion(&sscs.done);
++	destroy_work_on_stack(&sscs.work);
  
- 	if (err == -ELOOP)
--		dev->stats.collisions++;
-+		DEV_STATS_INC(dev, collisions);
- 	else if (err == -ENETUNREACH)
--		dev->stats.tx_carrier_errors++;
-+		DEV_STATS_INC(dev, tx_carrier_errors);
- 
--	dev->stats.tx_errors++;
-+	DEV_STATS_INC(dev, tx_errors);
- 	return NETDEV_TX_OK;
+ 	return sscs.ret;
  }
- 
 -- 
 2.43.0
 
