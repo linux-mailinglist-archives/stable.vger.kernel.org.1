@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-74897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85D58973200
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:18:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0AF69734F7
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:44:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6B961C21239
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:18:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B7A2F2832B2
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:44:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2662A194137;
-	Tue, 10 Sep 2024 10:12:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5C67191F82;
+	Tue, 10 Sep 2024 10:42:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gJAog+ii"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FeCdVJ9W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D661418C025;
-	Tue, 10 Sep 2024 10:12:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8369B14D431;
+	Tue, 10 Sep 2024 10:42:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963153; cv=none; b=W+iFrU6zSYJ+u1WA0UnwoJetevFtFI0J2rNWEauDz6+RhslDg4gctgRGfu8qJWboOLGBSV4csy5/bTcUIqVUG47DQeI3ya5EpUCD6Q2inAGTykkFchsrJ//+nyPLC5i0rkPTMSmaW+CHMIMP/spjt+Ny1r1mFRVxxh61dDjfcC4=
+	t=1725964966; cv=none; b=BqZ/6JkH7NQ5RQNbUEKh6He9SQXoj8TimTf1HwPbGJqNbKDbaoHVYBCUlAb7seIbG5sIRkXlkrA+DbZBXFguPADkyoqYUu3xmZtOSG+k0dO2SygVpmYd2klZRFJcdGr8ogam/5YjdZGYFT0Ay8NqE2xajGfDpa91FTiXslOPwSs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963153; c=relaxed/simple;
-	bh=jWm/J9IKNt/ASNnDfDM70qj4bJ1uvuPy2ut+LlVfGrU=;
+	s=arc-20240116; t=1725964966; c=relaxed/simple;
+	bh=UkW9AVXeQMWG/0SSz+WZurzbSjvZOWxMX2/KmDK5a54=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aOI7aGvfSujSq7Dr+Jefovjse3RHJO5np05XExxzpTawjIXHKV+Y/z6KHQfN1B23YIQaZ18zGvO3hthcytU4vreoPOjDpkaO2NxQt1uNvh0Xa6iWExVXkGLVEkG7+2h0+jE4epLJp6AtmttSLr1GM9JbeBLrnWObSq+z7k1JvGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gJAog+ii; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D76FC4CECD;
-	Tue, 10 Sep 2024 10:12:33 +0000 (UTC)
+	 MIME-Version; b=AORTn69mdCiEcxGTQl6rZId/XpBnmVt0SIrPe8BR1OZMgnnNkfUn/o+6rsICHodMKdjYxb1I4IeTFp++uG0YGjLDEIrNZS8EEceqeKr+xjSjzmM+JWMxQpopaj4cIczDQ3rGib5hRLkS5AmvBP+vnVBaacRvVP1pmBvtuUWVNzE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FeCdVJ9W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05BB3C4CEC3;
+	Tue, 10 Sep 2024 10:42:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963153;
-	bh=jWm/J9IKNt/ASNnDfDM70qj4bJ1uvuPy2ut+LlVfGrU=;
+	s=korg; t=1725964966;
+	bh=UkW9AVXeQMWG/0SSz+WZurzbSjvZOWxMX2/KmDK5a54=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gJAog+iiZ8hgVe9ECX5HGnpq6lyfUoRoMJJe7Ct7NHiyR/jipTQZnFkSyhDyeFa+/
-	 fWrF9tuphI6js/8gE9X3LGKY027Ydr9IB37eFp7ar6OxUQmmRlhFqWJ0G7+tthSyKa
-	 rJyinVF7WPn/bJcZBuhYzBB16V2u83xerVpN01Os=
+	b=FeCdVJ9W2ET47Bbv8VTC5pfPFFpFoPC9Tt2hAJwx6AifLX288CrnlRuK9qmqusoxL
+	 BS2po53YfvwUHpeyg6DE/rHMp4skrHZLLPLsdL9Pxd66Zj86ffvECKinmPm7RAx1sy
+	 Ea6wWrz37XMxAn5xJA1ygVmBTAWo09iFemX1HTlc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Aleksandr Mishin <amishin@t-argos.ru>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 6.1 136/192] staging: iio: frequency: ad9834: Validate frequency parameter value
+	Joanne Koong <joannelkoong@gmail.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Miklos Szeredi <mszeredi@redhat.com>
+Subject: [PATCH 5.10 065/186] fuse: update stats for pages in dropped aux writeback list
 Date: Tue, 10 Sep 2024 11:32:40 +0200
-Message-ID: <20240910092603.605994354@linuxfoundation.org>
+Message-ID: <20240910092557.171340416@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksandr Mishin <amishin@t-argos.ru>
+From: Joanne Koong <joannelkoong@gmail.com>
 
-commit b48aa991758999d4e8f9296c5bbe388f293ef465 upstream.
+commit f7790d67785302b3116bbbfda62a5a44524601a3 upstream.
 
-In ad9834_write_frequency() clk_get_rate() can return 0. In such case
-ad9834_calc_freqreg() call will lead to division by zero. Checking
-'if (fout > (clk_freq / 2))' doesn't protect in case of 'fout' is 0.
-ad9834_write_frequency() is called from ad9834_write(), where fout is
-taken from text buffer, which can contain any value.
+In the case where the aux writeback list is dropped (e.g. the pages
+have been truncated or the connection is broken), the stats for
+its pages and backing device info need to be updated as well.
 
-Modify parameters checking.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 12b9d5bf76bf ("Staging: IIO: DDS: AD9833 / AD9834 driver")
-Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://patch.msgid.link/20240703154506.25584-1-amishin@t-argos.ru
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: e2653bd53a98 ("fuse: fix leaked aux requests")
+Signed-off-by: Joanne Koong <joannelkoong@gmail.com>
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Cc: <stable@vger.kernel.org> # v5.1
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/staging/iio/frequency/ad9834.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/fuse/file.c |    8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/staging/iio/frequency/ad9834.c
-+++ b/drivers/staging/iio/frequency/ad9834.c
-@@ -114,7 +114,7 @@ static int ad9834_write_frequency(struct
+--- a/fs/fuse/file.c
++++ b/fs/fuse/file.c
+@@ -1692,10 +1692,16 @@ __acquires(fi->lock)
+ 	fuse_writepage_finish(fm, wpa);
+ 	spin_unlock(&fi->lock);
  
- 	clk_freq = clk_get_rate(st->mclk);
+-	/* After fuse_writepage_finish() aux request list is private */
++	/* After rb_erase() aux request list is private */
+ 	for (aux = wpa->next; aux; aux = next) {
++		struct backing_dev_info *bdi = inode_to_bdi(aux->inode);
++
+ 		next = aux->next;
+ 		aux->next = NULL;
++
++		dec_wb_stat(&bdi->wb, WB_WRITEBACK);
++		dec_node_page_state(aux->ia.ap.pages[0], NR_WRITEBACK_TEMP);
++		wb_writeout_inc(&bdi->wb);
+ 		fuse_writepage_free(aux);
+ 	}
  
--	if (fout > (clk_freq / 2))
-+	if (!clk_freq || fout > (clk_freq / 2))
- 		return -EINVAL;
- 
- 	regval = ad9834_calc_freqreg(clk_freq, fout);
 
 
 
