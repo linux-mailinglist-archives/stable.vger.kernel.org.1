@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-74998-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8360697327F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:23:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E4E1C97319B
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:13:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 410E22876F6
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:23:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A82B6B26641
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:13:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BADA11A00F5;
-	Tue, 10 Sep 2024 10:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43B00196C86;
+	Tue, 10 Sep 2024 10:08:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wydP23Rf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oP2d4Yru"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71FFE1A00CF;
-	Tue, 10 Sep 2024 10:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F02F2194C8B;
+	Tue, 10 Sep 2024 10:08:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963450; cv=none; b=Hi4r1fhCwCXuB5iDg1aoRBIh0Md2WE7iH1th7wQPhmE+lGJRyq937D3+XUTaxeOkueZqDqa0MQGTXZBR7qv7r5C1+GEG2V/gQXm5yRt1bnNoU27j9smgHsn3in21x8lBmk5ClN2DQMRqr0/7OQFJUd+IijAdE3AcVTWr/zlCx7k=
+	t=1725962934; cv=none; b=BcojRCQ0db2SU903UmwJ+HKKNDLSujdwLLk+FRXLxN6BYtyeZcNqdRgnKsp/GkB3RPcN/yUCx5xhKo1BOVX1u56/N8jCMxDWTteS3uUBqFazUyijZBlk8YErX7AxqyN+YtT35k6LuuogtCqOX5moaGpECGHH1fue5A24sPqw9DA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963450; c=relaxed/simple;
-	bh=AkqDv6iQwvq74hDAOYoxTeJVLHVDX/8BF6konN3OOs0=;
+	s=arc-20240116; t=1725962934; c=relaxed/simple;
+	bh=mxebgZ4SubVvsfIAON/TviTKWRZkHjBs/e1P67vgWBg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=df9J2/Eo0z8K8QlMk+figjorVDsYmPVayRedvLuNcBm6CitvdlQkkkWAOyF8SKXK9w7seBWls1ahBfG+6+1VH1n5eKtS+0ch0ySAo5xNCbkXuiOThMZ3TNbca3vRsDjxQNiFtOEnuDt36bOYZ8Ox+5m91bVP+lVH8fILjexy3mw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wydP23Rf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC80CC4CEC3;
-	Tue, 10 Sep 2024 10:17:29 +0000 (UTC)
+	 MIME-Version; b=QjB0jGqqAwHcMTbKqGnJTD+nrlm8u007y5P0djPDp9M7AEmiSxmOO9Zu3d+l+8RPPVuxIsnRoTbaAhqFFfQXvyQiScW2eeJIPic2qnkgsczkig9VpyQ19+Kff3m/Pn5BMQKub5gnJ835YfAtKbxu5LfR/fxBvWTqhgy74waQHQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oP2d4Yru; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AC91C4CEC6;
+	Tue, 10 Sep 2024 10:08:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963450;
-	bh=AkqDv6iQwvq74hDAOYoxTeJVLHVDX/8BF6konN3OOs0=;
+	s=korg; t=1725962933;
+	bh=mxebgZ4SubVvsfIAON/TviTKWRZkHjBs/e1P67vgWBg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wydP23RfkEU0dEhjdgRuALQlIbMxAZgMpi4d6Nq7p9tJKCMxSYOdSQVljT5tMdcHv
-	 uGllV+/yL0dt7LoHk9LI+Gp/lsKRYnhvKAJum3EkuESZXtiF1ZuBzY1+lUvmMyNGdJ
-	 +ULvi4FdNQo+88c4GCrGrnT0nt3LIaLwE/BogPQQ=
+	b=oP2d4YruTe2EVqrkLbCz4wU/UKQWllZ5JR74/wWHf6vl3poZtc0s+s96J3XyPqe9W
+	 rXeWFlnBK3CPOL9LH9RWLricwIs2sf0e5sfknAG1Xyj9NiT1nTDtAPYrvb4dtt0uMl
+	 fBR4KEn/qevmLgerCjP43McR/YDurYxjtjMfy82E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ricardo Ribalda <ribalda@chromium.org>,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 054/214] media: uvcvideo: Enforce alignment of frame and interval
+Subject: [PATCH 6.1 052/192] fs/ntfs3: One more reason to mark inode bad
 Date: Tue, 10 Sep 2024 11:31:16 +0200
-Message-ID: <20240910092600.971564051@linuxfoundation.org>
+Message-ID: <20240910092600.134523298@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ricardo Ribalda <ribalda@chromium.org>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit c8931ef55bd325052ec496f242aea7f6de47dc9c ]
+[ Upstream commit a0dde5d7a58b6bf9184ef3d8c6e62275c3645584 ]
 
-Struct uvc_frame and interval (u32*) are packaged together on
-streaming->formats on a single contiguous allocation.
+In addition to returning an error, mark the node as bad.
 
-Right now they are allocated right after uvc_format, without taking into
-consideration their required alignment.
-
-This is working fine because both structures have a field with a
-pointer, but it will stop working when the sizeof() of any of those
-structs is not a multiple of the sizeof(void*).
-
-Enforce that alignment during the allocation.
-
-Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Link: https://lore.kernel.org/r/20240404-uvc-align-v2-1-9e104b0ecfbd@chromium.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/uvc/uvc_driver.c |   18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+ fs/ntfs3/frecord.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/media/usb/uvc/uvc_driver.c
-+++ b/drivers/media/usb/uvc/uvc_driver.c
-@@ -936,16 +936,26 @@ static int uvc_parse_streaming(struct uv
- 		goto error;
- 	}
+diff --git a/fs/ntfs3/frecord.c b/fs/ntfs3/frecord.c
+index 6cce71cc750e..7bfdc91fae1e 100644
+--- a/fs/ntfs3/frecord.c
++++ b/fs/ntfs3/frecord.c
+@@ -1601,8 +1601,10 @@ int ni_delete_all(struct ntfs_inode *ni)
+ 		asize = le32_to_cpu(attr->size);
+ 		roff = le16_to_cpu(attr->nres.run_off);
  
--	size = nformats * sizeof(*format) + nframes * sizeof(*frame)
-+	/*
-+	 * Allocate memory for the formats, the frames and the intervals,
-+	 * plus any required padding to guarantee that everything has the
-+	 * correct alignment.
-+	 */
-+	size = nformats * sizeof(*format);
-+	size = ALIGN(size, __alignof__(*frame)) + nframes * sizeof(*frame);
-+	size = ALIGN(size, __alignof__(*interval))
- 	     + nintervals * sizeof(*interval);
-+
- 	format = kzalloc(size, GFP_KERNEL);
--	if (format == NULL) {
-+	if (!format) {
- 		ret = -ENOMEM;
- 		goto error;
- 	}
+-		if (roff > asize)
++		if (roff > asize) {
++			_ntfs_bad_inode(&ni->vfs_inode);
+ 			return -EINVAL;
++		}
  
--	frame = (struct uvc_frame *)&format[nformats];
--	interval = (u32 *)&frame[nframes];
-+	frame = (void *)format + nformats * sizeof(*format);
-+	frame = PTR_ALIGN(frame, __alignof__(*frame));
-+	interval = (void *)frame + nframes * sizeof(*frame);
-+	interval = PTR_ALIGN(interval, __alignof__(*interval));
- 
- 	streaming->format = format;
- 	streaming->nformats = 0;
+ 		/* run==1 means unpack and deallocate. */
+ 		run_unpack_ex(RUN_DEALLOCATE, sbi, ni->mi.rno, svcn, evcn, svcn,
+-- 
+2.43.0
+
 
 
 
