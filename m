@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-75421-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDD39973479
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:40:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id EC8C5973521
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:45:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 890111F24DEC
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:40:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 975591F26026
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:45:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 297741922EB;
-	Tue, 10 Sep 2024 10:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDDF418FDB1;
+	Tue, 10 Sep 2024 10:44:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ifV+8xhc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u9MpHFZY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D82D7190664;
-	Tue, 10 Sep 2024 10:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E5E218FC9C;
+	Tue, 10 Sep 2024 10:44:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964682; cv=none; b=fPhHD9uNBov+82g9iOhOYtgD5/NPql0EonoD8dTpTN5jWw3i+o6gIBfjvH8+t1bAvTbVQWUrsrs3sdEvbL+oiKjQ197ZWwsIrw5mSoWf2hk2kYrBvPdgpy2nhMfmgjlmZwn3LXqQRuW1qGVhoRkeTk0PHLJ6kTmCToutPpsBE48=
+	t=1725965081; cv=none; b=Kv5ENtLCxHng1lL05bG79SZs5yLlPz9zZHvQALhuUpYXlfWLxF2RGv4I7MZ1JngPekOC9MOtwpWCptzrpkoZutKjq56WEKfA/7NvP/ybbmZ8C9hJDdQGsPmvJixIGibPyJUh0Nxhqp6vJKlgYWZf3WB9BLwgbEv0VnSCqkwdxHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964682; c=relaxed/simple;
-	bh=EjtcW/bvlVYrwIKkRkB0opE/i8WUPHNkCMz2Pm+Ahlw=;
+	s=arc-20240116; t=1725965081; c=relaxed/simple;
+	bh=uBGU2fK8zcCEPXUR1U2/fxFOIKmqnYmueRoFdxHNyXM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N+U7/3w2oUXcUN6985ZFSQOvkyNhNb0maT+6sCw84rv+Rpk4BLNGGH6nPooNLFr0Ii+aP09THtuZAMwotzQ0So9ltusOx14mx2Fmpi6/UUjYzC2op8o8duDC8uajQakc9np/Za6DlsQH8gVgjyUG/t4ziX50bp2A8vucBknuuRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ifV+8xhc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CD7EC4CEC3;
-	Tue, 10 Sep 2024 10:38:02 +0000 (UTC)
+	 MIME-Version; b=mzFYMzjepFiTp0gy6oZCgyzJp76MMfAI1v0nMqi0uTuDfCArg9KK8iblErV9QZXyEaxM45JaDkkwsroN2dM1MP5oTEPL5zuCyJHdyy977/qcgSLsu5U/5ry2wt8ykpCrmIvRNeVWLEkFnb/u1fxjGQ0W5fbUkGfudzULD4J8834=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u9MpHFZY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 156C8C4CEC3;
+	Tue, 10 Sep 2024 10:44:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964682;
-	bh=EjtcW/bvlVYrwIKkRkB0opE/i8WUPHNkCMz2Pm+Ahlw=;
+	s=korg; t=1725965081;
+	bh=uBGU2fK8zcCEPXUR1U2/fxFOIKmqnYmueRoFdxHNyXM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ifV+8xhcyIvuGxkD/RXcsDxQMII/UKdi6YXUKIHtKqt2TTSP3krrfwWGTTMz7Jl9q
-	 06ksLmZhLymFQFyPYoYbSHnVriz0YnAhapKlE6AVpt6JZfCsvm9u/gnlLyGZotV3Cr
-	 gk8RbmMME+QK5EtLEF5RTnYvc6NltLuxGiecWofg=
+	b=u9MpHFZYu4vpq7or49sC35wzYmWzR9+k/9Zsx/csoNV2P221vLUhx0+4yMyt5/L/Q
+	 lhYdS+bWxfY+wD8qZNKr6V6aOVAmvHX6mg4X1X5QESyMmkEPNCIaWT3vSyWWfoE6px
+	 LlLcNufFEDB2OA5eu1FTJ3XcaoBTgDoh7kD/xHn0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@suse.de>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Igor Pylypiv <ipylypiv@google.com>,
+	Waiman Long <longman@redhat.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 239/269] ata: libata-scsi: Remove redundant sense_buffer memsets
+Subject: [PATCH 5.10 131/186] cgroup: Protect css->cgroup write under css_set_lock
 Date: Tue, 10 Sep 2024 11:33:46 +0200
-Message-ID: <20240910092616.391479057@linuxfoundation.org>
+Message-ID: <20240910092559.978572661@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,53 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Igor Pylypiv <ipylypiv@google.com>
+From: Waiman Long <longman@redhat.com>
 
-[ Upstream commit 3f6d903b54a137e9e438d9c3b774b5d0432917bc ]
+[ Upstream commit 57b56d16800e8961278ecff0dc755d46c4575092 ]
 
-SCSI layer clears sense_buffer in scsi_queue_rq() so there is no need for
-libata to clear it again.
+The writing of css->cgroup associated with the cgroup root in
+rebind_subsystems() is currently protected only by cgroup_mutex.
+However, the reading of css->cgroup in both proc_cpuset_show() and
+proc_cgroup_show() is protected just by css_set_lock. That makes the
+readers susceptible to racing problems like data tearing or caching.
+It is also a problem that can be reported by KCSAN.
 
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
-Link: https://lore.kernel.org/r/20240702024735.1152293-5-ipylypiv@google.com
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
+This can be fixed by using READ_ONCE() and WRITE_ONCE() to access
+css->cgroup. Alternatively, the writing of css->cgroup can be moved
+under css_set_lock as well which is done by this patch.
+
+Signed-off-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-scsi.c | 5 -----
- 1 file changed, 5 deletions(-)
+ kernel/cgroup/cgroup.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
-index 277bf0e8ed09..27e0c87236ac 100644
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -926,11 +926,8 @@ static void ata_gen_passthru_sense(struct ata_queued_cmd *qc)
- {
- 	struct scsi_cmnd *cmd = qc->scsicmd;
- 	struct ata_taskfile *tf = &qc->result_tf;
--	unsigned char *sb = cmd->sense_buffer;
- 	u8 sense_key, asc, ascq;
+diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
+index 030eaed1f06b..643d8e178f7b 100644
+--- a/kernel/cgroup/cgroup.c
++++ b/kernel/cgroup/cgroup.c
+@@ -1773,9 +1773,9 @@ int rebind_subsystems(struct cgroup_root *dst_root, u16 ss_mask)
+ 		RCU_INIT_POINTER(scgrp->subsys[ssid], NULL);
+ 		rcu_assign_pointer(dcgrp->subsys[ssid], css);
+ 		ss->root = dst_root;
+-		css->cgroup = dcgrp;
  
--	memset(sb, 0, SCSI_SENSE_BUFFERSIZE);
--
- 	/*
- 	 * Use ata_to_sense_error() to map status register bits
- 	 * onto sense key, asc & ascq.
-@@ -976,8 +973,6 @@ static void ata_gen_ata_sense(struct ata_queued_cmd *qc)
- 	u64 block;
- 	u8 sense_key, asc, ascq;
- 
--	memset(sb, 0, SCSI_SENSE_BUFFERSIZE);
--
- 	if (ata_dev_disabled(dev)) {
- 		/* Device disabled after error recovery */
- 		/* LOGICAL UNIT NOT READY, HARD RESET REQUIRED */
+ 		spin_lock_irq(&css_set_lock);
++		css->cgroup = dcgrp;
+ 		WARN_ON(!list_empty(&dcgrp->e_csets[ss->id]));
+ 		list_for_each_entry_safe(cset, cset_pos, &scgrp->e_csets[ss->id],
+ 					 e_cset_node[ss->id]) {
 -- 
 2.43.0
 
