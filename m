@@ -1,64 +1,55 @@
-Return-Path: <stable+bounces-74817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75445-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AFB5973194
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:12:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BEDA8973493
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:41:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6CB328ABE4
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:12:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F14131C2500F
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:41:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 180F819004B;
-	Tue, 10 Sep 2024 10:08:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF79C18FC67;
+	Tue, 10 Sep 2024 10:39:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MY/puQK8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m8h6K84R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2F1C196455;
-	Tue, 10 Sep 2024 10:08:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A3D418EFCE;
+	Tue, 10 Sep 2024 10:39:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962916; cv=none; b=glKJkxiwDwhH7QI6Z/j6xhXlcVEkRUit+nYqrUtFJ7d9iSx7923qK4rtPI45q3/CnpDxC9NGxrvkfKU0ZXoV8p3+mIcPo0mXKbg6WCGI416G9gpt+8A62okOvqbV4nvtaeFKlx/NISjiiZaVF7y5k52iBlosQUWPQSOawXWxPHc=
+	t=1725964753; cv=none; b=LOv1PkBtB9+tr6yruoXjjCFRV8EW/rxYi1Gj7Fn3j57spZMta329VpgKZ3uZniCpdKWbvXswA5UVkjRrjCOA+tz8qyyUekbWHwASg9Bl+nLutZAzRCdUoACMiyXUNp9o+YpdNa1Hcf3JbiLHa9Kmyl6CTRDL+UOBShx5zygkhLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962916; c=relaxed/simple;
-	bh=tAE2+XoFiNgHteoUTtc7fp/JUHaErHH1wQ23bYs4q3A=;
+	s=arc-20240116; t=1725964753; c=relaxed/simple;
+	bh=5AV9nCzhdHkbgDH90jW61MojM1W9ho8LemvUqyojdV8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nG7B54eLTrGRxmdtiIhpJl+8MGf+wG8lbJevIATbqGdkSLX6B3W7UyLdy0Xnbd0hg1DiQGp3AduS+5cYTFUHWVIiNxxE+dK3f5UqhbHxU0LAoN6qdt0mbt0Sogk3XoAOzZZnv2szlmHcP7lP2543PcCA59BjNIjg1KPZq90YilQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MY/puQK8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B14FDC4CEC3;
-	Tue, 10 Sep 2024 10:08:35 +0000 (UTC)
+	 MIME-Version; b=o1LQ59oVMvLf7R0Ani94mJulc4yN3C+uqEE4Cj5DdPnrEbASDKGYv9tyTXSzitpQzuvX5xVQtAMudFcvjjKki1jpcPPsTnEyNMM0hEi3fzjLBaiZ1csmJcei4zwya27B070uaNSsfjkZndXDzkeBzfgupt8Lx5CeBjxzmpK6WDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m8h6K84R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11CD6C4CEC3;
+	Tue, 10 Sep 2024 10:39:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962916;
-	bh=tAE2+XoFiNgHteoUTtc7fp/JUHaErHH1wQ23bYs4q3A=;
+	s=korg; t=1725964753;
+	bh=5AV9nCzhdHkbgDH90jW61MojM1W9ho8LemvUqyojdV8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MY/puQK89+QMB1+LH/TUoH7Dk60iaMaA8Mb70UXcf2I0RW7J6jsDWG9Awune8KooM
-	 dHFiX/xgoy/5exc+/gtnpgR9T2RZ+JWoaFdt3HGUMqX7yXv4kMUgK9XENqR01ADsJO
-	 5KD3xS3tl9YF/WZo9hUCY58BOgGBfH/6kejIJgwk=
+	b=m8h6K84RvS2YSM9PPFaBx0iiQd+DCb+//bsPX6xI7v/nWcVGE5QQzJc9Y9OUqRUt0
+	 Gu1ZXf1GZKqKQtfOhUmZwP8+ZG5i7/FbSAwDoegLOBkF4TwLArby1pbvbvjxfTnKye
+	 JxBsZIisiIA/UYw04Vb5yIJguJujIiCDv6cNowKM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Howells <dhowells@redhat.com>,
-	Steve French <stfrench@microsoft.com>,
-	Zhang Xiaoxu <zhangxiaoxu5@huawei.com>,
-	Pavel Shilovsky <pshilov@microsoft.com>,
-	Paulo Alcantara <pc@manguebit.com>,
-	Shyam Prasad N <nspmangalore@gmail.com>,
-	Rohith Surabattula <rohiths.msft@gmail.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	linux-cifs@vger.kernel.org,
-	linux-mm@kvack.org,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 073/192] cifs: Fix FALLOC_FL_ZERO_RANGE to preflush buffered part of target region
+Subject: [PATCH 5.10 002/186] ALSA: hda/generic: Add a helper to mute speakers at suspend/shutdown
 Date: Tue, 10 Sep 2024 11:31:37 +0200
-Message-ID: <20240910092601.000270539@linuxfoundation.org>
+Message-ID: <20240910092554.749630733@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,104 +61,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Howells <dhowells@redhat.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 91d1dfae464987aaf6c79ff51d8674880fb3be77 ]
+[ Upstream commit 6cd23b26b348fa52c88e1adf9c0e48d68e13f95e ]
 
-Under certain conditions, the range to be cleared by FALLOC_FL_ZERO_RANGE
-may only be buffered locally and not yet have been flushed to the server.
-For example:
+Some devices indicate click noises at suspend or shutdown when the
+speakers are unmuted.  This patch adds a helper,
+snd_hda_gen_shutup_speakers(), to work around it.  The new function is
+supposed to be called at suspend or shutdown by the codec driver, and
+it mutes the speakers.
 
-	xfs_io -f -t -c "pwrite -S 0x41 0 4k" \
-		     -c "pwrite -S 0x42 4k 4k" \
-		     -c "fzero 0 4k" \
-		     -c "pread -v 0 8k" /xfstest.test/foo
+The mute status isn't cached, hence the original mute state will be
+restored at resume again.
 
-will write two 4KiB blocks of data, which get buffered in the pagecache,
-and then fallocate() is used to clear the first 4KiB block on the server -
-but we don't flush the data first, which means the EOF position on the
-server is wrong, and so the FSCTL_SET_ZERO_DATA RPC fails (and xfs_io
-ignores the error), but then when we try to read it, we see the old data.
-
-Fix this by preflushing any part of the target region that above the
-server's idea of the EOF position to force the server to update its EOF
-position.
-
-Note, however, that we don't want to simply expand the file by moving the
-EOF before doing the FSCTL_SET_ZERO_DATA[*] because someone else might see
-the zeroed region or if the RPC fails we then have to try to clean it up or
-risk getting corruption.
-
-[*] And we have to move the EOF first otherwise FSCTL_SET_ZERO_DATA won't
-do what we want.
-
-This fixes the generic/008 xfstest.
-
-[!] Note: A better way to do this might be to split the operation into two
-parts: we only do FSCTL_SET_ZERO_DATA for the part of the range below the
-server's EOF and then, if that worked, invalidate the buffered pages for the
-part above the range.
-
-Fixes: 6b69040247e1 ("cifs/smb3: Fix data inconsistent when zero file range")
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Steve French <stfrench@microsoft.com>
-cc: Zhang Xiaoxu <zhangxiaoxu5@huawei.com>
-cc: Pavel Shilovsky <pshilov@microsoft.com>
-cc: Paulo Alcantara <pc@manguebit.com>
-cc: Shyam Prasad N <nspmangalore@gmail.com>
-cc: Rohith Surabattula <rohiths.msft@gmail.com>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: linux-cifs@vger.kernel.org
-cc: linux-mm@kvack.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Link: https://patch.msgid.link/20240726142625.2460-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2ops.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ sound/pci/hda/hda_generic.c | 63 +++++++++++++++++++++++++++++++++++++
+ sound/pci/hda/hda_generic.h |  1 +
+ 2 files changed, 64 insertions(+)
 
-diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-index 2291081653a8..5e9478f31d47 100644
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -3443,13 +3443,15 @@ static long smb3_zero_data(struct file *file, struct cifs_tcon *tcon,
+diff --git a/sound/pci/hda/hda_generic.c b/sound/pci/hda/hda_generic.c
+index 35113fa84a0fd..733dc9953a38b 100644
+--- a/sound/pci/hda/hda_generic.c
++++ b/sound/pci/hda/hda_generic.c
+@@ -5067,6 +5067,69 @@ void snd_hda_gen_stream_pm(struct hda_codec *codec, hda_nid_t nid, bool on)
  }
+ EXPORT_SYMBOL_GPL(snd_hda_gen_stream_pm);
  
- static long smb3_zero_range(struct file *file, struct cifs_tcon *tcon,
--			    loff_t offset, loff_t len, bool keep_size)
-+			    unsigned long long offset, unsigned long long len,
-+			    bool keep_size)
- {
- 	struct cifs_ses *ses = tcon->ses;
- 	struct inode *inode = file_inode(file);
- 	struct cifsInodeInfo *cifsi = CIFS_I(inode);
- 	struct cifsFileInfo *cfile = file->private_data;
--	unsigned long long new_size;
-+	struct netfs_inode *ictx = netfs_inode(inode);
-+	unsigned long long i_size, new_size, remote_size;
- 	long rc;
- 	unsigned int xid;
- 	__le64 eof;
-@@ -3462,6 +3464,16 @@ static long smb3_zero_range(struct file *file, struct cifs_tcon *tcon,
- 	inode_lock(inode);
- 	filemap_invalidate_lock(inode->i_mapping);
- 
-+	i_size = i_size_read(inode);
-+	remote_size = ictx->remote_i_size;
-+	if (offset + len >= remote_size && offset < i_size) {
-+		unsigned long long top = umin(offset + len, i_size);
++/* forcibly mute the speaker output without caching; return true if updated */
++static bool force_mute_output_path(struct hda_codec *codec, hda_nid_t nid)
++{
++	if (!nid)
++		return false;
++	if (!nid_has_mute(codec, nid, HDA_OUTPUT))
++		return false; /* no mute, skip */
++	if (snd_hda_codec_amp_read(codec, nid, 0, HDA_OUTPUT, 0) &
++	    snd_hda_codec_amp_read(codec, nid, 1, HDA_OUTPUT, 0) &
++	    HDA_AMP_MUTE)
++		return false; /* both channels already muted, skip */
 +
-+		rc = filemap_write_and_wait_range(inode->i_mapping, offset, top - 1);
-+		if (rc < 0)
-+			goto zero_range_exit;
++	/* direct amp update without caching */
++	snd_hda_codec_write(codec, nid, 0, AC_VERB_SET_AMP_GAIN_MUTE,
++			    AC_AMP_SET_OUTPUT | AC_AMP_SET_LEFT |
++			    AC_AMP_SET_RIGHT | HDA_AMP_MUTE);
++	return true;
++}
++
++/**
++ * snd_hda_gen_shutup_speakers - Forcibly mute the speaker outputs
++ * @codec: the HDA codec
++ *
++ * Forcibly mute the speaker outputs, to be called at suspend or shutdown.
++ *
++ * The mute state done by this function isn't cached, hence the original state
++ * will be restored at resume.
++ *
++ * Return true if the mute state has been changed.
++ */
++bool snd_hda_gen_shutup_speakers(struct hda_codec *codec)
++{
++	struct hda_gen_spec *spec = codec->spec;
++	const int *paths;
++	const struct nid_path *path;
++	int i, p, num_paths;
++	bool updated = false;
++
++	/* if already powered off, do nothing */
++	if (!snd_hdac_is_power_on(&codec->core))
++		return false;
++
++	if (spec->autocfg.line_out_type == AUTO_PIN_SPEAKER_OUT) {
++		paths = spec->out_paths;
++		num_paths = spec->autocfg.line_outs;
++	} else {
++		paths = spec->speaker_paths;
++		num_paths = spec->autocfg.speaker_outs;
 +	}
 +
- 	/*
- 	 * We zero the range through ioctl, so we need remove the page caches
- 	 * first, otherwise the data may be inconsistent with the server.
++	for (i = 0; i < num_paths; i++) {
++		path = snd_hda_get_path_from_idx(codec, paths[i]);
++		if (!path)
++			continue;
++		for (p = 0; p < path->depth; p++)
++			if (force_mute_output_path(codec, path->path[p]))
++				updated = true;
++	}
++
++	return updated;
++}
++EXPORT_SYMBOL_GPL(snd_hda_gen_shutup_speakers);
++
+ /**
+  * snd_hda_gen_parse_auto_config - Parse the given BIOS configuration and
+  * set up the hda_gen_spec
+diff --git a/sound/pci/hda/hda_generic.h b/sound/pci/hda/hda_generic.h
+index 578faa9adcdcd..fc00f8bc0d78d 100644
+--- a/sound/pci/hda/hda_generic.h
++++ b/sound/pci/hda/hda_generic.h
+@@ -364,5 +364,6 @@ int snd_hda_gen_add_mute_led_cdev(struct hda_codec *codec,
+ int snd_hda_gen_add_micmute_led_cdev(struct hda_codec *codec,
+ 				     int (*callback)(struct led_classdev *,
+ 						     enum led_brightness));
++bool snd_hda_gen_shutup_speakers(struct hda_codec *codec);
+ 
+ #endif /* __SOUND_HDA_GENERIC_H */
 -- 
 2.43.0
 
