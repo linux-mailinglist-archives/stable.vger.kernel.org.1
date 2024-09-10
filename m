@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-75005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B09C973286
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:23:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C58DA973189
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:12:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6DF831C24109
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:23:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 046411C246AE
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:12:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C49D193439;
-	Tue, 10 Sep 2024 10:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2814E194C76;
+	Tue, 10 Sep 2024 10:08:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f4WHgReh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UIUnQ0q8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDA9214D431;
-	Tue, 10 Sep 2024 10:17:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DACF8194ADB;
+	Tue, 10 Sep 2024 10:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963470; cv=none; b=oxDvEDLP0qTtw8Pmev7/8kATh2895Mpmz1gXidxLSfytw+WcFS7Y6JkHNqBQkLsPEVvo57omlur6Nos4vFTiX0vEMcY2mtB2n9HWOwiglVKdOQPn9t976eYAqYzEhKwQB6pFRuqPz0rBk2iRtESCSLYrpYv8GC2AVaxbjqH1NOs=
+	t=1725962898; cv=none; b=GNQZMn/TqEt9kb7RZcDhgvS4XBqU+MI+6lm6MhNgqhRPD23g1KG04fzzbrPw45rUq6da2uV+bhKwaqP7aJgp5rM+2LsR36srdCA3MIbZtDoQjgl+kY5DgttoekP/7zAYIYYY/sz3REQWK7pBgb04gPeYwkXW0YHhU0cDQV8q9yc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963470; c=relaxed/simple;
-	bh=BvDG3R4clfk2OqnTEcqsPdgtRpRs6mEMZMrnMUNIFas=;
+	s=arc-20240116; t=1725962898; c=relaxed/simple;
+	bh=4LGTeVzRH9wsHQ1+gad8MazyvEyyNdZrAxzPJLWKtEs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qG2UiUOH0FP16WjImUSVkhyHfSjf/SWqiIlgSscQek8cbNfHibrazBRyL/yOEsbktLMGfDX29XYYu3klGEuiqEP94E4Z/WKmUH3sAV1IJAJ/5poWKo1alK3U5jyLmUd92fLU09nFDvCeXZEfyZidsvReVVL9ZLYBS3mW8iTe4OI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f4WHgReh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F7A3C4CEC3;
-	Tue, 10 Sep 2024 10:17:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WmLrBNTmTFIxJS5GKnHBduFAO1H+0OqiUllAsotFdImGbIiBL0+oQqQ3c0VJ+zkh2zU29bhsLpK65sn8VyrkF53flV4lQlLMHN73nO6YSOwL1bcgGbSffDWqhUd3BbE0+qEl0yGYC+vArgn3X5PH5okNkZsW0Rn7C0Q81uhcWeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UIUnQ0q8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61A12C4CEC3;
+	Tue, 10 Sep 2024 10:08:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963470;
-	bh=BvDG3R4clfk2OqnTEcqsPdgtRpRs6mEMZMrnMUNIFas=;
+	s=korg; t=1725962898;
+	bh=4LGTeVzRH9wsHQ1+gad8MazyvEyyNdZrAxzPJLWKtEs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f4WHgRehLiDkbobc+aWZFOvxDGPXHOqmEcpddNKzIQMpj8LPEtLKSh3csJDu375ZQ
-	 h7+QbPjqg3I/gMUnyQ2fM1k8ZdXz5rgW9qBzG8+XeyofhJF7GCriMbnX+GTJsSmZWx
-	 1J9gk8Z+vmzgiArp9VoptZwvSHNXwjhLlUJeNMcc=
+	b=UIUnQ0q8B93LToGjZQ/XtZYDXFN1dWhNBWH/UAVnE3uJ+3mJNzZvnIVs/Z8e8HaHC
+	 Ztok4oa8+IwlP1gT7W1He/+Yry0A/KyUw8B14rKhha/L85oyxiHwYPrnd9P/ShUfza
+	 0SjVFBkTGhHA9biG7OHxJI8B0bjn1oSaP4DKYWQk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zheng Qixing <zhengqixing@huawei.com>,
-	Yu Kuai <yukuai3@huawei.com>,
-	Damien Le Moal <dlemoal@kernel.org>
-Subject: [PATCH 5.15 069/214] ata: libata: Fix memory leak for error path in ata_host_alloc()
+	=?UTF-8?q?Marek=20Ol=C5=A1=C3=A1k?= <marek.olsak@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 067/192] drm/amdgpu: check for LINEAR_ALIGNED correctly in check_tiling_flags_gfx6
 Date: Tue, 10 Sep 2024 11:31:31 +0200
-Message-ID: <20240910092601.566959555@linuxfoundation.org>
+Message-ID: <20240910092600.753578828@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Qixing <zhengqixing@huawei.com>
+From: Marek Olšák <marek.olsak@amd.com>
 
-commit 284b75a3d83c7631586d98f6dede1d90f128f0db upstream.
+[ Upstream commit 11317d2963fa79767cd7c6231a00a9d77f2e0f54 ]
 
-In ata_host_alloc(), if devres_alloc() fails to allocate the device host
-resource data pointer, the already allocated ata_host structure is not
-freed before returning from the function. This results in a potential
-memory leak.
+Fix incorrect check.
 
-Call kfree(host) before jumping to the error handling path to ensure
-that the ata_host structure is properly freed if devres_alloc() fails.
-
-Fixes: 2623c7a5f279 ("libata: add refcounting to ata_host")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Marek Olšák <marek.olsak@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-core.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_display.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -5454,8 +5454,10 @@ struct ata_host *ata_host_alloc(struct d
- 	}
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
+index aabde6ebb190..ac773b191071 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
+@@ -873,8 +873,7 @@ static int check_tiling_flags_gfx6(struct amdgpu_framebuffer *afb)
+ {
+ 	u64 micro_tile_mode;
  
- 	dr = devres_alloc(ata_devres_release, 0, GFP_KERNEL);
--	if (!dr)
-+	if (!dr) {
-+		kfree(host);
- 		goto err_out;
-+	}
+-	/* Zero swizzle mode means linear */
+-	if (AMDGPU_TILING_GET(afb->tiling_flags, SWIZZLE_MODE) == 0)
++	if (AMDGPU_TILING_GET(afb->tiling_flags, ARRAY_MODE) == 1) /* LINEAR_ALIGNED */
+ 		return 0;
  
- 	devres_add(dev, dr);
- 	dev_set_drvdata(dev, host);
+ 	micro_tile_mode = AMDGPU_TILING_GET(afb->tiling_flags, MICRO_TILE_MODE);
+-- 
+2.43.0
+
 
 
 
