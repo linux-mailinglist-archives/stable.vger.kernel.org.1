@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-74763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 244B3973153
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:10:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C84E0973256
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:21:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A94E1C255E2
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:10:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 74ABA1F26A36
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:21:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AF6D1917E2;
-	Tue, 10 Sep 2024 10:05:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2D6B18FDDC;
+	Tue, 10 Sep 2024 10:15:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rzK0tbBq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kkgcgrrB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 284261917DC;
-	Tue, 10 Sep 2024 10:05:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A176C18FDA9;
+	Tue, 10 Sep 2024 10:15:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962758; cv=none; b=pqtZ7eVxlEeTbf0sWjNVZiEj1lqKflOLYsG2P8UVNnwlZh/dTrYYTsjAKtrzt/o9MXOUN5ZYKIxusxYoqndVz+Iph3iFRjX60QTTUShtYyC7BTWfKfIS8caxzTD2ZjXvSbDpLy2cLgrJt2FwZfTQrMh/p/Pdix4oEqgM6HrFnVA=
+	t=1725963353; cv=none; b=uPHQZG21XtyY1Y7b38FAfVvoJunwYD39gtqV84gMFTeNYCocy2Ms2b5NEcli+uilfBRxT2CmmiFhduNLF+6C8sT5TvPXymPcQR8fA4PSrRh8s7RwFuiJwvmbRVv6oJKCVqTuU7qa0ecWEHJJOHlSzWfaM3sxD3QER3FyuLL7pIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962758; c=relaxed/simple;
-	bh=HxmFhvCYeq5MzbwtjrMOHBqbZqthCFHHummjHPtdSic=;
+	s=arc-20240116; t=1725963353; c=relaxed/simple;
+	bh=4VKpKzSTMcD4q2/rtkcKt+fhY5PVXhXMx8YGPIwnRJg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LKpHA2RCbMqQ1pXHV2RbFqFc5WF/8EAfyBhrjuWmMBJyi5hZN9qN6KUCRfLPWQWvC/TlQb+o43kIA7sSAm0YlFL44ZJgHP7tiJHp+WlJuIT4wPOUTBYMvDhRmvltaAbI0YtoJmMUmYsXWDsNCHo1OIay3JiYTFih246v4Fsuho4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rzK0tbBq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99312C4CECD;
-	Tue, 10 Sep 2024 10:05:57 +0000 (UTC)
+	 MIME-Version; b=rJPB+oeQibXIQ5vIFUdEscfAH9WSE3v2h2kXuGciloMWskq0SILw70hnHMtdkfw9aM/8PiLrzlYmdC/lbgIYo9Ajst2Nq7BIcaAwsn4yGaQpseWXlZcCcUVtAieEP3b3gx2CxQwZD2RY9s+IdF9FI4MBhYzEyRqVcEIl0jYYgyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kkgcgrrB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCBC3C4CEC3;
+	Tue, 10 Sep 2024 10:15:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962758;
-	bh=HxmFhvCYeq5MzbwtjrMOHBqbZqthCFHHummjHPtdSic=;
+	s=korg; t=1725963353;
+	bh=4VKpKzSTMcD4q2/rtkcKt+fhY5PVXhXMx8YGPIwnRJg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rzK0tbBqyOCJpE7SbimHdpy3pj1rHub5uvbNBwjE/b4NdyGZCtIUdPSBL8Ure5dK8
-	 qlQF/mUE+hsd6ac6VCDY2FKlLl/+OMCs284iu4Q9KFwKvvmJn1/TxE38AYKCLxcST+
-	 HEcMUcmD8yxFmoS0ZvrJVblQfk08ndyMKP32K9Sw=
+	b=kkgcgrrBmqn80rOzt4NRVBNwk0wNzcUv+8t4/v9j/8eX9GpyXcBqvdlAlHw+hcB/P
+	 0S0hevFKaUzJVRW0jTBjmPk1bWPsclhM9EZC6onDM9WhsACVMzUHod+wssP37iGT8n
+	 fjWfd/dW35qc7Jx3AldhnHs/uSE8EQpL2ehe9CwM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoffer Sandberg <cs@tuxedo.de>,
-	Werner Sembach <wse@tuxedocomputers.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.1 006/192] ALSA: hda/conexant: Add pincfg quirk to enable top speakers on Sirius devices
+	Sohaib Nadeem <sohaib.nadeem@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Alvin Lee <alvin.lee2@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 008/214] drm/amd/display: Assign linear_pitch_alignment even for VM
 Date: Tue, 10 Sep 2024 11:30:30 +0200
-Message-ID: <20240910092558.168884544@linuxfoundation.org>
+Message-ID: <20240910092559.045233106@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +65,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoffer Sandberg <cs@tuxedo.de>
+From: Alvin Lee <alvin.lee2@amd.com>
 
-commit 4178d78cd7a86510ba68d203f26fc01113c7f126 upstream.
+[ Upstream commit 984debc133efa05e62f5aa1a7a1dd8ca0ef041f4 ]
 
-The Sirius notebooks have two sets of speakers 0x17 (sides) and
-0x1d (top center). The side speakers are active by default but
-the top speakers aren't.
+[Description]
+Assign linear_pitch_alignment so we don't cause a divide by 0
+error in VM environments
 
-This patch provides a pincfg quirk to activate the top speakers.
-
-Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20240827102540.9480-1-wse@tuxedocomputers.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Sohaib Nadeem <sohaib.nadeem@amd.com>
+Acked-by: Wayne Lin <wayne.lin@amd.com>
+Signed-off-by: Alvin Lee <alvin.lee2@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_conexant.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ drivers/gpu/drm/amd/display/dc/core/dc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/sound/pci/hda/patch_conexant.c
-+++ b/sound/pci/hda/patch_conexant.c
-@@ -311,6 +311,7 @@ enum {
- 	CXT_FIXUP_HEADSET_MIC,
- 	CXT_FIXUP_HP_MIC_NO_PRESENCE,
- 	CXT_PINCFG_SWS_JS201D,
-+	CXT_PINCFG_TOP_SPEAKER,
- };
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
+index ef151a1bc31c..12e4beca5e84 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -1107,6 +1107,7 @@ struct dc *dc_create(const struct dc_init_data *init_params)
+ 		return NULL;
  
- /* for hda_fixup_thinkpad_acpi() */
-@@ -978,6 +979,13 @@ static const struct hda_fixup cxt_fixups
- 		.type = HDA_FIXUP_PINS,
- 		.v.pins = cxt_pincfg_sws_js201d,
- 	},
-+	[CXT_PINCFG_TOP_SPEAKER] = {
-+		.type = HDA_FIXUP_PINS,
-+		.v.pins = (const struct hda_pintbl[]) {
-+			{ 0x1d, 0x82170111 },
-+			{ }
-+		},
-+	},
- };
- 
- static const struct snd_pci_quirk cxt5045_fixups[] = {
-@@ -1074,6 +1082,8 @@ static const struct snd_pci_quirk cxt506
- 	SND_PCI_QUIRK_VENDOR(0x17aa, "Thinkpad", CXT_FIXUP_THINKPAD_ACPI),
- 	SND_PCI_QUIRK(0x1c06, 0x2011, "Lemote A1004", CXT_PINCFG_LEMOTE_A1004),
- 	SND_PCI_QUIRK(0x1c06, 0x2012, "Lemote A1205", CXT_PINCFG_LEMOTE_A1205),
-+	SND_PCI_QUIRK(0x2782, 0x12c3, "Sirius Gen1", CXT_PINCFG_TOP_SPEAKER),
-+	SND_PCI_QUIRK(0x2782, 0x12c5, "Sirius Gen2", CXT_PINCFG_TOP_SPEAKER),
- 	{}
- };
- 
-@@ -1093,6 +1103,7 @@ static const struct hda_model_fixup cxt5
- 	{ .id = CXT_FIXUP_HP_MIC_NO_PRESENCE, .name = "hp-mic-fix" },
- 	{ .id = CXT_PINCFG_LENOVO_NOTEBOOK, .name = "lenovo-20149" },
- 	{ .id = CXT_PINCFG_SWS_JS201D, .name = "sws-js201d" },
-+	{ .id = CXT_PINCFG_TOP_SPEAKER, .name = "sirius-top-speaker" },
- 	{}
- };
- 
+ 	if (init_params->dce_environment == DCE_ENV_VIRTUAL_HW) {
++		dc->caps.linear_pitch_alignment = 64;
+ 		if (!dc_construct_ctx(dc, init_params))
+ 			goto destruct_dc;
+ 	} else {
+-- 
+2.43.0
+
 
 
 
