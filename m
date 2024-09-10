@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-75216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 894DF973380
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:33:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72FE9973364
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:32:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4E6452848D8
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:33:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E6AB2B28308
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:30:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A8A1192B9C;
-	Tue, 10 Sep 2024 10:28:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A12D18CBE9;
+	Tue, 10 Sep 2024 10:26:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N/3t6q3/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DWdBSSOh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57B76172BA8;
-	Tue, 10 Sep 2024 10:28:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4872918C913;
+	Tue, 10 Sep 2024 10:26:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964088; cv=none; b=JH1qT9XknN0g8SMjXpSr8NvCheCadL3NnvUM2ADz14xuDWytv33fWtwDlqBJtkDQ3bZWPvR6jTEX11n471M3pQ7vZY6IX3EBQUmLg5SH1Bae9WydnILgFCfEpQRvL6QBxpoRKCx1Olyu7KtQHrY9IauqfNehUtdnUPL1VTAnjNQ=
+	t=1725964006; cv=none; b=Ty7k98C3nUOJ90VM2e0DnJdmlIYBGNwjU+mILFG2+m/p9KTCM39l6VOVGUoweBjqrcQgc7FkEgVe75X/ACq7xhaClQTaHPeR/OhNSJcWV6N9VTIhdx1imlrE7dDdk0oUaduopkppRaVjHxTkRzf/SiBLHl8ylB0Ubq+WYe7kSlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964088; c=relaxed/simple;
-	bh=f/w0tjnthylhMqvzO3lIBZSnp6CJcw9sbg8nZexUfiM=;
+	s=arc-20240116; t=1725964006; c=relaxed/simple;
+	bh=dikGOPWw4M4+fBRSiw3PXGNwgbCNEGRNUVOjt1jST5I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U6uETI1vGH3AmHsrMpLc3b/Fbpwr8TP9iFmisb8iRqd+iLmz9dDMuEh5IdL4nY2h2Gcf2bTdrK6MFUm4vQ2zflnEsAUX6nr0E4QoVV/zYvY6qpdbueMu7p1FvRM+3B/osxfPiJowEN9qAgAxLpXNdHntlTmnls+7/uWe62pyg94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N/3t6q3/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D43FCC4CEC6;
-	Tue, 10 Sep 2024 10:28:07 +0000 (UTC)
+	 MIME-Version; b=d2ZIIFSbQo4AsY2yKtntLynVU6klbDdfLlj5kTDCkUy0topJmWF17ByFPu4Hz8ko0JsKPEqrd+rIsUhvV1BHqse/7yQ6i62IUGiy10wElIl7hWOzEu6d/iuR+tmWKokU7ZcBgQ9qgtYUgijy6V3PKPj8DK2tptx1xsUvcgZCpJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DWdBSSOh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69586C4CECD;
+	Tue, 10 Sep 2024 10:26:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964088;
-	bh=f/w0tjnthylhMqvzO3lIBZSnp6CJcw9sbg8nZexUfiM=;
+	s=korg; t=1725964005;
+	bh=dikGOPWw4M4+fBRSiw3PXGNwgbCNEGRNUVOjt1jST5I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N/3t6q3/tnW64fdhyB2WGrCpaJycIjqVu6l8NE1+cing/qvUXKRtv/d/yqXU60kJa
-	 aNZA13QdBipGCiOVrXM/hm8XoINdkK7O6JpwrQPOygV5Qt83EtROKuKfaW3tI+Sugc
-	 NKUHmGg0hub0ocakXONG9MVGa3muf1o1JIXmcjgY=
+	b=DWdBSSOhZsjfNJwyqnv5gktroD5JCqw7TLnp7fLlbAqzz0GDgZrkM5eLhQh3XE8cN
+	 oyL6q83dLnGbXBKIXkFWUxFtmYm7QSkA2n/I1y7M8LQujbAOtjR0ua5y7+dyYXUXw3
+	 X3CixfvSsBaXrP+h1BUfbiltdi1vKAai6weAlIHI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liao Chen <liaochen4@huawei.com>,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
+	Seunghwan Baek <sh8267.baek@samsung.com>,
+	Ritesh Harjani <ritesh.list@gmail.com>,
+	Adrian Hunter <adrian.hunter@intel.com>,
 	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.6 027/269] mmc: sdhci-of-aspeed: fix module autoloading
-Date: Tue, 10 Sep 2024 11:30:14 +0200
-Message-ID: <20240910092609.210416199@linuxfoundation.org>
+Subject: [PATCH 6.6 028/269] mmc: cqhci: Fix checking of CQHCI_HALT state
+Date: Tue, 10 Sep 2024 11:30:15 +0200
+Message-ID: <20240910092609.245756028@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
 References: <20240910092608.225137854@linuxfoundation.org>
@@ -66,34 +67,36 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Liao Chen <liaochen4@huawei.com>
+From: Seunghwan Baek <sh8267.baek@samsung.com>
 
-commit 6e540da4c1db7b840e347c4dfe48359b18b7e376 upstream.
+commit aea62c744a9ae2a8247c54ec42138405216414da upstream.
 
-Add MODULE_DEVICE_TABLE(), so modules could be properly autoloaded
-based on the alias from of_device_id table.
+To check if mmc cqe is in halt state, need to check set/clear of CQHCI_HALT
+bit. At this time, we need to check with &, not &&.
 
-Signed-off-by: Liao Chen <liaochen4@huawei.com>
-Acked-by: Andrew Jeffery <andrew@codeconstruct.com.au>
-Fixes: bb7b8ec62dfb ("mmc: sdhci-of-aspeed: Add support for the ASPEED SD controller")
+Fixes: a4080225f51d ("mmc: cqhci: support for command queue enabled host")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240826124851.379759-1-liaochen4@huawei.com
+Signed-off-by: Seunghwan Baek <sh8267.baek@samsung.com>
+Reviewed-by: Ritesh Harjani <ritesh.list@gmail.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20240829061823.3718-2-sh8267.baek@samsung.com
 Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/sdhci-of-aspeed.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/mmc/host/cqhci-core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/mmc/host/sdhci-of-aspeed.c
-+++ b/drivers/mmc/host/sdhci-of-aspeed.c
-@@ -510,6 +510,7 @@ static const struct of_device_id aspeed_
- 	{ .compatible = "aspeed,ast2600-sdhci", .data = &ast2600_sdhci_pdata, },
- 	{ }
- };
-+MODULE_DEVICE_TABLE(of, aspeed_sdhci_of_match);
- 
- static struct platform_driver aspeed_sdhci_driver = {
- 	.driver		= {
+--- a/drivers/mmc/host/cqhci-core.c
++++ b/drivers/mmc/host/cqhci-core.c
+@@ -612,7 +612,7 @@ static int cqhci_request(struct mmc_host
+ 		cqhci_writel(cq_host, 0, CQHCI_CTL);
+ 		mmc->cqe_on = true;
+ 		pr_debug("%s: cqhci: CQE on\n", mmc_hostname(mmc));
+-		if (cqhci_readl(cq_host, CQHCI_CTL) && CQHCI_HALT) {
++		if (cqhci_readl(cq_host, CQHCI_CTL) & CQHCI_HALT) {
+ 			pr_err("%s: cqhci: CQE failed to exit halt state\n",
+ 			       mmc_hostname(mmc));
+ 		}
 
 
 
