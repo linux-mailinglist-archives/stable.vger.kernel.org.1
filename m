@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-75074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA0C89732D2
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:26:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85D58973200
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:18:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54A691F22B9A
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:26:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B6B961C21239
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:18:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 392CB17A589;
-	Tue, 10 Sep 2024 10:21:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2662A194137;
+	Tue, 10 Sep 2024 10:12:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vaIodX1R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gJAog+ii"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED6CF18C02E;
-	Tue, 10 Sep 2024 10:21:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D661418C025;
+	Tue, 10 Sep 2024 10:12:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963674; cv=none; b=X7lEWRjLYECazsaGGVbGiSo9fXzJazF5nuJvWkzmCW9PKLeDJ1Vdf8oVtYYL1NSl18UEhAlqaOBM+T5rTKT/xJUaXOAO28cP2VQniEx8BD9+q5HpQNvp3XWFWnRtFdI/GuAXY38zE9lM/t//RYA8YdRfcQl4BsjhWg/pq3cF4WY=
+	t=1725963153; cv=none; b=W+iFrU6zSYJ+u1WA0UnwoJetevFtFI0J2rNWEauDz6+RhslDg4gctgRGfu8qJWboOLGBSV4csy5/bTcUIqVUG47DQeI3ya5EpUCD6Q2inAGTykkFchsrJ//+nyPLC5i0rkPTMSmaW+CHMIMP/spjt+Ny1r1mFRVxxh61dDjfcC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963674; c=relaxed/simple;
-	bh=R/LQH9X3eRe2yRS59VkEUdM1S3H+eAGfuYOkLlL7pUY=;
+	s=arc-20240116; t=1725963153; c=relaxed/simple;
+	bh=jWm/J9IKNt/ASNnDfDM70qj4bJ1uvuPy2ut+LlVfGrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GZwxZ3N92ntGYgeAqep6YWtcxzYl1IYh/gVI4BAX2v8S9UnwsGFD2FyXdPei/frD+kkKBlNxVbwhfW95WIrVVnDiYvEgpVUV23RZrxfW3pyncxgxtIJMb4swa4r1f1yDFVe7lHv0kaz2TKdd+2J2BdEMv7Qo657bOGo+IiyZf7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vaIodX1R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DEB4C4CEC3;
-	Tue, 10 Sep 2024 10:21:13 +0000 (UTC)
+	 MIME-Version; b=aOI7aGvfSujSq7Dr+Jefovjse3RHJO5np05XExxzpTawjIXHKV+Y/z6KHQfN1B23YIQaZ18zGvO3hthcytU4vreoPOjDpkaO2NxQt1uNvh0Xa6iWExVXkGLVEkG7+2h0+jE4epLJp6AtmttSLr1GM9JbeBLrnWObSq+z7k1JvGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gJAog+ii; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D76FC4CECD;
+	Tue, 10 Sep 2024 10:12:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963673;
-	bh=R/LQH9X3eRe2yRS59VkEUdM1S3H+eAGfuYOkLlL7pUY=;
+	s=korg; t=1725963153;
+	bh=jWm/J9IKNt/ASNnDfDM70qj4bJ1uvuPy2ut+LlVfGrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vaIodX1RowJisqX3OKcc0JFt89HMnhQ7T0KPJHRHHhJDM++CacOeUkfXpMgxIVRwE
-	 nbhm8Yh2NTvRatbVR+K7vyMHDz9zkyPIqv6Gh4AeMPICf83wh/CgUoZyvm4q2QyN8/
-	 06EEvaY7SHKcGBHpQBt+JzhQwvfW06NMrKvZPEc4=
+	b=gJAog+iiZ8hgVe9ECX5HGnpq6lyfUoRoMJJe7Ct7NHiyR/jipTQZnFkSyhDyeFa+/
+	 fWrF9tuphI6js/8gE9X3LGKY027Ydr9IB37eFp7ar6OxUQmmRlhFqWJ0G7+tthSyKa
+	 rJyinVF7WPn/bJcZBuhYzBB16V2u83xerVpN01Os=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Pan <jacob.jun.pan@linux.intel.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Yi Liu <yi.l.liu@intel.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Will Deacon <will@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 137/214] iommu/vt-d: Handle volatile descriptor status read
-Date: Tue, 10 Sep 2024 11:32:39 +0200
-Message-ID: <20240910092604.358664749@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.1 136/192] staging: iio: frequency: ad9834: Validate frequency parameter value
+Date: Tue, 10 Sep 2024 11:32:40 +0200
+Message-ID: <20240910092603.605994354@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,61 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Pan <jacob.jun.pan@linux.intel.com>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit b5e86a95541cea737394a1da967df4cd4d8f7182 ]
+commit b48aa991758999d4e8f9296c5bbe388f293ef465 upstream.
 
-Queued invalidation wait descriptor status is volatile in that IOMMU
-hardware writes the data upon completion.
+In ad9834_write_frequency() clk_get_rate() can return 0. In such case
+ad9834_calc_freqreg() call will lead to division by zero. Checking
+'if (fout > (clk_freq / 2))' doesn't protect in case of 'fout' is 0.
+ad9834_write_frequency() is called from ad9834_write(), where fout is
+taken from text buffer, which can contain any value.
 
-Use READ_ONCE() to prevent compiler optimizations which ensures memory
-reads every time. As a side effect, READ_ONCE() also enforces strict
-types and may add an extra instruction. But it should not have negative
-performance impact since we use cpu_relax anyway and the extra time(by
-adding an instruction) may allow IOMMU HW request cacheline ownership
-easier.
+Modify parameters checking.
 
-e.g. gcc 12.3
-BEFORE:
-	81 38 ad de 00 00       cmpl   $0x2,(%rax)
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-AFTER (with READ_ONCE())
-    772f:       8b 00                   mov    (%rax),%eax
-    7731:       3d ad de 00 00          cmp    $0x2,%eax
-                                        //status data is 32 bit
-
-Signed-off-by: Jacob Pan <jacob.jun.pan@linux.intel.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Reviewed-by: Yi Liu <yi.l.liu@intel.com>
-Link: https://lore.kernel.org/r/20240607173817.3914600-1-jacob.jun.pan@linux.intel.com
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Link: https://lore.kernel.org/r/20240702130839.108139-2-baolu.lu@linux.intel.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 12b9d5bf76bf ("Staging: IIO: DDS: AD9833 / AD9834 driver")
+Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/20240703154506.25584-1-amishin@t-argos.ru
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/intel/dmar.c | 2 +-
+ drivers/staging/iio/frequency/ad9834.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/intel/dmar.c b/drivers/iommu/intel/dmar.c
-index 0ad33d8d99d1..1134aa24d67f 100644
---- a/drivers/iommu/intel/dmar.c
-+++ b/drivers/iommu/intel/dmar.c
-@@ -1418,7 +1418,7 @@ int qi_submit_sync(struct intel_iommu *iommu, struct qi_desc *desc,
- 	 */
- 	writel(qi->free_head << shift, iommu->reg + DMAR_IQT_REG);
+--- a/drivers/staging/iio/frequency/ad9834.c
++++ b/drivers/staging/iio/frequency/ad9834.c
+@@ -114,7 +114,7 @@ static int ad9834_write_frequency(struct
  
--	while (qi->desc_status[wait_index] != QI_DONE) {
-+	while (READ_ONCE(qi->desc_status[wait_index]) != QI_DONE) {
- 		/*
- 		 * We will leave the interrupts disabled, to prevent interrupt
- 		 * context to queue another cmd while a cmd is already submitted
--- 
-2.43.0
-
+ 	clk_freq = clk_get_rate(st->mclk);
+ 
+-	if (fout > (clk_freq / 2))
++	if (!clk_freq || fout > (clk_freq / 2))
+ 		return -EINVAL;
+ 
+ 	regval = ad9834_calc_freqreg(clk_freq, fout);
 
 
 
