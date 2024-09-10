@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-75581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78937973545
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:47:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E71F973459
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:40:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3154928A4C9
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:47:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3A241C24F15
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:40:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A57E18CBE6;
-	Tue, 10 Sep 2024 10:45:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE651191466;
+	Tue, 10 Sep 2024 10:36:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h7wUq6X+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wr7wHpLJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0905B1DA4C;
-	Tue, 10 Sep 2024 10:45:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B2CF190072;
+	Tue, 10 Sep 2024 10:36:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725965152; cv=none; b=EYEwSzuAQj1/zAoSx60GatGPjfkkNfMX8o8BJwuuhyBYFwRuB1UOWrpm9CgAkllULI4zS6bPHqp2P+XP6mfNUs0v18eLIwrlYLLYC6tSRLFeVB0/xA4CkGZ3iI7zTDHEK5Eq+I5JEyPdosom6mUHJoGfz+QsvOmpMay/NcSJiaU=
+	t=1725964618; cv=none; b=OnbTu9vTWnhktp0oBVONs2zVUWZMzMo0ntlnDArlkimCqbjBXAC6iXXqkMCvu72dGyWCLfN4W4djse2/BZwf+4IBGgNeUBKTfy94uplu+3M/jx0Cxt2oRpR/OtN+wyI5iwQN4FvdR1T9qSqqU/t1OJyzE9refr3iwAC93cjPe/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725965152; c=relaxed/simple;
-	bh=N2LiIpdkhlc5Y6RcNOkjOl926eMiuKVpnEewtLexCNE=;
+	s=arc-20240116; t=1725964618; c=relaxed/simple;
+	bh=s/zWoE3o8M8ocIbtbqmoYEpmvEQ90YlG85UNhhyEHGs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m6wuUBwE94aNj1uHosBqkORJEXpX1OnErYodNc90wZnq/2kKgkvD4Z38tqTKP4wFGPzUmuXKO7sKYCm0QH7edx8UIW+lvKpySdTIorMUxCcYi9Ysy7tKgf31cfIM4M+XvXI0cmWnYED9atnaQzP68c9F0T49D5ihqDzS1OYsmbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h7wUq6X+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87E47C4CEC3;
-	Tue, 10 Sep 2024 10:45:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Anepk5MRx9u61g/XYFO99hBFW1XcQUY2qfCzA6d4hoQPgdadybUebbschAuWewzzAd749TgL+s91ZtQiWfhF8O96bxBsiacT9JiIQv/jkJRZqgY+FbTSgrkiRQcmsAGSNBKkWVnzRnLm8ImKeqtG1pH5qOd69LXAshfQscul8ho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wr7wHpLJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBC10C4CEC3;
+	Tue, 10 Sep 2024 10:36:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725965151;
-	bh=N2LiIpdkhlc5Y6RcNOkjOl926eMiuKVpnEewtLexCNE=;
+	s=korg; t=1725964618;
+	bh=s/zWoE3o8M8ocIbtbqmoYEpmvEQ90YlG85UNhhyEHGs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h7wUq6X+jvO69d2/hfXg+C+iurrvtg8zUvopkDGn4x5PQ544e8YRGNXw76mCujWxR
-	 +6CsqUqZ33wILxCw9FphjSwuPWqiYwgPeqIlSnv8oXp3W5MF9QJCN/treaxC1D36Fj
-	 RoWvsqNj/xgLvg6mhZSPomGao7IS6cZPTtQ2Han4=
+	b=wr7wHpLJxL9S7DIyaITIQz20bxSp69uboncRaX/wNRfha0Vw/HiVZ3+ufqp2EymrO
+	 MwehCBWPyKQSQPCork+A+c6w4Op7d9iQ5o4/boxLwtuztWqvk44LonzaoTEz1QpeHG
+	 y9LYvDqk1XZ04yqakHbsI4b+OtLxiomyTiblzVnw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pawel Dembicki <paweldembicki@gmail.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	=?UTF-8?q?Stefan=20Alth=C3=B6fer?= <Stefan.Althoefer@janztec.com>,
+	Thomas Kopp <thomas.kopp@microchip.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 127/186] net: dsa: vsc73xx: fix possible subblocks range of CAPT block
-Date: Tue, 10 Sep 2024 11:33:42 +0200
-Message-ID: <20240910092559.811381791@linuxfoundation.org>
+Subject: [PATCH 6.6 236/269] can: mcp251xfd: rx: add workaround for erratum DS80000789E 6 of mcp2518fd
+Date: Tue, 10 Sep 2024 11:33:43 +0200
+Message-ID: <20240910092616.294806230@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +61,147 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawel Dembicki <paweldembicki@gmail.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit 8e69c96df771ab469cec278edb47009351de4da6 ]
+[ Upstream commit 24436be590c6fbb05f6161b0dfba7d9da60214aa ]
 
-CAPT block (CPU Capture Buffer) have 7 sublocks: 0-3, 4, 6, 7.
-Function 'vsc73xx_is_addr_valid' allows to use only block 0 at this
-moment.
+This patch tries to works around erratum DS80000789E 6 of the
+mcp2518fd, the other variants of the chip family (mcp2517fd and
+mcp251863) are probably also affected.
 
-This patch fix it.
+In the bad case, the driver reads a too large head index. In the
+original code, the driver always trusted the read value, which caused
+old, already processed CAN frames or new, incompletely written CAN
+frames to be (re-)processed.
 
-Fixes: 05bd97fc559d ("net: dsa: Add Vitesse VSC73xx DSA router driver")
-Signed-off-by: Pawel Dembicki <paweldembicki@gmail.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20240903203340.1518789-1-paweldembicki@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+To work around this issue, keep a per FIFO timestamp [1] of the last
+valid received CAN frame and compare against the timestamp of every
+received CAN frame. If an old CAN frame is detected, abort the
+iteration and mark the number of valid CAN frames as processed in the
+chip by incrementing the FIFO's tail index.
+
+Further tests showed that this workaround can recognize old CAN
+frames, but a small time window remains in which partially written CAN
+frames [2] are not recognized but then processed. These CAN frames
+have the correct data and time stamps, but the DLC has not yet been
+updated.
+
+[1] As the raw timestamp overflows every 107 seconds (at the usual
+    clock rate of 40 MHz) convert it to nanoseconds with the
+    timecounter framework and use this to detect stale CAN frames.
+
+Link: https://lore.kernel.org/all/BL3PR11MB64844C1C95CA3BDADAE4D8CCFBC99@BL3PR11MB6484.namprd11.prod.outlook.com [2]
+Reported-by: Stefan Althöfer <Stefan.Althoefer@janztec.com>
+Closes: https://lore.kernel.org/all/FR0P281MB1966273C216630B120ABB6E197E89@FR0P281MB1966.DEUP281.PROD.OUTLOOK.COM
+Tested-by: Stefan Althöfer <Stefan.Althoefer@janztec.com>
+Tested-by: Thomas Kopp <thomas.kopp@microchip.com>
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/vitesse-vsc73xx-core.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ .../net/can/spi/mcp251xfd/mcp251xfd-ring.c    |  1 +
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c  | 32 +++++++++++++++++--
+ drivers/net/can/spi/mcp251xfd/mcp251xfd.h     |  3 ++
+ 3 files changed, 33 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/dsa/vitesse-vsc73xx-core.c b/drivers/net/dsa/vitesse-vsc73xx-core.c
-index 8a21902212e0..7c2780ccf9d6 100644
---- a/drivers/net/dsa/vitesse-vsc73xx-core.c
-+++ b/drivers/net/dsa/vitesse-vsc73xx-core.c
-@@ -35,7 +35,7 @@
- #define VSC73XX_BLOCK_ANALYZER	0x2 /* Only subblock 0 */
- #define VSC73XX_BLOCK_MII	0x3 /* Subblocks 0 and 1 */
- #define VSC73XX_BLOCK_MEMINIT	0x3 /* Only subblock 2 */
--#define VSC73XX_BLOCK_CAPTURE	0x4 /* Only subblock 2 */
-+#define VSC73XX_BLOCK_CAPTURE	0x4 /* Subblocks 0-4, 6, 7 */
- #define VSC73XX_BLOCK_ARBITER	0x5 /* Only subblock 0 */
- #define VSC73XX_BLOCK_SYSTEM	0x7 /* Only subblock 0 */
+diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
+index 5f92aed62ff9..f72582d4d3e8 100644
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
+@@ -206,6 +206,7 @@ mcp251xfd_ring_init_rx(struct mcp251xfd_priv *priv, u16 *base, u8 *fifo_nr)
+ 	int i, j;
  
-@@ -371,13 +371,19 @@ int vsc73xx_is_addr_valid(u8 block, u8 subblock)
- 		break;
+ 	mcp251xfd_for_each_rx_ring(priv, rx_ring, i) {
++		rx_ring->last_valid = timecounter_read(&priv->tc);
+ 		rx_ring->head = 0;
+ 		rx_ring->tail = 0;
+ 		rx_ring->base = *base;
+diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c
+index a79e6c661ecc..fe897f3e4c12 100644
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c
+@@ -159,8 +159,6 @@ mcp251xfd_hw_rx_obj_to_skb(const struct mcp251xfd_priv *priv,
  
- 	case VSC73XX_BLOCK_MII:
--	case VSC73XX_BLOCK_CAPTURE:
- 	case VSC73XX_BLOCK_ARBITER:
- 		switch (subblock) {
- 		case 0 ... 1:
- 			return 1;
- 		}
- 		break;
-+	case VSC73XX_BLOCK_CAPTURE:
-+		switch (subblock) {
-+		case 0 ... 4:
-+		case 6 ... 7:
-+			return 1;
-+		}
-+		break;
+ 	if (!(hw_rx_obj->flags & MCP251XFD_OBJ_FLAGS_RTR))
+ 		memcpy(cfd->data, hw_rx_obj->data, cfd->len);
+-
+-	mcp251xfd_skb_set_timestamp_raw(priv, skb, hw_rx_obj->ts);
+ }
+ 
+ static int
+@@ -171,8 +169,26 @@ mcp251xfd_handle_rxif_one(struct mcp251xfd_priv *priv,
+ 	struct net_device_stats *stats = &priv->ndev->stats;
+ 	struct sk_buff *skb;
+ 	struct canfd_frame *cfd;
++	u64 timestamp;
+ 	int err;
+ 
++	/* According to mcp2518fd erratum DS80000789E 6. the FIFOCI
++	 * bits of a FIFOSTA register, here the RX FIFO head index
++	 * might be corrupted and we might process past the RX FIFO's
++	 * head into old CAN frames.
++	 *
++	 * Compare the timestamp of currently processed CAN frame with
++	 * last valid frame received. Abort with -EBADMSG if an old
++	 * CAN frame is detected.
++	 */
++	timestamp = timecounter_cyc2time(&priv->tc, hw_rx_obj->ts);
++	if (timestamp <= ring->last_valid) {
++		stats->rx_fifo_errors++;
++
++		return -EBADMSG;
++	}
++	ring->last_valid = timestamp;
++
+ 	if (hw_rx_obj->flags & MCP251XFD_OBJ_FLAGS_FDF)
+ 		skb = alloc_canfd_skb(priv->ndev, &cfd);
+ 	else
+@@ -183,6 +199,7 @@ mcp251xfd_handle_rxif_one(struct mcp251xfd_priv *priv,
+ 		return 0;
  	}
  
- 	return 0;
++	mcp251xfd_skb_set_timestamp(skb, timestamp);
+ 	mcp251xfd_hw_rx_obj_to_skb(priv, hw_rx_obj, skb);
+ 	err = can_rx_offload_queue_timestamp(&priv->offload, skb, hw_rx_obj->ts);
+ 	if (err)
+@@ -265,7 +282,16 @@ mcp251xfd_handle_rxif_ring(struct mcp251xfd_priv *priv,
+ 			err = mcp251xfd_handle_rxif_one(priv, ring,
+ 							(void *)hw_rx_obj +
+ 							i * ring->obj_size);
+-			if (err)
++
++			/* -EBADMSG means we're affected by mcp2518fd
++			 * erratum DS80000789E 6., i.e. the timestamp
++			 * in the RX object is older that the last
++			 * valid received CAN frame. Don't process any
++			 * further and mark processed frames as good.
++			 */
++			if (err == -EBADMSG)
++				return mcp251xfd_handle_rxif_ring_uinc(priv, ring, i);
++			else if (err)
+ 				return err;
+ 		}
+ 
+diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd.h b/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
+index ae35845d4ce1..991662fbba42 100644
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
+@@ -554,6 +554,9 @@ struct mcp251xfd_rx_ring {
+ 	unsigned int head;
+ 	unsigned int tail;
+ 
++	/* timestamp of the last valid received CAN frame */
++	u64 last_valid;
++
+ 	u16 base;
+ 	u8 nr;
+ 	u8 fifo_nr;
 -- 
 2.43.0
 
