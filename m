@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-75289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 469A297349E
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:41:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 016D29732BF
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:26:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 88F4CB27557
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:35:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9F5C51F22291
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:26:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3629019994A;
-	Tue, 10 Sep 2024 10:31:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00B42199FB7;
+	Tue, 10 Sep 2024 10:20:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b25GSfsf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZP7/7OCe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E568318FC9F;
-	Tue, 10 Sep 2024 10:31:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B048218C03E;
+	Tue, 10 Sep 2024 10:20:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964300; cv=none; b=oKcb02Z/IbDEAJIYvgUAUOITVr6GKBLyAKGTyMwdWhniBJ473+/rppP6Ngjft0nKyLVpBJdbIcQKwpEfA5UArTY+frynb4xVZQ1QSlPyB5cLk0+987kAnQ+oF3YmBXBVCMwFtapcas41BvhO6NbBlV8qYAb0yBd+V+qlHZUl9cY=
+	t=1725963620; cv=none; b=urzo/XbI/IPeY/DhVR759B8SddG8/YKZak1+GtqEA4ypcuoNcn192HXZ/yVuoY71L9MgXMkBYWlwbxSmY705FF2e10yuzzOtx/y7a44pSM4cVHDKoWLAhY+2O4MFJ9KKVt/QSKADV8m1Lu2v+R6Kz6jdSDS4TaoU2n+JeWJEYiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964300; c=relaxed/simple;
-	bh=duOsC8rhc0JHWKooyEnSKRwKU6mbo33+IBoDkIrt6WM=;
+	s=arc-20240116; t=1725963620; c=relaxed/simple;
+	bh=fCYacT93f/SZoGv9SgJZ5V8MSpN3Y4hgOkegiH5VCaA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G0aH0SiDcGjRZC/TAfeTKtDZdb51rxyEJmNfdvXOpB1er6MVbBNMmnyskIKzRo2ctFBV++UbFxhnffkG5GG3w+q3moDDvtlvQ+0w7dTo3ShLPIxocV5YCtA3jGRc5XPH3buxR+1muaZjTCo3vHEBDZVRmc4Z7q6zIkWdhZ9mL+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b25GSfsf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67A4FC4CEC3;
-	Tue, 10 Sep 2024 10:31:39 +0000 (UTC)
+	 MIME-Version; b=XpYYX97IHiPfgsgrFHAkNwEHVzLqyyEefhJA+oZfyvJ2p+CWprIJDc+Fi4q30L93v5Ty0AzS+KJDYO7Kon3SCVKvPbCDaMiYZ6D+/czYfHY/WMyf+OmWcHtykaAT6gApcM0pSDy+CuoXeJA3PD58nNFatdrNsE3bOpGJihqPnW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZP7/7OCe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFD58C4CEC3;
+	Tue, 10 Sep 2024 10:20:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964299;
-	bh=duOsC8rhc0JHWKooyEnSKRwKU6mbo33+IBoDkIrt6WM=;
+	s=korg; t=1725963620;
+	bh=fCYacT93f/SZoGv9SgJZ5V8MSpN3Y4hgOkegiH5VCaA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b25GSfsfENHPH+hy9TtR+QwE0TmOuB8R66pWhdcizSHUHcAZ1WWDu3CO/4IRe9b4i
-	 n3FDFfBqcujWlX5SG/JC+s9FDsLZJGX7tOkNpowWA2fw4/5eNXHCPmBpvRPHnxFjvO
-	 03q12V52aAvDa6pBloLwrBqTZWxcr22q/m8wXbFA=
+	b=ZP7/7OCeU5fvZGT56TqRsFdKhJccDfST4QCe7wLlto8gpxhqzOC7yAxU5B8nT5qzs
+	 Zs0b4KNbonT+k6mJay7wwftFJxeZ9izHSUpefYZqArushtHcTK2S2v38nCMqgRGMLU
+	 GqnOLSgqlyfcK9eqrdM2UlUv7q2vdGOni45F5UXw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 118/269] Bluetooth: hci_sync: Introduce hci_cmd_sync_run/hci_cmd_sync_run_once
+	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 5.15 083/214] clk: qcom: clk-alpha-pll: Update set_rate for Zonda PLL
 Date: Tue, 10 Sep 2024 11:31:45 +0200
-Message-ID: <20240910092612.389657662@linuxfoundation.org>
+Message-ID: <20240910092602.128357067@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,111 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
 
-[ Upstream commit c898f6d7b093bd71e66569cd6797c87d4056f44b ]
+commit f4973130d255dd4811006f5822d4fa4d0de9d712 upstream.
 
-This introduces hci_cmd_sync_run/hci_cmd_sync_run_once which acts like
-hci_cmd_sync_queue/hci_cmd_sync_queue_once but runs immediately when
-already on hdev->cmd_sync_work context.
+The Zonda PLL has a 16 bit signed alpha and in the cases where the alpha
+value is greater than 0.5, the L value needs to be adjusted accordingly.
+Thus update the logic to handle the signed alpha val.
 
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Stable-dep-of: 227a0cdf4a02 ("Bluetooth: MGMT: Fix not generating command complete for MGMT_OP_DISCONNECT")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f21b6bfecc27 ("clk: qcom: clk-alpha-pll: add support for zonda pll")
+Cc: stable@vger.kernel.org
+Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20240731062916.2680823-5-quic_skakitap@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/bluetooth/hci_sync.h |  4 +++
- net/bluetooth/hci_sync.c         | 42 ++++++++++++++++++++++++++++++--
- 2 files changed, 44 insertions(+), 2 deletions(-)
+ drivers/clk/qcom/clk-alpha-pll.c |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
-diff --git a/include/net/bluetooth/hci_sync.h b/include/net/bluetooth/hci_sync.h
-index 534c3386e714..3cb2d10cac93 100644
---- a/include/net/bluetooth/hci_sync.h
-+++ b/include/net/bluetooth/hci_sync.h
-@@ -52,6 +52,10 @@ int hci_cmd_sync_queue(struct hci_dev *hdev, hci_cmd_sync_work_func_t func,
- 		       void *data, hci_cmd_sync_work_destroy_t destroy);
- int hci_cmd_sync_queue_once(struct hci_dev *hdev, hci_cmd_sync_work_func_t func,
- 			    void *data, hci_cmd_sync_work_destroy_t destroy);
-+int hci_cmd_sync_run(struct hci_dev *hdev, hci_cmd_sync_work_func_t func,
-+		     void *data, hci_cmd_sync_work_destroy_t destroy);
-+int hci_cmd_sync_run_once(struct hci_dev *hdev, hci_cmd_sync_work_func_t func,
-+			  void *data, hci_cmd_sync_work_destroy_t destroy);
- struct hci_cmd_sync_work_entry *
- hci_cmd_sync_lookup_entry(struct hci_dev *hdev, hci_cmd_sync_work_func_t func,
- 			  void *data, hci_cmd_sync_work_destroy_t destroy);
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index 3131daff56f4..f3c51315eb16 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -114,7 +114,7 @@ static void hci_cmd_sync_add(struct hci_request *req, u16 opcode, u32 plen,
- 	skb_queue_tail(&req->cmd_q, skb);
+--- a/drivers/clk/qcom/clk-alpha-pll.c
++++ b/drivers/clk/qcom/clk-alpha-pll.c
+@@ -39,6 +39,7 @@
+ #define PLL_USER_CTL(p)		((p)->offset + (p)->regs[PLL_OFF_USER_CTL])
+ # define PLL_POST_DIV_SHIFT	8
+ # define PLL_POST_DIV_MASK(p)	GENMASK((p)->width - 1, 0)
++# define PLL_ALPHA_MSB		BIT(15)
+ # define PLL_ALPHA_EN		BIT(24)
+ # define PLL_ALPHA_MODE		BIT(25)
+ # define PLL_VCO_SHIFT		20
+@@ -1913,6 +1914,18 @@ static void clk_zonda_pll_disable(struct
+ 	regmap_write(regmap, PLL_OPMODE(pll), 0x0);
  }
  
--static int hci_cmd_sync_run(struct hci_request *req)
-+static int hci_req_sync_run(struct hci_request *req)
++static void zonda_pll_adjust_l_val(unsigned long rate, unsigned long prate, u32 *l)
++{
++	u64 remainder, quotient;
++
++	quotient = rate;
++	remainder = do_div(quotient, prate);
++	*l = quotient;
++
++	if ((remainder * 2) / prate)
++		*l = *l + 1;
++}
++
+ static int clk_zonda_pll_set_rate(struct clk_hw *hw, unsigned long rate,
+ 				  unsigned long prate)
  {
- 	struct hci_dev *hdev = req->hdev;
- 	struct sk_buff *skb;
-@@ -164,7 +164,7 @@ struct sk_buff *__hci_cmd_sync_sk(struct hci_dev *hdev, u16 opcode, u32 plen,
+@@ -1929,6 +1942,9 @@ static int clk_zonda_pll_set_rate(struct
+ 	if (ret < 0)
+ 		return ret;
  
- 	hdev->req_status = HCI_REQ_PEND;
++	if (a & PLL_ALPHA_MSB)
++		zonda_pll_adjust_l_val(rate, prate, &l);
++
+ 	regmap_write(pll->clkr.regmap, PLL_ALPHA_VAL(pll), a);
+ 	regmap_write(pll->clkr.regmap, PLL_L_VAL(pll), l);
  
--	err = hci_cmd_sync_run(&req);
-+	err = hci_req_sync_run(&req);
- 	if (err < 0)
- 		return ERR_PTR(err);
- 
-@@ -800,6 +800,44 @@ int hci_cmd_sync_queue_once(struct hci_dev *hdev, hci_cmd_sync_work_func_t func,
- }
- EXPORT_SYMBOL(hci_cmd_sync_queue_once);
- 
-+/* Run HCI command:
-+ *
-+ * - hdev must be running
-+ * - if on cmd_sync_work then run immediately otherwise queue
-+ */
-+int hci_cmd_sync_run(struct hci_dev *hdev, hci_cmd_sync_work_func_t func,
-+		     void *data, hci_cmd_sync_work_destroy_t destroy)
-+{
-+	/* Only queue command if hdev is running which means it had been opened
-+	 * and is either on init phase or is already up.
-+	 */
-+	if (!test_bit(HCI_RUNNING, &hdev->flags))
-+		return -ENETDOWN;
-+
-+	/* If on cmd_sync_work then run immediately otherwise queue */
-+	if (current_work() == &hdev->cmd_sync_work)
-+		return func(hdev, data);
-+
-+	return hci_cmd_sync_submit(hdev, func, data, destroy);
-+}
-+EXPORT_SYMBOL(hci_cmd_sync_run);
-+
-+/* Run HCI command entry once:
-+ *
-+ * - Lookup if an entry already exist and only if it doesn't creates a new entry
-+ *   and run it.
-+ * - if on cmd_sync_work then run immediately otherwise queue
-+ */
-+int hci_cmd_sync_run_once(struct hci_dev *hdev, hci_cmd_sync_work_func_t func,
-+			  void *data, hci_cmd_sync_work_destroy_t destroy)
-+{
-+	if (hci_cmd_sync_lookup_entry(hdev, func, data, destroy))
-+		return 0;
-+
-+	return hci_cmd_sync_run(hdev, func, data, destroy);
-+}
-+EXPORT_SYMBOL(hci_cmd_sync_run_once);
-+
- /* Lookup HCI command entry:
-  *
-  * - Return first entry that matches by function callback or data or
--- 
-2.43.0
-
 
 
 
