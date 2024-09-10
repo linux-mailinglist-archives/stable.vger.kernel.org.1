@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-74959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74890973247
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:20:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D451973173
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:12:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2A8501F26FF7
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:20:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B79F0289681
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:12:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2773C18B48A;
-	Tue, 10 Sep 2024 10:15:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FD61192D97;
+	Tue, 10 Sep 2024 10:07:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L9joXQDQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K8f5hdJL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DAFEC18FDA3;
-	Tue, 10 Sep 2024 10:15:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DA97188CC1;
+	Tue, 10 Sep 2024 10:07:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963335; cv=none; b=i+pFK6qIaY9DSJNqbGOGJ3Nc88OIZde0p29QWsfOzqJPBDGRyyuxaCN1ejXeCfTbVl29pwAnHKPspiA4YyoKWnVmkAzdiXdYSiiUxypwhKzpEQydg1gBCVBmFBHDko3EFg0Sp84gCMUnbw4p+r5Ufob0G63qwtn2AWEdJfv0hq0=
+	t=1725962837; cv=none; b=dhPn1reQqfUzcBfIkL77ReSUqc42lfuucMBnwSH8UYcTsZg6hx0kVqrFCF3oJ2wfAGSQTuHQDdRUCyakbvFsO/03qNqXbPryLYqTmijft4VYCNxroz8qtQuIojVWBv6ka6RnKazr8LQGOdFxWIkNQCXXxkzouqcECpV1liuY/i0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963335; c=relaxed/simple;
-	bh=qYoe0yvmlN8gccp/ld3eThvU0jWoJtJFsu4LGPwOF8g=;
+	s=arc-20240116; t=1725962837; c=relaxed/simple;
+	bh=3P0qbpYD0sX6tIs8iQCT4NRGKHHf7Oql0kpQSzeLL48=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LGGIHksPtatrTTEOKFddIb3jcZ2WHior4jk7hK7J/bBn32zHogTrxVfv/gHtOCiWnG7+k4se2wcI59kCCIgEbBmTAdSiwlP2KZC0PCrsuqk/o66W/1MkxaR7MAVMTbYJCQ0Lk35QvClAp8lrBk/yh4V9eM8IjyNRVDeXKZWyjMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L9joXQDQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62C84C4CEC3;
-	Tue, 10 Sep 2024 10:15:35 +0000 (UTC)
+	 MIME-Version; b=ORS8oJYKIaPbdA8VQsBtRLgi8wBor3IiwERGf1QplQnlZlKS8OmrS1/FBt7sPMyLxe4cEnIslUhMb0AarvCuaEF1QyTwkg4y/BQnakwU54hoeAarm0RPiagqc0VIzNPt1NxTiDgn38XnmHFGSbuOlixtaD14j919FEtwyA4H3QU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K8f5hdJL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCCD1C4CEC3;
+	Tue, 10 Sep 2024 10:07:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963335;
-	bh=qYoe0yvmlN8gccp/ld3eThvU0jWoJtJFsu4LGPwOF8g=;
+	s=korg; t=1725962837;
+	bh=3P0qbpYD0sX6tIs8iQCT4NRGKHHf7Oql0kpQSzeLL48=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L9joXQDQwiHljtt5prc5riCTD3N8joU5c+L+PACB5fQMM0vNtb5p8Xf83fIbu2IGs
-	 ydGEOkMRrRuVTYZ9BbTVh4qLtfogHFRonTiM9wm9WQ0d6FwRgjWBs5uAKwPO1r6U6H
-	 iQmOrrXSmrlkg1yVicZ5zLiA1ed94gbVgar0r178=
+	b=K8f5hdJL+dmctL0GdTekS4MLGsNr5WHeVdaNGVEbBnwff/koyPdXccFRkbZE0EfDD
+	 E9RY/FyZVLJc4/0AiXAMSKXd4H1HMDuRU1UbPgCjru/nQcLFYVGgcfVgFPGjtF6tGv
+	 6C4rEl5h/OPAuW5AjIWMvufZHbJ6rdd6RnCFYKNU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Tom Chung <chiahsuan.chung@amd.com>,
-	Hersen Wu <hersenxs.wu@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 022/214] drm/amd/display: Fix Coverity INTEGER_OVERFLOW within dal_gpio_service_create
+	Jonathan Bell <jonathan@raspberrypi.com>,
+	Keita Aihara <keita.aihara@sony.com>,
+	Dragan Simic <dsimic@manjaro.org>,
+	Avri Altman <avri.altman@wdc.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 6.1 020/192] mmc: core: apply SD quirks earlier during probe
 Date: Tue, 10 Sep 2024 11:30:44 +0200
-Message-ID: <20240910092559.686116351@linuxfoundation.org>
+Message-ID: <20240910092558.775325753@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,56 +64,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hersen Wu <hersenxs.wu@amd.com>
+From: Jonathan Bell <jonathan@raspberrypi.com>
 
-[ Upstream commit c6077aa66fa230d12f37fef01161ef080d13b726 ]
+commit 469e5e4713989fdd5e3e502b922e7be0da2464b9 upstream.
 
-[Why]
-For subtraction, coverity reports integer overflow
-warning message when variable type is uint32_t.
+Applying MMC_QUIRK_BROKEN_SD_CACHE is broken, as the card's SD quirks are
+referenced in sd_parse_ext_reg_perf() prior to the quirks being initialized
+in mmc_blk_probe().
 
-[How]
-Change variable type to int32_t.
+To fix this problem, let's split out an SD-specific list of quirks and
+apply in mmc_sd_init_card() instead. In this way, sd_read_ext_regs() to has
+the available information for not assigning the SD_EXT_PERF_CACHE as one of
+the (un)supported features, which in turn allows mmc_sd_init_card() to
+properly skip execution of sd_enable_cache().
 
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Acked-by: Tom Chung <chiahsuan.chung@amd.com>
-Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c467c8f08185 ("mmc: Add MMC_QUIRK_BROKEN_SD_CACHE for Kingston Canvas Go Plus from 11/2019")
+Signed-off-by: Jonathan Bell <jonathan@raspberrypi.com>
+Co-developed-by: Keita Aihara <keita.aihara@sony.com>
+Signed-off-by: Keita Aihara <keita.aihara@sony.com>
+Reviewed-by: Dragan Simic <dsimic@manjaro.org>
+Reviewed-by: Avri Altman <avri.altman@wdc.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240820230631.GA436523@sony.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mmc/core/quirks.h |   22 +++++++++++++---------
+ drivers/mmc/core/sd.c     |    4 ++++
+ 2 files changed, 17 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c b/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c
-index a7c92c64490c..a5de27908914 100644
---- a/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c
-+++ b/drivers/gpu/drm/amd/display/dc/gpio/gpio_service.c
-@@ -58,7 +58,7 @@ struct gpio_service *dal_gpio_service_create(
- 	struct dc_context *ctx)
- {
- 	struct gpio_service *service;
--	uint32_t index_of_id;
-+	int32_t index_of_id;
+--- a/drivers/mmc/core/quirks.h
++++ b/drivers/mmc/core/quirks.h
+@@ -15,6 +15,19 @@
  
- 	service = kzalloc(sizeof(struct gpio_service), GFP_KERNEL);
+ #include "card.h"
  
-@@ -114,7 +114,7 @@ struct gpio_service *dal_gpio_service_create(
- 	return service;
++static const struct mmc_fixup __maybe_unused mmc_sd_fixups[] = {
++	/*
++	 * Kingston Canvas Go! Plus microSD cards never finish SD cache flush.
++	 * This has so far only been observed on cards from 11/2019, while new
++	 * cards from 2023/05 do not exhibit this behavior.
++	 */
++	_FIXUP_EXT("SD64G", CID_MANFID_KINGSTON_SD, 0x5449, 2019, 11,
++		   0, -1ull, SDIO_ANY_ID, SDIO_ANY_ID, add_quirk_sd,
++		   MMC_QUIRK_BROKEN_SD_CACHE, EXT_CSD_REV_ANY),
++
++	END_FIXUP
++};
++
+ static const struct mmc_fixup __maybe_unused mmc_blk_fixups[] = {
+ #define INAND_CMD38_ARG_EXT_CSD  113
+ #define INAND_CMD38_ARG_ERASE    0x00
+@@ -54,15 +67,6 @@ static const struct mmc_fixup __maybe_un
+ 		  MMC_QUIRK_BLK_NO_CMD23),
  
- failure_2:
--	while (index_of_id) {
-+	while (index_of_id > 0) {
- 		--index_of_id;
- 		kfree(service->busyness[index_of_id]);
+ 	/*
+-	 * Kingston Canvas Go! Plus microSD cards never finish SD cache flush.
+-	 * This has so far only been observed on cards from 11/2019, while new
+-	 * cards from 2023/05 do not exhibit this behavior.
+-	 */
+-	_FIXUP_EXT("SD64G", CID_MANFID_KINGSTON_SD, 0x5449, 2019, 11,
+-		   0, -1ull, SDIO_ANY_ID, SDIO_ANY_ID, add_quirk_sd,
+-		   MMC_QUIRK_BROKEN_SD_CACHE, EXT_CSD_REV_ANY),
+-
+-	/*
+ 	 * Some SD cards lockup while using CMD23 multiblock transfers.
+ 	 */
+ 	MMC_FIXUP("AF SD", CID_MANFID_ATP, CID_OEMID_ANY, add_quirk_sd,
+--- a/drivers/mmc/core/sd.c
++++ b/drivers/mmc/core/sd.c
+@@ -26,6 +26,7 @@
+ #include "host.h"
+ #include "bus.h"
+ #include "mmc_ops.h"
++#include "quirks.h"
+ #include "sd.h"
+ #include "sd_ops.h"
+ 
+@@ -1475,6 +1476,9 @@ retry:
+ 			goto free_card;
  	}
--- 
-2.43.0
-
+ 
++	/* Apply quirks prior to card setup */
++	mmc_fixup_device(card, mmc_sd_fixups);
++
+ 	err = mmc_sd_setup_card(host, card, oldcard != NULL);
+ 	if (err)
+ 		goto free_card;
 
 
 
