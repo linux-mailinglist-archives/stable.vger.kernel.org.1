@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-75560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7DBC973524
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:46:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 014E797347D
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:40:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82BBC1F26007
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:46:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 348DF1C24FE7
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:40:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADE89190472;
-	Tue, 10 Sep 2024 10:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0F96190664;
+	Tue, 10 Sep 2024 10:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bPfY5wmp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GAdsukbD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ADA518E77F;
-	Tue, 10 Sep 2024 10:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EC2918A6B9;
+	Tue, 10 Sep 2024 10:38:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725965090; cv=none; b=s4ufaYLJNL/W65Pw/SC+97INn1TTLHyHTFSSt8eLXECj/ES7DSNBFvQ1ini8wPyU/oGB4jKka0XuFPI44F724iocyddhYUH2/70olwEHxeaIamqrj6kMeu1I/5Cu8kNxIIcta6LeFELEimNB4xi88uN4OINLcTGmldaEqFuFWXc=
+	t=1725964694; cv=none; b=pypCLjUUgfQ2xFi96pAhJc8auCfJDN6HZwiPpXjHUHBEDIhb9eHgW+iU3L9IpAGXBlH7tsby/LToSYDvWGLX5JlatGSc2Vgs6N9y4aUgWe5eek5MxXRUZ5zXYvf3A7U1t1hO1OZWz5L/zCH5nvioXrkWSlddAUqHDzeoLR/+H04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725965090; c=relaxed/simple;
-	bh=BKTDbhWMBsjkmUm36WqSijsZl7YNH7b6RSO31nKqCHU=;
+	s=arc-20240116; t=1725964694; c=relaxed/simple;
+	bh=ifdGWo664eVzvkjZs4iB+kjUBi+J34JBWp8PNAKwfZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MIhLFrQhPGvLtmAUhZuA+h4pSs0/vDyPPFMuhzfeLVvCVcljseQChdp8sxGM9BpfJ4QD2lOwO5XabMJ5KFA8PquWrd9rDCYzu0Toiz2U7MbLW4fMr1c1ohWjWL/ERdTs9y3ZPCFkZviynoCsGwQOwjiiyvyXYIB6Ri5tzO9PSaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bPfY5wmp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4FB5C4CEC3;
-	Tue, 10 Sep 2024 10:44:49 +0000 (UTC)
+	 MIME-Version; b=T+apKf9BL9lcA6wyS7QpgOwp3vy7BlPa76Ujl5ButSpB/THiDlal+XIVT+xl68YwrSpg31NqPYC1hvrJ/3rcd95QoDAJbXs0kqGvrz89eSVyO9Dc3WdEjUtD3nBcsvGuS4yrPOALDcX30f1larXwFUKyEzu1ClzzMQcXqC7v8z8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GAdsukbD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2385BC4CEC3;
+	Tue, 10 Sep 2024 10:38:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725965090;
-	bh=BKTDbhWMBsjkmUm36WqSijsZl7YNH7b6RSO31nKqCHU=;
+	s=korg; t=1725964694;
+	bh=ifdGWo664eVzvkjZs4iB+kjUBi+J34JBWp8PNAKwfZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bPfY5wmpt3H2QTlbUw1nH1hGlqS5HsKnAVHFcjRu5MORG9tC8+ujrnCYg3gW20Fvy
-	 TuXZWcO1q3xA4+ip6qxXPh7ws7KWrIjoWOaZcpTfWCPCnRV7rX6EBJc1G91WuRurHi
-	 qpchIdm3ZTSYpPXVIUfYQS+fPwA9/E4BYfVDo8Ik=
+	b=GAdsukbDRfZjhG5a5rh1NJlxhE0h5YLxN9js/WdkHhVmUb3qNN3npMa26KInnU2zw
+	 MVp5IvMzGWmLq8vpNNfuATXHa4/NcPJcyteYkCAH4RNfT3dlezGZHt5iu4XvnJINNU
+	 XAjQMo3JtojWbYCkreMdcpvmyaL2LwpldINJ0muM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Timothy Pearson <tpearson@raptorengineering.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Shawn Anastasio <sanastasio@raptorengineering.com>,
-	Krishna Kumar <krishnak@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	devi priya <quic_devipriy@quicinc.com>,
+	Amandeep Singh <quic_amansing@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 134/186] pci/hotplug/pnv_php: Fix hotplug driver crash on Powernv
-Date: Tue, 10 Sep 2024 11:33:49 +0200
-Message-ID: <20240910092600.107420349@linuxfoundation.org>
+Subject: [PATCH 6.6 243/269] clk: qcom: ipq9574: Update the alpha PLL type for GPLLs
+Date: Tue, 10 Sep 2024 11:33:50 +0200
+Message-ID: <20240910092616.520394839@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,60 +63,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krishna Kumar <krishnak@linux.ibm.com>
+From: devi priya <quic_devipriy@quicinc.com>
 
-[ Upstream commit 335e35b748527f0c06ded9eebb65387f60647fda ]
+[ Upstream commit 6357efe3abead68048729adf11a9363881657939 ]
 
-The hotplug driver for powerpc (pci/hotplug/pnv_php.c) causes a kernel
-crash when we try to hot-unplug/disable the PCIe switch/bridge from
-the PHB.
+Update PLL offsets to DEFAULT_EVO to configure MDIO to 800MHz.
 
-The crash occurs because although the MSI data structure has been
-released during disable/hot-unplug path and it has been assigned
-with NULL, still during unregistration the code was again trying to
-explicitly disable the MSI which causes the NULL pointer dereference and
-kernel crash.
+The incorrect clock frequency leads to an incorrect MDIO clock. This,
+in turn, affects the MDIO hardware configurations as the divider is
+calculated from the MDIO clock frequency. If the clock frequency is
+not as expected, the MDIO register fails due to the generation of an
+incorrect MDIO frequency.
 
-The patch fixes the check during unregistration path to prevent invoking
-pci_disable_msi/msix() since its data structure is already freed.
+This issue is critical as it results in incorrect MDIO configurations
+and ultimately leads to the MDIO function not working. This results in
+a complete feature failure affecting all Ethernet PHYs. Specifically,
+Ethernet will not work on IPQ9574 due to this issue.
 
-Reported-by: Timothy Pearson <tpearson@raptorengineering.com>
-Closes: https://lore.kernel.org/all/1981605666.2142272.1703742465927.JavaMail.zimbra@raptorengineeringinc.com/
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Shawn Anastasio <sanastasio@raptorengineering.com>
-Signed-off-by: Krishna Kumar <krishnak@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240701074513.94873-2-krishnak@linux.ibm.com
+Currently, the clock frequency is set to CLK_ALPHA_PLL_TYPE_DEFAULT.
+However, this setting does not yield the expected clock frequency.
+To rectify this, we need to change this to CLK_ALPHA_PLL_TYPE_DEFAULT_EVO.
+
+This modification ensures that the clock frequency aligns with our
+expectations, thereby resolving the MDIO register failure and ensuring
+the proper functioning of the Ethernet on IPQ9574.
+
+Fixes: d75b82cff488 ("clk: qcom: Add Global Clock Controller driver for IPQ9574")
+Signed-off-by: devi priya <quic_devipriy@quicinc.com>
+Signed-off-by: Amandeep Singh <quic_amansing@quicinc.com>
+Link: https://lore.kernel.org/r/20240806061105.2849944-1-quic_amansing@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/hotplug/pnv_php.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/clk/qcom/gcc-ipq9574.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/pci/hotplug/pnv_php.c b/drivers/pci/hotplug/pnv_php.c
-index 04565162a449..cf9c0e75f0be 100644
---- a/drivers/pci/hotplug/pnv_php.c
-+++ b/drivers/pci/hotplug/pnv_php.c
-@@ -38,7 +38,6 @@ static void pnv_php_disable_irq(struct pnv_php_slot *php_slot,
- 				bool disable_device)
- {
- 	struct pci_dev *pdev = php_slot->pdev;
--	int irq = php_slot->irq;
- 	u16 ctrl;
+diff --git a/drivers/clk/qcom/gcc-ipq9574.c b/drivers/clk/qcom/gcc-ipq9574.c
+index f8b9a1e93bef..cdbbf2cc9c5d 100644
+--- a/drivers/clk/qcom/gcc-ipq9574.c
++++ b/drivers/clk/qcom/gcc-ipq9574.c
+@@ -65,7 +65,7 @@ static const struct clk_parent_data gcc_sleep_clk_data[] = {
  
- 	if (php_slot->irq > 0) {
-@@ -57,7 +56,7 @@ static void pnv_php_disable_irq(struct pnv_php_slot *php_slot,
- 		php_slot->wq = NULL;
- 	}
+ static struct clk_alpha_pll gpll0_main = {
+ 	.offset = 0x20000,
+-	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT],
++	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT_EVO],
+ 	.clkr = {
+ 		.enable_reg = 0x0b000,
+ 		.enable_mask = BIT(0),
+@@ -93,7 +93,7 @@ static struct clk_fixed_factor gpll0_out_main_div2 = {
  
--	if (disable_device || irq > 0) {
-+	if (disable_device) {
- 		if (pdev->msix_enabled)
- 			pci_disable_msix(pdev);
- 		else if (pdev->msi_enabled)
+ static struct clk_alpha_pll_postdiv gpll0 = {
+ 	.offset = 0x20000,
+-	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT],
++	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT_EVO],
+ 	.width = 4,
+ 	.clkr.hw.init = &(const struct clk_init_data) {
+ 		.name = "gpll0",
+@@ -107,7 +107,7 @@ static struct clk_alpha_pll_postdiv gpll0 = {
+ 
+ static struct clk_alpha_pll gpll4_main = {
+ 	.offset = 0x22000,
+-	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT],
++	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT_EVO],
+ 	.clkr = {
+ 		.enable_reg = 0x0b000,
+ 		.enable_mask = BIT(2),
+@@ -122,7 +122,7 @@ static struct clk_alpha_pll gpll4_main = {
+ 
+ static struct clk_alpha_pll_postdiv gpll4 = {
+ 	.offset = 0x22000,
+-	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT],
++	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT_EVO],
+ 	.width = 4,
+ 	.clkr.hw.init = &(const struct clk_init_data) {
+ 		.name = "gpll4",
+@@ -136,7 +136,7 @@ static struct clk_alpha_pll_postdiv gpll4 = {
+ 
+ static struct clk_alpha_pll gpll2_main = {
+ 	.offset = 0x21000,
+-	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT],
++	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT_EVO],
+ 	.clkr = {
+ 		.enable_reg = 0x0b000,
+ 		.enable_mask = BIT(1),
+@@ -151,7 +151,7 @@ static struct clk_alpha_pll gpll2_main = {
+ 
+ static struct clk_alpha_pll_postdiv gpll2 = {
+ 	.offset = 0x21000,
+-	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT],
++	.regs = clk_alpha_pll_regs[CLK_ALPHA_PLL_TYPE_DEFAULT_EVO],
+ 	.width = 4,
+ 	.clkr.hw.init = &(const struct clk_init_data) {
+ 		.name = "gpll2",
 -- 
 2.43.0
 
