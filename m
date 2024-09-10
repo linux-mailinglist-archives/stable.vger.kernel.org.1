@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-74572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F258972FFF
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:56:49 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F37A5972E14
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:39:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1A09E288897
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:56:48 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6130FB2571A
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:39:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7173B188A38;
-	Tue, 10 Sep 2024 09:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 099BF188CDC;
+	Tue, 10 Sep 2024 09:39:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1q0AgcHe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z7gcw8Nf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3112F17BEAE;
-	Tue, 10 Sep 2024 09:56:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB38517BEAE;
+	Tue, 10 Sep 2024 09:39:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962196; cv=none; b=FFU0pEHAn0qzsp0zf8DFtiaHbz4Ep3h0asERQ3uDk8p6hJ2S+QYUm7LxnrOxMRBCqySyJLBoduUmOURYkZmeGRtHxa6LXMl+sKhDBr6uBJxqaA6natt/uPahMbCTLyWlCFU++G0IjI1LZ4fg1IQogI6xPB54d0qxnHHTTxzw+nQ=
+	t=1725961151; cv=none; b=QDnvkUSAKQAHaHQj27p868Uk4sPTHdWTu3zltmQAmHuiIjvtyf5n25UMf0kAq3PVYAKBD6IZtMJUERAzJnoEcYhdF5mZUP9foAnUVwVNsmd5oca5o4m/E8izJhoUCCzkCX6htw7L2khlDZNUCfmpd55OFVKYSL2ipypBXolz5hs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962196; c=relaxed/simple;
-	bh=p6TsU7Zv978WNvPrx1ZOh9wStUxKvn0CS1SMAxOjpDQ=;
+	s=arc-20240116; t=1725961151; c=relaxed/simple;
+	bh=ICapJevXh0T6VFJL5op/Z280jw8bRcJDzAu9fMJhTR8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BRieQx+dF0aAjku1FIKsUbeXXM/W+WS13iJx7A6KeYA8qbDjcuLD8MmTxE60pYE+fKLOJ+uRDUFz6YFk4NGlLoNMr1f8U5gZyR/d40BXK86uMBXBZLPU4cKOOf3mlB9r1DkwFdlowhHm24pqlocu1JZOsdoGalLqdtmFTZIvGqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1q0AgcHe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACC98C4CEC6;
-	Tue, 10 Sep 2024 09:56:35 +0000 (UTC)
+	 MIME-Version; b=CExDvDdTseRwXbd/vfaorTDR0C1thi9VPgnn3It7NcKLxeYubduA0Ho9DbnVWtwbZJW1lfamkuZnUyA3lqQG2UCDIWycraUYKUd/znUSUaq0aQ/ra6otis3Ahk62Ion7ztWcvkBvz/kW3KyacAPkiLnJnSc515ASCCImhcZGUsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z7gcw8Nf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F0E8C4CEC3;
+	Tue, 10 Sep 2024 09:39:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962196;
-	bh=p6TsU7Zv978WNvPrx1ZOh9wStUxKvn0CS1SMAxOjpDQ=;
+	s=korg; t=1725961151;
+	bh=ICapJevXh0T6VFJL5op/Z280jw8bRcJDzAu9fMJhTR8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1q0AgcHe27ENaRxu+biqap1K5xj/1dsqVe13SBTkcfmfjBaj7cNL8tr2TYNQFFX4r
-	 a0spwsWZZoh0ksbEyGUkwWkrG7PdyGqfdVr2H2rAtRoxAuasKzVsnUZGtW677MY94U
-	 ned5NI6Aa5MSvvW066QCM+rW6nq02KINddtBbVQw=
+	b=Z7gcw8Nf3ytc5HY3w0FF/gZpFtyQDbdACgCBNZSPHK4mUTikWo9kyWTXZaJ5Uk53F
+	 KzTYse2JmvNknNkWdKOGJxAe6VWhOsdCncbItigVACeHoxvs8s1n0y5/fnFyJTvV2B
+	 KaPB1Fq5OO6kTmvGT58RH7UbWZEZt9Qn/1SeHxfU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hannes Reinecke <hare@suse.de>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Igor Pylypiv <ipylypiv@google.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 328/375] ata: libata-scsi: Check ATA_QCFLAG_RTF_FILLED before using result_tf
+Subject: [PATCH 4.19 63/96] btrfs: replace BUG_ON with ASSERT in walk_down_proc()
 Date: Tue, 10 Sep 2024 11:32:05 +0200
-Message-ID: <20240910092633.589862374@linuxfoundation.org>
+Message-ID: <20240910092544.304371559@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
-References: <20240910092622.245959861@linuxfoundation.org>
+In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
+References: <20240910092541.383432924@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,83 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Igor Pylypiv <ipylypiv@google.com>
+From: Josef Bacik <josef@toxicpanda.com>
 
-[ Upstream commit 816be86c7993d3c5832c3017c0056297e86f978c ]
+[ Upstream commit 1f9d44c0a12730a24f8bb75c5e1102207413cc9b ]
 
-qc->result_tf contents are only valid when the ATA_QCFLAG_RTF_FILLED flag
-is set. The ATA_QCFLAG_RTF_FILLED flag should be always set for commands
-that failed or for commands that have the ATA_QCFLAG_RESULT_TF flag set.
+We have a couple of areas where we check to make sure the tree block is
+locked before looking up or messing with references.  This is old code
+so it has this as BUG_ON().  Convert this to ASSERT() for developers.
 
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Igor Pylypiv <ipylypiv@google.com>
-Link: https://lore.kernel.org/r/20240702024735.1152293-8-ipylypiv@google.com
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-scsi.c | 21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ fs/btrfs/extent-tree.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/ata/libata-scsi.c b/drivers/ata/libata-scsi.c
-index 4deee71006ef..4116ae088719 100644
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -242,10 +242,17 @@ void ata_scsi_set_sense_information(struct ata_device *dev,
-  */
- static void ata_scsi_set_passthru_sense_fields(struct ata_queued_cmd *qc)
- {
-+	struct ata_device *dev = qc->dev;
- 	struct scsi_cmnd *cmd = qc->scsicmd;
- 	struct ata_taskfile *tf = &qc->result_tf;
- 	unsigned char *sb = cmd->sense_buffer;
+diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
+index 51f21cd61422..635d51c8098d 100644
+--- a/fs/btrfs/extent-tree.c
++++ b/fs/btrfs/extent-tree.c
+@@ -8468,7 +8468,7 @@ static noinline int walk_down_proc(struct btrfs_trans_handle *trans,
+ 	if (lookup_info &&
+ 	    ((wc->stage == DROP_REFERENCE && wc->refs[level] != 1) ||
+ 	     (wc->stage == UPDATE_BACKREF && !(wc->flags[level] & flag)))) {
+-		BUG_ON(!path->locks[level]);
++		ASSERT(path->locks[level]);
+ 		ret = btrfs_lookup_extent_info(trans, fs_info,
+ 					       eb->start, level, 1,
+ 					       &wc->refs[level],
+@@ -8492,7 +8492,7 @@ static noinline int walk_down_proc(struct btrfs_trans_handle *trans,
  
-+	if (!(qc->flags & ATA_QCFLAG_RTF_FILLED)) {
-+		ata_dev_dbg(dev,
-+			    "missing result TF: can't set ATA PT sense fields\n");
-+		return;
-+	}
-+
- 	if ((sb[0] & 0x7f) >= 0x72) {
- 		unsigned char *desc;
- 		u8 len;
-@@ -924,10 +931,17 @@ static void ata_to_sense_error(unsigned id, u8 drv_stat, u8 drv_err, u8 *sk,
-  */
- static void ata_gen_passthru_sense(struct ata_queued_cmd *qc)
- {
-+	struct ata_device *dev = qc->dev;
- 	struct scsi_cmnd *cmd = qc->scsicmd;
- 	struct ata_taskfile *tf = &qc->result_tf;
- 	u8 sense_key, asc, ascq;
- 
-+	if (!(qc->flags & ATA_QCFLAG_RTF_FILLED)) {
-+		ata_dev_dbg(dev,
-+			    "missing result TF: can't generate ATA PT sense data\n");
-+		return;
-+	}
-+
- 	/*
- 	 * Use ata_to_sense_error() to map status register bits
- 	 * onto sense key, asc & ascq.
-@@ -979,6 +993,13 @@ static void ata_gen_ata_sense(struct ata_queued_cmd *qc)
- 		ata_scsi_set_sense(dev, cmd, NOT_READY, 0x04, 0x21);
- 		return;
- 	}
-+
-+	if (!(qc->flags & ATA_QCFLAG_RTF_FILLED)) {
-+		ata_dev_dbg(dev,
-+			    "missing result TF: can't generate sense data\n");
-+		return;
-+	}
-+
- 	/* Use ata_to_sense_error() to map status register bits
- 	 * onto sense key, asc & ascq.
- 	 */
+ 	/* wc->stage == UPDATE_BACKREF */
+ 	if (!(wc->flags[level] & flag)) {
+-		BUG_ON(!path->locks[level]);
++		ASSERT(path->locks[level]);
+ 		ret = btrfs_inc_ref(trans, root, eb, 1);
+ 		BUG_ON(ret); /* -ENOMEM */
+ 		ret = btrfs_dec_ref(trans, root, eb, 0);
 -- 
 2.43.0
 
