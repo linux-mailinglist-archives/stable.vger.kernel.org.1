@@ -1,117 +1,123 @@
-Return-Path: <stable+bounces-74114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E0B69729A5
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 08:38:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1025972A87
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:22:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0CCC1C23F29
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 06:38:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F2FA1C24163
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 07:22:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09043178CDE;
-	Tue, 10 Sep 2024 06:38:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63E1917CA1A;
+	Tue, 10 Sep 2024 07:22:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="QodAntrm"
+	dkim=pass (1024-bit key) header.d=citrix.com header.i=@citrix.com header.b="LvOXJ2qr"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7339E1741FE;
-	Tue, 10 Sep 2024 06:38:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69B9817C7BD
+	for <stable@vger.kernel.org>; Tue, 10 Sep 2024 07:22:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725950286; cv=none; b=IX56RFazWouSzY5baQQ5sDRTrK4JGC6pgrIy7vbfwfC2gnuEkFKUfRZfEoWRgkHl9WoLCokkMyZeFmjsdI0hoAsT0Bd69E0oyp0+MctBH+fBrueCA3C/2dTKh1Sw1lreZUQ4hoCxPYzspGWRkxu6yhvXSUmqX+3ckSCg1zyrefs=
+	t=1725952964; cv=none; b=Z1vN7pOn8VyaftPsgqoDuMxXnqwHj82GJXvjL5GWhlaf1nRR735/MK4VW2UL11ojIXHqq5PrPkGWLs0LQ7NvVrVPEWR0Qyj8PRBeMaxMD1rw+dLmixdrFuldQVONsFwGey+YIfAqYj49I2DRqB3kM1XNxMo4VmYX9ptsvp5ksoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725950286; c=relaxed/simple;
-	bh=VjEIbjqPBq3Lp/fNF9Xa+R+uI/8Mp6sw85Dh8NFlIB8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tONcdZSXUQrsTP/LClrnTCd8MrD0zkS9zFFg2NAGOrkXvcOanC+APb+bZO8+C+dK8Zlj/dCvRwuV9jAxXuRYpPA0K+hp0UA6SDOBBqb3duGUkTSVptqh9ZSwuY0aBeEGEzJ/OMfiwYw33KuVl2JlXBIFBChwP8pbgxAqUkJWKuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=QodAntrm; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from [100.79.224.114] (unknown [4.194.122.170])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 8E01320B9A6A;
-	Mon,  9 Sep 2024 23:37:56 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 8E01320B9A6A
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1725950279;
-	bh=jQczYn4IGDpSbJMWUYwJY7GUd+3u9rqMfdxFfIyCuZM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=QodAntrm/M+rGXnVAIDrpNgDFRklZCJG34eYYhdCqhPwx1sYzQwYjN8pkVZZ69I7x
-	 YLIBEw+ZUiYP2aXvrFrqetk9A3V02Cd3Rveiw9l+AzshSXV4RGA7O0NyZPZrTjqGN0
-	 UNG+zKE7ukm15BRcjHFFM7kOHRkP8PCTOyOBuYaU=
-Message-ID: <f982f176-c171-44db-b86c-f91b7d926949@linux.microsoft.com>
-Date: Tue, 10 Sep 2024 12:07:53 +0530
+	s=arc-20240116; t=1725952964; c=relaxed/simple;
+	bh=SpCPdaf+rqMdpwxcYuM94rsX5LB7bRciqtjUhbHrjD4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=o0Iacuo8d9oFu9FSaE1Pu+PdJFRJaviNbbIk5Ep0cdakEQA1B0DYQEn4UNvHvyQ1BCmar75abZxkC1uU4vOOfmfe9Fi0on0gEUT3GKyvfzoTgmnzoqDe5+a5nEsERzaKr2H9zzeb82id1M8GMTMBvutcbnOxV0paIB1XWalws8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citrix.com; spf=pass smtp.mailfrom=cloud.com; dkim=pass (1024-bit key) header.d=citrix.com header.i=@citrix.com header.b=LvOXJ2qr; arc=none smtp.client-ip=209.85.218.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=citrix.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cloud.com
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a8d60e23b33so223154066b.0
+        for <stable@vger.kernel.org>; Tue, 10 Sep 2024 00:22:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=citrix.com; s=google; t=1725952961; x=1726557761; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=t2XzcGJ9CHpUVmI2Qjvu0h7RfZYDHRIyC3QcUD62zzQ=;
+        b=LvOXJ2qr5ODsTpwKsXlIRZU7PeIiZwaWcry5ekJS+bAAOYKW5lmGZ9gYKZhx863r28
+         WKMnifGvNErZ5E++Jv3RpBKJhFsc3t2jr2wwK1pSGzMQ1Aw7HHJaP/g1Rb8FuvFEYvwi
+         h5Czfg61LE8Ey4yXTmPMmakcESDpiocl7TECM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725952961; x=1726557761;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=t2XzcGJ9CHpUVmI2Qjvu0h7RfZYDHRIyC3QcUD62zzQ=;
+        b=SUk+Qv1+kadQSvRBeejx+J5q6Vrp5WwQVVjlTKpQtaZkFmCbBEnBvn1Wkqe6xMPe6k
+         gg2bV+2HjM+q/GT+L15uJNvnsj/Sdpnes7q0P/qcObNzof7GRBD7B7jgSfgIQB5ZYkZU
+         wLdDNW1eNDPsV/fbBYQsu4BTygw1SHO4VikgslIcy87v02wfF4dzp9bvjBb2AbYyQcvm
+         yxg0oQsNyGyH1VbN/JQxtfsOZLMYcVfXOO+sCYlCxhbgCEU9RLxt0F6GAf3mgxTU6jt0
+         9E0ePrCjLR4OYjuPTUAErOD+biz56Z1N/sRnAJBC+3CrhpwR97m62YVAHbQBD77gCw64
+         WLHw==
+X-Forwarded-Encrypted: i=1; AJvYcCUkRCfLt3vqDii2xDSy339Nz9De5cSQn+vA/xx+5peCv8et8mcZoYWz4qZPMfhrxE1blYkUoys=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw9t8gTwTQwGN4W58ozPdFwxiOMQzKbtPTiMU2JodMQ8h3doifD
+	PlE5QieryKaWJLc5jWag7suo16YBO+GlX80zPjcAr5OFXerYWsm0sqK783nAsBs=
+X-Google-Smtp-Source: AGHT+IEguAdmxCBaR1QB8kCKr4wvM2lfEhrwmL0iuSI4thRN/LxomXCTbP9/stpoAL4vqJLfL4K0dw==
+X-Received: by 2002:a17:907:3a96:b0:a8b:154b:7649 with SMTP id a640c23a62f3a-a8b154b790dmr817815766b.15.1725952959944;
+        Tue, 10 Sep 2024 00:22:39 -0700 (PDT)
+Received: from localhost ([213.195.124.163])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a8d25ce9277sm447915066b.149.2024.09.10.00.22.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Sep 2024 00:22:39 -0700 (PDT)
+Date: Tue, 10 Sep 2024 09:22:38 +0200
+From: Roger Pau =?utf-8?B?TW9ubsOp?= <roger.pau@citrix.com>
+To: Jason Andryuk <jandryuk@gmail.com>
+Cc: Helge Deller <deller@gmx.de>, Thomas Zimmermann <tzimmermann@suse.de>,
+	Arnd Bergmann <arnd@arndb.de>, Sam Ravnborg <sam@ravnborg.org>,
+	xen-devel@lists.xenproject.org,
+	Jason Andryuk <jason.andryuk@amd.com>,
+	Arthur Borsboom <arthurborsboom@gmail.com>, stable@vger.kernel.org,
+	linux-fbdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] fbdev/xen-fbfront: Assign fb_info->device
+Message-ID: <Zt_zvt3VXwim_DwS@macbook.local>
+References: <20240910020919.5757-1-jandryuk@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: RE: [PATCH] clocksource: hyper-v: Fix hv tsc page based
- sched_clock for hibernation
-To: Michael Kelley <mhklinux@outlook.com>,
- "K . Y . Srinivasan" <kys@microsoft.com>,
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
- Dexuan Cui <decui@microsoft.com>, Daniel Lezcano
- <daniel.lezcano@linaro.org>, Thomas Gleixner <tglx@linutronix.de>
-Cc: "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <20240909053923.8512-1-namjain@linux.microsoft.com>
- <SN6PR02MB4157141DD58FD6EAE96C7CABD4992@SN6PR02MB4157.namprd02.prod.outlook.com>
-Content-Language: en-US
-From: Naman Jain <namjain@linux.microsoft.com>
-In-Reply-To: <SN6PR02MB4157141DD58FD6EAE96C7CABD4992@SN6PR02MB4157.namprd02.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240910020919.5757-1-jandryuk@gmail.com>
 
-
-
-On 9/9/2024 9:16 PM, Michael Kelley wrote:
-> From: Naman Jain <namjain@linux.microsoft.com> Sent: Sunday, September 8, 2024 10:39 PM
->>
->> read_hv_sched_clock_tsc() assumes that the Hyper-V clock counter is
->> bigger than the variable hv_sched_clock_offset, which is cached during
->> early boot, but depending on the timing this assumption may be false
-
-..
-
->> +	old_save_sched_clock_state = x86_platform.save_sched_clock_state;
->> +	x86_platform.save_sched_clock_state = hv_save_sched_clock_state;
->> +	old_restore_sched_clock_state = x86_platform.restore_sched_clock_state;
->> +	x86_platform.restore_sched_clock_state = hv_restore_sched_clock_state;
+On Mon, Sep 09, 2024 at 10:09:16PM -0400, Jason Andryuk wrote:
+> From: Jason Andryuk <jason.andryuk@amd.com>
 > 
-> This Hyper-V clocksource/timer driver has intentionally been kept
-> instruction set architecture independent.  See the comment at the top
-> of the source code file. We've also avoided any "#ifdef x86" or similar, though
-> it's OK to have #ifdef's on specific clock-related functionality like
-> GENERIC_SCHED_CLOCK.
+> Probing xen-fbfront faults in video_is_primary_device().  The passed-in
+> struct device is NULL since xen-fbfront doesn't assign it and the
+> memory is kzalloc()-ed.  Assign fb_info->device to avoid this.
 > 
-> The reference to "x86_platform" violates the intended independence. The
-> code to save-on-suspend and update-on-resume can probably stay in this
-> module in generic form, but hooking the functions into the x86_platform
-> function call mechanism should move to x86-specific code.
+> This was exposed by the conversion of fb_is_primary_device() to
+> video_is_primary_device() which dropped a NULL check for struct device.
 > 
-> Michael
-> 
+> Fixes: f178e96de7f0 ("arch: Remove struct fb_info from video helpers")
+> Reported-by: Arthur Borsboom <arthurborsboom@gmail.com>
+> Closes: https://lore.kernel.org/xen-devel/CALUcmUncX=LkXWeiSiTKsDY-cOe8QksWhFvcCneOKfrKd0ZajA@mail.gmail.com/
+> Tested-by: Arthur Borsboom <arthurborsboom@gmail.com>
+> CC: stable@vger.kernel.org
+> Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
 
-Thanks for the review and guidance Michael. I'll take care of it in v2.
+Reviewed-by: Roger Pau Monné <roger.pau@citrix.com>
 
+> ---
+> The other option would be to re-instate the NULL check in
+> video_is_primary_device()
 
-Regards,
-Naman
+I do think this is needed, or at least an explanation.  The commit
+message in f178e96de7f0 doesn't mention anything about
+video_is_primary_device() not allowing being passed a NULL device
+(like it was possible with fb_is_primary_device()).
 
+Otherwise callers of video_is_primary_device() would need to be
+adjusted to check for device != NULL.
 
->> +
->>   	/*
->>   	 * TSC page mapping works differently in root compared to guest.
->>   	 * - In guest partition the guest PFN has to be passed to the
->>
->> base-commit: da3ea35007d0af457a0afc87e84fddaebc4e0b63
->> --
->> 2.25.1
-> 
-
+Thanks, Roger.
 
