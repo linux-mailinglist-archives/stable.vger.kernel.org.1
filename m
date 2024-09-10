@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-75360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75495-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E097973426
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:38:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 04BED9734E5
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:44:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CCC3B1F23FA9
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:38:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0061286509
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:44:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8578B18DF67;
-	Tue, 10 Sep 2024 10:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0E7A18DF8F;
+	Tue, 10 Sep 2024 10:41:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e05Msoxx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cF38aNNt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 418E4181B8D;
-	Tue, 10 Sep 2024 10:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E4EB18DF60;
+	Tue, 10 Sep 2024 10:41:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964505; cv=none; b=aWNQNYsop+n1Aqk6ZaAVX6buW0jCNiwjnhlmSC15Ln1KP0C0U/ZZ3hS/OuGZCdr/k50KRpywrMmpvLaVRLQsH57vL/+Mn6hgDN5wz6FDUuPG2LYUySc3/GUOkrOTH3fKeJ4fhqUVRkL4J0t0eocQ8yCeweyHSCj4x4s2wkA0S7g=
+	t=1725964901; cv=none; b=ZhmstE0YOD3xVTmHcuSIsAuCWZdvxzNnNuw/hnKdkCpxHqAUWHh4hpAXJbk60vKPIz6ybRlnvvvqN2++kcuC7gA8owt/sztnbFdxadjwBHrHkg8Q9zthkq7TQPZ4YhrTgLiUD/ujqzgSqaOgNTm5SqLcNCSNjz5n++EWE6oGG8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964505; c=relaxed/simple;
-	bh=Z48hiQQ2F++eGdQnURVCSE6ptIW9YZBk4FBN5rkPl9Q=;
+	s=arc-20240116; t=1725964901; c=relaxed/simple;
+	bh=uqRQiQp0SqwJg2uL5mpnwQVASOkDy7SDlS5M610sZgQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iPe7hVJb9GnVPW9EO/AnW8Jof624BeFm34+pGJcvZzHCogt4eGvQmpPTJ72wTjBaBy0tx3CQUQlilBXRE63CbeWcHYtx2d7IKvolsrlXDXcdudA5Ks5lYKWFMuu5dnaC8fJ3qGCGwUDEfkAn+UVDxr75oIKpI37bslPeqEVBqyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e05Msoxx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC0F1C4CEC3;
-	Tue, 10 Sep 2024 10:35:04 +0000 (UTC)
+	 MIME-Version; b=IOMQ/m6hCIuEKS+M0xKArJ/RGO9JV++lo4zSYxChZA76lkY36NkULV36qk/BlbnGsZ/peuCerm88s/YAgVNZABV7AHOoV5rn5pk9uXWhj6hCQHnbKAnQE29BN9df3LOlykwT8dTTDS2U5AxW+baENBL/h5YezJuCqR4HUTXsJAc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cF38aNNt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 039FDC4CEC3;
+	Tue, 10 Sep 2024 10:41:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964505;
-	bh=Z48hiQQ2F++eGdQnURVCSE6ptIW9YZBk4FBN5rkPl9Q=;
+	s=korg; t=1725964901;
+	bh=uqRQiQp0SqwJg2uL5mpnwQVASOkDy7SDlS5M610sZgQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e05MsoxxKxmsh1bpoIb/cxt2HEhAEy5GrdEumLsqkpRyN6SP47fWhbs5GuU4bKkyM
-	 tcr4r9FxF7jaJ0Y91JEqAHHOAE45ptU69Ilf+AJarXLst+BjmftnVe7M2y3mxCZrM0
-	 fNRji/LTPZnmnk4EUbArTYUb9+qt970N3mwH4NxI=
+	b=cF38aNNtdNk6YaGSUcWcLDe73SSgkkMKmczN7V0Z3NnrMEUmt/oF2F50R46RRnfL8
+	 e1GVWlDtMlM0qW3tRvLdEpOw9cPo3b2dGSUUWG+Ie2OvkUJvslvfqjvJkGkKEIYdjX
+	 JnMjUAN6306iXiwz/t2DmRrd8U50M971VXUKLu4Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 178/269] i3c: master: svc: resend target address when get NACK
+	Steven Rostedt <rostedt@goodmis.org>,
+	Zheng Yejian <zhengyejian@huaweicloud.com>
+Subject: [PATCH 5.10 070/186] tracing: Avoid possible softlockup in tracing_iter_reset()
 Date: Tue, 10 Sep 2024 11:32:45 +0200
-Message-ID: <20240910092614.508405105@linuxfoundation.org>
+Message-ID: <20240910092557.402774314@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,127 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Zheng Yejian <zhengyejian@huaweicloud.com>
 
-[ Upstream commit 9bc7501b0b90f4d0c34b97c14ff1f708ce7ad8f3 ]
+commit 49aa8a1f4d6800721c7971ed383078257f12e8f9 upstream.
 
-According to I3C Spec 1.1.1, 11-Jun-2021, section: 5.1.2.2.3:
+In __tracing_open(), when max latency tracers took place on the cpu,
+the time start of its buffer would be updated, then event entries with
+timestamps being earlier than start of the buffer would be skipped
+(see tracing_iter_reset()).
 
-If the Controller chooses to start an I3C Message with an I3C Dynamic
-Address, then special provisions shall be made because that same I3C Target
-may be initiating an IBI or a Controller Role Request. So, one of three
-things may happen: (skip 1, 2)
+Softlockup will occur if the kernel is non-preemptible and too many
+entries were skipped in the loop that reset every cpu buffer, so add
+cond_resched() to avoid it.
 
-3. The Addresses match and the RnW bits also match, and so neither
-Controller nor Target will ACK since both are expecting the other side to
-provide ACK. As a result, each side might think it had "won" arbitration,
-but neither side would continue, as each would subsequently see that the
-other did not provide ACK.
-...
-For either value of RnW: Due to the NACK, the Controller shall defer the
-Private Write or Private Read, and should typically transmit the Target
-						    ^^^^^^^^^^^^^^^^^^^
-Address again after a Repeated START (i.e., the next one or any one prior
-^^^^^^^^^^^^^
-to a STOP in the Frame). Since the Address Header following a Repeated
-START is not arbitrated, the Controller will always win (see Section
-5.1.2.2.4).
-
-Resend target address again if address is not 7E and controller get NACK.
-
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 2f26ebd549b9a ("tracing: use timestamp to determine start of latency traces")
+Link: https://lore.kernel.org/20240827124654.3817443-1-zhengyejian@huaweicloud.com
+Suggested-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Zheng Yejian <zhengyejian@huaweicloud.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i3c/master/svc-i3c-master.c | 58 ++++++++++++++++++++++-------
- 1 file changed, 44 insertions(+), 14 deletions(-)
+ kernel/trace/trace.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
-index ccd0c4680be2..acc937275c18 100644
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -1037,29 +1037,59 @@ static int svc_i3c_master_xfer(struct svc_i3c_master *master,
- 			       u8 *in, const u8 *out, unsigned int xfer_len,
- 			       unsigned int *actual_len, bool continued)
- {
-+	int retry = 2;
- 	u32 reg;
- 	int ret;
- 
- 	/* clean SVC_I3C_MINT_IBIWON w1c bits */
- 	writel(SVC_I3C_MINT_IBIWON, master->regs + SVC_I3C_MSTATUS);
- 
--	writel(SVC_I3C_MCTRL_REQUEST_START_ADDR |
--	       xfer_type |
--	       SVC_I3C_MCTRL_IBIRESP_NACK |
--	       SVC_I3C_MCTRL_DIR(rnw) |
--	       SVC_I3C_MCTRL_ADDR(addr) |
--	       SVC_I3C_MCTRL_RDTERM(*actual_len),
--	       master->regs + SVC_I3C_MCTRL);
- 
--	ret = readl_poll_timeout(master->regs + SVC_I3C_MSTATUS, reg,
-+	while (retry--) {
-+		writel(SVC_I3C_MCTRL_REQUEST_START_ADDR |
-+		       xfer_type |
-+		       SVC_I3C_MCTRL_IBIRESP_NACK |
-+		       SVC_I3C_MCTRL_DIR(rnw) |
-+		       SVC_I3C_MCTRL_ADDR(addr) |
-+		       SVC_I3C_MCTRL_RDTERM(*actual_len),
-+		       master->regs + SVC_I3C_MCTRL);
-+
-+		ret = readl_poll_timeout(master->regs + SVC_I3C_MSTATUS, reg,
- 				 SVC_I3C_MSTATUS_MCTRLDONE(reg), 0, 1000);
--	if (ret)
--		goto emit_stop;
-+		if (ret)
-+			goto emit_stop;
- 
--	if (readl(master->regs + SVC_I3C_MERRWARN) & SVC_I3C_MERRWARN_NACK) {
--		ret = -ENXIO;
--		*actual_len = 0;
--		goto emit_stop;
-+		if (readl(master->regs + SVC_I3C_MERRWARN) & SVC_I3C_MERRWARN_NACK) {
-+			/*
-+			 * According to I3C Spec 1.1.1, 11-Jun-2021, section: 5.1.2.2.3.
-+			 * If the Controller chooses to start an I3C Message with an I3C Dynamic
-+			 * Address, then special provisions shall be made because that same I3C
-+			 * Target may be initiating an IBI or a Controller Role Request. So, one of
-+			 * three things may happen: (skip 1, 2)
-+			 *
-+			 * 3. The Addresses match and the RnW bits also match, and so neither
-+			 * Controller nor Target will ACK since both are expecting the other side to
-+			 * provide ACK. As a result, each side might think it had "won" arbitration,
-+			 * but neither side would continue, as each would subsequently see that the
-+			 * other did not provide ACK.
-+			 * ...
-+			 * For either value of RnW: Due to the NACK, the Controller shall defer the
-+			 * Private Write or Private Read, and should typically transmit the Target
-+			 * Address again after a Repeated START (i.e., the next one or any one prior
-+			 * to a STOP in the Frame). Since the Address Header following a Repeated
-+			 * START is not arbitrated, the Controller will always win (see Section
-+			 * 5.1.2.2.4).
-+			 */
-+			if (retry && addr != 0x7e) {
-+				writel(SVC_I3C_MERRWARN_NACK, master->regs + SVC_I3C_MERRWARN);
-+			} else {
-+				ret = -ENXIO;
-+				*actual_len = 0;
-+				goto emit_stop;
-+			}
-+		} else {
-+			break;
-+		}
+--- a/kernel/trace/trace.c
++++ b/kernel/trace/trace.c
+@@ -3742,6 +3742,8 @@ void tracing_iter_reset(struct trace_ite
+ 			break;
+ 		entries++;
+ 		ring_buffer_iter_advance(buf_iter);
++		/* This could be a big loop */
++		cond_resched();
  	}
  
- 	/*
--- 
-2.43.0
-
+ 	per_cpu_ptr(iter->array_buffer->data, cpu)->skipped_entries = entries;
 
 
 
