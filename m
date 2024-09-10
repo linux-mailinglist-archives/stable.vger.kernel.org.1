@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-74207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BD69972E09
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:38:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E93D972FDE
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:55:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 457FC285143
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:38:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 21DF6285EF5
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:55:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AF171891A5;
-	Tue, 10 Sep 2024 09:38:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBC6014F12C;
+	Tue, 10 Sep 2024 09:55:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mFgHAuBg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fekjROsv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C869B1891A1;
-	Tue, 10 Sep 2024 09:38:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9239171671;
+	Tue, 10 Sep 2024 09:55:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961127; cv=none; b=Jp2hVHho+DHqpR3e4/jRPRgWC+FBNvNw/uvp2+Ga1XGDjyI6bA3Io08ZTJscGR46IBbFifBfwwWYMYVrh2g8MPLdzRxCD6uhDhjDeH8LTWMjsqtjyW2kKl06jy14Ogag/gik1kY0NhCvVNZkEfbemHaozGsnf8pIfh31Fv7t630=
+	t=1725962119; cv=none; b=i843JSV9qItq4wlaoWcUeR8i3xBHD4i5VBC8w128cVGBsifAiZlXas6LBOwqEYm3Ps7dKAp37H/SjkMAEtPU6xFQrQllDuWlVPc9Spb2pTmh+mBX+wC22ttXXhXXfE+b+2awA0gLCfheN4SahUt5Pa0Mr34j14TXTA3vvbI7Bek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961127; c=relaxed/simple;
-	bh=a3D44cT4Ml7LcKl5pbaEPYM7NEJyWrhjq3Gv9tRxaDE=;
+	s=arc-20240116; t=1725962119; c=relaxed/simple;
+	bh=HqmrULg8Cz+NyFP8/7yEvuR3uIbp+yQHpGfYEm2x5/c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kM3SJfFt6GrTXmY4cCUVsE0cQriGysZ3r+mlV7uFohK+JDEJ3KeXJOqE45uu21OxzcSQXL92xx/J4PbyBH00S38IevuBybYfOVmZ8DOTy1bbA337iHMiEz9stUjfod4bodqUsuVWs77QmHaCCLmel5urRgUpf9yuo2/nJwoz6Vo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mFgHAuBg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52762C4CEC3;
-	Tue, 10 Sep 2024 09:38:47 +0000 (UTC)
+	 MIME-Version; b=BwhcO9ha/+l0COYRMvt85fCMjD1bToB6koHcUffr8XUplOcv9bbKaX2CZ9il7SaCjN2U9dEFiCIycOtbgXMuQJfkce1jlnVFRJCpg51yBmCUCRoxXhKj2yZc2dsZr6tLB3id87uMbGE5TO0PH9gIvTj/fwTT6yHuaXccvmtl1f0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fekjROsv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 311DBC4CEC3;
+	Tue, 10 Sep 2024 09:55:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961127;
-	bh=a3D44cT4Ml7LcKl5pbaEPYM7NEJyWrhjq3Gv9tRxaDE=;
+	s=korg; t=1725962119;
+	bh=HqmrULg8Cz+NyFP8/7yEvuR3uIbp+yQHpGfYEm2x5/c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mFgHAuBgNOS5g2zI1v5vgoaGSX4NRVbfV+PFI8K/y4blspWWeGfZ/FuTGZArBF+kq
-	 DfkSGejC7FCc1HD47AJCxUmodMRY1nSnxznV7noGGT1ehc54ouAukx5DFzk1xxZ+9O
-	 UKmGONQUb2DwYdEZOn8FtFoO3R7ROgReue0nt2I4=
+	b=fekjROsv+ECBmrZrj+BjOp3zMn7J6x5QzW93D90p++n2FtwZwIz8TtrO2T+jm+H9p
+	 UXfJ2ThSf5Oy9nK08rOuKS4zThplUej6LwA8SWdz16J/CYBZRP1u0IKZ3sWhPBzjPT
+	 iZWpKDQGf+5ULCpaAFMzWQeiMJzm68HJThNkTopM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzkaller <syzkaller@googlegroups.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Simon Horman <horms@kernel.org>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 35/96] can: bcm: Remove proc entry when dev is unregistered.
-Date: Tue, 10 Sep 2024 11:31:37 +0200
-Message-ID: <20240910092543.052214940@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Subject: [PATCH 6.10 301/375] nvmem: Fix return type of devm_nvmem_device_get() in kerneldoc
+Date: Tue, 10 Sep 2024 11:31:38 +0200
+Message-ID: <20240910092632.667872348@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
-References: <20240910092541.383432924@linuxfoundation.org>
+In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
+References: <20240910092622.245959861@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,104 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 76fe372ccb81b0c89b6cd2fec26e2f38c958be85 ]
+commit c69f37f6559a8948d70badd2b179db7714dedd62 upstream.
 
-syzkaller reported a warning in bcm_connect() below. [0]
+devm_nvmem_device_get() returns an nvmem device, not an nvmem cell.
 
-The repro calls connect() to vxcan1, removes vxcan1, and calls
-connect() with ifindex == 0.
-
-Calling connect() for a BCM socket allocates a proc entry.
-Then, bcm_sk(sk)->bound is set to 1 to prevent further connect().
-
-However, removing the bound device resets bcm_sk(sk)->bound to 0
-in bcm_notify().
-
-The 2nd connect() tries to allocate a proc entry with the same
-name and sets NULL to bcm_sk(sk)->bcm_proc_read, leaking the
-original proc entry.
-
-Since the proc entry is available only for connect()ed sockets,
-let's clean up the entry when the bound netdev is unregistered.
-
-[0]:
-proc_dir_entry 'can-bcm/2456' already registered
-WARNING: CPU: 1 PID: 394 at fs/proc/generic.c:376 proc_register+0x645/0x8f0 fs/proc/generic.c:375
-Modules linked in:
-CPU: 1 PID: 394 Comm: syz-executor403 Not tainted 6.10.0-rc7-g852e42cc2dd4
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-RIP: 0010:proc_register+0x645/0x8f0 fs/proc/generic.c:375
-Code: 00 00 00 00 00 48 85 ed 0f 85 97 02 00 00 4d 85 f6 0f 85 9f 02 00 00 48 c7 c7 9b cb cf 87 48 89 de 4c 89 fa e8 1c 6f eb fe 90 <0f> 0b 90 90 48 c7 c7 98 37 99 89 e8 cb 7e 22 05 bb 00 00 00 10 48
-RSP: 0018:ffa0000000cd7c30 EFLAGS: 00010246
-RAX: 9e129be1950f0200 RBX: ff1100011b51582c RCX: ff1100011857cd80
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000002
-RBP: 0000000000000000 R08: ffd400000000000f R09: ff1100013e78cac0
-R10: ffac800000cd7980 R11: ff1100013e12b1f0 R12: 0000000000000000
-R13: 0000000000000000 R14: 0000000000000000 R15: ff1100011a99a2ec
-FS:  00007fbd7086f740(0000) GS:ff1100013fd00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00000000200071c0 CR3: 0000000118556004 CR4: 0000000000771ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe07f0 DR7: 0000000000000400
-PKRU: 55555554
-Call Trace:
- <TASK>
- proc_create_net_single+0x144/0x210 fs/proc/proc_net.c:220
- bcm_connect+0x472/0x840 net/can/bcm.c:1673
- __sys_connect_file net/socket.c:2049 [inline]
- __sys_connect+0x5d2/0x690 net/socket.c:2066
- __do_sys_connect net/socket.c:2076 [inline]
- __se_sys_connect net/socket.c:2073 [inline]
- __x64_sys_connect+0x8f/0x100 net/socket.c:2073
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xd9/0x1c0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x4b/0x53
-RIP: 0033:0x7fbd708b0e5d
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 73 9f 1b 00 f7 d8 64 89 01 48
-RSP: 002b:00007fff8cd33f08 EFLAGS: 00000246 ORIG_RAX: 000000000000002a
-RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 00007fbd708b0e5d
-RDX: 0000000000000010 RSI: 0000000020000040 RDI: 0000000000000003
-RBP: 0000000000000000 R08: 0000000000000040 R09: 0000000000000040
-R10: 0000000000000040 R11: 0000000000000246 R12: 00007fff8cd34098
-R13: 0000000000401280 R14: 0000000000406de8 R15: 00007fbd70ab9000
- </TASK>
-remove_proc_entry: removing non-empty directory 'net/can-bcm', leaking at least '2456'
-
-Fixes: ffd980f976e7 ("[CAN]: Add broadcast manager (bcm) protocol")
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/all/20240722192842.37421-1-kuniyu@amazon.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e2a5402ec7c6d044 ("nvmem: Add nvmem_device based consumer apis.")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20240902142510.71096-3-srinivas.kandagatla@linaro.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/can/bcm.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/nvmem/core.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/net/can/bcm.c b/net/can/bcm.c
-index 1c9953c68f09..095f68536c14 100644
---- a/net/can/bcm.c
-+++ b/net/can/bcm.c
-@@ -1422,6 +1422,10 @@ static void bcm_notify(struct bcm_sock *bo, unsigned long msg,
+--- a/drivers/nvmem/core.c
++++ b/drivers/nvmem/core.c
+@@ -1258,13 +1258,13 @@ void nvmem_device_put(struct nvmem_devic
+ EXPORT_SYMBOL_GPL(nvmem_device_put);
  
- 		/* remove device reference, if this is our bound device */
- 		if (bo->bound && bo->ifindex == dev->ifindex) {
-+#if IS_ENABLED(CONFIG_PROC_FS)
-+			if (sock_net(sk)->can.bcmproc_dir && bo->bcm_proc_read)
-+				remove_proc_entry(bo->procname, sock_net(sk)->can.bcmproc_dir);
-+#endif
- 			bo->bound   = 0;
- 			bo->ifindex = 0;
- 			notify_enodev = 1;
--- 
-2.43.0
-
+ /**
+- * devm_nvmem_device_get() - Get nvmem cell of device form a given id
++ * devm_nvmem_device_get() - Get nvmem device of device form a given id
+  *
+  * @dev: Device that requests the nvmem device.
+  * @id: name id for the requested nvmem device.
+  *
+- * Return: ERR_PTR() on error or a valid pointer to a struct nvmem_cell
+- * on success.  The nvmem_cell will be freed by the automatically once the
++ * Return: ERR_PTR() on error or a valid pointer to a struct nvmem_device
++ * on success.  The nvmem_device will be freed by the automatically once the
+  * device is freed.
+  */
+ struct nvmem_device *devm_nvmem_device_get(struct device *dev, const char *id)
 
 
 
