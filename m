@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-75478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74866-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F4B19734D6
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:43:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B7E79731CD
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:15:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6217A1C21BD8
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:43:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC3CC1F28791
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:15:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD11918C02F;
-	Tue, 10 Sep 2024 10:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE3D9191F6D;
+	Tue, 10 Sep 2024 10:11:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gANt9MY0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pfqfGhoj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C1D9144D1A;
-	Tue, 10 Sep 2024 10:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C44F18CBE9;
+	Tue, 10 Sep 2024 10:11:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964850; cv=none; b=gZEWHayNhPO5M5zMw3Xok92AJJ9THs9sBL6Zin2RVvmWQnwjCv3DW4lyi8mg4MM1iMHhZb3f0JGpVlojBG5VK9cuvAwq62veZztVYZrT3a7DAdWfPhxcgQXiBRYb8zLt8QYMXl53yXusRhEh2sq/mhJ47G3Rrt3q8Gxvz7uoG8o=
+	t=1725963062; cv=none; b=LggHGCWQ0RBLJ9tprDUA1H/R3VcGEwFBKBErjtorsVupzLsjGOu2vOqH8Wiarb16DNcryLsKjC4N7iosQV3skUqMx1OxFDQUEncZPHDbqDknXOgp1NUW/PTlbGBj5H+3OOYZ9R/IBJ6kyMlaiuLNjydgifCpSbI8jrZkvZB6i0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964850; c=relaxed/simple;
-	bh=MCMVM8E91wpOLhwZ4XWPrGwIlLUjuJesDfuQ1pVhEUQ=;
+	s=arc-20240116; t=1725963062; c=relaxed/simple;
+	bh=Uoym0uFAX8WBMTMlVt2tQxX4r0Q6zuNMIGajuEcWq00=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eTxOhVs/12AQUOeMV3hxnJLQtlO1Ryu+y4wLfTUOGBO2Kul7X8KkYRLz+RX+J7/YVmbhVE4VppujHfM801ho2K6FEDDFDZ17EARA3C7RghiF154FpIv12NWfikkNjOlKrjvHN4VCeYuLZRJWXKYt7nmPdp15iOwMiSpYcTcOyuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gANt9MY0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 125A8C4CEC3;
-	Tue, 10 Sep 2024 10:40:49 +0000 (UTC)
+	 MIME-Version; b=Afx1JQhkVvegPdSq6p6whOUjfO3QFk2G/K6amRT+wjUZ7WUM50HB0IlsWxMVYUaZwWARvUK2wezyF0bNmD+wo7o6BhxwGxNqb1ZYkb5nmUJsP3GCCRvf9Hhyzm55x4uzuldC4mntdJ/ONFsqfROvwPuG12awRO0DiWDWkAYu6pw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pfqfGhoj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCCFFC4CEC3;
+	Tue, 10 Sep 2024 10:11:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964850;
-	bh=MCMVM8E91wpOLhwZ4XWPrGwIlLUjuJesDfuQ1pVhEUQ=;
+	s=korg; t=1725963062;
+	bh=Uoym0uFAX8WBMTMlVt2tQxX4r0Q6zuNMIGajuEcWq00=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gANt9MY0Sg79YtF7oLD5b7kBCEuSazaGMWsZ1PG0BtjiyHHIqNoMZTvT1IJPHhoyp
-	 kV9gQ0Qd1LJyFMQH5QAgcMgVlr0wOZav9I1DZqco0x9Js9u0Dqd9XJ+Xdwa+QJNJzj
-	 QpefdiyCoyXueD0Cnxx4fxHCNk+SiPY91bKP19qA=
+	b=pfqfGhojEkIiMGCrUqEk7PBKeJMA+FPubt98oFWGF5dJS/6yWP/tFEXhqSk/HoNKJ
+	 jnNFy9f71TGUzxESfI6hw/SWd/a/LofvsVWBAR38f2NzaM5rxXJNiLMxc9UUEt2ceY
+	 DYm4Qm2UJHmZxpD6h5uYDBuOTRju/i2dzOHdWFZw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Fitzgerald <rf@opensource.cirrus.com>,
-	kernel test robot <lkp@intel.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Wolfram Sang <wsa+renesas@sang-engineering.com>
-Subject: [PATCH 5.10 052/186] i2c: Use IS_REACHABLE() for substituting empty ACPI functions
+	Oliver Neukum <oneukum@suse.com>,
+	Foster Snowhill <forst@pen.gy>,
+	Georgi Valkov <gvalkov@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 123/192] usbnet: ipheth: race between ipheth_close and error handling
 Date: Tue, 10 Sep 2024 11:32:27 +0200
-Message-ID: <20240910092556.647142300@linuxfoundation.org>
+Message-ID: <20240910092603.096659950@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +64,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Fitzgerald <rf@opensource.cirrus.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit 71833e79a42178d8a50b5081c98c78ace9325628 upstream.
+[ Upstream commit e5876b088ba03a62124266fa20d00e65533c7269 ]
 
-Replace IS_ENABLED() with IS_REACHABLE() to substitute empty stubs for:
-    i2c_acpi_get_i2c_resource()
-    i2c_acpi_client_count()
-    i2c_acpi_find_bus_speed()
-    i2c_acpi_new_device_by_fwnode()
-    i2c_adapter *i2c_acpi_find_adapter_by_handle()
-    i2c_acpi_waive_d0_probe()
+ipheth_sndbulk_callback() can submit carrier_work
+as a part of its error handling. That means that
+the driver must make sure that the work is cancelled
+after it has made sure that no more URB can terminate
+with an error condition.
 
-commit f17c06c6608a ("i2c: Fix conditional for substituting empty ACPI
-functions") partially fixed this conditional to depend on CONFIG_I2C,
-but used IS_ENABLED(), which is wrong since CONFIG_I2C is tristate.
+Hence the order of actions in ipheth_close() needs
+to be inverted.
 
-CONFIG_ACPI is boolean but let's also change it to use IS_REACHABLE()
-to future-proof it against becoming tristate.
-
-Somehow despite testing various combinations of CONFIG_I2C and CONFIG_ACPI
-we missed the combination CONFIG_I2C=m, CONFIG_ACPI=y.
-
-Signed-off-by: Richard Fitzgerald <rf@opensource.cirrus.com>
-Fixes: f17c06c6608a ("i2c: Fix conditional for substituting empty ACPI functions")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202408141333.gYnaitcV-lkp@intel.com/
-Reviewed-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Signed-off-by: Foster Snowhill <forst@pen.gy>
+Tested-by: Georgi Valkov <gvalkov@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/i2c.h |    2 +-
+ drivers/net/usb/ipheth.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/linux/i2c.h
-+++ b/include/linux/i2c.h
-@@ -991,7 +991,7 @@ static inline int of_i2c_get_board_info(
- struct acpi_resource;
- struct acpi_resource_i2c_serialbus;
+diff --git a/drivers/net/usb/ipheth.c b/drivers/net/usb/ipheth.c
+index 6a769df0b421..13381d87eeb0 100644
+--- a/drivers/net/usb/ipheth.c
++++ b/drivers/net/usb/ipheth.c
+@@ -353,8 +353,8 @@ static int ipheth_close(struct net_device *net)
+ {
+ 	struct ipheth_device *dev = netdev_priv(net);
  
--#if IS_ENABLED(CONFIG_ACPI) && IS_ENABLED(CONFIG_I2C)
-+#if IS_REACHABLE(CONFIG_ACPI) && IS_REACHABLE(CONFIG_I2C)
- bool i2c_acpi_get_i2c_resource(struct acpi_resource *ares,
- 			       struct acpi_resource_i2c_serialbus **i2c);
- u32 i2c_acpi_find_bus_speed(struct device *dev);
+-	cancel_delayed_work_sync(&dev->carrier_work);
+ 	netif_stop_queue(net);
++	cancel_delayed_work_sync(&dev->carrier_work);
+ 	return 0;
+ }
+ 
+-- 
+2.43.0
+
 
 
 
