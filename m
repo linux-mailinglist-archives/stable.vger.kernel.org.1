@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-75484-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 002D79734DB
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:43:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15EA89731D5
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:15:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3B67284C86
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:43:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAB2828C80F
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:15:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4B12188A28;
-	Tue, 10 Sep 2024 10:41:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9C9818B498;
+	Tue, 10 Sep 2024 10:11:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NS5b5cQQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hiol86lH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 635B317BB0C;
-	Tue, 10 Sep 2024 10:41:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CA3F1552FD;
+	Tue, 10 Sep 2024 10:11:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964868; cv=none; b=YndQ+aDgsC+1mE10zAduRaWAH2b3nmWE041ffmCvxCuqyQoWuwQQcpxgKq9gK+kxC+YEIMyZ+SGmNdI5Mv0NQtSqHwkleLOl1qLmrrifO5SJ3sjha3Xa4Y2PyKWCHwpOufAktOpkEq+IjvNhZ2UWA2OowyYo64keMiLdTI+Tsew=
+	t=1725963083; cv=none; b=pAsrw1ifalVMXotLwu4Bgo2b9yTOgPHbMS6I5D14FlbDFlRQGmsHl+v4a45Dshc6AEwkjuErSioa9JJb4TOZnrswcYwlvrEIc3dNJzVYTrvxk7+W/IAIE5THXGTlGv4P7L6kEkEv+T8x0XnDcv5+Hg0cP6avrd/5BsRezdd2iZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964868; c=relaxed/simple;
-	bh=Ths4npP8BqnYaq+UrIpbOi7tq7ITj+5I7ReM8zPwFsk=;
+	s=arc-20240116; t=1725963083; c=relaxed/simple;
+	bh=5DRWSpC2yBuqc53shjawERuvsjzNj9wptG51szFXDcg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P0gFm4DsuYtIzo2Zq/CIgVfN2up2rZ0pRr2lf7iQalIHsXSZ6NLEGI9AqXEK8btKHYwjg84M2qzqld3s8axBL1hggwxiGHMi2yYUPhhcVsuVDvq3ITi+EuROOk513ha4ul4PCr8fduR5P/QghTSZjNsHSo61q/d+ZdUlouKSzno=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NS5b5cQQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCB7CC4CEC3;
-	Tue, 10 Sep 2024 10:41:07 +0000 (UTC)
+	 MIME-Version; b=X4iY8XivpC8gKQLKQ+AFUCxDKNPYZe/tFa1ydyhIqcq3ToZ7HOXiNIvw/tnm/ajYAMcdTgnzcxV89pk4hk/Tc2uYc+o4wyQVAJDElMcQxVNTJCkSlizMdUgjgSqHZ1U6vXx6eY9M5guudqy98+vrkvI29trXUBTAkKkjo6XsYT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hiol86lH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D767DC4CEC3;
+	Tue, 10 Sep 2024 10:11:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964868;
-	bh=Ths4npP8BqnYaq+UrIpbOi7tq7ITj+5I7ReM8zPwFsk=;
+	s=korg; t=1725963083;
+	bh=5DRWSpC2yBuqc53shjawERuvsjzNj9wptG51szFXDcg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NS5b5cQQZ8YZ4lSbG85+EDoofA051Jvplka67lSB73aQX5y1KHPvgiGnycGmx3Rpq
-	 ZpwKGQGjBGJkrcsFy4YvXW2vrSjV9u/t+8SkQZdF8lOlCeLzP8QsOzMf/EpubKRefv
-	 7nqf0U80mlG+J+/wJGV9z2GtndES4sBDdSBeU6Jo=
+	b=hiol86lHn7lYwnDdUwMz94ydyqJMdjX6hOFFcFo61PrUFrE9cLHmrKKpsinBrq+DP
+	 VJNaRxmVHg+XkflLzNMzIMq/+0QY3DAjkqv6JsHwfetPJExJroVVo6LCsz7240Yj3v
+	 CWWbp+DpUdWWnMWgoHj0mWB6I0D9GcpSChM4MguE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maximilien Perreault <maximilienperreault@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.10 058/186] ALSA: hda/realtek: Support mute LED on HP Laptop 14-dq2xxx
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Anna Schumaker <Anna.Schumaker@Netapp.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 129/192] NFSv4: Add missing rescheduling points in nfs_client_return_marked_delegations
 Date: Tue, 10 Sep 2024 11:32:33 +0200
-Message-ID: <20240910092556.880374098@linuxfoundation.org>
+Message-ID: <20240910092603.325822533@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,35 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maximilien Perreault <maximilienperreault@gmail.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-commit 47a9e8dbb8d4713a9aac7cc6ce3c82dcc94217d8 upstream.
+[ Upstream commit a017ad1313fc91bdf235097fd0a02f673fc7bb11 ]
 
-The mute LED on this HP laptop uses ALC236 and requires a quirk to function. This patch enables the existing quirk for the device.
+We're seeing reports of soft lockups when iterating through the loops,
+so let's add rescheduling points.
 
-Signed-off-by: Maximilien Perreault <maximilienperreault@gmail.com>
-Cc: <stable@vger.kernel.org>
-Link: https://patch.msgid.link/20240904031013.21220-1-maximilienperreault@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/nfs/super.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -9112,6 +9112,7 @@ static const struct snd_pci_quirk alc269
- 	SND_PCI_QUIRK(0x103c, 0x87f5, "HP", ALC287_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x87f6, "HP Spectre x360 14", ALC245_FIXUP_HP_X360_AMP),
- 	SND_PCI_QUIRK(0x103c, 0x87f7, "HP Spectre x360 14", ALC245_FIXUP_HP_X360_AMP),
-+	SND_PCI_QUIRK(0x103c, 0x87fd, "HP Laptop 14-dq2xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x87fe, "HP Laptop 15s-fq2xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
- 	SND_PCI_QUIRK(0x103c, 0x8805, "HP ProBook 650 G8 Notebook PC", ALC236_FIXUP_HP_GPIO_LED),
- 	SND_PCI_QUIRK(0x103c, 0x880d, "HP EliteBook 830 G8 Notebook PC", ALC285_FIXUP_HP_GPIO_LED),
+diff --git a/fs/nfs/super.c b/fs/nfs/super.c
+index 05ae23657527..f7b4df29ac5f 100644
+--- a/fs/nfs/super.c
++++ b/fs/nfs/super.c
+@@ -47,6 +47,7 @@
+ #include <linux/vfs.h>
+ #include <linux/inet.h>
+ #include <linux/in6.h>
++#include <linux/sched.h>
+ #include <linux/slab.h>
+ #include <net/ipv6.h>
+ #include <linux/netdevice.h>
+@@ -219,6 +220,7 @@ static int __nfs_list_for_each_server(struct list_head *head,
+ 		ret = fn(server, data);
+ 		if (ret)
+ 			goto out;
++		cond_resched();
+ 		rcu_read_lock();
+ 	}
+ 	rcu_read_unlock();
+-- 
+2.43.0
+
 
 
 
