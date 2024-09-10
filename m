@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-74202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74665-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60C9D972E03
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:38:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4806973089
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:02:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 16B6D1F25486
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:38:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D69121C245E6
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:02:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D2AA18A6D2;
-	Tue, 10 Sep 2024 09:38:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF63918C008;
+	Tue, 10 Sep 2024 10:01:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zlRq64i5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HqwVjQwU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD4AA46444;
-	Tue, 10 Sep 2024 09:38:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D0C618C000;
+	Tue, 10 Sep 2024 10:01:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961113; cv=none; b=niiVJkt7gJQLpGFVvvZXMGZYVmOWBA/sIaux/E2Y3V6ZQry5klReFU92lQbcl3/ciy0YQGMIBA/u+1CoTd7lcqhZsH1boqRcvhekB3A9Nj9HNdyhRujmJRRSf90c8DuYdStQurtyk5HYk2zl4tWoHODCUV3vLoMrnRlpoSOh5JQ=
+	t=1725962466; cv=none; b=o7FhMyJ0Y95XjPssbsvHoIvqW7+0JXtMldrGzIKuLlHRHc5hKDxz6JgXmcCWVw/4mDilhkUoIxdXIFFkyddEcFHWoVOfJixjZYK0E+5Aux6acEz1fhdi84j0agIueAWaCpwVQQct8JuUraNN88TgSqKXapazMsnhnEWbvdyatnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961113; c=relaxed/simple;
-	bh=NyqWP07UmOSJDjZog40UpUisd9Ga1ywP9X6XIXzTyUI=;
+	s=arc-20240116; t=1725962466; c=relaxed/simple;
+	bh=/f2tJ2AsfDC+cEeAfTVQK73gcAKwD40JbOhcxwbWKNM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gw529mpLJK2E1G6z0jF3aufEOiZ1obD/sW2TwBCPD0LeGnd1sYLDzF7/IblI63xBFd0oO8KG+WJCA17rSUR7gyiKKN0NoodoP82O5+ByItobA8ZPYXXgIU8xwajSIm/iM8ica8YsvlqaxteEph1J1WGrMGOe5O+t2FPqUQcsOig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zlRq64i5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62AC1C4CEC3;
-	Tue, 10 Sep 2024 09:38:32 +0000 (UTC)
+	 MIME-Version; b=izlCoCmwvweaDK0uK366I21KUMUbQ9JV7WZ8cKU6+QanRC5T8KwP0Fq0ff6N6WqPHzSBxXRSs5Y6wt52qAElOTFma5KllE/e0IGTldXcNaIDMvhHpBXErPS8a1Uq0fMhmxCyJE4dR1aAEFBlbgC4xIQ4goS8MnchrBqCNNyu5QE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HqwVjQwU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09E4CC4CEC3;
+	Tue, 10 Sep 2024 10:01:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961112;
-	bh=NyqWP07UmOSJDjZog40UpUisd9Ga1ywP9X6XIXzTyUI=;
+	s=korg; t=1725962466;
+	bh=/f2tJ2AsfDC+cEeAfTVQK73gcAKwD40JbOhcxwbWKNM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zlRq64i57bebrO6Qh3Y79VnBdFTt7KTOKCD+AikJYqwOH0PqzWJQNwcFz5xCppnEs
-	 5O7NkOY1Cb6M9yUYcONDJZO0EJdyDq5rq6ioHE/VFW8bBg+Ypw60CQMeNHbsOOzdxq
-	 HroUPqBE9fmyk7/GxYCUTA3dBLVw1ueZHel/+sUo=
+	b=HqwVjQwUL24AAK+N2AAjHJwkAAisMKw2wxHBFgS1bY9KaxWjX+xTbXWRcXGsv9a/D
+	 ZN/B4tgMUkDEQCO3RJwF0rPLGd1S7249mAWWXO9Q1wqEpVa8e9anaV3UBBwNh17xah
+	 i5487SIRy1Oas1bAsLgFFhFKxPmV6y+wulH3RORE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
+	Konstantin Andreev <andreev@swemel.ru>,
+	Casey Schaufler <casey@schaufler-ca.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 57/96] hwmon: (adc128d818) Fix underflows seen when writing limit attributes
+Subject: [PATCH 5.4 044/121] smack: unix sockets: fix accept()ed socket label
 Date: Tue, 10 Sep 2024 11:31:59 +0200
-Message-ID: <20240910092544.028209460@linuxfoundation.org>
+Message-ID: <20240910092547.840386026@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
-References: <20240910092541.383432924@linuxfoundation.org>
+In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
+References: <20240910092545.737864202@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Konstantin Andreev <andreev@swemel.ru>
 
-[ Upstream commit 8cad724c8537fe3e0da8004646abc00290adae40 ]
+[ Upstream commit e86cac0acdb1a74f608bacefe702f2034133a047 ]
 
-DIV_ROUND_CLOSEST() after kstrtol() results in an underflow if a large
-negative number such as -9223372036854775808 is provided by the user.
-Fix it by reordering clamp_val() and DIV_ROUND_CLOSEST() operations.
+When a process accept()s connection from a unix socket
+(either stream or seqpacket)
+it gets the socket with the label of the connecting process.
 
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+For example, if a connecting process has a label 'foo',
+the accept()ed socket will also have 'in' and 'out' labels 'foo',
+regardless of the label of the listener process.
+
+This is because kernel creates unix child sockets
+in the context of the connecting process.
+
+I do not see any obvious way for the listener to abuse
+alien labels coming with the new socket, but,
+to be on the safe side, it's better fix new socket labels.
+
+Signed-off-by: Konstantin Andreev <andreev@swemel.ru>
+Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/adc128d818.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ security/smack/smack_lsm.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/hwmon/adc128d818.c b/drivers/hwmon/adc128d818.c
-index bd2ca315c9d8..5abb28cd81bf 100644
---- a/drivers/hwmon/adc128d818.c
-+++ b/drivers/hwmon/adc128d818.c
-@@ -184,7 +184,7 @@ static ssize_t adc128_set_in(struct device *dev, struct device_attribute *attr,
+diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
+index 7d04b21737cf..a9582737c230 100644
+--- a/security/smack/smack_lsm.c
++++ b/security/smack/smack_lsm.c
+@@ -3640,12 +3640,18 @@ static int smack_unix_stream_connect(struct sock *sock,
+ 		}
+ 	}
  
- 	mutex_lock(&data->update_lock);
- 	/* 10 mV LSB on limit registers */
--	regval = clamp_val(DIV_ROUND_CLOSEST(val, 10), 0, 255);
-+	regval = DIV_ROUND_CLOSEST(clamp_val(val, 0, 2550), 10);
- 	data->in[index][nr] = regval << 4;
- 	reg = index == 1 ? ADC128_REG_IN_MIN(nr) : ADC128_REG_IN_MAX(nr);
- 	i2c_smbus_write_byte_data(data->client, reg, regval);
-@@ -222,7 +222,7 @@ static ssize_t adc128_set_temp(struct device *dev,
- 		return err;
+-	/*
+-	 * Cross reference the peer labels for SO_PEERSEC.
+-	 */
+ 	if (rc == 0) {
++		/*
++		 * Cross reference the peer labels for SO_PEERSEC.
++		 */
+ 		nsp->smk_packet = ssp->smk_out;
+ 		ssp->smk_packet = osp->smk_out;
++
++		/*
++		 * new/child/established socket must inherit listening socket labels
++		 */
++		nsp->smk_out = osp->smk_out;
++		nsp->smk_in  = osp->smk_in;
+ 	}
  
- 	mutex_lock(&data->update_lock);
--	regval = clamp_val(DIV_ROUND_CLOSEST(val, 1000), -128, 127);
-+	regval = DIV_ROUND_CLOSEST(clamp_val(val, -128000, 127000), 1000);
- 	data->temp[index] = regval << 1;
- 	i2c_smbus_write_byte_data(data->client,
- 				  index == 1 ? ADC128_REG_TEMP_MAX
+ 	return rc;
 -- 
 2.43.0
 
