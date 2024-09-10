@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-75250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7D879733A0
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:34:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F43B973180
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:12:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FA031F2554F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:34:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 494671F28344
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:12:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 510841946CA;
-	Tue, 10 Sep 2024 10:29:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D55EC190499;
+	Tue, 10 Sep 2024 10:07:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2mLbnESd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CeV00oh6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09029172BAE;
-	Tue, 10 Sep 2024 10:29:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9301018C32F;
+	Tue, 10 Sep 2024 10:07:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964185; cv=none; b=KphNMVHBYIt4Nxzc7OCgK31bpfwSk3q/ZhgbV1ffCaWCdiwoBYEnnq7F+Q8RB/njg9bl/98k0mHVuVEpxdqPHmOxNsANzjZaGjPA+J6tyzfgggVyUf84jtai79ZMle55N9uDDlKww2715LgHpeSnyM9XSo3RTFD7+IlDR+iV1tk=
+	t=1725962875; cv=none; b=jw5vAEj+oROnAno1sdHZLJvEgrFtlO2Dj+KrpLDRdUONtZWtP/irE/hc33zfpr5yAcvChZNoAQPKw7EI9VnnjMFAHE5rrrFAwZvOXz5C95H1R/qkEjk874NmGZp1ZZFtG83EKv6kktfFcxWmxz3lzYgKoLbqT5rB0IQ9/EVIOyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964185; c=relaxed/simple;
-	bh=wCxwbUfuYgEpxKhnRvrKroVrUDVfyPhacByJOppR0Ig=;
+	s=arc-20240116; t=1725962875; c=relaxed/simple;
+	bh=WSRjt5B6c0Zz8N3/d78Goq9JYmJIKjDMIlp9zVE1mNE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=czF1cytv4I5vbdw08ID+99x2IPz+VAdZP/d3+Aq7SkjLUoGLeBSQrwkITAFiTVi1vy5FX1qP89k30efc8iMB8m4i7R5LNSffQRepbh5c3cN6TgMDHscLenEKWM/XRXIZica4XWHnjMzNfb7OjbM500iJU187HXjBnhwEQbjNQuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2mLbnESd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8005AC4CEC3;
-	Tue, 10 Sep 2024 10:29:44 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hQORvXyX08FqzIHkH86o33sqV1LmzalNTS/0+19RUUxdwQnQ7zo9gUJPyHPV2KPWgRxMakrCuw/uT8re1vSdlAkRj0WuCgRKbK6xj31y/krNlkYkKqli04al7RUgzlwXpBgyHMsVLqakYz+eDgt7lQPlQsjaOyRiFlwO/gxTFbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CeV00oh6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA63AC4CEC3;
+	Tue, 10 Sep 2024 10:07:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964184;
-	bh=wCxwbUfuYgEpxKhnRvrKroVrUDVfyPhacByJOppR0Ig=;
+	s=korg; t=1725962875;
+	bh=WSRjt5B6c0Zz8N3/d78Goq9JYmJIKjDMIlp9zVE1mNE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2mLbnESdhLsLlfE/AIZsE1oJDsf3EZidnxt19oMD7RHEl3sRcnXw0uM6ZGhcV6l8L
-	 vsCYfVddKub9LLdLk+HeEJpIy47CNNQJaPGPd1Mt7k7glKA9vsNWkS44XEKird87ui
-	 P1P9xFWMCAoV+hl5nbTX3YemESphziDtlJDQXqH0=
+	b=CeV00oh68pGtzcv1AOugksuquCDoPLg9f99nNz8n5UesDUc44O8JSBTP5DkAJNsLf
+	 HwLOS8csuqeyXAUIFunCH5lge8To/tN/ql0xAdjNCrAMqubPlp8L5Bw5N4pJAkNjbC
+	 44X91fHVWeXrUj10xMwAuAD6dAb24xFMOIZ/Ww94=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Simon Horman <horms@kernel.org>,
+	Danijel Slivka <danijel.slivka@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 097/269] can: m_can: Release irq on error in m_can_open
+Subject: [PATCH 6.1 060/192] drm/amdgpu: clear RB_OVERFLOW bit when enabling interrupts
 Date: Tue, 10 Sep 2024 11:31:24 +0200
-Message-ID: <20240910092611.669578865@linuxfoundation.org>
+Message-ID: <20240910092600.456078454@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,58 +61,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Horman <horms@kernel.org>
+From: Danijel Slivka <danijel.slivka@amd.com>
 
-[ Upstream commit 06d4ef3056a7ac31be331281bb7a6302ef5a7f8a ]
+[ Upstream commit afbf7955ff01e952dbdd465fa25a2ba92d00291c ]
 
-It appears that the irq requested in m_can_open() may be leaked
-if an error subsequently occurs: if m_can_start() fails.
+Why:
+Setting IH_RB_WPTR register to 0 will not clear the RB_OVERFLOW bit
+if RB_ENABLE is not set.
 
-Address this by calling free_irq in the unwind path for
-such cases.
+How to fix:
+Set WPTR_OVERFLOW_CLEAR bit after RB_ENABLE bit is set.
+The RB_ENABLE bit is required to be set, together with
+WPTR_OVERFLOW_ENABLE bit so that setting WPTR_OVERFLOW_CLEAR bit
+would clear the RB_OVERFLOW.
 
-Flagged by Smatch.
-Compile tested only.
-
-Fixes: eaacfeaca7ad ("can: m_can: Call the RAM init directly from m_can_chip_config")
-Acked-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/all/20240805-mcan-irq-v2-1-7154c0484819@kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Danijel Slivka <danijel.slivka@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/m_can/m_can.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/ih_v6_0.c | 28 ++++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-diff --git a/drivers/net/can/m_can/m_can.c b/drivers/net/can/m_can/m_can.c
-index 2395b1225cc8..fb77fd74de27 100644
---- a/drivers/net/can/m_can/m_can.c
-+++ b/drivers/net/can/m_can/m_can.c
-@@ -1871,7 +1871,7 @@ static int m_can_open(struct net_device *dev)
- 	/* start the m_can controller */
- 	err = m_can_start(dev);
- 	if (err)
--		goto exit_irq_fail;
-+		goto exit_start_fail;
+diff --git a/drivers/gpu/drm/amd/amdgpu/ih_v6_0.c b/drivers/gpu/drm/amd/amdgpu/ih_v6_0.c
+index 657e4ca6f9dd..fccbec438bbe 100644
+--- a/drivers/gpu/drm/amd/amdgpu/ih_v6_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/ih_v6_0.c
+@@ -135,6 +135,34 @@ static int ih_v6_0_toggle_ring_interrupts(struct amdgpu_device *adev,
  
- 	if (!cdev->is_peripheral)
- 		napi_enable(&cdev->napi);
-@@ -1880,6 +1880,9 @@ static int m_can_open(struct net_device *dev)
- 
- 	return 0;
- 
-+exit_start_fail:
-+	if (cdev->is_peripheral || dev->irq)
-+		free_irq(dev->irq, dev);
- exit_irq_fail:
- 	if (cdev->is_peripheral)
- 		destroy_workqueue(cdev->tx_wq);
+ 	tmp = RREG32(ih_regs->ih_rb_cntl);
+ 	tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, RB_ENABLE, (enable ? 1 : 0));
++
++	if (enable) {
++		/* Unset the CLEAR_OVERFLOW bit to make sure the next step
++		 * is switching the bit from 0 to 1
++		 */
++		tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 0);
++		if (amdgpu_sriov_vf(adev) && amdgpu_sriov_reg_indirect_ih(adev)) {
++			if (psp_reg_program(&adev->psp, ih_regs->psp_reg_id, tmp))
++				return -ETIMEDOUT;
++		} else {
++			WREG32_NO_KIQ(ih_regs->ih_rb_cntl, tmp);
++		}
++
++		/* Clear RB_OVERFLOW bit */
++		tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 1);
++		if (amdgpu_sriov_vf(adev) && amdgpu_sriov_reg_indirect_ih(adev)) {
++			if (psp_reg_program(&adev->psp, ih_regs->psp_reg_id, tmp))
++				return -ETIMEDOUT;
++		} else {
++			WREG32_NO_KIQ(ih_regs->ih_rb_cntl, tmp);
++		}
++
++		/* Unset the CLEAR_OVERFLOW bit immediately so new overflows
++		 * can be detected.
++		 */
++		tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, WPTR_OVERFLOW_CLEAR, 0);
++	}
++
+ 	/* enable_intr field is only valid in ring0 */
+ 	if (ih == &adev->irq.ih)
+ 		tmp = REG_SET_FIELD(tmp, IH_RB_CNTL, ENABLE_INTR, (enable ? 1 : 0));
 -- 
 2.43.0
 
