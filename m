@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-75552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D853B9735C6
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:58:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B640D97341F
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:38:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0BFDAB2A744
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:45:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E9CFC1C24E55
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:38:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A14418DF8F;
-	Tue, 10 Sep 2024 10:44:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E39C018B474;
+	Tue, 10 Sep 2024 10:34:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2vhai70s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fFB+MyO6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB68DC8DF;
-	Tue, 10 Sep 2024 10:44:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1488188CB6;
+	Tue, 10 Sep 2024 10:34:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725965069; cv=none; b=uA/zuFb5jVFukXu7PTl2CzDDalQuo7PfB3ZR3ClFLkX04PkSZaRq+1nQUEfiDtM3urDWkZ1JzMMQ4QEKUcxpqG0g8ZFbrVAoZc0otuGhn7ccU1sGIBWSEQ0FIz4dJtXAQVbx/Sn+ETbd2T90lXp3z61v3TCv4DD9zxMEi3WlEYQ=
+	t=1725964481; cv=none; b=YOaebhOafosFRN3CSKXEAUSMW8pzDyIFEaLxaTSTpdgk+ibXF9Bm+ClJE0/UqEOf2mmaScjg17xmLQSG3tx638D3a9zdArV4oiHmqZS6B7AF0qOCiWXRK89JADargGP2d94M4321y5qVitnT2UvIBl4Vm4gy7igoXntbLcupcuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725965069; c=relaxed/simple;
-	bh=zCeEfly6CINOh48iJlYgFAiqAJp7f5AShNkbLwiVdSw=;
+	s=arc-20240116; t=1725964481; c=relaxed/simple;
+	bh=tdlOWxweStGxw5byYiBz+OwO5h31ODF9CN8aSEcEa6k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RofWJ7YwAX9E0cSOC8WmWzdhldKEaCx8CeBMCf5RJdaReyAFt89P3YggGqf0dQx3yq6fLyx6BW0mXozVaLSUY68Rsoug4A8Vm95V058ksrcSS7EVecSiwQR9rMep+HjPnVv/qh8oXSBoEyaCamXV0jkW1U6cO+FQYXhUG8X10+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2vhai70s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A5A3C4CEC3;
-	Tue, 10 Sep 2024 10:44:29 +0000 (UTC)
+	 MIME-Version; b=uB2tMzL017ZKwqF//HH5h9kQlbyL/Cv4Wq2iC51Vy2Rh/XS3wk2DLHudxYYty1Vw3Co3FEYlt+8zj+fFOaIpsdzHOjd4V9Cvf03MIG20LP3a5i6hp06l+lHF9nlGO/esFvxWiG5bYcMpXJIXPt8laypCGTxQwtLlAFs4JPAXSwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fFB+MyO6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26139C4CEC3;
+	Tue, 10 Sep 2024 10:34:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725965069;
-	bh=zCeEfly6CINOh48iJlYgFAiqAJp7f5AShNkbLwiVdSw=;
+	s=korg; t=1725964481;
+	bh=tdlOWxweStGxw5byYiBz+OwO5h31ODF9CN8aSEcEa6k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2vhai70sdF2kNVsn2FIW/KsJChIS2BctxQmbjL/eZRYq3JCoIvgWlUWH8UvQR+vHq
-	 B6iZpatcljBrNLXXtot8djQiN0eaqRa1E+HiSxAp9fGml1oY5fCo29e4OL3vsrUHPT
-	 f/BTWB5/+zqacIkUP2ahDJpGPTDFOZqomTszjtfM=
+	b=fFB+MyO6HDkku/CL6MvKvF3CNo2xTBl2m8i7+JTT/0kFTmUTsjzZtwfDaoWkGvGYC
+	 ZhyicwAT94ECt7eIJtv+3cC3QYtLVtcvSCxuY5tVp0in/BZ/XLwKRSbRsFzDJ97Eue
+	 g782lMn9wGhIUh3xPWFpUfZIL/Gp53VdA2UhbXVo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.10 089/186] sunrpc: pass in the sv_stats struct through svc_create_pooled
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	WangYuli <wangyuli@uniontech.com>
+Subject: [PATCH 6.6 197/269] mm: Introduce pudp/p4dp/pgdp_get() functions
 Date: Tue, 10 Sep 2024 11:33:04 +0200
-Message-ID: <20240910092558.168470500@linuxfoundation.org>
+Message-ID: <20240910092615.125068684@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,109 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Alexandre Ghiti <alexghiti@rivosinc.com>
 
-[ Upstream commit f094323867668d50124886ad884b665de7319537 ]
+commit eba2591d99d1f14a04c8a8a845ab0795b93f5646 upstream.
 
-Since only one service actually reports the rpc stats there's not much
-of a reason to have a pointer to it in the svc_program struct.  Adjust
-the svc_create_pooled function to take the sv_stats as an argument and
-pass the struct through there as desired instead of getting it from the
-svc_program->pg_stats.
+Instead of directly dereferencing page tables entries, which can cause
+issues (see commit 20a004e7b017 ("arm64: mm: Use READ_ONCE/WRITE_ONCE when
+accessing page tables"), let's introduce new functions to get the
+pud/p4d/pgd entries (the pte and pmd versions already exist).
 
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-[ cel: adjusted to apply to v5.10.y ]
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Note that arm pgd_t is actually an array so pgdp_get() is defined as a
+macro to avoid a build error.
+
+Those new functions will be used in subsequent commits by the riscv
+architecture.
+
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20231213203001.179237-3-alexghiti@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: WangYuli <wangyuli@uniontech.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfssvc.c           |    3 ++-
- include/linux/sunrpc/svc.h |    4 +++-
- net/sunrpc/svc.c           |   12 +++++++-----
- 3 files changed, 12 insertions(+), 7 deletions(-)
+ arch/arm/include/asm/pgtable.h |    2 ++
+ include/linux/pgtable.h        |   21 +++++++++++++++++++++
+ 2 files changed, 23 insertions(+)
 
---- a/fs/nfsd/nfssvc.c
-+++ b/fs/nfsd/nfssvc.c
-@@ -664,7 +664,8 @@ int nfsd_create_serv(struct net *net)
- 	if (nfsd_max_blksize == 0)
- 		nfsd_max_blksize = nfsd_get_default_max_blksize();
- 	nfsd_reset_versions(nn);
--	serv = svc_create_pooled(&nfsd_program, nfsd_max_blksize, nfsd);
-+	serv = svc_create_pooled(&nfsd_program, &nfsd_svcstats,
-+				 nfsd_max_blksize, nfsd);
- 	if (serv == NULL)
- 		return -ENOMEM;
+--- a/arch/arm/include/asm/pgtable.h
++++ b/arch/arm/include/asm/pgtable.h
+@@ -151,6 +151,8 @@ extern pgprot_t phys_mem_access_prot(str
  
---- a/include/linux/sunrpc/svc.h
-+++ b/include/linux/sunrpc/svc.h
-@@ -484,7 +484,9 @@ void		   svc_rqst_replace_page(struct sv
- 					 struct page *page);
- void		   svc_rqst_free(struct svc_rqst *);
- void		   svc_exit_thread(struct svc_rqst *);
--struct svc_serv *  svc_create_pooled(struct svc_program *, unsigned int,
-+struct svc_serv *  svc_create_pooled(struct svc_program *prog,
-+				     struct svc_stat *stats,
-+				     unsigned int bufsize,
- 				     int (*threadfn)(void *data));
- int		   svc_set_num_threads(struct svc_serv *, struct svc_pool *, int);
- int		   svc_pool_stats_open(struct svc_serv *serv, struct file *file);
---- a/net/sunrpc/svc.c
-+++ b/net/sunrpc/svc.c
-@@ -445,8 +445,8 @@ __svc_init_bc(struct svc_serv *serv)
-  * Create an RPC service
-  */
- static struct svc_serv *
--__svc_create(struct svc_program *prog, unsigned int bufsize, int npools,
--	     int (*threadfn)(void *data))
-+__svc_create(struct svc_program *prog, struct svc_stat *stats,
-+	     unsigned int bufsize, int npools, int (*threadfn)(void *data))
- {
- 	struct svc_serv	*serv;
- 	unsigned int vers;
-@@ -458,7 +458,7 @@ __svc_create(struct svc_program *prog, u
- 	serv->sv_name      = prog->pg_name;
- 	serv->sv_program   = prog;
- 	kref_init(&serv->sv_refcnt);
--	serv->sv_stats     = prog->pg_stats;
-+	serv->sv_stats     = stats;
- 	if (bufsize > RPCSVC_MAXPAYLOAD)
- 		bufsize = RPCSVC_MAXPAYLOAD;
- 	serv->sv_max_payload = bufsize? bufsize : 4096;
-@@ -520,26 +520,28 @@ __svc_create(struct svc_program *prog, u
- struct svc_serv *svc_create(struct svc_program *prog, unsigned int bufsize,
- 			    int (*threadfn)(void *data))
- {
--	return __svc_create(prog, bufsize, 1, threadfn);
-+	return __svc_create(prog, NULL, bufsize, 1, threadfn);
+ extern pgd_t swapper_pg_dir[PTRS_PER_PGD];
+ 
++#define pgdp_get(pgpd)		READ_ONCE(*pgdp)
++
+ #define pud_page(pud)		pmd_page(__pmd(pud_val(pud)))
+ #define pud_write(pud)		pmd_write(__pmd(pud_val(pud)))
+ 
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -292,6 +292,27 @@ static inline pmd_t pmdp_get(pmd_t *pmdp
  }
- EXPORT_SYMBOL_GPL(svc_create);
+ #endif
  
- /**
-  * svc_create_pooled - Create an RPC service with pooled threads
-  * @prog: the RPC program the new service will handle
-+ * @stats: the stats struct if desired
-  * @bufsize: maximum message size for @prog
-  * @threadfn: a function to service RPC requests for @prog
-  *
-  * Returns an instantiated struct svc_serv object or NULL.
-  */
- struct svc_serv *svc_create_pooled(struct svc_program *prog,
-+				   struct svc_stat *stats,
- 				   unsigned int bufsize,
- 				   int (*threadfn)(void *data))
- {
- 	struct svc_serv *serv;
- 	unsigned int npools = svc_pool_map_get();
- 
--	serv = __svc_create(prog, bufsize, npools, threadfn);
-+	serv = __svc_create(prog, stats, bufsize, npools, threadfn);
- 	if (!serv)
- 		goto out_err;
- 	return serv;
++#ifndef pudp_get
++static inline pud_t pudp_get(pud_t *pudp)
++{
++	return READ_ONCE(*pudp);
++}
++#endif
++
++#ifndef p4dp_get
++static inline p4d_t p4dp_get(p4d_t *p4dp)
++{
++	return READ_ONCE(*p4dp);
++}
++#endif
++
++#ifndef pgdp_get
++static inline pgd_t pgdp_get(pgd_t *pgdp)
++{
++	return READ_ONCE(*pgdp);
++}
++#endif
++
+ #ifndef __HAVE_ARCH_PTEP_TEST_AND_CLEAR_YOUNG
+ static inline int ptep_test_and_clear_young(struct vm_area_struct *vma,
+ 					    unsigned long address,
 
 
 
