@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-75274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74799-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E45CA9734BA
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:42:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D72C997317B
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:12:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 777B3B2586C
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:35:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 15F361C24650
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:12:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C9A81991B5;
-	Tue, 10 Sep 2024 10:30:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC1AB193097;
+	Tue, 10 Sep 2024 10:07:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oMGlltr8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FZRpzTDr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED96417BEAD;
-	Tue, 10 Sep 2024 10:30:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9311190493;
+	Tue, 10 Sep 2024 10:07:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964256; cv=none; b=NncGPRUThu+S4ZQjPXyPe5WJI2/rNutSuQ3iap2To4p578Fsb1FuL24LaoIdA/wGBpq2JoUszRjzj41iEiCqn0s/n2zrHVPY2EEyB4Vla4ORdzshcs0JswoiABLw5mH/lWvHC3wD/wuN58Y3BLbJtn+sNkJsWeINDOHRwEBUupQ=
+	t=1725962863; cv=none; b=ntbltwho0eA1eWq3kNARgkrIlsE3HuD6qg50AiHixjYJADAWPec1xSxU9T8MKQJpO2oA6xlZyVfR7fPslp1m7671zM2hpSNenuGCJCIHe5cUEvhiwOaSFmTobkhSSH5G29t2RzvC38XcnGBdos6Xy9uRs0Ujj7IjWYGzTpEZafo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964256; c=relaxed/simple;
-	bh=19L8JuHsOlvMHTqOCalNPn0fdQV0KCZ0c+ThuTRuqT8=;
+	s=arc-20240116; t=1725962863; c=relaxed/simple;
+	bh=hIFKm9uwk0hMXoEM2HIVznxAEqDRU9v90X4G89oythw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fmco/+TJ0JK7oseSinZDzHd6ilmYtnzbFEBfnuEyjekMyi/7YjB9vVSbxS3S4/K+KxG1eSvqhRS8ad9cvd6OBVOOwC19zInsc251QccJboUBUUI+OsArIzcVxeMuMzMV/RVHKj7VYhAOAPARPFVzYB/5RIfm5OeHuDTvM/WLjzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oMGlltr8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69ED3C4CEC3;
-	Tue, 10 Sep 2024 10:30:55 +0000 (UTC)
+	 MIME-Version; b=nzGimUvjaqVElXpru849gtIxK3IPGbyJNRRTA8btHjfV/AiwdWn8k4S4dJr1fo7ww1yBGyDEGhPVZ2z8FPbeqPmU2AM8h19uhBLcmYBNeM3z79/diVAD81JgRuBZilhTIHokCexCzdqMgy4s/M4d0VAvIlmBaEXo5XjCI7G3JvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FZRpzTDr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F832C4CEC3;
+	Tue, 10 Sep 2024 10:07:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964255;
-	bh=19L8JuHsOlvMHTqOCalNPn0fdQV0KCZ0c+ThuTRuqT8=;
+	s=korg; t=1725962863;
+	bh=hIFKm9uwk0hMXoEM2HIVznxAEqDRU9v90X4G89oythw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oMGlltr8w2+PuOgTQid2LUOLfWkOQ+NuQU2JwT4RvGw6VNH96JC/bBIDp7OgjVrV6
-	 oVyXjTgj+mjmlzwbPnRHQ+aXmX2Jx3ACJI+UWF6aF3bBtCnTSVo8ksFUlg70t4oY/d
-	 E+gxPvu4yuOjzM8W7rgYoMXB4PW+cNmyz8ZdhqAc=
+	b=FZRpzTDrHYyeDE/tJUOvu51ZDu/iC/vXTdV11+HsOkHrEKirMVrrgIP8SkdHYczrp
+	 QsWwCcSz778o7EK+b4p6Yma/z8KO+fkryJy6jQ5tINC7e8lb6CHYp8VhDIrmYWAEW1
+	 parKWKuCP+XjOFK6Lb3huwKd9RLDbaOe7SQsokmM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jules Irenge <jbi.octave@gmail.com>,
-	Dominik Brodowski <linux@dominikbrodowski.net>,
+	Shantanu Goel <sgoel01@yahoo.com>,
+	Oliver Neukum <oneukum@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 093/269] pcmcia: Use resource_size function on resource object
+Subject: [PATCH 6.1 056/192] usb: uas: set host status byte on data completion error
 Date: Tue, 10 Sep 2024 11:31:20 +0200
-Message-ID: <20240910092611.530162446@linuxfoundation.org>
+Message-ID: <20240910092600.282336925@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jules Irenge <jbi.octave@gmail.com>
+From: Shantanu Goel <sgoel01@yahoo.com>
 
-[ Upstream commit 24a025497e7e883bd2adef5d0ece1e9b9268009f ]
+[ Upstream commit 9d32685a251a754f1823d287df233716aa23bcb9 ]
 
-Cocinnele reports a warning
+Set the host status byte when a data completion error is encountered
+otherwise the upper layer may end up using the invalid zero'ed data.
+The following output was observed from scsi/sd.c prior to this fix.
 
-WARNING: Suspicious code. resource_size is maybe missing with root
+[   11.872824] sd 0:0:0:1: [sdf] tag#9 data cmplt err -75 uas-tag 1 inflight:
+[   11.872826] sd 0:0:0:1: [sdf] tag#9 CDB: Read capacity(16) 9e 10 00 00 00 00 00 00 00 00 00 00 00 20 00 00
+[   11.872830] sd 0:0:0:1: [sdf] Sector size 0 reported, assuming 512.
 
-The root cause is the function resource_size is not used when needed
-
-Use resource_size() on variable "root" of type resource
-
-Signed-off-by: Jules Irenge <jbi.octave@gmail.com>
-Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
+Signed-off-by: Shantanu Goel <sgoel01@yahoo.com>
+Acked-by: Oliver Neukum <oneukum@suse.com>
+Link: https://lore.kernel.org/r/87msnx4ec6.fsf@yahoo.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pcmcia/yenta_socket.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/usb/storage/uas.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/pcmcia/yenta_socket.c b/drivers/pcmcia/yenta_socket.c
-index 1365eaa20ff4..ff169124929c 100644
---- a/drivers/pcmcia/yenta_socket.c
-+++ b/drivers/pcmcia/yenta_socket.c
-@@ -638,11 +638,11 @@ static int yenta_search_one_res(struct resource *root, struct resource *res,
- 		start = PCIBIOS_MIN_CARDBUS_IO;
- 		end = ~0U;
+diff --git a/drivers/usb/storage/uas.c b/drivers/usb/storage/uas.c
+index af619efe8eab..b565c1eb84b3 100644
+--- a/drivers/usb/storage/uas.c
++++ b/drivers/usb/storage/uas.c
+@@ -422,6 +422,7 @@ static void uas_data_cmplt(struct urb *urb)
+ 			uas_log_cmd_state(cmnd, "data cmplt err", status);
+ 		/* error: no data transfered */
+ 		scsi_set_resid(cmnd, sdb->length);
++		set_host_byte(cmnd, DID_ERROR);
  	} else {
--		unsigned long avail = root->end - root->start;
-+		unsigned long avail = resource_size(root);
- 		int i;
- 		size = BRIDGE_MEM_MAX;
--		if (size > avail/8) {
--			size = (avail+1)/8;
-+		if (size > (avail - 1) / 8) {
-+			size = avail / 8;
- 			/* round size down to next power of 2 */
- 			i = 0;
- 			while ((size /= 2) != 0)
+ 		scsi_set_resid(cmnd, sdb->length - urb->actual_length);
+ 	}
 -- 
 2.43.0
 
