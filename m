@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-75622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8D5C9735C2
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:58:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27C1E973566
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:48:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C2B69B2F756
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:48:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D04681F261D4
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:48:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D8A218DF86;
-	Tue, 10 Sep 2024 10:47:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BE5D18C036;
+	Tue, 10 Sep 2024 10:47:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DaOWYAa1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BxMDP1Yr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9FF718DF67;
-	Tue, 10 Sep 2024 10:47:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A332144D1A;
+	Tue, 10 Sep 2024 10:47:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725965269; cv=none; b=LCFDz6mTkU5ThtJs/JfldnTgPxQ8VWFQ6mGGsoZuGFPQFrWhkEy3DiCX95XlZbp1v7PdU7/4usAdQ5jeTPtM39KIvq5GIsMmgjKjVAtWBX06VrU5+0TfWdSgc3iSBQy57AQ3ZSigBLkZs2qYmJhoM1os2BO2UK+eTz1VUxnydXA=
+	t=1725965249; cv=none; b=WudAbq+IWvZbzzMgidUKvgREy3uECG3Ub9rE8B+ZKvWyAdKBs7W0wv29c7+Z4YUIxy70lZkKa5+gSqLfoJTYVEqjZ0jEUsnS99esM9tuGTvE0xLh6HMmK9B9NneFOH78EAtVUWRcPyu9CvgpOwRXy+BBWLgNzbdTzf8dD/inBjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725965269; c=relaxed/simple;
-	bh=mMAPMl6eJslHDD08TFZKEAkaaaWbnXxDXNaz/EU/LM8=;
+	s=arc-20240116; t=1725965249; c=relaxed/simple;
+	bh=IMpyHqWk+pId3qgZdHWUYdZcEmIodC1/i1OaqEYN1E8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N6TjwvtjcABbjWn76xhkiY1dNu55QHWb/gpICGHYSpUGsreQPfK8GkEFOOVnMnqfDeVYDmFzxqNjyK9fz3uhZJElk1VMXcb4f2yMi58s2+cujce5j8NrOBEyat1LMuVhsR8f/QyGc0ZqNB5WB8Nqv8orQaNiaucxpoiGp/LXj1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DaOWYAa1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E1DFC4CEC3;
-	Tue, 10 Sep 2024 10:47:49 +0000 (UTC)
+	 MIME-Version; b=tO9Y7VEr4GeKoHDGJF7bbdfCPT6RUiVIkSieoc2Q2k/5rwhi9cP54AxBIRUgn/yQ9jxmoXzl0+Elf2twq7Kt8IXmfmuGDPueyNSobKb+eIB/5+wyGjCXxF1wjBGyzPQBK3c7FPgPxJ5DMnxDG7P7dtladdRcSSLrZYxwFoefA7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BxMDP1Yr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B708CC4CEC3;
+	Tue, 10 Sep 2024 10:47:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725965269;
-	bh=mMAPMl6eJslHDD08TFZKEAkaaaWbnXxDXNaz/EU/LM8=;
+	s=korg; t=1725965249;
+	bh=IMpyHqWk+pId3qgZdHWUYdZcEmIodC1/i1OaqEYN1E8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DaOWYAa10yOJi6jD/xUOTQbxX/aiaqzHvN8EaYeL4nYtWs8lqJEHIo/IUkPjc5z+v
-	 /PPOxveVGLVRnTF2YWY1mXGS/MA/JzQk4rk3RIEzzuMZcI3MGxlya72BeV06nkWS30
-	 rzMH1A2jZmfkzaEjxRvIrhFtZy+h5Z9kRnFh1esQ=
+	b=BxMDP1YrrNZiLnm3G+5UlLblr4BOxnqkmCyOOc8rcVnT3fTD7aV3vUGIY4PKUvaYa
+	 dkIkw8UPo+5lx3VSqv1UMBNbsBPjuY4it/3GcTZ3KwxmxJVN8Nm+XCFJvkx8xuF+JN
+	 x8TB6/OvesjCcze68kcgI2ROfzfMFiq+DlutOlCM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maurizio Lombardi <mlombard@redhat.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 179/186] nvmet-tcp: fix kernel crash if commands allocation fails
-Date: Tue, 10 Sep 2024 11:34:34 +0200
-Message-ID: <20240910092601.992469441@linuxfoundation.org>
+Subject: [PATCH 5.10 180/186] drm/i915/fence: Mark debug_fence_init_onstack() with __maybe_unused
+Date: Tue, 10 Sep 2024 11:34:35 +0200
+Message-ID: <20240910092602.043351424@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
 References: <20240910092554.645718780@linuxfoundation.org>
@@ -67,44 +67,54 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Maurizio Lombardi <mlombard@redhat.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 5572a55a6f830ee3f3a994b6b962a5c327d28cb3 ]
+[ Upstream commit fcd9e8afd546f6ced378d078345a89bf346d065e ]
 
-If the commands allocation fails in nvmet_tcp_alloc_cmds()
-the kernel crashes in nvmet_tcp_release_queue_work() because of
-a NULL pointer dereference.
+When debug_fence_init_onstack() is unused (CONFIG_DRM_I915_SELFTEST=n),
+it prevents kernel builds with clang, `make W=1` and CONFIG_WERROR=y:
 
-  nvmet: failed to install queue 0 cntlid 1 ret 6
-  Unable to handle kernel NULL pointer dereference at
-         virtual address 0000000000000008
+.../i915_sw_fence.c:97:20: error: unused function 'debug_fence_init_onstack' [-Werror,-Wunused-function]
+   97 | static inline void debug_fence_init_onstack(struct i915_sw_fence *fence)
+      |                    ^~~~~~~~~~~~~~~~~~~~~~~~
 
-Fix the bug by setting queue->nr_cmds to zero in case
-nvmet_tcp_alloc_cmd() fails.
+Fix this by marking debug_fence_init_onstack() with __maybe_unused.
 
-Fixes: 872d26a391da ("nvmet-tcp: add NVMe over TCP target driver")
-Signed-off-by: Maurizio Lombardi <mlombard@redhat.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+See also commit 6863f5643dd7 ("kbuild: allow Clang to find unused static
+inline functions for W=1 build").
+
+Fixes: 214707fc2ce0 ("drm/i915/selftests: Wrap a timer into a i915_sw_fence")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240829155950.1141978-2-andriy.shevchenko@linux.intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+(cherry picked from commit 5bf472058ffb43baf6a4cdfe1d7f58c4c194c688)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/target/tcp.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/i915/i915_sw_fence.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvme/target/tcp.c b/drivers/nvme/target/tcp.c
-index e493fc709065..5655f6d81cc0 100644
---- a/drivers/nvme/target/tcp.c
-+++ b/drivers/nvme/target/tcp.c
-@@ -1787,8 +1787,10 @@ static u16 nvmet_tcp_install_queue(struct nvmet_sq *sq)
- 	}
+diff --git a/drivers/gpu/drm/i915/i915_sw_fence.c b/drivers/gpu/drm/i915/i915_sw_fence.c
+index 038d4c6884c5..1c4498c29f25 100644
+--- a/drivers/gpu/drm/i915/i915_sw_fence.c
++++ b/drivers/gpu/drm/i915/i915_sw_fence.c
+@@ -44,7 +44,7 @@ static inline void debug_fence_init(struct i915_sw_fence *fence)
+ 	debug_object_init(fence, &i915_sw_fence_debug_descr);
+ }
  
- 	queue->nr_cmds = sq->size * 2;
--	if (nvmet_tcp_alloc_cmds(queue))
-+	if (nvmet_tcp_alloc_cmds(queue)) {
-+		queue->nr_cmds = 0;
- 		return NVME_SC_INTERNAL;
-+	}
- 	return 0;
+-static inline void debug_fence_init_onstack(struct i915_sw_fence *fence)
++static inline __maybe_unused void debug_fence_init_onstack(struct i915_sw_fence *fence)
+ {
+ 	debug_object_init_on_stack(fence, &i915_sw_fence_debug_descr);
+ }
+@@ -87,7 +87,7 @@ static inline void debug_fence_init(struct i915_sw_fence *fence)
+ {
+ }
+ 
+-static inline void debug_fence_init_onstack(struct i915_sw_fence *fence)
++static inline __maybe_unused void debug_fence_init_onstack(struct i915_sw_fence *fence)
+ {
  }
  
 -- 
