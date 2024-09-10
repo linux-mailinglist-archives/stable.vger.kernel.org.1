@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-75093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B07A9732E4
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:27:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E91129734F1
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:44:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B49E31F235A4
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:27:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE826287D32
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:44:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AFFB192B61;
-	Tue, 10 Sep 2024 10:22:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDC9318C021;
+	Tue, 10 Sep 2024 10:42:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ry5VMq1t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="toKrH3dQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47E7B191F91;
-	Tue, 10 Sep 2024 10:22:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABE0C14B06C;
+	Tue, 10 Sep 2024 10:42:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963729; cv=none; b=hey8tOK7/gjSkKFTd83BR3Y85I5aR8TBIXkR/4NHcXz89utVhIJXyjRyccP7VGsTZw00ejkRYP/m/SRBAX28YA2LbEmiL7eJtRRn5468SQ44lPjHZ4kkyjWoi/ioexA3bIz6HjXIAWE6vdxABvgCS0j+H9VcYso+p57yW0KlaiQ=
+	t=1725964945; cv=none; b=ISf3N0WKU5H1AAJ9kBJ7s+T+89UvFz5YW6rWoqb7/3PloY6M7P176Ec54ZgjS39FigGzczAItovBP6eCrg9XDCag/VcrjMp7i3qbS+SY3u2MHu/EM/3Yse+/PwTTs+YEal4JT13fZKeCdsM8d+/RQahuRSC+hcC5CyOclNvG4I8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963729; c=relaxed/simple;
-	bh=5abCjS/UpYRq3hV8n0shQdiPQuRLQsvqSYCZ3KuZ/R4=;
+	s=arc-20240116; t=1725964945; c=relaxed/simple;
+	bh=a2sEPcO0pnf5BtHIg3EvSU9ZN5iNeMXoU0fYQmVss0g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RgjUO78H409tu1NO1jPrJ6c5H5twpaLz/hrD2wUiRpByeifu5TZx3Y223sAxkdtmrzwbqXVVctpASaH5xG2dNri7/od/p1kaB39Rp3O8kQtxaf6neNW0BkFxUENr/mJTNH3n6N5D6UmP4i+nrrOj1IWr7ewhw2io/ug/vTJdQMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ry5VMq1t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0B78C4CEC3;
-	Tue, 10 Sep 2024 10:22:08 +0000 (UTC)
+	 MIME-Version; b=g/Zj8Z1rCwTGHRvIFtjI/00MYc61kQcodqhf5QLEa4HmXAOCuXeLQgyu7eKGZ+RXfh+zTQYqBGJgU7GGstf0onsPcFLkVQzOVu4rP4sWCNNvnENqjLpZiTraobps9298eSVW2td325904uuQVpUS6YEFexebzQCOKXUUcHjf2fY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=toKrH3dQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EF38C4CEC3;
+	Tue, 10 Sep 2024 10:42:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963729;
-	bh=5abCjS/UpYRq3hV8n0shQdiPQuRLQsvqSYCZ3KuZ/R4=;
+	s=korg; t=1725964945;
+	bh=a2sEPcO0pnf5BtHIg3EvSU9ZN5iNeMXoU0fYQmVss0g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ry5VMq1tsdJfprStVS0dz++un1NI0iFTzmcWclHjiWeeMJEws7cwPW2Bd4JZtmJmM
-	 2M44IoJApr/wI5JNX9aCjI41SqfBO4TFARc/ip2kT15t7eO552+Wr3sWeSTLmz8Hxa
-	 qfMdTFwxhU8GM18UZD5isj74ewhuGLUElpF5GJ50=
+	b=toKrH3dQQCtTcnFpUq7Ti+3m30vjJgCF+0Gea4Ffp5oGo6gsUIapJEMjN/0T9/tgL
+	 MGMb1wwjNjITBhRPki7y36rfQT/jvgGOCkB2l8faJ2E768fe+hPTVmPXFOZxbAXre9
+	 gWmyIKlVbVOMVxagbg9xyIIL5bf/wKaDYYz3xdd4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Imre Deak <imre.deak@intel.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Keith Busch <kbusch@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Kalle Valo <kvalo@kernel.org>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 157/214] PCI: Add missing bridge lock to pci_bus_lock()
+	NeilBrown <neilb@suse.de>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.10 084/186] NFSD: simplify error paths in nfsd_svc()
 Date: Tue, 10 Sep 2024 11:32:59 +0200
-Message-ID: <20240910092605.145131526@linuxfoundation.org>
+Message-ID: <20240910092557.973203067@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,168 +62,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Williams <dan.j.williams@intel.com>
+From: NeilBrown <neilb@suse.de>
 
-[ Upstream commit a4e772898f8bf2e7e1cf661a12c60a5612c4afab ]
+[ Upstream commit bf32075256e9dd9c6b736859e2c5813981339908 ]
 
-One of the true positives that the cfg_access_lock lockdep effort
-identified is this sequence:
+The error paths in nfsd_svc() are needlessly complex and can result in a
+final call to svc_put() without nfsd_last_thread() being called.  This
+results in the listening sockets not being closed properly.
 
-  WARNING: CPU: 14 PID: 1 at drivers/pci/pci.c:4886 pci_bridge_secondary_bus_reset+0x5d/0x70
-  RIP: 0010:pci_bridge_secondary_bus_reset+0x5d/0x70
-  Call Trace:
-   <TASK>
-   ? __warn+0x8c/0x190
-   ? pci_bridge_secondary_bus_reset+0x5d/0x70
-   ? report_bug+0x1f8/0x200
-   ? handle_bug+0x3c/0x70
-   ? exc_invalid_op+0x18/0x70
-   ? asm_exc_invalid_op+0x1a/0x20
-   ? pci_bridge_secondary_bus_reset+0x5d/0x70
-   pci_reset_bus+0x1d8/0x270
-   vmd_probe+0x778/0xa10
-   pci_device_probe+0x95/0x120
+The per-netns setup provided by nfsd_startup_new() and removed by
+nfsd_shutdown_net() is needed precisely when there are running threads.
+So we don't need nfsd_up_before.  We don't need to know if it *was* up.
+We only need to know if any threads are left.  If none are, then we must
+call nfsd_shutdown_net().  But we don't need to do that explicitly as
+nfsd_last_thread() does that for us.
 
-Where pci_reset_bus() users are triggering unlocked secondary bus resets.
-Ironically pci_bus_reset(), several calls down from pci_reset_bus(), uses
-pci_bus_lock() before issuing the reset which locks everything *but* the
-bridge itself.
+So simply call nfsd_last_thread() before the last svc_put() if there are
+no running threads.  That will always do the right thing.
 
-For the same motivation as adding:
+Also discard:
+ pr_info("nfsd: last server has exited, flushing export cache\n");
+It may not be true if an attempt to start the first server failed, and
+it isn't particularly helpful and it simply reports normal behaviour.
 
-  bridge = pci_upstream_bridge(dev);
-  if (bridge)
-    pci_dev_lock(bridge);
-
-to pci_reset_function() for the "bus" and "cxl_bus" reset cases, add
-pci_dev_lock() for @bus->self to pci_bus_lock().
-
-Link: https://lore.kernel.org/r/171711747501.1628941.15217746952476635316.stgit@dwillia2-xfh.jf.intel.com
-Reported-by: Imre Deak <imre.deak@intel.com>
-Closes: http://lore.kernel.org/r/6657833b3b5ae_14984b29437@dwillia2-xfh.jf.intel.com.notmuch
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-[bhelgaas: squash in recursive locking deadlock fix from Keith Busch:
-https://lore.kernel.org/r/20240711193650.701834-1-kbusch@meta.com]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Hans de Goede <hdegoede@redhat.com>
-Tested-by: Kalle Valo <kvalo@kernel.org>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: NeilBrown <neilb@suse.de>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/pci.c | 35 +++++++++++++++++++++--------------
- 1 file changed, 21 insertions(+), 14 deletions(-)
+ fs/nfsd/nfssvc.c |   14 ++++----------
+ 1 file changed, 4 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index a88909f2ae65..ee1d74f89a05 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -5496,10 +5496,12 @@ static void pci_bus_lock(struct pci_bus *bus)
- {
- 	struct pci_dev *dev;
+--- a/fs/nfsd/nfssvc.c
++++ b/fs/nfsd/nfssvc.c
+@@ -567,7 +567,6 @@ void nfsd_last_thread(struct net *net)
+ 		return;
  
-+	pci_dev_lock(bus->self);
- 	list_for_each_entry(dev, &bus->devices, bus_list) {
--		pci_dev_lock(dev);
- 		if (dev->subordinate)
- 			pci_bus_lock(dev->subordinate);
-+		else
-+			pci_dev_lock(dev);
- 	}
+ 	nfsd_shutdown_net(net);
+-	pr_info("nfsd: last server has exited, flushing export cache\n");
+ 	nfsd_export_flush(net);
  }
  
-@@ -5511,8 +5513,10 @@ static void pci_bus_unlock(struct pci_bus *bus)
- 	list_for_each_entry(dev, &bus->devices, bus_list) {
- 		if (dev->subordinate)
- 			pci_bus_unlock(dev->subordinate);
--		pci_dev_unlock(dev);
-+		else
-+			pci_dev_unlock(dev);
- 	}
-+	pci_dev_unlock(bus->self);
- }
- 
- /* Return 1 on successful lock, 0 on contention */
-@@ -5520,15 +5524,15 @@ static int pci_bus_trylock(struct pci_bus *bus)
+@@ -782,7 +781,6 @@ int
+ nfsd_svc(int nrservs, struct net *net, const struct cred *cred)
  {
- 	struct pci_dev *dev;
+ 	int	error;
+-	bool	nfsd_up_before;
+ 	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
+ 	struct svc_serv *serv;
  
-+	if (!pci_dev_trylock(bus->self))
-+		return 0;
+@@ -802,8 +800,6 @@ nfsd_svc(int nrservs, struct net *net, c
+ 	error = nfsd_create_serv(net);
+ 	if (error)
+ 		goto out;
+-
+-	nfsd_up_before = nn->nfsd_net_up;
+ 	serv = nn->nfsd_serv;
+ 
+ 	error = nfsd_startup_net(net, cred);
+@@ -811,17 +807,15 @@ nfsd_svc(int nrservs, struct net *net, c
+ 		goto out_put;
+ 	error = svc_set_num_threads(serv, NULL, nrservs);
+ 	if (error)
+-		goto out_shutdown;
++		goto out_put;
+ 	error = serv->sv_nrthreads;
+-	if (error == 0)
+-		nfsd_last_thread(net);
+-out_shutdown:
+-	if (error < 0 && !nfsd_up_before)
+-		nfsd_shutdown_net(net);
+ out_put:
+ 	/* Threads now hold service active */
+ 	if (xchg(&nn->keep_active, 0))
+ 		svc_put(serv);
 +
- 	list_for_each_entry(dev, &bus->devices, bus_list) {
--		if (!pci_dev_trylock(dev))
--			goto unlock;
- 		if (dev->subordinate) {
--			if (!pci_bus_trylock(dev->subordinate)) {
--				pci_dev_unlock(dev);
-+			if (!pci_bus_trylock(dev->subordinate))
- 				goto unlock;
--			}
--		}
-+		} else if (!pci_dev_trylock(dev))
-+			goto unlock;
- 	}
- 	return 1;
- 
-@@ -5536,8 +5540,10 @@ static int pci_bus_trylock(struct pci_bus *bus)
- 	list_for_each_entry_continue_reverse(dev, &bus->devices, bus_list) {
- 		if (dev->subordinate)
- 			pci_bus_unlock(dev->subordinate);
--		pci_dev_unlock(dev);
-+		else
-+			pci_dev_unlock(dev);
- 	}
-+	pci_dev_unlock(bus->self);
- 	return 0;
- }
- 
-@@ -5569,9 +5575,10 @@ static void pci_slot_lock(struct pci_slot *slot)
- 	list_for_each_entry(dev, &slot->bus->devices, bus_list) {
- 		if (!dev->slot || dev->slot != slot)
- 			continue;
--		pci_dev_lock(dev);
- 		if (dev->subordinate)
- 			pci_bus_lock(dev->subordinate);
-+		else
-+			pci_dev_lock(dev);
- 	}
- }
- 
-@@ -5597,14 +5604,13 @@ static int pci_slot_trylock(struct pci_slot *slot)
- 	list_for_each_entry(dev, &slot->bus->devices, bus_list) {
- 		if (!dev->slot || dev->slot != slot)
- 			continue;
--		if (!pci_dev_trylock(dev))
--			goto unlock;
- 		if (dev->subordinate) {
- 			if (!pci_bus_trylock(dev->subordinate)) {
- 				pci_dev_unlock(dev);
- 				goto unlock;
- 			}
--		}
-+		} else if (!pci_dev_trylock(dev))
-+			goto unlock;
- 	}
- 	return 1;
- 
-@@ -5615,7 +5621,8 @@ static int pci_slot_trylock(struct pci_slot *slot)
- 			continue;
- 		if (dev->subordinate)
- 			pci_bus_unlock(dev->subordinate);
--		pci_dev_unlock(dev);
-+		else
-+			pci_dev_unlock(dev);
- 	}
- 	return 0;
- }
--- 
-2.43.0
-
++	if (serv->sv_nrthreads == 0)
++		nfsd_last_thread(net);
+ 	svc_put(serv);
+ out:
+ 	mutex_unlock(&nfsd_mutex);
 
 
 
