@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-75437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51B3897348B
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:41:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA4A89731BF
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:14:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 170B628E1F4
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:41:08 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 35EEB1F293F2
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:14:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2657818DF60;
-	Tue, 10 Sep 2024 10:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3881318E76B;
+	Tue, 10 Sep 2024 10:10:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K/BvJKLH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QuuNDNzA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA00317C220;
-	Tue, 10 Sep 2024 10:38:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA637188A0C;
+	Tue, 10 Sep 2024 10:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964729; cv=none; b=BO4JMKO8/Z/X7C35YUWKWT6rJbu+USlkGS4ETanqqpV/wD6l5aVqOhdxVZDKF30PgM120eaA/SG61NVdHzeMxbraRSgWuS+StTsObnBJ2UBYq2IhEUIUq00bRufCI6pyil+9qe1ExXulvfZ26HiVzEBY4Fu96MNRflwjH9vHvp0=
+	t=1725963030; cv=none; b=rPvMgAuLy3qV9mhfkBsz1jBWGOhEu2nxNd+W2zgn3sThSg1p600U7/OV0mSX9AE3c18uMRgjv4Jw+5K0lP3CGFELmErLXKb4pH+nAK2KZdZDRg5F7GWI2g86HA3metALpAPcUeoOsmS15CmnNcu0P1dG7lmQuEzefqYB379TRT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964729; c=relaxed/simple;
-	bh=llK0AIrJ+0Udu8TzPYc3q+5MZbiLnQpL9NHwinwWNZU=;
+	s=arc-20240116; t=1725963030; c=relaxed/simple;
+	bh=r4foIv7podjAl0v8VyC2HzHoT7y/Gtl6ZZQE/TlJKLU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tQQmmCRQmghl93LI/jVzIHD8LVbdQrrgYBEBJHCSvW7MHWI8V0gDZ6BirX9JsgxcHIgxuqQgHGaQEzdQ13S9BIJi/Gd2OKiTSEYl/BugCHIoliEnVZlOe1BAMF7NSq2A7iK7LmZ0fC7qddOheW+D0D+5wf+etGfVvSlPXH7yKoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K/BvJKLH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57F51C4CEC3;
-	Tue, 10 Sep 2024 10:38:49 +0000 (UTC)
+	 MIME-Version; b=hqP0NOhxC1Gbq0yRbcbziNFt3npxRVK8kZ3OYUFlbYpce6Hu67XEUeJ1v7IR6o3LtMLrrofrJkoaQDQaBauU31dezPgj+VKdT9Mqnq2Zlwir0yy0MHNS4xh4Ucb8I6+lK+TAZOt5L3k0uJybQ8Jb56kcs/zE2N2NYGdqozbUkGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QuuNDNzA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 721DBC4CEC3;
+	Tue, 10 Sep 2024 10:10:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964729;
-	bh=llK0AIrJ+0Udu8TzPYc3q+5MZbiLnQpL9NHwinwWNZU=;
+	s=korg; t=1725963029;
+	bh=r4foIv7podjAl0v8VyC2HzHoT7y/Gtl6ZZQE/TlJKLU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K/BvJKLHeWdgdKgLNZPNnyRIUhmBfp+Lq6zTl6DquAPwUQ/2R6mExhXp4xHT8p/7l
-	 3U3pu2OJ1KKsd2ywlM2C5yAgf30JnzpFV+iywjmdhgo+ugjngZJGaMTtuShSDtCjZf
-	 Mgw+3BUkNqzEoN2Sk95rehzIXHyFw5FgxMhIug74=
+	b=QuuNDNzAC1Mg4rn+hybzAWxDrm/qsRJhKV6wup9tO6+iuWj1McqcTFHuCtmuVIfPE
+	 HSXiaI3xHbzcCg4PHyNue4PG6vni90Oni0XLnJvdj/g7MSwEkExGlglLSkTHJUO/f5
+	 030SSBPFLkljBPuzzpX4sQM9UDfdYbAkiib3Vhd0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Huang <Tim.Huang@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Guillaume Nault <gnault@redhat.com>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 012/186] drm/amdgpu: fix uninitialized scalar variable warning
-Date: Tue, 10 Sep 2024 11:31:47 +0200
-Message-ID: <20240910092555.156905260@linuxfoundation.org>
+Subject: [PATCH 6.1 084/192] bareudp: Fix device stats updates.
+Date: Tue, 10 Sep 2024 11:31:48 +0200
+Message-ID: <20240910092601.459719725@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +61,110 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tim Huang <Tim.Huang@amd.com>
+From: Guillaume Nault <gnault@redhat.com>
 
-[ Upstream commit 9a5f15d2a29d06ce5bd50919da7221cda92afb69 ]
+[ Upstream commit 4963d2343af81f493519f9c3ea9f2169eaa7353a ]
 
-Clear warning that uses uninitialized value fw_size.
+Bareudp devices update their stats concurrently.
+Therefore they need proper atomic increments.
 
-Signed-off-by: Tim Huang <Tim.Huang@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 571912c69f0e ("net: UDP tunnel encapsulation module for tunnelling different protocols like MPLS, IP, NSH etc.")
+Signed-off-by: Guillaume Nault <gnault@redhat.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/04b7b9d0b480158eb3ab4366ec80aa2ab7e41fcb.1725031794.git.gnault@redhat.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/bareudp.c | 22 +++++++++++-----------
+ 1 file changed, 11 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
-index d6f295103595..bd53844a8ba4 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
-@@ -404,6 +404,8 @@ static void amdgpu_virt_add_bad_page(struct amdgpu_device *adev,
- 	uint64_t retired_page;
- 	uint32_t bp_idx, bp_cnt;
+diff --git a/drivers/net/bareudp.c b/drivers/net/bareudp.c
+index 683203f87ae2..277493e41b07 100644
+--- a/drivers/net/bareudp.c
++++ b/drivers/net/bareudp.c
+@@ -82,7 +82,7 @@ static int bareudp_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
  
-+	memset(&bp, 0, sizeof(bp));
-+
- 	if (bp_block_size) {
- 		bp_cnt = bp_block_size / sizeof(uint64_t);
- 		for (bp_idx = 0; bp_idx < bp_cnt; bp_idx++) {
+ 		if (skb_copy_bits(skb, BAREUDP_BASE_HLEN, &ipversion,
+ 				  sizeof(ipversion))) {
+-			bareudp->dev->stats.rx_dropped++;
++			DEV_STATS_INC(bareudp->dev, rx_dropped);
+ 			goto drop;
+ 		}
+ 		ipversion >>= 4;
+@@ -92,7 +92,7 @@ static int bareudp_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
+ 		} else if (ipversion == 6 && bareudp->multi_proto_mode) {
+ 			proto = htons(ETH_P_IPV6);
+ 		} else {
+-			bareudp->dev->stats.rx_dropped++;
++			DEV_STATS_INC(bareudp->dev, rx_dropped);
+ 			goto drop;
+ 		}
+ 	} else if (bareudp->ethertype == htons(ETH_P_MPLS_UC)) {
+@@ -106,7 +106,7 @@ static int bareudp_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
+ 				   ipv4_is_multicast(tunnel_hdr->daddr)) {
+ 				proto = htons(ETH_P_MPLS_MC);
+ 			} else {
+-				bareudp->dev->stats.rx_dropped++;
++				DEV_STATS_INC(bareudp->dev, rx_dropped);
+ 				goto drop;
+ 			}
+ 		} else {
+@@ -122,7 +122,7 @@ static int bareudp_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
+ 				   (addr_type & IPV6_ADDR_MULTICAST)) {
+ 				proto = htons(ETH_P_MPLS_MC);
+ 			} else {
+-				bareudp->dev->stats.rx_dropped++;
++				DEV_STATS_INC(bareudp->dev, rx_dropped);
+ 				goto drop;
+ 			}
+ 		}
+@@ -134,12 +134,12 @@ static int bareudp_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
+ 				 proto,
+ 				 !net_eq(bareudp->net,
+ 				 dev_net(bareudp->dev)))) {
+-		bareudp->dev->stats.rx_dropped++;
++		DEV_STATS_INC(bareudp->dev, rx_dropped);
+ 		goto drop;
+ 	}
+ 	tun_dst = udp_tun_rx_dst(skb, family, TUNNEL_KEY, 0, 0);
+ 	if (!tun_dst) {
+-		bareudp->dev->stats.rx_dropped++;
++		DEV_STATS_INC(bareudp->dev, rx_dropped);
+ 		goto drop;
+ 	}
+ 	skb_dst_set(skb, &tun_dst->dst);
+@@ -165,8 +165,8 @@ static int bareudp_udp_encap_recv(struct sock *sk, struct sk_buff *skb)
+ 						     &((struct ipv6hdr *)oiph)->saddr);
+ 		}
+ 		if (err > 1) {
+-			++bareudp->dev->stats.rx_frame_errors;
+-			++bareudp->dev->stats.rx_errors;
++			DEV_STATS_INC(bareudp->dev, rx_frame_errors);
++			DEV_STATS_INC(bareudp->dev, rx_errors);
+ 			goto drop;
+ 		}
+ 	}
+@@ -462,11 +462,11 @@ static netdev_tx_t bareudp_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	dev_kfree_skb(skb);
+ 
+ 	if (err == -ELOOP)
+-		dev->stats.collisions++;
++		DEV_STATS_INC(dev, collisions);
+ 	else if (err == -ENETUNREACH)
+-		dev->stats.tx_carrier_errors++;
++		DEV_STATS_INC(dev, tx_carrier_errors);
+ 
+-	dev->stats.tx_errors++;
++	DEV_STATS_INC(dev, tx_errors);
+ 	return NETDEV_TX_OK;
+ }
+ 
 -- 
 2.43.0
 
