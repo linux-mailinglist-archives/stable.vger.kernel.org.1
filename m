@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-74597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3297A973023
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:58:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F61A9730D1
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:04:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BF9ADB25ECD
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:58:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 911B21C248D8
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:04:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D25C518B491;
-	Tue, 10 Sep 2024 09:57:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 082EF19004B;
+	Tue, 10 Sep 2024 10:02:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zTw4hZoA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="okE56HgF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9255118B488;
-	Tue, 10 Sep 2024 09:57:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B49D11922E5;
+	Tue, 10 Sep 2024 10:02:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962269; cv=none; b=RctJqpsWILWb2JLK+iv/F/RG5x7vKEFHqFlyEQTDu+axib3K/shRrmsbKIIR7kGTuCbMv4jvLoTq24e9Ve380/nTsm7mM7mrVJoiSy+CEOus0drQ9oQ1Po8LoJU9sDUOspY5aqRSoAQgjBxydvrMksqwdXmw/2tzz9zFr6HhAgY=
+	t=1725962558; cv=none; b=PuBmSwx1Qsr1CrFhAqJ3uJsiGJ8MNb9vn2MlmNhSdIiCe5suR9t2CVK/Lf4CPsAjgC11fGYZwQkmsBTqF7YzjEdJdXW4OfRBgfM9ZzfwEVJ3aLBBMtPCmW6+SEb+Z0boTCu/hN8Ryg+3OFiY/MsCWZHx1Y1CXtVHH0CIxcKi+6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962269; c=relaxed/simple;
-	bh=CpUH7gtaMUTnQi0OK1CDFKguhb4RzgQ5enxxDYJ9F/s=;
+	s=arc-20240116; t=1725962558; c=relaxed/simple;
+	bh=oCtLPbTX1iyRK9g5P7ap8hV+34XngdgYjTCIdLL2ItI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fMWYy7hjuIrMqMoCMm8MroUcPgQtX+3K92Eo0DPKI589FVRs0jyaDpMent3lMFRrifpIOjjDlIO3Jbt0JJRDkQdthntRM4hPzUiqLrPLU2OGcNHIU5MUOCSv5S6fSDePWFv9ujnbRPrivlfIYYgJJhnlObrprAef//DdiyiIIYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zTw4hZoA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A522C4CEC3;
-	Tue, 10 Sep 2024 09:57:48 +0000 (UTC)
+	 MIME-Version; b=crZPWGqMtTa6eJ/17mN4NwEGJN66ujPqAr0h4z6aSp4OyWyTFoP/FV8uX74kmk98pHNDTV8MfCggPRlNqYoqNW0ta8vkS3aHRvnDnDynZjuulgNnLxrVgdAFSxJ7/fhPE81MIESxOHL9tyMPmZ+t1I8vhQ6kvtH+rcbZ0WumVXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=okE56HgF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38501C4CEC3;
+	Tue, 10 Sep 2024 10:02:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962269;
-	bh=CpUH7gtaMUTnQi0OK1CDFKguhb4RzgQ5enxxDYJ9F/s=;
+	s=korg; t=1725962558;
+	bh=oCtLPbTX1iyRK9g5P7ap8hV+34XngdgYjTCIdLL2ItI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zTw4hZoAqau/0nICTBz07Ca0kzdkS8D1dmpMgaPE0/39J/7tji3k6PllO+GHyPt7O
-	 Bsufh4aAxMr3qyZ30s2+PC+XHxP1U+0BMAI6ssnTHmUFI+68PZXYHMr8/dcmjEu439
-	 MT/8z6ylsDY0+RnD8O5GsltqkcGbKN+/OOrnI0pU=
+	b=okE56HgFOxyE0URRizlCuVYNuQYdQUZSob7VdkZG39TC23CcMuVilIaUIBHGYiYPU
+	 exglrYL/zIvLKHYM6fuP/mGx943G1Z6NShMgJjeAldKGrktHhFUTCEPp+pa/IHWU6i
+	 Uzxh6ustXnZkFAd31oP8fFqvP8AVoLcQKnbQcfLg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
+	Timothy Pearson <tpearson@raptorengineering.com>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Shawn Anastasio <sanastasio@raptorengineering.com>,
+	Krishna Kumar <krishnak@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 353/375] drm/i915/fence: Mark debug_fence_init_onstack() with __maybe_unused
+Subject: [PATCH 5.4 075/121] pci/hotplug/pnv_php: Fix hotplug driver crash on Powernv
 Date: Tue, 10 Sep 2024 11:32:30 +0200
-Message-ID: <20240910092634.458337499@linuxfoundation.org>
+Message-ID: <20240910092549.461045060@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
-References: <20240910092622.245959861@linuxfoundation.org>
+In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
+References: <20240910092545.737864202@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +65,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Krishna Kumar <krishnak@linux.ibm.com>
 
-[ Upstream commit fcd9e8afd546f6ced378d078345a89bf346d065e ]
+[ Upstream commit 335e35b748527f0c06ded9eebb65387f60647fda ]
 
-When debug_fence_init_onstack() is unused (CONFIG_DRM_I915_SELFTEST=n),
-it prevents kernel builds with clang, `make W=1` and CONFIG_WERROR=y:
+The hotplug driver for powerpc (pci/hotplug/pnv_php.c) causes a kernel
+crash when we try to hot-unplug/disable the PCIe switch/bridge from
+the PHB.
 
-.../i915_sw_fence.c:97:20: error: unused function 'debug_fence_init_onstack' [-Werror,-Wunused-function]
-   97 | static inline void debug_fence_init_onstack(struct i915_sw_fence *fence)
-      |                    ^~~~~~~~~~~~~~~~~~~~~~~~
+The crash occurs because although the MSI data structure has been
+released during disable/hot-unplug path and it has been assigned
+with NULL, still during unregistration the code was again trying to
+explicitly disable the MSI which causes the NULL pointer dereference and
+kernel crash.
 
-Fix this by marking debug_fence_init_onstack() with __maybe_unused.
+The patch fixes the check during unregistration path to prevent invoking
+pci_disable_msi/msix() since its data structure is already freed.
 
-See also commit 6863f5643dd7 ("kbuild: allow Clang to find unused static
-inline functions for W=1 build").
-
-Fixes: 214707fc2ce0 ("drm/i915/selftests: Wrap a timer into a i915_sw_fence")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Jani Nikula <jani.nikula@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240829155950.1141978-2-andriy.shevchenko@linux.intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-(cherry picked from commit 5bf472058ffb43baf6a4cdfe1d7f58c4c194c688)
-Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
+Reported-by: Timothy Pearson <tpearson@raptorengineering.com>
+Closes: https://lore.kernel.org/all/1981605666.2142272.1703742465927.JavaMail.zimbra@raptorengineeringinc.com/
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Shawn Anastasio <sanastasio@raptorengineering.com>
+Signed-off-by: Krishna Kumar <krishnak@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240701074513.94873-2-krishnak@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/i915_sw_fence.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pci/hotplug/pnv_php.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/i915/i915_sw_fence.c b/drivers/gpu/drm/i915/i915_sw_fence.c
-index 8a9aad523eec..d4020ff3549a 100644
---- a/drivers/gpu/drm/i915/i915_sw_fence.c
-+++ b/drivers/gpu/drm/i915/i915_sw_fence.c
-@@ -51,7 +51,7 @@ static inline void debug_fence_init(struct i915_sw_fence *fence)
- 	debug_object_init(fence, &i915_sw_fence_debug_descr);
- }
- 
--static inline void debug_fence_init_onstack(struct i915_sw_fence *fence)
-+static inline __maybe_unused void debug_fence_init_onstack(struct i915_sw_fence *fence)
+diff --git a/drivers/pci/hotplug/pnv_php.c b/drivers/pci/hotplug/pnv_php.c
+index d7b2b47bc33e..382494261830 100644
+--- a/drivers/pci/hotplug/pnv_php.c
++++ b/drivers/pci/hotplug/pnv_php.c
+@@ -35,7 +35,6 @@ static void pnv_php_disable_irq(struct pnv_php_slot *php_slot,
+ 				bool disable_device)
  {
- 	debug_object_init_on_stack(fence, &i915_sw_fence_debug_descr);
- }
-@@ -94,7 +94,7 @@ static inline void debug_fence_init(struct i915_sw_fence *fence)
- {
- }
+ 	struct pci_dev *pdev = php_slot->pdev;
+-	int irq = php_slot->irq;
+ 	u16 ctrl;
  
--static inline void debug_fence_init_onstack(struct i915_sw_fence *fence)
-+static inline __maybe_unused void debug_fence_init_onstack(struct i915_sw_fence *fence)
- {
- }
+ 	if (php_slot->irq > 0) {
+@@ -54,7 +53,7 @@ static void pnv_php_disable_irq(struct pnv_php_slot *php_slot,
+ 		php_slot->wq = NULL;
+ 	}
  
+-	if (disable_device || irq > 0) {
++	if (disable_device) {
+ 		if (pdev->msix_enabled)
+ 			pci_disable_msix(pdev);
+ 		else if (pdev->msi_enabled)
 -- 
 2.43.0
 
