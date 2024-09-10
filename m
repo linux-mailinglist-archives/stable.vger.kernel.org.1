@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-75538-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75375-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 743A497350D
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:45:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FDB097343D
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:39:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 38710288BEE
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:45:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BECA728D879
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:39:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1318B18595E;
-	Tue, 10 Sep 2024 10:43:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BB7E1990B5;
+	Tue, 10 Sep 2024 10:35:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CVvhHtXV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L9wsF0Oa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D615381A;
-	Tue, 10 Sep 2024 10:43:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B2CA198A3F;
+	Tue, 10 Sep 2024 10:35:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725965028; cv=none; b=pJTEoATSbYBdTJGIsumERJQ/UqU3FqpweUSZp4cFyjXkU6snAAHfuF6kWOhbu0oGOzyOD3LL7Be/9M5WFSv005kO3yto54SXbZ6Fw1m/kdiuTew475hibtJTc5o0dYrIlXHS8zkkSBfmqo/z5rLBQjmuPnIhOApIhrX6XFZCJWI=
+	t=1725964549; cv=none; b=FJlTQqfA5PBrgbcDgBHguHTXmEIzQsgwVyL899UWhXDC2HcusFQ0Edsy1zvHMoQFOgn/CFEt+grUcIk3+AKJQoa+zooo3ZvnVyG/pSY7AAcKq5M4Q8kVkD3WWpPriUIOEL8RpeTjQddKmyXb7Uk608BpujY9zaEX5/IlBCdvKpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725965028; c=relaxed/simple;
-	bh=73FzyG2vsBjtsDNjPDYVUKxnNnavqweK3J9U0ce9qb8=;
+	s=arc-20240116; t=1725964549; c=relaxed/simple;
+	bh=xqkGa2xM++KXSmtjWEKJmqODhPy+QQk3SyMeVugVH8w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=klNVBcb1BCP5TnNku4iq1RA8v2HimKYCuI1bosHnv2Wr0Fq+S5Lj/4ZjvKusLmkxliQTSgnFS/fpeVCoO2w86L513hvR8Uv7VOjcvwhEXW8/yLRWCnTwlmq9Jd3GhwaMjSzCXvwpETWBZDHHkaBlwk0cWdO5hS2BtYygLkG76H0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CVvhHtXV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E69D3C4CEC3;
-	Tue, 10 Sep 2024 10:43:47 +0000 (UTC)
+	 MIME-Version; b=UQqIGhgNuJnNC4PxfE4km6ETzuOKqvU67pItY5Q4hi2aUkUEqBkFU61ax79N5HH1NbA6TwZUBvOnO99TG/xc/TB8eMR7cp1+WH0N1TArraFt//kwwNxJOLjZGHsKJXvbtHjWLv4i7ZBJnhKj+8g0SQyVCoTiiNgZ+kIF+46ZJls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L9wsF0Oa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5929C4CEC3;
+	Tue, 10 Sep 2024 10:35:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725965028;
-	bh=73FzyG2vsBjtsDNjPDYVUKxnNnavqweK3J9U0ce9qb8=;
+	s=korg; t=1725964549;
+	bh=xqkGa2xM++KXSmtjWEKJmqODhPy+QQk3SyMeVugVH8w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CVvhHtXViNUVDyNpiGkFSrXkYvU2qTsw85lOvPG/BvBCI4YePN7JLT3hC3QGsp0wz
-	 J8bq/pShicwL4Y9KOj1UHQRDrTlHMyJcvHDsSRYx8ZggA6tEH7VeER2HznV7CtfwF/
-	 gcvlpA4Q6f8olUdR5JFvTVncLJTHyBssv6fvx5Nc=
+	b=L9wsF0OaFIgY5R5c+DRPvh3tu5PEGEHoEaiSnn9p+qClM6ndjv9ABqcxfAGtVHj90
+	 tLzJ66aBzD5TjLT6QN5nUOdZy33N2oVDq6zZNLueO4T9MO320M1h5VmXJbE92A+pl7
+	 DdrA3gl6KWet8qgSSrvc209Qdm9rdEefxkjUWah0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzkaller <syzkaller@googlegroups.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Simon Horman <horms@kernel.org>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 112/186] can: bcm: Remove proc entry when dev is unregistered.
-Date: Tue, 10 Sep 2024 11:33:27 +0200
-Message-ID: <20240910092559.141335055@linuxfoundation.org>
+	Jacky Bai <ping.bai@nxp.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Ye Li <ye.li@nxp.com>,
+	Jason Liu <jason.hui.liu@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>
+Subject: [PATCH 6.6 221/269] clocksource/drivers/imx-tpm: Fix next event not taking effect sometime
+Date: Tue, 10 Sep 2024 11:33:28 +0200
+Message-ID: <20240910092615.843854367@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,104 +65,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Jacky Bai <ping.bai@nxp.com>
 
-[ Upstream commit 76fe372ccb81b0c89b6cd2fec26e2f38c958be85 ]
+commit 3d5c2f8e75a55cfb11a85086c71996af0354a1fb upstream.
 
-syzkaller reported a warning in bcm_connect() below. [0]
+The value written into the TPM CnV can only be updated into the hardware
+when the counter increases. Additional writes to the CnV write buffer are
+ignored until the register has been updated. Therefore, we need to check
+if the CnV has been updated before continuing. This may require waiting for
+1 counter cycle in the worst case.
 
-The repro calls connect() to vxcan1, removes vxcan1, and calls
-connect() with ifindex == 0.
-
-Calling connect() for a BCM socket allocates a proc entry.
-Then, bcm_sk(sk)->bound is set to 1 to prevent further connect().
-
-However, removing the bound device resets bcm_sk(sk)->bound to 0
-in bcm_notify().
-
-The 2nd connect() tries to allocate a proc entry with the same
-name and sets NULL to bcm_sk(sk)->bcm_proc_read, leaking the
-original proc entry.
-
-Since the proc entry is available only for connect()ed sockets,
-let's clean up the entry when the bound netdev is unregistered.
-
-[0]:
-proc_dir_entry 'can-bcm/2456' already registered
-WARNING: CPU: 1 PID: 394 at fs/proc/generic.c:376 proc_register+0x645/0x8f0 fs/proc/generic.c:375
-Modules linked in:
-CPU: 1 PID: 394 Comm: syz-executor403 Not tainted 6.10.0-rc7-g852e42cc2dd4
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-RIP: 0010:proc_register+0x645/0x8f0 fs/proc/generic.c:375
-Code: 00 00 00 00 00 48 85 ed 0f 85 97 02 00 00 4d 85 f6 0f 85 9f 02 00 00 48 c7 c7 9b cb cf 87 48 89 de 4c 89 fa e8 1c 6f eb fe 90 <0f> 0b 90 90 48 c7 c7 98 37 99 89 e8 cb 7e 22 05 bb 00 00 00 10 48
-RSP: 0018:ffa0000000cd7c30 EFLAGS: 00010246
-RAX: 9e129be1950f0200 RBX: ff1100011b51582c RCX: ff1100011857cd80
-RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000002
-RBP: 0000000000000000 R08: ffd400000000000f R09: ff1100013e78cac0
-R10: ffac800000cd7980 R11: ff1100013e12b1f0 R12: 0000000000000000
-R13: 0000000000000000 R14: 0000000000000000 R15: ff1100011a99a2ec
-FS:  00007fbd7086f740(0000) GS:ff1100013fd00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00000000200071c0 CR3: 0000000118556004 CR4: 0000000000771ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe07f0 DR7: 0000000000000400
-PKRU: 55555554
-Call Trace:
- <TASK>
- proc_create_net_single+0x144/0x210 fs/proc/proc_net.c:220
- bcm_connect+0x472/0x840 net/can/bcm.c:1673
- __sys_connect_file net/socket.c:2049 [inline]
- __sys_connect+0x5d2/0x690 net/socket.c:2066
- __do_sys_connect net/socket.c:2076 [inline]
- __se_sys_connect net/socket.c:2073 [inline]
- __x64_sys_connect+0x8f/0x100 net/socket.c:2073
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xd9/0x1c0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x4b/0x53
-RIP: 0033:0x7fbd708b0e5d
-Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 73 9f 1b 00 f7 d8 64 89 01 48
-RSP: 002b:00007fff8cd33f08 EFLAGS: 00000246 ORIG_RAX: 000000000000002a
-RAX: ffffffffffffffda RBX: 0000000000000003 RCX: 00007fbd708b0e5d
-RDX: 0000000000000010 RSI: 0000000020000040 RDI: 0000000000000003
-RBP: 0000000000000000 R08: 0000000000000040 R09: 0000000000000040
-R10: 0000000000000040 R11: 0000000000000246 R12: 00007fff8cd34098
-R13: 0000000000401280 R14: 0000000000406de8 R15: 00007fbd70ab9000
- </TASK>
-remove_proc_entry: removing non-empty directory 'net/can-bcm', leaking at least '2456'
-
-Fixes: ffd980f976e7 ("[CAN]: Add broadcast manager (bcm) protocol")
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/all/20240722192842.37421-1-kuniyu@amazon.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 059ab7b82eec ("clocksource/drivers/imx-tpm: Add imx tpm timer support")
+Signed-off-by: Jacky Bai <ping.bai@nxp.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Ye Li <ye.li@nxp.com>
+Reviewed-by: Jason Liu <jason.hui.liu@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20240725193355.1436005-2-Frank.Li@nxp.com
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/can/bcm.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/clocksource/timer-imx-tpm.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/net/can/bcm.c b/net/can/bcm.c
-index 2388c619f29c..b2b1bd672787 100644
---- a/net/can/bcm.c
-+++ b/net/can/bcm.c
-@@ -1423,6 +1423,10 @@ static void bcm_notify(struct bcm_sock *bo, unsigned long msg,
+--- a/drivers/clocksource/timer-imx-tpm.c
++++ b/drivers/clocksource/timer-imx-tpm.c
+@@ -91,6 +91,14 @@ static int tpm_set_next_event(unsigned l
+ 	now = tpm_read_counter();
  
- 		/* remove device reference, if this is our bound device */
- 		if (bo->bound && bo->ifindex == dev->ifindex) {
-+#if IS_ENABLED(CONFIG_PROC_FS)
-+			if (sock_net(sk)->can.bcmproc_dir && bo->bcm_proc_read)
-+				remove_proc_entry(bo->procname, sock_net(sk)->can.bcmproc_dir);
-+#endif
- 			bo->bound   = 0;
- 			bo->ifindex = 0;
- 			notify_enodev = 1;
--- 
-2.43.0
-
+ 	/*
++	 * Need to wait CNT increase at least 1 cycle to make sure
++	 * the C0V has been updated into HW.
++	 */
++	if ((next & 0xffffffff) != readl(timer_base + TPM_C0V))
++		while (now == tpm_read_counter())
++			;
++
++	/*
+ 	 * NOTE: We observed in a very small probability, the bus fabric
+ 	 * contention between GPU and A7 may results a few cycles delay
+ 	 * of writing CNT registers which may cause the min_delta event got
 
 
 
