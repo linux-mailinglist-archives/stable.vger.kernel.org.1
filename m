@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-75348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74902-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C70997341A
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:38:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DD7A973202
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:18:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 469B81F25D18
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:38:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3498E28DF1B
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:18:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69D4218C33D;
-	Tue, 10 Sep 2024 10:34:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 351CD190074;
+	Tue, 10 Sep 2024 10:12:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YsOTrAw2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NBBR3/Ju"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28F0218B487;
-	Tue, 10 Sep 2024 10:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6B21143880;
+	Tue, 10 Sep 2024 10:12:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964470; cv=none; b=r/kvyJsQUTjgL0njNteZwcv1AAcIzYdAHT2H/hKUv3o19291pfTqPWPcLIbZWwFgXYjlo/WIlBHIZyNhHr2jOFIVdtKnXWGExjt6HDrplC1U9NLe4mQzcoNmic6PFAOu4LS/NeCrLh5dwwCTEto7yRXji7imGnNKl/kJ05nG1eQ=
+	t=1725963169; cv=none; b=VVUoJ7Z6lVJeGy7U1WGW9NT3/gxJ27WDI+EwDAoO1GWwd795EI9uePqHGaqbDBEc6yu1p5WbFa3t8GtNybLFb7l1R+zgCQIpkCCh0Hj/6Kdi+CqBgzkIW9rZltKF8m1ZtL8R+nu9BnVkI/X67ckwHmNTg9EE9tkgIHUz2zwaMQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964470; c=relaxed/simple;
-	bh=vvQft8fD5+wFIsUoAoS5xjmm7PTEOBOeHM3ocdqkm8U=;
+	s=arc-20240116; t=1725963169; c=relaxed/simple;
+	bh=1r+WHUuYh1d3OTfs7L3mpbxHeJMx5Y/Lk335urbiCeU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P83gU/Uf6JNVb06FeqHfkSbiYSAKhVS9IY+JI7xkbQcHiqS6tIdjnEeeRgv30vsvrs+90gQmmp/wXyh9GTvu1njVMrj0vcT455UTv/F/aEvSXiZvfjEZYouNtqO01Mjh6YZhJDT5e8X4K6MdisqVDH+I5mg5KkckN0qHG7ty8fM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YsOTrAw2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EC9BC4CEC3;
-	Tue, 10 Sep 2024 10:34:29 +0000 (UTC)
+	 MIME-Version; b=sfL/dcpXY9Tlyhrb2gFwALbOPVHSGyFuVPykzvmNXSNHGrdTE0rhVKjCJe7PuMdoagu8UpX5JD7DuKTEyDeE5lMk8DukjPhvJXx+hRRTfdm5SaOilWKbsRp0sOkgiyBpuQkv/ATva02coOAqMnj+/57KXuwwaAOFGbZcrzSYoNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NBBR3/Ju; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 629F5C4CEC3;
+	Tue, 10 Sep 2024 10:12:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964469;
-	bh=vvQft8fD5+wFIsUoAoS5xjmm7PTEOBOeHM3ocdqkm8U=;
+	s=korg; t=1725963168;
+	bh=1r+WHUuYh1d3OTfs7L3mpbxHeJMx5Y/Lk335urbiCeU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YsOTrAw2cnHtLZ8qCRW+gNrunjIiNlJEGWxl+hfQsCihgbZ7uB76xFucLVvw7cLTN
-	 j/fC3je+kulr9DZDfT/ROalQqryDwy9iSnEUGwx0hfAucNFaOWtqRhKAqHbs8EmI0m
-	 ubnLojG4wzg1BnyT8k8JcDKRtO+zeFU5mgX6ITew=
+	b=NBBR3/JuC7xSqeY1PsWViwBoxWyNJjTRvxtH8XBWa3l/Hf4oICKSvTZnMQ8Tr5MhJ
+	 QgwZ80nzw9S+Wg3MPNev6cGxpvQ3j4ezX7aszlSd7MTCHQld5/I56MtaWfcD0asm5Y
+	 cN88mjTURUBB6tNmHAqQxXpNJ0o+DfLE9NDPai3A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ChenXiaoSong <chenxiaosong@kylinos.cn>,
-	Steve French <stfrench@microsoft.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 194/269] smb/server: fix potential null-ptr-deref of lease_ctx_info in smb2_open()
-Date: Tue, 10 Sep 2024 11:33:01 +0200
-Message-ID: <20240910092615.027879595@linuxfoundation.org>
+Subject: [PATCH 6.1 158/192] x86/mm/pae: Make pmd_t similar to pte_t
+Date: Tue, 10 Sep 2024 11:33:02 +0200
+Message-ID: <20240910092604.456070042@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +61,158 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ChenXiaoSong <chenxiaosong@kylinos.cn>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit 4e8771a3666c8f216eefd6bd2fd50121c6c437db ]
+[ Upstream commit fbfdec9989e69e0b17aa3bf32fcb22d04cc33301 ]
 
-null-ptr-deref will occur when (req_op_level == SMB2_OPLOCK_LEVEL_LEASE)
-and parse_lease_state() return NULL.
+Instead of mucking about with at least 2 different ways of fudging
+it, do the same thing we do for pte_t.
 
-Fix this by check if 'lease_ctx_info' is NULL.
-
-Additionally, remove the redundant parentheses in
-parse_durable_handle_context().
-
-Signed-off-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20221022114424.580310787%40infradead.org
+Stable-dep-of: 71c186efc1b2 ("userfaultfd: fix checks for huge PMDs")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/oplock.c  |  2 +-
- fs/smb/server/smb2pdu.c | 10 +++++-----
- 2 files changed, 6 insertions(+), 6 deletions(-)
+ arch/x86/include/asm/pgtable-3level.h       | 42 +++++++--------------
+ arch/x86/include/asm/pgtable-3level_types.h |  7 ++++
+ arch/x86/include/asm/pgtable_64_types.h     |  1 +
+ arch/x86/include/asm/pgtable_types.h        |  4 +-
+ 4 files changed, 23 insertions(+), 31 deletions(-)
 
-diff --git a/fs/smb/server/oplock.c b/fs/smb/server/oplock.c
-index a8f52c4ebbda..e546ffa57b55 100644
---- a/fs/smb/server/oplock.c
-+++ b/fs/smb/server/oplock.c
-@@ -1510,7 +1510,7 @@ void create_lease_buf(u8 *rbuf, struct lease *lease)
-  * parse_lease_state() - parse lease context containted in file open request
-  * @open_req:	buffer containing smb2 file open(create) request
-  *
-- * Return:  oplock state, -ENOENT if create lease context not found
-+ * Return: allocated lease context object on success, otherwise NULL
-  */
- struct lease_ctx_info *parse_lease_state(void *open_req)
+diff --git a/arch/x86/include/asm/pgtable-3level.h b/arch/x86/include/asm/pgtable-3level.h
+index 28421a887209..28556d22feb8 100644
+--- a/arch/x86/include/asm/pgtable-3level.h
++++ b/arch/x86/include/asm/pgtable-3level.h
+@@ -87,7 +87,7 @@ static inline pmd_t pmd_read_atomic(pmd_t *pmdp)
+ 		ret |= ((pmdval_t)*(tmp + 1)) << 32;
+ 	}
+ 
+-	return (pmd_t) { ret };
++	return (pmd_t) { .pmd = ret };
+ }
+ 
+ static inline void native_set_pte_atomic(pte_t *ptep, pte_t pte)
+@@ -121,12 +121,11 @@ static inline void native_pte_clear(struct mm_struct *mm, unsigned long addr,
+ 	ptep->pte_high = 0;
+ }
+ 
+-static inline void native_pmd_clear(pmd_t *pmd)
++static inline void native_pmd_clear(pmd_t *pmdp)
  {
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index c55924f5164e..458cc736286a 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -2771,8 +2771,8 @@ static int parse_durable_handle_context(struct ksmbd_work *work,
- 				}
- 			}
+-	u32 *tmp = (u32 *)pmd;
+-	*tmp = 0;
++	pmdp->pmd_low = 0;
+ 	smp_wmb();
+-	*(tmp + 1) = 0;
++	pmdp->pmd_high = 0;
+ }
  
--			if (((lc && (lc->req_state & SMB2_LEASE_HANDLE_CACHING_LE)) ||
--			     req_op_level == SMB2_OPLOCK_LEVEL_BATCH)) {
-+			if ((lc && (lc->req_state & SMB2_LEASE_HANDLE_CACHING_LE)) ||
-+			    req_op_level == SMB2_OPLOCK_LEVEL_BATCH) {
- 				dh_info->CreateGuid =
- 					durable_v2_blob->CreateGuid;
- 				dh_info->persistent =
-@@ -2792,8 +2792,8 @@ static int parse_durable_handle_context(struct ksmbd_work *work,
- 				goto out;
- 			}
+ static inline void native_pud_clear(pud_t *pudp)
+@@ -162,25 +161,17 @@ static inline pte_t native_ptep_get_and_clear(pte_t *ptep)
+ #define native_ptep_get_and_clear(xp) native_local_ptep_get_and_clear(xp)
+ #endif
  
--			if (((lc && (lc->req_state & SMB2_LEASE_HANDLE_CACHING_LE)) ||
--			     req_op_level == SMB2_OPLOCK_LEVEL_BATCH)) {
-+			if ((lc && (lc->req_state & SMB2_LEASE_HANDLE_CACHING_LE)) ||
-+			    req_op_level == SMB2_OPLOCK_LEVEL_BATCH) {
- 				ksmbd_debug(SMB, "Request for durable open\n");
- 				dh_info->type = dh_idx;
- 			}
-@@ -3415,7 +3415,7 @@ int smb2_open(struct ksmbd_work *work)
- 			goto err_out1;
- 		}
- 	} else {
--		if (req_op_level == SMB2_OPLOCK_LEVEL_LEASE) {
-+		if (req_op_level == SMB2_OPLOCK_LEVEL_LEASE && lc) {
- 			if (S_ISDIR(file_inode(filp)->i_mode)) {
- 				lc->req_state &= ~SMB2_LEASE_WRITE_CACHING_LE;
- 				lc->is_dir = true;
+-union split_pmd {
+-	struct {
+-		u32 pmd_low;
+-		u32 pmd_high;
+-	};
+-	pmd_t pmd;
+-};
+-
+ #ifdef CONFIG_SMP
+ static inline pmd_t native_pmdp_get_and_clear(pmd_t *pmdp)
+ {
+-	union split_pmd res, *orig = (union split_pmd *)pmdp;
++	pmd_t res;
+ 
+ 	/* xchg acts as a barrier before setting of the high bits */
+-	res.pmd_low = xchg(&orig->pmd_low, 0);
+-	res.pmd_high = orig->pmd_high;
+-	orig->pmd_high = 0;
++	res.pmd_low = xchg(&pmdp->pmd_low, 0);
++	res.pmd_high = READ_ONCE(pmdp->pmd_high);
++	WRITE_ONCE(pmdp->pmd_high, 0);
+ 
+-	return res.pmd;
++	return res;
+ }
+ #else
+ #define native_pmdp_get_and_clear(xp) native_local_pmdp_get_and_clear(xp)
+@@ -199,17 +190,12 @@ static inline pmd_t pmdp_establish(struct vm_area_struct *vma,
+ 	 * anybody.
+ 	 */
+ 	if (!(pmd_val(pmd) & _PAGE_PRESENT)) {
+-		union split_pmd old, new, *ptr;
+-
+-		ptr = (union split_pmd *)pmdp;
+-
+-		new.pmd = pmd;
+-
+ 		/* xchg acts as a barrier before setting of the high bits */
+-		old.pmd_low = xchg(&ptr->pmd_low, new.pmd_low);
+-		old.pmd_high = ptr->pmd_high;
+-		ptr->pmd_high = new.pmd_high;
+-		return old.pmd;
++		old.pmd_low = xchg(&pmdp->pmd_low, pmd.pmd_low);
++		old.pmd_high = READ_ONCE(pmdp->pmd_high);
++		WRITE_ONCE(pmdp->pmd_high, pmd.pmd_high);
++
++		return old;
+ 	}
+ 
+ 	do {
+diff --git a/arch/x86/include/asm/pgtable-3level_types.h b/arch/x86/include/asm/pgtable-3level_types.h
+index 56baf43befb4..80911349519e 100644
+--- a/arch/x86/include/asm/pgtable-3level_types.h
++++ b/arch/x86/include/asm/pgtable-3level_types.h
+@@ -18,6 +18,13 @@ typedef union {
+ 	};
+ 	pteval_t pte;
+ } pte_t;
++
++typedef union {
++	struct {
++		unsigned long pmd_low, pmd_high;
++	};
++	pmdval_t pmd;
++} pmd_t;
+ #endif	/* !__ASSEMBLY__ */
+ 
+ #define SHARED_KERNEL_PMD	(!static_cpu_has(X86_FEATURE_PTI))
+diff --git a/arch/x86/include/asm/pgtable_64_types.h b/arch/x86/include/asm/pgtable_64_types.h
+index 6c7f7c526450..4ea3755f2444 100644
+--- a/arch/x86/include/asm/pgtable_64_types.h
++++ b/arch/x86/include/asm/pgtable_64_types.h
+@@ -19,6 +19,7 @@ typedef unsigned long	pgdval_t;
+ typedef unsigned long	pgprotval_t;
+ 
+ typedef struct { pteval_t pte; } pte_t;
++typedef struct { pmdval_t pmd; } pmd_t;
+ 
+ #ifdef CONFIG_X86_5LEVEL
+ extern unsigned int __pgtable_l5_enabled;
+diff --git a/arch/x86/include/asm/pgtable_types.h b/arch/x86/include/asm/pgtable_types.h
+index e3028373f0b4..d0e9654d7272 100644
+--- a/arch/x86/include/asm/pgtable_types.h
++++ b/arch/x86/include/asm/pgtable_types.h
+@@ -363,11 +363,9 @@ static inline pudval_t native_pud_val(pud_t pud)
+ #endif
+ 
+ #if CONFIG_PGTABLE_LEVELS > 2
+-typedef struct { pmdval_t pmd; } pmd_t;
+-
+ static inline pmd_t native_make_pmd(pmdval_t val)
+ {
+-	return (pmd_t) { val };
++	return (pmd_t) { .pmd = val };
+ }
+ 
+ static inline pmdval_t native_pmd_val(pmd_t pmd)
 -- 
 2.43.0
 
