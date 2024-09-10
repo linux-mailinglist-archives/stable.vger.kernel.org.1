@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-74674-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56847973096
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:02:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B35DF972E34
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:40:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C618FB2324E
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:02:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A23E2882EC
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:40:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C5BA18D63B;
-	Tue, 10 Sep 2024 10:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 190A418C340;
+	Tue, 10 Sep 2024 09:40:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lQ82wtAW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zVXdj9hH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A24A18C00C;
-	Tue, 10 Sep 2024 10:01:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB62E18B487;
+	Tue, 10 Sep 2024 09:40:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962493; cv=none; b=Gc40/ktMrH44FViGhRL3tUpGNDGDt5cDW9KX5+w+uaewaeleUnlQLFhuBdIJjbOrTKfc3oF9wyFn81CRE4nYtaA8mypp8Vw5YAJcKcxAok2UA6clSRaWrxcNwoxv5QFxr7/Flxwm74OYpmiV7eWNLb2HJUid5wifbj1kPDpz5LE=
+	t=1725961216; cv=none; b=GxA8XKjxAsLOOQ3W0V1ZlmB++iF+BoW4WQR80tazKIouPvsN88Kjs9tVGKH/AUP9Qw7iFYTg+duYDDtKVe+rAQXDv8RHtwtQFQ2icPBJfCmzg/0gxOKjsKwdlmX1nHaRWO0BpR/lGBVDa670wrkPKqdBSdIn1aSrPaUwP6poNnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962493; c=relaxed/simple;
-	bh=RIvcCbxSgWT9zkdLr+IfWKxBR1q0++GCwJENl0UDydw=;
+	s=arc-20240116; t=1725961216; c=relaxed/simple;
+	bh=hRAywrzvc2icGN6wqJjFvStiVqZs4FXiW8GdEzagOPk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZjUiJjLrDFEbTP2cVfoGhcVAfRCrzklKPgHAhW9QnoSW98KHtJuO8lRAkrqmDelzV/QU25gCMFDxOO6nCRevqdz21SnDDFCxD4XYV5rAUBTLtztfNSxuLJ6nqZZPjgqptYhADQgJDcEELbJKWlcql+OLqosaPUvCKoa9ZcKfg4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lQ82wtAW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B607FC4CEC3;
-	Tue, 10 Sep 2024 10:01:32 +0000 (UTC)
+	 MIME-Version; b=GvNT1gjlpRJcTDfNoMZVlgvMgPJKFQrlPaFCbXr1Ug+7R6XoStjiD1lDWCTY1uoX1zYCw7fE8i+ec/F4q90gvaNARbNT4V90jc/WG52YNxSpTjv+ef3MQQpNHYY4gETw9J8K1anBNBIywU3F0dn3xM+s7y4+1zcCgeANupe3SYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zVXdj9hH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F77CC4CEC3;
+	Tue, 10 Sep 2024 09:40:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962493;
-	bh=RIvcCbxSgWT9zkdLr+IfWKxBR1q0++GCwJENl0UDydw=;
+	s=korg; t=1725961216;
+	bh=hRAywrzvc2icGN6wqJjFvStiVqZs4FXiW8GdEzagOPk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lQ82wtAWYTQQXJU+Y7gVfm7kFOlBSZAl3mD/ZQevqqfE3wiowfmSF6PW+NDCfJGEA
-	 k+Sp+IN6utkXWP//lyQ4gfPDjZULJ+ddgf9HllLQjb867JQgmmLkk53toQeg4uLIOV
-	 W8L50DV576ZCq27JFH9PPnYyjZgoz4tMOAscrSG4=
+	b=zVXdj9hHmv0fhAkQyaxMxodujm1muvDYmimSUEGNgl6sWsfgKkoQdNQuLsMizmTOq
+	 oUUC7+bzndFCxtWMoU2fHVSwK9RL3+bLfnpWDJHibztbxLAaF2BKGtu28U/B+Qq5Vj
+	 6Zx25iZLAJSj8dTcJENmo9qjqBERDHWPgKnt2tf4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 052/121] media: qcom: camss: Add check for v4l2_fwnode_endpoint_parse
-Date: Tue, 10 Sep 2024 11:32:07 +0200
-Message-ID: <20240910092548.245574842@linuxfoundation.org>
+Subject: [PATCH 4.19 66/96] btrfs: initialize location to fix -Wmaybe-uninitialized in btrfs_lookup_dentry()
+Date: Tue, 10 Sep 2024 11:32:08 +0200
+Message-ID: <20240910092544.434648655@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
-References: <20240910092545.737864202@linuxfoundation.org>
+In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
+References: <20240910092541.383432924@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: David Sterba <dsterba@suse.com>
 
-[ Upstream commit 4caf6d93d9f2c11d6441c64e1c549c445fa322ed ]
+[ Upstream commit b8e947e9f64cac9df85a07672b658df5b2bcff07 ]
 
-Add check for the return value of v4l2_fwnode_endpoint_parse() and
-return the error if it fails in order to catch the error.
+Some arch + compiler combinations report a potentially unused variable
+location in btrfs_lookup_dentry(). This is a false alert as the variable
+is passed by value and always valid or there's an error. The compilers
+cannot probably reason about that although btrfs_inode_by_name() is in
+the same file.
 
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+   >  + /kisskb/src/fs/btrfs/inode.c: error: 'location.objectid' may be used
+   +uninitialized in this function [-Werror=maybe-uninitialized]:  => 5603:9
+   >  + /kisskb/src/fs/btrfs/inode.c: error: 'location.type' may be used
+   +uninitialized in this function [-Werror=maybe-uninitialized]:  => 5674:5
+
+   m68k-gcc8/m68k-allmodconfig
+   mips-gcc8/mips-allmodconfig
+   powerpc-gcc5/powerpc-all{mod,yes}config
+   powerpc-gcc5/ppc64_defconfig
+
+Initialize it to zero, this should fix the warnings and won't change the
+behaviour as btrfs_inode_by_name() accepts only a root or inode item
+types, otherwise returns an error.
+
+Reported-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Tested-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/linux-btrfs/bd4e9928-17b3-9257-8ba7-6b7f9bbb639a@linux-m68k.org/
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/camss/camss.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ fs/btrfs/inode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/qcom/camss/camss.c b/drivers/media/platform/qcom/camss/camss.c
-index 2483641799df..2db9229d5601 100644
---- a/drivers/media/platform/qcom/camss/camss.c
-+++ b/drivers/media/platform/qcom/camss/camss.c
-@@ -431,8 +431,11 @@ static int camss_of_parse_endpoint_node(struct device *dev,
- 	struct v4l2_fwnode_bus_mipi_csi2 *mipi_csi2;
- 	struct v4l2_fwnode_endpoint vep = { { 0 } };
- 	unsigned int i;
-+	int ret;
- 
--	v4l2_fwnode_endpoint_parse(of_fwnode_handle(node), &vep);
-+	ret = v4l2_fwnode_endpoint_parse(of_fwnode_handle(node), &vep);
-+	if (ret)
-+		return ret;
- 
- 	csd->interface.csiphy_id = vep.base.port;
- 
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index 15ebebed4005..22059aa5eb26 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -5869,7 +5869,7 @@ struct inode *btrfs_lookup_dentry(struct inode *dir, struct dentry *dentry)
+ 	struct inode *inode;
+ 	struct btrfs_root *root = BTRFS_I(dir)->root;
+ 	struct btrfs_root *sub_root = root;
+-	struct btrfs_key location;
++	struct btrfs_key location = { 0 };
+ 	u8 di_type = 0;
+ 	int index;
+ 	int ret = 0;
 -- 
 2.43.0
 
