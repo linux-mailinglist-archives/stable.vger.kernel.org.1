@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-74600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70682973024
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:58:08 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AD6A972E47
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:41:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1ED421F240F1
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:58:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3300D286994
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:41:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A361117BEAE;
-	Tue, 10 Sep 2024 09:57:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CDD718E776;
+	Tue, 10 Sep 2024 09:40:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FLD2j1ue"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x6rLAwrq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60BB614D431;
-	Tue, 10 Sep 2024 09:57:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC57F18C90A;
+	Tue, 10 Sep 2024 09:40:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962278; cv=none; b=qSjxamsV6B3Jo6vnBq30tUKnjG9V83WEG5S53B8QIt3z3pivzEH/bI9XRmmOFEoMOxzR4YK4DGPebdORVbZAgm8+3ZA2LIx19qjR8I1vRKoN+9kx5rOnQyg2T5i55to5wdj0n6pdzA/ImEPu98lNVB2io2ApXngh1JJ8MWOoF4E=
+	t=1725961252; cv=none; b=BgvBMNJaztYXvfHlZ9HI5zLz7crnTBdCR94YVtkSC9Zdy9QzIAhfmiN5EnZ0LOgCCKK9pYjkGFSQhIVDr3PIc+CMdBHj6AIAKWJTiLNC1BCNiL4g1VWM1SB5n14K/MBCQFUsm7bDzYcffvODv9xO3/RacE3xHoW7qR2evaTqcu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962278; c=relaxed/simple;
-	bh=xrGtrQmyn8nd1trN6H81GLggUIBFAJQc3QOHo9ikeIs=;
+	s=arc-20240116; t=1725961252; c=relaxed/simple;
+	bh=1sUj+Pv6lh2GCiV6xOZK6sLJ+j6zk8joa9Ntqx/B2gk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jurdNp704Ef0RjSbn7cGHNeUrIldOAZP1s5cS7dTjE0TeRU5YwNKwoWRG5Vjsxn8EZ+5YyEq4aoYeC+piryzuQ1QnXx2Na6NL1eK/Xzi5ipZDfclEOcbs6/+j88gYSKLg5oiJjojU+jeZ8cANpg+hE6QF/7t1+xGqJBSiZ/VZ9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FLD2j1ue; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBC11C4CEC3;
-	Tue, 10 Sep 2024 09:57:57 +0000 (UTC)
+	 MIME-Version; b=lkW3Nyr1CVMyi+HsCr3fd+rnMixSIj7LmjCt8rvxzJzcNtQ5NJE4JK0FhrA/Fb1ys3mPNXpevOd0r/YiNdJKuBR74AB9cDJjwpTieNpsNIr7uOYiPKajw/HAVSoR4zeHaaiXzkzv0otP1eDhr5uQGFOIcYgBieImWApq6DPIjkk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x6rLAwrq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13C55C4CEC3;
+	Tue, 10 Sep 2024 09:40:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962278;
-	bh=xrGtrQmyn8nd1trN6H81GLggUIBFAJQc3QOHo9ikeIs=;
+	s=korg; t=1725961252;
+	bh=1sUj+Pv6lh2GCiV6xOZK6sLJ+j6zk8joa9Ntqx/B2gk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FLD2j1uea24j3T/ZuSms3XXsIlVgt/dfptqndLs0KvM3CN/Hmvl36h1G2EOKTVTqR
-	 v9j4JSQFx9KxPiGiaLkABupaeru5gJyDzI3XAOGB8yaIDmy8gqtEV6SUdtjjy82e6e
-	 hD008cBB5I7mU9Vk4WC+EJ6S3J+vXKnEGMzorPrc=
+	b=x6rLAwrqvqHpj56WBVeAEK0pyRHJUiurRlbgEK8UhcR4j3FjtHNZN3HOoW9qW2H1Z
+	 jlpgtWlL2XDrqwOFk0pCLWSr9ky7rqeNXalPTMqhVy2EPh4NjNULKN01Ky99HUoDEo
+	 ax/hkXzuSs7f8phLI2wb3m0px7tCqkuwTMALWc7Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liao Chen <liaochen4@huawei.com>,
-	Michal Simek <michal.simek@amd.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 356/375] gpio: modepin: Enable module autoloading
+Subject: [PATCH 4.19 91/96] drm/i915/fence: Mark debug_fence_free() with __maybe_unused
 Date: Tue, 10 Sep 2024 11:32:33 +0200
-Message-ID: <20240910092634.558224694@linuxfoundation.org>
+Message-ID: <20240910092545.533286435@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
-References: <20240910092622.245959861@linuxfoundation.org>
+In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
+References: <20240910092541.383432924@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,39 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liao Chen <liaochen4@huawei.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit a5135526426df5319d5f4bcd15ae57c45a97714b ]
+[ Upstream commit f99999536128b14b5d765a9982763b5134efdd79 ]
 
-Add MODULE_DEVICE_TABLE(), so modules could be properly autoloaded based
-on the alias from of_device_id table.
+When debug_fence_free() is unused
+(CONFIG_DRM_I915_SW_FENCE_DEBUG_OBJECTS=n), it prevents kernel builds
+with clang, `make W=1` and CONFIG_WERROR=y:
 
-Fixes: 7687a5b0ee93 ("gpio: modepin: Add driver support for modepin GPIO controller")
-Signed-off-by: Liao Chen <liaochen4@huawei.com>
-Reviewed-by: Michal Simek <michal.simek@amd.com>
-Link: https://lore.kernel.org/r/20240902115848.904227-1-liaochen4@huawei.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+.../i915_sw_fence.c:118:20: error: unused function 'debug_fence_free' [-Werror,-Wunused-function]
+  118 | static inline void debug_fence_free(struct i915_sw_fence *fence)
+      |                    ^~~~~~~~~~~~~~~~
+
+Fix this by marking debug_fence_free() with __maybe_unused.
+
+See also commit 6863f5643dd7 ("kbuild: allow Clang to find unused static
+inline functions for W=1 build").
+
+Fixes: fc1584059d6c ("drm/i915: Integrate i915_sw_fence with debugobjects")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240829155950.1141978-3-andriy.shevchenko@linux.intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+(cherry picked from commit 8be4dce5ea6f2368cc25edc71989c4690fa66964)
+Signed-off-by: Joonas Lahtinen <joonas.lahtinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-zynqmp-modepin.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/i915/i915_sw_fence.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpio/gpio-zynqmp-modepin.c b/drivers/gpio/gpio-zynqmp-modepin.c
-index a0d69387c153..2f3c9ebfa78d 100644
---- a/drivers/gpio/gpio-zynqmp-modepin.c
-+++ b/drivers/gpio/gpio-zynqmp-modepin.c
-@@ -146,6 +146,7 @@ static const struct of_device_id modepin_platform_id[] = {
- 	{ .compatible = "xlnx,zynqmp-gpio-modepin", },
- 	{ }
- };
-+MODULE_DEVICE_TABLE(of, modepin_platform_id);
+diff --git a/drivers/gpu/drm/i915/i915_sw_fence.c b/drivers/gpu/drm/i915/i915_sw_fence.c
+index c61e50659ed1..bcc997d217c2 100644
+--- a/drivers/gpu/drm/i915/i915_sw_fence.c
++++ b/drivers/gpu/drm/i915/i915_sw_fence.c
+@@ -67,7 +67,7 @@ static inline void debug_fence_destroy(struct i915_sw_fence *fence)
+ 	debug_object_destroy(fence, &i915_sw_fence_debug_descr);
+ }
  
- static struct platform_driver modepin_platform_driver = {
- 	.driver = {
+-static inline void debug_fence_free(struct i915_sw_fence *fence)
++static inline __maybe_unused void debug_fence_free(struct i915_sw_fence *fence)
+ {
+ 	debug_object_free(fence, &i915_sw_fence_debug_descr);
+ 	smp_wmb(); /* flush the change in state before reallocation */
+@@ -105,7 +105,7 @@ static inline void debug_fence_destroy(struct i915_sw_fence *fence)
+ {
+ }
+ 
+-static inline void debug_fence_free(struct i915_sw_fence *fence)
++static inline __maybe_unused void debug_fence_free(struct i915_sw_fence *fence)
+ {
+ }
+ 
 -- 
 2.43.0
 
