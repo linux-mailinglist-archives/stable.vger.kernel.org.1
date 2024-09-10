@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-74798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75274-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D30497317A
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:12:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E45CA9734BA
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:42:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D05FC289863
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:12:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 777B3B2586C
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:35:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18CA0193096;
-	Tue, 10 Sep 2024 10:07:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C9A81991B5;
+	Tue, 10 Sep 2024 10:30:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rG3ftGU+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oMGlltr8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9AC7188CC1;
-	Tue, 10 Sep 2024 10:07:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED96417BEAD;
+	Tue, 10 Sep 2024 10:30:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962860; cv=none; b=bBKZUQgEGyu+rgPdFNpZcsYt+FwA2r6m+v3X+bV4eIz9YgdyAEOTgib07wDL42mGYrXwADj58SV2xj/GXgCudpJdHc7VpA7ncUV/46aTx29hNjiVTfWHNIKD2J+AUm8h/HHAk41JiNwNDxk9o7OVjGWB7Zz/NutkhZ1eqyQmxsY=
+	t=1725964256; cv=none; b=NncGPRUThu+S4ZQjPXyPe5WJI2/rNutSuQ3iap2To4p578Fsb1FuL24LaoIdA/wGBpq2JoUszRjzj41iEiCqn0s/n2zrHVPY2EEyB4Vla4ORdzshcs0JswoiABLw5mH/lWvHC3wD/wuN58Y3BLbJtn+sNkJsWeINDOHRwEBUupQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962860; c=relaxed/simple;
-	bh=FoCWUZPMU8wbpWcOvW5tjY7yPDZirI6IUPmq7oxo8Pg=;
+	s=arc-20240116; t=1725964256; c=relaxed/simple;
+	bh=19L8JuHsOlvMHTqOCalNPn0fdQV0KCZ0c+ThuTRuqT8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aeHLDx+4FOboXMX3ufhQY45oHaH/ayDhg/Sl876ir7m8+14VUmhDR8mvZwZatj3S38tvTnTOUj5UpLL1DYJQSyL47B55bqrjdWDpBJOT5lR6EiDmElwLcSPnUUkRUO4PCC8zlbcIH0TqRDZENpOZIxSLXS7cQO0EUR3Jcx4LRo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rG3ftGU+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B625C4CEC3;
-	Tue, 10 Sep 2024 10:07:40 +0000 (UTC)
+	 MIME-Version; b=fmco/+TJ0JK7oseSinZDzHd6ilmYtnzbFEBfnuEyjekMyi/7YjB9vVSbxS3S4/K+KxG1eSvqhRS8ad9cvd6OBVOOwC19zInsc251QccJboUBUUI+OsArIzcVxeMuMzMV/RVHKj7VYhAOAPARPFVzYB/5RIfm5OeHuDTvM/WLjzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oMGlltr8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69ED3C4CEC3;
+	Tue, 10 Sep 2024 10:30:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962860;
-	bh=FoCWUZPMU8wbpWcOvW5tjY7yPDZirI6IUPmq7oxo8Pg=;
+	s=korg; t=1725964255;
+	bh=19L8JuHsOlvMHTqOCalNPn0fdQV0KCZ0c+ThuTRuqT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rG3ftGU+jHVQoBjUa1yO3JaWTmVNre40HkHMPTLT0FpH7jTjclxaU6XvqZUBlIBiF
-	 m5yCTESMmQQ8h2cCTJmJ20O67IO2EoYSqxC2P/SEMTKP8tE4HVAt7ZYHsTyYgpYKCQ
-	 HvD8lc3vuXm7dIfeuzhSeF3tUCYWHwS4lsHCfEX4=
+	b=oMGlltr8w2+PuOgTQid2LUOLfWkOQ+NuQU2JwT4RvGw6VNH96JC/bBIDp7OgjVrV6
+	 oVyXjTgj+mjmlzwbPnRHQ+aXmX2Jx3ACJI+UWF6aF3bBtCnTSVo8ksFUlg70t4oY/d
+	 E+gxPvu4yuOjzM8W7rgYoMXB4PW+cNmyz8ZdhqAc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arend van Spriel <arend.vanspriel@broadcom.com>,
-	Reijer Boekhoff <reijerboekhoff@protonmail.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Jules Irenge <jbi.octave@gmail.com>,
+	Dominik Brodowski <linux@dominikbrodowski.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 055/192] wifi: brcmsmac: advertise MFP_CAPABLE to enable WPA3
-Date: Tue, 10 Sep 2024 11:31:19 +0200
-Message-ID: <20240910092600.245193181@linuxfoundation.org>
+Subject: [PATCH 6.6 093/269] pcmcia: Use resource_size function on resource object
+Date: Tue, 10 Sep 2024 11:31:20 +0200
+Message-ID: <20240910092611.530162446@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arend van Spriel <arend.vanspriel@broadcom.com>
+From: Jules Irenge <jbi.octave@gmail.com>
 
-[ Upstream commit dbb5265a5d7cca1cdba7736dba313ab7d07bc19d ]
+[ Upstream commit 24a025497e7e883bd2adef5d0ece1e9b9268009f ]
 
-After being asked about support for WPA3 for BCM43224 chipset it
-was found that all it takes is setting the MFP_CAPABLE flag and
-mac80211 will take care of all that is needed [1].
+Cocinnele reports a warning
 
-Link: https://lore.kernel.org/linux-wireless/20200526155909.5807-2-Larry.Finger@lwfinger.net/ [1]
-Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
-Tested-by: Reijer Boekhoff <reijerboekhoff@protonmail.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/20240617122609.349582-1-arend.vanspriel@broadcom.com
+WARNING: Suspicious code. resource_size is maybe missing with root
+
+The root cause is the function resource_size is not used when needed
+
+Use resource_size() on variable "root" of type resource
+
+Signed-off-by: Jules Irenge <jbi.octave@gmail.com>
+Signed-off-by: Dominik Brodowski <linux@dominikbrodowski.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/pcmcia/yenta_socket.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
-index a4034d44609b..94b1e4f15b41 100644
---- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
-+++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
-@@ -1089,6 +1089,7 @@ static int ieee_hw_init(struct ieee80211_hw *hw)
- 	ieee80211_hw_set(hw, AMPDU_AGGREGATION);
- 	ieee80211_hw_set(hw, SIGNAL_DBM);
- 	ieee80211_hw_set(hw, REPORTS_TX_ACK_STATUS);
-+	ieee80211_hw_set(hw, MFP_CAPABLE);
- 
- 	hw->extra_tx_headroom = brcms_c_get_header_len();
- 	hw->queues = N_TX_QUEUES;
+diff --git a/drivers/pcmcia/yenta_socket.c b/drivers/pcmcia/yenta_socket.c
+index 1365eaa20ff4..ff169124929c 100644
+--- a/drivers/pcmcia/yenta_socket.c
++++ b/drivers/pcmcia/yenta_socket.c
+@@ -638,11 +638,11 @@ static int yenta_search_one_res(struct resource *root, struct resource *res,
+ 		start = PCIBIOS_MIN_CARDBUS_IO;
+ 		end = ~0U;
+ 	} else {
+-		unsigned long avail = root->end - root->start;
++		unsigned long avail = resource_size(root);
+ 		int i;
+ 		size = BRIDGE_MEM_MAX;
+-		if (size > avail/8) {
+-			size = (avail+1)/8;
++		if (size > (avail - 1) / 8) {
++			size = avail / 8;
+ 			/* round size down to next power of 2 */
+ 			i = 0;
+ 			while ((size /= 2) != 0)
 -- 
 2.43.0
 
