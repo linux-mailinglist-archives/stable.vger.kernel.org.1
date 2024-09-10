@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-75713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1AD1973FFF
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 19:34:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 46857974002
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 19:35:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 305D51C20F0D
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 17:34:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 78F3E1C258BA
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 17:34:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31BA31A01C6;
-	Tue, 10 Sep 2024 17:24:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A81F1C1720;
+	Tue, 10 Sep 2024 17:24:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sTQF81pB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CI1rX76a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3C371C0DCD;
-	Tue, 10 Sep 2024 17:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 463A21C0DF4;
+	Tue, 10 Sep 2024 17:24:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725989039; cv=none; b=CwdMBTUeLUpijmGux2Cz3yEOkJIoTkSqGlFEIQm1Qtia2Y3I750nHEwhTMrlpFoSol457olWFma6Dylltt2xbCUIqjRArbzDSTOZTueDLaFFuhi8+KH+KeiYlc62CPTYxrMzD8DskyvNDoPPp+FOdb6xMvw/I8YqPlIW/SUkank=
+	t=1725989041; cv=none; b=T4T70YePvF/sF+knHpuu/TmK0+x8MATp8qrKL7N7Bml3MxgVFd715Iv43kipXOEFF94kMNCdFIgSLUlcA+pOV5OAUqdrJb8tp8uaYGnlI7B7KbOgZfbxfN+eU6Ek14sHNpCWJpCh6408GnEj2+/PhYMWM/OIlpt/BNNj4DzmjOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725989039; c=relaxed/simple;
-	bh=FUKeRmE6BFe4XXkctFyJAIGZZXQNUr6MILo4sD+IpVo=;
+	s=arc-20240116; t=1725989041; c=relaxed/simple;
+	bh=lCF0R7gkYu9gR9wi3pViJNLBYIi/XgL9HE0iP/L0WsI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Am08LdXZczsNxYtidXSroWZI6kRl70DJEAk52bPT2Of5iX3d90HCVvW6nM8A4hkKylYLsRjfaS2BJqhVmtzbSbNDXdBo9n3OOldicFwDP3O3gxP5w9EUBdqru9XhRqGV/HIQwTk+dox7JFJexhfLdCee7tqhLBfAFnBOW4eP0t8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sTQF81pB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC6D5C4CECC;
-	Tue, 10 Sep 2024 17:23:58 +0000 (UTC)
+	 MIME-Version; b=P1PIl3GjSriIA5B05fi4LbU7dXR7XU++QJKNEjAr8bcURNUmyQZ32vwlFsB4sCnGLph0fZg2cZnwHaWsGOfWcF3XJuTkhIN7i8VWAt//wLTS5xoSnhxEClc/mooxgjdOrO8ZQ8Ba/DLto+FIGUVc9JTc9esvAXMoOyIzc2KwIqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CI1rX76a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF111C4CECD;
+	Tue, 10 Sep 2024 17:23:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725989039;
-	bh=FUKeRmE6BFe4XXkctFyJAIGZZXQNUr6MILo4sD+IpVo=;
+	s=k20201202; t=1725989041;
+	bh=lCF0R7gkYu9gR9wi3pViJNLBYIi/XgL9HE0iP/L0WsI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sTQF81pBt5UDwTA2tpkQ/EXIUcaXZr7JaxLbCAajl2lOuoHGqFO+JBtVPMFFRRHkc
-	 LQ2UGWHNCXC1Fu3iwvz9Qjh1Tjnb4119rSANgq/9bGjR+ggoxKArsY1y6kOhnt6lWU
-	 oqKUsbUt39cJJVGY1r9RBVT9biv/1mkq8ovplNysHsfj65Zf0bqwl6S+xl3sdDcNwu
-	 VmN+tCYRbbMGCUG1ECrwoiMJneAYVqrxV4Ikkh2IMXRFDtraOwHizy8E4ar4aoo03d
-	 IVmf99V9d4GwWON20uCcrjFwTKTqQYOv63z5VzOd2a5I4jxHoMmwfzxQPK6mSH6JZo
-	 gwlyf9xsD87jQ==
+	b=CI1rX76aWv2hTxmsRQyuoNAR/plHm9gx0TDnwHKCezikVbfWgL2xbs/M3ARGSh2z5
+	 DA5Lw3WhU1V6B4AzP1OrJEXS16BCTBhVxr+8G8ksF8tWiHsfcUf/8JE2VxLwGnMyIb
+	 ld//ccOyjqe4bXvMov9Fr2/VHy6YRqQNFAstv/Y+CeSQ7qvkN0AUKTcahDRZEOapkZ
+	 3GStvLCBEiwPCLUeD+UD6x1U1twDqcal1/09LBEa//NTkOVpVkhG7R4GChSaP6KSXH
+	 a3geGDx6XbpjCHBpQG9oG6cZGL/mowgMIKSbx7qv1wJwmrlC4CR4/UEnGTTZ+slMwl
+	 RM7IXSU5sP8/Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Fabio Estevam <festevam@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Mark Brown <broonie@kernel.org>,
+Cc: "hongchi.peng" <hongchi.peng@siengine.com>,
+	Liviu Dudau <liviu.dudau@arm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-spi@vger.kernel.org
-Subject: [PATCH AUTOSEL 5.15 3/5] spi: spidev: Add an entry for elgin,jg10309-01
-Date: Tue, 10 Sep 2024 13:23:47 -0400
-Message-ID: <20240910172352.2416462-3-sashal@kernel.org>
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	daniel@ffwll.ch,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 5.15 4/5] drm: komeda: Fix an issue related to normalized zpos
+Date: Tue, 10 Sep 2024 13:23:48 -0400
+Message-ID: <20240910172352.2416462-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240910172352.2416462-1-sashal@kernel.org>
 References: <20240910172352.2416462-1-sashal@kernel.org>
@@ -66,36 +70,77 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 5.15.166
 Content-Transfer-Encoding: 8bit
 
-From: Fabio Estevam <festevam@gmail.com>
+From: "hongchi.peng" <hongchi.peng@siengine.com>
 
-[ Upstream commit 5f3eee1eef5d0edd23d8ac0974f56283649a1512 ]
+[ Upstream commit 258905cb9a6414be5c9ca4aa20ef855f8dc894d4 ]
 
-The rv1108-elgin-r1 board has an LCD controlled via SPI in userspace.
-The marking on the LCD is JG10309-01.
+We use komeda_crtc_normalize_zpos to normalize zpos of affected planes
+to their blending zorder in CU. If there's only one slave plane in
+affected planes and its layer_split property is enabled, order++ for
+its split layer, so that when calculating the normalized_zpos
+of master planes, the split layer of the slave plane is included, but
+the max_slave_zorder does not include the split layer and keep zero
+because there's only one slave plane in affacted planes, although we
+actually use two slave layers in this commit.
 
-Add the "elgin,jg10309-01" compatible string.
+In most cases, this bug does not result in a commit failure, but assume
+the following situation:
+    slave_layer 0: zpos = 0, layer split enabled, normalized_zpos =
+    0;(use slave_layer 2 as its split layer)
+    master_layer 0: zpos = 2, layer_split enabled, normalized_zpos =
+    2;(use master_layer 2 as its split layer)
+    master_layer 1: zpos = 4, normalized_zpos = 4;
+    master_layer 3: zpos = 5, normalized_zpos = 5;
+    kcrtc_st->max_slave_zorder = 0;
+When we use master_layer 3 as a input of CU in function
+komeda_compiz_set_input and check it with function
+komeda_component_check_input, the parameter idx is equal to
+normailzed_zpos minus max_slave_zorder, the value of idx is 5
+and is euqal to CU's max_active_inputs, so that
+komeda_component_check_input returns a -EINVAL value.
 
-Signed-off-by: Fabio Estevam <festevam@gmail.com>
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patch.msgid.link/20240828180057.3167190-2-festevam@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+To fix the bug described above, when calculating the max_slave_zorder
+with the layer_split enabled, count the split layer in this calculation
+directly.
+
+Signed-off-by: hongchi.peng <hongchi.peng@siengine.com>
+Acked-by: Liviu Dudau <liviu.dudau@arm.com>
+Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240826024517.3739-1-hongchi.peng@siengine.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spidev.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/arm/display/komeda/komeda_kms.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index 0b97e5b97a01..8570cd35b7e5 100644
---- a/drivers/spi/spidev.c
-+++ b/drivers/spi/spidev.c
-@@ -712,6 +712,7 @@ static int spidev_of_check(struct device *dev)
- static const struct of_device_id spidev_dt_ids[] = {
- 	{ .compatible = "cisco,spi-petra", .data = &spidev_of_check },
- 	{ .compatible = "dh,dhcom-board", .data = &spidev_of_check },
-+	{ .compatible = "elgin,jg10309-01", .data = &spidev_of_check },
- 	{ .compatible = "lineartechnology,ltc2488", .data = &spidev_of_check },
- 	{ .compatible = "lwn,bk4", .data = &spidev_of_check },
- 	{ .compatible = "menlo,m53cpld", .data = &spidev_of_check },
+diff --git a/drivers/gpu/drm/arm/display/komeda/komeda_kms.c b/drivers/gpu/drm/arm/display/komeda/komeda_kms.c
+index 327051bba5b6..cee7b8d58830 100644
+--- a/drivers/gpu/drm/arm/display/komeda/komeda_kms.c
++++ b/drivers/gpu/drm/arm/display/komeda/komeda_kms.c
+@@ -163,6 +163,7 @@ static int komeda_crtc_normalize_zpos(struct drm_crtc *crtc,
+ 	struct drm_plane *plane;
+ 	struct list_head zorder_list;
+ 	int order = 0, err;
++	u32 slave_zpos = 0;
+ 
+ 	DRM_DEBUG_ATOMIC("[CRTC:%d:%s] calculating normalized zpos values\n",
+ 			 crtc->base.id, crtc->name);
+@@ -202,10 +203,13 @@ static int komeda_crtc_normalize_zpos(struct drm_crtc *crtc,
+ 				 plane_st->zpos, plane_st->normalized_zpos);
+ 
+ 		/* calculate max slave zorder */
+-		if (has_bit(drm_plane_index(plane), kcrtc->slave_planes))
++		if (has_bit(drm_plane_index(plane), kcrtc->slave_planes)) {
++			slave_zpos = plane_st->normalized_zpos;
++			if (to_kplane_st(plane_st)->layer_split)
++				slave_zpos++;
+ 			kcrtc_st->max_slave_zorder =
+-				max(plane_st->normalized_zpos,
+-				    kcrtc_st->max_slave_zorder);
++				max(slave_zpos, kcrtc_st->max_slave_zorder);
++		}
+ 	}
+ 
+ 	crtc_st->zpos_changed = true;
 -- 
 2.43.0
 
