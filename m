@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-75036-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 022199732A5
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:25:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 560B99731AE
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:13:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AC8371F213DA
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:25:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0ABBA2891CE
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:13:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBA3518C344;
-	Tue, 10 Sep 2024 10:19:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B3DD199FBA;
+	Tue, 10 Sep 2024 10:09:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e8AoOivY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZsLHiE7x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2BC188A28;
-	Tue, 10 Sep 2024 10:19:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBD7319066D;
+	Tue, 10 Sep 2024 10:09:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963561; cv=none; b=Y9mrSR+yALkKTh35NUYv7BnKxjQkAKpWULjojRToRAxHdUw8C1Z0/ZhsbDcWdsHySpDqa64fNNkfAIASm3y+/wgS5cy3MgXNLAzLsYwD/oJslDkxTXIofDXmAvUK+5Hu7lxVodQZCLLN009qvcCf3u9EdNHi168XJCbylA0FNtw=
+	t=1725962995; cv=none; b=HC5OGlGKTg4bkOYSbCmRxLVt9+O2pM5QMKVogCrLd808xE5xQyS8NZ+9O9DA/jeCZHREQQZ1P+6C7/9DEMmGzsPoXQtfGZZFN4g1yf/ePeNg7DypDR4xItV73WM6DEi4TGt+U6cQush6v+3vDUgTx8Kg0VNPrHSBTQZEuSvwlJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963561; c=relaxed/simple;
-	bh=z0Hhqc4oYGeIQPu3exfBwKdxWTHV+IPlePlg0yyYdfc=;
+	s=arc-20240116; t=1725962995; c=relaxed/simple;
+	bh=yPIY/1gkbfUE7jm8EnTBTZk3daEmcZelGWVMyDoR7XY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qjs1dPuGyE5cMtDS7hiRlhoqUh+hR3QpWizalpb0MNm2TPduvb1e9BC0s094lcePwWtjUmY40ztjsh7xyowpEk+oYV/9ehX781Ktd8Y8wSNux17DwuLzrrbfpTfl/03BnykefG5zqnc//RggKbnrhPm5Y+lECUALo45CpRETrsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e8AoOivY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A3F0C4CEC3;
-	Tue, 10 Sep 2024 10:19:20 +0000 (UTC)
+	 MIME-Version; b=DjZrXJ/n/Wulw3vt7PvcgdrCFwuegcWerokaHI+GzPTBNUb5IDNXeYcU/GLXGVtdPV1EMeMHBUIXHDwr1vp1QVZwQUEvR5mMYObu0s/C3ZzMjvvLAua6agI3hANg1HLswnVzC5U5unrfQcr1PvCpsE5/z1XMLToS3tvoz/Ftb24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZsLHiE7x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64D5EC4CEC3;
+	Tue, 10 Sep 2024 10:09:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963561;
-	bh=z0Hhqc4oYGeIQPu3exfBwKdxWTHV+IPlePlg0yyYdfc=;
+	s=korg; t=1725962994;
+	bh=yPIY/1gkbfUE7jm8EnTBTZk3daEmcZelGWVMyDoR7XY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e8AoOivYWuL+y3rprtoxs+386kaw59B4Yy2ga0wpz/4uuoTYavOgfVxNt0CqHgA/W
-	 MWD/Hkt8Thc76z2DT464dSO8GQIrgme+sxqTkjyZDE9XftqBLbX0bxpYKgaFfO55cY
-	 9v1y9U8ovWffeJXV06kXPdxW0Lb0Pgl0yrheMBQo=
+	b=ZsLHiE7xs9NijnHSkl601c6/z8ViItJCXtnbbyZEqEfXhDDuu/7Ukk4fW1CVX3/mK
+	 23umvY8truT9LwvmRiEksjcG4s6QnBvhTvAbW8zYKTjC9DAjsWXL5219VBL5LSpSYh
+	 5wJ0TGEVNw/A4XfqEEM+RNxgGVpsiZrO6SJ37qnw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.15 100/214] mptcp: pm: skip connecting to already established sf
-Date: Tue, 10 Sep 2024 11:32:02 +0200
-Message-ID: <20240910092602.882002649@linuxfoundation.org>
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 099/192] hwmon: (lm95234) Fix underflows seen when writing limit attributes
+Date: Tue, 10 Sep 2024 11:32:03 +0200
+Message-ID: <20240910092602.093836910@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-References: <20240910092558.714365667@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Guenter Roeck <linux@roeck-us.net>
 
-commit bc19ff57637ff563d2bdf2b385b48c41e6509e0d upstream.
+[ Upstream commit af64e3e1537896337405f880c1e9ac1f8c0c6198 ]
 
-The lookup_subflow_by_daddr() helper checks if there is already a
-subflow connected to this address. But there could be a subflow that is
-closing, but taking time due to some reasons: latency, losses, data to
-process, etc.
+DIV_ROUND_CLOSEST() after kstrtol() results in an underflow if a large
+negative number such as -9223372036854775808 is provided by the user.
+Fix it by reordering clamp_val() and DIV_ROUND_CLOSEST() operations.
 
-If an ADD_ADDR is received while the endpoint is being closed, it is
-better to try connecting to it, instead of rejecting it: the peer which
-has sent the ADD_ADDR will not be notified that the ADD_ADDR has been
-rejected for this reason, and the expected subflow will not be created
-at the end.
-
-This helper should then only look for subflows that are established, or
-going to be, but not the ones being closed.
-
-Fixes: d84ad04941c3 ("mptcp: skip connecting the connected address")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-[ Conflicts in pm_netlink.c, due to commit 4638de5aefe5 ("mptcp: handle
-  local addrs announced by userspace PMs"), not in this version, and
-  changing the context. The same fix can still be applied. ]
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/pm_netlink.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/hwmon/lm95234.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -145,12 +145,15 @@ static bool lookup_subflow_by_daddr(cons
- {
- 	struct mptcp_subflow_context *subflow;
- 	struct mptcp_addr_info cur;
--	struct sock_common *skc;
+diff --git a/drivers/hwmon/lm95234.c b/drivers/hwmon/lm95234.c
+index b4a9d0c223c4..db570fe84132 100644
+--- a/drivers/hwmon/lm95234.c
++++ b/drivers/hwmon/lm95234.c
+@@ -301,7 +301,8 @@ static ssize_t tcrit2_store(struct device *dev, struct device_attribute *attr,
+ 	if (ret < 0)
+ 		return ret;
  
- 	list_for_each_entry(subflow, list, node) {
--		skc = (struct sock_common *)mptcp_subflow_tcp_sock(subflow);
-+		struct sock *ssk = mptcp_subflow_tcp_sock(subflow);
+-	val = clamp_val(DIV_ROUND_CLOSEST(val, 1000), 0, index ? 255 : 127);
++	val = DIV_ROUND_CLOSEST(clamp_val(val, 0, (index ? 255 : 127) * 1000),
++				1000);
  
--		remote_address(skc, &cur);
-+		if (!((1 << inet_sk_state_load(ssk)) &
-+		      (TCPF_ESTABLISHED | TCPF_SYN_SENT | TCPF_SYN_RECV)))
-+			continue;
-+
-+		remote_address((struct sock_common *)ssk, &cur);
- 		if (addresses_equal(&cur, daddr, daddr->port))
- 			return true;
- 	}
+ 	mutex_lock(&data->update_lock);
+ 	data->tcrit2[index] = val;
+@@ -350,7 +351,7 @@ static ssize_t tcrit1_store(struct device *dev, struct device_attribute *attr,
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	val = clamp_val(DIV_ROUND_CLOSEST(val, 1000), 0, 255);
++	val = DIV_ROUND_CLOSEST(clamp_val(val, 0, 255000), 1000);
+ 
+ 	mutex_lock(&data->update_lock);
+ 	data->tcrit1[index] = val;
+@@ -391,7 +392,7 @@ static ssize_t tcrit1_hyst_store(struct device *dev,
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	val = DIV_ROUND_CLOSEST(val, 1000);
++	val = DIV_ROUND_CLOSEST(clamp_val(val, -255000, 255000), 1000);
+ 	val = clamp_val((int)data->tcrit1[index] - val, 0, 31);
+ 
+ 	mutex_lock(&data->update_lock);
+@@ -431,7 +432,7 @@ static ssize_t offset_store(struct device *dev, struct device_attribute *attr,
+ 		return ret;
+ 
+ 	/* Accuracy is 1/2 degrees C */
+-	val = clamp_val(DIV_ROUND_CLOSEST(val, 500), -128, 127);
++	val = DIV_ROUND_CLOSEST(clamp_val(val, -64000, 63500), 500);
+ 
+ 	mutex_lock(&data->update_lock);
+ 	data->toffset[index] = val;
+-- 
+2.43.0
+
 
 
 
