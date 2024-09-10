@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-74860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C6BA9731C6
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:14:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F1A297340A
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:37:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3B70A28BE8D
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:14:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32FBF28BC13
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:37:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBB17190663;
-	Tue, 10 Sep 2024 10:10:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69FE3192D62;
+	Tue, 10 Sep 2024 10:33:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tK9FeY1N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CbBgKwAS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9BEB18FC67;
-	Tue, 10 Sep 2024 10:10:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 298EC18F2F0;
+	Tue, 10 Sep 2024 10:33:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963044; cv=none; b=nOCnoHlPu5tk8B04e8aJNJMXhZpoz6h49s8QO22gs4ZpD/3vlInYum0joeq7i0pJ6KbBweK5td39GCyNmzaUcH+ZPXOAiqP9euKgDpDbnAIuHyJptCxzEw/qSIO5rmmLGl0tZdNYABSUojnlaxw23R0Kdiiwai4GyPYksJ1T304=
+	t=1725964432; cv=none; b=DUmXQRYl7Tk1fHmrlYp7tO/YJ9q9P87qxYB3hTism5cunkQL8jA/tLMRwcHJZcffsH6cEQ22BKVMLmVmUjQJePPAsx8POtHZYQZnNgcL80onnU5+O6Y5OfiTG1fT+kkIrVoBkq0smkLi5wLEYeXMyd/4owsmLv6CFUt/qncqIJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963044; c=relaxed/simple;
-	bh=StKbsjty1QVzwDYRbn/6f1cNZWseJ9pMEFL3VnHpk8Y=;
+	s=arc-20240116; t=1725964432; c=relaxed/simple;
+	bh=dUWR+zLobtDhikyPNh4kRUNCF1m6W2cIceZa16GWQfc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s/GWygCMI891FPz0AV6Fqp2x+W24Q71pUFlyJTjToebk+WMAj78p9V+NOi8PZkpywtlGNQR8txopJwL6X5GCgikGvQLLyLJV6qENkKMyKudpwq/lFSkes5CFHzrfbS7B1E85bRE/iTBqoCcCOqWBc5wpEB6wpMsmd3S6odg900I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tK9FeY1N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32D9BC4CEC3;
-	Tue, 10 Sep 2024 10:10:44 +0000 (UTC)
+	 MIME-Version; b=R2C4TDxBfvwYeUXoV82v0LXkJhILsBHnkjJKJqBV8eQ/U7y/6nkR+mtpGRnnYiFYLlN9GjZBsm8BkHVCNSvLWmLZgyfcUPIHMLGbir06t+LHWOl5fD2NA7+aFhLoyoSOaKi0tljHatP+6w6s05Eo5A/HC1QlIBa+bJveaNhzwYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CbBgKwAS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BC62C4CEC3;
+	Tue, 10 Sep 2024 10:33:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963044;
-	bh=StKbsjty1QVzwDYRbn/6f1cNZWseJ9pMEFL3VnHpk8Y=;
+	s=korg; t=1725964431;
+	bh=dUWR+zLobtDhikyPNh4kRUNCF1m6W2cIceZa16GWQfc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tK9FeY1NI+vunrNgjGPl+igZopHEdlFLdC5XTyEErWPS1ZrrH0BO7Hwzt8ev5N4CE
-	 35xG04Fr9fS/SqGPE85mZoGWpVt/0Xiqt1GABUjU/w4pbQfoaJnDq0APfOEbVYZp0J
-	 ++WtsHxQN0ap18NMzcqRY+srvsIGT4K+6EHilJc4=
+	b=CbBgKwASDN/Zu2vjGhEdGv4RCvYmO9Rt/gZ8EKt7O3tkXxXP0UVNVtD4rRmBVc8FL
+	 JONzcub/Dk67m3tNbFGs0vh4JqRgB6D60Z9YtiDWaRDplnF6sX8lJoOQ5L8A8//MX5
+	 3LWcVin7RWgCNSbd03hTt/IsSwiVjQn4gwltQcmk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Daniel Vetter <daniel.vetter@ffwll.ch>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 117/192] kselftests: dmabuf-heaps: Ensure the driver name is null-terminated
+Subject: [PATCH 6.6 154/269] hwmon: (nct6775-core) Fix underflows seen when writing limit attributes
 Date: Tue, 10 Sep 2024 11:32:21 +0200
-Message-ID: <20240910092602.842525806@linuxfoundation.org>
+Message-ID: <20240910092613.697206265@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +61,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zenghui Yu <yuzenghui@huawei.com>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit 291e4baf70019f17a81b7b47aeb186b27d222159 ]
+[ Upstream commit 0403e10bf0824bf0ec2bb135d4cf1c0cc3bf4bf0 ]
 
-Even if a vgem device is configured in, we will skip the import_vgem_fd()
-test almost every time.
+DIV_ROUND_CLOSEST() after kstrtol() results in an underflow if a large
+negative number such as -9223372036854775808 is provided by the user.
+Fix it by reordering clamp_val() and DIV_ROUND_CLOSEST() operations.
 
-  TAP version 13
-  1..11
-  # Testing heap: system
-  # =======================================
-  # Testing allocation and importing:
-  ok 1 # SKIP Could not open vgem -1
-
-The problem is that we use the DRM_IOCTL_VERSION ioctl to query the driver
-version information but leave the name field a non-null-terminated string.
-Terminate it properly to actually test against the vgem device.
-
-While at it, let's check the length of the driver name is exactly 4 bytes
-and return early otherwise (in case there is a name like "vgemfoo" that
-gets converted to "vgem\0" unexpectedly).
-
-Signed-off-by: Zenghui Yu <yuzenghui@huawei.com>
-Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240729024604.2046-1-yuzenghui@huawei.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/dmabuf-heaps/dmabuf-heap.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/hwmon/nct6775-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/dmabuf-heaps/dmabuf-heap.c b/tools/testing/selftests/dmabuf-heaps/dmabuf-heap.c
-index 890a8236a8ba..2809f9a25c43 100644
---- a/tools/testing/selftests/dmabuf-heaps/dmabuf-heap.c
-+++ b/tools/testing/selftests/dmabuf-heaps/dmabuf-heap.c
-@@ -28,9 +28,11 @@ static int check_vgem(int fd)
- 	version.name = name;
+diff --git a/drivers/hwmon/nct6775-core.c b/drivers/hwmon/nct6775-core.c
+index f3bf2e4701c3..8da7aa1614d7 100644
+--- a/drivers/hwmon/nct6775-core.c
++++ b/drivers/hwmon/nct6775-core.c
+@@ -2262,7 +2262,7 @@ store_temp_offset(struct device *dev, struct device_attribute *attr,
+ 	if (err < 0)
+ 		return err;
  
- 	ret = ioctl(fd, DRM_IOCTL_VERSION, &version);
--	if (ret)
-+	if (ret || version.name_len != 4)
- 		return 0;
+-	val = clamp_val(DIV_ROUND_CLOSEST(val, 1000), -128, 127);
++	val = DIV_ROUND_CLOSEST(clamp_val(val, -128000, 127000), 1000);
  
-+	name[4] = '\0';
-+
- 	return !strcmp(name, "vgem");
- }
- 
+ 	mutex_lock(&data->update_lock);
+ 	data->temp_offset[nr] = val;
 -- 
 2.43.0
 
