@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-74229-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74693-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF403972E27
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:40:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 176D59730C4
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:04:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 504FB1F24212
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:40:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8E9F3B29303
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:04:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D16C18C006;
-	Tue, 10 Sep 2024 09:39:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35E1018B491;
+	Tue, 10 Sep 2024 10:02:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WMuhGBwb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jko4v4Gz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF4AD18A6B9;
-	Tue, 10 Sep 2024 09:39:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E887214D431;
+	Tue, 10 Sep 2024 10:02:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961193; cv=none; b=jl8VEpOobr4YB0wcsweSHCA1MS/WUxborVGqOLSX8laJZw+lDXkDoWYbzeWqb9n7qK7E1i+OPP2X6BnoduW+D9yH/2FdLgdn8FFqv71GmzeSuJQlqcM3rIedn0nFRHyh5QSBt9UnXl3JCYXq55qo5Xq+yajoPxZVrkS9bWxf9zg=
+	t=1725962550; cv=none; b=DZLUO7MTYJosPJb+brl/vgR1lLfc4A2werLpE+lJol6e4mp29ReigKurS5IhduWtILlxJKwMtQdJSKa6QSHsTHHNT4bcBjG5F5oISiDVn8q1dl4QOLvxR+u/dA/VqChvdBJt6GyoLqOzhQOc1ZR2G+I7yViniE7bwPDag7wnw+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961193; c=relaxed/simple;
-	bh=LeUVYEJayxpyqVfACtd7cZ4LjWJMS6DyTiVRV1yIslk=;
+	s=arc-20240116; t=1725962550; c=relaxed/simple;
+	bh=9VuAzwegBgxkPbmHkmBOYSyXFQR0R7H8iMfNbYPQ/Eo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lzs8YprJflCs3lkUKgYsbS62dcCvkTqzMfCNVale/hmI/5pFLzIotnzZSaHC3yqMOXRzovG+d6t2xdt2J3IsLQ7eKgRu62fQORQoiAd+FE7liJ8kjTMDUiKH1fAVgfzKp0AksijnPk5y/QqnC8vyDBJIevGNu3wJoUT8Ps1kFnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WMuhGBwb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73E38C4CEC6;
-	Tue, 10 Sep 2024 09:39:52 +0000 (UTC)
+	 MIME-Version; b=J22Vvv1l1XDfNx38SVPswFR5Rz15MF94hcZOLG4xFoCrWBgj0GjHFgdP3rl/0fjH4jrjaIXcbz7gLva9yNsWYRZ6TQWsgxtyyrabuZWFZ7BeiWjimUmhmHJnptzrWQM/wigUOW9hTqfMiWeCOlCr3JHzvVaLhLD39XsZSJoUNF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jko4v4Gz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66BFDC4CEC3;
+	Tue, 10 Sep 2024 10:02:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961192;
-	bh=LeUVYEJayxpyqVfACtd7cZ4LjWJMS6DyTiVRV1yIslk=;
+	s=korg; t=1725962549;
+	bh=9VuAzwegBgxkPbmHkmBOYSyXFQR0R7H8iMfNbYPQ/Eo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WMuhGBwbMl9Tkvb8jcOBU8LSrIPEvhqKJoySd/1Tl7iFOg7Ygnd/GhAj7Xae6Xw2K
-	 EBPBZelxSt7jS4SyGjRDCL521gRxOX5Mw0emHVnX4FTLxhSa7mibYSNO4XdKdF1YWc
-	 XbOISbVNs4U/ifpJuXq1GYRBr6l+Y6ke0emPi9xA=
+	b=Jko4v4Gz/odYgLFBCdTDwTuGwJilHTBKd+zQ8TrDEL8TjnPrQW92wsCKv4iiZUxk9
+	 d3TwXDbf06mrGv5vEuTtCN3eonQgZzXwGFi7/1Cw3oOp9e8/vo9y1Op/A+RIMVh4bE
+	 roJs++6lsuaj004gaBxKoNIQWABWq9Q+m+tyQjdY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qing Wang <wangqing@vivo.com>,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	Waiman Long <longman@redhat.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 84/96] nilfs2: replace snprintf in show functions with sysfs_emit
-Date: Tue, 10 Sep 2024 11:32:26 +0200
-Message-ID: <20240910092545.228222517@linuxfoundation.org>
+Subject: [PATCH 5.4 072/121] cgroup: Protect css->cgroup write under css_set_lock
+Date: Tue, 10 Sep 2024 11:32:27 +0200
+Message-ID: <20240910092549.303843427@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
-References: <20240910092541.383432924@linuxfoundation.org>
+In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
+References: <20240910092545.737864202@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,385 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qing Wang <wangqing@vivo.com>
+From: Waiman Long <longman@redhat.com>
 
-[ Upstream commit 3bcd6c5bd483287f4a09d3d59a012d47677b6edc ]
+[ Upstream commit 57b56d16800e8961278ecff0dc755d46c4575092 ]
 
-Patch series "nilfs2 updates".
+The writing of css->cgroup associated with the cgroup root in
+rebind_subsystems() is currently protected only by cgroup_mutex.
+However, the reading of css->cgroup in both proc_cpuset_show() and
+proc_cgroup_show() is protected just by css_set_lock. That makes the
+readers susceptible to racing problems like data tearing or caching.
+It is also a problem that can be reported by KCSAN.
 
-This patch (of 2):
+This can be fixed by using READ_ONCE() and WRITE_ONCE() to access
+css->cgroup. Alternatively, the writing of css->cgroup can be moved
+under css_set_lock as well which is done by this patch.
 
-coccicheck complains about the use of snprintf() in sysfs show functions.
-
-Fix the coccicheck warning:
-
-  WARNING: use scnprintf or sprintf.
-
-Use sysfs_emit instead of scnprintf or sprintf makes more sense.
-
-Link: https://lkml.kernel.org/r/1635151862-11547-1-git-send-email-konishi.ryusuke@gmail.com
-Link: https://lkml.kernel.org/r/1634095759-4625-1-git-send-email-wangqing@vivo.com
-Link: https://lkml.kernel.org/r/1635151862-11547-2-git-send-email-konishi.ryusuke@gmail.com
-Signed-off-by: Qing Wang <wangqing@vivo.com>
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Stable-dep-of: 683408258917 ("nilfs2: protect references to superblock parameters exposed in sysfs")
+Signed-off-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/sysfs.c | 76 +++++++++++++++++++++++------------------------
- 1 file changed, 38 insertions(+), 38 deletions(-)
+ kernel/cgroup/cgroup.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nilfs2/sysfs.c b/fs/nilfs2/sysfs.c
-index 57afd06db62d..63ab8f9e6db3 100644
---- a/fs/nilfs2/sysfs.c
-+++ b/fs/nilfs2/sysfs.c
-@@ -108,7 +108,7 @@ static ssize_t
- nilfs_snapshot_inodes_count_show(struct nilfs_snapshot_attr *attr,
- 				 struct nilfs_root *root, char *buf)
- {
--	return snprintf(buf, PAGE_SIZE, "%llu\n",
-+	return sysfs_emit(buf, "%llu\n",
- 			(unsigned long long)atomic64_read(&root->inodes_count));
- }
- 
-@@ -116,7 +116,7 @@ static ssize_t
- nilfs_snapshot_blocks_count_show(struct nilfs_snapshot_attr *attr,
- 				 struct nilfs_root *root, char *buf)
- {
--	return snprintf(buf, PAGE_SIZE, "%llu\n",
-+	return sysfs_emit(buf, "%llu\n",
- 			(unsigned long long)atomic64_read(&root->blocks_count));
- }
- 
-@@ -129,7 +129,7 @@ static ssize_t
- nilfs_snapshot_README_show(struct nilfs_snapshot_attr *attr,
- 			    struct nilfs_root *root, char *buf)
- {
--	return snprintf(buf, PAGE_SIZE, snapshot_readme_str);
-+	return sysfs_emit(buf, snapshot_readme_str);
- }
- 
- NILFS_SNAPSHOT_RO_ATTR(inodes_count);
-@@ -230,7 +230,7 @@ static ssize_t
- nilfs_mounted_snapshots_README_show(struct nilfs_mounted_snapshots_attr *attr,
- 				    struct the_nilfs *nilfs, char *buf)
- {
--	return snprintf(buf, PAGE_SIZE, mounted_snapshots_readme_str);
-+	return sysfs_emit(buf, mounted_snapshots_readme_str);
- }
- 
- NILFS_MOUNTED_SNAPSHOTS_RO_ATTR(README);
-@@ -268,7 +268,7 @@ nilfs_checkpoints_checkpoints_number_show(struct nilfs_checkpoints_attr *attr,
- 
- 	ncheckpoints = cpstat.cs_ncps;
- 
--	return snprintf(buf, PAGE_SIZE, "%llu\n", ncheckpoints);
-+	return sysfs_emit(buf, "%llu\n", ncheckpoints);
- }
- 
- static ssize_t
-@@ -291,7 +291,7 @@ nilfs_checkpoints_snapshots_number_show(struct nilfs_checkpoints_attr *attr,
- 
- 	nsnapshots = cpstat.cs_nsss;
- 
--	return snprintf(buf, PAGE_SIZE, "%llu\n", nsnapshots);
-+	return sysfs_emit(buf, "%llu\n", nsnapshots);
- }
- 
- static ssize_t
-@@ -305,7 +305,7 @@ nilfs_checkpoints_last_seg_checkpoint_show(struct nilfs_checkpoints_attr *attr,
- 	last_cno = nilfs->ns_last_cno;
- 	spin_unlock(&nilfs->ns_last_segment_lock);
- 
--	return snprintf(buf, PAGE_SIZE, "%llu\n", last_cno);
-+	return sysfs_emit(buf, "%llu\n", last_cno);
- }
- 
- static ssize_t
-@@ -319,7 +319,7 @@ nilfs_checkpoints_next_checkpoint_show(struct nilfs_checkpoints_attr *attr,
- 	cno = nilfs->ns_cno;
- 	up_read(&nilfs->ns_segctor_sem);
- 
--	return snprintf(buf, PAGE_SIZE, "%llu\n", cno);
-+	return sysfs_emit(buf, "%llu\n", cno);
- }
- 
- static const char checkpoints_readme_str[] =
-@@ -335,7 +335,7 @@ static ssize_t
- nilfs_checkpoints_README_show(struct nilfs_checkpoints_attr *attr,
- 				struct the_nilfs *nilfs, char *buf)
- {
--	return snprintf(buf, PAGE_SIZE, checkpoints_readme_str);
-+	return sysfs_emit(buf, checkpoints_readme_str);
- }
- 
- NILFS_CHECKPOINTS_RO_ATTR(checkpoints_number);
-@@ -366,7 +366,7 @@ nilfs_segments_segments_number_show(struct nilfs_segments_attr *attr,
- 				     struct the_nilfs *nilfs,
- 				     char *buf)
- {
--	return snprintf(buf, PAGE_SIZE, "%lu\n", nilfs->ns_nsegments);
-+	return sysfs_emit(buf, "%lu\n", nilfs->ns_nsegments);
- }
- 
- static ssize_t
-@@ -374,7 +374,7 @@ nilfs_segments_blocks_per_segment_show(struct nilfs_segments_attr *attr,
- 					struct the_nilfs *nilfs,
- 					char *buf)
- {
--	return snprintf(buf, PAGE_SIZE, "%lu\n", nilfs->ns_blocks_per_segment);
-+	return sysfs_emit(buf, "%lu\n", nilfs->ns_blocks_per_segment);
- }
- 
- static ssize_t
-@@ -388,7 +388,7 @@ nilfs_segments_clean_segments_show(struct nilfs_segments_attr *attr,
- 	ncleansegs = nilfs_sufile_get_ncleansegs(nilfs->ns_sufile);
- 	up_read(&NILFS_MDT(nilfs->ns_dat)->mi_sem);
- 
--	return snprintf(buf, PAGE_SIZE, "%lu\n", ncleansegs);
-+	return sysfs_emit(buf, "%lu\n", ncleansegs);
- }
- 
- static ssize_t
-@@ -408,7 +408,7 @@ nilfs_segments_dirty_segments_show(struct nilfs_segments_attr *attr,
- 		return err;
- 	}
- 
--	return snprintf(buf, PAGE_SIZE, "%llu\n", sustat.ss_ndirtysegs);
-+	return sysfs_emit(buf, "%llu\n", sustat.ss_ndirtysegs);
- }
- 
- static const char segments_readme_str[] =
-@@ -424,7 +424,7 @@ nilfs_segments_README_show(struct nilfs_segments_attr *attr,
- 			    struct the_nilfs *nilfs,
- 			    char *buf)
- {
--	return snprintf(buf, PAGE_SIZE, segments_readme_str);
-+	return sysfs_emit(buf, segments_readme_str);
- }
- 
- NILFS_SEGMENTS_RO_ATTR(segments_number);
-@@ -461,7 +461,7 @@ nilfs_segctor_last_pseg_block_show(struct nilfs_segctor_attr *attr,
- 	last_pseg = nilfs->ns_last_pseg;
- 	spin_unlock(&nilfs->ns_last_segment_lock);
- 
--	return snprintf(buf, PAGE_SIZE, "%llu\n",
-+	return sysfs_emit(buf, "%llu\n",
- 			(unsigned long long)last_pseg);
- }
- 
-@@ -476,7 +476,7 @@ nilfs_segctor_last_seg_sequence_show(struct nilfs_segctor_attr *attr,
- 	last_seq = nilfs->ns_last_seq;
- 	spin_unlock(&nilfs->ns_last_segment_lock);
- 
--	return snprintf(buf, PAGE_SIZE, "%llu\n", last_seq);
-+	return sysfs_emit(buf, "%llu\n", last_seq);
- }
- 
- static ssize_t
-@@ -490,7 +490,7 @@ nilfs_segctor_last_seg_checkpoint_show(struct nilfs_segctor_attr *attr,
- 	last_cno = nilfs->ns_last_cno;
- 	spin_unlock(&nilfs->ns_last_segment_lock);
- 
--	return snprintf(buf, PAGE_SIZE, "%llu\n", last_cno);
-+	return sysfs_emit(buf, "%llu\n", last_cno);
- }
- 
- static ssize_t
-@@ -504,7 +504,7 @@ nilfs_segctor_current_seg_sequence_show(struct nilfs_segctor_attr *attr,
- 	seg_seq = nilfs->ns_seg_seq;
- 	up_read(&nilfs->ns_segctor_sem);
- 
--	return snprintf(buf, PAGE_SIZE, "%llu\n", seg_seq);
-+	return sysfs_emit(buf, "%llu\n", seg_seq);
- }
- 
- static ssize_t
-@@ -518,7 +518,7 @@ nilfs_segctor_current_last_full_seg_show(struct nilfs_segctor_attr *attr,
- 	segnum = nilfs->ns_segnum;
- 	up_read(&nilfs->ns_segctor_sem);
- 
--	return snprintf(buf, PAGE_SIZE, "%llu\n", segnum);
-+	return sysfs_emit(buf, "%llu\n", segnum);
- }
- 
- static ssize_t
-@@ -532,7 +532,7 @@ nilfs_segctor_next_full_seg_show(struct nilfs_segctor_attr *attr,
- 	nextnum = nilfs->ns_nextnum;
- 	up_read(&nilfs->ns_segctor_sem);
- 
--	return snprintf(buf, PAGE_SIZE, "%llu\n", nextnum);
-+	return sysfs_emit(buf, "%llu\n", nextnum);
- }
- 
- static ssize_t
-@@ -546,7 +546,7 @@ nilfs_segctor_next_pseg_offset_show(struct nilfs_segctor_attr *attr,
- 	pseg_offset = nilfs->ns_pseg_offset;
- 	up_read(&nilfs->ns_segctor_sem);
- 
--	return snprintf(buf, PAGE_SIZE, "%lu\n", pseg_offset);
-+	return sysfs_emit(buf, "%lu\n", pseg_offset);
- }
- 
- static ssize_t
-@@ -560,7 +560,7 @@ nilfs_segctor_next_checkpoint_show(struct nilfs_segctor_attr *attr,
- 	cno = nilfs->ns_cno;
- 	up_read(&nilfs->ns_segctor_sem);
- 
--	return snprintf(buf, PAGE_SIZE, "%llu\n", cno);
-+	return sysfs_emit(buf, "%llu\n", cno);
- }
- 
- static ssize_t
-@@ -588,7 +588,7 @@ nilfs_segctor_last_seg_write_time_secs_show(struct nilfs_segctor_attr *attr,
- 	ctime = nilfs->ns_ctime;
- 	up_read(&nilfs->ns_segctor_sem);
- 
--	return snprintf(buf, PAGE_SIZE, "%llu\n", ctime);
-+	return sysfs_emit(buf, "%llu\n", ctime);
- }
- 
- static ssize_t
-@@ -616,7 +616,7 @@ nilfs_segctor_last_nongc_write_time_secs_show(struct nilfs_segctor_attr *attr,
- 	nongc_ctime = nilfs->ns_nongc_ctime;
- 	up_read(&nilfs->ns_segctor_sem);
- 
--	return snprintf(buf, PAGE_SIZE, "%llu\n", nongc_ctime);
-+	return sysfs_emit(buf, "%llu\n", nongc_ctime);
- }
- 
- static ssize_t
-@@ -630,7 +630,7 @@ nilfs_segctor_dirty_data_blocks_count_show(struct nilfs_segctor_attr *attr,
- 	ndirtyblks = atomic_read(&nilfs->ns_ndirtyblks);
- 	up_read(&nilfs->ns_segctor_sem);
- 
--	return snprintf(buf, PAGE_SIZE, "%u\n", ndirtyblks);
-+	return sysfs_emit(buf, "%u\n", ndirtyblks);
- }
- 
- static const char segctor_readme_str[] =
-@@ -667,7 +667,7 @@ static ssize_t
- nilfs_segctor_README_show(struct nilfs_segctor_attr *attr,
- 			  struct the_nilfs *nilfs, char *buf)
- {
--	return snprintf(buf, PAGE_SIZE, segctor_readme_str);
-+	return sysfs_emit(buf, segctor_readme_str);
- }
- 
- NILFS_SEGCTOR_RO_ATTR(last_pseg_block);
-@@ -736,7 +736,7 @@ nilfs_superblock_sb_write_time_secs_show(struct nilfs_superblock_attr *attr,
- 	sbwtime = nilfs->ns_sbwtime;
- 	up_read(&nilfs->ns_sem);
- 
--	return snprintf(buf, PAGE_SIZE, "%llu\n", sbwtime);
-+	return sysfs_emit(buf, "%llu\n", sbwtime);
- }
- 
- static ssize_t
-@@ -750,7 +750,7 @@ nilfs_superblock_sb_write_count_show(struct nilfs_superblock_attr *attr,
- 	sbwcount = nilfs->ns_sbwcount;
- 	up_read(&nilfs->ns_sem);
- 
--	return snprintf(buf, PAGE_SIZE, "%u\n", sbwcount);
-+	return sysfs_emit(buf, "%u\n", sbwcount);
- }
- 
- static ssize_t
-@@ -764,7 +764,7 @@ nilfs_superblock_sb_update_frequency_show(struct nilfs_superblock_attr *attr,
- 	sb_update_freq = nilfs->ns_sb_update_freq;
- 	up_read(&nilfs->ns_sem);
- 
--	return snprintf(buf, PAGE_SIZE, "%u\n", sb_update_freq);
-+	return sysfs_emit(buf, "%u\n", sb_update_freq);
- }
- 
- static ssize_t
-@@ -812,7 +812,7 @@ static ssize_t
- nilfs_superblock_README_show(struct nilfs_superblock_attr *attr,
- 				struct the_nilfs *nilfs, char *buf)
- {
--	return snprintf(buf, PAGE_SIZE, sb_readme_str);
-+	return sysfs_emit(buf, sb_readme_str);
- }
- 
- NILFS_SUPERBLOCK_RO_ATTR(sb_write_time);
-@@ -847,7 +847,7 @@ ssize_t nilfs_dev_revision_show(struct nilfs_dev_attr *attr,
- 	u32 major = le32_to_cpu(sbp[0]->s_rev_level);
- 	u16 minor = le16_to_cpu(sbp[0]->s_minor_rev_level);
- 
--	return snprintf(buf, PAGE_SIZE, "%d.%d\n", major, minor);
-+	return sysfs_emit(buf, "%d.%d\n", major, minor);
- }
- 
- static
-@@ -855,7 +855,7 @@ ssize_t nilfs_dev_blocksize_show(struct nilfs_dev_attr *attr,
- 				 struct the_nilfs *nilfs,
- 				 char *buf)
- {
--	return snprintf(buf, PAGE_SIZE, "%u\n", nilfs->ns_blocksize);
-+	return sysfs_emit(buf, "%u\n", nilfs->ns_blocksize);
- }
- 
- static
-@@ -866,7 +866,7 @@ ssize_t nilfs_dev_device_size_show(struct nilfs_dev_attr *attr,
- 	struct nilfs_super_block **sbp = nilfs->ns_sbp;
- 	u64 dev_size = le64_to_cpu(sbp[0]->s_dev_size);
- 
--	return snprintf(buf, PAGE_SIZE, "%llu\n", dev_size);
-+	return sysfs_emit(buf, "%llu\n", dev_size);
- }
- 
- static
-@@ -877,7 +877,7 @@ ssize_t nilfs_dev_free_blocks_show(struct nilfs_dev_attr *attr,
- 	sector_t free_blocks = 0;
- 
- 	nilfs_count_free_blocks(nilfs, &free_blocks);
--	return snprintf(buf, PAGE_SIZE, "%llu\n",
-+	return sysfs_emit(buf, "%llu\n",
- 			(unsigned long long)free_blocks);
- }
- 
-@@ -888,7 +888,7 @@ ssize_t nilfs_dev_uuid_show(struct nilfs_dev_attr *attr,
- {
- 	struct nilfs_super_block **sbp = nilfs->ns_sbp;
- 
--	return snprintf(buf, PAGE_SIZE, "%pUb\n", sbp[0]->s_uuid);
-+	return sysfs_emit(buf, "%pUb\n", sbp[0]->s_uuid);
- }
- 
- static
-@@ -916,7 +916,7 @@ static ssize_t nilfs_dev_README_show(struct nilfs_dev_attr *attr,
- 				     struct the_nilfs *nilfs,
- 				     char *buf)
- {
--	return snprintf(buf, PAGE_SIZE, dev_readme_str);
-+	return sysfs_emit(buf, dev_readme_str);
- }
- 
- NILFS_DEV_RO_ATTR(revision);
-@@ -1060,7 +1060,7 @@ void nilfs_sysfs_delete_device_group(struct the_nilfs *nilfs)
- static ssize_t nilfs_feature_revision_show(struct kobject *kobj,
- 					    struct attribute *attr, char *buf)
- {
--	return snprintf(buf, PAGE_SIZE, "%d.%d\n",
-+	return sysfs_emit(buf, "%d.%d\n",
- 			NILFS_CURRENT_REV, NILFS_MINOR_REV);
- }
- 
-@@ -1073,7 +1073,7 @@ static ssize_t nilfs_feature_README_show(struct kobject *kobj,
- 					 struct attribute *attr,
- 					 char *buf)
- {
--	return snprintf(buf, PAGE_SIZE, features_readme_str);
-+	return sysfs_emit(buf, features_readme_str);
- }
- 
- NILFS_FEATURE_RO_ATTR(revision);
+diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
+index 62a7a5075014..16ae86894121 100644
+--- a/kernel/cgroup/cgroup.c
++++ b/kernel/cgroup/cgroup.c
+@@ -1783,9 +1783,9 @@ int rebind_subsystems(struct cgroup_root *dst_root, u16 ss_mask)
+ 		RCU_INIT_POINTER(scgrp->subsys[ssid], NULL);
+ 		rcu_assign_pointer(dcgrp->subsys[ssid], css);
+ 		ss->root = dst_root;
+-		css->cgroup = dcgrp;
+ 
+ 		spin_lock_irq(&css_set_lock);
++		css->cgroup = dcgrp;
+ 		WARN_ON(!list_empty(&dcgrp->e_csets[ss->id]));
+ 		list_for_each_entry_safe(cset, cset_pos, &scgrp->e_csets[ss->id],
+ 					 e_cset_node[ss->id]) {
 -- 
 2.43.0
 
