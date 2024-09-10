@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-75264-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FC7D9733B4
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:35:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ABB9973339
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:30:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5152EB2E3B3
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:34:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 274DAB29427
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:24:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96C4A18B46D;
-	Tue, 10 Sep 2024 10:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3962319409C;
+	Tue, 10 Sep 2024 10:18:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bRl1QoU6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tZXV7rpX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5513B144D1A;
-	Tue, 10 Sep 2024 10:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB32C17AE00;
+	Tue, 10 Sep 2024 10:18:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964226; cv=none; b=EiNWumy1epnoiQoTLzP64TCWFFdIP9trLhBhu5Nt0NVZ3OzfoFfeTE+yzeXHOrurPEupfNca+lNDIrcmVCmmXXip2WHbgZfm9HwrGFxJINH3aVnNmcg9gJac5I2IugOjqoS0/JnD6vFPBq02agAEu26R2vytHZm3qhuwD2N/uEo=
+	t=1725963492; cv=none; b=Lewo+7eqppv+E9F08F+cQIyvCsZWQy2fqqwckDCGMiwGmSnHIgRlHDXpYZiSACGjLJ9yprJ5LtPXYA2G+6jv3CeVB2Z3cCDxMPicCcqNrQr+gOJuVNwyI6rit+Z6xoC0O1gi4/TVEp4UdfDZS1TkveVRXwk8S68MdTX3D9oBTls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964226; c=relaxed/simple;
-	bh=CqRQTBv3MphYCPg8vygHMuV21dAb3Vec33a8nh1xJwI=;
+	s=arc-20240116; t=1725963492; c=relaxed/simple;
+	bh=yDR7v979Vib0F3QlWnCqhtYidkDyqfRMZcz7s1YmAMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aWhUicfxWdEqz3z276m75mUs6XkWnfNgTi504f6wXEykcKtkxuNoWiEBDwSx9i9NWDuR7NV3eCOzfKL737IcyBPtoD9o3U6cmX1LUA8rrBVGeBLM1iI+28h3Vodtf/z44djvsANIpXPl8ac6DGJhsorq60gbuBR9dHMRXvz5nss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bRl1QoU6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB4C1C4CEC3;
-	Tue, 10 Sep 2024 10:30:25 +0000 (UTC)
+	 MIME-Version; b=VrSpdX/n4sHoP4HklXEo5iKvK88dVzK6mqJzxW3XltkBQaz8XmlvhR1tLIYYgJtTr4SDVAEh2TRQvw0ey4ZlSPx5OM56/4Y8sB10F4Xl+u/MMtGqqKfMC0TlVewkorMUBOXt3hHpLJ8gr5uEePS9zBerdOVQRlXaF5Wn1N9aNlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tZXV7rpX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09D62C4CEC3;
+	Tue, 10 Sep 2024 10:18:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964226;
-	bh=CqRQTBv3MphYCPg8vygHMuV21dAb3Vec33a8nh1xJwI=;
+	s=korg; t=1725963491;
+	bh=yDR7v979Vib0F3QlWnCqhtYidkDyqfRMZcz7s1YmAMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bRl1QoU6dMTN4pd42+dVzwQejS5TYTdlsPwxYlaBUQAmluPjk9NlP0OWKlWy2PtDv
-	 RcRY2reikcaoMIWiCnDn1X/zFF49EyYDWwSlmH+72zgSTgAP0qtKITjR1sdJNwyU/8
-	 pYmJEri45BQT0Qfzs6x5U24npibctcqJDC1/Qr7E=
+	b=tZXV7rpXEX5765ig6oHjqjOED8qteGCYkMzaW1bsFQk1PBvqHFzee1wvOVoRDeGDt
+	 8iv/G4EBxQn0E583BhNaHkfbxwLQofwrTC596aS8Qacfb4yXlfXUHOiKR7fnu7CIm3
+	 wJmFtVVpc7Z/wkeflQfXfA0SOPsf5qay4JoXhxuk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Jocic <martin.jocic@kvaser.com>,
-	Vincent Mailhol <mailhol.vincent@wanadoo.fr>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 110/269] can: kvaser_pciefd: Use a single write when releasing RX buffers
+	Arnd Bergmann <arnd@arndb.de>,
+	Linux Kernel Functional Testing <lkft@linaro.org>,
+	Sam Protsenko <semen.protsenko@linaro.org>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.15 075/214] mmc: dw_mmc: Fix IDMAC operation with pages bigger than 4K
 Date: Tue, 10 Sep 2024 11:31:37 +0200
-Message-ID: <20240910092612.112181412@linuxfoundation.org>
+Message-ID: <20240910092601.805271753@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +63,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Jocic <martin.jocic@kvaser.com>
+From: Sam Protsenko <semen.protsenko@linaro.org>
 
-[ Upstream commit dd885d90c047dbdd2773c1d33954cbd8747d81e2 ]
+commit 8396c793ffdf28bb8aee7cfe0891080f8cab7890 upstream.
 
-Kvaser's PCIe cards uses the KCAN FPGA IP block which has dual 4K
-buffers for incoming messages shared by all (currently up to eight)
-channels. While the driver processes messages in one buffer, new
-incoming messages are stored in the other and so on.
+Commit 616f87661792 ("mmc: pass queue_limits to blk_mq_alloc_disk") [1]
+revealed the long living issue in dw_mmc.c driver, existing since the
+time when it was first introduced in commit f95f3850f7a9 ("mmc: dw_mmc:
+Add Synopsys DesignWare mmc host driver."), also making kernel boot
+broken on platforms using dw_mmc driver with 16K or 64K pages enabled,
+with this message in dmesg:
 
-The design of KCAN is such that a buffer must be fully read and then
-released. Releasing a buffer will make the FPGA switch buffers. If the
-other buffer contains at least one incoming message the FPGA will also
-instantly issue a new interrupt, if not the interrupt will be issued
-after receiving the first new message.
+    mmcblk: probe of mmc0:0001 failed with error -22
 
-With IRQx interrupts, it takes a little time for the interrupt to
-happen, enough for any previous ISR call to do it's business and
-return, but MSI interrupts are way faster so this time is reduced to
-almost nothing.
+That's happening because mmc_blk_probe() fails when it calls
+blk_validate_limits() consequently, which returns the error due to
+failed max_segment_size check in this code:
 
-So with MSI, releasing the buffer HAS to be the very last action of
-the ISR before returning, otherwise the new interrupt might be
-"masked" by the kernel because the previous ISR call hasn't returned.
-And the interrupts are edge-triggered so we cannot loose one, or the
-ping-pong reading process will stop.
+    /*
+     * The maximum segment size has an odd historic 64k default that
+     * drivers probably should override.  Just like the I/O size we
+     * require drivers to at least handle a full page per segment.
+     */
+    ...
+    if (WARN_ON_ONCE(lim->max_segment_size < PAGE_SIZE))
+        return -EINVAL;
 
-This is why this patch modifies the driver to use a single write to
-the SRB_CMD register before returning.
+In case when IDMAC (Internal DMA Controller) is used, dw_mmc.c always
+sets .max_seg_size to 4 KiB:
 
-Signed-off-by: Martin Jocic <martin.jocic@kvaser.com>
-Reviewed-by: Vincent Mailhol <mailhol.vincent@wanadoo.fr>
-Link: https://patch.msgid.link/20240830153113.2081440-1-martin.jocic@kvaser.com
-Fixes: 26ad340e582d ("can: kvaser_pciefd: Add driver for Kvaser PCIEcan devices")
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+    mmc->max_seg_size = 0x1000;
+
+The comment in the code above explains why it's incorrect. Arnd
+suggested setting .max_seg_size to .max_req_size to fix it, which is
+also what some other drivers are doing:
+
+   $ grep -rl 'max_seg_size.*=.*max_req_size' drivers/mmc/host/ | \
+     wc -l
+   18
+
+This change is not only fixing the boot with 16K/64K pages, but also
+leads to a better MMC performance. The linear write performance was
+tested on E850-96 board (eMMC only), before commit [1] (where it's
+possible to boot with 16K/64K pages without this fix, to be able to do
+a comparison). It was tested with this command:
+
+    # dd if=/dev/zero of=somefile bs=1M count=500 oflag=sync
+
+Test results are as follows:
+
+  - 4K pages,  .max_seg_size = 4 KiB:                   94.2 MB/s
+  - 4K pages,  .max_seg_size = .max_req_size = 512 KiB: 96.9 MB/s
+  - 16K pages, .max_seg_size = 4 KiB:                   126 MB/s
+  - 16K pages, .max_seg_size = .max_req_size = 2 MiB:   128 MB/s
+  - 64K pages, .max_seg_size = 4 KiB:                   138 MB/s
+  - 64K pages, .max_seg_size = .max_req_size = 8 MiB:   138 MB/s
+
+Unfortunately, SD card controller is not enabled in E850-96 yet, so it
+wasn't possible for me to run the test on some cheap SD cards to check
+this patch's impact on those. But it's possible that this change might
+also reduce the writes count, thus improving SD/eMMC longevity.
+
+All credit for the analysis and the suggested solution goes to Arnd.
+
+[1] https://lore.kernel.org/all/20240215070300.2200308-18-hch@lst.de/
+
+Fixes: f95f3850f7a9 ("mmc: dw_mmc: Add Synopsys DesignWare mmc host driver.")
+Suggested-by: Arnd Bergmann <arnd@arndb.de>
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Closes: https://lore.kernel.org/all/CA+G9fYtddf2Fd3be+YShHP6CmSDNcn0ptW8qg+stUKW+Cn0rjQ@mail.gmail.com/
+Signed-off-by: Sam Protsenko <semen.protsenko@linaro.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240306232052.21317-1-semen.protsenko@linaro.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/kvaser_pciefd.c | 18 ++++++++----------
- 1 file changed, 8 insertions(+), 10 deletions(-)
+ drivers/mmc/host/dw_mmc.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/can/kvaser_pciefd.c b/drivers/net/can/kvaser_pciefd.c
-index 96b6e3d13e67..c490b4ba065b 100644
---- a/drivers/net/can/kvaser_pciefd.c
-+++ b/drivers/net/can/kvaser_pciefd.c
-@@ -1626,6 +1626,7 @@ static irqreturn_t kvaser_pciefd_irq_handler(int irq, void *dev)
- 	const struct kvaser_pciefd_irq_mask *irq_mask = pcie->driver_data->irq_mask;
- 	u32 pci_irq = ioread32(KVASER_PCIEFD_PCI_IRQ_ADDR(pcie));
- 	u32 srb_irq = 0;
-+	u32 srb_release = 0;
- 	int i;
- 
- 	if (!(pci_irq & irq_mask->all))
-@@ -1639,17 +1640,14 @@ static irqreturn_t kvaser_pciefd_irq_handler(int irq, void *dev)
- 			kvaser_pciefd_transmit_irq(pcie->can[i]);
- 	}
- 
--	if (srb_irq & KVASER_PCIEFD_SRB_IRQ_DPD0) {
--		/* Reset DMA buffer 0, may trigger new interrupt */
--		iowrite32(KVASER_PCIEFD_SRB_CMD_RDB0,
--			  KVASER_PCIEFD_SRB_ADDR(pcie) + KVASER_PCIEFD_SRB_CMD_REG);
--	}
-+	if (srb_irq & KVASER_PCIEFD_SRB_IRQ_DPD0)
-+		srb_release |= KVASER_PCIEFD_SRB_CMD_RDB0;
- 
--	if (srb_irq & KVASER_PCIEFD_SRB_IRQ_DPD1) {
--		/* Reset DMA buffer 1, may trigger new interrupt */
--		iowrite32(KVASER_PCIEFD_SRB_CMD_RDB1,
--			  KVASER_PCIEFD_SRB_ADDR(pcie) + KVASER_PCIEFD_SRB_CMD_REG);
--	}
-+	if (srb_irq & KVASER_PCIEFD_SRB_IRQ_DPD1)
-+		srb_release |= KVASER_PCIEFD_SRB_CMD_RDB1;
-+
-+	if (srb_release)
-+		iowrite32(srb_release, KVASER_PCIEFD_SRB_ADDR(pcie) + KVASER_PCIEFD_SRB_CMD_REG);
- 
- 	return IRQ_HANDLED;
- }
--- 
-2.43.0
-
+--- a/drivers/mmc/host/dw_mmc.c
++++ b/drivers/mmc/host/dw_mmc.c
+@@ -2903,8 +2903,8 @@ static int dw_mci_init_slot(struct dw_mc
+ 	if (host->use_dma == TRANS_MODE_IDMAC) {
+ 		mmc->max_segs = host->ring_size;
+ 		mmc->max_blk_size = 65535;
+-		mmc->max_seg_size = 0x1000;
+-		mmc->max_req_size = mmc->max_seg_size * host->ring_size;
++		mmc->max_req_size = DW_MCI_DESC_DATA_LENGTH * host->ring_size;
++		mmc->max_seg_size = mmc->max_req_size;
+ 		mmc->max_blk_count = mmc->max_req_size / 512;
+ 	} else if (host->use_dma == TRANS_MODE_EDMAC) {
+ 		mmc->max_segs = 64;
 
 
 
