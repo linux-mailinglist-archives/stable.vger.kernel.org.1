@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-75259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E79479733A8
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:34:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85D3A9731A0
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:13:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9E1F51F2538F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:34:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 846ECB26605
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:13:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A97E618B474;
-	Tue, 10 Sep 2024 10:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61B7B197512;
+	Tue, 10 Sep 2024 10:08:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xyvtAAGc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ryJU2D4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 693ED17BB0C;
-	Tue, 10 Sep 2024 10:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B1C91974EA;
+	Tue, 10 Sep 2024 10:08:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964211; cv=none; b=JCMrTl/s3k8jDcn0PN68xso1b6FSQRIUPxVmfM6XN01fHRzJIyg5tEpak8hKpfr70Cg5CExMlZ8Qdz515+t63RhQQnl1e2Zs5yDv9zsnamLkwZLArzmQhSj8DMA5OKGOw5MMbL8G9n7Cb3h+sIRdo1aUMiAsFF0fyEpl4I3PnIY=
+	t=1725962931; cv=none; b=IA3akZRb/ddq/T1zA3VDrGAGf4xE0ibuyUlCeyK3K/aISPADlrYs+1uLw3tYnTb6y8jV4fTcqCeMQXEw7S6wRBJXnNSnCZHcBgY6TgKHiO54UacciQq4tzI1zxLnVTYDm0ed/otawPtQ29C02cN9LNy3pnjaBxzOFFw8c9jebqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964211; c=relaxed/simple;
-	bh=l27zFQaenzKLLNNiKssM0jamu2280H9eJ+MHyVZ95I8=;
+	s=arc-20240116; t=1725962931; c=relaxed/simple;
+	bh=4XHbwMNb+hk/6TF7mV8+0taj7XSzvjSsv06NObfcdbE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nFSjSo2y6jFXVAvwazyGTU6WGTDXOu+fv5VxT2F/nnJSCKo2NNmJRLB5mmSxxDerLjjnifSshWSUYzs4t24CoUpL3AosPPHplDkr0eHkGvSYA887V3CMFgIWwWCV5rUu2ucxKmJI7AAnAwm+PBVB4jQu8dGSQPK9/54jWXIta0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xyvtAAGc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3DB4C4CEC6;
-	Tue, 10 Sep 2024 10:30:10 +0000 (UTC)
+	 MIME-Version; b=G8Z8Ya3LSSc9YVJ07iVUAbHdG/Fep5rZB1Mqm5Tv9fBuWUYQ2AxG/uArxUmWMBsdXaQUiJHybhwmjxuvxj7meO4yZCD3JM6tZdC45ohej6HNidpqxTVvmtHt1CWA06Fznv3oXOJ3UBxhn6xM5AFMM4cSmilsGQKaVVzKQbqYM0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ryJU2D4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8993AC4CEC3;
+	Tue, 10 Sep 2024 10:08:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964211;
-	bh=l27zFQaenzKLLNNiKssM0jamu2280H9eJ+MHyVZ95I8=;
+	s=korg; t=1725962930;
+	bh=4XHbwMNb+hk/6TF7mV8+0taj7XSzvjSsv06NObfcdbE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xyvtAAGcCO3N8N3P8kfI9OGtCg2NTMFEU/2D4MzsobRb2UQQBocapzb9KXVRfsCGU
-	 pvtXDm0l61OLi+jNeys7lw+q+jgf/vFNaIAOEeJWSln7RcRJ4bE4sjdWOPMAr66cGH
-	 r40S8Zl/fDWhln+MRL44PkzrmlAuvO51vpBbtesI=
+	b=1ryJU2D4yUWWvZ9lk/8jUIOkPQ+umdIt5QyP4caL3HBzy3ckrt3xpey7aAubGlEjF
+	 gtGY/cUo3XpvHFxFjHoCHuqp5Spq8bgYy0ygB97j9bOsAM6lTRSIWljzA+dqYedFu0
+	 MALzvkdnJFfhtmQKWMstKFHLvLbIjSy5IMylv8ao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shivaprasad G Bhat <sbhat@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Jan Kara <jack@suse.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 088/269] vfio/spapr: Always clear TCEs before unsetting the window
+Subject: [PATCH 6.1 051/192] udf: Avoid excessive partition lengths
 Date: Tue, 10 Sep 2024 11:31:15 +0200
-Message-ID: <20240910092611.343253550@linuxfoundation.org>
+Message-ID: <20240910092600.085741752@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +61,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shivaprasad G Bhat <sbhat@linux.ibm.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 4ba2fdff2eb174114786784926d0efb6903c88a6 ]
+[ Upstream commit ebbe26fd54a9621994bc16b14f2ba8f84c089693 ]
 
-The PAPR expects the TCE table to have no entries at the time of
-unset window(i.e. remove-pe). The TCE clear right now is done
-before freeing the iommu table. On pSeries, the unset window
-makes those entries inaccessible to the OS and the H_PUT/GET calls
-fail on them with H_CONSTRAINED.
+Avoid mounting filesystems where the partition would overflow the
+32-bits used for block number. Also refuse to mount filesystems where
+the partition length is so large we cannot safely index bits in a
+block bitmap.
 
-On PowerNV, this has no side effect as the TCE clear can be done
-before the DMA window removal as well.
-
-Signed-off-by: Shivaprasad G Bhat <sbhat@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/171923273535.1397.1236742071894414895.stgit@linux.ibm.com
+Link: https://patch.msgid.link/20240620130403.14731-1-jack@suse.cz
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/vfio_iommu_spapr_tce.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ fs/udf/super.c | 15 +++++++++++++++
+ 1 file changed, 15 insertions(+)
 
-diff --git a/drivers/vfio/vfio_iommu_spapr_tce.c b/drivers/vfio/vfio_iommu_spapr_tce.c
-index a94ec6225d31..5f9e7e477078 100644
---- a/drivers/vfio/vfio_iommu_spapr_tce.c
-+++ b/drivers/vfio/vfio_iommu_spapr_tce.c
-@@ -364,7 +364,6 @@ static void tce_iommu_release(void *iommu_data)
- 		if (!tbl)
- 			continue;
+diff --git a/fs/udf/super.c b/fs/udf/super.c
+index 3b6419f29a4c..fa790be4f19f 100644
+--- a/fs/udf/super.c
++++ b/fs/udf/super.c
+@@ -1084,12 +1084,19 @@ static int udf_fill_partdesc_info(struct super_block *sb,
+ 	struct udf_part_map *map;
+ 	struct udf_sb_info *sbi = UDF_SB(sb);
+ 	struct partitionHeaderDesc *phd;
++	u32 sum;
+ 	int err;
  
--		tce_iommu_clear(container, tbl, tbl->it_offset, tbl->it_size);
- 		tce_iommu_free_table(container, tbl);
- 	}
+ 	map = &sbi->s_partmaps[p_index];
  
-@@ -720,6 +719,8 @@ static long tce_iommu_remove_window(struct tce_container *container,
- 
- 	BUG_ON(!tbl->it_size);
- 
-+	tce_iommu_clear(container, tbl, tbl->it_offset, tbl->it_size);
-+
- 	/* Detach groups from IOMMUs */
- 	list_for_each_entry(tcegrp, &container->group_list, next) {
- 		table_group = iommu_group_get_iommudata(tcegrp->grp);
-@@ -738,7 +739,6 @@ static long tce_iommu_remove_window(struct tce_container *container,
- 	}
- 
- 	/* Free table */
--	tce_iommu_clear(container, tbl, tbl->it_offset, tbl->it_size);
- 	tce_iommu_free_table(container, tbl);
- 	container->tables[num] = NULL;
- 
-@@ -1197,9 +1197,14 @@ static void tce_iommu_release_ownership(struct tce_container *container,
- 		return;
- 	}
- 
--	for (i = 0; i < IOMMU_TABLE_GROUP_MAX_TABLES; ++i)
--		if (container->tables[i])
-+	for (i = 0; i < IOMMU_TABLE_GROUP_MAX_TABLES; ++i) {
-+		if (container->tables[i]) {
-+			tce_iommu_clear(container, container->tables[i],
-+					container->tables[i]->it_offset,
-+					container->tables[i]->it_size);
- 			table_group->ops->unset_window(table_group, i);
-+		}
+ 	map->s_partition_len = le32_to_cpu(p->partitionLength); /* blocks */
+ 	map->s_partition_root = le32_to_cpu(p->partitionStartingLocation);
++	if (check_add_overflow(map->s_partition_root, map->s_partition_len,
++			       &sum)) {
++		udf_err(sb, "Partition %d has invalid location %u + %u\n",
++			p_index, map->s_partition_root, map->s_partition_len);
++		return -EFSCORRUPTED;
 +	}
- }
  
- static long tce_iommu_take_ownership(struct tce_container *container,
+ 	if (p->accessType == cpu_to_le32(PD_ACCESS_TYPE_READ_ONLY))
+ 		map->s_partition_flags |= UDF_PART_FLAG_READ_ONLY;
+@@ -1145,6 +1152,14 @@ static int udf_fill_partdesc_info(struct super_block *sb,
+ 		bitmap->s_extPosition = le32_to_cpu(
+ 				phd->unallocSpaceBitmap.extPosition);
+ 		map->s_partition_flags |= UDF_PART_FLAG_UNALLOC_BITMAP;
++		/* Check whether math over bitmap won't overflow. */
++		if (check_add_overflow(map->s_partition_len,
++				       sizeof(struct spaceBitmapDesc) << 3,
++				       &sum)) {
++			udf_err(sb, "Partition %d is too long (%u)\n", p_index,
++				map->s_partition_len);
++			return -EFSCORRUPTED;
++		}
+ 		udf_debug("unallocSpaceBitmap (part %d) @ %u\n",
+ 			  p_index, bitmap->s_extPosition);
+ 	}
 -- 
 2.43.0
 
