@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-75202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CC359733B0
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:35:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 847BE973263
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:22:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1DB78B2CD66
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:32:29 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A5FBAB2AB7C
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:20:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C48D91A00F5;
-	Tue, 10 Sep 2024 10:27:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3159D18FC65;
+	Tue, 10 Sep 2024 10:15:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KD32XUEx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wXRxASH8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83FFD1A01BF;
-	Tue, 10 Sep 2024 10:27:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE5B2188A09;
+	Tue, 10 Sep 2024 10:15:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964047; cv=none; b=BUmHIcQxQtu2zD+HYu8EYEwsye7VkniD3Who7gFyJ/cpyP569e87vIrhUwi8DnYgg7/AFlb/O5FlpsKNuhohWpL7pof3iuSzsyHb08P67unsZ86kgt9ujUjQRNauWsAZ1KNYanQU98fDudkjeWgBvChk+9wl+ikFFxHBSkwTCeo=
+	t=1725963310; cv=none; b=Ynmjp/ZJtVHuA3k5vk9nWVEauDkRny6khGagk70wSeXm/2hV8k4e/ZyAwFnZNDtnoONnE5giYKtgyzaS95rqZBJ+mfPX639Q+UshTJixmrXjUAJz3NkR+4RzfJADWMI9IEmvAlmmuHl4CIPCNH900spbbCnzlqnCKLxAaVx+Klo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964047; c=relaxed/simple;
-	bh=U9Q8BQR2nReMtRsBqw+9t9aCa5CcvctMpUrN1ozjMOE=;
+	s=arc-20240116; t=1725963310; c=relaxed/simple;
+	bh=K4TzeoQdY58wEde+cZnEYk4Z0tj4Ymtbkm+TBBCcTdU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JzJqch2hIM6ea452C+qAMCMRkJVhalibmRzhszz4CvFRJOd58uqd3IByL7Ovvk4m8MPg3vGOeEU74BaLBKtiMA2fEp7dqAd4o30EMbZ0gSZgZDPYtLhDf0NvcPpcYVaLMpc77eAM4dvXvmBQtVDpWFGqwWJlyCfZBcaeSgJ5W9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KD32XUEx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6A70C4CEC3;
-	Tue, 10 Sep 2024 10:27:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=W4AQqYcEu7J6nWGcPGJYG0n2dD0sFncniyHt5zNJglvQhJ4NxrykW4KgBXjWWBenSIwhjL+hWplU19kt7EkCTNDyHZ9U3d8AKK9aUSwKdUtgzbQBYladCjD0lKbeH97Cx7PGNz8h/ikuGCzzTrjfkHSwl5xMjjxGmqQL/2gDJaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wXRxASH8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 175B8C4CEC3;
+	Tue, 10 Sep 2024 10:15:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964047;
-	bh=U9Q8BQR2nReMtRsBqw+9t9aCa5CcvctMpUrN1ozjMOE=;
+	s=korg; t=1725963309;
+	bh=K4TzeoQdY58wEde+cZnEYk4Z0tj4Ymtbkm+TBBCcTdU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KD32XUExE1khd2pyAfNi+8kS5ljIrTZ44giLfrbtTYafCmV7qoGXt5RXS5Qws9ZXi
-	 r+RhePcu7WOS8vAw9G9bV9g1qVZzxF4qk5hkrKSyDDZFx+ntaaBQu1Ftq9dRMRyPto
-	 exjSVT5RMT/RudAcL98CmZS47Nnuw0R6E1cz1UhY=
+	b=wXRxASH8oHn09KZSEjv6rxr1u8cYKlcMoa0+9UKFdZFZ3lPkFQZT8CeLiWgyo/E+O
+	 BvL9c0FP0Cj59dBIO7OpF1fJ9OcZsl7VfFLvZV9RuWFYYlwmPU27+8Y3NnySJjhBWf
+	 WZIKx0hMiVUhi+Fg7p4MApRMBHigWPHncKk9UXcM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Shradha Gupta <shradhagupta@linux.microsoft.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.6 049/269] net: mana: Fix error handling in mana_create_txq/rxqs NAPI cleanup
+	Tim Huang <Tim.Huang@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 014/214] drm/amdgpu: fix uninitialized scalar variable warning
 Date: Tue, 10 Sep 2024 11:30:36 +0200
-Message-ID: <20240910092609.994204976@linuxfoundation.org>
+Message-ID: <20240910092559.316569524@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,125 +61,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
+From: Tim Huang <Tim.Huang@amd.com>
 
-commit b6ecc662037694488bfff7c9fd21c405df8411f2 upstream.
+[ Upstream commit 9a5f15d2a29d06ce5bd50919da7221cda92afb69 ]
 
-Currently napi_disable() gets called during rxq and txq cleanup,
-even before napi is enabled and hrtimer is initialized. It causes
-kernel panic.
+Clear warning that uses uninitialized value fw_size.
 
-? page_fault_oops+0x136/0x2b0
-  ? page_counter_cancel+0x2e/0x80
-  ? do_user_addr_fault+0x2f2/0x640
-  ? refill_obj_stock+0xc4/0x110
-  ? exc_page_fault+0x71/0x160
-  ? asm_exc_page_fault+0x27/0x30
-  ? __mmdrop+0x10/0x180
-  ? __mmdrop+0xec/0x180
-  ? hrtimer_active+0xd/0x50
-  hrtimer_try_to_cancel+0x2c/0xf0
-  hrtimer_cancel+0x15/0x30
-  napi_disable+0x65/0x90
-  mana_destroy_rxq+0x4c/0x2f0
-  mana_create_rxq.isra.0+0x56c/0x6d0
-  ? mana_uncfg_vport+0x50/0x50
-  mana_alloc_queues+0x21b/0x320
-  ? skb_dequeue+0x5f/0x80
-
-Cc: stable@vger.kernel.org
-Fixes: e1b5683ff62e ("net: mana: Move NAPI from EQ to CQ")
-Signed-off-by: Souradeep Chakrabarti <schakrabarti@linux.microsoft.com>
-Reviewed-by: Haiyang Zhang <haiyangz@microsoft.com>
-Reviewed-by: Shradha Gupta <shradhagupta@linux.microsoft.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Tim Huang <Tim.Huang@amd.com>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microsoft/mana/mana_en.c |   22 +++++++++++++---------
- include/net/mana/mana.h                       |    2 ++
- 2 files changed, 15 insertions(+), 9 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/net/ethernet/microsoft/mana/mana_en.c
-+++ b/drivers/net/ethernet/microsoft/mana/mana_en.c
-@@ -1858,10 +1858,12 @@ static void mana_destroy_txq(struct mana
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
+index b508126a9738..8d9bdec2b700 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_virt.c
+@@ -410,6 +410,8 @@ static void amdgpu_virt_add_bad_page(struct amdgpu_device *adev,
+ 	uint64_t retired_page;
+ 	uint32_t bp_idx, bp_cnt;
  
- 	for (i = 0; i < apc->num_queues; i++) {
- 		napi = &apc->tx_qp[i].tx_cq.napi;
--		napi_synchronize(napi);
--		napi_disable(napi);
--		netif_napi_del(napi);
--
-+		if (apc->tx_qp[i].txq.napi_initialized) {
-+			napi_synchronize(napi);
-+			napi_disable(napi);
-+			netif_napi_del(napi);
-+			apc->tx_qp[i].txq.napi_initialized = false;
-+		}
- 		mana_destroy_wq_obj(apc, GDMA_SQ, apc->tx_qp[i].tx_object);
- 
- 		mana_deinit_cq(apc, &apc->tx_qp[i].tx_cq);
-@@ -1917,6 +1919,7 @@ static int mana_create_txq(struct mana_p
- 		txq->ndev = net;
- 		txq->net_txq = netdev_get_tx_queue(net, i);
- 		txq->vp_offset = apc->tx_vp_offset;
-+		txq->napi_initialized = false;
- 		skb_queue_head_init(&txq->pending_skbs);
- 
- 		memset(&spec, 0, sizeof(spec));
-@@ -1983,6 +1986,7 @@ static int mana_create_txq(struct mana_p
- 
- 		netif_napi_add_tx(net, &cq->napi, mana_poll);
- 		napi_enable(&cq->napi);
-+		txq->napi_initialized = true;
- 
- 		mana_gd_ring_cq(cq->gdma_cq, SET_ARM_BIT);
- 	}
-@@ -1994,7 +1998,7 @@ out:
- }
- 
- static void mana_destroy_rxq(struct mana_port_context *apc,
--			     struct mana_rxq *rxq, bool validate_state)
-+			     struct mana_rxq *rxq, bool napi_initialized)
- 
- {
- 	struct gdma_context *gc = apc->ac->gdma_dev->gdma_context;
-@@ -2009,15 +2013,15 @@ static void mana_destroy_rxq(struct mana
- 
- 	napi = &rxq->rx_cq.napi;
- 
--	if (validate_state)
-+	if (napi_initialized) {
- 		napi_synchronize(napi);
- 
--	napi_disable(napi);
-+		napi_disable(napi);
- 
-+		netif_napi_del(napi);
-+	}
- 	xdp_rxq_info_unreg(&rxq->xdp_rxq);
- 
--	netif_napi_del(napi);
--
- 	mana_destroy_wq_obj(apc, GDMA_RQ, rxq->rxobj);
- 
- 	mana_deinit_cq(apc, &rxq->rx_cq);
---- a/include/net/mana/mana.h
-+++ b/include/net/mana/mana.h
-@@ -97,6 +97,8 @@ struct mana_txq {
- 
- 	atomic_t pending_sends;
- 
-+	bool napi_initialized;
++	memset(&bp, 0, sizeof(bp));
 +
- 	struct mana_stats_tx stats;
- };
- 
+ 	if (bp_block_size) {
+ 		bp_cnt = bp_block_size / sizeof(uint64_t);
+ 		for (bp_idx = 0; bp_idx < bp_cnt; bp_idx++) {
+-- 
+2.43.0
+
 
 
 
