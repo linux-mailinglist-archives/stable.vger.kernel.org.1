@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-74902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DD7A973202
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:18:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BD009732E7
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:27:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3498E28DF1B
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:18:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 313B9283A21
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:27:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 351CD190074;
-	Tue, 10 Sep 2024 10:12:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4784A192B7B;
+	Tue, 10 Sep 2024 10:22:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NBBR3/Ju"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p+vyUZLZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6B21143880;
-	Tue, 10 Sep 2024 10:12:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0280B18C00C;
+	Tue, 10 Sep 2024 10:22:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963169; cv=none; b=VVUoJ7Z6lVJeGy7U1WGW9NT3/gxJ27WDI+EwDAoO1GWwd795EI9uePqHGaqbDBEc6yu1p5WbFa3t8GtNybLFb7l1R+zgCQIpkCCh0Hj/6Kdi+CqBgzkIW9rZltKF8m1ZtL8R+nu9BnVkI/X67ckwHmNTg9EE9tkgIHUz2zwaMQc=
+	t=1725963738; cv=none; b=btMTxNW/KS6Ri4v2mhn+6JXVhcGyCZCIff/aOv4Z0PtgP6LKTtiu29lYqi2p5rAJFNflzp8DH2q/92HyQA6th5gI/GD3dRwt+QRDNTtj3jtNL0cPNM7vXVirDFppG9DohawLW7tvxIRvsjl8BayY0EbM0R/0twddlR2oxLeSshI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963169; c=relaxed/simple;
-	bh=1r+WHUuYh1d3OTfs7L3mpbxHeJMx5Y/Lk335urbiCeU=;
+	s=arc-20240116; t=1725963738; c=relaxed/simple;
+	bh=/csc5sLJmTv/F4znLUR3SDnAjpsh26SudZIWwdJPRd8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sfL/dcpXY9Tlyhrb2gFwALbOPVHSGyFuVPykzvmNXSNHGrdTE0rhVKjCJe7PuMdoagu8UpX5JD7DuKTEyDeE5lMk8DukjPhvJXx+hRRTfdm5SaOilWKbsRp0sOkgiyBpuQkv/ATva02coOAqMnj+/57KXuwwaAOFGbZcrzSYoNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NBBR3/Ju; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 629F5C4CEC3;
-	Tue, 10 Sep 2024 10:12:48 +0000 (UTC)
+	 MIME-Version; b=XLHmPgXtnwlnx+LCW3xdrpMRxKdMY+8rHTDFDoqqHSTQPXDXMm+VwomKe8Iz++wdF8BUoihR+YacmDLmYBs0EWagt2MEneKswOXt8cXKVTnjoxAGY7YSo1P0kPowydK76SQI9sYyWVA5cZq/2tOfgQh/q5glvsXQ+uMZkGY0wig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p+vyUZLZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80F67C4CEC3;
+	Tue, 10 Sep 2024 10:22:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963168;
-	bh=1r+WHUuYh1d3OTfs7L3mpbxHeJMx5Y/Lk335urbiCeU=;
+	s=korg; t=1725963737;
+	bh=/csc5sLJmTv/F4znLUR3SDnAjpsh26SudZIWwdJPRd8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NBBR3/JuC7xSqeY1PsWViwBoxWyNJjTRvxtH8XBWa3l/Hf4oICKSvTZnMQ8Tr5MhJ
-	 QgwZ80nzw9S+Wg3MPNev6cGxpvQ3j4ezX7aszlSd7MTCHQld5/I56MtaWfcD0asm5Y
-	 cN88mjTURUBB6tNmHAqQxXpNJ0o+DfLE9NDPai3A=
+	b=p+vyUZLZ85TyY20oMkc6aGClY4CBwtYVOzfGp4oipiPkaAVOmwxz5dWhQCpuYJ9E4
+	 DIFewIHQMC250ux8OKhh8kqVsqrcg03ICEY1LdhUURO8jUxtDNegE7HX+TA2F2QKEe
+	 xlJNy7RpcQgBCiDZaFGQwQYBoO/PbsrNiy6fF9Bs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Daniel Vetter <daniel.vetter@ffwll.ch>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 158/192] x86/mm/pae: Make pmd_t similar to pte_t
+Subject: [PATCH 5.15 160/214] kselftests: dmabuf-heaps: Ensure the driver name is null-terminated
 Date: Tue, 10 Sep 2024 11:33:02 +0200
-Message-ID: <20240910092604.456070042@linuxfoundation.org>
+Message-ID: <20240910092605.241014132@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,158 +62,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Zenghui Yu <yuzenghui@huawei.com>
 
-[ Upstream commit fbfdec9989e69e0b17aa3bf32fcb22d04cc33301 ]
+[ Upstream commit 291e4baf70019f17a81b7b47aeb186b27d222159 ]
 
-Instead of mucking about with at least 2 different ways of fudging
-it, do the same thing we do for pte_t.
+Even if a vgem device is configured in, we will skip the import_vgem_fd()
+test almost every time.
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lkml.kernel.org/r/20221022114424.580310787%40infradead.org
-Stable-dep-of: 71c186efc1b2 ("userfaultfd: fix checks for huge PMDs")
+  TAP version 13
+  1..11
+  # Testing heap: system
+  # =======================================
+  # Testing allocation and importing:
+  ok 1 # SKIP Could not open vgem -1
+
+The problem is that we use the DRM_IOCTL_VERSION ioctl to query the driver
+version information but leave the name field a non-null-terminated string.
+Terminate it properly to actually test against the vgem device.
+
+While at it, let's check the length of the driver name is exactly 4 bytes
+and return early otherwise (in case there is a name like "vgemfoo" that
+gets converted to "vgem\0" unexpectedly).
+
+Signed-off-by: Zenghui Yu <yuzenghui@huawei.com>
+Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240729024604.2046-1-yuzenghui@huawei.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/pgtable-3level.h       | 42 +++++++--------------
- arch/x86/include/asm/pgtable-3level_types.h |  7 ++++
- arch/x86/include/asm/pgtable_64_types.h     |  1 +
- arch/x86/include/asm/pgtable_types.h        |  4 +-
- 4 files changed, 23 insertions(+), 31 deletions(-)
+ tools/testing/selftests/dmabuf-heaps/dmabuf-heap.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/include/asm/pgtable-3level.h b/arch/x86/include/asm/pgtable-3level.h
-index 28421a887209..28556d22feb8 100644
---- a/arch/x86/include/asm/pgtable-3level.h
-+++ b/arch/x86/include/asm/pgtable-3level.h
-@@ -87,7 +87,7 @@ static inline pmd_t pmd_read_atomic(pmd_t *pmdp)
- 		ret |= ((pmdval_t)*(tmp + 1)) << 32;
- 	}
+diff --git a/tools/testing/selftests/dmabuf-heaps/dmabuf-heap.c b/tools/testing/selftests/dmabuf-heaps/dmabuf-heap.c
+index 29af27acd40e..a0d3d2ed7a4a 100644
+--- a/tools/testing/selftests/dmabuf-heaps/dmabuf-heap.c
++++ b/tools/testing/selftests/dmabuf-heaps/dmabuf-heap.c
+@@ -29,9 +29,11 @@ static int check_vgem(int fd)
+ 	version.name = name;
  
--	return (pmd_t) { ret };
-+	return (pmd_t) { .pmd = ret };
- }
+ 	ret = ioctl(fd, DRM_IOCTL_VERSION, &version);
+-	if (ret)
++	if (ret || version.name_len != 4)
+ 		return 0;
  
- static inline void native_set_pte_atomic(pte_t *ptep, pte_t pte)
-@@ -121,12 +121,11 @@ static inline void native_pte_clear(struct mm_struct *mm, unsigned long addr,
- 	ptep->pte_high = 0;
- }
- 
--static inline void native_pmd_clear(pmd_t *pmd)
-+static inline void native_pmd_clear(pmd_t *pmdp)
- {
--	u32 *tmp = (u32 *)pmd;
--	*tmp = 0;
-+	pmdp->pmd_low = 0;
- 	smp_wmb();
--	*(tmp + 1) = 0;
-+	pmdp->pmd_high = 0;
- }
- 
- static inline void native_pud_clear(pud_t *pudp)
-@@ -162,25 +161,17 @@ static inline pte_t native_ptep_get_and_clear(pte_t *ptep)
- #define native_ptep_get_and_clear(xp) native_local_ptep_get_and_clear(xp)
- #endif
- 
--union split_pmd {
--	struct {
--		u32 pmd_low;
--		u32 pmd_high;
--	};
--	pmd_t pmd;
--};
--
- #ifdef CONFIG_SMP
- static inline pmd_t native_pmdp_get_and_clear(pmd_t *pmdp)
- {
--	union split_pmd res, *orig = (union split_pmd *)pmdp;
-+	pmd_t res;
- 
- 	/* xchg acts as a barrier before setting of the high bits */
--	res.pmd_low = xchg(&orig->pmd_low, 0);
--	res.pmd_high = orig->pmd_high;
--	orig->pmd_high = 0;
-+	res.pmd_low = xchg(&pmdp->pmd_low, 0);
-+	res.pmd_high = READ_ONCE(pmdp->pmd_high);
-+	WRITE_ONCE(pmdp->pmd_high, 0);
- 
--	return res.pmd;
-+	return res;
- }
- #else
- #define native_pmdp_get_and_clear(xp) native_local_pmdp_get_and_clear(xp)
-@@ -199,17 +190,12 @@ static inline pmd_t pmdp_establish(struct vm_area_struct *vma,
- 	 * anybody.
- 	 */
- 	if (!(pmd_val(pmd) & _PAGE_PRESENT)) {
--		union split_pmd old, new, *ptr;
--
--		ptr = (union split_pmd *)pmdp;
--
--		new.pmd = pmd;
--
- 		/* xchg acts as a barrier before setting of the high bits */
--		old.pmd_low = xchg(&ptr->pmd_low, new.pmd_low);
--		old.pmd_high = ptr->pmd_high;
--		ptr->pmd_high = new.pmd_high;
--		return old.pmd;
-+		old.pmd_low = xchg(&pmdp->pmd_low, pmd.pmd_low);
-+		old.pmd_high = READ_ONCE(pmdp->pmd_high);
-+		WRITE_ONCE(pmdp->pmd_high, pmd.pmd_high);
++	name[4] = '\0';
 +
-+		return old;
- 	}
- 
- 	do {
-diff --git a/arch/x86/include/asm/pgtable-3level_types.h b/arch/x86/include/asm/pgtable-3level_types.h
-index 56baf43befb4..80911349519e 100644
---- a/arch/x86/include/asm/pgtable-3level_types.h
-+++ b/arch/x86/include/asm/pgtable-3level_types.h
-@@ -18,6 +18,13 @@ typedef union {
- 	};
- 	pteval_t pte;
- } pte_t;
-+
-+typedef union {
-+	struct {
-+		unsigned long pmd_low, pmd_high;
-+	};
-+	pmdval_t pmd;
-+} pmd_t;
- #endif	/* !__ASSEMBLY__ */
- 
- #define SHARED_KERNEL_PMD	(!static_cpu_has(X86_FEATURE_PTI))
-diff --git a/arch/x86/include/asm/pgtable_64_types.h b/arch/x86/include/asm/pgtable_64_types.h
-index 6c7f7c526450..4ea3755f2444 100644
---- a/arch/x86/include/asm/pgtable_64_types.h
-+++ b/arch/x86/include/asm/pgtable_64_types.h
-@@ -19,6 +19,7 @@ typedef unsigned long	pgdval_t;
- typedef unsigned long	pgprotval_t;
- 
- typedef struct { pteval_t pte; } pte_t;
-+typedef struct { pmdval_t pmd; } pmd_t;
- 
- #ifdef CONFIG_X86_5LEVEL
- extern unsigned int __pgtable_l5_enabled;
-diff --git a/arch/x86/include/asm/pgtable_types.h b/arch/x86/include/asm/pgtable_types.h
-index e3028373f0b4..d0e9654d7272 100644
---- a/arch/x86/include/asm/pgtable_types.h
-+++ b/arch/x86/include/asm/pgtable_types.h
-@@ -363,11 +363,9 @@ static inline pudval_t native_pud_val(pud_t pud)
- #endif
- 
- #if CONFIG_PGTABLE_LEVELS > 2
--typedef struct { pmdval_t pmd; } pmd_t;
--
- static inline pmd_t native_make_pmd(pmdval_t val)
- {
--	return (pmd_t) { val };
-+	return (pmd_t) { .pmd = val };
+ 	return !strcmp(name, "vgem");
  }
  
- static inline pmdval_t native_pmd_val(pmd_t pmd)
 -- 
 2.43.0
 
