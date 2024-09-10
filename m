@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-74185-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74642-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D42C972DED
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:37:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19FE797306F
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:01:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C4A36B22B28
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:37:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA35E287301
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:01:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B38D1885A6;
-	Tue, 10 Sep 2024 09:37:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBB3218E77F;
+	Tue, 10 Sep 2024 09:59:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tkxNl+W4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FIcVK0Mn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AB90188CC1;
-	Tue, 10 Sep 2024 09:37:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9B7518E021;
+	Tue, 10 Sep 2024 09:59:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961063; cv=none; b=jm7ZEw2+g2W3MRc7PBf28CcPXkhLeLVzt4bTkz3YNPMB8tw3hhT4iGothFYQFSDcYpm125n20Vm13ULcbZepmpMhbQIp8C3r9RA0ugmh3GNESOHzyjlINOu+4em7sUDeONkoTlYmWZPs4ZRUd7TJrsCpDmAB+rOjBTHi9RsPEWk=
+	t=1725962398; cv=none; b=mxV/v2fltq42A3gmlVIqexN0imwOGFrMX87Kz3xcfnQ2vYr39vqIBFjTrBtSZ1iHLogwATUu0BQyrnj5PfpOmfuD3ruouHdhc5n1LTOsxQcHLcdxp8CsE7AHyfy1GoCnA967/PZVyk1tC0sv8Dp0TmYxAxgcyaaQ1JSpwGR3Rj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961063; c=relaxed/simple;
-	bh=zi4q78+M+og8lZOgAvaPpZqAlT3vo3rwcyQTujruS+I=;
+	s=arc-20240116; t=1725962398; c=relaxed/simple;
+	bh=2MNBayd7k/krtv4P9T6ziOF6hv01GZIEk8QTClsV35U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EuqJhQJIcw7EK/CRPslvAogasGGJ1Aa4n0uaGSWeU7011WBzT3120Ok5qnsISUVDOOYytAavMbAN9K/GM+pQdCDaGS0hYu+vNlYfWHc/HrIYMlLiHB024BCi3DS/fwWGHhMOGpEw+jimDZF1iQg6Wna6R0D59+0VWBomoZogs24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tkxNl+W4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8EB68C4CEC3;
-	Tue, 10 Sep 2024 09:37:42 +0000 (UTC)
+	 MIME-Version; b=ZONI4dB5n+aqISM6ODOr2rVnOznD2GMBnowhdt5WFScCAZIOlFPi0pMPjwQuIoAT9vls092/SZFdbzsuzjXfqInL2dRh4xHqKBGucBtX+0OGMbAT03BB7TgPKPT+IGu6TRjGjSNcm/N4vw8gL1PMZtjthytQrp13G4yjAKD3ltk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FIcVK0Mn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EE87C4CEC3;
+	Tue, 10 Sep 2024 09:59:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961062;
-	bh=zi4q78+M+og8lZOgAvaPpZqAlT3vo3rwcyQTujruS+I=;
+	s=korg; t=1725962398;
+	bh=2MNBayd7k/krtv4P9T6ziOF6hv01GZIEk8QTClsV35U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tkxNl+W4ZWk1qJ5JvfYMW/WU7lxczs4Nk76K/pyLq8pM9+U+lUCtiWpY/BWdGHBbY
-	 t9rtFsfP8dNgMLOQcayGtNPzbCuAJ3w+USs06oo2dJ7UEQoI4gBqnjqHdYu89DK0JL
-	 WYTHINOOJGz3aCXZEso3Jzpowd/IMa/5cFeNfflQ=
+	b=FIcVK0Mnhzundg1rS56SCDXDfqi0fFlRInYL0PmTF49uSBvjMjy4yH5IZjwH9E+KT
+	 uUn7dNl8NPRwCUBbTF43Pjvtd/YNKuYGaA9jeHR44RCfnAJhGZLS8XvAGdLgQjCVbn
+	 R+HPvMbhHy/+twR8hieL7Iem+149lAHtCEsN3xso=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Ni <nichen@iscas.ac.cn>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 33/96] media: qcom: camss: Add check for v4l2_fwnode_endpoint_parse
+Subject: [PATCH 5.4 020/121] media: uvcvideo: Enforce alignment of frame and interval
 Date: Tue, 10 Sep 2024 11:31:35 +0200
-Message-ID: <20240910092542.974374606@linuxfoundation.org>
+Message-ID: <20240910092546.690404259@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
-References: <20240910092541.383432924@linuxfoundation.org>
+In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
+References: <20240910092545.737864202@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Ni <nichen@iscas.ac.cn>
+From: Ricardo Ribalda <ribalda@chromium.org>
 
-[ Upstream commit 4caf6d93d9f2c11d6441c64e1c549c445fa322ed ]
+[ Upstream commit c8931ef55bd325052ec496f242aea7f6de47dc9c ]
 
-Add check for the return value of v4l2_fwnode_endpoint_parse() and
-return the error if it fails in order to catch the error.
+Struct uvc_frame and interval (u32*) are packaged together on
+streaming->formats on a single contiguous allocation.
 
-Signed-off-by: Chen Ni <nichen@iscas.ac.cn>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Right now they are allocated right after uvc_format, without taking into
+consideration their required alignment.
+
+This is working fine because both structures have a field with a
+pointer, but it will stop working when the sizeof() of any of those
+structs is not a multiple of the sizeof(void*).
+
+Enforce that alignment during the allocation.
+
+Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Link: https://lore.kernel.org/r/20240404-uvc-align-v2-1-9e104b0ecfbd@chromium.org
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/qcom/camss/camss.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/media/usb/uvc/uvc_driver.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/media/platform/qcom/camss/camss.c b/drivers/media/platform/qcom/camss/camss.c
-index 669615fff6a0..0fc7951640e2 100644
---- a/drivers/media/platform/qcom/camss/camss.c
-+++ b/drivers/media/platform/qcom/camss/camss.c
-@@ -431,8 +431,11 @@ static int camss_of_parse_endpoint_node(struct device *dev,
- 	struct v4l2_fwnode_bus_mipi_csi2 *mipi_csi2;
- 	struct v4l2_fwnode_endpoint vep = { { 0 } };
- 	unsigned int i;
-+	int ret;
+diff --git a/drivers/media/usb/uvc/uvc_driver.c b/drivers/media/usb/uvc/uvc_driver.c
+index 0caa57a6782a..6d1a7e02da51 100644
+--- a/drivers/media/usb/uvc/uvc_driver.c
++++ b/drivers/media/usb/uvc/uvc_driver.c
+@@ -887,16 +887,26 @@ static int uvc_parse_streaming(struct uvc_device *dev,
+ 		goto error;
+ 	}
  
--	v4l2_fwnode_endpoint_parse(of_fwnode_handle(node), &vep);
-+	ret = v4l2_fwnode_endpoint_parse(of_fwnode_handle(node), &vep);
-+	if (ret)
-+		return ret;
+-	size = nformats * sizeof(*format) + nframes * sizeof(*frame)
++	/*
++	 * Allocate memory for the formats, the frames and the intervals,
++	 * plus any required padding to guarantee that everything has the
++	 * correct alignment.
++	 */
++	size = nformats * sizeof(*format);
++	size = ALIGN(size, __alignof__(*frame)) + nframes * sizeof(*frame);
++	size = ALIGN(size, __alignof__(*interval))
+ 	     + nintervals * sizeof(*interval);
++
+ 	format = kzalloc(size, GFP_KERNEL);
+-	if (format == NULL) {
++	if (!format) {
+ 		ret = -ENOMEM;
+ 		goto error;
+ 	}
  
- 	csd->interface.csiphy_id = vep.base.port;
+-	frame = (struct uvc_frame *)&format[nformats];
+-	interval = (u32 *)&frame[nframes];
++	frame = (void *)format + nformats * sizeof(*format);
++	frame = PTR_ALIGN(frame, __alignof__(*frame));
++	interval = (void *)frame + nframes * sizeof(*frame);
++	interval = PTR_ALIGN(interval, __alignof__(*interval));
  
+ 	streaming->format = format;
+ 	streaming->nformats = nformats;
 -- 
 2.43.0
 
