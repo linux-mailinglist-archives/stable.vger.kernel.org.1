@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-74700-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B02939730DC
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:05:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70682973024
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:58:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCEC21C24B68
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:05:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1ED421F240F1
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:58:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D6ED18C914;
-	Tue, 10 Sep 2024 10:02:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A361117BEAE;
+	Tue, 10 Sep 2024 09:57:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0yVLu1ib"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FLD2j1ue"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AB1118C340;
-	Tue, 10 Sep 2024 10:02:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60BB614D431;
+	Tue, 10 Sep 2024 09:57:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962571; cv=none; b=pxiD5Jn3SZgz2xDsvd5GvVLopZIKHmTmMSBCS1HT/JDs5beNQorfmOSpF9irEUGvGvuWRRWGdhHhsSAWdeP9QK2xMp0smw0vC/j0ilL0V4uBMYwKhBh1xKtKIhOJZJGZfjuqsshzpSJKaOk/QQ5AM28De320F1lweIi0WTHjn9U=
+	t=1725962278; cv=none; b=qSjxamsV6B3Jo6vnBq30tUKnjG9V83WEG5S53B8QIt3z3pivzEH/bI9XRmmOFEoMOxzR4YK4DGPebdORVbZAgm8+3ZA2LIx19qjR8I1vRKoN+9kx5rOnQyg2T5i55to5wdj0n6pdzA/ImEPu98lNVB2io2ApXngh1JJ8MWOoF4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962571; c=relaxed/simple;
-	bh=G0ER95/A8O/EGW/ojtcFMQPLGI5rX52+U8xPXmGKfcw=;
+	s=arc-20240116; t=1725962278; c=relaxed/simple;
+	bh=xrGtrQmyn8nd1trN6H81GLggUIBFAJQc3QOHo9ikeIs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NaaHgE+gMc/cxpTSATglMu/6qMT4TWLzjfyhVJRL6F7HzhCWDUXIqcLnyTfcrg0q3DXS7VdlGc9S4DVVQGcaz5nTpXFPCH9iPhd3c625abiZyWR4dROyCqVigd3PR8Izg3Ty1b02CGbTc5CLvHPJg77ohVw4hdwk4YiZmINvyMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0yVLu1ib; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46777C4CEC3;
-	Tue, 10 Sep 2024 10:02:50 +0000 (UTC)
+	 MIME-Version; b=jurdNp704Ef0RjSbn7cGHNeUrIldOAZP1s5cS7dTjE0TeRU5YwNKwoWRG5Vjsxn8EZ+5YyEq4aoYeC+piryzuQ1QnXx2Na6NL1eK/Xzi5ipZDfclEOcbs6/+j88gYSKLg5oiJjojU+jeZ8cANpg+hE6QF/7t1+xGqJBSiZ/VZ9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FLD2j1ue; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBC11C4CEC3;
+	Tue, 10 Sep 2024 09:57:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962570;
-	bh=G0ER95/A8O/EGW/ojtcFMQPLGI5rX52+U8xPXmGKfcw=;
+	s=korg; t=1725962278;
+	bh=xrGtrQmyn8nd1trN6H81GLggUIBFAJQc3QOHo9ikeIs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0yVLu1ibH4iYuO93PHafNHrfzHadkxyN6IrGo+mlYd+c88qCXGHFA0FcwghhYJmyw
-	 umFld/UJZx0oeato7Q2s9FjpGBjMk3VfI+mQYLXgIF+0qP3an9UyofSe+J6vGjRFjB
-	 P3w3XgoWLyZplVfby5bgoonDAwCYGz1oartmr5DQ=
+	b=FLD2j1uea24j3T/ZuSms3XXsIlVgt/dfptqndLs0KvM3CN/Hmvl36h1G2EOKTVTqR
+	 v9j4JSQFx9KxPiGiaLkABupaeru5gJyDzI3XAOGB8yaIDmy8gqtEV6SUdtjjy82e6e
+	 hD008cBB5I7mU9Vk4WC+EJ6S3J+vXKnEGMzorPrc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
+	Liao Chen <liaochen4@huawei.com>,
+	Michal Simek <michal.simek@amd.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 078/121] hwmon: (nct6775-core) Fix underflows seen when writing limit attributes
+Subject: [PATCH 6.10 356/375] gpio: modepin: Enable module autoloading
 Date: Tue, 10 Sep 2024 11:32:33 +0200
-Message-ID: <20240910092549.596355054@linuxfoundation.org>
+Message-ID: <20240910092634.558224694@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
-References: <20240910092545.737864202@linuxfoundation.org>
+In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
+References: <20240910092622.245959861@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,37 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guenter Roeck <linux@roeck-us.net>
+From: Liao Chen <liaochen4@huawei.com>
 
-[ Upstream commit 0403e10bf0824bf0ec2bb135d4cf1c0cc3bf4bf0 ]
+[ Upstream commit a5135526426df5319d5f4bcd15ae57c45a97714b ]
 
-DIV_ROUND_CLOSEST() after kstrtol() results in an underflow if a large
-negative number such as -9223372036854775808 is provided by the user.
-Fix it by reordering clamp_val() and DIV_ROUND_CLOSEST() operations.
+Add MODULE_DEVICE_TABLE(), so modules could be properly autoloaded based
+on the alias from of_device_id table.
 
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 7687a5b0ee93 ("gpio: modepin: Add driver support for modepin GPIO controller")
+Signed-off-by: Liao Chen <liaochen4@huawei.com>
+Reviewed-by: Michal Simek <michal.simek@amd.com>
+Link: https://lore.kernel.org/r/20240902115848.904227-1-liaochen4@huawei.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/nct6775.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpio/gpio-zynqmp-modepin.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/hwmon/nct6775.c b/drivers/hwmon/nct6775.c
-index ba9b96973e80..da6bbfca15fe 100644
---- a/drivers/hwmon/nct6775.c
-+++ b/drivers/hwmon/nct6775.c
-@@ -2374,7 +2374,7 @@ store_temp_offset(struct device *dev, struct device_attribute *attr,
- 	if (err < 0)
- 		return err;
+diff --git a/drivers/gpio/gpio-zynqmp-modepin.c b/drivers/gpio/gpio-zynqmp-modepin.c
+index a0d69387c153..2f3c9ebfa78d 100644
+--- a/drivers/gpio/gpio-zynqmp-modepin.c
++++ b/drivers/gpio/gpio-zynqmp-modepin.c
+@@ -146,6 +146,7 @@ static const struct of_device_id modepin_platform_id[] = {
+ 	{ .compatible = "xlnx,zynqmp-gpio-modepin", },
+ 	{ }
+ };
++MODULE_DEVICE_TABLE(of, modepin_platform_id);
  
--	val = clamp_val(DIV_ROUND_CLOSEST(val, 1000), -128, 127);
-+	val = DIV_ROUND_CLOSEST(clamp_val(val, -128000, 127000), 1000);
- 
- 	mutex_lock(&data->update_lock);
- 	data->temp_offset[nr] = val;
+ static struct platform_driver modepin_platform_driver = {
+ 	.driver = {
 -- 
 2.43.0
 
