@@ -1,157 +1,114 @@
-Return-Path: <stable+bounces-74133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2585F972B38
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:54:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC580972B3E
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:54:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 953C9B239DA
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 07:53:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A8A31C240B1
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 07:54:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BC4317C9B9;
-	Tue, 10 Sep 2024 07:53:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32A91180032;
+	Tue, 10 Sep 2024 07:54:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vtwlE8p+"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EhrU5HkZ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFEFA17E00F
-	for <stable@vger.kernel.org>; Tue, 10 Sep 2024 07:53:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A9321514DA
+	for <stable@vger.kernel.org>; Tue, 10 Sep 2024 07:54:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725954835; cv=none; b=eUjoya4tCeEEKHbuqGPgMZREHcF+APYnOSeqStbGL6RiOtRsefZ2h/VXIBnMlu6rkvD7wDodO8YDN7U0HAi9ZRVGBowXXBpMzbtsMQM/0dw9eocX8Rcl5LS2VHCmdWJTxK5YKl95H89tcQeTH9yrCTRerHYHznEd09NcA4EGv+I=
+	t=1725954889; cv=none; b=dVDeN04RMubRSfqJchXA//nSE76zebnKcIx9SvRpP0i7XkmmYruu/sBTtJFyre3KLCI9QpA8mVqVgqcgbhGoSTJIEjIsVvPREEYq/C7Pl+1wrleZbJUvalu0zZQFW8Z1UZiCjurFqBan4dW2vrZ5EmRii9IEcriSIupVFJUhMOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725954835; c=relaxed/simple;
-	bh=mqO8eTuIMcFKXwiOXlhhWVxknS5LDG9KlEwbD3zQsis=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s6M7iBXHKffDHshZcB309V4lZh7a/NQIkxv4SvMFZndY+OatXG2Vcd6bGnECl+8h8g3dN/JCSA3b5FUTwXooBrnXVBF9MTrirc3OkmeIzf1yttwLPK0sHJ/5O4E2Halo7Ci6fYJgc8YF6lvKXq4ytmlhdU5SZGaZgB5kHxL7Ja0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vtwlE8p+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C40A2C4CEC6;
-	Tue, 10 Sep 2024 07:53:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725954835;
-	bh=mqO8eTuIMcFKXwiOXlhhWVxknS5LDG9KlEwbD3zQsis=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=vtwlE8p+Tz/+DQcLqEzq+9DRjT6vjQpxWVz/HKFm0fSUbqC7IzSuQTzVn4SNDAUm8
-	 eiwVHwXJNXh++5SS+R4f6QKlEFTuRDUErLY0Hgpf0jd9im+WZMWFem7Kfw12N8ZTrZ
-	 fIxvt0BB6ItbOa/hx8lXjGtOxRQsB6D/3PrdhC2I=
-Date: Tue, 10 Sep 2024 09:53:52 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Diogo Jahchan Koike <djahchankoike@gmail.com>
-Cc: stable@vger.kernel.org,
-	syzbot+958967f249155967d42a@syzkaller.appspotmail.com,
-	Yonghong Song <yhs@fb.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>
-Subject: Re: [PATCH 6.1.y] bpf: Silence a warning in btf_type_id_size()
-Message-ID: <2024091044-exhaust-yogurt-d9e7@gregkh>
-References: <20240909231017.340597-1-djahchankoike@gmail.com>
+	s=arc-20240116; t=1725954889; c=relaxed/simple;
+	bh=KeqTmh0BQFN/VIEkcymNhVe7df/Fj9BSFD8+DM+IarE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Xn3fnvj6FQeEc1RVxqjhWXISsYBy1ZywMB5UARXRV561YP2YwdgjqKEFHINDXTT1T23LgMXpQZlrdNRxGVZhm68Zb10xPd006opReRZ3glrYTGmjXJWc22KGW4cB8cvRz863ykYA+8n5xBds7fSVpOSOkP1fElAnev/LZeq64CI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EhrU5HkZ; arc=none smtp.client-ip=209.85.218.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a8d24f98215so391386266b.1
+        for <stable@vger.kernel.org>; Tue, 10 Sep 2024 00:54:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1725954886; x=1726559686; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VLxdbbIcHKz8caJW0+X/KLCN31tHPPcKqzcOKw7iaTQ=;
+        b=EhrU5HkZuIDvvNpGeKqW3O8Q63x7Urfub872eZ1nEwfHxSCgqkt1tgVP0FwosC4mRC
+         hQ2hKiGUK1BYrFIJCxuswYFtNKxXsNucCYW+DPMwbvZeRJwpK2HNZoYqUgAo6EOoYuGC
+         v6Is0DejhFQ/HHyTGGnAyu8mYTvcs/HBdzbZcLWugQ6PGEgbH1qhiEjlpAIdwcLl9gAh
+         BpI+HfTLEMpfcdbI+1uOZiARQg3yg5AiB24DllO+1KHElwo/+CsGVo3bMSf7bns1QCMK
+         yMA4hd86DkPuMLXgedRnZq9EqRkMQ2yvcXSxvICyTgZdKdWfDb1TynBp1sJ2KV89I8MS
+         xQEw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725954886; x=1726559686;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VLxdbbIcHKz8caJW0+X/KLCN31tHPPcKqzcOKw7iaTQ=;
+        b=maK4QuPz997AmkZ/RSDMXtny31uPZ7zkGhh+yBzoWn5RIY7waISsw+zZHjJKFv9zTC
+         7/iOLoOWzmYG787GN9MGal0Rdpy0U9aqwbgrZc4DId6PFpJhaD19BRbAlkG5X7Y+NQ0T
+         z7zPIb/BpbvrfhmzCSmceSUOpGV0QBk7qMFABLBXaPQAZQ3B75OdSg9sEtoR76mzzb2R
+         eQSfxoUDGwI4SEC7pDPukVtegmxjWtZ4vphUO4EUJ2U3xUObfG+0LgkoaxqS2un6Oeft
+         KIHej3AiGSGJiIIlKDbL9Xg9fjwp5xHhPYVA5ClNOlO+UKc04aP/OmCpfWtTzhUtIvua
+         sBBg==
+X-Forwarded-Encrypted: i=1; AJvYcCXLy6i21W10Pgylg0EVu2UKnLgcyBWQDMbaTH3q9vn73zmTqYYLWi75JhFh4iFYRvr5n4H99c4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzvA6uP5z7GSWA4+apk3sjDlfD2aG8MlBbsXY2VCu34zkBi81OC
+	JOpg4zV7ycZwddAOBO6OKOI6HixuEdSecxiln5+uQxdFt2xNkJUSYElQPKjyGWQX7xEHjwfx2Pm
+	IXmR0snNP1t1QXyKv4ZklsaASpOLHtdafslzK
+X-Google-Smtp-Source: AGHT+IG3sGZv3WdAfHkBHWqny8tIQGffeAIFi8EjCWEZVIxB5gyfhJfccPbUdsWHu1CD++Ri0ByqrE/nlrD/rJSbWcU=
+X-Received: by 2002:a17:906:6a14:b0:a86:b042:585a with SMTP id
+ a640c23a62f3a-a8d2494c39fmr778949466b.57.1725954884809; Tue, 10 Sep 2024
+ 00:54:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240909231017.340597-1-djahchankoike@gmail.com>
+References: <20240910004033.530313-1-willemdebruijn.kernel@gmail.com>
+ <2024091024-gratitude-challenge-c4c3@gregkh> <20240910034529-mutt-send-email-mst@kernel.org>
+In-Reply-To: <20240910034529-mutt-send-email-mst@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
+Date: Tue, 10 Sep 2024 09:54:31 +0200
+Message-ID: <CANn89i+3u2hQWoZECOqo6QL4wX01_KAkwgYzELWnZjutzFoW2w@mail.gmail.com>
+Subject: Re: [PATCH net] net: tighten bad gso csum offset check in virtio_net_hdr
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>, 
+	Willem de Bruijn <willemdebruijn.kernel@gmail.com>, netdev@vger.kernel.org, 
+	davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com, 
+	stable@vger.kernel.org, nsz@port70.net, jasowang@redhat.com, 
+	yury.khrustalev@arm.com, broonie@kernel.org, sudeep.holla@arm.com, 
+	Willem de Bruijn <willemb@google.com>, stable@vger.kernel.net
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 09, 2024 at 08:09:58PM -0300, Diogo Jahchan Koike wrote:
-> From: Yonghong Song <yhs@fb.com>
-> 
-> commit e6c2f594ed961273479505b42040782820190305 upstream.
-> 
-> syzbot reported a warning in [1] with the following stacktrace:
->   WARNING: CPU: 0 PID: 5005 at kernel/bpf/btf.c:1988 btf_type_id_size+0x2d9/0x9d0 kernel/bpf/btf.c:1988
->   ...
->   RIP: 0010:btf_type_id_size+0x2d9/0x9d0 kernel/bpf/btf.c:1988
->   ...
->   Call Trace:
->    <TASK>
->    map_check_btf kernel/bpf/syscall.c:1024 [inline]
->    map_create+0x1157/0x1860 kernel/bpf/syscall.c:1198
->    __sys_bpf+0x127f/0x5420 kernel/bpf/syscall.c:5040
->    __do_sys_bpf kernel/bpf/syscall.c:5162 [inline]
->    __se_sys_bpf kernel/bpf/syscall.c:5160 [inline]
->    __x64_sys_bpf+0x79/0xc0 kernel/bpf/syscall.c:5160
->    do_syscall_x64 arch/x86/entry/common.c:50 [inline]
->    do_syscall_64+0x39/0xb0 arch/x86/entry/common.c:80
->    entry_SYSCALL_64_after_hwframe+0x63/0xcd
-> 
-> With the following btf
->   [1] DECL_TAG 'a' type_id=4 component_idx=-1
->   [2] PTR '(anon)' type_id=0
->   [3] TYPE_TAG 'a' type_id=2
->   [4] VAR 'a' type_id=3, linkage=static
-> and when the bpf_attr.btf_key_type_id = 1 (DECL_TAG),
-> the following WARN_ON_ONCE in btf_type_id_size() is triggered:
->   if (WARN_ON_ONCE(!btf_type_is_modifier(size_type) &&
->                    !btf_type_is_var(size_type)))
->           return NULL;
-> 
-> Note that 'return NULL' is the correct behavior as we don't want
-> a DECL_TAG type to be used as a btf_{key,value}_type_id even
-> for the case like 'DECL_TAG -> STRUCT'. So there
-> is no correctness issue here, we just want to silence warning.
-> 
-> To silence the warning, I added DECL_TAG as one of kinds in
-> btf_type_nosize() which will cause btf_type_id_size() returning
-> NULL earlier without the warning.
-> 
->   [1] https://lore.kernel.org/bpf/000000000000e0df8d05fc75ba86@google.com/
-> 
-> Reported-by: syzbot+958967f249155967d42a@syzkaller.appspotmail.com
-> Signed-off-by: Yonghong Song <yhs@fb.com>
-> Link: https://lore.kernel.org/r/20230530205029.264910-1-yhs@fb.com
-> Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-> (cherry picked from commit e6c2f594ed961273479505b42040782820190305)
-> Signed-off-by: Diogo Jahchan Koike <djahchankoike@gmail.com>
-> ---
->  kernel/bpf/btf.c | 13 +++++++------
->  1 file changed, 7 insertions(+), 6 deletions(-)
-> 
-> diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
-> index 7582ec4fd413..2c58a6c3f978 100644
-> --- a/kernel/bpf/btf.c
-> +++ b/kernel/bpf/btf.c
-> @@ -466,10 +466,16 @@ static bool btf_type_is_fwd(const struct btf_type *t)
->  	return BTF_INFO_KIND(t->info) == BTF_KIND_FWD;
->  }
->  
-> +static bool btf_type_is_decl_tag(const struct btf_type *t)
-> +{
-> +	return BTF_INFO_KIND(t->info) == BTF_KIND_DECL_TAG;
-> +}
-> +
->  static bool btf_type_nosize(const struct btf_type *t)
->  {
->  	return btf_type_is_void(t) || btf_type_is_fwd(t) ||
-> -	       btf_type_is_func(t) || btf_type_is_func_proto(t);
-> +	       btf_type_is_func(t) || btf_type_is_func_proto(t) ||
-> +	       btf_type_is_decl_tag(t);
->  }
->  
->  static bool btf_type_nosize_or_null(const struct btf_type *t)
-> @@ -492,11 +498,6 @@ static bool btf_type_is_datasec(const struct btf_type *t)
->  	return BTF_INFO_KIND(t->info) == BTF_KIND_DATASEC;
->  }
->  
-> -static bool btf_type_is_decl_tag(const struct btf_type *t)
-> -{
-> -	return BTF_INFO_KIND(t->info) == BTF_KIND_DECL_TAG;
-> -}
-> -
->  static bool btf_type_is_decl_tag_target(const struct btf_type *t)
->  {
->  	return btf_type_is_func(t) || btf_type_is_struct(t) ||
-> -- 
-> 2.43.0
-> 
-> 
+On Tue, Sep 10, 2024 at 9:45=E2=80=AFAM Michael S. Tsirkin <mst@redhat.com>=
+ wrote:
+>
+> On Tue, Sep 10, 2024 at 06:34:46AM +0200, Greg KH wrote:
+> > On Mon, Sep 09, 2024 at 08:38:52PM -0400, Willem de Bruijn wrote:
+> > > Cc: <stable@vger.kernel.net>
+> >
+> > This is not a correct email address :(
+>
+> I think netdev does its own stable thing, no need to CC stable at all.
 
-Now queued up, thanks.
+This is no longer the case.
 
-greg k-h
+commit dbbe7c962c3a8163bf724dbc3c9fdfc9b16d3117
+Author: Jakub Kicinski <kuba@kernel.org>
+Date:   Tue Mar 2 18:46:43 2021 -0800
+
+    docs: networking: drop special stable handling
+
+    Leave it to Greg.
+
+    Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+    Signed-off-by: David S. Miller <davem@davemloft.net>
 
