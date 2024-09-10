@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-74665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4806973089
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:02:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44F02972FF8
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:56:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D69121C245E6
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:02:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8B8E5B24C3C
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:56:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF63918C008;
-	Tue, 10 Sep 2024 10:01:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0061C18C343;
+	Tue, 10 Sep 2024 09:56:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HqwVjQwU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hHWIg3RV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D0C618C000;
-	Tue, 10 Sep 2024 10:01:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B234C18C331;
+	Tue, 10 Sep 2024 09:56:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962466; cv=none; b=o7FhMyJ0Y95XjPssbsvHoIvqW7+0JXtMldrGzIKuLlHRHc5hKDxz6JgXmcCWVw/4mDilhkUoIxdXIFFkyddEcFHWoVOfJixjZYK0E+5Aux6acEz1fhdi84j0agIueAWaCpwVQQct8JuUraNN88TgSqKXapazMsnhnEWbvdyatnQ=
+	t=1725962178; cv=none; b=ZsEAcRWCJPba+fflc6AaLPPb2vNPh9nz9cmYpqP8ro/iJksB1qMaOsYHfvX8TEyIvjvhp1ypgCRB6EylWG12uUTYQ8/RljQ8Y2aGtCmtPePVH/yvG/dx//Kp4wKf4/R60Ti6pw+kR/oAb/+47x2Q8tt/RICcx9buVLlg+GAyuCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962466; c=relaxed/simple;
-	bh=/f2tJ2AsfDC+cEeAfTVQK73gcAKwD40JbOhcxwbWKNM=;
+	s=arc-20240116; t=1725962178; c=relaxed/simple;
+	bh=w+y0TLl4MxMWHGP1/CDsmBOzDDrRgODK36w0UsBOtnM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=izlCoCmwvweaDK0uK366I21KUMUbQ9JV7WZ8cKU6+QanRC5T8KwP0Fq0ff6N6WqPHzSBxXRSs5Y6wt52qAElOTFma5KllE/e0IGTldXcNaIDMvhHpBXErPS8a1Uq0fMhmxCyJE4dR1aAEFBlbgC4xIQ4goS8MnchrBqCNNyu5QE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HqwVjQwU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09E4CC4CEC3;
-	Tue, 10 Sep 2024 10:01:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=RRBUUiPlAlL5TosJq4VFetg2la7QmHAJEQSAv4s6lsM0RhcH/rtRG7Wvr7uINbbZL84O8jnCADFujLoo+B/LqFR7r7c1tbOIjTRYbBoRyWm6DsINZfiTmlV83JsC3aUd9XXaTbit4vTdSKAXhlZCBOznaVTsOoO4AnYE5jP+wtw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hHWIg3RV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37B59C4CECF;
+	Tue, 10 Sep 2024 09:56:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962466;
-	bh=/f2tJ2AsfDC+cEeAfTVQK73gcAKwD40JbOhcxwbWKNM=;
+	s=korg; t=1725962178;
+	bh=w+y0TLl4MxMWHGP1/CDsmBOzDDrRgODK36w0UsBOtnM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HqwVjQwUL24AAK+N2AAjHJwkAAisMKw2wxHBFgS1bY9KaxWjX+xTbXWRcXGsv9a/D
-	 ZN/B4tgMUkDEQCO3RJwF0rPLGd1S7249mAWWXO9Q1wqEpVa8e9anaV3UBBwNh17xah
-	 i5487SIRy1Oas1bAsLgFFhFKxPmV6y+wulH3RORE=
+	b=hHWIg3RV9z5K8pDEn70FAqebup21bJUPI2eBHnFIJW1fQpPTWVPWWBB5f/1c8Z1xf
+	 Lh2FazfOLrlcbyY41eSHphxZX1K6q7kfN00ZdVm3SlVp4ryoEKpL1KXnC1ChdvHOV+
+	 3i4te0lSAdEDUmdZnUOiQYBU1sIno0lmHHO+sT7A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Andreev <andreev@swemel.ru>,
-	Casey Schaufler <casey@schaufler-ca.com>,
+	=?UTF-8?q?Stefan=20Alth=C3=B6fer?= <Stefan.Althoefer@janztec.com>,
+	Thomas Kopp <thomas.kopp@microchip.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 044/121] smack: unix sockets: fix accept()ed socket label
+Subject: [PATCH 6.10 322/375] can: mcp251xfd: rx: prepare to workaround broken RX FIFO head index erratum
 Date: Tue, 10 Sep 2024 11:31:59 +0200
-Message-ID: <20240910092547.840386026@linuxfoundation.org>
+Message-ID: <20240910092633.380447534@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
-References: <20240910092545.737864202@linuxfoundation.org>
+In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
+References: <20240910092622.245959861@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,64 +61,256 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Andreev <andreev@swemel.ru>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit e86cac0acdb1a74f608bacefe702f2034133a047 ]
+[ Upstream commit 85505e585637a737e4713c1386c30e37c325b82e ]
 
-When a process accept()s connection from a unix socket
-(either stream or seqpacket)
-it gets the socket with the label of the connecting process.
+This is a preparatory patch to work around erratum DS80000789E 6 of
+the mcp2518fd, the other variants of the chip family (mcp2517fd and
+mcp251863) are probably also affected.
 
-For example, if a connecting process has a label 'foo',
-the accept()ed socket will also have 'in' and 'out' labels 'foo',
-regardless of the label of the listener process.
+When handling the RX interrupt, the driver iterates over all pending
+FIFOs (which are implemented as ring buffers in hardware) and reads
+the FIFO header index from the RX FIFO STA register of the chip.
 
-This is because kernel creates unix child sockets
-in the context of the connecting process.
+In the bad case, the driver reads a too large head index. In the
+original code, the driver always trusted the read value, which caused
+old CAN frames that were already processed, or new, incompletely
+written CAN frames to be (re-)processed.
 
-I do not see any obvious way for the listener to abuse
-alien labels coming with the new socket, but,
-to be on the safe side, it's better fix new socket labels.
+Instead of reading and trusting the head index, read the head index
+and calculate the number of CAN frames that were supposedly received -
+replace mcp251xfd_rx_ring_update() with mcp251xfd_get_rx_len().
 
-Signed-off-by: Konstantin Andreev <andreev@swemel.ru>
-Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
+The mcp251xfd_handle_rxif_ring() function reads the received CAN
+frames from the chip, iterates over them and pushes them into the
+network stack. Prepare that the iteration can be stopped if an old CAN
+frame is detected. The actual code to detect old or incomplete frames
+and abort will be added in the next patch.
+
+Link: https://lore.kernel.org/all/BL3PR11MB64844C1C95CA3BDADAE4D8CCFBC99@BL3PR11MB6484.namprd11.prod.outlook.com
+Reported-by: Stefan Althöfer <Stefan.Althoefer@janztec.com>
+Closes: https://lore.kernel.org/all/FR0P281MB1966273C216630B120ABB6E197E89@FR0P281MB1966.DEUP281.PROD.OUTLOOK.COM
+Tested-by: Stefan Althöfer <Stefan.Althoefer@janztec.com>
+Tested-by: Thomas Kopp <thomas.kopp@microchip.com>
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/smack/smack_lsm.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ .../net/can/spi/mcp251xfd/mcp251xfd-ring.c    |  2 +
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c  | 89 +++++++++++--------
+ drivers/net/can/spi/mcp251xfd/mcp251xfd.h     | 12 +--
+ 3 files changed, 56 insertions(+), 47 deletions(-)
 
-diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
-index 7d04b21737cf..a9582737c230 100644
---- a/security/smack/smack_lsm.c
-+++ b/security/smack/smack_lsm.c
-@@ -3640,12 +3640,18 @@ static int smack_unix_stream_connect(struct sock *sock,
+diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
+index 3a941a71c78f..5f92aed62ff9 100644
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
+@@ -523,6 +523,8 @@ int mcp251xfd_ring_alloc(struct mcp251xfd_priv *priv)
  		}
- 	}
  
--	/*
--	 * Cross reference the peer labels for SO_PEERSEC.
--	 */
- 	if (rc == 0) {
-+		/*
-+		 * Cross reference the peer labels for SO_PEERSEC.
-+		 */
- 		nsp->smk_packet = ssp->smk_out;
- 		ssp->smk_packet = osp->smk_out;
+ 		rx_ring->obj_num = rx_obj_num;
++		rx_ring->obj_num_shift_to_u8 = BITS_PER_TYPE(rx_ring->obj_num_shift_to_u8) -
++			ilog2(rx_obj_num);
+ 		rx_ring->obj_size = rx_obj_size;
+ 		priv->rx[i] = rx_ring;
+ 	}
+diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c
+index 5e2f39de88f3..5d0fb1c454cd 100644
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-rx.c
+@@ -2,7 +2,7 @@
+ //
+ // mcp251xfd - Microchip MCP251xFD Family CAN controller driver
+ //
+-// Copyright (c) 2019, 2020, 2021 Pengutronix,
++// Copyright (c) 2019, 2020, 2021, 2023 Pengutronix,
+ //               Marc Kleine-Budde <kernel@pengutronix.de>
+ //
+ // Based on:
+@@ -16,23 +16,14 @@
+ 
+ #include "mcp251xfd.h"
+ 
+-static inline int
+-mcp251xfd_rx_head_get_from_chip(const struct mcp251xfd_priv *priv,
+-				const struct mcp251xfd_rx_ring *ring,
+-				u8 *rx_head, bool *fifo_empty)
++static inline bool mcp251xfd_rx_fifo_sta_empty(const u32 fifo_sta)
+ {
+-	u32 fifo_sta;
+-	int err;
+-
+-	err = regmap_read(priv->map_reg, MCP251XFD_REG_FIFOSTA(ring->fifo_nr),
+-			  &fifo_sta);
+-	if (err)
+-		return err;
+-
+-	*rx_head = FIELD_GET(MCP251XFD_REG_FIFOSTA_FIFOCI_MASK, fifo_sta);
+-	*fifo_empty = !(fifo_sta & MCP251XFD_REG_FIFOSTA_TFNRFNIF);
++	return !(fifo_sta & MCP251XFD_REG_FIFOSTA_TFNRFNIF);
++}
+ 
+-	return 0;
++static inline bool mcp251xfd_rx_fifo_sta_full(const u32 fifo_sta)
++{
++	return fifo_sta & MCP251XFD_REG_FIFOSTA_TFERFFIF;
+ }
+ 
+ static inline int
+@@ -80,29 +71,49 @@ mcp251xfd_check_rx_tail(const struct mcp251xfd_priv *priv,
+ }
+ 
+ static int
+-mcp251xfd_rx_ring_update(const struct mcp251xfd_priv *priv,
+-			 struct mcp251xfd_rx_ring *ring)
++mcp251xfd_get_rx_len(const struct mcp251xfd_priv *priv,
++		     const struct mcp251xfd_rx_ring *ring,
++		     u8 *len_p)
+ {
+-	u32 new_head;
+-	u8 chip_rx_head;
+-	bool fifo_empty;
++	const u8 shift = ring->obj_num_shift_to_u8;
++	u8 chip_head, tail, len;
++	u32 fifo_sta;
+ 	int err;
+ 
+-	err = mcp251xfd_rx_head_get_from_chip(priv, ring, &chip_rx_head,
+-					      &fifo_empty);
+-	if (err || fifo_empty)
++	err = regmap_read(priv->map_reg, MCP251XFD_REG_FIFOSTA(ring->fifo_nr),
++			  &fifo_sta);
++	if (err)
++		return err;
 +
-+		/*
-+		 * new/child/established socket must inherit listening socket labels
-+		 */
-+		nsp->smk_out = osp->smk_out;
-+		nsp->smk_in  = osp->smk_in;
++	if (mcp251xfd_rx_fifo_sta_empty(fifo_sta)) {
++		*len_p = 0;
++		return 0;
++	}
++
++	if (mcp251xfd_rx_fifo_sta_full(fifo_sta)) {
++		*len_p = ring->obj_num;
++		return 0;
++	}
++
++	chip_head = FIELD_GET(MCP251XFD_REG_FIFOSTA_FIFOCI_MASK, fifo_sta);
++
++	err =  mcp251xfd_check_rx_tail(priv, ring);
++	if (err)
+ 		return err;
++	tail = mcp251xfd_get_rx_tail(ring);
+ 
+-	/* chip_rx_head, is the next RX-Object filled by the HW.
+-	 * The new RX head must be >= the old head.
++	/* First shift to full u8. The subtraction works on signed
++	 * values, that keeps the difference steady around the u8
++	 * overflow. The right shift acts on len, which is an u8.
+ 	 */
+-	new_head = round_down(ring->head, ring->obj_num) + chip_rx_head;
+-	if (new_head <= ring->head)
+-		new_head += ring->obj_num;
++	BUILD_BUG_ON(sizeof(ring->obj_num) != sizeof(chip_head));
++	BUILD_BUG_ON(sizeof(ring->obj_num) != sizeof(tail));
++	BUILD_BUG_ON(sizeof(ring->obj_num) != sizeof(len));
+ 
+-	ring->head = new_head;
++	len = (chip_head << shift) - (tail << shift);
++	*len_p = len >> shift;
+ 
+-	return mcp251xfd_check_rx_tail(priv, ring);
++	return 0;
+ }
+ 
+ static void
+@@ -208,6 +219,8 @@ mcp251xfd_handle_rxif_ring_uinc(const struct mcp251xfd_priv *priv,
+ 	if (!len)
+ 		return 0;
+ 
++	ring->head += len;
++
+ 	/* Increment the RX FIFO tail pointer 'len' times in a
+ 	 * single SPI message.
+ 	 *
+@@ -233,22 +246,22 @@ mcp251xfd_handle_rxif_ring(struct mcp251xfd_priv *priv,
+ 			   struct mcp251xfd_rx_ring *ring)
+ {
+ 	struct mcp251xfd_hw_rx_obj_canfd *hw_rx_obj = ring->obj;
+-	u8 rx_tail, len;
++	u8 rx_tail, len, l;
+ 	int err, i;
+ 
+-	err = mcp251xfd_rx_ring_update(priv, ring);
++	err = mcp251xfd_get_rx_len(priv, ring, &len);
+ 	if (err)
+ 		return err;
+ 
+-	while ((len = mcp251xfd_get_rx_linear_len(ring))) {
++	while ((l = mcp251xfd_get_rx_linear_len(ring, len))) {
+ 		rx_tail = mcp251xfd_get_rx_tail(ring);
+ 
+ 		err = mcp251xfd_rx_obj_read(priv, ring, hw_rx_obj,
+-					    rx_tail, len);
++					    rx_tail, l);
+ 		if (err)
+ 			return err;
+ 
+-		for (i = 0; i < len; i++) {
++		for (i = 0; i < l; i++) {
+ 			err = mcp251xfd_handle_rxif_one(priv, ring,
+ 							(void *)hw_rx_obj +
+ 							i * ring->obj_size);
+@@ -256,9 +269,11 @@ mcp251xfd_handle_rxif_ring(struct mcp251xfd_priv *priv,
+ 				return err;
+ 		}
+ 
+-		err = mcp251xfd_handle_rxif_ring_uinc(priv, ring, len);
++		err = mcp251xfd_handle_rxif_ring_uinc(priv, ring, l);
+ 		if (err)
+ 			return err;
++
++		len -= l;
  	}
  
- 	return rc;
+ 	return 0;
+diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd.h b/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
+index 4628bf847bc9..2e5cee6ad0c4 100644
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
+@@ -558,6 +558,7 @@ struct mcp251xfd_rx_ring {
+ 	u8 nr;
+ 	u8 fifo_nr;
+ 	u8 obj_num;
++	u8 obj_num_shift_to_u8;
+ 	u8 obj_size;
+ 
+ 	union mcp251xfd_write_reg_buf irq_enable_buf;
+@@ -907,18 +908,9 @@ static inline u8 mcp251xfd_get_rx_tail(const struct mcp251xfd_rx_ring *ring)
+ 	return ring->tail & (ring->obj_num - 1);
+ }
+ 
+-static inline u8 mcp251xfd_get_rx_len(const struct mcp251xfd_rx_ring *ring)
+-{
+-	return ring->head - ring->tail;
+-}
+-
+ static inline u8
+-mcp251xfd_get_rx_linear_len(const struct mcp251xfd_rx_ring *ring)
++mcp251xfd_get_rx_linear_len(const struct mcp251xfd_rx_ring *ring, u8 len)
+ {
+-	u8 len;
+-
+-	len = mcp251xfd_get_rx_len(ring);
+-
+ 	return min_t(u8, len, ring->obj_num - mcp251xfd_get_rx_tail(ring));
+ }
+ 
 -- 
 2.43.0
 
