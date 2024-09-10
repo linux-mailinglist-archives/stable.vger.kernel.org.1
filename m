@@ -1,111 +1,105 @@
-Return-Path: <stable+bounces-75666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75667-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB677973C00
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 17:32:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A370C973C8D
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 17:45:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EE8BF1C23D89
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 15:32:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C5E991C23DC5
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 15:45:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7533197A76;
-	Tue, 10 Sep 2024 15:31:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0617C19E827;
+	Tue, 10 Sep 2024 15:45:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="RxDz43hr";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="jfxNNWS7"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="Sg6d44+g";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="dhZrgVLx"
 X-Original-To: stable@vger.kernel.org
 Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB1D34204D;
-	Tue, 10 Sep 2024 15:31:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB7C5187FFF;
+	Tue, 10 Sep 2024 15:45:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725982318; cv=fail; b=cfbj2vkdmo4kgChbKSlPqkR8Vqna1e3elqTOe5ZHXFjR2GgObcQp0KNqQwAVGdtf48w6gnZjlFAemZ+jwAqjUxpuA8Ej9K3awk7eqHRdKkTZMqIde2b2/Sk7umL064H42d1czfvBhCEeKrmH+8vCbeE4lKmjFGM/M9yxzqzXnUc=
+	t=1725983102; cv=fail; b=EF/WCHh81IY37e4tA/60GmIKr437NTUSRvYHSrfZLqjNYCju9iFvfp0mr7Us+eyqtKNl2/duIrI9rei93l366wBmxk66CkI7mJAQ05/p2qbHOSG+sXgSxc+c8F9C97A0D7ECdlAcWUF5Dpm4zWWoPAV6yYTOZlSFArU/4jwdQS0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725982318; c=relaxed/simple;
-	bh=E7Pd35crUMUCj97z4VRMuCeU664jQQMD+5rU+8B+grk=;
+	s=arc-20240116; t=1725983102; c=relaxed/simple;
+	bh=ivSa0zqL6KggeTyZO6tXe04wvGJE3QvwcqTFMCBvgwg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=GNT8JE8RVX1DxDFd+YQc0NeyZMhP7+pmXB0PApruyyJqNHABJSIdkDYEzK0jdLYN+I8K24w3uzE0ALIacFY6qXmHdunGty9EZy43hdvhC5dugpsvZuqq3EotFZgent8NcRM0SHeDy5kM09fuVPjLBV41hK0PmDexhxqTGrHFAfA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=RxDz43hr; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=jfxNNWS7; arc=fail smtp.client-ip=205.220.177.32
+	 Content-Disposition:In-Reply-To:MIME-Version; b=pDZoLEQtOB5OpAtRX5IQ69DK2p7KjHYoZpHb/pAqkJFAecsQphj6mn1SbjsylYNeHZfbqKyDwN4dPmgB6oCQadGPtaHVxwHCbzGSgUJP50N8U9QoXP9CLsxBmy8u5uSOHv7ereJ52PrtFWk6LGYwSfEE0DXK7B7eMcIjkdUV0OM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=Sg6d44+g; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=dhZrgVLx; arc=fail smtp.client-ip=205.220.177.32
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48AF3TY9032333;
-	Tue, 10 Sep 2024 15:31:46 GMT
+Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48AFfU7Z031448;
+	Tue, 10 Sep 2024 15:44:54 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
 	date:from:to:cc:subject:message-id:references:content-type
 	:content-transfer-encoding:in-reply-to:mime-version; s=
-	corp-2023-11-20; bh=8qlFhkXDh0LDIORuV86uCm6yMlNcqXRh+Sp0a+aLWzY=; b=
-	RxDz43hrcjA+fkFyPHZFLgdv+3hbMLVj8Y58c7qIqHSPi1XDFZKVQLtCGBJLY5nC
-	fVn86M/GP9K99JB3dkSaUK4HpWdy3JbuwXDZgE/SxvyzPMa0iQacD22UvkDjVUZr
-	q0SdG0EENYzwr1peK3Bogs/zYAc+EXI4htjJocF+6a4m+1qV06FOrVOiYCzyJsTR
-	jDrvAJasntPCLyKnNpyPOhAznfeEHKK5haUS0L6+0JYAT1vv+w3+CVs/73wh9rJV
-	XCryy1ZxWOYbsvtseNlj3WxvGnFCE1hbrHpC+wiNaaQvIBGflc/qVVkF6CPwIiOo
-	DyY3j49KmQnsttYq7/mctw==
-Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 41gd8cwuha-1
+	corp-2023-11-20; bh=QsB85aDdWlC7Xtku5WDJu4SerdMApUzdWQ9qY3Gg46Q=; b=
+	Sg6d44+g8YwcnKbrH20HwsMhFyF9zr6xqOXqMCWXCMgvCjoeARe8qVroUINhSVVE
+	1xyM5DOpZOoSFl1PQaif0FaRyyAtJxOLX1L7fth3FdsLwgXnsnfxRtuQy3ADLXK1
+	YokdoCQWTmxmqGQIKAS89Ky9AC96mkJ123peTI8qFLzEM/5redgsN1/5yRiUze4v
+	RSfUS/6aZjbkQyBRoqz9z6NEmT8u3jXl+b/qyoXBjs8K+jD1s7Tk0US89umBQbBU
+	JLSveEvHyMaLga9cMxEopp82IsRs5dcZJfVd/j4MBODg1Q9U9MpRj5CaKeyltQOj
+	0LzcJMJb2EHcT+43cBos+w==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 41gjbunr13-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 10 Sep 2024 15:31:46 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 48AF0QVv031630;
-	Tue, 10 Sep 2024 15:31:45 GMT
-Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10lp2046.outbound.protection.outlook.com [104.47.55.46])
-	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 41gd997uk0-1
+	Tue, 10 Sep 2024 15:44:54 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 48AFU22j040958;
+	Tue, 10 Sep 2024 15:44:38 GMT
+Received: from nam12-mw2-obe.outbound.protection.outlook.com (mail-mw2nam12lp2043.outbound.protection.outlook.com [104.47.66.43])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 41gd9a710y-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 10 Sep 2024 15:31:44 +0000
+	Tue, 10 Sep 2024 15:44:38 +0000
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=H/Ynmum/x3xCmSzj1OVmMws8gh3v02po/RMCXfNqxECSLl0mivRb3eu7Fp6Wwbm5MlUDbtq/HkXtcw7kA4mf9dOdAQ+gUvtRlTJb4iiVo5TlAFqjzigMPJ1YoiLPuKqBDgFWwZ+wNU++sMIq7QSC2bAER7+mrez0QrVxvw0W04YeK65O3TGyU9vsdqsX/bObzDGaLwrSiisYLfw0Ra8qWIQrR9oAsUoTKFC2osKxCrnzc/zJFsa+qioIpEyvMw8r6ytSVS2onsONXfxMO10Wp9LIjV3jPhzluJo5HbeJ1e2s2uWym0ihhXD9KGKaozjGPgp8aYHIXS3yE5xnVUB+Uw==
+ b=p+3eXL1iPHckmVQpZ1XKW1kBHzSVqeoosQt/0CQth7vR5fjld1MH2CWdiosIzGXnHV1oClt2TsSNDu1Hf9ekzN4ODAV5QqiizW5sQ5Us+IEyYYtBgBhW2LHeNOXiQc1tYrc11YhbTGVaMeSH30aVM+BDFGHdeZhgO6zHlHG1p+mKtaFPVqX43JXufMg4Co3aDCtfMT16mvCorvl7+L3t4rcF1tc2gMrUArgH8TcakFskAJLn+YOE0XeEk0gDGExo026wj/ocWLYIPgsC+JxqSSCgWpzq7VIrUHyahPh5Ur3EvJSBTcIUhNpZIusgqO+eCd2WBqqYO5YoDWjSTa+ctQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8qlFhkXDh0LDIORuV86uCm6yMlNcqXRh+Sp0a+aLWzY=;
- b=jl0iQnZ4vkyEZ8LXz/dTbZxIPtBAkXzdSpKwdK4NnU5gzyiyqQbG03Tbu6/T5ycUC8wtGohPXXNO0KWIt3OYbocGOwEPhu8vVypXsN2stgBedPQYpMacoegXvTcNjCSmbGmgvkVMHGXgXzSXYHcqCU/8uzYDB2Mut5IIe/EpjdxXrnMkQ6XvaQHJzemb/540lE+hBM4z+R0IZYMiTg8iRmGxGufwewL26BvhaSP8oRcGw5h8kAb9DRJnBuh8TGOj+gQarWFxNurz9EpTu7T21ILrGpUv5BJcIpDq1dTN5C2PEI6t3eR1miCbHSBjxDT+RiUIqv3uuUpR4MTaP7hmmw==
+ bh=QsB85aDdWlC7Xtku5WDJu4SerdMApUzdWQ9qY3Gg46Q=;
+ b=zWl2TGSzF1eAKrxeDNPsxO8O289PSP+M/KU+30tiDA0CNMGwj1Gc/0UsSW6iVvxod295kXp+NzE3J7YNzl9CXg1Lpj7ptPeST6TfUOmON2o7lwjj+IwZR8O6J54NpqYQPHeYX/6JGqXAUi/4gb50LAnPt3VHEOrpc887d6Yr2Azlrqvs7LxPTewBqbaJYUvU8worWAbUyas64Ql29MX+B/Xzd/m91g3RLv8XaYccBYAfobmiwszLBIPoP/Vox5thmyh/3jNRWamfUX2mVoZcm5iSpn7D9DHwNfEFoGViXlofmk+qwWXcsiAdf1Ur9HM8WCuu+VzDNDyPHaZYtW2jcQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
  dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
  d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8qlFhkXDh0LDIORuV86uCm6yMlNcqXRh+Sp0a+aLWzY=;
- b=jfxNNWS7em5WN6WU6slFTepXWb4+MhREYl8x3IUMJIjV6iErnmvUK/M5kcFNVwCKnquaRLTNDooPeYwMb+c1AEsy9Nynt70ov8WY7a93f99Laff+xBQ/jU63hVr8S0BH7ls18mzd0fGvpRHe8R1YrZTMbrvcI9iqpoYjWADV3f0=
+ bh=QsB85aDdWlC7Xtku5WDJu4SerdMApUzdWQ9qY3Gg46Q=;
+ b=dhZrgVLxzSEkgxDGgqxEehvL4tErfyFDWd73HYKl1XYh+4bzTF4AIokHRfAevGbp9Xdk/h67WWO/C676cDhQLKztlHtICCVVlMaKwcFgVS4CpJc+ztQ9RLLMmNVtRM0l1VR5XmAagNQeJezZdJUgrutaudRhABoYvxNfDTuCx1E=
 Received: from LV8PR10MB7943.namprd10.prod.outlook.com (2603:10b6:408:1f9::22)
- by SJ0PR10MB5719.namprd10.prod.outlook.com (2603:10b6:a03:3ee::18) with
+ by BL3PR10MB6089.namprd10.prod.outlook.com (2603:10b6:208:3b5::21) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7962.17; Tue, 10 Sep
- 2024 15:31:41 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7939.14; Tue, 10 Sep
+ 2024 15:44:35 +0000
 Received: from LV8PR10MB7943.namprd10.prod.outlook.com
  ([fe80::a8ec:6b6b:e1a:782d]) by LV8PR10MB7943.namprd10.prod.outlook.com
  ([fe80::a8ec:6b6b:e1a:782d%7]) with mapi id 15.20.7918.020; Tue, 10 Sep 2024
- 15:31:41 +0000
-Date: Tue, 10 Sep 2024 11:31:39 -0400
+ 15:44:35 +0000
+Date: Tue, 10 Sep 2024 11:44:33 -0400
 From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
 To: Jeff Xu <jeffxu@chromium.org>
-Cc: Muhammad Usama Anjum <Usama.Anjum@collabora.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Shuah Khan <shuah@kernel.org>, Kees Cook <kees@kernel.org>,
-        kernel@collabora.com, stable@vger.kernel.org, linux-mm@kvack.org,
-        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] selftests: mm: Fix build errors on armhf
-Message-ID: <pvdw7s4uorkbi34txw7zkrpunjigoahcwt7vepbpgtm57rlehh@zy5yxjr2g62n>
-Mail-Followup-To: "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	Jeff Xu <jeffxu@chromium.org>, Muhammad Usama Anjum <Usama.Anjum@collabora.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>, Kees Cook <kees@kernel.org>, 
-	kernel@collabora.com, stable@vger.kernel.org, linux-mm@kvack.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20240809082511.497266-1-usama.anjum@collabora.com>
- <CABi2SkWgPoWJY_CMxDru7FPjtQBgv61PA2VoCumd3T8Xq3fjbg@mail.gmail.com>
- <1b36ba43-60a4-441c-981f-9b62f366aa95@collabora.com>
- <CABi2SkUih8XrA4aJwngAoByCytg-PthJ8JrkKpzJRFP=f9zyKA@mail.gmail.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+        patches@lists.linux.dev,
+        Muhammad Usama Anjum <usama.anjum@collabora.com>,
+        Kees Cook <kees@kernel.org>, Shuah Khan <shuah@kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH 6.10 032/375] selftests: mm: fix build errors on armhf
+Message-ID: <s663e6vb3dgxnedvugt65t6cao55lofznpq4fnkejh227myxxp@6ppza2y4tj2t>
+References: <20240910092622.245959861@linuxfoundation.org>
+ <20240910092623.314101083@linuxfoundation.org>
+ <CABi2SkV-FdDQy2bjDkpgpqz7hX7ybeTjCrUgUf6WcYqGkuxWMQ@mail.gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
-In-Reply-To: <CABi2SkUih8XrA4aJwngAoByCytg-PthJ8JrkKpzJRFP=f9zyKA@mail.gmail.com>
+In-Reply-To: <CABi2SkV-FdDQy2bjDkpgpqz7hX7ybeTjCrUgUf6WcYqGkuxWMQ@mail.gmail.com>
 User-Agent: NeoMutt/20240425
-X-ClientProxiedBy: YT4P288CA0006.CANP288.PROD.OUTLOOK.COM
- (2603:10b6:b01:d4::12) To LV8PR10MB7943.namprd10.prod.outlook.com
+X-ClientProxiedBy: YT4PR01CA0306.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:b01:10e::9) To LV8PR10MB7943.namprd10.prod.outlook.com
  (2603:10b6:408:1f9::22)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -114,199 +108,344 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PR10MB7943:EE_|SJ0PR10MB5719:EE_
-X-MS-Office365-Filtering-Correlation-Id: 76e66981-e86c-40aa-558d-08dcd1adab67
+X-MS-TrafficTypeDiagnostic: LV8PR10MB7943:EE_|BL3PR10MB6089:EE_
+X-MS-Office365-Filtering-Correlation-Id: 630809d7-9fe4-4d4d-1bca-08dcd1af7888
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|366016;
 X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?di9vNFlPaEFTdktLdit1MUlRZElTVkNub1gwVSs1cDcrNEdNTWdUdW1XUGQ5?=
- =?utf-8?B?b2pTb1ZTL1NwSUhDZnBWc2hwMzlkRzBjRG9xQWRXLzVwYmVoVXFBV0g4WG1M?=
- =?utf-8?B?aGFlWmtzMlV4NHI4TDFuY1lST2d4VlJSc1NFeGJkaktsWDBTWTdIOEVRRGNS?=
- =?utf-8?B?djEyeU90WW1FR3UrK1ZGMTczRmhIVVQxMTM5TGFmV1k1U0ZSTGdYVmxXd0Uw?=
- =?utf-8?B?Rlc3bzI1RUo3TUpNb1FnOU0yOEJJNFVoMzlENEt2Nk9paGFVdm5FdjJUMjVV?=
- =?utf-8?B?WUxob0ZYNU1aQndxdGgrSFdEdWxvOFM5Sko3aEdZM1lpWVU5V0FLY1RPdnZM?=
- =?utf-8?B?UndyRWo0ekxNdXlXTTlMUWNHY2dqVjQyOTZZTG5UUHNhSFp0RHBmckJtOEFK?=
- =?utf-8?B?SkwxcU5YdWRaRFJsa0krSEhYM0QrTW10ZmplN3RsVTdpcVRkaHFlLzlKZmxK?=
- =?utf-8?B?VTNLaThOSnQ0ZHhBcWZWaHFKVHJXSzJwQWo1S2V6eUhCNFNRdGUzM1lXMEJP?=
- =?utf-8?B?a1lVdzRiOE5EVGJDczViTWtNdzRIeFM2YWpoTmhLeFhEUWVFQlZDNWduS29y?=
- =?utf-8?B?aVVEWGN4eTVoZ3h3OExNbnBLL1k0RHYzYk5zNmJFVzZ2czcwNGw2ZXJscG5z?=
- =?utf-8?B?RWVaSk5ZVnJsNFlnTXJMNi9wTHhJQ1ZDeHVYMUN4VmxqNEg4K3MySEcveU5z?=
- =?utf-8?B?dnlJbTBHOG4rQTdxZzBaUTJmMlZjb2V3TUg3VXlLZTZBMzNHR3MySFhZTGJN?=
- =?utf-8?B?TTJzVHMrL2o1OExHMWl4TDlSRm8wYjE3RGtOaHI2U2ZhWFZLWkxCbTY4d0V6?=
- =?utf-8?B?OTVvaHJiS1ZEdmxPL2FZNE5GUnNOM1JqVklzZjY5eG96ZkFiNzZKbnNIcXFp?=
- =?utf-8?B?aCs4TUQyTDMyeDNOek9TbjJqTDcwUThtUjVxTmlSUnJXOWxMVCtoWElvTlZa?=
- =?utf-8?B?eTJsdThrMUxoTTRsZG9FTDIwWUZPL3d1KzlJK0hmaWgxWm5WS254Wmp3LzRM?=
- =?utf-8?B?c1ZSa2dxNWFDYk9lRkE5WjN6Z0RXYkUwYjdCdDlUUmNaRkhxU0h6NkR5Tnli?=
- =?utf-8?B?bWk2VWFxaG5EVnFTTXhIblFVTExBUHdteUNnbWZyMDl5RTZrUGUwQk03bHI1?=
- =?utf-8?B?bDJLd2IxeE5Xdk5YSWs0cUpmUmIzZ29tai9rak9ZQ0s3enU4MUo4dW80TERE?=
- =?utf-8?B?eUYzNUVmYlVLSXU2dXpZeEtwMGdjTHFqZmloeVJEK1FEa3pLbC9nZXlUYmtn?=
- =?utf-8?B?aWZTS3A3aUEwcU9VQ1diNTVNWEZKUkNyRmpGeUF1bGFHZG1DN3liTkFLZ1o2?=
- =?utf-8?B?dEt0N2pGUGszWWFaQ3FNMXBkMjI4ZDl3YXFUWWZQVEY1YjdteUc1Y0xjWTRZ?=
- =?utf-8?B?OGdnMEVpaEFwQUtKdXhBQWNmUWV6MC9sK29wczVGNDlESThBTWEydG1SRDUv?=
- =?utf-8?B?RGRIZFdvSHFBSCtXSEN5R3dYcStjU3p3dVFGRnRqR1hteWhnVHJTWGJpTW8z?=
- =?utf-8?B?V2RQVFh1czAvS2R2bW94UUpUcXFFQ0hZSlBtdlRPazQzbi9DU3dvcEFvZlh3?=
- =?utf-8?B?bGFFTVNLMTY3Nnp2NkJhWk96OWVEMVN2aW1LaUhrUm5qTWhwR093V2U2VFkx?=
- =?utf-8?B?bTc2TDVUSFMrNTk4d3VNOWY3YTVXV1V5TUtKNHoxVzYvc0dXOWExTzdCRE50?=
- =?utf-8?B?LzgySi9ZcFB6RVlyOStmenJMTkFOeVFET1NPTmpjaVJIZWdlZ1Y5clpiTml1?=
- =?utf-8?B?bjFzY2tIT0cyWlBSL2twaHpobWhPS2dnLzFscFNiN0ZkRDhHYjhQUHhmd3hC?=
- =?utf-8?B?Z1FaVC9tRE96eXMzbE52dz09?=
+	=?utf-8?B?YmZ1Z0E0SjNBakJQVXNZRGZjUTIvelFZWlhka2Vid2dJRzZvNmJNN1dLYktL?=
+ =?utf-8?B?cXc3bUI4dTNMeGliR3B2MHR4ckhoSGRmQ3JnbGhNUWhXRnJxNUdkeHhHSncr?=
+ =?utf-8?B?S1IxYlFKcDY2STkrQm5jUHMwaHdsMnViamtEU2Zpb0dNajFINDlFbVVrcVJZ?=
+ =?utf-8?B?RnZJYWczNzlZYi9tY3VScUY2NmtIc2RhTXQwZFpxdzM2L1NnbjVFSWlwc3ZJ?=
+ =?utf-8?B?SWV5dFZyTi9pelBrdU9GN1BlRTRjQ0VwaGVZaDZFbTlXZ1BnUytDVGdpZzNM?=
+ =?utf-8?B?M05FWm5CMmZyTVdaV2YxYlB0QTZKNUdzY3RNeUt3aXlxRWpiZWh6ck9KVmN0?=
+ =?utf-8?B?T1hXOFM4SUtKRElXcmhxWHNHZGlER1pPWkxhNXlHZFlOa3p0aUNYZUxZaHhY?=
+ =?utf-8?B?Y0lFQUNmaVloS1JpV2hGZkxGSk52Z2gwV1dpTXZYbkZRa0t0eEZMOFRHd3Ju?=
+ =?utf-8?B?VjNJdjJuSi9WSUxVWEVKeGRoa1lCRDVvWVd2dm1WVHVIbG51UnpNYnZFak9t?=
+ =?utf-8?B?dHFBem9UZFlIa0NxMzdQbk5hUDRhS0pTZ1FldzhTYklsSXNQb0Y0RlR5b0Zk?=
+ =?utf-8?B?TGdjZVIrejhuY1lDb1hoVGtkSDk2V0hUeVAyRlkrZEU0aFZjOVFsTGNQYmRy?=
+ =?utf-8?B?SXNsMmpPdmFSQWFMOG5XSWVPMDYrcDdTbUZsZnM4MFpIOVdRMEhEVVU0TFRT?=
+ =?utf-8?B?b2ZTOTYzZ1dNc2Q5ZGIzenlNdGdIYjl1THlGSTU4VnBOaC9vMThScXdGa2dZ?=
+ =?utf-8?B?N1IrSXVwenJ4SGVqNVZrOW81TzZNVXI1eVp0RlRzaUtGQ2RDaVRyalltTkp3?=
+ =?utf-8?B?YW9naXBOajc3b0E0UXpuOTFJR3BocWV2NExBWHBQNWVjYUNDaVZxbm1HTUFl?=
+ =?utf-8?B?Zzh3c2dpa1I5UUl4cFUzM2xkcjNXMHlTQWdGRWpuYWZPT1IzMjBoZ1Vlem55?=
+ =?utf-8?B?Z1VKVkVTM0dvODRCbVdERSt2Ukhxc2w0V0hGdXcvMWVwdWVRcHlUTGZpQ2lY?=
+ =?utf-8?B?WTErV1FUbk9ROURjOFc5KzViODdxbmdNNUNFT01PbkdLRmJHa2d4Rkk1MU1u?=
+ =?utf-8?B?bmlHYkZhODArUmZXcWZQaW9tbTNZZ0JsN2dTYy82UTk4a0ZSbVdlSE52bzhl?=
+ =?utf-8?B?cmRFZ0hoblQyZzBuK01qdzRWNkVPUGhSQXFZNjZQNm1kTWI0bnp2dVNnbDg4?=
+ =?utf-8?B?Z0hBNDdpYlYwcGpybGxOek1pT1dLOFBBdHdpTUszZGJjYko5NVc2ZUpOSUxx?=
+ =?utf-8?B?ck9odjc5ay9NYk1HZWZnR2VDeHh4emF3dmVRdGsrUFh4bFNTQTgySklmSjF2?=
+ =?utf-8?B?SjNqYXBVNW9iMzlXaFNwalJlRFN2a1o0Y0Yzak1POUs4QUtud0xDclVVTWNj?=
+ =?utf-8?B?SXNZMTc5RFVxVmowQnVWNUdZaHF4dmNvSXQ3YnBkVnpGaWwvSHg5SCtOb3Zn?=
+ =?utf-8?B?eHFwWml6YUQ0T2NTa2tlcng1dDYwWlMrcSsrQmxlVHNad1VzQjV3NTJ4Q3JD?=
+ =?utf-8?B?clNBekE4Rm0zaWRIVUVocmhlK1pzdmNiTUQ1TERHeEcwNUU1SU9SeE9WTUZk?=
+ =?utf-8?B?Z2lPZm93VDJ3aG1JcnJoVVdLS3dVQkJrbW1DQ0FxVUowWE9wOEhXU2s1cU93?=
+ =?utf-8?B?cW92a0syMDZKekZBWlBGMFg4eTJnWWFUald5MVBsRkJYb0IyZG9nODNpcUM5?=
+ =?utf-8?B?UnpGL0k0Z1lpSGtmNHNkdjY4eG9teER6WVZONEI2Zk9jR1hyY3lQcHRpVU9J?=
+ =?utf-8?B?SkpUQWNlOGlyQmhoUHdWS3BTa0o4TUNiMkZiM29EZHlobVNQNkF6cTNDTlBs?=
+ =?utf-8?B?d3Rsa2plNGxmVWNSRE1LZz09?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR10MB7943.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR10MB7943.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?VENNN3pJaU5XOGVvbnFaeCtWeVhkQWxDblJZOUc4RnA4dVAxMklCemNobmRI?=
- =?utf-8?B?c1VUaTRRMTAxQ2lKU3c2R3FXNjE5Y1pTblczK2gyL0VNTTFPeGJEM1pydGpZ?=
- =?utf-8?B?ekllTVVlbWowanBiU2F0VDNiRExCcFRDT1Fnekljcnl1TTVqb2NobE8xTUc4?=
- =?utf-8?B?QzVHdFJyM25sWGxNQmxteWQyU0ZBMG15VmlTSzNjZEhzcVBBTTBMVFI5VGVi?=
- =?utf-8?B?blhseGI3MURHaGFiMk1LMDlMUjZXQ2tNUWlVYUxYRDF5Tnk5WXliK1lad0FV?=
- =?utf-8?B?eVRUZDRTZHNYbFRNQjdQcUJSK1IyQWo5aXpaM1EwS0hPb1VRV3NubnVQZWMz?=
- =?utf-8?B?N20vSHN4ajhyUjRydXJ0ZG9xMklEVyszWWRSYnZNZDZqZEFjaWt1cnYxNkYy?=
- =?utf-8?B?VVZLQ1lwdmptazREVDVucEYwWWNkVVpvMEh0QWZ1ckdDejhQUjN4bndZcVk2?=
- =?utf-8?B?aDUzd1RIa0E3aEJIdlp1Z3VGcklncWpNY0dUNnlidnZaZ2NRSzZKVjFYbEY3?=
- =?utf-8?B?cTFJaXhGN1NqakozSDdyc0JhbGZFWlo1VFd1eWE0Rlg0M1F6Z0VYLzhGVG5v?=
- =?utf-8?B?ZzJXc3ErZmltcHdxUVRIb3E3RHk3WGZsbXl1eGpiNXhQQ1A3SEpwOFptWVQz?=
- =?utf-8?B?RXQ3Q2dSR0lRNTdydEtsYzVSRzlINWNLNVZaTllsaXJBTXM1T0FoVnJQT2s4?=
- =?utf-8?B?RllDQ3pWaWsybVFYNVVPVGxFTCtpS3JXMHRqak81bWI2aDg4R2IzM2NqMHAz?=
- =?utf-8?B?NXRLeER2TXFDalRqYlBoRmpOS290SnptdUl5TFd1TGMvU3FKSHlPeXdiUGMw?=
- =?utf-8?B?UEhEOXpsVWdCU0k1UWh5ZVFNaW1ONmFoT3pPdlU3T29Cajk3Rm4xUzhrbGdo?=
- =?utf-8?B?QTUwUXMxWXU4NVdOVnkzZ245ZnRwclhiUVdyMEVsN1V0NzllUVFrQkF5TXh0?=
- =?utf-8?B?eEVCdlloNnhZRDhGL3J2UjdNNDk0WXVkbDVpWit5LzY5NzQvNStkdnppR20x?=
- =?utf-8?B?Ri9TVlhLcW1rc1dsanZkLzJaTld1Z1JIb0FwYkI2dGRydUVUc3ZWdkh5cThK?=
- =?utf-8?B?S3lqQklDVTFFejNzS1hoRUZObFd6eGI5T3RvL1JqWEdvZjlhdEpMRnpVeGpw?=
- =?utf-8?B?VjNGZVk0YUJFMDByU1RydzdpL1lkVlJpZVBJV3lmSUpFcUt1VUNJME9zQXRL?=
- =?utf-8?B?L3owTU1qTU9CNGlLZjlQaWYrZHJBb3E2OVFDcER4L1RGL1hja0FoZWUzbDRE?=
- =?utf-8?B?V1FkYjI3OWR3dHptS0dKUnVpcXhvK0UySU9iYjRZdmlsVzd1akJzUmlaMGV4?=
- =?utf-8?B?NG80eHB1bktFMmR3ZGZrZUNxVG5rK1RPY2ZPVFd4eXVVbUoxQWdPUnpEY1di?=
- =?utf-8?B?QUNIdzNYUlRxaWlpSlBHWkQ2YUF2R0NSZldHQVJWT0syRDJYNHJZSVpRaVB0?=
- =?utf-8?B?RHJBTk9Bbk5uaEQvM0NSbEVFQTRkazV4NHNaMzFPS3dwbkFRdnlFR1BMdXQ0?=
- =?utf-8?B?d2JZdkhRQ3NrVzI0S1IvNU9ZKzR1cm5LcjU4K2h4K1N6UEo1UDJOU2VYUUxI?=
- =?utf-8?B?K0FsK0lBWjR0UWt5NCtEUk1yUTlyOEw0TmppVjBsVFd1ajVDcll0dVZTU0lT?=
- =?utf-8?B?WklDUE9aNDZRYXVLcEsvaTE2T0NuUndaOERIT3ZEeGdRN0tOMzNaU3JJZ0Nr?=
- =?utf-8?B?LzAwcE40SXcyTTJudm1yRW8xcGV0eWJpUzcrUWZwYlV1UTZ1N21UUTlRN2NI?=
- =?utf-8?B?Y3M5K0UyMytFV3cwVTBtcThGb2o5NU5XUjdYVm5GMWYvVzJDekhmWjM2cDBN?=
- =?utf-8?B?ZDlVSzNsUEszbUJwOXRMbVpaL3gxS1BZa2lFRDZ3cUdPd1RHRjlJakFGMTB5?=
- =?utf-8?B?Wk9rK25vYUpLTmZ3VE41YzVxVVdkUzFYNms3dG5ZLzdab1dyenY5eWRvekhr?=
- =?utf-8?B?L0ZzVVhwN0o5S0ZScGVVNW5FZ0wyQjhNc21rR2ZnVG9VeHFCenBtUHZKUk1r?=
- =?utf-8?B?VXN1TkNnRXM3NWRHcVdoWG9xR2lQMjlJU1I5Rk9CcUk1a2YzRngyWkdocWJa?=
- =?utf-8?B?elFVMUUrODMwSjBEZnBDRzZHblpUT3RHQWYwaFZOYjNZMHhUemVDSWdFVjdk?=
- =?utf-8?Q?LyHdciojpztH31pv96VDGO8zO?=
+	=?utf-8?B?ZFYyY21BcUltR3EvcHFjK1ZJZ1d2aHVjR3pPM3dyc0FkSDdjWnQvQmVJalFj?=
+ =?utf-8?B?dU1xR1NwSDBYU1FFaVFSNjdVdmpDaGxyV2ozSEtlVVZlYnJVcEF4czVWZTBi?=
+ =?utf-8?B?VzBHVzZwTXlvRmdWdWQzYWZjbUtlWkhaMVJwZHhnV3dEWXI2cGQyTWRXVEhl?=
+ =?utf-8?B?MEYwd1hwSEdMTWlETDdaYW5ycTRXSUEySWtpd3M5MTVEZnZGRmY1QVl6Z0Uv?=
+ =?utf-8?B?NnhFU2hZT0pTTWNLN3ZkSW94bkFsMXJEaVJzUEg3VVdmV3NLdWlpOHFoUGxl?=
+ =?utf-8?B?dmFlTThhaDFQcDd3M1FhbjJlazJobXF1YnkzL1dzTGFwb1F4aGpLUUp6cjlR?=
+ =?utf-8?B?S3diNEpXZkY0WjJ4TE44cDJDUTYxNWVWd1I2dW5BREJaN05qM1M0eVBMSEFF?=
+ =?utf-8?B?NTBZVnVxUnoxQXFPQ3NHb25OR2x3UlRLVExYeU5GckM1eUl4d00wUThPQ0Vz?=
+ =?utf-8?B?Z2RKaTRpM09Kd1lUTzhRSDBGQWh0Y0hJeUppZ2kyZkR4VG1qd3Y3VDRnS0dj?=
+ =?utf-8?B?ekRldHZxbXhST1NVNCthdXFrMWRZalZsMUFWS3d2dTlVaFBaR1ZDeGZkUXJJ?=
+ =?utf-8?B?VG9Eczk3UndMY1ppb1JXcHhQVWhWcXBMeE83Q0NQa05XbTNnRisvZlhZSWRL?=
+ =?utf-8?B?L3pqenplNGVIVkU5Smp6RmwrcittNFBHb1ZpK3BjcE9ETVMrc3BxdXQxYmFP?=
+ =?utf-8?B?Z1ZER2pQV25jMm1vVFRWeVVYaVNjM2c5ejlheFRaN1ltMzlsOHdna1c3WjhF?=
+ =?utf-8?B?S3lrYkRvOTRQcHZvS3NJVXNIVmh2L0VvMkJOQ1Myd3RNODk3ek5GR2FpYUxz?=
+ =?utf-8?B?Z3ZBejZ3c2poU1FCNGpGdjFHY1plSGFVeEFsZ3VxSEtFdk9uRlo1QmJoVmd4?=
+ =?utf-8?B?MFFoZTJJeEdQZ0xUTU1QNGtyblBLOC91eFNHQzN2Wi9kQmp3ZDFTYS9Lei9M?=
+ =?utf-8?B?TklMamNCcnZDaTBaMUlzYy82b2k3OWxRSGtBMzUwM2hUNTU0VkNNQ1AvTEVr?=
+ =?utf-8?B?UGg1S3VOMHFmQ2ZJQ2J1TWQ0Um5TVjVuWW8wbGJRVDRSbisrRTh1VXlvZFJa?=
+ =?utf-8?B?cWl5R3VOeGJ6Zm5qcWdPQXVMTXA5ZzFRQnE1empjT0h2L0g4YjJKZkN2ZVl3?=
+ =?utf-8?B?L0hKOG9MdDRKSEJsWkxlVjRTQ21WWjZUZ2x1b29WdDZkNE1TdXh4UURydGFT?=
+ =?utf-8?B?TTd1MTlNMXhaaGxsNmpaVUM3c3ZuZWs1ayt5UTJyRDFsMS9idnh1SnJ2eU92?=
+ =?utf-8?B?K0dOb2EzejJ2WmIwdHB4L0EwaFcyN1FLaWoxSU9UUkV1WFNzeDBMbW5kU2hP?=
+ =?utf-8?B?dWcwTUUyZWNSNXRqek0yNHVtYTYwcDlRUjcyeWRwM2JYb2VNSWZzZUFRYzEz?=
+ =?utf-8?B?Zlg0ZXRvNEh6ejBXbDg3YjhwT1YxVlRnTzhCU0IxQzJoUjZxb0tONi9nZFZp?=
+ =?utf-8?B?d1BucUF4alVWak9ud2xseEthbjg1Y3dMUXJldkVKQ1ByNldoa0wyZGVjL0Ru?=
+ =?utf-8?B?WnlkUlBxVmQ1TFNDRitxYmVTeTRLZi96aFl4UmZCRXI3R2ZDL21XV2JJVGRR?=
+ =?utf-8?B?QXZlV3RkTHViZzIvcUljM3pndWk0V3RsT0ZzekVteERhT29Ha2xsOUNBblZq?=
+ =?utf-8?B?NitGRUozc2NsNlFrRHVUSm9BWkc3eU5ScDhsWTloYzgyWnRvdUZ0TTdzNURh?=
+ =?utf-8?B?VXQxVERoSUcyN0duUWNMRGEwQnIyMTd0dCtEL0xQbHdndk1GSnlPVmlIcVFJ?=
+ =?utf-8?B?THVnR1hTWlRoSUFycC9sWGdUZnpreHZaWGg2d1lpVXl6MWRKVXpNcmVrWG5t?=
+ =?utf-8?B?alU5aWIzUW1BK0dxa0p1WXBUUmx1TDJqVnhmNzgzZnFSRHFWRzZOMnNYYUU1?=
+ =?utf-8?B?cnkzbXRxdmVSd1pSV2dWYkZITStVY2w5TFAraFAvZTF5eXkrTUw5N0JsTFpQ?=
+ =?utf-8?B?RzBoRG15TmxxRnZnMVgwYUZRWE5SSEFZNkUwd01vaVhhZjZ3M21zMXRXZjVB?=
+ =?utf-8?B?UzJ1Zkh0akNKSFcvbGF3THRibFMvVExKaVJMSW1zQnRGWS9aUlk4dXRiMSts?=
+ =?utf-8?B?YWxUWmM3ajMrZjFFVHZwT1NSUTJ2OGZqa0ZrYi9RbzV4US9jeDhKb2hKaHlp?=
+ =?utf-8?Q?teRFD2NXANLDcteqml3212HFT?=
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	0zeIQUPat9dVJtnyEVUojq/kiUz3Ti4VYJeWuoMOq2KwkBVZthsWmoczKinh+HJ6N6lh2sg3bDFdXSaqDPCVQ5AWA+oLE2aHpqAkCRlTlpwO+DEnsj94sMh4EqgFnMPxilXXI1aPcTbE8g6laHtRAwHwdKLoeUW+J8ddrg+bsYswSGvRXKRYFgrKtOds5/On9qNC4XVQxQRv/MCX/Nij4q+wrroyj5SS5iWjMVvER0WMkuyP6pWC5+jlExsdpkhXb6YAUOerd5C5g1yoqhzs6gdOzOuCn5coS3X/YR3F5QVifQqYcuLAthlY93/ViUjWhfOP2dpEqRMQ6K+aFGpsBPTs0IFAVHfmCnIvfJ/d3HPF/+EiGNcsBjLSrb5oW5ZfzVNDHmhjvy0mfpmpKYA+ASyvx8eVZzOwxUQnAtIFvUgxCzawTnJkaFXj2qUtlMdrn9mcHj3l+2TlUZPvhale/gz4sSz+lspD+S2YmfnNjZgSPILftI+v7S2koB4IRvgNsPPFTdgxLWAddcAH/tn94aaoMn6m5p2ym1f6UQQNeWe7bEiSLIS3K0C0PIxV9o6JOrgRPbt22fKFKfWEqf9T17WINspxzAwcOPNbvdQTEbs=
+	mHO3MBcvtCprYbtK2ZXwOaOL2l53jEAvjyN1NlkDT8P+tO24jsoc/xXNeUfgKgGdlyqGpSwaLq8nNxVnawfftNr61PFwuVoddQ9dInNLmibS+pO3oxltiu1mwRl5BRCkd3+agekMRSDaD/3ebczhPY3ccaJQiQOGVaQ5eTHe+zrzbkC/2ABG6s18Tds60nKctFniWNw6g5VxA8E2+m3fNzYbzJPF3VHJOLmmGOdnwaIXC/GXzjNCS0+zKN7zgeg1EjkTGK9YN6eZNv3GTjM8LReqqx1IaN1RG6H+lv3t3otIQqTIWzxXcqGXHXWPL8LiMXgnmmDgvLCY9d/URZLko7VLyUkQgyxnjb4Ngfl7xl6frCWvQJR1MaFyOtX26K+Wz9r5Zuj9hLNr5D+0OlQuMBuPYXUSHIiJQAYFI/rZqd+ON9QKTCRvd9/73YZ3L7QP4J1Xa7MuVs8xPJyvfG0nGjcd65aZRsaPvkwZ2RvxH/pK46YTHj5I2pVQ1yNPIajKq8qOHO9r/8yGFehbN9b9ipAY394zIM39zfrV+E4v9+Ldk+0VXDaopeF6yxcN0FKBaKKi3MdSVFf0Q9X/MYK5qvo4YQiQMkg6raCO6wgrGWQ=
 X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 76e66981-e86c-40aa-558d-08dcd1adab67
+X-MS-Exchange-CrossTenant-Network-Message-Id: 630809d7-9fe4-4d4d-1bca-08dcd1af7888
 X-MS-Exchange-CrossTenant-AuthSource: LV8PR10MB7943.namprd10.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2024 15:31:41.7028
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 10 Sep 2024 15:44:35.2958
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: znL/v0u/RRifOCqaYM2m81TnwSoOAt/vsPR2A5ozMXZK/bTr62hcp5CzzVlXcDxWYE5ZL52zfG7irEZ3qr4/pg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR10MB5719
+X-MS-Exchange-CrossTenant-UserPrincipalName: plu1sZXMWxpome8p71uXkv+zb6TcLcrUyeVwMJS0Xyz2uh9Cz4AooHP7YfGPNXcV4SQQiD9bwaXsqHZScYzIVQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR10MB6089
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
  definitions=2024-09-10_04,2024-09-09_02,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxlogscore=999 bulkscore=0
- suspectscore=0 phishscore=0 mlxscore=0 adultscore=0 malwarescore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2408220000
- definitions=main-2409100115
-X-Proofpoint-ORIG-GUID: OaVhnbUcOQW_59y30qXZ5CD05gROq3Rx
-X-Proofpoint-GUID: OaVhnbUcOQW_59y30qXZ5CD05gROq3Rx
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 suspectscore=0
+ mlxlogscore=999 mlxscore=0 malwarescore=0 phishscore=0 adultscore=0
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2408220000 definitions=main-2409100117
+X-Proofpoint-GUID: 9B5NnXXjZwbjasprUIBhzLmlGg7ImN8j
+X-Proofpoint-ORIG-GUID: 9B5NnXXjZwbjasprUIBhzLmlGg7ImN8j
 
-* Jeff Xu <jeffxu@chromium.org> [240910 10:15]:
-> Hi Muhammad
+* Jeff Xu <jeffxu@chromium.org> [240910 10:23]:
+> Hi
 >=20
-> On Mon, Aug 19, 2024 at 3:05=E2=80=AFAM Muhammad Usama Anjum
-> <Usama.Anjum@collabora.com> wrote:
-> >
-> > On 8/14/24 3:29 AM, Jeff Xu wrote:
-> > > Hi Muhammad
-> > >
-> > > On Fri, Aug 9, 2024 at 1:25=E2=80=AFAM Muhammad Usama Anjum
-> > > <usama.anjum@collabora.com> wrote:
-> > >>
-> > >> The __NR_mmap isn't found on armhf. The mmap() is commonly available
-> > >> system call and its wrapper is presnet on all architectures. So it
-> > >> should be used directly. It solves problem for armhf and doesn't cre=
-ate
-> > >> problem for architectures as well. Remove sys_mmap() functions as th=
-ey
-> > >> aren't doing anything else other than calling mmap(). There is no ne=
-ed
-> > >> to set errno =3D 0 manually as glibc always resets it.
-> > >>
-> > > The mseal_test should't have dependency on libc, and mmap() is
-> > > implemented by glibc, right ?
-> > >
-> > > I just fixed a bug to switch mremap() to sys_mremap to address an
-> > > issue that different glibc version's behavior is slightly different
-> > > for mremap().
-> > >
-> > > What is the reason that __NR_mmap not available in armhf ? (maybe it
-> > > is another name ?)  there must be a way to call syscall directly on
-> > > armhf, can we use that instead ?
-> >
-> > It seems __NR_mmap syscall is deprecated for arm. Found this comment in
-> > arch/arm/include/asm/unistd.h:
-> > /*
-> >  * The following syscalls are obsolete and no longer available for EABI=
-:
-> >  *  __NR_time
-> >  *  __NR_umount
-> >  *  __NR_stime
-> >  *  __NR_alarm
-> >  *  __NR_utime
-> >  *  __NR_getrlimit
-> >  *  __NR_select
-> >  *  __NR_readdir
-> >  *  __NR_mmap
-> >  *  __NR_socketcall
-> >  *  __NR_syscall
-> >  *  __NR_ipc
-> >  */
-> >
-> > The glibc mmap() calls mmap2() these days by adjusting the parameters
-> > internally. From man mmap:
-> > C library/kernel differences:
-> > This  page  describes the interface provided by the glibc mmap() wrappe=
-r
-> > function.  Originally, this function invoked a system call of the same
-> > name.  Since Linux 2.4, that system call has been superseded  by
-> > mmap2(2), and nowadays the glibc mmap() wrapper function invokes
-> > mmap2(2) with a suitably adjusted value for offset.
-> >
-> > I'm not sure if behaviour of glibc mmap() and syscall mmap2() would be
-> > same, but we should use glibc at most places which accounts for
-> > different architectures correctly. Maybe the differences were only
-> > present in case of mremap().
-> >
-> We shouldn't use glibc to test mseal, mseal is a security feature, and
-> an attacker can access syscall directly, so the test needs to test
-> with as little layer as possible.
+> I'm not sure this is a correct fix.
 
-This sounds like you are concerned about the use of a library
-artificially reducing the attack surface that exists by bypassing the
-library to access the syscall directly.
+This should be backported, mainly to help facilitate future backports.
 
-If you have an example of something that is restricted by the library
-that can be used by the attacker, then we will need to roll our own
-caller with wrappers so that this works on random archs.
+...
 
-It appears that the existing tests can use the library without reducing
-the test coverage, so why would we maintain our own abstraction?
+> Although, I don't think we need to block this  getting into 6.10, we
+> can backport  again when a future fix is available.
 
-This patch is also upstream, so it is obviously not going to change at
-this point.  I'm sure you are aware of that as you raised this concern
-on the failed backport email [1].  Neither of these locations are the
-right one for a discussion that you are trying to start.  It would be
-better to produce an RFC patch and send it to the mm mailing list and cc
-the people on this patch.
+Please move this discussion to the mm mailing list.
+
+Any changes to the area will depend on the stable and upstream kernel
+being in sync for easier backporting.  Without the fix, armhf will fail
+to build the selftest.  So our choices are to have a working selftest
+that helps backporting in the future or broken selftest on certain archs
+and potentially more work for the stable team.
 
 Thanks,
 Liam
 
-[1]. https://lore.kernel.org/all/CABi2SkV-FdDQy2bjDkpgpqz7hX7ybeTjCrUgUf6Wc=
-YqGkuxWMQ@mail.gmail.com/
+>=20
+> Thanks
+> -Jeff
+>=20
+>=20
+> On Tue, Sep 10, 2024 at 2:42=E2=80=AFAM Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > 6.10-stable review patch.  If anyone has any objections, please let me =
+know.
+> >
+> > ------------------
+> >
+> > From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+> >
+> > commit b808f629215685c1941b1cd567c7b7ccb3c90278 upstream.
+> >
+> > The __NR_mmap isn't found on armhf.  The mmap() is commonly available
+> > system call and its wrapper is present on all architectures.  So it sho=
+uld
+> > be used directly.  It solves problem for armhf and doesn't create probl=
+em
+> > for other architectures.
+> >
+> > Remove sys_mmap() functions as they aren't doing anything else other th=
+an
+> > calling mmap().  There is no need to set errno =3D 0 manually as glibc
+> > always resets it.
+> >
+> > For reference errors are as following:
+> >
+> >   CC       seal_elf
+> > seal_elf.c: In function 'sys_mmap':
+> > seal_elf.c:39:33: error: '__NR_mmap' undeclared (first use in this func=
+tion)
+> >    39 |         sret =3D (void *) syscall(__NR_mmap, addr, len, prot,
+> >       |                                 ^~~~~~~~~
+> >
+> > mseal_test.c: In function 'sys_mmap':
+> > mseal_test.c:90:33: error: '__NR_mmap' undeclared (first use in this fu=
+nction)
+> >    90 |         sret =3D (void *) syscall(__NR_mmap, addr, len, prot,
+> >       |                                 ^~~~~~~~~
+> >
+> > Link: https://lkml.kernel.org/r/20240809082511.497266-1-usama.anjum@col=
+labora.com
+> > Fixes: 4926c7a52de7 ("selftest mm/mseal memory sealing")
+> > Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+> > Cc: Jeff Xu <jeffxu@chromium.org>
+> > Cc: Kees Cook <kees@kernel.org>
+> > Cc: Liam R. Howlett <Liam.Howlett@oracle.com>
+> > Cc: Shuah Khan <shuah@kernel.org>
+> > Cc: <stable@vger.kernel.org>
+> > Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > ---
+> >  tools/testing/selftests/mm/mseal_test.c |   37 +++++++++++------------=
+---------
+> >  tools/testing/selftests/mm/seal_elf.c   |   13 -----------
+> >  2 files changed, 14 insertions(+), 36 deletions(-)
+> >
+> > --- a/tools/testing/selftests/mm/mseal_test.c
+> > +++ b/tools/testing/selftests/mm/mseal_test.c
+> > @@ -128,17 +128,6 @@ static int sys_mprotect_pkey(void *ptr,
+> >         return sret;
+> >  }
+> >
+> > -static void *sys_mmap(void *addr, unsigned long len, unsigned long pro=
+t,
+> > -       unsigned long flags, unsigned long fd, unsigned long offset)
+> > -{
+> > -       void *sret;
+> > -
+> > -       errno =3D 0;
+> > -       sret =3D (void *) syscall(__NR_mmap, addr, len, prot,
+> > -               flags, fd, offset);
+> > -       return sret;
+> > -}
+> > -
+> >  static int sys_munmap(void *ptr, size_t size)
+> >  {
+> >         int sret;
+> > @@ -219,7 +208,7 @@ static void setup_single_address(int siz
+> >  {
+> >         void *ptr;
+> >
+> > -       ptr =3D sys_mmap(NULL, size, PROT_READ, MAP_ANONYMOUS | MAP_PRI=
+VATE, -1, 0);
+> > +       ptr =3D mmap(NULL, size, PROT_READ, MAP_ANONYMOUS | MAP_PRIVATE=
+, -1, 0);
+> >         *ptrOut =3D ptr;
+> >  }
+> >
+> > @@ -228,7 +217,7 @@ static void setup_single_address_rw(int
+> >         void *ptr;
+> >         unsigned long mapflags =3D MAP_ANONYMOUS | MAP_PRIVATE;
+> >
+> > -       ptr =3D sys_mmap(NULL, size, PROT_READ | PROT_WRITE, mapflags, =
+-1, 0);
+> > +       ptr =3D mmap(NULL, size, PROT_READ | PROT_WRITE, mapflags, -1, =
+0);
+> >         *ptrOut =3D ptr;
+> >  }
+> >
+> > @@ -252,7 +241,7 @@ bool seal_support(void)
+> >         void *ptr;
+> >         unsigned long page_size =3D getpagesize();
+> >
+> > -       ptr =3D sys_mmap(NULL, page_size, PROT_READ, MAP_ANONYMOUS | MA=
+P_PRIVATE, -1, 0);
+> > +       ptr =3D mmap(NULL, page_size, PROT_READ, MAP_ANONYMOUS | MAP_PR=
+IVATE, -1, 0);
+> >         if (ptr =3D=3D (void *) -1)
+> >                 return false;
+> >
+> > @@ -528,8 +517,8 @@ static void test_seal_zero_address(void)
+> >         int prot;
+> >
+> >         /* use mmap to change protection. */
+> > -       ptr =3D sys_mmap(0, size, PROT_NONE,
+> > -                       MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED, -1, 0)=
+;
+> > +       ptr =3D mmap(0, size, PROT_NONE,
+> > +                  MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED, -1, 0);
+> >         FAIL_TEST_IF_FALSE(ptr =3D=3D 0);
+> >
+> >         size =3D get_vma_size(ptr, &prot);
+> > @@ -1256,8 +1245,8 @@ static void test_seal_mmap_overwrite_pro
+> >         }
+> >
+> >         /* use mmap to change protection. */
+> > -       ret2 =3D sys_mmap(ptr, size, PROT_NONE,
+> > -                       MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED, -1, 0)=
+;
+> > +       ret2 =3D mmap(ptr, size, PROT_NONE,
+> > +                   MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED, -1, 0);
+> >         if (seal) {
+> >                 FAIL_TEST_IF_FALSE(ret2 =3D=3D MAP_FAILED);
+> >                 FAIL_TEST_IF_FALSE(errno =3D=3D EPERM);
+> > @@ -1287,8 +1276,8 @@ static void test_seal_mmap_expand(bool s
+> >         }
+> >
+> >         /* use mmap to expand. */
+> > -       ret2 =3D sys_mmap(ptr, size, PROT_READ,
+> > -                       MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED, -1, 0)=
+;
+> > +       ret2 =3D mmap(ptr, size, PROT_READ,
+> > +                   MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED, -1, 0);
+> >         if (seal) {
+> >                 FAIL_TEST_IF_FALSE(ret2 =3D=3D MAP_FAILED);
+> >                 FAIL_TEST_IF_FALSE(errno =3D=3D EPERM);
+> > @@ -1315,8 +1304,8 @@ static void test_seal_mmap_shrink(bool s
+> >         }
+> >
+> >         /* use mmap to shrink. */
+> > -       ret2 =3D sys_mmap(ptr, 8 * page_size, PROT_READ,
+> > -                       MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED, -1, 0)=
+;
+> > +       ret2 =3D mmap(ptr, 8 * page_size, PROT_READ,
+> > +                   MAP_ANONYMOUS | MAP_PRIVATE | MAP_FIXED, -1, 0);
+> >         if (seal) {
+> >                 FAIL_TEST_IF_FALSE(ret2 =3D=3D MAP_FAILED);
+> >                 FAIL_TEST_IF_FALSE(errno =3D=3D EPERM);
+> > @@ -1697,7 +1686,7 @@ static void test_seal_discard_ro_anon_on
+> >         ret =3D fallocate(fd, 0, 0, size);
+> >         FAIL_TEST_IF_FALSE(!ret);
+> >
+> > -       ptr =3D sys_mmap(NULL, size, PROT_READ, mapflags, fd, 0);
+> > +       ptr =3D mmap(NULL, size, PROT_READ, mapflags, fd, 0);
+> >         FAIL_TEST_IF_FALSE(ptr !=3D MAP_FAILED);
+> >
+> >         if (seal) {
+> > @@ -1727,7 +1716,7 @@ static void test_seal_discard_ro_anon_on
+> >         int ret;
+> >         unsigned long mapflags =3D MAP_ANONYMOUS | MAP_SHARED;
+> >
+> > -       ptr =3D sys_mmap(NULL, size, PROT_READ, mapflags, -1, 0);
+> > +       ptr =3D mmap(NULL, size, PROT_READ, mapflags, -1, 0);
+> >         FAIL_TEST_IF_FALSE(ptr !=3D (void *)-1);
+> >
+> >         if (seal) {
+> > --- a/tools/testing/selftests/mm/seal_elf.c
+> > +++ b/tools/testing/selftests/mm/seal_elf.c
+> > @@ -61,17 +61,6 @@ static int sys_mseal(void *start, size_t
+> >         return sret;
+> >  }
+> >
+> > -static void *sys_mmap(void *addr, unsigned long len, unsigned long pro=
+t,
+> > -       unsigned long flags, unsigned long fd, unsigned long offset)
+> > -{
+> > -       void *sret;
+> > -
+> > -       errno =3D 0;
+> > -       sret =3D (void *) syscall(__NR_mmap, addr, len, prot,
+> > -               flags, fd, offset);
+> > -       return sret;
+> > -}
+> > -
+> >  static inline int sys_mprotect(void *ptr, size_t size, unsigned long p=
+rot)
+> >  {
+> >         int sret;
+> > @@ -87,7 +76,7 @@ static bool seal_support(void)
+> >         void *ptr;
+> >         unsigned long page_size =3D getpagesize();
+> >
+> > -       ptr =3D sys_mmap(NULL, page_size, PROT_READ, MAP_ANONYMOUS | MA=
+P_PRIVATE, -1, 0);
+> > +       ptr =3D mmap(NULL, page_size, PROT_READ, MAP_ANONYMOUS | MAP_PR=
+IVATE, -1, 0);
+> >         if (ptr =3D=3D (void *) -1)
+> >                 return false;
+> >
+> >
+> >
 
