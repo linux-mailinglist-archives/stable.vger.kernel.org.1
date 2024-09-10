@@ -1,107 +1,103 @@
-Return-Path: <stable+bounces-75341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 110D3973410
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:37:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70F66973441
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:39:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA95028BE6F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:37:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32C2728D9E2
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:39:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48366192D6D;
-	Tue, 10 Sep 2024 10:34:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b="DKI7zL9b"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40A0019923F;
+	Tue, 10 Sep 2024 10:35:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.19])
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A665192D74;
-	Tue, 10 Sep 2024 10:34:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D0D11991B5;
+	Tue, 10 Sep 2024 10:35:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.255.230.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964451; cv=none; b=CYGgcQm8kKkb9mdzvHn6G/ge+QuMbmZUsO6e3mizOGY5iE8mQO3x9qEryd9YXlEKh39rkU+IdHl0U81dbIJ2BNcAQWxYdFhRDqUofz7xJ2d3lB9Iqx1XlbhXaJc73R23igK6amsjn/kG6p4fHL1cLpMGWiXc79/4R1j2+qBY2go=
+	t=1725964559; cv=none; b=kIqFqYzMB5WqJ+Vz5B5U5JbVEn8goumafUcasKkPlT68N2PBAHcqHB4sTwdquWBJuwQ4y7n+YrPlxruZbg6cHBYcxEOPBFTAfncg/cXEgiYEHFJB2wcgyvxhcUEbB70VFxZP27aIavwHOZ5S8K1RSNGdE8C8TBOUbUab/gzkiFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964451; c=relaxed/simple;
-	bh=zTqlr/QPOz5pKf1RFPMYxAuopq4c12N7cuBQ2OHORqo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ejjjYhxXhf42pggNUSorJO4sxKlINmqlKq57wp0gD+AO2GMJHsvjkCz21AkuqGQQ6o6nYYoUY/9nfs6lIIfPAeLNmouYtfQQYNVl3zGAxXvnYtnpAk835XVfL7nGmkEzzpVyDCynwqCAiqiotzNvjSj94EkPwi3yqCtNXyM2Edc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=deller@gmx.de header.b=DKI7zL9b; arc=none smtp.client-ip=212.227.15.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1725964432; x=1726569232; i=deller@gmx.de;
-	bh=DtErsRUxKfC5cdRl92P3BngsATEbxZp7I7h/63llepU=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=DKI7zL9bMXxE1K1q+F4ZAzir2LM+E9jbBJocuKdQdAFOD+I0PyLNlnFGYt3197Ih
-	 8DPX65hPG9XBtjVDrVnhSs/GNRP0/emFKwHLmUFIrYMwzdhSN4Vp2o7E2ZdWdWPbF
-	 aBxlefBSkxHOyOEAQNO404odmMlN9elUSL7D19XW1ZunfSb/vAD9YEAaenSD7fvsj
-	 yhw+K01HW7YkQhlLizDvWecKwSMvYeQfi8+5Fe9YpAwposnFT8/vbhhV6Jq23sr79
-	 0NFnOIpEuL/d1pz4uLxsTgf3x8YI1eMfjUHsWu1mmoH3cdWMBb16FmhWNHAR3IsZo
-	 YAIpTl6nqWIMpuAEKw==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.55] ([109.250.63.79]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MpUUw-1sDny81jbQ-00ZSoW; Tue, 10
- Sep 2024 12:33:52 +0200
-Message-ID: <72b133a6-c221-4906-9184-30b4e6ee4260@gmx.de>
-Date: Tue, 10 Sep 2024 12:33:51 +0200
+	s=arc-20240116; t=1725964559; c=relaxed/simple;
+	bh=rXp9VPIWYwYxP3tRta0x35hYjF5C4uWsNb8Pc5MPAjU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hx/346YZkB17KbdkmlDd1sI1YAszzZPA8mMKuYve2KfFsnoSzWaDv6pFuloXIvb18ME0wLPpCqz/FNjIp1KGHkSuBmaoE89xeLSkx8bnCG9h91QNGSGKyY2TWvD1a5eamTCJAWJaYFgS3slrvZQKhmc4njqkuXvg6cMUzfHfwFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de; spf=fail smtp.mailfrom=denx.de; arc=none smtp.client-ip=46.255.230.98
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=denx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=denx.de
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+	id 3285E1C009E; Tue, 10 Sep 2024 12:35:55 +0200 (CEST)
+Date: Tue, 10 Sep 2024 12:35:54 +0200
+From: Pavel Machek <pavel@denx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+Subject: Re: [PATCH 6.1 000/192] 6.1.110-rc1 review
+Message-ID: <ZuAhCgJ3LUBROwBR@duo.ucw.cz>
+References: <20240910092557.876094467@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.4 000/121] 5.4.284-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org, linux@roeck-us.net
-References: <20240910092545.737864202@linuxfoundation.org>
-Content-Language: en-US
-From: Helge Deller <deller@gmx.de>
-In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:9ZvbjU5W1+bcoFuWNxlpcpLpw7hQSF5Qsam/yt62ZYJfm+fWmVf
- Mu/ZaTlK2momzJP61Jr5KObNv16MHTFIuqIcRcWHf0JFsT9c37SImHtDfROEm3if2GsQazc
- IEcehr1fkf3qDDhgIJX1QxHQ5TWa3lWOqC/Y9KP+BLgZocvuxzM93HJzMX8wER5IGXCPdye
- 6JjkA0lPxkkxXOzmYUGQg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:Hzn63id7MzA=;pWafmo+Q6hRRebbZFrob04SqtX7
- vRVhs4fYLxDeFDF/erp/sARK9u/JFr1uvjVX6tZN7CVJE2nmApuSmp9vaNCy63dFgrnptzGEw
- 54Acvskd0GcYmJJGA0MbVlZvvIwKnuuD6WNNj5L5Jej4tbqhv6PAPXV3TuaYfdJe1EpkfHCXF
- 2CJ9UgJyLePZj421eQ7vxVowIwNUAW+Xmf2cSVjaVbk+WbDmQ3HTtXl6z4K0XlEeZbKhLRBU0
- 07gewTOiyDQxvnHfTwKVbf3FYxDp22v1w+8HwdZAtdE7ZjnwJYtzwCWPRSYzCxkLzFmLwOI63
- h38UV1KEAKSJ9hYT4V/4ABj6rVcLbnwy+rDsw2edOBGUPDbFCzfiCU09c9uPbOC5h0M45vOt2
- lB/3brxYxt8rSxWQCD47onUrP87KgejcZ/7U6xlnjentaTvtM4v+V4iM9cWnXlOALADMwwH+A
- S/fuN2Ur/i48xC5Uj02j8EGvVjDFrrjsn2O8n+rrKbVF4hkuNCMBnwHfsorrdhuRR4MmmO1Wh
- XL2oxf2bIEe/7L31tceHlPpT83q4nxegPE++ncz3TokE03nrp6f89RujPHGte1gGGYrLJ8Qjd
- C5GwzdDqrtrS/qb8+mRtOsc3AgJehDLzmVDkdjTjzMq581Jv3qAdE07Y8iBbrnXYqGOopL5t/
- CyGJTgvBHuw+UW2LNYtI7n5N1oWcnlfEcxlJ9MRIs4RK1jSwzx1o6TpULUYsTjqJsGmtfSv3p
- 6I+k/swOqRWhxdtJooXGjB4vHsTxvu8Wk3QVDhBm46gPgnWdkU+ng0DqQiMD/9XBkFdbTZ6DL
- JWMkEFarPZhsP30OH9qUvSBg==
+Content-Type: multipart/signed; micalg=pgp-sha1;
+	protocol="application/pgp-signature"; boundary="ZVbRxP2zarSARuXd"
+Content-Disposition: inline
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
 
-Hi Greg,
 
-On 9/10/24 11:31, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.4.284 release.
-> There are 121 patches in this series, all will be posted as a response
+--ZVbRxP2zarSARuXd
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hi!
+
+> This is the start of the stable review cycle for the 6.1.110 release.
+> There are 192 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 
-The upstream commit 73cb4a2d8d7e0259f94046116727084f21e4599f
-("parisc: Use irq_enter_rcu() to fix warning at kernel/context_tracking.c:367")
-was added in the last stable series to 5.4.283 and v4.19.321.
+Can you quote git hash of the 6.1.110-rc1?
 
-Since it breaks the build on parisc [1], could please you add a revert of that
-patch to the current v5.4 and v4.19 series?
+We do have
 
-Thanks!
-Helge
-[1] https://lore.kernel.org/lkml/092aa55c-0538-41e5-8ed0-d0a96b06f32e@roeck-us.net/T/#m8657a387ec86f9a2af62380743718f72ef7619b5
+Linux 6.1.110-rc1 (244a97bb85be)
+Greg Kroah-Hartman authored 1 day ago
+
+passing tests
+
+https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
+6.1.y
+
+=2E But that's 1 day old.
+
+Best regards,
+									Pavel
+								=09
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+
+--ZVbRxP2zarSARuXd
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZuAhCgAKCRAw5/Bqldv6
+8nInAKCAfDzvB/g7di65iJIiWwf1ut9eEQCdHD1aUpkZmIRykjHO2l2uq8zPlU4=
+=0bYm
+-----END PGP SIGNATURE-----
+
+--ZVbRxP2zarSARuXd--
 
