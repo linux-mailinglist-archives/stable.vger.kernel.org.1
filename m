@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-74787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75234-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9153D97316F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:12:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F28AE973390
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:34:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4C7BB289FB3
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:11:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 318C31C23783
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:34:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBC23192D8C;
-	Tue, 10 Sep 2024 10:07:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 580B318F2FF;
+	Tue, 10 Sep 2024 10:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F4aMKWMc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ydqAmSaY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78406190485;
-	Tue, 10 Sep 2024 10:07:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14C041940B5;
+	Tue, 10 Sep 2024 10:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962828; cv=none; b=RKnu2bLd2YO90kjal+5gMuzFN+GR3Et2oKyS1MXKIVdeM9GApHHUe/5+R1KAMg4kGfUyzt8arOCRo6x5DWpwy4RwSdmYyCiKPF2S7e786V3N9nwsCZFT3H5fEVJhnfc7e6BZROo+jImnel0U36wE+YbmoM562gU5AcKkcyQL394=
+	t=1725964138; cv=none; b=lNECBfomYvGzvaZ3kc+MNed7it2Gj4qwnEVaC8l6vM6D5VKlfmQsg4y7N7t4Lyw5jIaAARQ5uM2bktdxdGMvtPSc4i3kEVgVWIFOqQWTm1wbDvot1HZQlrFf+Vz4SCMFPzH+5yjU4ZnQFK3Ap3vj7QatN5z6PTb7Ug5fsl18nxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962828; c=relaxed/simple;
-	bh=qKvuEacAViA5UtuTEP9rMu5nOqMKU3ZWy63GElBnYTI=;
+	s=arc-20240116; t=1725964138; c=relaxed/simple;
+	bh=S5SkFz4R1ynHMb+JCX416P9IYCEDi2hLUYRfS9udJjk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rxrhKm1+fjfuF3ctaPLU3oR9h9ceraaFqeL3yfKkUjlnG/v/ZGXMvJGlVj5oL+MIl2APNwOaZbE3zVATs+QeQZhYR2wydJJJsniYpSJnIdp35NCyoJn8f2DR0wOF81H3IMaMwYtVPd4NFfUObk+lBCM4UTbxNrZHnAuv1AjJeek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F4aMKWMc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1DF8C4CEC3;
-	Tue, 10 Sep 2024 10:07:07 +0000 (UTC)
+	 MIME-Version; b=ItyrxwFY79+yvwt3D7RjGowT3IQot5+0Mv1zUo1qQkkUIsZE5YPEJfyKBzaCq7uFqlKX/C6srge4oZZ2kK+NaV7I3P88Tcx8YaJZ90jU69NggBYo1AUhgn6LD9/R9L43h+So1dMtNw4VxwLqVhg9q02VCn7uEIB2Q45S6sesk8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ydqAmSaY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F945C4CEC3;
+	Tue, 10 Sep 2024 10:28:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962828;
-	bh=qKvuEacAViA5UtuTEP9rMu5nOqMKU3ZWy63GElBnYTI=;
+	s=korg; t=1725964138;
+	bh=S5SkFz4R1ynHMb+JCX416P9IYCEDi2hLUYRfS9udJjk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F4aMKWMcBSRL2oeRbbyli5I+jI3TyCig1A5jIEkLzOWyWu94BB9DMc55XjkU/e1Gr
-	 vbBt678QmZZLQEuYBqfcfPO2H2PVgQX/JxWL966Ceq0FKuJr46hE2qwU4erfB0VGBD
-	 Rjm3LHclrViIxub9W70ZprY8xx3YGqZGg6luQZxk=
+	b=ydqAmSaY7qIeYAQs6iLkJvn6kvLmi7VF2fLs3UsFPVuejFFOkHjIC8Oz1KaXTRmo9
+	 skHuwop0THbDzO8Bn5XwflE39elJ7Cn3duaNytvYDxIqHBpsR4anr5smb31dqonyNM
+	 r9Oa6PchRbGKdp/9rB1/jPIyD4Itj2vAWPrv49zU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jaroslav Kysela <perex@perex.cz>,
-	Takashi Iwai <tiwai@suse.de>,
+	Arend van Spriel <arend.vanspriel@broadcom.com>,
+	Reijer Boekhoff <reijerboekhoff@protonmail.com>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 043/192] ALSA: hda: Add input value sanity checks to HDMI channel map controls
+Subject: [PATCH 6.6 080/269] wifi: brcmsmac: advertise MFP_CAPABLE to enable WPA3
 Date: Tue, 10 Sep 2024 11:31:07 +0200
-Message-ID: <20240910092559.782417783@linuxfoundation.org>
+Message-ID: <20240910092611.046406761@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Arend van Spriel <arend.vanspriel@broadcom.com>
 
-[ Upstream commit 6278056e42d953e207e2afd416be39d09ed2d496 ]
+[ Upstream commit dbb5265a5d7cca1cdba7736dba313ab7d07bc19d ]
 
-Add a simple sanity check to HD-audio HDMI Channel Map controls.
-Although the value might not be accepted for the actual connection, we
-can filter out some bogus values beforehand, and that should be enough
-for making kselftest happier.
+After being asked about support for WPA3 for BCM43224 chipset it
+was found that all it takes is setting the MFP_CAPABLE flag and
+mac80211 will take care of all that is needed [1].
 
-Reviewed-by: Jaroslav Kysela <perex@perex.cz>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://lore.kernel.org/20240616073454.16512-7-tiwai@suse.de
+Link: https://lore.kernel.org/linux-wireless/20200526155909.5807-2-Larry.Finger@lwfinger.net/ [1]
+Signed-off-by: Arend van Spriel <arend.vanspriel@broadcom.com>
+Tested-by: Reijer Boekhoff <reijerboekhoff@protonmail.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20240617122609.349582-1-arend.vanspriel@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/hdmi_chmap.c | 18 ++++++++++++++++++
- 1 file changed, 18 insertions(+)
+ drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/hda/hdmi_chmap.c b/sound/hda/hdmi_chmap.c
-index 5d8e1d944b0a..7b276047f85a 100644
---- a/sound/hda/hdmi_chmap.c
-+++ b/sound/hda/hdmi_chmap.c
-@@ -753,6 +753,20 @@ static int hdmi_chmap_ctl_get(struct snd_kcontrol *kcontrol,
- 	return 0;
- }
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
+index 543e93ec49d2..9ab669487de4 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmsmac/mac80211_if.c
+@@ -1086,6 +1086,7 @@ static int ieee_hw_init(struct ieee80211_hw *hw)
+ 	ieee80211_hw_set(hw, AMPDU_AGGREGATION);
+ 	ieee80211_hw_set(hw, SIGNAL_DBM);
+ 	ieee80211_hw_set(hw, REPORTS_TX_ACK_STATUS);
++	ieee80211_hw_set(hw, MFP_CAPABLE);
  
-+/* a simple sanity check for input values to chmap kcontrol */
-+static int chmap_value_check(struct hdac_chmap *hchmap,
-+			     const struct snd_ctl_elem_value *ucontrol)
-+{
-+	int i;
-+
-+	for (i = 0; i < hchmap->channels_max; i++) {
-+		if (ucontrol->value.integer.value[i] < 0 ||
-+		    ucontrol->value.integer.value[i] > SNDRV_CHMAP_LAST)
-+			return -EINVAL;
-+	}
-+	return 0;
-+}
-+
- static int hdmi_chmap_ctl_put(struct snd_kcontrol *kcontrol,
- 			      struct snd_ctl_elem_value *ucontrol)
- {
-@@ -764,6 +778,10 @@ static int hdmi_chmap_ctl_put(struct snd_kcontrol *kcontrol,
- 	unsigned char chmap[8], per_pin_chmap[8];
- 	int i, err, ca, prepared = 0;
- 
-+	err = chmap_value_check(hchmap, ucontrol);
-+	if (err < 0)
-+		return err;
-+
- 	/* No monitor is connected in dyn_pcm_assign.
- 	 * It's invalid to setup the chmap
- 	 */
+ 	hw->extra_tx_headroom = brcms_c_get_header_len();
+ 	hw->queues = N_TX_QUEUES;
 -- 
 2.43.0
 
