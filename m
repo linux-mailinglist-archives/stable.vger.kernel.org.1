@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-75339-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDAB79734A9
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:41:56 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31CF3973216
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:18:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1757FB2EBE7
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:37:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 97DA4B2A5BC
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:17:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D51D18F2F7;
-	Tue, 10 Sep 2024 10:34:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71CB7192D82;
+	Tue, 10 Sep 2024 10:12:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jOhnesSl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0chlCii2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB263144D1A;
-	Tue, 10 Sep 2024 10:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 309BA19048F;
+	Tue, 10 Sep 2024 10:12:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964447; cv=none; b=RopztyV8t5uAv3D77u4LtfIiYsY0FdVUyPrJknOLDKGurIZp596RKHaE96ho1wc92ZFi/r0F9iBXXDfXOdbGDRQpgFQgF0aejj70VrlSWU1ENhbRvJLyGCdE01ld0Vy0e9ZHtFl5HKGyA8pkMWXVUWgdIGL9hAa80RFqwm3S3rs=
+	t=1725963139; cv=none; b=uvf2Vosn8rj51/fNCeRHL+NMbhHKTIEsIh9Tvf6Fi+7ssP8LHTfSt5ngRL06z9u2qGvVJeZipj7UE4Vd2xyLS/w1ROLz8uxIWJ29NbWF/JVcPgsDBPuWUpur2OJgZcgnxC8ecoz6ClZAFeVbM3U0gELNHeYi4Uie7Ih4HtYlBeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964447; c=relaxed/simple;
-	bh=kvdVV2TyzVePxqnnazl8JWe1z680eIGtXaw1Tv6WQlo=;
+	s=arc-20240116; t=1725963139; c=relaxed/simple;
+	bh=1QyfCNk0XthlmUYZsL61HnHq95Z4wk1/dHmD7++WLKU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=caoUcVWhym1T3GGW5/LP++s4AIJt3OY0Q1ikT5JRclsukt4cIgQPhl7FEWQxkJ1bxX24QsekIQ0YyCm1rLurmDK/kTYw8sbXXLuYg27jJ334Oy11lBbZ2e0/6H6Y6uaXKVsHnq4Bxc3YMSNLlbNhHbrzm5vxRIprsxAqmt03EeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jOhnesSl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09298C4CEC3;
-	Tue, 10 Sep 2024 10:34:05 +0000 (UTC)
+	 MIME-Version; b=aIYy+s6k2zBjK9MIOPZp0YXU0YUPrMjWDyDUc4r8DJONQ7FwIor+i0eGXqhQo5gkGGAsBn8OoOKyGuJsu7jhzoImyI34LlpgtW+7ODSk4BO72UuYvCgQ2vxWRGARXSI+nQsEZJy9wYFjR9SbAormIJMItfX7INg8lLAL24BVQC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0chlCii2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD359C4CEC3;
+	Tue, 10 Sep 2024 10:12:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964446;
-	bh=kvdVV2TyzVePxqnnazl8JWe1z680eIGtXaw1Tv6WQlo=;
+	s=korg; t=1725963139;
+	bh=1QyfCNk0XthlmUYZsL61HnHq95Z4wk1/dHmD7++WLKU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jOhnesSlIO5XeY+MJq7gnI5AA6mFvwvSVR/wXUm+JjLyuEqIhn7I82TDz8/zKOSIU
-	 MVohiSoi2Z9QtcsPt9xu7NnZ+zB0Cq6nw9Vm70F7Qdo9eTkxMX6d0Pt9Dsvd/Kqht3
-	 rsYzZlPx1zv5Evb9bqMow9NMOnMHEYOW9+CpxbYY=
+	b=0chlCii2tOT+A9A5uzK55Pno2e0hSn/d3Aotn0w9+gJ4WsNKMS3L/cDnbBJ77Pieb
+	 Bhx2pkCSuzpU9n9iTT2N22cZXOJxFqTvP2eBneECQkoieGJWgZ1HgwajfKvse3ah6D
+	 ulIxRAx0n9TIJX2B9hSpNd6abl7Om0gc4UZxqOf8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	syzbot <syzbot+0122fa359a69694395d5@syzkaller.appspotmail.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 186/269] Input: uinput - reject requests with unreasonable number of slots
+	Jacky Bai <ping.bai@nxp.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Ye Li <ye.li@nxp.com>,
+	Jason Liu <jason.hui.liu@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Daniel Lezcano <daniel.lezcano@linaro.org>
+Subject: [PATCH 6.1 149/192] clocksource/drivers/imx-tpm: Fix next event not taking effect sometime
 Date: Tue, 10 Sep 2024 11:32:53 +0200
-Message-ID: <20240910092614.759869006@linuxfoundation.org>
+Message-ID: <20240910092604.104576519@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +65,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+From: Jacky Bai <ping.bai@nxp.com>
 
-[ Upstream commit 206f533a0a7c683982af473079c4111f4a0f9f5e ]
+commit 3d5c2f8e75a55cfb11a85086c71996af0354a1fb upstream.
 
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+The value written into the TPM CnV can only be updated into the hardware
+when the counter increases. Additional writes to the CnV write buffer are
+ignored until the register has been updated. Therefore, we need to check
+if the CnV has been updated before continuing. This may require waiting for
+1 counter cycle in the worst case.
 
-When exercising uinput interface syzkaller may try setting up device
-with a really large number of slots, which causes memory allocation
-failure in input_mt_init_slots(). While this allocation failure is
-handled properly and request is rejected, it results in syzkaller
-reports. Additionally, such request may put undue burden on the
-system which will try to free a lot of memory for a bogus request.
-
-Fix it by limiting allowed number of slots to 100. This can easily
-be extended if we see devices that can track more than 100 contacts.
-
-Reported-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Reported-by: syzbot <syzbot+0122fa359a69694395d5@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=0122fa359a69694395d5
-Link: https://lore.kernel.org/r/Zqgi7NYEbpRsJfa2@google.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 059ab7b82eec ("clocksource/drivers/imx-tpm: Add imx tpm timer support")
+Signed-off-by: Jacky Bai <ping.bai@nxp.com>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Ye Li <ye.li@nxp.com>
+Reviewed-by: Jason Liu <jason.hui.liu@nxp.com>
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20240725193355.1436005-2-Frank.Li@nxp.com
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/misc/uinput.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/clocksource/timer-imx-tpm.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/input/misc/uinput.c b/drivers/input/misc/uinput.c
-index d98212d55108..2c973f15cab7 100644
---- a/drivers/input/misc/uinput.c
-+++ b/drivers/input/misc/uinput.c
-@@ -417,6 +417,20 @@ static int uinput_validate_absinfo(struct input_dev *dev, unsigned int code,
- 		return -EINVAL;
- 	}
+--- a/drivers/clocksource/timer-imx-tpm.c
++++ b/drivers/clocksource/timer-imx-tpm.c
+@@ -91,6 +91,14 @@ static int tpm_set_next_event(unsigned l
+ 	now = tpm_read_counter();
  
-+	/*
-+	 * Limit number of contacts to a reasonable value (100). This
-+	 * ensures that we need less than 2 pages for struct input_mt
-+	 * (we are not using in-kernel slot assignment so not going to
-+	 * allocate memory for the "red" table), and we should have no
-+	 * trouble getting this much memory.
+ 	/*
++	 * Need to wait CNT increase at least 1 cycle to make sure
++	 * the C0V has been updated into HW.
 +	 */
-+	if (code == ABS_MT_SLOT && max > 99) {
-+		printk(KERN_DEBUG
-+		       "%s: unreasonably large number of slots requested: %d\n",
-+		       UINPUT_NAME, max);
-+		return -EINVAL;
-+	}
++	if ((next & 0xffffffff) != readl(timer_base + TPM_C0V))
++		while (now == tpm_read_counter())
++			;
 +
- 	return 0;
- }
- 
--- 
-2.43.0
-
++	/*
+ 	 * NOTE: We observed in a very small probability, the bus fabric
+ 	 * contention between GPU and A7 may results a few cycles delay
+ 	 * of writing CNT registers which may cause the min_delta event got
 
 
 
