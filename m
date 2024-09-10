@@ -1,55 +1,59 @@
-Return-Path: <stable+bounces-74784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F37B097316D
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:11:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A896A973267
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:22:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 31D331C20F0B
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:11:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 652B12886E9
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:22:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07946192D82;
-	Tue, 10 Sep 2024 10:07:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EB101922E2;
+	Tue, 10 Sep 2024 10:16:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t54I31tR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K/Bfrn8D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BABB918A6D2;
-	Tue, 10 Sep 2024 10:06:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD848188A1E;
+	Tue, 10 Sep 2024 10:16:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962819; cv=none; b=E7bXNx5Zj4fGh5uToqcDVZxhQG4oYqQUhGng+vvZjblJd2LVf9qKT9MWT3Xe/nhIXJ6FMcPJqsVKsnbxBTkeYoLdtaq+tFJMCORIZKMXAmckwGJVwDbo4l/iCXtYKQD54bEAA1Aj30u4Gw+J4VoZLnr0XAwxnFTS71HQ3bedspM=
+	t=1725963391; cv=none; b=XS6Q2/0zj1PCo/RkvCmexqNR8zJ6pSFbAihp8xV2enn8jKNZMMlaFvddxECt+89+ifFVMag8+pknaiDF54482vM8QySX8QMkU2Dxetl+YWYB4GVokJtYNcRVGCmesMinnoozeAuraV+M37A6/izpGBOPYgne2FlmsFuWDAayNJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962819; c=relaxed/simple;
-	bh=8OuWQXwaabVgPIMNqyrv/4lc4vtiWUxlvy+YYJygHlw=;
+	s=arc-20240116; t=1725963391; c=relaxed/simple;
+	bh=ih7ZT4Ahup+jXCo+Bl8zlbyuvUKnoOCLFAwzjHRv3ns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VSgn/WgMJaXNUqBATxb6qhTnLM9tXxKUhg32KuZJfwvyYZ21BuIb2esAN0qyqs+VXegSckZFdmEUYbVQZtGxWhjzURiGcqi86Xph/fCpT70TZi7affwg/RfZJQhZIS6tvAQGKe9/ACkWFDe3hdB5mJT14AukgsBElH6tetvI/lY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t54I31tR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38951C4CEC3;
-	Tue, 10 Sep 2024 10:06:59 +0000 (UTC)
+	 MIME-Version; b=ITjHx6Xt0ag2iFlm4EsQ9Yc+n+ZivWnWi4SJkWmZmf6UNPJE5el2wnHMugtTQP1DSbL8rfcebuLYEF487mtmy3nFqpxJfLxM6X2m3K8hWlhvt8Z3ECh/ebeuJOO9KNwOHTg6Rj8z3sI68nDOrmE6lMJIrjRdWeh0JH4CPXy+fpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K/Bfrn8D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 555D8C4CEC3;
+	Tue, 10 Sep 2024 10:16:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962819;
-	bh=8OuWQXwaabVgPIMNqyrv/4lc4vtiWUxlvy+YYJygHlw=;
+	s=korg; t=1725963391;
+	bh=ih7ZT4Ahup+jXCo+Bl8zlbyuvUKnoOCLFAwzjHRv3ns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t54I31tRcPchK800f6/+7qTowhnf7kplzi3FDQ5sPy71AiW9YiqMfVBiuO+TQ2oQt
-	 XRBgbKgVu4BgpadH/q28pPvU3L4sJJ9dtwuziNOVeki84lqAldfet02nOdoO6slAAG
-	 E8b+cS3VlBYKkOmJ917GzC2BBrePFf3WHoTtdXk8=
+	b=K/Bfrn8DKwA8aaiVTD6WAzo+R/XMm8x+IzmAMWNGv2f6q12N4nQuc2qWt6h51dTo8
+	 5UUWLJxRLwg1O7v4MjMjFD7p9AQ83keNxX/fYMrNzhzrLE9P1YrRQr4H72BXxqw8gY
+	 eglphQ7WZib5cztha+JONJwYrOTOMgSliftXIs04=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 040/192] nilfs2: protect references to superblock parameters exposed in sysfs
+	Firas Jahjah <firasj@amazon.com>,
+	Yehuda Yitschak <yehuday@amazon.com>,
+	Michael Margolin <mrgolin@amazon.com>,
+	Gal Pressman <gal.pressman@linux.dev>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 042/214] RDMA/efa: Properly handle unexpected AQ completions
 Date: Tue, 10 Sep 2024 11:31:04 +0200
-Message-ID: <20240910092559.643870439@linuxfoundation.org>
+Message-ID: <20240910092600.490113711@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
+References: <20240910092558.714365667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,109 +65,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Michael Margolin <mrgolin@amazon.com>
 
-commit 683408258917541bdb294cd717c210a04381931e upstream.
+[ Upstream commit 2d0e7ba468eae365f3c4bc9266679e1f8dd405f0 ]
 
-The superblock buffers of nilfs2 can not only be overwritten at runtime
-for modifications/repairs, but they are also regularly swapped, replaced
-during resizing, and even abandoned when degrading to one side due to
-backing device issues.  So, accessing them requires mutual exclusion using
-the reader/writer semaphore "nilfs->ns_sem".
+Do not try to handle admin command completion if it has an unexpected
+command id and print a relevant error message.
 
-Some sysfs attribute show methods read this superblock buffer without the
-necessary mutual exclusion, which can cause problems with pointer
-dereferencing and memory access, so fix it.
-
-Link: https://lkml.kernel.org/r/20240811100320.9913-1-konishi.ryusuke@gmail.com
-Fixes: da7141fb78db ("nilfs2: add /sys/fs/nilfs2/<device> group")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Firas Jahjah <firasj@amazon.com>
+Reviewed-by: Yehuda Yitschak <yehuday@amazon.com>
+Signed-off-by: Michael Margolin <mrgolin@amazon.com>
+Link: https://lore.kernel.org/r/20240513064630.6247-1-mrgolin@amazon.com
+Reviewed-by: Gal Pressman <gal.pressman@linux.dev>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/sysfs.c |   43 +++++++++++++++++++++++++++++++++----------
- 1 file changed, 33 insertions(+), 10 deletions(-)
+ drivers/infiniband/hw/efa/efa_com.c | 30 ++++++++++++++++-------------
+ 1 file changed, 17 insertions(+), 13 deletions(-)
 
---- a/fs/nilfs2/sysfs.c
-+++ b/fs/nilfs2/sysfs.c
-@@ -836,9 +836,15 @@ ssize_t nilfs_dev_revision_show(struct n
- 				struct the_nilfs *nilfs,
- 				char *buf)
- {
--	struct nilfs_super_block **sbp = nilfs->ns_sbp;
--	u32 major = le32_to_cpu(sbp[0]->s_rev_level);
--	u16 minor = le16_to_cpu(sbp[0]->s_minor_rev_level);
-+	struct nilfs_super_block *raw_sb;
-+	u32 major;
-+	u16 minor;
-+
-+	down_read(&nilfs->ns_sem);
-+	raw_sb = nilfs->ns_sbp[0];
-+	major = le32_to_cpu(raw_sb->s_rev_level);
-+	minor = le16_to_cpu(raw_sb->s_minor_rev_level);
-+	up_read(&nilfs->ns_sem);
+diff --git a/drivers/infiniband/hw/efa/efa_com.c b/drivers/infiniband/hw/efa/efa_com.c
+index 0d523ad736c7..462908022091 100644
+--- a/drivers/infiniband/hw/efa/efa_com.c
++++ b/drivers/infiniband/hw/efa/efa_com.c
+@@ -1,6 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
+ /*
+- * Copyright 2018-2021 Amazon.com, Inc. or its affiliates. All rights reserved.
++ * Copyright 2018-2024 Amazon.com, Inc. or its affiliates. All rights reserved.
+  */
  
- 	return sysfs_emit(buf, "%d.%d\n", major, minor);
- }
-@@ -856,8 +862,13 @@ ssize_t nilfs_dev_device_size_show(struc
- 				    struct the_nilfs *nilfs,
- 				    char *buf)
- {
--	struct nilfs_super_block **sbp = nilfs->ns_sbp;
--	u64 dev_size = le64_to_cpu(sbp[0]->s_dev_size);
-+	struct nilfs_super_block *raw_sb;
-+	u64 dev_size;
-+
-+	down_read(&nilfs->ns_sem);
-+	raw_sb = nilfs->ns_sbp[0];
-+	dev_size = le64_to_cpu(raw_sb->s_dev_size);
-+	up_read(&nilfs->ns_sem);
- 
- 	return sysfs_emit(buf, "%llu\n", dev_size);
- }
-@@ -879,9 +890,15 @@ ssize_t nilfs_dev_uuid_show(struct nilfs
- 			    struct the_nilfs *nilfs,
- 			    char *buf)
- {
--	struct nilfs_super_block **sbp = nilfs->ns_sbp;
-+	struct nilfs_super_block *raw_sb;
-+	ssize_t len;
-+
-+	down_read(&nilfs->ns_sem);
-+	raw_sb = nilfs->ns_sbp[0];
-+	len = sysfs_emit(buf, "%pUb\n", raw_sb->s_uuid);
-+	up_read(&nilfs->ns_sem);
- 
--	return sysfs_emit(buf, "%pUb\n", sbp[0]->s_uuid);
-+	return len;
+ #include "efa_com.h"
+@@ -398,8 +398,8 @@ static struct efa_comp_ctx *efa_com_submit_admin_cmd(struct efa_com_admin_queue
+ 	return comp_ctx;
  }
  
- static
-@@ -889,10 +906,16 @@ ssize_t nilfs_dev_volume_name_show(struc
- 				    struct the_nilfs *nilfs,
- 				    char *buf)
+-static void efa_com_handle_single_admin_completion(struct efa_com_admin_queue *aq,
+-						   struct efa_admin_acq_entry *cqe)
++static int efa_com_handle_single_admin_completion(struct efa_com_admin_queue *aq,
++						  struct efa_admin_acq_entry *cqe)
  {
--	struct nilfs_super_block **sbp = nilfs->ns_sbp;
-+	struct nilfs_super_block *raw_sb;
-+	ssize_t len;
-+
-+	down_read(&nilfs->ns_sem);
-+	raw_sb = nilfs->ns_sbp[0];
-+	len = scnprintf(buf, sizeof(raw_sb->s_volume_name), "%s\n",
-+			raw_sb->s_volume_name);
-+	up_read(&nilfs->ns_sem);
+ 	struct efa_comp_ctx *comp_ctx;
+ 	u16 cmd_id;
+@@ -408,11 +408,11 @@ static void efa_com_handle_single_admin_completion(struct efa_com_admin_queue *a
+ 			 EFA_ADMIN_ACQ_COMMON_DESC_COMMAND_ID);
  
--	return scnprintf(buf, sizeof(sbp[0]->s_volume_name), "%s\n",
--			 sbp[0]->s_volume_name);
-+	return len;
+ 	comp_ctx = efa_com_get_comp_ctx(aq, cmd_id, false);
+-	if (!comp_ctx) {
++	if (comp_ctx->status != EFA_CMD_SUBMITTED) {
+ 		ibdev_err(aq->efa_dev,
+-			  "comp_ctx is NULL. Changing the admin queue running state\n");
+-		clear_bit(EFA_AQ_STATE_RUNNING_BIT, &aq->state);
+-		return;
++			  "Received completion with unexpected command id[%d], sq producer: %d, sq consumer: %d, cq consumer: %d\n",
++			  cmd_id, aq->sq.pc, aq->sq.cc, aq->cq.cc);
++		return -EINVAL;
+ 	}
+ 
+ 	comp_ctx->status = EFA_CMD_COMPLETED;
+@@ -420,14 +420,17 @@ static void efa_com_handle_single_admin_completion(struct efa_com_admin_queue *a
+ 
+ 	if (!test_bit(EFA_AQ_STATE_POLLING_BIT, &aq->state))
+ 		complete(&comp_ctx->wait_event);
++
++	return 0;
  }
  
- static const char dev_readme_str[] =
+ static void efa_com_handle_admin_completion(struct efa_com_admin_queue *aq)
+ {
+ 	struct efa_admin_acq_entry *cqe;
+ 	u16 queue_size_mask;
+-	u16 comp_num = 0;
++	u16 comp_cmds = 0;
+ 	u8 phase;
++	int err;
+ 	u16 ci;
+ 
+ 	queue_size_mask = aq->depth - 1;
+@@ -445,10 +448,12 @@ static void efa_com_handle_admin_completion(struct efa_com_admin_queue *aq)
+ 		 * phase bit was validated
+ 		 */
+ 		dma_rmb();
+-		efa_com_handle_single_admin_completion(aq, cqe);
++		err = efa_com_handle_single_admin_completion(aq, cqe);
++		if (!err)
++			comp_cmds++;
+ 
++		aq->cq.cc++;
+ 		ci++;
+-		comp_num++;
+ 		if (ci == aq->depth) {
+ 			ci = 0;
+ 			phase = !phase;
+@@ -457,10 +462,9 @@ static void efa_com_handle_admin_completion(struct efa_com_admin_queue *aq)
+ 		cqe = &aq->cq.entries[ci];
+ 	}
+ 
+-	aq->cq.cc += comp_num;
+ 	aq->cq.phase = phase;
+-	aq->sq.cc += comp_num;
+-	atomic64_add(comp_num, &aq->stats.completed_cmd);
++	aq->sq.cc += comp_cmds;
++	atomic64_add(comp_cmds, &aq->stats.completed_cmd);
+ }
+ 
+ static int efa_com_comp_status_to_errno(u8 comp_status)
+-- 
+2.43.0
+
 
 
 
