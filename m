@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-74878-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75490-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E78639731DF
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:15:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EC719734E0
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:43:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 69D311F293AC
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:15:55 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 93FEA1C24E93
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:43:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4376D190047;
-	Tue, 10 Sep 2024 10:11:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FBB118C34D;
+	Tue, 10 Sep 2024 10:41:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1VtFYK4K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q4rvQnuC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 016DE18FDB0;
-	Tue, 10 Sep 2024 10:11:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1D2F2AF15;
+	Tue, 10 Sep 2024 10:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963098; cv=none; b=XZxnEbGBoEhnw/k2+N+nkKsTV7FxKK5GALJTBRj+cU6oJ3XpyKHd/AuABiF+iOUb79ts4FaO0WhkFXN96eaYlelC+lgbDFjN9KPA+aDZNNgN2lVnN0bqLAemCGt/VmJKZmzTTCQLGO3xeEbv1fjAkbpAp9z2wvj/kaM7gSL/LGM=
+	t=1725964886; cv=none; b=BL0Z64vie1wIyPqIj6UI+a/xXgTsJb/hLTgTuvl6k7MH1ryc1fKKZn/Erw4XiGb8qfOUUvd7iIB+Y4thkAKo6LB5EDaQJsH/chcsGcWTyBm98YRBYGTHAR4En4DXhPNHqbZfDiAVpimOEBtR+cSev55mqS4QdPeB7LBZsMZ/psM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963098; c=relaxed/simple;
-	bh=oxAMr8ySKixxC3sYw3npg8tMWDDAqDQT/dWQDW1AeQs=;
+	s=arc-20240116; t=1725964886; c=relaxed/simple;
+	bh=yFZ2GatA7enghP4v9cAcmVMiiG/aAXIbv1GYLV42zi0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=B70E/cKqXYPZ4A3ZlYw6kx2MIpe5kfzHs9RHa5EUPhPfW2FxprdCqCMeHZwApNUuZlOM0vnok5vrl0acUkoOZB1lstVhlAl20cg9mhRIJNjN1FrEZST0MaeAyHXasiwMFq8kl8VdiQm8cVkSY35Oto7ykjKRmxXdJQiz28YbkUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1VtFYK4K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C874C4CECD;
-	Tue, 10 Sep 2024 10:11:37 +0000 (UTC)
+	 MIME-Version; b=VifDFzZsgQ7xMadXwbvDrPkJBgdkC8/VStKCWmIh+hVURzN9kZHw0xQq/5LjugZFaUe7Ru4ZNTms++R3afFdFku+twHjdp+7mNefR0uE2fheFUnXXJCLpL3v9GseSjKHcCCroFL7coN53+5afVQe7Zmqzzb2WZQ+pwkcwohSFf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q4rvQnuC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB229C4CEC3;
+	Tue, 10 Sep 2024 10:41:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963097;
-	bh=oxAMr8ySKixxC3sYw3npg8tMWDDAqDQT/dWQDW1AeQs=;
+	s=korg; t=1725964886;
+	bh=yFZ2GatA7enghP4v9cAcmVMiiG/aAXIbv1GYLV42zi0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1VtFYK4KQJo0hl6YyKOPWAoP6U4+3LwVpPLwdDnseqx9yYr20Hc8+IVAhmSI5zfWo
-	 J+hzdWL5iNgJcnEVHqXcWgmUr70/W7tVy7tGsh8uPtemSvPvdY4VPKmW29sB89N25z
-	 SQyaZghz2sPEtiYxiOosUpejgC1gPkJOD2GPlT8c=
+	b=q4rvQnuCnHhcZmirusCfyHuSGhh/clVYiBXgjDjFFTzuaGHx/ZvYQa0IzCO3YZ7C5
+	 8qc5id7MT+U0VW3Q43S+uUzg92XsOBfyMR+xkwInBzKldfvZUoVirgnF9C8mYClbIz
+	 iAmdQwwk2fRGYhPuCtc54KMtb19ezAyjBgqzbWsY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Jan Kara <jack@suse.cz>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Stephen Brennan <stephen.s.brennan@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 108/192] fs/ntfs3: Check more cases when directory is corrupted
+Subject: [PATCH 5.10 037/186] fsnotify: clear PARENT_WATCHED flags lazily
 Date: Tue, 10 Sep 2024 11:32:12 +0200
-Message-ID: <20240910092602.439143810@linuxfoundation.org>
+Message-ID: <20240910092556.072910783@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,164 +63,210 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Amir Goldstein <amir73il@gmail.com>
 
-[ Upstream commit 744375343662058cbfda96d871786e5a5cbe1947 ]
+[ Upstream commit 172e422ffea20a89bfdc672741c1aad6fbb5044e ]
 
-Mark ntfs dirty in this case.
-Rename ntfs_filldir to ntfs_dir_emit.
+In some setups directories can have many (usually negative) dentries.
+Hence __fsnotify_update_child_dentry_flags() function can take a
+significant amount of time. Since the bulk of this function happens
+under inode->i_lock this causes a significant contention on the lock
+when we remove the watch from the directory as the
+__fsnotify_update_child_dentry_flags() call from fsnotify_recalc_mask()
+races with __fsnotify_update_child_dentry_flags() calls from
+__fsnotify_parent() happening on children. This can lead upto softlockup
+reports reported by users.
 
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Fix the problem by calling fsnotify_update_children_dentry_flags() to
+set PARENT_WATCHED flags only when parent starts watching children.
+
+When parent stops watching children, clear false positive PARENT_WATCHED
+flags lazily in __fsnotify_parent() for each accessed child.
+
+Suggested-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Stephen Brennan <stephen.s.brennan@oracle.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/dir.c | 52 +++++++++++++++++++++++++++++++-------------------
- 1 file changed, 32 insertions(+), 20 deletions(-)
+ fs/notify/fsnotify.c             | 31 +++++++++++++++++++++----------
+ fs/notify/fsnotify.h             |  2 +-
+ fs/notify/mark.c                 | 32 +++++++++++++++++++++++++++++---
+ include/linux/fsnotify_backend.h |  8 +++++---
+ 4 files changed, 56 insertions(+), 17 deletions(-)
 
-diff --git a/fs/ntfs3/dir.c b/fs/ntfs3/dir.c
-index dcd689ed4baa..a4ab0164d150 100644
---- a/fs/ntfs3/dir.c
-+++ b/fs/ntfs3/dir.c
-@@ -272,9 +272,12 @@ struct inode *dir_search_u(struct inode *dir, const struct cpu_str *uni,
- 	return err == -ENOENT ? NULL : err ? ERR_PTR(err) : inode;
+diff --git a/fs/notify/fsnotify.c b/fs/notify/fsnotify.c
+index 7974e91ffe13..b5d8f238fce4 100644
+--- a/fs/notify/fsnotify.c
++++ b/fs/notify/fsnotify.c
+@@ -103,17 +103,13 @@ void fsnotify_sb_delete(struct super_block *sb)
+  * parent cares.  Thus when an event happens on a child it can quickly tell
+  * if there is a need to find a parent and send the event to the parent.
+  */
+-void __fsnotify_update_child_dentry_flags(struct inode *inode)
++void fsnotify_set_children_dentry_flags(struct inode *inode)
+ {
+ 	struct dentry *alias;
+-	int watched;
+ 
+ 	if (!S_ISDIR(inode->i_mode))
+ 		return;
+ 
+-	/* determine if the children should tell inode about their events */
+-	watched = fsnotify_inode_watches_children(inode);
+-
+ 	spin_lock(&inode->i_lock);
+ 	/* run all of the dentries associated with this inode.  Since this is a
+ 	 * directory, there damn well better only be one item on this list */
+@@ -129,10 +125,7 @@ void __fsnotify_update_child_dentry_flags(struct inode *inode)
+ 				continue;
+ 
+ 			spin_lock_nested(&child->d_lock, DENTRY_D_LOCK_NESTED);
+-			if (watched)
+-				child->d_flags |= DCACHE_FSNOTIFY_PARENT_WATCHED;
+-			else
+-				child->d_flags &= ~DCACHE_FSNOTIFY_PARENT_WATCHED;
++			child->d_flags |= DCACHE_FSNOTIFY_PARENT_WATCHED;
+ 			spin_unlock(&child->d_lock);
+ 		}
+ 		spin_unlock(&alias->d_lock);
+@@ -140,6 +133,24 @@ void __fsnotify_update_child_dentry_flags(struct inode *inode)
+ 	spin_unlock(&inode->i_lock);
  }
  
--static inline int ntfs_filldir(struct ntfs_sb_info *sbi, struct ntfs_inode *ni,
--			       const struct NTFS_DE *e, u8 *name,
--			       struct dir_context *ctx)
 +/*
-+ * returns false if 'ctx' if full
++ * Lazily clear false positive PARENT_WATCHED flag for child whose parent had
++ * stopped watching children.
 + */
-+static inline bool ntfs_dir_emit(struct ntfs_sb_info *sbi,
-+				 struct ntfs_inode *ni, const struct NTFS_DE *e,
-+				 u8 *name, struct dir_context *ctx)
- {
- 	const struct ATTR_FILE_NAME *fname;
- 	unsigned long ino;
-@@ -284,29 +287,29 @@ static inline int ntfs_filldir(struct ntfs_sb_info *sbi, struct ntfs_inode *ni,
- 	fname = Add2Ptr(e, sizeof(struct NTFS_DE));
- 
- 	if (fname->type == FILE_NAME_DOS)
--		return 0;
-+		return true;
- 
- 	if (!mi_is_ref(&ni->mi, &fname->home))
--		return 0;
-+		return true;
- 
- 	ino = ino_get(&e->ref);
- 
- 	if (ino == MFT_REC_ROOT)
--		return 0;
-+		return true;
- 
- 	/* Skip meta files. Unless option to show metafiles is set. */
- 	if (!sbi->options->showmeta && ntfs_is_meta_file(sbi, ino))
--		return 0;
-+		return true;
- 
- 	if (sbi->options->nohidden && (fname->dup.fa & FILE_ATTRIBUTE_HIDDEN))
--		return 0;
-+		return true;
- 
- 	name_len = ntfs_utf16_to_nls(sbi, fname->name, fname->name_len, name,
- 				     PATH_MAX);
- 	if (name_len <= 0) {
- 		ntfs_warn(sbi->sb, "failed to convert name for inode %lx.",
- 			  ino);
--		return 0;
-+		return true;
- 	}
++static void fsnotify_clear_child_dentry_flag(struct inode *pinode,
++					     struct dentry *dentry)
++{
++	spin_lock(&dentry->d_lock);
++	/*
++	 * d_lock is a sufficient barrier to prevent observing a non-watched
++	 * parent state from before the fsnotify_set_children_dentry_flags()
++	 * or fsnotify_update_flags() call that had set PARENT_WATCHED.
++	 */
++	if (!fsnotify_inode_watches_children(pinode))
++		dentry->d_flags &= ~DCACHE_FSNOTIFY_PARENT_WATCHED;
++	spin_unlock(&dentry->d_lock);
++}
++
+ /* Are inode/sb/mount interested in parent and name info with this event? */
+ static bool fsnotify_event_needs_parent(struct inode *inode, struct mount *mnt,
+ 					__u32 mask)
+@@ -208,7 +219,7 @@ int __fsnotify_parent(struct dentry *dentry, __u32 mask, const void *data,
+ 	p_inode = parent->d_inode;
+ 	p_mask = fsnotify_inode_watches_children(p_inode);
+ 	if (unlikely(parent_watched && !p_mask))
+-		__fsnotify_update_child_dentry_flags(p_inode);
++		fsnotify_clear_child_dentry_flag(p_inode, dentry);
  
  	/*
-@@ -336,17 +339,20 @@ static inline int ntfs_filldir(struct ntfs_sb_info *sbi, struct ntfs_inode *ni,
- 		}
- 	}
+ 	 * Include parent/name in notification either if some notification
+diff --git a/fs/notify/fsnotify.h b/fs/notify/fsnotify.h
+index fde74eb333cc..2b4267de86e6 100644
+--- a/fs/notify/fsnotify.h
++++ b/fs/notify/fsnotify.h
+@@ -74,7 +74,7 @@ static inline void fsnotify_clear_marks_by_sb(struct super_block *sb)
+  * update the dentry->d_flags of all of inode's children to indicate if inode cares
+  * about events that happen to its children.
+  */
+-extern void __fsnotify_update_child_dentry_flags(struct inode *inode);
++extern void fsnotify_set_children_dentry_flags(struct inode *inode);
  
--	return !dir_emit(ctx, (s8 *)name, name_len, ino, dt_type);
-+	return dir_emit(ctx, (s8 *)name, name_len, ino, dt_type);
+ extern struct kmem_cache *fsnotify_mark_connector_cachep;
+ 
+diff --git a/fs/notify/mark.c b/fs/notify/mark.c
+index c74ef947447d..4be6e883d492 100644
+--- a/fs/notify/mark.c
++++ b/fs/notify/mark.c
+@@ -176,6 +176,24 @@ static void *__fsnotify_recalc_mask(struct fsnotify_mark_connector *conn)
+ 	return fsnotify_update_iref(conn, want_iref);
+ }
+ 
++static bool fsnotify_conn_watches_children(
++					struct fsnotify_mark_connector *conn)
++{
++	if (conn->type != FSNOTIFY_OBJ_TYPE_INODE)
++		return false;
++
++	return fsnotify_inode_watches_children(fsnotify_conn_inode(conn));
++}
++
++static void fsnotify_conn_set_children_dentry_flags(
++					struct fsnotify_mark_connector *conn)
++{
++	if (conn->type != FSNOTIFY_OBJ_TYPE_INODE)
++		return;
++
++	fsnotify_set_children_dentry_flags(fsnotify_conn_inode(conn));
++}
++
+ /*
+  * Calculate mask of events for a list of marks. The caller must make sure
+  * connector and connector->obj cannot disappear under us.  Callers achieve
+@@ -184,15 +202,23 @@ static void *__fsnotify_recalc_mask(struct fsnotify_mark_connector *conn)
+  */
+ void fsnotify_recalc_mask(struct fsnotify_mark_connector *conn)
+ {
++	bool update_children;
++
+ 	if (!conn)
+ 		return;
+ 
+ 	spin_lock(&conn->lock);
++	update_children = !fsnotify_conn_watches_children(conn);
+ 	__fsnotify_recalc_mask(conn);
++	update_children &= fsnotify_conn_watches_children(conn);
+ 	spin_unlock(&conn->lock);
+-	if (conn->type == FSNOTIFY_OBJ_TYPE_INODE)
+-		__fsnotify_update_child_dentry_flags(
+-					fsnotify_conn_inode(conn));
++	/*
++	 * Set children's PARENT_WATCHED flags only if parent started watching.
++	 * When parent stops watching, we clear false positive PARENT_WATCHED
++	 * flags lazily in __fsnotify_parent().
++	 */
++	if (update_children)
++		fsnotify_conn_set_children_dentry_flags(conn);
+ }
+ 
+ /* Free all connectors queued for freeing once SRCU period ends */
+diff --git a/include/linux/fsnotify_backend.h b/include/linux/fsnotify_backend.h
+index d7d96c806bff..096b79e4373f 100644
+--- a/include/linux/fsnotify_backend.h
++++ b/include/linux/fsnotify_backend.h
+@@ -563,12 +563,14 @@ static inline __u32 fsnotify_parent_needed_mask(__u32 mask)
+ 
+ static inline int fsnotify_inode_watches_children(struct inode *inode)
+ {
++	__u32 parent_mask = READ_ONCE(inode->i_fsnotify_mask);
++
+ 	/* FS_EVENT_ON_CHILD is set if the inode may care */
+-	if (!(inode->i_fsnotify_mask & FS_EVENT_ON_CHILD))
++	if (!(parent_mask & FS_EVENT_ON_CHILD))
+ 		return 0;
+ 	/* this inode might care about child events, does it care about the
+ 	 * specific set of events that can happen on a child? */
+-	return inode->i_fsnotify_mask & FS_EVENTS_POSS_ON_CHILD;
++	return parent_mask & FS_EVENTS_POSS_ON_CHILD;
  }
  
  /*
-  * ntfs_read_hdr - Helper function for ntfs_readdir().
-+ *
-+ * returns 0 if ok.
-+ * returns -EINVAL if directory is corrupted.
-+ * returns +1 if 'ctx' is full.
-  */
- static int ntfs_read_hdr(struct ntfs_sb_info *sbi, struct ntfs_inode *ni,
- 			 const struct INDEX_HDR *hdr, u64 vbo, u64 pos,
- 			 u8 *name, struct dir_context *ctx)
- {
--	int err;
- 	const struct NTFS_DE *e;
- 	u32 e_size;
- 	u32 end = le32_to_cpu(hdr->used);
-@@ -354,12 +360,12 @@ static int ntfs_read_hdr(struct ntfs_sb_info *sbi, struct ntfs_inode *ni,
- 
- 	for (;; off += e_size) {
- 		if (off + sizeof(struct NTFS_DE) > end)
--			return -1;
-+			return -EINVAL;
- 
- 		e = Add2Ptr(hdr, off);
- 		e_size = le16_to_cpu(e->size);
- 		if (e_size < sizeof(struct NTFS_DE) || off + e_size > end)
--			return -1;
-+			return -EINVAL;
- 
- 		if (de_is_last(e))
- 			return 0;
-@@ -369,14 +375,15 @@ static int ntfs_read_hdr(struct ntfs_sb_info *sbi, struct ntfs_inode *ni,
- 			continue;
- 
- 		if (le16_to_cpu(e->key_size) < SIZEOF_ATTRIBUTE_FILENAME)
--			return -1;
-+			return -EINVAL;
- 
- 		ctx->pos = vbo + off;
- 
- 		/* Submit the name to the filldir callback. */
--		err = ntfs_filldir(sbi, ni, e, name, ctx);
--		if (err)
--			return err;
-+		if (!ntfs_dir_emit(sbi, ni, e, name, ctx)) {
-+			/* ctx is full. */
-+			return +1;
-+		}
- 	}
- }
- 
-@@ -475,8 +482,6 @@ static int ntfs_readdir(struct file *file, struct dir_context *ctx)
- 
- 		vbo = (u64)bit << index_bits;
- 		if (vbo >= i_size) {
--			ntfs_inode_err(dir, "Looks like your dir is corrupt");
--			ctx->pos = eod;
- 			err = -EINVAL;
- 			goto out;
- 		}
-@@ -499,9 +504,16 @@ static int ntfs_readdir(struct file *file, struct dir_context *ctx)
- 	__putname(name);
- 	put_indx_node(node);
- 
--	if (err == -ENOENT) {
-+	if (err == 1) {
-+		/* 'ctx' is full. */
-+		err = 0;
-+	} else if (err == -ENOENT) {
- 		err = 0;
- 		ctx->pos = pos;
-+	} else if (err < 0) {
-+		if (err == -EINVAL)
-+			ntfs_inode_err(dir, "directory corrupted");
-+		ctx->pos = eod;
- 	}
- 
- 	return err;
+@@ -582,7 +584,7 @@ static inline void fsnotify_update_flags(struct dentry *dentry)
+ 	/*
+ 	 * Serialisation of setting PARENT_WATCHED on the dentries is provided
+ 	 * by d_lock. If inotify_inode_watched changes after we have taken
+-	 * d_lock, the following __fsnotify_update_child_dentry_flags call will
++	 * d_lock, the following fsnotify_set_children_dentry_flags call will
+ 	 * find our entry, so it will spin until we complete here, and update
+ 	 * us with the new state.
+ 	 */
 -- 
 2.43.0
 
