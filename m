@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-75587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 149A497354B
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:47:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0CF1973484
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:41:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B03C1F25C6F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:47:25 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1F9621C24FCB
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:41:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46DDF18E77C;
-	Tue, 10 Sep 2024 10:46:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5F8318C03E;
+	Tue, 10 Sep 2024 10:38:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0tR3aq1m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="widdOfb5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 038A81DA4C;
-	Tue, 10 Sep 2024 10:46:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71D1A5674D;
+	Tue, 10 Sep 2024 10:38:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725965170; cv=none; b=usWU8dUmKk0bAyCdWcyEcRPqLlTQaXa8ngIRRdmBUo29M4zx/NwhUKhtnpgkuRTR9F1QiKxqUmlqk0gISn2tlPhFVllwGfuX+FqFnR3a4g4t2dRojnmD29oOxYRJoeuarzYws/L/wS1iKL+FjfOEGejEyfOshAfrrq5W7hWHSE8=
+	t=1725964715; cv=none; b=TUC19YBq7NUMCTHepTEygyRDnEqLDznu3aUpcLvR8JMm2kxY+BvP8++MvvNOpA6EVrZtSyu4uwn71R0U9RBgts2BJ8BlCsSw+MHJH2jlWr4kZu0OKYBR/hEIy/JERRJWaZH/+SRXz3dCeysSe9SG837pS6f0AMRAYIFPg5ls6v8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725965170; c=relaxed/simple;
-	bh=kfsLZCpi+g9tfYhZl+DIALaUtZDF+yAV4M/J2kDMyJM=;
+	s=arc-20240116; t=1725964715; c=relaxed/simple;
+	bh=KNaNsW/j6NDztrnWr9mElq12kT0biRIigUEDce25i24=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g2wZxMPVuauL0+6BwINw2vflRSdW2lGuSym1R9HPDr1FW4SM+sytPr/eYaKMc7SIEzyJrB6egYecRd5aGs/BtWeBGgOQ9rvqzZGP62IIJUI6TKkGGEgHdv+l82dFkk3kwFMPj0Xx5YloxxSwkTNxan73UMWd+gzI1NV579p+raA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0tR3aq1m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41C54C4CEC3;
-	Tue, 10 Sep 2024 10:46:09 +0000 (UTC)
+	 MIME-Version; b=Pcvh3ciluIdUKeTjuBJJbQCYfBjFyLq/eISNOwh2a9uuT8NTaOztxiuBmeW8ucojqZtIF1JnQo/jQefX7Hv0mRSpr6VRGATf3Jtea+UG5XHIkbQSTOFcbLpb723/Kkk0KHBrcU1iy0rUXa2BN3EyVsHoaOSzLn07K7aXArJrOw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=widdOfb5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 955FEC4CEC3;
+	Tue, 10 Sep 2024 10:38:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725965169;
-	bh=kfsLZCpi+g9tfYhZl+DIALaUtZDF+yAV4M/J2kDMyJM=;
+	s=korg; t=1725964715;
+	bh=KNaNsW/j6NDztrnWr9mElq12kT0biRIigUEDce25i24=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0tR3aq1mJwOhMzs2bckUCt9FJpMUvClun5oIG83xbU/jKvaiEZTHtYMQLdHzR4WgF
-	 LWd6WiYiU6BBVcBMqSwrbXZIJ7T1THe3h72MLd/r4orVNCxclHDeGcsr/kaW905Kv3
-	 idFtuC8ZkboMy4hrrR2zYeZnkElVOkIjXVkQO5k4=
+	b=widdOfb5V3zTDICNZn8peNGno5CjmUfeBftwisAlqjtcO6J3Pke/iqEhwG1Vu1BLw
+	 E97QLkxBkvjg9riRXs0Nrrt3z3g8Qn9+ACuYphsXk0cQcb1r4yY1BnlT8dp3dYRPM5
+	 gXdcpV1qGjPe/O/3yerMqBR2K5N3R3IIO7JrtIrI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guillaume Stols <gstols@baylibre.com>,
-	Nuno Sa <nuno.sa@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Subject: [PATCH 5.10 161/186] iio: adc: ad7606: remove frstdata check for serial mode
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Subject: [PATCH 6.6 269/269] Bluetooth: hci_sync: Fix UAF on hci_abort_conn_sync
 Date: Tue, 10 Sep 2024 11:34:16 +0200
-Message-ID: <20240910092601.246165284@linuxfoundation.org>
+Message-ID: <20240910092617.320405012@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,178 +60,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guillaume Stols <gstols@baylibre.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-commit 90826e08468ba7fb35d8b39645b22d9e80004afe upstream.
+commit 7453847fb22c7c45334c43cc6a02ea5df5b9961d upstream.
 
-The current implementation attempts to recover from an eventual glitch
-in the clock by checking frstdata state after reading the first
-channel's sample: If frstdata is low, it will reset the chip and
-return -EIO.
+Fixes the following trace where hci_acl_create_conn_sync attempts to
+call hci_abort_conn_sync after timeout:
 
-This will only work in parallel mode, where frstdata pin is set low
-after the 2nd sample read starts.
+BUG: KASAN: slab-use-after-free in hci_abort_conn_sync
+(net/bluetooth/hci_sync.c:5439)
+Read of size 2 at addr ffff88800322c032 by task kworker/u3:2/36
 
-For the serial mode, according to the datasheet, "The FRSTDATA output
-returns to a logic low following the 16th SCLK falling edge.", thus
-after the Xth pulse, X being the number of bits in a sample, the check
-will always be true, and the driver will not work at all in serial
-mode if frstdata(optional) is defined in the devicetree as it will
-reset the chip, and return -EIO every time read_sample is called.
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.2-1.fc38
+04/01/2014
+Workqueue: hci0 hci_cmd_sync_work
+Call Trace:
+<TASK>
+dump_stack_lvl (./arch/x86/include/asm/irqflags.h:26
+./arch/x86/include/asm/irqflags.h:67 ./arch/x86/include/asm/irqflags.h:127
+lib/dump_stack.c:107)
+print_report (mm/kasan/report.c:378 mm/kasan/report.c:488)
+? preempt_count_sub (kernel/sched/core.c:5889)
+? __virt_addr_valid (./arch/x86/include/asm/preempt.h:103 (discriminator 1)
+./include/linux/rcupdate.h:865 (discriminator 1)
+./include/linux/mmzone.h:2026 (discriminator 1)
+arch/x86/mm/physaddr.c:65 (discriminator 1))
+? hci_abort_conn_sync (net/bluetooth/hci_sync.c:5439)
+kasan_report (mm/kasan/report.c:603)
+? hci_abort_conn_sync (net/bluetooth/hci_sync.c:5439)
+hci_abort_conn_sync (net/bluetooth/hci_sync.c:5439)
+? __pfx_hci_abort_conn_sync (net/bluetooth/hci_sync.c:5433)
+hci_acl_create_conn_sync (net/bluetooth/hci_sync.c:6681)
 
-Hence, this check must be removed for serial mode.
-
-Fixes: b9618c0cacd7 ("staging: IIO: ADC: New driver for AD7606/AD7606-6/AD7606-4")
-Signed-off-by: Guillaume Stols <gstols@baylibre.com>
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://patch.msgid.link/20240702-cleanup-ad7606-v3-1-18d5ea18770e@baylibre.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Fixes: 45340097ce6e ("Bluetooth: hci_conn: Only do ACL connections sequentially")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/ad7606.c     |   28 +------------------------
- drivers/iio/adc/ad7606.h     |    2 +
- drivers/iio/adc/ad7606_par.c |   48 ++++++++++++++++++++++++++++++++++++++++---
- 3 files changed, 49 insertions(+), 29 deletions(-)
+ net/bluetooth/hci_sync.c |   13 ++++---------
+ 1 file changed, 4 insertions(+), 9 deletions(-)
 
---- a/drivers/iio/adc/ad7606.c
-+++ b/drivers/iio/adc/ad7606.c
-@@ -48,7 +48,7 @@ static const unsigned int ad7616_oversam
- 	1, 2, 4, 8, 16, 32, 64, 128,
- };
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -6796,15 +6796,10 @@ static int hci_acl_create_conn_sync(stru
+ 	else
+ 		cp.role_switch = 0x00;
  
--static int ad7606_reset(struct ad7606_state *st)
-+int ad7606_reset(struct ad7606_state *st)
- {
- 	if (st->gpio_reset) {
- 		gpiod_set_value(st->gpio_reset, 1);
-@@ -59,6 +59,7 @@ static int ad7606_reset(struct ad7606_st
- 
- 	return -ENODEV;
- }
-+EXPORT_SYMBOL_NS_GPL(ad7606_reset, IIO_AD7606);
- 
- static int ad7606_reg_access(struct iio_dev *indio_dev,
- 			     unsigned int reg,
-@@ -87,31 +88,6 @@ static int ad7606_read_samples(struct ad
- {
- 	unsigned int num = st->chip_info->num_channels - 1;
- 	u16 *data = st->data;
--	int ret;
+-	err = __hci_cmd_sync_status_sk(hdev, HCI_OP_CREATE_CONN,
+-				       sizeof(cp), &cp,
+-				       HCI_EV_CONN_COMPLETE,
+-				       HCI_ACL_CONN_TIMEOUT, NULL);
 -
--	/*
--	 * The frstdata signal is set to high while and after reading the sample
--	 * of the first channel and low for all other channels. This can be used
--	 * to check that the incoming data is correctly aligned. During normal
--	 * operation the data should never become unaligned, but some glitch or
--	 * electrostatic discharge might cause an extra read or clock cycle.
--	 * Monitoring the frstdata signal allows to recover from such failure
--	 * situations.
--	 */
+-	if (err == -ETIMEDOUT)
+-		hci_abort_conn_sync(hdev, conn, HCI_ERROR_LOCAL_HOST_TERM);
 -
--	if (st->gpio_frstdata) {
--		ret = st->bops->read_block(st->dev, 1, data);
--		if (ret)
--			return ret;
--
--		if (!gpiod_get_value(st->gpio_frstdata)) {
--			ad7606_reset(st);
--			return -EIO;
--		}
--
--		data++;
--		num--;
--	}
- 
- 	return st->bops->read_block(st->dev, num, data);
- }
---- a/drivers/iio/adc/ad7606.h
-+++ b/drivers/iio/adc/ad7606.h
-@@ -153,6 +153,8 @@ int ad7606_probe(struct device *dev, int
- 		 const char *name, unsigned int id,
- 		 const struct ad7606_bus_ops *bops);
- 
-+int ad7606_reset(struct ad7606_state *st);
-+
- enum ad7606_supported_device_ids {
- 	ID_AD7605_4,
- 	ID_AD7606_8,
---- a/drivers/iio/adc/ad7606_par.c
-+++ b/drivers/iio/adc/ad7606_par.c
-@@ -6,6 +6,7 @@
-  */
- 
- #include <linux/module.h>
-+#include <linux/gpio/consumer.h>
- #include <linux/platform_device.h>
- #include <linux/types.h>
- #include <linux/err.h>
-@@ -20,8 +21,29 @@ static int ad7606_par16_read_block(struc
- 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
- 	struct ad7606_state *st = iio_priv(indio_dev);
- 
--	insw((unsigned long)st->base_address, buf, count);
- 
-+	/*
-+	 * On the parallel interface, the frstdata signal is set to high while
-+	 * and after reading the sample of the first channel and low for all
-+	 * other channels.  This can be used to check that the incoming data is
-+	 * correctly aligned.  During normal operation the data should never
-+	 * become unaligned, but some glitch or electrostatic discharge might
-+	 * cause an extra read or clock cycle.  Monitoring the frstdata signal
-+	 * allows to recover from such failure situations.
-+	 */
-+	int num = count;
-+	u16 *_buf = buf;
-+
-+	if (st->gpio_frstdata) {
-+		insw((unsigned long)st->base_address, _buf, 1);
-+		if (!gpiod_get_value(st->gpio_frstdata)) {
-+			ad7606_reset(st);
-+			return -EIO;
-+		}
-+		_buf++;
-+		num--;
-+	}
-+	insw((unsigned long)st->base_address, _buf, num);
- 	return 0;
+-	return err;
++	return __hci_cmd_sync_status_sk(hdev, HCI_OP_CREATE_CONN,
++					sizeof(cp), &cp,
++					HCI_EV_CONN_COMPLETE,
++					conn->conn_timeout, NULL);
  }
  
-@@ -34,8 +56,28 @@ static int ad7606_par8_read_block(struct
- {
- 	struct iio_dev *indio_dev = dev_get_drvdata(dev);
- 	struct ad7606_state *st = iio_priv(indio_dev);
--
--	insb((unsigned long)st->base_address, buf, count * 2);
-+	/*
-+	 * On the parallel interface, the frstdata signal is set to high while
-+	 * and after reading the sample of the first channel and low for all
-+	 * other channels.  This can be used to check that the incoming data is
-+	 * correctly aligned.  During normal operation the data should never
-+	 * become unaligned, but some glitch or electrostatic discharge might
-+	 * cause an extra read or clock cycle.  Monitoring the frstdata signal
-+	 * allows to recover from such failure situations.
-+	 */
-+	int num = count;
-+	u16 *_buf = buf;
-+
-+	if (st->gpio_frstdata) {
-+		insb((unsigned long)st->base_address, _buf, 2);
-+		if (!gpiod_get_value(st->gpio_frstdata)) {
-+			ad7606_reset(st);
-+			return -EIO;
-+		}
-+		_buf++;
-+		num--;
-+	}
-+	insb((unsigned long)st->base_address, _buf, num * 2);
- 
- 	return 0;
- }
+ int hci_connect_acl_sync(struct hci_dev *hdev, struct hci_conn *conn)
 
 
 
