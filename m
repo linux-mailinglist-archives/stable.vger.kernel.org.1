@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-74710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74218-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A6F09730E8
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:05:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2DB1972E15
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:39:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E5ABD1F21BD7
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:05:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8E6E4287D19
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:39:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E39318E77F;
-	Tue, 10 Sep 2024 10:03:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDE02189F58;
+	Tue, 10 Sep 2024 09:39:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jQPs4VXI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FGXJlneF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D02BE18787E;
-	Tue, 10 Sep 2024 10:03:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BB211885A6;
+	Tue, 10 Sep 2024 09:39:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962600; cv=none; b=T9LHSml04MZ0Vr7kP71NbJLvRmcRnBXAZiw5ASFJIcKje3TjL45+uuGPK0Vq+zplxtHRlc5XrPnk1NsQgD5xDJV8T8DnR95gAnAVX7Dq0CuDrY+y8xr+iFuWZaZ1uiPZH3qcvJ4VVPUE7bSSchJWnFZ+DyRcR2BYLYW4r0m/87Y=
+	t=1725961160; cv=none; b=oXo4jGxtDMcZdiYriXdJ/qbaaUhrUAZHCw3JcJ33pQPD1oZxo7Y+flv7GYsB8vCmtroJPITIrs9Dy9PQdzT67s6GvDPBHdOpIgZuqAQV894HAHbCUrI1VDs9+zl0hcYS8j5ieAoDEyviaYY75b7nzeMmKweNeWu1PIVF1bsNJBI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962600; c=relaxed/simple;
-	bh=nSLMpBEFEd/Jfol5qeNPM2v6l8QFXV2eZStkZzL4UXY=;
+	s=arc-20240116; t=1725961160; c=relaxed/simple;
+	bh=FLpEExGs3wM4NQUckVFchWcoS6SFPr4htfAQudOXLc4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FglNP02QUHZdGvXQaI+HABPCzov77HgwZsay3elzb0A64v8F74ve491BUD8++3jJ+LyxZwIjtVFBpMoypA1ZbcNL/sTMWzakIaQ43uoioQx+lyLJB1rZFmFshf8J53bXfxRS0c5bWknfBpqCqesw+ZSXhBoK5l1/y6/mUqNOQ9U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jQPs4VXI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D583C4CEC3;
-	Tue, 10 Sep 2024 10:03:20 +0000 (UTC)
+	 MIME-Version; b=Ckxfo/kMb5CqXoctPK3ht+e3RYKehdU9D/RpYk7SeB1K+fOA60dwYBP0GWBEB2vM94UJsMVk4J6CVPsrqZjPYXRqVvCQTt2AdrTxqzJQLkmCY8oeSvy4cRz9lEQKKIyxUui8ScZG+HKT9xbS9aQ+SjpQ76vtpHpmlkbjV1mWV3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FGXJlneF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 125FEC4CECE;
+	Tue, 10 Sep 2024 09:39:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962600;
-	bh=nSLMpBEFEd/Jfol5qeNPM2v6l8QFXV2eZStkZzL4UXY=;
+	s=korg; t=1725961160;
+	bh=FLpEExGs3wM4NQUckVFchWcoS6SFPr4htfAQudOXLc4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jQPs4VXI5SWyC6RZWZJ629VURpAqdli3rWEH7qwxqKXH8CdcHefeE3IA7W8HMLPoK
-	 wj/Uy36BEXRAxm5OwEusDkSv/XHsndP5fhL6xt+YI+ryYkynFp6GIicmCalTTDrqvf
-	 +Q78bxbibFYYfiY4BvSNrCuuTs20tDDUXTR0st0k=
+	b=FGXJlneF64DdTZuxe9zjgjX+MJMCVBYBSqzGtKNzZ2CSlJjIoujXCqStrd7xaXS5p
+	 22xuaQCGVWZUD4bRqpwiXjcuAnDJwx0RyE0pGsYeX/ULNX/Oo5E0vUB9gUUZaF+riO
+	 c4CtpjIFjnQzj0a5VLvf+N/6VN9Hb9PzA5CiPzd0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 061/121] usbnet: modern method to get random MAC
+	Matteo Martelli <matteomartelli3@gmail.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 4.19 74/96] iio: fix scale application in iio_convert_raw_to_processed_unlocked
 Date: Tue, 10 Sep 2024 11:32:16 +0200
-Message-ID: <20240910092548.738957268@linuxfoundation.org>
+Message-ID: <20240910092544.801537327@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
-References: <20240910092545.737864202@linuxfoundation.org>
+In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
+References: <20240910092541.383432924@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Matteo Martelli <matteomartelli3@gmail.com>
 
-[ Upstream commit bab8eb0dd4cb995caa4a0529d5655531c2ec5e8e ]
+commit 8a3dcc970dc57b358c8db2702447bf0af4e0d83a upstream.
 
-The driver generates a random MAC once on load
-and uses it over and over, including on two devices
-needing a random MAC at the same time.
+When the scale_type is IIO_VAL_INT_PLUS_MICRO or IIO_VAL_INT_PLUS_NANO
+the scale passed as argument is only applied to the fractional part of
+the value. Fix it by also multiplying the integer part by the scale
+provided.
 
-Jakub suggested revamping the driver to the modern
-API for setting a random MAC rather than fixing
-the old stuff.
-
-The bug is as old as the driver.
-
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Link: https://patch.msgid.link/20240829175201.670718-1-oneukum@suse.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 48e44ce0f881 ("iio:inkern: Add function to read the processed value")
+Signed-off-by: Matteo Martelli <matteomartelli3@gmail.com>
+Link: https://patch.msgid.link/20240730-iio-fix-scale-v1-1-6246638c8daa@gmail.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/usbnet.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ drivers/iio/inkern.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
-index 58e6eade1b04..240511b4246d 100644
---- a/drivers/net/usb/usbnet.c
-+++ b/drivers/net/usb/usbnet.c
-@@ -67,9 +67,6 @@
- 
- /*-------------------------------------------------------------------------*/
- 
--// randomly generated ethernet address
--static u8	node_id [ETH_ALEN];
--
- /* use ethtool to change the level for any given device */
- static int msg_level = -1;
- module_param (msg_level, int, 0);
-@@ -1714,7 +1711,6 @@ usbnet_probe (struct usb_interface *udev, const struct usb_device_id *prod)
- 
- 	dev->net = net;
- 	strscpy(net->name, "usb%d", sizeof(net->name));
--	eth_hw_addr_set(net, node_id);
- 
- 	/* rx and tx sides can use different message sizes;
- 	 * bind() should set rx_urb_size in that case.
-@@ -1788,9 +1784,9 @@ usbnet_probe (struct usb_interface *udev, const struct usb_device_id *prod)
- 		goto out4;
- 	}
- 
--	/* let userspace know we have a random address */
--	if (ether_addr_equal(net->dev_addr, node_id))
--		net->addr_assign_type = NET_ADDR_RANDOM;
-+	/* this flags the device for user space */
-+	if (!is_valid_ether_addr(net->dev_addr))
-+		eth_hw_addr_random(net);
- 
- 	if ((dev->driver_info->flags & FLAG_WLAN) != 0)
- 		SET_NETDEV_DEVTYPE(net, &wlan_type);
-@@ -2200,7 +2196,6 @@ static int __init usbnet_init(void)
- 	BUILD_BUG_ON(
- 		FIELD_SIZEOF(struct sk_buff, cb) < sizeof(struct skb_data));
- 
--	eth_random_addr(node_id);
- 	return 0;
- }
- module_init(usbnet_init);
--- 
-2.43.0
-
+--- a/drivers/iio/inkern.c
++++ b/drivers/iio/inkern.c
+@@ -640,17 +640,17 @@ static int iio_convert_raw_to_processed_
+ 		break;
+ 	case IIO_VAL_INT_PLUS_MICRO:
+ 		if (scale_val2 < 0)
+-			*processed = -raw64 * scale_val;
++			*processed = -raw64 * scale_val * scale;
+ 		else
+-			*processed = raw64 * scale_val;
++			*processed = raw64 * scale_val * scale;
+ 		*processed += div_s64(raw64 * (s64)scale_val2 * scale,
+ 				      1000000LL);
+ 		break;
+ 	case IIO_VAL_INT_PLUS_NANO:
+ 		if (scale_val2 < 0)
+-			*processed = -raw64 * scale_val;
++			*processed = -raw64 * scale_val * scale;
+ 		else
+-			*processed = raw64 * scale_val;
++			*processed = raw64 * scale_val * scale;
+ 		*processed += div_s64(raw64 * (s64)scale_val2 * scale,
+ 				      1000000000LL);
+ 		break;
 
 
 
