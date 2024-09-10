@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-74194-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78678972DF9
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:38:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 165B59730B4
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:04:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ABA731C24502
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:38:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CAD25285598
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:03:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9412B46444;
-	Tue, 10 Sep 2024 09:38:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C22D518FC9F;
+	Tue, 10 Sep 2024 10:02:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BE+W/Frp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uQK4Sd1B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 532D7188CDC;
-	Tue, 10 Sep 2024 09:38:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A9818595E;
+	Tue, 10 Sep 2024 10:02:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961089; cv=none; b=jgkpdfFJV0J3U/OM4Xj1Ueb129q+4deOjrTWZQhrM5IK2C0CDoQ8x8GQE2bm4nYzUK1ymBStW4uQ63X8K9Prhwed+7JyPhYLHH1Mwiiy5IL1Z2LvBovO26I9vB6sjTB4d0UoG0kVFNw0kGB6+scQQVWSiGM4AZ94l1kwLT3oyh4=
+	t=1725962526; cv=none; b=bSrJuMLckbsWyS37lG8F9o5j8zxHruZYkxCnAOdorKhbnS4Ze3C3oV2pZ8WUw9vTo+O0D6rzY/tg72LIOn+6Ai0Ak8aM6aYBJZbkqbF6JjZjE1RZYMFXCmHSQw1E5Tgtn2l+xqA2rl1XwyE1RpwlQJODmsk4eG35ur0F/KMtG4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961089; c=relaxed/simple;
-	bh=lTx73lCS79Xjo09Xp4ZDnt5Zv6V/Rnu98oe02emVgy0=;
+	s=arc-20240116; t=1725962526; c=relaxed/simple;
+	bh=xjmmxg5//wFj/ENC2qBnKlKDXKdklL3AW6L9ygHIE6Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F3ruGJ6Qr+zITpOyHhUUn390xLfK7TAF7oQttXV/pizBHxMbFD7R6we86xC5Az0oITkthf5igfuZ6VdvcyBYm08ltNfKQm9InM1OsK84nwL/pqzR3iCbQO7i9zRb83OaGkAyiujZg9Pyh/pHRncP35x6jVSUMSchKryFXt46DC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BE+W/Frp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE58EC4CEC3;
-	Tue, 10 Sep 2024 09:38:08 +0000 (UTC)
+	 MIME-Version; b=p4W4dA9pTRwsmqH+Gikl33gMTLFaEX7syXpce0X99k0Ufcs8iGoTRCZ58aUoGmQdSlrSymH2v+8sWsbM/GxkdXHWXl4VPjF2hHjRlVpAc67cJekULT4lQDaKK6a5ZNar/IKHOu1uMx0M7jVJ9h7m5PSi1kBtNPyU32mP+qIxLR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uQK4Sd1B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F093BC4CEC3;
+	Tue, 10 Sep 2024 10:02:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961089;
-	bh=lTx73lCS79Xjo09Xp4ZDnt5Zv6V/Rnu98oe02emVgy0=;
+	s=korg; t=1725962526;
+	bh=xjmmxg5//wFj/ENC2qBnKlKDXKdklL3AW6L9ygHIE6Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BE+W/Frpu1AYSmsvQetmr3Doz/Tcqz6Uy1AN4vBQvdQdHqFOk5f+7YYXs742U3brv
-	 EGrB8VtAweh4df/PlmCMTdPHZwtp5V691hrPTfo+zlqbJkaR1VS90RRgumLbtA6nqe
-	 NCzm6viCqQ9/woft69koZloNdATI2k++xeh5F5ik=
+	b=uQK4Sd1BRUONPzz5PqteeZk7EIB5HaG7Nw+wqtr3JHgfBeDAhWEXRDo5vlBwpN6u3
+	 3STs8YPNHXDfFQ39CMAc1KWmAX1p3oNVDY3URLcYWPtk1v9avIeO7sLIgjK1woC9j1
+	 MN7/1NhMfQsxAgFQgBtp4KvLUyYo1kWlcbpj5n0Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@bisdn.de>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 50/96] net: bridge: br_fdb_external_learn_add(): always set EXT_LEARN
+	Konrad Dybcio <konrad.dybcio@linaro.org>,
+	Satya Priya Kakitapalli <quic_skakitap@quicinc.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 5.4 037/121] clk: qcom: clk-alpha-pll: Fix the pll post div mask
 Date: Tue, 10 Sep 2024 11:31:52 +0200
-Message-ID: <20240910092543.721220384@linuxfoundation.org>
+Message-ID: <20240910092547.480621399@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
-References: <20240910092541.383432924@linuxfoundation.org>
+In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
+References: <20240910092545.737864202@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,63 +62,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Gorski <jonas.gorski@bisdn.de>
+From: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
 
-[ Upstream commit bee2ef946d3184e99077be526567d791c473036f ]
+commit 2c4553e6c485a96b5d86989eb9654bf20e51e6dd upstream.
 
-When userspace wants to take over a fdb entry by setting it as
-EXTERN_LEARNED, we set both flags BR_FDB_ADDED_BY_EXT_LEARN and
-BR_FDB_ADDED_BY_USER in br_fdb_external_learn_add().
+The PLL_POST_DIV_MASK should be 0 to (width - 1) bits. Fix it.
 
-If the bridge updates the entry later because its port changed, we clear
-the BR_FDB_ADDED_BY_EXT_LEARN flag, but leave the BR_FDB_ADDED_BY_USER
-flag set.
-
-If userspace then wants to take over the entry again,
-br_fdb_external_learn_add() sees that BR_FDB_ADDED_BY_USER and skips
-setting the BR_FDB_ADDED_BY_EXT_LEARN flags, thus silently ignores the
-update.
-
-Fix this by always allowing to set BR_FDB_ADDED_BY_EXT_LEARN regardless
-if this was a user fdb entry or not.
-
-Fixes: 710ae7287737 ("net: bridge: Mark FDB entries that were added by user as such")
-Signed-off-by: Jonas Gorski <jonas.gorski@bisdn.de>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20240903081958.29951-1-jonas.gorski@bisdn.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1c3541145cbf ("clk: qcom: support for 2 bit PLL post divider")
+Cc: stable@vger.kernel.org
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
+Link: https://lore.kernel.org/r/20240731062916.2680823-2-quic_skakitap@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bridge/br_fdb.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/clk/qcom/clk-alpha-pll.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bridge/br_fdb.c b/net/bridge/br_fdb.c
-index d898e3814f91..a6e4901909e3 100644
---- a/net/bridge/br_fdb.c
-+++ b/net/bridge/br_fdb.c
-@@ -1116,12 +1116,10 @@ int br_fdb_external_learn_add(struct net_bridge *br, struct net_bridge_port *p,
- 			modified = true;
- 		}
+--- a/drivers/clk/qcom/clk-alpha-pll.c
++++ b/drivers/clk/qcom/clk-alpha-pll.c
+@@ -38,7 +38,7 @@
  
--		if (test_bit(BR_FDB_ADDED_BY_EXT_LEARN, &fdb->flags)) {
-+		if (test_and_set_bit(BR_FDB_ADDED_BY_EXT_LEARN, &fdb->flags)) {
- 			/* Refresh entry */
- 			fdb->used = jiffies;
--		} else if (!test_bit(BR_FDB_ADDED_BY_USER, &fdb->flags)) {
--			/* Take over SW learned entry */
--			set_bit(BR_FDB_ADDED_BY_EXT_LEARN, &fdb->flags);
-+		} else {
- 			modified = true;
- 		}
- 
--- 
-2.43.0
-
+ #define PLL_USER_CTL(p)		((p)->offset + (p)->regs[PLL_OFF_USER_CTL])
+ # define PLL_POST_DIV_SHIFT	8
+-# define PLL_POST_DIV_MASK(p)	GENMASK((p)->width, 0)
++# define PLL_POST_DIV_MASK(p)	GENMASK((p)->width - 1, 0)
+ # define PLL_ALPHA_EN		BIT(24)
+ # define PLL_ALPHA_MODE		BIT(25)
+ # define PLL_VCO_SHIFT		20
 
 
 
