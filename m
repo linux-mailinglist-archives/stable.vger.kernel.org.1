@@ -1,67 +1,223 @@
-Return-Path: <stable+bounces-74147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43FCC972CD5
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:04:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3980B972D00
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:10:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 015F928336C
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:04:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A7CA7B25088
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:10:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1AC0187FE8;
-	Tue, 10 Sep 2024 09:03:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DA5D188CB3;
+	Tue, 10 Sep 2024 09:09:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iVO1zV6/"
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="fRsUN+R7"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpbguseast3.qq.com (smtpbguseast3.qq.com [54.243.244.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EB6F339AC
-	for <stable@vger.kernel.org>; Tue, 10 Sep 2024 09:03:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FB5518787C
+	for <stable@vger.kernel.org>; Tue, 10 Sep 2024 09:09:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.243.244.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725959017; cv=none; b=uUL++z5XD3U9N3zNYnAXH9rQzNCvmK4YXg1Ib2ANFWn92nH+SUgv614WeNSedZ4Nfi8qiL9IGopxG7u04GlMS9KVfcGyQOJ8359MAP5rDZtIGmpu8h4d8xw9Mj9FzqMoAw1kP5Kr3Kqt33ooGYyeoPXfdKzP9Lnm0kNPDA2r0+E=
+	t=1725959347; cv=none; b=DEOXB/fijjeovb7Z16lMDAV2Ijnt306h6YcGCyuIo0HlOV4LKuryIyRNgobenFd9wXbnq/z5NSwwaQFofnhSNxA7/P+lFwb0KZuWS0MtVLqb1UooMTOyvMjMtkOuYgM1WTU2tA0W8O3zQqlX2UTviBx3vZY1pfqCyDUo86XxA8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725959017; c=relaxed/simple;
-	bh=IAmZTY+2tPSsYHRg0kAGJOWmzCqA6r7GTWL51BSsmpI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sWJYhensNxE3KhuAI44xW4QG8JnD6h/fJw2TV0lI71NifIo9t02WANI2lQgsTblvffc7VfWuisSDUtAemjn4vfeHv6qz/RKu3mSxxi0yw21P+rfMqtGje2iGTHvWI9f2swX3UUs3ICfQ+czvXvq1a7bE4eCvhz/Mcq/RemUxbGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iVO1zV6/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91786C4CEC3;
-	Tue, 10 Sep 2024 09:03:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725959017;
-	bh=IAmZTY+2tPSsYHRg0kAGJOWmzCqA6r7GTWL51BSsmpI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iVO1zV6/boyZvwv5gxx2R4syJ7A9+nuKk+iUXo+BNuQGDd2n9TUXUqwpdrBjkKTzU
-	 FzVrfhq1d11ZGwovoR8v1FgKC/AVGy8E2rmdyqZKdLCtBef9aed/zh84jp2nN53xJR
-	 nzPTb1eowyY/g4UBhxNkckUUiRHlsR2SGdgvV72w=
-Date: Tue, 10 Sep 2024 11:03:33 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: chenhuacai@kernel.org, chenhuacai@loongson.cn
-Cc: stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] LoongArch: Use accessors to page table
- entries instead of" failed to apply to 6.10-stable tree
-Message-ID: <2024091018-vaguely-strenuous-f8ae@gregkh>
-References: <2024091025-freeway-unlocked-8c52@gregkh>
+	s=arc-20240116; t=1725959347; c=relaxed/simple;
+	bh=YHwBqx9G21FsoFYku8GX3hhVy40UYTs/AASB+5loJsU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=YxeA596TBkx6kHwDnWoymb55A4QmaenqmvQmbthI5Ia4RGLgcqNBsYHwN8Fsik1Vbe+bUlG/y5cS0lI/oh4MNKU2k40rfnpiIR07B8+l8OdgS+5W5prGqP/W+NcixPpUXc/1o4BC7sG2yq5qM4zOrZ6bMSRBG8t6AbQMFJz9rgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=fRsUN+R7; arc=none smtp.client-ip=54.243.244.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1725959306;
+	bh=K5MgbC+1GSEYwxXglI3LQz6Upf1W706u/AfsWPkfxj4=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=fRsUN+R7R/boc9o7GbkQF2v5SzVrf0JtLoH61RY+aIfAJnD7UUTCa3m8f3iZkxHma
+	 MSq5ntWpewEoChT593eUa0zIMtCYH3sKv5QV34ScVWbE1Z8Z0cBtukf/isdw9PDaAT
+	 WfeoGKoZ29H10tr10o2YQzruFcGSxPXi2yotHNmE=
+X-QQ-mid: bizesmtpsz3t1725959302t1i87e9
+X-QQ-Originating-IP: qj9DwWbwG3HNRngYU8o/PXKp3fbYC9tGShHuaQu17dw=
+Received: from localhost.localdomain ( [221.226.144.218])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Tue, 10 Sep 2024 17:08:00 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 11735355893217453475
+From: He Lugang <helugang@uniontech.com>
+To: stable@vger.kernel.org
+Cc: He Lugang <helugang@uniontech.com>,
+	Lars-Peter Clausen <lars@metafoo.de>,
+	Michael Hennerich <Michael.Hennerich@analog.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Subject: [PATCH 6.6.y 1/2] iio: adc: ad7124: Switch from of specific to fwnode based property handling
+Date: Tue, 10 Sep 2024 17:07:56 +0800
+Message-ID: <74DDAC4620914CD0+20240910090757.649865-1-helugang@uniontech.com>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <2024090914-province-underdone-1eea@gregkh>
+References: <2024090914-province-underdone-1eea@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2024091025-freeway-unlocked-8c52@gregkh>
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtpsz:uniontech.com:qybglogicsvrgz:qybglogicsvrgz7a-0
 
-On Tue, Sep 10, 2024 at 10:55:25AM +0200, gregkh@linuxfoundation.org wrote:
-> 
-> The patch below does not apply to the 6.10-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
+From:Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-Oops, nope, I got this to work in 6.10.y, but not in 6.6.y
+[ Upstream commit a6eaf02b82744b424b9b2c74847282deb2c6f77b ]
+
+Using the generic firmware data access functions from property.h
+provides a number of advantages:
+ 1) Works with different firmware types.
+ 2) Doesn't provide a 'bad' example for new IIO drivers.
+ 3) Lets us use the new _scoped() loops with automatic reference count
+    cleanup for fwnode_handle
+
+Cc: Lars-Peter Clausen <lars@metafoo.de>
+Cc: Michael Hennerich <Michael.Hennerich@analog.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20240218172731.1023367-4-jic23@kernel.org
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: He Lugang <helugang@uniontech.com>
+---
+ drivers/iio/adc/ad7124.c | 55 +++++++++++++++++-----------------------
+ 1 file changed, 23 insertions(+), 32 deletions(-)
+
+diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
+index b9b206fcd748..e7b1d517d3de 100644
+--- a/drivers/iio/adc/ad7124.c
++++ b/drivers/iio/adc/ad7124.c
+@@ -14,7 +14,8 @@
+ #include <linux/kernel.h>
+ #include <linux/kfifo.h>
+ #include <linux/module.h>
+-#include <linux/of.h>
++#include <linux/mod_devicetable.h>
++#include <linux/property.h>
+ #include <linux/regulator/consumer.h>
+ #include <linux/spi/spi.h>
+ 
+@@ -807,22 +808,19 @@ static int ad7124_check_chip_id(struct ad7124_state *st)
+ 	return 0;
+ }
+ 
+-static int ad7124_of_parse_channel_config(struct iio_dev *indio_dev,
+-					  struct device_node *np)
++static int ad7124_parse_channel_config(struct iio_dev *indio_dev,
++				       struct device *dev)
+ {
+ 	struct ad7124_state *st = iio_priv(indio_dev);
+ 	struct ad7124_channel_config *cfg;
+ 	struct ad7124_channel *channels;
+-	struct device_node *child;
+ 	struct iio_chan_spec *chan;
+ 	unsigned int ain[2], channel = 0, tmp;
+ 	int ret;
+ 
+-	st->num_channels = of_get_available_child_count(np);
+-	if (!st->num_channels) {
+-		dev_err(indio_dev->dev.parent, "no channel children\n");
+-		return -ENODEV;
+-	}
++	st->num_channels = device_get_child_node_count(dev);
++	if (!st->num_channels)
++		return dev_err_probe(dev, -ENODEV, "no channel children\n");
+ 
+ 	chan = devm_kcalloc(indio_dev->dev.parent, st->num_channels,
+ 			    sizeof(*chan), GFP_KERNEL);
+@@ -838,39 +836,38 @@ static int ad7124_of_parse_channel_config(struct iio_dev *indio_dev,
+ 	indio_dev->num_channels = st->num_channels;
+ 	st->channels = channels;
+ 
+-	for_each_available_child_of_node(np, child) {
++	device_for_each_child_node_scoped(dev, child) {
+ 		cfg = &st->channels[channel].cfg;
+ 
+-		ret = of_property_read_u32(child, "reg", &channel);
++		ret = fwnode_property_read_u32(child, "reg", &channel);
+ 		if (ret)
+-			goto err;
++			return ret;
+ 
+-		if (channel >= indio_dev->num_channels) {
+-			dev_err(indio_dev->dev.parent,
++		if (channel >= indio_dev->num_channels)
++			return dev_err_probe(dev, -EINVAL,
+ 				"Channel index >= number of channels\n");
+-			ret = -EINVAL;
+-			goto err;
+-		}
+ 
+-		ret = of_property_read_u32_array(child, "diff-channels",
+-						 ain, 2);
++		ret = fwnode_property_read_u32_array(child, "diff-channels",
++						     ain, 2);
+ 		if (ret)
+-			goto err;
++			return ret;
+ 
+ 		st->channels[channel].nr = channel;
+ 		st->channels[channel].ain = AD7124_CHANNEL_AINP(ain[0]) |
+ 						  AD7124_CHANNEL_AINM(ain[1]);
+ 
+-		cfg->bipolar = of_property_read_bool(child, "bipolar");
++		cfg->bipolar = fwnode_property_read_bool(child, "bipolar");
+ 
+-		ret = of_property_read_u32(child, "adi,reference-select", &tmp);
++		ret = fwnode_property_read_u32(child, "adi,reference-select", &tmp);
+ 		if (ret)
+ 			cfg->refsel = AD7124_INT_REF;
+ 		else
+ 			cfg->refsel = tmp;
+ 
+-		cfg->buf_positive = of_property_read_bool(child, "adi,buffered-positive");
+-		cfg->buf_negative = of_property_read_bool(child, "adi,buffered-negative");
++		cfg->buf_positive =
++			fwnode_property_read_bool(child, "adi,buffered-positive");
++		cfg->buf_negative =
++			fwnode_property_read_bool(child, "adi,buffered-negative");
+ 
+ 		chan[channel] = ad7124_channel_template;
+ 		chan[channel].address = channel;
+@@ -880,10 +877,6 @@ static int ad7124_of_parse_channel_config(struct iio_dev *indio_dev,
+ 	}
+ 
+ 	return 0;
+-err:
+-	of_node_put(child);
+-
+-	return ret;
+ }
+ 
+ static int ad7124_setup(struct ad7124_state *st)
+@@ -943,9 +936,7 @@ static int ad7124_probe(struct spi_device *spi)
+ 	struct iio_dev *indio_dev;
+ 	int i, ret;
+ 
+-	info = of_device_get_match_data(&spi->dev);
+-	if (!info)
+-		info = (void *)spi_get_device_id(spi)->driver_data;
++	info = spi_get_device_match_data(spi);
+ 	if (!info)
+ 		return -ENODEV;
+ 
+@@ -965,7 +956,7 @@ static int ad7124_probe(struct spi_device *spi)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	ret = ad7124_of_parse_channel_config(indio_dev, spi->dev.of_node);
++	ret = ad7124_parse_channel_config(indio_dev, &spi->dev);
+ 	if (ret < 0)
+ 		return ret;
+ 
+-- 
+2.45.2
+
 
