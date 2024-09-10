@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-75375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FDB097343D
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:39:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5632897350E
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:45:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BECA728D879
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:39:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 890381C2502D
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:45:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BB7E1990B5;
-	Tue, 10 Sep 2024 10:35:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E12A181B8D;
+	Tue, 10 Sep 2024 10:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L9wsF0Oa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KSTFVugn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B2CA198A3F;
-	Tue, 10 Sep 2024 10:35:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59FFD5381A;
+	Tue, 10 Sep 2024 10:43:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964549; cv=none; b=FJlTQqfA5PBrgbcDgBHguHTXmEIzQsgwVyL899UWhXDC2HcusFQ0Edsy1zvHMoQFOgn/CFEt+grUcIk3+AKJQoa+zooo3ZvnVyG/pSY7AAcKq5M4Q8kVkD3WWpPriUIOEL8RpeTjQddKmyXb7Uk608BpujY9zaEX5/IlBCdvKpc=
+	t=1725965031; cv=none; b=EbbcKmMKvDsec1407RoXcKtkiI8Y3It6TyqFAULmkixvBmDrxh+r1geDx48ZrBotUsuUUr1ptXvb6HlDLkIi7srFELZ33BBxgyLGkPgtv+6JIuomFVmF+8e5Rs9Z0emIjvOBEAJwHdUaN5OwLnH6OhudC5cjMTDCcjhFldRqHTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964549; c=relaxed/simple;
-	bh=xqkGa2xM++KXSmtjWEKJmqODhPy+QQk3SyMeVugVH8w=;
+	s=arc-20240116; t=1725965031; c=relaxed/simple;
+	bh=PMEwiwjmdpgwl21gShYmVE+mGXsEODd9xSMMJtowQCs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UQqIGhgNuJnNC4PxfE4km6ETzuOKqvU67pItY5Q4hi2aUkUEqBkFU61ax79N5HH1NbA6TwZUBvOnO99TG/xc/TB8eMR7cp1+WH0N1TArraFt//kwwNxJOLjZGHsKJXvbtHjWLv4i7ZBJnhKj+8g0SQyVCoTiiNgZ+kIF+46ZJls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L9wsF0Oa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5929C4CEC3;
-	Tue, 10 Sep 2024 10:35:48 +0000 (UTC)
+	 MIME-Version; b=mqjYIIVNmRMV87SVZ2RlpppqTRAOd3eEwVF/fbg40EQyW6OjP8PsIp2fu8vtxMBD7hFwi750GIlrWU3ltGLQw8+7liLW7Spis9e7OhnKHsL1/I6aejcFoytWg7YPKEmR1k6uskDzGuagKZaTLd5g6+OXOCIJpvZ6Rm9MIIPyu3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KSTFVugn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4B5FC4CEC3;
+	Tue, 10 Sep 2024 10:43:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964549;
-	bh=xqkGa2xM++KXSmtjWEKJmqODhPy+QQk3SyMeVugVH8w=;
+	s=korg; t=1725965031;
+	bh=PMEwiwjmdpgwl21gShYmVE+mGXsEODd9xSMMJtowQCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L9wsF0OaFIgY5R5c+DRPvh3tu5PEGEHoEaiSnn9p+qClM6ndjv9ABqcxfAGtVHj90
-	 tLzJ66aBzD5TjLT6QN5nUOdZy33N2oVDq6zZNLueO4T9MO320M1h5VmXJbE92A+pl7
-	 DdrA3gl6KWet8qgSSrvc209Qdm9rdEefxkjUWah0=
+	b=KSTFVugnovdGshGySVGYb+LexMZSxVAJdVgymnoUblu1vMUVJLZy3G/jt2z6AOysR
+	 3NWcCCHoFIm8zbQAJs2XqYdB2RG+i5bWWHmDri/Y+emU4ZuHyTBBuhw1ICq2wPhxBX
+	 VCsgtt1weHzwE/Xznds9PdqyXrWLWUlWDhrH6pzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacky Bai <ping.bai@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Ye Li <ye.li@nxp.com>,
-	Jason Liu <jason.hui.liu@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>
-Subject: [PATCH 6.6 221/269] clocksource/drivers/imx-tpm: Fix next event not taking effect sometime
+	Daiwei Li <daiweili@google.com>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	Kurt Kanzenbach <kurt@linutronix.de>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 5.10 113/186] igb: Fix not clearing TimeSync interrupts for 82580
 Date: Tue, 10 Sep 2024 11:33:28 +0200
-Message-ID: <20240910092615.843854367@linuxfoundation.org>
+Message-ID: <20240910092559.175692958@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,51 +65,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacky Bai <ping.bai@nxp.com>
+From: Daiwei Li <daiweili@google.com>
 
-commit 3d5c2f8e75a55cfb11a85086c71996af0354a1fb upstream.
+[ Upstream commit ba8cf80724dbc09825b52498e4efacb563935408 ]
 
-The value written into the TPM CnV can only be updated into the hardware
-when the counter increases. Additional writes to the CnV write buffer are
-ignored until the register has been updated. Therefore, we need to check
-if the CnV has been updated before continuing. This may require waiting for
-1 counter cycle in the worst case.
+82580 NICs have a hardware bug that makes it
+necessary to write into the TSICR (TimeSync Interrupt Cause) register
+to clear it:
+https://lore.kernel.org/all/CDCB8BE0.1EC2C%25matthew.vick@intel.com/
 
-Cc: stable@vger.kernel.org
-Fixes: 059ab7b82eec ("clocksource/drivers/imx-tpm: Add imx tpm timer support")
-Signed-off-by: Jacky Bai <ping.bai@nxp.com>
-Reviewed-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Ye Li <ye.li@nxp.com>
-Reviewed-by: Jason Liu <jason.hui.liu@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20240725193355.1436005-2-Frank.Li@nxp.com
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Add a conditional so only for 82580 we write into the TSICR register,
+so we don't risk losing events for other models.
+
+Without this change, when running ptp4l with an Intel 82580 card,
+I get the following output:
+
+> timed out while polling for tx timestamp increasing tx_timestamp_timeout or
+> increasing kworker priority may correct this issue, but a driver bug likely
+> causes it
+
+This goes away with this change.
+
+This (partially) reverts commit ee14cc9ea19b ("igb: Fix missing time sync events").
+
+Fixes: ee14cc9ea19b ("igb: Fix missing time sync events")
+Closes: https://lore.kernel.org/intel-wired-lan/CAN0jFd1kO0MMtOh8N2Ztxn6f7vvDKp2h507sMryobkBKe=xk=w@mail.gmail.com/
+Tested-by: Daiwei Li <daiweili@google.com>
+Suggested-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Signed-off-by: Daiwei Li <daiweili@google.com>
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Reviewed-by: Kurt Kanzenbach <kurt@linutronix.de>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clocksource/timer-imx-tpm.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/ethernet/intel/igb/igb_main.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/drivers/clocksource/timer-imx-tpm.c
-+++ b/drivers/clocksource/timer-imx-tpm.c
-@@ -91,6 +91,14 @@ static int tpm_set_next_event(unsigned l
- 	now = tpm_read_counter();
+diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
+index 0848613c3f45..e2c38e5232dc 100644
+--- a/drivers/net/ethernet/intel/igb/igb_main.c
++++ b/drivers/net/ethernet/intel/igb/igb_main.c
+@@ -6805,10 +6805,20 @@ static void igb_extts(struct igb_adapter *adapter, int tsintr_tt)
  
- 	/*
-+	 * Need to wait CNT increase at least 1 cycle to make sure
-+	 * the C0V has been updated into HW.
-+	 */
-+	if ((next & 0xffffffff) != readl(timer_base + TPM_C0V))
-+		while (now == tpm_read_counter())
-+			;
+ static void igb_tsync_interrupt(struct igb_adapter *adapter)
+ {
++	const u32 mask = (TSINTR_SYS_WRAP | E1000_TSICR_TXTS |
++			  TSINTR_TT0 | TSINTR_TT1 |
++			  TSINTR_AUTT0 | TSINTR_AUTT1);
+ 	struct e1000_hw *hw = &adapter->hw;
+ 	u32 tsicr = rd32(E1000_TSICR);
+ 	struct ptp_clock_event event;
+ 
++	if (hw->mac.type == e1000_82580) {
++		/* 82580 has a hardware bug that requires an explicit
++		 * write to clear the TimeSync interrupt cause.
++		 */
++		wr32(E1000_TSICR, tsicr & mask);
++	}
 +
-+	/*
- 	 * NOTE: We observed in a very small probability, the bus fabric
- 	 * contention between GPU and A7 may results a few cycles delay
- 	 * of writing CNT registers which may cause the min_delta event got
+ 	if (tsicr & TSINTR_SYS_WRAP) {
+ 		event.type = PTP_CLOCK_PPS;
+ 		if (adapter->ptp_caps.pps)
+-- 
+2.43.0
+
 
 
 
