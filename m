@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-74702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0072A9730E0
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:05:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id E724E973028
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:58:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 311B81C24A7F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:05:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6E3F8B2639F
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:58:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B34418B488;
-	Tue, 10 Sep 2024 10:02:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68EEF188A38;
+	Tue, 10 Sep 2024 09:58:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G9Rez9kp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="afuLcrD9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C933B18787E;
-	Tue, 10 Sep 2024 10:02:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22F82188A1E;
+	Tue, 10 Sep 2024 09:58:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962576; cv=none; b=RHHuJPr1ybNdRosEXfYsyAx41WqdyY57JImopLSnz9o1c2+ieohGnQQPBP9lEFseNiwrPnVpUzu+aIoSRDAZeyKLV0OlSGmxy2rC9/Z8yuZnhTDp3y+c15Vox0aPKSsu+Fp8VXfDtZiQ8cCpkP0pHfGvwyMjPXbijnYQcvBTfLQ=
+	t=1725962284; cv=none; b=efAdqWMtWMXgeHcFglAiZ/RAzH2Q9NUBrYJcKSumYjmmpT/RgMsuPBeNEjMCJZkBReuaCioPe/7WAfqXcpEpoMXvO89LwgVOboWLBVh9j78cbAbLsysdiXlkk+OpPI1RafzHddimCR5h4QY1UIg3rc1amznhWEEurE5q/oqWimI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962576; c=relaxed/simple;
-	bh=+flJCUBRh8ua8g5O+Gzc792sja8SWeGxKneJ1jVrVSw=;
+	s=arc-20240116; t=1725962284; c=relaxed/simple;
+	bh=Z3baw4p3LQqNsy1Rx9pUBXUw/AS2zmZ64f7TUkC7FFM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yg+IyRn1rddKQVv9gB4PtLhlnitkmYKnjTkYron0IJ53LtKJIVFgQebW+vinTuYNGVhu/goEn5UuO2jLfFqxBen5T+WCHEV7tjtLzXTjrknrlY5J8XxDy59kGF8sQsFMH3mdt+QgWgoi+CkcLCNgdo0rzm5AL6tVZs/YMAp6YUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G9Rez9kp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F177C4CEC3;
-	Tue, 10 Sep 2024 10:02:56 +0000 (UTC)
+	 MIME-Version; b=gNmIb5y0SXJG3pL3MEO5nSxKS+azlTmbXis1UQ96h6iv3OB+NJkt1lof/lvUj0Esq2L85wSCMpF/wIhMX0XzWKES9dhUP6mzgFQCTWQktfni7YJnAcQQM9qWGKw5FyRPaaeAq2nLE0lLQ5s71ZESCjF7fcoo++0dBYBt0umN4I4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=afuLcrD9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F61CC4CEC3;
+	Tue, 10 Sep 2024 09:58:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962576;
-	bh=+flJCUBRh8ua8g5O+Gzc792sja8SWeGxKneJ1jVrVSw=;
+	s=korg; t=1725962284;
+	bh=Z3baw4p3LQqNsy1Rx9pUBXUw/AS2zmZ64f7TUkC7FFM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G9Rez9kpSYMWOuX9KDIFNPM54bto/3lAQ/s4rJJI8GI/EpRRNblrr+uBXOF0xykhu
-	 B/7/Wn05OzyjovFCw5Czq03l+JPQ7CnlDUXNtTVq3DR0hNb6YN+JKSO+5HqTufulX+
-	 NgkCdYAFBiBOJBjloTd8vZTf1As0AQb6oPdlQLFo=
+	b=afuLcrD92sgk+R9Ct1aYWb+7/r1mz68MzTH8e1YWC+EgsQotkUavryOTgXFp9Mns8
+	 iEKDHDKu6qpMUfcllONRLWwcy6AUuOOeXE0soopLfScBk7aA/ncU3a8ClhZkMQPePI
+	 IsBOarKx1hUQtIUDT7pqRoO3/NhN3AkcHedTAa70=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Ziegler <ziegler.andreas@siemens.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
+	Anton Blanchard <antonb@tenstorrent.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 080/121] libbpf: Add NULL checks to bpf_object__{prev_map,next_map}
+Subject: [PATCH 6.10 358/375] riscv: Fix toolchain vector detection
 Date: Tue, 10 Sep 2024 11:32:35 +0200
-Message-ID: <20240910092549.692657546@linuxfoundation.org>
+Message-ID: <20240910092634.630835135@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
-References: <20240910092545.737864202@linuxfoundation.org>
+In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
+References: <20240910092622.245959861@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Ziegler <ziegler.andreas@siemens.com>
+From: Anton Blanchard <antonb@tenstorrent.com>
 
-[ Upstream commit cedc12c5b57f7efa6dbebfb2b140e8675f5a2616 ]
+[ Upstream commit 5ba7a75a53dffbf727e842b5847859bb482ac4aa ]
 
-In the current state, an erroneous call to
-bpf_object__find_map_by_name(NULL, ...) leads to a segmentation
-fault through the following call chain:
+A recent change to gcc flags rv64iv as no longer valid:
 
-  bpf_object__find_map_by_name(obj = NULL, ...)
-  -> bpf_object__for_each_map(pos, obj = NULL)
-  -> bpf_object__next_map((obj = NULL), NULL)
-  -> return (obj = NULL)->maps
+   cc1: sorry, unimplemented: Currently the 'V' implementation
+   requires the 'M' extension
 
-While calling bpf_object__find_map_by_name with obj = NULL is
-obviously incorrect, this should not lead to a segmentation
-fault but rather be handled gracefully.
+and as a result vector support is disabled. Fix this by adding m
+to our toolchain vector detection code.
 
-As __bpf_map__iter already handles this situation correctly, we
-can delegate the check for the regular case there and only add
-a check in case the prev or next parameter is NULL.
-
-Signed-off-by: Andreas Ziegler <ziegler.andreas@siemens.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20240703083436.505124-1-ziegler.andreas@siemens.com
+Signed-off-by: Anton Blanchard <antonb@tenstorrent.com>
+Fixes: fa8e7cce55da ("riscv: Enable Vector code to be built")
+Link: https://lore.kernel.org/r/20240819001131.1738806-1-antonb@tenstorrent.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/libbpf.c | 4 ++--
+ arch/riscv/Kconfig | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-index b8849812449c..98e34c517267 100644
---- a/tools/lib/bpf/libbpf.c
-+++ b/tools/lib/bpf/libbpf.c
-@@ -4754,7 +4754,7 @@ __bpf_map__iter(const struct bpf_map *m, const struct bpf_object *obj, int i)
- struct bpf_map *
- bpf_map__next(const struct bpf_map *prev, const struct bpf_object *obj)
- {
--	if (prev == NULL)
-+	if (prev == NULL && obj != NULL)
- 		return obj->maps;
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index 0525ee2d63c7..006232b67b46 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -545,8 +545,8 @@ config RISCV_ISA_SVPBMT
+ config TOOLCHAIN_HAS_V
+ 	bool
+ 	default y
+-	depends on !64BIT || $(cc-option,-mabi=lp64 -march=rv64iv)
+-	depends on !32BIT || $(cc-option,-mabi=ilp32 -march=rv32iv)
++	depends on !64BIT || $(cc-option,-mabi=lp64 -march=rv64imv)
++	depends on !32BIT || $(cc-option,-mabi=ilp32 -march=rv32imv)
+ 	depends on LLD_VERSION >= 140000 || LD_VERSION >= 23800
+ 	depends on AS_HAS_OPTION_ARCH
  
- 	return __bpf_map__iter(prev, obj, 1);
-@@ -4763,7 +4763,7 @@ bpf_map__next(const struct bpf_map *prev, const struct bpf_object *obj)
- struct bpf_map *
- bpf_map__prev(const struct bpf_map *next, const struct bpf_object *obj)
- {
--	if (next == NULL) {
-+	if (next == NULL && obj != NULL) {
- 		if (!obj->nr_maps)
- 			return NULL;
- 		return obj->maps + obj->nr_maps - 1;
 -- 
 2.43.0
 
