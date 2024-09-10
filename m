@@ -1,64 +1,56 @@
-Return-Path: <stable+bounces-74573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 270CC973002
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:56:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DF4AD972DF8
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:38:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 682CEB28786
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:56:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 53BA1B25FE6
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:38:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C868318B462;
-	Tue, 10 Sep 2024 09:56:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47F6E18BC24;
+	Tue, 10 Sep 2024 09:38:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g+EB9ZGT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OOxSewz8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CBE017BEAE;
-	Tue, 10 Sep 2024 09:56:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 066CA1891A5;
+	Tue, 10 Sep 2024 09:38:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725962199; cv=none; b=TKco8lUdZAREqtbIkV9af8FS2ox6eWy2htsLVIohqXuVAvqEpYjmzdixr8aSPwROYObI0xM3BTP5R4yPbsjsMFRvmpoOqSngEKkCAgU/tLQwJC20rQq9XWyTIwOT5vOjHNMBLSIhwc7SI5PNJIXbcr4K7boQt8QCD00Effbf1dw=
+	t=1725961081; cv=none; b=Jpbm/fsTrf1CysGGUbzZh5oAFLlxd4ehB5SaamBNZB+SaObcdQn+dCPi5+WvTR3HvzG9YmlYTDHSMm4UWRJpSlGYRdIcNChrPU0BItqLJxXI5eYvfVCJ7MLqtpEA0zcCWZM42o9WEfXpZGLQQU/+IM4Drk2DpVRPhEwI2dqEb34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725962199; c=relaxed/simple;
-	bh=QUfbPhhLGRuxzmSmLiBKoM7VsOCtgqT35BvVZIFxqfg=;
+	s=arc-20240116; t=1725961081; c=relaxed/simple;
+	bh=yySG0NbyU0DQesgIqwJ9bw/65HZ5LFRqMtS/u+AbyAI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iNeQhRaPoD4hXIFLXTxUvKy/hHX5COoybnts2wPvmL9IR+zMEEXxp21dfh70H/Oy0t69eNgeOovK2Lylcj580AAFkM9NgiUSPzSsL3O+YLK/Mm5uLBAUOeEoTg3GdGK8MOt3l4akOrkVRVSHIEeaXzK9rk0sBcf4rxxWR41qz/8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g+EB9ZGT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71B7CC4CECD;
-	Tue, 10 Sep 2024 09:56:38 +0000 (UTC)
+	 MIME-Version; b=mFx2fNt2bAokvHHrW5Kv+NamqAfFipqlFt7BTYVwQ9WCI7S0j1FL/WM8eVG098kwLoPNR2/aOaBlI7TlvEQSoc6t9cBdwDeNZVsLg7DnmOYpQMxaFqgjWgp6i4DgpzStMwKh/PNLqPXWgQ0/7mL6kOe42kqFQiLNU/2YwtgbKoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OOxSewz8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F95CC4CEC3;
+	Tue, 10 Sep 2024 09:37:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725962199;
-	bh=QUfbPhhLGRuxzmSmLiBKoM7VsOCtgqT35BvVZIFxqfg=;
+	s=korg; t=1725961080;
+	bh=yySG0NbyU0DQesgIqwJ9bw/65HZ5LFRqMtS/u+AbyAI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g+EB9ZGTq4zj75Yw5SQeHAYqWSxiDjGhvxLotsSfUkc+VLSNcOfR+mq5DfVIKiRbu
-	 +doc6eT83Yl3hbjSx9OGC2him75UFJMple33rnGsxngOu1T4iQ5GvwZ8ePgpOW5uUF
-	 lYDP+R0/McwpPu2AKey7FDN/FUR5ttEr9RLVObhM=
+	b=OOxSewz8orBuCQYssr+7OInsLQeOpPWID+nAct0WrBKkg0UwdI78R/rcz9GyifAY2
+	 reev+NaRwfkAj0v2ND3CEZwNzVISqtREC1kXdH9jGUKIsdwQeLLsEw0tn7acNKfUCL
+	 W2S7LHFqlSJ7sthV5Hw+T2ynWKJUuYUPgJoOtPHE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Yuan <me@yhndnzj.com>,
-	Nhat Pham <nphamcs@gmail.com>,
-	Yosry Ahmed <yosryahmed@google.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Michal Hocko <mhocko@kernel.org>,
-	=?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
-	Muchun Song <muchun.song@linux.dev>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Nikolay Aleksandrov <nikolay@cumulusnetworks.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 311/375] mm/memcontrol: respect zswap.writeback setting from parent cg too
-Date: Tue, 10 Sep 2024 11:31:48 +0200
-Message-ID: <20240910092633.004017679@linuxfoundation.org>
+Subject: [PATCH 4.19 47/96] net: bridge: fdb: convert is_sticky to bitops
+Date: Tue, 10 Sep 2024 11:31:49 +0200
+Message-ID: <20240910092543.600747835@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
-References: <20240910092622.245959861@linuxfoundation.org>
+In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
+References: <20240910092541.383432924@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,101 +60,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Yuan <me@yhndnzj.com>
+From: Nikolay Aleksandrov <nikolay@cumulusnetworks.com>
 
-[ Upstream commit e399257349098bf7c84343f99efb2bc9c22eb9fd ]
+[ Upstream commit e0458d9a733ba71a2821d0c3fc0745baac697db0 ]
 
-Currently, the behavior of zswap.writeback wrt.  the cgroup hierarchy
-seems a bit odd.  Unlike zswap.max, it doesn't honor the value from parent
-cgroups.  This surfaced when people tried to globally disable zswap
-writeback, i.e.  reserve physical swap space only for hibernation [1] -
-disabling zswap.writeback only for the root cgroup results in subcgroups
-with zswap.writeback=1 still performing writeback.
+Straight-forward convert of the is_sticky field to bitops.
 
-The inconsistency became more noticeable after I introduced the
-MemoryZSwapWriteback= systemd unit setting [2] for controlling the knob.
-The patch assumed that the kernel would enforce the value of parent
-cgroups.  It could probably be workarounded from systemd's side, by going
-up the slice unit tree and inheriting the value.  Yet I think it's more
-sensible to make it behave consistently with zswap.max and friends.
-
-[1] https://wiki.archlinux.org/title/Power_management/Suspend_and_hibernate#Disable_zswap_writeback_to_use_the_swap_space_only_for_hibernation
-[2] https://github.com/systemd/systemd/pull/31734
-
-Link: https://lkml.kernel.org/r/20240823162506.12117-1-me@yhndnzj.com
-Fixes: 501a06fe8e4c ("zswap: memcontrol: implement zswap writeback disabling")
-Signed-off-by: Mike Yuan <me@yhndnzj.com>
-Reviewed-by: Nhat Pham <nphamcs@gmail.com>
-Acked-by: Yosry Ahmed <yosryahmed@google.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Michal Hocko <mhocko@kernel.org>
-Cc: Michal Koutný <mkoutny@suse.com>
-Cc: Muchun Song <muchun.song@linux.dev>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Nikolay Aleksandrov <nikolay@cumulusnetworks.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: bee2ef946d31 ("net: bridge: br_fdb_external_learn_add(): always set EXT_LEARN")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/admin-guide/cgroup-v2.rst |  7 ++++---
- mm/memcontrol.c                         | 12 +++++++++---
- 2 files changed, 13 insertions(+), 6 deletions(-)
+ net/bridge/br_fdb.c     | 11 ++++++-----
+ net/bridge/br_private.h |  4 ++--
+ 2 files changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/Documentation/admin-guide/cgroup-v2.rst b/Documentation/admin-guide/cgroup-v2.rst
-index b69f701b2485..4a7a59bbf76f 100644
---- a/Documentation/admin-guide/cgroup-v2.rst
-+++ b/Documentation/admin-guide/cgroup-v2.rst
-@@ -1706,9 +1706,10 @@ PAGE_SIZE multiple when read back.
- 	entries fault back in or are written out to disk.
+diff --git a/net/bridge/br_fdb.c b/net/bridge/br_fdb.c
+index 2639cc744bca..25aeaedce762 100644
+--- a/net/bridge/br_fdb.c
++++ b/net/bridge/br_fdb.c
+@@ -594,7 +594,8 @@ void br_fdb_update(struct net_bridge *br, struct net_bridge_port *source,
+ 			unsigned long now = jiffies;
  
-   memory.zswap.writeback
--	A read-write single value file. The default value is "1". The
--	initial value of the root cgroup is 1, and when a new cgroup is
--	created, it inherits the current value of its parent.
-+	A read-write single value file. The default value is "1".
-+	Note that this setting is hierarchical, i.e. the writeback would be
-+	implicitly disabled for child cgroups if the upper hierarchy
-+	does so.
+ 			/* fastpath: update of existing entry */
+-			if (unlikely(source != fdb->dst && !fdb->is_sticky)) {
++			if (unlikely(source != fdb->dst &&
++				     !test_bit(BR_FDB_STICKY, &fdb->flags))) {
+ 				fdb->dst = source;
+ 				fdb_modified = true;
+ 				/* Take over HW learned entry */
+@@ -666,7 +667,7 @@ static int fdb_fill_info(struct sk_buff *skb, const struct net_bridge *br,
+ 		ndm->ndm_flags |= NTF_OFFLOADED;
+ 	if (fdb->added_by_external_learn)
+ 		ndm->ndm_flags |= NTF_EXT_LEARNED;
+-	if (fdb->is_sticky)
++	if (test_bit(BR_FDB_STICKY, &fdb->flags))
+ 		ndm->ndm_flags |= NTF_STICKY;
  
- 	When this is set to 0, all swapping attempts to swapping devices
- 	are disabled. This included both zswap writebacks, and swapping due
-diff --git a/mm/memcontrol.c b/mm/memcontrol.c
-index ff1e7d2260ab..5c44d3d304da 100644
---- a/mm/memcontrol.c
-+++ b/mm/memcontrol.c
-@@ -5804,8 +5804,7 @@ mem_cgroup_css_alloc(struct cgroup_subsys_state *parent_css)
- 	WRITE_ONCE(memcg->soft_limit, PAGE_COUNTER_MAX);
- #if defined(CONFIG_MEMCG_KMEM) && defined(CONFIG_ZSWAP)
- 	memcg->zswap_max = PAGE_COUNTER_MAX;
--	WRITE_ONCE(memcg->zswap_writeback,
--		!parent || READ_ONCE(parent->zswap_writeback));
-+	WRITE_ONCE(memcg->zswap_writeback, true);
- #endif
- 	page_counter_set_high(&memcg->swap, PAGE_COUNTER_MAX);
- 	if (parent) {
-@@ -8444,7 +8443,14 @@ void obj_cgroup_uncharge_zswap(struct obj_cgroup *objcg, size_t size)
- bool mem_cgroup_zswap_writeback_enabled(struct mem_cgroup *memcg)
+ 	if (nla_put(skb, NDA_LLADDR, ETH_ALEN, &fdb->key.addr))
+@@ -787,7 +788,7 @@ static int fdb_add_entry(struct net_bridge *br, struct net_bridge_port *source,
+ 			 const u8 *addr, u16 state, u16 flags, u16 vid,
+ 			 u8 ndm_flags)
  {
- 	/* if zswap is disabled, do not block pages going to the swapping device */
--	return !zswap_is_enabled() || !memcg || READ_ONCE(memcg->zswap_writeback);
-+	if (!zswap_is_enabled())
-+		return true;
-+
-+	for (; memcg; memcg = parent_mem_cgroup(memcg))
-+		if (!READ_ONCE(memcg->zswap_writeback))
-+			return false;
-+
-+	return true;
- }
+-	u8 is_sticky = !!(ndm_flags & NTF_STICKY);
++	bool is_sticky = !!(ndm_flags & NTF_STICKY);
+ 	struct net_bridge_fdb_entry *fdb;
+ 	bool modified = false;
  
- static u64 zswap_current_read(struct cgroup_subsys_state *css,
+@@ -844,8 +845,8 @@ static int fdb_add_entry(struct net_bridge *br, struct net_bridge_port *source,
+ 		modified = true;
+ 	}
+ 
+-	if (is_sticky != fdb->is_sticky) {
+-		fdb->is_sticky = is_sticky;
++	if (is_sticky != test_bit(BR_FDB_STICKY, &fdb->flags)) {
++		change_bit(BR_FDB_STICKY, &fdb->flags);
+ 		modified = true;
+ 	}
+ 
+diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
+index c3160d73e6ed..131e5be58468 100644
+--- a/net/bridge/br_private.h
++++ b/net/bridge/br_private.h
+@@ -172,6 +172,7 @@ struct net_bridge_vlan_group {
+ enum {
+ 	BR_FDB_LOCAL,
+ 	BR_FDB_STATIC,
++	BR_FDB_STICKY,
+ };
+ 
+ struct net_bridge_fdb_key {
+@@ -186,8 +187,7 @@ struct net_bridge_fdb_entry {
+ 	struct net_bridge_fdb_key	key;
+ 	struct hlist_node		fdb_node;
+ 	unsigned long			flags;
+-	unsigned char			is_sticky:1,
+-					added_by_user:1,
++	unsigned char			added_by_user:1,
+ 					added_by_external_learn:1,
+ 					offloaded:1;
+ 
 -- 
 2.43.0
 
