@@ -1,60 +1,55 @@
-Return-Path: <stable+bounces-74896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75508-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94F0797321F
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:19:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BED1C9734F0
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:44:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 63902B2A65A
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:18:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7F4AB287C0D
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:44:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 869F51A0B04;
-	Tue, 10 Sep 2024 10:12:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19D2818B49E;
+	Tue, 10 Sep 2024 10:42:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oPDRKxq8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wyuntP6x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 438561A0AF2;
-	Tue, 10 Sep 2024 10:12:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBF9114B06C;
+	Tue, 10 Sep 2024 10:42:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725963151; cv=none; b=suUvXOZlY99jJd5Y3zB2MeJdIti/LwBjx8zZkTrau7Edte88EUy2tbK8aifz90TRHGykEiPl9+Y8kj37+SK8YZ7Uuz+1RpaTa0sRF9nyY8TBi6C0aHV+VP3pK3k8gOLp/4e/R92MZMVzVa9NYRinQaGlxIlsXZSz+4qchlmw+y8=
+	t=1725964939; cv=none; b=U+XCJ2NVqF9GoziY50swVh9zYjGTmF2G9ZSpGFf4BQ4rlIA0P0U4EhVZZMlxwsv8dPNEQWH/vfr1yovf8DwMnq88Uuz0XOaj56D/IOqxkgK5qE6mmPWDJppxFWYhaF65KxfKluNTVln78ka8a/qFVDE1/KB6g3dsO/NEHKwwYQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725963151; c=relaxed/simple;
-	bh=nBCKfxzmVpMcwpbJhlMMqiymkOV24P2z9GayWHeeDmw=;
+	s=arc-20240116; t=1725964939; c=relaxed/simple;
+	bh=EqAuxrqzIz5bA1vhmURPaoOvdF7/CwScEIyVsGSlwls=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ebQna5l1lAGxghsGr/6/T6fzJXr/HFVpcPe0KWgNN6m5/9nKFMYvmKKMiWCCNyPLH8k+y6hLtRs7E7nc7NOHqw/WCQrvWl35JAA8zhwzeKvyoV4KzxXWai36jVnwSn0rPy9LrKF+WMYjU6XnDGt2KSPBPMriFVW8aRopAIQqfmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oPDRKxq8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E637C4CECD;
-	Tue, 10 Sep 2024 10:12:30 +0000 (UTC)
+	 MIME-Version; b=uFAVRDm//eCgqblnDyNCey3NKx3QzW3hRQwVLIkjQWYuHPQ2wPPju+15RRi/c3S0GgCWKBTbQv0mzT4BiLXXuJuKL//wwsQeoYGYZfUSuBPIHp3GkhLM8ERSTa6o0gMdw6hQ9zx07QleozCuckl8E2isnTkMrrDcCg5cfbt4Vto=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wyuntP6x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5520CC4CEC3;
+	Tue, 10 Sep 2024 10:42:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725963150;
-	bh=nBCKfxzmVpMcwpbJhlMMqiymkOV24P2z9GayWHeeDmw=;
+	s=korg; t=1725964939;
+	bh=EqAuxrqzIz5bA1vhmURPaoOvdF7/CwScEIyVsGSlwls=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oPDRKxq8x+sOmXejxvgZy37A7FDCujHQoIYRa51/HqhipZxwX6ToORov6fllBd3rk
-	 rtqGF6kEL7T3lzpqqqIfp7tyCk3lgd5Il1qAVlhetF6FB3n3E32eq8Ky+0oNVbIsth
-	 51HF3oTYrGNt2WlK0k2u6x3obxbpNSwX6AgGJxqA=
+	b=wyuntP6xAIUUZ21a/F9b7g8tsM1TfpVWx6J1Hbr9EbfEc4UoBRGsK4KzaDI0k5oTO
+	 zeWCxT9SnEfeOQfOlRNzyOlxAeTbOoijihNVph7xqTnBZb5CQ+mx/8Irdb1kQvX3O8
+	 Xdt+CbgMBO0duu5c17NQz8JRLl0mG7tM+Gk/0HL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alice Ryhl <aliceryhl@google.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Gary Guo <gary@garyguo.net>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 153/192] rust: macros: provide correct provenance when constructing THIS_MODULE
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.10 082/186] NFSD: Replace nfsd_prune_bucket()
 Date: Tue, 10 Sep 2024 11:32:57 +0200
-Message-ID: <20240910092604.257546283@linuxfoundation.org>
+Message-ID: <20240910092557.892101282@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
-References: <20240910092557.876094467@linuxfoundation.org>
+In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
+References: <20240910092554.645718780@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,67 +61,189 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boqun Feng <boqun.feng@gmail.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit a5a3c952e82c1ada12bf8c55b73af26f1a454bd2 ]
+[ Upstream commit a9507f6af1450ed26a4a36d979af518f5bb21e5d ]
 
-Currently while defining `THIS_MODULE` symbol in `module!()`, the
-pointer used to construct `ThisModule` is derived from an immutable
-reference of `__this_module`, which means the pointer doesn't have
-the provenance for writing, and that means any write to that pointer
-is UB regardless of data races or not. However, the usage of
-`THIS_MODULE` includes passing this pointer to functions that may write
-to it (probably in unsafe code), and this will create soundness issues.
+Enable nfsd_prune_bucket() to drop the bucket lock while calling
+kfree(). Use the same pattern that Jeff recently introduced in the
+NFSD filecache.
 
-One way to fix this is using `addr_of_mut!()` but that requires the
-unstable feature "const_mut_refs". So instead of `addr_of_mut()!`,
-an extern static `Opaque` is used here: since `Opaque<T>` is transparent
-to `T`, an extern static `Opaque` will just wrap the C symbol (defined
-in a C compile unit) in an `Opaque`, which provides a pointer with
-writable provenance via `Opaque::get()`. This fix the potential UBs
-because of pointer provenance unmatched.
+A few percpu operations are moved outside the lock since they
+temporarily disable local IRQs which is expensive and does not
+need to be done while the lock is held.
 
-Reported-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Trevor Gross <tmgross@umich.edu>
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-Reviewed-by: Gary Guo <gary@garyguo.net>
-Closes: https://rust-for-linux.zulipchat.com/#narrow/stream/x/topic/x/near/465412664
-Fixes: 1fbde52bde73 ("rust: add `macros` crate")
-Cc: stable@vger.kernel.org # 6.6.x: be2ca1e03965: ("rust: types: Make Opaque::get const")
-Link: https://lore.kernel.org/r/20240828180129.4046355-1-boqun.feng@gmail.com
-[ Fixed two typos, reworded title. - Miguel ]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Stable-dep-of: c135e1269f34 ("NFSD: Refactor the duplicate reply cache shrinker")
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- rust/macros/module.rs | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ fs/nfsd/nfscache.c |   78 ++++++++++++++++++++++++++++++++++++++++++-----------
+ fs/nfsd/trace.h    |   22 ++++++++++++++
+ 2 files changed, 85 insertions(+), 15 deletions(-)
 
-diff --git a/rust/macros/module.rs b/rust/macros/module.rs
-index 031028b3dc41..071b96639a2e 100644
---- a/rust/macros/module.rs
-+++ b/rust/macros/module.rs
-@@ -183,7 +183,11 @@ pub(crate) fn module(ts: TokenStream) -> TokenStream {
-             // freed until the module is unloaded.
-             #[cfg(MODULE)]
-             static THIS_MODULE: kernel::ThisModule = unsafe {{
--                kernel::ThisModule::from_ptr(&kernel::bindings::__this_module as *const _ as *mut _)
-+                extern \"C\" {{
-+                    static __this_module: kernel::types::Opaque<kernel::bindings::module>;
-+                }}
+--- a/fs/nfsd/nfscache.c
++++ b/fs/nfsd/nfscache.c
+@@ -117,6 +117,21 @@ static void nfsd_cacherep_free(struct sv
+ 	kmem_cache_free(drc_slab, rp);
+ }
+ 
++static unsigned long
++nfsd_cacherep_dispose(struct list_head *dispose)
++{
++	struct svc_cacherep *rp;
++	unsigned long freed = 0;
 +
-+                kernel::ThisModule::from_ptr(__this_module.get())
-             }};
-             #[cfg(not(MODULE))]
-             static THIS_MODULE: kernel::ThisModule = unsafe {{
--- 
-2.43.0
-
++	while (!list_empty(dispose)) {
++		rp = list_first_entry(dispose, struct svc_cacherep, c_lru);
++		list_del(&rp->c_lru);
++		nfsd_cacherep_free(rp);
++		freed++;
++	}
++	return freed;
++}
++
+ static void
+ nfsd_cacherep_unlink_locked(struct nfsd_net *nn, struct nfsd_drc_bucket *b,
+ 			    struct svc_cacherep *rp)
+@@ -259,6 +274,41 @@ nfsd_cache_bucket_find(__be32 xid, struc
+ 	return &nn->drc_hashtbl[hash];
+ }
+ 
++/*
++ * Remove and return no more than @max expired entries in bucket @b.
++ * If @max is zero, do not limit the number of removed entries.
++ */
++static void
++nfsd_prune_bucket_locked(struct nfsd_net *nn, struct nfsd_drc_bucket *b,
++			 unsigned int max, struct list_head *dispose)
++{
++	unsigned long expiry = jiffies - RC_EXPIRE;
++	struct svc_cacherep *rp, *tmp;
++	unsigned int freed = 0;
++
++	lockdep_assert_held(&b->cache_lock);
++
++	/* The bucket LRU is ordered oldest-first. */
++	list_for_each_entry_safe(rp, tmp, &b->lru_head, c_lru) {
++		/*
++		 * Don't free entries attached to calls that are still
++		 * in-progress, but do keep scanning the list.
++		 */
++		if (rp->c_state == RC_INPROG)
++			continue;
++
++		if (atomic_read(&nn->num_drc_entries) <= nn->max_drc_entries &&
++		    time_before(expiry, rp->c_timestamp))
++			break;
++
++		nfsd_cacherep_unlink_locked(nn, b, rp);
++		list_add(&rp->c_lru, dispose);
++
++		if (max && ++freed > max)
++			break;
++	}
++}
++
+ static long prune_bucket(struct nfsd_drc_bucket *b, struct nfsd_net *nn,
+ 			 unsigned int max)
+ {
+@@ -282,11 +332,6 @@ static long prune_bucket(struct nfsd_drc
+ 	return freed;
+ }
+ 
+-static long nfsd_prune_bucket(struct nfsd_drc_bucket *b, struct nfsd_net *nn)
+-{
+-	return prune_bucket(b, nn, 3);
+-}
+-
+ /*
+  * Walk the LRU list and prune off entries that are older than RC_EXPIRE.
+  * Also prune the oldest ones when the total exceeds the max number of entries.
+@@ -442,6 +487,8 @@ int nfsd_cache_lookup(struct svc_rqst *r
+ 	__wsum			csum;
+ 	struct nfsd_drc_bucket	*b;
+ 	int type = rqstp->rq_cachetype;
++	unsigned long freed;
++	LIST_HEAD(dispose);
+ 	int rtn = RC_DOIT;
+ 
+ 	rqstp->rq_cacherep = NULL;
+@@ -466,20 +513,18 @@ int nfsd_cache_lookup(struct svc_rqst *r
+ 	found = nfsd_cache_insert(b, rp, nn);
+ 	if (found != rp)
+ 		goto found_entry;
+-
+-	nfsd_stats_rc_misses_inc();
+ 	rqstp->rq_cacherep = rp;
+ 	rp->c_state = RC_INPROG;
++	nfsd_prune_bucket_locked(nn, b, 3, &dispose);
++	spin_unlock(&b->cache_lock);
+ 
++	freed = nfsd_cacherep_dispose(&dispose);
++	trace_nfsd_drc_gc(nn, freed);
++
++	nfsd_stats_rc_misses_inc();
+ 	atomic_inc(&nn->num_drc_entries);
+ 	nfsd_stats_drc_mem_usage_add(nn, sizeof(*rp));
+-
+-	nfsd_prune_bucket(b, nn);
+-
+-out_unlock:
+-	spin_unlock(&b->cache_lock);
+-out:
+-	return rtn;
++	goto out;
+ 
+ found_entry:
+ 	/* We found a matching entry which is either in progress or done. */
+@@ -517,7 +562,10 @@ found_entry:
+ 
+ out_trace:
+ 	trace_nfsd_drc_found(nn, rqstp, rtn);
+-	goto out_unlock;
++out_unlock:
++	spin_unlock(&b->cache_lock);
++out:
++	return rtn;
+ }
+ 
+ /**
+--- a/fs/nfsd/trace.h
++++ b/fs/nfsd/trace.h
+@@ -1171,6 +1171,28 @@ TRACE_EVENT(nfsd_drc_mismatch,
+ 		__entry->ingress)
+ );
+ 
++TRACE_EVENT_CONDITION(nfsd_drc_gc,
++	TP_PROTO(
++		const struct nfsd_net *nn,
++		unsigned long freed
++	),
++	TP_ARGS(nn, freed),
++	TP_CONDITION(freed > 0),
++	TP_STRUCT__entry(
++		__field(unsigned long long, boot_time)
++		__field(unsigned long, freed)
++		__field(int, total)
++	),
++	TP_fast_assign(
++		__entry->boot_time = nn->boot_time;
++		__entry->freed = freed;
++		__entry->total = atomic_read(&nn->num_drc_entries);
++	),
++	TP_printk("boot_time=%16llx total=%d freed=%lu",
++		__entry->boot_time, __entry->total, __entry->freed
++	)
++);
++
+ TRACE_EVENT(nfsd_cb_args,
+ 	TP_PROTO(
+ 		const struct nfs4_client *clp,
 
 
 
