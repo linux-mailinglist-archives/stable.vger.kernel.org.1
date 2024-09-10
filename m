@@ -1,46 +1,62 @@
-Return-Path: <stable+bounces-74141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B856972C47
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:37:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0381972C84
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:51:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E2261C24612
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 08:37:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D9A61C242DC
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 08:51:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 192EC1862BD;
-	Tue, 10 Sep 2024 08:37:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E9DB186E4B;
+	Tue, 10 Sep 2024 08:51:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mx.astralinux.ru (mx.astralinux.ru [89.232.161.68])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BD7D186285;
-	Tue, 10 Sep 2024 08:37:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2213E17624C;
+	Tue, 10 Sep 2024 08:51:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.232.161.68
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725957445; cv=none; b=RckzeS+CDc6W/G3prULcDOmZ1pJhEHaN+L8tUi5NCDPh+QoTSOT47PgkBTuB0BCCFfd1R7ajGC6i15j0JbCKbLRtzGCcXqfJNvjsOdQhN//WqEapi/OGizU6gWOvdw7CVhlTsGJvSn73XABKrkIKV+H8to1PoB7q6E3/sJZ5SAQ=
+	t=1725958307; cv=none; b=pTw16oDpze/TJTxhyhkHl8NMK2PrMk1vol7ou59iqtrXrS8Kqp8iPpZ1RCoAJo1q6Pki/LLuVmC8aLLdZrsrnSuwrdh2o9F/RWXGYAmA3gMfqy7B4muDFoMkavzBz/qbi8GxretUW4eWPoK6jLD1J4F1kaqQj5NUp9ON1RsNWzg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725957445; c=relaxed/simple;
-	bh=oxBpnBaSb18ZCmhI9DN1neCWkluARg45MSJPHMp2Pm8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Rwxv0dTqV0AODyzyENdL266IqCQAkSn564b+loPW4bC7Rid2Vd8zel/49aFt9r6d+BMJNF9L6ZbcGYCcuUde8UvMn3ueUgU4Ys7Z/u4fA5moaFZzLR+i9J5uhkvISMM+KPJcI8Jrq85ngKe3cNW3VfkPY6d1G3G68K5Owrzo7OY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-01 (Coremail) with SMTP id qwCowAC3DaswBeBmMJxTAg--.48716S2;
-	Tue, 10 Sep 2024 16:37:07 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: linux@dominikbrodowski.net,
-	make24@iscas.ac.cn,
-	akpm@linux-foundation.org
-Cc: linux-kernel@vger.kernel.org,
+	s=arc-20240116; t=1725958307; c=relaxed/simple;
+	bh=XVGXGzADbsLu3p+a2MUO3UozEei62Ba2NCZZ3KNQTWM=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=H7IiOhEO2DdcPczIEvMtC3WZhkr2dWolWDz0emhlsPk06AQhfKVK8pCHeQ6CzM61Olwx+uqVVjLMXKAqIhuANVmKN+wedczWnvwVxndfjNX9436wfpZETT151IqzqgpSNyaBJHEgMANWp0nvVToqp7ZiKjQzFM0pl/C+iXAF8eo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=astralinux.ru; spf=pass smtp.mailfrom=astralinux.ru; arc=none smtp.client-ip=89.232.161.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=astralinux.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=astralinux.ru
+Received: from [10.177.185.111] (helo=new-mail.astralinux.ru)
+	by mx.astralinux.ru with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <abelova@astralinux.ru>)
+	id 1snwZS-00BYd3-TK; Tue, 10 Sep 2024 11:49:58 +0300
+Received: from rbta-msk-lt-106062.astralinux.ru (unknown [10.177.20.58])
+	by new-mail.astralinux.ru (Postfix) with ESMTPA id 4X2y983ntBz1c0mR;
+	Tue, 10 Sep 2024 11:51:08 +0300 (MSK)
+From: Anastasia Belova <abelova@astralinux.ru>
+To: Marc Zyngier <maz@kernel.org>
+Cc: Anastasia Belova <abelova@astralinux.ru>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	James Morse <james.morse@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org,
 	stable@vger.kernel.org
-Subject: [PATCH] pcmcia: Fix a NULL pointer dereference in __iodyn_find_io_region()
-Date: Tue, 10 Sep 2024 16:37:03 +0800
-Message-Id: <20240910083703.1416342-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+Subject: [PATCH v2] arm64: KVM: define ESR_ELx_EC_* constants as UL
+Date: Tue, 10 Sep 2024 11:50:16 +0300
+Message-Id: <20240910085016.32120-1-abelova@astralinux.ru>
+X-Mailer: git-send-email 2.30.2
+In-Reply-To: <865xr5856r.wl-maz@kernel.org>
+References: 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -48,56 +64,144 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowAC3DaswBeBmMJxTAg--.48716S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrZF1fXw17Kr17GrWDKrWDtwb_yoWDArc_WF
-	10gr97Gr4jqr4Ikw42yrsakr9a9rn3ur1xWFn3ta4fur9Fvw13uF1fJryDXw1xJrn3JF1k
-	AF9rJr13u3ZF9jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbVkFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
-	Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
-	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr
-	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
-	rcIFxwCY1x0262kKe7AKxVWUAVWUtwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbV
-	WUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF
-	67kF1VAFwI0_JF0_Jw1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42
-	IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF
-	0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2Kf
-	nxnUUI43ZEXa7VUjJ3vUUUUUU==
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+X-DrWeb-SpamScore: 0
+X-DrWeb-SpamState: legit
+X-DrWeb-SpamDetail: gggruggvucftvghtrhhoucdtuddrgedvfedrvdehuddgtddvucetufdoteggodetrfcurfhrohhfihhlvgemucfftfghgfeunecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjughrpefhvfevufffkffojghfggfgsedtkeertdertddtnecuhfhrohhmpeetnhgrshhtrghsihgruceuvghlohhvrgcuoegrsggvlhhovhgrsegrshhtrhgrlhhinhhugidrrhhuqeenucggtffrrghtthgvrhhnpeevhfduuefhueektdefkedvgfekgfekffegvdetffehfefhffejhfehveevudeigfenucffohhmrghinheplhhinhhugihtvghsthhinhhgrdhorhhgnecukfhppedutddrudejjedrvddtrdehkeenucfrrghrrghmpehhvghloheprhgsthgrqdhmshhkqdhlthdquddtiedtiedvrdgrshhtrhgrlhhinhhugidrrhhupdhinhgvthepuddtrddujeejrddvtddrheekmeegleehjeekpdhmrghilhhfrhhomheprggsvghlohhvrgesrghsthhrrghlihhnuhigrdhruhdpnhgspghrtghpthhtohepudefpdhrtghpthhtohepmhgriieskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprggsvghlohhvrgesrghsthhrrghlihhnuhigrdhruhdprhgtphhtthhopeholhhivhgvrhdruhhpthhonheslhhinhhugidruggvvhdprhgtphhtthhopehjrghmvghsrdhmohhrshgvsegrrhhmrdgtohhmpdhrtghpthhtohepshhuiihukhhirdhpohhulhhoshgvsegrrhhmrd
+ gtohhmpdhrtghpthhtohephihuiigvnhhghhhuiheshhhurgifvghirdgtohhmpdhrtghpthhtoheptggrthgrlhhinhdrmhgrrhhinhgrshesrghrmhdrtghomhdprhgtphhtthhopeifihhllheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqrghrmhdqkhgvrhhnvghlsehlihhsthhsrdhinhhfrhgruggvrggurdhorhhgpdhrtghpthhtohepkhhvmhgrrhhmsehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhvtgdqphhrohhjvggttheslhhinhhugihtvghsthhinhhgrdhorhhgpdhrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgnecuffhrrdghvggsucetnhhtihhsphgrmhemucenucfvrghgshem
+X-DrWeb-SpamVersion: Dr.Web Antispam 1.0.7.202406240#1725912977#02
+X-AntiVirus: Checked by Dr.Web [MailD: 11.1.19.2307031128, SE: 11.1.12.2210241838, Core engine: 7.00.65.05230, Virus records: 12167075, Updated: 2024-Sep-10 07:11:52 UTC]
 
-In __iodyn_find_io_region(), pcmcia_make_resource() is assigned to
-res and used in pci_bus_alloc_resource(). There is a dereference of res
-in pci_bus_alloc_resource(), which could lead to a NULL pointer
-dereference on failure of pcmcia_make_resource().
+Add explicit casting to prevent expantion of 32th bit of
+u32 into highest half of u64 in several places.
 
-Fix this bug by adding a check of res.
+For example, in inject_abt64:
+ESR_ELx_EC_DABT_LOW << ESR_ELx_EC_SHIFT = 0x24 << 26.
+This operation's result is int with 1 in 32th bit.
+While casting this value into u64 (esr is u64) 1
+fills 32 highest bits.
 
-Found by code review, complie tested only.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Cc: stable@vger.kernel.org
-Fixes: 49b1153adfe1 ("pcmcia: move all pcmcia_resource_ops providers into one module")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Fixes: aa8eff9bfbd5 ("arm64: KVM: fault injection into a guest")
+Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
 ---
- drivers/pcmcia/rsrc_iodyn.c | 3 +++
- 1 file changed, 3 insertions(+)
+v2: move casting from usage to definition
+ arch/arm64/include/asm/esr.h | 88 ++++++++++++++++++------------------
+ 1 file changed, 44 insertions(+), 44 deletions(-)
 
-diff --git a/drivers/pcmcia/rsrc_iodyn.c b/drivers/pcmcia/rsrc_iodyn.c
-index b04b16496b0c..2677b577c1f8 100644
---- a/drivers/pcmcia/rsrc_iodyn.c
-+++ b/drivers/pcmcia/rsrc_iodyn.c
-@@ -62,6 +62,9 @@ static struct resource *__iodyn_find_io_region(struct pcmcia_socket *s,
- 	unsigned long min = base;
- 	int ret;
+diff --git a/arch/arm64/include/asm/esr.h b/arch/arm64/include/asm/esr.h
+index 56c148890daf..2f3d56857a97 100644
+--- a/arch/arm64/include/asm/esr.h
++++ b/arch/arm64/include/asm/esr.h
+@@ -10,63 +10,63 @@
+ #include <asm/memory.h>
+ #include <asm/sysreg.h>
  
-+	if (!res)
-+		return NULL;
-+
- 	data.mask = align - 1;
- 	data.offset = base & data.mask;
+-#define ESR_ELx_EC_UNKNOWN	(0x00)
+-#define ESR_ELx_EC_WFx		(0x01)
++#define ESR_ELx_EC_UNKNOWN	UL(0x00)
++#define ESR_ELx_EC_WFx		UL(0x01)
+ /* Unallocated EC: 0x02 */
+-#define ESR_ELx_EC_CP15_32	(0x03)
+-#define ESR_ELx_EC_CP15_64	(0x04)
+-#define ESR_ELx_EC_CP14_MR	(0x05)
+-#define ESR_ELx_EC_CP14_LS	(0x06)
+-#define ESR_ELx_EC_FP_ASIMD	(0x07)
+-#define ESR_ELx_EC_CP10_ID	(0x08)	/* EL2 only */
+-#define ESR_ELx_EC_PAC		(0x09)	/* EL2 and above */
++#define ESR_ELx_EC_CP15_32	UL(0x03)
++#define ESR_ELx_EC_CP15_64	UL(0x04)
++#define ESR_ELx_EC_CP14_MR	UL(0x05)
++#define ESR_ELx_EC_CP14_LS	UL(0x06)
++#define ESR_ELx_EC_FP_ASIMD	UL(0x07)
++#define ESR_ELx_EC_CP10_ID	UL(0x08)	/* EL2 only */
++#define ESR_ELx_EC_PAC		UL(0x09)	/* EL2 and above */
+ /* Unallocated EC: 0x0A - 0x0B */
+-#define ESR_ELx_EC_CP14_64	(0x0C)
+-#define ESR_ELx_EC_BTI		(0x0D)
+-#define ESR_ELx_EC_ILL		(0x0E)
++#define ESR_ELx_EC_CP14_64	UL(0x0C)
++#define ESR_ELx_EC_BTI		UL(0x0D)
++#define ESR_ELx_EC_ILL		UL(0x0E)
+ /* Unallocated EC: 0x0F - 0x10 */
+-#define ESR_ELx_EC_SVC32	(0x11)
+-#define ESR_ELx_EC_HVC32	(0x12)	/* EL2 only */
+-#define ESR_ELx_EC_SMC32	(0x13)	/* EL2 and above */
++#define ESR_ELx_EC_SVC32	UL(0x11)
++#define ESR_ELx_EC_HVC32	UL(0x12)	/* EL2 only */
++#define ESR_ELx_EC_SMC32	UL(0x13)	/* EL2 and above */
+ /* Unallocated EC: 0x14 */
+-#define ESR_ELx_EC_SVC64	(0x15)
+-#define ESR_ELx_EC_HVC64	(0x16)	/* EL2 and above */
+-#define ESR_ELx_EC_SMC64	(0x17)	/* EL2 and above */
+-#define ESR_ELx_EC_SYS64	(0x18)
+-#define ESR_ELx_EC_SVE		(0x19)
+-#define ESR_ELx_EC_ERET		(0x1a)	/* EL2 only */
++#define ESR_ELx_EC_SVC64	UL(0x15)
++#define ESR_ELx_EC_HVC64	UL(0x16)	/* EL2 and above */
++#define ESR_ELx_EC_SMC64	UL(0x17)	/* EL2 and above */
++#define ESR_ELx_EC_SYS64	UL(0x18)
++#define ESR_ELx_EC_SVE		UL(0x19)
++#define ESR_ELx_EC_ERET		UL(0x1a)	/* EL2 only */
+ /* Unallocated EC: 0x1B */
+-#define ESR_ELx_EC_FPAC		(0x1C)	/* EL1 and above */
+-#define ESR_ELx_EC_SME		(0x1D)
++#define ESR_ELx_EC_FPAC		UL(0x1C)	/* EL1 and above */
++#define ESR_ELx_EC_SME		UL(0x1D)
+ /* Unallocated EC: 0x1E */
+-#define ESR_ELx_EC_IMP_DEF	(0x1f)	/* EL3 only */
+-#define ESR_ELx_EC_IABT_LOW	(0x20)
+-#define ESR_ELx_EC_IABT_CUR	(0x21)
+-#define ESR_ELx_EC_PC_ALIGN	(0x22)
++#define ESR_ELx_EC_IMP_DEF	UL(0x1f)	/* EL3 only */
++#define ESR_ELx_EC_IABT_LOW	UL(0x20)
++#define ESR_ELx_EC_IABT_CUR	UL(0x21)
++#define ESR_ELx_EC_PC_ALIGN	UL(0x22)
+ /* Unallocated EC: 0x23 */
+-#define ESR_ELx_EC_DABT_LOW	(0x24)
+-#define ESR_ELx_EC_DABT_CUR	(0x25)
+-#define ESR_ELx_EC_SP_ALIGN	(0x26)
+-#define ESR_ELx_EC_MOPS		(0x27)
+-#define ESR_ELx_EC_FP_EXC32	(0x28)
++#define ESR_ELx_EC_DABT_LOW	UL(0x24)
++#define ESR_ELx_EC_DABT_CUR	UL(0x25)
++#define ESR_ELx_EC_SP_ALIGN	UL(0x26)
++#define ESR_ELx_EC_MOPS		UL(0x27)
++#define ESR_ELx_EC_FP_EXC32	UL(0x28)
+ /* Unallocated EC: 0x29 - 0x2B */
+-#define ESR_ELx_EC_FP_EXC64	(0x2C)
++#define ESR_ELx_EC_FP_EXC64	UL(0x2C)
+ /* Unallocated EC: 0x2D - 0x2E */
+-#define ESR_ELx_EC_SERROR	(0x2F)
+-#define ESR_ELx_EC_BREAKPT_LOW	(0x30)
+-#define ESR_ELx_EC_BREAKPT_CUR	(0x31)
+-#define ESR_ELx_EC_SOFTSTP_LOW	(0x32)
+-#define ESR_ELx_EC_SOFTSTP_CUR	(0x33)
+-#define ESR_ELx_EC_WATCHPT_LOW	(0x34)
+-#define ESR_ELx_EC_WATCHPT_CUR	(0x35)
++#define ESR_ELx_EC_SERROR	UL(0x2F)
++#define ESR_ELx_EC_BREAKPT_LOW	UL(0x30)
++#define ESR_ELx_EC_BREAKPT_CUR	UL(0x31)
++#define ESR_ELx_EC_SOFTSTP_LOW	UL(0x32)
++#define ESR_ELx_EC_SOFTSTP_CUR	UL(0x33)
++#define ESR_ELx_EC_WATCHPT_LOW	UL(0x34)
++#define ESR_ELx_EC_WATCHPT_CUR	UL(0x35)
+ /* Unallocated EC: 0x36 - 0x37 */
+-#define ESR_ELx_EC_BKPT32	(0x38)
++#define ESR_ELx_EC_BKPT32	UL(0x38)
+ /* Unallocated EC: 0x39 */
+-#define ESR_ELx_EC_VECTOR32	(0x3A)	/* EL2 only */
++#define ESR_ELx_EC_VECTOR32	UL(0x3A)	/* EL2 only */
+ /* Unallocated EC: 0x3B */
+-#define ESR_ELx_EC_BRK64	(0x3C)
++#define ESR_ELx_EC_BRK64	UL(0x3C)
+ /* Unallocated EC: 0x3D - 0x3F */
+-#define ESR_ELx_EC_MAX		(0x3F)
++#define ESR_ELx_EC_MAX		UL(0x3F)
  
+ #define ESR_ELx_EC_SHIFT	(26)
+ #define ESR_ELx_EC_WIDTH	(6)
 -- 
-2.25.1
+2.30.2
 
 
