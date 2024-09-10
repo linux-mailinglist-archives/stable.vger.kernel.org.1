@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-74191-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF4AD972DF8
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 11:38:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79DF29730AE
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:03:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 53BA1B25FE6
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 09:38:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D14D31C21417
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:03:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47F6E18BC24;
-	Tue, 10 Sep 2024 09:38:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D338191476;
+	Tue, 10 Sep 2024 10:01:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OOxSewz8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M9R8o48f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 066CA1891A5;
-	Tue, 10 Sep 2024 09:38:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFB56191F9F;
+	Tue, 10 Sep 2024 10:01:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961081; cv=none; b=Jpbm/fsTrf1CysGGUbzZh5oAFLlxd4ehB5SaamBNZB+SaObcdQn+dCPi5+WvTR3HvzG9YmlYTDHSMm4UWRJpSlGYRdIcNChrPU0BItqLJxXI5eYvfVCJ7MLqtpEA0zcCWZM42o9WEfXpZGLQQU/+IM4Drk2DpVRPhEwI2dqEb34=
+	t=1725962517; cv=none; b=OrUpTrvVgVMBu59+Rxq0Sp8Z3jUJGBhi/yv4v5H89TehVe+MW099L227NfPvVAyf8L5haYo1CUR6uxMKKAybdWTlquS5zQVjTc2G+S9i/AO4au3qXQVyWpm7Sfr/IwC/qpUSMpFEQmdVMyBP41zqwXhnfZpgC7I0JWxtPbqCjkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961081; c=relaxed/simple;
-	bh=yySG0NbyU0DQesgIqwJ9bw/65HZ5LFRqMtS/u+AbyAI=;
+	s=arc-20240116; t=1725962517; c=relaxed/simple;
+	bh=IBoP8DOlB3myNeorUUofsUh0aIydHA/wEMxzvM8unek=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mFx2fNt2bAokvHHrW5Kv+NamqAfFipqlFt7BTYVwQ9WCI7S0j1FL/WM8eVG098kwLoPNR2/aOaBlI7TlvEQSoc6t9cBdwDeNZVsLg7DnmOYpQMxaFqgjWgp6i4DgpzStMwKh/PNLqPXWgQ0/7mL6kOe42kqFQiLNU/2YwtgbKoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OOxSewz8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F95CC4CEC3;
-	Tue, 10 Sep 2024 09:37:59 +0000 (UTC)
+	 MIME-Version; b=Hw9nqTBsCo+Uhwy3uWDwbklrQaEIfB+rdYAJLSOvKC8rw83RW8LQZYVfQA92Qu62J5fw/mAlNHAwdzNs/CRAS4HSMWnPU/hG7JYdiw4OVNjlmqfiraQ89yRFs1TdfK08JeS3CJ/Kfdzy8JsvGSLJP6cRYqNt/8vEKU6S1Rygad4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M9R8o48f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66958C4CEC3;
+	Tue, 10 Sep 2024 10:01:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725961080;
-	bh=yySG0NbyU0DQesgIqwJ9bw/65HZ5LFRqMtS/u+AbyAI=;
+	s=korg; t=1725962516;
+	bh=IBoP8DOlB3myNeorUUofsUh0aIydHA/wEMxzvM8unek=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OOxSewz8orBuCQYssr+7OInsLQeOpPWID+nAct0WrBKkg0UwdI78R/rcz9GyifAY2
-	 reev+NaRwfkAj0v2ND3CEZwNzVISqtREC1kXdH9jGUKIsdwQeLLsEw0tn7acNKfUCL
-	 W2S7LHFqlSJ7sthV5Hw+T2ynWKJUuYUPgJoOtPHE=
+	b=M9R8o48fALR6PxoI/wFX4r4OQRByJuMMDJEo0OoCSPwLsY2nsaUAPdEUTOeMjdsgO
+	 HpK8Nnf12bS5c6k1w6FhgUMcUZU1Dbg/o50E3elP9XK5C/A9RnnpQLlZTtoTyy/WYQ
+	 TMCUoBbt2bOEcKEHFEecbmOz3l+M5DU6NEL9Gp9M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikolay Aleksandrov <nikolay@cumulusnetworks.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 47/96] net: bridge: fdb: convert is_sticky to bitops
+	Jann Horn <jannh@google.com>,
+	Miklos Szeredi <mszeredi@redhat.com>
+Subject: [PATCH 5.4 034/121] fuse: use unsigned type for getxattr/listxattr size truncation
 Date: Tue, 10 Sep 2024 11:31:49 +0200
-Message-ID: <20240910092543.600747835@linuxfoundation.org>
+Message-ID: <20240910092547.351785604@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092541.383432924@linuxfoundation.org>
-References: <20240910092541.383432924@linuxfoundation.org>
+In-Reply-To: <20240910092545.737864202@linuxfoundation.org>
+References: <20240910092545.737864202@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,93 +61,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikolay Aleksandrov <nikolay@cumulusnetworks.com>
+From: Jann Horn <jannh@google.com>
 
-[ Upstream commit e0458d9a733ba71a2821d0c3fc0745baac697db0 ]
+commit b18915248a15eae7d901262f108d6ff0ffb4ffc1 upstream.
 
-Straight-forward convert of the is_sticky field to bitops.
+The existing code uses min_t(ssize_t, outarg.size, XATTR_LIST_MAX) when
+parsing the FUSE daemon's response to a zero-length getxattr/listxattr
+request.
+On 32-bit kernels, where ssize_t and outarg.size are the same size, this is
+wrong: The min_t() will pass through any size values that are negative when
+interpreted as signed.
+fuse_listxattr() will then return this userspace-supplied negative value,
+which callers will treat as an error value.
 
-Signed-off-by: Nikolay Aleksandrov <nikolay@cumulusnetworks.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: bee2ef946d31 ("net: bridge: br_fdb_external_learn_add(): always set EXT_LEARN")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This kind of bug pattern can lead to fairly bad security bugs because of
+how error codes are used in the Linux kernel. If a caller were to convert
+the numeric error into an error pointer, like so:
+
+    struct foo *func(...) {
+      int len = fuse_getxattr(..., NULL, 0);
+      if (len < 0)
+        return ERR_PTR(len);
+      ...
+    }
+
+then it would end up returning this userspace-supplied negative value cast
+to a pointer - but the caller of this function wouldn't recognize it as an
+error pointer (IS_ERR_VALUE() only detects values in the narrow range in
+which legitimate errno values are), and so it would just be treated as a
+kernel pointer.
+
+I think there is at least one theoretical codepath where this could happen,
+but that path would involve virtio-fs with submounts plus some weird
+SELinux configuration, so I think it's probably not a concern in practice.
+
+Cc: stable@vger.kernel.org # v4.9
+Fixes: 63401ccdb2ca ("fuse: limit xattr returned size")
+Signed-off-by: Jann Horn <jannh@google.com>
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bridge/br_fdb.c     | 11 ++++++-----
- net/bridge/br_private.h |  4 ++--
- 2 files changed, 8 insertions(+), 7 deletions(-)
+ fs/fuse/xattr.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/bridge/br_fdb.c b/net/bridge/br_fdb.c
-index 2639cc744bca..25aeaedce762 100644
---- a/net/bridge/br_fdb.c
-+++ b/net/bridge/br_fdb.c
-@@ -594,7 +594,8 @@ void br_fdb_update(struct net_bridge *br, struct net_bridge_port *source,
- 			unsigned long now = jiffies;
- 
- 			/* fastpath: update of existing entry */
--			if (unlikely(source != fdb->dst && !fdb->is_sticky)) {
-+			if (unlikely(source != fdb->dst &&
-+				     !test_bit(BR_FDB_STICKY, &fdb->flags))) {
- 				fdb->dst = source;
- 				fdb_modified = true;
- 				/* Take over HW learned entry */
-@@ -666,7 +667,7 @@ static int fdb_fill_info(struct sk_buff *skb, const struct net_bridge *br,
- 		ndm->ndm_flags |= NTF_OFFLOADED;
- 	if (fdb->added_by_external_learn)
- 		ndm->ndm_flags |= NTF_EXT_LEARNED;
--	if (fdb->is_sticky)
-+	if (test_bit(BR_FDB_STICKY, &fdb->flags))
- 		ndm->ndm_flags |= NTF_STICKY;
- 
- 	if (nla_put(skb, NDA_LLADDR, ETH_ALEN, &fdb->key.addr))
-@@ -787,7 +788,7 @@ static int fdb_add_entry(struct net_bridge *br, struct net_bridge_port *source,
- 			 const u8 *addr, u16 state, u16 flags, u16 vid,
- 			 u8 ndm_flags)
- {
--	u8 is_sticky = !!(ndm_flags & NTF_STICKY);
-+	bool is_sticky = !!(ndm_flags & NTF_STICKY);
- 	struct net_bridge_fdb_entry *fdb;
- 	bool modified = false;
- 
-@@ -844,8 +845,8 @@ static int fdb_add_entry(struct net_bridge *br, struct net_bridge_port *source,
- 		modified = true;
+--- a/fs/fuse/xattr.c
++++ b/fs/fuse/xattr.c
+@@ -79,7 +79,7 @@ ssize_t fuse_getxattr(struct inode *inod
  	}
- 
--	if (is_sticky != fdb->is_sticky) {
--		fdb->is_sticky = is_sticky;
-+	if (is_sticky != test_bit(BR_FDB_STICKY, &fdb->flags)) {
-+		change_bit(BR_FDB_STICKY, &fdb->flags);
- 		modified = true;
+ 	ret = fuse_simple_request(fc, &args);
+ 	if (!ret && !size)
+-		ret = min_t(ssize_t, outarg.size, XATTR_SIZE_MAX);
++		ret = min_t(size_t, outarg.size, XATTR_SIZE_MAX);
+ 	if (ret == -ENOSYS) {
+ 		fc->no_getxattr = 1;
+ 		ret = -EOPNOTSUPP;
+@@ -141,7 +141,7 @@ ssize_t fuse_listxattr(struct dentry *en
  	}
- 
-diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
-index c3160d73e6ed..131e5be58468 100644
---- a/net/bridge/br_private.h
-+++ b/net/bridge/br_private.h
-@@ -172,6 +172,7 @@ struct net_bridge_vlan_group {
- enum {
- 	BR_FDB_LOCAL,
- 	BR_FDB_STATIC,
-+	BR_FDB_STICKY,
- };
- 
- struct net_bridge_fdb_key {
-@@ -186,8 +187,7 @@ struct net_bridge_fdb_entry {
- 	struct net_bridge_fdb_key	key;
- 	struct hlist_node		fdb_node;
- 	unsigned long			flags;
--	unsigned char			is_sticky:1,
--					added_by_user:1,
-+	unsigned char			added_by_user:1,
- 					added_by_external_learn:1,
- 					offloaded:1;
- 
--- 
-2.43.0
-
+ 	ret = fuse_simple_request(fc, &args);
+ 	if (!ret && !size)
+-		ret = min_t(ssize_t, outarg.size, XATTR_LIST_MAX);
++		ret = min_t(size_t, outarg.size, XATTR_LIST_MAX);
+ 	if (ret > 0 && size)
+ 		ret = fuse_verify_xattr_list(list, ret);
+ 	if (ret == -ENOSYS) {
 
 
 
