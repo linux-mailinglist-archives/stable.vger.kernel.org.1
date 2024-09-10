@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-75611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F0BC973562
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:48:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 332D9973485
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:41:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BB73284F45
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:48:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E603528E1A7
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:41:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0524D18B488;
-	Tue, 10 Sep 2024 10:47:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F1E018B48A;
+	Tue, 10 Sep 2024 10:38:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jICuNbO9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zl88rXJL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B81A4144D1A;
-	Tue, 10 Sep 2024 10:47:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A4F55674D;
+	Tue, 10 Sep 2024 10:38:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725965237; cv=none; b=XezjjhhxjtPMnpXdmqdwU8L418n/k3alX2HnQytjKFCahJ29MVgKKdWYTnLbYwpJWgw70fbgXx92dgEXrrnUlrBCWm8a3atMD1iS6kYWCJlFTj8yXGiTLuQ+76vHV6SLmo3bbR4lC9gXM+zXOyVAJ8Jgvg5e+sdOo3o6L9Ey4bE=
+	t=1725964718; cv=none; b=VrNQL4xufKn74z9VLwvod18bwKtxu6lKez0NavxjengDIaZXZWpIeZ02YrWTdA3Tt3EISAVQ91PKkgiQ7lgBxFqmtECM8NAcOj4LmzQkogdgLYNQLbjTbTbFGazFOwcHKDomJmOEhjZHDoGEX7DrZ6lbuDhg0cPOTKE3lf/RW6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725965237; c=relaxed/simple;
-	bh=JeqZf57dvvK65uJnps+VfKvvzzG0otFFTobUi2svT6g=;
+	s=arc-20240116; t=1725964718; c=relaxed/simple;
+	bh=lTcZm3WMBuZy3TM0EzmD+/wuySea2V+9af3dsR67/+w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SV+AQpuhYjYdIk64opxniERDiLr8S9AV5bPS2KX8COmguUCe/v+M/Gj1A4phhMPuxvFCuCM0785TiAAQ9qPJeEXscwfj7nR7rGIlqgEdZLsKMXspl4AVgZ1wZyCidEWEeWwTF0JgNQwvzfwTy+PyhDekdGcMARrv4YojWnW9FgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jICuNbO9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E172BC4CEC3;
-	Tue, 10 Sep 2024 10:47:16 +0000 (UTC)
+	 MIME-Version; b=t2i++xUzWJU9nXx44hL0JR4zVkupH0aCXfJ5V1VpWPvxrADwuOESJo5SlV8C7rsid4pVNr8Bh9ujofWIRkBMTglkTk+/ijqb1MNl8jmIXJSx4yvDbrUXt11M5+b2RtsWopJVYuSHD6I8u069PatUFjKHk8JdXLNRLwaPRE6qAW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zl88rXJL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 861FEC4CEC3;
+	Tue, 10 Sep 2024 10:38:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725965237;
-	bh=JeqZf57dvvK65uJnps+VfKvvzzG0otFFTobUi2svT6g=;
+	s=korg; t=1725964717;
+	bh=lTcZm3WMBuZy3TM0EzmD+/wuySea2V+9af3dsR67/+w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jICuNbO9CT986qaiRnvSI/xdAoMelFTWFq0dUD5tXG2l/cst+tWNt7NwvbBQC237/
-	 kiyFFx9XVq40ifihptLYKV1deJg8zeRn+BPzLy7lyaNzqxcHoTEf0jDqHBv3RTwQZ7
-	 aufHZsXs5GhZyclChit0HUD7U/JjuUsO9K6kiziw=
+	b=zl88rXJLIjmFWusHFdvGy/gbASFTW58Lk8Tj5Sg33DRpVTIbO+WupIuPKsDy/2rcP
+	 0jd88N9qDMSXPzCho8gslmMRbGL24Q5/HwiLz5gqMp75T0fkPGxM1B2p4R+ilqKVnO
+	 KJ8AAfsUdn5mpE78yN/YU7pEdZ4Z1s7x1Rg/2F9o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 156/186] ata: pata_macio: Use WARN instead of BUG
+	Guenter Roeck <linux@roeck-us.net>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>
+Subject: [PATCH 6.6 264/269] x86/mm: Fix PTI for i386 some more
 Date: Tue, 10 Sep 2024 11:34:11 +0200
-Message-ID: <20240910092601.020266638@linuxfoundation.org>
+Message-ID: <20240910092617.153906070@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092554.645718780@linuxfoundation.org>
-References: <20240910092554.645718780@linuxfoundation.org>
+In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
+References: <20240910092608.225137854@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +62,165 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit d4bc0a264fb482b019c84fbc7202dd3cab059087 ]
+commit c48b5a4cf3125adb679e28ef093f66ff81368d05 upstream.
 
-The overflow/underflow conditions in pata_macio_qc_prep() should never
-happen. But if they do there's no need to kill the system entirely, a
-WARN and failing the IO request should be sufficient and might allow the
-system to keep running.
+So it turns out that we have to do two passes of
+pti_clone_entry_text(), once before initcalls, such that device and
+late initcalls can use user-mode-helper / modprobe and once after
+free_initmem() / mark_readonly().
 
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Now obviously mark_readonly() can cause PMD splits, and
+pti_clone_pgtable() doesn't like that much.
+
+Allow the late clone to split PMDs so that pagetables stay in sync.
+
+[peterz: Changelog and comments]
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lkml.kernel.org/r/20240806184843.GX37996@noisy.programming.kicks-ass.net
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/pata_macio.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/x86/mm/pti.c |   45 +++++++++++++++++++++++++++++----------------
+ 1 file changed, 29 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/ata/pata_macio.c b/drivers/ata/pata_macio.c
-index e47a28271f5b..ba8f0084075b 100644
---- a/drivers/ata/pata_macio.c
-+++ b/drivers/ata/pata_macio.c
-@@ -540,7 +540,8 @@ static enum ata_completion_errors pata_macio_qc_prep(struct ata_queued_cmd *qc)
+--- a/arch/x86/mm/pti.c
++++ b/arch/x86/mm/pti.c
+@@ -241,7 +241,7 @@ static pmd_t *pti_user_pagetable_walk_pm
+  *
+  * Returns a pointer to a PTE on success, or NULL on failure.
+  */
+-static pte_t *pti_user_pagetable_walk_pte(unsigned long address)
++static pte_t *pti_user_pagetable_walk_pte(unsigned long address, bool late_text)
+ {
+ 	gfp_t gfp = (GFP_KERNEL | __GFP_NOTRACK | __GFP_ZERO);
+ 	pmd_t *pmd;
+@@ -251,10 +251,15 @@ static pte_t *pti_user_pagetable_walk_pt
+ 	if (!pmd)
+ 		return NULL;
  
- 		while (sg_len) {
- 			/* table overflow should never happen */
--			BUG_ON (pi++ >= MAX_DCMDS);
-+			if (WARN_ON_ONCE(pi >= MAX_DCMDS))
-+				return AC_ERR_SYSTEM;
- 
- 			len = (sg_len < MAX_DBDMA_SEG) ? sg_len : MAX_DBDMA_SEG;
- 			table->command = cpu_to_le16(write ? OUTPUT_MORE: INPUT_MORE);
-@@ -552,11 +553,13 @@ static enum ata_completion_errors pata_macio_qc_prep(struct ata_queued_cmd *qc)
- 			addr += len;
- 			sg_len -= len;
- 			++table;
-+			++pi;
- 		}
+-	/* We can't do anything sensible if we hit a large mapping. */
++	/* Large PMD mapping found */
+ 	if (pmd_large(*pmd)) {
+-		WARN_ON(1);
+-		return NULL;
++		/* Clear the PMD if we hit a large mapping from the first round */
++		if (late_text) {
++			set_pmd(pmd, __pmd(0));
++		} else {
++			WARN_ON_ONCE(1);
++			return NULL;
++		}
  	}
  
- 	/* Should never happen according to Tejun */
--	BUG_ON(!pi);
-+	if (WARN_ON_ONCE(!pi))
-+		return AC_ERR_SYSTEM;
+ 	if (pmd_none(*pmd)) {
+@@ -283,7 +288,7 @@ static void __init pti_setup_vsyscall(vo
+ 	if (!pte || WARN_ON(level != PG_LEVEL_4K) || pte_none(*pte))
+ 		return;
  
- 	/* Convert the last command to an input/output */
- 	table--;
--- 
-2.43.0
-
+-	target_pte = pti_user_pagetable_walk_pte(VSYSCALL_ADDR);
++	target_pte = pti_user_pagetable_walk_pte(VSYSCALL_ADDR, false);
+ 	if (WARN_ON(!target_pte))
+ 		return;
+ 
+@@ -301,7 +306,7 @@ enum pti_clone_level {
+ 
+ static void
+ pti_clone_pgtable(unsigned long start, unsigned long end,
+-		  enum pti_clone_level level)
++		  enum pti_clone_level level, bool late_text)
+ {
+ 	unsigned long addr;
+ 
+@@ -390,7 +395,7 @@ pti_clone_pgtable(unsigned long start, u
+ 				return;
+ 
+ 			/* Allocate PTE in the user page-table */
+-			target_pte = pti_user_pagetable_walk_pte(addr);
++			target_pte = pti_user_pagetable_walk_pte(addr, late_text);
+ 			if (WARN_ON(!target_pte))
+ 				return;
+ 
+@@ -452,7 +457,7 @@ static void __init pti_clone_user_shared
+ 		phys_addr_t pa = per_cpu_ptr_to_phys((void *)va);
+ 		pte_t *target_pte;
+ 
+-		target_pte = pti_user_pagetable_walk_pte(va);
++		target_pte = pti_user_pagetable_walk_pte(va, false);
+ 		if (WARN_ON(!target_pte))
+ 			return;
+ 
+@@ -475,7 +480,7 @@ static void __init pti_clone_user_shared
+ 	start = CPU_ENTRY_AREA_BASE;
+ 	end   = start + (PAGE_SIZE * CPU_ENTRY_AREA_PAGES);
+ 
+-	pti_clone_pgtable(start, end, PTI_CLONE_PMD);
++	pti_clone_pgtable(start, end, PTI_CLONE_PMD, false);
+ }
+ #endif /* CONFIG_X86_64 */
+ 
+@@ -492,11 +497,11 @@ static void __init pti_setup_espfix64(vo
+ /*
+  * Clone the populated PMDs of the entry text and force it RO.
+  */
+-static void pti_clone_entry_text(void)
++static void pti_clone_entry_text(bool late)
+ {
+ 	pti_clone_pgtable((unsigned long) __entry_text_start,
+ 			  (unsigned long) __entry_text_end,
+-			  PTI_LEVEL_KERNEL_IMAGE);
++			  PTI_LEVEL_KERNEL_IMAGE, late);
+ }
+ 
+ /*
+@@ -571,7 +576,7 @@ static void pti_clone_kernel_text(void)
+ 	 * pti_set_kernel_image_nonglobal() did to clear the
+ 	 * global bit.
+ 	 */
+-	pti_clone_pgtable(start, end_clone, PTI_LEVEL_KERNEL_IMAGE);
++	pti_clone_pgtable(start, end_clone, PTI_LEVEL_KERNEL_IMAGE, false);
+ 
+ 	/*
+ 	 * pti_clone_pgtable() will set the global bit in any PMDs
+@@ -638,8 +643,15 @@ void __init pti_init(void)
+ 
+ 	/* Undo all global bits from the init pagetables in head_64.S: */
+ 	pti_set_kernel_image_nonglobal();
++
+ 	/* Replace some of the global bits just for shared entry text: */
+-	pti_clone_entry_text();
++	/*
++	 * This is very early in boot. Device and Late initcalls can do
++	 * modprobe before free_initmem() and mark_readonly(). This
++	 * pti_clone_entry_text() allows those user-mode-helpers to function,
++	 * but notably the text is still RW.
++	 */
++	pti_clone_entry_text(false);
+ 	pti_setup_espfix64();
+ 	pti_setup_vsyscall();
+ }
+@@ -656,10 +668,11 @@ void pti_finalize(void)
+ 	if (!boot_cpu_has(X86_FEATURE_PTI))
+ 		return;
+ 	/*
+-	 * We need to clone everything (again) that maps parts of the
+-	 * kernel image.
++	 * This is after free_initmem() (all initcalls are done) and we've done
++	 * mark_readonly(). Text is now NX which might've split some PMDs
++	 * relative to the early clone.
+ 	 */
+-	pti_clone_entry_text();
++	pti_clone_entry_text(true);
+ 	pti_clone_kernel_text();
+ 
+ 	debug_checkwx_user();
 
 
 
