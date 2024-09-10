@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-75351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-74903-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 635BF97341E
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:38:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7B6A4973203
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 12:18:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 954761C213C3
-	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:38:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A063B1C2101A
+	for <lists+stable@lfdr.de>; Tue, 10 Sep 2024 10:18:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFE04192581;
-	Tue, 10 Sep 2024 10:34:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 718771946A4;
+	Tue, 10 Sep 2024 10:12:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JVfxRVRd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TOW7O9kV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF27718B462;
-	Tue, 10 Sep 2024 10:34:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30B11143880;
+	Tue, 10 Sep 2024 10:12:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725964478; cv=none; b=HStxg44bmfxMkumqTVuk0RGVVlFgYDOcENJzCjr0DHLFkSZwYm3KNDXfKFn7Qwvc091hDPozIoHsHxTaDncYtKPJA/ERCsm0to2BZ3/VfS/EsYeWOUS71wNntEVF/DzP+yqMyni2sPbuN/82QMC7Txa/jhAJjkI5dO/FVjD2wuM=
+	t=1725963172; cv=none; b=VoMPBNKfdUB2f90HRSTFAbj9tUQTsZsdTfmxxxV4zwyX7PbTH4vUHJcqTZq0GNKTELsFwSZM2hkojUCWzkFmWogWnMtcRUXBeucRMExqdPQZkz4mwkaOqawRiTvtaOs2ZjBa4qVfJbZeIRmL/pVTTtzgNQMEyy4NEkj0pm0UE/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725964478; c=relaxed/simple;
-	bh=8suC4PMMCm6AFIMZYmMkG6BSihA1xyRVLFeT9QPv6Q4=;
+	s=arc-20240116; t=1725963172; c=relaxed/simple;
+	bh=JsUgj/Iv0jn9sxa6AEKPAsXfkGAHU9HNUy4nkvEw0QI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gpBaYwIRfFSKqIIgAw9esc2RQjZpdvZUf2vAamF+tbnLVXLThBpfDw3XOIsAMOldlX1EEdHorUfiOwYXyRycHfuTz+a+wa+YFQNEceDkYXIavrlWl9nrAST7MjUgCLqVkstNMd3NOZAjH3+t1mJu2b4IqMc36xVaFZP773oyIq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JVfxRVRd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37884C4CEC3;
-	Tue, 10 Sep 2024 10:34:38 +0000 (UTC)
+	 MIME-Version; b=Q+jW/17tgXhl+dUX3JzZXu0pB3ujHgHAC8URG17VDq0XiQJd+Lv3hj1HkWcTKkhNG6uOp3vYZjJ3M4WiQWsHjPEasFarA+bUVgAwL9niuPZdMDe3n3JNIaiipZYNuhBLnlNk/NAHywK42v5i8T5OOFpBc6znbSt43FdDtfNpDT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TOW7O9kV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55ABDC4CEC3;
+	Tue, 10 Sep 2024 10:12:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1725964478;
-	bh=8suC4PMMCm6AFIMZYmMkG6BSihA1xyRVLFeT9QPv6Q4=;
+	s=korg; t=1725963171;
+	bh=JsUgj/Iv0jn9sxa6AEKPAsXfkGAHU9HNUy4nkvEw0QI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JVfxRVRdf0AK3AJeVVKIeoUS4nQY1VIThPXRdB9KJ7YmdP4Bml3hak3ZoEGKz4nwO
-	 dI4HjRQ5RKn7jX8in/skNFoZfO/ZtpYDBZgA3BCfn6fhNadCI11a46Zg+FHgHpYwAv
-	 GDcrt4+B066i/yKqk+5N06odhphq6jmcqjn7GMzc=
+	b=TOW7O9kV7GzBOdeCyxPYS/T6/bdRn7oHb3kHcRFmuH5ShuZk3NfsWDGVxrUHOghS3
+	 yuj4QlcC+MESjuM+7f8fRoUE3PFHDDwmhjYxo6pd7TcVWeKy5UPiIVNV5qfTFD5NpW
+	 O4h3wIMw/I3BK7VznJ0bH22fw569hea5Yy523/lc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	WangYuli <wangyuli@uniontech.com>
-Subject: [PATCH 6.6 196/269] riscv: Use WRITE_ONCE() when setting page table entries
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 159/192] mm: Fix pmd_read_atomic()
 Date: Tue, 10 Sep 2024 11:33:03 +0200
-Message-ID: <20240910092615.094075592@linuxfoundation.org>
+Message-ID: <20240910092604.491396323@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240910092608.225137854@linuxfoundation.org>
-References: <20240910092608.225137854@linuxfoundation.org>
+In-Reply-To: <20240910092557.876094467@linuxfoundation.org>
+References: <20240910092557.876094467@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,78 +61,178 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-commit c30fa83b49897e708a52e122dd10616a52a4c82b upstream.
+[ Upstream commit 024d232ae4fcd7a7ce8ea239607d6c1246d7adc8 ]
 
-To avoid any compiler "weirdness" when accessing page table entries which
-are concurrently modified by the HW, let's use WRITE_ONCE() macro
-(commit 20a004e7b017 ("arm64: mm: Use READ_ONCE/WRITE_ONCE when accessing
-page tables") gives a great explanation with more details).
+AFAICT there's no reason to do anything different than what we do for
+PTEs. Make it so (also affects SH).
 
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20231213203001.179237-2-alexghiti@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20221022114424.711181252%40infradead.org
+Stable-dep-of: 71c186efc1b2 ("userfaultfd: fix checks for huge PMDs")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/include/asm/pgtable-64.h |    6 +++---
- arch/riscv/include/asm/pgtable.h    |    4 ++--
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ arch/x86/include/asm/pgtable-3level.h | 56 ---------------------------
+ include/linux/pgtable.h               | 47 +++++++++++++++++-----
+ 2 files changed, 37 insertions(+), 66 deletions(-)
 
---- a/arch/riscv/include/asm/pgtable-64.h
-+++ b/arch/riscv/include/asm/pgtable-64.h
-@@ -198,7 +198,7 @@ static inline int pud_user(pud_t pud)
- 
- static inline void set_pud(pud_t *pudp, pud_t pud)
- {
--	*pudp = pud;
-+	WRITE_ONCE(*pudp, pud);
+diff --git a/arch/x86/include/asm/pgtable-3level.h b/arch/x86/include/asm/pgtable-3level.h
+index 28556d22feb8..94f50b0100a5 100644
+--- a/arch/x86/include/asm/pgtable-3level.h
++++ b/arch/x86/include/asm/pgtable-3level.h
+@@ -34,62 +34,6 @@ static inline void native_set_pte(pte_t *ptep, pte_t pte)
+ 	ptep->pte_low = pte.pte_low;
  }
  
- static inline void pud_clear(pud_t *pudp)
-@@ -274,7 +274,7 @@ static inline unsigned long _pmd_pfn(pmd
- static inline void set_p4d(p4d_t *p4dp, p4d_t p4d)
+-#define pmd_read_atomic pmd_read_atomic
+-/*
+- * pte_offset_map_lock() on 32-bit PAE kernels was reading the pmd_t with
+- * a "*pmdp" dereference done by GCC. Problem is, in certain places
+- * where pte_offset_map_lock() is called, concurrent page faults are
+- * allowed, if the mmap_lock is hold for reading. An example is mincore
+- * vs page faults vs MADV_DONTNEED. On the page fault side
+- * pmd_populate() rightfully does a set_64bit(), but if we're reading the
+- * pmd_t with a "*pmdp" on the mincore side, a SMP race can happen
+- * because GCC will not read the 64-bit value of the pmd atomically.
+- *
+- * To fix this all places running pte_offset_map_lock() while holding the
+- * mmap_lock in read mode, shall read the pmdp pointer using this
+- * function to know if the pmd is null or not, and in turn to know if
+- * they can run pte_offset_map_lock() or pmd_trans_huge() or other pmd
+- * operations.
+- *
+- * Without THP if the mmap_lock is held for reading, the pmd can only
+- * transition from null to not null while pmd_read_atomic() runs. So
+- * we can always return atomic pmd values with this function.
+- *
+- * With THP if the mmap_lock is held for reading, the pmd can become
+- * trans_huge or none or point to a pte (and in turn become "stable")
+- * at any time under pmd_read_atomic(). We could read it truly
+- * atomically here with an atomic64_read() for the THP enabled case (and
+- * it would be a whole lot simpler), but to avoid using cmpxchg8b we
+- * only return an atomic pmdval if the low part of the pmdval is later
+- * found to be stable (i.e. pointing to a pte). We are also returning a
+- * 'none' (zero) pmdval if the low part of the pmd is zero.
+- *
+- * In some cases the high and low part of the pmdval returned may not be
+- * consistent if THP is enabled (the low part may point to previously
+- * mapped hugepage, while the high part may point to a more recently
+- * mapped hugepage), but pmd_none_or_trans_huge_or_clear_bad() only
+- * needs the low part of the pmd to be read atomically to decide if the
+- * pmd is unstable or not, with the only exception when the low part
+- * of the pmd is zero, in which case we return a 'none' pmd.
+- */
+-static inline pmd_t pmd_read_atomic(pmd_t *pmdp)
+-{
+-	pmdval_t ret;
+-	u32 *tmp = (u32 *)pmdp;
+-
+-	ret = (pmdval_t) (*tmp);
+-	if (ret) {
+-		/*
+-		 * If the low part is null, we must not read the high part
+-		 * or we can end up with a partial pmd.
+-		 */
+-		smp_rmb();
+-		ret |= ((pmdval_t)*(tmp + 1)) << 32;
+-	}
+-
+-	return (pmd_t) { .pmd = ret };
+-}
+-
+ static inline void native_set_pte_atomic(pte_t *ptep, pte_t pte)
  {
- 	if (pgtable_l4_enabled)
--		*p4dp = p4d;
-+		WRITE_ONCE(*p4dp, p4d);
- 	else
- 		set_pud((pud_t *)p4dp, (pud_t){ p4d_val(p4d) });
+ 	set_64bit((unsigned long long *)(ptep), native_pte_val(pte));
+diff --git a/include/linux/pgtable.h b/include/linux/pgtable.h
+index 5f0d7d0b9471..8f31e2ff6b58 100644
+--- a/include/linux/pgtable.h
++++ b/include/linux/pgtable.h
+@@ -316,6 +316,13 @@ static inline pte_t ptep_get(pte_t *ptep)
  }
-@@ -347,7 +347,7 @@ static inline pud_t *pud_offset(p4d_t *p
- static inline void set_pgd(pgd_t *pgdp, pgd_t pgd)
- {
- 	if (pgtable_l5_enabled)
--		*pgdp = pgd;
-+		WRITE_ONCE(*pgdp, pgd);
- 	else
- 		set_p4d((p4d_t *)pgdp, (p4d_t){ pgd_val(pgd) });
- }
---- a/arch/riscv/include/asm/pgtable.h
-+++ b/arch/riscv/include/asm/pgtable.h
-@@ -248,7 +248,7 @@ static inline int pmd_leaf(pmd_t pmd)
+ #endif
  
- static inline void set_pmd(pmd_t *pmdp, pmd_t pmd)
- {
--	*pmdp = pmd;
-+	WRITE_ONCE(*pmdp, pmd);
- }
++#ifndef __HAVE_ARCH_PMDP_GET
++static inline pmd_t pmdp_get(pmd_t *pmdp)
++{
++	return READ_ONCE(*pmdp);
++}
++#endif
++
+ #ifdef CONFIG_GUP_GET_PTE_LOW_HIGH
+ /*
+  * WARNING: only to be used in the get_user_pages_fast() implementation.
+@@ -361,15 +368,42 @@ static inline pte_t ptep_get_lockless(pte_t *ptep)
  
- static inline void pmd_clear(pmd_t *pmdp)
-@@ -515,7 +515,7 @@ static inline int pte_same(pte_t pte_a,
+ 	return pte;
+ }
+-#else /* CONFIG_GUP_GET_PTE_LOW_HIGH */
++#define ptep_get_lockless ptep_get_lockless
++
++#if CONFIG_PGTABLE_LEVELS > 2
++static inline pmd_t pmdp_get_lockless(pmd_t *pmdp)
++{
++	pmd_t pmd;
++
++	do {
++		pmd.pmd_low = pmdp->pmd_low;
++		smp_rmb();
++		pmd.pmd_high = pmdp->pmd_high;
++		smp_rmb();
++	} while (unlikely(pmd.pmd_low != pmdp->pmd_low));
++
++	return pmd;
++}
++#define pmdp_get_lockless pmdp_get_lockless
++#endif /* CONFIG_PGTABLE_LEVELS > 2 */
++#endif /* CONFIG_GUP_GET_PTE_LOW_HIGH */
++
+ /*
+  * We require that the PTE can be read atomically.
   */
- static inline void set_pte(pte_t *ptep, pte_t pteval)
++#ifndef ptep_get_lockless
+ static inline pte_t ptep_get_lockless(pte_t *ptep)
  {
--	*ptep = pteval;
-+	WRITE_ONCE(*ptep, pteval);
+ 	return ptep_get(ptep);
+ }
+-#endif /* CONFIG_GUP_GET_PTE_LOW_HIGH */
++#endif
++
++#ifndef pmdp_get_lockless
++static inline pmd_t pmdp_get_lockless(pmd_t *pmdp)
++{
++	return pmdp_get(pmdp);
++}
++#endif
+ 
+ #ifdef CONFIG_TRANSPARENT_HUGEPAGE
+ #ifndef __HAVE_ARCH_PMDP_HUGE_GET_AND_CLEAR
+@@ -1339,17 +1373,10 @@ static inline int pud_trans_unstable(pud_t *pud)
+ #endif
  }
  
- void flush_icache_pte(pte_t pte);
+-#ifndef pmd_read_atomic
+ static inline pmd_t pmd_read_atomic(pmd_t *pmdp)
+ {
+-	/*
+-	 * Depend on compiler for an atomic pmd read. NOTE: this is
+-	 * only going to work, if the pmdval_t isn't larger than
+-	 * an unsigned long.
+-	 */
+-	return *pmdp;
++	return pmdp_get_lockless(pmdp);
+ }
+-#endif
+ 
+ #ifndef arch_needs_pgtable_deposit
+ #define arch_needs_pgtable_deposit() (false)
+-- 
+2.43.0
+
 
 
 
