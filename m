@@ -1,207 +1,153 @@
-Return-Path: <stable+bounces-75811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71B2C974F21
-	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 11:56:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE3A7974F3E
+	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 12:06:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 968411C2096D
-	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 09:56:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7944D2882DD
+	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 10:06:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 199AD1714C0;
-	Wed, 11 Sep 2024 09:56:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B50117B51B;
+	Wed, 11 Sep 2024 10:06:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="A7tDLrGm"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="YDH5r8Yt";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="uFysFXLB"
 X-Original-To: stable@vger.kernel.org
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC8DD183090;
-	Wed, 11 Sep 2024 09:56:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC85613A884;
+	Wed, 11 Sep 2024 10:06:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726048591; cv=none; b=Db1Hph+0JzKZ2WY3piL1s+iFFvB4sy1WF2wGp29iSLnmmZb+ukW9LOxFFTCQFa8i6ehBHSXMAKUST1Hvkwz+huWeX/4tUFO8ZBJ6pVUgWpmEl36hS6ydVezQxU7s3xpwicRWiE+VY+lENwHMF3NrwU9eBhpBUWdb/IqI7PXaGTk=
+	t=1726049213; cv=none; b=rMWVb/goqn5cn+HreEm+89nG/fK1Sb5HyxStE0GUf7Svi5Q+2f2M5J2urX5zGgUEvvS2Ilu2kpPY2bZQYTnFV+dgzwt7oPQm2aVgemW9L5stefK1eS+spDT8UpOWD8B2KArs7KgEn9uAQqOan42ykrwGBRtCw71uhduKrPCM4q4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726048591; c=relaxed/simple;
-	bh=onQrlm7Spgay/NhleJW/fE7MXyrydOTKX3HcUEyerqY=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lWQKntBxMWADeiNrq112rTRc3RwnRml+pX7Sz0etxcQSi/4vHUqpcH2Nla6IF5PpT0M4Zlxiggax71qKt7pW6JUbtzdTMLh+Z/jzOt1UReyNMyhxng5jPO5pjBVjNJodCIXyHq/Rt0Eqx8E8E9/NNmrHCaxGzLctTF2ZCnnMjoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=A7tDLrGm; arc=none smtp.client-ip=60.244.123.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 1bd4e144702411efb66947d174671e26-20240911
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=nUmaVNM1YQIFyvYzAgNVxdg5wnm8OSBcsLnkQn2Ri5w=;
-	b=A7tDLrGmfG5nhtG/247Q/RxtE/8PZRtd+2mQOTsVABpulrYPPXCQMPGw4TE6A5yDJ6NSHYCxVteYB6wjr0XLJ103Ab5hWwR2SduqNEFcVHRP9xiB23si7He9BViiXmvbYkzoQe5gta6Xkzxfk28Wr7SGArltzW5LdI8tMVC9asU=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.41,REQID:d1eebb60-fe53-4856-be96-23ecb18a399d,IP:0,U
-	RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:-25
-X-CID-META: VersionHash:6dc6a47,CLOUDID:b4480ad0-7921-4900-88a1-3aef019a55ce,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-	RL:11|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
-	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
-X-UUID: 1bd4e144702411efb66947d174671e26-20240911
-Received: from mtkmbs13n1.mediatek.inc [(172.21.101.193)] by mailgw01.mediatek.com
-	(envelope-from <peter.wang@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 681956778; Wed, 11 Sep 2024 17:56:25 +0800
-Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
- MTKMBS09N1.mediatek.inc (172.21.101.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Wed, 11 Sep 2024 17:56:24 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Wed, 11 Sep 2024 17:56:24 +0800
-From: <peter.wang@mediatek.com>
-To: <linux-scsi@vger.kernel.org>, <martin.petersen@oracle.com>,
-	<avri.altman@wdc.com>, <alim.akhtar@samsung.com>, <jejb@linux.ibm.com>
-CC: <wsd_upstream@mediatek.com>, <linux-mediatek@lists.infradead.org>,
-	<peter.wang@mediatek.com>, <chun-hung.wu@mediatek.com>,
-	<alice.chao@mediatek.com>, <cc.chou@mediatek.com>,
-	<chaotian.jing@mediatek.com>, <jiajie.hao@mediatek.com>,
-	<powen.kao@mediatek.com>, <qilin.tan@mediatek.com>, <lin.gui@mediatek.com>,
-	<tun-yu.yu@mediatek.com>, <eddie.huang@mediatek.com>,
-	<naomi.chu@mediatek.com>, <ed.tsai@mediatek.com>, <bvanassche@acm.org>,
-	<quic_nguyenb@quicinc.com>, <stable@vger.kernel.org>
-Subject: [PATCH v6 2/2] ufs: core: requeue aborted request
-Date: Wed, 11 Sep 2024 17:56:22 +0800
-Message-ID: <20240911095622.19225-3-peter.wang@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20240911095622.19225-1-peter.wang@mediatek.com>
-References: <20240911095622.19225-1-peter.wang@mediatek.com>
+	s=arc-20240116; t=1726049213; c=relaxed/simple;
+	bh=j7Vkpupxfk7+rTtHxoILPpzEtyYb9xsvJQ/vdmrzzd0=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:MIME-Version:
+	 Message-ID:Content-Type; b=lWYCCZATmiNeX2/yL6h/rPXUnDXcY/lqGk90Ou9PiPxIo3GLPRRFWiqG2ZBA/3+hATCCIEXIB5ARhaFiJM4vsAy8yI8EpRqTwq5bo8ISydKEPRLfPdOPzQlD6iTybKfvHVLQnoo3EgkBfgP0R7zFwygWjgj7s2SImColbMDVTLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=YDH5r8Yt; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=uFysFXLB; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+Date: Wed, 11 Sep 2024 10:06:49 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1726049210;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VQ3kUgGWKSQGLSixMX014dGSHDJnnNvpx2tES2cafgw=;
+	b=YDH5r8YtydDRk+ayh0emZVh9cemy5RgsliL52Ll1iWmcFY+jJlE9XbCN76+E5CrFiaECGf
+	3+wGWun3o8t3SOYPDiMo/R/32ya7ugbYXac0Mjjxoeo/UL35ZMhbKw5+pLRaA3lY/BnerB
+	jNa2yQqsyMO6egi7wTSS6ThEIjP6cWeXa6Y1AfEWXej+uPG47RCz6MFRTNHgqZgXl7XiWk
+	q66ey5/JD9bH4rNOowtEuW/hj5JEKe08Dh7vpp+N/IYluz3jBqSiOAtMi6DDnu/D9D1VTi
+	8nFOO/RhhUv91Tq5vLTy6L9fFo1o8hWYhm60PVbhpfu2u4yrsl6+Nq/jzeii9A==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1726049210;
+	h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+	 message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+	 content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=VQ3kUgGWKSQGLSixMX014dGSHDJnnNvpx2tES2cafgw=;
+	b=uFysFXLBxX9+Z/XY8gqqvALom4rFKYtzK52NT8frKSi6doKtIgIOLbddTYQpSyoaAeXFe1
+	E7gi6GEbYIzI6eCw==
+From: "tip-bot2 for Kan Liang" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To: linux-tip-commits@vger.kernel.org
+Subject: [tip: perf/urgent] perf/x86/intel: Allow to setup LBR for counting
+ event for BPF
+Cc: Andrii Nakryiko <andrii.nakryiko@gmail.com>,
+ Kan Liang <kan.liang@linux.intel.com>,
+ "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+ Andrii Nakryiko <andrii@kernel.org>, stable@vger.kernel.org, x86@kernel.org,
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20240909155848.326640-1-kan.liang@linux.intel.com>
+References: <20240909155848.326640-1-kan.liang@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK: N
+Message-ID: <172604920952.2215.6617498667963214270.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe:
+ Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Precedence: bulk
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 
-From: Peter Wang <peter.wang@mediatek.com>
+The following commit has been merged into the perf/urgent branch of tip:
 
-ufshcd_abort_all forcibly aborts all on-going commands and the host
-controller will automatically fill in the OCS field of the corresponding
-response with OCS_ABORTED based on different working modes.
+Commit-ID:     ef493f4b122d6b14a6de111d1acac1eab1d673b0
+Gitweb:        https://git.kernel.org/tip/ef493f4b122d6b14a6de111d1acac1eab1d673b0
+Author:        Kan Liang <kan.liang@linux.intel.com>
+AuthorDate:    Mon, 09 Sep 2024 08:58:48 -07:00
+Committer:     Peter Zijlstra <peterz@infradead.org>
+CommitterDate: Tue, 10 Sep 2024 12:02:23 +02:00
 
-MCQ mode: aborts a command using SQ cleanup, The host controller
-will post a Completion Queue entry with OCS = ABORTED.
+perf/x86/intel: Allow to setup LBR for counting event for BPF
 
-SDB mode: aborts a command using UTRLCLR. Task Management response
-which means a Transfer Request was aborted.
+The BPF subsystem may capture LBR data on a counting event. However, the
+current implementation assumes that LBR can/should only be used with
+sampling events.
 
-For these two cases, set a flag to notify SCSI to requeue the
-command after receiving response with OCS_ABORTED.
+For instance, retsnoop tool ([0]) makes an extensive use of this
+functionality and sets up perf event as follows:
 
-Fixes: ab248643d3d6 ("scsi: ufs: core: Add error handling for MCQ mode")
+	struct perf_event_attr attr;
+
+	memset(&attr, 0, sizeof(attr));
+	attr.size = sizeof(attr);
+	attr.type = PERF_TYPE_HARDWARE;
+	attr.config = PERF_COUNT_HW_CPU_CYCLES;
+	attr.sample_type = PERF_SAMPLE_BRANCH_STACK;
+	attr.branch_sample_type = PERF_SAMPLE_BRANCH_KERNEL;
+
+To limit the LBR for a sampling event is to avoid unnecessary branch
+stack setup for a counting event in the sample read. Because LBR is only
+read in the sampling event's overflow.
+
+Although in most cases LBR is used in sampling, there is no HW limit to
+bind LBR to the sampling mode. Allow an LBR setup for a counting event
+unless in the sample read mode.
+
+Fixes: 85846b27072d ("perf/x86: Add PERF_X86_EVENT_NEEDS_BRANCH_STACK flag")
+Closes: https://lore.kernel.org/lkml/20240905180055.1221620-1-andrii@kernel.org/
+Reported-by: Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Acked-by: Andrii Nakryiko <andrii@kernel.org>
+Tested-by: Andrii Nakryiko <andrii@kernel.org>
 Cc: stable@vger.kernel.org
-Signed-off-by: Peter Wang <peter.wang@mediatek.com>
+Link: https://lore.kernel.org/r/20240909155848.326640-1-kan.liang@linux.intel.com
 ---
- drivers/ufs/core/ufshcd.c | 35 ++++++++++++++++++++---------------
- include/ufs/ufshcd.h      |  3 +++
- 2 files changed, 23 insertions(+), 15 deletions(-)
+ arch/x86/events/intel/core.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index a6f818cdef0e..a0548a495f30 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -3006,6 +3006,7 @@ static int ufshcd_queuecommand(struct Scsi_Host *host, struct scsi_cmnd *cmd)
- 	ufshcd_prepare_lrbp_crypto(scsi_cmd_to_rq(cmd), lrbp);
- 
- 	lrbp->req_abort_skip = false;
-+	lrbp->abort_initiated_by_eh = false;
- 
- 	ufshcd_comp_scsi_upiu(hba, lrbp);
- 
-@@ -5404,7 +5405,10 @@ ufshcd_transfer_rsp_status(struct ufs_hba *hba, struct ufshcd_lrb *lrbp,
- 		}
- 		break;
- 	case OCS_ABORTED:
--		result |= DID_ABORT << 16;
-+		if (lrbp->abort_initiated_by_eh)
-+			result |= DID_REQUEUE << 16;
-+		else
-+			result |= DID_ABORT << 16;
- 		break;
- 	case OCS_INVALID_COMMAND_STATUS:
- 		result |= DID_REQUEUE << 16;
-@@ -6471,26 +6475,12 @@ static bool ufshcd_abort_one(struct request *rq, void *priv)
- 	struct scsi_device *sdev = cmd->device;
- 	struct Scsi_Host *shost = sdev->host;
- 	struct ufs_hba *hba = shost_priv(shost);
--	struct ufshcd_lrb *lrbp = &hba->lrb[tag];
--	struct ufs_hw_queue *hwq;
--	unsigned long flags;
- 
- 	*ret = ufshcd_try_to_abort_task(hba, tag);
- 	dev_err(hba->dev, "Aborting tag %d / CDB %#02x %s\n", tag,
- 		hba->lrb[tag].cmd ? hba->lrb[tag].cmd->cmnd[0] : -1,
- 		*ret ? "failed" : "succeeded");
- 
--	/* Release cmd in MCQ mode if abort succeeds */
--	if (hba->mcq_enabled && (*ret == 0)) {
--		hwq = ufshcd_mcq_req_to_hwq(hba, scsi_cmd_to_rq(lrbp->cmd));
--		if (!hwq)
--			return 0;
--		spin_lock_irqsave(&hwq->cq_lock, flags);
--		if (ufshcd_cmd_inflight(lrbp->cmd))
--			ufshcd_release_scsi_cmd(hba, lrbp);
--		spin_unlock_irqrestore(&hwq->cq_lock, flags);
--	}
--
- 	return *ret == 0;
- }
- 
-@@ -7561,6 +7551,21 @@ int ufshcd_try_to_abort_task(struct ufs_hba *hba, int tag)
- 		goto out;
+diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
+index 9e519d8..d879478 100644
+--- a/arch/x86/events/intel/core.c
++++ b/arch/x86/events/intel/core.c
+@@ -3972,8 +3972,12 @@ static int intel_pmu_hw_config(struct perf_event *event)
+ 			x86_pmu.pebs_aliases(event);
  	}
  
-+	/*
-+	 * When the host software receives a "FUNCTION COMPLETE", set flag
-+	 * to requeue command after receive response with OCS_ABORTED
-+	 * SDB mode: UTRLCLR Task Management response which means a Transfer
-+	 *           Request was aborted.
-+	 * MCQ mode: Host will post to CQ with OCS_ABORTED after SQ cleanup
-+	 *
-+	 * This flag is set because error handler ufshcd_abort_all forcibly
-+	 * aborts all commands, and the host controller will automatically
-+	 * fill in the OCS field of the corresponding response with OCS_ABORTED.
-+	 * Therefore, upon receiving this response, it needs to be requeued.
-+	 */
-+	if (!err && ufshcd_eh_in_progress(hba))
-+		lrbp->abort_initiated_by_eh = true;
-+
- 	err = ufshcd_clear_cmd(hba, tag);
- 	if (err)
- 		dev_err(hba->dev, "%s: Failed clearing cmd at tag %d, err %d\n",
-diff --git a/include/ufs/ufshcd.h b/include/ufs/ufshcd.h
-index 0fd2aebac728..07b5e60e6c44 100644
---- a/include/ufs/ufshcd.h
-+++ b/include/ufs/ufshcd.h
-@@ -173,6 +173,8 @@ struct ufs_pm_lvl_states {
-  * @crypto_key_slot: the key slot to use for inline crypto (-1 if none)
-  * @data_unit_num: the data unit number for the first block for inline crypto
-  * @req_abort_skip: skip request abort task flag
-+ * @abort_initiated_by_eh: The flag is specifically used to handle
-+ *                         ufshcd_err_handler forcibly aborts.
-  */
- struct ufshcd_lrb {
- 	struct utp_transfer_req_desc *utr_descriptor_ptr;
-@@ -202,6 +204,7 @@ struct ufshcd_lrb {
- #endif
+-	if (needs_branch_stack(event) && is_sampling_event(event))
+-		event->hw.flags  |= PERF_X86_EVENT_NEEDS_BRANCH_STACK;
++	if (needs_branch_stack(event)) {
++		/* Avoid branch stack setup for counting events in SAMPLE READ */
++		if (is_sampling_event(event) ||
++		    !(event->attr.sample_type & PERF_SAMPLE_READ))
++			event->hw.flags |= PERF_X86_EVENT_NEEDS_BRANCH_STACK;
++	}
  
- 	bool req_abort_skip;
-+	bool abort_initiated_by_eh;
- };
- 
- /**
--- 
-2.45.2
-
+ 	if (branch_sample_counters(event)) {
+ 		struct perf_event *leader, *sibling;
 
