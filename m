@@ -1,58 +1,83 @@
-Return-Path: <stable+bounces-75834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75835-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B216975326
-	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 15:03:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28612975328
+	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 15:03:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8D9221C20E2F
-	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 13:03:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5B4B71C223F2
+	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 13:03:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 885CD187FE9;
-	Wed, 11 Sep 2024 13:03:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBEE61885B8;
+	Wed, 11 Sep 2024 13:03:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J2ruDyVu"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FoPiNejF"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 381FE2F860;
-	Wed, 11 Sep 2024 13:03:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FA41156C6C;
+	Wed, 11 Sep 2024 13:03:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726059806; cv=none; b=JDyQihsyx8SFHyxRGLicbnBgbuyDHBHfbGSE/bdejO+LFx4N6VAKqlJmafS+klmZoea2NXZir0ePe8rq/4YYVzPooXfS4MbbcEr7V/i6iuDzJoPzBD13/thPf4O7fkP0eSih8H95FICoUd77dXevdGSkpL2EmE9rBcu+ECUnCDw=
+	t=1726059821; cv=none; b=qAEHuWAR6hHFuFDWdj42ZW/DI+/d/CxXWtItgqqxY0PCc03y/fEopDbJ8zHgV//cMSDIGI5uVZ4+DvN/5FqU/34ojNyYdithaURHA3rgotKvBjILPH8PSuWhN6tLWm4G+9+ErqM23AO+1RjsxneMsCy7YAVoISjh4nQMcNVc8yg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726059806; c=relaxed/simple;
-	bh=2pCs1t6UJrwp6f9PYdU/Sx+jCvACRP7QBjm89RH4+ac=;
+	s=arc-20240116; t=1726059821; c=relaxed/simple;
+	bh=06KUJ6FSLxBVrfoCMTs/MWMdnJKm/uUyZyDWiPvPxm0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Oo5ng2+GI7VeJE+irfhNrr4XrKh6fMv20FFBPLjM0jvfEliQETsHgqAXJy7c8jGzg5HWEosRh5E+kKgacD3qfn7YIheinHKmDQz0fvDDgrc3ohgtRkapC/UOxu/YThUsWpQei2Pn60lBoSW64LvX5iJOrZS1IWshdBxt4N6Op/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J2ruDyVu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 658AEC4CEC5;
-	Wed, 11 Sep 2024 13:03:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726059806;
-	bh=2pCs1t6UJrwp6f9PYdU/Sx+jCvACRP7QBjm89RH4+ac=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=J2ruDyVu1GUpuyOMUMAgWqaEM6YQN2wn5w/tDqF3SWoQjjZQnun0b5WT4KMzbmc4p
-	 qdwp+n766msXhmWZxunu7LpC1kGLR0xzPXTVKrGY+lB+X7qhUhP/T5wLLX6t02o9t3
-	 d8x6inRDWHrJCEe5IM3WksvsMXHMaSXl6HHgZvSM=
-Date: Wed, 11 Sep 2024 15:03:23 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	allen.lkml@gmail.com, broonie@kernel.org,
-	Helge Deller <deller@gmx.de>
-Subject: Re: [PATCH 5.4 000/134] 5.4.283-rc1 review
-Message-ID: <2024091116-anemia-tweezers-2fab@gregkh>
-References: <20240901160809.752718937@linuxfoundation.org>
- <092aa55c-0538-41e5-8ed0-d0a96b06f32e@roeck-us.net>
+	 Content-Type:Content-Disposition:In-Reply-To; b=RwOr7RPQcYwU5fhCwscA9Fq/i7QKg5kJgZ/+nPDwWcoHlu0+KR1T0lPYpdJCTECJSLl0EpkxE9/YI8/8rRUlmdTAjxWdOrmSbKrpVPGVqTV3rtXUp/L9Pfmw1iAwkJRv0XASfguuZLyNF3gVjTSK1sGyW6ITq1Abf2XrJ3RYcpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FoPiNejF; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1726059820; x=1757595820;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=06KUJ6FSLxBVrfoCMTs/MWMdnJKm/uUyZyDWiPvPxm0=;
+  b=FoPiNejFZa75Xvqq1L6e6t2Tn3qdEDiR6E+5QSRB6y+lkXI0Cw1mcHz5
+   q0rzP7kD11FbnQI2OoT6j7eZdeJJ3x5DiT/7jeovJ9jmzBRAH49IFp+X1
+   xlc7PPPOVF9QUskPOtJ4JYLzqzc46ejdRpFPPkMDLaqxwQ4X0A0Ap2cZm
+   JXhID4ZdxCPoEOOZpcBwT0LrfCtcWvZ7Mx0J5VfSaPlFTqDwwIUxP9Ok8
+   UQcKRKEz4HIm+Ew8w4l53jHEXMYawQI4fpQcByW5yGvwBNckGQHnqYEWu
+   fCIJhSNWmCi3J/llP/t9VJrXRRri0bD47SlOW1ni9gHP50h5Zzb2m0OAW
+   g==;
+X-CSE-ConnectionGUID: 9kkHQUEyR8SLv6IhFQIi8A==
+X-CSE-MsgGUID: 2lCGWjQsTa2dFGbOP7mTyg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11191"; a="47375161"
+X-IronPort-AV: E=Sophos;i="6.10,220,1719903600"; 
+   d="scan'208";a="47375161"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2024 06:03:40 -0700
+X-CSE-ConnectionGUID: quJw22cRT7al/h7UKBNqYw==
+X-CSE-MsgGUID: cExRptkVTTCixmES8/hz4w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,220,1719903600"; 
+   d="scan'208";a="68128173"
+Received: from black.fi.intel.com ([10.237.72.28])
+  by orviesa008.jf.intel.com with ESMTP; 11 Sep 2024 06:03:36 -0700
+Received: by black.fi.intel.com (Postfix, from userid 1000)
+	id DB83F192; Wed, 11 Sep 2024 16:03:33 +0300 (EEST)
+Date: Wed, 11 Sep 2024 16:03:33 +0300
+From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+To: Alexey Gladkov <legion@kernel.org>
+Cc: Dave Hansen <dave.hansen@intel.com>, linux-kernel@vger.kernel.org, 
+	linux-coco@lists.linux.dev, Thomas Gleixner <tglx@linutronix.de>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Yuan Yao <yuan.yao@intel.com>, 
+	Geert Uytterhoeven <geert@linux-m68k.org>, Yuntao Wang <ytcoode@gmail.com>, Kai Huang <kai.huang@intel.com>, 
+	Baoquan He <bhe@redhat.com>, Oleg Nesterov <oleg@redhat.com>, cho@microsoft.com, 
+	decui@microsoft.com, John.Starks@microsoft.com, stable@vger.kernel.org
+Subject: Re: [PATCH v6 1/6] x86/tdx: Fix "in-kernel MMIO" check
+Message-ID: <ijxp5xk6kq7gk4myfaijnq5vunrq6tcoqu3eoqoy6n7qfvvqjg@5ca372qmmy2o>
+References: <cover.1724837158.git.legion@kernel.org>
+ <cover.1725622408.git.legion@kernel.org>
+ <398de747c81e06be4d3f3602ee11a7e2881f31ed.1725622408.git.legion@kernel.org>
+ <24ec1497-af03-4e65-abb4-db89590fb28e@intel.com>
+ <ZuGITwFiv5X3wg0y@example.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,42 +86,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <092aa55c-0538-41e5-8ed0-d0a96b06f32e@roeck-us.net>
+In-Reply-To: <ZuGITwFiv5X3wg0y@example.org>
 
-On Thu, Sep 05, 2024 at 10:52:05AM -0700, Guenter Roeck wrote:
-> On 9/1/24 09:15, Greg Kroah-Hartman wrote:
-> > This is the start of the stable review cycle for the 5.4.283 release.
-> > There are 134 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
+On Wed, Sep 11, 2024 at 02:08:47PM +0200, Alexey Gladkov wrote:
+> On Tue, Sep 10, 2024 at 12:54:19PM -0700, Dave Hansen wrote:
+> > On 9/6/24 04:49, Alexey Gladkov wrote:
+> > > +static inline bool is_kernel_addr(unsigned long addr)
+> > > +{
+> > > +	return (long)addr < 0;
+> > > +}
+> > > +
+> > >  static int handle_mmio(struct pt_regs *regs, struct ve_info *ve)
+> > >  {
+> > >  	unsigned long *reg, val, vaddr;
+> > > @@ -434,6 +439,11 @@ static int handle_mmio(struct pt_regs *regs, struct ve_info *ve)
+> > >  			return -EINVAL;
+> > >  	}
+> > >  
+> > > +	if (!user_mode(regs) && !is_kernel_addr(ve->gla)) {
+> > > +		WARN_ONCE(1, "Access to userspace address is not supported");
+> > > +		return -EINVAL;
+> > > +	}
 > > 
-> > Responses should be made by Tue, 03 Sep 2024 16:07:34 +0000.
-> > Anything received after that time might be too late.
+> > Should we really be open-coding a "is_kernel_addr" check?  I mean,
+> > TASK_SIZE_MAX is there for a reason.  While I doubt we'd ever change the
+> > positive vs. negative address space convention on 64-bit, I don't see a
+> > good reason to write a 64-bit x86-specific is_kernel_addr() when a more
+> > generic, portable and conventional idiom would do.
+> 
+> I took arch/x86/events/perf_event.h:1262 as an example. There is no
+> special reason in its own function.
+> 
+> > So, please use either a:
 > > 
-> [ ... ]
-> 
-> > Helge Deller <deller@gmx.de>
-> >      parisc: Use irq_enter_rcu() to fix warning at kernel/context_tracking.c:367
+> > 	addr < TASK_SIZE_MAX
 > > 
+> > check, or use fault_in_kernel_space() directly.
 > 
-> irq_enter_rcu() does not exist in v5.4.y and v4.19.y, resulting in the following
-> build errors in v4.19.y and v5.4.y.
-> 
-> Building parisc:allnoconfig ... failed
-> --------------
-> Error log:
-> arch/parisc/kernel/irq.c: In function 'do_cpu_irq_mask':
-> arch/parisc/kernel/irq.c:523:9: error: implicit declaration of function 'irq_enter_rcu'; did you mean 'irq_enter'? [-Werror=implicit-function-declaration]
->   523 |         irq_enter_rcu();
->       |         ^~~~~~~~~~~~~
->       |         irq_enter
-> arch/parisc/kernel/irq.c:558:9: error: implicit declaration of function 'irq_exit_rcu'; did you mean 'irq_exit'? [-Werror=implicit-function-declaration]
->   558 |         irq_exit_rcu();
->       |         ^~~~~~~~~~~~
->       |         irq_exit
-> 
+> I'll use fault_in_kernel_space() since SEV uses it. Thanks.
 
-Now fixed, sorry for the delay.
+Also user_mode() check is redundant until later in the patchset. Move it
+to the patch that allows userspace MMIO.
 
-greg k-h
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
 
