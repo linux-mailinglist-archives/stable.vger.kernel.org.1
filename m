@@ -1,129 +1,98 @@
-Return-Path: <stable+bounces-75852-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7011975798
-	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 17:52:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A74CC9757A4
+	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 17:54:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1546C1C260E7
-	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 15:52:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D9E941C25EF4
+	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 15:54:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C1C21AE047;
-	Wed, 11 Sep 2024 15:49:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B17281B29CA;
+	Wed, 11 Sep 2024 15:52:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=syndicat.com header.i=@syndicat.com header.b="n/nWhaAY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O53vvKAD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.syndicat.com (mail.syndicat.com [62.146.89.62])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8213A1ABEB8;
-	Wed, 11 Sep 2024 15:49:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.146.89.62
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68ED61A3021;
+	Wed, 11 Sep 2024 15:52:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726069798; cv=none; b=fIcxhRA+JMWxD7KPDUFtbop3dSxseFvQJs84Yuaa1CRWqZzmBIfO5cGBjp6INIm+K4KGsSHTqOWT+C1QDMsmnLIlaI4xTLeMa0Z9fGUYX0UIduwGXZtcENAAN2NTT6n102CzxO/w2PKVLWoe8WgSpZ0ZsA43aM3njUKfK11WOLg=
+	t=1726069960; cv=none; b=XCk9prNel3Qe3dWDyXr0UnUK7KI4rl50966zawUykHhaSJh763SlXkFKdBNBOr+dP4pMrWOoo4ozSqeOkZZ7agsKAjyqMxDpiK8K+0plSJCF0lwJbjzPOayp6fR6zdBpL9NSvTnHjWFO5uPD7Q6pKj3Lp9b8KPbq0yOQ8LWReeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726069798; c=relaxed/simple;
-	bh=rsDjtUbs6FEUozaeUr5ELGw2oV4jRVnMxSabRL/2HgY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hjaMvqtGRR53Qn9q8iySMd/PspomoOJbC4d14IerC/aMTu6Nicy06NiPrwgSmUPvr6xD2l/4DLykhAMHPzxt+7u6CrvH5qoQK9h0x4TRPZMRul0ZHO+LbwA3C7YTfDk9YfL/PNdvn9TeXDxGsQto2iebqsJnlJ65x41EPU4RNN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=syndicat.com; spf=pass smtp.mailfrom=syndicat.com; dkim=pass (1024-bit key) header.d=syndicat.com header.i=@syndicat.com header.b=n/nWhaAY; arc=none smtp.client-ip=62.146.89.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=syndicat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=syndicat.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=syndicat.com; s=x; h=Content-Type:Content-Transfer-Encoding:MIME-Version:
-	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=fzIXo3yyzydPZssY8Emq0ERM7FiN4ixdZ6PRUNbHpxU=; b=n/nWhaAYBBuf3nzNnd7Sqg7jbe
-	2+Fmmi494pA1/npuLQeAVIeBTOimjs5oJuV4GdO3BBowfzJrOz1vFOFAfqcmC5TRBFhSLMQGFfn02
-	XIOWKcCvGhGQmY9VvnEpuyLLRNEuokHtithLAuCK9+PnE2NGdiyUh7y9bbJkPeoVQOqo=;
-Received: from localhost.syndicat.com ([127.0.0.1]:51771 helo=localhost)
-	by mail.syndicat.com with esmtp (Syndicat PostHamster 12.2 4.96.1)
-	(envelope-from <nd@syndicat.com>)
-	id 1soPbM-0007FZ-0h;
-	Wed, 11 Sep 2024 17:49:52 +0200
-X-Virus-Scanned: amavisd-new at syndicat.com
-Received: from mail.syndicat.com ([127.0.0.1])
-	by localhost (mail.syndicat.com [127.0.0.1]) (amavisd-new, port 10024)
-	with ESMTP id 0ONhiC24LKMG; Wed, 11 Sep 2024 17:49:51 +0200 (CEST)
-Received: from p579493d3.dip0.t-ipconnect.de ([87.148.147.211]:57025 helo=gongov.localnet)
-	by mail.syndicat.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Syndicat PostHamster 12.2 4.96.1)
-	(envelope-from <nd@syndicat.com>)
-	id 1soPbL-0002M7-23;
-	Wed, 11 Sep 2024 17:49:51 +0200
-From: Niels Dettenbach <nd@syndicat.com>
-To: linux-arch@vger.kernel.org
-Cc: stable@vger.kernel.org, trivial@kernel.org
-Subject: Re: [PATCH 1/1] x86: SMT broken on Xen PV DomU since 6.9 (updated)
-Date: Wed, 11 Sep 2024 17:49:46 +0200
-Message-ID: <3301863.oiGErgHkdL@gongov>
-Organization: Syndicat IT&Internet
-In-Reply-To: <4242435.1IzOArtZ34@gongov>
-References: <4242435.1IzOArtZ34@gongov>
+	s=arc-20240116; t=1726069960; c=relaxed/simple;
+	bh=EaRo3nIvBeULRRnHqzUQ05tQMRJjg5ALvOAHP3Y91Qc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=vEw9Nth+L713nkl1c9jVpJ60ipZsin3k2nzg2nLY3ai36+oXNu18T20/zpDGFEz5bnlttU7c6BQ+JYdNUTL5DBc3X4mY1+pzb2jHX19gs33W6/h4Z6ZOW6FqKPgu2fSsn7bsBLIEdYIHfzKkrvxgp/58eL3vXUWj9rC9zYIXI5Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O53vvKAD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34B5FC4CED0;
+	Wed, 11 Sep 2024 15:52:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1726069959;
+	bh=EaRo3nIvBeULRRnHqzUQ05tQMRJjg5ALvOAHP3Y91Qc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=O53vvKADVc2odhiedKGSyCanEhIgja3ljEd9a2PgKFVz2pWndZITepiIts4ziDx1J
+	 3vQaiVIX9SMnsdq7USKWHNw4CTlX51WtDUbg0nWokkrY6JOQNptxJAibuMydppfz08
+	 qwf1cQOhkPD/Q3TwL+scqChMY8uwLCwMw27awSUFEnrBrNyE7sTpF+GvwEtYZiTYn5
+	 jotU1ukSAd/CkMYs9Q9xWU/TI1IbI22GFBDkLLDPPLEO/AmSu0HOec7XH+yDnE810R
+	 QENQWKkuOOSUtuCRf23z/zGiekAJe1BxlxCyjaFgAxoYvMu6ul46En1jO9AozQ0P3f
+	 IHfFsgI9dD48w==
+Date: Wed, 11 Sep 2024 16:52:33 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com
+Subject: Re: [PATCH 5.15 000/212] 5.15.167-rc2 review
+Message-ID: <090abdd1-bd82-483e-8d51-fef56c8039ee@sirena.org.uk>
+References: <20240911130535.165892968@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7Bit
-Content-Type: text/plain; charset="utf-8"
-X-Report-Abuse-To: abuse@syndicat.com (see https://www.syndicat.com/kontakt/kontakte/)
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - mail.syndicat.com
-X-AntiAbuse: Original Domain - 
-X-AntiAbuse: Sender Address Domain - syndicat.com
-
-Am Mittwoch, 11. September 2024, 10:53:30  schrieb Niels Dettenbach:
-> virtual machines under Xen Hypervisor (DomU) running in Xen PV mode use a
-> special, nonstandard synthetized CPU topology which "just works" under
-> kernels 6.9.x while newer kernels assuming a "crash kernel" and disable
-> SMT (reducing to one CPU core) because the newer topology implementation
-> produces a wrong error "[Firmware Bug]: APIC enumeration order not
-> specification compliant" after new topology checks which are improper for
-> Xen PV platform. As a result, the kernel disables SMT and activates just
-> one CPU core within the VM (DomU).
-> 
-> The patch disables the regarding checks if it is running in Xen PV
-> mode (only) and bring back SMT / all CPUs as in the past to such DomU
-> VMs.
-> 
-> Signed-off-by: Niels Dettenbach <nd@syndicat.com>
-> 
-
-Signed-off-by: Niels Dettenbach <nd@syndicat.com>
----
-
-A reworked proposal patch which substitutes my initial proposed patch:
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ahH29RshIXgcaMP2"
+Content-Disposition: inline
+In-Reply-To: <20240911130535.165892968@linuxfoundation.org>
+X-Cookie: No Canadian coins.
 
 
---- linux/arch/x86/kernel/cpu/topology.c        2024-09-11 17:42:42.699278317 +0200
-+++ linux/arch/x86/kernel/cpu/topology.c.orig   2024-09-11 09:53:16.194095250 +0200
-@@ -132,14 +132,6 @@
-        u64 msr;
+--ahH29RshIXgcaMP2
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-        /*
--        * assume Xen PV has a working (special) topology
--        */
--       if (xen_pv_domain()) {
--               topo_info.real_bsp_apic_id = topo_info.boot_cpu_apic_id;
--               return false;
--       }
--
--       /*
-         * There is no real good way to detect whether this a kdump()
-         * kernel, but except on the Voyager SMP monstrosity which is not
-         * longer supported, the real BSP APIC ID is the first one which is
+On Wed, Sep 11, 2024 at 03:07:08PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.15.167 release.
+> There are 212 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
- 
+Tested-by: Mark Brown <broonie@kernel.org>
 
+--ahH29RshIXgcaMP2
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
 
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmbhvMAACgkQJNaLcl1U
+h9ASrwf/deW7IhEH0alp/BDC60u+MfVsjYsjFvv/Z2BSfgEr9c5wsxj9u2jBzfCD
+oUVkf5bv1+JQYiITy6RpqWOF0yozP9IpSt7Zv4+VH4wVz9zCrtp7toORL3+qfiI3
+NL8Zduflu+lkO0AzVmTpPY3NX51Yb1NKikT8/ywcRhKp+OqhZMVfW5OXjaCcmn+3
+20M7bvQOMTQeavHTaxMlptsDP8WADAJPn4Qsi6bhHbuiBrucwHsYJTw12Gi0FjvO
+32qz6x99exo1Gt+/nd+nQYViCBtF1M526M+8c38rnw8ufKvq03I2OxFhMGoU+XAB
+KlgcG5uOW3z/gxTm5xQwKanPa3xLfA==
+=peKz
+-----END PGP SIGNATURE-----
 
-
-
+--ahH29RshIXgcaMP2--
 
