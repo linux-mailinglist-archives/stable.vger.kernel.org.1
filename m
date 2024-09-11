@@ -1,97 +1,119 @@
-Return-Path: <stable+bounces-75843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75845-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6FA11975572
-	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 16:31:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A483C975612
+	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 16:52:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A21981C22CA8
-	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 14:31:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D68471C227DE
+	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 14:52:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C70EE19F124;
-	Wed, 11 Sep 2024 14:31:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EB2215C13F;
+	Wed, 11 Sep 2024 14:52:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="u/+8qiZ9"
+	dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b="eizSyDBx"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from mta-64-227.siemens.flowmailer.net (mta-64-227.siemens.flowmailer.net [185.136.64.227])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D210F192B88;
-	Wed, 11 Sep 2024 14:31:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB918F6C
+	for <stable@vger.kernel.org>; Wed, 11 Sep 2024 14:52:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.136.64.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726065111; cv=none; b=MEefkIo5iTw2sT6K5iL7gcHcjtRcjSjTz341CCTXTdDkX0L0KZhVO3ljs55vR4EVCqIAQ+VlPni16yJw7zxqaHiK5gtnnrYC6w4/mPW5nkA0lOcJ7dHqkf284Y+A8aNBvOgkc9WB5q2lTCOd3NplU6w0eNe66Tdyv66nIDQUozo=
+	t=1726066357; cv=none; b=Hrc/bOj5vD8s2SoM8kvpZToeNFf17x8ktkAtItxieEiHrEjifUPOLgX1R3ZDv30JJ0SWCkGFfCYvlSyMMmkY8frnhQGtTy1jQDoVNrNc+U1tkprBDeJ29cCPpfjE/2LLVDWzoyp5N4lvv0PwjInEzxNwomzWX9BYqU86RQ0pQUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726065111; c=relaxed/simple;
-	bh=gfWKMePXNCFVDvze8VMVK6kMx9WF1reISt4viCSBPNs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CfhSq0fPSB+hXPPYr3R4s10OJeZVvhYz2SjgQRXmYP9ELLdhxrdpHUM7gylmVzyA4V4uUmFO5Fng13gqH73vIvD9Tzg6eYFjq3OxhvpQPGpSaG5pIMvjbmiNw5zmFyPk7IiQSWLgixDOG8mJNcMN69MiryjnoDv9e1L3nVILSQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=u/+8qiZ9; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:
-	Message-ID:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:
-	Content-Type:Content-Transfer-Encoding:Content-ID:Content-Description:
-	In-Reply-To:References; bh=kazUhr9+CMKnxrHDG4LG25lGRvg5PhMm3O1ZvwtY70I=;
-	t=1726065109; x=1726497109; b=u/+8qiZ9bzv1UOEp9alY0TfTT1Cc6pn8ZIbmydUn39R40b4
-	pYUPt3nkFo+fkvShBZFWSlpgUmWwdrUD9IEojO5WdDwrFjsZd5sG0qhmjguwbbktHmi5gGpVgFleq
-	UXLocCYjdHaY1xB1J1CdHJtzT0gR77QTqdv6qUfHOOV9hvLg/U5j5l2k1Ud2PVJaU/c7GGx+KqdpO
-	14b82Zbef9yvaD6APyT6PDO9YqPXcoWWb9qA4x3NlYVIv5QFbx2Lu3nHkr7udgd9KzVDj3XNf16zG
-	f4ad5kofkJI1zPjIt/TFC3DnZbqzADeDRLVU46YE9h8EV3Mm4vizvhkRUMPjwwTA==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1soONj-00022u-U2; Wed, 11 Sep 2024 16:31:44 +0200
-Message-ID: <f4c222e2-cf94-44ec-bc69-0ab758bfb3fa@leemhuis.info>
-Date: Wed, 11 Sep 2024 16:31:43 +0200
+	s=arc-20240116; t=1726066357; c=relaxed/simple;
+	bh=f/128AteF2svPgXo8CH8dthfp+5ydTjymU4vIkiJJe8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ua3fUQlpClOJ/qAt3Bn0HdXb1dDPEFvO0hGyqjg/pVdMjlqn3hWRDvsPcGLD/50H0IJKMhNC0iMoWL/ckoX6TYFZmokFWZ231Ke+DNNvp2okwsuZwlbw/1TCCXr/vIVwK/OVQHoPWV8ERjrTWpyj4ZwHOaTw9riojssTak7JrpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com; dkim=pass (2048-bit key) header.d=siemens.com header.i=alexander.sverdlin@siemens.com header.b=eizSyDBx; arc=none smtp.client-ip=185.136.64.227
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=siemens.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rts-flowmailer.siemens.com
+Received: by mta-64-227.siemens.flowmailer.net with ESMTPSA id 202409111442165e00cd909981832c6c
+        for <stable@vger.kernel.org>;
+        Wed, 11 Sep 2024 16:42:16 +0200
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; s=fm1;
+ d=siemens.com; i=alexander.sverdlin@siemens.com;
+ h=Date:From:Subject:To:Message-ID:MIME-Version:Content-Type:Content-Transfer-Encoding:Cc;
+ bh=c9PcQZFfNdq8cUu9sqpnFLswW6Zin2UTvho5Wq+tuEE=;
+ b=eizSyDBxVpSvjni1XMMj6PhpkbTUBjCbkU/8EclL0rc/j2HAXGp6cFI5VV6J9NsnFZ65Ff
+ Rs2XfVJLw04GNsVDnkIUVXLS0Q08s2MFeADXPip+FUkIstZDVp03Xyrk6XWKM3C8K+YvmVK2
+ JHzWHkIbhsA6iFJZWT24DnqS0YoqqFLICVAPud3Vu4J8z0zbQRNHa5EGMvyUr7/lHPZ7LrKt
+ ukm4xi/CXhO5KFDOMaKfeFfFg4JzgW+rLWN8/F90RXny/Tp9XbsDqSI2/wvSGVCiDw5ZT/oT
+ VLUtQUfANBzjBNmVCspZj6VGRUQAwuBgQgQEzMgNVhRvioB7i5oRHzrg==;
+From: "A. Sverdlin" <alexander.sverdlin@siemens.com>
+To: netdev@vger.kernel.org
+Cc: Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Florian Fainelli <f.fainelli@gmail.com>,
+	Vladimir Oltean <olteanv@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	stable@vger.kernel.org
+Subject: [PATCH net] net: dsa: lan9303: avoid dsa_switch_shutdown()
+Date: Wed, 11 Sep 2024 16:40:03 +0200
+Message-ID: <20240911144006.48481-1-alexander.sverdlin@siemens.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH stable-6.10 regression] Revert "soundwire: stream: fix
- programming slave ports for non-continous port maps"
-To: Greg KH <gregkh@linuxfoundation.org>,
- =?UTF-8?Q?P=C3=A9ter_Ujfalusi?= <peter.ujfalusi@linux.intel.com>
-Cc: vkoul@kernel.org, yung-chuan.liao@linux.intel.com,
- pierre-louis.bossart@linux.intel.com, krzysztof.kozlowski@linaro.org,
- alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org,
- Linux kernel regressions list <regressions@lists.linux.dev>
-References: <20240910124009.10183-1-peter.ujfalusi@linux.intel.com>
- <febaa630-7bf4-4bb8-8bcf-a185f1b2ed65@linux.intel.com>
- <2024091130-detail-remix-34f7@gregkh>
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-Content-Language: en-US, de-DE
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <2024091130-detail-remix-34f7@gregkh>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1726065109;ac2ccdb3;
-X-HE-SMSGID: 1soONj-00022u-U2
+X-Flowmailer-Platform: Siemens
+Feedback-ID: 519:519-456497:519-21489:flowmailer
 
-On 11.09.24 14:31, Greg KH wrote:
-> On Tue, Sep 10, 2024 at 04:02:29PM +0300, Péter Ujfalusi wrote:
->>> The reverted patch causes major regression on soundwire causing all audio
->>> to fail.
->>> Interestingly the patch is only in 6.10.8 and 6.10.9, not in mainline or linux-next.
-> 
-> Really?  Commit ab8d66d132bc ("soundwire: stream: fix programming slave
-> ports for non-continous port maps") is in Linus's tree, why isn't it
-> being reverted there first?
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-FWIW, the revert should land in mainline tomorrow afaics:
-https://lore.kernel.org/all/ZuFcBcJztAgicjNt@vaman/
+dsa_switch_shutdown() doesn't bring down any ports, but only disconnects
+slaves from master. Packets still come afterwards into master port and the
+ports are being polled for link status. This leads to crashes:
 
-BTW, in case anyone cares: I think this is another report about the
-problem, this time with 6.6.y:
-https://bugzilla.kernel.org/show_bug.cgi?id=219256
+Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
+CPU: 0 PID: 442 Comm: kworker/0:3 Tainted: G O 6.1.99+ #1
+Workqueue: events_power_efficient phy_state_machine
+pc : lan9303_mdio_phy_read
+lr : lan9303_phy_read
+Call trace:
+ lan9303_mdio_phy_read
+ lan9303_phy_read
+ dsa_slave_phy_read
+ __mdiobus_read
+ mdiobus_read
+ genphy_update_link
+ genphy_read_status
+ phy_check_link_status
+ phy_state_machine
+ process_one_work
+ worker_thread
 
-Ciao, Thorsten
+Call lan9303_remove() instead to really unregister all ports before zeroing
+drvdata and dsa_ptr.
+
+Fixes: 0650bf52b31f ("net: dsa: be compatible with masters which unregister on shutdown")
+Cc: stable@vger.kernel.org
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+---
+ drivers/net/dsa/lan9303-core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/drivers/net/dsa/lan9303-core.c b/drivers/net/dsa/lan9303-core.c
+index 268949939636..ecd507355f51 100644
+--- a/drivers/net/dsa/lan9303-core.c
++++ b/drivers/net/dsa/lan9303-core.c
+@@ -1477,7 +1477,7 @@ EXPORT_SYMBOL(lan9303_remove);
+ 
+ void lan9303_shutdown(struct lan9303 *chip)
+ {
+-	dsa_switch_shutdown(chip->ds);
++	lan9303_remove(chip);
+ }
+ EXPORT_SYMBOL(lan9303_shutdown);
+ 
+-- 
+2.46.0
+
 
