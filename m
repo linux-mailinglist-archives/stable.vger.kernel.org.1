@@ -1,132 +1,103 @@
-Return-Path: <stable+bounces-75822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34D059751F3
-	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 14:23:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A33CE97526C
+	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 14:34:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D37E01F2231F
-	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 12:23:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B9EE51C25F6D
+	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 12:34:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1003186606;
-	Wed, 11 Sep 2024 12:23:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44CE719E81F;
+	Wed, 11 Sep 2024 12:31:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b="SzJcLeoD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ayVjDTRz"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.74])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEA57142E9D;
-	Wed, 11 Sep 2024 12:23:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECE7519E80F;
+	Wed, 11 Sep 2024 12:31:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726057414; cv=none; b=SVFEHQU4gOj8w6ORyghvOFsj9vrpsQiblS943jHsjtwQJzGVZEsAm24KmYxKDowa1Ys3WpPOmyMNqoAPScWTwBMiH0j4ul1F+U0cp0ZNWJpd1+jQcmQKaaMNqGs2g1DbteHV+AWG7z1oj5Xj1sl6TdhUNj+FmI9xm3D3WBlrunA=
+	t=1726057890; cv=none; b=DQGHAwSnnWI1/orIEQI9lLELhtYqIwS/Hu1moyWgQkqLa2On2IZZlqL1zL0Lr5gNgtIHGjBlP3yir2WLzI6EajrovjFkIEIzbsDSxmPf1aaaD4OnDFHeqrWazlZY/D+iq86UML0uG4M2cyFL61m9rNklUAulwSvtqf/f4MhF1zc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726057414; c=relaxed/simple;
-	bh=DqLXaji5lH2QLr1w3bBVF9EeaBQoVRIIV8XgFCrhhSU=;
+	s=arc-20240116; t=1726057890; c=relaxed/simple;
+	bh=Fdj0q0pVD/ggTHM+Ik2S/NvfwPTQ8AAyOcVULW9PyVs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=sYoV0jWbxCTkm9qrsBY9keWUu4P2+pYBPOw/p0FJHaos/OIF9CTQH/8xxzVf0zVncfACQk/8xFIXLv4+lsWlDZFBpDYJiUAZMw20Xla23cLdEo4VdOdYJ3AWykYVZJZryt34sJQvfmY9jylg2vuzhqEov5B4Rzx9rqpXSwnoMnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu; spf=pass smtp.mailfrom=heusel.eu; dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b=SzJcLeoD; arc=none smtp.client-ip=217.72.192.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heusel.eu
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heusel.eu;
-	s=s1-ionos; t=1726057373; x=1726662173; i=christian@heusel.eu;
-	bh=RbCZJv4mBL/FdxnaNMh7aE8UT2XZ+9DcRN+xckpQNFA=;
-	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:References:
-	 MIME-Version:Content-Type:In-Reply-To:cc:
-	 content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=SzJcLeoDouLb30yUDu1WGSZQZ2qUMLw7dwbpnk3BoisqnIUfsoKkkXXh1Aq2Sqe+
-	 huWQBCv8SJSDUvZbiqzCx46S5uPyfgfZjEXSmh8Jcu+uUOuB+PQREHh21SHff23L9
-	 hPPt2JTD5K7oHd/+FClidkm8P04MhAGihenIgHtWFcf3P+g50V7HjruLJEBa6i50s
-	 d7bN+0e+g//hJCfFoxAkqn071AqoH0WfUrUpaPenhzqiNE5oY2MiBY1SlRPTg2AsZ
-	 tCamF6hFu094X+yaLPW5KcdBTyeTJuwmf62h1X0SwUtegLTbidtqxm4zI7VcvnCCR
-	 ub9cDVZYWJWpq1ctXw==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from localhost ([141.70.80.5]) by mrelayeu.kundenserver.de (mreue109
- [212.227.15.183]) with ESMTPSA (Nemesis) id 1N63NW-1rvKyb2gDw-016eUN; Wed, 11
- Sep 2024 14:22:53 +0200
-Date: Wed, 11 Sep 2024 14:22:51 +0200
-From: Christian Heusel <christian@heusel.eu>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, akpm@linux-foundation.org, 
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org, 
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com, f.fainelli@gmail.com, 
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, 
-	allen.lkml@gmail.com, broonie@kernel.org
-Subject: Re: [PATCH 6.10 000/375] 6.10.10-rc1 review
-Message-ID: <3b946649-8204-487f-a173-968288701eb5@heusel.eu>
-References: <20240910092622.245959861@linuxfoundation.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=AHH8xS3N6rv4o5IaVEw7qzzheXsCSqx42nUOeGPPpaf/6sUhvlu8qoAUmWo2zXYJxIvS7+QkwCujz3qelJ4wmLDGoANwwUCronkrZksZ/RJWkNyaUlhPiQoI5mT0VncoS4NSLFr+Wv3kcYDbQlEz06TNTxXXYZRqBKiicvT5wxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ayVjDTRz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D761DC4CEC5;
+	Wed, 11 Sep 2024 12:31:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1726057889;
+	bh=Fdj0q0pVD/ggTHM+Ik2S/NvfwPTQ8AAyOcVULW9PyVs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ayVjDTRz6hgaLP0bob5pmAAi5bmpANJE/YTTIfCCz7FoFJJkabeYrkTlo205lNaHe
+	 ZftpOfexRw3cV1FhK50YbS1uxkAGjB2ZcAvWRgb/uut69eeRwuKFaDk/vxxZn/Tb3A
+	 xSpkq4nvgYbRX0XJY41QKVhJUgHpVlMtlOPF4+v4=
+Date: Wed, 11 Sep 2024 14:31:26 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: =?iso-8859-1?Q?P=E9ter?= Ujfalusi <peter.ujfalusi@linux.intel.com>
+Cc: vkoul@kernel.org, yung-chuan.liao@linux.intel.com,
+	pierre-louis.bossart@linux.intel.com,
+	krzysztof.kozlowski@linaro.org, alsa-devel@alsa-project.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH stable-6.10 regression] Revert "soundwire: stream: fix
+ programming slave ports for non-continous port maps"
+Message-ID: <2024091130-detail-remix-34f7@gregkh>
+References: <20240910124009.10183-1-peter.ujfalusi@linux.intel.com>
+ <febaa630-7bf4-4bb8-8bcf-a185f1b2ed65@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="xj3xznqvjwvwf5ri"
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
-X-Provags-ID: V03:K1:pwWXrMZdMBs8R7+3b19VMLK4MTTYGRQ6OAp/y/uiyC4MP6CRHJK
- M9HgXC6fSe1G1Z26g9QSf5ovz/K/eRIsX4cmzg69dbkYO9lcC6YSQf0GBb8JcV4mQsMca58
- A/jeEmgPk/Y0et+Xg8BA/8hVXqJ6yF17oYdCkilzF//Ia9yqp9+ZqhTk8LT8V8Z09wvwPzl
- EhwljWsxlcW8tZO0UOlog==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:qdiBTps56VA=;WwdF3rOZGzIVencPwdm+ae/8St3
- rQx4D0SZsv0M6hBYUi+pD/7QFCFgZAVCLLl6HECcJHmAuetXdVR1qKeS+z4Wrl44P2BqiHDbE
- ibCkxR8xI/cAXQYi8FXWE0r3+1OTrm3zfdO1b21VtD7S/uodoRPcQPfRp1S26Y9VWpb+FFw0T
- F3TUmGtuu8Bd2zbRcTeKA3N9F705dMOWVL7Mdt6s+kMyxM9YXvdDz9eEr3Nwqdndw4+t+gfxR
- KTJOHhYxAGLg4H0q+gnrRzp12Ly7wF8n8GjiHLrkLRXHt0EW9jVKIQsQ1X4k8Ea/BrtARrHaG
- VGYBoD32F9/44GtodwmdlgA7q3s0+tIlBitSeWx+j2/kaMRxOANqwDWmBRAgRCqUUjiEb+r+3
- XjXsFu01uFjR0+NJQuwNDTP5gHrN0JWGgoLYa1u0EINLk5R0PfTbkmktazMwAwM/X/m/+RGRc
- 5PN82i8i4XnkVbXBpdBgfhqEJ2yhos9kmTqlRMz9pg2p3nWXIH4WeAC2FR+U8B8QTejc6nmoA
- 6YI3U9gc6IsH1C5eGPf7uxtkaDQ+V9/4KgFu5vNyVCdPV3G0lzT0TuwWhbFUW0UPcyn0J/16k
- Ka1+lfHXDSTTgOORiEPT31P0gXoV25XowLwJGX61c834wkYSB5X+j9r7wBV/r8BSkMUiAhFBA
- er0dG192fL6f0T3HGv8vC4X9/zwC7OnVyYMP79ShKpTRm5EPInsr8+0zA4NZ9YAtNMRy559v5
- O3mxSzBTqlPrqnvyXrSfwocpDowX3hxoQ==
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <febaa630-7bf4-4bb8-8bcf-a185f1b2ed65@linux.intel.com>
 
+On Tue, Sep 10, 2024 at 04:02:29PM +0300, Péter Ujfalusi wrote:
+> Hi,
+> 
+> On 10/09/2024 15:40, Peter Ujfalusi wrote:
+> > The prop->src_dpn_prop and prop.sink_dpn_prop is allocated for the _number_
+> > of ports and it is forced as 0 index based.
+> > 
+> > The original code was correct while the change to walk the bits and use
+> > their position as index into the arrays is not correct.
+> > 
+> > For exmple we can have the prop.source_ports=0x2, which means we have one
+> > port, but the prop.src_dpn_prop[1] is accessing outside of the allocated
+> > memory.
+> > 
+> > This reverts commit 6fa78e9c41471fe43052cd6feba6eae1b0277ae3.
+> 
+> I just noticed that Krzysztof already sent the revert patch but it is
+> not picked up for stable-6.10.y
+> 
+> https://lore.kernel.org/lkml/20240909164746.136629-1-krzysztof.kozlowski@linaro.org/
 
---xj3xznqvjwvwf5ri
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Is this in Linus's tree yet?  That's what we are waiting for.
 
-On 24/09/10 11:26AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.10.10 release.
-> There are 375 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->=20
-> Responses should be made by Thu, 12 Sep 2024 09:25:22 +0000.
-> Anything received after that time might be too late.
+> > Cc: stable@vger.kernel.org # 6.10.y
+> > Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+> > ---
+> > Hi,
+> > 
+> > The reverted patch causes major regression on soundwire causing all audio
+> > to fail.
+> > Interestingly the patch is only in 6.10.8 and 6.10.9, not in mainline or linux-next.
 
-Tested-by: Christian Heusel <christian@heusel.eu>
+Really?  Commit ab8d66d132bc ("soundwire: stream: fix programming slave
+ports for non-continous port maps") is in Linus's tree, why isn't it
+being reverted there first?
 
-Tested on a ThinkPad E14 Gen 3 with a AMD Ryzen 5 5500U CPU and on the
-Steam Deck (LCD varian).
+confused,
 
---xj3xznqvjwvwf5ri
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEb3ea3iR6a4oPcswTwEfU8yi1JYUFAmbhi5sACgkQwEfU8yi1
-JYXI8Q//W/7liD0ogMri/rAvtFFbKCn7QDvcrh4woZm6IbHnQjnhixVbn2uenOGg
-DAqMpAy2VTI6nTOhELAHsnm68V0gwHbGUXqq8Z8+spYJOq55SmhFqlcEVGwQXs/o
-WROGpfGsltMVILxk2cNlTC3zAWIvf6IcHI1XSih1AVJxXXlZHM5HNVJcwghXt5jg
-h9CSksSOB21jWVlbFvRGzPGC0byaA4f9187D3GLy85XUTNB3TroQGcwatrhaPPBD
-S+GBIYsqtnvgOH9KEm7xrY/nQWLXgFuzq5GS7S+i7br0QwOuw337PUCKSi24TwE/
-Evin9Fj0vgRsvFnCBTc6D4wGUZA6QnZpRhSkAEuqWIFc6XBqtn3KG8pQhgXJvYVu
-Tyh4rdZnoy3xnrzqZT4vtNcuVlr4Hva9QnwPUAOhO3JXah/JitD8HXVwrH4DxGii
-w8tkdLI5tUV1GuiiFn4bdgEXNtKHjwiyt4i3rvNLfOtTBnlQbyMkKwd2yHrCzfMs
-JNQc5FAk+pVKhUnOeSybY0BkD9ebSeb5fKfK9Mxd9SLGT1TbnbfqyyxAZGMCy1Vu
-iBHyOCfBAihNVGrrReyUP9qdU5FYmE6UCfsJlzWyCrJQkBaI+fkMyDaji6ALKUk+
-zWCIUZNmgzF8cMSCkhVDyY7KN30+2yunhJsqQHDPPA6EPqMt/88=
-=rjMj
------END PGP SIGNATURE-----
-
---xj3xznqvjwvwf5ri--
+greg k-h
 
