@@ -1,164 +1,113 @@
-Return-Path: <stable+bounces-75903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1B01975AB4
-	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 21:12:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6BBB6975ADB
+	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 21:32:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 432211F23FF7
-	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 19:12:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3501D283CC6
+	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 19:32:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BD451B78EB;
-	Wed, 11 Sep 2024 19:12:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 365B31BA276;
+	Wed, 11 Sep 2024 19:32:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="w94iOTF5"
+	dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b="KDJgk4Ny"
 X-Original-To: stable@vger.kernel.org
-Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f48.google.com (mail-io1-f48.google.com [209.85.166.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC5B51B1D53;
-	Wed, 11 Sep 2024 19:12:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA7D21B5808
+	for <stable@vger.kernel.org>; Wed, 11 Sep 2024 19:32:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726081931; cv=none; b=Jrj6z4MzXKuRbQ28XcWjAj82PIZiRILSy14Kh0W5u/bGnnzirTsw40BQM8rRDXQFmi9Xet5fhe/6hGU2LdkzjjZXENGJuxk+7iUaiamQ1cPRSBITIO9IpPyaeWcMNt3thbfAvEbp+yNCxbzdpiC8p8zzIzcpFEpHehvRBO1UY2U=
+	t=1726083124; cv=none; b=H0kOYuiMpOWdIO55SSUcBMn7INlHxQ7bmcnvGe2KNNq4maCRA2iKtZNf5CoNHMEL2EP0YPKV5Whk0QVOFvrqANw6Xn/AmTAD+oXzl0kLXqhu9v3d2IBco/QIVWSUHIPJuNxOHr+UYW50QQbyIlPpNQ2kKmZkr0oqFrclmN2mgvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726081931; c=relaxed/simple;
-	bh=fsoxF7sGIu5bOZ9u0NafTnI88ERHYf0UaLPVUsqPJhA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LxARWFDHnUmlS7Zb0Rmyvo2cufAMmwvfsXsTLfnBFlqIRKYc+Kbn9XMXMlGNPvJfJr/uZIv4gAh06ATTLDEYNL2dT9c7ZpGNImaBC2Sdzy6OPU37U30UYw1n8JRD0pCcxNB6Nb3mRCMHgKXiZdlxcISWNuLeeTztGt1pgK6OffU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=w94iOTF5; arc=none smtp.client-ip=199.89.1.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 008.lax.mailroute.net (Postfix) with ESMTP id 4X3qvF0tD1z6ClY9P;
-	Wed, 11 Sep 2024 19:12:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1726081917; x=1728673918; bh=LgUJrvRBNbuYJhKEae8t1pD8
-	8/KE+UPgTHV197Abt0o=; b=w94iOTF59lHhd1wu0GBhna72MMT+5bzSYBZ85Huc
-	MtSjsIfRi3uW+wjemZbJY5Bz0oJYg82lgz4ywKCZRNPhq2eEgqYJGSHrDho0OR7C
-	vb1lrvkgmRRWOc/LqwA7jqH0SbbfgfZHguWN3XeWKA2BwnBLoaSVxUtGsJQyWUa4
-	st5AMkew5I8t8SU+4sDeuUXvv7ywglaOTPIiht1B+cx94shkTX0jgfNSo4MTIO/m
-	ezzQOKIizmXot94a5zWWz3jzk9M7TeljSsRcPBmHYgx6lt9yIcMv+GbvmNZ8Czxy
-	3QPIZS/jJ1NMuUK2ql96RHl5rkJpPDYiJxtsI4hmE0zU0w==
-X-Virus-Scanned: by MailRoute
-Received: from 008.lax.mailroute.net ([127.0.0.1])
- by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id 7HCF5J1oaQqY; Wed, 11 Sep 2024 19:11:57 +0000 (UTC)
-Received: from [100.66.154.22] (unknown [104.135.204.82])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4X3qtw0vbNz6ClY9K;
-	Wed, 11 Sep 2024 19:11:51 +0000 (UTC)
-Message-ID: <858c4b6b-fcbc-4d51-8641-051aeda387c5@acm.org>
-Date: Wed, 11 Sep 2024 12:11:50 -0700
+	s=arc-20240116; t=1726083124; c=relaxed/simple;
+	bh=07yVX+a5HKymQT/kEVbwRWOHz7xK4lZuHdWBrjAUKc4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nq27w9ju53ymVSv2An9V1cwfkDDnuiVkwENX0HuTDsAz05gDvJeVFebiDMTTzfR/B8785iVHZH4Qw0p2vQeJlDOgX9bT3NA2KSQ1eX7biN3En0e7IPnt11nbJ/zlgSkt8YrYe7LSq0VPmmlWtWdQiZkxTKqQgKlJynFNpGGxcnY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org; spf=pass smtp.mailfrom=linuxtx.org; dkim=pass (1024-bit key) header.d=linuxtx.org header.i=@linuxtx.org header.b=KDJgk4Ny; arc=none smtp.client-ip=209.85.166.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxtx.org
+Received: by mail-io1-f48.google.com with SMTP id ca18e2360f4ac-82a238e0a9cso7749039f.3
+        for <stable@vger.kernel.org>; Wed, 11 Sep 2024 12:32:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxtx.org; s=google; t=1726083121; x=1726687921; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Gtmb2W0kiaRq3w+FhsyuW0F/eW+GNWteDIgqlZPPh+o=;
+        b=KDJgk4NymABHJOwXLAXqZzFOgL03V3mwrRZ3+KfC8lU7+MNXGzvsJD0IVfvkEVf5/o
+         5PehWh+xnakWAk0cftdNY5DPDgXM7x64mSKaucHKDwY+Yc/kcwzMkbCZ+1Lo2L9OEdiq
+         FQqWYM69BaK/Byi0FcAwzrrv1R/k6EUCYekWA=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726083121; x=1726687921;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Gtmb2W0kiaRq3w+FhsyuW0F/eW+GNWteDIgqlZPPh+o=;
+        b=CWcIvU4eejqgQdY5Kr8f9fzzhWNbtVPpgm24NEdeaeKqh3l2joZS91w+neXLWXi5fL
+         v1Wx7HvPXmn6S1Z/CudHoJFoYTBFfW8Q48M62omu9Krr9BphP5KQuOQDTFkDUK9lt2hf
+         9QYX+U74RclQYl47XSDTpVgxnUMN93T3UfiES150pQ4l2Pr1csRPDCR2YJW8LzvqCqFs
+         iOxHeS51MrVudFtWUGzN5dNO+LGqVcnVxQl87+8cZ1oJVkB25okxvLot3BfNpnkntPEF
+         74sYHO55pH3TZ4wofGsY8tpOZXrCouGnhO//R139EXad7pucRtOvekHVG0u4YhUgSKrk
+         oxUQ==
+X-Gm-Message-State: AOJu0YwMja5JkfuU8TPgW+5dnZlCgjFtgBY321Y63fkL5vDDnbhzR76k
+	7DtdVCaajcCaLjvxHVzkUvaBMGLCwWxwjFOTwL5k7DKDJosfK08YpjsLHFE5EQ==
+X-Google-Smtp-Source: AGHT+IH61wJeAaDsZVI0UulLG1dxqR8dVtT/hu5F4TWg8gxDaOsHx00AEczVpQO1l7iNb6Sv8R042Q==
+X-Received: by 2002:a05:6602:6c14:b0:82a:34da:72f7 with SMTP id ca18e2360f4ac-82d1fa93764mr101635039f.16.1726083120696;
+        Wed, 11 Sep 2024 12:32:00 -0700 (PDT)
+Received: from fedora64.linuxtx.org ([72.42.103.70])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4d35f433dc4sm159871173.25.2024.09.11.12.31.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Sep 2024 12:32:00 -0700 (PDT)
+Sender: Justin Forbes <jmforbes@linuxtx.org>
+Date: Wed, 11 Sep 2024 13:31:58 -0600
+From: Justin Forbes <jforbes@fedoraproject.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+Subject: Re: [PATCH 6.10 000/375] 6.10.10-rc1 review
+Message-ID: <ZuHwLtRJkij6oz15@fedora64.linuxtx.org>
+References: <20240910092622.245959861@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/2] ufs: core: requeue aborted request
-To: =?UTF-8?B?UGV0ZXIgV2FuZyAo546L5L+h5Y+LKQ==?= <peter.wang@mediatek.com>,
- "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
- "avri.altman@wdc.com" <avri.altman@wdc.com>,
- "jejb@linux.ibm.com" <jejb@linux.ibm.com>,
- "alim.akhtar@samsung.com" <alim.akhtar@samsung.com>,
- "martin.petersen@oracle.com" <martin.petersen@oracle.com>
-Cc: "linux-mediatek@lists.infradead.org"
- <linux-mediatek@lists.infradead.org>,
- =?UTF-8?B?SmlhamllIEhhbyAo6YOd5Yqg6IqCKQ==?= <jiajie.hao@mediatek.com>,
- =?UTF-8?B?Q0MgQ2hvdSAo5ZGo5b+X5p2wKQ==?= <cc.chou@mediatek.com>,
- =?UTF-8?B?RWRkaWUgSHVhbmcgKOm7g+aZuuWCkSk=?= <eddie.huang@mediatek.com>,
- =?UTF-8?B?QWxpY2UgQ2hhbyAo6LaZ54+u5Z2HKQ==?= <Alice.Chao@mediatek.com>,
- =?UTF-8?B?RWQgVHNhaSAo6JSh5a6X6LuSKQ==?= <Ed.Tsai@mediatek.com>,
- wsd_upstream <wsd_upstream@mediatek.com>,
- "quic_nguyenb@quicinc.com" <quic_nguyenb@quicinc.com>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- =?UTF-8?B?TGluIEd1aSAo5qGC5p6XKQ==?= <Lin.Gui@mediatek.com>,
- =?UTF-8?B?Q2h1bi1IdW5nIFd1ICjlt6vpp7/lro8p?= <Chun-hung.Wu@mediatek.com>,
- =?UTF-8?B?VHVuLXl1IFl1ICjmuLjmlabogb8p?= <Tun-yu.Yu@mediatek.com>,
- =?UTF-8?B?Q2hhb3RpYW4gSmluZyAo5LqV5pyd5aSpKQ==?=
- <Chaotian.Jing@mediatek.com>, =?UTF-8?B?UG93ZW4gS2FvICjpq5jkvK/mlocp?=
- <Powen.Kao@mediatek.com>, =?UTF-8?B?TmFvbWkgQ2h1ICjmnLHoqaDnlLAp?=
- <Naomi.Chu@mediatek.com>, =?UTF-8?B?UWlsaW4gVGFuICjosK3pupLpup8p?=
- <Qilin.Tan@mediatek.com>
-References: <20240910073035.25974-1-peter.wang@mediatek.com>
- <20240910073035.25974-3-peter.wang@mediatek.com>
- <e42abf07-ba6b-4301-8717-8d5b01d56640@acm.org>
- <04e392c00986ac798e881dcd347ff5045cf61708.camel@mediatek.com>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <04e392c00986ac798e881dcd347ff5045cf61708.camel@mediatek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240910092622.245959861@linuxfoundation.org>
 
-On 9/10/24 11:03 PM, Peter Wang (=E7=8E=8B=E4=BF=A1=E5=8F=8B) wrote:
-> This statement is not quite accurate becasue in UFSHIC2.1, SDB mode
-> specification already have OCS: ABORTED (0x6) define.
-> And it is used in below UTRLCLR description:
-> 'which means a Transfer Request was "aborted"'
-> Therefore, the host controller should follow the
-> specification and fill the OCS field with OCS: ABORTED.
-> If not so, at what point does your host controller use the
-> OCS: ABORTED status?
+On Tue, Sep 10, 2024 at 11:26:37AM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.10.10 release.
+> There are 375 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Thu, 12 Sep 2024 09:25:22 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.10.10-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.10.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Hmm ... I have not been able to find any explanation in the UFSHCI 2.1
-specification that says when the OCS status is set to aborted. Did I
-perhaps overlook something?
+Tested rc1 against the Fedora build system (aarch64, ppc64le, s390x,
+x86_64), and boot tested x86_64. No regressions noted.
 
-This is what I found in the UTRLCLR description: "The host software=20
-shall use this field only when a UTP Transfer Request is expected to
-not be completed, e.g., when the host software receives a =E2=80=9CFUNCTI=
-ON
-COMPLETE=E2=80=9D Task Management response which means a Transfer Request=
- was
-aborted." This does not mean that the host controller is expected to
-set the OCS status to "ABORTED". I will send an email to the JC-64
-mailing list to request clarification.
-
->>> +/*
->>> + * When the host software receives a "FUNCTION COMPLETE", set flag
->>> + * to requeue command after receive response with OCS_ABORTED
->>> + * SDB mode: UTRLCLR Task Management response which means a
->> Transfer
->>> + *           Request was aborted.
->>> + * MCQ mode: Host will post to CQ with OCS_ABORTED after SQ
->> cleanup
->>> + * This flag is set because ufshcd_abort_all forcibly aborts all
->>> + * commands, and the host will automatically fill in the OCS field
->>> + * of the corresponding response with OCS_ABORTED.
->>> + * Therefore, upon receiving this response, it needs to be
->> requeued.
->>> + */
->>> +if (!err)
->>> +lrbp->abort_initiated_by_err =3D true;
->>> +
->>>    err =3D ufshcd_clear_cmd(hba, tag);
->>>    if (err)
->>>    dev_err(hba->dev, "%s: Failed clearing cmd at tag %d, err %d\n",
->>
->> The above change is misplaced. ufshcd_try_to_abort_task() can be
->> called
->> when the SCSI core decides to abort a command while
->> abort_initiated_by_err must not be set in that case. Please move the
->> above code block into ufshcd_abort_one().
->=20
-> But move to ufshcd_abort_one may have race condition, beacause we
-> need set this flag before ufshcd_clear_cmd host controller fill
-> OCS_ABORTED to response. I will add check ufshcd_eh_in_progress.
-
-Calling ufshcd_clear_cmd() does not affect the OCS status as far as I
-know. Did I perhaps overlook something?
-
-Thanks,
-
-Bart.
+Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
 
