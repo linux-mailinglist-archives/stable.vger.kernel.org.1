@@ -1,230 +1,104 @@
-Return-Path: <stable+bounces-75816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 460F7975093
-	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 13:14:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEE72975121
+	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 13:53:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6AEB71C22310
-	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 11:14:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94BE81F27849
+	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 11:53:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3C19186E42;
-	Wed, 11 Sep 2024 11:14:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1576918890B;
+	Wed, 11 Sep 2024 11:53:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="t4Mjn+v0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VQqh694f"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ua1-f53.google.com (mail-ua1-f53.google.com [209.85.222.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56AB2185B69
-	for <stable@vger.kernel.org>; Wed, 11 Sep 2024 11:14:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9EC3185B7B;
+	Wed, 11 Sep 2024 11:53:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726053283; cv=none; b=GWORoO8xG4OAMLQmW6KcPcDCyqoJiEpgDCsc29vLUIPSbaL4+NwdZYvYXdfBm0QDmEdH/9UuGdczI3++E3Y18a7MkHauEWl7jy+CosZ/ZPvVg4XSpshVPP2JmmI2jf3/pbuadhlUyNPF7qNKt5qsJuO1JF0kjAvKw5LkLwDEgR4=
+	t=1726055610; cv=none; b=P+c7LBoUG4EsZZT477zbgiChntf2wM1pHegPVoNrCqV6EO38k+pnRUiY5oDqW67pZmoqd/FsE+dqeSblKLcf/h5dPismUbB6O1PmqZCDQiBeYtxkkbO64skM6q7FiSFKTXotKmYPQW58VVRooiARSBGa4B+yJCZQd+qFNPq69p4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726053283; c=relaxed/simple;
-	bh=eLZ7w7cowPa3hhjddGdA8bWcU9jM6WNWngJVkRAKwMc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=roe3OkJmHLEkD5JKE/BcYJfsSV5wuGJuWUivSZRXaEsd8On6z1TrNN8B2yuSpl8nKTCMr2wLdhYK/K6hUJORafy65OyVeJ+iIsVQeekU/H14k8dCkYqIJK7Q0fGV17wkZeUJxDYqmAUcQ7lFkpJlrxyiCW4PlMu3ZQHzHShZscg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=t4Mjn+v0; arc=none smtp.client-ip=209.85.222.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ua1-f53.google.com with SMTP id a1e0cc1a2514c-848750e7e5eso1781979241.2
-        for <stable@vger.kernel.org>; Wed, 11 Sep 2024 04:14:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1726053280; x=1726658080; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vbxD6Wjz+v5CvHgK6ct9WCz155k6N2RRxLxKsD63LvI=;
-        b=t4Mjn+v0eERdcTy++Q2ij2zW7rDvn+iw+iPmx9Sx7fksQs9fDFTtsPsqHUk5ZsBr+m
-         QcV8jT+ftPKhm/Cf21vEfu721tVp8giU41v3RkmkKShWVBnscNiARjndDSIT6m0/lqaL
-         oC18Ncla1cWVy0Z+CWVLD/UpbrdzFni7U5VWUZvPFzmQBWgGaCOshNhuC3CkrZ6Cp2gM
-         Ele9h81FnD9LJ/nHRIQaWQx//1Wzh0syAm5T3Zzs25kjOwkQ2iJRlkgZ6W71ck8QRv84
-         J+WKWF+ZCURn+/X7rFgnVfk9ELthHKqLic5A80j5G0rF1uCL1N9oaMZfdZlEAx/deHo/
-         S2TQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726053280; x=1726658080;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vbxD6Wjz+v5CvHgK6ct9WCz155k6N2RRxLxKsD63LvI=;
-        b=MZABACH5qcH3Rmxiql5irx3OhnFSaIxAvDOm0+wIIRaFZXmvP+PfMu0yCKfM3DLMGm
-         +RNCqqL82ZWJ4xOV8oKw8bKXR+34nJv/7pmVQlQKUyHVMdMTbOz4RaRQuRPHcOyDo13F
-         gH71QnD9ObS9AKs3dA3f0gmDOnfzVDYtTe5OHJx8L/Ii4HW3VVA5sYgXbRZCZKo4iX4+
-         f2sPRGglS3cq7+ffRL4MqloTvF5g9bvq/3zcg8MDdbZEMl+rAErCuxWMuKEFE9uJU/mB
-         smZCbBDOCNOZZ5BsU1sw+jNqJU8Q82TLqJ0imaM70Yj26elMvxNjzGiJg1q1z5/w7H0T
-         QZlw==
-X-Gm-Message-State: AOJu0YzezXaVq82R1kXruA7EbcfqA/zqdqzzfS2EeR/PGJk+dO6oG9gf
-	UdCO6WCDNLrmQZYZLN18vWnBtVSj04gXQ4Njetd8Q0QJ18O5O0VA6nK0CPNuMboudJne3adY7S1
-	UEWgvb+avynhIFYCJLLtG9rWf+EoZxF40BxrO4A==
-X-Google-Smtp-Source: AGHT+IGJdmdDESJ2hyYLx3bgpfboZD9Buso5h41DrgJJgM3cqrVacNQh8sevxkDEFVdgEIxpTzITdrKLs4m4zvYwZhE=
-X-Received: by 2002:a05:6122:2021:b0:4fc:da8f:c8c4 with SMTP id
- 71dfb90a1353d-5022146e600mr18116038e0c.12.1726053280241; Wed, 11 Sep 2024
- 04:14:40 -0700 (PDT)
+	s=arc-20240116; t=1726055610; c=relaxed/simple;
+	bh=zhjs0HCCkCG44moeklx+BEEW7yaiU/+Dj4UI+iaJ2eI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=elkiURA8xsaE/iOujsAbzJv/z/wzcV0JDvLIGmPIhuQBRmWRs1TGy9MBhiJ0TctBKXgTLdJNLG0wnyWNruvDrFAST6EGQpaeeqYgsC/ZfuH1KydyJ8OXFiOWVCIQ9HFOr1/LKB+ls1OjludhGr+tZ10bZJQuw+P2BtOpjC9QyLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VQqh694f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 661A4C4CEC5;
+	Wed, 11 Sep 2024 11:53:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1726055610;
+	bh=zhjs0HCCkCG44moeklx+BEEW7yaiU/+Dj4UI+iaJ2eI=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=VQqh694fEMkFMNJ5j/gBTLOa6DLKSlMgjzgp09f/Z6k6vObr9ha03j7vAZvQppN26
+	 54E3beImSDwAVbyKgYY5Moy1RiVl70z6B99BS8EYcyOrosoEJLFRwaNR87NCBvQ4eg
+	 O9tJAD4ea+oJ7rzsWxJ8ElTZEtZyTtmNrruPih3OJXwEF0qlyoFKDfsiTM49QH9cFR
+	 MjkFT7OL4dtbHwKIr2Oa0Vl61RxZo14+6x8M/Bkawye8l3NzufbzBAsf0ho1tMUm4q
+	 khzx5+DlUxJZn/kiSgHrvt0zPKH6JCp3688qVUOY/EqhxZVmlWEMVNEHq83BANkpf+
+	 Dy+45qFLRFxPA==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan+linaro@kernel.org>)
+	id 1soLuv-000000002rM-1Vkj;
+	Wed, 11 Sep 2024 13:53:49 +0200
+From: Johan Hovold <johan+linaro@kernel.org>
+To: Vinod Koul <vkoul@kernel.org>,
+	Kishon Vijay Abraham I <kishon@kernel.org>
+Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	linux-arm-msm@vger.kernel.org,
+	linux-phy@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Johan Hovold <johan+linaro@kernel.org>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/4] phy: qcom: qmp-usb: fix NULL-deref on runtime suspend
+Date: Wed, 11 Sep 2024 13:52:50 +0200
+Message-ID: <20240911115253.10920-2-johan+linaro@kernel.org>
+X-Mailer: git-send-email 2.44.2
+In-Reply-To: <20240911115253.10920-1-johan+linaro@kernel.org>
+References: <20240911115253.10920-1-johan+linaro@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240910092558.714365667@linuxfoundation.org>
-In-Reply-To: <20240910092558.714365667@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Wed, 11 Sep 2024 16:44:27 +0530
-Message-ID: <CA+G9fYstZOHMFx9OHTseUTpXEZtRMSEujTMT+frbdSzQmm++jw@mail.gmail.com>
-Subject: Re: [PATCH 5.15 000/214] 5.15.167-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, 10 Sept 2024 at 15:46, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 5.15.167 release.
-> There are 214 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Thu, 12 Sep 2024 09:25:22 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
-5.15.167-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-5.15.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+Commit 413db06c05e7 ("phy: qcom-qmp-usb: clean up probe initialisation")
+removed most users of the platform device driver data, but mistakenly
+also removed the initialisation despite the data still being used in the
+runtime PM callbacks.
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+Restore the driver data initialisation at probe to avoid a NULL-pointer
+dereference on runtime suspend.
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Apparently no one uses runtime PM, which currently needs to be enabled
+manually through sysfs, with this driver.
 
-## Build
-* kernel: 5.15.167-rc1
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git commit: 72253b6b4643a28e11448f1ee2d2f0fbda027130
-* git describe: v5.15.166-215-g72253b6b4643
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15=
-.166-215-g72253b6b4643
+Fixes: 413db06c05e7 ("phy: qcom-qmp-usb: clean up probe initialisation")
+Cc: stable@vger.kernel.org	# 6.2
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+---
+ drivers/phy/qualcomm/phy-qcom-qmp-usb.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-## Test Regressions (compared to v5.15.165-216-g36422b23d6d0)
+diff --git a/drivers/phy/qualcomm/phy-qcom-qmp-usb.c b/drivers/phy/qualcomm/phy-qcom-qmp-usb.c
+index 49f4a53f9b2c..76068393e4ba 100644
+--- a/drivers/phy/qualcomm/phy-qcom-qmp-usb.c
++++ b/drivers/phy/qualcomm/phy-qcom-qmp-usb.c
+@@ -2191,6 +2191,7 @@ static int qmp_usb_probe(struct platform_device *pdev)
+ 		return -ENOMEM;
+ 
+ 	qmp->dev = dev;
++	dev_set_drvdata(dev, qmp);
+ 
+ 	qmp->cfg = of_device_get_match_data(dev);
+ 	if (!qmp->cfg)
+-- 
+2.44.2
 
-## Metric Regressions (compared to v5.15.165-216-g36422b23d6d0)
-
-## Test Fixes (compared to v5.15.165-216-g36422b23d6d0)
-
-## Metric Fixes (compared to v5.15.165-216-g36422b23d6d0)
-
-## Test result summary
-total: 278874, pass: 232368, fail: 5633, skip: 40510, xfail: 363
-
-## Build Summary
-* arc: 15 total, 15 passed, 0 failed
-* arm: 306 total, 306 passed, 0 failed
-* arm64: 87 total, 87 passed, 0 failed
-* i386: 69 total, 69 passed, 0 failed
-* mips: 66 total, 66 passed, 0 failed
-* parisc: 9 total, 9 passed, 0 failed
-* powerpc: 72 total, 72 passed, 0 failed
-* riscv: 18 total, 18 passed, 0 failed
-* s390: 27 total, 27 passed, 0 failed
-* sh: 30 total, 30 passed, 0 failed
-* sparc: 18 total, 18 passed, 0 failed
-* x86_64: 75 total, 75 passed, 0 failed
-
-## Test suites summary
-* boot
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-kcmp
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-mincore
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-mptcp
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-tc-testing
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-x86
-* kunit
-* kvm-unit-tests
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-test
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
