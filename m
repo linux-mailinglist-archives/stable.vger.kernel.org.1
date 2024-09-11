@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-75870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EEED97585C
-	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 18:26:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1237597585E
+	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 18:26:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 14F6A1F2172F
-	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 16:26:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C1051281FF1
+	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 16:26:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 374291AE873;
-	Wed, 11 Sep 2024 16:26:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A50151AE872;
+	Wed, 11 Sep 2024 16:26:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="agRtj5Xd"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="cxqrUruT"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2069.outbound.protection.outlook.com [40.107.92.69])
+Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2078.outbound.protection.outlook.com [40.107.236.78])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7079B1AC452
-	for <stable@vger.kernel.org>; Wed, 11 Sep 2024 16:26:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.92.69
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFFF51AE865
+	for <stable@vger.kernel.org>; Wed, 11 Sep 2024 16:26:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.78
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726071969; cv=fail; b=U7CKEcKyffb5fQk7y+1EVTYpzSer5SIEB9cp+fwAz7oqdwDaJ5OgzRS9Y6mAQAEUKHtmjGD8iWZeaNhaSviYuLiR/6sP/2CsSi2UFk+ZbAh+YnNsGu4gcAUixccG6KN2EbSe1GI/JvB351UF6MkHdACLpjfx6whGQB/zkyea2LY=
+	t=1726071991; cv=fail; b=BRlhhulfhKENtXnKRZlHkGPk9RHnc0NiEX025y95IqJ+TJDrvIUprI+vmKUxDaim27Zye8e2JJfKxTI0BDq6SU9BJqo4/kYLqVSTDoGWnIEnCO7I/Wq6e/in0YD1+Cap2Lw3MRrotkT04BC89ZgFve9l6XF37C+RwDebHDvAgcM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726071969; c=relaxed/simple;
-	bh=gQ08aELECdlpbMqbYj6W98K/izmaD1T+Yl74GPCui7s=;
+	s=arc-20240116; t=1726071991; c=relaxed/simple;
+	bh=33znUgipqWjgTyd1v+3Y8XRNwIcXRQF/GlAlOBgOB8Q=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=h4faipp/KQo3+bAugAO88TbTxq1EJIsBG7Ytzh6Bvow8RKFwV/VlvQB/Id+IKiqDRZCgyyy6JtnqKXVUL4mg4YhbyRKjIUb4gmb1AuYvoDfDh9ZX9s/EnKqt+cvyFbYT79mf/v3oG3XxdPGPjPxew4Z1HcqI4rCIugjo59CcMYo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=agRtj5Xd; arc=fail smtp.client-ip=40.107.92.69
+	 MIME-Version:Content-Type; b=OH1xoxVS7yW5C4bOeGxUohYYDnK3QT0UCaWKjUcZ7uEbUAwEvZ8fUMAYHsRAPq3g+4Gk1bKbxdHx/rbVC7a/wsifdx2qxv0tCEb0fry7eEOBiR40IapU0kY7DRDTPOyeKD+9pASptaxWEg0QudOF3Fmxz/81GdyTUJLZ1cJ8pE8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=cxqrUruT; arc=fail smtp.client-ip=40.107.236.78
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ItPcvSRvOTkuPbyzivqt1EGBdgWiwoxFGTjjfQKKaI5qOsRKaN1KaCYiSB06gBzr0h+hEhmcmyguwBFdWdxRRZI3IlVSu1HdzIGO+xv+4pibqu9LllX/8TdUk4iB1o2wOei6tFusS/qS2nh9s6YbYrYSsPDjkpFwJWGxIKYc9dAiWlo+i5RettCGPEC1c0WCX+V4D++CBEd0hsHDe0O+TiE37k6nBrE0zKTadNs/WZat1a9miZSE/VzBPlcs3UiOhwOLmxftO/dRDLNbX93gWvPqqiP4ZV2S39+ckl9gxyY/y076bZR0Eo/TKPRYjjqKODmjpHMmptfMjTCwntSLeA==
+ b=XyIlfje6PY+Icc74goqa5qnJ+CDSE4nbI6Nll6u6EquMdKayvYLaogHK3kRRmJzVRRqIgAd1KBtnI/49QFxSTsm38+qjrPy+Vegb9QS34/iwfkuh/nq+3+dKJ7SAGtFmaQ/nNNSEgQVwtFsdydL15tvpm1PDJElwsGgRZjz6PZYbaUrAmGF7l1h5CmqqRIfWn5qzhSI9/XUp76Q/yFq8kO6PkIls4BsRtrT313xe9pvrX8qWMRSkh5f8pnikIAxlPsy2UgiNHepRboayrXjDXn4+fLwTtSVAriNuKbZpxRVo4a7S0Kuxvke8TZg5IdVS95bCEBXStnwbcWQXUDC3OA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Fectndtn7wSRK+L0sDyGU7jbZv+NpNx1dBhr6SRnMTo=;
- b=lJbNkHEHx1g3l+rLnAozNDrN3XwFABBpNFM2CJ+xnsYUwZpHaPktl9YaWYSz+utBKOzSC+VuW/BURbwgzK6AlFttJHiEOJpbqybyEqdkHGl9bAvodl+S013IXI875yDSry/kJG/tWv9sKTb+VVwm4QZk5Fjvgf+PHPbeBbl/TKfOCPjr9PIvutPKv6FmAEUNs06cM8FN28/ZDKn+oKI9nSk4E1OZSErHu70ib58vZooJNeHqi7dO1frt1yAArLgJRBK8k5GrMwwB3ZmqEYjiUZ27ogIN19xcsA9rnas3xUQWVxAIMgQm70PIYMGNPZyP0EdBHIKaFl2bub7IioDsMA==
+ bh=RXbdG4+Z2/2Xk+RTT+GN2J7wNY+No9XHFaenDPXDF/0=;
+ b=UzjyvCeEthl1lRXYjyA4upzD1tdKjL0CCVVQFxk15kaClTGAGrHt9fQ3tQWwA71zbF3GvSDz45N2vOfNQ7ELWkcbGTiKyxMmg/IXI+BRTSILbsPEIDCk3SfHmDLhHjU/yTmBuV42ssvEDUiWftEmru4nGjaxPveHOyK+UVI4kncWkj9uTAqQsPd5uAi5JgwhRUARSJAdzBqmWGjCXkUBEmPVrRdKpDU4/fuOc5rwiJC0eBLH6EPKCjeWSNBqDfEpGnYP4UuP97Gme9gekBHlKvfEzzHl9WSvRpmOh1u0Tf9rrGiLOBVeEomO2y+13wk8QH4JX3ljyjximhNWbLNvtg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Fectndtn7wSRK+L0sDyGU7jbZv+NpNx1dBhr6SRnMTo=;
- b=agRtj5XdXWWQzxCseG7qATT6nKGDgMuno9zA7nkl17F0bdpuXhdX1xYCPFsN1uRX8Qr0XhpS0r1iyzAzT06CsaYhSEl0yVemv+gwWoew7CMdSIgN/wElOfMKeUf/y2oa34j4v+Z8YgXS7t53l+GwjPqvXC527AyVJ2Ni7ou37nw=
-Received: from CH2PR14CA0040.namprd14.prod.outlook.com (2603:10b6:610:56::20)
- by PH0PR12MB7888.namprd12.prod.outlook.com (2603:10b6:510:28b::20) with
+ bh=RXbdG4+Z2/2Xk+RTT+GN2J7wNY+No9XHFaenDPXDF/0=;
+ b=cxqrUruTZIgD6/kx/bk6YVXFA8+bFyAs+rSXjNrjC3iAei0NMzieyDz+y4lmqzgDaqzhSBT0S5FyUxfmQCdQ+UDxZ901+isA6QMwBVHeCHVpXeN/5yuYpgRgHViLrrhcv+0LrGVCWI5R2TxfsdUMI2dkzxANG5YC6stO+jdLXNM=
+Received: from CH2PR07CA0053.namprd07.prod.outlook.com (2603:10b6:610:5b::27)
+ by SN7PR12MB8025.namprd12.prod.outlook.com (2603:10b6:806:340::12) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7962.18; Wed, 11 Sep
- 2024 16:26:03 +0000
-Received: from CH2PEPF0000013D.namprd02.prod.outlook.com
- (2603:10b6:610:56:cafe::fc) by CH2PR14CA0040.outlook.office365.com
- (2603:10b6:610:56::20) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7939.24 via Frontend
- Transport; Wed, 11 Sep 2024 16:26:02 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.25; Wed, 11 Sep
+ 2024 16:26:17 +0000
+Received: from CH2PEPF00000142.namprd02.prod.outlook.com
+ (2603:10b6:610:5b:cafe::fe) by CH2PR07CA0053.outlook.office365.com
+ (2603:10b6:610:5b::27) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7939.25 via Frontend
+ Transport; Wed, 11 Sep 2024 16:26:16 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -63,13 +63,13 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- CH2PEPF0000013D.mail.protection.outlook.com (10.167.244.69) with Microsoft
+ CH2PEPF00000142.mail.protection.outlook.com (10.167.244.75) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7918.13 via Frontend Transport; Wed, 11 Sep 2024 16:26:02 +0000
+ 15.20.7918.13 via Frontend Transport; Wed, 11 Sep 2024 16:26:16 +0000
 Received: from shire.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 11 Sep
- 2024 11:25:59 -0500
+ 2024 11:26:13 -0500
 From: Alex Hung <alex.hung@amd.com>
 To: <amd-gfx@lists.freedesktop.org>
 CC: Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>,
@@ -78,13 +78,13 @@ CC: Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>,
  Li" <roman.li@amd.com>, Wayne Lin <wayne.lin@amd.com>, Tom Chung
 	<chiahsuan.chung@amd.com>, Fangzhi Zuo <jerry.zuo@amd.com>, Zaeem Mohamed
 	<zaeem.mohamed@amd.com>, Solomon Chiu <solomon.chiu@amd.com>, Daniel Wheeler
-	<daniel.wheeler@amd.com>, Zhikai Zhai <zhikai.zhai@amd.com>, "Mario
+	<daniel.wheeler@amd.com>, Charlene Liu <Charlene.Liu@amd.com>, "Mario
  Limonciello" <mario.limonciello@amd.com>, Alex Deucher
-	<alexander.deucher@amd.com>, <stable@vger.kernel.org>, Wenjing Liu
-	<wenjing.liu@amd.com>, Alex Hung <alex.hung@amd.com>
-Subject: [PATCH 19/23] drm/amd/display: Skip to enable dsc if it has been off
-Date: Wed, 11 Sep 2024 10:21:01 -0600
-Message-ID: <20240911162105.3567133-20-alex.hung@amd.com>
+	<alexander.deucher@amd.com>, <stable@vger.kernel.org>, Chris Park
+	<chris.park@amd.com>, Alex Hung <alex.hung@amd.com>
+Subject: [PATCH 20/23] drm/amd/display: Use full update for swizzle mode change
+Date: Wed, 11 Sep 2024 10:21:02 -0600
+Message-ID: <20240911162105.3567133-21-alex.hung@amd.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20240911162105.3567133-1-alex.hung@amd.com>
 References: <20240911162105.3567133-1-alex.hung@amd.com>
@@ -100,127 +100,120 @@ X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
  (10.181.40.145)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PEPF0000013D:EE_|PH0PR12MB7888:EE_
-X-MS-Office365-Filtering-Correlation-Id: e2a09970-b8d7-4bb7-2d6a-08dcd27e6dbe
+X-MS-TrafficTypeDiagnostic: CH2PEPF00000142:EE_|SN7PR12MB8025:EE_
+X-MS-Office365-Filtering-Correlation-Id: 781021aa-6bc4-407d-6ede-08dcd27e761d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|1800799024|36860700013|376014|82310400026;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?pkWFNeo6y1BBpF9GB6d+lw57zhpF8K+vcHQdMmanPiai2kWNat4mk8OMLyvK?=
- =?us-ascii?Q?+8HD2qNH1ul2Rdvua47MzR7Y+JiQywWv0Nk7J+0FvERiO7KsLm4ps3B08Slr?=
- =?us-ascii?Q?W4NpMxbLuwx+a+mdpVXZfFQDM5nxvoSuBG9h2c+j4+hM8AopC5F6oFI9B+Bc?=
- =?us-ascii?Q?Lz8X/evmiNURqMEteyypkYmlq/cBAgSEdkTlVXlKwiBX54iJAGp2/pSVxMAX?=
- =?us-ascii?Q?qjaz+iKtpC8LOQw7uE13FGFAe+1yW2s2zqhKpZK6ziGWz4VlKRXddsL7MNds?=
- =?us-ascii?Q?9vE2rKujn5R1UIRp50jlonDJxlwVgz936SIXowGpyACRKCBvJnlKdhr1M/dz?=
- =?us-ascii?Q?5mWBHBpKaRZ2VJj8BnPWRPV0TYAHtboPkMLUq0KIH+wfWwbpIiOfo92BFhQJ?=
- =?us-ascii?Q?F7A7nQ4rkGeTZW0GUmdLVhuORqJM1dNqwSQPfK/VHKVP9qM9vC6QI79iI/B0?=
- =?us-ascii?Q?tTisTD+1wf1ISzihWph9bfJ2WADKHwbwarMmIhunDmUPs9gwoHo69HAY65dA?=
- =?us-ascii?Q?yL/O5aIPn+ZxMINFrsvyYLcYWTk3Y2iHNBGGlXwzXff5jN+2/CXyh26uSKv+?=
- =?us-ascii?Q?0Opb38ryAOzzSnLB72CwvVasCUelD3asrbjmGSIVAva0HOX0Azocbm1JrLx1?=
- =?us-ascii?Q?vOTASsnRdRiicJTFbwP9j7akahl1b7JXCQ5pHzJh10tx6MIHs/XGZV94mz2/?=
- =?us-ascii?Q?WX+PwtrjmzDwYyxMZL7FBhQvhMwH8FLEmzbZ6Bid99tK0tNk1iYPXjvU8w8v?=
- =?us-ascii?Q?i0+tUvph7eDWRIo08zScWfiw1V3i3vevGQJHmg6V8pDL8BskXWwVITYX5k6l?=
- =?us-ascii?Q?Un82VtJ/78UF4l4dqb6zqfuj3gpKBdQTVARk0njHAYG/N523Lwt3uXhXcw8I?=
- =?us-ascii?Q?h6BfWDA0QwaXCvAZMIOMG9iTtoZJtv8ewkrriRSK8Cfv/soTTIGaXKzX0kGd?=
- =?us-ascii?Q?tyQKNkmFGgAkhNjC2P26uqq/NpFWbsrjcmuzfg2N1FygGUylCfyKVnoQOlyr?=
- =?us-ascii?Q?niGUPFEOHyONmRvDwhezgjqU4Ln2W7axvqlJfl21LnDBUg2gnaTiXFajICq2?=
- =?us-ascii?Q?M4vLBBtkZCEaJMuiqkj9fhrifkve+5K1DyvPTTTw/IvTw8oD90T6MAnjbJPU?=
- =?us-ascii?Q?io4Bxt8XvZJHTm0ngw3Vcg3yXskwLwoOuD2PR4XnbQucfF1k+h+qtMTq/+si?=
- =?us-ascii?Q?x9PqtMBsxP0Yf2LNRHjSwHnAvJAqC0HoTPcRwFZH8HWscfKRytpS8jY56FLA?=
- =?us-ascii?Q?HqOemENAGTclYMLE/WQlnsqQDcOHVCeDoC/fCSM0xAA0gM5/ri3sa8Uj0lts?=
- =?us-ascii?Q?ispdpZlii+eiPtP77s0dn8depmeHVSOKgbvmmjqaSSHsp9f9wO7qee7kTE+2?=
- =?us-ascii?Q?dHUXEKgS0nNnOhI5L/XjiSsbSNHZdh/i6PHTY79h/YgWggCQkm+HkcC6GX40?=
- =?us-ascii?Q?ezNq3qthd3fv7sM2IJFLTtvPJDayofwU?=
+	=?us-ascii?Q?Q01UTctJ7ciX250ef9ilrvd5XsNcGuo9RByPbYFTtd2EC3JZbSrXNqk3mt49?=
+ =?us-ascii?Q?gW55qn7SOWV7Gs2NUHGASlSgKrLLn3MAXEedmrst6/LOL9SMM7aKhgLy9ebZ?=
+ =?us-ascii?Q?KSWGpDRjzHvlOl/fICF3+7h3LCJldl043s73iS5joilGgL8VgJ9bdUmN6eHn?=
+ =?us-ascii?Q?ZNHNhyz4ohI2WFHtX1j/xiYCZ7JY3QXclqjNvVRO5wIBzZ5cDZH/3V9mKfJj?=
+ =?us-ascii?Q?RMB5KSetduNz7qHzN/6FvqG/oZlBLJ/ottkiddUjVzpD3QVzHx9f3kqK6yf4?=
+ =?us-ascii?Q?b3OB87mOcWj53+B0S6a+trcuEez9gQnshwg+YZpJrw++ULw/Hv+x3tzjvB3M?=
+ =?us-ascii?Q?/NjzL4ZuMLNhJa5qi3cEdTx1EuUkkbWpAhqhvHPcn06d/EyixMwwBZMzTsiy?=
+ =?us-ascii?Q?lr6z1lcDZsGqSHLa5tnrNPuOO+sGvBD2nINoh/FdXPHEmtV+hAVTzzQQsdOJ?=
+ =?us-ascii?Q?wr3bcIK5njeEAOR0EKDr3pw1Uf9wC9RFn92xY4mrqLE1CsR0sPgX8ZVFIxnW?=
+ =?us-ascii?Q?HMMsFIiQz4MLgkyqDMKvADSc7x5Ke83ViXr1UfIQEq4js36Q0aBrpeJ05f58?=
+ =?us-ascii?Q?ZaAevWqBj5sUo/JWkZr7FZsf/F/s9+hJfDKF4JyxSxGC/hPU25w5l9UyUSCU?=
+ =?us-ascii?Q?dOg+BuOtmKMKzwErxVYWH4vDuf9GnHLK6QWuxJ8XZfHehs4IH3VIR7SkZdjB?=
+ =?us-ascii?Q?H9kKucZhaYE/b0qyfBQS/eMrcacyXqCqM7xvbDTTrKMiCJg70RRd76UEutVP?=
+ =?us-ascii?Q?4Mb4DZlJM+d1MSybqDrRQL2EUs1DyzDOQFa9BCQdCH/JNnEbULvvwMAa08pS?=
+ =?us-ascii?Q?02PS6OkeX83cwNtlBTEKfs9M4O+AmhYGxiyBLNGIrlt2Hrkn99Cu2E2gQSR9?=
+ =?us-ascii?Q?C7VSeel1pJ5cb3I4G4axbMjLVhysKtrxpRdSiiLbBL1SdRwFyP/5Z6G8MGip?=
+ =?us-ascii?Q?BpvqsU4YeiMvMSHRtbTzO9+5174InVGTAakGKUmMHzn0DG1Ujvqq8DceFjGw?=
+ =?us-ascii?Q?PH6D/kPAqmCnzzA7p+cU8pHZpEgzX8TDlDkV6BbLc5X5PiM/fLj0DVfK0viA?=
+ =?us-ascii?Q?DWtdcmFT52Jb4URmX9iwwmVtm4l4t7i30LKT6H4zT5oGfrpAtRsgc6bOzyLh?=
+ =?us-ascii?Q?0GwjqRqXjVOZsVzEzqcoGsott7AB/DKQ9hEHZ+au2f2snVOv5Cri1xDTHUxT?=
+ =?us-ascii?Q?SUeKGxuwKh2KmEAefSFCby2SJ2q6u5dZEpURfSbe11njuaB31yQFXoQ3uZqn?=
+ =?us-ascii?Q?ZjsSkrd+WyiF7fWrU3aD0VDd3qfAXZfqnS3Oa+M5F8L9PSQkVkuoQhyRkhFK?=
+ =?us-ascii?Q?OjDNtAthQuqreCbae5Kmr5QEFQL0r1NfDgFYIU+hKHU9sdExAKqatitqN5l1?=
+ =?us-ascii?Q?54HrKLRK/6HFSPNcMCSE8gQ+4WNN9ISISeZLc1G0qPB2Bgylmwy9s98GCHQ/?=
+ =?us-ascii?Q?0OvRbguDs0EsNeqcwFsYcMqvsUiaMLgC?=
 X-Forefront-Antispam-Report:
 	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(376014)(82310400026);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Sep 2024 16:26:02.7878
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 Sep 2024 16:26:16.8339
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: e2a09970-b8d7-4bb7-2d6a-08dcd27e6dbe
+X-MS-Exchange-CrossTenant-Network-Message-Id: 781021aa-6bc4-407d-6ede-08dcd27e761d
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	CH2PEPF0000013D.namprd02.prod.outlook.com
+	CH2PEPF00000142.namprd02.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7888
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8025
 
-From: Zhikai Zhai <zhikai.zhai@amd.com>
+From: Charlene Liu <Charlene.Liu@amd.com>
 
-[WHY]
-It makes DSC enable when we commit the stream which need
-keep power off, and then it will skip to disable DSC if
-pipe reset at this situation as power has been off. It may
-cause the DSC unexpected enable on the pipe with the
-next new stream which doesn't support DSC.
+[WHY & HOW]
+1) We did linear/non linear transition properly long ago
+2) We used that path to handle SystemDisplayEnable
+3) We fixed a SystemDisplayEnable inability to fallback to passive by
+   impacting the transition flow generically
+4) AFMF later relied on the generic transition behavior
 
-[HOW]
-Check the DSC used on current pipe status when update stream.
-Skip to enable if it has been off. The operation enable
-DSC should happen when set power on.
+Separating the two flows to make (3) non-generic is the best immediate
+coarse of action.
+
+DC can discern SSAMPO3 very easily from SDE.
 
 Cc: Mario Limonciello <mario.limonciello@amd.com>
 Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
-Signed-off-by: Zhikai Zhai <zhikai.zhai@amd.com>
+Reviewed-by: Chris Park <chris.park@amd.com>
+Signed-off-by: Charlene Liu <Charlene.Liu@amd.com>
 Signed-off-by: Alex Hung <alex.hung@amd.com>
 ---
- .../drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c    | 14 ++++++++++++++
- .../drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c    | 13 +++++++++++++
- 2 files changed, 27 insertions(+)
+ drivers/gpu/drm/amd/display/dc/core/dc.c | 6 +++---
+ drivers/gpu/drm/amd/display/dc/dc.h      | 1 +
+ 2 files changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c
-index a36e11606f90..2e8c9f738259 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c
-@@ -1032,6 +1032,20 @@ void dcn32_update_dsc_on_stream(struct pipe_ctx *pipe_ctx, bool enable)
- 		struct dsc_config dsc_cfg;
- 		struct dsc_optc_config dsc_optc_cfg = {0};
- 		enum optc_dsc_mode optc_dsc_mode;
-+		struct dcn_dsc_state dsc_state = {0};
-+
-+		if (!dsc) {
-+			DC_LOG_DSC("DSC is NULL for tg instance %d:", pipe_ctx->stream_res.tg->inst);
-+			return;
-+		}
-+
-+		if (dsc->funcs->dsc_read_state) {
-+			dsc->funcs->dsc_read_state(dsc, &dsc_state);
-+			if (!dsc_state.dsc_fw_en) {
-+				DC_LOG_DSC("DSC has been disabled for tg instance %d:", pipe_ctx->stream_res.tg->inst);
-+				return;
-+			}
-+		}
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
+index 67812fbbb006..a1652130e4be 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -2376,7 +2376,7 @@ static bool is_surface_in_context(
+ 	return false;
+ }
  
- 		/* Enable DSC hw block */
- 		dsc_cfg.pic_width = (stream->timing.h_addressable + stream->timing.h_border_left + stream->timing.h_border_right) / opp_cnt;
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
-index 479fd3e89e5a..bd309dbdf7b2 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
-@@ -334,7 +334,20 @@ static void update_dsc_on_stream(struct pipe_ctx *pipe_ctx, bool enable)
- 		struct dsc_config dsc_cfg;
- 		struct dsc_optc_config dsc_optc_cfg = {0};
- 		enum optc_dsc_mode optc_dsc_mode;
-+		struct dcn_dsc_state dsc_state = {0};
+-static enum surface_update_type get_plane_info_update_type(const struct dc_surface_update *u)
++static enum surface_update_type get_plane_info_update_type(const struct dc *dc, const struct dc_surface_update *u)
+ {
+ 	union surface_update_flags *update_flags = &u->surface->update_flags;
+ 	enum surface_update_type update_type = UPDATE_TYPE_FAST;
+@@ -2455,7 +2455,7 @@ static enum surface_update_type get_plane_info_update_type(const struct dc_surfa
+ 		/* todo: below are HW dependent, we should add a hook to
+ 		 * DCE/N resource and validated there.
+ 		 */
+-		if (u->plane_info->tiling_info.gfx9.swizzle != DC_SW_LINEAR) {
++		if (!dc->debug.skip_full_updated_if_possible) {
+ 			/* swizzled mode requires RQ to be setup properly,
+ 			 * thus need to run DML to calculate RQ settings
+ 			 */
+@@ -2547,7 +2547,7 @@ static enum surface_update_type det_surface_update(const struct dc *dc,
  
-+		if (!dsc) {
-+			DC_LOG_DSC("DSC is NULL for tg instance %d:", pipe_ctx->stream_res.tg->inst);
-+			return;
-+		}
-+
-+		if (dsc->funcs->dsc_read_state) {
-+			dsc->funcs->dsc_read_state(dsc, &dsc_state);
-+			if (!dsc_state.dsc_fw_en) {
-+				DC_LOG_DSC("DSC has been disabled for tg instance %d:", pipe_ctx->stream_res.tg->inst);
-+				return;
-+			}
-+		}
- 		/* Enable DSC hw block */
- 		dsc_cfg.pic_width = (stream->timing.h_addressable + stream->timing.h_border_left + stream->timing.h_border_right) / opp_cnt;
- 		dsc_cfg.pic_height = stream->timing.v_addressable + stream->timing.v_border_top + stream->timing.v_border_bottom;
+ 	update_flags->raw = 0; // Reset all flags
+ 
+-	type = get_plane_info_update_type(u);
++	type = get_plane_info_update_type(dc, u);
+ 	elevate_update_type(&overall_type, type);
+ 
+ 	type = get_scaling_info_update_type(dc, u);
+diff --git a/drivers/gpu/drm/amd/display/dc/dc.h b/drivers/gpu/drm/amd/display/dc/dc.h
+index e659f4fed19f..78ebe636389e 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc.h
++++ b/drivers/gpu/drm/amd/display/dc/dc.h
+@@ -1060,6 +1060,7 @@ struct dc_debug_options {
+ 	bool enable_ips_visual_confirm;
+ 	unsigned int sharpen_policy;
+ 	unsigned int scale_to_sharpness_policy;
++	bool skip_full_updated_if_possible;
+ };
+ 
+ 
 -- 
 2.34.1
 
