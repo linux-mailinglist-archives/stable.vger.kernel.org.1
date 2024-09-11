@@ -1,120 +1,164 @@
-Return-Path: <stable+bounces-75902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75903-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5515975A1A
-	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 20:11:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1B01975AB4
+	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 21:12:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 35EA9B238C9
-	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 18:11:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 432211F23FF7
+	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 19:12:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7CD51B6543;
-	Wed, 11 Sep 2024 18:11:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BD451B78EB;
+	Wed, 11 Sep 2024 19:12:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QLQDzddJ"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="w94iOTF5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C75C11A3055
-	for <stable@vger.kernel.org>; Wed, 11 Sep 2024 18:11:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC5B51B1D53;
+	Wed, 11 Sep 2024 19:12:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726078307; cv=none; b=ekLtXRwH/d5Innl0C4X7oKuKpbzerbvwBGcZ0bAxfnT4c0nlKV0JvOfnIao76TdR2S29MCGC4dPSi7jMjodIjngqJmIPOQ6tq1/4Dcp59VkcpZHLmRRY892WneR/GI65YXV+6zKR/4xMsu275nBTsyOpCjL4v4sF3XD5/0EBjjU=
+	t=1726081931; cv=none; b=Jrj6z4MzXKuRbQ28XcWjAj82PIZiRILSy14Kh0W5u/bGnnzirTsw40BQM8rRDXQFmi9Xet5fhe/6hGU2LdkzjjZXENGJuxk+7iUaiamQ1cPRSBITIO9IpPyaeWcMNt3thbfAvEbp+yNCxbzdpiC8p8zzIzcpFEpHehvRBO1UY2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726078307; c=relaxed/simple;
-	bh=z857oVhOO9Ge5wn4k4nabsLRCg+zyT2pPs33TkWJQgE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IS4pgGQXXKBSu9ntj1Dh7f8RCC3JWNqw3P1uQQGkwPJfFAH2GAYExxhR60pFReHjfrWUmF5aAmDRzK/y0eCvZLsRVcgMMjEInXM8fAd6aKQIkOJvPCiCVP9OYfBcznnI5A39GXZ4kLYD4IloEX/xeaa9+hxSHoRjxxT8mjv1Ik0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QLQDzddJ; arc=none smtp.client-ip=209.85.218.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-a8d60e23b33so19085766b.0
-        for <stable@vger.kernel.org>; Wed, 11 Sep 2024 11:11:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1726078304; x=1726683104; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=QXiJI/L0vchgadKCOX7xJsbzxv2AfJtb8fmGhILgPNI=;
-        b=QLQDzddJHGLjsGGeAU/V/QerDX+8YYLHUswbATuFFhKBdQrsC7CBrFaJjwOqlQn02p
-         tpVFrUtM/Ca7GRyEfJ/ivHZXoEfElvTDcJrjfmEP9SY4Slse7JgyL3T6WWkSbsp9gRaI
-         dpI61X7heQ6V9ISr1aKwEzIe4OZog/cF962IU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726078304; x=1726683104;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=QXiJI/L0vchgadKCOX7xJsbzxv2AfJtb8fmGhILgPNI=;
-        b=UoRunW0JqnFkUiWavXKKD7vjMIf12sG3HSrWAe4yf7XEJzE2ANtPP3pSfGWt0mF06Y
-         zTEwxVUuTmn4FhHRU79z1PAKcn1QfrL0tzEet77MxVlET0Sk0Q214mtwKR3bJK2CWuWv
-         xrGW8s6S51F8eBAs0FoA+LOTjzp9eY06/S6ATtlRbm04J/EwmeZLOwxGXSepWXekfZD6
-         39kzBDmHKCNFXqEgHtKUv/HWZiXH8G5/08LBqToUm02p7ngIDeIQe2n1UDtDunF9iRjl
-         ra/+N1eOpPSpjEapJsvFmwEsMNkRxij3fS0DzFHguzocJeYAlFNFlmfkI/EFPvnANRw9
-         yQGA==
-X-Forwarded-Encrypted: i=1; AJvYcCUuTb5CbfMSQl7j4358LyquWbN/AWrz1QKkzd4w4ZHcpsfhGKwdJf++EwHwJ73qUhF9Q6a5o58=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz9ZlUqDdAUpoQwjWf0poB3/hGeKrxXASQoaCkTj8tzPW0306VK
-	wSxonb5UZMTmzyvRjDWN+37trTS85v1cApivlumj9VjoDpjw3SqWBor/5qAgHPdW1ZU5f3X1Z0C
-	bsKp+8w==
-X-Google-Smtp-Source: AGHT+IHhr6ukrLP5s/5O341oteDuBSI0QIS8e9IBI9PcMsFuqsBSJjHpnqmPknmKGnzmINPM7VJZxg==
-X-Received: by 2002:a17:907:f75b:b0:a8d:4d76:a75e with SMTP id a640c23a62f3a-a90294d0958mr27732266b.30.1726078303384;
-        Wed, 11 Sep 2024 11:11:43 -0700 (PDT)
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com. [209.85.208.46])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a8d25d66ba1sm641528066b.223.2024.09.11.11.11.42
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 11 Sep 2024 11:11:43 -0700 (PDT)
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-5c3c3b63135so60933a12.3
-        for <stable@vger.kernel.org>; Wed, 11 Sep 2024 11:11:42 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCW6gVhLEMh+5Tz6ZrBDEyG8uJRGZQROcpNvGq3bnGUm/Xh3Ef9E5KZRjMhcgpCbtDoqsU5v2oA=@vger.kernel.org
-X-Received: by 2002:a05:6402:33d5:b0:5c2:5620:f70 with SMTP id
- 4fb4d7f45d1cf-5c413e4fbd6mr215370a12.28.1726078302536; Wed, 11 Sep 2024
- 11:11:42 -0700 (PDT)
+	s=arc-20240116; t=1726081931; c=relaxed/simple;
+	bh=fsoxF7sGIu5bOZ9u0NafTnI88ERHYf0UaLPVUsqPJhA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LxARWFDHnUmlS7Zb0Rmyvo2cufAMmwvfsXsTLfnBFlqIRKYc+Kbn9XMXMlGNPvJfJr/uZIv4gAh06ATTLDEYNL2dT9c7ZpGNImaBC2Sdzy6OPU37U30UYw1n8JRD0pCcxNB6Nb3mRCMHgKXiZdlxcISWNuLeeTztGt1pgK6OffU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=w94iOTF5; arc=none smtp.client-ip=199.89.1.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 008.lax.mailroute.net (Postfix) with ESMTP id 4X3qvF0tD1z6ClY9P;
+	Wed, 11 Sep 2024 19:12:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1726081917; x=1728673918; bh=LgUJrvRBNbuYJhKEae8t1pD8
+	8/KE+UPgTHV197Abt0o=; b=w94iOTF59lHhd1wu0GBhna72MMT+5bzSYBZ85Huc
+	MtSjsIfRi3uW+wjemZbJY5Bz0oJYg82lgz4ywKCZRNPhq2eEgqYJGSHrDho0OR7C
+	vb1lrvkgmRRWOc/LqwA7jqH0SbbfgfZHguWN3XeWKA2BwnBLoaSVxUtGsJQyWUa4
+	st5AMkew5I8t8SU+4sDeuUXvv7ywglaOTPIiht1B+cx94shkTX0jgfNSo4MTIO/m
+	ezzQOKIizmXot94a5zWWz3jzk9M7TeljSsRcPBmHYgx6lt9yIcMv+GbvmNZ8Czxy
+	3QPIZS/jJ1NMuUK2ql96RHl5rkJpPDYiJxtsI4hmE0zU0w==
+X-Virus-Scanned: by MailRoute
+Received: from 008.lax.mailroute.net ([127.0.0.1])
+ by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id 7HCF5J1oaQqY; Wed, 11 Sep 2024 19:11:57 +0000 (UTC)
+Received: from [100.66.154.22] (unknown [104.135.204.82])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4X3qtw0vbNz6ClY9K;
+	Wed, 11 Sep 2024 19:11:51 +0000 (UTC)
+Message-ID: <858c4b6b-fcbc-4d51-8641-051aeda387c5@acm.org>
+Date: Wed, 11 Sep 2024 12:11:50 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1726074904.git.lorenzo.stoakes@oracle.com> <b38d8936eaddd524d19823f7429138e2ef24e0d1.1726074904.git.lorenzo.stoakes@oracle.com>
-In-Reply-To: <b38d8936eaddd524d19823f7429138e2ef24e0d1.1726074904.git.lorenzo.stoakes@oracle.com>
-From: Linus Torvalds <torvalds@linuxfoundation.org>
-Date: Wed, 11 Sep 2024 11:11:25 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wgWJmQJSWz_5S8ZqEpDs1t3Abym9DPZfUzWu+OCNM3igw@mail.gmail.com>
-Message-ID: <CAHk-=wgWJmQJSWz_5S8ZqEpDs1t3Abym9DPZfUzWu+OCNM3igw@mail.gmail.com>
-Subject: Re: [PATCH hotfix 6.11 v2 3/3] minmax: reduce min/max macro expansion
- in atomisp driver
-To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>, Richard Narron <richard@aaazen.com>, 
-	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
-	Hans de Goede <hdegoede@redhat.com>, Mauro Carvalho Chehab <mchehab@kernel.org>, 
-	Sakari Ailus <sakari.ailus@linux.intel.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Marcin Wojtas <marcin.s.wojtas@gmail.com>, 
-	Russell King <linux@armlinux.org.uk>, "David S . Miller" <davem@davemloft.net>, 
-	Arnd Bergmann <arnd@kernel.org>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-media@vger.kernel.org, linux-staging@lists.linux.dev, 
-	linux-mm@kvack.org, Andrew Lunn <andrew@lunn.ch>, 
-	Dan Carpenter <dan.carpenter@linaro.org>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/2] ufs: core: requeue aborted request
+To: =?UTF-8?B?UGV0ZXIgV2FuZyAo546L5L+h5Y+LKQ==?= <peter.wang@mediatek.com>,
+ "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+ "avri.altman@wdc.com" <avri.altman@wdc.com>,
+ "jejb@linux.ibm.com" <jejb@linux.ibm.com>,
+ "alim.akhtar@samsung.com" <alim.akhtar@samsung.com>,
+ "martin.petersen@oracle.com" <martin.petersen@oracle.com>
+Cc: "linux-mediatek@lists.infradead.org"
+ <linux-mediatek@lists.infradead.org>,
+ =?UTF-8?B?SmlhamllIEhhbyAo6YOd5Yqg6IqCKQ==?= <jiajie.hao@mediatek.com>,
+ =?UTF-8?B?Q0MgQ2hvdSAo5ZGo5b+X5p2wKQ==?= <cc.chou@mediatek.com>,
+ =?UTF-8?B?RWRkaWUgSHVhbmcgKOm7g+aZuuWCkSk=?= <eddie.huang@mediatek.com>,
+ =?UTF-8?B?QWxpY2UgQ2hhbyAo6LaZ54+u5Z2HKQ==?= <Alice.Chao@mediatek.com>,
+ =?UTF-8?B?RWQgVHNhaSAo6JSh5a6X6LuSKQ==?= <Ed.Tsai@mediatek.com>,
+ wsd_upstream <wsd_upstream@mediatek.com>,
+ "quic_nguyenb@quicinc.com" <quic_nguyenb@quicinc.com>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ =?UTF-8?B?TGluIEd1aSAo5qGC5p6XKQ==?= <Lin.Gui@mediatek.com>,
+ =?UTF-8?B?Q2h1bi1IdW5nIFd1ICjlt6vpp7/lro8p?= <Chun-hung.Wu@mediatek.com>,
+ =?UTF-8?B?VHVuLXl1IFl1ICjmuLjmlabogb8p?= <Tun-yu.Yu@mediatek.com>,
+ =?UTF-8?B?Q2hhb3RpYW4gSmluZyAo5LqV5pyd5aSpKQ==?=
+ <Chaotian.Jing@mediatek.com>, =?UTF-8?B?UG93ZW4gS2FvICjpq5jkvK/mlocp?=
+ <Powen.Kao@mediatek.com>, =?UTF-8?B?TmFvbWkgQ2h1ICjmnLHoqaDnlLAp?=
+ <Naomi.Chu@mediatek.com>, =?UTF-8?B?UWlsaW4gVGFuICjosK3pupLpup8p?=
+ <Qilin.Tan@mediatek.com>
+References: <20240910073035.25974-1-peter.wang@mediatek.com>
+ <20240910073035.25974-3-peter.wang@mediatek.com>
+ <e42abf07-ba6b-4301-8717-8d5b01d56640@acm.org>
+ <04e392c00986ac798e881dcd347ff5045cf61708.camel@mediatek.com>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <04e392c00986ac798e881dcd347ff5045cf61708.camel@mediatek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 11 Sept 2024 at 10:51, Lorenzo Stoakes
-<lorenzo.stoakes@oracle.com> wrote:
->
-> Avoid unnecessary nested min()/max() which results in egregious macro
-> expansion. Use clamp_t() as this introduces the least possible expansion.
+On 9/10/24 11:03 PM, Peter Wang (=E7=8E=8B=E4=BF=A1=E5=8F=8B) wrote:
+> This statement is not quite accurate becasue in UFSHIC2.1, SDB mode
+> specification already have OCS: ABORTED (0x6) define.
+> And it is used in below UTRLCLR description:
+> 'which means a Transfer Request was "aborted"'
+> Therefore, the host controller should follow the
+> specification and fill the OCS field with OCS: ABORTED.
+> If not so, at what point does your host controller use the
+> OCS: ABORTED status?
 
-I took this (single) patch directly, since that's the one that
-actually causes build problems in limited environments (admittedly not
-in current git with the more invasive min/max cleanups, but in order
-to be back-ported).
+Hmm ... I have not been able to find any explanation in the UFSHCI 2.1
+specification that says when the OCS status is set to aborted. Did I
+perhaps overlook something?
 
-Plus it cleans up the code with more legible inline functions, rather
-than just doing some minimal syntactic changes. I expanded on the
-commit message to say that.
+This is what I found in the UTRLCLR description: "The host software=20
+shall use this field only when a UTP Transfer Request is expected to
+not be completed, e.g., when the host software receives a =E2=80=9CFUNCTI=
+ON
+COMPLETE=E2=80=9D Task Management response which means a Transfer Request=
+ was
+aborted." This does not mean that the host controller is expected to
+set the OCS status to "ABORTED". I will send an email to the JC-64
+mailing list to request clarification.
 
-The two others I'll leave for now and see what maintainers of their
-respective areas think.
+>>> +/*
+>>> + * When the host software receives a "FUNCTION COMPLETE", set flag
+>>> + * to requeue command after receive response with OCS_ABORTED
+>>> + * SDB mode: UTRLCLR Task Management response which means a
+>> Transfer
+>>> + *           Request was aborted.
+>>> + * MCQ mode: Host will post to CQ with OCS_ABORTED after SQ
+>> cleanup
+>>> + * This flag is set because ufshcd_abort_all forcibly aborts all
+>>> + * commands, and the host will automatically fill in the OCS field
+>>> + * of the corresponding response with OCS_ABORTED.
+>>> + * Therefore, upon receiving this response, it needs to be
+>> requeued.
+>>> + */
+>>> +if (!err)
+>>> +lrbp->abort_initiated_by_err =3D true;
+>>> +
+>>>    err =3D ufshcd_clear_cmd(hba, tag);
+>>>    if (err)
+>>>    dev_err(hba->dev, "%s: Failed clearing cmd at tag %d, err %d\n",
+>>
+>> The above change is misplaced. ufshcd_try_to_abort_task() can be
+>> called
+>> when the SCSI core decides to abort a command while
+>> abort_initiated_by_err must not be set in that case. Please move the
+>> above code block into ufshcd_abort_one().
+>=20
+> But move to ufshcd_abort_one may have race condition, beacause we
+> need set this flag before ufshcd_clear_cmd host controller fill
+> OCS_ABORTED to response. I will add check ufshcd_eh_in_progress.
 
-            Linus
+Calling ufshcd_clear_cmd() does not affect the OCS status as far as I
+know. Did I perhaps overlook something?
+
+Thanks,
+
+Bart.
 
