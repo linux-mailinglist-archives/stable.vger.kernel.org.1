@@ -1,75 +1,80 @@
-Return-Path: <stable+bounces-75875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C58697589C
-	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 18:37:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A64D9758A8
+	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 18:44:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AD90C1C22CA5
-	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 16:37:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 674F51C22DE5
+	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 16:44:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 272C71AC8B7;
-	Wed, 11 Sep 2024 16:37:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F4B91AED3F;
+	Wed, 11 Sep 2024 16:44:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BLDELWl2"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fIOi7aSe"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DACF19AA4E;
-	Wed, 11 Sep 2024 16:37:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 542971AE873
+	for <stable@vger.kernel.org>; Wed, 11 Sep 2024 16:44:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726072646; cv=none; b=JOJhCsFab8ljJSPyUyiY4jSCHzdygFGm+ufjQzs4LXnOAEyqNO87+pm6HWJapy1IBbqN/Ir6gokdd7RTjLOnKyRgvAld41gUqSFUWbmR6X6J+EQI95hy7mSPa7gcJrBScruChMXitnLXuXrRJpsQgir0jLF4gUF05HEzIDv4hy8=
+	t=1726073091; cv=none; b=ed/Mbp6IQXHT8vhs/aanEw0EHG46XnrY27m3e03VLMJ3dAt1pM9y9Nai/06hmYsjo5f5Ly2ZJOZwqDlz40Zwm96ovi61oAR6TaB/W4a2cBBM4YhaesHiH4ziD1Rv7YVKgMYJtk2vNh9/BjLz+YHjTp0s6g14z4Xb0dRUO7SPQB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726072646; c=relaxed/simple;
-	bh=9eK0yHEDauIWsVSgY9SqhfVJCOquv7paPpwYwu69AA4=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=m7fxMqcT7MH8pzTr4zQVa7NUkC7BS8slU6GB12jH2NThLTQM8QcrlZ5URhG7bSyFI+Zii2Z6ff06nvjUrDpczjmvjd9RCmEds76fU1+s7bre5VeHNnJ0yaoujv5eT3OR6ULo0SXdPT6qy0fymMVN6tng7jnN7pthH11gexYdbRM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BLDELWl2; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2057835395aso586545ad.3;
-        Wed, 11 Sep 2024 09:37:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1726072645; x=1726677445; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :references:cc:to:subject:from:user-agent:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=90TMb1/MbVS5WiGMgu7GUWPEif7p2vMbBbdE9JcSnoA=;
-        b=BLDELWl2W9vVu6LNK/qnuJo8gYpBUPNtz3RXp2w+K6xtwv5DAahHPQHaTxWI6bx3BQ
-         it9658F+BsaumFwDilnU8+CsXefvEza8n64GmhauBTXFn1HrDzqih67DJAJMKvnCAje+
-         KqUuB9oCusKjeVjKh1NHTChl8r9lhJQgpMIB9l9C4YZu8u96797pR7cRgpc3yVbj7jnE
-         5xqEFqx3bgttSmzcNbTTQpkA7agkpYmtfAUnxISi/dt4EP0vJSSRAVz33nNwBGVN2hI8
-         qMPNK6JWYjM/4b5ZCcWT2BxEjjNjtKPbXTCqK9ufuS683Eenla2s6T39KmgfpLh35Lrg
-         zwtA==
+	s=arc-20240116; t=1726073091; c=relaxed/simple;
+	bh=1nXds3ZP4p3jZUi2dsZQP+ReMsx100WA8hDf2B/ubZA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PeRAH0EqFP0CJpV9CsIObUjnqzhUTD5C7Aj47YbhMkBC9VLz9p6WdTrglhQwgVf+A9MKnQJOYDhn6+aevkKCv/NEacrGDUQqNUxiak6SyKfABdjIw3lKaef75y1F6dxZFx4V2K1Trw23sfKLZUJeF5DNrJTIiuaUkdTfVfyC1lk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fIOi7aSe; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1726073088;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=KvxdIsxfAzYBcE3ejxiUV1BcDIxlqNJLApqpadVPCTc=;
+	b=fIOi7aSej5iGaXjeLlnIUXgcp7t7lpTM9bcQdeVr3jP2bvLDZGBkBgJ90+eJDgCyhyOXkv
+	woO4h4zACvW21726wt4PpSyWF1h4B3y224OS93hksUmPAgPEDEoWVhL//Aq1TzJ0OIJA2Z
+	xHQL7Rtn4E2tQdK1P1VrhlJVU6oixZA=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-124-3QfF7YD0OYGSF2j6dSNCbQ-1; Wed, 11 Sep 2024 12:44:47 -0400
+X-MC-Unique: 3QfF7YD0OYGSF2j6dSNCbQ-1
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-a8a80667ad8so1135366b.2
+        for <stable@vger.kernel.org>; Wed, 11 Sep 2024 09:44:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726072645; x=1726677445;
-        h=content-transfer-encoding:in-reply-to:autocrypt:content-language
-         :references:cc:to:subject:from:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=90TMb1/MbVS5WiGMgu7GUWPEif7p2vMbBbdE9JcSnoA=;
-        b=ZcX2e9kfF/GmIX29avehQDfx0ETyPIYw+ZOnhQ3jD9Cl099hqeF9xfcqucLS1Kb1Jg
-         qWhtDtmGUiZIWkIp0p3MAiBImdy50hUiFqNDT4DAMZdjQujws5ZSTJAjS5kGdSulQv5o
-         N47fRgoYZ++0fJQyM0GzTulxa9sZOVhLXBUksSz5ktfUz2hTM7yHPh1W9zE120+zCzIo
-         Xqbtd+Si62KoWEP67K78cUtVI+DRg1W/dXifHXqxXWL7gB8TEIN960g2BPZRLzR+90zW
-         AXnaa1hImz01mM1lei5GZD0uB1V8JBpuUTwKcKTo0rnoJ2pWFb7sQCYPZCzQdvp7r+F/
-         8svQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW6rpBMZh9oaBjVol3KZFgRvEuKBnF4K6T5GdZFqj1TNN64VdGahAge1war2wmu79sfeVP+g8fiYk8nEg4=@vger.kernel.org, AJvYcCXcmnRHks51XNcht/O1CPLJs6nS2LUU3iDF9tsfDwzLPixeJG8IQqXlPl2q46qamt08zHtwP4wN@vger.kernel.org
-X-Gm-Message-State: AOJu0YyPWDDTTcbvSAXT1cwV9QHXNMwh6tzs2Zidgs8CL3RpBfeKuQUM
-	+8v+g973i5hjjMQsy8G8QTKkG4zCaasVmDU2M7cBHKdjTjb8QojA
-X-Google-Smtp-Source: AGHT+IFRWs5tDpCZz4ebtck/HzGJhZ2Sstm9Pf2WqLdLZ9Lh6Mhx5HhRBLNVUk+FbghPJ9dfL6+I4Q==
-X-Received: by 2002:a17:902:ecca:b0:207:14d1:8270 with SMTP id d9443c01a7336-20752195bd6mr57744205ad.16.1726072644731;
-        Wed, 11 Sep 2024 09:37:24 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2076afdd86csm1598095ad.131.2024.09.11.09.37.22
+        d=1e100.net; s=20230601; t=1726073086; x=1726677886;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KvxdIsxfAzYBcE3ejxiUV1BcDIxlqNJLApqpadVPCTc=;
+        b=R0dkbKa+K1jQlprYFGov3f3mA9zauGibBn7XWNBqUHO3msj+r6wv5bDhiBqABaJsTG
+         Urelxpb4NTFr2Io2kchV53hkjc4hmvDF82jL+uI7hKHYfuSwYkgJJj7o+7OeFm+4EVe9
+         Tv4vTekl8DUVfTQbTnaQaoxHkEikybVogu4p0t5MFB2yG70yMVSXDuSwu/e5Y8nEExPZ
+         6nexMn1hMLePGxNRJ80qojvXwkcrLfm2SJqEqMrO/Ul/mq2V1OtB4KcziXJFGL7DEFIY
+         k1nHFNaXMVDezDgfiYYyeinN0nRbnKEUAhwqa6f7Vgdk06GfmHmfYehGrp899cuA4wEm
+         Kabg==
+X-Forwarded-Encrypted: i=1; AJvYcCUj58CwL3/j6ARnZWNx7MPVzyiHwC53MFV3JcC11LdAbPmAtq9jU90J/1iDe0WpLboz6Gg2ZJc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyHetzTnOwhwu7Ywv1TTIFPpZ50dumwhRbSpm6wU4kTkMn/c/+V
+	yo8QZKl/uvnpC3Vb9v7dmNUAPVBKxI9bt38X3mXSroYus124RLwEs2fjbVYGKWCMS99kyNnqJCj
+	CJrEUs6GcC8KmOiu1EhmAQ8HB7Emovv2BXsxVkrRkh5vlcaY+HGqGMw==
+X-Received: by 2002:a17:906:d7da:b0:a86:812a:d2ca with SMTP id a640c23a62f3a-a9029504e84mr8786366b.25.1726073085914;
+        Wed, 11 Sep 2024 09:44:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFktpKzCa0aKc4C7BgocbZxtL8LJuk2wMgcJlorDEqUL7HtqzMbLcy98KSTxOWnzNfmiPcTLQ==
+X-Received: by 2002:a17:906:d7da:b0:a86:812a:d2ca with SMTP id a640c23a62f3a-a9029504e84mr8781066b.25.1726073085204;
+        Wed, 11 Sep 2024 09:44:45 -0700 (PDT)
+Received: from ?IPV6:2001:1c00:c32:7800:5bfa:a036:83f0:f9ec? (2001-1c00-0c32-7800-5bfa-a036-83f0-f9ec.cable.dynamic.v6.ziggo.nl. [2001:1c00:c32:7800:5bfa:a036:83f0:f9ec])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a8d25d40e8csm633247166b.196.2024.09.11.09.44.44
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 11 Sep 2024 09:37:24 -0700 (PDT)
-Message-ID: <52f297b2-62c4-4e53-8b82-a87f29394d6a@gmail.com>
-Date: Wed, 11 Sep 2024 09:37:22 -0700
+        Wed, 11 Sep 2024 09:44:44 -0700 (PDT)
+Message-ID: <8af6253d-83aa-403a-a383-8fb5f5ee0d78@redhat.com>
+Date: Wed, 11 Sep 2024 18:44:43 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -77,81 +82,156 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: Florian Fainelli <f.fainelli@gmail.com>
-Subject: Re: [PATCH 5.4 000/121] 5.4.284-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
- conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
-References: <20240911130518.626277627@linuxfoundation.org>
-Content-Language: en-US
-Autocrypt: addr=f.fainelli@gmail.com; keydata=
- xsDiBEjPuBIRBACW9MxSJU9fvEOCTnRNqG/13rAGsj+vJqontvoDSNxRgmafP8d3nesnqPyR
- xGlkaOSDuu09rxuW+69Y2f1TzjFuGpBk4ysWOR85O2Nx8AJ6fYGCoeTbovrNlGT1M9obSFGQ
- X3IzRnWoqlfudjTO5TKoqkbOgpYqIo5n1QbEjCCwCwCg3DOH/4ug2AUUlcIT9/l3pGvoRJ0E
- AICDzi3l7pmC5IWn2n1mvP5247urtHFs/uusE827DDj3K8Upn2vYiOFMBhGsxAk6YKV6IP0d
- ZdWX6fqkJJlu9cSDvWtO1hXeHIfQIE/xcqvlRH783KrihLcsmnBqOiS6rJDO2x1eAgC8meAX
- SAgsrBhcgGl2Rl5gh/jkeA5ykwbxA/9u1eEuL70Qzt5APJmqVXR+kWvrqdBVPoUNy/tQ8mYc
- nzJJ63ng3tHhnwHXZOu8hL4nqwlYHRa9eeglXYhBqja4ZvIvCEqSmEukfivk+DlIgVoOAJbh
- qIWgvr3SIEuR6ayY3f5j0f2ejUMYlYYnKdiHXFlF9uXm1ELrb0YX4GMHz80nRmxvcmlhbiBG
- YWluZWxsaSA8Zi5mYWluZWxsaUBnbWFpbC5jb20+wmYEExECACYCGyMGCwkIBwMCBBUCCAME
- FgIDAQIeAQIXgAUCZtdNBQUJMNWh3gAKCRBhV5kVtWN2DhBgAJ9D8p3pChCfpxunOzIK7lyt
- +uv8dQCgrNubjaY9TotNykglHlGg2NB0iOLOw00ESM+4EhAQAL/o09boR9D3Vk1Tt7+gpYr3
- WQ6hgYVON905q2ndEoA2J0dQxJNRw3snabHDDzQBAcqOvdi7YidfBVdKi0wxHhSuRBfuOppu
- pdXkb7zxuPQuSveCLqqZWRQ+Cc2QgF7SBqgznbe6Ngout5qXY5Dcagk9LqFNGhJQzUGHAsIs
- hap1f0B1PoUyUNeEInV98D8Xd/edM3mhO9nRpUXRK9Bvt4iEZUXGuVtZLT52nK6Wv2EZ1TiT
- OiqZlf1P+vxYLBx9eKmabPdm3yjalhY8yr1S1vL0gSA/C6W1o/TowdieF1rWN/MYHlkpyj9c
- Rpc281gAO0AP3V1G00YzBEdYyi0gaJbCEQnq8Vz1vDXFxHzyhgGz7umBsVKmYwZgA8DrrB0M
- oaP35wuGR3RJcaG30AnJpEDkBYHznI2apxdcuTPOHZyEilIRrBGzDwGtAhldzlBoBwE3Z3MY
- 31TOpACu1ZpNOMysZ6xiE35pWkwc0KYm4hJA5GFfmWSN6DniimW3pmdDIiw4Ifcx8b3mFrRO
- BbDIW13E51j9RjbO/nAaK9ndZ5LRO1B/8Fwat7bLzmsCiEXOJY7NNpIEpkoNoEUfCcZwmLrU
- +eOTPzaF6drw6ayewEi5yzPg3TAT6FV3oBsNg3xlwU0gPK3v6gYPX5w9+ovPZ1/qqNfOrbsE
- FRuiSVsZQ5s3AAMFD/9XjlnnVDh9GX/r/6hjmr4U9tEsM+VQXaVXqZuHKaSmojOLUCP/YVQo
- 7IiYaNssCS4FCPe4yrL4FJJfJAsbeyDykMN7wAnBcOkbZ9BPJPNCbqU6dowLOiy8AuTYQ48m
- vIyQ4Ijnb6GTrtxIUDQeOBNuQC/gyyx3nbL/lVlHbxr4tb6YkhkO6shjXhQh7nQb33FjGO4P
- WU11Nr9i/qoV8QCo12MQEo244RRA6VMud06y/E449rWZFSTwGqb0FS0seTcYNvxt8PB2izX+
- HZA8SL54j479ubxhfuoTu5nXdtFYFj5Lj5x34LKPx7MpgAmj0H7SDhpFWF2FzcC1bjiW9mjW
- HaKaX23Awt97AqQZXegbfkJwX2Y53ufq8Np3e1542lh3/mpiGSilCsaTahEGrHK+lIusl6mz
- Joil+u3k01ofvJMK0ZdzGUZ/aPMZ16LofjFA+MNxWrZFrkYmiGdv+LG45zSlZyIvzSiG2lKy
- kuVag+IijCIom78P9jRtB1q1Q5lwZp2TLAJlz92DmFwBg1hyFzwDADjZ2nrDxKUiybXIgZp9
- aU2d++ptEGCVJOfEW4qpWCCLPbOT7XBr+g/4H3qWbs3j/cDDq7LuVYIe+wchy/iXEJaQVeTC
- y5arMQorqTFWlEOgRA8OP47L9knl9i4xuR0euV6DChDrguup2aJVU8JPBBgRAgAPAhsMBQJU
- X9LxBQkeXB3fAAoJEGFXmRW1Y3YOj4UAn3nrFLPZekMeqX5aD/aq/dsbXSfyAKC45Go0YyxV
- HGuUuzv+GKZ6nsysJw==
-In-Reply-To: <20240911130518.626277627@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH hotfix 6.11] minmax: reduce egregious min/max macro
+ expansion
+To: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>,
+ Richard Narron <richard@aaazen.com>, Eric Dumazet <edumazet@google.com>,
+ Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+ Mauro Carvalho Chehab <mchehab@kernel.org>,
+ Sakari Ailus <sakari.ailus@linux.intel.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Marcin Wojtas <marcin.s.wojtas@gmail.com>,
+ Russell King <linux@armlinux.org.uk>, "David S . Miller"
+ <davem@davemloft.net>, Arnd Bergmann <arnd@kernel.org>,
+ Linus Torvalds <torvalds@linuxfoundation.org>, netdev@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+ linux-staging@lists.linux.dev, linux-mm@kvack.org, stable@vger.kernel.org
+References: <20240911153457.1005227-1-lorenzo.stoakes@oracle.com>
+ <181dec64-5906-4cdd-bb29-40bc7c02d63e@redhat.com>
+ <3f622e05-9843-4763-9191-c980feb831d2@lucifer.local>
+Content-Language: en-US, nl
+From: Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <3f622e05-9843-4763-9191-c980feb831d2@lucifer.local>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
+Hi,
 
-
-On 9/11/2024 6:07 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.4.284 release.
-> There are 121 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On 9/11/24 6:37 PM, Lorenzo Stoakes wrote:
+> On Wed, Sep 11, 2024 at 06:24:54PM GMT, Hans de Goede wrote:
+>> Hi Lorenzo,
+>>
+>> On 9/11/24 5:34 PM, Lorenzo Stoakes wrote:
+>>> Avoid nested min()/max() which results in egregious macro expansion.
+>>>
+>>> This issue was introduced by commit 867046cc7027 ("minmax: relax check to
+>>> allow comparison between unsigned arguments and signed constants") [2].
+>>>
+>>> Work has been done to address the issue of egregious min()/max() macro
+>>> expansion in commit 22f546873149 ("minmax: improve macro expansion and type
+>>> checking") and related, however it appears that some issues remain on more
+>>> tightly constrained systems.
+>>>
+>>> Adjust a few known-bad cases of deeply nested macros to avoid doing so to
+>>> mitigate this. Porting the patch first proposed in [1] to Linus's tree.
+>>>
+>>> Running an allmodconfig build using the methodology described in [2] we
+>>> observe a 35 MiB reduction in generated code.
+>>>
+>>> The difference is much more significant prior to recent minmax fixes which
+>>> were not backported. As per [1] prior these the reduction is more like 200
+>>> MiB.
+>>>
+>>> This resolves an issue with slackware 15.0 32-bit compilation as reported
+>>> by Richard Narron.
+>>>
+>>> Presumably the min/max fixups would be difficult to backport, this patch
+>>> should be easier and fix's Richard's problem in 5.15.
+>>>
+>>> [0]:https://lore.kernel.org/all/b97faef60ad24922b530241c5d7c933c@AcuMS.aculab.com/
+>>> [1]:https://lore.kernel.org/lkml/5882b96e-1287-4390-8174-3316d39038ef@lucifer.local/
+>>> [2]:https://lore.kernel.org/linux-mm/36aa2cad-1db1-4abf-8dd2-fb20484aabc3@lucifer.local/
+>>>
+>>> Reported-by: Richard Narron <richard@aaazen.com>
+>>> Closes: https://lore.kernel.org/all/4a5321bd-b1f-1832-f0c-cea8694dc5aa@aaazen.com/
+>>> Fixes: 867046cc7027 ("minmax: relax check to allow comparison between unsigned arguments and signed constants")
+>>> Cc: stable@vger.kernel.org
+>>> Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+>>
+>> Thank you for your patch.
+>>
+>> I must say that I'm not a fan of that this is patching 3 totally
+>> unrelated files here in a single patch.
+>>
+>> This is e.g. going to be a problem if we need to revert one of
+>> the changes because of regressions...
+>>
+>> So I would prefer this to be split into 3 patches.
 > 
-> Responses should be made by Fri, 13 Sep 2024 13:05:00 +0000.
-> Anything received after that time might be too late.
+> Well, I was doing this as a favour to Richard between other work so put
+> this together quickly, but you're right this is going to be a pain to
+> backport/revert if issues so absolutely - will do.
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.284-rc2.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
-> and the diffstat can be found below.
+> Since this is a hotfix I'm going to risk annoying people and shoot out
+> a v2 on same day as v1. Sorry in advance.
 > 
-> thanks,
+>>
+>> One review comment for the atomisp bits inline / below.
+>>
+>>> ---
+>>>  drivers/net/ethernet/marvell/mvpp2/mvpp2.h    |  2 +-
+>>>  .../staging/media/atomisp/pci/sh_css_frac.h   | 26 ++++++++++++++-----
+>>>  include/linux/skbuff.h                        |  6 ++++-
+>>>  3 files changed, 25 insertions(+), 9 deletions(-)
+>>>
+>>> diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2.h b/drivers/net/ethernet/marvell/mvpp2/mvpp2.h
+>>> index e809f91c08fb..8b431f90efc3 100644
+>>> --- a/drivers/net/ethernet/marvell/mvpp2/mvpp2.h
+>>> +++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2.h
+>>> @@ -23,7 +23,7 @@
+>>>  /* The PacketOffset field is measured in units of 32 bytes and is 3 bits wide,
+>>>   * so the maximum offset is 7 * 32 = 224
+>>>   */
+>>> -#define MVPP2_SKB_HEADROOM	min(max(XDP_PACKET_HEADROOM, NET_SKB_PAD), 224)
+>>> +#define MVPP2_SKB_HEADROOM	clamp_t(int, XDP_PACKET_HEADROOM, NET_SKB_PAD, 224)
+>>>
+>>>  #define MVPP2_XDP_PASS		0
+>>>  #define MVPP2_XDP_DROPPED	BIT(0)
+>>> diff --git a/drivers/staging/media/atomisp/pci/sh_css_frac.h b/drivers/staging/media/atomisp/pci/sh_css_frac.h
+>>> index b90b5b330dfa..a973394c5bc0 100644
+>>> --- a/drivers/staging/media/atomisp/pci/sh_css_frac.h
+>>> +++ b/drivers/staging/media/atomisp/pci/sh_css_frac.h
+>>> @@ -32,12 +32,24 @@
+>>>  #define uISP_VAL_MAX		      ((unsigned int)((1 << uISP_REG_BIT) - 1))
+>>>
+>>>  /* a:fraction bits for 16bit precision, b:fraction bits for ISP precision */
+>>> -#define sDIGIT_FITTING(v, a, b) \
+>>> -	min_t(int, max_t(int, (((v) >> sSHIFT) >> max(sFRACTION_BITS_FITTING(a) - (b), 0)), \
+>>> -	  sISP_VAL_MIN), sISP_VAL_MAX)
+>>> -#define uDIGIT_FITTING(v, a, b) \
+>>> -	min((unsigned int)max((unsigned)(((v) >> uSHIFT) \
+>>> -	>> max((int)(uFRACTION_BITS_FITTING(a) - (b)), 0)), \
+>>> -	  uISP_VAL_MIN), uISP_VAL_MAX)
+>>> +static inline int sDIGIT_FITTING(short v, int a, int b)
+>>> +{
+>>
+>> drivers/staging/media/atomisp/pci/isp/kernels/s3a/s3a_1.0/ia_css_s3a.host.c
+>>
+>> calls this with ia_css_3a_config.af_fir1_coef / .af_fir2_coef
+>> as first argument those are of the ia_css_s0_15 type which is:
+>>
+>> /* Signed fixed point value, 0 integer bits, 15 fractional bits */
+>> typedef s32 ia_css_s0_15;
+>>
+>> please replace the "short v" with "int v"
 > 
-> greg k-h
+> Yeah I think you're right, it's odd, because it seems that the shift value
+> and the comments implies that this is a short, but perhaps it's more so
+> that values are shifted as to obtain 16 bits of precision.
+> 
+>>
+>> I think that you can then also replace clamp_t() with clamp()
+> 
+> The use of clamp_t() is to avoid egregious macro expansion in
+> clamp(). After the series improving min/max the clamp() is probably
+> equivalent. But in 5.15 it will likely not be. So this is, in line with the
+> purpose of this change, I believe necesasry.
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+Ok fair enough.
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+Regards,
 
+Hans
 
 
