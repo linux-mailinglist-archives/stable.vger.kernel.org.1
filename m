@@ -1,65 +1,81 @@
-Return-Path: <stable+bounces-75783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38E7697496A
-	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 06:56:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47EB79749A3
+	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 07:18:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D1D51C25007
-	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 04:56:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 85271B24D77
+	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 05:18:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EA144F8A0;
-	Wed, 11 Sep 2024 04:56:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2629453E15;
+	Wed, 11 Sep 2024 05:18:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="jXdFqoie"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jYTfSlI2"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FC2E5589B;
-	Wed, 11 Sep 2024 04:56:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B9945464B;
+	Wed, 11 Sep 2024 05:18:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726030606; cv=none; b=Rj43tzFs6nzrzaR0Y4XX8o/5SqahIIfLbJDdPLO2USf+fqftGfKr/9sAPJUV4+87GOHxtvZiT+NduOwBTc+p+3vRaAvLEIyoPr38xh6sWyoy5jauWChiEn5xvgXvoowTjXHgDLweFOQ3Gj3zdsqGEoLYJKOyJYdE5tXIClWRUSc=
+	t=1726031887; cv=none; b=PumyrNRbM2EmhWdim1O9SHFeiJNsHwnAGYEQ3f9KeYcjP8FjeD00ouYC3P11StnLXsCI0Uf3vrvCiPSOsL+gRlkQa6jkEnrGIP1wzhsl59k4alcww5MAD3iD7nITRw2SCtaQrH6AL95LDfbrVcojA1+rfGpymFjo3r6DVw5Hifg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726030606; c=relaxed/simple;
-	bh=WCT3gLIPKi2rloiBhOc+oD67Lrpf+PtV0i/c70mMkeo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=huLTEgWeUVb13Veuwx3Jgok8cneWvxAiunJnMkA3CnCo+6zo5nJHrcj12gBXko8itvL+E0aFpDZWfYWgURiYkEF0naZ54tyEFvr0xFaEeAcWNjl3pBHnA6VWHsMNVfSLzi/V/9Zm2I5WGsZ7PR7I/XNEdd+8ks23Jw6TFgqWvRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=jXdFqoie; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from namjain-Virtual-Machine.mshome.net (unknown [167.220.238.141])
-	by linux.microsoft.com (Postfix) with ESMTPSA id DC2C620B9A88;
-	Tue, 10 Sep 2024 21:56:39 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com DC2C620B9A88
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1726030603;
-	bh=9bq4kQISS+sdNw0M52IYsF90Bgvmo3NQ+h9q6SDUnJE=;
-	h=From:To:Cc:Subject:Date:From;
-	b=jXdFqoiexQLH9gRlzWsQEGaUBok2wTyWLeF5OYUKyLNYKXTHqoQyT+kzNMIST/qjp
-	 YEaTmS9TWu/WOjJTeWwKCbd+Dj4+NPSq2XJrNBIJNjQYrej0Rq5oJ+aOiTxSV1IE0V
-	 43evBpQCHSNuywQYNt5PNavK52Xrrlimik/V6AVw=
-From: Naman Jain <namjain@linux.microsoft.com>
-To: "K . Y . Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Michael Kelley <mhklinux@outlook.com>
-Cc: linux-hyperv@vger.kernel.org,
+	s=arc-20240116; t=1726031887; c=relaxed/simple;
+	bh=HIl6FUMwsId7NWuqsLQb6qLx/lhvSz/FK61If7SUvoc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=UBsGQLEQjFTbg6+nEhsPy41Auj2kDOOaX/oOGmkWqJQCIB1wj4832TVupokrwbo9edG1pDoOljAIGYD1ORPQ6MaWz1Mmp2l1ELKv7+ory+9wvko8cjRgag2CDnlLa6IZhvq928iP5xro1O3yUU5YWinIsWJbqQP1vDwKVd9KtmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jYTfSlI2; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-1fc47abc040so55830875ad.0;
+        Tue, 10 Sep 2024 22:18:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1726031886; x=1726636686; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=vPFFkBUH1KUQvGTAkddgh3AbnGWF386sDPxW9jKCyYA=;
+        b=jYTfSlI2MpNebT2QE+MWXan2aR/VWtRcTdYgENU0JFp/jI5FokAkMjDySER5csvtPO
+         z8139cwSSR9CF2HcqKXg0dtqKetZFTxEYvpFgVSt69/7rs32ghvhxosazCMGeFNuTAwR
+         6uSQjmjtvsPtDt5fHnL+ktj1udMuutuX/tQvNP1xo0JtXOFJAd4bgl6ZG+la2POpYobN
+         +3EsJTVbZrBgEbeic0EZ0VLElDiFMVUu2v1BVG7tUlCbgyJdBBRKUSnZfz008TxT6NVc
+         2SBXs0pf26DEYJqNBRb6m6jSUnv/7RkTvXX5lTk9yCk0o/5Q6N8oRU3tX55GR6ZTgydp
+         2XGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726031886; x=1726636686;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vPFFkBUH1KUQvGTAkddgh3AbnGWF386sDPxW9jKCyYA=;
+        b=GuG8yjQhHejNTzLjkrigCSzBD7ZW1xJ6X7+JULZLIozZlIbbxIl2q5ghMc/122+nOO
+         rF+xX0Ec8dZQnAo72ZO770HciYMEJKLDdB58UsVHzjCYp6zSkWxoZ7+0jwDDhtxJlIBf
+         QnrZ+S82nD1ShFlC+LGBcAWDeaBK3BVaIzPAx31mTXixTUP5XndxR1GaYjIwvkhRmCnF
+         Qkp4Z+sz4fBrmOJq50QPbZeqxpJgU2CQsAwrGoAcXh1rNwxdhBb6wYWwHeBN1PNt3+7t
+         sz9NjNxJK/LmFYCQweDqQu0p93nlfWeQ6KspEzjqfZGoTrErQ+mlS1j63l23O/ZriRyQ
+         r5Ug==
+X-Forwarded-Encrypted: i=1; AJvYcCVn2CogJsO7a+SkEipabkU3/tWMIR22jjsCpKRycdujodOJsUk0CHe8lLc/xrnabWXGKbNtibPe@vger.kernel.org, AJvYcCXffJwqqKVIWFyqqvQ1OZ9j+tf2Lipxcuy5IN8UtafNtw88ILohUcGXSM+xA78kfBdM3OazD2B0c/9QvJw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxn6JmSNUYsp+Gwvuitju//LpaZPmlJ6CAC2CuhQCII0RWNYokv
+	blg/WK2I3ZLLv1UQUnslLysJunEJLPxzHNeu7NmCM2tLQbpgEsOE
+X-Google-Smtp-Source: AGHT+IFIs42BaBHr5f6zXfAUHBDW+oglVKQHTCBImU/2pgw3MkM8yZdGXBV6oGVZLrxZQGsXtn/WcA==
+X-Received: by 2002:a17:903:247:b0:207:c38:9fd7 with SMTP id d9443c01a7336-2074c5f13f8mr38917615ad.22.1726031885488;
+        Tue, 10 Sep 2024 22:18:05 -0700 (PDT)
+Received: from kic-machine.localdomain (122-117-151-175.hinet-ip.hinet.net. [122.117.151.175])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20710e10eb4sm56252735ad.7.2024.09.10.22.18.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 10 Sep 2024 22:18:04 -0700 (PDT)
+From: Kuangyi Chiang <ki.chiang65@gmail.com>
+To: gregkh@linuxfoundation.org,
+	mathias.nyman@intel.com
+Cc: linux-usb@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	namjain@linux.microsoft.com,
+	ki.chiang65@gmail.com,
 	stable@vger.kernel.org
-Subject: [PATCH v2] clocksource: hyper-v: Fix hv tsc page based sched_clock for hibernation
-Date: Wed, 11 Sep 2024 10:26:32 +0530
-Message-Id: <20240911045632.3757-1-namjain@linux.microsoft.com>
-X-Mailer: git-send-email 2.34.1
+Subject: [PATCH 3/3] xhci: Don't perform Soft Retry for Etron xHCI host
+Date: Wed, 11 Sep 2024 13:17:13 +0800
+Message-Id: <20240911051716.6572-1-ki.chiang65@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,183 +84,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-read_hv_sched_clock_tsc() assumes that the Hyper-V clock counter is
-bigger than the variable hv_sched_clock_offset, which is cached during
-early boot, but depending on the timing this assumption may be false
-when a hibernated VM starts again (the clock counter starts from 0
-again) and is resuming back (Note: hv_init_tsc_clocksource() is not
-called during hibernation/resume); consequently,
-read_hv_sched_clock_tsc() may return a negative integer (which is
-interpreted as a huge positive integer since the return type is u64)
-and new kernel messages are prefixed with huge timestamps before
-read_hv_sched_clock_tsc() grows big enough (which typically takes
-several seconds).
+Since commit f8f80be501aa ("xhci: Use soft retry to recover faster from
+transaction errors"), unplugging USB device while enumeration results in
+errors like this:
 
-Fix the issue by saving the Hyper-V clock counter just before the
-suspend, and using it to correct the hv_sched_clock_offset in
-resume. Override x86_platform.save_sched_clock_state  and
-x86_platform.restore_sched_clock_state.
+[ 364.855321] xhci_hcd 0000:0b:00.0: ERROR Transfer event for disabled endpoint slot 5 ep 2
+[ 364.864622] xhci_hcd 0000:0b:00.0: @0000002167656d70 67f03000 00000021 0c000000 05038001
+[ 374.934793] xhci_hcd 0000:0b:00.0: Abort failed to stop command ring: -110
+[ 374.958793] xhci_hcd 0000:0b:00.0: xHCI host controller not responding, assume dead
+[ 374.967590] xhci_hcd 0000:0b:00.0: HC died; cleaning up
+[ 374.973984] xhci_hcd 0000:0b:00.0: Timeout while waiting for configure endpoint command
 
-Note: if Invariant TSC is available, the issue doesn't happen because
-1) we don't register read_hv_sched_clock_tsc() for sched clock:
-See commit e5313f1c5404 ("clocksource/drivers/hyper-v: Rework
-clocksource and sched clock setup");
-2) the common x86 code adjusts TSC similarly: see
-__restore_processor_state() ->  tsc_verify_tsc_adjust(true) and
-x86_platform.restore_sched_clock_state().
+Seems that Etorn xHCI host can not perform Soft Retry correctly, apply
+XHCI_NO_SOFT_RETRY quirk to disable Soft Retry and then issue is gone.
 
-Cc: stable@vger.kernel.org
-Fixes: 1349401ff1aa ("clocksource/drivers/hyper-v: Suspend/resume Hyper-V clocksource for hibernation")
-Co-developed-by: Dexuan Cui <decui@microsoft.com>
-Signed-off-by: Dexuan Cui <decui@microsoft.com>
-Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
+This patch depends on commit a4a251f8c235 ("usb: xhci: do not perform
+Soft Retry for some xHCI hosts").
+
+Fixes: f8f80be501aa ("xhci: Use soft retry to recover faster from transaction errors")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Kuangyi Chiang <ki.chiang65@gmail.com>
 ---
-Changes from v1:
-https://lore.kernel.org/all/20240909053923.8512-1-namjain@linux.microsoft.com/
-* Reorganized code as per Michael's comment, and moved the logic to x86
-specific files, to keep hyperv_timer.c arch independent.
+ drivers/usb/host/xhci-pci.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
----
- arch/x86/kernel/cpu/mshyperv.c     | 70 ++++++++++++++++++++++++++++++
- drivers/clocksource/hyperv_timer.c |  8 +++-
- include/clocksource/hyperv_timer.h |  8 ++++
- 3 files changed, 85 insertions(+), 1 deletion(-)
-
-diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyperv.c
-index e0fd57a8ba84..d83a694e387c 100644
---- a/arch/x86/kernel/cpu/mshyperv.c
-+++ b/arch/x86/kernel/cpu/mshyperv.c
-@@ -224,6 +224,75 @@ static void hv_machine_crash_shutdown(struct pt_regs *regs)
- 	hyperv_cleanup();
- }
- #endif /* CONFIG_CRASH_DUMP */
-+
-+static u64 hv_sched_clock_offset_saved;
-+static void (*old_save_sched_clock_state)(void);
-+static void (*old_restore_sched_clock_state)(void);
-+
-+/*
-+ * Hyper-V clock counter resets during hibernation. Save and restore clock
-+ * offset during suspend/resume, while also considering the time passed
-+ * before suspend. This is to make sure that sched_clock using hv tsc page
-+ * based clocksource, proceeds from where it left off during suspend and
-+ * it shows correct time for the timestamps of kernel messages after resume.
-+ */
-+static void save_hv_clock_tsc_state(void)
-+{
-+	hv_sched_clock_offset_saved = hv_read_reference_counter();
-+}
-+
-+static void restore_hv_clock_tsc_state(void)
-+{
-+	/*
-+	 * hv_sched_clock_offset = offset that is used by hyperv_timer clocksource driver
-+	 *                         to get time.
-+	 * Time passed before suspend = hv_sched_clock_offset_saved
-+	 *                            - hv_sched_clock_offset (old)
-+	 *
-+	 * After Hyper-V clock counter resets, hv_sched_clock_offset needs a correction.
-+	 *
-+	 * New time = hv_read_reference_counter() (future) - hv_sched_clock_offset (new)
-+	 * New time = Time passed before suspend + hv_read_reference_counter() (future)
-+	 *                                       - hv_read_reference_counter() (now)
-+	 *
-+	 * Solving the above two equations gives:
-+	 *
-+	 * hv_sched_clock_offset (new) = hv_sched_clock_offset (old)
-+	 *                             - hv_sched_clock_offset_saved
-+	 *                             + hv_read_reference_counter() (now))
-+	 */
-+	hv_adj_sched_clock_offset(hv_sched_clock_offset_saved - hv_read_reference_counter());
-+}
-+
-+/*
-+ * Functions to override save_sched_clock_state and restore_sched_clock_state
-+ * functions of x86_platform. The Hyper-V clock counter is reset during
-+ * suspend-resume and the offset used to measure time needs to be
-+ * corrected, post resume.
-+ */
-+static void hv_save_sched_clock_state(void)
-+{
-+	old_save_sched_clock_state();
-+	save_hv_clock_tsc_state();
-+}
-+
-+static void hv_restore_sched_clock_state(void)
-+{
-+	restore_hv_clock_tsc_state();
-+	old_restore_sched_clock_state();
-+}
-+
-+static void __init x86_setup_ops_for_tsc_pg_clock(void)
-+{
-+	if (!(ms_hyperv.features & HV_MSR_REFERENCE_TSC_AVAILABLE))
-+		return;
-+
-+	old_save_sched_clock_state = x86_platform.save_sched_clock_state;
-+	x86_platform.save_sched_clock_state = hv_save_sched_clock_state;
-+
-+	old_restore_sched_clock_state = x86_platform.restore_sched_clock_state;
-+	x86_platform.restore_sched_clock_state = hv_restore_sched_clock_state;
-+}
- #endif /* CONFIG_HYPERV */
+diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
+index dda873f3fee7..19f120ed8dd3 100644
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -399,6 +399,7 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
+ 		xhci->quirks |= XHCI_BROKEN_STREAMS;
+ 		xhci->quirks |= XHCI_NO_RESET_DEVICE;
+ 		xhci->quirks |= XHCI_NO_BREAK_CTRL_TD;
++		xhci->quirks |= XHCI_NO_SOFT_RETRY;
+ 	}
+ 	if (pdev->vendor == PCI_VENDOR_ID_ETRON &&
+ 			pdev->device == PCI_DEVICE_ID_EJ188) {
+@@ -406,6 +407,7 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
+ 		xhci->quirks |= XHCI_BROKEN_STREAMS;
+ 		xhci->quirks |= XHCI_NO_RESET_DEVICE;
+ 		xhci->quirks |= XHCI_NO_BREAK_CTRL_TD;
++		xhci->quirks |= XHCI_NO_SOFT_RETRY;
+ 	}
  
- static uint32_t  __init ms_hyperv_platform(void)
-@@ -575,6 +644,7 @@ static void __init ms_hyperv_init_platform(void)
- 
- 	/* Register Hyper-V specific clocksource */
- 	hv_init_clocksource();
-+	x86_setup_ops_for_tsc_pg_clock();
- 	hv_vtl_init_platform();
- #endif
- 	/*
-diff --git a/drivers/clocksource/hyperv_timer.c b/drivers/clocksource/hyperv_timer.c
-index b2a080647e41..e424892444ed 100644
---- a/drivers/clocksource/hyperv_timer.c
-+++ b/drivers/clocksource/hyperv_timer.c
-@@ -27,7 +27,8 @@
- #include <asm/mshyperv.h>
- 
- static struct clock_event_device __percpu *hv_clock_event;
--static u64 hv_sched_clock_offset __ro_after_init;
-+/* Note: offset can hold negative values after hibernation. */
-+static u64 hv_sched_clock_offset __read_mostly;
- 
- /*
-  * If false, we're using the old mechanism for stimer0 interrupts
-@@ -456,6 +457,11 @@ static void resume_hv_clock_tsc(struct clocksource *arg)
- 	hv_set_msr(HV_MSR_REFERENCE_TSC, tsc_msr.as_uint64);
- }
- 
-+void hv_adj_sched_clock_offset(u64 offset)
-+{
-+	hv_sched_clock_offset -= offset;
-+}
-+
- #ifdef HAVE_VDSO_CLOCKMODE_HVCLOCK
- static int hv_cs_enable(struct clocksource *cs)
- {
-diff --git a/include/clocksource/hyperv_timer.h b/include/clocksource/hyperv_timer.h
-index 6cdc873ac907..62e2bad754c0 100644
---- a/include/clocksource/hyperv_timer.h
-+++ b/include/clocksource/hyperv_timer.h
-@@ -38,6 +38,14 @@ extern void hv_remap_tsc_clocksource(void);
- extern unsigned long hv_get_tsc_pfn(void);
- extern struct ms_hyperv_tsc_page *hv_get_tsc_page(void);
- 
-+/*
-+ * Called during resume from hibernation, from overridden
-+ * x86_platform.restore_sched_clock_state routine. This is to adjust offsets
-+ * used to calculate time for hv tsc page based sched_clock, to account for
-+ * time spent before hibernation.
-+ */
-+extern void hv_adj_sched_clock_offset(u64 offset);
-+
- static __always_inline bool
- hv_read_tsc_page_tsc(const struct ms_hyperv_tsc_page *tsc_pg,
- 		     u64 *cur_tsc, u64 *time)
-
-base-commit: da3ea35007d0af457a0afc87e84fddaebc4e0b63
+ 	if (pdev->vendor == PCI_VENDOR_ID_RENESAS &&
 -- 
 2.25.1
 
