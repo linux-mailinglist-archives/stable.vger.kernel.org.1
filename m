@@ -1,51 +1,65 @@
-Return-Path: <stable+bounces-75801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9986974BEB
-	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 09:55:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23577974CBB
+	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 10:35:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B9C3B2172E
-	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 07:55:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81D6A281B5C
+	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 08:35:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08A821422AB;
-	Wed, 11 Sep 2024 07:55:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5C6F154425;
+	Wed, 11 Sep 2024 08:35:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="SsYm+jLk"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JkcuSRYx"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75AC113CFA1;
-	Wed, 11 Sep 2024 07:55:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08EF713B5A9
+	for <stable@vger.kernel.org>; Wed, 11 Sep 2024 08:35:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726041313; cv=none; b=VbFJYfvKYCd+HIG5S7bsginiQx0aUSpwciZok/aSUmnRtA/6AEpsUA9uFqRSyartcVKxi0Q6Ll1n3+Q4tTYXGzWzzkS0pMXP3GuslqC4A60bOUrFCEodyRNaJoCjsondCM30yeTexBGPyfYIQAh2tOblvKU/iJv82d7fhx/KkPU=
+	t=1726043727; cv=none; b=fTGxQonIOuuPLJA1pa5uNCm4/FF2dN5kJdG43s4RuL26ChLUhAIR909bRDUi0CSOvYvpCaEHwSZSX8+c37llfZ/ONXupZSZcrWVTduvQlmzAaPsOeTKlUL3rXun8TLc8ccGCqPcAvPes8J1V/9AVLwr+0LXuBNPHwU42ubyAtbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726041313; c=relaxed/simple;
-	bh=EA2tEPCTXn6CLL+yTzdOoB+ZdBX9EA2j8pmKlZ6sF5c=;
-	h=Message-ID:Date:MIME-Version:From:To:Subject:Cc:Content-Type; b=DP7mph7Ta/OFjvq8BhlG8ptN2uOFXJ+vmOZP741K3VvIDn15umyaezvCh+j8/0Ea85zTx9U4lSqdxuL06czD4vFTOTOM2MWUTIl7CPSa3NFyCA2v+612igzOL+5W4ppK03S0+B4Ui1KUg+lznjxHl4zFbdJi4CHc94bDxyGyMVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=SsYm+jLk; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:Cc:
-	Subject:Reply-To:To:From:MIME-Version:Date:Message-ID:From:Sender:Reply-To:
-	Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=fV7E5LQGvZ58qV7zl++1wTRM8EAH4UQbWhnGhcyslZw=; t=1726041311;
-	x=1726473311; b=SsYm+jLkKj9sbF44XD1kH/M4WsDSGW7Dg0G6JMeF9LrFxd4uJ6THLDRO/hHw9
-	auy/McHCDfzcs7a/N4YociK29sdweHkweMbzPWX1Z6RmPTiMSo8yArTY8Mm9YleblBIwwke7C/imE
-	D+Lj7DZ6uro0gEUMckwNjnO/1xdeTWQvTvCRFJCC2NHcSMr+wYRvJcHz3uWGahtJ5qywIAqgoZe/2
-	N60gbMqRoOSnTKrKv0mutnyXvbqjUA2M2znz/6vyMLNWh08yawapEily/EKOSZLlLwtAO/nzNUcgg
-	OV4ACW8ZkPuIfXj/N8Z1ibT7Cl9US3IFcz9+jo6rP3PMIzfkQg==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1soIBr-0004CD-UF; Wed, 11 Sep 2024 09:55:04 +0200
-Message-ID: <3724e8e8-ab71-4f64-8ba1-c5c9a617632f@leemhuis.info>
-Date: Wed, 11 Sep 2024 09:55:03 +0200
+	s=arc-20240116; t=1726043727; c=relaxed/simple;
+	bh=yNsD1Pwsc6IgI8eIFuuaKK/VsJIDLrR8k8TQWAQ1sfs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uOQRQ09OuAIf211N72VtFBdlrTo7khZ4zKQXyGydlJA5Uyct29dSfzH6F4mnZk610tSuM5dDV4RtUkMzFKevpMQmHeLVE+zSzo04d4Oub7/p59bsouZY7/V3/alikxL9D8y/aT+aM5abKMtV4s2WMfabHZt21Wb5DiwNUOMwj4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JkcuSRYx; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1726043726; x=1757579726;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=yNsD1Pwsc6IgI8eIFuuaKK/VsJIDLrR8k8TQWAQ1sfs=;
+  b=JkcuSRYxZ9EdlEgPANKSdWLcgdJh0ML6L12/hmnvHAfcvbeKFRVaUpUg
+   i0zo1sJzZs14sGsSc2lDlh0V3GeG9LT9Xb+I9W5g90iZYkDzK6rM7BwwA
+   Slv7aD/RIjfFLkUKVrcmotvNo0dZswucMoX8O9j5T+BpzOVWgLaoGQLQj
+   Ar6WBlQdbOR6LqGa6DOZypwDxN3cKLiRmS4HHUHSkXwLe05deNPfp/cvk
+   9/4Q0nQanLi2KBtm+xJBGItanH2eu1S0Tn4awRzlJjrAx3LBTWttyTPy9
+   IUh9LJ+/roPk7TeyeeP7ObN5FWRkIgZu3iEgBRuuVJoyhXfG/8pRGRlYO
+   A==;
+X-CSE-ConnectionGUID: DrS3FsIJRVii8RyO4XKvug==
+X-CSE-MsgGUID: EJWrX13jSTqHKHP1DtmFIA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11191"; a="24967191"
+X-IronPort-AV: E=Sophos;i="6.10,219,1719903600"; 
+   d="scan'208";a="24967191"
+Received: from orviesa010.jf.intel.com ([10.64.159.150])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2024 01:35:25 -0700
+X-CSE-ConnectionGUID: aHDORpfURvmND6l5ypiRFw==
+X-CSE-MsgGUID: QABO1tC+TUWKF7vfdwa8cw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,219,1719903600"; 
+   d="scan'208";a="67133809"
+Received: from dalessan-mobl3.ger.corp.intel.com (HELO [10.245.244.102]) ([10.245.244.102])
+  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2024 01:35:24 -0700
+Message-ID: <fea806cc-ed5e-4fd0-adf5-87d98ea5b99d@intel.com>
+Date: Wed, 11 Sep 2024 09:35:22 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,161 +67,147 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: "Linux regression tracking (Thorsten Leemhuis)"
- <regressions@leemhuis.info>
-Content-Language: en-US, de-DE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Dan Williams <dan.j.williams@intel.com>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-Subject: [regression] frozen usb mouse pointer at boot
-Cc: LKML <linux-kernel@vger.kernel.org>,
- Linux kernel regressions list <regressions@lists.linux.dev>,
+Subject: Re: [PATCH 2/4] drm/xe/client: add missing bo locking in
+ show_meminfo()
+To: "Upadhyay, Tejas" <tejas.upadhyay@intel.com>,
+ "intel-xe@lists.freedesktop.org" <intel-xe@lists.freedesktop.org>
+Cc: "Ghimiray, Himal Prasad" <himal.prasad.ghimiray@intel.com>,
+ =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
  "stable@vger.kernel.org" <stable@vger.kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1726041311;adc16418;
-X-HE-SMSGID: 1soIBr-0004CD-UF
+References: <20240910131145.136984-5-matthew.auld@intel.com>
+ <20240910131145.136984-6-matthew.auld@intel.com>
+ <SJ1PR11MB620426C360C56AE7A55D6DA7819B2@SJ1PR11MB6204.namprd11.prod.outlook.com>
+Content-Language: en-GB
+From: Matthew Auld <matthew.auld@intel.com>
+In-Reply-To: <SJ1PR11MB620426C360C56AE7A55D6DA7819B2@SJ1PR11MB6204.namprd11.prod.outlook.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hi, Thorsten here, the Linux kernel's regression tracker.
+Hi,
 
-I noticed a report about a linux-6.6.y regression in bugzilla.kernel.org
-that appears to be caused by this commit from Dan applied by Greg:
+On 11/09/2024 06:39, Upadhyay, Tejas wrote:
+> 
+> 
+>> -----Original Message-----
+>> From: Auld, Matthew <matthew.auld@intel.com>
+>> Sent: Tuesday, September 10, 2024 6:42 PM
+>> To: intel-xe@lists.freedesktop.org
+>> Cc: Ghimiray, Himal Prasad <himal.prasad.ghimiray@intel.com>; Upadhyay,
+>> Tejas <tejas.upadhyay@intel.com>; Thomas Hellström
+>> <thomas.hellstrom@linux.intel.com>; stable@vger.kernel.org
+>> Subject: [PATCH 2/4] drm/xe/client: add missing bo locking in
+>> show_meminfo()
+>>
+>> bo_meminfo() wants to inspect bo state like tt and the ttm resource, however
+>> this state can change at any point leading to stuff like NPD and UAF, if the bo
+>> lock is not held. Grab the bo lock when calling bo_meminfo(), ensuring we
+>> drop any spinlocks first. In the case of object_idr we now also need to hold a
+>> ref.
+>>
+>> Fixes: 0845233388f8 ("drm/xe: Implement fdinfo memory stats printing")
+>> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+>> Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+>> Cc: Tejas Upadhyay <tejas.upadhyay@intel.com>
+>> Cc: "Thomas Hellström" <thomas.hellstrom@linux.intel.com>
+>> Cc: <stable@vger.kernel.org> # v6.8+
+>> ---
+>>   drivers/gpu/drm/xe/xe_drm_client.c | 37 +++++++++++++++++++++++++++---
+>>   1 file changed, 34 insertions(+), 3 deletions(-)
+>>
+>> diff --git a/drivers/gpu/drm/xe/xe_drm_client.c
+>> b/drivers/gpu/drm/xe/xe_drm_client.c
+>> index badfa045ead8..3cca741c500c 100644
+>> --- a/drivers/gpu/drm/xe/xe_drm_client.c
+>> +++ b/drivers/gpu/drm/xe/xe_drm_client.c
+>> @@ -10,6 +10,7 @@
+>>   #include <linux/slab.h>
+>>   #include <linux/types.h>
+>>
+>> +#include "xe_assert.h"
+>>   #include "xe_bo.h"
+>>   #include "xe_bo_types.h"
+>>   #include "xe_device_types.h"
+>> @@ -151,10 +152,13 @@ void xe_drm_client_add_bo(struct xe_drm_client
+>> *client,
+>>    */
+>>   void xe_drm_client_remove_bo(struct xe_bo *bo)  {
+>> +	struct xe_device *xe = ttm_to_xe_device(bo->ttm.bdev);
+>>   	struct xe_drm_client *client = bo->client;
+>>
+>> +	xe_assert(xe, !kref_read(&bo->ttm.base.refcount));
+>> +
+>>   	spin_lock(&client->bos_lock);
+>> -	list_del(&bo->client_link);
+>> +	list_del_init(&bo->client_link);
+>>   	spin_unlock(&client->bos_lock);
+>>
+>>   	xe_drm_client_put(client);
+>> @@ -207,7 +211,20 @@ static void show_meminfo(struct drm_printer *p,
+>> struct drm_file *file)
+>>   	idr_for_each_entry(&file->object_idr, obj, id) {
+>>   		struct xe_bo *bo = gem_to_xe_bo(obj);
+>>
+>> -		bo_meminfo(bo, stats);
+>> +		if (dma_resv_trylock(bo->ttm.base.resv)) {
+>> +			bo_meminfo(bo, stats);
+>> +			xe_bo_unlock(bo);
+>> +		} else {
+>> +			xe_bo_get(bo);
+>> +			spin_unlock(&file->table_lock);
+>> +
+>> +			xe_bo_lock(bo, false);
+>> +			bo_meminfo(bo, stats);
+>> +			xe_bo_unlock(bo);
+>> +
+>> +			xe_bo_put(bo);
+>> +			spin_lock(&file->table_lock);
+>> +		}
+>>   	}
+>>   	spin_unlock(&file->table_lock);
+>>
+>> @@ -217,7 +234,21 @@ static void show_meminfo(struct drm_printer *p,
+>> struct drm_file *file)
+>>   		if (!kref_get_unless_zero(&bo->ttm.base.refcount))
+>>   			continue;
+>>
+> 
+> While we have ref to BO, why would it need lock here, can you please explain if I am missing something. I though BO cant be deleted till will hold ref?
 
-15fffc6a5624b1 ("driver core: Fix uevent_show() vs driver detach race")
-[v6.11-rc3, v6.10.5, v6.6.46, v6.1.105, v5.15.165, v5.10.224, v5.4.282,
-v4.19.320]
+The ref is just about protecting the lifetime of the bo, however the 
+internal bo state in particular the ttm stuff, is all protected by 
+holding the dma-resv bo lock.
 
-The reporter did not check yet if mainline is affected; decided to
-forward the report by mail nevertheless, as the maintainer for the
-subsystem is also the maintainer for the stable tree. ;-)
+For example the bo can be moved/evicted around at will and the object 
+state changes with it, but that should be done only when also holding 
+the bo lock. If we are holding the bo lock here then the object state 
+should be stable, making it safe to inspect stuff like bo->ttm.ttm and 
+bo->ttm.resource. As an example, if you look at ttm_bo_move_null() and 
+imagine xe_bo_has_pages() racing with that, then NPD or UAF is possible.
 
-To quote from https://bugzilla.kernel.org/show_bug.cgi?id=219244 :
-
-> The symptoms of this bug are as follows:
 > 
-> - After booting (to the graphical login screen) the mouse pointer
-> would frozen and only after unplugging and plugging-in again the usb
-> plug of the mouse would the mouse be working as expected.
-> - If one would log in without fixing the mouse issue, the mouse
-> pointer would still be frozen after login.
-> - The usb keyboard usually is not affected even though plugged into
-> the same usb-hub - thus logging in is possible.
-> - The mouse pointer is also frozen if the usb connector is plugged
-> into a different usb-port (different from the usb-hub)
-> - The pointer is moveable via the inbuilt synaptics trackpad
+> Thanks,
+> Tejas
+>> -		bo_meminfo(bo, stats);
+>> +		if (dma_resv_trylock(bo->ttm.base.resv)) {
+>> +			bo_meminfo(bo, stats);
+>> +			xe_bo_unlock(bo);
+>> +		} else {
+>> +			spin_unlock(&client->bos_lock);
+>> +
+>> +			xe_bo_lock(bo, false);
+>> +			bo_meminfo(bo, stats);
+>> +			xe_bo_unlock(bo);
+>> +
+>> +			spin_lock(&client->bos_lock);
+>> +			/* The bo ref will prevent this bo from being removed
+>> from the list */
+>> +			xe_assert(xef->xe, !list_empty(&bo->client_link));
+>> +		}
+>> +
+>>   		xe_bo_put_deferred(bo, &deferred);
+>>   	}
+>>   	spin_unlock(&client->bos_lock);
+>> --
+>> 2.46.0
 > 
-> 
-> The kernel log shows almost the same messages (not sure if the
-> differences mean anything in regards to this bug) for the initial
-> recognizing the mouse (frozen mouse pointer) and the re-plugged-in mouse
-> (and subsequently moveable mouse pointer):
-> 
-> [kernel] [    8.763158] usb 1-2.2.1.2: new low-speed USB device number 10 using xhci_hcd
-> [kernel] [    8.956028] usb 1-2.2.1.2: New USB device found, idVendor=045e, idProduct=00cb, bcdDevice= 1.04
-> [kernel] [    8.956036] usb 1-2.2.1.2: New USB device strings: Mfr=1, Product=2, SerialNumber=0
-> [kernel] [    8.956039] usb 1-2.2.1.2: Product: Microsoft Basic Optical Mouse v2.0 
-> [kernel] [    8.956041] usb 1-2.2.1.2: Manufacturer: Microsoft 
-> [kernel] [    8.963554] input: Microsoft  Microsoft Basic Optical Mouse v2.0  as /devices/pci0000:00/0000:00:14.0/usb1/1-2/1-2.2/1-2.2.1/1-2.2.1.2/1-2.2.1.2:1.0/0003:045E:00CB.0002/input/input18
-> [kernel] [    8.964417] hid-generic 0003:045E:00CB.0002: input,hidraw1: USB HID v1.11 Mouse [Microsoft  Microsoft Basic Optical Mouse v2.0 ] on usb-0000:00:14.0-2.2.1.2/input0
-> 
-> [kernel] [   31.258381] usb 1-2.2.1.2: USB disconnect, device number 10
-> [kernel] [   31.595051] usb 1-2.2.1.2: new low-speed USB device number 16 using xhci_hcd
-> [kernel] [   31.804002] usb 1-2.2.1.2: New USB device found, idVendor=045e, idProduct=00cb, bcdDevice= 1.04
-> [kernel] [   31.804010] usb 1-2.2.1.2: New USB device strings: Mfr=1, Product=2, SerialNumber=0
-> [kernel] [   31.804013] usb 1-2.2.1.2: Product: Microsoft Basic Optical Mouse v2.0 
-> [kernel] [   31.804016] usb 1-2.2.1.2: Manufacturer: Microsoft 
-> [kernel] [   31.812933] input: Microsoft  Microsoft Basic Optical Mouse v2.0  as /devices/pci0000:00/0000:00:14.0/usb1/1-2/1-2.2/1-2.2.1/1-2.2.1.2/1-2.2.1.2:1.0/0003:045E:00CB.0004/input/input20
-> [kernel] [   31.814028] hid-generic 0003:045E:00CB.0004: input,hidraw1: USB HID v1.11 Mouse [Microsoft  Microsoft Basic Optical Mouse v2.0 ] on usb-0000:00:14.0-2.2.1.2/input0
-> 
-> Differences:
-> 
-> ../0003:045E:00CB.0002/input/input18 vs ../0003:045E:00CB.0004/input/input20
-> 
-> and
-> 
-> hid-generic 0003:045E:00CB.0002 vs hid-generic 0003:045E:00CB.0004
-> 
-> 
-> The connector / usb-port was not changed in this case!
-> 
-> 
-> The symptoms of this bug have been present at one point in the
-> recent
-> past, but with kernel v6.6.45 (or maybe even some version before that)
-> it was fine. But with 6.6.45 it seems to be definitely fine.
-> 
-> But with v6.6.46 the symptoms returned. That's the reason I
-> suspected
-> the kernel to be the cause of this issue. So I did some bisecting -
-> which wasn't easy because that bug would often times not appear if the
-> system was simply rebooted into the test kernel.
-> As the bug would definitely appear on the affected kernels (v6.6.46
-> ff) after shutting down the system for the night and booting the next
-> day, I resorted to simulating the over-night powering-off by shutting
-> the system down, unplugging the power and pressing the power button to
-> get rid of residual voltage. But even then a few times the bug would
-> only appear if I repeated this procedure before booting the system again
-> with the respective kernel.
-> 
-> This is on a Thinkpad with Kaby Lake and integrated Intel graphics. 
-> Even though it is a laptop, it is used as a desktop device, and the
-> internal battery is disconnected, the removable battery is removed as
-> the system is plugged-in via the power cord at all times (when in use)!
-> Also, the system has no power (except for the bios battery, of
-> course)
-> over night as the power outlet is switched off if the device is not in use.
-> 
-> Not sure if this affects the issue - or how it does. But for
-> successful bisecting I had to resort to the above procedure.
-> 
-> Bisecting the issue (between the release commits of v6.6.45 and
-> v6.6.46) resulted in this commit [1] being the probable culprit.
-> 
-> I then tested kernel v6.6.49. It still produced the bug for me. So I
-> reverted the changes of the assumed "bad commit" and re-compiled kernel
-> v6.6.49. With this modified kernel the bug seems to be gone.
-> 
-> Now, I assume the commit has a reason for being introduced, but
-> maybe
-> needs some adjusting in order to avoid this bug I'm experiencing on my
-> system.
-> Also, I can't say why the issue appeared in the past even without
-> this
-> commit being present, as I haven't bisected any kernel version before
-> v6.6.45.
-> 
-> 
-> [1]:
-> 
-> 4d035c743c3e391728a6f81cbf0f7f9ca700cf62 is the first bad commit
-> commit 4d035c743c3e391728a6f81cbf0f7f9ca700cf62
-> Author: Dan Williams <dan.j.williams@intel.com>
-> Date:   Fri Jul 12 12:42:09 2024 -0700
-> 
->     driver core: Fix uevent_show() vs driver detach race
->     
->     commit 15fffc6a5624b13b428bb1c6e9088e32a55eb82c upstream.
->     
->     uevent_show() wants to de-reference dev->driver->name. There is no clean
-
-See the ticket for more details. Note, you have to use bugzilla to reach
-the reporter, as I sadly[1] can not CCed them in mails like this.
-
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-If I did something stupid, please tell me, as explained on that page.
-
-[1] because bugzilla.kernel.org tells users upon registration their
-"email address will never be displayed to logged out users"
-
-P.S.: let me use this mail to also add the report to the list of tracked
-regressions to ensure it's doesn't fall through the cracks:
-
-#regzbot introduced: 4d035c743c3e391728a6f81cbf0f7f9ca700cf62
-#regzbot from: brmails+k
-#regzbot duplicate: https://bugzilla.kernel.org/show_bug.cgi?id=219244
-#regzbot title: driver core: frozen usb mouse pointer at boot
-#regzbot ignore-activity
 
