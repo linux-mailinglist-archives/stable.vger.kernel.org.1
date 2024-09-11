@@ -1,252 +1,273 @@
-Return-Path: <stable+bounces-75787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA95B9749AE
-	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 07:20:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61BA49749B0
+	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 07:21:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6EDA71F25F2D
-	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 05:20:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2017D2837C9
+	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 05:21:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5B404AEF7;
-	Wed, 11 Sep 2024 05:20:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D5C45464B;
+	Wed, 11 Sep 2024 05:21:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nVHqXb6t"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="p/6TrfyO"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from out-177.mta1.migadu.com (out-177.mta1.migadu.com [95.215.58.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7901D4AEF4
-	for <stable@vger.kernel.org>; Wed, 11 Sep 2024 05:20:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.20
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726032004; cv=fail; b=Zu6DxnatLBjlqrpj5UW9xSUoh75kDPHnJLuNkwsk57JoDAg+J9TpJrwsuVRV+tDwLQSunJ7IpObDZppkw4g251PJuCiZc32ZzOkHQ7hvqSo6xHsPh6IrSuawi2iG6+d5B7bBL8Ra9JLrMZ9cWJjiOeWYK5pGFpwNQr+oK8SVX1s=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726032004; c=relaxed/simple;
-	bh=g8TCwZPPuJ3f8osj/Ft7MmmGYgVMxSl/UrZF4+QTJD8=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=SPYo3e/l9k3xAgWGA+OXVh/QYDIIr8FQnlLgL5FuTxoymW/whtIuYxByZHIecZrBeMruzU/4rTBGrwTATHTx+Qy8Cax1xsp/vSl6cBmvmsFoDhdPNya4w5rbbchTjau4bregLbJfTp1zfh2VcRUGBdFTvYruU0tKMsbjz9mvuEI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nVHqXb6t; arc=fail smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1726032003; x=1757568003;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=g8TCwZPPuJ3f8osj/Ft7MmmGYgVMxSl/UrZF4+QTJD8=;
-  b=nVHqXb6tPg2g7yPcIdsr9bEYHKr8OWmR6LZqzE8HsXDFYan9oqfGacWK
-   f4sr1KgwT0Ec9TuoLoaKcVy4tbddffFQ8RhLpvdYGf7TKI0DidvikqqKv
-   RkvwoB6q0GS0smjsZp6XYAyCV6dhLwlf/Z+yzwo3hgrfLxr5AB1kKh1s+
-   R+cTi02A7IySEyi4eofLUAm9X1ZyDC2Xg5NeRsxKUPct4A9jqJoBF8glk
-   M2aSCZl2UpveaXF7wSPeqVBqUYuJE2YCu1iwI7DoqtMRiX1iFsBvLCYi1
-   OeWKX3itTOWv3XcG5Sz/dDlLzsFePyAaD3JoYkCHR/t1nMwG7jKunSoU3
-   w==;
-X-CSE-ConnectionGUID: LLar3sdJQQWMgbXhpD0rog==
-X-CSE-MsgGUID: PQUg2atcRPC3rFLbkkmVOw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11191"; a="24632486"
-X-IronPort-AV: E=Sophos;i="6.10,219,1719903600"; 
-   d="scan'208";a="24632486"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 10 Sep 2024 22:20:01 -0700
-X-CSE-ConnectionGUID: w/x62Wf8QnyF1E/9sIW9ug==
-X-CSE-MsgGUID: 60dz3/xbTxm+w18ghJDCGw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,219,1719903600"; 
-   d="scan'208";a="71864560"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
-  by fmviesa004.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 10 Sep 2024 22:20:01 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Tue, 10 Sep 2024 22:20:00 -0700
-Received: from FMSEDG603.ED.cps.intel.com (10.1.192.133) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Tue, 10 Sep 2024 22:20:00 -0700
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.43) by
- edgegateway.intel.com (192.55.55.68) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 10 Sep 2024 22:19:59 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=RuT41h1JSGF7YVUiZEQ9jnMkCD0bv+zqrhE/GAJ5z3va7oD+0oDrcyr8DMthquFYVdtUUp8Bj5SMKwcWoki1uYopodM/ZOLNcPF69CbA5W0vj/I8KKRLmycv/yL3MyN3OkfoV+A39Sztgw7IiUXp7CCNw/tnTkMcYgY0zq+pVl80COkq6sfIglUxZM64b4I8sIrbA944G1sjaU+b8IOqXO6P3BBZnw6A0Gzf8e4P+AxoPKi+ml2cRZva1r1utvGRIPvrvJk0oJEMVr0I22sfzUr09PjYD1HlgqO7BzB7p9tZFStlpzlYZCfUxJbCq44WNDdNU+FbxhMtENP3ph2kPg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=g8TCwZPPuJ3f8osj/Ft7MmmGYgVMxSl/UrZF4+QTJD8=;
- b=jNiagqLK36mk3ylQMWRg/AGVCtWx+/I+/vYRtZ50k43lNpujiutKF+mDaqcQ8YyLKJTLackkpaQ9SbaVEho1V+bcv0x17Eyhws3wC+peno6uHWEGEa8puvZtAZtnJhBuWeT2napNjg9cuukyixwOY4eyAqEbIZcPkxcFwIFbzf5FQAdfvfNkLGVJrkRbc7EIcSNRzkg7QU3dLLR3DCGfJ15jTplmKXTgP3LUFcHX7tIn6cSreXcP4G/WQluNqy2jfO4TZjf2VkJnbH6WNtKG7SpV46w+EXfEV7TABoPLAR2/Pr04SulJ7UASg3yOoi3sWyX5V0s5PcHeveXQPCCg0Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from SJ1PR11MB6204.namprd11.prod.outlook.com (2603:10b6:a03:459::19)
- by MW6PR11MB8438.namprd11.prod.outlook.com (2603:10b6:303:241::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.27; Wed, 11 Sep
- 2024 05:19:52 +0000
-Received: from SJ1PR11MB6204.namprd11.prod.outlook.com
- ([fe80::fd8d:bca9:3486:7762]) by SJ1PR11MB6204.namprd11.prod.outlook.com
- ([fe80::fd8d:bca9:3486:7762%4]) with mapi id 15.20.7962.016; Wed, 11 Sep 2024
- 05:19:52 +0000
-From: "Upadhyay, Tejas" <tejas.upadhyay@intel.com>
-To: "Auld, Matthew" <matthew.auld@intel.com>, "intel-xe@lists.freedesktop.org"
-	<intel-xe@lists.freedesktop.org>
-CC: "Ghimiray, Himal Prasad" <himal.prasad.ghimiray@intel.com>,
-	=?utf-8?B?VGhvbWFzIEhlbGxzdHLDtm0=?= <thomas.hellstrom@linux.intel.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: RE: [PATCH 1/4] drm/xe/client: fix deadlock in show_meminfo()
-Thread-Topic: [PATCH 1/4] drm/xe/client: fix deadlock in show_meminfo()
-Thread-Index: AQHbA4MZcRkmP4/LC0yeHHBKxOxejbJSDStg
-Date: Wed, 11 Sep 2024 05:19:52 +0000
-Message-ID: <SJ1PR11MB62046D2BB255365FF08AD25C819B2@SJ1PR11MB6204.namprd11.prod.outlook.com>
-References: <20240910131145.136984-5-matthew.auld@intel.com>
-In-Reply-To: <20240910131145.136984-5-matthew.auld@intel.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ1PR11MB6204:EE_|MW6PR11MB8438:EE_
-x-ms-office365-filtering-correlation-id: c2d401cc-9208-4f91-b626-08dcd2215dc9
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|376014|366016|1800799024|38070700018;
-x-microsoft-antispam-message-info: =?utf-8?B?SG5ON0lmYS9jcFhPaHJhUjlWZXREcXI3ZXRLVmhRNjBUOWlsNVMxNDQyR2Nq?=
- =?utf-8?B?b1d1d2V2M2FqaG0xc0R1cDlvcHFLNExaYjhRSnMwRUFpNkYwMFBsZDNqZThm?=
- =?utf-8?B?Ymdzbm5zTUdMa3dDM2c0RndlaDJ2U1hGTmczV3pNZFlHMzYxMitzV2FJREZn?=
- =?utf-8?B?eXRVdVNiU3F4d1B0b1p3Z3NQV3FyMXAveTdBSzM2bHI5aDVYc3hIYnMrQzNz?=
- =?utf-8?B?ZlNEeTFzczRlWUxDYmJNQysybzNXcDBGeE83ZHdzNGxzV1R2d1RqOStRUmtI?=
- =?utf-8?B?NzEwc3phQnBtU0ZEKzQxNlZLZEorQ2lJZnRrcVdwb2dzT3FlL05JSFdrSWdS?=
- =?utf-8?B?OHN5S3BFc09Cd1MzSVhNMlNTY0FsTVp6cHFqUDRQODdpNWh0c2ZiUVdSNjhm?=
- =?utf-8?B?ZVF2MzRHOG1zWm9uVCtEL3c0cytzOUdhVG5GMGI1U3hFMGxoV0RhNGhVbDl3?=
- =?utf-8?B?TmhGeVc1ZEdlWVFLaUwyK3QyNW9YZWQySS9sNGpoekNxWStwcG1YMVE2WUNw?=
- =?utf-8?B?dmNzSEVzNlg3Y0hiUENFTll2RENCNithK3IwNmhBU3lkU2M0Y2VZK0tlbnk0?=
- =?utf-8?B?bUtnTHNBdzRDVEtsSUljTmIrdDFCVVUzQWNpS3ZXaTd1YmZObENpd0RMclZq?=
- =?utf-8?B?REt3R1dTWWowOFVzaXRkZWFlckc4T3hlMlFFSlQ2WEdBK1g4YkQvV0UxUTBM?=
- =?utf-8?B?MS82NmthTlJMSUEyVTZ0amx6Y3ViYmF2ditYTUJmZ1lhS1VBRERIL2VOQ3FZ?=
- =?utf-8?B?WEpCdHBEaUlubGxNc1puWVJOWlZvRWxQeE45UDV0V1k0aHppdFVIMEthUmZI?=
- =?utf-8?B?VXBMN0J0bGY1TFZ1a2ZuRHdJMHdvd1JpWW1xY2RmMHJTdkJaTDhYbVdHNkxv?=
- =?utf-8?B?VzVjckpCMlZJOVhNU2xoRWRtZ0N0ZW4vZGZHRjgzc2dmam1yVjdKSFNkb2RM?=
- =?utf-8?B?eGtBbWx5MlR2aDdoOS9laGhkak1Md3BESmM1dUhFNHphNTlpdTlLWUExcE1w?=
- =?utf-8?B?ZmtMQ3o2RlR0anF1SDRORnZyNS9TREN2K0t5Vi9kcHBRcUdkOXVkSFRiSDdp?=
- =?utf-8?B?WFc4cGE5cHgrM2Joa1k2NG5IMmFabEdoZ09sdWVyckpYUldDM25FZ0hxSnVm?=
- =?utf-8?B?dTdlRVc0K1pRSVdkQzVJRGgyM0czbStwdzVudC9qTWR2OVJIcC9qWjNzYXpY?=
- =?utf-8?B?azAvMHBIS25zMVhzZVRDSXl0YjJmQUZDZlRXaTlYczVrd1hJb3VnZUl5cVdF?=
- =?utf-8?B?ZEJNRlVOWE1OY016K1hPdlZlVXhmTXpnaGhUVGtMZXBDdHJ3aHdxMUwyWWZB?=
- =?utf-8?B?dk4wNUo1eDFDMjk4bU82Z1ZhUGd1Ymw2Zk56KzdwdVd4OFo4M3dXdU9nejdD?=
- =?utf-8?B?ZVR3MFRkQzA4VTJUcnhBSXBBVFlteFZpWGpFbm10TW94MytFczRLaHFSQW9V?=
- =?utf-8?B?b1o1MGF0azNBaUlqdytLR25iQWVEQXdtQm5FWGpPRyt4bDFEZVlmSTVZKzg3?=
- =?utf-8?B?VVBnOUxRMlBzY2k4YVM3YXFvSndBQThPeTBIei9TM2JRVnBkZU0vZXVJK0FS?=
- =?utf-8?B?RmQxeXNQQnBHMXhmeHlQNWhIQ0dENnZDZHJlcSsraktHMnVTL0pyeVJocWFt?=
- =?utf-8?B?T0dZR29GdXVEYWdsQllVZEw2SVRUaENiTjRkMTVWNjlsTU1LRjdMRStvS3dV?=
- =?utf-8?B?UC9RZ05DczVRUjBKOStFeDBEdGdEZUx0SDdUa0tUcEw1M0g2cUpsK01qRHBn?=
- =?utf-8?B?TmR5S0tWRkNIZTdpbVN3dy81MkxiRnFxMi9CQTRXVE9OT01VdWFnRnVvckNz?=
- =?utf-8?Q?r/QOloc5kUnqqBpzc/eqVYuUq8W91yLWSIDqo=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ1PR11MB6204.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?NmIrMUJMdE45ekMxc0M3V0NZejZMbjNOUlN2ZlJ3b1N2amFUU2xNanhrWUgv?=
- =?utf-8?B?T0xsM0VIYTVEbis3OVhJcThJdk91YWtFR3ZKM0dvT012WHJBZ2dlb2tEYWpE?=
- =?utf-8?B?QlBQbGoxUWRhMEQ0eVZZcEVHcFlkbHlJdXRLbGE3b3E4S2FFQjN0SkhFUzE0?=
- =?utf-8?B?R2FjV2s4eG5PWGZKQ3cwVERaOExHUWVRNUE3UzNhdDQyWVM2WDZFSi9WT2Nw?=
- =?utf-8?B?aTBXTVV0My9PZlc4UWF2c3phbytNaVMzakZvamxDWkI2Tk5tbVUyZ0JqSSt5?=
- =?utf-8?B?THlNdVlvYXF1Tm1KeFVqaFVHMG1JV1hQUG9uUjduWGpFUVVsT2JsajBSSGtR?=
- =?utf-8?B?Um5JUEJxNU9RQkpDTUhjWVpaamhWd2grMytTTFRwcFBOVVQvbHN2L1cvK29I?=
- =?utf-8?B?L2g5c2FoNXE3RERJaG5DWmVaaW1PRTRZNi9McXlsM2ZQdVZ5LzRkNDhSZno0?=
- =?utf-8?B?TUdxVW83REJGRk9oRXNQNDJWR0xQVVl0UEtMbnB3WmVHcURFeUhJeWNyMkxt?=
- =?utf-8?B?RjZtRjkxVTZsZy91NVBpSjB0UXdIdklRTnp6REtWQzErc0ZIeUpDcDdScWE3?=
- =?utf-8?B?WkFVeFNRRzU5Y0ZXNUMxbjQ4RDlBOUVRM3hpZWo0aFpRdUJNb0dLVTg3TXIy?=
- =?utf-8?B?eGlHaWE5L09MVHQ1eGlwek03Q2pOOWt3NDhPS21qb0xjWWI5aC9VM1NFM00v?=
- =?utf-8?B?bnErZ2Q0QzVmNlBwRU16SDZCMnk4Z0I1eWdKR3IxWERNand3OSttR0FSbE4v?=
- =?utf-8?B?ZjdWdng1aXRoZ3o5OUxjVVhBT1RhaVZsSVh1SXNlYXA2RzkzV2xFWktSRnNp?=
- =?utf-8?B?azAxTm1IYWF2Z3pFYll1Y25GYkVSSUxvMENFeE1DQzFmV3lxb0VPbVR1VHVR?=
- =?utf-8?B?VHRmNGt1d3VRZDAwNTBmTFJSUFIvRUVwcUw1SUdrc2ErWEh6UHFQQTdPeExv?=
- =?utf-8?B?YVpsSlJsOUxET01OZGdGRGc4MjJMNit3NVNuM0M1YUxqYjYvUWhjTytydWZx?=
- =?utf-8?B?RHBEc0lUZGxpTHVwSTVFdC83MWw0eGZaK3VzUlY5Sm9DNmlzZlltME45dEI1?=
- =?utf-8?B?MDZHbnA0bjlLRFNWRGljN24yL0cwaExkR01DTE1kUEpHN0xVVmhOazdqQzN6?=
- =?utf-8?B?YWNqVld4QW5SM09hYjhGUjFhaEIvOXdnOUFhYkhTUjlIMHhpNWpobi94QlF0?=
- =?utf-8?B?NHNXOEk5eWgvSkVxMVV6d2dSbjNnczVKa2diblFvU3VDR05Jd1NvNVpYbzJX?=
- =?utf-8?B?dEdHbTdXV2JxWGthYkxFV2hnbW5sa3FIeld1K0NWeENUdHZkSFJ1ZStqZWcx?=
- =?utf-8?B?YUpKc2pkc2RacHdiSXdkZUd6K2FmU2dheXNzVEE0UWR0MWNpdk1EVVA2SWc2?=
- =?utf-8?B?aDJyUzZmYk1EUUtiQ2YvVW1tdFA0YkwvdVVMUTl3SXM5S2tCS3RxbHBPYlZl?=
- =?utf-8?B?S2ZVQlJacUVZVlJmR2Fac0IzaGRMay9hVmlQVkt4TjQzV0U2QWdiQWswSUsv?=
- =?utf-8?B?aGtORjIvTGJlNnB2TTBQZVBzTElvM0hObVBDTDBFQ3hPSjZlNUR3WUdRYmF2?=
- =?utf-8?B?T3N6c2V0SkVtekVxN3BqZ1pNd05yMEhZUXgycmM2Umg3TnREVXYyUU5iYjl2?=
- =?utf-8?B?YUh2anZPMnNRMlFpSVNMY0M5NXFDS1E3UHROOHNyUTZMdVlncndoYW9lWFMr?=
- =?utf-8?B?eHMvSVFuTDIwM3lHbXBSV2J2cTNXb0hHQWkwMXFpalF6Q09vY28rN1RmVndl?=
- =?utf-8?B?OGQwM1BIcDlmbjM5RFYvNEtWWFBQbWtzcUd0MVVKS3RIdVVuSldZNEUrNFFh?=
- =?utf-8?B?V3NBZk8zZGEyWjhINi9DMmdzWFgwRGRkbUVrd2ZQcC9aeCtkc2oyOVpSek16?=
- =?utf-8?B?MFZxS2hYT0FGUEFta2RpS3FnNURhUVJFQUpiREFTdzM5UGkwOUtQT25MOUpL?=
- =?utf-8?B?MGdMWWFQWGdjUFZVOEdLYzBPZUFYQkE0ZzFVcUY5V3I1K2pRRXVnS05pa3Zh?=
- =?utf-8?B?NENpd3VEdExWOEhoZHFrdjl0KzJhaXlKcEo2eWR1VzFBTTAzWEhDSXQveXk2?=
- =?utf-8?B?aG9scnl4b3ZLN205RGx4eCtObUlRUFFVcVFFNC9oV0Nza21oR2tyM095YWlq?=
- =?utf-8?Q?PNtuSypO39MxhjAfYs6nNKH6S?=
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAC524AEF4
+	for <stable@vger.kernel.org>; Wed, 11 Sep 2024 05:21:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.177
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1726032073; cv=none; b=ibT202QA9tEnxJiMfJBiD5t3f7OMPEMK2tT04NpMFi3JBOaHJ5BQNxl/FA5QMBRWPte8BljbtC3ceyiY1PvNEQfxqzPjOb1CFsO+AKLmGIChXjTuNlfS1AkL9gopgg5pYhSiXX0iEdcxziEx8/YCKDsFJPGwaQFInwqZdHBe1MM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1726032073; c=relaxed/simple;
+	bh=HJlpz8eduYiyw8yyvJNhR+nu02+JfJVfh/68TFMzlPg=;
+	h=Content-Type:From:Mime-Version:Subject:Date:Message-Id:References:
+	 Cc:In-Reply-To:To; b=cD91Z1wWLGCaBCR1JMBzW5EM5ZpqA50NTl4kSaOBeaElR7c127vy22BmtFlxxZ48trJXZlCW8/9kYE38/JmwqCzh+qqCx+uVxeiFxG4YsNrYiLPdXjCMGnSaQ+eb/bXjlmMAyV2bhG0HvlDAHhxxZn9InVirQyBQXm2M68ae+yE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=p/6TrfyO; arc=none smtp.client-ip=95.215.58.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Content-Type: text/plain; charset=utf-8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1726032068;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=1IbthqVd0Y1HGEHfUp7IhQWZyBV6AeAPAti9kFjOXTU=;
+	b=p/6TrfyOdz5bPa6WQHxmu5CrSrzWuD58AHrK4GL6TaXF7zIyNDidvBfFMjFvw0fjEMFWbB
+	5D/70SbNDh5UHHQPaylSqV8cjcePsGHKqrL5P/jcn7NB2rinYtC5tzXKRKO7xUY764X/Te
+	dYyL4fjw/KvIp2itN9TmQHps3CDGE8Q=
+Content-Transfer-Encoding: quoted-printable
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Muchun Song <muchun.song@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ1PR11MB6204.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: c2d401cc-9208-4f91-b626-08dcd2215dc9
-X-MS-Exchange-CrossTenant-originalarrivaltime: 11 Sep 2024 05:19:52.8431
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: krE6+Q4LFPeMweMdt7VI0xwxZzOz5vI2e7V6cJWaWfuYHMn+J/LMnlzkToHagFx9iAxFnG96YKCDFi5YYhmKJ3MJxIID5V66Sm2QDJL/dqU=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR11MB8438
-X-OriginatorOrg: intel.com
+Mime-Version: 1.0 (1.0)
+Subject: Re: [PATCH v2 2/3] block: fix ordering between checking QUEUE_FLAG_QUIESCED and adding requests
+Date: Wed, 11 Sep 2024 13:20:28 +0800
+Message-Id: <12E43452-371C-495D-B06A-DC2DA92CE0E8@linux.dev>
+References: <AA8B604C-4CE6-435F-8D95-1E6B88EB2B68@linux.dev>
+Cc: Jens Axboe <axboe@kernel.dk>, Muchun Song <songmuchun@bytedance.com>,
+ Yu Kuai <yukuai1@huaweicloud.com>,
+ "open list:BLOCK LAYER" <linux-block@vger.kernel.org>,
+ LKML <linux-kernel@vger.kernel.org>, stable@vger.kernel.org
+In-Reply-To: <AA8B604C-4CE6-435F-8D95-1E6B88EB2B68@linux.dev>
+To: Ming Lei <ming.lei@redhat.com>
+X-Migadu-Flow: FLOW_OUT
 
-DQoNCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogQXVsZCwgTWF0dGhldyA8
-bWF0dGhldy5hdWxkQGludGVsLmNvbT4NCj4gU2VudDogVHVlc2RheSwgU2VwdGVtYmVyIDEwLCAy
-MDI0IDY6NDIgUE0NCj4gVG86IGludGVsLXhlQGxpc3RzLmZyZWVkZXNrdG9wLm9yZw0KPiBDYzog
-R2hpbWlyYXksIEhpbWFsIFByYXNhZCA8aGltYWwucHJhc2FkLmdoaW1pcmF5QGludGVsLmNvbT47
-IFVwYWRoeWF5LA0KPiBUZWphcyA8dGVqYXMudXBhZGh5YXlAaW50ZWwuY29tPjsgVGhvbWFzIEhl
-bGxzdHLDtm0NCj4gPHRob21hcy5oZWxsc3Ryb21AbGludXguaW50ZWwuY29tPjsgc3RhYmxlQHZn
-ZXIua2VybmVsLm9yZw0KPiBTdWJqZWN0OiBbUEFUQ0ggMS80XSBkcm0veGUvY2xpZW50OiBmaXgg
-ZGVhZGxvY2sgaW4gc2hvd19tZW1pbmZvKCkNCj4gDQo+IFRoZXJlIGlzIGEgcmVhbCBkZWFkbG9j
-ayBhcyB3ZWxsIGFzIHNsZWVwaW5nIGluIGF0b21pYygpIGJ1ZyBpbiBoZXJlLCBpZiB0aGUgYm8N
-Cj4gcHV0IGhhcHBlbnMgdG8gYmUgdGhlIGxhc3QgcmVmLCBzaW5jZSBibyBkZXN0cnVjdGlvbiB3
-YW50cyB0byBncmFiIHRoZSBzYW1lDQo+IHNwaW5sb2NrIGFuZCBzbGVlcGluZyBsb2Nrcy4gIEZp
-eCB0aGF0IGJ5IGRyb3BwaW5nIHRoZSByZWYgdXNpbmcNCj4geGVfYm9fcHV0X2RlZmVycmVkKCks
-IGFuZCBtb3ZpbmcgdGhlIGZpbmFsIGNvbW1pdCBvdXRzaWRlIG9mIHRoZSBsb2NrLg0KPiBEcm9w
-cGluZyB0aGUgbG9jayBhcm91bmQgdGhlIHB1dCBpcyB0cmlja3kgc2luY2UgdGhlIGJvIGNhbiBn
-byBvdXQgb2Ygc2NvcGUNCj4gYW5kIGRlbGV0ZSBpdHNlbGYgZnJvbSB0aGUgbGlzdCwgbWFraW5n
-IGl0IGRpZmZpY3VsdCB0byBuYXZpZ2F0ZSB0byB0aGUgbmV4dCBsaXN0DQo+IGVudHJ5Lg0KPiAN
-Cj4gRml4ZXM6IDA4NDUyMzMzODhmOCAoImRybS94ZTogSW1wbGVtZW50IGZkaW5mbyBtZW1vcnkg
-c3RhdHMgcHJpbnRpbmciKQ0KPiBDbG9zZXM6IGh0dHBzOi8vZ2l0bGFiLmZyZWVkZXNrdG9wLm9y
-Zy9kcm0veGUva2VybmVsLy0vaXNzdWVzLzI3MjcNCj4gU2lnbmVkLW9mZi1ieTogTWF0dGhldyBB
-dWxkIDxtYXR0aGV3LmF1bGRAaW50ZWwuY29tPg0KPiBDYzogSGltYWwgUHJhc2FkIEdoaW1pcmF5
-IDxoaW1hbC5wcmFzYWQuZ2hpbWlyYXlAaW50ZWwuY29tPg0KPiBDYzogVGVqYXMgVXBhZGh5YXkg
-PHRlamFzLnVwYWRoeWF5QGludGVsLmNvbT4NCj4gQ2M6ICJUaG9tYXMgSGVsbHN0csO2bSIgPHRo
-b21hcy5oZWxsc3Ryb21AbGludXguaW50ZWwuY29tPg0KPiBDYzogPHN0YWJsZUB2Z2VyLmtlcm5l
-bC5vcmc+ICMgdjYuOCsNCj4gLS0tDQo+ICBkcml2ZXJzL2dwdS9kcm0veGUveGVfZHJtX2NsaWVu
-dC5jIHwgNiArKysrKy0NCj4gIDEgZmlsZSBjaGFuZ2VkLCA1IGluc2VydGlvbnMoKyksIDEgZGVs
-ZXRpb24oLSkNCj4gDQo+IGRpZmYgLS1naXQgYS9kcml2ZXJzL2dwdS9kcm0veGUveGVfZHJtX2Ns
-aWVudC5jDQo+IGIvZHJpdmVycy9ncHUvZHJtL3hlL3hlX2RybV9jbGllbnQuYw0KPiBpbmRleCBl
-NjRmNGI2NDVlMmUuLmJhZGZhMDQ1ZWFkOCAxMDA2NDQNCj4gLS0tIGEvZHJpdmVycy9ncHUvZHJt
-L3hlL3hlX2RybV9jbGllbnQuYw0KPiArKysgYi9kcml2ZXJzL2dwdS9kcm0veGUveGVfZHJtX2Ns
-aWVudC5jDQo+IEBAIC0xOTYsNiArMTk2LDcgQEAgc3RhdGljIHZvaWQgc2hvd19tZW1pbmZvKHN0
-cnVjdCBkcm1fcHJpbnRlciAqcCwNCj4gc3RydWN0IGRybV9maWxlICpmaWxlKQ0KPiAgCXN0cnVj
-dCB4ZV9kcm1fY2xpZW50ICpjbGllbnQ7DQo+ICAJc3RydWN0IGRybV9nZW1fb2JqZWN0ICpvYmo7
-DQo+ICAJc3RydWN0IHhlX2JvICpibzsNCj4gKwlMTElTVF9IRUFEKGRlZmVycmVkKTsNCj4gIAl1
-bnNpZ25lZCBpbnQgaWQ7DQo+ICAJdTMyIG1lbV90eXBlOw0KPiANCj4gQEAgLTIxNSwxMSArMjE2
-LDE0IEBAIHN0YXRpYyB2b2lkIHNob3dfbWVtaW5mbyhzdHJ1Y3QgZHJtX3ByaW50ZXIgKnAsDQo+
-IHN0cnVjdCBkcm1fZmlsZSAqZmlsZSkNCj4gIAlsaXN0X2Zvcl9lYWNoX2VudHJ5KGJvLCAmY2xp
-ZW50LT5ib3NfbGlzdCwgY2xpZW50X2xpbmspIHsNCj4gIAkJaWYgKCFrcmVmX2dldF91bmxlc3Nf
-emVybygmYm8tPnR0bS5iYXNlLnJlZmNvdW50KSkNCj4gIAkJCWNvbnRpbnVlOw0KPiArDQo+ICAJ
-CWJvX21lbWluZm8oYm8sIHN0YXRzKTsNCj4gLQkJeGVfYm9fcHV0KGJvKTsNCj4gKwkJeGVfYm9f
-cHV0X2RlZmVycmVkKGJvLCAmZGVmZXJyZWQpOw0KPiAgCX0NCj4gIAlzcGluX3VubG9jaygmY2xp
-ZW50LT5ib3NfbG9jayk7DQo+IA0KPiArCXhlX2JvX3B1dF9jb21taXQoJmRlZmVycmVkKTsNCj4g
-Kw0KDQpSZXZpZXdlZC1ieTogVGVqYXMgVXBhZGh5YXkgPHRlamFzLnVwYWRoeWF5QGludGVsLmNv
-bT4NCg0KVGhhbmtzLA0KVGVqYXMNCj4gIAlmb3IgKG1lbV90eXBlID0gWEVfUExfU1lTVEVNOyBt
-ZW1fdHlwZSA8DQo+IFRUTV9OVU1fTUVNX1RZUEVTOyArK21lbV90eXBlKSB7DQo+ICAJCWlmICgh
-eGVfbWVtX3R5cGVfdG9fbmFtZVttZW1fdHlwZV0pDQo+ICAJCQljb250aW51ZTsNCj4gLS0NCj4g
-Mi40Ni4wDQoNCg==
+
+
+> On Sep 11, 2024, at 11:59, Muchun Song <muchun.song@linux.dev> wrote:
+>=20
+> =EF=BB=BF
+>=20
+>> On Sep 11, 2024, at 11:54, Ming Lei <ming.lei@redhat.com> wrote:
+>>=20
+>>> On Tue, Sep 10, 2024 at 07:22:16AM -0600, Jens Axboe wrote:
+>>> On 9/3/24 2:16 AM, Muchun Song wrote:
+>>>> Supposing the following scenario.
+>>>>=20
+>>>> CPU0                                        CPU1
+>>>>=20
+>>>> blk_mq_insert_request()         1) store    blk_mq_unquiesce_queue()
+>>>> blk_mq_run_hw_queue()                       blk_queue_flag_clear(QUEUE_=
+FLAG_QUIESCED)   3) store
+>>>>   if (blk_queue_quiesced())   2) load         blk_mq_run_hw_queues()
+>>>>       return                                      blk_mq_run_hw_queue()=
+
+>>>>   blk_mq_sched_dispatch_requests()                    if (!blk_mq_hctx_=
+has_pending()) 4) load
+>>>>                                                          return
+>>>>=20
+>>>> The full memory barrier should be inserted between 1) and 2), as well a=
+s
+>>>> between 3) and 4) to make sure that either CPU0 sees QUEUE_FLAG_QUIESCE=
+D is
+>>>> cleared or CPU1 sees dispatch list or setting of bitmap of software que=
+ue.
+>>>> Otherwise, either CPU will not re-run the hardware queue causing starva=
+tion.
+>>>>=20
+>>>> So the first solution is to 1) add a pair of memory barrier to fix the
+>>>> problem, another solution is to 2) use hctx->queue->queue_lock to synch=
+ronize
+>>>> QUEUE_FLAG_QUIESCED. Here, we chose 2) to fix it since memory barrier i=
+s not
+>>>> easy to be maintained.
+>>>=20
+>>> Same comment here, 72-74 chars wide please.
+>>>=20
+>>>> diff --git a/block/blk-mq.c b/block/blk-mq.c
+>>>> index b2d0f22de0c7f..ac39f2a346a52 100644
+>>>> --- a/block/blk-mq.c
+>>>> +++ b/block/blk-mq.c
+>>>> @@ -2202,6 +2202,24 @@ void blk_mq_delay_run_hw_queue(struct blk_mq_hw_=
+ctx *hctx, unsigned long msecs)
+>>>> }
+>>>> EXPORT_SYMBOL(blk_mq_delay_run_hw_queue);
+>>>>=20
+>>>> +static inline bool blk_mq_hw_queue_need_run(struct blk_mq_hw_ctx *hctx=
+)
+>>>> +{
+>>>> +    bool need_run;
+>>>> +
+>>>> +    /*
+>>>> +     * When queue is quiesced, we may be switching io scheduler, or
+>>>> +     * updating nr_hw_queues, or other things, and we can't run queue
+>>>> +     * any more, even blk_mq_hctx_has_pending() can't be called safely=
+.
+>>>> +     *
+>>>> +     * And queue will be rerun in blk_mq_unquiesce_queue() if it is
+>>>> +     * quiesced.
+>>>> +     */
+>>>> +    __blk_mq_run_dispatch_ops(hctx->queue, false,
+>>>> +                  need_run =3D !blk_queue_quiesced(hctx->queue) &&
+>>>> +                  blk_mq_hctx_has_pending(hctx));
+>>>> +    return need_run;
+>>>> +}
+>>>=20
+>>> This __blk_mq_run_dispatch_ops() is also way too wide, why didn't you
+>>> just break it like where you copied it from?
+>>>=20
+>>>> +
+>>>> /**
+>>>> * blk_mq_run_hw_queue - Start to run a hardware queue.
+>>>> * @hctx: Pointer to the hardware queue to run.
+>>>> @@ -2222,20 +2240,23 @@ void blk_mq_run_hw_queue(struct blk_mq_hw_ctx *=
+hctx, bool async)
+>>>>=20
+>>>> might_sleep_if(!async && hctx->flags & BLK_MQ_F_BLOCKING);
+>>>>=20
+>>>> -    /*
+>>>> -     * When queue is quiesced, we may be switching io scheduler, or
+>>>> -     * updating nr_hw_queues, or other things, and we can't run queue
+>>>> -     * any more, even __blk_mq_hctx_has_pending() can't be called safe=
+ly.
+>>>> -     *
+>>>> -     * And queue will be rerun in blk_mq_unquiesce_queue() if it is
+>>>> -     * quiesced.
+>>>> -     */
+>>>> -    __blk_mq_run_dispatch_ops(hctx->queue, false,
+>>>> -        need_run =3D !blk_queue_quiesced(hctx->queue) &&
+>>>> -        blk_mq_hctx_has_pending(hctx));
+>>>> +    need_run =3D blk_mq_hw_queue_need_run(hctx);
+>>>> +    if (!need_run) {
+>>>> +        unsigned long flags;
+>>>>=20
+>>>> -    if (!need_run)
+>>>> -        return;
+>>>> +    /*
+>>>> +     * synchronize with blk_mq_unquiesce_queue(), becuase we check
+>>>> +     * if hw queue is quiesced locklessly above, we need the use
+>>>> +     * ->queue_lock to make sure we see the up-to-date status to
+>>>> +     * not miss rerunning the hw queue.
+>>>> +     */
+>>>> +    spin_lock_irqsave(&hctx->queue->queue_lock, flags);
+>>>> +    need_run =3D blk_mq_hw_queue_need_run(hctx);
+>>>> +    spin_unlock_irqrestore(&hctx->queue->queue_lock, flags);
+>>>> +
+>>>> +    if (!need_run)
+>>>> +        return;
+>>>> +    }
+>>>=20
+>>> Is this not solvable on the unquiesce side instead? It's rather a shame
+>>> to add overhead to the fast path to avoid a race with something that's
+>>> super unlikely, like quisce.
+>>=20
+>> Yeah, it can be solved by adding synchronize_rcu()/srcu() in unquiesce
+>> side, but SCSI may call it in non-sleepable context via scsi_internal_dev=
+ice_unblock_nowait().
+>=20
+> Another approach will be like the fix for BLK_MQ_S_STOPPED (in patch 3),
+> we could add a pair of mb into blk_queue_quiesced() and
+> blk_mq_unquiesce_queue(). In which case, the fix will not affect any fast
+> path, only slow path need the barrier overhead.
+
+I misunderstood Jens=E2=80=99s question. I think Ming is right.
+This approach only tries to reduce the overhead as=20
+much
+as possible even for slow path compared to=20
+spinlock_based approach.=20
+Not solving the problem only from the unquiesce side.
+
+Muchun,
+Thanks.
+
+>=20
+> diff --git a/block/blk-mq.c b/block/blk-mq.c
+> index b2d0f22de0c7f..45588ddb08d6b 100644
+> --- a/block/blk-mq.c
+> +++ b/block/blk-mq.c
+> @@ -264,6 +264,12 @@ void blk_mq_unquiesce_queue(struct request_queue *q)
+>                ;
+>        } else if (!--q->quiesce_depth) {
+>                blk_queue_flag_clear(QUEUE_FLAG_QUIESCED, q);
+> +               /*
+> +                * Pairs with the smp_mb() in blk_queue_quiesced() to orde=
+r the
+> +                * clearing of QUEUE_FLAG_QUIESCED above and the checking o=
+f
+> +                * dispatch list in the subsequent routine.
+> +                */
+> +               smp_mb__after_atomic();
+>                run_queue =3D true;
+>        }
+>        spin_unlock_irqrestore(&q->queue_lock, flags);
+> diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
+> index b8196e219ac22..7a71462892b66 100644
+> --- a/include/linux/blkdev.h
+> +++ b/include/linux/blkdev.h
+> @@ -628,7 +628,25 @@ void blk_queue_flag_clear(unsigned int flag, struct r=
+equest_queue *q);
+> #define blk_noretry_request(rq) \
+>        ((rq)->cmd_flags & (REQ_FAILFAST_DEV|REQ_FAILFAST_TRANSPORT| \
+>                             REQ_FAILFAST_DRIVER))
+> -#define blk_queue_quiesced(q)  test_bit(QUEUE_FLAG_QUIESCED, &(q)->queue_=
+flags)
+> +
+> +static inline bool blk_queue_quiesced(struct request_queue *q)
+> +{
+> +       /* Fast path: hardware queue is unquiesced most of the time. */
+> +       if (likely(!test_bit(QUEUE_FLAG_QUIESCED, &q->queue_flags)))
+> +               return false;
+> +
+> +       /*
+> +        * This barrier is used to order adding of dispatch list before an=
+d
+> +        * the test of QUEUE_FLAG_QUIESCED below. Pairs with the memory ba=
+rrier
+> +        * in blk_mq_unquiesce_queue() so that dispatch code could either s=
+ee
+> +        * QUEUE_FLAG_QUIESCED is cleared or dispatch list is not  empty t=
+o
+> +        * avoid missing dispatching requests.
+> +        */
+> +       smp_mb();
+> +
+> +       return test_bit(QUEUE_FLAG_QUIESCED, &q->queue_flags);
+> +}
+> +
+> #define blk_queue_pm_only(q)   atomic_read(&(q)->pm_only)
+> #define blk_queue_registered(q)        test_bit(QUEUE_FLAG_REGISTERED, &(q=
+)->queue_flags)
+> #define blk_queue_sq_sched(q)  test_bit(QUEUE_FLAG_SQ_SCHED, &(q)->queue_f=
+lags)
+>=20
+> Muchun,
+> Thanks.
+>=20
+>>=20
+>>=20
+>> Thanks,
+>> Ming
+>=20
+>=20
 
