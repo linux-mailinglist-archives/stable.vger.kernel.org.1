@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-75812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0729974F24
-	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 11:56:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71B2C974F21
+	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 11:56:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6C93B1F25862
-	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 09:56:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 968411C2096D
+	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 09:56:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4917A17F505;
-	Wed, 11 Sep 2024 09:56:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 199AD1714C0;
+	Wed, 11 Sep 2024 09:56:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="tvMjilFS"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="A7tDLrGm"
 X-Original-To: stable@vger.kernel.org
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B580E153820;
-	Wed, 11 Sep 2024 09:56:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC8DD183090;
+	Wed, 11 Sep 2024 09:56:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726048599; cv=none; b=dE3e5V5CtnLS5kggnzsKznOdYS4YhLcwFWxCCFMrS1+QminCwKZYu4MyYcusIvfDHgfeHn4VbDLxpUco80PXbsfy3nl6CnSREJmd16RiVpCelrx0Xf6/KFRUR9mQAPFlHpFTVr+2onBKO16g7rvPcfiarn5s+1uGtOAckZpAVDQ=
+	t=1726048591; cv=none; b=Db1Hph+0JzKZ2WY3piL1s+iFFvB4sy1WF2wGp29iSLnmmZb+ukW9LOxFFTCQFa8i6ehBHSXMAKUST1Hvkwz+huWeX/4tUFO8ZBJ6pVUgWpmEl36hS6ydVezQxU7s3xpwicRWiE+VY+lENwHMF3NrwU9eBhpBUWdb/IqI7PXaGTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726048599; c=relaxed/simple;
-	bh=9g6mH65weF44bLQevwU1JtpQ/d+yi8uM5z152woSbYc=;
+	s=arc-20240116; t=1726048591; c=relaxed/simple;
+	bh=onQrlm7Spgay/NhleJW/fE7MXyrydOTKX3HcUEyerqY=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=igjL79HrN3gBssKYbk/tDGs3ynUwbz2IySYUsk6eW+ZnSILEk74q53PoZ0sdDwoVaAM9nCBfGPNSqnCyAIYF95yhMwXT1b5SvGgDkpaZzTdttZsT6ni/QpiERfsYhxnG4W/xN9pUcSxrKAjzRb81lM1kFZ34dIU72hD2vZBo0Rg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=tvMjilFS; arc=none smtp.client-ip=210.61.82.184
+	 MIME-Version:Content-Type; b=lWQKntBxMWADeiNrq112rTRc3RwnRml+pX7Sz0etxcQSi/4vHUqpcH2Nla6IF5PpT0M4Zlxiggax71qKt7pW6JUbtzdTMLh+Z/jzOt1UReyNMyhxng5jPO5pjBVjNJodCIXyHq/Rt0Eqx8E8E9/NNmrHCaxGzLctTF2ZCnnMjoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=A7tDLrGm; arc=none smtp.client-ip=60.244.123.138
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 1b1a0342702411ef8b96093e013ec31c-20240911
+X-UUID: 1bd4e144702411efb66947d174671e26-20240911
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=LQLPSb8ldyG1OVVh0BB+yFOhjzNrq/gu6sGXkPkLj9A=;
-	b=tvMjilFSsCFHVjEkQod7g1/COSBWFp2ujfF5Hp7Dv5be89ZI66BwbL9298fUddNlQYdWTlz4tHZa48tisrW8rDskgDfRtCITqhkJCowhqcwmz7g/ipfhVzyPRL2YptdtA6HP6v9UZKZRykRWn3EVWUW1VauJw7QNbQSfPIvHr8M=;
+	h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=nUmaVNM1YQIFyvYzAgNVxdg5wnm8OSBcsLnkQn2Ri5w=;
+	b=A7tDLrGmfG5nhtG/247Q/RxtE/8PZRtd+2mQOTsVABpulrYPPXCQMPGw4TE6A5yDJ6NSHYCxVteYB6wjr0XLJ103Ab5hWwR2SduqNEFcVHRP9xiB23si7He9BViiXmvbYkzoQe5gta6Xkzxfk28Wr7SGArltzW5LdI8tMVC9asU=;
 X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.41,REQID:708e37be-0cea-4c54-a128-8ef0b1bbaf22,IP:0,U
-	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:-5
-X-CID-META: VersionHash:6dc6a47,CLOUDID:b1480ad0-7921-4900-88a1-3aef019a55ce,B
+X-CID-O-INFO: VERSION:1.1.41,REQID:d1eebb60-fe53-4856-be96-23ecb18a399d,IP:0,U
+	RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
+	N:release,TS:-25
+X-CID-META: VersionHash:6dc6a47,CLOUDID:b4480ad0-7921-4900-88a1-3aef019a55ce,B
 	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
 	RL:11|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
 	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
 X-CID-BVR: 0
 X-CID-BAS: 0,_,0,_
 X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
-X-UUID: 1b1a0342702411ef8b96093e013ec31c-20240911
-Received: from mtkmbs09n2.mediatek.inc [(172.21.101.94)] by mailgw02.mediatek.com
+X-UUID: 1bd4e144702411efb66947d174671e26-20240911
+Received: from mtkmbs13n1.mediatek.inc [(172.21.101.193)] by mailgw01.mediatek.com
 	(envelope-from <peter.wang@mediatek.com>)
 	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1299984284; Wed, 11 Sep 2024 17:56:24 +0800
+	with ESMTP id 681956778; Wed, 11 Sep 2024 17:56:25 +0800
 Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
  MTKMBS09N1.mediatek.inc (172.21.101.35) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
@@ -69,9 +69,9 @@ CC: <wsd_upstream@mediatek.com>, <linux-mediatek@lists.infradead.org>,
 	<tun-yu.yu@mediatek.com>, <eddie.huang@mediatek.com>,
 	<naomi.chu@mediatek.com>, <ed.tsai@mediatek.com>, <bvanassche@acm.org>,
 	<quic_nguyenb@quicinc.com>, <stable@vger.kernel.org>
-Subject: [PATCH v6 1/2] ufs: core: fix the issue of ICU failure
-Date: Wed, 11 Sep 2024 17:56:21 +0800
-Message-ID: <20240911095622.19225-2-peter.wang@mediatek.com>
+Subject: [PATCH v6 2/2] ufs: core: requeue aborted request
+Date: Wed, 11 Sep 2024 17:56:22 +0800
+Message-ID: <20240911095622.19225-3-peter.wang@mediatek.com>
 X-Mailer: git-send-email 2.18.0
 In-Reply-To: <20240911095622.19225-1-peter.wang@mediatek.com>
 References: <20240911095622.19225-1-peter.wang@mediatek.com>
@@ -86,60 +86,121 @@ X-MTK: N
 
 From: Peter Wang <peter.wang@mediatek.com>
 
-When setting the ICU bit without using read-modify-write,
-SQRTCy will restart SQ again and receive an RTC return
-error code 2 (Failure - SQ not stopped).
+ufshcd_abort_all forcibly aborts all on-going commands and the host
+controller will automatically fill in the OCS field of the corresponding
+response with OCS_ABORTED based on different working modes.
 
-Additionally, the error log has been modified so that
-this type of error can be observed.
+MCQ mode: aborts a command using SQ cleanup, The host controller
+will post a Completion Queue entry with OCS = ABORTED.
+
+SDB mode: aborts a command using UTRLCLR. Task Management response
+which means a Transfer Request was aborted.
+
+For these two cases, set a flag to notify SCSI to requeue the
+command after receiving response with OCS_ABORTED.
 
 Fixes: ab248643d3d6 ("scsi: ufs: core: Add error handling for MCQ mode")
 Cc: stable@vger.kernel.org
 Signed-off-by: Peter Wang <peter.wang@mediatek.com>
-Reviewed-by: Bao D. Nguyen <quic_nguyenb@quicinc.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
 ---
- drivers/ufs/core/ufs-mcq.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ drivers/ufs/core/ufshcd.c | 35 ++++++++++++++++++++---------------
+ include/ufs/ufshcd.h      |  3 +++
+ 2 files changed, 23 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/ufs/core/ufs-mcq.c b/drivers/ufs/core/ufs-mcq.c
-index 5891cdacd0b3..3903947dbed1 100644
---- a/drivers/ufs/core/ufs-mcq.c
-+++ b/drivers/ufs/core/ufs-mcq.c
-@@ -539,7 +539,7 @@ int ufshcd_mcq_sq_cleanup(struct ufs_hba *hba, int task_tag)
- 	struct scsi_cmnd *cmd = lrbp->cmd;
- 	struct ufs_hw_queue *hwq;
- 	void __iomem *reg, *opr_sqd_base;
--	u32 nexus, id, val;
-+	u32 nexus, id, val, rtc;
- 	int err;
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index a6f818cdef0e..a0548a495f30 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -3006,6 +3006,7 @@ static int ufshcd_queuecommand(struct Scsi_Host *host, struct scsi_cmnd *cmd)
+ 	ufshcd_prepare_lrbp_crypto(scsi_cmd_to_rq(cmd), lrbp);
  
- 	if (hba->quirks & UFSHCD_QUIRK_MCQ_BROKEN_RTC)
-@@ -569,17 +569,18 @@ int ufshcd_mcq_sq_cleanup(struct ufs_hba *hba, int task_tag)
- 	opr_sqd_base = mcq_opr_base(hba, OPR_SQD, id);
- 	writel(nexus, opr_sqd_base + REG_SQCTI);
+ 	lrbp->req_abort_skip = false;
++	lrbp->abort_initiated_by_eh = false;
  
--	/* SQRTCy.ICU = 1 */
--	writel(SQ_ICU, opr_sqd_base + REG_SQRTC);
-+	/* Initiate Cleanup */
-+	writel(readl(opr_sqd_base + REG_SQRTC) | SQ_ICU,
-+		opr_sqd_base + REG_SQRTC);
+ 	ufshcd_comp_scsi_upiu(hba, lrbp);
  
- 	/* Poll SQRTSy.CUS = 1. Return result from SQRTSy.RTC */
- 	reg = opr_sqd_base + REG_SQRTS;
- 	err = read_poll_timeout(readl, val, val & SQ_CUS, 20,
- 				MCQ_POLL_US, false, reg);
--	if (err)
--		dev_err(hba->dev, "%s: failed. hwq=%d, tag=%d err=%ld\n",
--			__func__, id, task_tag,
--			FIELD_GET(SQ_ICU_ERR_CODE_MASK, readl(reg)));
-+	rtc = FIELD_GET(SQ_ICU_ERR_CODE_MASK, readl(reg));
-+	if (err || rtc)
-+		dev_err(hba->dev, "%s: failed. hwq=%d, tag=%d err=%d RTC=%d\n",
-+			__func__, id, task_tag, err, rtc);
+@@ -5404,7 +5405,10 @@ ufshcd_transfer_rsp_status(struct ufs_hba *hba, struct ufshcd_lrb *lrbp,
+ 		}
+ 		break;
+ 	case OCS_ABORTED:
+-		result |= DID_ABORT << 16;
++		if (lrbp->abort_initiated_by_eh)
++			result |= DID_REQUEUE << 16;
++		else
++			result |= DID_ABORT << 16;
+ 		break;
+ 	case OCS_INVALID_COMMAND_STATUS:
+ 		result |= DID_REQUEUE << 16;
+@@ -6471,26 +6475,12 @@ static bool ufshcd_abort_one(struct request *rq, void *priv)
+ 	struct scsi_device *sdev = cmd->device;
+ 	struct Scsi_Host *shost = sdev->host;
+ 	struct ufs_hba *hba = shost_priv(shost);
+-	struct ufshcd_lrb *lrbp = &hba->lrb[tag];
+-	struct ufs_hw_queue *hwq;
+-	unsigned long flags;
  
- 	if (ufshcd_mcq_sq_start(hba, hwq))
- 		err = -ETIMEDOUT;
+ 	*ret = ufshcd_try_to_abort_task(hba, tag);
+ 	dev_err(hba->dev, "Aborting tag %d / CDB %#02x %s\n", tag,
+ 		hba->lrb[tag].cmd ? hba->lrb[tag].cmd->cmnd[0] : -1,
+ 		*ret ? "failed" : "succeeded");
+ 
+-	/* Release cmd in MCQ mode if abort succeeds */
+-	if (hba->mcq_enabled && (*ret == 0)) {
+-		hwq = ufshcd_mcq_req_to_hwq(hba, scsi_cmd_to_rq(lrbp->cmd));
+-		if (!hwq)
+-			return 0;
+-		spin_lock_irqsave(&hwq->cq_lock, flags);
+-		if (ufshcd_cmd_inflight(lrbp->cmd))
+-			ufshcd_release_scsi_cmd(hba, lrbp);
+-		spin_unlock_irqrestore(&hwq->cq_lock, flags);
+-	}
+-
+ 	return *ret == 0;
+ }
+ 
+@@ -7561,6 +7551,21 @@ int ufshcd_try_to_abort_task(struct ufs_hba *hba, int tag)
+ 		goto out;
+ 	}
+ 
++	/*
++	 * When the host software receives a "FUNCTION COMPLETE", set flag
++	 * to requeue command after receive response with OCS_ABORTED
++	 * SDB mode: UTRLCLR Task Management response which means a Transfer
++	 *           Request was aborted.
++	 * MCQ mode: Host will post to CQ with OCS_ABORTED after SQ cleanup
++	 *
++	 * This flag is set because error handler ufshcd_abort_all forcibly
++	 * aborts all commands, and the host controller will automatically
++	 * fill in the OCS field of the corresponding response with OCS_ABORTED.
++	 * Therefore, upon receiving this response, it needs to be requeued.
++	 */
++	if (!err && ufshcd_eh_in_progress(hba))
++		lrbp->abort_initiated_by_eh = true;
++
+ 	err = ufshcd_clear_cmd(hba, tag);
+ 	if (err)
+ 		dev_err(hba->dev, "%s: Failed clearing cmd at tag %d, err %d\n",
+diff --git a/include/ufs/ufshcd.h b/include/ufs/ufshcd.h
+index 0fd2aebac728..07b5e60e6c44 100644
+--- a/include/ufs/ufshcd.h
++++ b/include/ufs/ufshcd.h
+@@ -173,6 +173,8 @@ struct ufs_pm_lvl_states {
+  * @crypto_key_slot: the key slot to use for inline crypto (-1 if none)
+  * @data_unit_num: the data unit number for the first block for inline crypto
+  * @req_abort_skip: skip request abort task flag
++ * @abort_initiated_by_eh: The flag is specifically used to handle
++ *                         ufshcd_err_handler forcibly aborts.
+  */
+ struct ufshcd_lrb {
+ 	struct utp_transfer_req_desc *utr_descriptor_ptr;
+@@ -202,6 +204,7 @@ struct ufshcd_lrb {
+ #endif
+ 
+ 	bool req_abort_skip;
++	bool abort_initiated_by_eh;
+ };
+ 
+ /**
 -- 
 2.45.2
 
