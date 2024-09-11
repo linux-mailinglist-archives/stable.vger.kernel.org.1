@@ -1,213 +1,173 @@
-Return-Path: <stable+bounces-75802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23577974CBB
-	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 10:35:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 179AC974D91
+	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 10:56:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 81D6A281B5C
-	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 08:35:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8BA471F23D44
+	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 08:55:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5C6F154425;
-	Wed, 11 Sep 2024 08:35:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDB3C186E55;
+	Wed, 11 Sep 2024 08:53:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JkcuSRYx"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=syndicat.com header.i=@syndicat.com header.b="J3QNnlT9"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from mail.syndicat.com (mail.syndicat.com [62.146.89.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08EF713B5A9
-	for <stable@vger.kernel.org>; Wed, 11 Sep 2024 08:35:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08360186617;
+	Wed, 11 Sep 2024 08:53:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.146.89.62
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726043727; cv=none; b=fTGxQonIOuuPLJA1pa5uNCm4/FF2dN5kJdG43s4RuL26ChLUhAIR909bRDUi0CSOvYvpCaEHwSZSX8+c37llfZ/ONXupZSZcrWVTduvQlmzAaPsOeTKlUL3rXun8TLc8ccGCqPcAvPes8J1V/9AVLwr+0LXuBNPHwU42ubyAtbs=
+	t=1726044817; cv=none; b=nYiDUPoKF0SylnHATjp1UiDlbYDU7lwOu8S8fzXzp28Of2Ax87QVQx5jW5XC5QtWsh10oV9JptIxGH9LakrIOxuPcZWbEIboMVPbxztJLIYt6fJiWtem0etcp++7YFZV6Hc2haU7PEaLrl3HSsvf0bd1ckjv4CFAyjtzBqDeX0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726043727; c=relaxed/simple;
-	bh=yNsD1Pwsc6IgI8eIFuuaKK/VsJIDLrR8k8TQWAQ1sfs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uOQRQ09OuAIf211N72VtFBdlrTo7khZ4zKQXyGydlJA5Uyct29dSfzH6F4mnZk610tSuM5dDV4RtUkMzFKevpMQmHeLVE+zSzo04d4Oub7/p59bsouZY7/V3/alikxL9D8y/aT+aM5abKMtV4s2WMfabHZt21Wb5DiwNUOMwj4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JkcuSRYx; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1726043726; x=1757579726;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=yNsD1Pwsc6IgI8eIFuuaKK/VsJIDLrR8k8TQWAQ1sfs=;
-  b=JkcuSRYxZ9EdlEgPANKSdWLcgdJh0ML6L12/hmnvHAfcvbeKFRVaUpUg
-   i0zo1sJzZs14sGsSc2lDlh0V3GeG9LT9Xb+I9W5g90iZYkDzK6rM7BwwA
-   Slv7aD/RIjfFLkUKVrcmotvNo0dZswucMoX8O9j5T+BpzOVWgLaoGQLQj
-   Ar6WBlQdbOR6LqGa6DOZypwDxN3cKLiRmS4HHUHSkXwLe05deNPfp/cvk
-   9/4Q0nQanLi2KBtm+xJBGItanH2eu1S0Tn4awRzlJjrAx3LBTWttyTPy9
-   IUh9LJ+/roPk7TeyeeP7ObN5FWRkIgZu3iEgBRuuVJoyhXfG/8pRGRlYO
-   A==;
-X-CSE-ConnectionGUID: DrS3FsIJRVii8RyO4XKvug==
-X-CSE-MsgGUID: EJWrX13jSTqHKHP1DtmFIA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11191"; a="24967191"
-X-IronPort-AV: E=Sophos;i="6.10,219,1719903600"; 
-   d="scan'208";a="24967191"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2024 01:35:25 -0700
-X-CSE-ConnectionGUID: aHDORpfURvmND6l5ypiRFw==
-X-CSE-MsgGUID: QABO1tC+TUWKF7vfdwa8cw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,219,1719903600"; 
-   d="scan'208";a="67133809"
-Received: from dalessan-mobl3.ger.corp.intel.com (HELO [10.245.244.102]) ([10.245.244.102])
-  by orviesa010-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2024 01:35:24 -0700
-Message-ID: <fea806cc-ed5e-4fd0-adf5-87d98ea5b99d@intel.com>
-Date: Wed, 11 Sep 2024 09:35:22 +0100
+	s=arc-20240116; t=1726044817; c=relaxed/simple;
+	bh=AFjFLDnq/+lP0SuwMkKNtX86bZmCxqHOAJ/cSvALlBQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=hQyDLHNIQDMfW+PrS0gSFoAorEr9S7RVLJS8fc+05iDxcObryG2KQy4uwA3GYnlbzNatgdZseRDQ5qCviGPlt+R/Zxd9RIjghthxiIjmV2vK5tDzl5fSn4BaTpy/JoSAMNun2dLExeYPeX8T1dz5rd2EfNnP/UOvqUnW5RzcKf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=syndicat.com; spf=pass smtp.mailfrom=syndicat.com; dkim=pass (1024-bit key) header.d=syndicat.com header.i=@syndicat.com header.b=J3QNnlT9; arc=none smtp.client-ip=62.146.89.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=syndicat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=syndicat.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=syndicat.com; s=x; h=Content-Type:Content-Transfer-Encoding:MIME-Version:
+	Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=DFhocolaymN+nqIRd1rb2UPYdFMXFFDHYqqmrIgDEWE=; b=J3QNnlT98CH++fdZOijRecXe2P
+	MfdLNWCCXx7UjzMVmXmxaacpWHUldmGJnFnCZacSEG9PT4suu0IYm02Y9r/QL2GkOfNOHhOgFQReu
+	ALu3Zk7D5WX5zFmd30eg2WU0BfcyQhwN0+7z5tccuHDQbRy6p6vsAGP85Iu/c3opampM=;
+Received: from localhost.syndicat.com ([127.0.0.1]:61271 helo=localhost)
+	by mail.syndicat.com with esmtp (Syndicat PostHamster 12.2 4.96.1)
+	(envelope-from <nd@syndicat.com>)
+	id 1soJ6R-0007IG-2D;
+	Wed, 11 Sep 2024 10:53:31 +0200
+X-Virus-Scanned: amavisd-new at syndicat.com
+Received: from mail.syndicat.com ([127.0.0.1])
+	by localhost (mail.syndicat.com [127.0.0.1]) (amavisd-new, port 10024)
+	with ESMTP id JHSj0EFsB1tc; Wed, 11 Sep 2024 10:53:31 +0200 (CEST)
+Received: from p579493d3.dip0.t-ipconnect.de ([87.148.147.211]:40790 helo=gongov.localnet)
+	by mail.syndicat.com with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Syndicat PostHamster 12.2 4.96.1)
+	(envelope-from <nd@syndicat.com>)
+	id 1soJ6R-00012U-0h;
+	Wed, 11 Sep 2024 10:53:31 +0200
+From: Niels Dettenbach <nd@syndicat.com>
+To: linux-arch@vger.kernel.org
+Cc: stable@vger.kernel.org, trivial@kernel.org
+Subject: [PATCH 1/1] x86: SMT broken on Xen PV DomU since 6.9
+Date: Wed, 11 Sep 2024 10:53:30 +0200
+Message-ID: <4242435.1IzOArtZ34@gongov>
+Organization: Syndicat IT&Internet
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/4] drm/xe/client: add missing bo locking in
- show_meminfo()
-To: "Upadhyay, Tejas" <tejas.upadhyay@intel.com>,
- "intel-xe@lists.freedesktop.org" <intel-xe@lists.freedesktop.org>
-Cc: "Ghimiray, Himal Prasad" <himal.prasad.ghimiray@intel.com>,
- =?UTF-8?Q?Thomas_Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <20240910131145.136984-5-matthew.auld@intel.com>
- <20240910131145.136984-6-matthew.auld@intel.com>
- <SJ1PR11MB620426C360C56AE7A55D6DA7819B2@SJ1PR11MB6204.namprd11.prod.outlook.com>
-Content-Language: en-GB
-From: Matthew Auld <matthew.auld@intel.com>
-In-Reply-To: <SJ1PR11MB620426C360C56AE7A55D6DA7819B2@SJ1PR11MB6204.namprd11.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="utf-8"
+X-Report-Abuse-To: abuse@syndicat.com (see https://www.syndicat.com/kontakt/kontakte/)
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - mail.syndicat.com
+X-AntiAbuse: Original Domain - 
+X-AntiAbuse: Sender Address Domain - syndicat.com
 
-Hi,
+virtual machines under Xen Hypervisor (DomU) running in Xen PV mode use a 
+special, nonstandard synthetized CPU topology which "just works" under 
+kernels 6.9.x while newer kernels assuming a "crash kernel" and disable 
+SMT (reducing to one CPU core) because the newer topology implementation 
+produces a wrong error "[Firmware Bug]: APIC enumeration order not 
+specification compliant" after new topology checks which are improper for 
+Xen PV platform. As a result, the kernel disables SMT and activates just 
+one CPU core within the VM (DomU).
 
-On 11/09/2024 06:39, Upadhyay, Tejas wrote:
-> 
-> 
->> -----Original Message-----
->> From: Auld, Matthew <matthew.auld@intel.com>
->> Sent: Tuesday, September 10, 2024 6:42 PM
->> To: intel-xe@lists.freedesktop.org
->> Cc: Ghimiray, Himal Prasad <himal.prasad.ghimiray@intel.com>; Upadhyay,
->> Tejas <tejas.upadhyay@intel.com>; Thomas Hellström
->> <thomas.hellstrom@linux.intel.com>; stable@vger.kernel.org
->> Subject: [PATCH 2/4] drm/xe/client: add missing bo locking in
->> show_meminfo()
->>
->> bo_meminfo() wants to inspect bo state like tt and the ttm resource, however
->> this state can change at any point leading to stuff like NPD and UAF, if the bo
->> lock is not held. Grab the bo lock when calling bo_meminfo(), ensuring we
->> drop any spinlocks first. In the case of object_idr we now also need to hold a
->> ref.
->>
->> Fixes: 0845233388f8 ("drm/xe: Implement fdinfo memory stats printing")
->> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
->> Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
->> Cc: Tejas Upadhyay <tejas.upadhyay@intel.com>
->> Cc: "Thomas Hellström" <thomas.hellstrom@linux.intel.com>
->> Cc: <stable@vger.kernel.org> # v6.8+
->> ---
->>   drivers/gpu/drm/xe/xe_drm_client.c | 37 +++++++++++++++++++++++++++---
->>   1 file changed, 34 insertions(+), 3 deletions(-)
->>
->> diff --git a/drivers/gpu/drm/xe/xe_drm_client.c
->> b/drivers/gpu/drm/xe/xe_drm_client.c
->> index badfa045ead8..3cca741c500c 100644
->> --- a/drivers/gpu/drm/xe/xe_drm_client.c
->> +++ b/drivers/gpu/drm/xe/xe_drm_client.c
->> @@ -10,6 +10,7 @@
->>   #include <linux/slab.h>
->>   #include <linux/types.h>
->>
->> +#include "xe_assert.h"
->>   #include "xe_bo.h"
->>   #include "xe_bo_types.h"
->>   #include "xe_device_types.h"
->> @@ -151,10 +152,13 @@ void xe_drm_client_add_bo(struct xe_drm_client
->> *client,
->>    */
->>   void xe_drm_client_remove_bo(struct xe_bo *bo)  {
->> +	struct xe_device *xe = ttm_to_xe_device(bo->ttm.bdev);
->>   	struct xe_drm_client *client = bo->client;
->>
->> +	xe_assert(xe, !kref_read(&bo->ttm.base.refcount));
->> +
->>   	spin_lock(&client->bos_lock);
->> -	list_del(&bo->client_link);
->> +	list_del_init(&bo->client_link);
->>   	spin_unlock(&client->bos_lock);
->>
->>   	xe_drm_client_put(client);
->> @@ -207,7 +211,20 @@ static void show_meminfo(struct drm_printer *p,
->> struct drm_file *file)
->>   	idr_for_each_entry(&file->object_idr, obj, id) {
->>   		struct xe_bo *bo = gem_to_xe_bo(obj);
->>
->> -		bo_meminfo(bo, stats);
->> +		if (dma_resv_trylock(bo->ttm.base.resv)) {
->> +			bo_meminfo(bo, stats);
->> +			xe_bo_unlock(bo);
->> +		} else {
->> +			xe_bo_get(bo);
->> +			spin_unlock(&file->table_lock);
->> +
->> +			xe_bo_lock(bo, false);
->> +			bo_meminfo(bo, stats);
->> +			xe_bo_unlock(bo);
->> +
->> +			xe_bo_put(bo);
->> +			spin_lock(&file->table_lock);
->> +		}
->>   	}
->>   	spin_unlock(&file->table_lock);
->>
->> @@ -217,7 +234,21 @@ static void show_meminfo(struct drm_printer *p,
->> struct drm_file *file)
->>   		if (!kref_get_unless_zero(&bo->ttm.base.refcount))
->>   			continue;
->>
-> 
-> While we have ref to BO, why would it need lock here, can you please explain if I am missing something. I though BO cant be deleted till will hold ref?
+The patch disables the regarding checks if it is running in Xen PV 
+mode (only) and bring back SMT / all CPUs as in the past to such DomU 
+VMs.
 
-The ref is just about protecting the lifetime of the bo, however the 
-internal bo state in particular the ttm stuff, is all protected by 
-holding the dma-resv bo lock.
+Signed-off-by: Niels Dettenbach <nd@syndicat.com>
 
-For example the bo can be moved/evicted around at will and the object 
-state changes with it, but that should be done only when also holding 
-the bo lock. If we are holding the bo lock here then the object state 
-should be stable, making it safe to inspect stuff like bo->ttm.ttm and 
-bo->ttm.resource. As an example, if you look at ttm_bo_move_null() and 
-imagine xe_bo_has_pages() racing with that, then NPD or UAF is possible.
+---
 
-> 
-> Thanks,
-> Tejas
->> -		bo_meminfo(bo, stats);
->> +		if (dma_resv_trylock(bo->ttm.base.resv)) {
->> +			bo_meminfo(bo, stats);
->> +			xe_bo_unlock(bo);
->> +		} else {
->> +			spin_unlock(&client->bos_lock);
->> +
->> +			xe_bo_lock(bo, false);
->> +			bo_meminfo(bo, stats);
->> +			xe_bo_unlock(bo);
->> +
->> +			spin_lock(&client->bos_lock);
->> +			/* The bo ref will prevent this bo from being removed
->> from the list */
->> +			xe_assert(xef->xe, !list_empty(&bo->client_link));
->> +		}
->> +
->>   		xe_bo_put_deferred(bo, &deferred);
->>   	}
->>   	spin_unlock(&client->bos_lock);
->> --
->> 2.46.0
-> 
+
+The current behaviour leads all of our production Xen Host platforms 
+unusable after updating to newer linux kernels (with just one CPU 
+available/activated per VM) while older kernels other OS still work 
+fully (and stable since many years on the platform). 
+
+Xen PV mode is still provided by current Xen and widely used - even 
+if less wide as the newer Xen PVH mode today. So a solution probably 
+will be required.
+
+So we assume that bug affects stable@vger.kernel.org as well.
+
+
+dmesg from affected kernel:
+
+-- snip --
+Sep 10 14:35:50 ffm1 kernel: [    0.640364] CPU topo: Enumerated BSP APIC 0 is not marked in APICBASE MSR
+Sep 10 14:35:50 ffm1 kernel: [    0.640367] CPU topo: Assuming crash kernel. Limiting to one CPU to prevent machine INIT
+Sep 10 14:35:50 ffm1 kernel: [    0.640368] CPU topo: [Firmware Bug]: APIC enumeration order not specification compliant
+Sep 10 14:35:50 ffm1 kernel: [    0.640376] CPU topo: Max. logical packages:   1
+Sep 10 14:35:50 ffm1 kernel: [    0.640378] CPU topo: Max. logical dies:       1
+Sep 10 14:35:50 ffm1 kernel: [    0.640379] CPU topo: Max. dies per package:   1
+Sep 10 14:35:50 ffm1 kernel: [    0.640386] CPU topo: Max. threads per core:   1
+Sep 10 14:35:50 ffm1 kernel: [    0.640388] CPU topo: Num. cores per package:     1
+Sep 10 14:35:50 ffm1 kernel: [    0.640389] CPU topo: Num. threads per package:   1
+Sep 10 14:35:50 ffm1 kernel: [    0.640390] CPU topo: Allowing 1 present CPUs plus 0 hotplug CPUs
+Sep 10 14:35:50 ffm1 kernel: [    0.640402] Cannot find an available gap in the 32-bit address range
+-- snap --
+
+We tested the patch intensely under productive / high load since 2 days now with no issues.
+
+
+references:
+arch/x86/kernel/cpu/topology.c
+[line 448]
+--- snip ---
+        /*
+         * XEN PV is special as it does not advertise the local APIC
+         * properly, but provides a fake topology for it so that the
+         * infrastructure works. So don't apply the restrictions vs. APIC
+         * here.
+         */
+---snap ---
+
+Related errors / tickets:
+https://forum.qubes-os.org/t/fedora-sees-only-1-cpu-core-after-updating-the-kernel-to-6-9-x/27205/5
+
+
+
+
+
+
+--- linux/arch/x86/kernel/cpu/topology.c.orig   2024-09-11 09:53:16.194095250 +0200
++++ linux/arch/x86/kernel/cpu/topology.c        2024-09-11 09:55:17.338448094 +0200
+@@ -158,7 +158,7 @@ static __init bool check_for_real_bsp(u3
+                is_bsp = !!(msr & MSR_IA32_APICBASE_BSP);
+        }
+
+-       if (apic_id == topo_info.boot_cpu_apic_id) {
++       if (!xen_pv_domain() && apic_id == topo_info.boot_cpu_apic_id) {
+                /*
+                 * If the boot CPU has the APIC BSP bit set then the
+                 * firmware enumeration is agreeing. If the CPU does not
+@@ -185,7 +185,7 @@ static __init bool check_for_real_bsp(u3
+        pr_warn("Boot CPU APIC ID not the first enumerated APIC ID: %x != %x\n",
+                topo_info.boot_cpu_apic_id, apic_id);
+
+-       if (is_bsp) {
++       if (!xen_pv_domain() && is_bsp) {
+                /*
+                 * The boot CPU has the APIC BSP bit set. Use it and complain
+                 * about the broken firmware enumeration.
+
+
+
+
+
+
 
