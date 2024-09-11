@@ -1,99 +1,95 @@
-Return-Path: <stable+bounces-75915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CAD5975D36
-	for <lists+stable@lfdr.de>; Thu, 12 Sep 2024 00:30:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0039E975D47
+	for <lists+stable@lfdr.de>; Thu, 12 Sep 2024 00:33:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21FDA1F22D2E
-	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 22:30:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3301F1C21DFA
+	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 22:33:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E14B619CC19;
-	Wed, 11 Sep 2024 22:30:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAB33186607;
+	Wed, 11 Sep 2024 22:32:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T09dSuDV"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="elLjxVwx"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D9E7224CF;
-	Wed, 11 Sep 2024 22:30:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16FD315442D;
+	Wed, 11 Sep 2024 22:32:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726093830; cv=none; b=XCq8s2MfDXS1Txki2kA3S5KpXtMO4OkSosWIoxaEIAHAG3Y7ISOIunWAXVFqo0F5WUCIgsSPR/1iySCQhNTkdpdhbBWrR19Qd10dBC46S132yAWxOP9yUBvE2D+JSx0ELumX2N6iIEuSgDbH5I5zERLQ2fzbpQCWE9lvyrpzgtI=
+	t=1726093978; cv=none; b=ZRf6RAm7czGx0+uM6g4Yb6Ck6hbZo8MwHPBpn16T7LigDye9rXtdWpuGRfs0jmIQEP29/AqJvphQRG8pjzhVsMUt+53KZgv2jMNtkrWpIs3veTjH46+lFwLOuRDkY/ixYwuDdFUAwh6sbyCnvsWQR6auA6zYugKns1a1juyFw60=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726093830; c=relaxed/simple;
-	bh=9CY7jtiBhyePSX79v/9ohwRq9HgavX2rGlMwlGxscd0=;
-	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=gJftPhebrXFbcQyYKsk/goN4n3aiki1+kJjLirbsjgzckVUgGTG/k4lnxn95PQlY44PAuvMMd3MGD1BoxfC5Ogio0vHoiV7JitpaiAVr4vrGsvReEj+PyKMBAVTGsw7GilwD/YFOBfVqDeiY6yoqrH8T3IM88sfrIObl9I+GUTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T09dSuDV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DE67C4CEC0;
-	Wed, 11 Sep 2024 22:30:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726093829;
-	bh=9CY7jtiBhyePSX79v/9ohwRq9HgavX2rGlMwlGxscd0=;
-	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=T09dSuDVfXTXLXyPX/PYSlJS8rQOJqPKUmkttN7s8u3oHDbkVQ+UZ+a/MjQHUxb1m
-	 4kmJUapHfZwGp7rnxo+fASXtisrz2Qus1BnysPIxZc1qtKKuF90EzUp3Dnj/MnqvAI
-	 IxKpQ8BXd0i4d4d0GXlT0+RIIjtyl4IwPiem3eYVC/AoCpkugMRp9EZ+aS9/QXfZZQ
-	 /JFM1jSgKg4BVozTUgWOgHKhGZWEqIb8QTYA7zmOYOtPGTtkPWUz57MpbGoWwwQ0Vd
-	 vaF8rfYo23jDH+3o+m/+0lZKMknDyP0aM1JBOJPHZZjPQ4xvo2XMiy4fnyiHnJvCoI
-	 d42Ij0O3OJCEQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70E373806656;
-	Wed, 11 Sep 2024 22:30:31 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1726093978; c=relaxed/simple;
+	bh=ri02tmiI/Fny0K80RpVCmC5qXeAd5Ny5JNmTjqHehXM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=aHa94+EF23Kg+DxBKayPN8D/+KC0QZqV3X/r3c6QS6VNGy+IwPHbLbCn9BMY5+cApJdt3xHvpKcNInjE2iL6CnLIOQm2zQIjfl2PsxFErlQVAuhPeK7+SiO30KalftwJKD6lN/64cz55YLPAWx4RlQLZGxacLMFHoIGLOd71CwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=elLjxVwx; arc=none smtp.client-ip=199.89.1.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 008.lax.mailroute.net (Postfix) with ESMTP id 4X3wLw35Ysz6ClY9S;
+	Wed, 11 Sep 2024 22:32:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1726093974; x=1728685975; bh=ri02tmiI/Fny0K80RpVCmC5q
+	XeAd5Ny5JNmTjqHehXM=; b=elLjxVwx9VAzFxniWyRO+6x14OWsxd4+yZQjLRp8
+	duo1F+3Y5swt8w6/LFDzgo0pCPYJXMM9i7Lx9j0Z5MnU3Isu/EHKmxVZccHnQ2uq
+	PJ+mmmRrMTVcJUMvdwvx0a81vmkfYXGTEHizroYPZLQ3i/59k1pmmnXiQ8igageI
+	G5+AsqvWmNbOPiSErbCZM8GmB7IcpOlC+V2g7qGccjKq+EiRWDTC824U3QT+ABn2
+	RozWDl4f7qj037tloIHEzc7qjDaAUW8rvs4G7pFxGlsesngNxSfCS1GLmNWLOqKV
+	VgEIpeY6K9xrsRoSSWFy5R761fUi2/eTeZ1VQ6hhGYQdfg==
+X-Virus-Scanned: by MailRoute
+Received: from 008.lax.mailroute.net ([127.0.0.1])
+ by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id 0Bz_iw8E3IBp; Wed, 11 Sep 2024 22:32:54 +0000 (UTC)
+Received: from [192.168.51.14] (c-73-231-117-72.hsd1.ca.comcast.net [73.231.117.72])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4X3wLt0fq3z6ClY9R;
+	Wed, 11 Sep 2024 22:32:53 +0000 (UTC)
+Message-ID: <f47a00da-a072-491d-80a0-59b984ea92b0@acm.org>
+Date: Wed, 11 Sep 2024 15:32:52 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH net 0/3] selftests: mptcp: misc. small fixes
-From: patchwork-bot+netdevbpf@kernel.org
-Message-Id: 
- <172609383002.1065358.12169361654383136843.git-patchwork-notify@kernel.org>
-Date: Wed, 11 Sep 2024 22:30:30 +0000
-References: <20240910-net-selftests-mptcp-fix-install-v1-0-8f124aa9156d@kernel.org>
-In-Reply-To: <20240910-net-selftests-mptcp-fix-install-v1-0-8f124aa9156d@kernel.org>
-To: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Cc: mptcp@lists.linux.dev, martineau@kernel.org, geliang@kernel.org,
- davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
- shuah@kernel.org, netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] scsi: ufs: Use pre-calculated offsets in
+ ufshcd_init_lrb
+To: Avri Altman <avri.altman@wdc.com>,
+ "Martin K . Petersen" <martin.petersen@oracle.com>
+Cc: linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20240910044543.3812642-1-avri.altman@wdc.com>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <20240910044543.3812642-1-avri.altman@wdc.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hello:
+On 9/9/24 9:45 PM, Avri Altman wrote:
+> Replace manual offset calculations for response_upiu and prd_table in
+> ufshcd_init_lrb() with pre-calculated offsets already stored in the
+> utp_transfer_req_desc structure. The pre-calculated offsets are set
+> differently in ufshcd_host_memory_configure() based on the
+> UFSHCD_QUIRK_PRDT_BYTE_GRAN quirk, ensuring correct alignment and
+> access.
 
-This series was applied to netdev/net.git (main)
-by Jakub Kicinski <kuba@kernel.org>:
+With which host controllers has this patch been tested?
 
-On Tue, 10 Sep 2024 21:06:35 +0200 you wrote:
-> Here are some various fixes for the MPTCP selftests.
-> 
-> Patch 1 fixes a recently modified test to continue to work as expected
-> on older kernels. This is a fix for a recent fix that can be backported
-> up to v5.15.
-> 
-> Patch 2 and 3 include dependences when exporting or installing the
-> tests. Two fixes for v6.11-rc1.
-> 
-> [...]
+Thanks,
 
-Here is the summary with links:
-  - [net,1/3] selftests: mptcp: join: restrict fullmesh endp on 1st sf
-    https://git.kernel.org/netdev/net/c/49ac6f05ace5
-  - [net,2/3] selftests: mptcp: include lib.sh file
-    https://git.kernel.org/netdev/net/c/1a5a2d19e827
-  - [net,3/3] selftests: mptcp: include net_helper.sh file
-    https://git.kernel.org/netdev/net/c/c66c08e51b55
-
-You are awesome, thank you!
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+Bart.
 
 
