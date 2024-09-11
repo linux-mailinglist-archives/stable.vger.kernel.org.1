@@ -1,88 +1,99 @@
-Return-Path: <stable+bounces-75916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75915-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13547975D3E
-	for <lists+stable@lfdr.de>; Thu, 12 Sep 2024 00:31:01 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CAD5975D36
+	for <lists+stable@lfdr.de>; Thu, 12 Sep 2024 00:30:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A124FB24DBA
-	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 22:30:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 21FDA1F22D2E
+	for <lists+stable@lfdr.de>; Wed, 11 Sep 2024 22:30:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1726F1BB6B6;
-	Wed, 11 Sep 2024 22:30:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E14B619CC19;
+	Wed, 11 Sep 2024 22:30:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="hYEzcXuE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T09dSuDV"
 X-Original-To: stable@vger.kernel.org
-Received: from relay8-d.mail.gandi.net (relay8-d.mail.gandi.net [217.70.183.201])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64E81149DE3;
-	Wed, 11 Sep 2024 22:30:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726093836; cv=none; b=CppBV2CAgwxSGsTfZkCeBA1E6ZFXUA8caNU34RJ22+Z2jpGQXIsWeFW6T0SBm1bjeEy5t3LunQcZ/flb3W2A8lkZ/nJ0+LptEXcvQZUF2AnYzHJ6f6CXcHmxGTCpm231BVMQGhH6mbTzV81bQNCO1j3DugFIjTJ7xnfJgugYm+8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726093836; c=relaxed/simple;
-	bh=16DAmtyXluiww3znXH0E4bF/DRcQegZFZDhG+/3GEh8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h1ggaCj9QNLij2eFOspPtvUu0Dx49c8Z97p38b5XEMJWeKGg/Lz3cQkws779W//XHEWcVY7jbXM5BEfRqbLFq8aUJweB3IpzradY1vGzlbrlH7yNGXRzL+aNf436CQUK0KhNLi3/2+zhzPruytuv1JTaJ+o8aBFoIz+rdd2GY5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=hYEzcXuE; arc=none smtp.client-ip=217.70.183.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: by mail.gandi.net (Postfix) with ESMTPSA id BE15F1BF203;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D9E7224CF;
 	Wed, 11 Sep 2024 22:30:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=gm1;
-	t=1726093832;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=IX+3w90XDz+AnwsDUYP4XKgqT68dgajpBkw88bJjKxw=;
-	b=hYEzcXuERfqWACfLZRzFCy13Cpy9Tk9ervIACpH6+4OLJPPx53v8R+yU422L6bJgpJbhzW
-	7re/awyKPC4ghDOjMRAQkWAECusuX48GN1GKAbk0OqcLykjGcI0N5weo3YxxAqI17rXdx3
-	UARoCeK0RIyjPDUeVZgXLS2x9Wy0ABb66Ya8+vsxuMw2j4zpXoOadFQFSveKDHMGAoM+47
-	/gN0jzZ+oYFECbYr0xAfX40dus3rjRcZwlVwC+HJzDXspKeTf3n/j86rgkEWelo5kOqKdt
-	Yh9nVx1ukDSc8LwBw0M3FSSk0/yyRGoSfDCkxfufetANbbHoqTIF700XBARDuQ==
-Date: Thu, 12 Sep 2024 00:30:29 +0200
-From: Alexandre Belloni <alexandre.belloni@bootlin.com>
-To: Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
-	Boris Brezillon <bbrezillon@kernel.org>,
-	Johan Hovold <johan@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	linux-rtc@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc: stable@vger.kernel.org
-Subject: Re: [PATCH] rtc: at91sam9: fix OF node leak in probe() error path
-Message-ID: <172609381395.1549758.8649440335633838885.b4-ty@bootlin.com>
-References: <20240825183103.102904-1-krzysztof.kozlowski@linaro.org>
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1726093830; cv=none; b=XCq8s2MfDXS1Txki2kA3S5KpXtMO4OkSosWIoxaEIAHAG3Y7ISOIunWAXVFqo0F5WUCIgsSPR/1iySCQhNTkdpdhbBWrR19Qd10dBC46S132yAWxOP9yUBvE2D+JSx0ELumX2N6iIEuSgDbH5I5zERLQ2fzbpQCWE9lvyrpzgtI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1726093830; c=relaxed/simple;
+	bh=9CY7jtiBhyePSX79v/9ohwRq9HgavX2rGlMwlGxscd0=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=gJftPhebrXFbcQyYKsk/goN4n3aiki1+kJjLirbsjgzckVUgGTG/k4lnxn95PQlY44PAuvMMd3MGD1BoxfC5Ogio0vHoiV7JitpaiAVr4vrGsvReEj+PyKMBAVTGsw7GilwD/YFOBfVqDeiY6yoqrH8T3IM88sfrIObl9I+GUTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T09dSuDV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DE67C4CEC0;
+	Wed, 11 Sep 2024 22:30:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1726093829;
+	bh=9CY7jtiBhyePSX79v/9ohwRq9HgavX2rGlMwlGxscd0=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+	b=T09dSuDVfXTXLXyPX/PYSlJS8rQOJqPKUmkttN7s8u3oHDbkVQ+UZ+a/MjQHUxb1m
+	 4kmJUapHfZwGp7rnxo+fASXtisrz2Qus1BnysPIxZc1qtKKuF90EzUp3Dnj/MnqvAI
+	 IxKpQ8BXd0i4d4d0GXlT0+RIIjtyl4IwPiem3eYVC/AoCpkugMRp9EZ+aS9/QXfZZQ
+	 /JFM1jSgKg4BVozTUgWOgHKhGZWEqIb8QTYA7zmOYOtPGTtkPWUz57MpbGoWwwQ0Vd
+	 vaF8rfYo23jDH+3o+m/+0lZKMknDyP0aM1JBOJPHZZjPQ4xvo2XMiy4fnyiHnJvCoI
+	 d42Ij0O3OJCEQ==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 70E373806656;
+	Wed, 11 Sep 2024 22:30:31 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240825183103.102904-1-krzysztof.kozlowski@linaro.org>
-X-GND-Sasl: alexandre.belloni@bootlin.com
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net 0/3] selftests: mptcp: misc. small fixes
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <172609383002.1065358.12169361654383136843.git-patchwork-notify@kernel.org>
+Date: Wed, 11 Sep 2024 22:30:30 +0000
+References: <20240910-net-selftests-mptcp-fix-install-v1-0-8f124aa9156d@kernel.org>
+In-Reply-To: <20240910-net-selftests-mptcp-fix-install-v1-0-8f124aa9156d@kernel.org>
+To: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Cc: mptcp@lists.linux.dev, martineau@kernel.org, geliang@kernel.org,
+ davem@davemloft.net, edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+ shuah@kernel.org, netdev@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
 
-On Sun, 25 Aug 2024 20:31:03 +0200, Krzysztof Kozlowski wrote:
-> Driver is leaking an OF node reference obtained from
-> of_parse_phandle_with_fixed_args().
+Hello:
+
+This series was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
+
+On Tue, 10 Sep 2024 21:06:35 +0200 you wrote:
+> Here are some various fixes for the MPTCP selftests.
 > 
+> Patch 1 fixes a recently modified test to continue to work as expected
+> on older kernels. This is a fix for a recent fix that can be backported
+> up to v5.15.
 > 
+> Patch 2 and 3 include dependences when exporting or installing the
+> tests. Two fixes for v6.11-rc1.
+> 
+> [...]
 
-Applied, thanks!
+Here is the summary with links:
+  - [net,1/3] selftests: mptcp: join: restrict fullmesh endp on 1st sf
+    https://git.kernel.org/netdev/net/c/49ac6f05ace5
+  - [net,2/3] selftests: mptcp: include lib.sh file
+    https://git.kernel.org/netdev/net/c/1a5a2d19e827
+  - [net,3/3] selftests: mptcp: include net_helper.sh file
+    https://git.kernel.org/netdev/net/c/c66c08e51b55
 
-[1/1] rtc: at91sam9: fix OF node leak in probe() error path
-      https://git.kernel.org/abelloni/c/988d7f3571e8
-
-Best regards,
-
+You are awesome, thank you!
 -- 
-Alexandre Belloni, co-owner and COO, Bootlin
-Embedded Linux and Kernel engineering
-https://bootlin.com
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
+
+
 
