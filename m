@@ -1,234 +1,149 @@
-Return-Path: <stable+bounces-75946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39F2E976125
-	for <lists+stable@lfdr.de>; Thu, 12 Sep 2024 08:16:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8251297615C
+	for <lists+stable@lfdr.de>; Thu, 12 Sep 2024 08:20:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F2841C22E4A
-	for <lists+stable@lfdr.de>; Thu, 12 Sep 2024 06:16:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 379951F21C53
+	for <lists+stable@lfdr.de>; Thu, 12 Sep 2024 06:20:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EAD0188A00;
-	Thu, 12 Sep 2024 06:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EE00188910;
+	Thu, 12 Sep 2024 06:20:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="dnMeLjWH"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dzqWCkJv"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vk1-f172.google.com (mail-vk1-f172.google.com [209.85.221.172])
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FD421878
-	for <stable@vger.kernel.org>; Thu, 12 Sep 2024 06:16:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7C7118952C;
+	Thu, 12 Sep 2024 06:20:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726121771; cv=none; b=VDffJOq2UesK/+oh3TLZEPFNbeTLnz9vFFVPH2TdGrtAih4o4CCgnyoUKpw/Hmcbfo3qYXyCERZLhM5M9kz3uOQXouhtKbDAbRSdfUDTaVgVPbtswHSqHUOIZXy16zCXeT/e3dGXfjvnis0UZvrGwYUtdcrTLt8vun5Rcl0HmaA=
+	t=1726122004; cv=none; b=K8XiiZUflJQWfSzmrrYLB5l0+SpnVkADcDKZbnmfaApV4lbZ5gpf+/Art6BZBCSPjDXjhFLmsYuH8Bs9MNE6VmDUkmXhooy4TNlug/Z2YgAGLgei3jA4ITnKAUXik/wH5nQK8bIphzLsPGbWaknSCooRua5PCeXzxNYP8gVMozM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726121771; c=relaxed/simple;
-	bh=NSZ0gFhmnSAWkPLIvkThE/jj2vyRHEZgjI1vgLBE5JU=;
+	s=arc-20240116; t=1726122004; c=relaxed/simple;
+	bh=Eh//eC2ZQUF3nfb6eUzz3dVJDDGdTBrFXZ1nCAZv5ow=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=W1QYWJ8TlV71Z3dYAnedFWecxiqe1Gai4u8IjVEnVQhuLjMvO6pVpFCNXxAD9EOJdyCC+aJfsVoyokOR2uoOQ4VOIu/riIbQKOG8Pl1vO8htPxhts79rWJ1FkkWGD4SGLXEtKiSnFX+ONQVEUfd8GZkclQbKRxLThQ0+wgoxbVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=dnMeLjWH; arc=none smtp.client-ip=209.85.221.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vk1-f172.google.com with SMTP id 71dfb90a1353d-5012813249cso183892e0c.2
-        for <stable@vger.kernel.org>; Wed, 11 Sep 2024 23:16:09 -0700 (PDT)
+	 To:Cc:Content-Type; b=bArOuLDnw6g2/L2vTC9VetvZ6H/lsW0PBbp6C94/3boynxjiZB9PcO9dAcSPOu12zsCMdm4X6LU/BcbPoPkJFh9FyaBJzcByjVJOPTYnARbikKzv0sjoNbMddoaoIfkfsmV1R0hnQR7ESJHTj0a5r9NaFQODPhsFDPAOgOIW4hA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dzqWCkJv; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-374b9761eecso492499f8f.2;
+        Wed, 11 Sep 2024 23:20:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1726121768; x=1726726568; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1726122001; x=1726726801; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=PG7etX+XMtB4JyEWMR7RO6+kiYe96BaV75NlxGPDwcI=;
-        b=dnMeLjWHB1PWVH5MnvG22gtT90VS84LNutCPgw/3pOhTrJ8pzPvfqwHo7JscGujKa/
-         cPfgq2hgUgCxSpdfBEwGKLtIrNae/zsutKu7zZ6Lp+XrakYY/Nfk8ouColFjDQ5/qGAI
-         HI9yLKGKyJA5R9W/NaDdg7f9jejIeWc7QS6TgwkHH67I8NE6mOrCOJz5QCbX0KooazIT
-         CZCIurT8LE5KuP2r9mdBuvy9sbEukboyJl6AfWuuOCg+s/MJbYX3WWxOeIWYGsanA3to
-         Gu2MxcSapFUYq9ZF6s8DeRUFjLI7wmqZnJhf9eAi1ZGq9CUpPbUN/EAcTuePK6H6k/ZM
-         pFrA==
+        bh=lrFGMy8rj0h87/GhVASiPltt/Rs0Uh3ENOxRwjDF3p4=;
+        b=dzqWCkJvyov0H1d0Yq6N/SmiWwCv20G+1vAFKgDl8Eoc/3VQyTHoePd4G68cc27ru8
+         dEJTibskPNU8608v1MeFAeHjWfQoFHGM8lAYbqyKE6EvJrIRhIg7KZWoqmzIhHKpcCJd
+         Swfap7bkxHMijjNf/ha9rW2h6npM43QALGLpHW4hQ7CQO4ntBl/3HBj2JzOFNDuVfMJ7
+         LwwJ0NPMU8mj+m7y8IwjOKsLZYA+9GjqTCjrYTeUhJsHhu9I8ac1jR7px1jWY/V1vhUQ
+         TV0IfOYtoKbZT6wqXAiizxQFguIPuHP34NDPQR/HlNpGY7vfPtbdKhqb9B+wiYyXFYWd
+         xF/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726121768; x=1726726568;
+        d=1e100.net; s=20230601; t=1726122001; x=1726726801;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=PG7etX+XMtB4JyEWMR7RO6+kiYe96BaV75NlxGPDwcI=;
-        b=GXvjM6cn+ek9UulX0A+BOcP+CuyVczoQuZmVLaGgkW6y4PDpiHxI/94J93Sf9VfPjh
-         CRhPLIj6cnV8gpIFq092kc7kc6YOSqnKKJjLOdUsEKKKITnnYqkUjVvlVjtFaT0Fzbj+
-         XVQGb4bnQhfxmHlnJ7mTmH5o5t1e043YoOQLR9NIEQHp4MBIcHs2WXDXmAEjWr1q6HXU
-         fjskPUgm2umVL1Vmqf7C8yRE6KBkos7ZI5fvnKmXVXGCtXVE7SePWPZiIPGqKjFzoUT1
-         QrOekSlqFDnCajbydRKJnJ50CFA9w7Q6G7wF2QAJq7enZ8md6Uy1YjFgF8fCK19PIVU3
-         m7Mg==
-X-Gm-Message-State: AOJu0YyuKQBzq0H1obMidHDJ68TXm2U3MSxbFwhSvU0bpSF6Dms58xlg
-	eqTPtw7fd0PO4fjGSRgmF1TkXbQLXW1VYWJx5BRRmTp56hGFAA9CbEOf/Or6SUBiDsYLpTUQTyF
-	LbafOgGO/fGrXdDK9Xz6wJi4bFgku0v0iZD4u6w==
-X-Google-Smtp-Source: AGHT+IFnKBv5XJbS0vNasn1Vw2sANTpPRzyj0SqebB77rWvDXnyuPcbBolA73RD6RJwTdHu7xtKHHJGmKaO/CemalcU=
-X-Received: by 2002:a05:6122:1306:b0:4f5:254e:e111 with SMTP id
- 71dfb90a1353d-5032d40e6a1mr1568236e0c.7.1726121768215; Wed, 11 Sep 2024
- 23:16:08 -0700 (PDT)
+        bh=lrFGMy8rj0h87/GhVASiPltt/Rs0Uh3ENOxRwjDF3p4=;
+        b=eIfH4F84xvVSRT2FIK6x7/WYDY32O1/htDMsj/bk0RI6jlPQ0rz2ULv24Qlo34/pgK
+         7//wWAg7LRW/t7vOOFPmpZ5/V/iudrmoGt41UkBPkipJOS5LvC9sJlVKeV5OLp7NDAQl
+         p6Ol1+D4xB2+DN4uqUgy0xVKFPYVRfJkOR03GBGX2L7VKg9XnBp4/l/nuEeagPl7Frpm
+         yUkmvukJZooRRSnnF3f6JyR7Lj5JfpXhRk9asfd+JeB/cMBde7iiqNVSnnXHK2CgyBfw
+         dXWI2Uc7BOpztHXcHnUCh5AcmYveUk56mOkuxrK0eKOtzvDVNFAG4PuNjSp9egcbzDM3
+         kEtQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWKXAnspPlMfnVdLB15D0NZvh8XI/A08TBq0ecUdDSq4ljnBoOgY62cMEHVQgquFJS6PdVgfQbFlrvozGY=@vger.kernel.org, AJvYcCWMzy44hxiVbxw4WlIiw2qqy52OS5tFtA/aKfAhwSenOw2OFedkL4Kr0vhoPVp6gSBtiW6mcEguFQlm@vger.kernel.org, AJvYcCWu7SfxUfRPrsa/vQVP2KmiPe8AgePAhXjMqmUkrC6IasT7V4pv3nm2lVdiFU24UsQwiuR4kbve@vger.kernel.org
+X-Gm-Message-State: AOJu0YyTeuGmFZs0K9Bnn6NHsz57lFTC4S2SvTADL0t3Pm/p/8yFiDAc
+	kD170Yr7szsZngLmmKs/Rftnz5Wd4IP86sgGyfoS1EqCt5p0ECc+sPd7mJEEZj1W3MGHUzpzn6h
+	YpsXJqCvBE84TEe/P2LgiN75uxXI=
+X-Google-Smtp-Source: AGHT+IFoNGTWT3h99GoY81Qz+ckGxTsP5b3QngDN17LEFaL8m39H2H60Mty6V0Vopz/yEwWpGaNSgzfGudlm4Qbkn98=
+X-Received: by 2002:adf:a356:0:b0:377:284d:9946 with SMTP id
+ ffacd0b85a97d-378c2d031ebmr803696f8f.30.1726122001036; Wed, 11 Sep 2024
+ 23:20:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240911130536.697107864@linuxfoundation.org>
-In-Reply-To: <20240911130536.697107864@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Thu, 12 Sep 2024 11:45:56 +0530
-Message-ID: <CA+G9fYvzUeEMf98sCDqwWDYksYgvRfpgTABEcWUvmjwE-aGa1w@mail.gmail.com>
-Subject: Re: [PATCH 6.1 000/186] 6.1.110-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
-	broonie@kernel.org
+References: <20240911051716.6572-2-ki.chiang65@gmail.com> <20240911095233.3e4d734d@foxbook>
+In-Reply-To: <20240911095233.3e4d734d@foxbook>
+From: Kuangyi Chiang <ki.chiang65@gmail.com>
+Date: Thu, 12 Sep 2024 14:19:51 +0800
+Message-ID: <CAHN5xi1ZiOrZBUUAKmyJ5qtUUx5wLc3vyavQwA7k_Q47dN-WNg@mail.gmail.com>
+Subject: Re: [PATCH 2/3] xhci: Fix control transfer error on Etron xHCI host
+To: =?UTF-8?Q?Micha=C5=82_Pecio?= <michal.pecio@gmail.com>
+Cc: gregkh@linuxfoundation.org, linux-kernel@vger.kernel.org, 
+	linux-usb@vger.kernel.org, mathias.nyman@intel.com, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, 11 Sept 2024 at 18:37, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+Hi,
+
+Thank you for the review.
+
+Micha=C5=82 Pecio <michal.pecio@gmail.com> =E6=96=BC 2024=E5=B9=B49=E6=9C=
+=8811=E6=97=A5 =E9=80=B1=E4=B8=89 =E4=B8=8B=E5=8D=883:52=E5=AF=AB=E9=81=93=
+=EF=BC=9A
 >
-> This is the start of the stable review cycle for the 6.1.110 release.
-> There are 186 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+> Hi,
 >
-> Responses should be made by Fri, 13 Sep 2024 13:05:08 +0000.
-> Anything received after that time might be too late.
+> > This happens when the xHCI driver enqueue a control TD (which cross
+> > over the Link TRB between two ring segments, as shown) in the endpoint
+> > zero's transfer ring. Seems the Etron xHCI host can not perform this
+> > TD correctly, causing the USB transfer error occurred, maybe the upper
+> > driver retry that control-IN request can solve problem, but not all
+> > drivers do this.
+> >
+> > |     |
+> > -------
+> > | TRB | Setup Stage
+> > -------
+> > | TRB | Link
+> > -------
+> > -------
+> > | TRB | Data Stage
+> > -------
+> > | TRB | Status Stage
+> > -------
+> > |     |
 >
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.1.110-rc2.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.1.y
-> and the diffstat can be found below.
+> I wonder about a few things.
 >
-> thanks,
+> 1. What are the exact symptoms, besides Ethernet driver errors?
+> Any errors from xhci_hcd? What if dynamic debug is enabled?
+
+The xhci driver receives a transfer event TRB (completion code is
+"USB Transaction Error") when the issue is triggered.
+
 >
-> greg k-h
+> 2. How did you determine that this is the exact cause?
 
+The issue is triggered every time when a Link TRB follows a Setup
+Stage TRB.
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+>
+> 3. Does it happen every time when a Link follows Setup, or only
+> randomly and it takes lots of control transfers to trigger it?
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Yes, it happens every time.
 
-## Build
-* kernel: 6.1.110-rc2
-* git: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-=
-rc.git
-* git commit: b844a80a36a118a1da8965067142b0246fc2a88c
-* git describe: v6.1.109-187-gb844a80a36a1
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.1=
-09-187-gb844a80a36a1
+>
+> 4. How is it even possible? As far as I see, Linux simply queues
+> three TRBs for a control URB. There are 255 slots in a segemnt,
+> so exactly 85 URBs should fit, and then back to the first slot.
 
-## Test Regressions (compared to v6.1.108-102-gbe9ed790219a)
+The xhci driver also queues no data control transfers.
 
-## Metric Regressions (compared to v6.1.108-102-gbe9ed790219a)
+>
+> Regards,
+> Michal
 
-## Test Fixes (compared to v6.1.108-102-gbe9ed790219a)
-
-## Metric Fixes (compared to v6.1.108-102-gbe9ed790219a)
-
-## Test result summary
-total: 208365, pass: 180115, fail: 2479, skip: 25484, xfail: 287
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 135 total, 135 passed, 0 failed
-* arm64: 41 total, 41 passed, 0 failed
-* i386: 28 total, 26 passed, 2 failed
-* mips: 26 total, 25 passed, 1 failed
-* parisc: 4 total, 4 passed, 0 failed
-* powerpc: 36 total, 35 passed, 1 failed
-* riscv: 7 total, 7 passed, 0 failed
-* s390: 14 total, 14 passed, 0 failed
-* sh: 10 total, 10 passed, 0 failed
-* sparc: 7 total, 7 passed, 0 failed
-* x86_64: 33 total, 33 passed, 0 failed
-
-## Test suites summary
-* boot
-* commands
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-kcmp
-* kselftest-kvm
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-mincore
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-mptcp
-* kselftest-openat2
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-watchdog
-* kselftest-x86
-* kunit
-* kvm-unit-tests
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-test
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-hugetlb
-* ltp-ip[
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
-
---
-Linaro LKFT
-https://lkft.linaro.org
+Thanks,
+Kuangyi Chiang
 
