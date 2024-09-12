@@ -1,373 +1,231 @@
-Return-Path: <stable+bounces-75940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 127A0976027
-	for <lists+stable@lfdr.de>; Thu, 12 Sep 2024 06:51:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B033497603D
+	for <lists+stable@lfdr.de>; Thu, 12 Sep 2024 07:07:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F2AA286185
-	for <lists+stable@lfdr.de>; Thu, 12 Sep 2024 04:51:00 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA50D1C224F3
+	for <lists+stable@lfdr.de>; Thu, 12 Sep 2024 05:07:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22740188A00;
-	Thu, 12 Sep 2024 04:50:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 852067DA81;
+	Thu, 12 Sep 2024 05:07:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="KcjYda98"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="TRszoogL"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17798188587;
-	Thu, 12 Sep 2024 04:50:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FF1C80B;
+	Thu, 12 Sep 2024 05:07:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726116646; cv=none; b=EC3lSXeXEmBNLj0DbNgyBzRCAmVPq5YgW1e0K6XY7OycJS2k/0BSwo54CLIO7cCU17FmyZtp4TcNyhXI/q4E6TNHU++LVclpkt/egKraDx6Li1L9xPaRQGPFWVVnX9mf8Br2/DpI5jpwfu71W3Uf9nYYLows38cJeSyRllClnck=
+	t=1726117628; cv=none; b=IiBd7Spu7rOnw2rnYQBC6EI1geY+7U58Cc9E993NjpxtJRdMR6Dz1Y6vFPPEXTtq5tWK2zHeF2+ETXHG5wwuMWMyDypfWmSa8y5qhaQODGClaNnbAyqikD7W5gYfWQH5Q0ECFLKZwf3jIjR/ed9oBSjzUuf02J5yAQ/hEmwU+bk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726116646; c=relaxed/simple;
-	bh=OHG/G1DrGqlKXRYTqgpyK3HZLc/Ma2uqVsJEdwVfOnU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SQliSHHU7//q0SQYIGapcj90LR/OQvDdlNvQ6sugLglvKLf6b62E8KQuNMiK/5QvCnW+8CSNZr1vs3TIVfwTLSpIOjcE6MhdsXXcDXdzL5zLk0JtmGVTtGoIS6jigo8we31qUJxNmu/Tw1zOR9AMcymKJWPGU64/NKYkWFZTpFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=KcjYda98; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from [10.95.75.183] (unknown [167.220.238.215])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 851F420B9A9A;
-	Wed, 11 Sep 2024 21:50:40 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 851F420B9A9A
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1726116644;
-	bh=bzr7HrsoQW01+LQcVQeciWqqtEn3V1YzZq2oY62lzXE=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=KcjYda98BOpiZMKkfXb8eq772Hv8xvyyGbeHZVmQdwArMu7DXdZr9Lww5pu9kZdkv
-	 kbEOhk2efhVLei4NvuoAf8jjbH9mhCq19hNq3sVmrP4vnu1kII4ENtSDYM1+O4l5xz
-	 LE1QShITzx5TRHFqXWF3D9gYz+g60THZlabJMGtk=
-Message-ID: <c047e855-61be-4b68-8876-40d07e79bb7c@linux.microsoft.com>
-Date: Thu, 12 Sep 2024 10:20:37 +0530
+	s=arc-20240116; t=1726117628; c=relaxed/simple;
+	bh=wYmdRZ+fcoUSDJqLVY9ekrGZDJXwFgDkRi2CyDKb7gY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=d1OwO9f8wxHEPY6M9gEuhC8ZKcIn70fIuQQt0KJAEgicWGEToCEKTgUTKD5+BEgQ7B85OvDDflkjCA9G0snBZSVA2PFEKhPD5AmcDlApZQxYjR1+gUbWeVPI5in6D5YGgcBUkBescPwynmbVqn91v0mZ/KehSDa+ektD28zcRTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=TRszoogL; arc=none smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48BMfWgI007772;
+	Thu, 12 Sep 2024 05:07:00 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
+	from:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding; s=corp-2023-11-20; bh=KxMUyX7txjIC6n
+	kyeMEK721v7lR8v7WNs0wnkFdrzIc=; b=TRszoogLlEb9ThuKV7+qkS/69qYlhW
+	9GbybHEePEiVlBD7RhPQnj20ggP1oE31ahYMBmY3AgwA+WqmmPOrQ23AMTCNw8la
+	pkRwo4KDHDxfrYIRXez3nKZZsgtpbk6MGZoEs8Vn3pZEkDc7yatITGLY4vBoiVxT
+	SLyKwhogTW403qGiH/ejMAXfTYlhDyH0c1lT9caSqTE5kyzkIRkwzxgXGAbEI5ht
+	ur2ZCL028LGdUa9ZzXal3uvu94AYqxLHZbp0m5vL8JWe5BhFsISsb3KDs/GNt6aG
+	MDaOD8P8n8G8ESlEyDKMOauzGOfByou1s38so8zsaUgHycvKiboL0cOg==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 41gevcssvv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 12 Sep 2024 05:07:00 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 48C2UI9i034196;
+	Thu, 12 Sep 2024 05:06:59 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 41gd9b9x7c-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 12 Sep 2024 05:06:59 +0000
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 48C56wns019784;
+	Thu, 12 Sep 2024 05:06:58 GMT
+Received: from gmananth-20230209-1132.osdevelopmeniad.oraclevcn.com (gmananth-20230209-1132.appad3iad.osdevelopmeniad.oraclevcn.com [100.100.242.10])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 41gd9b9x6y-1;
+	Thu, 12 Sep 2024 05:06:58 +0000
+From: Gautham Ananthakrishna <gautham.ananthakrishna@oracle.com>
+To: joseph.qi@linux.alibaba.com
+Cc: gautham.ananthakrishna@oracle.com, junxiao.bi@oracle.com,
+        rajesh.sivaramasubramaniom@oracle.com, ocfs2-devel@lists.linux.dev,
+        stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH RFC V3 1/1] ocfs2: reserve space for inline xattr before attaching reflink tree
+Date: Thu, 12 Sep 2024 05:06:56 +0000
+Message-Id: <20240912050656.877264-1-gautham.ananthakrishna@oracle.com>
+X-Mailer: git-send-email 2.39.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] clocksource: hyper-v: Fix hv tsc page based
- sched_clock for hibernation
-To: Michael Kelley <mhklinux@outlook.com>,
- "K . Y . Srinivasan" <kys@microsoft.com>,
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
- Dexuan Cui <decui@microsoft.com>, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, "x86@kernel.org"
- <x86@kernel.org>, "H . Peter Anvin" <hpa@zytor.com>,
- Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc: "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <20240911045632.3757-1-namjain@linux.microsoft.com>
- <SN6PR02MB415797B9F0A29B91C6117D5BD4642@SN6PR02MB4157.namprd02.prod.outlook.com>
-Content-Language: en-US
-From: Naman Jain <namjain@linux.microsoft.com>
-In-Reply-To: <SN6PR02MB415797B9F0A29B91C6117D5BD4642@SN6PR02MB4157.namprd02.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-11_02,2024-09-09_02,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxlogscore=999 bulkscore=0
+ suspectscore=0 phishscore=0 mlxscore=0 adultscore=0 malwarescore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2408220000
+ definitions=main-2409120036
+X-Proofpoint-ORIG-GUID: vGrLtJVhagPsUjHjw6-5ZWL_c7w0ohiR
+X-Proofpoint-GUID: vGrLtJVhagPsUjHjw6-5ZWL_c7w0ohiR
 
+One of our customers reported a crash and a corrupted ocfs2 filesystem.
+The crash was due to the detection of corruption. Upon troubleshooting,
+the fsck -fn output showed the below corruption
 
+[EXTENT_LIST_FREE] Extent list in owner 33080590 claims 230 as the next free chain record,
+but fsck believes the largest valid value is 227.  Clamp the next record value? n
 
-On 9/12/2024 9:09 AM, Michael Kelley wrote:
-> From: Naman Jain <namjain@linux.microsoft.com> Sent: Tuesday, September 10, 2024 9:57 PM
->>
-> 
-> This version of the patch looks good to me from the standpoint of
-> separating the x86 specific functionality from the arch independent
-> functionality. And I think the patch works as intended. But there
-> are parts of the description and variable naming that don't align
-> with my understanding of the problem and the fix. So I've added
-> some additional comments below.
-> 
-> Nit: Now that most of the code changes are in mshyperv.c, the
-> patch Subject: prefix should perhaps be "x86/hyperv:" instead
-> of "clocksource: hyperv:".
+The stat output from the debugfs.ocfs2 showed the following corruption
+where the "Next Free Rec:" had overshot the "Count:" in the root metadata
+block.
 
-Thanks a lot for reviewing Michael. As you rightly pointed out, these
-comments and variable names made more sense when they were in
-hyperv_timer.c. I'll change them accordingly in next patch.
+        Inode: 33080590   Mode: 0640   Generation: 2619713622 (0x9c25a856)
+        FS Generation: 904309833 (0x35e6ac49)
+        CRC32: 00000000   ECC: 0000
+        Type: Regular   Attr: 0x0   Flags: Valid
+        Dynamic Features: (0x16) HasXattr InlineXattr Refcounted
+        Extended Attributes Block: 0  Extended Attributes Inline Size: 256
+        User: 0 (root)   Group: 0 (root)   Size: 281320357888
+        Links: 1   Clusters: 141738
+        ctime: 0x66911b56 0x316edcb8 -- Fri Jul 12 06:02:30.829349048 2024
+        atime: 0x66911d6b 0x7f7a28d -- Fri Jul 12 06:11:23.133669517 2024
+        mtime: 0x66911b56 0x12ed75d7 -- Fri Jul 12 06:02:30.317552087 2024
+        dtime: 0x0 -- Wed Dec 31 17:00:00 1969
+        Refcount Block: 2777346
+        Last Extblk: 2886943   Orphan Slot: 0
+        Sub Alloc Slot: 0   Sub Alloc Bit: 14
+        Tree Depth: 1   Count: 227   Next Free Rec: 230
+        ## Offset        Clusters       Block#
+        0  0             2310           2776351
+        1  2310          2139           2777375
+        2  4449          1221           2778399
+        3  5670          731            2779423
+        4  6401          566            2780447
+        .......          ....           .......
+        .......          ....           .......
 
-Will change commit msg subject as well.
+The issue was in the reflink workfow while reserving space for inline xattr.
+The problematic function is ocfs2_reflink_xattr_inline(). By the time this
+function is called the reflink tree is already recreated at the destination
+inode from the source inode. At this point, this function reserves space
+space inline xattrs at the destination inode without even checking if there
+is space at the root metadata block. It simply reduces the l_count from 243
+to 227 thereby making space of 256 bytes for inline xattr whereas the inode
+already has extents beyond this index (in this case upto 230), thereby causing
+corruption.
 
-> 
->> read_hv_sched_clock_tsc() assumes that the Hyper-V clock counter is
->> bigger than the variable hv_sched_clock_offset, which is cached during
->> early boot, but depending on the timing this assumption may be false
->> when a hibernated VM starts again (the clock counter starts from 0
->> again) and is resuming back (Note: hv_init_tsc_clocksource() is not
->> called during hibernation/resume); consequently,
->> read_hv_sched_clock_tsc() may return a negative integer (which is
->> interpreted as a huge positive integer since the return type is u64)
->> and new kernel messages are prefixed with huge timestamps before
->> read_hv_sched_clock_tsc() grows big enough (which typically takes
->> several seconds).
-> 
-> Just so I'm clear on the sequence, when a new VM is created to
-> resume the hibernated VM, I think the following happens:
-> 
-> 1) The VM being used to resume the hibernation image boots a
-> fresh instance of the Linux kernel. The sched clock and sched clock
-> offset value are initialized as with any kernel, and kernel messages
-> are printed with the correct timestamps starting at zero.
-> 
-> 2) The new Linux kernel then loads the hibernation image and
-> transfers control to it, whereupon the "resume" callbacks are run
-> in the context of the hibernation image.  At this point, any kernel
-> timestamps are wrong, and might even be negative, because the
-> sched clock value is calculated based on the new Hyper-V reference
-> time (which started again at zero) minus the old sched clock offset.
-> The goal is that the sched clock value should be continuous with
-> the sched clock value from the original VM. If the original VM
-> had been running for 1000 seconds when the hibernation was
-> done, the sched clock value in the resumed hibernation image
-> should continue, starting at ~1000 seconds.
-> 
-> 3) The fix is to adjust the sched clock offset in the resumed
-> hibernation image, and make it more negative by that ~1000
-> seconds.
-> 
-> Is that all correct?  If so, then it seems like this patch is doing
-> more than just cleaning up the negative values for sched clock.
-> It's also making the sched clock values continuous with the
-> sched clock values in the original VM rather than restarting
-> near zero after hibernation image is resumed.
->
+The fix for this is to reserve space for inline metadata before the at the
+destination inode before the reflink tree gets recreated. The customer has
+verified the fix.
 
-Yes, that's exactly what this patch is trying to do. There was an option
-to correct in suspend-resume callbacks of original VM in hyperv_timer.c,
-but these are executed very late, and we still end up getting many logs
-with these incorrect timestamps. We took reference from the code where
-tsc clock correction takes place, and thought that similar should be
-done here.
+Fixes: ef962df057aa ("ocfs2: xattr: fix inlined xattr reflink")
+Cc: stable@vger.kernel.org
 
-We can tweak the commit msg to add this additional detail.
+Signed-off-by: Gautham Ananthakrishna <gautham.ananthakrishna@oracle.com>
+---
+ fs/ocfs2/refcounttree.c | 26 ++++++++++++++++++++++++--
+ fs/ocfs2/xattr.c        | 11 +----------
+ 2 files changed, 25 insertions(+), 12 deletions(-)
 
->>
->> Fix the issue by saving the Hyper-V clock counter just before the
->> suspend, and using it to correct the hv_sched_clock_offset in
->> resume. Override x86_platform.save_sched_clock_state  and
->> x86_platform.restore_sched_clock_state.
->>
->> Note: if Invariant TSC is available, the issue doesn't happen because
->> 1) we don't register read_hv_sched_clock_tsc() for sched clock:
->> See commit e5313f1c5404 ("clocksource/drivers/hyper-v: Rework
->> clocksource and sched clock setup");
->> 2) the common x86 code adjusts TSC similarly: see
->> __restore_processor_state() ->  tsc_verify_tsc_adjust(true) and
->> x86_platform.restore_sched_clock_state().
->>
->> Cc: stable@vger.kernel.org
->> Fixes: 1349401ff1aa ("clocksource/drivers/hyper-v: Suspend/resume Hyper-V
->> clocksource for hibernation")
->> Co-developed-by: Dexuan Cui <decui@microsoft.com>
->> Signed-off-by: Dexuan Cui <decui@microsoft.com>
->> Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
->> ---
->> Changes from v1:
->> https://lore.kernel.org/all/20240909053923.8512-1-namjain@linux.microsoft.com/
->> * Reorganized code as per Michael's comment, and moved the logic to x86
->> specific files, to keep hyperv_timer.c arch independent.
->>
->> ---
->>   arch/x86/kernel/cpu/mshyperv.c     | 70 ++++++++++++++++++++++++++++++
->>   drivers/clocksource/hyperv_timer.c |  8 +++-
->>   include/clocksource/hyperv_timer.h |  8 ++++
->>   3 files changed, 85 insertions(+), 1 deletion(-)
->>
->> diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyperv.c
->> index e0fd57a8ba84..d83a694e387c 100644
->> --- a/arch/x86/kernel/cpu/mshyperv.c
->> +++ b/arch/x86/kernel/cpu/mshyperv.c
->> @@ -224,6 +224,75 @@ static void hv_machine_crash_shutdown(struct pt_regs
->> *regs)
->>   	hyperv_cleanup();
->>   }
->>   #endif /* CONFIG_CRASH_DUMP */
->> +
->> +static u64 hv_sched_clock_offset_saved;
->> +static void (*old_save_sched_clock_state)(void);
->> +static void (*old_restore_sched_clock_state)(void);
->> +
->> +/*
->> + * Hyper-V clock counter resets during hibernation. Save and restore clock
->> + * offset during suspend/resume, while also considering the time passed
->> + * before suspend. This is to make sure that sched_clock using hv tsc page
->> + * based clocksource, proceeds from where it left off during suspend and
->> + * it shows correct time for the timestamps of kernel messages after resume.
->> + */
+diff --git a/fs/ocfs2/refcounttree.c b/fs/ocfs2/refcounttree.c
+index 3f80a56d0d60..05105d271fc8 100644
+--- a/fs/ocfs2/refcounttree.c
++++ b/fs/ocfs2/refcounttree.c
+@@ -25,6 +25,7 @@
+ #include "namei.h"
+ #include "ocfs2_trace.h"
+ #include "file.h"
++#include "symlink.h"
+ 
+ #include <linux/bio.h>
+ #include <linux/blkdev.h>
+@@ -4155,8 +4156,9 @@ static int __ocfs2_reflink(struct dentry *old_dentry,
+ 	int ret;
+ 	struct inode *inode = d_inode(old_dentry);
+ 	struct buffer_head *new_bh = NULL;
++	struct ocfs2_inode_info *oi = OCFS2_I(inode);
+ 
+-	if (OCFS2_I(inode)->ip_flags & OCFS2_INODE_SYSTEM_FILE) {
++	if (oi->ip_flags & OCFS2_INODE_SYSTEM_FILE) {
+ 		ret = -EINVAL;
+ 		mlog_errno(ret);
+ 		goto out;
+@@ -4182,6 +4184,26 @@ static int __ocfs2_reflink(struct dentry *old_dentry,
+ 		goto out_unlock;
+ 	}
+ 
++	if ((oi->ip_dyn_features & OCFS2_HAS_XATTR_FL) &&
++	    (oi->ip_dyn_features & OCFS2_INLINE_XATTR_FL)) {
++		/*
++		 * Adjust extent record count to reserve space for extended attribute.
++		 * Inline data count had been adjusted in ocfs2_duplicate_inline_data().
++		 */
++		struct ocfs2_inode_info *new_oi = OCFS2_I(new_inode);
++
++		if (!(new_oi->ip_dyn_features & OCFS2_INLINE_DATA_FL) &&
++		    !(ocfs2_inode_is_fast_symlink(new_inode))) {
++			struct ocfs2_dinode *new_di = new_bh->b_data;
++			struct ocfs2_dinode *old_di = old_bh->b_data;
++			struct ocfs2_extent_list *el = &new_di->id2.i_list;
++			int inline_size = le16_to_cpu(old_di->i_xattr_inline_size);
++
++			le16_add_cpu(&el->l_count, -(inline_size /
++					sizeof(struct ocfs2_extent_rec)));
++		}
++	}
++
+ 	ret = ocfs2_create_reflink_node(inode, old_bh,
+ 					new_inode, new_bh, preserve);
+ 	if (ret) {
+@@ -4189,7 +4211,7 @@ static int __ocfs2_reflink(struct dentry *old_dentry,
+ 		goto inode_unlock;
+ 	}
+ 
+-	if (OCFS2_I(inode)->ip_dyn_features & OCFS2_HAS_XATTR_FL) {
++	if (oi->ip_dyn_features & OCFS2_HAS_XATTR_FL) {
+ 		ret = ocfs2_reflink_xattrs(inode, old_bh,
+ 					   new_inode, new_bh,
+ 					   preserve);
+diff --git a/fs/ocfs2/xattr.c b/fs/ocfs2/xattr.c
+index 3b81213ed7b8..a9f716ec89e2 100644
+--- a/fs/ocfs2/xattr.c
++++ b/fs/ocfs2/xattr.c
+@@ -6511,16 +6511,7 @@ static int ocfs2_reflink_xattr_inline(struct ocfs2_xattr_reflink *args)
+ 	}
+ 
+ 	new_oi = OCFS2_I(args->new_inode);
+-	/*
+-	 * Adjust extent record count to reserve space for extended attribute.
+-	 * Inline data count had been adjusted in ocfs2_duplicate_inline_data().
+-	 */
+-	if (!(new_oi->ip_dyn_features & OCFS2_INLINE_DATA_FL) &&
+-	    !(ocfs2_inode_is_fast_symlink(args->new_inode))) {
+-		struct ocfs2_extent_list *el = &new_di->id2.i_list;
+-		le16_add_cpu(&el->l_count, -(inline_size /
+-					sizeof(struct ocfs2_extent_rec)));
+-	}
++
+ 	spin_lock(&new_oi->ip_lock);
+ 	new_oi->ip_dyn_features |= OCFS2_HAS_XATTR_FL | OCFS2_INLINE_XATTR_FL;
+ 	new_di->i_dyn_features = cpu_to_le16(new_oi->ip_dyn_features);
+-- 
+2.39.3
 
-I added it here, but the same should be added in commit msg as well.
-I'll add it.
-
->> +static void save_hv_clock_tsc_state(void)
->> +{
->> +	hv_sched_clock_offset_saved = hv_read_reference_counter();
-> 
-> Naming this variable hv_sched_clock_offset_saved doesn't seem to match
-> what it actually contains. The saved value is not a sched_clock_offset. It's
-> the value of the Hyper-V reference counter at the time the original VM
-> hibernates does "suspend".  The sched_clock_offset in the original VM will
-> typically be a pretty small value (a few seconds or even less). But the
-> Hyper-V reference counter value might be thousands of seconds if the
-> VM has been running a while before it hibernates.
-
-I'll change it to something that conveys the right information. Thanks
-for the suggestion.
-
-> 
->> +}
->> +
->> +static void restore_hv_clock_tsc_state(void)
->> +{
->> +	/*
->> +	 * hv_sched_clock_offset = offset that is used by hyperv_timer clocksource driver
->> +	 *                         to get time.
->> +	 * Time passed before suspend = hv_sched_clock_offset_saved
->> +	 *                            - hv_sched_clock_offset (old)
->> +	 *
->> +	 * After Hyper-V clock counter resets, hv_sched_clock_offset needs a correction.
->> +	 *
->> +	 * New time = hv_read_reference_counter() (future) - hv_sched_clock_offset (new)
->> +	 * New time = Time passed before suspend + hv_read_reference_counter() (future)
->> +	 *                                       - hv_read_reference_counter() (now)
->> +	 *
->> +	 * Solving the above two equations gives:
->> +	 *
->> +	 * hv_sched_clock_offset (new) = hv_sched_clock_offset (old)
->> +	 *                             - hv_sched_clock_offset_saved
->> +	 *                             + hv_read_reference_counter() (now))
->> +	 */
->> +	hv_adj_sched_clock_offset(hv_sched_clock_offset_saved - hv_read_reference_counter());
-> 
-> The argument passed to hv_adj_sched_clock_offset() makes sense to me if I think
-> of it as:
-> 
-> 	hv_ref_time_at_hibernate - hv_read_reference_counter()
-> 
-> where hv_read_reference_counter() is just "ref time now".
-> 
-> I think of it like this: The Hyper-V reference counter value changed underneath
-> the resumed hibernation image when it starts running in the new VM. The adjustment
-> changes the sched clock offset to compensate for that change so that sched clock
-> values are continuous across the suspend/resume hibernation sequence.
-> 
-> I don't completely understand what you've explained with the two equations and
-> solving them, though the result matches my expectations.
-
-Yeah :) it made more sense when we look at it from hyperv_timer.c driver
-POV because these offsets are nothing but reference counters at
-different points of time. Having said that, I think we can go with a
-comment explaining the intention, and skip adding these equations which
-may be confusing here as there is no concept of offsets here, as you
-rightly pointed out in your previous reply as well.
-
-> 
->> +}
->> +
->> +/*
->> + * Functions to override save_sched_clock_state and restore_sched_clock_state
->> + * functions of x86_platform. The Hyper-V clock counter is reset during
->> + * suspend-resume and the offset used to measure time needs to be
->> + * corrected, post resume.
->> + */
->> +static void hv_save_sched_clock_state(void)
->> +{
->> +	old_save_sched_clock_state();
->> +	save_hv_clock_tsc_state();
->> +}
->> +
->> +static void hv_restore_sched_clock_state(void)
->> +{
->> +	restore_hv_clock_tsc_state();
->> +	old_restore_sched_clock_state();
->> +}
->> +
->> +static void __init x86_setup_ops_for_tsc_pg_clock(void)
->> +{
->> +	if (!(ms_hyperv.features & HV_MSR_REFERENCE_TSC_AVAILABLE))
->> +		return;
->> +
->> +	old_save_sched_clock_state = x86_platform.save_sched_clock_state;
->> +	x86_platform.save_sched_clock_state = hv_save_sched_clock_state;
->> +
->> +	old_restore_sched_clock_state = x86_platform.restore_sched_clock_state;
->> +	x86_platform.restore_sched_clock_state = hv_restore_sched_clock_state;
->> +}
->>   #endif /* CONFIG_HYPERV */
->>
->>   static uint32_t  __init ms_hyperv_platform(void)
->> @@ -575,6 +644,7 @@ static void __init ms_hyperv_init_platform(void)
->>
->>   	/* Register Hyper-V specific clocksource */
->>   	hv_init_clocksource();
->> +	x86_setup_ops_for_tsc_pg_clock();
->>   	hv_vtl_init_platform();
->>   #endif
->>   	/*
->> diff --git a/drivers/clocksource/hyperv_timer.c b/drivers/clocksource/hyperv_timer.c
->> index b2a080647e41..e424892444ed 100644
->> --- a/drivers/clocksource/hyperv_timer.c
->> +++ b/drivers/clocksource/hyperv_timer.c
->> @@ -27,7 +27,8 @@
->>   #include <asm/mshyperv.h>
->>
->>   static struct clock_event_device __percpu *hv_clock_event;
->> -static u64 hv_sched_clock_offset __ro_after_init;
->> +/* Note: offset can hold negative values after hibernation. */
->> +static u64 hv_sched_clock_offset __read_mostly;
->>
->>   /*
->>    * If false, we're using the old mechanism for stimer0 interrupts
->> @@ -456,6 +457,11 @@ static void resume_hv_clock_tsc(struct clocksource *arg)
->>   	hv_set_msr(HV_MSR_REFERENCE_TSC, tsc_msr.as_uint64);
->>   }
->>
->> +void hv_adj_sched_clock_offset(u64 offset)
->> +{
->> +	hv_sched_clock_offset -= offset;
->> +}
->> +
->>   #ifdef HAVE_VDSO_CLOCKMODE_HVCLOCK
->>   static int hv_cs_enable(struct clocksource *cs)
->>   {
->> diff --git a/include/clocksource/hyperv_timer.h b/include/clocksource/hyperv_timer.h
->> index 6cdc873ac907..62e2bad754c0 100644
->> --- a/include/clocksource/hyperv_timer.h
->> +++ b/include/clocksource/hyperv_timer.h
->> @@ -38,6 +38,14 @@ extern void hv_remap_tsc_clocksource(void);
->>   extern unsigned long hv_get_tsc_pfn(void);
->>   extern struct ms_hyperv_tsc_page *hv_get_tsc_page(void);
->>
->> +/*
->> + * Called during resume from hibernation, from overridden
->> + * x86_platform.restore_sched_clock_state routine. This is to adjust offsets
->> + * used to calculate time for hv tsc page based sched_clock, to account for
->> + * time spent before hibernation.
->> + */
-> 
-> I would have expected this comment to be placed with the actual
-> function in hyperv_timer.c, not with the declaration here in the .h
-> file.
-> 
-
-Acked. Will move it in next patch.
-
-> Michael
-> 
->> +extern void hv_adj_sched_clock_offset(u64 offset);
->> +
->>   static __always_inline bool
->>   hv_read_tsc_page_tsc(const struct ms_hyperv_tsc_page *tsc_pg,
->>   		     u64 *cur_tsc, u64 *time)
->>
->> base-commit: da3ea35007d0af457a0afc87e84fddaebc4e0b63
->> --
->> 2.25.1
-
-Regards,
-Naman
 
