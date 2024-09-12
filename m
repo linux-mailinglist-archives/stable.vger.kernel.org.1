@@ -1,115 +1,71 @@
-Return-Path: <stable+bounces-75965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E1169762C7
-	for <lists+stable@lfdr.de>; Thu, 12 Sep 2024 09:34:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49B069763C8
+	for <lists+stable@lfdr.de>; Thu, 12 Sep 2024 10:01:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AC4A1B21476
-	for <lists+stable@lfdr.de>; Thu, 12 Sep 2024 07:34:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BBCF1C23359
+	for <lists+stable@lfdr.de>; Thu, 12 Sep 2024 08:01:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8715C18BBA6;
-	Thu, 12 Sep 2024 07:34:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 022401917CE;
+	Thu, 12 Sep 2024 08:00:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zhmUi3f6"
+	dkim=pass (2048-bit key) header.d=ImagineSphere.pl header.i=@ImagineSphere.pl header.b="OibgVKDs"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail.ImagineSphere.pl (mail.imaginesphere.pl [92.222.170.29])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B40D186E58;
-	Thu, 12 Sep 2024 07:34:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 567CC2F3E
+	for <stable@vger.kernel.org>; Thu, 12 Sep 2024 08:00:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=92.222.170.29
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726126458; cv=none; b=VYN2MOGXAUMveFeaGi+ZZSstJYF9zd7nKozjXz1ZWBoEhAu7HN8nH1m2sK+1mDokeofrOSXkcMQ64DF21d0PQdbGyEdt24wM733ArF8//IIS46IQi5MR60okU/I6zaaQ0hVE0CireS3d9o8lwv4pi0O0qRmizxbQrLLF0VTXw5E=
+	t=1726128056; cv=none; b=acpydPkv+aK17DZ7cPVK+Rc63PSatNIz2D8nrj2nJfOZj+68FxQdKmzX0JsnW1ceMQrjZjgvKZFzvdDibEz0AD3RrG4lvjGsUXahoLPt20Ma2SN/W7UliDwd1LGME9pkCYYzEOhsdMMwitbz7wpTiPmA1oT+j3Z0dHTOzPN82gA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726126458; c=relaxed/simple;
-	bh=nYbkOKHYRFOZ+w2JM97HqI9IeKhZ1OUF0sxHdxDDa1E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ccklkLhQv6Yi1xCSjzG17uZi8LsNlnpoEs8CP3Gkq3soPxPQ1WuyWk5OyOHQatVovvEjkjVkeU8lUFB8Wd7LaGUDIs6RFkPHOm8u/xIKIOVzohPnWkKzSDtl/UaFRzv/svQVJH1DYWLmfUbeEwwZo7NqzMYq3JxSHt1gIV+odM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zhmUi3f6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFD27C4CEC3;
-	Thu, 12 Sep 2024 07:34:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726126457;
-	bh=nYbkOKHYRFOZ+w2JM97HqI9IeKhZ1OUF0sxHdxDDa1E=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=zhmUi3f6KWPUYQ7nTxi0599w7TVQqdSEJOMy7rB/danc/C9HjvsNB3ZTwWvr5cUi5
-	 GAuFRObjPY4XV0pdsLY1nFs0/Ha62kukd6Dm2AKKyuvmXkPAFGIeIk/5OEbLpTtdMS
-	 3aSPNOKnQ955nBMEfBmAv7lFS8k994cyTY69Ft/E=
-Date: Thu, 12 Sep 2024 09:34:14 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Jon Hunter <jonathanh@nvidia.com>
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-	torvalds@linux-foundation.org, akpm@linux-foundation.org,
-	linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org,
-	linux-tegra@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 6.6 000/269] 6.6.51-rc1 review
-Message-ID: <2024091214-relearn-emboss-75d0@gregkh>
-References: <20240910092608.225137854@linuxfoundation.org>
- <69a511a3-af84-4123-a837-0ed1e5f62161@drhqmail202.nvidia.com>
- <10b0ef8b-7fd8-40f0-8d48-b44610502eb2@nvidia.com>
+	s=arc-20240116; t=1726128056; c=relaxed/simple;
+	bh=00Q5NAIur15eovFIjFWhgwqj8foRqzD4UBvU0TfwGUU=;
+	h=Message-ID:Date:From:To:Subject:MIME-Version:Content-Type; b=JxjPWmPQzRhXU2vq9NXA0j+Vlndhx71KSnY1Y0PKOeSvrWVv1kL1Gc4mT30hRhSuA0FZT4Uqnr1l+u730I/YTpGH43eLNZiLJZPswG+iV/7XxYXJceSnozMpauLLwy4VjVMQacD+yymLoO9pTFinHsdWddosS9UvfruHKY2yqzQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=imaginesphere.pl; spf=pass smtp.mailfrom=imaginesphere.pl; dkim=pass (2048-bit key) header.d=ImagineSphere.pl header.i=@ImagineSphere.pl header.b=OibgVKDs; arc=none smtp.client-ip=92.222.170.29
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=imaginesphere.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=imaginesphere.pl
+Received: by mail.ImagineSphere.pl (Postfix, from userid 1002)
+	id E006C242F1; Thu, 12 Sep 2024 09:41:04 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ImagineSphere.pl;
+	s=mail; t=1726126866;
+	bh=00Q5NAIur15eovFIjFWhgwqj8foRqzD4UBvU0TfwGUU=;
+	h=Date:From:To:Subject:From;
+	b=OibgVKDsHylHUOQ11Hww/1WtA4gvhFIFkpYSA5p9EJ/XCs93AXyzOqXKv+fbIVI+A
+	 dBJyk/a75vxY+b+aHUKdSKWSBNo7fKn0E8sMqbIfE2BMiNZyXHu2dBOy5e1R6NgeQx
+	 eQBM1JJRJKBC2UJwGVlqkOxAniZA2gucDgDqMU46jgha58PKp16/dG2NxpxzQ6HD4g
+	 lhn0mDFRsKEmzAbsm0fM+dCAkLh7Hwp6S7kOD8uBjvjB1nfeIl6uG/Lgn/GyzOi5yc
+	 rKx/DNiNe0U4bIpcJ5uE+SxVq17jGMGkePAVzPqwQgdV8OYoU4LWP8qPZCozDAzNsl
+	 Bggj7tzkbMLRA==
+Received: by mail.ImagineSphere.pl for <stable@vger.kernel.org>; Thu, 12 Sep 2024 07:41:02 GMT
+Message-ID: <20240912084500-0.1.be.1dlyy.0.2urbmnmgrg@ImagineSphere.pl>
+Date: Thu, 12 Sep 2024 07:41:02 GMT
+From: "Szymon Jankowski" <szymon.jankowski@imaginesphere.pl>
+To: <stable@vger.kernel.org>
+Subject: Potwierdzenie przelewu
+X-Mailer: mail.ImagineSphere.pl
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <10b0ef8b-7fd8-40f0-8d48-b44610502eb2@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 12, 2024 at 08:24:38AM +0100, Jon Hunter wrote:
-> Hi Greg,
-> 
-> On 12/09/2024 08:19, Jon Hunter wrote:
-> > On Tue, 10 Sep 2024 11:29:47 +0200, Greg Kroah-Hartman wrote:
-> > > This is the start of the stable review cycle for the 6.6.51 release.
-> > > There are 269 patches in this series, all will be posted as a response
-> > > to this one.  If anyone has any issues with these being applied, please
-> > > let me know.
-> > > 
-> > > Responses should be made by Thu, 12 Sep 2024 09:25:22 +0000.
-> > > Anything received after that time might be too late.
-> > > 
-> > > The whole patch series can be found in one patch at:
-> > > 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.51-rc1.gz
-> > > or in the git tree and branch at:
-> > > 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> > > and the diffstat can be found below.
-> > > 
-> > > thanks,
-> > > 
-> > > greg k-h
-> > 
-> > Failures detected for Tegra ...
-> > 
-> > Test results for stable-v6.6:
-> >      10 builds:	7 pass, 3 fail
-> >      20 boots:	20 pass, 0 fail
-> >      98 tests:	98 pass, 0 fail
-> > 
-> > Linux version:	6.6.51-rc1-g415df4b6a669
-> > Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
-> >                  tegra194-p2972-0000, tegra194-p3509-0000+p3668-0000,
-> >                  tegra20-ventana, tegra210-p2371-2180,
-> >                  tegra210-p3450-0000, tegra30-cardhu-a04
-> > 
-> > Builds failed:	arm+multi_v7
-> 
-> 
-> This is the same build issue I reported for 5.15.y and introduced by ...
-> 
-> Satya Priya Kakitapalli <quic_skakitap@quicinc.com>
->     clk: qcom: clk-alpha-pll: Update set_rate for Zonda PLL
-> 
-> Looks like we still need to drop this from 6.6.y and 6.10.y.
+Witam,
 
-Ok, will drop it from those branches as well, thanks!
+Pomagamy pozyskiwa=C4=87 nowych klient=C3=B3w B2B.
 
-greg k-h
+Czy interesuje Pa=C5=84stwa dotarcie do nowych potencjalnych partner=C3=B3=
+w oraz uruchomienie z nimi rozm=C3=B3w handlowch ?
+
+
+Pozdrawiam
+Szymon Jankowski
 
