@@ -1,123 +1,91 @@
-Return-Path: <stable+bounces-76022-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76023-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EBA797737E
-	for <lists+stable@lfdr.de>; Thu, 12 Sep 2024 23:17:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8D18A9773EB
+	for <lists+stable@lfdr.de>; Thu, 12 Sep 2024 23:54:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4463B1F24ED9
-	for <lists+stable@lfdr.de>; Thu, 12 Sep 2024 21:17:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 448701F25634
+	for <lists+stable@lfdr.de>; Thu, 12 Sep 2024 21:54:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3170D18BB80;
-	Thu, 12 Sep 2024 21:17:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="PJldVbjD"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85DDD1C244C;
+	Thu, 12 Sep 2024 21:54:27 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
+Received: from mail.aaazen.com (99-33-87-210.lightspeed.sntcca.sbcglobal.net [99.33.87.210])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F8E3548E0;
-	Thu, 12 Sep 2024 21:17:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C14FD1C2424;
+	Thu, 12 Sep 2024 21:54:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=99.33.87.210
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726175862; cv=none; b=NQZfe6BBkHoAwPJcgRs8GjCvfwoFdju0Pxj7WNsY9B5btEIUIk2/gG+6jjIKZ8rjrVTj7NOJxvSWU6NADWe1nJfLlz3UIC6a1TxCq/1lQ/cxRRa1vP6FMeWrz61KCyViARi+2/45raqebHr+F39mmtdVBpJHFjRgxCyvTXQnbEM=
+	t=1726178067; cv=none; b=CKNUpi8Xn7wEYwBeuOxdRnZTKJ2MryJ5pTpVH/fs7IzSIsHSVHCTi2AXSOcuyqyrtfChVn8zneCa7hIuRhPD5dgdish8XgArxiD3QmveaSLCYPZK2lOYj677mmjjmwWfpgOU7A6t1NrFBdSGS6PSp+64kyg4zL7kwa7jfbota6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726175862; c=relaxed/simple;
-	bh=gd1MI7WTJ66whWz3mg6E+ps2Eh2nuq7DBF84NU2PKh4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tnKZ/oJQvOSguorKYRBqTTXl8tv7wIZn/jLuIPuN+rAfkqHYatoYB9NiJreTSynhV9hqn+23cbCugOCRtKNIcfZZDVtMeRnrnPkNNsKXPu0Lf2E7fXaT6fvgQkDx5IFyoT9yZjVIXHMgZkdUXFwUMb5Mq0FOeEINzJ+BaotD3dA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=PJldVbjD; arc=none smtp.client-ip=199.89.1.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+	s=arc-20240116; t=1726178067; c=relaxed/simple;
+	bh=Uucssok7TIvls+tebBseLNQG3VjlcIuDadYcy43VwnY=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=B83zQcR3HGcnfPUu8i5BBUj32gSbyCxIN8gLxk4gfcnIWoOr7lE0uRIX2YZtt9YoMj2eKdpw5QMKlamc3jkJ28yjdUFK6KQ4Lru7XSiIVC76RB/S2r6v9ogfbAxVo7rHhQsOMNCm2oVXp/I+DGtyKRTkgYlSt4RHWprxxtdtmqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aaazen.com; spf=pass smtp.mailfrom=aaazen.com; arc=none smtp.client-ip=99.33.87.210
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aaazen.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aaazen.com
 Received: from localhost (localhost [127.0.0.1])
-	by 008.lax.mailroute.net (Postfix) with ESMTP id 4X4Vdb4hVtz6ClSq1;
-	Thu, 12 Sep 2024 21:17:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1726175852; x=1728767853; bh=gd1MI7WTJ66whWz3mg6E+ps2
-	Eh2nuq7DBF84NU2PKh4=; b=PJldVbjDQxc+uDgTOfw+V2OCBlqnhICvwRkEBzj9
-	JbFOq8YrWcDqYjBgB83NgO10d7l7YDhCxrXXaZ5vVvvrFb/wEYc8b2kyj+vjzk1r
-	vky7Lc6L8SJNvB27aVNS/b/qy5E1RIezmNXk5o3iTaVS7cIVMTU0OpG5fUWVGMHA
-	qlyV9xDiRW2wcqxOpgwWo4vjyvFkbcunZvHSvtAIzVU/agwofE6lt68h2MUJobpW
-	iJp/tu3Ny7+LBUNdwwsVPE2UM0uh+m0UISJ6c7W3x9hK2tFGa6PotU2wP8K/2Z6t
-	mwrwsPwK5MBNBczzHI0rIvoGn4TvTCtw3/f2LS3UGQgkRw==
-X-Virus-Scanned: by MailRoute
-Received: from 008.lax.mailroute.net ([127.0.0.1])
- by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id NodNbSD3M-yS; Thu, 12 Sep 2024 21:17:32 +0000 (UTC)
-Received: from [192.168.51.14] (c-73-231-117-72.hsd1.ca.comcast.net [73.231.117.72])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4X4VdN4NT7z6ClSpy;
-	Thu, 12 Sep 2024 21:17:28 +0000 (UTC)
-Message-ID: <6203d7c9-b33c-4bf1-aca3-5fc8ba5636b9@acm.org>
-Date: Thu, 12 Sep 2024 14:17:27 -0700
+	by thursday.test (OpenSMTPD) with ESMTP id 2a0062c2;
+	Thu, 12 Sep 2024 14:54:18 -0700 (PDT)
+Date: Thu, 12 Sep 2024 14:54:18 -0700 (PDT)
+From: Richard Narron <richard@aaazen.com>
+X-X-Sender: richard@thursday.test
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+cc: Linux stable <stable@vger.kernel.org>, 
+    Linus Torvalds <torvalds@linux-foundation.org>, 
+    Linux kernel <linux-kernel@vger.kernel.org>, 
+    Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, 
+    Hans de Goede <hdegoede@redhat.com>
+Subject: Re: [PATCH 5.15 000/214] 5.15.167-rc1 review
+In-Reply-To: <2024091103-revivable-dictator-a9da@gregkh>
+Message-ID: <a6392c39-e12f-e913-8f4f-c135b283ce@aaazen.com>
+References: <4a5321bd-b1f-1832-f0c-cea8694dc5aa@aaazen.com> <2024091103-revivable-dictator-a9da@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/2] ufs: core: requeue aborted request
-To: =?UTF-8?B?UGV0ZXIgV2FuZyAo546L5L+h5Y+LKQ==?= <peter.wang@mediatek.com>,
- "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
- "avri.altman@wdc.com" <avri.altman@wdc.com>,
- "jejb@linux.ibm.com" <jejb@linux.ibm.com>,
- "alim.akhtar@samsung.com" <alim.akhtar@samsung.com>,
- "martin.petersen@oracle.com" <martin.petersen@oracle.com>
-Cc: "linux-mediatek@lists.infradead.org"
- <linux-mediatek@lists.infradead.org>,
- =?UTF-8?B?SmlhamllIEhhbyAo6YOd5Yqg6IqCKQ==?= <jiajie.hao@mediatek.com>,
- =?UTF-8?B?Q0MgQ2hvdSAo5ZGo5b+X5p2wKQ==?= <cc.chou@mediatek.com>,
- =?UTF-8?B?RWRkaWUgSHVhbmcgKOm7g+aZuuWCkSk=?= <eddie.huang@mediatek.com>,
- =?UTF-8?B?QWxpY2UgQ2hhbyAo6LaZ54+u5Z2HKQ==?= <Alice.Chao@mediatek.com>,
- "quic_nguyenb@quicinc.com" <quic_nguyenb@quicinc.com>,
- wsd_upstream <wsd_upstream@mediatek.com>,
- =?UTF-8?B?RWQgVHNhaSAo6JSh5a6X6LuSKQ==?= <Ed.Tsai@mediatek.com>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- =?UTF-8?B?TGluIEd1aSAo5qGC5p6XKQ==?= <Lin.Gui@mediatek.com>,
- =?UTF-8?B?Q2h1bi1IdW5nIFd1ICjlt6vpp7/lro8p?= <Chun-hung.Wu@mediatek.com>,
- =?UTF-8?B?VHVuLXl1IFl1ICjmuLjmlabogb8p?= <Tun-yu.Yu@mediatek.com>,
- =?UTF-8?B?Q2hhb3RpYW4gSmluZyAo5LqV5pyd5aSpKQ==?=
- <Chaotian.Jing@mediatek.com>, =?UTF-8?B?UG93ZW4gS2FvICjpq5jkvK/mlocp?=
- <Powen.Kao@mediatek.com>, =?UTF-8?B?TmFvbWkgQ2h1ICjmnLHoqaDnlLAp?=
- <Naomi.Chu@mediatek.com>, =?UTF-8?B?UWlsaW4gVGFuICjosK3pupLpup8p?=
- <Qilin.Tan@mediatek.com>
-References: <20240910073035.25974-1-peter.wang@mediatek.com>
- <20240910073035.25974-3-peter.wang@mediatek.com>
- <e42abf07-ba6b-4301-8717-8d5b01d56640@acm.org>
- <04e392c00986ac798e881dcd347ff5045cf61708.camel@mediatek.com>
- <858c4b6b-fcbc-4d51-8641-051aeda387c5@acm.org>
- <524e9da9196cc0acf497ff87eba3a8043b780332.camel@mediatek.com>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <524e9da9196cc0acf497ff87eba3a8043b780332.camel@mediatek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
 
-On 9/12/24 6:31 AM, Peter Wang (=E7=8E=8B=E4=BF=A1=E5=8F=8B) wrote:
-> in SDB mode:
-> ufshcd_utrl_clear set UTRLC, Mediatek host controller
-> (may not all host controller) will post response with OCS ABORTED.
->=20
-> In both cases, we have an interrupt sent to the host, and there
-> may be a race condition before we set this flag for requeue.
-> So I need to set this flag before ufshcd_clear_cmd.
+On Wed, 11 Sep 2024, Greg Kroah-Hartman wrote:
 
-If a completion interrupt is sent to the host if a command has been
-cleared in SDB mode (I doubt this is what happens), I think that's a
-severe controller bug. A UFSHCI controller is not allowed to send a
-completion interrupt to the host if a command is cleared by writing into
-the UTRLCLR register.
+> On Tue, Sep 10, 2024 at 03:54:18PM -0700, Richard Narron wrote:
+> > Slackware 15.0 64-bit compiles and runs fine.
+> > Slackware 15.0 32-bit fails to build and gives the "out of memory" error:
+> >
+> > cc1: out of memory allocating 180705472 bytes after a total of 284454912
+> > bytes
+> > ...
+> > make[4]: *** [scripts/Makefile.build:289:
+> > drivers/staging/media/atomisp/pci/isp/kernels/ynr/ynr_1.0/ia_css_ynr.ho
+> > st.o] Error 1
+> >
+> > Patching it with help from Lorenzo Stoakes allows the build to
+> > run:
+> > https://lore.kernel.org/lkml/5882b96e-1287-4390-8174-3316d39038ef@lucifer.local/
+> >
+> > And then 32-bit runs fine too.
+>
+> Great, please help to get that commit merged into Linus's tree and then
+> I can backport it here.
 
-Thanks,
+Thanks to Linus and Lorenzo and Hans there is new smaller fix patch in
+Linus's tree:
 
-Bart.
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/drivers/staging/media/atomisp/pci/sh_css_frac.h?id=7c6a3a65ace70f12b27b1a27c9a69cb791dc6e91
+
+This works with the new 5.15.167 kernel with both 32-bit (x86) and 64-bit
+(x86_64) CPUs
+
+Can this be backported?
+
+Thanks
+
+richard@aaazen.com
 
