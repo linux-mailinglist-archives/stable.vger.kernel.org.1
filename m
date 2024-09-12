@@ -1,174 +1,158 @@
-Return-Path: <stable+bounces-76020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 751369770E9
-	for <lists+stable@lfdr.de>; Thu, 12 Sep 2024 20:48:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D81D977362
+	for <lists+stable@lfdr.de>; Thu, 12 Sep 2024 23:12:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E3F028142A
-	for <lists+stable@lfdr.de>; Thu, 12 Sep 2024 18:48:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50A471C21B43
+	for <lists+stable@lfdr.de>; Thu, 12 Sep 2024 21:12:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A25B1BF7F7;
-	Thu, 12 Sep 2024 18:48:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E2B81C2322;
+	Thu, 12 Sep 2024 21:12:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W5pzdq97"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="mK4oX0p/"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from 009.lax.mailroute.net (009.lax.mailroute.net [199.89.1.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA2AE126BED;
-	Thu, 12 Sep 2024 18:48:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C058C1C1AD7;
+	Thu, 12 Sep 2024 21:12:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726166924; cv=none; b=G36eY2Mpk9lkVh06X2fNdMumARNRQxPYKVFXyqQtElDaVL3ZbSvJLvZuiWLbbkm6YFaLjWwMGe0DQwBY0HcMjaFN9uLBijiAtaaFvlP4S3Vt1QL197Zcd47rMFSIAHu0mhcajbC3exVv3/Gn72lcPTf3DpvHbzJifMSIekvIosg=
+	t=1726175523; cv=none; b=qhOI6LYF9k5s5cCRDrsODPyLrbCOCUFlNae3nPfh2FfLhiZK+5bwP3dYEGJq/OgOBLPkLJZUrpQ6ML/xlivGEq7/aRgidSrTRieJwDG3iu4bYRduS1l2Ojk4N4csF2wbuygHgvFeuG8MLOUaiW0cws9rNEBc7AVRYqgwEAD2kMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726166924; c=relaxed/simple;
-	bh=VsPoHKdTV/hmH6JHnw5e9LUwNZcjzv8WARUE6KL4R+4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iQl3PjHZ7toaEtOD59TI3jnZD5e4XPp8t7V8JDmcMdWK70a3utrv/T7NkYBJU1kI+2HThOg+2EacPhl4vX17Uds9No7331GSF3N18+UgdnIOIyAChXBzIJVPkSgJ9ah2ylOxzXYjZCi0j0tXO8LYXL07efDTWKR8cG8O9KAOMkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W5pzdq97; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FE08C4CEC3;
-	Thu, 12 Sep 2024 18:48:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726166923;
-	bh=VsPoHKdTV/hmH6JHnw5e9LUwNZcjzv8WARUE6KL4R+4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=W5pzdq97xBYRWrUX9/mGz2HpiJrmpmeTvrOuap/dYSsMh+Bd9HU1egW7G37O2u4vO
-	 MgiBoBKQC7n+qkGaUrAtRpCzfzhRgG9qEmoDnpB1xB8rYETW3Zdy+seJxwwXekhk3y
-	 RxU7SRt2SYbgdXE8Vs9XW1+V1FMY+JlopI9v9cAhe0XMHBCc/7PMUHI1BQKfmRVYmG
-	 YfEe4VKtRXiZNg2e2zwff7sL6KTwoItkEtqXCt4QlMIRwAtXzwy7JWFftM2j/7kmJn
-	 5fVDxtAMepSqVRF22fANE2tOLxYhAqQfeGiZkapwHBRe/FDNYOoPP2o5BCoW/lQyPp
-	 LMdr4kvVJ5q6A==
-Date: Thu, 12 Sep 2024 19:48:37 +0100
-From: Conor Dooley <conor@kernel.org>
-To: WangYuli <wangyuli@uniontech.com>
-Cc: Conor Dooley <conor.dooley@microchip.com>,
-	Hal Feng <hal.feng@starfivetech.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-	"sashal@kernel.org" <sashal@kernel.org>,
-	William Qiu <william.qiu@starfivetech.com>,
-	"emil.renner.berthing@canonical.com" <emil.renner.berthing@canonical.com>,
-	Xingyu Wu <xingyu.wu@starfivetech.com>,
-	Walker Chen <walker.chen@starfivetech.com>,
-	"robh@kernel.org" <robh@kernel.org>,
-	"kernel@esmil.dk" <kernel@esmil.dk>,
-	"robh+dt@kernel.org" <robh+dt@kernel.org>,
-	"krzysztof.kozlowski+dt@linaro.org" <krzysztof.kozlowski+dt@linaro.org>,
-	"conor+dt@kernel.org" <conor+dt@kernel.org>,
-	"paul.walmsley@sifive.com" <paul.walmsley@sifive.com>,
-	"palmer@dabbelt.com" <palmer@dabbelt.com>,
-	"aou@eecs.berkeley.edu" <aou@eecs.berkeley.edu>,
-	"devicetree@vger.kernel.org" <devicetree@vger.kernel.org>,
-	"linux-riscv@lists.infradead.org" <linux-riscv@lists.infradead.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"richardcochran@gmail.com" <richardcochran@gmail.com>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>
-Subject: Re: [PATCH 6.6 v2 3/4] riscv: dts: starfive: Add the nodes and pins
- of I2Srx/I2Stx0/I2Stx1
-Message-ID: <20240912-carnation-aspirate-9a8ef572da2f@spud>
-References: <20240912025539.1928223-1-wangyuli@uniontech.com>
- <D2DCF9E2F70EDC93+20240912025539.1928223-3-wangyuli@uniontech.com>
- <ZQ2PR01MB13070BA638E892A5516DEA8CE6642@ZQ2PR01MB1307.CHNPR01.prod.partner.outlook.cn>
- <20240912-lividly-remover-6d71b985a803@wendy>
- <57B002D3A0A289D5+d784ecd6-ed84-4aa1-ae58-0c67d2de1989@uniontech.com>
+	s=arc-20240116; t=1726175523; c=relaxed/simple;
+	bh=C6CkW2oCJhZUpWHZhRaLMofmbBfUu+5eB8hqNusT0CI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jv6g0tB6oIhc3wcbXxngxhsOeXQ/OSr4waTQRZeamS+8NLfhKbvpH369n2aoAJV8Th12G1VEG0hKnO3Eb6XHxJGqdcbj8fhLu029j8rpj2NBl8pPW0o/UO//zIv0Db++C6ZPPwvotNy6vf6FusMKoCbrw0Ef2fjpbkQifopSSus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=mK4oX0p/; arc=none smtp.client-ip=199.89.1.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 009.lax.mailroute.net (Postfix) with ESMTP id 4X4VW51T8rzlgMVW;
+	Thu, 12 Sep 2024 21:12:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1726175512; x=1728767513; bh=GTOsC91kloUZyZyFxUUv7fuF
+	od8x7DnECYaKtYuXhk4=; b=mK4oX0p/RdYS+DRyXfiZRpOOVJ8VS36r+DKp7W1M
+	XtFqAJI3VyDmjjHh/byUaYVhYwbr/0ezHMfUR/2dcQvAELxfn9BcCiqn+kzzNFoP
+	vozQiXvNDc7Iko+5E0ADHXdfzX1uK3Sh1H9RUIjycUOK3zWzv8lP+TbkkjAqWPUo
+	lYCd3yDGzsBFRQdduh1G+8usahdfxW5pDAOnevPTiEVDidTUCPLygtU7wacSL+ut
+	B7Du1Nqy2HnKLGAyVfZqwmFEkp72S/iqjadOjCeRx+1spzoXP+jj6CCXaHlXjMi6
+	v8M+AuuxfDh5p5RtABx/4LfqH3wZ/LtOAk1vSCP7K++/IA==
+X-Virus-Scanned: by MailRoute
+Received: from 009.lax.mailroute.net ([127.0.0.1])
+ by localhost (009.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id iOblTJxy53mX; Thu, 12 Sep 2024 21:11:52 +0000 (UTC)
+Received: from [192.168.51.14] (c-73-231-117-72.hsd1.ca.comcast.net [73.231.117.72])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 009.lax.mailroute.net (Postfix) with ESMTPSA id 4X4VVq6LBTzlgMVN;
+	Thu, 12 Sep 2024 21:11:47 +0000 (UTC)
+Message-ID: <cad4804b-2102-4c95-9387-a63ff847cf21@acm.org>
+Date: Thu, 12 Sep 2024 14:11:46 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="DUVkQka0vWnFdotT"
-Content-Disposition: inline
-In-Reply-To: <57B002D3A0A289D5+d784ecd6-ed84-4aa1-ae58-0c67d2de1989@uniontech.com>
-
-
---DUVkQka0vWnFdotT
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 2/2] ufs: core: requeue aborted request
+To: =?UTF-8?B?UGV0ZXIgV2FuZyAo546L5L+h5Y+LKQ==?= <peter.wang@mediatek.com>,
+ "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+ "avri.altman@wdc.com" <avri.altman@wdc.com>,
+ "jejb@linux.ibm.com" <jejb@linux.ibm.com>,
+ "alim.akhtar@samsung.com" <alim.akhtar@samsung.com>,
+ "martin.petersen@oracle.com" <martin.petersen@oracle.com>
+Cc: "linux-mediatek@lists.infradead.org"
+ <linux-mediatek@lists.infradead.org>,
+ =?UTF-8?B?SmlhamllIEhhbyAo6YOd5Yqg6IqCKQ==?= <jiajie.hao@mediatek.com>,
+ =?UTF-8?B?Q0MgQ2hvdSAo5ZGo5b+X5p2wKQ==?= <cc.chou@mediatek.com>,
+ =?UTF-8?B?RWRkaWUgSHVhbmcgKOm7g+aZuuWCkSk=?= <eddie.huang@mediatek.com>,
+ =?UTF-8?B?QWxpY2UgQ2hhbyAo6LaZ54+u5Z2HKQ==?= <Alice.Chao@mediatek.com>,
+ =?UTF-8?B?RWQgVHNhaSAo6JSh5a6X6LuSKQ==?= <Ed.Tsai@mediatek.com>,
+ wsd_upstream <wsd_upstream@mediatek.com>,
+ "quic_nguyenb@quicinc.com" <quic_nguyenb@quicinc.com>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ =?UTF-8?B?TGluIEd1aSAo5qGC5p6XKQ==?= <Lin.Gui@mediatek.com>,
+ =?UTF-8?B?Q2h1bi1IdW5nIFd1ICjlt6vpp7/lro8p?= <Chun-hung.Wu@mediatek.com>,
+ =?UTF-8?B?VHVuLXl1IFl1ICjmuLjmlabogb8p?= <Tun-yu.Yu@mediatek.com>,
+ =?UTF-8?B?Q2hhb3RpYW4gSmluZyAo5LqV5pyd5aSpKQ==?=
+ <Chaotian.Jing@mediatek.com>, =?UTF-8?B?UG93ZW4gS2FvICjpq5jkvK/mlocp?=
+ <Powen.Kao@mediatek.com>, =?UTF-8?B?TmFvbWkgQ2h1ICjmnLHoqaDnlLAp?=
+ <Naomi.Chu@mediatek.com>, =?UTF-8?B?UWlsaW4gVGFuICjosK3pupLpup8p?=
+ <Qilin.Tan@mediatek.com>
+References: <20240911095622.19225-1-peter.wang@mediatek.com>
+ <20240911095622.19225-3-peter.wang@mediatek.com>
+ <55d2cca5-0e30-4734-aa25-d5f5cdfbfd93@acm.org>
+ <d3306f9d2b88c5b6ae8d2104041e5c941898dee5.camel@mediatek.com>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <d3306f9d2b88c5b6ae8d2104041e5c941898dee5.camel@mediatek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 12, 2024 at 07:19:05PM +0800, WangYuli wrote:
-> On 2024/9/12 18:40, Conor Dooley wrote:
+On 9/12/24 6:49 AM, Peter Wang (=E7=8E=8B=E4=BF=A1=E5=8F=8B) wrote:
+> On Wed, 2024-09-11 at 12:37 -0700, Bart Van Assche wrote:
+[ ... ]
+> So at this time, the device will not have a corresponding
+> response coming back. The host controller will automatically
+> fill in the response for the corresponding command based on
+> the results of SQ cleanup (MCQ) or UTRLCLR (DBR, mediatek),
+> with the COS content being ABORTED by interrupt.
+
+I don't think so. In SDB mode, writing into the UTRLCLR register does
+NOT cause the ABORTED status to be written into the OCS field. Even if
+there would be UFSHCI controllers that do this, the UFSHCI specification
+does not require this behavior and hence the UFS driver should not
+assume this behavior.
+
+>> The above change will cause lrbp->abort_initiated_by_eh to be set not
+>> only if the UFS error handler decides to abort a command but also if
+>> the
+>> SCSI core decides to abort a command. I think this is wrong.
 >=20
-> > On Thu, Sep 12, 2024 at 10:23:09AM +0000, Hal Feng wrote:
-> > > > On 12.09.24 10:55, WangYuli wrote:
-> > > > +	i2srx_pins: i2srx-0 {
-> > > > +		clk-sd-pins {
-> > > > +			pinmux =3D <GPIOMUX(38, GPOUT_LOW,
-> > > > +					      GPOEN_DISABLE,
-> > > > +					      GPI_SYS_I2SRX_BCLK)>,
-> > > > +				 <GPIOMUX(63, GPOUT_LOW,
-> > > > +					      GPOEN_DISABLE,
-> > > > +					      GPI_SYS_I2SRX_LRCK)>,
-> > > > +				 <GPIOMUX(38, GPOUT_LOW,
-> > > > +					      GPOEN_DISABLE,
-> > > > +					      GPI_SYS_I2STX1_BCLK)>,
-> > > > +				 <GPIOMUX(63, GPOUT_LOW,
-> > > > +					      GPOEN_DISABLE,
-> > > > +					      GPI_SYS_I2STX1_LRCK)>,
-> > > > +				 <GPIOMUX(61, GPOUT_LOW,
-> > > > +					      GPOEN_DISABLE,
-> > > > +					      GPI_SYS_I2SRX_SDIN0)>;
-> > > > +			input-enable;
-> > > > +		};
-> > > > +	};
-> > > > +
-> > > > +	i2stx1_pins: i2stx1-0 {
-> > > > +		sd-pins {
-> > > > +			pinmux =3D <GPIOMUX(44, GPOUT_SYS_I2STX1_SDO0,
-> > > > +					      GPOEN_ENABLE,
-> > > > +					      GPI_NONE)>;
-> > > > +			bias-disable;
-> > > > +			input-disable;
-> > > > +		};
-> > > > +	};
-> > > > +
-> > > > +	mclk_ext_pins: mclk-ext-0 {
-> > > > +		mclk-ext-pins {
-> > > > +			pinmux =3D <GPIOMUX(4, GPOUT_LOW,
-> > > > +					     GPOEN_DISABLE,
-> > > > +					     GPI_SYS_MCLK_EXT)>;
-> > > > +			input-enable;
-> > > > +		};
-> > > > +	};
-> > > > +
-> > > >   	mmc0_pins: mmc0-0 {
-> > > >   		 rst-pins {
-> > > >   			pinmux =3D <GPIOMUX(62, GPOUT_SYS_SDIO0_RST,
-> > > The above changes had been reverted in commit e0503d47e93d in the mai=
-nline.
-> > > Is it appropriate to merge this patch into the stable branch?
-> > >=20
-> > > https://lore.kernel.org/all/20240415125033.86909-1-hannah.peuckmann@c=
-anonical.com/
-> > Hah, I had gone looking this morning because I had a hunch that there
-> > was some missing fix this series didn't, but couldn't remember what it
-> > was. I completely forgot that some of this was non-present overlay
-> > related stuff that had had to be reverted.
-> >=20
-> > So yes, if it had to be reverted in mainline, it shouldn't get
-> > backported. Thanks for spotting that Hal.
-> >=20
-> Got it. Thanks for pointing that out, and sorry for bothering you all...
+> Sorry, I might have missed something, but I didn't see
+> scsi abort (ufshcd_abort) calling ufshcd_set_eh_in_progress.
+> So, during a SCSI abort, ufshcd_eh_in_progress(hba)
+> should return false and not set this flag, right?
 
-Patch 1 still seems like it could be backported though, even if these
-pwmdac patches are not suitble?
+I think you are right so please ignore my comment above.
 
+> Additionally, SCSI abort (ufshcd_abort) will have different
+> return values for MCQ mode and DBR mode when the device
+> does not respond with a response.
+> MCQ mode will receivce OCS_ABORTED (nullify)
+> 	case OCS_ABORTED:
+> 		result |=3D DID_ABORT << 16;
+> 		break;
 
---DUVkQka0vWnFdotT
-Content-Type: application/pgp-signature; name="signature.asc"
+No. ufshcd_abort() submits an abort TMF and the OCS status is not
+modified if the abort TMF succeeds.
 
------BEGIN PGP SIGNATURE-----
+> But DBR mode, OCS won't change, it is 0x0F
+> 	case OCS_INVALID_COMMAND_STATUS:
+> 		result |=3D DID_REQUEUE << 16;
+> 		break;
+> In this case, should we also return DID_ABORT for DBR mode?
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZuM3hQAKCRB4tDGHoIJi
-0tHdAP469+SvjkqO/rEKHfqhrnsk2nxKybDVYuHxJ0twOw+RjwD/YUruu5BbY7La
-NBPyazL+MNe9sykkvgmWNvSNnwcfwQA=
-=i+ZU
------END PGP SIGNATURE-----
+The above code comes from ufshcd_transfer_rsp_status(), isn't it?
+ufshcd_transfer_rsp_status() should not be called if the SCSI core
+aborts a SCSI command (ufshcd_abort()). It is not allowed to call
+scsi_done() from a SCSI abort handler like ufshcd_abort(). SCSI
+abort handlers must return SUCCESS, FAILED or FAST_IO_FAIL and let
+the SCSI core decide whether to complete or whether to resubmit the
+SCSI command.
 
---DUVkQka0vWnFdotT--
+Thanks,
+
+Bart.
 
