@@ -1,108 +1,117 @@
-Return-Path: <stable+bounces-75926-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66CE5975EC2
-	for <lists+stable@lfdr.de>; Thu, 12 Sep 2024 04:09:28 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCE94975EFA
+	for <lists+stable@lfdr.de>; Thu, 12 Sep 2024 04:38:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 96ADA1C22AF9
-	for <lists+stable@lfdr.de>; Thu, 12 Sep 2024 02:09:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 39F34B2175B
+	for <lists+stable@lfdr.de>; Thu, 12 Sep 2024 02:38:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 358B33B784;
-	Thu, 12 Sep 2024 02:09:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F196D41C89;
+	Thu, 12 Sep 2024 02:38:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="XTczgsIE"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtpbgjp3.qq.com (smtpbgjp3.qq.com [54.92.39.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89BD66FBF;
-	Thu, 12 Sep 2024 02:09:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45547250EC;
+	Thu, 12 Sep 2024 02:38:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.92.39.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726106961; cv=none; b=kCRNFvKKIRYWQQEdCu9jQ8HYCbOc7WOwWCN4ESwJeoDXY+tzSrVQBTTtr6byI0SK4+33IJi4fkxfvSeMStWrZH5lQO7p1UBsv2lMpYE7KoqCdUPEe3vUCUMLvwihXjoTagTHL2hZA3EJq2Du2YKPFf3HEZBmypNuKmN1q1hpJqY=
+	t=1726108712; cv=none; b=FwI9kNDPgvcrmjnCS5LyHuyap5FU6yX3ejbeuzYUXzM0pu9GqojSm4STy1r1CUTyhcw8k5/UA/hCjvmoJg6yNLKiWYkbmr7SxHuh87oIWZ7y+9Fm4EV5hpIckmfPy3XH1sT9mrGjsVyBMNHO+xdS3PJG7Hz0AnQQhjvJ4gtC9Ws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726106961; c=relaxed/simple;
-	bh=V5+gNunt16oUkcf+NPsxyEcEVV/pBevZJ7IRqjTAZb4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=bg+BNifg1A0oH7O6RngdVkq8PeCl3Tkz+Jn94fSZNLYHAfQD65f4bJx/hGBiCevGYZl2/R4Dv0nb6PTmi7NDpyXSSTG++47NHAfd9LhjZLRxT+vYjmHISlMkXpCrKtRPa8zZYkbHRrohu+Mn/qyB0V+avivh6YiEFD03ksgvG7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-03 (Coremail) with SMTP id rQCowACHjdkpTeJmNeLlAg--.8164S2;
-	Thu, 12 Sep 2024 10:08:45 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: marcan@marcan.st,
-	sven@svenpeter.dev,
-	alyssa@rosenzweig.io,
-	linus.walleij@linaro.org,
-	joey.gouly@arm.com,
-	stan@corellium.com,
-	maz@kernel.org,
-	akpm@linux-foundation.org
-Cc: asahi@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Ma Ke <make24@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH RESEND] pinctrl: check devm_kasprintf() returned value
-Date: Thu, 12 Sep 2024 10:08:40 +0800
-Message-Id: <20240912020840.1763252-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1726108712; c=relaxed/simple;
+	bh=U1oQ8yV2876PbJ1l87fAYYB5li3P/vajQPSAI368Zec=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sO1i7bdNWvUD/u4pYDJ7G/MMohQpRUjn/eh4xEmLdcVBsBBTQAmRWe86IJWWsknZ1B9FzeLF7nD+YNbKA8c8IAtntnWsp1OzkcRZQLDrHtYcsWBvP+vRsRBAFikaxq/JQp+3BzJnoiLobWdCwk36K53DBhoDiLos42xM1m4ETCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=XTczgsIE; arc=none smtp.client-ip=54.92.39.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1726108706;
+	bh=+pRg9X4n7TVLk4pJltxMi594tN+w+P/Lvm16g3XG4LU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From;
+	b=XTczgsIESkLqCDl6+PXig9KDrrVBh6568anOox/JcvGJ74DOi97qJDxuxSZ71ELtG
+	 GwNZpvqgAaBadgn2EkFRnvBo0z6+0ySbrfUvJlLBrm+iZYKfP7M9Stw3TtSYo4/jOf
+	 RDlG4Ji3lbwIDHybKtptTaM/TKq8CxSg+/toLZQE=
+X-QQ-mid: bizesmtp90t1726108703t4wrs7qk
+X-QQ-Originating-IP: WA3jwlK+hZurhA4Tg3wzuZx/vI63xq+b6Mf+xnbk/es=
+Received: from [10.20.53.89] ( [113.57.152.160])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Thu, 12 Sep 2024 10:38:21 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 15563347605386470238
+Message-ID: <DBEFAD22C49AAFC6+58debc20-5281-4ae7-a418-a4b232be9458@uniontech.com>
+Date: Thu, 12 Sep 2024 10:38:20 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowACHjdkpTeJmNeLlAg--.8164S2
-X-Coremail-Antispam: 1UD129KBjvdXoWrKFW7ZFW5Ww13ZF1fGF4xXrb_yoWDGFb_Ca
-	y8urZ7Jry8CFn8urW7tw13ZFy0ka15JFyvqrnagFW3Cry5Xr4UJrWkurn8Gw48W3s5JFyD
-	trykZrWrXw1UCjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbSkFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
-	Cr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AKxVW8Jr
-	0_Cr1UM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
-	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJV
-	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
-	0VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28Icx
-	kI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2Iq
-	xVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42
-	IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY
-	6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aV
-	CY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VU122NtUUUUU==
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.6 1/4] riscv: dts: starfive: add assigned-clock* to
+ limit frquency
+To: Conor Dooley <conor.dooley@microchip.com>,
+ Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc: stable@vger.kernel.org, gregkh@linuxfoundation.org, sashal@kernel.org,
+ william.qiu@starfivetech.com, emil.renner.berthing@canonical.com,
+ xingyu.wu@starfivetech.com, walker.chen@starfivetech.com, robh@kernel.org,
+ hal.feng@starfivetech.com, kernel@esmil.dk, robh+dt@kernel.org,
+ krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+ paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu,
+ devicetree@vger.kernel.org, linux-riscv@lists.infradead.org,
+ linux-kernel@vger.kernel.org, richardcochran@gmail.com,
+ netdev@vger.kernel.org
+References: <D200DC520B462771+20240909074645.1161554-1-wangyuli@uniontech.com>
+ <20240909-fidgeting-baggage-e9ef9fab9ca4@wendy>
+ <ac72665f-0138-4951-aa90-d1defebac9ca@linaro.org>
+ <20240909-wrath-sway-0fe29ff06a22@wendy>
+From: WangYuli <wangyuli@uniontech.com>
+Autocrypt: addr=wangyuli@uniontech.com; keydata=
+ xjMEZoEsiBYJKwYBBAHaRw8BAQdAyDPzcbPnchbIhweThfNK1tg1imM+5kgDBJSKP+nX39DN
+ IVdhbmdZdWxpIDx3YW5neXVsaUB1bmlvbnRlY2guY29tPsKJBBMWCAAxFiEEa1GMzYeuKPkg
+ qDuvxdofMEb0C+4FAmaBLIgCGwMECwkIBwUVCAkKCwUWAgMBAAAKCRDF2h8wRvQL7g0UAQCH
+ 3mrGM0HzOaARhBeA/Q3AIVfhS010a0MZmPTRGVfPbwD/SrncJwwPAL4GiLPEC4XssV6FPUAY
+ 0rA68eNNI9cJLArOOARmgSyJEgorBgEEAZdVAQUBAQdA88W4CTLDD9fKwW9PB5yurCNdWNS7
+ VTL0dvPDofBTjFYDAQgHwngEGBYIACAWIQRrUYzNh64o+SCoO6/F2h8wRvQL7gUCZoEsiQIb
+ DAAKCRDF2h8wRvQL7sKvAP4mBvm7Zn1OUjFViwkma8IGRGosXAvMUFyOHVcl1RTgFQEAuJkU
+ o9ERi7qS/hbUdUgtitI89efbY0TVetgDsyeQiwU=
+In-Reply-To: <20240909-wrath-sway-0fe29ff06a22@wendy>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
 
-devm_kasprintf() can return a NULL pointer on failure but this returned
-value is not checked. Fix this lack and check the returned value.
 
-Found by code review.
+On 2024/9/9 19:17, Conor Dooley wrote:
+> [6.6] in the subject and Sasha/Greg/stable list on CC, so I figure it is
+> for stable, yeah. Only one of these patches is a "fix", and not really a
+> functional one, so I would like to know why this stuff is being
+> backported. I think under some definition of "new device IDs and quirks"
+> it could be suitable, but it'd be a looser definition than I personally
+> agree with!
+These submissions will help to ensure a more stable behavior for the 
+RISC-V devices involved on the Linux-6.6.y kernel,and as far as I can 
+tell,they won't introduce any new issues (please correct me if I'm wrong).
+> Oh, and also, the 4 patches aren't threaded - you should fix that
 
-Cc: stable@vger.kernel.org
-Fixes: a0f160ffcb83 ("pinctrl: add pinctrl/GPIO driver for Apple SoCs")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
----
- drivers/pinctrl/pinctrl-apple-gpio.c | 3 +++
- 1 file changed, 3 insertions(+)
+I apologize for my ignorance about the correct procedure...
 
-diff --git a/drivers/pinctrl/pinctrl-apple-gpio.c b/drivers/pinctrl/pinctrl-apple-gpio.c
-index 3751c7de37aa..f861e63f4115 100644
---- a/drivers/pinctrl/pinctrl-apple-gpio.c
-+++ b/drivers/pinctrl/pinctrl-apple-gpio.c
-@@ -474,6 +474,9 @@ static int apple_gpio_pinctrl_probe(struct platform_device *pdev)
- 	for (i = 0; i < npins; i++) {
- 		pins[i].number = i;
- 		pins[i].name = devm_kasprintf(&pdev->dev, GFP_KERNEL, "PIN%u", i);
-+		if (!pins[i].name)
-+			return -ENOMEM;
-+
- 		pins[i].drv_data = pctl;
- 		pin_names[i] = pins[i].name;
- 		pin_nums[i] = i;
+For instance,for these four commits,I first used 'git format-patch -4' 
+to create four consecutive .patch files,and then used 'git send-email 
+--annotate --cover-letter --thread ./*.patch' to send them,but the 
+result wasn't as expected...
+
+I'm not sure where the problem lies...
+
+> WangYuli.
+QAQ
 -- 
-2.25.1
-
+WangYuli
 
