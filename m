@@ -1,73 +1,81 @@
-Return-Path: <stable+bounces-75934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-75935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8CD1975F92
-	for <lists+stable@lfdr.de>; Thu, 12 Sep 2024 05:14:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60826975F9E
+	for <lists+stable@lfdr.de>; Thu, 12 Sep 2024 05:21:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25A801F23150
-	for <lists+stable@lfdr.de>; Thu, 12 Sep 2024 03:14:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 216872840A6
+	for <lists+stable@lfdr.de>; Thu, 12 Sep 2024 03:21:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BE4686126;
-	Thu, 12 Sep 2024 03:14:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1BC9126BE4;
+	Thu, 12 Sep 2024 03:21:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="Ydb3r0oU"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AaqtE//L"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E37E5364A0;
-	Thu, 12 Sep 2024 03:14:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37C2F7581A;
+	Thu, 12 Sep 2024 03:20:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726110876; cv=none; b=J0Iga/umwR3UgG9aTeFwui6V0idY2kdCs+VYGnU6AfPihzwmiBf/oIxoLGXlUf50jyNzalM3b5ZPYSKe+k1sXJKloYOHZOxCGnj+o+Ek/8kfI6kqEJSe0HWu8BW6qNSUUjqIa4R34mXNI0t3q53lFyOmeao8zq+sBtsBk9cmT3w=
+	t=1726111261; cv=none; b=gBMBcmU3KfnF+BtjEcKvq3JG79MDyzKzIvpWwgu6THkxIODJEHM+TAj0IKqSUl4P9uXq1vR8qK7mnpphVmIxt4BbB5GNBBJn8B7Pp6Wf1rpH/sel6CFDHJ8qqmGM4rkezSeXcvzKtn0xEm25kvYFQUclf51K1QAI6GRL/fGhYb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726110876; c=relaxed/simple;
-	bh=tz49BWy/RtHdUNniiIV2q55VY8fwlliAJZaOH6eh1HU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LIcZz6r5dwJgXlgQyWH3pZr4e7AsLZQKqyyRD5dQTUhb4jV/BWVWE+80mY28Dq45c2Eoc8BTF03f8u/8JQgZLwpC6Yz6MJ0LnzIrLLlPCXF2E6yD5Zpb003oyDHrQ90LuuDOn3iqRlAjmKgx8p3/l01rt09ERQ0gWl9zVzU1mY8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=Ydb3r0oU; arc=none smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48BMfWbk014424;
-	Thu, 12 Sep 2024 03:14:25 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
-	from:to:cc:subject:date:message-id:mime-version
-	:content-transfer-encoding; s=corp-2023-11-20; bh=ZOinSuu6+IxkxU
-	JM2PJ/JHhQAqIURgQp8RgfgAZZSSA=; b=Ydb3r0oUPPt++V+jgH4d/pCKbeU6T/
-	rVpAfODixMPZY/KYgrqOTCd/6AvfbQuxywVLpEoTxY2MnKFg89tXGjPd/z3H7URm
-	W8ozasGOx6KDzGTwB1nIA9TYlNfkzDaKj2Uj0DRnnGWG43p3MuO6Ckiedg7/dvZQ
-	AEha5Me+Echow4Tzm7TlL8JvDH5Ylwxt38RG4oIHcMav/JnTKY3fqiXT4qgBroOS
-	1qLMvA3fHrE1YfKcay7MvhWyqxcoOhjihdaA8Oz9GHHxDkwrsUX5p8H48JQMHXyW
-	MZQJtrTbUQLsATeyWow8U7pGoBRhe/NfjfA80t75J/mGxTyam9cV4txw==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 41gjbuscae-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 12 Sep 2024 03:14:24 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 48C2YRqh036194;
-	Thu, 12 Sep 2024 03:14:24 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 41gd9ar3yn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 12 Sep 2024 03:14:23 +0000
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 48C3ENti039910;
-	Thu, 12 Sep 2024 03:14:23 GMT
-Received: from gmananth-20230209-1132.osdevelopmeniad.oraclevcn.com (gmananth-20230209-1132.appad3iad.osdevelopmeniad.oraclevcn.com [100.100.242.10])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 41gd9ar3y9-1;
-	Thu, 12 Sep 2024 03:14:23 +0000
-From: Gautham Ananthakrishna <gautham.ananthakrishna@oracle.com>
-To: joseph.qi@linux.alibaba.com
-Cc: gautham.ananthakrishna@oracle.com, junxiao.bi@oracle.com,
-        rajesh.sivaramasubramaniom@oracle.com, ocfs2-devel@lists.linux.dev,
-        stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH RFC V2 1/1] ocfs2: reserve space for inline xattr before attaching reflink tree
-Date: Thu, 12 Sep 2024 03:14:21 +0000
-Message-Id: <20240912031421.853017-1-gautham.ananthakrishna@oracle.com>
-X-Mailer: git-send-email 2.39.3
+	s=arc-20240116; t=1726111261; c=relaxed/simple;
+	bh=GUqCDR+y1+YOIGBqeNIT2ogINr0OduQatYWQKAqbfyc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=hPpPCTv9NxeL82boUeLXSYJqlpbQE2kH4c8A2rM9tHYlcTbXPCsxXFMHWPycaYlIndUUxrslxnl0L3uCt9xfzKqjWse4U/Jl80TlEBbyT3gkqaS9cpwzo2DBA/Yp6XEYHIY6nDXN+ztp1mdKblAS9hBcajXVxfKJIkOMH0B2NPo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AaqtE//L; arc=none smtp.client-ip=209.85.210.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-71781f42f75so359725b3a.1;
+        Wed, 11 Sep 2024 20:20:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1726111259; x=1726716059; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=SEKP3pkgJvbS9JmjvVYc0s7DNvaW/qUR+vrAHcWJhrY=;
+        b=AaqtE//LxUPtundSEYjWiigbkOYWeRcm+yc8r1p8k1hONkN52HSK+0fNfXE6H5AydL
+         irawKPdMwXZB9144PX2SS2mbJlcUPURQCFEnHRfWasbSp0/uAEwZ5SJAZ0fJGAFMi1M9
+         ZRmHukP5BHvJjY8AV5X+/0R58dYTiE4lx2vWedOzDAqZ1N97bHwla2fkYOYfFQi85m0S
+         2AlunxhJidCCDM7AAELcNZN0yuLkq81lf9f17vOClTb/mwg0AEMBHEGMLDsu+r5VxV4i
+         7HQj3nY7V4MFZIYP+2H10H4/YnqUboL93Ag3B950+qJnedsaOp2+Eakze4JepW0HVUF7
+         L2KA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726111259; x=1726716059;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=SEKP3pkgJvbS9JmjvVYc0s7DNvaW/qUR+vrAHcWJhrY=;
+        b=ghbufOmqhAMS0vViPtv4FdHoEUBl+fPcDD0zURmQcC7KS8HlWL2VDUos31PzdzhAQI
+         gYRhuk+9MCSnShyzO2I6b9U1zXJL9SfjKpOQg9lpvqzXSLBcJrIBiEDx9m0BkQLHp5Ua
+         IqcROV8H6R7fpjQXfviwNrPlgeZ9HFqlpeE3tYoZ8mub94K8+z+bghEdVWq7YcNJXSgX
+         vO4F3EI+0aDAhd31Mgg96yodeoUYLgSsFDtBimQPic6WDvMOVUOYR1/o6BVxnwD1ycYT
+         VKG+E6E6205keR7ccsl2+NDY/XzBPFYNqgv3fmE++SI4W9Fu++LzD/ZAWrk5BqUWpLuC
+         DKPA==
+X-Forwarded-Encrypted: i=1; AJvYcCU6dWdFPV8rsVHGeY14XuX94/xt9xB18wMK+IbFRmUgD0zCLVNt5vrXvok9oILCGBmHYAR55IY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy1WQnGr2DZhyBJpDLFzPu5UlXYDrPXkrXUYA+5g8474qPxWQG0
+	t3eO8JUMiQOikCm+FQ/WlqPLH4VM4H92swYHAh9Nm4aamaS4DSSkThEuDw==
+X-Google-Smtp-Source: AGHT+IENt6VnrE0aUFNOWmLcvSgsV8s5ZJGD6414LG2whJOZY0T6yN3T2/bO5jLO5L/5U5Ks2fdBhQ==
+X-Received: by 2002:a05:6a00:1906:b0:70d:2621:5808 with SMTP id d2e1a72fcca58-7192607fcb9mr2200779b3a.9.1726111258744;
+        Wed, 11 Sep 2024 20:20:58 -0700 (PDT)
+Received: from localhost ([47.88.5.130])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71908fc9c89sm3679015b3a.33.2024.09.11.20.20.58
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Wed, 11 Sep 2024 20:20:58 -0700 (PDT)
+From: Lai Jiangshan <jiangshanlai@gmail.com>
+To: linux-kernel@vger.kernel.org
+Cc: Lai Jiangshan <jiangshan.ljs@antgroup.com>,
+	Marc Hartmayer <mhartmay@linux.ibm.com>,
+	stable@vger.kernel.org,
+	Tejun Heo <tj@kernel.org>,
+	Lai Jiangshan <jiangshanlai@gmail.com>
+Subject: [PATCH] workqueue: Clear worker->pool in the worker thread context
+Date: Thu, 12 Sep 2024 11:23:29 +0800
+Message-Id: <20240912032329.419054-1-jiangshanlai@gmail.com>
+X-Mailer: git-send-email 2.19.1.6.gb485710b
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -75,157 +83,91 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-11_02,2024-09-09_02,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 suspectscore=0 phishscore=0
- spamscore=0 malwarescore=0 adultscore=0 mlxscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2408220000
- definitions=main-2409120023
-X-Proofpoint-GUID: _8FwWaXqjJ--Qmv9Vs96IXcNQhUDhq3I
-X-Proofpoint-ORIG-GUID: _8FwWaXqjJ--Qmv9Vs96IXcNQhUDhq3I
 
-One of our customers reported a crash and a corrupted ocfs2 filesystem.
-The crash was due to the detection of corruption. Upon troubleshooting,
-the fsck -fn output showed the below corruption
+From: Lai Jiangshan <jiangshan.ljs@antgroup.com>
 
-[EXTENT_LIST_FREE] Extent list in owner 33080590 claims 230 as the next free chain record,
-but fsck believes the largest valid value is 227.  Clamp the next record value? n
+Marc Hartmayer reported:
+        [   23.133876] Unable to handle kernel pointer dereference in virtual kernel address space
+        [   23.133950] Failing address: 0000000000000000 TEID: 0000000000000483
+        [   23.133954] Fault in home space mode while using kernel ASCE.
+        [   23.133957] AS:000000001b8f0007 R3:0000000056cf4007 S:0000000056cf3800 P:000000000000003d
+        [   23.134207] Oops: 0004 ilc:2 [#1] SMP
+	(snip)
+        [   23.134516] Call Trace:
+        [   23.134520]  [<0000024e326caf28>] worker_thread+0x48/0x430
+        [   23.134525] ([<0000024e326caf18>] worker_thread+0x38/0x430)
+        [   23.134528]  [<0000024e326d3a3e>] kthread+0x11e/0x130
+        [   23.134533]  [<0000024e3264b0dc>] __ret_from_fork+0x3c/0x60
+        [   23.134536]  [<0000024e333fb37a>] ret_from_fork+0xa/0x38
+        [   23.134552] Last Breaking-Event-Address:
+        [   23.134553]  [<0000024e333f4c04>] mutex_unlock+0x24/0x30
+        [   23.134562] Kernel panic - not syncing: Fatal exception: panic_on_oops
 
-The stat output from the debugfs.ocfs2 showed the following corruption
-where the "Next Free Rec:" had overshot the "Count:" in the root metadata
-block.
+With debuging and analysis, worker_thread() accesses to the nullified
+worker->pool when the newly created worker is destroyed before being
+waken-up, in which case worker_thread() can see the result detach_worker()
+reseting worker->pool to NULL at the begining.
 
-        Inode: 33080590   Mode: 0640   Generation: 2619713622 (0x9c25a856)
-        FS Generation: 904309833 (0x35e6ac49)
-        CRC32: 00000000   ECC: 0000
-        Type: Regular   Attr: 0x0   Flags: Valid
-        Dynamic Features: (0x16) HasXattr InlineXattr Refcounted
-        Extended Attributes Block: 0  Extended Attributes Inline Size: 256
-        User: 0 (root)   Group: 0 (root)   Size: 281320357888
-        Links: 1   Clusters: 141738
-        ctime: 0x66911b56 0x316edcb8 -- Fri Jul 12 06:02:30.829349048 2024
-        atime: 0x66911d6b 0x7f7a28d -- Fri Jul 12 06:11:23.133669517 2024
-        mtime: 0x66911b56 0x12ed75d7 -- Fri Jul 12 06:02:30.317552087 2024
-        dtime: 0x0 -- Wed Dec 31 17:00:00 1969
-        Refcount Block: 2777346
-        Last Extblk: 2886943   Orphan Slot: 0
-        Sub Alloc Slot: 0   Sub Alloc Bit: 14
-        Tree Depth: 1   Count: 227   Next Free Rec: 230
-        ## Offset        Clusters       Block#
-        0  0             2310           2776351
-        1  2310          2139           2777375
-        2  4449          1221           2778399
-        3  5670          731            2779423
-        4  6401          566            2780447
-        .......          ....           .......
-        .......          ....           .......
+Move the code "worker->pool = NULL;" out from detach_worker() to fix the
+problem.
 
-The issue was in the reflink workfow while reserving space for inline xattr.
-The problematic function is ocfs2_reflink_xattr_inline(). By the time this
-function is called the reflink tree is already recreated at the destination
-inode from the source inode. At this point, this function reserves space
-space inline xattrs at the destination inode without even checking if there
-is space at the root metadata block. It simply reduces the l_count from 243
-to 227 thereby making space of 256 bytes for inline xattr whereas the inode
-already has extents beyond this index (in this case upto 230), thereby causing
-corruption.
+worker->pool had been designed to be constant for regular workers and
+changeable for rescuer. To share attaching/detaching code for regular
+and rescuer workers and to avoid worker->pool being accessed inadvertently
+when the worker has been detached, worker->pool is reset to NULL when
+detached no matter the worker is rescuer or not.
 
-The fix for this is to reserve space for inline metadata before the at the
-destination inode before the reflink tree gets recreated. The customer has
-verified the fix.
+To maintain worker->pool being reset after detached, move the code
+"worker->pool = NULL;" in the worker thread context after detached.
 
-Fixes: ef962df057aa ("ocfs2: xattr: fix inlined xattr reflink")
-Cc: stable@vger.kernel.org
+It is either be in the regular worker thread context after PF_WQ_WORKER
+is cleared or in rescuer worker thread context with wq_pool_attach_mutex
+held. So it is safe to do so.
 
-Signed-off-by: Gautham Ananthakrishna <gautham.ananthakrishna@oracle.com>
+Cc: Marc Hartmayer <mhartmay@linux.ibm.com>
+Link: https://lore.kernel.org/lkml/87wmjj971b.fsf@linux.ibm.com/
+Reported-by: Marc Hartmayer <mhartmay@linux.ibm.com>
+Fixes: f4b7b53c94af ("workqueue: Detach workers directly in idle_cull_fn()")
+Cc: stable@vger.kernel.org # v6.11+
+Signed-off-by: Lai Jiangshan <jiangshan.ljs@antgroup.com>
 ---
- fs/ocfs2/refcounttree.c | 26 ++++++++++++++++++++++++--
- fs/ocfs2/xattr.c        | 11 +----------
- 2 files changed, 25 insertions(+), 12 deletions(-)
+ kernel/workqueue.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/fs/ocfs2/refcounttree.c b/fs/ocfs2/refcounttree.c
-index 3f80a56d0d60..1d427da06bee 100644
---- a/fs/ocfs2/refcounttree.c
-+++ b/fs/ocfs2/refcounttree.c
-@@ -25,6 +25,7 @@
- #include "namei.h"
- #include "ocfs2_trace.h"
- #include "file.h"
-+#include "symlink.h"
+diff --git a/kernel/workqueue.c b/kernel/workqueue.c
+index e7b005ff3750..6f2545037e57 100644
+--- a/kernel/workqueue.c
++++ b/kernel/workqueue.c
+@@ -2709,7 +2709,6 @@ static void detach_worker(struct worker *worker)
  
- #include <linux/bio.h>
- #include <linux/blkdev.h>
-@@ -4155,8 +4156,9 @@ static int __ocfs2_reflink(struct dentry *old_dentry,
- 	int ret;
- 	struct inode *inode = d_inode(old_dentry);
- 	struct buffer_head *new_bh = NULL;
-+	struct ocfs2_inode_info *oi = OCFS2_I(inode);
+ 	unbind_worker(worker);
+ 	list_del(&worker->node);
+-	worker->pool = NULL;
+ }
  
--	if (OCFS2_I(inode)->ip_flags & OCFS2_INODE_SYSTEM_FILE) {
-+	if (oi->ip_flags & OCFS2_INODE_SYSTEM_FILE) {
- 		ret = -EINVAL;
- 		mlog_errno(ret);
- 		goto out;
-@@ -4182,6 +4184,26 @@ static int __ocfs2_reflink(struct dentry *old_dentry,
- 		goto out_unlock;
- 	}
+ /**
+@@ -2729,6 +2728,7 @@ static void worker_detach_from_pool(struct worker *worker)
  
-+	if ((oi->ip_dyn_features & OCFS2_HAS_XATTR_FL) &&
-+	    (oi->ip_dyn_features & OCFS2_INLINE_XATTR_FL)) {
+ 	mutex_lock(&wq_pool_attach_mutex);
+ 	detach_worker(worker);
++	worker->pool = NULL;
+ 	mutex_unlock(&wq_pool_attach_mutex);
+ 
+ 	/* clear leftover flags without pool->lock after it is detached */
+@@ -3349,7 +3349,11 @@ static int worker_thread(void *__worker)
+ 	if (unlikely(worker->flags & WORKER_DIE)) {
+ 		raw_spin_unlock_irq(&pool->lock);
+ 		set_pf_worker(false);
+-
 +		/*
-+		 * Adjust extent record count to reserve space for extended attribute.
-+		 * Inline data count had been adjusted in ocfs2_duplicate_inline_data().
++		 * The worker is dead and PF_WQ_WORKER is cleared, worker->pool
++		 * shouldn't be accessed, reset it to NULL in case otherwise.
 +		 */
-+		struct ocfs2_inode_info *ni = OCFS2_I(new_inode);
-+
-+		if (!(ni->ip_dyn_features & OCFS2_INLINE_DATA_FL) &&
-+		    !(ocfs2_inode_is_fast_symlink(new_inode))) {
-+			struct ocfs2_dinode *new_di = new_bh->b_data;
-+			struct ocfs2_dinode *old_di = old_bh->b_data;
-+			struct ocfs2_extent_list *el = &new_di->id2.i_list;
-+			int inline_size = le16_to_cpu(old_di->i_xattr_inline_size);
-+
-+			le16_add_cpu(&el->l_count, -(inline_size /
-+					sizeof(struct ocfs2_extent_rec)));
-+		}
-+	}
-+
- 	ret = ocfs2_create_reflink_node(inode, old_bh,
- 					new_inode, new_bh, preserve);
- 	if (ret) {
-@@ -4189,7 +4211,7 @@ static int __ocfs2_reflink(struct dentry *old_dentry,
- 		goto inode_unlock;
++		worker->pool = NULL;
+ 		ida_free(&pool->worker_ida, worker->id);
+ 		return 0;
  	}
- 
--	if (OCFS2_I(inode)->ip_dyn_features & OCFS2_HAS_XATTR_FL) {
-+	if (oi->ip_dyn_features & OCFS2_HAS_XATTR_FL) {
- 		ret = ocfs2_reflink_xattrs(inode, old_bh,
- 					   new_inode, new_bh,
- 					   preserve);
-diff --git a/fs/ocfs2/xattr.c b/fs/ocfs2/xattr.c
-index 3b81213ed7b8..a9f716ec89e2 100644
---- a/fs/ocfs2/xattr.c
-+++ b/fs/ocfs2/xattr.c
-@@ -6511,16 +6511,7 @@ static int ocfs2_reflink_xattr_inline(struct ocfs2_xattr_reflink *args)
- 	}
- 
- 	new_oi = OCFS2_I(args->new_inode);
--	/*
--	 * Adjust extent record count to reserve space for extended attribute.
--	 * Inline data count had been adjusted in ocfs2_duplicate_inline_data().
--	 */
--	if (!(new_oi->ip_dyn_features & OCFS2_INLINE_DATA_FL) &&
--	    !(ocfs2_inode_is_fast_symlink(args->new_inode))) {
--		struct ocfs2_extent_list *el = &new_di->id2.i_list;
--		le16_add_cpu(&el->l_count, -(inline_size /
--					sizeof(struct ocfs2_extent_rec)));
--	}
-+
- 	spin_lock(&new_oi->ip_lock);
- 	new_oi->ip_dyn_features |= OCFS2_HAS_XATTR_FL | OCFS2_INLINE_XATTR_FL;
- 	new_di->i_dyn_features = cpu_to_le16(new_oi->ip_dyn_features);
 -- 
-2.39.3
+2.19.1.6.gb485710b
 
 
