@@ -1,115 +1,161 @@
-Return-Path: <stable+bounces-76029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76030-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AED997784F
-	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 07:26:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACCE597789A
+	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 08:06:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A96AD1F2487F
-	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 05:26:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3322A1F25E5F
+	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 06:06:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E47F6149DF0;
-	Fri, 13 Sep 2024 05:26:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2C5B18732D;
+	Fri, 13 Sep 2024 06:06:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="NALrRdky"
+	dkim=pass (1024-bit key) header.d=hp.com header.i=@hp.com header.b="JsRzNHRu"
 X-Original-To: stable@vger.kernel.org
-Received: from msa.smtpout.orange.fr (msa-213.smtpout.orange.fr [193.252.23.213])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-162.mimecast.com (us-smtp-delivery-162.mimecast.com [170.10.133.162])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B4C4154C0B
-	for <stable@vger.kernel.org>; Fri, 13 Sep 2024 05:26:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.252.23.213
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEF411779A5
+	for <stable@vger.kernel.org>; Fri, 13 Sep 2024 06:06:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.162
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726205187; cv=none; b=DU0pKWEwrhx92DxU2eUT/AnVdamVFVSGYe8j25BNtY9g77cUXGi/okLGvJ2aF7D2hjzRbXrYi5Ymst/BsDPobuNIGDfCvNBFV7oXB2pvN7YpcQ2qao+l+eNOEEkLKGGDRi27Km0Mz6iAUP3APfLO4DXrFiLHHunPkZywXQ+8OAY=
+	t=1726207584; cv=none; b=PC1ksYh+LoFOj/uzkgfGo/ltO4n5A37A7Ho5reVHRVziprgbPYkCfTpngu5+7wqzxh+osdiCbvIvUZqX/dEPFjkz4EICbl371xF9DAao0tUbDlw6Iff9HV31GKqpHYDDOj82LoVG2veIZHrQrg6BpAcEOtfi6LeomDTRLU7pzDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726205187; c=relaxed/simple;
-	bh=oDzPv1Y1QlhN0VKg61eGukUlI585QY4rVzK17U1/DBM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uXY5nJoEWx/Yb229C5LlKadX8CjwCZwMHyQsDCuF+Y3yiI3WwduD38d3JqpnKnrt1tnUUzunM/2ktTcNJOT/6e6bP2vyHdTBbXvdLQVhY00YvEPzXNLa+yMEItkPvKbOT/YrFt28Qre6M8U7ZF6n4nnxt0LGrtH47PUJxvCweFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=NALrRdky; arc=none smtp.client-ip=193.252.23.213
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from [192.168.1.37] ([90.11.132.44])
-	by smtp.orange.fr with ESMTPA
-	id oyowsnGGQG3q8oyowsqRC1; Fri, 13 Sep 2024 07:26:22 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1726205182;
-	bh=KIKSdY+oERrLJGWIuSve8q7G/AsXHAikohdbciI8Qc4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From;
-	b=NALrRdkyqSw0QUjCidqRSlXV1y52pP0uv/A9xVZlDpuTgeiAfJHP4Dt7daRBd2BkU
-	 rfDoRRwmmBR/1qZ2cha8mA0lY0PyWe/7PnBTr5avaaR5gZ3vrnWdLcmYdzXAG+3Ox5
-	 6hWctQKO9CfWib3XRENrgA45ZRRJLT/06z3/1VLkp2CZeAjFx1CWjBwx6IWqGkcuQD
-	 c8oBrbiisx+85n04ejSf2aJ6LcBrTy4ogXlEOhbjiIV4FoKGKFvfyzUHIoZHtqjo/3
-	 kbuLPIaY1ploJocF5gIEUlyGdPVbO03ir/c4EM/Cq6edB+YBHCnsEI24mq8FCluZu+
-	 GqpcXBYCmh8LA==
-X-ME-Helo: [192.168.1.37]
-X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
-X-ME-Date: Fri, 13 Sep 2024 07:26:22 +0200
-X-ME-IP: 90.11.132.44
-Message-ID: <3efdd5c8-84e9-4beb-811c-65db48e9af2b@wanadoo.fr>
-Date: Fri, 13 Sep 2024 07:26:12 +0200
+	s=arc-20240116; t=1726207584; c=relaxed/simple;
+	bh=T2WVPeItws/8KSshd4JJuacLfIblNmrXh3m4eR9SqGM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=nBjAVgVP5jelIWRNMQ8qdAL21WFlODtlro8tAcK1SGsvUqAUzpu99w1jYFr06GHebUW8B4uXP12WI3Iigy+sCeLJZC6g/GOaVjE/Lrtuz+JNcg8VXrqLl6spDf5P48MLUtmcV9LW/PO2632KaQetERL+SDgWpYyH4EmprrEoBuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hp.com; spf=pass smtp.mailfrom=hp.com; dkim=pass (1024-bit key) header.d=hp.com header.i=@hp.com header.b=JsRzNHRu; arc=none smtp.client-ip=170.10.133.162
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hp.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hp.com; s=mimecast20180716;
+	t=1726207581;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=u5UMeaxqG4NmIWc0i5zrZ9ZlV9cl6Ku3OxStJMFQQko=;
+	b=JsRzNHRurluhdnh49hvgigSVA2xx3+T2tIk2uSnApPb7jTy3kNvipGK9vym0LCjwOlIk+4
+	gIh5nZvsFz5eXCiUOn5cOiDjyk8OUhc/XxL7Ks1XuX3Pm7rcCnI4rg6U5TQc0IOCVDowjY
+	euQy0pGdVBeAysFgiFMQK2AzqboR/zY=
+Received: from g8t13017g.inc.hp.com (g8t13017g.inc.hp.com [15.72.64.135]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-350-KkGqon8TN8qbvEYjHahyow-1; Fri,
+ 13 Sep 2024 02:06:19 -0400
+X-MC-Unique: KkGqon8TN8qbvEYjHahyow-1
+Received: from g8t01565g.inc.hpicorp.net (g8t01565g.inc.hpicorp.net [15.60.11.226])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by g8t13017g.inc.hp.com (Postfix) with ESMTPS id D6C796000C02;
+	Fri, 13 Sep 2024 06:06:18 +0000 (UTC)
+Received: from mail.hp.com (unknown [15.32.134.51])
+	(using TLSv1.2 with cipher ADH-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by g8t01565g.inc.hpicorp.net (Postfix) with ESMTPS id 374F2212D3;
+	Fri, 13 Sep 2024 06:06:17 +0000 (UTC)
+Received: from cdc-linux-buildsrv17.. (localhost [127.0.0.1])
+	by mail.hp.com (Postfix) with ESMTP id E83BAA40465;
+	Fri, 13 Sep 2024 13:58:41 +0800 (CST)
+From: Wade Wang <wade.wang@hp.com>
+To: jikos@kernel.org,
+	bentiss@kernel.org,
+	linux-input@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	wade.wang@hp.com
+Cc: stable@vger.kernel.org
+Subject: [PATCH] HID: plantronics: Additional PID for double volume key presses quirk
+Date: Fri, 13 Sep 2024 13:58:31 +0800
+Message-Id: <20240913055831.1322457-1-wade.wang@hp.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RESEND] pinctrl: check devm_kasprintf() returned value
-To: Ma Ke <make24@iscas.ac.cn>, marcan@marcan.st, sven@svenpeter.dev,
- alyssa@rosenzweig.io, linus.walleij@linaro.org, joey.gouly@arm.com,
- stan@corellium.com, maz@kernel.org, akpm@linux-foundation.org
-Cc: asahi@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
- linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20240912020840.1763252-1-make24@iscas.ac.cn>
-Content-Language: en-US, fr-FR
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-In-Reply-To: <20240912020840.1763252-1-make24@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: hp.com
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=WINDOWS-1252; x-default=true
 
-Le 12/09/2024 à 04:08, Ma Ke a écrit :
-> devm_kasprintf() can return a NULL pointer on failure but this returned
-> value is not checked. Fix this lack and check the returned value.
-> 
-> Found by code review.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: a0f160ffcb83 ("pinctrl: add pinctrl/GPIO driver for Apple SoCs")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-> ---
->   drivers/pinctrl/pinctrl-apple-gpio.c | 3 +++
->   1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/pinctrl/pinctrl-apple-gpio.c b/drivers/pinctrl/pinctrl-apple-gpio.c
-> index 3751c7de37aa..f861e63f4115 100644
-> --- a/drivers/pinctrl/pinctrl-apple-gpio.c
-> +++ b/drivers/pinctrl/pinctrl-apple-gpio.c
-> @@ -474,6 +474,9 @@ static int apple_gpio_pinctrl_probe(struct platform_device *pdev)
->   	for (i = 0; i < npins; i++) {
->   		pins[i].number = i;
->   		pins[i].name = devm_kasprintf(&pdev->dev, GFP_KERNEL, "PIN%u", i);
-> +		if (!pins[i].name)
-> +			return -ENOMEM;
-> +
->   		pins[i].drv_data = pctl;
->   		pin_names[i] = pins[i].name;
->   		pin_nums[i] = i;
+Add the below headsets for double volume key presses quirk
+        Plantronics EncorePro 500 Series  (047f:431e)
+        Plantronics Blackwire_3325 Series (047f:430c)
 
-Hi,
+Quote from previous patch by Maxim Mikityanskiy and Terry Junge
+=09'commit f567d6ef8606 ("HID: plantronics: Workaround for double volume
+=09 key presses")'
+=09'commit 3d57f36c89d8 ("HID: plantronics: Additional PIDs for double
+=09 volume key presses quirk")'
+These Plantronics Series headset sends an opposite volume key following
+each volume key press. This patch adds a quirk to hid-plantronics for this
+product ID, which will ignore the second opposite volume key press if it
+happens within 250 ms from the last one that was handled.
 
-this is not really an issue. if pin[i].name is NULL, then 
-pinctrl_generic_add_group() below will fail with -EINVAL.
-So your change only returns a more correct error code and saves a few 
-cycles in case of (unlikely) memory allocation issue.
+Signed-off-by: Wade Wang <wade.wang@hp.com>
+---
+ drivers/hid/hid-ids.h         |  2 ++
+ drivers/hid/hid-plantronics.c | 11 +++++++++++
+ 2 files changed, 13 insertions(+)
 
-Anyway:
-Reviewed-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-
-CJ
-
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index 781c5aa29859..a0aaac98a891 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -1050,6 +1050,8 @@
+ #define USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3220_SERIES=090xc056
+ #define USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3215_SERIES=090xc057
+ #define USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3225_SERIES=090xc058
++#define USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3325_SERIES=090x430c
++#define USB_DEVICE_ID_PLANTRONICS_ENCOREPRO_500_SERIES=09=090x431e
+=20
+ #define USB_VENDOR_ID_PANASONIC=09=090x04da
+ #define USB_DEVICE_ID_PANABOARD_UBT780=090x1044
+diff --git a/drivers/hid/hid-plantronics.c b/drivers/hid/hid-plantronics.c
+index 3d414ae194ac..2a19f3646ecb 100644
+--- a/drivers/hid/hid-plantronics.c
++++ b/drivers/hid/hid-plantronics.c
+@@ -38,8 +38,10 @@
+ =09=09=09    (usage->hid & HID_USAGE_PAGE) =3D=3D HID_UP_CONSUMER)
+=20
+ #define PLT_QUIRK_DOUBLE_VOLUME_KEYS BIT(0)
++#define PLT_QUIRK_FOLLOWED_VOLUME_UP_DN_KEYS BIT(1)
+=20
+ #define PLT_DOUBLE_KEY_TIMEOUT 5 /* ms */
++#define PLT_FOLLOWED_KEY_TIMEOUT 250 /* ms */
+=20
+ struct plt_drv_data {
+ =09unsigned long device_type;
+@@ -134,6 +136,9 @@ static int plantronics_event(struct hid_device *hdev, s=
+truct hid_field *field,
+ =09=09cur_ts =3D jiffies;
+ =09=09if (jiffies_to_msecs(cur_ts - prev_ts) <=3D PLT_DOUBLE_KEY_TIMEOUT)
+ =09=09=09return 1; /* Ignore the repeated key. */
++=09=09if ((drv_data->quirks & PLT_QUIRK_FOLLOWED_VOLUME_UP_DN_KEYS)
++=09=09 && jiffies_to_msecs(cur_ts - prev_ts) <=3D PLT_FOLLOWED_KEY_TIMEOUT=
+)
++=09=09=09return 1; /* Ignore the followed volume key. */
+=20
+ =09=09drv_data->last_volume_key_ts =3D cur_ts;
+ =09}
+@@ -210,6 +215,12 @@ static const struct hid_device_id plantronics_devices[=
+] =3D {
+ =09{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
+ =09=09=09=09=09 USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3225_SERIES),
+ =09=09.driver_data =3D PLT_QUIRK_DOUBLE_VOLUME_KEYS },
++=09{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
++=09=09=09=09=09 USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3325_SERIES),
++=09=09.driver_data =3D PLT_QUIRK_DOUBLE_VOLUME_KEYS|PLT_QUIRK_FOLLOWED_VOL=
+UME_UP_DN_KEYS },
++=09{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
++=09=09=09=09=09 USB_DEVICE_ID_PLANTRONICS_ENCOREPRO_500_SERIES),
++=09=09.driver_data =3D PLT_QUIRK_DOUBLE_VOLUME_KEYS|PLT_QUIRK_FOLLOWED_VOL=
+UME_UP_DN_KEYS },
+ =09{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS, HID_ANY_ID) },
+ =09{ }
+ };
+--=20
+2.34.1
 
 
