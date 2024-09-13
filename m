@@ -1,116 +1,133 @@
-Return-Path: <stable+bounces-76035-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76037-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45BD59778B4
-	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 08:15:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 185039778D0
+	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 08:28:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E55001F26023
-	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 06:15:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8748BB2314E
+	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 06:28:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A82C4188005;
-	Fri, 13 Sep 2024 06:15:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 728231BA299;
+	Fri, 13 Sep 2024 06:28:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hp.com header.i=@hp.com header.b="aS1/dJjK"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="c5o8ga0h"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-162.mimecast.com (us-smtp-delivery-162.mimecast.com [170.10.133.162])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E654B1474C5
-	for <stable@vger.kernel.org>; Fri, 13 Sep 2024 06:15:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.162
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8888A187FF7
+	for <stable@vger.kernel.org>; Fri, 13 Sep 2024 06:28:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726208144; cv=none; b=lpjm2AvEGzme3i1/XrLbyTm8tUmkrxGbF+mbHw02tK5JhMdlgJsLWk6AYfgy9ZoSZE73uHImNwqXh8ST8YUPNw6Qmg0HdLm1nR6s3G0Y+vHY9q0mPL0c45CckTi5Y7p3BPpYHHNyN/SsleuWSGWdjKiV6hm9St/+LUwW3UZsJKE=
+	t=1726208896; cv=none; b=q9y4Y4r8J6xH+KQmB+fMZNxFWhO6jDC/nTwmuL+quVnANrUEEEa/ByTjoeR/yk9vfCSmllbFMWAGqGdsnGScjvVpznvEbulnKqlIonz7fGGHhvitrOFNet19CF1XOmmzs+AL5jK94ovtOmQYz9AjJvcVlntuzlOqmDsCvRJ5sfE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726208144; c=relaxed/simple;
-	bh=dSSZCLqJrCrxAWOzdFx7LtvdZ65kcJjv55yZSeigVKs=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=cdulhR/9UELIJf4M2YTzyWhBL/RiLXS+6pfy8A+n5XY9nIRIqJn80OOAku/4jutqa8JRGAATmBlnf0Ynm7Bmw+CZlklu2z9+lvGh4WfJyvP+Ct+qmQHaxbn7nWsprGRzsODFfghda59URx8spmDHIebEk44KCPC84nwQ/yGl9FA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hp.com; spf=pass smtp.mailfrom=hp.com; dkim=pass (1024-bit key) header.d=hp.com header.i=@hp.com header.b=aS1/dJjK; arc=none smtp.client-ip=170.10.133.162
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hp.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hp.com; s=mimecast20180716;
-	t=1726208142;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=dSSZCLqJrCrxAWOzdFx7LtvdZ65kcJjv55yZSeigVKs=;
-	b=aS1/dJjKF88akMTGbJrWP3soOivWNgGybmSi5MPAoepCs+W4tuYw8bCL8NQPbpeFvdh3JW
-	Ag86+zArDhXLc0u1eSI0Jz0xH9zkwzL+AHuts2N4fYxQYZ1C8sf4jXkSVddQdkdeesJgyw
-	j6+tz+m3VeUpNc9t8ZUqDfCyev2bWBE=
-Received: from g7t14361s.inc.hp.com (hpifallback.mail.core.hp.com
- [15.73.128.136]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-576-R6_kcrN8N6WC44JbgxhUEw-1; Fri, 13 Sep 2024 02:15:40 -0400
-X-MC-Unique: R6_kcrN8N6WC44JbgxhUEw-1
-Received: from g7t16458g.inc.hpicorp.net (g7t16458g.inc.hpicorp.net [15.63.18.16])
-	(using TLSv1.2 with cipher ADH-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by g7t14361s.inc.hp.com (Postfix) with ESMTPS id C4DB220298;
-	Fri, 13 Sep 2024 06:15:39 +0000 (UTC)
-Received: from mail.hp.com (unknown [15.32.134.51])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by g7t16458g.inc.hpicorp.net (Postfix) with ESMTPS id D3A2D6000092;
-	Fri, 13 Sep 2024 06:15:38 +0000 (UTC)
-Received: from cdc-linux-buildsrv17.. (localhost [127.0.0.1])
-	by mail.hp.com (Postfix) with ESMTP id AFDC0A40465;
-	Fri, 13 Sep 2024 14:08:02 +0800 (CST)
-From: Wade Wang <wade.wang@hp.com>
-To: jikos@kernel.org,
-	bentiss@kernel.org,
-	linux-input@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	wade.wang@hp.com
-Cc: stable@vger.kernel.org
-Subject: [PATCH] HID: plantronics: Update to map micmute controls
-Date: Fri, 13 Sep 2024 14:08:00 +0800
-Message-Id: <20240913060800.1325954-1-wade.wang@hp.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1726208896; c=relaxed/simple;
+	bh=x/Az8mOIx6xCh9QaWyogQuSUaXizbzH8pdV2aJhLse0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hEXeOAt6JJJgrUMBvPgQThMtftpJr/gfP45pfFFyDxI2Bic0GwLZhF2z1bg4RKuSjnSt2vgi4jDYCn33TPr+o8ekq7wBk/63nhcxAVBoelPgGPczPWjtqu0F+gC/jlRn+sa5fUjxD5q0eDAd2Djgjoq7601MYEyS5xYbSxDeEdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=c5o8ga0h; arc=none smtp.client-ip=209.85.215.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-656d8b346d2so334776a12.2
+        for <stable@vger.kernel.org>; Thu, 12 Sep 2024 23:28:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1726208893; x=1726813693; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=+aurCislgZb8sZalAgSWWZjYMecXAeXVb8GYqztcliU=;
+        b=c5o8ga0how06UFh+QCW1/SfHXXC3dq831sSk1dpM3omFmL4XchjihCtZ89kIQzgrfP
+         HwKr4TV2pAOmH6jkR+xcmrQAmHu5m57wHVLdXonIoPO2KWcNSIvzCUsfkMeacZnEx5Nq
+         UXySasbP6xjyAANkKacNc1NNfXKBlvr6bxbIkaPv15GYoKj/Wtsqgtb+Z9niBRVEl7lI
+         TkJLh3TeJd9FO9OsBkKvTnWxk2aJ9WFf8SLYgn1fthFtvbPeBMg1NWyx6Ov8pKDEe68A
+         DhC5N1JJ5jMlg/1cucoDh59g26ScvPiWZs0LzCDOqLV6IFKgXZKvo2zOrrnoNMSwmRJN
+         0Lhw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726208893; x=1726813693;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=+aurCislgZb8sZalAgSWWZjYMecXAeXVb8GYqztcliU=;
+        b=nTTP0I7bkZQ79WdH8u72+BIjFRw9x9g0fQhfoJNMcQ3Jb1enyp0Hbbh/7XUcdXeqJd
+         woQJVYEpg0E3W7gROKtbDCuQI+tw2UUdmR9zgNLSmaLnwJoib2FUVLdufsjpgRCWL80T
+         u42YqQHnEE6JWck1nm0F94pyycMRQ4WTzQg0ATVCb7JQgq2QCKUMJSui2qU6o4eUDO6G
+         JgxLYaIf8yvTHM7wrGvOTntE8MX1XBA0Rv+FsfRLqzjb+gMfMx+pWS3o05saIQTW3c6D
+         OAyHz4gY0ia20wnRHPFn3/xcRg0vexNjJplJtzp71mcwS7C1czthGy3cGh/ST1GOond8
+         lj8g==
+X-Forwarded-Encrypted: i=1; AJvYcCXqVIheM3txD5qx1aIS/lCr4ZPJGWNGX4CCWeRLx5ofJh2VZvg1+9CFQnWUJFRmAAFm+OTuWQQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzQbl+6prkdPUC+XoSZwXKR3qa+LLSt6rXDK/t9oaGIw+CSsOpr
+	j7Wn5k9UDMZK/vxI5SMwYUBT8WBodktMiSORSs9YljLmxGVv11lH06yQwn63kVLHa2UJQdcdRdu
+	dbj1FCAZWY2CkfTE2FQqjmXDi9TGBzRTb7nccsg==
+X-Google-Smtp-Source: AGHT+IHZLlzD3eQuo84QD3nKDHwfqVrbh6iCWwwh4mJK8NL8ynrj7arJaVAk3bzgxxOkNZduZMot64FtEDU01bvcGnU=
+X-Received: by 2002:a05:6a20:4394:b0:1cf:2988:c34c with SMTP id
+ adf61e73a8af0-1d112db26e6mr2866959637.22.1726208892551; Thu, 12 Sep 2024
+ 23:28:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: hp.com
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=WINDOWS-1252; x-default=true
+References: <20240912155159.1951792-2-ardb+git@google.com>
+In-Reply-To: <20240912155159.1951792-2-ardb+git@google.com>
+From: Ilias Apalodimas <ilias.apalodimas@linaro.org>
+Date: Fri, 13 Sep 2024 09:27:36 +0300
+Message-ID: <CAC_iWj+0pXoRwUeGuuGXZJ-sFhtuxBFidyZJpAOB+Do4-PKXgQ@mail.gmail.com>
+Subject: Re: [PATCH] efistub/tpm: Use ACPI reclaim memory for event log to
+ avoid corruption
+To: Ard Biesheuvel <ardb+git@google.com>
+Cc: linux-efi@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>, stable@vger.kernel.org, 
+	Breno Leitao <leitao@debian.org>, Usama Arif <usamaarif642@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 
-telephony page of Plantronics headset is ignored currently, it caused
-micmute button no function, Now follow native HID key mapping for
-telephony page map, telephony micmute key is enabled by default
+On Thu, 12 Sept 2024 at 18:52, Ard Biesheuvel <ardb+git@google.com> wrote:
+>
+> From: Ard Biesheuvel <ardb@kernel.org>
+>
+> The TPM event log table is a Linux specific construct, where the data
+> produced by the GetEventLog() boot service is cached in memory, and
+> passed on to the OS using a EFI configuration table.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Wade Wang <wade.wang@hp.com>
----
- drivers/hid/hid-plantronics.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+an EFI*
 
-diff --git a/drivers/hid/hid-plantronics.c b/drivers/hid/hid-plantronics.c
-index 2a19f3646ecb..2d17534fce61 100644
---- a/drivers/hid/hid-plantronics.c
-+++ b/drivers/hid/hid-plantronics.c
-@@ -77,10 +77,10 @@ static int plantronics_input_mapping(struct hid_device =
-*hdev,
- =09=09}
- =09}
- =09/* handle standard types - plt_type is 0xffa0uuuu or 0xffa2uuuu */
--=09/* 'basic telephony compliant' - allow default consumer page map */
-+=09/* 'basic telephony compliant' - allow default consumer & telephony pag=
-e map */
- =09else if ((plt_type & HID_USAGE) >=3D PLT_BASIC_TELEPHONY &&
- =09=09 (plt_type & HID_USAGE) !=3D PLT_BASIC_EXCEPTION) {
--=09=09if (PLT_ALLOW_CONSUMER)
-+=09=09if (PLT_ALLOW_CONSUMER || (usage->hid & HID_USAGE_PAGE) =3D=3D HID_U=
-P_TELEPHONY)
- =09=09=09goto defaulted;
- =09}
- =09/* not 'basic telephony' - apply legacy mapping */
---=20
-2.34.1
-
+>
+> The use of EFI_LOADER_DATA here results in the region being left
+> unreserved in the E820 memory map constructed by the EFI stub, and this
+> is the memory description that is passed on to the incoming kernel by
+> kexec, which is therefore unaware that the region should be reserved.
+>
+> Even though the utility of the TPM2 event log after a kexec is
+> questionable, any corruption might send the parsing code off into the
+> weeds and crash the kernel. So let's use EFI_ACPI_RECLAIM_MEMORY
+> instead, which is always treated as reserved by the E820 conversion
+> logic.
+>
+> Cc: <stable@vger.kernel.org>
+> Reported-by: Breno Leitao <leitao@debian.org>
+> Tested-by: Usama Arif <usamaarif642@gmail.com>
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> ---
+>  drivers/firmware/efi/libstub/tpm.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/firmware/efi/libstub/tpm.c b/drivers/firmware/efi/libstub/tpm.c
+> index df3182f2e63a..1fd6823248ab 100644
+> --- a/drivers/firmware/efi/libstub/tpm.c
+> +++ b/drivers/firmware/efi/libstub/tpm.c
+> @@ -96,7 +96,7 @@ static void efi_retrieve_tcg2_eventlog(int version, efi_physical_addr_t log_loca
+>         }
+>
+>         /* Allocate space for the logs and copy them. */
+> -       status = efi_bs_call(allocate_pool, EFI_LOADER_DATA,
+> +       status = efi_bs_call(allocate_pool, EFI_ACPI_RECLAIM_MEMORY,
+>                              sizeof(*log_tbl) + log_size, (void **)&log_tbl);
+>
+>         if (status != EFI_SUCCESS) {
+> --
+> 2.46.0.662.g92d0881bb0-goog
+>
+>
+Reviewed-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
 
