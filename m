@@ -1,81 +1,122 @@
-Return-Path: <stable+bounces-76085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76086-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 699C3978285
-	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 16:28:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86B6D9782E1
+	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 16:48:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1505BB20A1C
-	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 14:28:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29E2D28D7CC
+	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 14:48:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE777B67D;
-	Fri, 13 Sep 2024 14:27:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5749418C36;
+	Fri, 13 Sep 2024 14:47:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dDcOS59r"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="HZ4lmL5D"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DB82B672
-	for <stable@vger.kernel.org>; Fri, 13 Sep 2024 14:27:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 292B129CE3;
+	Fri, 13 Sep 2024 14:47:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726237677; cv=none; b=Oeld3LYQ3em6JG077QdLrjuYdsOMIfUDwnixPe9yNw7wywJ5IKFDnrGZMJGfxFX13ajX6s+SS6849uHcmLZKNOMQzNIyqqXJ9WX2GpTqgDJr3Tyj2SDKzIdSRkfEeoKimHH+z+mOAaC1SvMrsqzCp7BBCDFFZx0AyqhFUzos/Pw=
+	t=1726238876; cv=none; b=BLYyhtkV9cPXMrAAgcpNr+8CNAs636ACUmMIcN0Bfbl+WFNXmVPmSe/7wt6V4jGlpCvlRR+EsdI7QzJgbsmaalpnef8hylLkwLdrEDh2DQOZho6nxA7nYr5n9zSN8NYW66O+bSkKcX9+Vs7K8curvdKHHZR5p68IXKBvV/Hn4SQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726237677; c=relaxed/simple;
-	bh=L+2VZeRnJHTSQ+zYM8PG/4GMUJQ1lc2mOrFWE8E0nL8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rKehHmkhuIy8+lzHzbGt/pW140vxx+O8X01YHASImDqE1U0o/Yj8NKbGKM2gVzx8+oJ0TVCp8z5zFMcmmFHWgQVIHcz7nGKn3earwVt4gb15QILGdO4s77N83oszh59YTgnrEbtqOKjg2ckXXMylO1G9q3DKx78zv8lVQv+nWdQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dDcOS59r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A08DDC4CEC0;
-	Fri, 13 Sep 2024 14:27:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726237677;
-	bh=L+2VZeRnJHTSQ+zYM8PG/4GMUJQ1lc2mOrFWE8E0nL8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dDcOS59riCSGbhyzdpVafo16n1nn17FSl0cEZb1aSQO9OIFcNI/vdVGVb14EoXoWU
-	 qSsgYmf72wcRYZOHb6jDHiG72aWMKTlm2W9kcRpqNz0ZHdraTW822gboIxebIvavGz
-	 3PJD5YvMo84KoFwsDAxhLEYHaU2F5+YYXtOcWl5M=
-Date: Fri, 13 Sep 2024 16:27:54 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: He Lugang <helugang@uniontech.com>
-Cc: stable@vger.kernel.org, Huacai Chen <chenhuacai@loongson.cn>
-Subject: Re: [PATCH 6.6.y RESEND 2/2] LoongArch: Use accessors to page table
- entries instead of direct dereference
-Message-ID: <2024091339-untangled-tracing-d859@gregkh>
-References: <2024091028-stinking-mourner-56f5@gregkh>
- <20240910131119.18625-1-helugang@uniontech.com>
- <1197B2966A66F7F9+20240910131119.18625-2-helugang@uniontech.com>
+	s=arc-20240116; t=1726238876; c=relaxed/simple;
+	bh=FsvMNSjsqkmpovx3KipovB3Nr37RFysiVdtAEGJB5Ko=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=gecMYcY+QhKBZtT/mBO0gGGzePnaO7lv5lze1FF3YywqI0m3NI90aqsJsOdou/PjBE9PHEMY+e12BcoXh7uBOlPECC1WBwkcKxjf9N9n859I7uc6z9/olChanKWQw9ZKf8GnFcyPFpORolT8PKJBrEjT/QhIBUZNsFdACF3F2NE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=HZ4lmL5D; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48D74ZVp028394;
+	Fri, 13 Sep 2024 14:42:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
+	:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding; s=pp1; bh=aA0VD6ILZwVsRCqF6gyMIXcvET
+	Ry4AHsm47dMSMexos=; b=HZ4lmL5DfAEi7SrWDWljVLFu/HrpBbdPmmOfbd5XNZ
+	DalIyxewb9m7uYdGawvPM3GwWsNir1FVhgzJPUx7n1qghWrp4Jrn5/p230j2NLvB
+	PzIwecRik9bz/0aOX3n90CY8ecNCcvyNG+L22PaFgVkLsKaZUTBzoeXZO9vGQ4Xr
+	2VyKbbWO/sRrfwv6qgDmL4GISwGTM5IGB7UJxjn0+pq8+XSHh4LhfiJuNmbQ0vNO
+	SDXFhI6gGUzO+IJFwMiVLVxOkHL0l1PvhioAVpWqOyFIYWGszElhjN7WRyKx6pQW
+	4ZQBSQOOhuTfjtfTAfT6s+j6szsR67+P3HmG+1j5sLIw==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41geg02de4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 13 Sep 2024 14:42:37 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48DCgFTA027389;
+	Fri, 13 Sep 2024 14:42:36 GMT
+Received: from smtprelay07.wdc07v.mail.ibm.com ([172.16.1.74])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 41h3v3pev3-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 13 Sep 2024 14:42:36 +0000
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
+	by smtprelay07.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 48DEgYu522413890
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 13 Sep 2024 14:42:35 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B762758058;
+	Fri, 13 Sep 2024 14:42:34 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5BD9858059;
+	Fri, 13 Sep 2024 14:42:34 +0000 (GMT)
+Received: from ltcden12-lp3.aus.stglabs.ibm.com (unknown [9.40.195.53])
+	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 13 Sep 2024 14:42:34 +0000 (GMT)
+From: Danny Tsen <dtsen@linux.ibm.com>
+To: linux-crypto@vger.kernel.org
+Cc: stable@vger.kernel.org, herbert@gondor.apana.org.au, leitao@debian.org,
+        nayna@linux.ibm.com, appro@cryptogams.org,
+        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        mpe@ellerman.id.au, ltcgcw@linux.vnet.ibm.com, dtsen@us.ibm.com,
+        Danny Tsen <dtsen@linux.ibm.com>
+Subject: [PATCH v2] crypto: Removing CRYPTO_AES_GCM_P10.
+Date: Fri, 13 Sep 2024 10:42:23 -0400
+Message-ID: <20240913144223.1783162-1-dtsen@linux.ibm.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1197B2966A66F7F9+20240910131119.18625-2-helugang@uniontech.com>
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-GUID: -CEw3quGPWS97YQJeKZRXaB0Yg4lcMyu
+X-Proofpoint-ORIG-GUID: -CEw3quGPWS97YQJeKZRXaB0Yg4lcMyu
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-13_11,2024-09-13_02,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 mlxscore=0 malwarescore=0
+ lowpriorityscore=0 suspectscore=0 mlxlogscore=808 priorityscore=1501
+ adultscore=0 clxscore=1011 spamscore=0 bulkscore=0 phishscore=0
+ impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2408220000 definitions=main-2409130102
 
-On Tue, Sep 10, 2024 at 09:11:19PM +0800, He Lugang wrote:
-> From: Huacai Chen <chenhuacai@loongson.cn>
-> 
-> commit 4574815abf43e2bf05643e1b3f7a2e5d6df894f0 upstream
-> 
-> As very well explained in commit 20a004e7b017cce282 ("arm64: mm: Use
-> READ_ONCE/WRITE_ONCE when accessing page tables"), an architecture whose
-> page table walker can modify the PTE in parallel must use READ_ONCE()/
-> WRITE_ONCE() macro to avoid any compiler transformation.
-> 
-> So apply that to LoongArch which is such an architecture, in order to
-> avoid potential problems.
-> 
-> Similar to commit edf955647269422e ("riscv: Use accessors to page table
-> entries instead of direct dereference").
-> 
-> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Disabling CRYPTO_AES_GCM_P10 in Kconfig first so that we can apply the
+subsequent patches to fix data mismatch over ipsec tunnel.
 
-You did not sign off on this, so I'm dropping it :(
+Signed-off-by: Danny Tsen <dtsen@linux.ibm.com>
+---
+ arch/powerpc/crypto/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/powerpc/crypto/Kconfig b/arch/powerpc/crypto/Kconfig
+index 09ebcbdfb34f..46a4c85e85e2 100644
+--- a/arch/powerpc/crypto/Kconfig
++++ b/arch/powerpc/crypto/Kconfig
+@@ -107,6 +107,7 @@ config CRYPTO_AES_PPC_SPE
+ 
+ config CRYPTO_AES_GCM_P10
+ 	tristate "Stitched AES/GCM acceleration support on P10 or later CPU (PPC)"
++	depends on BROKEN
+ 	depends on PPC64 && CPU_LITTLE_ENDIAN && VSX
+ 	select CRYPTO_LIB_AES
+ 	select CRYPTO_ALGAPI
+-- 
+2.43.0
 
 
