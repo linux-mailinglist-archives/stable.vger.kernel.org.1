@@ -1,160 +1,104 @@
-Return-Path: <stable+bounces-76052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76054-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AB30977C14
-	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 11:19:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4758B977CB8
+	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 11:59:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 40291281476
-	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 09:19:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E66091F275DA
+	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 09:59:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C476E1D6C7C;
-	Fri, 13 Sep 2024 09:19:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 746D11D7E22;
+	Fri, 13 Sep 2024 09:59:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WURHdlxD"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1632A1D5CC1;
-	Fri, 13 Sep 2024 09:19:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B84981D7998;
+	Fri, 13 Sep 2024 09:59:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726219169; cv=none; b=OniSFY2CNmeZpedMww+X1Ln2v26ANeIItwGBfO2LEEJ7SToaBcdXpiVnf0cihjtFlGNTXW61Ks8mc+KXuDNxlgW9ck+LkfHgBotQRBy77FpsFdY52bBF1ms4uuYarAZhVczcRYf2j9bZTU0Nlq+3MV01hx88TiQgdeTkf2Yn/fY=
+	t=1726221563; cv=none; b=VnGTqJfL17jp1NqPnwVjrq8x7zVLtx25CRa+nqe66GldsJb7LJashN/hxB9dwZacEn0zMErC1JOye9T2C/tMa73PmJWcGgjAuSy/WbBTKn/vijwW6Bt8mdvD3qFWX4KyMeht0xPGlXS+HGkQaD1dWqsqcy3QmMVnR1sA8z13GlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726219169; c=relaxed/simple;
-	bh=IR5J9e4PvS1gfDTjd1ZAG39ngyGRHzP2kRwLiZkWNps=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=cEroni1+8/jgbcCdWxSjwTEZdFkCHF7pIzK2TUks3XdUjahR43X4BuHy38yIg7dUsmIGQQa/T7+zfXelwsXD1gSaPn1qA9JEYy0/Cu6ifdVN4vqaw7NP2WlYQTwtlsk0M1dw9EmRSPglV1pjig/NJyYkrQRCJ2RxIkla+oaKgCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
-	by APP-03 (Coremail) with SMTP id rQCowAAXHHyEA+RmIphXAw--.1451S2;
-	Fri, 13 Sep 2024 17:19:12 +0800 (CST)
-From: Ma Ke <make24@iscas.ac.cn>
-To: alain.volmat@foss.st.com
-Cc: airlied@gmail.com,
-	akpm@linux-foundation.org,
-	daniel@ffwll.ch,
-	dri-devel@lists.freedesktop.org,
-	laurent.pinchart@ideasonboard.com,
-	linux-kernel@vger.kernel.org,
-	maarten.lankhorst@linux.intel.com,
-	make24@iscas.ac.cn,
-	mripard@kernel.org,
-	stable@vger.kernel.org,
-	tzimmermann@suse.de
-Subject: Re: [PATCH RESEND] drm/sti: avoid potential dereference of error pointers
-Date: Fri, 13 Sep 2024 17:19:00 +0800
-Message-Id: <20240913091900.2025122-1-make24@iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240912070118.GA3783204@gnbcxd0016.gnb.st.com>
-References: <20240912070118.GA3783204@gnbcxd0016.gnb.st.com>
+	s=arc-20240116; t=1726221563; c=relaxed/simple;
+	bh=3+NbSZ3etjvKYRx4sm9SGu5IqWM9BNB/WQxIlcSu+zw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hEhIBlf0XX6aNSH44v6c+c6Usdig+N9eE4WwM3lXrH8la/eimEXGJH5rYXPpIM1KcimD0s5pihej9EAW8UdZdbyZB1w4XCFEzbo5u1/0veQOMsuDAxo1JkxBViK+6VUt4JW96gCKT8fwBM9/BP22w8hHlhhZjA/F2zj9MYsSC7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WURHdlxD; arc=none smtp.client-ip=209.85.218.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a86e9db75b9so278216766b.1;
+        Fri, 13 Sep 2024 02:59:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1726221560; x=1726826360; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3+NbSZ3etjvKYRx4sm9SGu5IqWM9BNB/WQxIlcSu+zw=;
+        b=WURHdlxDuGT9FPUxsfQCi6T1HMeUOjWFo590lTg8HmrJf8cTQiKDO9WRk1TERLSbdG
+         w888AInEQ02xK+Sokj6wNj0OyZrp8Gi5T3YwdCKrXlhVxwN74zyiufRHFf8xWgqAkmNN
+         VjVrh/Y/LvV4HFUHcS7Z339fzwKj9lqzLizlzpWZjHqYcplkhLFPtxsIzeFflCmXp+8j
+         j58DpyKxfDmsOLVkcB3eJ+4VRL6hQ4Xsp/QbZypSl5uQ3dAhd5SHkYNAAri2uRg0DcJo
+         J8JStjoj9e4sINsZPRe/mh+jkuw8iq3H75eweCHzACZwRapzmgNDGiuK+9L9gxWo7VRo
+         QQKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726221560; x=1726826360;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3+NbSZ3etjvKYRx4sm9SGu5IqWM9BNB/WQxIlcSu+zw=;
+        b=Omopa52NMBN6qJOcdMb5bbEdNB7wHIvzXZXmXqy2YaT3EvVE/Di9QLVx9WN5lQDQi1
+         Wi/OzD0lPruniA0sglFM5+/bMRiS5ZDY478bWVzaQwiKXz+eFOe4PS/3s7QtCS5FhOQc
+         qNHdoaZATW/hXQEp7Ou3aEwOFy7/4EVcfBcSfOcJ2mvrWkdyQJ443NAQfkmCM6zkEKSr
+         xs4VzSnyeCA3Un83uesNZuarP1me6iMD6Rglp9Z/6ja1cl11UPL/Fn4XjPiEIxF55iXs
+         YJkfTsh9JY2ZV7JMglZex6HMbHhuAmfS+YtOE6NStutbtVwys5CF0Q/EIonrGlrf9G1J
+         MnAg==
+X-Forwarded-Encrypted: i=1; AJvYcCUGAJO4CBs8xREsAIIqXNFvqtOeQpKosPV6vKTem0J3uj/unpuXgghzZxq3ToC8Gs3W9DmeLmKfVgxj@vger.kernel.org, AJvYcCX8o9HWq6mZvK/OmcKpoJbx5HTELcrvUch8qF8rxD11ijs/kmKEFAzmJ8Yp21A1LwsEK/c4i7wd@vger.kernel.org, AJvYcCXB0t93S1ayeLQF0v1c92+cLnCfT3GXuv0pXrzBwyxKradL9RLUDUVZXAV3kv/w9IS4PRrsME+o5jC5jzM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyblGxLcXWhHJ93H9PJjJBuKPo9YwvWau40CtSF5HB+ZCPrnMhQ
+	x+sdBJtwgVPM1QBcScIRTa7GKnVg0aQkYb1PrxinKraWQQl851WsRZbeqmmE3HhyXqJd+nm3oMM
+	IXdji+rqJb7i/SjG47zeqNliTTLA=
+X-Google-Smtp-Source: AGHT+IHykOTcthTjBRQ45AGDlyV4+KjC8hweDGxJDxkIBpD6K6YsFn1B5hioCcBaxqBusZecaQhw69UeMtFb6ngBJFo=
+X-Received: by 2002:a17:906:dc8a:b0:a8d:7b7d:8c47 with SMTP id
+ a640c23a62f3a-a90297315b9mr609687866b.59.1726221559701; Fri, 13 Sep 2024
+ 02:59:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20240905065716.305332-1-pawell@cadence.com> <PH7PR07MB9538584F3C0AD11119403F11DD9D2@PH7PR07MB9538.namprd07.prod.outlook.com>
+ <PH7PR07MB9538734A9BC4FA56E34998EEDD9D2@PH7PR07MB9538.namprd07.prod.outlook.com>
+ <ZuMOfHp9j_6_3-WC@surfacebook.localdomain> <7e73a66f-e853-4da5-bb95-f28c75d993f2@linux.intel.com>
+In-Reply-To: <7e73a66f-e853-4da5-bb95-f28c75d993f2@linux.intel.com>
+From: Andy Shevchenko <andy.shevchenko@gmail.com>
+Date: Fri, 13 Sep 2024 12:58:42 +0300
+Message-ID: <CAHp75Vca4PCa0DfDF53g8=GuFzSxmbQUR4N985R7AtLa=F2=Jg@mail.gmail.com>
+Subject: Re: [PATCH] usb: xhci: fix loss of data on Cadence xHC
+To: Mathias Nyman <mathias.nyman@linux.intel.com>
+Cc: Pawel Laszczak <pawell@cadence.com>, "mathias.nyman@intel.com" <mathias.nyman@intel.com>, 
+	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>, 
+	"peter.chen@kernel.org" <peter.chen@kernel.org>, 
+	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-CM-TRANSID:rQCowAAXHHyEA+RmIphXAw--.1451S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxXr1kWFW5JFyfZry3Gr4fGrg_yoW5GFy8pr
-	W7GF1j9rWYqa17J3s2qw1qqF4S9395K3y7Gr98G3s2qw1Dtry3GF1akr43ua15Wry8Gw1Y
-	yF9F9FZIqay5ZaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBI14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26r
-	xl6s0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
-	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJV
-	W8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
-	0VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28Icx
-	kI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2Iq
-	xVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42
-	IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY
-	6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aV
-	CY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VU122NtUUUUU==
-X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-Alain Volmat<alain.volmat@foss.st.com> wrote:=0D
-> Hi,=0D
-> =0D
-> I probably went a bit fast on the commit message.  It seems to me that=0D
-> the Fixes line would be probably better with below one instead.=0D
-> =0D
-> Fixes: dd86dc2f9ae1 ("drm/sti: implement atomic_check for the planes")=0D
-> =0D
-> The same fix is actually necessary for all planes (cursor / gdp / hqvdp),=
-=0D
-> which is related to the same original commit.  Hence sti_cursor/sti_gdp=0D
-> and sti_hqvdp.=0D
-> =0D
-> Would you be ok to have those 3 fixes within a commit ?=0D
-> =0D
-> Regards,=0D
-> Alain=0D
-> =0D
-> On Tue, Sep 10, 2024 at 07:25:43PM +0200, Alain Volmat wrote:=0D
-> > Hi,=0D
-> > =0D
-> > Thanks for your patch.=0D
-> > =0D
-> > Acked-by: Alain Volmat <alain.volmat@foss.st.com>=0D
-> > =0D
-> > Regards,=0D
-> > Alain=0D
-> > =0D
-> > On Mon, Aug 26, 2024 at 01:26:52PM +0800, Ma Ke wrote:=0D
-> > > The return value of drm_atomic_get_crtc_state() needs to be=0D
-> > > checked. To avoid use of error pointer 'crtc_state' in case=0D
-> > > of the failure.=0D
-> > > =0D
-> > > Cc: stable@vger.kernel.org=0D
-> > > Fixes: dec92020671c ("drm: Use the state pointer directly in planes a=
-tomic_check")=0D
-> > > =0D
-> > > Signed-off-by: Ma Ke <make24@iscas.ac.cn>=0D
-> > > ---=0D
-> > >  drivers/gpu/drm/sti/sti_cursor.c | 2 ++=0D
-> > >  1 file changed, 2 insertions(+)=0D
-> > > =0D
-> > > diff --git a/drivers/gpu/drm/sti/sti_cursor.c b/drivers/gpu/drm/sti/s=
-ti_cursor.c=0D
-> > > index db0a1eb53532..e460f5ba2d87 100644=0D
-> > > --- a/drivers/gpu/drm/sti/sti_cursor.c=0D
-> > > +++ b/drivers/gpu/drm/sti/sti_cursor.c=0D
-> > > @@ -200,6 +200,8 @@ static int sti_cursor_atomic_check(struct drm_pla=
-ne *drm_plane,=0D
-> > >  		return 0;=0D
-> > >  =0D
-> > >  	crtc_state =3D drm_atomic_get_crtc_state(state, crtc);=0D
-> > > +	if (IS_ERR(crtc_state))=0D
-> > > +		return PTR_ERR(crtc_state);=0D
-> > >  	mode =3D &crtc_state->mode;=0D
-> > >  	dst_x =3D new_plane_state->crtc_x;=0D
-> > >  	dst_y =3D new_plane_state->crtc_y;=0D
-> > > -- =0D
-> > > 2.25.1=0D
-> > > =0D
-Hi=EF=BC=8C=0D
-=0D
-I appreciate your guidance regarding the modification of the Fixes tag. As =
-=0D
-your observation, I have also identified the additional instance=0D
-(sti_hqvdp_atomic_check) where a similar issue exists, necessitating the =0D
-same patch. I have recognized the problem and was in the process of =0D
-reporting it. To prevent any confusion and ensure accurate reporting, I =0D
-have updated the patch already submitted as patch v2. The issue in =0D
-sti_hqvdp_atomic_check has also been reported, and I kindly request you to =
-=0D
-review it.(I am not very familiar with how to combine the reporting of =0D
-vulnerabilities in multiple functions, so to avoid unnecessary errors or =0D
-confusion, I reported them one by one. Hope for your understanding.) Thank =
-=0D
-you for your prompt response. Your assistance is invaluable to me.=0D
-=0D
-Best regards,=0D
-Ma Ke=
+On Fri, Sep 13, 2024 at 11:59=E2=80=AFAM Mathias Nyman
+<mathias.nyman@linux.intel.com> wrote:
+> On 12.9.2024 18.53, Andy Shevchenko wrote:
+> > Thu, Sep 05, 2024 at 07:06:48AM +0000, Pawel Laszczak kirjoitti:
 
+> Thanks, fixed and rebased.
+
+LGTM, thanks!
+
+--
+With Best Regards,
+Andy Shevchenko
 
