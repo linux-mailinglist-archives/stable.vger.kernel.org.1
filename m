@@ -1,40 +1,63 @@
-Return-Path: <stable+bounces-76099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76100-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 287989786E4
-	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 19:36:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19C43978708
+	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 19:41:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1AF91F230F4
-	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 17:36:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1CBD028C301
+	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 17:41:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFD99823AF;
-	Fri, 13 Sep 2024 17:36:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8874823AF;
+	Fri, 13 Sep 2024 17:41:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="AatjiUj2"
 X-Original-To: stable@vger.kernel.org
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3841B1C14;
-	Fri, 13 Sep 2024 17:36:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC0AC1C2BF;
+	Fri, 13 Sep 2024 17:41:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726248999; cv=none; b=pCKoi58N9iZrD3f59WS51LuZWW3ilY1zJc+/2TFUj8EKHEFmysfzX2q5EUXjV9JNSoohXSpLKEWfe2dj/RtqxmbREequur1ifEG+loB5OfHe7Ocl9r4l1MYrfTUMDTppwHNbc0FzXrCFNhnI4omZ0PX17ZRNIVtfLyLNiHvlYGE=
+	t=1726249303; cv=none; b=AQcUh1b0h63pD4NHhnN3L20w1VJoARTSY1UyiB8za7p7JJd97R+Wnafv26WpKegfANAwyaXvdhLT+uQ3ds2cbJmV6YY6aZsJPVzxTmhZLsz12Dw/pRbeYPJZloZowdPYw325OfpOYkrSl/Pw4/w/QQmXyMQsraobeZUcbt1jUpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726248999; c=relaxed/simple;
-	bh=i4sBOolzT6ahoQSSuKXWmcVCJLLVD2qcsAVFDfhP6MI=;
+	s=arc-20240116; t=1726249303; c=relaxed/simple;
+	bh=QtHJbwu5/epgl2p5n2RdNELTRjuNZo/XSz1tUF1eHjk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=imANcuoYu31FhyfXgUyZBuy5nONtT8441UzISIbV8UgPxip0ebAZbwlfJid7BEvBQIdwW/Wv+v/OAdtnjKSedU1Ac+WqjG8SBQMKeFekcd78SfCAgJeW4JPWxPTz0ejBg77GDGQslS5Cu9bxRlLlvBOwMveHMZq/u170hdx8MYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 676CD13D5;
-	Fri, 13 Sep 2024 10:37:05 -0700 (PDT)
-Received: from [192.168.1.12] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BC4A33F64C;
-	Fri, 13 Sep 2024 10:36:33 -0700 (PDT)
-Message-ID: <6f365e5b-220c-4b2e-8a56-a5135b216e62@arm.com>
-Date: Fri, 13 Sep 2024 19:36:27 +0200
+	 In-Reply-To:Content-Type; b=mx4FUOVhRle1Q+cz3pgTNJpoB8t8NEhbkH4BVaHNjCJzCsxpndJ8/VO6fJnpbsw/BuzDp1aG2g9RecqFC6xffljITgZW4IG3TNNQkUd7tevt5bBymX6AAWB/IxGNHuW+Ey4f9hxnXGfUdfmJxjZLzNbIek2IsymlPS03O8mbOGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=AatjiUj2; arc=none smtp.client-ip=199.89.1.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 008.lax.mailroute.net (Postfix) with ESMTP id 4X51nx1CHfz6ClY9v;
+	Fri, 13 Sep 2024 17:41:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1726249292; x=1728841293; bh=xqyDQIoqZjQ2fEbsTKhOiFFn
+	qZZY5hTOfZg9GgG1tyQ=; b=AatjiUj2NlM3NO69WMmWLryosaRyL6sPhQIFWG6n
+	RMFdM6KJA2CbWS0o3qda86OPVmNHcFWrW7fd8iLaB1WoiDOIgTWnSWT1GlkLW36e
+	YcRNonztC87ZocwB8RFYXUE+xwhViBd+nOlVFGK9Or2nKC6sNggVSqhzgdjzWFnn
+	2SSABOPCCOVFYLl1P+WMrQl/jChUAHk2iZy9U4ajc02Jte6dTsdcWUo7+mJ0Mrdy
+	NDIrXqpuEN5ShhHB/VVRa0OXszpdmiQ5PXaAUkOYrU61cIXV7Dw3YGE2KvzezpA/
+	dKbdQ1IkDjog0PaQjJ2Q1VG/QU7yrbRW/pYa3bK/s612dw==
+X-Virus-Scanned: by MailRoute
+Received: from 008.lax.mailroute.net ([127.0.0.1])
+ by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id lhkbSclY8FRY; Fri, 13 Sep 2024 17:41:32 +0000 (UTC)
+Received: from [192.168.51.14] (c-73-231-117-72.hsd1.ca.comcast.net [73.231.117.72])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4X51nh3RLbz6ClY9t;
+	Fri, 13 Sep 2024 17:41:28 +0000 (UTC)
+Message-ID: <46d8be04-10db-4de1-8a59-6cd402bcecb1@acm.org>
+Date: Fri, 13 Sep 2024 10:41:27 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -42,87 +65,71 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] sched/fair: Fix integer underflow
-To: Vincent Guittot <vincent.guittot@linaro.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
- Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
- Juri Lelli <juri.lelli@redhat.com>,
- Dietmar Eggemann <dietmar.eggemann@arm.com>,
- Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
- Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>
-References: <20240913085824.404709-1-pierre.gondois@arm.com>
- <CAKfTPtB2=_O=dJbTH=e_Hg80_rcSvBgwUP+ZMehfyG4sG5W6iQ@mail.gmail.com>
+Subject: Re: [PATCH v4 2/2] ufs: core: requeue aborted request
+To: =?UTF-8?B?UGV0ZXIgV2FuZyAo546L5L+h5Y+LKQ==?= <peter.wang@mediatek.com>,
+ "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+ "avri.altman@wdc.com" <avri.altman@wdc.com>,
+ "jejb@linux.ibm.com" <jejb@linux.ibm.com>,
+ "alim.akhtar@samsung.com" <alim.akhtar@samsung.com>,
+ "martin.petersen@oracle.com" <martin.petersen@oracle.com>
+Cc: "linux-mediatek@lists.infradead.org"
+ <linux-mediatek@lists.infradead.org>,
+ =?UTF-8?B?SmlhamllIEhhbyAo6YOd5Yqg6IqCKQ==?= <jiajie.hao@mediatek.com>,
+ =?UTF-8?B?Q0MgQ2hvdSAo5ZGo5b+X5p2wKQ==?= <cc.chou@mediatek.com>,
+ =?UTF-8?B?RWRkaWUgSHVhbmcgKOm7g+aZuuWCkSk=?= <eddie.huang@mediatek.com>,
+ =?UTF-8?B?QWxpY2UgQ2hhbyAo6LaZ54+u5Z2HKQ==?= <Alice.Chao@mediatek.com>,
+ "quic_nguyenb@quicinc.com" <quic_nguyenb@quicinc.com>,
+ wsd_upstream <wsd_upstream@mediatek.com>,
+ =?UTF-8?B?RWQgVHNhaSAo6JSh5a6X6LuSKQ==?= <Ed.Tsai@mediatek.com>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ =?UTF-8?B?TGluIEd1aSAo5qGC5p6XKQ==?= <Lin.Gui@mediatek.com>,
+ =?UTF-8?B?Q2h1bi1IdW5nIFd1ICjlt6vpp7/lro8p?= <Chun-hung.Wu@mediatek.com>,
+ =?UTF-8?B?VHVuLXl1IFl1ICjmuLjmlabogb8p?= <Tun-yu.Yu@mediatek.com>,
+ =?UTF-8?B?Q2hhb3RpYW4gSmluZyAo5LqV5pyd5aSpKQ==?=
+ <Chaotian.Jing@mediatek.com>, =?UTF-8?B?UG93ZW4gS2FvICjpq5jkvK/mlocp?=
+ <Powen.Kao@mediatek.com>, =?UTF-8?B?TmFvbWkgQ2h1ICjmnLHoqaDnlLAp?=
+ <Naomi.Chu@mediatek.com>, =?UTF-8?B?UWlsaW4gVGFuICjosK3pupLpup8p?=
+ <Qilin.Tan@mediatek.com>
+References: <20240910073035.25974-1-peter.wang@mediatek.com>
+ <20240910073035.25974-3-peter.wang@mediatek.com>
+ <e42abf07-ba6b-4301-8717-8d5b01d56640@acm.org>
+ <04e392c00986ac798e881dcd347ff5045cf61708.camel@mediatek.com>
+ <858c4b6b-fcbc-4d51-8641-051aeda387c5@acm.org>
+ <524e9da9196cc0acf497ff87eba3a8043b780332.camel@mediatek.com>
+ <6203d7c9-b33c-4bf1-aca3-5fc8ba5636b9@acm.org>
+ <6fc025d7ffb9d702a117381fb5da318b40a24246.camel@mediatek.com>
 Content-Language: en-US
-From: Pierre Gondois <pierre.gondois@arm.com>
-In-Reply-To: <CAKfTPtB2=_O=dJbTH=e_Hg80_rcSvBgwUP+ZMehfyG4sG5W6iQ@mail.gmail.com>
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <6fc025d7ffb9d702a117381fb5da318b40a24246.camel@mediatek.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: quoted-printable
 
-Hello Vincent,
+On 9/13/24 12:10 AM, Peter Wang (=E7=8E=8B=E4=BF=A1=E5=8F=8B) wrote:
+> Because the MediaTek UFS controller uses UTRLCLR to clear
+> commands and fills OCS with ABORTED.
+>=20
+> Regarding the specification of UTRCS:
+> This bit is set to '1' by the host controller upon one of the
+> following:
+> 	Overall command Status (OCS) of the completed command is not
+> 	equal to 'SUCCESS' even if its UTRD Interrupt bit set to '0'
+>=20
+> So, MediaTek host controller will send interrupt in this case.
 
-On 9/13/24 18:14, Vincent Guittot wrote:
-> Hi Pierre
-> 
-> On Fri, 13 Sept 2024 at 10:58, Pierre Gondois <pierre.gondois@arm.com> wrote:
->>
->> (struct sg_lb_stats).idle_cpus is of type 'unsigned int'.
->> (local->idle_cpus - busiest->idle_cpus) can underflow to UINT_MAX
->> for instance, and max_t(long, 0, UINT_MAX) will output UINT_MAX.
->>
->> Use lsub_positive() instead of max_t().
-> 
-> Have you faced the problem or this patch is based on code review ?
-> 
-> we have the below in sched_balance_find_src_group() that should ensure
-> that we have local->idle_cpus > busiest->idle_cpus
-> 
-> if (busiest->group_weight > 1 &&
->      local->idle_cpus <= (busiest->idle_cpus + 1)) {
->      /*
->      * If the busiest group is not overloaded
->      * and there is no imbalance between this and busiest
->      * group wrt idle CPUs, it is balanced. The imbalance
->      * becomes significant if the diff is greater than 1
->      * otherwise we might end up to just move the imbalance
->      * on another group. Of course this applies only if
->      * there is more than 1 CPU per group.
->      */
->      goto out_balanced;
-> }
+Hi Peter,
 
-It was with this setup:
-- busiest->group_type == group_overloaded
-so it might not have checked the value. I can check the exact path if desired,
+Thank you for having shared this information. Please consider
+introducing a quirk for ignoring completions triggered by clearing
+a command, e.g. as follows (there may be better approaches):
+* In ufshcd_clear_cmd(), before a command is cleared, initialize
+   the completion that will be used for waiting for the completion
+   interrupt. After a command has been cleared, call
+   wait_for_completion_timeout().
+* In ufshcd_compl_one_cqe(), check whether the completion is the
+   result of a command being cleared. If so, call complete() instead
+   of executing the regular completion code.
 
-Regards,
-Pierre
+Thanks,
 
-
-> 
->>
->> Fixes: 0b0695f2b34a ("sched/fair: Rework load_balance()")
->> cc: stable@vger.kernel.org
->> Signed-off-by: Pierre Gondois <pierre.gondois@arm.com>
->> ---
->>   kernel/sched/fair.c | 4 ++--
->>   1 file changed, 2 insertions(+), 2 deletions(-)
->>
->> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
->> index 9057584ec06d..6d9124499f52 100644
->> --- a/kernel/sched/fair.c
->> +++ b/kernel/sched/fair.c
->> @@ -10775,8 +10775,8 @@ static inline void calculate_imbalance(struct lb_env *env, struct sd_lb_stats *s
->>                           * idle CPUs.
->>                           */
->>                          env->migration_type = migrate_task;
->> -                       env->imbalance = max_t(long, 0,
->> -                                              (local->idle_cpus - busiest->idle_cpus));
->> +                       env->imbalance = local->idle_cpus;
->> +                       lsub_positive(&env->imbalance, busiest->idle_cpus);
->>                  }
->>
->>   #ifdef CONFIG_NUMA
->> --
->> 2.25.1
->>
+Bart.
 
