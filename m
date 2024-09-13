@@ -1,85 +1,54 @@
-Return-Path: <stable+bounces-76046-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76047-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAB0B977B25
-	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 10:35:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 081B6977BB5
+	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 10:58:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 311E01C24A14
-	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 08:35:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A64B31F21A60
+	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 08:58:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92F881D67BE;
-	Fri, 13 Sep 2024 08:35:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Mk6T0X1r"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89E431D6C58;
+	Fri, 13 Sep 2024 08:58:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f194.google.com (mail-pg1-f194.google.com [209.85.215.194])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AD8F15381F;
-	Fri, 13 Sep 2024 08:35:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.194
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DDEA1D58B7;
+	Fri, 13 Sep 2024 08:58:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726216515; cv=none; b=UQ8IzHfXvBY59/Wzz+Vj3iRdLT0P5HObgrQEd5/Iem41mstDQpu0+/oxsPrlaLpZrmLBQJrWwHUFkM0zNXuk4vTMrpIACGDJ265xsimNlKl66DW5KLAUR0mYTwZCyjbfQdYmxijNMwMvrHfK63aITjNiFZdrmOPDXRiePqh6Ey4=
+	t=1726217918; cv=none; b=I3VBvvoHOLTNJ+WPofGdI0M6LwiP+tmLDIraFsPSEmd5gBech6rbIzq0gMNYFEcSR5RA97dVdXX4lq/S9IYrUQS4EPz5qKUJwONezXc7f9M9jVEMuLwAoFSsbc6kHVBzv8fY6zLF/Y3Dns3RD3hErsfzoytKwGQ6fQwfEUqG/0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726216515; c=relaxed/simple;
-	bh=ndTMI7Ta5mkzEp+G+rl2QJDEsX+BahwLi0B2IW6AhGQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Nzs5s6lFCc7NuVrD8CbOU2/rFbmmrtvYbORlmMZbCfVlfclWo38Us3FQKtOo3S1z2YzuJJ1ryKxnPvIFBaJqxvlHg4JvbMaLvjIblG9+qDxoz/1dsT8sqOs4vs0Q1Bj41FmtT70sj/WRZJev9N1A4xwqOXRA4e8S6qeSM/mOnQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Mk6T0X1r; arc=none smtp.client-ip=209.85.215.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f194.google.com with SMTP id 41be03b00d2f7-7d4fbe62bf5so387316a12.0;
-        Fri, 13 Sep 2024 01:35:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1726216513; x=1726821313; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=kC1E6rGRaMKkAAHcPV87FQ7r8LHjz2Mgn/xn2HhiS4I=;
-        b=Mk6T0X1reQai0sHUmCP1/CQVNMAHsPXNoPSiXZCYDZ/rs5wc7KzJ1kjpneX0Tbal5X
-         YsD3YE7oszcDpZIklVQsWPYS1KN+UaKulOMBpu0oRRokI2j8L1SpGLECricP6oACUHWo
-         Yk1QK8/Uv0C8+axlA9jytAV1qrG6umw6phrhcEWYqykkUOdhYlXxpTifCl9imIEvUZse
-         Xv18pHQOn94ABX1oQ5I457n8AP2Gw2XEVsdNA8aKxfbPolCsnkG7nZQAeednWB+bOLFH
-         yAjyIXlJpdGhBU384f1AQtqmWrbjvEwIHdolq316rpkj4jLSe67k38bfVEf8JFQZjxa+
-         u1jA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726216513; x=1726821313;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=kC1E6rGRaMKkAAHcPV87FQ7r8LHjz2Mgn/xn2HhiS4I=;
-        b=iZuE7/q2dYo6d3cjo3Fng5GmK3BFR7Qr+NDAWm4vioQ5yct+B0/QFE9pnSnDS5J+5u
-         jP/vt6Qaw9KV18QNoR1vHUBO4/2ICz1UfHkKGzd3QT9W21c68fVnvSC1pJtyMe0ODnSk
-         Ow2vyJ+eV38uJq0NFiwt4qNqkSnaAGGjNTq6ks5VMuVGMBbPjd42/om5rCxtMvwbAJYU
-         43xP6hDIOdfi+Q6d4MvQQP/cjPUM2vjex1vjTyiGDEzhYgdZVV06Lddt3HvbU4BNq+oz
-         ZsCxkn6EbBc2C2IE6M+QXcvLFj6/jtqVOKHgKyqxfxv9DwLvBp1CbeBz+RCAXDicfeUD
-         dKzw==
-X-Forwarded-Encrypted: i=1; AJvYcCVCxP60pOxTt/hZovghpvgoN2vSTsu9Vr2uwIVTXoHOyvbVudbZEkgfDpLhI76LYgW5hdLy3A+oMluOYQ==@vger.kernel.org, AJvYcCVOrJh29PzK1Ci3YAvrthx2W1mTmTG8pTNrdhzEEkqM+PDrusWE827cKnHrU7VMkJHDhYSQw1Bo@vger.kernel.org, AJvYcCWfOw7glNO77xsTItTCVVT3dgpYCWvt392m2ht2Cqy+6q36aLEj0oggeC6RbK5AT4cR7Cx5zQ+b99OXXBO2@vger.kernel.org
-X-Gm-Message-State: AOJu0YxI7fdesHS0izKyk9ECFQjN4Q4/eF3tXeu1oCOJOXq42bF270wK
-	05czGp1+o9xUpXCizIPFkFajE5mJ+w5F2gSSIFof1tNWrV8H6Tz3
-X-Google-Smtp-Source: AGHT+IGhOiHOH2ZzR9kqH7H6Mz2LbLdj+bggZwXEzS9FbvIrM15f4iZFYOTdBo7HUQ+io4t6nMbhvw==
-X-Received: by 2002:a17:90a:d149:b0:2c6:ee50:5af4 with SMTP id 98e67ed59e1d1-2dbb9dc1163mr2394189a91.6.1726216513004;
-        Fri, 13 Sep 2024 01:35:13 -0700 (PDT)
-Received: from tom-QiTianM540-A739.. ([106.39.42.164])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2dbb9d37e01sm1123613a91.52.2024.09.13.01.35.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Sep 2024 01:35:12 -0700 (PDT)
-From: Qiu-ji Chen <chenqiuji666@gmail.com>
-To: philipp.reisner@linbit.com,
-	lars.ellenberg@linbit.com,
-	christoph.boehmwalder@linbit.com,
-	axboe@kernel.dk
-Cc: drbd-dev@lists.linbit.com,
-	linux-block@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	baijiaju1990@gmail.com,
-	Qiu-ji Chen <chenqiuji666@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] drbd: Fix atomicity violation in drbd_uuid_set_bm()
-Date: Fri, 13 Sep 2024 16:35:04 +0800
-Message-Id: <20240913083504.10549-1-chenqiuji666@gmail.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1726217918; c=relaxed/simple;
+	bh=gvYM1eP7xAAEJwcJpVXx5FknQI88VmeZhycs4DExV5M=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=AQYV7ZNXN6gocWZvY4cqMI5vCBNZf8VeXDTDLFSovfixP72fDDA60V4knIBg5+i11Sv03s0vNUAxemeh1+oW2+ZFn2V8SBN30znpVP/7GsXB3DIe5Vga4qeRfDIMGNZBF8s9W3nbVQcWqpvvhynVBOp7KI6TZ43Ma8N1Kv/PqB4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id CEB8D13D5;
+	Fri, 13 Sep 2024 01:59:05 -0700 (PDT)
+Received: from e126645.arm.com (unknown [10.57.75.215])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id C1D4E3F73B;
+	Fri, 13 Sep 2024 01:58:33 -0700 (PDT)
+From: Pierre Gondois <pierre.gondois@arm.com>
+To: linux-kernel@vger.kernel.org
+Cc: Pierre Gondois <pierre.gondois@arm.com>,
+	stable@vger.kernel.org,
+	Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>,
+	Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>
+Subject: [PATCH] sched/fair: Fix integer underflow
+Date: Fri, 13 Sep 2024 10:58:23 +0200
+Message-Id: <20240913085824.404709-1-pierre.gondois@arm.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -88,53 +57,35 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The violation of atomicity occurs when the drbd_uuid_set_bm function is
-executed simultaneously with modifying the value of
-device->ldev->md.uuid[UI_BITMAP]. Consider a scenario where, while
-device->ldev->md.uuid[UI_BITMAP] passes the validity check when its value
-is not zero, the value of device->ldev->md.uuid[UI_BITMAP] is written to
-zero. In this case, the check in drbd_uuid_set_bm might refer to the old
-value of device->ldev->md.uuid[UI_BITMAP] (before locking), which allows
-an invalid value to pass the validity check, resulting in inconsistency.
+(struct sg_lb_stats).idle_cpus is of type 'unsigned int'.
+(local->idle_cpus - busiest->idle_cpus) can underflow to UINT_MAX
+for instance, and max_t(long, 0, UINT_MAX) will output UINT_MAX.
 
-To address this issue, it is recommended to include the data validity check
-within the locked section of the function. This modification ensures that
-the value of device->ldev->md.uuid[UI_BITMAP] does not change during the
-validation process, thereby maintaining its integrity.
+Use lsub_positive() instead of max_t().
 
-This possible bug is found by an experimental static analysis tool
-developed by our team. This tool analyzes the locking APIs to extract
-function pairs that can be concurrently executed, and then analyzes the
-instructions in the paired functions to identify possible concurrency bugs
-including data races and atomicity violations.
-
-Fixes: 9f2247bb9b75 ("drbd: Protect accesses to the uuid set with a spinlock")
-Cc: stable@vger.kernel.org
-Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
+Fixes: 0b0695f2b34a ("sched/fair: Rework load_balance()")
+cc: stable@vger.kernel.org
+Signed-off-by: Pierre Gondois <pierre.gondois@arm.com>
 ---
- drivers/block/drbd/drbd_main.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ kernel/sched/fair.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/block/drbd/drbd_main.c b/drivers/block/drbd/drbd_main.c
-index a9e49b212341..abafc4edf9ed 100644
---- a/drivers/block/drbd/drbd_main.c
-+++ b/drivers/block/drbd/drbd_main.c
-@@ -3399,10 +3399,12 @@ void drbd_uuid_new_current(struct drbd_device *device) __must_hold(local)
- void drbd_uuid_set_bm(struct drbd_device *device, u64 val) __must_hold(local)
- {
- 	unsigned long flags;
--	if (device->ldev->md.uuid[UI_BITMAP] == 0 && val == 0)
-+	spin_lock_irqsave(&device->ldev->md.uuid_lock, flags);
-+	if (device->ldev->md.uuid[UI_BITMAP] == 0 && val == 0) {
-+		spin_unlock_irqrestore(&device->ldev->md.uuid_lock, flags);
- 		return;
-+	}
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 9057584ec06d..6d9124499f52 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -10775,8 +10775,8 @@ static inline void calculate_imbalance(struct lb_env *env, struct sd_lb_stats *s
+ 			 * idle CPUs.
+ 			 */
+ 			env->migration_type = migrate_task;
+-			env->imbalance = max_t(long, 0,
+-					       (local->idle_cpus - busiest->idle_cpus));
++			env->imbalance = local->idle_cpus;
++			lsub_positive(&env->imbalance, busiest->idle_cpus);
+ 		}
  
--	spin_lock_irqsave(&device->ldev->md.uuid_lock, flags);
- 	if (val == 0) {
- 		drbd_uuid_move_history(device);
- 		device->ldev->md.uuid[UI_HISTORY_START] = device->ldev->md.uuid[UI_BITMAP];
+ #ifdef CONFIG_NUMA
 -- 
-2.34.1
+2.25.1
 
 
