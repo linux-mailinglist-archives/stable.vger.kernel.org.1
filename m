@@ -1,153 +1,115 @@
-Return-Path: <stable+bounces-76028-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DE6C977847
-	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 07:25:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AED997784F
+	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 07:26:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4879E1F24E81
-	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 05:25:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A96AD1F2487F
+	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 05:26:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 625E3153BE4;
-	Fri, 13 Sep 2024 05:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E47F6149DF0;
+	Fri, 13 Sep 2024 05:26:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TvUuyRy+"
+	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="NALrRdky"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+Received: from msa.smtpout.orange.fr (msa-213.smtpout.orange.fr [193.252.23.213])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C535C4A07;
-	Fri, 13 Sep 2024 05:25:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B4C4154C0B
+	for <stable@vger.kernel.org>; Fri, 13 Sep 2024 05:26:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.252.23.213
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726205115; cv=none; b=QVEi7qnCrUKC56nAHdGYmrAGqK+QVceSmTu8Gn+fbI7TE5ZFZSPoN9k/D2kuLoGEbiy1mTJWNBee4Rlk4e4T0i40xEkNJiMPI+KbNRqBRmDxG3tQFrEHKMMAHBeZYSIj8vndCAi+/K7jw87ubb/X9Qr8m17En0JlZ/zf1qwXvdI=
+	t=1726205187; cv=none; b=DU0pKWEwrhx92DxU2eUT/AnVdamVFVSGYe8j25BNtY9g77cUXGi/okLGvJ2aF7D2hjzRbXrYi5Ymst/BsDPobuNIGDfCvNBFV7oXB2pvN7YpcQ2qao+l+eNOEEkLKGGDRi27Km0Mz6iAUP3APfLO4DXrFiLHHunPkZywXQ+8OAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726205115; c=relaxed/simple;
-	bh=27gpEokVPxNneEEgKh8PwQgYDDsz/nj+/b0k1NQV3fE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=vDRLRIhzmH7grAHGUiLAX4KD5ORwF02AiIfdEki+mvY2rhjt0xKLS5xRt9ZLB6Ez0mlwMylHlPOLeh7veXISh/M0Kc14lR8TnSiDnuT5XUFN3/INJVP7u4LH967LfWzwKBQ+du17jtB0yFmIuRaNWC/JDw+C4pRCqbTILdGykUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TvUuyRy+; arc=none smtp.client-ip=209.85.215.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-7d4f85766f0so1541908a12.2;
-        Thu, 12 Sep 2024 22:25:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1726205113; x=1726809913; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=20ZaIfIVSeWUJgDUWvfCEP+VNL9P/nfw/kHDqiLJ47k=;
-        b=TvUuyRy+f9eI/nye1+bRS+RR6DSwM7IR1OMssftnp6V6RLHxkfB65gaNbT15dhI3Z0
-         1kHlcsdnbZR2p0mGcMgtUZrP2KBWrZEAYD1wLmCvwfbTUwfmFZ/ZMFxeq5PDX6yRGfVT
-         wMap1vq+nnnA/7L1JCJ98uU7+zRSZ8TZ8+EnxWZHGZaY7jgmYFElluwF/bgAOb2fYWsU
-         IhhCnN6zh71fFn+oGz1evCISMJBaWuI/zFCmxe3wJqZFYp4v8ORZM6QIYeRMb0DafH0h
-         76xHU4k0/ktvvif7sdS7jJP3YSrFAtQ8eu//pK5p0yVeeTIt/e6kIkqjoRB1B7/zpDz+
-         2jsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726205113; x=1726809913;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=20ZaIfIVSeWUJgDUWvfCEP+VNL9P/nfw/kHDqiLJ47k=;
-        b=IWydeHNLVY5VyMNMThuwoYziwaGhPnfbBz5kLGyRCq8StfxRj3JdZAOSy9v0BBeYdJ
-         JXvr2sTRzQm0zX6y55Y72OUUcjL/y5fBYzoFnOGx2exKDmGkru8/UtmjSkZtUSzgY8Ng
-         gQNW60e6s/1CH/ocFe85p5s3x1GaLy70GeblKKBdDSzPOFcvuvcF1nUT0yzrH6ap0Dbe
-         5JWcgrX1C/ycPrFT/kqywWWZfSUNzwlESLvugetvvF1kg1NN7vhVNma5o9qzPbQsPdl1
-         PRe/6uJHmwXBYBifegfLbHd1ZRdm19BOD1EukYLUizMiGg7mmhMStjNw4b4wYie6sOJJ
-         FDTQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWHNOikg/j/WkMGacBmxFvH7xnIhzOJKyZlEB9EvMENodFReOiIVcp+IDJeWRyUuaqXX2raGQ29@vger.kernel.org, AJvYcCX4XeXQNYQ5ZGZzGTJE0GPUdQFTrtJoVPYJW99wv5hsAxsjlnvXM6WTvUtb2RihbXi8JzKpsIBDclas@vger.kernel.org, AJvYcCXtWbAoNhJ9IiZO9wjqs3nd7ycAZTktoqqT4vUkkqtrYI+dCDn8JOp/s4nQUAc9TYsTq80Hec1+znijVfA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy4sURdgkYEPwHquBLiYzKq8gnEKhQ+z9jof6uMFwApYIU4xGcT
-	LQpwHXQN2rYjnxCCtHaWRhhEAFiaOExKwUAAzMhIgOCVYjiMHeTcCfzCUDoXjIpM++pKHmsC//E
-	z5Rfq+0Iaz90rRrXDhN3alHoDwNc=
-X-Google-Smtp-Source: AGHT+IGdVg8q8qvyLIEMHbHsPv/DvSwUDUKj0IRac1OwT3hrcFwNwy5nZqfkXIzxp2oIAKxdmnaUNjMKrxKD5eWTv5Y=
-X-Received: by 2002:a17:90a:46cb:b0:2da:5d71:fbc with SMTP id
- 98e67ed59e1d1-2db9ffcc71emr6157282a91.16.1726205112882; Thu, 12 Sep 2024
- 22:25:12 -0700 (PDT)
+	s=arc-20240116; t=1726205187; c=relaxed/simple;
+	bh=oDzPv1Y1QlhN0VKg61eGukUlI585QY4rVzK17U1/DBM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uXY5nJoEWx/Yb229C5LlKadX8CjwCZwMHyQsDCuF+Y3yiI3WwduD38d3JqpnKnrt1tnUUzunM/2ktTcNJOT/6e6bP2vyHdTBbXvdLQVhY00YvEPzXNLa+yMEItkPvKbOT/YrFt28Qre6M8U7ZF6n4nnxt0LGrtH47PUJxvCweFw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=NALrRdky; arc=none smtp.client-ip=193.252.23.213
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
+Received: from [192.168.1.37] ([90.11.132.44])
+	by smtp.orange.fr with ESMTPA
+	id oyowsnGGQG3q8oyowsqRC1; Fri, 13 Sep 2024 07:26:22 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
+	s=t20230301; t=1726205182;
+	bh=KIKSdY+oERrLJGWIuSve8q7G/AsXHAikohdbciI8Qc4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From;
+	b=NALrRdkyqSw0QUjCidqRSlXV1y52pP0uv/A9xVZlDpuTgeiAfJHP4Dt7daRBd2BkU
+	 rfDoRRwmmBR/1qZ2cha8mA0lY0PyWe/7PnBTr5avaaR5gZ3vrnWdLcmYdzXAG+3Ox5
+	 6hWctQKO9CfWib3XRENrgA45ZRRJLT/06z3/1VLkp2CZeAjFx1CWjBwx6IWqGkcuQD
+	 c8oBrbiisx+85n04ejSf2aJ6LcBrTy4ogXlEOhbjiIV4FoKGKFvfyzUHIoZHtqjo/3
+	 kbuLPIaY1ploJocF5gIEUlyGdPVbO03ir/c4EM/Cq6edB+YBHCnsEI24mq8FCluZu+
+	 GqpcXBYCmh8LA==
+X-ME-Helo: [192.168.1.37]
+X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
+X-ME-Date: Fri, 13 Sep 2024 07:26:22 +0200
+X-ME-IP: 90.11.132.44
+Message-ID: <3efdd5c8-84e9-4beb-811c-65db48e9af2b@wanadoo.fr>
+Date: Fri, 13 Sep 2024 07:26:12 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240911051716.6572-1-ki.chiang65@gmail.com> <20240911051716.6572-2-ki.chiang65@gmail.com>
- <d222e5b9-7241-46a1-84fe-be2343fa4346@linux.intel.com>
-In-Reply-To: <d222e5b9-7241-46a1-84fe-be2343fa4346@linux.intel.com>
-From: Kuangyi Chiang <ki.chiang65@gmail.com>
-Date: Fri, 13 Sep 2024 13:25:06 +0800
-Message-ID: <CAHN5xi3UEJJ2aPuF3y0PHoqzb6xhmD+UG3YZyh2Ut_hk0H58gg@mail.gmail.com>
-Subject: Re: [PATCH 2/3] xhci: Fix control transfer error on Etron xHCI host
-To: Mathias Nyman <mathias.nyman@linux.intel.com>
-Cc: gregkh@linuxfoundation.org, mathias.nyman@intel.com, 
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RESEND] pinctrl: check devm_kasprintf() returned value
+To: Ma Ke <make24@iscas.ac.cn>, marcan@marcan.st, sven@svenpeter.dev,
+ alyssa@rosenzweig.io, linus.walleij@linaro.org, joey.gouly@arm.com,
+ stan@corellium.com, maz@kernel.org, akpm@linux-foundation.org
+Cc: asahi@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+ linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20240912020840.1763252-1-make24@iscas.ac.cn>
+Content-Language: en-US, fr-FR
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+In-Reply-To: <20240912020840.1763252-1-make24@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+
+Le 12/09/2024 à 04:08, Ma Ke a écrit :
+> devm_kasprintf() can return a NULL pointer on failure but this returned
+> value is not checked. Fix this lack and check the returned value.
+> 
+> Found by code review.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: a0f160ffcb83 ("pinctrl: add pinctrl/GPIO driver for Apple SoCs")
+> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+> ---
+>   drivers/pinctrl/pinctrl-apple-gpio.c | 3 +++
+>   1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/pinctrl/pinctrl-apple-gpio.c b/drivers/pinctrl/pinctrl-apple-gpio.c
+> index 3751c7de37aa..f861e63f4115 100644
+> --- a/drivers/pinctrl/pinctrl-apple-gpio.c
+> +++ b/drivers/pinctrl/pinctrl-apple-gpio.c
+> @@ -474,6 +474,9 @@ static int apple_gpio_pinctrl_probe(struct platform_device *pdev)
+>   	for (i = 0; i < npins; i++) {
+>   		pins[i].number = i;
+>   		pins[i].name = devm_kasprintf(&pdev->dev, GFP_KERNEL, "PIN%u", i);
+> +		if (!pins[i].name)
+> +			return -ENOMEM;
+> +
+>   		pins[i].drv_data = pctl;
+>   		pin_names[i] = pins[i].name;
+>   		pin_nums[i] = i;
 
 Hi,
 
-Thank you for the review.
+this is not really an issue. if pin[i].name is NULL, then 
+pinctrl_generic_add_group() below will fail with -EINVAL.
+So your change only returns a more correct error code and saves a few 
+cycles in case of (unlikely) memory allocation issue.
 
-Mathias Nyman <mathias.nyman@linux.intel.com> =E6=96=BC 2024=E5=B9=B49=E6=
-=9C=8811=E6=97=A5 =E9=80=B1=E4=B8=89 =E4=B8=8B=E5=8D=8811:05=E5=AF=AB=E9=81=
-=93=EF=BC=9A
->
-> On 11.9.2024 8.17, Kuangyi Chiang wrote:
-> > Performing a stability stress test on a USB3.0 2.5G ethernet adapter
-> > results in errors like this:
-> >
-> > [   91.441469] r8152 2-3:1.0 eth3: get_registers -71
-> > [   91.458659] r8152 2-3:1.0 eth3: get_registers -71
-> > [   91.475911] r8152 2-3:1.0 eth3: get_registers -71
-> > [   91.493203] r8152 2-3:1.0 eth3: get_registers -71
-> > [   91.510421] r8152 2-3:1.0 eth3: get_registers -71
-> >
-> > The r8152 driver will periodically issue lots of control-IN requests
-> > to access the status of ethernet adapter hardware registers during
-> > the test.
-> >
-> > This happens when the xHCI driver enqueue a control TD (which cross
-> > over the Link TRB between two ring segments, as shown) in the endpoint
-> > zero's transfer ring. Seems the Etron xHCI host can not perform this
-> > TD correctly, causing the USB transfer error occurred, maybe the upper
-> > driver retry that control-IN request can solve problem, but not all
-> > drivers do this.
-> >
-> > |     |
-> > -------
-> > | TRB | Setup Stage
-> > -------
-> > | TRB | Link
-> > -------
-> > -------
-> > | TRB | Data Stage
-> > -------
-> > | TRB | Status Stage
-> > -------
-> > |     |
-> >
->
-> What if the link TRB is between Data and Status stage, does that
-> case work normally?
+Anyway:
+Reviewed-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-I am not sure, I don't encounter this case, maybe OK.
+CJ
 
->
-> > To work around this, the xHCI driver should enqueue a No Op TRB if
-> > next available TRB is the Link TRB in the ring segment, this can
-> > prevent the Setup and Data Stage TRB to be breaked by the Link TRB.
->
-> There are some hosts that need the 'Chain' bit set in the Link TRB,
-> does that work in this case?
 
-No, it doesn't work. It seems to be a hardware issue.
-
->
-> Thanks
-> Mathias
->
-
-Thanks,
-Kuangyi Chiang
 
