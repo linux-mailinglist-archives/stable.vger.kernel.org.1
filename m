@@ -1,134 +1,109 @@
-Return-Path: <stable+bounces-76048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70DE8977BBA
-	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 10:59:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09E11977BCF
+	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 11:04:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E826282D07
-	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 08:59:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B57CD1F253D7
+	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 09:04:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DFE71D6C6F;
-	Fri, 13 Sep 2024 08:59:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="frq4NGj3"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A01FB1BD4FF;
+	Fri, 13 Sep 2024 09:04:52 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8463215443F;
-	Fri, 13 Sep 2024 08:59:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EACC31BCA01;
+	Fri, 13 Sep 2024 09:04:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726217968; cv=none; b=ebQqz1mXgi2eklQ6154+J3HwDHzvCNc6gvDIR2weqih7s+ewFRFHbB9Vi8qiQX+cPJJA2QMWTC2dt0hFtO9RCjkGH5rpe+8+RJFq9ixoMwFkIlYnkB6ocAP1CI/eqZNO9UAc4dJyyi7lvHoXfFLjFNQ7U8sGFyZ36nFwfoiOHqQ=
+	t=1726218292; cv=none; b=ohfOvjvCMpHvqB9G4l1uRZtq8yMMwE1emcuIVG19RHPVnUqun2OyxbR32K4aV535Xx2VV94yPBRbA16bP5+nzpJRJIZUSdcM9oi0pmLHPrTcSN8kL00NUBIQytCzClBVtEysZ/KurOR5G2zCTShjr8NQmvPmh0MqWRjonueyuNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726217968; c=relaxed/simple;
-	bh=zRkh1Ji+XJM1QVnhjaVembi9RZTPeDYx7ZVLPItSeJ4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NKlcynR2bmAqe170SJ8RDCTwUleyWkKFATugTlVRcmk3UhKFZwhOHwDzgR+TKfvc0c2Ss+1wvm5uTIfnxZKB5Rt51bwheLlVVIxfKhpDbr4v81A4pBz1sgpNouGJtjlODlvei5Gb7DqrxuRXRtdBTwrIfKbe4cZbLDAKJaJkFJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=frq4NGj3; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1726217966; x=1757753966;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=zRkh1Ji+XJM1QVnhjaVembi9RZTPeDYx7ZVLPItSeJ4=;
-  b=frq4NGj3b4BLxL/1iT7p6kWX2qr00W4qu6VqdUXeV+EJkjm3OCO+r378
-   hy1m2yMP23g3k4IbSjpvRH+JZ070V3fWp/PmMiA553icPQP5cIy+KQyL/
-   a7HW+Lsw3/Gh74+70NWK28JiW5h6KictKo6p5Cq0eB00lUhuycFvRMkgL
-   XXsjr5iHpx2mIpAFP0tVkWfcGkn5bMWY82BVztYzM7XWf7vq/hXSFbxqk
-   GD6pGzJnmAnMBTaNYKbKDDJWC5/1f6Iq7cq+SR3cqMt4dzzYjU9GyK/Bi
-   WekFNkJ4vHoJyg5slbjKc1U6RLw3ZSbE+UZS8qQFhh87nSC5YHyFLebBs
-   Q==;
-X-CSE-ConnectionGUID: qUaf1PLWQQSQv/knTwHUHw==
-X-CSE-MsgGUID: F1IfLTdhR9CQqmJ0AlSLvg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11193"; a="29004358"
-X-IronPort-AV: E=Sophos;i="6.10,225,1719903600"; 
-   d="scan'208";a="29004358"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2024 01:59:25 -0700
-X-CSE-ConnectionGUID: RWGsGADGS/aa0PhV8zUxIw==
-X-CSE-MsgGUID: j/LSU4Q5QsKg8MOzQAm9/Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,225,1719903600"; 
-   d="scan'208";a="67834021"
-Received: from mattu-haswell.fi.intel.com (HELO [10.237.72.199]) ([10.237.72.199])
-  by orviesa010.jf.intel.com with ESMTP; 13 Sep 2024 01:59:24 -0700
-Message-ID: <7e73a66f-e853-4da5-bb95-f28c75d993f2@linux.intel.com>
-Date: Fri, 13 Sep 2024 12:01:30 +0300
+	s=arc-20240116; t=1726218292; c=relaxed/simple;
+	bh=AYp9QbBhozFAh+2HGtWqo/Ory1mgHJGETiq53P7XG4k=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=UTvQKAz9tTJrF3aKsPq+cJ0/NbffGO9YM43b8stKA7QKuu0UiAJ07eEeb4PDNlI+0rLJ5rq9jbgEUCNLlrW/jExGYmlpo+iKGOcU+rZTkrDVqLN6jZEHYZ2tRRdI2em9h+qrginlJk6gwejQWUmVlmEwyyMUwM2fxJCMLQUnjy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from icess-ProLiant-DL380-Gen10.. (unknown [183.174.60.14])
+	by APP-03 (Coremail) with SMTP id rQCowAA3P38MAORmj8pWAw--.309S2;
+	Fri, 13 Sep 2024 17:04:21 +0800 (CST)
+From: Ma Ke <make24@iscas.ac.cn>
+To: alain.volmat@foss.st.com,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
+	airlied@gmail.com,
+	daniel@ffwll.ch,
+	vincent.abriou@st.com,
+	benjamin.gaignard@linaro.org
+Cc: dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	Ma Ke <make24@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH v2] drm/sti: avoid potential dereference of error pointers
+Date: Fri, 13 Sep 2024 17:04:12 +0800
+Message-Id: <20240913090412.2022848-1-make24@iscas.ac.cn>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] usb: xhci: fix loss of data on Cadence xHC
-To: Andy Shevchenko <andy.shevchenko@gmail.com>,
- Pawel Laszczak <pawell@cadence.com>
-Cc: "mathias.nyman@intel.com" <mathias.nyman@intel.com>,
- "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
- "peter.chen@kernel.org" <peter.chen@kernel.org>,
- "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <20240905065716.305332-1-pawell@cadence.com>
- <PH7PR07MB9538584F3C0AD11119403F11DD9D2@PH7PR07MB9538.namprd07.prod.outlook.com>
- <PH7PR07MB9538734A9BC4FA56E34998EEDD9D2@PH7PR07MB9538.namprd07.prod.outlook.com>
- <ZuMOfHp9j_6_3-WC@surfacebook.localdomain>
-Content-Language: en-US
-From: Mathias Nyman <mathias.nyman@linux.intel.com>
-In-Reply-To: <ZuMOfHp9j_6_3-WC@surfacebook.localdomain>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowAA3P38MAORmj8pWAw--.309S2
+X-Coremail-Antispam: 1UD129KBjvdXoWruF4kGrW7Gw18WF43ZFykAFb_yoWDCrX_G3
+	WUXrn3Kr9rGF1jva1jyrn8Aa9Y9rWv9F48X340qa9IyrWDAry8X3yxWF1fWr1UWF1UtF9r
+	t3WfC3s0krnIkjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbS8FF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr0_
+	Gr1UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
+	Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
+	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr
+	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
+	rcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x
+	0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E
+	7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcV
+	C0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF
+	04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7
+	CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUQvtAUUUUU=
+X-CM-SenderInfo: ppdnvj2u6l2u1dvotugofq/
 
-On 12.9.2024 18.53, Andy Shevchenko wrote:
-> Thu, Sep 05, 2024 at 07:06:48AM +0000, Pawel Laszczak kirjoitti:
->> Please ignore this patch. I send it again with correct version in subject.
-> 
-> It seems it's in Mathias' tree, never the less, see also below.
-> 
-> ...
-> 
->>> +#define PCI_DEVICE_ID_CADENCE				0x17CD
-> 
-> First of all this is misleadig as this is VENDOR_ID, second, there is official
-> ID constant for Cadence in pci_ids.h.
-> 
-> #define PCI_VENDOR_ID_CDNS              0x17cd
-> 
+The return value of drm_atomic_get_crtc_state() needs to be
+checked. To avoid use of error pointer 'crtc_state' in case
+of the failure.
 
-Thanks, fixed and rebased.
+Cc: stable@vger.kernel.org
+Fixes: dd86dc2f9ae1 ("drm/sti: implement atomic_check for the planes")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+---
+Changes in v2:
+- modified the Fixes tag according to suggestions;
+- added necessary blank line.
+---
+ drivers/gpu/drm/sti/sti_cursor.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Changes:
-
-diff --git a/drivers/usb/host/xhci-pci.c b/drivers/usb/host/xhci-pci.c
-index 5e7747f80762..4bc6ee57ec42 100644
---- a/drivers/usb/host/xhci-pci.c
-+++ b/drivers/usb/host/xhci-pci.c
-@@ -78,8 +78,7 @@
-  #define PCI_DEVICE_ID_ASMEDIA_2142_XHCI                        0x2142
-  #define PCI_DEVICE_ID_ASMEDIA_3242_XHCI                        0x3242
-  
--#define PCI_DEVICE_ID_CADENCE                          0x17CD
--#define PCI_DEVICE_ID_CADENCE_SSP                      0x0200
-+#define PCI_DEVICE_ID_CDNS_SSP                         0x0200
-  
-  static const char hcd_name[] = "xhci_hcd";
-  
-@@ -470,8 +469,8 @@ static void xhci_pci_quirks(struct device *dev, struct xhci_hcd *xhci)
-                         xhci->quirks |= XHCI_ZHAOXIN_TRB_FETCH;
-         }
-  
--       if (pdev->vendor == PCI_DEVICE_ID_CADENCE &&
--           pdev->device == PCI_DEVICE_ID_CADENCE_SSP)
-+       if (pdev->vendor == PCI_VENDOR_ID_CDNS &&
-+           pdev->device == PCI_DEVICE_ID_CDNS_SSP)
-                 xhci->quirks |= XHCI_CDNS_SCTX_QUIRK;
--Mathias
+diff --git a/drivers/gpu/drm/sti/sti_cursor.c b/drivers/gpu/drm/sti/sti_cursor.c
+index db0a1eb53532..c59fcb4dca32 100644
+--- a/drivers/gpu/drm/sti/sti_cursor.c
++++ b/drivers/gpu/drm/sti/sti_cursor.c
+@@ -200,6 +200,9 @@ static int sti_cursor_atomic_check(struct drm_plane *drm_plane,
+ 		return 0;
+ 
+ 	crtc_state = drm_atomic_get_crtc_state(state, crtc);
++	if (IS_ERR(crtc_state))
++		return PTR_ERR(crtc_state);
++
+ 	mode = &crtc_state->mode;
+ 	dst_x = new_plane_state->crtc_x;
+ 	dst_y = new_plane_state->crtc_y;
+-- 
+2.25.1
 
 
