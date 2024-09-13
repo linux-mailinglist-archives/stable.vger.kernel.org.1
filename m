@@ -1,127 +1,118 @@
-Return-Path: <stable+bounces-76108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76109-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 419B99788F4
-	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 21:27:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFF3E97893C
+	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 22:03:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C2871C21D85
-	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 19:27:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7465CB2421E
+	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 20:03:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 738791474A5;
-	Fri, 13 Sep 2024 19:27:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E70D146A9F;
+	Fri, 13 Sep 2024 20:03:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="3s/5Lffk"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="HzOfART7"
 X-Original-To: stable@vger.kernel.org
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9483212C526;
-	Fri, 13 Sep 2024 19:27:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59A3CBA2E
+	for <stable@vger.kernel.org>; Fri, 13 Sep 2024 20:03:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726255667; cv=none; b=iIKC8oV1BL2eJe2er4cLrlGC+YvmnYRUPoAuV8qonwUIggd2ZOUcGjne3my5wyDSC2ZoTsqb5idKfpwG+DC4Urpcb3PxjohVEvKKWIMQqy5r3MFzuvP0zTQ1QGABiF47q4B6TZNTdrXEcTXWf8u6d8phQDx5iRZbSue7k59dh/Y=
+	t=1726257805; cv=none; b=Oi+mVxH12rs8/E+4RRNXnDlomkDg7jFzFZ4AIoy2iLqREKN3wrpRFjA5qiybktcwT68D0c3PQyIbBhdhSBwPzdE3p2sSU5yIXkps33ucdC1txPdKBRO/qp/IwViBFQt4bOXzMkD7uJyVmiBZWBsPgjk2Bvp0XYmnUGRCtezAM5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726255667; c=relaxed/simple;
-	bh=Uzy0WKo0zVSTsnIqoRl2P0vXxeopPBlGtqFbKaNB4x0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZsPRSfq06ABSxdwLqom9E0lhmG8gMnaSWvJ2oj4KcCLnouI6JlhAagZN0ZQrEqDSeootPs7FfEZLbVk/oh6QYjPYlWCvdnxVirem1R3K2F/1Y1LujwCQtlO7DDVLUmztqCuAVeB8Vv4SYNnmkG1LQEAE7S3mMxvkvpYRWgnKLt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=3s/5Lffk; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=V/fJdEFiVV1xIWs3tBqysiFVv3X6oa6gDDk7YeJVw8s=; b=3s/5LffkanL6JgKJdCkpMVN4mA
-	gvWbJIwLXl8SJgWI2e05xTlPRuVo02f26hMdxNDCq1K/0UM+dKCgrnRS5RSztGn0G7endKpcSNkVK
-	CWv9lipO+ZXgG68QJje6llHwbX++Tsc8PqQgyr3rll+5m1jDJwpxUCuWUvea+uKXgiSU=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1spBwx-007Q0o-Hv; Fri, 13 Sep 2024 21:27:23 +0200
-Date: Fri, 13 Sep 2024 21:27:23 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Vladimir Oltean <olteanv@gmail.com>
-Cc: "A. Sverdlin" <alexander.sverdlin@siemens.com>, netdev@vger.kernel.org,
-	=?iso-8859-1?Q?Ar1n=E7_=DCNAL?= <arinc.unal@arinc9.com>,
-	Daniel Golle <daniel@makrotopia.org>,
-	DENG Qingfang <dqfext@gmail.com>,
-	Sean Wang <sean.wang@mediatek.com>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	UNGLinuxDriver@microchip.com,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>, Felix Fietkau <nbd@nbd.name>,
-	Mark Lee <Mark-MC.Lee@mediatek.com>,
-	Roopa Prabhu <roopa@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	linux-mediatek@lists.infradead.org, bridge@lists.linux.dev,
-	stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] net: dsa: RCU-protect dsa_ptr in struct net_device
-Message-ID: <28d0a7a5-ead6-4ce0-801c-096038823259@lunn.ch>
-References: <20240910130321.337154-1-alexander.sverdlin@siemens.com>
- <20240910130321.337154-2-alexander.sverdlin@siemens.com>
- <20240913190326.xv5qkxt7b3sjuroz@skbuf>
+	s=arc-20240116; t=1726257805; c=relaxed/simple;
+	bh=8LLZRYM7c13O9q3MIbGrKIrbhmpC+vGwEWD3lL1NACc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=A7SU8ude56MrU2bRWHR5Rio89LMVx52mED+vJKSq9XfsybzSb1ys6Axi1qXzXnmtnemZHVRKCNaRxjAHoxP0pyBSQ2OK9hS9vr7E8mahfHN2gIiAdM1pG29MNYy7DOp813CQN3Bd3YFTJyxj5dRv6bcvuSRwG85d3uNBStYHnTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=HzOfART7; arc=none smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48DJ13Y2006355;
+	Fri, 13 Sep 2024 20:03:20 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
+	from:to:cc:subject:date:message-id:mime-version:content-type
+	:content-transfer-encoding; s=corp-2023-11-20; bh=PxqMiw7kuRI7J6
+	7JaZIuSwLjfUuCoAV3doY9aR4k7d0=; b=HzOfART7HH48Jne2IaFupNJsKtvyOg
+	NHCDNtU4Ml+gE3GQ819A4Yg2ne+vQTYTTP6VBBJ08PCsHz1lUar29NEhIUeTBEnb
+	lMD4JqNlGeRSGBwF/2Wa7a6jXEbcz7jCT6geYRJo3tkbaqkJpecvhT76d+S3eVmX
+	K5uSDdkhZ+d7VHkGXftCYBBorrGBFrhs5LzMaB9EorU2B3eImXCc4o2aKxzCSYoQ
+	qiWO5LkIi2LuWSvcN+c4qJPMgBdxJT8MA27SZ82fhsmy7h5xhRiOG+by1mhgKDoe
+	uxm5IFqVCUhcGgVeApbzckx7X3Viroc53FwUyd9Q9kxvyMMgWNEuMDYw==
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.appoci.oracle.com [147.154.18.20])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 41gevcxks8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 13 Sep 2024 20:03:20 +0000 (GMT)
+Received: from pps.filterd (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 48DIXZ7w032388;
+	Fri, 13 Sep 2024 20:03:19 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 41gd9ke3sw-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 13 Sep 2024 20:03:19 +0000
+Received: from iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 48DK1HJP017052;
+	Fri, 13 Sep 2024 20:03:18 GMT
+Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
+	by iadpaimrmta02.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 41gd9ke3c9-1;
+	Fri, 13 Sep 2024 20:03:18 +0000
+From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+To: stable@vger.kernel.org
+Cc: gautammenghani201@gmail.com, skhan@linuxfoundation.org,
+        usama.anjum@collabora.com, saeed.mirzamohammadi@oracle.com,
+        samasth.norway.ananda@oracle.com
+Subject: [PATCH 4.19 0/2] kselftest fails to compile on 4.19
+Date: Fri, 13 Sep 2024 13:02:38 -0700
+Message-ID: <20240913200249.4060165-1-samasth.norway.ananda@oracle.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240913190326.xv5qkxt7b3sjuroz@skbuf>
+Content-Type: text/plain; charset=y
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-13_11,2024-09-13_02,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 adultscore=0 suspectscore=0
+ mlxlogscore=614 malwarescore=0 bulkscore=0 spamscore=0 mlxscore=0
+ phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.12.0-2408220000 definitions=main-2409130142
+X-Proofpoint-ORIG-GUID: MFdkVJgZv37eszGhrSzSyss-RNocB5QM
+X-Proofpoint-GUID: MFdkVJgZv37eszGhrSzSyss-RNocB5QM
 
-> >  drivers/net/dsa/mt7530.c                    |   3 +-
-> >  drivers/net/dsa/ocelot/felix.c              |   3 +-
-> >  drivers/net/dsa/qca/qca8k-8xxx.c            |   3 +-
-> >  drivers/net/ethernet/broadcom/bcmsysport.c  |   8 +-
-> >  drivers/net/ethernet/mediatek/airoha_eth.c  |   2 +-
-> >  drivers/net/ethernet/mediatek/mtk_eth_soc.c |  22 +++--
-> >  drivers/net/ethernet/mediatek/mtk_ppe.c     |  15 ++-
-> >  include/linux/netdevice.h                   |   2 +-
-> >  include/net/dsa.h                           |  36 +++++--
-> >  include/net/dsa_stubs.h                     |   6 +-
-> >  net/bridge/br_input.c                       |   2 +-
-> >  net/core/dev.c                              |   3 +-
-> >  net/core/flow_dissector.c                   |  19 ++--
-> >  net/dsa/conduit.c                           |  66 ++++++++-----
-> >  net/dsa/dsa.c                               |  19 ++--
-> >  net/dsa/port.c                              |   3 +-
-> >  net/dsa/tag.c                               |   3 +-
-> >  net/dsa/tag.h                               |  19 ++--
-> >  net/dsa/tag_8021q.c                         |  10 +-
-> >  net/dsa/tag_brcm.c                          |   2 +-
-> >  net/dsa/tag_dsa.c                           |   8 +-
-> >  net/dsa/tag_qca.c                           |  10 +-
-> >  net/dsa/tag_sja1105.c                       |  22 +++--
-> >  net/dsa/user.c                              | 104 +++++++++++---------
-> >  net/ethernet/eth.c                          |   2 +-
-> >  25 files changed, 240 insertions(+), 152 deletions(-)
-> 
-> Thank you for the patch, and I would like you to not give up on it, even
-> if we will go for a different bug fix for 'stable'.
-> 
-> It's just that it makes me a bit uneasy to have this as the bug fix.
+In the linux-4.19.y kernel kcmp_test and compaction_test kselftest fails to compile.
 
-+1
+kcmp_test.c: In function ‘main’:
+kcmp_test.c:92:17: warning: implicit declaration of function ‘ksft_set_plan’ [-Wimplicit-function-declaration]
+  92 |         ksft_set_plan(3);
+   |
+         ^~~~~~~~~~~~~
+and
 
-We should try for a minimal fix for stable, and keep this for
-net-next, given its size.
+compaction_test.c: In function ‘main’:
+compaction_test.c:186:9: warning: implicit declaration of function ‘ksft_set_plan’ [-Wimplicit-function-declaration]
+ 186 |   ksft_set_plan(1);
+   |   ^~~~~~~~~~~~~
 
-https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+The function definition for ksft_set_plan() is introduced by commit
+5821ba969511 ("selftests: Add test plan API to kselftest.h and adjust
+callers") which is present from linux-5.2.y onwards.
 
-* It must be obviously correct and tested.
-* It cannot be bigger than 100 lines, with context.
+Samasth Norway Ananda (2):
+  selftests/vm: remove call to ksft_set_plan()
+  selftests/kcmp: remove call to ksft_set_plan()
 
-	Andrew
+ tools/testing/selftests/kcmp/kcmp_test.c     | 1 -
+ tools/testing/selftests/vm/compaction_test.c | 2 --
+ 2 files changed, 3 deletions(-)
+
+-- 
+2.45.2
+
 
