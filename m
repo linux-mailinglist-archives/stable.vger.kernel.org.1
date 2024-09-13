@@ -1,120 +1,156 @@
-Return-Path: <stable+bounces-76114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 242FC978A12
-	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 22:36:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13E3D978B6F
+	for <lists+stable@lfdr.de>; Sat, 14 Sep 2024 00:33:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B27B41F2254D
-	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 20:36:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46A001C22C21
+	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 22:33:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBE3E34CD8;
-	Fri, 13 Sep 2024 20:36:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D0A416F287;
+	Fri, 13 Sep 2024 22:33:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DRNAprKS"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="LCydffo3"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f52.google.com (mail-io1-f52.google.com [209.85.166.52])
+Received: from mail-oa1-f46.google.com (mail-oa1-f46.google.com [209.85.160.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E187914831E
-	for <stable@vger.kernel.org>; Fri, 13 Sep 2024 20:36:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD897148308
+	for <stable@vger.kernel.org>; Fri, 13 Sep 2024 22:33:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726259810; cv=none; b=s/dxZepvUBOexdHOVz783jVAg40DmMuV5dKU5yGpWu79eJmSIrS+bRB9s6QTXYQ4Jg8edFUkRAmpmndyewcTVarKg5vJCSqeGa3DzHrxavBMlqnIGGeDUpTvd/ERLa12Pe6p3yewfsYFX970zoS3TZF34yCwIkhpqOQNroF6sgI=
+	t=1726266834; cv=none; b=FNtPgk3m/DuBKFD689NDZ8VIMCWjjNr1OyNdAxwh5uUwLG5kiDsT3r1iwYnFRYd2e6lqiptXhJwGm5wZ7MUF2JWofyxhqrD1Leq5fBYfAGSZtKlP+4wLWdExMqXI5NOJcW+UOK02JoNbYRUxK4ZtsHFpXMrrE7Uh/Nel3j0dVdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726259810; c=relaxed/simple;
-	bh=jKtw0Brni1/+iCUqpzFBjatwEiWqFozxwWCl0Dg92jY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jXud40PiFBVtmQlizgsyx++V8cNimTQZs3MhuC+JFpDF2YIYPUYRLyURSnrPPskmKKciqPxm/YSfPbjoTzQCBKq76rvlQEpdM2uqEw9KWpsoTO/R4pYWVEWUALAEG5+fJPgo6zL5D11cShSm60PG5oD52WJ06yYcdf3QlOqbq+s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DRNAprKS; arc=none smtp.client-ip=209.85.166.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-io1-f52.google.com with SMTP id ca18e2360f4ac-82ab349320fso103818839f.1
-        for <stable@vger.kernel.org>; Fri, 13 Sep 2024 13:36:48 -0700 (PDT)
+	s=arc-20240116; t=1726266834; c=relaxed/simple;
+	bh=U1NroKr0HA7CbvYhIRp6QGqZlDY9h8+cRjm0wX0Ld0E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jb7I7YLReR7ZmT+x1KMoCF8hqYoU3yAmWM/VbaIBefBMuDhB38OSuMzkjqkbZ3Qpf3LPaFjPeFRb15IWsFbEzZ8TVRztXAkHbPpk0VpjcgcuqIQdC2yxq9psrTT/p15LheLt8HW6JauSUTwZ6RsVaPGqWo1XAE38WP5dRBeIpnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=LCydffo3; arc=none smtp.client-ip=209.85.160.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
+Received: by mail-oa1-f46.google.com with SMTP id 586e51a60fabf-277f969ef0eso51736fac.3
+        for <stable@vger.kernel.org>; Fri, 13 Sep 2024 15:33:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1726259808; x=1726864608; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=o1WoLTK+YlUVcs/IjyKVz4zW4+QbadUtrtKQYYALwEM=;
-        b=DRNAprKSaEeO5rJPlv5613phkSKbEaZwQdYz8OzrBl0vDW/HCktTrNvzyZ5PUgc7cE
-         rqon3jEmuDgjoHnPsvPdYogoMLRiGIDQXgIyD3MRqDzQReMfqPzRoHILGedfPSQVDa4N
-         XYpT5az9/6eGnxqlJvQZGImD8Kkrvut/pEY0U=
+        d=chromium.org; s=google; t=1726266832; x=1726871632; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nR+aFVWTVq8CbCarFENk6QxpMqmR4IKiYC+//JY1HWs=;
+        b=LCydffo3Ahdeh+wUDqj9HWcDSBv8dPoRSKM1pN7d8sx0CGMT4dj53oFP8zVT9jv22+
+         tP9k9PuECqQ3H34RpXKVEc+36J7i1jbezFYo55ZaLIb3bA5Am5BWEk5A0RvvvsTSN852
+         fh0fZKjaNozRhvQLGwZtsGVJq2rhS6lt1R4Z8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726259808; x=1726864608;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=o1WoLTK+YlUVcs/IjyKVz4zW4+QbadUtrtKQYYALwEM=;
-        b=QOF2CjTXFVDoDbLhydS3JXamtQ8Zcw5tG8Q1rwFp3AqXy3/EBy6cTz3DDofR3WUDRU
-         7G81jYG0gRlTGYGPEeDxVTfvsA0RZ1JscbZtIK6OjdVK9mQ/FyCYUaF8mZP2MOBqQwaO
-         I5nAyjdnFKHH1O17Dkxl03t5X/HzENI2mzSWncOxTQtvYD6t5y9GsGV5a/LkFmJTqOcI
-         UcDNo2SS1O84M1hiudp0xb/BwebVgeg77OU2dHdANEgSsEjQvL1b8zfxP0jlJJiETnfZ
-         sxf4Q1mNSpiRZbrBeQ03YqLn7kCaMrRwOwTd/SlDCqMD1O8Iic6ePVw9NUBTZ+gcQe45
-         LqlA==
-X-Forwarded-Encrypted: i=1; AJvYcCVphWK2T30TcI7Cf5v4QAGZjWMd2K6hibPxB6s2OYNHbihZjtOrRckAAXcci1JrKKNTsWcrofs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyhKnB08rz7/s8UvjX5D6QXPU8dls6ZRdEPrI0+d8WVdkD7N+P9
-	IriYW9CJ4/N2WQpPn9L4ev8jqM6ntZcJlv9XQ6ShMwUBgJbbC8oeiY62YKapoZA=
-X-Google-Smtp-Source: AGHT+IEQ1L0MFKR1nRMmiDLgnPh7PrK8Ke0srYPlD8+V46YSRMNcq+JiyaIknXLPqiXgRA/pBIETJw==
-X-Received: by 2002:a05:6602:3429:b0:82d:96a:84f4 with SMTP id ca18e2360f4ac-82d1f8a8e0fmr824283939f.1.1726259807870;
-        Fri, 13 Sep 2024 13:36:47 -0700 (PDT)
-Received: from [192.168.1.128] ([38.175.170.29])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4d37ebf4e1csm44953173.20.2024.09.13.13.36.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 13 Sep 2024 13:36:47 -0700 (PDT)
-Message-ID: <4e893168-8bbe-4422-a638-fc85182f7646@linuxfoundation.org>
-Date: Fri, 13 Sep 2024 14:36:47 -0600
+        d=1e100.net; s=20230601; t=1726266832; x=1726871632;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nR+aFVWTVq8CbCarFENk6QxpMqmR4IKiYC+//JY1HWs=;
+        b=oXg4jyqgSaxRD457iqoXOL3rMS/Dm3HTHnYFGNttZW/nbRWiFjuEANWIP5PmHqZK/+
+         qRETjtmtUe65wE1onF2daqFDQRlpCREIDrFqzOsWE34r4KyfG8P6gyHPUG4FL0m1xpcp
+         MXGKLccGbCnFwZJYWP9hGHb8mU4tROl4K7P229nZhmEG97OKQ8D4LYK+YJ3JQW2eRsIX
+         el7xE/k6qRSD9lV1w+wCYvd4OE8U94NKzsCp4plT7qRWoILDTfc4A2NtUhthW/EgeUBg
+         4sxEpwOSKHCQqihISKbsp5z59a/TlTjhuwcsa9yjjQ91c3IaB+VjY6NSHbQxyevfb03C
+         xO8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCU1L3dNEx1XPpkie0fSmQz7med714kTWGu0N+csmK+hvRTBb2M2rJWhOxJw+r4M9LlyuZIu51A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyV0GQ+k4qWLtphuGar2HadjlUdrCh2o+WHbQlIemm0gb3WHNTe
+	JnoDhqsKTCsgYBN1ENMCSpgM165LvGgEZzImjctQVThQmwDDOvhEeNIANGTllFIh1cHDLDtN3AI
+	iQXy0TyGO+41+aSGtPzw9xCdya+09WPwM8kUk
+X-Google-Smtp-Source: AGHT+IHoRn8wPvaGm0XnG3869dlzoogkjY3U7o40PCg3lnku1IuTJCyxK495TTkFeC7nabla4nDYmkGBplV0McjYN34=
+X-Received: by 2002:a05:6870:65a4:b0:27b:9f8b:7e4a with SMTP id
+ 586e51a60fabf-27c3f694c07mr1516649fac.12.1726266831574; Fri, 13 Sep 2024
+ 15:33:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4.19 1/2] selftests/vm: remove call to ksft_set_plan()
-To: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
- stable@vger.kernel.org
-Cc: gautammenghani201@gmail.com, usama.anjum@collabora.com,
- saeed.mirzamohammadi@oracle.com, Shuah Khan <skhan@linuxfoundation.org>
-References: <20240913200249.4060165-1-samasth.norway.ananda@oracle.com>
- <20240913200249.4060165-2-samasth.norway.ananda@oracle.com>
-Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20240913200249.4060165-2-samasth.norway.ananda@oracle.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20240809082511.497266-1-usama.anjum@collabora.com>
+ <CABi2SkWgPoWJY_CMxDru7FPjtQBgv61PA2VoCumd3T8Xq3fjbg@mail.gmail.com> <1b36ba43-60a4-441c-981f-9b62f366aa95@collabora.com>
+In-Reply-To: <1b36ba43-60a4-441c-981f-9b62f366aa95@collabora.com>
+From: Jeff Xu <jeffxu@chromium.org>
+Date: Fri, 13 Sep 2024 15:33:39 -0700
+Message-ID: <CABi2SkWk8igT=HCTcawv72uxrf2rhzj1A23k4EixCxcDKhSNxw@mail.gmail.com>
+Subject: Re: [PATCH] selftests: mm: Fix build errors on armhf
+To: Muhammad Usama Anjum <Usama.Anjum@collabora.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Shuah Khan <shuah@kernel.org>, 
+	Kees Cook <kees@kernel.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, kernel@collabora.com, 
+	stable@vger.kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 9/13/24 14:02, Samasth Norway Ananda wrote:
-> The function definition for ksft_set_plan() is not present in linux-4.19.y.
-> compaction_test selftest fails to compile because of this.
-> 
-> Fixes: 9a21701edc41 ("selftests/mm: conform test to TAP format output")
-> Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
-> Reviewed-by: Saeed Mirzamohammadi <saeed.mirzamohammadi@oracle.com>
-> ---
->   tools/testing/selftests/vm/compaction_test.c | 2 --
->   1 file changed, 2 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/vm/compaction_test.c b/tools/testing/selftests/vm/compaction_test.c
-> index e056cfc487e08..e7044fa7f0b70 100644
-> --- a/tools/testing/selftests/vm/compaction_test.c
-> +++ b/tools/testing/selftests/vm/compaction_test.c
-> @@ -183,8 +183,6 @@ int main(int argc, char **argv)
->   	if (prereq() != 0)
->   		return ksft_exit_pass();
->   
-> -	ksft_set_plan(1);
-> -
->   	lim.rlim_cur = RLIM_INFINITY;
->   	lim.rlim_max = RLIM_INFINITY;
->   	if (setrlimit(RLIMIT_MEMLOCK, &lim))
+On Mon, Aug 19, 2024 at 3:05=E2=80=AFAM Muhammad Usama Anjum
+<Usama.Anjum@collabora.com> wrote:
+>
+> On 8/14/24 3:29 AM, Jeff Xu wrote:
+> > Hi Muhammad
+> >
+> > On Fri, Aug 9, 2024 at 1:25=E2=80=AFAM Muhammad Usama Anjum
+> > <usama.anjum@collabora.com> wrote:
+> >>
+> >> The __NR_mmap isn't found on armhf. The mmap() is commonly available
 
-Thank for for finding and fixing this.
+What is armhf ?
+is that arm64 ? I was able to build arm64 correctly.
 
-Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+-Jeff
 
-thanks,
--- Shuah
+> >> system call and its wrapper is presnet on all architectures. So it
+> >> should be used directly. It solves problem for armhf and doesn't creat=
+e
+> >> problem for architectures as well. Remove sys_mmap() functions as they
+> >> aren't doing anything else other than calling mmap(). There is no need
+> >> to set errno =3D 0 manually as glibc always resets it.
+> >>
+> > The mseal_test should't have dependency on libc, and mmap() is
+> > implemented by glibc, right ?
+> >
+> > I just fixed a bug to switch mremap() to sys_mremap to address an
+> > issue that different glibc version's behavior is slightly different
+> > for mremap().
+> >
+> > What is the reason that __NR_mmap not available in armhf ? (maybe it
+> > is another name ?)  there must be a way to call syscall directly on
+> > armhf, can we use that instead ?
+>
+> It seems __NR_mmap syscall is deprecated for arm. Found this comment in
+> arch/arm/include/asm/unistd.h:
+> /*
+>  * The following syscalls are obsolete and no longer available for EABI:
+>  *  __NR_time
+>  *  __NR_umount
+>  *  __NR_stime
+>  *  __NR_alarm
+>  *  __NR_utime
+>  *  __NR_getrlimit
+>  *  __NR_select
+>  *  __NR_readdir
+>  *  __NR_mmap
+>  *  __NR_socketcall
+>  *  __NR_syscall
+>  *  __NR_ipc
+>  */
+>
+> The glibc mmap() calls mmap2() these days by adjusting the parameters
+> internally. From man mmap:
+> C library/kernel differences:
+> This  page  describes the interface provided by the glibc mmap() wrapper
+> function.  Originally, this function invoked a system call of the same
+> name.  Since Linux 2.4, that system call has been superseded  by
+> mmap2(2), and nowadays the glibc mmap() wrapper function invokes
+> mmap2(2) with a suitably adjusted value for offset.
+>
+> I'm not sure if behaviour of glibc mmap() and syscall mmap2() would be
+> same, but we should use glibc at most places which accounts for
+> different architectures correctly. Maybe the differences were only
+> present in case of mremap().
+>
+> --
+> BR,
+> Muhammad Usama Anjum
+>
 
