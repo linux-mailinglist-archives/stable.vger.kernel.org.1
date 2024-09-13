@@ -1,65 +1,65 @@
-Return-Path: <stable+bounces-76095-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DD16978687
-	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 19:18:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7B5697869E
+	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 19:23:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A87F8281AB9
-	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 17:18:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 289B3B23800
+	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 17:23:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4253A770E4;
-	Fri, 13 Sep 2024 17:18:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C397E84DF5;
+	Fri, 13 Sep 2024 17:23:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EW4p6hKN"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GKGKuXZH"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11F54BE68;
-	Fri, 13 Sep 2024 17:18:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B4E683A09;
+	Fri, 13 Sep 2024 17:23:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726247919; cv=none; b=V+Fx4HhESHBimDfyDAam7vuwD8zWcPenVf9pu68L6hgrlfrZoPpzih7awXoWzNuOcRdbDmp58JrwRun9oyGzAgYeVMcft3GNOy7Ra2mcpymtVM8v93H7sJwgOq0+pF8+xhNEJGzDjGzRKYdwO9PjxfFf44lB/TWuzSkAJPNWyEY=
+	t=1726248210; cv=none; b=bXzk8OM53WLny7AsNhxxB+4hn9Xmvfjyr3x5p/Mnzub4wsRCoSvYmrs+jMjjA9JoUR5sywhBSWmTEBsSZRJspShRvvvsn3ZNWNT1UsBPpA0VJ8KswfALUf/ksQKZChrp/rsUallHzENtyOprCevlEUtbOzQGRjiEKyf5ESsgV8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726247919; c=relaxed/simple;
-	bh=kuuI752ZXreNArmYRc/RtxsGAdh8eKATl5btww46mns=;
+	s=arc-20240116; t=1726248210; c=relaxed/simple;
+	bh=I0UV8Tw3BxBdPIsVqWhTYO5nLNoEjYYcamPX9Hh+ADw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Y41gL/PFRBc+O06iyhFIU0sdxZw2ymMFJsKmBdjHgsMNFzvpkBdqxJJJ+4muxZY7FUddZkgKVHCNJwGvvJLuZW/EXmrePlfvPwrtV2x3qCGSc2iF06O5iY66GL9Ql1G82KweB2ylQiuDjkEQRwt9AzF4JT9UY2lQiF5aTrwVUGM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EW4p6hKN; arc=none smtp.client-ip=192.198.163.7
+	 In-Reply-To:Content-Type; b=jyypaw2WK0X+TxEalj32GDEimfs3TG3FeYMB3zspqcrieSMPjv+FltwhvLWJkEktO6fbYVq4+LPRCrLPoGKWdvr80c1O464DBiDrHSGqdlj/fBLAwJErlTw7Kqn/G/HEWu9LjH8USW2fGa7dGhzoOBHR7r675hofSFC1IXgu80Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GKGKuXZH; arc=none smtp.client-ip=192.198.163.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1726247917; x=1757783917;
+  t=1726248209; x=1757784209;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=kuuI752ZXreNArmYRc/RtxsGAdh8eKATl5btww46mns=;
-  b=EW4p6hKNWjVWfDHA8wPyWvzQ9xY7Y4iL92o+1lGprMJngNDENYIzhFGo
-   dWTf6vPQEnhPcFd4A4cgZ0IRwt2HJBg20dbYTFupzK9+SMKV5skzTqS5c
-   WGAjQsHn7GiwRTRK8xv7YD7Kr1AvFlzkhXXFfmYivFRcRSBAOz9OL0qA6
-   URlFp0tpfRBd5Q1yTu1UpUHQEAH5gthgTvcPxuU2nSUphYWUoLjWY2sQ0
-   EG0NGgFpGB9BYPwn4vL5WD43oQX+lx4i5wJwLsSo2StWKn84+wp+RVr4+
-   Z51JT5SxBazldNmg7Io0q7PtfbTAtHT90A8jvgP+A7FDEa0f6355Za5/h
-   A==;
-X-CSE-ConnectionGUID: QHVfwR+QQgijftvISi/zWg==
-X-CSE-MsgGUID: Nfl3n5FdTWGxecWxIgXBiw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11194"; a="50571626"
+  bh=I0UV8Tw3BxBdPIsVqWhTYO5nLNoEjYYcamPX9Hh+ADw=;
+  b=GKGKuXZHqle5MUSPRgOAHWBMW2xA9zUQXL+OsamycTtSZUrBTSDcrGqm
+   T5QyXz1+NlOgh2CLzMMVA0QC/KTt0pIfhvLj3P0Ogo8DJBZZP1wMy47Bq
+   jIlKzDNAnZ49rhkcmZJZ0q2EPXlmwBQRDGpy8hzlA0FDFbHwOhSprLDm+
+   Kp9zLDjT+pd1OmspP/RjUjVvNGrNO41zeJtKtSMBtGA/6CHYYa+uJdgaL
+   SllBcvTTHi2LW5H1PeC4xmgrNAUWjKqo6zOsICCWfAta+IkS7OX5sOBPI
+   v58+Vah1S3uroLVFnVagcJXHkQm6Ehaz+iuVQYooqHN9kjJIsRi668CLd
+   Q==;
+X-CSE-ConnectionGUID: x2RWrNWdTkCF7tj2hP+cDA==
+X-CSE-MsgGUID: fQdyXTMvQziFJzO1X+eLyA==
+X-IronPort-AV: E=McAfee;i="6700,10204,11194"; a="13515768"
 X-IronPort-AV: E=Sophos;i="6.10,226,1719903600"; 
-   d="scan'208";a="50571626"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2024 10:18:36 -0700
-X-CSE-ConnectionGUID: ZzlB2d+iSfWuAGQJE8gqiw==
-X-CSE-MsgGUID: aig1sNnMSMK5tRSuC/8+uw==
+   d="scan'208";a="13515768"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2024 10:23:28 -0700
+X-CSE-ConnectionGUID: 8mpxKhqYR5WfdRAun5ktnQ==
+X-CSE-MsgGUID: muCD5ygXQZGAiIe9WgOPrQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.10,226,1719903600"; 
-   d="scan'208";a="72892348"
+   d="scan'208";a="98978799"
 Received: from ccbilbre-mobl3.amr.corp.intel.com (HELO [10.124.220.219]) ([10.124.220.219])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2024 10:18:35 -0700
-Message-ID: <385cb72c-1220-484a-80db-9f5aeeca8484@intel.com>
-Date: Fri, 13 Sep 2024 10:18:14 -0700
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Sep 2024 10:23:28 -0700
+Message-ID: <e02558e6-d315-4b0e-bc0c-fb4d8a043c10@intel.com>
+Date: Fri, 13 Sep 2024 10:23:07 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -82,6 +82,7 @@ Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
 References: <cover.1725622408.git.legion@kernel.org>
  <cover.1726237595.git.legion@kernel.org>
  <565a804b80387970460a4ebc67c88d1380f61ad1.1726237595.git.legion@kernel.org>
+ <385cb72c-1220-484a-80db-9f5aeeca8484@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -127,23 +128,19 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <565a804b80387970460a4ebc67c88d1380f61ad1.1726237595.git.legion@kernel.org>
+In-Reply-To: <385cb72c-1220-484a-80db-9f5aeeca8484@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 9/13/24 10:05, Alexey Gladkov wrote:
-> TDX only supports kernel-initiated MMIO operations. The handle_mmio()
-> function checks if the #VE exception occurred in the kernel and rejects
-> the operation if it did not.
+On 9/13/24 10:18, Dave Hansen wrote:
+...
+>> Ensure that the target MMIO address is within the kernel before decoding
+>> instruction.
 > 
-> However, userspace can deceive the kernel into performing MMIO on its
-> behalf. For example, if userspace can point a syscall to an MMIO address,
-> syscall does get_user() or put_user() on it, triggering MMIO #VE. The
-> kernel will treat the #VE as in-kernel MMIO.
-> 
-> Ensure that the target MMIO address is within the kernel before decoding
-> instruction.
+> Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
 
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Oh, and please add these to anything you cc:stable@ on:
+
+Fixes: 31d58c4e557d ("x86/tdx: Handle in-kernel MMIO")
 
 
