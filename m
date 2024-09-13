@@ -1,75 +1,76 @@
-Return-Path: <stable+bounces-76081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 330C09780E8
-	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 15:19:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A4EA9780F4
+	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 15:19:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6D2D91C221EE
-	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 13:19:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 319A6287A0D
+	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 13:19:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D73721DA631;
-	Fri, 13 Sep 2024 13:19:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AFE31DB953;
+	Fri, 13 Sep 2024 13:19:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YBKB0LoB"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iJOhsmTB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E45FF1DA2FF;
-	Fri, 13 Sep 2024 13:19:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A58951DB555;
+	Fri, 13 Sep 2024 13:19:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726233558; cv=none; b=M3Wgxgnr8M6sLpiga86EL9nST98QoqSJBj0HO2XTow60xh4lX0eef0sWbuuUw9EXd5xImrRYDuYzJu1W+2vw7IOCBUVf/4lEtT44aOe8nfiIkBJl1RDfriaIrBVA4UD6jzsmZN6uY1+9FJYB7wtLG1r8E9pSnDytJkHAhf3JIoY=
+	t=1726233562; cv=none; b=dWj1NEnyOmzhB+kpebR57sRu6tv8QyK8vdddbL9/ycDw+jx3p1yuHd1GAJXtKST3H15kDAaVhiiyxLtFegcO6g/uzU24SxG3qwUL+ILOOhsU2BPpGbnRpNkzuyuVk9FADYUUyoL4sJxgXsZT4V70si0lM2uwoYANfMYhnkua7uU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726233558; c=relaxed/simple;
-	bh=4q/8N6O8ffI72x/9iTUFiRqxpi/mE0XbxqrQO5oMoWM=;
-	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=HEBiWvQLSTZFPP+aCgeANLthpMLjJ9rf5evyn0ouolmK7/1GdocAYeFZqEIiZ+sPw1icOB/uc/5vuh4O+j5Ci066+UvX6h0IPxOXZ3vVMfgo/6As36wdBwEcYDUq9xSc5sXX56KX9R8XinTuMjFhsCIf64jjU0fSqNwdK4TCysI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YBKB0LoB; arc=none smtp.client-ip=209.85.167.45
+	s=arc-20240116; t=1726233562; c=relaxed/simple;
+	bh=1o+RujVAQZnAD3qfV2O0LLel9fgxe9gwMp5ZPSdYRNo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=iX9+cRiZG8K0q1HwXm3CBUyuP4cQ9uB1FOxoPnWt3FcA9fJdR/fsdcS4CayEFicyLhWw6pT4ffud3xNOOrnkHULBT3vd0lBLp6ZYBJy4WCHn4zEw35RndqCftszxJgej974r32XvwuQEdvIrAvZmgGQ8ns+OjEdmilMZbxyASWg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iJOhsmTB; arc=none smtp.client-ip=209.85.218.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-5365aa568ceso1202316e87.0;
-        Fri, 13 Sep 2024 06:19:16 -0700 (PDT)
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-a8a897bd4f1so107321866b.3;
+        Fri, 13 Sep 2024 06:19:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1726233555; x=1726838355; darn=vger.kernel.org;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=cnZBXkdG1OqmFjnngLoBqqNkjebYkNRY5cB09E7/o7A=;
-        b=YBKB0LoBg7DxZbkSoO0yLAsR44a/nCALzXKpXoEpkGsy8G10bABYlfEbl92zhs91BJ
-         0M3yJYNfb+cC9ZYWGmtu1y/4Gq+9PqmmVoWhW7+gXVvbKUjinijYEF7NveKtR6kZux6A
-         iYRF2F8c2M3jJa1NEP4uQ4ywmSnSCoAgCp++rBEtzQcd/rnU2Rz6Ho4M0A5NG0a/QA2C
-         6ilnW2Be/7wzWLvJH2Y2K6/lMPkMziweug5kUCGg1VPWNnouiOaBc9FMmt+HF7ud8EyP
-         Fg4OEwdWkndD6zmxU0U50VXPHEIbA3TlPp9OcjNGO3+kF252pPtfm79zj/WIolCr5nfI
-         0mdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726233555; x=1726838355;
-        h=cc:to:content-transfer-encoding:mime-version:message-id:date
-         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=gmail.com; s=20230601; t=1726233559; x=1726838359; darn=vger.kernel.org;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=cnZBXkdG1OqmFjnngLoBqqNkjebYkNRY5cB09E7/o7A=;
-        b=VjDhoxNZ152VZapEejH4ly7HUIprVmaLya3ud3tOFamfQOAgDXMifG7Wj+xLEbUa1/
-         RKXaEAvkSP/qJOmaH9WKz/gWpAoeYq9/vPWx6U5Ke+5pSKb/MPpXANFVJ0bmnhIinwpk
-         iNy9PMtYvo8WgbFyLeAfFyjP+CewGRuTsBoDnQc/w/IBMBVfyUMOEKyuWnlmAjesDLGO
-         /PCuKf1LQ8S8Mz8DYk+Pd2Bn5MMOSsXukEdpZOEXLBhUbv/3HL/sZMC1wc1s3O7G/FYv
-         pAG7BLHTks1yXcS4BcWhNqoTAn8GJqHO1zborxWmh6nACTesnPm330btiWXDSbmv2cL9
-         kJag==
-X-Forwarded-Encrypted: i=1; AJvYcCUqH8bmb0JPZzsP9uoTdT3e7ZHpwsbNMF4dd1utiZ8jPmJmtY07pxyvfzquGLatJ2pM75wmwJWSU8Jh@vger.kernel.org, AJvYcCWW+XGePhTecTsGh0V4YLVWunbCGzYwgGAv2TbqR9f4XFtrnTit2L/AkQoFA3xiekowClQPWSCS@vger.kernel.org, AJvYcCXJ+tl4TfMLo8x3VMuRvcocOJ4feioHqOXv9WlTvGBzchN1wssn8x18gujBFuymSnrhIy1MhDf5m2nreZio@vger.kernel.org
-X-Gm-Message-State: AOJu0YwTYJqYClbfdkFH+sC2m0M4Fq1fZ7lLfqyEsasZWqr5Y64mffog
-	D34gxsASKfe7s8FzjsGrDZq9YktlwmoMtkYSokOl+RZJqhqBaFy/
-X-Google-Smtp-Source: AGHT+IHLOctH/seZi9U2ROlC0Paog572OIeyF1WDBW/pyJ+Rgfnrhh7rDUxEq6zeapMoNF+4zLw9ZQ==
-X-Received: by 2002:a05:6512:3e29:b0:52e:936e:a237 with SMTP id 2adb3069b0e04-5367fec8cb1mr2509991e87.16.1726233554670;
-        Fri, 13 Sep 2024 06:19:14 -0700 (PDT)
+        bh=5IF4qGvII+dur0qzTSrxsUrxH0fWjZLIM0pUAGbbih0=;
+        b=iJOhsmTBwGSL4eqoxDINnseAAiO+hxFkJ1LddtGNUpzPfk6pTLeS1agxUMin7Slg1Y
+         nEBX/yqTTs4Zh9OCnXy/waER8parEEHs1DA94NoZqbN1QCn+pTZaM7tprEE61ZlKge/p
+         9cCct4A/a40NGFh9JSKsJAFkU0n3syoDUI13dmzZ2eWaQ8zincyUO5jTSkHJxBorUEJO
+         eykxHYEEh6p9GI7vvxUoAWdVDtcVjkVpGsQLlWfBiuykMJQmMg0/M/D1Acmp0/RJIXM5
+         B3Y61QkdZfz8dZmX9jTnrBgVula1acs6BM4pPBcY5lL8XoCiQXHzwt0NfaG/zUPYqhBH
+         xKeA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726233559; x=1726838359;
+        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
+         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5IF4qGvII+dur0qzTSrxsUrxH0fWjZLIM0pUAGbbih0=;
+        b=EX1V0RkiYgRxOgseft9SYu0A7JjynaVo7pTYcy64kxMQIh9ZAD2dOHMr5IUcdVVUa8
+         wvFUv57ojBYCb4g/KylT+hIxhK1nUaauqYoMfyR2bnoxp3SQE1WuMIrVp6wD+9TdDrbD
+         h3MJLG26Ds2gXRT33rWW6DzntLV26diQcXwqfd8SU/MvVMoKjCQ8XQl+rndrj2uJcW72
+         xJvM41plxUDpbn84ztJjGbEO8cZM8FJ4VpTK2UUxHqvad1fo02jR3sM5dveuwlOO04dI
+         OvQ9M7otUw8RMM+XRoUp+kY0mCXB3wyFCoBS668TBlChP7cgZpKfl2/gb0/rzgjM+Hpe
+         bO1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVD14xrwnl3WerRAR2Lfs6X72JphwtCer5h9gaj3FRWE10LLcFKo8NygPGDYy60WLkPa9X1NL7IMrNYKpWd@vger.kernel.org, AJvYcCWkVogmzK2FBrOwlyULkPqbYEDuJ8EHabiqV0TTmqBULULpJ/vTo+P0316eSGoRU+EA6DL9abeH@vger.kernel.org, AJvYcCXztUHOiFbuRZG6Igjd/klPvU6ZcDOWusJFhxMTHZiPYZg9ZY1ngwOEnB4QyC41MCAJt76hbMS7d2Cr@vger.kernel.org
+X-Gm-Message-State: AOJu0YyLZ3vU+hKwO81yqYRL09lX3Dil7/vjJ0Vdo1GFWG2eaFmeYfU2
+	nLwC7F+9XJUZYt15GAX7e3sQL+W6ReOYbbBtWTO5/yU0LhyT0nEZ
+X-Google-Smtp-Source: AGHT+IGls/PJoarlAbHcGQA/sOJ/gjWdxcBKwteEvQzmyudaC7u8D3sWcLe/9CjdeJO4QCbLfDuWTw==
+X-Received: by 2002:a17:907:60d1:b0:a77:c30c:341 with SMTP id a640c23a62f3a-a904758f269mr225921266b.0.1726233559073;
+        Fri, 13 Sep 2024 06:19:19 -0700 (PDT)
 Received: from [127.0.1.1] (84-115-213-37.cable.dynamic.surfer.at. [84.115.213.37])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a8d25a258a3sm865945666b.89.2024.09.13.06.19.13
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a8d25a258a3sm865945666b.89.2024.09.13.06.19.17
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Sep 2024 06:19:14 -0700 (PDT)
+        Fri, 13 Sep 2024 06:19:18 -0700 (PDT)
 From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Subject: [PATCH 0/7] iio: light: veml6030: fix issues and add support for
- veml6035
-Date: Fri, 13 Sep 2024 15:18:55 +0200
-Message-Id: <20240913-veml6035-v1-0-0b09c0c90418@gmail.com>
+Date: Fri, 13 Sep 2024 15:18:58 +0200
+Subject: [PATCH 3/7] iio: light: veml6030: fix IIO device retrieval from
+ embedded device
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -78,9 +79,9 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-X-B4-Tracking: v=1; b=H4sIAL875GYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxMDSwNj3bLU3BwzA2NTXfNES8OkZAMLi2SzNCWg8oKi1LTMCrBR0bG1tQC
- dd0DYWgAAAA==
+Message-Id: <20240913-veml6035-v1-3-0b09c0c90418@gmail.com>
+References: <20240913-veml6035-v1-0-0b09c0c90418@gmail.com>
+In-Reply-To: <20240913-veml6035-v1-0-0b09c0c90418@gmail.com>
 To: Jonathan Cameron <jic23@kernel.org>, 
  Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
  Krzysztof Kozlowski <krzk+dt@kernel.org>, 
@@ -90,52 +91,51 @@ Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
  Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
  Javier Carrasco <javier.carrasco.cruz@gmail.com>, stable@vger.kernel.org
 X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1726233553; l=1792;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1726233553; l=1569;
  i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
- bh=4q/8N6O8ffI72x/9iTUFiRqxpi/mE0XbxqrQO5oMoWM=;
- b=4KjytU33ZjXrLgrm2P1Kf/9UjwbWMq1EApvzJscdq7sGzb52I9BXebT/4H7SeFW+hMPe10/Lf
- cfnvYuMHvxkDlXQkTNQKjJ9vpGw8/UGr4bvJEjyVMtOjYhZngvBCy/m
+ bh=1o+RujVAQZnAD3qfV2O0LLel9fgxe9gwMp5ZPSdYRNo=;
+ b=qnqEVdzyMlkDlPv3IGJ5UBVq48lMpPTlZpPD+gPuneJcVhNhh7lDifOVYEfLYL6/sMphF5oe1
+ 7+hBxFB4fX/CZ+SpmC7WZUZHftW+GNNzYTKpD3hrBZehd+c/gxvUiL+
 X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
  pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
-This series updates the driver for the veml6030 ALS and adds support for
-the veml6035, which shares most of its functionality with the former.
+The dev pointer that is received as an argument in the
+in_illuminance_period_available_show function references the device
+embedded in the IIO device, not in the i2c client.
 
-The most relevant updates for the veml6030 are the resolution correction
-to meet the datasheet update that took place with Rev 1.7, 28-Nov-2023,
-and a fix to avoid a segmentation fault when reading the
-in_illuminance_period_available attribute.
+dev_to_iio_dev() must be used to accessthe right data. The current
+implementation leads to a segmentation fault on every attempt to read
+the attribute because indio_dev gets a NULL assignment.
 
-Vishay does not host the Product Information Notification where the
-resolution correction was introduced, but it can still be found
-online[1], and the corrected value is the one listed on the latest
-version of the datasheet[2] (Rev. 1.7, 28-Nov-2023) and application
-note[3] (Rev. 17-Jan-2024).
+This bug has been present since the first appearance of the driver,
+apparently since the last version (V6) before getting applied. A
+constant attribute was used until then, and the last modifications might
+have not been tested again.
 
-Link: https://www.farnell.com/datasheets/4379688.pdf [1]
-Link: https://www.vishay.com/docs/84366/veml6030.pdf [2]
-Link: https://www.vishay.com/docs/84367/designingveml6030.pdf [3]
-
+Cc: stable@vger.kernel.org
+Fixes: 7b779f573c48 ("iio: light: add driver for veml6030 ambient light sensor")
 Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 ---
-Javier Carrasco (7):
-      dt-bindings: iio: light: veml6030: rename to add manufacturer
-      dt-bindings: iio: light: veml6030: add veml6035
-      iio: light: veml6030: fix IIO device retrieval from embedded device
-      iio: light: veml6030: make use of regmap_set_bits()
-      iio: light: veml6030: update sensor resolution
-      iio: light: veml6030: add set up delay after any power on sequence
-      iio: light: veml6030: add support for veml6035
+ drivers/iio/light/veml6030.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
- .../light/{veml6030.yaml => vishay,veml6030.yaml}  |  42 ++-
- drivers/iio/light/veml6030.c                       | 323 ++++++++++++++++++---
- 2 files changed, 319 insertions(+), 46 deletions(-)
----
-base-commit: 5acd9952f95fb4b7da6d09a3be39195a80845eb6
-change-id: 20240903-veml6035-7a91bc088c6f
+diff --git a/drivers/iio/light/veml6030.c b/drivers/iio/light/veml6030.c
+index 2e86d310952e..df2ba3078b91 100644
+--- a/drivers/iio/light/veml6030.c
++++ b/drivers/iio/light/veml6030.c
+@@ -99,9 +99,8 @@ static const char * const period_values[] = {
+ static ssize_t in_illuminance_period_available_show(struct device *dev,
+ 				struct device_attribute *attr, char *buf)
+ {
++	struct veml6030_data *data = iio_priv(dev_to_iio_dev(dev));
+ 	int ret, reg, x;
+-	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
+-	struct veml6030_data *data = iio_priv(indio_dev);
+ 
+ 	ret = regmap_read(data->regmap, VEML6030_REG_ALS_CONF, &reg);
+ 	if (ret) {
 
-Best regards,
 -- 
-Javier Carrasco <javier.carrasco.cruz@gmail.com>
+2.43.0
 
 
