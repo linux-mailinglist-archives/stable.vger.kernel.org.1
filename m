@@ -1,126 +1,122 @@
-Return-Path: <stable+bounces-76088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5011497830F
-	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 16:58:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8063D978576
+	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 18:06:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 07053B254DC
-	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 14:58:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44972281BA3
+	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 16:06:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39D0C6F2EE;
-	Fri, 13 Sep 2024 14:57:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E427336AF8;
+	Fri, 13 Sep 2024 16:06:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="frB2zXBk"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="eeR6Eej9"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.smtpout.orange.fr (smtp-21.smtpout.orange.fr [80.12.242.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 213AC5EE8D
-	for <stable@vger.kernel.org>; Fri, 13 Sep 2024 14:56:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3189455898
+	for <stable@vger.kernel.org>; Fri, 13 Sep 2024 16:06:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726239421; cv=none; b=azDwBa01QjOl/WsUm8fsnUWnMW+S1tYpdAy3JcrSdsKk8n2zAa0nEAYbYhqSykuuXMoIJeYtkAvAAAYhQn5aUR211UJiCU0f52aym/Xy3Ybn2m+lrxcTX0wCY6vzvjsshI5tJzYV0P5cp2bQfYtompL9z0JV7ARl9vqVa0aoC+A=
+	t=1726243580; cv=none; b=l2A75FcfXJwq2+bST702uEHPLS9REnj9F7l0OhlZFsLNnDFMu4GBjLMLRdLZ1gJXW9xzp1knxtae9HiQZfM8eK2Wg1AQyJs2hGjB3M/g3FCjcV2Pn4VJzHtp5sgEpGUN6eYKAeOpQOD7+m+clBy4kuJLt5VeHupBgeL+BdBog2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726239421; c=relaxed/simple;
-	bh=bk5fBYoRubuV3SwJbAObGRT8vGObXynBdtgnt0h4beo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=roILXGZlyc0eWJHfsjgSHwaVpp7P5tEQvWPsgahWZFeroEbCShBLvXzqXNxAl3K2tiCoqbnFNlRbmVKJGMGAWadnRHQiyiLoGD4eM/S2AR4m5+HlH1qWVDGw1rpZ6325RWQJhvUKsRWCU9q7i35qsVEm9h8lRDQmyJi23gjKITU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=frB2zXBk; arc=none smtp.client-ip=80.12.242.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from [192.168.1.37] ([90.11.132.44])
-	by smtp.orange.fr with ESMTPA
-	id p7j0sSUf9oR4tp7j1soqq0; Fri, 13 Sep 2024 16:56:51 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1726239411;
-	bh=2ppfZtFE3UF/ZPMPNi/oYz7eBBncngRv+97pSLrZhqA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From;
-	b=frB2zXBkPf2SbckhFM/MElr0u4oWmiNEG9WMsoDpJ/9F4I7EYcra7Vs8SKV+jLf+1
-	 WWGlSmHvc/f7s+3oGUMSXH5RIL/A2V+mD/tDQ2Npd7phpBuZLSvDKJhe1Lm1JTLPfu
-	 aoxhKvyROQrUYZ8kb0VNSo/Qfd2ONclCAzrvbaA7mu5HE+UmjR/zDHxx+E1fE7Es+7
-	 kJbvvCde1ENSFzGt/J6Qu/wq7dZt4HKhih6QC9K5ksQM1/n4HyKc1NWK5Yw0uZwRO6
-	 s4b/ny6bMWwAvVEVZZhnBEqRRMu4p2PMo2aiVQriYVg2PMV8jODsa9EVN43ryFMzxo
-	 R4XOTF72vKrbw==
-X-ME-Helo: [192.168.1.37]
-X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
-X-ME-Date: Fri, 13 Sep 2024 16:56:51 +0200
-X-ME-IP: 90.11.132.44
-Message-ID: <e2d7ed77-827b-4b7c-800c-9c8f3bcb6b5a@wanadoo.fr>
-Date: Fri, 13 Sep 2024 16:56:42 +0200
+	s=arc-20240116; t=1726243580; c=relaxed/simple;
+	bh=SbKI5cAJdOgD9G2f5+QQ5ehndnwTHB1xz1sc1UmMcLc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=sqytR9OFpYV6S5gHGgjRcAFoUo97Fl6QioqAlZfxo4hmRVzQuFYPRxLa2QfMpPKRT8kDi7bII/0vIrmZBJhrpZ6l6KkOllVPahar+N3V+HG9f4YSM+RILd7nalKR8wdBYsI3cKHqyJd4D0pXV06uD4OkTQdP9FeDJ1txnCDXxPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=eeR6Eej9; arc=none smtp.client-ip=178.60.130.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:MIME-Version:References:
+	In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=QHznVG0dw/I2+S6cFlrcLiYFQdj8Fyd3f4zRj6YRMU8=; b=eeR6Eej9YJ6J/4xLvRqqrwvwfY
+	9PI8qPy7ljYDBx4ZWUkxONLC3HfwkCsXAwPc3Srqjmnn2Y8iHpZa0DhuwdBTklH9B8zCxI3Ahxl7P
+	3SIcYWLF2pgwRbQgpBTCSDaU9fdojnP7FRy4bgo4ygFFAXuDWV0OEaJrW9WFTG7wpqcryfUOGXot2
+	Y3dN5+MajmEiRECicpGBNe4q9LWnsXegnz3w7YAk66oxRjXM/K0lXwzwVtQsX3i+wSGAoKrLxPUSg
+	7iyfAcbD28docXv76Vug77BXcs5uwOcRwZt3fZcdmtlYopXFZTaP08dvagU/7P9wmrqxXHZUdN2RO
+	uAAoRXjw==;
+Received: from [90.241.98.187] (helo=localhost)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1sp8o6-00DOeS-7d; Fri, 13 Sep 2024 18:06:02 +0200
+From: Tvrtko Ursulin <tursulin@igalia.com>
+To: amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Cc: kernel-dev@igalia.com,
+	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
+	Luben Tuikov <ltuikov89@gmail.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	David Airlie <airlied@gmail.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Philipp Stanner <pstanner@redhat.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/8] drm/sched: Add locking to drm_sched_entity_modify_sched
+Date: Fri, 13 Sep 2024 17:05:52 +0100
+Message-ID: <20240913160559.49054-2-tursulin@igalia.com>
+X-Mailer: git-send-email 2.46.0
+In-Reply-To: <20240913160559.49054-1-tursulin@igalia.com>
+References: <20240913160559.49054-1-tursulin@igalia.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6 v2 1/4] riscv: dts: starfive: add assigned-clock* to
- limit frquency
-To: WangYuli <wangyuli@uniontech.com>, stable@vger.kernel.org,
- gregkh@linuxfoundation.org, sashal@kernel.org, william.qiu@starfivetech.com,
- emil.renner.berthing@canonical.com, conor.dooley@microchip.com,
- xingyu.wu@starfivetech.com, walker.chen@starfivetech.com, robh@kernel.org,
- hal.feng@starfivetech.com
-Cc: kernel@esmil.dk, robh+dt@kernel.org, krzysztof.kozlowski+dt@linaro.org,
- conor+dt@kernel.org, paul.walmsley@sifive.com, palmer@dabbelt.com,
- aou@eecs.berkeley.edu, devicetree@vger.kernel.org,
- linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
- richardcochran@gmail.com, netdev@vger.kernel.org
-References: <3A31C289BC240955+20240912025539.1928223-1-wangyuli@uniontech.com>
-Content-Language: en-US, fr-FR
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-In-Reply-To: <3A31C289BC240955+20240912025539.1928223-1-wangyuli@uniontech.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Le 12/09/2024 à 04:55, WangYuli a écrit :
-> From: William Qiu <william.qiu@starfivetech.com>
-> 
-> [ Upstream commit af571133f7ae028ec9b5fdab78f483af13bf28d3 ]
-> 
-> In JH7110 SoC, we need to go by-pass mode, so we need add the
-> assigned-clock* properties to limit clock frquency.
-> 
-> Signed-off-by: William Qiu <william.qiu@starfivetech.com>
-> Reviewed-by: Emil Renner Berthing <emil.renner.berthing@canonical.com>
-> Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
-> Signed-off-by: WangYuli <wangyuli@uniontech.com>
-> ---
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 
-Hi,
+Without the locking amdgpu currently can race between
+amdgpu_ctx_set_entity_priority() (via drm_sched_entity_modify_sched()) and
+drm_sched_job_arm(), leading to the latter accesing potentially
+inconsitent entity->sched_list and entity->num_sched_list pair.
 
-if/when resent, there is a typo in the subject: s/frquency/frequency/
+v2:
+ * Improve commit message. (Philipp)
 
-CJ
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+Fixes: b37aced31eb0 ("drm/scheduler: implement a function to modify sched list")
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: Luben Tuikov <ltuikov89@gmail.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: dri-devel@lists.freedesktop.org
+Cc: Philipp Stanner <pstanner@redhat.com>
+Cc: <stable@vger.kernel.org> # v5.7+
+Reviewed-by: Christian König <christian.koenig@amd.com>
+---
+ drivers/gpu/drm/scheduler/sched_entity.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-
->   .../riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi | 4 ++++
->   1 file changed, 4 insertions(+)
-> 
-> diff --git a/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi b/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi
-> index 062b97c6e7df..4874e3bb42ab 100644
-> --- a/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi
-> +++ b/arch/riscv/boot/dts/starfive/jh7110-starfive-visionfive-2.dtsi
-> @@ -204,6 +204,8 @@ &i2c6 {
->   
->   &mmc0 {
->   	max-frequency = <100000000>;
-> +	assigned-clocks = <&syscrg JH7110_SYSCLK_SDIO0_SDCARD>;
-> +	assigned-clock-rates = <50000000>;
->   	bus-width = <8>;
->   	cap-mmc-highspeed;
->   	mmc-ddr-1_8v;
-> @@ -220,6 +222,8 @@ &mmc0 {
->   
->   &mmc1 {
->   	max-frequency = <100000000>;
-> +	assigned-clocks = <&syscrg JH7110_SYSCLK_SDIO1_SDCARD>;
-> +	assigned-clock-rates = <50000000>;
->   	bus-width = <4>;
->   	no-sdio;
->   	no-mmc;
+diff --git a/drivers/gpu/drm/scheduler/sched_entity.c b/drivers/gpu/drm/scheduler/sched_entity.c
+index 58c8161289fe..ae8be30472cd 100644
+--- a/drivers/gpu/drm/scheduler/sched_entity.c
++++ b/drivers/gpu/drm/scheduler/sched_entity.c
+@@ -133,8 +133,10 @@ void drm_sched_entity_modify_sched(struct drm_sched_entity *entity,
+ {
+ 	WARN_ON(!num_sched_list || !sched_list);
+ 
++	spin_lock(&entity->rq_lock);
+ 	entity->sched_list = sched_list;
+ 	entity->num_sched_list = num_sched_list;
++	spin_unlock(&entity->rq_lock);
+ }
+ EXPORT_SYMBOL(drm_sched_entity_modify_sched);
+ 
+-- 
+2.46.0
 
 
