@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-76065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92B80978006
-	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 14:33:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B58B978007
+	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 14:33:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 45A691F21EA8
-	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 12:33:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F37F5281A1F
+	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 12:33:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1ECBB1DA0EE;
-	Fri, 13 Sep 2024 12:33:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B5471DA0E7;
+	Fri, 13 Sep 2024 12:33:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GTk2LYDk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xCRCnhGl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D31201D932B
-	for <stable@vger.kernel.org>; Fri, 13 Sep 2024 12:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDDCD1D932B
+	for <stable@vger.kernel.org>; Fri, 13 Sep 2024 12:33:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726230780; cv=none; b=WQzwQNSl/Eq0PeXGQsFfX/Kaz4BEN28IEStAkMrrZBKzSoMJRfuU+mYpGYTSlJLTjW/5DngaWK21XRGM19oJgV+bD019o2aNbLxMkg35oWkJ1TKh8VLDew4B3RSxHC59InA7gKpQe50xkjzzLO9jBVqqlni/Bb0b8RWzHlr8tvg=
+	t=1726230786; cv=none; b=p+s5xR6+aN/yLliUZmzwn/Ft+2DVcIrkuS23GGHfA56jAFzrn5GtRTBQsN5AVtW8XTV9LZey1pFQqyfAk+pMvjyloXEDcnj8MYCnZHkJB1PrInnkAB/CqF9c0w8+F9aH05oFoCiuaq/sBJn9LED4DC8NPWM0lKZAaNiTKcal3Jw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726230780; c=relaxed/simple;
-	bh=gtWbIUVa8lIcQqKroT/o2+KjXlSLWkJ5Vvfodjcc2Zc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=qZ2x8iBDN7VlkCRjNu5Q02nUCMBN6pqH0DLcFIcg2SdBcMWkc41c74QQqhlHC3AmWyj2xi01y3vahSg+GTfkf19qSwZfxp4mUy9pfH+MDr7Zq8JaRiDbXXYedZSStajNVPC2kc8hC0cmwY/a/0LxQsS+pIUC55KZHq752o6EXfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GTk2LYDk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8F31C4CEC0;
-	Fri, 13 Sep 2024 12:32:59 +0000 (UTC)
+	s=arc-20240116; t=1726230786; c=relaxed/simple;
+	bh=wgyKd8oipLyUnyzICLot1morGm90LY1JFhnIbTfjxfg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=rmLm4bm0AARpaLHU7noPL8NHV3wfE6+G602UyghnPe4q+zv/J/7l7bd7NvYGgzWnlCWgilbiDwKNXj0OwfP1S9sPOB+8bLVbopUeNhoTQkRmmSgUKl85R6KvzFwzz490s4rqigww1SOJNBmMinTuY10KnR4Fc0a5W3sIk/jYun8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xCRCnhGl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C407C4CEC0;
+	Fri, 13 Sep 2024 12:33:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726230780;
-	bh=gtWbIUVa8lIcQqKroT/o2+KjXlSLWkJ5Vvfodjcc2Zc=;
+	s=korg; t=1726230786;
+	bh=wgyKd8oipLyUnyzICLot1morGm90LY1JFhnIbTfjxfg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=GTk2LYDkP2UTCsYXysNSanMe3qTC/qRYEFUSSPhgYEMd1vP31iq4Ueky9Hv7lhasY
-	 /YQNe8g8H6Edf0cKqex0uVtnWgwaMbjpGijvQsv1XH6Yrp+O/PgQ/Rh8hsd8fKRItf
-	 iyCv/eCtaC13R9YBCeTl2o5yqUyMcxjUojNxYG6I=
-Subject: FAILED: patch "[PATCH] platform/x86: panasonic-laptop: Fix SINF array out of bounds" failed to apply to 4.19-stable tree
-To: hdegoede@redhat.com,ilpo.jarvinen@linux.intel.com
+	b=xCRCnhGlEninGuL6IKBh7XV4qMR2Ph9Y0JBb+TIfXs9LhghcG9JaY6qE+wvUcZ//n
+	 TNONKeHvyeY1ITurwNFkN65tLZm+uVsrK0zwQAAgkK2CFudsouI10CkAOzatV0Iwmm
+	 zlUMI3ZxBWSZvSvarg/MKACyPYl9+a8126gEcnlE=
+Subject: FAILED: patch "[PATCH] platform/x86: panasonic-laptop: Allocate 1 entry extra in the" failed to apply to 5.10-stable tree
+To: hdegoede@redhat.com,ilpo.jarvinen@linux.intel.com,jharmison@redhat.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Fri, 13 Sep 2024 14:32:46 +0200
-Message-ID: <2024091346-football-rely-87b8@gregkh>
+Date: Fri, 13 Sep 2024 14:33:03 +0200
+Message-ID: <2024091303-dash-sensitive-4aee@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,31 +53,23 @@ Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x f52e98d16e9bd7dd2b3aef8e38db5cbc9899d6a4
+git cherry-pick -x 33297cef3101d950cec0033a0dce0a2d2bd59999
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024091346-football-rely-87b8@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024091303-dash-sensitive-4aee@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
-f52e98d16e9b ("platform/x86: panasonic-laptop: Fix SINF array out of bounds accesses")
-f1fba0860962 ("platform/x86: panasonic-laptop: remove redundant assignment of variable result")
-25dd390c6206 ("platform/x86: panasonic-laptop: Add sysfs attributes for firmware brightness registers")
-468f96bfa3a0 ("platform/x86: panasonic-laptop: Add support for battery charging threshold (eco mode)")
-ed83c9171829 ("platform/x86: panasonic-laptop: Resolve hotkey double trigger bug")
-e3a9afbbc309 ("platform/x86: panasonic-laptop: Add write support to mute")
-008563513348 ("platform/x86: panasonic-laptop: Fix sticky key init bug")
-80373ad0edb5 ("platform/x86: panasonic-laptop: Fix naming of platform files for consistency with other modules")
-0119fbc0215a ("platform/x86: panasonic-laptop: Split MODULE_AUTHOR() by one author per macro call")
+33297cef3101 ("platform/x86: panasonic-laptop: Allocate 1 entry extra in the sinf array")
 f1aaf914654a ("platform/x86: panasonic-laptop: Replace ACPI prints with pr_*() macros")
 d5a81d8e864b ("platform/x86: panasonic-laptop: Add support for optical driver power in Y and W series")
 
@@ -87,130 +79,62 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From f52e98d16e9bd7dd2b3aef8e38db5cbc9899d6a4 Mon Sep 17 00:00:00 2001
+From 33297cef3101d950cec0033a0dce0a2d2bd59999 Mon Sep 17 00:00:00 2001
 From: Hans de Goede <hdegoede@redhat.com>
-Date: Mon, 9 Sep 2024 13:32:25 +0200
-Subject: [PATCH] platform/x86: panasonic-laptop: Fix SINF array out of bounds
- accesses
+Date: Mon, 9 Sep 2024 13:32:26 +0200
+Subject: [PATCH] platform/x86: panasonic-laptop: Allocate 1 entry extra in the
+ sinf array
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-The panasonic laptop code in various places uses the SINF array with index
-values of 0 - SINF_CUR_BRIGHT(0x0d) without checking that the SINF array
-is big enough.
+Some DSDT-s have an off-by-one bug where the SINF package count is
+one higher than the SQTY reported value, allocate 1 entry extra.
 
-Not all panasonic laptops have this many SINF array entries, for example
-the Toughbook CF-18 model only has 10 SINF array entries. So it only
-supports the AC+DC brightness entries and mute.
+Also make the SQTY <-> SINF package count mismatch error more verbose
+to help debugging similar issues in the future.
 
-Check that the SINF array has a minimum size which covers all AC+DC
-brightness entries and refuse to load if the SINF array is smaller.
+This fixes the panasonic-laptop driver failing to probe() on some
+devices with the following errors:
 
-For higher SINF indexes hide the sysfs attributes when the SINF array
-does not contain an entry for that attribute, avoiding show()/store()
-accessing the array out of bounds and add bounds checking to the probe()
-and resume() code accessing these.
+[    3.958887] SQTY reports bad SINF length SQTY: 37 SINF-pkg-count: 38
+[    3.958892] Couldn't retrieve BIOS data
+[    3.983685] Panasonic Laptop Support - With Macros: probe of MAT0019:00 failed with error -5
 
-Fixes: e424fb8cc4e6 ("panasonic-laptop: avoid overflow in acpi_pcc_hotkey_add()")
+Fixes: 709ee531c153 ("panasonic-laptop: add Panasonic Let's Note laptop extras driver v0.94")
 Cc: stable@vger.kernel.org
+Tested-by: James Harmison <jharmison@redhat.com>
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240909113227.254470-1-hdegoede@redhat.com
+Link: https://lore.kernel.org/r/20240909113227.254470-2-hdegoede@redhat.com
 Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
 diff --git a/drivers/platform/x86/panasonic-laptop.c b/drivers/platform/x86/panasonic-laptop.c
-index cf845ee1c7b1..39044119d2a6 100644
+index 39044119d2a6..ebd81846e2d5 100644
 --- a/drivers/platform/x86/panasonic-laptop.c
 +++ b/drivers/platform/x86/panasonic-laptop.c
-@@ -773,6 +773,24 @@ static DEVICE_ATTR_RW(dc_brightness);
- static DEVICE_ATTR_RW(current_brightness);
- static DEVICE_ATTR_RW(cdpower);
+@@ -337,7 +337,8 @@ static int acpi_pcc_retrieve_biosdata(struct pcc_acpi *pcc)
+ 	}
  
-+static umode_t pcc_sysfs_is_visible(struct kobject *kobj, struct attribute *attr, int idx)
-+{
-+	struct device *dev = kobj_to_dev(kobj);
-+	struct acpi_device *acpi = to_acpi_device(dev);
-+	struct pcc_acpi *pcc = acpi_driver_data(acpi);
-+
-+	if (attr == &dev_attr_mute.attr)
-+		return (pcc->num_sifr > SINF_MUTE) ? attr->mode : 0;
-+
-+	if (attr == &dev_attr_eco_mode.attr)
-+		return (pcc->num_sifr > SINF_ECO_MODE) ? attr->mode : 0;
-+
-+	if (attr == &dev_attr_current_brightness.attr)
-+		return (pcc->num_sifr > SINF_CUR_BRIGHT) ? attr->mode : 0;
-+
-+	return attr->mode;
-+}
-+
- static struct attribute *pcc_sysfs_entries[] = {
- 	&dev_attr_numbatt.attr,
- 	&dev_attr_lcdtype.attr,
-@@ -787,8 +805,9 @@ static struct attribute *pcc_sysfs_entries[] = {
- };
- 
- static const struct attribute_group pcc_attr_group = {
--	.name	= NULL,		/* put in device directory */
--	.attrs	= pcc_sysfs_entries,
-+	.name		= NULL,		/* put in device directory */
-+	.attrs		= pcc_sysfs_entries,
-+	.is_visible	= pcc_sysfs_is_visible,
- };
- 
- 
-@@ -941,12 +960,15 @@ static int acpi_pcc_hotkey_resume(struct device *dev)
- 	if (!pcc)
- 		return -EINVAL;
- 
--	acpi_pcc_write_sset(pcc, SINF_MUTE, pcc->mute);
--	acpi_pcc_write_sset(pcc, SINF_ECO_MODE, pcc->eco_mode);
-+	if (pcc->num_sifr > SINF_MUTE)
-+		acpi_pcc_write_sset(pcc, SINF_MUTE, pcc->mute);
-+	if (pcc->num_sifr > SINF_ECO_MODE)
-+		acpi_pcc_write_sset(pcc, SINF_ECO_MODE, pcc->eco_mode);
- 	acpi_pcc_write_sset(pcc, SINF_STICKY_KEY, pcc->sticky_key);
- 	acpi_pcc_write_sset(pcc, SINF_AC_CUR_BRIGHT, pcc->ac_brightness);
- 	acpi_pcc_write_sset(pcc, SINF_DC_CUR_BRIGHT, pcc->dc_brightness);
--	acpi_pcc_write_sset(pcc, SINF_CUR_BRIGHT, pcc->current_brightness);
-+	if (pcc->num_sifr > SINF_CUR_BRIGHT)
-+		acpi_pcc_write_sset(pcc, SINF_CUR_BRIGHT, pcc->current_brightness);
- 
- 	return 0;
- }
-@@ -963,8 +985,12 @@ static int acpi_pcc_hotkey_add(struct acpi_device *device)
- 
- 	num_sifr = acpi_pcc_get_sqty(device);
- 
--	if (num_sifr < 0 || num_sifr > 255) {
--		pr_err("num_sifr out of range");
-+	/*
-+	 * pcc->sinf is expected to at least have the AC+DC brightness entries.
-+	 * Accesses to higher SINF entries are checked against num_sifr.
-+	 */
-+	if (num_sifr <= SINF_DC_CUR_BRIGHT || num_sifr > 255) {
-+		pr_err("num_sifr %d out of range %d - 255\n", num_sifr, SINF_DC_CUR_BRIGHT + 1);
+ 	if (pcc->num_sifr < hkey->package.count) {
+-		pr_err("SQTY reports bad SINF length\n");
++		pr_err("SQTY reports bad SINF length SQTY: %lu SINF-pkg-count: %u\n",
++		       pcc->num_sifr, hkey->package.count);
+ 		status = AE_ERROR;
+ 		goto end;
+ 	}
+@@ -994,6 +995,12 @@ static int acpi_pcc_hotkey_add(struct acpi_device *device)
  		return -ENODEV;
  	}
  
-@@ -1020,11 +1046,14 @@ static int acpi_pcc_hotkey_add(struct acpi_device *device)
- 	acpi_pcc_write_sset(pcc, SINF_STICKY_KEY, 0);
- 	pcc->sticky_key = 0;
- 
--	pcc->eco_mode = pcc->sinf[SINF_ECO_MODE];
--	pcc->mute = pcc->sinf[SINF_MUTE];
- 	pcc->ac_brightness = pcc->sinf[SINF_AC_CUR_BRIGHT];
- 	pcc->dc_brightness = pcc->sinf[SINF_DC_CUR_BRIGHT];
--	pcc->current_brightness = pcc->sinf[SINF_CUR_BRIGHT];
-+	if (pcc->num_sifr > SINF_MUTE)
-+		pcc->mute = pcc->sinf[SINF_MUTE];
-+	if (pcc->num_sifr > SINF_ECO_MODE)
-+		pcc->eco_mode = pcc->sinf[SINF_ECO_MODE];
-+	if (pcc->num_sifr > SINF_CUR_BRIGHT)
-+		pcc->current_brightness = pcc->sinf[SINF_CUR_BRIGHT];
- 
- 	/* add sysfs attributes */
- 	result = sysfs_create_group(&device->dev.kobj, &pcc_attr_group);
++	/*
++	 * Some DSDT-s have an off-by-one bug where the SINF package count is
++	 * one higher than the SQTY reported value, allocate 1 entry extra.
++	 */
++	num_sifr++;
++
+ 	pcc = kzalloc(sizeof(struct pcc_acpi), GFP_KERNEL);
+ 	if (!pcc) {
+ 		pr_err("Couldn't allocate mem for pcc");
 
 
