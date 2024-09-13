@@ -1,226 +1,110 @@
-Return-Path: <stable+bounces-76101-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9095A97871A
-	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 19:48:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FEB5978774
+	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 20:03:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A5551F22965
-	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 17:48:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E84F51F231DF
+	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 18:03:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3CAF84A3E;
-	Fri, 13 Sep 2024 17:48:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA71584E11;
+	Fri, 13 Sep 2024 18:03:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="fYM2siTo"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FPBntywq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CA6D81ACA
-	for <stable@vger.kernel.org>; Fri, 13 Sep 2024 17:47:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33E53446AF
+	for <stable@vger.kernel.org>; Fri, 13 Sep 2024 18:03:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726249680; cv=none; b=lpieA8er8J0mJVHYjig+afHq0QYzQflCQYpiHwoifQj9SP8STP1hDouc5WrMuTabFSjpCVyCWJgqT8Vr4hgKmmPm/hCN69uoE4V9bp/Y/Hn/sY/FFEB+BMNQpxJyxmPbL2Vc/X+TAH7GlwpPSFxHVyNKfoYGZAxfbycbIxWCm2A=
+	t=1726250587; cv=none; b=rVfVsWMUcAUJocpnuMQFSxiYoZnMv+mUOHcBzuj/EgxET9H9W9t3W5IimUZ4TC3DXZ3Sz8SxMjD4zAOfFKun+Y/uPgbjyyfvky+LHUeA54QuZ5h7N2f3YmFC90xL8g74oNDaNxEx7Qa089KT/bYTI68mxcZDREa6zV22ZI+juvM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726249680; c=relaxed/simple;
-	bh=gd4U6lhjfa5SiS/0ILHhYNor4QZLTvpx0IBnAFnuPc8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DVDuz3kau027zrtSYx4+XFZvIblHpZbIqmlVy8LtBLNrtClqVzK7tJ2jy7CVgaD4DdNry2zVJh3gIoT2dyWVj8ATUsGaavSGH79M+2aav5lRQ031jRyk6OxZKtVClhlFk9N3R1QFhzmhErk9dC0YmiPEnZjbFU2WMOU6pOLHTJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=fYM2siTo; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2053f6b8201so23052585ad.2
-        for <stable@vger.kernel.org>; Fri, 13 Sep 2024 10:47:58 -0700 (PDT)
+	s=arc-20240116; t=1726250587; c=relaxed/simple;
+	bh=UXOkfh0KcTju6djH7sIVB89zq8vPdKXMJhkLDkEvaUs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=eiZ5RjBCd8D17tpUHaB2WYB4Nx0AT6u5s8nk4We2R0T0jjchcLqq4cJDFRBC8OPxJf/9Kserim6HYYqZoRel4XdclzSwK1waTUieO8FbSDTWNydY2XSjb5hUwjQtuBV+8ayIzYhKV4/cq1OajJwfIP7e+Ol0bNm6i9ZxJ4WEhNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FPBntywq; arc=none smtp.client-ip=209.85.210.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-71100987d1cso757118a34.2
+        for <stable@vger.kernel.org>; Fri, 13 Sep 2024 11:03:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1726249678; x=1726854478; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=8IH/fKZ7WlUWd6MAHGKHHDTF08xKH8CLIu/uq2juW/g=;
-        b=fYM2siToKs5b7tGUhzc4ruDZ0ZhXs4RvNdPK5JBjl61HBMlzbLEOK/dJTbSlrkChVO
-         65hylTI2ZAAt0hKGAHIhppmOBFeQ7IzIUJxk09eVwYFp5XRjsqk95DeU1OYNi/SenudV
-         2+b0lKiPciHCmNFa2tBK4q2cfA0ff6/3uBlvk=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726249678; x=1726854478;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1726250585; x=1726855385; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=8IH/fKZ7WlUWd6MAHGKHHDTF08xKH8CLIu/uq2juW/g=;
-        b=T+Q1Yobwqn2z/r6qJw2N3+gvXOIf5pSRXx4I4MGc/Vy1InhK2o1sEWJeaN8JmXxILw
-         VvnGTDagKRN/uEFyi81y9pKdfiCu4x6mCtRV27EHkIuv0KlhjcZR8uaUeM6BhFDyvK/h
-         qntp+k4aSWgR7CR/G+kMoAhpdXk2TVCjpymRVIoo6xL2z9cQHFBo1I/s8ouFBRTEswN5
-         Yj11tmkCHwByq+CkGfHa/yY3X+bx1kUwKx1RCS4yPY3QIrzZdU1GbeSdwLLcPHwqA5Ls
-         q9xauxqvkw8Yahd6pdpPrJDsMMPZKTqZZcqtFX/U8ebe0Ltr57RXSfdWvdWc1DrNEvho
-         7IDQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWoI08iRNqg4euM1uhXyrYsSR2hmSPPMS/uMe4ri+aAOCW9S0WMpHicqr9YYjv+t+Uye4sWZmA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+e+fFpe1TBEpM+SHfS7nNiKTX58mrfmr1bync4X2KRbpFwrDb
-	Ks+o2m8a5f2ygXtGQGeRMKtbdmZK6g2EeyhVrHngHf11g8kx6ycbWgl1BEJ05Q==
-X-Google-Smtp-Source: AGHT+IF/Z83uZ5DKsWYI6BIBnszLvyBcxjjxnEpt4x8DvN82ruG8ZaQekEMAasgPQ7k4gkSjUIiGcg==
-X-Received: by 2002:a17:902:c946:b0:207:850c:2548 with SMTP id d9443c01a7336-207850c26e1mr44249585ad.22.1726249677812;
-        Fri, 13 Sep 2024 10:47:57 -0700 (PDT)
-Received: from localhost ([2a00:79e0:2e14:7:8bb7:9bdd:6697:b2f7])
-        by smtp.gmail.com with UTF8SMTPSA id d9443c01a7336-2076b01a742sm30385035ad.259.2024.09.13.10.47.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 13 Sep 2024 10:47:57 -0700 (PDT)
-Date: Fri, 13 Sep 2024 10:47:54 -0700
-From: Brian Norris <briannorris@chromium.org>
-To: Javier Martinez Canillas <javierm@redhat.com>
-Cc: Julius Werner <jwerner@chromium.org>, Borislav Petkov <bp@alien8.de>,
-	Hugues Bruant <hugues.bruant@gmail.com>, stable@vger.kernel.org,
-	regressions@lists.linux.dev, linux-kernel@vger.kernel.org,
-	Fenghua Yu <fenghua.yu@intel.com>,
-	Reinette Chatre <reinette.chatre@intel.com>,
-	Tony Luck <tony.luck@intel.com>, Tzung-Bi Shih <tzungbi@kernel.org>,
-	chrome-platform@lists.linux.dev,
-	Jani Nikula <jani.nikula@linux.intel.com>,
-	Joonas Lahtinen <joonas.lahtinen@linux.intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Tvrtko Ursulin <tursulin@ursulin.net>,
-	intel-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org
-Subject: Re: [NOT A REGRESSION] firmware: framebuffer-coreboot: duplicate
- device name "simple-framebuffer.0"
-Message-ID: <ZuR6yvqpCiV4Cjqf@google.com>
-References: <CALvjV29jozswRtmYxDur2TuEQ=1JSDrM+uWVHmghW3hG5Y9F+w@mail.gmail.com>
- <20240909080200.GAZt6reI9c98c9S_Xc@fat_crate.local>
- <ZuCGkjoxKxpnhEh6@google.com>
- <87jzfhayul.fsf@minerva.mail-host-address-is-not-set>
- <CAODwPW8P+jcF0erUph5XyWoyQgLFbZWxEM6Ygi_LFCCTLmH89Q@mail.gmail.com>
- <87mskczv9l.fsf@minerva.mail-host-address-is-not-set>
+        bh=UXOkfh0KcTju6djH7sIVB89zq8vPdKXMJhkLDkEvaUs=;
+        b=FPBntywqsxArJi54K4PxjZdCs2Y8HU3hhwmDaz2q429m9R25ERQP0zx3BkqV72gsms
+         UEhE0VAbKfw01LT9oL2yLHKxoIm7dL36ArSNSkX0KNtPaOlTCBwtpjUQrBVNPIk0R3ph
+         +0SkOkOTAYnUGx8YyAkpH9bKioiU6yqRKNvQZjaQ+lDbldo4kzsQ33OdaepJn5hwr9+j
+         W0xbTcAH/H/9Bp5q7Omdv4eW0ZTnwupdhkhKr1tMTMpqmlf7J2z5SwAfwRLawC9xvnY1
+         4PtRMu13rg4gx1SWVokPOopH2N3AtgfbFAn3/tpKb8Xeri80N8qcrhMhYN+FEMKRX6+z
+         aAvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726250585; x=1726855385;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=UXOkfh0KcTju6djH7sIVB89zq8vPdKXMJhkLDkEvaUs=;
+        b=tSuvfWkboziN/VbQSFXEFaO4HK0KXilbjqAXutwTI7cxkv8JTWV0C2tS3h5h8UtEj4
+         jcEXVpcQUOWwz0Gql4weQ9B9dKtDk++8to0uWl3GsZnrRUW3HHa0YkTR6cYcCnO1H7Kt
+         kwEb9FvwuQF/tQ9DL8G1afywdqPj+DrWUA+4l3nF/Os2fZIqVhgaJNstfkZh8Wnvfb+Y
+         Yo9IAsFh+fkXdVSp/U7R/pKUmYalpAPw+YKjMYGVb92wZ6Q2YxxamK2UdBPt5iG3/n4q
+         W7mRW3ziH8reKU/SRTdN3xK4AMVKPwvvUbWX7nkKZSt18JonULXEeHZwBJvF1lW9Sqjo
+         KOjQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU+skJldUGRGNm6kfSzUFA5h94FC013kkSFjQxMp3ZZh9mnAX9EJXqapK54m37rNiS2uHBcybc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YybYRnfyNmym7eVvziwbB07I09LTcdpKTz2fbHlPtfyMhjfND9C
+	KqwDa9ThcemVHKoaMpaMGVeH3NURMv/X7qGdVvL9Dr4OUYVXYYBv8bZrDRiAjYH4dQ3E6Ggp6oV
+	j7laCSZwNfbT9ModFL5sa2fpmQKI1Nv7uFWUh
+X-Google-Smtp-Source: AGHT+IFrf2QUiZsdEKs4/Sf36WYr8jWjIM29ElW6cJcACEnzKBzgpfdB7Kxl5d/I2hCYcFryV9WuyJMJ0IY43uIBeDQ=
+X-Received: by 2002:a05:6358:3a06:b0:1b8:6074:b4e with SMTP id
+ e5c5f4694b2df-1bc394937d8mr183875455d.9.1726250584950; Fri, 13 Sep 2024
+ 11:03:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <87mskczv9l.fsf@minerva.mail-host-address-is-not-set>
+References: <20240906005803.1824339-1-royluo@google.com> <20240907005829.ldaspnspaegq5m4t@synopsys.com>
+In-Reply-To: <20240907005829.ldaspnspaegq5m4t@synopsys.com>
+From: Roy Luo <royluo@google.com>
+Date: Fri, 13 Sep 2024 11:02:27 -0700
+Message-ID: <CA+zupgxMefawABGDkpRy9XmWJ5S50H1U9AF9V3UqX2b5G3pj-Q@mail.gmail.com>
+Subject: Re: [PATCH v1] usb: dwc3: re-enable runtime PM after failed resume
+To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Cc: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>, "badhri@google.com" <badhri@google.com>, 
+	"frank.wang@rock-chips.com" <frank.wang@rock-chips.com>, 
+	"linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Javier,
+On Fri, Sep 6, 2024 at 5:58=E2=80=AFPM Thinh Nguyen <Thinh.Nguyen@synopsys.=
+com> wrote:
+>
+> On Fri, Sep 06, 2024, Roy Luo wrote:
+> > When dwc3_resume_common() returns an error, runtime pm is left in
+> > disabled state in dwc3_resume(). The next dwc3_suspend_common()
+>
+> What issue did you see when dwc3_suspend_common is not skipped?
 
-On Thu, Sep 12, 2024 at 06:33:58PM +0200, Javier Martinez Canillas wrote:
-> That's a very good point. I'm actually not familiar with Coreboot and I
-> used an educated guess (in the case of DT for example, that's the main
-> source of truth and I didn't know if a Core table was in a similar vein).
-> 
-> Maybe something like the following (untested) patch then?
+Apologies for the delayed response.
 
-Julius is more familiar with the Coreboot + payload ecosystem than me,
-but his explanations make sense to me, as does this patch.
+To answer your question, if dwc3_suspend_common() isn't skipped, it
+can lead to issues because dwc->dev is already in a suspended state.
+This could mean its parent devices (like the power domain or glue
+driver) are also suspended and may have released resources that dwc
+requires.
+Consequently, calling dwc3_suspend_common() in this situation could
+result in attempts to access unclocked or unpowered registers.
 
-> From de1c32017006f4671d91b695f4d6b4e99c073ab2 Mon Sep 17 00:00:00 2001
-> From: Javier Martinez Canillas <javierm@redhat.com>
-> Date: Thu, 12 Sep 2024 18:31:55 +0200
-> Subject: [PATCH] firmware: coreboot: Don't register a pdev if screen_info data
->  is available
-> 
-> On Coreboot platforms, a system framebuffer may be provided to the Linux
-> kernel by filling a LB_TAG_FRAMEBUFFER entry in the Coreboot table. But
-> a Coreboot payload (e.g: SeaBIOS) could also provide this information to
-> the Linux kernel.
-> 
-> If that the case, early arch x86 boot code will fill the global struct
-> screen_info data and that data used by the Generic System Framebuffers
-> (sysfb) framework to add a platform device with platform data about the
-> system framebuffer.
-
-Normally, these sorts of "early" and "later" ordering descriptions would
-set alarm bells when talking about independent drivers. But I suppose
-the "early arch" code has better ordering guaranteeds than drivers, so
-this should be fine.
-
-> But later then the framebuffer_coreboot driver will try to do the same
-> framebuffer (using the information from the Coreboot table), which will
-> lead to an error due a simple-framebuffer.0 device already registered:
-> 
->     sysfs: cannot create duplicate filename '/bus/platform/devices/simple-framebuffer.0'
->     ...
->     coreboot: could not register framebuffer
->     framebuffer coreboot8: probe with driver framebuffer failed with error -17
-> 
-> To prevent the issue, make the framebuffer_core driver to not register a
-> platform device if the global struct screen_info data has been filled.
-> 
-> Reported-by: Brian Norris <briannorris@chromium.org>
-> Link: https://lore.kernel.org/all/ZuCG-DggNThuF4pj@b20ea791c01f/T/#ma7fb65acbc1a56042258adac910992bb225a20d2
-> Suggested-by: Julius Werner <jwerner@chromium.org>
-> Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
-> ---
->  drivers/firmware/google/framebuffer-coreboot.c | 16 ++++++++++++++++
->  1 file changed, 16 insertions(+)
-> 
-> diff --git a/drivers/firmware/google/framebuffer-coreboot.c b/drivers/firmware/google/framebuffer-coreboot.c
-> index daadd71d8ddd..4e50da17cd7e 100644
-> --- a/drivers/firmware/google/framebuffer-coreboot.c
-> +++ b/drivers/firmware/google/framebuffer-coreboot.c
-> @@ -15,6 +15,7 @@
->  #include <linux/module.h>
->  #include <linux/platform_data/simplefb.h>
->  #include <linux/platform_device.h>
-> +#include <linux/screen_info.h>
->  
->  #include "coreboot_table.h"
->  
-> @@ -27,6 +28,7 @@ static int framebuffer_probe(struct coreboot_device *dev)
->  	int i;
->  	u32 length;
->  	struct lb_framebuffer *fb = &dev->framebuffer;
-> +	struct screen_info *si = &screen_info;
->  	struct platform_device *pdev;
->  	struct resource res;
->  	struct simplefb_platform_data pdata = {
-> @@ -36,6 +38,20 @@ static int framebuffer_probe(struct coreboot_device *dev)
->  		.format = NULL,
->  	};
->  
-> +	/*
-> +	 * If the global screen_info data has been filled, the Generic
-> +	 * System Framebuffers (sysfb) will already register a platform
-
-Did you mean 'platform_device'?
-
-> +	 * and pass the screen_info as platform_data to a driver that
-> +	 * could scan-out using the system provided framebuffer.
-> +	 *
-> +	 * On Coreboot systems, the advertise LB_TAG_FRAMEBUFFER entry
-
-s/advertise/advertised/ ?
-
-> +	 * in the Coreboot table should only be used if the payload did
-> +	 * not set video mode info and passed it to the Linux kernel.
-
-s/passed/pass/
-
-> +	 */
-> +	if (si->orig_video_isVGA == VIDEO_TYPE_VLFB ||
-> +            si->orig_video_isVGA == VIDEO_TYPE_EFI)
-
-This line is using spaces for indentation. It should use a tab, and then
-spaces for alignment. But presumably this will change based on Thomas's
-suggestions anyway.
-
-> +		return -EINVAL;
-
-Is EINVAL right? IIUC, that will print a noisier error to the logs. I
-believe the "expected" sorts of return codes are ENODEV or ENXIO. (See
-call_driver_probe().) ENODEV seems like a fine choice, similar to
-several of the other return codes already used here.
-
-Anyway, this seems along the right track. Thanks for tackling, and feel
-free to carry a:
-
-Reviewed-by: Brian Norris <briannorris@chromium.org>
-
-> +
->  	if (!fb->physical_address)
->  		return -ENODEV;
->  
-> -- 
-> Best regards,
-> 
-> Javier Martinez Canillas
-> Core Platforms
-> Red Hat
-> 
+Regards,
+Roy Luo
 
