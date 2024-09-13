@@ -1,126 +1,128 @@
-Return-Path: <stable+bounces-76098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 218099786BF
-	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 19:29:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 287989786E4
+	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 19:36:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A0181C20FE4
-	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 17:29:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D1AF91F230F4
+	for <lists+stable@lfdr.de>; Fri, 13 Sep 2024 17:36:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 053B38289E;
-	Fri, 13 Sep 2024 17:29:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="iCkSMpxS"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFD99823AF;
+	Fri, 13 Sep 2024 17:36:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 515B21EEE4
-	for <stable@vger.kernel.org>; Fri, 13 Sep 2024 17:28:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3841B1C14;
+	Fri, 13 Sep 2024 17:36:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726248539; cv=none; b=nagmmuB3uKC4sX3A5RHBGP/rnruoFYebeugelzoNKZpgJYmOun3y+KRa2EpgzIsQtI2mCUi2tIvgkj8xj9JvfKzju+RIDyxdAM9sYKacE0tcmtB6sE0eoypx57zlwzxd+uSYnDoChwcAo16AjpTSi9IQZgqo+1jYogc6N5nTGwU=
+	t=1726248999; cv=none; b=pCKoi58N9iZrD3f59WS51LuZWW3ilY1zJc+/2TFUj8EKHEFmysfzX2q5EUXjV9JNSoohXSpLKEWfe2dj/RtqxmbREequur1ifEG+loB5OfHe7Ocl9r4l1MYrfTUMDTppwHNbc0FzXrCFNhnI4omZ0PX17ZRNIVtfLyLNiHvlYGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726248539; c=relaxed/simple;
-	bh=6SCoYvowv92Dj53wJCD6euhlEpB4iJI0VCV8S4gdqNI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kEgPT8P5oFTpK2Wggq3M0L6rdFRzDU6gjkDp09ciU0m3JENHMJuGyJbU7/rVnMBxqK5NKAjhBMWN6AvW52fBLrZ+KOO7jumbaQOQgkC9c8s5HSrxXuX8lNm28Zh/y7YubG2GRs2E79AEvQOQIIcEjoPMI5UXGZeu7O3nqw4M2tU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=iCkSMpxS; arc=none smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0333521.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48DGkgUr008400;
-	Fri, 13 Sep 2024 17:28:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
-	from:to:cc:subject:date:message-id:mime-version
-	:content-transfer-encoding; s=corp-2023-11-20; bh=uO3h/rBOng8LuP
-	c1+hNDJLJ69j0neGxdQe8MruvFX7c=; b=iCkSMpxS8AMY6Bh6q1cgJsSocPjLtq
-	nUdAWGax/1i0hCopzHFNHtskoYvkUpc/jwXSvWJpEuGGIqqJWNtB9akS4QKnS622
-	eGA0lRaCUN2u4un1S9Lwzvc9k9W3ea93Aw5jOhSIjkjvDHDTNO5TbgkL7gJob+Gg
-	cbVx9WzAwhmuPwHNZCcJfFJ/Uivft7nGYlSUEDvykJTOaijRLlUwaGpVOLHJf4Qz
-	zzT4yY6sEs7b8UW+mxkMGn1YOk+0CPhkT06ZV9u5cvHqNIABCjWliVMdt4CP4iSv
-	FzIzl5iIVeaQMI1ijXTwHFOtnsRVqyMzZf0SC4AuEM2D2DJZM9a3Ejnw==
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 41gdrbe6t0-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 13 Sep 2024 17:28:54 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 48DGvHu9033599;
-	Fri, 13 Sep 2024 17:28:53 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 41gd9cxdtt-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 13 Sep 2024 17:28:53 +0000
-Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 48DHSqwe023617;
-	Fri, 13 Sep 2024 17:28:52 GMT
-Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 41gd9cxdtj-1;
-	Fri, 13 Sep 2024 17:28:52 +0000
-From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
-To: stable@vger.kernel.org
-Cc: mhiramat@kernel.org, skhan@linuxfoundation.org, keescook@chromium.org,
-        samasth.norway.ananda@oracle.com
-Subject: [PATCH 5.4.y] selftests: breakpoints: Fix a typo of function name
-Date: Fri, 13 Sep 2024 10:28:52 -0700
-Message-ID: <20240913172852.3690929-1-samasth.norway.ananda@oracle.com>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1726248999; c=relaxed/simple;
+	bh=i4sBOolzT6ahoQSSuKXWmcVCJLLVD2qcsAVFDfhP6MI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=imANcuoYu31FhyfXgUyZBuy5nONtT8441UzISIbV8UgPxip0ebAZbwlfJid7BEvBQIdwW/Wv+v/OAdtnjKSedU1Ac+WqjG8SBQMKeFekcd78SfCAgJeW4JPWxPTz0ejBg77GDGQslS5Cu9bxRlLlvBOwMveHMZq/u170hdx8MYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 676CD13D5;
+	Fri, 13 Sep 2024 10:37:05 -0700 (PDT)
+Received: from [192.168.1.12] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id BC4A33F64C;
+	Fri, 13 Sep 2024 10:36:33 -0700 (PDT)
+Message-ID: <6f365e5b-220c-4b2e-8a56-a5135b216e62@arm.com>
+Date: Fri, 13 Sep 2024 19:36:27 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-13_11,2024-09-13_02,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 suspectscore=0 phishscore=0
- spamscore=0 malwarescore=0 adultscore=0 mlxscore=0 mlxlogscore=999
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2408220000
- definitions=main-2409130125
-X-Proofpoint-ORIG-GUID: 3MrVoYS_VVQBrZ-7PBMSxugdqcETFW7H
-X-Proofpoint-GUID: 3MrVoYS_VVQBrZ-7PBMSxugdqcETFW7H
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] sched/fair: Fix integer underflow
+To: Vincent Guittot <vincent.guittot@linaro.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
+ Juri Lelli <juri.lelli@redhat.com>,
+ Dietmar Eggemann <dietmar.eggemann@arm.com>,
+ Steven Rostedt <rostedt@goodmis.org>, Ben Segall <bsegall@google.com>,
+ Mel Gorman <mgorman@suse.de>, Valentin Schneider <vschneid@redhat.com>
+References: <20240913085824.404709-1-pierre.gondois@arm.com>
+ <CAKfTPtB2=_O=dJbTH=e_Hg80_rcSvBgwUP+ZMehfyG4sG5W6iQ@mail.gmail.com>
+Content-Language: en-US
+From: Pierre Gondois <pierre.gondois@arm.com>
+In-Reply-To: <CAKfTPtB2=_O=dJbTH=e_Hg80_rcSvBgwUP+ZMehfyG4sG5W6iQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Masami Hiramatsu <mhiramat@kernel.org>
+Hello Vincent,
 
-commit 5b06eeae52c02dd0d9bc8488275a1207d410870b upstream.
+On 9/13/24 18:14, Vincent Guittot wrote:
+> Hi Pierre
+> 
+> On Fri, 13 Sept 2024 at 10:58, Pierre Gondois <pierre.gondois@arm.com> wrote:
+>>
+>> (struct sg_lb_stats).idle_cpus is of type 'unsigned int'.
+>> (local->idle_cpus - busiest->idle_cpus) can underflow to UINT_MAX
+>> for instance, and max_t(long, 0, UINT_MAX) will output UINT_MAX.
+>>
+>> Use lsub_positive() instead of max_t().
+> 
+> Have you faced the problem or this patch is based on code review ?
+> 
+> we have the below in sched_balance_find_src_group() that should ensure
+> that we have local->idle_cpus > busiest->idle_cpus
+> 
+> if (busiest->group_weight > 1 &&
+>      local->idle_cpus <= (busiest->idle_cpus + 1)) {
+>      /*
+>      * If the busiest group is not overloaded
+>      * and there is no imbalance between this and busiest
+>      * group wrt idle CPUs, it is balanced. The imbalance
+>      * becomes significant if the diff is greater than 1
+>      * otherwise we might end up to just move the imbalance
+>      * on another group. Of course this applies only if
+>      * there is more than 1 CPU per group.
+>      */
+>      goto out_balanced;
+> }
 
-Since commit 5821ba969511 ("selftests: Add test plan API to kselftest.h
-and adjust callers") accidentally introduced 'a' typo in the front of
-run_test() function, breakpoint_test_arm64.c became not able to be
-compiled.
+It was with this setup:
+- busiest->group_type == group_overloaded
+so it might not have checked the value. I can check the exact path if desired,
 
-Remove the 'a' from arun_test().
+Regards,
+Pierre
 
-Fixes: 5821ba969511 ("selftests: Add test plan API to kselftest.h and adjust callers")
-Reported-by: Jun Takahashi <takahashi.jun_s@aa.socionext.com>
-Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Kees Cook <keescook@chromium.org>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
-[Samasth: bp to 5.4.y]
-Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
----
- tools/testing/selftests/breakpoints/breakpoint_test_arm64.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/breakpoints/breakpoint_test_arm64.c b/tools/testing/selftests/breakpoints/breakpoint_test_arm64.c
-index 58ed5eeab7094..ad41ea69001bc 100644
---- a/tools/testing/selftests/breakpoints/breakpoint_test_arm64.c
-+++ b/tools/testing/selftests/breakpoints/breakpoint_test_arm64.c
-@@ -109,7 +109,7 @@ static bool set_watchpoint(pid_t pid, int size, int wp)
- 	return false;
- }
- 
--static bool arun_test(int wr_size, int wp_size, int wr, int wp)
-+static bool run_test(int wr_size, int wp_size, int wr, int wp)
- {
- 	int status;
- 	siginfo_t siginfo;
--- 
-2.45.2
-
+> 
+>>
+>> Fixes: 0b0695f2b34a ("sched/fair: Rework load_balance()")
+>> cc: stable@vger.kernel.org
+>> Signed-off-by: Pierre Gondois <pierre.gondois@arm.com>
+>> ---
+>>   kernel/sched/fair.c | 4 ++--
+>>   1 file changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+>> index 9057584ec06d..6d9124499f52 100644
+>> --- a/kernel/sched/fair.c
+>> +++ b/kernel/sched/fair.c
+>> @@ -10775,8 +10775,8 @@ static inline void calculate_imbalance(struct lb_env *env, struct sd_lb_stats *s
+>>                           * idle CPUs.
+>>                           */
+>>                          env->migration_type = migrate_task;
+>> -                       env->imbalance = max_t(long, 0,
+>> -                                              (local->idle_cpus - busiest->idle_cpus));
+>> +                       env->imbalance = local->idle_cpus;
+>> +                       lsub_positive(&env->imbalance, busiest->idle_cpus);
+>>                  }
+>>
+>>   #ifdef CONFIG_NUMA
+>> --
+>> 2.25.1
+>>
 
