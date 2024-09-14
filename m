@@ -1,123 +1,123 @@
-Return-Path: <stable+bounces-76125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D65F978E20
-	for <lists+stable@lfdr.de>; Sat, 14 Sep 2024 07:57:05 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F2ED978E68
+	for <lists+stable@lfdr.de>; Sat, 14 Sep 2024 08:28:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 139E8287E99
-	for <lists+stable@lfdr.de>; Sat, 14 Sep 2024 05:57:04 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2642E286FC4
+	for <lists+stable@lfdr.de>; Sat, 14 Sep 2024 06:28:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A60A444376;
-	Sat, 14 Sep 2024 05:56:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4866245027;
+	Sat, 14 Sep 2024 06:28:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="oiKgM+gD";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="dTvhx3KG"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bZCg9qDF"
 X-Original-To: stable@vger.kernel.org
-Received: from flow7-smtp.messagingengine.com (flow7-smtp.messagingengine.com [103.168.172.142])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D42E175BF;
-	Sat, 14 Sep 2024 05:56:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.142
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7876D1805E;
+	Sat, 14 Sep 2024 06:28:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726293419; cv=none; b=iybXmU6Iz9MmiLDTfK/oKRpbSbA/50x2c8e0aB+pHJ9VLxXn1jNeErtER7IpoBLMyjL5jw2NgYwYPaJDxibx/wrJ5FiH6Palrnt5icpb0J7S47EQMkwO7P31gfC6lcAHPoHVUq25PMpUCpEiMFJ+2cDWrR0lQNveGuad8lN+Fd8=
+	t=1726295331; cv=none; b=Itojo1R/W1cRNs7AoccVW0153YumaHgozXIRLQoPuUr1+xOXqA4k3mcoQu0IndlE9QQYghZK7n6OvvJn0mQQ8eS1PiWZTCbZgkiqJOYqG8XNDoGp9zFvrPjO29QcDH+LcJKygChZdkdStkzBY1KLj7KnMFyQ9HiwvuHv4IEz9D0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726293419; c=relaxed/simple;
-	bh=MyCryc9nsFpXYN6b1j3UQJHUPrg2LOTyuy5q5J1ZkLo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RK6HbA9BRoGpcerS5F3vw8vdUhM8WqZLVdopOR0jD7pEjJiemGXfTAxJ809Ur2BUwgZWALBkCcFnJ581UFDGO5B+1Rlc0SZTbwKK+X5+boloWNcP54pscc3qpEw4rVV9ecVDpXfEuMwkgaaAv7WTUxmKQbIdirKA44i7/AQofMk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=oiKgM+gD; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=dTvhx3KG; arc=none smtp.client-ip=103.168.172.142
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from phl-compute-12.internal (phl-compute-12.phl.internal [10.202.2.52])
-	by mailflow.phl.internal (Postfix) with ESMTP id 946DF2000B1;
-	Sat, 14 Sep 2024 01:56:56 -0400 (EDT)
+	s=arc-20240116; t=1726295331; c=relaxed/simple;
+	bh=1qR9wHfPRJFwvSE3B98E7SDsBj44G8aq26FBsusaxmA=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DGrKY+VUs4EeXUuDK0b/emyf1+UOn0uwkgCLPYJEb1bj7FKrH6RaV9fuUTGk0+f+ZP9ISk38wyPV/0DAkIJcb7SwPBzY2mEVKM+Jyh0F1Wn+eam1ltkQOlEc3+8CkEACW1zemfADrwucCfwxaWo0ZnjhZsQrKH4n+x+weUbLnHU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bZCg9qDF; arc=none smtp.client-ip=209.85.160.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4581e7f31eeso13772501cf.0;
+        Fri, 13 Sep 2024 23:28:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1726295328; x=1726900128; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:to:from:date:feedback-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=R/LGgXmIndL3SCPEW9jZlfhiJ8WqrC9UKkvceLgY3EA=;
+        b=bZCg9qDFw20ILhsmFS6aGKQjNDkf2V+vIO8OirV5rytWGWuk+oK4JknQSV2bjck98U
+         5gs7Cm4FdL6DuOyhfUaqAhIuck6OJFxVHMB2yH1T5x3Oc868mRUlCgowkQPQ6tPi+S2+
+         2UdN5u6Zrlx1zNKfEqeCZpNDKlY28t6B012EX/ieZajttyK60c+qNNJulIXyVa7NanWu
+         rrbLGAHBDJfim6q9Pn9DkxbDxKrdmgSsDVfi2BzFyPsUP8Q6n/dVqzkTxHHpoEhXq26l
+         qe4gsijA+8Dw9wJT3G6l3T9W1cHPR9fpzjEVCu12bk6+PzG6eLjx2fx4ZOXuXyWc60TA
+         7T0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726295328; x=1726900128;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=R/LGgXmIndL3SCPEW9jZlfhiJ8WqrC9UKkvceLgY3EA=;
+        b=Edj6g6htdaQ2rfu4WrDmhpxNlnRjwhi+STbfZRbE6rNl5udp1YPAlZuPkivncs2n31
+         CVS79DMTrEUEiyVTJ6Qp7z+KCXrpcckSZUg1d3dqwR3U5fCRDJbs1PhQnfQg8ijSeldT
+         CqzRcvipc998Ug3HQIPNZHT/0A5sdHOdFpNMAG/X9bJPRunW0UKlcq9QY7r3QZ1b1rrh
+         XRVbJp7HZ2wOIG7hBUa0krBW52xa+b+BBOWR5WtDbvT3xsKd5ckiryuE5naEHzPbCDUP
+         5Nlk03kqMedasgKgp3F9/YufVLRiggPVix1IATatGOUTHzvxFabfpZiQBlaleT6f1x7n
+         Rl/g==
+X-Forwarded-Encrypted: i=1; AJvYcCU2shFU53yjU/R9seswy5y28HdY7HQZvMFalNXTm4qmdDh+pQcqkdoSD8COlwyiepJh4zx8gRGDfSIKGqA=@vger.kernel.org, AJvYcCUre3MExRWfDA3U60wTXOSY+khMSvQrd4QSSK4rwkhHwMXdjxDZM6ScvHNGC8jxW6Xbag3zgoqy@vger.kernel.org, AJvYcCXlry13XSFHrVRMJHXi9SEfsXeehTfAQmro4KVekqBlNl13spvTHZ668mkf0UNbts/DbqCOUvVutabv7/Yi2rI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyI3BmEO+AhpU3mHvz/b8JwILhIS/ev/6142KekrS+CCwYDmcXP
+	yR30uK88uIKIYi2Hd4rygO8YKSsGIiJYuOo0Gfg/PXkjA0jmeyjh
+X-Google-Smtp-Source: AGHT+IHBJi3CzFMFwQpKBZFUGTbIzDHa18QYekID29Lw1qGBfZdJgqNzoqPu3k7CS8cjG+qG8L9o2Q==
+X-Received: by 2002:a05:622a:15cf:b0:458:4c86:4564 with SMTP id d75a77b69052e-4599d29c7b0mr89071481cf.37.1726295328309;
+        Fri, 13 Sep 2024 23:28:48 -0700 (PDT)
+Received: from fauth1-smtp.messagingengine.com (fauth1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-459aac99ba7sm4218521cf.47.2024.09.13.23.28.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Sep 2024 23:28:47 -0700 (PDT)
+Received: from phl-compute-10.internal (phl-compute-10.phl.internal [10.202.2.50])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 43BCC1200068;
+	Sat, 14 Sep 2024 02:28:47 -0400 (EDT)
 Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-12.internal (MEProxy); Sat, 14 Sep 2024 01:56:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1726293416; x=1726300616; bh=r1M7ruRNRU
-	YjRohbwuaCuLvbF8h8qL/m91LCjTsa0pY=; b=oiKgM+gD3RT2ib83IZzlMUM41J
-	1QbbZbmqBdJBHGGq2WpIaVCB+Ge+quoKsOMtuTLjJU5FPrpf3AWVOSXUWufjkobc
-	Ux0gg/ailm0C6haQPKngJlphanol8xtASqkbxiRNz99xBSdrvitByIwdSb21ynUP
-	KjVrk8hB3bAQpmUgemoRUpsK+bKiiAIPPDWPapZSagCdKMQ5ge1AW/XrsWFQTwMP
-	F4RDYSkfDl+Wcd9dVsnrVtym0x6XIZOrwiCRwgvpIx5h5j55RnWUnbhFUG9s3cog
-	fjUNDG1LVo+t1N5W4dgZuvH1AcytA0fLz8imKR9A7wp7OTVZzKxu1ycFvz5w==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm1; t=1726293416; x=1726300616; bh=r1M7ruRNRUYjRohbwuaCuLvbF8h8
-	qL/m91LCjTsa0pY=; b=dTvhx3KGz7lzodcLtN7FWvG6iRBbtM/oQwdQbCu5H/2C
-	jj8ghPZhTT6JIuj2tIKfeGxBj2IkfRK80+ExL484EeqmZrhVsLg2l5vPGtYnwfZl
-	EVZXr9lnXwWosTTY/s9V1mZvmdv8K7qvLZPitDJgcFCDukmM9kHRZIi5FSJjIJRA
-	mIi6qaWZGknB3hgZRpwuTqTJmdERu+HLupSUz6isZMqog5g5W0OhIwa7l05Btgp4
-	w8+NRO/8sdktwMl7uD2jW1PioE3Cm4rp/uFIAP80+aDpYxZIPnGhlRCDMOyX0zlh
-	CtLZcLuqnQHFPbX/qEDrcG1yXxIikp/CeVIlURxUQA==
-X-ME-Sender: <xms:pyXlZo0ykIxWD-4xYHvIY8eHb8ErwcjcJqz8nEN6qGnQDD666ZKqzA>
-    <xme:pyXlZjFQwo4CElZ8_eq9qnVJabBqGqA7P5ZN70N1B-o4yxzh64J8yLDgtIt349CEW
-    ShDLB750snMgg>
-X-ME-Received: <xmr:pyXlZg6DVL-59vM29UlEnostWe8LhObGPwQ0ImNW3zzeSuwEgVOTX6MYjnCPYFq_07wWuALjworwc3bgLKYrESsBxw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudejledguddtudcutefuodetggdotefrod
+  by phl-compute-10.internal (MEProxy); Sat, 14 Sep 2024 02:28:47 -0400
+X-ME-Sender: <xms:Hy3lZlIpUIhu1C2YHldeNZSKVV7ost2PfL4uCf67MTJFkaRSnzuFMw>
+    <xme:Hy3lZhJgz4rZs8rBmh1OKw35-oNtCnbXTE49mFaKx2AIYiC8l-9jMGCs2YFapmaFQ
+    nDtHF-YRyCkCQNSag>
+X-ME-Received: <xmr:Hy3lZttrlI4ibLq84ZHUgBGRUlSptpcXlXbHHW4YIWnH2FJFUllBWIwrMx_jMA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudejledguddtkecutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
     uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
-    necuhfhrohhmpefirhgvghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtf
-    frrghtthgvrhhnpeegheeuhefgtdeluddtleekfeegjeetgeeikeehfeduieffvddufeef
-    leevtddtvdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuih
-    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorghhrdgtohhm
-    pdhnsggprhgtphhtthhopeehgedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprg
-    hnughrvgifsehluhhnnhdrtghhpdhrtghpthhtohepohhlthgvrghnvhesghhmrghilhdr
-    tghomhdprhgtphhtthhopegrlhgvgigrnhguvghrrdhsvhgvrhgulhhinhesshhivghmvg
-    hnshdrtghomhdprhgtphhtthhopehnvghtuggvvhesvhhgvghrrdhkvghrnhgvlhdrohhr
-    ghdprhgtphhtthhopegrrhhinhgtrdhunhgrlhesrghrihhntgelrdgtohhmpdhrtghpth
-    htohepuggrnhhivghlsehmrghkrhhothhophhirgdrohhrghdprhgtphhtthhopeguqhhf
-    vgigthesghhmrghilhdrtghomhdprhgtphhtthhopehsvggrnhdrfigrnhhgsehmvgguih
-    grthgvkhdrtghomhdprhgtphhtthhopehfrdhfrghinhgvlhhlihesghhmrghilhdrtgho
-    mh
-X-ME-Proxy: <xmx:pyXlZh3NhZ47W8ot1yzi438QqhshqQMC_t9XFoqvfNOTSMt5VhKiEw>
-    <xmx:pyXlZrEnQC7yKvdjSbHpNdDdDCFjizNJ7TGZIjnSiciYgqbskDAwaA>
-    <xmx:pyXlZq-IDOu97cyMH9awHz4QyfjAFCflPRcJso-FJKiv2wBdSj1ksw>
-    <xmx:pyXlZgn-FI0AoKPDAFRSg9cIKczVtuMSzJNK60Ux6G4dAS_2JdCfYw>
-    <xmx:qCXlZlD-5VlMMQYk06m3uJiE1IpLx5akx0bxavQG_4jtn2jPM_iELKKW>
-Feedback-ID: i787e41f1:Fastmail
+    hnthhsucdlqddutddtmdenucfjughrpeffhffvuffkfhggtggujgesthdtredttddtvden
+    ucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrd
+    gtohhmqeenucggtffrrghtthgvrhhnpeegudegfedtjedtffdvleelteefuddvkefgheej
+    uedujeehfeelkeetjeegtdefgfenucffohhmrghinhepfhhffihllhdrtghhnecuvehluh
+    hsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgv
+    shhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehhe
+    ehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgv
+    pdhnsggprhgtphhtthhopeduvddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprg
+    hlihgtvghrhihhlhesghhoohhglhgvrdgtohhmpdhrtghpthhtohepohhjvggurgeskhgv
+    rhhnvghlrdhorhhgpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtg
+    hpthhtohepsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtghpthht
+    ohepsggvnhhnohdrlhhoshhsihhnsehprhhothhonhdrmhgvpdhrtghpthhtoheprgdrhh
+    hinhgusghorhhgsehsrghmshhunhhgrdgtohhmpdhrtghpthhtohepthhmghhrohhsshes
+    uhhmihgthhdrvgguuhdprhgtphhtthhopeihrghkohihohhkuhesghhmrghilhdrtghomh
+    dprhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdr
+    ohhrgh
+X-ME-Proxy: <xmx:Hy3lZmYa4KroPslS4loDGh0mdPYR8Q-r0TmqTmu4w-SaVMHpeVEfuA>
+    <xmx:Hy3lZsalbh_lLyndKZ3IDjPP_KZKQumQqFlHF2iPdbD0oZrVfRKHLw>
+    <xmx:Hy3lZqAVe9JzYN8e1WCOjCk4gdxOhLS5tVRdq2W00n8HJEQqdZ7v-Q>
+    <xmx:Hy3lZqaG81VMtAkGJzv6H4gtBlK2pHe9vqK2Dmywn8aPY7Ep7cxuUw>
+    <xmx:Hy3lZopFYoE7hK_uTQlzSPhe4nthZzEft_hV7Xv-vLG_-Cs2mnaEUfLb>
+Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 14 Sep 2024 01:56:54 -0400 (EDT)
-Date: Sat, 14 Sep 2024 07:56:52 +0200
-From: Greg KH <greg@kroah.com>
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Vladimir Oltean <olteanv@gmail.com>,
-	"A. Sverdlin" <alexander.sverdlin@siemens.com>,	netdev@vger.kernel.org,
-	=?iso-8859-1?Q?Ar1n=E7_=DCNAL?= <arinc.unal@arinc9.com>,
-	Daniel Golle <daniel@makrotopia.org>,	DENG Qingfang <dqfext@gmail.com>,
-	Sean Wang <sean.wang@mediatek.com>,
-	Florian Fainelli <f.fainelli@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,	Jakub Kicinski <kuba@kernel.org>,
- Paolo Abeni <pabeni@redhat.com>,
-	Matthias Brugger <matthias.bgg@gmail.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Claudiu Manoil <claudiu.manoil@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	UNGLinuxDriver@microchip.com,
-	Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>, Felix Fietkau <nbd@nbd.name>,
-	Mark Lee <Mark-MC.Lee@mediatek.com>,	Roopa Prabhu <roopa@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	linux-mediatek@lists.infradead.org, bridge@lists.linux.dev,
+ 14 Sep 2024 02:28:46 -0400 (EDT)
+Date: Fri, 13 Sep 2024 23:28:37 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] net: dsa: RCU-protect dsa_ptr in struct net_device
-Message-ID: <2024091436-gas-phonebook-0018@gregkh>
-References: <20240910130321.337154-1-alexander.sverdlin@siemens.com>
- <20240910130321.337154-2-alexander.sverdlin@siemens.com>
- <20240913190326.xv5qkxt7b3sjuroz@skbuf>
- <28d0a7a5-ead6-4ce0-801c-096038823259@lunn.ch>
+Subject: Re: [PATCH] rust: sync: fix incorrect Sync bounds for LockedBy
+Message-ID: <ZuUtFQ9zs6jJkasD@boqun-archlinux>
+References: <20240912-locked-by-sync-fix-v1-1-26433cbccbd2@google.com>
+ <ZuSIPIHn4gDLm4si@phenom.ffwll.local>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -126,50 +126,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <28d0a7a5-ead6-4ce0-801c-096038823259@lunn.ch>
+In-Reply-To: <ZuSIPIHn4gDLm4si@phenom.ffwll.local>
 
-On Fri, Sep 13, 2024 at 09:27:23PM +0200, Andrew Lunn wrote:
-> > >  drivers/net/dsa/mt7530.c                    |   3 +-
-> > >  drivers/net/dsa/ocelot/felix.c              |   3 +-
-> > >  drivers/net/dsa/qca/qca8k-8xxx.c            |   3 +-
-> > >  drivers/net/ethernet/broadcom/bcmsysport.c  |   8 +-
-> > >  drivers/net/ethernet/mediatek/airoha_eth.c  |   2 +-
-> > >  drivers/net/ethernet/mediatek/mtk_eth_soc.c |  22 +++--
-> > >  drivers/net/ethernet/mediatek/mtk_ppe.c     |  15 ++-
-> > >  include/linux/netdevice.h                   |   2 +-
-> > >  include/net/dsa.h                           |  36 +++++--
-> > >  include/net/dsa_stubs.h                     |   6 +-
-> > >  net/bridge/br_input.c                       |   2 +-
-> > >  net/core/dev.c                              |   3 +-
-> > >  net/core/flow_dissector.c                   |  19 ++--
-> > >  net/dsa/conduit.c                           |  66 ++++++++-----
-> > >  net/dsa/dsa.c                               |  19 ++--
-> > >  net/dsa/port.c                              |   3 +-
-> > >  net/dsa/tag.c                               |   3 +-
-> > >  net/dsa/tag.h                               |  19 ++--
-> > >  net/dsa/tag_8021q.c                         |  10 +-
-> > >  net/dsa/tag_brcm.c                          |   2 +-
-> > >  net/dsa/tag_dsa.c                           |   8 +-
-> > >  net/dsa/tag_qca.c                           |  10 +-
-> > >  net/dsa/tag_sja1105.c                       |  22 +++--
-> > >  net/dsa/user.c                              | 104 +++++++++++---------
-> > >  net/ethernet/eth.c                          |   2 +-
-> > >  25 files changed, 240 insertions(+), 152 deletions(-)
+On Fri, Sep 13, 2024 at 08:45:16PM +0200, Simona Vetter wrote:
+> On Thu, Sep 12, 2024 at 02:20:06PM +0000, Alice Ryhl wrote:
+> > The `impl Sync for LockedBy` implementation has insufficient trait
+> > bounds, as it only requires `T: Send`. However, `T: Sync` is also
+> > required for soundness because the `LockedBy::access` method could be
+> > used to provide shared access to the inner value from several threads in
+> > parallel.
 > > 
-> > Thank you for the patch, and I would like you to not give up on it, even
-> > if we will go for a different bug fix for 'stable'.
-> > 
-> > It's just that it makes me a bit uneasy to have this as the bug fix.
+> > Cc: stable@vger.kernel.org
+> > Fixes: 7b1f55e3a984 ("rust: sync: introduce `LockedBy`")
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 > 
-> +1
+> So I was pondering this forever, because we don't yet have read locks and
+> for exclusive locks Send is enough. But since Arc<T> allows us to build
+> really funny read locks already we need to require Sync for LockedBy,
+> unlike Lock.
 > 
-> We should try for a minimal fix for stable, and keep this for
-> net-next, given its size.
+> We could split access and access_mut up with a newtype so that Sync is
+> only required when needed, but that's not too hard to sneak in when we
+> actually need it.
 > 
-> https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-> 
-> * It must be obviously correct and tested.
-> * It cannot be bigger than 100 lines, with context.
 
-It's fine if it fixes something properly, to go over those limits.
+Hmm.. I think it makes more sense to make `access()` requires `where T:
+Sync` instead of the current fix? I.e. I propose we do:
+
+	impl<T, U> LockedBy<T, U> {
+	    pub fn access<'a>(&'a self, owner: &'a U) -> &'a T
+	    where T: Sync {
+	    	...
+	    }
+	}
+
+The current fix in this patch disallows the case where a user has a
+`Foo: !Sync`, but want to have multiple `&LockedBy<Foo, X>` in different
+threads (they would use `access_mut()` to gain unique accesses), which
+seems to me is a valid use case.
+
+The where-clause fix disallows the case where a user has a `Foo: !Sync`,
+a `&LockedBy<Foo, X>` and a `&X`, and is trying to get a `&Foo` with
+`access()`, this doesn't seems to be a common usage, but maybe I'm
+missing something?
+
+Thoughts?
+
+Regards,
+Boqun
+
+> Reviewed-by: Simona Vetter <simona.vetter@ffwll.ch>
+> 
+> > ---
+> >  rust/kernel/sync/locked_by.rs | 9 +++++----
+> >  1 file changed, 5 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/rust/kernel/sync/locked_by.rs b/rust/kernel/sync/locked_by.rs
+> > index babc731bd5f6..153ba4edcb03 100644
+> > --- a/rust/kernel/sync/locked_by.rs
+> > +++ b/rust/kernel/sync/locked_by.rs
+> > @@ -83,9 +83,10 @@ pub struct LockedBy<T: ?Sized, U: ?Sized> {
+> >  // SAFETY: `LockedBy` can be transferred across thread boundaries iff the data it protects can.
+> >  unsafe impl<T: ?Sized + Send, U: ?Sized> Send for LockedBy<T, U> {}
+> >  
+> > -// SAFETY: `LockedBy` serialises the interior mutability it provides, so it is `Sync` as long as the
+> > -// data it protects is `Send`.
+> > -unsafe impl<T: ?Sized + Send, U: ?Sized> Sync for LockedBy<T, U> {}
+> > +// SAFETY: Shared access to the `LockedBy` can provide both `&mut T` references in a synchronized
+> > +// manner, or `&T` access in an unsynchronized manner. The `Send` trait is sufficient for the first
+> > +// case, and `Sync` is sufficient for the second case.
+> > +unsafe impl<T: ?Sized + Send + Sync, U: ?Sized> Sync for LockedBy<T, U> {}
+> >  
+> >  impl<T, U> LockedBy<T, U> {
+> >      /// Constructs a new instance of [`LockedBy`].
+> > @@ -127,7 +128,7 @@ pub fn access<'a>(&'a self, owner: &'a U) -> &'a T {
+> >              panic!("mismatched owners");
+> >          }
+> >  
+> > -        // SAFETY: `owner` is evidence that the owner is locked.
+> > +        // SAFETY: `owner` is evidence that there are only shared references to the owner.
+> >          unsafe { &*self.data.get() }
+> >      }
+> >  
+> > 
+> > ---
+> > base-commit: 93dc3be19450447a3a7090bd1dfb9f3daac3e8d2
+> > change-id: 20240912-locked-by-sync-fix-07193df52f98
+> > 
+> > Best regards,
+> > -- 
+> > Alice Ryhl <aliceryhl@google.com>
+> > 
+> 
+> -- 
+> Simona Vetter
+> Software Engineer, Intel Corporation
+> http://blog.ffwll.ch
 
