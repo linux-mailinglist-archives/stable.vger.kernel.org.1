@@ -1,114 +1,116 @@
-Return-Path: <stable+bounces-76142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DBC79791A0
-	for <lists+stable@lfdr.de>; Sat, 14 Sep 2024 16:51:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECA8B9791E3
+	for <lists+stable@lfdr.de>; Sat, 14 Sep 2024 17:46:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AC9CDB23264
-	for <lists+stable@lfdr.de>; Sat, 14 Sep 2024 14:51:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2562F1C21722
+	for <lists+stable@lfdr.de>; Sat, 14 Sep 2024 15:46:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 481931D017C;
-	Sat, 14 Sep 2024 14:51:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SSnvvWhK"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43D4F1D0967;
+	Sat, 14 Sep 2024 15:46:18 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtpbgjp3.qq.com (smtpbgjp3.qq.com [54.92.39.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED2531CE6E9;
-	Sat, 14 Sep 2024 14:51:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D836749A;
+	Sat, 14 Sep 2024 15:46:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.92.39.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726325500; cv=none; b=qx+Y3J1ZaGYxlcAN8F5nKo4Ql7EoRKgvg7c5N9cX0Qj/GR4Vxf9ulxxOVkR6Fu5BP2qaVNKysNSxrheE73xI7WK2QOmoeOWbUk9i2aQhqk2OeQtN9RJUj8z13O/6+YKG/blxy4x6QWYGh+nLEZ09WiaBjZzcHvaAtd1F5cDFhpI=
+	t=1726328778; cv=none; b=LMbi9J4PtvsuRfD7otxXG3EY1zpL2dgYFIqQdICPNde39citMJzkfs3DLq40HdeyzkPsFWRr2K5Y1g3+hkAeSBkjhvD+9UK3YKIeyhD5nxdyRq1f/YppcbgFvDlFfIVM6RL2Z6FpxVUwvhr9wbQ92a+vWfD9MmU/7I4bUqxSrTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726325500; c=relaxed/simple;
-	bh=mFhu7DLeiP0inPX7LRw4dG6RsHNLyjH6HXWdUV07AwU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PdGCLznnyrE3TMEDO9Soc6s9hx4INQt+jmpl/7/mTs17SNySVyYo1iRmqizSzNn+E8EC45lAkCfiVsA3xsjaVfDw2k4S3EosMoyWRQnsetELfFox8W8xXFlB9GGkXgg7XQyh2db6SRoSLu+NmTqQ/ulPzAuTha9oP32u1MMOK94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SSnvvWhK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0728C4CEC0;
-	Sat, 14 Sep 2024 14:51:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726325499;
-	bh=mFhu7DLeiP0inPX7LRw4dG6RsHNLyjH6HXWdUV07AwU=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=SSnvvWhK7EzibuVZEBceZdAQ1Tsktpj7sm+KM3XOnufQvJz8L7FBlSYlU+WTECU1M
-	 Eu+RaYpumtlcGVoSXXRYIo3qIxHbxszJPJ7YACEQof5zVtEgZuwK76kQ5spFZpfMvH
-	 eDVkqpiDcDcWNzY05h0OrlJu8ZbedF+l9n93qp0SWq+ciKTlFeQa54eSvBIh9ALOG/
-	 3JBG4wlZvkSuHWB37uHWSPy5LaMZTaKb7uz1TQdM+xIQldhpJDm8n9OF8YXhH0V/8E
-	 nc8Y3VMskiPnp1VsoBIQPbf6F5B5v61cuwpmiVUNG536L/aliflevRd8OB6CdOR75q
-	 cdkP8lL2iFuJQ==
-Date: Sat, 14 Sep 2024 15:51:30 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Rishi Gupta <gupt21@gmail.com>,
- linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
- linux-kernel@vger.kernel.org, Jonathan Cameron
- <Jonathan.Cameron@huawei.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 3/7] iio: light: veml6030: fix IIO device retrieval from
- embedded device
-Message-ID: <20240914155130.2a3d0368@jic23-huawei>
-In-Reply-To: <20240913-veml6035-v1-3-0b09c0c90418@gmail.com>
-References: <20240913-veml6035-v1-0-0b09c0c90418@gmail.com>
-	<20240913-veml6035-v1-3-0b09c0c90418@gmail.com>
-X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1726328778; c=relaxed/simple;
+	bh=20+yhgT9p/xQ8QoCmoOGZLzO+I0VmtTVue4TDZWkL4g=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Q6dOc95BCqYsVwEU2cFFKbI5vSfFxFsdk2HbeNH3WYVs/5FcwppzodeER7bta2/G2lKuo0orIHZFOjrJgEWMJY64aWD1mnbVkPSqvqSaBjfIhseXiL80OtQyIKgRcyRUpgbi6NDm2R13d2gUEQPnxgL3J2SirDOg4eR9D+cd/G4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=m.fudan.edu.cn; spf=pass smtp.mailfrom=m.fudan.edu.cn; arc=none smtp.client-ip=54.92.39.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=m.fudan.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=m.fudan.edu.cn
+X-QQ-mid: bizesmtpip3t1726328721td2rd4i
+X-QQ-Originating-IP: C+8UI1lNAvQxIkMuI2KqnBuNs/WHZRtwxSlHtl4LGQ4=
+Received: from localhost.localdomain ( [localhost])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Sat, 14 Sep 2024 23:45:18 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 6681894478682742638
+From: Kaixin Wang <kxwang23@m.fudan.edu.cn>
+To: miquel.raynal@bootlin.com
+Cc: 21210240012@m.fudan.edu.cn,
+	21302010073@m.fudan.edu.cn,
+	conor.culhane@silvaco.com,
+	alexandre.belloni@bootlin.com,
+	linux-i3c@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	frank.li@nxp.com,
+	stable@vger.kernel.org,
+	Kaixin Wang <kxwang23@m.fudan.edu.cn>
+Subject: [PATCH v2] i3c: master: svc: Fix use after free vulnerability in svc_i3c_master Driver Due to Race Condition
+Date: Sat, 14 Sep 2024 23:40:32 +0800
+Message-Id: <20240914154030.180-1-kxwang23@m.fudan.edu.cn>
+X-Mailer: git-send-email 2.39.1.windows.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtpip:m.fudan.edu.cn:qybglogicsvrsz:qybglogicsvrsz4a-0
 
-On Fri, 13 Sep 2024 15:18:58 +0200
-Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
+In the svc_i3c_master_probe function, &master->hj_work is bound with
+svc_i3c_master_hj_work, &master->ibi_work is bound with
+svc_i3c_master_ibi_work. And svc_i3c_master_ibi_work  can start the
+hj_work, svc_i3c_master_irq_handler can start the ibi_work.
 
-> The dev pointer that is received as an argument in the
-> in_illuminance_period_available_show function references the device
-> embedded in the IIO device, not in the i2c client.
-> 
-> dev_to_iio_dev() must be used to accessthe right data. The current
-> implementation leads to a segmentation fault on every attempt to read
-> the attribute because indio_dev gets a NULL assignment.
-> 
-> This bug has been present since the first appearance of the driver,
-> apparently since the last version (V6) before getting applied. A
-> constant attribute was used until then, and the last modifications might
-> have not been tested again.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 7b779f573c48 ("iio: light: add driver for veml6030 ambient light sensor")
-> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Applied to the fixes-togreg branch of iio.git.
+If we remove the module which will call svc_i3c_master_remove to
+make cleanup, it will free master->base through i3c_master_unregister
+while the work mentioned above will be used. The sequence of operations
+that may lead to a UAF bug is as follows:
 
-Thanks,
-Jonathan
+CPU0                                         CPU1
 
-> ---
->  drivers/iio/light/veml6030.c | 3 +--
->  1 file changed, 1 insertion(+), 2 deletions(-)
-> 
-> diff --git a/drivers/iio/light/veml6030.c b/drivers/iio/light/veml6030.c
-> index 2e86d310952e..df2ba3078b91 100644
-> --- a/drivers/iio/light/veml6030.c
-> +++ b/drivers/iio/light/veml6030.c
-> @@ -99,9 +99,8 @@ static const char * const period_values[] = {
->  static ssize_t in_illuminance_period_available_show(struct device *dev,
->  				struct device_attribute *attr, char *buf)
->  {
-> +	struct veml6030_data *data = iio_priv(dev_to_iio_dev(dev));
->  	int ret, reg, x;
-> -	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
-> -	struct veml6030_data *data = iio_priv(indio_dev);
->  
->  	ret = regmap_read(data->regmap, VEML6030_REG_ALS_CONF, &reg);
->  	if (ret) {
-> 
+                                    | svc_i3c_master_hj_work
+svc_i3c_master_remove               |
+i3c_master_unregister(&master->base)|
+device_unregister(&master->dev)     |
+device_release                      |
+//free master->base                 |
+                                    | i3c_master_do_daa(&master->base)
+                                    | //use master->base
+
+Fix it by ensuring that the work is canceled before proceeding with the
+cleanup in svc_i3c_master_remove.
+
+Fixes: 0f74f8b6675c ("i3c: Make i3c_master_unregister() return void")
+Signed-off-by: Kaixin Wang <kxwang23@m.fudan.edu.cn>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+
+---
+v2:
+- add fixes tag and cc stable, suggested by Frank
+- add Reviewed-by label from Miquel
+- Link to v1: https://lore.kernel.org/r/20240911150135.839946-1-kxwang23@m.fudan.edu.cn
+---
+ drivers/i3c/master/svc-i3c-master.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/i3c/master/svc-i3c-master.c b/drivers/i3c/master/svc-i3c-master.c
+index 0a68fd1b81d4..e084ba648b4a 100644
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -1775,6 +1775,7 @@ static void svc_i3c_master_remove(struct platform_device *pdev)
+ {
+ 	struct svc_i3c_master *master = platform_get_drvdata(pdev);
+ 
++	cancel_work_sync(&master->hj_work);
+ 	i3c_master_unregister(&master->base);
+ 
+ 	pm_runtime_dont_use_autosuspend(&pdev->dev);
+-- 
+2.39.1.windows.1
 
 
