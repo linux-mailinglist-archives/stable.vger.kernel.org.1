@@ -1,177 +1,114 @@
-Return-Path: <stable+bounces-76141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CBB1979000
-	for <lists+stable@lfdr.de>; Sat, 14 Sep 2024 12:33:06 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DBC79791A0
+	for <lists+stable@lfdr.de>; Sat, 14 Sep 2024 16:51:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6201A1C21FC2
-	for <lists+stable@lfdr.de>; Sat, 14 Sep 2024 10:33:05 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AC9CDB23264
+	for <lists+stable@lfdr.de>; Sat, 14 Sep 2024 14:51:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D6C91CF2A3;
-	Sat, 14 Sep 2024 10:32:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 481931D017C;
+	Sat, 14 Sep 2024 14:51:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="V/v73Ou/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SSnvvWhK"
 X-Original-To: stable@vger.kernel.org
-Received: from omta038.useast.a.cloudfilter.net (omta038.useast.a.cloudfilter.net [44.202.169.37])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B98C81CF2A9
-	for <stable@vger.kernel.org>; Sat, 14 Sep 2024 10:32:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED2531CE6E9;
+	Sat, 14 Sep 2024 14:51:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726309967; cv=none; b=Rv4ycKgVeOe8ow/VCJV3oxC2ew7wgB/l+BEYgPURYvqooGQzNWRhCbnsgQ8sdsYFfmJGEs/4D4wr0osI1+XgZgcZxOWtZF+u94bSxgGBW7/wvn+8BTsW66GkxAsJVdHl+J57K2kvlEavxPPZw0JxdCPUmDxqaNQkFzzu2TPL1bo=
+	t=1726325500; cv=none; b=qx+Y3J1ZaGYxlcAN8F5nKo4Ql7EoRKgvg7c5N9cX0Qj/GR4Vxf9ulxxOVkR6Fu5BP2qaVNKysNSxrheE73xI7WK2QOmoeOWbUk9i2aQhqk2OeQtN9RJUj8z13O/6+YKG/blxy4x6QWYGh+nLEZ09WiaBjZzcHvaAtd1F5cDFhpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726309967; c=relaxed/simple;
-	bh=WcO4Ee9IpzhkwJXAKmkn53e/tlBB9ljk9pZ60gsG66s=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=bxw+Wa+ILvItriI+HeWCo+ajFN2VIotgybdLGqbMS07ZlRSsqezfVw5oKkOULFlwdXDSJHC9Ekno4p23/5R4aQyZN916h1S7S00Y0oRpZzcR7KTWI5TCsWz1Gq+LPoi9weQOhzpWaUOPCFmYHB/XLFpf8LPMEbULSL0HrSPJUss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=V/v73Ou/; arc=none smtp.client-ip=44.202.169.37
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-5010a.ext.cloudfilter.net ([10.0.29.199])
-	by cmsmtp with ESMTPS
-	id pOoesRJhyg2lzpQ50sz3pn; Sat, 14 Sep 2024 10:32:38 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id pQ4zs8hj8r1JupQ4zs7qdD; Sat, 14 Sep 2024 10:32:37 +0000
-X-Authority-Analysis: v=2.4 cv=VPjbncPX c=1 sm=1 tr=0 ts=66e56645
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=laDfMnwPvlV8RbZy:21 a=IkcTkHD0fZMA:10 a=EaEq8P2WXUwA:10 a=7vwVE5O1G3EA:10
- a=VwQbUJbxAAAA:8 a=LNEQrawzAAAA:8 a=yXU_oFUb34Xy4YaZEXEA:9 a=QEXdDO2ut3YA:10
- a=TG63qu3eEmdwY2BC5db5:22 a=hTR6fmoedSdf3N0JiVF8:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:
-	Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=Bk70K7VBmRMTvuA0V8Jh3LSbE28XJ9nYjCpemqhH96A=; b=V/v73Ou/vTIkaO131zUxeocE5x
-	HEKJ1gXF1hvPa9QK8vxPQDzfl/3+BQ9HxXPc02/ejVMz3qqjjoDmlmIg++zdxuXaI/TCRaaBlypPz
-	uBzZI+O0PNHNVA5QuEjVDed9ixS9RLnHg91RpvZG6k1tKi4t408fN6z0JUU5geIZs5OT+IGMo1TEC
-	CdIqebSgKkXM6uSX/OnLhDAa+wau5wHDwnIZYC0IiV0W+kfHvdtw+pHlwRdMt+SxLzgyFfXx0gNFy
-	zVH7MKoUJRI0oSmRYHLow7Hfl+09IFCeHdw4upgwuiDdECJCB9c+Pkr8JVMYRDx4MUYS8JxIOQyne
-	I9X3ipCw==;
-Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:40386 helo=[10.0.1.47])
-	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <re@w6rz.net>)
-	id 1spQ4x-002Q3E-07;
-	Sat, 14 Sep 2024 04:32:35 -0600
-Subject: Re: Patch "riscv: dts: starfive: jh7110-common: Fix lower rate of
- CPUfreq by setting PLL0 rate to 1.5GHz" has been added to the 6.10-stable
- tree
-To: Xingyu Wu <xingyu.wu@starfivetech.com>, Greg KH <greg@kroah.com>
-Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
- "stable-commits@vger.kernel.org" <stable-commits@vger.kernel.org>,
- Sasha Levin <sashal@kernel.org>, Emil Renner Berthing <kernel@esmil.dk>,
- Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
- <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Hal Feng <hal.feng@starfivetech.com>
-References: <20240913141134.2831322-1-sashal@kernel.org>
- <NTZPR01MB0956F268E07BAE72F3A133DE9F662@NTZPR01MB0956.CHNPR01.prod.partner.outlook.cn>
- <2024091451-partake-dyslexia-e238@gregkh>
- <NTZPR01MB0956BF9AAE1FCAAF71C810A69F662@NTZPR01MB0956.CHNPR01.prod.partner.outlook.cn>
- <2024091445-underwent-rearview-24be@gregkh>
- <NTZPR01MB0956C2EF430930E4DB2C35BE9F662@NTZPR01MB0956.CHNPR01.prod.partner.outlook.cn>
-From: Ron Economos <re@w6rz.net>
-Message-ID: <59b65d17-7dce-ef5d-41ba-2c04656fb2e8@w6rz.net>
-Date: Sat, 14 Sep 2024 03:32:33 -0700
-User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+	s=arc-20240116; t=1726325500; c=relaxed/simple;
+	bh=mFhu7DLeiP0inPX7LRw4dG6RsHNLyjH6HXWdUV07AwU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=PdGCLznnyrE3TMEDO9Soc6s9hx4INQt+jmpl/7/mTs17SNySVyYo1iRmqizSzNn+E8EC45lAkCfiVsA3xsjaVfDw2k4S3EosMoyWRQnsetELfFox8W8xXFlB9GGkXgg7XQyh2db6SRoSLu+NmTqQ/ulPzAuTha9oP32u1MMOK94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SSnvvWhK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0728C4CEC0;
+	Sat, 14 Sep 2024 14:51:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1726325499;
+	bh=mFhu7DLeiP0inPX7LRw4dG6RsHNLyjH6HXWdUV07AwU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=SSnvvWhK7EzibuVZEBceZdAQ1Tsktpj7sm+KM3XOnufQvJz8L7FBlSYlU+WTECU1M
+	 Eu+RaYpumtlcGVoSXXRYIo3qIxHbxszJPJ7YACEQof5zVtEgZuwK76kQ5spFZpfMvH
+	 eDVkqpiDcDcWNzY05h0OrlJu8ZbedF+l9n93qp0SWq+ciKTlFeQa54eSvBIh9ALOG/
+	 3JBG4wlZvkSuHWB37uHWSPy5LaMZTaKb7uz1TQdM+xIQldhpJDm8n9OF8YXhH0V/8E
+	 nc8Y3VMskiPnp1VsoBIQPbf6F5B5v61cuwpmiVUNG536L/aliflevRd8OB6CdOR75q
+	 cdkP8lL2iFuJQ==
+Date: Sat, 14 Sep 2024 15:51:30 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Rishi Gupta <gupt21@gmail.com>,
+ linux-iio@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Jonathan Cameron
+ <Jonathan.Cameron@huawei.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 3/7] iio: light: veml6030: fix IIO device retrieval from
+ embedded device
+Message-ID: <20240914155130.2a3d0368@jic23-huawei>
+In-Reply-To: <20240913-veml6035-v1-3-0b09c0c90418@gmail.com>
+References: <20240913-veml6035-v1-0-0b09c0c90418@gmail.com>
+	<20240913-veml6035-v1-3-0b09c0c90418@gmail.com>
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <NTZPR01MB0956C2EF430930E4DB2C35BE9F662@NTZPR01MB0956.CHNPR01.prod.partner.outlook.cn>
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.223.253.157
-X-Source-L: No
-X-Exim-ID: 1spQ4x-002Q3E-07
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net ([10.0.1.47]) [73.223.253.157]:40386
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 3
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfEJ/MAXdzVSOPboeKvtOD0L4Br4fwwBFJG4oJ6b/yYFujgXuyKWkNDi/0Ws3tJLBN2cyQbK8CAt5mBFFCqit+YZMt+LPd36gUx3SteGN9LP6IUr4q8Rs
- 4WBKl9+IlpuFxnGTTbWWcRF4W3VK187SQkpFv2pdJCzHVV2t33ksxlZ2HqSsGGyOnl1z7vVF25oJvw==
 
-On 9/14/24 3:04 AM, Xingyu Wu wrote:
-> On 14/09/2024 17:37, Greg KH wrote:
->> On Sat, Sep 14, 2024 at 09:24:44AM +0000, Xingyu Wu wrote:
->>> On 14/09/2024 16:51, Greg KH wrote:
->>>> On Sat, Sep 14, 2024 at 08:01:44AM +0000, Xingyu Wu wrote:
->>>>> On 13/09/2024 22:12, Sasha Levin wrote:
->>>>>> This is a note to let you know that I've just added the patch
->>>>>> titled
->>>>>>
->>>>>>      riscv: dts: starfive: jh7110-common: Fix lower rate of
->>>>>> CPUfreq by setting PLL0 rate to 1.5GHz
->>>>>>
->>>>>> to the 6.10-stable tree which can be found at:
->>>>>>      http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-
->>>>>> queue.git;a=summary
->>>>>>
->>>>>> The filename of the patch is:
->>>>>>       riscv-dts-starfive-jh7110-common-fix-lower-rate-of-c.patch
->>>>>> and it can be found in the queue-6.10 subdirectory.
->>>>>>
->>>>>> If you, or anyone else, feels it should not be added to the
->>>>>> stable tree, please let <stable@vger.kernel.org> know about it.
->>>>>>
->>>>> Hi Sasha,
->>>>>
->>>>> This patch only has the part of DTS without the clock driver patch[1].
->>>>> [1]:
->>>>> https://lore.kernel.org/all/20240826080430.179788-2-xingyu.wu@star
->>>>> five
->>>>> tech.com/
->>>>>
->>>>> I don't know your plan about this driver patch, or maybe I missed it.
->>>>> But the DTS changes really needs the driver patch to work and you
->>>>> should add
->>>> the driver patch.
->>>>
->>>> Then why does the commit say:
->>>>
->>>>>>      Fixes: e2c510d6d630 ("riscv: dts: starfive: Add cpu scaling
->>>>>> for
->>>>>> JH7110 SoC")
->>>> Is that line incorrect?
->>>>
->>> No, this patch can also fix the problem.
->>> In that patchset, the patch 2 depended on patch 1,  so I added the Fixes tag in
->> both patches.
->>
->> What is the commit id of the other change you are referring to here?
->>
-> This commit id is the bug I'm trying to fix. The Fixes tag need to add it.
->
-> Thanks,
-> Xingyu Wu
->
-I think Greg is looking for this:
+On Fri, 13 Sep 2024 15:18:58 +0200
+Javier Carrasco <javier.carrasco.cruz@gmail.com> wrote:
 
-commit 538d5477b25289ac5d46ca37b9e5b4d685cbe019
+> The dev pointer that is received as an argument in the
+> in_illuminance_period_available_show function references the device
+> embedded in the IIO device, not in the i2c client.
+> 
+> dev_to_iio_dev() must be used to accessthe right data. The current
+> implementation leads to a segmentation fault on every attempt to read
+> the attribute because indio_dev gets a NULL assignment.
+> 
+> This bug has been present since the first appearance of the driver,
+> apparently since the last version (V6) before getting applied. A
+> constant attribute was used until then, and the last modifications might
+> have not been tested again.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 7b779f573c48 ("iio: light: add driver for veml6030 ambient light sensor")
+> Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Applied to the fixes-togreg branch of iio.git.
 
-clk: starfive: jh7110-sys: Add notifier for PLL0 clock
+Thanks,
+Jonathan
+
+> ---
+>  drivers/iio/light/veml6030.c | 3 +--
+>  1 file changed, 1 insertion(+), 2 deletions(-)
+> 
+> diff --git a/drivers/iio/light/veml6030.c b/drivers/iio/light/veml6030.c
+> index 2e86d310952e..df2ba3078b91 100644
+> --- a/drivers/iio/light/veml6030.c
+> +++ b/drivers/iio/light/veml6030.c
+> @@ -99,9 +99,8 @@ static const char * const period_values[] = {
+>  static ssize_t in_illuminance_period_available_show(struct device *dev,
+>  				struct device_attribute *attr, char *buf)
+>  {
+> +	struct veml6030_data *data = iio_priv(dev_to_iio_dev(dev));
+>  	int ret, reg, x;
+> -	struct iio_dev *indio_dev = i2c_get_clientdata(to_i2c_client(dev));
+> -	struct veml6030_data *data = iio_priv(indio_dev);
+>  
+>  	ret = regmap_read(data->regmap, VEML6030_REG_ALS_CONF, &reg);
+>  	if (ret) {
+> 
 
 
