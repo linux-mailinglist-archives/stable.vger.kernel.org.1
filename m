@@ -1,177 +1,200 @@
-Return-Path: <stable+bounces-76160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75B1C979741
-	for <lists+stable@lfdr.de>; Sun, 15 Sep 2024 16:41:47 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1ADAF97975F
+	for <lists+stable@lfdr.de>; Sun, 15 Sep 2024 17:01:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2E16C281662
-	for <lists+stable@lfdr.de>; Sun, 15 Sep 2024 14:41:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3EF1C1C20AF3
+	for <lists+stable@lfdr.de>; Sun, 15 Sep 2024 15:01:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76CCC1C6F78;
-	Sun, 15 Sep 2024 14:41:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56B801C6F78;
+	Sun, 15 Sep 2024 15:01:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="G1LNfT3s"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="sBEWH2mF"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from omta34.uswest2.a.cloudfilter.net (omta34.uswest2.a.cloudfilter.net [35.89.44.33])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF4311C6F66
-	for <stable@vger.kernel.org>; Sun, 15 Sep 2024 14:41:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDF6417BBE
+	for <stable@vger.kernel.org>; Sun, 15 Sep 2024 15:01:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726411296; cv=none; b=QMvdVAt3LPrfRaYhGSv0x51l7FcqOiHGoCCSiECyzqynY+xWWmQ8O4QNBUWmzmJ2+ZGHiXBPMVRZ6aMsM3wUd4ZJ1nfft4seCFNJPUsDmE2kKb/98Xf+pRW4ZMF4ali1IRPXoAXo2UQ16lvqOi26Z08mbpFNdA/M+cTIz7sOBEA=
+	t=1726412507; cv=none; b=M9ZopJIPWYjPDkidxhAoPekmbYzkD4ixjEwHab2Ox/BZkh5eqVsDrnRjZre2yXgXrrE/0tRKOhZbpGkoRqItv/jqvJVwjSUf1fS6dB7DMunoeBXLCW2bdCenETNa7fOoqK9/vUxz92UJ4Tqeb/0+g+9Rk4zelCGZueb1SzHb6YM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726411296; c=relaxed/simple;
-	bh=3WcMNrZ0tsoHg+qzEqC8I515GwoTWxUcB94qskQiDls=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=GMiPHV1PSMisS05TXeoVm5Ps1+MVwahOHdWqExPmVK9AGHPRUvSQAilWGcqMlzkYbwlmRfHnO7lcgL8yf85uiSrg29jDOwhAI+Sw7qXUXBRCyk8PC+G5ZAHHZCS2O0y9off3grz+YJVyXsEmvk/7pxw+ETYvxB2bupyHgYDtkGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=G1LNfT3s; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-42cb374f0cdso18406335e9.0
-        for <stable@vger.kernel.org>; Sun, 15 Sep 2024 07:41:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1726411292; x=1727016092; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=r/O8x7VJ554ueyy+hbUwWFKRcP1g4JZ3yxvjNVEBW2I=;
-        b=G1LNfT3sAgPIOlM2/fU7DbTQqtREmOtCy0ybMdHFkNU9T+nPcwsBQbJklxNYD9TvtD
-         GMiq09+qdmyzG7/m1Lk31C1fHmrBQomVKTe9TFkfAyvQBFsxKm2erkTHg/nwvspY5L5B
-         ikD1/SZISKmWGQFAbUwRCQjjmrNRsRfCWppAph+kBSXoHLChPwJ8/Ub6E3XS6w78CptB
-         OUq2/jYJRZbpYMhOt7+RIXEm6iuPgYOrda06OIPkCs8063FaLJdTXN9YAlG1LoUvbrTX
-         3SEq5Hv4RU/Unrp3s/HRMaDTAnQxB8qDZAruM8EV/Xj6nGEwLCtDfdPnQxiPVQRlhxmT
-         M2hA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726411292; x=1727016092;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=r/O8x7VJ554ueyy+hbUwWFKRcP1g4JZ3yxvjNVEBW2I=;
-        b=Vp3bTwIhuaf+IZPbWvaw7r8Y5lLjrib+ExkuynTkTyqsOstdKp8CTi8JQciucdM8mR
-         y5a3WVoKiGXUBFGpv+UC9YnGvGfxILMnZAwdRIsIzqbQUAntAa1zrtVGsfg4IGqfxfLS
-         4Sr9WQ1GYuiaMBC8No+lCMEQ9q+PyyOTczdvTlwFdhNa7ugyibo7XjWlr3qoQ1CoTMmk
-         tvNN5nDNcttu7bu4RsEUfltgQ2MjKEWNFlUrelUQueSIh0COFojEM87Z+J7Yt0CjfTnJ
-         3Z3CkLt34Fab0lL0Jx5HFSgdEhc7rJ+3GQ/U7UxWl+tm3pd6C9YcXDwTMRxoPJEa4ban
-         02QQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXybVsj6SkGYegFUnwBrG2CoE6RotZfGYHDuF91LeMe96aKzcxMzXe08WwDtl+3Tye3vlxW7EQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzdGDgsSp7scTg9XWVrlPoGywqabkr/NT0c0GFpezVveErJEyRR
-	0lCuxoWWJ/wp2oAAGJcYOT4dLtU4Iz3DiiunEEFgHrPGDcmEiBcaAmV8AFD7+RULsY5dvLMmAg4
-	IJhG0pLbNNVuEBQ==
-X-Google-Smtp-Source: AGHT+IF6tbgP24fOhUCyIFJUdfk1J1lsm3emGm3kIkIAo9VgaODWeLcdjdRZMS5qXJKsI5d95ieOiuRPkZ0IYuM=
-X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:35bd])
- (user=aliceryhl job=sendgmr) by 2002:a05:600c:2318:b0:42c:b026:4525 with SMTP
- id 5b1f17b1804b1-42cdc88d08bmr1412005e9.1.1726411292105; Sun, 15 Sep 2024
- 07:41:32 -0700 (PDT)
-Date: Sun, 15 Sep 2024 14:41:28 +0000
+	s=arc-20240116; t=1726412507; c=relaxed/simple;
+	bh=mJkmRu67wu2FBYJDd5gC0HWoGDWeWC00r79enZB3UsE=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=Uwcfyw4e75svDeKJH7JAAIWKZ61UGuxloxIWjv7nsadBXi1se4LLWqy6D1iJWPixB61zwcswuE1ja64KPre66ba/nOGi903sJeWEbuTigTHtK0c3KuowCYWK3ofxpPuQLCPH31awX72aC+4XfAEnBrToHEZKLp15jfnXv8Jka98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=sBEWH2mF; arc=none smtp.client-ip=35.89.44.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-5006a.ext.cloudfilter.net ([10.0.29.179])
+	by cmsmtp with ESMTPS
+	id pRl0soPvdVpzppqkssJRLR; Sun, 15 Sep 2024 15:01:38 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id pqkrsw3fhD1F3pqkrsnYQL; Sun, 15 Sep 2024 15:01:37 +0000
+X-Authority-Analysis: v=2.4 cv=Ffoxxo+6 c=1 sm=1 tr=0 ts=66e6f6d1
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=laDfMnwPvlV8RbZy:21 a=IkcTkHD0fZMA:10 a=EaEq8P2WXUwA:10 a=7vwVE5O1G3EA:10
+ a=VwQbUJbxAAAA:8 a=LNEQrawzAAAA:8 a=uS7RAPvdmta9kbX28JEA:9 a=QEXdDO2ut3YA:10
+ a=TG63qu3eEmdwY2BC5db5:22 a=hTR6fmoedSdf3N0JiVF8:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:
+	Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=UnrjJPh4oBGo9hXxo17DCGW3tolqp1s9+4N/VKQBb1I=; b=sBEWH2mFf31UaTOst8w0wQTKTX
+	46utWePy0mEV5qGlJ+W4MoQUtssnVRl4iiFX5IvbVAui6DancHXyRZXMlMp1Kvz0mn3JeE+e+LJEq
+	xcIdkbS4HO0rGZUyAj1K8b3F1kAdor/qBHTDG4K+ldn48FfzTDrASgZXX/s4hK+x1SOOVB9CYUSzJ
+	6bpkZJt7pZ7lQFaSbGWmDDBXIUe+jq64zZe0m0X3fv45D/CgHDt6JcPc3WYT6ad9cldl13P//cB/3
+	pLSSG6o3E78ndcJn2XFwxWMSJt+cBwNoCQruyxLGGXiir4NKICMzjXnh0iKZa5yOFis3ets8sgjzy
+	dZrfpcKA==;
+Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:40524 helo=[10.0.1.47])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <re@w6rz.net>)
+	id 1spqkp-003TXC-0U;
+	Sun, 15 Sep 2024 09:01:35 -0600
+Subject: Re: Patch "riscv: dts: starfive: jh7110-common: Fix lower rate of
+ CPUfreq by setting PLL0 rate to 1.5GHz" has been added to the 6.10-stable
+ tree
+To: Greg KH <greg@kroah.com>
+Cc: Xingyu Wu <xingyu.wu@starfivetech.com>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ "stable-commits@vger.kernel.org" <stable-commits@vger.kernel.org>,
+ Sasha Levin <sashal@kernel.org>, Emil Renner Berthing <kernel@esmil.dk>,
+ Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Hal Feng <hal.feng@starfivetech.com>
+References: <20240913141134.2831322-1-sashal@kernel.org>
+ <NTZPR01MB0956F268E07BAE72F3A133DE9F662@NTZPR01MB0956.CHNPR01.prod.partner.outlook.cn>
+ <2024091451-partake-dyslexia-e238@gregkh>
+ <NTZPR01MB0956BF9AAE1FCAAF71C810A69F662@NTZPR01MB0956.CHNPR01.prod.partner.outlook.cn>
+ <2024091445-underwent-rearview-24be@gregkh>
+ <NTZPR01MB0956C2EF430930E4DB2C35BE9F662@NTZPR01MB0956.CHNPR01.prod.partner.outlook.cn>
+ <59b65d17-7dce-ef5d-41ba-2c04656fb2e8@w6rz.net>
+ <2024091501-dreamland-driveway-e0c3@gregkh>
+From: Ron Economos <re@w6rz.net>
+Message-ID: <148a908f-e2e2-6001-510e-73aef81d07b5@w6rz.net>
+Date: Sun, 15 Sep 2024 08:01:33 -0700
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIABfy5mYC/32NTQ6CMBBGr0Jm7Zh2wJ+68h6GhUyH0ojUtKaRE
- O5u5QAu30u+9y2QJHpJcKkWiJJ98mEqQLsKeLhPTtDbwkCKGmU04Rj4IRa7GdM8Mfb+g+qkTW3
- 7A/XmDGX4ilL0Fr21hQef3iHO20fWP/s3lzVqpGNT19wxd5auLgQ3yp7DE9p1Xb9YmzwBtQAAA A==
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3347; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=3WcMNrZ0tsoHg+qzEqC8I515GwoTWxUcB94qskQiDls=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBm5vIZzbcn43lhxpnxChoTQ4UlOIGXoizh9RPck
- GOqCSjJT/+JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZubyGQAKCRAEWL7uWMY5
- RjlhD/47qaRnFhoeeKcGD65fEJvXyOsg6UlWoXkHdTIqzdWc+gD5xYKrax+0CQRTYhLTbjxHbfE
- wmAiz1ApmJw6QFuVbfFb8eZfArOIkbuxU03K3mU0EWQ8GQxsl/UzAtJnCtuIneUoWjSQaXQOLlY
- vb5mhfJMWSvcxCLCVKVpi2IAHPI8aVaD/DZ2y35btYOqzOHjzHTyoy3UmPbx6D60m5q2qY58vmW
- 5jH/NzV1JEOiQ9P/OsdUwbKxTHxpUJtrmSBuKzUEcurZpirT3PGqB0+snRQPEAp3UwYBi0iF0TV
- Pov70T51EJMisFa+GHAY2yTgH4Eq+TSvqHOCr5cbmzQRF+dqyMetDLbZsBnf2/bS63Uo2cIqi4O
- 1oGVEnIKCntj3HriNyhmFwbvLLhN6svYAcQVb/Y9NBWRUvamckq73oNOg+3P5/nSNnc8JZ8FmVM
- 5+j7la/1LNeceFYZEEV+ZsGKNoYoouTojtEIZzQr//hP7/o4QqctaRlg6ZGxiH9ttehN7N/+nyN
- FZu40e9L4/z3AlW9VlZlpFB47nxkP15UY16w8I/05HISn270zlx55k76Vz79I2V0JOHpgvSCRUb
- rKspVY9zpp2gufT5HWhZfPLIlDHTS7TqxplBtXi4VjCYPywZPxUq8iUb8vwHLFxy0YSKIjhzqdQ IdRtLCV4s56hzBA==
-X-Mailer: b4 0.13.0
-Message-ID: <20240915-locked-by-sync-fix-v2-1-1a8d89710392@google.com>
-Subject: [PATCH v2] rust: sync: require `T: Sync` for `LockedBy::access`
-From: Alice Ryhl <aliceryhl@google.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Trevor Gross <tmgross@umich.edu>, 
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+In-Reply-To: <2024091501-dreamland-driveway-e0c3@gregkh>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.223.253.157
+X-Source-L: No
+X-Exim-ID: 1spqkp-003TXC-0U
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net ([10.0.1.47]) [73.223.253.157]:40524
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 3
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfL3xPntX1h26E8CPcFxYnu1HK6fvqcJ7zDl9RkCn9qcyGJcSkj7drDISprDLLwYiAK2roc10/uVqPqps+TLs2dtOS3BOoPqmIk6C2UyQxiYfOC0XHbl1
+ YYo889uLu+seMj40EHTtK8/rr5yKa4FeJr11Gy7sTO+8m+cOzQbakBl38eqjU6UorUNbfC+vLXL+ag==
 
-The `LockedBy::access` method only requires a shared reference to the
-owner, so if we have shared access to the `LockedBy` from several
-threads at once, then two threads could call `access` in parallel and
-both obtain a shared reference to the inner value. Thus, require that
-`T: Sync` when calling the `access` method.
+On 9/15/24 6:22 AM, Greg KH wrote:
+> On Sat, Sep 14, 2024 at 03:32:33AM -0700, Ron Economos wrote:
+>> On 9/14/24 3:04 AM, Xingyu Wu wrote:
+>>> On 14/09/2024 17:37, Greg KH wrote:
+>>>> On Sat, Sep 14, 2024 at 09:24:44AM +0000, Xingyu Wu wrote:
+>>>>> On 14/09/2024 16:51, Greg KH wrote:
+>>>>>> On Sat, Sep 14, 2024 at 08:01:44AM +0000, Xingyu Wu wrote:
+>>>>>>> On 13/09/2024 22:12, Sasha Levin wrote:
+>>>>>>>> This is a note to let you know that I've just added the patch
+>>>>>>>> titled
+>>>>>>>>
+>>>>>>>>       riscv: dts: starfive: jh7110-common: Fix lower rate of
+>>>>>>>> CPUfreq by setting PLL0 rate to 1.5GHz
+>>>>>>>>
+>>>>>>>> to the 6.10-stable tree which can be found at:
+>>>>>>>>       http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-
+>>>>>>>> queue.git;a=summary
+>>>>>>>>
+>>>>>>>> The filename of the patch is:
+>>>>>>>>        riscv-dts-starfive-jh7110-common-fix-lower-rate-of-c.patch
+>>>>>>>> and it can be found in the queue-6.10 subdirectory.
+>>>>>>>>
+>>>>>>>> If you, or anyone else, feels it should not be added to the
+>>>>>>>> stable tree, please let <stable@vger.kernel.org> know about it.
+>>>>>>>>
+>>>>>>> Hi Sasha,
+>>>>>>>
+>>>>>>> This patch only has the part of DTS without the clock driver patch[1].
+>>>>>>> [1]:
+>>>>>>> https://lore.kernel.org/all/20240826080430.179788-2-xingyu.wu@star
+>>>>>>> five
+>>>>>>> tech.com/
+>>>>>>>
+>>>>>>> I don't know your plan about this driver patch, or maybe I missed it.
+>>>>>>> But the DTS changes really needs the driver patch to work and you
+>>>>>>> should add
+>>>>>> the driver patch.
+>>>>>>
+>>>>>> Then why does the commit say:
+>>>>>>
+>>>>>>>>       Fixes: e2c510d6d630 ("riscv: dts: starfive: Add cpu scaling
+>>>>>>>> for
+>>>>>>>> JH7110 SoC")
+>>>>>> Is that line incorrect?
+>>>>>>
+>>>>> No, this patch can also fix the problem.
+>>>>> In that patchset, the patch 2 depended on patch 1,  so I added the Fixes tag in
+>>>> both patches.
+>>>>
+>>>> What is the commit id of the other change you are referring to here?
+>>>>
+>>> This commit id is the bug I'm trying to fix. The Fixes tag need to add it.
+>>>
+>>> Thanks,
+>>> Xingyu Wu
+>>>
+>> I think Greg is looking for this:
+>>
+>> commit 538d5477b25289ac5d46ca37b9e5b4d685cbe019
+>>
+>> clk: starfive: jh7110-sys: Add notifier for PLL0 clock
+> That commit is already in the following releases:
+> 	6.6.51 6.10.10
+> so what are we supposed to be doing here?
+>
+> confused,
+>
+> greg k-h
+>
+Sorry, I didn't check to see if it was already in releases. So the 6.10 
+queue is fine as is.
 
-An alternative is to require `T: Sync` in the `impl Sync for LockedBy`.
-This patch does not choose that approach as it gives up the ability to
-use `LockedBy` with `!Sync` types, which is okay as long as you only use
-`access_mut`.
+However, these two patches go together, so the 6.6 queue should also 
+have 61f2e8a3a94175dbbaad6a54f381b2a505324610 "riscv: dts: starfive: 
+jh7110-common: Fix lower rate of CPUfreq by setting PLL0 rate to 1.5GHz" 
+added to it.
 
-Cc: stable@vger.kernel.org
-Fixes: 7b1f55e3a984 ("rust: sync: introduce `LockedBy`")
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
-Changes in v2:
-- Use a `where T: Sync` on `access` instead of changing `impl Sync for
-  LockedBy`.
-- Link to v1: https://lore.kernel.org/r/20240912-locked-by-sync-fix-v1-1-26433cbccbd2@google.com
----
- rust/kernel/sync/locked_by.rs | 18 ++++++++++++++----
- 1 file changed, 14 insertions(+), 4 deletions(-)
+Does that make sense?
 
-diff --git a/rust/kernel/sync/locked_by.rs b/rust/kernel/sync/locked_by.rs
-index babc731bd5f6..ce2ee8d87865 100644
---- a/rust/kernel/sync/locked_by.rs
-+++ b/rust/kernel/sync/locked_by.rs
-@@ -83,8 +83,12 @@ pub struct LockedBy<T: ?Sized, U: ?Sized> {
- // SAFETY: `LockedBy` can be transferred across thread boundaries iff the data it protects can.
- unsafe impl<T: ?Sized + Send, U: ?Sized> Send for LockedBy<T, U> {}
- 
--// SAFETY: `LockedBy` serialises the interior mutability it provides, so it is `Sync` as long as the
--// data it protects is `Send`.
-+// SAFETY: If `T` is not `Sync`, then parallel shared access to this `LockedBy` allows you to use
-+// `access_mut` to hand out `&mut T` on one thread at the time. The requirement that `T: Send` is
-+// sufficient to allow that.
-+//
-+// If `T` is `Sync`, then the `access` method also becomes available, which allows you to obtain
-+// several `&T` from several threads at once. However, this is okay as `T` is `Sync`.
- unsafe impl<T: ?Sized + Send, U: ?Sized> Sync for LockedBy<T, U> {}
- 
- impl<T, U> LockedBy<T, U> {
-@@ -118,7 +122,10 @@ impl<T: ?Sized, U> LockedBy<T, U> {
-     ///
-     /// Panics if `owner` is different from the data protected by the lock used in
-     /// [`new`](LockedBy::new).
--    pub fn access<'a>(&'a self, owner: &'a U) -> &'a T {
-+    pub fn access<'a>(&'a self, owner: &'a U) -> &'a T
-+    where
-+        T: Sync,
-+    {
-         build_assert!(
-             size_of::<U>() > 0,
-             "`U` cannot be a ZST because `owner` wouldn't be unique"
-@@ -127,7 +134,10 @@ pub fn access<'a>(&'a self, owner: &'a U) -> &'a T {
-             panic!("mismatched owners");
-         }
- 
--        // SAFETY: `owner` is evidence that the owner is locked.
-+        // SAFETY: `owner` is evidence that there are only shared references to the owner for the
-+        // duration of 'a, so it's not possible to use `Self::access_mut` to obtain a mutable
-+        // reference to the inner value that aliases with this shared reference. The type is `Sync`
-+        // so there are no other requirements.
-         unsafe { &*self.data.get() }
-     }
- 
-
----
-base-commit: 93dc3be19450447a3a7090bd1dfb9f3daac3e8d2
-change-id: 20240912-locked-by-sync-fix-07193df52f98
-
-Best regards,
--- 
-Alice Ryhl <aliceryhl@google.com>
 
 
