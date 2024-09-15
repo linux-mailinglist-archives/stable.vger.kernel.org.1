@@ -1,215 +1,194 @@
-Return-Path: <stable+bounces-76163-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76164-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21F4597976F
-	for <lists+stable@lfdr.de>; Sun, 15 Sep 2024 17:18:09 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60B57979797
+	for <lists+stable@lfdr.de>; Sun, 15 Sep 2024 17:36:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD734281EBF
-	for <lists+stable@lfdr.de>; Sun, 15 Sep 2024 15:18:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9024B215A7
+	for <lists+stable@lfdr.de>; Sun, 15 Sep 2024 15:36:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11AD41C7B82;
-	Sun, 15 Sep 2024 15:18:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEC711C6F7A;
+	Sun, 15 Sep 2024 15:36:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="lM9iMxdY"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="y3iqsZ9p"
 X-Original-To: stable@vger.kernel.org
-Received: from omta036.useast.a.cloudfilter.net (omta036.useast.a.cloudfilter.net [44.202.169.35])
+Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020076.outbound.protection.outlook.com [52.101.195.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A586543ABD
-	for <stable@vger.kernel.org>; Sun, 15 Sep 2024 15:18:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.202.169.35
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726413483; cv=none; b=YXwfOrLwHuMhBcEslxdH+z44hO5tiKmOzVnanNHwtT1graGoUl+mw7XeYteibz308rgBMnz3p8Vku6sOZne8ThiW0uy3yR1iJZlUOWv5opXFocWHgj0roqBTGBD7xTJCDnZ9joWNtSiM60L1ja3wba+i8v4VrEYVsHjqrQsQHlI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726413483; c=relaxed/simple;
-	bh=FAke71PPV7UuLEIn2+Pxo8DEvEn3mFVw7hUfXfbdXa0=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=kHXYmYy+PiRdLUCNWUNUnFQxlUp972wTwrV/UkRzqJsseuvpwuJfETbYWOy9bBCPmu7pUllsIIt8eKKhj+MLcqcWOZH78D7QAx6UwIiP7EXAgYDsd3I6eCXpCVnSOmFrLSZfSTlzthdsHGjeBcX/7njQ1l40GHHWm1CQaQwNbiE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=lM9iMxdY; arc=none smtp.client-ip=44.202.169.35
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
-Received: from eig-obgw-6003a.ext.cloudfilter.net ([10.0.30.151])
-	by cmsmtp with ESMTPS
-	id pfxas6fbliA19pr0dsoAiw; Sun, 15 Sep 2024 15:17:55 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-	by cmsmtp with ESMTPS
-	id pr0cs3CPtV2ivpr0cs9s15; Sun, 15 Sep 2024 15:17:54 +0000
-X-Authority-Analysis: v=2.4 cv=OLns3jaB c=1 sm=1 tr=0 ts=66e6faa2
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=laDfMnwPvlV8RbZy:21 a=IkcTkHD0fZMA:10 a=EaEq8P2WXUwA:10 a=7vwVE5O1G3EA:10
- a=VwQbUJbxAAAA:8 a=LNEQrawzAAAA:8 a=RTMV0P7I31P55PDG7BsA:9 a=QEXdDO2ut3YA:10
- a=TG63qu3eEmdwY2BC5db5:22 a=hTR6fmoedSdf3N0JiVF8:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-	s=default; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:MIME-Version:
-	Date:Message-ID:From:References:Cc:To:Subject:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=M/hzHkagkLCx05LIwxZKR37UEX0vUREPGxIXtLaSYoQ=; b=lM9iMxdY9vhvE1CpHhXUVSmrK9
-	t+6Bsrvn/dfzK8Gu92InMhakFiPjiPx7ymDIvlsPraYhz9OcN4syFjzVSvoZQ13Up+RHGZgQQ+/Ey
-	oIFS8zad69UfQCURS6W90pLbuCJjIeFrVG4rgBv+zLjt4t5E2ti6d36cnCHZ0TpSWVftyd9kyvrio
-	Vx/f37mvwzIsKtH66oek0ntIsGnpH0ceVgSCu5gDUglgsjvYBmmr7iTIpAgKfD4dkcCyfin6BDPk0
-	Csj0a6nH1uycwSS6TfCq/3LWc7es2GR3LDXhrndV7QEEkZHTTHxczEgh593veVSxM/q4HWUN2X7qE
-	Roz8bZEw==;
-Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:40532 helo=[10.0.1.47])
-	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96.2)
-	(envelope-from <re@w6rz.net>)
-	id 1spr0a-003ZYE-2P;
-	Sun, 15 Sep 2024 09:17:52 -0600
-Subject: Re: Patch "riscv: dts: starfive: jh7110-common: Fix lower rate of
- CPUfreq by setting PLL0 rate to 1.5GHz" has been added to the 6.10-stable
- tree
-To: Greg KH <greg@kroah.com>
-Cc: Xingyu Wu <xingyu.wu@starfivetech.com>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- "stable-commits@vger.kernel.org" <stable-commits@vger.kernel.org>,
- Sasha Levin <sashal@kernel.org>, Emil Renner Berthing <kernel@esmil.dk>,
- Conor Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>,
- Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
- <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Hal Feng <hal.feng@starfivetech.com>
-References: <20240913141134.2831322-1-sashal@kernel.org>
- <NTZPR01MB0956F268E07BAE72F3A133DE9F662@NTZPR01MB0956.CHNPR01.prod.partner.outlook.cn>
- <2024091451-partake-dyslexia-e238@gregkh>
- <NTZPR01MB0956BF9AAE1FCAAF71C810A69F662@NTZPR01MB0956.CHNPR01.prod.partner.outlook.cn>
- <2024091445-underwent-rearview-24be@gregkh>
- <NTZPR01MB0956C2EF430930E4DB2C35BE9F662@NTZPR01MB0956.CHNPR01.prod.partner.outlook.cn>
- <59b65d17-7dce-ef5d-41ba-2c04656fb2e8@w6rz.net>
- <2024091501-dreamland-driveway-e0c3@gregkh>
- <148a908f-e2e2-6001-510e-73aef81d07b5@w6rz.net>
- <2024091557-contents-mobster-f2c3@gregkh>
-From: Ron Economos <re@w6rz.net>
-Message-ID: <3acc9ffe-9468-54e4-96a4-9d2bc852d99d@w6rz.net>
-Date: Sun, 15 Sep 2024 08:17:50 -0700
-User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1135B42065;
+	Sun, 15 Sep 2024 15:36:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.76
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1726414589; cv=fail; b=AFavnHDNOWYKs2S+VbqQ3BzdcBySjutI+FEXc59nJ/Uz97zi1j3y/DJ7bDOZtZm2R3d9nCjqBJxk4ukmzvrnk4vRiJ+KVyaETd4Ftp4COvG+XudmNauYW0v05aY6GWno3+qgbKKmWUz2E8/3+/y3v6RwL/xJcJLjYSBuFIkrvR4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1726414589; c=relaxed/simple;
+	bh=sKKWig14A3B6UPJuaJk1iZqxWZAkUiSAFcftlUYrprc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=drLhXcgf+9BIhaaeUtNRw/jxqqX2J7wTGhmWRZ2GPzrfGJpn3TsEMwuw06t+yFMp/fuHj94ZGQ3fExXyvzzbX96uNF96pHjk36HhkxOVy2INl2MJZO5NzcPXB7AN+U1qVyLV3NYb0Ltgs3v2ZVRKilvxh11Mok26Do+FzC0OAto=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=y3iqsZ9p; arc=fail smtp.client-ip=52.101.195.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fDvxuvtZkg9LdFm0U/VS5Y4WPFRmySrqKmlxaKLRPUlEk4++5I8mNyfCIXJE0F6ULp1i0MMlR16vkmmFh3leL25OhN7Apw6UysrLZWWEWto0nwJCWWWpWfVcrmf2p3HWXDf/fEVej3irME2DpKiCaMI/LZNZLQc6zF8guBzW6jsHbeY41UjOaXU/MVyd4tXmF3dUqu1YYE6JKiNF9s6nvS2u3GxhTcCMOrvh4pZMBJ55i5Ga25OcvMVoVCpAS/7aNZWCCs9sBuRmlITrbWpZMVnPmRQ8zI3yAZVtCiRCFT+r1gpNyUdRXB2txQr9x3d1ixbgvyWV8ygCmWV+t14iyA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=3zgcql/QK7X1M8XCCIrw5pkDAf/bojtxOwCiztvVjos=;
+ b=ZFhzpJPamHgE68lZLvfa4GTLCqyz11cUBrjwFc8wJXZH3BAJur65p890V/yQiNPNB8hMZsl9IRxHsHU4wg/WNrIi+mibDARYddYx1zcYe7ckJ6tbj07dQo5OwV1QeaPCdtCsXOZDwt05xAck6yqvPudGT6QS6ZMZ5C5ojhX1OkfqChXtRC6QA5UfRahxMbwMVzk9ISzDo56lWZEPk09GfmoU3CAyixyD8D7fS3+4Z0+0sDWlES9AdBM9B82dxfxyHtnqfwywcWgs2QRTVsoKfWAaRBkZGHo3+lXCqWCeHeTApYHU/tsvydfbBOsSY63+Uq8F3oVhfh/wRtEIqlfT3A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=3zgcql/QK7X1M8XCCIrw5pkDAf/bojtxOwCiztvVjos=;
+ b=y3iqsZ9pxN+5j5d9muy2sObx1LsPTJTIXUoMANV+H9ShUTC4VUddliF9L6WHK8gBFfpkJT6g0Kwsu+cpLRJq8SL8toyXB14yMvfCj9PgsEFQ2UI+iOoZHFxeVopUtHqu4RCJzMu0+ETyYAQU1bZns1vguEQW45uWssw516LmzPE=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
+ by CWXP265MB3192.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:b1::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7962.23; Sun, 15 Sep
+ 2024 15:36:24 +0000
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1818:a2bf:38a7:a1e7%3]) with mapi id 15.20.7962.022; Sun, 15 Sep 2024
+ 15:36:24 +0000
+Date: Sun, 15 Sep 2024 16:36:22 +0100
+From: Gary Guo <gary@garyguo.net>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, "
+ =?UTF-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin
+ <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Trevor
+ Gross <tmgross@umich.edu>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+Subject: Re: [PATCH v2] rust: sync: require `T: Sync` for `LockedBy::access`
+Message-ID: <20240915163622.5f3365fe.gary@garyguo.net>
+In-Reply-To: <20240915-locked-by-sync-fix-v2-1-1a8d89710392@google.com>
+References: <20240915-locked-by-sync-fix-v2-1-1a8d89710392@google.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO4P123CA0356.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:18d::19) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:253::10)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <2024091557-contents-mobster-f2c3@gregkh>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.223.253.157
-X-Source-L: No
-X-Exim-ID: 1spr0a-003ZYE-2P
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net ([10.0.1.47]) [73.223.253.157]:40532
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 16
-X-Org: HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfFXu8qUWH8mGC2bbbooozJfBUEOL5sbkk2K4WZ/DlOSAf7tZ2IVxES+TdhdJkS2+6bIHLJT+2qzpw1NaYijRoIlIlscIpAqmpsTRhcD0xZeYtJ8Rk87v
- OTxW0lMpAgkGji/60MahPqllKJcOWo265WOfx3cT+96QECRzFRqhBwjP2uPvxdNNJUxswbWeFg/EyQ==
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|CWXP265MB3192:EE_
+X-MS-Office365-Filtering-Correlation-Id: dc15c631-25b0-4384-d6f3-08dcd59c2842
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?h6QBqj4KWa0WibANf/nKJiBiR7xpt3CqPUjKhqmTJna12znwGD5l/K8j/wGm?=
+ =?us-ascii?Q?VwYa9K9NIJT4ubzp4yGlbrtC/JjnwZxel0PF9hXj/jDHHlIBSnnP35Za/MC6?=
+ =?us-ascii?Q?V9/wBEpZ9tXglHI3fNKUbj1Eux49CkCPGPJaHhHjagg+QLIUEDMuCZRIghyK?=
+ =?us-ascii?Q?LOJgDWcOqyyqzZEe0imNfW79l+PE36g6vLMSHxYmUqfaKVmhHEfTkTDwUkIu?=
+ =?us-ascii?Q?MIqqtcPvheo7iXob9pd5xzJGSVFSi8VVnht3cfQMxvkQtLJNT/iMjKvnT8bE?=
+ =?us-ascii?Q?NpJAaTHaT4PjLhole9a7Fcfa5LbX4GBhzDh4LUVtuTEvPuKa9BLJOvrBpKq4?=
+ =?us-ascii?Q?16UJHwrCQweJjf6952rhcVjUvy54XpJySShDNHkn49C0oJSZAujndz9IN6b4?=
+ =?us-ascii?Q?bwrt8EwXHw+HXNtrjtgkmgCrsYYKAd1mujipOce/TbqxZ9HbUm/qlGTdXdO2?=
+ =?us-ascii?Q?61aY6M82S/q3t6mnMtNAhLAB+1QfJ8gyujfBXgmnz/C4A6RnAHwqeFlLImTe?=
+ =?us-ascii?Q?L6SLuBBbTZOfMBO6PTirrV2HLsVN1uuI+J45ASQLpJMe8nZ98N80ReVd0Ctt?=
+ =?us-ascii?Q?aTGPoc22kopCTgnHz0xG3qrkEWmy6XXzn/UE6+VWFuwT8H5KGtJj8AkNRR+R?=
+ =?us-ascii?Q?UzseLe3OslGmITtaUgQFDEJDvhqsXyAnwbWiEr5q5LvUb+jDNL0l/fAb8ulm?=
+ =?us-ascii?Q?KqqDeNeJ+eenWTo1cdwgHVbGZ5hLgZnVPMSp7TzygZDdXudfmCzGb9JXW5Ty?=
+ =?us-ascii?Q?8MvegojR650eWp/SH2FxVwpQbmL9nhRogbcPurZ4iB1KXX0+fURWOTU1K9Zb?=
+ =?us-ascii?Q?JvvXZ+1kx3X9jdrzHUIIterdLIS4P9SLhK70xzVkQtZ/byN9Ji4EdwjInbIN?=
+ =?us-ascii?Q?LsLWseHOhEKwJmNB/HW54IMJ5nU4dJkbtDG2zqq8OxYQeotOJot/ozy1EnIC?=
+ =?us-ascii?Q?SEDQHwbXd1wVUplPqA8kgc0UbrqnmuSLYBlse7xwn3TBZmL+i1J8QlFScHhW?=
+ =?us-ascii?Q?5aCKRUByxpPdJojg7lelYkdrCyI3pfOE1UHMzEie++6bQACIY5nxClUY324S?=
+ =?us-ascii?Q?ISEtS8iqB8d6S/KfU5PZ2yMa0n9fQ0r/9VtMWB229Gs8f46EmXya/YlDzwW0?=
+ =?us-ascii?Q?RHYhE6QRdMya4W3VY5tzIqxDTrDzQ1Bs5AZ6Uxen7LuzL8+J/wXkEFvAJe4D?=
+ =?us-ascii?Q?MNFwyrRvUejhbkm0UHGtPj3n15mJuwKx5JfpNmvu2U/XHNTjDTSi1Dx+6+2u?=
+ =?us-ascii?Q?JZdV0jKG0rw8jnEyURWn/9eiIoNiEw0wV2JPkjTwby6ffQq1xEfJqErFnww4?=
+ =?us-ascii?Q?OjdnjZC/97+4Z8/nRqzgqhU5diXteXJaNqPozrYXxQebk/JOFYZaa38TnYUX?=
+ =?us-ascii?Q?U9YXPE8=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?D5U5o3MaHipp6jDHPBxnRjRQswV4qaHelvAz567ES9IRb8S4RAieFOmYOAFY?=
+ =?us-ascii?Q?2WhMfILy31/wSJXAU+W1/iwY9xOcq8oPKqiGj2Tky0muK3vn4lJ36CPpBqUQ?=
+ =?us-ascii?Q?aTKED5PXXUNJOZ/r8Pyhp4Fj4T6QvWwUFvhg+FLsVd06MUBfyhSgomY6enNM?=
+ =?us-ascii?Q?KwFN1ZfEWxb/3YubGdJFhJm3O94OFWUEGEYVZcI9/LTat24nuwV+zRoYePye?=
+ =?us-ascii?Q?H1u+s8WJMAnCs6ev84usShgAF1Z9WhL1cqgJJjJ4LUOaQJHPDc7VFXpXm/Gf?=
+ =?us-ascii?Q?N/uR/lPfSxE/4XQ46lD2raPVwLkAoS/uWsRSWSbikuoi/Yxrs3PFo+sP+pjN?=
+ =?us-ascii?Q?jiSUajoL3WxxvMETXx4nCchfPlFxsF1T0nd0Qhzt+A7UzmaAcZL5aACe0qk8?=
+ =?us-ascii?Q?4dcd2R5FJUFo+Bl2M0/ccYHRVP/77+mSHVIj1DEZa8sW8TBghVwpQTX+M72R?=
+ =?us-ascii?Q?n0qCq96rcvS/5GNS1uYnz+1VJ//Y4JI9FpuN9+bZxAKIxBOoB0JigaO04Qzu?=
+ =?us-ascii?Q?hHY88vDVG3aW/V97E9dpgl5hc8XVZCSmXD5PRRrj78LUhLZotP1AEVwxRvfK?=
+ =?us-ascii?Q?MsyF0gWLGcZua7t3x1SqgrGrcPe6sVdRvtJUYVqR8gMGJ9thjJu0lX+MkGDv?=
+ =?us-ascii?Q?NsaCjEsOGPq7MSavjSfBa8soaNlx3vQzcz+lU+ARjP9F0oNuR7i6B9InDbvm?=
+ =?us-ascii?Q?MecKXU7yF3I5l6oenJhHH7G7+1NlvNimgHm1ySxE1zj2K5DgSz+955tIys8f?=
+ =?us-ascii?Q?/qIkCkUKeJA2351w/XsYOr01Z8BGrqWsZRsTAzaFOPXHn6hfKdCDwDujSCYi?=
+ =?us-ascii?Q?1bBD9Pf8zUKCz19VxrGYhiB4Tr4JoeGYwujn6UCLrvKNEaDdyvXHE2tt6C/q?=
+ =?us-ascii?Q?ETPIHi+oNU1h6iZl2Htj6m/hUV+YWbSYR1JZtzyXyBXir1hnhDrCEknw6DqW?=
+ =?us-ascii?Q?SQvN6Tk4m2WcIWJlPthPNl9K9UD+ojCMZUwQQqhLTmIn1U8hiKJRAjEg5Ymp?=
+ =?us-ascii?Q?TtaEE2gtXNd38QmFD/qOIRj0IVQ5IcNacKs13QR+B202CmTHCGGRyR1/U6ra?=
+ =?us-ascii?Q?WzHgFGVUvEyhdSLIJVb5J7Jd1NduEKqQsl8LlVJZavMTQ0lCK8xyedqTtcyW?=
+ =?us-ascii?Q?drnX6cWru4UMMDu6k1Uk65XhuSY6sB9OnAZ1YRGyRZiXZ+rEDTslMH4Pe11s?=
+ =?us-ascii?Q?Y3q3Uw9to+4oD7anKqD5Kgt1pKZrfNFEhGTg37IwCbb6sfpH5iXVXaRkTjru?=
+ =?us-ascii?Q?glGUyfriFJc/L6gkGASmL7ukgge8IFjQnicNNooDsWv1hzwYcciKgPsQoee5?=
+ =?us-ascii?Q?t1KJOkTgPyMKaIjWiyQNqNJaQFO+sA3R6MUetEheOTtFNG2xzBcaERqVAnd2?=
+ =?us-ascii?Q?zXDJ5OvhhdPqQRd9O0hS1x/MN9F5RrNO5L95uLCZAxyzE8QNZGGgwJbVghMF?=
+ =?us-ascii?Q?w3smhmCprcBs68Qj1iMqxtJnfDcLU9ju29VBKnKDUGGihBRi4QDbzpi6x+5a?=
+ =?us-ascii?Q?xW37yWT3Keu8QZJGZWpQVvsAzJYnFg5Qw04ZeejOAmZgYoXPI/pukDm5lXkC?=
+ =?us-ascii?Q?Ud8bV1bUV/X1iCElIFBVXNgessnHJjJpAdmZmms8RjNWg80TBe05XJVQqkL9?=
+ =?us-ascii?Q?Qw=3D=3D?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: dc15c631-25b0-4384-d6f3-08dcd59c2842
+X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Sep 2024 15:36:24.8157
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: FlbDd0HLAtdg26+QLtaSoxUtqACba/YHRWCcALGf417URm2zsI0fPZIGgThAqlajWC4t18dl6uY4RwN5agJP9Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWXP265MB3192
 
-On 9/15/24 8:10 AM, Greg KH wrote:
-> On Sun, Sep 15, 2024 at 08:01:33AM -0700, Ron Economos wrote:
->> On 9/15/24 6:22 AM, Greg KH wrote:
->>> On Sat, Sep 14, 2024 at 03:32:33AM -0700, Ron Economos wrote:
->>>> On 9/14/24 3:04 AM, Xingyu Wu wrote:
->>>>> On 14/09/2024 17:37, Greg KH wrote:
->>>>>> On Sat, Sep 14, 2024 at 09:24:44AM +0000, Xingyu Wu wrote:
->>>>>>> On 14/09/2024 16:51, Greg KH wrote:
->>>>>>>> On Sat, Sep 14, 2024 at 08:01:44AM +0000, Xingyu Wu wrote:
->>>>>>>>> On 13/09/2024 22:12, Sasha Levin wrote:
->>>>>>>>>> This is a note to let you know that I've just added the patch
->>>>>>>>>> titled
->>>>>>>>>>
->>>>>>>>>>        riscv: dts: starfive: jh7110-common: Fix lower rate of
->>>>>>>>>> CPUfreq by setting PLL0 rate to 1.5GHz
->>>>>>>>>>
->>>>>>>>>> to the 6.10-stable tree which can be found at:
->>>>>>>>>>        http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-
->>>>>>>>>> queue.git;a=summary
->>>>>>>>>>
->>>>>>>>>> The filename of the patch is:
->>>>>>>>>>         riscv-dts-starfive-jh7110-common-fix-lower-rate-of-c.patch
->>>>>>>>>> and it can be found in the queue-6.10 subdirectory.
->>>>>>>>>>
->>>>>>>>>> If you, or anyone else, feels it should not be added to the
->>>>>>>>>> stable tree, please let <stable@vger.kernel.org> know about it.
->>>>>>>>>>
->>>>>>>>> Hi Sasha,
->>>>>>>>>
->>>>>>>>> This patch only has the part of DTS without the clock driver patch[1].
->>>>>>>>> [1]:
->>>>>>>>> https://lore.kernel.org/all/20240826080430.179788-2-xingyu.wu@star
->>>>>>>>> five
->>>>>>>>> tech.com/
->>>>>>>>>
->>>>>>>>> I don't know your plan about this driver patch, or maybe I missed it.
->>>>>>>>> But the DTS changes really needs the driver patch to work and you
->>>>>>>>> should add
->>>>>>>> the driver patch.
->>>>>>>>
->>>>>>>> Then why does the commit say:
->>>>>>>>
->>>>>>>>>>        Fixes: e2c510d6d630 ("riscv: dts: starfive: Add cpu scaling
->>>>>>>>>> for
->>>>>>>>>> JH7110 SoC")
->>>>>>>> Is that line incorrect?
->>>>>>>>
->>>>>>> No, this patch can also fix the problem.
->>>>>>> In that patchset, the patch 2 depended on patch 1,  so I added the Fixes tag in
->>>>>> both patches.
->>>>>>
->>>>>> What is the commit id of the other change you are referring to here?
->>>>>>
->>>>> This commit id is the bug I'm trying to fix. The Fixes tag need to add it.
->>>>>
->>>>> Thanks,
->>>>> Xingyu Wu
->>>>>
->>>> I think Greg is looking for this:
->>>>
->>>> commit 538d5477b25289ac5d46ca37b9e5b4d685cbe019
->>>>
->>>> clk: starfive: jh7110-sys: Add notifier for PLL0 clock
->>> That commit is already in the following releases:
->>> 	6.6.51 6.10.10
->>> so what are we supposed to be doing here?
->>>
->>> confused,
->>>
->>> greg k-h
->>>
->> Sorry, I didn't check to see if it was already in releases. So the 6.10
->> queue is fine as is.
->>
->> However, these two patches go together, so the 6.6 queue should also have
->> 61f2e8a3a94175dbbaad6a54f381b2a505324610 "riscv: dts: starfive:
->> jh7110-common: Fix lower rate of CPUfreq by setting PLL0 rate to 1.5GHz"
->> added to it.
-> Given that the file arch/riscv/boot/dts/starfive/jh7110-common.dtsi is
-> not in the 6.6.y kernel tree, are you sure about this?  If so, where
-> should it be applied to instead?
->
-> thanks,
->
-> greg k-h
+On Sun, 15 Sep 2024 14:41:28 +0000
+Alice Ryhl <aliceryhl@google.com> wrote:
 
-Doh, the patch was rebased, so it won't apply to 6.6. The good news is 
-that not applying it won't break anything, it just renders the other 
-patch to have no effect (the board still runs at 1 GHz instead of 1.5 GHz).
+> The `LockedBy::access` method only requires a shared reference to the
+> owner, so if we have shared access to the `LockedBy` from several
+> threads at once, then two threads could call `access` in parallel and
+> both obtain a shared reference to the inner value. Thus, require that
+> `T: Sync` when calling the `access` method.
+> 
+> An alternative is to require `T: Sync` in the `impl Sync for LockedBy`.
+> This patch does not choose that approach as it gives up the ability to
+> use `LockedBy` with `!Sync` types, which is okay as long as you only use
+> `access_mut`.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 7b1f55e3a984 ("rust: sync: introduce `LockedBy`")
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-So in the end, there's nothing to do.
+Reviewed-by: Gary Guo <gary@garyguo.net>
 
+You probably also want to have a Suggested-by to credit Boqun for
+suggesting the current implementation.
 
+Best,
+Gary
+
+> ---
+> Changes in v2:
+> - Use a `where T: Sync` on `access` instead of changing `impl Sync for
+>   LockedBy`.
+> - Link to v1: https://lore.kernel.org/r/20240912-locked-by-sync-fix-v1-1-26433cbccbd2@google.com
+> ---
+>  rust/kernel/sync/locked_by.rs | 18 ++++++++++++++----
+>  1 file changed, 14 insertions(+), 4 deletions(-)
 
