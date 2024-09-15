@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-76155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B34C9796D0
-	for <lists+stable@lfdr.de>; Sun, 15 Sep 2024 15:27:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 561529796D1
+	for <lists+stable@lfdr.de>; Sun, 15 Sep 2024 15:27:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 61ADF281862
-	for <lists+stable@lfdr.de>; Sun, 15 Sep 2024 13:27:01 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1FF7C281852
+	for <lists+stable@lfdr.de>; Sun, 15 Sep 2024 13:27:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 109DB1C68A4;
-	Sun, 15 Sep 2024 13:26:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EEC51C68A6;
+	Sun, 15 Sep 2024 13:27:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VbS8WggY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z/RAD9pA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3BC6125DB
-	for <stable@vger.kernel.org>; Sun, 15 Sep 2024 13:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0E23125DB
+	for <stable@vger.kernel.org>; Sun, 15 Sep 2024 13:27:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726406817; cv=none; b=Ies55/cqUlyOamevVHrwXseLmkATOcmIKti3gbUAP07xgQ6fB+noWt1EEg1FpBm/K/j1Ivinp3/g/jdHvmMh58BqGxIivRduxDpplfcc136UxhTuEH/8+8hCXeKAzhLzzHnTo5HfWY7saNvpd9hwCjzxSxk1T2OTpVRvkvKsDt4=
+	t=1726406827; cv=none; b=iUU9YAoc+xfA4OQEAT2FhwqS4P1zHPQBM/6gslATRh9bYaR5gPV3GcZEt3qqtI1GTBXyxEWaCP6GfZG8QWg2U0l8gaq3Narvs5Y0FOChp1cKmHdWCiX5jMFNFH3VBAcILPRtnXvn4aCEB2Hsf2K1BGj7RfWeZg+o6Dh7Zk99W1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726406817; c=relaxed/simple;
-	bh=mCmXYqJFK8CpU/OxJwfFG3yL7dTbmysSkFevEirxd70=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=DYorsWfqn+ftJgFbVplwUqabyEfczcvC2bQQz8zhvwJgbkfdpXAnsrM7dAdVMcBW5WDW4oyGGegZg0ANJ3zxIp9wrLrHSaAsc86WlZKR+HS9MU9RPaDx96xKsY6BJrLiGzW6wR3bzdVbS7V+ZcnSJalRbF8RoPiplsZRIiPqttM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VbS8WggY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3F1CC4CEC3;
-	Sun, 15 Sep 2024 13:26:56 +0000 (UTC)
+	s=arc-20240116; t=1726406827; c=relaxed/simple;
+	bh=EqX708RvPiLTH6h0xuT3eljqAFrxjTCjgyYowgRyZYA=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=lFQcPHbFV9OjcLW50UukriTSuZwM/WsnMLGzxS2pLL3Zz/SPja7KbnNjULJaNwyhlfPGNnENI+oaAdtK9aJOYMTKHGr0gQQDxSOQnRZR23P1f0pOtG9qGkqQqYRnyvBqZL+vwn0+obwRHkQy9FUdfyoGqwkjqlFYwXNKKrLxwhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z/RAD9pA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E22A9C4CEC3;
+	Sun, 15 Sep 2024 13:27:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726406817;
-	bh=mCmXYqJFK8CpU/OxJwfFG3yL7dTbmysSkFevEirxd70=;
+	s=korg; t=1726406826;
+	bh=EqX708RvPiLTH6h0xuT3eljqAFrxjTCjgyYowgRyZYA=;
 	h=Subject:To:Cc:From:Date:From;
-	b=VbS8WggYs76IQsRljUJLYxy/EfdLxBjriHc6QQwtn0TJtsDOik89M5AYEXxBME/7n
-	 hnjxMLeRFpKFcXvfZu+06xFakEsj1IZgIZz2uIZminLL1wOszbO4PWT/4O7Ygwu/Tn
-	 hTjaV6JpzZZXpffl9Z+SqBdHLP7Ff9Ww9KQ7cSnU=
-Subject: FAILED: patch "[PATCH] ASoC: meson: axg-card: fix 'use-after-free'" failed to apply to 5.4-stable tree
+	b=z/RAD9pAUbytYbSi4gem8Hhnt6cQsRxR1BH+tmaFdMxMw3Vlppq64cK5bUIn4/TIH
+	 qcHSFRqwCjTcJ38PlzM7JGwLxFyfz3BpkSrMgF6ZTyhGjg1a8wlFI7l5I48sRTqVPO
+	 goffjDe13PK5nvHsT+RU3sUui1Kz1WipOVEXLeMw=
+Subject: FAILED: patch "[PATCH] ASoC: meson: axg-card: fix 'use-after-free'" failed to apply to 4.19-stable tree
 To: avkrasnov@salutedevices.com,broonie@kernel.org,jbrunet@baylibre.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Sun, 15 Sep 2024 15:26:53 +0200
-Message-ID: <2024091552-croak-destruct-a0ea@gregkh>
+Date: Sun, 15 Sep 2024 15:26:54 +0200
+Message-ID: <2024091554-obtain-sibling-75bf@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,25 +53,26 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x 4f9a71435953f941969a4f017e2357db62d85a86
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024091552-croak-destruct-a0ea@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024091554-obtain-sibling-75bf@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
 4f9a71435953 ("ASoC: meson: axg-card: fix 'use-after-free'")
 aa9c3b7273a5 ("ASoC: meson: axg: extract sound card utils")
 9c29fd9bdf92 ("ASoC: meson: g12a: extract codec-to-codec utils")
+dd28d54c248f ("Merge branch 'asoc-5.3' into asoc-5.4")
 
 thanks,
 
