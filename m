@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-76315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 526DD97A12E
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:06:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8533F97A19A
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:08:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1C1F6286603
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:06:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA7B2288248
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:08:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3BE61586CF;
-	Mon, 16 Sep 2024 12:04:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 205EA156225;
+	Mon, 16 Sep 2024 12:08:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FJgxuQZr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rPBremsd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F2C5158525;
-	Mon, 16 Sep 2024 12:04:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D31C4155A3C;
+	Mon, 16 Sep 2024 12:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488242; cv=none; b=EJ5J+xA/RhAqDbQocxZChcko4d8FiVIaQtuvOnKJVRzfEOAwN74IryCboJ00wUpqKgwIUadoV/vN9z5n8j43/uAsCkfivuv5NJjyJ8q+6tYUSgyXbjuJ1A4/1acg9gjKwoSVw+F8VHn+WqGV3oJaisVNXieYU7ZIgPdfyw3H3X4=
+	t=1726488509; cv=none; b=mhxfJREXWVzuINNImFbc7XjHrRl7yrhmiFG8S/hqTX01nzkjq7JKHwVnCdSdNkYMxWa9CJ2nyAVjoHZYjdFXJzTUrFIaXlAHGeVXcFt3uzvWV/Yn1TxYcxXHe/rvW4aj8R21+HIjTbD+wrwL4pIX+FGE8Wf1VwrFAukpEW8acRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488242; c=relaxed/simple;
-	bh=c7pUnpaIc8w8Lyh1DiM0+VTCqDPAQXkq6K+rA6fIvnQ=;
+	s=arc-20240116; t=1726488509; c=relaxed/simple;
+	bh=6O0S07BSYH2gXJw8doMUQARbR0JF9b3wOcBBSb12SO4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d6j9q4wkx+5CEtkDJQ7j1ksNFzuiKqJABMkJswZy2PLY+2LvQFt0izdGlTK9dxTagy6xH1L3SK/uQbGzt+7MVDh9HfeoXLNcsokD547s8jcmw0qTqQI/niFxkv55Fqm28ybltpKc0kcWe+FLKCL08V57mwINdbRMhMBxuA0yWcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FJgxuQZr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5858C4CEC4;
-	Mon, 16 Sep 2024 12:04:01 +0000 (UTC)
+	 MIME-Version; b=aR6nD9HuVA3ynNCNbgLakLns8LKhHIPo70MXovnbPXj8BULuK1+KhOCCjDXCC/yDm9dtJtpOcn4b/RGjMfuflApA7mBJG2e2i+109p/70emcFWUsyYu8rwqnmLCbU5xO2sRSgx3ru926mD1GcfDRnnOLYZ7G6vXRnXmakjxKSdo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rPBremsd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42546C4CECE;
+	Mon, 16 Sep 2024 12:08:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488242;
-	bh=c7pUnpaIc8w8Lyh1DiM0+VTCqDPAQXkq6K+rA6fIvnQ=;
+	s=korg; t=1726488509;
+	bh=6O0S07BSYH2gXJw8doMUQARbR0JF9b3wOcBBSb12SO4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FJgxuQZrnSSN5GWc+PTRkdKpdqF29iFe0KPQfF6dJbn2uETPzoEP+4M+TYGZdbVcd
-	 XMxac9tus4/+vnUt3TEdZdHybq8J+QUZ7Ac7MvQm+ZJVu8331tjWk7kScePIUhhasK
-	 SPrKz4RBWHGeRB3q/xKd+GTF/1/WX5fTJORbXpSI=
+	b=rPBremsdxCSV2W7vE7qLDG10RSpf8g57Eq3yjpHfnJ1jZQqV+BOOVMUeF/kPwBym1
+	 snCrMEcVknoz/W998YFl6CyNv2u8C2rZw+PaICrpGuiElEsWjx8vUS42IIVkUbHfXh
+	 HwDaUoFqOG5Z4I8iO4DqnGxjdyztO0nQBc86D7L8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Edward Adam Davis <eadavis@qq.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	syzbot+f3a31fb909db9b2a5c4d@syzkaller.appspotmail.com
-Subject: [PATCH 6.10 045/121] mptcp: pm: Fix uaf in __timer_delete_sync
-Date: Mon, 16 Sep 2024 13:43:39 +0200
-Message-ID: <20240916114230.613170641@linuxfoundation.org>
+	Dumitru Ceclan <dumitru.ceclan@analog.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Stable@vger.kernel.org,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 04/91] iio: adc: ad7124: fix DT configuration parsing
+Date: Mon, 16 Sep 2024 13:43:40 +0200
+Message-ID: <20240916114224.656385094@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
-References: <20240916114228.914815055@linuxfoundation.org>
+In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
+References: <20240916114224.509743970@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,95 +64,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Dumitru Ceclan <mitrutzceclan@gmail.com>
 
-commit b4cd80b0338945a94972ac3ed54f8338d2da2076 upstream.
+[ Upstream commit 61cbfb5368dd50ed0d65ce21d305aa923581db2b ]
 
-There are two paths to access mptcp_pm_del_add_timer, result in a race
-condition:
+The cfg pointer is set before reading the channel number that the
+configuration should point to. This causes configurations to be shifted
+by one channel.
+For example setting bipolar to the first channel defined in the DT will
+cause bipolar mode to be active on the second defined channel.
 
-     CPU1				CPU2
-     ====                               ====
-     net_rx_action
-     napi_poll                          netlink_sendmsg
-     __napi_poll                        netlink_unicast
-     process_backlog                    netlink_unicast_kernel
-     __netif_receive_skb                genl_rcv
-     __netif_receive_skb_one_core       netlink_rcv_skb
-     NF_HOOK                            genl_rcv_msg
-     ip_local_deliver_finish            genl_family_rcv_msg
-     ip_protocol_deliver_rcu            genl_family_rcv_msg_doit
-     tcp_v4_rcv                         mptcp_pm_nl_flush_addrs_doit
-     tcp_v4_do_rcv                      mptcp_nl_remove_addrs_list
-     tcp_rcv_established                mptcp_pm_remove_addrs_and_subflows
-     tcp_data_queue                     remove_anno_list_by_saddr
-     mptcp_incoming_options             mptcp_pm_del_add_timer
-     mptcp_pm_del_add_timer             kfree(entry)
+Fix by moving the cfg pointer setting after reading the channel number.
 
-In remove_anno_list_by_saddr(running on CPU2), after leaving the critical
-zone protected by "pm.lock", the entry will be released, which leads to the
-occurrence of uaf in the mptcp_pm_del_add_timer(running on CPU1).
-
-Keeping a reference to add_timer inside the lock, and calling
-sk_stop_timer_sync() with this reference, instead of "entry->add_timer".
-
-Move list_del(&entry->list) to mptcp_pm_del_add_timer and inside the pm lock,
-do not directly access any members of the entry outside the pm lock, which
-can avoid similar "entry->x" uaf.
-
-Fixes: 00cfd77b9063 ("mptcp: retransmit ADD_ADDR when timeout")
-Cc: stable@vger.kernel.org
-Reported-and-tested-by: syzbot+f3a31fb909db9b2a5c4d@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=f3a31fb909db9b2a5c4d
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://patch.msgid.link/tencent_7142963A37944B4A74EF76CD66EA3C253609@qq.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7b8d045e497a ("iio: adc: ad7124: allow more than 8 channels")
+Signed-off-by: Dumitru Ceclan <dumitru.ceclan@analog.com>
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://patch.msgid.link/20240806085133.114547-1-dumitru.ceclan@analog.com
+Cc: <Stable@vger.kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/pm_netlink.c |   13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/iio/adc/ad7124.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -334,15 +334,21 @@ mptcp_pm_del_add_timer(struct mptcp_sock
- {
- 	struct mptcp_pm_add_entry *entry;
- 	struct sock *sk = (struct sock *)msk;
-+	struct timer_list *add_timer = NULL;
+diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
+index bd323c6bd756..d2fe0269b6d3 100644
+--- a/drivers/iio/adc/ad7124.c
++++ b/drivers/iio/adc/ad7124.c
+@@ -842,8 +842,6 @@ static int ad7124_parse_channel_config(struct iio_dev *indio_dev,
+ 	st->channels = channels;
  
- 	spin_lock_bh(&msk->pm.lock);
- 	entry = mptcp_lookup_anno_list_by_saddr(msk, addr);
--	if (entry && (!check_id || entry->addr.id == addr->id))
-+	if (entry && (!check_id || entry->addr.id == addr->id)) {
- 		entry->retrans_times = ADD_ADDR_RETRANS_MAX;
-+		add_timer = &entry->add_timer;
-+	}
-+	if (!check_id && entry)
-+		list_del(&entry->list);
- 	spin_unlock_bh(&msk->pm.lock);
+ 	device_for_each_child_node_scoped(dev, child) {
+-		cfg = &st->channels[channel].cfg;
+-
+ 		ret = fwnode_property_read_u32(child, "reg", &channel);
+ 		if (ret)
+ 			return ret;
+@@ -861,6 +859,7 @@ static int ad7124_parse_channel_config(struct iio_dev *indio_dev,
+ 		st->channels[channel].ain = AD7124_CHANNEL_AINP(ain[0]) |
+ 						  AD7124_CHANNEL_AINM(ain[1]);
  
--	if (entry && (!check_id || entry->addr.id == addr->id))
--		sk_stop_timer_sync(sk, &entry->add_timer);
-+	/* no lock, because sk_stop_timer_sync() is calling del_timer_sync() */
-+	if (add_timer)
-+		sk_stop_timer_sync(sk, add_timer);
++		cfg = &st->channels[channel].cfg;
+ 		cfg->bipolar = fwnode_property_read_bool(child, "bipolar");
  
- 	return entry;
- }
-@@ -1462,7 +1468,6 @@ static bool remove_anno_list_by_saddr(st
- 
- 	entry = mptcp_pm_del_add_timer(msk, addr, false);
- 	if (entry) {
--		list_del(&entry->list);
- 		kfree(entry);
- 		return true;
- 	}
+ 		ret = fwnode_property_read_u32(child, "adi,reference-select", &tmp);
+-- 
+2.43.0
+
 
 
 
