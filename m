@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-76224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFF6497A0AE
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 13:59:51 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C295C97A1C4
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:10:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7B55FB2352C
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 11:59:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B2B0B244CE
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:10:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A474C15667E;
-	Mon, 16 Sep 2024 11:59:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59B0A155333;
+	Mon, 16 Sep 2024 12:10:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E1Hy4SHb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AIv6kZTy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 464C6156864;
-	Mon, 16 Sep 2024 11:59:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14E311547F5;
+	Mon, 16 Sep 2024 12:10:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726487983; cv=none; b=erMNTmSs0GhiMpI4zfeh3lamndyAN8MN2bHi3pFk37qYK3EJwe782uhA0pvkoeNu4Q2EHw0K2yt0vzCvnV33bPgWp6FJFme5YR3dyVLRO965TQy3N1GSJ2/x7c0oXlvHGM1HjeITaSSibuBLU7Z0v7M9G7xKy9G5fCUGhMvDlLM=
+	t=1726488602; cv=none; b=dDKGjKXWL8xQBcaVbUMd66YiYuYFjatW5g1jXmj+lwHhrnvWPWDZDoUg4nbrjCp7duTG0OrluhOJDGlOI7TB8/QTvkMs8AvnnPGhOeSiDygsbHM4gwtXxOb18KV+GR1dwXSjXjxF8WxBdtrYatZBlWzohBo58i+By/ds9PO7QqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726487983; c=relaxed/simple;
-	bh=7yPmjvbLv6f71I84eL5ZmyaKu1pWzxDKEMqm0Q1kHB0=;
+	s=arc-20240116; t=1726488602; c=relaxed/simple;
+	bh=/LuoSL5w9LRmRK4ek5+e8xZrRhzDVG/MYgiij2w9SFY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ATR7tc8vN6MGywIP0XHaCKXSl/K5GHbSJ4oVrX3BodRXFsy1GVz2yNKq3HoKH8nOOu8zZroWHNMCcClPY3k0jb5n57dwnjJML8nwa8S7bUfqvWyDGruM3K18JIzwVueNi2wNmldnM3wRdMJS/yQTi7JvskgagTb1eHTFrGzRaIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E1Hy4SHb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7C66C4CEC4;
-	Mon, 16 Sep 2024 11:59:42 +0000 (UTC)
+	 MIME-Version; b=LT2aOqVVC18pfrKWvqYst3l+zpsoCzvNJTd3RO1kLunyer6F7lQM5aEkfeuTBe7DKv1Nru6EhXAJSrdqy0TpjFXQI+gvvIkLILKSKw5L3c0tRKW7y1iebVoU2ytYUTptBvnjph5eKmEZdx8s8yJ7+BsD0POD8ouyEK0zNEa5O7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AIv6kZTy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72F0FC4CECF;
+	Mon, 16 Sep 2024 12:10:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726487983;
-	bh=7yPmjvbLv6f71I84eL5ZmyaKu1pWzxDKEMqm0Q1kHB0=;
+	s=korg; t=1726488601;
+	bh=/LuoSL5w9LRmRK4ek5+e8xZrRhzDVG/MYgiij2w9SFY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E1Hy4SHbXZF1DkCUfjdwxJoVJD44rLBZ3QLFvjCZo9s8gbtl1v02CWFv2Ch5plo7/
-	 ASd2aHWhqCJra4IVFvNQL5+X9JNVrR4gzcsUzwr+HbmU4TlX9gHN5ytov1U4ASyzLC
-	 oPENlQCP3DxhBqfWPGPqhZuwadZR0ei2nVyCn41Q=
+	b=AIv6kZTyKS8ojeZNHV46lmqcRpQ1jGFKUnLu5wRXtnudCNkM0CvjUrnZnsSXW9EEg
+	 ut0YaiPVLWvtFpjlKb31otcxeMg6tFWa9Rd+xAI+W3aa1UQD6yle45vmSXUZu3LnaD
+	 CiIiQVbmuKQr7oxb7/GoCmjNCxfbVrDgkJrFsSso=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ChenXiaoSong <chenxiaosong@kylinos.cn>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Bert Karwatzki <spasswolf@web.de>,
+	Felix Fietkau <nbd@nbd.name>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 18/63] smb/server: fix return value of smb2_open()
+Subject: [PATCH 6.6 21/91] wifi: mt76: mt7921: fix NULL pointer access in mt7921_ipv6_addr_change
 Date: Mon, 16 Sep 2024 13:43:57 +0200
-Message-ID: <20240916114221.704997961@linuxfoundation.org>
+Message-ID: <20240916114225.221567327@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
-References: <20240916114221.021192667@linuxfoundation.org>
+In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
+References: <20240916114224.509743970@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ChenXiaoSong <chenxiaosong@kylinos.cn>
+From: Bert Karwatzki <spasswolf@web.de>
 
-[ Upstream commit 2186a116538a715b20e15f84fdd3545e5fe0a39b ]
+[ Upstream commit 479ffee68d59c599f8aed8fa2dcc8e13e7bd13c3 ]
 
-In most error cases, error code is not returned in smb2_open(),
-__process_request() will not print error message.
+When disabling wifi mt7921_ipv6_addr_change() is called as a notifier.
+At this point mvif->phy is already NULL so we cannot use it here.
 
-Fix this by returning the correct value at the end of smb2_open().
-
-Signed-off-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Bert Karwatzki <spasswolf@web.de>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/20240812104542.80760-1-spasswolf@web.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c | 2 +-
+ drivers/net/wireless/mediatek/mt76/mt7921/main.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index 808c62d7ff3e..dc8f1e7ce2fa 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -3482,7 +3482,7 @@ int smb2_open(struct ksmbd_work *work)
- 	kfree(name);
- 	kfree(lc);
- 
--	return 0;
-+	return rc;
- }
- 
- static int readdir_info_level_struct_sz(int info_level)
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+index 6a5c2cae087d..6dec54431312 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
+@@ -1095,7 +1095,7 @@ static void mt7921_ipv6_addr_change(struct ieee80211_hw *hw,
+ 				    struct inet6_dev *idev)
+ {
+ 	struct mt792x_vif *mvif = (struct mt792x_vif *)vif->drv_priv;
+-	struct mt792x_dev *dev = mvif->phy->dev;
++	struct mt792x_dev *dev = mt792x_hw_dev(hw);
+ 	struct inet6_ifaddr *ifa;
+ 	struct in6_addr ns_addrs[IEEE80211_BSS_ARP_ADDR_LIST_LEN];
+ 	struct sk_buff *skb;
 -- 
 2.43.0
 
