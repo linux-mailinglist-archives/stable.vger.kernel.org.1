@@ -1,218 +1,113 @@
-Return-Path: <stable+bounces-76505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93F5697A565
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 17:35:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FD8597A57B
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 17:50:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9F9FB24472
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 15:33:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E68C42849B5
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 15:50:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C18515958A;
-	Mon, 16 Sep 2024 15:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88CA315820F;
+	Mon, 16 Sep 2024 15:50:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nc/R/uSH"
 X-Original-To: stable@vger.kernel.org
-Received: from ganesha.gnumonks.org (ganesha.gnumonks.org [213.95.27.120])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25E4715749A;
-	Mon, 16 Sep 2024 15:33:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.27.120
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4356C2B9AA;
+	Mon, 16 Sep 2024 15:50:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726500822; cv=none; b=pPqyb5SNM2zuSmLyRJgcPfyGaUZ3J0wpvHwGNQTBWi0uqjGYI0K6kV8RNY1PmHTda1gAzPL4rfRVcti4ZRIHEK57DMbswq8vdOeltTzAHxcg/EgcmwgI/uaP7lHEWLuWLczDzvp+cbXjJz5c5XHYI72MLDFK/8263AOehjq14EY=
+	t=1726501811; cv=none; b=dwDI3yi06ojs/XSaj8GVIh4nUV8zdgmsRQeH1zVYN0Zwj/dDbTagdbs6ln+hVIM6u+Zq7o3El9oBpvVR2geRg/vVHVolGbzufyVGnW2HEAIq6pf0lMaUy8jlYK903IW9J5t/FznYfgSEXb5dEhK4XfSd91UG9sBjxAtVc/fdPj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726500822; c=relaxed/simple;
-	bh=un/i0gViPPSEFoEji7kwMkqEV659V7f5pGJSsTREtm8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GBHRqj3wAC5TvFZ9X/yOWfFVWq/onGkB4HeVzMa5eCix5hAkSx69Z+DED6fsAwJvxBFs703m0iBdoZj9S9Y/AvfiBOoCA6Ov064VjIE1QWU063MKtuWXxn2olguOPCSIfLYv/n8FMvkI6b97GXUyqaajV1DkAPB9fFQ24cFOinU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=gnumonks.org; arc=none smtp.client-ip=213.95.27.120
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gnumonks.org
-Received: from [78.30.37.63] (port=38220 helo=gnumonks.org)
-	by ganesha.gnumonks.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <pablo@gnumonks.org>)
-	id 1sqDjJ-00FzvZ-RV; Mon, 16 Sep 2024 17:33:35 +0200
-Date: Mon, 16 Sep 2024 17:33:33 +0200
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	cgroups@vger.kernel.org, Nadia Pinaeva <n.m.pinaeva@gmail.com>,
-	Florian Westphal <fw@strlen.de>, Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.10 092/121] netfilter: nft_socket: make cgroupsv2
- matching work with namespaces
-Message-ID: <ZuhPzTZxBLBU6Vx5@calendula>
-References: <20240916114228.914815055@linuxfoundation.org>
- <20240916114232.178821333@linuxfoundation.org>
+	s=arc-20240116; t=1726501811; c=relaxed/simple;
+	bh=BiTNLTz7WyfL7CcGIQ/jDtxOJcBfVarS3KkNOxAjdOY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=rIDtvagvokp8y+tjexcGWE+280YYfh13MiHC6HuUAvRC6ba8WIddIkeJiAlCIImvrWzgV66SWAfxHQHXmj+IW2J0a0KViDSKcnfs4Cc+y15B/rtyaE5QEoAgTsslWj3XIwqs42GUQke4pjsl+Bmb0CAgrdbdhONiLtTmOrVNlNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nc/R/uSH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29248C4CEC4;
+	Mon, 16 Sep 2024 15:50:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1726501810;
+	bh=BiTNLTz7WyfL7CcGIQ/jDtxOJcBfVarS3KkNOxAjdOY=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=nc/R/uSH13lcMV7TKObSVNthI12F7OdA0qD9IC15scSYTZXvqgQGVbZE2pcJKp/0A
+	 fEaGEYlXbFjq+bGzMBprZr5saQHMGVcPH6L/PaDT8ARngPOJnXl0qlZm3VMnNrRhlo
+	 QMXCuwBUdGdL39h/Jng15FI+wAL5ST7BMFh1ZfcQF5hzSHwfdW0okICdVTdt8boIB/
+	 bL3f2HOQFw1oqbqtigXa0XpIPSF29dwFlRPI2Q0D4QLLcbG22X34dUQWytGLXJ4G6i
+	 D2stUuSDRWCAlA8SA5XU9Oulvi6Ka2SYqQc8TOtw+RZTVGOpCs7zDqhU03lQUxXcC+
+	 AywnbLFnSl3BA==
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: MPTCP Upstream <mptcp@lists.linux.dev>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1.y] selftests: mptcp: join: restrict fullmesh endp on 1st sf
+Date: Mon, 16 Sep 2024 17:48:37 +0200
+Message-ID: <20240916154836.565586-2-matttbe@kernel.org>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <2024091343-excusably-laborer-3bef@gregkh>
+References: <2024091343-excusably-laborer-3bef@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240916114232.178821333@linuxfoundation.org>
-X-Spam-Score: -1.9 (-)
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2310; i=matttbe@kernel.org; h=from:subject; bh=BiTNLTz7WyfL7CcGIQ/jDtxOJcBfVarS3KkNOxAjdOY=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBm6FNU16CHitQ1XT2Hf0JOdP7wyNz60ArwxxZDj iBtpvk0FICJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZuhTVAAKCRD2t4JPQmmg c1PZD/4tH0/DBd6MTd0efvmTUuYJi61j3opd/+VCAy/X/iyZz27YdTcu3QKzc/l9IAiUeQJIjS3 C9QcytV6kgIyDwIQZo3pHLegb1do2mTeLgxIK9jGFcxQhJyYOaBHn/8z2SA2lMiLNKfl5PjJdWD l6DMn8+ay1UU6S2M5gG0RBie0zPKabBzJUaHh9ZtJJEaIQWpPOCKpW0Ojk/Ez5SXOxNXqdegcdX ArPtYIr4t+SpbT9DmWFLnDdrLWPrADyv5BmAMowcx8KYPLm8KjrtxYsiIGsr8ejsUL1FhH18AVS QL9TQxuqbuXmJYZdXRCWwPqZj3eWish58ToWjZh08JPN4vrFNQX/G9HRrecQEdgz4cWsQe+8bjv nE+/UQGzTloFqmSeT7dMD3mbC/nhAVTxWLEoNrD8WHY66wDWXDfu2s0tzzQL0FR3Lq0WRL/J/g9 Z48xdGZW/+gSzenszwOYt5B5qq5tzvRI+vvrGZa0mwPpacydUVyPLBjbazPdYJHzA7wh57LftMC vYvu8xa42oB0IdcQ+b/JvlVIi5ERY+5Pjv8qBor2yULE5vmcdxOFnf8YxJphxf2ukt+IeHa0jPW jHd5/NKt8/mVj3AMxIc/mX3a5rXn+b09Nvrz9BVm6QXAHMGlN9dYmhD1LtySAY+sxYDKW+y0+lJ hSkGuKcebvxYmug==
+X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
+Content-Transfer-Encoding: 8bit
 
-Hi Greg,
+commit 49ac6f05ace5bb0070c68a0193aa05d3c25d4c83 upstream.
 
-This needs a follow up incremental fix. Please, hold on with it.
+A new endpoint using the IP of the initial subflow has been recently
+added to increase the code coverage. But it breaks the test when using
+old kernels not having commit 86e39e04482b ("mptcp: keep track of local
+endpoint still available for each msk"), e.g. on v5.15.
 
-I will ping you back once it is there.
+Similar to commit d4c81bbb8600 ("selftests: mptcp: join: support local
+endpoint being tracked or not"), it is possible to add the new endpoint
+conditionally, by checking if "mptcp_pm_subflow_check_next" is present
+in kallsyms: this is not directly linked to the commit introducing this
+symbol but for the parent one which is linked anyway. So we can know in
+advance what will be the expected behaviour, and add the new endpoint
+only when it makes sense to do so.
 
-Thanks
+Fixes: 4878f9f8421f ("selftests: mptcp: join: validate fullmesh endp on 1st sf")
+Cc: stable@vger.kernel.org
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20240910-net-selftests-mptcp-fix-install-v1-1-8f124aa9156d@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Conflicts in mptcp_join.sh, because the 'run_tests' helper has been
+  modified in multiple commits that are not in this version, e.g. commit
+  e571fb09c893 ("selftests: mptcp: add speed env var"). The conflict was
+  in the context, the new lines can still be added at the same place. ]
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+---
+ tools/testing/selftests/net/mptcp/mptcp_join.sh | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-On Mon, Sep 16, 2024 at 01:44:26PM +0200, Greg Kroah-Hartman wrote:
-> 6.10-stable review patch.  If anyone has any objections, please let me know.
-> 
-> ------------------
-> 
-> From: Florian Westphal <fw@strlen.de>
-> 
-> [ Upstream commit 7f3287db654395f9c5ddd246325ff7889f550286 ]
-> 
-> When running in container environmment, /sys/fs/cgroup/ might not be
-> the real root node of the sk-attached cgroup.
-> 
-> Example:
-> 
-> In container:
-> % stat /sys//fs/cgroup/
-> Device: 0,21    Inode: 2214  ..
-> % stat /sys/fs/cgroup/foo
-> Device: 0,21    Inode: 2264  ..
-> 
-> The expectation would be for:
-> 
->   nft add rule .. socket cgroupv2 level 1 "foo" counter
-> 
-> to match traffic from a process that got added to "foo" via
-> "echo $pid > /sys/fs/cgroup/foo/cgroup.procs".
-> 
-> However, 'level 3' is needed to make this work.
-> 
-> Seen from initial namespace, the complete hierarchy is:
-> 
-> % stat /sys/fs/cgroup/system.slice/docker-.../foo
->   Device: 0,21    Inode: 2264 ..
-> 
-> i.e. hierarchy is
-> 0    1               2              3
-> / -> system.slice -> docker-1... -> foo
-> 
-> ... but the container doesn't know that its "/" is the "docker-1.."
-> cgroup.  Current code will retrieve the 'system.slice' cgroup node
-> and store its kn->id in the destination register, so compare with
-> 2264 ("foo" cgroup id) will not match.
-> 
-> Fetch "/" cgroup from ->init() and add its level to the level we try to
-> extract.  cgroup root-level is 0 for the init-namespace or the level
-> of the ancestor that is exposed as the cgroup root inside the container.
-> 
-> In the above case, cgrp->level of "/" resolved in the container is 2
-> (docker-1...scope/) and request for 'level 1' will get adjusted
-> to fetch the actual level (3).
-> 
-> v2: use CONFIG_SOCK_CGROUP_DATA, eval function depends on it.
->     (kernel test robot)
-> 
-> Cc: cgroups@vger.kernel.org
-> Fixes: e0bb96db96f8 ("netfilter: nft_socket: add support for cgroupsv2")
-> Reported-by: Nadia Pinaeva <n.m.pinaeva@gmail.com>
-> Signed-off-by: Florian Westphal <fw@strlen.de>
-> Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  net/netfilter/nft_socket.c | 41 +++++++++++++++++++++++++++++++++++---
->  1 file changed, 38 insertions(+), 3 deletions(-)
-> 
-> diff --git a/net/netfilter/nft_socket.c b/net/netfilter/nft_socket.c
-> index 765ffd6e06bc..12cdff640492 100644
-> --- a/net/netfilter/nft_socket.c
-> +++ b/net/netfilter/nft_socket.c
-> @@ -9,7 +9,8 @@
->  
->  struct nft_socket {
->  	enum nft_socket_keys		key:8;
-> -	u8				level;
-> +	u8				level;		/* cgroupv2 level to extract */
-> +	u8				level_user;	/* cgroupv2 level provided by userspace */
->  	u8				len;
->  	union {
->  		u8			dreg;
-> @@ -53,6 +54,28 @@ nft_sock_get_eval_cgroupv2(u32 *dest, struct sock *sk, const struct nft_pktinfo
->  	memcpy(dest, &cgid, sizeof(u64));
->  	return true;
->  }
-> +
-> +/* process context only, uses current->nsproxy. */
-> +static noinline int nft_socket_cgroup_subtree_level(void)
-> +{
-> +	struct cgroup *cgrp = cgroup_get_from_path("/");
-> +	int level;
-> +
-> +	if (!cgrp)
-> +		return -ENOENT;
-> +
-> +	level = cgrp->level;
-> +
-> +	cgroup_put(cgrp);
-> +
-> +	if (WARN_ON_ONCE(level > 255))
-> +		return -ERANGE;
-> +
-> +	if (WARN_ON_ONCE(level < 0))
-> +		return -EINVAL;
-> +
-> +	return level;
-> +}
->  #endif
->  
->  static struct sock *nft_socket_do_lookup(const struct nft_pktinfo *pkt)
-> @@ -174,9 +197,10 @@ static int nft_socket_init(const struct nft_ctx *ctx,
->  	case NFT_SOCKET_MARK:
->  		len = sizeof(u32);
->  		break;
-> -#ifdef CONFIG_CGROUPS
-> +#ifdef CONFIG_SOCK_CGROUP_DATA
->  	case NFT_SOCKET_CGROUPV2: {
->  		unsigned int level;
-> +		int err;
->  
->  		if (!tb[NFTA_SOCKET_LEVEL])
->  			return -EINVAL;
-> @@ -185,6 +209,17 @@ static int nft_socket_init(const struct nft_ctx *ctx,
->  		if (level > 255)
->  			return -EOPNOTSUPP;
->  
-> +		err = nft_socket_cgroup_subtree_level();
-> +		if (err < 0)
-> +			return err;
-> +
-> +		priv->level_user = level;
-> +
-> +		level += err;
-> +		/* Implies a giant cgroup tree */
-> +		if (WARN_ON_ONCE(level > 255))
-> +			return -EOPNOTSUPP;
-> +
->  		priv->level = level;
->  		len = sizeof(u64);
->  		break;
-> @@ -209,7 +244,7 @@ static int nft_socket_dump(struct sk_buff *skb,
->  	if (nft_dump_register(skb, NFTA_SOCKET_DREG, priv->dreg))
->  		return -1;
->  	if (priv->key == NFT_SOCKET_CGROUPV2 &&
-> -	    nla_put_be32(skb, NFTA_SOCKET_LEVEL, htonl(priv->level)))
-> +	    nla_put_be32(skb, NFTA_SOCKET_LEVEL, htonl(priv->level_user)))
->  		return -1;
->  	return 0;
->  }
-> -- 
-> 2.43.0
-> 
-> 
-> 
+diff --git a/tools/testing/selftests/net/mptcp/mptcp_join.sh b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+index 446b8daa23e0..ed7c0193ffc3 100755
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -3048,7 +3048,9 @@ fullmesh_tests()
+ 		pm_nl_set_limits $ns1 1 3
+ 		pm_nl_set_limits $ns2 1 3
+ 		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
+-		pm_nl_add_endpoint $ns2 10.0.1.2 flags subflow,fullmesh
++		if mptcp_lib_kallsyms_has "mptcp_pm_subflow_check_next$"; then
++			pm_nl_add_endpoint $ns2 10.0.1.2 flags subflow,fullmesh
++		fi
+ 		run_tests $ns1 $ns2 10.0.1.1 0 0 fullmesh_1 slow
+ 		chk_join_nr 3 3 3
+ 		chk_add_nr 1 1
+-- 
+2.45.2
+
 
