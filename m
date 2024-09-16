@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-76491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E498597A1FD
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:12:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 62C6B97A1EC
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:11:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8EC7A1F21E40
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:12:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D1EB1F2184B
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:11:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1459C1547FF;
-	Mon, 16 Sep 2024 12:12:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87B6D1547F5;
+	Mon, 16 Sep 2024 12:11:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lOs5RFGH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QvzLaVI1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C13C2154429;
-	Mon, 16 Sep 2024 12:12:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44B0B155359;
+	Mon, 16 Sep 2024 12:11:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488743; cv=none; b=tf++XgFsMvlriSUFJdO4L2FJfwr3ImoB6INvzW836g64OF+jNcqXUnxWhp0jWukjKYL6gNSqFuvwmZ8hCbZkBk1lBmkta52xdkURqtr3UHIl++uSaUJW2tehfmUY9BjpO653aGQxNa7i9gECEyb59bTUwv4MpZEf5GP9oOmx0O4=
+	t=1726488704; cv=none; b=qXVjgpdgecB1DzbtiHfxL1eEdgm4g0TWCJJ1b4BIJ0p4cEyOIQ6FvJvcuOwdlnMdzjm08DfGGaTfXFyePtIPldaOletl29I9jJ/i/0gKYUN5NL0DnK52scPykpEVWOv8sKsrQBfZi0aN0y7Yi+IptDA0CAP3J+6R6jVZsK+ZPis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488743; c=relaxed/simple;
-	bh=XTwwS1bP/CNlmNm9O7vGm5pu6kQt/evxldkHeyEJOZ4=;
+	s=arc-20240116; t=1726488704; c=relaxed/simple;
+	bh=qFJnaXZRMIhzOGG1tAGaHUtpBBLqT8yxTrcj2qcUCXg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W5guVqLq5T8tAOINYtEIS09T13WeNPVWImLMOXKmJzhDZpfzNZbod784Xj5kmN5kPOJYLwWw/8IE8YK6bpJda4pdiPTM5AQzCVGDD0Vg3KMW9qkSppT8x3Lf8Qy+fcAEojObS3W0/Iv2E/RWwCwsk1PfUWGy/zv4x2ZLbgtvtoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lOs5RFGH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49324C4CEC4;
-	Mon, 16 Sep 2024 12:12:23 +0000 (UTC)
+	 MIME-Version; b=UEH0DzoHp/saa8YC5lOeZlFb0E4FKcgWoRftRkKWibSCNW06aAijSzeKsW4HqACP7gnU4tICd3W5jWBm/NrV5XcjrORNcuxcRPkQFvVwgT9+uPrsAkPCX6UTJaSC88209lIhFygI5tdw7hXGmw98d+BrjkTdaQmw6S3Xhs6WomU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QvzLaVI1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B87CAC4CEC4;
+	Mon, 16 Sep 2024 12:11:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488743;
-	bh=XTwwS1bP/CNlmNm9O7vGm5pu6kQt/evxldkHeyEJOZ4=;
+	s=korg; t=1726488704;
+	bh=qFJnaXZRMIhzOGG1tAGaHUtpBBLqT8yxTrcj2qcUCXg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lOs5RFGH3k/0ZU79w/BHgvO97INUjd3IGMq3DR2ZzxxTH910fH3zHMLbWHFg9+Ccw
-	 cyCX5F/lVUrj7Xv6L4sDdzYMUymF0eJ0soKpXnA6CU35RtKb9shxWv3ad2uJBPOdTI
-	 /kklj93PILZQ7+o1xUDKOUjeJeOzPZnSw6GclXVw=
+	b=QvzLaVI1eJChmhOyOu0cU4QkBRWbAq6p5wfpojXIhvNTt7U9+088l5UzNbbjl2moD
+	 SkiRQd2zTTaCMDzuNfUyPXFmnTVDebi9JebISs3ZnWBjflpHhl4PlKZVO/rdpBAP5X
+	 3TFbyaTn3aiEXHuRbMJmkmJ8WnX5jJ0rrsuQkDkQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 84/91] spi: geni-qcom: Undo runtime PM changes at driver exit time
-Date: Mon, 16 Sep 2024 13:45:00 +0200
-Message-ID: <20240916114227.219729066@linuxfoundation.org>
+Subject: [PATCH 6.6 85/91] spi: geni-qcom: Fix incorrect free_irq() sequence
+Date: Mon, 16 Sep 2024 13:45:01 +0200
+Message-ID: <20240916114227.248223927@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
 References: <20240916114224.509743970@linuxfoundation.org>
@@ -69,78 +69,36 @@ Content-Transfer-Encoding: 8bit
 
 From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 89e362c883c65ff94b76b9862285f63545fb5274 ]
+[ Upstream commit b787a33864121a565aeb0e88561bf6062a19f99c ]
 
-It's important to undo pm_runtime_use_autosuspend() with
-pm_runtime_dont_use_autosuspend() at driver exit time unless driver
-initially enabled pm_runtime with devm_pm_runtime_enable()
-(which handles it for you).
+In spi_geni_remove(), the free_irq() sequence is different from that
+on the probe error path. And the IRQ will still remain and it's interrupt
+handler may use the dma channel after release dma channel and before free
+irq, which is not secure, fix it.
 
-Hence, switch to devm_pm_runtime_enable() to fix it, so the
-pm_runtime_disable() in probe error path and remove function
-can be removed.
-
-Fixes: cfdab2cd85ec ("spi: spi-geni-qcom: Set an autosuspend delay of 250 ms")
+Fixes: b59c122484ec ("spi: spi-geni-qcom: Add support for GPI dma")
 Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://patch.msgid.link/20240909073141.951494-2-ruanjinjie@huawei.com
+Link: https://patch.msgid.link/20240909073141.951494-3-ruanjinjie@huawei.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-geni-qcom.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ drivers/spi/spi-geni-qcom.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
-index f4f376a8351b..983c4896c8cf 100644
+index 983c4896c8cf..7401ed3b9acd 100644
 --- a/drivers/spi/spi-geni-qcom.c
 +++ b/drivers/spi/spi-geni-qcom.c
-@@ -1110,25 +1110,27 @@ static int spi_geni_probe(struct platform_device *pdev)
- 	spin_lock_init(&mas->lock);
- 	pm_runtime_use_autosuspend(&pdev->dev);
- 	pm_runtime_set_autosuspend_delay(&pdev->dev, 250);
--	pm_runtime_enable(dev);
-+	ret = devm_pm_runtime_enable(dev);
-+	if (ret)
-+		return ret;
+@@ -1170,9 +1170,9 @@ static void spi_geni_remove(struct platform_device *pdev)
+ 	/* Unregister _before_ disabling pm_runtime() so we stop transfers */
+ 	spi_unregister_master(spi);
  
- 	if (device_property_read_bool(&pdev->dev, "spi-slave"))
- 		spi->slave = true;
- 
- 	ret = geni_icc_get(&mas->se, NULL);
- 	if (ret)
--		goto spi_geni_probe_runtime_disable;
-+		return ret;
- 	/* Set the bus quota to a reasonable value for register access */
- 	mas->se.icc_paths[GENI_TO_CORE].avg_bw = Bps_to_icc(CORE_2X_50_MHZ);
- 	mas->se.icc_paths[CPU_TO_GENI].avg_bw = GENI_DEFAULT_BW;
- 
- 	ret = geni_icc_set_bw(&mas->se);
- 	if (ret)
--		goto spi_geni_probe_runtime_disable;
-+		return ret;
- 
- 	ret = spi_geni_init(mas);
- 	if (ret)
--		goto spi_geni_probe_runtime_disable;
-+		return ret;
- 
- 	/*
- 	 * check the mode supported and set_cs for fifo mode only
-@@ -1157,8 +1159,6 @@ static int spi_geni_probe(struct platform_device *pdev)
+-	spi_geni_release_dma_chan(mas);
+-
  	free_irq(mas->irq, spi);
- spi_geni_release_dma:
- 	spi_geni_release_dma_chan(mas);
--spi_geni_probe_runtime_disable:
--	pm_runtime_disable(dev);
- 	return ret;
- }
- 
-@@ -1173,7 +1173,6 @@ static void spi_geni_remove(struct platform_device *pdev)
- 	spi_geni_release_dma_chan(mas);
- 
- 	free_irq(mas->irq, spi);
--	pm_runtime_disable(&pdev->dev);
++
++	spi_geni_release_dma_chan(mas);
  }
  
  static int __maybe_unused spi_geni_runtime_suspend(struct device *dev)
