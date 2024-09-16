@@ -1,85 +1,175 @@
-Return-Path: <stable+bounces-76178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67ADF979BC6
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 09:03:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CB55979BE4
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 09:16:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 116BE1F20FB1
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 07:03:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41D501C224F5
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 07:16:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E4D31332A1;
-	Mon, 16 Sep 2024 07:02:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 845E98F70;
+	Mon, 16 Sep 2024 07:16:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZvUF430c"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="tWC+tkRZ";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="uqmp8RwK";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="D/PWzUlj";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="PgXA8jh8"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD5A131BAF
-	for <stable@vger.kernel.org>; Mon, 16 Sep 2024 07:02:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C497A5EE97
+	for <stable@vger.kernel.org>; Mon, 16 Sep 2024 07:16:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726470171; cv=none; b=e7u2LZinUF8vV34KmawW4pScZFyCRrMoBQ+8DLEAHGYgQ1koi1vuLW4OemasjGVXsFiM8ZIxtVgRaLguqs6LNejhjTCnNj5uzucV1o3zOjspyPx7V73WekMEjh1i6wWQqOaiHubX/dDylfmxUPCbARwkZLDLWD2OWrVQB3Wph8U=
+	t=1726470973; cv=none; b=o2m+lbZeFx2nRGLYu/qdAbqbU7vEizjxhZ6wtnqpdewLjbTmwqnoqA9vq4Vd28we6icKXP8e66nQwgg+buihZTRo5lqwRxCuCK1TUrmL7pkKSIXBXnk+50y2d4keTTJEJbEZmOIRK6A3IF0zhwzsNck7BGIhY2pwYnaP7ub7EtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726470171; c=relaxed/simple;
-	bh=2xeH0G3E/fYTv4QIfZNlBOpPe+nhmbn1RmNdIb5dy7g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EmdS1KKVtuxiTTvD/HeuAkn8JvJtn42a+6fE1Tm0+5CKm/K9feDnDlSw5sVCMccsYmqwnK2yGpc/TzECcm4BvKQf090FT3P4urA5wU3CuCkrFbcGq1HXCEu+frcqZQPcZR7GRk50dEpRETYm8n67uePbonJP6VmLfqMmZfylaUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZvUF430c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADF10C4CECD;
-	Mon, 16 Sep 2024 07:02:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726470170;
-	bh=2xeH0G3E/fYTv4QIfZNlBOpPe+nhmbn1RmNdIb5dy7g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ZvUF430c7yJvJxrhIhC8CuH9OxS0Dl9pgvmNkvbuyiYp4Xkbwg8wt318NrVMTqKHp
-	 6Ziq5nUdXgCUaGMAkjB0vW0YHpceO3dgnauwPxXIl4zQPONxG1aPivcYogvhM+bHQH
-	 atanlPfMpHpxW9tMYvGJ230D47A/3mFhO7Rvy944=
-Date: Mon, 16 Sep 2024 09:02:37 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: "T.J. Mercier" <tjmercier@google.com>
-Cc: stable@vger.kernel.org, Xingyu Jin <xingyuj@google.com>,
-	John Stultz <jstultz@google.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>
-Subject: Re: [PATCH 5.10.y] dma-buf: heaps: Fix off-by-one in CMA heap fault
- handler
-Message-ID: <2024091643-proved-financial-0bb5@gregkh>
-References: <20240916043441.323792-1-tjmercier@google.com>
+	s=arc-20240116; t=1726470973; c=relaxed/simple;
+	bh=HSY+P674ZC//NI+yJrY0M1U5P0BgZX3TedYhmPf6JCc=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KW3sGuYjmkFnzbOpXuhLVl+iH0Lv0mLxraaKoPsF5gBDRQjhtQmGx8241Kr35Yp2nOlz4bPATz04QUeYlITOpV1JLfx+DHbRakWnCLGkWKyHU4uh7Wx6yWUp9MCf0YCU5yS1Bk5Q3Vl5dazAB2aquyrgmlLfdg2Ih9sGAKM0vrg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=tWC+tkRZ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=uqmp8RwK; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=D/PWzUlj; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=PgXA8jh8; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id C9F411F86B;
+	Mon, 16 Sep 2024 07:16:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1726470970; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/sSjzr5HtMz2pqKGcdEToj0QWZJuyrJg/ZaZJWn3ez0=;
+	b=tWC+tkRZSIILrMkX3PiwGWsBW6zdfHTqG3kqixGQ7cPTArpL8x/xRtnqqWgB4AecZAGn0g
+	wFsDCBVexmux1UA6KQO89Rxu/04unwGKJJdyC5jIGf5BfwBXkh9a0PiF82MsAY8nnkkMGB
+	MGB/SEZ9U/q01KQ4s40yDbVinqT4a78=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1726470970;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/sSjzr5HtMz2pqKGcdEToj0QWZJuyrJg/ZaZJWn3ez0=;
+	b=uqmp8RwKdGFtm4DmshUo59x2lZGJMy1LTO02FLGgrIMEFy3ZLY3iFPOV4fDwfF79Yrr2Xq
+	KHFhEf3l2zp6fhAw==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1726470968; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/sSjzr5HtMz2pqKGcdEToj0QWZJuyrJg/ZaZJWn3ez0=;
+	b=D/PWzUljxJ8oLF8aG3BG/eE3gmGfrLC9qv1ZM+Ut4tBAkgI5nVmUqTI+Ng6w3jNOTbtaiF
+	5zVuQQTL4Y8pSrjjnVpfR2XhxGG59Ia2ywk7jzhKXZhq3VqtjIsjNksMOQwZbqI+YZM5hx
+	mxophtHHZFqZDZKXcomFx/Ie0VC0q/0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1726470968;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=/sSjzr5HtMz2pqKGcdEToj0QWZJuyrJg/ZaZJWn3ez0=;
+	b=PgXA8jh8vvF6cxpxPAmnG5qnK/9FOOAFAdo2uTAh+5Eg6kRMavX6GfiJPqfP9zkFPV8eye
+	huOSo+Y9fOspuYAQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 96C631397F;
+	Mon, 16 Sep 2024 07:16:08 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id qWQ2Izjb52b0KAAAD6G6ig
+	(envelope-from <tiwai@suse.de>); Mon, 16 Sep 2024 07:16:08 +0000
+Date: Mon, 16 Sep 2024 09:16:58 +0200
+Message-ID: <874j6g9ifp.wl-tiwai@suse.de>
+From: Takashi Iwai <tiwai@suse.de>
+To: Christoph Hellwig <hch@infradead.org>
+Cc: Andrew Cooper <andrew.cooper3@citrix.com>,
+	Ariadne Conill <ariadne@ariadne.space>,
+	xen-devel@lists.xenproject.org,
+	alsa-devel@alsa-project.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] Revert "ALSA: memalloc: Workaround for Xen PV"
+In-Reply-To: <ZuK6xcmAE4sngFqk@infradead.org>
+References: <20240906184209.25423-1-ariadne@ariadne.space>
+	<877cbnewib.wl-tiwai@suse.de>
+	<9eda21ac-2ce7-47d5-be49-65b941e76340@citrix.com>
+	<ZuK6xcmAE4sngFqk@infradead.org>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240916043441.323792-1-tjmercier@google.com>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=ISO-8859-1
+Content-Transfer-Encoding: 8bit
+X-Spam-Level: 
+X-Spamd-Result: default: False [-3.30 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	TO_DN_SOME(0.00)[];
+	ARC_NA(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	RCPT_COUNT_FIVE(0.00)[6];
+	FROM_HAS_DN(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid]
+X-Spam-Score: -3.30
+X-Spam-Flag: NO
 
-On Mon, Sep 16, 2024 at 04:34:41AM +0000, T.J. Mercier wrote:
-> commit ea5ff5d351b520524019f7ff7f9ce418de2dad87 upstream.
+On Thu, 12 Sep 2024 11:56:21 +0200,
+Christoph Hellwig wrote:
 > 
-> Until VM_DONTEXPAND was added in commit 1c1914d6e8c6 ("dma-buf: heaps:
-> Don't track CMA dma-buf pages under RssFile") it was possible to obtain
-> a mapping larger than the buffer size via mremap and bypass the overflow
-> check in dma_buf_mmap_internal. When using such a mapping to attempt to
-> fault past the end of the buffer, the CMA heap fault handler also checks
-> the fault offset against the buffer size, but gets the boundary wrong by
-> 1. Fix the boundary check so that we don't read off the end of the pages
-> array and insert an arbitrary page in the mapping.
+> On Sat, Sep 07, 2024 at 11:38:50AM +0100, Andrew Cooper wrote:
+> > Individual subsystems ought not to know or care about XENPV; it's a
+> > layering violation.
 > 
-> Reported-by: Xingyu Jin <xingyuj@google.com>
-> Fixes: a5d2d29e24be ("dma-buf: heaps: Move heap-helper logic into the cma_heap implementation")
+> Agreed.
+> 
+> > If the main APIs don't behave properly, then it probably means we've got
+> > a bug at a lower level (e.g. Xen SWIOTLB is a constant source of fun)
+> > which is probably affecting other subsystems too.
+> > 
+> > I think we need to re-analyse the original bug.  Right now, the
+> > behaviour resulting from 53466ebde is worse than what it was trying to fix.
+> 
+> 53466ebde looks bogus to me, and the commit message doesn't even
+> try to explain what bad behavior it works around.  I'd also like to
+> state once again that if you think something is broken about dma
+> allocation or mapping helpers please Cc me and the iommu list.
+> 
+> Most of the time it's actually the drivers doing something invalid, but
+> sometimes it is a core dma layer bug or something that needs a proper
+> API.
+> 
+> Also while looking at the above commit I noticed the broken fallback
+> code in snd_dma_noncontig_alloc - get_dma_ops is not for driver use,
+> and starting with the code queued up for 6.12 will also return NULL
+> when using dma-iommu for example.
 
-This commit is in 5.11, so why:
+Yes, all those are really ugly hacks and have been already removed for
+6.12.  Let's hope everything works as expected with it.
 
-> Cc: stable@vger.kernel.org # Applicable >= 5.10. Needs adjustments only for 5.10.
-
-does this say 5.10?
 
 thanks,
 
-greg k-h
+Takashi
 
