@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-76356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27CE397A15C
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:07:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2539797A1BE
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:09:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E3A842872D7
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:07:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D524E288B7A
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:09:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6106E157A67;
-	Mon, 16 Sep 2024 12:05:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 181B9155352;
+	Mon, 16 Sep 2024 12:09:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FIwWYAYw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xz3o5bJW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A29814D439;
-	Mon, 16 Sep 2024 12:05:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFEDD153573;
+	Mon, 16 Sep 2024 12:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488359; cv=none; b=ucev5fgKSvlJK6zAM+E4qgZINpkgzatcY9a5gTNoEGF0QYmXK9p51lECB+PA2pjNnicHiYGH9/c4R/mRQd9SywiN/ZxBaKCN8IYMPLT9wW/eQeYIvLRJE2alVVQqGA1iyh7orx95mcTZUDoAwKI4Do4mKWARK2jC0FpgTc4Iclk=
+	t=1726488587; cv=none; b=IvlzE24S8ubGIn+q30Q1sUByE6owZi8m9C/4WV8QMMLFT2lkl44G6eS+Mrd0oCUBCOQ6JLj1VjTnm9EQOx3CLOSU4XryyCllPMAlrhwklMlYC7QpQ6G0IM/C0VgUErUyqFcv3ffizjNZU2FqwWFEYlrOLyhkyWsdyFctIX9eCU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488359; c=relaxed/simple;
-	bh=/5XiUlta4/XKVE+un0vsG/IIAD61ers+QYo1Q9HvDnk=;
+	s=arc-20240116; t=1726488587; c=relaxed/simple;
+	bh=q14hcftMXNaPh38zCxc5l4kZ+WftUDwM3j30qCiauIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U5sEOoCiXLdoEkFYG7FfIAb4swkdpGLMEYEsAQJkMilRgGhYEIEn33tzUTMHABJCYifxtdm6Xc0oDPL6QQ9dGZWxEmrbo7gL+jtXLyQCRWVLHUFdm6+lh6EZ5UHvZPlAR6MHleULn+YhNhWeuc3VXfzNgtWJS6V8G4Koj9JRlG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FIwWYAYw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D317C4CEC4;
-	Mon, 16 Sep 2024 12:05:58 +0000 (UTC)
+	 MIME-Version; b=H0QJrnPHnHSJc417FvDs3IISreJBjqGqLA5lvtxucxftj6j9QQx+r6lZORd5E8l6ex4/xIL2l6JvsbuD7Fe2UlgN1wdZCDcanOdmX8Em4DhT1WbaPSOYxXguzrW1fwrbI0RmONb6i8OaTdyulb10IVNG1vPscdbGc1x4dzDsifc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xz3o5bJW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 384A1C4CEC4;
+	Mon, 16 Sep 2024 12:09:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488358;
-	bh=/5XiUlta4/XKVE+un0vsG/IIAD61ers+QYo1Q9HvDnk=;
+	s=korg; t=1726488587;
+	bh=q14hcftMXNaPh38zCxc5l4kZ+WftUDwM3j30qCiauIM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FIwWYAYwuXrDeRXUayHBttc1FeZ7dQ4Xk55GvZF3klcG8x+q6CaqRWuJcAhX4hRqf
-	 D2wuxmCaCe+YYT9sH57KhDIvTyejNH6UbIPAtgEupVcr1/hzAgqgsAbjtJU82XobIC
-	 FJwR4QAC0AZl1nInDND8/sAeI9tmICuQHN9wP3Do=
+	b=xz3o5bJW8kAKuN77vrZl1MvjSjtDjwPPv9S2K4VBCUF1Iw36jRiLyElsRY+W0kt/a
+	 ojObwgrP3TDrMA8Isho9GOTd3k5fPHpuOU6nkSAYyFSf3sptoZJwJhOw/tQZV5Zrcx
+	 D7HWd9y64o1j86HGViFvMTqsX4kCdwBwDmaFVHBM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Naveen Mamindlapalli <naveenm@marvell.com>,
-	Sunil Kovvuri Goutham <sgoutham@marvell.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 085/121] octeontx2-af: Modify SMQ flush sequence to drop packets
+	Willem de Bruijn <willemb@google.com>,
+	Jason Wang <jasowang@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 43/91] net: tighten bad gso csum offset check in virtio_net_hdr
 Date: Mon, 16 Sep 2024 13:44:19 +0200
-Message-ID: <20240916114231.963005913@linuxfoundation.org>
+Message-ID: <20240916114225.923827191@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
-References: <20240916114228.914815055@linuxfoundation.org>
+In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
+References: <20240916114224.509743970@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,184 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naveen Mamindlapalli <naveenm@marvell.com>
+From: Willem de Bruijn <willemb@google.com>
 
-[ Upstream commit 019aba04f08c2102b35ce7fee9d4628d349f56c0 ]
+commit 6513eb3d3191574b58859ef2d6dc26c0277c6f81 upstream.
 
-The current implementation of SMQ flush sequence waits for the packets
-in the TM pipeline to be transmitted out of the link. This sequence
-doesn't succeed in HW when there is any issue with link such as lack of
-link credits, link down or any other traffic that is fully occupying the
-link bandwidth (QoS). This patch modifies the SMQ flush sequence to
-drop the packets after TL1 level (SQM) instead of polling for the packets
-to be sent out of RPM/CGX link.
+The referenced commit drops bad input, but has false positives.
+Tighten the check to avoid these.
 
-Fixes: 5d9b976d4480 ("octeontx2-af: Support fixed transmit scheduler topology")
-Signed-off-by: Naveen Mamindlapalli <naveenm@marvell.com>
-Reviewed-by: Sunil Kovvuri Goutham <sgoutham@marvell.com>
-Link: https://patch.msgid.link/20240906045838.1620308-1-naveenm@marvell.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The check detects illegal checksum offload requests, which produce
+csum_start/csum_off beyond end of packet after segmentation.
+
+But it is based on two incorrect assumptions:
+
+1. virtio_net_hdr_to_skb with VIRTIO_NET_HDR_GSO_TCP[46] implies GSO.
+True in callers that inject into the tx path, such as tap.
+But false in callers that inject into rx, like virtio-net.
+Here, the flags indicate GRO, and CHECKSUM_UNNECESSARY or
+CHECKSUM_NONE without VIRTIO_NET_HDR_F_NEEDS_CSUM is normal.
+
+2. TSO requires checksum offload, i.e., ip_summed == CHECKSUM_PARTIAL.
+False, as tcp[46]_gso_segment will fix up csum_start and offset for
+all other ip_summed by calling __tcp_v4_send_check.
+
+Because of 2, we can limit the scope of the fix to virtio_net_hdr
+that do try to set these fields, with a bogus value.
+
+Link: https://lore.kernel.org/netdev/20240909094527.GA3048202@port70.net/
+Fixes: 89add40066f9 ("net: drop bad gso csum_start and offset in virtio_net_hdr")
+Signed-off-by: Willem de Bruijn <willemb@google.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20240910213553.839926-1-willemdebruijn.kernel@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/marvell/octeontx2/af/rvu.h   |  3 +-
- .../ethernet/marvell/octeontx2/af/rvu_nix.c   | 59 +++++++++++++++----
- 2 files changed, 48 insertions(+), 14 deletions(-)
+ include/linux/virtio_net.h |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
-index 35834687e40f..96a7b23428be 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu.h
-@@ -318,6 +318,7 @@ struct nix_mark_format {
- 
- /* smq(flush) to tl1 cir/pir info */
- struct nix_smq_tree_ctx {
-+	u16 schq;
- 	u64 cir_off;
- 	u64 cir_val;
- 	u64 pir_off;
-@@ -327,8 +328,6 @@ struct nix_smq_tree_ctx {
- /* smq flush context */
- struct nix_smq_flush_ctx {
- 	int smq;
--	u16 tl1_schq;
--	u16 tl2_schq;
- 	struct nix_smq_tree_ctx smq_tree_ctx[NIX_TXSCH_LVL_CNT];
- };
- 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-index 3dc828cf6c5a..10f8efff7843 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-@@ -2259,14 +2259,13 @@ static void nix_smq_flush_fill_ctx(struct rvu *rvu, int blkaddr, int smq,
- 	schq = smq;
- 	for (lvl = NIX_TXSCH_LVL_SMQ; lvl <= NIX_TXSCH_LVL_TL1; lvl++) {
- 		smq_tree_ctx = &smq_flush_ctx->smq_tree_ctx[lvl];
-+		smq_tree_ctx->schq = schq;
- 		if (lvl == NIX_TXSCH_LVL_TL1) {
--			smq_flush_ctx->tl1_schq = schq;
- 			smq_tree_ctx->cir_off = NIX_AF_TL1X_CIR(schq);
- 			smq_tree_ctx->pir_off = 0;
- 			smq_tree_ctx->pir_val = 0;
- 			parent_off = 0;
- 		} else if (lvl == NIX_TXSCH_LVL_TL2) {
--			smq_flush_ctx->tl2_schq = schq;
- 			smq_tree_ctx->cir_off = NIX_AF_TL2X_CIR(schq);
- 			smq_tree_ctx->pir_off = NIX_AF_TL2X_PIR(schq);
- 			parent_off = NIX_AF_TL2X_PARENT(schq);
-@@ -2301,8 +2300,8 @@ static void nix_smq_flush_enadis_xoff(struct rvu *rvu, int blkaddr,
- {
- 	struct nix_txsch *txsch;
- 	struct nix_hw *nix_hw;
-+	int tl2, tl2_schq;
- 	u64 regoff;
--	int tl2;
- 
- 	nix_hw = get_nix_hw(rvu->hw, blkaddr);
- 	if (!nix_hw)
-@@ -2310,16 +2309,17 @@ static void nix_smq_flush_enadis_xoff(struct rvu *rvu, int blkaddr,
- 
- 	/* loop through all TL2s with matching PF_FUNC */
- 	txsch = &nix_hw->txsch[NIX_TXSCH_LVL_TL2];
-+	tl2_schq = smq_flush_ctx->smq_tree_ctx[NIX_TXSCH_LVL_TL2].schq;
- 	for (tl2 = 0; tl2 < txsch->schq.max; tl2++) {
- 		/* skip the smq(flush) TL2 */
--		if (tl2 == smq_flush_ctx->tl2_schq)
-+		if (tl2 == tl2_schq)
- 			continue;
- 		/* skip unused TL2s */
- 		if (TXSCH_MAP_FLAGS(txsch->pfvf_map[tl2]) & NIX_TXSCHQ_FREE)
- 			continue;
- 		/* skip if PF_FUNC doesn't match */
- 		if ((TXSCH_MAP_FUNC(txsch->pfvf_map[tl2]) & ~RVU_PFVF_FUNC_MASK) !=
--		    (TXSCH_MAP_FUNC(txsch->pfvf_map[smq_flush_ctx->tl2_schq] &
-+		    (TXSCH_MAP_FUNC(txsch->pfvf_map[tl2_schq] &
- 				    ~RVU_PFVF_FUNC_MASK)))
- 			continue;
- 		/* enable/disable XOFF */
-@@ -2361,10 +2361,12 @@ static int nix_smq_flush(struct rvu *rvu, int blkaddr,
- 			 int smq, u16 pcifunc, int nixlf)
- {
- 	struct nix_smq_flush_ctx *smq_flush_ctx;
-+	int err, restore_tx_en = 0, i;
- 	int pf = rvu_get_pf(pcifunc);
- 	u8 cgx_id = 0, lmac_id = 0;
--	int err, restore_tx_en = 0;
--	u64 cfg;
-+	u16 tl2_tl3_link_schq;
-+	u8 link, link_level;
-+	u64 cfg, bmap = 0;
- 
- 	if (!is_rvu_otx2(rvu)) {
- 		/* Skip SMQ flush if pkt count is zero */
-@@ -2388,16 +2390,38 @@ static int nix_smq_flush(struct rvu *rvu, int blkaddr,
- 	nix_smq_flush_enadis_xoff(rvu, blkaddr, smq_flush_ctx, true);
- 	nix_smq_flush_enadis_rate(rvu, blkaddr, smq_flush_ctx, false);
- 
--	cfg = rvu_read64(rvu, blkaddr, NIX_AF_SMQX_CFG(smq));
--	/* Do SMQ flush and set enqueue xoff */
--	cfg |= BIT_ULL(50) | BIT_ULL(49);
--	rvu_write64(rvu, blkaddr, NIX_AF_SMQX_CFG(smq), cfg);
--
- 	/* Disable backpressure from physical link,
- 	 * otherwise SMQ flush may stall.
- 	 */
- 	rvu_cgx_enadis_rx_bp(rvu, pf, false);
- 
-+	link_level = rvu_read64(rvu, blkaddr, NIX_AF_PSE_CHANNEL_LEVEL) & 0x01 ?
-+			NIX_TXSCH_LVL_TL3 : NIX_TXSCH_LVL_TL2;
-+	tl2_tl3_link_schq = smq_flush_ctx->smq_tree_ctx[link_level].schq;
-+	link = smq_flush_ctx->smq_tree_ctx[NIX_TXSCH_LVL_TL1].schq;
-+
-+	/* SMQ set enqueue xoff */
-+	cfg = rvu_read64(rvu, blkaddr, NIX_AF_SMQX_CFG(smq));
-+	cfg |= BIT_ULL(50);
-+	rvu_write64(rvu, blkaddr, NIX_AF_SMQX_CFG(smq), cfg);
-+
-+	/* Clear all NIX_AF_TL3_TL2_LINK_CFG[ENA] for the TL3/TL2 queue */
-+	for (i = 0; i < (rvu->hw->cgx_links + rvu->hw->lbk_links); i++) {
-+		cfg = rvu_read64(rvu, blkaddr,
-+				 NIX_AF_TL3_TL2X_LINKX_CFG(tl2_tl3_link_schq, link));
-+		if (!(cfg & BIT_ULL(12)))
-+			continue;
-+		bmap |= (1 << i);
-+		cfg &= ~BIT_ULL(12);
-+		rvu_write64(rvu, blkaddr,
-+			    NIX_AF_TL3_TL2X_LINKX_CFG(tl2_tl3_link_schq, link), cfg);
-+	}
-+
-+	/* Do SMQ flush and set enqueue xoff */
-+	cfg = rvu_read64(rvu, blkaddr, NIX_AF_SMQX_CFG(smq));
-+	cfg |= BIT_ULL(50) | BIT_ULL(49);
-+	rvu_write64(rvu, blkaddr, NIX_AF_SMQX_CFG(smq), cfg);
-+
- 	/* Wait for flush to complete */
- 	err = rvu_poll_reg(rvu, blkaddr,
- 			   NIX_AF_SMQX_CFG(smq), BIT_ULL(49), true);
-@@ -2406,6 +2430,17 @@ static int nix_smq_flush(struct rvu *rvu, int blkaddr,
- 			 "NIXLF%d: SMQ%d flush failed, txlink might be busy\n",
- 			 nixlf, smq);
- 
-+	/* Set NIX_AF_TL3_TL2_LINKX_CFG[ENA] for the TL3/TL2 queue */
-+	for (i = 0; i < (rvu->hw->cgx_links + rvu->hw->lbk_links); i++) {
-+		if (!(bmap & (1 << i)))
-+			continue;
-+		cfg = rvu_read64(rvu, blkaddr,
-+				 NIX_AF_TL3_TL2X_LINKX_CFG(tl2_tl3_link_schq, link));
-+		cfg |= BIT_ULL(12);
-+		rvu_write64(rvu, blkaddr,
-+			    NIX_AF_TL3_TL2X_LINKX_CFG(tl2_tl3_link_schq, link), cfg);
-+	}
-+
- 	/* clear XOFF on TL2s */
- 	nix_smq_flush_enadis_rate(rvu, blkaddr, smq_flush_ctx, true);
- 	nix_smq_flush_enadis_xoff(rvu, blkaddr, smq_flush_ctx, false);
--- 
-2.43.0
-
+--- a/include/linux/virtio_net.h
++++ b/include/linux/virtio_net.h
+@@ -173,7 +173,8 @@ retry:
+ 			break;
+ 		case SKB_GSO_TCPV4:
+ 		case SKB_GSO_TCPV6:
+-			if (skb->csum_offset != offsetof(struct tcphdr, check))
++			if (skb->ip_summed == CHECKSUM_PARTIAL &&
++			    skb->csum_offset != offsetof(struct tcphdr, check))
+ 				return -EINVAL;
+ 			break;
+ 		}
 
 
 
