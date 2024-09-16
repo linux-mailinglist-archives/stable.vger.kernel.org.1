@@ -1,120 +1,118 @@
-Return-Path: <stable+bounces-76519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BCC497A6EA
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 19:42:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E78C197A726
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 20:12:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42DBA1F24618
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 17:42:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 104511C2598F
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 18:12:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7936915C128;
-	Mon, 16 Sep 2024 17:41:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A00CF15B141;
+	Mon, 16 Sep 2024 18:12:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=maxima.ru header.i=@maxima.ru header.b="krt4n0/N"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="PD5HjywU"
 X-Original-To: stable@vger.kernel.org
-Received: from ksmg01.maxima.ru (ksmg01.maxima.ru [81.200.124.38])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9ED215B555;
-	Mon, 16 Sep 2024 17:41:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.200.124.38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC44AA95E;
+	Mon, 16 Sep 2024 18:12:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726508519; cv=none; b=MYpxi5kk9HZRqFrKd8tCkZSOJecfSBfDMqKT3fTk/n8EK6It/9GbvY5LKyT32hpyULCpJoVJzoJVV8JbNZ2oziNS+uMaDgWSCuKG7PNDCtfft6leG5aaFRqcQN90EgSWuo6/4/jJSoA5rK2c5IPZkUy7XxUQzl9ozoc7LBwjYVg=
+	t=1726510348; cv=none; b=JXd5ZPCCB/h5DRz17HOEuwsMm/uIrFJHIq1EzRO3ORHJ1kxsqVFtJCICMMgcB02ZkYrZ4pUf5OYmrcrhk79dzXkAXozZpvst82WPW6VQdMf9jshyut86YBMGHpE6K7t/biWfYUUjpWG+nDBWSSZt7A+2FE56k5LOwcuBVAKbsok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726508519; c=relaxed/simple;
-	bh=+rJpvIPO5yEsP+zpBqSixjqyl57HlBrna/VFYv2U+0s=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=UBG1WEMH9IPwYmzWPrrg+N7Xc32IP+WwWN2yF4C+e/16+uVS5BpmSDzaY3+J/TyohmjCU7TcKdntoR8aMUZ7NcxG/jYy8kaa9fMGaONcqreYnBO2JMGg3AEZwCIcJSeUarZjiuiLCd7J1gmZShHLl3m5+PMt1N6t+oUMUUvKbc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maxima.ru; spf=pass smtp.mailfrom=maxima.ru; dkim=pass (2048-bit key) header.d=maxima.ru header.i=@maxima.ru header.b=krt4n0/N; arc=none smtp.client-ip=81.200.124.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maxima.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=maxima.ru
-Received: from ksmg01.maxima.ru (localhost [127.0.0.1])
-	by ksmg01.maxima.ru (Postfix) with ESMTP id AB179C0002;
-	Mon, 16 Sep 2024 20:41:51 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 ksmg01.maxima.ru AB179C0002
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=maxima.ru; s=sl;
-	t=1726508511; bh=diCzsoBGaJDuxCaIPlitAIbV51E2AV2hqaeEV0ZPrl8=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
-	b=krt4n0/NCcaayPy9QC6tuignGUAnkm+YPpwKWiTtXkhrq6Gyqz3WTdtTQgRm99ZEV
-	 uFPBcuTtcP7lp6Kmv1BPIUmv6JhxuSb01GqYoK1btsgbFSTcHu/hPOt0Sbb/FkUt0R
-	 yEwMeYgxfjUfeSC/zk8Qvgg1FIWsQMw8K54nzN2j0b41mukJ/Kzpk+/OozmmaWlcIm
-	 HFaNf2bw8VA1hYQa5G3vu5PW3PDgLuBXWIwg4PuW8CP0U92QFnGGw/f9utD/VEtlPp
-	 CpiiJ4XotzeBq/hOhbsTPSRDNLYAXwZRutFSCr0793sEBMXd4uwAuTsr9Fjm0IKrrw
-	 lJ3ujf/JCK32Q==
-Received: from ksmg01.maxima.ru (unknown [81.200.124.61])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(Client CN "*.maxima.ru", Issuer "GlobalSign GCC R3 DV TLS CA 2020" (verified OK))
-	by ksmg01.maxima.ru (Postfix) with ESMTPS;
-	Mon, 16 Sep 2024 20:41:51 +0300 (MSK)
-Received: from localhost.maximatelecom.ru (10.0.247.12) by
- mmail-p-exch01.mt.ru (81.200.124.61) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.1544.4; Mon, 16 Sep 2024 20:41:50 +0300
-From: Vitaliy Shevtsov <v.shevtsov@maxima.ru>
-To: <stable@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: Vitaliy Shevtsov <v.shevtsov@maxima.ru>, Hannes Reinecke <hare@suse.de>,
-	Christoph Hellwig <hch@lst.de>, Sagi Grimberg <sagi@grimberg.me>, Chaitanya
- Kulkarni <kch@nvidia.com>, Jens Axboe <axboe@kernel.dk>,
-	<linux-nvme@lists.infradead.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH] nvmet-auth: assign dh_key to NULL after kfree_sensitive
-Date: Mon, 16 Sep 2024 22:41:37 +0500
-Message-ID: <20240916174139.1182-1-v.shevtsov@maxima.ru>
-X-Mailer: git-send-email 2.46.1
+	s=arc-20240116; t=1726510348; c=relaxed/simple;
+	bh=/OfRyNqrb0rhZXvUasI7+TDBt2vnFU2uO2phanTYMSM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fWIuBoRrdaBZ4jfnnSZIlVUuXvh4YKsceBKdOQc1NEzw35xQ07hGkz9z2QoZGll3xPvgwwqr8JtxHkEGCMK4GEMbOaytJb59p4rxu3lkmb/b1G0R0Cbxd6zJ/1jFS4OlZrXo4KbyoaI3gAEw082rTVYBdRRhrk/YrME5g8OPHNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=PD5HjywU; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-42cb6f3a5bcso47186715e9.2;
+        Mon, 16 Sep 2024 11:12:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1726510345; x=1727115145; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=4ZW97+TG1bHC3qGZeiAaZOhq8lixoj+g1nC65K/8l3Q=;
+        b=PD5HjywUxoHwRYjcYI3xFeWdWwjhufd1cc+IdQkXPqSfo8k8XLjhq0vgrFxWAjxQGA
+         dbs3XYl/vjVoz8nALLI8XXtp75pZ2ZZXqeEG+RrjV8mb1uYjzjkuQltz6/uDDc/ccsXi
+         9/cd5GjRKkd4RAtQh9iiBBOIK/sU9dft47b4soOxXvg5CkhUl52+7q1XLExR+w9uGvTu
+         exCK7h9GQqWvZ4cf24Tym/I0RFpRW2tvU3fD25+KTZku15KX7hXXscPxHyxVwCY8PKMF
+         3hZ1JB3mtdc4QCEkxZGOar58QA6ScmmLeWpaKZHt0u7G5yYThEvu2JX2BRiyG47ka6Vj
+         5i3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726510345; x=1727115145;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4ZW97+TG1bHC3qGZeiAaZOhq8lixoj+g1nC65K/8l3Q=;
+        b=nPfhu1SLglhXqjNmnixNryhsmvJ7w+SIw4uawR9DFq4jthd4FqYTtrlhovc53fUWc0
+         flfVbAOxzFJiSK8K7F0pcTnB6g2KO+eIsG3S+XLJ42C2c0AXRMR1IoThY5aOL8OEozpl
+         Sf66yjJ7/xjn+YFKESxV0IK/y1Kq9dIHJnz6O3iHZAgbP1SYzpLOnnTROzh/KvafY/F5
+         V4NUYFkoDHxNmEngpZifVC5d5c0UGM5R4Z1L2ReK4FKSb2oSq45h0hfgiiokVsD3gQp8
+         EQDvI46N3tNd4AAshYWCMed6KZ9cGvG3PMMlXeI110Ognt9dF0Q0JNytEXqeqfVCZh8M
+         KjLg==
+X-Forwarded-Encrypted: i=1; AJvYcCUUFUbVs0xQrJufN9WcLokJe/zw0mB2lraKBhWuMYdUXA8+PRWIQaeinme9nTv7K9RB2hrh40GEFDTYteU=@vger.kernel.org, AJvYcCXiEwEU/bHbDZ1+ikw2iBHgaQNrDnA0SBPYnn1M2ayKjq+1YHzXI/LxEM3nPErvtAmBXEKMOCJC@vger.kernel.org
+X-Gm-Message-State: AOJu0YxiJOEI4VHRGpU5MsxvQi/R40mXo3cPf9anjFINXrapnLRDGdZA
+	8EyLBsiQFSVzh4jUoccKDsgCEGBhEJp4d5HRN5Xm1j6y6ivSy4U=
+X-Google-Smtp-Source: AGHT+IGQbKp0JgJMcbk//NhE7JFF/Sc+z/Un8HvbYJn5CqgdSrSP+LnKzeoQpzxpl4BwO3NAoE20Ww==
+X-Received: by 2002:a05:600c:46c9:b0:42c:a8cb:6a5a with SMTP id 5b1f17b1804b1-42d908267d1mr131297855e9.15.1726510344858;
+        Mon, 16 Sep 2024 11:12:24 -0700 (PDT)
+Received: from [192.168.1.3] (p5b2acc3a.dip0.t-ipconnect.de. [91.42.204.58])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-378e78051c1sm7864645f8f.99.2024.09.16.11.12.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 16 Sep 2024 11:12:24 -0700 (PDT)
+Message-ID: <0b3ad565-1d66-4dcb-9a6d-64c356d50e2f@googlemail.com>
+Date: Mon, 16 Sep 2024 20:12:22 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.6 00/91] 6.6.52-rc1 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240916114224.509743970@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: mt-exch-01.mt.ru (91.220.120.210) To mmail-p-exch01.mt.ru
- (81.200.124.61)
-X-KSMG-Rule-ID: 7
-X-KSMG-Message-Action: clean
-X-KSMG-AntiSpam-Lua-Profiles: 187775 [Sep 16 2024]
-X-KSMG-AntiSpam-Version: 6.1.1.5
-X-KSMG-AntiSpam-Envelope-From: v.shevtsov@maxima.ru
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Auth: dmarc=none header.from=maxima.ru;spf=none smtp.mailfrom=maxima.ru;dkim=none
-X-KSMG-AntiSpam-Info: LuaCore: 34 0.3.34 8a1fac695d5606478feba790382a59668a4f0039, {rep_avail}, {Tracking_from_domain_doesnt_match_to}, 81.200.124.61:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;ksmg01.maxima.ru:7.1.1;maxima.ru:7.1.1;127.0.0.199:7.1.2, FromAlignment: s, ApMailHostAddress: 81.200.124.61, {DNS response errors}
-X-MS-Exchange-Organization-SCL: -1
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiPhishing: Clean
-X-KSMG-LinksScanning: Clean
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.0.1.6960, bases: 2024/09/16 15:27:00 #26597375
-X-KSMG-AntiVirus-Status: Clean, skipped
 
-ctrl->dh_key might be used across multiple calls to nvmet_setup_dhgroup()
-for the same controller. So it's better to nullify it after release on
-error path in order to avoid double free later in nvmet_destroy_auth().
+Am 16.09.2024 um 13:43 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.6.52 release.
+> There are 91 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Found by Linux Verification Center (linuxtesting.org) with Svace.
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg 
+oddities or regressions found.
 
-Fixes: 7a277c37d352 ("nvmet-auth: Diffie-Hellman key exchange support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Vitaliy Shevtsov <v.shevtsov@maxima.ru>
----
- drivers/nvme/target/auth.c | 1 +
- 1 file changed, 1 insertion(+)
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
-diff --git a/drivers/nvme/target/auth.c b/drivers/nvme/target/auth.c
-index e900525b7866..7bca64de4a2f 100644
---- a/drivers/nvme/target/auth.c
-+++ b/drivers/nvme/target/auth.c
-@@ -101,6 +101,7 @@ int nvmet_setup_dhgroup(struct nvmet_ctrl *ctrl, u8 dhgroup_id)
- 			pr_debug("%s: ctrl %d failed to generate private key, err %d\n",
- 				 __func__, ctrl->cntlid, ret);
- 			kfree_sensitive(ctrl->dh_key);
-+			ctrl->dh_key = NULL;
- 			return ret;
- 		}
- 		ctrl->dh_keysize = crypto_kpp_maxsize(ctrl->dh_tfm);
+
+Beste Grüße,
+Peter Schneider
+
 -- 
-2.46.1
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
 
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
