@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-76277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADC4597A0E7
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:02:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16A3997A0C9
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:01:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7369628461B
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:02:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA5261F229E4
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:01:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02A5E14B946;
-	Mon, 16 Sep 2024 12:02:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 484151547F5;
+	Mon, 16 Sep 2024 12:01:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ISeHdft5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="09d1Q1B2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B404813DBA0;
-	Mon, 16 Sep 2024 12:02:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0631B14AD19;
+	Mon, 16 Sep 2024 12:01:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488133; cv=none; b=BpZ/rJwH0SToOOScwNdL29TT9wWWOhuGKPgei/y7IOQvuGjM22342xAxyRwyPB39p497IhapIlth8eONj7/iDoiyKxU3lR1S0jie2+73cpkUye5W3ugkdoZ991qTLxYIgWnS6545d56xX3kPnay9bb8aVjqC9vXujxYrKDAJLTs=
+	t=1726488063; cv=none; b=qgHH+z13mAPep52VXEYedulacZFfG5brQLk6iqmWwwBduungWiQ8PA/QG++M46TtuSclHW0eRjWqZe7XI5Id4IqmsLRBTaqBjWfjghohkG/r9qJTGI3SE2w06H10PacahTH4lYzCgYkTDXoPFdZgu2ZEU6V93YC7g3TyXndFBTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488133; c=relaxed/simple;
-	bh=MCf9xcrrKuGCHGfojj0QDBSaFcLbEEqA/VUJYzKCxjU=;
+	s=arc-20240116; t=1726488063; c=relaxed/simple;
+	bh=E8B/6nYS4K7iGS3mW1IcO0xg4RplCrYYePS9fiQn9xM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X6RKQ3UVTkMdPAwbFuZ4ek3MIf5urw1IawLjJl46ZqgKv57EsZG7XVqqSmkxrEh8M+dtHeRiTm60Orxw1Zq+VnRcX311U3ugv/hXi6h+IgJMMR/BaLM5/79wBDAXyZ9nx8ToUOQSCdkgc9AUGtxHAPBfeFUagiMjv9RIx/2O+/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ISeHdft5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22DC1C4CEC4;
-	Mon, 16 Sep 2024 12:02:12 +0000 (UTC)
+	 MIME-Version; b=n1xRqCqWQ+WxKLqtQANxiNu5AIsW75G4Z/d5rH7hMae9XQYT8ScjC8PLL4qvp4BrNFIYwEdN844UPpFDYt8CQu5vrh9NZKxNCAyL+51V6W4IQsAalhVuctLBv9aQM3wpNgUYLXJt/A9zqYnZJZadh9b6917o53Y3a9zJDxMSYH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=09d1Q1B2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 770D6C4CEC4;
+	Mon, 16 Sep 2024 12:01:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488133;
-	bh=MCf9xcrrKuGCHGfojj0QDBSaFcLbEEqA/VUJYzKCxjU=;
+	s=korg; t=1726488062;
+	bh=E8B/6nYS4K7iGS3mW1IcO0xg4RplCrYYePS9fiQn9xM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ISeHdft5s7iNf3Spp+HMm/RfmUS6HbvikptzRtggdWL4N+ajkRHJn4jzkonV4mIFz
-	 zKgcRc1EHeydQo3QjXvdhRrNVSXu9omvLh2bkpx9q5tBMkLvxLLhaMiqG7nytZSjLO
-	 T4uSiAg2qDnC8kvljDQLUKHQnpp3pw1JYBzOMbGk=
+	b=09d1Q1B2yW1yDmTmv5bY8e235Rzj5iWB+m7vV1yguLmn6pULAXpoOFKXuZDZb9apl
+	 V7DmerRGUuG6J2/vmWabh5reKAox3tjNsEgb58QAY3+PQq+/ZVPtHPaCF20L1XYEqg
+	 RsEV1NGBy1EFU+pU1DNI8Uk75MWqqh1Tibuhp63k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carolina Jubran <cjubran@nvidia.com>,
+	Benjamin Poirier <bpoirier@nvidia.com>,
 	Cosmin Ratiu <cratiu@nvidia.com>,
 	Saeed Mahameed <saeedm@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 45/63] net/mlx5: Verify support for scheduling element and TSAR type
-Date: Mon, 16 Sep 2024 13:44:24 +0200
-Message-ID: <20240916114222.656103895@linuxfoundation.org>
+Subject: [PATCH 6.1 46/63] net/mlx5: Fix bridge mode operations when there are no VFs
+Date: Mon, 16 Sep 2024 13:44:25 +0200
+Message-ID: <20240916114222.694590597@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
 References: <20240916114221.021192667@linuxfoundation.org>
@@ -67,128 +67,76 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Carolina Jubran <cjubran@nvidia.com>
+From: Benjamin Poirier <bpoirier@nvidia.com>
 
-[ Upstream commit 861cd9b9cb62feb244b8d77e68fd6ddedbbf66e9 ]
+[ Upstream commit b1d305abef4640af1b4f1b4774d513cd81b10cfc ]
 
-Before creating a scheduling element in a NIC or E-Switch scheduler,
-ensure that the requested element type is supported. If the element is
-of type Transmit Scheduling Arbiter (TSAR), also verify that the
-specific TSAR type is supported.
+Currently, trying to set the bridge mode attribute when numvfs=0 leads to a
+crash:
 
-Fixes: 214baf22870c ("net/mlx5e: Support HTB offload")
-Fixes: 85c5f7c9200e ("net/mlx5: E-switch, Create QoS on demand")
-Fixes: 0fe132eac38c ("net/mlx5: E-switch, Allow to add vports to rate groups")
-Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
+bridge link set dev eth2 hwmode vepa
+
+[  168.967392] BUG: kernel NULL pointer dereference, address: 0000000000000030
+[...]
+[  168.969989] RIP: 0010:mlx5_add_flow_rules+0x1f/0x300 [mlx5_core]
+[...]
+[  168.976037] Call Trace:
+[  168.976188]  <TASK>
+[  168.978620]  _mlx5_eswitch_set_vepa_locked+0x113/0x230 [mlx5_core]
+[  168.979074]  mlx5_eswitch_set_vepa+0x7f/0xa0 [mlx5_core]
+[  168.979471]  rtnl_bridge_setlink+0xe9/0x1f0
+[  168.979714]  rtnetlink_rcv_msg+0x159/0x400
+[  168.980451]  netlink_rcv_skb+0x54/0x100
+[  168.980675]  netlink_unicast+0x241/0x360
+[  168.980918]  netlink_sendmsg+0x1f6/0x430
+[  168.981162]  ____sys_sendmsg+0x3bb/0x3f0
+[  168.982155]  ___sys_sendmsg+0x88/0xd0
+[  168.985036]  __sys_sendmsg+0x59/0xa0
+[  168.985477]  do_syscall_64+0x79/0x150
+[  168.987273]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[  168.987773] RIP: 0033:0x7f8f7950f917
+
+(esw->fdb_table.legacy.vepa_fdb is null)
+
+The bridge mode is only relevant when there are multiple functions per
+port. Therefore, prevent setting and getting this setting when there are no
+VFs.
+
+Note that after this change, there are no settings to change on the PF
+interface using `bridge link` when there are no VFs, so the interface no
+longer appears in the `bridge link` output.
+
+Fixes: 4b89251de024 ("net/mlx5: Support ndo bridge_setlink and getlink")
+Signed-off-by: Benjamin Poirier <bpoirier@nvidia.com>
 Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
 Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/esw/qos.c | 44 ++++++++++---------
- drivers/net/ethernet/mellanox/mlx5/core/qos.c |  7 +++
- 2 files changed, 31 insertions(+), 20 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/esw/legacy.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
-index 41d875066149..a7400ed4956e 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
-@@ -311,6 +311,25 @@ static int esw_qos_set_group_max_rate(struct mlx5_eswitch *esw,
- 	return err;
- }
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/legacy.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/legacy.c
+index fabe49a35a5c..a47e93caccb1 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/esw/legacy.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/legacy.c
+@@ -321,7 +321,7 @@ int mlx5_eswitch_set_vepa(struct mlx5_eswitch *esw, u8 setting)
+ 		return -EPERM;
  
-+static bool esw_qos_element_type_supported(struct mlx5_core_dev *dev, int type)
-+{
-+	switch (type) {
-+	case SCHEDULING_CONTEXT_ELEMENT_TYPE_TSAR:
-+		return MLX5_CAP_QOS(dev, esw_element_type) &
-+		       ELEMENT_TYPE_CAP_MASK_TSAR;
-+	case SCHEDULING_CONTEXT_ELEMENT_TYPE_VPORT:
-+		return MLX5_CAP_QOS(dev, esw_element_type) &
-+		       ELEMENT_TYPE_CAP_MASK_VPORT;
-+	case SCHEDULING_CONTEXT_ELEMENT_TYPE_VPORT_TC:
-+		return MLX5_CAP_QOS(dev, esw_element_type) &
-+		       ELEMENT_TYPE_CAP_MASK_VPORT_TC;
-+	case SCHEDULING_CONTEXT_ELEMENT_TYPE_PARA_VPORT_TC:
-+		return MLX5_CAP_QOS(dev, esw_element_type) &
-+		       ELEMENT_TYPE_CAP_MASK_PARA_VPORT_TC;
-+	}
-+	return false;
-+}
-+
- static int esw_qos_vport_create_sched_element(struct mlx5_eswitch *esw,
- 					      struct mlx5_vport *vport,
- 					      u32 max_rate, u32 bw_share)
-@@ -322,6 +341,9 @@ static int esw_qos_vport_create_sched_element(struct mlx5_eswitch *esw,
- 	void *vport_elem;
- 	int err;
+ 	mutex_lock(&esw->state_lock);
+-	if (esw->mode != MLX5_ESWITCH_LEGACY) {
++	if (esw->mode != MLX5_ESWITCH_LEGACY || !mlx5_esw_is_fdb_created(esw)) {
+ 		err = -EOPNOTSUPP;
+ 		goto out;
+ 	}
+@@ -341,7 +341,7 @@ int mlx5_eswitch_get_vepa(struct mlx5_eswitch *esw, u8 *setting)
+ 	if (!mlx5_esw_allowed(esw))
+ 		return -EPERM;
  
-+	if (!esw_qos_element_type_supported(dev, SCHEDULING_CONTEXT_ELEMENT_TYPE_VPORT))
-+		return -EOPNOTSUPP;
-+
- 	parent_tsar_ix = group ? group->tsar_ix : esw->qos.root_tsar_ix;
- 	MLX5_SET(scheduling_context, sched_ctx, element_type,
- 		 SCHEDULING_CONTEXT_ELEMENT_TYPE_VPORT);
-@@ -532,25 +554,6 @@ static int esw_qos_destroy_rate_group(struct mlx5_eswitch *esw,
- 	return err;
- }
- 
--static bool esw_qos_element_type_supported(struct mlx5_core_dev *dev, int type)
--{
--	switch (type) {
--	case SCHEDULING_CONTEXT_ELEMENT_TYPE_TSAR:
--		return MLX5_CAP_QOS(dev, esw_element_type) &
--		       ELEMENT_TYPE_CAP_MASK_TSAR;
--	case SCHEDULING_CONTEXT_ELEMENT_TYPE_VPORT:
--		return MLX5_CAP_QOS(dev, esw_element_type) &
--		       ELEMENT_TYPE_CAP_MASK_VPORT;
--	case SCHEDULING_CONTEXT_ELEMENT_TYPE_VPORT_TC:
--		return MLX5_CAP_QOS(dev, esw_element_type) &
--		       ELEMENT_TYPE_CAP_MASK_VPORT_TC;
--	case SCHEDULING_CONTEXT_ELEMENT_TYPE_PARA_VPORT_TC:
--		return MLX5_CAP_QOS(dev, esw_element_type) &
--		       ELEMENT_TYPE_CAP_MASK_PARA_VPORT_TC;
--	}
--	return false;
--}
--
- static int esw_qos_create(struct mlx5_eswitch *esw, struct netlink_ext_ack *extack)
- {
- 	u32 tsar_ctx[MLX5_ST_SZ_DW(scheduling_context)] = {};
-@@ -561,7 +564,8 @@ static int esw_qos_create(struct mlx5_eswitch *esw, struct netlink_ext_ack *exta
- 	if (!MLX5_CAP_GEN(dev, qos) || !MLX5_CAP_QOS(dev, esw_scheduling))
+-	if (esw->mode != MLX5_ESWITCH_LEGACY)
++	if (esw->mode != MLX5_ESWITCH_LEGACY || !mlx5_esw_is_fdb_created(esw))
  		return -EOPNOTSUPP;
  
--	if (!esw_qos_element_type_supported(dev, SCHEDULING_CONTEXT_ELEMENT_TYPE_TSAR))
-+	if (!esw_qos_element_type_supported(dev, SCHEDULING_CONTEXT_ELEMENT_TYPE_TSAR) ||
-+	    !(MLX5_CAP_QOS(dev, esw_tsar_type) & TSAR_TYPE_CAP_MASK_DWRR))
- 		return -EOPNOTSUPP;
- 
- 	MLX5_SET(scheduling_context, tsar_ctx, element_type,
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/qos.c b/drivers/net/ethernet/mellanox/mlx5/core/qos.c
-index 8bce730b5c5b..db2bd3ad63ba 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/qos.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/qos.c
-@@ -28,6 +28,9 @@ int mlx5_qos_create_leaf_node(struct mlx5_core_dev *mdev, u32 parent_id,
- {
- 	u32 sched_ctx[MLX5_ST_SZ_DW(scheduling_context)] = {0};
- 
-+	if (!(MLX5_CAP_QOS(mdev, nic_element_type) & ELEMENT_TYPE_CAP_MASK_QUEUE_GROUP))
-+		return -EOPNOTSUPP;
-+
- 	MLX5_SET(scheduling_context, sched_ctx, parent_element_id, parent_id);
- 	MLX5_SET(scheduling_context, sched_ctx, element_type,
- 		 SCHEDULING_CONTEXT_ELEMENT_TYPE_QUEUE_GROUP);
-@@ -44,6 +47,10 @@ int mlx5_qos_create_inner_node(struct mlx5_core_dev *mdev, u32 parent_id,
- 	u32 sched_ctx[MLX5_ST_SZ_DW(scheduling_context)] = {0};
- 	void *attr;
- 
-+	if (!(MLX5_CAP_QOS(mdev, nic_element_type) & ELEMENT_TYPE_CAP_MASK_TSAR) ||
-+	    !(MLX5_CAP_QOS(mdev, nic_tsar_type) & TSAR_TYPE_CAP_MASK_DWRR))
-+		return -EOPNOTSUPP;
-+
- 	MLX5_SET(scheduling_context, sched_ctx, parent_element_id, parent_id);
- 	MLX5_SET(scheduling_context, sched_ctx, element_type,
- 		 SCHEDULING_CONTEXT_ELEMENT_TYPE_TSAR);
+ 	*setting = esw->fdb_table.legacy.vepa_uplink_rule ? 1 : 0;
 -- 
 2.43.0
 
