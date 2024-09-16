@@ -1,99 +1,103 @@
-Return-Path: <stable+bounces-76513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6A8797A671
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 19:06:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0738297A6B9
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 19:27:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 058171C21482
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 17:06:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CBB21F27264
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 17:27:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDCE2142E77;
-	Mon, 16 Sep 2024 17:06:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7B1415B97B;
+	Mon, 16 Sep 2024 17:27:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OBeka3HI"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DfKZ0IwF"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B44B610A18
-	for <stable@vger.kernel.org>; Mon, 16 Sep 2024 17:06:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89D2A15AD9B;
+	Mon, 16 Sep 2024 17:27:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726506386; cv=none; b=ExxYegDk6SZnWmszsDklXmT+hh5Q8k4mjDHc3VbKjUmZn9Ve5RURp0JX+aRveXyfRN6wexOMvSCbtZrJdVnVqliYURooL3blhCYridJZIU+rKjtQC1xrHRXoAZpICHUD+aC/y8/LK1nbxkQOgME8MYCbIL5U43K/JWhyyPcneM4=
+	t=1726507623; cv=none; b=lmVu6csPQGIA8IsKv2+sbf2QhRil8vEJUCx5y8dboc5EHSZWOrfGnFRd3n63d2Hnqmlp6SyJd+qKL2m3UxFoph3w8f8cJUU5ZC3Ca4ar9zvr2wK30WZXO53eVFuHVJHgA/+vyi2SBljWZCekcrPhT8npJ0tOS7bKRrxn7hO6f3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726506386; c=relaxed/simple;
-	bh=U1mnWBtQb1ZiV8mOJDscZ1Y99BEJlPHKsHVdbhnUbyo=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=jzAY8q80/6jkUZHRLMvzotGLBRe/sYYkl5wGF1MaiYIBwEKlc3bZupLTK63hEWq1HmlPXfztvevrdVETbG+72sRasZqcV2DbedANgGR5FeBcFbhWnm2u+d7KRZaZszP3m1MvjTA5uDqI5oeyB+BdQcx14MBAqWm8EDtI22eXUeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OBeka3HI; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1726506384; x=1758042384;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=U1mnWBtQb1ZiV8mOJDscZ1Y99BEJlPHKsHVdbhnUbyo=;
-  b=OBeka3HI5tjmn5Ptkid1QIMJ+d+s25147lYivxCd3WnFtI2d4Nlod7dv
-   +EwtXVE5N45Woh4a6eiznGvHiuXsuhSaxlHaAS29d7Azq452VQX1M8bb6
-   asonozrGybu3kZ4MYle2psfIMJb0wbJK/wekiG0hEzJiwHuO8WpUObkKz
-   S13QQCCpV644BsD6nfhIPY5W+4KjAHDgIib7ymv31XZMrmBsBPm9emEIK
-   KRSJkeqyvCgYSjhzpXslzhH8n3b8EKcMw9TaBqs4ZdMiDFjXWTApxvDOq
-   Kb+NqQNhqNZoX4WLcbr1fxp+bvdOGeo+DS5dpca1t8nbmbJmHYfDFHN8U
-   A==;
-X-CSE-ConnectionGUID: N9dYOrxbQCW2yiuuAjJ3xw==
-X-CSE-MsgGUID: U4yTgVAXTWOLVYJr0TbaaA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11197"; a="35921801"
-X-IronPort-AV: E=Sophos;i="6.10,233,1719903600"; 
-   d="scan'208";a="35921801"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2024 10:06:23 -0700
-X-CSE-ConnectionGUID: CNEUFBB5SE2gX2fh0PtF3A==
-X-CSE-MsgGUID: qtt89Hp0QN+ANUV+3TZIDw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,233,1719903600"; 
-   d="scan'208";a="68802990"
-Received: from lkp-server01.sh.intel.com (HELO 53e96f405c61) ([10.239.97.150])
-  by orviesa010.jf.intel.com with ESMTP; 16 Sep 2024 10:06:20 -0700
-Received: from kbuild by 53e96f405c61 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sqFB2-000AKU-1y;
-	Mon, 16 Sep 2024 17:06:16 +0000
-Date: Tue, 17 Sep 2024 01:05:35 +0800
-From: kernel test robot <lkp@intel.com>
-To: Vitaliy Shevtsov <v.shevtsov@maxima.ru>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH] RDMA/irdma: fix error message in irdma_modify_qp_roce()
-Message-ID: <ZuhlX8eeJhpKLU9h@3bb1e60d1c37>
+	s=arc-20240116; t=1726507623; c=relaxed/simple;
+	bh=5qUhOm/N1xmDx37BzF4Us12jj7jxEK7J2OvOQCs+KIc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=RUgBYn2EnggjRgWwNY4T8UiOTOy6GAhAlMDmcRrQESysF5zq9gzPjtr+VqGU39/kkrdqZ7K4F33PSkWEK3PmLLL2vwa8gRPsrJKc9oYsrxSG1A5ClRt6p17h4Ripu74uT+kIkkeZhoSU1OQEDEMIK2OicLxCtNJFTzfad3G2Klo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DfKZ0IwF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32F8CC4CED3;
+	Mon, 16 Sep 2024 17:27:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1726507623;
+	bh=5qUhOm/N1xmDx37BzF4Us12jj7jxEK7J2OvOQCs+KIc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=DfKZ0IwF1udZMyn5LKM4gMYAnIY4mM6dt4LOFY2RCTt3At5qS+hMZpPmgKDCuR/p6
+	 k84EeefGYh/HaDUie//XokwSUGUPgJplID/uo9euiZW1bpXjEPGMJMftnmZmHIss13
+	 NGzgJLo6KQyUV5ko+dndHApXfXU7KmSv64LgiBqbxnaoBhadi44NM2vH/tggB4Me/1
+	 55Bm1TDP/1X4KVW7jjew5kJNpZSegNZgO0NETOjYBKSQelLBDnemWsKGtCnX6h1Knq
+	 GcQL+mYdp3IiG13RyqJ3BIRXo4MKzMozW0HKRTSvpWB2TYesLuo/WjGhQQzIC2360O
+	 EEA+lHyaVgd9Q==
+Received: from johan by xi.lan with local (Exim 4.97.1)
+	(envelope-from <johan+linaro@kernel.org>)
+	id 1sqFVS-00000000234-3RXq;
+	Mon, 16 Sep 2024 19:27:22 +0200
+From: Johan Hovold <johan+linaro@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Jiri Slaby <jirislaby@kernel.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	linux-arm-msm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-serial@vger.kernel.org,
+	Johan Hovold <johan+linaro@kernel.org>,
+	stable@vger.kernel.org,
+	Aniket Randive <quic_arandive@quicinc.com>
+Subject: [PATCH 1/3] serial: qcom-geni: fix premature receiver enable
+Date: Mon, 16 Sep 2024 19:26:40 +0200
+Message-ID: <20240916172642.7814-2-johan+linaro@kernel.org>
+X-Mailer: git-send-email 2.44.2
+In-Reply-To: <20240916172642.7814-1-johan+linaro@kernel.org>
+References: <20240916172642.7814-1-johan+linaro@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240916165817.14691-1-v.shevtsov@maxima.ru>
+Content-Transfer-Encoding: 8bit
 
-Hi,
+The receiver should no be enabled until the port is opened so drop the
+bogus call to start tx from the setup code which is shared with the
+console implementation.
 
-Thanks for your patch.
+This was added for some confused implementation of hibernation support,
+but the receiver must not be started unconditionally as the port may not
+have been open when hibernating the system.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+Fixes: 35781d8356a2 ("tty: serial: qcom-geni-serial: Add support for Hibernation feature")
+Cc: stable@vger.kernel.org	# 6.2
+Cc: Aniket Randive <quic_arandive@quicinc.com>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+---
+ drivers/tty/serial/qcom_geni_serial.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH] RDMA/irdma: fix error message in irdma_modify_qp_roce()
-Link: https://lore.kernel.org/stable/20240916165817.14691-1-v.shevtsov%40maxima.ru
-
+diff --git a/drivers/tty/serial/qcom_geni_serial.c b/drivers/tty/serial/qcom_geni_serial.c
+index 6f0db310cf69..9ea6bd09e665 100644
+--- a/drivers/tty/serial/qcom_geni_serial.c
++++ b/drivers/tty/serial/qcom_geni_serial.c
+@@ -1152,7 +1152,6 @@ static int qcom_geni_serial_port_setup(struct uart_port *uport)
+ 			       false, true, true);
+ 	geni_se_init(&port->se, UART_RX_WM, port->rx_fifo_depth - 2);
+ 	geni_se_select_mode(&port->se, port->dev_data->mode);
+-	qcom_geni_serial_start_rx(uport);
+ 	port->setup = true;
+ 
+ 	return 0;
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+2.44.2
 
 
