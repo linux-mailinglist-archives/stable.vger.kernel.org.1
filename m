@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-76379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76460-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F12397A178
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:07:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2C3197A1D8
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:10:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 16399B211E1
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:07:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 21C921C219F9
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:10:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF4EA15687D;
-	Mon, 16 Sep 2024 12:07:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F49D149C57;
+	Mon, 16 Sep 2024 12:10:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IHUVSAmb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FxyGX17t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BBEB155725;
-	Mon, 16 Sep 2024 12:07:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ABB0146A79;
+	Mon, 16 Sep 2024 12:10:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488424; cv=none; b=jg72UDKfqADMd/kViXOg2pvdrz/DesoZa9MTWjwtG/UjQoM6lX6I4G6LBX9HqLrvK7rTO3K9XBdFgHWm7rHeENlGrt+KI1kt6g/OEQpdXJrzEWg21oR/scKlH7/L/WIvG37+v8KBSm6+OVdyfkUHzGwH6i7K28QzSdSlVqGIB+0=
+	t=1726488656; cv=none; b=mPs/DhqFjueHUsY7Bc2fOXt5c4ylPSR9EhnB/Q1w7kiwa64UM8/KTgce0sWVit+IUW4tTFt85kdNZjoLCovPN3MtDdZQEybfkkn3XgLFJiIlTkXarCZlLNjzIY2JQ49Bg2LGVZM6AfxpanhlQ3GYQDnHLZPUQ2rkG+LL1WPWD9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488424; c=relaxed/simple;
-	bh=DYGzXn9EaRJv00mkVbJ53IRPSxZE3oHOtjh6c7BDrMg=;
+	s=arc-20240116; t=1726488656; c=relaxed/simple;
+	bh=HsoYHyJKglsY0i21SPaemsCye3DF/VHrdGLEohEvJ/A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=t0bqzJm4n8FuKLmpIqj0MwkRgsPXMvwtApAJ+7MnM4txNMNmc6xLDrh7h5l42LvbWFpODO9EcBrffZw8Sa4KzpSdj/VdmoZ7b0iGIuZ9ah81Z4Fa9NMc5CMEp6D1/fVtvGV9hHLinWr2BEaSCKKDJrti46EZ+aQttrZ7SdaOCTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IHUVSAmb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14602C4CEC4;
-	Mon, 16 Sep 2024 12:07:03 +0000 (UTC)
+	 MIME-Version; b=TY5fFzEVNyE/KOv1r6RRZhEDFXyrSioT09PoCIEhFl732uTjp7gTZ00SHBIfya4KvkNJZiLqOdmTyStk/AK6tLwRLu4Wt1aCXijfz53HBmch2G4EF0MLteyZ52scR09pHw6cZgh03fa4qjMPmKhvoi+F/Co/CpJHCozMDAnL2Z0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FxyGX17t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83FB8C4CEC4;
+	Mon, 16 Sep 2024 12:10:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488424;
-	bh=DYGzXn9EaRJv00mkVbJ53IRPSxZE3oHOtjh6c7BDrMg=;
+	s=korg; t=1726488655;
+	bh=HsoYHyJKglsY0i21SPaemsCye3DF/VHrdGLEohEvJ/A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IHUVSAmbJsEPkD2kY8bHdnrj7zoBx0vVRrbkg2REzKgeItXwJRQwPag0k6sVX1r2j
-	 eY5tFFJ0clUMjEJFVqxbuaFQIRFAZnX+jMJFq6VfzHdp/LJl3zqbLzygMvq7+agBjE
-	 kRxMv2PqUpmiUx8DrihmzHjGF6AaIQYRIFtHZ/HM=
+	b=FxyGX17tl4mxPlrdhwhRqTY4ViflTzX247PXxzABDsR57Lxqg07tuvZzqH9sIfjyl
+	 XrLLj39edmu8lE9biBu1QtJlS2k9IEWAJuTGPJhwq1KF7C/amnUXQ5F68Mg5fFKSQY
+	 /90Z/g+fselSMDjTcDrUUjPrTTrJlE8bQxeBSLIA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthew Auld <matthew.auld@intel.com>,
-	Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
-	Tejas Upadhyay <tejas.upadhyay@intel.com>,
-	=?UTF-8?q?Thomas=20Hellstr=C3=B6m?= <thomas.hellstrom@linux.intel.com>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.10 109/121] drm/xe/client: add missing bo locking in show_meminfo()
+	Benjamin Poirier <bpoirier@nvidia.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 67/91] net/mlx5: Fix bridge mode operations when there are no VFs
 Date: Mon, 16 Sep 2024 13:44:43 +0200
-Message-ID: <20240916114232.699246365@linuxfoundation.org>
+Message-ID: <20240916114226.698433970@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
-References: <20240916114228.914815055@linuxfoundation.org>
+In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
+References: <20240916114224.509743970@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,121 +61,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Auld <matthew.auld@intel.com>
+From: Benjamin Poirier <bpoirier@nvidia.com>
 
-commit 94c4aa266111262c96c98f822d1bccc494786fee upstream.
+[ Upstream commit b1d305abef4640af1b4f1b4774d513cd81b10cfc ]
 
-bo_meminfo() wants to inspect bo state like tt and the ttm resource,
-however this state can change at any point leading to stuff like NPD and
-UAF, if the bo lock is not held. Grab the bo lock when calling
-bo_meminfo(), ensuring we drop any spinlocks first. In the case of
-object_idr we now also need to hold a ref.
+Currently, trying to set the bridge mode attribute when numvfs=0 leads to a
+crash:
 
-v2 (MattB)
-  - Also add xe_bo_assert_held()
+bridge link set dev eth2 hwmode vepa
 
-Fixes: 0845233388f8 ("drm/xe: Implement fdinfo memory stats printing")
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-Cc: Tejas Upadhyay <tejas.upadhyay@intel.com>
-Cc: "Thomas Hellström" <thomas.hellstrom@linux.intel.com>
-Cc: <stable@vger.kernel.org> # v6.8+
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Tejas Upadhyay <tejas.upadhyay@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240911155527.178910-6-matthew.auld@intel.com
-(cherry picked from commit 4f63d712fa104c3ebefcb289d1e733e86d8698c7)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[  168.967392] BUG: kernel NULL pointer dereference, address: 0000000000000030
+[...]
+[  168.969989] RIP: 0010:mlx5_add_flow_rules+0x1f/0x300 [mlx5_core]
+[...]
+[  168.976037] Call Trace:
+[  168.976188]  <TASK>
+[  168.978620]  _mlx5_eswitch_set_vepa_locked+0x113/0x230 [mlx5_core]
+[  168.979074]  mlx5_eswitch_set_vepa+0x7f/0xa0 [mlx5_core]
+[  168.979471]  rtnl_bridge_setlink+0xe9/0x1f0
+[  168.979714]  rtnetlink_rcv_msg+0x159/0x400
+[  168.980451]  netlink_rcv_skb+0x54/0x100
+[  168.980675]  netlink_unicast+0x241/0x360
+[  168.980918]  netlink_sendmsg+0x1f6/0x430
+[  168.981162]  ____sys_sendmsg+0x3bb/0x3f0
+[  168.982155]  ___sys_sendmsg+0x88/0xd0
+[  168.985036]  __sys_sendmsg+0x59/0xa0
+[  168.985477]  do_syscall_64+0x79/0x150
+[  168.987273]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[  168.987773] RIP: 0033:0x7f8f7950f917
+
+(esw->fdb_table.legacy.vepa_fdb is null)
+
+The bridge mode is only relevant when there are multiple functions per
+port. Therefore, prevent setting and getting this setting when there are no
+VFs.
+
+Note that after this change, there are no settings to change on the PF
+interface using `bridge link` when there are no VFs, so the interface no
+longer appears in the `bridge link` output.
+
+Fixes: 4b89251de024 ("net/mlx5: Support ndo bridge_setlink and getlink")
+Signed-off-by: Benjamin Poirier <bpoirier@nvidia.com>
+Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_drm_client.c |   39 ++++++++++++++++++++++++++++++++++---
- 1 file changed, 36 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/esw/legacy.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/xe/xe_drm_client.c
-+++ b/drivers/gpu/drm/xe/xe_drm_client.c
-@@ -9,6 +9,7 @@
- #include <linux/slab.h>
- #include <linux/types.h>
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/legacy.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/legacy.c
+index 255bc8b749f9..8587cd572da5 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/esw/legacy.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/legacy.c
+@@ -319,7 +319,7 @@ int mlx5_eswitch_set_vepa(struct mlx5_eswitch *esw, u8 setting)
+ 		return -EPERM;
  
-+#include "xe_assert.h"
- #include "xe_bo.h"
- #include "xe_bo_types.h"
- #include "xe_device_types.h"
-@@ -93,10 +94,13 @@ void xe_drm_client_add_bo(struct xe_drm_
-  */
- void xe_drm_client_remove_bo(struct xe_bo *bo)
- {
-+	struct xe_device *xe = ttm_to_xe_device(bo->ttm.bdev);
- 	struct xe_drm_client *client = bo->client;
- 
-+	xe_assert(xe, !kref_read(&bo->ttm.base.refcount));
-+
- 	spin_lock(&client->bos_lock);
--	list_del(&bo->client_link);
-+	list_del_init(&bo->client_link);
- 	spin_unlock(&client->bos_lock);
- 
- 	xe_drm_client_put(client);
-@@ -108,6 +112,8 @@ static void bo_meminfo(struct xe_bo *bo,
- 	u64 sz = bo->size;
- 	u32 mem_type;
- 
-+	xe_bo_assert_held(bo);
-+
- 	if (bo->placement.placement)
- 		mem_type = bo->placement.placement->mem_type;
- 	else
-@@ -149,7 +155,20 @@ static void show_meminfo(struct drm_prin
- 	idr_for_each_entry(&file->object_idr, obj, id) {
- 		struct xe_bo *bo = gem_to_xe_bo(obj);
- 
--		bo_meminfo(bo, stats);
-+		if (dma_resv_trylock(bo->ttm.base.resv)) {
-+			bo_meminfo(bo, stats);
-+			xe_bo_unlock(bo);
-+		} else {
-+			xe_bo_get(bo);
-+			spin_unlock(&file->table_lock);
-+
-+			xe_bo_lock(bo, false);
-+			bo_meminfo(bo, stats);
-+			xe_bo_unlock(bo);
-+
-+			xe_bo_put(bo);
-+			spin_lock(&file->table_lock);
-+		}
+ 	mutex_lock(&esw->state_lock);
+-	if (esw->mode != MLX5_ESWITCH_LEGACY) {
++	if (esw->mode != MLX5_ESWITCH_LEGACY || !mlx5_esw_is_fdb_created(esw)) {
+ 		err = -EOPNOTSUPP;
+ 		goto out;
  	}
- 	spin_unlock(&file->table_lock);
+@@ -339,7 +339,7 @@ int mlx5_eswitch_get_vepa(struct mlx5_eswitch *esw, u8 *setting)
+ 	if (!mlx5_esw_allowed(esw))
+ 		return -EPERM;
  
-@@ -159,7 +178,21 @@ static void show_meminfo(struct drm_prin
- 		if (!kref_get_unless_zero(&bo->ttm.base.refcount))
- 			continue;
+-	if (esw->mode != MLX5_ESWITCH_LEGACY)
++	if (esw->mode != MLX5_ESWITCH_LEGACY || !mlx5_esw_is_fdb_created(esw))
+ 		return -EOPNOTSUPP;
  
--		bo_meminfo(bo, stats);
-+		if (dma_resv_trylock(bo->ttm.base.resv)) {
-+			bo_meminfo(bo, stats);
-+			xe_bo_unlock(bo);
-+		} else {
-+			spin_unlock(&client->bos_lock);
-+
-+			xe_bo_lock(bo, false);
-+			bo_meminfo(bo, stats);
-+			xe_bo_unlock(bo);
-+
-+			spin_lock(&client->bos_lock);
-+			/* The bo ref will prevent this bo from being removed from the list */
-+			xe_assert(xef->xe, !list_empty(&bo->client_link));
-+		}
-+
- 		xe_bo_put_deferred(bo, &deferred);
- 	}
- 	spin_unlock(&client->bos_lock);
+ 	*setting = esw->fdb_table.legacy.vepa_uplink_rule ? 1 : 0;
+-- 
+2.43.0
+
 
 
 
