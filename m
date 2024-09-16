@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-76369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76421-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB7B697A169
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:07:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 153BD97A1B0
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:09:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2ACC21C23028
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:07:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A67F8B24357
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:09:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65820154C04;
-	Mon, 16 Sep 2024 12:06:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1191E15665C;
+	Mon, 16 Sep 2024 12:09:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="maF2vhv9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N4B6hyax"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20EA81534FB;
-	Mon, 16 Sep 2024 12:06:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C067914AD19;
+	Mon, 16 Sep 2024 12:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488396; cv=none; b=ngWOhF0SFIBpYmyw3XVdEBwYp3Ma9tWw+xHR3FpXEiFyowCfezTMxfTEZu5kwaXlcApL/s3dwSuoMgJkJTxg1/5d4idLYKvZMOEKrXeoYJRmPpnv9OZwb0yQHNh6D2xZsWLfqSSAUHYN5UlhSDeJ7SCIRGTAuDIprRv1VtRIQF4=
+	t=1726488544; cv=none; b=GSTMpj/7nsaPoGUxPwtxp2EOQW3bW9FQDlw9c/Ek7vaXGJnYCcWcmxhbXWarSdrb8qRoDInOTRRiyBSn4NkTjBv/u42IxuBUXht217o7+QKhtrJhU12gajSV1gh/NySMYoeuiPbZ1moKmTgehAcC1eZ5V9TfhYtcxqRI464/6jY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488396; c=relaxed/simple;
-	bh=oKmKi34R3NrkPZJrmdvaWuSHp31GQcEwcD3YxB3KLKA=;
+	s=arc-20240116; t=1726488544; c=relaxed/simple;
+	bh=Xs+la2YeUbYjDIuOLvViw9gZONAPOFNIHOeIrV6yOwY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=APb3nHer+nPCWY56vf/EJhETQCmQNPR5P9HqyyTCbOnSlvUuyQ5z+fLgLKEfnmoJSNHInqsq4WLr2DAmQLa4PM31BpkT1+ICBf2Ed8ndeqGIsI5mRGEw4Ghel5YQsXZ0f7xT4nHaRaMJPzi4Hlf2ZcVrwsZmX4TCqChtvhq/XSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=maF2vhv9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88156C4CEC4;
-	Mon, 16 Sep 2024 12:06:35 +0000 (UTC)
+	 MIME-Version:Content-Type; b=rjckXueU+5pwl4SAZG3e47tRQaScwnP+bU/fha4pZojKbKsn9Bj+v71NtpUGue48vzGb9s0KyKx/a/wzqAekHePYPvBDBe6+Q0uHaVCgkiXNRG4ZlEE7BxshdhNLIcLYWuh9526KlEf7xcNKK4ieJBd/Byjuz7QNlOxZRva2NXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N4B6hyax; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48F96C4CEC4;
+	Mon, 16 Sep 2024 12:09:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488395;
-	bh=oKmKi34R3NrkPZJrmdvaWuSHp31GQcEwcD3YxB3KLKA=;
+	s=korg; t=1726488544;
+	bh=Xs+la2YeUbYjDIuOLvViw9gZONAPOFNIHOeIrV6yOwY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=maF2vhv91O53q3p6pt8JE51z7wpiH7r3yreGzkN7TDdIJOUQQI3r276fKk/y0a7ZW
-	 iDJNkf0dngXgN7CNv55f4ZjIluVqNkAZqcY1QHp704uigMd3rP9jWMJdTTxcsbbZPP
-	 ZmakgLLkOWVLGmHWqf4FLoufSv65MX59Da/XNoDI=
+	b=N4B6hyaxtnzg7sR4A9xxyCntOmTNHN/I4VXOvKqxpCMGRbx9WZOw9fEmKw6wXVpZD
+	 H9imT0XXFgaIPG/qnoWoLCEYaGYMmI2wDhNKtHOucY5ksPsGk/41KpbNVNjnAQKDdS
+	 2R6klKuVeVi3A6U1hPqyJAtnv0AZDCEwPYEX6geU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patryk Biel <pbiel7@gmail.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Maximilian Luz <luzmaximilian@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 071/121] hwmon: (pmbus) Conditionally clear individual status bits for pmbus rev >= 1.2
+Subject: [PATCH 6.6 29/91] platform/surface: aggregator_registry: Add support for Surface Laptop Go 3
 Date: Mon, 16 Sep 2024 13:44:05 +0200
-Message-ID: <20240916114231.530557612@linuxfoundation.org>
+Message-ID: <20240916114225.471096253@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
-References: <20240916114228.914815055@linuxfoundation.org>
+In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
+References: <20240916114224.509743970@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,102 +60,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Patryk Biel <pbiel7@gmail.com>
+From: Maximilian Luz <luzmaximilian@gmail.com>
 
-[ Upstream commit 20471071f198c8626dbe3951ac9834055b387844 ]
+[ Upstream commit ed235163c3f02329d5e37ed4485bbc39ed2568d4 ]
 
-The current implementation of pmbus_show_boolean assumes that all devices
-support write-back operation of status register to clear pending warnings
-or faults. Since clearing individual bits in the status registers was only
-introduced in PMBus specification 1.2, this operation may not be supported
-by some older devices. This can result in an error while reading boolean
-attributes such as temp1_max_alarm.
+Add SAM client device nodes for the Surface Laptop Go 3. It seems to use
+the same SAM client devices as the Surface Laptop Go 1 and 2, so re-use
+their node group.
 
-Fetch PMBus revision supported by the device and modify pmbus_show_boolean
-so that it only tries to clear individual status bits if the device is
-compliant with PMBus specs >= 1.2. Otherwise clear all fault indicators
-on the current page after a fault status was reported.
-
-Fixes: 35f165f08950a ("hwmon: (pmbus) Clear pmbus fault/warning bits after read")
-Signed-off-by: Patryk Biel <pbiel7@gmail.com>
-Message-ID: <20240909-pmbus-status-reg-clearing-v1-1-f1c0d68c6408@gmail.com>
-[groeck:
- Rewrote description
- Moved revision detection code ahead of clear faults command
- Assigned revision if return value from PMBUS_REVISION command is 0
- Improved return value check from calling _pmbus_write_byte_data()]
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Maximilian Luz <luzmaximilian@gmail.com>
+Link: https://lore.kernel.org/r/20240811131948.261806-3-luzmaximilian@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/pmbus/pmbus.h      |  6 ++++++
- drivers/hwmon/pmbus/pmbus_core.c | 17 ++++++++++++++---
- 2 files changed, 20 insertions(+), 3 deletions(-)
+ drivers/platform/surface/surface_aggregator_registry.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/hwmon/pmbus/pmbus.h b/drivers/hwmon/pmbus/pmbus.h
-index fb442fae7b3e..0bea603994e7 100644
---- a/drivers/hwmon/pmbus/pmbus.h
-+++ b/drivers/hwmon/pmbus/pmbus.h
-@@ -418,6 +418,12 @@ enum pmbus_sensor_classes {
- enum pmbus_data_format { linear = 0, ieee754, direct, vid };
- enum vrm_version { vr11 = 0, vr12, vr13, imvp9, amd625mv };
+diff --git a/drivers/platform/surface/surface_aggregator_registry.c b/drivers/platform/surface/surface_aggregator_registry.c
+index c2651599685e..8c5b5f35d848 100644
+--- a/drivers/platform/surface/surface_aggregator_registry.c
++++ b/drivers/platform/surface/surface_aggregator_registry.c
+@@ -370,6 +370,9 @@ static const struct acpi_device_id ssam_platform_hub_match[] = {
+ 	/* Surface Laptop Go 2 */
+ 	{ "MSHW0290", (unsigned long)ssam_node_group_slg1 },
  
-+/* PMBus revision identifiers */
-+#define PMBUS_REV_10 0x00	/* PMBus revision 1.0 */
-+#define PMBUS_REV_11 0x11	/* PMBus revision 1.1 */
-+#define PMBUS_REV_12 0x22	/* PMBus revision 1.2 */
-+#define PMBUS_REV_13 0x33	/* PMBus revision 1.3 */
++	/* Surface Laptop Go 3 */
++	{ "MSHW0440", (unsigned long)ssam_node_group_slg1 },
 +
- struct pmbus_driver_info {
- 	int pages;		/* Total number of pages */
- 	u8 phases[PMBUS_PAGES];	/* Number of phases per page */
-diff --git a/drivers/hwmon/pmbus/pmbus_core.c b/drivers/hwmon/pmbus/pmbus_core.c
-index cb4c65a7f288..e592446b2665 100644
---- a/drivers/hwmon/pmbus/pmbus_core.c
-+++ b/drivers/hwmon/pmbus/pmbus_core.c
-@@ -85,6 +85,8 @@ struct pmbus_data {
+ 	/* Surface Laptop Studio */
+ 	{ "MSHW0123", (unsigned long)ssam_node_group_sls },
  
- 	u32 flags;		/* from platform data */
- 
-+	u8 revision;	/* The PMBus revision the device is compliant with */
-+
- 	int exponent[PMBUS_PAGES];
- 				/* linear mode: exponent for output voltages */
- 
-@@ -1095,9 +1097,14 @@ static int pmbus_get_boolean(struct i2c_client *client, struct pmbus_boolean *b,
- 
- 	regval = status & mask;
- 	if (regval) {
--		ret = _pmbus_write_byte_data(client, page, reg, regval);
--		if (ret)
--			goto unlock;
-+		if (data->revision >= PMBUS_REV_12) {
-+			ret = _pmbus_write_byte_data(client, page, reg, regval);
-+			if (ret)
-+				goto unlock;
-+		} else {
-+			pmbus_clear_fault_page(client, page);
-+		}
-+
- 	}
- 	if (s1 && s2) {
- 		s64 v1, v2;
-@@ -2640,6 +2647,10 @@ static int pmbus_init_common(struct i2c_client *client, struct pmbus_data *data,
- 			data->flags |= PMBUS_WRITE_PROTECTED | PMBUS_SKIP_STATUS_CHECK;
- 	}
- 
-+	ret = i2c_smbus_read_byte_data(client, PMBUS_REVISION);
-+	if (ret >= 0)
-+		data->revision = ret;
-+
- 	if (data->info->pages)
- 		pmbus_clear_faults(client);
- 	else
 -- 
 2.43.0
 
