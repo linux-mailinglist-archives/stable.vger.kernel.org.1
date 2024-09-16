@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-76351-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76432-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 446A297A158
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:07:20 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2633D97A1BA
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:09:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A2B99B240D4
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:07:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5F701F21321
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:09:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A895156641;
-	Mon, 16 Sep 2024 12:05:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8B1415666B;
+	Mon, 16 Sep 2024 12:09:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dxTBBiC4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OnISVUmh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B971A15748E;
-	Mon, 16 Sep 2024 12:05:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63FC2155359;
+	Mon, 16 Sep 2024 12:09:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488344; cv=none; b=T+6zbFIZWUTDTlIbTYM92x5M4MLD9Jq6eh1vGZuig6c9XrpxMprgJBqAVxs+2dTmVc2WGGlppiAKTIhRBAZFIdE49vqFKNIflLtFlQ60x2EHHKO5+CV/6YXY8qAxYmoX/hP9B6V1O3aIuVtgX12X1DmFwMM26h4K0HSpM1ZfV0Q=
+	t=1726488576; cv=none; b=DAtUtEWsToz2QlBLcBoZtlGcxpZ1p2gjbOF2WYjf3YHid+o9b5L7raj07o5YRCX+11fu1XbYNCZKVmYMjmk6RrsPzwluvme0jFtfrgOJ+LEriK3OWwwa0st7dmHV1cOu4LFBPSfS+PQKL+AuXvUf+f1BFykMUp94L5NLT0sgQAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488344; c=relaxed/simple;
-	bh=LO+xCwWtjmpNmSJ/1UMOhjAfE03LvKKAzdf94iY/EdM=;
+	s=arc-20240116; t=1726488576; c=relaxed/simple;
+	bh=OFqdphQkx5AwgF08Bwc49HzljTq67AyfhnWLcBcedxs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YsA/xdANfYY0Tu2E0oBm+dXqrZaCmDCbkUdgfYXuYNOYTR7QN2flnX9i1F5E2Hji+8rkVPL/GtI8WTQyji5bIEtsJjhW/z2U82cA92xRn/mx+JHKr3j14KeX5B/zNw61TOFb3dGZZ/fOp0XOEnVrZ0fYHqB95azepieRofW2XRc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dxTBBiC4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FFC6C4CEC4;
-	Mon, 16 Sep 2024 12:05:44 +0000 (UTC)
+	 MIME-Version; b=mTg9fz0M2f99YPH9FUl4pKr5PaWuPtkXhoYuyBvbYynu+YVpIBULTGTujlAaiaxV7VdIx6Fx4mIRFJyBZkXIyai3cxtSAt7EJiistH0yqNxqfw7KinftoK+Zqo0KQjqXDigAVowjm+wXuOu7GL0Zkr2ny7Df2dET06L2VqpSeSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OnISVUmh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDEB1C4CEC4;
+	Mon, 16 Sep 2024 12:09:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488344;
-	bh=LO+xCwWtjmpNmSJ/1UMOhjAfE03LvKKAzdf94iY/EdM=;
+	s=korg; t=1726488576;
+	bh=OFqdphQkx5AwgF08Bwc49HzljTq67AyfhnWLcBcedxs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dxTBBiC41R5sOr1v1F1jtL5tQdseL/NecNIwYTx1JboOfm12rkKrnb44RUNExw7T5
-	 nAjODNdh/5ZLaejXHyRLHK9LKaBe+ki6Ru1OS7ckVMTtdqyFA+KulF1glY6BJbRM5e
-	 uXKW2N4ZYetPftbnyC/f99Wo6A8WEYyNDa79CHII=
+	b=OnISVUmhr2z5Q70GuM+uE61INSFBZ3GezO9PwKxKtybikViKgvmUvRFPwY1s4wUoW
+	 nGY/vTQBT8YFa1X86aFDL4D3HJqx+40dChgre15LJ78sl86jl3++md5isU4CPchgFJ
+	 7yXwET7B2ZXzcnXD+yv0TlECZQBY5quKJf0xjBjE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Gal Pressman <gal@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 081/121] net/mlx5: Correct TASR typo into TSAR
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 39/91] selftests: mptcp: join: restrict fullmesh endp on 1st sf
 Date: Mon, 16 Sep 2024 13:44:15 +0200
-Message-ID: <20240916114231.831013108@linuxfoundation.org>
+Message-ID: <20240916114225.801966873@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
-References: <20240916114228.914815055@linuxfoundation.org>
+In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
+References: <20240916114224.509743970@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cosmin Ratiu <cratiu@nvidia.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit e575d3a6dd22123888defb622b1742aa2d45b942 ]
+commit 49ac6f05ace5bb0070c68a0193aa05d3c25d4c83 upstream.
 
-TSAR is the correct spelling (Transmit Scheduling ARbiter).
+A new endpoint using the IP of the initial subflow has been recently
+added to increase the code coverage. But it breaks the test when using
+old kernels not having commit 86e39e04482b ("mptcp: keep track of local
+endpoint still available for each msk"), e.g. on v5.15.
 
-Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
-Reviewed-by: Gal Pressman <gal@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://lore.kernel.org/r/20240613210036.1125203-2-tariqt@nvidia.com
+Similar to commit d4c81bbb8600 ("selftests: mptcp: join: support local
+endpoint being tracked or not"), it is possible to add the new endpoint
+conditionally, by checking if "mptcp_pm_subflow_check_next" is present
+in kallsyms: this is not directly linked to the commit introducing this
+symbol but for the parent one which is linked anyway. So we can know in
+advance what will be the expected behaviour, and add the new endpoint
+only when it makes sense to do so.
+
+Fixes: 4878f9f8421f ("selftests: mptcp: join: validate fullmesh endp on 1st sf")
+Cc: stable@vger.kernel.org
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20240910-net-selftests-mptcp-fix-install-v1-1-8f124aa9156d@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 861cd9b9cb62 ("net/mlx5: Verify support for scheduling element and TSAR type")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c | 2 +-
- include/linux/mlx5/mlx5_ifc.h                     | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
-index bcea5f06807a..997c412a81af 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
-@@ -538,7 +538,7 @@ static bool esw_qos_element_type_supported(struct mlx5_core_dev *dev, int type)
- 	switch (type) {
- 	case SCHEDULING_CONTEXT_ELEMENT_TYPE_TSAR:
- 		return MLX5_CAP_QOS(dev, esw_element_type) &
--		       ELEMENT_TYPE_CAP_MASK_TASR;
-+		       ELEMENT_TYPE_CAP_MASK_TSAR;
- 	case SCHEDULING_CONTEXT_ELEMENT_TYPE_VPORT:
- 		return MLX5_CAP_QOS(dev, esw_element_type) &
- 		       ELEMENT_TYPE_CAP_MASK_VPORT;
-diff --git a/include/linux/mlx5/mlx5_ifc.h b/include/linux/mlx5/mlx5_ifc.h
-index d4dd7e2d8ffe..6ffafd596d39 100644
---- a/include/linux/mlx5/mlx5_ifc.h
-+++ b/include/linux/mlx5/mlx5_ifc.h
-@@ -3913,7 +3913,7 @@ enum {
- };
- 
- enum {
--	ELEMENT_TYPE_CAP_MASK_TASR		= 1 << 0,
-+	ELEMENT_TYPE_CAP_MASK_TSAR		= 1 << 0,
- 	ELEMENT_TYPE_CAP_MASK_VPORT		= 1 << 1,
- 	ELEMENT_TYPE_CAP_MASK_VPORT_TC		= 1 << 2,
- 	ELEMENT_TYPE_CAP_MASK_PARA_VPORT_TC	= 1 << 3,
--- 
-2.43.0
-
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -3222,7 +3222,9 @@ fullmesh_tests()
+ 		pm_nl_set_limits $ns1 1 3
+ 		pm_nl_set_limits $ns2 1 3
+ 		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
+-		pm_nl_add_endpoint $ns2 10.0.1.2 flags subflow,fullmesh
++		if mptcp_lib_kallsyms_has "mptcp_pm_subflow_check_next$"; then
++			pm_nl_add_endpoint $ns2 10.0.1.2 flags subflow,fullmesh
++		fi
+ 		fullmesh=1 speed=slow \
+ 			run_tests $ns1 $ns2 10.0.1.1
+ 		chk_join_nr 3 3 3
 
 
 
