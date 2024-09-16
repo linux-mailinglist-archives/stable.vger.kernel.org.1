@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-76266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76375-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 281E697A0DE
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:02:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD5FE97A172
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:07:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78B3FB23961
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:01:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E61251C20ECA
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:07:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B66D5155391;
-	Mon, 16 Sep 2024 12:01:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 693D6156875;
+	Mon, 16 Sep 2024 12:06:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rv80Pgp8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PrSDOYdl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7175D154C14;
-	Mon, 16 Sep 2024 12:01:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27793156222;
+	Mon, 16 Sep 2024 12:06:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488102; cv=none; b=X3VvkLi33K/YX0eJZzM4nxxPuosZ/PwCl0fSyXthpozaTsJpMnWNxBfVpaaPyay0vYW1JOdN9MhZQ+mLyCLSafkuVSEiGFEvq3AAsjKgNkaKiAEFGkrq5bK3UrzQveXmC+4vdoWZQbwIrX+plbFf7lffFZIAtnjfm6cYJx4f0w8=
+	t=1726488413; cv=none; b=WFEV8meOcN5R+abC9cqgggLclVj9PoBPX3VWJqKOrFOciB5l83X1XNu3h0IY0sVvhO7/5XounXBe5aGw8960Pnexrgr9NcrnzxEuRZWC78P/J8JfsQ94dN2jY+EjwrdG74vsCg9Vm4rmqw/E75lLwpC9oFHKELf3GnRQtwfvtRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488102; c=relaxed/simple;
-	bh=Wy754d6yp5lILM8yJr+nowjHXhr9PM1vZyx1xdTQkAY=;
+	s=arc-20240116; t=1726488413; c=relaxed/simple;
+	bh=irGgRJXBUbo2ZYUkSFP9PdW70Oq1mP1juUVqJSyrgfU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aGgoOQSRYwJmNk32NUqELLEnqM0nrq9jtVyQUsCk1KrMm94fkDHGuiUZyjRdAZEUVU1zipY26QS/wSwMTpaY6gRbFzAHfUDAUhIqWMZ+s6Zu3kquOlKJ0rhTuDicJpxJ7KEfBIPvTZdRBfkotbpHK1k0NhmlGNcdU/g5OkNjRhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rv80Pgp8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEE4DC4CEC4;
-	Mon, 16 Sep 2024 12:01:41 +0000 (UTC)
+	 MIME-Version; b=WXY9SL9M0MtOaWLkYej/vi51AkWJqkYJzky5EbPFJDYfBYEtRgeBGS/lLPylV3RWuMdM1HnQcV5XgIjwWxmlYBzYwn8bhmmTJmgf6rSvY2xjudAXGjJ/Z4t2rWmvhfF6s/kEmJL14eJYSOmR2VXOG3uMB/s/cbEdnE4KDaSqyrs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PrSDOYdl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FE8BC4CEC4;
+	Mon, 16 Sep 2024 12:06:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488102;
-	bh=Wy754d6yp5lILM8yJr+nowjHXhr9PM1vZyx1xdTQkAY=;
+	s=korg; t=1726488413;
+	bh=irGgRJXBUbo2ZYUkSFP9PdW70Oq1mP1juUVqJSyrgfU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rv80Pgp8Y9UOfDnmMNqmdzzKgn9aldStHcvbXsOJ3w76xFU8KFvLTZHDPkgxTawhy
-	 NRXHrYfaN1ATQPKKsk4lRv9DjpwjLRfPfZmtK3UYsNBh2aV9qizN1YKn/gCjwDZpsL
-	 Nc93huH7dNUdIdUTZD+deq1H/+GbZBtJbpwDRCWo=
+	b=PrSDOYdlLSU5nH7KEX56a4mmNYGM2bVAC3IMnicSnL2U7jb4WjQFFGobFn7FxpOPR
+	 IPCCJ3gexj3VR9hNDjuV0S1vFRQYRl1lwXXqVVzAssxpVSnIblfkZbYUyFq1/NMd2U
+	 8iv+KtQwYypa+upH57cfAf+9SKCZaS4LQN81oNH4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 59/63] spi: geni-qcom: Undo runtime PM changes at driver exit time
-Date: Mon, 16 Sep 2024 13:44:38 +0200
-Message-ID: <20240916114223.127278027@linuxfoundation.org>
+	Tobias Jakobi <tjakobi@math.uni-bielefeld.de>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.10 105/121] drm/amd/display: Avoid race between dcn35_set_drr() and dc_state_destruct()
+Date: Mon, 16 Sep 2024 13:44:39 +0200
+Message-ID: <20240916114232.579597839@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
-References: <20240916114221.021192667@linuxfoundation.org>
+In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
+References: <20240916114228.914815055@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +63,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Tobias Jakobi <tjakobi@math.uni-bielefeld.de>
 
-[ Upstream commit 89e362c883c65ff94b76b9862285f63545fb5274 ]
+commit e835d5144f5ef78e4f8828c63e2f0d61144f283a upstream.
 
-It's important to undo pm_runtime_use_autosuspend() with
-pm_runtime_dont_use_autosuspend() at driver exit time unless driver
-initially enabled pm_runtime with devm_pm_runtime_enable()
-(which handles it for you).
+dc_state_destruct() nulls the resource context of the DC state. The pipe
+context passed to dcn35_set_drr() is a member of this resource context.
 
-Hence, switch to devm_pm_runtime_enable() to fix it, so the
-pm_runtime_disable() in probe error path and remove function
-can be removed.
+If dc_state_destruct() is called parallel to the IRQ processing (which
+calls dcn35_set_drr() at some point), we can end up using already nulled
+function callback fields of struct stream_resource.
 
-Fixes: cfdab2cd85ec ("spi: spi-geni-qcom: Set an autosuspend delay of 250 ms")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://patch.msgid.link/20240909073141.951494-2-ruanjinjie@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The logic in dcn35_set_drr() already tries to avoid this, by checking tg
+against NULL. But if the nulling happens exactly after the NULL check and
+before the next access, then we get a race.
+
+Avoid this by copying tg first to a local variable, and then use this
+variable for all the operations. This should work, as long as nobody
+frees the resource pool where the timing generators live.
+
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3142
+Fixes: 06ad7e164256 ("drm/amd/display: Destroy DC context while keeping DML and DML2")
+Signed-off-by: Tobias Jakobi <tjakobi@math.uni-bielefeld.de>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 0607a50c004798a96e62c089a4c34c220179dcb5)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-geni-qcom.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c |   20 +++++++++-------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
-index ac5a581d1e5e..6d8eb7c26076 100644
---- a/drivers/spi/spi-geni-qcom.c
-+++ b/drivers/spi/spi-geni-qcom.c
-@@ -954,22 +954,24 @@ static int spi_geni_probe(struct platform_device *pdev)
- 	spin_lock_init(&mas->lock);
- 	pm_runtime_use_autosuspend(&pdev->dev);
- 	pm_runtime_set_autosuspend_delay(&pdev->dev, 250);
--	pm_runtime_enable(dev);
-+	ret = devm_pm_runtime_enable(dev);
-+	if (ret)
-+		return ret;
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
+@@ -1371,7 +1371,13 @@ void dcn35_set_drr(struct pipe_ctx **pip
+ 	params.vertical_total_mid_frame_num = adjust.v_total_mid_frame_num;
  
- 	ret = geni_icc_get(&mas->se, NULL);
- 	if (ret)
--		goto spi_geni_probe_runtime_disable;
-+		return ret;
- 	/* Set the bus quota to a reasonable value for register access */
- 	mas->se.icc_paths[GENI_TO_CORE].avg_bw = Bps_to_icc(CORE_2X_50_MHZ);
- 	mas->se.icc_paths[CPU_TO_GENI].avg_bw = GENI_DEFAULT_BW;
+ 	for (i = 0; i < num_pipes; i++) {
+-		if ((pipe_ctx[i]->stream_res.tg != NULL) && pipe_ctx[i]->stream_res.tg->funcs) {
++		/* dc_state_destruct() might null the stream resources, so fetch tg
++		 * here first to avoid a race condition. The lifetime of the pointee
++		 * itself (the timing_generator object) is not a problem here.
++		 */
++		struct timing_generator *tg = pipe_ctx[i]->stream_res.tg;
++
++		if ((tg != NULL) && tg->funcs) {
+ 			struct dc_crtc_timing *timing = &pipe_ctx[i]->stream->timing;
+ 			struct dc *dc = pipe_ctx[i]->stream->ctx->dc;
  
- 	ret = geni_icc_set_bw(&mas->se);
- 	if (ret)
--		goto spi_geni_probe_runtime_disable;
-+		return ret;
- 
- 	ret = spi_geni_init(mas);
- 	if (ret)
--		goto spi_geni_probe_runtime_disable;
-+		return ret;
- 
- 	/*
- 	 * check the mode supported and set_cs for fifo mode only
-@@ -998,8 +1000,6 @@ static int spi_geni_probe(struct platform_device *pdev)
- 	free_irq(mas->irq, spi);
- spi_geni_release_dma:
- 	spi_geni_release_dma_chan(mas);
--spi_geni_probe_runtime_disable:
--	pm_runtime_disable(dev);
- 	return ret;
+@@ -1384,14 +1390,12 @@ void dcn35_set_drr(struct pipe_ctx **pip
+ 					num_frames = 2 * (frame_rate % 60);
+ 				}
+ 			}
+-			if (pipe_ctx[i]->stream_res.tg->funcs->set_drr)
+-				pipe_ctx[i]->stream_res.tg->funcs->set_drr(
+-					pipe_ctx[i]->stream_res.tg, &params);
++			if (tg->funcs->set_drr)
++				tg->funcs->set_drr(tg, &params);
+ 			if (adjust.v_total_max != 0 && adjust.v_total_min != 0)
+-				if (pipe_ctx[i]->stream_res.tg->funcs->set_static_screen_control)
+-					pipe_ctx[i]->stream_res.tg->funcs->set_static_screen_control(
+-						pipe_ctx[i]->stream_res.tg,
+-						event_triggers, num_frames);
++				if (tg->funcs->set_static_screen_control)
++					tg->funcs->set_static_screen_control(
++						tg, event_triggers, num_frames);
+ 		}
+ 	}
  }
- 
-@@ -1014,7 +1014,6 @@ static void spi_geni_remove(struct platform_device *pdev)
- 	spi_geni_release_dma_chan(mas);
- 
- 	free_irq(mas->irq, spi);
--	pm_runtime_disable(&pdev->dev);
- }
- 
- static int __maybe_unused spi_geni_runtime_suspend(struct device *dev)
--- 
-2.43.0
-
 
 
 
