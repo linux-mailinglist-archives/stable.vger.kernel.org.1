@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-76276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAF5397A0E6
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:02:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 28EDC97A160
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:07:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 849D5282D3C
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:02:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E87552874C9
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:07:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20A55154BF5;
-	Mon, 16 Sep 2024 12:02:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3C681581E1;
+	Mon, 16 Sep 2024 12:06:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qWzUVAVJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ukNd8r7d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1AA71547C4;
-	Mon, 16 Sep 2024 12:02:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C78114D439;
+	Mon, 16 Sep 2024 12:06:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488130; cv=none; b=WkGAEvA1f3DUmfLzeXeXJQG4e062nl7056tgbwMivjMi+eRNo5iNKXc7CXiSp1V/nuUhBkgZyMqG7vlMFJzVhG4kfAeyAIMAp87lxQdYo9F8izPbfhNPOFAcLXK97uIOOmiqqmfWgpzq+5bP6kHJMpMuVX4XqgPHheb8n4iTjn8=
+	t=1726488370; cv=none; b=BgIeklpceov/wrT72qrg3bQNDHxkLjPcCANzrND3D/lZmgZFi/yFeRTUzSdBmZ9tc6d/TajwoJgR6sdiI+50am6domKm55chTtvpLJtL/c5lPHhk1QH+BWULIunLeB+HvYawC/0jTU+/3GWPhkrXQ0+O/X71DjUAge0ON9iquHg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488130; c=relaxed/simple;
-	bh=N9X8GWgQkvb0Kdt0f1p05buNSWqOesx3FHTBf7S+Ogc=;
+	s=arc-20240116; t=1726488370; c=relaxed/simple;
+	bh=HVLKDCHvscOm1sKOa5Mz6gTewVKnO2kbkYfjm2fU2YI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H1XpoaGR8urwPsaMQjKzrqYB91lAIxFe6gSnpAkvv8OfT7KzID/x4mXco/rNQfqZqd6bP0xIkmklQe9D2K0caNGTC/IcHJDBUy2A3Oj+KJirKFFt50Cn6dmK/SmOgl7joFo/732ykfPlUerKkIMv/dAZ1MVy3mkeUv+Z9/XgKD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qWzUVAVJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A1B3C4CEC4;
-	Mon, 16 Sep 2024 12:02:10 +0000 (UTC)
+	 MIME-Version; b=uIIwB5bwyT6e12yd9BubgF3qvfGbbvMs0lVXXFd1TeBHQr4jmmRS2n3Fi4x0Shx7lSapY/oBkoEfZcUJT25m8+AYlfTjthd0q3YbPFkQ2A8s6G4Q93lKL4ZoTTm9wcQcqR8D4b4EdXjpQl+oR9/Ab1XtbGj7u6d46GaXRXD/g88=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ukNd8r7d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA9F6C4CEC4;
+	Mon, 16 Sep 2024 12:06:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488130;
-	bh=N9X8GWgQkvb0Kdt0f1p05buNSWqOesx3FHTBf7S+Ogc=;
+	s=korg; t=1726488370;
+	bh=HVLKDCHvscOm1sKOa5Mz6gTewVKnO2kbkYfjm2fU2YI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qWzUVAVJxoTsQqpIb+NFJvAvIQO9IXbgRR86KOvoV2qkYn5WbyYs26RnywDjb4JrW
-	 jKG3BlRdQbDvbEkmVUhA0+HiIUNE62SXy29MjJmZwMWyAhxIgfe/rXjgobwQhbHx85
-	 SYr8uZfqvffkz59t/rv64EeEk8gKBJSMiw+F3i1c=
+	b=ukNd8r7dtJSaTl1oVXwzdufsuUt5fjXx4dT+m4sNbrzuBGFcubWeFijEKrEDMY9jS
+	 RgpiH44Rnm4fCwVqYsVa/Hddg7BAPyHsgdOJiYq6aG1u9gnlGKnX8r6I1qr2K2QfmX
+	 6i6a3pmMpdSENJZ3xL0jz8EAlOKfhdgYRarlsv8s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Gal Pressman <gal@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Nam Cao <namcao@linutronix.de>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Anup Patel <anup@brainfault.org>,
+	Andrea Parri <parri.andrea@gmail.com>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 44/63] net/mlx5: Correct TASR typo into TSAR
+Subject: [PATCH 6.10 089/121] drivers: perf: Fix smp_processor_id() use in preemptible code
 Date: Mon, 16 Sep 2024 13:44:23 +0200
-Message-ID: <20240916114222.612953820@linuxfoundation.org>
+Message-ID: <20240916114232.093364599@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
-References: <20240916114221.021192667@linuxfoundation.org>
+In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
+References: <20240916114228.914815055@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,54 +65,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cosmin Ratiu <cratiu@nvidia.com>
+From: Alexandre Ghiti <alexghiti@rivosinc.com>
 
-[ Upstream commit e575d3a6dd22123888defb622b1742aa2d45b942 ]
+[ Upstream commit 2840dadf0dde92638d13b97998026c5fcddbdceb ]
 
-TSAR is the correct spelling (Transmit Scheduling ARbiter).
+As reported in [1], the use of smp_processor_id() in
+pmu_sbi_device_probe() must be protected by disabling the preemption, so
+simple use get_cpu()/put_cpu() instead.
 
-Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
-Reviewed-by: Gal Pressman <gal@nvidia.com>
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://lore.kernel.org/r/20240613210036.1125203-2-tariqt@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 861cd9b9cb62 ("net/mlx5: Verify support for scheduling element and TSAR type")
+Reported-by: Nam Cao <namcao@linutronix.de>
+Closes: https://lore.kernel.org/linux-riscv/20240820074925.ReMKUPP3@linutronix.de/ [1]
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Reviewed-by: Anup Patel <anup@brainfault.org>
+Tested-by: Nam Cao <namcao@linutronix.de>
+Fixes: a8625217a054 ("drivers/perf: riscv: Implement SBI PMU snapshot function")
+Reported-by: Andrea Parri <parri.andrea@gmail.com>
+Tested-by: Andrea Parri <parri.andrea@gmail.com>
+Link: https://lore.kernel.org/r/20240826165210.124696-1-alexghiti@rivosinc.com
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c | 2 +-
- include/linux/mlx5/mlx5_ifc.h                     | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/perf/riscv_pmu_sbi.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
-index b8bf98a0a80a..41d875066149 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
-@@ -537,7 +537,7 @@ static bool esw_qos_element_type_supported(struct mlx5_core_dev *dev, int type)
- 	switch (type) {
- 	case SCHEDULING_CONTEXT_ELEMENT_TYPE_TSAR:
- 		return MLX5_CAP_QOS(dev, esw_element_type) &
--		       ELEMENT_TYPE_CAP_MASK_TASR;
-+		       ELEMENT_TYPE_CAP_MASK_TSAR;
- 	case SCHEDULING_CONTEXT_ELEMENT_TYPE_VPORT:
- 		return MLX5_CAP_QOS(dev, esw_element_type) &
- 		       ELEMENT_TYPE_CAP_MASK_VPORT;
-diff --git a/include/linux/mlx5/mlx5_ifc.h b/include/linux/mlx5/mlx5_ifc.h
-index 64434a3b7e1a..271c5a87751f 100644
---- a/include/linux/mlx5/mlx5_ifc.h
-+++ b/include/linux/mlx5/mlx5_ifc.h
-@@ -3743,7 +3743,7 @@ enum {
- };
+diff --git a/drivers/perf/riscv_pmu_sbi.c b/drivers/perf/riscv_pmu_sbi.c
+index 11c7c85047ed..765bda7924f7 100644
+--- a/drivers/perf/riscv_pmu_sbi.c
++++ b/drivers/perf/riscv_pmu_sbi.c
+@@ -1368,11 +1368,15 @@ static int pmu_sbi_device_probe(struct platform_device *pdev)
  
- enum {
--	ELEMENT_TYPE_CAP_MASK_TASR		= 1 << 0,
-+	ELEMENT_TYPE_CAP_MASK_TSAR		= 1 << 0,
- 	ELEMENT_TYPE_CAP_MASK_VPORT		= 1 << 1,
- 	ELEMENT_TYPE_CAP_MASK_VPORT_TC		= 1 << 2,
- 	ELEMENT_TYPE_CAP_MASK_PARA_VPORT_TC	= 1 << 3,
+ 	/* SBI PMU Snapsphot is only available in SBI v2.0 */
+ 	if (sbi_v2_available) {
++		int cpu;
++
+ 		ret = pmu_sbi_snapshot_alloc(pmu);
+ 		if (ret)
+ 			goto out_unregister;
+ 
+-		ret = pmu_sbi_snapshot_setup(pmu, smp_processor_id());
++		cpu = get_cpu();
++
++		ret = pmu_sbi_snapshot_setup(pmu, cpu);
+ 		if (ret) {
+ 			/* Snapshot is an optional feature. Continue if not available */
+ 			pmu_sbi_snapshot_free(pmu);
+@@ -1386,6 +1390,7 @@ static int pmu_sbi_device_probe(struct platform_device *pdev)
+ 			 */
+ 			static_branch_enable(&sbi_pmu_snapshot_available);
+ 		}
++		put_cpu();
+ 	}
+ 
+ 	register_sysctl("kernel", sbi_pmu_sysctl_table);
 -- 
 2.43.0
 
