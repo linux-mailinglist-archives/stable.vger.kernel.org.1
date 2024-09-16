@@ -1,123 +1,152 @@
-Return-Path: <stable+bounces-76170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B987979A64
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 06:34:57 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 841BF979A96
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 07:09:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D9061F22C6E
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 04:34:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D58C28219D
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 05:09:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 909241BC58;
-	Mon, 16 Sep 2024 04:34:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1530B3770C;
+	Mon, 16 Sep 2024 05:09:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qdw4a1lN"
+	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="i/Gq917E"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D03DD200A3
-	for <stable@vger.kernel.org>; Mon, 16 Sep 2024 04:34:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 665E62D032
+	for <stable@vger.kernel.org>; Mon, 16 Sep 2024 05:09:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726461292; cv=none; b=OTLLfZaJwL7BKZC9umT2MJ44LlfBDkuxeiNxhgRxXFUbGhRTWPA+UA/CUXg2cRIX6fdgu7d2IcAgLSGO9DR5sziHQL7FHS6WDGDL8BRoBQZhnf7YMINVi/Tnhr2O3bqDHVzAkibJswdybf/ohNxs6IULmYflXnsTFpBSS664Foc=
+	t=1726463345; cv=none; b=MsxLjuhpCpzc0MUFjm+rCGxTJbBr1GPV4ik2NvuNUjb3/E7axZF64SSqVwbP0TSIrB1H20aSCF8liV7g2CFTbTlYSuV8DfCxtFxOccD1zZBqYOmMr8O/B3+tTQynO0LkTEm72fp6wsT9xPg/bC84Ula5QY34Tk6mpoBm/rFCg4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726461292; c=relaxed/simple;
-	bh=ThWd2UtxW2x9I+IYpHMl4gRO7sgS6KMVeEq07neoMMw=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=YAsfk2XCaYSTIWbLUV2aGKKFIClBx3a+UOo5au7ei0XyhQFgrgf7aOz2HhowFkr152UYQiF56wsNA1KsPeqt1gsxcEp2jKYslTAS8u+Oc2dJWSzqmWunw74gwkHhbCQvmXHuv3csb7Mdrp7Vux4AqQJu+iMKLPalk4H1Mma8roU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tjmercier.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qdw4a1lN; arc=none smtp.client-ip=209.85.128.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tjmercier.bounces.google.com
-Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-6d4bd76f5a8so123456197b3.0
-        for <stable@vger.kernel.org>; Sun, 15 Sep 2024 21:34:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1726461290; x=1727066090; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=c4EvMoEy9WsXEBcEuZ7+o7nbPZhcyr/e1sU0DElzMN0=;
-        b=qdw4a1lNOa4cb7Mx86nNyFyjMeo7ZU28mNvF/4Z2yBDzAzzY0ZRD7QRCmCi4LJzbgD
-         FN6ft+TD8EbH45cu/1BiONe8llY4RRq0XrF4gopbTKJu7IQJMlGiwrnvnFvb5QQ5Ce2I
-         rUzw2vxrgZpapaSivg3ha6vboG6iAd+dVZ8LLhTvJPhCisjlAECwyxARemW6XLx42K7u
-         Xnchjm1L+mqzbdUnreTWG8B+SkqQM9cYZXXVNRNLYks76/V9JbYtW7fh5O9ntietyn70
-         BLtUsUpdkEklt9DD07cKi2q4R0lldx+BV0HbXnXkqMtbqqCQUz0c526imZ5eYTdd9J2b
-         yOrg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726461290; x=1727066090;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=c4EvMoEy9WsXEBcEuZ7+o7nbPZhcyr/e1sU0DElzMN0=;
-        b=nZXv+j3EBWQCW/aK1T5qBOwdKKf2/tNm8F+jm4+8oaqXVlBXqzlxiuT0sk+d0zYANL
-         9yatUae7s9SCy2xpfhbggJbISJPRuTmuBjTrz1O44FGRqEB+GDrr0I6zb173uKg/GmkC
-         Op0N30Xv1+nykinB8NNAR2pQ7nMgLEbMlzEKop0b/8/vq7toPmfzu2SG+Gg4f3n58pcI
-         oWd55lz2pj0FpinGWi8zNx2nYIqDWopNs0Rpo+sj8uIiPLpE2xyomRyJUgK3z0nB8yoc
-         blJVc/SwOH0j2C8cI/fddG0mT+uwI8cuKgbw5m6qJ14+rvJFP8YivpGD5CbyHvIomSau
-         2rdw==
-X-Gm-Message-State: AOJu0YzV/ov6dFBt8kc/yhOA4xPyO6hZM4MQ/i87q+E1lkC/MXgxqR+m
-	U04vWpJGwOe8P+tKHYZg73P/VuE9CwmI2SbHOJ1rWuJ4isQVjuSmO87GZUmryAEhkOJwsOEs23B
-	VToIBp7kTGZXh9ZpyEIFkUQXXETaB81xoT98eB+QmXjadynnhaU3ddH4crdhkRsnnqa91cYsitm
-	T4dSYTPqJwjISKQBPwL+8BOXnt2brqW5dCtUxu1qsvYqMRJSKI
-X-Google-Smtp-Source: AGHT+IFZXNg0p9y252GxKOJOb2Y9hhuDrzInlFSAAnhXSNxuisxh7Zhe5DG4/ASRPIS3vWLY7PMkUPAUooq6OPA=
-X-Received: from tj-virt.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5683])
- (user=tjmercier job=sendgmr) by 2002:a05:690c:338e:b0:64b:5cc7:bcb7 with SMTP
- id 00721157ae682-6dbb6acf2ebmr7690517b3.1.1726461289617; Sun, 15 Sep 2024
- 21:34:49 -0700 (PDT)
-Date: Mon, 16 Sep 2024 04:34:41 +0000
+	s=arc-20240116; t=1726463345; c=relaxed/simple;
+	bh=HJIBHsb+pG4OJ3YHQjLLneMy7DBgN37FKEWs1Hsxxto=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=A6T23ma+QqmwxkymxltKhcSEYrw8G6ae/mzZoVvD8AUuKwLVD75o44Ves0cvZr6JzKvfXfVLZ21MCRaqhuuLjDjaNYzTeo8lZa/OWoiFZgsn9yZEYWs1AJ205PaaiskMGQNJrhxaM7ofUWil3BlhqxZ6ymCaVyxpH0GewXSFP+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=i/Gq917E; arc=none smtp.client-ip=185.70.40.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
+	s=protonmail3; t=1726463335; x=1726722535;
+	bh=Lkl/4iBF6JIYsf4lrgb1MIvDWPSfZ6J3feAMHghzPp4=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=i/Gq917Ek+Y+2ldSBq/OlO7O3ptlTiRNsh0DvzQZRIjzThXt4qeqkEpq7KQuRZ5nU
+	 UU7PwCayJVN4bLIIuD+vemnwPlxTa0n1RpcR92mNmPS/WZ2q6zDpF39iMDmQOZZyGS
+	 k1NS5OE1ICcVTdQqnPd/szTb4Vl6SX1qr9bss07V8BarYpg6RYMPmSAHOmC41oyOAE
+	 EgqP2bfHnA8rC5YOcC+wsv1c4dsKoOHJtkBqa+s62uc1PrMf1KGs4xoVyZ6N7hWOcS
+	 NiOgPZ8IecEVJu02fcWxORFB9v05IRRMo2a/JYjQ38rS76pZ2VWOVJlxdJMJG7KDzk
+	 YmVIw/cHe5zEw==
+Date: Mon, 16 Sep 2024 05:08:49 +0000
+To: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>
+From: Michael Pratt <mcpratt@pm.me>
+Cc: linux-kernel@vger.kernel.org, Michael Pratt <mcpratt@pm.me>, stable@vger.kernel.org
+Subject: [RESEND PATCH] sched/syscalls: Allow setting niceness using sched_param struct
+Message-ID: <20240916050741.24206-1-mcpratt@pm.me>
+Feedback-ID: 27397442:user:proton
+X-Pm-Message-ID: 3d255fa677a5318de52013f02a9f192fdc8cdce0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.46.0.662.g92d0881bb0-goog
-Message-ID: <20240916043441.323792-1-tjmercier@google.com>
-Subject: [PATCH 5.10.y] dma-buf: heaps: Fix off-by-one in CMA heap fault handler
-From: "T.J. Mercier" <tjmercier@google.com>
-To: stable@vger.kernel.org
-Cc: "T.J. Mercier" <tjmercier@google.com>, Xingyu Jin <xingyuj@google.com>, 
-	John Stultz <jstultz@google.com>, Sumit Semwal <sumit.semwal@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-commit ea5ff5d351b520524019f7ff7f9ce418de2dad87 upstream.
+From userspace, spawning a new process with, for example,
+posix_spawn(), only allows the user to work with
+the scheduling priority value defined by POSIX
+in the sched_param struct.
 
-Until VM_DONTEXPAND was added in commit 1c1914d6e8c6 ("dma-buf: heaps:
-Don't track CMA dma-buf pages under RssFile") it was possible to obtain
-a mapping larger than the buffer size via mremap and bypass the overflow
-check in dma_buf_mmap_internal. When using such a mapping to attempt to
-fault past the end of the buffer, the CMA heap fault handler also checks
-the fault offset against the buffer size, but gets the boundary wrong by
-1. Fix the boundary check so that we don't read off the end of the pages
-array and insert an arbitrary page in the mapping.
+However, sched_setparam() and similar syscalls lead to
+__sched_setscheduler() which rejects any new value
+for the priority other than 0 for non-RT schedule classes,
+a behavior kept since Linux 2.6 or earlier.
 
-Reported-by: Xingyu Jin <xingyuj@google.com>
-Fixes: a5d2d29e24be ("dma-buf: heaps: Move heap-helper logic into the cma_heap implementation")
-Cc: stable@vger.kernel.org # Applicable >= 5.10. Needs adjustments only for 5.10.
-Signed-off-by: T.J. Mercier <tjmercier@google.com>
-Acked-by: John Stultz <jstultz@google.com>
-Signed-off-by: Sumit Semwal <sumit.semwal@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240830192627.2546033-1-tjmercier@google.com
-[TJ: Backport to 5.10. On this kernel the bug is located in
-dma_heap_vm_fault which is used by both the CMA and system heaps.]
-Signed-off-by: T.J. Mercier <tjmercier@google.com>
+Linux translates the usage of the sched_param struct
+into it's own internal sched_attr struct during the syscall,
+but the user has no way to manage the other values
+within the sched_attr struct using only POSIX functions.
+
+The only other way to adjust niceness while using posix_spawn()
+would be to set the value after the process has started,
+but this introduces the risk of the process being dead
+before the next syscall can set the priority after the fact.
+
+To resolve this, allow the use of the priority value
+originally from the POSIX sched_param struct in order to
+set the niceness value instead of rejecting the priority value.
+
+Edit the sched_get_priority_*() POSIX syscalls
+in order to reflect the range of values accepted.
+
+Cc: stable@vger.kernel.org # Apply to kernel/sched/core.c
+Signed-off-by: Michael Pratt <mcpratt@pm.me>
 ---
- drivers/dma-buf/heaps/heap-helpers.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/sched/syscalls.c | 21 +++++++++++++++++++--
+ 1 file changed, 19 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/dma-buf/heaps/heap-helpers.c b/drivers/dma-buf/heaps/heap-helpers.c
-index d0696cf937af..a852b5e8122f 100644
---- a/drivers/dma-buf/heaps/heap-helpers.c
-+++ b/drivers/dma-buf/heaps/heap-helpers.c
-@@ -161,7 +161,7 @@ static vm_fault_t dma_heap_vm_fault(struct vm_fault *vmf)
- 	struct vm_area_struct *vma = vmf->vma;
- 	struct heap_helper_buffer *buffer = vma->vm_private_data;
- 
--	if (vmf->pgoff > buffer->pagecount)
-+	if (vmf->pgoff >= buffer->pagecount)
- 		return VM_FAULT_SIGBUS;
- 
- 	vmf->page = buffer->pages[vmf->pgoff];
--- 
-2.46.0.662.g92d0881bb0-goog
+diff --git a/kernel/sched/syscalls.c b/kernel/sched/syscalls.c
+index ae1b42775ef9..52c02b80f037 100644
+--- a/kernel/sched/syscalls.c
++++ b/kernel/sched/syscalls.c
+@@ -853,6 +853,19 @@ static int _sched_setscheduler(struct task_struct *p, =
+int policy,
+ =09=09attr.sched_policy =3D policy;
+ =09}
+=20
++=09if (attr.sched_priority > MAX_PRIO-1)
++=09=09return -EINVAL;
++
++=09/*
++=09 * If priority is set for SCHED_NORMAL or SCHED_BATCH,
++=09 * set the niceness instead, but only for user calls.
++=09 */
++=09if (check && attr.sched_priority > MAX_RT_PRIO-1 &&
++=09   ((policy !=3D SETPARAM_POLICY && fair_policy(policy)) || fair_policy=
+(p->policy))) {
++=09=09attr.sched_nice =3D PRIO_TO_NICE(attr.sched_priority);
++=09=09attr.sched_priority =3D 0;
++=09}
++
+ =09return __sched_setscheduler(p, &attr, check, true);
+ }
+ /**
+@@ -1598,9 +1611,11 @@ SYSCALL_DEFINE1(sched_get_priority_max, int, policy)
+ =09case SCHED_RR:
+ =09=09ret =3D MAX_RT_PRIO-1;
+ =09=09break;
+-=09case SCHED_DEADLINE:
+ =09case SCHED_NORMAL:
+ =09case SCHED_BATCH:
++=09=09ret =3D MAX_PRIO-1;
++=09=09break;
++=09case SCHED_DEADLINE:
+ =09case SCHED_IDLE:
+ =09=09ret =3D 0;
+ =09=09break;
+@@ -1625,9 +1640,11 @@ SYSCALL_DEFINE1(sched_get_priority_min, int, policy)
+ =09case SCHED_RR:
+ =09=09ret =3D 1;
+ =09=09break;
+-=09case SCHED_DEADLINE:
+ =09case SCHED_NORMAL:
+ =09case SCHED_BATCH:
++=09=09ret =3D MAX_RT_PRIO;
++=09=09break;
++=09case SCHED_DEADLINE:
+ =09case SCHED_IDLE:
+ =09=09ret =3D 0;
+ =09}
+
+base-commit: 5be63fc19fcaa4c236b307420483578a56986a37
+--=20
+2.30.2
+
 
 
