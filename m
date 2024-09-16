@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-76258-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82A6097A0CF
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:01:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9ABAC97A187
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:08:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45B932813A0
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:01:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD8D21C22BB0
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:08:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B7A6154BFB;
-	Mon, 16 Sep 2024 12:01:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5E53155CBD;
+	Mon, 16 Sep 2024 12:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tG06mijx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2H1Vcax7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05C30A95E;
-	Mon, 16 Sep 2024 12:01:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 713D81553AB;
+	Mon, 16 Sep 2024 12:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488080; cv=none; b=P/5d9lD6HCIOjpoqLhaCitSQLNSXr+huJ8WtPdF2+pU7kvsM8vDL1kyOxGugZ6fVkf6GAbG9fIGDee45/XFRO9+BVzaQ1zkFpyhj9+ZgTKogw4+JzDFM3Phu0TuPBMUxQw7LGqaa3W0HD8QuScbiFtJSb2wUUsVctglS0/7yS1w=
+	t=1726488467; cv=none; b=Yp5dtUh9dvykudL3uVDyNRgvRf5/oHsaL7Jian10cE+LZUuboWAnvekVXWCJu9FK3Sg/hqB+/i9WqvjnPRV5qWVpmwU2ZWpvEpeybgEhjmKOhciU8eJ1ZL/Fz+sRLkq1h3auGZ5u458FycJOa5vnIbyh0zjt1Iby8ohhTKJqRd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488080; c=relaxed/simple;
-	bh=YWhgczJP+LWTtEm5E4ikkBy2xeb3qB3sgLDWaMkLX28=;
+	s=arc-20240116; t=1726488467; c=relaxed/simple;
+	bh=KiQ2/uUyuJUNM7kBJGnpRa74jGaUhbZMqT2hfaGjAmE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lj5MyUoFcVI1k76T7OtHPTH8k7IjjuYgx0/q1B6EEa67GIfbOgju3pKif4+wxAtkujlqKXMisWDMfyee8fx9wpWo8b/ICx8H+M5YUtlqLkG4O35UfQMmVogO9mq3qKdp9OVN4L2d26CDFJ5ujBLLI832NkVq/3RAg/hMe8FQExY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tG06mijx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70571C4CEC4;
-	Mon, 16 Sep 2024 12:01:19 +0000 (UTC)
+	 MIME-Version; b=sRTXqdM+l5/HpV9amFAed0cfQIH4DcLfgjMJlaToFDvpAedo0V2LeeuvyrDGjbHnYgpefB+2LxOOCRKIuGtZAIi0moYD3ILrjMPhbqZeF+lxvSk+TCZJ4TKg7AXvVF4JLpGLhIuAmBKtAoYz8AuUBRzu+FsGJ3vsLzCFrRCir/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2H1Vcax7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A150CC4CEC4;
+	Mon, 16 Sep 2024 12:07:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488079;
-	bh=YWhgczJP+LWTtEm5E4ikkBy2xeb3qB3sgLDWaMkLX28=;
+	s=korg; t=1726488467;
+	bh=KiQ2/uUyuJUNM7kBJGnpRa74jGaUhbZMqT2hfaGjAmE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tG06mijxDFBjZoNVA/GagoRszQ933xByDlxYD7VyDahsphg9hXWglPEYt6RD20koW
-	 iFqijGPU5aVrogROV2x82ueRGuiKy6uFK0XMDS37DmvqRBXJ4oYidHX9mwfxcY05mU
-	 u7UwA1qva7Wjp4Hb/UflMppBRfOovFpp7z90AFbA=
+	b=2H1Vcax7T4r7luyghmbeg99bdnSAo12PMDnHEMYDKyE0zQcRIlYv8jMLIfWd578WL
+	 fC9MNafQsXQ1WS6rK1FH/v/5PogC5Q+/t0w15tmqnANljPWZocrsjl+fWbJko+woiC
+	 mk9GVgKP819P546S/pvFv5G6O2bv874AxvPLS8Go=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	cgroups@vger.kernel.org,
-	Nadia Pinaeva <n.m.pinaeva@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 52/63] netfilter: nft_socket: make cgroupsv2 matching work with namespaces
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Helena Anna" <helena.anna.dubel@intel.com>,
+	"Luis Claudio R. Goncalves" <lgoncalv@redhat.com>,
+	Tomas Glozar <tglozar@redhat.com>,
+	"Bityutskiy, Artem" <artem.bityutskiy@intel.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.10 097/121] tracing/osnoise: Fix build when timerlat is not enabled
 Date: Mon, 16 Sep 2024 13:44:31 +0200
-Message-ID: <20240916114222.900057413@linuxfoundation.org>
+Message-ID: <20240916114232.335520377@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
-References: <20240916114221.021192667@linuxfoundation.org>
+In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
+References: <20240916114228.914815055@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,154 +66,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit 7f3287db654395f9c5ddd246325ff7889f550286 ]
+commit af178143343028fdec9d5960a22d17f5587fd3f5 upstream.
 
-When running in container environmment, /sys/fs/cgroup/ might not be
-the real root node of the sk-attached cgroup.
+To fix some critical section races, the interface_lock was added to a few
+locations. One of those locations was above where the interface_lock was
+declared, so the declaration was moved up before that usage.
+Unfortunately, where it was placed was inside a CONFIG_TIMERLAT_TRACER
+ifdef block. As the interface_lock is used outside that config, this broke
+the build when CONFIG_OSNOISE_TRACER was enabled but
+CONFIG_TIMERLAT_TRACER was not.
 
-Example:
-
-In container:
-% stat /sys//fs/cgroup/
-Device: 0,21    Inode: 2214  ..
-% stat /sys/fs/cgroup/foo
-Device: 0,21    Inode: 2264  ..
-
-The expectation would be for:
-
-  nft add rule .. socket cgroupv2 level 1 "foo" counter
-
-to match traffic from a process that got added to "foo" via
-"echo $pid > /sys/fs/cgroup/foo/cgroup.procs".
-
-However, 'level 3' is needed to make this work.
-
-Seen from initial namespace, the complete hierarchy is:
-
-% stat /sys/fs/cgroup/system.slice/docker-.../foo
-  Device: 0,21    Inode: 2264 ..
-
-i.e. hierarchy is
-0    1               2              3
-/ -> system.slice -> docker-1... -> foo
-
-... but the container doesn't know that its "/" is the "docker-1.."
-cgroup.  Current code will retrieve the 'system.slice' cgroup node
-and store its kn->id in the destination register, so compare with
-2264 ("foo" cgroup id) will not match.
-
-Fetch "/" cgroup from ->init() and add its level to the level we try to
-extract.  cgroup root-level is 0 for the init-namespace or the level
-of the ancestor that is exposed as the cgroup root inside the container.
-
-In the above case, cgrp->level of "/" resolved in the container is 2
-(docker-1...scope/) and request for 'level 1' will get adjusted
-to fetch the actual level (3).
-
-v2: use CONFIG_SOCK_CGROUP_DATA, eval function depends on it.
-    (kernel test robot)
-
-Cc: cgroups@vger.kernel.org
-Fixes: e0bb96db96f8 ("netfilter: nft_socket: add support for cgroupsv2")
-Reported-by: Nadia Pinaeva <n.m.pinaeva@gmail.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: "Helena Anna" <helena.anna.dubel@intel.com>
+Cc: "Luis Claudio R. Goncalves" <lgoncalv@redhat.com>
+Cc: Tomas Glozar <tglozar@redhat.com>
+Link: https://lore.kernel.org/20240909103231.23a289e2@gandalf.local.home
+Fixes: e6a53481da29 ("tracing/timerlat: Only clear timer if a kthread exists")
+Reported-by: "Bityutskiy, Artem" <artem.bityutskiy@intel.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_socket.c | 41 +++++++++++++++++++++++++++++++++++---
- 1 file changed, 38 insertions(+), 3 deletions(-)
+ kernel/trace/trace_osnoise.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/net/netfilter/nft_socket.c b/net/netfilter/nft_socket.c
-index 0f37738e4b26..8722f712c019 100644
---- a/net/netfilter/nft_socket.c
-+++ b/net/netfilter/nft_socket.c
-@@ -9,7 +9,8 @@
- 
- struct nft_socket {
- 	enum nft_socket_keys		key:8;
--	u8				level;
-+	u8				level;		/* cgroupv2 level to extract */
-+	u8				level_user;	/* cgroupv2 level provided by userspace */
- 	u8				len;
- 	union {
- 		u8			dreg;
-@@ -53,6 +54,28 @@ nft_sock_get_eval_cgroupv2(u32 *dest, struct sock *sk, const struct nft_pktinfo
- 	memcpy(dest, &cgid, sizeof(u64));
- 	return true;
+--- a/kernel/trace/trace_osnoise.c
++++ b/kernel/trace/trace_osnoise.c
+@@ -228,6 +228,11 @@ static inline struct osnoise_variables *
+ 	return this_cpu_ptr(&per_cpu_osnoise_var);
  }
-+
-+/* process context only, uses current->nsproxy. */
-+static noinline int nft_socket_cgroup_subtree_level(void)
-+{
-+	struct cgroup *cgrp = cgroup_get_from_path("/");
-+	int level;
-+
-+	if (!cgrp)
-+		return -ENOENT;
-+
-+	level = cgrp->level;
-+
-+	cgroup_put(cgrp);
-+
-+	if (WARN_ON_ONCE(level > 255))
-+		return -ERANGE;
-+
-+	if (WARN_ON_ONCE(level < 0))
-+		return -EINVAL;
-+
-+	return level;
-+}
- #endif
  
- static struct sock *nft_socket_do_lookup(const struct nft_pktinfo *pkt)
-@@ -174,9 +197,10 @@ static int nft_socket_init(const struct nft_ctx *ctx,
- 	case NFT_SOCKET_MARK:
- 		len = sizeof(u32);
- 		break;
--#ifdef CONFIG_CGROUPS
-+#ifdef CONFIG_SOCK_CGROUP_DATA
- 	case NFT_SOCKET_CGROUPV2: {
- 		unsigned int level;
-+		int err;
- 
- 		if (!tb[NFTA_SOCKET_LEVEL])
- 			return -EINVAL;
-@@ -185,6 +209,17 @@ static int nft_socket_init(const struct nft_ctx *ctx,
- 		if (level > 255)
- 			return -EOPNOTSUPP;
- 
-+		err = nft_socket_cgroup_subtree_level();
-+		if (err < 0)
-+			return err;
++/*
++ * Protect the interface.
++ */
++static struct mutex interface_lock;
 +
-+		priv->level_user = level;
-+
-+		level += err;
-+		/* Implies a giant cgroup tree */
-+		if (WARN_ON_ONCE(level > 255))
-+			return -EOPNOTSUPP;
-+
- 		priv->level = level;
- 		len = sizeof(u64);
- 		break;
-@@ -209,7 +244,7 @@ static int nft_socket_dump(struct sk_buff *skb,
- 	if (nft_dump_register(skb, NFTA_SOCKET_DREG, priv->dreg))
- 		return -1;
- 	if (priv->key == NFT_SOCKET_CGROUPV2 &&
--	    nla_put_be32(skb, NFTA_SOCKET_LEVEL, htonl(priv->level)))
-+	    nla_put_be32(skb, NFTA_SOCKET_LEVEL, htonl(priv->level_user)))
- 		return -1;
- 	return 0;
+ #ifdef CONFIG_TIMERLAT_TRACER
+ /*
+  * Runtime information for the timer mode.
+@@ -253,11 +258,6 @@ static inline struct timerlat_variables
  }
--- 
-2.43.0
-
+ 
+ /*
+- * Protect the interface.
+- */
+-static struct mutex interface_lock;
+-
+-/*
+  * tlat_var_reset - Reset the values of the given timerlat_variables
+  */
+ static inline void tlat_var_reset(void)
 
 
 
