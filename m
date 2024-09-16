@@ -1,175 +1,81 @@
-Return-Path: <stable+bounces-76179-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CB55979BE4
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 09:16:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9AC05979C00
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 09:24:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 41D501C224F5
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 07:16:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 646792819D7
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 07:24:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 845E98F70;
-	Mon, 16 Sep 2024 07:16:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61598131BDD;
+	Mon, 16 Sep 2024 07:24:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="tWC+tkRZ";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="uqmp8RwK";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="D/PWzUlj";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="PgXA8jh8"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Pn9FC1x6"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C497A5EE97
-	for <stable@vger.kernel.org>; Mon, 16 Sep 2024 07:16:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AFDA71739
+	for <stable@vger.kernel.org>; Mon, 16 Sep 2024 07:24:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726470973; cv=none; b=o2m+lbZeFx2nRGLYu/qdAbqbU7vEizjxhZ6wtnqpdewLjbTmwqnoqA9vq4Vd28we6icKXP8e66nQwgg+buihZTRo5lqwRxCuCK1TUrmL7pkKSIXBXnk+50y2d4keTTJEJbEZmOIRK6A3IF0zhwzsNck7BGIhY2pwYnaP7ub7EtE=
+	t=1726471492; cv=none; b=UdY7IEuqwwOxXFB8tTBMhZPebAMhmFgmTbrubM9loyVhMUBotD0c2gZaBZEOgTYez7IWWJG9GIN9s5ZubRepvv06vssGoAGYCVCtsw/rYA4QAysF+2HIyweIpANGgsoeTdZBHELsj5ONNRyQ2DNpIsI4qFzqj1aWKq4YjjJHirM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726470973; c=relaxed/simple;
-	bh=HSY+P674ZC//NI+yJrY0M1U5P0BgZX3TedYhmPf6JCc=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KW3sGuYjmkFnzbOpXuhLVl+iH0Lv0mLxraaKoPsF5gBDRQjhtQmGx8241Kr35Yp2nOlz4bPATz04QUeYlITOpV1JLfx+DHbRakWnCLGkWKyHU4uh7Wx6yWUp9MCf0YCU5yS1Bk5Q3Vl5dazAB2aquyrgmlLfdg2Ih9sGAKM0vrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=tWC+tkRZ; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=uqmp8RwK; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=D/PWzUlj; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=PgXA8jh8; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id C9F411F86B;
-	Mon, 16 Sep 2024 07:16:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1726470970; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/sSjzr5HtMz2pqKGcdEToj0QWZJuyrJg/ZaZJWn3ez0=;
-	b=tWC+tkRZSIILrMkX3PiwGWsBW6zdfHTqG3kqixGQ7cPTArpL8x/xRtnqqWgB4AecZAGn0g
-	wFsDCBVexmux1UA6KQO89Rxu/04unwGKJJdyC5jIGf5BfwBXkh9a0PiF82MsAY8nnkkMGB
-	MGB/SEZ9U/q01KQ4s40yDbVinqT4a78=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1726470970;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/sSjzr5HtMz2pqKGcdEToj0QWZJuyrJg/ZaZJWn3ez0=;
-	b=uqmp8RwKdGFtm4DmshUo59x2lZGJMy1LTO02FLGgrIMEFy3ZLY3iFPOV4fDwfF79Yrr2Xq
-	KHFhEf3l2zp6fhAw==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1726470968; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/sSjzr5HtMz2pqKGcdEToj0QWZJuyrJg/ZaZJWn3ez0=;
-	b=D/PWzUljxJ8oLF8aG3BG/eE3gmGfrLC9qv1ZM+Ut4tBAkgI5nVmUqTI+Ng6w3jNOTbtaiF
-	5zVuQQTL4Y8pSrjjnVpfR2XhxGG59Ia2ywk7jzhKXZhq3VqtjIsjNksMOQwZbqI+YZM5hx
-	mxophtHHZFqZDZKXcomFx/Ie0VC0q/0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1726470968;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/sSjzr5HtMz2pqKGcdEToj0QWZJuyrJg/ZaZJWn3ez0=;
-	b=PgXA8jh8vvF6cxpxPAmnG5qnK/9FOOAFAdo2uTAh+5Eg6kRMavX6GfiJPqfP9zkFPV8eye
-	huOSo+Y9fOspuYAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 96C631397F;
-	Mon, 16 Sep 2024 07:16:08 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id qWQ2Izjb52b0KAAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Mon, 16 Sep 2024 07:16:08 +0000
-Date: Mon, 16 Sep 2024 09:16:58 +0200
-Message-ID: <874j6g9ifp.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Christoph Hellwig <hch@infradead.org>
-Cc: Andrew Cooper <andrew.cooper3@citrix.com>,
+	s=arc-20240116; t=1726471492; c=relaxed/simple;
+	bh=47xPVJrzm6Sz8Ky0GorJhQI2r9rwb/mpjHTKV1Qxpjc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=S60YTvPWE+j1pjq6U6a5HWPE3vSRk9SBDlG/MSZDtay+UiwBDMT4aqEdpEaqanznJIVR4Ias5HXUGzXLqhSJOaRMEsHrZtrcWlnBxlaX9Ez+8UwyonZUZklQbqN5h/OhZ/TLuiTKcLuAmdxTYAG8FNRh+yqqQWf0nWk9Jtd/XTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Pn9FC1x6; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=htINtMKW1HHHTz6jXf4cYaZiT3xsT/nN0J8Q13owBXQ=; b=Pn9FC1x6nnL0y9Cn7Z9N7H7ytU
+	cnlXuztesp1Ehje2r9n2mP9UmGrD44lQT6tOQ5ADkWRaKwb8R6I7Tpqg887T3I6M3vWHX2gjKeLVr
+	McgOkSWOVNM5zTI6182gNcaJM+eN5U60ysxN4vYhN5f3PPW8dnRw5KHtlOPllrR5ATMEtcKXXsiPw
+	rmvmNKdTTSWRBPx/3MJtoWxl9S6n8T32ttqeufOQlPfRXQu85xrXE/oT5jQU4tj3N79sBYNkOEtZo
+	FO/40oEM+s/FyGzhKQOq4mHmISg54wN862PYFIhB9dC6ZkjnvzA22QGKPt1pnf4CNL02uqk5DNzB0
+	mK4aPqfg==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.98 #2 (Red Hat Linux))
+	id 1sq66E-00000003Iyc-1rAO;
+	Mon, 16 Sep 2024 07:24:42 +0000
+Date: Mon, 16 Sep 2024 00:24:42 -0700
+From: Christoph Hellwig <hch@infradead.org>
+To: Takashi Iwai <tiwai@suse.de>
+Cc: Christoph Hellwig <hch@infradead.org>,
+	Andrew Cooper <andrew.cooper3@citrix.com>,
 	Ariadne Conill <ariadne@ariadne.space>,
-	xen-devel@lists.xenproject.org,
-	alsa-devel@alsa-project.org,
+	xen-devel@lists.xenproject.org, alsa-devel@alsa-project.org,
 	stable@vger.kernel.org
 Subject: Re: [PATCH] Revert "ALSA: memalloc: Workaround for Xen PV"
-In-Reply-To: <ZuK6xcmAE4sngFqk@infradead.org>
+Message-ID: <ZufdOjFCdqQQX7tz@infradead.org>
 References: <20240906184209.25423-1-ariadne@ariadne.space>
-	<877cbnewib.wl-tiwai@suse.de>
-	<9eda21ac-2ce7-47d5-be49-65b941e76340@citrix.com>
-	<ZuK6xcmAE4sngFqk@infradead.org>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+ <877cbnewib.wl-tiwai@suse.de>
+ <9eda21ac-2ce7-47d5-be49-65b941e76340@citrix.com>
+ <ZuK6xcmAE4sngFqk@infradead.org>
+ <874j6g9ifp.wl-tiwai@suse.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=ISO-8859-1
-Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-X-Spamd-Result: default: False [-3.30 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TO_DN_SOME(0.00)[];
-	ARC_NA(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	RCPT_COUNT_FIVE(0.00)[6];
-	FROM_HAS_DN(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid]
-X-Spam-Score: -3.30
-X-Spam-Flag: NO
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <874j6g9ifp.wl-tiwai@suse.de>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
 
-On Thu, 12 Sep 2024 11:56:21 +0200,
-Christoph Hellwig wrote:
-> 
-> On Sat, Sep 07, 2024 at 11:38:50AM +0100, Andrew Cooper wrote:
-> > Individual subsystems ought not to know or care about XENPV; it's a
-> > layering violation.
-> 
-> Agreed.
-> 
-> > If the main APIs don't behave properly, then it probably means we've got
-> > a bug at a lower level (e.g. Xen SWIOTLB is a constant source of fun)
-> > which is probably affecting other subsystems too.
-> > 
-> > I think we need to re-analyse the original bug.  Right now, the
-> > behaviour resulting from 53466ebde is worse than what it was trying to fix.
-> 
-> 53466ebde looks bogus to me, and the commit message doesn't even
-> try to explain what bad behavior it works around.  I'd also like to
-> state once again that if you think something is broken about dma
-> allocation or mapping helpers please Cc me and the iommu list.
-> 
-> Most of the time it's actually the drivers doing something invalid, but
-> sometimes it is a core dma layer bug or something that needs a proper
-> API.
-> 
-> Also while looking at the above commit I noticed the broken fallback
-> code in snd_dma_noncontig_alloc - get_dma_ops is not for driver use,
-> and starting with the code queued up for 6.12 will also return NULL
-> when using dma-iommu for example.
+On Mon, Sep 16, 2024 at 09:16:58AM +0200, Takashi Iwai wrote:
+> Yes, all those are really ugly hacks and have been already removed for
+> 6.12.  Let's hope everything works as expected with it.
 
-Yes, all those are really ugly hacks and have been already removed for
-6.12.  Let's hope everything works as expected with it.
+The code currently in linux-next will not work as explained in my
+previous mail, because it tries to side step the DMA API and abuses
+get_dma_ops in an unsupported way.
 
-
-thanks,
-
-Takashi
 
