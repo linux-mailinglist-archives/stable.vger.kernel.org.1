@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-76448-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E990B97A1CA
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:10:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F5CC97A18A
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:08:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A13571F21427
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:10:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F3531B22A46
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:08:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B59C155322;
-	Mon, 16 Sep 2024 12:10:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5737A15533B;
+	Mon, 16 Sep 2024 12:07:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YgGYEGSG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gpYj7qsF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBC89146A79;
-	Mon, 16 Sep 2024 12:10:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14EB3154452;
+	Mon, 16 Sep 2024 12:07:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488622; cv=none; b=bvCJyVPHGYTr4PCCUe0TqLnaWE8nwrz1S5utBK9q6fhAaSv//e4u29mhd+YMHQdYeZDAcLFvPs7ouBMXZcMUQ9xpjrh3gwlGmmrxQqIAtX4kAf1zQ0UpQ26uVJLsHkakIXyZMGGMgcToRs8B4hylhw9YWj3Vkoe0/Rtz7YZBV9E=
+	t=1726488470; cv=none; b=ovgiN+bNzWeEougoTkcIYsXCBm2TnBVGGF/IBjg7HwyqTaPbWSh+iyxb5skq/J4FOsfdn/hkKT50w7qfDpD0rDDch9mUHx+MbI0SjKg/VqvhNUfI1vRN3CbaTEthyxLI6HmwhJ+aMG5uKL1VsQ4kwAua4vTdZUpFA/IUHEVPzyQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488622; c=relaxed/simple;
-	bh=qHvJN4F/BWMcPXv/I2lH8+he1edA1FwEvfAbHQA7Dss=;
+	s=arc-20240116; t=1726488470; c=relaxed/simple;
+	bh=UuTsrAEn09COB4t+4+5Kggi9gurZrX7zL0LthcC1x+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=esITiWj/owX22609QmvdBVlBxm/Ks5auUikpLJTShWPQmkv8QyZOD6KZ5yaaPMD+NFkpi3jlRdP4XerVpp/z3ubdX8LBsXUpLIyaUOYgYg3gRmGQSUad2ZEJShLUN95QHHs60rDGN+/z3IRHEhOyaYBdYZJh4EgYYbaYzaXViz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YgGYEGSG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6385BC4CEC4;
-	Mon, 16 Sep 2024 12:10:21 +0000 (UTC)
+	 MIME-Version; b=nOIJjjpc+pOU56RTajcpVhZSbOEcx70gWXO8KWPqLYwCBTF8SQmvjCQRiqIUtjkUOx/nTqea72z2V+tnovhQuyFQBVQ+GwcHhK22DJIxACjhON3FSQl3t0F9sIy656+O+SNk/mmgN9SyKuDBzKCjlB27R9glqyPTevLd/i8OWds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gpYj7qsF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CCC3C4CEC7;
+	Mon, 16 Sep 2024 12:07:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488621;
-	bh=qHvJN4F/BWMcPXv/I2lH8+he1edA1FwEvfAbHQA7Dss=;
+	s=korg; t=1726488469;
+	bh=UuTsrAEn09COB4t+4+5Kggi9gurZrX7zL0LthcC1x+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YgGYEGSGdYMszRSwuH2wiRC8Ybio5RR/uIAN6yGRFBjPVEF9Ato6/w43UQIvB4N+5
-	 ogs3MWQktTcsDXfbpp1fRhwgVbOUsxmJg0+bDyebBgK67Mlop5sElGm0CXtXvjQQTQ
-	 P+0HrqIJ8TwGT7ILbT9HFf9f+v3BfbQtDMwxAOJ4=
+	b=gpYj7qsFqEhmjXFPF/RCRUUk8W/QijF/nIdzrAqrjWoRmZ2ZRvnu52qHKgLYJYeAS
+	 oySMVwuUVfqBMVY+eDLIotjE9k8JqQTaLGUte00/pMx3DVQPOiMqaR80wrNSR4X09p
+	 +0AUrqBmJ5H4koigmgpim4i/N+qPn8gpx/ezkHRk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 56/91] ice: fix accounting for filters shared by multiple VSIs
+	stable@kernel.org,
+	Han Xu <han.xu@nxp.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.10 098/121] spi: nxp-fspi: fix the KASAN report out-of-bounds bug
 Date: Mon, 16 Sep 2024 13:44:32 +0200
-Message-ID: <20240916114226.357643645@linuxfoundation.org>
+Message-ID: <20240916114232.364850707@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
-References: <20240916114224.509743970@linuxfoundation.org>
+In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
+References: <20240916114228.914815055@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +62,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacob Keller <jacob.e.keller@intel.com>
+From: Han Xu <han.xu@nxp.com>
 
-[ Upstream commit e843cf7b34fe2e0c1afc55e1f3057375c9b77a14 ]
+commit 2a8787c1cdc7be24fdd8953ecd1a8743a1006235 upstream.
 
-When adding a switch filter (such as a MAC or VLAN filter), it is expected
-that the driver will detect the case where the filter already exists, and
-return -EEXIST. This is used by calling code such as ice_vc_add_mac_addr,
-and ice_vsi_add_vlan to avoid incrementing the accounting fields such as
-vsi->num_vlan or vf->num_mac.
+Change the memcpy length to fix the out-of-bounds issue when writing the
+data that is not 4 byte aligned to TX FIFO.
 
-This logic works correctly for the case where only a single VSI has added a
-given switch filter.
+To reproduce the issue, write 3 bytes data to NOR chip.
 
-When a second VSI adds the same switch filter, the driver converts the
-existing filter from an ICE_FWD_TO_VSI filter into an ICE_FWD_TO_VSI_LIST
-filter. This saves switch resources, by ensuring that multiple VSIs can
-re-use the same filter.
+dd if=3b of=/dev/mtd0
+[   36.926103] ==================================================================
+[   36.933409] BUG: KASAN: slab-out-of-bounds in nxp_fspi_exec_op+0x26ec/0x2838
+[   36.940514] Read of size 4 at addr ffff00081037c2a0 by task dd/455
+[   36.946721]
+[   36.948235] CPU: 3 UID: 0 PID: 455 Comm: dd Not tainted 6.11.0-rc5-gc7b0e37c8434 #1070
+[   36.956185] Hardware name: Freescale i.MX8QM MEK (DT)
+[   36.961260] Call trace:
+[   36.963723]  dump_backtrace+0x90/0xe8
+[   36.967414]  show_stack+0x18/0x24
+[   36.970749]  dump_stack_lvl+0x78/0x90
+[   36.974451]  print_report+0x114/0x5cc
+[   36.978151]  kasan_report+0xa4/0xf0
+[   36.981670]  __asan_report_load_n_noabort+0x1c/0x28
+[   36.986587]  nxp_fspi_exec_op+0x26ec/0x2838
+[   36.990800]  spi_mem_exec_op+0x8ec/0xd30
+[   36.994762]  spi_mem_no_dirmap_read+0x190/0x1e0
+[   36.999323]  spi_mem_dirmap_write+0x238/0x32c
+[   37.003710]  spi_nor_write_data+0x220/0x374
+[   37.007932]  spi_nor_write+0x110/0x2e8
+[   37.011711]  mtd_write_oob_std+0x154/0x1f0
+[   37.015838]  mtd_write_oob+0x104/0x1d0
+[   37.019617]  mtd_write+0xb8/0x12c
+[   37.022953]  mtdchar_write+0x224/0x47c
+[   37.026732]  vfs_write+0x1e4/0x8c8
+[   37.030163]  ksys_write+0xec/0x1d0
+[   37.033586]  __arm64_sys_write+0x6c/0x9c
+[   37.037539]  invoke_syscall+0x6c/0x258
+[   37.041327]  el0_svc_common.constprop.0+0x160/0x22c
+[   37.046244]  do_el0_svc+0x44/0x5c
+[   37.049589]  el0_svc+0x38/0x78
+[   37.052681]  el0t_64_sync_handler+0x13c/0x158
+[   37.057077]  el0t_64_sync+0x190/0x194
+[   37.060775]
+[   37.062274] Allocated by task 455:
+[   37.065701]  kasan_save_stack+0x2c/0x54
+[   37.069570]  kasan_save_track+0x20/0x3c
+[   37.073438]  kasan_save_alloc_info+0x40/0x54
+[   37.077736]  __kasan_kmalloc+0xa0/0xb8
+[   37.081515]  __kmalloc_noprof+0x158/0x2f8
+[   37.085563]  mtd_kmalloc_up_to+0x120/0x154
+[   37.089690]  mtdchar_write+0x130/0x47c
+[   37.093469]  vfs_write+0x1e4/0x8c8
+[   37.096901]  ksys_write+0xec/0x1d0
+[   37.100332]  __arm64_sys_write+0x6c/0x9c
+[   37.104287]  invoke_syscall+0x6c/0x258
+[   37.108064]  el0_svc_common.constprop.0+0x160/0x22c
+[   37.112972]  do_el0_svc+0x44/0x5c
+[   37.116319]  el0_svc+0x38/0x78
+[   37.119401]  el0t_64_sync_handler+0x13c/0x158
+[   37.123788]  el0t_64_sync+0x190/0x194
+[   37.127474]
+[   37.128977] The buggy address belongs to the object at ffff00081037c2a0
+[   37.128977]  which belongs to the cache kmalloc-8 of size 8
+[   37.141177] The buggy address is located 0 bytes inside of
+[   37.141177]  allocated 3-byte region [ffff00081037c2a0, ffff00081037c2a3)
+[   37.153465]
+[   37.154971] The buggy address belongs to the physical page:
+[   37.160559] page: refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x89037c
+[   37.168596] flags: 0xbfffe0000000000(node=0|zone=2|lastcpupid=0x1ffff)
+[   37.175149] page_type: 0xfdffffff(slab)
+[   37.179021] raw: 0bfffe0000000000 ffff000800002500 dead000000000122 0000000000000000
+[   37.186788] raw: 0000000000000000 0000000080800080 00000001fdffffff 0000000000000000
+[   37.194553] page dumped because: kasan: bad access detected
+[   37.200144]
+[   37.201647] Memory state around the buggy address:
+[   37.206460]  ffff00081037c180: fa fc fc fc fa fc fc fc fa fc fc fc fa fc fc fc
+[   37.213701]  ffff00081037c200: fa fc fc fc 05 fc fc fc 03 fc fc fc 02 fc fc fc
+[   37.220946] >ffff00081037c280: 06 fc fc fc 03 fc fc fc fc fc fc fc fc fc fc fc
+[   37.228186]                                ^
+[   37.232473]  ffff00081037c300: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[   37.239718]  ffff00081037c380: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[   37.246962] ==================================================================
+[   37.254394] Disabling lock debugging due to kernel taint
+0+1 records in
+0+1 records out
+3 bytes copied, 0.335911 s, 0.0 kB/s
 
-The ice_add_update_vsi_list() function is responsible for doing this
-conversion. When first converting a filter from the FWD_TO_VSI into
-FWD_TO_VSI_LIST, it checks if the VSI being added is the same as the
-existing rule's VSI. In such a case it returns -EEXIST.
-
-However, when the switch rule has already been converted to a
-FWD_TO_VSI_LIST, the logic is different. Adding a new VSI in this case just
-requires extending the VSI list entry. The logic for checking if the rule
-already exists in this case returns 0 instead of -EEXIST.
-
-This breaks the accounting logic mentioned above, so the counters for how
-many MAC and VLAN filters exist for a given VF or VSI no longer accurately
-reflect the actual count. This breaks other code which relies on these
-counts.
-
-In typical usage this primarily affects such filters generally shared by
-multiple VSIs such as VLAN 0, or broadcast and multicast MAC addresses.
-
-Fix this by correctly reporting -EEXIST in the case of adding the same VSI
-to a switch rule already converted to ICE_FWD_TO_VSI_LIST.
-
-Fixes: 9daf8208dd4d ("ice: Add support for switch filter programming")
-Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a5356aef6a90 ("spi: spi-mem: Add driver for NXP FlexSPI controller")
+Cc: stable@kernel.org
+Signed-off-by: Han Xu <han.xu@nxp.com>
+Link: https://patch.msgid.link/20240911211146.3337068-1-han.xu@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_switch.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-nxp-fspi.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_switch.c b/drivers/net/ethernet/intel/ice/ice_switch.c
-index 88ee2491312a..1b48fa8c435d 100644
---- a/drivers/net/ethernet/intel/ice/ice_switch.c
-+++ b/drivers/net/ethernet/intel/ice/ice_switch.c
-@@ -3072,7 +3072,7 @@ ice_add_update_vsi_list(struct ice_hw *hw,
+--- a/drivers/spi/spi-nxp-fspi.c
++++ b/drivers/spi/spi-nxp-fspi.c
+@@ -805,14 +805,15 @@ static void nxp_fspi_fill_txfifo(struct
+ 	if (i < op->data.nbytes) {
+ 		u32 data = 0;
+ 		int j;
++		int remaining = op->data.nbytes - i;
+ 		/* Wait for TXFIFO empty */
+ 		ret = fspi_readl_poll_tout(f, f->iobase + FSPI_INTR,
+ 					   FSPI_INTR_IPTXWE, 0,
+ 					   POLL_TOUT, true);
+ 		WARN_ON(ret);
  
- 		/* A rule already exists with the new VSI being added */
- 		if (test_bit(vsi_handle, m_entry->vsi_list_info->vsi_map))
--			return 0;
-+			return -EEXIST;
- 
- 		/* Update the previously created VSI list set with
- 		 * the new VSI ID passed in
--- 
-2.43.0
-
+-		for (j = 0; j < ALIGN(op->data.nbytes - i, 4); j += 4) {
+-			memcpy(&data, buf + i + j, 4);
++		for (j = 0; j < ALIGN(remaining, 4); j += 4) {
++			memcpy(&data, buf + i + j, min_t(int, 4, remaining - j));
+ 			fspi_writel(f, data, base + FSPI_TFDR + j);
+ 		}
+ 		fspi_writel(f, FSPI_INTR_IPTXWE, base + FSPI_INTR);
 
 
 
