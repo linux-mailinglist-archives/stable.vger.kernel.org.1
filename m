@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-76453-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76373-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38D2697A1CF
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:10:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4362597A16F
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:07:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA5E91F216D8
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:10:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF14E1F23DB0
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:07:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F0E21547F5;
-	Mon, 16 Sep 2024 12:10:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5852155C87;
+	Mon, 16 Sep 2024 12:06:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0WkZR+p5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GdpUAtwJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CEF4149C57;
-	Mon, 16 Sep 2024 12:10:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 842F324B34;
+	Mon, 16 Sep 2024 12:06:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488636; cv=none; b=gQkTZANalvaED/zLZPAgM9gqNZIahVfBcWYR3sOH7encnpjlqM6BSmqsYQXtSLvVTinV1kQrBAyKgo/ND2YhvBAlPAkCUdfQ0i6w5EG3PXOZ5la9J69f1UMGJtT49j/zpyCOwvV/qNcs/u9XAYF6C2FnopF4rGt/tiPXyzFf/ZI=
+	t=1726488407; cv=none; b=ehY24xJ+YjjKxoPLYe2cUdAIbzqzLAKxBnCSnlQngOmGk/+rULc5jb4fQZo0ylyJiJzyhP1ODGucq91Gnb9Ct+VU42S8yMZXn7cHhlvk0814VPVV1IAIvqhUCXn6lx2o8DHkb/adSxZMyzzjyDJkj7Qy5InL4Mxk0rFWkEnl78Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488636; c=relaxed/simple;
-	bh=rMKaxa4GK5zXMLyshZ4OlwxXPoacdlvHcsyd8P7YcLg=;
+	s=arc-20240116; t=1726488407; c=relaxed/simple;
+	bh=GKlWtlpQuZDT2AaJMG5JEupvGWp6lP8NEK+66qgg7kg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tJZKQR1sixcwrrHACe7A/PU+bqjP6QOEiDE5R9WKEZQKmphrsaxsjH/8r5BMQpvUqVImtEZavKXhlBEDVOMjgVo5rkVEopoRQLAvMJrljgO5/sVrQk9BDG9KORM/3by67qqRcACbOrgPT1anwPfgxr0YhaUKZ2x8XRVN8NzlC6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0WkZR+p5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86A15C4CEC4;
-	Mon, 16 Sep 2024 12:10:35 +0000 (UTC)
+	 MIME-Version; b=qP+prQzXghh3LFHtFXM3EBPBbc4I5B3OwEK4eporoO738OZ6ZaJUWopY/FmhohbknA0qNamsUXOySLHO3ULJ+JmdFu/2E66uAvK3Hjk2RCiHc7GP0TR+mqnlcb+3zolMk+MNDts7XNX6GBUqZMJGZi+rAIAqUQoKeVhhaN7OFO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GdpUAtwJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9E9FC4CEC4;
+	Mon, 16 Sep 2024 12:06:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488635;
-	bh=rMKaxa4GK5zXMLyshZ4OlwxXPoacdlvHcsyd8P7YcLg=;
+	s=korg; t=1726488407;
+	bh=GKlWtlpQuZDT2AaJMG5JEupvGWp6lP8NEK+66qgg7kg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0WkZR+p5Jqaan1zEqeNb6AAZlYMkk3IJ57pu4UYFji+ml0SoD4RBilBYld8t316/3
-	 T0ViQya4wc1tMSn6lhjIEp6B/4KRQElabtk2eFvQCVtYWiC0+BcmPxXZH5mAgCeLrU
-	 7vAccTV0FIoPRaQ25hNUJG42rMMj8DhR/u1DW2hQ=
+	b=GdpUAtwJ++P4Kkj/xvJifKHVQOAizu4jMRu2z3w465XkVhYr7Jbpb2keSZgI3ifqI
+	 BaoTgj/HeyrasBwu2DeQcG9C8B2cKnI9rV4YTLw5OgUY/ckcMkz2Op+Xqabh7TKpBz
+	 XxxCWfc0daanpcByiDArLyeHigcD7M1UFuSHXByg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patrisious Haddad <phaddad@nvidia.com>,
-	Mark Zhang <markzhang@nvidia.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 61/91] IB/mlx5: Rename 400G_8X speed to comply to naming convention
+	Harry Wentland <harry.wentland@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.10 103/121] drm/amdgpu/atomfirmware: Silence UBSAN warning
 Date: Mon, 16 Sep 2024 13:44:37 +0200
-Message-ID: <20240916114226.502307566@linuxfoundation.org>
+Message-ID: <20240916114232.521537575@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
-References: <20240916114224.509743970@linuxfoundation.org>
+In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
+References: <20240916114228.914815055@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Patrisious Haddad <phaddad@nvidia.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-[ Upstream commit b28ad32442bec2f0d9cb660d7d698a1a53c13d08 ]
+commit 17ea4383649fdeaff3181ddcf1ff03350d42e591 upstream.
 
-Rename 400G_8X speed to comply to naming convention.
+Per the comments, these are variable sized arrays.
 
-Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
-Reviewed-by: Mark Zhang <markzhang@nvidia.com>
-Link: https://lore.kernel.org/r/ac98447cac8379a43fbdb36d56e5fb2b741a97ff.1695204156.git.leon@kernel.org
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Stable-dep-of: 80bf474242b2 ("net/mlx5e: Add missing link mode to ptys2ext_ethtool_map")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3613
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 81f7804ba84ee617ed594de934ed87bcc4f83531)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/mlx5/main.c              | 2 +-
- drivers/net/ethernet/mellanox/mlx5/core/port.c | 2 +-
- include/linux/mlx5/port.h                      | 2 +-
- 3 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/include/atomfirmware.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/infiniband/hw/mlx5/main.c b/drivers/infiniband/hw/mlx5/main.c
-index 45a497c0258b..2d179bc56ce6 100644
---- a/drivers/infiniband/hw/mlx5/main.c
-+++ b/drivers/infiniband/hw/mlx5/main.c
-@@ -444,7 +444,7 @@ static int translate_eth_ext_proto_oper(u32 eth_proto_oper, u16 *active_speed,
- 		*active_width = IB_WIDTH_2X;
- 		*active_speed = IB_SPEED_NDR;
- 		break;
--	case MLX5E_PROT_MASK(MLX5E_400GAUI_8):
-+	case MLX5E_PROT_MASK(MLX5E_400GAUI_8_400GBASE_CR8):
- 		*active_width = IB_WIDTH_8X;
- 		*active_speed = IB_SPEED_HDR;
- 		break;
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/port.c b/drivers/net/ethernet/mellanox/mlx5/core/port.c
-index be70d1f23a5d..749f0fc2c189 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/port.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/port.c
-@@ -1098,7 +1098,7 @@ static const u32 mlx5e_ext_link_speed[MLX5E_EXT_LINK_MODES_NUMBER] = {
- 	[MLX5E_CAUI_4_100GBASE_CR4_KR4] = 100000,
- 	[MLX5E_100GAUI_2_100GBASE_CR2_KR2] = 100000,
- 	[MLX5E_200GAUI_4_200GBASE_CR4_KR4] = 200000,
--	[MLX5E_400GAUI_8] = 400000,
-+	[MLX5E_400GAUI_8_400GBASE_CR8] = 400000,
- 	[MLX5E_100GAUI_1_100GBASE_CR_KR] = 100000,
- 	[MLX5E_200GAUI_2_200GBASE_CR2_KR2] = 200000,
- 	[MLX5E_400GAUI_4_400GBASE_CR4_KR4] = 400000,
-diff --git a/include/linux/mlx5/port.h b/include/linux/mlx5/port.h
-index 98b2e1e149f9..5cc34216f23c 100644
---- a/include/linux/mlx5/port.h
-+++ b/include/linux/mlx5/port.h
-@@ -115,7 +115,7 @@ enum mlx5e_ext_link_mode {
- 	MLX5E_100GAUI_1_100GBASE_CR_KR		= 11,
- 	MLX5E_200GAUI_4_200GBASE_CR4_KR4	= 12,
- 	MLX5E_200GAUI_2_200GBASE_CR2_KR2	= 13,
--	MLX5E_400GAUI_8				= 15,
-+	MLX5E_400GAUI_8_400GBASE_CR8		= 15,
- 	MLX5E_400GAUI_4_400GBASE_CR4_KR4	= 16,
- 	MLX5E_EXT_LINK_MODES_NUMBER,
+--- a/drivers/gpu/drm/amd/include/atomfirmware.h
++++ b/drivers/gpu/drm/amd/include/atomfirmware.h
+@@ -1038,7 +1038,7 @@ struct display_object_info_table_v1_4
+   uint16_t  supporteddevices;
+   uint8_t   number_of_path;
+   uint8_t   reserved;
+-  struct    atom_display_object_path_v2 display_path[8];   //the real number of this included in the structure is calculated by using the (whole structure size - the header size- number_of_path)/size of atom_display_object_path
++  struct    atom_display_object_path_v2 display_path[];   //the real number of this included in the structure is calculated by using the (whole structure size - the header size- number_of_path)/size of atom_display_object_path
  };
--- 
-2.43.0
-
+ 
+ struct display_object_info_table_v1_5 {
+@@ -1048,7 +1048,7 @@ struct display_object_info_table_v1_5 {
+ 	uint8_t reserved;
+ 	// the real number of this included in the structure is calculated by using the
+ 	// (whole structure size - the header size- number_of_path)/size of atom_display_object_path
+-	struct atom_display_object_path_v3 display_path[8];
++	struct atom_display_object_path_v3 display_path[];
+ };
+ 
+ /* 
 
 
 
