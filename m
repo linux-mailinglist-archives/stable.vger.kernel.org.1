@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-76248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E10F397A0C5
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:00:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E39A297A13F
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:06:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9DCD281EE9
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:00:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A55F1F2471C
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:06:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21D551547C4;
-	Mon, 16 Sep 2024 12:00:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 177491591FC;
+	Mon, 16 Sep 2024 12:04:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Das6YO/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uv8bFGwc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D35ED14B967;
-	Mon, 16 Sep 2024 12:00:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9724155CBA;
+	Mon, 16 Sep 2024 12:04:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488051; cv=none; b=ljC670DTiRhhvwxrFb+LABCweAC5BqomWFyzyIc83AakspqIyE/8cYvrlFmzlV8KnS7tLLpNcpGUyzQhujAblUrZzAv6pw+7RvOWTy/4gYfjsER0qP28MjkQUQM2ZOeE0NpKoLSMl8WD+JNHxQHbKGSxJ9DF0AYt6i8auwX+fI8=
+	t=1726488284; cv=none; b=J9C/f/2Nkk6acCfr7Y78mEcc0Ni+mn1smni+y4I1HrJ4vxikY78yPpNp5FOUdFI+58bBkGscpNCInH2Et16TeYpCyoXQy5xKszpWhCQSJ8s7AyY9qAE3w7UmSuMEgg0jUeOViowsDuIIwt0hn1RDr19SVhnAfEj8EPzoPvmy45Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488051; c=relaxed/simple;
-	bh=RTYGH/6Fsor/n3StNji8S/c955FDREdt9xXDfYzfuI0=;
+	s=arc-20240116; t=1726488284; c=relaxed/simple;
+	bh=rca/pAyktM6aEVoVYTLqS/iwhmEda7x0KWJXeow381M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=au7pf8vIgt5OSxRy+hA1UzHQYbgSnU+OoKTFzJmX20zT6OCLNind26sQn8vhmadKDuTMXTc7HLyo8VxNKDywTn5p8TMnpOFWsPDUWXN92hMDQbPFeUJCs0GUO527IyHjJc/qwH3vAkCD81qpoW9fc3rJPcI1r79RnZ7LkBmesT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Das6YO/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F58CC4CEC4;
-	Mon, 16 Sep 2024 12:00:50 +0000 (UTC)
+	 MIME-Version; b=g3TqY9bI5334xTIAofYLUw8jHMNWFevgA3o9kBgm2M1etJSH0K5XIEtFRYALcra0GQPyULT7ZoLeR6nACcYP9bhLfc1dPHcT4zn2L7+uyIJqrJf4Y7agTKFztdJKYHC0jcCJELvwEeL+Z86klJDeyMc13qA//RPZNJMviposQbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uv8bFGwc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53460C4CEC4;
+	Mon, 16 Sep 2024 12:04:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488051;
-	bh=RTYGH/6Fsor/n3StNji8S/c955FDREdt9xXDfYzfuI0=;
+	s=korg; t=1726488284;
+	bh=rca/pAyktM6aEVoVYTLqS/iwhmEda7x0KWJXeow381M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2Das6YO/ssgdzEkCYjzFOyEydOa4riW7a5VBvLO1ObAGqX8F6wVSZLnxXTq3rmirI
-	 3G1P3bWAzsU1JpyQEdMlv59se0ayk2jB6thGtrQ8zcV43txsChafaAclu3K2nYpBFc
-	 /xZvmOxJ0/8vyXRhVbbplKg7S7NL4uogAnk/iNdE=
+	b=Uv8bFGwcPEFlDAlY0NyOH9/9hXQcdynU5RS8xVbKEl/7yH5HpZjdamdlZlbJHRRSj
+	 plWjTMYJABUPY5FTPEV6DJYvONjgUuiIRKviwfGWxkmEfwt5amS/DtRNaEKr1TCp0v
+	 UtpHmmhBbG2hLZHKN8OPu2LPrsQAuYqQKtVdT7fM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maximilian Luz <luzmaximilian@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	FUKAUMI Naoki <naoki@radxa.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 14/63] platform/surface: aggregator_registry: Add Support for Surface Pro 10
+Subject: [PATCH 6.10 059/121] arm64: dts: rockchip: fix PMIC interrupt pin in pinctrl for ROCK Pi E
 Date: Mon, 16 Sep 2024 13:43:53 +0200
-Message-ID: <20240916114221.557209032@linuxfoundation.org>
+Message-ID: <20240916114231.112955776@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
-References: <20240916114221.021192667@linuxfoundation.org>
+In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
+References: <20240916114228.914815055@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +60,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maximilian Luz <luzmaximilian@gmail.com>
+From: FUKAUMI Naoki <naoki@radxa.com>
 
-[ Upstream commit 9c8e022567bbec53bee8ae75c44b3d6cd2080d42 ]
+[ Upstream commit c623e9daf60a0275d623ce054601550e54987f5b ]
 
-Add SAM client device nodes for the Surface Pro 10. It seems to use the
-same SAM client devices as the Surface Pro 9, so re-use its node group.
+use GPIO0_A2 as PMIC interrupt pin in pinctrl.
+(I forgot to fix this part in previous commit.)
 
-Signed-off-by: Maximilian Luz <luzmaximilian@gmail.com>
-Link: https://lore.kernel.org/r/20240811131948.261806-2-luzmaximilian@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fixes: 02afd3d5b9fa ("arm64: dts: rockchip: fix PMIC interrupt pin on ROCK Pi E")
+Signed-off-by: FUKAUMI Naoki <naoki@radxa.com>
+Link: https://lore.kernel.org/r/20240722095216.1656081-1-naoki@radxa.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/surface/surface_aggregator_registry.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/rockchip/rk3328-rock-pi-e.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/platform/surface/surface_aggregator_registry.c b/drivers/platform/surface/surface_aggregator_registry.c
-index 023f126121d7..6882f32d239d 100644
---- a/drivers/platform/surface/surface_aggregator_registry.c
-+++ b/drivers/platform/surface/surface_aggregator_registry.c
-@@ -298,7 +298,7 @@ static const struct software_node *ssam_node_group_sp8[] = {
- 	NULL,
- };
+diff --git a/arch/arm64/boot/dts/rockchip/rk3328-rock-pi-e.dts b/arch/arm64/boot/dts/rockchip/rk3328-rock-pi-e.dts
+index a608a219543e..3e08e2fd0a78 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3328-rock-pi-e.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3328-rock-pi-e.dts
+@@ -387,7 +387,7 @@ led_pin: led-pin {
  
--/* Devices for Surface Pro 9 */
-+/* Devices for Surface Pro 9 and 10 */
- static const struct software_node *ssam_node_group_sp9[] = {
- 	&ssam_node_root,
- 	&ssam_node_hub_kip,
-@@ -337,6 +337,9 @@ static const struct acpi_device_id ssam_platform_hub_match[] = {
- 	/* Surface Pro 9 */
- 	{ "MSHW0343", (unsigned long)ssam_node_group_sp9 },
- 
-+	/* Surface Pro 10 */
-+	{ "MSHW0510", (unsigned long)ssam_node_group_sp9 },
-+
- 	/* Surface Book 2 */
- 	{ "MSHW0107", (unsigned long)ssam_node_group_gen5 },
+ 	pmic {
+ 		pmic_int_l: pmic-int-l {
+-			rockchip,pins = <2 RK_PA6 RK_FUNC_GPIO &pcfg_pull_up>;
++			rockchip,pins = <0 RK_PA2 RK_FUNC_GPIO &pcfg_pull_up>;
+ 		};
+ 	};
  
 -- 
 2.43.0
