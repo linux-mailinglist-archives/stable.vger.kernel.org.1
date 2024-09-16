@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-76253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDE4F97A0CA
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:01:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id B50A697A1E4
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:11:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B11DF281DDD
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:01:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DCF301C215C6
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:11:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 666281534FB;
-	Mon, 16 Sep 2024 12:01:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DD4F155322;
+	Mon, 16 Sep 2024 12:11:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SQ+/5eZC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UhOn1mOG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22B3AA95E;
-	Mon, 16 Sep 2024 12:01:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 089C6142903;
+	Mon, 16 Sep 2024 12:11:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488066; cv=none; b=HETKLt96b1zebCMABD+EU5pPjWr7Uu/x1GoCnpzcXZ9lJG9sOLB+1pMh/2kA23pyA1SG3vTMKsco3SVo7B+eEBCkw89lccQIy7YBTGWujexVDDTW1GjGLTgn+u7mUuafeL1zfuwybNCRo/2LaqmbE4eY58f3taqMtT4xx42HRIU=
+	t=1726488687; cv=none; b=Ut9lVb8GsUtIUm+G6z/Yr/deEJ4m9jIMrhRD56JWn9P8vwU5iwKwX5cBe5mVryz2x3CIaptqb6ve6X5cQX7hWSaLJ6ftc/xiST8nXval4yBUFq4Mryly4GzUmwo7HlB5OftrLVcEcHflCq9yc4guC5LXPnqqZpe+jHcdIELebbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488066; c=relaxed/simple;
-	bh=bwxYMgo0tIDzprL9l1ThnPqL3D63Flv/3cuH2CpZ4Rk=;
+	s=arc-20240116; t=1726488687; c=relaxed/simple;
+	bh=O1QdZVQGT3MN1ZahrRL+XEDIpdqh7QRK1Z72kSubhmU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pk/MT08CoubjXQZHlQgCtgFpXplsUgayVcfHYCxvpyEobGkPSfQlPJ5BQkUKhkJrVJ6xxkg6wJQXaxXtmi4ZI8/YW5otBBlldXbJE4HNOLROXwVkNkVgSYn/sjhWtIlo0lUv3QdWhM+agaeGCohDlYOO27taNuWxGhXSKcaTf+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SQ+/5eZC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EE01C4CEC4;
-	Mon, 16 Sep 2024 12:01:05 +0000 (UTC)
+	 MIME-Version; b=rkS45t05O5ExHqWfqSp7TAzroTBTo9L/mf+Td0YZFpgnoMkeVVhnyOIEBHGonfysSIyRW2WHMUFcPOV+Ja6jD228expdnZYif49qBoCqkfSzMw6BNaxNgC9qjJCGaWtvuqVdSXfUnkvddFuyz4Rjxg0qMRephjA85/ROV4wECqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UhOn1mOG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C7F4C4CEC4;
+	Mon, 16 Sep 2024 12:11:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488065;
-	bh=bwxYMgo0tIDzprL9l1ThnPqL3D63Flv/3cuH2CpZ4Rk=;
+	s=korg; t=1726488686;
+	bh=O1QdZVQGT3MN1ZahrRL+XEDIpdqh7QRK1Z72kSubhmU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SQ+/5eZCXmRWHoQfdackeEvji8gsIDjT7vApSwx3CypHG2GSeLW233Cuot/vaRXV+
-	 W6WPKjGkX64AFwTLppw9WUmxjDpAMQZcCRgW/ukVTJGNZ32VejkHd9KWqspY3HjkQE
-	 aPsBa0YWhBBMtm+WTRFzD3RSZjf9uWoiHQZ4QHQQ=
+	b=UhOn1mOGJb0Gbt/U+8dS9xdInR3OsCVMjHqjJDrBhQxpxgNgPWMqLru7XUnBNBsQF
+	 RBFsSDXzDCx9UUNngEaoXIrdBNbJc2uAnKKSx5iTaGE7tTXuAvcS+eMamhe4KCv/UO
+	 5chGmXnXuk4IcHbS152LkDq2vYI1cm00ePCB/mMg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 47/63] fou: fix initialization of grc
-Date: Mon, 16 Sep 2024 13:44:26 +0200
-Message-ID: <20240916114222.731712597@linuxfoundation.org>
+Subject: [PATCH 6.6 51/91] eeprom: digsy_mtc: Fix 93xx46 driver probe failure
+Date: Mon, 16 Sep 2024 13:44:27 +0200
+Message-ID: <20240916114226.191917179@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
-References: <20240916114221.021192667@linuxfoundation.org>
+In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
+References: <20240916114224.509743970@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 4c8002277167125078e6b9b90137bdf443ebaa08 ]
+[ Upstream commit 2b82641ad0620b2d71dc05024b20f82db7e1c0b6 ]
 
-The grc must be initialize first. There can be a condition where if
-fou is NULL, goto out will be executed and grc would be used
-uninitialized.
+The update to support other (bigger) types of EEPROMs broke
+the driver loading due to removal of the default size.
 
-Fixes: 7e4196935069 ("fou: Fix null-ptr-deref in GRO.")
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20240906102839.202798-1-usama.anjum@collabora.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fix this by adding the respective (new) flag to the platform data.
+
+Fixes: 14374fbb3f06 ("misc: eeprom_93xx46: Add new 93c56 and 93c66 compatible strings")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20240508184905.2102633-3-andriy.shevchenko@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/fou.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/misc/eeprom/digsy_mtc_eeprom.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/fou.c b/net/ipv4/fou.c
-index 7bcc933103e2..c29c976a2596 100644
---- a/net/ipv4/fou.c
-+++ b/net/ipv4/fou.c
-@@ -334,11 +334,11 @@ static struct sk_buff *gue_gro_receive(struct sock *sk,
- 	struct gro_remcsum grc;
- 	u8 proto;
+diff --git a/drivers/misc/eeprom/digsy_mtc_eeprom.c b/drivers/misc/eeprom/digsy_mtc_eeprom.c
+index f1f766b70965..4eddc5ba1af9 100644
+--- a/drivers/misc/eeprom/digsy_mtc_eeprom.c
++++ b/drivers/misc/eeprom/digsy_mtc_eeprom.c
+@@ -42,7 +42,7 @@ static void digsy_mtc_op_finish(void *p)
+ }
  
-+	skb_gro_remcsum_init(&grc);
-+
- 	if (!fou)
- 		goto out;
- 
--	skb_gro_remcsum_init(&grc);
--
- 	off = skb_gro_offset(skb);
- 	len = off + sizeof(*guehdr);
- 
+ struct eeprom_93xx46_platform_data digsy_mtc_eeprom_data = {
+-	.flags		= EE_ADDR8,
++	.flags		= EE_ADDR8 | EE_SIZE1K,
+ 	.prepare	= digsy_mtc_op_prepare,
+ 	.finish		= digsy_mtc_op_finish,
+ };
 -- 
 2.43.0
 
