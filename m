@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-76311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76284-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AA9297A129
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:06:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E2F597A0EF
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:02:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9BA031C230E9
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:05:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90BB01C218C9
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:02:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41CF6158548;
-	Mon, 16 Sep 2024 12:03:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB1A8155CA5;
+	Mon, 16 Sep 2024 12:02:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JwQiqSUN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bhcFL3Qo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE81915852B;
-	Mon, 16 Sep 2024 12:03:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 894EE15575B;
+	Mon, 16 Sep 2024 12:02:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488231; cv=none; b=j80Jno7/xsYiWMifZFk0EyWrRNUaTrvWQC1C9g6ujTzWLuHtLTxQ9hwtzerS6mivyn0ck4NVE5+R8sehzTW7bsy3Bo3ZoQSOeZJS4svrRTpUmMJXcHZuiGqEeb3bhKv2MVjAPREe/P5PAPqe+Upamd3uFrPWp4EGClFSbjigXLg=
+	t=1726488153; cv=none; b=ldBWly0Zh2BxLpiR958hAP5Id/OjoRd+wpMDATbmm/yulyPsM2XV/o5axxvZMYwVrYGfKtcbhDiC2fqLIPzbHOYY1pprf0nbofSmgZPfNsF+alNEQselWhugVmKpDQ6M27Zf0QuUe/rBB4qnaS8Jzr8WUv+CNmEpq/4vYC9lnHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488231; c=relaxed/simple;
-	bh=z+lAs2MuWBeqrOTXodiBXaZD3WHfvhL4FTO7k9r9YXY=;
+	s=arc-20240116; t=1726488153; c=relaxed/simple;
+	bh=gryYHLkPJS31ZlaDtVG2niKIwi9OD0IhXtXK/u9WngM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IZoPolI+4DUF/MfCdxT+oCKDJ8GCE9/+EtqzX46Uk7O7LpJc2+tqvQdEfpXkUYW3mo1fd6eMVSWI7vn5UyW/UOAAfjvr6jp5ZMPloRVDPOIwWpbug/qpQ+D/Q3GkCD9supz5dS6VK7xbAB858BwYq8eyVP/OXYFoGzYBd7x1/SA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JwQiqSUN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75D9FC4CEC4;
-	Mon, 16 Sep 2024 12:03:50 +0000 (UTC)
+	 MIME-Version; b=cBUo0H+9rLb8t3ONcqnTvTWOyYMhrWzw6LEjWo7I55VKjHNAdlrddb2KRWPfDMN+yw5ovNbkA14OSiaHK2M69UG69Ak4YXLQ8aGYEBwdYwp8cB+aiBOxvKsi+78xWBGPCJ0pFAiYVHttdiflfw+IWW+XgBJgWLoiE1RlGVMQ4uw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bhcFL3Qo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12929C4CEC4;
+	Mon, 16 Sep 2024 12:02:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488230;
-	bh=z+lAs2MuWBeqrOTXodiBXaZD3WHfvhL4FTO7k9r9YXY=;
+	s=korg; t=1726488153;
+	bh=gryYHLkPJS31ZlaDtVG2niKIwi9OD0IhXtXK/u9WngM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JwQiqSUN10QIv/P+8l8jt9/O4o/1OlfEUe+F+wBy1fQaUYwr2/JhJwBfVTiPRbEF1
-	 8zSHvl+h367GpDMaRFB1DjW8xRktKWqJmbyadcC/TnEQnDa/mfaZ88926NwNjz76hQ
-	 XkD/B61NBZ3/UfidtP3uWR+K0oWwiwGfrxlA2NLI=
+	b=bhcFL3QolLOmvPyH4yi28rRymbpbgJqNMjPROlZVJL/3Htphh+++1xD6OSVW1sSSZ
+	 +J44jB8Rz6igXkJ5Wy55v3WoQMI0pYkzEOnwcRTECKBMDnRnUwYt7AQ+PmafJCkpAx
+	 OU9GhtSqV31XIT/l3Ajd3fctlCXnfSbprxI1jisk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Pawel Dembicki <paweldembicki@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 013/121] net: phy: vitesse: repair vsc73xx autonegotiation
-Date: Mon, 16 Sep 2024 13:43:07 +0200
-Message-ID: <20240916114229.357973126@linuxfoundation.org>
+Subject: [PATCH 6.10 014/121] powerpc/mm: Fix boot warning with hugepages and CONFIG_DEBUG_VIRTUAL
+Date: Mon, 16 Sep 2024 13:43:08 +0200
+Message-ID: <20240916114229.395182178@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
 References: <20240916114228.914815055@linuxfoundation.org>
@@ -67,74 +66,83 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Pawel Dembicki <paweldembicki@gmail.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit de7a670f8defe4ed2115552ad23dea0f432f7be4 ]
+[ Upstream commit e7e846dc6c73fbc94ae8b4ec20d05627646416f2 ]
 
-When the vsc73xx mdio bus work properly, the generic autonegotiation
-configuration works well.
+Booting with CONFIG_DEBUG_VIRTUAL leads to following warning when
+passing hugepage reservation on command line:
 
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Pawel Dembicki <paweldembicki@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+  Kernel command line: hugepagesz=1g hugepages=1 hugepagesz=64m hugepages=1 hugepagesz=256m hugepages=1 noreboot
+  HugeTLB: allocating 1 of page size 1.00 GiB failed.  Only allocated 0 hugepages.
+  ------------[ cut here ]------------
+  WARNING: CPU: 0 PID: 0 at arch/powerpc/include/asm/io.h:948 __alloc_bootmem_huge_page+0xd4/0x284
+  Modules linked in:
+  CPU: 0 PID: 0 Comm: swapper Not tainted 6.10.0-rc6-00396-g6b0e82791bd0-dirty #936
+  Hardware name: MPC8544DS e500v2 0x80210030 MPC8544 DS
+  NIP:  c1020240 LR: c10201d0 CTR: 00000000
+  REGS: c13fdd30 TRAP: 0700   Not tainted  (6.10.0-rc6-00396-g6b0e82791bd0-dirty)
+  MSR:  00021000 <CE,ME>  CR: 44084288  XER: 20000000
+
+  GPR00: c10201d0 c13fde20 c130b560 e8000000 e8001000 00000000 00000000 c1420000
+  GPR08: 00000000 00028001 00000000 00000004 44084282 01066ac0 c0eb7c9c efffe149
+  GPR16: c0fc4228 0000005f ffffffff c0eb7d0c c0eb7cc0 c0eb7ce0 ffffffff 00000000
+  GPR24: c1441cec efffe153 e8001000 c14240c0 00000000 c1441d64 00000000 e8000000
+  NIP [c1020240] __alloc_bootmem_huge_page+0xd4/0x284
+  LR [c10201d0] __alloc_bootmem_huge_page+0x64/0x284
+  Call Trace:
+  [c13fde20] [c10201d0] __alloc_bootmem_huge_page+0x64/0x284 (unreliable)
+  [c13fde50] [c10207b8] hugetlb_hstate_alloc_pages+0x8c/0x3e8
+  [c13fdeb0] [c1021384] hugepages_setup+0x240/0x2cc
+  [c13fdef0] [c1000574] unknown_bootoption+0xfc/0x280
+  [c13fdf30] [c0078904] parse_args+0x200/0x4c4
+  [c13fdfa0] [c1000d9c] start_kernel+0x238/0x7d0
+  [c13fdff0] [c0000434] set_ivor+0x12c/0x168
+  Code: 554aa33e 7c042840 3ce0c142 80a7427c 5109a016 50caa016 7c9a2378 7fdcf378 4180000c 7c052040 41810160 7c095040 <0fe00000> 38c00000 40800108 3c60c0eb
+  ---[ end trace 0000000000000000 ]---
+
+This is due to virt_addr_valid() using high_memory before it is set.
+
+high_memory is set in mem_init() using max_low_pfn, but max_low_pfn
+is available long before, it is set in mem_topology_setup(). So just
+like commit daa9ada2093e ("powerpc/mm: Fix boot crash with FLATMEM")
+moved the setting of max_mapnr immediately after the call to
+mem_topology_setup(), the same can be done for high_memory.
+
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/62b69c4baad067093f39e7e60df0fe27a86b8d2a.1723100702.git.christophe.leroy@csgroup.eu
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/vitesse.c | 14 --------------
- 1 file changed, 14 deletions(-)
+ arch/powerpc/kernel/setup-common.c | 1 +
+ arch/powerpc/mm/mem.c              | 2 --
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/phy/vitesse.c b/drivers/net/phy/vitesse.c
-index 897b979ec03c..3b5fcaf0dd36 100644
---- a/drivers/net/phy/vitesse.c
-+++ b/drivers/net/phy/vitesse.c
-@@ -237,16 +237,6 @@ static int vsc739x_config_init(struct phy_device *phydev)
- 	return 0;
- }
+diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
+index 4bd2f87616ba..943430077375 100644
+--- a/arch/powerpc/kernel/setup-common.c
++++ b/arch/powerpc/kernel/setup-common.c
+@@ -959,6 +959,7 @@ void __init setup_arch(char **cmdline_p)
+ 	mem_topology_setup();
+ 	/* Set max_mapnr before paging_init() */
+ 	set_max_mapnr(max_pfn);
++	high_memory = (void *)__va(max_low_pfn * PAGE_SIZE);
  
--static int vsc73xx_config_aneg(struct phy_device *phydev)
--{
--	/* The VSC73xx switches does not like to be instructed to
--	 * do autonegotiation in any way, it prefers that you just go
--	 * with the power-on/reset defaults. Writing some registers will
--	 * just make autonegotiation permanently fail.
--	 */
--	return 0;
--}
+ 	/*
+ 	 * Release secondary cpus out of their spinloops at 0x60 now that
+diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
+index d325217ab201..da21cb018984 100644
+--- a/arch/powerpc/mm/mem.c
++++ b/arch/powerpc/mm/mem.c
+@@ -290,8 +290,6 @@ void __init mem_init(void)
+ 	swiotlb_init(ppc_swiotlb_enable, ppc_swiotlb_flags);
+ #endif
+ 
+-	high_memory = (void *) __va(max_low_pfn * PAGE_SIZE);
 -
- /* This adds a skew for both TX and RX clocks, so the skew should only be
-  * applied to "rgmii-id" interfaces. It may not work as expected
-  * on "rgmii-txid", "rgmii-rxid" or "rgmii" interfaces.
-@@ -444,7 +434,6 @@ static struct phy_driver vsc82xx_driver[] = {
- 	.phy_id_mask    = 0x000ffff0,
- 	/* PHY_GBIT_FEATURES */
- 	.config_init    = vsc738x_config_init,
--	.config_aneg    = vsc73xx_config_aneg,
- 	.read_page      = vsc73xx_read_page,
- 	.write_page     = vsc73xx_write_page,
- }, {
-@@ -453,7 +442,6 @@ static struct phy_driver vsc82xx_driver[] = {
- 	.phy_id_mask    = 0x000ffff0,
- 	/* PHY_GBIT_FEATURES */
- 	.config_init    = vsc738x_config_init,
--	.config_aneg    = vsc73xx_config_aneg,
- 	.read_page      = vsc73xx_read_page,
- 	.write_page     = vsc73xx_write_page,
- }, {
-@@ -462,7 +450,6 @@ static struct phy_driver vsc82xx_driver[] = {
- 	.phy_id_mask    = 0x000ffff0,
- 	/* PHY_GBIT_FEATURES */
- 	.config_init    = vsc739x_config_init,
--	.config_aneg    = vsc73xx_config_aneg,
- 	.read_page      = vsc73xx_read_page,
- 	.write_page     = vsc73xx_write_page,
- }, {
-@@ -471,7 +458,6 @@ static struct phy_driver vsc82xx_driver[] = {
- 	.phy_id_mask    = 0x000ffff0,
- 	/* PHY_GBIT_FEATURES */
- 	.config_init    = vsc739x_config_init,
--	.config_aneg    = vsc73xx_config_aneg,
- 	.read_page      = vsc73xx_read_page,
- 	.write_page     = vsc73xx_write_page,
- }, {
+ 	kasan_late_init();
+ 
+ 	memblock_free_all();
 -- 
 2.43.0
 
