@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-76455-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C67B97A1D1
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:10:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CC0D97A173
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:07:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CEE991C2029F
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:10:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B84CF1F23D48
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:07:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A97F1547F5;
-	Mon, 16 Sep 2024 12:10:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5548B15575B;
+	Mon, 16 Sep 2024 12:06:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JvPtMELk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r72MTV3i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9AA4146A79;
-	Mon, 16 Sep 2024 12:10:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10BDB13B79F;
+	Mon, 16 Sep 2024 12:06:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488641; cv=none; b=fhVpp0C8cMbjUlpKUO7waGrjNg6FdFSF0mnZ9EjMnzaQZIL3k3uwU0Aadpg1aHyEY2hv28MwBdoky2l0opDZ7WhXfAn+Ds70E3vQc+B6HYiCRdtXOSsxrhnY4cFgKB+yEnDji8wf+71gJwFCczRvneyCXKiYDAnkI5JkDmDaANA=
+	t=1726488416; cv=none; b=GD4xIKsQOwHCfBbW/duR6Bb3ACZYqCQ3zPEWRx1+AQdaKOg3Z1okmYGhX9MMGxtQHRTB3VX+aUr0lUiQBgyE4u1Dnty8Ph5zyQ1s+tCGEUSOOeg0H/MbHIsQDo6SOMLKGImbMPLnltt4QqPeag2o1dUW6W/lh4AFjbM4z+qeIzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488641; c=relaxed/simple;
-	bh=YwHH4f+Mgf97+ya8fpoBAKoSH4SAHFQMezlT18PMmd0=;
+	s=arc-20240116; t=1726488416; c=relaxed/simple;
+	bh=/FpLk9csAFh4tfrieAUD5T4xXtYYSgMwJaUPbjOuXI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kq1u/gEYTkFcSlO7f2UhhRDaygM02PZ0bpqDYK6lqX7JlbHt4R/I793UbyF9EvTVHi4mAE7/sUKu+R+Ye0u/uLBJ6OzrebSVvAjf1FfV1eItG8YYAIWY1TThWGexJy1r27YW+K2p4WhbuGX168pcUtpjzFYqSJJHHLxr0jFb6ak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JvPtMELk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E705C4CEC4;
-	Mon, 16 Sep 2024 12:10:41 +0000 (UTC)
+	 MIME-Version; b=BBJrqfQUwSrbHFcT7OSNq8Zq79U5kfkr9gKn9VWovWPRJkLMFe3Zgv9bL/rLSmMC8UFMeC3SNUY+VYPj0LCxDlSs9ZE1+3QECxFo3VHlCi6efgx1IdG/n4k3lh1G0vw9xjKmBOXizKgN/mia2PWBbOqo2/HCATF02oPIOap4MF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r72MTV3i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 777B4C4CEC4;
+	Mon, 16 Sep 2024 12:06:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488641;
-	bh=YwHH4f+Mgf97+ya8fpoBAKoSH4SAHFQMezlT18PMmd0=;
+	s=korg; t=1726488415;
+	bh=/FpLk9csAFh4tfrieAUD5T4xXtYYSgMwJaUPbjOuXI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JvPtMELksZnV2J7ZQyMNWN52jlbYp7d3FXtXAvvBpuoy5+2pWxdCcWKvbuiJuiFGn
-	 hE+iFRmaVm+qQyCCqNI9Ht8XTfZGSoJnqvZ6zUSvdhpy6Yc4gJEy+1tT4ZwooeLtPy
-	 1sFl4Di/SQVYANkh8PpwtH+8FLXIkZ8Yb7Q13eqw=
+	b=r72MTV3iabl+l46Und0UskF+hOT1DmF5T2yUfpfuW0Upe2Ze9oI7rSl1N1WNFKL8h
+	 dbpGr02br5gq/uwMRj3VZ9cpMGSsFZpDyBpvmcejzXLcAebeBFE/bDRNFGDW9HNzAy
+	 3xaCXwukHwh4bpLHrmgVpJ+5b1wY9mfHbN2LjRPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carolina Jubran <cjubran@nvidia.com>,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 63/91] net/mlx5: Explicitly set scheduling element and TSAR type
-Date: Mon, 16 Sep 2024 13:44:39 +0200
-Message-ID: <20240916114226.562672715@linuxfoundation.org>
+	Alex Deucher <alexander.deucher@amd.com>,
+	"David (Ming Qiang) Wu" <David.Wu3@amd.com>
+Subject: [PATCH 6.10 106/121] drm/amd/amdgpu: apply command submission parser for JPEG v1
+Date: Mon, 16 Sep 2024 13:44:40 +0200
+Message-ID: <20240916114232.608007796@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
-References: <20240916114224.509743970@linuxfoundation.org>
+In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
+References: <20240916114228.914815055@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +61,156 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carolina Jubran <cjubran@nvidia.com>
+From: David (Ming Qiang) Wu <David.Wu3@amd.com>
 
-[ Upstream commit c88146abe4d0f8cf659b2b8883fdc33936d2e3b8 ]
+commit 8409fb50ce48d66cf9dc5391f03f05c56c430605 upstream.
 
-Ensure the scheduling element type and TSAR type are explicitly
-initialized in the QoS rate group creation.
+Similar to jpeg_v2_dec_ring_parse_cs() but it has different
+register ranges and a few other registers access.
 
-This prevents potential issues due to default values.
-
-Fixes: 1ae258f8b343 ("net/mlx5: E-switch, Introduce rate limiting groups API")
-Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
-Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: David (Ming Qiang) Wu <David.Wu3@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 3d5adbdf1d01708777f2eda375227cbf7a98b9fe)
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/jpeg_v1_0.c |   76 ++++++++++++++++++++++++++++++++-
+ drivers/gpu/drm/amd/amdgpu/jpeg_v1_0.h |   11 ++++
+ 2 files changed, 86 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
-index 1887a24ee414..627cdb072573 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
-@@ -420,6 +420,7 @@ __esw_qos_create_rate_group(struct mlx5_eswitch *esw, struct netlink_ext_ack *ex
+--- a/drivers/gpu/drm/amd/amdgpu/jpeg_v1_0.c
++++ b/drivers/gpu/drm/amd/amdgpu/jpeg_v1_0.c
+@@ -23,6 +23,7 @@
+ 
+ #include "amdgpu.h"
+ #include "amdgpu_jpeg.h"
++#include "amdgpu_cs.h"
+ #include "soc15.h"
+ #include "soc15d.h"
+ #include "vcn_v1_0.h"
+@@ -34,6 +35,9 @@
+ static void jpeg_v1_0_set_dec_ring_funcs(struct amdgpu_device *adev);
+ static void jpeg_v1_0_set_irq_funcs(struct amdgpu_device *adev);
+ static void jpeg_v1_0_ring_begin_use(struct amdgpu_ring *ring);
++static int jpeg_v1_dec_ring_parse_cs(struct amdgpu_cs_parser *parser,
++				     struct amdgpu_job *job,
++				     struct amdgpu_ib *ib);
+ 
+ static void jpeg_v1_0_decode_ring_patch_wreg(struct amdgpu_ring *ring, uint32_t *ptr, uint32_t reg_offset, uint32_t val)
  {
- 	u32 tsar_ctx[MLX5_ST_SZ_DW(scheduling_context)] = {};
- 	struct mlx5_esw_rate_group *group;
-+	__be32 *attr;
- 	u32 divider;
- 	int err;
+@@ -300,7 +304,10 @@ static void jpeg_v1_0_decode_ring_emit_i
  
-@@ -427,6 +428,12 @@ __esw_qos_create_rate_group(struct mlx5_eswitch *esw, struct netlink_ext_ack *ex
- 	if (!group)
- 		return ERR_PTR(-ENOMEM);
+ 	amdgpu_ring_write(ring,
+ 		PACKETJ(SOC15_REG_OFFSET(JPEG, 0, mmUVD_LMI_JRBC_IB_VMID), 0, 0, PACKETJ_TYPE0));
+-	amdgpu_ring_write(ring, (vmid | (vmid << 4)));
++	if (ring->funcs->parse_cs)
++		amdgpu_ring_write(ring, 0);
++	else
++		amdgpu_ring_write(ring, (vmid | (vmid << 4)));
  
-+	MLX5_SET(scheduling_context, tsar_ctx, element_type,
-+		 SCHEDULING_CONTEXT_ELEMENT_TYPE_TSAR);
+ 	amdgpu_ring_write(ring,
+ 		PACKETJ(SOC15_REG_OFFSET(JPEG, 0, mmUVD_LMI_JPEG_VMID), 0, 0, PACKETJ_TYPE0));
+@@ -554,6 +561,7 @@ static const struct amdgpu_ring_funcs jp
+ 	.get_rptr = jpeg_v1_0_decode_ring_get_rptr,
+ 	.get_wptr = jpeg_v1_0_decode_ring_get_wptr,
+ 	.set_wptr = jpeg_v1_0_decode_ring_set_wptr,
++	.parse_cs = jpeg_v1_dec_ring_parse_cs,
+ 	.emit_frame_size =
+ 		6 + 6 + /* hdp invalidate / flush */
+ 		SOC15_FLUSH_GPU_TLB_NUM_WREG * 6 +
+@@ -612,3 +620,69 @@ static void jpeg_v1_0_ring_begin_use(str
+ 
+ 	vcn_v1_0_set_pg_for_begin_use(ring, set_clocks);
+ }
 +
-+	attr = MLX5_ADDR_OF(scheduling_context, tsar_ctx, element_attributes);
-+	*attr = cpu_to_be32(TSAR_ELEMENT_TSAR_TYPE_DWRR << 16);
++/**
++ * jpeg_v1_dec_ring_parse_cs - command submission parser
++ *
++ * @parser: Command submission parser context
++ * @job: the job to parse
++ * @ib: the IB to parse
++ *
++ * Parse the command stream, return -EINVAL for invalid packet,
++ * 0 otherwise
++ */
++static int jpeg_v1_dec_ring_parse_cs(struct amdgpu_cs_parser *parser,
++				     struct amdgpu_job *job,
++				     struct amdgpu_ib *ib)
++{
++	u32 i, reg, res, cond, type;
++	int ret = 0;
++	struct amdgpu_device *adev = parser->adev;
 +
- 	MLX5_SET(scheduling_context, tsar_ctx, parent_element_id,
- 		 esw->qos.root_tsar_ix);
- 	err = mlx5_create_scheduling_element_cmd(esw->dev,
--- 
-2.43.0
-
++	for (i = 0; i < ib->length_dw ; i += 2) {
++		reg  = CP_PACKETJ_GET_REG(ib->ptr[i]);
++		res  = CP_PACKETJ_GET_RES(ib->ptr[i]);
++		cond = CP_PACKETJ_GET_COND(ib->ptr[i]);
++		type = CP_PACKETJ_GET_TYPE(ib->ptr[i]);
++
++		if (res || cond != PACKETJ_CONDITION_CHECK0) /* only allow 0 for now */
++			return -EINVAL;
++
++		if (reg >= JPEG_V1_REG_RANGE_START && reg <= JPEG_V1_REG_RANGE_END)
++			continue;
++
++		switch (type) {
++		case PACKETJ_TYPE0:
++			if (reg != JPEG_V1_LMI_JPEG_WRITE_64BIT_BAR_HIGH &&
++			    reg != JPEG_V1_LMI_JPEG_WRITE_64BIT_BAR_LOW &&
++			    reg != JPEG_V1_LMI_JPEG_READ_64BIT_BAR_HIGH &&
++			    reg != JPEG_V1_LMI_JPEG_READ_64BIT_BAR_LOW &&
++			    reg != JPEG_V1_REG_CTX_INDEX &&
++			    reg != JPEG_V1_REG_CTX_DATA) {
++				ret = -EINVAL;
++			}
++			break;
++		case PACKETJ_TYPE1:
++			if (reg != JPEG_V1_REG_CTX_DATA)
++				ret = -EINVAL;
++			break;
++		case PACKETJ_TYPE3:
++			if (reg != JPEG_V1_REG_SOFT_RESET)
++				ret = -EINVAL;
++			break;
++		case PACKETJ_TYPE6:
++			if (ib->ptr[i] != CP_PACKETJ_NOP)
++				ret = -EINVAL;
++			break;
++		default:
++			ret = -EINVAL;
++		}
++
++		if (ret) {
++			dev_err(adev->dev, "Invalid packet [0x%08x]!\n", ib->ptr[i]);
++			break;
++		}
++	}
++
++	return ret;
++}
+--- a/drivers/gpu/drm/amd/amdgpu/jpeg_v1_0.h
++++ b/drivers/gpu/drm/amd/amdgpu/jpeg_v1_0.h
+@@ -29,4 +29,15 @@ int jpeg_v1_0_sw_init(void *handle);
+ void jpeg_v1_0_sw_fini(void *handle);
+ void jpeg_v1_0_start(struct amdgpu_device *adev, int mode);
+ 
++#define JPEG_V1_REG_RANGE_START	0x8000
++#define JPEG_V1_REG_RANGE_END	0x803f
++
++#define JPEG_V1_LMI_JPEG_WRITE_64BIT_BAR_HIGH	0x8238
++#define JPEG_V1_LMI_JPEG_WRITE_64BIT_BAR_LOW	0x8239
++#define JPEG_V1_LMI_JPEG_READ_64BIT_BAR_HIGH	0x825a
++#define JPEG_V1_LMI_JPEG_READ_64BIT_BAR_LOW	0x825b
++#define JPEG_V1_REG_CTX_INDEX			0x8328
++#define JPEG_V1_REG_CTX_DATA			0x8329
++#define JPEG_V1_REG_SOFT_RESET			0x83a0
++
+ #endif /*__JPEG_V1_0_H__*/
 
 
 
