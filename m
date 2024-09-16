@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-76221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A68F97A0A9
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 13:59:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DC6797A136
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:06:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 448B11F246CC
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 11:59:40 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD3141F235E8
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:06:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C37315666B;
-	Mon, 16 Sep 2024 11:59:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C2B8158A3D;
+	Mon, 16 Sep 2024 12:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GZddRkID"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mulnug/M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35992156238;
-	Mon, 16 Sep 2024 11:59:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F43158A18;
+	Mon, 16 Sep 2024 12:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726487974; cv=none; b=HZAd6510h+87Ok0rqJDYV6BKPhc++m4IQ/mTeeQwKkAJBwTHx4/McE3L/9VD0q64HnBXnpKQh2i8bNLrvRAPx7WmT7kFe38Vak79kqeHSovqu8rVecwnmCtiIW6HDAmguGlcMt2VQxUn+cHyRJlDpq3LT+hKC+q3kaJJdwm/ZP8=
+	t=1726488265; cv=none; b=Kx5Nf56ejXwE4Ezw3VItVCL2UzuQGjkKiaCsn2h0MkzzdN/rqnB0mmKyO1uEgxJrhsZq0gKw0qCWYLE/UqkOY6+xNO4Qxqxq9dSbhdzXqslr0Mwek0T2qmtISfeks3tlL7fDFL6pKqjrO8OTy6VPgg6psiuajp2QXds4hEPvrkY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726487974; c=relaxed/simple;
-	bh=hdL0XPgz5jPybJkanMYinBW1ZeARLcdPCrhXoMIF32U=;
+	s=arc-20240116; t=1726488265; c=relaxed/simple;
+	bh=OXNGa64MhFEH3IKgQTR+pgCMuCIz9h63w/RVVtZdq7g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Gzn4MB9uTK8i4bNHEjjNSpZwOaN5YCeVTDsLTY3IegBZaxlPEdIN/3u6YqvYvCqRY2eimgyzGIHE4Mp5MyTW/fILXDfHELTztyP1SPp9oQMTAvqtB5x1eB3XnTUGTjmYrSlg6yR1c6AjjM2MpGX2NYiJeTzvegO+jcxt4Ki/Taw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GZddRkID; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B269C4CECC;
-	Mon, 16 Sep 2024 11:59:33 +0000 (UTC)
+	 MIME-Version; b=KG7asKzdMZz+T5bgWfZ+wfh5psOj4Ebnz3adc+4++SyGd4/ocnUFE9Ph9L/JvZhU0ko/YOuiB0hLyVNmV7AWHXKNC0F+BxT2FvHFUecIUYSPc69a32ug08yO9KsnjXkGPdMvnPClpEIxwUYD2Z3QBd4DcJmaxQaw3e0MBOwYFvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mulnug/M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FA8FC4CEC4;
+	Mon, 16 Sep 2024 12:04:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726487974;
-	bh=hdL0XPgz5jPybJkanMYinBW1ZeARLcdPCrhXoMIF32U=;
+	s=korg; t=1726488264;
+	bh=OXNGa64MhFEH3IKgQTR+pgCMuCIz9h63w/RVVtZdq7g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GZddRkIDLNZTjCxlw07udG2yIRQwWcVXkQSz7UCd2rHNFUXi3ZTNwdhaNxXuVh2t1
-	 yM+bZtJoETG6AUjcqtQwqCWyB/3fUwPOJH6aGFTSPyAd0ZBGaS0kzzm9Ki2WA614Jc
-	 +nM4KrfT7kUj0JpW8/gIUXacQGxwdG0QN/aLzVK0=
+	b=Mulnug/MfA4Rm73rzyvnmRbcFF90d6uVB8m6CrlP4Xsid2bEeKQPM5z9tJG1jJwT7
+	 saUWPZQSYP6fFiKVjnurXnZoCI/4vgGvGNWSN5T8NGCPXApumeO4c5teOFvKGuaEEQ
+	 gSiqxq6J8W7IWNwbF2XbL2t95kYQ/oAaJWFiGgfE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Pawel Dembicki <paweldembicki@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 07/63] net: phy: vitesse: repair vsc73xx autonegotiation
-Date: Mon, 16 Sep 2024 13:43:46 +0200
-Message-ID: <20240916114221.295621750@linuxfoundation.org>
+	Roman Kisel <romank@linux.microsoft.com>,
+	Dexuan Cui <decui@microsoft.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Wei Liu <wei.liu@kernel.org>
+Subject: [PATCH 6.10 053/121] clocksource: hyper-v: Use lapic timer in a TDX VM without paravisor
+Date: Mon, 16 Sep 2024 13:43:47 +0200
+Message-ID: <20240916114230.896959629@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
-References: <20240916114221.021192667@linuxfoundation.org>
+In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
+References: <20240916114228.914815055@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,81 +63,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pawel Dembicki <paweldembicki@gmail.com>
+From: Dexuan Cui <decui@microsoft.com>
 
-[ Upstream commit de7a670f8defe4ed2115552ad23dea0f432f7be4 ]
+commit 7f828d5fff7d24752e1ecf6bebb6617a81f97b93 upstream.
 
-When the vsc73xx mdio bus work properly, the generic autonegotiation
-configuration works well.
+In a TDX VM without paravisor, currently the default timer is the Hyper-V
+timer, which depends on the slow VM Reference Counter MSR: the Hyper-V TSC
+page is not enabled in such a VM because the VM uses Invariant TSC as a
+better clocksource and it's challenging to mark the Hyper-V TSC page shared
+in very early boot.
 
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Pawel Dembicki <paweldembicki@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Lower the rating of the Hyper-V timer so the local APIC timer becomes the
+the default timer in such a VM, and print a warning in case Invariant TSC
+is unavailable in such a VM. This change should cause no perceivable
+performance difference.
+
+Cc: stable@vger.kernel.org # 6.6+
+Reviewed-by: Roman Kisel <romank@linux.microsoft.com>
+Signed-off-by: Dexuan Cui <decui@microsoft.com>
+Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+Link: https://lore.kernel.org/r/20240621061614.8339-1-decui@microsoft.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <20240621061614.8339-1-decui@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/phy/vitesse.c | 14 --------------
- 1 file changed, 14 deletions(-)
+ arch/x86/kernel/cpu/mshyperv.c     |   16 +++++++++++++++-
+ drivers/clocksource/hyperv_timer.c |   16 +++++++++++++++-
+ 2 files changed, 30 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/phy/vitesse.c b/drivers/net/phy/vitesse.c
-index 897b979ec03c..3b5fcaf0dd36 100644
---- a/drivers/net/phy/vitesse.c
-+++ b/drivers/net/phy/vitesse.c
-@@ -237,16 +237,6 @@ static int vsc739x_config_init(struct phy_device *phydev)
- 	return 0;
- }
+--- a/arch/x86/kernel/cpu/mshyperv.c
++++ b/arch/x86/kernel/cpu/mshyperv.c
+@@ -449,9 +449,23 @@ static void __init ms_hyperv_init_platfo
+ 			ms_hyperv.hints &= ~HV_X64_APIC_ACCESS_RECOMMENDED;
  
--static int vsc73xx_config_aneg(struct phy_device *phydev)
--{
--	/* The VSC73xx switches does not like to be instructed to
--	 * do autonegotiation in any way, it prefers that you just go
--	 * with the power-on/reset defaults. Writing some registers will
--	 * just make autonegotiation permanently fail.
--	 */
--	return 0;
--}
--
- /* This adds a skew for both TX and RX clocks, so the skew should only be
-  * applied to "rgmii-id" interfaces. It may not work as expected
-  * on "rgmii-txid", "rgmii-rxid" or "rgmii" interfaces.
-@@ -444,7 +434,6 @@ static struct phy_driver vsc82xx_driver[] = {
- 	.phy_id_mask    = 0x000ffff0,
- 	/* PHY_GBIT_FEATURES */
- 	.config_init    = vsc738x_config_init,
--	.config_aneg    = vsc73xx_config_aneg,
- 	.read_page      = vsc73xx_read_page,
- 	.write_page     = vsc73xx_write_page,
- }, {
-@@ -453,7 +442,6 @@ static struct phy_driver vsc82xx_driver[] = {
- 	.phy_id_mask    = 0x000ffff0,
- 	/* PHY_GBIT_FEATURES */
- 	.config_init    = vsc738x_config_init,
--	.config_aneg    = vsc73xx_config_aneg,
- 	.read_page      = vsc73xx_read_page,
- 	.write_page     = vsc73xx_write_page,
- }, {
-@@ -462,7 +450,6 @@ static struct phy_driver vsc82xx_driver[] = {
- 	.phy_id_mask    = 0x000ffff0,
- 	/* PHY_GBIT_FEATURES */
- 	.config_init    = vsc739x_config_init,
--	.config_aneg    = vsc73xx_config_aneg,
- 	.read_page      = vsc73xx_read_page,
- 	.write_page     = vsc73xx_write_page,
- }, {
-@@ -471,7 +458,6 @@ static struct phy_driver vsc82xx_driver[] = {
- 	.phy_id_mask    = 0x000ffff0,
- 	/* PHY_GBIT_FEATURES */
- 	.config_init    = vsc739x_config_init,
--	.config_aneg    = vsc73xx_config_aneg,
- 	.read_page      = vsc73xx_read_page,
- 	.write_page     = vsc73xx_write_page,
- }, {
--- 
-2.43.0
-
+ 			if (!ms_hyperv.paravisor_present) {
+-				/* To be supported: more work is required.  */
++				/*
++				 * Mark the Hyper-V TSC page feature as disabled
++				 * in a TDX VM without paravisor so that the
++				 * Invariant TSC, which is a better clocksource
++				 * anyway, is used instead.
++				 */
+ 				ms_hyperv.features &= ~HV_MSR_REFERENCE_TSC_AVAILABLE;
+ 
++				/*
++				 * The Invariant TSC is expected to be available
++				 * in a TDX VM without paravisor, but if not,
++				 * print a warning message. The slower Hyper-V MSR-based
++				 * Ref Counter should end up being the clocksource.
++				 */
++				if (!(ms_hyperv.features & HV_ACCESS_TSC_INVARIANT))
++					pr_warn("Hyper-V: Invariant TSC is unavailable\n");
++
+ 				/* HV_MSR_CRASH_CTL is unsupported. */
+ 				ms_hyperv.misc_features &= ~HV_FEATURE_GUEST_CRASH_MSR_AVAILABLE;
+ 
+--- a/drivers/clocksource/hyperv_timer.c
++++ b/drivers/clocksource/hyperv_timer.c
+@@ -137,7 +137,21 @@ static int hv_stimer_init(unsigned int c
+ 	ce->name = "Hyper-V clockevent";
+ 	ce->features = CLOCK_EVT_FEAT_ONESHOT;
+ 	ce->cpumask = cpumask_of(cpu);
+-	ce->rating = 1000;
++
++	/*
++	 * Lower the rating of the Hyper-V timer in a TDX VM without paravisor,
++	 * so the local APIC timer (lapic_clockevent) is the default timer in
++	 * such a VM. The Hyper-V timer is not preferred in such a VM because
++	 * it depends on the slow VM Reference Counter MSR (the Hyper-V TSC
++	 * page is not enbled in such a VM because the VM uses Invariant TSC
++	 * as a better clocksource and it's challenging to mark the Hyper-V
++	 * TSC page shared in very early boot).
++	 */
++	if (!ms_hyperv.paravisor_present && hv_isolation_type_tdx())
++		ce->rating = 90;
++	else
++		ce->rating = 1000;
++
+ 	ce->set_state_shutdown = hv_ce_shutdown;
+ 	ce->set_state_oneshot = hv_ce_set_oneshot;
+ 	ce->set_next_event = hv_ce_set_next_event;
 
 
 
