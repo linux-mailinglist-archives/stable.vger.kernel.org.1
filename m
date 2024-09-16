@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-76414-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76250-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B59797A1A7
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:09:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 848F197A0C7
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:01:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AE1221C216B1
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:09:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2CBCFB2379D
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:00:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CD72156661;
-	Mon, 16 Sep 2024 12:08:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 891F8A95E;
+	Mon, 16 Sep 2024 12:00:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n+j1a54I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZgSvuVES"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF4E914D2B3;
-	Mon, 16 Sep 2024 12:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48B1714AD19;
+	Mon, 16 Sep 2024 12:00:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488524; cv=none; b=L6grINX4Ep7brrny2CHPI6o7aZET302YHSazYjwO531ickCqfJGjsofxIJkTL074E2MGtIubNCccGPhZwEQP7kPwod7TcUKqEmhb/5rZ8adxjt5OuiFbWmcMcBNEbALw6jgQitajfK/dubHXD3VAoYQ4JXA4Lb8to0j4qm7m9Lw=
+	t=1726488057; cv=none; b=VD/fniWE3Ztb2+uFq70Rs4qGtx8Qx+aKy2wOTX7/hgeUk6EULYPOsWjlcYgvusVXJz0qMxMjQosSdZGzciQgHLz4r0PP7E28lBNELHhx05AQl4dgUDm1HXjaHmwfJQIN6oKyKnSE/D4HbkKBxtSkQ6hmDXsGPjILDVWeiLC2VwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488524; c=relaxed/simple;
-	bh=IARXPRX1eZmmOByUVqq0Z9IKJEg4x30b43Dwedn1ZcQ=;
+	s=arc-20240116; t=1726488057; c=relaxed/simple;
+	bh=TOVD7Igml/zrb9T0SHxOhCVz747KU6ci8xbcNwOlXCs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=vAtfl7LzireZvCeLYJTJysMVtuhFlFttySUDhSEZnCwZLq+hhUAGuSGBxUiBh/IKhPu/UCIDfhd7P3xyo9S5UQWtzogRUkbWfcDr8K+IBzJKxMivJO3znFjiYYlexhvloVEgSFs8Yu3reRzV9Q9xU8Q7wnVkE6Io8xy15gMrOFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n+j1a54I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49A81C4CEC4;
-	Mon, 16 Sep 2024 12:08:44 +0000 (UTC)
+	 MIME-Version; b=G6u9BFDcxQhnPkApmVe1SL94Is4mdNEkeNwV7/cQIQBNxjy89sw2l8zt35qKRy+tQgTp+b50tMgd8SQW3B1HYQuHP4kR9R4wXSFgBiGOWSAwJB6TaaMg+koHyRq4AeyInx5PC9qncqhJfss88U/rhcRBbePCjc0NHEIiLPlAevI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZgSvuVES; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C45BFC4CEC4;
+	Mon, 16 Sep 2024 12:00:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488524;
-	bh=IARXPRX1eZmmOByUVqq0Z9IKJEg4x30b43Dwedn1ZcQ=;
+	s=korg; t=1726488057;
+	bh=TOVD7Igml/zrb9T0SHxOhCVz747KU6ci8xbcNwOlXCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n+j1a54Ilv/9YATGtXYzQaEawC9hR4LnGP2RA9v9NEgr9DfdvKVa8N36EqiuTAz8v
-	 XLj4EEi6wSYmSIK4H58IgznzBy1emHKdb0FvaZJaGCbAWAl2eHoCRZ0CHj6sgZn04v
-	 mzSrAzcWZtzRwXMSnO/FC0ySmmQQIhnm7tMtuN9w=
+	b=ZgSvuVESN1XAubdX5SweFqjjxIsF/DnQ76LgZW21EGyoLHrPZoQyWtAyauhgpk7D6
+	 t8IUDzL8Ju7Y+uNDzyIequcZGJp/5scsMqPXd7ik9g2n1MRXGOEpiFnkUKoeuY7GAd
+	 Qt4bEPL8vXObgHSWh+IwkO6riJ022gguHf8j5Wmg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	John Thomson <git@johnthomson.fastmail.com.au>,
-	stable <stable@kernel.org>,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-	Srinivas Kandagatla <srinivas.kandagatla@linaro.org>,
+	Bouke Sybren Haarsma <boukehaarsma23@gmail.com>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 09/91] nvmem: u-boot-env: error if NVMEM device is too small
+Subject: [PATCH 6.1 06/63] drm: panel-orientation-quirks: Add quirk for Ayn Loki Max
 Date: Mon, 16 Sep 2024 13:43:45 +0200
-Message-ID: <20240916114224.840689383@linuxfoundation.org>
+Message-ID: <20240916114221.255503676@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
-References: <20240916114224.509743970@linuxfoundation.org>
+In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
+References: <20240916114221.021192667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +60,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: John Thomson <git@johnthomson.fastmail.com.au>
+From: Bouke Sybren Haarsma <boukehaarsma23@gmail.com>
 
-[ Upstream commit 8679e8b4a1ebdb40c4429e49368d29353e07b601 ]
+[ Upstream commit 2c71c8459c8ca66bd8f597effaac892ee8448a9f ]
 
-Verify data size before trying to parse it to avoid reading out of
-buffer. This could happen in case of problems at MTD level or invalid DT
-bindings.
+Add quirk orientation for Ayn Loki Max model.
 
-Signed-off-by: John Thomson <git@johnthomson.fastmail.com.au>
-Cc: stable <stable@kernel.org>
-Fixes: d5542923f200 ("nvmem: add driver handling U-Boot environment variables")
-[rmilecki: simplify commit description & rebase]
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
-Link: https://lore.kernel.org/r/20240902142510.71096-2-srinivas.kandagatla@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This has been tested by JELOS team that uses their
+own patched kernel for a while now and confirmed by
+users in the ChimeraOS discord servers.
+
+Signed-off-by: Bouke Sybren Haarsma <boukehaarsma23@gmail.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240728124731.168452-3-boukehaarsma23@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvmem/u-boot-env.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/gpu/drm/drm_panel_orientation_quirks.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/nvmem/u-boot-env.c b/drivers/nvmem/u-boot-env.c
-index befbab156cda..adabbfdad6fb 100644
---- a/drivers/nvmem/u-boot-env.c
-+++ b/drivers/nvmem/u-boot-env.c
-@@ -176,6 +176,13 @@ static int u_boot_env_parse(struct u_boot_env *priv)
- 		data_offset = offsetof(struct u_boot_env_image_broadcom, data);
- 		break;
- 	}
-+
-+	if (dev_size < data_offset) {
-+		dev_err(dev, "Device too small for u-boot-env\n");
-+		err = -EIO;
-+		goto err_kfree;
-+	}
-+
- 	crc32_addr = (__le32 *)(buf + crc32_offset);
- 	crc32 = le32_to_cpu(*crc32_addr);
- 	crc32_data_len = dev_size - crc32_data_offset;
+diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
+index 79ccf4959df4..5b2506c65e95 100644
+--- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
++++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
+@@ -208,6 +208,12 @@ static const struct dmi_system_id orientation_data[] = {
+ 		  DMI_MATCH(DMI_BOARD_NAME, "KUN"),
+ 		},
+ 		.driver_data = (void *)&lcd1600x2560_rightside_up,
++	}, {    /* AYN Loki Max */
++		.matches = {
++			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "ayn"),
++			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Loki Max"),
++		},
++		.driver_data = (void *)&lcd1080x1920_leftside_up,
+ 	}, {	/* AYN Loki Zero */
+ 		.matches = {
+ 			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "ayn"),
 -- 
 2.43.0
 
