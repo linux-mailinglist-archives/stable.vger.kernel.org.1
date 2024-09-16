@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-76341-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76313-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2169B97A14A
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:06:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 968B297A12C
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:06:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 541351C232B3
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:06:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 604E528646F
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:06:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ED84156222;
-	Mon, 16 Sep 2024 12:05:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E043A158546;
+	Mon, 16 Sep 2024 12:03:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VqgmTZas"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Sp+PUVSA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B1AD156641;
-	Mon, 16 Sep 2024 12:05:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D7F1158525;
+	Mon, 16 Sep 2024 12:03:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488316; cv=none; b=JK9ZCXwg0/QovUIWGgsUunyXGl0y+UvApwCoFMwwy6hV1UsFK5tmdWPejp/EqsEU8+OVKoFkvKgEgUG4p8Dv1L9CQ4q40WADiET+HNfzj6lRoxpbnXeLaitO93p2e/IgjH+9PD+IXOBQFFRK39oehQt04L1nveAOUBgBeOzsoSo=
+	t=1726488236; cv=none; b=eEIGaT9DA1PFaPcR22uSgVWFYcgPRPElAIjPMMuHtDl26pbOiZUyxwEMQVdHWpnMQWNZKFlew847Teyg/EUoZi9ueI62eQpRL7sEvx615q65c8cDGKAfJ5Z4fQepiVTHz0KKOdGUYt+tG3cYMoxQuhfsRP94+GtqQdIOYJ/46uo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488316; c=relaxed/simple;
-	bh=1JRYX/fmyWujRbGYPDY7VpN5ZiQvYWSVS0REM8DG1uw=;
+	s=arc-20240116; t=1726488236; c=relaxed/simple;
+	bh=Xih8Y19YpIX5vJPayhzyGfVs/NWCUR9lzN6G7IONClI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VUUVgSiD4RngNPs1SPmPO0z1s+lSwipvVcD359R3uHQj0hmP+PHFq+hjyz1w9UPdepSPKr0oN2Ma6aPb/0b6yiXI2QHQ7YH3NmekTQ3DcePq3+hnbQ7WfYKebKReSyV0WLw2nJPe8RkA/o6zsf99r6HMD6+Fw0ic5d517RZgR40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VqgmTZas; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85815C4CEC4;
-	Mon, 16 Sep 2024 12:05:15 +0000 (UTC)
+	 MIME-Version; b=hHhuOOPhL25+Nds2DpyrhnofcB8o/aFTFszhwp/XcnUmTbZ72H0HY++P2AALJFpwmw6q7Gado2LsJPu7avwhKBM3QK53CBM/x90C6phAv6eAvy6Yx+O6PTWmlqNvEBJxfov5vipYCzccibBXDCnb9Z4e+CYH/MMLEvGRk+41iJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Sp+PUVSA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27456C4CEC4;
+	Mon, 16 Sep 2024 12:03:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488315;
-	bh=1JRYX/fmyWujRbGYPDY7VpN5ZiQvYWSVS0REM8DG1uw=;
+	s=korg; t=1726488236;
+	bh=Xih8Y19YpIX5vJPayhzyGfVs/NWCUR9lzN6G7IONClI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VqgmTZasHnLBrNIGLDweFWcm19S3/1RIZNLvtG7fQZWnZo9NqdWTcKOcKGyK14EuT
-	 MzF1syOimpcq2MRoqGWG5uB6UuKADZH018QmATiErzVZk9P0CXnQ8Rd8IrnxRqUN5l
-	 TXP8o79yBOrYHVSEsTXmIOkC/7HZU/22c6Bme6zI=
+	b=Sp+PUVSABumkJ6iszS55b6+zI5kbHU82vhMGWGkuJWF4vwX/9HJ8Za9c3xpVhXJD1
+	 98EInO270pewF7SmM5Zk2PJo5SzVoOaEB56SYjnKAolhRuLp4it+z6OzdVS5Z5ueqk
+	 TGifejumweca0sluYE6/f9lUwqpMwFGS/en22FOk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Ngai-Mint Kwan <ngai-mint.kwan@linux.intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 034/121] Input: i8042 - add Fujitsu Lifebook E756 to i8042 quirk table
-Date: Mon, 16 Sep 2024 13:43:28 +0200
-Message-ID: <20240916114230.259413785@linuxfoundation.org>
+Subject: [PATCH 6.10 035/121] drm/xe/xe2lpm: Extend Wa_16021639441
+Date: Mon, 16 Sep 2024 13:43:29 +0200
+Message-ID: <20240916114230.289977338@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
 References: <20240916114228.914815055@linuxfoundation.org>
@@ -66,42 +67,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Ngai-Mint Kwan <ngai-mint.kwan@linux.intel.com>
 
-[ Upstream commit 7ce7c2283fa6843ab3c2adfeb83dcc504a107858 ]
+[ Upstream commit 03a2dc84f5c4ef31ac0112b29d51ff103f7c8dd4 ]
 
-Yet another quirk entry for Fujitsu laptop.  Lifebook E756 requires
-i8041.nomux for keeping the touchpad working after suspend/resume.
+Wa_16021639441 applies to Xe2_LPM.
 
-Link: https://bugzilla.suse.com/show_bug.cgi?id=1229056
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://lore.kernel.org/r/20240814100630.2048-1-tiwai@suse.de
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Ngai-Mint Kwan <ngai-mint.kwan@linux.intel.com>
+Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
+Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240701184637.531794-1-ngai-mint.kwan@linux.intel.com
+(cherry picked from commit 74e3076800067c6dc0dcff5b75344cec064c20eb)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/serio/i8042-acpipnpio.h | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/gpu/drm/xe/xe_wa.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/input/serio/i8042-acpipnpio.h b/drivers/input/serio/i8042-acpipnpio.h
-index e9eb9554dd7b..bad238f69a7a 100644
---- a/drivers/input/serio/i8042-acpipnpio.h
-+++ b/drivers/input/serio/i8042-acpipnpio.h
-@@ -627,6 +627,15 @@ static const struct dmi_system_id i8042_dmi_quirk_table[] __initconst = {
- 		},
- 		.driver_data = (void *)(SERIO_QUIRK_NOMUX)
+diff --git a/drivers/gpu/drm/xe/xe_wa.c b/drivers/gpu/drm/xe/xe_wa.c
+index 66dafe980b9c..1f7699d7fffb 100644
+--- a/drivers/gpu/drm/xe/xe_wa.c
++++ b/drivers/gpu/drm/xe/xe_wa.c
+@@ -542,6 +542,16 @@ static const struct xe_rtp_entry_sr engine_was[] = {
+ 	  XE_RTP_ACTIONS(SET(HALF_SLICE_CHICKEN7, CLEAR_OPTIMIZATION_DISABLE))
  	},
-+	{
-+		/* Fujitsu Lifebook E756 */
-+		/* https://bugzilla.suse.com/show_bug.cgi?id=1229056 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "FUJITSU"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "LIFEBOOK E756"),
-+		},
-+		.driver_data = (void *)(SERIO_QUIRK_NOMUX)
+ 
++	/* Xe2_LPM */
++
++	{ XE_RTP_NAME("16021639441"),
++	  XE_RTP_RULES(MEDIA_VERSION(2000)),
++	  XE_RTP_ACTIONS(SET(CSFE_CHICKEN1(0),
++			     GHWSP_CSB_REPORT_DIS |
++			     PPHWSP_CSB_AND_TIMESTAMP_REPORT_DIS,
++			     XE_RTP_ACTION_FLAG(ENGINE_BASE)))
 +	},
- 	{
- 		/* Fujitsu Lifebook E5411 */
- 		.matches = {
++
+ 	/* Xe2_HPM */
+ 
+ 	{ XE_RTP_NAME("16021639441"),
 -- 
 2.43.0
 
