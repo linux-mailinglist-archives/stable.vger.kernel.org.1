@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-76293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36D8197A111
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:05:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9299E97A113
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:05:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E1DAA1F24BCB
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:05:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 508D2285422
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:05:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E27815B10A;
-	Mon, 16 Sep 2024 12:02:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52BB815687C;
+	Mon, 16 Sep 2024 12:03:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1QJTj2Fa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a2WnRRPI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C1BE15B108;
-	Mon, 16 Sep 2024 12:02:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 104DC155732;
+	Mon, 16 Sep 2024 12:03:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488179; cv=none; b=ZP5Yj0tyjsTlsUxnSImmty2Zbsxh3egORBApmqKmiMF87l4JPU3VLf9VKp39vZMPTW4gwoPI7T0Ux/WVEnEhZY5luOc7n7lCFYiEXQy2UeQZh8LF0aWKMdlJfWtaQoxR6z5RHp07RCU5WFYgRnbY7TeSqDmNEfbnP+A8tsIS4jE=
+	t=1726488185; cv=none; b=D5iuhfZV4Z24UolqudTcqzcFaO9R2cNP/DsE5Cn3lm4eVVtYSeEEJJCNOG/aKE+pSeMWpO9Tw72BDDCcacRWA7WttIFS8+Vtfam8aoSyJezjhMVJxE8TQXwqh1w3bo0Ywky9wunzY4TrF1/KJhGvJX4TUS+Wz1ewSuT8PlY6bFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488179; c=relaxed/simple;
-	bh=UUeWXZPvtJ5G9Y/1gyUZ8S0YneO1MDi8+DQTWibnb6g=;
+	s=arc-20240116; t=1726488185; c=relaxed/simple;
+	bh=siRCnTcuZ6MR0tvaUs+9qZ3HwG2DjyW8XpSdmgcP1Zw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oM/gXQVS7woGYMocvY81v10ceiWjSGZzPxMtyeh/l9YNW4H9XEhvPcChSbNnUy70MLda1G3y4UYQVkfsbR2iQZ9c4fFHdTQvhrRblJiTrKiIrkE/aHVDYjGSR/+p8mxFgGLLOA1qI7G1ZPUUtPWPwp32sRzgOQeZcLr28uo88Gc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1QJTj2Fa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CDCDC4CEC7;
-	Mon, 16 Sep 2024 12:02:58 +0000 (UTC)
+	 MIME-Version; b=hFEn379binVQAReAgx2EFLwyMdOaOpIGQLQilR525x6IgeEgWQusAaUZm7aUwy6/lyxT5n/AUH23aUjy3awQUgrHilhRVKZXSfgg9haTtOUKFNCktGIcXdL90uglj6OfmM/mAEy5YcaRRUGWpIzvtcwSydM89pkrhURfPRKM7MI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a2WnRRPI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42C62C4CEC4;
+	Mon, 16 Sep 2024 12:03:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488179;
-	bh=UUeWXZPvtJ5G9Y/1gyUZ8S0YneO1MDi8+DQTWibnb6g=;
+	s=korg; t=1726488184;
+	bh=siRCnTcuZ6MR0tvaUs+9qZ3HwG2DjyW8XpSdmgcP1Zw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1QJTj2FaeiqwD+9hA4wou91of5Kax+Oq62SCHSxktuaGJ1/n1JIQ0GhBmf0Ybqaof
-	 kOuW2nYUOyDLeeP1v6/JDNi3chWMc8HEQFj//EOC4fJ+bnvRpJQQfo1VUt2m1W3VPk
-	 1mH+C+VhdcdvuPi6wsbw3djRf8CGHBTtzx5NNy6A=
+	b=a2WnRRPI26cUAtEMihtqxBB9S8yoJ7J3b9HiwipwoHRBsKrV8rw5YKOYbhdA7HrqN
+	 jy1AX3AqWZdtgh7z6MxN735NDHBQ4vm/7tN63tD9o/28CzMQibpRJS/c0O/aC3f7hM
+	 8xfcDG276mLSLQ/NSy1nlG6HBpsiRHfRE+sqjSj4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Kaechele <felix@kaechele.ca>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Waiman Long <longman@redhat.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 023/121] Input: edt-ft5x06 - add support for FocalTech FT8201
-Date: Mon, 16 Sep 2024 13:43:17 +0200
-Message-ID: <20240916114229.764993384@linuxfoundation.org>
+Subject: [PATCH 6.10 024/121] cgroup/cpuset: Eliminate unncessary sched domains rebuilds in hotplug
+Date: Mon, 16 Sep 2024 13:43:18 +0200
+Message-ID: <20240916114229.798019521@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
 References: <20240916114228.914815055@linuxfoundation.org>
@@ -66,54 +66,124 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Felix Kaechele <felix@kaechele.ca>
+From: Waiman Long <longman@redhat.com>
 
-[ Upstream commit fc289d3e8698f9b11edad6d73f371ebf35944c57 ]
+[ Upstream commit ff0ce721ec213499ec5a532041fb3a1db2dc5ecb ]
 
-The driver supports the FT8201 chip as well. It registers up to 10 touch
-points.
+It was found that some hotplug operations may cause multiple
+rebuild_sched_domains_locked() calls. Some of those intermediate calls
+may use cpuset states not in the final correct form leading to incorrect
+sched domain setting.
 
-Tested on: Lenovo ThinkSmart View (CD-18781Y), LCM: BOE TV080WXM-LL4
+Fix this problem by using the existing force_rebuild flag to inhibit
+immediate rebuild_sched_domains_locked() calls if set and only doing
+one final call at the end. Also renaming the force_rebuild flag to
+force_sd_rebuild to make its meaning for clear.
 
-Signed-off-by: Felix Kaechele <felix@kaechele.ca>
-Link: https://lore.kernel.org/r/20240804031310.331871-3-felix@kaechele.ca
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/touchscreen/edt-ft5x06.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ kernel/cgroup/cpuset.c | 33 +++++++++++++++++----------------
+ 1 file changed, 17 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/input/touchscreen/edt-ft5x06.c b/drivers/input/touchscreen/edt-ft5x06.c
-index 06ec0f2e18ae..b0b5b6241b44 100644
---- a/drivers/input/touchscreen/edt-ft5x06.c
-+++ b/drivers/input/touchscreen/edt-ft5x06.c
-@@ -1474,6 +1474,10 @@ static const struct edt_i2c_chip_data edt_ft6236_data = {
- 	.max_support_points = 2,
- };
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index e8f24483e05f..c03a2bc106d4 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -223,6 +223,13 @@ static cpumask_var_t	isolated_cpus;
+ /* List of remote partition root children */
+ static struct list_head remote_children;
  
-+static const struct edt_i2c_chip_data edt_ft8201_data = {
-+	.max_support_points = 10,
-+};
++/*
++ * A flag to force sched domain rebuild at the end of an operation while
++ * inhibiting it in the intermediate stages when set. Currently it is only
++ * set in hotplug code.
++ */
++static bool force_sd_rebuild;
 +
- static const struct edt_i2c_chip_data edt_ft8719_data = {
- 	.max_support_points = 10,
- };
-@@ -1485,6 +1489,7 @@ static const struct i2c_device_id edt_ft5x06_ts_id[] = {
- 	{ .name = "ft5452", .driver_data = (long)&edt_ft5452_data },
- 	/* Note no edt- prefix for compatibility with the ft6236.c driver */
- 	{ .name = "ft6236", .driver_data = (long)&edt_ft6236_data },
-+	{ .name = "ft8201", .driver_data = (long)&edt_ft8201_data },
- 	{ .name = "ft8719", .driver_data = (long)&edt_ft8719_data },
- 	{ /* sentinel */ }
- };
-@@ -1499,6 +1504,7 @@ static const struct of_device_id edt_ft5x06_of_match[] = {
- 	{ .compatible = "focaltech,ft5452", .data = &edt_ft5452_data },
- 	/* Note focaltech vendor prefix for compatibility with ft6236.c */
- 	{ .compatible = "focaltech,ft6236", .data = &edt_ft6236_data },
-+	{ .compatible = "focaltech,ft8201", .data = &edt_ft8201_data },
- 	{ .compatible = "focaltech,ft8719", .data = &edt_ft8719_data },
- 	{ /* sentinel */ }
- };
+ /*
+  * Partition root states:
+  *
+@@ -1442,7 +1449,7 @@ static void update_partition_sd_lb(struct cpuset *cs, int old_prs)
+ 			clear_bit(CS_SCHED_LOAD_BALANCE, &cs->flags);
+ 	}
+ 
+-	if (rebuild_domains)
++	if (rebuild_domains && !force_sd_rebuild)
+ 		rebuild_sched_domains_locked();
+ }
+ 
+@@ -1805,7 +1812,7 @@ static void remote_partition_check(struct cpuset *cs, struct cpumask *newmask,
+ 			remote_partition_disable(child, tmp);
+ 			disable_cnt++;
+ 		}
+-	if (disable_cnt)
++	if (disable_cnt && !force_sd_rebuild)
+ 		rebuild_sched_domains_locked();
+ }
+ 
+@@ -2415,7 +2422,8 @@ static void update_cpumasks_hier(struct cpuset *cs, struct tmpmasks *tmp,
+ 	}
+ 	rcu_read_unlock();
+ 
+-	if (need_rebuild_sched_domains && !(flags & HIER_NO_SD_REBUILD))
++	if (need_rebuild_sched_domains && !(flags & HIER_NO_SD_REBUILD) &&
++	    !force_sd_rebuild)
+ 		rebuild_sched_domains_locked();
+ }
+ 
+@@ -3077,7 +3085,8 @@ static int update_flag(cpuset_flagbits_t bit, struct cpuset *cs,
+ 	cs->flags = trialcs->flags;
+ 	spin_unlock_irq(&callback_lock);
+ 
+-	if (!cpumask_empty(trialcs->cpus_allowed) && balance_flag_changed)
++	if (!cpumask_empty(trialcs->cpus_allowed) && balance_flag_changed &&
++	    !force_sd_rebuild)
+ 		rebuild_sched_domains_locked();
+ 
+ 	if (spread_flag_changed)
+@@ -4478,11 +4487,9 @@ hotplug_update_tasks(struct cpuset *cs,
+ 		update_tasks_nodemask(cs);
+ }
+ 
+-static bool force_rebuild;
+-
+ void cpuset_force_rebuild(void)
+ {
+-	force_rebuild = true;
++	force_sd_rebuild = true;
+ }
+ 
+ /**
+@@ -4630,15 +4637,9 @@ static void cpuset_handle_hotplug(void)
+ 		       !cpumask_empty(subpartitions_cpus);
+ 	mems_updated = !nodes_equal(top_cpuset.effective_mems, new_mems);
+ 
+-	/*
+-	 * In the rare case that hotplug removes all the cpus in
+-	 * subpartitions_cpus, we assumed that cpus are updated.
+-	 */
+-	if (!cpus_updated && !cpumask_empty(subpartitions_cpus))
+-		cpus_updated = true;
+-
+ 	/* For v1, synchronize cpus_allowed to cpu_active_mask */
+ 	if (cpus_updated) {
++		cpuset_force_rebuild();
+ 		spin_lock_irq(&callback_lock);
+ 		if (!on_dfl)
+ 			cpumask_copy(top_cpuset.cpus_allowed, &new_cpus);
+@@ -4694,8 +4695,8 @@ static void cpuset_handle_hotplug(void)
+ 	}
+ 
+ 	/* rebuild sched domains if cpus_allowed has changed */
+-	if (cpus_updated || force_rebuild) {
+-		force_rebuild = false;
++	if (force_sd_rebuild) {
++		force_sd_rebuild = false;
+ 		rebuild_sched_domains_cpuslocked();
+ 	}
+ 
 -- 
 2.43.0
 
