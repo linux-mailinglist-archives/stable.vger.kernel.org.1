@@ -1,188 +1,114 @@
-Return-Path: <stable+bounces-76529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A30597A7C4
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 21:23:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE84897A7CC
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 21:27:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 197542837E9
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 19:23:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5917CB225B0
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 19:27:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79E4015855C;
-	Mon, 16 Sep 2024 19:23:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E6BD15B560;
+	Mon, 16 Sep 2024 19:27:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="Q88ZGTyO"
+	dkim=pass (1024-bit key) header.d=hp.com header.i=@hp.com header.b="WDKuDLMM"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+Received: from us-smtp-delivery-162.mimecast.com (us-smtp-delivery-162.mimecast.com [170.10.129.162])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31939175AD;
-	Mon, 16 Sep 2024 19:23:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02B0B15921D
+	for <stable@vger.kernel.org>; Mon, 16 Sep 2024 19:27:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.162
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726514609; cv=none; b=hcBiptYHMyFKh1dUqFUeCp5sVzQDm6vP9C+b1ANoUpTzuY7T81mGbu+bBu3FZKVlXeCmlUkX8H+BGZSeNIB2cC0kv5mRLngFxHSnqW/soWfRqjFIlmmwvqRw0cEFK8Ng+I9tu8RZOiyZhqTLneWhrT4gA7cCRilMAjNmXEvp42w=
+	t=1726514837; cv=none; b=F1oAdKZCmJ7Nf0FDmuAvNLalnq/9buCQJmiHo/ALN2ocK+I4kHc7q1g8gpwr6HVwvynXsZe8oIO3RuHEm4iNpr4vqv87+FxdN/8z60BZjPrERJRHFkeN8RDWtVrvDg9trVt5/hVZZP/ATlgYBfa/SzeXeYpDiZBMRjBng0foTAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726514609; c=relaxed/simple;
-	bh=Y9BOtJsZrUeI/T4AT5kJOL8XvzIzRW7qwuR4PC7DwVk=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rEDfwufP5Rl7NkkZ2a4fCcYhrp58/n9QyVUx3TgwOD4Yf4W6sN5S9EmC6FjKkcUKoKScCR5G/BtAY2Df8Gw2xG1BAiv64UefEE9dYkKu8eHuY9xnRZvRaUMLe952otto7pvipMhyQtnVNNvmTHwAB77mnpLHYWpNzy7ml63kZT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=Q88ZGTyO; arc=none smtp.client-ip=185.70.40.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1726514604; x=1726773804;
-	bh=EDMp3dBEF1fsOY4Eb5Xm0ct3qsgK0RLGRh03NwDR2vM=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=Q88ZGTyOptWULxET/5DFyEx6n0krlC7ffgtql0DkqjMMEBK8mQAyldbQqbCUBSsoB
-	 pTGc5FILZNEKuSmnJz/JmtstQMmvdBlaokkRQYd5bb3jKp4XwXytasW+7kx2ta+hJ2
-	 1aJYhznrEEbtuEQ6zhRvdzG5UxKqj5+g+RTKci3ksKjIwFNqU9KKUQ3tJv0FKEo7nW
-	 qoxFObG1YegUDN5j7yyH6s6NHS1pzQQt9dzM3VplE+AtJ790h/ZVH7725yaXMe7vIG
-	 pZTUgrgr9Ei2kZajnu+YT5EXn1jPIVsc99Tx4j1KvvvfOFKK/437lkunHJqPXBhnl9
-	 r/wsitoox+Gmg==
-Date: Mon, 16 Sep 2024 19:23:19 +0000
-To: Peter Zijlstra <peterz@infradead.org>
-From: Michael Pratt <mcpratt@pm.me>
-Cc: Ingo Molnar <mingo@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [RESEND PATCH] sched/syscalls: Allow setting niceness using sched_param struct
-Message-ID: <e6KW_ypfbIVbenvwbBwGgnxX700e-A68oVmCn1pdJ0834U4wtIWXhh5zfHrQF2dvSL_Vc_heC4KZ0XRzNZ-w7QfF70W0epxCzpph55reOls=@pm.me>
-In-Reply-To: <20240916111323.GX4723@noisy.programming.kicks-ass.net>
-References: <20240916050741.24206-1-mcpratt@pm.me> <20240916111323.GX4723@noisy.programming.kicks-ass.net>
-Feedback-ID: 27397442:user:proton
-X-Pm-Message-ID: c1a624c5731e80bb9e31a8274bfbd698f437c055
+	s=arc-20240116; t=1726514837; c=relaxed/simple;
+	bh=MA2ipLhTcZA7vIZAwQ9F3rY4FTOpS7BrXQ7wWgPpTtE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=FWk+GqZYpugcvxdpj8fXeklDFBZoGolajqt/VQEIcGYytrCTAMfpCL5+yOydXG6u4m6I6g7W6OaevX1ZHCqEnPJKJaWc8W+e/PGXn+rmK3m/ljDHrzQC5xwPDQsZ7tuw9NAuyLeXmTgfp3u2F/ruJokRgO8exq6pe2f6P05p6U0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hp.com; spf=pass smtp.mailfrom=hp.com; dkim=pass (1024-bit key) header.d=hp.com header.i=@hp.com header.b=WDKuDLMM; arc=none smtp.client-ip=170.10.129.162
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hp.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hp.com; s=mimecast20180716;
+	t=1726514833;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=MA2ipLhTcZA7vIZAwQ9F3rY4FTOpS7BrXQ7wWgPpTtE=;
+	b=WDKuDLMMxVEVn85RO97sLsZgggmXbXH1jDaKtrNTHaMKopcUxEBQlYDa+hy6DVt6FMsfiT
+	M6LX7c7rLRP6HS0G0RpFnhKH8zWTHdSejefTf/5kVo310gwlreK6bo0T1EqEYjC7h3N7uR
+	y+VMYHnix+TqWNBQ205TZKAc2oOHmnM=
+Received: from g7t16451g.inc.hp.com (hpifallback.mail.core.hp.com
+ [15.73.128.137]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-609-oPleO0YMPci8afcKhvXddg-1; Mon, 16 Sep 2024 15:27:12 -0400
+X-MC-Unique: oPleO0YMPci8afcKhvXddg-1
+Received: from g7t14407g.inc.hpicorp.net (g7t14407g.inc.hpicorp.net [15.63.19.131])
+	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+	(No client certificate requested)
+	by g7t16451g.inc.hp.com (Postfix) with ESMTPS id 0F10B6000CA2
+	for <stable@vger.kernel.org>; Mon, 16 Sep 2024 19:27:12 +0000 (UTC)
+Received: from niko-jammy.localdomain (unknown [15.52.90.21])
+	by g7t14407g.inc.hpicorp.net (Postfix) with ESMTP id 0B93518;
+	Mon, 16 Sep 2024 19:27:10 +0000 (UTC)
+From: nikolai.afanasenkov@hp.com
+To: alexandru.gagniuc@hp.com
+Cc: eniac-xw.zhang@hp.com,
+	nikolai.afanasenkov@hp.com,
+	stable@vger.kernel.org
+Subject: [PATCH] ALSA: hda/realtek: fix mute/micmute LED for HP mt645 G8
+Date: Mon, 16 Sep 2024 13:26:48 -0600
+Message-Id: <20240916192648.3918-1-nikolai.afanasenkov@hp.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: hp.com
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=WINDOWS-1252; x-default=true
 
-Hi Peter,
+From: Nikolai Afanasenkov <nikolai.afanasenkov@hp.com>
 
-On Monday, September 16th, 2024 at 07:13, Peter Zijlstra <peterz@infradead.=
-org> wrote:
->=20
-> On Mon, Sep 16, 2024 at 05:08:49AM +0000, Michael Pratt wrote:
->=20
-> > From userspace, spawning a new process with, for example,
-> > posix_spawn(), only allows the user to work with
-> > the scheduling priority value defined by POSIX
-> > in the sched_param struct.
-> >=20
-> > However, sched_setparam() and similar syscalls lead to
-> > __sched_setscheduler() which rejects any new value
-> > for the priority other than 0 for non-RT schedule classes,
-> > a behavior kept since Linux 2.6 or earlier.
->=20
->=20
-> Right, and the current behaviour is entirely in-line with the POSIX
-> specs.
+The HP Elite mt645 G8 Mobile Thin Client uses an ALC236 codec
+and needs the ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF quirk
+to enable the mute and micmute LED functionality.
 
-I'm just mentioning this for context.
-In this case, "in-line with POSIX specs" has nothing to do with
-whether or not the feature works. POSIX says nothing about which policies
-should be accepting which values or not and how they are processed.
-Like many things, it is simply implementation-specific.
+This patch adds the system ID of the HP Elite mt645 G8
+to the `alc269_fixup_tbl` in `patch_realtek.c`
+to enable the required quirk.
 
-The current behavior is that it doesn't work, and I would like it to work.
+Cc: stable@vger.kernel.org
+Signed-off-by: Nikolai Afanasenkov <nikolai.afanasenkov@hp.com>
+---
+ sound/pci/hda/patch_realtek.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-> I realize this might be a pain, but why should we change this spec
-> conforming and very long standing behavior?
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 452c6e7c20e2..5ad5a901f9b6 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10396,6 +10396,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[=
+] =3D {
+ =09SND_PCI_QUIRK(0x103c, 0x8ca2, "HP ZBook Power", ALC236_FIXUP_HP_GPIO_LE=
+D),
+ =09SND_PCI_QUIRK(0x103c, 0x8ca4, "HP ZBook Fury", ALC245_FIXUP_CS35L41_SPI=
+_2_HP_GPIO_LED),
+ =09SND_PCI_QUIRK(0x103c, 0x8ca7, "HP ZBook Fury", ALC245_FIXUP_CS35L41_SPI=
+_2_HP_GPIO_LED),
++=09SND_PCI_QUIRK(0x103c, 0x8caf, "HP Elite mt645 G8 Mobile Thin Client", A=
+LC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
+ =09SND_PCI_QUIRK(0x103c, 0x8cbd, "HP Pavilion Aero Laptop 13-bg0xxx", ALC2=
+45_FIXUP_HP_X360_MUTE_LEDS),
+ =09SND_PCI_QUIRK(0x103c, 0x8cdd, "HP Spectre", ALC287_FIXUP_CS35L41_I2C_2)=
+,
+ =09SND_PCI_QUIRK(0x103c, 0x8cde, "HP Spectre", ALC287_FIXUP_CS35L41_I2C_2)=
+,
+--=20
+2.34.1
 
-The fact that the overall behavior is "very long standing" is a coincidence=
-.
-The code here conforms to the specs both before and after the patch,
-and the difference is functionality.
-
-In fact, I am not aiming to change
-the exact behavior of "reject every priority value other than 0"
-but rather work around that by translating it to niceness
-so long as it is a valid range passed as the priority by the user.
-This method is not just to maintain that priority must be 0, but I found it=
- necessary,
-because if the syscall were allowed to change the static priority,
-then a future change in the "niceness" value would theoretically allow the =
-priority
-to pass into the RT range for non-RT policies.
-
-> Worse, you're proposing a nice ABI that is entirely different from the
-> normal [-20,19] range.
-
-Please take a closer look... The resulting niceness value is exactly that r=
-ange.
-  PRIO_TO_NICE([MAX_RT_PRIO,MAX_PRIO-1]) =3D [-20,19]
-
-I am not writing this so that the value passed as a "priority" value should=
- be assumed
-to be the "niceness" value instead by the user, but rather that the user sh=
-ould
-pass a value for "priority" that will actually result in that value,
-but with the "niceness" adjusted instead,
-as that is the user-specific method to effectively do the same thing.
-
-The "niceness" value has no meaning in the world of POSIX, it only means so=
-mething
-in the world of Linux, and just like the translation from sched_param to sc=
-hed_attr structs,
-this is the place where we would translate priority to niceness.
-Everything outside the internals of the kernel should be understood as the =
-"actual" priority,
-because POSIX is a userspace that doesn't acknowledge or understand the ker=
-nel's ABIs,
-not the other way around.
-
-Otherwise, we have a confusing conflation between the meaning of the two va=
-lues,
-where a value of 19 makes sense for niceness, but is obviously invalid for =
-priority
-for SCHED_NORMAL, and a negative value makes sense for niceness, but is obv=
-iously invalid
-for priority in any policy.
-
-Implementations of posix_spawn functions ask for the "priority",
-and POSIX states that the value passed in with the sched_param struct shoul=
-d be the "priority"
-and that the usage is implementation-specific, not the other way around, wh=
-ere
-the meaning of the value would be implementation-specific, but the usage of=
- the value
-would be clearly defined instead. I'm trying to stay in-line with the seman=
-tics as well.
-
-> Why do you feel this is the best way forward? Would not adding
-> POSIX_SPAWN_SETSCHEDATTR be a more future proof mechanism?
-
-New flags don't change the fact that the value will be rejected in the kern=
-el,
-unless I am misunderstanding what you mean...
-
-I believe this is the simplest and the smallest possible change
-that is conforming both to POSIX and the kernel's styling
-in order to make posix_spawnattr_setschedparam()
-work instead of _just_ being "conforming and compliant",
-which like I said is a low requirement of "just reject all values".
-
-Flags like POSIX_SPAWN_SETSCHEDATTR would be used at the library level
-and we have no problems at the library level, except for Linux-only librari=
-es
-that have not implemented posix_spawnattr_setschedparam() because it curren=
-tly fails.
-Notably, the musl C library is an example of this, but that might change
-if we finally add support for this.
-
-It would be nice if POSIX would add a flag to specifically cater to linux,
-however, that would likely require them to add the sched_attr struct defini=
-tion
-or replace the sched_param struct, and as we know things usually work the o=
-ther way around.
-
-Thanks for your time.
-
---
-MCP
 
