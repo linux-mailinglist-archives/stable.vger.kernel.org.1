@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-76432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76251-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2633D97A1BA
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:09:49 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEE5897A0C8
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:01:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5F701F21321
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:09:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19E401C22E03
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:01:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8B1415666B;
-	Mon, 16 Sep 2024 12:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B0CB14D2B3;
+	Mon, 16 Sep 2024 12:01:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OnISVUmh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wM+jT2JQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63FC2155359;
-	Mon, 16 Sep 2024 12:09:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3845114B946;
+	Mon, 16 Sep 2024 12:01:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488576; cv=none; b=DAtUtEWsToz2QlBLcBoZtlGcxpZ1p2gjbOF2WYjf3YHid+o9b5L7raj07o5YRCX+11fu1XbYNCZKVmYMjmk6RrsPzwluvme0jFtfrgOJ+LEriK3OWwwa0st7dmHV1cOu4LFBPSfS+PQKL+AuXvUf+f1BFykMUp94L5NLT0sgQAk=
+	t=1726488060; cv=none; b=MGsatNrBXDU9SSAyW24IPiYH5LNQ+GwgLWRGDyDJ/uIA8Zkejg5hd/4sgSTkJzWA3Lbw1gX0B9g93M3I2VpjCWAuJJMAPTTjYm//OasKMfiKUHfJ3QlTugIlZRm1Umg4sZ40VNYVqA7/P8NPE3BzGGSTmY5FYHE/JnLjSXM3azk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488576; c=relaxed/simple;
-	bh=OFqdphQkx5AwgF08Bwc49HzljTq67AyfhnWLcBcedxs=;
+	s=arc-20240116; t=1726488060; c=relaxed/simple;
+	bh=nBQo2+gqF667ULhPB4E7GIrt886M+k5dnIEdEi8X2TM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mTg9fz0M2f99YPH9FUl4pKr5PaWuPtkXhoYuyBvbYynu+YVpIBULTGTujlAaiaxV7VdIx6Fx4mIRFJyBZkXIyai3cxtSAt7EJiistH0yqNxqfw7KinftoK+Zqo0KQjqXDigAVowjm+wXuOu7GL0Zkr2ny7Df2dET06L2VqpSeSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OnISVUmh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDEB1C4CEC4;
-	Mon, 16 Sep 2024 12:09:35 +0000 (UTC)
+	 MIME-Version; b=f0SEP57KCYDDxi10zumeTmsCH1OZUad9txovje871lQ8MWurX4+OHuJHF9T3Hfvfq1Fl/jcaE/0GUoTeoBWvWX+wubtpgPQx++FSslMGpba0qL755BBbcDImn7ry8PZby6LwNNa0Kaa+K+Fr3Bcd6eotjGt2eU0BT0RyFloxXDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wM+jT2JQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97FAEC4CEC4;
+	Mon, 16 Sep 2024 12:00:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488576;
-	bh=OFqdphQkx5AwgF08Bwc49HzljTq67AyfhnWLcBcedxs=;
+	s=korg; t=1726488060;
+	bh=nBQo2+gqF667ULhPB4E7GIrt886M+k5dnIEdEi8X2TM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OnISVUmhr2z5Q70GuM+uE61INSFBZ3GezO9PwKxKtybikViKgvmUvRFPwY1s4wUoW
-	 nGY/vTQBT8YFa1X86aFDL4D3HJqx+40dChgre15LJ78sl86jl3++md5isU4CPchgFJ
-	 7yXwET7B2ZXzcnXD+yv0TlECZQBY5quKJf0xjBjE=
+	b=wM+jT2JQeHgVlJAANTjng8gI2f1RgmUf1m3xd1RrKhTZ1veW5h8JzhakzldiS8GwH
+	 jqoYMS4Erc/9zxdobu3DB/xL+FgLfUIQZLXSOPMdxW92icvcK4BAlj6GYDiUA0/8sG
+	 gVsy6S07uKQjM9XK/UkbiMQufQlT/vD39BL0Kv2o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 39/91] selftests: mptcp: join: restrict fullmesh endp on 1st sf
-Date: Mon, 16 Sep 2024 13:44:15 +0200
-Message-ID: <20240916114225.801966873@linuxfoundation.org>
+	Patryk Biel <pbiel7@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 37/63] hwmon: (pmbus) Conditionally clear individual status bits for pmbus rev >= 1.2
+Date: Mon, 16 Sep 2024 13:44:16 +0200
+Message-ID: <20240916114222.371442381@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
-References: <20240916114224.509743970@linuxfoundation.org>
+In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
+References: <20240916114221.021192667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +62,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+From: Patryk Biel <pbiel7@gmail.com>
 
-commit 49ac6f05ace5bb0070c68a0193aa05d3c25d4c83 upstream.
+[ Upstream commit 20471071f198c8626dbe3951ac9834055b387844 ]
 
-A new endpoint using the IP of the initial subflow has been recently
-added to increase the code coverage. But it breaks the test when using
-old kernels not having commit 86e39e04482b ("mptcp: keep track of local
-endpoint still available for each msk"), e.g. on v5.15.
+The current implementation of pmbus_show_boolean assumes that all devices
+support write-back operation of status register to clear pending warnings
+or faults. Since clearing individual bits in the status registers was only
+introduced in PMBus specification 1.2, this operation may not be supported
+by some older devices. This can result in an error while reading boolean
+attributes such as temp1_max_alarm.
 
-Similar to commit d4c81bbb8600 ("selftests: mptcp: join: support local
-endpoint being tracked or not"), it is possible to add the new endpoint
-conditionally, by checking if "mptcp_pm_subflow_check_next" is present
-in kallsyms: this is not directly linked to the commit introducing this
-symbol but for the parent one which is linked anyway. So we can know in
-advance what will be the expected behaviour, and add the new endpoint
-only when it makes sense to do so.
+Fetch PMBus revision supported by the device and modify pmbus_show_boolean
+so that it only tries to clear individual status bits if the device is
+compliant with PMBus specs >= 1.2. Otherwise clear all fault indicators
+on the current page after a fault status was reported.
 
-Fixes: 4878f9f8421f ("selftests: mptcp: join: validate fullmesh endp on 1st sf")
-Cc: stable@vger.kernel.org
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20240910-net-selftests-mptcp-fix-install-v1-1-8f124aa9156d@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 35f165f08950a ("hwmon: (pmbus) Clear pmbus fault/warning bits after read")
+Signed-off-by: Patryk Biel <pbiel7@gmail.com>
+Message-ID: <20240909-pmbus-status-reg-clearing-v1-1-f1c0d68c6408@gmail.com>
+[groeck:
+ Rewrote description
+ Moved revision detection code ahead of clear faults command
+ Assigned revision if return value from PMBUS_REVISION command is 0
+ Improved return value check from calling _pmbus_write_byte_data()]
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/mptcp/mptcp_join.sh |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/hwmon/pmbus/pmbus.h      |  6 ++++++
+ drivers/hwmon/pmbus/pmbus_core.c | 17 ++++++++++++++---
+ 2 files changed, 20 insertions(+), 3 deletions(-)
 
---- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
-+++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
-@@ -3222,7 +3222,9 @@ fullmesh_tests()
- 		pm_nl_set_limits $ns1 1 3
- 		pm_nl_set_limits $ns2 1 3
- 		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
--		pm_nl_add_endpoint $ns2 10.0.1.2 flags subflow,fullmesh
-+		if mptcp_lib_kallsyms_has "mptcp_pm_subflow_check_next$"; then
-+			pm_nl_add_endpoint $ns2 10.0.1.2 flags subflow,fullmesh
-+		fi
- 		fullmesh=1 speed=slow \
- 			run_tests $ns1 $ns2 10.0.1.1
- 		chk_join_nr 3 3 3
+diff --git a/drivers/hwmon/pmbus/pmbus.h b/drivers/hwmon/pmbus/pmbus.h
+index 10fb17879f8e..0bbb8ae9341c 100644
+--- a/drivers/hwmon/pmbus/pmbus.h
++++ b/drivers/hwmon/pmbus/pmbus.h
+@@ -409,6 +409,12 @@ enum pmbus_sensor_classes {
+ enum pmbus_data_format { linear = 0, ieee754, direct, vid };
+ enum vrm_version { vr11 = 0, vr12, vr13, imvp9, amd625mv };
+ 
++/* PMBus revision identifiers */
++#define PMBUS_REV_10 0x00	/* PMBus revision 1.0 */
++#define PMBUS_REV_11 0x11	/* PMBus revision 1.1 */
++#define PMBUS_REV_12 0x22	/* PMBus revision 1.2 */
++#define PMBUS_REV_13 0x33	/* PMBus revision 1.3 */
++
+ struct pmbus_driver_info {
+ 	int pages;		/* Total number of pages */
+ 	u8 phases[PMBUS_PAGES];	/* Number of phases per page */
+diff --git a/drivers/hwmon/pmbus/pmbus_core.c b/drivers/hwmon/pmbus/pmbus_core.c
+index 7ec04934747e..4b73c7b27e9a 100644
+--- a/drivers/hwmon/pmbus/pmbus_core.c
++++ b/drivers/hwmon/pmbus/pmbus_core.c
+@@ -84,6 +84,8 @@ struct pmbus_data {
+ 
+ 	u32 flags;		/* from platform data */
+ 
++	u8 revision;	/* The PMBus revision the device is compliant with */
++
+ 	int exponent[PMBUS_PAGES];
+ 				/* linear mode: exponent for output voltages */
+ 
+@@ -1093,9 +1095,14 @@ static int pmbus_get_boolean(struct i2c_client *client, struct pmbus_boolean *b,
+ 
+ 	regval = status & mask;
+ 	if (regval) {
+-		ret = _pmbus_write_byte_data(client, page, reg, regval);
+-		if (ret)
+-			goto unlock;
++		if (data->revision >= PMBUS_REV_12) {
++			ret = _pmbus_write_byte_data(client, page, reg, regval);
++			if (ret)
++				goto unlock;
++		} else {
++			pmbus_clear_fault_page(client, page);
++		}
++
+ 	}
+ 	if (s1 && s2) {
+ 		s64 v1, v2;
+@@ -2639,6 +2646,10 @@ static int pmbus_init_common(struct i2c_client *client, struct pmbus_data *data,
+ 			data->flags |= PMBUS_WRITE_PROTECTED | PMBUS_SKIP_STATUS_CHECK;
+ 	}
+ 
++	ret = i2c_smbus_read_byte_data(client, PMBUS_REVISION);
++	if (ret >= 0)
++		data->revision = ret;
++
+ 	if (data->info->pages)
+ 		pmbus_clear_faults(client);
+ 	else
+-- 
+2.43.0
+
 
 
 
