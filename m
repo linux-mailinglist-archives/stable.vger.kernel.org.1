@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-76409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8533F97A19A
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:08:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F4E597A12F
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:06:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA7B2288248
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:08:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 079B5286649
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:06:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 205EA156225;
-	Mon, 16 Sep 2024 12:08:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D3261586C8;
+	Mon, 16 Sep 2024 12:04:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rPBremsd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UG5jmkdH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D31C4155A3C;
-	Mon, 16 Sep 2024 12:08:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C125155393;
+	Mon, 16 Sep 2024 12:04:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488509; cv=none; b=mhxfJREXWVzuINNImFbc7XjHrRl7yrhmiFG8S/hqTX01nzkjq7JKHwVnCdSdNkYMxWa9CJ2nyAVjoHZYjdFXJzTUrFIaXlAHGeVXcFt3uzvWV/Yn1TxYcxXHe/rvW4aj8R21+HIjTbD+wrwL4pIX+FGE8Wf1VwrFAukpEW8acRk=
+	t=1726488245; cv=none; b=IJUPTIPcgyqr6bKBF5T9Oka7+38XWcbuSFCXrN27kplHWLDwvQXFZsbf9YMqB3KhoVjHYhEvurMFtwQLo35Kay2zZz+KRHuFtVHivoGkw83e3fO2dDE0tny+/lL0EHWT2XahT4jHy3hvaAdowo5LFRLVebwb/L8bLL+OiP9Ya6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488509; c=relaxed/simple;
-	bh=6O0S07BSYH2gXJw8doMUQARbR0JF9b3wOcBBSb12SO4=;
+	s=arc-20240116; t=1726488245; c=relaxed/simple;
+	bh=RCyeJsIaX2rTqyD4nAG9SmOa9Pz9C7NSbTC9QoXpjxM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aR6nD9HuVA3ynNCNbgLakLns8LKhHIPo70MXovnbPXj8BULuK1+KhOCCjDXCC/yDm9dtJtpOcn4b/RGjMfuflApA7mBJG2e2i+109p/70emcFWUsyYu8rwqnmLCbU5xO2sRSgx3ru926mD1GcfDRnnOLYZ7G6vXRnXmakjxKSdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rPBremsd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42546C4CECE;
-	Mon, 16 Sep 2024 12:08:29 +0000 (UTC)
+	 MIME-Version; b=o34yJlV2Q0VibVscaabsD/KQlX+pdTK2p7mdHIyfJK700LlXWNCMQFMxLpZJX5qJlzEpXM7C2hp35AguCFfU2c8uRJwbnwmQj34CUez2nsEJ/6N3K0ojk2lA7dDBXQdLNKQqpN2oYATo/KE62nTH/At9BrBIDbH36NP7K8gXbAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UG5jmkdH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8BD0C4CEC4;
+	Mon, 16 Sep 2024 12:04:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488509;
-	bh=6O0S07BSYH2gXJw8doMUQARbR0JF9b3wOcBBSb12SO4=;
+	s=korg; t=1726488245;
+	bh=RCyeJsIaX2rTqyD4nAG9SmOa9Pz9C7NSbTC9QoXpjxM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rPBremsdxCSV2W7vE7qLDG10RSpf8g57Eq3yjpHfnJ1jZQqV+BOOVMUeF/kPwBym1
-	 snCrMEcVknoz/W998YFl6CyNv2u8C2rZw+PaICrpGuiElEsWjx8vUS42IIVkUbHfXh
-	 HwDaUoFqOG5Z4I8iO4DqnGxjdyztO0nQBc86D7L8=
+	b=UG5jmkdHffN07H1UEolUOZ64Y7INtHMsbeiedRqrTIScLVnalTpjArUiU6qwtugjk
+	 c/R0MRw4nc88ms7avRLgLqEvbEp6C/1T+6iny2EPXTeyC6Ut8yXZGIE8tn18PRsdx9
+	 tPC/g49rprEGG4RTQXCsKdROMEwK5m0glxoUaNU0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dumitru Ceclan <dumitru.ceclan@analog.com>,
-	Nuno Sa <nuno.sa@analog.com>,
-	Stable@vger.kernel.org,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 04/91] iio: adc: ad7124: fix DT configuration parsing
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.10 046/121] selftests: mptcp: join: restrict fullmesh endp on 1st sf
 Date: Mon, 16 Sep 2024 13:43:40 +0200
-Message-ID: <20240916114224.656385094@linuxfoundation.org>
+Message-ID: <20240916114230.643742423@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
-References: <20240916114224.509743970@linuxfoundation.org>
+In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
+References: <20240916114228.914815055@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dumitru Ceclan <mitrutzceclan@gmail.com>
+From: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 
-[ Upstream commit 61cbfb5368dd50ed0d65ce21d305aa923581db2b ]
+commit 49ac6f05ace5bb0070c68a0193aa05d3c25d4c83 upstream.
 
-The cfg pointer is set before reading the channel number that the
-configuration should point to. This causes configurations to be shifted
-by one channel.
-For example setting bipolar to the first channel defined in the DT will
-cause bipolar mode to be active on the second defined channel.
+A new endpoint using the IP of the initial subflow has been recently
+added to increase the code coverage. But it breaks the test when using
+old kernels not having commit 86e39e04482b ("mptcp: keep track of local
+endpoint still available for each msk"), e.g. on v5.15.
 
-Fix by moving the cfg pointer setting after reading the channel number.
+Similar to commit d4c81bbb8600 ("selftests: mptcp: join: support local
+endpoint being tracked or not"), it is possible to add the new endpoint
+conditionally, by checking if "mptcp_pm_subflow_check_next" is present
+in kallsyms: this is not directly linked to the commit introducing this
+symbol but for the parent one which is linked anyway. So we can know in
+advance what will be the expected behaviour, and add the new endpoint
+only when it makes sense to do so.
 
-Fixes: 7b8d045e497a ("iio: adc: ad7124: allow more than 8 channels")
-Signed-off-by: Dumitru Ceclan <dumitru.ceclan@analog.com>
-Reviewed-by: Nuno Sa <nuno.sa@analog.com>
-Link: https://patch.msgid.link/20240806085133.114547-1-dumitru.ceclan@analog.com
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4878f9f8421f ("selftests: mptcp: join: validate fullmesh endp on 1st sf")
+Cc: stable@vger.kernel.org
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20240910-net-selftests-mptcp-fix-install-v1-1-8f124aa9156d@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iio/adc/ad7124.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ tools/testing/selftests/net/mptcp/mptcp_join.sh |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
-index bd323c6bd756..d2fe0269b6d3 100644
---- a/drivers/iio/adc/ad7124.c
-+++ b/drivers/iio/adc/ad7124.c
-@@ -842,8 +842,6 @@ static int ad7124_parse_channel_config(struct iio_dev *indio_dev,
- 	st->channels = channels;
- 
- 	device_for_each_child_node_scoped(dev, child) {
--		cfg = &st->channels[channel].cfg;
--
- 		ret = fwnode_property_read_u32(child, "reg", &channel);
- 		if (ret)
- 			return ret;
-@@ -861,6 +859,7 @@ static int ad7124_parse_channel_config(struct iio_dev *indio_dev,
- 		st->channels[channel].ain = AD7124_CHANNEL_AINP(ain[0]) |
- 						  AD7124_CHANNEL_AINM(ain[1]);
- 
-+		cfg = &st->channels[channel].cfg;
- 		cfg->bipolar = fwnode_property_read_bool(child, "bipolar");
- 
- 		ret = fwnode_property_read_u32(child, "adi,reference-select", &tmp);
--- 
-2.43.0
-
+--- a/tools/testing/selftests/net/mptcp/mptcp_join.sh
++++ b/tools/testing/selftests/net/mptcp/mptcp_join.sh
+@@ -3064,7 +3064,9 @@ fullmesh_tests()
+ 		pm_nl_set_limits $ns1 1 3
+ 		pm_nl_set_limits $ns2 1 3
+ 		pm_nl_add_endpoint $ns1 10.0.2.1 flags signal
+-		pm_nl_add_endpoint $ns2 10.0.1.2 flags subflow,fullmesh
++		if mptcp_lib_kallsyms_has "mptcp_pm_subflow_check_next$"; then
++			pm_nl_add_endpoint $ns2 10.0.1.2 flags subflow,fullmesh
++		fi
+ 		fullmesh=1 speed=slow \
+ 			run_tests $ns1 $ns2 10.0.1.1
+ 		chk_join_nr 3 3 3
 
 
 
