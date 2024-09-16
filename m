@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-76243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9593D97A0C0
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:00:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 97B3E97A191
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:08:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C6DD71C22D48
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:00:38 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CA74A1C22436
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:08:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 349831547C4;
-	Mon, 16 Sep 2024 12:00:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEC4815533B;
+	Mon, 16 Sep 2024 12:08:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dRvIn+iN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZfTadYE9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E439D14B967;
-	Mon, 16 Sep 2024 12:00:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CC6F14D2B3;
+	Mon, 16 Sep 2024 12:08:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488038; cv=none; b=sKj/pv2V9jgcmpvDfdgKcy5WE0bvx0xj7hGVSunIkGmpRvQqZouw+Mkm8HSJZQIpvatDqjUTW1tvBMjrg0yk3YAmSJ7uTkTPBejdarlrbOWqr8Pj7481Umdh3S7UghqOX4TXG8afaJe7OxrQRPAKbvVb1ScnscGQcUHxnCel3nQ=
+	t=1726488495; cv=none; b=MCogeZVdzD4Uvrsku56RxkWnKvLtirm8P9PaoaU2ZpPQUhAbE75dXxhwqxSmtIqvgKl49ZnbZM2IBQeBavnGJ76hAUgn7F5fqVE8p1O8tnIGc24cH8iw3WW0ofDeQP+qTSWKaTz17v9cwuabbnWaGlsEilAHu5OOZsm1ZgHRFFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488038; c=relaxed/simple;
-	bh=0zqz7jUdP+kOOer6NX025mgQzu17b5V8ZTF+A/DGVFQ=;
+	s=arc-20240116; t=1726488495; c=relaxed/simple;
+	bh=H4zSf22/RLPk/4OpP59lOFY3MyyprMdVzEW7Q0YDHy0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EFPiEBaBBA3I3EyAB+dF9Dy8JXTTtEa9MS7qmFSs2CpSynk+uY7BqAAiIvYKd3QraH4dobNJl/N71ygY3oRsX0jafjSUdzrnJr7i35eXq8g3WY2+uo/K8emSn/x3lp4z96O1vE0Az2ocGMOtE5JkJzGdDNdxzKOjdd+Wsaq7r3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dRvIn+iN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 056EFC4CEC4;
-	Mon, 16 Sep 2024 12:00:36 +0000 (UTC)
+	 MIME-Version; b=pab54ymO2iwmU5IdZXi57dZBGSHGrkVDLBz7JAHouU1101L/IqYj2C4nZQSw6AYzkn5v0LUxofd4p6Dzma2Bn3cYAC6zKD9XaEIwvVYq5a+Vq4DLjfnAzh7/fXXLIbWmugWJY+84HQcV+6X8FafA32mdHQObt7dnCWoCv7qokSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZfTadYE9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17111C4CEC4;
+	Mon, 16 Sep 2024 12:08:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488037;
-	bh=0zqz7jUdP+kOOer6NX025mgQzu17b5V8ZTF+A/DGVFQ=;
+	s=korg; t=1726488495;
+	bh=H4zSf22/RLPk/4OpP59lOFY3MyyprMdVzEW7Q0YDHy0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dRvIn+iNHvknjsbtbm8ArO0WTtI7Hm7J65nFkUVxPLk+wtVCNj/FXfVprx7RF/H5H
-	 bEaFVZfW5atQQ/UKpKhWKwv/1bJGv2S4A2zMihfzNJXYjRd3ww5HxuzvXAT+w3nzFg
-	 v1ZKIiHuhN5jJDFP/1tn4pRW+wzpK9Ijd16vthLg=
+	b=ZfTadYE9hqeSI1yO2t636PLtWS7qx9RqlVbK4xAJUzYYTbBaE4OScdIz0bsf4YIXi
+	 +NFoxpDTYOvMhS4/VnGdvIAv1X54P3f3HsxMWQLvcVvLiqnBnI1/pzfFaVE5eLI/Zm
+	 6dD9HNLJcEc6KkMvIfsr/4wlIPan8r+9iX5O2UhQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	David Sterba <dsterba@suse.com>,
+	Foster Snowhill <forst@pen.gy>,
+	Georgi Valkov <gvalkov@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 09/63] btrfs: update target inodes ctime on unlink
+Subject: [PATCH 6.6 12/91] usbnet: ipheth: remove extraneous rx URB length check
 Date: Mon, 16 Sep 2024 13:43:48 +0200
-Message-ID: <20240916114221.369542460@linuxfoundation.org>
+Message-ID: <20240916114224.938380819@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
-References: <20240916114221.021192667@linuxfoundation.org>
+In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
+References: <20240916114224.509743970@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: Foster Snowhill <forst@pen.gy>
 
-[ Upstream commit 3bc2ac2f8f0b78a13140fc72022771efe0c9b778 ]
+[ Upstream commit 655b46d7a39ac6f049698b27c1568c0f7ff85d1e ]
 
-Unlink changes the link count on the target inode. POSIX mandates that
-the ctime must also change when this occurs.
+Rx URB length was already checked in ipheth_rcvbulk_callback_legacy()
+and ipheth_rcvbulk_callback_ncm(), depending on the current mode.
+The check in ipheth_rcvbulk_callback() was thus mostly a duplicate.
 
-According to https://pubs.opengroup.org/onlinepubs/9699919799/functions/unlink.html:
+The only place in ipheth_rcvbulk_callback() where we care about the URB
+length is for the initial control frame. These frames are always 4 bytes
+long. This has been checked as far back as iOS 4.2.1 on iPhone 3G.
 
-"Upon successful completion, unlink() shall mark for update the last data
- modification and last file status change timestamps of the parent
- directory. Also, if the file's link count is not 0, the last file status
- change timestamp of the file shall be marked for update."
+Remove the extraneous URB length check. For control frames, check for
+the specific 4-byte length instead.
 
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: David Sterba <dsterba@suse.com>
-[ add link to the opengroup docs ]
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Foster Snowhill <forst@pen.gy>
+Tested-by: Georgi Valkov <gvalkov@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/inode.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/usb/ipheth.c | 8 ++------
+ 1 file changed, 2 insertions(+), 6 deletions(-)
 
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index e5017b2ade57..894887640c43 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -4379,6 +4379,7 @@ static int __btrfs_unlink_inode(struct btrfs_trans_handle *trans,
+diff --git a/drivers/net/usb/ipheth.c b/drivers/net/usb/ipheth.c
+index 6eeef10edada..017255615508 100644
+--- a/drivers/net/usb/ipheth.c
++++ b/drivers/net/usb/ipheth.c
+@@ -286,11 +286,6 @@ static void ipheth_rcvbulk_callback(struct urb *urb)
+ 		return;
+ 	}
  
- 	btrfs_i_size_write(dir, dir->vfs_inode.i_size - name->len * 2);
- 	inode_inc_iversion(&inode->vfs_inode);
-+	inode_set_ctime_current(&inode->vfs_inode);
- 	inode_inc_iversion(&dir->vfs_inode);
- 	inode->vfs_inode.i_ctime = current_time(&inode->vfs_inode);
- 	dir->vfs_inode.i_mtime = inode->vfs_inode.i_ctime;
+-	if (urb->actual_length <= IPHETH_IP_ALIGN) {
+-		dev->net->stats.rx_length_errors++;
+-		return;
+-	}
+-
+ 	/* RX URBs starting with 0x00 0x01 do not encapsulate Ethernet frames,
+ 	 * but rather are control frames. Their purpose is not documented, and
+ 	 * they don't affect driver functionality, okay to drop them.
+@@ -298,7 +293,8 @@ static void ipheth_rcvbulk_callback(struct urb *urb)
+ 	 * URB received from the bulk IN endpoint.
+ 	 */
+ 	if (unlikely
+-		(((char *)urb->transfer_buffer)[0] == 0 &&
++		(urb->actual_length == 4 &&
++		 ((char *)urb->transfer_buffer)[0] == 0 &&
+ 		 ((char *)urb->transfer_buffer)[1] == 1))
+ 		goto rx_submit;
+ 
 -- 
 2.43.0
 
