@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-76387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0534A97A17E
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:08:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED68797A1E0
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:11:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 380101C2237A
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:08:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8945286235
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:11:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CD44156F44;
-	Mon, 16 Sep 2024 12:07:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B3411553AF;
+	Mon, 16 Sep 2024 12:11:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w+lCB4SF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mi0DB3mR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B4E7156641;
-	Mon, 16 Sep 2024 12:07:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE051146A79;
+	Mon, 16 Sep 2024 12:11:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488447; cv=none; b=URPg7WZyUxVaSdhW6jjwcQPsicqKgSkFRYkmHb6ncCbJrZY0PIoJMWGeIwWzrccqWGx2jLlUuTLV5N87He/Kg8zVatU4JQtmddlCsVNp3dB0ODmEtSjhEF4FO+JRE7+jIT+z+wsHgE+6xS2giBBJISQYh60qrX1rKJ8sBHyCmhY=
+	t=1726488675; cv=none; b=pCDPMKWzpE5+4VnmUfHSrBjVe4dnBbnr3UkO2RZja3D1CfAoc9Uh2vYevLNAsZH5Ce3Vg49BzuBFewuHswlkj4Dg9QxlyMwx3lDBBK5xxORY6m6lEyeJpxngyxWoivW1eeC09FGoTcMzudRmZmvnbFIWr+BCSycBXh24p0voDEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488447; c=relaxed/simple;
-	bh=W/tL8KNzGXOiM98wJwhhxVIfhtNH9WbOymJmltjwyOo=;
+	s=arc-20240116; t=1726488675; c=relaxed/simple;
+	bh=DnaxPdYtel76XLph+gaSO3w2l6Ki9yEGdI0Pahg1HQ4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FyPGVtt3HqTl54h/10i/aCoZSfxXnxchi8zs8Rq5mbmZLbLD/uo8p/f4+Y7jw0xW/SueumGFxCAZRiUqaTSYGGa+Jc6N95OfI9OAsDiMxEpnsDztXoMVu+b7aPEgXbVK+q0ZhZfu++mFd6N7S6AZacW7aEeiJ2Znx01R20RuEGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w+lCB4SF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA0C3C4CEC4;
-	Mon, 16 Sep 2024 12:07:26 +0000 (UTC)
+	 MIME-Version; b=eIfs8sn0gqYQV/OzDPkPXRUDABnx9Yhwzo9caJy4S/LisxKCbkHhHDxGqF2HlIIOspqQ+IYwWZ11/FOvilKhkr3/IHWDWNzA41A1B6wXfhP/8ELCIPDXdFus29lyNfx8bKNpL/odeO2POhnw8l885bDWE5mo3St+Vx8o8c9+ku8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mi0DB3mR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41518C4CEC4;
+	Mon, 16 Sep 2024 12:11:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488447;
-	bh=W/tL8KNzGXOiM98wJwhhxVIfhtNH9WbOymJmltjwyOo=;
+	s=korg; t=1726488675;
+	bh=DnaxPdYtel76XLph+gaSO3w2l6Ki9yEGdI0Pahg1HQ4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w+lCB4SFNx6MipKCnYj9nzr1vBfnzpiZD3GOVn1+TOT3SrZRc6lL+7OGE0wPi6gbp
-	 mYPauuafyLKsPrnE7ha3fN7MDGzPQ/wPmbmyA/qbJDkx0sLrsL3nlnoXMSIMEY2JKi
-	 YUnKDVzhHzVB+CsanhSsYp0OWFbFypOCRzLtlmd0=
+	b=Mi0DB3mRUPi8mfGf4oNeF3Oul357Ah+DzSEYbKxc76OLe01yG7A86k9DRDsWpnnl3
+	 MnmybGXQlK07hqiHVVNTid5CQOwnpxvSJ9cDlSRiEqY5o6mc27zETA88AenWjaZSEB
+	 5mXZ0J8GNtVy8Py+cwxwOwx+yXeGFHmbbytbDIS0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Mark Brown <broonie@kernel.org>,
+	Xiaoliang Yang <xiaoliang.yang_1@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 116/121] ASoC: codecs: avoid possible garbage value in peb2466_reg_read()
+Subject: [PATCH 6.6 74/91] net: dsa: felix: ignore pending status of TAS module when its disabled
 Date: Mon, 16 Sep 2024 13:44:50 +0200
-Message-ID: <20240916114232.945445206@linuxfoundation.org>
+Message-ID: <20240916114226.915670759@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
-References: <20240916114228.914815055@linuxfoundation.org>
+In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
+References: <20240916114224.509743970@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Xiaoliang Yang <xiaoliang.yang_1@nxp.com>
 
-[ Upstream commit 38cc0334baabc5baf08a1db753de521e016c0432 ]
+[ Upstream commit 70654f4c212e83898feced125d91ebb3695950d8 ]
 
-Clang static checker (scan-build) warning:
-sound/soc/codecs/peb2466.c:232:8:
-Assigned value is garbage or undefined [core.uninitialized.Assign]
-  232 |                 *val = tmp;
-      |                      ^ ~~~
+The TAS module could not be configured when it's running in pending
+status. We need disable the module and configure it again. However, the
+pending status is not cleared after the module disabled. TC taprio set
+will always return busy even it's disabled.
 
-When peb2466_read_byte() fails, 'tmp' will have a garbage value.
-Add a judgemnet to avoid this problem.
+For example, a user uses tc-taprio to configure Qbv and a future
+basetime. The TAS module will run in a pending status. There is no way
+to reconfigure Qbv, it always returns busy.
 
-Fixes: 227f609c7c0e ("ASoC: codecs: Add support for the Infineon PEB2466 codec")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Link: https://patch.msgid.link/20240911115448.277828-1-suhui@nfschina.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Actually the TAS module can be reconfigured when it's disabled. So it
+doesn't need to check the pending status if the TAS module is disabled.
+
+After the patch, user can delete the tc taprio configuration to disable
+Qbv and reconfigure it again.
+
+Fixes: de143c0e274b ("net: dsa: felix: Configure Time-Aware Scheduler via taprio offload")
+Signed-off-by: Xiaoliang Yang <xiaoliang.yang_1@nxp.com>
+Link: https://patch.msgid.link/20240906093550.29985-1-xiaoliang.yang_1@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/peb2466.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/dsa/ocelot/felix_vsc9959.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/codecs/peb2466.c b/sound/soc/codecs/peb2466.c
-index 5dec69be0acb..06c83d2042f3 100644
---- a/sound/soc/codecs/peb2466.c
-+++ b/sound/soc/codecs/peb2466.c
-@@ -229,7 +229,8 @@ static int peb2466_reg_read(void *context, unsigned int reg, unsigned int *val)
- 	case PEB2466_CMD_XOP:
- 	case PEB2466_CMD_SOP:
- 		ret = peb2466_read_byte(peb2466, reg, &tmp);
--		*val = tmp;
-+		if (!ret)
-+			*val = tmp;
- 		break;
- 	default:
- 		dev_err(&peb2466->spi->dev, "Not a XOP or SOP command\n");
+diff --git a/drivers/net/dsa/ocelot/felix_vsc9959.c b/drivers/net/dsa/ocelot/felix_vsc9959.c
+index 3c5509e75a54..afb5dae4439c 100644
+--- a/drivers/net/dsa/ocelot/felix_vsc9959.c
++++ b/drivers/net/dsa/ocelot/felix_vsc9959.c
+@@ -1474,10 +1474,13 @@ static int vsc9959_qos_port_tas_set(struct ocelot *ocelot, int port,
+ 	/* Hardware errata -  Admin config could not be overwritten if
+ 	 * config is pending, need reset the TAS module
+ 	 */
+-	val = ocelot_read(ocelot, QSYS_PARAM_STATUS_REG_8);
+-	if (val & QSYS_PARAM_STATUS_REG_8_CONFIG_PENDING) {
+-		ret = -EBUSY;
+-		goto err_reset_tc;
++	val = ocelot_read_rix(ocelot, QSYS_TAG_CONFIG, port);
++	if (val & QSYS_TAG_CONFIG_ENABLE) {
++		val = ocelot_read(ocelot, QSYS_PARAM_STATUS_REG_8);
++		if (val & QSYS_PARAM_STATUS_REG_8_CONFIG_PENDING) {
++			ret = -EBUSY;
++			goto err_reset_tc;
++		}
+ 	}
+ 
+ 	ocelot_rmw_rix(ocelot,
 -- 
 2.43.0
 
