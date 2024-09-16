@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-76399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C018397A18C
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:08:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C776C97A0DA
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:01:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87A6D287E35
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:08:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65078284C63
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:01:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E0E015666B;
-	Mon, 16 Sep 2024 12:08:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CC98155333;
+	Mon, 16 Sep 2024 12:01:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zkFjDMRH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UiZbnnz6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C99C13DBA0;
-	Mon, 16 Sep 2024 12:08:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE3FE14AD19;
+	Mon, 16 Sep 2024 12:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488481; cv=none; b=uiQ4RvmapoYkCkFTU55hxQV8CRntuo9fMgUME0r/Dra0I3Rf9hf9Zk6bE29SUpCWuOwRRu2+cPAFFEB75nUFSKYYqfv7r7eQ3XgizWxvYy8tp/I/YY/C/oRWX/Th+zOuPkjF1FHuV09v4fdOoPM52RAYiYHhWNMK9wmkaN/7Ma4=
+	t=1726488097; cv=none; b=ZvNZeZ2Voe7F7g2XmWKwU2LSks+gHL4bM3paNvMDeJuM4Y2gRvTkdKuqCkovf55TKKrl4j7W4PY9dIKI/3v7zWMRhO5bgbj78V9sgOkopAvziyL/jG/oU8EP5/P4irMPHJqszUglqPyDQyss/84xXZB0gb/XEa6j7hBXqjQIBeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488481; c=relaxed/simple;
-	bh=IpfzF2RuzOJLkTtSQYxKijihcb7Iw1TspsDhhA3M//A=;
+	s=arc-20240116; t=1726488097; c=relaxed/simple;
+	bh=0ngpE6t8k8Vp5iIxQ96zV7xvagS988eUk0sxSno4D3M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c8zCTMkp+ngJVKzyg+tqAErYsNDlmx1VPPTid4fKQWRdmNJH4s0pHERDc9BR4Xx9pUvl62nrjsiSPBLPvAvcyOA7QSNtJiA1VVlgL/8/zh74WzYrrc60/N+VKewFFwhdXeAWYlNGrr6jZiq+u2WfeySjY6qbLkijnJBqb6n2AUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zkFjDMRH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C97E0C4CEC4;
-	Mon, 16 Sep 2024 12:08:00 +0000 (UTC)
+	 MIME-Version; b=Yen/YeK5mfxtLAgxwZeuFmOy9W/2zCKDbw67VtKBlcJ0aBs3gnR1bjLG8ZDACR+RSPFUqRkfUYfZUFjzt/2b1P5oeSauDhRdjxtJ68Umer+nQNnyDhPXEt1H7aqa7NXcWba+W1X/w4mlIFOs05s2E8DU200e9Vq8W118rkuAxDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UiZbnnz6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BB6EC4CEC4;
+	Mon, 16 Sep 2024 12:01:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488481;
-	bh=IpfzF2RuzOJLkTtSQYxKijihcb7Iw1TspsDhhA3M//A=;
+	s=korg; t=1726488096;
+	bh=0ngpE6t8k8Vp5iIxQ96zV7xvagS988eUk0sxSno4D3M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zkFjDMRHsFQsZ28sMqnhb83iBqFZpO8/9BLkgtWp0M6vIBcjwYcKrK+iimpqGzX8O
-	 bddkYHs71voEi8R0Qj4R9HwMyvETJLUFi6akhPy6Xw71Hw7E8//0PdbMbLow0DmPzI
-	 H11YM0GbrE3ai6pcYhN9GcxfQ7Z8tMe8BEI5C/3Q=
+	b=UiZbnnz6/siTpITcKAfvKysEO5V9etYOf+wEbJfY+7foq7YWsf8sjD9OA+J1oqOeh
+	 YK/3X4vAw9TQfjUIzCWLplIh1tSMUWBKJOqAlel2KNT3RM7Vy4ZdKWVJhpMiHBe7TB
+	 kgtC8rM/e49X3OdL2CITOrKVp8DVD0IOyeFWnqU8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Skeggs <bskeggs@nvidia.com>,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH 6.10 102/121] drm/nouveau/fb: restore init() for ramgp102
+	Harry Wentland <harry.wentland@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 57/63] drm/amdgpu/atomfirmware: Silence UBSAN warning
 Date: Mon, 16 Sep 2024 13:44:36 +0200
-Message-ID: <20240916114232.494821754@linuxfoundation.org>
+Message-ID: <20240916114223.064244433@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
-References: <20240916114228.914815055@linuxfoundation.org>
+In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
+References: <20240916114221.021192667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Skeggs <bskeggs@nvidia.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit 6db9df4f7055eb4ea339e7b83ca676edd9ec1277 upstream.
+commit 17ea4383649fdeaff3181ddcf1ff03350d42e591 upstream.
 
-init() was removed from ramgp102 when reworking the memory detection, as
-it was thought that the code was only necessary when the driver performs
-mclk changes, which nouveau doesn't support on pascal.
+Per the comments, these are variable sized arrays.
 
-However, it turns out that we still need to execute this on some GPUs to
-restore settings after DEVINIT, so revert to the original behaviour.
-
-v2: fix tags in commit message, cc stable
-
-Closes: https://gitlab.freedesktop.org/drm/nouveau/-/issues/319
-Fixes: 2c0c15a22fa0 ("drm/nouveau/fb/gp102-ga100: switch to simpler vram size detection method")
-Cc: stable@vger.kernel.org # 6.6+
-Signed-off-by: Ben Skeggs <bskeggs@nvidia.com>
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240904232418.8590-1-bskeggs@nvidia.com
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3613
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 81f7804ba84ee617ed594de934ed87bcc4f83531)
+Cc: stable@vger.kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/nouveau/nvkm/subdev/fb/ram.h      |    2 ++
- drivers/gpu/drm/nouveau/nvkm/subdev/fb/ramgp100.c |    2 +-
- drivers/gpu/drm/nouveau/nvkm/subdev/fb/ramgp102.c |    1 +
- 3 files changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/include/atomfirmware.h |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/nouveau/nvkm/subdev/fb/ram.h
-+++ b/drivers/gpu/drm/nouveau/nvkm/subdev/fb/ram.h
-@@ -46,6 +46,8 @@ u32 gm107_ram_probe_fbp(const struct nvk
- u32 gm200_ram_probe_fbp_amount(const struct nvkm_ram_func *, u32,
- 			       struct nvkm_device *, int, int *);
- 
-+int gp100_ram_init(struct nvkm_ram *);
-+
- /* RAM type-specific MR calculation routines */
- int nvkm_sddr2_calc(struct nvkm_ram *);
- int nvkm_sddr3_calc(struct nvkm_ram *);
---- a/drivers/gpu/drm/nouveau/nvkm/subdev/fb/ramgp100.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/subdev/fb/ramgp100.c
-@@ -27,7 +27,7 @@
- #include <subdev/bios/init.h>
- #include <subdev/bios/rammap.h>
- 
--static int
-+int
- gp100_ram_init(struct nvkm_ram *ram)
- {
- 	struct nvkm_subdev *subdev = &ram->fb->subdev;
---- a/drivers/gpu/drm/nouveau/nvkm/subdev/fb/ramgp102.c
-+++ b/drivers/gpu/drm/nouveau/nvkm/subdev/fb/ramgp102.c
-@@ -5,6 +5,7 @@
- 
- static const struct nvkm_ram_func
- gp102_ram = {
-+	.init = gp100_ram_init,
+--- a/drivers/gpu/drm/amd/include/atomfirmware.h
++++ b/drivers/gpu/drm/amd/include/atomfirmware.h
+@@ -1005,7 +1005,7 @@ struct display_object_info_table_v1_4
+   uint16_t  supporteddevices;
+   uint8_t   number_of_path;
+   uint8_t   reserved;
+-  struct    atom_display_object_path_v2 display_path[8];   //the real number of this included in the structure is calculated by using the (whole structure size - the header size- number_of_path)/size of atom_display_object_path
++  struct    atom_display_object_path_v2 display_path[];   //the real number of this included in the structure is calculated by using the (whole structure size - the header size- number_of_path)/size of atom_display_object_path
  };
  
- int
+ struct display_object_info_table_v1_5 {
+@@ -1015,7 +1015,7 @@ struct display_object_info_table_v1_5 {
+ 	uint8_t reserved;
+ 	// the real number of this included in the structure is calculated by using the
+ 	// (whole structure size - the header size- number_of_path)/size of atom_display_object_path
+-	struct atom_display_object_path_v3 display_path[8];
++	struct atom_display_object_path_v3 display_path[];
+ };
+ 
+ /* 
 
 
 
