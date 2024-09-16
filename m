@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-76411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCD9597A1A3
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:09:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FC6C97A0A3
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 13:59:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1C2331C218C8
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:09:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C95B6284B40
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 11:59:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACE9D153573;
-	Mon, 16 Sep 2024 12:08:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F89F156F4C;
+	Mon, 16 Sep 2024 11:59:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MXgN57fO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P3tGSUMA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 675A0149C57;
-	Mon, 16 Sep 2024 12:08:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7297915533B;
+	Mon, 16 Sep 2024 11:59:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488515; cv=none; b=cBbUgxFZl8aT1HfOSzS/GTJQRApjZKujdCT1W+TYchktykSQ3Jq7P0SIx/0+dTVHnqMJf6LnTI8Dwl8BORAdZMLJ6ac5ZJaaG8NZMz5KznZGHLhYzalx+8UidJT0VTH1Ff84ciQKIsjdWGOLYVZ80NxJ76s/yXBnuiJ0zGLIBbI=
+	t=1726487962; cv=none; b=fUzW981AFQHPgDqAN4EIZw1C0BUK+N0kY1IW/PKdlGc7l6Tzzt85j3kcVu/EJAfZ25ebY1yerSIc27DgEpq/ASvXlg4EN/rjI3rjmZchFDRxiDX5VNNKCGzkm/l1fCt6cXoGPq7hodHxyfY9bW43dMhwZuKVlVaQQXBh4xgioos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488515; c=relaxed/simple;
-	bh=cwqLtmDxj+ctWl+zImvBIgtKbbKUfSgsAH1yVX+eKfw=;
+	s=arc-20240116; t=1726487962; c=relaxed/simple;
+	bh=mwpViyOAax28B8eVocuZFYa6jNCNPZ9XTCTm3huZArM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sMA6TsAXxhNbCcjZD9M3vdUdN5w+qvgj/0C/RlMdgaTQ81DGc1GZIrweqkZi/eG07Xry2XNgyXYlNXqfBai7N1XcYsXyIKYXOXY28/KZOVgBTBz4rlFiepCZR4ewZkazQgMj+jiLB/eiUsu/k9w8ETGzHp9BDHgdHzI8RTi2Wmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MXgN57fO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4728C4CECF;
-	Mon, 16 Sep 2024 12:08:34 +0000 (UTC)
+	 MIME-Version; b=eL7xUe/8XCsqwwd8SHXmZUa2lMEgDT1ZcMhoeAvRsTlvA3Mj06ivRFFfvyMdiQRths5zJpkDrXENLOkn9mvkywIG2IrYNl2tdWkZYttdmHiBvlveCuXbHBDiwPrvivWlznOfIHCbJURFzztS8dv3BbUtlGY+bBE5SHxIyplyOD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P3tGSUMA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA7E6C4CEC4;
+	Mon, 16 Sep 2024 11:59:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488515;
-	bh=cwqLtmDxj+ctWl+zImvBIgtKbbKUfSgsAH1yVX+eKfw=;
+	s=korg; t=1726487962;
+	bh=mwpViyOAax28B8eVocuZFYa6jNCNPZ9XTCTm3huZArM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MXgN57fODwYBfPXvE2wYeK7Us2BAR0odYsV8Fkifws4ShUxYijicnCFqYNzmG2Z6f
-	 QPAckbbKUBkiz7H1gIdjQwqf3ParLEi4uwVxHhb3IBOpR7QxIUD6jpHRWAqOEaLBFN
-	 sM6nWyUr4shipuN46skVNj/Ssn8+Dzlh0R6FqAKQ=
+	b=P3tGSUMAJQO0fCehNSTUgzD0Cx7nzqS+AFGeWNU7x+eNShdzSm0LLt1MCq4omq+8s
+	 sTyj9z6veXuRz4gMXq3JBrGlt0KYu2oH61aLCKxv7B5FWt37rAQihhZ92HHbiZcdpa
+	 j/9dg5GoXIsnKBsx3BGAiJ+iyHYKXVGU9icnVdoc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Foster Snowhill <forst@pen.gy>,
+	Georgi Valkov <gvalkov@gmail.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 06/91] nvmem: u-boot-env: use nvmem_add_one_cell() nvmem subsystem helper
+Subject: [PATCH 6.1 03/63] usbnet: ipheth: fix carrier detection in modes 1 and 4
 Date: Mon, 16 Sep 2024 13:43:42 +0200
-Message-ID: <20240916114224.729288400@linuxfoundation.org>
+Message-ID: <20240916114221.145161335@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
-References: <20240916114224.509743970@linuxfoundation.org>
+In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
+References: <20240916114221.021192667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,138 +61,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafał Miłecki <rafal@milecki.pl>
+From: Foster Snowhill <forst@pen.gy>
 
-[ Upstream commit 7c8979b42b1a9c5604f431ba804928e55919263c ]
+[ Upstream commit 67927a1b255d883881be9467508e0af9a5e0be9d ]
 
-Simplify adding NVMEM cells.
+Apart from the standard "configurations", "interfaces" and "alternate
+interface settings" in USB, iOS devices also have a notion of
+"modes". In different modes, the device exposes a different set of
+available configurations.
 
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/r/20231221173421.13737-3-zajec5@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 8679e8b4a1eb ("nvmem: u-boot-env: error if NVMEM device is too small")
+Depending on the iOS version, and depending on the current mode, the
+length and contents of the carrier state control message differs:
+
+* 1 byte (seen on iOS 4.2.1, 8.4):
+    * 03: carrier off (mode 0)
+    * 04: carrier on (mode 0)
+* 3 bytes (seen on iOS 10.3.4, 15.7.6):
+    * 03 03 03: carrier off (mode 0)
+    * 04 04 03: carrier on (mode 0)
+* 4 bytes (seen on iOS 16.5, 17.6):
+    * 03 03 03 00: carrier off (mode 0)
+    * 04 03 03 00: carrier off (mode 1)
+    * 06 03 03 00: carrier off (mode 4)
+    * 04 04 03 04: carrier on (mode 0 and 1)
+    * 06 04 03 04: carrier on (mode 4)
+
+Before this change, the driver always used the first byte of the
+response to determine carrier state.
+
+>From this larger sample, the first byte seems to indicate the number of
+available USB configurations in the current mode (with the exception of
+the default mode 0), and in some cases (namely mode 1 and 4) does not
+correlate with the carrier state.
+
+Previous logic erroneously counted `04 03 03 00` as "carrier on" and
+`06 04 03 04` as "carrier off" on iOS versions that support mode 1 and
+mode 4 respectively.
+
+Only modes 0, 1 and 4 expose the USB Ethernet interfaces necessary for
+the ipheth driver.
+
+Check the second byte of the control message where possible, and fall
+back to checking the first byte on older iOS versions.
+
+Signed-off-by: Foster Snowhill <forst@pen.gy>
+Tested-by: Georgi Valkov <gvalkov@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvmem/u-boot-env.c | 55 +++++++++++++++-----------------------
- 1 file changed, 21 insertions(+), 34 deletions(-)
+ drivers/net/usb/ipheth.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/nvmem/u-boot-env.c b/drivers/nvmem/u-boot-env.c
-index c4ae94af4af7..dd9d0ad22712 100644
---- a/drivers/nvmem/u-boot-env.c
-+++ b/drivers/nvmem/u-boot-env.c
-@@ -23,13 +23,10 @@ enum u_boot_env_format {
- 
- struct u_boot_env {
- 	struct device *dev;
-+	struct nvmem_device *nvmem;
- 	enum u_boot_env_format format;
- 
- 	struct mtd_info *mtd;
--
--	/* Cells */
--	struct nvmem_cell_info *cells;
--	int ncells;
- };
- 
- struct u_boot_env_image_single {
-@@ -94,43 +91,36 @@ static int u_boot_env_read_post_process_ethaddr(void *context, const char *id, i
- static int u_boot_env_add_cells(struct u_boot_env *priv, uint8_t *buf,
- 				size_t data_offset, size_t data_len)
- {
-+	struct nvmem_device *nvmem = priv->nvmem;
- 	struct device *dev = priv->dev;
- 	char *data = buf + data_offset;
- 	char *var, *value, *eq;
--	int idx;
--
--	priv->ncells = 0;
--	for (var = data; var < data + data_len && *var; var += strlen(var) + 1)
--		priv->ncells++;
--
--	priv->cells = devm_kcalloc(dev, priv->ncells, sizeof(*priv->cells), GFP_KERNEL);
--	if (!priv->cells)
--		return -ENOMEM;
- 
--	for (var = data, idx = 0;
-+	for (var = data;
- 	     var < data + data_len && *var;
--	     var = value + strlen(value) + 1, idx++) {
-+	     var = value + strlen(value) + 1) {
-+		struct nvmem_cell_info info = {};
-+
- 		eq = strchr(var, '=');
- 		if (!eq)
- 			break;
- 		*eq = '\0';
- 		value = eq + 1;
- 
--		priv->cells[idx].name = devm_kstrdup(dev, var, GFP_KERNEL);
--		if (!priv->cells[idx].name)
-+		info.name = devm_kstrdup(dev, var, GFP_KERNEL);
-+		if (!info.name)
- 			return -ENOMEM;
--		priv->cells[idx].offset = data_offset + value - data;
--		priv->cells[idx].bytes = strlen(value);
--		priv->cells[idx].np = of_get_child_by_name(dev->of_node, priv->cells[idx].name);
-+		info.offset = data_offset + value - data;
-+		info.bytes = strlen(value);
-+		info.np = of_get_child_by_name(dev->of_node, info.name);
- 		if (!strcmp(var, "ethaddr")) {
--			priv->cells[idx].raw_len = strlen(value);
--			priv->cells[idx].bytes = ETH_ALEN;
--			priv->cells[idx].read_post_process = u_boot_env_read_post_process_ethaddr;
-+			info.raw_len = strlen(value);
-+			info.bytes = ETH_ALEN;
-+			info.read_post_process = u_boot_env_read_post_process_ethaddr;
- 		}
--	}
- 
--	if (WARN_ON(idx != priv->ncells))
--		priv->ncells = idx;
-+		nvmem_add_one_cell(nvmem, &info);
-+	}
- 
- 	return 0;
- }
-@@ -209,7 +199,6 @@ static int u_boot_env_probe(struct platform_device *pdev)
- 	struct device *dev = &pdev->dev;
- 	struct device_node *np = dev->of_node;
- 	struct u_boot_env *priv;
--	int err;
- 
- 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
- 	if (!priv)
-@@ -224,17 +213,15 @@ static int u_boot_env_probe(struct platform_device *pdev)
- 		return PTR_ERR(priv->mtd);
+diff --git a/drivers/net/usb/ipheth.c b/drivers/net/usb/ipheth.c
+index 13381d87eeb0..17844c07305c 100644
+--- a/drivers/net/usb/ipheth.c
++++ b/drivers/net/usb/ipheth.c
+@@ -253,13 +253,14 @@ static int ipheth_carrier_set(struct ipheth_device *dev)
+ 			0x02, /* index */
+ 			dev->ctrl_buf, IPHETH_CTRL_BUF_SIZE,
+ 			IPHETH_CTRL_TIMEOUT);
+-	if (retval < 0) {
++	if (retval <= 0) {
+ 		dev_err(&dev->intf->dev, "%s: usb_control_msg: %d\n",
+ 			__func__, retval);
+ 		return retval;
  	}
  
--	err = u_boot_env_parse(priv);
--	if (err)
--		return err;
--
- 	config.dev = dev;
--	config.cells = priv->cells;
--	config.ncells = priv->ncells;
- 	config.priv = priv;
- 	config.size = priv->mtd->size;
- 
--	return PTR_ERR_OR_ZERO(devm_nvmem_register(dev, &config));
-+	priv->nvmem = devm_nvmem_register(dev, &config);
-+	if (IS_ERR(priv->nvmem))
-+		return PTR_ERR(priv->nvmem);
-+
-+	return u_boot_env_parse(priv);
- }
- 
- static const struct of_device_id u_boot_env_of_match_table[] = {
+-	if (dev->ctrl_buf[0] == IPHETH_CARRIER_ON) {
++	if ((retval == 1 && dev->ctrl_buf[0] == IPHETH_CARRIER_ON) ||
++	    (retval >= 2 && dev->ctrl_buf[1] == IPHETH_CARRIER_ON)) {
+ 		netif_carrier_on(dev->net);
+ 		if (dev->tx_urb->status != -EINPROGRESS)
+ 			netif_wake_queue(dev->net);
 -- 
 2.43.0
 
