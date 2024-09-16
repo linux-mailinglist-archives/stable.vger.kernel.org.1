@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-76247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA72697A0C4
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:00:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B518997A13E
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:06:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82B701F21087
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:00:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75EF7286C36
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:06:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BE57154429;
-	Mon, 16 Sep 2024 12:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54DC11591F0;
+	Mon, 16 Sep 2024 12:04:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zpEBEx+F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RcEVo8GN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCB1DA95E;
-	Mon, 16 Sep 2024 12:00:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12ED6158DD0;
+	Mon, 16 Sep 2024 12:04:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488048; cv=none; b=NPaicXfiz3MXhIIW6zAJej2b+Ll6uQnFcrvHf37tygpvOgnAmRtXjnTTgxFYXjBlZU/TzaZFlArWi2pieQe5yKSZkHhXamfbyNhRoOhJPmVwP2Lzb0KYMAPTsjab4Ik9G1S1e1H5zUrAMGrHCMslRRa1KWtzyopYw9m1Dyw5wqY=
+	t=1726488282; cv=none; b=pObBcFPb1Vzagc1iu++GjuntcwW8TXkkZXJ2p1lLziBF4lsFWrEykNXiaGNQktU5Zrp8BGal0PEjRxZ0ghMdtmQvALtzOTpB+PhGe+PUse1ML4WQArvHnYrLhTAQGQtO0SG523zN/2rAMdZ2IxPyqJLOIjv7R7gyfYmW9yPXy8k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488048; c=relaxed/simple;
-	bh=twrLv11AH/st8BM/Ih+vkmvge1h2CkfMJg6YmQTUSW4=;
+	s=arc-20240116; t=1726488282; c=relaxed/simple;
+	bh=cdwKZOWNcBbQBJMgzLDQ/d7OCQL+gsH7bazUuqeOofc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NS7msFMN2ys7ZluXCPIXjX+H2+O8Izgv+F9YF4JMOsgTQDAvuqy7+iToqZ50yb7Zq2Wts6tJbZrpCOt9peo+YAb1ki2twGP5/S8SnGgJss8IYDmT/3Y6b3DVqVigrFyeG9+F8PLsoPfsqVIaPctEeRR4tmObcBdjAoys6OK62q0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zpEBEx+F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 538D2C4CEC4;
-	Mon, 16 Sep 2024 12:00:48 +0000 (UTC)
+	 MIME-Version; b=sNoyvHDCd/fgKgOorV1Gkt6UUKdkCBrvquX6UbwkSg5ZrmdzHMf76tR3bqqFAq5kXmLYtSrOPA8c83beaM/Kw/qz1bwx810TBbjMwgEwrsfZB61W1enF2khb6teOrHSSY7e0jYCtBR5tK0YcwJ1OniqKHLlMYxLyFGCRstWSeTA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RcEVo8GN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86D86C4CEC4;
+	Mon, 16 Sep 2024 12:04:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488048;
-	bh=twrLv11AH/st8BM/Ih+vkmvge1h2CkfMJg6YmQTUSW4=;
+	s=korg; t=1726488281;
+	bh=cdwKZOWNcBbQBJMgzLDQ/d7OCQL+gsH7bazUuqeOofc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zpEBEx+F3fCtB5VYtDzWhMpyCXsNsWjT7p+oZvLHJ0ONfU/HUzPPa8qeI/rR5WEPG
-	 eO3UaLry5LPQiZ648zmZGPPFwOU70rQaFUlR63LKDbD/qE/YBW3U9YUc7XuehHwCf2
-	 7hSwmW8NpbLT5ivQbPZiVm0dTE8CqmFSw+2ViwSQ=
+	b=RcEVo8GNZ8VpuioXKoMFvqDPSpW9pQMtDIXRUhxdUKDblsh/0P0JA/+HVs7wpoM59
+	 eZtJYNpAPa0adl/SNM6c8kPFbs7yFf2jUj0IMlOaQRp49wolxCIoZYXpDGDJareO9z
+	 Ib7NFhDWfvknG/uiAkxH1ratPd74p4o0VC6qwJfM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anders Roxell <anders.roxell@linaro.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 13/63] scripts: kconfig: merge_config: config files: add a trailing newline
+	Kent Overstreet <kent.overstreet@linux.dev>
+Subject: [PATCH 6.10 058/121] bcachefs: Dont delete open files in online fsck
 Date: Mon, 16 Sep 2024 13:43:52 +0200
-Message-ID: <20240916114221.520367514@linuxfoundation.org>
+Message-ID: <20240916114231.079285590@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
-References: <20240916114221.021192667@linuxfoundation.org>
+In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
+References: <20240916114228.914815055@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +60,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anders Roxell <anders.roxell@linaro.org>
+From: Kent Overstreet <kent.overstreet@linux.dev>
 
-[ Upstream commit 33330bcf031818e60a816db0cfd3add9eecc3b28 ]
+[ Upstream commit 16005147cca41a0f67b5def2a4656286f8c0db4a ]
 
-When merging files without trailing newlines at the end of the file, two
-config fragments end up at the same row if file1.config doens't have a
-trailing newline at the end of the file.
+If a file is unlinked but still open, we don't want online fsck to
+delete it - or fun inconsistencies will happen.
 
-file1.config "CONFIG_1=y"
-file2.config "CONFIG_2=y"
-./scripts/kconfig/merge_config.sh -m .config file1.config file2.config
+https://github.com/koverstreet/bcachefs/issues/727
 
-This will generate a .config looking like this.
-cat .config
-...
-CONFIG_1=yCONFIG_2=y"
-
-Making sure so we add a newline at the end of every config file that is
-passed into the script.
-
-Signed-off-by: Anders Roxell <anders.roxell@linaro.org>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Kent Overstreet <kent.overstreet@linux.dev>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- scripts/kconfig/merge_config.sh | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/bcachefs/fs.c   |    8 ++++++++
+ fs/bcachefs/fs.h   |    7 +++++++
+ fs/bcachefs/fsck.c |   18 ++++++++++++++++++
+ 3 files changed, 33 insertions(+)
 
-diff --git a/scripts/kconfig/merge_config.sh b/scripts/kconfig/merge_config.sh
-index e5b46980c22a..72da3b8d6f30 100755
---- a/scripts/kconfig/merge_config.sh
-+++ b/scripts/kconfig/merge_config.sh
-@@ -160,6 +160,8 @@ for ORIG_MERGE_FILE in $MERGE_LIST ; do
- 			sed -i "/$CFG[ =]/d" $MERGE_FILE
- 		fi
- 	done
-+	# In case the previous file lacks a new line at the end
-+	echo >> $TMP_FILE
- 	cat $MERGE_FILE >> $TMP_FILE
- done
+--- a/fs/bcachefs/fs.c
++++ b/fs/bcachefs/fs.c
+@@ -177,6 +177,14 @@ static unsigned bch2_inode_hash(subvol_i
+ 	return jhash_3words(inum.subvol, inum.inum >> 32, inum.inum, JHASH_INITVAL);
+ }
  
--- 
-2.43.0
-
++struct bch_inode_info *__bch2_inode_hash_find(struct bch_fs *c, subvol_inum inum)
++{
++	return to_bch_ei(ilookup5_nowait(c->vfs_sb,
++					 bch2_inode_hash(inum),
++					 bch2_iget5_test,
++					 &inum));
++}
++
+ static struct bch_inode_info *bch2_inode_insert(struct bch_fs *c, struct bch_inode_info *inode)
+ {
+ 	subvol_inum inum = inode_inum(inode);
+--- a/fs/bcachefs/fs.h
++++ b/fs/bcachefs/fs.h
+@@ -56,6 +56,8 @@ static inline subvol_inum inode_inum(str
+ 	};
+ }
+ 
++struct bch_inode_info *__bch2_inode_hash_find(struct bch_fs *, subvol_inum);
++
+ /*
+  * Set if we've gotten a btree error for this inode, and thus the vfs inode and
+  * btree inode may be inconsistent:
+@@ -194,6 +196,11 @@ int bch2_vfs_init(void);
+ 
+ #define bch2_inode_update_after_write(_trans, _inode, _inode_u, _fields)	({ do {} while (0); })
+ 
++static inline struct bch_inode_info *__bch2_inode_hash_find(struct bch_fs *c, subvol_inum inum)
++{
++	return NULL;
++}
++
+ static inline void bch2_evict_subvolume_inodes(struct bch_fs *c,
+ 					       snapshot_id_list *s) {}
+ static inline void bch2_vfs_exit(void) {}
+--- a/fs/bcachefs/fsck.c
++++ b/fs/bcachefs/fsck.c
+@@ -8,6 +8,7 @@
+ #include "darray.h"
+ #include "dirent.h"
+ #include "error.h"
++#include "fs.h"
+ #include "fs-common.h"
+ #include "fsck.h"
+ #include "inode.h"
+@@ -948,6 +949,22 @@ fsck_err:
+ 	return ret;
+ }
+ 
++static bool bch2_inode_open(struct bch_fs *c, struct bpos p)
++{
++	subvol_inum inum = {
++		.subvol = snapshot_t(c, p.snapshot)->subvol,
++		.inum	= p.offset,
++	};
++
++	/* snapshot tree corruption, can't safely delete */
++	if (!inum.subvol) {
++		bch_err_ratelimited(c, "%s(): snapshot %u has no subvol", __func__, p.snapshot);
++		return true;
++	}
++
++	return __bch2_inode_hash_find(c, inum) != NULL;
++}
++
+ static int check_inode(struct btree_trans *trans,
+ 		       struct btree_iter *iter,
+ 		       struct bkey_s_c k,
+@@ -1025,6 +1042,7 @@ static int check_inode(struct btree_tran
+ 	}
+ 
+ 	if (u.bi_flags & BCH_INODE_unlinked &&
++	    !bch2_inode_open(c, k.k->p) &&
+ 	    (!c->sb.clean ||
+ 	     fsck_err(c, inode_unlinked_but_clean,
+ 		      "filesystem marked clean, but inode %llu unlinked",
 
 
 
