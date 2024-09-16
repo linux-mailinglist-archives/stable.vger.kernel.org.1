@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-76359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76457-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 061F597A15F
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:07:26 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7751897A1D4
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:10:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 38EE01C2373D
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:07:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E1A71F217CC
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:10:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8D15158210;
-	Mon, 16 Sep 2024 12:06:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6D1D155300;
+	Mon, 16 Sep 2024 12:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gjFmQrC8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o30Pie08"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 914A91581E1;
-	Mon, 16 Sep 2024 12:06:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63889146A79;
+	Mon, 16 Sep 2024 12:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488367; cv=none; b=X4SFFP6f9mE9JuasAQsXBQlBs9o+xOhjv97ObHXctvzWUXi4hvRx1pAYWM3jK67P2ygKSl1WQ+xEok+c4whiqJWXJlhJgXAx8EOc+ZXmEvtpqx9iGqZqLPko3wo514SQ+j4t7CyrNhs2oaFQyNp3/d8N4Kuw86hSpnlsXPAbwng=
+	t=1726488647; cv=none; b=cUA8QDg5Tyse9+2aiMtQRTwS1WmdWlinEQQMPAysPK/Que5w8dgYHgAp0xYeDgk1AmRqVhM93kiXbxu8n1c8Gvi1v5qVlzhpxGZi5MEALoWjCAGyJPrT8V0fuaSzEiLGrBUk6IChkPvdyf40MMe0Gq5ed06EVOYJYt5qfqIv1CQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488367; c=relaxed/simple;
-	bh=TqHnj9To1Sl7Ldm4hfQMYsvl840jCZSNxLdOb6P+q4U=;
+	s=arc-20240116; t=1726488647; c=relaxed/simple;
+	bh=5dasstrbL33Kk+vNWJWPBv5rzOTulsJYbGS6DSZ0Keo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UFPmc5q/clQkKVQVHXobXlzDcVw+8+RanpocLUxGuS8uR3A0/OQs+HGvg0aN1rZb6YGn/tBejmwZ8o7q/2dbSexCqeAEJJlXB648gM5+mgHeEbDIiiFjuRz5ta5Kg1yJFys69tvNo/gruvbSFlrpmU0hU0YkSuj6neuEw0zT50E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gjFmQrC8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B164C4CECC;
-	Mon, 16 Sep 2024 12:06:06 +0000 (UTC)
+	 MIME-Version; b=BF6CQHTnwyaRPfFugvWaMH29cnnOj9kHKqTbCcKIkpkp9srFpDa0lw8+jxxgja7HbZTpFSdqmFvjJlBaIiK4/Hep3IFQw2OvJanjW4DMv1w69iJk8Lf8DqwGnS6xHLy9h2aUIvanWFPeoBWpvYkkRfUQbnAEcT87AwRS2a+k7pI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o30Pie08; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE50EC4CECC;
+	Mon, 16 Sep 2024 12:10:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488367;
-	bh=TqHnj9To1Sl7Ldm4hfQMYsvl840jCZSNxLdOb6P+q4U=;
+	s=korg; t=1726488647;
+	bh=5dasstrbL33Kk+vNWJWPBv5rzOTulsJYbGS6DSZ0Keo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gjFmQrC8iOAS6yuL59ihORljlKmF16CJiB/YXz1MnayTyNFK2y77bUvgO3N/4sXk1
-	 ex4m7jcM+EXil1Ej2hrY5BdjzakabzvbxErRELw9BWp23XKqiW1OqbasjszkzyjWDY
-	 O1nzJjxdi1qiCNeAHr91MTABmbwF5mCZNaXJzpLQ=
+	b=o30Pie08BMnu7q0ohYUODzTfGVAikwk0Ra8R3eIR15/MesVPNtEq9DlAPQE59rSDK
+	 iDhdzaccGbrkKzVizah4D1BWUtjlM5uorMpTc6/uUdLQ7iPGwEqCovEaEIxIMsKBYB
+	 sOLiHKmjpvilfBkS6DWczIfGGRHjpsTZB+k0YO0g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Sean Anderson <sean.anderson@linux.dev>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 088/121] selftests: net: csum: Fix checksums for packets with non-zero padding
-Date: Mon, 16 Sep 2024 13:44:22 +0200
-Message-ID: <20240916114232.055888737@linuxfoundation.org>
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 47/91] net: xilinx: axienet: Fix race in axienet_stop
+Date: Mon, 16 Sep 2024 13:44:23 +0200
+Message-ID: <20240916114226.050290263@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
-References: <20240916114228.914815055@linuxfoundation.org>
+In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
+References: <20240916114224.509743970@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,84 +61,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Sean Anderson <sean.anderson@linux.dev>
 
-[ Upstream commit e8a63d473b49011a68a748aea1c8aefa046ebacf ]
+commit 858430db28a5f5a11f8faa3a6fa805438e6f0851 upstream.
 
-Padding is not included in UDP and TCP checksums. Therefore, reduce the
-length of the checksummed data to include only the data in the IP
-payload. This fixes spurious reported checksum failures like
+axienet_dma_err_handler can race with axienet_stop in the following
+manner:
 
-rx: pkt: sport=33000 len=26 csum=0xc850 verify=0xf9fe
-pkt: bad csum
+CPU 1                       CPU 2
+======================      ==================
+axienet_stop()
+    napi_disable()
+    axienet_dma_stop()
+                            axienet_dma_err_handler()
+                                napi_disable()
+                                axienet_dma_stop()
+                                axienet_dma_start()
+                                napi_enable()
+    cancel_work_sync()
+    free_irq()
 
-Technically it is possible for there to be trailing bytes after the UDP
-data but before the Ethernet padding (e.g. if sizeof(ip) + sizeof(udp) +
-udp.len < ip.len). However, we don't generate such packets.
+Fix this by setting a flag in axienet_stop telling
+axienet_dma_err_handler not to bother doing anything. I chose not to use
+disable_work_sync to allow for easier backporting.
 
-Fixes: 91a7de85600d ("selftests/net: add csum offload test")
 Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20240906210743.627413-1-sean.anderson@linux.dev
+Fixes: 8a3b7a252dca ("drivers/net/ethernet/xilinx: added Xilinx AXI Ethernet driver")
+Link: https://patch.msgid.link/20240903175141.4132898-1-sean.anderson@linux.dev
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[ Adjusted to apply before dmaengine support ]
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/lib/csum.c | 16 ++++++++++++++--
- 1 file changed, 14 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/xilinx/xilinx_axienet.h      |    3 +++
+ drivers/net/ethernet/xilinx/xilinx_axienet_main.c |    8 ++++++++
+ 2 files changed, 11 insertions(+)
 
-diff --git a/tools/testing/selftests/net/lib/csum.c b/tools/testing/selftests/net/lib/csum.c
-index b9f3fc3c3426..e0a34e5e8dd5 100644
---- a/tools/testing/selftests/net/lib/csum.c
-+++ b/tools/testing/selftests/net/lib/csum.c
-@@ -654,10 +654,16 @@ static int recv_verify_packet_ipv4(void *nh, int len)
- {
- 	struct iphdr *iph = nh;
- 	uint16_t proto = cfg_encap ? IPPROTO_UDP : cfg_proto;
-+	uint16_t ip_len;
+--- a/drivers/net/ethernet/xilinx/xilinx_axienet.h
++++ b/drivers/net/ethernet/xilinx/xilinx_axienet.h
+@@ -419,6 +419,8 @@ struct axidma_bd {
+  * @tx_bytes:	TX byte count for statistics
+  * @tx_stat_sync: Synchronization object for TX stats
+  * @dma_err_task: Work structure to process Axi DMA errors
++ * @stopping:   Set when @dma_err_task shouldn't do anything because we are
++ *              about to stop the device.
+  * @tx_irq:	Axidma TX IRQ number
+  * @rx_irq:	Axidma RX IRQ number
+  * @eth_irq:	Ethernet core IRQ number
+@@ -481,6 +483,7 @@ struct axienet_local {
+ 	struct u64_stats_sync tx_stat_sync;
  
- 	if (len < sizeof(*iph) || iph->protocol != proto)
- 		return -1;
+ 	struct work_struct dma_err_task;
++	bool stopping;
  
-+	ip_len = ntohs(iph->tot_len);
-+	if (ip_len > len || ip_len < sizeof(*iph))
-+		return -1;
+ 	int tx_irq;
+ 	int rx_irq;
+--- a/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
++++ b/drivers/net/ethernet/xilinx/xilinx_axienet_main.c
+@@ -1162,6 +1162,7 @@ static int axienet_open(struct net_devic
+ 	phylink_start(lp->phylink);
+ 
+ 	/* Enable worker thread for Axi DMA error handling */
++	lp->stopping = false;
+ 	INIT_WORK(&lp->dma_err_task, axienet_dma_err_handler);
+ 
+ 	napi_enable(&lp->napi_rx);
+@@ -1217,6 +1218,9 @@ static int axienet_stop(struct net_devic
+ 
+ 	dev_dbg(&ndev->dev, "axienet_close()\n");
+ 
++	WRITE_ONCE(lp->stopping, true);
++	flush_work(&lp->dma_err_task);
 +
-+	len = ip_len;
- 	iph_addr_p = &iph->saddr;
- 	if (proto == IPPROTO_TCP)
- 		return recv_verify_packet_tcp(iph + 1, len - sizeof(*iph));
-@@ -669,16 +675,22 @@ static int recv_verify_packet_ipv6(void *nh, int len)
- {
- 	struct ipv6hdr *ip6h = nh;
- 	uint16_t proto = cfg_encap ? IPPROTO_UDP : cfg_proto;
-+	uint16_t ip_len;
+ 	napi_disable(&lp->napi_tx);
+ 	napi_disable(&lp->napi_rx);
  
- 	if (len < sizeof(*ip6h) || ip6h->nexthdr != proto)
- 		return -1;
+@@ -1761,6 +1765,10 @@ static void axienet_dma_err_handler(stru
+ 						dma_err_task);
+ 	struct net_device *ndev = lp->ndev;
  
-+	ip_len = ntohs(ip6h->payload_len);
-+	if (ip_len > len - sizeof(*ip6h))
-+		return -1;
++	/* Don't bother if we are going to stop anyway */
++	if (READ_ONCE(lp->stopping))
++		return;
 +
-+	len = ip_len;
- 	iph_addr_p = &ip6h->saddr;
+ 	napi_disable(&lp->napi_tx);
+ 	napi_disable(&lp->napi_rx);
  
- 	if (proto == IPPROTO_TCP)
--		return recv_verify_packet_tcp(ip6h + 1, len - sizeof(*ip6h));
-+		return recv_verify_packet_tcp(ip6h + 1, len);
- 	else
--		return recv_verify_packet_udp(ip6h + 1, len - sizeof(*ip6h));
-+		return recv_verify_packet_udp(ip6h + 1, len);
- }
- 
- /* return whether auxdata includes TP_STATUS_CSUM_VALID */
--- 
-2.43.0
-
 
 
 
