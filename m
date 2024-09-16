@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-76347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 738B297A154
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:07:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D9CD697A1B6
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:09:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E767BB240A7
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:07:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 84BA31F21E40
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:09:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0A81156F3B;
-	Mon, 16 Sep 2024 12:05:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59BC5156875;
+	Mon, 16 Sep 2024 12:09:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zgZD8nwc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EEk/fL2m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AFD1156641;
-	Mon, 16 Sep 2024 12:05:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00DCD156222;
+	Mon, 16 Sep 2024 12:09:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488333; cv=none; b=SWP3pGnkXlnF5+gQ+4I9q7ecmLNVc3PYqcNHGNTqi4bVS1zmB68tW6/8Oo5RZ2cGXdDlzFgb5g4wATVRTuNOqO5frMoLs7aLvVsl3z/tX1hNx8oWS5yXk3iQ+rQqsRDoyiHFalfsBC/0SN10dgCZz167Ee6Avl/T2czjBnoAkFw=
+	t=1726488565; cv=none; b=hD1IEk14NqOdJatdHq3sJCIEVYb26iwRK7EE/qjSjxkU7QJ7QuBxbqcdC3ElROIfuvCf/ToE+euXvRbKFBIg4rB5OkqDIctEOIyVrW7lYdIlRHDFcQXCnzRTEY0lW1tshtUbqBTVbgE1Y79mEfAaZiWvPb+pA7D5TP7CcMHmq8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488333; c=relaxed/simple;
-	bh=A/oRCxhacOy3vMFASpp8Y/jnERMVITTzRg9vN9aqYmI=;
+	s=arc-20240116; t=1726488565; c=relaxed/simple;
+	bh=LA4aSc1ETp2YBSaTPFmIKP1u/BxazkwXNh/Nllc/nbU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sSrDdMN46lhMQDb0muBJTqCbfQRLnvQqvXfwK+iT3xXtLaCC06CXyGc6JD7yYezi+Tr2hS03gb1kSp6ki8tq5sC1EtjdqZqc8O2dt4eqgme9fzJa3dOanSCBouet5JNFyux6L3rHhxsFoDwQE3PFHO5kOGxHgRqomih91Av59aQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zgZD8nwc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA010C4CECE;
-	Mon, 16 Sep 2024 12:05:32 +0000 (UTC)
+	 MIME-Version; b=Ra7XZmf/RDtCO0mh0EkElDFCvz4nxrMDpIA9Y89SP03qodz4z9w+JhvMsGrMWyGwIreyWIleC6igFwjtDdiifnUKpc+UuyErA1F5oEEiFc9pDFj+6f/GVvHya8xaoy+48MwlfiYMBbh2eVJHRVr5y32dsr6n8GJ57P+8vCO+iec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EEk/fL2m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CC3DC4CEC4;
+	Mon, 16 Sep 2024 12:09:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488333;
-	bh=A/oRCxhacOy3vMFASpp8Y/jnERMVITTzRg9vN9aqYmI=;
+	s=korg; t=1726488564;
+	bh=LA4aSc1ETp2YBSaTPFmIKP1u/BxazkwXNh/Nllc/nbU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zgZD8nwcJvXV4L+J0U9EcWr7c/LXb8WJtMcKTmIu4zpgpsji5VUi2wCL7TwBGOEpT
-	 snNuBwzEmRNU/eFLcHprWTGjcpyQQNcayWjdFBewswuK5lA9EZ63EGaQhvB3C1p2xO
-	 9m70Jb78IaKtyu5S16uCqDkBM3IPZ9HObLwp1yR4=
+	b=EEk/fL2mwysnuKzx3Lo9umzyPu9aVl3oKXZ9G+XvWXSQmGQwb7L0BKYWtunBzyCyx
+	 /VECxUenAcZ4CrhD84n/0ELq0ueGi1FfJNQfDFvuT1LoPdf8DKg2PFRluv6edC7z+g
+	 gM/yBFpMeN+jcAt0Ucyr+/YEwHTxlWNVNEtntZqI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shahar Shitrit <shshitrit@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Carolina Jubran <cjubran@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Anna Schumaker <Anna.Schumaker@Netapp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 077/121] net/mlx5e: Add missing link modes to ptys2ethtool_map
+Subject: [PATCH 6.6 35/91] NFS: Avoid unnecessary rescanning of the per-server delegation list
 Date: Mon, 16 Sep 2024 13:44:11 +0200
-Message-ID: <20240916114231.711385356@linuxfoundation.org>
+Message-ID: <20240916114225.669660711@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
-References: <20240916114228.914815055@linuxfoundation.org>
+In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
+References: <20240916114224.509743970@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,42 +63,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shahar Shitrit <shshitrit@nvidia.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 7617d62cba4a8a3ff3ed3fda0171c43f135c142e ]
+[ Upstream commit f92214e4c312f6ea9d78650cc6291d200f17abb6 ]
 
-Add MLX5E_1000BASE_T and MLX5E_100BASE_TX to the legacy
-modes in ptys2legacy_ethtool_table, since they were missing.
+If the call to nfs_delegation_grab_inode() fails, we will not have
+dropped any locks that require us to rescan the list.
 
-Fixes: 665bc53969d7 ("net/mlx5e: Use new ethtool get/set link ksettings API")
-Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Carolina Jubran <cjubran@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ fs/nfs/delegation.c | 15 +++++----------
+ 1 file changed, 5 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-index 58eb96a68853..5b3b442c4a58 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-@@ -139,6 +139,10 @@ void mlx5e_build_ptys2ethtool_map(void)
- 				       ETHTOOL_LINK_MODE_100000baseKR4_Full_BIT);
- 	MLX5_BUILD_PTYS2ETHTOOL_CONFIG(MLX5E_100GBASE_LR4, legacy,
- 				       ETHTOOL_LINK_MODE_100000baseLR4_ER4_Full_BIT);
-+	MLX5_BUILD_PTYS2ETHTOOL_CONFIG(MLX5E_100BASE_TX, legacy,
-+				       ETHTOOL_LINK_MODE_100baseT_Full_BIT);
-+	MLX5_BUILD_PTYS2ETHTOOL_CONFIG(MLX5E_1000BASE_T, legacy,
-+				       ETHTOOL_LINK_MODE_1000baseT_Full_BIT);
- 	MLX5_BUILD_PTYS2ETHTOOL_CONFIG(MLX5E_10GBASE_T, legacy,
- 				       ETHTOOL_LINK_MODE_10000baseT_Full_BIT);
- 	MLX5_BUILD_PTYS2ETHTOOL_CONFIG(MLX5E_25GBASE_CR, legacy,
+diff --git a/fs/nfs/delegation.c b/fs/nfs/delegation.c
+index cf7365581031..a2034511b631 100644
+--- a/fs/nfs/delegation.c
++++ b/fs/nfs/delegation.c
+@@ -627,6 +627,9 @@ static int nfs_server_return_marked_delegations(struct nfs_server *server,
+ 				prev = delegation;
+ 			continue;
+ 		}
++		inode = nfs_delegation_grab_inode(delegation);
++		if (inode == NULL)
++			continue;
+ 
+ 		if (prev) {
+ 			struct inode *tmp = nfs_delegation_grab_inode(prev);
+@@ -637,12 +640,6 @@ static int nfs_server_return_marked_delegations(struct nfs_server *server,
+ 			}
+ 		}
+ 
+-		inode = nfs_delegation_grab_inode(delegation);
+-		if (inode == NULL) {
+-			rcu_read_unlock();
+-			iput(to_put);
+-			goto restart;
+-		}
+ 		delegation = nfs_start_delegation_return_locked(NFS_I(inode));
+ 		rcu_read_unlock();
+ 
+@@ -1164,7 +1161,6 @@ static int nfs_server_reap_unclaimed_delegations(struct nfs_server *server,
+ 	struct inode *inode;
+ restart:
+ 	rcu_read_lock();
+-restart_locked:
+ 	list_for_each_entry_rcu(delegation, &server->delegations, super_list) {
+ 		if (test_bit(NFS_DELEGATION_INODE_FREEING,
+ 					&delegation->flags) ||
+@@ -1175,7 +1171,7 @@ static int nfs_server_reap_unclaimed_delegations(struct nfs_server *server,
+ 			continue;
+ 		inode = nfs_delegation_grab_inode(delegation);
+ 		if (inode == NULL)
+-			goto restart_locked;
++			continue;
+ 		delegation = nfs_start_delegation_return_locked(NFS_I(inode));
+ 		rcu_read_unlock();
+ 		if (delegation != NULL) {
+@@ -1296,7 +1292,6 @@ static int nfs_server_reap_expired_delegations(struct nfs_server *server,
+ 	nfs4_stateid stateid;
+ restart:
+ 	rcu_read_lock();
+-restart_locked:
+ 	list_for_each_entry_rcu(delegation, &server->delegations, super_list) {
+ 		if (test_bit(NFS_DELEGATION_INODE_FREEING,
+ 					&delegation->flags) ||
+@@ -1307,7 +1302,7 @@ static int nfs_server_reap_expired_delegations(struct nfs_server *server,
+ 			continue;
+ 		inode = nfs_delegation_grab_inode(delegation);
+ 		if (inode == NULL)
+-			goto restart_locked;
++			continue;
+ 		spin_lock(&delegation->lock);
+ 		cred = get_cred_rcu(delegation->cred);
+ 		nfs4_stateid_copy(&stateid, &delegation->stateid);
 -- 
 2.43.0
 
