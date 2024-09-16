@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-76263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D8FC97A0D9
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:01:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FFDB97A1CD
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:10:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6D351F23622
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:01:52 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BDA61F215D2
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:10:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF87715687D;
-	Mon, 16 Sep 2024 12:01:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A98A7146A79;
+	Mon, 16 Sep 2024 12:10:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TXjwUN4u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iiDXGTmZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B48B156864;
-	Mon, 16 Sep 2024 12:01:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65EDF14B094;
+	Mon, 16 Sep 2024 12:10:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488094; cv=none; b=s6b8yRAGu+rp+kFLEfM8FWeK8wVMYXWo4E+P8i9JwTX0qvJPKVQqm6Tex339HvfqqEkq0RzWiuCAL30LNfsXysQQ2SQCGjbv+f+F+lPXDXlNc2AdXpfRT58pGq7r7npgXsRd7BHGo/gc/qSPqO/z2hTOPYORfrxvX1CfhD04Jdg=
+	t=1726488630; cv=none; b=CBwXdxYFfbzv7ahcBZJ26HWwMeQq27jdVlnqgUoF4M7tLtEAjKZlc2HfGNMmqllHLFPEp64J4UISKbkoW+0HFdMaEchyWTaiXGzCsIQrU9WSAmqNsi104U8BMwLsR6Dh7K34FG4oAqU5VNl1+Tx2gv4sT6Z/1vkmVeqn4k0/xaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488094; c=relaxed/simple;
-	bh=WvuRTYig0usgMf5rMBPZqr/wF8mzGgbpos7YGDxxR80=;
+	s=arc-20240116; t=1726488630; c=relaxed/simple;
+	bh=uENX6u9PvkdhiphK/U+R/FoiQ67lyevQZ/uU+pyKOp8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FYWuuPHpApKsMu/h20eKXyyLCHM8kgM3pRYh3rF+ipOffIWnJRKAKvXvc2x68omg/ktAXB1L+ozCho2wpz9hLWIQXG84J8BJLIeAEq6ZrA1yynEPEU3PC3oPWUQRM96BnDDK9m7A2pmaQrcmjhMtkk/LkRwnHkdEZFKYRJza3gA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TXjwUN4u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 981C6C4CECC;
-	Mon, 16 Sep 2024 12:01:33 +0000 (UTC)
+	 MIME-Version; b=D/cbkZjHFO4lGIlRg924Arq+0Xa689Bdg6i4zno7tAj9hN3Oy0ROwTudhEsy57L0+4iw4WfZ/63ftuxUFjm5n3sA4gZJT5ignzZO9r2wyom54bJ+kzgOtqAQdvHxwnVdVYGfr29/1V3bTbjNPH5nsbkrERv2m+tIxuQhr+Oq4U0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iiDXGTmZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3A21C4CEC4;
+	Mon, 16 Sep 2024 12:10:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488094;
-	bh=WvuRTYig0usgMf5rMBPZqr/wF8mzGgbpos7YGDxxR80=;
+	s=korg; t=1726488630;
+	bh=uENX6u9PvkdhiphK/U+R/FoiQ67lyevQZ/uU+pyKOp8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TXjwUN4u1dul0UkdAwHlYDYt0hJtVRJrC0sz4ov+usbFyegrQb1WlrzDFeWvOy+jp
-	 sTSY9kGvQJQSFk8WMtdTmQTz886ESBMLcnAH7Z0D/sH5o7XtCIzu3SQdTIKadqAWlT
-	 TYxdUIaE99gkudxnUwA+JPMPXqV+Pq4BotSxFsfQ=
+	b=iiDXGTmZ98/xQj2rHzW4IOue73FuYfJRv2vlIE7QiXxFhJ6O793/Z1YHXVQ8YurlA
+	 40tIXGrIZCujD10PQxbPcFHd6qMJooW5ZYJPMpqKYRWMLABn6323TbWxCFJDi4WWJS
+	 5IjSeBPuyc7EG2wHncSMIae6cEfCZR53QUDig3MM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xingyu Jin <xingyuj@google.com>,
-	"T.J. Mercier" <tjmercier@google.com>,
-	John Stultz <jstultz@google.com>,
-	Sumit Semwal <sumit.semwal@linaro.org>
-Subject: [PATCH 6.1 56/63] dma-buf: heaps: Fix off-by-one in CMA heap fault handler
+	Maher Sanalla <msanalla@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 59/91] net/mlx5: Update the list of the PCI supported devices
 Date: Mon, 16 Sep 2024 13:44:35 +0200
-Message-ID: <20240916114223.035736106@linuxfoundation.org>
+Message-ID: <20240916114226.443019890@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
-References: <20240916114221.021192667@linuxfoundation.org>
+In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
+References: <20240916114224.509743970@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: T.J. Mercier <tjmercier@google.com>
+From: Maher Sanalla <msanalla@nvidia.com>
 
-commit ea5ff5d351b520524019f7ff7f9ce418de2dad87 upstream.
+[ Upstream commit 7472d157cb8014103105433bcc0705af2e6f7184 ]
 
-Until VM_DONTEXPAND was added in commit 1c1914d6e8c6 ("dma-buf: heaps:
-Don't track CMA dma-buf pages under RssFile") it was possible to obtain
-a mapping larger than the buffer size via mremap and bypass the overflow
-check in dma_buf_mmap_internal. When using such a mapping to attempt to
-fault past the end of the buffer, the CMA heap fault handler also checks
-the fault offset against the buffer size, but gets the boundary wrong by
-1. Fix the boundary check so that we don't read off the end of the pages
-array and insert an arbitrary page in the mapping.
+Add the upcoming ConnectX-9 device ID to the table of supported
+PCI device IDs.
 
-Reported-by: Xingyu Jin <xingyuj@google.com>
-Fixes: a5d2d29e24be ("dma-buf: heaps: Move heap-helper logic into the cma_heap implementation")
-Cc: stable@vger.kernel.org # Applicable >= 5.10. Needs adjustments only for 5.10.
-Signed-off-by: T.J. Mercier <tjmercier@google.com>
-Acked-by: John Stultz <jstultz@google.com>
-Signed-off-by: Sumit Semwal <sumit.semwal@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240830192627.2546033-1-tjmercier@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f908a35b2218 ("net/mlx5: Update the list of the PCI supported devices")
+Signed-off-by: Maher Sanalla <msanalla@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma-buf/heaps/cma_heap.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/dma-buf/heaps/cma_heap.c
-+++ b/drivers/dma-buf/heaps/cma_heap.c
-@@ -165,7 +165,7 @@ static vm_fault_t cma_heap_vm_fault(stru
- 	struct vm_area_struct *vma = vmf->vma;
- 	struct cma_heap_buffer *buffer = vma->vm_private_data;
- 
--	if (vmf->pgoff > buffer->pagecount)
-+	if (vmf->pgoff >= buffer->pagecount)
- 		return VM_FAULT_SIGBUS;
- 
- 	vmf->page = buffer->pages[vmf->pgoff];
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+index 11f11248feb8..96136229b1b0 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+@@ -2205,6 +2205,7 @@ static const struct pci_device_id mlx5_core_pci_table[] = {
+ 	{ PCI_VDEVICE(MELLANOX, 0x101f) },			/* ConnectX-6 LX */
+ 	{ PCI_VDEVICE(MELLANOX, 0x1021) },			/* ConnectX-7 */
+ 	{ PCI_VDEVICE(MELLANOX, 0x1023) },			/* ConnectX-8 */
++	{ PCI_VDEVICE(MELLANOX, 0x1025) },			/* ConnectX-9 */
+ 	{ PCI_VDEVICE(MELLANOX, 0xa2d2) },			/* BlueField integrated ConnectX-5 network controller */
+ 	{ PCI_VDEVICE(MELLANOX, 0xa2d3), MLX5_PCI_DEV_IS_VF},	/* BlueField integrated ConnectX-5 network controller VF */
+ 	{ PCI_VDEVICE(MELLANOX, 0xa2d6) },			/* BlueField-2 integrated ConnectX-6 Dx network controller */
+-- 
+2.43.0
+
 
 
 
