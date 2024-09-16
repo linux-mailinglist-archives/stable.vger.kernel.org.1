@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-76251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76352-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEE5897A0C8
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:01:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F6CA97A156
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:07:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 19E401C22E03
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:01:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C48951C23619
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:07:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B0CB14D2B3;
-	Mon, 16 Sep 2024 12:01:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E8F7156F53;
+	Mon, 16 Sep 2024 12:05:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wM+jT2JQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2tCpk51a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3845114B946;
-	Mon, 16 Sep 2024 12:01:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0704515748E;
+	Mon, 16 Sep 2024 12:05:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488060; cv=none; b=MGsatNrBXDU9SSAyW24IPiYH5LNQ+GwgLWRGDyDJ/uIA8Zkejg5hd/4sgSTkJzWA3Lbw1gX0B9g93M3I2VpjCWAuJJMAPTTjYm//OasKMfiKUHfJ3QlTugIlZRm1Umg4sZ40VNYVqA7/P8NPE3BzGGSTmY5FYHE/JnLjSXM3azk=
+	t=1726488348; cv=none; b=elqWSiLAPyDP8LlckdoVDer+xCCcUZZSPBP8+gmWzwGnlBYuG5aSaCvXw4SnZaD9wzgLzA4IlXXSWcrqSJtEFg2BQerOgvnw7DvUi7iL2oWowXW8v0S5vGMaA3COLopPAI8scFf9xgpCTpRsNbJy3ooZuxsZdtqIIYWv/9PJA2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488060; c=relaxed/simple;
-	bh=nBQo2+gqF667ULhPB4E7GIrt886M+k5dnIEdEi8X2TM=;
+	s=arc-20240116; t=1726488348; c=relaxed/simple;
+	bh=tc0M9LGMOy8SfvZsmp/g8MQNVscwy4gpOt9V77keYDI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f0SEP57KCYDDxi10zumeTmsCH1OZUad9txovje871lQ8MWurX4+OHuJHF9T3Hfvfq1Fl/jcaE/0GUoTeoBWvWX+wubtpgPQx++FSslMGpba0qL755BBbcDImn7ry8PZby6LwNNa0Kaa+K+Fr3Bcd6eotjGt2eU0BT0RyFloxXDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wM+jT2JQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97FAEC4CEC4;
-	Mon, 16 Sep 2024 12:00:59 +0000 (UTC)
+	 MIME-Version; b=IE94OgN2Vr4othH3niWIj1DHrf7Dquq3hNDyYjfRBUOM2Xw665xstR5hnTodk/10sBpqXlU17HB1PqPDzFda+lyJSJa/GN8XG+AQEIVTCGgkrQwAmg/hsmZXBcz2wbSn+oHNwiq1s5Ggt3ikAayXzpk1NxCrffQV88gdD8n8OXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2tCpk51a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23614C4CEC4;
+	Mon, 16 Sep 2024 12:05:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488060;
-	bh=nBQo2+gqF667ULhPB4E7GIrt886M+k5dnIEdEi8X2TM=;
+	s=korg; t=1726488347;
+	bh=tc0M9LGMOy8SfvZsmp/g8MQNVscwy4gpOt9V77keYDI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wM+jT2JQeHgVlJAANTjng8gI2f1RgmUf1m3xd1RrKhTZ1veW5h8JzhakzldiS8GwH
-	 jqoYMS4Erc/9zxdobu3DB/xL+FgLfUIQZLXSOPMdxW92icvcK4BAlj6GYDiUA0/8sG
-	 gVsy6S07uKQjM9XK/UkbiMQufQlT/vD39BL0Kv2o=
+	b=2tCpk51adqskVoGmOlgwGb1ohx256KXg2EKfj6bfMQvtB+ATwr31CZjuS8VGCLe9q
+	 bvYz8uWlkaGCI75Lq2QrHFb9ioUg81phoh2jZ9AUb6cFKojWD1CH/UB7xztQ85z9Dd
+	 bFEGiIPFdUJRspZ0q8f+1BxdNer/5nWFC5tkJ0uI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patryk Biel <pbiel7@gmail.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Carolina Jubran <cjubran@nvidia.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 37/63] hwmon: (pmbus) Conditionally clear individual status bits for pmbus rev >= 1.2
+Subject: [PATCH 6.10 082/121] net/mlx5: Verify support for scheduling element and TSAR type
 Date: Mon, 16 Sep 2024 13:44:16 +0200
-Message-ID: <20240916114222.371442381@linuxfoundation.org>
+Message-ID: <20240916114231.859632924@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
-References: <20240916114221.021192667@linuxfoundation.org>
+In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
+References: <20240916114228.914815055@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +63,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Patryk Biel <pbiel7@gmail.com>
+From: Carolina Jubran <cjubran@nvidia.com>
 
-[ Upstream commit 20471071f198c8626dbe3951ac9834055b387844 ]
+[ Upstream commit 861cd9b9cb62feb244b8d77e68fd6ddedbbf66e9 ]
 
-The current implementation of pmbus_show_boolean assumes that all devices
-support write-back operation of status register to clear pending warnings
-or faults. Since clearing individual bits in the status registers was only
-introduced in PMBus specification 1.2, this operation may not be supported
-by some older devices. This can result in an error while reading boolean
-attributes such as temp1_max_alarm.
+Before creating a scheduling element in a NIC or E-Switch scheduler,
+ensure that the requested element type is supported. If the element is
+of type Transmit Scheduling Arbiter (TSAR), also verify that the
+specific TSAR type is supported.
 
-Fetch PMBus revision supported by the device and modify pmbus_show_boolean
-so that it only tries to clear individual status bits if the device is
-compliant with PMBus specs >= 1.2. Otherwise clear all fault indicators
-on the current page after a fault status was reported.
-
-Fixes: 35f165f08950a ("hwmon: (pmbus) Clear pmbus fault/warning bits after read")
-Signed-off-by: Patryk Biel <pbiel7@gmail.com>
-Message-ID: <20240909-pmbus-status-reg-clearing-v1-1-f1c0d68c6408@gmail.com>
-[groeck:
- Rewrote description
- Moved revision detection code ahead of clear faults command
- Assigned revision if return value from PMBUS_REVISION command is 0
- Improved return value check from calling _pmbus_write_byte_data()]
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 214baf22870c ("net/mlx5e: Support HTB offload")
+Fixes: 85c5f7c9200e ("net/mlx5: E-switch, Create QoS on demand")
+Fixes: 0fe132eac38c ("net/mlx5: E-switch, Allow to add vports to rate groups")
+Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
+Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/pmbus/pmbus.h      |  6 ++++++
- drivers/hwmon/pmbus/pmbus_core.c | 17 ++++++++++++++---
- 2 files changed, 20 insertions(+), 3 deletions(-)
+ .../net/ethernet/mellanox/mlx5/core/esw/qos.c | 44 ++++++++++---------
+ drivers/net/ethernet/mellanox/mlx5/core/qos.c |  7 +++
+ 2 files changed, 31 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/hwmon/pmbus/pmbus.h b/drivers/hwmon/pmbus/pmbus.h
-index 10fb17879f8e..0bbb8ae9341c 100644
---- a/drivers/hwmon/pmbus/pmbus.h
-+++ b/drivers/hwmon/pmbus/pmbus.h
-@@ -409,6 +409,12 @@ enum pmbus_sensor_classes {
- enum pmbus_data_format { linear = 0, ieee754, direct, vid };
- enum vrm_version { vr11 = 0, vr12, vr13, imvp9, amd625mv };
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
+index 997c412a81af..02a3563f51ad 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
+@@ -312,6 +312,25 @@ static int esw_qos_set_group_max_rate(struct mlx5_eswitch *esw,
+ 	return err;
+ }
  
-+/* PMBus revision identifiers */
-+#define PMBUS_REV_10 0x00	/* PMBus revision 1.0 */
-+#define PMBUS_REV_11 0x11	/* PMBus revision 1.1 */
-+#define PMBUS_REV_12 0x22	/* PMBus revision 1.2 */
-+#define PMBUS_REV_13 0x33	/* PMBus revision 1.3 */
++static bool esw_qos_element_type_supported(struct mlx5_core_dev *dev, int type)
++{
++	switch (type) {
++	case SCHEDULING_CONTEXT_ELEMENT_TYPE_TSAR:
++		return MLX5_CAP_QOS(dev, esw_element_type) &
++		       ELEMENT_TYPE_CAP_MASK_TSAR;
++	case SCHEDULING_CONTEXT_ELEMENT_TYPE_VPORT:
++		return MLX5_CAP_QOS(dev, esw_element_type) &
++		       ELEMENT_TYPE_CAP_MASK_VPORT;
++	case SCHEDULING_CONTEXT_ELEMENT_TYPE_VPORT_TC:
++		return MLX5_CAP_QOS(dev, esw_element_type) &
++		       ELEMENT_TYPE_CAP_MASK_VPORT_TC;
++	case SCHEDULING_CONTEXT_ELEMENT_TYPE_PARA_VPORT_TC:
++		return MLX5_CAP_QOS(dev, esw_element_type) &
++		       ELEMENT_TYPE_CAP_MASK_PARA_VPORT_TC;
++	}
++	return false;
++}
 +
- struct pmbus_driver_info {
- 	int pages;		/* Total number of pages */
- 	u8 phases[PMBUS_PAGES];	/* Number of phases per page */
-diff --git a/drivers/hwmon/pmbus/pmbus_core.c b/drivers/hwmon/pmbus/pmbus_core.c
-index 7ec04934747e..4b73c7b27e9a 100644
---- a/drivers/hwmon/pmbus/pmbus_core.c
-+++ b/drivers/hwmon/pmbus/pmbus_core.c
-@@ -84,6 +84,8 @@ struct pmbus_data {
+ static int esw_qos_vport_create_sched_element(struct mlx5_eswitch *esw,
+ 					      struct mlx5_vport *vport,
+ 					      u32 max_rate, u32 bw_share)
+@@ -323,6 +342,9 @@ static int esw_qos_vport_create_sched_element(struct mlx5_eswitch *esw,
+ 	void *vport_elem;
+ 	int err;
  
- 	u32 flags;		/* from platform data */
- 
-+	u8 revision;	/* The PMBus revision the device is compliant with */
++	if (!esw_qos_element_type_supported(dev, SCHEDULING_CONTEXT_ELEMENT_TYPE_VPORT))
++		return -EOPNOTSUPP;
 +
- 	int exponent[PMBUS_PAGES];
- 				/* linear mode: exponent for output voltages */
+ 	parent_tsar_ix = group ? group->tsar_ix : esw->qos.root_tsar_ix;
+ 	MLX5_SET(scheduling_context, sched_ctx, element_type,
+ 		 SCHEDULING_CONTEXT_ELEMENT_TYPE_VPORT);
+@@ -533,25 +555,6 @@ static int esw_qos_destroy_rate_group(struct mlx5_eswitch *esw,
+ 	return err;
+ }
  
-@@ -1093,9 +1095,14 @@ static int pmbus_get_boolean(struct i2c_client *client, struct pmbus_boolean *b,
+-static bool esw_qos_element_type_supported(struct mlx5_core_dev *dev, int type)
+-{
+-	switch (type) {
+-	case SCHEDULING_CONTEXT_ELEMENT_TYPE_TSAR:
+-		return MLX5_CAP_QOS(dev, esw_element_type) &
+-		       ELEMENT_TYPE_CAP_MASK_TSAR;
+-	case SCHEDULING_CONTEXT_ELEMENT_TYPE_VPORT:
+-		return MLX5_CAP_QOS(dev, esw_element_type) &
+-		       ELEMENT_TYPE_CAP_MASK_VPORT;
+-	case SCHEDULING_CONTEXT_ELEMENT_TYPE_VPORT_TC:
+-		return MLX5_CAP_QOS(dev, esw_element_type) &
+-		       ELEMENT_TYPE_CAP_MASK_VPORT_TC;
+-	case SCHEDULING_CONTEXT_ELEMENT_TYPE_PARA_VPORT_TC:
+-		return MLX5_CAP_QOS(dev, esw_element_type) &
+-		       ELEMENT_TYPE_CAP_MASK_PARA_VPORT_TC;
+-	}
+-	return false;
+-}
+-
+ static int esw_qos_create(struct mlx5_eswitch *esw, struct netlink_ext_ack *extack)
+ {
+ 	u32 tsar_ctx[MLX5_ST_SZ_DW(scheduling_context)] = {};
+@@ -562,7 +565,8 @@ static int esw_qos_create(struct mlx5_eswitch *esw, struct netlink_ext_ack *exta
+ 	if (!MLX5_CAP_GEN(dev, qos) || !MLX5_CAP_QOS(dev, esw_scheduling))
+ 		return -EOPNOTSUPP;
  
- 	regval = status & mask;
- 	if (regval) {
--		ret = _pmbus_write_byte_data(client, page, reg, regval);
--		if (ret)
--			goto unlock;
-+		if (data->revision >= PMBUS_REV_12) {
-+			ret = _pmbus_write_byte_data(client, page, reg, regval);
-+			if (ret)
-+				goto unlock;
-+		} else {
-+			pmbus_clear_fault_page(client, page);
-+		}
+-	if (!esw_qos_element_type_supported(dev, SCHEDULING_CONTEXT_ELEMENT_TYPE_TSAR))
++	if (!esw_qos_element_type_supported(dev, SCHEDULING_CONTEXT_ELEMENT_TYPE_TSAR) ||
++	    !(MLX5_CAP_QOS(dev, esw_tsar_type) & TSAR_TYPE_CAP_MASK_DWRR))
+ 		return -EOPNOTSUPP;
+ 
+ 	MLX5_SET(scheduling_context, tsar_ctx, element_type,
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/qos.c b/drivers/net/ethernet/mellanox/mlx5/core/qos.c
+index 8bce730b5c5b..db2bd3ad63ba 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/qos.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/qos.c
+@@ -28,6 +28,9 @@ int mlx5_qos_create_leaf_node(struct mlx5_core_dev *mdev, u32 parent_id,
+ {
+ 	u32 sched_ctx[MLX5_ST_SZ_DW(scheduling_context)] = {0};
+ 
++	if (!(MLX5_CAP_QOS(mdev, nic_element_type) & ELEMENT_TYPE_CAP_MASK_QUEUE_GROUP))
++		return -EOPNOTSUPP;
 +
- 	}
- 	if (s1 && s2) {
- 		s64 v1, v2;
-@@ -2639,6 +2646,10 @@ static int pmbus_init_common(struct i2c_client *client, struct pmbus_data *data,
- 			data->flags |= PMBUS_WRITE_PROTECTED | PMBUS_SKIP_STATUS_CHECK;
- 	}
+ 	MLX5_SET(scheduling_context, sched_ctx, parent_element_id, parent_id);
+ 	MLX5_SET(scheduling_context, sched_ctx, element_type,
+ 		 SCHEDULING_CONTEXT_ELEMENT_TYPE_QUEUE_GROUP);
+@@ -44,6 +47,10 @@ int mlx5_qos_create_inner_node(struct mlx5_core_dev *mdev, u32 parent_id,
+ 	u32 sched_ctx[MLX5_ST_SZ_DW(scheduling_context)] = {0};
+ 	void *attr;
  
-+	ret = i2c_smbus_read_byte_data(client, PMBUS_REVISION);
-+	if (ret >= 0)
-+		data->revision = ret;
++	if (!(MLX5_CAP_QOS(mdev, nic_element_type) & ELEMENT_TYPE_CAP_MASK_TSAR) ||
++	    !(MLX5_CAP_QOS(mdev, nic_tsar_type) & TSAR_TYPE_CAP_MASK_DWRR))
++		return -EOPNOTSUPP;
 +
- 	if (data->info->pages)
- 		pmbus_clear_faults(client);
- 	else
+ 	MLX5_SET(scheduling_context, sched_ctx, parent_element_id, parent_id);
+ 	MLX5_SET(scheduling_context, sched_ctx, element_type,
+ 		 SCHEDULING_CONTEXT_ELEMENT_TYPE_TSAR);
 -- 
 2.43.0
 
