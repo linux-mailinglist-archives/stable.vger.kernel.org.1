@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-76446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76359-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 041C397A1C8
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:10:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 061F597A15F
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:07:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 292BD1C21623
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:10:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 38EE01C2373D
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:07:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74B8D155359;
-	Mon, 16 Sep 2024 12:10:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8D15158210;
+	Mon, 16 Sep 2024 12:06:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o+d+9TBU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gjFmQrC8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3310C1547F5;
-	Mon, 16 Sep 2024 12:10:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 914A91581E1;
+	Mon, 16 Sep 2024 12:06:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488616; cv=none; b=KwtZyfsiKXYr4lYbwezAlY1qEWngP6yufAl4VdNmal4Z63740Iwwr219YGkFVSP0QKssjaWuzDTINrAEIi/zPNBdiCzK5PUHxrhzS5L0ZS8M7Bs267GO0gBKwUodjVwBAPe4c/hzCd+VuxBxhe62VCaUsUlPPdg7MY9X5uRhau4=
+	t=1726488367; cv=none; b=X4SFFP6f9mE9JuasAQsXBQlBs9o+xOhjv97ObHXctvzWUXi4hvRx1pAYWM3jK67P2ygKSl1WQ+xEok+c4whiqJWXJlhJgXAx8EOc+ZXmEvtpqx9iGqZqLPko3wo514SQ+j4t7CyrNhs2oaFQyNp3/d8N4Kuw86hSpnlsXPAbwng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488616; c=relaxed/simple;
-	bh=nJpOfDU8B0ps+Mj9Z5LqTpYSs8oVZbqfXWY3FB36M2c=;
+	s=arc-20240116; t=1726488367; c=relaxed/simple;
+	bh=TqHnj9To1Sl7Ldm4hfQMYsvl840jCZSNxLdOb6P+q4U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H5jMpjgh/GJJfWw1buS+1CpWezIHDE4+UIPceG6z5rgo2aUCCDguFHI8uahaF2B2il4K7dWYi125kwnUi/5cpwrPP9TqMcn1Pa9xtsSOMSiPt5rv/VKEsRTlmo60FXJDei3BQJlkFQZS9D5VvfrAdUD94NGbvpGEezpA39vNlk4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o+d+9TBU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1DDDC4CEC4;
-	Mon, 16 Sep 2024 12:10:15 +0000 (UTC)
+	 MIME-Version; b=UFPmc5q/clQkKVQVHXobXlzDcVw+8+RanpocLUxGuS8uR3A0/OQs+HGvg0aN1rZb6YGn/tBejmwZ8o7q/2dbSexCqeAEJJlXB648gM5+mgHeEbDIiiFjuRz5ta5Kg1yJFys69tvNo/gruvbSFlrpmU0hU0YkSuj6neuEw0zT50E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gjFmQrC8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B164C4CECC;
+	Mon, 16 Sep 2024 12:06:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488616;
-	bh=nJpOfDU8B0ps+Mj9Z5LqTpYSs8oVZbqfXWY3FB36M2c=;
+	s=korg; t=1726488367;
+	bh=TqHnj9To1Sl7Ldm4hfQMYsvl840jCZSNxLdOb6P+q4U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o+d+9TBUp7uDILtOZwkF/+d4FkrS8Q2zBtDk9aqOs1X6AKCKFc3EYOLQ8udWsxojS
-	 i6df29661OMkdQfdLmnr6+SUwW4YeYfdsRnKLEf/2BeYA720ZGfJqBgtO1WwP1I7GE
-	 kJtlyStomF+/Dyq5vXdc6CVtIkH0eqM4GASm5800=
+	b=gjFmQrC8iOAS6yuL59ihORljlKmF16CJiB/YXz1MnayTyNFK2y77bUvgO3N/4sXk1
+	 ex4m7jcM+EXil1Ej2hrY5BdjzakabzvbxErRELw9BWp23XKqiW1OqbasjszkzyjWDY
+	 O1nzJjxdi1qiCNeAHr91MTABmbwF5mCZNaXJzpLQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Jann Horn <jannh@google.com>
-Subject: [PATCH 6.6 46/91] mm: avoid leaving partial pfn mappings around in error case
+	Sean Anderson <sean.anderson@linux.dev>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 088/121] selftests: net: csum: Fix checksums for packets with non-zero padding
 Date: Mon, 16 Sep 2024 13:44:22 +0200
-Message-ID: <20240916114226.017097211@linuxfoundation.org>
+Message-ID: <20240916114232.055888737@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
-References: <20240916114224.509743970@linuxfoundation.org>
+In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
+References: <20240916114228.914815055@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +63,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Sean Anderson <sean.anderson@linux.dev>
 
-commit 79a61cc3fc0466ad2b7b89618a6157785f0293b3 upstream.
+[ Upstream commit e8a63d473b49011a68a748aea1c8aefa046ebacf ]
 
-As Jann points out, PFN mappings are special, because unlike normal
-memory mappings, there is no lifetime information associated with the
-mapping - it is just a raw mapping of PFNs with no reference counting of
-a 'struct page'.
+Padding is not included in UDP and TCP checksums. Therefore, reduce the
+length of the checksummed data to include only the data in the IP
+payload. This fixes spurious reported checksum failures like
 
-That's all very much intentional, but it does mean that it's easy to
-mess up the cleanup in case of errors.  Yes, a failed mmap() will always
-eventually clean up any partial mappings, but without any explicit
-lifetime in the page table mapping itself, it's very easy to do the
-error handling in the wrong order.
+rx: pkt: sport=33000 len=26 csum=0xc850 verify=0xf9fe
+pkt: bad csum
 
-In particular, it's easy to mistakenly free the physical backing store
-before the page tables are actually cleaned up and (temporarily) have
-stale dangling PTE entries.
+Technically it is possible for there to be trailing bytes after the UDP
+data but before the Ethernet padding (e.g. if sizeof(ip) + sizeof(udp) +
+udp.len < ip.len). However, we don't generate such packets.
 
-To make this situation less error-prone, just make sure that any partial
-pfn mapping is torn down early, before any other error handling.
-
-Reported-and-tested-by: Jann Horn <jannh@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Simona Vetter <simona.vetter@ffwll.ch>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 91a7de85600d ("selftests/net: add csum offload test")
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20240906210743.627413-1-sean.anderson@linux.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/memory.c |   27 ++++++++++++++++++++++-----
- 1 file changed, 22 insertions(+), 5 deletions(-)
+ tools/testing/selftests/net/lib/csum.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -2424,11 +2424,7 @@ static inline int remap_p4d_range(struct
- 	return 0;
- }
- 
--/*
-- * Variant of remap_pfn_range that does not call track_pfn_remap.  The caller
-- * must have pre-validated the caching bits of the pgprot_t.
-- */
--int remap_pfn_range_notrack(struct vm_area_struct *vma, unsigned long addr,
-+static int remap_pfn_range_internal(struct vm_area_struct *vma, unsigned long addr,
- 		unsigned long pfn, unsigned long size, pgprot_t prot)
+diff --git a/tools/testing/selftests/net/lib/csum.c b/tools/testing/selftests/net/lib/csum.c
+index b9f3fc3c3426..e0a34e5e8dd5 100644
+--- a/tools/testing/selftests/net/lib/csum.c
++++ b/tools/testing/selftests/net/lib/csum.c
+@@ -654,10 +654,16 @@ static int recv_verify_packet_ipv4(void *nh, int len)
  {
- 	pgd_t *pgd;
-@@ -2481,6 +2477,27 @@ int remap_pfn_range_notrack(struct vm_ar
- 	return 0;
+ 	struct iphdr *iph = nh;
+ 	uint16_t proto = cfg_encap ? IPPROTO_UDP : cfg_proto;
++	uint16_t ip_len;
+ 
+ 	if (len < sizeof(*iph) || iph->protocol != proto)
+ 		return -1;
+ 
++	ip_len = ntohs(iph->tot_len);
++	if (ip_len > len || ip_len < sizeof(*iph))
++		return -1;
++
++	len = ip_len;
+ 	iph_addr_p = &iph->saddr;
+ 	if (proto == IPPROTO_TCP)
+ 		return recv_verify_packet_tcp(iph + 1, len - sizeof(*iph));
+@@ -669,16 +675,22 @@ static int recv_verify_packet_ipv6(void *nh, int len)
+ {
+ 	struct ipv6hdr *ip6h = nh;
+ 	uint16_t proto = cfg_encap ? IPPROTO_UDP : cfg_proto;
++	uint16_t ip_len;
+ 
+ 	if (len < sizeof(*ip6h) || ip6h->nexthdr != proto)
+ 		return -1;
+ 
++	ip_len = ntohs(ip6h->payload_len);
++	if (ip_len > len - sizeof(*ip6h))
++		return -1;
++
++	len = ip_len;
+ 	iph_addr_p = &ip6h->saddr;
+ 
+ 	if (proto == IPPROTO_TCP)
+-		return recv_verify_packet_tcp(ip6h + 1, len - sizeof(*ip6h));
++		return recv_verify_packet_tcp(ip6h + 1, len);
+ 	else
+-		return recv_verify_packet_udp(ip6h + 1, len - sizeof(*ip6h));
++		return recv_verify_packet_udp(ip6h + 1, len);
  }
  
-+/*
-+ * Variant of remap_pfn_range that does not call track_pfn_remap.  The caller
-+ * must have pre-validated the caching bits of the pgprot_t.
-+ */
-+int remap_pfn_range_notrack(struct vm_area_struct *vma, unsigned long addr,
-+		unsigned long pfn, unsigned long size, pgprot_t prot)
-+{
-+	int error = remap_pfn_range_internal(vma, addr, pfn, size, prot);
-+
-+	if (!error)
-+		return 0;
-+
-+	/*
-+	 * A partial pfn range mapping is dangerous: it does not
-+	 * maintain page reference counts, and callers may free
-+	 * pages due to the error. So zap it early.
-+	 */
-+	zap_page_range_single(vma, addr, size, NULL);
-+	return error;
-+}
-+
- /**
-  * remap_pfn_range - remap kernel memory to userspace
-  * @vma: user vma to map to
+ /* return whether auxdata includes TP_STATUS_CSUM_VALID */
+-- 
+2.43.0
+
 
 
 
