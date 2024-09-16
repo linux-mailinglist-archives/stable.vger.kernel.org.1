@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-76242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62ED597A0BF
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:00:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E749397A1B9
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:09:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 953F31C22CA1
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:00:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC5932856F3
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:09:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF2A1154C14;
-	Mon, 16 Sep 2024 12:00:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D248815687D;
+	Mon, 16 Sep 2024 12:09:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FgGknqSr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D6W4qiIF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADD87A95E;
-	Mon, 16 Sep 2024 12:00:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EB5C156641;
+	Mon, 16 Sep 2024 12:09:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488034; cv=none; b=dt6E9TBPMGBk3SSvdJjIGCcdIf+bx9D1GbJfu3+ZTAxWoYEGwpokjaWgD+iyGMATaHwR3K3W31JeA5C0Xa7Co08Lwyb9KeIHzDg8spODdSMPnmwAOtimMVJ7Y+Y3EDEnXIWMF0AUWEWKlPLtwmnbDWJc4OqjNlHXqq+w//lQR/g=
+	t=1726488573; cv=none; b=bVuZfmNbqZD8W+V6DTT6hTbUzVXvdVWq/5otqnGJB/PQJFy/9AfxdHuWi/wE2OoBnzDIlIh1NlJIUKdGeuTf2qpp49y83Rz5ed8WvhBVault8fc3SnW3VqDOweZTqW+Jyny5hJw5T79wm8p6Dq8NAM0XV2QbyLVeUp2uDlwZ4SE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488034; c=relaxed/simple;
-	bh=SZxWRBS7wKKsM5ty4G5dRKKhgZOuzk5H7ryLPH5JXws=;
+	s=arc-20240116; t=1726488573; c=relaxed/simple;
+	bh=fHehPeyjBEUC+Pny3ytC3pSLTWJhQ/Wg9H0CfOf63Zg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZK1s115/riiyEUEqI4aRQkQlGnLxDbY4T9ZpoBvhEcmRJkYtZ0YjTdl++uXhRAynv9H8fOlnzpK0K0yaubfRR0hW1N40riGPWUFhQAXN66w7jrq6vVmRPnQ0gpXmN8Xk+G7+PvPIE0Nmu5kBtGkLXcnw6NcaxcNmCZML251zTBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FgGknqSr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32BC7C4CEC4;
-	Mon, 16 Sep 2024 12:00:34 +0000 (UTC)
+	 MIME-Version; b=KP/zxR2O8eAALN+NJieYpqf8V5khicKNnAVSpKzTfka35HCNyZO+wuGUtRZqrtD/QEnD2iOR9p2H0GQF0DP316cmbsOhJ2AICEH7i7m85Pt//tRYJI9/XNOacqPkqkphzOkuhNxY2chqKaRMGq1EETRizQBxihmLHEiZo6p+YWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D6W4qiIF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 033BAC4CEC7;
+	Mon, 16 Sep 2024 12:09:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488034;
-	bh=SZxWRBS7wKKsM5ty4G5dRKKhgZOuzk5H7ryLPH5JXws=;
+	s=korg; t=1726488573;
+	bh=fHehPeyjBEUC+Pny3ytC3pSLTWJhQ/Wg9H0CfOf63Zg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FgGknqSrP+T2Y6HTuBZ07EmitHwBpAJsbohea6dPMnPQgkG2eM3MaiL3qYP1LC83F
-	 Z+3Zqvn4XvDASXNy/+k4FP8bqjqcB4AZExp+I7MdeRvFVF2AvDwM6NBks6PWaEjRqt
-	 5A1mJhHuEkloLXQCwoPDuNYfvq6YOGt7xIlQXwGU=
+	b=D6W4qiIFT9+aatAAg/aF3GEfhP7GyfdODXW8vbj1dhNA4SCgCa4QQ359Hz7FHTSH4
+	 l8o+x5U+jaVTzACcHOpvrAMkwMQhLY3zE/iKyRfplC1hSK1gP8KfTgJIwlz5e6s04O
+	 V5iKNB1a2JtNekIDduLrhkGb2KLy81WjtyZZyGGw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	peng guo <engguopeng@buaa.edu.cn>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 35/63] cxl/core: Fix incorrect vendor debug UUID define
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Edward Adam Davis <eadavis@qq.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	syzbot+f3a31fb909db9b2a5c4d@syzkaller.appspotmail.com
+Subject: [PATCH 6.6 38/91] mptcp: pm: Fix uaf in __timer_delete_sync
 Date: Mon, 16 Sep 2024 13:44:14 +0200
-Message-ID: <20240916114222.306515474@linuxfoundation.org>
+Message-ID: <20240916114225.775782419@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
-References: <20240916114221.021192667@linuxfoundation.org>
+In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
+References: <20240916114224.509743970@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +64,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: peng guo <engguopeng@buaa.edu.cn>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit 8ecef8e01a08c7e3e4ffc8f08d9f9663984f334b ]
+commit b4cd80b0338945a94972ac3ed54f8338d2da2076 upstream.
 
-When user send a mbox command whose opcode is CXL_MBOX_OP_CLEAR_LOG and
-the in_payload is normal vendor debug log UUID according to
-the CXL specification cxl_payload_from_user_allowed() will return
-false unexpectedly, Sending mbox cmd operation fails and the kernel
-log will print:
-Clear Log: input payload not allowed.
+There are two paths to access mptcp_pm_del_add_timer, result in a race
+condition:
 
-All CXL devices that support a debug log shall support the Vendor Debug
-Log to allow the log to be accessed through a common host driver, for any
-device, all versions of the CXL specification define the same value with
-Log Identifier of: 5e1819d9-11a9-400c-811f-d60719403d86
+     CPU1				CPU2
+     ====                               ====
+     net_rx_action
+     napi_poll                          netlink_sendmsg
+     __napi_poll                        netlink_unicast
+     process_backlog                    netlink_unicast_kernel
+     __netif_receive_skb                genl_rcv
+     __netif_receive_skb_one_core       netlink_rcv_skb
+     NF_HOOK                            genl_rcv_msg
+     ip_local_deliver_finish            genl_family_rcv_msg
+     ip_protocol_deliver_rcu            genl_family_rcv_msg_doit
+     tcp_v4_rcv                         mptcp_pm_nl_flush_addrs_doit
+     tcp_v4_do_rcv                      mptcp_nl_remove_addrs_list
+     tcp_rcv_established                mptcp_pm_remove_addrs_and_subflows
+     tcp_data_queue                     remove_anno_list_by_saddr
+     mptcp_incoming_options             mptcp_pm_del_add_timer
+     mptcp_pm_del_add_timer             kfree(entry)
 
-Refer to CXL spec r3.1 Table 8-71
+In remove_anno_list_by_saddr(running on CPU2), after leaving the critical
+zone protected by "pm.lock", the entry will be released, which leads to the
+occurrence of uaf in the mptcp_pm_del_add_timer(running on CPU1).
 
-Fix the definition value of DEFINE_CXL_VENDOR_DEBUG_UUID to match the
-CXL specification.
+Keeping a reference to add_timer inside the lock, and calling
+sk_stop_timer_sync() with this reference, instead of "entry->add_timer".
 
-Fixes: 472b1ce6e9d6 ("cxl/mem: Enable commands via CEL")
-Signed-off-by: peng guo <engguopeng@buaa.edu.cn>
-Reviewed-by: Alison Schofield <alison.schofield@intel.com>
-Link: https://patch.msgid.link/20240710023112.8063-1-engguopeng@buaa.edu.cn
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Move list_del(&entry->list) to mptcp_pm_del_add_timer and inside the pm lock,
+do not directly access any members of the entry outside the pm lock, which
+can avoid similar "entry->x" uaf.
+
+Fixes: 00cfd77b9063 ("mptcp: retransmit ADD_ADDR when timeout")
+Cc: stable@vger.kernel.org
+Reported-and-tested-by: syzbot+f3a31fb909db9b2a5c4d@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=f3a31fb909db9b2a5c4d
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://patch.msgid.link/tencent_7142963A37944B4A74EF76CD66EA3C253609@qq.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cxl/cxlmem.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/mptcp/pm_netlink.c |   13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/cxl/cxlmem.h b/drivers/cxl/cxlmem.h
-index b58a5b782e5d..0be48441d0f2 100644
---- a/drivers/cxl/cxlmem.h
-+++ b/drivers/cxl/cxlmem.h
-@@ -293,7 +293,7 @@ enum cxl_opcode {
- 		  0x3b, 0x3f, 0x17)
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -339,15 +339,21 @@ mptcp_pm_del_add_timer(struct mptcp_sock
+ {
+ 	struct mptcp_pm_add_entry *entry;
+ 	struct sock *sk = (struct sock *)msk;
++	struct timer_list *add_timer = NULL;
  
- #define DEFINE_CXL_VENDOR_DEBUG_UUID                                           \
--	UUID_INIT(0xe1819d9, 0x11a9, 0x400c, 0x81, 0x1f, 0xd6, 0x07, 0x19,     \
-+	UUID_INIT(0x5e1819d9, 0x11a9, 0x400c, 0x81, 0x1f, 0xd6, 0x07, 0x19,     \
- 		  0x40, 0x3d, 0x86)
+ 	spin_lock_bh(&msk->pm.lock);
+ 	entry = mptcp_lookup_anno_list_by_saddr(msk, addr);
+-	if (entry && (!check_id || entry->addr.id == addr->id))
++	if (entry && (!check_id || entry->addr.id == addr->id)) {
+ 		entry->retrans_times = ADD_ADDR_RETRANS_MAX;
++		add_timer = &entry->add_timer;
++	}
++	if (!check_id && entry)
++		list_del(&entry->list);
+ 	spin_unlock_bh(&msk->pm.lock);
  
- struct cxl_mbox_get_supported_logs {
--- 
-2.43.0
-
+-	if (entry && (!check_id || entry->addr.id == addr->id))
+-		sk_stop_timer_sync(sk, &entry->add_timer);
++	/* no lock, because sk_stop_timer_sync() is calling del_timer_sync() */
++	if (add_timer)
++		sk_stop_timer_sync(sk, add_timer);
+ 
+ 	return entry;
+ }
+@@ -1493,7 +1499,6 @@ static bool remove_anno_list_by_saddr(st
+ 
+ 	entry = mptcp_pm_del_add_timer(msk, addr, false);
+ 	if (entry) {
+-		list_del(&entry->list);
+ 		kfree(entry);
+ 		return true;
+ 	}
 
 
 
