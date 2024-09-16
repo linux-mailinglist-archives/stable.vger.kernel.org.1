@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-76442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C555797A1C3
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:10:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0D5A97A0AD
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 13:59:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7E12F1F21309
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:10:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 40E401F22109
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 11:59:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 154BD153573;
-	Mon, 16 Sep 2024 12:10:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B46FA156225;
+	Mon, 16 Sep 2024 11:59:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DUhxaidC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ohRTTIs+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6C5C14B094;
-	Mon, 16 Sep 2024 12:10:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31CD21553BB;
+	Mon, 16 Sep 2024 11:59:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488604; cv=none; b=fEHnfS+JMTQ7Lqh1fApIyQf72pliuEoqzCYgr7tXmabSL26NZj1sf5ea7kuWkIYWfvcEyRHgI7rKc5Bi4oPstjLSuCXC/j8h44bByoDDBewstaF3rtRG9vUIsJ6zkayyCert5mnWH1C+YCr94I2GxLFlLR1biZAZU+8NR7RKua4=
+	t=1726487986; cv=none; b=qigIESwFpMPLEuvBl86E9MmulipvdwYX/w5P7AJQUD0Gpin0TRtH8UImFAidr28A4fb5B0PfVPzOEaYkLWc9zP5MDEuYkXKrM1p+Ok3vXaPOl9txytDw75cygSaXRZ70lU+IMIAnzlVjRmioNFKc7wi29cDCAnAmLZdYyvjGZkA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488604; c=relaxed/simple;
-	bh=uYfCkPVbJQCH9WZuz3MR5AUcvfS7iXDZhGiCqHTzCt8=;
+	s=arc-20240116; t=1726487986; c=relaxed/simple;
+	bh=GaLtUpipQ4gHwOGB0eThkqcpFyLspf255Yt0t9CcLQA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mQulVcZw+/3Ks+39n35eQ0xq/ZfDEVVSVXqbAvNjFadlO8mwFp2rVme8QRbGpe/TAu7zRpsz4FlZ+AsvANhfBgaH2UqC8EAFmKFqlKh9wZn7aCFqnRcb2pEFZt6Bjgu5w5jMB4hH1tgdlNUexfkFkLI3twMA61sokZp/9nCnv/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DUhxaidC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4871CC4CEC4;
-	Mon, 16 Sep 2024 12:10:04 +0000 (UTC)
+	 MIME-Version; b=J4ws2NvaMic9QLCEgG8fkUxDFmTkqncE5pXegdmM049XLBQSWy75+vsm3ULLP6RDwIeGWoBRSeLqOslrK2mEAIfZneqLx78Gks1Enk8o1EsC1Tnxt0JY8BSSR07QSNfxcisSEUQxRhWYKyd8CLWFABNzY/lJcGrQoLeejBCGlXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ohRTTIs+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8456BC4CEC4;
+	Mon, 16 Sep 2024 11:59:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488604;
-	bh=uYfCkPVbJQCH9WZuz3MR5AUcvfS7iXDZhGiCqHTzCt8=;
+	s=korg; t=1726487985;
+	bh=GaLtUpipQ4gHwOGB0eThkqcpFyLspf255Yt0t9CcLQA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DUhxaidCoafmXC1tr53M4TgAnl1VRCvaiCf3qf5r8al68TY6jeGwIrErTQMMfIaWS
-	 Dh/3I6DdiMVjo1/qsQiN8V8T+VgxKfeL1i0MFkUZg3ssW5bCsS63TCaJCco4Zb8Ckk
-	 8cV5B8WfKlPuV1MGq2JqR1YVgGIdqcDlWn3HAIVY=
+	b=ohRTTIs+R0emyaknjsxXlfOFsu9cEd6kmMTsgv+Go8knkjIh1bs7QyBmfRr5qoUz6
+	 J8jbU8C17f6paQaBDwWx+Mm2wIqh5oWJYuHsXHvHl1HpTjMoOLDaDD8byLX2q9G7fq
+	 UfqjxBEAtr0cYMLiJDMQm8J4O+g6hjfl0WzVMxaY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peiyang Wang <wangpeiyang1@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Anna Schumaker <Anna.Schumaker@Netapp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 22/91] net: hns3: use correct release function during uninitialization
+Subject: [PATCH 6.1 19/63] NFSv4: Fix clearing of layout segments in layoutreturn
 Date: Mon, 16 Sep 2024 13:43:58 +0200
-Message-ID: <20240916114225.248264288@linuxfoundation.org>
+Message-ID: <20240916114221.748222733@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
-References: <20240916114224.509743970@linuxfoundation.org>
+In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
+References: <20240916114221.021192667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peiyang Wang <wangpeiyang1@huawei.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 7660833d217528c8f2385528951ab820a031e4e3 ]
+[ Upstream commit d72b7963115bea971a28eaa2cb76722c023f9fdf ]
 
-pci_request_regions is called to apply for PCI I/O and memory resources
-when the driver is initialized, Therefore, when the driver is uninstalled,
-pci_release_regions should be used to release PCI I/O and memory resources
-instead of pci_release_mem_regions is used to release memory reasouces
-only.
+Make sure that we clear the layout segments in cases where we see a
+fatal error, and also in the case where the layout is invalid.
 
-Signed-off-by: Peiyang Wang <wangpeiyang1@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfs/nfs4proc.c | 9 ++++++---
+ fs/nfs/pnfs.c     | 5 ++---
+ 2 files changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index 92c592c177e6..9650ce594e2f 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -11370,7 +11370,7 @@ static void hclge_pci_uninit(struct hclge_dev *hdev)
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index 467e9439eded..1e97de7c8c20 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -9850,13 +9850,16 @@ static void nfs4_layoutreturn_done(struct rpc_task *task, void *calldata)
+ 		fallthrough;
+ 	default:
+ 		task->tk_status = 0;
++		lrp->res.lrs_present = 0;
+ 		fallthrough;
+ 	case 0:
+ 		break;
+ 	case -NFS4ERR_DELAY:
+-		if (nfs4_async_handle_error(task, server, NULL, NULL) != -EAGAIN)
+-			break;
+-		goto out_restart;
++		if (nfs4_async_handle_error(task, server, NULL, NULL) ==
++		    -EAGAIN)
++			goto out_restart;
++		lrp->res.lrs_present = 0;
++		break;
+ 	}
+ 	return;
+ out_restart:
+diff --git a/fs/nfs/pnfs.c b/fs/nfs/pnfs.c
+index 8c1f47ca5dc5..c96d2e76156e 100644
+--- a/fs/nfs/pnfs.c
++++ b/fs/nfs/pnfs.c
+@@ -1172,10 +1172,9 @@ void pnfs_layoutreturn_free_lsegs(struct pnfs_layout_hdr *lo,
+ 	LIST_HEAD(freeme);
  
- 	pcim_iounmap(pdev, hdev->hw.hw.io_base);
- 	pci_free_irq_vectors(pdev);
--	pci_release_mem_regions(pdev);
-+	pci_release_regions(pdev);
- 	pci_disable_device(pdev);
- }
+ 	spin_lock(&inode->i_lock);
+-	if (!pnfs_layout_is_valid(lo) ||
+-	    !nfs4_stateid_match_other(&lo->plh_stateid, arg_stateid))
++	if (!nfs4_stateid_match_other(&lo->plh_stateid, arg_stateid))
+ 		goto out_unlock;
+-	if (stateid) {
++	if (stateid && pnfs_layout_is_valid(lo)) {
+ 		u32 seq = be32_to_cpu(arg_stateid->seqid);
  
+ 		pnfs_mark_matching_lsegs_invalid(lo, &freeme, range, seq);
 -- 
 2.43.0
 
