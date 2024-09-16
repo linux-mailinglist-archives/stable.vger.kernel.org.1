@@ -1,99 +1,50 @@
-Return-Path: <stable+bounces-76504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76505-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D3AC97A54E
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 17:28:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 93F5697A565
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 17:35:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5AD03287531
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 15:28:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B9F9FB24472
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 15:33:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4988C1591E3;
-	Mon, 16 Sep 2024 15:28:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="dqtLX7p6"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C18515958A;
+	Mon, 16 Sep 2024 15:33:42 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from ganesha.gnumonks.org (ganesha.gnumonks.org [213.95.27.120])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AAD6157E99
-	for <stable@vger.kernel.org>; Mon, 16 Sep 2024 15:28:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25E4715749A;
+	Mon, 16 Sep 2024 15:33:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.27.120
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726500498; cv=none; b=GRb3hcUr1vHu9DphAX4kREJ95fdWb8P4+SFtmQVCbrmhGKss1MzSdcRBf3eSHVjBcmaxfomXuxoUFPehShHeXmnB69ItXXHMSED4fnYGpDjMInmcmymQzCDa7o0IjLsgBC7COSljQuZ8BPZ7tl5JzUWle9zkuwgV/OrO6cqjQiw=
+	t=1726500822; cv=none; b=pPqyb5SNM2zuSmLyRJgcPfyGaUZ3J0wpvHwGNQTBWi0uqjGYI0K6kV8RNY1PmHTda1gAzPL4rfRVcti4ZRIHEK57DMbswq8vdOeltTzAHxcg/EgcmwgI/uaP7lHEWLuWLczDzvp+cbXjJz5c5XHYI72MLDFK/8263AOehjq14EY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726500498; c=relaxed/simple;
-	bh=WlODueikdE8iNg+YcFfV4D9fBjO+4Cw1pzynCIM+K+k=;
+	s=arc-20240116; t=1726500822; c=relaxed/simple;
+	bh=un/i0gViPPSEFoEji7kwMkqEV659V7f5pGJSsTREtm8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cRx2JIPciKJt68YUSSiu8qMzqWBPdpWhWJOUrFVDpROY52NYGOxKh0U8mBHQfDTOQqccVAdAuqMiDlDyYPCy02WIGQKAh/HCmqqw0DEehYAKhs/LISIb9R6/oSaSRtO/ij8kkmwChlvtiWDG96PhRRVg2nB8JMIChE483PSGtxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=dqtLX7p6; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-374d29ad870so2235004f8f.3
-        for <stable@vger.kernel.org>; Mon, 16 Sep 2024 08:28:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google; t=1726500495; x=1727105295; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:mail-followup-to:message-id:subject:cc:to
-         :from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7m4daR3wtHlZl9dcuxcFnv3RNISgqsCBz2X/zdmjlr4=;
-        b=dqtLX7p65/y7sBWF6zXxus+TD1RMiLVoqiWv/2oloaZUaAARl4liz+ESOOgouOpiWN
-         aHEa9rIXBvPhhaaojmpJebhlcmKw/Wj+1cK7afP8xurOYyrb6dh4k+AVIRLZBs0wXgc3
-         GmpqJTelWqyvUKv35J/NaRAAHtViTliLWkKho=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726500495; x=1727105295;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:mail-followup-to:message-id:subject:cc:to
-         :from:date:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=7m4daR3wtHlZl9dcuxcFnv3RNISgqsCBz2X/zdmjlr4=;
-        b=rAFa0g/qUtYYLf1eIdIqPOvg4gP0cAzD4U5wgzJnBcLVfBsu2mOjwsHDpGNSsuPc9q
-         rRj8uMKJ3bAYW/WfNUtiYuLGbNLWdJaQzXymx+pSoAF7MC/15M3VJps2p+IrgoTObLcS
-         xeOh5ZHV56bDuEx8yGYOrR0gm+MD1K2P7KG3ia/P3ZzzU5zphOi9kZrEuiQz3aaDAmuq
-         gun/xYVSTfHd6Es61hqyi8b6fiF26QrIu38lDz3tufhYTd7XwAQQycqZkexzktuZihSe
-         cTLXaOO1BGzsaleqi/6RBkjLGNqvLV+AF+wXCHGvx6nwLQwjOg8xMzroiT/nZnO35bXg
-         M8BQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUV/uTpuNtebPN3PnVHkdtzg+LNFN4he6ZLHdxKafMbqJbggauQPHq6ceC35RlSAxgRWZJNZ9g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzqN+JbuewVGGAYrKAbCg1jBDAKZhcg9qvuRHtd0IkYyN2k+z1V
-	bb5OVBGV2h5AeCaYv3NenKFkI0VyqUdinT6PpWb9caJwTg8E7iBPfmO8lR81lFU=
-X-Google-Smtp-Source: AGHT+IGWvzNIRGqBC8AGUY8qiZPWMwcVmKXq3jZ8qz07XXarJ1ziKNdbe2x93+v1ko+aFpHXY3tsYw==
-X-Received: by 2002:a05:6000:120d:b0:371:82ec:206f with SMTP id ffacd0b85a97d-378d61e2871mr6466145f8f.16.1726500494626;
-        Mon, 16 Sep 2024 08:28:14 -0700 (PDT)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-378e78052efsm7470228f8f.97.2024.09.16.08.28.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Sep 2024 08:28:14 -0700 (PDT)
-Date: Mon, 16 Sep 2024 17:28:11 +0200
-From: Simona Vetter <simona.vetter@ffwll.ch>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Gary Guo <gary@garyguo.net>, Boqun Feng <boqun.feng@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] rust: sync: fix incorrect Sync bounds for LockedBy
-Message-ID: <ZuhOi1xFBNtfGxn5@phenom.ffwll.local>
-Mail-Followup-To: Alice Ryhl <aliceryhl@google.com>,
-	Gary Guo <gary@garyguo.net>, Boqun Feng <boqun.feng@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-References: <20240912-locked-by-sync-fix-v1-1-26433cbccbd2@google.com>
- <ZuSIPIHn4gDLm4si@phenom.ffwll.local>
- <ZuUtFQ9zs6jJkasD@boqun-archlinux>
- <20240915144853.7f85568a.gary@garyguo.net>
- <CAH5fLggoz5gdgOpEiXu7u9hPXjLLeSv9An6jaq0am0-dG7+ohw@mail.gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=GBHRqj3wAC5TvFZ9X/yOWfFVWq/onGkB4HeVzMa5eCix5hAkSx69Z+DED6fsAwJvxBFs703m0iBdoZj9S9Y/AvfiBOoCA6Ov064VjIE1QWU063MKtuWXxn2olguOPCSIfLYv/n8FMvkI6b97GXUyqaajV1DkAPB9fFQ24cFOinU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=gnumonks.org; arc=none smtp.client-ip=213.95.27.120
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gnumonks.org
+Received: from [78.30.37.63] (port=38220 helo=gnumonks.org)
+	by ganesha.gnumonks.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <pablo@gnumonks.org>)
+	id 1sqDjJ-00FzvZ-RV; Mon, 16 Sep 2024 17:33:35 +0200
+Date: Mon, 16 Sep 2024 17:33:33 +0200
+From: Pablo Neira Ayuso <pablo@netfilter.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	cgroups@vger.kernel.org, Nadia Pinaeva <n.m.pinaeva@gmail.com>,
+	Florian Westphal <fw@strlen.de>, Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.10 092/121] netfilter: nft_socket: make cgroupsv2
+ matching work with namespaces
+Message-ID: <ZuhPzTZxBLBU6Vx5@calendula>
+References: <20240916114228.914815055@linuxfoundation.org>
+ <20240916114232.178821333@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -102,81 +53,166 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAH5fLggoz5gdgOpEiXu7u9hPXjLLeSv9An6jaq0am0-dG7+ohw@mail.gmail.com>
-X-Operating-System: Linux phenom 6.9.12-amd64 
+In-Reply-To: <20240916114232.178821333@linuxfoundation.org>
+X-Spam-Score: -1.9 (-)
 
-On Sun, Sep 15, 2024 at 04:11:57PM +0200, Alice Ryhl wrote:
-> On Sun, Sep 15, 2024 at 3:49 PM Gary Guo <gary@garyguo.net> wrote:
-> >
-> > On Fri, 13 Sep 2024 23:28:37 -0700
-> > Boqun Feng <boqun.feng@gmail.com> wrote:
-> >
-> > > Hmm.. I think it makes more sense to make `access()` requires `where T:
-> > > Sync` instead of the current fix? I.e. I propose we do:
-> > >
-> > >       impl<T, U> LockedBy<T, U> {
-> > >           pub fn access<'a>(&'a self, owner: &'a U) -> &'a T
-> > >           where T: Sync {
-> > >               ...
-> > >           }
-> > >       }
-> > >
-> > > The current fix in this patch disallows the case where a user has a
-> > > `Foo: !Sync`, but want to have multiple `&LockedBy<Foo, X>` in different
-> > > threads (they would use `access_mut()` to gain unique accesses), which
-> > > seems to me is a valid use case.
-> > >
-> > > The where-clause fix disallows the case where a user has a `Foo: !Sync`,
-> > > a `&LockedBy<Foo, X>` and a `&X`, and is trying to get a `&Foo` with
-> > > `access()`, this doesn't seems to be a common usage, but maybe I'm
-> > > missing something?
-> >
-> > +1 on this. Our `LockedBy` type only works with `Lock` -- which
-> > provides mutual exclusion rather than `RwLock`-like semantics, so I
-> > think it should be perfectly valid for people to want to use `LockedBy`
-> > for `Send + !Sync` types and only use `access_mut`. So placing `Sync`
-> > bound on `access` sounds better.
+Hi Greg,
+
+This needs a follow up incremental fix. Please, hold on with it.
+
+I will ping you back once it is there.
+
+Thanks
+
+On Mon, Sep 16, 2024 at 01:44:26PM +0200, Greg Kroah-Hartman wrote:
+> 6.10-stable review patch.  If anyone has any objections, please let me know.
 > 
-> I will add the `where` bound to `access`.
-
-Yeah I considered but it felt a bit icky to put constraints on the
-functions. But I didn't come up with a real use-case that would be
-prevented, so I think it's fine.
-
-Even the use-case below where a shared references only gives you the
-guarantee something is valid you likely have additional locks to protected
-the data if it's mutable.
-
-> > There's even a way to not requiring `Sync` bound at all, which is to
-> > ensure that the owner itself is a `!Sync` type:
-> >
-> >         impl<T, U> LockedBy<T, U> {
-> >             pub fn access<'a, B: Backend>(&'a self, owner: &'a Guard<U, B>) -> &'a T {
-> >                 ...
-> >             }
-> >         }
-> >
-> > Because there's no way for `Guard<U, B>` to be sent across threads, we
-> > can also deduce that all caller of `access` must be from a single
-> > thread and thus the `Sync` bound is unnecessary.
+> ------------------
 > 
-> Isn't Guard Sync? Either way, it's inconvenient to make Guard part of
-> the interface. That prevents you from using it from within
-> `&self`/`&mut self` methods on the owner.
-
-I think there's also plenty of patterns where just having reference is
-enoug to guarantee access and exclusive ownership gives exclusive access.
-E.g. in drm we have some objects that are generally attached to a File,
-but get independently destroyed. But some of the fields/values are only
-valid as long as the corresponding File is still around. Lockedby as-is
-can perfectly encode these kind of rules.
-
-So I don't think tying LockedBy to Guard, or even a specific Lock type is
-a good idea.
--Sima
--- 
-Simona Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+> From: Florian Westphal <fw@strlen.de>
+> 
+> [ Upstream commit 7f3287db654395f9c5ddd246325ff7889f550286 ]
+> 
+> When running in container environmment, /sys/fs/cgroup/ might not be
+> the real root node of the sk-attached cgroup.
+> 
+> Example:
+> 
+> In container:
+> % stat /sys//fs/cgroup/
+> Device: 0,21    Inode: 2214  ..
+> % stat /sys/fs/cgroup/foo
+> Device: 0,21    Inode: 2264  ..
+> 
+> The expectation would be for:
+> 
+>   nft add rule .. socket cgroupv2 level 1 "foo" counter
+> 
+> to match traffic from a process that got added to "foo" via
+> "echo $pid > /sys/fs/cgroup/foo/cgroup.procs".
+> 
+> However, 'level 3' is needed to make this work.
+> 
+> Seen from initial namespace, the complete hierarchy is:
+> 
+> % stat /sys/fs/cgroup/system.slice/docker-.../foo
+>   Device: 0,21    Inode: 2264 ..
+> 
+> i.e. hierarchy is
+> 0    1               2              3
+> / -> system.slice -> docker-1... -> foo
+> 
+> ... but the container doesn't know that its "/" is the "docker-1.."
+> cgroup.  Current code will retrieve the 'system.slice' cgroup node
+> and store its kn->id in the destination register, so compare with
+> 2264 ("foo" cgroup id) will not match.
+> 
+> Fetch "/" cgroup from ->init() and add its level to the level we try to
+> extract.  cgroup root-level is 0 for the init-namespace or the level
+> of the ancestor that is exposed as the cgroup root inside the container.
+> 
+> In the above case, cgrp->level of "/" resolved in the container is 2
+> (docker-1...scope/) and request for 'level 1' will get adjusted
+> to fetch the actual level (3).
+> 
+> v2: use CONFIG_SOCK_CGROUP_DATA, eval function depends on it.
+>     (kernel test robot)
+> 
+> Cc: cgroups@vger.kernel.org
+> Fixes: e0bb96db96f8 ("netfilter: nft_socket: add support for cgroupsv2")
+> Reported-by: Nadia Pinaeva <n.m.pinaeva@gmail.com>
+> Signed-off-by: Florian Westphal <fw@strlen.de>
+> Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  net/netfilter/nft_socket.c | 41 +++++++++++++++++++++++++++++++++++---
+>  1 file changed, 38 insertions(+), 3 deletions(-)
+> 
+> diff --git a/net/netfilter/nft_socket.c b/net/netfilter/nft_socket.c
+> index 765ffd6e06bc..12cdff640492 100644
+> --- a/net/netfilter/nft_socket.c
+> +++ b/net/netfilter/nft_socket.c
+> @@ -9,7 +9,8 @@
+>  
+>  struct nft_socket {
+>  	enum nft_socket_keys		key:8;
+> -	u8				level;
+> +	u8				level;		/* cgroupv2 level to extract */
+> +	u8				level_user;	/* cgroupv2 level provided by userspace */
+>  	u8				len;
+>  	union {
+>  		u8			dreg;
+> @@ -53,6 +54,28 @@ nft_sock_get_eval_cgroupv2(u32 *dest, struct sock *sk, const struct nft_pktinfo
+>  	memcpy(dest, &cgid, sizeof(u64));
+>  	return true;
+>  }
+> +
+> +/* process context only, uses current->nsproxy. */
+> +static noinline int nft_socket_cgroup_subtree_level(void)
+> +{
+> +	struct cgroup *cgrp = cgroup_get_from_path("/");
+> +	int level;
+> +
+> +	if (!cgrp)
+> +		return -ENOENT;
+> +
+> +	level = cgrp->level;
+> +
+> +	cgroup_put(cgrp);
+> +
+> +	if (WARN_ON_ONCE(level > 255))
+> +		return -ERANGE;
+> +
+> +	if (WARN_ON_ONCE(level < 0))
+> +		return -EINVAL;
+> +
+> +	return level;
+> +}
+>  #endif
+>  
+>  static struct sock *nft_socket_do_lookup(const struct nft_pktinfo *pkt)
+> @@ -174,9 +197,10 @@ static int nft_socket_init(const struct nft_ctx *ctx,
+>  	case NFT_SOCKET_MARK:
+>  		len = sizeof(u32);
+>  		break;
+> -#ifdef CONFIG_CGROUPS
+> +#ifdef CONFIG_SOCK_CGROUP_DATA
+>  	case NFT_SOCKET_CGROUPV2: {
+>  		unsigned int level;
+> +		int err;
+>  
+>  		if (!tb[NFTA_SOCKET_LEVEL])
+>  			return -EINVAL;
+> @@ -185,6 +209,17 @@ static int nft_socket_init(const struct nft_ctx *ctx,
+>  		if (level > 255)
+>  			return -EOPNOTSUPP;
+>  
+> +		err = nft_socket_cgroup_subtree_level();
+> +		if (err < 0)
+> +			return err;
+> +
+> +		priv->level_user = level;
+> +
+> +		level += err;
+> +		/* Implies a giant cgroup tree */
+> +		if (WARN_ON_ONCE(level > 255))
+> +			return -EOPNOTSUPP;
+> +
+>  		priv->level = level;
+>  		len = sizeof(u64);
+>  		break;
+> @@ -209,7 +244,7 @@ static int nft_socket_dump(struct sk_buff *skb,
+>  	if (nft_dump_register(skb, NFTA_SOCKET_DREG, priv->dreg))
+>  		return -1;
+>  	if (priv->key == NFT_SOCKET_CGROUPV2 &&
+> -	    nla_put_be32(skb, NFTA_SOCKET_LEVEL, htonl(priv->level)))
+> +	    nla_put_be32(skb, NFTA_SOCKET_LEVEL, htonl(priv->level_user)))
+>  		return -1;
+>  	return 0;
+>  }
+> -- 
+> 2.43.0
+> 
+> 
+> 
 
