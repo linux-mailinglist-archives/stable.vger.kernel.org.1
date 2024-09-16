@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-76382-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 244C097A179
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:07:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7430B97A1DB
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:11:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E208828774F
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:07:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36486286126
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:11:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58EE2156C72;
-	Mon, 16 Sep 2024 12:07:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAA821553AF;
+	Mon, 16 Sep 2024 12:11:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RHIN35bA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hYQCbTNq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1715315665C;
-	Mon, 16 Sep 2024 12:07:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87CA81547F5;
+	Mon, 16 Sep 2024 12:11:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488433; cv=none; b=uLBZ7HxglIAHMMbJs2tJ2po8i9bEoihnLrpay0NByRLGiBHnfxdAst+igbWZtDrC8VkoQTST4vgm8i7vzMSGFP3fjEfFyerpKk8rCuAJ38wvvuHLz8kF7wUqJu+tC3YNKDAkLmPek0jaGcwuPG5DuH66/BYWsXOXBk7T4wA3e1U=
+	t=1726488664; cv=none; b=iAApkuyMrnmYoVfbTTvOslAZ8RFaR/zMYa8OiMGBYTqujV8+9PBPw6GlmzIjGRcjIOU4qtR+Dnq8/X39dO4u06Ya4XZzhTk9QUzzRpaYekRRt7u/E+Acq44/04PVp86fwAGb45FqIrNoLxOOhtoaZAqmv6VBY2mlOfjHil6qIFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488433; c=relaxed/simple;
-	bh=2K0u835bQUYVIE94JnzLbwsTK/FRCaTbDVp1B7iEx4o=;
+	s=arc-20240116; t=1726488664; c=relaxed/simple;
+	bh=N0Gz4weZXQjW3VwwNGauiGnVyCTffDWirWeSaygLf9E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fcwP94VhhX1cydwMWL+MvV6Y6D2DiA2imBgJx4eizzLoinShMlKe4lXqtm06WWMaBp2XCRAktqm8UOxBZb3D9yo+549q2XRd60+v4TVd4gd1WRLuddMnmOBg7fgdRbsXxL70rB5Gw4fqZ6Up8mxnKJ67MCYbUdUYNCcJOgxGwTc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RHIN35bA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92C91C4CEC4;
-	Mon, 16 Sep 2024 12:07:12 +0000 (UTC)
+	 MIME-Version; b=O/GoTd9yZqVJyX57FbDV/V/a10OkWnUSjcp1VaqVRw1NWtwzyzHDrhs5M8z+SjDzGu/ohLQgUskvi490dsj7iRB9Y3rtvo+xCI/YJKYYcxhLZ2xdmcn4+XZj0W3T9JgWFuWeNhEqC+dL3qbrLqdVkSnz+f45nibaYVOzaIllpWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hYQCbTNq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F996C4CEC4;
+	Mon, 16 Sep 2024 12:11:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488433;
-	bh=2K0u835bQUYVIE94JnzLbwsTK/FRCaTbDVp1B7iEx4o=;
+	s=korg; t=1726488664;
+	bh=N0Gz4weZXQjW3VwwNGauiGnVyCTffDWirWeSaygLf9E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RHIN35bAilK+8m2tMn0Ac8h7eW0x1bGiiennF6lFZd7hGNS8SrkM5Z410P8t3KXet
-	 TSCsY7lOl2CNBseN8mGJxoHIMmBKQ0rDzTYR+5YQwyUeGplcyDgrDgbGi1Wurb/Q3R
-	 5+4t2IxIPl1fBhLt7EVUr8fG68deZ6eoV1P0IClA=
+	b=hYQCbTNqsztFIcxerKxUuJ90hg8VKR1a9ojzFBdx4oQ2J79PbLd219pG2fyAmwJi5
+	 L9wcT0nfqfb4Vux3k5uQNtjOj8Is+enKmZaljP1AaBTpg14ioMgvSuiYOerXVYz0np
+	 fu5U/6giqOXFudzkxLJ0grYjnQS6MtUxPr4tDGsE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Jacky Chou <jacky_chou@aspeedtech.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 112/121] ASoC: Intel: soc-acpi-intel-mtl-match: add missing empty item
+Subject: [PATCH 6.6 70/91] net: ftgmac100: Enable TX interrupt to avoid TX timeout
 Date: Mon, 16 Sep 2024 13:44:46 +0200
-Message-ID: <20240916114232.803710505@linuxfoundation.org>
+Message-ID: <20240916114226.792298720@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
-References: <20240916114228.914815055@linuxfoundation.org>
+In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
+References: <20240916114224.509743970@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +60,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bard Liao <yung-chuan.liao@linux.intel.com>
+From: Jacky Chou <jacky_chou@aspeedtech.com>
 
-[ Upstream commit bf6d7a44a144aa9c476dee83c23faf3151181bab ]
+[ Upstream commit fef2843bb49f414d1523ca007d088071dee0e055 ]
 
-There is no links_num in struct snd_soc_acpi_mach {}, and we test
-!link->num_adr as a condition to end the loop in hda_sdw_machine_select().
-So an empty item in struct snd_soc_acpi_link_adr array is required.
+Currently, the driver only enables RX interrupt to handle RX
+packets and TX resources. Sometimes there is not RX traffic,
+so the TX resource needs to wait for RX interrupt to free.
+This situation will toggle the TX timeout watchdog when the MAC
+TX ring has no more resources to transmit packets.
+Therefore, enable TX interrupt to release TX resources at any time.
 
-Fixes: f77ae7fcdc4763 ("ASoC: Intel: soc-acpi-intel-mtl-match: add cs42l43 only support")
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Link: https://patch.msgid.link/20240906060224.2241212-3-yung-chuan.liao@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+When I am verifying iperf3 over UDP, the network hangs.
+Like the log below.
+
+root# iperf3 -c 192.168.100.100 -i1 -t10 -u -b0
+Connecting to host 192.168.100.100, port 5201
+[  4] local 192.168.100.101 port 35773 connected to 192.168.100.100 port 5201
+[ ID] Interval           Transfer     Bandwidth       Total Datagrams
+[  4]   0.00-20.42  sec   160 KBytes  64.2 Kbits/sec  20
+[  4]  20.42-20.42  sec  0.00 Bytes  0.00 bits/sec  0
+[  4]  20.42-20.42  sec  0.00 Bytes  0.00 bits/sec  0
+[  4]  20.42-20.42  sec  0.00 Bytes  0.00 bits/sec  0
+[  4]  20.42-20.42  sec  0.00 Bytes  0.00 bits/sec  0
+[  4]  20.42-20.42  sec  0.00 Bytes  0.00 bits/sec  0
+[  4]  20.42-20.42  sec  0.00 Bytes  0.00 bits/sec  0
+[  4]  20.42-20.42  sec  0.00 Bytes  0.00 bits/sec  0
+[  4]  20.42-20.42  sec  0.00 Bytes  0.00 bits/sec  0
+[  4]  20.42-20.42  sec  0.00 Bytes  0.00 bits/sec  0
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval          Transfer    Bandwidth      Jitter   Lost/Total Datagrams
+[  4]   0.00-20.42  sec  160 KBytes 64.2 Kbits/sec 0.000 ms 0/20 (0%)
+[  4] Sent 20 datagrams
+iperf3: error - the server has terminated
+
+The network topology is FTGMAC connects directly to a PC.
+UDP does not need to wait for ACK, unlike TCP.
+Therefore, FTGMAC needs to enable TX interrupt to release TX resources instead
+of waiting for the RX interrupt.
+
+Fixes: 10cbd6407609 ("ftgmac100: Rework NAPI & interrupts handling")
+Signed-off-by: Jacky Chou <jacky_chou@aspeedtech.com>
+Link: https://patch.msgid.link/20240906062831.2243399-1-jacky_chou@aspeedtech.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/common/soc-acpi-intel-mtl-match.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/faraday/ftgmac100.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/intel/common/soc-acpi-intel-mtl-match.c b/sound/soc/intel/common/soc-acpi-intel-mtl-match.c
-index 8e0ae3635a35..d4435a34a3a3 100644
---- a/sound/soc/intel/common/soc-acpi-intel-mtl-match.c
-+++ b/sound/soc/intel/common/soc-acpi-intel-mtl-match.c
-@@ -674,6 +674,7 @@ static const struct snd_soc_acpi_link_adr mtl_cs42l43_l0[] = {
- 		.num_adr = ARRAY_SIZE(cs42l43_0_adr),
- 		.adr_d = cs42l43_0_adr,
- 	},
-+	{}
- };
+diff --git a/drivers/net/ethernet/faraday/ftgmac100.h b/drivers/net/ethernet/faraday/ftgmac100.h
+index 63b3e02fab16..4968f6f0bdbc 100644
+--- a/drivers/net/ethernet/faraday/ftgmac100.h
++++ b/drivers/net/ethernet/faraday/ftgmac100.h
+@@ -84,7 +84,7 @@
+ 			    FTGMAC100_INT_RPKT_BUF)
  
- static const struct snd_soc_acpi_link_adr mtl_cs42l43_cs35l56[] = {
+ /* All the interrupts we care about */
+-#define FTGMAC100_INT_ALL (FTGMAC100_INT_RPKT_BUF  |  \
++#define FTGMAC100_INT_ALL (FTGMAC100_INT_RXTX  |  \
+ 			   FTGMAC100_INT_BAD)
+ 
+ /*
 -- 
 2.43.0
 
