@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-76403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CA3E97A190
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:08:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BEAC397A0B5
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:00:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7C221C2226F
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:08:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E80AB1C22D91
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:00:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03218155333;
-	Mon, 16 Sep 2024 12:08:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DB3B1547FF;
+	Mon, 16 Sep 2024 12:00:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lFYl5TyY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zdp5c2xX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4896154C04;
-	Mon, 16 Sep 2024 12:08:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0EE91553AF;
+	Mon, 16 Sep 2024 12:00:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488492; cv=none; b=gYWYVswKCnKY4XuB7HXh0ChWJ4khE5ckmBb7qrYwHfOxahBvOT+FQLXquJjrMXrjaR4m9cgo5C9uKUSOrZbIZMYi5zF2ELxYi/2Ci3torHBeWfc/Ubri4MBnX7uFiOy0J5oPUYFOItB9Vi3HMb5clnVs5NmlZSyOoSt7MYbEw78=
+	t=1726488006; cv=none; b=Cry4AxyuUslTKhRK4iZYl/o6dONAEF2wONvkrkMayhFvhyzi5dstB3bVUCLupJ11xfXzSOm2sI7qmSJFtdNGM78Ceh8w6SJ1nwx7Fols+nEwkNRSoyCtGZ4ROIpshO8AY/j/7SP2o2AqHZZipWAMlASYHZbfI+fmzPjAV60AmAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488492; c=relaxed/simple;
-	bh=B3fdbKgdkOQ/yAjUzBb0DXybWRFfNE2VMcqQ5OciJEI=;
+	s=arc-20240116; t=1726488006; c=relaxed/simple;
+	bh=gYYxgq+rDs5z9/NrkLLJ4Yhl4j9RNO/agg7K3MfSk58=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GyMja7GRlHi31c3fEwCdsV4H2oMs84OjNjHHF4kKosJWA/yr36WW1b49WcgQh5ZdQiVLrmJfPTYRgH8RmcOrs3qoIkEqURBIv4Vmzw4tTAYASLiom6CPVfiWlnTlL3dcpRb98/jgO72LEJAXZ3qOECaK1Qhr9gJC2j2EIkqHTtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lFYl5TyY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C9FAC4CEC4;
-	Mon, 16 Sep 2024 12:08:12 +0000 (UTC)
+	 MIME-Version; b=bMIargM40Y6Wht/K/EhwmcYn2Xsu5VBr0RY4UnyJLnNZ6/vqECzZrrKaQ0GTZXr1hi2V3uEMj1iNQRCYruOWffZus8npwWaUJhszWLFuS6zXRnpZbXnoSaST8U/9MlX4ob95rtmHUDcThHyLAesWmC1RNdRFssfRDs6ridyuouU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zdp5c2xX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B6CAC4CEC4;
+	Mon, 16 Sep 2024 12:00:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488492;
-	bh=B3fdbKgdkOQ/yAjUzBb0DXybWRFfNE2VMcqQ5OciJEI=;
+	s=korg; t=1726488005;
+	bh=gYYxgq+rDs5z9/NrkLLJ4Yhl4j9RNO/agg7K3MfSk58=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lFYl5TyY7+LZBC+aUNsIkT6yRDbSjU+scG8EeJ+qvA/rr6//ba4xdARC2HVpSY949
-	 BVLkbDeZw/EHAgufR64BwpV72KrcJjiA/GgN4p7LSM1XwsvUpHDm1E0XXkHAOsJsZP
-	 D1lUA2v3jGyJlVjK5f39KNZ31Qbq4Xm0LpG2cnrg=
+	b=zdp5c2xXsyP+Q+nd1qJUdWajdHqx3txl/DG5yIFYe6K3XO4al1iAYLmTm+NBXkS3Z
+	 7ZXOvR4BfUJInfpq3CXeoTKyo5eFrVKMQuXnhDxY0uRStsZ4DKKzwkMFan/aVwmq70
+	 2MuUbrh1+yE9jFlYcGZn8XeYPt09RbQ9U1TLN8I8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sangsoo Lee <constant.lee@samsung.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Michael Ellerman <mpe@ellerman.id.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 11/91] ksmbd: override fsids for smb2_query_info()
+Subject: [PATCH 6.1 08/63] powerpc/mm: Fix boot warning with hugepages and CONFIG_DEBUG_VIRTUAL
 Date: Mon, 16 Sep 2024 13:43:47 +0200
-Message-ID: <20240916114224.908360754@linuxfoundation.org>
+Message-ID: <20240916114221.328342323@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
-References: <20240916114224.509743970@linuxfoundation.org>
+In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
+References: <20240916114221.021192667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +62,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit f6bd41280a44dcc2e0a25ed72617d25f586974a7 ]
+[ Upstream commit e7e846dc6c73fbc94ae8b4ec20d05627646416f2 ]
 
-Sangsoo reported that a DAC denial error occurred when accessing
-files through the ksmbd thread. This patch override fsids for
-smb2_query_info().
+Booting with CONFIG_DEBUG_VIRTUAL leads to following warning when
+passing hugepage reservation on command line:
 
-Reported-by: Sangsoo Lee <constant.lee@samsung.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+  Kernel command line: hugepagesz=1g hugepages=1 hugepagesz=64m hugepages=1 hugepagesz=256m hugepages=1 noreboot
+  HugeTLB: allocating 1 of page size 1.00 GiB failed.  Only allocated 0 hugepages.
+  ------------[ cut here ]------------
+  WARNING: CPU: 0 PID: 0 at arch/powerpc/include/asm/io.h:948 __alloc_bootmem_huge_page+0xd4/0x284
+  Modules linked in:
+  CPU: 0 PID: 0 Comm: swapper Not tainted 6.10.0-rc6-00396-g6b0e82791bd0-dirty #936
+  Hardware name: MPC8544DS e500v2 0x80210030 MPC8544 DS
+  NIP:  c1020240 LR: c10201d0 CTR: 00000000
+  REGS: c13fdd30 TRAP: 0700   Not tainted  (6.10.0-rc6-00396-g6b0e82791bd0-dirty)
+  MSR:  00021000 <CE,ME>  CR: 44084288  XER: 20000000
+
+  GPR00: c10201d0 c13fde20 c130b560 e8000000 e8001000 00000000 00000000 c1420000
+  GPR08: 00000000 00028001 00000000 00000004 44084282 01066ac0 c0eb7c9c efffe149
+  GPR16: c0fc4228 0000005f ffffffff c0eb7d0c c0eb7cc0 c0eb7ce0 ffffffff 00000000
+  GPR24: c1441cec efffe153 e8001000 c14240c0 00000000 c1441d64 00000000 e8000000
+  NIP [c1020240] __alloc_bootmem_huge_page+0xd4/0x284
+  LR [c10201d0] __alloc_bootmem_huge_page+0x64/0x284
+  Call Trace:
+  [c13fde20] [c10201d0] __alloc_bootmem_huge_page+0x64/0x284 (unreliable)
+  [c13fde50] [c10207b8] hugetlb_hstate_alloc_pages+0x8c/0x3e8
+  [c13fdeb0] [c1021384] hugepages_setup+0x240/0x2cc
+  [c13fdef0] [c1000574] unknown_bootoption+0xfc/0x280
+  [c13fdf30] [c0078904] parse_args+0x200/0x4c4
+  [c13fdfa0] [c1000d9c] start_kernel+0x238/0x7d0
+  [c13fdff0] [c0000434] set_ivor+0x12c/0x168
+  Code: 554aa33e 7c042840 3ce0c142 80a7427c 5109a016 50caa016 7c9a2378 7fdcf378 4180000c 7c052040 41810160 7c095040 <0fe00000> 38c00000 40800108 3c60c0eb
+  ---[ end trace 0000000000000000 ]---
+
+This is due to virt_addr_valid() using high_memory before it is set.
+
+high_memory is set in mem_init() using max_low_pfn, but max_low_pfn
+is available long before, it is set in mem_topology_setup(). So just
+like commit daa9ada2093e ("powerpc/mm: Fix boot crash with FLATMEM")
+moved the setting of max_mapnr immediately after the call to
+mem_topology_setup(), the same can be done for high_memory.
+
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/62b69c4baad067093f39e7e60df0fe27a86b8d2a.1723100702.git.christophe.leroy@csgroup.eu
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/powerpc/kernel/setup-common.c | 1 +
+ arch/powerpc/mm/mem.c              | 2 --
+ 2 files changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index 4ac6068c50cc..c527050bc981 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -5601,6 +5601,11 @@ int smb2_query_info(struct ksmbd_work *work)
+diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
+index 59b4ac57bfaf..56f6b958926d 100644
+--- a/arch/powerpc/kernel/setup-common.c
++++ b/arch/powerpc/kernel/setup-common.c
+@@ -948,6 +948,7 @@ void __init setup_arch(char **cmdline_p)
+ 	mem_topology_setup();
+ 	/* Set max_mapnr before paging_init() */
+ 	set_max_mapnr(max_pfn);
++	high_memory = (void *)__va(max_low_pfn * PAGE_SIZE);
  
- 	ksmbd_debug(SMB, "GOT query info request\n");
+ 	/*
+ 	 * Release secondary cpus out of their spinloops at 0x60 now that
+diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
+index c7599b173709..40f4a31f001c 100644
+--- a/arch/powerpc/mm/mem.c
++++ b/arch/powerpc/mm/mem.c
+@@ -287,8 +287,6 @@ void __init mem_init(void)
+ 	swiotlb_init(ppc_swiotlb_enable, ppc_swiotlb_flags);
+ #endif
  
-+	if (ksmbd_override_fsids(work)) {
-+		rc = -ENOMEM;
-+		goto err_out;
-+	}
-+
- 	switch (req->InfoType) {
- 	case SMB2_O_INFO_FILE:
- 		ksmbd_debug(SMB, "GOT SMB2_O_INFO_FILE\n");
-@@ -5619,6 +5624,7 @@ int smb2_query_info(struct ksmbd_work *work)
- 			    req->InfoType);
- 		rc = -EOPNOTSUPP;
- 	}
-+	ksmbd_revert_fsids(work);
+-	high_memory = (void *) __va(max_low_pfn * PAGE_SIZE);
+-
+ 	kasan_late_init();
  
- 	if (!rc) {
- 		rsp->StructureSize = cpu_to_le16(9);
-@@ -5628,6 +5634,7 @@ int smb2_query_info(struct ksmbd_work *work)
- 					le32_to_cpu(rsp->OutputBufferLength));
- 	}
- 
-+err_out:
- 	if (rc < 0) {
- 		if (rc == -EACCES)
- 			rsp->hdr.Status = STATUS_ACCESS_DENIED;
+ 	memblock_free_all();
 -- 
 2.43.0
 
