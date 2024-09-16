@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-76348-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76240-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CB8097A152
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:07:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A41B497A0BD
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:00:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 708A41C23530
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:07:13 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F3621F21BE4
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:00:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A6B3156C40;
-	Mon, 16 Sep 2024 12:05:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1944514AD19;
+	Mon, 16 Sep 2024 12:00:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jvn1rdF2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MOxtTaTD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 176F9156641;
-	Mon, 16 Sep 2024 12:05:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1835E155359;
+	Mon, 16 Sep 2024 12:00:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488336; cv=none; b=MGQkB7ySx7OV0WM7xu0JZj3Tys8TvzrvoUaul3uFJvrN2K1ChKCfoqGroxHcausP+U0AQtyNwqcgNX+lsnHj1bNJ0RKJbrktDydwM+E7niVQyH1cNQRqHl9DegvEirOBDADkw+0Uj3g+6v0QTBZfNrnS9p3iw52BjLN16pK3TNA=
+	t=1726488029; cv=none; b=gAZVpR8YX5cLDRc3kfzS2f0X5an0DcvyZCB0/iRbPCt4slXikbFXmZ9gjsK5x+U4ZqdeUeW8ukatfvYNAK7RdWt/9ky9HgoN+BLG5r3LKjheYEQBMWsK3IL3RlBmT/yz2k2xpXF2ZXV1YL0kzhWpDBoaSFyTe1c2P6QI3+p915Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488336; c=relaxed/simple;
-	bh=ZB8DaBpzkeQvQa78IV06F1r5wPvl8c+DhE1ISQJvg3U=;
+	s=arc-20240116; t=1726488029; c=relaxed/simple;
+	bh=deOml+XIHA/BmUtfIOB0HPB7Utj6yKXmDURozN4wPmc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SrJKBIRVueuW/nKDHZ5N/5e7HdmHwuTnX/J5Q06wnEaRoPJspoX/rkp2B+Qg75tqAdCQ5STrayrFsxXvw1crteeau8uYZ6VVOxx8pKfJOmH3em2hp0Bbf75323cQznvHyKFFUX5rXB/OsfqzLZFeySi4WSVkI/VSdDBLWqFDRFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jvn1rdF2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95351C4CEC4;
-	Mon, 16 Sep 2024 12:05:35 +0000 (UTC)
+	 MIME-Version; b=CshrrVPxCl8rCUsJITFn36K6lprT/zvWdtFW0yH3B838I+DRlsatG45liZ6YiL2H2TD76xGwdlZG0heXvhwhXg7OcZvPuCz4ZrOui7rDg7mz+mTy0RrfvA+t4AOCCAX+JM1RFU+u5/PRgHZ81ZsIIFeOZEkRPr+hmQhW5bbjD1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MOxtTaTD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5441BC4CEC4;
+	Mon, 16 Sep 2024 12:00:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488336;
-	bh=ZB8DaBpzkeQvQa78IV06F1r5wPvl8c+DhE1ISQJvg3U=;
+	s=korg; t=1726488028;
+	bh=deOml+XIHA/BmUtfIOB0HPB7Utj6yKXmDURozN4wPmc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jvn1rdF2ntAp4N1lJkWr9MaKJ9aUQq1x8h7obH0gIICGki5feqwkVB+LC0alj246G
-	 Ji0rmVvT1S5o5i8m4w+Tn2fpcTyYKPAAm94hQyHaK6uWt17y9L0Y/haTxkwmcubMIk
-	 DiNxKCkIm1TIuqmHM10U/lcGgS/XhAob4IZsstYc=
+	b=MOxtTaTDB++WVgflzTJMX8r1NFoUIYISAowZ4yWHDjF23ifezCTX1yT6025Mofb6i
+	 XtSGifAtmSoi7VFcZP2IzVK2aVPP02lT05JpnXm8f3eq3zvnwwXmNB4W1+cw5/XCCc
+	 PTlc0Vqk2XBmOoGivYqdLg0auZojbk2HZl00z1Vo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shahar Shitrit <shshitrit@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Carolina Jubran <cjubran@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
+	FUKAUMI Naoki <naoki@radxa.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 078/121] net/mlx5e: Add missing link mode to ptys2ext_ethtool_map
+Subject: [PATCH 6.1 33/63] arm64: dts: rockchip: fix PMIC interrupt pin in pinctrl for ROCK Pi E
 Date: Mon, 16 Sep 2024 13:44:12 +0200
-Message-ID: <20240916114231.740923708@linuxfoundation.org>
+Message-ID: <20240916114222.243958512@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
-References: <20240916114228.914815055@linuxfoundation.org>
+In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
+References: <20240916114221.021192667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shahar Shitrit <shshitrit@nvidia.com>
+From: FUKAUMI Naoki <naoki@radxa.com>
 
-[ Upstream commit 80bf474242b21d64a514fd2bb65faa7a17ca8d8d ]
+[ Upstream commit c623e9daf60a0275d623ce054601550e54987f5b ]
 
-Add MLX5E_400GAUI_8_400GBASE_CR8 to the extended modes
-in ptys2ext_ethtool_table, since it was missing.
+use GPIO0_A2 as PMIC interrupt pin in pinctrl.
+(I forgot to fix this part in previous commit.)
 
-Fixes: 6a897372417e ("net/mlx5: ethtool, Add ethtool support for 50Gbps per lane link modes")
-Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Carolina Jubran <cjubran@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Fixes: 02afd3d5b9fa ("arm64: dts: rockchip: fix PMIC interrupt pin on ROCK Pi E")
+Signed-off-by: FUKAUMI Naoki <naoki@radxa.com>
+Link: https://lore.kernel.org/r/20240722095216.1656081-1-naoki@radxa.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/arm64/boot/dts/rockchip/rk3328-rock-pi-e.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-index 5b3b442c4a58..9d2d67e24205 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-@@ -208,6 +208,12 @@ void mlx5e_build_ptys2ethtool_map(void)
- 				       ETHTOOL_LINK_MODE_200000baseLR4_ER4_FR4_Full_BIT,
- 				       ETHTOOL_LINK_MODE_200000baseDR4_Full_BIT,
- 				       ETHTOOL_LINK_MODE_200000baseCR4_Full_BIT);
-+	MLX5_BUILD_PTYS2ETHTOOL_CONFIG(MLX5E_400GAUI_8_400GBASE_CR8, ext,
-+				       ETHTOOL_LINK_MODE_400000baseKR8_Full_BIT,
-+				       ETHTOOL_LINK_MODE_400000baseSR8_Full_BIT,
-+				       ETHTOOL_LINK_MODE_400000baseLR8_ER8_FR8_Full_BIT,
-+				       ETHTOOL_LINK_MODE_400000baseDR8_Full_BIT,
-+				       ETHTOOL_LINK_MODE_400000baseCR8_Full_BIT);
- 	MLX5_BUILD_PTYS2ETHTOOL_CONFIG(MLX5E_100GAUI_1_100GBASE_CR_KR, ext,
- 				       ETHTOOL_LINK_MODE_100000baseKR_Full_BIT,
- 				       ETHTOOL_LINK_MODE_100000baseSR_Full_BIT,
+diff --git a/arch/arm64/boot/dts/rockchip/rk3328-rock-pi-e.dts b/arch/arm64/boot/dts/rockchip/rk3328-rock-pi-e.dts
+index d9905a08c6ce..66443d52cd34 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3328-rock-pi-e.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3328-rock-pi-e.dts
+@@ -332,7 +332,7 @@ led_pin: led-pin {
+ 
+ 	pmic {
+ 		pmic_int_l: pmic-int-l {
+-			rockchip,pins = <2 RK_PA6 RK_FUNC_GPIO &pcfg_pull_up>;
++			rockchip,pins = <0 RK_PA2 RK_FUNC_GPIO &pcfg_pull_up>;
+ 		};
+ 	};
+ 
 -- 
 2.43.0
 
