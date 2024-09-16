@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-76384-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76464-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EDE297A17B
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:07:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6C7297A1DC
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:11:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00EC3287A3E
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:07:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 250D01C21D62
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:11:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43276156F20;
-	Mon, 16 Sep 2024 12:07:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D24C155300;
+	Mon, 16 Sep 2024 12:11:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="imHIQQwF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QJ38r5pn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0160A155336;
-	Mon, 16 Sep 2024 12:07:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BD10146A79;
+	Mon, 16 Sep 2024 12:11:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488439; cv=none; b=ezmPkufLpoFooiVBJmzRWV0+CAbHGARibEHjRyIg43aQCFhbjmS5z7TcQ1VE00Vsxq1dXtn+UO8epvxRPAG1SASatdICVeQuZDPar52XKaheXuEBsdDfAJ9BZcEzZMGDFlgpXjK7ErB1+s86n4HbgVeYnh2YvzRq25fiJ0E3HvU=
+	t=1726488667; cv=none; b=Yq2iLWI5KEtFFF6dxvketj6A+VC+Ahhm2u6i4Sg2L0XRn1zEbhaObQdJP0J2Cnc7NqpDjfVHNOnMxwNjfftGbYY4SViPsRxuo8XzuQDwXZ3jN9pvwuyh861/qKkOq8NWnjVjAQdOPnh8TTNm48gpRnd2tC7zzsr1UsI0BYYdtTk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488439; c=relaxed/simple;
-	bh=7dHoZWczIIvnvtm1WAs+ln1058C0P7P65EPvy9kERQA=;
+	s=arc-20240116; t=1726488667; c=relaxed/simple;
+	bh=xvN8dTVDLzwQ5vTs0crGmMKf9v9XGF/cyniXEuyl8gg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d3WldQPJbZvCkDmlBvdPlA355zEgH6ti0prX4n3qIDwdnEGjeTHRIJ88ILTNU7a64O0ocsptB+4xap4IZSCUCBpjC0ADIKEB0o1S1UVws0+LSgbNhpL+EF8ysa6HmIm7WEZfEUHGjmCjvaYe1YV/5xag/VWHxl9XTw59wIn9+zw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=imHIQQwF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46879C4CEC4;
-	Mon, 16 Sep 2024 12:07:18 +0000 (UTC)
+	 MIME-Version; b=sOVeKnjqARUJfpg7aPs8OV9i4cNR53njcdOSjtuJtiWX1ZvGU02rSOHy0QqG9yLz3auwNmGyhIWxxqShhyGdel8DsKpV8eNTIIgPLgyVoyfcW9bpWaxQ9YMuQpPN8PuBXq4A/EXpOlsW75YLGtoeHx1pdnZrpnvCb8J+cCcTeNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QJ38r5pn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C96D6C4CEC4;
+	Mon, 16 Sep 2024 12:11:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488438;
-	bh=7dHoZWczIIvnvtm1WAs+ln1058C0P7P65EPvy9kERQA=;
+	s=korg; t=1726488667;
+	bh=xvN8dTVDLzwQ5vTs0crGmMKf9v9XGF/cyniXEuyl8gg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=imHIQQwFxuaEu4H/PN4uFkehPVa+CuGCOgjIHh9mycH9YS0U6SL/3aPHtg+Hbiw4p
-	 MwjNdb+mKizMjMz9B9/DZfxAlwiJzj5ocpCn2BrEqy1WtDszGu9/7wrJyvqimwLfbi
-	 BLal8Fps8ZxZZlqiAYYuzgkMUcMcv16xusqjR7WU=
+	b=QJ38r5pnx/coDXcsMMNxt8NywEcPlXjRRARE1CRsatbhJH5dw7uvYenn26jIvMPM9
+	 YlUJjl6pDL2gCX7mNQi0VJ5n08I1DiXNSnfkNyF2PugtMnCvIQgIxSnCGLL6n767fJ
+	 0940U84/Zk7+bFA36TdJ2NytRxjXTZEVv8BR7smY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Sean Anderson <sean.anderson@linux.dev>,
+	Willem de Bruijn <willemb@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 113/121] spi: geni-qcom: Undo runtime PM changes at driver exit time
+Subject: [PATCH 6.6 71/91] selftests: net: csum: Fix checksums for packets with non-zero padding
 Date: Mon, 16 Sep 2024 13:44:47 +0200
-Message-ID: <20240916114232.838714274@linuxfoundation.org>
+Message-ID: <20240916114226.819719076@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
-References: <20240916114228.914815055@linuxfoundation.org>
+In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
+References: <20240916114224.509743970@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,87 +63,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Sean Anderson <sean.anderson@linux.dev>
 
-[ Upstream commit 89e362c883c65ff94b76b9862285f63545fb5274 ]
+[ Upstream commit e8a63d473b49011a68a748aea1c8aefa046ebacf ]
 
-It's important to undo pm_runtime_use_autosuspend() with
-pm_runtime_dont_use_autosuspend() at driver exit time unless driver
-initially enabled pm_runtime with devm_pm_runtime_enable()
-(which handles it for you).
+Padding is not included in UDP and TCP checksums. Therefore, reduce the
+length of the checksummed data to include only the data in the IP
+payload. This fixes spurious reported checksum failures like
 
-Hence, switch to devm_pm_runtime_enable() to fix it, so the
-pm_runtime_disable() in probe error path and remove function
-can be removed.
+rx: pkt: sport=33000 len=26 csum=0xc850 verify=0xf9fe
+pkt: bad csum
 
-Fixes: cfdab2cd85ec ("spi: spi-geni-qcom: Set an autosuspend delay of 250 ms")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Suggested-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://patch.msgid.link/20240909073141.951494-2-ruanjinjie@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Technically it is possible for there to be trailing bytes after the UDP
+data but before the Ethernet padding (e.g. if sizeof(ip) + sizeof(udp) +
+udp.len < ip.len). However, we don't generate such packets.
+
+Fixes: 91a7de85600d ("selftests/net: add csum offload test")
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Link: https://patch.msgid.link/20240906210743.627413-1-sean.anderson@linux.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-geni-qcom.c | 13 ++++++-------
- 1 file changed, 6 insertions(+), 7 deletions(-)
+ tools/testing/selftests/net/csum.c | 16 ++++++++++++++--
+ 1 file changed, 14 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
-index 37ef8c40b276..fef522fece1b 100644
---- a/drivers/spi/spi-geni-qcom.c
-+++ b/drivers/spi/spi-geni-qcom.c
-@@ -1110,25 +1110,27 @@ static int spi_geni_probe(struct platform_device *pdev)
- 	spin_lock_init(&mas->lock);
- 	pm_runtime_use_autosuspend(&pdev->dev);
- 	pm_runtime_set_autosuspend_delay(&pdev->dev, 250);
--	pm_runtime_enable(dev);
-+	ret = devm_pm_runtime_enable(dev);
-+	if (ret)
-+		return ret;
+diff --git a/tools/testing/selftests/net/csum.c b/tools/testing/selftests/net/csum.c
+index 90eb06fefa59..eef72b50270c 100644
+--- a/tools/testing/selftests/net/csum.c
++++ b/tools/testing/selftests/net/csum.c
+@@ -654,10 +654,16 @@ static int recv_verify_packet_ipv4(void *nh, int len)
+ {
+ 	struct iphdr *iph = nh;
+ 	uint16_t proto = cfg_encap ? IPPROTO_UDP : cfg_proto;
++	uint16_t ip_len;
  
- 	if (device_property_read_bool(&pdev->dev, "spi-slave"))
- 		spi->target = true;
+ 	if (len < sizeof(*iph) || iph->protocol != proto)
+ 		return -1;
  
- 	ret = geni_icc_get(&mas->se, NULL);
- 	if (ret)
--		goto spi_geni_probe_runtime_disable;
-+		return ret;
- 	/* Set the bus quota to a reasonable value for register access */
- 	mas->se.icc_paths[GENI_TO_CORE].avg_bw = Bps_to_icc(CORE_2X_50_MHZ);
- 	mas->se.icc_paths[CPU_TO_GENI].avg_bw = GENI_DEFAULT_BW;
++	ip_len = ntohs(iph->tot_len);
++	if (ip_len > len || ip_len < sizeof(*iph))
++		return -1;
++
++	len = ip_len;
+ 	iph_addr_p = &iph->saddr;
+ 	if (proto == IPPROTO_TCP)
+ 		return recv_verify_packet_tcp(iph + 1, len - sizeof(*iph));
+@@ -669,16 +675,22 @@ static int recv_verify_packet_ipv6(void *nh, int len)
+ {
+ 	struct ipv6hdr *ip6h = nh;
+ 	uint16_t proto = cfg_encap ? IPPROTO_UDP : cfg_proto;
++	uint16_t ip_len;
  
- 	ret = geni_icc_set_bw(&mas->se);
- 	if (ret)
--		goto spi_geni_probe_runtime_disable;
-+		return ret;
+ 	if (len < sizeof(*ip6h) || ip6h->nexthdr != proto)
+ 		return -1;
  
- 	ret = spi_geni_init(mas);
- 	if (ret)
--		goto spi_geni_probe_runtime_disable;
-+		return ret;
++	ip_len = ntohs(ip6h->payload_len);
++	if (ip_len > len - sizeof(*ip6h))
++		return -1;
++
++	len = ip_len;
+ 	iph_addr_p = &ip6h->saddr;
  
- 	/*
- 	 * check the mode supported and set_cs for fifo mode only
-@@ -1157,8 +1159,6 @@ static int spi_geni_probe(struct platform_device *pdev)
- 	free_irq(mas->irq, spi);
- spi_geni_release_dma:
- 	spi_geni_release_dma_chan(mas);
--spi_geni_probe_runtime_disable:
--	pm_runtime_disable(dev);
- 	return ret;
+ 	if (proto == IPPROTO_TCP)
+-		return recv_verify_packet_tcp(ip6h + 1, len - sizeof(*ip6h));
++		return recv_verify_packet_tcp(ip6h + 1, len);
+ 	else
+-		return recv_verify_packet_udp(ip6h + 1, len - sizeof(*ip6h));
++		return recv_verify_packet_udp(ip6h + 1, len);
  }
  
-@@ -1173,7 +1173,6 @@ static void spi_geni_remove(struct platform_device *pdev)
- 	spi_geni_release_dma_chan(mas);
- 
- 	free_irq(mas->irq, spi);
--	pm_runtime_disable(&pdev->dev);
- }
- 
- static int __maybe_unused spi_geni_runtime_suspend(struct device *dev)
+ /* return whether auxdata includes TP_STATUS_CSUM_VALID */
 -- 
 2.43.0
 
