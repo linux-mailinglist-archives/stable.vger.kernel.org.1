@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-76353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5846797A15A
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:07:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E03C97A0AC
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 13:59:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DBECF1F2352E
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:07:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 65DAA284DA3
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 11:59:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B85FD157487;
-	Mon, 16 Sep 2024 12:05:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7702E155A59;
+	Mon, 16 Sep 2024 11:59:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A2uFERDw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bTq2g5gT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7536315747A;
-	Mon, 16 Sep 2024 12:05:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04F9A1547C4;
+	Mon, 16 Sep 2024 11:59:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488350; cv=none; b=Y7/3c4dffob6LIgzRQ+0/xpwD8DJakQr2H+9rC0LHsRyj6j1QGb7CKqYvc8iON94z+L/SV8jPEeODYzs51gWzpEG5nBi/xkdu6MDzFEMfLZIMg98cAVn0QHxNF3l1iwRYUYqeKTTJAR9rl8vBqssld6SToSvzZHakGaNuHPAQoY=
+	t=1726487989; cv=none; b=R6TUnPfNEI3kUrbHJBEVbz17h2IcX6Jistkw3l8tqkoiadfrAlDf7/SoSGSR3jyDuO/C28qUKO70tU32caTAES3EfDNfMenjiu35Zhd64VwqO+eHicQ9ldLQVr+zk6JSYuLlWnD/NqID5yyfaRCTJlcRGiyZauSXcT7OMzvva+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488350; c=relaxed/simple;
-	bh=wrQHFXb6VxYMC2ubbVbe0tBOImbND42kWUCl6QXuYxk=;
+	s=arc-20240116; t=1726487989; c=relaxed/simple;
+	bh=hS0DF/NrT1AKpp77bbCZz/S/IFJBs/kEVPCRlMAEXEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a5+hNq67Oio6CXTMGEGGsNWaRqh9fl1xpAerlgmHYktb6gLC+4XeA+XFeoShPWot0ckaQoJVlOSqMpYS+77stneGoBq+pP3Bt1V8ducEwA9oK4zNpUGkqZICDbHk2mseR8EqC0dg4+LjEeQlg6rb/lMQJ36u+0l1N1nFUkJsWTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A2uFERDw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1F91C4CEC4;
-	Mon, 16 Sep 2024 12:05:49 +0000 (UTC)
+	 MIME-Version; b=h+/0wOx0Ge+u5i5zHb19XbM3gIyxZcZ9KmdTBgHM6mq58VSY328V5TYy0dlX5/E0Z8LylYyKO0rsHT3yyz1rIakNgsFwnKGx32fpWIqfUfDyGaHRMWe65yXqLFUEvGGwmEUOCvh2efiMmig/l/QdahTwVIEGeetuLHmCnC3zzNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bTq2g5gT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 605ABC4CEC4;
+	Mon, 16 Sep 2024 11:59:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488350;
-	bh=wrQHFXb6VxYMC2ubbVbe0tBOImbND42kWUCl6QXuYxk=;
+	s=korg; t=1726487988;
+	bh=hS0DF/NrT1AKpp77bbCZz/S/IFJBs/kEVPCRlMAEXEI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A2uFERDwQYM4jRw5/xfApNIxBtxwAsLxc+wVdqXtjXwnXbARw0qG0XCjKsymQeCwS
-	 TL25N/kCHkHo7sfGlyhvTIbAdKaWOtej0Ttet9mn264DFnwKdqS2QKN+sPz6J9jvK5
-	 PkWvpNC/88PZCwiUbZhBaTpwovFGhuEcYhdG3R8w=
+	b=bTq2g5gTXJIFaXQX3idHNhsb6EFLj5kKaK3dPRXu8vj+c/Y2q3g8OfQwe5Sh43uiq
+	 QhcWg9BWDtx5v1dCQSn5FVCtm8TCniNiLLu6sCVs5pPQnp/uGU9nsN6aKnjxYLM0V9
+	 Dr1JR3uKTo0LZPOfEE2pfIpvivRhiavbBUS9LfV0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Qiang <liqiang01@kylinos.cn>,
-	Stephen Boyd <sboyd@kernel.org>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Anna Schumaker <Anna.Schumaker@Netapp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 065/121] clk/sophgo: Using BUG() instead of unreachable() in mmux_get_parent_id()
+Subject: [PATCH 6.1 20/63] NFS: Avoid unnecessary rescanning of the per-server delegation list
 Date: Mon, 16 Sep 2024 13:43:59 +0200
-Message-ID: <20240916114231.319041113@linuxfoundation.org>
+Message-ID: <20240916114221.786276532@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
-References: <20240916114228.914815055@linuxfoundation.org>
+In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
+References: <20240916114221.021192667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Qiang <liqiang01@kylinos.cn>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 1f7a04a0e673c19cc10bf4039047e11367ac5735 ]
+[ Upstream commit f92214e4c312f6ea9d78650cc6291d200f17abb6 ]
 
-In general it's a good idea to avoid using bare unreachable() because it
-introduces undefined behavior in compiled code. but it caused a compilation warning,
-Using BUG() instead of unreachable() to resolve compilation warnings.
+If the call to nfs_delegation_grab_inode() fails, we will not have
+dropped any locks that require us to rescan the list.
 
-Fixes the following warnings:
-    drivers/clk/sophgo/clk-cv18xx-ip.o: warning: objtool: mmux_round_rate() falls through to next function bypass_div_round_rate()
-
-Fixes: 80fd61ec46124 ("clk: sophgo: Add clock support for CV1800 SoC")
-Signed-off-by: Li Qiang <liqiang01@kylinos.cn>
-Link: https://lore.kernel.org/r/c8e66d51f880127549e2a3e623be6787f62b310d.1720506143.git.liqiang01@kylinos.cn
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/sophgo/clk-cv18xx-ip.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfs/delegation.c | 15 +++++----------
+ 1 file changed, 5 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/clk/sophgo/clk-cv18xx-ip.c b/drivers/clk/sophgo/clk-cv18xx-ip.c
-index 805f561725ae..b186e64d4813 100644
---- a/drivers/clk/sophgo/clk-cv18xx-ip.c
-+++ b/drivers/clk/sophgo/clk-cv18xx-ip.c
-@@ -613,7 +613,7 @@ static u8 mmux_get_parent_id(struct cv1800_clk_mmux *mmux)
- 			return i;
- 	}
+diff --git a/fs/nfs/delegation.c b/fs/nfs/delegation.c
+index ead8a0e06abf..2ba4d221bf9d 100644
+--- a/fs/nfs/delegation.c
++++ b/fs/nfs/delegation.c
+@@ -627,6 +627,9 @@ static int nfs_server_return_marked_delegations(struct nfs_server *server,
+ 				prev = delegation;
+ 			continue;
+ 		}
++		inode = nfs_delegation_grab_inode(delegation);
++		if (inode == NULL)
++			continue;
  
--	unreachable();
-+	BUG();
- }
+ 		if (prev) {
+ 			struct inode *tmp = nfs_delegation_grab_inode(prev);
+@@ -637,12 +640,6 @@ static int nfs_server_return_marked_delegations(struct nfs_server *server,
+ 			}
+ 		}
  
- static int mmux_enable(struct clk_hw *hw)
+-		inode = nfs_delegation_grab_inode(delegation);
+-		if (inode == NULL) {
+-			rcu_read_unlock();
+-			iput(to_put);
+-			goto restart;
+-		}
+ 		delegation = nfs_start_delegation_return_locked(NFS_I(inode));
+ 		rcu_read_unlock();
+ 
+@@ -1164,7 +1161,6 @@ static int nfs_server_reap_unclaimed_delegations(struct nfs_server *server,
+ 	struct inode *inode;
+ restart:
+ 	rcu_read_lock();
+-restart_locked:
+ 	list_for_each_entry_rcu(delegation, &server->delegations, super_list) {
+ 		if (test_bit(NFS_DELEGATION_INODE_FREEING,
+ 					&delegation->flags) ||
+@@ -1175,7 +1171,7 @@ static int nfs_server_reap_unclaimed_delegations(struct nfs_server *server,
+ 			continue;
+ 		inode = nfs_delegation_grab_inode(delegation);
+ 		if (inode == NULL)
+-			goto restart_locked;
++			continue;
+ 		delegation = nfs_start_delegation_return_locked(NFS_I(inode));
+ 		rcu_read_unlock();
+ 		if (delegation != NULL) {
+@@ -1296,7 +1292,6 @@ static int nfs_server_reap_expired_delegations(struct nfs_server *server,
+ 	nfs4_stateid stateid;
+ restart:
+ 	rcu_read_lock();
+-restart_locked:
+ 	list_for_each_entry_rcu(delegation, &server->delegations, super_list) {
+ 		if (test_bit(NFS_DELEGATION_INODE_FREEING,
+ 					&delegation->flags) ||
+@@ -1307,7 +1302,7 @@ static int nfs_server_reap_expired_delegations(struct nfs_server *server,
+ 			continue;
+ 		inode = nfs_delegation_grab_inode(delegation);
+ 		if (inode == NULL)
+-			goto restart_locked;
++			continue;
+ 		spin_lock(&delegation->lock);
+ 		cred = get_cred_rcu(delegation->cred);
+ 		nfs4_stateid_copy(&stateid, &delegation->stateid);
 -- 
 2.43.0
 
