@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-76467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED68797A1E0
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:11:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61BCF97A17F
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:08:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8945286235
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:11:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BC771F23F52
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:08:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B3411553AF;
-	Mon, 16 Sep 2024 12:11:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6703A155333;
+	Mon, 16 Sep 2024 12:07:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mi0DB3mR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p9jBO31R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE051146A79;
-	Mon, 16 Sep 2024 12:11:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25DCE142903;
+	Mon, 16 Sep 2024 12:07:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488675; cv=none; b=pCDPMKWzpE5+4VnmUfHSrBjVe4dnBbnr3UkO2RZja3D1CfAoc9Uh2vYevLNAsZH5Ce3Vg49BzuBFewuHswlkj4Dg9QxlyMwx3lDBBK5xxORY6m6lEyeJpxngyxWoivW1eeC09FGoTcMzudRmZmvnbFIWr+BCSycBXh24p0voDEU=
+	t=1726488450; cv=none; b=ZMEwGNFyAtJuXjGwBW1sKgmq0tabTGuB9xSUAof20qbjlCehgwz0rvT8OBPfCNhlUPMb172fwTtjQP6wUP98DhsoHPYZopM+ZszPfSwQlOGKFGOLhIcRMM0qC2/T1tezDVCRGuNs38MaNU6Ljqjw6V5/XeKX8+x+xguVsvF3DyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488675; c=relaxed/simple;
-	bh=DnaxPdYtel76XLph+gaSO3w2l6Ki9yEGdI0Pahg1HQ4=;
+	s=arc-20240116; t=1726488450; c=relaxed/simple;
+	bh=m7zFGszEgoAXGQyGfO/LNUa8iwIFMXhKZRu7ZPwA6og=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eIfs8sn0gqYQV/OzDPkPXRUDABnx9Yhwzo9caJy4S/LisxKCbkHhHDxGqF2HlIIOspqQ+IYwWZ11/FOvilKhkr3/IHWDWNzA41A1B6wXfhP/8ELCIPDXdFus29lyNfx8bKNpL/odeO2POhnw8l885bDWE5mo3St+Vx8o8c9+ku8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mi0DB3mR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41518C4CEC4;
-	Mon, 16 Sep 2024 12:11:15 +0000 (UTC)
+	 MIME-Version; b=lyobttQNwAXAygElqTi9D6q5JyQpPtOBA21qGTzy7+j3gtOJgfqGdG5Rkgo4m8hAeE9Qf7ByhVvdYpYWQ4v0VhA/M117d4ATmekYOTws/w+WEgwCADn5BOLN2/1015A+lo0Vm6Y222r58zcAvw2bRr9XdvtKMW4VlZFpwu/H5VY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p9jBO31R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A32E9C4CEC4;
+	Mon, 16 Sep 2024 12:07:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488675;
-	bh=DnaxPdYtel76XLph+gaSO3w2l6Ki9yEGdI0Pahg1HQ4=;
+	s=korg; t=1726488450;
+	bh=m7zFGszEgoAXGQyGfO/LNUa8iwIFMXhKZRu7ZPwA6og=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mi0DB3mRUPi8mfGf4oNeF3Oul357Ah+DzSEYbKxc76OLe01yG7A86k9DRDsWpnnl3
-	 MnmybGXQlK07hqiHVVNTid5CQOwnpxvSJ9cDlSRiEqY5o6mc27zETA88AenWjaZSEB
-	 5mXZ0J8GNtVy8Py+cwxwOwx+yXeGFHmbbytbDIS0=
+	b=p9jBO31RaGFsx4Kddq/cYaCf7n9wVXdS5BhpS6Upg5Dop4cS8ia0zDwDZkDMW33yb
+	 f3Qs/V+T23cbx4GGow83wgpocmuxGnbuj0KjzXWjqkWxuO38hNRlJ+hnesMvExtW2L
+	 4bDos6Hfe62sD/51Dsn7QXIYu+ptPCzdHjww68ro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiaoliang Yang <xiaoliang.yang_1@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 74/91] net: dsa: felix: ignore pending status of TAS module when its disabled
-Date: Mon, 16 Sep 2024 13:44:50 +0200
-Message-ID: <20240916114226.915670759@linuxfoundation.org>
+Subject: [PATCH 6.10 117/121] drm/xe/display: fix compat IS_DISPLAY_STEP() range end
+Date: Mon, 16 Sep 2024 13:44:51 +0200
+Message-ID: <20240916114232.984676760@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
-References: <20240916114224.509743970@linuxfoundation.org>
+In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
+References: <20240916114228.914815055@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaoliang Yang <xiaoliang.yang_1@nxp.com>
+From: Jani Nikula <jani.nikula@intel.com>
 
-[ Upstream commit 70654f4c212e83898feced125d91ebb3695950d8 ]
+[ Upstream commit dd10595c3232d362f5a01e5d616434b2371ae8d4 ]
 
-The TAS module could not be configured when it's running in pending
-status. We need disable the module and configure it again. However, the
-pending status is not cleared after the module disabled. TC taprio set
-will always return busy even it's disabled.
+It's supposed to be an open range at the end like in i915. Fingers
+crossed that nobody relies on this definition.
 
-For example, a user uses tc-taprio to configure Qbv and a future
-basetime. The TAS module will run in a pending status. There is no way
-to reconfigure Qbv, it always returns busy.
-
-Actually the TAS module can be reconfigured when it's disabled. So it
-doesn't need to check the pending status if the TAS module is disabled.
-
-After the patch, user can delete the tc taprio configuration to disable
-Qbv and reconfigure it again.
-
-Fixes: de143c0e274b ("net: dsa: felix: Configure Time-Aware Scheduler via taprio offload")
-Signed-off-by: Xiaoliang Yang <xiaoliang.yang_1@nxp.com>
-Link: https://patch.msgid.link/20240906093550.29985-1-xiaoliang.yang_1@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 44e694958b95 ("drm/xe/display: Implement display support")
+Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
+Acked-by: Lucas De Marchi <lucas.demarchi@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/fe8743770694e429f6902491cdb306c97bdf701a.1724180287.git.jani.nikula@intel.com
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+(cherry picked from commit 453afb1a439994deeacb8d9ecbb48c1f2348ea0a)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/dsa/ocelot/felix_vsc9959.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/xe/compat-i915-headers/i915_drv.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/ocelot/felix_vsc9959.c b/drivers/net/dsa/ocelot/felix_vsc9959.c
-index 3c5509e75a54..afb5dae4439c 100644
---- a/drivers/net/dsa/ocelot/felix_vsc9959.c
-+++ b/drivers/net/dsa/ocelot/felix_vsc9959.c
-@@ -1474,10 +1474,13 @@ static int vsc9959_qos_port_tas_set(struct ocelot *ocelot, int port,
- 	/* Hardware errata -  Admin config could not be overwritten if
- 	 * config is pending, need reset the TAS module
- 	 */
--	val = ocelot_read(ocelot, QSYS_PARAM_STATUS_REG_8);
--	if (val & QSYS_PARAM_STATUS_REG_8_CONFIG_PENDING) {
--		ret = -EBUSY;
--		goto err_reset_tc;
-+	val = ocelot_read_rix(ocelot, QSYS_TAG_CONFIG, port);
-+	if (val & QSYS_TAG_CONFIG_ENABLE) {
-+		val = ocelot_read(ocelot, QSYS_PARAM_STATUS_REG_8);
-+		if (val & QSYS_PARAM_STATUS_REG_8_CONFIG_PENDING) {
-+			ret = -EBUSY;
-+			goto err_reset_tc;
-+		}
- 	}
+diff --git a/drivers/gpu/drm/xe/compat-i915-headers/i915_drv.h b/drivers/gpu/drm/xe/compat-i915-headers/i915_drv.h
+index cd4632276141..68ade1a05ca9 100644
+--- a/drivers/gpu/drm/xe/compat-i915-headers/i915_drv.h
++++ b/drivers/gpu/drm/xe/compat-i915-headers/i915_drv.h
+@@ -96,7 +96,7 @@ static inline struct drm_i915_private *kdev_to_i915(struct device *kdev)
+ #define HAS_GMD_ID(xe) GRAPHICS_VERx100(xe) >= 1270
  
- 	ocelot_rmw_rix(ocelot,
+ /* Workarounds not handled yet */
+-#define IS_DISPLAY_STEP(xe, first, last) ({u8 __step = (xe)->info.step.display; first <= __step && __step <= last; })
++#define IS_DISPLAY_STEP(xe, first, last) ({u8 __step = (xe)->info.step.display; first <= __step && __step < last; })
+ 
+ #define IS_LP(xe) (0)
+ #define IS_GEN9_LP(xe) (0)
 -- 
 2.43.0
 
