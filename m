@@ -1,119 +1,119 @@
-Return-Path: <stable+bounces-76195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2846E979D02
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 10:40:52 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64070979D37
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 10:49:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A76D31F22864
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 08:40:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D4902825B3
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 08:49:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37084145B26;
-	Mon, 16 Sep 2024 08:39:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 818C713EFF3;
+	Mon, 16 Sep 2024 08:49:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b="SdpkkFBO"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bxQyuVh2"
 X-Original-To: stable@vger.kernel.org
-Received: from abb.hmeau.com (abb.hmeau.com [144.6.53.87])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E59F1288B1;
-	Mon, 16 Sep 2024 08:39:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.6.53.87
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D71145A07
+	for <stable@vger.kernel.org>; Mon, 16 Sep 2024 08:49:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726475966; cv=none; b=sYQlxX5lDZfK1rvcX2+JtQboyZnO1j07I1aNSIaCwYtJIZuCTvdSOdcrjs8/b47GRryTuzKsh+eUXsdj0QF/XeWx+0UcCekMWKSKB3QNM7cy2igPAkVolH9syieeuS0Az+N4hHQr02Oi3GHKh1WTk1ZanoTpoqQhbfxIQ10rSCE=
+	t=1726476568; cv=none; b=QJfWDVVvDQ5lEtWJIZgU07CGxP+Dff5ErMjee98W1NDqEz4B9km7jj3+5lnEdCTz/7DjzJyD0+w0Q+vBGt/bDTGeXgdtSTj+SSLmugWIxofl76Ir3BJp6fBC/LNHpvzZSsK70TJ8lINcBEG6BehNk4IE1EFQPpG4e4tAzcAq1+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726475966; c=relaxed/simple;
-	bh=5wmU3wNRqWeGfeTeUjpRCeyNNDPEYvCrVrqChh9r4h4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Wadh3f0fD0eRpz01qS8ZzNS9ERH1tUMoI9/nxw66HOQZ9KM+cnd+/zjmTvbj/0Arm0OeeBd1KFk/LMfNLoUrdcCk2iQOfyldeZy8gziz6O0UIGKddb/zXPa5KYdENyRbzF6JNbnq45pn4eCl6AVsitGF+BZB8QxCmW7jtdVILeI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au; spf=pass smtp.mailfrom=gondor.apana.org.au; dkim=pass (2048-bit key) header.d=hmeau.com header.i=@hmeau.com header.b=SdpkkFBO; arc=none smtp.client-ip=144.6.53.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gondor.apana.org.au
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gondor.apana.org.au
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hmeau.com;
-	s=formenos; h=In-Reply-To:Content-Transfer-Encoding:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=5ztQ5UCZw4pxwgb8jxltM7S+mP447O5EdUv1R07M1qg=; b=SdpkkFBOfaxKt34uNB/s3napvE
-	jTCIBwYpX7mhVmuwA4XBbKgdAj3aWFFd0bx6hhUoKM6TnKZvVBBZu8jSNPvg578hb0HydNz49SQHI
-	qTvhJQHl/emwGpUKmI5VUkEyKkKue0GX87xmLxpFHGLlS8Ps/WxypVhHofK2ApgPWnSSGtX4qLZNH
-	x/8dlgcVx2hMJQhiJ6Jj7hBTBUXm0xPVchxo7GCW/Ttmx1K8CPibn0xunnGA4tFQqGKx5B+ffRlB8
-	/MUicarGEMszgAtlw9nTNIzGjLVMyTjOhpUaWdFS4+bY20OFiQulahPCMdg4Tqnhwr0VOqo0sjKVl
-	VlSsBhOQ==;
-Received: from loth.rohan.me.apana.org.au ([192.168.167.2])
-	by formenos.hmeau.com with smtp (Exim 4.96 #2 (Debian))
-	id 1sq76A-002lbE-2a;
-	Mon, 16 Sep 2024 16:38:57 +0800
-Received: by loth.rohan.me.apana.org.au (sSMTP sendmail emulation); Mon, 16 Sep 2024 16:38:56 +0800
-Date: Mon, 16 Sep 2024 16:38:56 +0800
-From: Herbert Xu <herbert@gondor.apana.org.au>
-To: George Rurikov <g.ryurikov@securitycode.ru>,
-	Stephan =?iso-8859-1?Q?M=FCller?= <smueller@chronox.de>
-Cc: MrRurikov <grurikovsherbakov@yandex.ru>,
-	"David S . Miller" <davem@davemloft.net>,
-	linux-crypto@vger.kernel.org, linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org, stable@vger.kernel.org
-Subject: Re: [PATCH] crypto: Fix logical operator in _aead_recvmsg()
-Message-ID: <ZufuoJC8sFi9ETqZ@gondor.apana.org.au>
-References: <20240916074422.503645-1-g.ryurikov@securitycode.ru>
+	s=arc-20240116; t=1726476568; c=relaxed/simple;
+	bh=uymRN6t4HF0pj4doTRtGJuVhiLXV7AyJRx07mGHr4p4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Wl5micwux4PTAogjsvXmhk/gz1e1BwahB+XrhrgM/WM654+UNrluNJCeSfKe4z2kE4W5c0V0M858RRhIWo0UvA1M9500MgcmEbKtTUh/n7+AG+ZB7NZ7K+DX4kpAb5jTZnlyzqL94LYi9MVT9o1bCR85PTP8rLQHHsEoOJ60bMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bxQyuVh2; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1726476567; x=1758012567;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=uymRN6t4HF0pj4doTRtGJuVhiLXV7AyJRx07mGHr4p4=;
+  b=bxQyuVh2D+HmB6kx+lalVeelm7sC3Fot7HhnqmjZIHMVUpXAsmHWckHJ
+   hdc9791F/T0+cFd8fQ8LMBz4uvOwuHfiiaDepzi8Ri9hwTag8DDZFT7xl
+   T42P67Xh00CKC8V4E4j36UKN/Y4djbL7BsvPtKAdOm2C8oeMO+mY2GFSA
+   ZOhyxtrSmTJ2z8dXiasZgugOwD8INV5mrR3o0SO/gWSJrnHX3P0xjMIox
+   bW7P3ZhhEm8A7lD1T5rbvbK6gtHtEtVn6+vqlLaSO5AMqyjHgrgyx6U9j
+   HWGhL8oSeTg+fdXxr50ZhMmP2sLxulHu7L0r4uFeFBvRGw6NJfBc3smA7
+   g==;
+X-CSE-ConnectionGUID: EyWA94FQSYq8vlrNV7Kbog==
+X-CSE-MsgGUID: RaQxJX+iQ8GCnG5v59z1bg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11196"; a="50710914"
+X-IronPort-AV: E=Sophos;i="6.10,232,1719903600"; 
+   d="scan'208";a="50710914"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2024 01:49:26 -0700
+X-CSE-ConnectionGUID: 57d0GLj2SUanMsARH+ANsQ==
+X-CSE-MsgGUID: fEKIKArgQR69fGaFRXXFYA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,232,1719903600"; 
+   d="scan'208";a="69052874"
+Received: from mlehtone-mobl.ger.corp.intel.com (HELO mwauld-desk.intel.com) ([10.245.244.77])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2024 01:49:24 -0700
+From: Matthew Auld <matthew.auld@intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
+	Akshata Jahagirdar <akshata.jahagirdar@intel.com>,
+	Lucas De Marchi <lucas.demarchi@intel.com>,
+	Shuicheng Lin <shuicheng.lin@intel.com>,
+	Matt Roper <matthew.d.roper@intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v3] drm/xe/vram: fix ccs offset calculation
+Date: Mon, 16 Sep 2024 09:49:12 +0100
+Message-ID: <20240916084911.13119-2-matthew.auld@intel.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240916074422.503645-1-g.ryurikov@securitycode.ru>
 
-On Mon, Sep 16, 2024 at 10:44:22AM +0300, George Rurikov wrote:
-> From: MrRurikov <grurikovsherbakov@yandex.ru>
-> 
-> After having been compared to a NULL value at algif_aead.c:191, pointer
-> 'tsgl_src' is passed as 2nd parameter in call to function
-> 'crypto_aead_copy_sgl' at algif_aead.c:244, where it is dereferenced at
-> algif_aead.c:85.
-> 
-> Change logical operator from && to || because pointer 'tsgl_src' is NULL,
-> then 'proccessed' will still be non-null
-> 
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 2d97591ef43d ("crypto: af_alg - consolidation of duplicate code")
-> Signed-off-by: MrRurikov <grurikovsherbakov@yandex.ru>
-> ---
->  crypto/algif_aead.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+Spec says SW is expected to round up to the nearest 128K, if not already
+aligned for the CC unit view of CCS. We are seeing the assert sometimes
+pop on BMG to tell us that there is a hole between GSM and CCS, as well
+as popping other asserts with having a vram size with strange alignment,
+which is likely caused by misaligned offset here.
 
-Cc Stephan.
+v2 (Shuicheng):
+ - Do the round_up() on final SW address.
 
-> 
-> diff --git a/crypto/algif_aead.c b/crypto/algif_aead.c
-> index 7d58cbbce4af..135f09a4b3f8 100644
-> --- a/crypto/algif_aead.c
-> +++ b/crypto/algif_aead.c
-> @@ -191,7 +191,7 @@ static int _aead_recvmsg(struct socket *sock, struct msghdr *msg,
->                 if (tsgl_src)
->                         break;
->         }
-> -       if (processed && !tsgl_src) {
-> +       if (processed || !tsgl_src) {
->                 err = -EFAULT;
->                 goto free;
->         }
-> --
-> 2.34.1
-> 
-> Заявление о конфиденциальности
-> 
-> Данное электронное письмо и любые приложения к нему являются конфиденциальными и предназначены исключительно для адресата. Если Вы не являетесь адресатом данного письма, пожалуйста, уведомите немедленно отправителя, не раскрывайте содержание другим лицам, не используйте его в каких-либо целях, не храните и не копируйте информацию любым способом.
+BSpec: 68023
+Fixes: b5c2ca0372dc ("drm/xe/xe2hpg: Determine flat ccs offset for vram")
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Cc: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
+Cc: Lucas De Marchi <lucas.demarchi@intel.com>
+Cc: Shuicheng Lin <shuicheng.lin@intel.com>
+Cc: Matt Roper <matthew.d.roper@intel.com>
+Cc: <stable@vger.kernel.org> # v6.10+
+Reviewed-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
+Tested-by: Shuicheng Lin <shuicheng.lin@intel.com>
+---
+ drivers/gpu/drm/xe/xe_vram.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/gpu/drm/xe/xe_vram.c b/drivers/gpu/drm/xe/xe_vram.c
+index 7e765b1499b1..2a623bfcda7e 100644
+--- a/drivers/gpu/drm/xe/xe_vram.c
++++ b/drivers/gpu/drm/xe/xe_vram.c
+@@ -182,6 +182,7 @@ static inline u64 get_flat_ccs_offset(struct xe_gt *gt, u64 tile_size)
+ 		offset = offset_hi << 32; /* HW view bits 39:32 */
+ 		offset |= offset_lo << 6; /* HW view bits 31:6 */
+ 		offset *= num_enabled; /* convert to SW view */
++		offset = round_up(offset, SZ_128K); /* SW must round up to nearest 128K */
+ 
+ 		/* We don't expect any holes */
+ 		xe_assert_msg(xe, offset == (xe_mmio_read64_2x32(&gt_to_tile(gt)->mmio, GSMBASE) -
 -- 
-Email: Herbert Xu <herbert@gondor.apana.org.au>
-Home Page: http://gondor.apana.org.au/~herbert/
-PGP Key: http://gondor.apana.org.au/~herbert/pubkey.txt
+2.46.0
+
 
