@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-76314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76407-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 686ED97A12D
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:06:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DD3197A194
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:08:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BFA6286635
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:06:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CC60C28800E
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:08:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBC3A1586FE;
-	Mon, 16 Sep 2024 12:03:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5020D155300;
+	Mon, 16 Sep 2024 12:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cLnrYmbB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sMMyuIK1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AEF9158525;
-	Mon, 16 Sep 2024 12:03:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D820153573;
+	Mon, 16 Sep 2024 12:08:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488239; cv=none; b=Yem5AT8+GLbULSmFLV+wvTL58uqyUZkzXvchdPOWAXHC3ZjTz7xhGlqepZ3gyxlACIiAABWEM8lMLO8tJGfPekWvJvJIA4arZVOVr7hoVfEgJNJuqZbV8xk8l2t+oEafd5egcUwWj/opHaDp+rMoueEcB6Vyd2+Z2pN7p2vxOm0=
+	t=1726488504; cv=none; b=XtN2rseiQhPqtKHoRNkz/NUEi4KuJcMxHw+P/hMc7J++AnlYzcT7dAowiq4xJOMkvOV0knu9fIXlvyJx5QVsekYZzIR2wXjM7Lrt/hwR458TwYRMvHC8Trdcng5DBTG4B+EOXa+qRQaEvkGkSqs2fnY/UEfoqXk0L/84xpV/tLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488239; c=relaxed/simple;
-	bh=7Z/8f/5u6z89gVXyo9MSQBCjKk96P7l6KAuvepBRpP0=;
+	s=arc-20240116; t=1726488504; c=relaxed/simple;
+	bh=jeLhovaJY3/sF8eP3ibl6vOVFjZXaqgOBs5LU1tI1+k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cEkM2OsG0Lg7mxiTMUXMt+hfbgwR5K/NnivGa2eqF2zLwI5Yqe5A4NtEZaWoG/CYhO50hICX00S0NZ9RZjx1bWnNImAfRqhAsSLDckwbI93VTHFlI1VAn5gc1rd0UjkAl6fVzJwsYM9ngrShYDIIuq4TuBNP4MdJ+eKqZO9nAF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cLnrYmbB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00B13C4CEC4;
-	Mon, 16 Sep 2024 12:03:58 +0000 (UTC)
+	 MIME-Version; b=JRiwKIT1KBECtWD3yPLx1JNevVR5nicShlNcMDWKIDKFuTpdUUsnB4CT7ouHsrf0u51U4Tr+yBHu+j7moDOblMTs8TsYJFyO6JzsEvzPKIEkNUJLDk6ijgizzsrZGZavpgZrhvUlud87gCIkpCOIEm4cA5pQ018HsdnCeVbTgys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sMMyuIK1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8845CC4CEC4;
+	Mon, 16 Sep 2024 12:08:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488239;
-	bh=7Z/8f/5u6z89gVXyo9MSQBCjKk96P7l6KAuvepBRpP0=;
+	s=korg; t=1726488503;
+	bh=jeLhovaJY3/sF8eP3ibl6vOVFjZXaqgOBs5LU1tI1+k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cLnrYmbBlfpWaSx1Z7K6oaH43LtaXnVxBwTsNJcSvFNW3GB2tm+PItt0iTrB1CJQX
-	 zfgDUGCs1o4Ef8/UTmwfB8Pr7fkH+bVeePV/jbNwqXHYUGigVofR+xMRqptvfGQK1C
-	 N/OIQ34LC1wD7l/lrW7Fd5/pWjETdUtMVEZ7NV1E=
+	b=sMMyuIK1W6hD8ipxmVKhQbp3lEA8C09qTMHf9Q0cifHrXrZ3JUX6UXsKq5U9IBruy
+	 4c9OJZ33rv0hcE6dzubPILu/gheu5FgmyhJ74wcidSg/GpEFEtKUctYe+/+8z7xKgM
+	 9/vYhCvPNHfZgibD3lo//V4IJZL+UAcv0uiEudJE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Harmison <jharmison@redhat.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.10 044/121] platform/x86: panasonic-laptop: Allocate 1 entry extra in the sinf array
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 02/91] device property: Introduce device_for_each_child_node_scoped()
 Date: Mon, 16 Sep 2024 13:43:38 +0200
-Message-ID: <20240916114230.586485314@linuxfoundation.org>
+Message-ID: <20240916114224.588476921@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
-References: <20240916114228.914815055@linuxfoundation.org>
+In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
+References: <20240916114224.509743970@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,67 +60,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 
-commit 33297cef3101d950cec0033a0dce0a2d2bd59999 upstream.
+[ Upstream commit 365130fd47af6d4317aa16a407874b699ab8d8cb ]
 
-Some DSDT-s have an off-by-one bug where the SINF package count is
-one higher than the SQTY reported value, allocate 1 entry extra.
+Similar to recently propose for_each_child_of_node_scoped() this
+new version of the loop macro instantiates a new local
+struct fwnode_handle * that uses the __free(fwnode_handle) auto
+cleanup handling so that if a reference to a node is held on early
+exit from the loop the reference will be released. If the loop
+runs to completion, the child pointer will be NULL and no action will
+be taken.
 
-Also make the SQTY <-> SINF package count mismatch error more verbose
-to help debugging similar issues in the future.
+The reason this is useful is that it removes the need for
+fwnode_handle_put() on early loop exits.  If there is a need
+to retain the reference, then return_ptr(child) or no_free_ptr(child)
+may be used to safely disable the auto cleanup.
 
-This fixes the panasonic-laptop driver failing to probe() on some
-devices with the following errors:
-
-[    3.958887] SQTY reports bad SINF length SQTY: 37 SINF-pkg-count: 38
-[    3.958892] Couldn't retrieve BIOS data
-[    3.983685] Panasonic Laptop Support - With Macros: probe of MAT0019:00 failed with error -5
-
-Fixes: 709ee531c153 ("panasonic-laptop: add Panasonic Let's Note laptop extras driver v0.94")
-Cc: stable@vger.kernel.org
-Tested-by: James Harmison <jharmison@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240909113227.254470-2-hdegoede@redhat.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Link: https://lore.kernel.org/r/20240217164249.921878-5-jic23@kernel.org
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Stable-dep-of: 61cbfb5368dd ("iio: adc: ad7124: fix DT configuration parsing")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/panasonic-laptop.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ include/linux/property.h | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/platform/x86/panasonic-laptop.c
-+++ b/drivers/platform/x86/panasonic-laptop.c
-@@ -337,7 +337,8 @@ static int acpi_pcc_retrieve_biosdata(st
- 	}
+diff --git a/include/linux/property.h b/include/linux/property.h
+index 909416c701b8..d32b8052e086 100644
+--- a/include/linux/property.h
++++ b/include/linux/property.h
+@@ -168,6 +168,11 @@ struct fwnode_handle *device_get_next_child_node(const struct device *dev,
+ 	for (child = device_get_next_child_node(dev, NULL); child;	\
+ 	     child = device_get_next_child_node(dev, child))
  
- 	if (pcc->num_sifr < hkey->package.count) {
--		pr_err("SQTY reports bad SINF length\n");
-+		pr_err("SQTY reports bad SINF length SQTY: %lu SINF-pkg-count: %u\n",
-+		       pcc->num_sifr, hkey->package.count);
- 		status = AE_ERROR;
- 		goto end;
- 	}
-@@ -994,6 +995,12 @@ static int acpi_pcc_hotkey_add(struct ac
- 		return -ENODEV;
- 	}
- 
-+	/*
-+	 * Some DSDT-s have an off-by-one bug where the SINF package count is
-+	 * one higher than the SQTY reported value, allocate 1 entry extra.
-+	 */
-+	num_sifr++;
++#define device_for_each_child_node_scoped(dev, child)			\
++	for (struct fwnode_handle *child __free(fwnode_handle) =	\
++		device_get_next_child_node(dev, NULL);			\
++	     child; child = device_get_next_child_node(dev, child))
 +
- 	pcc = kzalloc(sizeof(struct pcc_acpi), GFP_KERNEL);
- 	if (!pcc) {
- 		pr_err("Couldn't allocate mem for pcc");
+ struct fwnode_handle *fwnode_get_named_child_node(const struct fwnode_handle *fwnode,
+ 						  const char *childname);
+ struct fwnode_handle *device_get_named_child_node(const struct device *dev,
+-- 
+2.43.0
+
 
 
 
