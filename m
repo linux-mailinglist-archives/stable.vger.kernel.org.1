@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-76371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76224-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7C6C97A16C
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:07:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFF6497A0AE
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 13:59:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 074B91F213AA
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:07:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7B55FB2352C
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 11:59:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03944158543;
-	Mon, 16 Sep 2024 12:06:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A474C15667E;
+	Mon, 16 Sep 2024 11:59:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e7ewphPL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E1Hy4SHb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B637524B34;
-	Mon, 16 Sep 2024 12:06:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 464C6156864;
+	Mon, 16 Sep 2024 11:59:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488401; cv=none; b=W6ew54GOYzUji6z8Xg/BOwo/7fLYg2KXmuYedsbqftOJRS+XcsCKhfLpVGZNYS5tN9wTsP+qF20rWLWkbv1xPPcLuQy+mliUn4mnLg3rs9qFa+nAtUKDTrCd1qcDx0Uyu68sx/9NhlPIAdcIJJo2oEl+KEeVzxJa76whkSRgJ/o=
+	t=1726487983; cv=none; b=erMNTmSs0GhiMpI4zfeh3lamndyAN8MN2bHi3pFk37qYK3EJwe782uhA0pvkoeNu4Q2EHw0K2yt0vzCvnV33bPgWp6FJFme5YR3dyVLRO965TQy3N1GSJ2/x7c0oXlvHGM1HjeITaSSibuBLU7Z0v7M9G7xKy9G5fCUGhMvDlLM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488401; c=relaxed/simple;
-	bh=B1AUYOzDGakSBFziZzZZYTqZ3MjiwNdyDLL0XQQL5mI=;
+	s=arc-20240116; t=1726487983; c=relaxed/simple;
+	bh=7yPmjvbLv6f71I84eL5ZmyaKu1pWzxDKEMqm0Q1kHB0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZeSCknM0s670YqFHbcpS6q2c1pSv4C9jihpQaIhR3fzYJX4GSgppYCBgjtqYjoEBV1feG5AeJ3uzM7nUt089HiRo4v+TOh9U17htNsvzbrLbEVpvLouddNm1cFNt8k/O9QayLsmGIOEIVCWMSEszO40SL3KS+xHYWoXW4OR8OhU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e7ewphPL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F251C4CEC4;
-	Mon, 16 Sep 2024 12:06:41 +0000 (UTC)
+	 MIME-Version; b=ATR7tc8vN6MGywIP0XHaCKXSl/K5GHbSJ4oVrX3BodRXFsy1GVz2yNKq3HoKH8nOOu8zZroWHNMCcClPY3k0jb5n57dwnjJML8nwa8S7bUfqvWyDGruM3K18JIzwVueNi2wNmldnM3wRdMJS/yQTi7JvskgagTb1eHTFrGzRaIE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E1Hy4SHb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7C66C4CEC4;
+	Mon, 16 Sep 2024 11:59:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488401;
-	bh=B1AUYOzDGakSBFziZzZZYTqZ3MjiwNdyDLL0XQQL5mI=;
+	s=korg; t=1726487983;
+	bh=7yPmjvbLv6f71I84eL5ZmyaKu1pWzxDKEMqm0Q1kHB0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e7ewphPL8Rqqysd4gSjH7JU2vHNVYgNUuT5WpgpOyOFqR1sQEXAlvvkh8G/qqbJIB
-	 RS/wmQU4wt7U7ngOavhuLY1z6fIqg6ftgePW8c0Cj5femsPZaTcDWOjMylO32Jnej6
-	 LDxwY7DPAyakosR77Ltiylo2c4rVrjsMkD3c7cMk=
+	b=E1Hy4SHbXZF1DkCUfjdwxJoVJD44rLBZ3QLFvjCZo9s8gbtl1v02CWFv2Ch5plo7/
+	 ASd2aHWhqCJra4IVFvNQL5+X9JNVrR4gzcsUzwr+HbmU4TlX9gHN5ytov1U4ASyzLC
+	 oPENlQCP3DxhBqfWPGPqhZuwadZR0ei2nVyCn41Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Wenjing Liu <wenjing.liu@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Ilya Bakoulin <ilya.bakoulin@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+	ChenXiaoSong <chenxiaosong@kylinos.cn>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 063/121] drm/amd/display: Fix FEC_READY write on DP LT
+Subject: [PATCH 6.1 18/63] smb/server: fix return value of smb2_open()
 Date: Mon, 16 Sep 2024 13:43:57 +0200
-Message-ID: <20240916114231.252377973@linuxfoundation.org>
+Message-ID: <20240916114221.704997961@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
-References: <20240916114228.914815055@linuxfoundation.org>
+In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
+References: <20240916114221.021192667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,59 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Bakoulin <ilya.bakoulin@amd.com>
+From: ChenXiaoSong <chenxiaosong@kylinos.cn>
 
-[ Upstream commit a8baec4623aedf36d50767627f6eae5ebf07c6fb ]
+[ Upstream commit 2186a116538a715b20e15f84fdd3545e5fe0a39b ]
 
-[Why/How]
-We can miss writing FEC_READY in some cases before LT start, which
-violates DP spec. Remove the condition guarding the DPCD write so that
-the write happens unconditionally.
+In most error cases, error code is not returned in smb2_open(),
+__process_request() will not print error message.
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
-Acked-by: Wayne Lin <wayne.lin@amd.com>
-Signed-off-by: Ilya Bakoulin <ilya.bakoulin@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fix this by returning the correct value at the end of smb2_open().
+
+Signed-off-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../amd/display/dc/link/protocols/link_dp_phy.c    | 14 ++++++--------
- 1 file changed, 6 insertions(+), 8 deletions(-)
+ fs/smb/server/smb2pdu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_phy.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_phy.c
-index 5cbf5f93e584..bafa52a0165a 100644
---- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_phy.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_phy.c
-@@ -151,16 +151,14 @@ enum dc_status dp_set_fec_ready(struct dc_link *link, const struct link_resource
- 		return DC_NOT_SUPPORTED;
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index 808c62d7ff3e..dc8f1e7ce2fa 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -3482,7 +3482,7 @@ int smb2_open(struct ksmbd_work *work)
+ 	kfree(name);
+ 	kfree(lc);
  
- 	if (ready && dp_should_enable_fec(link)) {
--		if (link->fec_state == dc_link_fec_not_ready) {
--			fec_config = 1;
-+		fec_config = 1;
+-	return 0;
++	return rc;
+ }
  
--			status = core_link_write_dpcd(link, DP_FEC_CONFIGURATION,
--					&fec_config, sizeof(fec_config));
-+		status = core_link_write_dpcd(link, DP_FEC_CONFIGURATION,
-+				&fec_config, sizeof(fec_config));
- 
--			if (status == DC_OK) {
--				link_enc->funcs->fec_set_ready(link_enc, true);
--				link->fec_state = dc_link_fec_ready;
--			}
-+		if (status == DC_OK) {
-+			link_enc->funcs->fec_set_ready(link_enc, true);
-+			link->fec_state = dc_link_fec_ready;
- 		}
- 	} else {
- 		if (link->fec_state == dc_link_fec_ready) {
+ static int readdir_info_level_struct_sz(int info_level)
 -- 
 2.43.0
 
