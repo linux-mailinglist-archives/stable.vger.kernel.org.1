@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-76388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61BCF97A17F
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:08:02 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E8F797A1FE
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:12:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0BC771F23F52
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:08:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4835C285B23
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:12:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6703A155333;
-	Mon, 16 Sep 2024 12:07:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6E63153573;
+	Mon, 16 Sep 2024 12:12:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p9jBO31R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PLgEQJiZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25DCE142903;
-	Mon, 16 Sep 2024 12:07:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93724142903;
+	Mon, 16 Sep 2024 12:12:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488450; cv=none; b=ZMEwGNFyAtJuXjGwBW1sKgmq0tabTGuB9xSUAof20qbjlCehgwz0rvT8OBPfCNhlUPMb172fwTtjQP6wUP98DhsoHPYZopM+ZszPfSwQlOGKFGOLhIcRMM0qC2/T1tezDVCRGuNs38MaNU6Ljqjw6V5/XeKX8+x+xguVsvF3DyI=
+	t=1726488746; cv=none; b=MeWD8WJ+GM0OTmFexk/6M30qYmk+/Uszg0Wgw+C8MR+5y0vuOGZTtvqVeBcEYp2CIRCYJ0KFi2Wqu6hrvEhpoA5vvAMWiwcFRb5n6PZ5JPvJV9LKTi85UBB2r5Y0YqYQIA8pTurGSPtM+bZuFteieNpwCrCjpNSahWP3LBwq7OY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488450; c=relaxed/simple;
-	bh=m7zFGszEgoAXGQyGfO/LNUa8iwIFMXhKZRu7ZPwA6og=;
+	s=arc-20240116; t=1726488746; c=relaxed/simple;
+	bh=1vNq0UqHhXFbvgLAXpZJOEqW9PnZPnMzF0dnbyHXHuU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lyobttQNwAXAygElqTi9D6q5JyQpPtOBA21qGTzy7+j3gtOJgfqGdG5Rkgo4m8hAeE9Qf7ByhVvdYpYWQ4v0VhA/M117d4ATmekYOTws/w+WEgwCADn5BOLN2/1015A+lo0Vm6Y222r58zcAvw2bRr9XdvtKMW4VlZFpwu/H5VY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p9jBO31R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A32E9C4CEC4;
-	Mon, 16 Sep 2024 12:07:29 +0000 (UTC)
+	 MIME-Version; b=d2fTV9SXEwSgOx4h8XZC88nhKTYhZquDBJWNENJz6VH9n4PQXrYcnEftOVVG+XTMg0Cqp75zoKpICH6m039UFRm+lmxDp9Pe/d+uLiPedUbPtAh6Ft8w+A2pp0FWqTGjXTSFGagrYboLmfQGkgR7bOtMJCeyZt0j7elvtcvdSPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PLgEQJiZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D9D3C4CEC4;
+	Mon, 16 Sep 2024 12:12:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488450;
-	bh=m7zFGszEgoAXGQyGfO/LNUa8iwIFMXhKZRu7ZPwA6og=;
+	s=korg; t=1726488746;
+	bh=1vNq0UqHhXFbvgLAXpZJOEqW9PnZPnMzF0dnbyHXHuU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p9jBO31RaGFsx4Kddq/cYaCf7n9wVXdS5BhpS6Upg5Dop4cS8ia0zDwDZkDMW33yb
-	 f3Qs/V+T23cbx4GGow83wgpocmuxGnbuj0KjzXWjqkWxuO38hNRlJ+hnesMvExtW2L
-	 4bDos6Hfe62sD/51Dsn7QXIYu+ptPCzdHjww68ro=
+	b=PLgEQJiZWTwDG0OttbNkoMmwO2AM3p2suSlBFmNLcd0abbUEvJMLeTmYdu24m60DP
+	 DpsewcyPm7/+r2YpCV0clQyb/wtwRQJjrRLeVDaDywdoH0ySTQ7UviBBnx8/hkdl4R
+	 sXMLyj8WRtkOxAdbbwI1na6aLVGgKeF2eWcU+kbs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	Jani Nikula <jani.nikula@intel.com>,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Eric Dumazet <edumazet@google.com>,
+	Sean Anderson <sean.anderson@linux.dev>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 117/121] drm/xe/display: fix compat IS_DISPLAY_STEP() range end
+Subject: [PATCH 6.6 75/91] net: dpaa: Pad packets to ETH_ZLEN
 Date: Mon, 16 Sep 2024 13:44:51 +0200
-Message-ID: <20240916114232.984676760@linuxfoundation.org>
+Message-ID: <20240916114226.948858791@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
-References: <20240916114228.914815055@linuxfoundation.org>
+In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
+References: <20240916114224.509743970@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Sean Anderson <sean.anderson@linux.dev>
 
-[ Upstream commit dd10595c3232d362f5a01e5d616434b2371ae8d4 ]
+[ Upstream commit cbd7ec083413c6a2e0c326d49e24ec7d12c7a9e0 ]
 
-It's supposed to be an open range at the end like in i915. Fingers
-crossed that nobody relies on this definition.
+When sending packets under 60 bytes, up to three bytes of the buffer
+following the data may be leaked. Avoid this by extending all packets to
+ETH_ZLEN, ensuring nothing is leaked in the padding. This bug can be
+reproduced by running
 
-Fixes: 44e694958b95 ("drm/xe/display: Implement display support")
-Reviewed-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
-Acked-by: Lucas De Marchi <lucas.demarchi@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/fe8743770694e429f6902491cdb306c97bdf701a.1724180287.git.jani.nikula@intel.com
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-(cherry picked from commit 453afb1a439994deeacb8d9ecbb48c1f2348ea0a)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+	$ ping -s 11 destination
+
+Fixes: 9ad1a3749333 ("dpaa_eth: add support for DPAA Ethernet")
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20240910143144.1439910-1-sean.anderson@linux.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/compat-i915-headers/i915_drv.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/freescale/dpaa/dpaa_eth.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/xe/compat-i915-headers/i915_drv.h b/drivers/gpu/drm/xe/compat-i915-headers/i915_drv.h
-index cd4632276141..68ade1a05ca9 100644
---- a/drivers/gpu/drm/xe/compat-i915-headers/i915_drv.h
-+++ b/drivers/gpu/drm/xe/compat-i915-headers/i915_drv.h
-@@ -96,7 +96,7 @@ static inline struct drm_i915_private *kdev_to_i915(struct device *kdev)
- #define HAS_GMD_ID(xe) GRAPHICS_VERx100(xe) >= 1270
+diff --git a/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c b/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
+index c6a3eefd83bf..e7bf70ac9a4c 100644
+--- a/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
++++ b/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
+@@ -2285,12 +2285,12 @@ static netdev_tx_t
+ dpaa_start_xmit(struct sk_buff *skb, struct net_device *net_dev)
+ {
+ 	const int queue_mapping = skb_get_queue_mapping(skb);
+-	bool nonlinear = skb_is_nonlinear(skb);
+ 	struct rtnl_link_stats64 *percpu_stats;
+ 	struct dpaa_percpu_priv *percpu_priv;
+ 	struct netdev_queue *txq;
+ 	struct dpaa_priv *priv;
+ 	struct qm_fd fd;
++	bool nonlinear;
+ 	int offset = 0;
+ 	int err = 0;
  
- /* Workarounds not handled yet */
--#define IS_DISPLAY_STEP(xe, first, last) ({u8 __step = (xe)->info.step.display; first <= __step && __step <= last; })
-+#define IS_DISPLAY_STEP(xe, first, last) ({u8 __step = (xe)->info.step.display; first <= __step && __step < last; })
+@@ -2300,6 +2300,13 @@ dpaa_start_xmit(struct sk_buff *skb, struct net_device *net_dev)
  
- #define IS_LP(xe) (0)
- #define IS_GEN9_LP(xe) (0)
+ 	qm_fd_clear_fd(&fd);
+ 
++	/* Packet data is always read as 32-bit words, so zero out any part of
++	 * the skb which might be sent if we have to pad the packet
++	 */
++	if (__skb_put_padto(skb, ETH_ZLEN, false))
++		goto enomem;
++
++	nonlinear = skb_is_nonlinear(skb);
+ 	if (!nonlinear) {
+ 		/* We're going to store the skb backpointer at the beginning
+ 		 * of the data buffer, so we need a privately owned skb
 -- 
 2.43.0
 
