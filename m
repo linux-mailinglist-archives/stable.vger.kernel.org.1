@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-76385-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE7C997A17C
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:07:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6A6E97A1DD
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:11:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D2521C2172E
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:07:58 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04D7A1C21B92
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:11:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE050156F36;
-	Mon, 16 Sep 2024 12:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D98C153573;
+	Mon, 16 Sep 2024 12:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0jHoZMCa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J131iAwH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BDC0155335;
-	Mon, 16 Sep 2024 12:07:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BAE2149C57;
+	Mon, 16 Sep 2024 12:11:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488441; cv=none; b=XfV6fHaBUY0e2d8rQxW+DGWuRCHn86z+gDtwPsrpYI9E+sUYgcEob9MWnfoVZ83tqaodVnKTG9uU2DcI6BW8knuh1+m29Bdto8lV53bFAniFoa+jWFywDKc4/TfmcGlAeW5NZkenpJ/Qd7b+myvx8Oa9Joy4GODXJ0C+ZsbDwek=
+	t=1726488670; cv=none; b=p+7m7e6nGv4AcMdh+IzJVK+TXQVS6PDUyrv4Rz9Zz4HYZk4T5u17cWKzatjNY5E3XTkn4h08MEjQ7BhBZJ+E/GM3LmrAB5ezeMfxXUH+MICqkmFF/DBBgMhpZ4GazxF99cTgfatMZupdYkB1YzaFXtuT/WcNffe4KIXC263/Wqc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488441; c=relaxed/simple;
-	bh=q8oZTD57xpIZDFBDQMmV7inKMX0z9qbzxcKej0BFvHQ=;
+	s=arc-20240116; t=1726488670; c=relaxed/simple;
+	bh=bNAzY/3imvP5IElGAgLlLEKQkMBJxHPA1jDHowjRBDQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JeizzLP3mH7l+BaT8oKZVPJ14SbXoL4kRMWsPXd25ypXV597s4nrMZK+/jR9j9D6L+JSrS4+JWr/QJYRcKXYKshzX1Kup71ywqfiORGXYGqo33raPyZpNLWRGqZDLZRRvDbv/8MUmYsQAwVWF+4GQk/kRCtd8PcM1pBgwzCHEUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0jHoZMCa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2393BC4CEC4;
-	Mon, 16 Sep 2024 12:07:20 +0000 (UTC)
+	 MIME-Version; b=Rup+Jcc7S3XUGTd6z4AaqBRCFsUI6thy+6EdH8cFxxkuoLlgiNMBYlm/zra66ecfmEAxkB8YxnvPDO+Tm+Ah7UhOp3Gm8Jc/eA81kbIt5QD/30o7ePc3rcn23Y8gBwyXWrvi95xf3FEJVB7jvhdKr01RM4RwRtjEWOMgV3O6kCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J131iAwH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A33BEC4CEC4;
+	Mon, 16 Sep 2024 12:11:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488441;
-	bh=q8oZTD57xpIZDFBDQMmV7inKMX0z9qbzxcKej0BFvHQ=;
+	s=korg; t=1726488670;
+	bh=bNAzY/3imvP5IElGAgLlLEKQkMBJxHPA1jDHowjRBDQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0jHoZMCajTuoUsOhgGEOVhn/CErToshZ3Km4N1m7BHOt2P+CYso4LkJRUv67S96se
-	 jJXScsYFlOdQoXTKtB6YZDeCRRUhBvu4yUeIkuxRHLUqYoo0EnzS2kXIedFynGaV/B
-	 AxAmXsMMy2rsoSO2mLmp1l5ibrMMzrHQUR/ym6vk=
+	b=J131iAwHsHuBq4GJ9dTB5GrQjRTZoZ3zrfXKTrhLURq4Pma6YT9ivIuC6DhZyiCWn
+	 Gk46J0zI1zqcRBBK9OUMtLAwl0uOizzx14T+qDVQV2fBdeZf4TWO2zdKIozglB6+LK
+	 +7du9YXCKD1n2Hqe0UkG/Zc9N75cuOgpYSpIsnA4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 114/121] spi: geni-qcom: Fix incorrect free_irq() sequence
+Subject: [PATCH 6.6 72/91] netfilter: nft_socket: fix sk refcount leaks
 Date: Mon, 16 Sep 2024 13:44:48 +0200
-Message-ID: <20240916114232.870839632@linuxfoundation.org>
+Message-ID: <20240916114226.850044503@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
-References: <20240916114228.914815055@linuxfoundation.org>
+In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
+References: <20240916114224.509743970@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit b787a33864121a565aeb0e88561bf6062a19f99c ]
+[ Upstream commit 8b26ff7af8c32cb4148b3e147c52f9e4c695209c ]
 
-In spi_geni_remove(), the free_irq() sequence is different from that
-on the probe error path. And the IRQ will still remain and it's interrupt
-handler may use the dma channel after release dma channel and before free
-irq, which is not secure, fix it.
+We must put 'sk' reference before returning.
 
-Fixes: b59c122484ec ("spi: spi-geni-qcom: Add support for GPI dma")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://patch.msgid.link/20240909073141.951494-3-ruanjinjie@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 039b1f4f24ec ("netfilter: nft_socket: fix erroneous socket assignment")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-geni-qcom.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/netfilter/nft_socket.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
-index fef522fece1b..6f4057330444 100644
---- a/drivers/spi/spi-geni-qcom.c
-+++ b/drivers/spi/spi-geni-qcom.c
-@@ -1170,9 +1170,9 @@ static void spi_geni_remove(struct platform_device *pdev)
- 	/* Unregister _before_ disabling pm_runtime() so we stop transfers */
- 	spi_unregister_controller(spi);
+diff --git a/net/netfilter/nft_socket.c b/net/netfilter/nft_socket.c
+index f30163e2ca62..765ffd6e06bc 100644
+--- a/net/netfilter/nft_socket.c
++++ b/net/netfilter/nft_socket.c
+@@ -110,13 +110,13 @@ static void nft_socket_eval(const struct nft_expr *expr,
+ 			*dest = READ_ONCE(sk->sk_mark);
+ 		} else {
+ 			regs->verdict.code = NFT_BREAK;
+-			return;
++			goto out_put_sk;
+ 		}
+ 		break;
+ 	case NFT_SOCKET_WILDCARD:
+ 		if (!sk_fullsock(sk)) {
+ 			regs->verdict.code = NFT_BREAK;
+-			return;
++			goto out_put_sk;
+ 		}
+ 		nft_socket_wildcard(pkt, regs, sk, dest);
+ 		break;
+@@ -124,7 +124,7 @@ static void nft_socket_eval(const struct nft_expr *expr,
+ 	case NFT_SOCKET_CGROUPV2:
+ 		if (!nft_sock_get_eval_cgroupv2(dest, sk, pkt, priv->level)) {
+ 			regs->verdict.code = NFT_BREAK;
+-			return;
++			goto out_put_sk;
+ 		}
+ 		break;
+ #endif
+@@ -133,6 +133,7 @@ static void nft_socket_eval(const struct nft_expr *expr,
+ 		regs->verdict.code = NFT_BREAK;
+ 	}
  
--	spi_geni_release_dma_chan(mas);
--
- 	free_irq(mas->irq, spi);
-+
-+	spi_geni_release_dma_chan(mas);
++out_put_sk:
+ 	if (sk != skb->sk)
+ 		sock_gen_put(sk);
  }
- 
- static int __maybe_unused spi_geni_runtime_suspend(struct device *dev)
 -- 
 2.43.0
 
