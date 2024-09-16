@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-76443-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93B3597A1C5
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:10:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DD8B97A165
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:07:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C70911C21623
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:10:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93D2E286A1C
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:07:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17DE2155333;
-	Mon, 16 Sep 2024 12:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FDAB15574C;
+	Mon, 16 Sep 2024 12:06:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ifSp+Ymz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DrERhg4A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8A0E146A79;
-	Mon, 16 Sep 2024 12:10:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E25A783CDA;
+	Mon, 16 Sep 2024 12:06:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488607; cv=none; b=E9+pGqjEHW6CrXV4YiyT3B9ABvXcYNsbcDP6qbYoUDdUbRAZp/hT2LkMvKX6x+IvP3vNbAi1HlfdxN0ML2OVuBTMO6xnL7OYQm+TlfJ2fydDDMOayoRv3HUs7kQdxKwaLPUcOgp1WUoH2ZDTwt+moUC4+VgNewYrqnMPeR7H4mc=
+	t=1726488382; cv=none; b=bJ0cot/Rrsq9XJx2T18u1paZKKaTm53K4gTMtqoPTxXlazs7gionM7XRpeHaLuhvleACkMRAQpBbJscIrHFDU8qApFRoQCgw6PwnD/aj5TxG+fP6hM3kPM7nxoA4HyM6g96QJHh6X+QUDslMJ09RVc7J8dyurvwUBxRTU36+BGQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488607; c=relaxed/simple;
-	bh=JS6nRDVGiu9r30IqHyzfAoRiyR/UAju3rpfNkyF8Mvk=;
+	s=arc-20240116; t=1726488382; c=relaxed/simple;
+	bh=fRCOFHd8ZYU+D4vPuz651jBccxtQu/qX7ivmrjYZVAI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l3BWFKlehi5A/KPE8rnItDdCE1FDzR8rGgRQGujJHVAnbE2lxlSWO3CFHW/QMgRWALNYNHNtAwbdh/md5uTGRpl9vBzziJA3xaxT9WggAVpRdloSr3+dn6LRmHl2QCeR0ahnIxgO9rrOpSvAy4ORsI+ua6zXboPt15JmRBHgRr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ifSp+Ymz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25D71C4CEC4;
-	Mon, 16 Sep 2024 12:10:06 +0000 (UTC)
+	 MIME-Version; b=ZmXjkAAdki696iE8T2/5xocuxWJGkd5Ah40TIOro6cDAxTDjRb2PFlGREqv1FAX+7zXcM/mdqOFeNXCDoRpQfSFWxSILATytt/SRXnI13p0bvpb9T1QfICHyqYNKh3fFrd6FeOuLSdovCCZiIxEUJp4r+fvxAWuk6I1sl6rAhE0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DrERhg4A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E471C4CEC4;
+	Mon, 16 Sep 2024 12:06:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488607;
-	bh=JS6nRDVGiu9r30IqHyzfAoRiyR/UAju3rpfNkyF8Mvk=;
+	s=korg; t=1726488381;
+	bh=fRCOFHd8ZYU+D4vPuz651jBccxtQu/qX7ivmrjYZVAI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ifSp+YmzpQnkt0EEabLFIOYG7umz+PPbjCZFyhFgWZO5niJRPUamk4V87SG0eaqAK
-	 8X5q+aPu5CfN09s/njZWVNhZhOs22xDmdhEZs661xAl0x7Iz4HMiKa9ttfi/mVH0ZP
-	 clt5aK+Mfp/Nut8N3B1CDZrZ9Su86Y+2oqBfvOSo=
+	b=DrERhg4AZWwStfr+iArAaAFTsU1vEmiyv//mcmuxLZ/5E4IGlhSmj1XOjYJeuldul
+	 6JxTgM50PdCNoowWMHmiCihBqPobfGwbeOuRgd+VHWovSfexmae5LT+5icVfJ8HDBV
+	 P2iI8rpCiqZqhxwlVBqDtt9ZV+dQShBAbLaxV8S8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	David Sterba <dsterba@suse.com>,
+	peng guo <engguopeng@buaa.edu.cn>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 23/91] btrfs: update target inodes ctime on unlink
-Date: Mon, 16 Sep 2024 13:43:59 +0200
-Message-ID: <20240916114225.281261888@linuxfoundation.org>
+Subject: [PATCH 6.10 066/121] cxl/core: Fix incorrect vendor debug UUID define
+Date: Mon, 16 Sep 2024 13:44:00 +0200
+Message-ID: <20240916114231.352939974@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
-References: <20240916114224.509743970@linuxfoundation.org>
+In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
+References: <20240916114228.914815055@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeff Layton <jlayton@kernel.org>
+From: peng guo <engguopeng@buaa.edu.cn>
 
-[ Upstream commit 3bc2ac2f8f0b78a13140fc72022771efe0c9b778 ]
+[ Upstream commit 8ecef8e01a08c7e3e4ffc8f08d9f9663984f334b ]
 
-Unlink changes the link count on the target inode. POSIX mandates that
-the ctime must also change when this occurs.
+When user send a mbox command whose opcode is CXL_MBOX_OP_CLEAR_LOG and
+the in_payload is normal vendor debug log UUID according to
+the CXL specification cxl_payload_from_user_allowed() will return
+false unexpectedly, Sending mbox cmd operation fails and the kernel
+log will print:
+Clear Log: input payload not allowed.
 
-According to https://pubs.opengroup.org/onlinepubs/9699919799/functions/unlink.html:
+All CXL devices that support a debug log shall support the Vendor Debug
+Log to allow the log to be accessed through a common host driver, for any
+device, all versions of the CXL specification define the same value with
+Log Identifier of: 5e1819d9-11a9-400c-811f-d60719403d86
 
-"Upon successful completion, unlink() shall mark for update the last data
- modification and last file status change timestamps of the parent
- directory. Also, if the file's link count is not 0, the last file status
- change timestamp of the file shall be marked for update."
+Refer to CXL spec r3.1 Table 8-71
 
-Signed-off-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: David Sterba <dsterba@suse.com>
-[ add link to the opengroup docs ]
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fix the definition value of DEFINE_CXL_VENDOR_DEBUG_UUID to match the
+CXL specification.
+
+Fixes: 472b1ce6e9d6 ("cxl/mem: Enable commands via CEL")
+Signed-off-by: peng guo <engguopeng@buaa.edu.cn>
+Reviewed-by: Alison Schofield <alison.schofield@intel.com>
+Link: https://patch.msgid.link/20240710023112.8063-1-engguopeng@buaa.edu.cn
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/inode.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/cxl/cxlmem.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
-index a42238211887..ee04185d8e0f 100644
---- a/fs/btrfs/inode.c
-+++ b/fs/btrfs/inode.c
-@@ -4148,6 +4148,7 @@ static int __btrfs_unlink_inode(struct btrfs_trans_handle *trans,
+diff --git a/drivers/cxl/cxlmem.h b/drivers/cxl/cxlmem.h
+index af8169ccdbc0..feb1106559d2 100644
+--- a/drivers/cxl/cxlmem.h
++++ b/drivers/cxl/cxlmem.h
+@@ -563,7 +563,7 @@ enum cxl_opcode {
+ 		  0x3b, 0x3f, 0x17)
  
- 	btrfs_i_size_write(dir, dir->vfs_inode.i_size - name->len * 2);
- 	inode_inc_iversion(&inode->vfs_inode);
-+	inode_set_ctime_current(&inode->vfs_inode);
- 	inode_inc_iversion(&dir->vfs_inode);
- 	inode_set_ctime_current(&inode->vfs_inode);
- 	dir->vfs_inode.i_mtime = inode_set_ctime_current(&dir->vfs_inode);
+ #define DEFINE_CXL_VENDOR_DEBUG_UUID                                           \
+-	UUID_INIT(0xe1819d9, 0x11a9, 0x400c, 0x81, 0x1f, 0xd6, 0x07, 0x19,     \
++	UUID_INIT(0x5e1819d9, 0x11a9, 0x400c, 0x81, 0x1f, 0xd6, 0x07, 0x19,     \
+ 		  0x40, 0x3d, 0x86)
+ 
+ struct cxl_mbox_get_supported_logs {
 -- 
 2.43.0
 
