@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-76394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9ABAC97A187
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:08:11 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E990B97A1CA
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:10:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CD8D21C22BB0
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:08:10 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A13571F21427
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:10:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5E53155CBD;
-	Mon, 16 Sep 2024 12:07:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B59C155322;
+	Mon, 16 Sep 2024 12:10:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2H1Vcax7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YgGYEGSG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 713D81553AB;
-	Mon, 16 Sep 2024 12:07:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBC89146A79;
+	Mon, 16 Sep 2024 12:10:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488467; cv=none; b=Yp5dtUh9dvykudL3uVDyNRgvRf5/oHsaL7Jian10cE+LZUuboWAnvekVXWCJu9FK3Sg/hqB+/i9WqvjnPRV5qWVpmwU2ZWpvEpeybgEhjmKOhciU8eJ1ZL/Fz+sRLkq1h3auGZ5u458FycJOa5vnIbyh0zjt1Iby8ohhTKJqRd0=
+	t=1726488622; cv=none; b=bvCJyVPHGYTr4PCCUe0TqLnaWE8nwrz1S5utBK9q6fhAaSv//e4u29mhd+YMHQdYeZDAcLFvPs7ouBMXZcMUQ9xpjrh3gwlGmmrxQqIAtX4kAf1zQ0UpQ26uVJLsHkakIXyZMGGMgcToRs8B4hylhw9YWj3Vkoe0/Rtz7YZBV9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488467; c=relaxed/simple;
-	bh=KiQ2/uUyuJUNM7kBJGnpRa74jGaUhbZMqT2hfaGjAmE=;
+	s=arc-20240116; t=1726488622; c=relaxed/simple;
+	bh=qHvJN4F/BWMcPXv/I2lH8+he1edA1FwEvfAbHQA7Dss=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sRTXqdM+l5/HpV9amFAed0cfQIH4DcLfgjMJlaToFDvpAedo0V2LeeuvyrDGjbHnYgpefB+2LxOOCRKIuGtZAIi0moYD3ILrjMPhbqZeF+lxvSk+TCZJ4TKg7AXvVF4JLpGLhIuAmBKtAoYz8AuUBRzu+FsGJ3vsLzCFrRCir/o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2H1Vcax7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A150CC4CEC4;
-	Mon, 16 Sep 2024 12:07:46 +0000 (UTC)
+	 MIME-Version; b=esITiWj/owX22609QmvdBVlBxm/Ks5auUikpLJTShWPQmkv8QyZOD6KZ5yaaPMD+NFkpi3jlRdP4XerVpp/z3ubdX8LBsXUpLIyaUOYgYg3gRmGQSUad2ZEJShLUN95QHHs60rDGN+/z3IRHEhOyaYBdYZJh4EgYYbaYzaXViz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YgGYEGSG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6385BC4CEC4;
+	Mon, 16 Sep 2024 12:10:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488467;
-	bh=KiQ2/uUyuJUNM7kBJGnpRa74jGaUhbZMqT2hfaGjAmE=;
+	s=korg; t=1726488621;
+	bh=qHvJN4F/BWMcPXv/I2lH8+he1edA1FwEvfAbHQA7Dss=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2H1Vcax7T4r7luyghmbeg99bdnSAo12PMDnHEMYDKyE0zQcRIlYv8jMLIfWd578WL
-	 fC9MNafQsXQ1WS6rK1FH/v/5PogC5Q+/t0w15tmqnANljPWZocrsjl+fWbJko+woiC
-	 mk9GVgKP819P546S/pvFv5G6O2bv874AxvPLS8Go=
+	b=YgGYEGSGdYMszRSwuH2wiRC8Ybio5RR/uIAN6yGRFBjPVEF9Ato6/w43UQIvB4N+5
+	 ogs3MWQktTcsDXfbpp1fRhwgVbOUsxmJg0+bDyebBgK67Mlop5sElGm0CXtXvjQQTQ
+	 P+0HrqIJ8TwGT7ILbT9HFf9f+v3BfbQtDMwxAOJ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Helena Anna" <helena.anna.dubel@intel.com>,
-	"Luis Claudio R. Goncalves" <lgoncalv@redhat.com>,
-	Tomas Glozar <tglozar@redhat.com>,
-	"Bityutskiy, Artem" <artem.bityutskiy@intel.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.10 097/121] tracing/osnoise: Fix build when timerlat is not enabled
-Date: Mon, 16 Sep 2024 13:44:31 +0200
-Message-ID: <20240916114232.335520377@linuxfoundation.org>
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 56/91] ice: fix accounting for filters shared by multiple VSIs
+Date: Mon, 16 Sep 2024 13:44:32 +0200
+Message-ID: <20240916114226.357643645@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
-References: <20240916114228.914815055@linuxfoundation.org>
+In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
+References: <20240916114224.509743970@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,62 +63,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Jacob Keller <jacob.e.keller@intel.com>
 
-commit af178143343028fdec9d5960a22d17f5587fd3f5 upstream.
+[ Upstream commit e843cf7b34fe2e0c1afc55e1f3057375c9b77a14 ]
 
-To fix some critical section races, the interface_lock was added to a few
-locations. One of those locations was above where the interface_lock was
-declared, so the declaration was moved up before that usage.
-Unfortunately, where it was placed was inside a CONFIG_TIMERLAT_TRACER
-ifdef block. As the interface_lock is used outside that config, this broke
-the build when CONFIG_OSNOISE_TRACER was enabled but
-CONFIG_TIMERLAT_TRACER was not.
+When adding a switch filter (such as a MAC or VLAN filter), it is expected
+that the driver will detect the case where the filter already exists, and
+return -EEXIST. This is used by calling code such as ice_vc_add_mac_addr,
+and ice_vsi_add_vlan to avoid incrementing the accounting fields such as
+vsi->num_vlan or vf->num_mac.
 
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: "Helena Anna" <helena.anna.dubel@intel.com>
-Cc: "Luis Claudio R. Goncalves" <lgoncalv@redhat.com>
-Cc: Tomas Glozar <tglozar@redhat.com>
-Link: https://lore.kernel.org/20240909103231.23a289e2@gandalf.local.home
-Fixes: e6a53481da29 ("tracing/timerlat: Only clear timer if a kthread exists")
-Reported-by: "Bityutskiy, Artem" <artem.bityutskiy@intel.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This logic works correctly for the case where only a single VSI has added a
+given switch filter.
+
+When a second VSI adds the same switch filter, the driver converts the
+existing filter from an ICE_FWD_TO_VSI filter into an ICE_FWD_TO_VSI_LIST
+filter. This saves switch resources, by ensuring that multiple VSIs can
+re-use the same filter.
+
+The ice_add_update_vsi_list() function is responsible for doing this
+conversion. When first converting a filter from the FWD_TO_VSI into
+FWD_TO_VSI_LIST, it checks if the VSI being added is the same as the
+existing rule's VSI. In such a case it returns -EEXIST.
+
+However, when the switch rule has already been converted to a
+FWD_TO_VSI_LIST, the logic is different. Adding a new VSI in this case just
+requires extending the VSI list entry. The logic for checking if the rule
+already exists in this case returns 0 instead of -EEXIST.
+
+This breaks the accounting logic mentioned above, so the counters for how
+many MAC and VLAN filters exist for a given VF or VSI no longer accurately
+reflect the actual count. This breaks other code which relies on these
+counts.
+
+In typical usage this primarily affects such filters generally shared by
+multiple VSIs such as VLAN 0, or broadcast and multicast MAC addresses.
+
+Fix this by correctly reporting -EEXIST in the case of adding the same VSI
+to a switch rule already converted to ICE_FWD_TO_VSI_LIST.
+
+Fixes: 9daf8208dd4d ("ice: Add support for switch filter programming")
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_osnoise.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_switch.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/trace/trace_osnoise.c
-+++ b/kernel/trace/trace_osnoise.c
-@@ -228,6 +228,11 @@ static inline struct osnoise_variables *
- 	return this_cpu_ptr(&per_cpu_osnoise_var);
- }
+diff --git a/drivers/net/ethernet/intel/ice/ice_switch.c b/drivers/net/ethernet/intel/ice/ice_switch.c
+index 88ee2491312a..1b48fa8c435d 100644
+--- a/drivers/net/ethernet/intel/ice/ice_switch.c
++++ b/drivers/net/ethernet/intel/ice/ice_switch.c
+@@ -3072,7 +3072,7 @@ ice_add_update_vsi_list(struct ice_hw *hw,
  
-+/*
-+ * Protect the interface.
-+ */
-+static struct mutex interface_lock;
-+
- #ifdef CONFIG_TIMERLAT_TRACER
- /*
-  * Runtime information for the timer mode.
-@@ -253,11 +258,6 @@ static inline struct timerlat_variables
- }
+ 		/* A rule already exists with the new VSI being added */
+ 		if (test_bit(vsi_handle, m_entry->vsi_list_info->vsi_map))
+-			return 0;
++			return -EEXIST;
  
- /*
-- * Protect the interface.
-- */
--static struct mutex interface_lock;
--
--/*
-  * tlat_var_reset - Reset the values of the given timerlat_variables
-  */
- static inline void tlat_var_reset(void)
+ 		/* Update the previously created VSI list set with
+ 		 * the new VSI ID passed in
+-- 
+2.43.0
+
 
 
 
