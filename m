@@ -1,152 +1,161 @@
-Return-Path: <stable+bounces-76171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76172-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 841BF979A96
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 07:09:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C4DB979AA7
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 07:11:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7D58C28219D
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 05:09:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 12B99B23341
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 05:11:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1530B3770C;
-	Mon, 16 Sep 2024 05:09:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41F5A20B22;
+	Mon, 16 Sep 2024 05:11:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="i/Gq917E"
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=Usama.Anjum@collabora.com header.b="F+27Yvno"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 665E62D032
-	for <stable@vger.kernel.org>; Mon, 16 Sep 2024 05:09:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726463345; cv=none; b=MsxLjuhpCpzc0MUFjm+rCGxTJbBr1GPV4ik2NvuNUjb3/E7axZF64SSqVwbP0TSIrB1H20aSCF8liV7g2CFTbTlYSuV8DfCxtFxOccD1zZBqYOmMr8O/B3+tTQynO0LkTEm72fp6wsT9xPg/bC84Ula5QY34Tk6mpoBm/rFCg4c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726463345; c=relaxed/simple;
-	bh=HJIBHsb+pG4OJ3YHQjLLneMy7DBgN37FKEWs1Hsxxto=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=A6T23ma+QqmwxkymxltKhcSEYrw8G6ae/mzZoVvD8AUuKwLVD75o44Ves0cvZr6JzKvfXfVLZ21MCRaqhuuLjDjaNYzTeo8lZa/OWoiFZgsn9yZEYWs1AJ205PaaiskMGQNJrhxaM7ofUWil3BlhqxZ6ymCaVyxpH0GewXSFP+k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=i/Gq917E; arc=none smtp.client-ip=185.70.40.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
-	s=protonmail3; t=1726463335; x=1726722535;
-	bh=Lkl/4iBF6JIYsf4lrgb1MIvDWPSfZ6J3feAMHghzPp4=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=i/Gq917Ek+Y+2ldSBq/OlO7O3ptlTiRNsh0DvzQZRIjzThXt4qeqkEpq7KQuRZ5nU
-	 UU7PwCayJVN4bLIIuD+vemnwPlxTa0n1RpcR92mNmPS/WZ2q6zDpF39iMDmQOZZyGS
-	 k1NS5OE1ICcVTdQqnPd/szTb4Vl6SX1qr9bss07V8BarYpg6RYMPmSAHOmC41oyOAE
-	 EgqP2bfHnA8rC5YOcC+wsv1c4dsKoOHJtkBqa+s62uc1PrMf1KGs4xoVyZ6N7hWOcS
-	 NiOgPZ8IecEVJu02fcWxORFB9v05IRRMo2a/JYjQ38rS76pZ2VWOVJlxdJMJG7KDzk
-	 YmVIw/cHe5zEw==
-Date: Mon, 16 Sep 2024 05:08:49 +0000
-To: Ingo Molnar <mingo@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>
-From: Michael Pratt <mcpratt@pm.me>
-Cc: linux-kernel@vger.kernel.org, Michael Pratt <mcpratt@pm.me>, stable@vger.kernel.org
-Subject: [RESEND PATCH] sched/syscalls: Allow setting niceness using sched_param struct
-Message-ID: <20240916050741.24206-1-mcpratt@pm.me>
-Feedback-ID: 27397442:user:proton
-X-Pm-Message-ID: 3d255fa677a5318de52013f02a9f192fdc8cdce0
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C8296FDC;
+	Mon, 16 Sep 2024 05:11:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1726463506; cv=pass; b=lCSXcSdYJUQRxt1IOYaSWt87nK379nATnxyCDnb0SGAPY/E9T588+R21v93nYg5foQitcGgSJz0neH6szuLPUvUJfVn3q1Vt1NpgZpjMWWIAg41lgTOUWf2h/YecvvJIFlEEsYZu+pA6NyKx163HDAkSppdIzx3sd6/xc6Qb4RA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1726463506; c=relaxed/simple;
+	bh=JXtRfIu5OcEA9kgFjsMrRK/elxa5CFF6iRmJv8pi3I4=;
+	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=CKxz/Zr+n4ObikMiJ0yaQ/zH+4YmR8N361nNLABGzrGnEA2PA6aJSaIsfGOzlIT6Y4swJ9Rqw1IyLlTEsv+5dQcp2o+qNgF0DxYk5KL4DP9tElaZJAbgbj3tEArgQP3m+hUiya7+oU5QtbzwuGuTz4gY7eNg3vdbBZxvhQBpQ4Q=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=Usama.Anjum@collabora.com header.b=F+27Yvno; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+ARC-Seal: i=1; a=rsa-sha256; t=1726463488; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=kwggkEmqLX6Mfr7HygJA+b/VB1IVl/+GGxQ6NewS4pNwJQfJJPZHSJC1Brpegyu6EotB1FwseDlPIm+6ZJsL279Qtrvqvd6qFxPKmlpjN2LOwCXnKwKhn15hBOmXN1jEtm1vxmcVE3QHUZLR3NpXEsoHB54XeImjGvaS0PDey1Q=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1726463488; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=fiQmj+mg8bdz3LaM2MFQ1wsitBjBxISWyvNuEMIjyb8=; 
+	b=DEVN37ppZUptSjjd62+W82sZ1aykTgPENQNnsMnM7OT6S2HczvX7va+vYlprR+Vtn1dcLI7N9PkPrUWmAtoOrT224DIaM2xdabXrp5SJZrC5NnZIc3XRikECzy5hCu49oRk7TGzH3+ZmRzn/5oGFbOKoQYV8XCzRpiBdPBuUsc4=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=Usama.Anjum@collabora.com;
+	dmarc=pass header.from=<Usama.Anjum@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1726463488;
+	s=zohomail; d=collabora.com; i=Usama.Anjum@collabora.com;
+	h=Message-ID:Date:Date:MIME-Version:Cc:Cc:Subject:Subject:To:To:References:From:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
+	bh=fiQmj+mg8bdz3LaM2MFQ1wsitBjBxISWyvNuEMIjyb8=;
+	b=F+27YvnoFfhS8+LKAGj8b2uDd3XSSkH3ITGIZxWb20cWNcUlRRSUQmxE/HeJaaSv
+	G11BOFu2zhhjSsuKo726Hv9Ch1doS4cZMUdXNcWXJetVAhRdP+5VoOn1k8thcBR1pCR
+	eRDRMVeCRp1jqiBvczy4z4xX0QTtyMG3Hnbjz0K0=
+Received: by mx.zohomail.com with SMTPS id 1726463487032102.77484826415719;
+	Sun, 15 Sep 2024 22:11:27 -0700 (PDT)
+Message-ID: <406c2919-a546-40e4-89af-baa910c22740@collabora.com>
+Date: Mon, 16 Sep 2024 10:11:18 +0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Cc: Usama.Anjum@collabora.com, Andrew Morton <akpm@linux-foundation.org>,
+ Shuah Khan <shuah@kernel.org>, Kees Cook <kees@kernel.org>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>, kernel@collabora.com,
+ stable@vger.kernel.org, linux-mm@kvack.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] selftests: mm: Fix build errors on armhf
+To: Jeff Xu <jeffxu@chromium.org>
+References: <20240809082511.497266-1-usama.anjum@collabora.com>
+ <CABi2SkWgPoWJY_CMxDru7FPjtQBgv61PA2VoCumd3T8Xq3fjbg@mail.gmail.com>
+ <1b36ba43-60a4-441c-981f-9b62f366aa95@collabora.com>
+ <CABi2SkWk8igT=HCTcawv72uxrf2rhzj1A23k4EixCxcDKhSNxw@mail.gmail.com>
+Content-Language: en-US
+From: Muhammad Usama Anjum <Usama.Anjum@collabora.com>
+In-Reply-To: <CABi2SkWk8igT=HCTcawv72uxrf2rhzj1A23k4EixCxcDKhSNxw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ZohoMailClient: External
 
-From userspace, spawning a new process with, for example,
-posix_spawn(), only allows the user to work with
-the scheduling priority value defined by POSIX
-in the sched_param struct.
+On 9/14/24 3:33 AM, Jeff Xu wrote:
+> On Mon, Aug 19, 2024 at 3:05 AM Muhammad Usama Anjum
+> <Usama.Anjum@collabora.com> wrote:
+>>
+>> On 8/14/24 3:29 AM, Jeff Xu wrote:
+>>> Hi Muhammad
+>>>
+>>> On Fri, Aug 9, 2024 at 1:25 AM Muhammad Usama Anjum
+>>> <usama.anjum@collabora.com> wrote:
+>>>>
+>>>> The __NR_mmap isn't found on armhf. The mmap() is commonly available
+> 
+> What is armhf ?
+> is that arm64 ? I was able to build arm64 correctly.
+It is arm architecture. Use following toolchain with it:
+make ARCH=arm CROSS_COMPILE=arm-linux-gnueabihf-
 
-However, sched_setparam() and similar syscalls lead to
-__sched_setscheduler() which rejects any new value
-for the priority other than 0 for non-RT schedule classes,
-a behavior kept since Linux 2.6 or earlier.
+Please test your patches on it.
 
-Linux translates the usage of the sched_param struct
-into it's own internal sched_attr struct during the syscall,
-but the user has no way to manage the other values
-within the sched_attr struct using only POSIX functions.
+> 
+> -Jeff
+> 
+>>>> system call and its wrapper is presnet on all architectures. So it
+>>>> should be used directly. It solves problem for armhf and doesn't create
+>>>> problem for architectures as well. Remove sys_mmap() functions as they
+>>>> aren't doing anything else other than calling mmap(). There is no need
+>>>> to set errno = 0 manually as glibc always resets it.
+>>>>
+>>> The mseal_test should't have dependency on libc, and mmap() is
+>>> implemented by glibc, right ?
+>>>
+>>> I just fixed a bug to switch mremap() to sys_mremap to address an
+>>> issue that different glibc version's behavior is slightly different
+>>> for mremap().
+>>>
+>>> What is the reason that __NR_mmap not available in armhf ? (maybe it
+>>> is another name ?)  there must be a way to call syscall directly on
+>>> armhf, can we use that instead ?
+>>
+>> It seems __NR_mmap syscall is deprecated for arm. Found this comment in
+>> arch/arm/include/asm/unistd.h:
+>> /*
+>>  * The following syscalls are obsolete and no longer available for EABI:
+>>  *  __NR_time
+>>  *  __NR_umount
+>>  *  __NR_stime
+>>  *  __NR_alarm
+>>  *  __NR_utime
+>>  *  __NR_getrlimit
+>>  *  __NR_select
+>>  *  __NR_readdir
+>>  *  __NR_mmap
+>>  *  __NR_socketcall
+>>  *  __NR_syscall
+>>  *  __NR_ipc
+>>  */
+>>
+>> The glibc mmap() calls mmap2() these days by adjusting the parameters
+>> internally. From man mmap:
+>> C library/kernel differences:
+>> This  page  describes the interface provided by the glibc mmap() wrapper
+>> function.  Originally, this function invoked a system call of the same
+>> name.  Since Linux 2.4, that system call has been superseded  by
+>> mmap2(2), and nowadays the glibc mmap() wrapper function invokes
+>> mmap2(2) with a suitably adjusted value for offset.
+>>
+>> I'm not sure if behaviour of glibc mmap() and syscall mmap2() would be
+>> same, but we should use glibc at most places which accounts for
+>> different architectures correctly. Maybe the differences were only
+>> present in case of mremap().
+>>
+>> --
+>> BR,
+>> Muhammad Usama Anjum
+>>
 
-The only other way to adjust niceness while using posix_spawn()
-would be to set the value after the process has started,
-but this introduces the risk of the process being dead
-before the next syscall can set the priority after the fact.
-
-To resolve this, allow the use of the priority value
-originally from the POSIX sched_param struct in order to
-set the niceness value instead of rejecting the priority value.
-
-Edit the sched_get_priority_*() POSIX syscalls
-in order to reflect the range of values accepted.
-
-Cc: stable@vger.kernel.org # Apply to kernel/sched/core.c
-Signed-off-by: Michael Pratt <mcpratt@pm.me>
----
- kernel/sched/syscalls.c | 21 +++++++++++++++++++--
- 1 file changed, 19 insertions(+), 2 deletions(-)
-
-diff --git a/kernel/sched/syscalls.c b/kernel/sched/syscalls.c
-index ae1b42775ef9..52c02b80f037 100644
---- a/kernel/sched/syscalls.c
-+++ b/kernel/sched/syscalls.c
-@@ -853,6 +853,19 @@ static int _sched_setscheduler(struct task_struct *p, =
-int policy,
- =09=09attr.sched_policy =3D policy;
- =09}
-=20
-+=09if (attr.sched_priority > MAX_PRIO-1)
-+=09=09return -EINVAL;
-+
-+=09/*
-+=09 * If priority is set for SCHED_NORMAL or SCHED_BATCH,
-+=09 * set the niceness instead, but only for user calls.
-+=09 */
-+=09if (check && attr.sched_priority > MAX_RT_PRIO-1 &&
-+=09   ((policy !=3D SETPARAM_POLICY && fair_policy(policy)) || fair_policy=
-(p->policy))) {
-+=09=09attr.sched_nice =3D PRIO_TO_NICE(attr.sched_priority);
-+=09=09attr.sched_priority =3D 0;
-+=09}
-+
- =09return __sched_setscheduler(p, &attr, check, true);
- }
- /**
-@@ -1598,9 +1611,11 @@ SYSCALL_DEFINE1(sched_get_priority_max, int, policy)
- =09case SCHED_RR:
- =09=09ret =3D MAX_RT_PRIO-1;
- =09=09break;
--=09case SCHED_DEADLINE:
- =09case SCHED_NORMAL:
- =09case SCHED_BATCH:
-+=09=09ret =3D MAX_PRIO-1;
-+=09=09break;
-+=09case SCHED_DEADLINE:
- =09case SCHED_IDLE:
- =09=09ret =3D 0;
- =09=09break;
-@@ -1625,9 +1640,11 @@ SYSCALL_DEFINE1(sched_get_priority_min, int, policy)
- =09case SCHED_RR:
- =09=09ret =3D 1;
- =09=09break;
--=09case SCHED_DEADLINE:
- =09case SCHED_NORMAL:
- =09case SCHED_BATCH:
-+=09=09ret =3D MAX_RT_PRIO;
-+=09=09break;
-+=09case SCHED_DEADLINE:
- =09case SCHED_IDLE:
- =09=09ret =3D 0;
- =09}
-
-base-commit: 5be63fc19fcaa4c236b307420483578a56986a37
---=20
-2.30.2
-
+-- 
+BR,
+Muhammad Usama Anjum
 
 
