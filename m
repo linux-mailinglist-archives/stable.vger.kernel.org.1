@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-76333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76371-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8706997A142
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:06:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7C6C97A16C
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:07:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B80401C22951
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:06:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 074B91F213AA
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:07:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E227156225;
-	Mon, 16 Sep 2024 12:04:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03944158543;
+	Mon, 16 Sep 2024 12:06:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tR4HGvr3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e7ewphPL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B1EF155725;
-	Mon, 16 Sep 2024 12:04:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B637524B34;
+	Mon, 16 Sep 2024 12:06:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488293; cv=none; b=I9kt75N95Vn5H36kIpJP2DObchLW9KXjEDq1ar7lftMI8wEhC4CKeql9AikZCKOc6faXAlIRYLUZ3RCrhCgyy8i9DCyJhqaY/9tz7s2WXAynNmYELcE+MTTtfqIV4eAgr/0xeAxGjLqRFcWqaZRwTc1cP1KYnbP1REBr8VHniIo=
+	t=1726488401; cv=none; b=W6ew54GOYzUji6z8Xg/BOwo/7fLYg2KXmuYedsbqftOJRS+XcsCKhfLpVGZNYS5tN9wTsP+qF20rWLWkbv1xPPcLuQy+mliUn4mnLg3rs9qFa+nAtUKDTrCd1qcDx0Uyu68sx/9NhlPIAdcIJJo2oEl+KEeVzxJa76whkSRgJ/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488293; c=relaxed/simple;
-	bh=L24LIt/bwVO+m+etwg2cgt4q0fOhRuB4/EjnmIj0szw=;
+	s=arc-20240116; t=1726488401; c=relaxed/simple;
+	bh=B1AUYOzDGakSBFziZzZZYTqZ3MjiwNdyDLL0XQQL5mI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E+qiBCAee+ypougZe+VJLPvu8ALzdyyspNtuiJLhEouehAKMuZrOrOYUdPd9kYewjyPl7Yze9Kj+cTfhyrOoWutK+4FPARyZyKOnCywtJ57cOT9NlypFVop7GNInbAZHf0HjbDo5sIVxlau6Qu7r0dPk5LxmqnvtoSL5bGNODBk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tR4HGvr3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5B38C4CEC4;
-	Mon, 16 Sep 2024 12:04:52 +0000 (UTC)
+	 MIME-Version; b=ZeSCknM0s670YqFHbcpS6q2c1pSv4C9jihpQaIhR3fzYJX4GSgppYCBgjtqYjoEBV1feG5AeJ3uzM7nUt089HiRo4v+TOh9U17htNsvzbrLbEVpvLouddNm1cFNt8k/O9QayLsmGIOEIVCWMSEszO40SL3KS+xHYWoXW4OR8OhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e7ewphPL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F251C4CEC4;
+	Mon, 16 Sep 2024 12:06:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488293;
-	bh=L24LIt/bwVO+m+etwg2cgt4q0fOhRuB4/EjnmIj0szw=;
+	s=korg; t=1726488401;
+	bh=B1AUYOzDGakSBFziZzZZYTqZ3MjiwNdyDLL0XQQL5mI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tR4HGvr3/hGKKnuVjkKSLMCCqWZUoUvI0vUGS3xFX73jKxdrqeEEbhVX0BRwSvJHD
-	 nwruWaLPFIsdma3kASU18bf701swxJh5v+H4fXk60ec65yurKlg8HwhHw/CU7MRAvc
-	 7Z8buDTRDYwse8D+leTIgxG4P90ySKKmpFDOdDsw=
+	b=e7ewphPL8Rqqysd4gSjH7JU2vHNVYgNUuT5WpgpOyOFqR1sQEXAlvvkh8G/qqbJIB
+	 RS/wmQU4wt7U7ngOavhuLY1z6fIqg6ftgePW8c0Cj5femsPZaTcDWOjMylO32Jnej6
+	 LDxwY7DPAyakosR77Ltiylo2c4rVrjsMkD3c7cMk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenjing Liu <wenjing.liu@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Cruise <cruise.hung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Mario Limonciello <mario.limonciello@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
+	Wenjing Liu <wenjing.liu@amd.com>,
+	Wayne Lin <wayne.lin@amd.com>,
+	Ilya Bakoulin <ilya.bakoulin@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 062/121] drm/amd/display: Disable error correction if its not supported
-Date: Mon, 16 Sep 2024 13:43:56 +0200
-Message-ID: <20240916114231.219887606@linuxfoundation.org>
+Subject: [PATCH 6.10 063/121] drm/amd/display: Fix FEC_READY write on DP LT
+Date: Mon, 16 Sep 2024 13:43:57 +0200
+Message-ID: <20240916114231.252377973@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
 References: <20240916114228.914815055@linuxfoundation.org>
@@ -69,108 +70,55 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Cruise <cruise.hung@amd.com>
+From: Ilya Bakoulin <ilya.bakoulin@amd.com>
 
-[ Upstream commit a8ac994cf0693a1ce59410995594e56124a1c79f ]
+[ Upstream commit a8baec4623aedf36d50767627f6eae5ebf07c6fb ]
 
-[Why]
-Error correction was enabled in a monitor which doesn't support.
+[Why/How]
+We can miss writing FEC_READY in some cases before LT start, which
+violates DP spec. Remove the condition guarding the DPCD write so that
+the write happens unconditionally.
 
-[How]
-Disable error correction if it's not supported
-
+Cc: Mario Limonciello <mario.limonciello@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
+Cc: stable@vger.kernel.org
 Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
-Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Cruise <cruise.hung@amd.com>
+Acked-by: Wayne Lin <wayne.lin@amd.com>
+Signed-off-by: Ilya Bakoulin <ilya.bakoulin@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: a8baec4623ae ("drm/amd/display: Fix FEC_READY write on DP LT")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../display/dc/link/protocols/link_dp_phy.c   | 47 +++++++++----------
- 1 file changed, 21 insertions(+), 26 deletions(-)
+ .../amd/display/dc/link/protocols/link_dp_phy.c    | 14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_phy.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_phy.c
-index 2fa4e64e2430..5cbf5f93e584 100644
+index 5cbf5f93e584..bafa52a0165a 100644
 --- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_phy.c
 +++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_phy.c
-@@ -147,32 +147,27 @@ enum dc_status dp_set_fec_ready(struct dc_link *link, const struct link_resource
+@@ -151,16 +151,14 @@ enum dc_status dp_set_fec_ready(struct dc_link *link, const struct link_resource
+ 		return DC_NOT_SUPPORTED;
  
- 	link_enc = link_enc_cfg_get_link_enc(link);
- 	ASSERT(link_enc);
-+	if (link_enc->funcs->fec_set_ready == NULL)
-+		return DC_NOT_SUPPORTED;
+ 	if (ready && dp_should_enable_fec(link)) {
+-		if (link->fec_state == dc_link_fec_not_ready) {
+-			fec_config = 1;
++		fec_config = 1;
  
--	if (!dp_should_enable_fec(link))
--		return status;
--
--	if (link_enc->funcs->fec_set_ready &&
--			link->dpcd_caps.fec_cap.bits.FEC_CAPABLE) {
--		if (ready) {
-+	if (ready && dp_should_enable_fec(link)) {
-+		if (link->fec_state == dc_link_fec_not_ready) {
- 			fec_config = 1;
--			status = core_link_write_dpcd(link,
--					DP_FEC_CONFIGURATION,
--					&fec_config,
--					sizeof(fec_config));
-+
-+			status = core_link_write_dpcd(link, DP_FEC_CONFIGURATION,
-+					&fec_config, sizeof(fec_config));
-+
- 			if (status == DC_OK) {
- 				link_enc->funcs->fec_set_ready(link_enc, true);
- 				link->fec_state = dc_link_fec_ready;
--			} else {
--				link_enc->funcs->fec_set_ready(link_enc, false);
--				link->fec_state = dc_link_fec_not_ready;
--				dm_error("dpcd write failed to set fec_ready");
- 			}
--		} else if (link->fec_state == dc_link_fec_ready) {
-+		}
-+	} else {
-+		if (link->fec_state == dc_link_fec_ready) {
- 			fec_config = 0;
--			status = core_link_write_dpcd(link,
--					DP_FEC_CONFIGURATION,
--					&fec_config,
--					sizeof(fec_config));
-+			core_link_write_dpcd(link, DP_FEC_CONFIGURATION,
+-			status = core_link_write_dpcd(link, DP_FEC_CONFIGURATION,
+-					&fec_config, sizeof(fec_config));
++		status = core_link_write_dpcd(link, DP_FEC_CONFIGURATION,
 +				&fec_config, sizeof(fec_config));
-+
- 			link_enc->funcs->fec_set_ready(link_enc, false);
- 			link->fec_state = dc_link_fec_not_ready;
- 		}
-@@ -187,14 +182,12 @@ void dp_set_fec_enable(struct dc_link *link, bool enable)
  
- 	link_enc = link_enc_cfg_get_link_enc(link);
- 	ASSERT(link_enc);
--
--	if (!dp_should_enable_fec(link))
-+	if (link_enc->funcs->fec_set_enable == NULL)
- 		return;
- 
--	if (link_enc->funcs->fec_set_enable &&
--			link->dpcd_caps.fec_cap.bits.FEC_CAPABLE) {
--		if (link->fec_state == dc_link_fec_ready && enable) {
--			/* Accord to DP spec, FEC enable sequence can first
-+	if (enable && dp_should_enable_fec(link)) {
-+		if (link->fec_state == dc_link_fec_ready) {
-+			/* According to DP spec, FEC enable sequence can first
- 			 * be transmitted anytime after 1000 LL codes have
- 			 * been transmitted on the link after link training
- 			 * completion. Using 1 lane RBR should have the maximum
-@@ -204,7 +197,9 @@ void dp_set_fec_enable(struct dc_link *link, bool enable)
- 			udelay(7);
- 			link_enc->funcs->fec_set_enable(link_enc, true);
- 			link->fec_state = dc_link_fec_enabled;
--		} else if (link->fec_state == dc_link_fec_enabled && !enable) {
-+		}
-+	} else {
-+		if (link->fec_state == dc_link_fec_enabled) {
- 			link_enc->funcs->fec_set_enable(link_enc, false);
- 			link->fec_state = dc_link_fec_ready;
+-			if (status == DC_OK) {
+-				link_enc->funcs->fec_set_ready(link_enc, true);
+-				link->fec_state = dc_link_fec_ready;
+-			}
++		if (status == DC_OK) {
++			link_enc->funcs->fec_set_ready(link_enc, true);
++			link->fec_state = dc_link_fec_ready;
  		}
+ 	} else {
+ 		if (link->fec_state == dc_link_fec_ready) {
 -- 
 2.43.0
 
