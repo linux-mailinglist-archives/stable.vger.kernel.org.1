@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-76373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4362597A16F
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:07:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7B2297A1D0
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:10:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EF14E1F23DB0
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:07:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90599285CD9
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:10:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5852155C87;
-	Mon, 16 Sep 2024 12:06:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D043155335;
+	Mon, 16 Sep 2024 12:10:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GdpUAtwJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kDvsMmrd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 842F324B34;
-	Mon, 16 Sep 2024 12:06:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEC93146A79;
+	Mon, 16 Sep 2024 12:10:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488407; cv=none; b=ehY24xJ+YjjKxoPLYe2cUdAIbzqzLAKxBnCSnlQngOmGk/+rULc5jb4fQZo0ylyJiJzyhP1ODGucq91Gnb9Ct+VU42S8yMZXn7cHhlvk0814VPVV1IAIvqhUCXn6lx2o8DHkb/adSxZMyzzjyDJkj7Qy5InL4Mxk0rFWkEnl78Y=
+	t=1726488639; cv=none; b=CIfnKSfuSHfdqcR2gEaTm3SGFdzluzPYOZxxhr8nRXKPtFC5aiXRIgJ8jAzf1CDbGC17xq+qf6Z+ggCv7mQ3GHCeFxlJ1JlnI9ee1K1fQQ3BovY+W9ngYCkqnBuRpX+Kk7yoNIL8ctyDzwMnKrL2V04Gi99KEDPQgGdp6uQbhrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488407; c=relaxed/simple;
-	bh=GKlWtlpQuZDT2AaJMG5JEupvGWp6lP8NEK+66qgg7kg=;
+	s=arc-20240116; t=1726488639; c=relaxed/simple;
+	bh=2h7UeTQn+OQ8nCdaIKvuhTgJB+5sg0DMCSLhFwXFnqs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qP+prQzXghh3LFHtFXM3EBPBbc4I5B3OwEK4eporoO738OZ6ZaJUWopY/FmhohbknA0qNamsUXOySLHO3ULJ+JmdFu/2E66uAvK3Hjk2RCiHc7GP0TR+mqnlcb+3zolMk+MNDts7XNX6GBUqZMJGZi+rAIAqUQoKeVhhaN7OFO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GdpUAtwJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9E9FC4CEC4;
-	Mon, 16 Sep 2024 12:06:46 +0000 (UTC)
+	 MIME-Version; b=U0lcUdRLqm9nd5C4sk3nOxTah2bclIU45gaZR2XKSj/16fjophFCWVPVji9kLp9XwcslrP6DutmuwbxuBQhD8TZSWs37D5Xvi6eE1a6dYRtgeAnluNeyfUjwyylqjiVu460Uw7xZreARX7fBFUoeBnTOR7OEhRr96HbnT5yVv18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kDvsMmrd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66849C4CEC4;
+	Mon, 16 Sep 2024 12:10:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488407;
-	bh=GKlWtlpQuZDT2AaJMG5JEupvGWp6lP8NEK+66qgg7kg=;
+	s=korg; t=1726488638;
+	bh=2h7UeTQn+OQ8nCdaIKvuhTgJB+5sg0DMCSLhFwXFnqs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GdpUAtwJ++P4Kkj/xvJifKHVQOAizu4jMRu2z3w465XkVhYr7Jbpb2keSZgI3ifqI
-	 BaoTgj/HeyrasBwu2DeQcG9C8B2cKnI9rV4YTLw5OgUY/ckcMkz2Op+Xqabh7TKpBz
-	 XxxCWfc0daanpcByiDArLyeHigcD7M1UFuSHXByg=
+	b=kDvsMmrdV2sa2/OGdAnZ+cbj3uOzn5g7M0TdZHtmXdR4GTHzFepPnTgoPb312uHfX
+	 cgvu3EBoDxa/OqSiX/HGKabdiYWxpJXblVDHdkzXGNAB+LiGlRenTeA41kz21b3aAu
+	 jQqOhiPjn6gk02NpAngkTfnECuPviyis7PSuAgbc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.10 103/121] drm/amdgpu/atomfirmware: Silence UBSAN warning
-Date: Mon, 16 Sep 2024 13:44:37 +0200
-Message-ID: <20240916114232.521537575@linuxfoundation.org>
+	Shahar Shitrit <shshitrit@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Carolina Jubran <cjubran@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 62/91] net/mlx5e: Add missing link mode to ptys2ext_ethtool_map
+Date: Mon, 16 Sep 2024 13:44:38 +0200
+Message-ID: <20240916114226.530447133@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
-References: <20240916114228.914815055@linuxfoundation.org>
+In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
+References: <20240916114224.509743970@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Shahar Shitrit <shshitrit@nvidia.com>
 
-commit 17ea4383649fdeaff3181ddcf1ff03350d42e591 upstream.
+[ Upstream commit 80bf474242b21d64a514fd2bb65faa7a17ca8d8d ]
 
-Per the comments, these are variable sized arrays.
+Add MLX5E_400GAUI_8_400GBASE_CR8 to the extended modes
+in ptys2ext_ethtool_table, since it was missing.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/3613
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 81f7804ba84ee617ed594de934ed87bcc4f83531)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6a897372417e ("net/mlx5: ethtool, Add ethtool support for 50Gbps per lane link modes")
+Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Carolina Jubran <cjubran@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/include/atomfirmware.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/gpu/drm/amd/include/atomfirmware.h
-+++ b/drivers/gpu/drm/amd/include/atomfirmware.h
-@@ -1038,7 +1038,7 @@ struct display_object_info_table_v1_4
-   uint16_t  supporteddevices;
-   uint8_t   number_of_path;
-   uint8_t   reserved;
--  struct    atom_display_object_path_v2 display_path[8];   //the real number of this included in the structure is calculated by using the (whole structure size - the header size- number_of_path)/size of atom_display_object_path
-+  struct    atom_display_object_path_v2 display_path[];   //the real number of this included in the structure is calculated by using the (whole structure size - the header size- number_of_path)/size of atom_display_object_path
- };
- 
- struct display_object_info_table_v1_5 {
-@@ -1048,7 +1048,7 @@ struct display_object_info_table_v1_5 {
- 	uint8_t reserved;
- 	// the real number of this included in the structure is calculated by using the
- 	// (whole structure size - the header size- number_of_path)/size of atom_display_object_path
--	struct atom_display_object_path_v3 display_path[8];
-+	struct atom_display_object_path_v3 display_path[];
- };
- 
- /* 
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
+index f973314b1724..54379297a748 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
+@@ -205,6 +205,12 @@ void mlx5e_build_ptys2ethtool_map(void)
+ 				       ETHTOOL_LINK_MODE_200000baseLR4_ER4_FR4_Full_BIT,
+ 				       ETHTOOL_LINK_MODE_200000baseDR4_Full_BIT,
+ 				       ETHTOOL_LINK_MODE_200000baseCR4_Full_BIT);
++	MLX5_BUILD_PTYS2ETHTOOL_CONFIG(MLX5E_400GAUI_8_400GBASE_CR8, ext,
++				       ETHTOOL_LINK_MODE_400000baseKR8_Full_BIT,
++				       ETHTOOL_LINK_MODE_400000baseSR8_Full_BIT,
++				       ETHTOOL_LINK_MODE_400000baseLR8_ER8_FR8_Full_BIT,
++				       ETHTOOL_LINK_MODE_400000baseDR8_Full_BIT,
++				       ETHTOOL_LINK_MODE_400000baseCR8_Full_BIT);
+ 	MLX5_BUILD_PTYS2ETHTOOL_CONFIG(MLX5E_100GAUI_1_100GBASE_CR_KR, ext,
+ 				       ETHTOOL_LINK_MODE_100000baseKR_Full_BIT,
+ 				       ETHTOOL_LINK_MODE_100000baseSR_Full_BIT,
+-- 
+2.43.0
+
 
 
 
