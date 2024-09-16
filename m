@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-76241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76349-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E6D497A0BE
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:00:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F2C797A153
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:07:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D923E282CF7
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:00:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F3D9B1F2319C
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:07:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59346154456;
-	Mon, 16 Sep 2024 12:00:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63A5A155336;
+	Mon, 16 Sep 2024 12:05:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="erfkpmaV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="upRiSsJl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECB101547FF;
-	Mon, 16 Sep 2024 12:00:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2120A14AD19;
+	Mon, 16 Sep 2024 12:05:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488032; cv=none; b=g04NSlb+s4SBmn2Bm7YFYsOooWJQ5qYF8lZB2hpQT9XSrRIIaA0c+SmBEvSoGa7ILMh/OB9iUgNwKrdKv6cg8MH4tdqxBEIZbJQaIRSdBbwJLcUDGHX/9BgX5rJrVhfYp9cIcOIeHCy+SS+pI3aZSlYTIV0IS7UXkPXongoYFFE=
+	t=1726488339; cv=none; b=a/bY3Nm5DgdAbVKS70ibPEX/bKryeUROx+TcOp4tw8XaZJmJ5np4FrvkcxBAKFDW3DesuWfAITRneKiLvBz9T8pZiuFNAN78ZK73sZtBCe90AIpbcnM8pJ7XldMli+0lAmwTY+qjEDKheY/k69Fbo1rQqKTy7Xv228iqeS4E8/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488032; c=relaxed/simple;
-	bh=4IR5LjgKmFL7IuEavhVQRmIt2zN9mwgi06NQKfoQn9E=;
+	s=arc-20240116; t=1726488339; c=relaxed/simple;
+	bh=dMqpoLtYXdPGBHUEbs7Y4t7aDrzsV8XPpiG47NNAGRk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qd80Re/LecYgIRtZmLWI0lGLqPqLTG2wSmXi4vXzrHKp/bp5sJ7DOv01kyxMrhlYSPp9fju3KO8WYDEjf9JhLHq+2ZQMZaXJqJovUn9e6VD2SbBWmqPeS6B7RKZaCGQxj+PgbLYG+0rNamvpMlQtnRua6bMAPtKzbwtyT91zaPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=erfkpmaV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A001C4CEC4;
-	Mon, 16 Sep 2024 12:00:30 +0000 (UTC)
+	 MIME-Version; b=aEgq1nnKrVgwmBsH3v0oC/Nl0aHviHn3D27IQ+7CCmu7DTerDm3b9bjt9TxW5zOOpLEij2bud+IVD3MQDCdBp7nOCEV/RKhsrl9VMniYWgrBh9XHWTZVCXknR+OSdPK/kf1l1m9PZC6m2P0R84U6JlqkmW4Lo7CK+PXTCIbdErA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=upRiSsJl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80BAAC4CEC4;
+	Mon, 16 Sep 2024 12:05:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488031;
-	bh=4IR5LjgKmFL7IuEavhVQRmIt2zN9mwgi06NQKfoQn9E=;
+	s=korg; t=1726488338;
+	bh=dMqpoLtYXdPGBHUEbs7Y4t7aDrzsV8XPpiG47NNAGRk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=erfkpmaVed/nQiUS0BRvNbU6zX8UAcvCInJ8AsXu7edcCzSjXPDslMYDzFM9ClUd5
-	 BFS3kK34b13NHuDHlGFSyTxfA9q4jU3cPVaNW5kKTY/rftXJ6cBuZJZr+87QdgT6Gm
-	 XE8gN9tCgV4nAjDq30fJGvH5GKnmYRvOe7TM3TM8=
+	b=upRiSsJlVQGWYQZCAFQr0slumQznQ+H+cw3s0UcUVLR7wHMnEr1dVtlVyhULGaHYF
+	 c4wZ2m7a7puq9Pd7JSDpOqBXq4Tcr+Ed2s5VWcGAZeg/cJbi5pSRGuRuG9adl/gF3O
+	 nWU+fDr58yyu6EPjLUmu5BHByDlBJA+Qh0oAMq7g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Carolina Jubran <cjubran@nvidia.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 34/63] eeprom: digsy_mtc: Fix 93xx46 driver probe failure
+Subject: [PATCH 6.10 079/121] net/mlx5: Explicitly set scheduling element and TSAR type
 Date: Mon, 16 Sep 2024 13:44:13 +0200
-Message-ID: <20240916114222.275533975@linuxfoundation.org>
+Message-ID: <20240916114231.768351714@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
-References: <20240916114221.021192667@linuxfoundation.org>
+In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
+References: <20240916114228.914815055@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Carolina Jubran <cjubran@nvidia.com>
 
-[ Upstream commit 2b82641ad0620b2d71dc05024b20f82db7e1c0b6 ]
+[ Upstream commit c88146abe4d0f8cf659b2b8883fdc33936d2e3b8 ]
 
-The update to support other (bigger) types of EEPROMs broke
-the driver loading due to removal of the default size.
+Ensure the scheduling element type and TSAR type are explicitly
+initialized in the QoS rate group creation.
 
-Fix this by adding the respective (new) flag to the platform data.
+This prevents potential issues due to default values.
 
-Fixes: 14374fbb3f06 ("misc: eeprom_93xx46: Add new 93c56 and 93c66 compatible strings")
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20240508184905.2102633-3-andriy.shevchenko@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1ae258f8b343 ("net/mlx5: E-switch, Introduce rate limiting groups API")
+Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
+Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/misc/eeprom/digsy_mtc_eeprom.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/misc/eeprom/digsy_mtc_eeprom.c b/drivers/misc/eeprom/digsy_mtc_eeprom.c
-index f1f766b70965..4eddc5ba1af9 100644
---- a/drivers/misc/eeprom/digsy_mtc_eeprom.c
-+++ b/drivers/misc/eeprom/digsy_mtc_eeprom.c
-@@ -42,7 +42,7 @@ static void digsy_mtc_op_finish(void *p)
- }
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
+index d2ebe56c3977..bcea5f06807a 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
+@@ -421,6 +421,7 @@ __esw_qos_create_rate_group(struct mlx5_eswitch *esw, struct netlink_ext_ack *ex
+ {
+ 	u32 tsar_ctx[MLX5_ST_SZ_DW(scheduling_context)] = {};
+ 	struct mlx5_esw_rate_group *group;
++	__be32 *attr;
+ 	u32 divider;
+ 	int err;
  
- struct eeprom_93xx46_platform_data digsy_mtc_eeprom_data = {
--	.flags		= EE_ADDR8,
-+	.flags		= EE_ADDR8 | EE_SIZE1K,
- 	.prepare	= digsy_mtc_op_prepare,
- 	.finish		= digsy_mtc_op_finish,
- };
+@@ -428,6 +429,12 @@ __esw_qos_create_rate_group(struct mlx5_eswitch *esw, struct netlink_ext_ack *ex
+ 	if (!group)
+ 		return ERR_PTR(-ENOMEM);
+ 
++	MLX5_SET(scheduling_context, tsar_ctx, element_type,
++		 SCHEDULING_CONTEXT_ELEMENT_TYPE_TSAR);
++
++	attr = MLX5_ADDR_OF(scheduling_context, tsar_ctx, element_attributes);
++	*attr = cpu_to_be32(TSAR_ELEMENT_TSAR_TYPE_DWRR << 16);
++
+ 	MLX5_SET(scheduling_context, tsar_ctx, parent_element_id,
+ 		 esw->qos.root_tsar_ix);
+ 	err = mlx5_create_scheduling_element_cmd(esw->dev,
 -- 
 2.43.0
 
