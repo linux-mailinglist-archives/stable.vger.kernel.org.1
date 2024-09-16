@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-76354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76262-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0F7897A159
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:07:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BE5497A0D6
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:01:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F3BFB1C2364D
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:07:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2120B281758
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:01:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D297157492;
-	Mon, 16 Sep 2024 12:05:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0A14155359;
+	Mon, 16 Sep 2024 12:01:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mCC4lP+X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ppb1nxNA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B24915747A;
-	Mon, 16 Sep 2024 12:05:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E730154C04;
+	Mon, 16 Sep 2024 12:01:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488353; cv=none; b=XTIdlUXfD+D4EgaoJOysEVIDc+BeFkCPC7Cap8M9KUNZEbTQjBKkAG3bERcKeOhGLCpQnxhdf8sUCtfkJ3ZGj+V7fOkKV7UmzEaHZTWwe3IPubTawrcfoW9jjTfVbfCODiECjf0mqkaRTU4SyXq42eWWhElKJghHZIRPrkAXkx8=
+	t=1726488091; cv=none; b=D8JKWTHA6PfDS0QE7U6QmgAo81Q++CgpNgPy53gfgcOjLDwsZKg8xOXUs0rAYm/geyZTJUMJ4KUVq3HSgSyG6eV6X3HABqvvEH7Ice3Aq3GloonafTyQ4Fhh7VEvxtC9z3MlmW6uMQ5b5w+T5sJebT3ZiERamhEK6ZtSOdJyYJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488353; c=relaxed/simple;
-	bh=KxRdqDsw0Fh4wUBwusUHg9EbsijuYQ2NDAGuK24q/1E=;
+	s=arc-20240116; t=1726488091; c=relaxed/simple;
+	bh=ITvW5htVREudHmWjPwRZ/zNK1cS+X/yzWNHJpRgNDTU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Umc/nHX0wzhhBESOKVgQ1lhTI8w600+R7p4k1uvabE85mosk3XHsylQmY0A96yU1WuoGheivUIM8DKQ6i4/2v/oy9slK7spw0/aqvOmsUPmzL0nCP92rR2GA5ogQC1+A+3g5xzC0cLJpyAMBch6bEFgU6Sw6J3RrdWbje82+XZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mCC4lP+X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8C91C4CEC4;
-	Mon, 16 Sep 2024 12:05:52 +0000 (UTC)
+	 MIME-Version; b=tj1mpULFraADJxIyqVGTSb6+KciWtcNBXDtHLLZk3ex5266wGIgZeoyCmoPdWme64y3vxLkOUVKldF0/GGRkiQ3eurUlshMZNkOgDSVxMa7n8vax653BkhMZvTdYwwktAOAhJgOdLcMWdnflgo9vXRR/bqAshLZuPKpgEtKsQP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ppb1nxNA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC05DC4CEC4;
+	Mon, 16 Sep 2024 12:01:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488353;
-	bh=KxRdqDsw0Fh4wUBwusUHg9EbsijuYQ2NDAGuK24q/1E=;
+	s=korg; t=1726488091;
+	bh=ITvW5htVREudHmWjPwRZ/zNK1cS+X/yzWNHJpRgNDTU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mCC4lP+Xcjllrsx0MkpqVjCN+z1qu93RXj+XcUY1fofldj3pUvXTeBmFFPuoDkhe0
-	 TAS+1pVoTJzX0jPalRlBMxjKwCFHdND9XG6VZPoFY0Q7CNx47h9Jb3mqY2bTQHdX5m
-	 5FcrnNzxN152ZWUgiQYouamgHpfYANuoXpsX3d8w=
+	b=Ppb1nxNAycFOW12EEThP6B7RfhQf5llnJQiCkVZQD+8nP7Sf2JNPE/rmg0Y27r+5D
+	 i/lMNMLMXtPKVDaxZSznga/WGtDemUfu7X9R1zA5F+AgNrR1/9StQ51TEs2EOCG3S5
+	 cXwXC2LXDFMxO8N2AF9l9q+zG35+MauCM69RSp50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Poirier <bpoirier@nvidia.com>,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 083/121] net/mlx5: Fix bridge mode operations when there are no VFs
+Subject: [PATCH 6.1 38/63] ice: fix accounting for filters shared by multiple VSIs
 Date: Mon, 16 Sep 2024 13:44:17 +0200
-Message-ID: <20240916114231.892700273@linuxfoundation.org>
+Message-ID: <20240916114222.411493070@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
-References: <20240916114228.914815055@linuxfoundation.org>
+In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
+References: <20240916114221.021192667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,80 +63,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Poirier <bpoirier@nvidia.com>
+From: Jacob Keller <jacob.e.keller@intel.com>
 
-[ Upstream commit b1d305abef4640af1b4f1b4774d513cd81b10cfc ]
+[ Upstream commit e843cf7b34fe2e0c1afc55e1f3057375c9b77a14 ]
 
-Currently, trying to set the bridge mode attribute when numvfs=0 leads to a
-crash:
+When adding a switch filter (such as a MAC or VLAN filter), it is expected
+that the driver will detect the case where the filter already exists, and
+return -EEXIST. This is used by calling code such as ice_vc_add_mac_addr,
+and ice_vsi_add_vlan to avoid incrementing the accounting fields such as
+vsi->num_vlan or vf->num_mac.
 
-bridge link set dev eth2 hwmode vepa
+This logic works correctly for the case where only a single VSI has added a
+given switch filter.
 
-[  168.967392] BUG: kernel NULL pointer dereference, address: 0000000000000030
-[...]
-[  168.969989] RIP: 0010:mlx5_add_flow_rules+0x1f/0x300 [mlx5_core]
-[...]
-[  168.976037] Call Trace:
-[  168.976188]  <TASK>
-[  168.978620]  _mlx5_eswitch_set_vepa_locked+0x113/0x230 [mlx5_core]
-[  168.979074]  mlx5_eswitch_set_vepa+0x7f/0xa0 [mlx5_core]
-[  168.979471]  rtnl_bridge_setlink+0xe9/0x1f0
-[  168.979714]  rtnetlink_rcv_msg+0x159/0x400
-[  168.980451]  netlink_rcv_skb+0x54/0x100
-[  168.980675]  netlink_unicast+0x241/0x360
-[  168.980918]  netlink_sendmsg+0x1f6/0x430
-[  168.981162]  ____sys_sendmsg+0x3bb/0x3f0
-[  168.982155]  ___sys_sendmsg+0x88/0xd0
-[  168.985036]  __sys_sendmsg+0x59/0xa0
-[  168.985477]  do_syscall_64+0x79/0x150
-[  168.987273]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-[  168.987773] RIP: 0033:0x7f8f7950f917
+When a second VSI adds the same switch filter, the driver converts the
+existing filter from an ICE_FWD_TO_VSI filter into an ICE_FWD_TO_VSI_LIST
+filter. This saves switch resources, by ensuring that multiple VSIs can
+re-use the same filter.
 
-(esw->fdb_table.legacy.vepa_fdb is null)
+The ice_add_update_vsi_list() function is responsible for doing this
+conversion. When first converting a filter from the FWD_TO_VSI into
+FWD_TO_VSI_LIST, it checks if the VSI being added is the same as the
+existing rule's VSI. In such a case it returns -EEXIST.
 
-The bridge mode is only relevant when there are multiple functions per
-port. Therefore, prevent setting and getting this setting when there are no
-VFs.
+However, when the switch rule has already been converted to a
+FWD_TO_VSI_LIST, the logic is different. Adding a new VSI in this case just
+requires extending the VSI list entry. The logic for checking if the rule
+already exists in this case returns 0 instead of -EEXIST.
 
-Note that after this change, there are no settings to change on the PF
-interface using `bridge link` when there are no VFs, so the interface no
-longer appears in the `bridge link` output.
+This breaks the accounting logic mentioned above, so the counters for how
+many MAC and VLAN filters exist for a given VF or VSI no longer accurately
+reflect the actual count. This breaks other code which relies on these
+counts.
 
-Fixes: 4b89251de024 ("net/mlx5: Support ndo bridge_setlink and getlink")
-Signed-off-by: Benjamin Poirier <bpoirier@nvidia.com>
-Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+In typical usage this primarily affects such filters generally shared by
+multiple VSIs such as VLAN 0, or broadcast and multicast MAC addresses.
+
+Fix this by correctly reporting -EEXIST in the case of adding the same VSI
+to a switch rule already converted to ICE_FWD_TO_VSI_LIST.
+
+Fixes: 9daf8208dd4d ("ice: Add support for switch filter programming")
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/esw/legacy.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_switch.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/legacy.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/legacy.c
-index 255bc8b749f9..8587cd572da5 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/esw/legacy.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/legacy.c
-@@ -319,7 +319,7 @@ int mlx5_eswitch_set_vepa(struct mlx5_eswitch *esw, u8 setting)
- 		return -EPERM;
+diff --git a/drivers/net/ethernet/intel/ice/ice_switch.c b/drivers/net/ethernet/intel/ice/ice_switch.c
+index 735f995a3a68..dc4ce3bd412d 100644
+--- a/drivers/net/ethernet/intel/ice/ice_switch.c
++++ b/drivers/net/ethernet/intel/ice/ice_switch.c
+@@ -3061,7 +3061,7 @@ ice_add_update_vsi_list(struct ice_hw *hw,
  
- 	mutex_lock(&esw->state_lock);
--	if (esw->mode != MLX5_ESWITCH_LEGACY) {
-+	if (esw->mode != MLX5_ESWITCH_LEGACY || !mlx5_esw_is_fdb_created(esw)) {
- 		err = -EOPNOTSUPP;
- 		goto out;
- 	}
-@@ -339,7 +339,7 @@ int mlx5_eswitch_get_vepa(struct mlx5_eswitch *esw, u8 *setting)
- 	if (!mlx5_esw_allowed(esw))
- 		return -EPERM;
+ 		/* A rule already exists with the new VSI being added */
+ 		if (test_bit(vsi_handle, m_entry->vsi_list_info->vsi_map))
+-			return 0;
++			return -EEXIST;
  
--	if (esw->mode != MLX5_ESWITCH_LEGACY)
-+	if (esw->mode != MLX5_ESWITCH_LEGACY || !mlx5_esw_is_fdb_created(esw))
- 		return -EOPNOTSUPP;
- 
- 	*setting = esw->fdb_table.legacy.vepa_uplink_rule ? 1 : 0;
+ 		/* Update the previously created VSI list set with
+ 		 * the new VSI ID passed in
 -- 
 2.43.0
 
