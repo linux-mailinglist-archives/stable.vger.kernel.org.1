@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-76360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28EDC97A160
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:07:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7AB6297A1E1
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:11:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E87552874C9
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:07:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3A153286209
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:11:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3C681581E1;
-	Mon, 16 Sep 2024 12:06:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAF84155352;
+	Mon, 16 Sep 2024 12:11:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ukNd8r7d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jCGnGArk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C78114D439;
-	Mon, 16 Sep 2024 12:06:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A5AC1547F5;
+	Mon, 16 Sep 2024 12:11:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488370; cv=none; b=BgIeklpceov/wrT72qrg3bQNDHxkLjPcCANzrND3D/lZmgZFi/yFeRTUzSdBmZ9tc6d/TajwoJgR6sdiI+50am6domKm55chTtvpLJtL/c5lPHhk1QH+BWULIunLeB+HvYawC/0jTU+/3GWPhkrXQ0+O/X71DjUAge0ON9iquHg=
+	t=1726488678; cv=none; b=gssJs8UTo3bg08s4yCSCF+TbYgnip3vib2ao6Bpq21bFitFjqvtXgzVKyFgkpvcW64lDuXFWVNlAvznGcSkmACPr5WAmpRVj40wSxd+a7l7XaYREt8rEIPGhuO7FPitj3MOsRaYILlOa1W7/71VU7ge7K4HhSCwo4QRrChl/lJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488370; c=relaxed/simple;
-	bh=HVLKDCHvscOm1sKOa5Mz6gTewVKnO2kbkYfjm2fU2YI=;
+	s=arc-20240116; t=1726488678; c=relaxed/simple;
+	bh=n17P9zxYxzjCmCgFvr+5WUgZh0bSdQmoCRuGhxOdJSI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uIIwB5bwyT6e12yd9BubgF3qvfGbbvMs0lVXXFd1TeBHQr4jmmRS2n3Fi4x0Shx7lSapY/oBkoEfZcUJT25m8+AYlfTjthd0q3YbPFkQ2A8s6G4Q93lKL4ZoTTm9wcQcqR8D4b4EdXjpQl+oR9/Ab1XtbGj7u6d46GaXRXD/g88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ukNd8r7d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA9F6C4CEC4;
-	Mon, 16 Sep 2024 12:06:09 +0000 (UTC)
+	 MIME-Version; b=UPt7QCvMaq04/icAJXlhK/yBNfCKsBkSqfWruicpq+TD0yScze/4xwgd0De/wMoVh8Gfkp7dED7kwBYVSyvmvzWYygts15DrKPozPUWMh7VmOW3jUfn2V6Rv5LNHGw1Zi00M7QUNWcH4BQNCnhhUvHFb0Wdfx2K91mqtEaTcIvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jCGnGArk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13EC8C4CEC4;
+	Mon, 16 Sep 2024 12:11:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488370;
-	bh=HVLKDCHvscOm1sKOa5Mz6gTewVKnO2kbkYfjm2fU2YI=;
+	s=korg; t=1726488678;
+	bh=n17P9zxYxzjCmCgFvr+5WUgZh0bSdQmoCRuGhxOdJSI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ukNd8r7dtJSaTl1oVXwzdufsuUt5fjXx4dT+m4sNbrzuBGFcubWeFijEKrEDMY9jS
-	 RgpiH44Rnm4fCwVqYsVa/Hddg7BAPyHsgdOJiYq6aG1u9gnlGKnX8r6I1qr2K2QfmX
-	 6i6a3pmMpdSENJZ3xL0jz8EAlOKfhdgYRarlsv8s=
+	b=jCGnGArkr8k+bpZNLFTHT1sN4AZ//WMK7YUmFe150s8/yEsXBJ8lAuFGc840nP0Ox
+	 fDvoqfKDlAhssAR5cJJkvK58vObOskwykke8YbzeqT0902O/pqtmPuEwywzHsFMHPX
+	 xe55iWJ+Osm7V6b6tC6btecI8SNwBZdfsizifBro=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nam Cao <namcao@linutronix.de>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Anup Patel <anup@brainfault.org>,
-	Andrea Parri <parri.andrea@gmail.com>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
+	FUKAUMI Naoki <naoki@radxa.com>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 089/121] drivers: perf: Fix smp_processor_id() use in preemptible code
-Date: Mon, 16 Sep 2024 13:44:23 +0200
-Message-ID: <20240916114232.093364599@linuxfoundation.org>
+Subject: [PATCH 6.6 48/91] arm64: dts: rockchip: fix PMIC interrupt pin in pinctrl for ROCK Pi E
+Date: Mon, 16 Sep 2024 13:44:24 +0200
+Message-ID: <20240916114226.089835309@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
-References: <20240916114228.914815055@linuxfoundation.org>
+In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
+References: <20240916114224.509743970@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,62 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
+From: FUKAUMI Naoki <naoki@radxa.com>
 
-[ Upstream commit 2840dadf0dde92638d13b97998026c5fcddbdceb ]
+[ Upstream commit c623e9daf60a0275d623ce054601550e54987f5b ]
 
-As reported in [1], the use of smp_processor_id() in
-pmu_sbi_device_probe() must be protected by disabling the preemption, so
-simple use get_cpu()/put_cpu() instead.
+use GPIO0_A2 as PMIC interrupt pin in pinctrl.
+(I forgot to fix this part in previous commit.)
 
-Reported-by: Nam Cao <namcao@linutronix.de>
-Closes: https://lore.kernel.org/linux-riscv/20240820074925.ReMKUPP3@linutronix.de/ [1]
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Reviewed-by: Anup Patel <anup@brainfault.org>
-Tested-by: Nam Cao <namcao@linutronix.de>
-Fixes: a8625217a054 ("drivers/perf: riscv: Implement SBI PMU snapshot function")
-Reported-by: Andrea Parri <parri.andrea@gmail.com>
-Tested-by: Andrea Parri <parri.andrea@gmail.com>
-Link: https://lore.kernel.org/r/20240826165210.124696-1-alexghiti@rivosinc.com
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Fixes: 02afd3d5b9fa ("arm64: dts: rockchip: fix PMIC interrupt pin on ROCK Pi E")
+Signed-off-by: FUKAUMI Naoki <naoki@radxa.com>
+Link: https://lore.kernel.org/r/20240722095216.1656081-1-naoki@radxa.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/riscv_pmu_sbi.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/rockchip/rk3328-rock-pi-e.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/perf/riscv_pmu_sbi.c b/drivers/perf/riscv_pmu_sbi.c
-index 11c7c85047ed..765bda7924f7 100644
---- a/drivers/perf/riscv_pmu_sbi.c
-+++ b/drivers/perf/riscv_pmu_sbi.c
-@@ -1368,11 +1368,15 @@ static int pmu_sbi_device_probe(struct platform_device *pdev)
+diff --git a/arch/arm64/boot/dts/rockchip/rk3328-rock-pi-e.dts b/arch/arm64/boot/dts/rockchip/rk3328-rock-pi-e.dts
+index d9905a08c6ce..66443d52cd34 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3328-rock-pi-e.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3328-rock-pi-e.dts
+@@ -332,7 +332,7 @@ led_pin: led-pin {
  
- 	/* SBI PMU Snapsphot is only available in SBI v2.0 */
- 	if (sbi_v2_available) {
-+		int cpu;
-+
- 		ret = pmu_sbi_snapshot_alloc(pmu);
- 		if (ret)
- 			goto out_unregister;
+ 	pmic {
+ 		pmic_int_l: pmic-int-l {
+-			rockchip,pins = <2 RK_PA6 RK_FUNC_GPIO &pcfg_pull_up>;
++			rockchip,pins = <0 RK_PA2 RK_FUNC_GPIO &pcfg_pull_up>;
+ 		};
+ 	};
  
--		ret = pmu_sbi_snapshot_setup(pmu, smp_processor_id());
-+		cpu = get_cpu();
-+
-+		ret = pmu_sbi_snapshot_setup(pmu, cpu);
- 		if (ret) {
- 			/* Snapshot is an optional feature. Continue if not available */
- 			pmu_sbi_snapshot_free(pmu);
-@@ -1386,6 +1390,7 @@ static int pmu_sbi_device_probe(struct platform_device *pdev)
- 			 */
- 			static_branch_enable(&sbi_pmu_snapshot_available);
- 		}
-+		put_cpu();
- 	}
- 
- 	register_sysctl("kernel", sbi_pmu_sysctl_table);
 -- 
 2.43.0
 
