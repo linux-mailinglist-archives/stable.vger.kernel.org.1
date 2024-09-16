@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-76431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E749397A1B9
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:09:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9BA497A0E8
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:02:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC5932856F3
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:09:46 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FFB01F229EB
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:02:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D248815687D;
-	Mon, 16 Sep 2024 12:09:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBD771547FF;
+	Mon, 16 Sep 2024 12:02:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D6W4qiIF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R2bmg/1G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EB5C156641;
-	Mon, 16 Sep 2024 12:09:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A5E514B946;
+	Mon, 16 Sep 2024 12:02:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488573; cv=none; b=bVuZfmNbqZD8W+V6DTT6hTbUzVXvdVWq/5otqnGJB/PQJFy/9AfxdHuWi/wE2OoBnzDIlIh1NlJIUKdGeuTf2qpp49y83Rz5ed8WvhBVault8fc3SnW3VqDOweZTqW+Jyny5hJw5T79wm8p6Dq8NAM0XV2QbyLVeUp2uDlwZ4SE=
+	t=1726488136; cv=none; b=kNw+Q0BNeoEDS5O67esOXIOk1m+jSySMSTRXVAuJHPDGgUmUiN+dKVwJfX8KkakPuObPs7TAHTW/ZOQy85v3Wlcby9dQqYJa9wmD2jIJRWGQe3nl8jVQSU46j9qzAgiERVKoqLAnVBE3wbY+qUgwI1nQdandCzNNoP/VgN31/Y8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488573; c=relaxed/simple;
-	bh=fHehPeyjBEUC+Pny3ytC3pSLTWJhQ/Wg9H0CfOf63Zg=;
+	s=arc-20240116; t=1726488136; c=relaxed/simple;
+	bh=99AFPWlBUSHZJVJ69OqatdfjMZ3TQux5TB9C7i1Kieg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KP/zxR2O8eAALN+NJieYpqf8V5khicKNnAVSpKzTfka35HCNyZO+wuGUtRZqrtD/QEnD2iOR9p2H0GQF0DP316cmbsOhJ2AICEH7i7m85Pt//tRYJI9/XNOacqPkqkphzOkuhNxY2chqKaRMGq1EETRizQBxihmLHEiZo6p+YWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D6W4qiIF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 033BAC4CEC7;
-	Mon, 16 Sep 2024 12:09:32 +0000 (UTC)
+	 MIME-Version; b=pM+wIU7IO8avKytFW/h/c7Bv3Mrs6C1klhJOA+M7k3UNCgFVWXCkR8xiipVayMTmwgegUuIHHO//lyH27Q6L8PGsSlZvp1c6g4qU8yIkyHFTIZTJc7Vi2mMJxfo+yrJ8ftpRj58rnI9wZQYdQQPUkYncJH5UXr71S9VSx3vo7is=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R2bmg/1G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF17DC4CEC4;
+	Mon, 16 Sep 2024 12:02:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488573;
-	bh=fHehPeyjBEUC+Pny3ytC3pSLTWJhQ/Wg9H0CfOf63Zg=;
+	s=korg; t=1726488136;
+	bh=99AFPWlBUSHZJVJ69OqatdfjMZ3TQux5TB9C7i1Kieg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D6W4qiIFT9+aatAAg/aF3GEfhP7GyfdODXW8vbj1dhNA4SCgCa4QQ359Hz7FHTSH4
-	 l8o+x5U+jaVTzACcHOpvrAMkwMQhLY3zE/iKyRfplC1hSK1gP8KfTgJIwlz5e6s04O
-	 V5iKNB1a2JtNekIDduLrhkGb2KLy81WjtyZZyGGw=
+	b=R2bmg/1G5Go0UoXJ+cyzbyMtnjrxr2dASqV/qDWk2/0hoPYi5E040KeLwx2iC6y0R
+	 06z3pZBaI4Fi0eUJR52CA0ULxh73UJfk1efJsriudaafoNOzlREA1O8z3VYc/NxHaD
+	 DPMFb62zfRl4T9xeqa9PRbyOmDnDhUpfWjVg/3+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Edward Adam Davis <eadavis@qq.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	syzbot+f3a31fb909db9b2a5c4d@syzkaller.appspotmail.com
-Subject: [PATCH 6.6 38/91] mptcp: pm: Fix uaf in __timer_delete_sync
-Date: Mon, 16 Sep 2024 13:44:14 +0200
-Message-ID: <20240916114225.775782419@linuxfoundation.org>
+	Jakub Sitnicki <jakub@cloudflare.com>,
+	Michal Luczaj <mhal@rbox.co>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 36/63] selftests/bpf: Support SOCK_STREAM in unix_inet_redir_to_connected()
+Date: Mon, 16 Sep 2024 13:44:15 +0200
+Message-ID: <20240916114222.338950446@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
-References: <20240916114224.509743970@linuxfoundation.org>
+In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
+References: <20240916114221.021192667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,95 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Michal Luczaj <mhal@rbox.co>
 
-commit b4cd80b0338945a94972ac3ed54f8338d2da2076 upstream.
+[ Upstream commit 1b0ad43177c097d38b967b99c2b71d8be28b0223 ]
 
-There are two paths to access mptcp_pm_del_add_timer, result in a race
-condition:
+Function ignores the AF_UNIX socket type argument, SOCK_DGRAM is hardcoded.
+Fix to respect the argument provided.
 
-     CPU1				CPU2
-     ====                               ====
-     net_rx_action
-     napi_poll                          netlink_sendmsg
-     __napi_poll                        netlink_unicast
-     process_backlog                    netlink_unicast_kernel
-     __netif_receive_skb                genl_rcv
-     __netif_receive_skb_one_core       netlink_rcv_skb
-     NF_HOOK                            genl_rcv_msg
-     ip_local_deliver_finish            genl_family_rcv_msg
-     ip_protocol_deliver_rcu            genl_family_rcv_msg_doit
-     tcp_v4_rcv                         mptcp_pm_nl_flush_addrs_doit
-     tcp_v4_do_rcv                      mptcp_nl_remove_addrs_list
-     tcp_rcv_established                mptcp_pm_remove_addrs_and_subflows
-     tcp_data_queue                     remove_anno_list_by_saddr
-     mptcp_incoming_options             mptcp_pm_del_add_timer
-     mptcp_pm_del_add_timer             kfree(entry)
-
-In remove_anno_list_by_saddr(running on CPU2), after leaving the critical
-zone protected by "pm.lock", the entry will be released, which leads to the
-occurrence of uaf in the mptcp_pm_del_add_timer(running on CPU1).
-
-Keeping a reference to add_timer inside the lock, and calling
-sk_stop_timer_sync() with this reference, instead of "entry->add_timer".
-
-Move list_del(&entry->list) to mptcp_pm_del_add_timer and inside the pm lock,
-do not directly access any members of the entry outside the pm lock, which
-can avoid similar "entry->x" uaf.
-
-Fixes: 00cfd77b9063 ("mptcp: retransmit ADD_ADDR when timeout")
-Cc: stable@vger.kernel.org
-Reported-and-tested-by: syzbot+f3a31fb909db9b2a5c4d@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=f3a31fb909db9b2a5c4d
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://patch.msgid.link/tencent_7142963A37944B4A74EF76CD66EA3C253609@qq.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 75e0e27db6cf ("selftest/bpf: Change udp to inet in some function names")
+Suggested-by: Jakub Sitnicki <jakub@cloudflare.com>
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Tested-by: Jakub Sitnicki <jakub@cloudflare.com>
+Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
+Link: https://lore.kernel.org/bpf/20240713200218.2140950-3-mhal@rbox.co
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mptcp/pm_netlink.c |   13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ tools/testing/selftests/bpf/prog_tests/sockmap_listen.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -339,15 +339,21 @@ mptcp_pm_del_add_timer(struct mptcp_sock
- {
- 	struct mptcp_pm_add_entry *entry;
- 	struct sock *sk = (struct sock *)msk;
-+	struct timer_list *add_timer = NULL;
+diff --git a/tools/testing/selftests/bpf/prog_tests/sockmap_listen.c b/tools/testing/selftests/bpf/prog_tests/sockmap_listen.c
+index 2cf0c7a3fe23..cef5d3595171 100644
+--- a/tools/testing/selftests/bpf/prog_tests/sockmap_listen.c
++++ b/tools/testing/selftests/bpf/prog_tests/sockmap_listen.c
+@@ -1909,7 +1909,7 @@ static void unix_inet_redir_to_connected(int family, int type, int sock_mapfd,
+ 	if (err)
+ 		return;
  
- 	spin_lock_bh(&msk->pm.lock);
- 	entry = mptcp_lookup_anno_list_by_saddr(msk, addr);
--	if (entry && (!check_id || entry->addr.id == addr->id))
-+	if (entry && (!check_id || entry->addr.id == addr->id)) {
- 		entry->retrans_times = ADD_ADDR_RETRANS_MAX;
-+		add_timer = &entry->add_timer;
-+	}
-+	if (!check_id && entry)
-+		list_del(&entry->list);
- 	spin_unlock_bh(&msk->pm.lock);
+-	if (socketpair(AF_UNIX, SOCK_DGRAM | SOCK_NONBLOCK, 0, sfd))
++	if (socketpair(AF_UNIX, type | SOCK_NONBLOCK, 0, sfd))
+ 		goto close_cli0;
+ 	c1 = sfd[0], p1 = sfd[1];
  
--	if (entry && (!check_id || entry->addr.id == addr->id))
--		sk_stop_timer_sync(sk, &entry->add_timer);
-+	/* no lock, because sk_stop_timer_sync() is calling del_timer_sync() */
-+	if (add_timer)
-+		sk_stop_timer_sync(sk, add_timer);
- 
- 	return entry;
+@@ -1944,7 +1944,6 @@ static void unix_inet_redir_to_connected(int family, int type, int sock_mapfd,
+ close_cli0:
+ 	xclose(c0);
+ 	xclose(p0);
+-
  }
-@@ -1493,7 +1499,6 @@ static bool remove_anno_list_by_saddr(st
  
- 	entry = mptcp_pm_del_add_timer(msk, addr, false);
- 	if (entry) {
--		list_del(&entry->list);
- 		kfree(entry);
- 		return true;
- 	}
+ static void unix_inet_skb_redir_to_connected(struct test_sockmap_listen *skel,
+-- 
+2.43.0
+
 
 
 
