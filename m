@@ -1,114 +1,85 @@
-Return-Path: <stable+bounces-76514-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9D49F97A6BA
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 19:27:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3101797A6C2
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 19:28:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C451A1C27018
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 17:27:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EAD47282769
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 17:28:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7BE315B97E;
-	Mon, 16 Sep 2024 17:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1422415C13C;
+	Mon, 16 Sep 2024 17:27:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CCILYzyJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OGwMdUur"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89CDF15AAC8;
-	Mon, 16 Sep 2024 17:27:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD00115B57C;
+	Mon, 16 Sep 2024 17:27:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726507623; cv=none; b=N+QALJEmLsNYUW5eNW3zUBzH5Z2Wa344e/PSfuou9KX8stPfgOXCWOQqCHYLcU/4aL3zfe+x63xenMHLvkTMjGplo5LkCzdkU0/YP4GeipHu2KssIWoJUVLzUnHu7xbhrZHLu/askWRg3pJvpN8n9BmPnALZiZVH5yx9Gc6tXkE=
+	t=1726507643; cv=none; b=bj1kg92U0HiA/PBs8P7DPprSpxF8GvM0hwi2CIxm8MT327SYAvQId3cgcExufrUo6qSsxEfvgbhfpMJmXevhCcn6UUk+aWBt3kEEaCCP75VR3tZ2HlsoCPXeN98zKMyqXOaLzIwazEDGrFZrcSm639edQWrDIUeW+x2ZSVWz2AY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726507623; c=relaxed/simple;
-	bh=2FOD8FiK/h3Ovv4JzXzrjDug1ahckongn7Uoo/tlsCI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hczvPHjWXJhBCZoRSfdBZzo5I+sVztay5F91Bd8B6U8eXBretLeRwhenTJcgPi06i0R7pT45yF6eoTht0JC1iTNIrDD3maa5GyM4dn/gLbvXCdJPsgD5qa3vxEPMoB5cIOqWT1QqUK1TER5+7+XFPWK0/jXD6cXId5dq66qHjSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CCILYzyJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30F05C4CED2;
-	Mon, 16 Sep 2024 17:27:03 +0000 (UTC)
+	s=arc-20240116; t=1726507643; c=relaxed/simple;
+	bh=+xc3T+HS3P3D5SkUBrTbv9oBZix8vyeXWqLxN/v37hw=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=ZFXuHKICK/bestFSNws0HN0hgUX84igKEBGPg86d4feg6kPZKjR5IvcGptbT9+yuB1UDpBE6A2pJZmMuKDRVNd+orDGRa47vlOfhDllS5x4ylE1yYGnIMoW44sqTmAFtJpF1KG42WFn5S90mKRv2BJxr0CVx5VPnCAuSN+Tz8Hc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OGwMdUur; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3A8FC4CECD;
+	Mon, 16 Sep 2024 17:27:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726507623;
-	bh=2FOD8FiK/h3Ovv4JzXzrjDug1ahckongn7Uoo/tlsCI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CCILYzyJy0okcu+ucr1B9N9/NeNLkJOfwsqy1AG+ux/93td6XQJ91fLZn5/DvkxSF
-	 FpkE4ewwjbXG+Dkreo3v1Ax9Y24yPz9m6mpax6Vj7pUPnb4qGC7xO6cGNJj9L0wnzJ
-	 w/mMfnLmw0o566dgEROs62skvKhHogeMpPWwzkOg+33mmyIFpBrABiV7CTr2XqHz23
-	 MyUHWu6tk2WCdfcJkisI96NK4qCE50qm1aADnEWvXUfoNkj759pW7rhS5RY9dWnciS
-	 y+JCrom25qx4sfhdXm63bmV+xBzefTyJsFZ7nQdA+eEJPvr1WGdFQ/eTu0lG1yZ8FI
-	 hYSYUrXRYxWOg==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan+linaro@kernel.org>)
-	id 1sqFVS-00000000236-3osE;
-	Mon, 16 Sep 2024 19:27:22 +0200
-From: Johan Hovold <johan+linaro@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Jiri Slaby <jirislaby@kernel.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org,
-	Johan Hovold <johan+linaro@kernel.org>,
-	stable@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 2/3] serial: qcom-geni: fix shutdown race
-Date: Mon, 16 Sep 2024 19:26:41 +0200
-Message-ID: <20240916172642.7814-3-johan+linaro@kernel.org>
-X-Mailer: git-send-email 2.44.2
-In-Reply-To: <20240916172642.7814-1-johan+linaro@kernel.org>
-References: <20240916172642.7814-1-johan+linaro@kernel.org>
+	s=k20201202; t=1726507643;
+	bh=+xc3T+HS3P3D5SkUBrTbv9oBZix8vyeXWqLxN/v37hw=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
+	b=OGwMdUurv25xQUMpqd/gk4EsJohro4XBT+7bFHIO34BMX1rpbQitJb9nr0MSquAqV
+	 MTmwSDPscBqwuxU1cuMPj93hSDii+gzmwjsOW80tnNIGuYOrILhnLqQppDy54P+lQi
+	 Kt6tzOtNA+/aY+VFHdoDHr24YaCvClB+mwAm1ufMlco34mS245Oj0XmfSAtaVDLrDT
+	 vapy64YvVUE7+9uPsnQjAZl+F94b0aFUb8ZAGqYerIsdZ69cCFToD5AB8IXiFlkjHy
+	 q3BkqyeMj96iEImOSOfVSOohu4DhJNE92yFjWQo1E7X9i006kxzU2qdKNI3/K9TI+T
+	 J9zoxyNKyKukQ==
+From: Leon Romanovsky <leon@kernel.org>
+To: stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Vitaliy Shevtsov <v.shevtsov@maxima.ru>
+Cc: Mustafa Ismail <mustafa.ismail@intel.com>, 
+ Shiraz Saleem <shiraz.saleem@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>, 
+ linux-rdma@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ lvc-project@linuxtesting.org
+In-Reply-To: <20240916165817.14691-1-v.shevtsov@maxima.ru>
+References: <20240916165817.14691-1-v.shevtsov@maxima.ru>
+Subject: Re: [PATCH] RDMA/irdma: fix error message in
+ irdma_modify_qp_roce()
+Message-Id: <172650763993.4296.6996914379843619777.b4-ty@kernel.org>
+Date: Mon, 16 Sep 2024 20:27:19 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.15-dev-37811
 
-A commit adding back the stopping of tx on port shutdown failed to add
-back the locking which had also been removed by commit e83766334f96
-("tty: serial: qcom_geni_serial: No need to stop tx/rx on UART
-shutdown").
 
-Holding the port lock is needed to serialise against the console code,
-which may update the interrupt enable register and access the port
-state.
+On Mon, 16 Sep 2024 21:58:05 +0500, Vitaliy Shevtsov wrote:
+> Use a correct field max_dest_rd_atomic instead of max_rd_atomic for the
+> error output.
+> 
+> Found by Linux Verification Center (linuxtesting.org) with Svace.
+> 
+> 
 
-The call to stop rx that was added by the same commit is redundant as
-serial core will already have taken care of that and can thus be
-removed.
+Applied, thanks!
 
-Fixes: d8aca2f96813 ("tty: serial: qcom-geni-serial: stop operations in progress at shutdown")
-Fixes: 947cc4ecc06c ("serial: qcom-geni: fix soft lockup on sw flow control and suspend")
-Cc: stable@vger.kernel.org	# 6.3
-Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
----
- drivers/tty/serial/qcom_geni_serial.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+[1/1] RDMA/irdma: fix error message in irdma_modify_qp_roce()
+      https://git.kernel.org/rdma/rdma/c/9f0eafe86ea0a5
 
-diff --git a/drivers/tty/serial/qcom_geni_serial.c b/drivers/tty/serial/qcom_geni_serial.c
-index 9ea6bd09e665..88ad5a6e7de2 100644
---- a/drivers/tty/serial/qcom_geni_serial.c
-+++ b/drivers/tty/serial/qcom_geni_serial.c
-@@ -1096,10 +1096,10 @@ static void qcom_geni_serial_shutdown(struct uart_port *uport)
- {
- 	disable_irq(uport->irq);
- 
-+	uart_port_lock_irq(uport);
- 	qcom_geni_serial_stop_tx(uport);
--	qcom_geni_serial_stop_rx(uport);
--
- 	qcom_geni_serial_cancel_tx_cmd(uport);
-+	uart_port_unlock_irq(uport);
- }
- 
- static void qcom_geni_serial_flush_buffer(struct uart_port *uport)
+Best regards,
 -- 
-2.44.2
+Leon Romanovsky <leon@kernel.org>
 
 
