@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-76430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4BBF97A1B8
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:09:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2291C97A157
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:07:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9CFAE1F218FC
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:09:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8DBF8B240C1
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:07:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF075156872;
-	Mon, 16 Sep 2024 12:09:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B7F715747D;
+	Mon, 16 Sep 2024 12:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nv8UpR2X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UEqt1uuB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A58ED156641;
-	Mon, 16 Sep 2024 12:09:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD5BE156F53;
+	Mon, 16 Sep 2024 12:05:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488570; cv=none; b=lULctZVsWh6o9BJYahIRuMZ6swsDGf5y54ptjp/6bIxF0rMjdxfpO+ZRBgsrcLWBAEsjBGBlhQ3vXNZxqq7RpVk78v9vhRcwY++Xy6DuK1GeQ+zW6ViKz5tjxMJDvcwYtDpsChFbX1vE4+JzNbX3vdTkgSrOytVZF0jaqMzAaR8=
+	t=1726488342; cv=none; b=LyqJXP+r/9bahA9f3BR7PuMZSRoBqWVjHBsgeYLLOuBExGsnCQgbSYc3C0Z8HlL9PK1u/117iZ6ibSLKZjc4X4Mg9OF3T5BnbUEKbBRPB6FbD4IUhPGm6852xpBU5ilUyKWQXF0zUcZamzlAUfJB3DUmVHNWRa0OoFMJryb2Ai4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488570; c=relaxed/simple;
-	bh=fb457Zo1SeAQdk3d3omzSLtsSd/G29I3zzh29jZnJMQ=;
+	s=arc-20240116; t=1726488342; c=relaxed/simple;
+	bh=gJhqwPSWmeYte1jsmBwiihR9wPskCqWyqfc1nW12RzM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XgaHzz+YC9fi65cxu5WN6u8DJID9fDCkGRsfTUiitssmfoXBU4e3sIkL4THpfSl8rH9GH2xxRKl0eYCI+SqEbphbV/zx574sYpjvW+RGjjoY6cHOLsbsK1LEbhgjrVdi0XGJXQbKg/K+JOMTY1wfcNLTY/NfzoSsRGL00zgJZuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nv8UpR2X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E0A6C4CECE;
-	Mon, 16 Sep 2024 12:09:30 +0000 (UTC)
+	 MIME-Version; b=qLdjSL58x0EMhCSd6/1PDH7RXEYxm3+xtnl+f5vKFp8dfvuee0eXhVBSH24yhENPllw1lLEImnSqpslgbGQ7maspP+X34B8xxc1Bfx/jygo6RkgYNvsh+08A1hf45s0KofXWRa5Ru6Hcgk8DCMBATT4/gzTJrWV1ZjhIGO2QPKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UEqt1uuB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64587C4CEC4;
+	Mon, 16 Sep 2024 12:05:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488570;
-	bh=fb457Zo1SeAQdk3d3omzSLtsSd/G29I3zzh29jZnJMQ=;
+	s=korg; t=1726488341;
+	bh=gJhqwPSWmeYte1jsmBwiihR9wPskCqWyqfc1nW12RzM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nv8UpR2X2ITjqUq7AaH22rmKWBCLFrL49U2f+1W/N5fk6xxLIsDwa8jgPu4qeSp43
-	 HV+ezRlQFT50t5pag0zXgg00B2Rv6uAcO5/GKOxhwWQVFkVxO99eCkxSubJ0k7qt9v
-	 fsInBKj3XEVJ3/36g7W2E4wNzfbmAf2wdRX/LQbg=
+	b=UEqt1uuB/V1LARs92OF1qds9T3yd8jG99mVP38qhs1K8pEeGuc5wsusTlgyXedMyb
+	 ghEK7RdVZ/9KVoG7jtkaQSXc2KcH7oowiaSh0Z6V7W21/hMsZUKBFH0+J1JlONj/XB
+	 tG7ar6boOFlTh1qRUWaiECoVFLx7oAvn+WejiCdQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	James Harmison <jharmison@redhat.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.6 37/91] platform/x86: panasonic-laptop: Allocate 1 entry extra in the sinf array
-Date: Mon, 16 Sep 2024 13:44:13 +0200
-Message-ID: <20240916114225.738770671@linuxfoundation.org>
+	Carolina Jubran <cjubran@nvidia.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 080/121] net/mlx5: Add missing masks and QoS bit masks for scheduling elements
+Date: Mon, 16 Sep 2024 13:44:14 +0200
+Message-ID: <20240916114231.803181427@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
-References: <20240916114224.509743970@linuxfoundation.org>
+In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
+References: <20240916114228.914815055@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,67 +61,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Carolina Jubran <cjubran@nvidia.com>
 
-commit 33297cef3101d950cec0033a0dce0a2d2bd59999 upstream.
+[ Upstream commit 452ef7f86036392005940de54228d42ca0044192 ]
 
-Some DSDT-s have an off-by-one bug where the SINF package count is
-one higher than the SQTY reported value, allocate 1 entry extra.
+Add the missing masks for supported element types and Transmit
+Scheduling Arbiter (TSAR) types in scheduling elements.
 
-Also make the SQTY <-> SINF package count mismatch error more verbose
-to help debugging similar issues in the future.
+Also, add the corresponding bit masks for these types in the QoS
+capabilities of a NIC scheduler.
 
-This fixes the panasonic-laptop driver failing to probe() on some
-devices with the following errors:
-
-[    3.958887] SQTY reports bad SINF length SQTY: 37 SINF-pkg-count: 38
-[    3.958892] Couldn't retrieve BIOS data
-[    3.983685] Panasonic Laptop Support - With Macros: probe of MAT0019:00 failed with error -5
-
-Fixes: 709ee531c153 ("panasonic-laptop: add Panasonic Let's Note laptop extras driver v0.94")
-Cc: stable@vger.kernel.org
-Tested-by: James Harmison <jharmison@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240909113227.254470-2-hdegoede@redhat.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 214baf22870c ("net/mlx5e: Support HTB offload")
+Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
+Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/panasonic-laptop.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ include/linux/mlx5/mlx5_ifc.h | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/drivers/platform/x86/panasonic-laptop.c
-+++ b/drivers/platform/x86/panasonic-laptop.c
-@@ -337,7 +337,8 @@ static int acpi_pcc_retrieve_biosdata(st
- 	}
+diff --git a/include/linux/mlx5/mlx5_ifc.h b/include/linux/mlx5/mlx5_ifc.h
+index d45bfb7cf81d..d4dd7e2d8ffe 100644
+--- a/include/linux/mlx5/mlx5_ifc.h
++++ b/include/linux/mlx5/mlx5_ifc.h
+@@ -1027,7 +1027,8 @@ struct mlx5_ifc_qos_cap_bits {
  
- 	if (pcc->num_sifr < hkey->package.count) {
--		pr_err("SQTY reports bad SINF length\n");
-+		pr_err("SQTY reports bad SINF length SQTY: %lu SINF-pkg-count: %u\n",
-+		       pcc->num_sifr, hkey->package.count);
- 		status = AE_ERROR;
- 		goto end;
- 	}
-@@ -994,6 +995,12 @@ static int acpi_pcc_hotkey_add(struct ac
- 		return -ENODEV;
- 	}
+ 	u8         max_tsar_bw_share[0x20];
  
-+	/*
-+	 * Some DSDT-s have an off-by-one bug where the SINF package count is
-+	 * one higher than the SQTY reported value, allocate 1 entry extra.
-+	 */
-+	num_sifr++;
+-	u8         reserved_at_100[0x20];
++	u8         nic_element_type[0x10];
++	u8         nic_tsar_type[0x10];
+ 
+ 	u8         reserved_at_120[0x3];
+ 	u8         log_meter_aso_granularity[0x5];
+@@ -3916,6 +3917,7 @@ enum {
+ 	ELEMENT_TYPE_CAP_MASK_VPORT		= 1 << 1,
+ 	ELEMENT_TYPE_CAP_MASK_VPORT_TC		= 1 << 2,
+ 	ELEMENT_TYPE_CAP_MASK_PARA_VPORT_TC	= 1 << 3,
++	ELEMENT_TYPE_CAP_MASK_QUEUE_GROUP	= 1 << 4,
+ };
+ 
+ struct mlx5_ifc_scheduling_context_bits {
+@@ -4623,6 +4625,12 @@ enum {
+ 	TSAR_ELEMENT_TSAR_TYPE_ETS = 0x2,
+ };
+ 
++enum {
++	TSAR_TYPE_CAP_MASK_DWRR		= 1 << 0,
++	TSAR_TYPE_CAP_MASK_ROUND_ROBIN	= 1 << 1,
++	TSAR_TYPE_CAP_MASK_ETS		= 1 << 2,
++};
 +
- 	pcc = kzalloc(sizeof(struct pcc_acpi), GFP_KERNEL);
- 	if (!pcc) {
- 		pr_err("Couldn't allocate mem for pcc");
+ struct mlx5_ifc_tsar_element_bits {
+ 	u8         reserved_at_0[0x8];
+ 	u8         tsar_type[0x8];
+-- 
+2.43.0
+
 
 
 
