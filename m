@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-76238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFE7097A0BB
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:00:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AA8D97A1B4
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:09:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 974EF2824FB
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:00:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DE7E1C21B25
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:09:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED9CD156654;
-	Mon, 16 Sep 2024 12:00:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9383F149C57;
+	Mon, 16 Sep 2024 12:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eZpHaYb4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2iOilcW3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 033A3156250;
-	Mon, 16 Sep 2024 12:00:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E056156222;
+	Mon, 16 Sep 2024 12:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488024; cv=none; b=lZb6K2ciT61XhNdiKZnXsVF6nSZfTDdbcswKoCnc1keSCdOEcAEeuzqwcQYE0mJXTjRf6o21+nCy6CsMMTFRADuMumHhXsNit4ystGsg2n/RUzkeAaOYDmAMdSr+qrcnh+nDg6m5DbiBLkK0zvLzaRHSnODZlLX5vplH2DhSZoI=
+	t=1726488559; cv=none; b=SPV0WconTMWUm/rziWjR6s7ZFJbNLWHtX7SoTvsGKzcVOufaOrIvEjAlkRK64QZg/tFNe4RruIZhhf1AdrVf3hkdlAaBLi3kxfaSoeD62TaNIkKN734zFQpls87h4bcOMWqYg5dd1vqaKmnRU9fdhsOBkrDxNf1L74qXqYLS4ww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488024; c=relaxed/simple;
-	bh=yMuaUndqguj4++tLkGX/4dBEd2R8kPFQWRC9aExHIW4=;
+	s=arc-20240116; t=1726488559; c=relaxed/simple;
+	bh=ZL/sLatXinr9DessbpTwzpw9w/cdOb4GGhdnPHCthkQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=utitudnADO+SF0HR4Wyiyb5q59J9OrHPs5/1pwXh4ia3YLiGBjuPCG/6g8sNiUy+HT02sZf0LaJSgoE2Q2yE76cvNa3kDXUUaxL5m/V+2XhXj5HVzCqDt1Z3AdfRqbMgmzGm1wZincMc4xXxb/9eXxBqbg3C8jJf/pFbzHgHHO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eZpHaYb4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A457CC4CEC4;
-	Mon, 16 Sep 2024 12:00:22 +0000 (UTC)
+	 MIME-Version; b=kw9UpCn+fMfkwaFHGsVdzvSdAL0IWyVWX6JeUqGHSHGqXIpqgRot2fORE7lfwlgszzehrUETUNXe63zAhehJdym0py60q95bpNrUQZru0o3QvIKRwIvwk+Y7C4S7NOeYGd40lmnIpluhtvUL/+0SwA2kP5UAz74ezDDOTNVaaq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2iOilcW3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBD1AC4CEC4;
+	Mon, 16 Sep 2024 12:09:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488023;
-	bh=yMuaUndqguj4++tLkGX/4dBEd2R8kPFQWRC9aExHIW4=;
+	s=korg; t=1726488559;
+	bh=ZL/sLatXinr9DessbpTwzpw9w/cdOb4GGhdnPHCthkQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eZpHaYb4mfh44woSEiWWQyfhbOU5ypGQPOJ/7LgvZCwovlJvSeujLuc6PnZtQt/Yi
-	 7W51ZE35by7STIcDfj5e88BwSHa64N+o/wBnvYOouQGycUQ/up9vv/ugttZ9nUQj5M
-	 CjW07r3630XY3PjOUHFUD8aIexHlWJ5mD5zAjgw4=
+	b=2iOilcW3LzoLFoL7YbqCFd2LoGfxw8P5n4DB4y072qFuNmaKtVQhe2UZfUX8IZTOt
+	 sVf/bGBkyZ1zvIe8hzajvESu6vnKwErN0EasfsEUAnDQ2iZXZwA86CS34x6w7Xqnrs
+	 10qZotZv8dVraMjb4wOdazhrjVcEwKfi5vVEh3tc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kunwu Chan <chentao@kylinos.cn>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Xiangyu Chen <xiangyu.chen@windriver.com>
-Subject: [PATCH 6.1 31/63] pmdomain: ti: Add a null pointer check to the omap_prm_domain_init
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Anna Schumaker <Anna.Schumaker@Netapp.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 34/91] NFSv4: Fix clearing of layout segments in layoutreturn
 Date: Mon, 16 Sep 2024 13:44:10 +0200
-Message-ID: <20240916114222.174986682@linuxfoundation.org>
+Message-ID: <20240916114225.636756523@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
-References: <20240916114221.021192667@linuxfoundation.org>
+In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
+References: <20240916114224.509743970@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +63,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunwu Chan <chentao@kylinos.cn>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-commit 5d7f58ee08434a33340f75ac7ac5071eea9673b3 upstream.
+[ Upstream commit d72b7963115bea971a28eaa2cb76722c023f9fdf ]
 
-devm_kasprintf() returns a pointer to dynamically allocated memory
-which can be NULL upon failure. Ensure the allocation was successful
-by checking the pointer validity.
+Make sure that we clear the layout segments in cases where we see a
+fatal error, and also in the case where the layout is invalid.
 
-Signed-off-by: Kunwu Chan <chentao@kylinos.cn>
-Link: https://lore.kernel.org/r/20240118054257.200814-1-chentao@kylinos.cn
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-[Xiangyu: Modified to apply on 6.1.y]
-Signed-off-by: Xiangyu Chen <xiangyu.chen@windriver.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/ti/omap_prm.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/nfs/nfs4proc.c | 9 ++++++---
+ fs/nfs/pnfs.c     | 5 ++---
+ 2 files changed, 8 insertions(+), 6 deletions(-)
 
---- a/drivers/soc/ti/omap_prm.c
-+++ b/drivers/soc/ti/omap_prm.c
-@@ -696,6 +696,8 @@ static int omap_prm_domain_init(struct d
- 	data = prm->data;
- 	name = devm_kasprintf(dev, GFP_KERNEL, "prm_%s",
- 			      data->name);
-+	if (!name)
-+		return -ENOMEM;
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index e7ac249df1ad..299ea2b86df6 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -9845,13 +9845,16 @@ static void nfs4_layoutreturn_done(struct rpc_task *task, void *calldata)
+ 		fallthrough;
+ 	default:
+ 		task->tk_status = 0;
++		lrp->res.lrs_present = 0;
+ 		fallthrough;
+ 	case 0:
+ 		break;
+ 	case -NFS4ERR_DELAY:
+-		if (nfs4_async_handle_error(task, server, NULL, NULL) != -EAGAIN)
+-			break;
+-		goto out_restart;
++		if (nfs4_async_handle_error(task, server, NULL, NULL) ==
++		    -EAGAIN)
++			goto out_restart;
++		lrp->res.lrs_present = 0;
++		break;
+ 	}
+ 	return;
+ out_restart:
+diff --git a/fs/nfs/pnfs.c b/fs/nfs/pnfs.c
+index 664d3128e730..3d1a9f8634a9 100644
+--- a/fs/nfs/pnfs.c
++++ b/fs/nfs/pnfs.c
+@@ -1172,10 +1172,9 @@ void pnfs_layoutreturn_free_lsegs(struct pnfs_layout_hdr *lo,
+ 	LIST_HEAD(freeme);
  
- 	prmd->dev = dev;
- 	prmd->prm = prm;
+ 	spin_lock(&inode->i_lock);
+-	if (!pnfs_layout_is_valid(lo) ||
+-	    !nfs4_stateid_match_other(&lo->plh_stateid, arg_stateid))
++	if (!nfs4_stateid_match_other(&lo->plh_stateid, arg_stateid))
+ 		goto out_unlock;
+-	if (stateid) {
++	if (stateid && pnfs_layout_is_valid(lo)) {
+ 		u32 seq = be32_to_cpu(arg_stateid->seqid);
+ 
+ 		pnfs_mark_matching_lsegs_invalid(lo, &freeme, range, seq);
+-- 
+2.43.0
+
 
 
 
