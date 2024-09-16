@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-76244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76326-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F66597A0C1
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:00:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9FF697A139
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:06:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D18491C22E12
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:00:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60FE01F240C5
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:06:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEFF3154429;
-	Mon, 16 Sep 2024 12:00:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3379F155CBD;
+	Mon, 16 Sep 2024 12:04:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pocc/bT2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l/vEAWtu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD4C014AD19;
-	Mon, 16 Sep 2024 12:00:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2448155CA5;
+	Mon, 16 Sep 2024 12:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488040; cv=none; b=DXk6/p3FtdS8UaDSDDKG/BXbMWzYjLZXyxuI6dTzG6ba7r+Koq5717XT55wNJkNLaNkI9LDEe1+C8BApragqLK8mNf03JeNuJ7FkO7WlCSXyirsLjwjcmz5405fgR60O4xQVrf1JLLrScABDW/dtYhO+o2Om6lvxFtHW5xEKD4w=
+	t=1726488274; cv=none; b=gVmNestrjMXVwWI7aUCJ/w8f5R8RUoEBQhgSxuboGNjoA4hgWL2XEdTBotXzU+T98DC8BwUde2N+DEMi4eUkr3gpir4y/tsurZfJR94KteTC+E9ctkd3XwgZ8tYR91qkFEMgKGIQOray69Xh6/gUPDCwkoZdWh+VdGY2ZMh0tGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488040; c=relaxed/simple;
-	bh=adQJ5SHNS8rMz2O5xvhJm70l4/qzTZBZM1ZoJjM5Ezc=;
+	s=arc-20240116; t=1726488274; c=relaxed/simple;
+	bh=irQzuFiTspjxNqzGisvvkxxFf8/pbRUxVsFkdBfAwGg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ptpKrGgLrKEfCaynekuXyRsvTqkyOGiJknaKC6DKq/0JcXTVRCHZ9Y3PD1A9lazFwiUmj9gEf8dHPvPJdKezW1C9TuI5KBVOQGvBL9LwY/Idsoxq62YgQq1lGkHhpu3g0p+7yGOe+mH6nayHh6GL6sbDwj2GSErUd8iHTqK6OPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pocc/bT2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC111C4CEC4;
-	Mon, 16 Sep 2024 12:00:39 +0000 (UTC)
+	 MIME-Version; b=cGtzPt4YhEM4Dtku3HKKDk9LJQj0omGgI1VzZadOQAa/ts56UqroTUFN4/nKtZ6ZcCRe8/XQSbAInLpmh6piDPSZw82d7jzYN/E6iefpT0QY/MG8OBs9OjzlHcSe6iNn8JTNazzDbeUZ25azvoevnHXKl6ozRyfEOzloCdH/Dz4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l/vEAWtu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 245D2C4CEC4;
+	Mon, 16 Sep 2024 12:04:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488040;
-	bh=adQJ5SHNS8rMz2O5xvhJm70l4/qzTZBZM1ZoJjM5Ezc=;
+	s=korg; t=1726488273;
+	bh=irQzuFiTspjxNqzGisvvkxxFf8/pbRUxVsFkdBfAwGg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pocc/bT2O+T4Zz7oWrLaTpHclTi4Dea3M9cG11N1gOnXlL2yCPriq90KMy8BNSRtM
-	 cHOyiFKmDtiG7IortUP1lp++ylgjrnuTbsjFRSt2Xxoil7eWHJDaUz84ul7vNtwsh7
-	 6sqrcXmDhvBCNqpLNk5KMWDutMY4HmnTDptkVb0U=
+	b=l/vEAWtuugbCfl6PM5bQoeKCK4WQanJkoT1CdCjHnbmOUBpbcG8+cL+/QCg7dY66L
+	 bsoSFA9EIenx0thlF86wuE134pH+rtKR2b6Pd5CJu2oFSVI3Az2oCkO7mJ0RA0x1jN
+	 JyeOFpjx1ptKDgJIXeGBeBNeigqVRfVbk0Kvums0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marex@denx.de>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 10/63] Input: ads7846 - ratelimit the spi_sync error message
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Jann Horn <jannh@google.com>
+Subject: [PATCH 6.10 055/121] mm: avoid leaving partial pfn mappings around in error case
 Date: Mon, 16 Sep 2024 13:43:49 +0200
-Message-ID: <20240916114221.407361399@linuxfoundation.org>
+Message-ID: <20240916114230.971579306@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
-References: <20240916114221.021192667@linuxfoundation.org>
+In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
+References: <20240916114228.914815055@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +64,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@denx.de>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit ccbfea78adf75d3d9e87aa739dab83254f5333fa ]
+commit 79a61cc3fc0466ad2b7b89618a6157785f0293b3 upstream.
 
-In case the touch controller is not connected, this message keeps scrolling
-on the console indefinitelly. Ratelimit it to avoid filling kernel logs.
+As Jann points out, PFN mappings are special, because unlike normal
+memory mappings, there is no lifetime information associated with the
+mapping - it is just a raw mapping of PFNs with no reference counting of
+a 'struct page'.
 
-"
-ads7846 spi2.1: spi_sync --> -22
-"
+That's all very much intentional, but it does mean that it's easy to
+mess up the cleanup in case of errors.  Yes, a failed mmap() will always
+eventually clean up any partial mappings, but without any explicit
+lifetime in the page table mapping itself, it's very easy to do the
+error handling in the wrong order.
 
-Signed-off-by: Marek Vasut <marex@denx.de>
-Link: https://lore.kernel.org/r/20240708211913.171243-1-marex@denx.de
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In particular, it's easy to mistakenly free the physical backing store
+before the page tables are actually cleaned up and (temporarily) have
+stale dangling PTE entries.
+
+To make this situation less error-prone, just make sure that any partial
+pfn mapping is torn down early, before any other error handling.
+
+Reported-and-tested-by: Jann Horn <jannh@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Simona Vetter <simona.vetter@ffwll.ch>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/touchscreen/ads7846.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/memory.c |   27 ++++++++++++++++++++++-----
+ 1 file changed, 22 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/input/touchscreen/ads7846.c b/drivers/input/touchscreen/ads7846.c
-index bed68a68f330..1f206c75c6cf 100644
---- a/drivers/input/touchscreen/ads7846.c
-+++ b/drivers/input/touchscreen/ads7846.c
-@@ -810,7 +810,7 @@ static void ads7846_read_state(struct ads7846 *ts)
- 		m = &ts->msg[msg_idx];
- 		error = spi_sync(ts->spi, m);
- 		if (error) {
--			dev_err(&ts->spi->dev, "spi_sync --> %d\n", error);
-+			dev_err_ratelimited(&ts->spi->dev, "spi_sync --> %d\n", error);
- 			packet->ignore = true;
- 			return;
- 		}
--- 
-2.43.0
-
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -2581,11 +2581,7 @@ static inline int remap_p4d_range(struct
+ 	return 0;
+ }
+ 
+-/*
+- * Variant of remap_pfn_range that does not call track_pfn_remap.  The caller
+- * must have pre-validated the caching bits of the pgprot_t.
+- */
+-int remap_pfn_range_notrack(struct vm_area_struct *vma, unsigned long addr,
++static int remap_pfn_range_internal(struct vm_area_struct *vma, unsigned long addr,
+ 		unsigned long pfn, unsigned long size, pgprot_t prot)
+ {
+ 	pgd_t *pgd;
+@@ -2638,6 +2634,27 @@ int remap_pfn_range_notrack(struct vm_ar
+ 	return 0;
+ }
+ 
++/*
++ * Variant of remap_pfn_range that does not call track_pfn_remap.  The caller
++ * must have pre-validated the caching bits of the pgprot_t.
++ */
++int remap_pfn_range_notrack(struct vm_area_struct *vma, unsigned long addr,
++		unsigned long pfn, unsigned long size, pgprot_t prot)
++{
++	int error = remap_pfn_range_internal(vma, addr, pfn, size, prot);
++
++	if (!error)
++		return 0;
++
++	/*
++	 * A partial pfn range mapping is dangerous: it does not
++	 * maintain page reference counts, and callers may free
++	 * pages due to the error. So zap it early.
++	 */
++	zap_page_range_single(vma, addr, size, NULL);
++	return error;
++}
++
+ /**
+  * remap_pfn_range - remap kernel memory to userspace
+  * @vma: user vma to map to
 
 
 
