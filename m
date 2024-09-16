@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-76275-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1EE797A0E5
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:02:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 041C397A1C8
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:10:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D262A1C21DD9
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:02:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 292BD1C21623
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:10:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E4F914D2B3;
-	Mon, 16 Sep 2024 12:02:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74B8D155359;
+	Mon, 16 Sep 2024 12:10:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m3fOsAv9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o+d+9TBU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE4DF14AD19;
-	Mon, 16 Sep 2024 12:02:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3310C1547F5;
+	Mon, 16 Sep 2024 12:10:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488128; cv=none; b=nitCG8CRriE2pmaCXFYljXcOGx5Ufd7S3471/F0jr3ix3pOrY9ceJRetB22nzZaBsCsBvOMniY2HP14I8bzR+EDQ2VyujiiDAgFgf5Jc6/Ggkm7v2G81kMpiQsbnvGVua4no2lHuIjTRRtszHNOrARhXLZhYPQ+EcV9aDBjF9Pg=
+	t=1726488616; cv=none; b=KwtZyfsiKXYr4lYbwezAlY1qEWngP6yufAl4VdNmal4Z63740Iwwr219YGkFVSP0QKssjaWuzDTINrAEIi/zPNBdiCzK5PUHxrhzS5L0ZS8M7Bs267GO0gBKwUodjVwBAPe4c/hzCd+VuxBxhe62VCaUsUlPPdg7MY9X5uRhau4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488128; c=relaxed/simple;
-	bh=I8z2L4wYtkFAijtNX7/MuXA1B+UOTJK38SOi3/Urw2U=;
+	s=arc-20240116; t=1726488616; c=relaxed/simple;
+	bh=nJpOfDU8B0ps+Mj9Z5LqTpYSs8oVZbqfXWY3FB36M2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iRNuRgzicKp/osH7nek9J8jLfX0evfdjLx5LdkAE25TzPIoVQ0qVZH9SScSSuZilSpy6iasfJS9HKeIvrEVHpAiAnXwgrkrEbhwmjgP32Lh8dKn38rr2mGAtNlo2Ko7JgTTntZHEFPYZQrXfrXTPAc7TxdKrTPp1cKaI9Df4DBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m3fOsAv9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 763B8C4CEC4;
-	Mon, 16 Sep 2024 12:02:07 +0000 (UTC)
+	 MIME-Version; b=H5jMpjgh/GJJfWw1buS+1CpWezIHDE4+UIPceG6z5rgo2aUCCDguFHI8uahaF2B2il4K7dWYi125kwnUi/5cpwrPP9TqMcn1Pa9xtsSOMSiPt5rv/VKEsRTlmo60FXJDei3BQJlkFQZS9D5VvfrAdUD94NGbvpGEezpA39vNlk4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o+d+9TBU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1DDDC4CEC4;
+	Mon, 16 Sep 2024 12:10:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488127;
-	bh=I8z2L4wYtkFAijtNX7/MuXA1B+UOTJK38SOi3/Urw2U=;
+	s=korg; t=1726488616;
+	bh=nJpOfDU8B0ps+Mj9Z5LqTpYSs8oVZbqfXWY3FB36M2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m3fOsAv958fu6j8BfnVI+YrjZQmJ5dpkp6y5H/peqQAWKKY5qCxd+UhdufentNc38
-	 I8JgRx1NQV6Qw31zF87wc/9JL9hFZIIlY4WGEOqJ5u6mcuzmO10UOC7boJ7NpDtsaJ
-	 sNpqU3VW56P32s9/hO6Jz2ZgcybtVlS9U+0CXuL0=
+	b=o+d+9TBUp7uDILtOZwkF/+d4FkrS8Q2zBtDk9aqOs1X6AKCKFc3EYOLQ8udWsxojS
+	 i6df29661OMkdQfdLmnr6+SUwW4YeYfdsRnKLEf/2BeYA720ZGfJqBgtO1WwP1I7GE
+	 kJtlyStomF+/Dyq5vXdc6CVtIkH0eqM4GASm5800=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carolina Jubran <cjubran@nvidia.com>,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 43/63] net/mlx5: Add missing masks and QoS bit masks for scheduling elements
+	Andrew Morton <akpm@linux-foundation.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Simona Vetter <simona.vetter@ffwll.ch>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Jann Horn <jannh@google.com>
+Subject: [PATCH 6.6 46/91] mm: avoid leaving partial pfn mappings around in error case
 Date: Mon, 16 Sep 2024 13:44:22 +0200
-Message-ID: <20240916114222.581780673@linuxfoundation.org>
+Message-ID: <20240916114226.017097211@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
-References: <20240916114221.021192667@linuxfoundation.org>
+In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
+References: <20240916114224.509743970@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +64,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carolina Jubran <cjubran@nvidia.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
 
-[ Upstream commit 452ef7f86036392005940de54228d42ca0044192 ]
+commit 79a61cc3fc0466ad2b7b89618a6157785f0293b3 upstream.
 
-Add the missing masks for supported element types and Transmit
-Scheduling Arbiter (TSAR) types in scheduling elements.
+As Jann points out, PFN mappings are special, because unlike normal
+memory mappings, there is no lifetime information associated with the
+mapping - it is just a raw mapping of PFNs with no reference counting of
+a 'struct page'.
 
-Also, add the corresponding bit masks for these types in the QoS
-capabilities of a NIC scheduler.
+That's all very much intentional, but it does mean that it's easy to
+mess up the cleanup in case of errors.  Yes, a failed mmap() will always
+eventually clean up any partial mappings, but without any explicit
+lifetime in the page table mapping itself, it's very easy to do the
+error handling in the wrong order.
 
-Fixes: 214baf22870c ("net/mlx5e: Support HTB offload")
-Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
-Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+In particular, it's easy to mistakenly free the physical backing store
+before the page tables are actually cleaned up and (temporarily) have
+stale dangling PTE entries.
+
+To make this situation less error-prone, just make sure that any partial
+pfn mapping is torn down early, before any other error handling.
+
+Reported-and-tested-by: Jann Horn <jannh@google.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Simona Vetter <simona.vetter@ffwll.ch>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/mlx5/mlx5_ifc.h | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ mm/memory.c |   27 ++++++++++++++++++++++-----
+ 1 file changed, 22 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/mlx5/mlx5_ifc.h b/include/linux/mlx5/mlx5_ifc.h
-index b2aee17a34d7..64434a3b7e1a 100644
---- a/include/linux/mlx5/mlx5_ifc.h
-+++ b/include/linux/mlx5/mlx5_ifc.h
-@@ -973,7 +973,8 @@ struct mlx5_ifc_qos_cap_bits {
+--- a/mm/memory.c
++++ b/mm/memory.c
+@@ -2424,11 +2424,7 @@ static inline int remap_p4d_range(struct
+ 	return 0;
+ }
  
- 	u8         max_tsar_bw_share[0x20];
+-/*
+- * Variant of remap_pfn_range that does not call track_pfn_remap.  The caller
+- * must have pre-validated the caching bits of the pgprot_t.
+- */
+-int remap_pfn_range_notrack(struct vm_area_struct *vma, unsigned long addr,
++static int remap_pfn_range_internal(struct vm_area_struct *vma, unsigned long addr,
+ 		unsigned long pfn, unsigned long size, pgprot_t prot)
+ {
+ 	pgd_t *pgd;
+@@ -2481,6 +2477,27 @@ int remap_pfn_range_notrack(struct vm_ar
+ 	return 0;
+ }
  
--	u8         reserved_at_100[0x20];
-+	u8         nic_element_type[0x10];
-+	u8         nic_tsar_type[0x10];
- 
- 	u8         reserved_at_120[0x3];
- 	u8         log_meter_aso_granularity[0x5];
-@@ -3746,6 +3747,7 @@ enum {
- 	ELEMENT_TYPE_CAP_MASK_VPORT		= 1 << 1,
- 	ELEMENT_TYPE_CAP_MASK_VPORT_TC		= 1 << 2,
- 	ELEMENT_TYPE_CAP_MASK_PARA_VPORT_TC	= 1 << 3,
-+	ELEMENT_TYPE_CAP_MASK_QUEUE_GROUP	= 1 << 4,
- };
- 
- struct mlx5_ifc_scheduling_context_bits {
-@@ -4444,6 +4446,12 @@ enum {
- 	TSAR_ELEMENT_TSAR_TYPE_ETS = 0x2,
- };
- 
-+enum {
-+	TSAR_TYPE_CAP_MASK_DWRR		= 1 << 0,
-+	TSAR_TYPE_CAP_MASK_ROUND_ROBIN	= 1 << 1,
-+	TSAR_TYPE_CAP_MASK_ETS		= 1 << 2,
-+};
++/*
++ * Variant of remap_pfn_range that does not call track_pfn_remap.  The caller
++ * must have pre-validated the caching bits of the pgprot_t.
++ */
++int remap_pfn_range_notrack(struct vm_area_struct *vma, unsigned long addr,
++		unsigned long pfn, unsigned long size, pgprot_t prot)
++{
++	int error = remap_pfn_range_internal(vma, addr, pfn, size, prot);
 +
- struct mlx5_ifc_tsar_element_bits {
- 	u8         reserved_at_0[0x8];
- 	u8         tsar_type[0x8];
--- 
-2.43.0
-
++	if (!error)
++		return 0;
++
++	/*
++	 * A partial pfn range mapping is dangerous: it does not
++	 * maintain page reference counts, and callers may free
++	 * pages due to the error. So zap it early.
++	 */
++	zap_page_range_single(vma, addr, size, NULL);
++	return error;
++}
++
+ /**
+  * remap_pfn_range - remap kernel memory to userspace
+  * @vma: user vma to map to
 
 
 
