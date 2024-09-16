@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-76364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76444-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DD8B97A165
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:07:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF88197A1C6
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:10:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 93D2E286A1C
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:07:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76A311F213B9
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:10:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FDAB15574C;
-	Mon, 16 Sep 2024 12:06:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1B761547F5;
+	Mon, 16 Sep 2024 12:10:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DrERhg4A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OuAhuATY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E25A783CDA;
-	Mon, 16 Sep 2024 12:06:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F214146A79;
+	Mon, 16 Sep 2024 12:10:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488382; cv=none; b=bJ0cot/Rrsq9XJx2T18u1paZKKaTm53K4gTMtqoPTxXlazs7gionM7XRpeHaLuhvleACkMRAQpBbJscIrHFDU8qApFRoQCgw6PwnD/aj5TxG+fP6hM3kPM7nxoA4HyM6g96QJHh6X+QUDslMJ09RVc7J8dyurvwUBxRTU36+BGQ=
+	t=1726488610; cv=none; b=KnVKUbFgNKVJZWnSZS8n0wkumqTa+eXd9LUAF+dvzx1dn5Fh6xOBvmDMcEf+mM85okUheDD4Tdu17UZ9X20ULrhUtL/Ufkw84ubE37kmn2oQq7Ak1L87mEa8ZiTOZqAnGD5yU4R8mUfK/TKfMqN3gvoWM3iKtBG82y8Gc/Sy40k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488382; c=relaxed/simple;
-	bh=fRCOFHd8ZYU+D4vPuz651jBccxtQu/qX7ivmrjYZVAI=;
+	s=arc-20240116; t=1726488610; c=relaxed/simple;
+	bh=V+M7PUImC8lNzPMefXNH5EQU6BZeAw6L6EU1zXSpkmI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZmXjkAAdki696iE8T2/5xocuxWJGkd5Ah40TIOro6cDAxTDjRb2PFlGREqv1FAX+7zXcM/mdqOFeNXCDoRpQfSFWxSILATytt/SRXnI13p0bvpb9T1QfICHyqYNKh3fFrd6FeOuLSdovCCZiIxEUJp4r+fvxAWuk6I1sl6rAhE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DrERhg4A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E471C4CEC4;
-	Mon, 16 Sep 2024 12:06:21 +0000 (UTC)
+	 MIME-Version; b=p8m3XbnGgn3D8goT6Lqau8yPrRFl5msflI1KBUaRE/nqKUgZlfatuhreZ5Uvjc6wFeRRr1H+F2nBjzXRWvy58RsWCo1SjVh2vgPloGiS23yJnCMRC+mpnAm1RPQzv9yvDB3EMWJGGDlyH8mYKoFEtW70CDsYRyUp2EpFvx/Q5RY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OuAhuATY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B896C4CEC4;
+	Mon, 16 Sep 2024 12:10:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488381;
-	bh=fRCOFHd8ZYU+D4vPuz651jBccxtQu/qX7ivmrjYZVAI=;
+	s=korg; t=1726488610;
+	bh=V+M7PUImC8lNzPMefXNH5EQU6BZeAw6L6EU1zXSpkmI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DrERhg4AZWwStfr+iArAaAFTsU1vEmiyv//mcmuxLZ/5E4IGlhSmj1XOjYJeuldul
-	 6JxTgM50PdCNoowWMHmiCihBqPobfGwbeOuRgd+VHWovSfexmae5LT+5icVfJ8HDBV
-	 P2iI8rpCiqZqhxwlVBqDtt9ZV+dQShBAbLaxV8S8=
+	b=OuAhuATYq/ATKZz9ElZQ3Zk0jLGqrDf/9zr1ya944MbQydaqGHz3H8D1PdnOv9Xvo
+	 PIA+5KSCJNcrMs9F2ZoJerR/Faqqk319EqTkMWZI4Q5qF6rHhtMmLCPtgH2RKNCnOV
+	 eZpxPBuDsDay6lYYqV2fHnhXm3g8JVWHtdlg9KzM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	peng guo <engguopeng@buaa.edu.cn>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
+	Marek Vasut <marex@denx.de>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 066/121] cxl/core: Fix incorrect vendor debug UUID define
+Subject: [PATCH 6.6 24/91] Input: ads7846 - ratelimit the spi_sync error message
 Date: Mon, 16 Sep 2024 13:44:00 +0200
-Message-ID: <20240916114231.352939974@linuxfoundation.org>
+Message-ID: <20240916114225.309305564@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
-References: <20240916114228.914815055@linuxfoundation.org>
+In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
+References: <20240916114224.509743970@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: peng guo <engguopeng@buaa.edu.cn>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit 8ecef8e01a08c7e3e4ffc8f08d9f9663984f334b ]
+[ Upstream commit ccbfea78adf75d3d9e87aa739dab83254f5333fa ]
 
-When user send a mbox command whose opcode is CXL_MBOX_OP_CLEAR_LOG and
-the in_payload is normal vendor debug log UUID according to
-the CXL specification cxl_payload_from_user_allowed() will return
-false unexpectedly, Sending mbox cmd operation fails and the kernel
-log will print:
-Clear Log: input payload not allowed.
+In case the touch controller is not connected, this message keeps scrolling
+on the console indefinitelly. Ratelimit it to avoid filling kernel logs.
 
-All CXL devices that support a debug log shall support the Vendor Debug
-Log to allow the log to be accessed through a common host driver, for any
-device, all versions of the CXL specification define the same value with
-Log Identifier of: 5e1819d9-11a9-400c-811f-d60719403d86
+"
+ads7846 spi2.1: spi_sync --> -22
+"
 
-Refer to CXL spec r3.1 Table 8-71
-
-Fix the definition value of DEFINE_CXL_VENDOR_DEBUG_UUID to match the
-CXL specification.
-
-Fixes: 472b1ce6e9d6 ("cxl/mem: Enable commands via CEL")
-Signed-off-by: peng guo <engguopeng@buaa.edu.cn>
-Reviewed-by: Alison Schofield <alison.schofield@intel.com>
-Link: https://patch.msgid.link/20240710023112.8063-1-engguopeng@buaa.edu.cn
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Marek Vasut <marex@denx.de>
+Link: https://lore.kernel.org/r/20240708211913.171243-1-marex@denx.de
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cxl/cxlmem.h | 2 +-
+ drivers/input/touchscreen/ads7846.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/cxl/cxlmem.h b/drivers/cxl/cxlmem.h
-index af8169ccdbc0..feb1106559d2 100644
---- a/drivers/cxl/cxlmem.h
-+++ b/drivers/cxl/cxlmem.h
-@@ -563,7 +563,7 @@ enum cxl_opcode {
- 		  0x3b, 0x3f, 0x17)
- 
- #define DEFINE_CXL_VENDOR_DEBUG_UUID                                           \
--	UUID_INIT(0xe1819d9, 0x11a9, 0x400c, 0x81, 0x1f, 0xd6, 0x07, 0x19,     \
-+	UUID_INIT(0x5e1819d9, 0x11a9, 0x400c, 0x81, 0x1f, 0xd6, 0x07, 0x19,     \
- 		  0x40, 0x3d, 0x86)
- 
- struct cxl_mbox_get_supported_logs {
+diff --git a/drivers/input/touchscreen/ads7846.c b/drivers/input/touchscreen/ads7846.c
+index a66375700a63..8b8c43b3c27f 100644
+--- a/drivers/input/touchscreen/ads7846.c
++++ b/drivers/input/touchscreen/ads7846.c
+@@ -808,7 +808,7 @@ static void ads7846_read_state(struct ads7846 *ts)
+ 		m = &ts->msg[msg_idx];
+ 		error = spi_sync(ts->spi, m);
+ 		if (error) {
+-			dev_err(&ts->spi->dev, "spi_sync --> %d\n", error);
++			dev_err_ratelimited(&ts->spi->dev, "spi_sync --> %d\n", error);
+ 			packet->ignore = true;
+ 			return;
+ 		}
 -- 
 2.43.0
 
