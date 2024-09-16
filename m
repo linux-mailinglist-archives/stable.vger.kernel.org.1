@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-76392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76487-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E544697A185
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:08:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3125E97A1F9
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:12:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA28C287C1A
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:08:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 63FD31C2181B
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:12:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4463149C57;
-	Mon, 16 Sep 2024 12:07:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9B6A155359;
+	Mon, 16 Sep 2024 12:12:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fw5uH8BZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GFGK3yvf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71D7415689A;
-	Mon, 16 Sep 2024 12:07:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7938B142903;
+	Mon, 16 Sep 2024 12:12:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488461; cv=none; b=YjgPx1d3DKiZqJ9e0/w2ca/uySwrBiEjPb99Zzn3rnRKkNx+A1DWhIgdkVJDt+wDGDA6X6J+sxfYkKQSgxmFIuLarhQ/N/WnQPDAbUYzlf2IDLr4PvmanKxcxb1ReJjsBZnmUaj2Ijsg0K3pAg+HTr83uBhDQ34lkH5/OauapXU=
+	t=1726488732; cv=none; b=ccyLrVfBnJ9cXdcFdfLHpk0UPrgtkGjPlm/jFoWGmmzMjDozotRtzgWtlqaRPm3gXk1UiwfyiFQbX3b9LWMq1We+cVIuwJTZyDj143PlLQoTkdnd8RC8rxSDL0yuHFOFcJJCg7rpxCITL4jp9H35AChSZJuCed6beoiGa1sLcKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488461; c=relaxed/simple;
-	bh=vERet8TUWSl4Xcqo3lquhTwiGWnJbNDZnR4NPt1cEng=;
+	s=arc-20240116; t=1726488732; c=relaxed/simple;
+	bh=wCJAMPzJT4MMQ6HuEUUdq+7YO2GUHyj/yJrDLBt1hgE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ndqY01N/ZeoiCdU+gwRrZfeP7iHGjrGNCNFM2GK1dQY7JtW/t9it/aqqqhvbF/HAxVk7KpuhhAJFjgi9b38eaV2F7m37JY5yO/GlRB2Zg820OJMCRyH375TpM3EgHm8b+PYEbXgrmMsHcS88rRt1SMVtGKT/nxJtLgZCES911Oc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fw5uH8BZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE1C8C4CEC4;
-	Mon, 16 Sep 2024 12:07:40 +0000 (UTC)
+	 MIME-Version; b=l0S0M+QZWrEMDEqZoVJSPmJpcH7pWs8SHMZpn+k0+LRI8bHsa/t9/2HlV3Q+ApT0UsCZO3SoT18T0bBE4/Sy6Lgx7X45TTpZfDS9BIqIQ0e+4WgqCTOVsyQilfKmmzx0lnKJaFLm1jVQNwm8smNiqMyO60DAbNHbEIAcBGSDnsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GFGK3yvf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02B65C4CEC4;
+	Mon, 16 Sep 2024 12:12:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488461;
-	bh=vERet8TUWSl4Xcqo3lquhTwiGWnJbNDZnR4NPt1cEng=;
+	s=korg; t=1726488732;
+	bh=wCJAMPzJT4MMQ6HuEUUdq+7YO2GUHyj/yJrDLBt1hgE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fw5uH8BZ5h30LMYIZqEkx7B7z9y8DxW34QZhJVc2HM41m3uXyNma6YmUDa3A/wNxr
-	 WbWC1bzNMR441pIbBJocb22wGXleSxZTohyBfHJhZyAHqCkooqdwiJKGzdCtClfWwd
-	 JfljISFPIrsWogxKgrFd9CF+wjybcz0h22oVT+fk=
+	b=GFGK3yvf89mIKFTvmQ0oJDxHNMAlfsKJf86kZkCZii1ldnhqw/K6HVNYpQHZ24dPQ
+	 P5I+bVgY+PqxK28F3QC6rggy05QInixFI4rcpqAUOa1TaJCsGkdYylatIEOXJWyPtS
+	 xvltXnVRbk47AjMPmYX4a3pGXdDMrBWlqnPSTztI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jon Hunter <jonathanh@nvidia.com>,
-	Jameson Thies <jthies@google.com>,
-	Benson Leung <bleung@chromium.org>,
-	Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.10 121/121] usb: typec: ucsi: Only set number of plug altmodes after registration
-Date: Mon, 16 Sep 2024 13:44:55 +0200
-Message-ID: <20240916114233.114262527@linuxfoundation.org>
+	Xingyu Jin <xingyuj@google.com>,
+	"T.J. Mercier" <tjmercier@google.com>,
+	John Stultz <jstultz@google.com>,
+	Sumit Semwal <sumit.semwal@linaro.org>
+Subject: [PATCH 6.6 80/91] dma-buf: heaps: Fix off-by-one in CMA heap fault handler
+Date: Mon, 16 Sep 2024 13:44:56 +0200
+Message-ID: <20240916114227.096883445@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
-References: <20240916114228.914815055@linuxfoundation.org>
+In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
+References: <20240916114224.509743970@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jameson Thies <jthies@google.com>
+From: T.J. Mercier <tjmercier@google.com>
 
-commit 22d96a285449ba78abeaf3e197caca46bc24f8e5 upstream.
+commit ea5ff5d351b520524019f7ff7f9ce418de2dad87 upstream.
 
-Move the setting of the plug's number of alternate modes into the
-same condition as the plug's registration to prevent dereferencing the
-connector's plug pointer while it is null.
+Until VM_DONTEXPAND was added in commit 1c1914d6e8c6 ("dma-buf: heaps:
+Don't track CMA dma-buf pages under RssFile") it was possible to obtain
+a mapping larger than the buffer size via mremap and bypass the overflow
+check in dma_buf_mmap_internal. When using such a mapping to attempt to
+fault past the end of the buffer, the CMA heap fault handler also checks
+the fault offset against the buffer size, but gets the boundary wrong by
+1. Fix the boundary check so that we don't read off the end of the pages
+array and insert an arbitrary page in the mapping.
 
-Fixes: c313a44ac9cd ("usb: typec: ucsi: Always set number of alternate modes")
-Suggested-by: Jon Hunter <jonathanh@nvidia.com>
-Signed-off-by: Jameson Thies <jthies@google.com>
-Reviewed-by: Benson Leung <bleung@chromium.org>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Tested-by: Jon Hunter <jonathanh@nvidia.com>
-Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
-Link: https://lore.kernel.org/r/20240625004607.3223757-1-jthies@google.com
+Reported-by: Xingyu Jin <xingyuj@google.com>
+Fixes: a5d2d29e24be ("dma-buf: heaps: Move heap-helper logic into the cma_heap implementation")
+Cc: stable@vger.kernel.org # Applicable >= 5.10. Needs adjustments only for 5.10.
+Signed-off-by: T.J. Mercier <tjmercier@google.com>
+Acked-by: John Stultz <jstultz@google.com>
+Signed-off-by: Sumit Semwal <sumit.semwal@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240830192627.2546033-1-tjmercier@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/ucsi/ucsi.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/dma-buf/heaps/cma_heap.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/typec/ucsi/ucsi.c
-+++ b/drivers/usb/typec/ucsi/ucsi.c
-@@ -1176,13 +1176,13 @@ static int ucsi_check_cable(struct ucsi_
- 		ret = ucsi_register_altmodes(con, UCSI_RECIPIENT_SOP_P);
- 		if (ret < 0)
- 			return ret;
--	}
+--- a/drivers/dma-buf/heaps/cma_heap.c
++++ b/drivers/dma-buf/heaps/cma_heap.c
+@@ -165,7 +165,7 @@ static vm_fault_t cma_heap_vm_fault(stru
+ 	struct vm_area_struct *vma = vmf->vma;
+ 	struct cma_heap_buffer *buffer = vma->vm_private_data;
  
--	if (con->plug_altmode[0]) {
--		num_plug_am = ucsi_get_num_altmode(con->plug_altmode);
--		typec_plug_set_num_altmodes(con->plug, num_plug_am);
--	} else {
--		typec_plug_set_num_altmodes(con->plug, 0);
-+		if (con->plug_altmode[0]) {
-+			num_plug_am = ucsi_get_num_altmode(con->plug_altmode);
-+			typec_plug_set_num_altmodes(con->plug, num_plug_am);
-+		} else {
-+			typec_plug_set_num_altmodes(con->plug, 0);
-+		}
- 	}
+-	if (vmf->pgoff > buffer->pagecount)
++	if (vmf->pgoff >= buffer->pagecount)
+ 		return VM_FAULT_SIGBUS;
  
- 	return 0;
+ 	vmf->page = buffer->pages[vmf->pgoff];
 
 
 
