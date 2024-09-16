@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-76265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76453-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F30997A0DB
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:01:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38D2697A1CF
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:10:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64369284C9A
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:01:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DA5E91F216D8
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:10:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F15BB14AD19;
-	Mon, 16 Sep 2024 12:01:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F0E21547F5;
+	Mon, 16 Sep 2024 12:10:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Afn5Xx5P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0WkZR+p5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD5D9154C04;
-	Mon, 16 Sep 2024 12:01:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CEF4149C57;
+	Mon, 16 Sep 2024 12:10:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488099; cv=none; b=HuUT+Kvtsr6KVRUxX2dEc4ankE9Fwasv2IFb4CAKhgX9WZ27PuUaV+E2YoRpr9QgcUZc/5QEf+VurFcrx3TylRQ8GGqNwic5+ovmh64FV2vewkieov4sl6EUPD6LIc9gcixisoZ57yYchlIIX06uyPtZTY6D7kj8OZZ/CWEh1No=
+	t=1726488636; cv=none; b=gQkTZANalvaED/zLZPAgM9gqNZIahVfBcWYR3sOH7encnpjlqM6BSmqsYQXtSLvVTinV1kQrBAyKgo/ND2YhvBAlPAkCUdfQ0i6w5EG3PXOZ5la9J69f1UMGJtT49j/zpyCOwvV/qNcs/u9XAYF6C2FnopF4rGt/tiPXyzFf/ZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488099; c=relaxed/simple;
-	bh=OYEMRUei5le+ZOlaMmEMPP7nsled3pCLxezaVLhiqj8=;
+	s=arc-20240116; t=1726488636; c=relaxed/simple;
+	bh=rMKaxa4GK5zXMLyshZ4OlwxXPoacdlvHcsyd8P7YcLg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rBKckN1V7AxJQq/HqjyL1alIg0pQa74Dbg4QH12icHmvJSW4gqZ0i9axqi2WL0nQ7/BI7KNvt11OmWkAVQ9M1FTcL/I76l61X+zA6fPyQurA/T1hWZk9+/LRGcIVrHmF+IKKdkVn6R97oVPIvc0EHBD4jhoR6vPJO88U67j/6vw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Afn5Xx5P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E4B9C4CEC4;
-	Mon, 16 Sep 2024 12:01:39 +0000 (UTC)
+	 MIME-Version; b=tJZKQR1sixcwrrHACe7A/PU+bqjP6QOEiDE5R9WKEZQKmphrsaxsjH/8r5BMQpvUqVImtEZavKXhlBEDVOMjgVo5rkVEopoRQLAvMJrljgO5/sVrQk9BDG9KORM/3by67qqRcACbOrgPT1anwPfgxr0YhaUKZ2x8XRVN8NzlC6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0WkZR+p5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86A15C4CEC4;
+	Mon, 16 Sep 2024 12:10:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488099;
-	bh=OYEMRUei5le+ZOlaMmEMPP7nsled3pCLxezaVLhiqj8=;
+	s=korg; t=1726488635;
+	bh=rMKaxa4GK5zXMLyshZ4OlwxXPoacdlvHcsyd8P7YcLg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Afn5Xx5PqQLDTOrE46C+dY4x9N0qxfCSXUX90K0ewZEdTpY98wdirzXXdDx/u+kKv
-	 VYjnZfj4gQekADtAzD3J5LkOjQ1XwpFd0UM9FtCqw8a3kMN3bC6g6+jVHcxYLcK8dm
-	 d4vmz/wpK+/WcjD/7sISV2CPSAMyBmcMzswZ5lZE=
+	b=0WkZR+p5Jqaan1zEqeNb6AAZlYMkk3IJ57pu4UYFji+ml0SoD4RBilBYld8t316/3
+	 T0ViQya4wc1tMSn6lhjIEp6B/4KRQElabtk2eFvQCVtYWiC0+BcmPxXZH5mAgCeLrU
+	 7vAccTV0FIoPRaQ25hNUJG42rMMj8DhR/u1DW2hQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Mark Brown <broonie@kernel.org>,
+	Patrisious Haddad <phaddad@nvidia.com>,
+	Mark Zhang <markzhang@nvidia.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 58/63] spi: geni-qcom: Convert to platform remove callback returning void
+Subject: [PATCH 6.6 61/91] IB/mlx5: Rename 400G_8X speed to comply to naming convention
 Date: Mon, 16 Sep 2024 13:44:37 +0200
-Message-ID: <20240916114223.096602472@linuxfoundation.org>
+Message-ID: <20240916114226.502307566@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
-References: <20240916114221.021192667@linuxfoundation.org>
+In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
+References: <20240916114224.509743970@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,67 +62,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Patrisious Haddad <phaddad@nvidia.com>
 
-[ Upstream commit d0b52f6539e008a0d42bf673486bd21b7d2dc191 ]
+[ Upstream commit b28ad32442bec2f0d9cb660d7d698a1a53c13d08 ]
 
-The .remove() callback for a platform driver returns an int which makes
-many driver authors wrongly assume it's possible to do error handling by
-returning an error code. However the value returned is (mostly) ignored
-and this typically results in resource leaks. To improve here there is a
-quest to make the remove callback return void. In the first step of this
-quest all drivers are converted to .remove_new() which already returns
-void.
+Rename 400G_8X speed to comply to naming convention.
 
-Trivially convert this driver from always returning zero in the remove
-callback to the void returning variant.
-
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Link: https://lore.kernel.org/r/20230303172041.2103336-30-u.kleine-koenig@pengutronix.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 89e362c883c6 ("spi: geni-qcom: Undo runtime PM changes at driver exit time")
+Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
+Reviewed-by: Mark Zhang <markzhang@nvidia.com>
+Link: https://lore.kernel.org/r/ac98447cac8379a43fbdb36d56e5fb2b741a97ff.1695204156.git.leon@kernel.org
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Stable-dep-of: 80bf474242b2 ("net/mlx5e: Add missing link mode to ptys2ext_ethtool_map")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-geni-qcom.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/infiniband/hw/mlx5/main.c              | 2 +-
+ drivers/net/ethernet/mellanox/mlx5/core/port.c | 2 +-
+ include/linux/mlx5/port.h                      | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
-index 7b76dcd11e2b..ac5a581d1e5e 100644
---- a/drivers/spi/spi-geni-qcom.c
-+++ b/drivers/spi/spi-geni-qcom.c
-@@ -1003,7 +1003,7 @@ static int spi_geni_probe(struct platform_device *pdev)
- 	return ret;
- }
- 
--static int spi_geni_remove(struct platform_device *pdev)
-+static void spi_geni_remove(struct platform_device *pdev)
- {
- 	struct spi_master *spi = platform_get_drvdata(pdev);
- 	struct spi_geni_master *mas = spi_master_get_devdata(spi);
-@@ -1015,7 +1015,6 @@ static int spi_geni_remove(struct platform_device *pdev)
- 
- 	free_irq(mas->irq, spi);
- 	pm_runtime_disable(&pdev->dev);
--	return 0;
- }
- 
- static int __maybe_unused spi_geni_runtime_suspend(struct device *dev)
-@@ -1097,7 +1096,7 @@ MODULE_DEVICE_TABLE(of, spi_geni_dt_match);
- 
- static struct platform_driver spi_geni_driver = {
- 	.probe  = spi_geni_probe,
--	.remove = spi_geni_remove,
-+	.remove_new = spi_geni_remove,
- 	.driver = {
- 		.name = "geni_spi",
- 		.pm = &spi_geni_pm_ops,
+diff --git a/drivers/infiniband/hw/mlx5/main.c b/drivers/infiniband/hw/mlx5/main.c
+index 45a497c0258b..2d179bc56ce6 100644
+--- a/drivers/infiniband/hw/mlx5/main.c
++++ b/drivers/infiniband/hw/mlx5/main.c
+@@ -444,7 +444,7 @@ static int translate_eth_ext_proto_oper(u32 eth_proto_oper, u16 *active_speed,
+ 		*active_width = IB_WIDTH_2X;
+ 		*active_speed = IB_SPEED_NDR;
+ 		break;
+-	case MLX5E_PROT_MASK(MLX5E_400GAUI_8):
++	case MLX5E_PROT_MASK(MLX5E_400GAUI_8_400GBASE_CR8):
+ 		*active_width = IB_WIDTH_8X;
+ 		*active_speed = IB_SPEED_HDR;
+ 		break;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/port.c b/drivers/net/ethernet/mellanox/mlx5/core/port.c
+index be70d1f23a5d..749f0fc2c189 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/port.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/port.c
+@@ -1098,7 +1098,7 @@ static const u32 mlx5e_ext_link_speed[MLX5E_EXT_LINK_MODES_NUMBER] = {
+ 	[MLX5E_CAUI_4_100GBASE_CR4_KR4] = 100000,
+ 	[MLX5E_100GAUI_2_100GBASE_CR2_KR2] = 100000,
+ 	[MLX5E_200GAUI_4_200GBASE_CR4_KR4] = 200000,
+-	[MLX5E_400GAUI_8] = 400000,
++	[MLX5E_400GAUI_8_400GBASE_CR8] = 400000,
+ 	[MLX5E_100GAUI_1_100GBASE_CR_KR] = 100000,
+ 	[MLX5E_200GAUI_2_200GBASE_CR2_KR2] = 200000,
+ 	[MLX5E_400GAUI_4_400GBASE_CR4_KR4] = 400000,
+diff --git a/include/linux/mlx5/port.h b/include/linux/mlx5/port.h
+index 98b2e1e149f9..5cc34216f23c 100644
+--- a/include/linux/mlx5/port.h
++++ b/include/linux/mlx5/port.h
+@@ -115,7 +115,7 @@ enum mlx5e_ext_link_mode {
+ 	MLX5E_100GAUI_1_100GBASE_CR_KR		= 11,
+ 	MLX5E_200GAUI_4_200GBASE_CR4_KR4	= 12,
+ 	MLX5E_200GAUI_2_200GBASE_CR2_KR2	= 13,
+-	MLX5E_400GAUI_8				= 15,
++	MLX5E_400GAUI_8_400GBASE_CR8		= 15,
+ 	MLX5E_400GAUI_4_400GBASE_CR4_KR4	= 16,
+ 	MLX5E_EXT_LINK_MODES_NUMBER,
+ };
 -- 
 2.43.0
 
