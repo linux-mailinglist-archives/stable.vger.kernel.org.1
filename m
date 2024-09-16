@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-76218-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D1D197A0A4
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 13:59:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E0F397A132
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:06:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B120D2816FE
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 11:59:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07632286754
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:06:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48DB61581F2;
-	Mon, 16 Sep 2024 11:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAAB7158870;
+	Mon, 16 Sep 2024 12:04:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NNUfQ64b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nT4gYJpJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79728156C78;
-	Mon, 16 Sep 2024 11:59:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A665C156237;
+	Mon, 16 Sep 2024 12:04:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726487966; cv=none; b=rjGGcyuad8UceEG9gi46YqIUQWhsXtDx3UvRl0HC4kWlnBeOB04b4hYeQIHY3eEqVqEK2v3NGazsbjcjxwwWE7ax4w0fZ+gGMH96fXhLIFyF7kGywgH0gq9oktCTcJSxgZaBJuMTsSvLCyyaiNfE1/5uG0pXmKnxuTES2XwWp74=
+	t=1726488253; cv=none; b=NeBKSudpslhuJnU4lfVo+mHoKQcBJSRqji6nVdgDmKiyqu91DDqTuzy/I1Rf//gQsT0nH3Y3zaOfdOfdpr/uvA/G2xUhIxupAgRHm7vRHjOBfdrTwcStNGFrnxpAyIpwpCFxNJXYO+I5AEVdLNJStt6ThEWcKYZpMfB7ZvWVjmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726487966; c=relaxed/simple;
-	bh=Iiyx/2i11zO02PZAC4kUHIbd4MHLtG4FWgcZVmK61X8=;
+	s=arc-20240116; t=1726488253; c=relaxed/simple;
+	bh=QeEyIi19ZaHHNirYQrK6dPA+MIXeAW1CbTln36xac/Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TwFH5p3uNxCtAnw5ouWVhCr0GQrJp1yPgVOLtA397cXqSe4F+Xmd+3uduoiKrXq7SwcauWQr96aDypb+i8DjcaVtaAe9HF4fzcZ0DJGI1Gc/ytCy/UwgANr7vC64LxROKmON/blq1Pd4AbTGXMWKIp3EsKvBCg1aglYT/afyhBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NNUfQ64b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9A4CC4CEC4;
-	Mon, 16 Sep 2024 11:59:24 +0000 (UTC)
+	 MIME-Version; b=sZtLqDA3f+dR4UXqnDmMw8vxiZAIq6Q7UnNM0IZWdh4QuSzvJtm9lhogkv8uiOV3vQbMk6ZB7yDWv9Bf0wduOT7UlDH+bYeUrrU/vAill3YJOvmDlUO3SteUb/jfRew/LS7LP6hPofahhAlf2b99PpD6MUTtMcKr9zA1P03RWf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nT4gYJpJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E3B7C4CEC4;
+	Mon, 16 Sep 2024 12:04:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726487965;
-	bh=Iiyx/2i11zO02PZAC4kUHIbd4MHLtG4FWgcZVmK61X8=;
+	s=korg; t=1726488253;
+	bh=QeEyIi19ZaHHNirYQrK6dPA+MIXeAW1CbTln36xac/Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NNUfQ64bILf7cpoaIp3G65pBQBkjisZfi7hDVsR6nqjC54q3sUyhigBJorGVfxSwl
-	 4Wk7ldaUKwqpH0kcVoJri4OTNdHsMUh+6a5dWNkADpjfhUSZ7/Tl4J6Q+jFSRTTcJo
-	 ad6/oRJZzaouNMvDLFzS9fjUasuoFi6L1fpbx2Cg=
+	b=nT4gYJpJcNd7BblnRRvQjQzRBOWlLwAZ2g8o0iWdHQs7/aDEE3IPvO9t58SBcj93/
+	 lGWYg7tY5E6j30apvfc3PfYeDSiye75UH4Op35ci5UgHbZQK9XPHNGZ3hV6uQqZnOR
+	 RW6tzNNyTMeF/pz4FzSWNuoVRaW9bPw6ECSBtkAg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Moon Yeounsu <yyyynoom@gmail.com>,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 04/63] net: ethernet: use ip_hdrlen() instead of bit shift
+	Richard Narron <richard@aaazen.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.10 049/121] minmax: reduce min/max macro expansion in atomisp driver
 Date: Mon, 16 Sep 2024 13:43:43 +0200
-Message-ID: <20240916114221.182462953@linuxfoundation.org>
+Message-ID: <20240916114230.749824309@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
-References: <20240916114221.021192667@linuxfoundation.org>
+In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
+References: <20240916114228.914815055@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Moon Yeounsu <yyyynoom@gmail.com>
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
 
-[ Upstream commit 9a039eeb71a42c8b13408a1976e300f3898e1be0 ]
+commit 7c6a3a65ace70f12b27b1a27c9a69cb791dc6e91 upstream.
 
-`ip_hdr(skb)->ihl << 2` is the same as `ip_hdrlen(skb)`
-Therefore, we should use a well-defined function not a bit shift
-to find the header length.
+Avoid unnecessary nested min()/max() which results in egregious macro
+expansion.
 
-It also compresses two lines to a single line.
+Use clamp_t() as this introduces the least possible expansion, and turn
+the {s,u}DIGIT_FITTING() macros into inline functions to avoid the
+nested expansion.
 
-Signed-off-by: Moon Yeounsu <yyyynoom@gmail.com>
-Reviewed-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This resolves an issue with slackware 15.0 32-bit compilation as
+reported by Richard Narron.
+
+Presumably the min/max fixups would be difficult to backport, this patch
+should be easier and fix's Richard's problem in 5.15.
+
+Reported-by: Richard Narron <richard@aaazen.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Closes: https://lore.kernel.org/all/4a5321bd-b1f-1832-f0c-cea8694dc5aa@aaazen.com/
+Fixes: 867046cc7027 ("minmax: relax check to allow comparison between unsigned arguments and signed constants")
+Cc: stable@vger.kernel.org
+Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/jme.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ drivers/staging/media/atomisp/pci/sh_css_frac.h |   26 +++++++++++++++++-------
+ 1 file changed, 19 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/jme.c b/drivers/net/ethernet/jme.c
-index 1732ec3c3dbd..a718207988f2 100644
---- a/drivers/net/ethernet/jme.c
-+++ b/drivers/net/ethernet/jme.c
-@@ -946,15 +946,13 @@ jme_udpsum(struct sk_buff *skb)
- 	if (skb->protocol != htons(ETH_P_IP))
- 		return csum;
- 	skb_set_network_header(skb, ETH_HLEN);
--	if ((ip_hdr(skb)->protocol != IPPROTO_UDP) ||
--	    (skb->len < (ETH_HLEN +
--			(ip_hdr(skb)->ihl << 2) +
--			sizeof(struct udphdr)))) {
+--- a/drivers/staging/media/atomisp/pci/sh_css_frac.h
++++ b/drivers/staging/media/atomisp/pci/sh_css_frac.h
+@@ -30,12 +30,24 @@
+ #define uISP_VAL_MAX		      ((unsigned int)((1 << uISP_REG_BIT) - 1))
+ 
+ /* a:fraction bits for 16bit precision, b:fraction bits for ISP precision */
+-#define sDIGIT_FITTING(v, a, b) \
+-	min_t(int, max_t(int, (((v) >> sSHIFT) >> max(sFRACTION_BITS_FITTING(a) - (b), 0)), \
+-	  sISP_VAL_MIN), sISP_VAL_MAX)
+-#define uDIGIT_FITTING(v, a, b) \
+-	min((unsigned int)max((unsigned)(((v) >> uSHIFT) \
+-	>> max((int)(uFRACTION_BITS_FITTING(a) - (b)), 0)), \
+-	  uISP_VAL_MIN), uISP_VAL_MAX)
++static inline int sDIGIT_FITTING(int v, int a, int b)
++{
++	int fit_shift = sFRACTION_BITS_FITTING(a) - b;
 +
-+	if (ip_hdr(skb)->protocol != IPPROTO_UDP ||
-+	    skb->len < (ETH_HLEN + ip_hdrlen(skb) + sizeof(struct udphdr))) {
- 		skb_reset_network_header(skb);
- 		return csum;
- 	}
--	skb_set_transport_header(skb,
--			ETH_HLEN + (ip_hdr(skb)->ihl << 2));
-+	skb_set_transport_header(skb, ETH_HLEN + ip_hdrlen(skb));
- 	csum = udp_hdr(skb)->check;
- 	skb_reset_transport_header(skb);
- 	skb_reset_network_header(skb);
--- 
-2.43.0
-
++	v >>= sSHIFT;
++	v >>= fit_shift > 0 ? fit_shift : 0;
++
++	return clamp_t(int, v, sISP_VAL_MIN, sISP_VAL_MAX);
++}
++
++static inline unsigned int uDIGIT_FITTING(unsigned int v, int a, int b)
++{
++	int fit_shift = uFRACTION_BITS_FITTING(a) - b;
++
++	v >>= uSHIFT;
++	v >>= fit_shift > 0 ? fit_shift : 0;
++
++	return clamp_t(unsigned int, v, uISP_VAL_MIN, uISP_VAL_MAX);
++}
+ 
+ #endif /* __SH_CSS_FRAC_H */
 
 
 
