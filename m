@@ -1,109 +1,102 @@
-Return-Path: <stable+bounces-76201-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76202-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0B8B979E6D
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 11:26:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3D1E979E70
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 11:27:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8E6AC1F22B7C
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 09:26:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 51344B20D66
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 09:27:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 741E414A4E0;
-	Mon, 16 Sep 2024 09:26:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D43E14A4E9;
+	Mon, 16 Sep 2024 09:27:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="n5Px2110"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EOS/9lF2"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbgbr2.qq.com (smtpbgbr2.qq.com [54.207.22.56])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CD8C146586;
-	Mon, 16 Sep 2024 09:26:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.22.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65FED146586
+	for <stable@vger.kernel.org>; Mon, 16 Sep 2024 09:27:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726478775; cv=none; b=ZZr2vmh70/fK0W6moUDE9pgdv1LvVD90KQrRRQ7kYVhpjyHTq4XekZDY7OjW/S/X9uMXbop9UMM58oM829dxuVzdRWjU+SEYX85oHZm6VVV7QiDf0QjYuJeRoFhom9E4iCNQPf7HeKhsS6JwE4GqZRfqRvo7Vb368c/fRtju3Rc=
+	t=1726478845; cv=none; b=Q14RVrmRgQK8GnGnd8dlzGEMusuk5QsdG+qaqW+Yk5ceUAb846UISPyPSiU52/5VoHn4Jw9ZlngsZilBzGY+HkiIJeGIQJqjzk5vGJQkaNVhtOu2Rgkg/z3MDxpfDhWDMEUgPpgRC6zdgf+CTHlYqdcM9Qj7oMK5GeQ5jA2FReM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726478775; c=relaxed/simple;
-	bh=aQkPuDpvwEae30GhlJo8cTrxC0ZYLwt1xKZE9oUNego=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=f9fIhljv9Lg898axWYhmaR+Rd1WxOBRVf9u6NWRiXzhArLprNLmaLVnvO5jsOJymlYqFXlP61Vs0nDmHlp8Kc5rMvpel2HeiL4porTdlyXVNpSNrTKlhVQaVr3DYbW4WemG1KjwnPN9zneJlxPCTwXKVSYIjdxQye4WQPq9q8Es=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=n5Px2110; arc=none smtp.client-ip=54.207.22.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1726478759;
-	bh=5C0HaDNv0z40Dq3FSjo9w53WFVCZuvNtTiGz93K91R0=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=n5Px21108kW6uvaDJUby4SvZrloSti/oICfeoE40G351nbnKXDilLyH+9RRdCkgLt
-	 Z9Hexp4Zz0KRgQwwC4VNQjY8QMgCQJY1ihq4YfzQPL3TygCpIN5TifkkiXwG9e1JWF
-	 CHHl3ZtGeMG9fAuvvVuXvvmRXwGNZ0wM1KTaNFzA=
-X-QQ-mid: bizesmtpip3t1726478756ti9l687
-X-QQ-Originating-IP: /gJoNUlmd+IboF2jL9DFoR2xzAYrz7MGcmEmwBftpMY=
-Received: from avenger-OMEN-by-HP-Gaming-Lapto ( [localhost])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 16 Sep 2024 17:25:54 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 4414229508549440317
-From: WangYuli <wangyuli@uniontech.com>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org,
-	sashal@kernel.org,
-	maobibo@loongson.cn,
-	guanwentao@uniontech.com,
-	zhangdandan@uniontech.com,
-	wangyuli@uniontech.com,
-	chenhuacai@loongson.cn
-Cc: zhaotianrui@loongson.cn,
-	kernel@xen0n.name,
-	kvm@vger.kernel.org,
-	loongarch@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 6.10] LoongArch: KVM: Remove undefined a6 argument comment for kvm_hypercall()
-Date: Mon, 16 Sep 2024 17:25:46 +0800
-Message-ID: <8EFAA3851253EB9A+20240916092546.429464-1-wangyuli@uniontech.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1726478845; c=relaxed/simple;
+	bh=SCw3QShxbZnnZCIySefmYOjTIE0+gI8LcGkGbDixo64=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=U7e15ZOnrnRsNtP5U3KIDLx7dv6sISl2fWPIXdm6TptQeDLZtFjBxQyzT/8zAyAzAgQDatdtda3LK87/CsAxw0TpeY+91rB7fj3Ow9sQ/B+wthecYIMR99OwZ2SBm13+9BBhPb8Qz+fFjsxLciZ/nMkM7z0hKZEw0pUVsB+PU+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EOS/9lF2; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1726478843; x=1758014843;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=SCw3QShxbZnnZCIySefmYOjTIE0+gI8LcGkGbDixo64=;
+  b=EOS/9lF2xC0HFD8Cp5R0ZdgdPj/+FbmXAYOo6ggztrqGEtBnLQW1pWoV
+   1l4QetEPFtzZXpwWMsrJ7ZBuS6Kfab9Q2KSa+35giUnEXPCsXTPm8OaT6
+   bq3/kXJ0iLBGZQIHhr6/WTTcMXrikwhpjPubNhEteA8CnyPLUyIkupucj
+   9PennqMlL/rHsK1yAbM5r+KJW6TvuZOzIG7J8SMWd8km4oCqGFN+0lWgQ
+   8hDKg77BN9qsATBKkyIoGI+nuspzAV/H4/uw2X7GRZAliuhA+DtyA1WAG
+   KXBfnVIW1QhdXbGD5UKS12endYdUid2Ag4iQxTfx7T67VMh6JK45A40rW
+   g==;
+X-CSE-ConnectionGUID: hfBYAkWlSMaKiyc2gkZvDw==
+X-CSE-MsgGUID: M/Nzw+zgSz6ypzpOC8dg5w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11196"; a="25180148"
+X-IronPort-AV: E=Sophos;i="6.10,232,1719903600"; 
+   d="scan'208";a="25180148"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2024 02:27:15 -0700
+X-CSE-ConnectionGUID: 6svhQV7IQ9KcM2RStXrbLg==
+X-CSE-MsgGUID: 1b0AGPLjSIqTioP/pjmOyQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,232,1719903600"; 
+   d="scan'208";a="69315766"
+Received: from lkp-server01.sh.intel.com (HELO 53e96f405c61) ([10.239.97.150])
+  by orviesa007.jf.intel.com with ESMTP; 16 Sep 2024 02:27:14 -0700
+Received: from kbuild by 53e96f405c61 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sq80m-0009cX-06;
+	Mon, 16 Sep 2024 09:27:12 +0000
+Date: Mon, 16 Sep 2024 17:26:38 +0800
+From: kernel test robot <lkp@intel.com>
+To: WangYuli <wangyuli@uniontech.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH 6.10] LoongArch: KVM: Remove undefined a6 argument
+ comment for kvm_hypercall()
+Message-ID: <Zuf5zjeeWO9zfUkL@3bb1e60d1c37>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtpip:uniontech.com:qybglogicsvrgz:qybglogicsvrgz8a-1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <8EFAA3851253EB9A+20240916092546.429464-1-wangyuli@uniontech.com>
 
-From: Dandan Zhang <zhangdandan@uniontech.com>
+Hi,
 
-The kvm_hypercall() set for LoongArch is limited to a1-a5. So the
-mention of a6 in the comment is undefined that needs to be rectified.
+Thanks for your patch.
 
-Reviewed-by: Bibo Mao <maobibo@loongson.cn>
-Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
-Signed-off-by: Dandan Zhang <zhangdandan@uniontech.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: WangYuli <wangyuli@uniontech.com>
----
- arch/loongarch/include/asm/kvm_para.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-diff --git a/arch/loongarch/include/asm/kvm_para.h b/arch/loongarch/include/asm/kvm_para.h
-index 4ba2312e5f8c..6d5e9b6c5714 100644
---- a/arch/loongarch/include/asm/kvm_para.h
-+++ b/arch/loongarch/include/asm/kvm_para.h
-@@ -28,9 +28,9 @@
-  * Hypercall interface for KVM hypervisor
-  *
-  * a0: function identifier
-- * a1-a6: args
-+ * a1-a5: args
-  * Return value will be placed in a0.
-- * Up to 6 arguments are passed in a1, a2, a3, a4, a5, a6.
-+ * Up to 5 arguments are passed in a1, a2, a3, a4, a5.
-  */
- static __always_inline long kvm_hypercall0(u64 fid)
- {
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-3
+
+Rule: The upstream commit ID must be specified with a separate line above the commit text.
+Subject: [PATCH 6.10] LoongArch: KVM: Remove undefined a6 argument comment for kvm_hypercall()
+Link: https://lore.kernel.org/stable/8EFAA3851253EB9A%2B20240916092546.429464-1-wangyuli%40uniontech.com
+
+Please ignore this mail if the patch is not relevant for upstream.
+
 -- 
-2.43.0
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
