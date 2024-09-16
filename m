@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-76420-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D4C697A1AE
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:09:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA38197A0B4
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:00:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AFE131C210AA
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:09:34 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 100F01C22D91
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:00:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31E31156F21;
-	Mon, 16 Sep 2024 12:09:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70417155391;
+	Mon, 16 Sep 2024 12:00:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r1MQG5It"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I0uHpDuo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1644155730;
-	Mon, 16 Sep 2024 12:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B019154429;
+	Mon, 16 Sep 2024 12:00:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488542; cv=none; b=emUozNmj6aFgKC/Bhjk1zNFcc8ZlO4cWqT5zbm6I7qvSelrk1/dbanDttQhum02R1yZ8Vda13f/VL6BacN15kg2P4Fmol2d9DeOP/Ti0fcxwIMbGGK9XtgaWkF4FoqftLmuNEKj7Y0vYNIytVlsz18F++CrAr7wVpnZaqhbh5lw=
+	t=1726488003; cv=none; b=cQ+ZMpY7uE4G7DPH1ddbdG8EGbs3xSa4hmyL6Zlj7DlMZ5RWYzwGFBXcrMQeJWOfIt6rQvvm51i2Wn5IECXyb8FZnT4Z8fu5BvCxRtOmCeylHoTEtBr77wY7SPmy1xs75QujRzNBTY3pYleE64o+PkARUdu8PB/PTuLTOSX0dwY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488542; c=relaxed/simple;
-	bh=1san2o4+8uOU4aeTCe9w/mmdQ4gRMjjiV45or9w9kR8=;
+	s=arc-20240116; t=1726488003; c=relaxed/simple;
+	bh=xAvMGefIRJI1CISG93pkbOfibhl4yK8LUwnqOe+4Zfs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YM2NNrdXMihigRLIGfiwIMMjzipBu1dHhHmPppRvWb2S3t16parxXZRjXRU/fpbKQJZ/ULhA87IUSmmT3iGqLSOgaml/itobVST2UzCT4aPQNrpP8jCu+CbTB9jHmg/SbnxaSje17UsyJM+0F1ZTRXRNAlIXPHXhkEa/1DU3v3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r1MQG5It; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BB27C4CEC4;
-	Mon, 16 Sep 2024 12:09:01 +0000 (UTC)
+	 MIME-Version; b=IWXpc3QN/HGZMLUSXQFvnwdzASSg7VFceXuqxdlwtRE2vMvMsrclXbEa7l0nwbc/ndjaBTFMvETiNxjGaXOif2MZ3TmWYDYWuwGoN2YCy2X2OU+1cntNIIiUvojLbi+hOc4bNqkI0vqExdmfPLMQ/pX3pn812bRpGFEX28c/fyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I0uHpDuo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 987DBC4CEC4;
+	Mon, 16 Sep 2024 12:00:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488541;
-	bh=1san2o4+8uOU4aeTCe9w/mmdQ4gRMjjiV45or9w9kR8=;
+	s=korg; t=1726488003;
+	bh=xAvMGefIRJI1CISG93pkbOfibhl4yK8LUwnqOe+4Zfs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r1MQG5ItQCqsYL6HGXmaLSkXRWPv/ZtPb1V+oK4S0KAUpfsbNM8GBWT8jBS7HCLpa
-	 t0RlhIIiJbUINDNf7B8LYfXI27K3M8Fr1VjjbbzwFKf7/rTotwhB8KWZX/Dl2uZM1q
-	 QzYJfpDmhBBNcDiciI3g5/e1UQPY+LJu+xPG3WyQ=
+	b=I0uHpDuotHUsaufVfPFlOa8PLG2lcWxjMbCNMT+LUhPpc8w/MBqCwTekCnixTO1kd
+	 9KSCPsrMf38UT+SPBjwVA0x4A5gD91pmbPu5ua3kiLVHhfiFywsJFu9c8jd3kHhtk6
+	 ALorMGxbHwHrnOa0XrfdsBv7zaqDeQFAQOBoApCI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maximilian Luz <luzmaximilian@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 28/91] platform/surface: aggregator_registry: Add Support for Surface Pro 10
+	Quentin Schulz <quentin.schulz@cherry.de>,
+	Heiko Stuebner <heiko@sntech.de>
+Subject: [PATCH 6.1 25/63] arm64: dts: rockchip: override BIOS_DISABLE signal via GPIO hog on RK3399 Puma
 Date: Mon, 16 Sep 2024 13:44:04 +0200
-Message-ID: <20240916114225.441013872@linuxfoundation.org>
+Message-ID: <20240916114221.959952822@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
-References: <20240916114224.509743970@linuxfoundation.org>
+In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
+References: <20240916114221.021192667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +59,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maximilian Luz <luzmaximilian@gmail.com>
+From: Quentin Schulz <quentin.schulz@cherry.de>
 
-[ Upstream commit 9c8e022567bbec53bee8ae75c44b3d6cd2080d42 ]
+commit 741f5ba7ccba5d7ae796dd11c320e28045524771 upstream.
 
-Add SAM client device nodes for the Surface Pro 10. It seems to use the
-same SAM client devices as the Surface Pro 9, so re-use its node group.
+The Qseven BIOS_DISABLE signal on the RK3399-Q7 keeps the on-module eMMC
+and SPI flash powered-down initially (in fact it keeps the reset signal
+asserted). BIOS_DISABLE_OVERRIDE pin allows to override that signal so
+that eMMC and SPI can be used regardless of the state of the signal.
 
-Signed-off-by: Maximilian Luz <luzmaximilian@gmail.com>
-Link: https://lore.kernel.org/r/20240811131948.261806-2-luzmaximilian@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Let's make this GPIO a hog so that it's reserved and locked in the
+proper state.
+
+At the same time, make sure the pin is reserved for the hog and cannot
+be requested by another node.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
+Link: https://lore.kernel.org/r/20240731-puma-emmc-6-v1-2-4e28eadf32d0@cherry.de
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/surface/surface_aggregator_registry.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi |   23 ++++++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/surface/surface_aggregator_registry.c b/drivers/platform/surface/surface_aggregator_registry.c
-index 0fe5be539652..c2651599685e 100644
---- a/drivers/platform/surface/surface_aggregator_registry.c
-+++ b/drivers/platform/surface/surface_aggregator_registry.c
-@@ -298,7 +298,7 @@ static const struct software_node *ssam_node_group_sp8[] = {
- 	NULL,
+--- a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
+@@ -119,6 +119,22 @@
+ 	drive-impedance-ohm = <33>;
  };
  
--/* Devices for Surface Pro 9 */
-+/* Devices for Surface Pro 9 and 10 */
- static const struct software_node *ssam_node_group_sp9[] = {
- 	&ssam_node_root,
- 	&ssam_node_hub_kip,
-@@ -337,6 +337,9 @@ static const struct acpi_device_id ssam_platform_hub_match[] = {
- 	/* Surface Pro 9 */
- 	{ "MSHW0343", (unsigned long)ssam_node_group_sp9 },
- 
-+	/* Surface Pro 10 */
-+	{ "MSHW0510", (unsigned long)ssam_node_group_sp9 },
++&gpio3 {
++	/*
++	 * The Qseven BIOS_DISABLE signal on the RK3399-Q7 keeps the on-module
++	 * eMMC and SPI flash powered-down initially (in fact it keeps the
++	 * reset signal asserted). BIOS_DISABLE_OVERRIDE pin allows to override
++	 * that signal so that eMMC and SPI can be used regardless of the state
++	 * of the signal.
++	 */
++	bios-disable-override-hog {
++		gpios = <RK_PD5 GPIO_ACTIVE_LOW>;
++		gpio-hog;
++		line-name = "bios_disable_override";
++		output-high;
++	};
++};
 +
- 	/* Surface Book 2 */
- 	{ "MSHW0107", (unsigned long)ssam_node_group_gen5 },
+ &gmac {
+ 	assigned-clocks = <&cru SCLK_RMII_SRC>;
+ 	assigned-clock-parents = <&clkin_gmac>;
+@@ -417,9 +433,14 @@
  
--- 
-2.43.0
-
+ &pinctrl {
+ 	pinctrl-names = "default";
+-	pinctrl-0 = <&q7_thermal_pin>;
++	pinctrl-0 = <&q7_thermal_pin &bios_disable_override_hog_pin>;
+ 
+ 	gpios {
++		bios_disable_override_hog_pin: bios-disable-override-hog-pin {
++			rockchip,pins =
++				<3 RK_PD5 RK_FUNC_GPIO &pcfg_pull_down>;
++		};
++
+ 		q7_thermal_pin: q7-thermal-pin {
+ 			rockchip,pins =
+ 				<0 RK_PA3 RK_FUNC_GPIO &pcfg_pull_up>;
 
 
 
