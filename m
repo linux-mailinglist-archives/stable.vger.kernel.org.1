@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-76278-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9BA497A0E8
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:02:19 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 446A297A158
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:07:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6FFB01F229EB
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:02:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A2B99B240D4
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:07:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBD771547FF;
-	Mon, 16 Sep 2024 12:02:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A895156641;
+	Mon, 16 Sep 2024 12:05:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R2bmg/1G"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dxTBBiC4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A5E514B946;
-	Mon, 16 Sep 2024 12:02:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B971A15748E;
+	Mon, 16 Sep 2024 12:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488136; cv=none; b=kNw+Q0BNeoEDS5O67esOXIOk1m+jSySMSTRXVAuJHPDGgUmUiN+dKVwJfX8KkakPuObPs7TAHTW/ZOQy85v3Wlcby9dQqYJa9wmD2jIJRWGQe3nl8jVQSU46j9qzAgiERVKoqLAnVBE3wbY+qUgwI1nQdandCzNNoP/VgN31/Y8=
+	t=1726488344; cv=none; b=T+6zbFIZWUTDTlIbTYM92x5M4MLD9Jq6eh1vGZuig6c9XrpxMprgJBqAVxs+2dTmVc2WGGlppiAKTIhRBAZFIdE49vqFKNIflLtFlQ60x2EHHKO5+CV/6YXY8qAxYmoX/hP9B6V1O3aIuVtgX12X1DmFwMM26h4K0HSpM1ZfV0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488136; c=relaxed/simple;
-	bh=99AFPWlBUSHZJVJ69OqatdfjMZ3TQux5TB9C7i1Kieg=;
+	s=arc-20240116; t=1726488344; c=relaxed/simple;
+	bh=LO+xCwWtjmpNmSJ/1UMOhjAfE03LvKKAzdf94iY/EdM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pM+wIU7IO8avKytFW/h/c7Bv3Mrs6C1klhJOA+M7k3UNCgFVWXCkR8xiipVayMTmwgegUuIHHO//lyH27Q6L8PGsSlZvp1c6g4qU8yIkyHFTIZTJc7Vi2mMJxfo+yrJ8ftpRj58rnI9wZQYdQQPUkYncJH5UXr71S9VSx3vo7is=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R2bmg/1G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF17DC4CEC4;
-	Mon, 16 Sep 2024 12:02:15 +0000 (UTC)
+	 MIME-Version; b=YsA/xdANfYY0Tu2E0oBm+dXqrZaCmDCbkUdgfYXuYNOYTR7QN2flnX9i1F5E2Hji+8rkVPL/GtI8WTQyji5bIEtsJjhW/z2U82cA92xRn/mx+JHKr3j14KeX5B/zNw61TOFb3dGZZ/fOp0XOEnVrZ0fYHqB95azepieRofW2XRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dxTBBiC4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FFC6C4CEC4;
+	Mon, 16 Sep 2024 12:05:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488136;
-	bh=99AFPWlBUSHZJVJ69OqatdfjMZ3TQux5TB9C7i1Kieg=;
+	s=korg; t=1726488344;
+	bh=LO+xCwWtjmpNmSJ/1UMOhjAfE03LvKKAzdf94iY/EdM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R2bmg/1G5Go0UoXJ+cyzbyMtnjrxr2dASqV/qDWk2/0hoPYi5E040KeLwx2iC6y0R
-	 06z3pZBaI4Fi0eUJR52CA0ULxh73UJfk1efJsriudaafoNOzlREA1O8z3VYc/NxHaD
-	 DPMFb62zfRl4T9xeqa9PRbyOmDnDhUpfWjVg/3+s=
+	b=dxTBBiC41R5sOr1v1F1jtL5tQdseL/NecNIwYTx1JboOfm12rkKrnb44RUNExw7T5
+	 nAjODNdh/5ZLaejXHyRLHK9LKaBe+ki6Ru1OS7ckVMTtdqyFA+KulF1glY6BJbRM5e
+	 uXKW2N4ZYetPftbnyC/f99Wo6A8WEYyNDa79CHII=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Sitnicki <jakub@cloudflare.com>,
-	Michal Luczaj <mhal@rbox.co>,
-	Daniel Borkmann <daniel@iogearbox.net>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Gal Pressman <gal@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 36/63] selftests/bpf: Support SOCK_STREAM in unix_inet_redir_to_connected()
+Subject: [PATCH 6.10 081/121] net/mlx5: Correct TASR typo into TSAR
 Date: Mon, 16 Sep 2024 13:44:15 +0200
-Message-ID: <20240916114222.338950446@linuxfoundation.org>
+Message-ID: <20240916114231.831013108@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
-References: <20240916114221.021192667@linuxfoundation.org>
+In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
+References: <20240916114228.914815055@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +64,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Luczaj <mhal@rbox.co>
+From: Cosmin Ratiu <cratiu@nvidia.com>
 
-[ Upstream commit 1b0ad43177c097d38b967b99c2b71d8be28b0223 ]
+[ Upstream commit e575d3a6dd22123888defb622b1742aa2d45b942 ]
 
-Function ignores the AF_UNIX socket type argument, SOCK_DGRAM is hardcoded.
-Fix to respect the argument provided.
+TSAR is the correct spelling (Transmit Scheduling ARbiter).
 
-Fixes: 75e0e27db6cf ("selftest/bpf: Change udp to inet in some function names")
-Suggested-by: Jakub Sitnicki <jakub@cloudflare.com>
-Signed-off-by: Michal Luczaj <mhal@rbox.co>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Tested-by: Jakub Sitnicki <jakub@cloudflare.com>
-Reviewed-by: Jakub Sitnicki <jakub@cloudflare.com>
-Link: https://lore.kernel.org/bpf/20240713200218.2140950-3-mhal@rbox.co
+Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
+Reviewed-by: Gal Pressman <gal@nvidia.com>
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://lore.kernel.org/r/20240613210036.1125203-2-tariqt@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 861cd9b9cb62 ("net/mlx5: Verify support for scheduling element and TSAR type")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/sockmap_listen.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c | 2 +-
+ include/linux/mlx5/mlx5_ifc.h                     | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/sockmap_listen.c b/tools/testing/selftests/bpf/prog_tests/sockmap_listen.c
-index 2cf0c7a3fe23..cef5d3595171 100644
---- a/tools/testing/selftests/bpf/prog_tests/sockmap_listen.c
-+++ b/tools/testing/selftests/bpf/prog_tests/sockmap_listen.c
-@@ -1909,7 +1909,7 @@ static void unix_inet_redir_to_connected(int family, int type, int sock_mapfd,
- 	if (err)
- 		return;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
+index bcea5f06807a..997c412a81af 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
+@@ -538,7 +538,7 @@ static bool esw_qos_element_type_supported(struct mlx5_core_dev *dev, int type)
+ 	switch (type) {
+ 	case SCHEDULING_CONTEXT_ELEMENT_TYPE_TSAR:
+ 		return MLX5_CAP_QOS(dev, esw_element_type) &
+-		       ELEMENT_TYPE_CAP_MASK_TASR;
++		       ELEMENT_TYPE_CAP_MASK_TSAR;
+ 	case SCHEDULING_CONTEXT_ELEMENT_TYPE_VPORT:
+ 		return MLX5_CAP_QOS(dev, esw_element_type) &
+ 		       ELEMENT_TYPE_CAP_MASK_VPORT;
+diff --git a/include/linux/mlx5/mlx5_ifc.h b/include/linux/mlx5/mlx5_ifc.h
+index d4dd7e2d8ffe..6ffafd596d39 100644
+--- a/include/linux/mlx5/mlx5_ifc.h
++++ b/include/linux/mlx5/mlx5_ifc.h
+@@ -3913,7 +3913,7 @@ enum {
+ };
  
--	if (socketpair(AF_UNIX, SOCK_DGRAM | SOCK_NONBLOCK, 0, sfd))
-+	if (socketpair(AF_UNIX, type | SOCK_NONBLOCK, 0, sfd))
- 		goto close_cli0;
- 	c1 = sfd[0], p1 = sfd[1];
- 
-@@ -1944,7 +1944,6 @@ static void unix_inet_redir_to_connected(int family, int type, int sock_mapfd,
- close_cli0:
- 	xclose(c0);
- 	xclose(p0);
--
- }
- 
- static void unix_inet_skb_redir_to_connected(struct test_sockmap_listen *skel,
+ enum {
+-	ELEMENT_TYPE_CAP_MASK_TASR		= 1 << 0,
++	ELEMENT_TYPE_CAP_MASK_TSAR		= 1 << 0,
+ 	ELEMENT_TYPE_CAP_MASK_VPORT		= 1 << 1,
+ 	ELEMENT_TYPE_CAP_MASK_VPORT_TC		= 1 << 2,
+ 	ELEMENT_TYPE_CAP_MASK_PARA_VPORT_TC	= 1 << 3,
 -- 
 2.43.0
 
