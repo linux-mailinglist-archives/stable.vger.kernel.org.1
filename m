@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-76410-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76216-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ED0297A19F
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:08:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7683B97A0A5
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 13:59:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 15C0E1F2138F
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:08:55 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E67FAB20C37
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 11:59:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDCB9157469;
-	Mon, 16 Sep 2024 12:08:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1872C15746F;
+	Mon, 16 Sep 2024 11:59:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IeIKW+Ri"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CrIrZ4US"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B769156F36;
-	Mon, 16 Sep 2024 12:08:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FDF715665C;
+	Mon, 16 Sep 2024 11:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488512; cv=none; b=sE6kyHzhP6qdwU3eJO+FkBHgUt4PstcgbQxNRiaLnJyCnYbLkyuchwPerbO2LToBJsccEtBRvq+OHbP7WcdARAvuLoiK4+cur1QCC0o/yN/s0YPtau4XA0sb52r1XedLNiZzsBQt9TTEcEApHfM5BuGVm59pcjydHURrykP6nFM=
+	t=1726487959; cv=none; b=tMkAwOFPD6z2BN+eJAztBV18eOSxgcliwMRtZUr7AwBLZHmsf1LwYjmadCmFN+AEgXPR2Gz0dvGCqcFKqdZfmZWQAdRBhhMp0I9LJ24YHPBZgqwP3YfXxJisjXDxZc8rljFQ0R2faQTYRpPibi6wQb112rLf7JJdgi7l5vTIUv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488512; c=relaxed/simple;
-	bh=+GoVzwJE4rNb+jyzXs6nfYquBNkQ+ma80jQwSbVMYXA=;
+	s=arc-20240116; t=1726487959; c=relaxed/simple;
+	bh=9bryp0z+hLPGKWjhTFi2nyL8V6GMCopvI3gjgu0CQLk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TX+N0CzcrbrpU6FJp6i3MAKqcefTG9GPlivVnMzZqcL/OS3KRGsItEXE13W29GvFFQrKACqRt/kguaw/kUDs5wbZg3eDbW7UXn7Em0mVPmviQHQ2G5WVuAxjy2agtxeT0ZHBNWvJts0AFi6hNUyTMGTJ5JLhSZPwEq6AbyWKDo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IeIKW+Ri; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14787C4CECE;
-	Mon, 16 Sep 2024 12:08:31 +0000 (UTC)
+	 MIME-Version; b=DsQECG6PX3f3KORa9mJn0rFKeKrQh/zBchfYSqOXoawlUL0sdcIAVbS6Zq5BTg5vq38XLgpnahjJ/CA3j14Gs6omzT3IxQTZRXYxOiC8JwJkvqkEdwVVowWz7w3f2zbRlxYodihCrWN6oAJw32l+DPjtb0WBo86InWQek5EfS+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CrIrZ4US; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1E3EC4CEC4;
+	Mon, 16 Sep 2024 11:59:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488512;
-	bh=+GoVzwJE4rNb+jyzXs6nfYquBNkQ+ma80jQwSbVMYXA=;
+	s=korg; t=1726487959;
+	bh=9bryp0z+hLPGKWjhTFi2nyL8V6GMCopvI3gjgu0CQLk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IeIKW+RiqPSl+qp1/ozclqrWGHZ9QGNeOsCZduy7XoUvsiuRrlXrwBhxvnmYfB2nB
-	 gPn4SBILhs+hmj1MPiq5PqzcI9+HI7Kuk0/xcjcB389zPX+ZCbbxfwcHZ9Ckpp8R8v
-	 NmDJBdFG1+/Oauy0wAH3Nl0RCUDe/oqBi70wMx5g=
+	b=CrIrZ4USpjpOqaVCZMAjlrOQGAaHEmNMQs85d9EgxMOtS5bGeWL4bNWYSfNuVOzCu
+	 TbQNaL42UWjJtyPOi1o09KERaWgZznik5xGhRcUQ4Rm75by0FaysJN278izlNe0IXE
+	 iCVY6Ct43F0yc7ErEu/gB/9yyCGPKKapvGFq0NJE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Sangsoo Lee <constant.lee@samsung.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 05/91] nvmem: core: add nvmem_dev_size() helper
+Subject: [PATCH 6.1 02/63] ksmbd: override fsids for smb2_query_info()
 Date: Mon, 16 Sep 2024 13:43:41 +0200
-Message-ID: <20240916114224.692502557@linuxfoundation.org>
+Message-ID: <20240916114221.106361043@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
-References: <20240916114224.509743970@linuxfoundation.org>
+In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
+References: <20240916114221.021192667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,68 +61,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafał Miłecki <rafal@milecki.pl>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 33cf42e68efc8ff529a7eee08a4f0ba8c8d0a207 ]
+[ Upstream commit f6bd41280a44dcc2e0a25ed72617d25f586974a7 ]
 
-This is required by layouts that need to read whole NVMEM content. It's
-especially useful for NVMEM devices without hardcoded layout (like
-U-Boot environment data block).
+Sangsoo reported that a DAC denial error occurred when accessing
+files through the ksmbd thread. This patch override fsids for
+smb2_query_info().
 
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/r/20231221173421.13737-2-zajec5@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 8679e8b4a1eb ("nvmem: u-boot-env: error if NVMEM device is too small")
+Reported-by: Sangsoo Lee <constant.lee@samsung.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvmem/core.c           | 13 +++++++++++++
- include/linux/nvmem-consumer.h |  1 +
- 2 files changed, 14 insertions(+)
+ fs/smb/server/smb2pdu.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/nvmem/core.c b/drivers/nvmem/core.c
-index e7fd1315d7ed..f28c005c2bb2 100644
---- a/drivers/nvmem/core.c
-+++ b/drivers/nvmem/core.c
-@@ -2131,6 +2131,19 @@ const char *nvmem_dev_name(struct nvmem_device *nvmem)
- }
- EXPORT_SYMBOL_GPL(nvmem_dev_name);
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index 386f1f039883..808c62d7ff3e 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -5326,6 +5326,11 @@ int smb2_query_info(struct ksmbd_work *work)
  
-+/**
-+ * nvmem_dev_size() - Get the size of a given nvmem device.
-+ *
-+ * @nvmem: nvmem device.
-+ *
-+ * Return: size of the nvmem device.
-+ */
-+size_t nvmem_dev_size(struct nvmem_device *nvmem)
-+{
-+	return nvmem->size;
-+}
-+EXPORT_SYMBOL_GPL(nvmem_dev_size);
+ 	ksmbd_debug(SMB, "GOT query info request\n");
+ 
++	if (ksmbd_override_fsids(work)) {
++		rc = -ENOMEM;
++		goto err_out;
++	}
 +
- static int __init nvmem_init(void)
- {
- 	return bus_register(&nvmem_bus_type);
-diff --git a/include/linux/nvmem-consumer.h b/include/linux/nvmem-consumer.h
-index 4523e4e83319..526025561df1 100644
---- a/include/linux/nvmem-consumer.h
-+++ b/include/linux/nvmem-consumer.h
-@@ -81,6 +81,7 @@ int nvmem_device_cell_write(struct nvmem_device *nvmem,
- 			    struct nvmem_cell_info *info, void *buf);
+ 	switch (req->InfoType) {
+ 	case SMB2_O_INFO_FILE:
+ 		ksmbd_debug(SMB, "GOT SMB2_O_INFO_FILE\n");
+@@ -5344,6 +5349,7 @@ int smb2_query_info(struct ksmbd_work *work)
+ 			    req->InfoType);
+ 		rc = -EOPNOTSUPP;
+ 	}
++	ksmbd_revert_fsids(work);
  
- const char *nvmem_dev_name(struct nvmem_device *nvmem);
-+size_t nvmem_dev_size(struct nvmem_device *nvmem);
+ 	if (!rc) {
+ 		rsp->StructureSize = cpu_to_le16(9);
+@@ -5353,6 +5359,7 @@ int smb2_query_info(struct ksmbd_work *work)
+ 					le32_to_cpu(rsp->OutputBufferLength));
+ 	}
  
- void nvmem_add_cell_lookups(struct nvmem_cell_lookup *entries,
- 			    size_t nentries);
++err_out:
+ 	if (rc < 0) {
+ 		if (rc == -EACCES)
+ 			rsp->hdr.Status = STATUS_ACCESS_DENIED;
 -- 
 2.43.0
 
