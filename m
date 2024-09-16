@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-76475-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B24097A1EA
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:11:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 433CC97A15E
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:07:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0FB432863D1
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:11:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07C19287452
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:07:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D2F3155352;
-	Mon, 16 Sep 2024 12:11:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EDE61581F2;
+	Mon, 16 Sep 2024 12:06:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CHygHbCP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cbphegK1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C318153573;
-	Mon, 16 Sep 2024 12:11:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C266C155333;
+	Mon, 16 Sep 2024 12:06:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488698; cv=none; b=guCGQ+LaBZat/ntKW+zyfp9V4zsVAgycq87UMGxML7DOKKPX2HcPx0A2LsbFcmXHSNNqBYMZ/G47pRR126+sfm4MFWerN7CpnUF2Vp2Xf6xqzgm8YZwamGOJhITpfjCzOQLXxl8HB1IpZWJb1HLeYx7dkcKxz2Pc2cehXqqIbCY=
+	t=1726488364; cv=none; b=a+fUfHwcotqs1vNmE2xsaNLxcbjkz/YRbPA1/x84odiPRdXA/ArxaQcD6oy0UI60DsVdCV3fFAjEO223Wu6ac2IQ1Zp1zYCUrvL0Gx65IYbPxKurdwCBA/hMgLSIQKGcJ2EZGxckmcVqWD+FIiXKIhivyyiIChWpG+cyaA28lMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488698; c=relaxed/simple;
-	bh=6/jEvzPku4kYe8q74mshnRje3VibUQAHoPuAU23OSO8=;
+	s=arc-20240116; t=1726488364; c=relaxed/simple;
+	bh=SNyrMW/sEqFeMcFvrneXvRs22HP0vvORbBbD8VSY/VE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bxjy0azD2Mj2afH7rgy27cJmOt5ZoNw6Vu0EDKGB6nzlNWkWJQtVeeHGMfaVNsf7iPwiz/rQJQP1IL2DELtYrCfbx70ppGx+zLgLbhLoE72VP4Tp+iOSv7iHorf6EkoqUDqzl+cPvWFztvd+FxHkRjALBl76DSdqbtg4JRpLlX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CHygHbCP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA49BC4CEC4;
-	Mon, 16 Sep 2024 12:11:37 +0000 (UTC)
+	 MIME-Version; b=WDVFCXaDQswaKpK1RpvxwFzy/HRkbaQRbIGFKmkYtSFDQFZhQpgg7xZhPF2FwOtl7p48aAcfZvO+ke9KBBKpQlOWvpygVPFyjslp2neoyyxxDWQ+oNWxmj4AxucDkO2tGeGyH4Rj1O0jFdp6VErWsfgbspmS1R7l6NHsp4uP3qI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cbphegK1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47BFCC4CECC;
+	Mon, 16 Sep 2024 12:06:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488698;
-	bh=6/jEvzPku4kYe8q74mshnRje3VibUQAHoPuAU23OSO8=;
+	s=korg; t=1726488364;
+	bh=SNyrMW/sEqFeMcFvrneXvRs22HP0vvORbBbD8VSY/VE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CHygHbCPScBGcdl0so+9cZIiZZU4Qidb3BuH8MEY+RlzDJOHUoVQHrk+XZgkCbYPl
-	 l34XcEQcGcieruC9BOJC0uu5TpZAlHT5skK3Hrt/CJz75DcNpGPX3ylJ8u3Nbj6UE/
-	 lsmXh0GXNA1iXeoTUQQimEuGFYmMHLhaqEG3zX48=
+	b=cbphegK1QkxqSr+ssvUMNuz9yUJ03TCp5nkUr76NeyvQOR7jkINcnkUC60TNvN54C
+	 cjydCByIjKD7NIm9AtcUVjG6yYUhCnXNWgwUV8lA4t5Nz6rV6csDK58+3jR+1whM6e
+	 2gZQ5n5iBxdkvB99vYMNsRDENhw2lPFcIneqBOe8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Anirudh Rayabharam (Microsoft)" <anirudh@anirudhrb.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Wei Liu <wei.liu@kernel.org>
-Subject: [PATCH 6.6 45/91] x86/hyperv: fix kexec crash due to VP assist page corruption
+	Tomas Paukrt <tomaspaukrt@email.cz>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 087/121] net: phy: dp83822: Fix NULL pointer dereference on DP83825 devices
 Date: Mon, 16 Sep 2024 13:44:21 +0200
-Message-ID: <20240916114225.988231382@linuxfoundation.org>
+Message-ID: <20240916114232.020786682@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
-References: <20240916114224.509743970@linuxfoundation.org>
+In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
+References: <20240916114228.914815055@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,100 +63,120 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anirudh Rayabharam (Microsoft) <anirudh@anirudhrb.com>
+From: Tomas Paukrt <tomaspaukrt@email.cz>
 
-commit b9af6418279c4cf73ca073f8ea024992b38be8ab upstream.
+[ Upstream commit 3f62ea572b3e8e3f10c39a9cb4f04ca9ae5f2952 ]
 
-commit 9636be85cc5b ("x86/hyperv: Fix hyperv_pcpu_input_arg handling when
-CPUs go online/offline") introduces a new cpuhp state for hyperv
-initialization.
+The probe() function is only used for DP83822 and DP83826 PHY,
+leaving the private data pointer uninitialized for the DP83825 models
+which causes a NULL pointer dereference in the recently introduced/changed
+functions dp8382x_config_init() and dp83822_set_wol().
 
-cpuhp_setup_state() returns the state number if state is
-CPUHP_AP_ONLINE_DYN or CPUHP_BP_PREPARE_DYN and 0 for all other states.
-For the hyperv case, since a new cpuhp state was introduced it would
-return 0. However, in hv_machine_shutdown(), the cpuhp_remove_state() call
-is conditioned upon "hyperv_init_cpuhp > 0". This will never be true and
-so hv_cpu_die() won't be called on all CPUs. This means the VP assist page
-won't be reset. When the kexec kernel tries to setup the VP assist page
-again, the hypervisor corrupts the memory region of the old VP assist page
-causing a panic in case the kexec kernel is using that memory elsewhere.
-This was originally fixed in commit dfe94d4086e4 ("x86/hyperv: Fix kexec
-panic/hang issues").
+Add the dp8382x_probe() function, so all PHY models will have a valid
+private data pointer to fix this issue and also prevent similar issues
+in the future.
 
-Get rid of hyperv_init_cpuhp entirely since we are no longer using a
-dynamic cpuhp state and use CPUHP_AP_HYPERV_ONLINE directly with
-cpuhp_remove_state().
-
-Cc: stable@vger.kernel.org
-Fixes: 9636be85cc5b ("x86/hyperv: Fix hyperv_pcpu_input_arg handling when CPUs go online/offline")
-Signed-off-by: Anirudh Rayabharam (Microsoft) <anirudh@anirudhrb.com>
-Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Link: https://lore.kernel.org/r/20240828112158.3538342-1-anirudh@anirudhrb.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <20240828112158.3538342-1-anirudh@anirudhrb.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9ef9ecfa9e9f ("net: phy: dp8382x: keep WOL settings across suspends")
+Signed-off-by: Tomas Paukrt <tomaspaukrt@email.cz>
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Link: https://patch.msgid.link/66w.ZbGt.65Ljx42yHo5.1csjxu@seznam.cz
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/hyperv/hv_init.c       |    5 +----
- arch/x86/include/asm/mshyperv.h |    1 -
- arch/x86/kernel/cpu/mshyperv.c  |    4 ++--
- 3 files changed, 3 insertions(+), 7 deletions(-)
+ drivers/net/phy/dp83822.c | 35 ++++++++++++++++++++++-------------
+ 1 file changed, 22 insertions(+), 13 deletions(-)
 
---- a/arch/x86/hyperv/hv_init.c
-+++ b/arch/x86/hyperv/hv_init.c
-@@ -35,7 +35,6 @@
- #include <clocksource/hyperv_timer.h>
- #include <linux/highmem.h>
+diff --git a/drivers/net/phy/dp83822.c b/drivers/net/phy/dp83822.c
+index efeb643c1373..fc247f479257 100644
+--- a/drivers/net/phy/dp83822.c
++++ b/drivers/net/phy/dp83822.c
+@@ -271,8 +271,7 @@ static int dp83822_config_intr(struct phy_device *phydev)
+ 				DP83822_ENERGY_DET_INT_EN |
+ 				DP83822_LINK_QUAL_INT_EN);
  
--int hyperv_init_cpuhp;
- u64 hv_current_partition_id = ~0ull;
- EXPORT_SYMBOL_GPL(hv_current_partition_id);
+-		/* Private data pointer is NULL on DP83825 */
+-		if (!dp83822 || !dp83822->fx_enabled)
++		if (!dp83822->fx_enabled)
+ 			misr_status |= DP83822_ANEG_COMPLETE_INT_EN |
+ 				       DP83822_DUP_MODE_CHANGE_INT_EN |
+ 				       DP83822_SPEED_CHANGED_INT_EN;
+@@ -292,8 +291,7 @@ static int dp83822_config_intr(struct phy_device *phydev)
+ 				DP83822_PAGE_RX_INT_EN |
+ 				DP83822_EEE_ERROR_CHANGE_INT_EN);
  
-@@ -607,8 +606,6 @@ skip_hypercall_pg_init:
+-		/* Private data pointer is NULL on DP83825 */
+-		if (!dp83822 || !dp83822->fx_enabled)
++		if (!dp83822->fx_enabled)
+ 			misr_status |= DP83822_ANEG_ERR_INT_EN |
+ 				       DP83822_WOL_PKT_INT_EN;
  
- 	register_syscore_ops(&hv_syscore_ops);
- 
--	hyperv_init_cpuhp = cpuhp;
--
- 	if (cpuid_ebx(HYPERV_CPUID_FEATURES) & HV_ACCESS_PARTITION_ID)
- 		hv_get_partition_id();
- 
-@@ -637,7 +634,7 @@ skip_hypercall_pg_init:
- clean_guest_os_id:
- 	wrmsrl(HV_X64_MSR_GUEST_OS_ID, 0);
- 	hv_ivm_msr_write(HV_X64_MSR_GUEST_OS_ID, 0);
--	cpuhp_remove_state(cpuhp);
-+	cpuhp_remove_state(CPUHP_AP_HYPERV_ONLINE);
- free_ghcb_page:
- 	free_percpu(hv_ghcb_pg);
- free_vp_assist_page:
---- a/arch/x86/include/asm/mshyperv.h
-+++ b/arch/x86/include/asm/mshyperv.h
-@@ -40,7 +40,6 @@ static inline unsigned char hv_get_nmi_r
+@@ -691,10 +689,9 @@ static int dp83822_read_straps(struct phy_device *phydev)
+ 	return 0;
  }
  
- #if IS_ENABLED(CONFIG_HYPERV)
--extern int hyperv_init_cpuhp;
- extern bool hyperv_paravisor_present;
+-static int dp83822_probe(struct phy_device *phydev)
++static int dp8382x_probe(struct phy_device *phydev)
+ {
+ 	struct dp83822_private *dp83822;
+-	int ret;
  
- extern void *hv_hypercall_pg;
---- a/arch/x86/kernel/cpu/mshyperv.c
-+++ b/arch/x86/kernel/cpu/mshyperv.c
-@@ -199,8 +199,8 @@ static void hv_machine_shutdown(void)
- 	 * Call hv_cpu_die() on all the CPUs, otherwise later the hypervisor
- 	 * corrupts the old VP Assist Pages and can crash the kexec kernel.
- 	 */
--	if (kexec_in_progress && hyperv_init_cpuhp > 0)
--		cpuhp_remove_state(hyperv_init_cpuhp);
-+	if (kexec_in_progress)
-+		cpuhp_remove_state(CPUHP_AP_HYPERV_ONLINE);
+ 	dp83822 = devm_kzalloc(&phydev->mdio.dev, sizeof(*dp83822),
+ 			       GFP_KERNEL);
+@@ -703,6 +700,20 @@ static int dp83822_probe(struct phy_device *phydev)
  
- 	/* The function calls stop_other_cpus(). */
- 	native_machine_shutdown();
+ 	phydev->priv = dp83822;
+ 
++	return 0;
++}
++
++static int dp83822_probe(struct phy_device *phydev)
++{
++	struct dp83822_private *dp83822;
++	int ret;
++
++	ret = dp8382x_probe(phydev);
++	if (ret)
++		return ret;
++
++	dp83822 = phydev->priv;
++
+ 	ret = dp83822_read_straps(phydev);
+ 	if (ret)
+ 		return ret;
+@@ -717,14 +728,11 @@ static int dp83822_probe(struct phy_device *phydev)
+ 
+ static int dp83826_probe(struct phy_device *phydev)
+ {
+-	struct dp83822_private *dp83822;
+-
+-	dp83822 = devm_kzalloc(&phydev->mdio.dev, sizeof(*dp83822),
+-			       GFP_KERNEL);
+-	if (!dp83822)
+-		return -ENOMEM;
++	int ret;
+ 
+-	phydev->priv = dp83822;
++	ret = dp8382x_probe(phydev);
++	if (ret)
++		return ret;
+ 
+ 	dp83826_of_init(phydev);
+ 
+@@ -795,6 +803,7 @@ static int dp83822_resume(struct phy_device *phydev)
+ 		PHY_ID_MATCH_MODEL(_id),			\
+ 		.name		= (_name),			\
+ 		/* PHY_BASIC_FEATURES */			\
++		.probe          = dp8382x_probe,		\
+ 		.soft_reset	= dp83822_phy_reset,		\
+ 		.config_init	= dp8382x_config_init,		\
+ 		.get_wol = dp83822_get_wol,			\
+-- 
+2.43.0
+
 
 
 
