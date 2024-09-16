@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-76416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B96C97A1AA
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:09:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CA72697A0C4
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:00:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF076288AFB
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:09:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 82B701F21087
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:00:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B215A156C65;
-	Mon, 16 Sep 2024 12:08:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BE57154429;
+	Mon, 16 Sep 2024 12:00:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sAobL2wo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zpEBEx+F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 718B8156C40;
-	Mon, 16 Sep 2024 12:08:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCB1DA95E;
+	Mon, 16 Sep 2024 12:00:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488530; cv=none; b=hvKpa+7QtqoZgV+KzxKeqVHkMBxLzwmpfAMBh7F0mM+L49toj4xzyU27Xlp1BjWryGq7SiBHmUHYzmtiD+HFH7+uc5UUWaLWBpuIi0+b4GknnldS2JrHyVfxE2NYE5ynzTmUdCKUr85dP2nC8DbMG6DnT9HcdfF0jf7DvP+praI=
+	t=1726488048; cv=none; b=NPaicXfiz3MXhIIW6zAJej2b+Ll6uQnFcrvHf37tygpvOgnAmRtXjnTTgxFYXjBlZU/TzaZFlArWi2pieQe5yKSZkHhXamfbyNhRoOhJPmVwP2Lzb0KYMAPTsjab4Ik9G1S1e1H5zUrAMGrHCMslRRa1KWtzyopYw9m1Dyw5wqY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488530; c=relaxed/simple;
-	bh=U/1RJmhci2gZUf38P7j8c5mkA6h9xXFuLScxDCBmroo=;
+	s=arc-20240116; t=1726488048; c=relaxed/simple;
+	bh=twrLv11AH/st8BM/Ih+vkmvge1h2CkfMJg6YmQTUSW4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CuhXgDReHkjwLJfABkW9eNuehDYK+0dqCNLHbD+DsmZ75F+WOQmJvo0qXf3cOApQcbLeRU151faGEiJl/9clBrxMMUknvgjfYZ6brV1yqWLw/AmpJDHVbAAZVukUiF5khuAra10Hm0+IOoNhuOZFIA+n8oWMXpbWxpwrHgy7Biw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sAobL2wo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDE84C4CEC4;
-	Mon, 16 Sep 2024 12:08:49 +0000 (UTC)
+	 MIME-Version; b=NS7msFMN2ys7ZluXCPIXjX+H2+O8Izgv+F9YF4JMOsgTQDAvuqy7+iToqZ50yb7Zq2Wts6tJbZrpCOt9peo+YAb1ki2twGP5/S8SnGgJss8IYDmT/3Y6b3DVqVigrFyeG9+F8PLsoPfsqVIaPctEeRR4tmObcBdjAoys6OK62q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zpEBEx+F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 538D2C4CEC4;
+	Mon, 16 Sep 2024 12:00:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488530;
-	bh=U/1RJmhci2gZUf38P7j8c5mkA6h9xXFuLScxDCBmroo=;
+	s=korg; t=1726488048;
+	bh=twrLv11AH/st8BM/Ih+vkmvge1h2CkfMJg6YmQTUSW4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sAobL2wocooI6Vxw859z22de63iFIGT3GfeCchgsAUAC+5q6jlzhKSPPtLqXfSD2K
-	 phVcgDb1rYuc/WwxlhSL8Rl03eO2eO/EWUWg3wDDBnnyAjgf7zlAVqulpceOBzL1na
-	 ORNx0qOtJp6baspUosFngFB/Eo3VZuPF5Gxn4Qt4=
+	b=zpEBEx+F3fCtB5VYtDzWhMpyCXsNsWjT7p+oZvLHJ0ONfU/HUzPPa8qeI/rR5WEPG
+	 eO3UaLry5LPQiZ648zmZGPPFwOU70rQaFUlR63LKDbD/qE/YBW3U9YUc7XuehHwCf2
+	 7hSwmW8NpbLT5ivQbPZiVm0dTE8CqmFSw+2ViwSQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Moon Yeounsu <yyyynoom@gmail.com>,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	"David S. Miller" <davem@davemloft.net>,
+	Anders Roxell <anders.roxell@linaro.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 16/91] net: ethernet: use ip_hdrlen() instead of bit shift
+Subject: [PATCH 6.1 13/63] scripts: kconfig: merge_config: config files: add a trailing newline
 Date: Mon, 16 Sep 2024 13:43:52 +0200
-Message-ID: <20240916114225.065655928@linuxfoundation.org>
+Message-ID: <20240916114221.520367514@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
-References: <20240916114224.509743970@linuxfoundation.org>
+In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
+References: <20240916114221.021192667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Moon Yeounsu <yyyynoom@gmail.com>
+From: Anders Roxell <anders.roxell@linaro.org>
 
-[ Upstream commit 9a039eeb71a42c8b13408a1976e300f3898e1be0 ]
+[ Upstream commit 33330bcf031818e60a816db0cfd3add9eecc3b28 ]
 
-`ip_hdr(skb)->ihl << 2` is the same as `ip_hdrlen(skb)`
-Therefore, we should use a well-defined function not a bit shift
-to find the header length.
+When merging files without trailing newlines at the end of the file, two
+config fragments end up at the same row if file1.config doens't have a
+trailing newline at the end of the file.
 
-It also compresses two lines to a single line.
+file1.config "CONFIG_1=y"
+file2.config "CONFIG_2=y"
+./scripts/kconfig/merge_config.sh -m .config file1.config file2.config
 
-Signed-off-by: Moon Yeounsu <yyyynoom@gmail.com>
-Reviewed-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+This will generate a .config looking like this.
+cat .config
+...
+CONFIG_1=yCONFIG_2=y"
+
+Making sure so we add a newline at the end of every config file that is
+passed into the script.
+
+Signed-off-by: Anders Roxell <anders.roxell@linaro.org>
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/jme.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ scripts/kconfig/merge_config.sh | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/jme.c b/drivers/net/ethernet/jme.c
-index 1732ec3c3dbd..a718207988f2 100644
---- a/drivers/net/ethernet/jme.c
-+++ b/drivers/net/ethernet/jme.c
-@@ -946,15 +946,13 @@ jme_udpsum(struct sk_buff *skb)
- 	if (skb->protocol != htons(ETH_P_IP))
- 		return csum;
- 	skb_set_network_header(skb, ETH_HLEN);
--	if ((ip_hdr(skb)->protocol != IPPROTO_UDP) ||
--	    (skb->len < (ETH_HLEN +
--			(ip_hdr(skb)->ihl << 2) +
--			sizeof(struct udphdr)))) {
-+
-+	if (ip_hdr(skb)->protocol != IPPROTO_UDP ||
-+	    skb->len < (ETH_HLEN + ip_hdrlen(skb) + sizeof(struct udphdr))) {
- 		skb_reset_network_header(skb);
- 		return csum;
- 	}
--	skb_set_transport_header(skb,
--			ETH_HLEN + (ip_hdr(skb)->ihl << 2));
-+	skb_set_transport_header(skb, ETH_HLEN + ip_hdrlen(skb));
- 	csum = udp_hdr(skb)->check;
- 	skb_reset_transport_header(skb);
- 	skb_reset_network_header(skb);
+diff --git a/scripts/kconfig/merge_config.sh b/scripts/kconfig/merge_config.sh
+index e5b46980c22a..72da3b8d6f30 100755
+--- a/scripts/kconfig/merge_config.sh
++++ b/scripts/kconfig/merge_config.sh
+@@ -160,6 +160,8 @@ for ORIG_MERGE_FILE in $MERGE_LIST ; do
+ 			sed -i "/$CFG[ =]/d" $MERGE_FILE
+ 		fi
+ 	done
++	# In case the previous file lacks a new line at the end
++	echo >> $TMP_FILE
+ 	cat $MERGE_FILE >> $TMP_FILE
+ done
+ 
 -- 
 2.43.0
 
