@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-76318-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 236B197A131
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:06:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E0D297A1A5
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:09:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 55DF81C2317A
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:06:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF13D288815
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:09:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25169158858;
-	Mon, 16 Sep 2024 12:04:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84498157E9F;
+	Mon, 16 Sep 2024 12:08:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RstYhIc4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xxSfkgIT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D83ED155C8A;
-	Mon, 16 Sep 2024 12:04:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40AC1157E78;
+	Mon, 16 Sep 2024 12:08:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488250; cv=none; b=ETVybEPz41TM5LDOj4raMP+ooglWHGGOg1yPrIgAa5G6q0WvRr6w1ZP5F7KYzd1s4YsOd9evzTfMwN2FBIYKoGTDyRSfW1kMHs8uCkufBywUtREdDzGxoQoRKCzznBdGJkQ9EN2739b2sFOoKtGY+leY2yaMsL80t5hpMUueVlY=
+	t=1726488518; cv=none; b=fvZfnQjNVgppdiQeqb83RG900DjDeqEVWWQTHX99IH+JZoRsZA7VkJwfKiZs/JFejj0uOj/w//g6LMAgkvN74SuuF5pd8Anhvlagq5xc7OlIrBOcJfVqR0VaS55podzL6Ctcrr+Yj6P0jZ3Tjzsnz+nGABjWgksqNVDNCOI1Nrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488250; c=relaxed/simple;
-	bh=z5rBVNoRkIGgLZ8hJx//wHBkD8Szl5Y0VlAFAsHIEYg=;
+	s=arc-20240116; t=1726488518; c=relaxed/simple;
+	bh=BXc6BTqAf7aGZOz36TVbkcjZQ+1jL9m+bsHgPHQrtfk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fa6dpIBMXyQc6L0nPyejCtpuac+Yf12b4CevEMS4XFFGyM6XAzblx8uUpJTFewLecNb1Ff8Pex67Re+y+M32aGxFsJPitI0BcEdv0lkoY67i1Qh7btHVd4CcJ8+x+08glbC2XiuWUcYCLhAPQskgp3W2QkTOIKc7V/9q6j1x/+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RstYhIc4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 535ACC4CEC4;
-	Mon, 16 Sep 2024 12:04:10 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ETuC4LTtn4/QtJnL/LRvJSV2q8Lfy7aUvH/ULZVNOTUrg2UA+GeDd1L9Wdrt4HKbIwXYaK0UOrIIU80ET9dLgdP7zjPK9at/fmwTh/kW2ztPED1g4ppepbaJrMbFXIxGM0CMzz9myBHU9j6ZgeaivEoTbpbOlonIfrghcRWIewg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xxSfkgIT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB0B3C4CEC4;
+	Mon, 16 Sep 2024 12:08:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488250;
-	bh=z5rBVNoRkIGgLZ8hJx//wHBkD8Szl5Y0VlAFAsHIEYg=;
+	s=korg; t=1726488518;
+	bh=BXc6BTqAf7aGZOz36TVbkcjZQ+1jL9m+bsHgPHQrtfk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RstYhIc4LMk60ErwV68/BzTKBl5KLCfstzr5zs2u9pxn0gAr81nNiyREBis0Ydy/g
-	 If86Lb6y7TKOZW4+oAM9PlBkHQ/6z8nIXX2F4OgeRQBJVIXt2wfosXlKaQtU+c4CSg
-	 9CSFFHLwZWWA+CTa7p81TxPjRVGnLKWRhqFfFbYI=
+	b=xxSfkgITCjy7wXVhVyOyjHiw9gJiDUv6ut+VVwfSwbdGAH8xawBN6E8QrF6ioDte2
+	 UUE4xSW4mwBCHjEH7DlL+xO5urysN0f0wxNq9FLp6T0sr7MNtplvVyfrIjS52mfzHc
+	 ChL5wmq3gkhKH5oOrZatXh/oP8nxPrdjUGyoeB1A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Quentin Schulz <quentin.schulz@cherry.de>,
-	Heiko Stuebner <heiko@sntech.de>
-Subject: [PATCH 6.10 048/121] arm64: dts: rockchip: override BIOS_DISABLE signal via GPIO hog on RK3399 Puma
-Date: Mon, 16 Sep 2024 13:43:42 +0200
-Message-ID: <20240916114230.711538375@linuxfoundation.org>
+	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 07/91] nvmem: u-boot-env: use nvmem device helpers
+Date: Mon, 16 Sep 2024 13:43:43 +0200
+Message-ID: <20240916114224.768652541@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
-References: <20240916114228.914815055@linuxfoundation.org>
+In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
+References: <20240916114224.509743970@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,77 +60,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Quentin Schulz <quentin.schulz@cherry.de>
+From: Rafał Miłecki <rafal@milecki.pl>
 
-commit 741f5ba7ccba5d7ae796dd11c320e28045524771 upstream.
+[ Upstream commit a832556d23c5a11115f300011a5874d6107a0d62 ]
 
-The Qseven BIOS_DISABLE signal on the RK3399-Q7 keeps the on-module eMMC
-and SPI flash powered-down initially (in fact it keeps the reset signal
-asserted). BIOS_DISABLE_OVERRIDE pin allows to override that signal so
-that eMMC and SPI can be used regardless of the state of the signal.
+Use nvmem_dev_size() and nvmem_device_read() to make this driver less
+mtd dependent.
 
-Let's make this GPIO a hog so that it's reserved and locked in the
-proper state.
-
-At the same time, make sure the pin is reserved for the hog and cannot
-be requested by another node.
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
-Link: https://lore.kernel.org/r/20240731-puma-emmc-6-v1-2-4e28eadf32d0@cherry.de
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/r/20231221173421.13737-4-zajec5@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 8679e8b4a1eb ("nvmem: u-boot-env: error if NVMEM device is too small")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi |   23 ++++++++++++++++++++++-
- 1 file changed, 22 insertions(+), 1 deletion(-)
+ drivers/nvmem/u-boot-env.c | 23 +++++++++++++++--------
+ 1 file changed, 15 insertions(+), 8 deletions(-)
 
---- a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
-@@ -154,6 +154,22 @@
- 	};
- };
+diff --git a/drivers/nvmem/u-boot-env.c b/drivers/nvmem/u-boot-env.c
+index dd9d0ad22712..111905189341 100644
+--- a/drivers/nvmem/u-boot-env.c
++++ b/drivers/nvmem/u-boot-env.c
+@@ -127,27 +127,34 @@ static int u_boot_env_add_cells(struct u_boot_env *priv, uint8_t *buf,
  
-+&gpio3 {
-+	/*
-+	 * The Qseven BIOS_DISABLE signal on the RK3399-Q7 keeps the on-module
-+	 * eMMC and SPI flash powered-down initially (in fact it keeps the
-+	 * reset signal asserted). BIOS_DISABLE_OVERRIDE pin allows to override
-+	 * that signal so that eMMC and SPI can be used regardless of the state
-+	 * of the signal.
-+	 */
-+	bios-disable-override-hog {
-+		gpios = <RK_PD5 GPIO_ACTIVE_LOW>;
-+		gpio-hog;
-+		line-name = "bios_disable_override";
-+		output-high;
-+	};
-+};
+ static int u_boot_env_parse(struct u_boot_env *priv)
+ {
++	struct nvmem_device *nvmem = priv->nvmem;
+ 	struct device *dev = priv->dev;
+ 	size_t crc32_data_offset;
+ 	size_t crc32_data_len;
+ 	size_t crc32_offset;
+ 	size_t data_offset;
+ 	size_t data_len;
++	size_t dev_size;
+ 	uint32_t crc32;
+ 	uint32_t calc;
+-	size_t bytes;
+ 	uint8_t *buf;
++	int bytes;
+ 	int err;
+ 
+-	buf = kcalloc(1, priv->mtd->size, GFP_KERNEL);
++	dev_size = nvmem_dev_size(nvmem);
 +
- &gmac {
- 	assigned-clocks = <&cru SCLK_RMII_SRC>;
- 	assigned-clock-parents = <&clkin_gmac>;
-@@ -458,9 +474,14 @@
++	buf = kcalloc(1, dev_size, GFP_KERNEL);
+ 	if (!buf) {
+ 		err = -ENOMEM;
+ 		goto err_out;
+ 	}
  
- &pinctrl {
- 	pinctrl-names = "default";
--	pinctrl-0 = <&q7_thermal_pin>;
-+	pinctrl-0 = <&q7_thermal_pin &bios_disable_override_hog_pin>;
+-	err = mtd_read(priv->mtd, 0, priv->mtd->size, &bytes, buf);
+-	if ((err && !mtd_is_bitflip(err)) || bytes != priv->mtd->size) {
+-		dev_err(dev, "Failed to read from mtd: %d\n", err);
++	bytes = nvmem_device_read(nvmem, 0, dev_size, buf);
++	if (bytes < 0) {
++		err = bytes;
++		goto err_kfree;
++	} else if (bytes != dev_size) {
++		err = -EIO;
+ 		goto err_kfree;
+ 	}
  
- 	gpios {
-+		bios_disable_override_hog_pin: bios-disable-override-hog-pin {
-+			rockchip,pins =
-+				<3 RK_PD5 RK_FUNC_GPIO &pcfg_pull_down>;
-+		};
-+
- 		q7_thermal_pin: q7-thermal-pin {
- 			rockchip,pins =
- 				<0 RK_PA3 RK_FUNC_GPIO &pcfg_pull_up>;
+@@ -169,8 +176,8 @@ static int u_boot_env_parse(struct u_boot_env *priv)
+ 		break;
+ 	}
+ 	crc32 = le32_to_cpu(*(__le32 *)(buf + crc32_offset));
+-	crc32_data_len = priv->mtd->size - crc32_data_offset;
+-	data_len = priv->mtd->size - data_offset;
++	crc32_data_len = dev_size - crc32_data_offset;
++	data_len = dev_size - data_offset;
+ 
+ 	calc = crc32(~0, buf + crc32_data_offset, crc32_data_len) ^ ~0L;
+ 	if (calc != crc32) {
+@@ -179,7 +186,7 @@ static int u_boot_env_parse(struct u_boot_env *priv)
+ 		goto err_kfree;
+ 	}
+ 
+-	buf[priv->mtd->size - 1] = '\0';
++	buf[dev_size - 1] = '\0';
+ 	err = u_boot_env_add_cells(priv, buf, data_offset, data_len);
+ 	if (err)
+ 		dev_err(dev, "Failed to add cells: %d\n", err);
+-- 
+2.43.0
+
 
 
 
