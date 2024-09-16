@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-76492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E8F797A1FE
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:12:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2779997A1EB
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:11:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4835C285B23
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:12:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A3511C21DD7
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:11:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D6E63153573;
-	Mon, 16 Sep 2024 12:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A99E1155333;
+	Mon, 16 Sep 2024 12:11:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PLgEQJiZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mSkGBfuh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93724142903;
-	Mon, 16 Sep 2024 12:12:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 664CF146A79;
+	Mon, 16 Sep 2024 12:11:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488746; cv=none; b=MeWD8WJ+GM0OTmFexk/6M30qYmk+/Uszg0Wgw+C8MR+5y0vuOGZTtvqVeBcEYp2CIRCYJ0KFi2Wqu6hrvEhpoA5vvAMWiwcFRb5n6PZ5JPvJV9LKTi85UBB2r5Y0YqYQIA8pTurGSPtM+bZuFteieNpwCrCjpNSahWP3LBwq7OY=
+	t=1726488701; cv=none; b=dW6pUJJRrC4DIATHPUYahVeyXYN5QrttjDGotf2rciMASVQcCAdXf9O+w3xokeqqW/XYifhzkOYa+JqAcefcebHKo5VfMyP9mN3qoeKJo7Kz04jnQ/QCoLU/5R5Z6ADuW67XMfsbaqBpAAtnoKN/OnLE4kXyadlGlxyVXLSFTcs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488746; c=relaxed/simple;
-	bh=1vNq0UqHhXFbvgLAXpZJOEqW9PnZPnMzF0dnbyHXHuU=;
+	s=arc-20240116; t=1726488701; c=relaxed/simple;
+	bh=MRPZvCFTQYxZBQQHQjPCATzYs19vvjWS47MhC+AF5Nk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d2fTV9SXEwSgOx4h8XZC88nhKTYhZquDBJWNENJz6VH9n4PQXrYcnEftOVVG+XTMg0Cqp75zoKpICH6m039UFRm+lmxDp9Pe/d+uLiPedUbPtAh6Ft8w+A2pp0FWqTGjXTSFGagrYboLmfQGkgR7bOtMJCeyZt0j7elvtcvdSPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PLgEQJiZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D9D3C4CEC4;
-	Mon, 16 Sep 2024 12:12:25 +0000 (UTC)
+	 MIME-Version; b=F4DTMJLD0sAqgqfrM9rgkMAKibGVDXGTSMuEDxmTlqYREM2B85hB/XOjDF2Lr4U+jPegsNygeqlPqfLEYlhPLOHwi8bvhOzNFN6J2EBr8ZrQrCPiis9bYxjH4nyEgWzip8PUZ2ki/QVSI80O5FD8r93RsuQ///IXrUGQeCPWD5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mSkGBfuh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2CA2C4CEC4;
+	Mon, 16 Sep 2024 12:11:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488746;
-	bh=1vNq0UqHhXFbvgLAXpZJOEqW9PnZPnMzF0dnbyHXHuU=;
+	s=korg; t=1726488701;
+	bh=MRPZvCFTQYxZBQQHQjPCATzYs19vvjWS47MhC+AF5Nk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PLgEQJiZWTwDG0OttbNkoMmwO2AM3p2suSlBFmNLcd0abbUEvJMLeTmYdu24m60DP
-	 DpsewcyPm7/+r2YpCV0clQyb/wtwRQJjrRLeVDaDywdoH0ySTQ7UviBBnx8/hkdl4R
-	 sXMLyj8WRtkOxAdbbwI1na6aLVGgKeF2eWcU+kbs=
+	b=mSkGBfuhYYaqrEBqm53QarSRWku6Tk0zvCVsrnFOqXDGRvAK1rlUc6GArU8Ff9tXe
+	 uhPd3JtHbpipLGT7HqPbz/25fP4xSMtD3m9v0IblUQCrbRykeogRKvgFEJr3T5vFn0
+	 TzgdOckHKIJeqZDYpkyI2m+T57ecp/aZVao+Sfmk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	Sean Anderson <sean.anderson@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 75/91] net: dpaa: Pad packets to ETH_ZLEN
-Date: Mon, 16 Sep 2024 13:44:51 +0200
-Message-ID: <20240916114226.948858791@linuxfoundation.org>
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Helena Anna" <helena.anna.dubel@intel.com>,
+	"Luis Claudio R. Goncalves" <lgoncalv@redhat.com>,
+	Tomas Glozar <tglozar@redhat.com>,
+	"Bityutskiy, Artem" <artem.bityutskiy@intel.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 6.6 76/91] tracing/osnoise: Fix build when timerlat is not enabled
+Date: Mon, 16 Sep 2024 13:44:52 +0200
+Message-ID: <20240916114226.980226511@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
 References: <20240916114224.509743970@linuxfoundation.org>
@@ -67,62 +70,62 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sean Anderson <sean.anderson@linux.dev>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit cbd7ec083413c6a2e0c326d49e24ec7d12c7a9e0 ]
+commit af178143343028fdec9d5960a22d17f5587fd3f5 upstream.
 
-When sending packets under 60 bytes, up to three bytes of the buffer
-following the data may be leaked. Avoid this by extending all packets to
-ETH_ZLEN, ensuring nothing is leaked in the padding. This bug can be
-reproduced by running
+To fix some critical section races, the interface_lock was added to a few
+locations. One of those locations was above where the interface_lock was
+declared, so the declaration was moved up before that usage.
+Unfortunately, where it was placed was inside a CONFIG_TIMERLAT_TRACER
+ifdef block. As the interface_lock is used outside that config, this broke
+the build when CONFIG_OSNOISE_TRACER was enabled but
+CONFIG_TIMERLAT_TRACER was not.
 
-	$ ping -s 11 destination
-
-Fixes: 9ad1a3749333 ("dpaa_eth: add support for DPAA Ethernet")
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20240910143144.1439910-1-sean.anderson@linux.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: "Helena Anna" <helena.anna.dubel@intel.com>
+Cc: "Luis Claudio R. Goncalves" <lgoncalv@redhat.com>
+Cc: Tomas Glozar <tglozar@redhat.com>
+Link: https://lore.kernel.org/20240909103231.23a289e2@gandalf.local.home
+Fixes: e6a53481da29 ("tracing/timerlat: Only clear timer if a kthread exists")
+Reported-by: "Bityutskiy, Artem" <artem.bityutskiy@intel.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/dpaa/dpaa_eth.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ kernel/trace/trace_osnoise.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c b/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
-index c6a3eefd83bf..e7bf70ac9a4c 100644
---- a/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
-+++ b/drivers/net/ethernet/freescale/dpaa/dpaa_eth.c
-@@ -2285,12 +2285,12 @@ static netdev_tx_t
- dpaa_start_xmit(struct sk_buff *skb, struct net_device *net_dev)
- {
- 	const int queue_mapping = skb_get_queue_mapping(skb);
--	bool nonlinear = skb_is_nonlinear(skb);
- 	struct rtnl_link_stats64 *percpu_stats;
- 	struct dpaa_percpu_priv *percpu_priv;
- 	struct netdev_queue *txq;
- 	struct dpaa_priv *priv;
- 	struct qm_fd fd;
-+	bool nonlinear;
- 	int offset = 0;
- 	int err = 0;
+diff --git a/kernel/trace/trace_osnoise.c b/kernel/trace/trace_osnoise.c
+index bbe47781617e..7e75c1214b36 100644
+--- a/kernel/trace/trace_osnoise.c
++++ b/kernel/trace/trace_osnoise.c
+@@ -228,6 +228,11 @@ static inline struct osnoise_variables *this_cpu_osn_var(void)
+ 	return this_cpu_ptr(&per_cpu_osnoise_var);
+ }
  
-@@ -2300,6 +2300,13 @@ dpaa_start_xmit(struct sk_buff *skb, struct net_device *net_dev)
- 
- 	qm_fd_clear_fd(&fd);
- 
-+	/* Packet data is always read as 32-bit words, so zero out any part of
-+	 * the skb which might be sent if we have to pad the packet
-+	 */
-+	if (__skb_put_padto(skb, ETH_ZLEN, false))
-+		goto enomem;
++/*
++ * Protect the interface.
++ */
++static struct mutex interface_lock;
 +
-+	nonlinear = skb_is_nonlinear(skb);
- 	if (!nonlinear) {
- 		/* We're going to store the skb backpointer at the beginning
- 		 * of the data buffer, so we need a privately owned skb
+ #ifdef CONFIG_TIMERLAT_TRACER
+ /*
+  * Runtime information for the timer mode.
+@@ -252,11 +257,6 @@ static inline struct timerlat_variables *this_cpu_tmr_var(void)
+ 	return this_cpu_ptr(&per_cpu_timerlat_var);
+ }
+ 
+-/*
+- * Protect the interface.
+- */
+-static struct mutex interface_lock;
+-
+ /*
+  * tlat_var_reset - Reset the values of the given timerlat_variables
+  */
 -- 
-2.43.0
+2.46.0
 
 
 
