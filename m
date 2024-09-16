@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-76486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76392-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DFC397A1F8
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:12:11 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E544697A185
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:08:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 367F828673C
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:12:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AA28C287C1A
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:08:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC9B5146A79;
-	Mon, 16 Sep 2024 12:12:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4463149C57;
+	Mon, 16 Sep 2024 12:07:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AkU1ipVW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fw5uH8BZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BA1F155322;
-	Mon, 16 Sep 2024 12:12:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71D7415689A;
+	Mon, 16 Sep 2024 12:07:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488729; cv=none; b=JyE21bCgFYfjnReBecNA+xsnmRY7SH9bXXW1knewhTPgmWfI0rHky+hAhXoiBAiBJlOOa/zIJjRfqD9EsEI3SPn0Y1UrLHteAjKD8H9HrXjqduHG3ejhrhTk4ZKC/SpGwDsnjTBZ9hAh/RDe3EvdWGa/BFkf5gMVjPZAoV4zhiI=
+	t=1726488461; cv=none; b=YjgPx1d3DKiZqJ9e0/w2ca/uySwrBiEjPb99Zzn3rnRKkNx+A1DWhIgdkVJDt+wDGDA6X6J+sxfYkKQSgxmFIuLarhQ/N/WnQPDAbUYzlf2IDLr4PvmanKxcxb1ReJjsBZnmUaj2Ijsg0K3pAg+HTr83uBhDQ34lkH5/OauapXU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488729; c=relaxed/simple;
-	bh=c/ea3m9QKBIMJ94PeIuB7Qo9YWO3KXPZa9wHo65iLkk=;
+	s=arc-20240116; t=1726488461; c=relaxed/simple;
+	bh=vERet8TUWSl4Xcqo3lquhTwiGWnJbNDZnR4NPt1cEng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tLSPDZ2Gvd67LaMJB5nPxWlXUBmtRXREIMqJoRCbklPMFZa8bXN2R+Q0Jo3Tnb71vh/h02Nzhx9tdwZE5b+L5YrYz0O4nGJCf6bPgwzdOoZ4vx9C4slqpGEbLWEjqDbuVClDSL+vmYWJfBW3hgQOb/jHJdOqge9vSa2iXQoM6OU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AkU1ipVW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23334C4CEC4;
-	Mon, 16 Sep 2024 12:12:08 +0000 (UTC)
+	 MIME-Version; b=ndqY01N/ZeoiCdU+gwRrZfeP7iHGjrGNCNFM2GK1dQY7JtW/t9it/aqqqhvbF/HAxVk7KpuhhAJFjgi9b38eaV2F7m37JY5yO/GlRB2Zg820OJMCRyH375TpM3EgHm8b+PYEbXgrmMsHcS88rRt1SMVtGKT/nxJtLgZCES911Oc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fw5uH8BZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE1C8C4CEC4;
+	Mon, 16 Sep 2024 12:07:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488729;
-	bh=c/ea3m9QKBIMJ94PeIuB7Qo9YWO3KXPZa9wHo65iLkk=;
+	s=korg; t=1726488461;
+	bh=vERet8TUWSl4Xcqo3lquhTwiGWnJbNDZnR4NPt1cEng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AkU1ipVWYtJa/7yldi6QKBIjPQvFDozCjmONeE4y1vTgPZb3QyAjhVE+O0Rz++R0Y
-	 WYjIMNNXrKnl83HM1Y//c8fHCBG5lxBSJgg1tWEHTXtl+7SH2wHNmfhTUtolE5x52M
-	 gc740wIXt8pnYRauKt6ulT2IwQq6do1wWfGSbyfQ=
+	b=Fw5uH8BZ5h30LMYIZqEkx7B7z9y8DxW34QZhJVc2HM41m3uXyNma6YmUDa3A/wNxr
+	 WbWC1bzNMR441pIbBJocb22wGXleSxZTohyBfHJhZyAHqCkooqdwiJKGzdCtClfWwd
+	 JfljISFPIrsWogxKgrFd9CF+wjybcz0h22oVT+fk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xingyu Jin <xingyuj@google.com>,
-	"T.J. Mercier" <tjmercier@google.com>,
-	Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
-Subject: [PATCH 6.6 79/91] drm/syncobj: Fix syncobj leak in drm_syncobj_eventfd_ioctl
+	Jon Hunter <jonathanh@nvidia.com>,
+	Jameson Thies <jthies@google.com>,
+	Benson Leung <bleung@chromium.org>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.10 121/121] usb: typec: ucsi: Only set number of plug altmodes after registration
 Date: Mon, 16 Sep 2024 13:44:55 +0200
-Message-ID: <20240916114227.064798315@linuxfoundation.org>
+Message-ID: <20240916114233.114262527@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
-References: <20240916114224.509743970@linuxfoundation.org>
+In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
+References: <20240916114228.914815055@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +61,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: T.J. Mercier <tjmercier@google.com>
+From: Jameson Thies <jthies@google.com>
 
-commit 8c7c44be57672e1474bf15a451011c291e85fda4 upstream.
+commit 22d96a285449ba78abeaf3e197caca46bc24f8e5 upstream.
 
-A syncobj reference is taken in drm_syncobj_find, but not released if
-eventfd_ctx_fdget or kzalloc fails. Put the reference in these error
-paths.
+Move the setting of the plug's number of alternate modes into the
+same condition as the plug's registration to prevent dereferencing the
+connector's plug pointer while it is null.
 
-Reported-by: Xingyu Jin <xingyuj@google.com>
-Fixes: c7a472297169 ("drm/syncobj: add IOCTL to register an eventfd")
-Signed-off-by: T.J. Mercier <tjmercier@google.com>
-Reviewed-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-Reviewed-by. Christian König <christian.koenig@amd.com>
-CC: stable@vger.kernel.org # 6.6+
-Link: https://patchwork.freedesktop.org/patch/msgid/20240909205400.3498337-1-tjmercier@google.com
-Signed-off-by: Christian König <christian.koenig@amd.com>
+Fixes: c313a44ac9cd ("usb: typec: ucsi: Always set number of alternate modes")
+Suggested-by: Jon Hunter <jonathanh@nvidia.com>
+Signed-off-by: Jameson Thies <jthies@google.com>
+Reviewed-by: Benson Leung <bleung@chromium.org>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
+Reviewed-by: Jon Hunter <jonathanh@nvidia.com>
+Link: https://lore.kernel.org/r/20240625004607.3223757-1-jthies@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_syncobj.c |   17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+ drivers/usb/typec/ucsi/ucsi.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/gpu/drm/drm_syncobj.c
-+++ b/drivers/gpu/drm/drm_syncobj.c
-@@ -1421,6 +1421,7 @@ drm_syncobj_eventfd_ioctl(struct drm_dev
- 	struct drm_syncobj *syncobj;
- 	struct eventfd_ctx *ev_fd_ctx;
- 	struct syncobj_eventfd_entry *entry;
-+	int ret;
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -1176,13 +1176,13 @@ static int ucsi_check_cable(struct ucsi_
+ 		ret = ucsi_register_altmodes(con, UCSI_RECIPIENT_SOP_P);
+ 		if (ret < 0)
+ 			return ret;
+-	}
  
- 	if (!drm_core_check_feature(dev, DRIVER_SYNCOBJ_TIMELINE))
- 		return -EOPNOTSUPP;
-@@ -1436,13 +1437,15 @@ drm_syncobj_eventfd_ioctl(struct drm_dev
- 		return -ENOENT;
- 
- 	ev_fd_ctx = eventfd_ctx_fdget(args->fd);
--	if (IS_ERR(ev_fd_ctx))
--		return PTR_ERR(ev_fd_ctx);
-+	if (IS_ERR(ev_fd_ctx)) {
-+		ret = PTR_ERR(ev_fd_ctx);
-+		goto err_fdget;
-+	}
- 
- 	entry = kzalloc(sizeof(*entry), GFP_KERNEL);
- 	if (!entry) {
--		eventfd_ctx_put(ev_fd_ctx);
--		return -ENOMEM;
-+		ret = -ENOMEM;
-+		goto err_kzalloc;
+-	if (con->plug_altmode[0]) {
+-		num_plug_am = ucsi_get_num_altmode(con->plug_altmode);
+-		typec_plug_set_num_altmodes(con->plug, num_plug_am);
+-	} else {
+-		typec_plug_set_num_altmodes(con->plug, 0);
++		if (con->plug_altmode[0]) {
++			num_plug_am = ucsi_get_num_altmode(con->plug_altmode);
++			typec_plug_set_num_altmodes(con->plug, num_plug_am);
++		} else {
++			typec_plug_set_num_altmodes(con->plug, 0);
++		}
  	}
- 	entry->syncobj = syncobj;
- 	entry->ev_fd_ctx = ev_fd_ctx;
-@@ -1453,6 +1456,12 @@ drm_syncobj_eventfd_ioctl(struct drm_dev
- 	drm_syncobj_put(syncobj);
  
  	return 0;
-+
-+err_kzalloc:
-+	eventfd_ctx_put(ev_fd_ctx);
-+err_fdget:
-+	drm_syncobj_put(syncobj);
-+	return ret;
- }
- 
- int
 
 
 
