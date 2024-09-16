@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-76469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76362-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0449397A1E2
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:11:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C28D97A162
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:07:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3442F1C2172E
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:11:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 036931F213AA
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:07:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 977451553AB;
-	Mon, 16 Sep 2024 12:11:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 89619155393;
+	Mon, 16 Sep 2024 12:06:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eMQYqPzR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y4kYWlzQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53454149C57;
-	Mon, 16 Sep 2024 12:11:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47F23149E0B;
+	Mon, 16 Sep 2024 12:06:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488681; cv=none; b=RcHGVpwjoBU1+7BNN/sf4jdtsXvxlIon7RKb4FSE9+zmQYBl0l9LK/6J73ocE5dnAoVN3x+xSz9GndShHPBGsrmBwEpRWCwcK6IRguDSiDauQr4E4+FaBl1axdFX4F46NzuWiLQwh3OBJTEoJ+ZNwXQm5b1kqATUsgFAkOOp/FE=
+	t=1726488376; cv=none; b=QKKBddjoSzUv9FQvpn6O7HJXQ+l41dLN8Iw6+CVHp2vTK+qKmLt/TQ9HsyG+GWzYvEqJ/S08QqStVTITc8h2XB6HyS9t61Yyd2w9qf9O2PxbqgsWC5/dXEZXpsjnDPXtNnpvFQmkOQMwD1WZIXcGlAcHdrFYuabnpR0ee7y76FA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488681; c=relaxed/simple;
-	bh=EzSNESjls5qXI9P2543yR3ID+r0Ak2Rlz1qRUBY2U30=;
+	s=arc-20240116; t=1726488376; c=relaxed/simple;
+	bh=RRfr/U+LU4D9C7nTrCfE4NhialZC/YM8BaF0oqLCSlY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tgqM67IBuRipbnpaVkSlMKtQUS/LuTZPgoAmIc2Q221i46vQGUxc15BaRAnUd5ZbK1s+jAO0WNVp1+HF1mrJJn7dTxG1vDdFW9aFGRGfJ45JkXt0BH3ymsauKpqQr516+rHTKzNuWRNAZ85RzCaVBzMZUHdJbA/Hv0wtufFS0j8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eMQYqPzR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D13A8C4CEC4;
-	Mon, 16 Sep 2024 12:11:20 +0000 (UTC)
+	 MIME-Version; b=RpJlEjgKSFEoFllSMhVmj65l77OLNcB5xvDcy1oT9BIthRcNNCJMhIJu+sC0O5I+H4qYSPSYk7calPBOk374Le44a4qzyT2L21END37c7MNa7LIEPuJbhn2QTh7DA3V8O9CPmerZiMTNCX3pU/K4LGKWsZSzQqVCMPCZKrJn8Xw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y4kYWlzQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A11BEC4CEC4;
+	Mon, 16 Sep 2024 12:06:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488681;
-	bh=EzSNESjls5qXI9P2543yR3ID+r0Ak2Rlz1qRUBY2U30=;
+	s=korg; t=1726488376;
+	bh=RRfr/U+LU4D9C7nTrCfE4NhialZC/YM8BaF0oqLCSlY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eMQYqPzRWyEWQ2Vst8aQFwILnRb37ymYkur0f9DY9NADKbQt7byIIDDnnZ0S3Krqm
-	 OEg5k4s3q5KlqtiqQn03acy1owk/EvMGjw5rPSjzSCrkN0DOJ/hmyyH8SL4+g51ihe
-	 WE8MAT6LVed+bAQwzbVaWwlmMSnmRE/uBIdcP1RQ=
+	b=Y4kYWlzQGzdhMNjZwLbhdlC0EqI1TAOWmjDg+UCHQ7jScc4PnmByetYfR+1V/6ZXw
+	 iISF36QPhGn6vZ9kQmll5Giow1nwPzEYo+MvIrhNAfe3MRU7YhsPxoICiHP8IVKq9k
+	 hq3WPa19y2ASSrl7oUabAko46xPG5x+f6TyozX1w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenjing Liu <wenjing.liu@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Cruise <cruise.hung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 49/91] drm/amd/display: Disable error correction if its not supported
+Subject: [PATCH 6.10 091/121] netfilter: nft_socket: fix sk refcount leaks
 Date: Mon, 16 Sep 2024 13:44:25 +0200
-Message-ID: <20240916114226.122420820@linuxfoundation.org>
+Message-ID: <20240916114232.147828101@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
-References: <20240916114224.509743970@linuxfoundation.org>
+In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
+References: <20240916114228.914815055@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,112 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cruise <cruise.hung@amd.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit a8ac994cf0693a1ce59410995594e56124a1c79f ]
+[ Upstream commit 8b26ff7af8c32cb4148b3e147c52f9e4c695209c ]
 
-[Why]
-Error correction was enabled in a monitor which doesn't support.
+We must put 'sk' reference before returning.
 
-[How]
-Disable error correction if it's not supported
-
-Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
-Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Signed-off-by: Cruise <cruise.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Stable-dep-of: a8baec4623ae ("drm/amd/display: Fix FEC_READY write on DP LT")
+Fixes: 039b1f4f24ec ("netfilter: nft_socket: fix erroneous socket assignment")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../display/dc/link/protocols/link_dp_phy.c   | 47 +++++++++----------
- 1 file changed, 21 insertions(+), 26 deletions(-)
+ net/netfilter/nft_socket.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_phy.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_phy.c
-index 0050e0a06cbc..f06f708ba5c8 100644
---- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_phy.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_phy.c
-@@ -143,32 +143,27 @@ enum dc_status dp_set_fec_ready(struct dc_link *link, const struct link_resource
- 
- 	link_enc = link_enc_cfg_get_link_enc(link);
- 	ASSERT(link_enc);
-+	if (link_enc->funcs->fec_set_ready == NULL)
-+		return DC_NOT_SUPPORTED;
- 
--	if (!dp_should_enable_fec(link))
--		return status;
--
--	if (link_enc->funcs->fec_set_ready &&
--			link->dpcd_caps.fec_cap.bits.FEC_CAPABLE) {
--		if (ready) {
-+	if (ready && dp_should_enable_fec(link)) {
-+		if (link->fec_state == dc_link_fec_not_ready) {
- 			fec_config = 1;
--			status = core_link_write_dpcd(link,
--					DP_FEC_CONFIGURATION,
--					&fec_config,
--					sizeof(fec_config));
-+
-+			status = core_link_write_dpcd(link, DP_FEC_CONFIGURATION,
-+					&fec_config, sizeof(fec_config));
-+
- 			if (status == DC_OK) {
- 				link_enc->funcs->fec_set_ready(link_enc, true);
- 				link->fec_state = dc_link_fec_ready;
--			} else {
--				link_enc->funcs->fec_set_ready(link_enc, false);
--				link->fec_state = dc_link_fec_not_ready;
--				dm_error("dpcd write failed to set fec_ready");
- 			}
--		} else if (link->fec_state == dc_link_fec_ready) {
-+		}
-+	} else {
-+		if (link->fec_state == dc_link_fec_ready) {
- 			fec_config = 0;
--			status = core_link_write_dpcd(link,
--					DP_FEC_CONFIGURATION,
--					&fec_config,
--					sizeof(fec_config));
-+			core_link_write_dpcd(link, DP_FEC_CONFIGURATION,
-+				&fec_config, sizeof(fec_config));
-+
- 			link_enc->funcs->fec_set_ready(link_enc, false);
- 			link->fec_state = dc_link_fec_not_ready;
+diff --git a/net/netfilter/nft_socket.c b/net/netfilter/nft_socket.c
+index f30163e2ca62..765ffd6e06bc 100644
+--- a/net/netfilter/nft_socket.c
++++ b/net/netfilter/nft_socket.c
+@@ -110,13 +110,13 @@ static void nft_socket_eval(const struct nft_expr *expr,
+ 			*dest = READ_ONCE(sk->sk_mark);
+ 		} else {
+ 			regs->verdict.code = NFT_BREAK;
+-			return;
++			goto out_put_sk;
  		}
-@@ -183,14 +178,12 @@ void dp_set_fec_enable(struct dc_link *link, bool enable)
- 
- 	link_enc = link_enc_cfg_get_link_enc(link);
- 	ASSERT(link_enc);
--
--	if (!dp_should_enable_fec(link))
-+	if (link_enc->funcs->fec_set_enable == NULL)
- 		return;
- 
--	if (link_enc->funcs->fec_set_enable &&
--			link->dpcd_caps.fec_cap.bits.FEC_CAPABLE) {
--		if (link->fec_state == dc_link_fec_ready && enable) {
--			/* Accord to DP spec, FEC enable sequence can first
-+	if (enable && dp_should_enable_fec(link)) {
-+		if (link->fec_state == dc_link_fec_ready) {
-+			/* According to DP spec, FEC enable sequence can first
- 			 * be transmitted anytime after 1000 LL codes have
- 			 * been transmitted on the link after link training
- 			 * completion. Using 1 lane RBR should have the maximum
-@@ -200,7 +193,9 @@ void dp_set_fec_enable(struct dc_link *link, bool enable)
- 			udelay(7);
- 			link_enc->funcs->fec_set_enable(link_enc, true);
- 			link->fec_state = dc_link_fec_enabled;
--		} else if (link->fec_state == dc_link_fec_enabled && !enable) {
-+		}
-+	} else {
-+		if (link->fec_state == dc_link_fec_enabled) {
- 			link_enc->funcs->fec_set_enable(link_enc, false);
- 			link->fec_state = dc_link_fec_ready;
+ 		break;
+ 	case NFT_SOCKET_WILDCARD:
+ 		if (!sk_fullsock(sk)) {
+ 			regs->verdict.code = NFT_BREAK;
+-			return;
++			goto out_put_sk;
  		}
+ 		nft_socket_wildcard(pkt, regs, sk, dest);
+ 		break;
+@@ -124,7 +124,7 @@ static void nft_socket_eval(const struct nft_expr *expr,
+ 	case NFT_SOCKET_CGROUPV2:
+ 		if (!nft_sock_get_eval_cgroupv2(dest, sk, pkt, priv->level)) {
+ 			regs->verdict.code = NFT_BREAK;
+-			return;
++			goto out_put_sk;
+ 		}
+ 		break;
+ #endif
+@@ -133,6 +133,7 @@ static void nft_socket_eval(const struct nft_expr *expr,
+ 		regs->verdict.code = NFT_BREAK;
+ 	}
+ 
++out_put_sk:
+ 	if (sk != skb->sk)
+ 		sock_gen_put(sk);
+ }
 -- 
 2.43.0
 
