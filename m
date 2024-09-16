@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-76332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF94597A141
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:06:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF6D597A0AA
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 13:59:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F25311C228D6
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:06:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 829D1284D3B
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 11:59:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAB9615921D;
-	Mon, 16 Sep 2024 12:04:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84C6215747A;
+	Mon, 16 Sep 2024 11:59:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bFl/RNEF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tt59O5Tk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75413155CBA;
-	Mon, 16 Sep 2024 12:04:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1739B15667B;
+	Mon, 16 Sep 2024 11:59:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488290; cv=none; b=cTovi3G3nxXzp6LpOxqohh6HJbDImkGXqX/NkonKTo07w1zfoctfOyWe6ku3QvvphT09rxoMJ9WWs/H7r6Q7velV7trYRtBYqYdHCnDd5oscdYioulrriTHOEM8qrzHVymxdn/SpuSFXlDaKdCI8IBZHbcv+V+kgb+ZV1THezIs=
+	t=1726487977; cv=none; b=FmTDwqC++kSBbyk/oxkp6KrJvrUm0A2Rcmv+lVs2K2IC662hv8Dvn+6i4j4p2rwkfXVsUx+W3ZiLxbo8r9uSXJdCB9EX3XuRCLG2hhig7tsvkUKFarMdvhF6gMCUSgTzBHX6eYVE90Akiu0M4KA7p491916Z2fdBJx8HDrpQ9S4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488290; c=relaxed/simple;
-	bh=0D0m6ZoB+Gjob1IHVUrjrTFjnjg+JMqdeDta62H9UG4=;
+	s=arc-20240116; t=1726487977; c=relaxed/simple;
+	bh=D4b12ri3fL92PS4sU914RT1bwqZLE1GPnqCtDsn1/sg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KzkpZwqpaGHL0xsNv4Gw7Qtz9dI/8h/KzuKcGXmwN7gSPm9+tR4ohKZjjESwFQgBoIVHQc1/U7/LTxbCxcPkapbo5KpW774aVSIHSP1V75TX1L6Rh9ELvDnXcepG2MxNqanYG0qsPj9TiySD/9N5//+z2B8CUE7CjDgDdhQYnWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bFl/RNEF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF85EC4CEC4;
-	Mon, 16 Sep 2024 12:04:49 +0000 (UTC)
+	 MIME-Version; b=QbbtCrJtpCE2sc4USWFVpTLUOuy4Cou1oTpaHMPCNVjwcAhVd5JXkqyi/A0SxIEnifPVf9xaUQg963O8RqROG/GHZDMldT1ILc4UFBqjlTcYWSsGhpJZRoGhR/TeiTA9Dz4PttZIgj+GwvWdrsG5dPj6k84WVjI2/8dgMJIgEr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tt59O5Tk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7124BC4CECE;
+	Mon, 16 Sep 2024 11:59:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488290;
-	bh=0D0m6ZoB+Gjob1IHVUrjrTFjnjg+JMqdeDta62H9UG4=;
+	s=korg; t=1726487976;
+	bh=D4b12ri3fL92PS4sU914RT1bwqZLE1GPnqCtDsn1/sg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bFl/RNEFxJMqCJ/OTyfGjcjfRP4oZhgPgXc9FPPDq9XHTLwT1bxJX5PREwgXfUuyc
-	 JjeLuHiHGXF/9QpxLAWOFjMxg93LRKyGzM7myvyvqDJqksFv8ZcbDuK2G91ZUkU6w9
-	 sLNwSDvT+L0rPBCOvbrGV7/MdTXhfti3KRPn/m3U=
+	b=tt59O5TkTePh2F98z2fqZGUZ1xVTEC+kax3rsH1dAAbr9U1BbOY95cD+GWOXYzlFg
+	 dTMycptPT0WMIVRT+OWGoRqpzJT3OLj4h1BWGe9YoxCIiHFZJhfUu2lkKXD7bxJ6rb
+	 oRF2D/yeeIEHeOhhZAcgGck+vMqWlEVExuldK7vU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xingyu Wu <xingyu.wu@starfivetech.com>,
-	Hal Feng <hal.feng@starfivetech.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
+	Rob Clark <robdclark@chromium.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Akhil P Oommen <quic_akhilpo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 061/121] riscv: dts: starfive: jh7110-common: Fix lower rate of CPUfreq by setting PLL0 rate to 1.5GHz
+Subject: [PATCH 6.1 16/63] drm/msm/adreno: Fix error return if missing firmware-name
 Date: Mon, 16 Sep 2024 13:43:55 +0200
-Message-ID: <20240916114231.184003791@linuxfoundation.org>
+Message-ID: <20240916114221.633148975@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
-References: <20240916114228.914815055@linuxfoundation.org>
+In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
+References: <20240916114221.021192667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,47 +63,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xingyu Wu <xingyu.wu@starfivetech.com>
+From: Rob Clark <robdclark@chromium.org>
 
-[ Upstream commit 61f2e8a3a94175dbbaad6a54f381b2a505324610 ]
+[ Upstream commit 624ab9cde26a9f150b4fd268b0f3dae3184dc40c ]
 
-CPUfreq supports 4 cpu frequency loads on 375/500/750/1500MHz.
-But now PLL0 rate is 1GHz and the cpu frequency loads become
-250/333/500/1000MHz in fact.
+-ENODEV is used to signify that there is no zap shader for the platform,
+and the CPU can directly take the GPU out of secure mode.  We want to
+use this return code when there is no zap-shader node.  But not when
+there is, but without a firmware-name property.  This case we want to
+treat as-if the needed fw is not found.
 
-The PLL0 rate should be default set to 1.5GHz and set the
-cpu_core rate to 500MHz in safe.
-
-Fixes: e2c510d6d630 ("riscv: dts: starfive: Add cpu scaling for JH7110 SoC")
-Signed-off-by: Xingyu Wu <xingyu.wu@starfivetech.com>
-Reviewed-by: Hal Feng <hal.feng@starfivetech.com>
-Signed-off-by: Conor Dooley <conor.dooley@microchip.com>
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Akhil P Oommen <quic_akhilpo@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/604564/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/boot/dts/starfive/jh7110-common.dtsi | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/msm/adreno/adreno_gpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/riscv/boot/dts/starfive/jh7110-common.dtsi b/arch/riscv/boot/dts/starfive/jh7110-common.dtsi
-index 68d16717db8c..51d85f447626 100644
---- a/arch/riscv/boot/dts/starfive/jh7110-common.dtsi
-+++ b/arch/riscv/boot/dts/starfive/jh7110-common.dtsi
-@@ -354,6 +354,12 @@ spi_dev0: spi@0 {
- 	};
- };
+diff --git a/drivers/gpu/drm/msm/adreno/adreno_gpu.c b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
+index dfd4eec21785..c4ad70eb1d92 100644
+--- a/drivers/gpu/drm/msm/adreno/adreno_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
+@@ -99,7 +99,7 @@ static int zap_shader_load_mdt(struct msm_gpu *gpu, const char *fwname,
+ 		 * was a bad idea, and is only provided for backwards
+ 		 * compatibility for older targets.
+ 		 */
+-		return -ENODEV;
++		return -ENOENT;
+ 	}
  
-+&syscrg {
-+	assigned-clocks = <&syscrg JH7110_SYSCLK_CPU_CORE>,
-+			  <&pllclk JH7110_PLLCLK_PLL0_OUT>;
-+	assigned-clock-rates = <500000000>, <1500000000>;
-+};
-+
- &sysgpio {
- 	i2c0_pins: i2c0-0 {
- 		i2c-pins {
+ 	if (IS_ERR(fw)) {
 -- 
 2.43.0
 
