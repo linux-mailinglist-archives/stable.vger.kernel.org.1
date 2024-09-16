@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-76461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D024497A1D9
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:11:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5602997A176
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:07:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8686F1F2177E
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:11:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 015241F23C74
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:07:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2063E155333;
-	Mon, 16 Sep 2024 12:10:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4F1E15666B;
+	Mon, 16 Sep 2024 12:07:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bUgF8nGF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BAR3aVmO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D12FF146A79;
-	Mon, 16 Sep 2024 12:10:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6282C155391;
+	Mon, 16 Sep 2024 12:07:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488658; cv=none; b=QHtZ4LsKR3bydHnx5JTN5rHwnC4DeEgdCnwm0qVH3D9ugL8jzCzc/9i9oc4jhLvXtwHEH3pK/Ltwzch1JBePj2i3G7S/RqXPpwlsdM+xM7BZw3nmR9eB0EtQ65WtmwBDRsP2QjNiINKaxPuKeGTtBEQOvuSCslfA/m9NOpyRME8=
+	t=1726488427; cv=none; b=AGlOrmYwQNI3f5ehpEw3PZWMOXrCGUQ6FedTfT3c7WXqJ2F4JdHpl+y4vyFjCbJkeT03v/iGUAvjWm7UP2mwk5YZOuGJfsWntnOliIzui1DvKJcCDdCfX3FcM6c8rN6nZkxJ+BnqI7Cxq9HlyJfage3RHZ6bpEAMiErOeKDxur8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488658; c=relaxed/simple;
-	bh=9I97LpS1UFKVXaER1kTgBY5ZHL1A8X3eu6nBaF/TEcs=;
+	s=arc-20240116; t=1726488427; c=relaxed/simple;
+	bh=k0ybQAEsTdJv3h9NKzef9FXrg3iYI1QIAcU1QDzD1Ao=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sKK9QuG8xZk5Wh3fQfse2urq9+YSzuRDiJBlZWCfCmGycwaYY3q2FJq4fICNa58xmvzr4vQpbiLH3GEMZ371tqR35gjVJeiWTu668sfjzXh77AZ5WJUb4uGdS1js/MR6Hz+20SzhSsmGKyPRZRHzPvjOkqvcDbAdGNzqXvwEv0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bUgF8nGF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 590D2C4CEC4;
-	Mon, 16 Sep 2024 12:10:58 +0000 (UTC)
+	 MIME-Version; b=MBlnJHhX5fYXTd0qtfsyCtOPHrW/5t47DLZGHIEyVqKce6DzcxdLVBBtgBbZ3TRL8x3Xl+jspN81dfqHEcgyoD0+I2UE/CQS5I3CRGT/EfMiTQu82/oDdHi8jWfCkkYGgN57Z4We/RqqjCLql52LIBn1Jrar5m532nf1ugQLqa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BAR3aVmO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E25E7C4CEC4;
+	Mon, 16 Sep 2024 12:07:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488658;
-	bh=9I97LpS1UFKVXaER1kTgBY5ZHL1A8X3eu6nBaF/TEcs=;
+	s=korg; t=1726488427;
+	bh=k0ybQAEsTdJv3h9NKzef9FXrg3iYI1QIAcU1QDzD1Ao=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bUgF8nGFzEuUnbzHyQrFc3xKFdkiDzOmdn8F6p84GL+HGAr0nL8mcH8LS6OuJwfZA
-	 mZIO9Cp9ydK/RHdYxbx4w2A8lYiFVwjrr2XCL7ljaZYvnOdFvLj+7kRmnv6KNH5n+d
-	 E7fYPARQ9KCsktgMlv/Ebb1Z/H2J7hRbyRNH7Meo=
+	b=BAR3aVmOr3XR+avflCYcXNDnRB2uDvrGhVVlScwXnOgIkOAKvlbmeMn3E3+PCk/6z
+	 yg4qfHsJcQqX7+GHeSuUgGTmYhJCwcnYD4Dm6qHyR9kE55qylVURri6d2BdJcuGFrn
+	 2QtwyMQjCVjZQ/ZGOFPASM68DVK71l12jxPzeNsQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 68/91] fou: fix initialization of grc
+	kernel test robot <lkp@intel.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Thorsten Leemhuis <regressions@leemhuis.info>
+Subject: [PATCH 6.10 110/121] tracing/kprobes: Fix build error when find_module() is not available
 Date: Mon, 16 Sep 2024 13:44:44 +0200
-Message-ID: <20240916114226.726715048@linuxfoundation.org>
+Message-ID: <20240916114232.732979657@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
-References: <20240916114224.509743970@linuxfoundation.org>
+In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
+References: <20240916114228.914815055@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-[ Upstream commit 4c8002277167125078e6b9b90137bdf443ebaa08 ]
+commit b10545b6b86b7a0b3e26b4c2a5c99b72d49bc4de upstream.
 
-The grc must be initialize first. There can be a condition where if
-fou is NULL, goto out will be executed and grc would be used
-uninitialized.
+The kernel test robot reported that the find_module() is not available
+if CONFIG_MODULES=n.
+Fix this error by hiding find_modules() in #ifdef CONFIG_MODULES with
+related rcu locks as try_module_get_by_name().
 
-Fixes: 7e4196935069 ("fou: Fix null-ptr-deref in GRO.")
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20240906102839.202798-1-usama.anjum@collabora.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/all/172056819167.201571.250053007194508038.stgit@devnote2/
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202407070744.RcLkn8sq-lkp@intel.com/
+Closes: https://lore.kernel.org/oe-kbuild-all/202407070917.VVUCBlaS-lkp@intel.com/
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Cc: Thorsten Leemhuis <regressions@leemhuis.info>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/fou_core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/trace/trace_kprobe.c |   25 +++++++++++++++++++------
+ 1 file changed, 19 insertions(+), 6 deletions(-)
 
-diff --git a/net/ipv4/fou_core.c b/net/ipv4/fou_core.c
-index e0b8d6b17a34..4e0a7d038e21 100644
---- a/net/ipv4/fou_core.c
-+++ b/net/ipv4/fou_core.c
-@@ -336,11 +336,11 @@ static struct sk_buff *gue_gro_receive(struct sock *sk,
- 	struct gro_remcsum grc;
- 	u8 proto;
+--- a/kernel/trace/trace_kprobe.c
++++ b/kernel/trace/trace_kprobe.c
+@@ -794,6 +794,24 @@ static int validate_module_probe_symbol(
+ 	return 0;
+ }
  
-+	skb_gro_remcsum_init(&grc);
++#ifdef CONFIG_MODULES
++/* Return NULL if the module is not loaded or under unloading. */
++static struct module *try_module_get_by_name(const char *name)
++{
++	struct module *mod;
 +
- 	if (!fou)
- 		goto out;
- 
--	skb_gro_remcsum_init(&grc);
--
- 	off = skb_gro_offset(skb);
- 	len = off + sizeof(*guehdr);
- 
--- 
-2.43.0
-
++	rcu_read_lock_sched();
++	mod = find_module(name);
++	if (mod && !try_module_get(mod))
++		mod = NULL;
++	rcu_read_unlock_sched();
++
++	return mod;
++}
++#else
++#define try_module_get_by_name(name)	(NULL)
++#endif
++
+ static int validate_probe_symbol(char *symbol)
+ {
+ 	struct module *mod = NULL;
+@@ -805,12 +823,7 @@ static int validate_probe_symbol(char *s
+ 		modname = symbol;
+ 		symbol = p + 1;
+ 		*p = '\0';
+-		/* Return 0 (defer) if the module does not exist yet. */
+-		rcu_read_lock_sched();
+-		mod = find_module(modname);
+-		if (mod && !try_module_get(mod))
+-			mod = NULL;
+-		rcu_read_unlock_sched();
++		mod = try_module_get_by_name(modname);
+ 		if (!mod)
+ 			goto out;
+ 	}
 
 
 
