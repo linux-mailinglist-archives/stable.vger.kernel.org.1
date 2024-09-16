@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-76452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CED797A1CE
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:10:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C018397A18C
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:08:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 079441F213B9
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:10:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 87A6D287E35
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:08:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 912A6155333;
-	Mon, 16 Sep 2024 12:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E0E015666B;
+	Mon, 16 Sep 2024 12:08:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jX6rZwqO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zkFjDMRH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38D7B14B094;
-	Mon, 16 Sep 2024 12:10:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C99C13DBA0;
+	Mon, 16 Sep 2024 12:08:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488633; cv=none; b=oR/uVnb8bTURuMx4YvQG/l/ES28ry5b3LFE8SdzJIefLzGDoqYqoovbb/RYWerL9kZeBzaxavB/tl1Eq51V0/F4D8LeUeC5e+BnxYbEMa4RCNANcDiA2twBloUGSwLpeTwViq2EupAujEyCdKU854dIkibJZG8zN1UJShTOROts=
+	t=1726488481; cv=none; b=uiQ4RvmapoYkCkFTU55hxQV8CRntuo9fMgUME0r/Dra0I3Rf9hf9Zk6bE29SUpCWuOwRRu2+cPAFFEB75nUFSKYYqfv7r7eQ3XgizWxvYy8tp/I/YY/C/oRWX/Th+zOuPkjF1FHuV09v4fdOoPM52RAYiYHhWNMK9wmkaN/7Ma4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488633; c=relaxed/simple;
-	bh=mwHDxBCTf+EckuUhpn4BTTTKGCAJ2QbaOQtZ7WAg2MM=;
+	s=arc-20240116; t=1726488481; c=relaxed/simple;
+	bh=IpfzF2RuzOJLkTtSQYxKijihcb7Iw1TspsDhhA3M//A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qBbLmV+VqlmJp0lFd/SincYt7vo/dRUd9KkGSjLTw2dICn1PVab/umf9lskqMamoHwDFKJZTs2CrpOI2hr7Y1CvH0cIFi0Gprm5B02JSKGszyab+DmuczajUmmouGfBXmhDSfS4BFws1FdYzZx5CnV6BKcPCkbyWp3yDqT5qTFQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jX6rZwqO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B488EC4CEC4;
-	Mon, 16 Sep 2024 12:10:32 +0000 (UTC)
+	 MIME-Version; b=c8zCTMkp+ngJVKzyg+tqAErYsNDlmx1VPPTid4fKQWRdmNJH4s0pHERDc9BR4Xx9pUvl62nrjsiSPBLPvAvcyOA7QSNtJiA1VVlgL/8/zh74WzYrrc60/N+VKewFFwhdXeAWYlNGrr6jZiq+u2WfeySjY6qbLkijnJBqb6n2AUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zkFjDMRH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C97E0C4CEC4;
+	Mon, 16 Sep 2024 12:08:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488633;
-	bh=mwHDxBCTf+EckuUhpn4BTTTKGCAJ2QbaOQtZ7WAg2MM=;
+	s=korg; t=1726488481;
+	bh=IpfzF2RuzOJLkTtSQYxKijihcb7Iw1TspsDhhA3M//A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jX6rZwqOAGvlIu0W0ryBIX+ua2WoGXzfoVarMfOogJs1HgAwGf0ksflsleZFEIGIV
-	 MMZ+fWIGuT6LwmbkEbmnAuhypxELx73bcJLQbv211xQ5JFcYy4jiH/LsSosVe34WWw
-	 ZCCRxBw2FqqWUhWbVb4pMhUlJk/IPigzMKG24guU=
+	b=zkFjDMRHsFQsZ28sMqnhb83iBqFZpO8/9BLkgtWp0M6vIBcjwYcKrK+iimpqGzX8O
+	 bddkYHs71voEi8R0Qj4R9HwMyvETJLUFi6akhPy6Xw71Hw7E8//0PdbMbLow0DmPzI
+	 H11YM0GbrE3ai6pcYhN9GcxfQ7Z8tMe8BEI5C/3Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shahar Shitrit <shshitrit@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Carolina Jubran <cjubran@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 60/91] net/mlx5e: Add missing link modes to ptys2ethtool_map
+	Ben Skeggs <bskeggs@nvidia.com>,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 6.10 102/121] drm/nouveau/fb: restore init() for ramgp102
 Date: Mon, 16 Sep 2024 13:44:36 +0200
-Message-ID: <20240916114226.471118212@linuxfoundation.org>
+Message-ID: <20240916114232.494821754@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
-References: <20240916114224.509743970@linuxfoundation.org>
+In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
+References: <20240916114228.914815055@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,45 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shahar Shitrit <shshitrit@nvidia.com>
+From: Ben Skeggs <bskeggs@nvidia.com>
 
-[ Upstream commit 7617d62cba4a8a3ff3ed3fda0171c43f135c142e ]
+commit 6db9df4f7055eb4ea339e7b83ca676edd9ec1277 upstream.
 
-Add MLX5E_1000BASE_T and MLX5E_100BASE_TX to the legacy
-modes in ptys2legacy_ethtool_table, since they were missing.
+init() was removed from ramgp102 when reworking the memory detection, as
+it was thought that the code was only necessary when the driver performs
+mclk changes, which nouveau doesn't support on pascal.
 
-Fixes: 665bc53969d7 ("net/mlx5e: Use new ethtool get/set link ksettings API")
-Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Reviewed-by: Carolina Jubran <cjubran@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, it turns out that we still need to execute this on some GPUs to
+restore settings after DEVINIT, so revert to the original behaviour.
+
+v2: fix tags in commit message, cc stable
+
+Closes: https://gitlab.freedesktop.org/drm/nouveau/-/issues/319
+Fixes: 2c0c15a22fa0 ("drm/nouveau/fb/gp102-ga100: switch to simpler vram size detection method")
+Cc: stable@vger.kernel.org # 6.6+
+Signed-off-by: Ben Skeggs <bskeggs@nvidia.com>
+Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240904232418.8590-1-bskeggs@nvidia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/nouveau/nvkm/subdev/fb/ram.h      |    2 ++
+ drivers/gpu/drm/nouveau/nvkm/subdev/fb/ramgp100.c |    2 +-
+ drivers/gpu/drm/nouveau/nvkm/subdev/fb/ramgp102.c |    1 +
+ 3 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-index 50db127e6371..f973314b1724 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
-@@ -136,6 +136,10 @@ void mlx5e_build_ptys2ethtool_map(void)
- 				       ETHTOOL_LINK_MODE_100000baseKR4_Full_BIT);
- 	MLX5_BUILD_PTYS2ETHTOOL_CONFIG(MLX5E_100GBASE_LR4, legacy,
- 				       ETHTOOL_LINK_MODE_100000baseLR4_ER4_Full_BIT);
-+	MLX5_BUILD_PTYS2ETHTOOL_CONFIG(MLX5E_100BASE_TX, legacy,
-+				       ETHTOOL_LINK_MODE_100baseT_Full_BIT);
-+	MLX5_BUILD_PTYS2ETHTOOL_CONFIG(MLX5E_1000BASE_T, legacy,
-+				       ETHTOOL_LINK_MODE_1000baseT_Full_BIT);
- 	MLX5_BUILD_PTYS2ETHTOOL_CONFIG(MLX5E_10GBASE_T, legacy,
- 				       ETHTOOL_LINK_MODE_10000baseT_Full_BIT);
- 	MLX5_BUILD_PTYS2ETHTOOL_CONFIG(MLX5E_25GBASE_CR, legacy,
--- 
-2.43.0
-
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/fb/ram.h
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/fb/ram.h
+@@ -46,6 +46,8 @@ u32 gm107_ram_probe_fbp(const struct nvk
+ u32 gm200_ram_probe_fbp_amount(const struct nvkm_ram_func *, u32,
+ 			       struct nvkm_device *, int, int *);
+ 
++int gp100_ram_init(struct nvkm_ram *);
++
+ /* RAM type-specific MR calculation routines */
+ int nvkm_sddr2_calc(struct nvkm_ram *);
+ int nvkm_sddr3_calc(struct nvkm_ram *);
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/fb/ramgp100.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/fb/ramgp100.c
+@@ -27,7 +27,7 @@
+ #include <subdev/bios/init.h>
+ #include <subdev/bios/rammap.h>
+ 
+-static int
++int
+ gp100_ram_init(struct nvkm_ram *ram)
+ {
+ 	struct nvkm_subdev *subdev = &ram->fb->subdev;
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/fb/ramgp102.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/fb/ramgp102.c
+@@ -5,6 +5,7 @@
+ 
+ static const struct nvkm_ram_func
+ gp102_ram = {
++	.init = gp100_ram_init,
+ };
+ 
+ int
 
 
 
