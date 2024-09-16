@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-76257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94D1697A0CE
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:01:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AD9297A1C9
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:10:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20D2A1F216AD
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:01:20 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C29141F21129
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:10:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAACA145B0C;
-	Mon, 16 Sep 2024 12:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50C5A155300;
+	Mon, 16 Sep 2024 12:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CuLjF6o/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qtgFwcNo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67FE514B946;
-	Mon, 16 Sep 2024 12:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E74D1547F5;
+	Mon, 16 Sep 2024 12:10:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488077; cv=none; b=sn42jzQDgSDLG6WK9z+0GqP+ahS+Hs/f8MAvOdCgMyW3uFyVze+/0yF4JW/Toyl5Nd8AxToBTX6yWxnSIfwshYvUqcPcxSXnnrGcDjJMbZo/8p7kFXTAg85AA4HpK5QZL9YhlVNGebCCxAoshqvYjW0D59VYM4fPMjyIGwDTymQ=
+	t=1726488619; cv=none; b=iJey90VO7duevzk7HgdqooRVmxvC0hw4dtNXed98XVMQQdpLlAgTB3ZhKfL5XZco1piujl4swMnaWANzRU9pJRTIW10C9zPR2deJIngS3gqK7MrRNvvucblXDfYgRV9VzUvuFtKA4LwYtJ+Vg14FDOYtzXH2w3gSHJqKv4hNHBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488077; c=relaxed/simple;
-	bh=KqYQm5bQIpZ3VYzI6lVD9OKA7HiYU45E44x3KN49Uhw=;
+	s=arc-20240116; t=1726488619; c=relaxed/simple;
+	bh=v7fl1c8Mt97BvRAhytzYQPWI9Mu0OdKlVDa2FWE6jxI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lHlZnshF31/e4iy4lFnYUweSUQQHYzwydDAF2KdPvhWU3eDOJUL6Hdy50rlJTLAAE9n1w8lT2S8YDqIMVFn8Nik5YnXU62SgH37RNzgIz2ehnW84HIbd00E7eSoCo+HD5bSfkDGPNdIP9Y1ZqpGLCynZz8mPkc6YGWXVrKeNoxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CuLjF6o/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A14A9C4CEC4;
-	Mon, 16 Sep 2024 12:01:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EaUje+RmZq+7HtmrTApBZGsJS/LmJ69OyMv8MrJMPU+SKg5JZHlnb2W9Hy+S4Zm8Rnr0VGz2qPOuEJtm0ib/OPhsFSbHhyLUYsxz4S/wGqgxPUvHS+4IZTFvJ9JhYolPnZZnpuUPxzmGIXlZ+MUW9cAM+RAXa9dBuB9MYAi8f+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qtgFwcNo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89775C4CEC4;
+	Mon, 16 Sep 2024 12:10:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488077;
-	bh=KqYQm5bQIpZ3VYzI6lVD9OKA7HiYU45E44x3KN49Uhw=;
+	s=korg; t=1726488618;
+	bh=v7fl1c8Mt97BvRAhytzYQPWI9Mu0OdKlVDa2FWE6jxI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CuLjF6o/FJYaDzaOTSylzlVt71q91bp2MBNGwx5TpML5in2K07k1Zxlh+nSUJ3cSi
-	 nbUqCFxtXn2VLiIhGnyUH8E09mMUXqQbKbpfx/AC7L11CZeQFQlgDLm3EixbU4xuzc
-	 E2vvmV+i8KKKx/X+cp/5QGST9YdFLNKp6lRHDKEg=
+	b=qtgFwcNoRDZ340fzgfj73JdMKCXYWI7AhrkS44SN4ReEwoUyiovQUGJa86v4fgnb2
+	 GzftD3fNPbEWA+3S1eFjESD4nuZxjpQPVihwz4ALtlqsoYVPifo11HU92ZZjGNVft5
+	 fKZOG2UKeo+02hVrDdG2MbOnpAjrz7hmvUKYMj7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 51/63] netfilter: nft_socket: fix sk refcount leaks
-Date: Mon, 16 Sep 2024 13:44:30 +0200
-Message-ID: <20240916114222.863406933@linuxfoundation.org>
+	=?UTF-8?q?Mat=C4=9Bj=20Gr=C3=A9gr?= <mgregr@netx.as>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 6.6 55/91] ice: Fix lldp packets dropping after changing the number of channels
+Date: Mon, 16 Sep 2024 13:44:31 +0200
+Message-ID: <20240916114226.324413114@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
-References: <20240916114221.021192667@linuxfoundation.org>
+In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
+References: <20240916114224.509743970@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,63 +63,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>
 
-[ Upstream commit 8b26ff7af8c32cb4148b3e147c52f9e4c695209c ]
+[ Upstream commit 9debb703e14939dfafa5d403f27c4feb2e9f6501 ]
 
-We must put 'sk' reference before returning.
+After vsi setup refactor commit 6624e780a577 ("ice: split ice_vsi_setup
+into smaller functions") ice_cfg_sw_lldp function which removes rx rule
+directing LLDP packets to vsi is moved from ice_vsi_release to
+ice_vsi_decfg function. ice_vsi_decfg is used in more cases than just in
+vsi_release resulting in unnecessary removal of rx lldp packets handling
+switch rule. This leads to lldp packets being dropped after a change number
+of channels via ethtool.
+This patch moves ice_cfg_sw_lldp function that removes rx lldp sw rule back
+to ice_vsi_release function.
 
-Fixes: 039b1f4f24ec ("netfilter: nft_socket: fix erroneous socket assignment")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: 6624e780a577 ("ice: split ice_vsi_setup into smaller functions")
+Reported-by: Matěj Grégr <mgregr@netx.as>
+Closes: https://lore.kernel.org/intel-wired-lan/1be45a76-90af-4813-824f-8398b69745a9@netx.as/T/#u
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_socket.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_lib.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-diff --git a/net/netfilter/nft_socket.c b/net/netfilter/nft_socket.c
-index f28324fd8d71..0f37738e4b26 100644
---- a/net/netfilter/nft_socket.c
-+++ b/net/netfilter/nft_socket.c
-@@ -110,13 +110,13 @@ static void nft_socket_eval(const struct nft_expr *expr,
- 			*dest = READ_ONCE(sk->sk_mark);
- 		} else {
- 			regs->verdict.code = NFT_BREAK;
--			return;
-+			goto out_put_sk;
- 		}
- 		break;
- 	case NFT_SOCKET_WILDCARD:
- 		if (!sk_fullsock(sk)) {
- 			regs->verdict.code = NFT_BREAK;
--			return;
-+			goto out_put_sk;
- 		}
- 		nft_socket_wildcard(pkt, regs, sk, dest);
- 		break;
-@@ -124,7 +124,7 @@ static void nft_socket_eval(const struct nft_expr *expr,
- 	case NFT_SOCKET_CGROUPV2:
- 		if (!nft_sock_get_eval_cgroupv2(dest, sk, pkt, priv->level)) {
- 			regs->verdict.code = NFT_BREAK;
--			return;
-+			goto out_put_sk;
- 		}
- 		break;
- #endif
-@@ -133,6 +133,7 @@ static void nft_socket_eval(const struct nft_expr *expr,
- 		regs->verdict.code = NFT_BREAK;
- 	}
+diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
+index b3010a53f1b4..3a0ef56d3edc 100644
+--- a/drivers/net/ethernet/intel/ice/ice_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_lib.c
+@@ -2600,13 +2600,6 @@ void ice_vsi_decfg(struct ice_vsi *vsi)
+ 	struct ice_pf *pf = vsi->back;
+ 	int err;
  
-+out_put_sk:
- 	if (sk != skb->sk)
- 		sock_gen_put(sk);
- }
+-	/* The Rx rule will only exist to remove if the LLDP FW
+-	 * engine is currently stopped
+-	 */
+-	if (!ice_is_safe_mode(pf) && vsi->type == ICE_VSI_PF &&
+-	    !test_bit(ICE_FLAG_FW_LLDP_AGENT, pf->flags))
+-		ice_cfg_sw_lldp(vsi, false, false);
+-
+ 	ice_rm_vsi_lan_cfg(vsi->port_info, vsi->idx);
+ 	err = ice_rm_vsi_rdma_cfg(vsi->port_info, vsi->idx);
+ 	if (err)
+@@ -2953,6 +2946,14 @@ int ice_vsi_release(struct ice_vsi *vsi)
+ 		ice_rss_clean(vsi);
+ 
+ 	ice_vsi_close(vsi);
++
++	/* The Rx rule will only exist to remove if the LLDP FW
++	 * engine is currently stopped
++	 */
++	if (!ice_is_safe_mode(pf) && vsi->type == ICE_VSI_PF &&
++	    !test_bit(ICE_FLAG_FW_LLDP_AGENT, pf->flags))
++		ice_cfg_sw_lldp(vsi, false, false);
++
+ 	ice_vsi_decfg(vsi);
+ 
+ 	/* retain SW VSI data structure since it is needed to unregister and
 -- 
 2.43.0
 
