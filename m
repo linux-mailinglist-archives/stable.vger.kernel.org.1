@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-76304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8EC8B97A120
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:05:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2169B97A14A
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:06:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C19ED1C22FC8
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:05:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 541351C232B3
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:06:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C70B7158210;
-	Mon, 16 Sep 2024 12:03:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ED84156222;
+	Mon, 16 Sep 2024 12:05:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EIl0H4o5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VqgmTZas"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81AC3156F4C;
-	Mon, 16 Sep 2024 12:03:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B1AD156641;
+	Mon, 16 Sep 2024 12:05:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488210; cv=none; b=HSXv4SDQ3gSQJBw/4n46afwVnrt7YTs7PIt9Ua5QaItXx8e1xlkKt7dF9QtUNFDVxBqZSihSaua7zPfUxrNsaI9DMmmrUuCmKJAlB7/Uivo3rLNY/t4q7hrMHAjXc9L63ZNOKRbopvwd6irBgCdfeMYCYJegbzudx1phbDQfwRI=
+	t=1726488316; cv=none; b=JK9ZCXwg0/QovUIWGgsUunyXGl0y+UvApwCoFMwwy6hV1UsFK5tmdWPejp/EqsEU8+OVKoFkvKgEgUG4p8Dv1L9CQ4q40WADiET+HNfzj6lRoxpbnXeLaitO93p2e/IgjH+9PD+IXOBQFFRK39oehQt04L1nveAOUBgBeOzsoSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488210; c=relaxed/simple;
-	bh=i0o1/9JEA9Sm81MGBsrzH6xRdp0nOfxW61lhFJeGum4=;
+	s=arc-20240116; t=1726488316; c=relaxed/simple;
+	bh=1JRYX/fmyWujRbGYPDY7VpN5ZiQvYWSVS0REM8DG1uw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uC9Ujj9Vt8uLi1MTbPxEqP8+37iYWtpB3yR5h7UlVSf2Q4fPv58rzOL2zZXFOU5W15+fDp22yGm7+7oPH3PKlEgkUxvTJuCOpWDhAjaB4n9skgDCXvSU3bZcQ99TxWoMbTqe6MNpbYuaduDlsbK1j5QQYGHURtT/whIyXFHKv48=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EIl0H4o5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA0F5C4CECC;
-	Mon, 16 Sep 2024 12:03:29 +0000 (UTC)
+	 MIME-Version; b=VUUVgSiD4RngNPs1SPmPO0z1s+lSwipvVcD359R3uHQj0hmP+PHFq+hjyz1w9UPdepSPKr0oN2Ma6aPb/0b6yiXI2QHQ7YH3NmekTQ3DcePq3+hnbQ7WfYKebKReSyV0WLw2nJPe8RkA/o6zsf99r6HMD6+Fw0ic5d517RZgR40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VqgmTZas; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85815C4CEC4;
+	Mon, 16 Sep 2024 12:05:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488210;
-	bh=i0o1/9JEA9Sm81MGBsrzH6xRdp0nOfxW61lhFJeGum4=;
+	s=korg; t=1726488315;
+	bh=1JRYX/fmyWujRbGYPDY7VpN5ZiQvYWSVS0REM8DG1uw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EIl0H4o5F97kTsqa0xK1UDnT3OB5v+PINKvB6HjjltwzTeSphyDCglebnGNeikkEb
-	 nsVhZOq5rjzommGxt4GG9hh7poipUXKRhaIBm2fMuuRkHJ5+HNgdOzbWC+6nDSBCfe
-	 Aru1Hxzxg89VUC52v4inCMeYLLnAGHEpxY2g09cs=
+	b=VqgmTZasHnLBrNIGLDweFWcm19S3/1RIZNLvtG7fQZWnZo9NqdWTcKOcKGyK14EuT
+	 MzF1syOimpcq2MRoqGWG5uB6UuKADZH018QmATiErzVZk9P0CXnQ8Rd8IrnxRqUN5l
+	 TXP8o79yBOrYHVSEsTXmIOkC/7HZU/22c6Bme6zI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Clark <robdclark@chromium.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Akhil P Oommen <quic_akhilpo@quicinc.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 033/121] drm/msm/adreno: Fix error return if missing firmware-name
-Date: Mon, 16 Sep 2024 13:43:27 +0200
-Message-ID: <20240916114230.126164778@linuxfoundation.org>
+Subject: [PATCH 6.10 034/121] Input: i8042 - add Fujitsu Lifebook E756 to i8042 quirk table
+Date: Mon, 16 Sep 2024 13:43:28 +0200
+Message-ID: <20240916114230.259413785@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
 References: <20240916114228.914815055@linuxfoundation.org>
@@ -67,38 +66,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Rob Clark <robdclark@chromium.org>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 624ab9cde26a9f150b4fd268b0f3dae3184dc40c ]
+[ Upstream commit 7ce7c2283fa6843ab3c2adfeb83dcc504a107858 ]
 
--ENODEV is used to signify that there is no zap shader for the platform,
-and the CPU can directly take the GPU out of secure mode.  We want to
-use this return code when there is no zap-shader node.  But not when
-there is, but without a firmware-name property.  This case we want to
-treat as-if the needed fw is not found.
+Yet another quirk entry for Fujitsu laptop.  Lifebook E756 requires
+i8041.nomux for keeping the touchpad working after suspend/resume.
 
-Signed-off-by: Rob Clark <robdclark@chromium.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Akhil P Oommen <quic_akhilpo@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/604564/
+Link: https://bugzilla.suse.com/show_bug.cgi?id=1229056
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lore.kernel.org/r/20240814100630.2048-1-tiwai@suse.de
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/adreno_gpu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/input/serio/i8042-acpipnpio.h | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/adreno/adreno_gpu.c b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
-index 074fb498706f..b93ed15f04a3 100644
---- a/drivers/gpu/drm/msm/adreno/adreno_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
-@@ -99,7 +99,7 @@ static int zap_shader_load_mdt(struct msm_gpu *gpu, const char *fwname,
- 		 * was a bad idea, and is only provided for backwards
- 		 * compatibility for older targets.
- 		 */
--		return -ENODEV;
-+		return -ENOENT;
- 	}
- 
- 	if (IS_ERR(fw)) {
+diff --git a/drivers/input/serio/i8042-acpipnpio.h b/drivers/input/serio/i8042-acpipnpio.h
+index e9eb9554dd7b..bad238f69a7a 100644
+--- a/drivers/input/serio/i8042-acpipnpio.h
++++ b/drivers/input/serio/i8042-acpipnpio.h
+@@ -627,6 +627,15 @@ static const struct dmi_system_id i8042_dmi_quirk_table[] __initconst = {
+ 		},
+ 		.driver_data = (void *)(SERIO_QUIRK_NOMUX)
+ 	},
++	{
++		/* Fujitsu Lifebook E756 */
++		/* https://bugzilla.suse.com/show_bug.cgi?id=1229056 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "FUJITSU"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "LIFEBOOK E756"),
++		},
++		.driver_data = (void *)(SERIO_QUIRK_NOMUX)
++	},
+ 	{
+ 		/* Fujitsu Lifebook E5411 */
+ 		.matches = {
 -- 
 2.43.0
 
