@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-76398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD82097A18B
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:08:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D8FC97A0D9
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:01:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80BAA287E58
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:08:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id E6D351F23622
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:01:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7B3915665C;
-	Mon, 16 Sep 2024 12:07:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF87715687D;
+	Mon, 16 Sep 2024 12:01:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zMtX/sU/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TXjwUN4u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AFCC1553AB;
-	Mon, 16 Sep 2024 12:07:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B48B156864;
+	Mon, 16 Sep 2024 12:01:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488478; cv=none; b=l36MVPS2e1IWiEMJimIiN1v+3KGdKGRGEA3IL18z8BG3hXOWl3vg78Es/0UTRcyZ3EeH92VJT9ecTLHrGEHH7CetZzzrSRWvS9cHpOFu7TLI2bGhn/LwL/apH59i+PxelKUNtCIVzwaCjrcEejZuHJOIVw/LdipSKq98bKHsnj8=
+	t=1726488094; cv=none; b=s6b8yRAGu+rp+kFLEfM8FWeK8wVMYXWo4E+P8i9JwTX0qvJPKVQqm6Tex339HvfqqEkq0RzWiuCAL30LNfsXysQQ2SQCGjbv+f+F+lPXDXlNc2AdXpfRT58pGq7r7npgXsRd7BHGo/gc/qSPqO/z2hTOPYORfrxvX1CfhD04Jdg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488478; c=relaxed/simple;
-	bh=+6xfKA1VoTD3ZYFeSB+OhCOLV1+1qETpkG5pW2WNADg=;
+	s=arc-20240116; t=1726488094; c=relaxed/simple;
+	bh=WvuRTYig0usgMf5rMBPZqr/wF8mzGgbpos7YGDxxR80=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uSBhR0t8QTtqSlFHncuOMkNFaAa+6wjP8NIly6lbsEg+VXtJFaV9acq36RlA4Bh+jw2uFzzapC+dwkTOh8secLH816dGQY506b4eVaY3+NwvH0dJKqG4LEXV957wVLaBilmYjdODKY91N+qc36NxBheWXNXndMNbA3qIvztLUDM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zMtX/sU/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8D59C4CEC4;
-	Mon, 16 Sep 2024 12:07:57 +0000 (UTC)
+	 MIME-Version; b=FYWuuPHpApKsMu/h20eKXyyLCHM8kgM3pRYh3rF+ipOffIWnJRKAKvXvc2x68omg/ktAXB1L+ozCho2wpz9hLWIQXG84J8BJLIeAEq6ZrA1yynEPEU3PC3oPWUQRM96BnDDK9m7A2pmaQrcmjhMtkk/LkRwnHkdEZFKYRJza3gA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TXjwUN4u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 981C6C4CECC;
+	Mon, 16 Sep 2024 12:01:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488478;
-	bh=+6xfKA1VoTD3ZYFeSB+OhCOLV1+1qETpkG5pW2WNADg=;
+	s=korg; t=1726488094;
+	bh=WvuRTYig0usgMf5rMBPZqr/wF8mzGgbpos7YGDxxR80=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zMtX/sU/cHoSCR3tlYmQ9pJbQLy9UvHwQOeqYImYDg/HcSLbH+CKYKZkD1Ms7DBa5
-	 5+Q7JWetdsPdCEninDNbdrbHuJh/JOUyWLq8VgEzcCxIfvHjN6cjBGxzIi7ddx7luI
-	 Fn39de5J08EpwQV96R8gcZjJ/JDfN1+3if9H/bPw=
+	b=TXjwUN4u1dul0UkdAwHlYDYt0hJtVRJrC0sz4ov+usbFyegrQb1WlrzDFeWvOy+jp
+	 sTSY9kGvQJQSFk8WMtdTmQTz886ESBMLcnAH7Z0D/sH5o7XtCIzu3SQdTIKadqAWlT
+	 TYxdUIaE99gkudxnUwA+JPMPXqV+Pq4BotSxFsfQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	"T.J. Mercier" <tjmercier@google.com>,
 	John Stultz <jstultz@google.com>,
 	Sumit Semwal <sumit.semwal@linaro.org>
-Subject: [PATCH 6.10 101/121] dma-buf: heaps: Fix off-by-one in CMA heap fault handler
+Subject: [PATCH 6.1 56/63] dma-buf: heaps: Fix off-by-one in CMA heap fault handler
 Date: Mon, 16 Sep 2024 13:44:35 +0200
-Message-ID: <20240916114232.461267494@linuxfoundation.org>
+Message-ID: <20240916114223.035736106@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
-References: <20240916114228.914815055@linuxfoundation.org>
+In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
+References: <20240916114221.021192667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -102,7 +102,7 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 +	if (vmf->pgoff >= buffer->pagecount)
  		return VM_FAULT_SIGBUS;
  
- 	return vmf_insert_pfn(vma, vmf->address, page_to_pfn(buffer->pages[vmf->pgoff]));
+ 	vmf->page = buffer->pages[vmf->pgoff];
 
 
 
