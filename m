@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-76234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8BFF197A0B7
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:00:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 689DA97A16A
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:07:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BF2511C22DB4
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:00:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1DF861F235E8
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:07:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18551156250;
-	Mon, 16 Sep 2024 12:00:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DE49155CBD;
+	Mon, 16 Sep 2024 12:06:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VgHRsiDh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XCcJsWu7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C70D715667E;
-	Mon, 16 Sep 2024 12:00:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD51C24B34;
+	Mon, 16 Sep 2024 12:06:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488011; cv=none; b=gEYhcatvnZqbslm8MLK7q+FCw5HCUH2dNUH7gCyNWZMl6PYLMzogFFCja/SzjT103hf8QgVgcYO0zY6Etnp6yyPGUTOq5PWv5MVTF/fBk7EMJUN0X4GaVfkIbOKgYZCDZZ5c4iTDgTT93jZUlS7Z6yn4L1houPf7ah6THZwM/Xw=
+	t=1726488399; cv=none; b=jc5cgpds+DUzVIRcjutqF42Tn36gOld74n6jsO2422/ueN+C3YeO08cMJf0iiEOaZ2yxIrZuTyBK8cr8Alxc7qF1kFrEjQbvTMMfCoDM24Nw15/tvA7Y4gv9SY3o6G4opuZlWg6EB3x7YiJTax/DZj09fXB6dV7+mCPRrH2DqAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488011; c=relaxed/simple;
-	bh=INGJk12e3mBv4m6QOm86Ag38mtjUkOXk7IHkroGvIMs=;
+	s=arc-20240116; t=1726488399; c=relaxed/simple;
+	bh=BmVlT2jIvUvfTPsW7mvuncWMqU8zVi41ExXt9MrInXk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UAUELEwKlcRZnd1yxlhCcwRereIBNVEU5IxBYStnXUCFCMi89IA1vrueMwtVjkzc6MKaIqLonN7SC99Htii3pdtDCRQO1wt35luAeO1Id9uhmiUnTcTySVg+AOqEsnglW20K6cOL8/YKId2ROG2t/89qz6pn0w284BzcyG91WZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VgHRsiDh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C4F6C4CEC4;
-	Mon, 16 Sep 2024 12:00:11 +0000 (UTC)
+	 MIME-Version:Content-Type; b=p8p4LIcT+huMqoVKShOebZL7tmZl38g7SuzjVgKRd24nlVM1IfoOMZlkLqZyvxfntulELScsQaZCId/DWDY+ZVDisftl8SdhXmDBhx+ww2bOTQWlCp22zfK3DNXBdMiBJ9Yf6OBQhhJitM0Oh/8iGE76LMTe9xxX8mypmABC7tg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XCcJsWu7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 668FFC4CEC4;
+	Mon, 16 Sep 2024 12:06:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488011;
-	bh=INGJk12e3mBv4m6QOm86Ag38mtjUkOXk7IHkroGvIMs=;
+	s=korg; t=1726488398;
+	bh=BmVlT2jIvUvfTPsW7mvuncWMqU8zVi41ExXt9MrInXk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VgHRsiDh7+WJXQWLsBCSvwqj+QZoEXIsaqnX2USNb4g8HP2z1b3bmux6YbGBA93Xx
-	 Bi3vB4Sik3sJ8fwXQIlUksyP96+cBfPzIn5dRFN7oZt4IltxPn9GjtZQpOMbvPLURc
-	 ozeVxViXF5iKH5Goog8WvXdfnKa/ULis7dzcsg0E=
+	b=XCcJsWu7r0rByn4GRhb3e5b6RgSrp9/YDMXzGsE2OR2uaTbaphGn3rT87CSGfJnb+
+	 6anyW5W2WZ8fcGbkAf9uGyVRJ0BvTqVzTWnQ3drp3wAZydp6u+cXcKhXnZ3DhWzUsA
+	 u3r0YqQpVL2LnVuI+ebSyO+ZZjSnAfRxnTvMKPLQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Willem de Bruijn <willemb@google.com>,
-	Jason Wang <jasowang@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 27/63] net: tighten bad gso csum offset check in virtio_net_hdr
+	=?UTF-8?q?Mat=C4=9Bj=20Gr=C3=A9gr?= <mgregr@netx.as>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 6.10 072/121] ice: Fix lldp packets dropping after changing the number of channels
 Date: Mon, 16 Sep 2024 13:44:06 +0200
-Message-ID: <20240916114222.036740955@linuxfoundation.org>
+Message-ID: <20240916114231.556017826@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
-References: <20240916114221.021192667@linuxfoundation.org>
+In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
+References: <20240916114228.914815055@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +63,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Willem de Bruijn <willemb@google.com>
+From: Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>
 
-commit 6513eb3d3191574b58859ef2d6dc26c0277c6f81 upstream.
+[ Upstream commit 9debb703e14939dfafa5d403f27c4feb2e9f6501 ]
 
-The referenced commit drops bad input, but has false positives.
-Tighten the check to avoid these.
+After vsi setup refactor commit 6624e780a577 ("ice: split ice_vsi_setup
+into smaller functions") ice_cfg_sw_lldp function which removes rx rule
+directing LLDP packets to vsi is moved from ice_vsi_release to
+ice_vsi_decfg function. ice_vsi_decfg is used in more cases than just in
+vsi_release resulting in unnecessary removal of rx lldp packets handling
+switch rule. This leads to lldp packets being dropped after a change number
+of channels via ethtool.
+This patch moves ice_cfg_sw_lldp function that removes rx lldp sw rule back
+to ice_vsi_release function.
 
-The check detects illegal checksum offload requests, which produce
-csum_start/csum_off beyond end of packet after segmentation.
-
-But it is based on two incorrect assumptions:
-
-1. virtio_net_hdr_to_skb with VIRTIO_NET_HDR_GSO_TCP[46] implies GSO.
-True in callers that inject into the tx path, such as tap.
-But false in callers that inject into rx, like virtio-net.
-Here, the flags indicate GRO, and CHECKSUM_UNNECESSARY or
-CHECKSUM_NONE without VIRTIO_NET_HDR_F_NEEDS_CSUM is normal.
-
-2. TSO requires checksum offload, i.e., ip_summed == CHECKSUM_PARTIAL.
-False, as tcp[46]_gso_segment will fix up csum_start and offset for
-all other ip_summed by calling __tcp_v4_send_check.
-
-Because of 2, we can limit the scope of the fix to virtio_net_hdr
-that do try to set these fields, with a bogus value.
-
-Link: https://lore.kernel.org/netdev/20240909094527.GA3048202@port70.net/
-Fixes: 89add40066f9 ("net: drop bad gso csum_start and offset in virtio_net_hdr")
-Signed-off-by: Willem de Bruijn <willemb@google.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20240910213553.839926-1-willemdebruijn.kernel@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6624e780a577 ("ice: split ice_vsi_setup into smaller functions")
+Reported-by: Matěj Grégr <mgregr@netx.as>
+Closes: https://lore.kernel.org/intel-wired-lan/1be45a76-90af-4813-824f-8398b69745a9@netx.as/T/#u
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/virtio_net.h |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/ice/ice_lib.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
---- a/include/linux/virtio_net.h
-+++ b/include/linux/virtio_net.h
-@@ -161,7 +161,8 @@ retry:
- 			break;
- 		case SKB_GSO_TCPV4:
- 		case SKB_GSO_TCPV6:
--			if (skb->csum_offset != offsetof(struct tcphdr, check))
-+			if (skb->ip_summed == CHECKSUM_PARTIAL &&
-+			    skb->csum_offset != offsetof(struct tcphdr, check))
- 				return -EINVAL;
- 			break;
- 		}
+diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
+index 7076a7738864..c2ba58659347 100644
+--- a/drivers/net/ethernet/intel/ice/ice_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_lib.c
+@@ -2413,13 +2413,6 @@ void ice_vsi_decfg(struct ice_vsi *vsi)
+ 	struct ice_pf *pf = vsi->back;
+ 	int err;
+ 
+-	/* The Rx rule will only exist to remove if the LLDP FW
+-	 * engine is currently stopped
+-	 */
+-	if (!ice_is_safe_mode(pf) && vsi->type == ICE_VSI_PF &&
+-	    !test_bit(ICE_FLAG_FW_LLDP_AGENT, pf->flags))
+-		ice_cfg_sw_lldp(vsi, false, false);
+-
+ 	ice_rm_vsi_lan_cfg(vsi->port_info, vsi->idx);
+ 	err = ice_rm_vsi_rdma_cfg(vsi->port_info, vsi->idx);
+ 	if (err)
+@@ -2764,6 +2757,14 @@ int ice_vsi_release(struct ice_vsi *vsi)
+ 		ice_rss_clean(vsi);
+ 
+ 	ice_vsi_close(vsi);
++
++	/* The Rx rule will only exist to remove if the LLDP FW
++	 * engine is currently stopped
++	 */
++	if (!ice_is_safe_mode(pf) && vsi->type == ICE_VSI_PF &&
++	    !test_bit(ICE_FLAG_FW_LLDP_AGENT, pf->flags))
++		ice_cfg_sw_lldp(vsi, false, false);
++
+ 	ice_vsi_decfg(vsi);
+ 
+ 	/* retain SW VSI data structure since it is needed to unregister and
+-- 
+2.43.0
+
 
 
 
