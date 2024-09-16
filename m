@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-76330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76427-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id E39A297A13F
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:06:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A425C97A1B5
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:09:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9A55F1F2471C
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:06:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 69794284E6B
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:09:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 177491591FC;
-	Mon, 16 Sep 2024 12:04:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7522D156661;
+	Mon, 16 Sep 2024 12:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Uv8bFGwc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PrtwlrW1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9724155CBA;
-	Mon, 16 Sep 2024 12:04:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34483156222;
+	Mon, 16 Sep 2024 12:09:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488284; cv=none; b=J9C/f/2Nkk6acCfr7Y78mEcc0Ni+mn1smni+y4I1HrJ4vxikY78yPpNp5FOUdFI+58bBkGscpNCInH2Et16TeYpCyoXQy5xKszpWhCQSJ8s7AyY9qAE3w7UmSuMEgg0jUeOViowsDuIIwt0hn1RDr19SVhnAfEj8EPzoPvmy45Y=
+	t=1726488562; cv=none; b=u7m3TsUQAIhyocW75JZNH0ROsY4ENZGeruiE/loSOHXQa1vnlF0niNiGWyKKBsffypFQe4JPlkMtvvRJZXOGFxMddR1oCIVnnF+Mrncb5d05qR5z7O3xA4mXlap0efcIQAjKmnVpvrYIjT+baZ/ONq5GFOMthbndi9FTUPbofLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488284; c=relaxed/simple;
-	bh=rca/pAyktM6aEVoVYTLqS/iwhmEda7x0KWJXeow381M=;
+	s=arc-20240116; t=1726488562; c=relaxed/simple;
+	bh=RiXSV+mM7hJiwVUmy28ZIEWSgwMFXYUoQRasJoGeTYM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g3TqY9bI5334xTIAofYLUw8jHMNWFevgA3o9kBgm2M1etJSH0K5XIEtFRYALcra0GQPyULT7ZoLeR6nACcYP9bhLfc1dPHcT4zn2L7+uyIJqrJf4Y7agTKFztdJKYHC0jcCJELvwEeL+Z86klJDeyMc13qA//RPZNJMviposQbc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Uv8bFGwc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53460C4CEC4;
-	Mon, 16 Sep 2024 12:04:44 +0000 (UTC)
+	 MIME-Version; b=nLfFkDXvfmYVrUopjgDqzKJqYtkW+7MnPM15tgUYIoLFEhhSiuH/vcamilMTXlbsHP+p8rVe674+iNmzbq3KRIls64uZIL9LP950WzzkvvZIjmalcoB8o/Sdrk4o7R0/EQ/gYlGRfqTORTLcIRg8VevR3Wrn5SyKoCVvKzAdMxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PrtwlrW1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7D35C4CEC7;
+	Mon, 16 Sep 2024 12:09:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488284;
-	bh=rca/pAyktM6aEVoVYTLqS/iwhmEda7x0KWJXeow381M=;
+	s=korg; t=1726488562;
+	bh=RiXSV+mM7hJiwVUmy28ZIEWSgwMFXYUoQRasJoGeTYM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uv8bFGwcPEFlDAlY0NyOH9/9hXQcdynU5RS8xVbKEl/7yH5HpZjdamdlZlbJHRRSj
-	 plWjTMYJABUPY5FTPEV6DJYvONjgUuiIRKviwfGWxkmEfwt5amS/DtRNaEKr1TCp0v
-	 UtpHmmhBbG2hLZHKN8OPu2LPrsQAuYqQKtVdT7fM=
+	b=PrtwlrW1K0bFvtgZig44gFv4NPIeJS6HCnkg0ZqyoZuFsnr4C3jGatcFAmNGE/1zM
+	 IzFLL8Lo5o85Q3Em0eBuOdZhhTvEEjCfGHPU8r4HqFZZ9DJNDkHsXuhzZ01wbC+OES
+	 UhvcU9Ac3irrvJBF8mnLzEKA8CgWdiwGcL2YFlNs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	FUKAUMI Naoki <naoki@radxa.com>,
-	Heiko Stuebner <heiko@sntech.de>,
+	Bouke Sybren Haarsma <boukehaarsma23@gmail.com>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 059/121] arm64: dts: rockchip: fix PMIC interrupt pin in pinctrl for ROCK Pi E
+Subject: [PATCH 6.6 17/91] drm: panel-orientation-quirks: Add quirk for Ayn Loki Zero
 Date: Mon, 16 Sep 2024 13:43:53 +0200
-Message-ID: <20240916114231.112955776@linuxfoundation.org>
+Message-ID: <20240916114225.093707714@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
-References: <20240916114228.914815055@linuxfoundation.org>
+In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
+References: <20240916114224.509743970@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,39 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: FUKAUMI Naoki <naoki@radxa.com>
+From: Bouke Sybren Haarsma <boukehaarsma23@gmail.com>
 
-[ Upstream commit c623e9daf60a0275d623ce054601550e54987f5b ]
+[ Upstream commit b86aa4140f6a8f01f35bfb05af60e01a55b48803 ]
 
-use GPIO0_A2 as PMIC interrupt pin in pinctrl.
-(I forgot to fix this part in previous commit.)
+Add quirk orientation for the Ayn Loki Zero.
 
-Fixes: 02afd3d5b9fa ("arm64: dts: rockchip: fix PMIC interrupt pin on ROCK Pi E")
-Signed-off-by: FUKAUMI Naoki <naoki@radxa.com>
-Link: https://lore.kernel.org/r/20240722095216.1656081-1-naoki@radxa.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+This also has been tested/used by the JELOS team.
+
+Signed-off-by: Bouke Sybren Haarsma <boukehaarsma23@gmail.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240728124731.168452-2-boukehaarsma23@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/rockchip/rk3328-rock-pi-e.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/drm_panel_orientation_quirks.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3328-rock-pi-e.dts b/arch/arm64/boot/dts/rockchip/rk3328-rock-pi-e.dts
-index a608a219543e..3e08e2fd0a78 100644
---- a/arch/arm64/boot/dts/rockchip/rk3328-rock-pi-e.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3328-rock-pi-e.dts
-@@ -387,7 +387,7 @@ led_pin: led-pin {
- 
- 	pmic {
- 		pmic_int_l: pmic-int-l {
--			rockchip,pins = <2 RK_PA6 RK_FUNC_GPIO &pcfg_pull_up>;
-+			rockchip,pins = <0 RK_PA2 RK_FUNC_GPIO &pcfg_pull_up>;
- 		};
- 	};
- 
+diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
+index 039da0d1a613..79ccf4959df4 100644
+--- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
++++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
+@@ -208,6 +208,12 @@ static const struct dmi_system_id orientation_data[] = {
+ 		  DMI_MATCH(DMI_BOARD_NAME, "KUN"),
+ 		},
+ 		.driver_data = (void *)&lcd1600x2560_rightside_up,
++	}, {	/* AYN Loki Zero */
++		.matches = {
++			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "ayn"),
++			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Loki Zero"),
++		},
++		.driver_data = (void *)&lcd1080x1920_leftside_up,
+ 	}, {	/* Chuwi HiBook (CWI514) */
+ 		.matches = {
+ 			DMI_MATCH(DMI_BOARD_VENDOR, "Hampoo"),
 -- 
 2.43.0
 
