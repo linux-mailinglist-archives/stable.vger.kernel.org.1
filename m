@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-76250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 848F197A0C7
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:01:01 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0820997A134
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:06:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2CBCFB2379D
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:00:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3AF441C23109
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:06:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 891F8A95E;
-	Mon, 16 Sep 2024 12:00:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEC6F158848;
+	Mon, 16 Sep 2024 12:04:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZgSvuVES"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MQ54uKfP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48B1714AD19;
-	Mon, 16 Sep 2024 12:00:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71FC61514C6;
+	Mon, 16 Sep 2024 12:04:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488057; cv=none; b=VD/fniWE3Ztb2+uFq70Rs4qGtx8Qx+aKy2wOTX7/hgeUk6EULYPOsWjlcYgvusVXJz0qMxMjQosSdZGzciQgHLz4r0PP7E28lBNELHhx05AQl4dgUDm1HXjaHmwfJQIN6oKyKnSE/D4HbkKBxtSkQ6hmDXsGPjILDVWeiLC2VwQ=
+	t=1726488259; cv=none; b=LdYlFlshYKyVKzFChgOiX40Ewo7I4Zh+gIW54ODNnu+4WXH05sQd3LmTTuvxaaVUa+PrzfgzEaD8JTxnhUIqiLe4BoPo+GcPs+L0zZJXQpBOvQ7nOwHZ4e0p5mrZePu6aKmXtAVPY9efzqKwZ1/dlp9DuJxS9IEujyqKqA22TjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488057; c=relaxed/simple;
-	bh=TOVD7Igml/zrb9T0SHxOhCVz747KU6ci8xbcNwOlXCs=;
+	s=arc-20240116; t=1726488259; c=relaxed/simple;
+	bh=ByDeBhQ7aCPI48Y6kQlnZbAK9LGiz0TdoNRNOziwyh4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G6u9BFDcxQhnPkApmVe1SL94Is4mdNEkeNwV7/cQIQBNxjy89sw2l8zt35qKRy+tQgTp+b50tMgd8SQW3B1HYQuHP4kR9R4wXSFgBiGOWSAwJB6TaaMg+koHyRq4AeyInx5PC9qncqhJfss88U/rhcRBbePCjc0NHEIiLPlAevI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZgSvuVES; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C45BFC4CEC4;
-	Mon, 16 Sep 2024 12:00:56 +0000 (UTC)
+	 MIME-Version; b=RvwfvkSMO4OiQ3hu9554O2X6ndXncVrc75PjSGhY5KydNLbBp1WuzyVWx4bULwGdJ00/iuKaiz449H/LpoAfaJNUznZbaZ6OYqJFi9hxJyFOJz2xFFcoeLL+jG4cn96YW2h4iN2tCtQkjgnCDcmZa6mDI+R6t2dX/i13hE0b+gM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MQ54uKfP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA561C4CEC4;
+	Mon, 16 Sep 2024 12:04:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488057;
-	bh=TOVD7Igml/zrb9T0SHxOhCVz747KU6ci8xbcNwOlXCs=;
+	s=korg; t=1726488259;
+	bh=ByDeBhQ7aCPI48Y6kQlnZbAK9LGiz0TdoNRNOziwyh4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZgSvuVESN1XAubdX5SweFqjjxIsF/DnQ76LgZW21EGyoLHrPZoQyWtAyauhgpk7D6
-	 t8IUDzL8Ju7Y+uNDzyIequcZGJp/5scsMqPXd7ik9g2n1MRXGOEpiFnkUKoeuY7GAd
-	 Qt4bEPL8vXObgHSWh+IwkO6riJ022gguHf8j5Wmg=
+	b=MQ54uKfPC24HauD49b5TGoG/lT47T8ZfHuxQ0EeXDfHO5i4BxN6TQCSVmVrhEnP/j
+	 bcEnQzGzJTc9W+NajulFiG0QqNzKWXxeBkB/wYJACMR1qoELgWSQrEFt9ymC/tXC9F
+	 yEJL91GH7CtfRvkN0b6COUjQIiQN3j9GcyCAhP74=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bouke Sybren Haarsma <boukehaarsma23@gmail.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 06/63] drm: panel-orientation-quirks: Add quirk for Ayn Loki Max
+	Jiawen Wu <jiawenwu@trustnetic.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.10 051/121] net: libwx: fix number of Rx and Tx descriptors
 Date: Mon, 16 Sep 2024 13:43:45 +0200
-Message-ID: <20240916114221.255503676@linuxfoundation.org>
+Message-ID: <20240916114230.822023135@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
-References: <20240916114221.021192667@linuxfoundation.org>
+In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
+References: <20240916114228.914815055@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bouke Sybren Haarsma <boukehaarsma23@gmail.com>
+From: Jiawen Wu <jiawenwu@trustnetic.com>
 
-[ Upstream commit 2c71c8459c8ca66bd8f597effaac892ee8448a9f ]
+commit 077ee7e6b13a2b6668196ed01a22023549e19381 upstream.
 
-Add quirk orientation for Ayn Loki Max model.
+The number of transmit and receive descriptors must be a multiple of 128
+due to the hardware limitation. If it is set to a multiple of 8 instead of
+a multiple 128, the queues will easily be hung.
 
-This has been tested by JELOS team that uses their
-own patched kernel for a while now and confirmed by
-users in the ChimeraOS discord servers.
-
-Signed-off-by: Bouke Sybren Haarsma <boukehaarsma23@gmail.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240728124731.168452-3-boukehaarsma23@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 883b5984a5d2 ("net: wangxun: add ethtool_ops for ring parameters")
+Signed-off-by: Jiawen Wu <jiawenwu@trustnetic.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20240910095629.570674-1-jiawenwu@trustnetic.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_panel_orientation_quirks.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/ethernet/wangxun/libwx/wx_type.h |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_panel_orientation_quirks.c b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-index 79ccf4959df4..5b2506c65e95 100644
---- a/drivers/gpu/drm/drm_panel_orientation_quirks.c
-+++ b/drivers/gpu/drm/drm_panel_orientation_quirks.c
-@@ -208,6 +208,12 @@ static const struct dmi_system_id orientation_data[] = {
- 		  DMI_MATCH(DMI_BOARD_NAME, "KUN"),
- 		},
- 		.driver_data = (void *)&lcd1600x2560_rightside_up,
-+	}, {    /* AYN Loki Max */
-+		.matches = {
-+			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "ayn"),
-+			DMI_EXACT_MATCH(DMI_PRODUCT_NAME, "Loki Max"),
-+		},
-+		.driver_data = (void *)&lcd1080x1920_leftside_up,
- 	}, {	/* AYN Loki Zero */
- 		.matches = {
- 			DMI_EXACT_MATCH(DMI_SYS_VENDOR, "ayn"),
--- 
-2.43.0
-
+--- a/drivers/net/ethernet/wangxun/libwx/wx_type.h
++++ b/drivers/net/ethernet/wangxun/libwx/wx_type.h
+@@ -424,9 +424,9 @@ enum WX_MSCA_CMD_value {
+ #define WX_MIN_RXD                   128
+ #define WX_MIN_TXD                   128
+ 
+-/* Number of Transmit and Receive Descriptors must be a multiple of 8 */
+-#define WX_REQ_RX_DESCRIPTOR_MULTIPLE   8
+-#define WX_REQ_TX_DESCRIPTOR_MULTIPLE   8
++/* Number of Transmit and Receive Descriptors must be a multiple of 128 */
++#define WX_REQ_RX_DESCRIPTOR_MULTIPLE   128
++#define WX_REQ_TX_DESCRIPTOR_MULTIPLE   128
+ 
+ #define WX_MAX_JUMBO_FRAME_SIZE      9432 /* max payload 9414 */
+ #define VMDQ_P(p)                    p
 
 
 
