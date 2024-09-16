@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-76267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D89B97A0DC
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:02:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C67B97A1D1
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:10:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9B70F1C22F86
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:01:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CEE991C2029F
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:10:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E7F0154C04;
-	Mon, 16 Sep 2024 12:01:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A97F1547F5;
+	Mon, 16 Sep 2024 12:10:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oqp026Te"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JvPtMELk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B01113DBA0;
-	Mon, 16 Sep 2024 12:01:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9AA4146A79;
+	Mon, 16 Sep 2024 12:10:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488105; cv=none; b=d/t54tuyKmm2SQmxj8UA+ZydswxCuMkt2xzSyGlKzZO2ZZmNkIcRSf0Gdxtdt8xFmk+UfxEeWbTAckkuJMvfR7Rob0xiFcDro1Ik/Cb+KntsUV4Wg+krmjoLAhRI415cR9e3k1KDnjQTUzM41xWqb7IpyUSUHIQ8s4j7NNZFZg4=
+	t=1726488641; cv=none; b=fhVpp0C8cMbjUlpKUO7waGrjNg6FdFSF0mnZ9EjMnzaQZIL3k3uwU0Aadpg1aHyEY2hv28MwBdoky2l0opDZ7WhXfAn+Ds70E3vQc+B6HYiCRdtXOSsxrhnY4cFgKB+yEnDji8wf+71gJwFCczRvneyCXKiYDAnkI5JkDmDaANA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488105; c=relaxed/simple;
-	bh=IGnujiHp596BT+bxVn21ZzMSCzxWUscyipZ1jMmjNl4=;
+	s=arc-20240116; t=1726488641; c=relaxed/simple;
+	bh=YwHH4f+Mgf97+ya8fpoBAKoSH4SAHFQMezlT18PMmd0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U1JQsOoz/m5yKLS0QJjLnNn7Z1Uk/ofXKh/6ePKVI0Ma3/rQXUWa8DWblTpmzQH8lHnFUxL7az8s4xceMavA5gyU7UOBG2FCz5R5IpAm96JL0X9aeQcAEgM8xEeeC9K1Xax6iW2uu1LuS6P72VlTvb0VI0ggOdIRx6IVU4iC0HU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oqp026Te; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C76FBC4CEC4;
-	Mon, 16 Sep 2024 12:01:44 +0000 (UTC)
+	 MIME-Version; b=Kq1u/gEYTkFcSlO7f2UhhRDaygM02PZ0bpqDYK6lqX7JlbHt4R/I793UbyF9EvTVHi4mAE7/sUKu+R+Ye0u/uLBJ6OzrebSVvAjf1FfV1eItG8YYAIWY1TThWGexJy1r27YW+K2p4WhbuGX168pcUtpjzFYqSJJHHLxr0jFb6ak=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JvPtMELk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E705C4CEC4;
+	Mon, 16 Sep 2024 12:10:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488105;
-	bh=IGnujiHp596BT+bxVn21ZzMSCzxWUscyipZ1jMmjNl4=;
+	s=korg; t=1726488641;
+	bh=YwHH4f+Mgf97+ya8fpoBAKoSH4SAHFQMezlT18PMmd0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oqp026TeB11Bn/6uJIzuF90nMGyX6VLyV8SF/R7uxXwUh7DWTApzelL0aP4WUllc6
-	 RIUkJO9RFgh3WULba34E4ZkdEDBwkQO+KrG4K1e/D3X4rnIswY+7uplUWix+y+2j8p
-	 OOYo3okn7FYNf5cwJd/R3B7QiVTWo+SEYOoznNCM=
+	b=JvPtMELksZnV2J7ZQyMNWN52jlbYp7d3FXtXAvvBpuoy5+2pWxdCcWKvbuiJuiFGn
+	 hE+iFRmaVm+qQyCCqNI9Ht8XTfZGSoJnqvZ6zUSvdhpy6Yc4gJEy+1tT4ZwooeLtPy
+	 1sFl4Di/SQVYANkh8PpwtH+8FLXIkZ8Yb7Q13eqw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Carolina Jubran <cjubran@nvidia.com>,
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 60/63] spi: geni-qcom: Fix incorrect free_irq() sequence
+Subject: [PATCH 6.6 63/91] net/mlx5: Explicitly set scheduling element and TSAR type
 Date: Mon, 16 Sep 2024 13:44:39 +0200
-Message-ID: <20240916114223.160683201@linuxfoundation.org>
+Message-ID: <20240916114226.562672715@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
-References: <20240916114221.021192667@linuxfoundation.org>
+In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
+References: <20240916114224.509743970@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Carolina Jubran <cjubran@nvidia.com>
 
-[ Upstream commit b787a33864121a565aeb0e88561bf6062a19f99c ]
+[ Upstream commit c88146abe4d0f8cf659b2b8883fdc33936d2e3b8 ]
 
-In spi_geni_remove(), the free_irq() sequence is different from that
-on the probe error path. And the IRQ will still remain and it's interrupt
-handler may use the dma channel after release dma channel and before free
-irq, which is not secure, fix it.
+Ensure the scheduling element type and TSAR type are explicitly
+initialized in the QoS rate group creation.
 
-Fixes: b59c122484ec ("spi: spi-geni-qcom: Add support for GPI dma")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://patch.msgid.link/20240909073141.951494-3-ruanjinjie@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This prevents potential issues due to default values.
+
+Fixes: 1ae258f8b343 ("net/mlx5: E-switch, Introduce rate limiting groups API")
+Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
+Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-geni-qcom.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/spi/spi-geni-qcom.c b/drivers/spi/spi-geni-qcom.c
-index 6d8eb7c26076..17b5299c18c7 100644
---- a/drivers/spi/spi-geni-qcom.c
-+++ b/drivers/spi/spi-geni-qcom.c
-@@ -1011,9 +1011,9 @@ static void spi_geni_remove(struct platform_device *pdev)
- 	/* Unregister _before_ disabling pm_runtime() so we stop transfers */
- 	spi_unregister_master(spi);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
+index 1887a24ee414..627cdb072573 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
+@@ -420,6 +420,7 @@ __esw_qos_create_rate_group(struct mlx5_eswitch *esw, struct netlink_ext_ack *ex
+ {
+ 	u32 tsar_ctx[MLX5_ST_SZ_DW(scheduling_context)] = {};
+ 	struct mlx5_esw_rate_group *group;
++	__be32 *attr;
+ 	u32 divider;
+ 	int err;
  
--	spi_geni_release_dma_chan(mas);
--
- 	free_irq(mas->irq, spi);
+@@ -427,6 +428,12 @@ __esw_qos_create_rate_group(struct mlx5_eswitch *esw, struct netlink_ext_ack *ex
+ 	if (!group)
+ 		return ERR_PTR(-ENOMEM);
+ 
++	MLX5_SET(scheduling_context, tsar_ctx, element_type,
++		 SCHEDULING_CONTEXT_ELEMENT_TYPE_TSAR);
 +
-+	spi_geni_release_dma_chan(mas);
- }
- 
- static int __maybe_unused spi_geni_runtime_suspend(struct device *dev)
++	attr = MLX5_ADDR_OF(scheduling_context, tsar_ctx, element_attributes);
++	*attr = cpu_to_be32(TSAR_ELEMENT_TSAR_TYPE_DWRR << 16);
++
+ 	MLX5_SET(scheduling_context, tsar_ctx, parent_element_id,
+ 		 esw->qos.root_tsar_ix);
+ 	err = mlx5_create_scheduling_element_cmd(esw->dev,
 -- 
 2.43.0
 
