@@ -1,225 +1,371 @@
-Return-Path: <stable+bounces-76408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76220-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9976D97A195
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:08:29 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 532BE97A0A7
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 13:59:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BE7C81C21710
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:08:28 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 11970282899
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 11:59:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D83B155336;
-	Mon, 16 Sep 2024 12:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5E6C15747A;
+	Mon, 16 Sep 2024 11:59:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UBZr8hLb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eCBgFIbJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA077149C57;
-	Mon, 16 Sep 2024 12:08:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C07115689A;
+	Mon, 16 Sep 2024 11:59:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488506; cv=none; b=mh11RCceEGqt6bM5VJ2y0Mvdu+jvUwS3ysRnjUByZ6rwev6o0mOB5Ya1IjodmIPmJhPeh0sXGFb7VTOJ6xMt0O/aFS54UXdSv6KcuWExs+A5r+X7f2jZIZd9MrP+oWGOFq4hJE07zwikD4dS+0ARdzdur8vu5mUtMDf7QYTeX8M=
+	t=1726487971; cv=none; b=pIFkc+eVHI10SL1vIjGYcgyLaMdI92cHD1ynvlhCTBg39fg+1C7kqvDUh07B8GEZ2OEkD4NxAg+YXaw190Fv+ymgq7h27dR1bz31zvtiRbZ8imB15aSOjvKshDvsz9lVsrp/0YT6QlUW2/YNkrZnjmCfpP7CavICX0SQ8J/zT7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488506; c=relaxed/simple;
-	bh=rawQqJgEh2BtVX+IS9/lh/MEJXZ61nHby/ei5ho3TLw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NoPpR9li0bgWVOOUNS0Mq0US1lCMpVXD7lKa7iZYfP9ENlXAg5AUo9KTkR+ZBk4XbmD39LF7HW5HWecOqeNhQ7WBWisV5oCnXDlom+k0b2GrLON1Z1Q3IGTk4FTgXUwN91oGGLrxuJlnBUl/maCeRQzF6bRae/GhhYWEMPLj1Gw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UBZr8hLb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61D3EC4CEC4;
-	Mon, 16 Sep 2024 12:08:26 +0000 (UTC)
+	s=arc-20240116; t=1726487971; c=relaxed/simple;
+	bh=L3czxo4OvCVj53TdCdPmrZZD0MgFwtZAyFiQw6B3u6Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=EErysZ88jQ4o+H5cqlDzODODy4Lic6Cq9dY1BrqP/M+B4q6FTtnVWh94BtrE5YYpt4bJfEYIAQi0kCXACFv9phYCpmmXINuxRrWcqvfjuwhzKG09DVhzU/qroCfxqzyB/o9VcKggi7puGL37D5bpIxnXu3ae0ncQsCktLe2dm2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eCBgFIbJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D03EC4CEC4;
+	Mon, 16 Sep 2024 11:59:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488506;
-	bh=rawQqJgEh2BtVX+IS9/lh/MEJXZ61nHby/ei5ho3TLw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UBZr8hLbH/iGlaC2mAnetpklzM+ODnBgEzsaOiM10rW08Lm/3hmcpkKPvthXS3ffJ
-	 GPcnm9BtwCMHjrz5JMOf799kyUXVj2vlVm9aLfp+yUe8XAhanWHIiQTdP1CbMAFJAP
-	 Eo5/eu40KCUypoVDddDSCxb2BnGTQx6mm1qfHewU=
+	s=korg; t=1726487970;
+	bh=L3czxo4OvCVj53TdCdPmrZZD0MgFwtZAyFiQw6B3u6Q=;
+	h=From:To:Cc:Subject:Date:From;
+	b=eCBgFIbJRE24wbZu08xXjwr032+xLsOCxR4yym6glKn0NH8Ay/8BA1Hkl8NfrlDd6
+	 5nNDeVDdFSrnylx7Edq3A6HRpt3wScwIVwdgCNhjdNMojRwfY7K/Lv8/rH77s1+uI2
+	 8Jz5eYO6uh0YutsR9ZjcTpsxXpiN8Uwd3I1qeuSc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lars-Peter Clausen <lars@metafoo.de>,
-	Michael Hennerich <Michael.Hennerich@analog.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 03/91] iio: adc: ad7124: Switch from of specific to fwnode based property handling
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	allen.lkml@gmail.com,
+	broonie@kernel.org
+Subject: [PATCH 6.1 00/63] 6.1.111-rc1 review
 Date: Mon, 16 Sep 2024 13:43:39 +0200
-Message-ID: <20240916114224.623822327@linuxfoundation.org>
+Message-ID: <20240916114221.021192667@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
-References: <20240916114224.509743970@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.111-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-6.1.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 6.1.111-rc1
+X-KernelTest-Deadline: 2024-09-18T11:42+00:00
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+This is the start of the stable review cycle for the 6.1.111 release.
+There are 63 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-------------------
+Responses should be made by Wed, 18 Sep 2024 11:42:05 +0000.
+Anything received after that time might be too late.
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.111-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+and the diffstat can be found below.
 
-[ Upstream commit a6eaf02b82744b424b9b2c74847282deb2c6f77b ]
+thanks,
 
-Using the generic firmware data access functions from property.h
-provides a number of advantages:
- 1) Works with different firmware types.
- 2) Doesn't provide a 'bad' example for new IIO drivers.
- 3) Lets us use the new _scoped() loops with automatic reference count
-    cleanup for fwnode_handle
+greg k-h
 
-Cc: Lars-Peter Clausen <lars@metafoo.de>
-Cc: Michael Hennerich <Michael.Hennerich@analog.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20240218172731.1023367-4-jic23@kernel.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: 61cbfb5368dd ("iio: adc: ad7124: fix DT configuration parsing")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/iio/adc/ad7124.c | 55 +++++++++++++++++-----------------------
- 1 file changed, 23 insertions(+), 32 deletions(-)
+-------------
+Pseudo-Shortlog of commits:
 
-diff --git a/drivers/iio/adc/ad7124.c b/drivers/iio/adc/ad7124.c
-index 2976c62b58c0..bd323c6bd756 100644
---- a/drivers/iio/adc/ad7124.c
-+++ b/drivers/iio/adc/ad7124.c
-@@ -14,7 +14,8 @@
- #include <linux/kernel.h>
- #include <linux/kfifo.h>
- #include <linux/module.h>
--#include <linux/of.h>
-+#include <linux/mod_devicetable.h>
-+#include <linux/property.h>
- #include <linux/regulator/consumer.h>
- #include <linux/spi/spi.h>
- 
-@@ -812,22 +813,19 @@ static int ad7124_check_chip_id(struct ad7124_state *st)
- 	return 0;
- }
- 
--static int ad7124_of_parse_channel_config(struct iio_dev *indio_dev,
--					  struct device_node *np)
-+static int ad7124_parse_channel_config(struct iio_dev *indio_dev,
-+				       struct device *dev)
- {
- 	struct ad7124_state *st = iio_priv(indio_dev);
- 	struct ad7124_channel_config *cfg;
- 	struct ad7124_channel *channels;
--	struct device_node *child;
- 	struct iio_chan_spec *chan;
- 	unsigned int ain[2], channel = 0, tmp;
- 	int ret;
- 
--	st->num_channels = of_get_available_child_count(np);
--	if (!st->num_channels) {
--		dev_err(indio_dev->dev.parent, "no channel children\n");
--		return -ENODEV;
--	}
-+	st->num_channels = device_get_child_node_count(dev);
-+	if (!st->num_channels)
-+		return dev_err_probe(dev, -ENODEV, "no channel children\n");
- 
- 	chan = devm_kcalloc(indio_dev->dev.parent, st->num_channels,
- 			    sizeof(*chan), GFP_KERNEL);
-@@ -843,39 +841,38 @@ static int ad7124_of_parse_channel_config(struct iio_dev *indio_dev,
- 	indio_dev->num_channels = st->num_channels;
- 	st->channels = channels;
- 
--	for_each_available_child_of_node(np, child) {
-+	device_for_each_child_node_scoped(dev, child) {
- 		cfg = &st->channels[channel].cfg;
- 
--		ret = of_property_read_u32(child, "reg", &channel);
-+		ret = fwnode_property_read_u32(child, "reg", &channel);
- 		if (ret)
--			goto err;
-+			return ret;
- 
--		if (channel >= indio_dev->num_channels) {
--			dev_err(indio_dev->dev.parent,
-+		if (channel >= indio_dev->num_channels)
-+			return dev_err_probe(dev, -EINVAL,
- 				"Channel index >= number of channels\n");
--			ret = -EINVAL;
--			goto err;
--		}
- 
--		ret = of_property_read_u32_array(child, "diff-channels",
--						 ain, 2);
-+		ret = fwnode_property_read_u32_array(child, "diff-channels",
-+						     ain, 2);
- 		if (ret)
--			goto err;
-+			return ret;
- 
- 		st->channels[channel].nr = channel;
- 		st->channels[channel].ain = AD7124_CHANNEL_AINP(ain[0]) |
- 						  AD7124_CHANNEL_AINM(ain[1]);
- 
--		cfg->bipolar = of_property_read_bool(child, "bipolar");
-+		cfg->bipolar = fwnode_property_read_bool(child, "bipolar");
- 
--		ret = of_property_read_u32(child, "adi,reference-select", &tmp);
-+		ret = fwnode_property_read_u32(child, "adi,reference-select", &tmp);
- 		if (ret)
- 			cfg->refsel = AD7124_INT_REF;
- 		else
- 			cfg->refsel = tmp;
- 
--		cfg->buf_positive = of_property_read_bool(child, "adi,buffered-positive");
--		cfg->buf_negative = of_property_read_bool(child, "adi,buffered-negative");
-+		cfg->buf_positive =
-+			fwnode_property_read_bool(child, "adi,buffered-positive");
-+		cfg->buf_negative =
-+			fwnode_property_read_bool(child, "adi,buffered-negative");
- 
- 		chan[channel] = ad7124_channel_template;
- 		chan[channel].address = channel;
-@@ -885,10 +882,6 @@ static int ad7124_of_parse_channel_config(struct iio_dev *indio_dev,
- 	}
- 
- 	return 0;
--err:
--	of_node_put(child);
--
--	return ret;
- }
- 
- static int ad7124_setup(struct ad7124_state *st)
-@@ -948,9 +941,7 @@ static int ad7124_probe(struct spi_device *spi)
- 	struct iio_dev *indio_dev;
- 	int i, ret;
- 
--	info = of_device_get_match_data(&spi->dev);
--	if (!info)
--		info = (void *)spi_get_device_id(spi)->driver_data;
-+	info = spi_get_device_match_data(spi);
- 	if (!info)
- 		return -ENODEV;
- 
-@@ -970,7 +961,7 @@ static int ad7124_probe(struct spi_device *spi)
- 	if (ret < 0)
- 		return ret;
- 
--	ret = ad7124_of_parse_channel_config(indio_dev, spi->dev.of_node);
-+	ret = ad7124_parse_channel_config(indio_dev, &spi->dev);
- 	if (ret < 0)
- 		return ret;
- 
--- 
-2.43.0
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 6.1.111-rc1
 
+Arseniy Krasnov <avkrasnov@salutedevices.com>
+    ASoC: meson: axg-card: fix 'use-after-free'
+
+Mika Westerberg <mika.westerberg@linux.intel.com>
+    pinctrl: meteorlake: Add Arrow Lake-H/U ACPI ID
+
+Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+    drm/i915/guc: prevent a possible int overflow in wq offsets
+
+Jinjie Ruan <ruanjinjie@huawei.com>
+    spi: geni-qcom: Fix incorrect free_irq() sequence
+
+Jinjie Ruan <ruanjinjie@huawei.com>
+    spi: geni-qcom: Undo runtime PM changes at driver exit time
+
+Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+    spi: geni-qcom: Convert to platform remove callback returning void
+
+Alex Deucher <alexander.deucher@amd.com>
+    drm/amdgpu/atomfirmware: Silence UBSAN warning
+
+T.J. Mercier <tjmercier@google.com>
+    dma-buf: heaps: Fix off-by-one in CMA heap fault handler
+
+Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+    soundwire: stream: Revert "soundwire: stream: fix programming slave ports for non-continous port maps"
+
+Han Xu <han.xu@nxp.com>
+    spi: nxp-fspi: fix the KASAN report out-of-bounds bug
+
+Sean Anderson <sean.anderson@linux.dev>
+    net: dpaa: Pad packets to ETH_ZLEN
+
+Florian Westphal <fw@strlen.de>
+    netfilter: nft_socket: make cgroupsv2 matching work with namespaces
+
+Florian Westphal <fw@strlen.de>
+    netfilter: nft_socket: fix sk refcount leaks
+
+Jacky Chou <jacky_chou@aspeedtech.com>
+    net: ftgmac100: Enable TX interrupt to avoid TX timeout
+
+Naveen Mamindlapalli <naveenm@marvell.com>
+    octeontx2-af: Modify SMQ flush sequence to drop packets
+
+Naveen Mamindlapalli <naveenm@marvell.com>
+    octeontx2-af: Set XOFF on other child transmit schedulers during SMQ flush
+
+Muhammad Usama Anjum <usama.anjum@collabora.com>
+    fou: fix initialization of grc
+
+Benjamin Poirier <bpoirier@nvidia.com>
+    net/mlx5: Fix bridge mode operations when there are no VFs
+
+Carolina Jubran <cjubran@nvidia.com>
+    net/mlx5: Verify support for scheduling element and TSAR type
+
+Cosmin Ratiu <cratiu@nvidia.com>
+    net/mlx5: Correct TASR typo into TSAR
+
+Carolina Jubran <cjubran@nvidia.com>
+    net/mlx5: Add missing masks and QoS bit masks for scheduling elements
+
+Carolina Jubran <cjubran@nvidia.com>
+    net/mlx5: Explicitly set scheduling element and TSAR type
+
+Shahar Shitrit <shshitrit@nvidia.com>
+    net/mlx5e: Add missing link modes to ptys2ethtool_map
+
+Maher Sanalla <msanalla@nvidia.com>
+    net/mlx5: Update the list of the PCI supported devices
+
+Sriram Yagnaraman <sriram.yagnaraman@est.tech>
+    igb: Always call igb_xdp_ring_update_tail() under Tx lock
+
+Jacob Keller <jacob.e.keller@intel.com>
+    ice: fix accounting for filters shared by multiple VSIs
+
+Patryk Biel <pbiel7@gmail.com>
+    hwmon: (pmbus) Conditionally clear individual status bits for pmbus rev >= 1.2
+
+Michal Luczaj <mhal@rbox.co>
+    selftests/bpf: Support SOCK_STREAM in unix_inet_redir_to_connected()
+
+peng guo <engguopeng@buaa.edu.cn>
+    cxl/core: Fix incorrect vendor debug UUID define
+
+Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+    eeprom: digsy_mtc: Fix 93xx46 driver probe failure
+
+FUKAUMI Naoki <naoki@radxa.com>
+    arm64: dts: rockchip: fix PMIC interrupt pin in pinctrl for ROCK Pi E
+
+Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+    fs/ntfs3: Use kvfree to free memory allocated by kvmalloc
+
+Kunwu Chan <chentao@kylinos.cn>
+    pmdomain: ti: Add a null pointer check to the omap_prm_domain_init
+
+Sean Anderson <sean.anderson@linux.dev>
+    net: xilinx: axienet: Fix race in axienet_stop
+
+Linus Torvalds <torvalds@linux-foundation.org>
+    mm: avoid leaving partial pfn mappings around in error case
+
+Mikulas Patocka <mpatocka@redhat.com>
+    dm-integrity: fix a race condition when accessing recalc_sector
+
+Willem de Bruijn <willemb@google.com>
+    net: tighten bad gso csum offset check in virtio_net_hdr
+
+Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+    minmax: reduce min/max macro expansion in atomisp driver
+
+Quentin Schulz <quentin.schulz@cherry.de>
+    arm64: dts: rockchip: override BIOS_DISABLE signal via GPIO hog on RK3399 Puma
+
+Quentin Schulz <quentin.schulz@cherry.de>
+    arm64: dts: rockchip: fix eMMC/SPI corruption when audio has been used on RK3399 Puma
+
+Edward Adam Davis <eadavis@qq.com>
+    mptcp: pm: Fix uaf in __timer_delete_sync
+
+Hans de Goede <hdegoede@redhat.com>
+    platform/x86: panasonic-laptop: Allocate 1 entry extra in the sinf array
+
+Hans de Goede <hdegoede@redhat.com>
+    platform/x86: panasonic-laptop: Fix SINF array out of bounds accesses
+
+Trond Myklebust <trond.myklebust@hammerspace.com>
+    NFS: Avoid unnecessary rescanning of the per-server delegation list
+
+Trond Myklebust <trond.myklebust@hammerspace.com>
+    NFSv4: Fix clearing of layout segments in layoutreturn
+
+ChenXiaoSong <chenxiaosong@kylinos.cn>
+    smb/server: fix return value of smb2_open()
+
+Takashi Iwai <tiwai@suse.de>
+    Input: i8042 - add Fujitsu Lifebook E756 to i8042 quirk table
+
+Rob Clark <robdclark@chromium.org>
+    drm/msm/adreno: Fix error return if missing firmware-name
+
+Maximilian Luz <luzmaximilian@gmail.com>
+    platform/surface: aggregator_registry: Add support for Surface Laptop Go 3
+
+Maximilian Luz <luzmaximilian@gmail.com>
+    platform/surface: aggregator_registry: Add Support for Surface Pro 10
+
+Anders Roxell <anders.roxell@linaro.org>
+    scripts: kconfig: merge_config: config files: add a trailing newline
+
+Dmitry Savin <envelsavinds@gmail.com>
+    HID: multitouch: Add support for GT7868Q
+
+Jonathan Denose <jdenose@google.com>
+    Input: synaptics - enable SMBus for HP Elitebook 840 G2
+
+Marek Vasut <marex@denx.de>
+    Input: ads7846 - ratelimit the spi_sync error message
+
+Jeff Layton <jlayton@kernel.org>
+    btrfs: update target inode's ctime on unlink
+
+Christophe Leroy <christophe.leroy@csgroup.eu>
+    powerpc/mm: Fix boot warning with hugepages and CONFIG_DEBUG_VIRTUAL
+
+Pawel Dembicki <paweldembicki@gmail.com>
+    net: phy: vitesse: repair vsc73xx autonegotiation
+
+Bouke Sybren Haarsma <boukehaarsma23@gmail.com>
+    drm: panel-orientation-quirks: Add quirk for Ayn Loki Max
+
+Bouke Sybren Haarsma <boukehaarsma23@gmail.com>
+    drm: panel-orientation-quirks: Add quirk for Ayn Loki Zero
+
+Moon Yeounsu <yyyynoom@gmail.com>
+    net: ethernet: use ip_hdrlen() instead of bit shift
+
+Foster Snowhill <forst@pen.gy>
+    usbnet: ipheth: fix carrier detection in modes 1 and 4
+
+Namjae Jeon <linkinjeon@kernel.org>
+    ksmbd: override fsids for smb2_query_info()
+
+Namjae Jeon <linkinjeon@kernel.org>
+    ksmbd: override fsids for share path check
+
+
+-------------
+
+Diffstat:
+
+ Makefile                                           |   4 +-
+ arch/arm64/boot/dts/rockchip/rk3328-rock-pi-e.dts  |   2 +-
+ arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi      |  36 ++++-
+ arch/powerpc/kernel/setup-common.c                 |   1 +
+ arch/powerpc/mm/mem.c                              |   2 -
+ drivers/cxl/cxlmem.h                               |   2 +-
+ drivers/dma-buf/heaps/cma_heap.c                   |   2 +-
+ drivers/gpu/drm/amd/include/atomfirmware.h         |   4 +-
+ drivers/gpu/drm/drm_panel_orientation_quirks.c     |  12 ++
+ drivers/gpu/drm/i915/gt/uc/intel_guc_submission.c  |   4 +-
+ drivers/gpu/drm/msm/adreno/adreno_gpu.c            |   2 +-
+ drivers/hid/hid-ids.h                              |   2 +
+ drivers/hid/hid-multitouch.c                       |  33 ++++
+ drivers/hwmon/pmbus/pmbus.h                        |   6 +
+ drivers/hwmon/pmbus/pmbus_core.c                   |  17 +-
+ drivers/input/mouse/synaptics.c                    |   1 +
+ drivers/input/serio/i8042-acpipnpio.h              |   9 ++
+ drivers/input/touchscreen/ads7846.c                |   2 +-
+ drivers/md/dm-integrity.c                          |   4 +-
+ drivers/misc/eeprom/digsy_mtc_eeprom.c             |   2 +-
+ drivers/net/ethernet/faraday/ftgmac100.h           |   2 +-
+ drivers/net/ethernet/freescale/dpaa/dpaa_eth.c     |   9 +-
+ drivers/net/ethernet/intel/ice/ice_switch.c        |   2 +-
+ drivers/net/ethernet/intel/igb/igb_main.c          |  17 +-
+ drivers/net/ethernet/jme.c                         |  10 +-
+ drivers/net/ethernet/marvell/octeontx2/af/rvu.h    |  15 ++
+ .../net/ethernet/marvell/octeontx2/af/rvu_nix.c    | 177 ++++++++++++++++++++-
+ .../net/ethernet/mellanox/mlx5/core/en_ethtool.c   |   4 +
+ .../net/ethernet/mellanox/mlx5/core/esw/legacy.c   |   4 +-
+ drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c  |  51 +++---
+ drivers/net/ethernet/mellanox/mlx5/core/main.c     |   1 +
+ drivers/net/ethernet/mellanox/mlx5/core/qos.c      |   7 +
+ drivers/net/ethernet/xilinx/xilinx_axienet.h       |   3 +
+ drivers/net/ethernet/xilinx/xilinx_axienet_main.c  |   8 +
+ drivers/net/phy/vitesse.c                          |  14 --
+ drivers/net/usb/ipheth.c                           |   5 +-
+ drivers/pinctrl/intel/pinctrl-meteorlake.c         |   1 +
+ .../platform/surface/surface_aggregator_registry.c |   8 +-
+ drivers/platform/x86/panasonic-laptop.c            |  58 +++++--
+ drivers/soc/ti/omap_prm.c                          |   2 +
+ drivers/soundwire/stream.c                         |   8 +-
+ drivers/spi/spi-geni-qcom.c                        |  22 ++-
+ drivers/spi/spi-nxp-fspi.c                         |   5 +-
+ drivers/staging/media/atomisp/pci/sh_css_frac.h    |  26 ++-
+ fs/btrfs/inode.c                                   |   1 +
+ fs/nfs/delegation.c                                |  15 +-
+ fs/nfs/nfs4proc.c                                  |   9 +-
+ fs/nfs/pnfs.c                                      |   5 +-
+ fs/ntfs3/attrlist.c                                |   4 +-
+ fs/ntfs3/bitmap.c                                  |   4 +-
+ fs/ntfs3/frecord.c                                 |   4 +-
+ fs/ntfs3/super.c                                   |   2 +-
+ fs/smb/server/mgmt/share_config.c                  |  15 +-
+ fs/smb/server/mgmt/share_config.h                  |   4 +-
+ fs/smb/server/mgmt/tree_connect.c                  |   9 +-
+ fs/smb/server/mgmt/tree_connect.h                  |   4 +-
+ fs/smb/server/smb2pdu.c                            |  11 +-
+ fs/smb/server/smb_common.c                         |   9 +-
+ fs/smb/server/smb_common.h                         |   2 +
+ include/linux/mlx5/mlx5_ifc.h                      |  12 +-
+ include/linux/virtio_net.h                         |   3 +-
+ mm/memory.c                                        |  27 +++-
+ net/ipv4/fou.c                                     |   4 +-
+ net/mptcp/pm_netlink.c                             |  13 +-
+ net/netfilter/nft_socket.c                         |  48 +++++-
+ scripts/kconfig/merge_config.sh                    |   2 +
+ sound/soc/meson/axg-card.c                         |   3 +-
+ .../selftests/bpf/prog_tests/sockmap_listen.c      |   3 +-
+ 68 files changed, 642 insertions(+), 177 deletions(-)
 
 
 
