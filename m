@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-76437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DE2D97A1BF
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:09:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1696497A15D
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:07:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 13C681F20EDA
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:09:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 498EA1C236B7
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:07:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1DA815575B;
-	Mon, 16 Sep 2024 12:09:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CBDF156C62;
+	Mon, 16 Sep 2024 12:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hpBwB5u9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="inALqKCK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97401155335;
-	Mon, 16 Sep 2024 12:09:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED6F514D439;
+	Mon, 16 Sep 2024 12:06:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488590; cv=none; b=h0Ei9RucYrVmhOmpPU6y+lVwOaQZAoVM5tyG2upRfFKc0VOP6x0xA+ROTypYtFpQle4/+12jm1/nfg71vSwBTF1Dz9Frq/6ekGHAGm1NVsM9EFgTHvj7i/yl+rgVRP0t3CMUkTG9FdES9qHrJUGUC/o/Cg9nojEtmJuHIGOfTmc=
+	t=1726488362; cv=none; b=maaiUEKNZ8Gu0FaxWfQQj22fd+u/F9qk0MjYeVzgR2eUHcOHjVrJ11WoM6622KsbaV6TfwAN9OVEpP8fZ8fd94fRT3uDK++m32d783Xpp7WGY9JkEkJp9SnHrl638Q/JPBCQd4AyDqvz2b8kbhUntV14m2exFd7zYJdDKo1+AXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488590; c=relaxed/simple;
-	bh=pnu3Vpmj0uhMDx0UmZg6GpEtxWf1dUGFCqULjyKwlxY=;
+	s=arc-20240116; t=1726488362; c=relaxed/simple;
+	bh=+cCErK5O1mnFDx992WnPvFcL8waQUOsVqxnsm9GBeDE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JNtmMM2yfU2k+QM8wkf7gx0xvIK5cr7gqp6HsGLUG7zPz6a8xe35TYt88P+pzesOsUCbjsq8YIubt8iff5GAstR4pdGY0lji7TNEpQsMX01BYa+TyMmYpksNa2rekP9kVpJSr6hBTwAHuHaKV288iX/LUqpOn3kF0IDAe9ear1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hpBwB5u9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F6F7C4CEC4;
-	Mon, 16 Sep 2024 12:09:49 +0000 (UTC)
+	 MIME-Version; b=SM6Qm7CyOMn38zsLLV1KYCfzJHNvhuV36V3mtibpCYLSCiiLVN7TuF608gbqKO/L05rXV6ly/xBDmg9QkXlOwubY7GSWw9RTuC90+gSwsxQgOUr2N3e2T+McQLVJWmIV3IOde5KTRU3aLS0Jm8Lqt1vzLyuUuAKaEE4cGGOh3bU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=inALqKCK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61DDCC4CEC4;
+	Mon, 16 Sep 2024 12:06:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488590;
-	bh=pnu3Vpmj0uhMDx0UmZg6GpEtxWf1dUGFCqULjyKwlxY=;
+	s=korg; t=1726488361;
+	bh=+cCErK5O1mnFDx992WnPvFcL8waQUOsVqxnsm9GBeDE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hpBwB5u9+MxE69OsFl0JxraaZXo59vxteCU/as6lQN2Z8sx7e2WiZ7zexQ522k3ov
-	 n3Jyx8MJmot/wXBMCa7/DI43pMHi/z+byW57rrnLpTTnsxQhEA3/hzNPQw65ROFBEL
-	 oKsuM1C68eijUl3rxoO1K2RWAGLCmjaI8FIKCVxE=
+	b=inALqKCKlidUq3ZYtP7USAuHnG7VuTgS+Ho77LzdaBHX1gi9iLYVnd10/Ugf9DEf1
+	 ZJGZryDO2efrOTB7fcQDwgNtjwNqChe/zbPtXY0ObADP0mFuIBpg1fqlxO1eJBcaPZ
+	 LuBzKK/E053UooDK/djhpv3t+4w8fLYczSJ3aIx0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 6.6 44/91] dm-integrity: fix a race condition when accessing recalc_sector
+	Jacky Chou <jacky_chou@aspeedtech.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 086/121] net: ftgmac100: Enable TX interrupt to avoid TX timeout
 Date: Mon, 16 Sep 2024 13:44:20 +0200
-Message-ID: <20240916114225.957184600@linuxfoundation.org>
+Message-ID: <20240916114231.990638928@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
-References: <20240916114224.509743970@linuxfoundation.org>
+In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
+References: <20240916114228.914815055@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,63 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Jacky Chou <jacky_chou@aspeedtech.com>
 
-commit f8e1ca92e35e9041cc0a1bc226ef07a853a22de4 upstream.
+[ Upstream commit fef2843bb49f414d1523ca007d088071dee0e055 ]
 
-There's a race condition when accessing the variable
-ic->sb->recalc_sector. The function integrity_recalc writes to this
-variable when it makes some progress and the function
-dm_integrity_map_continue may read this variable concurrently.
+Currently, the driver only enables RX interrupt to handle RX
+packets and TX resources. Sometimes there is not RX traffic,
+so the TX resource needs to wait for RX interrupt to free.
+This situation will toggle the TX timeout watchdog when the MAC
+TX ring has no more resources to transmit packets.
+Therefore, enable TX interrupt to release TX resources at any time.
 
-One problem is that on 32-bit architectures the 64-bit variable is not
-read and written atomically - it may be possible to read garbage if read
-races with write.
+When I am verifying iperf3 over UDP, the network hangs.
+Like the log below.
 
-Another problem is that memory accesses to this variable are not guarded
-with memory barriers.
+root# iperf3 -c 192.168.100.100 -i1 -t10 -u -b0
+Connecting to host 192.168.100.100, port 5201
+[  4] local 192.168.100.101 port 35773 connected to 192.168.100.100 port 5201
+[ ID] Interval           Transfer     Bandwidth       Total Datagrams
+[  4]   0.00-20.42  sec   160 KBytes  64.2 Kbits/sec  20
+[  4]  20.42-20.42  sec  0.00 Bytes  0.00 bits/sec  0
+[  4]  20.42-20.42  sec  0.00 Bytes  0.00 bits/sec  0
+[  4]  20.42-20.42  sec  0.00 Bytes  0.00 bits/sec  0
+[  4]  20.42-20.42  sec  0.00 Bytes  0.00 bits/sec  0
+[  4]  20.42-20.42  sec  0.00 Bytes  0.00 bits/sec  0
+[  4]  20.42-20.42  sec  0.00 Bytes  0.00 bits/sec  0
+[  4]  20.42-20.42  sec  0.00 Bytes  0.00 bits/sec  0
+[  4]  20.42-20.42  sec  0.00 Bytes  0.00 bits/sec  0
+[  4]  20.42-20.42  sec  0.00 Bytes  0.00 bits/sec  0
+- - - - - - - - - - - - - - - - - - - - - - - - -
+[ ID] Interval          Transfer    Bandwidth      Jitter   Lost/Total Datagrams
+[  4]   0.00-20.42  sec  160 KBytes 64.2 Kbits/sec 0.000 ms 0/20 (0%)
+[  4] Sent 20 datagrams
+iperf3: error - the server has terminated
 
-This commit fixes the race - it moves reading ic->sb->recalc_sector to an
-earlier place where we hold &ic->endio_wait.lock.
+The network topology is FTGMAC connects directly to a PC.
+UDP does not need to wait for ACK, unlike TCP.
+Therefore, FTGMAC needs to enable TX interrupt to release TX resources instead
+of waiting for the RX interrupt.
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 10cbd6407609 ("ftgmac100: Rework NAPI & interrupts handling")
+Signed-off-by: Jacky Chou <jacky_chou@aspeedtech.com>
+Link: https://patch.msgid.link/20240906062831.2243399-1-jacky_chou@aspeedtech.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-integrity.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/faraday/ftgmac100.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/md/dm-integrity.c
-+++ b/drivers/md/dm-integrity.c
-@@ -2183,6 +2183,7 @@ static void dm_integrity_map_continue(st
- 	struct bio *bio = dm_bio_from_per_bio_data(dio, sizeof(struct dm_integrity_io));
- 	unsigned int journal_section, journal_entry;
- 	unsigned int journal_read_pos;
-+	sector_t recalc_sector;
- 	struct completion read_comp;
- 	bool discard_retried = false;
- 	bool need_sync_io = ic->internal_hash && dio->op == REQ_OP_READ;
-@@ -2323,6 +2324,7 @@ offload_to_thread:
- 			goto lock_retry;
- 		}
- 	}
-+	recalc_sector = le64_to_cpu(ic->sb->recalc_sector);
- 	spin_unlock_irq(&ic->endio_wait.lock);
+diff --git a/drivers/net/ethernet/faraday/ftgmac100.h b/drivers/net/ethernet/faraday/ftgmac100.h
+index 63b3e02fab16..4968f6f0bdbc 100644
+--- a/drivers/net/ethernet/faraday/ftgmac100.h
++++ b/drivers/net/ethernet/faraday/ftgmac100.h
+@@ -84,7 +84,7 @@
+ 			    FTGMAC100_INT_RPKT_BUF)
  
- 	if (unlikely(journal_read_pos != NOT_FOUND)) {
-@@ -2377,7 +2379,7 @@ offload_to_thread:
- 	if (need_sync_io) {
- 		wait_for_completion_io(&read_comp);
- 		if (ic->sb->flags & cpu_to_le32(SB_FLAG_RECALCULATING) &&
--		    dio->range.logical_sector + dio->range.n_sectors > le64_to_cpu(ic->sb->recalc_sector))
-+		    dio->range.logical_sector + dio->range.n_sectors > recalc_sector)
- 			goto skip_check;
- 		if (ic->mode == 'B') {
- 			if (!block_bitmap_op(ic, ic->recalc_bitmap, dio->range.logical_sector,
+ /* All the interrupts we care about */
+-#define FTGMAC100_INT_ALL (FTGMAC100_INT_RPKT_BUF  |  \
++#define FTGMAC100_INT_ALL (FTGMAC100_INT_RXTX  |  \
+ 			   FTGMAC100_INT_BAD)
+ 
+ /*
+-- 
+2.43.0
+
 
 
 
