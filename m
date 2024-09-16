@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-76329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B518997A13E
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:06:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E10F397A0C5
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:00:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 75EF7286C36
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:06:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A9DCD281EE9
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:00:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54DC11591F0;
-	Mon, 16 Sep 2024 12:04:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21D551547C4;
+	Mon, 16 Sep 2024 12:00:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RcEVo8GN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Das6YO/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12ED6158DD0;
-	Mon, 16 Sep 2024 12:04:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D35ED14B967;
+	Mon, 16 Sep 2024 12:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488282; cv=none; b=pObBcFPb1Vzagc1iu++GjuntcwW8TXkkZXJ2p1lLziBF4lsFWrEykNXiaGNQktU5Zrp8BGal0PEjRxZ0ghMdtmQvALtzOTpB+PhGe+PUse1ML4WQArvHnYrLhTAQGQtO0SG523zN/2rAMdZ2IxPyqJLOIjv7R7gyfYmW9yPXy8k=
+	t=1726488051; cv=none; b=ljC670DTiRhhvwxrFb+LABCweAC5BqomWFyzyIc83AakspqIyE/8cYvrlFmzlV8KnS7tLLpNcpGUyzQhujAblUrZzAv6pw+7RvOWTy/4gYfjsER0qP28MjkQUQM2ZOeE0NpKoLSMl8WD+JNHxQHbKGSxJ9DF0AYt6i8auwX+fI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488282; c=relaxed/simple;
-	bh=cdwKZOWNcBbQBJMgzLDQ/d7OCQL+gsH7bazUuqeOofc=;
+	s=arc-20240116; t=1726488051; c=relaxed/simple;
+	bh=RTYGH/6Fsor/n3StNji8S/c955FDREdt9xXDfYzfuI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sNoyvHDCd/fgKgOorV1Gkt6UUKdkCBrvquX6UbwkSg5ZrmdzHMf76tR3bqqFAq5kXmLYtSrOPA8c83beaM/Kw/qz1bwx810TBbjMwgEwrsfZB61W1enF2khb6teOrHSSY7e0jYCtBR5tK0YcwJ1OniqKHLlMYxLyFGCRstWSeTA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RcEVo8GN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86D86C4CEC4;
-	Mon, 16 Sep 2024 12:04:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=au7pf8vIgt5OSxRy+hA1UzHQYbgSnU+OoKTFzJmX20zT6OCLNind26sQn8vhmadKDuTMXTc7HLyo8VxNKDywTn5p8TMnpOFWsPDUWXN92hMDQbPFeUJCs0GUO527IyHjJc/qwH3vAkCD81qpoW9fc3rJPcI1r79RnZ7LkBmesT4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Das6YO/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F58CC4CEC4;
+	Mon, 16 Sep 2024 12:00:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488281;
-	bh=cdwKZOWNcBbQBJMgzLDQ/d7OCQL+gsH7bazUuqeOofc=;
+	s=korg; t=1726488051;
+	bh=RTYGH/6Fsor/n3StNji8S/c955FDREdt9xXDfYzfuI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RcEVo8GNZ8VpuioXKoMFvqDPSpW9pQMtDIXRUhxdUKDblsh/0P0JA/+HVs7wpoM59
-	 eZtJYNpAPa0adl/SNM6c8kPFbs7yFf2jUj0IMlOaQRp49wolxCIoZYXpDGDJareO9z
-	 Ib7NFhDWfvknG/uiAkxH1ratPd74p4o0VC6qwJfM=
+	b=2Das6YO/ssgdzEkCYjzFOyEydOa4riW7a5VBvLO1ObAGqX8F6wVSZLnxXTq3rmirI
+	 3G1P3bWAzsU1JpyQEdMlv59se0ayk2jB6thGtrQ8zcV43txsChafaAclu3K2nYpBFc
+	 /xZvmOxJ0/8vyXRhVbbplKg7S7NL4uogAnk/iNdE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kent Overstreet <kent.overstreet@linux.dev>
-Subject: [PATCH 6.10 058/121] bcachefs: Dont delete open files in online fsck
-Date: Mon, 16 Sep 2024 13:43:52 +0200
-Message-ID: <20240916114231.079285590@linuxfoundation.org>
+	Maximilian Luz <luzmaximilian@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 14/63] platform/surface: aggregator_registry: Add Support for Surface Pro 10
+Date: Mon, 16 Sep 2024 13:43:53 +0200
+Message-ID: <20240916114221.557209032@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
-References: <20240916114228.914815055@linuxfoundation.org>
+In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
+References: <20240916114221.021192667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,110 +60,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kent Overstreet <kent.overstreet@linux.dev>
+From: Maximilian Luz <luzmaximilian@gmail.com>
 
-[ Upstream commit 16005147cca41a0f67b5def2a4656286f8c0db4a ]
+[ Upstream commit 9c8e022567bbec53bee8ae75c44b3d6cd2080d42 ]
 
-If a file is unlinked but still open, we don't want online fsck to
-delete it - or fun inconsistencies will happen.
+Add SAM client device nodes for the Surface Pro 10. It seems to use the
+same SAM client devices as the Surface Pro 9, so re-use its node group.
 
-https://github.com/koverstreet/bcachefs/issues/727
-
-Signed-off-by: Kent Overstreet <kent.overstreet@linux.dev>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Maximilian Luz <luzmaximilian@gmail.com>
+Link: https://lore.kernel.org/r/20240811131948.261806-2-luzmaximilian@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/bcachefs/fs.c   |    8 ++++++++
- fs/bcachefs/fs.h   |    7 +++++++
- fs/bcachefs/fsck.c |   18 ++++++++++++++++++
- 3 files changed, 33 insertions(+)
+ drivers/platform/surface/surface_aggregator_registry.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/fs/bcachefs/fs.c
-+++ b/fs/bcachefs/fs.c
-@@ -177,6 +177,14 @@ static unsigned bch2_inode_hash(subvol_i
- 	return jhash_3words(inum.subvol, inum.inum >> 32, inum.inum, JHASH_INITVAL);
- }
+diff --git a/drivers/platform/surface/surface_aggregator_registry.c b/drivers/platform/surface/surface_aggregator_registry.c
+index 023f126121d7..6882f32d239d 100644
+--- a/drivers/platform/surface/surface_aggregator_registry.c
++++ b/drivers/platform/surface/surface_aggregator_registry.c
+@@ -298,7 +298,7 @@ static const struct software_node *ssam_node_group_sp8[] = {
+ 	NULL,
+ };
  
-+struct bch_inode_info *__bch2_inode_hash_find(struct bch_fs *c, subvol_inum inum)
-+{
-+	return to_bch_ei(ilookup5_nowait(c->vfs_sb,
-+					 bch2_inode_hash(inum),
-+					 bch2_iget5_test,
-+					 &inum));
-+}
-+
- static struct bch_inode_info *bch2_inode_insert(struct bch_fs *c, struct bch_inode_info *inode)
- {
- 	subvol_inum inum = inode_inum(inode);
---- a/fs/bcachefs/fs.h
-+++ b/fs/bcachefs/fs.h
-@@ -56,6 +56,8 @@ static inline subvol_inum inode_inum(str
- 	};
- }
+-/* Devices for Surface Pro 9 */
++/* Devices for Surface Pro 9 and 10 */
+ static const struct software_node *ssam_node_group_sp9[] = {
+ 	&ssam_node_root,
+ 	&ssam_node_hub_kip,
+@@ -337,6 +337,9 @@ static const struct acpi_device_id ssam_platform_hub_match[] = {
+ 	/* Surface Pro 9 */
+ 	{ "MSHW0343", (unsigned long)ssam_node_group_sp9 },
  
-+struct bch_inode_info *__bch2_inode_hash_find(struct bch_fs *, subvol_inum);
++	/* Surface Pro 10 */
++	{ "MSHW0510", (unsigned long)ssam_node_group_sp9 },
 +
- /*
-  * Set if we've gotten a btree error for this inode, and thus the vfs inode and
-  * btree inode may be inconsistent:
-@@ -194,6 +196,11 @@ int bch2_vfs_init(void);
+ 	/* Surface Book 2 */
+ 	{ "MSHW0107", (unsigned long)ssam_node_group_gen5 },
  
- #define bch2_inode_update_after_write(_trans, _inode, _inode_u, _fields)	({ do {} while (0); })
- 
-+static inline struct bch_inode_info *__bch2_inode_hash_find(struct bch_fs *c, subvol_inum inum)
-+{
-+	return NULL;
-+}
-+
- static inline void bch2_evict_subvolume_inodes(struct bch_fs *c,
- 					       snapshot_id_list *s) {}
- static inline void bch2_vfs_exit(void) {}
---- a/fs/bcachefs/fsck.c
-+++ b/fs/bcachefs/fsck.c
-@@ -8,6 +8,7 @@
- #include "darray.h"
- #include "dirent.h"
- #include "error.h"
-+#include "fs.h"
- #include "fs-common.h"
- #include "fsck.h"
- #include "inode.h"
-@@ -948,6 +949,22 @@ fsck_err:
- 	return ret;
- }
- 
-+static bool bch2_inode_open(struct bch_fs *c, struct bpos p)
-+{
-+	subvol_inum inum = {
-+		.subvol = snapshot_t(c, p.snapshot)->subvol,
-+		.inum	= p.offset,
-+	};
-+
-+	/* snapshot tree corruption, can't safely delete */
-+	if (!inum.subvol) {
-+		bch_err_ratelimited(c, "%s(): snapshot %u has no subvol", __func__, p.snapshot);
-+		return true;
-+	}
-+
-+	return __bch2_inode_hash_find(c, inum) != NULL;
-+}
-+
- static int check_inode(struct btree_trans *trans,
- 		       struct btree_iter *iter,
- 		       struct bkey_s_c k,
-@@ -1025,6 +1042,7 @@ static int check_inode(struct btree_tran
- 	}
- 
- 	if (u.bi_flags & BCH_INODE_unlinked &&
-+	    !bch2_inode_open(c, k.k->p) &&
- 	    (!c->sb.clean ||
- 	     fsck_err(c, inode_unlinked_but_clean,
- 		      "filesystem marked clean, but inode %llu unlinked",
+-- 
+2.43.0
+
 
 
 
