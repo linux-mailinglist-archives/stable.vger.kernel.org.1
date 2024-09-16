@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-76223-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EBAF897A0AB
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 13:59:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8706997A142
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:06:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 74C28B23506
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 11:59:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B80401C22951
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:06:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4863E1547C4;
-	Mon, 16 Sep 2024 11:59:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E227156225;
+	Mon, 16 Sep 2024 12:04:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a9TMobHD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tR4HGvr3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A98CD154429;
-	Mon, 16 Sep 2024 11:59:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B1EF155725;
+	Mon, 16 Sep 2024 12:04:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726487980; cv=none; b=mVYyU6Y3qMxR9QnWMO5NjqYftwwHCO+nzoc8MZdMuvT1Sm8XjwONBnxPawSVpxJEdELouHjbP4qXDuLqTayAgkBDJDWfLyNYCl7BklGQD/q4PdkTywtXOE5RiQL4BMa9zyZ+dTefS/SB5ojdFZTtq0NhcQ8VJtRIxZcAE/M00OQ=
+	t=1726488293; cv=none; b=I9kt75N95Vn5H36kIpJP2DObchLW9KXjEDq1ar7lftMI8wEhC4CKeql9AikZCKOc6faXAlIRYLUZ3RCrhCgyy8i9DCyJhqaY/9tz7s2WXAynNmYELcE+MTTtfqIV4eAgr/0xeAxGjLqRFcWqaZRwTc1cP1KYnbP1REBr8VHniIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726487980; c=relaxed/simple;
-	bh=4HhcTeMIfYiUOIkQAUUJ7ebNFJ0LwJY9S0tVdU2rJ8w=;
+	s=arc-20240116; t=1726488293; c=relaxed/simple;
+	bh=L24LIt/bwVO+m+etwg2cgt4q0fOhRuB4/EjnmIj0szw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MI6CbZ9rCoTdIz9qbMzLasTDW1LsX9R8gsqKSG4nJHh4ez/FRycBh7mBSA3vtMJPH19G6bi9gc7s1NsnpqpiOHJyOxCak/1w0+AeutsFA7Xmo/6iibBbOGxwXRlSB2rzyTP/UmV4HKvJCfli3wGiBTcrlKBJFWab1A43t81UIbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a9TMobHD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFB2BC4CEC4;
-	Mon, 16 Sep 2024 11:59:39 +0000 (UTC)
+	 MIME-Version; b=E+qiBCAee+ypougZe+VJLPvu8ALzdyyspNtuiJLhEouehAKMuZrOrOYUdPd9kYewjyPl7Yze9Kj+cTfhyrOoWutK+4FPARyZyKOnCywtJ57cOT9NlypFVop7GNInbAZHf0HjbDo5sIVxlau6Qu7r0dPk5LxmqnvtoSL5bGNODBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tR4HGvr3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5B38C4CEC4;
+	Mon, 16 Sep 2024 12:04:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726487980;
-	bh=4HhcTeMIfYiUOIkQAUUJ7ebNFJ0LwJY9S0tVdU2rJ8w=;
+	s=korg; t=1726488293;
+	bh=L24LIt/bwVO+m+etwg2cgt4q0fOhRuB4/EjnmIj0szw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a9TMobHDHeCCQqIeBj3qZ8JmlJxq3xcUDASUMmJlBjlVTipFZ2CEvOt3gnq3qEGT6
-	 l4KBH28Q4EZvWPwgyYZsgR/rVzuXWeInHIAh6eKPPPzktAImuRYZjtoyDBxTgNTXhY
-	 O0O3dzZWHqwIyeVMKtg24M5rK8Ibwt/5dGWErhd8=
+	b=tR4HGvr3/hGKKnuVjkKSLMCCqWZUoUvI0vUGS3xFX73jKxdrqeEEbhVX0BRwSvJHD
+	 nwruWaLPFIsdma3kASU18bf701swxJh5v+H4fXk60ec65yurKlg8HwhHw/CU7MRAvc
+	 7Z8buDTRDYwse8D+leTIgxG4P90ySKKmpFDOdDsw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Wenjing Liu <wenjing.liu@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Cruise <cruise.hung@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 17/63] Input: i8042 - add Fujitsu Lifebook E756 to i8042 quirk table
+Subject: [PATCH 6.10 062/121] drm/amd/display: Disable error correction if its not supported
 Date: Mon, 16 Sep 2024 13:43:56 +0200
-Message-ID: <20240916114221.664647497@linuxfoundation.org>
+Message-ID: <20240916114231.219887606@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
-References: <20240916114221.021192667@linuxfoundation.org>
+In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
+References: <20240916114228.914815055@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,46 +65,112 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Cruise <cruise.hung@amd.com>
 
-[ Upstream commit 7ce7c2283fa6843ab3c2adfeb83dcc504a107858 ]
+[ Upstream commit a8ac994cf0693a1ce59410995594e56124a1c79f ]
 
-Yet another quirk entry for Fujitsu laptop.  Lifebook E756 requires
-i8041.nomux for keeping the touchpad working after suspend/resume.
+[Why]
+Error correction was enabled in a monitor which doesn't support.
 
-Link: https://bugzilla.suse.com/show_bug.cgi?id=1229056
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://lore.kernel.org/r/20240814100630.2048-1-tiwai@suse.de
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+[How]
+Disable error correction if it's not supported
+
+Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
+Acked-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Signed-off-by: Cruise <cruise.hung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: a8baec4623ae ("drm/amd/display: Fix FEC_READY write on DP LT")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/serio/i8042-acpipnpio.h | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ .../display/dc/link/protocols/link_dp_phy.c   | 47 +++++++++----------
+ 1 file changed, 21 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/input/serio/i8042-acpipnpio.h b/drivers/input/serio/i8042-acpipnpio.h
-index e9eb9554dd7b..bad238f69a7a 100644
---- a/drivers/input/serio/i8042-acpipnpio.h
-+++ b/drivers/input/serio/i8042-acpipnpio.h
-@@ -627,6 +627,15 @@ static const struct dmi_system_id i8042_dmi_quirk_table[] __initconst = {
- 		},
- 		.driver_data = (void *)(SERIO_QUIRK_NOMUX)
- 	},
-+	{
-+		/* Fujitsu Lifebook E756 */
-+		/* https://bugzilla.suse.com/show_bug.cgi?id=1229056 */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "FUJITSU"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "LIFEBOOK E756"),
-+		},
-+		.driver_data = (void *)(SERIO_QUIRK_NOMUX)
-+	},
- 	{
- 		/* Fujitsu Lifebook E5411 */
- 		.matches = {
+diff --git a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_phy.c b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_phy.c
+index 2fa4e64e2430..5cbf5f93e584 100644
+--- a/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_phy.c
++++ b/drivers/gpu/drm/amd/display/dc/link/protocols/link_dp_phy.c
+@@ -147,32 +147,27 @@ enum dc_status dp_set_fec_ready(struct dc_link *link, const struct link_resource
+ 
+ 	link_enc = link_enc_cfg_get_link_enc(link);
+ 	ASSERT(link_enc);
++	if (link_enc->funcs->fec_set_ready == NULL)
++		return DC_NOT_SUPPORTED;
+ 
+-	if (!dp_should_enable_fec(link))
+-		return status;
+-
+-	if (link_enc->funcs->fec_set_ready &&
+-			link->dpcd_caps.fec_cap.bits.FEC_CAPABLE) {
+-		if (ready) {
++	if (ready && dp_should_enable_fec(link)) {
++		if (link->fec_state == dc_link_fec_not_ready) {
+ 			fec_config = 1;
+-			status = core_link_write_dpcd(link,
+-					DP_FEC_CONFIGURATION,
+-					&fec_config,
+-					sizeof(fec_config));
++
++			status = core_link_write_dpcd(link, DP_FEC_CONFIGURATION,
++					&fec_config, sizeof(fec_config));
++
+ 			if (status == DC_OK) {
+ 				link_enc->funcs->fec_set_ready(link_enc, true);
+ 				link->fec_state = dc_link_fec_ready;
+-			} else {
+-				link_enc->funcs->fec_set_ready(link_enc, false);
+-				link->fec_state = dc_link_fec_not_ready;
+-				dm_error("dpcd write failed to set fec_ready");
+ 			}
+-		} else if (link->fec_state == dc_link_fec_ready) {
++		}
++	} else {
++		if (link->fec_state == dc_link_fec_ready) {
+ 			fec_config = 0;
+-			status = core_link_write_dpcd(link,
+-					DP_FEC_CONFIGURATION,
+-					&fec_config,
+-					sizeof(fec_config));
++			core_link_write_dpcd(link, DP_FEC_CONFIGURATION,
++				&fec_config, sizeof(fec_config));
++
+ 			link_enc->funcs->fec_set_ready(link_enc, false);
+ 			link->fec_state = dc_link_fec_not_ready;
+ 		}
+@@ -187,14 +182,12 @@ void dp_set_fec_enable(struct dc_link *link, bool enable)
+ 
+ 	link_enc = link_enc_cfg_get_link_enc(link);
+ 	ASSERT(link_enc);
+-
+-	if (!dp_should_enable_fec(link))
++	if (link_enc->funcs->fec_set_enable == NULL)
+ 		return;
+ 
+-	if (link_enc->funcs->fec_set_enable &&
+-			link->dpcd_caps.fec_cap.bits.FEC_CAPABLE) {
+-		if (link->fec_state == dc_link_fec_ready && enable) {
+-			/* Accord to DP spec, FEC enable sequence can first
++	if (enable && dp_should_enable_fec(link)) {
++		if (link->fec_state == dc_link_fec_ready) {
++			/* According to DP spec, FEC enable sequence can first
+ 			 * be transmitted anytime after 1000 LL codes have
+ 			 * been transmitted on the link after link training
+ 			 * completion. Using 1 lane RBR should have the maximum
+@@ -204,7 +197,9 @@ void dp_set_fec_enable(struct dc_link *link, bool enable)
+ 			udelay(7);
+ 			link_enc->funcs->fec_set_enable(link_enc, true);
+ 			link->fec_state = dc_link_fec_enabled;
+-		} else if (link->fec_state == dc_link_fec_enabled && !enable) {
++		}
++	} else {
++		if (link->fec_state == dc_link_fec_enabled) {
+ 			link_enc->funcs->fec_set_enable(link_enc, false);
+ 			link->fec_state = dc_link_fec_ready;
+ 		}
 -- 
 2.43.0
 
