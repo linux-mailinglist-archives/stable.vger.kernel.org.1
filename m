@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-76323-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DC6797A136
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:06:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CA3E97A190
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:08:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD3141F235E8
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:06:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C7C221C2226F
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:08:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C2B8158A3D;
-	Mon, 16 Sep 2024 12:04:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03218155333;
+	Mon, 16 Sep 2024 12:08:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mulnug/M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lFYl5TyY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F43158A18;
-	Mon, 16 Sep 2024 12:04:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4896154C04;
+	Mon, 16 Sep 2024 12:08:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488265; cv=none; b=Kx5Nf56ejXwE4Ezw3VItVCL2UzuQGjkKiaCsn2h0MkzzdN/rqnB0mmKyO1uEgxJrhsZq0gKw0qCWYLE/UqkOY6+xNO4Qxqxq9dSbhdzXqslr0Mwek0T2qmtISfeks3tlL7fDFL6pKqjrO8OTy6VPgg6psiuajp2QXds4hEPvrkY=
+	t=1726488492; cv=none; b=gYWYVswKCnKY4XuB7HXh0ChWJ4khE5ckmBb7qrYwHfOxahBvOT+FQLXquJjrMXrjaR4m9cgo5C9uKUSOrZbIZMYi5zF2ELxYi/2Ci3torHBeWfc/Ubri4MBnX7uFiOy0J5oPUYFOItB9Vi3HMb5clnVs5NmlZSyOoSt7MYbEw78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488265; c=relaxed/simple;
-	bh=OXNGa64MhFEH3IKgQTR+pgCMuCIz9h63w/RVVtZdq7g=;
+	s=arc-20240116; t=1726488492; c=relaxed/simple;
+	bh=B3fdbKgdkOQ/yAjUzBb0DXybWRFfNE2VMcqQ5OciJEI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KG7asKzdMZz+T5bgWfZ+wfh5psOj4Ebnz3adc+4++SyGd4/ocnUFE9Ph9L/JvZhU0ko/YOuiB0hLyVNmV7AWHXKNC0F+BxT2FvHFUecIUYSPc69a32ug08yO9KsnjXkGPdMvnPClpEIxwUYD2Z3QBd4DcJmaxQaw3e0MBOwYFvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mulnug/M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FA8FC4CEC4;
-	Mon, 16 Sep 2024 12:04:24 +0000 (UTC)
+	 MIME-Version; b=GyMja7GRlHi31c3fEwCdsV4H2oMs84OjNjHHF4kKosJWA/yr36WW1b49WcgQh5ZdQiVLrmJfPTYRgH8RmcOrs3qoIkEqURBIv4Vmzw4tTAYASLiom6CPVfiWlnTlL3dcpRb98/jgO72LEJAXZ3qOECaK1Qhr9gJC2j2EIkqHTtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lFYl5TyY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C9FAC4CEC4;
+	Mon, 16 Sep 2024 12:08:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488264;
-	bh=OXNGa64MhFEH3IKgQTR+pgCMuCIz9h63w/RVVtZdq7g=;
+	s=korg; t=1726488492;
+	bh=B3fdbKgdkOQ/yAjUzBb0DXybWRFfNE2VMcqQ5OciJEI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mulnug/MfA4Rm73rzyvnmRbcFF90d6uVB8m6CrlP4Xsid2bEeKQPM5z9tJG1jJwT7
-	 saUWPZQSYP6fFiKVjnurXnZoCI/4vgGvGNWSN5T8NGCPXApumeO4c5teOFvKGuaEEQ
-	 gSiqxq6J8W7IWNwbF2XbL2t95kYQ/oAaJWFiGgfE=
+	b=lFYl5TyY7+LZBC+aUNsIkT6yRDbSjU+scG8EeJ+qvA/rr6//ba4xdARC2HVpSY949
+	 BVLkbDeZw/EHAgufR64BwpV72KrcJjiA/GgN4p7LSM1XwsvUpHDm1E0XXkHAOsJsZP
+	 D1lUA2v3jGyJlVjK5f39KNZ31Qbq4Xm0LpG2cnrg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Roman Kisel <romank@linux.microsoft.com>,
-	Dexuan Cui <decui@microsoft.com>,
-	Michael Kelley <mhklinux@outlook.com>,
-	Wei Liu <wei.liu@kernel.org>
-Subject: [PATCH 6.10 053/121] clocksource: hyper-v: Use lapic timer in a TDX VM without paravisor
+	Sangsoo Lee <constant.lee@samsung.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 11/91] ksmbd: override fsids for smb2_query_info()
 Date: Mon, 16 Sep 2024 13:43:47 +0200
-Message-ID: <20240916114230.896959629@linuxfoundation.org>
+Message-ID: <20240916114224.908360754@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
-References: <20240916114228.914815055@linuxfoundation.org>
+In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
+References: <20240916114224.509743970@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dexuan Cui <decui@microsoft.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 7f828d5fff7d24752e1ecf6bebb6617a81f97b93 upstream.
+[ Upstream commit f6bd41280a44dcc2e0a25ed72617d25f586974a7 ]
 
-In a TDX VM without paravisor, currently the default timer is the Hyper-V
-timer, which depends on the slow VM Reference Counter MSR: the Hyper-V TSC
-page is not enabled in such a VM because the VM uses Invariant TSC as a
-better clocksource and it's challenging to mark the Hyper-V TSC page shared
-in very early boot.
+Sangsoo reported that a DAC denial error occurred when accessing
+files through the ksmbd thread. This patch override fsids for
+smb2_query_info().
 
-Lower the rating of the Hyper-V timer so the local APIC timer becomes the
-the default timer in such a VM, and print a warning in case Invariant TSC
-is unavailable in such a VM. This change should cause no perceivable
-performance difference.
-
-Cc: stable@vger.kernel.org # 6.6+
-Reviewed-by: Roman Kisel <romank@linux.microsoft.com>
-Signed-off-by: Dexuan Cui <decui@microsoft.com>
-Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-Link: https://lore.kernel.org/r/20240621061614.8339-1-decui@microsoft.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <20240621061614.8339-1-decui@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Sangsoo Lee <constant.lee@samsung.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/mshyperv.c     |   16 +++++++++++++++-
- drivers/clocksource/hyperv_timer.c |   16 +++++++++++++++-
- 2 files changed, 30 insertions(+), 2 deletions(-)
+ fs/smb/server/smb2pdu.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/arch/x86/kernel/cpu/mshyperv.c
-+++ b/arch/x86/kernel/cpu/mshyperv.c
-@@ -449,9 +449,23 @@ static void __init ms_hyperv_init_platfo
- 			ms_hyperv.hints &= ~HV_X64_APIC_ACCESS_RECOMMENDED;
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index 4ac6068c50cc..c527050bc981 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -5601,6 +5601,11 @@ int smb2_query_info(struct ksmbd_work *work)
  
- 			if (!ms_hyperv.paravisor_present) {
--				/* To be supported: more work is required.  */
-+				/*
-+				 * Mark the Hyper-V TSC page feature as disabled
-+				 * in a TDX VM without paravisor so that the
-+				 * Invariant TSC, which is a better clocksource
-+				 * anyway, is used instead.
-+				 */
- 				ms_hyperv.features &= ~HV_MSR_REFERENCE_TSC_AVAILABLE;
+ 	ksmbd_debug(SMB, "GOT query info request\n");
  
-+				/*
-+				 * The Invariant TSC is expected to be available
-+				 * in a TDX VM without paravisor, but if not,
-+				 * print a warning message. The slower Hyper-V MSR-based
-+				 * Ref Counter should end up being the clocksource.
-+				 */
-+				if (!(ms_hyperv.features & HV_ACCESS_TSC_INVARIANT))
-+					pr_warn("Hyper-V: Invariant TSC is unavailable\n");
++	if (ksmbd_override_fsids(work)) {
++		rc = -ENOMEM;
++		goto err_out;
++	}
 +
- 				/* HV_MSR_CRASH_CTL is unsupported. */
- 				ms_hyperv.misc_features &= ~HV_FEATURE_GUEST_CRASH_MSR_AVAILABLE;
+ 	switch (req->InfoType) {
+ 	case SMB2_O_INFO_FILE:
+ 		ksmbd_debug(SMB, "GOT SMB2_O_INFO_FILE\n");
+@@ -5619,6 +5624,7 @@ int smb2_query_info(struct ksmbd_work *work)
+ 			    req->InfoType);
+ 		rc = -EOPNOTSUPP;
+ 	}
++	ksmbd_revert_fsids(work);
  
---- a/drivers/clocksource/hyperv_timer.c
-+++ b/drivers/clocksource/hyperv_timer.c
-@@ -137,7 +137,21 @@ static int hv_stimer_init(unsigned int c
- 	ce->name = "Hyper-V clockevent";
- 	ce->features = CLOCK_EVT_FEAT_ONESHOT;
- 	ce->cpumask = cpumask_of(cpu);
--	ce->rating = 1000;
-+
-+	/*
-+	 * Lower the rating of the Hyper-V timer in a TDX VM without paravisor,
-+	 * so the local APIC timer (lapic_clockevent) is the default timer in
-+	 * such a VM. The Hyper-V timer is not preferred in such a VM because
-+	 * it depends on the slow VM Reference Counter MSR (the Hyper-V TSC
-+	 * page is not enbled in such a VM because the VM uses Invariant TSC
-+	 * as a better clocksource and it's challenging to mark the Hyper-V
-+	 * TSC page shared in very early boot).
-+	 */
-+	if (!ms_hyperv.paravisor_present && hv_isolation_type_tdx())
-+		ce->rating = 90;
-+	else
-+		ce->rating = 1000;
-+
- 	ce->set_state_shutdown = hv_ce_shutdown;
- 	ce->set_state_oneshot = hv_ce_set_oneshot;
- 	ce->set_next_event = hv_ce_set_next_event;
+ 	if (!rc) {
+ 		rsp->StructureSize = cpu_to_le16(9);
+@@ -5628,6 +5634,7 @@ int smb2_query_info(struct ksmbd_work *work)
+ 					le32_to_cpu(rsp->OutputBufferLength));
+ 	}
+ 
++err_out:
+ 	if (rc < 0) {
+ 		if (rc == -EACCES)
+ 			rsp->hdr.Status = STATUS_ACCESS_DENIED;
+-- 
+2.43.0
+
 
 
 
