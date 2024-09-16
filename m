@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-76235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A1F797A0B8
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:00:16 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 87B5B97A1B2
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:09:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8ADB51C22DCB
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:00:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 15FE7B243ED
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:09:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE55615687C;
-	Mon, 16 Sep 2024 12:00:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE9FD155322;
+	Mon, 16 Sep 2024 12:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2eIX1I4g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vt9jDpxH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 940151553BB;
-	Mon, 16 Sep 2024 12:00:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BC7814AD19;
+	Mon, 16 Sep 2024 12:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488014; cv=none; b=X70OFsTVI3L7yFmiRPXFL9rzDL4rLgUGDF/0lATBU+hpOcrflSDa+Xk4nmZ8VBZ7rML8mZJRLOWLoC2C+G/89zN0RzGj8dfDrQdsl4otXzIE+TyjEM4goShQOq4Rb2duXXe05QuwKkKNJL4n3CZvkGWUJd6VUcMCa6um9ZKfdXo=
+	t=1726488550; cv=none; b=kSLDVQYEIgLmtfIIlljWuxdr45fWjZEj5RJv9LSkMhCc35LIUOOWDOez2zDj+F08arsIwrmQBF3dfZAT3DAYkTGkAlKM4O+0pvLem+TfWLYh/DzKCY2qBT85fm0cbouua7p6JRgy2lXaY7tBbkH4Z2vjJkXHGeNjT3/b2bNVaA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488014; c=relaxed/simple;
-	bh=YNWzurjmCM0UJrYprmKFfOxpgH6yX1yDTA1ea2Gc1JM=;
+	s=arc-20240116; t=1726488550; c=relaxed/simple;
+	bh=tMKOq/lNvN80djiOQ/kG0kMCUvS788OgevL1dm0nIfM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LTFJ1zQPAaRSx/4FPcRP1HEVjTNiGgjko0ByyG1KKO6AkmRuiN4D9j3D/+JIp2dI4Hr76LEsTK/geaO+1qxgfn7lP2gJk9rGBIqZSxhdp4EtKTJ6w1XljU3PamgTpF9hZIyVVzqHzEWVz5UVmYfvbawK16X6Ot1BhpffKjUo0t8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2eIX1I4g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B5CDC4CEC4;
-	Mon, 16 Sep 2024 12:00:13 +0000 (UTC)
+	 MIME-Version; b=YuP3wy2z8cLxcE9XqHJ7p2hpKdZoQ5ADxvqzjxpcTvrK+zoKc0Fp21fijt7ySnTV2u58AQ0ki35HNxFvdVIPCiYnnFMnKvDMwbBoD/EwcHCkvYFEbPSbbhDIYTtrsYXk84HcRpoLcHmNwM/lP/HxwqWRs1aKlpBoVHqwU9fB7/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vt9jDpxH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E90CCC4CEC4;
+	Mon, 16 Sep 2024 12:09:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488014;
-	bh=YNWzurjmCM0UJrYprmKFfOxpgH6yX1yDTA1ea2Gc1JM=;
+	s=korg; t=1726488550;
+	bh=tMKOq/lNvN80djiOQ/kG0kMCUvS788OgevL1dm0nIfM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2eIX1I4g6l9gr2yfzBy0Pu29D4PPnB2eHeMmqmmkjKTJ5+omNllVUG7AbkSNUdOdb
-	 1L7lppxxaNa7vrVj+YezrYEniTPL1RoEoBfXTTxMQHz1Msckq7iQZIjOhbGrJct/7k
-	 reexD9pLvVGB+M1zXcU0a9ctE5oUfqa/9xrvcGB4=
+	b=Vt9jDpxHzLAWCF3Ib4KQSKk5bbcP02/PE12cYI/tFSYvNV4JiSOUw44o58+ARqPsI
+	 F6kIj5LSBsjGk+9UGc+0+RvR46knwgY6HRS4tEU00Pkr9ACEq6r4yi06a0G8MN341E
+	 Lh+Oc91D7iimf0Nb3kQkdIz1RqBQSE3ZrlcODHFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 6.1 28/63] dm-integrity: fix a race condition when accessing recalc_sector
+	Takashi Iwai <tiwai@suse.de>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 31/91] Input: i8042 - add Fujitsu Lifebook E756 to i8042 quirk table
 Date: Mon, 16 Sep 2024 13:44:07 +0200
-Message-ID: <20240916114222.073459910@linuxfoundation.org>
+Message-ID: <20240916114225.535888493@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
-References: <20240916114221.021192667@linuxfoundation.org>
+In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
+References: <20240916114224.509743970@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,63 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit f8e1ca92e35e9041cc0a1bc226ef07a853a22de4 upstream.
+[ Upstream commit 7ce7c2283fa6843ab3c2adfeb83dcc504a107858 ]
 
-There's a race condition when accessing the variable
-ic->sb->recalc_sector. The function integrity_recalc writes to this
-variable when it makes some progress and the function
-dm_integrity_map_continue may read this variable concurrently.
+Yet another quirk entry for Fujitsu laptop.  Lifebook E756 requires
+i8041.nomux for keeping the touchpad working after suspend/resume.
 
-One problem is that on 32-bit architectures the 64-bit variable is not
-read and written atomically - it may be possible to read garbage if read
-races with write.
-
-Another problem is that memory accesses to this variable are not guarded
-with memory barriers.
-
-This commit fixes the race - it moves reading ic->sb->recalc_sector to an
-earlier place where we hold &ic->endio_wait.lock.
-
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://bugzilla.suse.com/show_bug.cgi?id=1229056
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lore.kernel.org/r/20240814100630.2048-1-tiwai@suse.de
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-integrity.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/input/serio/i8042-acpipnpio.h | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/drivers/md/dm-integrity.c
-+++ b/drivers/md/dm-integrity.c
-@@ -2175,6 +2175,7 @@ static void dm_integrity_map_continue(st
- 	struct bio *bio = dm_bio_from_per_bio_data(dio, sizeof(struct dm_integrity_io));
- 	unsigned int journal_section, journal_entry;
- 	unsigned int journal_read_pos;
-+	sector_t recalc_sector;
- 	struct completion read_comp;
- 	bool discard_retried = false;
- 	bool need_sync_io = ic->internal_hash && dio->op == REQ_OP_READ;
-@@ -2308,6 +2309,7 @@ offload_to_thread:
- 			goto lock_retry;
- 		}
- 	}
-+	recalc_sector = le64_to_cpu(ic->sb->recalc_sector);
- 	spin_unlock_irq(&ic->endio_wait.lock);
- 
- 	if (unlikely(journal_read_pos != NOT_FOUND)) {
-@@ -2362,7 +2364,7 @@ offload_to_thread:
- 	if (need_sync_io) {
- 		wait_for_completion_io(&read_comp);
- 		if (ic->sb->flags & cpu_to_le32(SB_FLAG_RECALCULATING) &&
--		    dio->range.logical_sector + dio->range.n_sectors > le64_to_cpu(ic->sb->recalc_sector))
-+		    dio->range.logical_sector + dio->range.n_sectors > recalc_sector)
- 			goto skip_check;
- 		if (ic->mode == 'B') {
- 			if (!block_bitmap_op(ic, ic->recalc_bitmap, dio->range.logical_sector,
+diff --git a/drivers/input/serio/i8042-acpipnpio.h b/drivers/input/serio/i8042-acpipnpio.h
+index e9eb9554dd7b..bad238f69a7a 100644
+--- a/drivers/input/serio/i8042-acpipnpio.h
++++ b/drivers/input/serio/i8042-acpipnpio.h
+@@ -627,6 +627,15 @@ static const struct dmi_system_id i8042_dmi_quirk_table[] __initconst = {
+ 		},
+ 		.driver_data = (void *)(SERIO_QUIRK_NOMUX)
+ 	},
++	{
++		/* Fujitsu Lifebook E756 */
++		/* https://bugzilla.suse.com/show_bug.cgi?id=1229056 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "FUJITSU"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "LIFEBOOK E756"),
++		},
++		.driver_data = (void *)(SERIO_QUIRK_NOMUX)
++	},
+ 	{
+ 		/* Fujitsu Lifebook E5411 */
+ 		.matches = {
+-- 
+2.43.0
+
 
 
 
