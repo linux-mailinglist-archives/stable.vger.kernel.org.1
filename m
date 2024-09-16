@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-76352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F6CA97A156
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:07:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 057B697A1BB
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:09:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C48951C23619
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:07:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B80D628595B
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:09:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E8F7156F53;
-	Mon, 16 Sep 2024 12:05:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DD2815699E;
+	Mon, 16 Sep 2024 12:09:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2tCpk51a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ddgeOE6L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0704515748E;
-	Mon, 16 Sep 2024 12:05:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 389F415697B;
+	Mon, 16 Sep 2024 12:09:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488348; cv=none; b=elqWSiLAPyDP8LlckdoVDer+xCCcUZZSPBP8+gmWzwGnlBYuG5aSaCvXw4SnZaD9wzgLzA4IlXXSWcrqSJtEFg2BQerOgvnw7DvUi7iL2oWowXW8v0S5vGMaA3COLopPAI8scFf9xgpCTpRsNbJy3ooZuxsZdtqIIYWv/9PJA2U=
+	t=1726488579; cv=none; b=dTT+5cXQjgWpUBNYKISAq3Oy2brJd4By7m6w9K/P57s1liRMB9RDiTaJjnnxUIJt451ZZ6f7zOit4RVLMEFV55QV8gG7/LtwWq7Oix0IH3Y4fBAISw8qEUuoV4S21DM/+wunGJ8K7JXNErvmvcdA3J0gQckeptrhd3wu1eVEuKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488348; c=relaxed/simple;
-	bh=tc0M9LGMOy8SfvZsmp/g8MQNVscwy4gpOt9V77keYDI=;
+	s=arc-20240116; t=1726488579; c=relaxed/simple;
+	bh=TckScBfSqj37W/hCv6yTsh59sm+g+WYF7HUsPEYymiI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IE94OgN2Vr4othH3niWIj1DHrf7Dquq3hNDyYjfRBUOM2Xw665xstR5hnTodk/10sBpqXlU17HB1PqPDzFda+lyJSJa/GN8XG+AQEIVTCGgkrQwAmg/hsmZXBcz2wbSn+oHNwiq1s5Ggt3ikAayXzpk1NxCrffQV88gdD8n8OXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2tCpk51a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23614C4CEC4;
-	Mon, 16 Sep 2024 12:05:46 +0000 (UTC)
+	 MIME-Version; b=EOLqe3PM0UJDXfEdGwfjMcnHokVVxY0tXTH4qj1Z0hi9B2Z/UogoEZl2Z4K+u3PxSexcjTrbTHIStPv2EoDML8ry92089RFS6oQeXmxkQkP5Xxa57FTYdO+JA9/Mb11iKDSVIzHGPbWLtRtZs62yWo+fvoUvTd0vYwtX9Sqv7GA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ddgeOE6L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD9B6C4CEC4;
+	Mon, 16 Sep 2024 12:09:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488347;
-	bh=tc0M9LGMOy8SfvZsmp/g8MQNVscwy4gpOt9V77keYDI=;
+	s=korg; t=1726488579;
+	bh=TckScBfSqj37W/hCv6yTsh59sm+g+WYF7HUsPEYymiI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2tCpk51adqskVoGmOlgwGb1ohx256KXg2EKfj6bfMQvtB+ATwr31CZjuS8VGCLe9q
-	 bvYz8uWlkaGCI75Lq2QrHFb9ioUg81phoh2jZ9AUb6cFKojWD1CH/UB7xztQ85z9Dd
-	 bFEGiIPFdUJRspZ0q8f+1BxdNer/5nWFC5tkJ0uI=
+	b=ddgeOE6LDyo1NQLptVMJPBl5DOl4Q+2DhUCBBgi+RHOWLuHNvoaivwPZLb3CKptki
+	 30DmrGEqt1acrVigQP+g/7NJ5rzrlmdvjyelX6Ag/138i/oAM2Y+q+HcmqxWL/+L4o
+	 J4/Q3VAKLWTXjyQEkKkeUow+nignXcjr7+JzqiLg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carolina Jubran <cjubran@nvidia.com>,
-	Cosmin Ratiu <cratiu@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 082/121] net/mlx5: Verify support for scheduling element and TSAR type
+	Quentin Schulz <quentin.schulz@cherry.de>,
+	Heiko Stuebner <heiko@sntech.de>
+Subject: [PATCH 6.6 40/91] arm64: dts: rockchip: fix eMMC/SPI corruption when audio has been used on RK3399 Puma
 Date: Mon, 16 Sep 2024 13:44:16 +0200
-Message-ID: <20240916114231.859632924@linuxfoundation.org>
+Message-ID: <20240916114225.829916068@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
-References: <20240916114228.914815055@linuxfoundation.org>
+In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
+References: <20240916114224.509743970@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,135 +61,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Carolina Jubran <cjubran@nvidia.com>
+From: Quentin Schulz <quentin.schulz@cherry.de>
 
-[ Upstream commit 861cd9b9cb62feb244b8d77e68fd6ddedbbf66e9 ]
+commit bb94a157b37ec23f53906a279320f6ed64300eba upstream.
 
-Before creating a scheduling element in a NIC or E-Switch scheduler,
-ensure that the requested element type is supported. If the element is
-of type Transmit Scheduling Arbiter (TSAR), also verify that the
-specific TSAR type is supported.
+In commit 91419ae0420f ("arm64: dts: rockchip: use BCLK to GPIO switch
+on rk3399"), an additional pinctrl state was added whose default pinmux
+is for 8ch i2s0. However, Puma only has 2ch i2s0. It's been overriding
+the pinctrl-0 property but the second property override was missed in
+the aforementioned commit.
 
-Fixes: 214baf22870c ("net/mlx5e: Support HTB offload")
-Fixes: 85c5f7c9200e ("net/mlx5: E-switch, Create QoS on demand")
-Fixes: 0fe132eac38c ("net/mlx5: E-switch, Allow to add vports to rate groups")
-Signed-off-by: Carolina Jubran <cjubran@nvidia.com>
-Reviewed-by: Cosmin Ratiu <cratiu@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+On Puma, a hardware slider called "BIOS Disable/Normal Boot" can disable
+eMMC and SPI to force booting from SD card. Another software-controlled
+GPIO is then configured to override this behavior to make eMMC and SPI
+available without human intervention. This is currently done in U-Boot
+and it was enough until the aforementioned commit.
+
+Indeed, because of this additional not-yet-overridden property, this
+software-controlled GPIO is now muxed in a state that does not override
+this hardware slider anymore, rendering SPI and eMMC flashes unusable.
+
+Let's override the property with the 2ch pinmux to fix this.
+
+Fixes: 91419ae0420f ("arm64: dts: rockchip: use BCLK to GPIO switch on rk3399")
+Cc: stable@vger.kernel.org
+Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
+Link: https://lore.kernel.org/r/20240731-puma-emmc-6-v1-1-4e28eadf32d0@cherry.de
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../net/ethernet/mellanox/mlx5/core/esw/qos.c | 44 ++++++++++---------
- drivers/net/ethernet/mellanox/mlx5/core/qos.c |  7 +++
- 2 files changed, 31 insertions(+), 20 deletions(-)
+ arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi |   13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c b/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
-index 997c412a81af..02a3563f51ad 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/esw/qos.c
-@@ -312,6 +312,25 @@ static int esw_qos_set_group_max_rate(struct mlx5_eswitch *esw,
- 	return err;
- }
+--- a/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399-puma.dtsi
+@@ -374,6 +374,7 @@
  
-+static bool esw_qos_element_type_supported(struct mlx5_core_dev *dev, int type)
-+{
-+	switch (type) {
-+	case SCHEDULING_CONTEXT_ELEMENT_TYPE_TSAR:
-+		return MLX5_CAP_QOS(dev, esw_element_type) &
-+		       ELEMENT_TYPE_CAP_MASK_TSAR;
-+	case SCHEDULING_CONTEXT_ELEMENT_TYPE_VPORT:
-+		return MLX5_CAP_QOS(dev, esw_element_type) &
-+		       ELEMENT_TYPE_CAP_MASK_VPORT;
-+	case SCHEDULING_CONTEXT_ELEMENT_TYPE_VPORT_TC:
-+		return MLX5_CAP_QOS(dev, esw_element_type) &
-+		       ELEMENT_TYPE_CAP_MASK_VPORT_TC;
-+	case SCHEDULING_CONTEXT_ELEMENT_TYPE_PARA_VPORT_TC:
-+		return MLX5_CAP_QOS(dev, esw_element_type) &
-+		       ELEMENT_TYPE_CAP_MASK_PARA_VPORT_TC;
-+	}
-+	return false;
-+}
+ &i2s0 {
+ 	pinctrl-0 = <&i2s0_2ch_bus>;
++	pinctrl-1 = <&i2s0_2ch_bus_bclk_off>;
+ 	rockchip,playback-channels = <2>;
+ 	rockchip,capture-channels = <2>;
+ 	status = "okay";
+@@ -382,8 +383,8 @@
+ /*
+  * As Q7 does not specify neither a global nor a RX clock for I2S these
+  * signals are not used. Furthermore I2S0_LRCK_RX is used as GPIO.
+- * Therefore we have to redefine the i2s0_2ch_bus definition to prevent
+- * conflicts.
++ * Therefore we have to redefine the i2s0_2ch_bus and i2s0_2ch_bus_bclk_off
++ * definitions to prevent conflicts.
+  */
+ &i2s0_2ch_bus {
+ 	rockchip,pins =
+@@ -391,6 +392,14 @@
+ 		<3 RK_PD2 1 &pcfg_pull_none>,
+ 		<3 RK_PD3 1 &pcfg_pull_none>,
+ 		<3 RK_PD7 1 &pcfg_pull_none>;
++};
 +
- static int esw_qos_vport_create_sched_element(struct mlx5_eswitch *esw,
- 					      struct mlx5_vport *vport,
- 					      u32 max_rate, u32 bw_share)
-@@ -323,6 +342,9 @@ static int esw_qos_vport_create_sched_element(struct mlx5_eswitch *esw,
- 	void *vport_elem;
- 	int err;
++&i2s0_2ch_bus_bclk_off {
++	rockchip,pins =
++		<3 RK_PD0 RK_FUNC_GPIO &pcfg_pull_none>,
++		<3 RK_PD2 1 &pcfg_pull_none>,
++		<3 RK_PD3 1 &pcfg_pull_none>,
++		<3 RK_PD7 1 &pcfg_pull_none>;
+ };
  
-+	if (!esw_qos_element_type_supported(dev, SCHEDULING_CONTEXT_ELEMENT_TYPE_VPORT))
-+		return -EOPNOTSUPP;
-+
- 	parent_tsar_ix = group ? group->tsar_ix : esw->qos.root_tsar_ix;
- 	MLX5_SET(scheduling_context, sched_ctx, element_type,
- 		 SCHEDULING_CONTEXT_ELEMENT_TYPE_VPORT);
-@@ -533,25 +555,6 @@ static int esw_qos_destroy_rate_group(struct mlx5_eswitch *esw,
- 	return err;
- }
- 
--static bool esw_qos_element_type_supported(struct mlx5_core_dev *dev, int type)
--{
--	switch (type) {
--	case SCHEDULING_CONTEXT_ELEMENT_TYPE_TSAR:
--		return MLX5_CAP_QOS(dev, esw_element_type) &
--		       ELEMENT_TYPE_CAP_MASK_TSAR;
--	case SCHEDULING_CONTEXT_ELEMENT_TYPE_VPORT:
--		return MLX5_CAP_QOS(dev, esw_element_type) &
--		       ELEMENT_TYPE_CAP_MASK_VPORT;
--	case SCHEDULING_CONTEXT_ELEMENT_TYPE_VPORT_TC:
--		return MLX5_CAP_QOS(dev, esw_element_type) &
--		       ELEMENT_TYPE_CAP_MASK_VPORT_TC;
--	case SCHEDULING_CONTEXT_ELEMENT_TYPE_PARA_VPORT_TC:
--		return MLX5_CAP_QOS(dev, esw_element_type) &
--		       ELEMENT_TYPE_CAP_MASK_PARA_VPORT_TC;
--	}
--	return false;
--}
--
- static int esw_qos_create(struct mlx5_eswitch *esw, struct netlink_ext_ack *extack)
- {
- 	u32 tsar_ctx[MLX5_ST_SZ_DW(scheduling_context)] = {};
-@@ -562,7 +565,8 @@ static int esw_qos_create(struct mlx5_eswitch *esw, struct netlink_ext_ack *exta
- 	if (!MLX5_CAP_GEN(dev, qos) || !MLX5_CAP_QOS(dev, esw_scheduling))
- 		return -EOPNOTSUPP;
- 
--	if (!esw_qos_element_type_supported(dev, SCHEDULING_CONTEXT_ELEMENT_TYPE_TSAR))
-+	if (!esw_qos_element_type_supported(dev, SCHEDULING_CONTEXT_ELEMENT_TYPE_TSAR) ||
-+	    !(MLX5_CAP_QOS(dev, esw_tsar_type) & TSAR_TYPE_CAP_MASK_DWRR))
- 		return -EOPNOTSUPP;
- 
- 	MLX5_SET(scheduling_context, tsar_ctx, element_type,
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/qos.c b/drivers/net/ethernet/mellanox/mlx5/core/qos.c
-index 8bce730b5c5b..db2bd3ad63ba 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/qos.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/qos.c
-@@ -28,6 +28,9 @@ int mlx5_qos_create_leaf_node(struct mlx5_core_dev *mdev, u32 parent_id,
- {
- 	u32 sched_ctx[MLX5_ST_SZ_DW(scheduling_context)] = {0};
- 
-+	if (!(MLX5_CAP_QOS(mdev, nic_element_type) & ELEMENT_TYPE_CAP_MASK_QUEUE_GROUP))
-+		return -EOPNOTSUPP;
-+
- 	MLX5_SET(scheduling_context, sched_ctx, parent_element_id, parent_id);
- 	MLX5_SET(scheduling_context, sched_ctx, element_type,
- 		 SCHEDULING_CONTEXT_ELEMENT_TYPE_QUEUE_GROUP);
-@@ -44,6 +47,10 @@ int mlx5_qos_create_inner_node(struct mlx5_core_dev *mdev, u32 parent_id,
- 	u32 sched_ctx[MLX5_ST_SZ_DW(scheduling_context)] = {0};
- 	void *attr;
- 
-+	if (!(MLX5_CAP_QOS(mdev, nic_element_type) & ELEMENT_TYPE_CAP_MASK_TSAR) ||
-+	    !(MLX5_CAP_QOS(mdev, nic_tsar_type) & TSAR_TYPE_CAP_MASK_DWRR))
-+		return -EOPNOTSUPP;
-+
- 	MLX5_SET(scheduling_context, sched_ctx, parent_element_id, parent_id);
- 	MLX5_SET(scheduling_context, sched_ctx, element_type,
- 		 SCHEDULING_CONTEXT_ELEMENT_TYPE_TSAR);
--- 
-2.43.0
-
+ &io_domains {
 
 
 
