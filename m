@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-76331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8867E97A140
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:06:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6670F97A0C6
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:00:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BB20E1C22856
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:06:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2DE79281CF4
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:00:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCDEA158DDC;
-	Mon, 16 Sep 2024 12:04:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCA9E154429;
+	Mon, 16 Sep 2024 12:00:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h1YhpHFG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="By88SxwP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 931B5155CBA;
-	Mon, 16 Sep 2024 12:04:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7962C14B946;
+	Mon, 16 Sep 2024 12:00:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488287; cv=none; b=bKUltMvJiCg75CEpRWEqAEpbud1E4OJiOEMEBFqAch1oYRqUB1s81g1VgWACE5BN3OKe2LNkcPoAg6h7+T2PsRGnxbBgsPnFxRm2vz1CHf1Ei0K6y2n+i6zsrRZEFqMrEEnUj+STLqCUq8FBbIf0fsj6U/sMxmwjqJIdPi6VG/A=
+	t=1726488054; cv=none; b=HGJk3aRUpmVuZAg4/HlBECKtGz6UJxyl1bu17fa7Y4xXlUqzRdYBnqLyUQtrDB6EvcwOc56FEflM6BBG+UZYRfG99oZRcxw7UuAL3CdEK2GQFT2ZnpRFkjWzdyYKwMLXveTQJGnIOSvwdGRR28gO1rhFWo2UQGatnRcTlvrTND0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488287; c=relaxed/simple;
-	bh=EgV4LaZP8HkC6hncPDasiuIj/nq+l+ozZEMsApVVcGA=;
+	s=arc-20240116; t=1726488054; c=relaxed/simple;
+	bh=oj2jFaP4S1gkyKnRNelLoW4roGHrWA5imHTQxEb/Pdk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bwf7gNk4UkpqPWrsdgNu36NEjZlA5u1YydYYuiJmdzPwtkV6LQbLrd5PA9R6GkrFvlalk184I9aTJCQ+s6c5XXEt0lvFPyXUErAT6ob6pHsemAC5TUG60R6dH1C4lOOiLrlGPakp7t9emTXTORywLDtl93ogq4oT6twrDI6t09g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h1YhpHFG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C204C4CEC4;
-	Mon, 16 Sep 2024 12:04:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Dvy+zlRdhoZRqjWz2hQWMMLoLtm54uGV8mFIUfu/XYeCy7SE9EFIJhMggVnIvNj7rIRrPht7WMToznD7+Y8nWGcjWomwGBxVPYxpFFK6+ePPLPQVHZU6oYUae1vtUaF9eyw7ASQeGq2FlBSAq+Ibrp7mirwLSJ4ZPQmaPmnZwdQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=By88SxwP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9DB6C4CEC4;
+	Mon, 16 Sep 2024 12:00:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488287;
-	bh=EgV4LaZP8HkC6hncPDasiuIj/nq+l+ozZEMsApVVcGA=;
+	s=korg; t=1726488054;
+	bh=oj2jFaP4S1gkyKnRNelLoW4roGHrWA5imHTQxEb/Pdk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h1YhpHFG2NY0CV0f1/Q/ORV3dSm4HoRiDeGUQYHTxWrN/iP6t5Hc6g30Xcfd7tePL
-	 w92oVeFKlH8ZWhu1aN16rGLXIuzssKYonl9jFXByQIGbC9ZiO2RW2bHQLlNuwzP9Vl
-	 8sngbBUIjPTc4nOgxkeHY1rg0A+sBicHz5TSC/J8=
+	b=By88SxwPlGQqZ6882dpuX54vTFsDq8vWQDT5AQV8l+ogKLxhWv7pJ0y93jzfQKRRH
+	 zAPYEUjdAcEEvWomYMBIxEkVfpHU/twykAIyT9bmYT6jhPLyaQ7EUxKIhi9RQ6itoQ
+	 Vzzzkb0PwX9FkjG2LdvT1U4J+O3GNu7pJ9y32SOQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Maximilian Luz <luzmaximilian@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 060/121] firmware: qcom: uefisecapp: Fix deadlock in qcuefi_acquire()
+Subject: [PATCH 6.1 15/63] platform/surface: aggregator_registry: Add support for Surface Laptop Go 3
 Date: Mon, 16 Sep 2024 13:43:54 +0200
-Message-ID: <20240916114231.148806358@linuxfoundation.org>
+Message-ID: <20240916114221.594705771@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
-References: <20240916114228.914815055@linuxfoundation.org>
+In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
+References: <20240916114221.021192667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +60,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Maximilian Luz <luzmaximilian@gmail.com>
 
-[ Upstream commit db213b0cfe3268d8b1d382b3bcc999c687a2567f ]
+[ Upstream commit ed235163c3f02329d5e37ed4485bbc39ed2568d4 ]
 
-If the __qcuefi pointer is not set, then in the original code, we would
-hold onto the lock.  That means that if we tried to set it later, then
-it would cause a deadlock.  Drop the lock on the error path.  That's
-what all the callers are expecting.
+Add SAM client device nodes for the Surface Laptop Go 3. It seems to use
+the same SAM client devices as the Surface Laptop Go 1 and 2, so re-use
+their node group.
 
-Fixes: 759e7a2b62eb ("firmware: Add support for Qualcomm UEFI Secure Application")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/19829bc4-1b6f-47f7-847a-e90c25749e40@stanley.mountain
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Maximilian Luz <luzmaximilian@gmail.com>
+Link: https://lore.kernel.org/r/20240811131948.261806-3-luzmaximilian@gmail.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/qcom/qcom_qseecom_uefisecapp.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/platform/surface/surface_aggregator_registry.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/firmware/qcom/qcom_qseecom_uefisecapp.c b/drivers/firmware/qcom/qcom_qseecom_uefisecapp.c
-index bc550ad0dbe0..68b2c09ed22c 100644
---- a/drivers/firmware/qcom/qcom_qseecom_uefisecapp.c
-+++ b/drivers/firmware/qcom/qcom_qseecom_uefisecapp.c
-@@ -786,6 +786,10 @@ static int qcuefi_set_reference(struct qcuefi_client *qcuefi)
- static struct qcuefi_client *qcuefi_acquire(void)
- {
- 	mutex_lock(&__qcuefi_lock);
-+	if (!__qcuefi) {
-+		mutex_unlock(&__qcuefi_lock);
-+		return NULL;
-+	}
- 	return __qcuefi;
- }
+diff --git a/drivers/platform/surface/surface_aggregator_registry.c b/drivers/platform/surface/surface_aggregator_registry.c
+index 6882f32d239d..fafb0bb49f7f 100644
+--- a/drivers/platform/surface/surface_aggregator_registry.c
++++ b/drivers/platform/surface/surface_aggregator_registry.c
+@@ -370,6 +370,9 @@ static const struct acpi_device_id ssam_platform_hub_match[] = {
+ 	/* Surface Laptop Go 2 */
+ 	{ "MSHW0290", (unsigned long)ssam_node_group_slg1 },
+ 
++	/* Surface Laptop Go 3 */
++	{ "MSHW0440", (unsigned long)ssam_node_group_slg1 },
++
+ 	/* Surface Laptop Studio */
+ 	{ "MSHW0123", (unsigned long)ssam_node_group_sls },
  
 -- 
 2.43.0
