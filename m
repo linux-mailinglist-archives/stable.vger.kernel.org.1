@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-76413-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BC0697A1A6
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:09:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E8D097A133
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:06:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9E6AD1C214BC
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:09:15 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 267D628674F
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:06:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 174D0155A3C;
-	Mon, 16 Sep 2024 12:08:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB880158851;
+	Mon, 16 Sep 2024 12:04:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wYVu8z0b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k0sSfN59"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C93CD14D2B3;
-	Mon, 16 Sep 2024 12:08:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 870F9155C8A;
+	Mon, 16 Sep 2024 12:04:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488521; cv=none; b=K0UMBZlpIP7gKVZxn7dlyH8cS7kRnBZOlI8xZfEZVdSVt4hZCrIkUx4ly2JPcpzaRTf2XaWAFsvcQrCg7MpHkapYb3WDw6wrADKNaD9xM3nrEt7TXZ8A1CfhzPY3DdEmz+gVarD+AtN0zzLXEycL7KqT/CafhnkkGETORMF1asA=
+	t=1726488256; cv=none; b=J/PEW1vyA+q9xlnaPBI9hTPv9GAXwcqMM6/xD2Epwb1cteQL2rmILDgt3CiwiH4zdCBwrwB0cRCQni3AgpJBLG9W74IpKw7q7IlaHOZltWmEOXUlk7eRvr6xiXcGL6IJSya2EBmeFfIp6BDz1gjpjjJb5wFNur7p9+eOT8rqat0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488521; c=relaxed/simple;
-	bh=26ZtwUFZ33rN8QVlJvoCr6L1gPNFAreIlmgS9WNpyH0=;
+	s=arc-20240116; t=1726488256; c=relaxed/simple;
+	bh=LICkqYE61a1kFS8jzFQuBCdOJbYEBMwdzzNefSp9Xr4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CWjRM7g62jQuTOVx4RuNMVBY2ItXDPmNe4lh49ihBfcqBASIkICWa7l2SdlU9AePRjaB73Zl/VLtyeXlY+OjS6J2kFBPco1R8wPB+IB0q/ZOfZDrMoOi6h/JuLKVyj++mwNsjbvbiYhGuf2A4aga2P5XQeOZ0LbsRo/lOnMNokI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wYVu8z0b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17924C4CEC4;
-	Mon, 16 Sep 2024 12:08:40 +0000 (UTC)
+	 MIME-Version; b=SrJxelhp9hzdd+R0TWprwq9RXv6phuaELBMJ0NjfVr0rUxtfwd2dqNcy9LltHGYmCIwKNy/wXme03BPc/6vm+WbyoybuLAXQPdJ96QFNo3gMey5XriXHM6jzHq4KtD3K7E4MDOVwvfGcs8Chpepde8qbju2lE7FZNW0buSvkBWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k0sSfN59; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E1C3C4CEC4;
+	Mon, 16 Sep 2024 12:04:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488521;
-	bh=26ZtwUFZ33rN8QVlJvoCr6L1gPNFAreIlmgS9WNpyH0=;
+	s=korg; t=1726488256;
+	bh=LICkqYE61a1kFS8jzFQuBCdOJbYEBMwdzzNefSp9Xr4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wYVu8z0bcJS+gMLLV6PYkwuuE6J5FbMCZyvibmqAzTNTrCuUS5f6YNkNW9R8Cz+Rm
-	 kRPYQSION/GGj/DQL+7uH7VOdjSJImihm18MwAmbWOtGA6zQFA8HxTCKex1BYz5xxg
-	 A8AlvXW6kHtWjnIcJAlTfOSNOUtTuICsz/0/EMbY=
+	b=k0sSfN59EphhEZvTiCVTQrAl+lCduccR7ioExL7kUXWBtoP+yyyrviLcDJ0FI8Wp7
+	 FGKEd7Sd21Hc2tcxDT40FZpbq6iUckpcBLCbNaXcec0Qb/eZ+pwM3/bKYlvBTjxK2Z
+	 F1zRpko4N+l/3nOp2dnZN6ezwMQ94NzTyDy3noSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 08/91] nvmem: u-boot-env: improve coding style
+	Willem de Bruijn <willemb@google.com>,
+	Jason Wang <jasowang@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.10 050/121] net: tighten bad gso csum offset check in virtio_net_hdr
 Date: Mon, 16 Sep 2024 13:43:44 +0200
-Message-ID: <20240916114224.803151746@linuxfoundation.org>
+Message-ID: <20240916114230.781993769@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
-References: <20240916114224.509743970@linuxfoundation.org>
+In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
+References: <20240916114228.914815055@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,78 +61,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafał Miłecki <rafal@milecki.pl>
+From: Willem de Bruijn <willemb@google.com>
 
-[ Upstream commit 6bafe07c930676d6430be471310958070816a595 ]
+commit 6513eb3d3191574b58859ef2d6dc26c0277c6f81 upstream.
 
-1. Prefer kzalloc() over kcalloc()
-   See memory-allocation.rst which says: "to be on the safe side it's
-   best to use routines that set memory to zero, like kzalloc()"
-2. Drop dev_err() for u_boot_env_add_cells() fail
-   It can fail only on -ENOMEM. We don't want to print error then.
-3. Add extra "crc32_addr" variable
-   It makes code reading header's crc32 easier to understand / review.
+The referenced commit drops bad input, but has false positives.
+Tighten the check to avoid these.
 
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-Reviewed-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/r/20231221173421.13737-5-zajec5@gmail.com
+The check detects illegal checksum offload requests, which produce
+csum_start/csum_off beyond end of packet after segmentation.
+
+But it is based on two incorrect assumptions:
+
+1. virtio_net_hdr_to_skb with VIRTIO_NET_HDR_GSO_TCP[46] implies GSO.
+True in callers that inject into the tx path, such as tap.
+But false in callers that inject into rx, like virtio-net.
+Here, the flags indicate GRO, and CHECKSUM_UNNECESSARY or
+CHECKSUM_NONE without VIRTIO_NET_HDR_F_NEEDS_CSUM is normal.
+
+2. TSO requires checksum offload, i.e., ip_summed == CHECKSUM_PARTIAL.
+False, as tcp[46]_gso_segment will fix up csum_start and offset for
+all other ip_summed by calling __tcp_v4_send_check.
+
+Because of 2, we can limit the scope of the fix to virtio_net_hdr
+that do try to set these fields, with a bogus value.
+
+Link: https://lore.kernel.org/netdev/20240909094527.GA3048202@port70.net/
+Fixes: 89add40066f9 ("net: drop bad gso csum_start and offset in virtio_net_hdr")
+Signed-off-by: Willem de Bruijn <willemb@google.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20240910213553.839926-1-willemdebruijn.kernel@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 8679e8b4a1eb ("nvmem: u-boot-env: error if NVMEM device is too small")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvmem/u-boot-env.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ include/linux/virtio_net.h |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/nvmem/u-boot-env.c b/drivers/nvmem/u-boot-env.c
-index 111905189341..befbab156cda 100644
---- a/drivers/nvmem/u-boot-env.c
-+++ b/drivers/nvmem/u-boot-env.c
-@@ -132,6 +132,7 @@ static int u_boot_env_parse(struct u_boot_env *priv)
- 	size_t crc32_data_offset;
- 	size_t crc32_data_len;
- 	size_t crc32_offset;
-+	__le32 *crc32_addr;
- 	size_t data_offset;
- 	size_t data_len;
- 	size_t dev_size;
-@@ -143,7 +144,7 @@ static int u_boot_env_parse(struct u_boot_env *priv)
- 
- 	dev_size = nvmem_dev_size(nvmem);
- 
--	buf = kcalloc(1, dev_size, GFP_KERNEL);
-+	buf = kzalloc(dev_size, GFP_KERNEL);
- 	if (!buf) {
- 		err = -ENOMEM;
- 		goto err_out;
-@@ -175,7 +176,8 @@ static int u_boot_env_parse(struct u_boot_env *priv)
- 		data_offset = offsetof(struct u_boot_env_image_broadcom, data);
- 		break;
- 	}
--	crc32 = le32_to_cpu(*(__le32 *)(buf + crc32_offset));
-+	crc32_addr = (__le32 *)(buf + crc32_offset);
-+	crc32 = le32_to_cpu(*crc32_addr);
- 	crc32_data_len = dev_size - crc32_data_offset;
- 	data_len = dev_size - data_offset;
- 
-@@ -188,8 +190,6 @@ static int u_boot_env_parse(struct u_boot_env *priv)
- 
- 	buf[dev_size - 1] = '\0';
- 	err = u_boot_env_add_cells(priv, buf, data_offset, data_len);
--	if (err)
--		dev_err(dev, "Failed to add cells: %d\n", err);
- 
- err_kfree:
- 	kfree(buf);
--- 
-2.43.0
-
+--- a/include/linux/virtio_net.h
++++ b/include/linux/virtio_net.h
+@@ -173,7 +173,8 @@ retry:
+ 			break;
+ 		case SKB_GSO_TCPV4:
+ 		case SKB_GSO_TCPV6:
+-			if (skb->csum_offset != offsetof(struct tcphdr, check))
++			if (skb->ip_summed == CHECKSUM_PARTIAL &&
++			    skb->csum_offset != offsetof(struct tcphdr, check))
+ 				return -EINVAL;
+ 			break;
+ 		}
 
 
 
