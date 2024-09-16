@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-76429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D8A797A1B7
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:09:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3CB8097A152
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:07:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A12331F23676
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:09:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 708A41C23530
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:07:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25685156880;
-	Mon, 16 Sep 2024 12:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A6B3156C40;
+	Mon, 16 Sep 2024 12:05:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wq2ViYuO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jvn1rdF2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE0AE14D2B3;
-	Mon, 16 Sep 2024 12:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 176F9156641;
+	Mon, 16 Sep 2024 12:05:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488567; cv=none; b=Bmoi63QtgYtBvHzG4LKNPOKT8l9iKGBCeXB5vmtDBKUseZgAuDMZP+WEgqRLS2g30mfcSD4yMzypdrfnfy4OKVyC4EAL8u6t8ZeZqnsj03/QA+qPr0OGqMdvKfaxzyC+cL+SSbJMuQqan2g6Yrr4kbH0MV4dfjoF+49Ouqv+/rQ=
+	t=1726488336; cv=none; b=MGQkB7ySx7OV0WM7xu0JZj3Tys8TvzrvoUaul3uFJvrN2K1ChKCfoqGroxHcausP+U0AQtyNwqcgNX+lsnHj1bNJ0RKJbrktDydwM+E7niVQyH1cNQRqHl9DegvEirOBDADkw+0Uj3g+6v0QTBZfNrnS9p3iw52BjLN16pK3TNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488567; c=relaxed/simple;
-	bh=ZoYQZkCdmGd8EW1fP0Vbkapg9WuWnQFZri4sPonDg9U=;
+	s=arc-20240116; t=1726488336; c=relaxed/simple;
+	bh=ZB8DaBpzkeQvQa78IV06F1r5wPvl8c+DhE1ISQJvg3U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LKmI/OH5y+Jvy2OzUnxnbXL2WYJ/uzICc72UXTwYi53aOtKVNlSndY3IlVVEMwyXzVhOP2yYEVrs1AHP7ol8rOm/go5SvfG6eltmEYlQZ5XS6PbB7OtDDop5dWmmiAhFqnynSVEkDvneJscHsqfVFWTmd8bafZSdAIDqNKaA2vE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wq2ViYuO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 533A8C4CEC4;
-	Mon, 16 Sep 2024 12:09:27 +0000 (UTC)
+	 MIME-Version; b=SrJKBIRVueuW/nKDHZ5N/5e7HdmHwuTnX/J5Q06wnEaRoPJspoX/rkp2B+Qg75tqAdCQ5STrayrFsxXvw1crteeau8uYZ6VVOxx8pKfJOmH3em2hp0Bbf75323cQznvHyKFFUX5rXB/OsfqzLZFeySi4WSVkI/VSdDBLWqFDRFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jvn1rdF2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95351C4CEC4;
+	Mon, 16 Sep 2024 12:05:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488567;
-	bh=ZoYQZkCdmGd8EW1fP0Vbkapg9WuWnQFZri4sPonDg9U=;
+	s=korg; t=1726488336;
+	bh=ZB8DaBpzkeQvQa78IV06F1r5wPvl8c+DhE1ISQJvg3U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wq2ViYuO6PxNXUfIp6+h6tLlf7jE49igxmi8rhyQ1dAv7r+qdE/qAjrZKsZKt2Ugd
-	 X/BNUXhNIzIKHl6f/csWuDpAHfpt6DYp1Qx9cLuEwhKxlxB2pAOtIUWm5DwFA5oFTa
-	 qSMMckficYh6+Qk6asnlnkHmJKPYQc7ojqyHbY5U=
+	b=Jvn1rdF2ntAp4N1lJkWr9MaKJ9aUQq1x8h7obH0gIICGki5feqwkVB+LC0alj246G
+	 Ji0rmVvT1S5o5i8m4w+Tn2fpcTyYKPAAm94hQyHaK6uWt17y9L0Y/haTxkwmcubMIk
+	 DiNxKCkIm1TIuqmHM10U/lcGgS/XhAob4IZsstYc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 6.6 36/91] platform/x86: panasonic-laptop: Fix SINF array out of bounds accesses
+	Shahar Shitrit <shshitrit@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Carolina Jubran <cjubran@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 078/121] net/mlx5e: Add missing link mode to ptys2ext_ethtool_map
 Date: Mon, 16 Sep 2024 13:44:12 +0200
-Message-ID: <20240916114225.705174518@linuxfoundation.org>
+Message-ID: <20240916114231.740923708@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
-References: <20240916114224.509743970@linuxfoundation.org>
+In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
+References: <20240916114228.914815055@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,135 +62,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Shahar Shitrit <shshitrit@nvidia.com>
 
-commit f52e98d16e9bd7dd2b3aef8e38db5cbc9899d6a4 upstream.
+[ Upstream commit 80bf474242b21d64a514fd2bb65faa7a17ca8d8d ]
 
-The panasonic laptop code in various places uses the SINF array with index
-values of 0 - SINF_CUR_BRIGHT(0x0d) without checking that the SINF array
-is big enough.
+Add MLX5E_400GAUI_8_400GBASE_CR8 to the extended modes
+in ptys2ext_ethtool_table, since it was missing.
 
-Not all panasonic laptops have this many SINF array entries, for example
-the Toughbook CF-18 model only has 10 SINF array entries. So it only
-supports the AC+DC brightness entries and mute.
-
-Check that the SINF array has a minimum size which covers all AC+DC
-brightness entries and refuse to load if the SINF array is smaller.
-
-For higher SINF indexes hide the sysfs attributes when the SINF array
-does not contain an entry for that attribute, avoiding show()/store()
-accessing the array out of bounds and add bounds checking to the probe()
-and resume() code accessing these.
-
-Fixes: e424fb8cc4e6 ("panasonic-laptop: avoid overflow in acpi_pcc_hotkey_add()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240909113227.254470-1-hdegoede@redhat.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6a897372417e ("net/mlx5: ethtool, Add ethtool support for 50Gbps per lane link modes")
+Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Carolina Jubran <cjubran@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/panasonic-laptop.c |   49 +++++++++++++++++++++++++-------
- 1 file changed, 39 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/platform/x86/panasonic-laptop.c
-+++ b/drivers/platform/x86/panasonic-laptop.c
-@@ -773,6 +773,24 @@ static DEVICE_ATTR_RW(dc_brightness);
- static DEVICE_ATTR_RW(current_brightness);
- static DEVICE_ATTR_RW(cdpower);
- 
-+static umode_t pcc_sysfs_is_visible(struct kobject *kobj, struct attribute *attr, int idx)
-+{
-+	struct device *dev = kobj_to_dev(kobj);
-+	struct acpi_device *acpi = to_acpi_device(dev);
-+	struct pcc_acpi *pcc = acpi_driver_data(acpi);
-+
-+	if (attr == &dev_attr_mute.attr)
-+		return (pcc->num_sifr > SINF_MUTE) ? attr->mode : 0;
-+
-+	if (attr == &dev_attr_eco_mode.attr)
-+		return (pcc->num_sifr > SINF_ECO_MODE) ? attr->mode : 0;
-+
-+	if (attr == &dev_attr_current_brightness.attr)
-+		return (pcc->num_sifr > SINF_CUR_BRIGHT) ? attr->mode : 0;
-+
-+	return attr->mode;
-+}
-+
- static struct attribute *pcc_sysfs_entries[] = {
- 	&dev_attr_numbatt.attr,
- 	&dev_attr_lcdtype.attr,
-@@ -787,8 +805,9 @@ static struct attribute *pcc_sysfs_entri
- };
- 
- static const struct attribute_group pcc_attr_group = {
--	.name	= NULL,		/* put in device directory */
--	.attrs	= pcc_sysfs_entries,
-+	.name		= NULL,		/* put in device directory */
-+	.attrs		= pcc_sysfs_entries,
-+	.is_visible	= pcc_sysfs_is_visible,
- };
- 
- 
-@@ -941,12 +960,15 @@ static int acpi_pcc_hotkey_resume(struct
- 	if (!pcc)
- 		return -EINVAL;
- 
--	acpi_pcc_write_sset(pcc, SINF_MUTE, pcc->mute);
--	acpi_pcc_write_sset(pcc, SINF_ECO_MODE, pcc->eco_mode);
-+	if (pcc->num_sifr > SINF_MUTE)
-+		acpi_pcc_write_sset(pcc, SINF_MUTE, pcc->mute);
-+	if (pcc->num_sifr > SINF_ECO_MODE)
-+		acpi_pcc_write_sset(pcc, SINF_ECO_MODE, pcc->eco_mode);
- 	acpi_pcc_write_sset(pcc, SINF_STICKY_KEY, pcc->sticky_key);
- 	acpi_pcc_write_sset(pcc, SINF_AC_CUR_BRIGHT, pcc->ac_brightness);
- 	acpi_pcc_write_sset(pcc, SINF_DC_CUR_BRIGHT, pcc->dc_brightness);
--	acpi_pcc_write_sset(pcc, SINF_CUR_BRIGHT, pcc->current_brightness);
-+	if (pcc->num_sifr > SINF_CUR_BRIGHT)
-+		acpi_pcc_write_sset(pcc, SINF_CUR_BRIGHT, pcc->current_brightness);
- 
- 	return 0;
- }
-@@ -963,8 +985,12 @@ static int acpi_pcc_hotkey_add(struct ac
- 
- 	num_sifr = acpi_pcc_get_sqty(device);
- 
--	if (num_sifr < 0 || num_sifr > 255) {
--		pr_err("num_sifr out of range");
-+	/*
-+	 * pcc->sinf is expected to at least have the AC+DC brightness entries.
-+	 * Accesses to higher SINF entries are checked against num_sifr.
-+	 */
-+	if (num_sifr <= SINF_DC_CUR_BRIGHT || num_sifr > 255) {
-+		pr_err("num_sifr %d out of range %d - 255\n", num_sifr, SINF_DC_CUR_BRIGHT + 1);
- 		return -ENODEV;
- 	}
- 
-@@ -1020,11 +1046,14 @@ static int acpi_pcc_hotkey_add(struct ac
- 	acpi_pcc_write_sset(pcc, SINF_STICKY_KEY, 0);
- 	pcc->sticky_key = 0;
- 
--	pcc->eco_mode = pcc->sinf[SINF_ECO_MODE];
--	pcc->mute = pcc->sinf[SINF_MUTE];
- 	pcc->ac_brightness = pcc->sinf[SINF_AC_CUR_BRIGHT];
- 	pcc->dc_brightness = pcc->sinf[SINF_DC_CUR_BRIGHT];
--	pcc->current_brightness = pcc->sinf[SINF_CUR_BRIGHT];
-+	if (pcc->num_sifr > SINF_MUTE)
-+		pcc->mute = pcc->sinf[SINF_MUTE];
-+	if (pcc->num_sifr > SINF_ECO_MODE)
-+		pcc->eco_mode = pcc->sinf[SINF_ECO_MODE];
-+	if (pcc->num_sifr > SINF_CUR_BRIGHT)
-+		pcc->current_brightness = pcc->sinf[SINF_CUR_BRIGHT];
- 
- 	/* add sysfs attributes */
- 	result = sysfs_create_group(&device->dev.kobj, &pcc_attr_group);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
+index 5b3b442c4a58..9d2d67e24205 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
+@@ -208,6 +208,12 @@ void mlx5e_build_ptys2ethtool_map(void)
+ 				       ETHTOOL_LINK_MODE_200000baseLR4_ER4_FR4_Full_BIT,
+ 				       ETHTOOL_LINK_MODE_200000baseDR4_Full_BIT,
+ 				       ETHTOOL_LINK_MODE_200000baseCR4_Full_BIT);
++	MLX5_BUILD_PTYS2ETHTOOL_CONFIG(MLX5E_400GAUI_8_400GBASE_CR8, ext,
++				       ETHTOOL_LINK_MODE_400000baseKR8_Full_BIT,
++				       ETHTOOL_LINK_MODE_400000baseSR8_Full_BIT,
++				       ETHTOOL_LINK_MODE_400000baseLR8_ER8_FR8_Full_BIT,
++				       ETHTOOL_LINK_MODE_400000baseDR8_Full_BIT,
++				       ETHTOOL_LINK_MODE_400000baseCR8_Full_BIT);
+ 	MLX5_BUILD_PTYS2ETHTOOL_CONFIG(MLX5E_100GAUI_1_100GBASE_CR_KR, ext,
+ 				       ETHTOOL_LINK_MODE_100000baseKR_Full_BIT,
+ 				       ETHTOOL_LINK_MODE_100000baseSR_Full_BIT,
+-- 
+2.43.0
+
 
 
 
