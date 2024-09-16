@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-76400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB84A97A18D
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:08:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6BA097A1E5
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:11:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 82C74287E66
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:08:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AE75F2862CB
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:11:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 705C11553AB;
-	Mon, 16 Sep 2024 12:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17EE1155352;
+	Mon, 16 Sep 2024 12:11:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RxGEO7RJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W/uDQ4hH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EF50154BFB;
-	Mon, 16 Sep 2024 12:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA6AD146A79;
+	Mon, 16 Sep 2024 12:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488484; cv=none; b=PT3FicM1MCUOfcczyJog89qhdvYZL6Ykfx7RG7VP5HEy5WNp9iUQXNEgVh1G7mp5VTAv2vydow+Fq0um0iZcXcAwXoV12jd1Z2/f+xQk+NWGmvsINYdmkg8LOxtcX45Mh+it9uDy9HcwlwrNDEW1fxmxgZLXkOxsivCFg4JJvOY=
+	t=1726488689; cv=none; b=sjwXVQLZxCBKzjnP3TCq9qk6hy/4UA0omvsUzZuB98V3IWjYts80L/+jHCgzOVTSK0oafzI1Kd1ZvtVoxsQ0+BZu6OwTX6YkVKFby0yXz5Hn7kP3bYjP65or4gxoqL76kSxA46XX3NNW2fuQEjk+km6p3/4ydIV+xIioLv/kcyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488484; c=relaxed/simple;
-	bh=IszvJnoDWFTgFdHiMpRUrTF0Q/D9gJ2vmJ6vVN7yb9I=;
+	s=arc-20240116; t=1726488689; c=relaxed/simple;
+	bh=4ymNFRocG1Kj7aE7+OCGKK2H6JbAeUtMbdvfs97718M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cfgWFu8VON9ZDOoo8O2he8eOLe7pZNRP5dYztmvI98xOH/K2hkE2DHuqh0YcIrpcP50LWt+TWvemSiGoD7xBS23brI24QxVdWBdcfa4MckTQXD32XCDfLHH9oBpp1GpnIsi/yeywiEVWGRH9ddpnPvrRwWOcacYXfAmRXfX2zc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RxGEO7RJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A700AC4CEC4;
-	Mon, 16 Sep 2024 12:08:03 +0000 (UTC)
+	 MIME-Version; b=eOLVI6ye23FBtKOuhQEW4kXyZi+Y/horw/Dmr/gcYOdxa6EfTeoYJsz/qEWASnbKHCE+gStw8KOPeTQOK9PU/r5gclPsQOCeqXYG2Djs36f6K6TkgzrKTh2O/VbouT1WJbJXQaWbV6TdP/ukO4KqLA6gjFP+i/m1CnctLEkOnK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W/uDQ4hH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50C5DC4CEC4;
+	Mon, 16 Sep 2024 12:11:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488484;
-	bh=IszvJnoDWFTgFdHiMpRUrTF0Q/D9gJ2vmJ6vVN7yb9I=;
+	s=korg; t=1726488689;
+	bh=4ymNFRocG1Kj7aE7+OCGKK2H6JbAeUtMbdvfs97718M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RxGEO7RJLEv/jaPgh6EmNtz/VTBqHSRBKgeFweEk4yGhIwFL5M70skhijBYv2HqJ9
-	 SYClO7Uy9nlqf6h4YH0bOcFz0bUQfVaKQFZJTPtr8MWR4YAgFkoRXKsojI/BmP7Dgn
-	 lAOIxCjiLn1BWTSBX0309BhJlUE2WgWwrXSE5Apo=
+	b=W/uDQ4hHFpGXRkrTnU3kl136iEszqhml8+wIxeqfAylnRJr3bLufb4ttrD/Aimcu2
+	 q+GBuYbjIe7Ou6IDzC9stAzD4pbZCq8L/OYtTOtXk+dUVTQIhYR5qvXh2zv+0aGrKN
+	 3yLLflngwSKIxJ5hyhfQtyPG2cHQ9DGTeBhXDYCA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+02a42d9b1bd395cbcab4@syzkaller.appspotmail.com,
-	Jeongjun Park <aha310510@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Lukasz Majewski <lukma@denx.de>,
-	Jakub Kicinski <kuba@kernel.org>,
+	peng guo <engguopeng@buaa.edu.cn>,
+	Alison Schofield <alison.schofield@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 093/121] net: hsr: prevent NULL pointer dereference in hsr_proxy_announce()
-Date: Mon, 16 Sep 2024 13:44:27 +0200
-Message-ID: <20240916114232.207314071@linuxfoundation.org>
+Subject: [PATCH 6.6 52/91] cxl/core: Fix incorrect vendor debug UUID define
+Date: Mon, 16 Sep 2024 13:44:28 +0200
+Message-ID: <20240916114226.226372345@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
-References: <20240916114228.914815055@linuxfoundation.org>
+In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
+References: <20240916114224.509743970@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,57 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: peng guo <engguopeng@buaa.edu.cn>
 
-[ Upstream commit a7789fd4caaf96ecfed5e28c4cddb927e6bebadb ]
+[ Upstream commit 8ecef8e01a08c7e3e4ffc8f08d9f9663984f334b ]
 
-In the function hsr_proxy_annouance() added in the previous commit
-5f703ce5c981 ("net: hsr: Send supervisory frames to HSR network
-with ProxyNodeTable data"), the return value of the hsr_port_get_hsr()
-function is not checked to be a NULL pointer, which causes a NULL
-pointer dereference.
+When user send a mbox command whose opcode is CXL_MBOX_OP_CLEAR_LOG and
+the in_payload is normal vendor debug log UUID according to
+the CXL specification cxl_payload_from_user_allowed() will return
+false unexpectedly, Sending mbox cmd operation fails and the kernel
+log will print:
+Clear Log: input payload not allowed.
 
-To solve this, we need to add code to check whether the return value
-of hsr_port_get_hsr() is NULL.
+All CXL devices that support a debug log shall support the Vendor Debug
+Log to allow the log to be accessed through a common host driver, for any
+device, all versions of the CXL specification define the same value with
+Log Identifier of: 5e1819d9-11a9-400c-811f-d60719403d86
 
-Reported-by: syzbot+02a42d9b1bd395cbcab4@syzkaller.appspotmail.com
-Fixes: 5f703ce5c981 ("net: hsr: Send supervisory frames to HSR network with ProxyNodeTable data")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Acked-by: Lukasz Majewski <lukma@denx.de>
-Link: https://patch.msgid.link/20240907190341.162289-1-aha310510@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Refer to CXL spec r3.1 Table 8-71
+
+Fix the definition value of DEFINE_CXL_VENDOR_DEBUG_UUID to match the
+CXL specification.
+
+Fixes: 472b1ce6e9d6 ("cxl/mem: Enable commands via CEL")
+Signed-off-by: peng guo <engguopeng@buaa.edu.cn>
+Reviewed-by: Alison Schofield <alison.schofield@intel.com>
+Link: https://patch.msgid.link/20240710023112.8063-1-engguopeng@buaa.edu.cn
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/hsr/hsr_device.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/cxl/cxlmem.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/hsr/hsr_device.c b/net/hsr/hsr_device.c
-index ac56784c327c..049e22bdaafb 100644
---- a/net/hsr/hsr_device.c
-+++ b/net/hsr/hsr_device.c
-@@ -414,6 +414,9 @@ static void hsr_proxy_announce(struct timer_list *t)
- 	 * of SAN nodes stored in ProxyNodeTable.
- 	 */
- 	interlink = hsr_port_get_hsr(hsr, HSR_PT_INTERLINK);
-+	if (!interlink)
-+		goto done;
-+
- 	list_for_each_entry_rcu(node, &hsr->proxy_node_db, mac_list) {
- 		if (hsr_addr_is_redbox(hsr, node->macaddress_A))
- 			continue;
-@@ -428,6 +431,7 @@ static void hsr_proxy_announce(struct timer_list *t)
- 		mod_timer(&hsr->announce_proxy_timer, jiffies + interval);
- 	}
+diff --git a/drivers/cxl/cxlmem.h b/drivers/cxl/cxlmem.h
+index 59c7f88b915a..edb46123e3eb 100644
+--- a/drivers/cxl/cxlmem.h
++++ b/drivers/cxl/cxlmem.h
+@@ -538,7 +538,7 @@ enum cxl_opcode {
+ 		  0x3b, 0x3f, 0x17)
  
-+done:
- 	rcu_read_unlock();
- }
+ #define DEFINE_CXL_VENDOR_DEBUG_UUID                                           \
+-	UUID_INIT(0xe1819d9, 0x11a9, 0x400c, 0x81, 0x1f, 0xd6, 0x07, 0x19,     \
++	UUID_INIT(0x5e1819d9, 0x11a9, 0x400c, 0x81, 0x1f, 0xd6, 0x07, 0x19,     \
+ 		  0x40, 0x3d, 0x86)
  
+ struct cxl_mbox_get_supported_logs {
 -- 
 2.43.0
 
