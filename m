@@ -1,114 +1,101 @@
-Return-Path: <stable+bounces-76530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE84897A7CC
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 21:27:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3BCA97A7ED
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 21:49:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5917CB225B0
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 19:27:23 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 762631F260B7
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 19:49:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E6BD15B560;
-	Mon, 16 Sep 2024 19:27:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DED341332A1;
+	Mon, 16 Sep 2024 19:49:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hp.com header.i=@hp.com header.b="WDKuDLMM"
+	dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b="GDIW3Sjp"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-162.mimecast.com (us-smtp-delivery-162.mimecast.com [170.10.129.162])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02B0B15921D
-	for <stable@vger.kernel.org>; Mon, 16 Sep 2024 19:27:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.162
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A551DFE4
+	for <stable@vger.kernel.org>; Mon, 16 Sep 2024 19:48:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726514837; cv=none; b=F1oAdKZCmJ7Nf0FDmuAvNLalnq/9buCQJmiHo/ALN2ocK+I4kHc7q1g8gpwr6HVwvynXsZe8oIO3RuHEm4iNpr4vqv87+FxdN/8z60BZjPrERJRHFkeN8RDWtVrvDg9trVt5/hVZZP/ATlgYBfa/SzeXeYpDiZBMRjBng0foTAo=
+	t=1726516140; cv=none; b=BVGSseHJHd+XjVBS8wKWTDWHX0iOr87++64eCaYit9vjVTp9rZcwNrr8QXzJ0/76pCYxvMG5sOHPs4MnO9nWdg698bxSNk+jfFf9CzPiC8+Qm44W7NzW+zgluLr6RRso+YdLor8P9tFVkq0zzi+nSj2gswrdHei1NCNqc7pnzYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726514837; c=relaxed/simple;
-	bh=MA2ipLhTcZA7vIZAwQ9F3rY4FTOpS7BrXQ7wWgPpTtE=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=FWk+GqZYpugcvxdpj8fXeklDFBZoGolajqt/VQEIcGYytrCTAMfpCL5+yOydXG6u4m6I6g7W6OaevX1ZHCqEnPJKJaWc8W+e/PGXn+rmK3m/ljDHrzQC5xwPDQsZ7tuw9NAuyLeXmTgfp3u2F/ruJokRgO8exq6pe2f6P05p6U0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hp.com; spf=pass smtp.mailfrom=hp.com; dkim=pass (1024-bit key) header.d=hp.com header.i=@hp.com header.b=WDKuDLMM; arc=none smtp.client-ip=170.10.129.162
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hp.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hp.com; s=mimecast20180716;
-	t=1726514833;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=MA2ipLhTcZA7vIZAwQ9F3rY4FTOpS7BrXQ7wWgPpTtE=;
-	b=WDKuDLMMxVEVn85RO97sLsZgggmXbXH1jDaKtrNTHaMKopcUxEBQlYDa+hy6DVt6FMsfiT
-	M6LX7c7rLRP6HS0G0RpFnhKH8zWTHdSejefTf/5kVo310gwlreK6bo0T1EqEYjC7h3N7uR
-	y+VMYHnix+TqWNBQ205TZKAc2oOHmnM=
-Received: from g7t16451g.inc.hp.com (hpifallback.mail.core.hp.com
- [15.73.128.137]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-609-oPleO0YMPci8afcKhvXddg-1; Mon, 16 Sep 2024 15:27:12 -0400
-X-MC-Unique: oPleO0YMPci8afcKhvXddg-1
-Received: from g7t14407g.inc.hpicorp.net (g7t14407g.inc.hpicorp.net [15.63.19.131])
-	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-	(No client certificate requested)
-	by g7t16451g.inc.hp.com (Postfix) with ESMTPS id 0F10B6000CA2
-	for <stable@vger.kernel.org>; Mon, 16 Sep 2024 19:27:12 +0000 (UTC)
-Received: from niko-jammy.localdomain (unknown [15.52.90.21])
-	by g7t14407g.inc.hpicorp.net (Postfix) with ESMTP id 0B93518;
-	Mon, 16 Sep 2024 19:27:10 +0000 (UTC)
-From: nikolai.afanasenkov@hp.com
-To: alexandru.gagniuc@hp.com
-Cc: eniac-xw.zhang@hp.com,
-	nikolai.afanasenkov@hp.com,
-	stable@vger.kernel.org
-Subject: [PATCH] ALSA: hda/realtek: fix mute/micmute LED for HP mt645 G8
-Date: Mon, 16 Sep 2024 13:26:48 -0600
-Message-Id: <20240916192648.3918-1-nikolai.afanasenkov@hp.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1726516140; c=relaxed/simple;
+	bh=zPjHfQdvpqs4TfgpQHEOptnUrlJ+kxZazWeYFpu76r8=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=APl9oqpcOcvMyoBEw5PSgoCuAfoQ/DuFFDGElMZO0u0WM8nctBtrk2tqMq21sn1tbVxG+z2mpZ0Tj9bynYGqLp+t6aWoKakaVWmxeXmZU6YK4XBg7FTg3meUCPGtWT1HTQdgJ+D+nYhfWPDlbO/mEmWUD6IXIh9TVX3rIaKQEHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me; spf=pass smtp.mailfrom=pm.me; dkim=pass (2048-bit key) header.d=pm.me header.i=@pm.me header.b=GDIW3Sjp; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=pm.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pm.me
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=pm.me;
+	s=protonmail3; t=1726516136; x=1726775336;
+	bh=8j1OBoEq93yzihCTZoTOGp8S4edGbr7k85rO/0srWEw=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=GDIW3SjpRZoye586ZrXv/+XV7/DLswdYwq/x/1/OrHNMlHpWpQln9jqUQDhbQAphW
+	 TZHWVJTs2KgiKyg41HlEwThjWrxWuUvh9JoT9fEKxZF91OjUJijM+Z3qYGNp1yGr79
+	 bD5OpMo3rGzTgF5JaGjZrxqOVBbP51/pEXcTIO9fahq7WZNhvn6orT9g3/M1PC349e
+	 El9SxH1/GwHAGFDoo0EJP1wrqYaOy8LavX7qDVqAhXf5Iuc91M4d3BkTUuIX6Z216d
+	 w8DYZX2mJkbMJzYZ5TYZAuYhZlnrIRMAU5a1afgnia8TiR3kePD1Vt+ixweO3wJ9gj
+	 skPjyF3rpsQAQ==
+Date: Mon, 16 Sep 2024 19:48:54 +0000
+To: Peter Zijlstra <peterz@infradead.org>
+From: Michael Pratt <mcpratt@pm.me>
+Cc: Ingo Molnar <mingo@redhat.com>, Vincent Guittot <vincent.guittot@linaro.org>, Dietmar Eggemann <dietmar.eggemann@arm.com>, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [RESEND PATCH] sched/syscalls: Allow setting niceness using sched_param struct
+Message-ID: <rdEqY1XYnE6kLSvXRjXReSAey0SEwMDUvqQRqLheIM99LpGH8pmv1ngZsNAkW1-DEHQhERga-rxGfTbuhL6FW_aEdo1DvWaOgncii1KmupY=@pm.me>
+In-Reply-To: <e6KW_ypfbIVbenvwbBwGgnxX700e-A68oVmCn1pdJ0834U4wtIWXhh5zfHrQF2dvSL_Vc_heC4KZ0XRzNZ-w7QfF70W0epxCzpph55reOls=@pm.me>
+References: <20240916050741.24206-1-mcpratt@pm.me> <20240916111323.GX4723@noisy.programming.kicks-ass.net> <e6KW_ypfbIVbenvwbBwGgnxX700e-A68oVmCn1pdJ0834U4wtIWXhh5zfHrQF2dvSL_Vc_heC4KZ0XRzNZ-w7QfF70W0epxCzpph55reOls=@pm.me>
+Feedback-ID: 27397442:user:proton
+X-Pm-Message-ID: 2ea0a1b247a658765daeb7e72ca0ee54c8445048
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: hp.com
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=WINDOWS-1252; x-default=true
 
-From: Nikolai Afanasenkov <nikolai.afanasenkov@hp.com>
+one more detail I forgot:
+it actually would not be compliant for niceness as the input...
 
-The HP Elite mt645 G8 Mobile Thin Client uses an ALC236 codec
-and needs the ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF quirk
-to enable the mute and micmute LED functionality.
+On Monday, September 16th, 2024 at 15:23, Michael Pratt <mcpratt@pm.me> wro=
+te:
 
-This patch adds the system ID of the HP Elite mt645 G8
-to the `alc269_fixup_tbl` in `patch_realtek.c`
-to enable the required quirk.
+> On Monday, September 16th, 2024 at 07:13, Peter Zijlstra <peterz@infradea=
+d.org> wrote:
+>
+> > Worse, you're proposing a nice ABI that is entirely different from the
+> > normal [-20,19] range.
+>=20
+> ...
+> ...
+> ...
+>=20
+> Otherwise, we have a confusing conflation between the meaning of the two =
+values,
+> where a value of 19 makes sense for niceness, but is obviously invalid fo=
+r priority
+> for SCHED_NORMAL, and a negative value makes sense for niceness, but is o=
+bviously invalid
+> for priority in any policy.
+>=20
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Nikolai Afanasenkov <nikolai.afanasenkov@hp.com>
----
- sound/pci/hda/patch_realtek.c | 1 +
- 1 file changed, 1 insertion(+)
+POSIX doesn't allow a negative value for the ABI at all:
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 452c6e7c20e2..5ad5a901f9b6 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10396,6 +10396,7 @@ static const struct snd_pci_quirk alc269_fixup_tbl[=
-] =3D {
- =09SND_PCI_QUIRK(0x103c, 0x8ca2, "HP ZBook Power", ALC236_FIXUP_HP_GPIO_LE=
-D),
- =09SND_PCI_QUIRK(0x103c, 0x8ca4, "HP ZBook Fury", ALC245_FIXUP_CS35L41_SPI=
-_2_HP_GPIO_LED),
- =09SND_PCI_QUIRK(0x103c, 0x8ca7, "HP ZBook Fury", ALC245_FIXUP_CS35L41_SPI=
-_2_HP_GPIO_LED),
-+=09SND_PCI_QUIRK(0x103c, 0x8caf, "HP Elite mt645 G8 Mobile Thin Client", A=
-LC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF),
- =09SND_PCI_QUIRK(0x103c, 0x8cbd, "HP Pavilion Aero Laptop 13-bg0xxx", ALC2=
-45_FIXUP_HP_X360_MUTE_LEDS),
- =09SND_PCI_QUIRK(0x103c, 0x8cdd, "HP Spectre", ALC287_FIXUP_CS35L41_I2C_2)=
-,
- =09SND_PCI_QUIRK(0x103c, 0x8cde, "HP Spectre", ALC287_FIXUP_CS35L41_I2C_2)=
-,
---=20
-2.34.1
+  If successful, the sched_get_priority_max() and sched_get_priority_min() =
+functions return
+  the appropriate maximum or minimum values, respectively.
+  If unsuccessful, they return a value of -1 and set errno to indicate the =
+error.
 
+
+--
+MCP
 
