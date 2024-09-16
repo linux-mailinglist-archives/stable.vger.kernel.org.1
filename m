@@ -1,229 +1,353 @@
-Return-Path: <stable+bounces-76189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19A5D979C96
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 10:13:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E9D3979CA3
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 10:19:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8D0121F239D0
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 08:13:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D8B11F22D77
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 08:19:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B61813B5B3;
-	Mon, 16 Sep 2024 08:13:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A24F13B584;
+	Mon, 16 Sep 2024 08:19:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hp.com header.i=@hp.com header.b="f50amXeA"
+	dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b="mdNvCgJp"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-162.mimecast.com (us-smtp-delivery-162.mimecast.com [170.10.133.162])
+Received: from smtpcmd03116.aruba.it (smtpcmd03116.aruba.it [62.149.158.116])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0509B13D291
-	for <stable@vger.kernel.org>; Mon, 16 Sep 2024 08:13:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.162
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E6BD13AA5F
+	for <stable@vger.kernel.org>; Mon, 16 Sep 2024 08:19:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.149.158.116
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726474402; cv=none; b=K0HjWckHwi1xag1wXbkQ/imrc4xUiNKkT+a9g/D325mpVwNrfAnF1myo71AAma5Z7FYnf0vPIJ5gbHqN9/oOODRPirMQWZ9z2vk7wHQ3BdizjgJIN34+lsZeXiiZEi8gTKRqRTzSrQF2cJgg3OMMIAxy92xFVIQIq9Y614OOpB0=
+	t=1726474765; cv=none; b=IbZfCikOK81thzbiULoXsV4DebLfm+TGyc2GFB+KVpkzAs46YmE6mK73n6qQLv1Yy/hdfxgrubo3EAolBIAhnePVwsKREY59EjpmQntDZiFNCfvFO92yfMcA6sMLjLtfQRaAowPkvNeDd5h6JURTilnVM77Dbr/phhzkhP5IoyA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726474402; c=relaxed/simple;
-	bh=wXIXWjCFZASPZJCCVg3BReFbcaue69mfpzOBABvKVX0=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 MIME-Version:Content-Type; b=F2aeOoeyTwxU0IaiIMISglS+ZzcPAM0wouW+Q2VZjYPKLAtPDqBVXqAbZHQmvl0psTsqIk8/qW3ZKBgrE0MzjzPDS5WF9Q4/bOScaFW8y8bBPxtLXdv2cGzEqsUwM5/y5vmrP7caTnLB7tKQUsFivLMiN30LINIG30PGT/0lngw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hp.com; spf=pass smtp.mailfrom=hp.com; dkim=pass (1024-bit key) header.d=hp.com header.i=@hp.com header.b=f50amXeA; arc=none smtp.client-ip=170.10.133.162
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hp.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hp.com; s=mimecast20180716;
-	t=1726474399;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=OHrnhgFtjZLacqo/XSOODkmPPGVuCqrNrsi2W98gfVg=;
-	b=f50amXeAnRDZDYseStrqhCtwzBExTmkKV6EpECB/UKMAT+RgkbRjE5f+OOwsIZYz6NH+RO
-	rWeBAAeqZHav+Gyf3uj+BiqDNEAs7hJ29LMo0NDKgU09UJSPLtdbgkfc5q+KLaS0KTbQxd
-	ROP7YFeWPidK+LTHKXU1KqEZ6f2804k=
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com
- (mail-co1nam11lp2173.outbound.protection.outlook.com [104.47.56.173]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-74-qiLmJNUHP3qJRrx9MaDv8w-1; Mon, 16 Sep 2024 04:13:17 -0400
-X-MC-Unique: qiLmJNUHP3qJRrx9MaDv8w-1
-Received: from EA2PR84MB3780.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:303:25b::18)
- by DS0PR84MB3591.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:8:1b3::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7962.19; Mon, 16 Sep
- 2024 08:13:14 +0000
-Received: from EA2PR84MB3780.NAMPRD84.PROD.OUTLOOK.COM
- ([fe80::af88:ed17:72c3:3f4e]) by EA2PR84MB3780.NAMPRD84.PROD.OUTLOOK.COM
- ([fe80::af88:ed17:72c3:3f4e%4]) with mapi id 15.20.7962.022; Mon, 16 Sep 2024
- 08:13:14 +0000
-From: "Wang, Wade" <wade.wang@hp.com>
-To: Benjamin Tissoires <bentiss@kernel.org>
-CC: "jikos@kernel.org" <jikos@kernel.org>, "linux-input@vger.kernel.org"
-	<linux-input@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "stable@vger.kernel.org"
-	<stable@vger.kernel.org>
-Subject: RE: [PATCH] HID: plantronics: Update to map micmute controls
-Thread-Topic: [PATCH] HID: plantronics: Update to map micmute controls
-Thread-Index: AQHbBeXJu68qxmQNwkyRo9KKHud0xbJaEwUg
-Date: Mon, 16 Sep 2024 08:13:14 +0000
-Message-ID: <EA2PR84MB378051BB14F857BA84E662818B602@EA2PR84MB3780.NAMPRD84.PROD.OUTLOOK.COM>
-References: <20240913060800.1325954-1-wade.wang@hp.com>
- <s36bnt7ptdarrxpejm6n62gf3rvvwfagmmpyq4unpv3hn7v2jf@up2vjv7shl2q>
-In-Reply-To: <s36bnt7ptdarrxpejm6n62gf3rvvwfagmmpyq4unpv3hn7v2jf@up2vjv7shl2q>
-Accept-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: EA2PR84MB3780:EE_|DS0PR84MB3591:EE_
-x-ms-office365-filtering-correlation-id: 63257f4b-ed77-4f81-216d-08dcd627698d
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|376014|38070700018
-x-microsoft-antispam-message-info: =?us-ascii?Q?MR2RKfRnYVt6naTKvuhEpaMW19cuNCAIGtPerSyediBeJquVYYsURBlv67j4?=
- =?us-ascii?Q?zqgu2K0NOv2RNxa39iDem8YosOeCTVVx/+9AH1Uuh5kS8/8fTftTtoWRRb6l?=
- =?us-ascii?Q?AbNqEpI99SQjG8jEYPsQSHYMWWRDFtb3pYzHO5RsFVLprik3VLWNvPPkHNcE?=
- =?us-ascii?Q?pEQCnZUQR9W/vIBfZAup2OmKhyPpdNGXyY8xhB1aCUxj6nHOoxm3WPv90K2G?=
- =?us-ascii?Q?kyt1qqrwOjKY/+W8I551NoY3bbSzkPXhCJ+Vgxll9CX6MrKTSRnOx9hYYanv?=
- =?us-ascii?Q?ewXp/9xyPUjvqf/oFFXrdanzApKAg1EPcwhP+ie8jGaQnVq230QUlD9O/x8x?=
- =?us-ascii?Q?KfKAzelcBsDYjLzh0zd09E6DSXlt12fhCvlwaGa2Uwi6rwh8FX1utHkpqnwG?=
- =?us-ascii?Q?JfRCCDzvAAa7K4buuIFEdjYnb6w5y0btM7FCxmUhXxXxB1hAZFpbBFDtnVk+?=
- =?us-ascii?Q?LTn51QTmdCZQpU3vCf9A8vqm/v96c2bMxepgv1+SnzCydmnJJEQz4+Y6roFI?=
- =?us-ascii?Q?ej34BWeXbrf34V+LKMqrlTtRWrPWqQ2i5jTx2XUb3fisWnBRghQZMsD+I5rl?=
- =?us-ascii?Q?Mkc81QLH6ol3Oqjr97E2X1JYV/oHX+QEx/IaYNkn39xGzDIGVXeiuCwPqQg8?=
- =?us-ascii?Q?6f5cNgb1NuM/QbleVX2cVX3zqCknyT5pLXzlg726r38Avejm3HxuRd/w050s?=
- =?us-ascii?Q?1Jbl4o9xBqYwXhkN+1WV/cyCbPPVFUggv8z2P8a9sC7evq9UeAlkN1rPKcPd?=
- =?us-ascii?Q?gP2Im51fHNnKydSvD1DRl7EugRB3JvnwMnKo6VnItA4Zj18Xv0i6EXliIv07?=
- =?us-ascii?Q?KwxJWphWwW7UGIe41NQnyeBcV5QY0hq1dkiHyszqGVCYGQ+3zeSY3pohE+jX?=
- =?us-ascii?Q?zMrWrQTym9LPMmuNEvwYd/xWpLppvWo+yLa/z9bzFwotSfmQUdCno2HxXyzM?=
- =?us-ascii?Q?SbOjoxTze+pCO1jYHQA0dbwRYikW7EsVBf7IsVfUsqrmUXvP/1J/GzUcqoqI?=
- =?us-ascii?Q?dIyJVU2TVkMYFT90Ul38T1tmijoEAS8oPxk8ylKVEuLJ0ObldTDNyhZ4WUoX?=
- =?us-ascii?Q?GC77PyCqKLsYlc7CSauT/cOFSRvQfn4niwzmuG7KoMLLEELRiqOeLZY0ws+8?=
- =?us-ascii?Q?xDX3OS+IwnA8ETF/0OWxlDcWi+0TsKe0WHNSt1fP1ewntVluRSaruDiTfnjg?=
- =?us-ascii?Q?vq+rekmaMxlxnoPboJS1UMbZIypJ6RMqEqs6+5H2V2bNHN1RBr8hzDxGYrC2?=
- =?us-ascii?Q?fdG+u2KXTGNDSFyLroe9UPUu/hwNwpBwQ4DQoXciaAKC/52cGy1XaEBK1Yd2?=
- =?us-ascii?Q?JAeJOxemeUHLzHaGSWXQAhVR2hZNlNdwS/B2LuR8LyHejRzpX9KrFsEf26Gr?=
- =?us-ascii?Q?p5/oNiZuoIWyr7oZtwBPzMlKjiWKhltf+IMGnPa09gQzxe+QIA=3D=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:EA2PR84MB3780.NAMPRD84.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(38070700018);DIR:OUT;SFP:1101
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?us-ascii?Q?dnOb2jPWCDc4Jto2eU/u0Ouy3YRyMeCpccLPxd61nhQYMM8C8MOyJs26ZR5r?=
- =?us-ascii?Q?adzBz4gYHAIBydyxWo3ZZYXfbxqbesa5HmJo+DEq1ZdyghGQH/NCLr1JjNMb?=
- =?us-ascii?Q?cT6K2CpZk2kJ0u2Q+YCUUqnWbd261YoaqDVH7fDrF3JmbzMoSTtojDL+pul8?=
- =?us-ascii?Q?fQ85l476aAjW//cbEJjJVhDXRTH7B1GS+Npx28GbLubNdAfNL6RsaKmZKCoM?=
- =?us-ascii?Q?DxQGfOH3OphBRyHigDZXboY4igQPSEZQ3fq6F1Ig+rGcL0IOk6x2JJzWxDo6?=
- =?us-ascii?Q?id5f8DsZeSSbPfm7ySuBVeYExSS8qA3lInA0gL3GnQF347NQFelYKK38w6pa?=
- =?us-ascii?Q?OP6NJzc34m0LkgygJmRh6rBKz6fLWQn2viBQUZPrfWrOfAbHz2IfepiKmI8B?=
- =?us-ascii?Q?xj6G+jiWgzScXlU3SBJIFriqi7rXYw6ecQ5aBlVKqdrbP7ObKhUQqSP+QPyC?=
- =?us-ascii?Q?2uPXoMygoqFBD0oJ5+hd+2FJfw0GyEHp4ZNoiyQORHrWEq/0fA/XNo+/kUPz?=
- =?us-ascii?Q?ch9NUuUSgBNN0FeYBh8CjugQX8xEjZ1tvtjWEzfFCveW5ZFccAkF9y38kvV5?=
- =?us-ascii?Q?B/8DstJTm4vj5q7hzUu2KVHTNxOsVYYiTpQqKiebK2cf9OzoaloKxf/+rAfF?=
- =?us-ascii?Q?Yc7+abGSE5ArCDrG8maD1NHSrCauyDuanWzQnCi0fgdmp3ZSsQXUGmPb9t54?=
- =?us-ascii?Q?UpWhMFtPI0T1sHNMi0+joZ8oJxiRS0bf+lEdKZ6o6H9emjunwl3/xqzKfRqY?=
- =?us-ascii?Q?qXqKExs3HsGGdLiNt3ykeoPAzBYRtZrg00uuCvwTOdwvEW3PlftOpZTrzu3w?=
- =?us-ascii?Q?xAAzsTHXcci23nZZb5F23YsFQDho08EDpOevqHsagA6HDleh2SX+BU4LkLHU?=
- =?us-ascii?Q?Ie5TvsPwLbSvonPayVKOwIDfoerB5NAOzSt7gaRmCPGLtu+kzfy24RVnIiup?=
- =?us-ascii?Q?NSDXVgjNtxkvH6N5McHVMYIf2KvbsEM9dclzKngUg0kP3jQsg7FURjMfzNNV?=
- =?us-ascii?Q?WSXD1SMmUeUVZdayuQsGnecozgbtoG2DdIut6xv9rLokrjZkjExgQ1OP1CEL?=
- =?us-ascii?Q?2xJalbW6zRXlNQf35G4MrbDJC/uSxWn0nYSmV4IqjjYvsnghRoapNLuDG4PF?=
- =?us-ascii?Q?Nu656OZTKecm7pYayYgSmaKUbzEnxtOLCCgmENccXuHTQ78E8C8P2Fu5vo54?=
- =?us-ascii?Q?xWfQ45V1xmSSk7J4czq7sLEkuZpkJhgOndvB/G5Iv3pGKQwUzrmO9gv/Jlix?=
- =?us-ascii?Q?UxGYY2rgtfzDFuBRBt8D7rrGGQoiKGJ1XvdEjyV2hGZglyW0bPPy78tEbgBJ?=
- =?us-ascii?Q?syF/O69uSh4VHzMO/wyiul/pA+E0D8qVi6y/kNSviItDQiCqpgijOQcqoEuj?=
- =?us-ascii?Q?qx9Nqb/P15IqX6Qm9fJZvzFxRgq0zm58foFL/5vnQJHTtYhFYZiqznLFWl7G?=
- =?us-ascii?Q?A/EVsVdMZGC9fr0DZkr246Lko6sUevriCxteLk13JwVUFTDIe6V9I4kgv+fG?=
- =?us-ascii?Q?CHbZOTVqfId+6TZz8Ce9FTuvzRzcLMuVvzcgrDPnGag787gE7QCW9XK+HWnk?=
- =?us-ascii?Q?4Dd0Mmtpp+wnrOxTvos=3D?=
+	s=arc-20240116; t=1726474765; c=relaxed/simple;
+	bh=zPER2DFSHvBQwzcjfVJE4mnEo9K7DmY5BCXlq+o6vGY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UpMEL0Wrj269nD0TkpeFXa2HAxaCgEzVxfKzdc5k24OXRlgki9AC1woM6PNlM5PkEDjcS81HF3b8dXsRa0ZO5APqZC+t1fAq9s42Zt6KbnCjluiPZDQ9j+Z0L8qWX36tkMSAX8cW85OH4hDHtCd3F0YqmPCjrC00iIQmq1K5148=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enneenne.com; spf=pass smtp.mailfrom=enneenne.com; dkim=pass (2048-bit key) header.d=aruba.it header.i=@aruba.it header.b=mdNvCgJp; arc=none smtp.client-ip=62.149.158.116
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=enneenne.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=enneenne.com
+Received: from [192.168.1.57] ([79.0.204.227])
+	by Aruba Outgoing Smtp  with ESMTPSA
+	id q6u3sJFccwiwkq6u3sxGKb; Mon, 16 Sep 2024 10:16:12 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=aruba.it; s=a1;
+	t=1726474572; bh=zPER2DFSHvBQwzcjfVJE4mnEo9K7DmY5BCXlq+o6vGY=;
+	h=Date:MIME-Version:Subject:To:From:Content-Type;
+	b=mdNvCgJpRvi1VrUEUUC0WsvWhYEb1MiMJ4baZlUQw1VewkZdnuOYeDBJ96ytbavSd
+	 29Eh9LlfDVCg10k+LH9EdShZFLL6LOMW8OttAn9pBxP51zK6g6AqvR4FcfGc6X1BX+
+	 NOqSvMXMHkIjThDSPnbUleW697pcCyhakpC+NyRJYut8eMOAw6IHg/HCwVxWCkBH+B
+	 aM9KAB3+O4XCX3Xh9fwa+DQka+OUXTxSr/DqNoT68lmYHgdQDW/SpRaaN/EpyBiyuL
+	 d8gp+xpSbAF0SzDO2GReS/92GtYOd8o0SGiz4HBRLqsIff7j8d3kVYfIIt2OCMdF0L
+	 B2g7/hvhLi+hg==
+Message-ID: <fc5fe55c-422d-4e63-a5bd-8b6b2d3e6c62@enneenne.com>
+Date: Mon, 16 Sep 2024 10:16:11 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: hp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: EA2PR84MB3780.NAMPRD84.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 63257f4b-ed77-4f81-216d-08dcd627698d
-X-MS-Exchange-CrossTenant-originalarrivaltime: 16 Sep 2024 08:13:14.2105
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: ca7981a2-785a-463d-b82a-3db87dfc3ce6
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: 9XihEEiIvisgY94BToc26aaXYiNLyGy3mLaKNQC3/ttThi9hKOl5g0GH4HZgT8Kr4LnsRGUsDAQfZ5W85GKutQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR84MB3591
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: hp.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] pps: Remove embedded cdev to fix a use-after-free
+To: Calvin Owens <calvin@wbinvd.org>, linux-kernel@vger.kernel.org
+Cc: George Spelvin <linux@horizon.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+ Andrew Morton <akpm@linux-foundation.org>
+References: <ZuMvmbf6Ru_pxhWn@mozart.vkv.me>
+ <8072cd54b02eaebf16739f07e6307271534e21c7.1726119983.git.calvin@wbinvd.org>
+From: Rodolfo Giometti <giometti@enneenne.com>
 Content-Language: en-US
-Content-Type: text/plain; charset=WINDOWS-1252
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <8072cd54b02eaebf16739f07e6307271534e21c7.1726119983.git.calvin@wbinvd.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CMAE-Envelope: MS4xfIizyv5xYKUvmxytyvfyFC556iQhAsrbq3g4mNMWKCJKZR4e8tSRkEYLAws/qXgVl1D/tMr6rp0mBDIn8Fi7dN2y4yrGf783GAMC+TIyu5M+rYyZsBZe
+ u6PJcOx7zIZkTtl8Pyxf4TS9QsEYdprZ3HX0mT6rKwjCp80zQA83Djv8cSU4BB+wFqzq3cuIJdA+OAfTCRsRRCZk52yequyGTzS463cIZc4m2KPVICXFMg9c
+ nNyDRJWzZ5jbUIxLBcS05Hmw9l1PEkNmw9wG+RyBuEuVYRqtq7ahgUllr34U2CLDmmg28DlbOQjusID2BPgQ+ZQuQXwFAPDiMinv2+GeiNwOX5sR/Q5oxIW9
+ lnBqrz5HL1UeXLf0Pcp9aJ8lzle4qw==
 
-Hi Benjamin,
-
-This patch is for all Poly HS devices, and it does not depends on other pat=
-ches, it can apply directly by " git am -3".
-
-With this patch, MicMute button key event will be send to user space, I hav=
-e tested on the below Poly devices:
-        Plantronics EncorePro 500 Series
-        Plantronics Blackwire_3325 Series
-        Poly Voyager 4320 HS + BT700 Dongle
-
-Regards
-Wade
-
------Original Message-----
-From: Benjamin Tissoires <bentiss@kernel.org>=20
-Sent: Friday, September 13, 2024 10:04 PM
-To: Wang, Wade <wade.wang@hp.com>
-Cc: jikos@kernel.org; linux-input@vger.kernel.org; linux-kernel@vger.kernel=
-.org; stable@vger.kernel.org
-Subject: Re: [PATCH] HID: plantronics: Update to map micmute controls
-
-CAUTION: External Email
-
-On Sep 13 2024, Wade Wang wrote:
-> telephony page of Plantronics headset is ignored currently, it caused
-> micmute button no function, Now follow native HID key mapping for
-> telephony page map, telephony micmute key is enabled by default
-
-For which devices this patch is required? Is it related to the other
-patch you sent today? If so please make a mention of the concerned
-devices and make sure both patches are sent in a single v3 series.
-
-Also, have you tested this change with other Plantronics headsets? Where
-there any changes in behavior from them?
-
-Cheers,
-Benjamin
-
->
+On 14/09/24 02:24, Calvin Owens wrote:
+> On a board running ntpd and gpsd, I'm seeing a consistent use-after-free
+> in sys_exit() from gpsd when rebooting:
+> 
+>      pps pps1: removed
+>      ------------[ cut here ]------------
+>      kobject: '(null)' (00000000db4bec24): is not initialized, yet kobject_put() is being called.
+>      WARNING: CPU: 2 PID: 440 at lib/kobject.c:734 kobject_put+0x120/0x150
+>      CPU: 2 UID: 299 PID: 440 Comm: gpsd Not tainted 6.11.0-rc6-00308-gb31c44928842 #1
+>      Hardware name: Raspberry Pi 4 Model B Rev 1.1 (DT)
+>      pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+>      pc : kobject_put+0x120/0x150
+>      lr : kobject_put+0x120/0x150
+>      sp : ffffffc0803d3ae0
+>      x29: ffffffc0803d3ae0 x28: ffffff8042dc9738 x27: 0000000000000001
+>      x26: 0000000000000000 x25: ffffff8042dc9040 x24: ffffff8042dc9440
+>      x23: ffffff80402a4620 x22: ffffff8042ef4bd0 x21: ffffff80405cb600
+>      x20: 000000000008001b x19: ffffff8040b3b6e0 x18: 0000000000000000
+>      x17: 0000000000000000 x16: 0000000000000000 x15: 696e6920746f6e20
+>      x14: 7369203a29343263 x13: 205d303434542020 x12: 0000000000000000
+>      x11: 0000000000000000 x10: 0000000000000000 x9 : 0000000000000000
+>      x8 : 0000000000000000 x7 : 0000000000000000 x6 : 0000000000000000
+>      x5 : 0000000000000000 x4 : 0000000000000000 x3 : 0000000000000000
+>      x2 : 0000000000000000 x1 : 0000000000000000 x0 : 0000000000000000
+>      Call trace:
+>       kobject_put+0x120/0x150
+>       cdev_put+0x20/0x3c
+>       __fput+0x2c4/0x2d8
+>       ____fput+0x1c/0x38
+>       task_work_run+0x70/0xfc
+>       do_exit+0x2a0/0x924
+>       do_group_exit+0x34/0x90
+>       get_signal+0x7fc/0x8c0
+>       do_signal+0x128/0x13b4
+>       do_notify_resume+0xdc/0x160
+>       el0_svc+0xd4/0xf8
+>       el0t_64_sync_handler+0x140/0x14c
+>       el0t_64_sync+0x190/0x194
+>      ---[ end trace 0000000000000000 ]---
+> 
+> ...followed by more symptoms of corruption, with similar stacks:
+> 
+>      refcount_t: underflow; use-after-free.
+>      kernel BUG at lib/list_debug.c:62!
+>      Kernel panic - not syncing: Oops - BUG: Fatal exception
+> 
+> This happens because pps_device_destruct() frees the pps_device with the
+> embedded cdev immediately after calling cdev_del(), but, as the comment
+> above cdev_del() notes, fops for previously opened cdevs are still
+> callable even after cdev_del() returns. I think this bug has always
+> been there: I can't explain why it suddenly started happening every time
+> I reboot this particular board.
+> 
+> In commit d953e0e837e6 ("pps: Fix a use-after free bug when
+> unregistering a source."), George Spelvin suggested removing the
+> embedded cdev. That seems like the simplest way to fix this, so I've
+> implemented his suggestion, with pps_idr becoming the source of truth
+> for which minor corresponds to which device.
+> 
+> But now that pps_idr defines userspace visibility instead of cdev_add(),
+> we need to be sure the pps->dev kobject refcount can't reach zero while
+> userspace can still find it again. So, the idr_remove() call moves to
+> pps_unregister_cdev(), and pps_idr now holds a reference to the pps->dev
+> kobject.
+> 
+>      pps_core: source serial1 got cdev (251:1)
+>      <...>
+>      pps pps1: removed
+>      pps_core: unregistering pps1
+>      pps_core: deallocating pps1
+> 
+> Fixes: d953e0e837e6 ("pps: Fix a use-after free bug when unregistering a source.")
 > Cc: stable@vger.kernel.org
-> Signed-off-by: Wade Wang <wade.wang@hp.com>
+> Signed-off-by: Calvin Owens <calvin@wbinvd.org>
 > ---
->  drivers/hid/hid-plantronics.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
->
-> diff --git a/drivers/hid/hid-plantronics.c b/drivers/hid/hid-plantronics.=
-c
-> index 2a19f3646ecb..2d17534fce61 100644
-> --- a/drivers/hid/hid-plantronics.c
-> +++ b/drivers/hid/hid-plantronics.c
-> @@ -77,10 +77,10 @@ static int plantronics_input_mapping(struct hid_devic=
-e *hdev,
->               }
->       }
->       /* handle standard types - plt_type is 0xffa0uuuu or 0xffa2uuuu */
-> -     /* 'basic telephony compliant' - allow default consumer page map */
-> +     /* 'basic telephony compliant' - allow default consumer & telephony=
- page map */
->       else if ((plt_type & HID_USAGE) >=3D PLT_BASIC_TELEPHONY &&
->                (plt_type & HID_USAGE) !=3D PLT_BASIC_EXCEPTION) {
-> -             if (PLT_ALLOW_CONSUMER)
-> +             if (PLT_ALLOW_CONSUMER || (usage->hid & HID_USAGE_PAGE) =3D=
-=3D HID_UP_TELEPHONY)
->                       goto defaulted;
->       }
->       /* not 'basic telephony' - apply legacy mapping */
-> --
-> 2.34.1
->
+> Changes in v2:
+> - Don't move pr_debug() from pps_device_destruct() to pps_unregister_cdev()
+> - Actually add stable@vger.kernel.org to CC
+> ---
+>   drivers/pps/pps.c          | 83 ++++++++++++++++++++------------------
+>   include/linux/pps_kernel.h |  1 -
+>   2 files changed, 44 insertions(+), 40 deletions(-)
+> 
+> diff --git a/drivers/pps/pps.c b/drivers/pps/pps.c
+> index 5d19baae6a38..6980ab17f314 100644
+> --- a/drivers/pps/pps.c
+> +++ b/drivers/pps/pps.c
+> @@ -25,7 +25,7 @@
+>    * Local variables
+>    */
+>   
+> -static dev_t pps_devt;
+> +static int pps_major;
+>   static struct class *pps_class;
+>   
+>   static DEFINE_MUTEX(pps_idr_lock);
+> @@ -296,19 +296,35 @@ static long pps_cdev_compat_ioctl(struct file *file,
+>   #define pps_cdev_compat_ioctl	NULL
+>   #endif
+>   
+> +static struct pps_device *pps_idr_get(unsigned long id)
+> +{
+> +	struct pps_device *pps;
+> +
+> +	mutex_lock(&pps_idr_lock);
+> +	pps = idr_find(&pps_idr, id);
+> +	if (pps)
+> +		kobject_get(&pps->dev->kobj);
+> +
+> +	mutex_unlock(&pps_idr_lock);
+> +	return pps;
+> +}
+> +
+>   static int pps_cdev_open(struct inode *inode, struct file *file)
+>   {
+> -	struct pps_device *pps = container_of(inode->i_cdev,
+> -						struct pps_device, cdev);
+> +	struct pps_device *pps = pps_idr_get(iminor(inode));
+> +
+> +	if (!pps)
+> +		return -ENODEV;
+> +
+>   	file->private_data = pps;
+> -	kobject_get(&pps->dev->kobj);
+>   	return 0;
+>   }
+>   
+>   static int pps_cdev_release(struct inode *inode, struct file *file)
+>   {
+> -	struct pps_device *pps = container_of(inode->i_cdev,
+> -						struct pps_device, cdev);
+> +	struct pps_device *pps = file->private_data;
+> +
+> +	WARN_ON(pps->id != iminor(inode));
+>   	kobject_put(&pps->dev->kobj);
+>   	return 0;
+>   }
+> @@ -332,14 +348,7 @@ static void pps_device_destruct(struct device *dev)
+>   {
+>   	struct pps_device *pps = dev_get_drvdata(dev);
+>   
+> -	cdev_del(&pps->cdev);
+> -
+> -	/* Now we can release the ID for re-use */
+>   	pr_debug("deallocating pps%d\n", pps->id);
+> -	mutex_lock(&pps_idr_lock);
+> -	idr_remove(&pps_idr, pps->id);
+> -	mutex_unlock(&pps_idr_lock);
+> -
+>   	kfree(dev);
+>   	kfree(pps);
+>   }
+> @@ -364,39 +373,26 @@ int pps_register_cdev(struct pps_device *pps)
+>   		goto out_unlock;
+>   	}
+>   	pps->id = err;
+> -	mutex_unlock(&pps_idr_lock);
+>   
+> -	devt = MKDEV(MAJOR(pps_devt), pps->id);
+> -
+> -	cdev_init(&pps->cdev, &pps_cdev_fops);
+> -	pps->cdev.owner = pps->info.owner;
+> -
+> -	err = cdev_add(&pps->cdev, devt, 1);
+> -	if (err) {
+> -		pr_err("%s: failed to add char device %d:%d\n",
+> -				pps->info.name, MAJOR(pps_devt), pps->id);
+> -		goto free_idr;
+> -	}
+> +	devt = MKDEV(pps_major, pps->id);
+>   	pps->dev = device_create(pps_class, pps->info.dev, devt, pps,
+>   							"pps%d", pps->id);
+>   	if (IS_ERR(pps->dev)) {
+>   		err = PTR_ERR(pps->dev);
+> -		goto del_cdev;
+> +		goto free_idr;
+>   	}
+>   
+>   	/* Override the release function with our own */
+>   	pps->dev->release = pps_device_destruct;
+>   
+> -	pr_debug("source %s got cdev (%d:%d)\n", pps->info.name,
+> -			MAJOR(pps_devt), pps->id);
+> +	pr_debug("source %s got cdev (%d:%d)\n", pps->info.name, pps_major,
+> +		 pps->id);
+>   
+> +	kobject_get(&pps->dev->kobj);
+> +	mutex_unlock(&pps_idr_lock);
+>   	return 0;
+>   
+> -del_cdev:
+> -	cdev_del(&pps->cdev);
+> -
+>   free_idr:
+> -	mutex_lock(&pps_idr_lock);
+>   	idr_remove(&pps_idr, pps->id);
+>   out_unlock:
+>   	mutex_unlock(&pps_idr_lock);
+> @@ -408,6 +404,12 @@ void pps_unregister_cdev(struct pps_device *pps)
+>   	pr_debug("unregistering pps%d\n", pps->id);
+>   	pps->lookup_cookie = NULL;
+>   	device_destroy(pps_class, pps->dev->devt);
+> +
+> +	/* Now we can release the ID for re-use */
+> +	mutex_lock(&pps_idr_lock);
+> +	idr_remove(&pps_idr, pps->id);
+> +	kobject_put(&pps->dev->kobj);
+> +	mutex_unlock(&pps_idr_lock);
+>   }
+>   
+>   /*
+> @@ -427,6 +429,11 @@ void pps_unregister_cdev(struct pps_device *pps)
+>    * so that it will not be used again, even if the pps device cannot
+>    * be removed from the idr due to pending references holding the minor
+>    * number in use.
+> + *
+> + * Since pps_idr holds a reference to the kobject, the returned
+> + * pps_device is guaranteed to be valid until pps_unregister_cdev() is
+> + * called on it. But after calling pps_unregister_cdev(), it may be
+> + * freed at any time.
+>    */
+>   struct pps_device *pps_lookup_dev(void const *cookie)
+>   {
+> @@ -449,13 +456,11 @@ EXPORT_SYMBOL(pps_lookup_dev);
+>   static void __exit pps_exit(void)
+>   {
+>   	class_destroy(pps_class);
+> -	unregister_chrdev_region(pps_devt, PPS_MAX_SOURCES);
+> +	__unregister_chrdev(pps_major, 0, PPS_MAX_SOURCES, "pps");
+>   }
+>   
+>   static int __init pps_init(void)
+>   {
+> -	int err;
+> -
+>   	pps_class = class_create("pps");
+>   	if (IS_ERR(pps_class)) {
+>   		pr_err("failed to allocate class\n");
+> @@ -463,8 +468,9 @@ static int __init pps_init(void)
+>   	}
+>   	pps_class->dev_groups = pps_groups;
+>   
+> -	err = alloc_chrdev_region(&pps_devt, 0, PPS_MAX_SOURCES, "pps");
+> -	if (err < 0) {
+> +	pps_major = __register_chrdev(0, 0, PPS_MAX_SOURCES, "pps",
+> +				      &pps_cdev_fops);
+> +	if (pps_major < 0) {
+>   		pr_err("failed to allocate char device region\n");
+>   		goto remove_class;
+>   	}
+> @@ -477,8 +483,7 @@ static int __init pps_init(void)
+>   
+>   remove_class:
+>   	class_destroy(pps_class);
+> -
+> -	return err;
+> +	return pps_major;
+>   }
+>   
+>   subsys_initcall(pps_init);
+> diff --git a/include/linux/pps_kernel.h b/include/linux/pps_kernel.h
+> index 78c8ac4951b5..8ee312788118 100644
+> --- a/include/linux/pps_kernel.h
+> +++ b/include/linux/pps_kernel.h
+> @@ -56,7 +56,6 @@ struct pps_device {
+>   
+>   	unsigned int id;			/* PPS source unique ID */
+>   	void const *lookup_cookie;		/* For pps_lookup_dev() only */
+> -	struct cdev cdev;
+>   	struct device *dev;
+>   	struct fasync_struct *async_queue;	/* fasync method */
+>   	spinlock_t lock;
+
+Acked-by: Rodolfo Giometti <giometti@enneenne.com>
+
+-- 
+GNU/Linux Solutions                  e-mail: giometti@enneenne.com
+Linux Device Driver                          giometti@linux.it
+Embedded Systems                     phone:  +39 349 2432127
+UNIX programming
 
 
