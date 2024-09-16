@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-76440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76223-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35F7C97A1C2
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:10:01 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EBAF897A0AB
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 13:59:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E05051F2169E
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:10:00 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 74C28B23506
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 11:59:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B876153573;
-	Mon, 16 Sep 2024 12:09:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4863E1547C4;
+	Mon, 16 Sep 2024 11:59:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UFUv+HqM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a9TMobHD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 339D214B094;
-	Mon, 16 Sep 2024 12:09:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A98CD154429;
+	Mon, 16 Sep 2024 11:59:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488599; cv=none; b=gdz/Nn6qs1l5HBjlbZ/qBQ30SDU1y4x98dG0s7nAMgdkqIm6Fsgu1DsrH/QC9zRxjkPbkNmy7JruzcvZG39VVW+YF4JVOQfsSZYu7KAFKnM7YjS6QTJ6zcev9FqtjgeP03fIz1H4PtNnIER8+a7jkuzREbOlTTh47Ln97ebyanc=
+	t=1726487980; cv=none; b=mVYyU6Y3qMxR9QnWMO5NjqYftwwHCO+nzoc8MZdMuvT1Sm8XjwONBnxPawSVpxJEdELouHjbP4qXDuLqTayAgkBDJDWfLyNYCl7BklGQD/q4PdkTywtXOE5RiQL4BMa9zyZ+dTefS/SB5ojdFZTtq0NhcQ8VJtRIxZcAE/M00OQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488599; c=relaxed/simple;
-	bh=IMJYoWW7MgPYil8f46RMV7Bi0LP2SrH5EWhzEEgdPfM=;
+	s=arc-20240116; t=1726487980; c=relaxed/simple;
+	bh=4HhcTeMIfYiUOIkQAUUJ7ebNFJ0LwJY9S0tVdU2rJ8w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hx5clNTZIPJhpxcYFG8d9TkwqwCqxO7ENGxR8lWc+XKmtk73vqQ4Acm44blegrtpQGsDAd2GXPK7B5DwTV0lQDK1p3sEpL4zfFpByPaz9Jj0hBcxviB5gS6xhGoXEVvHvGGWKLgMIOyzkkGQanSx38cr7o/7cbTkzIPqpjOrUY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UFUv+HqM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC3E4C4CEC4;
-	Mon, 16 Sep 2024 12:09:58 +0000 (UTC)
+	 MIME-Version; b=MI6CbZ9rCoTdIz9qbMzLasTDW1LsX9R8gsqKSG4nJHh4ez/FRycBh7mBSA3vtMJPH19G6bi9gc7s1NsnpqpiOHJyOxCak/1w0+AeutsFA7Xmo/6iibBbOGxwXRlSB2rzyTP/UmV4HKvJCfli3wGiBTcrlKBJFWab1A43t81UIbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a9TMobHD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFB2BC4CEC4;
+	Mon, 16 Sep 2024 11:59:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488599;
-	bh=IMJYoWW7MgPYil8f46RMV7Bi0LP2SrH5EWhzEEgdPfM=;
+	s=korg; t=1726487980;
+	bh=4HhcTeMIfYiUOIkQAUUJ7ebNFJ0LwJY9S0tVdU2rJ8w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UFUv+HqMsR1MlsLjbmmGjAptVhSFxDFxOUXFXkXbTTK9YlQkpw+UFeacrIV1xzdco
-	 g97x1EmzNPxxOKY+mLbzb1aoumutVztcQ5g6P6pbf6vL5WhPsZpAFmBre8BjJ44B6l
-	 lWAfzWiG9lwQ4S9VaP/C0WTzMrOKlVXiB06W+Jag=
+	b=a9TMobHDHeCCQqIeBj3qZ8JmlJxq3xcUDASUMmJlBjlVTipFZ2CEvOt3gnq3qEGT6
+	 l4KBH28Q4EZvWPwgyYZsgR/rVzuXWeInHIAh6eKPPPzktAImuRYZjtoyDBxTgNTXhY
+	 O0O3dzZWHqwIyeVMKtg24M5rK8Ibwt/5dGWErhd8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+	Takashi Iwai <tiwai@suse.de>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 20/91] powerpc/mm: Fix boot warning with hugepages and CONFIG_DEBUG_VIRTUAL
+Subject: [PATCH 6.1 17/63] Input: i8042 - add Fujitsu Lifebook E756 to i8042 quirk table
 Date: Mon, 16 Sep 2024 13:43:56 +0200
-Message-ID: <20240916114225.189388084@linuxfoundation.org>
+Message-ID: <20240916114221.664647497@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
-References: <20240916114224.509743970@linuxfoundation.org>
+In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
+References: <20240916114221.021192667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,87 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit e7e846dc6c73fbc94ae8b4ec20d05627646416f2 ]
+[ Upstream commit 7ce7c2283fa6843ab3c2adfeb83dcc504a107858 ]
 
-Booting with CONFIG_DEBUG_VIRTUAL leads to following warning when
-passing hugepage reservation on command line:
+Yet another quirk entry for Fujitsu laptop.  Lifebook E756 requires
+i8041.nomux for keeping the touchpad working after suspend/resume.
 
-  Kernel command line: hugepagesz=1g hugepages=1 hugepagesz=64m hugepages=1 hugepagesz=256m hugepages=1 noreboot
-  HugeTLB: allocating 1 of page size 1.00 GiB failed.  Only allocated 0 hugepages.
-  ------------[ cut here ]------------
-  WARNING: CPU: 0 PID: 0 at arch/powerpc/include/asm/io.h:948 __alloc_bootmem_huge_page+0xd4/0x284
-  Modules linked in:
-  CPU: 0 PID: 0 Comm: swapper Not tainted 6.10.0-rc6-00396-g6b0e82791bd0-dirty #936
-  Hardware name: MPC8544DS e500v2 0x80210030 MPC8544 DS
-  NIP:  c1020240 LR: c10201d0 CTR: 00000000
-  REGS: c13fdd30 TRAP: 0700   Not tainted  (6.10.0-rc6-00396-g6b0e82791bd0-dirty)
-  MSR:  00021000 <CE,ME>  CR: 44084288  XER: 20000000
-
-  GPR00: c10201d0 c13fde20 c130b560 e8000000 e8001000 00000000 00000000 c1420000
-  GPR08: 00000000 00028001 00000000 00000004 44084282 01066ac0 c0eb7c9c efffe149
-  GPR16: c0fc4228 0000005f ffffffff c0eb7d0c c0eb7cc0 c0eb7ce0 ffffffff 00000000
-  GPR24: c1441cec efffe153 e8001000 c14240c0 00000000 c1441d64 00000000 e8000000
-  NIP [c1020240] __alloc_bootmem_huge_page+0xd4/0x284
-  LR [c10201d0] __alloc_bootmem_huge_page+0x64/0x284
-  Call Trace:
-  [c13fde20] [c10201d0] __alloc_bootmem_huge_page+0x64/0x284 (unreliable)
-  [c13fde50] [c10207b8] hugetlb_hstate_alloc_pages+0x8c/0x3e8
-  [c13fdeb0] [c1021384] hugepages_setup+0x240/0x2cc
-  [c13fdef0] [c1000574] unknown_bootoption+0xfc/0x280
-  [c13fdf30] [c0078904] parse_args+0x200/0x4c4
-  [c13fdfa0] [c1000d9c] start_kernel+0x238/0x7d0
-  [c13fdff0] [c0000434] set_ivor+0x12c/0x168
-  Code: 554aa33e 7c042840 3ce0c142 80a7427c 5109a016 50caa016 7c9a2378 7fdcf378 4180000c 7c052040 41810160 7c095040 <0fe00000> 38c00000 40800108 3c60c0eb
-  ---[ end trace 0000000000000000 ]---
-
-This is due to virt_addr_valid() using high_memory before it is set.
-
-high_memory is set in mem_init() using max_low_pfn, but max_low_pfn
-is available long before, it is set in mem_topology_setup(). So just
-like commit daa9ada2093e ("powerpc/mm: Fix boot crash with FLATMEM")
-moved the setting of max_mapnr immediately after the call to
-mem_topology_setup(), the same can be done for high_memory.
-
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/62b69c4baad067093f39e7e60df0fe27a86b8d2a.1723100702.git.christophe.leroy@csgroup.eu
+Link: https://bugzilla.suse.com/show_bug.cgi?id=1229056
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lore.kernel.org/r/20240814100630.2048-1-tiwai@suse.de
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/setup-common.c | 1 +
- arch/powerpc/mm/mem.c              | 2 --
- 2 files changed, 1 insertion(+), 2 deletions(-)
+ drivers/input/serio/i8042-acpipnpio.h | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/arch/powerpc/kernel/setup-common.c b/arch/powerpc/kernel/setup-common.c
-index 20f72cd1d813..03eaad5949f1 100644
---- a/arch/powerpc/kernel/setup-common.c
-+++ b/arch/powerpc/kernel/setup-common.c
-@@ -950,6 +950,7 @@ void __init setup_arch(char **cmdline_p)
- 	mem_topology_setup();
- 	/* Set max_mapnr before paging_init() */
- 	set_max_mapnr(max_pfn);
-+	high_memory = (void *)__va(max_low_pfn * PAGE_SIZE);
- 
- 	/*
- 	 * Release secondary cpus out of their spinloops at 0x60 now that
-diff --git a/arch/powerpc/mm/mem.c b/arch/powerpc/mm/mem.c
-index 07e8f4f1e07f..9dbef559af4c 100644
---- a/arch/powerpc/mm/mem.c
-+++ b/arch/powerpc/mm/mem.c
-@@ -287,8 +287,6 @@ void __init mem_init(void)
- 	swiotlb_init(ppc_swiotlb_enable, ppc_swiotlb_flags);
- #endif
- 
--	high_memory = (void *) __va(max_low_pfn * PAGE_SIZE);
--
- 	kasan_late_init();
- 
- 	memblock_free_all();
+diff --git a/drivers/input/serio/i8042-acpipnpio.h b/drivers/input/serio/i8042-acpipnpio.h
+index e9eb9554dd7b..bad238f69a7a 100644
+--- a/drivers/input/serio/i8042-acpipnpio.h
++++ b/drivers/input/serio/i8042-acpipnpio.h
+@@ -627,6 +627,15 @@ static const struct dmi_system_id i8042_dmi_quirk_table[] __initconst = {
+ 		},
+ 		.driver_data = (void *)(SERIO_QUIRK_NOMUX)
+ 	},
++	{
++		/* Fujitsu Lifebook E756 */
++		/* https://bugzilla.suse.com/show_bug.cgi?id=1229056 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "FUJITSU"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "LIFEBOOK E756"),
++		},
++		.driver_data = (void *)(SERIO_QUIRK_NOMUX)
++	},
+ 	{
+ 		/* Fujitsu Lifebook E5411 */
+ 		.matches = {
 -- 
 2.43.0
 
