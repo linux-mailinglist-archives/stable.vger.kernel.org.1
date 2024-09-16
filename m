@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-76436-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2539797A1BE
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:09:53 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9497297A0E3
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:02:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D524E288B7A
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:09:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3F57D1F24156
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:02:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 181B9155352;
-	Mon, 16 Sep 2024 12:09:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9A3C15534E;
+	Mon, 16 Sep 2024 12:02:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xz3o5bJW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pr9W1wUu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFEDD153573;
-	Mon, 16 Sep 2024 12:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67031149E0B;
+	Mon, 16 Sep 2024 12:02:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488587; cv=none; b=IvlzE24S8ubGIn+q30Q1sUByE6owZi8m9C/4WV8QMMLFT2lkl44G6eS+Mrd0oCUBCOQ6JLj1VjTnm9EQOx3CLOSU4XryyCllPMAlrhwklMlYC7QpQ6G0IM/C0VgUErUyqFcv3ffizjNZU2FqwWFEYlrOLyhkyWsdyFctIX9eCU0=
+	t=1726488122; cv=none; b=hR+EUaETBjN+PNAbkJRIoeeB+Zf2AvgYwLr9sy3knPAo3Cj+mSRMhD9uXuPLe0i6UPH86nwj+O2BzkVpNBkZhz4RLIB81bwruD0lm/vhKxzJz7Q07H7TG6NtTDjrF4u9HeYoMwCx6Q+ZOLrdFurkubot9+Ogh+j5/tIju+dZIso=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488587; c=relaxed/simple;
-	bh=q14hcftMXNaPh38zCxc5l4kZ+WftUDwM3j30qCiauIM=;
+	s=arc-20240116; t=1726488122; c=relaxed/simple;
+	bh=DrDqNB2JbOL6bXOoIs+tK3quBOZDkDsMnZt5fok4DsQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H0QJrnPHnHSJc417FvDs3IISreJBjqGqLA5lvtxucxftj6j9QQx+r6lZORd5E8l6ex4/xIL2l6JvsbuD7Fe2UlgN1wdZCDcanOdmX8Em4DhT1WbaPSOYxXguzrW1fwrbI0RmONb6i8OaTdyulb10IVNG1vPscdbGc1x4dzDsifc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xz3o5bJW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 384A1C4CEC4;
-	Mon, 16 Sep 2024 12:09:47 +0000 (UTC)
+	 MIME-Version; b=ETqkpuS4GetDNGlURUeMcNiWs7EragyqfDV+zvJxmllx39Q/MKeV4EcM0xztwZnRI8tVojlyzbpsI161Uy855kCDKLb4hQJM8+q6l3KDGujgIgWWfd3cXmwXlEH3bRvVd9VehwjD6/7EXxjPo6Loc8AYhOq5rad3Slv+PAq8pZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pr9W1wUu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC8CAC4CEC4;
+	Mon, 16 Sep 2024 12:02:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488587;
-	bh=q14hcftMXNaPh38zCxc5l4kZ+WftUDwM3j30qCiauIM=;
+	s=korg; t=1726488122;
+	bh=DrDqNB2JbOL6bXOoIs+tK3quBOZDkDsMnZt5fok4DsQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xz3o5bJW8kAKuN77vrZl1MvjSjtDjwPPv9S2K4VBCUF1Iw36jRiLyElsRY+W0kt/a
-	 ojObwgrP3TDrMA8Isho9GOTd3k5fPHpuOU6nkSAYyFSf3sptoZJwJhOw/tQZV5Zrcx
-	 D7HWd9y64o1j86HGViFvMTqsX4kCdwBwDmaFVHBM=
+	b=Pr9W1wUumcrjG/wG3D9EFrHy6BOVQ5ocykymS09kJIA8LJaK/N3Z1RpNhKn6/WJ3D
+	 dSpywKKCfyhHVqKHuRNRdP+9Oap5uNXhN83R/sr11KVr/BApTzTdOIriPQpUsU4pms
+	 Vu55tERA725GqCfkqyGmK6TjokMEcA+dcoyoYxLM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Willem de Bruijn <willemb@google.com>,
-	Jason Wang <jasowang@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 43/91] net: tighten bad gso csum offset check in virtio_net_hdr
-Date: Mon, 16 Sep 2024 13:44:19 +0200
-Message-ID: <20240916114225.923827191@linuxfoundation.org>
+	Shahar Shitrit <shshitrit@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Carolina Jubran <cjubran@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 41/63] net/mlx5e: Add missing link modes to ptys2ethtool_map
+Date: Mon, 16 Sep 2024 13:44:20 +0200
+Message-ID: <20240916114222.513926295@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
-References: <20240916114224.509743970@linuxfoundation.org>
+In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
+References: <20240916114221.021192667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +64,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Willem de Bruijn <willemb@google.com>
+From: Shahar Shitrit <shshitrit@nvidia.com>
 
-commit 6513eb3d3191574b58859ef2d6dc26c0277c6f81 upstream.
+[ Upstream commit 7617d62cba4a8a3ff3ed3fda0171c43f135c142e ]
 
-The referenced commit drops bad input, but has false positives.
-Tighten the check to avoid these.
+Add MLX5E_1000BASE_T and MLX5E_100BASE_TX to the legacy
+modes in ptys2legacy_ethtool_table, since they were missing.
 
-The check detects illegal checksum offload requests, which produce
-csum_start/csum_off beyond end of packet after segmentation.
-
-But it is based on two incorrect assumptions:
-
-1. virtio_net_hdr_to_skb with VIRTIO_NET_HDR_GSO_TCP[46] implies GSO.
-True in callers that inject into the tx path, such as tap.
-But false in callers that inject into rx, like virtio-net.
-Here, the flags indicate GRO, and CHECKSUM_UNNECESSARY or
-CHECKSUM_NONE without VIRTIO_NET_HDR_F_NEEDS_CSUM is normal.
-
-2. TSO requires checksum offload, i.e., ip_summed == CHECKSUM_PARTIAL.
-False, as tcp[46]_gso_segment will fix up csum_start and offset for
-all other ip_summed by calling __tcp_v4_send_check.
-
-Because of 2, we can limit the scope of the fix to virtio_net_hdr
-that do try to set these fields, with a bogus value.
-
-Link: https://lore.kernel.org/netdev/20240909094527.GA3048202@port70.net/
-Fixes: 89add40066f9 ("net: drop bad gso csum_start and offset in virtio_net_hdr")
-Signed-off-by: Willem de Bruijn <willemb@google.com>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20240910213553.839926-1-willemdebruijn.kernel@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 665bc53969d7 ("net/mlx5e: Use new ethtool get/set link ksettings API")
+Signed-off-by: Shahar Shitrit <shshitrit@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Reviewed-by: Carolina Jubran <cjubran@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/virtio_net.h |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/include/linux/virtio_net.h
-+++ b/include/linux/virtio_net.h
-@@ -173,7 +173,8 @@ retry:
- 			break;
- 		case SKB_GSO_TCPV4:
- 		case SKB_GSO_TCPV6:
--			if (skb->csum_offset != offsetof(struct tcphdr, check))
-+			if (skb->ip_summed == CHECKSUM_PARTIAL &&
-+			    skb->csum_offset != offsetof(struct tcphdr, check))
- 				return -EINVAL;
- 			break;
- 		}
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
+index 3ee61987266c..8cb127a6fabf 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_ethtool.c
+@@ -136,6 +136,10 @@ void mlx5e_build_ptys2ethtool_map(void)
+ 				       ETHTOOL_LINK_MODE_100000baseKR4_Full_BIT);
+ 	MLX5_BUILD_PTYS2ETHTOOL_CONFIG(MLX5E_100GBASE_LR4, legacy,
+ 				       ETHTOOL_LINK_MODE_100000baseLR4_ER4_Full_BIT);
++	MLX5_BUILD_PTYS2ETHTOOL_CONFIG(MLX5E_100BASE_TX, legacy,
++				       ETHTOOL_LINK_MODE_100baseT_Full_BIT);
++	MLX5_BUILD_PTYS2ETHTOOL_CONFIG(MLX5E_1000BASE_T, legacy,
++				       ETHTOOL_LINK_MODE_1000baseT_Full_BIT);
+ 	MLX5_BUILD_PTYS2ETHTOOL_CONFIG(MLX5E_10GBASE_T, legacy,
+ 				       ETHTOOL_LINK_MODE_10000baseT_Full_BIT);
+ 	MLX5_BUILD_PTYS2ETHTOOL_CONFIG(MLX5E_25GBASE_CR, legacy,
+-- 
+2.43.0
+
 
 
 
