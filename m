@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-76444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF88197A1C6
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:10:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 996D297A0AF
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 13:59:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 76A311F213B9
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:10:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 64086280F1A
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 11:59:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1B761547F5;
-	Mon, 16 Sep 2024 12:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B1CC154429;
+	Mon, 16 Sep 2024 11:59:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OuAhuATY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SGHybWAz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F214146A79;
-	Mon, 16 Sep 2024 12:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD5AD4962E;
+	Mon, 16 Sep 2024 11:59:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488610; cv=none; b=KnVKUbFgNKVJZWnSZS8n0wkumqTa+eXd9LUAF+dvzx1dn5Fh6xOBvmDMcEf+mM85okUheDD4Tdu17UZ9X20ULrhUtL/Ufkw84ubE37kmn2oQq7Ak1L87mEa8ZiTOZqAnGD5yU4R8mUfK/TKfMqN3gvoWM3iKtBG82y8Gc/Sy40k=
+	t=1726487991; cv=none; b=FDXEi45zqYC9OYGcaExjdAqMQh/5Gn0culuSZhLCl/X6rDegzMjZ7J0PP1oFtJ1iKdJ259svB61fjE7dRxqigX3+AWqhwTArSyCasyn7VaLNv35rsOff5tHBhCh/obhWeiorJJ1OsOkiPgBXnO6lvJwYB4GIws28SsKLA+sUGZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488610; c=relaxed/simple;
-	bh=V+M7PUImC8lNzPMefXNH5EQU6BZeAw6L6EU1zXSpkmI=;
+	s=arc-20240116; t=1726487991; c=relaxed/simple;
+	bh=mYFVNPV16S8hyC79wqQ8kC9NC2giVMC39q7lwW0QTrg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p8m3XbnGgn3D8goT6Lqau8yPrRFl5msflI1KBUaRE/nqKUgZlfatuhreZ5Uvjc6wFeRRr1H+F2nBjzXRWvy58RsWCo1SjVh2vgPloGiS23yJnCMRC+mpnAm1RPQzv9yvDB3EMWJGGDlyH8mYKoFEtW70CDsYRyUp2EpFvx/Q5RY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OuAhuATY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B896C4CEC4;
-	Mon, 16 Sep 2024 12:10:09 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CXMdOgiIJY2bbJ4YEkw6hMEFpk+BPMO4Rvf/1AvKHNtybOp+hv8oGxY+q2sgiAn/lHs5iHJtI9jEoCRWov/LCVucHKpDLAOtNxo4ITBY6ZTAX0rQq6bN7JMUR3o1cM/aGUd9IAd5hP+S3pwF1+UnYhb6GhdmqlwY6LPsdBUGlkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SGHybWAz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 358B5C4CEC4;
+	Mon, 16 Sep 2024 11:59:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488610;
-	bh=V+M7PUImC8lNzPMefXNH5EQU6BZeAw6L6EU1zXSpkmI=;
+	s=korg; t=1726487991;
+	bh=mYFVNPV16S8hyC79wqQ8kC9NC2giVMC39q7lwW0QTrg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OuAhuATYq/ATKZz9ElZQ3Zk0jLGqrDf/9zr1ya944MbQydaqGHz3H8D1PdnOv9Xvo
-	 PIA+5KSCJNcrMs9F2ZoJerR/Faqqk319EqTkMWZI4Q5qF6rHhtMmLCPtgH2RKNCnOV
-	 eZpxPBuDsDay6lYYqV2fHnhXm3g8JVWHtdlg9KzM=
+	b=SGHybWAzuO/YklqPx8KSYNQzoaTgCMbAE+h3lL5qL1GOv+bBTxf97QPPDIhty1APN
+	 kzLZpGc1XNrKyZZxJRwtoze1cF6xOWxvI702XWryeJTddM3cZSEdJx+w5BRztV7RhG
+	 ziS2SgHg9XRLDpzMpKDuWrfbc5bc0BwsopRw3r3U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marex@denx.de>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 24/91] Input: ads7846 - ratelimit the spi_sync error message
+	Hans de Goede <hdegoede@redhat.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.1 21/63] platform/x86: panasonic-laptop: Fix SINF array out of bounds accesses
 Date: Mon, 16 Sep 2024 13:44:00 +0200
-Message-ID: <20240916114225.309305564@linuxfoundation.org>
+Message-ID: <20240916114221.820094998@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
-References: <20240916114224.509743970@linuxfoundation.org>
+In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
+References: <20240916114221.021192667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +59,135 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@denx.de>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit ccbfea78adf75d3d9e87aa739dab83254f5333fa ]
+commit f52e98d16e9bd7dd2b3aef8e38db5cbc9899d6a4 upstream.
 
-In case the touch controller is not connected, this message keeps scrolling
-on the console indefinitelly. Ratelimit it to avoid filling kernel logs.
+The panasonic laptop code in various places uses the SINF array with index
+values of 0 - SINF_CUR_BRIGHT(0x0d) without checking that the SINF array
+is big enough.
 
-"
-ads7846 spi2.1: spi_sync --> -22
-"
+Not all panasonic laptops have this many SINF array entries, for example
+the Toughbook CF-18 model only has 10 SINF array entries. So it only
+supports the AC+DC brightness entries and mute.
 
-Signed-off-by: Marek Vasut <marex@denx.de>
-Link: https://lore.kernel.org/r/20240708211913.171243-1-marex@denx.de
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Check that the SINF array has a minimum size which covers all AC+DC
+brightness entries and refuse to load if the SINF array is smaller.
+
+For higher SINF indexes hide the sysfs attributes when the SINF array
+does not contain an entry for that attribute, avoiding show()/store()
+accessing the array out of bounds and add bounds checking to the probe()
+and resume() code accessing these.
+
+Fixes: e424fb8cc4e6 ("panasonic-laptop: avoid overflow in acpi_pcc_hotkey_add()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20240909113227.254470-1-hdegoede@redhat.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/touchscreen/ads7846.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/panasonic-laptop.c |   49 +++++++++++++++++++++++++-------
+ 1 file changed, 39 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/input/touchscreen/ads7846.c b/drivers/input/touchscreen/ads7846.c
-index a66375700a63..8b8c43b3c27f 100644
---- a/drivers/input/touchscreen/ads7846.c
-+++ b/drivers/input/touchscreen/ads7846.c
-@@ -808,7 +808,7 @@ static void ads7846_read_state(struct ads7846 *ts)
- 		m = &ts->msg[msg_idx];
- 		error = spi_sync(ts->spi, m);
- 		if (error) {
--			dev_err(&ts->spi->dev, "spi_sync --> %d\n", error);
-+			dev_err_ratelimited(&ts->spi->dev, "spi_sync --> %d\n", error);
- 			packet->ignore = true;
- 			return;
- 		}
--- 
-2.43.0
-
+--- a/drivers/platform/x86/panasonic-laptop.c
++++ b/drivers/platform/x86/panasonic-laptop.c
+@@ -773,6 +773,24 @@ static DEVICE_ATTR_RW(dc_brightness);
+ static DEVICE_ATTR_RW(current_brightness);
+ static DEVICE_ATTR_RW(cdpower);
+ 
++static umode_t pcc_sysfs_is_visible(struct kobject *kobj, struct attribute *attr, int idx)
++{
++	struct device *dev = kobj_to_dev(kobj);
++	struct acpi_device *acpi = to_acpi_device(dev);
++	struct pcc_acpi *pcc = acpi_driver_data(acpi);
++
++	if (attr == &dev_attr_mute.attr)
++		return (pcc->num_sifr > SINF_MUTE) ? attr->mode : 0;
++
++	if (attr == &dev_attr_eco_mode.attr)
++		return (pcc->num_sifr > SINF_ECO_MODE) ? attr->mode : 0;
++
++	if (attr == &dev_attr_current_brightness.attr)
++		return (pcc->num_sifr > SINF_CUR_BRIGHT) ? attr->mode : 0;
++
++	return attr->mode;
++}
++
+ static struct attribute *pcc_sysfs_entries[] = {
+ 	&dev_attr_numbatt.attr,
+ 	&dev_attr_lcdtype.attr,
+@@ -787,8 +805,9 @@ static struct attribute *pcc_sysfs_entri
+ };
+ 
+ static const struct attribute_group pcc_attr_group = {
+-	.name	= NULL,		/* put in device directory */
+-	.attrs	= pcc_sysfs_entries,
++	.name		= NULL,		/* put in device directory */
++	.attrs		= pcc_sysfs_entries,
++	.is_visible	= pcc_sysfs_is_visible,
+ };
+ 
+ 
+@@ -941,12 +960,15 @@ static int acpi_pcc_hotkey_resume(struct
+ 	if (!pcc)
+ 		return -EINVAL;
+ 
+-	acpi_pcc_write_sset(pcc, SINF_MUTE, pcc->mute);
+-	acpi_pcc_write_sset(pcc, SINF_ECO_MODE, pcc->eco_mode);
++	if (pcc->num_sifr > SINF_MUTE)
++		acpi_pcc_write_sset(pcc, SINF_MUTE, pcc->mute);
++	if (pcc->num_sifr > SINF_ECO_MODE)
++		acpi_pcc_write_sset(pcc, SINF_ECO_MODE, pcc->eco_mode);
+ 	acpi_pcc_write_sset(pcc, SINF_STICKY_KEY, pcc->sticky_key);
+ 	acpi_pcc_write_sset(pcc, SINF_AC_CUR_BRIGHT, pcc->ac_brightness);
+ 	acpi_pcc_write_sset(pcc, SINF_DC_CUR_BRIGHT, pcc->dc_brightness);
+-	acpi_pcc_write_sset(pcc, SINF_CUR_BRIGHT, pcc->current_brightness);
++	if (pcc->num_sifr > SINF_CUR_BRIGHT)
++		acpi_pcc_write_sset(pcc, SINF_CUR_BRIGHT, pcc->current_brightness);
+ 
+ 	return 0;
+ }
+@@ -963,8 +985,12 @@ static int acpi_pcc_hotkey_add(struct ac
+ 
+ 	num_sifr = acpi_pcc_get_sqty(device);
+ 
+-	if (num_sifr < 0 || num_sifr > 255) {
+-		pr_err("num_sifr out of range");
++	/*
++	 * pcc->sinf is expected to at least have the AC+DC brightness entries.
++	 * Accesses to higher SINF entries are checked against num_sifr.
++	 */
++	if (num_sifr <= SINF_DC_CUR_BRIGHT || num_sifr > 255) {
++		pr_err("num_sifr %d out of range %d - 255\n", num_sifr, SINF_DC_CUR_BRIGHT + 1);
+ 		return -ENODEV;
+ 	}
+ 
+@@ -1020,11 +1046,14 @@ static int acpi_pcc_hotkey_add(struct ac
+ 	acpi_pcc_write_sset(pcc, SINF_STICKY_KEY, 0);
+ 	pcc->sticky_key = 0;
+ 
+-	pcc->eco_mode = pcc->sinf[SINF_ECO_MODE];
+-	pcc->mute = pcc->sinf[SINF_MUTE];
+ 	pcc->ac_brightness = pcc->sinf[SINF_AC_CUR_BRIGHT];
+ 	pcc->dc_brightness = pcc->sinf[SINF_DC_CUR_BRIGHT];
+-	pcc->current_brightness = pcc->sinf[SINF_CUR_BRIGHT];
++	if (pcc->num_sifr > SINF_MUTE)
++		pcc->mute = pcc->sinf[SINF_MUTE];
++	if (pcc->num_sifr > SINF_ECO_MODE)
++		pcc->eco_mode = pcc->sinf[SINF_ECO_MODE];
++	if (pcc->num_sifr > SINF_CUR_BRIGHT)
++		pcc->current_brightness = pcc->sinf[SINF_CUR_BRIGHT];
+ 
+ 	/* add sysfs attributes */
+ 	result = sysfs_create_group(&device->dev.kobj, &pcc_attr_group);
 
 
 
