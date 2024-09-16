@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-76355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76272-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 199D897A15B
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:07:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 467ED97A0E2
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:02:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B966F1F221F3
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:07:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 741D61C231A5
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:02:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68E58157A72;
-	Mon, 16 Sep 2024 12:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 106A514B946;
+	Mon, 16 Sep 2024 12:02:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UNlYLKai"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HJLNs1Js"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25731157A67;
-	Mon, 16 Sep 2024 12:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF9EE145B0C;
+	Mon, 16 Sep 2024 12:01:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488356; cv=none; b=X35ODaAm2J2l5XT1DVkuzlfnh8qBVs9Jb2b6xenmzw3YOuEXJge32AVrEUGMvd//zxecGf+WQOR4moPdya8o4BTuEWQOHE2i0/fy1R1fk17abYYWGjxAy3x6jOsHN775IE1WnbtiVz6wPWksrvL2KKVWgkspWhEmu7+hwMDNICI=
+	t=1726488119; cv=none; b=bWqqtMyD0czZPKzi2NYVrKlxw4xuk4nJgD/ET3kr/HbLa1FcvRLTOrVeiCNbjeKsjO7JkeenG8CLAiZUBqUb2fNs19xGTdsm+UlTp9dsjx/IphPCGYVhyvAkaFYkOb3K1hK5JZar/LARLjMk8wLI/O26ZVCXb8sI3LQZyNgWzlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488356; c=relaxed/simple;
-	bh=DGTuhztM5LuDjTu+x87m2AHjwHWNJn+n1HIcQOJheds=;
+	s=arc-20240116; t=1726488119; c=relaxed/simple;
+	bh=Uba+Wv5ApOVz2unbXMhNp88W7wmi6JYhdafjeTdxJ1g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BPNpxhk/YxyukZmw2XJSJJZvuZnwK1qg8/zBv0OYjhBny49CPS6+1X71z/otF3bq0U4eV+JySyLQAxcGof8mXhtOQioSdU9Vtd9lN/jahjGvgd2MXDsFz2l+DVounPqwD1Xy87ZaciLyojGAjk2GDUhztnq1OIfUxcQqDeTaPgg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UNlYLKai; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3B07C4CEC4;
-	Mon, 16 Sep 2024 12:05:55 +0000 (UTC)
+	 MIME-Version; b=oBBIN5GmoVOkAakaPx++5YgqeEiEdomBaOvde6OYpwBXNJkYHsJ4uAc4bbru8lF8ezRc0i6rCKg5GwSnhGsMzxvaKhbIZ8SxunsK3RxpUKBDYhsgswvz1dvk7nQX5E3zAvqe0Lv3MbmOLVYKxO5k8oob60z5ICZxv9p7NJQaPoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HJLNs1Js; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3853C4CEC4;
+	Mon, 16 Sep 2024 12:01:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488356;
-	bh=DGTuhztM5LuDjTu+x87m2AHjwHWNJn+n1HIcQOJheds=;
+	s=korg; t=1726488119;
+	bh=Uba+Wv5ApOVz2unbXMhNp88W7wmi6JYhdafjeTdxJ1g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UNlYLKaiuN9dmF9/7iiDn7VZxsuk1TwTx4Tj4zSWp8fPzCBuQtYroC1xVDzbzvp50
-	 93gc/7oss4Q7jj2RWo6yNdRI+PcAD0Q5vP0QUKEmnpM12v8+uq7+HhUdCtDY7ptXdw
-	 AsZtwRIrPm9sFH0rN675SpusWQSIoVCvOEXdkN5w=
+	b=HJLNs1JsRwaUYFWo8TxhKQx74OX0SJ3asfdQ92zKYwn+aUByB2+brGSUhXLu2wLF7
+	 RVwlddwy7Y/rda0IJKq6LZ577A/rnVU5mjlpRh0VA7rde7H00zdZhkZLDer/cRl4bH
+	 BmG9fcy6HiLj2N7um3hUDoJzY3nBAg/R0lq0/GJk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Muhammad Usama Anjum <usama.anjum@collabora.com>,
-	Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Maher Sanalla <msanalla@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 084/121] fou: fix initialization of grc
-Date: Mon, 16 Sep 2024 13:44:18 +0200
-Message-ID: <20240916114231.926492587@linuxfoundation.org>
+Subject: [PATCH 6.1 40/63] net/mlx5: Update the list of the PCI supported devices
+Date: Mon, 16 Sep 2024 13:44:19 +0200
+Message-ID: <20240916114222.483820098@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
-References: <20240916114228.914815055@linuxfoundation.org>
+In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
+References: <20240916114221.021192667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,46 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+From: Maher Sanalla <msanalla@nvidia.com>
 
-[ Upstream commit 4c8002277167125078e6b9b90137bdf443ebaa08 ]
+[ Upstream commit 7472d157cb8014103105433bcc0705af2e6f7184 ]
 
-The grc must be initialize first. There can be a condition where if
-fou is NULL, goto out will be executed and grc would be used
-uninitialized.
+Add the upcoming ConnectX-9 device ID to the table of supported
+PCI device IDs.
 
-Fixes: 7e4196935069 ("fou: Fix null-ptr-deref in GRO.")
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20240906102839.202798-1-usama.anjum@collabora.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: f908a35b2218 ("net/mlx5: Update the list of the PCI supported devices")
+Signed-off-by: Maher Sanalla <msanalla@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/fou_core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/main.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/ipv4/fou_core.c b/net/ipv4/fou_core.c
-index 78b869b31492..3e30745e2c09 100644
---- a/net/ipv4/fou_core.c
-+++ b/net/ipv4/fou_core.c
-@@ -336,11 +336,11 @@ static struct sk_buff *gue_gro_receive(struct sock *sk,
- 	struct gro_remcsum grc;
- 	u8 proto;
- 
-+	skb_gro_remcsum_init(&grc);
-+
- 	if (!fou)
- 		goto out;
- 
--	skb_gro_remcsum_init(&grc);
--
- 	off = skb_gro_offset(skb);
- 	len = off + sizeof(*guehdr);
- 
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+index 67849b1c0bb7..76af59cfdd0e 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+@@ -2025,6 +2025,7 @@ static const struct pci_device_id mlx5_core_pci_table[] = {
+ 	{ PCI_VDEVICE(MELLANOX, 0x101f) },			/* ConnectX-6 LX */
+ 	{ PCI_VDEVICE(MELLANOX, 0x1021) },			/* ConnectX-7 */
+ 	{ PCI_VDEVICE(MELLANOX, 0x1023) },			/* ConnectX-8 */
++	{ PCI_VDEVICE(MELLANOX, 0x1025) },			/* ConnectX-9 */
+ 	{ PCI_VDEVICE(MELLANOX, 0xa2d2) },			/* BlueField integrated ConnectX-5 network controller */
+ 	{ PCI_VDEVICE(MELLANOX, 0xa2d3), MLX5_PCI_DEV_IS_VF},	/* BlueField integrated ConnectX-5 network controller VF */
+ 	{ PCI_VDEVICE(MELLANOX, 0xa2d6) },			/* BlueField-2 integrated ConnectX-6 Dx network controller */
 -- 
 2.43.0
 
