@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-76474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3132B97A1E8
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:11:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94D1697A0CE
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:01:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6411E1C21A6F
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:11:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 20D2A1F216AD
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:01:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C63F614E2C2;
-	Mon, 16 Sep 2024 12:11:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AAACA145B0C;
+	Mon, 16 Sep 2024 12:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SNjE9IwT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CuLjF6o/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81A3A146A79;
-	Mon, 16 Sep 2024 12:11:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67FE514B946;
+	Mon, 16 Sep 2024 12:01:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488695; cv=none; b=C5l8A6f13IOECT6/D4ANq6+bcJuNxXtSWr6zEPsGNEJSAE02uUZkjmwJcOticCVDGA6pv8kbXN0uPMZqDDSZ4wbQrlHN93pLZJYfSFH9U0BYRVnqbWFMoA8X9pEoMVsfcUblzDJqmObQAYNR+g7g+2J0M66cVo/ogyWJwWwswuw=
+	t=1726488077; cv=none; b=sn42jzQDgSDLG6WK9z+0GqP+ahS+Hs/f8MAvOdCgMyW3uFyVze+/0yF4JW/Toyl5Nd8AxToBTX6yWxnSIfwshYvUqcPcxSXnnrGcDjJMbZo/8p7kFXTAg85AA4HpK5QZL9YhlVNGebCCxAoshqvYjW0D59VYM4fPMjyIGwDTymQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488695; c=relaxed/simple;
-	bh=aHWwxyi/rzdMhwR9LbaIWa9WBX6duK9KMVHTFM/HhtY=;
+	s=arc-20240116; t=1726488077; c=relaxed/simple;
+	bh=KqYQm5bQIpZ3VYzI6lVD9OKA7HiYU45E44x3KN49Uhw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OaK7SCg7shGpAiA3Mp5PeZCbKmJaHWp2iKgUMEcVFVDMR3J0XDR1YdHNiiGL71YeNl9R6aLOYFMQ9/YXhDH+A2rw6Dnj1IkdLXvWH/IhjAyXz4weN8vUPkMchpA4bh8UImostZINMVC/JRFsEDe3qSk9NKno2JZMHffUUxJW6so=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SNjE9IwT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09CE6C4CEC4;
-	Mon, 16 Sep 2024 12:11:34 +0000 (UTC)
+	 MIME-Version; b=lHlZnshF31/e4iy4lFnYUweSUQQHYzwydDAF2KdPvhWU3eDOJUL6Hdy50rlJTLAAE9n1w8lT2S8YDqIMVFn8Nik5YnXU62SgH37RNzgIz2ehnW84HIbd00E7eSoCo+HD5bSfkDGPNdIP9Y1ZqpGLCynZz8mPkc6YGWXVrKeNoxs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CuLjF6o/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A14A9C4CEC4;
+	Mon, 16 Sep 2024 12:01:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488695;
-	bh=aHWwxyi/rzdMhwR9LbaIWa9WBX6duK9KMVHTFM/HhtY=;
+	s=korg; t=1726488077;
+	bh=KqYQm5bQIpZ3VYzI6lVD9OKA7HiYU45E44x3KN49Uhw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SNjE9IwTH1sA8iCFf6s7HW67H73nDQsKF9U3A1i0+HDUZ4YN52XijSFBf6IMiDaOF
-	 WhOOkRsjbMrONGdfWr8pxnIRDD6/VayKFQEwiFF9+S73TqBUUi1k4W4g1qN7EXNZXO
-	 o0ZuMCJUVJayTVeNmI0F9gOh29/vl9U8uqSe89nE=
+	b=CuLjF6o/FJYaDzaOTSylzlVt71q91bp2MBNGwx5TpML5in2K07k1Zxlh+nSUJ3cSi
+	 nbUqCFxtXn2VLiIhGnyUH8E09mMUXqQbKbpfx/AC7L11CZeQFQlgDLm3EixbU4xuzc
+	 E2vvmV+i8KKKx/X+cp/5QGST9YdFLNKp6lRHDKEg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patryk Biel <pbiel7@gmail.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 54/91] hwmon: (pmbus) Conditionally clear individual status bits for pmbus rev >= 1.2
+Subject: [PATCH 6.1 51/63] netfilter: nft_socket: fix sk refcount leaks
 Date: Mon, 16 Sep 2024 13:44:30 +0200
-Message-ID: <20240916114226.292663669@linuxfoundation.org>
+Message-ID: <20240916114222.863406933@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
-References: <20240916114224.509743970@linuxfoundation.org>
+In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
+References: <20240916114221.021192667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,100 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Patryk Biel <pbiel7@gmail.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 20471071f198c8626dbe3951ac9834055b387844 ]
+[ Upstream commit 8b26ff7af8c32cb4148b3e147c52f9e4c695209c ]
 
-The current implementation of pmbus_show_boolean assumes that all devices
-support write-back operation of status register to clear pending warnings
-or faults. Since clearing individual bits in the status registers was only
-introduced in PMBus specification 1.2, this operation may not be supported
-by some older devices. This can result in an error while reading boolean
-attributes such as temp1_max_alarm.
+We must put 'sk' reference before returning.
 
-Fetch PMBus revision supported by the device and modify pmbus_show_boolean
-so that it only tries to clear individual status bits if the device is
-compliant with PMBus specs >= 1.2. Otherwise clear all fault indicators
-on the current page after a fault status was reported.
-
-Fixes: 35f165f08950a ("hwmon: (pmbus) Clear pmbus fault/warning bits after read")
-Signed-off-by: Patryk Biel <pbiel7@gmail.com>
-Message-ID: <20240909-pmbus-status-reg-clearing-v1-1-f1c0d68c6408@gmail.com>
-[groeck:
- Rewrote description
- Moved revision detection code ahead of clear faults command
- Assigned revision if return value from PMBUS_REVISION command is 0
- Improved return value check from calling _pmbus_write_byte_data()]
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 039b1f4f24ec ("netfilter: nft_socket: fix erroneous socket assignment")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/pmbus/pmbus.h      |  6 ++++++
- drivers/hwmon/pmbus/pmbus_core.c | 17 ++++++++++++++---
- 2 files changed, 20 insertions(+), 3 deletions(-)
+ net/netfilter/nft_socket.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/hwmon/pmbus/pmbus.h b/drivers/hwmon/pmbus/pmbus.h
-index b0832a4c690d..76c2b364c3fe 100644
---- a/drivers/hwmon/pmbus/pmbus.h
-+++ b/drivers/hwmon/pmbus/pmbus.h
-@@ -409,6 +409,12 @@ enum pmbus_sensor_classes {
- enum pmbus_data_format { linear = 0, ieee754, direct, vid };
- enum vrm_version { vr11 = 0, vr12, vr13, imvp9, amd625mv };
- 
-+/* PMBus revision identifiers */
-+#define PMBUS_REV_10 0x00	/* PMBus revision 1.0 */
-+#define PMBUS_REV_11 0x11	/* PMBus revision 1.1 */
-+#define PMBUS_REV_12 0x22	/* PMBus revision 1.2 */
-+#define PMBUS_REV_13 0x33	/* PMBus revision 1.3 */
-+
- struct pmbus_driver_info {
- 	int pages;		/* Total number of pages */
- 	u8 phases[PMBUS_PAGES];	/* Number of phases per page */
-diff --git a/drivers/hwmon/pmbus/pmbus_core.c b/drivers/hwmon/pmbus/pmbus_core.c
-index 1363d9f89181..728c07c42651 100644
---- a/drivers/hwmon/pmbus/pmbus_core.c
-+++ b/drivers/hwmon/pmbus/pmbus_core.c
-@@ -85,6 +85,8 @@ struct pmbus_data {
- 
- 	u32 flags;		/* from platform data */
- 
-+	u8 revision;	/* The PMBus revision the device is compliant with */
-+
- 	int exponent[PMBUS_PAGES];
- 				/* linear mode: exponent for output voltages */
- 
-@@ -1095,9 +1097,14 @@ static int pmbus_get_boolean(struct i2c_client *client, struct pmbus_boolean *b,
- 
- 	regval = status & mask;
- 	if (regval) {
--		ret = _pmbus_write_byte_data(client, page, reg, regval);
--		if (ret)
--			goto unlock;
-+		if (data->revision >= PMBUS_REV_12) {
-+			ret = _pmbus_write_byte_data(client, page, reg, regval);
-+			if (ret)
-+				goto unlock;
-+		} else {
-+			pmbus_clear_fault_page(client, page);
-+		}
-+
- 	}
- 	if (s1 && s2) {
- 		s64 v1, v2;
-@@ -2640,6 +2647,10 @@ static int pmbus_init_common(struct i2c_client *client, struct pmbus_data *data,
- 			data->flags |= PMBUS_WRITE_PROTECTED | PMBUS_SKIP_STATUS_CHECK;
+diff --git a/net/netfilter/nft_socket.c b/net/netfilter/nft_socket.c
+index f28324fd8d71..0f37738e4b26 100644
+--- a/net/netfilter/nft_socket.c
++++ b/net/netfilter/nft_socket.c
+@@ -110,13 +110,13 @@ static void nft_socket_eval(const struct nft_expr *expr,
+ 			*dest = READ_ONCE(sk->sk_mark);
+ 		} else {
+ 			regs->verdict.code = NFT_BREAK;
+-			return;
++			goto out_put_sk;
+ 		}
+ 		break;
+ 	case NFT_SOCKET_WILDCARD:
+ 		if (!sk_fullsock(sk)) {
+ 			regs->verdict.code = NFT_BREAK;
+-			return;
++			goto out_put_sk;
+ 		}
+ 		nft_socket_wildcard(pkt, regs, sk, dest);
+ 		break;
+@@ -124,7 +124,7 @@ static void nft_socket_eval(const struct nft_expr *expr,
+ 	case NFT_SOCKET_CGROUPV2:
+ 		if (!nft_sock_get_eval_cgroupv2(dest, sk, pkt, priv->level)) {
+ 			regs->verdict.code = NFT_BREAK;
+-			return;
++			goto out_put_sk;
+ 		}
+ 		break;
+ #endif
+@@ -133,6 +133,7 @@ static void nft_socket_eval(const struct nft_expr *expr,
+ 		regs->verdict.code = NFT_BREAK;
  	}
  
-+	ret = i2c_smbus_read_byte_data(client, PMBUS_REVISION);
-+	if (ret >= 0)
-+		data->revision = ret;
-+
- 	if (data->info->pages)
- 		pmbus_clear_faults(client);
- 	else
++out_put_sk:
+ 	if (sk != skb->sk)
+ 		sock_gen_put(sk);
+ }
 -- 
 2.43.0
 
