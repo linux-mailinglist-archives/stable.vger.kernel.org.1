@@ -1,119 +1,182 @@
-Return-Path: <stable+bounces-76196-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76197-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64070979D37
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 10:49:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E57E1979DC9
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 11:04:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2D4902825B3
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 08:49:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 669491F23BEE
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 09:04:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 818C713EFF3;
-	Mon, 16 Sep 2024 08:49:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD14D13CFA1;
+	Mon, 16 Sep 2024 09:04:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bxQyuVh2"
+	dkim=pass (1024-bit key) header.d=hp.com header.i=@hp.com header.b="F/j5Xpck"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from us-smtp-delivery-162.mimecast.com (us-smtp-delivery-162.mimecast.com [170.10.133.162])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8D71145A07
-	for <stable@vger.kernel.org>; Mon, 16 Sep 2024 08:49:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D33D5476B
+	for <stable@vger.kernel.org>; Mon, 16 Sep 2024 09:03:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.162
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726476568; cv=none; b=QJfWDVVvDQ5lEtWJIZgU07CGxP+Dff5ErMjee98W1NDqEz4B9km7jj3+5lnEdCTz/7DjzJyD0+w0Q+vBGt/bDTGeXgdtSTj+SSLmugWIxofl76Ir3BJp6fBC/LNHpvzZSsK70TJ8lINcBEG6BehNk4IE1EFQPpG4e4tAzcAq1+U=
+	t=1726477440; cv=none; b=TTCLAXZye9kjNIS2vXoAljdX8rp+UPhrwWj88ol10Re6LBhf2QdIEkXqoUuIWpyI7eBAd+qXlCNHKkkPRpCwWU+mynwX1ExVTit105+7DsNb5+MydFGJR4WWWg5OB+irLz47mLGYNv8G8nRP1mEN6VHfEUkL1UMu8COfmtAXS2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726476568; c=relaxed/simple;
-	bh=uymRN6t4HF0pj4doTRtGJuVhiLXV7AyJRx07mGHr4p4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Wl5micwux4PTAogjsvXmhk/gz1e1BwahB+XrhrgM/WM654+UNrluNJCeSfKe4z2kE4W5c0V0M858RRhIWo0UvA1M9500MgcmEbKtTUh/n7+AG+ZB7NZ7K+DX4kpAb5jTZnlyzqL94LYi9MVT9o1bCR85PTP8rLQHHsEoOJ60bMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bxQyuVh2; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1726476567; x=1758012567;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=uymRN6t4HF0pj4doTRtGJuVhiLXV7AyJRx07mGHr4p4=;
-  b=bxQyuVh2D+HmB6kx+lalVeelm7sC3Fot7HhnqmjZIHMVUpXAsmHWckHJ
-   hdc9791F/T0+cFd8fQ8LMBz4uvOwuHfiiaDepzi8Ri9hwTag8DDZFT7xl
-   T42P67Xh00CKC8V4E4j36UKN/Y4djbL7BsvPtKAdOm2C8oeMO+mY2GFSA
-   ZOhyxtrSmTJ2z8dXiasZgugOwD8INV5mrR3o0SO/gWSJrnHX3P0xjMIox
-   bW7P3ZhhEm8A7lD1T5rbvbK6gtHtEtVn6+vqlLaSO5AMqyjHgrgyx6U9j
-   HWGhL8oSeTg+fdXxr50ZhMmP2sLxulHu7L0r4uFeFBvRGw6NJfBc3smA7
-   g==;
-X-CSE-ConnectionGUID: EyWA94FQSYq8vlrNV7Kbog==
-X-CSE-MsgGUID: RaQxJX+iQ8GCnG5v59z1bg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11196"; a="50710914"
-X-IronPort-AV: E=Sophos;i="6.10,232,1719903600"; 
-   d="scan'208";a="50710914"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2024 01:49:26 -0700
-X-CSE-ConnectionGUID: 57d0GLj2SUanMsARH+ANsQ==
-X-CSE-MsgGUID: fEKIKArgQR69fGaFRXXFYA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,232,1719903600"; 
-   d="scan'208";a="69052874"
-Received: from mlehtone-mobl.ger.corp.intel.com (HELO mwauld-desk.intel.com) ([10.245.244.77])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 16 Sep 2024 01:49:24 -0700
-From: Matthew Auld <matthew.auld@intel.com>
-To: intel-xe@lists.freedesktop.org
-Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>,
-	Akshata Jahagirdar <akshata.jahagirdar@intel.com>,
-	Lucas De Marchi <lucas.demarchi@intel.com>,
-	Shuicheng Lin <shuicheng.lin@intel.com>,
-	Matt Roper <matthew.d.roper@intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v3] drm/xe/vram: fix ccs offset calculation
-Date: Mon, 16 Sep 2024 09:49:12 +0100
-Message-ID: <20240916084911.13119-2-matthew.auld@intel.com>
-X-Mailer: git-send-email 2.46.0
+	s=arc-20240116; t=1726477440; c=relaxed/simple;
+	bh=5oPEPxx3btISiu2HKpOI8h4G0Mq5rcLQYI86wc46wgA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=WTua/8ggzss507tnDMC99+I3p1L5MfA1o1eO7fjVPjSiMkb1spo2vIqoJF1eT2mb7VLe3kaklx0fAjdo33gHHSWDOWfTZlXV7uSuSCEIvWir9MwAovhZq5TFaoyvPgKL7XXgt8Xyj1gS62Q8fnGA1z4Kcvrl32pQu3X6+JVDjcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hp.com; spf=pass smtp.mailfrom=hp.com; dkim=pass (1024-bit key) header.d=hp.com header.i=@hp.com header.b=F/j5Xpck; arc=none smtp.client-ip=170.10.133.162
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hp.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hp.com; s=mimecast20180716;
+	t=1726477436;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=gx4WAWn0gDdOn3D6kua7ErNP0JPsHujFHwToAOT0YXM=;
+	b=F/j5Xpck4u6A+Oumay3OIbBf+iTLBwpYBynQi3BVMyIcudQQ8N6YZiiYFF1fLRWG+2hIW/
+	ZaajR6IwogVRb8vFLeI2W+Pt/Rz4GI/y58QsZ2hV65f0miveooQsdfC2zGcO/sRAiOg4SC
+	Jg34GERng49xAiyz8JIyWrPeIHeVTA8=
+Received: from g7t16454g.inc.hp.com (hpifallback.mail.core.hp.com
+ [15.73.128.143]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-446-dfc8iAKPMvqdM8G5pCHtmg-1; Mon, 16 Sep 2024 05:03:49 -0400
+X-MC-Unique: dfc8iAKPMvqdM8G5pCHtmg-1
+Received: from g8t13021g.inc.hpicorp.net (g8t13021g.inc.hpicorp.net [15.60.27.219])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
+	(No client certificate requested)
+	by g7t16454g.inc.hp.com (Postfix) with ESMTPS id ECD0E60010EF;
+	Mon, 16 Sep 2024 09:03:48 +0000 (UTC)
+Received: from mail.hp.com (unknown [15.32.134.51])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by g8t13021g.inc.hpicorp.net (Postfix) with ESMTPS id 3DB4260000B6;
+	Mon, 16 Sep 2024 09:03:47 +0000 (UTC)
+Received: from cdc-linux-buildsrv17.. (localhost [127.0.0.1])
+	by mail.hp.com (Postfix) with ESMTP id 2ACAFA401C6;
+	Mon, 16 Sep 2024 16:56:03 +0800 (CST)
+From: Wade Wang <wade.wang@hp.com>
+To: jikos@kernel.org,
+	bentiss@kernel.org,
+	linux-input@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	wade.wang@hp.com
+Cc: stable@vger.kernel.org
+Subject: [PATCH] HID: plantronics: Workaround for an unexcepted opposite volume key
+Date: Mon, 16 Sep 2024 16:56:00 +0800
+Message-Id: <20240916085600.1387418-1-wade.wang@hp.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: hp.com
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=WINDOWS-1252; x-default=true
 
-Spec says SW is expected to round up to the nearest 128K, if not already
-aligned for the CC unit view of CCS. We are seeing the assert sometimes
-pop on BMG to tell us that there is a hole between GSM and CCS, as well
-as popping other asserts with having a vram size with strange alignment,
-which is likely caused by misaligned offset here.
+Some Plantronics headset as the below send an unexcept opposite
+volume key's HID report for each volume key press after 200ms, like
+unecepted Volume Up Key following Volume Down key pressed by user.
+This patch adds a quirk to hid-plantronics for these devices, which
+will ignore the second unexcepted opposite volume key if it happens
+within 220ms from the last one that was handled.
+    Plantronics EncorePro 500 Series  (047f:431e)
+    Plantronics Blackwire_3325 Series (047f:430c)
 
-v2 (Shuicheng):
- - Do the round_up() on final SW address.
+The patch was tested on the mentioned model, it shouldn't affect
+other models, however, this quirk might be needed for them too.
+Auto-repeat (when a key is held pressed) is not affected per test
+result.
 
-BSpec: 68023
-Fixes: b5c2ca0372dc ("drm/xe/xe2hpg: Determine flat ccs offset for vram")
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-Cc: Akshata Jahagirdar <akshata.jahagirdar@intel.com>
-Cc: Lucas De Marchi <lucas.demarchi@intel.com>
-Cc: Shuicheng Lin <shuicheng.lin@intel.com>
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Cc: <stable@vger.kernel.org> # v6.10+
-Reviewed-by: Himal Prasad Ghimiray <himal.prasad.ghimiray@intel.com>
-Tested-by: Shuicheng Lin <shuicheng.lin@intel.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Wade Wang <wade.wang@hp.com>
 ---
- drivers/gpu/drm/xe/xe_vram.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/hid/hid-ids.h         |  2 ++
+ drivers/hid/hid-plantronics.c | 23 +++++++++++++++++++++++
+ 2 files changed, 25 insertions(+)
 
-diff --git a/drivers/gpu/drm/xe/xe_vram.c b/drivers/gpu/drm/xe/xe_vram.c
-index 7e765b1499b1..2a623bfcda7e 100644
---- a/drivers/gpu/drm/xe/xe_vram.c
-+++ b/drivers/gpu/drm/xe/xe_vram.c
-@@ -182,6 +182,7 @@ static inline u64 get_flat_ccs_offset(struct xe_gt *gt, u64 tile_size)
- 		offset = offset_hi << 32; /* HW view bits 39:32 */
- 		offset |= offset_lo << 6; /* HW view bits 31:6 */
- 		offset *= num_enabled; /* convert to SW view */
-+		offset = round_up(offset, SZ_128K); /* SW must round up to nearest 128K */
- 
- 		/* We don't expect any holes */
- 		xe_assert_msg(xe, offset == (xe_mmio_read64_2x32(&gt_to_tile(gt)->mmio, GSMBASE) -
--- 
-2.46.0
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index 781c5aa29859..b72d70bc5628 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -1050,6 +1050,8 @@
+ #define USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3220_SERIES=090xc056
+ #define USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3215_SERIES=090xc057
+ #define USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3225_SERIES=090xc058
++#define USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3325_SERIES=090x430c
++#define USB_DEVICE_ID_PLANTRONICS_ENCOREPRO_500_SERIES=09=090x431e
+=20
+ #define USB_VENDOR_ID_PANASONIC=09=090x04da
+ #define USB_DEVICE_ID_PANABOARD_UBT780=090x1044
+diff --git a/drivers/hid/hid-plantronics.c b/drivers/hid/hid-plantronics.c
+index 3d414ae194ac..25cfd964dc25 100644
+--- a/drivers/hid/hid-plantronics.c
++++ b/drivers/hid/hid-plantronics.c
+@@ -38,8 +38,10 @@
+ =09=09=09    (usage->hid & HID_USAGE_PAGE) =3D=3D HID_UP_CONSUMER)
+=20
+ #define PLT_QUIRK_DOUBLE_VOLUME_KEYS BIT(0)
++#define PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS BIT(1)
+=20
+ #define PLT_DOUBLE_KEY_TIMEOUT 5 /* ms */
++#define PLT_FOLLOWED_OPPOSITE_KEY_TIMEOUT 220 /* ms */
+=20
+ struct plt_drv_data {
+ =09unsigned long device_type;
+@@ -137,6 +139,21 @@ static int plantronics_event(struct hid_device *hdev, =
+struct hid_field *field,
+=20
+ =09=09drv_data->last_volume_key_ts =3D cur_ts;
+ =09}
++=09if (drv_data->quirks & PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS) {
++=09=09unsigned long prev_ts, cur_ts;
++
++=09=09/* Usages are filtered in plantronics_usages. */
++
++=09=09if (!value) /* Handle key presses only. */
++=09=09=09return 0;
++
++=09=09prev_ts =3D drv_data->last_volume_key_ts;
++=09=09cur_ts =3D jiffies;
++=09=09if (jiffies_to_msecs(cur_ts - prev_ts) <=3D PLT_FOLLOWED_OPPOSITE_KE=
+Y_TIMEOUT)
++=09=09=09return 1; /* Ignore the followed opposite volume key. */
++
++=09=09drv_data->last_volume_key_ts =3D cur_ts;
++=09}
+=20
+ =09return 0;
+ }
+@@ -210,6 +227,12 @@ static const struct hid_device_id plantronics_devices[=
+] =3D {
+ =09{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
+ =09=09=09=09=09 USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3225_SERIES),
+ =09=09.driver_data =3D PLT_QUIRK_DOUBLE_VOLUME_KEYS },
++=09{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
++=09=09=09=09=09 USB_DEVICE_ID_PLANTRONICS_BLACKWIRE_3325_SERIES),
++=09=09.driver_data =3D PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS },
++=09{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS,
++=09=09=09=09=09 USB_DEVICE_ID_PLANTRONICS_ENCOREPRO_500_SERIES),
++=09=09.driver_data =3D PLT_QUIRK_FOLLOWED_OPPOSITE_VOLUME_KEYS },
+ =09{ HID_USB_DEVICE(USB_VENDOR_ID_PLANTRONICS, HID_ANY_ID) },
+ =09{ }
+ };
+--=20
+Change log:
+1. 2nd patch submission:
+   Add one Cc mail aoount in patch comment, per kernel test robot
+   required
+2. 3rd patch submission:
+   Code and comment change to Separate this patch with previous patch
+   'commit f567d6ef8606 ("HID: plantronics: Workaround for double
+   volume key presses")'
+2.34.1
 
 
