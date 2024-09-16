@@ -1,60 +1,63 @@
-Return-Path: <stable+bounces-76476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2779997A1EB
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:11:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 541DC97A181
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:08:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A3511C21DD7
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:11:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F223E1F22ED1
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:08:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A99E1155333;
-	Mon, 16 Sep 2024 12:11:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4715E15746F;
+	Mon, 16 Sep 2024 12:07:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mSkGBfuh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vEY/jwn9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 664CF146A79;
-	Mon, 16 Sep 2024 12:11:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1BC615689A;
+	Mon, 16 Sep 2024 12:07:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488701; cv=none; b=dW6pUJJRrC4DIATHPUYahVeyXYN5QrttjDGotf2rciMASVQcCAdXf9O+w3xokeqqW/XYifhzkOYa+JqAcefcebHKo5VfMyP9mN3qoeKJo7Kz04jnQ/QCoLU/5R5Z6ADuW67XMfsbaqBpAAtnoKN/OnLE4kXyadlGlxyVXLSFTcs=
+	t=1726488453; cv=none; b=ARs9/p3KV2UqbhAZAjS3KHyAQHoDvCNRy12LpK3z/yJCxepU5Co3PZ9voOaBIEASUuM4S2X49G0MRvEc7wkNHG8dRub9qkGWU5LG2SNw+/YaxJaEe7CPqV1BuRRHTSt7AGiY06RyKnf7VBsVEHVjX8eDA86GM+xm6mb0V4qv8iM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488701; c=relaxed/simple;
-	bh=MRPZvCFTQYxZBQQHQjPCATzYs19vvjWS47MhC+AF5Nk=;
+	s=arc-20240116; t=1726488453; c=relaxed/simple;
+	bh=2g2qgh/YrdTdc1RKgP8SZlonukH4nq0K664Z/dAXG9Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F4DTMJLD0sAqgqfrM9rgkMAKibGVDXGTSMuEDxmTlqYREM2B85hB/XOjDF2Lr4U+jPegsNygeqlPqfLEYlhPLOHwi8bvhOzNFN6J2EBr8ZrQrCPiis9bYxjH4nyEgWzip8PUZ2ki/QVSI80O5FD8r93RsuQ///IXrUGQeCPWD5c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mSkGBfuh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2CA2C4CEC4;
-	Mon, 16 Sep 2024 12:11:40 +0000 (UTC)
+	 MIME-Version; b=fqwejfMJbFIx+EtXKesamoEqnfSvqhvp6FkUql5JhaGnmius3zTZEB+yKh8uGCzsAFfLRU0WxfY/7LvX88LTVPPRHR/niuKo+EHF/PeCY+czYh6cqcc0cN6w93C+5QZYXY06t7eXGUFcDDiElxHbET3Sxo1d0x0aULphLTlvViY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vEY/jwn9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E0FBC4CEC4;
+	Mon, 16 Sep 2024 12:07:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488701;
-	bh=MRPZvCFTQYxZBQQHQjPCATzYs19vvjWS47MhC+AF5Nk=;
+	s=korg; t=1726488452;
+	bh=2g2qgh/YrdTdc1RKgP8SZlonukH4nq0K664Z/dAXG9Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mSkGBfuhYYaqrEBqm53QarSRWku6Tk0zvCVsrnFOqXDGRvAK1rlUc6GArU8Ff9tXe
-	 uhPd3JtHbpipLGT7HqPbz/25fP4xSMtD3m9v0IblUQCrbRykeogRKvgFEJr3T5vFn0
-	 TzgdOckHKIJeqZDYpkyI2m+T57ecp/aZVao+Sfmk=
+	b=vEY/jwn9r/kdg5xtCb4iZixspunJAelQvP25wZhKyy1BMXBY21uabX3NLhko8qxVO
+	 CivW3J5D1aE9vWhXoIkTA8lKLgbnQbhRBVZz487G3E19gwIqnLUTJ/c3XGtwBmujhN
+	 o3CdV00B+z/pQuyEq7K/xKLO97ETUhnsx0OAFkVE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	"Helena Anna" <helena.anna.dubel@intel.com>,
-	"Luis Claudio R. Goncalves" <lgoncalv@redhat.com>,
-	Tomas Glozar <tglozar@redhat.com>,
-	"Bityutskiy, Artem" <artem.bityutskiy@intel.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.6 76/91] tracing/osnoise: Fix build when timerlat is not enabled
+	David Howells <dhowells@redhat.com>,
+	Tom Talpey <tom@talpey.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Shyam Prasad N <nspmangalore@gmail.com>,
+	Rohith Surabattula <rohiths.msft@gmail.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	linux-cifs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 118/121] cifs: Fix signature miscalculation
 Date: Mon, 16 Sep 2024 13:44:52 +0200
-Message-ID: <20240916114226.980226511@linuxfoundation.org>
+Message-ID: <20240916114233.022973853@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
-References: <20240916114224.509743970@linuxfoundation.org>
+In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
+References: <20240916114228.914815055@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,66 +69,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: David Howells <dhowells@redhat.com>
 
-commit af178143343028fdec9d5960a22d17f5587fd3f5 upstream.
+[ Upstream commit 5a20b7cb0d8d3ee490a8e088dc2584aa782e3355 ]
 
-To fix some critical section races, the interface_lock was added to a few
-locations. One of those locations was above where the interface_lock was
-declared, so the declaration was moved up before that usage.
-Unfortunately, where it was placed was inside a CONFIG_TIMERLAT_TRACER
-ifdef block. As the interface_lock is used outside that config, this broke
-the build when CONFIG_OSNOISE_TRACER was enabled but
-CONFIG_TIMERLAT_TRACER was not.
+Fix the calculation of packet signatures by adding the offset into a page
+in the read or write data payload when hashing the pages from it.
 
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: "Helena Anna" <helena.anna.dubel@intel.com>
-Cc: "Luis Claudio R. Goncalves" <lgoncalv@redhat.com>
-Cc: Tomas Glozar <tglozar@redhat.com>
-Link: https://lore.kernel.org/20240909103231.23a289e2@gandalf.local.home
-Fixes: e6a53481da29 ("tracing/timerlat: Only clear timer if a kthread exists")
-Reported-by: "Bityutskiy, Artem" <artem.bityutskiy@intel.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 39bc58203f04 ("cifs: Add a function to Hash the contents of an iterator")
+Signed-off-by: David Howells <dhowells@redhat.com>
+Reviewed-by: Tom Talpey <tom@talpey.com>
+Reviewed-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+cc: Shyam Prasad N <nspmangalore@gmail.com>
+cc: Rohith Surabattula <rohiths.msft@gmail.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: linux-cifs@vger.kernel.org
+cc: linux-fsdevel@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_osnoise.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ fs/smb/client/cifsencrypt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/trace/trace_osnoise.c b/kernel/trace/trace_osnoise.c
-index bbe47781617e..7e75c1214b36 100644
---- a/kernel/trace/trace_osnoise.c
-+++ b/kernel/trace/trace_osnoise.c
-@@ -228,6 +228,11 @@ static inline struct osnoise_variables *this_cpu_osn_var(void)
- 	return this_cpu_ptr(&per_cpu_osnoise_var);
- }
- 
-+/*
-+ * Protect the interface.
-+ */
-+static struct mutex interface_lock;
-+
- #ifdef CONFIG_TIMERLAT_TRACER
- /*
-  * Runtime information for the timer mode.
-@@ -252,11 +257,6 @@ static inline struct timerlat_variables *this_cpu_tmr_var(void)
- 	return this_cpu_ptr(&per_cpu_timerlat_var);
- }
- 
--/*
-- * Protect the interface.
-- */
--static struct mutex interface_lock;
--
- /*
-  * tlat_var_reset - Reset the values of the given timerlat_variables
-  */
+diff --git a/fs/smb/client/cifsencrypt.c b/fs/smb/client/cifsencrypt.c
+index 6322f0f68a17..b0473c2567fe 100644
+--- a/fs/smb/client/cifsencrypt.c
++++ b/fs/smb/client/cifsencrypt.c
+@@ -129,7 +129,7 @@ static ssize_t cifs_shash_xarray(const struct iov_iter *iter, ssize_t maxsize,
+ 			for (j = foffset / PAGE_SIZE; j < npages; j++) {
+ 				len = min_t(size_t, maxsize, PAGE_SIZE - offset);
+ 				p = kmap_local_page(folio_page(folio, j));
+-				ret = crypto_shash_update(shash, p, len);
++				ret = crypto_shash_update(shash, p + offset, len);
+ 				kunmap_local(p);
+ 				if (ret < 0)
+ 					return ret;
 -- 
-2.46.0
+2.43.0
 
 
 
