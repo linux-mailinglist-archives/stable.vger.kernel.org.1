@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-76326-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A9FF697A139
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:06:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id A062797A193
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:08:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 60FE01F240C5
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:06:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D10EC1C226A2
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:08:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3379F155CBD;
-	Mon, 16 Sep 2024 12:04:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B01F1553A7;
+	Mon, 16 Sep 2024 12:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l/vEAWtu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XaVDMCA+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2448155CA5;
-	Mon, 16 Sep 2024 12:04:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38B5D154BFB;
+	Mon, 16 Sep 2024 12:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488274; cv=none; b=gVmNestrjMXVwWI7aUCJ/w8f5R8RUoEBQhgSxuboGNjoA4hgWL2XEdTBotXzU+T98DC8BwUde2N+DEMi4eUkr3gpir4y/tsurZfJR94KteTC+E9ctkd3XwgZ8tYR91qkFEMgKGIQOray69Xh6/gUPDCwkoZdWh+VdGY2ZMh0tGM=
+	t=1726488501; cv=none; b=hQdB4OA6wTZq2iuR1vYWTWQms7zFELOJZmi44ryS7OdazDlrrDDL0IVB8FkUN8RMD6NSr79INNGEh6NKCFQPRPJ9I+JklsN5pYZIz5ifBBUDX1RR/WISUGuV4IXP8EjiUDsOchl4+my8oqMFOdYwO29ftMLqyBuUwh+7iEU9g4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488274; c=relaxed/simple;
-	bh=irQzuFiTspjxNqzGisvvkxxFf8/pbRUxVsFkdBfAwGg=;
+	s=arc-20240116; t=1726488501; c=relaxed/simple;
+	bh=MLVhKtJCHRhI8d034OKM0b2aN1Bb4jcLGUBbclH/z5E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cGtzPt4YhEM4Dtku3HKKDk9LJQj0omGgI1VzZadOQAa/ts56UqroTUFN4/nKtZ6ZcCRe8/XQSbAInLpmh6piDPSZw82d7jzYN/E6iefpT0QY/MG8OBs9OjzlHcSe6iNn8JTNazzDbeUZ25azvoevnHXKl6ozRyfEOzloCdH/Dz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l/vEAWtu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 245D2C4CEC4;
-	Mon, 16 Sep 2024 12:04:32 +0000 (UTC)
+	 MIME-Version; b=b9SYHEt4lWTzAUBW4pZbXrmJos0AvqhXh5aMj5fj/6H+v94muyEXanvImVESfki1jsRFC8N/UeXxIkYhEkXg2KKU7UPJQeGZ3D97U6Se3WxeBEeqz6FVYrXycfdl7KYgVKGS01DqjAV6dHzBiQ0NA5sLTDdl3ryWApNmnwVfVLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XaVDMCA+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B824AC4CEC4;
+	Mon, 16 Sep 2024 12:08:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488273;
-	bh=irQzuFiTspjxNqzGisvvkxxFf8/pbRUxVsFkdBfAwGg=;
+	s=korg; t=1726488501;
+	bh=MLVhKtJCHRhI8d034OKM0b2aN1Bb4jcLGUBbclH/z5E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l/vEAWtuugbCfl6PM5bQoeKCK4WQanJkoT1CdCjHnbmOUBpbcG8+cL+/QCg7dY66L
-	 bsoSFA9EIenx0thlF86wuE134pH+rtKR2b6Pd5CJu2oFSVI3Az2oCkO7mJ0RA0x1jN
-	 JyeOFpjx1ptKDgJIXeGBeBNeigqVRfVbk0Kvums0=
+	b=XaVDMCA+5zl8n5IGVXSojvBlnAAA4mlgosjwLBJRf4nmLtpeCJhMZFTtW73r1koNC
+	 gZ8FG8GSJJiMhyTUE+R2X+QemSA10ZxfhjB2HA+gjqjbbhJ33rcVBGmHW0W1LynpJs
+	 r4B83+Pvt0fhq6Rhir1o4wrqBx9V61Vp5PtWug0k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Linus Torvalds <torvalds@linux-foundation.org>,
-	Jann Horn <jannh@google.com>
-Subject: [PATCH 6.10 055/121] mm: avoid leaving partial pfn mappings around in error case
-Date: Mon, 16 Sep 2024 13:43:49 +0200
-Message-ID: <20240916114230.971579306@linuxfoundation.org>
+	Foster Snowhill <forst@pen.gy>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 14/91] usbnet: ipheth: do not stop RX on failing RX callback
+Date: Mon, 16 Sep 2024 13:43:50 +0200
+Message-ID: <20240916114224.999248924@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
-References: <20240916114228.914815055@linuxfoundation.org>
+In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
+References: <20240916114224.509743970@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,85 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Foster Snowhill <forst@pen.gy>
 
-commit 79a61cc3fc0466ad2b7b89618a6157785f0293b3 upstream.
+[ Upstream commit 74efed51e0a4d62f998f806c307778b47fc73395 ]
 
-As Jann points out, PFN mappings are special, because unlike normal
-memory mappings, there is no lifetime information associated with the
-mapping - it is just a raw mapping of PFNs with no reference counting of
-a 'struct page'.
+RX callbacks can fail for multiple reasons:
 
-That's all very much intentional, but it does mean that it's easy to
-mess up the cleanup in case of errors.  Yes, a failed mmap() will always
-eventually clean up any partial mappings, but without any explicit
-lifetime in the page table mapping itself, it's very easy to do the
-error handling in the wrong order.
+* Payload too short
+* Payload formatted incorrecly (e.g. bad NCM framing)
+* Lack of memory
 
-In particular, it's easy to mistakenly free the physical backing store
-before the page tables are actually cleaned up and (temporarily) have
-stale dangling PTE entries.
+None of these should cause the driver to seize up.
 
-To make this situation less error-prone, just make sure that any partial
-pfn mapping is torn down early, before any other error handling.
+Make such failures non-critical and continue processing further
+incoming URBs.
 
-Reported-and-tested-by: Jann Horn <jannh@google.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Simona Vetter <simona.vetter@ffwll.ch>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Foster Snowhill <forst@pen.gy>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/memory.c |   27 ++++++++++++++++++++++-----
- 1 file changed, 22 insertions(+), 5 deletions(-)
+ drivers/net/usb/ipheth.c | 1 -
+ 1 file changed, 1 deletion(-)
 
---- a/mm/memory.c
-+++ b/mm/memory.c
-@@ -2581,11 +2581,7 @@ static inline int remap_p4d_range(struct
- 	return 0;
- }
+diff --git a/drivers/net/usb/ipheth.c b/drivers/net/usb/ipheth.c
+index f04c7bf79665..cdc72559790a 100644
+--- a/drivers/net/usb/ipheth.c
++++ b/drivers/net/usb/ipheth.c
+@@ -308,7 +308,6 @@ static void ipheth_rcvbulk_callback(struct urb *urb)
+ 	if (retval != 0) {
+ 		dev_err(&dev->intf->dev, "%s: callback retval: %d\n",
+ 			__func__, retval);
+-		return;
+ 	}
  
--/*
-- * Variant of remap_pfn_range that does not call track_pfn_remap.  The caller
-- * must have pre-validated the caching bits of the pgprot_t.
-- */
--int remap_pfn_range_notrack(struct vm_area_struct *vma, unsigned long addr,
-+static int remap_pfn_range_internal(struct vm_area_struct *vma, unsigned long addr,
- 		unsigned long pfn, unsigned long size, pgprot_t prot)
- {
- 	pgd_t *pgd;
-@@ -2638,6 +2634,27 @@ int remap_pfn_range_notrack(struct vm_ar
- 	return 0;
- }
- 
-+/*
-+ * Variant of remap_pfn_range that does not call track_pfn_remap.  The caller
-+ * must have pre-validated the caching bits of the pgprot_t.
-+ */
-+int remap_pfn_range_notrack(struct vm_area_struct *vma, unsigned long addr,
-+		unsigned long pfn, unsigned long size, pgprot_t prot)
-+{
-+	int error = remap_pfn_range_internal(vma, addr, pfn, size, prot);
-+
-+	if (!error)
-+		return 0;
-+
-+	/*
-+	 * A partial pfn range mapping is dangerous: it does not
-+	 * maintain page reference counts, and callers may free
-+	 * pages due to the error. So zap it early.
-+	 */
-+	zap_page_range_single(vma, addr, size, NULL);
-+	return error;
-+}
-+
- /**
-  * remap_pfn_range - remap kernel memory to userspace
-  * @vma: user vma to map to
+ rx_submit:
+-- 
+2.43.0
+
 
 
 
