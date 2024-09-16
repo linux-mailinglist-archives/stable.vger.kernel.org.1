@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-76401-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D386097A18E
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:08:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 686ED97A12D
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:06:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9530C287F06
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:08:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2BFA6286635
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:06:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AE531547F5;
-	Mon, 16 Sep 2024 12:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBC3A1586FE;
+	Mon, 16 Sep 2024 12:03:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LjfiFRaS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cLnrYmbB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0684D14D2B3;
-	Mon, 16 Sep 2024 12:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AEF9158525;
+	Mon, 16 Sep 2024 12:03:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488487; cv=none; b=HcgFsdAKBHm15PuEZlM25XTNBuLj78CxQtMUq5WB+d4c3dYLmi8P6CepiBFtt06Pn65KbJ3//5IiYk3/4eFsgh8pNEPBoSRpi5e+MeFQ+YDXgavr14wliD0frYZipSDBXU3O1CUOS0P0LGQi8fwwINsDAU28ho1Bg3byocYBKqY=
+	t=1726488239; cv=none; b=Yem5AT8+GLbULSmFLV+wvTL58uqyUZkzXvchdPOWAXHC3ZjTz7xhGlqepZ3gyxlACIiAABWEM8lMLO8tJGfPekWvJvJIA4arZVOVr7hoVfEgJNJuqZbV8xk8l2t+oEafd5egcUwWj/opHaDp+rMoueEcB6Vyd2+Z2pN7p2vxOm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488487; c=relaxed/simple;
-	bh=MzogfVQc/xMoJRShvja2MHq68MoqdCnvO7r3EUiuJhU=;
+	s=arc-20240116; t=1726488239; c=relaxed/simple;
+	bh=7Z/8f/5u6z89gVXyo9MSQBCjKk96P7l6KAuvepBRpP0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hFIFU0L5LDOOKcI1gdYcnwHGjBTMK/cTF+6cXRkbhcHcxIK9ZhmoCdkMXY9gcHwvP413yHpNvMg3QNcw4R+E6NztGs2msYCKONDDOApMJm1ejIt2y5YvHyZIzVE+zqgS6zMBuc+FuOLiOQUPYvqdcERn3r96+VtrBE6aVDJa7u4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LjfiFRaS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82724C4CEC4;
-	Mon, 16 Sep 2024 12:08:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cEkM2OsG0Lg7mxiTMUXMt+hfbgwR5K/NnivGa2eqF2zLwI5Yqe5A4NtEZaWoG/CYhO50hICX00S0NZ9RZjx1bWnNImAfRqhAsSLDckwbI93VTHFlI1VAn5gc1rd0UjkAl6fVzJwsYM9ngrShYDIIuq4TuBNP4MdJ+eKqZO9nAF0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cLnrYmbB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00B13C4CEC4;
+	Mon, 16 Sep 2024 12:03:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488486;
-	bh=MzogfVQc/xMoJRShvja2MHq68MoqdCnvO7r3EUiuJhU=;
+	s=korg; t=1726488239;
+	bh=7Z/8f/5u6z89gVXyo9MSQBCjKk96P7l6KAuvepBRpP0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LjfiFRaSGRdgNimVnzTg0aTFZubWnLXA+Ennr+YiEbH6878wYjjr++IHCxETj3DBk
-	 ohHPYFR5HGKR9lT0XQCuVGpaWAOq5GR/X/0ZZAi2PTV6dGPGmHdsgVtfnRaBwV8h5a
-	 cmS79NagNgz2k+WIB43aXOWOvNl9Q9b83UcjAJhY=
+	b=cLnrYmbBlfpWaSx1Z7K6oaH43LtaXnVxBwTsNJcSvFNW3GB2tm+PItt0iTrB1CJQX
+	 zfgDUGCs1o4Ef8/UTmwfB8Pr7fkH+bVeePV/jbNwqXHYUGigVofR+xMRqptvfGQK1C
+	 N/OIQ34LC1wD7l/lrW7Fd5/pWjETdUtMVEZ7NV1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Sakari Ailus <sakari.ailus@linux.intel.com>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 01/91] device property: Add cleanup.h based fwnode_handle_put() scope based cleanup.
-Date: Mon, 16 Sep 2024 13:43:37 +0200
-Message-ID: <20240916114224.556783854@linuxfoundation.org>
+	James Harmison <jharmison@redhat.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.10 044/121] platform/x86: panasonic-laptop: Allocate 1 entry extra in the sinf array
+Date: Mon, 16 Sep 2024 13:43:38 +0200
+Message-ID: <20240916114230.586485314@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
-References: <20240916114224.509743970@linuxfoundation.org>
+In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
+References: <20240916114228.914815055@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,56 +60,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 59ed5e2d505bf5f9b4af64d0021cd0c96aec1f7c ]
+commit 33297cef3101d950cec0033a0dce0a2d2bd59999 upstream.
 
-Useful where the fwnode_handle was obtained from a call such as
-fwnode_find_reference() as it will safely do nothing if IS_ERR() is true
-and will automatically release the reference on the variable leaving
-scope.
+Some DSDT-s have an off-by-one bug where the SINF package count is
+one higher than the SQTY reported value, allocate 1 entry extra.
 
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Link: https://lore.kernel.org/r/20240217164249.921878-3-jic23@kernel.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: 61cbfb5368dd ("iio: adc: ad7124: fix DT configuration parsing")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Also make the SQTY <-> SINF package count mismatch error more verbose
+to help debugging similar issues in the future.
+
+This fixes the panasonic-laptop driver failing to probe() on some
+devices with the following errors:
+
+[    3.958887] SQTY reports bad SINF length SQTY: 37 SINF-pkg-count: 38
+[    3.958892] Couldn't retrieve BIOS data
+[    3.983685] Panasonic Laptop Support - With Macros: probe of MAT0019:00 failed with error -5
+
+Fixes: 709ee531c153 ("panasonic-laptop: add Panasonic Let's Note laptop extras driver v0.94")
+Cc: stable@vger.kernel.org
+Tested-by: James Harmison <jharmison@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20240909113227.254470-2-hdegoede@redhat.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/property.h | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/platform/x86/panasonic-laptop.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/property.h b/include/linux/property.h
-index 1684fca930f7..909416c701b8 100644
---- a/include/linux/property.h
-+++ b/include/linux/property.h
-@@ -11,6 +11,7 @@
- #define _LINUX_PROPERTY_H_
+--- a/drivers/platform/x86/panasonic-laptop.c
++++ b/drivers/platform/x86/panasonic-laptop.c
+@@ -337,7 +337,8 @@ static int acpi_pcc_retrieve_biosdata(st
+ 	}
  
- #include <linux/bits.h>
-+#include <linux/cleanup.h>
- #include <linux/fwnode.h>
- #include <linux/stddef.h>
- #include <linux/types.h>
-@@ -175,6 +176,8 @@ struct fwnode_handle *device_get_named_child_node(const struct device *dev,
- struct fwnode_handle *fwnode_handle_get(struct fwnode_handle *fwnode);
- void fwnode_handle_put(struct fwnode_handle *fwnode);
+ 	if (pcc->num_sifr < hkey->package.count) {
+-		pr_err("SQTY reports bad SINF length\n");
++		pr_err("SQTY reports bad SINF length SQTY: %lu SINF-pkg-count: %u\n",
++		       pcc->num_sifr, hkey->package.count);
+ 		status = AE_ERROR;
+ 		goto end;
+ 	}
+@@ -994,6 +995,12 @@ static int acpi_pcc_hotkey_add(struct ac
+ 		return -ENODEV;
+ 	}
  
-+DEFINE_FREE(fwnode_handle, struct fwnode_handle *, fwnode_handle_put(_T))
++	/*
++	 * Some DSDT-s have an off-by-one bug where the SINF package count is
++	 * one higher than the SQTY reported value, allocate 1 entry extra.
++	 */
++	num_sifr++;
 +
- int fwnode_irq_get(const struct fwnode_handle *fwnode, unsigned int index);
- int fwnode_irq_get_byname(const struct fwnode_handle *fwnode, const char *name);
- 
--- 
-2.43.0
-
+ 	pcc = kzalloc(sizeof(struct pcc_acpi), GFP_KERNEL);
+ 	if (!pcc) {
+ 		pr_err("Couldn't allocate mem for pcc");
 
 
 
