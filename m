@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-76447-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AD9297A1C9
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:10:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82A6097A0CF
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 14:01:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C29141F21129
-	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:10:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 45B932813A0
+	for <lists+stable@lfdr.de>; Mon, 16 Sep 2024 12:01:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50C5A155300;
-	Mon, 16 Sep 2024 12:10:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B7A6154BFB;
+	Mon, 16 Sep 2024 12:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qtgFwcNo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tG06mijx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E74D1547F5;
-	Mon, 16 Sep 2024 12:10:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05C30A95E;
+	Mon, 16 Sep 2024 12:01:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726488619; cv=none; b=iJey90VO7duevzk7HgdqooRVmxvC0hw4dtNXed98XVMQQdpLlAgTB3ZhKfL5XZco1piujl4swMnaWANzRU9pJRTIW10C9zPR2deJIngS3gqK7MrRNvvucblXDfYgRV9VzUvuFtKA4LwYtJ+Vg14FDOYtzXH2w3gSHJqKv4hNHBg=
+	t=1726488080; cv=none; b=P/5d9lD6HCIOjpoqLhaCitSQLNSXr+huJ8WtPdF2+pU7kvsM8vDL1kyOxGugZ6fVkf6GAbG9fIGDee45/XFRO9+BVzaQ1zkFpyhj9+ZgTKogw4+JzDFM3Phu0TuPBMUxQw7LGqaa3W0HD8QuScbiFtJSb2wUUsVctglS0/7yS1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726488619; c=relaxed/simple;
-	bh=v7fl1c8Mt97BvRAhytzYQPWI9Mu0OdKlVDa2FWE6jxI=;
+	s=arc-20240116; t=1726488080; c=relaxed/simple;
+	bh=YWhgczJP+LWTtEm5E4ikkBy2xeb3qB3sgLDWaMkLX28=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EaUje+RmZq+7HtmrTApBZGsJS/LmJ69OyMv8MrJMPU+SKg5JZHlnb2W9Hy+S4Zm8Rnr0VGz2qPOuEJtm0ib/OPhsFSbHhyLUYsxz4S/wGqgxPUvHS+4IZTFvJ9JhYolPnZZnpuUPxzmGIXlZ+MUW9cAM+RAXa9dBuB9MYAi8f+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qtgFwcNo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89775C4CEC4;
-	Mon, 16 Sep 2024 12:10:18 +0000 (UTC)
+	 MIME-Version; b=Lj5MyUoFcVI1k76T7OtHPTH8k7IjjuYgx0/q1B6EEa67GIfbOgju3pKif4+wxAtkujlqKXMisWDMfyee8fx9wpWo8b/ICx8H+M5YUtlqLkG4O35UfQMmVogO9mq3qKdp9OVN4L2d26CDFJ5ujBLLI832NkVq/3RAg/hMe8FQExY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tG06mijx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70571C4CEC4;
+	Mon, 16 Sep 2024 12:01:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726488618;
-	bh=v7fl1c8Mt97BvRAhytzYQPWI9Mu0OdKlVDa2FWE6jxI=;
+	s=korg; t=1726488079;
+	bh=YWhgczJP+LWTtEm5E4ikkBy2xeb3qB3sgLDWaMkLX28=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qtgFwcNoRDZ340fzgfj73JdMKCXYWI7AhrkS44SN4ReEwoUyiovQUGJa86v4fgnb2
-	 GzftD3fNPbEWA+3S1eFjESD4nuZxjpQPVihwz4ALtlqsoYVPifo11HU92ZZjGNVft5
-	 fKZOG2UKeo+02hVrDdG2MbOnpAjrz7hmvUKYMj7k=
+	b=tG06mijxDFBjZoNVA/GagoRszQ933xByDlxYD7VyDahsphg9hXWglPEYt6RD20koW
+	 iFqijGPU5aVrogROV2x82ueRGuiKy6uFK0XMDS37DmvqRBXJ4oYidHX9mwfxcY05mU
+	 u7UwA1qva7Wjp4Hb/UflMppBRfOovFpp7z90AFbA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Mat=C4=9Bj=20Gr=C3=A9gr?= <mgregr@netx.as>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 6.6 55/91] ice: Fix lldp packets dropping after changing the number of channels
+	cgroups@vger.kernel.org,
+	Nadia Pinaeva <n.m.pinaeva@gmail.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 52/63] netfilter: nft_socket: make cgroupsv2 matching work with namespaces
 Date: Mon, 16 Sep 2024 13:44:31 +0200
-Message-ID: <20240916114226.324413114@linuxfoundation.org>
+Message-ID: <20240916114222.900057413@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
-References: <20240916114224.509743970@linuxfoundation.org>
+In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
+References: <20240916114221.021192667@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +62,153 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 9debb703e14939dfafa5d403f27c4feb2e9f6501 ]
+[ Upstream commit 7f3287db654395f9c5ddd246325ff7889f550286 ]
 
-After vsi setup refactor commit 6624e780a577 ("ice: split ice_vsi_setup
-into smaller functions") ice_cfg_sw_lldp function which removes rx rule
-directing LLDP packets to vsi is moved from ice_vsi_release to
-ice_vsi_decfg function. ice_vsi_decfg is used in more cases than just in
-vsi_release resulting in unnecessary removal of rx lldp packets handling
-switch rule. This leads to lldp packets being dropped after a change number
-of channels via ethtool.
-This patch moves ice_cfg_sw_lldp function that removes rx lldp sw rule back
-to ice_vsi_release function.
+When running in container environmment, /sys/fs/cgroup/ might not be
+the real root node of the sk-attached cgroup.
 
-Fixes: 6624e780a577 ("ice: split ice_vsi_setup into smaller functions")
-Reported-by: Matěj Grégr <mgregr@netx.as>
-Closes: https://lore.kernel.org/intel-wired-lan/1be45a76-90af-4813-824f-8398b69745a9@netx.as/T/#u
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Martyna Szapar-Mudlaw <martyna.szapar-mudlaw@linux.intel.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Example:
+
+In container:
+% stat /sys//fs/cgroup/
+Device: 0,21    Inode: 2214  ..
+% stat /sys/fs/cgroup/foo
+Device: 0,21    Inode: 2264  ..
+
+The expectation would be for:
+
+  nft add rule .. socket cgroupv2 level 1 "foo" counter
+
+to match traffic from a process that got added to "foo" via
+"echo $pid > /sys/fs/cgroup/foo/cgroup.procs".
+
+However, 'level 3' is needed to make this work.
+
+Seen from initial namespace, the complete hierarchy is:
+
+% stat /sys/fs/cgroup/system.slice/docker-.../foo
+  Device: 0,21    Inode: 2264 ..
+
+i.e. hierarchy is
+0    1               2              3
+/ -> system.slice -> docker-1... -> foo
+
+... but the container doesn't know that its "/" is the "docker-1.."
+cgroup.  Current code will retrieve the 'system.slice' cgroup node
+and store its kn->id in the destination register, so compare with
+2264 ("foo" cgroup id) will not match.
+
+Fetch "/" cgroup from ->init() and add its level to the level we try to
+extract.  cgroup root-level is 0 for the init-namespace or the level
+of the ancestor that is exposed as the cgroup root inside the container.
+
+In the above case, cgrp->level of "/" resolved in the container is 2
+(docker-1...scope/) and request for 'level 1' will get adjusted
+to fetch the actual level (3).
+
+v2: use CONFIG_SOCK_CGROUP_DATA, eval function depends on it.
+    (kernel test robot)
+
+Cc: cgroups@vger.kernel.org
+Fixes: e0bb96db96f8 ("netfilter: nft_socket: add support for cgroupsv2")
+Reported-by: Nadia Pinaeva <n.m.pinaeva@gmail.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_lib.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ net/netfilter/nft_socket.c | 41 +++++++++++++++++++++++++++++++++++---
+ 1 file changed, 38 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
-index b3010a53f1b4..3a0ef56d3edc 100644
---- a/drivers/net/ethernet/intel/ice/ice_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_lib.c
-@@ -2600,13 +2600,6 @@ void ice_vsi_decfg(struct ice_vsi *vsi)
- 	struct ice_pf *pf = vsi->back;
- 	int err;
+diff --git a/net/netfilter/nft_socket.c b/net/netfilter/nft_socket.c
+index 0f37738e4b26..8722f712c019 100644
+--- a/net/netfilter/nft_socket.c
++++ b/net/netfilter/nft_socket.c
+@@ -9,7 +9,8 @@
  
--	/* The Rx rule will only exist to remove if the LLDP FW
--	 * engine is currently stopped
--	 */
--	if (!ice_is_safe_mode(pf) && vsi->type == ICE_VSI_PF &&
--	    !test_bit(ICE_FLAG_FW_LLDP_AGENT, pf->flags))
--		ice_cfg_sw_lldp(vsi, false, false);
--
- 	ice_rm_vsi_lan_cfg(vsi->port_info, vsi->idx);
- 	err = ice_rm_vsi_rdma_cfg(vsi->port_info, vsi->idx);
- 	if (err)
-@@ -2953,6 +2946,14 @@ int ice_vsi_release(struct ice_vsi *vsi)
- 		ice_rss_clean(vsi);
- 
- 	ice_vsi_close(vsi);
+ struct nft_socket {
+ 	enum nft_socket_keys		key:8;
+-	u8				level;
++	u8				level;		/* cgroupv2 level to extract */
++	u8				level_user;	/* cgroupv2 level provided by userspace */
+ 	u8				len;
+ 	union {
+ 		u8			dreg;
+@@ -53,6 +54,28 @@ nft_sock_get_eval_cgroupv2(u32 *dest, struct sock *sk, const struct nft_pktinfo
+ 	memcpy(dest, &cgid, sizeof(u64));
+ 	return true;
+ }
 +
-+	/* The Rx rule will only exist to remove if the LLDP FW
-+	 * engine is currently stopped
-+	 */
-+	if (!ice_is_safe_mode(pf) && vsi->type == ICE_VSI_PF &&
-+	    !test_bit(ICE_FLAG_FW_LLDP_AGENT, pf->flags))
-+		ice_cfg_sw_lldp(vsi, false, false);
++/* process context only, uses current->nsproxy. */
++static noinline int nft_socket_cgroup_subtree_level(void)
++{
++	struct cgroup *cgrp = cgroup_get_from_path("/");
++	int level;
 +
- 	ice_vsi_decfg(vsi);
++	if (!cgrp)
++		return -ENOENT;
++
++	level = cgrp->level;
++
++	cgroup_put(cgrp);
++
++	if (WARN_ON_ONCE(level > 255))
++		return -ERANGE;
++
++	if (WARN_ON_ONCE(level < 0))
++		return -EINVAL;
++
++	return level;
++}
+ #endif
  
- 	/* retain SW VSI data structure since it is needed to unregister and
+ static struct sock *nft_socket_do_lookup(const struct nft_pktinfo *pkt)
+@@ -174,9 +197,10 @@ static int nft_socket_init(const struct nft_ctx *ctx,
+ 	case NFT_SOCKET_MARK:
+ 		len = sizeof(u32);
+ 		break;
+-#ifdef CONFIG_CGROUPS
++#ifdef CONFIG_SOCK_CGROUP_DATA
+ 	case NFT_SOCKET_CGROUPV2: {
+ 		unsigned int level;
++		int err;
+ 
+ 		if (!tb[NFTA_SOCKET_LEVEL])
+ 			return -EINVAL;
+@@ -185,6 +209,17 @@ static int nft_socket_init(const struct nft_ctx *ctx,
+ 		if (level > 255)
+ 			return -EOPNOTSUPP;
+ 
++		err = nft_socket_cgroup_subtree_level();
++		if (err < 0)
++			return err;
++
++		priv->level_user = level;
++
++		level += err;
++		/* Implies a giant cgroup tree */
++		if (WARN_ON_ONCE(level > 255))
++			return -EOPNOTSUPP;
++
+ 		priv->level = level;
+ 		len = sizeof(u64);
+ 		break;
+@@ -209,7 +244,7 @@ static int nft_socket_dump(struct sk_buff *skb,
+ 	if (nft_dump_register(skb, NFTA_SOCKET_DREG, priv->dreg))
+ 		return -1;
+ 	if (priv->key == NFT_SOCKET_CGROUPV2 &&
+-	    nla_put_be32(skb, NFTA_SOCKET_LEVEL, htonl(priv->level)))
++	    nla_put_be32(skb, NFTA_SOCKET_LEVEL, htonl(priv->level_user)))
+ 		return -1;
+ 	return 0;
+ }
 -- 
 2.43.0
 
