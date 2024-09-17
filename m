@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-76559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5861597AC97
-	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 10:09:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0FF697AC9D
+	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 10:10:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C135CB290E5
-	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 08:08:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 37C55B29838
+	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 08:10:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31120157488;
-	Tue, 17 Sep 2024 08:08:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FD0D158874;
+	Tue, 17 Sep 2024 08:09:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="n8KqBYfR"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="MolwETd/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2B76156C62;
-	Tue, 17 Sep 2024 08:08:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E31E515886A;
+	Tue, 17 Sep 2024 08:09:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726560525; cv=none; b=LPJIVmlYXFmVFwe5OCP3oPK9YNebjm1uXp3o49KYBjey5gkXa3PBnhNtQsyHbd79uNInZoUjXk+5n0mVR7Xk04vDTzzylVrf0oxDYUUgmTuuUYujwtxlMuffs7IGlqdB2vu3ISOpD+MC1RXo2J2mfKP0Ufv2GAdOU50Knoj5EFA=
+	t=1726560586; cv=none; b=ZX6V88L7KtV8s7KQ8w0+2E2QlSYuclW0JHxs7CMh+0q27h4QzrbdWEn8ehlXIeyytpnecJGbHLHy/ZdJosSBRvCTZlRpGQVY6WnCXRYMdcrMdh81ajfxWp6TSSFvDYzwEw2rhYv+0zwvXBvWC+yLPT/+gS/fqrfx3jai/44UMWA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726560525; c=relaxed/simple;
-	bh=sh6ABWqGcsje+n2ZIJeDC3rHfUArvndyQmY2qM1izOs=;
-	h=Date:To:From:Subject:Message-Id; b=uoL/WFi6qpb+2O8O7c8LMXNZqSX5G+CJ+rqrHzTXm6C3fyKpOfY9PnlDMRfyeu54GYb4wuJusp1pF/4NuWJ4YuGZwyVTNgRTYAHfB17miE8hHmOAgLQ6NyGBiGJpsNahQ2wgSY2+xZmGiefEWv3MmhnVTEAldLHb6xDkxcUyQPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=n8KqBYfR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C39EC4CECE;
-	Tue, 17 Sep 2024 08:08:44 +0000 (UTC)
+	s=arc-20240116; t=1726560586; c=relaxed/simple;
+	bh=30mFcxDi1JQ9lNr32l6tdAPC0/lP7p0hMsSStL5BpWs=;
+	h=Date:To:From:Subject:Message-Id; b=jNVp+syW/hxFHWt+Po/UkwZ0WH0cqk++JVfgJT9SqKrZLl07dSXqyWGArM9w7xzj6Sb68t7UKG3+tOnhaLIG3NmCYPTXF07BHKQsTmKrSa2d342Uhb2yK7tZz6MW9a+CzuqLKXUG+alhLMDZbVN1JFcL0CIR1t5HKUASpRtrfTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=MolwETd/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28BCAC4CEC6;
+	Tue, 17 Sep 2024 08:09:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1726560524;
-	bh=sh6ABWqGcsje+n2ZIJeDC3rHfUArvndyQmY2qM1izOs=;
+	s=korg; t=1726560585;
+	bh=30mFcxDi1JQ9lNr32l6tdAPC0/lP7p0hMsSStL5BpWs=;
 	h=Date:To:From:Subject:From;
-	b=n8KqBYfRaSOE8MF8suTthtvoZrqw79Fh8PXz79mS5BmYtEjcxahHFCDyyXkVY9Cf3
-	 AsJf7yCP61Jqu8tCGYuIvtSJaN+fbLRgaBLC0IiiqWI573O1tikiFlPwvD+tsLDnQ7
-	 N9eaoZcXWTZ/F67y2Lf/r5q7rivSQuD42XTPTTUc=
-Date: Tue, 17 Sep 2024 01:08:41 -0700
-To: mm-commits@vger.kernel.org,vitaly.wool@konsulko.com,stable@vger.kernel.org,senozhatsky@chromium.org,npiggin@gmail.com,nphamcs@gmail.com,naveen.n.rao@linux.ibm.com,mpe@ellerman.id.au,linmiaohe@huawei.com,kernel@xen0n.name,hch@lst.de,hannes@cmpxchg.org,christophe.leroy@csgroup.eu,chris@chrisdown.name,chenhuacai@kernel.org,arnd@arndb.de,aneesh.kumar@kernel.org,yosryahmed@google.com,akpm@linux-foundation.org
+	b=MolwETd/e8F26t9OwSUzWveAbJ1g4IbtYf4jesBYcfjg1hm7kQyqXurDqkZVbEpu8
+	 HCZZnGnGlQ4DQsOoScbo/dDEH1II6ad6KTlPybVy1LV+3mmFqTzfrIfuycTcy2/rwx
+	 VKi6Fc4NfpsILpS6CfiurAJ5g64N5Idys6l3SQzM=
+Date: Tue, 17 Sep 2024 01:09:41 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,minchan@kernel.org,senozhatsky@chromium.org,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-stable] mm-z3fold-deprecate-config_z3fold.patch removed from -mm tree
-Message-Id: <20240917080844.4C39EC4CECE@smtp.kernel.org>
+Subject: [merged mm-stable] zram-free-secondary-algorithms-names.patch removed from -mm tree
+Message-Id: <20240917080945.28BCAC4CEC6@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,167 +50,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: mm: z3fold: deprecate CONFIG_Z3FOLD
+     Subject: zram: free secondary algorithms names
 has been removed from the -mm tree.  Its filename was
-     mm-z3fold-deprecate-config_z3fold.patch
+     zram-free-secondary-algorithms-names.patch
 
 This patch was dropped because it was merged into the mm-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Yosry Ahmed <yosryahmed@google.com>
-Subject: mm: z3fold: deprecate CONFIG_Z3FOLD
-Date: Wed, 4 Sep 2024 23:33:43 +0000
+From: Sergey Senozhatsky <senozhatsky@chromium.org>
+Subject: zram: free secondary algorithms names
+Date: Wed, 11 Sep 2024 11:54:56 +0900
 
-The z3fold compressed pages allocator is rarely used, most users use
-zsmalloc.  The only disadvantage of zsmalloc in comparison is the
-dependency on MMU, and zbud is a more common option for !MMU as it was the
-default zswap allocator for a long time.
+We need to kfree() secondary algorithms names when reset zram device that
+had multi-streams, otherwise we leak memory.
 
-Historically, zsmalloc had worse latency than zbud and z3fold but offered
-better memory savings.  This is no longer the case as shown by a simple
-recent analysis [1].  That analysis showed that z3fold does not have any
-advantage over zsmalloc or zbud considering both performance and memory
-usage.  In a kernel build test on tmpfs in a limited cgroup, z3fold took
-3% more time and used 1.8% more memory.  The latency of zswap_load() was
-7% higher, and that of zswap_store() was 10% higher.  Zsmalloc is better
-in all metrics.
-
-Moreover, z3fold apparently has latent bugs, which was made noticeable by
-a recent soft lockup bug report with z3fold [2].  Switching to zsmalloc
-not only fixed the problem, but also reduced the swap usage from 6~8G to
-1~2G.  Other users have also reported being bitten by mistakenly enabling
-z3fold.
-
-Other than hurting users, z3fold is repeatedly causing wasted engineering
-effort.  Apart from investigating the above bug, it came up in multiple
-development discussions (e.g.  [3]) as something we need to handle, when
-there aren't any legit users (at least not intentionally).
-
-The natural course of action is to deprecate z3fold, and remove in a few
-cycles if no objections are raised from active users.  Next on the list
-should be zbud, as it offers marginal latency gains at the cost of huge
-memory waste when compared to zsmalloc.  That one will need to wait until
-zsmalloc does not depend on MMU.
-
-Rename the user-visible config option from CONFIG_Z3FOLD to
-CONFIG_Z3FOLD_DEPRECATED so that users with CONFIG_Z3FOLD=y get a new
-prompt with explanation during make oldconfig.  Also, remove
-CONFIG_Z3FOLD=y from defconfigs.
-
-[1]https://lore.kernel.org/lkml/CAJD7tkbRF6od-2x_L8-A1QL3=2Ww13sCj4S3i4bNndqF+3+_Vg@mail.gmail.com/
-[2]https://lore.kernel.org/lkml/EF0ABD3E-A239-4111-A8AB-5C442E759CF3@gmail.com/
-[3]https://lore.kernel.org/lkml/CAJD7tkbnmeVugfunffSovJf9FAgy9rhBVt_tx=nxUveLUfqVsA@mail.gmail.com/
-
-[arnd@arndb.de: deprecate ZSWAP_ZPOOL_DEFAULT_Z3FOLD as well]
-  Link: https://lkml.kernel.org/r/20240909202625.1054880-1-arnd@kernel.org
-Link: https://lkml.kernel.org/r/20240904233343.933462-1-yosryahmed@google.com
-Signed-off-by: Yosry Ahmed <yosryahmed@google.com>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Chris Down <chris@chrisdown.name>
-Acked-by: Nhat Pham <nphamcs@gmail.com>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Acked-by: Vitaly Wool <vitaly.wool@konsulko.com>
-Acked-by: Christoph Hellwig <hch@lst.de>
-Cc: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Huacai Chen <chenhuacai@kernel.org>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: Naveen N. Rao <naveen.n.rao@linux.ibm.com>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: WANG Xuerui <kernel@xen0n.name>
+[senozhatsky@chromium.org: kfree(NULL) is legal]
+  Link: https://lkml.kernel.org/r/20240917013021.868769-1-senozhatsky@chromium.org
+Link: https://lkml.kernel.org/r/20240911025600.3681789-1-senozhatsky@chromium.org
+Fixes: 001d92735701 ("zram: add recompression algorithm sysfs knob")
+Signed-off-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Minchan Kim <minchan@kernel.org>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- arch/loongarch/configs/loongson3_defconfig |    1 
- arch/powerpc/configs/ppc64_defconfig       |    1 
- mm/Kconfig                                 |   25 ++++++++++++++-----
- 3 files changed, 19 insertions(+), 8 deletions(-)
+ drivers/block/zram/zram_drv.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/arch/loongarch/configs/loongson3_defconfig~mm-z3fold-deprecate-config_z3fold
-+++ a/arch/loongarch/configs/loongson3_defconfig
-@@ -96,7 +96,6 @@ CONFIG_ZPOOL=y
- CONFIG_ZSWAP=y
- CONFIG_ZSWAP_COMPRESSOR_DEFAULT_ZSTD=y
- CONFIG_ZBUD=y
--CONFIG_Z3FOLD=y
- CONFIG_ZSMALLOC=m
- # CONFIG_COMPAT_BRK is not set
- CONFIG_MEMORY_HOTPLUG=y
---- a/arch/powerpc/configs/ppc64_defconfig~mm-z3fold-deprecate-config_z3fold
-+++ a/arch/powerpc/configs/ppc64_defconfig
-@@ -81,7 +81,6 @@ CONFIG_MODULE_SIG_SHA512=y
- CONFIG_PARTITION_ADVANCED=y
- CONFIG_BINFMT_MISC=m
- CONFIG_ZSWAP=y
--CONFIG_Z3FOLD=y
- CONFIG_ZSMALLOC=y
- # CONFIG_SLAB_MERGE_DEFAULT is not set
- CONFIG_SLAB_FREELIST_RANDOM=y
---- a/mm/Kconfig~mm-z3fold-deprecate-config_z3fold
-+++ a/mm/Kconfig
-@@ -146,12 +146,15 @@ config ZSWAP_ZPOOL_DEFAULT_ZBUD
- 	help
- 	  Use the zbud allocator as the default allocator.
+--- a/drivers/block/zram/zram_drv.c~zram-free-secondary-algorithms-names
++++ a/drivers/block/zram/zram_drv.c
+@@ -2112,6 +2112,11 @@ static void zram_destroy_comps(struct zr
+ 		zram->num_active_comps--;
+ 	}
  
--config ZSWAP_ZPOOL_DEFAULT_Z3FOLD
--	bool "z3fold"
--	select Z3FOLD
-+config ZSWAP_ZPOOL_DEFAULT_Z3FOLD_DEPRECATED
-+	bool "z3foldi (DEPRECATED)"
-+	select Z3FOLD_DEPRECATED
- 	help
- 	  Use the z3fold allocator as the default allocator.
- 
-+	  Deprecated and scheduled for removal in a few cycles,
-+	  see CONFIG_Z3FOLD_DEPRECATED.
++	for (prio = ZRAM_SECONDARY_COMP; prio < ZRAM_MAX_COMPS; prio++) {
++		kfree(zram->comp_algs[prio]);
++		zram->comp_algs[prio] = NULL;
++	}
 +
- config ZSWAP_ZPOOL_DEFAULT_ZSMALLOC
- 	bool "zsmalloc"
- 	select ZSMALLOC
-@@ -163,7 +166,7 @@ config ZSWAP_ZPOOL_DEFAULT
-        string
-        depends on ZSWAP
-        default "zbud" if ZSWAP_ZPOOL_DEFAULT_ZBUD
--       default "z3fold" if ZSWAP_ZPOOL_DEFAULT_Z3FOLD
-+       default "z3fold" if ZSWAP_ZPOOL_DEFAULT_Z3FOLD_DEPRECATED
-        default "zsmalloc" if ZSWAP_ZPOOL_DEFAULT_ZSMALLOC
-        default ""
+ 	zram_comp_params_reset(zram);
+ }
  
-@@ -177,15 +180,25 @@ config ZBUD
- 	  deterministic reclaim properties that make it preferable to a higher
- 	  density approach when reclaim will be used.
- 
--config Z3FOLD
--	tristate "3:1 compression allocator (z3fold)"
-+config Z3FOLD_DEPRECATED
-+	tristate "3:1 compression allocator (z3fold) (DEPRECATED)"
- 	depends on ZSWAP
- 	help
-+	  Deprecated and scheduled for removal in a few cycles. If you have
-+	  a good reason for using Z3FOLD over ZSMALLOC, please contact
-+	  linux-mm@kvack.org and the zswap maintainers.
-+
- 	  A special purpose allocator for storing compressed pages.
- 	  It is designed to store up to three compressed pages per physical
- 	  page. It is a ZBUD derivative so the simplicity and determinism are
- 	  still there.
- 
-+config Z3FOLD
-+	tristate
-+	default y if Z3FOLD_DEPRECATED=y
-+	default m if Z3FOLD_DEPRECATED=m
-+	depends on Z3FOLD_DEPRECATED
-+
- config ZSMALLOC
- 	tristate
- 	prompt "N:1 compression allocator (zsmalloc)" if (ZSWAP || ZRAM)
 _
 
-Patches currently in -mm which might be from yosryahmed@google.com are
+Patches currently in -mm which might be from senozhatsky@chromium.org are
 
 
 
