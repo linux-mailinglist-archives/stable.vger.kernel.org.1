@@ -1,210 +1,240 @@
-Return-Path: <stable+bounces-76587-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76588-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BDBE97B0CF
-	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 15:32:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A55397B189
+	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 16:43:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EFCC91F2349E
-	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 13:32:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44EAF285548
+	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 14:43:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62526175D2A;
-	Tue, 17 Sep 2024 13:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABC78176FD3;
+	Tue, 17 Sep 2024 14:43:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="FYwadpim"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NVFazNdE"
 X-Original-To: stable@vger.kernel.org
-Received: from GBR01-CWX-obe.outbound.protection.outlook.com (mail-cwxgbr01on2090.outbound.protection.outlook.com [40.107.121.90])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f46.google.com (mail-ua1-f46.google.com [209.85.222.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8263417335E;
-	Tue, 17 Sep 2024 13:32:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.121.90
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726579961; cv=fail; b=NVHeVzy4tn4kx07vS346696f17Svwvq2Zg8t8PJDQMyQi6gVbVLMPLtiKGKnoQVvkGUhu8V+9rjenZiJZnQBuPplrjVmRf/C2UTqSxgr5amKvUAcDG/Ua/UxeLhJtSrf9pGc9F9TifgL21sWbGMUnJHSXeuboNXy2Tl0GfCia5A=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726579961; c=relaxed/simple;
-	bh=2OrKskkr++VoPjkambW5d1i2o3TKDtzya8kLlLous5w=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=FD5Gxm4Vhkx9TNSomEiPTqVwmK++ijTeWX+sWyam3QOP1yfjyN+8cdS6ar9wpbAWc9l+9yX4Qul++wsiKtiz/3M5rk0Er4Afk7tDvK4D0DNenQtFlpVfM+/fuGGe1WttzsLDNCc0rVq6U6pSy3WNxu50y9aq9QIvilmw9rFzWzc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=FYwadpim; arc=fail smtp.client-ip=40.107.121.90
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=a9Gp+oKlCTEqRUEVtxJKxGFbT2D40fQZ5P13q62nix5cSspre0yCEBhQzt+VyPb9A3g4wyzKsTG1tF6xrC2Md9JvvoUPWriG37z9UB/OlF3Z6QJINyQcmlPTFX0WNUSkBS9Yd5kSY7zrfv8gOn6cP+7ZuSQbIyhZ9SHJQXEkt21Lh15wKlLUQqzKJ0N5FqmkG2fIQKzvlLrRxeg0b6l3SPAemm3xl36YR8TFc7EQcAx2MPL9yIQ2iXKwwFQ50avBIo5H9J99O6WB3LY+1JKhl5z9mvvKPnWbcNG0nv0QQFcP4oqSxFQnMHVPPy+5IH0quESMWWnJXtnqaI5EauFdaQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=AC9IopL3tN9pMCZbGTUtfB0Uvbt5qvw3/lUplWcBiso=;
- b=OQRkr5uZ5vB9v8z3u3YA1UG+vI9Qjn+MjuT5LXOcMU711BTNXBnaeYtMlmvvdk+gm7qLKTbBjytcTF2Bk90wC2lI7xm7wncM7ycD7n0BlSNg31YiX5PYnCGoEr/Na5ioznnPuDNIKKpyfC9Z91g1DYduJdkU9j9SD3/CcYXgKzzyTnDY7x5a64cqGEbyrV9lvuTEcrhdORqNjtK2XGX06apQrflhpLehcpiDcH81vEY3Pu/GlVRDHTOGLPDSxJBRAtBlv/IEItLCgbPRes7BMj268xVxf5kEu5jfpZDexVciIkfrJrz+xarXQFfsl4UBRHFXMhAetSJHKBqXwE2JjQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=AC9IopL3tN9pMCZbGTUtfB0Uvbt5qvw3/lUplWcBiso=;
- b=FYwadpim4nyprUY+1XO3iR87s6Oa7IRkapRqfbM4osqceUCxLHm33uqGBC+HqJucTT13K9IGAbqhPwV1BCdCFRQRGRvkQtetD9o54p6lAbXnR01N/58U4y8XlT6E5eg2BUNv6pCZ2DLYQoYk6l2sVBJhOWS5WckHairTH9NGt3M=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by LO4P265MB3613.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:1bc::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7962.24; Tue, 17 Sep
- 2024 13:32:36 +0000
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1818:a2bf:38a7:a1e7%3]) with mapi id 15.20.7962.022; Tue, 17 Sep 2024
- 13:32:36 +0000
-Date: Tue, 17 Sep 2024 14:32:34 +0100
-From: Gary Guo <gary@garyguo.net>
-To: Jason Montleon <jmontleo@redhat.com>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
- bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@kernel.org,
- aliceryhl@google.com, paul.walmsley@sifive.com, palmer@dabbelt.com,
- aou@eecs.berkeley.edu, nathan@kernel.org, ndesaulniers@google.com,
- morbo@google.com, justinstitt@google.com, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
- llvm@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH] RISC-V: Fix building rust when using GCC toolchain
-Message-ID: <20240917143234.4b213175@eugeo>
-In-Reply-To: <20240917000848.720765-2-jmontleo@redhat.com>
-References: <20240917000848.720765-1-jmontleo@redhat.com>
-	<20240917000848.720765-2-jmontleo@redhat.com>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P123CA0418.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:18b::9) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:253::10)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1175169AC5
+	for <stable@vger.kernel.org>; Tue, 17 Sep 2024 14:43:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1726584207; cv=none; b=XE6gslevhD8wPJVCHdQybfvi5u3+2sPrUir6RW0XRDv01KerD4IPgly5SI8tH1f9LBl1e7EG1s6zZrT9VuNSlWal8NYbSR9gqkBHY+wJRlu7fKwON5wwO9+VQd7nLytWpUo7Ee8cIsboXZ5pgcpxfWut8d1TJvOql6oJVb3oR1Y=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1726584207; c=relaxed/simple;
+	bh=X7EoY4LeCIN2w6L9dfJvXhKYaEAXCv+HnsaumS4bhv4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=T8vJipjN1adErMMK54gewR7tCvP2kfg9kemDCmOg8ckLZDatOIQYUHb3ac4KxEStZCqoN1Re3eZC6hqRIQKikt6nbDfmqkac+cwWbx2pKnXFyIAsqGLkap+P1Zv+bpRJzBKGOgpKmJztK0jfopyRjDVI1p/bg5kTYct94XQrdOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NVFazNdE; arc=none smtp.client-ip=209.85.222.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ua1-f46.google.com with SMTP id a1e0cc1a2514c-846b934981aso871911241.3
+        for <stable@vger.kernel.org>; Tue, 17 Sep 2024 07:43:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1726584204; x=1727189004; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=lcAi7YcgriXxrPEb+xv9gs4bbk4HcZQwAJeRNSxSTdA=;
+        b=NVFazNdEzv4FTlZPvR4S1k5Npmjit9wwsyargvfTy3X8DZyk9B/GD0MURTtlHOF3tb
+         PLiuSQemlnnrK/QIRgQlWUPtw1AN4xPLRA0Xg4CA4F5C8uAKQKL1C+4NGHngLDOLUd/f
+         Gc7TQjUUb80TxpYn5n1sikZ2TYIH3iI9OKYEEtTPaizjrckQvXQHcn6J+hsWE1jZGDZH
+         2pw+JT/sRmG/aUun18balyoLobhethD7iqE+pqqYh6YGj3yqoJB0JCdGgIm710HtSTco
+         JgXV/LffGOHyaFySLAVJi3mIIdzhdJqUwAZ0tVdRRXENtwoRBzKX9jDZSuyBMAx+5pAy
+         PpZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726584204; x=1727189004;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lcAi7YcgriXxrPEb+xv9gs4bbk4HcZQwAJeRNSxSTdA=;
+        b=piMIZoT96yQwMFSljOy2vTlR5gL2OFiQW2QYuCbwJmFJQH7zQeck0IJp2sX3otQaie
+         +5YRflT/EYJq0JfrKsf4twJo3YPivQyIQtjdIW04RGP+bMSzKmB/nV+Ze2MM777V3J9k
+         CGiL6/PVF9ZFMMQRuLKLjbeDdqGiI//9s+ziecWJbUhvR2S8blqoaayhHoIy2+L7uf/a
+         1QsnTkD8KUOLeS/pLMDdRg3p9y2/OCfKd/x9dFYxYyZbh/4oZh7iGvpnlv3JAb0i7he1
+         MsRHpmOX7WCWTDIhXv5DSc+UNHAnuV+6g5F66tt7eFq05Tn9actWgrbqiNIfDVsgK1BO
+         3YQQ==
+X-Gm-Message-State: AOJu0YxA7c/Q3t+f7mPyd07koSHTQJGnQHqDl000PSHFHyoX5ZGDZ1sV
+	hMpxdWr/PbqNxAl0XZ0kwhQG3IX5WKXGNocxwUGr4JhvPAmvdvcr2r7BbowiEHQUVVIHS10yKGV
+	S4yHeHNiyQDd1ashxiK1mWM/5VaFTe1qQQ2kCgg==
+X-Google-Smtp-Source: AGHT+IESS9PDQfiP+vBD2icZWrZKIy0oWSckmSTGB2lVg2KUsAiyHJQLE0jTtqsGR3N/hyqFGg7bC1Mi3Wk2apDnUjY=
+X-Received: by 2002:a05:6102:3f09:b0:49c:484:995b with SMTP id
+ ada2fe7eead31-49d4f7242f7mr11079510137.29.1726584204417; Tue, 17 Sep 2024
+ 07:43:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO4P265MB3613:EE_
-X-MS-Office365-Filtering-Correlation-Id: 27f0d797-5658-4931-4af3-08dcd71d3151
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?tqDCNKDeU5SYztwZ2tq6fgdDgr7tFQFOIJWGrhp3EpjqR7QCk2g4atGVKvE/?=
- =?us-ascii?Q?gj3ny4dFbo35oMWkPNVDYHvYIx/eN1yIIfHXa4MJyyioqsSuNMi08ZULiImn?=
- =?us-ascii?Q?ZoP0s49t7LuDOXMleDMJkH/ZH0UPXiml0qLEtgHu0/sydGUSb/HpOwkQaN3X?=
- =?us-ascii?Q?/iqplDP4ltrxrzaL72xjQbZ2GT33Kuf9rCiUnX8GLp0+dCItcWKBqifDB2LF?=
- =?us-ascii?Q?IZyX/3V2p51Zp6+WPUlDq//nQ1uL+Tz8E99lTiLuajerB5RhRy1cKvwInqwQ?=
- =?us-ascii?Q?1BSHsZHKUJQZ0XhBMLLYwordA3w3KeCvZ7SoAuDOYW1h1zo9FYwHmvi1NI2O?=
- =?us-ascii?Q?u8a5SpYBHpCViLWabLxEC+FUdOAPnG7u51qGK3CuXHigeZFdg7qdCfWPhWnq?=
- =?us-ascii?Q?0EZoo0xgCdFHQXs2K4/O0+VQOxGeyGbm34aZHhrTjoE1xPMbd/+Bi6yjWP1d?=
- =?us-ascii?Q?pf/DWlmH5iNSOzLELDysSYEwwFKlnp4Bc01/o9OkHGx5s2MGC4xEn3F9+ksW?=
- =?us-ascii?Q?JZazWOqDyrkQvPpSPPA4d8D1OOiWjUOOi0X0Z9hg/OG6pwicfyQuQ0a/kIaq?=
- =?us-ascii?Q?Q2AGz0HIsVjYhmDAFeH6sLf9FvOwoZEZIBSH/LeCWO7LomqqVIB3pHlm9aSh?=
- =?us-ascii?Q?NyyEqlDteDSGeWmARXM56rMAiSm8DgtNsYKYiDvxPoHOakyZzrmPIvKMgANz?=
- =?us-ascii?Q?DUg2trFg+RdYxWlSSfEgMBdRhAtUK0mZvCm0G4sNJTQNz060JstsslJK0yKv?=
- =?us-ascii?Q?f8JeXGMTGW0G7sojmiA/YmwJYLSvG/Qq6t85Y8nePjU60tjrT/wwniUAOuLe?=
- =?us-ascii?Q?9bTKmO6sh/pDjiJ3dfIXJhoWDj0xN4+nXNw6HhsZbazffpMHsALbPvOIyhe5?=
- =?us-ascii?Q?GK6vuC0AheSgiq4pNDMl2Dm0qBRcjew/wLvsb5DlSriYcvDOYI/bufoplgBZ?=
- =?us-ascii?Q?v+01IUzYVd50zMta3uaE7CevZE+8nbtx6eQyvE7Upoo8JVboW15KIeU4BwVs?=
- =?us-ascii?Q?Us8CufG4EWEhUNRRXCBJWpOw2dCvqgS2qmS34Xu95dcKTYix82WQ2vM8IpSt?=
- =?us-ascii?Q?PAtfo2qJoUFFNB7pOlR/x+bmxW2fkhKis68Dvd2URot3uf4zshNKgmq36ArC?=
- =?us-ascii?Q?UZtwGhK2RBXPo5nMz112R3MA8IxT/VTOh3ltBJucUWA7FKV/EmMGYSoIbcGM?=
- =?us-ascii?Q?7VFQ36n6ra96LY80otnDnvnV1/hjvaX+MtWP4LV3Bk4hLim/z8i5tJ9mmHJS?=
- =?us-ascii?Q?8UiFDNwVtsz4FbCd6d6XbBNCLaU6KGYom7ArYPQVUdu+ce2LmPLJMnzsdIEH?=
- =?us-ascii?Q?cBYvMchT7pvlOPTWOrNh8CnFUXAX/JzIfKJgHZDjfx6P0w=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?0tfBNjbd88HXqoXagD2231LHOIaH9dhWh9neTvMLn6hGmoUMRAMDzchbCGYB?=
- =?us-ascii?Q?4NtAKYSDmXsSaxChWf7g8KH+nVq3HUOHfEEoEJrk7zQJcHudz17wjq6S9Hi7?=
- =?us-ascii?Q?I7wLmJdIXjlDqgr1Yjzy7QQ6LJzBDjHov/drZKVSURwk+kAzcDZMl/LHWq2c?=
- =?us-ascii?Q?G123IOP6PHUDxDvRkFcUWfBVFQOPf5fFFFDBmOOl9XdAPra9eYKcqVVvQnMj?=
- =?us-ascii?Q?MkOLsyQNFQcyWP97hAUoedrx+kUXNghtdGqX8g/mXoD62mBsDC0suCPSgCpy?=
- =?us-ascii?Q?00ah0rIHnTcn2bc+cJs3TxMylqL1XQOKfxhsS2TO7bIYgjtjq1zbtEO5m86Q?=
- =?us-ascii?Q?HOTIVNRFri9M5yn94vDn00y0z5QQQ/Y9YF21jXCeTd3e36sXRDFaJ/CFCBve?=
- =?us-ascii?Q?TM1AFTpbUZBzJ3nsUe8z9VuQAmN97W9xJU7KuUpyK/AW2pggFfOPjhDvGW1H?=
- =?us-ascii?Q?sku4tbL1iBJ3bzZ4PrIEt+u2AoQNvA8ZCVzZB7PPOQBjKdTLEr5EmOWptizY?=
- =?us-ascii?Q?yXfCte2LQ3H+OV6EoiE7eMH9bHcfa2+rFxFof/pKvQVLX89jnErLNxA95Sy1?=
- =?us-ascii?Q?4BHOFXQlX97YLUzewEAAkLgun6zSEnCnsrN5CyNe3qW5tLMCmBrgSLnISVxg?=
- =?us-ascii?Q?J3zo6tYOTBx22Y0/i3ZaoJYti07LHNHvh74zE1MWJShwn46uJOowkXO4dEF4?=
- =?us-ascii?Q?/GEHbjC4n29dkqBGgciTvle8h2zbf8YdyfV2e3QFy3gSF+3xW8hcNfU4MlB4?=
- =?us-ascii?Q?ix6JkVX4N4WsAQ/BKiYOKNVHugqZHy7uwecQlfUdr6vx7KK7pEDUh2zcakdI?=
- =?us-ascii?Q?NYRSIuWgaTVpMQ8vNn2PgqtrEAFEAGVhDtIOnjF6Ntz541zDbEhi4P+d3UGq?=
- =?us-ascii?Q?7cLmKmrCHXvh9Y/aDHIaN1UcAvmDhZbuuKM+qGjsP0PESYXFCorajIDEKQpN?=
- =?us-ascii?Q?zIp7K9zW2IdIAHcBpvKdXIMgvYRoV/M3QfWelmC7pjkxu6vRxZSmwqBIsDeJ?=
- =?us-ascii?Q?doS8cbwU/aPRhqoLB8BCArA/ZdMCSrD5+Y03GBJzKs4QAGl5oDbYNsG8Irxd?=
- =?us-ascii?Q?XfMnJ6+NHdAEA4Xg7XJdolltxDzIOiv4B4eO7sXoGvufa6LXX7cz31wfiywh?=
- =?us-ascii?Q?hEF1jZdqI3d59l147pyzvn/FM/cFhZcL8uE6jI7NvXrfgZr5/VpRbSP2o1QJ?=
- =?us-ascii?Q?/ihZl+3P1uslT2tT2oArPhDFb0cy7ZDAEhcRWI3M0LTbMYTzkz/fn/CsuRR8?=
- =?us-ascii?Q?lO1VAffMAL2V9HxK2J13f8DUdrrwBso92taRcEEzsKkC3HQuAzQirRTwkLB/?=
- =?us-ascii?Q?ALGOeg4zUfmw/OGFJjgoKR+joOcH+DHcqwccSKChks2ihN9xVjqzlgHYFYSF?=
- =?us-ascii?Q?BzEympxtSxvgn7iAIx0ZxEjHWmpigGA4flypIB9CkFj4PEfL3I4Jf6Bf5eyx?=
- =?us-ascii?Q?WV9IgJ7LD8H9iNc6Ro6TI29FviHACv3rytXwNDB4xpbpNtjYoa7PLlA+6JA8?=
- =?us-ascii?Q?ux8r9AYPQpg2txI2GJY59ZwjxLfm8U2DHmrDT/olTxA+TNawrFYgb6MKiaBE?=
- =?us-ascii?Q?wwUPO/11WkuqBulmvVk0J/zntTLFs+IWoXyTxEpc?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 27f0d797-5658-4931-4af3-08dcd71d3151
-X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2024 13:32:36.2373
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: jHavrdG+prcaVgCaBvIj/xL67ADWJHUWF7iS53g50EU7Aa+4L6ZdjpjYEYAP26WwbWGyyqC5q0FTgSuUJJ4dFw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO4P265MB3613
+References: <20240916114221.021192667@linuxfoundation.org>
+In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
+From: Naresh Kamboju <naresh.kamboju@linaro.org>
+Date: Tue, 17 Sep 2024 20:13:12 +0530
+Message-ID: <CA+G9fYtsjFtddG8i+k-SpV8U6okL0p4zpsTiwGfNH5GUA8dWAA@mail.gmail.com>
+Subject: Re: [PATCH 6.1 00/63] 6.1.111-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
+	broonie@kernel.org, Jinjie Ruan <ruanjinjie@huawei.com>, 
+	=?UTF-8?Q?Uwe_Kleine=2DK=C3=B6nig?= <u.kleine-koenig@pengutronix.de>, 
+	Srini Kandagatla <srinivas.kandagatla@linaro.org>, Anders Roxell <anders.roxell@linaro.org>, 
+	Dan Carpenter <dan.carpenter@linaro.org>, linux-spi@vger.kernel.org, 
+	Linux PM <linux-pm@vger.kernel.org>, Georgi Djakov <djakov@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, 16 Sep 2024 20:08:48 -0400
-Jason Montleon <jmontleo@redhat.com> wrote:
+On Mon, 16 Sept 2024 at 17:29, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.1.111 release.
+> There are 63 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 18 Sep 2024 11:42:05 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.111-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-> Clang does not support '-mno-riscv-attribute' resulting in the error
-> error: unknown argument: '-mno-riscv-attribute'
-> 
-> Not setting BINDGEN_TARGET_riscv results in the in the error
-> error: unsupported argument 'medany' to option '-mcmodel=' for target \
-> 'unknown'
-> error: unknown target triple 'unknown'
-> 
-> Signed-off-by: Jason Montleon <jmontleo@redhat.com>
-> Cc: stable@vger.kernel.org
 
-I also carry a similar patch locally (haven't get around to submit it
-yet), so I can confirm
+The following kernel warnings have been noticed on a Qualcomm db845c device
+running stable-rc  6.1.111-rc1, 6.6.52-rc1 and 6.10.11-rc1 at boot time.
 
-Tested-by: Gary Guo <garyguo.net>
+First seen on 6.1.111-rc1
+  Good: v6.1.110
+  BAD:  6.1.111-rc1
 
-As Conor points out, the commit message could be improved. Perhaps add
-a bit of context about the flag filtering.
+Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-Best,
-Gary
+Warning log:
+--------
+[    0.000000] Booting Linux on physical CPU 0x0000000000 [0x517f803c]
+[    0.000000] Linux version 6.1.111-rc1 (tuxmake@tuxmake)
+(aarch64-linux-gnu-gcc (Debian 13.3.0-5) 13.3.0, GNU ld (GNU Binutils
+for Debian) 2.43) #1 SMP PREEMPT @1726489583
+[    0.000000] Machine model: Thundercomm Dragonboard 845c
+...
+[    7.841428] ------------[ cut here ]------------
+[    7.841431] WARNING: CPU: 4 PID: 492 at
+drivers/interconnect/core.c:685 __icc_enable
+(drivers/interconnect/core.c:685 (discriminator 7))
+[    7.841442] Modules linked in: soundwire_bus(+) venus_core(+)
+qcom_camss(+) drm_dp_aux_bus bluetooth(+) qcom_stats mac80211(+)
+videobuf2_dma_sg drm_display_helper i2c_qcom_geni(+) i2c_qcom_cci
+camcc_sdm845(+) v4l2_mem2mem qcom_q6v5_mss(+) videobuf2_memops
+reset_qcom_pdc spi_geni_qcom(+) videobuf2_v4l2 phy_qcom_qmp_usb(+)
+videobuf2_common gpi(+) qcom_rng cfg80211 phy_qcom_qmp_ufs ufs_qcom(+)
+coresight_stm phy_qcom_qmp_pcie stm_core rfkill slim_qcom_ngd_ctrl
+qrtr pdr_interface lmh qcom_wdt slimbus icc_osm_l3 qcom_q6v5_pas(+)
+icc_bwmon llcc_qcom qcom_pil_info qcom_q6v5 qcom_sysmon qcom_common
+qcom_glink_smem qmi_helpers mdt_loader display_connector
+drm_kms_helper drm socinfo rmtfs_mem
+[    7.841494] CPU: 4 PID: 492 Comm: (udev-worker) Not tainted 6.1.111-rc1 #1
+[    7.841497] Hardware name: Thundercomm Dragonboard 845c (DT)
+[    7.841499] pstate: 80400005 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+[    7.841502] pc : __icc_enable (drivers/interconnect/core.c:685
+(discriminator 7))
+[    7.841505] lr : icc_disable (drivers/interconnect/core.c:708)
+[    7.841508] sp : ffff800008b23660
+[    7.841509] x29: ffff800008b23660 x28: ffff800008b23c20 x27: 0000000000000000
+[    7.841513] x26: ffffdd85da6ea1c0 x25: 0000000000000008 x24: 00000000000f4240
+[    7.841516] x23: 0000000000000000 x22: ffff46a58b7ca580 x21: 0000000000000001
+[    7.841519] x20: ffff46a58b7ca5c0 x19: ffff46a58b54a800 x18: 0000000000000000
+[    7.841522] x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
+[    7.841525] x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
+[    7.841528] x11: fefefefefefefeff x10: 0000000000000bf0 x9 : ffffdd85d8c9b0bc
+[    7.841531] x8 : ffff800008b22f58 x7 : 0000000000000000 x6 : 0000000000024404
+[    7.841535] x5 : 0000000000000000 x4 : ffff46a58b64b180 x3 : ffffdd85daa5e810
+[    7.841537] x2 : 0000000000000000 x1 : 0000000000000000 x0 : 0000000000000000
+[    7.841541] Call trace:
+[    7.841542] __icc_enable (drivers/interconnect/core.c:685 (discriminator 7))
+[    7.841545] icc_disable (drivers/interconnect/core.c:708)
+[    7.841547] geni_icc_disable (drivers/soc/qcom/qcom-geni-se.c:862)
+[    7.841553] spi_geni_runtime_suspend+0x3c/0x4c spi_geni_qcom
+[    7.841561] pm_generic_runtime_suspend (drivers/base/power/generic_ops.c:28)
+[    7.841565] __rpm_callback (drivers/base/power/runtime.c:395)
+[    7.841568] rpm_callback (drivers/base/power/runtime.c:532)
+[    7.841570] rpm_suspend (drivers/base/power/runtime.c:672)
+[    7.841572] rpm_idle (drivers/base/power/runtime.c:504 (discriminator 1))
+[    7.841574] update_autosuspend (drivers/base/power/runtime.c:1662)
+[    7.841576] pm_runtime_disable_action (include/linux/spinlock.h:401
+drivers/base/power/runtime.c:1703 include/linux/pm_runtime.h:599
+drivers/base/power/runtime.c:1517)
+[    7.841579] devm_action_release (drivers/base/devres.c:720)
+[    7.841581] release_nodes (drivers/base/devres.c:503)
+[    7.841583] devres_release_all (drivers/base/devres.c:532)
+[    7.841585] device_unbind_cleanup (drivers/base/dd.c:531)
+[    7.841589] really_probe (drivers/base/dd.c:710)
+[    7.841592] __driver_probe_device (drivers/base/dd.c:785)
+[    7.841594] driver_probe_device (drivers/base/dd.c:815)
+[    7.841596] __driver_attach (drivers/base/dd.c:1202)
+[    7.841598] bus_for_each_dev (drivers/base/bus.c:301)
+[    7.841600] driver_attach (drivers/base/dd.c:1219)
+[    7.841602] bus_add_driver (drivers/base/bus.c:618)
+[    7.841604] driver_register (drivers/base/driver.c:246)
+[    7.841607] __platform_driver_register (drivers/base/platform.c:868)
+[    7.841609] spi_geni_driver_init+0x28/0x1000 spi_geni_qcom
+[    7.841615] do_one_initcall (init/main.c:1298)
+[    7.841619] do_init_module (kernel/module/main.c:2469)
+[    7.841623] load_module (kernel/module/main.c:2878)
+[    7.841625] __do_sys_finit_module (kernel/module/main.c:2978
+(discriminator 1))
+[    7.841627] __arm64_sys_finit_module (kernel/module/main.c:2945)
+[    7.841630] invoke_syscall (arch/arm64/include/asm/current.h:19
+arch/arm64/kernel/syscall.c:57)
+[    7.841633] el0_svc_common.constprop.0
+(arch/arm64/include/asm/daifflags.h:28
+arch/arm64/kernel/syscall.c:148)
+[    7.841637] do_el0_svc (arch/arm64/kernel/syscall.c:205)
+[    7.841639] el0_svc (arch/arm64/include/asm/daifflags.h:28
+arch/arm64/kernel/entry-common.c:133
+arch/arm64/kernel/entry-common.c:142
+arch/arm64/kernel/entry-common.c:638)
+[    7.841644] el0t_64_sync_handler (arch/arm64/kernel/entry-common.c:656)
+[    7.841647] el0t_64_sync (arch/arm64/kernel/entry.S:585)
+[    7.841649] ---[ end trace 0000000000000000 ]---
 
-> ---
->  rust/Makefile | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/rust/Makefile b/rust/Makefile
-> index f168d2c98a15..73eceaaae61e 100644
-> --- a/rust/Makefile
-> +++ b/rust/Makefile
-> @@ -228,11 +228,12 @@ bindgen_skip_c_flags := -mno-fp-ret-in-387 -mpreferred-stack-boundary=% \
->  	-fzero-call-used-regs=% -fno-stack-clash-protection \
->  	-fno-inline-functions-called-once -fsanitize=bounds-strict \
->  	-fstrict-flex-arrays=% -fmin-function-alignment=% \
-> -	--param=% --param asan-%
-> +	--param=% --param asan-% -mno-riscv-attribute
->  
->  # Derived from `scripts/Makefile.clang`.
->  BINDGEN_TARGET_x86	:= x86_64-linux-gnu
->  BINDGEN_TARGET_arm64	:= aarch64-linux-gnu
-> +BINDGEN_TARGET_riscv	:= riscv64-linux-gnu
->  BINDGEN_TARGET		:= $(BINDGEN_TARGET_$(SRCARCH))
->  
->  # All warnings are inhibited since GCC builds are very experimental,
-> 
-> base-commit: ad060dbbcfcfcba624ef1a75e1d71365a98b86d8
+Warning Log links,
+--------
+ - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.110-64-gdc7da8d6f263/testrun/25159001/suite/log-parser-boot/test/check-kernel-exception-warning-cpu-pid-at-driversinterconnectcorec-__icc_enable/log
+ - https://lkft.validation.linaro.org/scheduler/job/7868463#L4624
 
+Warning comparison:
+--------
+ - https://qa-reports.linaro.org/_/comparetest/?project=2122&project=1971&project=1597&suite=log-parser-boot&test=check-kernel-exception-warning-cpu-pid-at-driversinterconnectcorec-__icc_enable
+
+metadata:
+----
+  git describe: v6.1.110-64-gdc7da8d6f263
+  git repo: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+  git sha: dc7da8d6f26378dd67cc4a43881971c5b46e85b3
+  kernel config:
+https://storage.tuxsuite.com/public/linaro/lkft/builds/2m9WQ7Yb0c2nzmG2EiVmYBATHTE/config
+  build url: https://storage.tuxsuite.com/public/linaro/lkft/builds/2m9WQ7Yb0c2nzmG2EiVmYBATHTE/
+  toolchain: gcc-13
+  config: gcc-13-lkftconfig-debug-kmemleak
+  arch: arm64
+
+Steps to reproduce:
+---------
+ - https://tuxapi.tuxsuite.com/v1/groups/linaro/projects/lkft/tests/2m9WRsriMSoUlRBXEyvin9x2bSG/reproducer
+ - https://tuxapi.tuxsuite.com/v1/groups/linaro/projects/lkft/tests/2m9WRsriMSoUlRBXEyvin9x2bSG/tux_plan
+
+--
+Linaro LKFT
+https://lkft.linaro.org
 
