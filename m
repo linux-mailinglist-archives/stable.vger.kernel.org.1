@@ -1,155 +1,156 @@
-Return-Path: <stable+bounces-76599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76600-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 562AE97B251
-	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 17:50:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C783597B35A
+	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 19:03:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C004DB2A2AA
-	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 15:50:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 05FB41C23C7F
+	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 17:03:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86AF6192D6F;
-	Tue, 17 Sep 2024 15:45:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB70317BEB4;
+	Tue, 17 Sep 2024 17:02:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SwNoTDzB"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="3XUO71gn";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="0lFCxIrv";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="3XUO71gn";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="0lFCxIrv"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F5AC194138;
-	Tue, 17 Sep 2024 15:45:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB0F017AE0B;
+	Tue, 17 Sep 2024 17:02:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726587904; cv=none; b=UuxFrK3UyNYxNj7i7IsF9kPggK4flZoXegG405H0YhYmYwoUagmrgBVKO9mX+ePhGT60bUzyaFSt52HLr02RB7jtYJvpY9pJWlLFAxnDUaE8bmAToYJq/IKWM8p14nAr6SBMTy2Vku9XIqW/1p4DJ0QZCJaHhDlIYxjmXhX6Pdo=
+	t=1726592541; cv=none; b=OzvoVnJVMFZYNbbtM/XrEiKgI8UuZxWwJVGuutwbwOjbb7/T6pdu9d0Td+hDEu6ovd+dkNqUjOvQND3R+fUyIeXkMrVxxkV67pGhu0+CLNvoJ23zg7YwhsH82DSdKTIZAo+/pW1rPWEZFIJDHBWlVnz4BQP0dDSl2/OHiqUFbSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726587904; c=relaxed/simple;
-	bh=BMyYGqGEO26GNPeQnIBlL1dX/WGOQKX5Yh6/QOkpGHU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bDOXHZTpaXrzAZLezK7Va8M4dSJxWqeyWsxf9TLqi92QLAZsBY8jscExuLXL8N73wW1fTLFKnUxRS34A3o35EJ04NbBhegYTj84OlmuDvVgfLyFRm5iiC20gsOX7ZKZxh1Nng1ZMU59PO8MtBLmo28ehaTgpE7Y4qZyxoVGtIs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SwNoTDzB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90A03C4CEC5;
-	Tue, 17 Sep 2024 15:45:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726587903;
-	bh=BMyYGqGEO26GNPeQnIBlL1dX/WGOQKX5Yh6/QOkpGHU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SwNoTDzBM4Lm2wuAGIqEZkyE7plkegd9QQBCKk46t+lvsAvsfyY3sK20RAeJplI6j
-	 /if9C1sw2hiXQ+hYMi6R1Lg35AIc8f89kkfgl4pYksTxu1HQdPiajpvKEkidPj6ypn
-	 56me0Zu7hICMSInfC2O9R/GUqy06yFj161DqgXjRzz/SQqBrVYJ52iqAZxKai/FONe
-	 BjHOConj+CCP+wi7Z5obWVeJ/TXbVK6dyOjlJjSfs2IpvzlM8UnT8CQgtmw3x85ztX
-	 lMTcIXHZ7XyLUC+Q0PnFKV/k7ucK99Z7V7UmIR9iG0JuA7gLb2M9d0J55qDpFyGpMr
-	 jFlP712AzvqLA==
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: linux-integrity@vger.kernel.org
-Cc: James.Bottomley@HansenPartnership.com,
-	roberto.sassu@huawei.com,
-	mapengyu@gmail.com,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	stable@vger.kernel.org,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	David Howells <dhowells@redhat.com>,
-	Paul Moore <paul@paul-moore.com>,
-	James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	keyrings@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 3/7] tpm: Return on tpm2_create_primary() failure in tpm2_load_null()
-Date: Tue, 17 Sep 2024 18:44:32 +0300
-Message-ID: <20240917154444.702370-4-jarkko@kernel.org>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240917154444.702370-1-jarkko@kernel.org>
-References: <20240917154444.702370-1-jarkko@kernel.org>
+	s=arc-20240116; t=1726592541; c=relaxed/simple;
+	bh=quDRDhd076WHqBIGywku9FWiyXyNXWyvLgVZg9kHrlw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=V98jbz7lCPhSP2DcMNe82pkj4UfvFCkdjsXabK0dCKIjBtHNAfzyWonAPIskUqW1+avVAIsEsxB847jvEFrXcLPe7WbDsZVtIMbSSGbLW1RvcYGlEBG/jkK0khjWvC1XJhlP2x6PNnrqL88Gf0jSlDF+KFXBP/HUR103mnF17Nc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=3XUO71gn; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=0lFCxIrv; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=3XUO71gn; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=0lFCxIrv; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 26E142012D;
+	Tue, 17 Sep 2024 17:02:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1726592538;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LjjdywdDGiZtxX/399QVThWd+iLZQJlIvJ5mb1cMV1U=;
+	b=3XUO71gnQL78BNN7ZIO0bFUFMRswTMF9l9MgW71YqlYmho2qPF6XrVjz5Qg14VYT8CsNbX
+	BwM5fegZwTvl5JaZnhtaXaPwa5QjxKb43/urcH6YetbjDOzvGakRyWcpyhIjzCCes8Sqyr
+	SQPwtRcqxOn8gMp3nrbUzVPBakzLc0Q=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1726592538;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LjjdywdDGiZtxX/399QVThWd+iLZQJlIvJ5mb1cMV1U=;
+	b=0lFCxIrvkulel3+kY3ursI7gexIU2io2NVXiGws6qW7xwl9F1mi7X/p3m287fAIXrLWUR3
+	O8n87lGjfjj2sGCg==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1726592538;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LjjdywdDGiZtxX/399QVThWd+iLZQJlIvJ5mb1cMV1U=;
+	b=3XUO71gnQL78BNN7ZIO0bFUFMRswTMF9l9MgW71YqlYmho2qPF6XrVjz5Qg14VYT8CsNbX
+	BwM5fegZwTvl5JaZnhtaXaPwa5QjxKb43/urcH6YetbjDOzvGakRyWcpyhIjzCCes8Sqyr
+	SQPwtRcqxOn8gMp3nrbUzVPBakzLc0Q=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1726592538;
+	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
+	 cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=LjjdywdDGiZtxX/399QVThWd+iLZQJlIvJ5mb1cMV1U=;
+	b=0lFCxIrvkulel3+kY3ursI7gexIU2io2NVXiGws6qW7xwl9F1mi7X/p3m287fAIXrLWUR3
+	O8n87lGjfjj2sGCg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1399B139CE;
+	Tue, 17 Sep 2024 17:02:18 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id wFlJBBq26WYmcAAAD6G6ig
+	(envelope-from <dsterba@suse.cz>); Tue, 17 Sep 2024 17:02:18 +0000
+Date: Tue, 17 Sep 2024 19:02:16 +0200
+From: David Sterba <dsterba@suse.cz>
+To: Qu Wenruo <wqu@suse.com>
+Cc: linux-btrfs@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] btrfs: qgroup: set a more sane default value for subtree
+ drop threshold
+Message-ID: <20240917170216.GI2920@twin.jikos.cz>
+Reply-To: dsterba@suse.cz
+References: <4ae3d5114b0fcffe9f95e614bb4fc8912b5f6573.1725947462.git.wqu@suse.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4ae3d5114b0fcffe9f95e614bb4fc8912b5f6573.1725947462.git.wqu@suse.com>
+User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
+X-Spam-Score: -4.00
+X-Spamd-Result: default: False [-4.00 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	HAS_REPLYTO(0.30)[dsterba@suse.cz];
+	NEURAL_HAM_SHORT(-0.20)[-0.995];
+	MIME_GOOD(-0.10)[text/plain];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	TO_DN_SOME(0.00)[];
+	ARC_NA(0.00)[];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
+	RCPT_COUNT_THREE(0.00)[3];
+	FROM_EQ_ENVFROM(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	REPLYTO_ADDR_EQ_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,imap1.dmz-prg2.suse.org:helo]
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-tpm2_load_null() ignores the return value of tpm2_create_primary().
-Further, it does not heal from the situation when memcmp() returns zero.
+On Tue, Sep 10, 2024 at 03:21:04PM +0930, Qu Wenruo wrote:
+> Since commit 011b46c30476 ("btrfs: skip subtree scan if it's too high to
+> avoid low stall in btrfs_commit_transaction()"), btrfs qgroup can
+> automatically skip large subtree scan at the cost of marking qgroup
+> inconsistent.
+> 
+> It's designed to address the final performance problem of snapshot drop
+> with qgroup enabled, but to be safe the default value is
+> BTRFS_MAX_LEVEL, requiring a user space daemon to set a different value
+> to make it work.
+> 
+> I'd say it's not a good idea to rely on user space tool to set this
+> default value, especially when some operations (snapshot dropping) can
+> be triggered immediately after mount, leaving a very small window to
+> that that sysfs interface.
+> 
+> So instead of disabling this new feature by default, enable it with a
+> low threshold (3), so that large subvolume tree drop at mount time won't
+> cause huge qgroup workload.
 
-Address this by returning on failure and saving the null key if there
-was no detected interference in the bus.
+Sounds like a sane idea to set it to some low value as default.
 
-Cc: stable@vger.kernel.org # v6.11+
-Fixes: eb24c9788cd9 ("tpm: disable the TPM if NULL name changes")
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
----
-v3:
-- Update log messages. Previously the log message incorrectly stated
-  on load failure that integrity check had been failed, even tho the
-  check is done *after* the load operation.
-v2:
-- Refined the commit message.
-- Reverted tpm2_create_primary() changes. They are not required if
-  tmp_null_key is used as the parameter.
----
- drivers/char/tpm/tpm2-sessions.c | 38 +++++++++++++++++---------------
- 1 file changed, 20 insertions(+), 18 deletions(-)
-
-diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
-index 0993d18ee886..03c56f0eda49 100644
---- a/drivers/char/tpm/tpm2-sessions.c
-+++ b/drivers/char/tpm/tpm2-sessions.c
-@@ -850,32 +850,34 @@ static int tpm2_parse_start_auth_session(struct tpm2_auth *auth,
- 
- static int tpm2_load_null(struct tpm_chip *chip, u32 *null_key)
- {
--	int rc;
- 	unsigned int offset = 0; /* dummy offset for null seed context */
- 	u8 name[SHA256_DIGEST_SIZE + 2];
-+	u32 tmp_null_key;
-+	int rc;
- 
- 	rc = tpm2_load_context(chip, chip->null_key_context, &offset,
--			       null_key);
--	if (rc != -EINVAL)
-+			       &tmp_null_key);
-+	if (rc != -EINVAL) {
-+		if (!rc)
-+			*null_key = tmp_null_key;
- 		return rc;
-+	}
-+	dev_info(&chip->dev, "the null key has been reset\n");
- 
--	/* an integrity failure may mean the TPM has been reset */
--	dev_err(&chip->dev, "NULL key integrity failure!\n");
--	/* check the null name against what we know */
--	tpm2_create_primary(chip, TPM2_RH_NULL, NULL, name);
--	if (memcmp(name, chip->null_key_name, sizeof(name)) == 0)
--		/* name unchanged, assume transient integrity failure */
-+	rc = tpm2_create_primary(chip, TPM2_RH_NULL, &tmp_null_key, name);
-+	if (rc)
- 		return rc;
--	/*
--	 * Fatal TPM failure: the NULL seed has actually changed, so
--	 * the TPM must have been illegally reset.  All in-kernel TPM
--	 * operations will fail because the NULL primary can't be
--	 * loaded to salt the sessions, but disable the TPM anyway so
--	 * userspace programmes can't be compromised by it.
--	 */
--	dev_err(&chip->dev, "NULL name has changed, disabling TPM due to interference\n");
--	chip->flags |= TPM_CHIP_FLAG_DISABLE;
- 
-+	/* Return the null key if the name has not been changed: */
-+	if (memcmp(name, chip->null_key_name, sizeof(name)) == 0) {
-+		*null_key = tmp_null_key;
-+		return 0;
-+	}
-+
-+	/* Deduce from the name change TPM interference: */
-+	dev_err(&chip->dev, "the null key integrity check failedh\n");
-+	tpm2_flush_context(chip, tmp_null_key);
-+	chip->flags |= TPM_CHIP_FLAG_DISABLE;
- 	return rc;
- }
- 
--- 
-2.46.0
-
+Reviewed-by: David Sterba <dsterba@suse.com>
 
