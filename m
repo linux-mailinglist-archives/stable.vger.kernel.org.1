@@ -1,128 +1,175 @@
-Return-Path: <stable+bounces-76577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76578-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B8CD97AF00
-	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 12:38:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D93597AF3F
+	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 13:07:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DB0F1C21484
-	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 10:38:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C818C1F2493C
+	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 11:07:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4611F167D80;
-	Tue, 17 Sep 2024 10:38:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4472915AAC8;
+	Tue, 17 Sep 2024 11:07:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="X5kSIzfe"
 X-Original-To: stable@vger.kernel.org
-Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9EF9166F2E;
-	Tue, 17 Sep 2024 10:38:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.154.21.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D097E1547F8;
+	Tue, 17 Sep 2024 11:07:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726569493; cv=none; b=QFTTgschIHqWUjSoB/XOnczsT1wHaxHikovBuxmZ6ck/VhfIXecb1rP77yHbdyNF+8ovGpB+eoLit/IdFt4K9s13sDD7HZnXFuvFI14EUPu55fhZsHz6FrD+bdeAfkyD2goBzccJZqE/shKB6W/fqc2BeAoDQLz9F7l9VZVMVgo=
+	t=1726571228; cv=none; b=gXxlBMpKSRQE+6E7kftFJtuqZEZ+dx2TeAF9/duGjjfshl7Mz0T2GTdfNexQrlX4XsFqRTAe2vE2HDAavNMcW7KOB5Fvjc2QGDpn4Pm+cYAZsk+Cb6jJ7IaKIU9wP9E1DsC3ZoBNZbKGLSQ4W10itcqVLdvhEotRx5AwgWZXfLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726569493; c=relaxed/simple;
-	bh=qUyC053BFLbdvh1TwSeAnDW+JocofleEoV+3f6rWh/Q=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=Ljuohh6yL4HSCGfaAG6CR/6fjo7RGzjbbEhA4XZAj/I4wO+k/cdri/w5cHhMniJuaZngJg9aK9s4adNqNNd/eNofl4V1S597eDkp24dPMVtK3DKzkZWnSiwKbc+2hEjwRSN5gcH/vAqoXF+JnrIDUzXHETfZ5QXfbntTo3F2kbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru; spf=pass smtp.mailfrom=omp.ru; arc=none smtp.client-ip=90.154.21.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=omp.ru
-Received: from msexch01.omp.ru (10.188.4.12) by msexch02.omp.ru (10.188.4.13)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Tue, 17 Sep
- 2024 13:38:06 +0300
-Received: from msexch01.omp.ru ([fe80::485b:1c4a:fb7f:c753]) by
- msexch01.omp.ru ([fe80::485b:1c4a:fb7f:c753%5]) with mapi id 15.02.1258.012;
- Tue, 17 Sep 2024 13:38:06 +0300
-From: Roman Smirnov <r.smirnov@omp.ru>
-To: "stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
-CC: Karina Yankevich <k.yankevich@omp.ru>, "rafael@kernel.org"
-	<rafael@kernel.org>, "broonie@kernel.org" <broonie@kernel.org>, "Sergey
- Shtylyov" <s.shtylyov@omp.ru>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "lvc-project@linuxtesting.org"
-	<lvc-project@linuxtesting.org>, Sergey Yudin <s.yudin@omp.ru>,
-	"mathias.nyman@linux.intel.com" <mathias.nyman@linux.intel.com>
-Subject: Re: [PATCH 5.10] xhci: check virt_dev is valid before dereferencing
- it
-Thread-Topic: [PATCH 5.10] xhci: check virt_dev is valid before dereferencing
- it
-Thread-Index: AQHbCOln/SYt17slkkiGE+zcRk3mnbJblz2A
-Date: Tue, 17 Sep 2024 10:38:06 +0000
-Message-ID: <204adc683e0e71f227ba3f0c6126a80d9b281768.camel@omp.ru>
-References: <20240917100703.80166-1-r.smirnov@omp.ru>
-In-Reply-To: <20240917100703.80166-1-r.smirnov@omp.ru>
-Accept-Language: ru-RU, en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-kse-serverinfo: msexch02.omp.ru, 9
-x-kse-antivirus-interceptor-info: scan successful
-x-kse-antivirus-info: Clean, bases: 9/17/2024 9:17:00 AM
-x-kse-attachment-filter-triggered-rules: Clean
-x-kse-attachment-filter-triggered-filters: Clean
-x-kse-bulkmessagesfiltering-scan-result: InTheLimit
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <A87ECA70B94A99428A66719B7ECD3694@omp.ru>
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1726571228; c=relaxed/simple;
+	bh=4TzgfNzU4X7Llu0Ur+J1tTSGJc+SZrOy4FB+uAHhS6U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lmxYncRHy0MulcKSrY0mJyYgVwiBOgw2hvZQIc6bd5N9huuileOYadZKaGMJDdcpcIT6OO+xhgCKGzIZdqpXYzhvwSizVNFVcYrKtZWfcmkMxrT0y7Zj2LdSox44953FAgCQMOZXc+t6IxZIDcBzcC4+9pd3rKPoBhZviXp4tcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=X5kSIzfe; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48H8LQWw031824;
+	Tue, 17 Sep 2024 11:06:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=date
+	:from:to:cc:subject:message-id:references:mime-version
+	:content-type:in-reply-to; s=pp1; bh=uFk2CZ9i+fQ2hNEQA/VA4OdDwxn
+	NB6sKXFr9zpdKM0w=; b=X5kSIzfeSTP4CxaX2d/mrglrTkrvkqA/IzUfj8kEsHy
+	iauq5tnmD/ffB1AZIJI1pS8/1FohiA1qM9f6LRonuh3ppXl+//E9X8mksZ36AE05
+	tcprvHQ4/XTwsNbKridJJyoM4VjdjeW5/lRtqG1u1/o2rRzAtubpS+ixe8qua5PV
+	54p8HcNqnXKGnwtVlq0VnOJOg8c8PayYazofRAm6vcBN4/yvj9FonWaG/kl2NDvi
+	Z0Jy7Mmf56RcmtqYNM2X5RY+nQBQo2NbHD0qbdUHA3Rb2G+vj/Mtqf9elXYfb4J+
+	JjnzjRotontn3YESr4H2QOuZCo/BPUKoGzEOXGl6Cdg==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41n3uj7nvh-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 17 Sep 2024 11:06:55 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48HALncT024672;
+	Tue, 17 Sep 2024 11:06:54 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 41nq1mvhsn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 17 Sep 2024 11:06:54 +0000
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 48HB6rfG49742212
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 17 Sep 2024 11:06:53 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0277520043;
+	Tue, 17 Sep 2024 11:06:53 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C84772004B;
+	Tue, 17 Sep 2024 11:06:52 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.152.85.9])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue, 17 Sep 2024 11:06:52 +0000 (GMT)
+Date: Tue, 17 Sep 2024 13:06:51 +0200
+From: Alexander Gordeev <agordeev@linux.ibm.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+        Vasily Gorbik <gor@linux.ibm.com>, Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.6 32/91] s390/mm: Prevent lowcore vs identity mapping
+ overlap
+Message-ID: <Zuliy6DOi47cD-cZ@tuxmaker.boeblingen.de.ibm.com>
+References: <20240916114224.509743970@linuxfoundation.org>
+ <20240916114225.569160063@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240916114225.569160063@linuxfoundation.org>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: UMwGydxAuuitSA5cPk3xqlH68mJwCYCi
+X-Proofpoint-GUID: UMwGydxAuuitSA5cPk3xqlH68mJwCYCi
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-17_02,2024-09-16_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ mlxlogscore=997 adultscore=0 phishscore=0 spamscore=0 lowpriorityscore=0
+ clxscore=1011 bulkscore=0 suspectscore=0 mlxscore=0 impostorscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2408220000 definitions=main-2409170079
 
-T24gVHVlLCAyMDI0LTA5LTE3IGF0IDEzOjA3ICswMzAwLCBSb21hbiBTbWlybm92IHdyb3RlOgo+
-IEZyb206IE1hdGhpYXMgTnltYW4gPG1hdGhpYXMubnltYW5AbGludXguaW50ZWwuY29tPgo+IAo+
-IGNvbW1pdCAwM2VkNTc5ZDlkNTFhYTAxODgzMGIwZGUzZThiNDYzZmFmNmI4N2RiIHVwc3RyZWFt
-Lgo+IAo+IENoZWNrIHRoYXQgdGhlIHhoY2lfdmlydF9kZXYgc3RydWN0dXJlIHRoYXQgd2UgZHVn
-IG91dCBiYXNlZAo+IG9uIGEgc2xvdF9pZCB2YWx1ZSBmcm9tIGEgY29tbWFuZCBjb21wbGV0aW9u
-IGlzIHZhbGlkIGJlZm9yZQo+IGRlcmVmZXJlbmNpbmcgaXQuCj4gCj4gU2lnbmVkLW9mZi1ieTog
-TWF0aGlhcyBOeW1hbiA8bWF0aGlhcy5ueW1hbkBsaW51eC5pbnRlbC5jb20+Cj4gTGluazogaHR0
-cHM6Ly9sb3JlLmtlcm5lbC5vcmcvci8yMDIxMDEyOTEzMDA0NC4yMDY4NTUtNy1tYXRoaWFzLm55
-bWFuQGxpbnV4LmludGVsLmNvbQo+IFNpZ25lZC1vZmYtYnk6IEdyZWcgS3JvYWgtSGFydG1hbiA8
-Z3JlZ2toQGxpbnV4Zm91bmRhdGlvbi5vcmc+Cj4gU2lnbmVkLW9mZi1ieTogUm9tYW4gU21pcm5v
-diA8ci5zbWlybm92QG9tcC5ydT4KPiAtLS0KPiDCoGRyaXZlcnMvdXNiL2hvc3QveGhjaS1yaW5n
-LmMgfCAxMiArKysrKysrKystLS0KPiDCoDEgZmlsZSBjaGFuZ2VkLCA5IGluc2VydGlvbnMoKyks
-IDMgZGVsZXRpb25zKC0pCj4gCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvdXNiL2hvc3QveGhjaS1y
-aW5nLmMgYi9kcml2ZXJzL3VzYi9ob3N0L3hoY2ktcmluZy5jCj4gaW5kZXggZmJiN2E1YjUxZWY0
-Li5hNzY5ODAzZTdkMzggMTAwNjQ0Cj4gLS0tIGEvZHJpdmVycy91c2IvaG9zdC94aGNpLXJpbmcu
-Ywo+ICsrKyBiL2RyaXZlcnMvdXNiL2hvc3QveGhjaS1yaW5nLmMKPiBAQCAtMTQxNSw2ICsxNDE1
-LDggQEAgc3RhdGljIHZvaWQgeGhjaV9oYW5kbGVfY21kX2NvbmZpZ19lcChzdHJ1Y3QgeGhjaV9o
-Y2QgKnhoY2ksIGludCBzbG90X2lkLAo+IMKgwqDCoMKgwqDCoMKgwqAgKiBpcyBub3Qgd2FpdGlu
-ZyBvbiB0aGUgY29uZmlndXJlIGVuZHBvaW50IGNvbW1hbmQuCj4gwqDCoMKgwqDCoMKgwqDCoCAq
-Lwo+IMKgwqDCoMKgwqDCoMKgwqB2aXJ0X2RldiA9IHhoY2ktPmRldnNbc2xvdF9pZF07Cj4gK8Kg
-wqDCoMKgwqDCoMKgaWYgKCF2aXJ0X2RldikKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgcmV0dXJuOwo+IMKgwqDCoMKgwqDCoMKgwqBjdHJsX2N0eCA9IHhoY2lfZ2V0X2lucHV0X2Nv
-bnRyb2xfY3R4KHZpcnRfZGV2LT5pbl9jdHgpOwo+IMKgwqDCoMKgwqDCoMKgwqBpZiAoIWN0cmxf
-Y3R4KSB7Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB4aGNpX3dhcm4oeGhjaSwg
-IkNvdWxkIG5vdCBnZXQgaW5wdXQgY29udGV4dCwgYmFkIHR5cGUuXG4iKTsKPiBAQCAtMTQ1OSw2
-ICsxNDYxLDggQEAgc3RhdGljIHZvaWQgeGhjaV9oYW5kbGVfY21kX2FkZHJfZGV2KHN0cnVjdCB4
-aGNpX2hjZCAqeGhjaSwgaW50IHNsb3RfaWQpCj4gwqDCoMKgwqDCoMKgwqDCoHN0cnVjdCB4aGNp
-X3Nsb3RfY3R4ICpzbG90X2N0eDsKPiDCoAo+IMKgwqDCoMKgwqDCoMKgwqB2ZGV2ID0geGhjaS0+
-ZGV2c1tzbG90X2lkXTsKPiArwqDCoMKgwqDCoMKgwqBpZiAoIXZkZXYpCj4gK8KgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoHJldHVybjsKPiDCoMKgwqDCoMKgwqDCoMKgc2xvdF9jdHggPSB4
-aGNpX2dldF9zbG90X2N0eCh4aGNpLCB2ZGV2LT5vdXRfY3R4KTsKPiDCoMKgwqDCoMKgwqDCoMKg
-dHJhY2VfeGhjaV9oYW5kbGVfY21kX2FkZHJfZGV2KHNsb3RfY3R4KTsKPiDCoH0KPiBAQCAtMTQ3
-MCwxMyArMTQ3NCwxNSBAQCBzdGF0aWMgdm9pZCB4aGNpX2hhbmRsZV9jbWRfcmVzZXRfZGV2KHN0
-cnVjdCB4aGNpX2hjZCAqeGhjaSwgaW50IHNsb3RfaWQsCj4gwqDCoMKgwqDCoMKgwqDCoHN0cnVj
-dCB4aGNpX3Nsb3RfY3R4ICpzbG90X2N0eDsKPiDCoAo+IMKgwqDCoMKgwqDCoMKgwqB2ZGV2ID0g
-eGhjaS0+ZGV2c1tzbG90X2lkXTsKPiArwqDCoMKgwqDCoMKgwqBpZiAoIXZkZXYpIHsKPiArwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgeGhjaV93YXJuKHhoY2ksICJSZXNldCBkZXZpY2Ug
-Y29tbWFuZCBjb21wbGV0aW9uIGZvciBkaXNhYmxlZCBzbG90ICV1XG4iLAo+ICvCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgc2xvdF9pZCk7Cj4gK8KgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJldHVybjsKPiArwqDCoMKgwqDCoMKgwqB9Cj4gwqDC
-oMKgwqDCoMKgwqDCoHNsb3RfY3R4ID0geGhjaV9nZXRfc2xvdF9jdHgoeGhjaSwgdmRldi0+b3V0
-X2N0eCk7Cj4gwqDCoMKgwqDCoMKgwqDCoHRyYWNlX3hoY2lfaGFuZGxlX2NtZF9yZXNldF9kZXYo
-c2xvdF9jdHgpOwo+IMKgCj4gwqDCoMKgwqDCoMKgwqDCoHhoY2lfZGJnKHhoY2ksICJDb21wbGV0
-ZWQgcmVzZXQgZGV2aWNlIGNvbW1hbmQuXG4iKTsKPiAtwqDCoMKgwqDCoMKgwqBpZiAoIXhoY2kt
-PmRldnNbc2xvdF9pZF0pCj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHhoY2lfd2Fy
-bih4aGNpLCAiUmVzZXQgZGV2aWNlIGNvbW1hbmQgY29tcGxldGlvbiAiCj4gLcKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgImZvciBk
-aXNhYmxlZCBzbG90ICV1XG4iLCBzbG90X2lkKTsKPiDCoH0KPiDCoAo+IMKgc3RhdGljIHZvaWQg
-eGhjaV9oYW5kbGVfY21kX25lY19nZXRfZncoc3RydWN0IHhoY2lfaGNkICp4aGNpLAoKU29ycnks
-IEkgYWNjaWRlbnRhbGx5IHNlbnQgYSBjb3B5IHRvIHRoZSB3cm9uZyBwbGFjZS4gSSd2ZSByZXNl
-bnQgdGhlIHBhdGNoLgo=
+On Mon, Sep 16, 2024 at 01:44:08PM +0200, Greg Kroah-Hartman wrote:
+> 6.6-stable review patch.  If anyone has any objections, please let me know.
+
+Hi Greg,
+
+Could you please drop this commit from 6.6-stable?
+
+Thanks!
+
+> ------------------
+> 
+> From: Alexander Gordeev <agordeev@linux.ibm.com>
+> 
+> [ Upstream commit a3ca27c405faad584af6e8e38cdafe5be73230a1 ]
+> 
+> The identity mapping position in virtual memory is randomized
+> together with the kernel mapping. That position can never
+> overlap with the lowcore even when the lowcore is relocated.
+> 
+> Prevent overlapping with the lowcore to allow independent
+> positioning of the identity mapping. With the current value
+> of the alternative lowcore address of 0x70000 the overlap
+> could happen in case the identity mapping is placed at zero.
+> 
+> This is a prerequisite for uncoupling of randomization base
+> of kernel image and identity mapping in virtual memory.
+> 
+> Acked-by: Vasily Gorbik <gor@linux.ibm.com>
+> Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
+> Signed-off-by: Vasily Gorbik <gor@linux.ibm.com>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  arch/s390/kernel/setup.c | 19 ++++++++++++++++++-
+>  1 file changed, 18 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/s390/kernel/setup.c b/arch/s390/kernel/setup.c
+> index d48c7afe97e6..89fe0764af84 100644
+> --- a/arch/s390/kernel/setup.c
+> +++ b/arch/s390/kernel/setup.c
+> @@ -741,7 +741,23 @@ static void __init memblock_add_physmem_info(void)
+>  }
+>  
+>  /*
+> - * Reserve memory used for lowcore/command line/kernel image.
+> + * Reserve memory used for lowcore.
+> + */
+> +static void __init reserve_lowcore(void)
+> +{
+> +	void *lowcore_start = get_lowcore();
+> +	void *lowcore_end = lowcore_start + sizeof(struct lowcore);
+> +	void *start, *end;
+> +
+> +	if ((void *)__identity_base < lowcore_end) {
+> +		start = max(lowcore_start, (void *)__identity_base);
+> +		end = min(lowcore_end, (void *)(__identity_base + ident_map_size));
+> +		memblock_reserve(__pa(start), __pa(end));
+> +	}
+> +}
+> +
+> +/*
+> + * Reserve memory used for absolute lowcore/command line/kernel image.
+>   */
+>  static void __init reserve_kernel(void)
+>  {
+> @@ -939,6 +955,7 @@ void __init setup_arch(char **cmdline_p)
+>  
+>  	/* Do some memory reservations *before* memory is added to memblock */
+>  	reserve_pgtables();
+> +	reserve_lowcore();
+>  	reserve_kernel();
+>  	reserve_initrd();
+>  	reserve_certificate_list();
+> -- 
+> 2.43.0
 
