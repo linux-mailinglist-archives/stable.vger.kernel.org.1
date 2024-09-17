@@ -1,146 +1,140 @@
-Return-Path: <stable+bounces-76591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 920F197B1D3
-	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 17:34:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 605D197B1F2
+	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 17:37:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C4D281C23779
-	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 15:34:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 772C01C24431
+	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 15:37:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13E3C19F469;
-	Tue, 17 Sep 2024 15:03:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 305791AAE1A;
+	Tue, 17 Sep 2024 15:13:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b="qB93pYbb"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="yStfJrlM"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBC2519F41F
-	for <stable@vger.kernel.org>; Tue, 17 Sep 2024 15:03:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26FA1176FA0
+	for <stable@vger.kernel.org>; Tue, 17 Sep 2024 15:13:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726585414; cv=none; b=GDjpOXDQZnGQHgurCV42my27bBfmcMRWAQ8DyGEj7ZoSKQpjIghTCFhC7PbWTqIc3EYaNd3KMhfkCug7uv6eXBcFSHJ+0oDU5u4GViI6Il9lM9Z0UO872LkPGXUKzeUU2na6jq6a9UPMnLYPYURtckw3pJBeFOsWPdOFw2SUkt0=
+	t=1726586002; cv=none; b=Di3K1xKAFk16mF6IbQMO4hQZ1PbzsUzsxdLOpsxpxiwu2w5cCNw0A20URKuCkjKxyG5NyYi3Miyh6Iy8x96Mk9dz/3PtugkAO4qsjmzrxVtlxjyJzx7cyY+Z497Ln4iXnPBngvPX3GEz/3BY0ink/xBLUy+7MQ2ntr/P5OCzvqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726585414; c=relaxed/simple;
-	bh=xY9XpkDmSD/xk6OEETkgGDk1u5UGujSDYdc4wxzsr8c=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=oxBWzIJXJ+2h1Fi5ul0aA6H8QAembSBwPb5A9fU+3m69PMUnncYaD3O7Rqkb/4YnhlE79tGYBhtv4UkUvFsIPTFFcYd0vr2q6Uyu7EKZicLNRDg3UCKxv0NP/06ICN2tPSvk0y4SVk8Ffri1igvEtBHY9bhYJ/mw+iu3OJV9N54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com; spf=pass smtp.mailfrom=rivosinc.com; dkim=pass (2048-bit key) header.d=rivosinc-com.20230601.gappssmtp.com header.i=@rivosinc-com.20230601.gappssmtp.com header.b=qB93pYbb; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rivosinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rivosinc.com
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-42cb806623eso49477565e9.2
-        for <stable@vger.kernel.org>; Tue, 17 Sep 2024 08:03:32 -0700 (PDT)
+	s=arc-20240116; t=1726586002; c=relaxed/simple;
+	bh=C6BIJE5gYeC/g2Oak4zV9l7IfmZQnQtGYVUJTeQWod0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=g2hfisEGbVVGXkaG9K2LFkzmUQB+KrJ21muohIBgHeP5f/LbRpYdflyQ9u4l6cotTiht+huTSOa/KLBNX1odYcemeAshvzRl73I4ltlR4eEKD1/UPxbYHYFj+gzcVZH24xixni0NTB2ix+nntlRhyY5aJ3wp7XwPleyAZOlO18c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=yStfJrlM; arc=none smtp.client-ip=209.85.208.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2f77fe7ccc4so47834971fa.2
+        for <stable@vger.kernel.org>; Tue, 17 Sep 2024 08:13:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20230601.gappssmtp.com; s=20230601; t=1726585411; x=1727190211; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ND6eYc2e5z5r+zC7yHLZpkb+5DC0X9uw7m7bHoeXpy8=;
-        b=qB93pYbbuazHoCUBxNhmGTV9rmDbsoCPgZJWFyKITjVWPtC0MixJJv3Ccp48vOL6nb
-         ada/ssb0JH3+RBP7uLiOIbDK1DCwUKPka6dqsAfRTBc2FF/Sjafe/qztAMlxRObcL4em
-         cQetQG9kWQ7CKoJEqsRy3D2GKb+l+V82BmWTRaNDG4hHoecel1xx4Uhq2GbnTw/S6akX
-         CTZGbZz7TgsdunqeePl9BzEJG7HeS6O1qnJ5m1cuKmsCzxOzCwOER27N8N23nMDaRqre
-         CNrEn0dreoB+p8DCQ0CKWWOVxk/HVhFLyp5RxXa+crCHFUDcDId1ev2Cc97xt6jjYxK+
-         QdXw==
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1726585999; x=1727190799; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=H9QCqlRh9eT2CMbCDWw6auXzAwjAo/ozmjDpAB5cjRo=;
+        b=yStfJrlMhN4gbrtmJKgz2O1MF4AD9CH88Hy2nqW1pq8ElVywcJ9EWqGDOdgYxXttK3
+         bpwNR7HMVpke9eioC5kp4efzUPDBtbLw/zwKnyiwwVTAUtoc+MnnWa/Bxdgmh/hA44HT
+         BHGIcFBfWSANWEvCNbEIUIlgPA0j4hRcZKBaIr8Cc5ol4CGb5cAjzT7KNzezLATyMX+c
+         V9FSbsT3RqhDYQgR65gGd6NEEakSeeB55APgcKITHi9TYhWNxuCYEfS/99nmVCfbM7Ra
+         fv3smgOYTpVcrx0MNpN3lNBkS/txwcAoq6MUCn9iDgRrr08mWSWix2kSc8OyzXPobYka
+         GWkA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726585411; x=1727190211;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ND6eYc2e5z5r+zC7yHLZpkb+5DC0X9uw7m7bHoeXpy8=;
-        b=r33lshGL5iZbiRwIE4koTTzlzsPaOSa4QmLPHR6HQempoV9Cw/v4VjrC5PUFZyn2Sp
-         VVI2COcmhYGi9GRbU5vclFM6UJkfOMFxkXhZBuPi4gtG9KUHJnCofW9asq3UDs40J/zE
-         Cj3fMbLpNpBYAl2mR7wsnI786yYGRfvpLskzF1836mm3do4z60Gtcrm4GFXOTVMHwFfj
-         m3IAtLHKU+MG00YB9BjDTDXwVBHaMApDwLGCMqX+TSmMxbBTZhf9H2EBcFY30Rtujpr5
-         w6kDWlWzKdzvAqCSltLHSmzntCqZ+iVEaPlck14RdL4BM2AoFXhCaSx7mdd8CHZJA1Vm
-         8d6Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUubsRxvrKce3VijUfaMXBNN81RF1vkiVCzhQQZJmDkgcGAy7XbibRpaucwBMa2icCp3VABhjQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzX7w9zu2rUl6fFX4j4U2ma5vjho0F4/S+TxcFGSPTuPZMxGzf9
-	JtlEZBxTKECWoTKEXpZSpNWfIaRzMuroI/NH6Qw4EG+EgF2SFtfRWUIL1wk4Jhs=
-X-Google-Smtp-Source: AGHT+IFcVadBxh+qAbSCLQDPMzD1mmtwUDKphd/cCXTI/LhLVwku41hzZL7m/dPisydjMBeLLD04ig==
-X-Received: by 2002:a05:600c:1e10:b0:42c:bd27:4c12 with SMTP id 5b1f17b1804b1-42cdb522cf7mr148867315e9.10.1726585410790;
-        Tue, 17 Sep 2024 08:03:30 -0700 (PDT)
-Received: from alex-rivos.ba.rivosinc.com (83-65-76-156.static.upcbusiness.at. [83.65.76.156])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-378e73e81a5sm9812770f8f.34.2024.09.17.08.03.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 17 Sep 2024 08:03:30 -0700 (PDT)
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
-To: Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Guo Ren <guoren@kernel.org>,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Cc: Alexandre Ghiti <alexghiti@rivosinc.com>,
-	syzbot+ba9eac24453387a9d502@syzkaller.appspotmail.com,
-	stable@vger.kernel.org
-Subject: [PATCH -fixes] riscv: Fix kernel stack size when KASAN is enabled
-Date: Tue, 17 Sep 2024 17:03:28 +0200
-Message-Id: <20240917150328.59831-1-alexghiti@rivosinc.com>
-X-Mailer: git-send-email 2.39.2
+        d=1e100.net; s=20230601; t=1726585999; x=1727190799;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=H9QCqlRh9eT2CMbCDWw6auXzAwjAo/ozmjDpAB5cjRo=;
+        b=WEtBfZgr4xlNILjJfn8XYR0ZfPyCL5bbF2iuZ0RV5J68kja+CMpVtSz4J8MKftfq7+
+         LNuQWyYxAvbTPyz1qvCuNARq7WFMy2vf57BbPIPR7my137eJnuPT2OLMO/Nmq1qukpvI
+         1HeBhnf53T2w7tfH30rZsYf4l28q6ukkk2/raiMuU3gDB3q7K3fO/TyxmLQ/DAjmaqwo
+         1oXyRag436KtDOKQhpE5XXPZPwbmpxnScosKJ82FSELKN99IsjL6e+3aF2b0B94wp814
+         AM1ogTQ1+JUtQjLHvSSFE7ygc0nGzC6Zq0ERwHXCQqf3Pd0LVRTkPXK5jZ1kv+kkjv0W
+         tyYQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXxPjgYA4nKs9fIoh/2MBfgrx+IDaNGQ1ZJplO+KAwzxUf436beIJczu7OThCF7ANLPyN8CSUY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxOOO50QMXEPAa+hBK46CEV3YGXULkOEFWwc+iUeClti5SxsfbA
+	oKoXd/ws+rH9vEyWyiV3Qj4s7oXmzt7MxeZnb/eGiekpPiBQ9eMiuytT+8F99CIoy+toCi/6Ydl
+	V1VQ0KcVa308gc5TTY6ltJHf8AcDaVG8lSBF5Qg==
+X-Google-Smtp-Source: AGHT+IEjk8ZHjlHyyFFjPJuCGwJFKhZ0kGO8bejy0WGDuXef54JZ6Xsqkq0B58+CUBKCRRCNpr78RpMazH22iNaAcZ8=
+X-Received: by 2002:a2e:bc19:0:b0:2f7:5e7f:b4e1 with SMTP id
+ 38308e7fff4ca-2f791b4d3fcmr82055101fa.30.1726585998980; Tue, 17 Sep 2024
+ 08:13:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240916172642.7814-1-johan+linaro@kernel.org> <20240916172642.7814-3-johan+linaro@kernel.org>
+In-Reply-To: <20240916172642.7814-3-johan+linaro@kernel.org>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Tue, 17 Sep 2024 17:13:07 +0200
+Message-ID: <CAMRc=Md-B3MCdjBA6Z03Tn09Qdq_O=2Gij=0kr8HiLtpp11kVg@mail.gmail.com>
+Subject: Re: [PATCH 2/3] serial: qcom-geni: fix shutdown race
+To: Johan Hovold <johan+linaro@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, 
+	Douglas Anderson <dianders@chromium.org>, linux-arm-msm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org, 
+	stable@vger.kernel.org, Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-We use Kconfig to select the kernel stack size, doubling the default
-size if KASAN is enabled.
+On Mon, Sep 16, 2024 at 7:27=E2=80=AFPM Johan Hovold <johan+linaro@kernel.o=
+rg> wrote:
+>
+> A commit adding back the stopping of tx on port shutdown failed to add
+> back the locking which had also been removed by commit e83766334f96
+> ("tty: serial: qcom_geni_serial: No need to stop tx/rx on UART
+> shutdown").
+>
+> Holding the port lock is needed to serialise against the console code,
+> which may update the interrupt enable register and access the port
+> state.
+>
+> The call to stop rx that was added by the same commit is redundant as
+> serial core will already have taken care of that and can thus be
+> removed.
+>
+> Fixes: d8aca2f96813 ("tty: serial: qcom-geni-serial: stop operations in p=
+rogress at shutdown")
+> Fixes: 947cc4ecc06c ("serial: qcom-geni: fix soft lockup on sw flow contr=
+ol and suspend")
+> Cc: stable@vger.kernel.org      # 6.3
+> Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+> ---
+>  drivers/tty/serial/qcom_geni_serial.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/tty/serial/qcom_geni_serial.c b/drivers/tty/serial/q=
+com_geni_serial.c
+> index 9ea6bd09e665..88ad5a6e7de2 100644
+> --- a/drivers/tty/serial/qcom_geni_serial.c
+> +++ b/drivers/tty/serial/qcom_geni_serial.c
+> @@ -1096,10 +1096,10 @@ static void qcom_geni_serial_shutdown(struct uart=
+_port *uport)
+>  {
+>         disable_irq(uport->irq);
+>
+> +       uart_port_lock_irq(uport);
+>         qcom_geni_serial_stop_tx(uport);
+> -       qcom_geni_serial_stop_rx(uport);
+> -
+>         qcom_geni_serial_cancel_tx_cmd(uport);
+> +       uart_port_unlock_irq(uport);
+>  }
+>
+>  static void qcom_geni_serial_flush_buffer(struct uart_port *uport)
+> --
+> 2.44.2
+>
+>
 
-But that actually only works if KASAN is selected from the beginning,
-meaning that if KASAN config is added later (for example using
-menuconfig), CONFIG_THREAD_SIZE_ORDER won't be updated, keeping the
-default size, which is not enough for KASAN as reported in [1].
-
-So fix this by moving the logic to compute the right kernel stack into a
-header.
-
-Fixes: a7555f6b62e7 ("riscv: stack: Add config of thread stack size")
-Reported-by: syzbot+ba9eac24453387a9d502@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/000000000000eb301906222aadc2@google.com/ [1]
-Cc: stable@vger.kernel.org
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
----
- arch/riscv/Kconfig                   | 3 +--
- arch/riscv/include/asm/thread_info.h | 7 ++++++-
- 2 files changed, 7 insertions(+), 3 deletions(-)
-
-diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
-index ccbfd28f4982..b65846d02622 100644
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -759,8 +759,7 @@ config IRQ_STACKS
- config THREAD_SIZE_ORDER
- 	int "Kernel stack size (in power-of-two numbers of page size)" if VMAP_STACK && EXPERT
- 	range 0 4
--	default 1 if 32BIT && !KASAN
--	default 3 if 64BIT && KASAN
-+	default 1 if 32BIT
- 	default 2
- 	help
- 	  Specify the Pages of thread stack size (from 4KB to 64KB), which also
-diff --git a/arch/riscv/include/asm/thread_info.h b/arch/riscv/include/asm/thread_info.h
-index fca5c6be2b81..385b43211a71 100644
---- a/arch/riscv/include/asm/thread_info.h
-+++ b/arch/riscv/include/asm/thread_info.h
-@@ -13,7 +13,12 @@
- #include <linux/sizes.h>
- 
- /* thread information allocation */
--#define THREAD_SIZE_ORDER	CONFIG_THREAD_SIZE_ORDER
-+#ifdef CONFIG_KASAN
-+#define KASAN_STACK_ORDER	1
-+#else
-+#define KASAN_STACK_ORDER	0
-+#endif
-+#define THREAD_SIZE_ORDER	(CONFIG_THREAD_SIZE_ORDER + KASAN_STACK_ORDER)
- #define THREAD_SIZE		(PAGE_SIZE << THREAD_SIZE_ORDER)
- 
- /*
--- 
-2.39.2
-
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
