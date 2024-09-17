@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-76549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2341E97AC00
-	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 09:26:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E1BB97AC02
+	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 09:26:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 99DEC1F22CD9
-	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 07:26:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3445A1F22B64
+	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 07:26:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3003413E022;
-	Tue, 17 Sep 2024 07:26:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73B5D130AC8;
+	Tue, 17 Sep 2024 07:26:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EwdZjPH8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TCTWeGvs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF41C44C77;
-	Tue, 17 Sep 2024 07:26:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30E9244C77;
+	Tue, 17 Sep 2024 07:26:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726557992; cv=none; b=PPuBhiwA3BspFuGsUT/sp0Dh51YIc+UrekPEDOFbpeCkpLMAm53pAtX/dbV/nDIQRvZ+++y+uDsxuYPUp1BuGFrnxcWzsNnFRccLlOUsu9yEIsYEqmlYJO4bVoz3DE0gcgBtot8Bd7GOLwcp0MnTMMB/oGwJMYwlSQVJJHRzl7s=
+	t=1726557995; cv=none; b=OIraNWA42NSHobF/nrCTjkUCHfhlRCZ/QUMqZ8fEMbj0Vvv6f4bgyliCcR7Xo91/Yq99dmTS3C5JxRPBKXgMaT6Sf1i84zwILYugzBMVyLJ+uBMXswaeQqlzyLKr656jtapKzI/gbhHRnXK2yErQ8zEB64+oDd+BYdMU8PTcjug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726557992; c=relaxed/simple;
-	bh=//aM2U/ny63eosrXeDO13PxS7+M2UOSYxmSTTy1IlIM=;
+	s=arc-20240116; t=1726557995; c=relaxed/simple;
+	bh=yQC6C1oDs8N8CJpFVeygXzUckUyvbnj/h5KN8aDjUKw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OXLSuRyc+RSTsI2ZGdjSipQ8sm1x789EyAZ1Og/qPfzO1EqLwjY/Zpwl69c9x2mBaAlrspxmhuGEJVxOoL7PYsao3p+XdNQzVV7dIpcmcNV6DxYo69dKEHO964ps3ES+62xJd7qTzRwD/TSSt1FGULvS5Ly+PUu1iFS611Zd3LE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EwdZjPH8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 103FDC4CEC7;
-	Tue, 17 Sep 2024 07:26:28 +0000 (UTC)
+	 MIME-Version; b=S+uhlDJGhaA5ZaEq9sbMUyGJilTGsdShLZckWuVCOVH/m97YaPpOubEzQD8i1BPDtZKMN/gs7YtQRpktiXH2HyhIEVhDwddl91/HVUnepH1ehHrJBj4f/hl9XEOz4IsnIydHcJHskFeobu4neMy1YtM2qctTYtZUPOqr9eSlwr0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TCTWeGvs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CADF4C4CECE;
+	Tue, 17 Sep 2024 07:26:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726557991;
-	bh=//aM2U/ny63eosrXeDO13PxS7+M2UOSYxmSTTy1IlIM=;
+	s=k20201202; t=1726557994;
+	bh=yQC6C1oDs8N8CJpFVeygXzUckUyvbnj/h5KN8aDjUKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EwdZjPH8kdXHbuMosur9RueIAGj0PNIzJMuw7QxGQ/nbR5/Zjtr0otFSVzfRk1NBP
-	 cWTn6lYQsNf3DYbVjXoNEpYjZtxX0VxVatmY62MXcng9bo+Gr7edowpFdTWojE3Z5R
-	 etVJUzJnd6soKNvxWilOr3cCs8WoK1YEW8OTNoNAcz8U89K9Fesvd1J0e0zfYh5tfE
-	 pqESqdy19Zd/6xRDMql6bPOXlsghrxk+ppyw+3b8zhbDDcVn9WxTNJ6BxSpHyX+/7M
-	 F9R5xbDz82IkCIk0/9iETdRCfrCEdiU4ItTa+Z3KuulwoxXEl2TKjDfsEXm9CmjUaR
-	 3A+T3bTHT84lg==
+	b=TCTWeGvsX08YKrg8NbD36/UCXgQzWHRP5tcRQ80YdcWv6d3dEugQc8bARjX8+XNj2
+	 BiNFSEaqgSnOiV6z7m2GgZXu97G41javViccalYIcyS8609bYCNarUDCFnUr6yRbIo
+	 oM+sZQxrSd+VZs/RKk6WTwam7QkzRV4qHC2XjZfG/ct9Psk+nrbqlqLlE0i7B1mytl
+	 T+AJxhw3QYcOgY53APCEe5H9EjRL/tf9S/MpynTjw+jWg/5lc/1A7gjtVVK+Fs67GF
+	 BexgIzPQXJMSCEhQwTez4JgmAzbZswcD7iyTKcLMPEj9GWjcaK7vkxEm0ND8scPzIU
+	 kh4tHUnnePgwA==
 From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 To: mptcp@lists.linux.dev,
 	stable@vger.kernel.org,
 	gregkh@linuxfoundation.org
-Cc: Davide Caratti <dcaratti@redhat.com>,
-	Mat Martineau <mathew.j.martineau@linux.intel.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Matthieu Baerts <matttbe@kernel.org>
-Subject: [PATCH 5.10.y 2/3] mptcp: validate 'id' when stopping the ADD_ADDR retransmit timer
-Date: Tue, 17 Sep 2024 09:26:10 +0200
-Message-ID: <20240917072607.799536-7-matttbe@kernel.org>
+Cc: Edward Adam Davis <eadavis@qq.com>,
+	syzbot+f3a31fb909db9b2a5c4d@syzkaller.appspotmail.com,
+	Matthieu Baerts <matttbe@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.10.y 3/3] mptcp: pm: Fix uaf in __timer_delete_sync
+Date: Tue, 17 Sep 2024 09:26:11 +0200
+Message-ID: <20240917072607.799536-8-matttbe@kernel.org>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <2024091330-reps-craftsman-ab67@gregkh>
 References: <2024091330-reps-craftsman-ab67@gregkh>
@@ -61,117 +62,96 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5149; i=matttbe@kernel.org; h=from:subject; bh=Q77lXubcXruTkhRulzeEeDUnZcKytXWgUq8/Cekgpw4=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBm6S8Qw3Xa6v54adxm7kiGOVnfH4J3FFc14pPds V+vAGCUrf2JAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZukvEAAKCRD2t4JPQmmg c7K8EACzhPUAQg9/bMnFkZ6aR4pBdCZfStuSom/KKWp1YZE9poDVg4nNDPcQAoVO7t5PdXtPIlE t5Nqw/uAiGeyJIhdaGKf1d5F2XJZJ4ddTLIeIlFPztVJW7VAQM0AGMPTaARgs50SGusZhDct03+ OijQ8smJXvjkVI0l5xvHXxD38sQrmptZlbL/RishrpWMbNmJU3SvyWobeJK/qwiH9aQxFN2JWuv ZfEfa6KiebN+1TLDJik3umuKEngNAm5JrRqF/n24AVTPrYfgUmKdDm2T41ZoQ7kjYMUz3iF07pD F/sF8uDulsh9KsSfgqGnIiM7g0iF48ahzJly05yT6BdxunXPtC86LC60/Y69dhSfQHjrp4KORiW DcbzS4aVTIvI9ZjllC9EDaLdFMOPsuhywRNhTlo/NvRBzgIq3wSEo12pqGK8sRlaFPDb0M4wRPe Qr2ieWzVX/x5G9CSo9DWsazjf7oUdQO03ATlc9tJi5oP7eO2AbqMaTj5v8YX0meqQNBS0/dp/jF ds5tVHStqs8xgayAOAJgkhhdcY/r3P03LbLNQSaQKwfk/Xridz507JTOmLW68uO2Ck9Oz4xWF8b FpXk/azAQ291Rl9rtvbhMN1eX2nYYDRWB0OccXaEwU/Rr4GMVR21FPS8US051e3HYRTTawMjVlQ 8FyYFNdlRpSI+VQ==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3594; i=matttbe@kernel.org; h=from:subject; bh=/XXALFUu8RPVQI5mU5wv9GlF5LNXN/xsZH23tllMpa0=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBm6S8Q+ceFwtcEWOGj5LrFncR4y5x+eyqvEyHX0 Xq1nWVTvWWJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZukvEAAKCRD2t4JPQmmg c1E3D/92EWPaXUVJR8TY+Wqgel/QAM7492r1jd8YgUVpatX3qA3+WOQ/d+jIsnyWNrzuv+NG+Q+ jSVcXEd4pbEwjycEdQH32YNEaoFLaqM8Df9txBALQHoI+G978eYTaLUweFbEMnmK73R67tLYWqD S07CpyW7lYivGK8+ra+ADONVKQeyk+RSwG2yxzRrZjTd8OJFeedJx9qFDsdAJZzbO3U/FTjzXcX 5kfJR8xKg4TGKsXwz0fmuJaVpt23r2krT1IFavG7OlWf7qEkgTaBKzuGKhPQ0c0eRp1i2Nf3zcR k+bzZVGG29zui633vVbURes1/4z55E+HGfmilQ/wijTG9FffU4B8RFhvFmZsbobYtS9rkIv7e8F 7pZ5pUOFqxTOJD5b9UaCTCXXoTsvPCrKeozkb17k6vpbDkoE8Ku0a02O5glIXTPiQbtIh3PUyPq UW3Xol3pCGfGxnnFsKnF1t46u7dwjaa4ypM7oWP/8F1DMPnLne7E1F9pNPDQ7bcG90GKre2aKFI Jqd9RoI97MLdnyOfl8xH5rx1jrjChWM7xwNtSk4RRHyRWAh5I6kNEt/6wpQCVTjSBd54ilIxUgj v4NJckifT55HJ3HlZ93c6n0i8dN/OkPBGLi6sGFou4zkdCenDSt66rMsYdwyAGFYhfG+Vq4P55F LMEfkgEpiNvImqA==
 X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
 Content-Transfer-Encoding: 8bit
 
-From: Davide Caratti <dcaratti@redhat.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-commit d58300c3185b78ab910092488126b97f0abe3ae2 upstream.
+There are two paths to access mptcp_pm_del_add_timer, result in a race
+condition:
 
-when Linux receives an echo-ed ADD_ADDR, it checks the IP address against
-the list of "announced" addresses. In case of a positive match, the timer
-that handles retransmissions is stopped regardless of the 'Address Id' in
-the received packet: this behaviour does not comply with RFC8684 3.4.1.
+     CPU1				CPU2
+     ====                               ====
+     net_rx_action
+     napi_poll                          netlink_sendmsg
+     __napi_poll                        netlink_unicast
+     process_backlog                    netlink_unicast_kernel
+     __netif_receive_skb                genl_rcv
+     __netif_receive_skb_one_core       netlink_rcv_skb
+     NF_HOOK                            genl_rcv_msg
+     ip_local_deliver_finish            genl_family_rcv_msg
+     ip_protocol_deliver_rcu            genl_family_rcv_msg_doit
+     tcp_v4_rcv                         mptcp_pm_nl_flush_addrs_doit
+     tcp_v4_do_rcv                      mptcp_nl_remove_addrs_list
+     tcp_rcv_established                mptcp_pm_remove_addrs_and_subflows
+     tcp_data_queue                     remove_anno_list_by_saddr
+     mptcp_incoming_options             mptcp_pm_del_add_timer
+     mptcp_pm_del_add_timer             kfree(entry)
 
-Fix it by validating the 'Address Id' in received echo-ed ADD_ADDRs.
-Tested using packetdrill, with the following captured output:
+In remove_anno_list_by_saddr(running on CPU2), after leaving the critical
+zone protected by "pm.lock", the entry will be released, which leads to the
+occurrence of uaf in the mptcp_pm_del_add_timer(running on CPU1).
 
- unpatched kernel:
+Keeping a reference to add_timer inside the lock, and calling
+sk_stop_timer_sync() with this reference, instead of "entry->add_timer".
 
- Out <...> Flags [.], ack 1, win 256, options [mptcp add-addr v1 id 1 198.51.100.2 hmac 0xfd2e62517888fe29,mptcp dss ack 3007449509], length 0
- In  <...> Flags [.], ack 1, win 257, options [mptcp add-addr v1-echo id 1 1.2.3.4,mptcp dss ack 3013740213], length 0
- Out <...> Flags [.], ack 1, win 256, options [mptcp add-addr v1 id 1 198.51.100.2 hmac 0xfd2e62517888fe29,mptcp dss ack 3007449509], length 0
- In  <...> Flags [.], ack 1, win 257, options [mptcp add-addr v1-echo id 90 198.51.100.2,mptcp dss ack 3013740213], length 0
-        ^^^ retransmission is stopped here, but 'Address Id' is 90
-
- patched kernel:
-
- Out <...> Flags [.], ack 1, win 256, options [mptcp add-addr v1 id 1 198.51.100.2 hmac 0x1cf372d59e05f4b8,mptcp dss ack 3007449509], length 0
- In  <...> Flags [.], ack 1, win 257, options [mptcp add-addr v1-echo id 1 1.2.3.4,mptcp dss ack 1672384568], length 0
- Out <...> Flags [.], ack 1, win 256, options [mptcp add-addr v1 id 1 198.51.100.2 hmac 0x1cf372d59e05f4b8,mptcp dss ack 3007449509], length 0
- In  <...> Flags [.], ack 1, win 257, options [mptcp add-addr v1-echo id 90 198.51.100.2,mptcp dss ack 1672384568], length 0
- Out <...> Flags [.], ack 1, win 256, options [mptcp add-addr v1 id 1 198.51.100.2 hmac 0x1cf372d59e05f4b8,mptcp dss ack 3007449509], length 0
- In  <...> Flags [.], ack 1, win 257, options [mptcp add-addr v1-echo id 1 198.51.100.2,mptcp dss ack 1672384568], length 0
-        ^^^ retransmission is stopped here, only when both 'Address Id' and 'IP Address' match
+Move list_del(&entry->list) to mptcp_pm_del_add_timer and inside the pm lock,
+do not directly access any members of the entry outside the pm lock, which
+can avoid similar "entry->x" uaf.
 
 Fixes: 00cfd77b9063 ("mptcp: retransmit ADD_ADDR when timeout")
-Signed-off-by: Davide Caratti <dcaratti@redhat.com>
-Signed-off-by: Mat Martineau <mathew.j.martineau@linux.intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: b4cd80b03389 ("mptcp: pm: Fix uaf in __timer_delete_sync")
-[ Conflicts in options.c, because some features are missing in this
-  version, e.g. commit 557963c383e8 ("mptcp: move to next addr when
-  subflow creation fail") and commit f7dafee18538 ("mptcp: use
-  mptcp_addr_info in mptcp_options_received"). ]
+Cc: stable@vger.kernel.org
+Reported-and-tested-by: syzbot+f3a31fb909db9b2a5c4d@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=f3a31fb909db9b2a5c4d
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Acked-by: Paolo Abeni <pabeni@redhat.com>
+Link: https://patch.msgid.link/tencent_7142963A37944B4A74EF76CD66EA3C253609@qq.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+(cherry picked from commit b4cd80b0338945a94972ac3ed54f8338d2da2076)
 Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
 ---
- net/mptcp/options.c    | 2 +-
- net/mptcp/pm_netlink.c | 8 ++++----
- net/mptcp/protocol.h   | 2 +-
- 3 files changed, 6 insertions(+), 6 deletions(-)
+ net/mptcp/pm_netlink.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
-diff --git a/net/mptcp/options.c b/net/mptcp/options.c
-index 9b11396552df..8bc8812f7526 100644
---- a/net/mptcp/options.c
-+++ b/net/mptcp/options.c
-@@ -915,7 +915,7 @@ void mptcp_incoming_options(struct sock *sk, struct sk_buff *skb)
- 			mptcp_pm_add_addr_received(msk, &addr);
- 			MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_ADDADDR);
- 		} else {
--			mptcp_pm_del_add_timer(msk, &addr);
-+			mptcp_pm_del_add_timer(msk, &addr, true);
- 			MPTCP_INC_STATS(sock_net(sk), MPTCP_MIB_ECHOADD);
- 		}
- 		mp_opt.add_addr = 0;
 diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
-index 0b566678cc96..f4f5cc76870a 100644
+index f4f5cc76870a..bd03fb6df729 100644
 --- a/net/mptcp/pm_netlink.c
 +++ b/net/mptcp/pm_netlink.c
-@@ -249,18 +249,18 @@ static void mptcp_pm_add_timer(struct timer_list *timer)
- 
- struct mptcp_pm_add_entry *
- mptcp_pm_del_add_timer(struct mptcp_sock *msk,
--		       struct mptcp_addr_info *addr)
-+		       struct mptcp_addr_info *addr, bool check_id)
+@@ -253,15 +253,21 @@ mptcp_pm_del_add_timer(struct mptcp_sock *msk,
  {
  	struct mptcp_pm_add_entry *entry;
  	struct sock *sk = (struct sock *)msk;
++	struct timer_list *add_timer = NULL;
  
  	spin_lock_bh(&msk->pm.lock);
  	entry = mptcp_lookup_anno_list_by_saddr(msk, addr);
--	if (entry)
-+	if (entry && (!check_id || entry->addr.id == addr->id))
+-	if (entry && (!check_id || entry->addr.id == addr->id))
++	if (entry && (!check_id || entry->addr.id == addr->id)) {
  		entry->retrans_times = ADD_ADDR_RETRANS_MAX;
++		add_timer = &entry->add_timer;
++	}
++	if (!check_id && entry)
++		list_del(&entry->list);
  	spin_unlock_bh(&msk->pm.lock);
  
--	if (entry)
-+	if (entry && (!check_id || entry->addr.id == addr->id))
- 		sk_stop_timer_sync(sk, &entry->add_timer);
+-	if (entry && (!check_id || entry->addr.id == addr->id))
+-		sk_stop_timer_sync(sk, &entry->add_timer);
++	/* no lock, because sk_stop_timer_sync() is calling del_timer_sync() */
++	if (add_timer)
++		sk_stop_timer_sync(sk, add_timer);
  
  	return entry;
-@@ -764,7 +764,7 @@ static bool remove_anno_list_by_saddr(struct mptcp_sock *msk,
- {
- 	struct mptcp_pm_add_entry *entry;
+ }
+@@ -766,7 +772,6 @@ static bool remove_anno_list_by_saddr(struct mptcp_sock *msk,
  
--	entry = mptcp_pm_del_add_timer(msk, addr);
-+	entry = mptcp_pm_del_add_timer(msk, addr, false);
+ 	entry = mptcp_pm_del_add_timer(msk, addr, false);
  	if (entry) {
- 		list_del(&entry->list);
+-		list_del(&entry->list);
  		kfree(entry);
-diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
-index eaaff2cee4d5..44944e8f73c5 100644
---- a/net/mptcp/protocol.h
-+++ b/net/mptcp/protocol.h
-@@ -450,7 +450,7 @@ void mptcp_pm_rm_addr_received(struct mptcp_sock *msk, u8 rm_id);
- void mptcp_pm_free_anno_list(struct mptcp_sock *msk);
- struct mptcp_pm_add_entry *
- mptcp_pm_del_add_timer(struct mptcp_sock *msk,
--		       struct mptcp_addr_info *addr);
-+		       struct mptcp_addr_info *addr, bool check_id);
- struct mptcp_pm_add_entry *
- mptcp_lookup_anno_list_by_saddr(struct mptcp_sock *msk,
- 				struct mptcp_addr_info *addr);
+ 		return true;
+ 	}
 -- 
 2.45.2
 
