@@ -1,156 +1,106 @@
-Return-Path: <stable+bounces-76600-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C783597B35A
-	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 19:03:00 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01F0897B3E1
+	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 20:05:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 05FB41C23C7F
-	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 17:03:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BFD26285702
+	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 18:05:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB70317BEB4;
-	Tue, 17 Sep 2024 17:02:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68BA21779AB;
+	Tue, 17 Sep 2024 18:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="3XUO71gn";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="0lFCxIrv";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="3XUO71gn";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="0lFCxIrv"
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="ICZknHN2"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB0F017AE0B;
-	Tue, 17 Sep 2024 17:02:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20AA44B5AE;
+	Tue, 17 Sep 2024 18:05:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726592541; cv=none; b=OzvoVnJVMFZYNbbtM/XrEiKgI8UuZxWwJVGuutwbwOjbb7/T6pdu9d0Td+hDEu6ovd+dkNqUjOvQND3R+fUyIeXkMrVxxkV67pGhu0+CLNvoJ23zg7YwhsH82DSdKTIZAo+/pW1rPWEZFIJDHBWlVnz4BQP0dDSl2/OHiqUFbSQ=
+	t=1726596311; cv=none; b=j0s00TfUBPsDj0iXGuwQmmf/rOaMZEje/0Z6Iaj0WiLrLhWTNpbozY3tOQVgggQxOZH+6Azeo2k3LfPsfjXlbd4mqovmu7ahj4EbGM9NVtvDznCPadRp5QsSeHnAYFoHX0P0XQd3bEKXDhYCoe82gKf0gBTPV5kFj3HrV1k3aCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726592541; c=relaxed/simple;
-	bh=quDRDhd076WHqBIGywku9FWiyXyNXWyvLgVZg9kHrlw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=V98jbz7lCPhSP2DcMNe82pkj4UfvFCkdjsXabK0dCKIjBtHNAfzyWonAPIskUqW1+avVAIsEsxB847jvEFrXcLPe7WbDsZVtIMbSSGbLW1RvcYGlEBG/jkK0khjWvC1XJhlP2x6PNnrqL88Gf0jSlDF+KFXBP/HUR103mnF17Nc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=3XUO71gn; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=0lFCxIrv; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=3XUO71gn; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=0lFCxIrv; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 26E142012D;
-	Tue, 17 Sep 2024 17:02:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1726592538;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
+	s=arc-20240116; t=1726596311; c=relaxed/simple;
+	bh=HNiU/xFkXuBMHW7Zd5LsIV4jMcr1zTjEJbiCwnEDbRM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QRacSMwLYVg3G8skeeB5s+04q/w/6VC+mvwiUirFct6eJ91NB9O2Vs2mm+ui2Ekz1VMFVUV5w1UJR//HBYx3YfENdi2Jk93lmlW7XUJpX5uSBUio0rCilBOs+r1PLR5+Tnkgxq+5kMi8Eho6RbotwbRBI72fzQT/+1Hcvgz2dns=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b=ICZknHN2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C2E3C4CED0;
+	Tue, 17 Sep 2024 18:05:10 +0000 (UTC)
+Authentication-Results: smtp.kernel.org;
+	dkim=pass (1024-bit key) header.d=zx2c4.com header.i=@zx2c4.com header.b="ICZknHN2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zx2c4.com; s=20210105;
+	t=1726596306;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=LjjdywdDGiZtxX/399QVThWd+iLZQJlIvJ5mb1cMV1U=;
-	b=3XUO71gnQL78BNN7ZIO0bFUFMRswTMF9l9MgW71YqlYmho2qPF6XrVjz5Qg14VYT8CsNbX
-	BwM5fegZwTvl5JaZnhtaXaPwa5QjxKb43/urcH6YetbjDOzvGakRyWcpyhIjzCCes8Sqyr
-	SQPwtRcqxOn8gMp3nrbUzVPBakzLc0Q=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1726592538;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LjjdywdDGiZtxX/399QVThWd+iLZQJlIvJ5mb1cMV1U=;
-	b=0lFCxIrvkulel3+kY3ursI7gexIU2io2NVXiGws6qW7xwl9F1mi7X/p3m287fAIXrLWUR3
-	O8n87lGjfjj2sGCg==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1726592538;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LjjdywdDGiZtxX/399QVThWd+iLZQJlIvJ5mb1cMV1U=;
-	b=3XUO71gnQL78BNN7ZIO0bFUFMRswTMF9l9MgW71YqlYmho2qPF6XrVjz5Qg14VYT8CsNbX
-	BwM5fegZwTvl5JaZnhtaXaPwa5QjxKb43/urcH6YetbjDOzvGakRyWcpyhIjzCCes8Sqyr
-	SQPwtRcqxOn8gMp3nrbUzVPBakzLc0Q=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1726592538;
-	h=from:from:reply-to:reply-to:date:date:message-id:message-id:to:to:
-	 cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LjjdywdDGiZtxX/399QVThWd+iLZQJlIvJ5mb1cMV1U=;
-	b=0lFCxIrvkulel3+kY3ursI7gexIU2io2NVXiGws6qW7xwl9F1mi7X/p3m287fAIXrLWUR3
-	O8n87lGjfjj2sGCg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1399B139CE;
-	Tue, 17 Sep 2024 17:02:18 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id wFlJBBq26WYmcAAAD6G6ig
-	(envelope-from <dsterba@suse.cz>); Tue, 17 Sep 2024 17:02:18 +0000
-Date: Tue, 17 Sep 2024 19:02:16 +0200
-From: David Sterba <dsterba@suse.cz>
-To: Qu Wenruo <wqu@suse.com>
-Cc: linux-btrfs@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] btrfs: qgroup: set a more sane default value for subtree
- drop threshold
-Message-ID: <20240917170216.GI2920@twin.jikos.cz>
-Reply-To: dsterba@suse.cz
-References: <4ae3d5114b0fcffe9f95e614bb4fc8912b5f6573.1725947462.git.wqu@suse.com>
+	bh=HNiU/xFkXuBMHW7Zd5LsIV4jMcr1zTjEJbiCwnEDbRM=;
+	b=ICZknHN2wr6dqCtKUdedr1JBjPSQKgbtFXOE/Diejh05c40JiOMKq6QcWpZoJKgkrECahl
+	2SFL/0/Z5eS5rS1ZI/hz7GCZ93Q32WDv+YbnFtbrFwsVQPy2OIOtPXKGko5NB17jBRYrmX
+	HQ4Ccy7uCO81e72BYfd4Pn+HIJikevo=
+Received: 
+	by mail.zx2c4.com (ZX2C4 Mail Server) with ESMTPSA id ef27daea (TLSv1.3:TLS_AES_256_GCM_SHA384:256:NO);
+	Tue, 17 Sep 2024 18:05:06 +0000 (UTC)
+Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-27cebc3e91eso260701fac.2;
+        Tue, 17 Sep 2024 11:05:06 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUobvUI67+VqRGFvUHB84YPE17UQbf80LDALi9LzvXyT1v23uIwPgRxytmQ3hSbNg15/czi4Ytk@vger.kernel.org, AJvYcCX2A1mzV1D3XQ/ylA5kfUKlypp1Eud/bKWeACUoOxNUpaaxyGgYgWb7PnEKzUSlekPjOg9Eu0lhAra3bbg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx4FmiF3r9VRnCDuonXNA+wizdRHIxI5XKXlY0OrMFCcUM0SwLn
+	op2XOSPmjDSJVcZcfowrol1StPcj3PyJqWmXKVe7p6QdAPplecqmmdDtX26r7mdnJjKeyHcGDDR
+	f0wfgFJTrQ9C9TBnSFdd/G6i1GAU=
+X-Google-Smtp-Source: AGHT+IEQZRhAA4Jq8raTdkSStrXgki8rCOXGQ5BoH3HW1S+7ShUR0mu1p+XIZxVwkJ+vt4xnl2M4yPpvrx+YnlExQ5I=
+X-Received: by 2002:a05:6870:d107:b0:260:fb11:3e49 with SMTP id
+ 586e51a60fabf-27c68c344d6mr8469322fac.45.1726596304061; Tue, 17 Sep 2024
+ 11:05:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <4ae3d5114b0fcffe9f95e614bb4fc8912b5f6573.1725947462.git.wqu@suse.com>
-User-Agent: Mutt/1.5.23.1-rc1 (2014-03-12)
-X-Spam-Score: -4.00
-X-Spamd-Result: default: False [-4.00 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	HAS_REPLYTO(0.30)[dsterba@suse.cz];
-	NEURAL_HAM_SHORT(-0.20)[-0.995];
-	MIME_GOOD(-0.10)[text/plain];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	TO_DN_SOME(0.00)[];
-	ARC_NA(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	MIME_TRACE(0.00)[0:+];
-	FROM_HAS_DN(0.00)[];
-	REPLYTO_DOM_NEQ_TO_DOM(0.00)[];
-	RCPT_COUNT_THREE(0.00)[3];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	REPLYTO_ADDR_EQ_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:email,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Flag: NO
-X-Spam-Level: 
+References: <20240418114814.24601-1-Jason@zx2c4.com> <e09ce9fd-14cb-47aa-a22d-d295e466fbb4@amazon.com>
+ <CAHmME9qKFraYWmzD9zKCd4oaMg6FyQGP5pL9bzZP4QuqV1O_Qw@mail.gmail.com>
+ <ZieoRxn-On0gD-H2@gardel-login> <b819717c-74ea-4556-8577-ccd90e9199e9@amazon.com>
+ <Ziujox51oPzZmwzA@zx2c4.com> <Zi9ilaX3254KL3Pp@gardel-login> <01d2b24c-a9d2-4be0-8fa0-35d9937eceb4@amazon.com>
+In-Reply-To: <01d2b24c-a9d2-4be0-8fa0-35d9937eceb4@amazon.com>
+From: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Date: Tue, 17 Sep 2024 20:04:51 +0200
+X-Gmail-Original-Message-ID: <CAHmME9rxn5KJJBOC3TqTEgotnsFO5r6F-DJn3ekc5ZgW8OaCFw@mail.gmail.com>
+Message-ID: <CAHmME9rxn5KJJBOC3TqTEgotnsFO5r6F-DJn3ekc5ZgW8OaCFw@mail.gmail.com>
+Subject: Re: [REGRESSION] Re: [PATCH] Revert "vmgenid: emit uevent when
+ VMGENID updates"
+To: Alexander Graf <graf@amazon.com>
+Cc: Lennart Poettering <mzxreary@0pointer.de>, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Linus Torvalds <torvalds@linux-foundation.org>, Babis Chalios <bchalios@amazon.es>, 
+	"Theodore Ts'o" <tytso@mit.edu>, "Cali, Marco" <xmarcalx@amazon.co.uk>, Arnd Bergmann <arnd@arndb.de>, 
+	"rostedt@goodmis.org" <rostedt@goodmis.org>, Christian Brauner <brauner@kernel.org>, linux@leemhuis.info, 
+	regressions@lists.linux.dev, Paolo Bonzini <pbonzini@redhat.com>, 
+	"Michael Kelley (LINUX)" <mikelley@microsoft.com>, Sean Christopherson <seanjc@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 10, 2024 at 03:21:04PM +0930, Qu Wenruo wrote:
-> Since commit 011b46c30476 ("btrfs: skip subtree scan if it's too high to
-> avoid low stall in btrfs_commit_transaction()"), btrfs qgroup can
-> automatically skip large subtree scan at the cost of marking qgroup
-> inconsistent.
-> 
-> It's designed to address the final performance problem of snapshot drop
-> with qgroup enabled, but to be safe the default value is
-> BTRFS_MAX_LEVEL, requiring a user space daemon to set a different value
-> to make it work.
-> 
-> I'd say it's not a good idea to rely on user space tool to set this
-> default value, especially when some operations (snapshot dropping) can
-> be triggered immediately after mount, leaving a very small window to
-> that that sysfs interface.
-> 
-> So instead of disabling this new feature by default, enable it with a
-> low threshold (3), so that large subvolume tree drop at mount time won't
-> cause huge qgroup workload.
+On Thu, Jun 13, 2024 at 6:37=E2=80=AFPM Alexander Graf <graf@amazon.com> wr=
+ote:
+> Friendly ping again. We would really like to have a constructive
+> technical conversation and collaboration on how to make forward progress
+> with VM clone notifications for user space applications that hold unique
+> data and hence need to learn about VM clone events, outside of any
+> randomness semantics.
 
-Sounds like a sane idea to set it to some low value as default.
+With the other work now mostly done, sure, let's pick this up again. I
+think next on the list was getting the virtio rng device delivering VM
+clone events and unique UUIDs. There was a spec change posted a while
+back and a patch for the kernel. Do you want to refresh those? I
+thought that was a promising direction -- and the one we all decided
+together in person as the most viable, race-free way, etc --
+especially because it would make ways of exposing those IDs low cost.
+And, importantly for you, I think that might *also* cover the need
+that you have here, so we'll kill several birds with one stone.
 
-Reviewed-by: David Sterba <dsterba@suse.com>
+Jason
 
