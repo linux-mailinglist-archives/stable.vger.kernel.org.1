@@ -1,196 +1,109 @@
-Return-Path: <stable+bounces-76574-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76575-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7CAD97AEC5
-	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 12:30:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2781997AEC8
+	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 12:31:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 77BE628383B
-	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 10:30:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDB951F23DDC
+	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 10:31:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21FDE169AC5;
-	Tue, 17 Sep 2024 10:30:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="sstSTs6V"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37ECD165EE3;
+	Tue, 17 Sep 2024 10:31:34 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vs1-f53.google.com (mail-vs1-f53.google.com [209.85.217.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C26EA170A3F
-	for <stable@vger.kernel.org>; Tue, 17 Sep 2024 10:30:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA8B14BFA3;
+	Tue, 17 Sep 2024 10:31:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726569030; cv=none; b=kNJH8d7hDcuyCWdFDfPcdqZ36WiXreMEPkqSjzULzfCCm7DCAKlWKgw3ykEXA8gs8VL4gqhcjAPem7WTCLjGFjTI8P4gBLmxOGNhzSBWADFxriPhXM0ffDRB64gATmxMdosMvWJZ2J2cILQj+E9/Aly2OTV9El4NfOA4ObO+nV0=
+	t=1726569094; cv=none; b=msIX9C5Ebp7J36UUhcj6TtJmTxwpryYdznAZxY0t+3/aPoh7ax2FkznXBpmuTJteTeLMXrVo0xjFr56tKEsOUoxpQRSR79AqSnULZhabU11eWeF6W9HblqXqg7MJbKEfCNtC3TzwSXLRRHERTLbQEsmZrQM+JIg1UlJGJOqAkuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726569030; c=relaxed/simple;
-	bh=rAUoQ4nus9+gGnXZO4GR16ay3famp7WL4FkpgBIVWUg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=i7YwXiO8VmH72XOBvld9As4AYctLhvwiDmRspaQB749oiGILObGwOPtN7j4IGjmJeilRdqHMAw8coGUvBqdHgjjI5RDaSN/btdmMFNSQp/0NyuTC/Kz4yrSQ4eft3UP8MmCTIe3Uov4KvIq3sIwA9j3bNebJjc8Vh2e758QKlw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=sstSTs6V; arc=none smtp.client-ip=209.85.217.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-vs1-f53.google.com with SMTP id ada2fe7eead31-49bc1b1368fso2592792137.1
-        for <stable@vger.kernel.org>; Tue, 17 Sep 2024 03:30:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1726569023; x=1727173823; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=TiSL4J7L8lMiEUKJ3FGpFS/7E/wv/Xs1VRoLh25eebs=;
-        b=sstSTs6VNOKqvK/uhvKhCNmEzG9dK4Mh1KxBFQl5JDZoOgEM8Xh5hc3sBCeryZaMJi
-         LG2v/rbPzwqDHlt2xovQx45QiW9TCc+/bxhO5ZexUO07pB6blRLs4OY4V/j0Heq9Kd+d
-         a615cKnZkbUMs5Y7nSmGeSce1Bws1pvcHcrKpeVzdHoXqCoRK5sk4jzdU/YO+TLIHNH+
-         EsdlEGNkolXiyGdt14FYc0oElpkSJXR7TI+Bh6llzJyI7JH6qQm0IUn9hJtXZtPmvjoU
-         rBcwA/NGA0j0tXu7PAclba/fsh2gUVW3nl+/6l85wKsn9lHdat36VXR7RbuqXqLa2ANL
-         1mzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726569023; x=1727173823;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TiSL4J7L8lMiEUKJ3FGpFS/7E/wv/Xs1VRoLh25eebs=;
-        b=owCi4PZK1+IMeigQnx4ynsZToTg/dKllZqeGvSFewGoU5SRBJooIBtXgmRMKXYI1yX
-         xbyVKXA+kdw/VzeF1e7uRtGfkU3Fw2JTaUyGU2nZoBd/TD7oaMDSt04CA3PhFZ+3+sOA
-         INv028Mgj60lKvRFGca5BTulTpadeImPSZlX2S/goJZN2G91EbGSeds/EQxD9ZqfLQ0F
-         Hz4NJ99qtPVRo7FQWjB2FitLpJWHJOz5TkiUtulCQ5xU2MHm0SYS0BFN/SBG2nRk2CKO
-         nJJDw1Etyqxp3W9e+W/hKuDtB95D5vIXckOSdAsd2TVgNLNYtRuozxv54aZ/wekNQpLm
-         C8hw==
-X-Gm-Message-State: AOJu0YxvQT1jjFoJEsE2r44vly+JC12Ilqz04mow8DPuKwCaJYNtppxh
-	VPBaHXsd3Mre+JzjydFYEUictIeLhS+gja2Z4zTuLe9PgdbJWyi3CzfbenTfF7DYCEscMoD9qDc
-	nNwQ+nR522trmYnXsZeMHmvhOngkh3PhAKd5mJwraXFd8928YoMM=
-X-Google-Smtp-Source: AGHT+IEVb9UtvU3qIrJ3hyC4983sMEXpKsLF/53bfiXaTkarBvujHfkK9GFkmBvRc6GUz54Xmq2wvMJKl1xR3mITQ20=
-X-Received: by 2002:a05:6102:b0d:b0:493:c261:1a9c with SMTP id
- ada2fe7eead31-49d42165fe1mr12824423137.5.1726569022577; Tue, 17 Sep 2024
- 03:30:22 -0700 (PDT)
+	s=arc-20240116; t=1726569094; c=relaxed/simple;
+	bh=niUuXF1kX6414wT0Aeqg+hda2mZhNooHNbfvmAYjPp4=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=i7tCeEgPBsh8C7Xeby0SG/QvWw6BwNNPv4ho+PERg8niikahkgwpKJ1uh7+nnLKX3whK3GAWTkO6jj2+nhGw8Lvd+p3apTRyNVXLETm9N6DQBauJ7/zTxq6mufCjN/TgGJ1rSH+sqP6KRFxdCnyNhHBM9ivz4zqdhWfN7ImJfos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.18.186.31])
+	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4X7J3Y0fw3z6K5qJ;
+	Tue, 17 Sep 2024 18:31:21 +0800 (CST)
+Received: from frapeml500005.china.huawei.com (unknown [7.182.85.13])
+	by mail.maildlp.com (Postfix) with ESMTPS id 100041400CD;
+	Tue, 17 Sep 2024 18:31:28 +0800 (CST)
+Received: from china (10.200.201.82) by frapeml500005.china.huawei.com
+ (7.182.85.13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 17 Sep
+ 2024 12:31:14 +0200
+From: Gur Stavi <gur.stavi@huawei.com>
+To: <alexander.sverdlin@siemens.com>
+CC: <Mark-MC.Lee@mediatek.com>, <UNGLinuxDriver@microchip.com>,
+	<alexandre.belloni@bootlin.com>, <andrew@lunn.ch>,
+	<angelogioacchino.delregno@collabora.com>, <arinc.unal@arinc9.com>,
+	<bcm-kernel-feedback-list@broadcom.com>, <bridge@lists.linux.dev>,
+	<claudiu.manoil@nxp.com>, <daniel@makrotopia.org>, <davem@davemloft.net>,
+	<dqfext@gmail.com>, <edumazet@google.com>, <f.fainelli@gmail.com>,
+	<gur.stavi@huawei.com>, <kuba@kernel.org>,
+	<linux-mediatek@lists.infradead.org>, <lorenzo@kernel.org>,
+	<matthias.bgg@gmail.com>, <nbd@nbd.name>, <netdev@vger.kernel.org>,
+	<olteanv@gmail.com>, <pabeni@redhat.com>, <razor@blackwall.org>,
+	<roopa@nvidia.com>, <sean.wang@mediatek.com>, <stable@vger.kernel.org>
+Subject: Re: [PATCH 1/2] net: dsa: RCU-protect dsa_ptr in struct net_device
+Date: Tue, 17 Sep 2024 13:30:41 +0300
+Message-ID: <20240917103041.1645536-1-gur.stavi@huawei.com>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <c7a52a818c1ae49ad7e44bb82fcea53d7f53d6e0.camel@siemens.com>
+References: <c7a52a818c1ae49ad7e44bb82fcea53d7f53d6e0.camel@siemens.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240916114224.509743970@linuxfoundation.org>
-In-Reply-To: <20240916114224.509743970@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Tue, 17 Sep 2024 16:00:10 +0530
-Message-ID: <CA+G9fYv+OXhNPn87X4O9w8-HzGP04USge-et0b3Y4ncU9tussg@mail.gmail.com>
-Subject: Re: [PATCH 6.6 00/91] 6.6.52-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
-	broonie@kernel.org, Vasily Gorbik <gor@linux.ibm.com>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Anders Roxell <anders.roxell@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
+ frapeml500005.china.huawei.com (7.182.85.13)
 
-On Mon, 16 Sept 2024 at 17:38, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+> Hello Gur!
 >
-> This is the start of the stable review cycle for the 6.6.52 release.
-> There are 91 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+> On Tue, 2024-09-17 at 11:10 +0300, Gur Stavi wrote:
+> > > @@ -1594,10 +1592,11 @@ void dsa_switch_shutdown(struct dsa_switch *ds)
+> > >   	}
+> > >
+> > >   	/* Disconnect from further netdevice notifiers on the conduit,
+> > > -	 * since netdev_uses_dsa() will now return false.
+> > > +	 * from now on, netdev_uses_dsa_currently() will return false.
+> > >   	 */
+> > >   	dsa_switch_for_each_cpu_port(dp, ds)
+> > > -		dp->conduit->dsa_ptr = NULL;
+> > > +		rcu_assign_pointer(dp->conduit->dsa_ptr, NULL);
+> > > +	synchronize_rcu();
+> > >
+> > >   	rtnl_unlock();
+> > >   out:
+> >
+> > Hi, I am a newbie here. Thanks for the opportunity for learning more
+> > about rcu.
+> > Wouldn't it make more sense to call synchronize_rcu after rtnl_unlock?
 >
-> Responses should be made by Wed, 18 Sep 2024 11:42:05 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.52-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+> This is indeed a question which is usually resolved other way around
+> (making locked section shorter), but in this particular case I thought that:
+> - we actually don't need giving rtnl lock sooner, which would potentially
+>   make synchronize_rcu() call longer (if another thread manages to wake up
+>   and claim the rtnl lock before synchronize_rcu())
+> - we are in shutdown phase, we don't need to minimize lock contention, we
+>   need to minimize the overall shutdown time
 
-
-The s390 builds failed on the Linux stable-rc linux-6.6.y and linux-6.10.y due
-to following build warnings / errors with gcc-13 and clang-19 with defconfig.
-
-* s390, build
-  - clang-19-allnoconfig
-  - clang-19-defconfig
-  - clang-19-tinyconfig
-  - clang-nightly-allnoconfig
-  - clang-nightly-defconfig
-  - clang-nightly-tinyconfig
-  - gcc-13-allmodconfig
-  - gcc-13-allnoconfig
-  - gcc-13-defconfig
-  - gcc-13-tinyconfig
-  - gcc-8-allnoconfig
-  - gcc-8-defconfig-fe40093d
-  - gcc-8-tinyconfig
-
-
-First seen on v6.6.51-92-gfd49ddc1e5f8
-  Good: v6.6.51
-  BAD:  v6.6.51-92-gfd49ddc1e5f8
-
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-build log:
---------
-arch/s390/kernel/setup.c: In function 'reserve_lowcore':
-arch/s390/kernel/setup.c:748:31: error: implicit declaration of
-function 'get_lowcore'; did you mean 'setup_lowcore'?
-[-Werror=implicit-function-declaration]
-  748 |         void *lowcore_start = get_lowcore();
-      |                               ^~~~~~~~~~~
-      |                               setup_lowcore
-arch/s390/kernel/setup.c:748:31: warning: initialization of 'void *'
-from 'int' makes pointer from integer without a cast
-[-Wint-conversion]
-arch/s390/kernel/setup.c:752:21: error: '__identity_base' undeclared
-(first use in this function)
-  752 |         if ((void *)__identity_base < lowcore_end) {
-      |                     ^~~~~~~~~~~~~~~
-arch/s390/kernel/setup.c:752:21: note: each undeclared identifier is
-reported only once for each function it appears in
-In file included from include/linux/bits.h:21,
-                 from arch/s390/include/asm/ptrace.h:10,
-                 from arch/s390/include/asm/lowcore.h:13,
-                 from arch/s390/include/asm/current.h:13,
-                 from include/linux/sched.h:12,
-                 from arch/s390/kernel/setup.c:21:
-include/linux/minmax.h:31:9: error: first argument to
-'__builtin_choose_expr' not a constant
-   31 |
-__builtin_choose_expr(__is_constexpr(is_signed_type(typeof(x))),
- \
-      |         ^~~~~~~~~~~~~~~~~~~~~
-
-Build Log links,
---------
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.51-92-gfd49ddc1e5f8/testrun/25153617/suite/build/test/gcc-13-defconfig/log
- - https://storage.tuxsuite.com/public/linaro/lkft/builds/2m9YUHx7PsQwr4lBdvjITAfP9Pp/
-
-Build failed comparison:
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.6.y/build/v6.6.51-92-gfd49ddc1e5f8/testrun/25153617/suite/build/test/gcc-13-defconfig/history/
-
-metadata:
-----
-  git describe: v6.6.51-92-gfd49ddc1e5f8
-  git repo: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-  git sha: fd49ddc1e5f8121355db23e04b94f6df460a5051
-  kernel config:
-https://storage.tuxsuite.com/public/linaro/lkft/builds/2m9YUHx7PsQwr4lBdvjITAfP9Pp/config
-  build url: https://storage.tuxsuite.com/public/linaro/lkft/builds/2m9YUHx7PsQwr4lBdvjITAfP9Pp/
-  toolchain: gcc-13, gcc-8 and clang-19
-  config: defconfig
-  arch: s390
-
-Steps to reproduce:
----------
- - # tuxmake --runtime podman --target-arch s390 --toolchain gcc-13
---kconfig defconfig
-
---
-Linaro LKFT
-https://lkft.linaro.org
+But isn't shutdown still multithreaded?
+10 threads may have similar shutdown task: remove objects from different
+rcu protected data structures while holding rtnl. Then synchronize RCU
+and release the objects.
+Synchronizing RCU from within the lock will completely serialize all
+threads and postpone shutdown whereas outside the lock multiple
+synchronize_rcu could run in parallel.
 
