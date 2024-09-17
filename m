@@ -1,106 +1,88 @@
-Return-Path: <stable+bounces-76540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A737397A9DD
-	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 02:11:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BD8B97A9F9
+	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 02:31:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D1D51F26A79
-	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 00:11:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23387286A11
+	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 00:31:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 549B17F6;
-	Tue, 17 Sep 2024 00:11:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D15824A2F;
+	Tue, 17 Sep 2024 00:31:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MEm1qqLW"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JQvqtj22"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D00B4C7E
-	for <stable@vger.kernel.org>; Tue, 17 Sep 2024 00:11:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC4A5A48
+	for <stable@vger.kernel.org>; Tue, 17 Sep 2024 00:31:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726531873; cv=none; b=Q1zSG55wiNoTy/cS12qMLE4LhpSZ5oS8GQx/YTS7vNWRWLTy3NjUwZ3lrxwbCVl4X0qsu34hhn1thCSMufBdqJ18zJQyGLu3d2iRh0I6BxkUchU6uCakxCht4TOGIiZb8antvt6PeE7bVW8q4cpnwfaN6tKewG1P9wqN1DHjh6M=
+	t=1726533094; cv=none; b=ugPZLngy9zCfF03d9mMvuBmiJLO6LnkQqEhmQw5rJ0eV7zDtYKP74keGxqEL0PBWhM1cAkH8PW7nrqrYb+4L/A4qlNftjpXKrhjZg0KEj4bdQ/pmUjd7tqWEE5S4EJNNZjlr8pWiMTdUyQqcIT0r637GacSBtTig43NEKgpjg9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726531873; c=relaxed/simple;
-	bh=W56FUMR9QIT0LTtxeEn0yFfK/pN99UsZE7+uyX1M+rg=;
+	s=arc-20240116; t=1726533094; c=relaxed/simple;
+	bh=80vqc1h5k7QtbNAI9S7XWwwbt2B/2ScQEoMPE7fX1uA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S4PbqfanWSYpjJ37Y79zEyFgygwaYMODZq7tx+4rlTuUkhQfGxZZn4IL4svT3CIoFx1rSloLBOexMaALHkCLJ3l3GBzkSQS1Q2zrjRBAIz7WARTEGzjsh+RHXLpgGfFrlrqV2rdJZDwrNohWwFK0wAfe4uOdOS20NRT86mlnwdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MEm1qqLW; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version; b=YqoOETTaMnjxsRJK3Ykc95vnI4MahYU+TiZMYgSVqtigZFWOJqLko1/kAtSAlsItIyqBzlTp/rFA+TrTJaFTUVksfdpwFZd3vXbwDL/srVqPp6ZrEC8o8jveFvOK+BfMuv/qf6cbajP2PPIlpdTirnVrs1dS8FECRra0NKxDd3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JQvqtj22; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1726531870;
+	s=mimecast20190719; t=1726533091;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=P3XRknCuZ+rddMbA9raqM8xFOQmhedysMspZNVnmtig=;
-	b=MEm1qqLWC4o6AMm8LBw7NSy6E0Smn6nIhEK0y/CLWiJA4QA8P5nYE1geja1OA4xOdAiWkP
-	PLRQN8k+h+B2XjNbZdbma9t6sJBs0DbjabUuPlGa/JN5OWcnBZoh3RztgV2Sbc9ZLR6rdu
-	peFgcbgr2o0agxJ5D09pUFFG6zIHI14=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=YTrfXOeRwBkIVUBR9O4O2yoB1GQ/xZoXRHhKkvHx0gI=;
+	b=JQvqtj22KWpSaOB/5Ttmqi+BLymfFRDyfduuRJLOO+cpgxUbf0n/KlqsyQcw83ZOflD/JN
+	5NJovCGhv5h8hZEDuBRAmVXVsz5apdCpIgtoByc2MlPq0isC2Q+r3vLVDoiYdOdksO59w8
+	L8WpgX1MkbenIzNn1pgZv9cA0v5HcaI=
+Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
+ [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-13-6lW8Zrn7MMGYTKVrQHURWA-1; Mon, 16 Sep 2024 20:11:09 -0400
-X-MC-Unique: 6lW8Zrn7MMGYTKVrQHURWA-1
-Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-6c517e32a97so94441176d6.0
-        for <stable@vger.kernel.org>; Mon, 16 Sep 2024 17:11:09 -0700 (PDT)
+ us-mta-478-OKmzecTyNkOyxbbfXYTkhA-1; Mon, 16 Sep 2024 20:31:30 -0400
+X-MC-Unique: OKmzecTyNkOyxbbfXYTkhA-1
+Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-6c517e32a97so94670916d6.0
+        for <stable@vger.kernel.org>; Mon, 16 Sep 2024 17:31:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726531869; x=1727136669;
+        d=1e100.net; s=20230601; t=1726533089; x=1727137889;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=P3XRknCuZ+rddMbA9raqM8xFOQmhedysMspZNVnmtig=;
-        b=Vxe4zJTZM05MSEeg//uQkfFKcZI5Fppxjud/htYe/QMcM1QcWyiyA6MaZ4wzBs1Yzx
-         whYjr/KZ0uzM72wzEshVMepmN2KqF09+S/nDXVj5S8FJa//dZK6wGjaos9vvOkNXaGXb
-         s/sNfOrCwN5FIGj2P++UJ93ub1CURC23PzrPMupeLDPzmNLCu8o5PwdjVwdfpHw07Daq
-         1AZ2IlHGD2uJuhxC++Mv9qJ2pQCtZlfEjp4pHHfMbMdZ0TttJKyRYqThihYCxsqPsx/D
-         TcTNwrQOcN0yJriBlW82TX3sSvm67hp30VwIumTsfQ8t1eGrXenepy/6dfFhKTfYDH9h
-         TZ4g==
-X-Forwarded-Encrypted: i=1; AJvYcCXZ950HkYESDohtbUuDZPjWJlW39gniBOzCQFirWuFnuKttd6flL+fDIiep6puOTby2vOzALLo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwU9Cq0BzQLW6p+fqfx7l5fQWtrIAT02//UScvxzQhOLSPxFKgu
-	lwOhLqwKfx1/AvEq+EnrxJS6tVPm5e7AIJ+8mHByPjfGhxm0JusxQ8rhhUcXfQZttXE5bbgoxbq
-	57i6BmQfYuGWrOdlJE5ap3k2/iqXuLAg2YQ2RkCYe2LtRnmCQ/eP2Dw==
-X-Received: by 2002:a05:6214:311a:b0:6c3:5496:3e06 with SMTP id 6a1803df08f44-6c57350b986mr276808276d6.10.1726531868919;
-        Mon, 16 Sep 2024 17:11:08 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEHnGglfemeo+Af3oezjiRWKnnZJZ0HiOz3D898c3WHVJObvGXlST1AzNl9ohW/gu5HlG6/gw==
-X-Received: by 2002:a05:6214:311a:b0:6c3:5496:3e06 with SMTP id 6a1803df08f44-6c57350b986mr276807636d6.10.1726531868420;
-        Mon, 16 Sep 2024 17:11:08 -0700 (PDT)
+        bh=YTrfXOeRwBkIVUBR9O4O2yoB1GQ/xZoXRHhKkvHx0gI=;
+        b=Ruimaw6XHylcCQkw/sMr9Ut8+dfDExgaFCtbSxFm21FQT+esn2Gga8CaYNSFh2CUPn
+         laTki5OLRbqQCbls2jLD31gk0b5NZ2k+QGJdNGikm8uPKNWnHtdhAG3jIm25+oOovoj9
+         BfKeGnSvwBGNkFhEZSzZC/6NPqbn+hKOFp0GdKBBkxFRGvcWLGRUrQhtKFyXdmO1qaqA
+         0fLoa/4zLI2LZV7sajyr4MnVctiR5fL5GG109yz8/vNFzBG0nUTklY0Vt1cAjSZQ505P
+         cZ8dopDzeZ2hVrUe8qKK+brbA9+yuUF9G3BC+OwIRWZFntAjJ7SbdJPItP6TeS7WbHR7
+         T+pg==
+X-Forwarded-Encrypted: i=1; AJvYcCWU2TMEVjS8bGrKMYbXEIiOS2+fzYd6sMKv09ZaKDobfct5LJTLOouXaKkr/zl86RtPFX2AQeQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxL/Ra7Tjxp4QPx0O8QzfRIbBn+xmDzpNuHTFwLhNBoRBC757lq
+	rHoZMn07GyMvfPQzEIO5ZDfyQq0vx/rhaaul7WNdILYZ7lbalR1+bIJ5mMT/ruww58f91EmDjn2
+	ojbGu7MppF4+diSbWhiFKtjwdxRiv4GtYoqHYDVz/CFHV6LvIh2rSBN7A8XLk6YNs
+X-Received: by 2002:a05:6214:5b86:b0:6c5:4b90:b5ce with SMTP id 6a1803df08f44-6c57352f5eamr266133836d6.24.1726533089640;
+        Mon, 16 Sep 2024 17:31:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFo7WVOhFAZCy7dJKRN2IgQWI2V62itbEidTmQgeCNcgyiTCHaVeu04ROWhSObSJxOIeCYJpA==
+X-Received: by 2002:a05:6214:5b86:b0:6c5:4b90:b5ce with SMTP id 6a1803df08f44-6c57352f5eamr266133546d6.24.1726533089160;
+        Mon, 16 Sep 2024 17:31:29 -0700 (PDT)
 Received: from towerofpower.montleon.net (syn-066-026-073-226.res.spectrum.com. [66.26.73.226])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6c58c62633bsm29221956d6.25.2024.09.16.17.11.06
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6c58c633343sm29342076d6.39.2024.09.16.17.31.28
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Sep 2024 17:11:07 -0700 (PDT)
+        Mon, 16 Sep 2024 17:31:28 -0700 (PDT)
 From: Jason Montleon <jmontleo@redhat.com>
-To: ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	paul.walmsley@sifive.com,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	nathan@kernel.org,
-	ndesaulniers@google.com,
-	morbo@google.com,
-	justinstitt@google.com
-Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	llvm@lists.linux.dev,
-	Jason Montleon <jmontleo@redhat.com>,
+To: jason@montleon.com
+Cc: Jason Montleon <jmontleo@redhat.com>,
 	stable@vger.kernel.org
-Subject: [PATCH] RISC-V: Fix building rust when using GCC toolchain
-Date: Mon, 16 Sep 2024 20:08:48 -0400
-Message-ID: <20240917000848.720765-2-jmontleo@redhat.com>
+Subject: [PATCH 1/1] RISC-V: Fix building rust when using GCC toolchain
+Date: Mon, 16 Sep 2024 20:31:18 -0400
+Message-ID: <20240917003118.722365-2-jmontleo@redhat.com>
 X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240917000848.720765-1-jmontleo@redhat.com>
-References: <20240917000848.720765-1-jmontleo@redhat.com>
+In-Reply-To: <20240917003118.722365-1-jmontleo@redhat.com>
+References: <20240917003118.722365-1-jmontleo@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -141,8 +123,6 @@ index f168d2c98a15..73eceaaae61e 100644
  BINDGEN_TARGET		:= $(BINDGEN_TARGET_$(SRCARCH))
  
  # All warnings are inhibited since GCC builds are very experimental,
-
-base-commit: ad060dbbcfcfcba624ef1a75e1d71365a98b86d8
 -- 
 2.46.0
 
