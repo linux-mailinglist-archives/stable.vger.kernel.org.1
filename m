@@ -1,144 +1,131 @@
-Return-Path: <stable+bounces-76624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76623-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86BA397B5D1
-	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 00:33:51 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7657E97B5B9
+	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 00:28:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 093D51F25F7A
-	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 22:33:51 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2CF0E1F23F49
+	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 22:28:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A1DE193425;
-	Tue, 17 Sep 2024 22:32:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0D891925A9;
+	Tue, 17 Sep 2024 22:28:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b="czMEgfPl"
 X-Original-To: stable@vger.kernel.org
-Received: from vmicros1.altlinux.org (vmicros1.altlinux.org [194.107.17.57])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3787F178363;
-	Tue, 17 Sep 2024 22:32:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.107.17.57
+Received: from omta40.uswest2.a.cloudfilter.net (omta40.uswest2.a.cloudfilter.net [35.89.44.39])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 684C0191F95
+	for <stable@vger.kernel.org>; Tue, 17 Sep 2024 22:28:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.89.44.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726612324; cv=none; b=lKJEkaM//ooJG7QS/vWXW+p2TJyq4J1NFxmjUPaWefLC2K/GOhB8SZYkjYJEX7T0rudM8MY5s2oerhnrcxs36u1K8gXGR1hKGNznPR4bnzTc3cSLz8cdlaIeB6+L2NK2ajd7wMX/aCDzKADiFUMtHzXAivrP6CMEiqJYe0D6WPk=
+	t=1726612097; cv=none; b=T1r+QlQk+H0Gyl2qY8FH1PUl8Zlm7qeDZXBn2EuepplU4fyOT3pZ8q2S2+AmTzVm5DlRxKo+XpRCsl9MzME3RSU6teGfW28GwPz10encQAJJhyp83n0brxsGNcsBl5HHtfdUbemPQqxsCJeQsUlh6QJtf6I7TQr/dPch8zE8VAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726612324; c=relaxed/simple;
-	bh=IMndr9K3NQ2VfXAd4kjGDI4l5XyHnbEZiBW+Havw5p4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lWnuEwShAP8Pa5JXYdMg8mVQClqC4qInTgfIEnal5QetWbZ+rryEG+WbDdMpHxasrAjx4jwciw3nvMFK795XQ/G/k7S+xzx6N6B/RJ5DN0DAclIP52CGaPK23uRlWo7BTM6BO+gFoIgKXPt8+X/DQCmkdnieazHy49iSwtwEUXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strace.io; spf=pass smtp.mailfrom=altlinux.org; arc=none smtp.client-ip=194.107.17.57
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strace.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=altlinux.org
-Received: from mua.local.altlinux.org (mua.local.altlinux.org [192.168.1.14])
-	by vmicros1.altlinux.org (Postfix) with ESMTP id EE57A72C8CC;
-	Wed, 18 Sep 2024 01:22:26 +0300 (MSK)
-Received: by mua.local.altlinux.org (Postfix, from userid 508)
-	id D77587CCB3C; Wed, 18 Sep 2024 01:22:26 +0300 (IDT)
-Date: Wed, 18 Sep 2024 01:22:26 +0300
-From: "Dmitry V . Levin" <ldv@strace.io>
-To: Celeste Liu <coelacanthushex@gmail.com>,
-	Andrea Bolognani <abologna@redhat.com>
-Cc: linux-riscv@lists.infradead.org,
-	=?utf-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@rivosinc.com>,
-	linux-kernel@vger.kernel.org, Guo Ren <guoren@kernel.org>,
-	Palmer Dabbelt <palmer@rivosinc.com>,
-	Emil Renner Berthing <emil.renner.berthing@canonical.com>,
-	Felix Yan <felixonmars@archlinux.org>,
-	Ruizhe Pan <c141028@gmail.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v2] riscv: entry: always initialize regs->a0 to -ENOSYS
-Message-ID: <20240917222226.GA25527@altlinux.org>
-References: <20240627142338.5114-2-CoelacanthusHex@gmail.com>
- <CABJz62PRAv0QqszOTHDUdrrgY-Za9y9Vq6mYke=FqP=N5qXvbw@mail.gmail.com>
+	s=arc-20240116; t=1726612097; c=relaxed/simple;
+	bh=ITGcAc30GiZ2r9on52mDfrwUHdGvKkm4dpPJI3/8rlc=;
+	h=Subject:To:Cc:References:In-Reply-To:From:Message-ID:Date:
+	 MIME-Version:Content-Type; b=ke/VJbR6SIdc7b2RHeYA94g40nbJQcjRo/06JFWpIceh+FKallem+kTwCKoe37I/I6ZgBAc5Q1sFP5HIGSMYbhnjuzdsnnVNtelIP1bw85WbpgTR5uprBmJC7DPZIoMfU2wwTa3fponc0LX8sVOnaJpn/kYmwVcK36c0lZOCYxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net; spf=pass smtp.mailfrom=w6rz.net; dkim=pass (2048-bit key) header.d=w6rz.net header.i=@w6rz.net header.b=czMEgfPl; arc=none smtp.client-ip=35.89.44.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=w6rz.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=w6rz.net
+Received: from eig-obgw-5001a.ext.cloudfilter.net ([10.0.29.139])
+	by cmsmtp with ESMTPS
+	id qgXWsYSouvH7lqgg5sPl4e; Tue, 17 Sep 2024 22:28:09 +0000
+Received: from box5620.bluehost.com ([162.241.219.59])
+	by cmsmtp with ESMTPS
+	id qgg4sNi46mqhiqgg4sTmkO; Tue, 17 Sep 2024 22:28:09 +0000
+X-Authority-Analysis: v=2.4 cv=NdEt1HD4 c=1 sm=1 tr=0 ts=66ea0279
+ a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
+ a=IkcTkHD0fZMA:10 a=EaEq8P2WXUwA:10 a=7vwVE5O1G3EA:10 a=VwQbUJbxAAAA:8
+ a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
+ a=nmWuMzfKamIsx3l42hEX:22 a=hTR6fmoedSdf3N0JiVF8:22
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
+	s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
+	Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=HhgWGGqSUKaUXy95pivy0JeC032zQ5e5NLogHgBkqFI=; b=czMEgfPlGR94PnCTB3YbXY5Hq7
+	HdtvDOkxgLgRmD4YEHOCme7zVVicM37CW8xwzu4g0BWuBCk5RcQXDzXHpcx8UJjnBP6umTslu4rfD
+	KmdplnQgPeP9KQE1qB+9XHhR0rJNq0rZsNAqKC7TfHDwhsdlnvBPdixUWGC1l7tUnXil+gB0iXsgE
+	E9ria9wHC82Ooj1yLf3gsRD+7LEvgErB2pCwUz7z2oU1ovHaUjvscxKjuezX0gmvCZ0q2uzLsLkzH
+	edNHX7UtNgmnWlhYkqD369E+lzcQTejukjsadYBAGMOcH5bd8tC1cBh62il0iwKvgJmJLfV6ekuRh
+	V6zvb9Lg==;
+Received: from c-73-223-253-157.hsd1.ca.comcast.net ([73.223.253.157]:41170 helo=[10.0.1.47])
+	by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96.2)
+	(envelope-from <re@w6rz.net>)
+	id 1sqgg2-001Uoq-1H;
+	Tue, 17 Sep 2024 16:28:06 -0600
+Subject: Re: [PATCH 6.10 000/121] 6.10.11-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240916114228.914815055@linuxfoundation.org>
+In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
+From: Ron Economos <re@w6rz.net>
+Message-ID: <9a7a68d4-845c-6d37-420d-e98d6781df34@w6rz.net>
+Date: Tue, 17 Sep 2024 15:28:04 -0700
+User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
+ Thunderbird/78.14.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CABJz62PRAv0QqszOTHDUdrrgY-Za9y9Vq6mYke=FqP=N5qXvbw@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+Content-Language: en-US
+X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
+X-AntiAbuse: Primary Hostname - box5620.bluehost.com
+X-AntiAbuse: Original Domain - vger.kernel.org
+X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
+X-AntiAbuse: Sender Address Domain - w6rz.net
+X-BWhitelist: no
+X-Source-IP: 73.223.253.157
+X-Source-L: No
+X-Exim-ID: 1sqgg2-001Uoq-1H
+X-Source: 
+X-Source-Args: 
+X-Source-Dir: 
+X-Source-Sender: c-73-223-253-157.hsd1.ca.comcast.net ([10.0.1.47]) [73.223.253.157]:41170
+X-Source-Auth: re@w6rz.net
+X-Email-Count: 2
+X-Org: HG=bhshared;ORG=bluehost;
+X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
+X-Local-Domain: yes
+X-CMAE-Envelope: MS4xfHtMNAjL+agazLN8n87ZaE1VnjSioW2j7RIo7wErRdtUYLhv+F0K191byx8zdUQBCU5ArGMklsDLwhelxt64+lrHDtPqz3b81peMtGGkz0lcQeBqK2He
+ cFnqUUaYcYrcpC+xLl3jAp8SX0G9WLhrRvry/ogJUoqcKbP6KUQ1zs+Y0FEkBPbzVI5DhGKVXS7IGQ==
 
-On Tue, Sep 17, 2024 at 01:49:52AM +0900, Andrea Bolognani wrote:
-> On Thu, Jun 27, 2024 at 10:23:39PM GMT, Celeste Liu wrote:
-> > Otherwise when the tracer changes syscall number to -1, the kernel fails
-> > to initialize a0 with -ENOSYS and subsequently fails to return the error
-> > code of the failed syscall to userspace. For example, it will break
-> > strace syscall tampering.
-> >
-> > Fixes: 52449c17bdd1 ("riscv: entry: set a0 = -ENOSYS only when syscall != -1")
-> > Reported-by: "Dmitry V. Levin" <ldv@strace.io>
-> > Reviewed-by: Björn Töpel <bjorn@rivosinc.com>
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Celeste Liu <CoelacanthusHex@gmail.com>
-> > ---
-> >  arch/riscv/kernel/traps.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/arch/riscv/kernel/traps.c b/arch/riscv/kernel/traps.c
-> > index 05a16b1f0aee..51ebfd23e007 100644
-> > --- a/arch/riscv/kernel/traps.c
-> > +++ b/arch/riscv/kernel/traps.c
-> > @@ -319,6 +319,7 @@ void do_trap_ecall_u(struct pt_regs *regs)
-> >
-> >  		regs->epc += 4;
-> >  		regs->orig_a0 = regs->a0;
-> > +		regs->a0 = -ENOSYS;
-> >
-> >  		riscv_v_vstate_discard(regs);
-> >
-> > @@ -328,8 +329,7 @@ void do_trap_ecall_u(struct pt_regs *regs)
-> >
-> >  		if (syscall >= 0 && syscall < NR_syscalls)
-> >  			syscall_handler(regs, syscall);
-> > -		else if (syscall != -1)
-> > -			regs->a0 = -ENOSYS;
-> > +
-> >  		/*
-> >  		 * Ultimately, this value will get limited by KSTACK_OFFSET_MAX(),
-> >  		 * so the maximum stack offset is 1k bytes (10 bits).
-> 
-> Hi,
-> 
-> this change seems to have broken strace's test suite.
-> 
-> In particular, the "legacy_syscall_info" test, which is meant to
-> verify that strace behaves correctly when PTRACE_GET_SYSCALL_INFO is
-> not available, reports a bogus value for the first argument of the
-> syscall (the one passed via a0).
-> 
-> The bogus value comes directly from the ptrace() call, before strace
-> has a chance to meddle with it, hence why the maintainer suggested
-> that the issue would likely be traced back to the kernel.
-> 
-> I have built a kernel with this change reverted and, as expected, the
-> strace test suite passes. Admittedly I've used the 6.11-rc7 Fedora
-> kernel as the baseline for this test, but none of the Fedora patches
-> touch the RISC-V code at all and the file itself hasn't been touched
-> since rc7, so I'm fairly confident the same behavior is present in
-> vanilla 6.11 too.
-> 
-> See
-> 
->   https://github.com/strace/strace/issues/315
-> 
-> for the original report. Please let me know if I need to provide
-> additional information, report this anywhere else (bugzilla?), and so
-> on...
+On 9/16/24 4:42 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.10.11 release.
+> There are 121 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 18 Sep 2024 11:42:05 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.10.11-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.10.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-By the way, in strace we had to apply a workaround [1] for the riscv ptrace
-regression caused by commit 52449c17bdd1540940e21511612b58acebc49c06.
+Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
 
-As result, reverting commit 61119394631f219e23ce98bcc3eb993a64a8ea64 that
-fixed the regression but introduced a PTRACE_GETREGSET syscall argument
-clobbering which is more serious regression seems to be the least of two
-evils.
+Tested-by: Ron Economos <re@w6rz.net>
 
-This essentially means strace would have to keep the workaround
-indefinitely, but we can live with that.
-
-[1] https://github.com/strace/strace/commit/c3ae2b27732952663a3600269884e363cb77a024
-
-
--- 
-ldv
 
