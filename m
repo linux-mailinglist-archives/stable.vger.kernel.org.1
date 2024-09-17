@@ -1,98 +1,153 @@
-Return-Path: <stable+bounces-76569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76570-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACE6197AE8E
-	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 12:15:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D23797AE7C
+	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 12:07:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 119EFB3044A
-	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 09:57:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C82FA284F82
+	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 10:07:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0681B161320;
-	Tue, 17 Sep 2024 09:56:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iZXzsKWT"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 537B6159571;
+	Tue, 17 Sep 2024 10:07:49 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2CBC15ECD5;
-	Tue, 17 Sep 2024 09:56:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C432158D8F;
+	Tue, 17 Sep 2024 10:07:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.154.21.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726567018; cv=none; b=bHg7FNiDC73qAI3MKnYu7cYy7QDTeC9/BTpvL/80Ol3ExD/QY1eblpCrQJY9HAG78qfaBruAJClMHUAtVW6pPQgwMYMpFYnWrP25u86XwWSkxw9TUpQdt/gga3FhQqwOipOXJehYkI+QqLr1i2dbS0KARl19qI60aIdtocDUY/M=
+	t=1726567669; cv=none; b=Prb/rEg6FsSFjsjuzJNb05Y/1y7iZP21mlxmqphs9P9+fQOUucx3Y95cTJ4LaN/4okS4zddlU3Fw6fHwiz8kIuFxfnpdVvqZKZBPDNSU1cs2EJ6p4Cxrbo5PHO08G4+rSw4GEMfmavKYXl9kw/flIITs/abcXpvznANYxtV40Cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726567018; c=relaxed/simple;
-	bh=dweB9mTwdkZRtIVkRq21Qmr3NVEzRHLPPKUPEExBesQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EDvly5aX5ejLegxsLQAiX/T3n8ZHV+0mH/iB7FOjqLqEPowAiFtDxiTWaFjdh1xNB+mIFoMRXTPf6/dAhjIbhjuvoT3S9qWIflyQx7bBMCTlZ3ZckpHNrIpYwKdvNXrNP2aFJiGsvPawQN+rD+dHtDYHmLSvVzOfRvabJveAyZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iZXzsKWT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BB79C4CEC5;
-	Tue, 17 Sep 2024 09:56:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726567018;
-	bh=dweB9mTwdkZRtIVkRq21Qmr3NVEzRHLPPKUPEExBesQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=iZXzsKWTV5ZYGLHoDYza00Jy0ABfiIVTj3UdhccUV77HuzBoa6GrCbAFfnjGSfQw7
-	 C8QYs009jCOJgDe9+oaEj9SlR0BlaGPv7y0kRcfASROVzx4j8yjYffeGtnaFOVJDwW
-	 jccOPuwDWuHrmFbNU47PGUAZRi5KkIbOtGus+uQLmDg5kNpwuTlRYDtvtQSxrpbtpR
-	 eyP2DrfQOAbk42YoLtqasg1C+K88GOzS6dl/nu98sLj6rsW05vDSHG52VTIB5bYx2Q
-	 nKqUtqPsmqY5FukpviU0yMVZssTrv3qh/WtSEa9v8TzkBYkr1qOd9488CFp3KUb4kI
-	 aT60Qxi+8NwAw==
-Date: Tue, 17 Sep 2024 11:56:53 +0200
-From: Mark Brown <broonie@kernel.org>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-	conor@kernel.org, allen.lkml@gmail.com
-Subject: Re: [PATCH 6.1 00/63] 6.1.111-rc1 review
-Message-ID: <ZulSZQ0IKTK1Bed4@finisterre.sirena.org.uk>
-References: <20240916114221.021192667@linuxfoundation.org>
+	s=arc-20240116; t=1726567669; c=relaxed/simple;
+	bh=OvPvzmYVf5PPB6SaJ1tyg1h/ET1ohPg3n64z+iN4ZdY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=A3DvviYctU6oAtpXgus+DXUS1nbs8fekRl9E3SZIgZDKENa6MaB5Oe3F+xGKOCOtmObW6ccK0vRobjIRuTWHzVz5NUnrAycxyjRAAJc7mR1eWKLJGfRpkUqm4pt0e+Ms3wdb1eDDpnZIHizJoSzN3yKEtpWVpWx/dAuvGYpInZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru; spf=pass smtp.mailfrom=omp.ru; arc=none smtp.client-ip=90.154.21.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=omp.ru
+Received: from inp1wst083.omp.ru (81.22.207.138) by msexch01.omp.ru
+ (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Tue, 17 Sep
+ 2024 13:07:23 +0300
+From: Roman Smirnov <r.smirnov@omp.ru>
+To: <stable@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: Roman Smirnov <r.smirnov@omp.ru>, Mark Brown <broonie@kernel.org>, "Rafael
+ J. Wysocki" <rafael@kernel.org>, <linux-kernel@vger.kernel.org>, Sergey
+ Shtylyov <s.shtylyov@omp.ru>, Karina Yankevich <k.yankevich@omp.ru>, Sergey
+ Yudin <s.yudin@omp.ru>, <lvc-project@linuxtesting.org>, Mathias Nyman
+	<mathias.nyman@linux.intel.com>
+Subject: [PATCH 5.10] xhci: check virt_dev is valid before dereferencing it
+Date: Tue, 17 Sep 2024 13:07:03 +0300
+Message-ID: <20240917100703.80166-1-r.smirnov@omp.ru>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="UfKMFtHYzGto6sVT"
-Content-Disposition: inline
-In-Reply-To: <20240916114221.021192667@linuxfoundation.org>
-X-Cookie: Editing is a rewording activity.
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
+ (10.188.4.12)
+X-KSE-ServerInfo: msexch01.omp.ru, 9
+X-KSE-AntiSpam-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 6.1.1, Database issued on: 09/17/2024 09:55:40
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 19
+X-KSE-AntiSpam-Info: Lua profiles 187792 [Sep 17 2024]
+X-KSE-AntiSpam-Info: Version: 6.1.1.5
+X-KSE-AntiSpam-Info: Envelope from: r.smirnov@omp.ru
+X-KSE-AntiSpam-Info: LuaCore: 34 0.3.34
+ 8a1fac695d5606478feba790382a59668a4f0039
+X-KSE-AntiSpam-Info: {rep_avail}
+X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: {SMTP from is not routable}
+X-KSE-AntiSpam-Info: {Found in DNSBL: 81.22.207.138 in (user)
+ b.barracudacentral.org}
+X-KSE-AntiSpam-Info:
+	lore.kernel.org:7.1.1;inp1wst083.omp.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;81.22.207.138:7.1.2;127.0.0.199:7.1.2;omp.ru:7.1.1
+X-KSE-AntiSpam-Info: FromAlignment: s
+X-KSE-AntiSpam-Info: ApMailHostAddress: 81.22.207.138
+X-KSE-AntiSpam-Info: {DNS response errors}
+X-KSE-AntiSpam-Info: Rate: 19
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
+ smtp.mailfrom=omp.ru;dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 09/17/2024 09:59:00
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: Clean, bases: 9/17/2024 9:17:00 AM
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
 
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
---UfKMFtHYzGto6sVT
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+commit 03ed579d9d51aa018830b0de3e8b463faf6b87db upstream.
 
-On Mon, Sep 16, 2024 at 01:43:39PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.111 release.
-> There are 63 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Check that the xhci_virt_dev structure that we dug out based
+on a slot_id value from a command completion is valid before
+dereferencing it.
 
-Tested-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20210129130044.206855-7-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
+---
+ drivers/usb/host/xhci-ring.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
---UfKMFtHYzGto6sVT
-Content-Type: application/pgp-signature; name="signature.asc"
+diff --git a/drivers/usb/host/xhci-ring.c b/drivers/usb/host/xhci-ring.c
+index fbb7a5b51ef4..a769803e7d38 100644
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -1415,6 +1415,8 @@ static void xhci_handle_cmd_config_ep(struct xhci_hcd *xhci, int slot_id,
+ 	 * is not waiting on the configure endpoint command.
+ 	 */
+ 	virt_dev = xhci->devs[slot_id];
++	if (!virt_dev)
++		return;
+ 	ctrl_ctx = xhci_get_input_control_ctx(virt_dev->in_ctx);
+ 	if (!ctrl_ctx) {
+ 		xhci_warn(xhci, "Could not get input context, bad type.\n");
+@@ -1459,6 +1461,8 @@ static void xhci_handle_cmd_addr_dev(struct xhci_hcd *xhci, int slot_id)
+ 	struct xhci_slot_ctx *slot_ctx;
+ 
+ 	vdev = xhci->devs[slot_id];
++	if (!vdev)
++		return;
+ 	slot_ctx = xhci_get_slot_ctx(xhci, vdev->out_ctx);
+ 	trace_xhci_handle_cmd_addr_dev(slot_ctx);
+ }
+@@ -1470,13 +1474,15 @@ static void xhci_handle_cmd_reset_dev(struct xhci_hcd *xhci, int slot_id,
+ 	struct xhci_slot_ctx *slot_ctx;
+ 
+ 	vdev = xhci->devs[slot_id];
++	if (!vdev) {
++		xhci_warn(xhci, "Reset device command completion for disabled slot %u\n",
++			  slot_id);
++		return;
++	}
+ 	slot_ctx = xhci_get_slot_ctx(xhci, vdev->out_ctx);
+ 	trace_xhci_handle_cmd_reset_dev(slot_ctx);
+ 
+ 	xhci_dbg(xhci, "Completed reset device command.\n");
+-	if (!xhci->devs[slot_id])
+-		xhci_warn(xhci, "Reset device command completion "
+-				"for disabled slot %u\n", slot_id);
+ }
+ 
+ static void xhci_handle_cmd_nec_get_fw(struct xhci_hcd *xhci,
+-- 
+2.34.1
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmbpUmUACgkQJNaLcl1U
-h9DteAf/TWmZcy44yIfU/rlTH8gvy1l1O93VuyvytaIOX0CnYWr5mDvX64LtPrRG
-B30rWJPZfFd6JTd6aTHZNjcZzouUQrcPuOLUhHfQt7z3yG+KUC6ZQ88Z3PqxEyQh
-ReG4vbo/prsEm7VEU9iHDcGELINRelHtG58C4EzmI2sLN6pW3pLnRFFA1t5yNe7B
-WhvHHwDEOuHXZI7dC5aV4VVw+wR5Tt15pyKdB1mj6bhP1jJQ3BeMNfwmsuN6h9DX
-DlXYVWVY3caKtWJGVZ4p8mhCAXRKykQW0eOejS/umFs0vfIi4PmY5DsSw9Enigak
-q+d8KiNdiXrARIhzOr8ilJQ7NQyxlA==
-=aVHb
------END PGP SIGNATURE-----
-
---UfKMFtHYzGto6sVT--
 
