@@ -1,158 +1,120 @@
-Return-Path: <stable+bounces-76550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E1BB97AC02
-	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 09:26:37 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47BB297AC0C
+	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 09:28:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3445A1F22B64
-	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 07:26:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D9E51B2219D
+	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 07:28:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73B5D130AC8;
-	Tue, 17 Sep 2024 07:26:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5B8C149E16;
+	Tue, 17 Sep 2024 07:28:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TCTWeGvs"
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="F1Wrp+w1"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from pv50p00im-ztdg10021801.me.com (pv50p00im-ztdg10021801.me.com [17.58.6.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30E9244C77;
-	Tue, 17 Sep 2024 07:26:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40F4B44C77
+	for <stable@vger.kernel.org>; Tue, 17 Sep 2024 07:28:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726557995; cv=none; b=OIraNWA42NSHobF/nrCTjkUCHfhlRCZ/QUMqZ8fEMbj0Vvv6f4bgyliCcR7Xo91/Yq99dmTS3C5JxRPBKXgMaT6Sf1i84zwILYugzBMVyLJ+uBMXswaeQqlzyLKr656jtapKzI/gbhHRnXK2yErQ8zEB64+oDd+BYdMU8PTcjug=
+	t=1726558120; cv=none; b=IbCaMnH95qy2GZbrP7VTC0Qfa5GIvDFNrbdNO+O9MrTsihKeKn7HVA/Oq1Jf3lFjf1l/0Ad4duhOQvHelaS0YShkzBKgqP2/Y69qgcsZfAQG3PvYnQoUg+s2J7PZWcBMIzN6MOz+HdJ8I/U5H+aj344logiI71zwjLTzuPvhBP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726557995; c=relaxed/simple;
-	bh=yQC6C1oDs8N8CJpFVeygXzUckUyvbnj/h5KN8aDjUKw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S+uhlDJGhaA5ZaEq9sbMUyGJilTGsdShLZckWuVCOVH/m97YaPpOubEzQD8i1BPDtZKMN/gs7YtQRpktiXH2HyhIEVhDwddl91/HVUnepH1ehHrJBj4f/hl9XEOz4IsnIydHcJHskFeobu4neMy1YtM2qctTYtZUPOqr9eSlwr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TCTWeGvs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CADF4C4CECE;
-	Tue, 17 Sep 2024 07:26:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726557994;
-	bh=yQC6C1oDs8N8CJpFVeygXzUckUyvbnj/h5KN8aDjUKw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TCTWeGvsX08YKrg8NbD36/UCXgQzWHRP5tcRQ80YdcWv6d3dEugQc8bARjX8+XNj2
-	 BiNFSEaqgSnOiV6z7m2GgZXu97G41javViccalYIcyS8609bYCNarUDCFnUr6yRbIo
-	 oM+sZQxrSd+VZs/RKk6WTwam7QkzRV4qHC2XjZfG/ct9Psk+nrbqlqLlE0i7B1mytl
-	 T+AJxhw3QYcOgY53APCEe5H9EjRL/tf9S/MpynTjw+jWg/5lc/1A7gjtVVK+Fs67GF
-	 BexgIzPQXJMSCEhQwTez4JgmAzbZswcD7iyTKcLMPEj9GWjcaK7vkxEm0ND8scPzIU
-	 kh4tHUnnePgwA==
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-To: mptcp@lists.linux.dev,
-	stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: Edward Adam Davis <eadavis@qq.com>,
-	syzbot+f3a31fb909db9b2a5c4d@syzkaller.appspotmail.com,
-	Matthieu Baerts <matttbe@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10.y 3/3] mptcp: pm: Fix uaf in __timer_delete_sync
-Date: Tue, 17 Sep 2024 09:26:11 +0200
-Message-ID: <20240917072607.799536-8-matttbe@kernel.org>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <2024091330-reps-craftsman-ab67@gregkh>
-References: <2024091330-reps-craftsman-ab67@gregkh>
+	s=arc-20240116; t=1726558120; c=relaxed/simple;
+	bh=EWGoryWPN3XTa5xPjDODSu5gYnovg9x/84Wb8baTxJk=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=AsyPzN28dj8UAhPypJ2glK5hF8JnuCyoW3SIAOz9EOohxRy5oM/J9Ci8CPRc27ptw3B/Vl3Xd7MQcUbvUrBxyi5wzKMAqUZmA2EZyVzGkzzHlPaGVIgOqg1di22gVkrrYDSvYnr0aqXaA9Vlljy1kCtgM6kPYoBv7iWm0/SLq1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=F1Wrp+w1; arc=none smtp.client-ip=17.58.6.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
+	s=1a1hai; t=1726558117;
+	bh=Vcx7WPhSegV9rB0wW863Hv71god9yUWJCSu6hxqP9VU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To;
+	b=F1Wrp+w17f3PBRPTIKc6ZoHbUZpmHP1s0Mq331e6WUdu/dPnG9YG7HCPPJtkxPTJ/
+	 BU1QvV7ILcDXaxMBvz2FK9WKzP4veUeKzK1GloueZcKAAi4yvRMu7j0EFnzWsBu3e8
+	 GPmFLNRt7NXneKWHRDObLTWPkP7BJcRKlylCqLtkvn6EXiqw7ovz4ReAwgzusK0lP+
+	 J4QpHUF2YP48u4jJputPaBeqCSMtm4fdvtBSl5UIA0+8Q1OEzpJRWoqOcMLJTh3i18
+	 BsoGZqkEzLQhnljtlUVBBrfge5attU8Jf4ZNvkNT693fU6NpfTs8kygF4YD2+GFujI
+	 4SCQg1GH0AvPA==
+Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
+	by pv50p00im-ztdg10021801.me.com (Postfix) with ESMTPSA id 1030F2010202;
+	Tue, 17 Sep 2024 07:28:31 +0000 (UTC)
+From: Zijun Hu <zijun_hu@icloud.com>
+Date: Tue, 17 Sep 2024 15:28:18 +0800
+Subject: [PATCH] list: Remove duplicated and unused macro
+ list_for_each_reverse
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3594; i=matttbe@kernel.org; h=from:subject; bh=/XXALFUu8RPVQI5mU5wv9GlF5LNXN/xsZH23tllMpa0=; b=owEBbQKS/ZANAwAIAfa3gk9CaaBzAcsmYgBm6S8Q+ceFwtcEWOGj5LrFncR4y5x+eyqvEyHX0 Xq1nWVTvWWJAjMEAAEIAB0WIQToy4X3aHcFem4n93r2t4JPQmmgcwUCZukvEAAKCRD2t4JPQmmg c1E3D/92EWPaXUVJR8TY+Wqgel/QAM7492r1jd8YgUVpatX3qA3+WOQ/d+jIsnyWNrzuv+NG+Q+ jSVcXEd4pbEwjycEdQH32YNEaoFLaqM8Df9txBALQHoI+G978eYTaLUweFbEMnmK73R67tLYWqD S07CpyW7lYivGK8+ra+ADONVKQeyk+RSwG2yxzRrZjTd8OJFeedJx9qFDsdAJZzbO3U/FTjzXcX 5kfJR8xKg4TGKsXwz0fmuJaVpt23r2krT1IFavG7OlWf7qEkgTaBKzuGKhPQ0c0eRp1i2Nf3zcR k+bzZVGG29zui633vVbURes1/4z55E+HGfmilQ/wijTG9FffU4B8RFhvFmZsbobYtS9rkIv7e8F 7pZ5pUOFqxTOJD5b9UaCTCXXoTsvPCrKeozkb17k6vpbDkoE8Ku0a02O5glIXTPiQbtIh3PUyPq UW3Xol3pCGfGxnnFsKnF1t46u7dwjaa4ypM7oWP/8F1DMPnLne7E1F9pNPDQ7bcG90GKre2aKFI Jqd9RoI97MLdnyOfl8xH5rx1jrjChWM7xwNtSk4RRHyRWAh5I6kNEt/6wpQCVTjSBd54ilIxUgj v4NJckifT55HJ3HlZ93c6n0i8dN/OkPBGLi6sGFou4zkdCenDSt66rMsYdwyAGFYhfG+Vq4P55F LMEfkgEpiNvImqA==
-X-Developer-Key: i=matttbe@kernel.org; a=openpgp; fpr=E8CB85F76877057A6E27F77AF6B7824F4269A073
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20240917-fix_list-v1-1-8fb8beb41e5d@quicinc.com>
+X-B4-Tracking: v=1; b=H4sIAJEv6WYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDS0Mz3bTMiviczOISXVNT42QTE/OklFSDNCWg8oKiVKAc2Kjo2NpaAFi
+ cbrtaAAAA
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+ Ingo Molnar <mingo@kernel.org>
+Cc: Zijun Hu <zijun_hu@icloud.com>, linux-kernel@vger.kernel.org, 
+ Zijun Hu <quic_zijuhu@quicinc.com>, stable@vger.kernel.org
+X-Mailer: b4 0.14.1
+X-Proofpoint-ORIG-GUID: PBPNEFXGRm1mF-qoq9AxFbNi8Y731PAQ
+X-Proofpoint-GUID: PBPNEFXGRm1mF-qoq9AxFbNi8Y731PAQ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-17_02,2024-09-16_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0 phishscore=0 clxscore=1011
+ mlxlogscore=664 adultscore=0 suspectscore=0 mlxscore=0 malwarescore=0
+ spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2308100000 definitions=main-2409170055
+X-Apple-Remote-Links: v=1;h=KCk=;charset=UTF-8
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Zijun Hu <quic_zijuhu@quicinc.com>
 
-There are two paths to access mptcp_pm_del_add_timer, result in a race
-condition:
+Remove macro list_for_each_reverse due to below reasons:
 
-     CPU1				CPU2
-     ====                               ====
-     net_rx_action
-     napi_poll                          netlink_sendmsg
-     __napi_poll                        netlink_unicast
-     process_backlog                    netlink_unicast_kernel
-     __netif_receive_skb                genl_rcv
-     __netif_receive_skb_one_core       netlink_rcv_skb
-     NF_HOOK                            genl_rcv_msg
-     ip_local_deliver_finish            genl_family_rcv_msg
-     ip_protocol_deliver_rcu            genl_family_rcv_msg_doit
-     tcp_v4_rcv                         mptcp_pm_nl_flush_addrs_doit
-     tcp_v4_do_rcv                      mptcp_nl_remove_addrs_list
-     tcp_rcv_established                mptcp_pm_remove_addrs_and_subflows
-     tcp_data_queue                     remove_anno_list_by_saddr
-     mptcp_incoming_options             mptcp_pm_del_add_timer
-     mptcp_pm_del_add_timer             kfree(entry)
+- it is same as list_for_each_prev.
+- it is not used by current kernel tree.
 
-In remove_anno_list_by_saddr(running on CPU2), after leaving the critical
-zone protected by "pm.lock", the entry will be released, which leads to the
-occurrence of uaf in the mptcp_pm_del_add_timer(running on CPU1).
-
-Keeping a reference to add_timer inside the lock, and calling
-sk_stop_timer_sync() with this reference, instead of "entry->add_timer".
-
-Move list_del(&entry->list) to mptcp_pm_del_add_timer and inside the pm lock,
-do not directly access any members of the entry outside the pm lock, which
-can avoid similar "entry->x" uaf.
-
-Fixes: 00cfd77b9063 ("mptcp: retransmit ADD_ADDR when timeout")
+Fixes: 8bf0cdfac7f8 ("<linux/list.h>: Introduce the list_for_each_reverse() method")
 Cc: stable@vger.kernel.org
-Reported-and-tested-by: syzbot+f3a31fb909db9b2a5c4d@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=f3a31fb909db9b2a5c4d
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Acked-by: Paolo Abeni <pabeni@redhat.com>
-Link: https://patch.msgid.link/tencent_7142963A37944B4A74EF76CD66EA3C253609@qq.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-(cherry picked from commit b4cd80b0338945a94972ac3ed54f8338d2da2076)
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Signed-off-by: Zijun Hu <quic_zijuhu@quicinc.com>
 ---
- net/mptcp/pm_netlink.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ include/linux/list.h | 8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/net/mptcp/pm_netlink.c b/net/mptcp/pm_netlink.c
-index f4f5cc76870a..bd03fb6df729 100644
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -253,15 +253,21 @@ mptcp_pm_del_add_timer(struct mptcp_sock *msk,
- {
- 	struct mptcp_pm_add_entry *entry;
- 	struct sock *sk = (struct sock *)msk;
-+	struct timer_list *add_timer = NULL;
+diff --git a/include/linux/list.h b/include/linux/list.h
+index 5f4b0a39cf46..29a375889fb8 100644
+--- a/include/linux/list.h
++++ b/include/linux/list.h
+@@ -686,14 +686,6 @@ static inline void list_splice_tail_init(struct list_head *list,
+ #define list_for_each(pos, head) \
+ 	for (pos = (head)->next; !list_is_head(pos, (head)); pos = pos->next)
  
- 	spin_lock_bh(&msk->pm.lock);
- 	entry = mptcp_lookup_anno_list_by_saddr(msk, addr);
--	if (entry && (!check_id || entry->addr.id == addr->id))
-+	if (entry && (!check_id || entry->addr.id == addr->id)) {
- 		entry->retrans_times = ADD_ADDR_RETRANS_MAX;
-+		add_timer = &entry->add_timer;
-+	}
-+	if (!check_id && entry)
-+		list_del(&entry->list);
- 	spin_unlock_bh(&msk->pm.lock);
- 
--	if (entry && (!check_id || entry->addr.id == addr->id))
--		sk_stop_timer_sync(sk, &entry->add_timer);
-+	/* no lock, because sk_stop_timer_sync() is calling del_timer_sync() */
-+	if (add_timer)
-+		sk_stop_timer_sync(sk, add_timer);
- 
- 	return entry;
- }
-@@ -766,7 +772,6 @@ static bool remove_anno_list_by_saddr(struct mptcp_sock *msk,
- 
- 	entry = mptcp_pm_del_add_timer(msk, addr, false);
- 	if (entry) {
--		list_del(&entry->list);
- 		kfree(entry);
- 		return true;
- 	}
+-/**
+- * list_for_each_reverse - iterate backwards over a list
+- * @pos:	the &struct list_head to use as a loop cursor.
+- * @head:	the head for your list.
+- */
+-#define list_for_each_reverse(pos, head) \
+-	for (pos = (head)->prev; pos != (head); pos = pos->prev)
+-
+ /**
+  * list_for_each_rcu - Iterate over a list in an RCU-safe fashion
+  * @pos:	the &struct list_head to use as a loop cursor.
+
+---
+base-commit: 6a36d828bdef0e02b1e6c12e2160f5b83be6aab5
+change-id: 20240916-fix_list-553c447bde0f
+
+Best regards,
 -- 
-2.45.2
+Zijun Hu <quic_zijuhu@quicinc.com>
 
 
