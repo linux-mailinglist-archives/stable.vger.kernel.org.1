@@ -1,109 +1,108 @@
-Return-Path: <stable+bounces-76575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2781997AEC8
-	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 12:31:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D25D97AEF5
+	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 12:36:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CDB951F23DDC
-	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 10:31:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34A10280FA1
+	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 10:36:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37ECD165EE3;
-	Tue, 17 Sep 2024 10:31:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 374BC166F17;
+	Tue, 17 Sep 2024 10:36:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="hdnNHGiJ"
 X-Original-To: stable@vger.kernel.org
-Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+Received: from pv50p00im-ztdg10021801.me.com (pv50p00im-ztdg10021801.me.com [17.58.6.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA8B14BFA3;
-	Tue, 17 Sep 2024 10:31:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.176.79.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C537A1662F4
+	for <stable@vger.kernel.org>; Tue, 17 Sep 2024 10:36:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726569094; cv=none; b=msIX9C5Ebp7J36UUhcj6TtJmTxwpryYdznAZxY0t+3/aPoh7ax2FkznXBpmuTJteTeLMXrVo0xjFr56tKEsOUoxpQRSR79AqSnULZhabU11eWeF6W9HblqXqg7MJbKEfCNtC3TzwSXLRRHERTLbQEsmZrQM+JIg1UlJGJOqAkuc=
+	t=1726569415; cv=none; b=CZi0Qx4y2ZwVgSS+BS/XTyPeAzblY3042BF4nwv8pwBmstS/3p1PL92aIZADKWSPO0hDLINXclWTRPC8mIEJIcV0XlwQ8Ms/HxYP2fYdPpwN5enUA6hPYI3IaQtBmP3ixIFeLqIFXTyYUZ+/GiAM8Z+Pbxz6aB6I6bg2ajSIqZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726569094; c=relaxed/simple;
-	bh=niUuXF1kX6414wT0Aeqg+hda2mZhNooHNbfvmAYjPp4=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=i7tCeEgPBsh8C7Xeby0SG/QvWw6BwNNPv4ho+PERg8niikahkgwpKJ1uh7+nnLKX3whK3GAWTkO6jj2+nhGw8Lvd+p3apTRyNVXLETm9N6DQBauJ7/zTxq6mufCjN/TgGJ1rSH+sqP6KRFxdCnyNhHBM9ivz4zqdhWfN7ImJfos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=185.176.79.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.18.186.31])
-	by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4X7J3Y0fw3z6K5qJ;
-	Tue, 17 Sep 2024 18:31:21 +0800 (CST)
-Received: from frapeml500005.china.huawei.com (unknown [7.182.85.13])
-	by mail.maildlp.com (Postfix) with ESMTPS id 100041400CD;
-	Tue, 17 Sep 2024 18:31:28 +0800 (CST)
-Received: from china (10.200.201.82) by frapeml500005.china.huawei.com
- (7.182.85.13) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 17 Sep
- 2024 12:31:14 +0200
-From: Gur Stavi <gur.stavi@huawei.com>
-To: <alexander.sverdlin@siemens.com>
-CC: <Mark-MC.Lee@mediatek.com>, <UNGLinuxDriver@microchip.com>,
-	<alexandre.belloni@bootlin.com>, <andrew@lunn.ch>,
-	<angelogioacchino.delregno@collabora.com>, <arinc.unal@arinc9.com>,
-	<bcm-kernel-feedback-list@broadcom.com>, <bridge@lists.linux.dev>,
-	<claudiu.manoil@nxp.com>, <daniel@makrotopia.org>, <davem@davemloft.net>,
-	<dqfext@gmail.com>, <edumazet@google.com>, <f.fainelli@gmail.com>,
-	<gur.stavi@huawei.com>, <kuba@kernel.org>,
-	<linux-mediatek@lists.infradead.org>, <lorenzo@kernel.org>,
-	<matthias.bgg@gmail.com>, <nbd@nbd.name>, <netdev@vger.kernel.org>,
-	<olteanv@gmail.com>, <pabeni@redhat.com>, <razor@blackwall.org>,
-	<roopa@nvidia.com>, <sean.wang@mediatek.com>, <stable@vger.kernel.org>
-Subject: Re: [PATCH 1/2] net: dsa: RCU-protect dsa_ptr in struct net_device
-Date: Tue, 17 Sep 2024 13:30:41 +0300
-Message-ID: <20240917103041.1645536-1-gur.stavi@huawei.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <c7a52a818c1ae49ad7e44bb82fcea53d7f53d6e0.camel@siemens.com>
-References: <c7a52a818c1ae49ad7e44bb82fcea53d7f53d6e0.camel@siemens.com>
+	s=arc-20240116; t=1726569415; c=relaxed/simple;
+	bh=qCfkST9/ft5SsImYPRZVlh+vnAIaaTcFSbz5op8XtxQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JPpoa3Wj/pnqAMP4rX5fjmu7VXlCbdnou4kIYns8LEd/qKEYTUoy7MpzF2mUZcKL6U9LDl5Ikr8oh1AHFBvXPYDfyNhNhDTCP9G0YrdaUIDh3Xs5u7KlgVUoSDlrUJvPcw7Ec9a4stn6AqK9NjIuHk3I/ObsKMZ2j8tgwXh/XWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=hdnNHGiJ; arc=none smtp.client-ip=17.58.6.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
+	s=1a1hai; t=1726569413;
+	bh=gfI6XH1BgBt2Bw02rFX0q5DP7pqI5n4xQBeIPuY+IQs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	b=hdnNHGiJRHBGI+2lhD9EyyXJb6sX5vHhy0/8JN0wmBD+h4o5Eq3nIts2P4uYMG5ZY
+	 5I7W7AAroNv3pti3yZg4iDb+eReA+l6lk9J3PxwaM6x0emYaj98lIYqE/9pFYSCCAw
+	 /ZSBAE3U7Da3p380d0bOC5URYd9GDsh578myO1Ux8uiur30RZ+f/HnebQSZfhU2BwT
+	 17ItAl3AigXHJfF7ZfF9LwAmt7nmfyE9GEVjQbii7yBbRLA8JkR+nMkFknkXTsaLN1
+	 lVdpYT/jikWmyNg0u7v2OQqHAa1VdXntOe3w/mHsr9W4co8rXDrsFXcL+lSran7qMC
+	 K3dELRJwMHvFA==
+Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
+	by pv50p00im-ztdg10021801.me.com (Postfix) with ESMTPSA id 2B254201049B;
+	Tue, 17 Sep 2024 10:36:48 +0000 (UTC)
+Message-ID: <7478478c-14e0-4760-b018-6bcf282db1b9@icloud.com>
+Date: Tue, 17 Sep 2024 18:36:43 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- frapeml500005.china.huawei.com (7.182.85.13)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] list: Remove duplicated and unused macro
+ list_for_each_reverse
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org,
+ Zijun Hu <quic_zijuhu@quicinc.com>, stable@vger.kernel.org
+References: <20240917-fix_list-v1-1-8fb8beb41e5d@quicinc.com>
+ <2024091752-passivism-donut-ccca@gregkh>
+Content-Language: en-US
+From: Zijun Hu <zijun_hu@icloud.com>
+In-Reply-To: <2024091752-passivism-donut-ccca@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-GUID: Q0VPYEKiAdwPevmrLx0_59b1hg7mo5q_
+X-Proofpoint-ORIG-GUID: Q0VPYEKiAdwPevmrLx0_59b1hg7mo5q_
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.272,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-17_02,2024-09-16_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=815 suspectscore=0
+ adultscore=0 phishscore=0 spamscore=0 mlxscore=0 malwarescore=0
+ clxscore=1015 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2308100000 definitions=main-2409170076
 
-> Hello Gur!
->
-> On Tue, 2024-09-17 at 11:10 +0300, Gur Stavi wrote:
-> > > @@ -1594,10 +1592,11 @@ void dsa_switch_shutdown(struct dsa_switch *ds)
-> > >   	}
-> > >
-> > >   	/* Disconnect from further netdevice notifiers on the conduit,
-> > > -	 * since netdev_uses_dsa() will now return false.
-> > > +	 * from now on, netdev_uses_dsa_currently() will return false.
-> > >   	 */
-> > >   	dsa_switch_for_each_cpu_port(dp, ds)
-> > > -		dp->conduit->dsa_ptr = NULL;
-> > > +		rcu_assign_pointer(dp->conduit->dsa_ptr, NULL);
-> > > +	synchronize_rcu();
-> > >
-> > >   	rtnl_unlock();
-> > >   out:
-> >
-> > Hi, I am a newbie here. Thanks for the opportunity for learning more
-> > about rcu.
-> > Wouldn't it make more sense to call synchronize_rcu after rtnl_unlock?
->
-> This is indeed a question which is usually resolved other way around
-> (making locked section shorter), but in this particular case I thought that:
-> - we actually don't need giving rtnl lock sooner, which would potentially
->   make synchronize_rcu() call longer (if another thread manages to wake up
->   and claim the rtnl lock before synchronize_rcu())
-> - we are in shutdown phase, we don't need to minimize lock contention, we
->   need to minimize the overall shutdown time
+On 2024/9/17 15:49, Greg Kroah-Hartman wrote:
+> On Tue, Sep 17, 2024 at 03:28:18PM +0800, Zijun Hu wrote:
+>> From: Zijun Hu <quic_zijuhu@quicinc.com>
+>>
+>> Remove macro list_for_each_reverse due to below reasons:
+>>
+>> - it is same as list_for_each_prev.
+>> - it is not used by current kernel tree.
+>>
+>> Fixes: 8bf0cdfac7f8 ("<linux/list.h>: Introduce the list_for_each_reverse() method")
+> 
+> Why is this a "Fix:"?
+> 
 
-But isn't shutdown still multithreaded?
-10 threads may have similar shutdown task: remove objects from different
-rcu protected data structures while holding rtnl. Then synchronize RCU
-and release the objects.
-Synchronizing RCU from within the lock will completely serialize all
-threads and postpone shutdown whereas outside the lock multiple
-synchronize_rcu could run in parallel.
+thank you for code review.
+Will remove fix tag for next revision and manually loop author of fixes
+tag commit.
+
+>> Cc: stable@vger.kernel.org
+> 
+
+will remove Cc tag for next revision as well. (^^)
+
+> Why is this for stable?  What does this fix?  Just removing code that no
+> one uses doesn't need to be backported, it's just dead, delete it.
+> 
+> thanks,
+> 
+> greg k-h
+
 
