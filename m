@@ -1,65 +1,44 @@
-Return-Path: <stable+bounces-76542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 436C697AB20
-	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 07:40:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12F1397AB43
+	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 08:05:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C3B7F1F290ED
-	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 05:40:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AFC6B28D4FE
+	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 06:05:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A39194964E;
-	Tue, 17 Sep 2024 05:39:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="ZWVwnN9r"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DF834D599;
+	Tue, 17 Sep 2024 06:05:39 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C90C9446DB;
-	Tue, 17 Sep 2024 05:39:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from IgnazServer.ignaz.org (IgnazServer.ignaz.org [37.252.120.146])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7DC94594D;
+	Tue, 17 Sep 2024 06:05:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=37.252.120.146
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726551574; cv=none; b=iAAee2wVDXap802taTgbuGeRHGQCzb8uD7T+KfR5YPL0gDoWfA3g8/4fJZ5k1CdqCc7+c1Dq4eyHsdPFy7ZR9aNwd2LUHmIQMM4mZ4iotLWpJovWyaqyZF3QyXCQwTa9pAqbpInqTWR4Nj9pGU5j8QIpXGb6ouNhyafvXBZjrHY=
+	t=1726553139; cv=none; b=qwwhALryJS7M3tkACQJa5A2l0B9+lUoywSdyijKw+zZhqjsmHhpcUaWryq+F7/eM3APrnNl7TcqAB2yOW7wcsJqpVEgK3cFHL1Ebt3+L48iGTfQVl9VEtA8bzOFOixupf9DL43xPlTU8Q5tRrunLRhHl31Sq9NYAnEi57WmptEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726551574; c=relaxed/simple;
-	bh=V36Enu6duhfMNTcCMdlRdxzAzxvIq2srIjoMqY92pwg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GxKYiVLCz3PD1/oqMsrGd6GVJzgjcvsVriq4oYQRnXsbzS2GN1JYrr3eqsEGcTHpaGl3nz0EU9KdM26kSl1n7o7pwZ0wv3Up9pZ5VVD7bu55e7i2NMYTTJDP54acjkzP6PpdcPqSplPEodrgrLOJ/V573eMXOrkvbr+7VDtpiAo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=ZWVwnN9r; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from namjain-Virtual-Machine.mshome.net (unknown [167.220.238.141])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 6022320C094F;
-	Mon, 16 Sep 2024 22:39:28 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 6022320C094F
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1726551572;
-	bh=YkNI0FauVOZ3gmotL9s3DC/8W/JDs9sBlb/S/RNZtEs=;
-	h=From:To:Cc:Subject:Date:From;
-	b=ZWVwnN9rcqiGaxS+uLcz2Rg4C5JwsXSLrycybM3X1p8WlUsuqNqCFP2d6fj3jEITT
-	 q9C7Xsp3IdqCOb7EMTTylH4m2QG1MT+LlXC4SfVyx1YRiw/JtV9gg4fAoceDlag4Ga
-	 Ry2x5cQvy2DtuMT5eQktok04mZiUFyHH4eTif3Qo=
-From: Naman Jain <namjain@linux.microsoft.com>
-To: "K . Y . Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Daniel Lezcano <daniel.lezcano@linaro.org>,
-	Michael Kelley <mhklinux@outlook.com>
-Cc: linux-hyperv@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	namjain@linux.microsoft.com,
-	stable@vger.kernel.org
-Subject: [PATCH v3] x86/hyper-v: Fix hv tsc page based sched_clock for hibernation
-Date: Tue, 17 Sep 2024 11:09:17 +0530
-Message-Id: <20240917053917.76787-1-namjain@linux.microsoft.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1726553139; c=relaxed/simple;
+	bh=Rr4Y2ybYGAWjCT9Yn8ZtwWVTKmY/yDpP3URlGCQIb5I=;
+	h=From:To:Cc:Subject:Message-ID:Date:Content-Type:MIME-Version; b=EBpqpWRWAyDN/WwlsoQFf8WKPJwuQx2zSOriBSuGvyJLn5S7LowK0Biub2M2eWJGu5bXY72XbgM5Y2v9Y+QyWjB23t3GC+FwOCegQ8cTomii29qp6ErmNeo2EdBo2EYtafoi4Tnxa+srDuXMfWIc9R8atY/G1AyMFuTLXvIqYg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ignaz.org; spf=pass smtp.mailfrom=ignaz.org; arc=none smtp.client-ip=37.252.120.146
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ignaz.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ignaz.org
+Received: from ignaz.org (localhost.localdomain [127.0.0.1])
+	by IgnazServer.ignaz.org (IgnazServer) with ESMTPSA id 837D33FFBD;
+	Tue, 17 Sep 2024 07:57:30 +0200 (CEST)
+From: Marcel =?utf-8?b?V2Vpw59lbmJhY2g=?= <mweissenbach@ignaz.org>
+To: stable@vger.kernel.org
+Cc: regressions@lists.linux.dev, linux-wireless@vger.kernel.org
+Subject: RTL8852BE wifi no longer working after 6.11 upgrade
+Message-ID: <20240917055730.Horde.pVyI-XF1MRA_zUQ5BDJZ4lC@ignaz.org>
+User-Agent: Horde Application Framework 5
+Date: Tue, 17 Sep 2024 05:57:30 +0000
+Content-Type: text/plain; charset=utf-8
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,187 +47,122 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-read_hv_sched_clock_tsc() assumes that the Hyper-V clock counter is
-bigger than the variable hv_sched_clock_offset, which is cached during
-early boot, but depending on the timing this assumption may be false
-when a hibernated VM starts again (the clock counter starts from 0
-again) and is resuming back (Note: hv_init_tsc_clocksource() is not
-called during hibernation/resume); consequently,
-read_hv_sched_clock_tsc() may return a negative integer (which is
-interpreted as a huge positive integer since the return type is u64)
-and new kernel messages are prefixed with huge timestamps before
-read_hv_sched_clock_tsc() grows big enough (which typically takes
-several seconds).
-
-Fix the issue by saving the Hyper-V clock counter just before the
-suspend, and using it to correct the hv_sched_clock_offset in
-resume. This makes hv tsc page based sched_clock continuous and ensures
-that post resume, it starts from where it left off during suspend.
-Override x86_platform.save_sched_clock_state and
-x86_platform.restore_sched_clock_state routines to correct this as soon
-as possible.
-
-Note: if Invariant TSC is available, the issue doesn't happen because
-1) we don't register read_hv_sched_clock_tsc() for sched clock:
-See commit e5313f1c5404 ("clocksource/drivers/hyper-v: Rework
-clocksource and sched clock setup");
-2) the common x86 code adjusts TSC similarly: see
-__restore_processor_state() ->  tsc_verify_tsc_adjust(true) and
-x86_platform.restore_sched_clock_state().
-
-Cc: stable@vger.kernel.org
-Fixes: 1349401ff1aa ("clocksource/drivers/hyper-v: Suspend/resume Hyper-V clocksource for hibernation")
-Co-developed-by: Dexuan Cui <decui@microsoft.com>
-Signed-off-by: Dexuan Cui <decui@microsoft.com>
-Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
----
-Changes from v2:
-https://lore.kernel.org/all/20240911045632.3757-1-namjain@linux.microsoft.com/
-Addressed Michael's comments:
-* Changed commit msg to include information on making timestamps
-  continuous
-* Changed subject to reflect the new file being changed
-* Changed variable name for saving offset/counters
-* Moved comment on new function introduced from header file to function
-  definition.
-* Removed the equations in comments
-* Rebased to latest linux-next tip
-
-Changes from v1:
-https://lore.kernel.org/all/20240909053923.8512-1-namjain@linux.microsoft.com/
-* Reorganized code as per Michael's comment, and moved the logic to x86
-specific files, to keep hyperv_timer.c arch independent.
-
----
- arch/x86/kernel/cpu/mshyperv.c     | 58 ++++++++++++++++++++++++++++++
- drivers/clocksource/hyperv_timer.c | 14 +++++++-
- include/clocksource/hyperv_timer.h |  2 ++
- 3 files changed, 73 insertions(+), 1 deletion(-)
-
-diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyperv.c
-index ead967479fa6..e8e25d6e64cd 100644
---- a/arch/x86/kernel/cpu/mshyperv.c
-+++ b/arch/x86/kernel/cpu/mshyperv.c
-@@ -224,6 +224,63 @@ static void hv_machine_crash_shutdown(struct pt_regs *regs)
- 	hyperv_cleanup();
- }
- #endif /* CONFIG_CRASH_DUMP */
-+
-+static u64 hv_ref_counter_at_suspend;
-+static void (*old_save_sched_clock_state)(void);
-+static void (*old_restore_sched_clock_state)(void);
-+
-+/*
-+ * Hyper-V clock counter resets during hibernation. Save and restore clock
-+ * offset during suspend/resume, while also considering the time passed
-+ * before suspend. This is to make sure that sched_clock using hv tsc page
-+ * based clocksource, proceeds from where it left off during suspend and
-+ * it shows correct time for the timestamps of kernel messages after resume.
-+ */
-+static void save_hv_clock_tsc_state(void)
-+{
-+	hv_ref_counter_at_suspend = hv_read_reference_counter();
-+}
-+
-+static void restore_hv_clock_tsc_state(void)
-+{
-+	/*
-+	 * Adjust the offsets used by hv tsc clocksource to
-+	 * account for the time spent before hibernation.
-+	 * adjusted value = reference counter (time) at suspend
-+	 *                - reference counter (time) now.
-+	 */
-+	hv_adj_sched_clock_offset(hv_ref_counter_at_suspend - hv_read_reference_counter());
-+}
-+
-+/*
-+ * Functions to override save_sched_clock_state and restore_sched_clock_state
-+ * functions of x86_platform. The Hyper-V clock counter is reset during
-+ * suspend-resume and the offset used to measure time needs to be
-+ * corrected, post resume.
-+ */
-+static void hv_save_sched_clock_state(void)
-+{
-+	old_save_sched_clock_state();
-+	save_hv_clock_tsc_state();
-+}
-+
-+static void hv_restore_sched_clock_state(void)
-+{
-+	restore_hv_clock_tsc_state();
-+	old_restore_sched_clock_state();
-+}
-+
-+static void __init x86_setup_ops_for_tsc_pg_clock(void)
-+{
-+	if (!(ms_hyperv.features & HV_MSR_REFERENCE_TSC_AVAILABLE))
-+		return;
-+
-+	old_save_sched_clock_state = x86_platform.save_sched_clock_state;
-+	x86_platform.save_sched_clock_state = hv_save_sched_clock_state;
-+
-+	old_restore_sched_clock_state = x86_platform.restore_sched_clock_state;
-+	x86_platform.restore_sched_clock_state = hv_restore_sched_clock_state;
-+}
- #endif /* CONFIG_HYPERV */
- 
- static uint32_t  __init ms_hyperv_platform(void)
-@@ -590,6 +647,7 @@ static void __init ms_hyperv_init_platform(void)
- 
- 	/* Register Hyper-V specific clocksource */
- 	hv_init_clocksource();
-+	x86_setup_ops_for_tsc_pg_clock();
- 	hv_vtl_init_platform();
- #endif
- 	/*
-diff --git a/drivers/clocksource/hyperv_timer.c b/drivers/clocksource/hyperv_timer.c
-index 99177835cade..b39dee7b93af 100644
---- a/drivers/clocksource/hyperv_timer.c
-+++ b/drivers/clocksource/hyperv_timer.c
-@@ -27,7 +27,8 @@
- #include <asm/mshyperv.h>
- 
- static struct clock_event_device __percpu *hv_clock_event;
--static u64 hv_sched_clock_offset __ro_after_init;
-+/* Note: offset can hold negative values after hibernation. */
-+static u64 hv_sched_clock_offset __read_mostly;
- 
- /*
-  * If false, we're using the old mechanism for stimer0 interrupts
-@@ -470,6 +471,17 @@ static void resume_hv_clock_tsc(struct clocksource *arg)
- 	hv_set_msr(HV_MSR_REFERENCE_TSC, tsc_msr.as_uint64);
- }
- 
-+/*
-+ * Called during resume from hibernation, from overridden
-+ * x86_platform.restore_sched_clock_state routine. This is to adjust offsets
-+ * used to calculate time for hv tsc page based sched_clock, to account for
-+ * time spent before hibernation.
-+ */
-+void hv_adj_sched_clock_offset(u64 offset)
-+{
-+	hv_sched_clock_offset -= offset;
-+}
-+
- #ifdef HAVE_VDSO_CLOCKMODE_HVCLOCK
- static int hv_cs_enable(struct clocksource *cs)
- {
-diff --git a/include/clocksource/hyperv_timer.h b/include/clocksource/hyperv_timer.h
-index 6cdc873ac907..aa5233b1eba9 100644
---- a/include/clocksource/hyperv_timer.h
-+++ b/include/clocksource/hyperv_timer.h
-@@ -38,6 +38,8 @@ extern void hv_remap_tsc_clocksource(void);
- extern unsigned long hv_get_tsc_pfn(void);
- extern struct ms_hyperv_tsc_page *hv_get_tsc_page(void);
- 
-+extern void hv_adj_sched_clock_offset(u64 offset);
-+
- static __always_inline bool
- hv_read_tsc_page_tsc(const struct ms_hyperv_tsc_page *tsc_pg,
- 		     u64 *cur_tsc, u64 *time)
-
-base-commit: a430d95c5efa2b545d26a094eb5f624e36732af0
--- 
-2.34.1
-
+Hi there,
+ 
+i upgraded my Archlinux testing setup from 6.10.9 to 6.11 and noticed that my wifi is no longer working. Here is the output from the working 6.10.x Kernel
+ 
+04:00.0 Network controller: Realtek Semiconductor Co., Ltd. RTL8852BE PCIe 802.11ax Wireless Network Controller 
+       Subsystem: AzureWave Device 5470 
+       Kernel driver in use: rtw89_8852be 
+       Kernel modules: rtw89_8852be
+ 
+On 6.11, loading the Kernel Module fails.
+ 
+After veryfing it is not an Archlinux issue by manually building the Kernel from kernel.org manually, i can verify, it happens with an vanilla Kernel too.
+ 
+Here are the relevant parts from dmesg
+[...]
+[    4.687462] rtw89_8852be 0000:04:00.0: [ERR]FWDL path ready 
+[    4.687472] rtw89_8852be 0000:04:00.0: [ERR]fwdl 0x1E0 = 0x23 
+[    4.687477] rtw89_8852be 0000:04:00.0: [ERR]fwdl 0x83F0 = 0x70000 
+[    4.687486] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb890ccd9 
+[    4.687501] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb890ccd9 
+[    4.687516] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb8901f3b 
+[    4.687531] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb890ccd9 
+[    4.687546] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb8901f3f 
+[    4.687561] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb890ccd9 
+[    4.687576] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb8901f57 
+[    4.687591] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb890ccd9 
+[    4.687606] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb8901f4f 
+[    4.687621] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb890ccd9 
+[    4.687636] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb890ccdf 
+[    4.687651] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb890ccd9 
+[    4.687666] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb8901f37 
+[    4.687681] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb890ccd9 
+[    4.687696] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb8901f53 
+[    6.376153] rtw89_8852be 0000:04:00.0: [ERR]FWDL path ready 
+[    6.376163] rtw89_8852be 0000:04:00.0: [ERR]fwdl 0x1E0 = 0x23 
+[    6.376168] rtw89_8852be 0000:04:00.0: [ERR]fwdl 0x83F0 = 0x70000 
+[    6.376178] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb8901f4b 
+[    6.376193] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb8901f43 
+[    6.376208] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb8901f4b 
+[    6.376223] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb8901f41 
+[    6.376238] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb8901f3f 
+[    6.376253] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb890ccd9 
+[    6.376268] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb890ccd9 
+[    6.376283] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb8901f57 
+[    6.376298] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb8901f47 
+[    6.376313] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb890ccd9 
+[    6.376327] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb890ccd9 
+[    6.376342] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb890ccdf 
+[    6.376357] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb8901f35 
+[    6.376372] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb890ccd9 
+[    6.376387] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb890ccd9 
+[    7.135332] r8169 0000:05:00.0 enp5s0: Link is Up - 1Gbps/Full - flow control off 
+[    8.097173] rtw89_8852be 0000:04:00.0: [ERR]FWDL path ready 
+[    8.097183] rtw89_8852be 0000:04:00.0: [ERR]fwdl 0x1E0 = 0x23 
+[    8.097188] rtw89_8852be 0000:04:00.0: [ERR]fwdl 0x83F0 = 0x70000 
+[    8.097197] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb8901f53 
+[    8.097212] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb8901f4b 
+[    8.097227] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb890ccd9 
+[    8.097242] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb8901f2f 
+[    8.097257] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb8901f4b 
+[    8.097272] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb890ccd9 
+[    8.097287] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb890ccd9 
+[    8.097302] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb8901f31 
+[    8.097317] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb8901f33 
+[    8.097332] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb8901f33 
+[    8.097347] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb890ccdb 
+[    8.097362] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb8901f33 
+[    8.097377] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb890ccd9 
+[    8.097391] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb890ccd9 
+[    8.097406] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb890ccdb 
+[    9.817051] rtw89_8852be 0000:04:00.0: [ERR]FWDL path ready 
+[    9.817059] rtw89_8852be 0000:04:00.0: [ERR]fwdl 0x1E0 = 0x23 
+[    9.817063] rtw89_8852be 0000:04:00.0: [ERR]fwdl 0x83F0 = 0x70000 
+[    9.817072] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb890ccd9 
+[    9.817087] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb890ccd9 
+[    9.817102] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb890ccdf 
+[    9.817117] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb890ccdf 
+[    9.817133] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb890ccf7 
+[    9.817147] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb8901f3d 
+[    9.817162] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb8901f35 
+[    9.817177] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb890ccd9 
+[    9.817192] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb890ccd9 
+[    9.817207] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb890ccd9 
+[    9.817222] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb8901f55 
+[    9.817237] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb8901f53 
+[    9.817252] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb8901f47 
+[    9.817267] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb8901f47 
+[    9.817282] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb890ccd9 
+[   11.536604] rtw89_8852be 0000:04:00.0: [ERR]FWDL path ready 
+[   11.536615] rtw89_8852be 0000:04:00.0: [ERR]fwdl 0x1E0 = 0x23 
+[   11.536621] rtw89_8852be 0000:04:00.0: [ERR]fwdl 0x83F0 = 0x70000 
+[   11.536632] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb8901f35 
+[   11.536648] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb8901f55 
+[   11.536664] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb890cce1 
+[   11.536680] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb8901f7f 
+[   11.536697] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb890ccd9 
+[   11.536713] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb890cce3 
+[   11.536730] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb8901f31 
+[   11.536746] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb890ccd9 
+[   11.536762] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb8901f4b 
+[   11.536778] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb8901f35 
+[   11.536794] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb8901f47 
+[   11.536809] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb890ccd9 
+[   11.536825] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb8901f47 
+[   11.536842] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb8901f57 
+[   11.536859] rtw89_8852be 0000:04:00.0: [ERR]fw PC = 0xb890ccd9 
+[   11.536874] rtw89_8852be 0000:04:00.0: failed to setup chip information 
+[   11.537455] rtw89_8852be 0000:04:00.0: probe with driver rtw89_8852be failed with error -110
+[...]
+ 
+The whole dmesg can be found here (with an Download button on the top right): https://ignaz.org/nextcloud/index.php/s/gMtZCxS5wjtWSYc
+ 
+ 
+ 
+Best Regards
+Marcel
+ 
+#regzbot introduced: v6.10.9..v6.11
 
