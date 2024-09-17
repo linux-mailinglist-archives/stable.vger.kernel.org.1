@@ -1,108 +1,128 @@
-Return-Path: <stable+bounces-76576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76577-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D25D97AEF5
-	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 12:36:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B8CD97AF00
+	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 12:38:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 34A10280FA1
-	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 10:36:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DB0F1C21484
+	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 10:38:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 374BC166F17;
-	Tue, 17 Sep 2024 10:36:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b="hdnNHGiJ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4611F167D80;
+	Tue, 17 Sep 2024 10:38:13 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from pv50p00im-ztdg10021801.me.com (pv50p00im-ztdg10021801.me.com [17.58.6.56])
+Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C537A1662F4
-	for <stable@vger.kernel.org>; Tue, 17 Sep 2024 10:36:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=17.58.6.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9EF9166F2E;
+	Tue, 17 Sep 2024 10:38:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.154.21.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726569415; cv=none; b=CZi0Qx4y2ZwVgSS+BS/XTyPeAzblY3042BF4nwv8pwBmstS/3p1PL92aIZADKWSPO0hDLINXclWTRPC8mIEJIcV0XlwQ8Ms/HxYP2fYdPpwN5enUA6hPYI3IaQtBmP3ixIFeLqIFXTyYUZ+/GiAM8Z+Pbxz6aB6I6bg2ajSIqZ4=
+	t=1726569493; cv=none; b=QFTTgschIHqWUjSoB/XOnczsT1wHaxHikovBuxmZ6ck/VhfIXecb1rP77yHbdyNF+8ovGpB+eoLit/IdFt4K9s13sDD7HZnXFuvFI14EUPu55fhZsHz6FrD+bdeAfkyD2goBzccJZqE/shKB6W/fqc2BeAoDQLz9F7l9VZVMVgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726569415; c=relaxed/simple;
-	bh=qCfkST9/ft5SsImYPRZVlh+vnAIaaTcFSbz5op8XtxQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JPpoa3Wj/pnqAMP4rX5fjmu7VXlCbdnou4kIYns8LEd/qKEYTUoy7MpzF2mUZcKL6U9LDl5Ikr8oh1AHFBvXPYDfyNhNhDTCP9G0YrdaUIDh3Xs5u7KlgVUoSDlrUJvPcw7Ec9a4stn6AqK9NjIuHk3I/ObsKMZ2j8tgwXh/XWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com; spf=pass smtp.mailfrom=icloud.com; dkim=pass (2048-bit key) header.d=icloud.com header.i=@icloud.com header.b=hdnNHGiJ; arc=none smtp.client-ip=17.58.6.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=icloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=icloud.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=icloud.com;
-	s=1a1hai; t=1726569413;
-	bh=gfI6XH1BgBt2Bw02rFX0q5DP7pqI5n4xQBeIPuY+IQs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	b=hdnNHGiJRHBGI+2lhD9EyyXJb6sX5vHhy0/8JN0wmBD+h4o5Eq3nIts2P4uYMG5ZY
-	 5I7W7AAroNv3pti3yZg4iDb+eReA+l6lk9J3PxwaM6x0emYaj98lIYqE/9pFYSCCAw
-	 /ZSBAE3U7Da3p380d0bOC5URYd9GDsh578myO1Ux8uiur30RZ+f/HnebQSZfhU2BwT
-	 17ItAl3AigXHJfF7ZfF9LwAmt7nmfyE9GEVjQbii7yBbRLA8JkR+nMkFknkXTsaLN1
-	 lVdpYT/jikWmyNg0u7v2OQqHAa1VdXntOe3w/mHsr9W4co8rXDrsFXcL+lSran7qMC
-	 K3dELRJwMHvFA==
-Received: from [192.168.1.26] (pv50p00im-dlb-asmtp-mailmevip.me.com [17.56.9.10])
-	by pv50p00im-ztdg10021801.me.com (Postfix) with ESMTPSA id 2B254201049B;
-	Tue, 17 Sep 2024 10:36:48 +0000 (UTC)
-Message-ID: <7478478c-14e0-4760-b018-6bcf282db1b9@icloud.com>
-Date: Tue, 17 Sep 2024 18:36:43 +0800
+	s=arc-20240116; t=1726569493; c=relaxed/simple;
+	bh=qUyC053BFLbdvh1TwSeAnDW+JocofleEoV+3f6rWh/Q=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=Ljuohh6yL4HSCGfaAG6CR/6fjo7RGzjbbEhA4XZAj/I4wO+k/cdri/w5cHhMniJuaZngJg9aK9s4adNqNNd/eNofl4V1S597eDkp24dPMVtK3DKzkZWnSiwKbc+2hEjwRSN5gcH/vAqoXF+JnrIDUzXHETfZ5QXfbntTo3F2kbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru; spf=pass smtp.mailfrom=omp.ru; arc=none smtp.client-ip=90.154.21.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=omp.ru
+Received: from msexch01.omp.ru (10.188.4.12) by msexch02.omp.ru (10.188.4.13)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Tue, 17 Sep
+ 2024 13:38:06 +0300
+Received: from msexch01.omp.ru ([fe80::485b:1c4a:fb7f:c753]) by
+ msexch01.omp.ru ([fe80::485b:1c4a:fb7f:c753%5]) with mapi id 15.02.1258.012;
+ Tue, 17 Sep 2024 13:38:06 +0300
+From: Roman Smirnov <r.smirnov@omp.ru>
+To: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
+CC: Karina Yankevich <k.yankevich@omp.ru>, "rafael@kernel.org"
+	<rafael@kernel.org>, "broonie@kernel.org" <broonie@kernel.org>, "Sergey
+ Shtylyov" <s.shtylyov@omp.ru>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "lvc-project@linuxtesting.org"
+	<lvc-project@linuxtesting.org>, Sergey Yudin <s.yudin@omp.ru>,
+	"mathias.nyman@linux.intel.com" <mathias.nyman@linux.intel.com>
+Subject: Re: [PATCH 5.10] xhci: check virt_dev is valid before dereferencing
+ it
+Thread-Topic: [PATCH 5.10] xhci: check virt_dev is valid before dereferencing
+ it
+Thread-Index: AQHbCOln/SYt17slkkiGE+zcRk3mnbJblz2A
+Date: Tue, 17 Sep 2024 10:38:06 +0000
+Message-ID: <204adc683e0e71f227ba3f0c6126a80d9b281768.camel@omp.ru>
+References: <20240917100703.80166-1-r.smirnov@omp.ru>
+In-Reply-To: <20240917100703.80166-1-r.smirnov@omp.ru>
+Accept-Language: ru-RU, en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-kse-serverinfo: msexch02.omp.ru, 9
+x-kse-antivirus-interceptor-info: scan successful
+x-kse-antivirus-info: Clean, bases: 9/17/2024 9:17:00 AM
+x-kse-attachment-filter-triggered-rules: Clean
+x-kse-attachment-filter-triggered-filters: Clean
+x-kse-bulkmessagesfiltering-scan-result: InTheLimit
+Content-Type: text/plain; charset="utf-8"
+Content-ID: <A87ECA70B94A99428A66719B7ECD3694@omp.ru>
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] list: Remove duplicated and unused macro
- list_for_each_reverse
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Ingo Molnar <mingo@kernel.org>, linux-kernel@vger.kernel.org,
- Zijun Hu <quic_zijuhu@quicinc.com>, stable@vger.kernel.org
-References: <20240917-fix_list-v1-1-8fb8beb41e5d@quicinc.com>
- <2024091752-passivism-donut-ccca@gregkh>
-Content-Language: en-US
-From: Zijun Hu <zijun_hu@icloud.com>
-In-Reply-To: <2024091752-passivism-donut-ccca@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: Q0VPYEKiAdwPevmrLx0_59b1hg7mo5q_
-X-Proofpoint-ORIG-GUID: Q0VPYEKiAdwPevmrLx0_59b1hg7mo5q_
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.272,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-17_02,2024-09-16_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=815 suspectscore=0
- adultscore=0 phishscore=0 spamscore=0 mlxscore=0 malwarescore=0
- clxscore=1015 bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2308100000 definitions=main-2409170076
 
-On 2024/9/17 15:49, Greg Kroah-Hartman wrote:
-> On Tue, Sep 17, 2024 at 03:28:18PM +0800, Zijun Hu wrote:
->> From: Zijun Hu <quic_zijuhu@quicinc.com>
->>
->> Remove macro list_for_each_reverse due to below reasons:
->>
->> - it is same as list_for_each_prev.
->> - it is not used by current kernel tree.
->>
->> Fixes: 8bf0cdfac7f8 ("<linux/list.h>: Introduce the list_for_each_reverse() method")
-> 
-> Why is this a "Fix:"?
-> 
-
-thank you for code review.
-Will remove fix tag for next revision and manually loop author of fixes
-tag commit.
-
->> Cc: stable@vger.kernel.org
-> 
-
-will remove Cc tag for next revision as well. (^^)
-
-> Why is this for stable?  What does this fix?  Just removing code that no
-> one uses doesn't need to be backported, it's just dead, delete it.
-> 
-> thanks,
-> 
-> greg k-h
-
+T24gVHVlLCAyMDI0LTA5LTE3IGF0IDEzOjA3ICswMzAwLCBSb21hbiBTbWlybm92IHdyb3RlOgo+
+IEZyb206IE1hdGhpYXMgTnltYW4gPG1hdGhpYXMubnltYW5AbGludXguaW50ZWwuY29tPgo+IAo+
+IGNvbW1pdCAwM2VkNTc5ZDlkNTFhYTAxODgzMGIwZGUzZThiNDYzZmFmNmI4N2RiIHVwc3RyZWFt
+Lgo+IAo+IENoZWNrIHRoYXQgdGhlIHhoY2lfdmlydF9kZXYgc3RydWN0dXJlIHRoYXQgd2UgZHVn
+IG91dCBiYXNlZAo+IG9uIGEgc2xvdF9pZCB2YWx1ZSBmcm9tIGEgY29tbWFuZCBjb21wbGV0aW9u
+IGlzIHZhbGlkIGJlZm9yZQo+IGRlcmVmZXJlbmNpbmcgaXQuCj4gCj4gU2lnbmVkLW9mZi1ieTog
+TWF0aGlhcyBOeW1hbiA8bWF0aGlhcy5ueW1hbkBsaW51eC5pbnRlbC5jb20+Cj4gTGluazogaHR0
+cHM6Ly9sb3JlLmtlcm5lbC5vcmcvci8yMDIxMDEyOTEzMDA0NC4yMDY4NTUtNy1tYXRoaWFzLm55
+bWFuQGxpbnV4LmludGVsLmNvbQo+IFNpZ25lZC1vZmYtYnk6IEdyZWcgS3JvYWgtSGFydG1hbiA8
+Z3JlZ2toQGxpbnV4Zm91bmRhdGlvbi5vcmc+Cj4gU2lnbmVkLW9mZi1ieTogUm9tYW4gU21pcm5v
+diA8ci5zbWlybm92QG9tcC5ydT4KPiAtLS0KPiDCoGRyaXZlcnMvdXNiL2hvc3QveGhjaS1yaW5n
+LmMgfCAxMiArKysrKysrKystLS0KPiDCoDEgZmlsZSBjaGFuZ2VkLCA5IGluc2VydGlvbnMoKyks
+IDMgZGVsZXRpb25zKC0pCj4gCj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvdXNiL2hvc3QveGhjaS1y
+aW5nLmMgYi9kcml2ZXJzL3VzYi9ob3N0L3hoY2ktcmluZy5jCj4gaW5kZXggZmJiN2E1YjUxZWY0
+Li5hNzY5ODAzZTdkMzggMTAwNjQ0Cj4gLS0tIGEvZHJpdmVycy91c2IvaG9zdC94aGNpLXJpbmcu
+Ywo+ICsrKyBiL2RyaXZlcnMvdXNiL2hvc3QveGhjaS1yaW5nLmMKPiBAQCAtMTQxNSw2ICsxNDE1
+LDggQEAgc3RhdGljIHZvaWQgeGhjaV9oYW5kbGVfY21kX2NvbmZpZ19lcChzdHJ1Y3QgeGhjaV9o
+Y2QgKnhoY2ksIGludCBzbG90X2lkLAo+IMKgwqDCoMKgwqDCoMKgwqAgKiBpcyBub3Qgd2FpdGlu
+ZyBvbiB0aGUgY29uZmlndXJlIGVuZHBvaW50IGNvbW1hbmQuCj4gwqDCoMKgwqDCoMKgwqDCoCAq
+Lwo+IMKgwqDCoMKgwqDCoMKgwqB2aXJ0X2RldiA9IHhoY2ktPmRldnNbc2xvdF9pZF07Cj4gK8Kg
+wqDCoMKgwqDCoMKgaWYgKCF2aXJ0X2RldikKPiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgcmV0dXJuOwo+IMKgwqDCoMKgwqDCoMKgwqBjdHJsX2N0eCA9IHhoY2lfZ2V0X2lucHV0X2Nv
+bnRyb2xfY3R4KHZpcnRfZGV2LT5pbl9jdHgpOwo+IMKgwqDCoMKgwqDCoMKgwqBpZiAoIWN0cmxf
+Y3R4KSB7Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqB4aGNpX3dhcm4oeGhjaSwg
+IkNvdWxkIG5vdCBnZXQgaW5wdXQgY29udGV4dCwgYmFkIHR5cGUuXG4iKTsKPiBAQCAtMTQ1OSw2
+ICsxNDYxLDggQEAgc3RhdGljIHZvaWQgeGhjaV9oYW5kbGVfY21kX2FkZHJfZGV2KHN0cnVjdCB4
+aGNpX2hjZCAqeGhjaSwgaW50IHNsb3RfaWQpCj4gwqDCoMKgwqDCoMKgwqDCoHN0cnVjdCB4aGNp
+X3Nsb3RfY3R4ICpzbG90X2N0eDsKPiDCoAo+IMKgwqDCoMKgwqDCoMKgwqB2ZGV2ID0geGhjaS0+
+ZGV2c1tzbG90X2lkXTsKPiArwqDCoMKgwqDCoMKgwqBpZiAoIXZkZXYpCj4gK8KgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoHJldHVybjsKPiDCoMKgwqDCoMKgwqDCoMKgc2xvdF9jdHggPSB4
+aGNpX2dldF9zbG90X2N0eCh4aGNpLCB2ZGV2LT5vdXRfY3R4KTsKPiDCoMKgwqDCoMKgwqDCoMKg
+dHJhY2VfeGhjaV9oYW5kbGVfY21kX2FkZHJfZGV2KHNsb3RfY3R4KTsKPiDCoH0KPiBAQCAtMTQ3
+MCwxMyArMTQ3NCwxNSBAQCBzdGF0aWMgdm9pZCB4aGNpX2hhbmRsZV9jbWRfcmVzZXRfZGV2KHN0
+cnVjdCB4aGNpX2hjZCAqeGhjaSwgaW50IHNsb3RfaWQsCj4gwqDCoMKgwqDCoMKgwqDCoHN0cnVj
+dCB4aGNpX3Nsb3RfY3R4ICpzbG90X2N0eDsKPiDCoAo+IMKgwqDCoMKgwqDCoMKgwqB2ZGV2ID0g
+eGhjaS0+ZGV2c1tzbG90X2lkXTsKPiArwqDCoMKgwqDCoMKgwqBpZiAoIXZkZXYpIHsKPiArwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgeGhjaV93YXJuKHhoY2ksICJSZXNldCBkZXZpY2Ug
+Y29tbWFuZCBjb21wbGV0aW9uIGZvciBkaXNhYmxlZCBzbG90ICV1XG4iLAo+ICvCoMKgwqDCoMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqAgc2xvdF9pZCk7Cj4gK8KgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHJldHVybjsKPiArwqDCoMKgwqDCoMKgwqB9Cj4gwqDC
+oMKgwqDCoMKgwqDCoHNsb3RfY3R4ID0geGhjaV9nZXRfc2xvdF9jdHgoeGhjaSwgdmRldi0+b3V0
+X2N0eCk7Cj4gwqDCoMKgwqDCoMKgwqDCoHRyYWNlX3hoY2lfaGFuZGxlX2NtZF9yZXNldF9kZXYo
+c2xvdF9jdHgpOwo+IMKgCj4gwqDCoMKgwqDCoMKgwqDCoHhoY2lfZGJnKHhoY2ksICJDb21wbGV0
+ZWQgcmVzZXQgZGV2aWNlIGNvbW1hbmQuXG4iKTsKPiAtwqDCoMKgwqDCoMKgwqBpZiAoIXhoY2kt
+PmRldnNbc2xvdF9pZF0pCj4gLcKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoHhoY2lfd2Fy
+bih4aGNpLCAiUmVzZXQgZGV2aWNlIGNvbW1hbmQgY29tcGxldGlvbiAiCj4gLcKgwqDCoMKgwqDC
+oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgImZvciBk
+aXNhYmxlZCBzbG90ICV1XG4iLCBzbG90X2lkKTsKPiDCoH0KPiDCoAo+IMKgc3RhdGljIHZvaWQg
+eGhjaV9oYW5kbGVfY21kX25lY19nZXRfZncoc3RydWN0IHhoY2lfaGNkICp4aGNpLAoKU29ycnks
+IEkgYWNjaWRlbnRhbGx5IHNlbnQgYSBjb3B5IHRvIHRoZSB3cm9uZyBwbGFjZS4gSSd2ZSByZXNl
+bnQgdGhlIHBhdGNoLgo=
 
