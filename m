@@ -1,179 +1,131 @@
-Return-Path: <stable+bounces-76571-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76572-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D952C97AE92
-	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 12:16:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DD9997AE9C
+	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 12:18:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9A8B128199E
-	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 10:16:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B7A5B1F234E8
+	for <lists+stable@lfdr.de>; Tue, 17 Sep 2024 10:18:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8008115D5B8;
-	Tue, 17 Sep 2024 10:16:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="gQOcBs7I"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B717B1684BE;
+	Tue, 17 Sep 2024 10:18:35 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D9649443
-	for <stable@vger.kernel.org>; Tue, 17 Sep 2024 10:16:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1122313E41D;
+	Tue, 17 Sep 2024 10:18:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.154.21.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726568193; cv=none; b=CjghCb4qM3JoV2SwAopXFJYey/BFCmz7nk0IbippFSwoTYgQYFoXSvLlW+scbUZ5lb3FduwgGcv4FmSNeWJYMwgR71ojNW6bMCq0pwAWmLsqZxQtl9gJ5sJLSoA7oCSdwizdFUezdZGeFqms2heolYmFYPyDlAk76ahFJwclrJw=
+	t=1726568315; cv=none; b=RtrTqwmo9d4UQ3pJlYTS9ufFglBXwDaxT2/3fj6KW9NLOK4rIchr1TzrAxvpDYfQlk02BkKdYO97SyjLroq85BXw/RWg4b1sT+NbSIdxKiONaanOg0pLSV4J56yQiezKx2nAqcxxUHJh6XEnUV0Ntjaoue7WEeQg018MoKwMa1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726568193; c=relaxed/simple;
-	bh=7uTw2Xdc4FdW8Wguya1dEDJdgUqDCcIuNIjLGieyNvo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VgfiRlJvd00XbUU+lHKBGQwpQJLNoYF/sVAczH72XJ0SB+da8/nGsjQauOl6D9/AqI2wUezMrZ56gQRBaajIfppDqwfUVOCjpXp2Y+aq8OV3BNUccPTLOwprXWy9S1vkIhyXLMjgFO7kPu4aX4fOfvkQkynQDDrvG+//Zuxhz6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=gQOcBs7I; arc=none smtp.client-ip=209.85.208.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2f77be8ffecso59877831fa.1
-        for <stable@vger.kernel.org>; Tue, 17 Sep 2024 03:16:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1726568190; x=1727172990; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=2RIH+rGbvMwZNuIYE1wkPZCJpfjU4C5REBdV9ppb+nc=;
-        b=gQOcBs7ISRRRcF8NQRrUWN5KXEX7yQxB0ujlmAhsw6KN40QhGIz4/PZf9gKP/BMFZ1
-         Y8oXu1XbhFKLa+GsZU1qRVcaVRDP4P6N94MkLbEk9NEySAOQ+3E2jHFCBYXfUfaJleMG
-         VSMdI+GLHf8AKpW6Ll0Jpp/gnLkVi1OCsxxRcR/8NcbYHCqEvCBjT3vZCBE278EHfDhq
-         KZBlrsSPmhLW2SODeYO9BFXQXyOaGVtyqEVA+i5ytj/yXjv5HoaPGBmrX5T9vMUgn5ka
-         8PpWphUYOlYEYTdKjarFWDUMPNQ19/sdAR2GKEIlAhv2sklCGxYExms/srHXVyj8dy4F
-         i4FQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726568190; x=1727172990;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2RIH+rGbvMwZNuIYE1wkPZCJpfjU4C5REBdV9ppb+nc=;
-        b=jonuVTHVCyc3B0nUp1hzMosMyJcVQFMXcIpeqVCdd4UU3r9z9ooUuV97wVODyqRAPx
-         YC4/HB6iV/sHzysTARk3+QdVExQfuOesV099fPy9c4fmb0CJbProZQZaPstOV25GFGAA
-         0y2YuMOutMNyeScXHGy+qPFoJHBc8VDCg+cPJf6sfvk7p1EfiPCRup+fHSniCnuA4zns
-         EPenC+rpBAu4exl3uILSyHTlgjhQlAzKOlyTTNB59gY7APvw29GBmm9jCRGB4608Qywt
-         98DupqcVCecl+xvGwld7SSKf6InRStr693G8n34/4X+NSBoYlBrZk59EU1RDa5Zn6+35
-         2ocg==
-X-Gm-Message-State: AOJu0YycSenUlLcOcI4LwlGoYa/D7byN8MJcM4L7OS/+k/qE1Fk7xUI/
-	n7nL29ranziCvnOTRaVezn2o8mwExeJU5KQM+YmQYBMx4W4YSbNkYDxhGFsvJizs9rWXL8L1KyI
-	kys8AHjfLGWudqVHtnkC1H3VKfpbs21/tDiaRoA==
-X-Google-Smtp-Source: AGHT+IEwjK+qN1NAncZoepbBFqxMMHpAHTJm2GY7gFtHq4zje3zC3w3ucZADOfEc9PbgoFaEb/FwjyKKPawCwz/1quM=
-X-Received: by 2002:a2e:be83:0:b0:2f7:503e:ed43 with SMTP id
- 38308e7fff4ca-2f787edf4a8mr102581301fa.26.1726568189502; Tue, 17 Sep 2024
- 03:16:29 -0700 (PDT)
+	s=arc-20240116; t=1726568315; c=relaxed/simple;
+	bh=T2HlKWKOFHe+AjBsWvXEFtdaYNxiWWSa/XFLmo1uKoU=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=IH2kbDggj0H5mI8hbHcB+92yUP0CvCUEFpKej+PGAmCGsi+9oKglYREW2sU7gzydhhHgowKqzho7KzzMhc+XCO1qvnzFLEHkSxQXqtMARo+4k0sUKLc7gwEXV6P21ERnlSsmuA7cFoa/xKW8wVM+pfNpnR0potldyf2eytRl/qY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru; spf=pass smtp.mailfrom=omp.ru; arc=none smtp.client-ip=90.154.21.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=omp.ru
+Received: from inp1wst083.omp.ru (81.22.207.138) by msexch01.omp.ru
+ (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Tue, 17 Sep
+ 2024 13:18:22 +0300
+From: Roman Smirnov <r.smirnov@omp.ru>
+To: <stable@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>
+CC: Roman Smirnov <r.smirnov@omp.ru>, Mark Brown <broonie@kernel.org>, "Rafael
+ J. Wysocki" <rafael@kernel.org>, <linux-kernel@vger.kernel.org>, Karina
+ Yankevich <k.yankevich@omp.ru>, Sergey Yudin <s.yudin@omp.ru>,
+	<lvc-project@linuxtesting.org>, Schspa Shi <schspa@gmail.com>
+Subject: [PATCH 5.10] regmap: cache: Add extra parameter check in regcache_init
+Date: Tue, 17 Sep 2024 13:17:57 +0300
+Message-ID: <20240917101757.83398-1-r.smirnov@omp.ru>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240916114228.914815055@linuxfoundation.org>
-In-Reply-To: <20240916114228.914815055@linuxfoundation.org>
-From: Naresh Kamboju <naresh.kamboju@linaro.org>
-Date: Tue, 17 Sep 2024 15:46:15 +0530
-Message-ID: <CA+G9fYvw7WaDjKp+v_snxnhgEzUDD1xZ9udJpqQcgAoQZXK5Vw@mail.gmail.com>
-Subject: Re: [PATCH 6.10 000/121] 6.10.11-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
-	broonie@kernel.org, Alexander Gordeev <agordeev@linux.ibm.com>, 
-	Anders Roxell <anders.roxell@linaro.org>, 
-	Christian Borntraeger <borntraeger@linux.ibm.com>, Vasily Gorbik <gor@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
+ (10.188.4.12)
+X-KSE-ServerInfo: msexch01.omp.ru, 9
+X-KSE-AntiSpam-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 6.1.1, Database issued on: 09/17/2024 10:02:15
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 19
+X-KSE-AntiSpam-Info: Lua profiles 187794 [Sep 17 2024]
+X-KSE-AntiSpam-Info: Version: 6.1.1.5
+X-KSE-AntiSpam-Info: Envelope from: r.smirnov@omp.ru
+X-KSE-AntiSpam-Info: LuaCore: 34 0.3.34
+ 8a1fac695d5606478feba790382a59668a4f0039
+X-KSE-AntiSpam-Info: {rep_avail}
+X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: {SMTP from is not routable}
+X-KSE-AntiSpam-Info: {Found in DNSBL: 81.22.207.138 in (user)
+ b.barracudacentral.org}
+X-KSE-AntiSpam-Info:
+	lore.kernel.org:7.1.1;127.0.0.199:7.1.2;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;inp1wst083.omp.ru:7.1.1;omp.ru:7.1.1;81.22.207.138:7.1.2
+X-KSE-AntiSpam-Info: FromAlignment: s
+X-KSE-AntiSpam-Info: ApMailHostAddress: 81.22.207.138
+X-KSE-AntiSpam-Info: {DNS response errors}
+X-KSE-AntiSpam-Info: Rate: 19
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
+ smtp.mailfrom=omp.ru;dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 09/17/2024 10:05:00
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: Clean, bases: 9/17/2024 9:17:00 AM
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
 
-On Mon, 16 Sept 2024 at 17:32, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.10.11 release.
-> There are 121 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 18 Sep 2024 11:42:05 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.10.11-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.10.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+From: Schspa Shi <schspa@gmail.com>
 
+commit a5201d42e2f8a8e8062103170027840ee372742f upstream.
 
-The s390 builds failed on the Linux stable-rc linux-6.10.y and linux-6.6.y due
-to following build warnings / errors with gcc-13 and clang-19 with defconfig.
+When num_reg_defaults > 0 but reg_defaults is NULL, there will be a
+NULL pointer exception.
 
-* s390, build
-  - clang-19-allnoconfig
-  - clang-19-defconfig
-  - clang-19-tinyconfig
-  - clang-nightly-allnoconfig
-  - clang-nightly-defconfig
-  - clang-nightly-tinyconfig
-  - gcc-13-allmodconfig
-  - gcc-13-allnoconfig
-  - gcc-13-defconfig
-  - gcc-13-tinyconfig
-  - gcc-8-allnoconfig
-  - gcc-8-defconfig-fe40093d
-  - gcc-8-tinyconfig
+Current code has no such usage, but as additional hardening, also
+check this to prevent any chance of crashing.
 
+Signed-off-by: Schspa Shi <schspa@gmail.com>
+Link: https://lore.kernel.org/r/20220629130951.63040-1-schspa@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Roman Smirnov <r.smirnov@omp.ru>
+---
+ drivers/base/regmap/regcache.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-First seen on v6.10.10-122-ge9fde6b546b5
-  Good: v6.10.10
-  BAD:  v6.10.10-122-ge9fde6b546b5
+diff --git a/drivers/base/regmap/regcache.c b/drivers/base/regmap/regcache.c
+index 7fdd702e564a..5ff79ba665ad 100644
+--- a/drivers/base/regmap/regcache.c
++++ b/drivers/base/regmap/regcache.c
+@@ -133,6 +133,12 @@ int regcache_init(struct regmap *map, const struct regmap_config *config)
+ 		return -EINVAL;
+ 	}
+ 
++	if (config->num_reg_defaults && !config->reg_defaults) {
++		dev_err(map->dev,
++			"Register defaults number are set without the reg!\n");
++		return -EINVAL;
++	}
++
+ 	for (i = 0; i < config->num_reg_defaults; i++)
+ 		if (config->reg_defaults[i].reg % map->reg_stride)
+ 			return -EINVAL;
+-- 
+2.34.1
 
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-build log:
---------
-arch/s390/kernel/setup.c: In function 'reserve_lowcore':
-arch/s390/kernel/setup.c:741:31: error: implicit declaration of
-function 'get_lowcore'; did you mean 'setup_lowcore'?
-[-Werror=implicit-function-declaration]
-  741 |         void *lowcore_start = get_lowcore();
-      |                               ^~~~~~~~~~~
-      |                               setup_lowcore
-arch/s390/kernel/setup.c:741:31: warning: initialization of 'void *'
-from 'int' makes pointer from integer without a cast
-[-Wint-conversion]
-cc1: some warnings being treated as errors
-
-Build Log links,
---------
- - https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.10.y/build/v6.10.10-122-ge9fde6b546b5/testrun/25149541/suite/build/test/gcc-13-defconfig/log
- - https://storage.tuxsuite.com/public/linaro/lkft/builds/2m9VsokpNpc89Dqg5cG7ddRusdA/
-
-Build failed comparison:
- - https://qa-reports.linaro.org/lkft/linux-next-master/build/next-20240909/testrun/25079447/suite/build/test/gcc-13-lkftconfig-kunit/history/
-
-metadata:
-----
-  git describe: v6.10.10-122-ge9fde6b546b5
-  git repo: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-  git sha: e9fde6b546b56159c192819586894f0e5b8ff6f3
-  kernel config:
-https://storage.tuxsuite.com/public/linaro/lkft/builds/2m9VsokpNpc89Dqg5cG7ddRusdA/config
-  build url: https://storage.tuxsuite.com/public/linaro/lkft/builds/2m9VsokpNpc89Dqg5cG7ddRusdA/
-  toolchain: gcc-13, gcc-8 and clang-19
-  config: defconfig, tinyconfig and allnoconfig
-  arch: s390
-
-Steps to reproduce:
----------
- - # tuxmake --runtime podman --target-arch s390 --toolchain gcc-13
---kconfig defconfig
-
---
-Linaro LKFT
-https://lkft.linaro.org
 
