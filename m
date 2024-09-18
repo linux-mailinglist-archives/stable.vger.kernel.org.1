@@ -1,168 +1,123 @@
-Return-Path: <stable+bounces-76717-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B6F897C09F
-	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 21:49:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC8F097C0CB
+	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 22:36:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42368283160
-	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 19:49:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 67FE5B21BA2
+	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 20:36:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7033C1CA684;
-	Wed, 18 Sep 2024 19:49:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C51E81CB323;
+	Wed, 18 Sep 2024 20:36:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ke3PSDuu"
 X-Original-To: stable@vger.kernel.org
-Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282BA1C68AB;
-	Wed, 18 Sep 2024 19:49:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.154.21.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F18417E019;
+	Wed, 18 Sep 2024 20:36:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726688958; cv=none; b=AeoZ1gzEZ1QMNleJFY5JPP17fyOAIkg7qywBxxOj5z7sINgtEeIIcNPsMxeiAFcgw1EZdl/ZcLsPD95ljw43ZZ8n366c9rPqKaVpJyY2hX/2J7QdEylZ2OzhWyddfWH48tbnxJog2Tr/XfwwqpqDvagfEPPLfP/e4ssBMjOi77g=
+	t=1726691774; cv=none; b=h7+OApRggVvEnd4tWXhiuWKkYLm/OS13RukDChk0atT+E/u1P6Db8tXzjBIiWmcVhPi/Xu2QXIKP1ciiZ4wqojkvtuNgnMQR/gl1iThdpnRNJfbB0LFqGadaYd+bTz3vz2CV2M+Gy3ssB+PYocyxKTe5XYE25I75jvtscCWdrKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726688958; c=relaxed/simple;
-	bh=WExMYyNGt9y9Ex94lL0h//oJecQB+e8gT88UZyGJPe8=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:CC:Content-Type; b=eaEA3zfi4r6hZIW6hP5ffs3GVDH5AVy+CMmAZi6uZo/J/l7J0ekw+9SD3C6U9OqziLUobvGAa+ifXkyXr3MJKvbUSzUnYPyt48jVWA02M0GuPoa3fP9R75NE+5Y2IhXd4YlLQm+sO3JLj93qgKEFfKG3ord8LFow5WoGQALPQgo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru; spf=pass smtp.mailfrom=omp.ru; arc=none smtp.client-ip=90.154.21.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=omp.ru
-Received: from [192.168.1.109] (31.173.87.200) by msexch01.omp.ru
- (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Wed, 18 Sep
- 2024 22:49:10 +0300
-Message-ID: <62f7666d-0a66-9ba5-61fd-a998e4169867@omp.ru>
-Date: Wed, 18 Sep 2024 22:49:09 +0300
+	s=arc-20240116; t=1726691774; c=relaxed/simple;
+	bh=TvUdzspAQaz6C2R6RF1Y+KyYSdkWOqy1X74m1OujPCc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=HroGzt9U9njuCK8l6WGBBvHS2AekWYWzulWjd2RIROkrDxLYZONABow88NUDEGz+xULFFoo/S/phAoqmAh53eCxvAHsoQWD4wrURGssir4gkQkUdTLdGwmxh4WeYKoME9Z42VZJ09qNccyyFJYAHWWBbxPh5Xl70zZfI6HSPQZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ke3PSDuu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69264C4CED3;
+	Wed, 18 Sep 2024 20:36:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1726691774;
+	bh=TvUdzspAQaz6C2R6RF1Y+KyYSdkWOqy1X74m1OujPCc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Ke3PSDuuEou00Gz7bk61dWlz2sdBuQ91//vPiDUnCPZBxXvJvEnt8UEbpqVQFm/oq
+	 myDwGR4KQvigZZ0X033+OjxVJfWjg/zc4RlaA7sFLCXPek2Rz0/FWRKcVxc7upSQvI
+	 FrDTZ3FPFEDdCmnhybKbCVoaa4DczT0Xh72SJf3Pnb3tqrVYdam3aI0Nm17s+vG//v
+	 dUiuaJUXqsDkwtGcWihP88O9QIqMqYwhXr91YdAMZRkDA2uY/D/XcFrMjRkQOVaGFr
+	 fWk8bmoOcB8RY6TBmpsO0/b5dPPRZMjwXUsneLkLSrLHN39siMZVekowNW7AMMY42E
+	 0ZfdDWFlIgZTQ==
+From: Jarkko Sakkinen <jarkko@kernel.org>
+To: linux-integrity@vger.kernel.org
+Cc: James.Bottomley@HansenPartnership.com,
+	roberto.sassu@huawei.com,
+	mapengyu@gmail.com,
+	Jarkko Sakkinen <jarkko@kernel.org>,
+	stable@vger.kernel.org,
+	Mimi Zohar <zohar@linux.ibm.com>,
+	David Howells <dhowells@redhat.com>,
+	Paul Moore <paul@paul-moore.com>,
+	James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	keyrings@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v4 1/5] tpm: Return on tpm2_create_null_primary() failure
+Date: Wed, 18 Sep 2024 23:35:45 +0300
+Message-ID: <20240918203559.192605-2-jarkko@kernel.org>
+X-Mailer: git-send-email 2.46.0
+In-Reply-To: <20240918203559.192605-1-jarkko@kernel.org>
+References: <20240918203559.192605-1-jarkko@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
- Thunderbird/91.9.0
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
-Subject: [PATCH 5.10.y] udf: Fold udf_getblk() into udf_bread()
-To: Jan Kara <jack@suse.cz>, <linux-kernel@vger.kernel.org>,
-	<stable@vger.kernel.org>
-CC: <lvc-project@linuxtesting.org>
-Content-Language: en-US
-Organization: Open Mobile Platform
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
- (10.188.4.12)
-X-KSE-ServerInfo: msexch01.omp.ru, 9
-X-KSE-AntiSpam-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 6.1.1, Database issued on: 09/18/2024 19:34:26
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 0
-X-KSE-AntiSpam-Info: Lua profiles 187837 [Sep 18 2024]
-X-KSE-AntiSpam-Info: Version: 6.1.1.5
-X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
-X-KSE-AntiSpam-Info: LuaCore: 34 0.3.34
- 8a1fac695d5606478feba790382a59668a4f0039
-X-KSE-AntiSpam-Info: {rep_avail}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info:
-	omp.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2
-X-KSE-AntiSpam-Info: FromAlignment: s
-X-KSE-AntiSpam-Info: ApMailHostAddress: 31.173.87.200
-X-KSE-AntiSpam-Info: Rate: 0
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
- smtp.mailfrom=omp.ru;dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 09/18/2024 19:37:00
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 9/18/2024 4:23:00 PM
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
+Content-Transfer-Encoding: 8bit
 
-From: Jan Kara <jack@suse.cz>
+tpm2_sessions_init() does not ignores the result of saving the null key.
+Address this by printing either TPM or POSIX error code, and returning
+-ENODEV back to the caller.
 
-udf_getblk() has a single call site. Fold it there.
-
-[Sergey: moved back to using udf_get_block() and buffer_{mapped|new}().]
-
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-
+Cc: stable@vger.kernel.org # v6.10+
+Fixes: d2add27cf2b8 ("tpm: Add NULL primary creation")
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 ---
-This patch prevents NULL pointer dereference in case sb_getblk() fails...
+v4:
+- Fixed up stable version.
+v3:
+- Handle TPM and POSIX error separately and return -ENODEV always back
+  to the caller.
+v2:
+- Refined the commit message.
+---
+ drivers/char/tpm/tpm2-sessions.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
- fs/udf/inode.c |   45 +++++++++++++++++++--------------------------
- 1 file changed, 19 insertions(+), 26 deletions(-)
-
-Index: linux-stable/fs/udf/inode.c
-===================================================================
---- linux-stable.orig/fs/udf/inode.c
-+++ linux-stable/fs/udf/inode.c
-@@ -458,30 +458,6 @@ abort:
- 	return err;
+diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
+index d3521aadd43e..795f4c7c6adb 100644
+--- a/drivers/char/tpm/tpm2-sessions.c
++++ b/drivers/char/tpm/tpm2-sessions.c
+@@ -1338,7 +1338,13 @@ static int tpm2_create_null_primary(struct tpm_chip *chip)
+ 		tpm2_flush_context(chip, null_key);
+ 	}
+ 
+-	return rc;
++	if (rc < 0)
++		dev_err(&chip->dev, "saving the null key failed with error %d\n", rc);
++	else if (rc > 0)
++		dev_err(&chip->dev, "saving the null key failed with TPM error 0x%04X\n", rc);
++
++	/* Map all errors to -ENODEV: */
++	return rc ? -ENODEV : rc;
  }
  
--static struct buffer_head *udf_getblk(struct inode *inode, udf_pblk_t block,
--				      int create, int *err)
--{
--	struct buffer_head *bh;
--	struct buffer_head dummy;
--
--	dummy.b_state = 0;
--	dummy.b_blocknr = -1000;
--	*err = udf_get_block(inode, block, &dummy, create);
--	if (!*err && buffer_mapped(&dummy)) {
--		bh = sb_getblk(inode->i_sb, dummy.b_blocknr);
--		if (buffer_new(&dummy)) {
--			lock_buffer(bh);
--			memset(bh->b_data, 0x00, inode->i_sb->s_blocksize);
--			set_buffer_uptodate(bh);
--			unlock_buffer(bh);
--			mark_buffer_dirty_inode(bh, inode);
--		}
--		return bh;
--	}
--
--	return NULL;
--}
--
- /* Extend the file with new blocks totaling 'new_block_bytes',
-  * return the number of extents added
-  */
-@@ -1197,10 +1173,27 @@ struct buffer_head *udf_bread(struct ino
- 			      int create, int *err)
- {
- 	struct buffer_head *bh = NULL;
-+	struct buffer_head dummy;
-+
-+	dummy.b_state = 0;
-+	dummy.b_blocknr = -1000;
-+	*err = udf_get_block(inode, block, &dummy, create);
-+	if (*err || !buffer_mapped(&dummy))
-+		return NULL;
+ /**
+@@ -1354,7 +1360,7 @@ int tpm2_sessions_init(struct tpm_chip *chip)
  
--	bh = udf_getblk(inode, block, create, err);
--	if (!bh)
-+	bh = sb_getblk(inode->i_sb, dummy.b_blocknr);
-+	if (!bh) {
-+		*err = -ENOMEM;
- 		return NULL;
-+	}
-+	if (buffer_new(&dummy)) {
-+		lock_buffer(bh);
-+		memset(bh->b_data, 0x00, inode->i_sb->s_blocksize);
-+		set_buffer_uptodate(bh);
-+		unlock_buffer(bh);
-+		mark_buffer_dirty_inode(bh, inode);
-+		return bh;
-+	}
+ 	rc = tpm2_create_null_primary(chip);
+ 	if (rc)
+-		dev_err(&chip->dev, "TPM: security failed (NULL seed derivation): %d\n", rc);
++		return rc;
  
- 	if (buffer_uptodate(bh))
- 		return bh;
+ 	chip->auth = kmalloc(sizeof(*chip->auth), GFP_KERNEL);
+ 	if (!chip->auth)
+-- 
+2.46.0
+
 
