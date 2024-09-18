@@ -1,167 +1,146 @@
-Return-Path: <stable+bounces-76650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4BC2397B8FD
-	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 10:10:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A581B97B992
+	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 10:48:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A7651C21D0C
-	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 08:10:06 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7B5F1C211AD
+	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 08:48:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98A80176ACB;
-	Wed, 18 Sep 2024 08:09:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C29F81714AE;
+	Wed, 18 Sep 2024 08:48:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="hI+Jn7PP";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="W5XliJSq";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="hI+Jn7PP";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="W5XliJSq"
+	dkim=pass (2048-bit key) header.d=maxima.ru header.i=@maxima.ru header.b="ZCuKeT3K"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from ksmg02.maxima.ru (ksmg02.maxima.ru [81.200.124.39])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D13EA176AB4;
-	Wed, 18 Sep 2024 08:09:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9DFF1779B8;
+	Wed, 18 Sep 2024 08:48:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.200.124.39
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726646994; cv=none; b=VcbHu8PKvvGwHsLR879OQHfBqDGOMngu3RfCKqRtZHLoazVYEA5Mt6422B0TlcVngp+4A3b80Ir7VlnVR+8jHEdzOoXYwyqrZDFr9TxoDsU7SSiBQAeVy3g1LPoiqDs67pIeSM+kqBgva0BpcwvgfVk2uVWW1hxkRRAmgEhNP1Q=
+	t=1726649321; cv=none; b=ApeZjqsWWnCYmpboHRXfkf2LR8icIKO6Z4Sogl6JfP7Hoo86xQj9t3WrDyjBHVxRHUGoGQSOzAfS2agt1o66kQd58hkDY2zwZ4vde7dLucH2ZTvYqqU97msjhkEiESEv2k6lVZxCNPiYC3UEKdH/JZMZX4h0mEKSWEjKGbAFtzo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726646994; c=relaxed/simple;
-	bh=qz4Wjp+U8AhtB1FBlvnIV5ZTBNFIbS9umXOxm+UAKEo=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=n631OhM5oPlTE+/b6m9ocu322DXSdkX9wkW01wseKBRdSaXZEbFOqTSgNsVPrNogNAHJHTivL2R/hld0QK1ez0Je/ha5nrEACpfc9HyZ390MXZ/agEiOEG9S6Ad+kTKLfgrzkXL4eJmNYl7n0RBo4ztWPfibH0w9NwKp8FjO0+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=hI+Jn7PP; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=W5XliJSq; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=hI+Jn7PP; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=W5XliJSq; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 2C9E0203CF;
-	Wed, 18 Sep 2024 08:09:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1726646991; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HM0qmaPjee+d/d/fIIAeZRg+uCEOMXGWkMIYCcEJ/a0=;
-	b=hI+Jn7PPBibUy64wfAxt96wvRKmQ7rUQaxhFvzVAM8uzNSHI6pVBQ/FRDDECeousV+CY8p
-	RuTTQ4mJhnmEw/hYoZ+o4bSXfKseA5xRzas1G/EWhaIdIdErVjgb0SozVlWJu0SMopDVRc
-	yLtI3GdxzcQkGPwbp8n1ICen/Bbe7J4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1726646991;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HM0qmaPjee+d/d/fIIAeZRg+uCEOMXGWkMIYCcEJ/a0=;
-	b=W5XliJSq+VcURGbiCigjOycEYg/CCaOAV4zoZFe862HjVOvHu4qYuzyQUQdr9aRigAS5qv
-	0ymyHs24xyEl0HDw==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=hI+Jn7PP;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=W5XliJSq
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1726646991; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HM0qmaPjee+d/d/fIIAeZRg+uCEOMXGWkMIYCcEJ/a0=;
-	b=hI+Jn7PPBibUy64wfAxt96wvRKmQ7rUQaxhFvzVAM8uzNSHI6pVBQ/FRDDECeousV+CY8p
-	RuTTQ4mJhnmEw/hYoZ+o4bSXfKseA5xRzas1G/EWhaIdIdErVjgb0SozVlWJu0SMopDVRc
-	yLtI3GdxzcQkGPwbp8n1ICen/Bbe7J4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1726646991;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=HM0qmaPjee+d/d/fIIAeZRg+uCEOMXGWkMIYCcEJ/a0=;
-	b=W5XliJSq+VcURGbiCigjOycEYg/CCaOAV4zoZFe862HjVOvHu4qYuzyQUQdr9aRigAS5qv
-	0ymyHs24xyEl0HDw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id D457C13A57;
-	Wed, 18 Sep 2024 08:09:50 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id KuEmMs6K6mYMVwAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Wed, 18 Sep 2024 08:09:50 +0000
-Date: Wed, 18 Sep 2024 10:10:41 +0200
-Message-ID: <87o74le60u.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: nikolai.afanasenkov@hp.com
-Cc: tiwai@suse.com,
-	perex@perex.cz,
-	kailang@realtek.com,
-	sbinding@opensource.cirrus.com,
-	simont@opensource.cirrus.com,
-	foss@athaariq.my.id,
-	rf@opensource.cirrus.com,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] ALSA: hda/realtek: fix mute/micmute LED for HP mt645 G8
-In-Reply-To: <20240916195042.4050-1-nikolai.afanasenkov@hp.com>
-References: <20240916195042.4050-1-nikolai.afanasenkov@hp.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+	s=arc-20240116; t=1726649321; c=relaxed/simple;
+	bh=wm8Ygh+nikDrz9gptJvvj5z1gWgziMGvh7tO67oEa+g=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=S4IBBovy9/Gy1t4CYlEyuwijDwnFUoFwByS5M2SA42WaQYdGoXMUGxEsDhcz2lyE7cRgi5TVVvt+c6ZzI7WqvDfKAtzGlpAykyABYNlk7T4CByXUCuMOJBe+TplpoQGEDfmuGzCmsYsJV6E2M5Axf85NZAME4IVGtNkypmdwHMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maxima.ru; spf=pass smtp.mailfrom=maxima.ru; dkim=pass (2048-bit key) header.d=maxima.ru header.i=@maxima.ru header.b=ZCuKeT3K; arc=none smtp.client-ip=81.200.124.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maxima.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=maxima.ru
+Received: from ksmg02.maxima.ru (localhost [127.0.0.1])
+	by ksmg02.maxima.ru (Postfix) with ESMTP id EAA891E0008;
+	Wed, 18 Sep 2024 11:48:26 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 ksmg02.maxima.ru EAA891E0008
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=maxima.ru; s=sl;
+	t=1726649306; bh=4didXC8oklQfIE0UM2UabfJum3DZPrOiUxM6+vR/FuM=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
+	b=ZCuKeT3K17L3Uiu5uSTqkq87sYD6I3SIrkhejr23+1b+9mjdq+mnImsw8e0O+OZcG
+	 foaiFeCFBxa864n63oVUk3HgLzwPjDhUu1fFzGxw6i2GwOzUIpU7HoagrLXPFYH/om
+	 V+vWEbyuNxhFHHjtbbwKthFtHWHFk5Sv7fGQgSWwRyLuJZNcuBm38PG8ZfV/xc6NLj
+	 fPrD7NyFUjqGKmcVHxwmLSWXkZkRfucHCaszKhiEfVva5q2Urt2GG+jl9W+dvEg5MS
+	 V7CEPg0vU6Tfc6kJiXrVWtx5b3XmHfFQH7kk7IHJG08d0J/VkO7fbkp9mxhHRokuBV
+	 xoiWJm2sS5lqg==
+Received: from ksmg02.maxima.ru (unknown [81.200.124.62])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(Client CN "*.maxima.ru", Issuer "GlobalSign GCC R3 DV TLS CA 2020" (verified OK))
+	by ksmg02.maxima.ru (Postfix) with ESMTPS;
+	Wed, 18 Sep 2024 11:48:26 +0300 (MSK)
+Received: from GS-NOTE-190.mt.ru (10.0.247.62) by mmail-p-exch02.mt.ru
+ (81.200.124.62) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.1544.4; Wed, 18 Sep
+ 2024 11:48:14 +0300
+From: Murad Masimov <m.masimov@maxima.ru>
+To: <stable@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: Murad Masimov <m.masimov@maxima.ru>, Felix Kuehling
+	<Felix.Kuehling@amd.com>, Alex Deucher <alexander.deucher@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>, "Pan, Xinhui"
+	<Xinhui.Pan@amd.com>, David Airlie <airlied@gmail.com>, Daniel Vetter
+	<daniel@ffwll.ch>, "open list:AMD KFD" <amd-gfx@lists.freedesktop.org>, "open
+ list:DRM DRIVERS" <dri-devel@lists.freedesktop.org>, open list
+	<linux-kernel@vger.kernel.org>, <lvc-project@linuxtesting.org>, Philip Yang
+	<Philip.Yang@amd.com>, Alex Sierra <alex.sierra@amd.com>
+Subject: [PATCH 6.1] drm/amdkfd: Skip handle mapping SVM range with no GPU access
+Date: Wed, 18 Sep 2024 11:47:16 +0300
+Message-ID: <20240918084718.958-1-m.masimov@maxima.ru>
+X-Mailer: git-send-email 2.46.0.windows.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Rspamd-Queue-Id: 2C9E0203CF
-X-Spam-Level: 
-X-Spamd-Result: default: False [-3.51 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_CONTAINS_FROM(1.00)[];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	ARC_NA(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	DKIM_TRACE(0.00)[suse.de:+];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	TO_DN_NONE(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	DWL_DNSWL_BLOCKED(0.00)[suse.de:dkim];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.de:dkim,suse.de:mid]
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -3.51
-X-Spam-Flag: NO
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: mt-exch-01.mt.ru (91.220.120.210) To mmail-p-exch02.mt.ru
+ (81.200.124.62)
+X-KSMG-Rule-ID: 7
+X-KSMG-Message-Action: clean
+X-KSMG-AntiSpam-Lua-Profiles: 187815 [Sep 18 2024]
+X-KSMG-AntiSpam-Version: 6.1.1.5
+X-KSMG-AntiSpam-Envelope-From: m.masimov@maxima.ru
+X-KSMG-AntiSpam-Rate: 0
+X-KSMG-AntiSpam-Status: not_detected
+X-KSMG-AntiSpam-Method: none
+X-KSMG-AntiSpam-Auth: dmarc=none header.from=maxima.ru;spf=none smtp.mailfrom=maxima.ru;dkim=none
+X-KSMG-AntiSpam-Info: LuaCore: 34 0.3.34 8a1fac695d5606478feba790382a59668a4f0039, {rep_avail}, {Tracking_from_domain_doesnt_match_to}, maxima.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;81.200.124.62:7.1.2;ksmg02.maxima.ru:7.1.1;127.0.0.199:7.1.2, FromAlignment: s, ApMailHostAddress: 81.200.124.62, {DNS response errors}
+X-MS-Exchange-Organization-SCL: -1
+X-KSMG-AntiSpam-Interceptor-Info: scan successful
+X-KSMG-AntiPhishing: Clean
+X-KSMG-LinksScanning: Clean
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.0.1.6960, bases: 2024/09/18 05:45:00 #26614741
+X-KSMG-AntiVirus-Status: Clean, skipped
 
-On Mon, 16 Sep 2024 21:50:42 +0200,
-nikolai.afanasenkov@hp.com wrote:
-> 
-> From: Nikolai Afanasenkov <nikolai.afanasenkov@hp.com>
-> 
-> The HP Elite mt645 G8 Mobile Thin Client uses an ALC236 codec
-> and needs the ALC236_FIXUP_HP_MUTE_LED_MICMUTE_VREF quirk
-> to enable the mute and micmute LED functionality.
-> 
-> This patch adds the system ID of the HP Elite mt645 G8
-> to the `alc269_fixup_tbl` in `patch_realtek.c`
-> to enable the required quirk.
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Nikolai Afanasenkov <nikolai.afanasenkov@hp.com>
+From: Philip Yang <Philip.Yang@amd.com>
 
-Thanks, applied now.
+commit 8c45b31909b730f9c7b146588e038f9c6553394d upstream.
 
+If the SVM range has no GPU access nor access-in-place attribute,
+validate and map to GPU should skip the range.
 
-Takashi
+Add NULL pointer check if find_first_bit(ctx->bitmap, MAX_GPU_INSTANCE)
+returns MAX_GPU_INSTANCE as gpuidx if ctx->bitmap is empty.
+
+Signed-off-by: Philip Yang <Philip.Yang@amd.com>
+Reviewed-by: Alex Sierra <alex.sierra@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+[m.masimov@maxima.ru: In order to adapt this patch to branch 6.1
+ctx was treated as a variable and not as a pointer.]
+Signed-off-by: Murad Masimov <m.masimov@maxima.ru>
+---
+ drivers/gpu/drm/amd/amdkfd/kfd_svm.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
+index 7fa5e70f1aac..a44781b66af9 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
+@@ -1491,6 +1491,8 @@ static void *kfd_svm_page_owner(struct kfd_process *p, int32_t gpuidx)
+ 	struct kfd_process_device *pdd;
+ 
+ 	pdd = kfd_process_device_from_gpuidx(p, gpuidx);
++	if (!pdd)
++		return NULL;
+ 
+ 	return SVM_ADEV_PGMAP_OWNER(pdd->dev->adev);
+ }
+@@ -1561,10 +1563,10 @@ static int svm_range_validate_and_map(struct mm_struct *mm,
+ 	}
+ 
+ 	if (bitmap_empty(ctx.bitmap, MAX_GPU_INSTANCE)) {
+-		if (!prange->mapped_to_gpu)
+-			return 0;
+-
+ 		bitmap_copy(ctx.bitmap, prange->bitmap_access, MAX_GPU_INSTANCE);
++		if (!prange->mapped_to_gpu ||
++		    bitmap_empty(ctx.bitmap, MAX_GPU_INSTANCE))
++			return 0;
+ 	}
+ 
+ 	if (prange->actual_loc && !prange->ttm_res) {
+-- 
+2.39.2
+
 
