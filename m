@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-76685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76688-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AE4B497BDA0
-	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 16:04:16 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A70597BDBC
+	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 16:11:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7240528D45A
-	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 14:04:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BE6011F2216F
+	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 14:11:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDC9B18A6CD;
-	Wed, 18 Sep 2024 14:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 179F618C028;
+	Wed, 18 Sep 2024 14:10:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jz5Kc3Ph"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cYdPTlg3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C16318B47B
-	for <stable@vger.kernel.org>; Wed, 18 Sep 2024 14:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C519E18B472;
+	Wed, 18 Sep 2024 14:10:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726668247; cv=none; b=b9OOMdq2Bf5Lor2MF6DcwVtDm0WZk5jWENBJgV+DBioNrzu+dVLrZNjdbDm4ACPQMmSzjLkJBKzSfvN+d3bw+9/PKV1AH93ZpmEPShZ7mIOsXAkyjvUEbJlcHgyzdOaw2Dx63+1RTgSykhXcfQX4E0Dv+CIhGbGpMG8VScJdwpA=
+	t=1726668651; cv=none; b=SshLx9QQdmGJyyskgzsvSA7WQSUg/+H6JtkKW4udegsiGwgovfH4RNJD0sqsFjFmBh+vozZskeEpMCYeVrOJcmu1nEkc06S2UIcjNpeXA+/0TJKVNrU0VRZCCmj1d4daDUpxg6/7hnY6HcE6tOSiOvCqk88trdR6x9J5EnqPYbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726668247; c=relaxed/simple;
-	bh=UgrEC0fMdTY6bGtmKjzCHWfv4tiW6VPnT1O+kyaXAmg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=iYKHjF3dlA43RB1LOHlKuOFQMapJo9GTz8OapPkdqJckCiXtOvOcFrDKQG05BK4XOsTVNhibnGm4mljz2aCzim5Do2Z+k8Csx7E77b+UUQ9rwsb5QBARHqCQprUbu+gkLfzL24ltSsGvVYxxpHmFadTm04NZxYhSaxyMnlkb4E8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jz5Kc3Ph; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 441BAC4CED6;
-	Wed, 18 Sep 2024 14:04:07 +0000 (UTC)
+	s=arc-20240116; t=1726668651; c=relaxed/simple;
+	bh=dkeHweZOsjkx3Ag5GOp8+zbO/oMVxglgz9oAsbZuWfw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=OQtzWW1yJvk2hwtDEOspoyyo8YL1koa5GFzg+BeJQg8IHMwxPOXG0d5dLmHzlzgWnEDFW2KQk3XitZI3m9S90Bbsj0VsL+PmviSkm4sys6NkvVobjbr0ck1dVb4rCT940QsvpGLE00312NyRBjmqWGjeHTjTKVzOamsac5Dy9C8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cYdPTlg3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 590E4C4CEC2;
+	Wed, 18 Sep 2024 14:10:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726668247;
-	bh=UgrEC0fMdTY6bGtmKjzCHWfv4tiW6VPnT1O+kyaXAmg=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=Jz5Kc3Phh0oOy9lUGyL9G4ah6c4dqs4QQG8l0lzPLX4Z0KFJR1qS4wEJ6NEkFjaqE
-	 5JX4OoW7BlGe08zB/BiaVJg0riEhiGV4VYyc4w/XPNAmytQ+tV/RbSxoAuBR+UU0Qm
-	 yoH5mgVGonftkVBuIFnx23Kr2PpHpf9ahS+GdbX9SpwJu8+tNJpkukfrPTqmUm5x+Y
-	 dSiTSdTFWX8MWhFBhrIQEEQl/Ps4Pdw0Fkbk9Nqh/D9F2tgsYosGAj21IGFLlD+MiP
-	 w0C4c1HXeiZvNqBdugGsXT2F0WIGM0GdFiS29AnRAyVa4DUbfMd78asjoJt2gz0VoF
-	 8ZHDUGjVtMLnw==
+	s=k20201202; t=1726668651;
+	bh=dkeHweZOsjkx3Ag5GOp8+zbO/oMVxglgz9oAsbZuWfw=;
+	h=From:Subject:Date:To:Cc:Reply-To:From;
+	b=cYdPTlg3ffygWcgCxyBPlCZ9Bt7oZKTvffdXiXkqdMRUlalCxoVwJNqoy7UWqr8Z/
+	 cB0PvRYAYNCuwAPA4w/GefAWog7iPRS6imqxflPqErW3qq/YrFNolVT95/7ktAjJfT
+	 U7/+OLHSAtFlO97oWUfSvrJlE4b3Zac/O6QwMYyHW+DjDJiQuqBJSehVETt/GVn2Wf
+	 7bK6EchdYX4NtVgD32lDWPpUlcXd5At/x9dFUNRQt6RkQ1UPgRkx0sDRuVpllWQ4rS
+	 ppUjmpf0+McRx9aMu2S/YNWHg4Mn+4WmRJ47KeE6CVOF7PSwxD8phXfzsupH5ObObF
+	 dQn8LGmDvTa7A==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 3CEC9CCD1AE;
-	Wed, 18 Sep 2024 14:04:07 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 46A06CCD1AB;
+	Wed, 18 Sep 2024 14:10:51 +0000 (UTC)
 From: Miao Wang via B4 Relay <devnull+shankerwangmiao.gmail.com@kernel.org>
-Date: Wed, 18 Sep 2024 22:04:01 +0800
-Subject: [PATCH v6.1 5/5] vfs: support statx(..., NULL, AT_EMPTY_PATH, ...)
+Subject: [PATCH 0/4] Backport statx(..., NULL, AT_EMPTY_PATH, ...)
+Date: Wed, 18 Sep 2024 22:10:36 +0800
+Message-Id: <20240918-statx-stable-linux-5-15-y-v1-0-5afb4401ddbe@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,35 +54,32 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240918-statx-stable-linux-6-1-y-v1-5-364a92b1a34f@gmail.com>
-References: <20240918-statx-stable-linux-6-1-y-v1-0-364a92b1a34f@gmail.com>
-In-Reply-To: <20240918-statx-stable-linux-6-1-y-v1-0-364a92b1a34f@gmail.com>
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAFzf6mYC/x2Myw5AMBBFf0VmbaRF4/ErYlEMJpGSFqmIf1c2J
+ znJPfcGR5bJQR3dYOlkx6sJIuMI+lmbiZCH4JCKNBeVLNHtevcfu4VwYXN4VCgVXljpTGSq1MW
+ QFxD6zdLI/v9u4FRJGH0U0D7PC/8LDll4AAAA
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
 Cc: Xi Ruoyao <xry111@xry111.site>, Mateusz Guzik <mjguzik@gmail.com>, 
  Christian Brauner <brauner@kernel.org>, 
- Alexander Viro <viro@zeniv.linux.org.uk>, Miguel Ojeda <ojeda@kernel.org>, 
- Alex Gaynor <alex.gaynor@gmail.com>, 
- Wedson Almeida Filho <wedsonaf@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- stable@vger.kernel.org, Miao Wang <shankerwangmiao@gmail.com>
+ Alexander Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org, 
+ stable@vger.kernel.org, Miao Wang <shankerwangmiao@gmail.com>, 
+ Linus Torvalds <torvalds@linux-foundation.org>
 X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6114;
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2178;
  i=shankerwangmiao@gmail.com; h=from:subject:message-id;
- bh=77zJsb0u6kCk3K0hUzAxVrYqZjci5JDs/Px8b4GNrDA=;
- b=owEBbQKS/ZANAwAKAbAx48p7/tluAcsmYgBm6t3UFu2pG1eIJP5tbcng+fJxpxa1uEHewXBLG
- 8VXulWPfqmJAjMEAAEKAB0WIQREqPWPgPJBxluezBOwMePKe/7ZbgUCZurd1AAKCRCwMePKe/7Z
- bn9AEADK++5yEtH3u6pKQnDC5GTKYgbQm5JeLhZayoAdi/dd9BoXYVkLNXS8hVOdzhGJBeLm1Hf
- 6bShbpvBMTAzIwN92fwIjqHepw1ytCJCzNq/gMmXlOSWUPz/QVf8SPeE1UjvxavmT9M2RGMKNoF
- RXHBt9KOV3Uypgw2Mmcp8l576gQGO8o0nc1QhIK/V2gWoh6Nga68ARooySoO2AfrZW2r8J/PZxL
- 9CcwgVfoGisquW7f0zv+R8lPDL3gwO2IouYEzOQZatuuZ6rn4Q04xrRyy0sL0rJ3UNcgwJqaQM8
- TsNKlAdT9eLTMDAZTG+bqn1uFTY6bAL8grdtrQNSlnX7EX2ylD8Zac4YGi1Gja3QgbaeFyFS6vZ
- mYwnsZFxSTVKmqxOH/hwg/iTSMfPlFcsL7v5Ru4X8XsklI46+erBNXozw7KhQGf8Pf0oru0pYUB
- K5K2SIBSqmrmRYYsPHJcUHfpDLprvCkuhvTQpGjSAJvQ1IfgdqW6JCT+GWqP6tdQyKmqdXQGSIM
- tmwM40XhJdotpCBFDgjrseEVk8yE6SuDu56ywM8z4ketcbcJvm+RKAtBmsPVRq5JXS/JdF6r1Ix
- DmcIYWRIHd+6TiuN5s7d0lnMYe+dGvDhUuRaCrLUy8q60ZR3kAaWAmvU5AdqVPfOBrtmi1c9UfE
- OYQ+3NpTf9wYTmw==
+ bh=dkeHweZOsjkx3Ag5GOp8+zbO/oMVxglgz9oAsbZuWfw=;
+ b=kA0DAAoBsDHjynv+2W4ByyZiAGbq32iiclsVGevsH3fdEUaojZ1rU7KBcrzo1/cYK142hpS/N
+ YkCMwQAAQoAHRYhBESo9Y+A8kHGW57ME7Ax48p7/tluBQJm6t9oAAoJELAx48p7/tlu87gQANBX
+ CdjnQ6MdfZkdWU82SRd8+3aRBEBWeQpcHyEmSxMxBWS/pXs21wtcl85ssdEtjpOnf8Ebfsz56R/
+ VWbGkZFIsSpWJ42/34sAEBjK/g8wiZqNU1LSmyW9ZIq68P0qd6deZ4lTbAddNxIJLtugjEMw/9y
+ LdevRi9NV66yNGF3saB/1poT0JjMuhA8kCiQiqrhfUEBnpgdaH3u4r08AwNWFXRyyIhtw9g4nOd
+ J+bVssMyWn99MZ9kEfOgxxuxEjKR4j9MMcAWd2vIHVyCposnIneEOWVwDG26Fv2GRFwZE7AFEfZ
+ D+MQui4jhJlXW04XcL2jC8mrThujD7DVxoWwCytqMAFXhpFNWV2a+hVPmLdjV9IuwSAVQ+g+P/A
+ yjodgqh6fzEOrgwW3Ejm9SZEkTnztE0LoAP6uXLaPPxEJ8ze9t5iAru+32RElbfIhJqJz3XJ191
+ /a1sgN9nlnHmf41EmybQ1EkRpzHrFJ2T4ob4wSTLUlWwewyGH97Swkl0J2fOSIr+e4VY6o3NmAC
+ iA2SlvqYvtBHWYz2SMWJW52zrkB30LfAKslHWp5JG9rsaSDmDT4y//D+TA6lGUc3k9ha+mW3aje
+ LnbwovzKdaMbwI1q1iJ4udI5yjYl/yPobc74u3l1jh34TvaZ1p+U2DHxW7yIGYhKE4nyMHoZE1g
+ ZWRK+
 X-Developer-Key: i=shankerwangmiao@gmail.com; a=openpgp;
  fpr=6FAEFF06B7D212A774C60BFDFA0D166D6632EF4A
 X-Endpoint-Received: by B4 Relay for shankerwangmiao@gmail.com/default with
@@ -90,198 +87,52 @@ X-Endpoint-Received: by B4 Relay for shankerwangmiao@gmail.com/default with
 X-Original-From: Miao Wang <shankerwangmiao@gmail.com>
 Reply-To: shankerwangmiao@gmail.com
 
-From: Mateusz Guzik <mjguzik@gmail.com>
+Commit 0ef625bba6fb ("vfs: support statx(..., NULL, AT_EMPTY_PATH,
+...)") added support for passing in NULL when AT_EMPTY_PATH is given,
+improving performance when statx is used for fetching stat informantion
+from a given fd, which is especially important for 32-bit platforms.
+This commit also improved the performance when an empty string is given
+by short-circuiting the handling of such paths.
 
-commit 0ef625b upstream.
+This series is based on the commits in the Linus’ tree. Modifications
+are applied to vfs_statx_path(). In the original patch, vfs_statx_path()
+was created to warp around the call to vfs_getattr() after
+filename_lookup() in vfs_statx(). Since the coresponding code is
+different in 5.15 and 5.10, the content of vfs_statx_path() is modified
+to match this. The original patch also moved path_mounted() from
+namespace.c to internal.h, which is not applicable for 5.15 and 5.10
+since it has not been introduced before 6.5. The original patch also
+used CLASS(fd_raw, ) to convert a file descriptor number provided from
+the user space in to a struct and automatically release it afterwards.
+Since CLASS mechanism is only available since 6.1.79, obtaining and
+releasing fd struct is done manually. do_statx() was directly handling
+filename string instead of a struct filename * before 5.18, as a result
+short-circuiting is implemented in do_statx() instead of sys_statx,
+without the need of introducing do_statx_fd().
 
-The newly used helper also checks for empty ("") paths.
-
-NULL paths with any flag value other than AT_EMPTY_PATH go the usual
-route and end up with -EFAULT to retain compatibility (Rust is abusing
-calls of the sort to detect availability of statx).
-
-This avoids path lookup code, lockref management, memory allocation and
-in case of NULL path userspace memory access (which can be quite
-expensive with SMAP on x86_64).
-
-Benchmarked with statx(..., AT_EMPTY_PATH, ...) running on Sapphire
-Rapids, with the "" path for the first two cases and NULL for the last
-one.
-
-Results in ops/s:
-stock:     4231237
-pre-check: 5944063 (+40%)
-NULL path: 6601619 (+11%/+56%)
-
-Signed-off-by: Mateusz Guzik <mjguzik@gmail.com>
-Link: https://lore.kernel.org/r/20240625151807.620812-1-mjguzik@gmail.com
 Tested-by: Xi Ruoyao <xry111@xry111.site>
-[brauner: use path_mounted() and other tweaks]
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-
-Cc: <stable@vger.kernel.org> # 6.1.x
 Signed-off-by: Miao Wang <shankerwangmiao@gmail.com>
-Tested-by: Xi Ruoyao <xry111@xry111.site>
 ---
- fs/internal.h |  2 ++
- fs/stat.c     | 92 +++++++++++++++++++++++++++++++++++++++++++++--------------
- 2 files changed, 72 insertions(+), 22 deletions(-)
+Christian Brauner (2):
+      fs: new helper vfs_empty_path()
+      stat: use vfs_empty_path() helper
 
-diff --git a/fs/internal.h b/fs/internal.h
-index 42df013f7fe7..004af47be35b 100644
---- a/fs/internal.h
-+++ b/fs/internal.h
-@@ -199,6 +199,8 @@ int sb_init_dio_done_wq(struct super_block *sb);
- int getname_statx_lookup_flags(int flags);
- int do_statx(int dfd, struct filename *filename, unsigned int flags,
- 	     unsigned int mask, struct statx __user *buffer);
-+int do_statx_fd(int fd, unsigned int flags, unsigned int mask,
-+		struct statx __user *buffer);
- 
- /*
-  * fs/splice.c:
-diff --git a/fs/stat.c b/fs/stat.c
-index 84e07356dfa4..61b9eefb19fe 100644
---- a/fs/stat.c
-+++ b/fs/stat.c
-@@ -199,6 +199,38 @@ int getname_statx_lookup_flags(int flags)
- 	return lookup_flags;
- }
- 
-+static int vfs_statx_path(struct path *path, int flags, struct kstat *stat,
-+			  u32 request_mask)
-+{
-+	int error = vfs_getattr(path, stat, request_mask, flags);
-+
-+	stat->mnt_id = real_mount(path->mnt)->mnt_id;
-+	stat->result_mask |= STATX_MNT_ID;
-+
-+	if (path->mnt->mnt_root == path->dentry)
-+		stat->attributes |= STATX_ATTR_MOUNT_ROOT;
-+	stat->attributes_mask |= STATX_ATTR_MOUNT_ROOT;
-+
-+	/* Handle STATX_DIOALIGN for block devices. */
-+	if (request_mask & STATX_DIOALIGN) {
-+		struct inode *inode = d_backing_inode(path->dentry);
-+
-+		if (S_ISBLK(inode->i_mode))
-+			bdev_statx_dioalign(inode, stat);
-+	}
-+
-+	return error;
-+}
-+
-+static int vfs_statx_fd(int fd, int flags, struct kstat *stat,
-+			  u32 request_mask)
-+{
-+	CLASS(fd_raw, f)(fd);
-+	if (!f.file)
-+		return -EBADF;
-+	return vfs_statx_path(&f.file->f_path, flags, stat, request_mask);
-+}
-+
- /**
-  * vfs_statx - Get basic and extra attributes by filename
-  * @dfd: A file descriptor representing the base dir for a relative filename
-@@ -228,31 +260,13 @@ static int vfs_statx(int dfd, struct filename *filename, int flags,
- retry:
- 	error = filename_lookup(dfd, filename, lookup_flags, &path, NULL);
- 	if (error)
--		goto out;
--
--	error = vfs_getattr(&path, stat, request_mask, flags);
--
--	stat->mnt_id = real_mount(path.mnt)->mnt_id;
--	stat->result_mask |= STATX_MNT_ID;
--
--	if (path.mnt->mnt_root == path.dentry)
--		stat->attributes |= STATX_ATTR_MOUNT_ROOT;
--	stat->attributes_mask |= STATX_ATTR_MOUNT_ROOT;
--
--	/* Handle STATX_DIOALIGN for block devices. */
--	if (request_mask & STATX_DIOALIGN) {
--		struct inode *inode = d_backing_inode(path.dentry);
--
--		if (S_ISBLK(inode->i_mode))
--			bdev_statx_dioalign(inode, stat);
--	}
--
-+		return error;
-+	error = vfs_statx_path(&path, flags, stat, request_mask);
- 	path_put(&path);
- 	if (retry_estale(error, lookup_flags)) {
- 		lookup_flags |= LOOKUP_REVAL;
- 		goto retry;
- 	}
--out:
- 	return error;
- }
- 
-@@ -656,16 +670,35 @@ int do_statx(int dfd, struct filename *filename, unsigned int flags,
- 	return cp_statx(&stat, buffer);
- }
- 
-+int do_statx_fd(int fd, unsigned int flags, unsigned int mask,
-+	     struct statx __user *buffer)
-+{
-+	struct kstat stat;
-+	int error;
-+
-+	if (mask & STATX__RESERVED)
-+		return -EINVAL;
-+	if ((flags & AT_STATX_SYNC_TYPE) == AT_STATX_SYNC_TYPE)
-+		return -EINVAL;
-+
-+	error = vfs_statx_fd(fd, flags, &stat, mask);
-+	if (error)
-+		return error;
-+
-+	return cp_statx(&stat, buffer);
-+}
-+
- /**
-  * sys_statx - System call to get enhanced stats
-  * @dfd: Base directory to pathwalk from *or* fd to stat.
-- * @filename: File to stat or "" with AT_EMPTY_PATH
-+ * @filename: File to stat or either NULL or "" with AT_EMPTY_PATH
-  * @flags: AT_* flags to control pathwalk.
-  * @mask: Parts of statx struct actually required.
-  * @buffer: Result buffer.
-  *
-  * Note that fstat() can be emulated by setting dfd to the fd of interest,
-- * supplying "" as the filename and setting AT_EMPTY_PATH in the flags.
-+ * supplying "" (or preferably NULL) as the filename and setting AT_EMPTY_PATH
-+ * in the flags.
-  */
- SYSCALL_DEFINE5(statx,
- 		int, dfd, const char __user *, filename, unsigned, flags,
-@@ -673,8 +706,23 @@ SYSCALL_DEFINE5(statx,
- 		struct statx __user *, buffer)
- {
- 	int ret;
-+	unsigned lflags;
- 	struct filename *name;
- 
-+	/*
-+	 * Short-circuit handling of NULL and "" paths.
-+	 *
-+	 * For a NULL path we require and accept only the AT_EMPTY_PATH flag
-+	 * (possibly |'d with AT_STATX flags).
-+	 *
-+	 * However, glibc on 32-bit architectures implements fstatat as statx
-+	 * with the "" pathname and AT_NO_AUTOMOUNT | AT_EMPTY_PATH flags.
-+	 * Supporting this results in the uglification below.
-+	 */
-+	lflags = flags & ~(AT_NO_AUTOMOUNT | AT_STATX_SYNC_TYPE);
-+	if (lflags == AT_EMPTY_PATH && vfs_empty_path(dfd, filename))
-+		return do_statx_fd(dfd, flags & ~AT_NO_AUTOMOUNT, mask, buffer);
-+
- 	name = getname_flags(filename, getname_statx_lookup_flags(flags), NULL);
- 	ret = do_statx(dfd, name, flags, mask, buffer);
- 	putname(name);
+Linus Torvalds (1):
+      vfs: mostly undo glibc turning 'fstat()' into 'fstatat(AT_EMPTY_PATH)'
 
+Mateusz Guzik (1):
+      vfs: support statx(..., NULL, AT_EMPTY_PATH, ...)
+
+ fs/stat.c          | 73 +++++++++++++++++++++++++++++++++++++++++++++---------
+ include/linux/fs.h | 17 +++++++++++++
+ 2 files changed, 78 insertions(+), 12 deletions(-)
+---
+base-commit: 3a5928702e7120f83f703fd566082bfb59f1a57e
+change-id: 20240918-statx-stable-linux-5-15-y-9a30358a7d47
+
+Best regards,
 -- 
-2.43.0
+Miao Wang <shankerwangmiao@gmail.com>
 
 
 
