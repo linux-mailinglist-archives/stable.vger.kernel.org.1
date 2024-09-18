@@ -1,134 +1,127 @@
-Return-Path: <stable+bounces-76664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76665-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32F3297BCB2
-	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 15:02:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C16697BD00
+	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 15:25:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EA2E3284EFE
-	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 13:02:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1BA592832EE
+	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 13:25:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6089189F3C;
-	Wed, 18 Sep 2024 13:02:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0C0D189F41;
+	Wed, 18 Sep 2024 13:25:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="dvQ5Colc"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="UvIylYbe"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D066817E019
-	for <stable@vger.kernel.org>; Wed, 18 Sep 2024 13:02:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32FC11CD3F
+	for <stable@vger.kernel.org>; Wed, 18 Sep 2024 13:24:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726664568; cv=none; b=Aw3miE1UcNPhyfkQMIUanC+uXz0GugP97r2PGWW+7GvugL9AaXdardoBW2HVS+4CYff0W3tRv1I2PN3YSqCllhlTDNrRY9/GjVwCd5KUQTyZR1sM0c3WWLt9ZHmuZ2rpvcNDGNZuHdkUTeKsxvpZGnq2CM9u+mJPTS9CerRRN7s=
+	t=1726665900; cv=none; b=JkZFW7KO4mmZL8NRjtIKvw8qIpU8L/FvO9QIMQBgbSYlXwbVJEgs1SyOx6kGPTIhiDPXkyposLEPVbErwagTa64FUMJ1EQrbIhfCdpnlZc0bbi4/7mSswliVUzbPu5P4xJHGUzTQWVOnghu3Piw0z3yjKsEfvL+L4N9w7Yhr9kk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726664568; c=relaxed/simple;
-	bh=fkxNactTtfPV+pF7AYrystjYaIivYRerWOIrN2LwuIQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=aSZ14hT6m0LgpKbI1wudafyHhkZddSc4GfAcarCZbftRJ0MwiXS6mD+apaKJYjHWr8iLR6OD+N6QzL8cMgYXzBIl8pSktwPJv+X3JcYPGUdfgPb79NCDhF+OIz3sIGz4ETBZ/0LsL2J9Nbkta6OJk/sgaqoHTbXtNowYCx74Pzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=dvQ5Colc; arc=none smtp.client-ip=209.85.208.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2f752d9ab62so55334341fa.3
-        for <stable@vger.kernel.org>; Wed, 18 Sep 2024 06:02:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1726664565; x=1727269365; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=ATW44ntMNC19RTiT79RitfHTSID/tcZoZ+wLlD8HpFA=;
-        b=dvQ5ColcUAnUV6vMCVFgGiBBzfWzxR+5ryql1kscafWxhDmveFIShuyoiSv1Umqonh
-         fxgQM317EUU9waXcPAix7Nt9UGCn7NJwGeqzCGdQHw9sUVdIbEjKBZPWr6yJd/JQ0m8i
-         IpxMbPRtLnXEBASHxXvCRG9OxeGAITfcweSXWuTMXuMzcYEzo/m61ADacv0D9XC8HmlH
-         /u2cXhUBtNnOCwrYCxVUx8ecXI2va1o961HSzI1TDKORYqdZfs5xppubNBicdXPp94yD
-         ovJFrConANtyHAvVzunKnqyQGERhhTdv0W1Zi0pzW1iS5QiJKiz0TRpRhN3iqcG9oydg
-         kF+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726664565; x=1727269365;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ATW44ntMNC19RTiT79RitfHTSID/tcZoZ+wLlD8HpFA=;
-        b=DFk8gjJuGPKxvjFbWUsm1DnZlBjtSqcC3FmB3BXg4Ggjhg6yD6dIO0F9JxlRKk2M0/
-         1AM4hwo3V/8Af5jvP6EhA9jJ8jv97i/NMo5tbOmBWhw3YD3UrDSKC8LHBTmtgUxc0pto
-         k+bA/SHFPs1a1APSbmUMQaV52SKoyw3Gwk6/8l5NfrtKMRZUlE0Kc8FiTa0zlPMgeHil
-         NMGKyY5lPLrbFViPeRoFd5RTr2J79lGWvMb604e6FlCBqS2MNtOIJSjJDvQkIGBjeWug
-         8uWmwpYD6pFjtj/fCYDR/GRuoO0gpvZU3ltS3j9aZbnDZjUDtkjipYRjwyNLUyi9K0+w
-         QfQg==
-X-Forwarded-Encrypted: i=1; AJvYcCW/IQm/J60WBBIxIffjtzWPLlYEPN1oHeIv+gVLi9zscIVJcw65eJ31fbafR5LCW2sjJM6kr0Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzJyJzsTYbOmNxqbVhoXOxpgqmrihER0TzwyxLZDtIQDbwLnYY6
-	4X7LmQ8k9H4i/wWVFMxg+n6KE5RrMfPdZTDFHZ7JCbG3C6INHW+cM8Rwc/qdM7A=
-X-Google-Smtp-Source: AGHT+IENvkLCRJ6PgUKbcBNDttzRMjlvQEm33+uhx9+i/+f7XgInowOISmKP2l/jOslrFqUCcHWCPw==
-X-Received: by 2002:a05:651c:2208:b0:2f6:5921:f35b with SMTP id 38308e7fff4ca-2f791a0d2d0mr106357291fa.27.1726664564786;
-        Wed, 18 Sep 2024 06:02:44 -0700 (PDT)
-Received: from umbar.lan ([192.130.178.90])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2f79d485c57sm13181811fa.109.2024.09.18.06.02.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 18 Sep 2024 06:02:43 -0700 (PDT)
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date: Wed, 18 Sep 2024 16:02:39 +0300
-Subject: [PATCH] soc: qcom: pd_mapper: fix ADSP PD maps
+	s=arc-20240116; t=1726665900; c=relaxed/simple;
+	bh=/LAA4EJIg52bKSE0rQfIY4l8Ih6Jw/u/MwRTL4ohXFU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pDdZB5SErpakadpoRPzeQhGQrVSVPdSgxDgfHNH+OrP+nIdmdCgjsJXRD7xKgx+LCqyTXST1Q34P/m4eDHRf0JltN2iiI0Qpmjv1xTtHzaEq4zsskxkxeJlKsMNNkiDRZ3T3gG6WzserctpsxMz1/YBLdwjlHlTL5BRVYHClxGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=UvIylYbe; arc=none smtp.client-ip=198.175.65.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1726665899; x=1758201899;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=/LAA4EJIg52bKSE0rQfIY4l8Ih6Jw/u/MwRTL4ohXFU=;
+  b=UvIylYbea839UyE65CtgPvtgikVFuHna4SpDARyRQnwO6nEKrjVIzni6
+   C9feaRujljQLAyvERvFayAh3dEwCbU9wFrQbftnmdqiz4yqW6uP1SDet2
+   OsciJsN/hMNecnAyA+3gpF0nVuPlu6iLvQXap4uJ45u0Mw/0zUwTvOUey
+   7T8sOpUuEUV+aqSpbIdCa+vhp5x9F2jjRcfbA3MVfGGOJBsWZgE8UaLO+
+   bH4QWYUPVeDdbMC4jxvARPwYi8Ds+kAKkqAHqyRxU0lIMYbwRvH2yjuza
+   sDEeLdA3S+lj6kSeMcC2KptO4t9QjGGfpUwyBcsG66lPUDCqqzT3dBISh
+   w==;
+X-CSE-ConnectionGUID: RYgPIqkuQg26eUZ/fG2+vw==
+X-CSE-MsgGUID: 8voiLd/8QG2k5dKDYjY08A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11199"; a="25517025"
+X-IronPort-AV: E=Sophos;i="6.10,238,1719903600"; 
+   d="scan'208";a="25517025"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2024 06:24:46 -0700
+X-CSE-ConnectionGUID: aztiQoaPT/ChmChtGyZM4w==
+X-CSE-MsgGUID: lbYSVQ79RjCVlgS+T5epHA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,238,1719903600"; 
+   d="scan'208";a="73708488"
+Received: from ksztyber-mobl2.ger.corp.intel.com (HELO intel.com) ([10.245.246.223])
+  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 Sep 2024 06:24:43 -0700
+Date: Wed, 18 Sep 2024 15:24:40 +0200
+From: Andi Shyti <andi.shyti@linux.intel.com>
+To: Jani Nikula <jani.nikula@intel.com>
+Cc: intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
+	Matthew Auld <matthew.auld@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Anshuman Gupta <anshuman.gupta@intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 1/5] drm/i915/gem: fix bitwise and logical AND mixup
+Message-ID: <ZurUmA5D04FgV2v6@ashyti-mobl2.lan>
+References: <cover.1726658138.git.jani.nikula@intel.com>
+ <dec5992d78db5bc556600c64ce72aa9b19c96c77.1726658138.git.jani.nikula@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240918-x1e-fix-pdm-pdr-v1-1-cefc79bb33d1@linaro.org>
-X-B4-Tracking: v=1; b=H4sIAG7P6mYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxMDS0ML3QrDVN20zArdgpRcIC7STTJPNkmxNLdITEwzVgLqKihKBUqDTYy
- Ora0FALKNxF5hAAAA
-To: Bjorn Andersson <andersson@kernel.org>, 
- Konrad Dybcio <konradybcio@kernel.org>
-Cc: Stephan Gerhold <stephan.gerhold@linaro.org>, 
- Johan Hovold <johan@kernel.org>, linux-arm-msm@vger.kernel.org, 
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-X-Mailer: b4 0.14.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1046;
- i=dmitry.baryshkov@linaro.org; h=from:subject:message-id;
- bh=fkxNactTtfPV+pF7AYrystjYaIivYRerWOIrN2LwuIQ=;
- b=owEBbQGS/pANAwAKAYs8ij4CKSjVAcsmYgBm6s9yWIoJMvUmfey0hpRsOxNUQUFmdSXLFwiYM
- FTFD77VoAiJATMEAAEKAB0WIQRMcISVXLJjVvC4lX+LPIo+Aiko1QUCZurPcgAKCRCLPIo+Aiko
- 1ZEHCACQgxEjTJtoCYuxeGuePeXLJn3K8bG5i7Np30n4hEb8LHST6j+h5b8Ult7yL3fI4XhXLMR
- 9b7vYGNQxUd7x7zo5gEcDnRllKBezAgqcG3vQNTB6VSjtdwJ508ahxStFd8lnVxuEAffJCQK62J
- 7y1pwFi7bvxFpZLtIcTpA08Aoj+1NWJJHdJKoExnhSvOJBYdyLRU+C+slK5rOjVwfcoB10lPLNM
- S9wnK2vUXhhBCWgK6PLpTs5ivEcXF8TEX5g/1HVI3FDDSWrqu7lJuANFYgY4VrOBR7VozwmNMJw
- vpDYyu+iI3yJiavKcxi3erCkLq33wwLg3B6Bu9lkhTPc7nwN
-X-Developer-Key: i=dmitry.baryshkov@linaro.org; a=openpgp;
- fpr=8F88381DD5C873E4AE487DA5199BF1243632046A
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <dec5992d78db5bc556600c64ce72aa9b19c96c77.1726658138.git.jani.nikula@intel.com>
 
-On X1E8 devices root ADSP domain should have tms/pdr_enabled registered.
-Change the PDM domain data that is used for X1E80100 ADSP.
+Hi Jani,
 
-Fixes: bd6db1f1486e ("soc: qcom: pd_mapper: Add X1E80100")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
----
- drivers/soc/qcom/qcom_pd_mapper.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On Wed, Sep 18, 2024 at 02:17:44PM +0300, Jani Nikula wrote:
+> CONFIG_DRM_I915_USERFAULT_AUTOSUSPEND is an int, defaulting to 250. When
+> the wakeref is non-zero, it's either -1 or a dynamically allocated
+> pointer, depending on CONFIG_DRM_I915_DEBUG_RUNTIME_PM. It's likely that
+> the code works by coincidence with the bitwise AND, but with
+> CONFIG_DRM_I915_DEBUG_RUNTIME_PM=y, there's the off chance that the
+> condition evaluates to false, and intel_wakeref_auto() doesn't get
+> called. Switch to the intended logical AND.
+> 
+> Fixes: ad74457a6b5a ("drm/i915/dgfx: Release mmap on rpm suspend")
+> Cc: Matthew Auld <matthew.auld@intel.com>
+> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> Cc: Anshuman Gupta <anshuman.gupta@intel.com>
+> Cc: Andi Shyti <andi.shyti@linux.intel.com>
+> Cc: <stable@vger.kernel.org> # v6.1+
+> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+> ---
+>  drivers/gpu/drm/i915/gem/i915_gem_ttm.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/i915/gem/i915_gem_ttm.c b/drivers/gpu/drm/i915/gem/i915_gem_ttm.c
+> index 5c72462d1f57..c157ade48c39 100644
+> --- a/drivers/gpu/drm/i915/gem/i915_gem_ttm.c
+> +++ b/drivers/gpu/drm/i915/gem/i915_gem_ttm.c
+> @@ -1131,7 +1131,7 @@ static vm_fault_t vm_fault_ttm(struct vm_fault *vmf)
+>  		GEM_WARN_ON(!i915_ttm_cpu_maps_iomem(bo->resource));
+>  	}
+>  
+> -	if (wakeref & CONFIG_DRM_I915_USERFAULT_AUTOSUSPEND)
+> +	if (wakeref && CONFIG_DRM_I915_USERFAULT_AUTOSUSPEND)
 
-diff --git a/drivers/soc/qcom/qcom_pd_mapper.c b/drivers/soc/qcom/qcom_pd_mapper.c
-index c940f4da28ed..9d33a8c71778 100644
---- a/drivers/soc/qcom/qcom_pd_mapper.c
-+++ b/drivers/soc/qcom/qcom_pd_mapper.c
-@@ -519,7 +519,7 @@ static const struct qcom_pdm_domain_data *sm8550_domains[] = {
- 
- static const struct qcom_pdm_domain_data *x1e80100_domains[] = {
- 	&adsp_audio_pd,
--	&adsp_root_pd,
-+	&adsp_root_pd_pdr,
- 	&adsp_charger_pd,
- 	&adsp_sensor_pd,
- 	&cdsp_root_pd,
+ops!
 
----
-base-commit: 32ffa5373540a8d1c06619f52d019c6cdc948bb4
-change-id: 20240918-x1e-fix-pdm-pdr-b7c4d978aaf3
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
 
-Best regards,
--- 
-Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Andi
 
+>  		intel_wakeref_auto(&to_i915(obj->base.dev)->runtime_pm.userfault_wakeref,
+>  				   msecs_to_jiffies_timeout(CONFIG_DRM_I915_USERFAULT_AUTOSUSPEND));
+>  
+> -- 
+> 2.39.2
 
