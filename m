@@ -1,65 +1,66 @@
-Return-Path: <stable+bounces-76640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76641-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAA6997B863
-	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 09:18:26 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E98A697B868
+	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 09:18:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80B47284BC1
-	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 07:18:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AB280284C33
+	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 07:18:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBBB516FF3B;
-	Wed, 18 Sep 2024 07:18:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2998B16CD33;
+	Wed, 18 Sep 2024 07:18:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TiUelxl7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O7A8z/Uj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A966B169AE6;
-	Wed, 18 Sep 2024 07:18:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D763F16BE14;
+	Wed, 18 Sep 2024 07:18:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726643882; cv=none; b=mwug8cL/HEopLfGr6l2yp+ezPCRSh2FBsZtIjoQI7XE1LJQLzHFncVTSMuL3zodr2XZjBcytfJcJZ4dRN6bD/7irESKdJbV7t6Tg2IbJYSC7M/rgZVy0Ku6jNPCwNQpvIiEb8+dSkj6ZygxeX+OoVUa0gfC9Z4UYpN4qJyDCpuo=
+	t=1726643889; cv=none; b=GOjhi1vMDvWGNFS6W6AEirURuHT8q9Eo6APbh5DkGrIYdpSWs3s/NtBmydFGGLkbuMch2HbnjgEl4A35ulJsXmKP+Cvcrt70V+0CyXmQB05jKspaSHSY/2w5P75BvEiNKoenIiPhzJtu630C243ZFPb86OSqRLEQf1Uq8LUihJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726643882; c=relaxed/simple;
-	bh=Y9jbd4JWFQB6z2sA5iWC4S4FUg6AOW2guJLi3l2dohY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FC4SI+bYB2yhcXUtlMWXTPzyFxObXIiqEwdX1XaFaR6r5pnvwafP9JJurWTleVJwpYfEb/AyTML70A2NPLddx1kSqFzBOYBj0XxNgJyE5xZ1zo5E5lGkoVFPYrjNQRhIt2xLLSV9HUIjNS9TqWb53ITwsPBMu0UPOLnuGmXKvwc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TiUelxl7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4040C4CEC3;
-	Wed, 18 Sep 2024 07:17:59 +0000 (UTC)
+	s=arc-20240116; t=1726643889; c=relaxed/simple;
+	bh=VuIhgX0aIBpCJp0kNodFaEnnzvm7wiw0m0bIXLnJIYA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=In78/rbNNG2XGCIBGWOzphjwGXU5PAOZMe+yXEchvDBXyK1kleZDLKJENpZjEf7D82EGWetcuJ+yQOmWjAmb7QGIHKyN19pqjSKsiOSEJb39rKnqJsdJIDaawLJI/6y5NnGeYEdjHRggbR1obHfeFTzjPq0ZZINEf30jEJVtAqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O7A8z/Uj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 562C3C4CEC3;
+	Wed, 18 Sep 2024 07:18:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726643882;
-	bh=Y9jbd4JWFQB6z2sA5iWC4S4FUg6AOW2guJLi3l2dohY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TiUelxl7xtEQ2ZWSMgLoBN5lh7gFpTd/whJLm9+KQWphDIDiHsBtPoFlPSjc0m9oi
-	 3gYwcl34kVAMDQokyLDl3TH59bFq0k6vO4lo7fNB2QiAl5n9opSkkppaORbV9zRXpG
-	 RvhC19xj4RblcFkkXyWn7qhCjWEiU8lboen5aoJuGH6jNqRihAi1ikH+8g+63qxmnn
-	 cZJXdDCzUlX+2++Ce56lJlSFWjj4R9jtWupSoVRpOGBAsvh6uV5CwYM7crSYG0Er3E
-	 RaDdO1F5wVi8traFKW3k5cOaBcCRq0YJtGnAiqB3oGyHATztZsP0Bl1Zf/YBRaT51R
-	 /dqkUZi0MyX7w==
+	s=k20201202; t=1726643889;
+	bh=VuIhgX0aIBpCJp0kNodFaEnnzvm7wiw0m0bIXLnJIYA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=O7A8z/UjjTK0WJBU069eSwmSZXIQn8qt/Qoll9WDoENZqcO2lxA2/ouPplRIdtcfj
+	 4VYYwem7Elmv23hqoITHcOAhzPXCSUdYZ7+AfM16bwvL1bldlvmgQf+V3N9qV2K+Hm
+	 kTSKdselspsxt+maCf/aF6IwPOu30+P6JWG9l7ySEopg8vqJrDWwA3d79Hd9S9k2bQ
+	 9eObea0auO5j78ygSo/l9tu2a4MObNV7y8wWy3B0LAejKob4V7ldBiZFjmAOCg1Enk
+	 CKiD1RgCFlu8LTxGQTmWjVqQhvrZkRO3jLndtBaBEAoM45edcCAOCQ8Ugcp8g/VSoc
+	 6qfoA8iLSznvw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kenneth Feng <kenneth.feng@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Michael Kelley <mhklinux@outlook.com>,
+	Roman Kisel <romank@linux.microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	evan.quan@amd.com,
-	christian.koenig@amd.com,
-	Xinhui.Pan@amd.com,
-	airlied@linux.ie,
-	daniel@ffwll.ch,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.10 3/3] drm/amd/pm: fix the pp_dpm_pcie issue on smu v14.0.2/3
-Date: Wed, 18 Sep 2024 02:36:11 -0400
-Message-ID: <20240918063614.238807-3-sashal@kernel.org>
+	kys@microsoft.com,
+	haiyangz@microsoft.com,
+	sthemmin@microsoft.com,
+	decui@microsoft.com,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	linux-hyperv@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 1/2] x86/hyperv: Set X86_FEATURE_TSC_KNOWN_FREQ when Hyper-V provides frequency
+Date: Wed, 18 Sep 2024 02:36:26 -0400
+Message-ID: <20240918063628.238885-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240918063614.238807-1-sashal@kernel.org>
-References: <20240918063614.238807-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -68,43 +69,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.10.10
+X-stable-base: Linux 6.6.51
 Content-Transfer-Encoding: 8bit
 
-From: Kenneth Feng <kenneth.feng@amd.com>
+From: Michael Kelley <mhklinux@outlook.com>
 
-[ Upstream commit 7a0982523cf3ff00f35b210fc3405c528a2ce7af ]
+[ Upstream commit 8fcc514809de41153b43ccbe1a0cdf7f72b78e7e ]
 
-fix the pp_dpm_pcie issue on smu v14.0.2/3 as below:
-0: 2.5GT/s, x4 250Mhz
-1: 8.0GT/s, x4 616Mhz *
-2: 8.0GT/s, x4 1143Mhz *
-the middle level can be removed since it is always skipped on
-smu v14.0.2/3
+A Linux guest on Hyper-V gets the TSC frequency from a synthetic MSR, if
+available. In this case, set X86_FEATURE_TSC_KNOWN_FREQ so that Linux
+doesn't unnecessarily do refined TSC calibration when setting up the TSC
+clocksource.
 
-Signed-off-by: Kenneth Feng <kenneth.feng@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit fedf6db3ea9dc5eda0b78cfbbb8f7a88b97e5b24)
+With this change, a message such as this is no longer output during boot
+when the TSC is used as the clocksource:
+
+[    1.115141] tsc: Refined TSC clocksource calibration: 2918.408 MHz
+
+Furthermore, the guest and host will have exactly the same view of the
+TSC frequency, which is important for features such as the TSC deadline
+timer that are emulated by the Hyper-V host.
+
+Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+Reviewed-by: Roman Kisel <romank@linux.microsoft.com>
+Link: https://lore.kernel.org/r/20240606025559.1631-1-mhklinux@outlook.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <20240606025559.1631-1-mhklinux@outlook.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/x86/kernel/cpu/mshyperv.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c
-index 06b65159f7b4..33c7740dd50a 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c
-@@ -672,6 +672,9 @@ static int smu_v14_0_2_set_default_dpm_table(struct smu_context *smu)
- 		pcie_table->clk_freq[pcie_table->num_of_link_levels] =
- 					skutable->LclkFreq[link_level];
- 		pcie_table->num_of_link_levels++;
-+
-+		if (link_level == 0)
-+			link_level++;
+diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyperv.c
+index e6bba12c759c..9a7cd3ce59ed 100644
+--- a/arch/x86/kernel/cpu/mshyperv.c
++++ b/arch/x86/kernel/cpu/mshyperv.c
+@@ -423,6 +423,7 @@ static void __init ms_hyperv_init_platform(void)
+ 	    ms_hyperv.misc_features & HV_FEATURE_FREQUENCY_MSRS_AVAILABLE) {
+ 		x86_platform.calibrate_tsc = hv_get_tsc_khz;
+ 		x86_platform.calibrate_cpu = hv_get_tsc_khz;
++		setup_force_cpu_cap(X86_FEATURE_TSC_KNOWN_FREQ);
  	}
  
- 	return 0;
+ 	if (ms_hyperv.priv_high & HV_ISOLATION) {
 -- 
 2.43.0
 
