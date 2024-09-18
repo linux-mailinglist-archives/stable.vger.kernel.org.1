@@ -1,146 +1,97 @@
-Return-Path: <stable+bounces-76651-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A581B97B992
-	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 10:48:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5447A97B9BD
+	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 11:00:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7B5F1C211AD
-	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 08:48:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 870DE1C23A2F
+	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 09:00:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C29F81714AE;
-	Wed, 18 Sep 2024 08:48:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C813E17994F;
+	Wed, 18 Sep 2024 09:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=maxima.ru header.i=@maxima.ru header.b="ZCuKeT3K"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="L+F+53r/"
 X-Original-To: stable@vger.kernel.org
-Received: from ksmg02.maxima.ru (ksmg02.maxima.ru [81.200.124.39])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9DFF1779B8;
-	Wed, 18 Sep 2024 08:48:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=81.200.124.39
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1405A178376;
+	Wed, 18 Sep 2024 09:00:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726649321; cv=none; b=ApeZjqsWWnCYmpboHRXfkf2LR8icIKO6Z4Sogl6JfP7Hoo86xQj9t3WrDyjBHVxRHUGoGQSOzAfS2agt1o66kQd58hkDY2zwZ4vde7dLucH2ZTvYqqU97msjhkEiESEv2k6lVZxCNPiYC3UEKdH/JZMZX4h0mEKSWEjKGbAFtzo=
+	t=1726650013; cv=none; b=TldVZCU8ycVdhUdv7R9J2By5n7l/OBBSCeTi4shED2QGVemWBtKwaiBsV3KDlcQQdc0VSf4Y7ncjt2FDqpBSq3vZXpshxAKmOkjJs31pvV8qzLFu2SA5b1MvU6CXet9AxYMUBggqDb++C6BpDDu1Ew6U2xrKF4V/NgUd4mxAUT0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726649321; c=relaxed/simple;
-	bh=wm8Ygh+nikDrz9gptJvvj5z1gWgziMGvh7tO67oEa+g=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=S4IBBovy9/Gy1t4CYlEyuwijDwnFUoFwByS5M2SA42WaQYdGoXMUGxEsDhcz2lyE7cRgi5TVVvt+c6ZzI7WqvDfKAtzGlpAykyABYNlk7T4CByXUCuMOJBe+TplpoQGEDfmuGzCmsYsJV6E2M5Axf85NZAME4IVGtNkypmdwHMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maxima.ru; spf=pass smtp.mailfrom=maxima.ru; dkim=pass (2048-bit key) header.d=maxima.ru header.i=@maxima.ru header.b=ZCuKeT3K; arc=none smtp.client-ip=81.200.124.39
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=maxima.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=maxima.ru
-Received: from ksmg02.maxima.ru (localhost [127.0.0.1])
-	by ksmg02.maxima.ru (Postfix) with ESMTP id EAA891E0008;
-	Wed, 18 Sep 2024 11:48:26 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 ksmg02.maxima.ru EAA891E0008
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=maxima.ru; s=sl;
-	t=1726649306; bh=4didXC8oklQfIE0UM2UabfJum3DZPrOiUxM6+vR/FuM=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
-	b=ZCuKeT3K17L3Uiu5uSTqkq87sYD6I3SIrkhejr23+1b+9mjdq+mnImsw8e0O+OZcG
-	 foaiFeCFBxa864n63oVUk3HgLzwPjDhUu1fFzGxw6i2GwOzUIpU7HoagrLXPFYH/om
-	 V+vWEbyuNxhFHHjtbbwKthFtHWHFk5Sv7fGQgSWwRyLuJZNcuBm38PG8ZfV/xc6NLj
-	 fPrD7NyFUjqGKmcVHxwmLSWXkZkRfucHCaszKhiEfVva5q2Urt2GG+jl9W+dvEg5MS
-	 V7CEPg0vU6Tfc6kJiXrVWtx5b3XmHfFQH7kk7IHJG08d0J/VkO7fbkp9mxhHRokuBV
-	 xoiWJm2sS5lqg==
-Received: from ksmg02.maxima.ru (unknown [81.200.124.62])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(Client CN "*.maxima.ru", Issuer "GlobalSign GCC R3 DV TLS CA 2020" (verified OK))
-	by ksmg02.maxima.ru (Postfix) with ESMTPS;
-	Wed, 18 Sep 2024 11:48:26 +0300 (MSK)
-Received: from GS-NOTE-190.mt.ru (10.0.247.62) by mmail-p-exch02.mt.ru
- (81.200.124.62) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.1544.4; Wed, 18 Sep
- 2024 11:48:14 +0300
-From: Murad Masimov <m.masimov@maxima.ru>
-To: <stable@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: Murad Masimov <m.masimov@maxima.ru>, Felix Kuehling
-	<Felix.Kuehling@amd.com>, Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>, "Pan, Xinhui"
-	<Xinhui.Pan@amd.com>, David Airlie <airlied@gmail.com>, Daniel Vetter
-	<daniel@ffwll.ch>, "open list:AMD KFD" <amd-gfx@lists.freedesktop.org>, "open
- list:DRM DRIVERS" <dri-devel@lists.freedesktop.org>, open list
-	<linux-kernel@vger.kernel.org>, <lvc-project@linuxtesting.org>, Philip Yang
-	<Philip.Yang@amd.com>, Alex Sierra <alex.sierra@amd.com>
-Subject: [PATCH 6.1] drm/amdkfd: Skip handle mapping SVM range with no GPU access
-Date: Wed, 18 Sep 2024 11:47:16 +0300
-Message-ID: <20240918084718.958-1-m.masimov@maxima.ru>
-X-Mailer: git-send-email 2.46.0.windows.1
+	s=arc-20240116; t=1726650013; c=relaxed/simple;
+	bh=zpWsjuIBWVAiCqX8yerATDfj5psK97U5Z6dT4Yxw4Tw=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=gj/b6MZZFJ4E0yUhY3uj0bvcrQ/NOQTRSAUGmq3XdCZjzc470IK+FQpgKGTFrx+RY0pgS7XrVduv3aGjFIquxhDpHwzX6ZUR9plgbDYagRtSMA8UP0EeJBYaAFpXcC0JaokkTjWXRheS9V388D16kZgYIsBm9nE1mdY5Kl1ltAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=L+F+53r/; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 48I904cD41868928, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1726650005; bh=zpWsjuIBWVAiCqX8yerATDfj5psK97U5Z6dT4Yxw4Tw=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=L+F+53r/PLprrq9jPOE4sNVVK0XsuTCcXfvVkCi9TFADZ+aOtg0wFcs0vrhoYbL3q
+	 ckr+N+bGpe/Jq3yePY2wF9HSOQWyIKU+nHEM+2IwnBlezMuztHwvgSjOGX0k/ZK9rk
+	 EFWUITonQXwtuThYFrb08DwF8ef+Kozi1HNIRGM5PlpMTNtblhQW33mHR7Z0X61wZi
+	 BiP5KBGYjR9Inw9XZuwrt5WoDArfRYRmWntPsrOP8V90yBQ/bH9Oapb3qWTFv/64hL
+	 Pj5l6Oktwv8UvPjg+mNg5yI3PbCM6FcNi7DnKwjkhNg4CD63wJXSvi/43C8WMLAJHZ
+	 SSS3Je5pSmSvA==
+Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
+	by rtits2.realtek.com.tw (8.15.2/3.05/5.92) with ESMTPS id 48I904cD41868928
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 18 Sep 2024 17:00:05 +0800
+Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
+ RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 18 Sep 2024 17:00:05 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Wed, 18 Sep 2024 17:00:04 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f]) by
+ RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f%11]) with mapi id
+ 15.01.2507.035; Wed, 18 Sep 2024 17:00:04 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: =?utf-8?B?TWFyY2VsIFdlacOfZW5iYWNo?= <mweissenbach@ignaz.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+CC: "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: RTL8852BE wifi no longer working after 6.11 upgrade
+Thread-Topic: RTL8852BE wifi no longer working after 6.11 upgrade
+Thread-Index: AQHbCMemb6H6HxFviUGmiPt2/8qxPLJdDI+A//+Vo4CAAJ3wIA==
+Date: Wed, 18 Sep 2024 09:00:04 +0000
+Message-ID: <63a3ef5acd70454e9f8db114204e2e2d@realtek.com>
+References: <f755bbeb5bbb479f9142bf223e71102c@realtek.com>
+ <20240918073237.Horde.VLueh0_KaiDw-9asEEcdM84@ignaz.org>
+In-Reply-To: <20240918073237.Horde.VLueh0_KaiDw-9asEEcdM84@ignaz.org>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: mt-exch-01.mt.ru (91.220.120.210) To mmail-p-exch02.mt.ru
- (81.200.124.62)
-X-KSMG-Rule-ID: 7
-X-KSMG-Message-Action: clean
-X-KSMG-AntiSpam-Lua-Profiles: 187815 [Sep 18 2024]
-X-KSMG-AntiSpam-Version: 6.1.1.5
-X-KSMG-AntiSpam-Envelope-From: m.masimov@maxima.ru
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Auth: dmarc=none header.from=maxima.ru;spf=none smtp.mailfrom=maxima.ru;dkim=none
-X-KSMG-AntiSpam-Info: LuaCore: 34 0.3.34 8a1fac695d5606478feba790382a59668a4f0039, {rep_avail}, {Tracking_from_domain_doesnt_match_to}, maxima.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;81.200.124.62:7.1.2;ksmg02.maxima.ru:7.1.1;127.0.0.199:7.1.2, FromAlignment: s, ApMailHostAddress: 81.200.124.62, {DNS response errors}
-X-MS-Exchange-Organization-SCL: -1
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiPhishing: Clean
-X-KSMG-LinksScanning: Clean
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.0.1.6960, bases: 2024/09/18 05:45:00 #26614741
-X-KSMG-AntiVirus-Status: Clean, skipped
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-From: Philip Yang <Philip.Yang@amd.com>
-
-commit 8c45b31909b730f9c7b146588e038f9c6553394d upstream.
-
-If the SVM range has no GPU access nor access-in-place attribute,
-validate and map to GPU should skip the range.
-
-Add NULL pointer check if find_first_bit(ctx->bitmap, MAX_GPU_INSTANCE)
-returns MAX_GPU_INSTANCE as gpuidx if ctx->bitmap is empty.
-
-Signed-off-by: Philip Yang <Philip.Yang@amd.com>
-Reviewed-by: Alex Sierra <alex.sierra@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-[m.masimov@maxima.ru: In order to adapt this patch to branch 6.1
-ctx was treated as a variable and not as a pointer.]
-Signed-off-by: Murad Masimov <m.masimov@maxima.ru>
----
- drivers/gpu/drm/amd/amdkfd/kfd_svm.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
-
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-index 7fa5e70f1aac..a44781b66af9 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_svm.c
-@@ -1491,6 +1491,8 @@ static void *kfd_svm_page_owner(struct kfd_process *p, int32_t gpuidx)
- 	struct kfd_process_device *pdd;
- 
- 	pdd = kfd_process_device_from_gpuidx(p, gpuidx);
-+	if (!pdd)
-+		return NULL;
- 
- 	return SVM_ADEV_PGMAP_OWNER(pdd->dev->adev);
- }
-@@ -1561,10 +1563,10 @@ static int svm_range_validate_and_map(struct mm_struct *mm,
- 	}
- 
- 	if (bitmap_empty(ctx.bitmap, MAX_GPU_INSTANCE)) {
--		if (!prange->mapped_to_gpu)
--			return 0;
--
- 		bitmap_copy(ctx.bitmap, prange->bitmap_access, MAX_GPU_INSTANCE);
-+		if (!prange->mapped_to_gpu ||
-+		    bitmap_empty(ctx.bitmap, MAX_GPU_INSTANCE))
-+			return 0;
- 	}
- 
- 	if (prange->actual_loc && !prange->ttm_res) {
--- 
-2.39.2
-
+TWFyY2VsIFdlacOfZW5iYWNoIDxtd2Vpc3NlbmJhY2hAaWduYXoub3JnPiB3cm90ZToNCj4gU2V0
+dGluZyByZXQgdG8gLTEgZGlkIHRoZSBqb2IsIHdpZmkgd29ya3MgYWdhaW4gYXMgZXhwZWN0ZWQu
+DQo+IA0KPiBIZXJlIGlzIHRoZSBvdXRwdXQgb2YgZG1pZGVjb2RlDQo+IGh0dHBzOi8vaWduYXou
+b3JnL25leHRjbG91ZC9pbmRleC5waHAvcy90WmRqWVlkeWVXcEhQSDQNCj4gDQoNCkkgd3JvdGUg
+YSBxdWlyayBhY2NvcmRpbmcgdG8geW91ciBkbWlkZWNvZGUgWzFdLiBQbGVhc2UgdHJ5IGlmIHRo
+aXMgY2FuDQpzdGlsbCB3b3JrIHRvIHlvdS4gSWYgeWVzLCBwbGVhc2UgaGVscCB0byByZXBseSBh
+IFRlc3RlZC1ieSB0YWcgdGhlcmUuDQpUaGFua3MuIA0KDQpbMV0gaHR0cHM6Ly9sb3JlLmtlcm5l
+bC5vcmcvbGludXgtd2lyZWxlc3MvMjAyNDA5MTgwODU1NTEuNTQ2MTEtMS1wa3NoaWhAcmVhbHRl
+ay5jb20vVC8jdQ0KDQoNCg==
 
