@@ -1,111 +1,118 @@
-Return-Path: <stable+bounces-76635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8ECA997B7E6
-	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 08:23:09 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8412697B85C
+	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 09:17:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1D81AB268D7
-	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 06:23:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B21B31C212B4
+	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 07:17:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AE68165EE8;
-	Wed, 18 Sep 2024 06:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D3D3166F17;
+	Wed, 18 Sep 2024 07:17:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="W+Hg6mF/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="myFs5mmJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0D0339A0;
-	Wed, 18 Sep 2024 06:22:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26AEA15B0F2;
+	Wed, 18 Sep 2024 07:17:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726640567; cv=none; b=T2uqAY189HX97I7F4E4BG0Zm4WtyvIr28YWcX0sRAIG/Gyu1zAOl8cC5iAqjrqA8WSXbvQvd0qSRc8MxwGOZBEKNqjl8qnThsXmhppzRLeqy8TeHoE9D9frcYBWTXHzCSS/Sm4TJcSCr1V//sdcSTVjS3/xkgbJoDb5Hgc7Bz7Q=
+	t=1726643876; cv=none; b=CHATjMus2jjtIwWVgJfakWuDyCOo2Y4ep4MFVJP61/Ezuirp9GE7XqG2wNakFAGWO4+uAuCI3sAVT2r8NA61rvbIusSazjYg+8JoW9hVZz2yRmI+icMFEL76yfvu0QHIIlrgZ3EQI+ijjaM/1wiE39tXHSx2lx8j83J1G2Gv4jY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726640567; c=relaxed/simple;
-	bh=2Nf2xXXqOPusb/SiXKCGS0TviajEiQ1Gtw/T5EX2xWg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GZhGOk0xLUF4QkOx3KN7H/D+pnBuqL1MEycjf2f9IEunp70TSzpC3xVUDrKvbFLAB3M/sqnHOSd0xw/K/rZhmc/iioXSlv10aUI+f6a9slI8lcv/MclpWUS3ni0sw52Njzi3xee4sbBj0HamzTvK5QoWyEvDgre+WOOAtNWnFNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=W+Hg6mF/; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1726640566; x=1758176566;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=2Nf2xXXqOPusb/SiXKCGS0TviajEiQ1Gtw/T5EX2xWg=;
-  b=W+Hg6mF/OI0H8sOOCIV2vSZwY/xqzEH3JYGa1omgxHietabF0O2pzMYZ
-   4nm57YSdik4Xk+ITe+KJ0+S9pBs82DRVQsUKTRyEHLSep1j4lSJxdi1l0
-   6gEQ1c0wZPtf8hg+a1j544nTj6b0CY3ysBFNaaziXL9tcOY54EQ33o5sq
-   DHvDi0Y/cKdwylv5uVgn3YXNoEuLyiMeumVaLtLMCiBfJJeOEYTlr8H49
-   o2D53UKDWVxtXDWw3uDOml8eCXm8CqapHzFy6RRBudhFfcEiDwHqpjObL
-   7XpSrelSNri2ZyKZS41JXZqXFsFlIk0Is01D/5FIF2MEzGO8VINmX/jd2
-   Q==;
-X-CSE-ConnectionGUID: js8VqP5pRIuIlSgrdn2OrQ==
-X-CSE-MsgGUID: Qr3n4ErGR3i8Oz8bmF0Xkw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11198"; a="25653554"
-X-IronPort-AV: E=Sophos;i="6.10,235,1719903600"; 
-   d="scan'208";a="25653554"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2024 23:22:38 -0700
-X-CSE-ConnectionGUID: vHY8YzuzRwC1U/FFOy8dKw==
-X-CSE-MsgGUID: BOsk7cVsQvCYWiTNiQ/SWQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,235,1719903600"; 
-   d="scan'208";a="69444540"
-Received: from ly-workstation.sh.intel.com (HELO ly-workstation) ([10.239.161.23])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2024 23:22:35 -0700
-Date: Wed, 18 Sep 2024 14:21:25 +0800
-From: "Lai, Yi" <yi1.lai@linux.intel.com>
-To: Jens Axboe <axboe@kernel.dk>
-Cc: Felix Moessbauer <felix.moessbauer@siemens.com>, asml.silence@gmail.com,
-	linux-kernel@vger.kernel.org, io-uring@vger.kernel.org,
-	cgroups@vger.kernel.org, dqminh@cloudflare.com, longman@redhat.com,
-	adriaan.schmidt@siemens.com, florian.bezdeka@siemens.com,
-	stable@vger.kernel.org, syzkaller-bugs@googlegroups.com,
-	pengfei.xu@intel.com, yi1.lai@intel.com
-Subject: Re: [PATCH 1/1] io_uring/sqpoll: do not allow pinning outside of
- cpuset
-Message-ID: <ZupxZeILxuKqFsRq@ly-workstation>
-References: <20240909150036.55921-1-felix.moessbauer@siemens.com>
- <ZupPb3OH3tnM2ARj@ly-workstation>
- <5237b4c0-973f-44cc-a6ee-08302871fd19@kernel.dk>
+	s=arc-20240116; t=1726643876; c=relaxed/simple;
+	bh=mkiRjtjab9a+5gPBHZUJp8eiyvFsih6ItF8U9OmClko=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cgj3J57gXF8OGpeteBAFyvkR2kKbspInPZQhEh+SX4tXCn+0sdHqeivXFiXJR99ThLRWLmMzU03eh1USGILIPwLbErdgo87v5kVLO4bgNFtaTtZkbbG99r81ZHAdN929VsLNW3NH4Pwdc4ZupAj4FbijGvI5YbUcSdVBAY88Yqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=myFs5mmJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 607DEC4CEC3;
+	Wed, 18 Sep 2024 07:17:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1726643875;
+	bh=mkiRjtjab9a+5gPBHZUJp8eiyvFsih6ItF8U9OmClko=;
+	h=From:To:Cc:Subject:Date:From;
+	b=myFs5mmJEwLzvCiObKYbYs+JYJYBcH01gF+AG0njhvL9V9/7RBB7lTBiL8bjBrOOf
+	 Gvq0rexR4S5p5UQFEocQNiZqR+wNOVO3BxytATDmScuCnPHGb1kGAnZblA+hI0BLqM
+	 GoNbjCrE3eU5dEM+Z21Ksar+E1j6uLqkvzAeBkIT6QymnRcbdeDbxtWkW/9bIhsRh0
+	 mthSdG7irDtAcMeRDLhTAGHPdQ8ojAarNfZXoydC7eWBhuXUjb9f30OMHa84OM9j7F
+	 VrI8B8uvaqN+kFRfzSWYib990jIPRxccgU0zMsQkd4+ab0yAw0XdwhKM6iLg6Y8wWw
+	 fg2qBkZ3/S1Yw==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Michael Kelley <mhklinux@outlook.com>,
+	Roman Kisel <romank@linux.microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	kys@microsoft.com,
+	haiyangz@microsoft.com,
+	sthemmin@microsoft.com,
+	decui@microsoft.com,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	linux-hyperv@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.10 1/3] x86/hyperv: Set X86_FEATURE_TSC_KNOWN_FREQ when Hyper-V provides frequency
+Date: Wed, 18 Sep 2024 02:36:09 -0400
+Message-ID: <20240918063614.238807-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5237b4c0-973f-44cc-a6ee-08302871fd19@kernel.dk>
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.10.10
+Content-Transfer-Encoding: 8bit
 
-Thanks for reply. I will include lkp into search database before sending
-out fuzzing findings.
+From: Michael Kelley <mhklinux@outlook.com>
 
-Regards,
-Yi Lai
+[ Upstream commit 8fcc514809de41153b43ccbe1a0cdf7f72b78e7e ]
 
-On Wed, Sep 18, 2024 at 12:16:41AM -0600, Jens Axboe wrote:
-> On 9/17/24 9:56 PM, Lai, Yi wrote:
-> > Hi Felix Moessbauer,
-> > 
-> > Greetings!
-> > 
-> > I used Syzkaller and found that there is KASAN: use-after-free Read in io_sq_offload_create in Linux-next tree - next-20240916.
-> > 
-> > After bisection and the first bad commit is:
-> > "
-> > f011c9cf04c0 io_uring/sqpoll: do not allow pinning outside of cpuset
-> > "
-> 
-> This is known and fixed:
-> 
-> https://git.kernel.dk/cgit/linux/commit/?h=for-6.12/io_uring&id=a09c17240bdf2e9fa6d0591afa9448b59785f7d4
-> 
-> -- 
-> Jens Axboe
+A Linux guest on Hyper-V gets the TSC frequency from a synthetic MSR, if
+available. In this case, set X86_FEATURE_TSC_KNOWN_FREQ so that Linux
+doesn't unnecessarily do refined TSC calibration when setting up the TSC
+clocksource.
+
+With this change, a message such as this is no longer output during boot
+when the TSC is used as the clocksource:
+
+[    1.115141] tsc: Refined TSC clocksource calibration: 2918.408 MHz
+
+Furthermore, the guest and host will have exactly the same view of the
+TSC frequency, which is important for features such as the TSC deadline
+timer that are emulated by the Hyper-V host.
+
+Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+Reviewed-by: Roman Kisel <romank@linux.microsoft.com>
+Link: https://lore.kernel.org/r/20240606025559.1631-1-mhklinux@outlook.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <20240606025559.1631-1-mhklinux@outlook.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/x86/kernel/cpu/mshyperv.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyperv.c
+index e0fd57a8ba84..c3e38eaf6d2f 100644
+--- a/arch/x86/kernel/cpu/mshyperv.c
++++ b/arch/x86/kernel/cpu/mshyperv.c
+@@ -424,6 +424,7 @@ static void __init ms_hyperv_init_platform(void)
+ 	    ms_hyperv.misc_features & HV_FEATURE_FREQUENCY_MSRS_AVAILABLE) {
+ 		x86_platform.calibrate_tsc = hv_get_tsc_khz;
+ 		x86_platform.calibrate_cpu = hv_get_tsc_khz;
++		setup_force_cpu_cap(X86_FEATURE_TSC_KNOWN_FREQ);
+ 	}
+ 
+ 	if (ms_hyperv.priv_high & HV_ISOLATION) {
+-- 
+2.43.0
+
 
