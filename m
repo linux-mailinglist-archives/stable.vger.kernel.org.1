@@ -1,112 +1,167 @@
-Return-Path: <stable+bounces-76712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76713-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E4F5297BFF4
-	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 20:02:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F33997C01E
+	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 20:29:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7CF741F223DF
-	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 18:02:51 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1423F283741
+	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 18:29:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1361817C98E;
-	Wed, 18 Sep 2024 18:02:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 805501C9EC5;
+	Wed, 18 Sep 2024 18:29:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="idT5mADP"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="FeWKh0CS"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 289051898E0
-	for <stable@vger.kernel.org>; Wed, 18 Sep 2024 18:02:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD82E17A597;
+	Wed, 18 Sep 2024 18:29:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726682565; cv=none; b=HC892++kOL5naTzczw5WFZ9LM9rRAneEvBmJEc+nZz+jekZwlj3l0Aas+4BzWQjhauDpQ90uiD+I5jxDUHoGNqKlmbejPfsZbxTtZPYJcvw33l93+R6KdKHBH5X+DJ3Ki4jl+mFbjmvOU6Gf4y5qG7Tef2yEL0Sk8qa2goq2lq0=
+	t=1726684164; cv=none; b=hbiznnTaexKesgqVxcEC1Ae/aQ4qvIAHpAiZdjKbaJfXxndYKKlSjmrei0rII4jKz1F1Z5eApbroWpYH7wpCAJLDxPFEpQLds9e2krvdSvj+b/9R0eFTFhmjoEjc+zmHUMH9um4/Kn/8B5qLrzBYLtnCOyrXwVAeJC6fGggdgOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726682565; c=relaxed/simple;
-	bh=eydevBGhJQWI1E04KDmItu5tvPwEG5AW7hNQ3eUI0Dg=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=MwYvFSnXqME608cQtaLGXKPd+UKiFmIB2BqXr2cLwcghX46nLYsXHNM/woDV3NHewxMzSxYAcH/Q1PzO2gInwLt4Zk3v2F42OO9gtBp6sYSqHe7zTWq8BFHV3EQJsFt1L+CCNyhLi0DTvTYSQzL9MFNjNjUCdchjCrr/lBSz+Go=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=idT5mADP; arc=none smtp.client-ip=83.149.199.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from fpc (unknown [10.10.165.15])
-	by mail.ispras.ru (Postfix) with ESMTPSA id 6EE21407851B;
-	Wed, 18 Sep 2024 17:55:45 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 6EE21407851B
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1726682145;
-	bh=uuGShs7iKMnmnffCNSbAsLKj+IneYBQ5SRuM2p8K3fQ=;
-	h=Date:From:To:Cc:Subject:From;
-	b=idT5mADPb7/MrEU/srWNQQlj4V2ImdpWoqYTAvj9viXulq+JIhXsblJm7v9JMvpHP
-	 Utx02UEGar4vh/bhe9F9F2iSr+CnDFaLNE+gHyQbDFLD3xMh45m8LWhKtQ5vE25pAo
-	 ew4+K61uU3Pfx+PAROpti4oELcy+pU3eBalzwlZA=
-Date: Wed, 18 Sep 2024 20:55:41 +0300
-From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
-	Sasha Levin <sashal@kernel.org>,
-	Johannes Berg <johannes.berg@intel.com>
-Cc: lvc-project@linuxtesting.org, gerben@altlinux.org, dutyrok@altlinux.org,
-	kovalev@altlinux.org
-Subject: Request to revert "wifi: cfg80211: check wiphy mutex is held for
- wdev mutex" from 5.15/6.1/6.6
-Message-ID: <20240918-d150ee61d40b8f327d65bbf3-pchelkin@ispras.ru>
+	s=arc-20240116; t=1726684164; c=relaxed/simple;
+	bh=nkl580+a0uBOKhc5mcNyZK23ECNeaOr9f9p593OR1Ls=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=T0IzbBYPavO6kYWMm/3csaVkv14bDDniedqZgXoSYUEsgtIhBGmfpQ7GOEXLz5uzKvbf96DQQauq2cWZfQ/n1l9nIMZ/ZX1W0SMfmU0VsFkHegzUBylVpYJJe7LlRXLxWVSlVWvJMl5hjFzrt0+ET3C8wCkQYVsyXMaX+9I0UKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=FeWKh0CS; arc=none smtp.client-ip=199.89.1.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 008.lax.mailroute.net (Postfix) with ESMTP id 4X86cf00qrz6ClY9Q;
+	Wed, 18 Sep 2024 18:29:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1726684150; x=1729276151; bh=n1hkPjiAcjY9wOAoX0674Dr6
+	Aw0zG2371dqlM9Wwe+E=; b=FeWKh0CS6b8lxHH+29DNP7yMc57kcF4LyQH/teCz
+	3lFD32sH3dU67JWm5a4jQ2AX6TXi3jHwsOMQYFWVF9RW/pUsob+7blK19sVyjg9V
+	kE5IOHoqUSDWXFOYH7ryrFHk4RbpremrUf+wOmPrXI3J/FXhc+r0Ccv9/qtHkFO3
+	zws2pyLSvO2KookzuCBwKrpJ87OQfGJQcTeBA1mTlx88e02onNXvy9q09PP26DSV
+	kO1ifqAGCyTfIVSzAIVZepXfPoz2sRR03doo9HBWlhF6+rUFnE57Klb5BQgwqIJe
+	fih/nOUj6tODx+d++nlAQ8mrHTtOWTSFIEvkEphyUSEgFw==
+X-Virus-Scanned: by MailRoute
+Received: from 008.lax.mailroute.net ([127.0.0.1])
+ by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id dXTB5ufEFL7m; Wed, 18 Sep 2024 18:29:10 +0000 (UTC)
+Received: from [100.66.154.22] (unknown [104.135.204.82])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4X86cK4VsMz6ClY9N;
+	Wed, 18 Sep 2024 18:29:05 +0000 (UTC)
+Message-ID: <78c7fc74-81c2-40e4-b050-1d65dec96d0a@acm.org>
+Date: Wed, 18 Sep 2024 11:29:03 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/2] ufs: core: requeue aborted request
+To: =?UTF-8?B?UGV0ZXIgV2FuZyAo546L5L+h5Y+LKQ==?= <peter.wang@mediatek.com>,
+ "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+ "avri.altman@wdc.com" <avri.altman@wdc.com>,
+ "jejb@linux.ibm.com" <jejb@linux.ibm.com>,
+ "alim.akhtar@samsung.com" <alim.akhtar@samsung.com>,
+ "martin.petersen@oracle.com" <martin.petersen@oracle.com>
+Cc: "linux-mediatek@lists.infradead.org"
+ <linux-mediatek@lists.infradead.org>,
+ =?UTF-8?B?SmlhamllIEhhbyAo6YOd5Yqg6IqCKQ==?= <jiajie.hao@mediatek.com>,
+ =?UTF-8?B?Q0MgQ2hvdSAo5ZGo5b+X5p2wKQ==?= <cc.chou@mediatek.com>,
+ =?UTF-8?B?RWRkaWUgSHVhbmcgKOm7g+aZuuWCkSk=?= <eddie.huang@mediatek.com>,
+ =?UTF-8?B?QWxpY2UgQ2hhbyAo6LaZ54+u5Z2HKQ==?= <Alice.Chao@mediatek.com>,
+ "quic_nguyenb@quicinc.com" <quic_nguyenb@quicinc.com>,
+ wsd_upstream <wsd_upstream@mediatek.com>,
+ =?UTF-8?B?RWQgVHNhaSAo6JSh5a6X6LuSKQ==?= <Ed.Tsai@mediatek.com>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ =?UTF-8?B?TGluIEd1aSAo5qGC5p6XKQ==?= <Lin.Gui@mediatek.com>,
+ =?UTF-8?B?Q2h1bi1IdW5nIFd1ICjlt6vpp7/lro8p?= <Chun-hung.Wu@mediatek.com>,
+ =?UTF-8?B?VHVuLXl1IFl1ICjmuLjmlabogb8p?= <Tun-yu.Yu@mediatek.com>,
+ =?UTF-8?B?Q2hhb3RpYW4gSmluZyAo5LqV5pyd5aSpKQ==?=
+ <Chaotian.Jing@mediatek.com>, =?UTF-8?B?UG93ZW4gS2FvICjpq5jkvK/mlocp?=
+ <Powen.Kao@mediatek.com>, =?UTF-8?B?TmFvbWkgQ2h1ICjmnLHoqaDnlLAp?=
+ <Naomi.Chu@mediatek.com>, =?UTF-8?B?UWlsaW4gVGFuICjosK3pupLpup8p?=
+ <Qilin.Tan@mediatek.com>
+References: <20240910073035.25974-1-peter.wang@mediatek.com>
+ <20240910073035.25974-3-peter.wang@mediatek.com>
+ <e42abf07-ba6b-4301-8717-8d5b01d56640@acm.org>
+ <04e392c00986ac798e881dcd347ff5045cf61708.camel@mediatek.com>
+ <858c4b6b-fcbc-4d51-8641-051aeda387c5@acm.org>
+ <524e9da9196cc0acf497ff87eba3a8043b780332.camel@mediatek.com>
+ <6203d7c9-b33c-4bf1-aca3-5fc8ba5636b9@acm.org>
+ <6fc025d7ffb9d702a117381fb5da318b40a24246.camel@mediatek.com>
+ <46d8be04-10db-4de1-8a59-6cd402bcecb1@acm.org>
+ <61a1678cad16dcb15f1e215ff1c47476666f0ee8.camel@mediatek.com>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <61a1678cad16dcb15f1e215ff1c47476666f0ee8.camel@mediatek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On 9/18/24 6:29 AM, Peter Wang (=E7=8E=8B=E4=BF=A1=E5=8F=8B) wrote:
+> Basically, this patch currently only needs to handle requeueing
+> for the error handler abort.
+> The approach for DBR mode and MCQ mode should be consistent.
+> If receive an interrupt response (OCS:ABORTED or INVALID_OCS_VALUE),
+> then set DID_REQUEUE. If there is no interrupt, it will also set
+> SCSI DID_REQUEUE in ufshcd_err_handler through
+> ufshcd_complete_requests
+> with force_compl =3D true.
 
-Upstream commit 1474bc87fe57 ("wifi: cfg80211: check wiphy mutex is held for wdev mutex")
-has been backported recently to 5.15/6.1/6.6 stable branches. After that
-we started seeing numerous lockdep assertion splats in these kernels
-originating from different parts of wireless stack where wdev_lock() is
-called. There is also a huge pile of them already found in Syzbot [1,2,3].
+Reporting a completion for commands cleared by writing into the legacy
+UTRLCLR register is not compliant with any version of the UFSHCI
+standard. Reporting a completion for commands cleared by writing into
+that register is problematic because it causes ufshcd_release_scsi_cmd()
+to be called as follows:
 
-Digging more into the issue it appears that the blamed commit is a part of
-a much larger series [4] with locking cleanups and improvements for the
-whole wireless subsystem. The series was merged at 6.7.
+ufshcd_sl_intr()
+   ufshcd_transfer_req_compl()
+     ufshcd_poll()
+       __ufshcd_transfer_req_compl()
+         ufshcd_compl_one_cqe()
+           cmd->result =3D ...
+           ufshcd_release_scsi_cmd()
+           scsi_done()
 
-The cover letter for the series says:
-  There's a kind of pointless commit in there that adds some wiphy
-  locking assertions to the wdev as an intermediate step, I can
-  remove that if you think that's better. We ran with it at that
-  intermediate stage for a while to test things.
+Calling ufshcd_release_scsi_cmd() if a command has been cleared is
+problematic because the SCSI core does not expect this. If=20
+ufshcd_try_to_abort_task() clears a SCSI command,=20
+ufshcd_release_scsi_cmd() must not be called until the SCSI core
+decides to release the command. This is why I wrote in a previous mail
+that I think that a quirk should be introduced to suppress the
+completions generated by clearing a SCSI command.
 
-So backporting this commit to stable branches without taking the series as
-a whole is pointless and just leads to bogus lockdep assertion splats
-there. The series itself is an improvement and cleanup work and therefore
-is not considered as material for old stable kernels.
+> The more problematic part is with MCQ mode. To imitate the DBR
+> approach, we just need to set DID_REQUEUE upon receiving an interrupt.
+> Everything else remains the same. This would make things simpler.
+>=20
+> Moving forward, if we want to simplify things and we have also
+> taken stock of the two or three scenarios where OCS: ABORTED occurs,
+> do we even need a flag? Couldn't we just set DID_REQUEUE directly
+> for OCS: ABORTED?
+> What do you think?
 
-The solution which comes to mind is to revert this backported patch from
-the affected stable branches.
+How about making ufshcd_compl_one_cqe() skip entries with status
+OCS_ABORTED? That would make ufshcd_compl_one_cqe() behave as the
+SCSI core expects, namely not freeing any command resources if a
+SCSI command is aborted successfully.
 
-Namely:
-- 5.15 https://lore.kernel.org/stable/20240901160825.013135421@linuxfoundation.org/
-- 6.1  https://lore.kernel.org/stable/20240827143842.546537850@linuxfoundation.org/
-- 6.6  https://lore.kernel.org/stable/20240827143846.794100356@linuxfoundation.org/
+This approach may require further changes to ufshcd_abort_all().
+In that function there are separate code paths for legacy and MCQ
+mode. This is less than ideal. Would it be possible to combine
+these code paths by removing the ufshcd_complete_requests() call
+from ufshcd_abort_all() and by handling completions from inside
+ufshcd_abort_one()?
 
-The intention why it was suddenly backported to these branches a year
-after merge-to-upstream is not clear actually: there are no stable or
-Fixes tags in commit message, and I don't find any public request for
-explicit backport on mailing lists.
-
-Please let me know if you can revert the commits yourself or I have to
-prepare and send them to you.
-
-[1]: https://syzkaller.appspot.com/bug?extid=310a1a9715fc1c9ead61
-[2]: https://syzkaller.appspot.com/bug?extid=b730e8b6bc76d07fe10b
-[3]: https://syzkaller.appspot.com/bug?extid=09501cf606ec2823fafa
-[4]: https://lore.kernel.org/linux-wireless/20230828115927.116700-41-johannes@sipsolutions.net/
-
---
 Thanks,
-Fedor
 
+Bart.
 
