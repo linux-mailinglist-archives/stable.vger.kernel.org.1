@@ -1,87 +1,175 @@
-Return-Path: <stable+bounces-76715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76716-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB5A697C046
-	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 21:03:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BB6E97C09D
+	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 21:47:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 29A7E1C21064
-	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 19:03:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C5E1C1F21ED3
+	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 19:47:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A972C1C9848;
-	Wed, 18 Sep 2024 19:03:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b="X8CevSOo"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78CC11CA686;
+	Wed, 18 Sep 2024 19:46:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11D8342AAB
-	for <stable@vger.kernel.org>; Wed, 18 Sep 2024 19:03:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A04981C68AB;
+	Wed, 18 Sep 2024 19:46:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.154.21.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726686230; cv=none; b=Y+NwO31W4Ui4NR2pvUXyrqnN8iUSDum5WMDmM+1Wsa1AT6kqZNpbIyNeLZudiMUSZf10qAC8AzLJ1XfGS0+qkTW5UGAaR6wfLVtuu0UEAp+FfBrPOR4ky5gcx6yMRWgt/ZMz70eC+0JqP+GeAIRJ46fQwvktqp6G6k36u8bQNpw=
+	t=1726688815; cv=none; b=VvCrEqWr5qhsFEdyjIpQfBHUkFnJjpTp/MZ8Vf4CNq0Ems90AX0+QeW4clEUxP7gC3V0ZELZrBpzIDFguMTEXM8cYEVmNACjJBYGzIdhcrRm9KUMZl6QPG4zn5h1KjBfVVBdky7o0+XGHHb0YxJeTY69Zs96nUJCfa6vTOHHjmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726686230; c=relaxed/simple;
-	bh=KcHCBYe5Bz6S2OMyoWpN1ozq0/s6h3MtBgf+WQidzPU=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=aV/lN9Dmt6LVLaKGmS9nhIDc44vFTGN2wwLRrJOPnsnHODi/Zf4zaFWorKcEVUGAkKdupSJacElWzprHsvcXMeevcN0h3FHyncFOT5/74BSNM/WvitdMuROEziT5koINiudDDXBxVmuHrFJ18YaW+KDuhJGU8o2emUK4pmjgjHQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com; spf=pass smtp.mailfrom=ionos.com; dkim=pass (2048-bit key) header.d=ionos.com header.i=@ionos.com header.b=X8CevSOo; arc=none smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ionos.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ionos.com
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-5c23c559defso4613a12.3
-        for <stable@vger.kernel.org>; Wed, 18 Sep 2024 12:03:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ionos.com; s=google; t=1726686226; x=1727291026; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=KcHCBYe5Bz6S2OMyoWpN1ozq0/s6h3MtBgf+WQidzPU=;
-        b=X8CevSOoAMczJ1C9ILvUR/kuWDMGuiNA7aQWi08Ts0KzzFln4nQ4r1jOn5+3WZJrMi
-         mED0VTc0n8YDIsRmrESR8IFJCuKmqeu3jj0+g7h3cq5VZTHE2fNfDiUWLQgT5VgKQ6g0
-         cjLvUTyHr9CqG8/KGHBQ6h1UPWfXDyk2Me/9w1zwV9y4/6mzxKN87QVvgIDrRWRqfpFF
-         S2Q6TD2p3cGJ2zoIbyPFtYWJljzQ3cVXKLJ+pLAO+RQ/rD113Pvbgfd+kL1JbSHGbtQF
-         tZAKZsBg8a0L/K1d9Y7UAHAzGDnNqpdQrnCsVpHjpWywwW4eFdzL7X/2XGQwntL3nx9Y
-         VEGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726686226; x=1727291026;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=KcHCBYe5Bz6S2OMyoWpN1ozq0/s6h3MtBgf+WQidzPU=;
-        b=hjZ02tljH/G2m8BmUasDeFgu3MoypB5iIW4sACJbAwGko5RpZMi2y+H3sDKouW+nXr
-         mAUmGjtNygoVY29xf11QOwTdC+LmSzY6lfTRqxwE4MZkCYyugF8/yKyXyDzqwJ82NJbb
-         bpeNSuh7Yk+UaMr0wlaH3h/3Mus0xrPRo86RtIl4HPi3OB6ULLbDmviczAWVekyiK5VL
-         OrEkbmH/hVLhMku2GWRhP6LsHc2rSO9zKiQ+JwehjeXbi80tbHyYcrVuTrfU0i91oxCc
-         FGslFx0zxANOsSTDJ1GI4ghsqxukgNbjEIUt0077eW0lDygALzRXpxlsd67cQxqAcrlG
-         AstQ==
-X-Gm-Message-State: AOJu0Yx5GAiHkivvPP0ILzUOyWYWzKLk1DJ4MJStl74tMSvqd2vVV3/Z
-	F87brzlbUGt8ybMl8luZh1CQPAl/tttGPy+PGKsHzlu+3VpHA4Yv7swJRU8YgmDY1+coWwyJKLe
-	nAyeuV9RHQuS4VovLjqDdp5pApE6NACDL4qCkgB+8uI8FW1TBKdQJlA==
-X-Google-Smtp-Source: AGHT+IFGYU9UfIn3o6lgY8SAP3X3VRax5v70CM6B59HtOwV+LijdATMtO3mXoTTNK57DWzFJCmMTY08o5PnN3cLxuMk=
-X-Received: by 2002:a05:6402:34ca:b0:5c4:bb1:6493 with SMTP id
- 4fb4d7f45d1cf-5c413e094a7mr8037496a12.1.1726686225897; Wed, 18 Sep 2024
- 12:03:45 -0700 (PDT)
+	s=arc-20240116; t=1726688815; c=relaxed/simple;
+	bh=K/dlFUVnDgMs1sLaRgMsMIoSqmXGHBsQ7u2XWyygUn8=;
+	h=Message-ID:Date:MIME-Version:To:CC:From:Subject:Content-Type; b=iBBQT7fzFLtFiLw9hkFf9K1ju0GE7iPV+5fJ48wEEcPKUY2olVubQuZYBScdzDi5JKmS6/Lz6mHz3dw73ORe2xoK55zheNfTN2UKzci1QQWLYCvkzoythcJTIzoKEqtegbfA3VtSDUfA4mX8c1YPONKTZYuLHPLRTe0atYjEKfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru; spf=pass smtp.mailfrom=omp.ru; arc=none smtp.client-ip=90.154.21.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=omp.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=omp.ru
+Received: from [192.168.1.109] (31.173.87.200) by msexch01.omp.ru
+ (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.1258.12; Wed, 18 Sep
+ 2024 22:46:38 +0300
+Message-ID: <3996808f-711a-3861-8388-c729045bd28a@omp.ru>
+Date: Wed, 18 Sep 2024 22:46:38 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Jinpu Wang <jinpu.wang@ionos.com>
-Date: Wed, 18 Sep 2024 21:03:32 +0200
-Message-ID: <CAMGffEnHRA5b7RsEBGc4TPL4XDRGUz8hsLgnJpo6B8S=2-KG1w@mail.gmail.com>
-Subject: stable request for kernel 6.1/6.6 for commit f3c89983cb4f ("block:
- Fix where bio IO priority gets set")
-To: stable <stable@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Sasha Levin <sashal@kernel.org>
-Cc: hongyu.jin@unisoc.com, Mike Snitzer <snitzer@kernel.org>, Jens Axboe <axboe@kernel.dk>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:91.0) Gecko/20100101
+ Thunderbird/91.9.0
+Content-Language: en-US
+To: Jan Kara <jack@suse.cz>, <linux-kernel@vger.kernel.org>,
+	<stable@vger.kernel.org>
+CC: <lvc-project@linuxtesting.org>
+From: Sergey Shtylyov <s.shtylyov@omp.ru>
+Subject: [PATCH 6.1.y] udf: Fold udf_getblk() into udf_bread()
+Organization: Open Mobile Platform
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
+ (10.188.4.12)
+X-KSE-ServerInfo: msexch01.omp.ru, 9
+X-KSE-AntiSpam-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 6.1.1, Database issued on: 09/18/2024 19:34:26
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 59
+X-KSE-AntiSpam-Info: Lua profiles 187837 [Sep 18 2024]
+X-KSE-AntiSpam-Info: Version: 6.1.1.5
+X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
+X-KSE-AntiSpam-Info: LuaCore: 34 0.3.34
+ 8a1fac695d5606478feba790382a59668a4f0039
+X-KSE-AntiSpam-Info: {rep_avail}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: {relay has no DNS name}
+X-KSE-AntiSpam-Info: {SMTP from is not routable}
+X-KSE-AntiSpam-Info: {Found in DNSBL: 31.173.87.200 in (user)
+ b.barracudacentral.org}
+X-KSE-AntiSpam-Info: {Found in DNSBL: 31.173.87.200 in (user)
+ dbl.spamhaus.org}
+X-KSE-AntiSpam-Info:
+	omp.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2
+X-KSE-AntiSpam-Info: FromAlignment: s
+X-KSE-AntiSpam-Info: ApMailHostAddress: 31.173.87.200
+X-KSE-AntiSpam-Info: {DNS response errors}
+X-KSE-AntiSpam-Info: Rate: 59
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dmarc=temperror header.from=omp.ru;spf=temperror
+ smtp.mailfrom=omp.ru;dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 09/18/2024 19:37:00
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: Clean, bases: 9/18/2024 4:23:00 PM
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
 
-Hi Greg, hi Sasha,
+From: Jan Kara <jack@suse.cz>
 
-Please applied f3c89983cb4f ("block: Fix where bio IO priority gets
-set") to stable 6.1+, it applies cleanly to v6.1.110/v6.6.51.
+udf_getblk() has a single call site. Fold it there.
 
-Thx!
-Jinpu Wang @ IONOS
+[Sergey: moved back to using udf_get_block() and buffer_{mapped|new}().]
+
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+
+---
+This patch prevents NULL pointer dereference in case sb_getblk() fails...
+
+ fs/udf/inode.c |   45 +++++++++++++++++++--------------------------
+ 1 file changed, 19 insertions(+), 26 deletions(-)
+
+Index: linux-stable/fs/udf/inode.c
+===================================================================
+--- linux-stable.orig/fs/udf/inode.c
++++ linux-stable/fs/udf/inode.c
+@@ -459,30 +459,6 @@ abort:
+ 	return err;
+ }
+ 
+-static struct buffer_head *udf_getblk(struct inode *inode, udf_pblk_t block,
+-				      int create, int *err)
+-{
+-	struct buffer_head *bh;
+-	struct buffer_head dummy;
+-
+-	dummy.b_state = 0;
+-	dummy.b_blocknr = -1000;
+-	*err = udf_get_block(inode, block, &dummy, create);
+-	if (!*err && buffer_mapped(&dummy)) {
+-		bh = sb_getblk(inode->i_sb, dummy.b_blocknr);
+-		if (buffer_new(&dummy)) {
+-			lock_buffer(bh);
+-			memset(bh->b_data, 0x00, inode->i_sb->s_blocksize);
+-			set_buffer_uptodate(bh);
+-			unlock_buffer(bh);
+-			mark_buffer_dirty_inode(bh, inode);
+-		}
+-		return bh;
+-	}
+-
+-	return NULL;
+-}
+-
+ /* Extend the file with new blocks totaling 'new_block_bytes',
+  * return the number of extents added
+  */
+@@ -1198,10 +1174,27 @@ struct buffer_head *udf_bread(struct ino
+ 			      int create, int *err)
+ {
+ 	struct buffer_head *bh = NULL;
++	struct buffer_head dummy;
++
++	dummy.b_state = 0;
++	dummy.b_blocknr = -1000;
++	*err = udf_get_block(inode, block, &dummy, create);
++	if (*err || !buffer_mapped(&dummy))
++		return NULL;
+ 
+-	bh = udf_getblk(inode, block, create, err);
+-	if (!bh)
++	bh = sb_getblk(inode->i_sb, dummy.b_blocknr);
++	if (!bh) {
++		*err = -ENOMEM;
+ 		return NULL;
++	}
++	if (buffer_new(&dummy)) {
++		lock_buffer(bh);
++		memset(bh->b_data, 0x00, inode->i_sb->s_blocksize);
++		set_buffer_uptodate(bh);
++		unlock_buffer(bh);
++		mark_buffer_dirty_inode(bh, inode);
++		return bh;
++	}
+ 
+ 	if (bh_read(bh, 0) >= 0)
+ 		return bh;
 
