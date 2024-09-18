@@ -1,61 +1,62 @@
-Return-Path: <stable+bounces-76639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3CC8597B861
-	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 09:18:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAA6997B863
+	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 09:18:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 705031C211A4
-	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 07:18:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 80B47284BC1
+	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 07:18:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 710E316DC36;
-	Wed, 18 Sep 2024 07:17:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBBB516FF3B;
+	Wed, 18 Sep 2024 07:18:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KyA96TJm"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TiUelxl7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A55A16DC0E;
-	Wed, 18 Sep 2024 07:17:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A966B169AE6;
+	Wed, 18 Sep 2024 07:18:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726643879; cv=none; b=qg8tj0eEOGD+wUlhhH3NFnjeu9zBO6Lv9i4OJ+gY4kb2+ziUuUtJOmkAt99urIbSjPF6gnkjth8plYVmCsT/WcOmnzLfYpCGD/2NrUt1UfZyGt2kZ4BA7yHLxslz/4TKI99MK6rGrFaa0We0DiaESR8zunoJ2W6lvPfzccvt/V8=
+	t=1726643882; cv=none; b=mwug8cL/HEopLfGr6l2yp+ezPCRSh2FBsZtIjoQI7XE1LJQLzHFncVTSMuL3zodr2XZjBcytfJcJZ4dRN6bD/7irESKdJbV7t6Tg2IbJYSC7M/rgZVy0Ku6jNPCwNQpvIiEb8+dSkj6ZygxeX+OoVUa0gfC9Z4UYpN4qJyDCpuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726643879; c=relaxed/simple;
-	bh=mbokiQWjB+GffoHWwGMrCP6yvyFiJTax/PyVtwe+Nro=;
+	s=arc-20240116; t=1726643882; c=relaxed/simple;
+	bh=Y9jbd4JWFQB6z2sA5iWC4S4FUg6AOW2guJLi3l2dohY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uDEbj/bMBaJ74Hhim8wBEAtXhFEOjkunewsEZTFh5/gC2f416NbCNkWN3cOIs953ac6shIsxfx5RbohysH9Q1BPKoRDmJFsgGPqkCEQLCt0uEt89I4y/sPd4EBRm5WFpXikY1qNN1MLrQFb+fTW9voNyt0LFtJkeUNRA/uv2HIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KyA96TJm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 914D9C4CECE;
-	Wed, 18 Sep 2024 07:17:56 +0000 (UTC)
+	 MIME-Version; b=FC4SI+bYB2yhcXUtlMWXTPzyFxObXIiqEwdX1XaFaR6r5pnvwafP9JJurWTleVJwpYfEb/AyTML70A2NPLddx1kSqFzBOYBj0XxNgJyE5xZ1zo5E5lGkoVFPYrjNQRhIt2xLLSV9HUIjNS9TqWb53ITwsPBMu0UPOLnuGmXKvwc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TiUelxl7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4040C4CEC3;
+	Wed, 18 Sep 2024 07:17:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726643879;
-	bh=mbokiQWjB+GffoHWwGMrCP6yvyFiJTax/PyVtwe+Nro=;
+	s=k20201202; t=1726643882;
+	bh=Y9jbd4JWFQB6z2sA5iWC4S4FUg6AOW2guJLi3l2dohY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KyA96TJmZHerCj/i9Jk/9WKZezsgt2FzOtz9jhf1hunv4iATZP27AMKSItswDeSTP
-	 hmaIW+3gfszKyWrd/y7Xqzw0dMgka1NUGKL1Fk+vquZCHQsEhdfnZUpial4A7/sNoo
-	 jaNDtNEgKYhrFn0C2kVSoo/v6MmG3nE3BQL2My8bLCU+xhqi/2E8iwj1oDlVK4opr0
-	 ft5xd/Bw72B8WqbeKLk91W7zHcby0IxOaZeGn4BIGjFt30/wbSuqp51d9S8Cf4/aY7
-	 3kwyBll1xr7Re+dqAwtZRUIqGc/KhwJSomclPzN+mdDi9qsNBob3nvJJbSisxvtHSi
-	 J2kgl1oIWJv7A==
+	b=TiUelxl7xtEQ2ZWSMgLoBN5lh7gFpTd/whJLm9+KQWphDIDiHsBtPoFlPSjc0m9oi
+	 3gYwcl34kVAMDQokyLDl3TH59bFq0k6vO4lo7fNB2QiAl5n9opSkkppaORbV9zRXpG
+	 RvhC19xj4RblcFkkXyWn7qhCjWEiU8lboen5aoJuGH6jNqRihAi1ikH+8g+63qxmnn
+	 cZJXdDCzUlX+2++Ce56lJlSFWjj4R9jtWupSoVRpOGBAsvh6uV5CwYM7crSYG0Er3E
+	 RaDdO1F5wVi8traFKW3k5cOaBcCRq0YJtGnAiqB3oGyHATztZsP0Bl1Zf/YBRaT51R
+	 /dqkUZi0MyX7w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: zhang jiao <zhangjiao2@cmss.chinamobile.com>,
-	Saurabh Sengar <ssengar@linux.microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
+Cc: Kenneth Feng <kenneth.feng@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	kys@microsoft.com,
-	haiyangz@microsoft.com,
-	sthemmin@microsoft.com,
-	decui@microsoft.com,
-	linux-hyperv@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 2/3] tools: hv: rm .*.cmd when make clean
-Date: Wed, 18 Sep 2024 02:36:10 -0400
-Message-ID: <20240918063614.238807-2-sashal@kernel.org>
+	evan.quan@amd.com,
+	christian.koenig@amd.com,
+	Xinhui.Pan@amd.com,
+	airlied@linux.ie,
+	daniel@ffwll.ch,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.10 3/3] drm/amd/pm: fix the pp_dpm_pcie issue on smu v14.0.2/3
+Date: Wed, 18 Sep 2024 02:36:11 -0400
+Message-ID: <20240918063614.238807-3-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240918063614.238807-1-sashal@kernel.org>
 References: <20240918063614.238807-1-sashal@kernel.org>
@@ -70,35 +71,40 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.10
 Content-Transfer-Encoding: 8bit
 
-From: zhang jiao <zhangjiao2@cmss.chinamobile.com>
+From: Kenneth Feng <kenneth.feng@amd.com>
 
-[ Upstream commit 5e5cc1eb65256e6017e3deec04f9806f2f317853 ]
+[ Upstream commit 7a0982523cf3ff00f35b210fc3405c528a2ce7af ]
 
-rm .*.cmd when make clean
+fix the pp_dpm_pcie issue on smu v14.0.2/3 as below:
+0: 2.5GT/s, x4 250Mhz
+1: 8.0GT/s, x4 616Mhz *
+2: 8.0GT/s, x4 1143Mhz *
+the middle level can be removed since it is always skipped on
+smu v14.0.2/3
 
-Signed-off-by: zhang jiao <zhangjiao2@cmss.chinamobile.com>
-Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
-Link: https://lore.kernel.org/r/20240902042103.5867-1-zhangjiao2@cmss.chinamobile.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <20240902042103.5867-1-zhangjiao2@cmss.chinamobile.com>
+Signed-off-by: Kenneth Feng <kenneth.feng@amd.com>
+Acked-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit fedf6db3ea9dc5eda0b78cfbbb8f7a88b97e5b24)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/hv/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/tools/hv/Makefile b/tools/hv/Makefile
-index 2e60e2c212cd..34ffcec264ab 100644
---- a/tools/hv/Makefile
-+++ b/tools/hv/Makefile
-@@ -52,7 +52,7 @@ $(OUTPUT)hv_fcopy_uio_daemon: $(HV_FCOPY_UIO_DAEMON_IN)
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c
+index 06b65159f7b4..33c7740dd50a 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c
+@@ -672,6 +672,9 @@ static int smu_v14_0_2_set_default_dpm_table(struct smu_context *smu)
+ 		pcie_table->clk_freq[pcie_table->num_of_link_levels] =
+ 					skutable->LclkFreq[link_level];
+ 		pcie_table->num_of_link_levels++;
++
++		if (link_level == 0)
++			link_level++;
+ 	}
  
- clean:
- 	rm -f $(ALL_PROGRAMS)
--	find $(or $(OUTPUT),.) -name '*.o' -delete -o -name '\.*.d' -delete
-+	find $(or $(OUTPUT),.) -name '*.o' -delete -o -name '\.*.d' -delete -o -name '\.*.cmd' -delete
- 
- install: $(ALL_PROGRAMS)
- 	install -d -m 755 $(DESTDIR)$(sbindir); \
+ 	return 0;
 -- 
 2.43.0
 
