@@ -1,183 +1,123 @@
-Return-Path: <stable+bounces-76694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5126497BDCB
-	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 16:13:12 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 499D597BE60
+	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 17:05:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 182342861CB
-	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 14:13:11 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5DFBB1C20D13
+	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 15:05:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0D8118C333;
-	Wed, 18 Sep 2024 14:12:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62F761C7B67;
+	Wed, 18 Sep 2024 15:05:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="W5wfDs9l"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fi1GILGD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 579DE18B464;
-	Wed, 18 Sep 2024 14:12:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20BD61C8FBA
+	for <stable@vger.kernel.org>; Wed, 18 Sep 2024 15:05:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726668769; cv=none; b=ZFF0QEjeVnaIO/l2kqdLkeVXmrtBpXHfbO0EpS0O8XCeTLXXlaCfxdiIEWdVh0iGG7gySQXk88KPiZ983pCgbMAEfldd9Q2xcmY4mUFqCC0XJktQZXqnELie3I4txGiiF/66nCv7DdwUR0DSlH9Y89NqIsk5FA+S1l4r23G/AYI=
+	t=1726671945; cv=none; b=babp0emjn0IeUQague+TAC+oiRUo6cC4ZnNjrw1mmK/gt4y3QGKgWLzTXrnqho2UmFoNMFndfAzadJdvcG06Do7rrQLsRdaQnli1Din4o4x615KHsx8pyHYrqBfwygP8LSuuTjIY5SRqrehQK6bEg5OYOzAASz2oWv1nfSoyv/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726668769; c=relaxed/simple;
-	bh=CYL78L9ih/Kr5eLuAqMgq+8E+45km9xjtzZNPt4WYs4=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=rMB+lpp7MhU/RZBOguioo7DmSPQSUViHcSjzqF9ub2oNuZ8BqD4L3XFfLG7w5s9FhpETwXAdDE1egiZeSnWCB/VGc2dAnoqIRSPHu+TISgeawccvjwDxMIZnVFg4eqM2vq+7E1Px+3v3gyLNRTKuDF8QrTBLfVEo9t85rWFjiQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=W5wfDs9l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 382F1C4CED7;
-	Wed, 18 Sep 2024 14:12:49 +0000 (UTC)
+	s=arc-20240116; t=1726671945; c=relaxed/simple;
+	bh=NEbsoDGarkF9DcJ1oPB0XKgElHrM+/7uFjvxWCETW0Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EI9afZxap3yWG3P5Q/vRgHvdCRjBcv2Duj4+PCQ96mfQgwdgONWseoygzrKUqo+da1RrhXEk5dAycTtVTdJ+09X5mvBV3EZdMa14XGEoJc3Aj+bX/Gi6Qnd4sAIX4qSSDJ5YTGdkmnrogrerVmDVDTsxOHkpev+vB5txMOyWsNM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fi1GILGD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41C37C4CEC2;
+	Wed, 18 Sep 2024 15:05:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726668769;
-	bh=CYL78L9ih/Kr5eLuAqMgq+8E+45km9xjtzZNPt4WYs4=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=W5wfDs9legPCf7O/PJbjKV7yQaeXHHsrQ7/szrdKXIgzgMpHxcZenTSVatf+Trgjf
-	 69xxRlcFrQtrCpaLcl3D9/K7acaMh7GFgJtWYpzKVjw9F7kHhT3tZyf7fz19Zzlb+M
-	 jF2x8eAHiEFzMya1CqVmJ8NqWR8z3ivKXJs0l/T8sOYJY/besq59ZyGheIDSMU7WSS
-	 PDS7UlYCuMe77l3181HbJVcMq8bTTXHWexxAjsfgnDeRyBOFLhXwRpwxj0mvgfoTPZ
-	 p1Qzv6U/pqR4iFZY+aA//hN0JS+K/MuaUGigu8XxN863fxfMpI/vO9MZ3rUqTQoyzI
-	 F3vrTM5j+GOSQ==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 314B3CCD1AB;
-	Wed, 18 Sep 2024 14:12:49 +0000 (UTC)
-From: Miao Wang via B4 Relay <devnull+shankerwangmiao.gmail.com@kernel.org>
-Date: Wed, 18 Sep 2024 22:12:25 +0800
-Subject: [PATCH v5.4-v4.19 6/6] vfs: support statx(..., NULL,
- AT_EMPTY_PATH, ...)
+	s=k20201202; t=1726671944;
+	bh=NEbsoDGarkF9DcJ1oPB0XKgElHrM+/7uFjvxWCETW0Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fi1GILGDGqdRw5CBleFgjz4TidR4S1TdejI62SRowk6vuJvj9pjXHpSAGdlPfuI1M
+	 c3oeEEdj1SqjpjawyCLABhDqu1sCnDS+03+xoA9DYwRWke5QOxrKvgrb+NF/fYtMsY
+	 VIFXPeamYNM2JkxHyIaU6Nil5kCJ8iYR+Iv9rNBh7BCaujHbYFPWR64ho6UDyUrYsT
+	 9ckVpjAZHZVEqjv9mYDoOZXB1Xlag32yFPdhICgUt8BNTKeqYMYHlaQr17xMflUtaf
+	 8/vEFafIFhm2kX5+RPV1NTouAhBw/rsvEdF4mDTTC/ita6U5rdLUV5bviZlp7H4KZO
+	 KkWckROIB9C4w==
+Date: Wed, 18 Sep 2024 08:05:42 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Jani Nikula <jani.nikula@intel.com>
+Cc: intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org,
+	Matthew Auld <matthew.auld@intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Anshuman Gupta <anshuman.gupta@intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 1/5] drm/i915/gem: fix bitwise and logical AND mixup
+Message-ID: <20240918150542.GA4049109@thelio-3990X>
+References: <cover.1726658138.git.jani.nikula@intel.com>
+ <dec5992d78db5bc556600c64ce72aa9b19c96c77.1726658138.git.jani.nikula@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240918-statx-stable-linux-5-4-y-v1-6-8a771c9bbe5f@gmail.com>
-References: <20240918-statx-stable-linux-5-4-y-v1-0-8a771c9bbe5f@gmail.com>
-In-Reply-To: <20240918-statx-stable-linux-5-4-y-v1-0-8a771c9bbe5f@gmail.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: Xi Ruoyao <xry111@xry111.site>, Christian Brauner <brauner@kernel.org>, 
- Alexander Viro <viro@zeniv.linux.org.uk>, linux-fsdevel@vger.kernel.org, 
- stable@vger.kernel.org, Miao Wang <shankerwangmiao@gmail.com>, 
- Mateusz Guzik <mjguzik@gmail.com>
-X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3164;
- i=shankerwangmiao@gmail.com; h=from:subject:message-id;
- bh=Mz70ynn0QmOv4iQYlvx/dmX1Pkma9wGWlUEA7jcK4og=;
- b=owEBbQKS/ZANAwAKAbAx48p7/tluAcsmYgBm6t/dGuOjI9aYmI1LQfgwrbw0dZPMapB67Fl5U
- Px5kKe2npWJAjMEAAEKAB0WIQREqPWPgPJBxluezBOwMePKe/7ZbgUCZurf3QAKCRCwMePKe/7Z
- bh8DD/9HS5BdVsTPeo/HHJUotxCRxYTUhGJighDBkTNcGK0dO63iAVafsGuImCuoSdjKdvUC9rE
- 3TRGLdB+VaxHyxnCcSfxDuXeIIS+CUBLcvI1oLAOOGgCNIN5r3gRUxLPnIeugyQ+awOZg3qHRko
- VJNHxjFtvW0AMI2Nj8XcEiC8b/vMFTiouia0Gx3K9hi9vDdgkVmRFKmtBsJDc1tQIw4I/QVXPTj
- y4hUXpHn6loOlcSBp1bOw40d+8kKWhsskqku3VqwIdMkV7J+QmjfhXaAXvRXWpncOcV7qAqP+cr
- FImQj89feRMFc+QGThtbz/VYqHgsxjXYIj1T6skMrfByzPVsgSC8B6JDl6HFAGe1p/zWEGBxY4X
- jf9ZG9Bv8JwBVylB1FxGklA+y71fXJ9tTpeCJMN6Y3/OTyYaytVNHmSBDNprppNrT+m8st8TQCk
- G6+rfxxkm0+Y2l0WenX+Z2mk1RxmVYmysNwEHvpLPhXbE0VGJXpjWqDbRhacKeyXzB5kBwYWNBk
- mdv2eqvr12fsi8tDXBgzFl3JxgSJrSxtHAykMiqon9Kee74M/7al1rWzt2oGQyM3Z7XXH31tDNH
- NBFp0zhz5heTqevgk4qLUifLEe4l+Mw/fK5GILEVdnp4Sst7608jqxzOLTAKHuWap8L/2Sn1udK
- jkaaUscsYWWbFGA==
-X-Developer-Key: i=shankerwangmiao@gmail.com; a=openpgp;
- fpr=6FAEFF06B7D212A774C60BFDFA0D166D6632EF4A
-X-Endpoint-Received: by B4 Relay for shankerwangmiao@gmail.com/default with
- auth_id=189
-X-Original-From: Miao Wang <shankerwangmiao@gmail.com>
-Reply-To: shankerwangmiao@gmail.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <dec5992d78db5bc556600c64ce72aa9b19c96c77.1726658138.git.jani.nikula@intel.com>
 
-From: Mateusz Guzik <mjguzik@gmail.com>
+On Wed, Sep 18, 2024 at 02:17:44PM +0300, Jani Nikula wrote:
+> CONFIG_DRM_I915_USERFAULT_AUTOSUSPEND is an int, defaulting to 250. When
+> the wakeref is non-zero, it's either -1 or a dynamically allocated
+> pointer, depending on CONFIG_DRM_I915_DEBUG_RUNTIME_PM. It's likely that
+> the code works by coincidence with the bitwise AND, but with
+> CONFIG_DRM_I915_DEBUG_RUNTIME_PM=y, there's the off chance that the
+> condition evaluates to false, and intel_wakeref_auto() doesn't get
+> called. Switch to the intended logical AND.
+> 
+> Fixes: ad74457a6b5a ("drm/i915/dgfx: Release mmap on rpm suspend")
+> Cc: Matthew Auld <matthew.auld@intel.com>
+> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+> Cc: Anshuman Gupta <anshuman.gupta@intel.com>
+> Cc: Andi Shyti <andi.shyti@linux.intel.com>
+> Cc: <stable@vger.kernel.org> # v6.1+
+> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+> ---
+>  drivers/gpu/drm/i915/gem/i915_gem_ttm.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/i915/gem/i915_gem_ttm.c b/drivers/gpu/drm/i915/gem/i915_gem_ttm.c
+> index 5c72462d1f57..c157ade48c39 100644
+> --- a/drivers/gpu/drm/i915/gem/i915_gem_ttm.c
+> +++ b/drivers/gpu/drm/i915/gem/i915_gem_ttm.c
+> @@ -1131,7 +1131,7 @@ static vm_fault_t vm_fault_ttm(struct vm_fault *vmf)
+>  		GEM_WARN_ON(!i915_ttm_cpu_maps_iomem(bo->resource));
+>  	}
+>  
+> -	if (wakeref & CONFIG_DRM_I915_USERFAULT_AUTOSUSPEND)
+> +	if (wakeref && CONFIG_DRM_I915_USERFAULT_AUTOSUSPEND)
 
-commit 0ef625b upstream.
+This is going to result in a clang warning:
 
-The newly used helper also checks for empty ("") paths.
+  drivers/gpu/drm/i915/gem/i915_gem_ttm.c:1134:14: error: use of logical '&&' with constant operand [-Werror,-Wconstant-logical-operand]
+   1134 |         if (wakeref && CONFIG_DRM_I915_USERFAULT_AUTOSUSPEND)
+        |                     ^  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  drivers/gpu/drm/i915/gem/i915_gem_ttm.c:1134:14: note: use '&' for a bitwise operation
+   1134 |         if (wakeref && CONFIG_DRM_I915_USERFAULT_AUTOSUSPEND)
+        |                     ^~
+        |                     &
+  drivers/gpu/drm/i915/gem/i915_gem_ttm.c:1134:14: note: remove constant to silence this warning
+   1134 |         if (wakeref && CONFIG_DRM_I915_USERFAULT_AUTOSUSPEND)
+        |                     ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  1 error generated.
 
-NULL paths with any flag value other than AT_EMPTY_PATH go the usual
-route and end up with -EFAULT to retain compatibility (Rust is abusing
-calls of the sort to detect availability of statx).
+Consider adding the explicit '!= 0' to make it clear this should be a
+boolean expression.
 
-This avoids path lookup code, lockref management, memory allocation and
-in case of NULL path userspace memory access (which can be quite
-expensive with SMAP on x86_64).
+Cheers,
+Nathan
 
-Benchmarked with statx(..., AT_EMPTY_PATH, ...) running on Sapphire
-Rapids, with the "" path for the first two cases and NULL for the last
-one.
-
-Results in ops/s:
-stock:     4231237
-pre-check: 5944063 (+40%)
-NULL path: 6601619 (+11%/+56%)
-
-Signed-off-by: Mateusz Guzik <mjguzik@gmail.com>
-Link: https://lore.kernel.org/r/20240625151807.620812-1-mjguzik@gmail.com
-Tested-by: Xi Ruoyao <xry111@xry111.site>
-[brauner: use path_mounted() and other tweaks]
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-
-Cc: <stable@vger.kernel.org> # 4.19.x-5.4.x
-Signed-off-by: Miao Wang <shankerwangmiao@gmail.com>
-Tested-by: Xi Ruoyao <xry111@xry111.site>
----
- fs/stat.c | 23 ++++++++++++++++++++---
- 1 file changed, 20 insertions(+), 3 deletions(-)
-
-diff --git a/fs/stat.c b/fs/stat.c
-index 1aaa5d847db8..111443789ced 100644
---- a/fs/stat.c
-+++ b/fs/stat.c
-@@ -590,13 +590,14 @@ cp_statx(const struct kstat *stat, struct statx __user *buffer)
- /**
-  * sys_statx - System call to get enhanced stats
-  * @dfd: Base directory to pathwalk from *or* fd to stat.
-- * @filename: File to stat or "" with AT_EMPTY_PATH
-+ * @filename: File to stat or either NULL or "" with AT_EMPTY_PATH
-  * @flags: AT_* flags to control pathwalk.
-  * @mask: Parts of statx struct actually required.
-  * @buffer: Result buffer.
-  *
-  * Note that fstat() can be emulated by setting dfd to the fd of interest,
-- * supplying "" as the filename and setting AT_EMPTY_PATH in the flags.
-+ * supplying "" (or preferably NULL) as the filename and setting AT_EMPTY_PATH
-+ * in the flags.
-  */
- SYSCALL_DEFINE5(statx,
- 		int, dfd, const char __user *, filename, unsigned, flags,
-@@ -605,13 +606,29 @@ SYSCALL_DEFINE5(statx,
- {
- 	struct kstat stat;
- 	int error;
-+	unsigned lflags;
- 
- 	if (mask & STATX__RESERVED)
- 		return -EINVAL;
- 	if ((flags & AT_STATX_SYNC_TYPE) == AT_STATX_SYNC_TYPE)
- 		return -EINVAL;
- 
--	error = vfs_statx(dfd, filename, flags, &stat, mask);
-+	/*
-+	 * Short-circuit handling of NULL and "" paths.
-+	 *
-+	 * For a NULL path we require and accept only the AT_EMPTY_PATH flag
-+	 * (possibly |'d with AT_STATX flags).
-+	 *
-+	 * However, glibc on 32-bit architectures implements fstatat as statx
-+	 * with the "" pathname and AT_NO_AUTOMOUNT | AT_EMPTY_PATH flags.
-+	 * Supporting this results in the uglification below.
-+	 */
-+	lflags = flags & ~(AT_NO_AUTOMOUNT | AT_STATX_SYNC_TYPE);
-+	if (lflags == AT_EMPTY_PATH && vfs_empty_path(dfd, filename))
-+		error = vfs_statx_fd(dfd, &stat, mask,
-+				    flags & ~(AT_NO_AUTOMOUNT | AT_EMPTY_PATH));
-+	else
-+		error = vfs_statx(dfd, filename, flags, &stat, mask);
- 	if (error)
- 		return error;
- 
-
--- 
-2.43.0
-
-
+>  		intel_wakeref_auto(&to_i915(obj->base.dev)->runtime_pm.userfault_wakeref,
+>  				   msecs_to_jiffies_timeout(CONFIG_DRM_I915_USERFAULT_AUTOSUSPEND));
+>  
+> -- 
+> 2.39.2
+> 
 
