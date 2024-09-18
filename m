@@ -1,261 +1,305 @@
-Return-Path: <stable+bounces-76627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76628-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12F8D97B708
-	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 05:10:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76A2297B726
+	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 05:57:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE22928403E
-	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 03:10:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BFA7DB20F73
+	for <lists+stable@lfdr.de>; Wed, 18 Sep 2024 03:57:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EFA1381C7;
-	Wed, 18 Sep 2024 03:09:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A458613A3F2;
+	Wed, 18 Sep 2024 03:57:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="i/ql75D1"
 X-Original-To: stable@vger.kernel.org
-Received: from CHN02-SH0-obe.outbound.protection.partner.outlook.cn (mail-sh0chn02on2112.outbound.protection.partner.outlook.cn [139.219.146.112])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 046F72557A;
-	Wed, 18 Sep 2024 03:09:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=139.219.146.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726628998; cv=fail; b=MIA9R/o8eDTDxF5UP8eRfLWisyuUUwFld1py8pWTlWe8PiTJXBS9UEAz1/TSYvJM2L+TkYaZaQ6e0IRN2rBQQLBjk4uO//JJLwJITPiQQlbKEN8xnJcV+j1ZpylOq1s94sMGMdNGhzFJ4/pV16tZBwbtRI194n6nYhvul0X6Nbc=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726628998; c=relaxed/simple;
-	bh=hLUbOvU4pO6cTVDPhnlfdbD990Gc+X7zmxLdcrrr2p0=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=NgEtHMvtwsi6AMTZDWr0Rbteem0SXhXNCdO5JHM/YNtaUGkA4Td6EzQH7NWUdqai2mzwDnwBjpIKgAz6kj3dNoTlohdciH0Sv2gTQYuimu1HvAWsrCQ50bRjQiL2DzdYwNddiEgMVGIwvhfUCF5n21xEweGRPE5JtsnpOFQU900=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=starfivetech.com; spf=pass smtp.mailfrom=starfivetech.com; arc=fail smtp.client-ip=139.219.146.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=starfivetech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=starfivetech.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=NO1F3G8O0z01Hsfva/Ptq07aAEaJLHXCm9czv+kmFW8PemHz4P1kbRbXodkzzuou/OUx4VojMze3mBRFvstPpLk3KsFeHJyKwAVw/H27F2IYfHHzCHN+/0g41tHfb0U8EETLeJaViyODsa1rPNAyo3UUjI97rFex8MtC5KIr8OvNwtj4XTb+XtUIraUQTray8bQqBirYzWAA0KbZNbLGKAXHodH3vUoeJegLkb7wQVe9AXynV47rD6t3gY5aNIB4gOSaNjgRdMlxm2r8aMbVgItZcIlwj30sMqzIYYj9kpXqRXQi8c6AhdsNG8NvV86zZ7KhSwSJJCmVPIyTm4121g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=toSm00GLCfjR13AMqe0WCIZpYhkZYCPzydTmwv3ITzI=;
- b=Gky1qhO60tkLPUTAvXyTVY2X0sqjAF1KLCP6bxSe4suHNpDFmw4uea681Tcy0JLpjXe5G4BfnO33Cecuk7mXAlcBgtz4Y+U1fl4bc27P1I4hH1RrJ1aLo9Iny0UoRLWqD95RwXZQP0XO5U4WPQIApbCokTOcS08ixUjLcyU+wBGn1nkf+hsq6jscPIn59jpDKgg/69ByIeTGq6n9zULO9az4iKvFulV5klVA4Af7RXSi56DtpBQECyF0D1n0uDpA+BO5v0LCy0sV/ZzYmrkjuxcq+yocmwDusFUt1D+uQ5VD/VtgTmS5xAKZsuH9JlIecksE60qhg7vX6aEDAmUDQw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=starfivetech.com; dmarc=pass action=none
- header.from=starfivetech.com; dkim=pass header.d=starfivetech.com; arc=none
-Received: from NTZPR01MB0956.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c510:8::10) by NTZPR01MB1065.CHNPR01.prod.partner.outlook.cn
- (2406:e500:c510:9::5) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7962.20; Wed, 18 Sep
- 2024 02:54:57 +0000
-Received: from NTZPR01MB0956.CHNPR01.prod.partner.outlook.cn
- ([fe80::40dc:d70a:7a0b:3f92]) by
- NTZPR01MB0956.CHNPR01.prod.partner.outlook.cn ([fe80::40dc:d70a:7a0b:3f92%4])
- with mapi id 15.20.7962.021; Wed, 18 Sep 2024 02:54:57 +0000
-From: Xingyu Wu <xingyu.wu@starfivetech.com>
-To: Greg KH <greg@kroah.com>, Ron Economos <re@w6rz.net>
-CC: "stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"stable-commits@vger.kernel.org" <stable-commits@vger.kernel.org>, Sasha
- Levin <sashal@kernel.org>, Emil Renner Berthing <kernel@esmil.dk>, Conor
- Dooley <conor@kernel.org>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski
-	<krzk+dt@kernel.org>, Paul Walmsley <paul.walmsley@sifive.com>, Palmer
- Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, Hal Feng
-	<hal.feng@starfivetech.com>
-Subject: RE: Patch "riscv: dts: starfive: jh7110-common: Fix lower rate of
- CPUfreq by setting PLL0 rate to 1.5GHz" has been added to the 6.10-stable
- tree
-Thread-Topic: Patch "riscv: dts: starfive: jh7110-common: Fix lower rate of
- CPUfreq by setting PLL0 rate to 1.5GHz" has been added to the 6.10-stable
- tree
-Thread-Index:
- AQHbBebciFlAlMvb90WBGNGztNgBK7JW3EkggAAecgCAAAPPgIAACPsAgAAFxiCAAAm4gIABwcqAgAAbs4CAAAJ1gIAD2eKg
-Date: Wed, 18 Sep 2024 02:54:57 +0000
-Message-ID:
- <NTZPR01MB0956C27D2BE2076D5B45DFFC9F622@NTZPR01MB0956.CHNPR01.prod.partner.outlook.cn>
-References: <20240913141134.2831322-1-sashal@kernel.org>
- <NTZPR01MB0956F268E07BAE72F3A133DE9F662@NTZPR01MB0956.CHNPR01.prod.partner.outlook.cn>
- <2024091451-partake-dyslexia-e238@gregkh>
- <NTZPR01MB0956BF9AAE1FCAAF71C810A69F662@NTZPR01MB0956.CHNPR01.prod.partner.outlook.cn>
- <2024091445-underwent-rearview-24be@gregkh>
- <NTZPR01MB0956C2EF430930E4DB2C35BE9F662@NTZPR01MB0956.CHNPR01.prod.partner.outlook.cn>
- <59b65d17-7dce-ef5d-41ba-2c04656fb2e8@w6rz.net>
- <2024091501-dreamland-driveway-e0c3@gregkh>
- <148a908f-e2e2-6001-510e-73aef81d07b5@w6rz.net>
- <2024091557-contents-mobster-f2c3@gregkh>
-In-Reply-To: <2024091557-contents-mobster-f2c3@gregkh>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=starfivetech.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: NTZPR01MB0956:EE_|NTZPR01MB1065:EE_
-x-ms-office365-filtering-correlation-id: a4c49393-5718-433b-bfe6-08dcd78d47c2
-x-ms-exchange-senderadcheck: 1
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|41320700013|366016|7416014|38070700018;
-x-microsoft-antispam-message-info:
- udRWfcvApgTPM3MaxHT7tLRT0BJVbTYASWBn+II9g27ac+ZT6JWUz2UlGWAhDEXTH95MZwUAvsKDYC95ez1+/th7R+iLLeGrUAWiKD2iRTt02c00F3QxpJax+AfLfVNlpN8oGmiFXNWJfvBgArg+KyajgdTDTQbC8jXF+EE7KPza+e8xq0QmTk+5ifodpRVl+rWeUqxjn9xGJMdb5XZSJ/kQuhIE7JOwHUZb9RGOEtGKr+q9ZtqwRYEh4+3znNOV6DOzuS6KLAsXxuyCyHUQPwrgQm87OdTKMB3JfahRGD3NoBOXBxEgYfnV6JzGNefhTjxYjQAQXky5E6Q7GCLdm2OBrQoaDBx8ZkXwUQ4rH5LpSy58bNZTNsiNRyC8AOKTepoFLzC/EZWaTVIWd98icSXDaMm/DmAA+/kvl4wCHuqA+1zR9ux8z5jadKDUcBOq7IbbP/DhxBu10DsMsG181sa0CPSU5SrGVNwUAYH0D79t2kILcKmL5mReUWCnTYnzypZ/owvzIpnjGLwNcyVFfQJYOhzXu8Phutn4MCtLZmXz9IrcnLKKvcDeatpC1TyiymfauEfkYQmOTCODHiN9ffF0/QUe5BoGLwRyzRaWVKU6wsanM7u6+aBHs1xvE8no
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:NTZPR01MB0956.CHNPR01.prod.partner.outlook.cn;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(41320700013)(366016)(7416014)(38070700018);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?g91m5+eLLwayFe8SrOaIAD4Yo1/YLdFWhO3iHrf/jzAfD1y6XbDcodaTCw2j?=
- =?us-ascii?Q?zUiUzOgMw8dF0g0Z9Z1OIQBh242MVDDy3OWNNskxTCvdGnuW+pSM+ySaRevb?=
- =?us-ascii?Q?CMJF5B5FTGqf0oi5oZx9XVvy56r/gPPEpBibIdS9UfRNYJREwpvwLsh3Ojbu?=
- =?us-ascii?Q?2bC/q1STiQIbGA6T1ygd5qMOtT/Em8d3/UW1cVoJcQMH/hJu1fHiXOuePsLm?=
- =?us-ascii?Q?0lE5j4hSj2QaaARsxPfUh7ZXHDSbXhh7HtTfdNogYQjXdVmtzpN7cJqPkEw5?=
- =?us-ascii?Q?M+lv7Kh9QVf7gF81skyd5S3g701bU/pADAX1cFSUTdNYvnk3ejAy4dX+pV//?=
- =?us-ascii?Q?K13/gnpXBJrpClDG2y3fife8cn1DzvSzHMRSpYiqFzQnusW6EhpZ3on6NMVN?=
- =?us-ascii?Q?Z0cduPqtvnJzXF/USseeRnkzzFPuUxGgu7ZTiPrwDkEZBG70i+7ann6pR1LJ?=
- =?us-ascii?Q?YGHWPm4t0wFwm94GjKONCCSmMDMhggCjV9Ex+AV7dXVsuQMPJTnQE4OEt615?=
- =?us-ascii?Q?E9qchEiEvtGFlzRUvJKp1tW5BFVX02JGYehj0Nqw6OOy8OgsQG1KUzJghdt6?=
- =?us-ascii?Q?psteV7MWBxcQAxGr3vQ60kBDUKmUPiUNReKMdt56FCdTmIXDMThYmyEvUzwB?=
- =?us-ascii?Q?BORzDDPNyzhiTukvsQOqAWMCLhxe/sSxnJ4ia05UrKq60QhKyCpXPJ3J8l8N?=
- =?us-ascii?Q?VfRIaZ91VP60tP43ZKSULTKCBgou7mqJ4EnRNYZh6LATcZRBMQmv3ea7owvX?=
- =?us-ascii?Q?Qm/Wk6WXiKIiY7pBehTe+hCzb6dF2Ge5XuxnvP4ziNQVp5lju3/woWNkXoZw?=
- =?us-ascii?Q?vMHF+A3JlFjumyXeYnRVH6BkNo6GFZE9tWRFaS97C8rL1kYF1mbx4u4xVfRC?=
- =?us-ascii?Q?vSMgRVr2qyO/Ysh+VwXjFJ2IoMnJxH6+LU3kios3snzcXeMtAnWrB7+0/THe?=
- =?us-ascii?Q?gfDy/MxmfRoud9/CPYSDCAOxNRUt9SHfXDOkHZQWFljqU1OuH1pQQHU/kIxA?=
- =?us-ascii?Q?NZPOgbGHeHeOBInT1zDS/JzxZW5k9DppbnPyDTINYbfe9DqivL/KBpvlouFD?=
- =?us-ascii?Q?7gfPQbS/tMOeEwIU/L4mLKk3KpNCp6ZolmjJ57ZfgXXzVqIlaPEySZFQEGkq?=
- =?us-ascii?Q?J7QC7UBvnZrdSVcmaVlIywEdr/fjUhMecqFcTOU5vbXZZ36iUBOC8Py/5A7L?=
- =?us-ascii?Q?L+f7bOITef00RkDecvsnLS1F7fQait6vlszfXvpiCD8IRXbPDwqzMhtcwxhc?=
- =?us-ascii?Q?eZTihuisdndCp5yuBhyYy4c1nX40NOIDrX8Qz5+EKpPEv81KbWO9O4QUBdXF?=
- =?us-ascii?Q?nOScbf5NW19IIYK8dN/bALuEC4ickexHvSg3vD7rpJVydYtV9HJfxTFriK53?=
- =?us-ascii?Q?NnJTgYn6zFZuleMKfpxTApYGO4nZg0SZ2Fnw99IuAVK+Ak1YKqjwRxF/X6SJ?=
- =?us-ascii?Q?ckif3RUVNiWvlpvtQcZ+YuGFMPkzgl6CWshUFmpMc33uVFw7X09QCHD7GVGw?=
- =?us-ascii?Q?LWdg08330nCiUWw9yX4sWUjseh7AC0rk7C76zLmOGeHH/+WzGztqnH9jG5WJ?=
- =?us-ascii?Q?o+6vWz3mNmfnQj8d5V0rczw9E5XhTJcLTDKUTVn1?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4EE627442;
+	Wed, 18 Sep 2024 03:57:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1726631866; cv=none; b=IFdUuC0ydlarFfbzV4T69xIoVX6Ah+9IIrowKx7RWFW+8RMiU8lFkIvNf0ee8noDDLY1DltbW4wR9NnGwjO1VG7hkaajQQsrXuAL6ZME+IHq5p/j5be0PyFhoAm8608MMTngGlDm0dZhdi0nU+1NrdnLroNLpT8OBxj1qLUVobg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1726631866; c=relaxed/simple;
+	bh=frD+K5HzGjuUq0/TH8Nj5H7UMFbyFlSEUpgkRZX7OQU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kooUeU1gxR/VOXVHKzAYomd3vEqoGGdcUvvaN2BpjONEtbnHwubg26CBLq6FlwErHA6cy8t0XnCH7o2Vk7UZFbxqwykrZOgr8hTdMOZnJ/0IOmQEPqKcHNZv0cE+zWbRC/GqXyFlkQjXVZ+9N2HV7uXuV6xUzUw1W3p/Kr5tmkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=i/ql75D1; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1726631863; x=1758167863;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=frD+K5HzGjuUq0/TH8Nj5H7UMFbyFlSEUpgkRZX7OQU=;
+  b=i/ql75D1kEiMZnBNJ0tupLx4EFrVgamasnK0EMjBeH8hnCvCzscKGJrs
+   VABMSkIsbaOcA3WF6qZ5hHqB4tHIlv38aPwYS7ohFJ4ajmXrUYLwCXvJ1
+   vg3nqdg0Rj/vKKdL1Qc0mvngxRPhLohA6G2DleMfzZNVj6A8YD1G5Us3J
+   /KCzk5S/0Yt6egxezZrlM2XaAjmPozB5OEImJ+PRpIVRp9hogvCkJtD7p
+   zD+4gL3fhY6MrKghhxqMw0hhQRzeSJfMVzKN0zWNygeYQuW667RP51ka9
+   w1ZN/TTQrdiHlD2PAx9bGH1TFzciO6koLY7CCcTpqM4Q5jC9LiCWhENR7
+   g==;
+X-CSE-ConnectionGUID: TLvtrn6fQcuUg0IpV/wEYw==
+X-CSE-MsgGUID: fid2O0s6RlKRSnh+58Nyiw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11198"; a="25398610"
+X-IronPort-AV: E=Sophos;i="6.10,235,1719903600"; 
+   d="scan'208";a="25398610"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2024 20:57:43 -0700
+X-CSE-ConnectionGUID: 97MOeXxuQZe8qSWGXtTPYQ==
+X-CSE-MsgGUID: AeWhu8umTt6Qh9MrwCDOPQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,235,1719903600"; 
+   d="scan'208";a="73962877"
+Received: from ly-workstation.sh.intel.com (HELO ly-workstation) ([10.239.161.23])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 Sep 2024 20:57:39 -0700
+Date: Wed, 18 Sep 2024 11:56:31 +0800
+From: "Lai, Yi" <yi1.lai@linux.intel.com>
+To: Felix Moessbauer <felix.moessbauer@siemens.com>
+Cc: axboe@kernel.dk, asml.silence@gmail.com, linux-kernel@vger.kernel.org,
+	io-uring@vger.kernel.org, cgroups@vger.kernel.org,
+	dqminh@cloudflare.com, longman@redhat.com,
+	adriaan.schmidt@siemens.com, florian.bezdeka@siemens.com,
+	stable@vger.kernel.org, syzkaller-bugs@googlegroups.com,
+	pengfei.xu@intel.com, yi1.lai@intel.com
+Subject: Re: [PATCH 1/1] io_uring/sqpoll: do not allow pinning outside of
+ cpuset
+Message-ID: <ZupPb3OH3tnM2ARj@ly-workstation>
+References: <20240909150036.55921-1-felix.moessbauer@siemens.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: starfivetech.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: NTZPR01MB0956.CHNPR01.prod.partner.outlook.cn
-X-MS-Exchange-CrossTenant-Network-Message-Id: a4c49393-5718-433b-bfe6-08dcd78d47c2
-X-MS-Exchange-CrossTenant-originalarrivaltime: 18 Sep 2024 02:54:57.3724
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 06fe3fa3-1221-43d3-861b-5a4ee687a85c
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: vq1/bWFXKJ5MNaHGUIhanIPWzOjRFlM0kp9RTlegUb2nOZLSbDUJ5UAuIA1L/ycrpdD81G+RVxNwTgAHWau1A2RZARyUi0eTCzGn+Fu5hCY=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: NTZPR01MB1065
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240909150036.55921-1-felix.moessbauer@siemens.com>
 
-On 9/15/24 23:10 AM, Greg KH wrote:
->=20
-> On Sun, Sep 15, 2024 at 08:01:33AM -0700, Ron Economos wrote:
-> > On 9/15/24 6:22 AM, Greg KH wrote:
-> > > On Sat, Sep 14, 2024 at 03:32:33AM -0700, Ron Economos wrote:
-> > > > On 9/14/24 3:04 AM, Xingyu Wu wrote:
-> > > > > On 14/09/2024 17:37, Greg KH wrote:
-> > > > > > On Sat, Sep 14, 2024 at 09:24:44AM +0000, Xingyu Wu wrote:
-> > > > > > > On 14/09/2024 16:51, Greg KH wrote:
-> > > > > > > > On Sat, Sep 14, 2024 at 08:01:44AM +0000, Xingyu Wu wrote:
-> > > > > > > > > On 13/09/2024 22:12, Sasha Levin wrote:
-> > > > > > > > > > This is a note to let you know that I've just added
-> > > > > > > > > > the patch titled
-> > > > > > > > > >
-> > > > > > > > > >       riscv: dts: starfive: jh7110-common: Fix lower
-> > > > > > > > > > rate of CPUfreq by setting PLL0 rate to 1.5GHz
-> > > > > > > > > >
-> > > > > > > > > > to the 6.10-stable tree which can be found at:
-> > > > > > > > > >
-> > > > > > > > > > http://www.kernel.org/git/?p=3Dlinux/kernel/git/stable/=
-s
-> > > > > > > > > > table-
-> > > > > > > > > > queue.git;a=3Dsummary
-> > > > > > > > > >
-> > > > > > > > > > The filename of the patch is:
-> > > > > > > > > >
-> > > > > > > > > > riscv-dts-starfive-jh7110-common-fix-lower-rate-of-c.p
-> > > > > > > > > > atch and it can be found in the queue-6.10
-> > > > > > > > > > subdirectory.
-> > > > > > > > > >
-> > > > > > > > > > If you, or anyone else, feels it should not be added
-> > > > > > > > > > to the stable tree, please let <stable@vger.kernel.org>=
- know
-> about it.
-> > > > > > > > > >
-> > > > > > > > > Hi Sasha,
-> > > > > > > > >
-> > > > > > > > > This patch only has the part of DTS without the clock dri=
-ver
-> patch[1].
-> > > > > > > > > [1]:
-> > > > > > > > > https://lore.kernel.org/all/20240826080430.179788-2-xing
-> > > > > > > > > yu.wu@star
-> > > > > > > > > five
-> > > > > > > > > tech.com/
-> > > > > > > > >
-> > > > > > > > > I don't know your plan about this driver patch, or maybe =
-I missed it.
-> > > > > > > > > But the DTS changes really needs the driver patch to
-> > > > > > > > > work and you should add
-> > > > > > > > the driver patch.
-> > > > > > > >
-> > > > > > > > Then why does the commit say:
-> > > > > > > >
-> > > > > > > > > >       Fixes: e2c510d6d630 ("riscv: dts: starfive: Add
-> > > > > > > > > > cpu scaling for
-> > > > > > > > > > JH7110 SoC")
-> > > > > > > > Is that line incorrect?
-> > > > > > > >
-> > > > > > > No, this patch can also fix the problem.
-> > > > > > > In that patchset, the patch 2 depended on patch 1,  so I
-> > > > > > > added the Fixes tag in
-> > > > > > both patches.
-> > > > > >
-> > > > > > What is the commit id of the other change you are referring to =
-here?
-> > > > > >
-> > > > > This commit id is the bug I'm trying to fix. The Fixes tag need t=
-o add it.
-> > > > >
-> > > > > Thanks,
-> > > > > Xingyu Wu
-> > > > >
-> > > > I think Greg is looking for this:
-> > > >
-> > > > commit 538d5477b25289ac5d46ca37b9e5b4d685cbe019
-> > > >
-> > > > clk: starfive: jh7110-sys: Add notifier for PLL0 clock
-> > > That commit is already in the following releases:
-> > > 	6.6.51 6.10.10
-> > > so what are we supposed to be doing here?
-> > >
-> > > confused,
-> > >
-> > > greg k-h
-> > >
-> > Sorry, I didn't check to see if it was already in releases. So the
-> > 6.10 queue is fine as is.
-> >
-> > However, these two patches go together, so the 6.6 queue should also
-> > have
-> > 61f2e8a3a94175dbbaad6a54f381b2a505324610 "riscv: dts: starfive:
-> > jh7110-common: Fix lower rate of CPUfreq by setting PLL0 rate to 1.5GHz=
+Hi Felix Moessbauer,
+
+Greetings!
+
+I used Syzkaller and found that there is KASAN: use-after-free Read in io_sq_offload_create in Linux-next tree - next-20240916.
+
+After bisection and the first bad commit is:
 "
-> > added to it.
->=20
-> Given that the file arch/riscv/boot/dts/starfive/jh7110-common.dtsi is no=
-t in the
-> 6.6.y kernel tree, are you sure about this?  If so, where should it be ap=
-plied to
-> instead?
->=20
+f011c9cf04c0 io_uring/sqpoll: do not allow pinning outside of cpuset
+"
 
-Hi Greg,
+All detailed into can be found at:
+https://github.com/laifryiee/syzkaller_logs/tree/main/240917_135250_io_sq_offload_create
+Syzkaller repro code:
+https://github.com/laifryiee/syzkaller_logs/blob/main/240917_135250_io_sq_offload_create/repro.c
+Syzkaller repro syscall steps:
+https://github.com/laifryiee/syzkaller_logs/blob/main/240917_135250_io_sq_offload_create/repro.prog
+Syzkaller report:
+https://github.com/laifryiee/syzkaller_logs/blob/main/240917_135250_io_sq_offload_create/repro.report
+Kconfig(make olddefconfig):
+https://github.com/laifryiee/syzkaller_logs/blob/main/240917_135250_io_sq_offload_create/kconfig_origin
+Bisect info:
+https://github.com/laifryiee/syzkaller_logs/blob/main/240917_135250_io_sq_offload_create/bisect_info.log
+bzImage:
+https://github.com/laifryiee/syzkaller_logs/raw/main/240917_135250_io_sq_offload_create/bzImage_7083504315d64199a329de322fce989e1e10f4f7
+Issue dmesg:
+https://github.com/laifryiee/syzkaller_logs/blob/main/240917_135250_io_sq_offload_create/7083504315d64199a329de322fce989e1e10f4f7_dmesg.log
 
-How about this patch[1] which I sent earlier about DTS?
-[1]: https://lore.kernel.org/all/20240507065319.274976-3-xingyu.wu@starfive=
-tech.com/
+"
+[   23.564898] ==================================================================
+[   23.565444] BUG: KASAN: use-after-free in io_sq_offload_create+0xcaa/0x11d0
+[   23.565971] Read of size 8 at addr ffff888036377898 by task repro/729
+[   23.566459] 
+[   23.566593] CPU: 0 UID: 0 PID: 729 Comm: repro Not tainted 6.11.0-next-20240916-7083504315d6 #1
+[   23.567271] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+[   23.568066] Call Trace:
+[   23.568252]  <TASK>
+[   23.568417]  dump_stack_lvl+0xea/0x150
+[   23.568718]  print_report+0xce/0x610
+[   23.569001]  ? io_sq_offload_create+0xcaa/0x11d0
+[   23.569340]  ? kasan_addr_to_slab+0x11/0xb0
+[   23.569651]  ? io_sq_offload_create+0xcaa/0x11d0
+[   23.569992]  kasan_report+0xcc/0x110
+[   23.570277]  ? io_sq_offload_create+0xcaa/0x11d0
+[   23.570621]  kasan_check_range+0x3e/0x1c0
+[   23.570917]  __kasan_check_read+0x15/0x20
+[   23.571212]  io_sq_offload_create+0xcaa/0x11d0
+[   23.571540]  ? __pfx_io_sq_offload_create+0x10/0x10
+[   23.571893]  ? __pfx___lock_acquire+0x10/0x10
+[   23.572228]  ? __this_cpu_preempt_check+0x21/0x30
+[   23.572580]  ? lock_acquire.part.0+0x152/0x390
+[   23.572910]  ? __this_cpu_preempt_check+0x21/0x30
+[   23.573254]  ? lock_release+0x441/0x870
+[   23.573541]  ? __pfx_lock_release+0x10/0x10
+[   23.573846]  ? trace_lock_acquire+0x139/0x1b0
+[   23.574180]  ? debug_smp_processor_id+0x20/0x30
+[   23.574524]  ? rcu_is_watching+0x19/0xc0
+[   23.574826]  ? __alloc_pages_noprof+0x517/0x710
+[   23.575171]  ? __pfx___alloc_pages_noprof+0x10/0x10
+[   23.575526]  ? mod_objcg_state+0x42c/0x9c0
+[   23.575838]  ? lockdep_hardirqs_on+0x89/0x110
+[   23.576159]  ? __sanitizer_cov_trace_switch+0x58/0xa0
+[   23.576534]  ? policy_nodemask+0xf9/0x450
+[   23.576835]  ? __sanitizer_cov_trace_const_cmp2+0x1c/0x30
+[   23.577220]  ? alloc_pages_mpol_noprof+0x35d/0x580
+[   23.577575]  ? __pfx_alloc_pages_mpol_noprof+0x10/0x10
+[   23.577950]  ? __kmalloc_node_noprof+0x3a3/0x4e0
+[   23.578302]  ? __kvmalloc_node_noprof+0x7f/0x240
+[   23.578645]  ? alloc_pages_noprof+0xa9/0x180
+[   23.578963]  ? __sanitizer_cov_trace_const_cmp8+0x1c/0x30
+[   23.579347]  ? io_pages_map+0x244/0x5c0
+[   23.579631]  io_uring_setup+0x18df/0x3950
+[   23.579936]  ? __pfx_io_uring_setup+0x10/0x10
+[   23.580263]  ? __audit_syscall_entry+0x39c/0x500
+[   23.580602]  __x64_sys_io_uring_setup+0xa4/0x160
+[   23.580939]  x64_sys_call+0x17f5/0x20d0
+[   23.581224]  do_syscall_64+0x6d/0x140
+[   23.581498]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[   23.581872] RIP: 0033:0x7efd9fa3ee5d
+[   23.582140] Code: ff c3 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 93 af 1b 00 f7 d8 64 89 01 48
+[   23.583404] RSP: 002b:00007ffdd4400858 EFLAGS: 00000202 ORIG_RAX: 00000000000001a9
+[   23.583938] RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007efd9fa3ee5d
+[   23.584430] RDX: 00007efd9fb3f247 RSI: 0000000020000080 RDI: 0000000000005230
+[   23.584927] RBP: 00007ffdd4400860 R08: 00007ffdd44002d0 R09: 00007ffdd4400890
+[   23.585419] R10: 0000000000000000 R11: 0000000000000202 R12: 00007ffdd44009b8
+[   23.585914] R13: 0000000000401730 R14: 0000000000403e08 R15: 00007efd9fcb5000
+[   23.586424]  </TASK>
+[   23.586589] 
+[   23.586709] The buggy address belongs to the physical page:
+[   23.587094] page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x36377
+[   23.587644] flags: 0xfffffc0000000(node=0|zone=1|lastcpupid=0x1fffff)
+[   23.588103] raw: 000fffffc0000000 ffffea0000d8ddc8 ffffea0000d8ddc8 0000000000000000
+[   23.588636] raw: 0000000000000000 0000000000000000 00000000ffffffff 0000000000000000
+[   23.589167] page dumped because: kasan: bad access detected
+[   23.589551] 
+[   23.589670] Memory state around the buggy address:
+[   23.590007]  ffff888036377780: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+[   23.590514]  ffff888036377800: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+[   23.591011] >ffff888036377880: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+[   23.591508]                             ^
+[   23.591794]  ffff888036377900: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+[   23.592292]  ffff888036377980: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+[   23.592789] ==================================================================
+[   23.593344] Disabling lock debugging due to kernel taint
+"
 
-This patch is based on older kernel without the file (jh7110-common.dtsi) a=
-nd has been tested to work.
+I hope you find it useful.
 
-Best regards,
-Xingyu Wu
+Regards,
+Yi Lai
+
+---
+
+If you don't need the following environment to reproduce the problem or if you
+already have one reproduced environment, please ignore the following information.
+
+How to reproduce:
+git clone https://gitlab.com/xupengfe/repro_vm_env.git
+cd repro_vm_env
+tar -xvf repro_vm_env.tar.gz
+cd repro_vm_env; ./start3.sh  // it needs qemu-system-x86_64 and I used v7.1.0
+  // start3.sh will load bzImage_2241ab53cbb5cdb08a6b2d4688feb13971058f65 v6.2-rc5 kernel
+  // You could change the bzImage_xxx as you want
+  // Maybe you need to remove line "-drive if=pflash,format=raw,readonly=on,file=./OVMF_CODE.fd \" for different qemu version
+You could use below command to log in, there is no password for root.
+ssh -p 10023 root@localhost
+
+After login vm(virtual machine) successfully, you could transfer reproduced
+binary to the vm by below way, and reproduce the problem in vm:
+gcc -pthread -o repro repro.c
+scp -P 10023 repro root@localhost:/root/
+
+Get the bzImage for target kernel:
+Please use target kconfig and copy it to kernel_src/.config
+make olddefconfig
+make -jx bzImage           //x should equal or less than cpu num your pc has
+
+Fill the bzImage file into above start3.sh to load the target kernel in vm.
+
+Tips:
+If you already have qemu-system-x86_64, please ignore below info.
+If you want to install qemu v7.1.0 version:
+git clone https://github.com/qemu/qemu.git
+cd qemu
+git checkout -f v7.1.0
+mkdir build
+cd build
+yum install -y ninja-build.x86_64
+yum -y install libslirp-devel.x86_64
+../configure --target-list=x86_64-softmmu --enable-kvm --enable-vnc --enable-gtk --enable-sdl --enable-usb-redir --enable-slirp
+make
+make install 
+
+On Mon, Sep 09, 2024 at 05:00:36PM +0200, Felix Moessbauer wrote:
+> The submit queue polling threads are userland threads that just never
+> exit to the userland. When creating the thread with IORING_SETUP_SQ_AFF,
+> the affinity of the poller thread is set to the cpu specified in
+> sq_thread_cpu. However, this CPU can be outside of the cpuset defined
+> by the cgroup cpuset controller. This violates the rules defined by the
+> cpuset controller and is a potential issue for realtime applications.
+> 
+> In b7ed6d8ffd6 we fixed the default affinity of the poller thread, in
+> case no explicit pinning is required by inheriting the one of the
+> creating task. In case of explicit pinning, the check is more
+> complicated, as also a cpu outside of the parent cpumask is allowed.
+> We implemented this by using cpuset_cpus_allowed (that has support for
+> cgroup cpusets) and testing if the requested cpu is in the set.
+> 
+> Fixes: 37d1e2e3642e ("io_uring: move SQPOLL thread io-wq forked worker")
+> Cc: stable@vger.kernel.org # 6.1+
+> Signed-off-by: Felix Moessbauer <felix.moessbauer@siemens.com>
+> ---
+> Hi,
+> 
+> that's hopefully the last fix of cpu pinnings of the sq poller threads.
+> However, there is more to come on the io-wq side. E.g the syscalls for
+> IORING_REGISTER_IOWQ_AFF that can be used to change the affinites are
+> not yet protected. I'm currently just lacking good reproducers for that.
+> I also have to admit that I don't feel too comfortable making changes to
+> the wq part, given that I don't have good tests.
+> 
+> While fixing this, I'm wondering if it makes sense to add tests for the
+> combination of pinning and cpuset. If yes, where should these tests be
+> added?
+> 
+> Best regards,
+> Felix Moessbauer
+> Siemens AG
+> 
+>  io_uring/sqpoll.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/io_uring/sqpoll.c b/io_uring/sqpoll.c
+> index 713be7c29388..b8ec8fec99b8 100644
+> --- a/io_uring/sqpoll.c
+> +++ b/io_uring/sqpoll.c
+> @@ -10,6 +10,7 @@
+>  #include <linux/slab.h>
+>  #include <linux/audit.h>
+>  #include <linux/security.h>
+> +#include <linux/cpuset.h>
+>  #include <linux/io_uring.h>
+>  
+>  #include <uapi/linux/io_uring.h>
+> @@ -459,10 +460,12 @@ __cold int io_sq_offload_create(struct io_ring_ctx *ctx,
+>  			return 0;
+>  
+>  		if (p->flags & IORING_SETUP_SQ_AFF) {
+> +			struct cpumask allowed_mask;
+>  			int cpu = p->sq_thread_cpu;
+>  
+>  			ret = -EINVAL;
+> -			if (cpu >= nr_cpu_ids || !cpu_online(cpu))
+> +			cpuset_cpus_allowed(current, &allowed_mask);
+> +			if (!cpumask_test_cpu(cpu, &allowed_mask))
+>  				goto err_sqpoll;
+>  			sqd->sq_cpu = cpu;
+>  		} else {
+> -- 
+> 2.39.2
+> 
 
