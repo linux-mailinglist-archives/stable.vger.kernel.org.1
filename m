@@ -1,224 +1,141 @@
-Return-Path: <stable+bounces-76741-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A6DF97C660
-	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 10:57:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BF0397C62D
+	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 10:48:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D9081F273CB
-	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 08:57:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DC8B4281FC8
+	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 08:48:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D905D19ABB3;
-	Thu, 19 Sep 2024 08:56:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7DB9199243;
+	Thu, 19 Sep 2024 08:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="hhPVwu03"
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="V8K3sKK6"
 X-Original-To: stable@vger.kernel.org
-Received: from DU2PR03CU002.outbound.protection.outlook.com (mail-northeuropeazon11012050.outbound.protection.outlook.com [52.101.66.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDB6F199FCC;
-	Thu, 19 Sep 2024 08:56:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.66.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726736198; cv=fail; b=O3KgG3zhnqvF/Q4eO5/2FPE+0vcFTLU+rQpmLV9yb4b5UmE9AADej7T9X3EF9ey/CLrM2ANy5G0xVks/XhCveuNq9uuEFQ2l2Sjd5O4AA7xA9FPcinvmiJHbhgAedSHipuysWE62jzwQIIBC4/l+aEGM6SHcJeVV1WTncDjs0cE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726736198; c=relaxed/simple;
-	bh=9Rh+rUmzy0C7oq95npDG1YWIvHqAMKFRjI3hPK8DO1M=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=sXd7wIu2mlZvZeoGWoU+Yy1rzwqdVdTbInu3RIQ2Ya2M3b+sgP1AmJnZYtUNAEcZJCmP2jjcXkGtx8lpvY2dnp7tenmpjSlDh/nIMWaKrRrc39nrfFqJZgT1LPqVX4Uog+FUZOhx/UFLZQGGOF0CmvClAQ2z1HWKfk3qm2BMS1s=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=hhPVwu03; arc=fail smtp.client-ip=52.101.66.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=FtQXnUoRIi6BkmlNPEUHEYPrLpk1ijLa+v8ZlH4yy1bkesM5CTLwQiQeaWJjmvpBGDGltRPKQ2/BEFnrvz3nIrgTtnELlGc6iZhQ25GKWgURVqi7tf7AI/wSGVgFiD9oYMRlh0n+zLYoP/OzYYlKt+IH9S4YINnXeIj+gva7JWmGOfDNugbY/c3i2frelQQj3+4k9neGlljxvFB4ss2PeaD3W82/nWNyL6p2in+rtnR7D8JPU501CDGby7DrTlOeHdUemG8gr1be6fGUTB9YmwpV4dr318tHPDPtMrM9/GK5o1uclrztW4iczoZHo0BNKQIefoylJdsBwLRBnfgH/w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rXqv+sdVIr3z3O07cuBTJ+KGD392tNhRET2iee9VYFk=;
- b=lrQW+g9qvpgCeWsEt4wtwl6hfcaFmU127fbIgm9ypjoPv1uF2wjUfniJB0RvwSgI8bSfCutgw06vYm0mR5BqGKqB4x+D5ZxtaOpwwqxAZ9SDF57+StRTztOPZmEJ8T2sicOhg9KM8XwM4bgatVw9Fails3+u5lvwfODX8OJdaPeSeatg21oF5jdvcx9SMGbH4k3H1LNPlPKVsagYJRe2DXcxB6mCMBYtMxyW18qE7FmpSopNkGybsuOE0hNju/qV2ityB5YPO88bk5PZ7ai97HN5cwZKgvwXHTghYpSR5LnIs2JUVzFFwG615f6FF8nLylzXmz+APGGYO8Tb/g8OJg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
- header.d=nxp.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rXqv+sdVIr3z3O07cuBTJ+KGD392tNhRET2iee9VYFk=;
- b=hhPVwu03wSfc07YE8VXN9xrAc/igmqEcsDI2VhSJpWmFuKHTlaSzhnHtg97DaYA/T2/31kDz7n1y+EP+GUHSSm7PQd+RSh0UBVpm8rNkTqktWD7iQho26ioMgZF0yC/RsoO4mYb11i9ml8fwjTINDUfhXk3g1MwpfqjMBxzfc1EslRnw4+gLreIVHeP0z+tQUcGkQoxcUTVuOb9vRcg6ShQZzpO7cB6adWU1kXmei6QYPIphDzkLN6rvNAv+aun9aBd/vMocDo67NqCJ2YAtzXrsng/l9ENP6GXWl6gxbyCwf6X2tRmyZBrMgbZPer14LFXhVx8JMJ48C34uSquFsg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nxp.com;
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com (2603:10a6:102:211::7)
- by GV1PR04MB10242.eurprd04.prod.outlook.com (2603:10a6:150:1a8::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7982.16; Thu, 19 Sep
- 2024 08:56:32 +0000
-Received: from PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db]) by PAXPR04MB8510.eurprd04.prod.outlook.com
- ([fe80::a7c2:e2fa:8e04:40db%6]) with mapi id 15.20.7918.024; Thu, 19 Sep 2024
- 08:56:32 +0000
-From: Wei Fang <wei.fang@nxp.com>
-To: davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	claudiu.manoil@nxp.com,
-	vladimir.oltean@nxp.com,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	hawk@kernel.org,
-	john.fastabend@gmail.com
-Cc: linux-kernel@vger.kernel.org,
-	netdev@vger.kernel.org,
-	bpf@vger.kernel.org,
-	stable@vger.kernel.org,
-	imx@lists.linux.dev
-Subject: [PATCH net 3/3] net: enetc: reset xdp_tx_in_flight when updating bpf program
-Date: Thu, 19 Sep 2024 16:41:04 +0800
-Message-Id: <20240919084104.661180-4-wei.fang@nxp.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240919084104.661180-1-wei.fang@nxp.com>
-References: <20240919084104.661180-1-wei.fang@nxp.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SI1PR02CA0005.apcprd02.prod.outlook.com
- (2603:1096:4:1f7::13) To PAXPR04MB8510.eurprd04.prod.outlook.com
- (2603:10a6:102:211::7)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22FBEFC0E
+	for <stable@vger.kernel.org>; Thu, 19 Sep 2024 08:47:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1726735668; cv=none; b=T0GtRIacZ5yhICIrAid8LzJSZYazpzBr9mFxluaQoaWqRz0xIYRr2dVvRWixjYmN+ZnThKR77+YRNij6NYYNJPTSYScb5YjdaAYXoZADoPgZf1rRZPahu6u5YxZl+tL/gssaTAB0jyPaUsck+62+o7aV4G6w3tiv9hH3DDBnDdQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1726735668; c=relaxed/simple;
+	bh=oUpxxtUV3Ftv+ypTgLvU88End0w9Jjkb6DhB98wYzYw=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=kas9dt89aM962SkB4TBVTjelu0UxQ8GnSfXOifrCfgTxEtit7REPWriAbDuxKdapSxZldllBPAoUc96q5YKsUaglX6IbvlbPbFSPo4wiXR4i0FeW6jrSr7gkAKRIR8sk0fwysR1I+6zo+27A21A8nP2SkyYz7nZlWlIsPspuKIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=V8K3sKK6; arc=none smtp.client-ip=83.149.199.84
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
+Received: from fpc (unknown [10.10.165.11])
+	by mail.ispras.ru (Postfix) with ESMTPSA id B85F040B278B;
+	Thu, 19 Sep 2024 08:47:41 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru B85F040B278B
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
+	s=default; t=1726735661;
+	bh=LHKpVziHOMxXCUDZFv5y7nePzbU+Q5qnBd7yll61uQo=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:From;
+	b=V8K3sKK67XQQva+GPyIYurfLkOPL9yu4erDa6pndUE9Rny+x4uope7TIDg8xM/Hv5
+	 d3LK2AV6lIC1cIhiZflKUlWaWiZs/Cc6J2UP4jvOlFPKujQFwl76DeUfOG4eynl41S
+	 wJw2L9eYT2pQGTGPP8SCVDUGWCVMOX2Yw3tSJ8e8=
+Date: Thu, 19 Sep 2024 11:47:34 +0300
+From: Fedor Pchelkin <pchelkin@ispras.ru>
+To: Greg Thelen <gthelen@google.com>
+Cc: Chen Ridong <chenridong@huawei.com>, Tejun Heo <tj@kernel.org>,
+	Shivani Agarwal <shivani.agarwal@broadcom.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	stable@vger.kernel.org, lvc-project@linuxtesting.org,
+	Michal =?utf-8?Q?Koutn=C3=BD?= <mkoutny@suse.com>
+Subject: Re: 5.10.225 stable kernel cgroup_mutex not held assertion failure
+Message-ID: <20240919-5e2d9ccca61f5022e0b574af-pchelkin@ispras.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PAXPR04MB8510:EE_|GV1PR04MB10242:EE_
-X-MS-Office365-Filtering-Correlation-Id: 12ce09aa-ae1b-4ecc-6591-08dcd888f565
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|52116014|366016|1800799024|7416014|38350700014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?jAq+TMt2opBkoJEEw8D7ZT0w7NyQKRrsm82BuyhnnVbFv6g50Igub58OgOMx?=
- =?us-ascii?Q?ZenOD4xA8EoabV1foqACGzHicsx+iv6cji7LQNCF7J/eNpnpAYsmV5N5u6iw?=
- =?us-ascii?Q?1XXwYyHj4sd9dw+DPNsAfym1p0ioQw7yypL5QXIOjZW1MxkZ1ZNBcuq1iPJQ?=
- =?us-ascii?Q?6MXX/eAzvoPGv9QYgbQzn6Fjgm8xE4JTXjY+j9ybKGmT5bwl13IKRi5usw68?=
- =?us-ascii?Q?Y3oVRCywRAHcvnlnrxtGgRbaObfSHad+C3Fwx4Ow/CVGebd3bqPalwZFyGyt?=
- =?us-ascii?Q?+L/vfuLg0lzI87bOMkqHqkfPieaXZ02cwQuSvsAg8iSUFywKWiY21r0YULBV?=
- =?us-ascii?Q?Ydla8tqjeSYgvSwUn55twOqPkbnPkHU+eRIA4KRt1wX64LNHJpBnM4CKlNNq?=
- =?us-ascii?Q?xA2SwgMS4haeGj3Bip0KdzBlVdrc8rbHwouuRPfCaYMrRtDVc40ggeyLlLkZ?=
- =?us-ascii?Q?Di1dS9/mlQg7E/zMlgBFUyJEVGDecg+sbF0Vk7i0iibRRGZO2VS1wBNgvxaX?=
- =?us-ascii?Q?6elNs2N0OK4B5NFlf78HiWtJGGxQoe0c9evCpVdPpzIwpuIkLWvN82g1KLbr?=
- =?us-ascii?Q?S3DzcaSZL50D6UIC/iO0Z4TWtdtmJz/FsgK5MZswbsKqBrf9a1gdxqmtOZb9?=
- =?us-ascii?Q?dq/crRTcLSTwa+zFewshCxwu8mpYwUaJM/0EQ3O+K1nqYG8xL9Du9lpJETyy?=
- =?us-ascii?Q?N/LQNyaaiaQYtDgw22q9kBXrsrdGYw745bL2af9U/rigYIpSKmGscBSUFHsd?=
- =?us-ascii?Q?qxW77yX329ulqGCrkZdo2j9lhWdxn53wsChjEsCtO1WrzoBo6J0ntSbDyc6n?=
- =?us-ascii?Q?TQWZeO/KGUO8G2V7/arEo0u87vUjAJpUU4qqrtczQQzFo8yEmAvOsqOH+iHU?=
- =?us-ascii?Q?svgi9Rs6zf2MBqa08XSXwkVi/gCyxGzwm00yodGrcJue9cizPhr8KaiBbKL6?=
- =?us-ascii?Q?zHyA6uMx5SBJBdUusHzfhn8f8WRx7Yc1HMz/ruhUMFfVeU3MRQyHEZqP8BNS?=
- =?us-ascii?Q?AT479JrJrIG2lFxZG8xEqLoiG2qfgkmW+llD9CBNE4+wUi/oygzeijRm1Tmk?=
- =?us-ascii?Q?8V9pE59FN44w+I1JJmhJi2H5y0gH934SnjPLLBQ3h6dex9A7xwGXu/Jr5lvr?=
- =?us-ascii?Q?9WCujlGIk41rTzD6FEUYuIF6O5i52DwJOB9R169eXqjcn1RfGGJySU9c+86f?=
- =?us-ascii?Q?SeMh5/BrkUKw85biZQTsr0N6X+shKEjEcDJRUl0jbOC2IF4VPbgjRrVsq/Br?=
- =?us-ascii?Q?0Ps8z8Uiykmqz6yf9xw9iIamkNSnL0wc+2F4/rsfjt4wVlCEdrBuRs8EYoBE?=
- =?us-ascii?Q?Zi74yHZX5J3sVg7Pt4Cgfx4Jg6dQH/mhaez1eVVODQFGQHVfCZB5tVTxbLJc?=
- =?us-ascii?Q?/tcFgFA21h+1TAJgUTlvx00xvqiZ/UQgZiOWUes4coYWEIHASC5owhCSyt/s?=
- =?us-ascii?Q?iARl3+W8mlU=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PAXPR04MB8510.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(52116014)(366016)(1800799024)(7416014)(38350700014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?MKfb1jD0GxF76HMZ3pUh+8360jO6Y5Cs0sjPwHoG505lY0dLQhPbWCyvfakZ?=
- =?us-ascii?Q?HUN9nVqSYlL7Px2pS7Cw/OTPPlbVkg6A5Fkk0+rURsdmj9W3oyipTxSdU+yo?=
- =?us-ascii?Q?tSxaH2Ywb6JZ3A3VPE08pV0f7aOmYHNBvEF58FpZv/DuoNrgIPuCFfaksZd9?=
- =?us-ascii?Q?3rlRYzeUnhxUonpOXMeokE4eOF4N9enrM0boxUQE9hG8Mm3RfDTksooG2jEi?=
- =?us-ascii?Q?FuAtikfNxnrhhx/WDm62j/kRckwRchVZIf6AAFG/UDfDxTLqLSY6BUduxM1P?=
- =?us-ascii?Q?HVoZUkhtb2VnRgtvAPw6X+4U/+zqtvRtSvjQROCitQtgCd5ubumH9sUM23Di?=
- =?us-ascii?Q?Wnh4hbrEMnNwveky1s0MUKI5kA10ubkBvfBfAjYGXpw8QGZmca1F/1K3kUoZ?=
- =?us-ascii?Q?ebssDuJ5xgXUdZOlNO1t8jUKYlwRpk2fbZDAPO9g3EZ8ZFS2wPS0Ei1BR5Mo?=
- =?us-ascii?Q?9Hpxd2JvQiTHtPSxU/aA4MX4wIvWxjx29ighAOJRFNCugU8zZAYFYBsdtmhF?=
- =?us-ascii?Q?9hxT/SuszSHGhxVGeV908J1sjkhS+2gtlirrvTkdX3vlHedvaxtNiu3ZmjLW?=
- =?us-ascii?Q?k8CjKxJDB0fz36jQjzoBe9BiKH0Mb3bzgpOjCAkzoRTOSSJT8Qgzu4oGaSML?=
- =?us-ascii?Q?VwGDF5QxjBbKR2d8ZXLUDw6n38dZYP3a4yzO/sDLXLlc3aLePqEZDj/Skfms?=
- =?us-ascii?Q?2adYP7uJt0TzWOIRwC2xpD13RLqFisesO8vAEgOFo5eYkEIHsedXXS/tunlq?=
- =?us-ascii?Q?U3Ja+IyYk2GdU34GjnCm3Dbi8f0CQ5ow3YTR0NOxlIDf6Zn65o6Xd6jqqxlr?=
- =?us-ascii?Q?gV0/WK3g5VenkotekrKBAZJSDsjt/tiPH9E1fsUvW8ZcmsrmzgO99HfPHwMU?=
- =?us-ascii?Q?Ab7CE+2aeE5Ws5Xe8tV/SMOgfLRN34CEjgdkgpN+xGy9YMN9VW2NHuZskHQB?=
- =?us-ascii?Q?/4NE65k4+mjFIQwKr4a9wCdK8rWiJ8h3uusk9lGr6hGLVPHDLKBnPmINtp92?=
- =?us-ascii?Q?oYr2YHCOQaZ7GcxSn48L9ESf/fXLrJp1NY4jEAeYIUGswb06E8mnpvtML4No?=
- =?us-ascii?Q?bYHgK7NocZvkYESOMqD/IGhwmX8bFTyd1eOwRuXWRwvegj/T+JqALeh5DUQP?=
- =?us-ascii?Q?l74iT+crEemdeZ3vpm6E8h+WCSHui0gLZ6JjA6oCMFltheEB0u2f/WiXCZu2?=
- =?us-ascii?Q?R9ts3xnCavnSL1QHbI1LYMcF7QNuNRjdydf7xhhi9XNaoPmgWVYhQzt5VjHJ?=
- =?us-ascii?Q?ISCLIhW4+xOeq7amX2MUg2lvbXvGX41zN0FxMHGUlQT33wHw1lbPIfk0ettx?=
- =?us-ascii?Q?IcClkC7KNcy4i17w/Om4lsMgakVvlP6reICGf+IKqw/fQ076t2jnrUYp/LPN?=
- =?us-ascii?Q?kjFl3YJW/Fz9+Q6r9dyxurAy4NSaFvWbmQD2TvIFPeUu5eKy9QVVdy5SOnDn?=
- =?us-ascii?Q?NdvtcF1U6B2rgsiQeB1E9vRZwEVdn0HNbTlmc6aaa+//7Z3/90Ff1hQ5Ti/m?=
- =?us-ascii?Q?MQcHFmXN+4z1Xi7fx/OvHhqUojhRrSv85qtYqNkQ2XiZvQrqCEhWTw7oIHAr?=
- =?us-ascii?Q?h+im3ei3DSnIhk9pbFTgWPKo/20y13jjMkQOaaVJ?=
-X-OriginatorOrg: nxp.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 12ce09aa-ae1b-4ecc-6591-08dcd888f565
-X-MS-Exchange-CrossTenant-AuthSource: PAXPR04MB8510.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Sep 2024 08:56:32.6610
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: ECr/6kdHmRrmkfPiY+raD1YKCoiHHteyr8VZ7gYNIINFvYEQSbnlhKhebdm4gyIT1/tCiQ6R/sNITtHIWAiZyg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR04MB10242
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <xr93ikus2nd1.fsf@gthelen-cloudtop.c.googlers.com>
 
-When running "xdp-bench tx eno0" to test the XDP_TX feature of ENETC
-on LS1028A, it was found that if the command was re-run multiple times,
-Rx could not receive the frames, and the result of xdo-bench showed
-that the rx rate was 0.
+Greg Thelen wrote:
+> Linux stable v5.10.226 suffers a lockdep warning when accessing
+> /proc/PID/cpuset. cset_cgroup_from_root() is called without cgroup_mutex
+> is held, which causes assertion failure.
+> 
+> Bisect blames 5.10.225 commit 688325078a8b ("cgroup/cpuset: Prevent UAF
+> in proc_cpuset_show()"). I've have not easily reproduced the problem
+> that this change fixes, so I'm not sure if it's best to revert the fix
+> or adapt it to meet the 5.10 locking expectations.
+> 
+> The lockdep complaint:
+> 
+> $ cat /proc/1/cpuset
+> $ dmesg
+> [  198.744891] ------------[ cut here ]------------
+> [  198.744918] WARNING: CPU: 4 PID: 9301 at kernel/cgroup/cgroup.c:1395  
+> cset_cgroup_from_root+0xb2/0xd0
+> [  198.744957] RIP: 0010:cset_cgroup_from_root+0xb2/0xd0
+> [  198.744960] Code: 02 00 00 74 11 48 8b 09 48 39 cb 75 eb eb 19 49 83 c6  
+> 10 4c 89 f0 48 85 c0 74 0d 5b 41 5e c3 48 8b 43 60 48 85 c0 75 f3 0f 0b  
+> <0f> 0b 83 3d 69 01 ee 01 00 0f 85 78 ff ff ff eb 8b 0f 0b eb 87 66
+> [  198.744962] RSP: 0018:ffffb492608a7ce8 EFLAGS: 00010046
+> [  198.744977] RAX: 0000000000000000 RBX: ffffffff8f4171b8 RCX:  
+> cc949de848c33e00
+> [  198.744979] RDX: 0000000000001000 RSI: ffffffff8f415450 RDI:  
+> ffff92e5417c4dc0
+> [  198.744981] RBP: ffff9303467e3f00 R08: 0000000000000008 R09:  
+> ffffffff9122d568
+> [  198.744983] R10: ffff92e5417c4380 R11: 0000000000000000 R12:  
+> ffff92e3d9506000
+> [  198.744984] R13: 0000000000000000 R14: ffff92e443a96000 R15:  
+> ffff92e3d9506000
+> [  198.744987] FS:  00007f15d94ed740(0000) GS:ffff9302bf500000(0000)  
+> knlGS:0000000000000000
+> [  198.744988] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [  198.744990] CR2: 00007f15d94ca000 CR3: 00000002816ca003 CR4:  
+> 00000000001706e0
+> [  198.744992] Call Trace:
+> [  198.744996]  ? __warn+0xcd/0x1c0
+> [  198.745000]  ? cset_cgroup_from_root+0xb2/0xd0
+> [  198.745008]  ? report_bug+0x87/0xf0
+> [  198.745015]  ? handle_bug+0x42/0x80
+> [  198.745017]  ? exc_invalid_op+0x16/0x70
+> [  198.745021]  ? asm_exc_invalid_op+0x12/0x20
+> [  198.745030]  ? cset_cgroup_from_root+0xb2/0xd0
+> [  198.745034]  ? cset_cgroup_from_root+0x28/0xd0
+> [  198.745038]  cgroup_path_ns_locked+0x23/0x50
+> [  198.745044]  proc_cpuset_show+0x115/0x210
+> [  198.745049]  proc_single_show+0x4a/0xa0
+> [  198.745056]  seq_read_iter+0x14d/0x400
+> [  198.745063]  seq_read+0x103/0x130
+> [  198.745074]  vfs_read+0xea/0x320
+> [  198.745078]  ? do_user_addr_fault+0x25b/0x390
+> [  198.745085]  ? do_user_addr_fault+0x25b/0x390
+> [  198.745090]  ksys_read+0x70/0xe0
+> [  198.745096]  do_syscall_64+0x2d/0x40
+> [  198.745099]  entry_SYSCALL_64_after_hwframe+0x61/0xcb
 
-root@ls1028ardb:~# ./xdp-bench tx eno0
-Hairpinning (XDP_TX) packets on eno0 (ifindex 3; driver fsl_enetc)
-Summary                      2046 rx/s                  0 err,drop/s
-Summary                         0 rx/s                  0 err,drop/s
-Summary                         0 rx/s                  0 err,drop/s
-Summary                         0 rx/s                  0 err,drop/s
+Hello,
 
-By observing the Rx PIR and CIR registers, we found that CIR is always
-equal to 0x7FF and PIR is always 0x7FE, which means that the Rx ring
-is full and can no longer accommodate other Rx frames. Therefore, it
-is obvious that the RX BD ring has not been cleaned up.
+we've also encountered this problem. The thing is that commit 688325078a8b
+("cgroup/cpuset: Prevent UAF in proc_cpuset_show()") relies on the RCU
+synchronization changes introduced by commit d23b5c577715 ("cgroup: Make
+operations on the cgroup root_list RCU safe") which wasn't backported to
+5.10 as it couldn't be cleanly applied there. That commit converted access
+to the root_list synchronization from depending on cgroup mutex to be
+RCU-safe.
 
-Further analysis of the code revealed that the Rx BD ring will only
-be cleaned if the "cleaned_cnt > xdp_tx_in_flight" condition is met.
-Therefore, some debug logs were added to the driver and the current
-values of cleaned_cnt and xdp_tx_in_flight were printed when the Rx
-BD ring was full. The logs are as follows.
+5.15 also has this problem, while 6.1 and later stables have the backport
+of this RCU-changing commit so they are not affected. As mentioned by
+Michal here:
+https://lore.kernel.org/stable/xrc6s5oyf3b5hflsffklogluuvd75h2khanrke2laes3en5js2@6kvpkcxs7ufj/
 
-[  178.762419] [XDP TX] >> cleaned_cnt:1728, xdp_tx_in_flight:2140
-[  178.771387] [XDP TX] >> cleaned_cnt:1941, xdp_tx_in_flight:2110
-[  178.776058] [XDP TX] >> cleaned_cnt:1792, xdp_tx_in_flight:2110
-
-From the results, we can see that the maximum value of xdp_tx_in_flight
-has reached 2140. However, the size of the Rx BD ring is only 2048. This
-is incredible, so checked the code again and found that the driver did
-not reset xdp_tx_in_flight when installing or uninstalling bpf program,
-resulting in xdp_tx_in_flight still retaining the value after the last
-command was run.
-
-Fixes: c33bfaf91c4c ("net: enetc: set up XDP program under enetc_reconfigure()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
----
- drivers/net/ethernet/freescale/enetc/enetc.c | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
-index 5830c046cb7d..3cff76923ab9 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-@@ -2769,6 +2769,7 @@ static int enetc_reconfigure_xdp_cb(struct enetc_ndev_priv *priv, void *ctx)
- 	for (i = 0; i < priv->num_rx_rings; i++) {
- 		struct enetc_bdr *rx_ring = priv->rx_ring[i];
- 
-+		rx_ring->xdp.xdp_tx_in_flight = 0;
- 		rx_ring->xdp.prog = prog;
- 
- 		if (prog)
--- 
-2.34.1
-
+In the next email I'll send the adapted to 5.10/5.15 commit along with its
+upstream-fix to avoid build failure in some situations. Would be nice if
+you give them a try. Thanks!
 
