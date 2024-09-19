@@ -1,111 +1,160 @@
-Return-Path: <stable+bounces-76751-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A20F497C876
-	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 13:18:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8CD4297C879
+	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 13:19:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1BD27B21C71
-	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 11:18:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D08191F263BC
+	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 11:19:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3928219AD7D;
-	Thu, 19 Sep 2024 11:18:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E140F19AD7D;
+	Thu, 19 Sep 2024 11:19:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XmqBG8ns"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HdFpUA5f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8637194083;
-	Thu, 19 Sep 2024 11:18:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86646194083;
+	Thu, 19 Sep 2024 11:19:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726744724; cv=none; b=VVYySHwTfVChhRGMgY0fr0CPNe/mGmrRc6YWMWQn8ckVSGwmcSgIZG4/qrxlLWN6Es5qIjT6xIEBoRlefyI/jB1+xs/wEHzCzhn9H8nyPSk0piL3Igog6s9+6ba7AQ5g9rxAX065MOYht5k/a0Je+9AxfI3P8xcjpKUDclx1LTU=
+	t=1726744771; cv=none; b=MfkWeSwOPXfEk/eW2jGSSPjHgDUYnEtNCm6EA9tPVwgOm2vQO7EW36t9iTurEAX4PHpLXoQRCexN6kfi1z+r1cz/BKSkmoKfDfoRfiNRqjXSPeNYmhbsRgtqXSOPXX0KngqjSXyO7hpcYjqI1DUkdizUJ6JmNbc4Hsx/AITc9JU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726744724; c=relaxed/simple;
-	bh=hIkLd8AvzpCoLbV7CT9rjtimplqyC+/Fv5vdmWL3vtI=;
+	s=arc-20240116; t=1726744771; c=relaxed/simple;
+	bh=jYG/+bOihbZ56Cfv+boYkIkhcJCD3pB8io/W06rCRq0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FqIhtzP3VrnfGkJXEqOG0GUgiA/3ElUNdYCL6WrKM5sP5B3U7jdjAQPLupCZAYB3gBX57wz3lkVQ8lOYw7I1vTrDRN5pVZxFUN7KDetiZasnPDnJ652AKsQTSP2Ci5JcoFyDamkiVzP+mwnCjBWsefzpqHmE0na+T6Q/XFEfmiQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XmqBG8ns; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0196C4CEC4;
-	Thu, 19 Sep 2024 11:18:42 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=GRecYbzZyjAL627oxATAS8iuwzV1bOfDaLcauGMFPMPATtfw1CzBLXnjjtLYvbemSPa5fAxG0GBs/o4mvtJ4a0iKkV7DozCQ8qB6o0y+6DxnFWhLhC3OAC2EX60UbDyIxVpMNJIR8VbQMIq2w0LcAxJP+617cGf5tEyZL7Kft9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HdFpUA5f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 752BFC4CECD;
+	Thu, 19 Sep 2024 11:19:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726744723;
-	bh=hIkLd8AvzpCoLbV7CT9rjtimplqyC+/Fv5vdmWL3vtI=;
+	s=korg; t=1726744771;
+	bh=jYG/+bOihbZ56Cfv+boYkIkhcJCD3pB8io/W06rCRq0=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XmqBG8ns2uJ+6E4E/IgTH8qLWzDPEqlixy+wG/Zne4Mt1niENwCleA7LucsTqxgTW
-	 qle3tzZtULuoXOjL0rJkxq/x1lJOeFLe8IDNSPFWznBJuogRumfG7J6Q8t0TJyrI1F
-	 o3x2t7G9a6J9FaICAQWcTCuWUIe71Oxk/mwNZ2NE=
-Date: Thu, 19 Sep 2024 13:18:39 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Xi Ruoyao <xry111@xry111.site>
-Cc: shankerwangmiao@gmail.com, stable@vger.kernel.org,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH 0/3] Backport statx(..., NULL, AT_EMPTY_PATH, ...)
-Message-ID: <2024091900-sloppy-swept-0a2e@gregkh>
-References: <20240918-statx-stable-linux-6-10-y-v1-0-8364a071074f@gmail.com>
- <2024091801-segment-lurk-e67b@gregkh>
- <f6ecd24e0fdb1327dad41f41c3ac31477ca00c9f.camel@xry111.site>
+	b=HdFpUA5fFXnr0uduODX0yzlyu6InN/ClAbTrmPJYhVKEPBwTii5XzveqLWRwVqkJv
+	 FgQaB7sFpuuns3YAJcol5rRIQoFZYJRNePncII5exa4MoIR38T19hMWy0niOxPSezk
+	 gX/gwwL09NCOjLzxBKzvVGZlsyBjw1eJ1DcF7ElM=
+Date: Thu, 19 Sep 2024 13:19:27 +0200
+From: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
+To: "Zhang, Rui" <rui.zhang@intel.com>
+Cc: "regressions@leemhuis.info" <regressions@leemhuis.info>,
+	"Neri, Ricardo" <ricardo.neri@intel.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"bp@alien8.de" <bp@alien8.de>,
+	"Gupta, Pawan Kumar" <pawan.kumar.gupta@intel.com>,
+	"regressions@lists.linux.dev" <regressions@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"Luck, Tony" <tony.luck@intel.com>,
+	"thomas.lindroth@gmail.com" <thomas.lindroth@gmail.com>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [STABLE REGRESSION] Possible missing backport of x86_match_cpu()
+ change in v6.1.96
+Message-ID: <2024091900-unimpeded-catalyst-b09f@gregkh>
+References: <eb709d67-2a8d-412f-905d-f3777d897bfa@gmail.com>
+ <a79fa3cc-73ef-4546-b110-1f448480e3e6@leemhuis.info>
+ <2024081217-putt-conform-4b53@gregkh>
+ <05ced22b5b68e338795c8937abb8141d9fa188e6.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <f6ecd24e0fdb1327dad41f41c3ac31477ca00c9f.camel@xry111.site>
+In-Reply-To: <05ced22b5b68e338795c8937abb8141d9fa188e6.camel@intel.com>
 
-On Thu, Sep 19, 2024 at 01:37:17AM +0800, Xi Ruoyao wrote:
-> On Wed, 2024-09-18 at 19:33 +0200, Greg Kroah-Hartman wrote:
-> > On Wed, Sep 18, 2024 at 10:01:18PM +0800, Miao Wang via B4 Relay wrote:
-> > > Commit 0ef625bba6fb ("vfs: support statx(..., NULL, AT_EMPTY_PATH,
-> > > ...)") added support for passing in NULL when AT_EMPTY_PATH is given,
-> > > improving performance when statx is used for fetching stat informantion
-> > > from a given fd, which is especially important for 32-bit platforms.
-> > > This commit also improved the performance when an empty string is given
-> > > by short-circuiting the handling of such paths.
+On Wed, Sep 18, 2024 at 06:54:33AM +0000, Zhang, Rui wrote:
+> On Mon, 2024-08-12 at 14:11 +0200, Greg KH wrote:
+> > On Wed, Aug 07, 2024 at 10:15:23AM +0200, Thorsten Leemhuis wrote:
+> > > [CCing the x86 folks, Greg, and the regressions list]
 > > > 
-> > > This series is based on the commits in the Linusâ€™ tree. Sligth
-> > > modifications are applied to the context of the patches for cleanly
-> > > applying.
+> > > Hi, Thorsten here, the Linux kernel's regression tracker.
 > > > 
-> > > Tested-by: Xi Ruoyao <xry111@xry111.site>
-> > > Signed-off-by: Miao Wang <shankerwangmiao@gmail.com>
+> > > On 30.07.24 18:41, Thomas Lindroth wrote:
+> > > > I upgraded from kernel 6.1.94 to 6.1.99 on one of my machines and
+> > > > noticed that
+> > > > the dmesg line "Incomplete global flushes, disabling PCID" had
+> > > > disappeared from
+> > > > the log.
+> > > 
+> > > Thomas, thx for the report. FWIW, mainline developers like the x86
+> > > folks
+> > > or Tony are free to focus on mainline and leave stable/longterm
+> > > series
+> > > to other people -- some nevertheless help out regularly or
+> > > occasionally.
+> > > So with a bit of luck this mail will make one of them care enough
+> > > to
+> > > provide a 6.1 version of what you afaics called the "existing fix"
+> > > in
+> > > mainline (2eda374e883ad2 ("x86/mm: Switch to new Intel CPU model
+> > > defines") [v6.10-rc1]) that seems to be missing in 6.1.y. But if
+> > > not I
+> > > suspect it might be up to you to prepare and submit a 6.1.y variant
+> > > of
+> > > that fix, as you seem to care and are able to test the patch.
 > > 
-> > This really looks like a brand new feature wanting to be backported, so
-> > why does it qualify under the stable kernel rules as fixing something?
+> > Needs to go to 6.6.y first, right?  But even then, it does not apply
+> > to
+> > 6.1.y cleanly, so someone needs to send a backported (and tested)
+> > series
+> > to us at stable@vger.kernel.org and we will be glad to queue them up
+> > then.
 > > 
-> > I am willing to take some kinds of "fixes performance issues" new
-> > features when the subsystem maintainers agree and ask for it, but that
-> > doesn't seem to be the case here, and so without their approval and
-> > agreement that this is relevant, we can't accept them.
+> > thanks,
+> > 
+> > greg k-h
 > 
-> Unfortunately the performance issue fix and the new feature are in the
-> same commit.  Is it acceptable to separate out the performance fix part
-> for stable?  (Basically remove "if (!path) return true;" from the 1st
-> patch.)
+> There are three commits involved.
+> 
+> commit A:
+>    4db64279bc2b (""x86/cpu: Switch to new Intel CPU model defines"") 
+>    This commit replaces
+>       X86_MATCH_INTEL_FAM6_MODEL(ANY, 1),             /* SNC */
+>    with
+>       X86_MATCH_VFM(INTEL_ANY,         1),    /* SNC */
+>    This is a functional change because the family info is replaced with
+> 0. And this exposes a x86_match_cpu() problem that it breaks when the
+> vendor/family/model/stepping/feature fields are all zeros.
+> 
+> commit B:
+>    93022482b294 ("x86/cpu: Fix x86_match_cpu() to match just
+> X86_VENDOR_INTEL")
+>    It addresses the x86_match_cpu() problem by introducing a valid flag
+> and set the flag in the Intel CPU model defines.
+>    This fixes commit A, but it actually breaks the x86_cpu_id
+> structures that are constructed without using the Intel CPU model
+> defines, like arch/x86/mm/init.c.
+> 
+> commit C:
+>    2eda374e883a ("x86/mm: Switch to new Intel CPU model defines")
+>    arch/x86/mm/init.c: broke by commit B but fixed by using the new
+> Intel CPU model defines
+> 
+> In 6.1.99,
+> commit A is missing
+> commit B is there
+> commit C is missing
+> 
+> In 6.6.50,
+> commit A is missing
+> commit B is there
+> commit C is missing
+> 
+> Now we can fix the problem in stable kernel, by converting
+> arch/x86/mm/init.c to use the CPU model defines (even the old style
+> ones). But before that, I'm wondering if we need to backport commit B
+> in 6.1 and 6.6 stable kernel because only commit A can expose this
+> problem.
 
-What prevents you, if you wish to have the increased performance, from
-just moving to a newer kernel version?  We add new features and
-improvements like this all the time, why is this one so special to
-warrant doing backports.  Especially with no maintainer or subsystem
-developer asking for this to be done?
-
-thanks,
+If so, can you submit the needed backports for us to apply?  That's the
+easiest way for us to take them, thanks.
 
 greg k-h
 
