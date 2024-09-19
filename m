@@ -1,124 +1,142 @@
-Return-Path: <stable+bounces-76783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D64497CE61
-	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 22:06:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DBD4797CF4D
+	for <lists+stable@lfdr.de>; Fri, 20 Sep 2024 00:50:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ACCECB22975
-	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 20:06:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D3A861C21641
+	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 22:50:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DE2D140E5F;
-	Thu, 19 Sep 2024 20:06:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 353C31B29D4;
+	Thu, 19 Sep 2024 22:50:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hYv5l73F"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dFBX17cB"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 857A63A1AC;
-	Thu, 19 Sep 2024 20:06:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94FB31586D3
+	for <stable@vger.kernel.org>; Thu, 19 Sep 2024 22:50:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726776391; cv=none; b=J+u1IcR4+WP5EQ/Ycb9mVGsh1TSt2tse9VvMt+QRWCn5XkFdngxtC1jpPjlWXlHATqg2AgJo9KxVmBIzuIM/nkbWTDJNfwLR1SWS8/mzIa9N2HB4HrsPLa46JgBuxGx3nSFnBjO+NHXBnuMQeAZ7o7ymaQs+fzqYHGJhSHTksT4=
+	t=1726786210; cv=none; b=SWDWWTG0akhzbcACJGeffQHpG5ZnXyl/09NLcVSozScdjNROBZHPL/rBeuACSywWr8OJesH6cwID7BMCddBWmBfiJyomJhesQcxmILF2s6rhimrgvSKCiDkJpq5V/1FhYfxUzSiKTyUilqgawFa++MmHZdNMWG8s3C65qzLVMbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726776391; c=relaxed/simple;
-	bh=XjN0oSMKjxqwxkOHJOTdBU2OHtVCEa6+hxnDLEA3Nrk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=D4JC9s3x0uJMgB7/s7omht8ubgFqhVKVNjII/FSVp4+qnPhwMa7cXA0QJKwLBw5NjFMRVnzEKeaW4m969GmR4Ti0krSziSTrwpBreR84rjxSS1XCkFQEheJUu26o+H5K3xt+zh9jD4ZoazM4xR8Hzxw2tDBOK61RTqWUTAyHxn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hYv5l73F; arc=none smtp.client-ip=192.198.163.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1726776390; x=1758312390;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=XjN0oSMKjxqwxkOHJOTdBU2OHtVCEa6+hxnDLEA3Nrk=;
-  b=hYv5l73FcFRY/QcaDAzRwbG+FrcPqervXhfRh1DBEgmXzlWaU0bllBwh
-   QdbgsV3Us79GMNHaATlZm7fZH9LMoixqUTK2kmxeGGHSzCD8Hz0jf2r+F
-   HREkMH61uxnAYCcBTiEwymeGHXxQk7lej5aYxyZbRcwvsiXb7GjaCkNUP
-   md/F6IQCtx3cjYnGQ83MXtDkuEirdn+G3eAW6EcfCnWuvApiOVe4w0Sr6
-   27KVoQyK4MG+TMmidjHdkX2t7nStESK9Uu7CoAme19d0KQ0ZfEaNPB1RD
-   0LRRYaiepKfxPTbPSCUPJoHK4gqzKJtuWiZmC6skHEJPaxKOHPmYFeGck
-   g==;
-X-CSE-ConnectionGUID: SzKBei91SkiSx4y5keDw4g==
-X-CSE-MsgGUID: f6bGWtf3R+qvH3WkfUydbw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11200"; a="25289362"
-X-IronPort-AV: E=Sophos;i="6.10,242,1719903600"; 
-   d="scan'208";a="25289362"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2024 13:06:29 -0700
-X-CSE-ConnectionGUID: x9OG1XstSeeGeCAcRv8Eqw==
-X-CSE-MsgGUID: PM6gh1Q7SmugdCKrnPa6NQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,242,1719903600"; 
-   d="scan'208";a="74167365"
-Received: from smile.fi.intel.com ([10.237.72.54])
-  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2024 13:06:27 -0700
-Received: from andy by smile.fi.intel.com with local (Exim 4.98)
-	(envelope-from <andriy.shevchenko@linux.intel.com>)
-	id 1srNQ0-0000000AgQy-25PB;
-	Thu, 19 Sep 2024 23:06:24 +0300
-Date: Thu, 19 Sep 2024 23:06:24 +0300
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Serge Semin <fancer.lancer@gmail.com>
-Cc: Viresh Kumar <vireshk@kernel.org>, Vinod Koul <vkoul@kernel.org>,
-	Ferry Toth <fntoth@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Ferry Toth <ftoth@exalondelft.nl>, dmaengine@vger.kernel.org,
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] dmaengine: dw: Select only supported masters for ACPI
- devices
-Message-ID: <ZuyEQOIztvUrO0gO@smile.fi.intel.com>
-References: <20240919135854.16124-1-fancer.lancer@gmail.com>
- <20240919185151.7331-1-fancer.lancer@gmail.com>
+	s=arc-20240116; t=1726786210; c=relaxed/simple;
+	bh=jcdO1Ws/371xc2rjJWhRW7rSMSnWdXQGzGvNQUoQN3k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=oxk75TcxY6HBe+qrsyUDIH+pXUVo9d5ka0RPG2nDJxEh2T1bBVEsuiv5hPXWKkk1U1gYfyGZ8h+VM+XG4oFF8Qpm3nkCq+vb4l9wzVaHe9Fxk1siq4VKJYh/x9ISPLb0ugrR2yPOHiULW1L/JatRDSlWbNzjp/rdyFWW1UNEX5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dFBX17cB; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-20696938f86so12248475ad.3
+        for <stable@vger.kernel.org>; Thu, 19 Sep 2024 15:50:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1726786208; x=1727391008; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=5wz5lXmuEfJrsdnRfJzjlfMUt5hIQmRZ+lBgO7w7oV4=;
+        b=dFBX17cBk36OABk6LPvevHRygX5mSAabB7hlLMKBWh9m6Uvc25nNT10iuz/6HH+pZr
+         y//iJ2Zs1NeuCTvWeSVKovFgFMGXyHz3SJxWk12+GAwzcKVUKixbmuhqTduYNeGFC3Su
+         4f7+CmkTnT2cm4/ISay4RlfWBL9UxNweaD1qTFSd04CoYTfGNmY/ownx6KkpXsvmwEGe
+         X+flQ68CZm3uxpRMXhIZ5xgVBT2aY2QjLhfe4oCIWSnb86fPxfKkqr/Ln4/o3DZ4JT8A
+         AB60fXrmmNqKpGW7CNqZvkWazjkncjUo7HMvQA3E9miP7IfKKfSrGiF83MpwI5YUMs+f
+         YW1A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726786208; x=1727391008;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5wz5lXmuEfJrsdnRfJzjlfMUt5hIQmRZ+lBgO7w7oV4=;
+        b=lqXE3i6VuVSMnirUKajXF5rw0T5ZA0pUimrZjeSSaKm/i5IAg5u95N/yJSd8WpQrPU
+         LgzTDteAVJKp2ZDsgYpHT/O5WcJL5fxwKzc0oL+xzshDxHO2mMxranPr48U2g4RW4F2I
+         vFH9gvyUvHtIn6V519+U/p60HCm+B/Jr20otudJyPYICtla9E9uHY5SzVi4Bt4TYrsPt
+         C/7ML+wy8R06o992C86eI0hKvsnzPQa6+PiKgEwuQ17WDmheGRoXPry//D+LcCd4aExE
+         XB2NlRufD/4eJXZ+I1+2HyI7Y8qGPiVjNYnHtKqFEousk7ogDh4CN2Jw8ilhZSFwSyXo
+         mWlQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX1DRoOt5husve5LUWGMnKfLlaze9ZqoNwG/leiIV/CEEQfBXJrBX52+jEE09GQbgm+jiMwNMA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywx7pYW6Hj+O4PwbL/CeUIk3UbNQLEvi1zf4M6mY9vNcsHiMNSt
+	DvdB4cVEb9YQX7o9G9ItqXbarSHzVp3jtRZA9J71ybfZQrJEQSovoaBKnZ2nxA==
+X-Google-Smtp-Source: AGHT+IEFTOdkTTfdrN+O9bFF4XZIaLF1A6VxLZ7fwhnPT6zj9SxeESvTNX2h3OI6/0yS5WhmbqNNQA==
+X-Received: by 2002:a17:902:d511:b0:205:7574:3b87 with SMTP id d9443c01a7336-208d980bb34mr4901005ad.15.1726786207484;
+        Thu, 19 Sep 2024 15:50:07 -0700 (PDT)
+Received: from ?IPV6:2a00:79e0:2e14:7:f9c5:155b:ca02:2b70? ([2a00:79e0:2e14:7:f9c5:155b:ca02:2b70])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-207946fb724sm84806845ad.200.2024.09.19.15.50.06
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 19 Sep 2024 15:50:07 -0700 (PDT)
+Message-ID: <ad1e9554-ebec-483f-90e0-d0c63fc07b86@google.com>
+Date: Thu, 19 Sep 2024 15:50:05 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240919185151.7331-1-fancer.lancer@gmail.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] usb: typec: Fix arg check for
+ usb_power_delivery_unregister_capabilities
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+ Greg KH <gregkh@linuxfoundation.org>
+Cc: heikki.krogerus@linux.intel.com, badhri@google.com, kyletso@google.com,
+ rdbabiera@google.com, linux-kernel@vger.kernel.org,
+ linux-usb@vger.kernel.org, stable@vger.kernel.org
+References: <20240919075815.332017-1-amitsd@google.com>
+ <2024091956-premiere-given-c496@gregkh>
+ <gkyzytmvcaefbfvu6ryss7zq5cm3t3mcjgtugsryhxl7aglpkk@gi2fgjnyidgi>
+Content-Language: en-US
+From: Amit Sunil Dhamne <amitsd@google.com>
+In-Reply-To: <gkyzytmvcaefbfvu6ryss7zq5cm3t3mcjgtugsryhxl7aglpkk@gi2fgjnyidgi>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Sep 19, 2024 at 09:51:48PM +0300, Serge Semin wrote:
-> The recently submitted fix-commit revealed a problem in the iDMA32
-> platform code. Even though the controller supported only a single master
-> the dw_dma_acpi_filter() method hard-coded two master interfaces with IDs
-> 0 and 1. As a result the sanity check implemented in the commit
-> b336268dde75 ("dmaengine: dw: Add peripheral bus width verification") got
-> incorrect interface data width and thus prevented the client drivers
-> from configuring the DMA-channel with the EINVAL error returned. E.g. the
-> next error was printed for the PXA2xx SPI controller driver trying to
-> configure the requested channels:
-> 
-> > [  164.525604] pxa2xx_spi_pci 0000:00:07.1: DMA slave config failed
-> > [  164.536105] pxa2xx_spi_pci 0000:00:07.1: failed to get DMA TX descriptor
-> > [  164.543213] spidev spi-SPT0001:00: SPI transfer failed: -16
-> 
-> The problem would have been spotted much earlier if the iDMA32 controller
-> supported more than one master interfaces. But since it supports just a
-> single master and the iDMA32-specific code just ignores the master IDs in
-> the CTLLO preparation method, the issue has been gone unnoticed so far.
-> 
-> Fix the problem by specifying a single master ID for both memory and
-> peripheral devices on the ACPI-based platforms if there is only one master
-> available on the controller. Thus the issue noticed for the iDMA32
-> controllers will be eliminated and the ACPI-probed DW DMA controllers will
-> be configured with the correct master ID by default.
+Hi Greg, Dmitry,
 
-Tested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Seems this fixes the bug I have seen.
-Ferry, can you confirm?
+Thanks for the review!
 
--- 
-With Best Regards,
-Andy Shevchenko
+On 9/19/24 3:03 AM, Dmitry Baryshkov wrote:
+> On Thu, Sep 19, 2024 at 10:11:37AM GMT, Greg KH wrote:
+>> On Thu, Sep 19, 2024 at 12:58:12AM -0700, Amit Sunil Dhamne wrote:
+>>> usb_power_delivery_register_capabilities() returns ERR_PTR in case of
+>>> failure. usb_power_delivery_unregister_capabilities() we only check
+>>> argument ("cap") for NULL. A more robust check would be checking for
+>>> ERR_PTR as well.
+>>>
+>>> Cc: stable@vger.kernel.org
+>>> Fixes: 662a60102c12 ("usb: typec: Separate USB Power Delivery from USB Type-C")
+>>> Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
+>>> Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
+>>> ---
+>>>   drivers/usb/typec/pd.c | 2 +-
+>>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> diff --git a/drivers/usb/typec/pd.c b/drivers/usb/typec/pd.c
+>>> index d78c04a421bc..761fe4dddf1b 100644
+>>> --- a/drivers/usb/typec/pd.c
+>>> +++ b/drivers/usb/typec/pd.c
+>>> @@ -519,7 +519,7 @@ EXPORT_SYMBOL_GPL(usb_power_delivery_register_capabilities);
+>>>    */
+>>>   void usb_power_delivery_unregister_capabilities(struct usb_power_delivery_capabilities *cap)
+>>>   {
+>>> -	if (!cap)
+>>> +	if (IS_ERR_OR_NULL(cap))
+>> This feels like there's a wrong caller, why would this be called with an
+>> error value in the first place?  Why not fix that?  And why would this
+>> be called with NULL as well in the first place?
+> I think passing NULL matches the rest of the kernel, it removes
+> unnecessary if(!NULL) statements from the caller side.
+>
+The reason for this patch was just to be a little more defensive in case 
+things slip through cracks and be
+consistent with the rest of the PD class. For example 
+usb_power_delivery_unregister() &
+usb_power_delivery_unlink_device() has similar arg checks.
 
+
+Regards,
+
+Amit
 
 
