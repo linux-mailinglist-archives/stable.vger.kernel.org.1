@@ -1,206 +1,257 @@
-Return-Path: <stable+bounces-76756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A2EE97C8EF
-	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 14:18:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8021397C949
+	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 14:35:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C53D1C21709
-	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 12:18:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A49521C22120
+	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 12:35:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06DA019C57B;
-	Thu, 19 Sep 2024 12:18:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37DBB19D8BE;
+	Thu, 19 Sep 2024 12:35:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mnyKVVK0"
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="CxgGwm8n";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="Ir6SVbs6"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56010199FCD;
-	Thu, 19 Sep 2024 12:18:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E923F1EB2F;
+	Thu, 19 Sep 2024 12:35:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726748312; cv=none; b=WBI7sGE8yOn+xHV7cFyefCP//1T8M5AsD4XbxUXxrJu2oHxYPgbTHtq0x2gscWkYEWGe2D69sxZ/XHC2nce5FU3XvZ8Cowy4hjTlMmcUmVkgiHj1rre6zsmU2VSMKb95hJS/4JDTm8lGUeRKvIvkfXK2v5R6sv8mCs4HhgQd39Y=
+	t=1726749333; cv=none; b=MbRk1/84iiI5BKRO4YYGdIiivUkRx/PjM2yN2V902LX2fDCfH8YOha9/afajmmockPrQJl8K71ENu2JeROlBqLYiMuPMasu6edKc5Taf/5BA7PHqMfL8+0u3ViWxNV5imTUYIpbb1mdsu7QexjX6AFQGVB71skd6fpPdLJnpwIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726748312; c=relaxed/simple;
-	bh=absoCpViD2rd9oH2c7EtVkPVbL+HoTLCORezhf11GC4=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=p7IWevFXrhQArdF/IxEQjschCNib+kfxHVy2AIYb3p9iRa87aupuvaQ/hq3RfVzm9UyYjMndQBg4EUvt1tu5AB2wblXlCy3IUwnMIAXTtUvsLowh1c7QZQvTmouM/Dfj6Gv9mWimkcjFm+m08VFiQ/AiSKB+xuXYmx5Oj06hZuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mnyKVVK0; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2053f72319fso662915ad.2;
-        Thu, 19 Sep 2024 05:18:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1726748311; x=1727353111; darn=vger.kernel.org;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=b0LMxaprsYAgSwJ1aL8Oxeuw2B+YaEuC1gX91HbsNHM=;
-        b=mnyKVVK0bciTZoiguFgrkUzn1njpage+a/J4vReBDSQXuMr6iITFHtA9iUorxUgAkF
-         PR6zDJBdI7hf19ytEfVAlQ9HWgFaGAkE2pwN2dqWaLlJujLYoK+lx+DXE5McAU46KEiT
-         dR7N0B+jHKU8vsbp+oQ+dbNBE+aXWWKjW39D8hcpAFXGNr3mphLrkdE7cn5QEntpejvT
-         /0fGn4lPGGN3Y1lFexAB8naoDZ1cgpvmt8CB90VSt0DDGSES1jxCkP4rZmcr9dh32W63
-         ecIEv8clEOMz2+kYZc8WfflHJb8ptQlZmGhrgL6vJEXxsduO66ncFA+Vb/VBUCVprvUm
-         cWHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726748311; x=1727353111;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=b0LMxaprsYAgSwJ1aL8Oxeuw2B+YaEuC1gX91HbsNHM=;
-        b=T+rRfHipCu0RBdBC9FuMkihAwPTmRcdlKLCJ9fbB/UETQWItH4+5pftlQJ1IgEqZWT
-         hYRwK8guakyeB9pULAaeVa6wG5QMaJTXFK42KdaFUYx/bGsCrX16GlL3jw0VFG/Q1VPk
-         iLcsAUaWnVRhcnJqICiBR9w3DO3hCD5vePjGQsKnNnQefGcFMJjfRUC4Grhqy4bwX5h5
-         zZaQwSo+ttWpWRGVxReKp0zr8T+8uxDhuFMlTsCXLYAI3BX2tbXpZA/s7/K4Wnm6PDnP
-         TIB6/0OEsE/OKxtSCTOwE/uvAkefYyddLzGSVZh80gDb0/wPxRUuRG+XaU5mVFIHfNEl
-         iRVA==
-X-Forwarded-Encrypted: i=1; AJvYcCWsP0kgWmZSM063aA4ArSM56AIyuD8hJuGlPN7urAMby1xGXAZphzDPWAZITielxOl5TWtFFtNR@vger.kernel.org, AJvYcCXrn7XfDnQQRzXiQUFZc1hqg+bYBxjTScjJrmQh186th4wkOHx2AYlJeMhhVARPSNSKaw4+vGmr5MNR2fCt@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw43zmSgqaITgmjxwg6tPZBHOGGNZsyg447v5sMV8mD4SG1eEwe
-	Wz/yQSxc9WczqvfSCxOY262e+B2kY8vqJiPGf8QIALfAF2yDUny+
-X-Google-Smtp-Source: AGHT+IG+c+ZQwOvpYAnnod5j5peCOVYy7tlRTX9YD4rCuK7dGJahEOJ+CSADrqtBazAQlxOERuqKBw==
-X-Received: by 2002:a17:902:d4cb:b0:205:4415:c62f with SMTP id d9443c01a7336-2076e318b03mr163387575ad.1.1726748310414;
-        Thu, 19 Sep 2024 05:18:30 -0700 (PDT)
-Received: from smtpclient.apple (v133-130-115-230.a046.g.tyo1.static.cnode.io. [133.130.115.230])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-207946d27ffsm78717035ad.121.2024.09.19.05.18.24
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 19 Sep 2024 05:18:29 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	s=arc-20240116; t=1726749333; c=relaxed/simple;
+	bh=C0qiYBjh7+JNE6dSxlKxI/K2eGBbcQXB5lUFPJMb3nw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sx4LO1WhO9Bnp+bcwRLn+goIYbzhsFLT0pbfPjgN5W3DEog/CByvVqyjRP3XDwToTFxUhDc/2IlS+8AmVh5gux8qAuok74nS54BKd/GAoUHLQujWsgh5FWgN3R4tlV0d6QdAp9pyohL8ojAP5SdSRPig+f/PZSvbqRIElxVcj1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=CxgGwm8n; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=Ir6SVbs6; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id D1D24338D2;
+	Thu, 19 Sep 2024 12:35:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1726749329; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=03iIXrm2d6dZ3mz5HP9AK7PKZOvrRHH8k/30bsSSODc=;
+	b=CxgGwm8nkJYm6CYU6iU5ojIwjv22TMnywi+UwUX9DXbFQcGx7GyI2HWP8XtA/Va//dfqCE
+	Oy27u7aWmDIrr/yOjee0yxRFjMlvlEO5KF4VYFw7ONf+VL7G3Z+CsUAufo7Qh+SmqM6lko
+	+mORCRUoHAkahsrpyp/flJHqmIdPgKI=
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.com header.s=susede1 header.b=Ir6SVbs6
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1726749328; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=03iIXrm2d6dZ3mz5HP9AK7PKZOvrRHH8k/30bsSSODc=;
+	b=Ir6SVbs6Gq/S2XQPoEb/UJFdcLES5VQxult3+ncWDxzDEzG7e07FnwBzWGQw6POGjAkykW
+	tpFjoSr3VnXCgs+2cu719G0EBDhupHssvKD4/dRo3hpM6+rE0VVwOOmSapMw4uuRh4XIFT
+	ZlS0DevOVM3iwwGOwHkdtIAo0KmMiZE=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 9649913A5F;
+	Thu, 19 Sep 2024 12:35:28 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id okdEI5Aa7GblLAAAD6G6ig
+	(envelope-from <oneukum@suse.com>); Thu, 19 Sep 2024 12:35:28 +0000
+From: Oliver Neukum <oneukum@suse.com>
+To: davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Oliver Neukum <oneukum@suse.com>,
+	stable@vger.kernel.org
+Subject: [PATCHv3] usbnet: fix cyclical race on disconnect with work queue
+Date: Thu, 19 Sep 2024 14:33:42 +0200
+Message-ID: <20240919123525.688065-1-oneukum@suse.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51\))
-Subject: Re: [PATCH 0/3] Backport statx(..., NULL, AT_EMPTY_PATH, ...)
-From: Miao Wang <shankerwangmiao@gmail.com>
-In-Reply-To: <2024091900-sloppy-swept-0a2e@gregkh>
-Date: Thu, 19 Sep 2024 20:18:10 +0800
-Cc: Xi Ruoyao <xry111@xry111.site>,
- stable@vger.kernel.org,
- Mateusz Guzik <mjguzik@gmail.com>,
- Christian Brauner <brauner@kernel.org>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Jan Kara <jack@suse.cz>,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@samsung.com>,
- Alice Ryhl <aliceryhl@google.com>,
- linux-fsdevel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <D5904FCB-5681-4744-93AE-BF030307CF86@gmail.com>
-References: <20240918-statx-stable-linux-6-10-y-v1-0-8364a071074f@gmail.com>
- <2024091801-segment-lurk-e67b@gregkh>
- <f6ecd24e0fdb1327dad41f41c3ac31477ca00c9f.camel@xry111.site>
- <2024091900-sloppy-swept-0a2e@gregkh>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-X-Mailer: Apple Mail (2.3776.700.51)
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Queue-Id: D1D24338D2
+X-Spam-Score: -5.01
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-5.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	DWL_DNSWL_MED(-2.00)[suse.com:dkim];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_CONTAINS_FROM(1.00)[];
+	R_MISSING_CHARSET(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FROM_HAS_DN(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[9];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:dkim,suse.com:mid,suse.com:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DKIM_TRACE(0.00)[suse.com:+]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Flag: NO
+X-Spam-Level: 
 
+The work can submit URBs and the URBs can schedule the work.
+This cycle needs to be broken, when a device is to be stopped.
+Use a flag to do so.
+This is a design issue as old as the driver.
 
-> 2024=E5=B9=B49=E6=9C=8819=E6=97=A5 19:18=EF=BC=8CGreg Kroah-Hartman =
-<gregkh@linuxfoundation.org> =E5=86=99=E9=81=93=EF=BC=9A
->=20
-> On Thu, Sep 19, 2024 at 01:37:17AM +0800, Xi Ruoyao wrote:
->> On Wed, 2024-09-18 at 19:33 +0200, Greg Kroah-Hartman wrote:
->>> On Wed, Sep 18, 2024 at 10:01:18PM +0800, Miao Wang via B4 Relay =
-wrote:
->>>> Commit 0ef625bba6fb ("vfs: support statx(..., NULL, AT_EMPTY_PATH,
->>>> ...)") added support for passing in NULL when AT_EMPTY_PATH is =
-given,
->>>> improving performance when statx is used for fetching stat =
-informantion
->>>> from a given fd, which is especially important for 32-bit =
-platforms.
->>>> This commit also improved the performance when an empty string is =
-given
->>>> by short-circuiting the handling of such paths.
->>>>=20
->>>> This series is based on the commits in the Linus=E2=80=99 tree. =
-Sligth
->>>> modifications are applied to the context of the patches for cleanly
->>>> applying.
->>>>=20
->>>> Tested-by: Xi Ruoyao <xry111@xry111.site>
->>>> Signed-off-by: Miao Wang <shankerwangmiao@gmail.com>
->>>=20
->>> This really looks like a brand new feature wanting to be backported, =
-so
->>> why does it qualify under the stable kernel rules as fixing =
-something?
->>>=20
->>> I am willing to take some kinds of "fixes performance issues" new
->>> features when the subsystem maintainers agree and ask for it, but =
-that
->>> doesn't seem to be the case here, and so without their approval and
->>> agreement that this is relevant, we can't accept them.
->>=20
->> Unfortunately the performance issue fix and the new feature are in =
-the
->> same commit.  Is it acceptable to separate out the performance fix =
-part
->> for stable?  (Basically remove "if (!path) return true;" from the 1st
->> patch.)
->=20
-> What prevents you, if you wish to have the increased performance, from
-> just moving to a newer kernel version?  We add new features and
-> improvements like this all the time, why is this one so special to
-> warrant doing backports.  Especially with no maintainer or subsystem
-> developer asking for this to be done?
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+CC: stable@vger.kernel.org
+---
 
-We all know the long process from a new improvement getting into the =
-mainline
-kernel to landing in users' devices. Considering 32-bit archectures =
-which lacks
-64-bit time support in fstat(), statx(fd, AT_EMPTY_PATH) is heavily =
-relied on.
-My intention on putting up this backport is that to quicken this =
-process,
-benefiting these users.
+v2: fix PM reference issue
+v3: drop unneeded memory ordering primitives
 
-Another reason is about loongarch. fstat() was not included in loongarch
-initially, until 6.11. Although the re-inclusion of fstat() is =
-backported to
-stable releases, we still have implementation problems on the glibc =
-side, that
-loongarch is the only architecture that may lack the support of fstat. =
-If
-dynamic probing of the existence of fstat() is implemented, this code =
-path
-would be only effective on loongarch, adding another layer of mess to =
-the
-current fstat implementation and adding maintenance burden to glibc =
-maintainers.
-Instead, if we choose to utilize statx(fd, NULL, AT_EMPTY_PATH), even if =
-using
-dynamic probing, loongarch and all other 32-bit architectures using =
-statx() for
-fstat() can benefit from this.
+ drivers/net/usb/usbnet.c   | 37 ++++++++++++++++++++++++++++---------
+ include/linux/usb/usbnet.h | 15 +++++++++++++++
+ 2 files changed, 43 insertions(+), 9 deletions(-)
 
-Based on the same reason why you have accepted the re-inclusion of fstat =
-on
-loongarch into the stable trees, I believe it would be potentially =
-possible to
-let the statx(..., NULL, AT_EMPTY_PATH, ...) get into the stable trees =
-as well.
-
-Thanks again for your considering this. Since VFS maintainers are being =
-looped
-in the thread, if their approval is necessary, I'm happy to listen to =
-their
-opinions.
-
-Cheers,
-
-Miao Wang
-
-
+diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+index 18eb5ba436df..2506aa8c603e 100644
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -464,10 +464,15 @@ static enum skb_state defer_bh(struct usbnet *dev, struct sk_buff *skb,
+ void usbnet_defer_kevent (struct usbnet *dev, int work)
+ {
+ 	set_bit (work, &dev->flags);
+-	if (!schedule_work (&dev->kevent))
+-		netdev_dbg(dev->net, "kevent %s may have been dropped\n", usbnet_event_names[work]);
+-	else
+-		netdev_dbg(dev->net, "kevent %s scheduled\n", usbnet_event_names[work]);
++	if (!usbnet_going_away(dev)) {
++		if (!schedule_work(&dev->kevent))
++			netdev_dbg(dev->net,
++				   "kevent %s may have been dropped\n",
++				   usbnet_event_names[work]);
++		else
++			netdev_dbg(dev->net,
++				   "kevent %s scheduled\n", usbnet_event_names[work]);
++	}
+ }
+ EXPORT_SYMBOL_GPL(usbnet_defer_kevent);
+ 
+@@ -535,7 +540,8 @@ static int rx_submit (struct usbnet *dev, struct urb *urb, gfp_t flags)
+ 			tasklet_schedule (&dev->bh);
+ 			break;
+ 		case 0:
+-			__usbnet_queue_skb(&dev->rxq, skb, rx_start);
++			if (!usbnet_going_away(dev))
++				__usbnet_queue_skb(&dev->rxq, skb, rx_start);
+ 		}
+ 	} else {
+ 		netif_dbg(dev, ifdown, dev->net, "rx: stopped\n");
+@@ -843,9 +849,18 @@ int usbnet_stop (struct net_device *net)
+ 
+ 	/* deferred work (timer, softirq, task) must also stop */
+ 	dev->flags = 0;
+-	del_timer_sync (&dev->delay);
+-	tasklet_kill (&dev->bh);
++	del_timer_sync(&dev->delay);
++	tasklet_kill(&dev->bh);
+ 	cancel_work_sync(&dev->kevent);
++
++	/* We have cyclic dependencies. Those calls are needed
++	 * to break a cycle. We cannot fall into the gaps because
++	 * we have a flag
++	 */
++	tasklet_kill(&dev->bh);
++	del_timer_sync(&dev->delay);
++	cancel_work_sync(&dev->kevent);
++
+ 	if (!pm)
+ 		usb_autopm_put_interface(dev->intf);
+ 
+@@ -1171,7 +1186,8 @@ usbnet_deferred_kevent (struct work_struct *work)
+ 					   status);
+ 		} else {
+ 			clear_bit (EVENT_RX_HALT, &dev->flags);
+-			tasklet_schedule (&dev->bh);
++			if (!usbnet_going_away(dev))
++				tasklet_schedule(&dev->bh);
+ 		}
+ 	}
+ 
+@@ -1196,7 +1212,8 @@ usbnet_deferred_kevent (struct work_struct *work)
+ 			usb_autopm_put_interface(dev->intf);
+ fail_lowmem:
+ 			if (resched)
+-				tasklet_schedule (&dev->bh);
++				if (!usbnet_going_away(dev))
++					tasklet_schedule(&dev->bh);
+ 		}
+ 	}
+ 
+@@ -1559,6 +1576,7 @@ static void usbnet_bh (struct timer_list *t)
+ 	} else if (netif_running (dev->net) &&
+ 		   netif_device_present (dev->net) &&
+ 		   netif_carrier_ok(dev->net) &&
++		   !usbnet_going_away(dev) &&
+ 		   !timer_pending(&dev->delay) &&
+ 		   !test_bit(EVENT_RX_PAUSED, &dev->flags) &&
+ 		   !test_bit(EVENT_RX_HALT, &dev->flags)) {
+@@ -1606,6 +1624,7 @@ void usbnet_disconnect (struct usb_interface *intf)
+ 	usb_set_intfdata(intf, NULL);
+ 	if (!dev)
+ 		return;
++	usbnet_mark_going_away(dev);
+ 
+ 	xdev = interface_to_usbdev (intf);
+ 
+diff --git a/include/linux/usb/usbnet.h b/include/linux/usb/usbnet.h
+index 9f08a584d707..0b9f1e598e3a 100644
+--- a/include/linux/usb/usbnet.h
++++ b/include/linux/usb/usbnet.h
+@@ -76,8 +76,23 @@ struct usbnet {
+ #		define EVENT_LINK_CHANGE	11
+ #		define EVENT_SET_RX_MODE	12
+ #		define EVENT_NO_IP_ALIGN	13
++/* This one is special, as it indicates that the device is going away
++ * there are cyclic dependencies between tasklet, timer and bh
++ * that must be broken
++ */
++#		define EVENT_UNPLUG		31
+ };
+ 
++static inline bool usbnet_going_away(struct usbnet *ubn)
++{
++	return test_bit(EVENT_UNPLUG, &ubn->flags);
++}
++
++static inline void usbnet_mark_going_away(struct usbnet *ubn)
++{
++	set_bit(EVENT_UNPLUG, &ubn->flags);
++}
++
+ static inline struct usb_driver *driver_of(struct usb_interface *intf)
+ {
+ 	return to_usb_driver(intf->dev.driver);
+-- 
+2.46.0
 
 
