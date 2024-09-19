@@ -1,84 +1,114 @@
-Return-Path: <stable+bounces-76746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8223997C697
-	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 11:10:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E86F897C254
+	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 02:21:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B54F81C23C75
-	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 09:10:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67FE41F21761
+	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 00:21:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A469199FD0;
-	Thu, 19 Sep 2024 09:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65261538A;
+	Thu, 19 Sep 2024 00:21:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U4CzLrWH"
+	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="gAPO72jZ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50D43199924;
-	Thu, 19 Sep 2024 09:09:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06C214C6D;
+	Thu, 19 Sep 2024 00:21:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726736987; cv=none; b=PgYBTju0VOTqknBctSt9appB5ULg5GeXAIPB1tBHxlX7ey5eSZ0JKn3CC5UaJ7A2GmxM9Sx3V08mDvwoYaZUddO3E8HUNSgC91Jiuwova+5ZcBo4Z1cOZIRb13kh0bw5n853t504VjyMLi+lybuoGJKzwDfIkkaruKbRogIO6N0=
+	t=1726705303; cv=none; b=i9yJ1senkj4ztS/INxoY+hBoV412tR5dJVe8KdqdvhCChQ818kl3CU/nC8pvlsRxMO9q7sGi8vPfxpt4HnwcpR9sDbUokUrmuoogJbtnT7LJPvNc6fldN9aXJ3OQOgp2WmmasmXreo+O7g/R0UWxnPyGb4yjieVJ7/FQTuIu4Kk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726736987; c=relaxed/simple;
-	bh=kB/dNdtwbCvdKRytgSgOnJ7fvVihQkMZJrYF4nzk3VE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DzvUVVH8CNL4pRvRIiF376a41unOih2W0YvpePG1jQ4MBfU5k5Yg1K0TTqEnOz7HCDIx3zfJQdWbBp628jLGGGuDgJ+Wh3euvdUtUHkuQAsXVREubO6FtdT2+zGbYmHaioQBn/z6bt9l83RQ3WoyGwT0ZCKsFemqX1fmEB6TvbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U4CzLrWH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 575BEC4CED8;
-	Thu, 19 Sep 2024 09:09:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726736986;
-	bh=kB/dNdtwbCvdKRytgSgOnJ7fvVihQkMZJrYF4nzk3VE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=U4CzLrWHN5RvAhgNxGV1u8xezSa+F7pVSEDrVOSxrjxNlsou2GzpZj2QgYAtYMskQ
-	 xcOxPgptz6ToJEehY1d++Qs1wRLK/eyJLTbVvmvOJiwnvzkwVHFlTxZ+vRuQbXcF0K
-	 ksHqEeB+3+RJ/S6lILZ7opc7TBzgnQDaJm+nQOnnPbqE0fI91BIKsVKETx3B+pEE6W
-	 A8nTLSKU8i/paJlZ2PQj50b8eUblblttlIgKN+UydZQgY4zqDvzUa8OI1z4wi1HfI8
-	 vHWO+1ebPmuR0x51L55vCDdxKSa7yha39JbsKbm6Cq5YF3eSHs5fjzaZcr2a920btb
-	 MbgA4sdU5JwQQ==
-Date: Wed, 18 Sep 2024 18:43:30 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: Mark Brown <broonie@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Fabio Estevam <festevam@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>, linux-spi@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.10 09/18] spi: spidev: Add an entry for
- elgin,jg10309-01
-Message-ID: <ZutXksJASClU5gia@sashalap>
-References: <20240910172214.2415568-1-sashal@kernel.org>
- <20240910172214.2415568-9-sashal@kernel.org>
- <23411f79-ac68-419e-8c28-640dc3df1e40@sirena.org.uk>
+	s=arc-20240116; t=1726705303; c=relaxed/simple;
+	bh=vAzsZy/aeWmSds6WWiyXTHlHBVDsJdZPcWK8gvCwvaM=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=U+vL9/8gaTtGmjCXGHTQht4zTHNaLvwt8vWuR1hBfrPp+wq18vUXg4KTlQgZ2s/72nFuSc+X7cfScFUwCecAPMuq4UFzWhzdh0Ai5QNnLAmrxrpi0PM9q4Ft22naB2r0Mf0hwSNTwAMLFflPoCO+uqg2pjtw61IC6KMKcvh2w9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=gAPO72jZ; arc=none smtp.client-ip=211.75.126.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
+X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 48J0LWXe82907218, This message is accepted by code: ctloc85258
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
+	t=1726705292; bh=vAzsZy/aeWmSds6WWiyXTHlHBVDsJdZPcWK8gvCwvaM=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:Content-Transfer-Encoding:MIME-Version;
+	b=gAPO72jZy/Ch4fP2O6DXQjHQNNl8MH4MPkcNP1R767oe0fX4tvxqcLOVyAs/fe0Jo
+	 2cXA+8lWbvg+3lt6kcsreuMZUIvBHyp039LFo7kk7w8ygmDq2aVJ2hoWUGDpkpZ12e
+	 5JC20HnFqbu7aQ/oUgXtiSHqT9OieSD0BeUEl0lGZ3Uzw9OabD0xldDw4UYo+w6Ew7
+	 HkzRnR9Es7VnTZye6n4j7Cb3l4N1sK4JBf5lPp3p1Go1C9hWQEudBfsZVKlSJ+l0vt
+	 6jJSxVa5yQ+6cxw2w1ulcXckFmwhxD23W9qztc15yIIGK6iFZBQMeTR2N5NPZmOZYx
+	 f1pe/VYsF6dvg==
+Received: from mail.realtek.com (rtexh36506.realtek.com.tw[172.21.6.27])
+	by rtits2.realtek.com.tw (8.15.2/3.05/5.92) with ESMTPS id 48J0LWXe82907218
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 19 Sep 2024 08:21:32 +0800
+Received: from RTEXMBS02.realtek.com.tw (172.21.6.95) by
+ RTEXH36506.realtek.com.tw (172.21.6.27) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Thu, 19 Sep 2024 08:21:33 +0800
+Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
+ RTEXMBS02.realtek.com.tw (172.21.6.95) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.35; Thu, 19 Sep 2024 08:21:32 +0800
+Received: from RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f]) by
+ RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f%11]) with mapi id
+ 15.01.2507.035; Thu, 19 Sep 2024 08:21:32 +0800
+From: Ping-Ke Shih <pkshih@realtek.com>
+To: =?utf-8?B?TWFyY2VsIFdlacOfZW5iYWNo?= <mweissenbach@ignaz.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+CC: "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
+        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
+Subject: RE: RTL8852BE wifi no longer working after 6.11 upgrade
+Thread-Topic: RTL8852BE wifi no longer working after 6.11 upgrade
+Thread-Index: AQHbCMemb6H6HxFviUGmiPt2/8qxPLJdDI+A//+Vo4CAAJ3wIP//qTkAgAFYScA=
+Date: Thu, 19 Sep 2024 00:21:32 +0000
+Message-ID: <72a320c056364e98b2fa338766fc11f2@realtek.com>
+References: <63a3ef5acd70454e9f8db114204e2e2d@realtek.com>
+ <20240918114718.Horde.TpiB1MVH0uadLCQXUbR5WtB@ignaz.org>
+In-Reply-To: <20240918114718.Horde.TpiB1MVH0uadLCQXUbR5WtB@ignaz.org>
+Accept-Language: en-US, zh-TW
+Content-Language: zh-TW
+x-kse-serverinfo: RTEXMBS02.realtek.com.tw, 9
+x-kse-antispam-interceptor-info: fallback
+x-kse-antivirus-interceptor-info: fallback
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <23411f79-ac68-419e-8c28-640dc3df1e40@sirena.org.uk>
+X-KSE-AntiSpam-Interceptor-Info: fallback
 
-On Tue, Sep 10, 2024 at 06:27:28PM +0100, Mark Brown wrote:
->On Tue, Sep 10, 2024 at 01:21:54PM -0400, Sasha Levin wrote:
->> From: Fabio Estevam <festevam@gmail.com>
->>
->> [ Upstream commit 5f3eee1eef5d0edd23d8ac0974f56283649a1512 ]
->>
->> The rv1108-elgin-r1 board has an LCD controlled via SPI in userspace.
->> The marking on the LCD is JG10309-01.
->>
->> Add the "elgin,jg10309-01" compatible string.
->
->There's also 5478a4f7b94414def7b56d2f18bc2ed9b0f3f1f2.
-
-I'll take it too, thanks!
-
--- 
-Thanks,
-Sasha
+TWFyY2VsIFdlacOfZW5iYWNoIDxtd2Vpc3NlbmJhY2hAaWduYXoub3JnPiB3cm90ZToNCj4gRmly
+c3Qgb2YgYWxsLCB0aGFuayB5b3Ugc28gbXVjaCBmb3IgeW91ciB0aW1lIGFuZCB3b3JrIQ0KPiAN
+Cj4gSSBob3BlIGkgZG9uJ3QgY2F1c2UgYW55IGNvbmZ1c2lvbiBhbmQgdGhpcyBxdWVzdGlvbiBt
+YXkgYmUgYmFzZWQgb24gbXkgbGFjayBvZiAgdW5kZXJzdGFuZGluZyB0aGUgcGF0Y2gsDQo+IGkg
+YWxtb3N0IGRvbid0IGRhcmUgdG8gYXNrLCBidXQgZG9lcyB0aGlzIHF1aXJrIG9ubHkgZ2V0cyBp
+bnRvIGFmZmVjdCwgd2hlbiBzb21lb25lIHVzZXMgdGhlIHNhbWUgbWFpbmJvYXJkDQo+IGkgdXNl
+PyBJcyB0aGlzIGFuIHJhdGhlciByYXJlIGNhc2UgdGhhdCBwcm9iYWJseSB3b24ndCBlZmZlY3Qg
+b3RoZXIgcGVvcGxlPw0KPiANCj4gSSBjYW4ndCBqdWRnZSB0aGF0IHNvIHBsZWFzZSBkb24ndCBn
+ZXQgbWUgd3JvbmcsIGJ1dCBpIGZlZWwgYSBiaXQgdW5lYXN5IGFib3V0IHRoaXMuIEkgYXNzdW1l
+IHRoYXQgbW9zdA0KPiBmaXN0IHRpbWUgTGludXggdXNlcnMgdGhhdCBoYXZlIHNpbWlsYXIgKGJ1
+dCBub3QgdGhlIHNhbWUpIHBsYXRmb3JtLCB3aGVyZSB0aGlzIHF1aXJrIHdpbGwgbm90IGdldCBh
+cHBsaWVkDQo+IGFuZCB0aGV5IGVuZCB1cCB3aXRoIG5vbi13b3JraW5nIHdpZmksIGp1c3Qgbm90
+aWNlIHRoYXQgd2lmaSBkb2Vzbid0IHdvcmsgYW5kIGdpdmUgdXAgb24gTGludXggYW5kIHJlbWVt
+YmVyDQo+IGl0IGFzICJNeSBXaWZpIGV2ZW4gZGlkbid0IHdvcmsgdGhlcmUiLg0KPiANCj4gQXMg
+YSBsb25nIHRpbWUgR2VudG9vIHVzZXIsIGkgaGF2ZSB0aGUgY2FwYWJpbGl0eSB0byBidWlsZCBt
+eSBvd24ga2VybmVsIGFuZCBwcm92aWRlIGZlZWRiYWNrIHRoYXQgY2FuIGhlbHANCj4gZml4IHRo
+aXMgaXNzdWUsIGJ1dCBpIGFzc3VtZSBtb3N0IHVzZXJzIGRvbid0LiBJIHdvdWxkIGFzc3VtZSBh
+biBVYnVudHUgdXNlcnMgd2lsbCBqdXN0IHJlbW92ZSB0aGUgVWJ1bnR1DQo+IHBhcnRpdGlvbiBh
+bmQgY2FsbHMgaXQgYSBkYXkgY29udGludWluZyB1c2luZyBXaW5kb3dzLiBJIGFtIGEgYml0IHdv
+cnJpZWQgYW5kIHdvbmRlciwgaWYgdGhlcmUgbWF5YmUgYSB3YXkNCj4gdG8gZml4IHRoYXQsIHRo
+YXQgaXMgaW5kZXBlbmRlbnQgb24gbXkgc3BlY2lmaWMgaGFyZHdhcmUvbWFpbmJvYXJkLg0KPiAN
+Cj4gT2YgY291cnNlLCBmZWVsIGZyZWUgdG8gY29ycmVjdCBtZSBpZiBpIGFtIGdldHRpbmcgc29t
+ZXRoaW5nIHdyb25nIGhlcmUsIGltIG5laXRoZXIgYW4gS2VybmVsIG5vciBDIGV4cGVydA0KPiBh
+bmQgdGhhbmsgeW91IGZvciB5b3VyIHRpbWUgYWdhaW4uDQo+IA0KDQpZb3UgYXJlIHJpZ2h0LiBJ
+IHdhcyBub3QgYXdhcmUgb2YgdGhhdC4gSSB3aWxsIGRpc2N1c3MgcGVvcGxlIGludGVybmFsbHkg
+YW5kIHJlY29uc2lkZXIgdGhlIHNvbHV0aW9uLiANCg0K
 
