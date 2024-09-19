@@ -1,160 +1,126 @@
-Return-Path: <stable+bounces-76752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CD4297C879
-	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 13:19:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE1AA97C8B8
+	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 13:42:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D08191F263BC
-	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 11:19:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A30AB2865C0
+	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 11:42:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E140F19AD7D;
-	Thu, 19 Sep 2024 11:19:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B3EA19D068;
+	Thu, 19 Sep 2024 11:42:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HdFpUA5f"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ojXqOjCb"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86646194083;
-	Thu, 19 Sep 2024 11:19:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB4AD193432;
+	Thu, 19 Sep 2024 11:42:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726744771; cv=none; b=MfkWeSwOPXfEk/eW2jGSSPjHgDUYnEtNCm6EA9tPVwgOm2vQO7EW36t9iTurEAX4PHpLXoQRCexN6kfi1z+r1cz/BKSkmoKfDfoRfiNRqjXSPeNYmhbsRgtqXSOPXX0KngqjSXyO7hpcYjqI1DUkdizUJ6JmNbc4Hsx/AITc9JU=
+	t=1726746133; cv=none; b=owCFj4iuOLg+2OQl47BbZ0roKlOLKgV0fGIQkBjIfkula0uymk/mJJMuultzfjPPPJFUUOML8VItSEJnmonYwlLpNE9/NoQWqLt4BfQGZGNvG5l47rZvOzJonc99pYAvT/SqxRDb31cFVXV3CcEdlw2WdnVP0qWgWooF7uWbwME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726744771; c=relaxed/simple;
-	bh=jYG/+bOihbZ56Cfv+boYkIkhcJCD3pB8io/W06rCRq0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GRecYbzZyjAL627oxATAS8iuwzV1bOfDaLcauGMFPMPATtfw1CzBLXnjjtLYvbemSPa5fAxG0GBs/o4mvtJ4a0iKkV7DozCQ8qB6o0y+6DxnFWhLhC3OAC2EX60UbDyIxVpMNJIR8VbQMIq2w0LcAxJP+617cGf5tEyZL7Kft9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HdFpUA5f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 752BFC4CECD;
-	Thu, 19 Sep 2024 11:19:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726744771;
-	bh=jYG/+bOihbZ56Cfv+boYkIkhcJCD3pB8io/W06rCRq0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HdFpUA5fFXnr0uduODX0yzlyu6InN/ClAbTrmPJYhVKEPBwTii5XzveqLWRwVqkJv
-	 FgQaB7sFpuuns3YAJcol5rRIQoFZYJRNePncII5exa4MoIR38T19hMWy0niOxPSezk
-	 gX/gwwL09NCOjLzxBKzvVGZlsyBjw1eJ1DcF7ElM=
-Date: Thu, 19 Sep 2024 13:19:27 +0200
-From: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
-To: "Zhang, Rui" <rui.zhang@intel.com>
-Cc: "regressions@leemhuis.info" <regressions@leemhuis.info>,
-	"Neri, Ricardo" <ricardo.neri@intel.com>,
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
-	"bp@alien8.de" <bp@alien8.de>,
-	"Gupta, Pawan Kumar" <pawan.kumar.gupta@intel.com>,
-	"regressions@lists.linux.dev" <regressions@lists.linux.dev>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"Luck, Tony" <tony.luck@intel.com>,
-	"thomas.lindroth@gmail.com" <thomas.lindroth@gmail.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [STABLE REGRESSION] Possible missing backport of x86_match_cpu()
- change in v6.1.96
-Message-ID: <2024091900-unimpeded-catalyst-b09f@gregkh>
-References: <eb709d67-2a8d-412f-905d-f3777d897bfa@gmail.com>
- <a79fa3cc-73ef-4546-b110-1f448480e3e6@leemhuis.info>
- <2024081217-putt-conform-4b53@gregkh>
- <05ced22b5b68e338795c8937abb8141d9fa188e6.camel@intel.com>
+	s=arc-20240116; t=1726746133; c=relaxed/simple;
+	bh=rru9U71LlZqwPY0JY1GK2L/XSmtbmZoDialzHi1gztQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QQeAGCLZkRZvbAtDxPpmdubSkaAgjHolwDaFZ1p7+vNVeVTfrBTL4DJX98PYVbZh+qQkKMVKVSX1OSCQQiGs+eVLaYPt8/UYQf5cY9R+ZBn5j6mNC0Oe6/X+RHfZ8wH7KYJmLNFrkQNa/7m/5t0er45JyTR4qqK+Ic5CuR9QUWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ojXqOjCb; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48JA0LOj032380;
+	Thu, 19 Sep 2024 11:36:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
+	:to:cc:subject:date:message-id:mime-version
+	:content-transfer-encoding; s=pp1; bh=QteISjsPvSYtQj+xdyh7B2a2F3
+	0QM/xnGWrnO7sCxH0=; b=ojXqOjCbLu3PN/O3M+WKEPeiXcsNM7mgOfb5Vo2E/I
+	fegUkrgrXj+OUFo5W+rojY7rZnjkXz8fSyAGKpC3LDTyX9Anb3vWdYUk5/465yrb
+	KCrjvlKBZmGcWyrQpH9X84rmpXHAfpekob+YfeDteu8I/QmWpQ6jWIYbf1UOsZ77
+	9gDC7wD4u1FHvqjkX5ktOIjIgYWH3dCF8be+DHZ5py+uFZ7YgqmqZTbpIfstVxvJ
+	owtqyeocvFlrMnbFhQsle/nGRgnBkFetDb7iEal/agcWcssTENJxsfZNU6smq4a6
+	pzdIchvuHgjLKaeLf0jlF2TGBC8ZcCGhhMMemnbhFkLw==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41n3vp4av4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 19 Sep 2024 11:36:51 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48JAHWqu030656;
+	Thu, 19 Sep 2024 11:36:50 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 41npanh1y1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 19 Sep 2024 11:36:50 +0000
+Received: from smtpav04.dal12v.mail.ibm.com (smtpav04.dal12v.mail.ibm.com [10.241.53.103])
+	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 48JBanNS46268824
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 19 Sep 2024 11:36:49 GMT
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2C60C58052;
+	Thu, 19 Sep 2024 11:36:49 +0000 (GMT)
+Received: from smtpav04.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C866658064;
+	Thu, 19 Sep 2024 11:36:48 +0000 (GMT)
+Received: from ltcden12-lp3.aus.stglabs.ibm.com (unknown [9.40.195.53])
+	by smtpav04.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 19 Sep 2024 11:36:48 +0000 (GMT)
+From: Danny Tsen <dtsen@linux.ibm.com>
+To: linux-crypto@vger.kernel.org
+Cc: stable@vger.kernel.org, herbert@gondor.apana.org.au, leitao@debian.org,
+        nayna@linux.ibm.com, appro@cryptogams.org,
+        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
+        mpe@ellerman.id.au, ltcgcw@linux.vnet.ibm.com, dtsen@us.ibm.com,
+        Danny Tsen <dtsen@linux.ibm.com>
+Subject: [PATCH v3] crypto: Removing CRYPTO_AES_GCM_P10.
+Date: Thu, 19 Sep 2024 07:36:37 -0400
+Message-ID: <20240919113637.144343-1-dtsen@linux.ibm.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <05ced22b5b68e338795c8937abb8141d9fa188e6.camel@intel.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: qAO453QM_JcoyMgrevBjlyXeYulnrA0z
+X-Proofpoint-GUID: qAO453QM_JcoyMgrevBjlyXeYulnrA0z
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-19_08,2024-09-18_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 adultscore=0 mlxlogscore=837
+ priorityscore=1501 phishscore=0 clxscore=1015 malwarescore=0 bulkscore=0
+ impostorscore=0 spamscore=0 suspectscore=0 mlxscore=0 lowpriorityscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.19.0-2408220000
+ definitions=main-2409190071
 
-On Wed, Sep 18, 2024 at 06:54:33AM +0000, Zhang, Rui wrote:
-> On Mon, 2024-08-12 at 14:11 +0200, Greg KH wrote:
-> > On Wed, Aug 07, 2024 at 10:15:23AM +0200, Thorsten Leemhuis wrote:
-> > > [CCing the x86 folks, Greg, and the regressions list]
-> > > 
-> > > Hi, Thorsten here, the Linux kernel's regression tracker.
-> > > 
-> > > On 30.07.24 18:41, Thomas Lindroth wrote:
-> > > > I upgraded from kernel 6.1.94 to 6.1.99 on one of my machines and
-> > > > noticed that
-> > > > the dmesg line "Incomplete global flushes, disabling PCID" had
-> > > > disappeared from
-> > > > the log.
-> > > 
-> > > Thomas, thx for the report. FWIW, mainline developers like the x86
-> > > folks
-> > > or Tony are free to focus on mainline and leave stable/longterm
-> > > series
-> > > to other people -- some nevertheless help out regularly or
-> > > occasionally.
-> > > So with a bit of luck this mail will make one of them care enough
-> > > to
-> > > provide a 6.1 version of what you afaics called the "existing fix"
-> > > in
-> > > mainline (2eda374e883ad2 ("x86/mm: Switch to new Intel CPU model
-> > > defines") [v6.10-rc1]) that seems to be missing in 6.1.y. But if
-> > > not I
-> > > suspect it might be up to you to prepare and submit a 6.1.y variant
-> > > of
-> > > that fix, as you seem to care and are able to test the patch.
-> > 
-> > Needs to go to 6.6.y first, right?  But even then, it does not apply
-> > to
-> > 6.1.y cleanly, so someone needs to send a backported (and tested)
-> > series
-> > to us at stable@vger.kernel.org and we will be glad to queue them up
-> > then.
-> > 
-> > thanks,
-> > 
-> > greg k-h
-> 
-> There are three commits involved.
-> 
-> commit A:
->    4db64279bc2b (""x86/cpu: Switch to new Intel CPU model defines"") 
->    This commit replaces
->       X86_MATCH_INTEL_FAM6_MODEL(ANY, 1),             /* SNC */
->    with
->       X86_MATCH_VFM(INTEL_ANY,         1),    /* SNC */
->    This is a functional change because the family info is replaced with
-> 0. And this exposes a x86_match_cpu() problem that it breaks when the
-> vendor/family/model/stepping/feature fields are all zeros.
-> 
-> commit B:
->    93022482b294 ("x86/cpu: Fix x86_match_cpu() to match just
-> X86_VENDOR_INTEL")
->    It addresses the x86_match_cpu() problem by introducing a valid flag
-> and set the flag in the Intel CPU model defines.
->    This fixes commit A, but it actually breaks the x86_cpu_id
-> structures that are constructed without using the Intel CPU model
-> defines, like arch/x86/mm/init.c.
-> 
-> commit C:
->    2eda374e883a ("x86/mm: Switch to new Intel CPU model defines")
->    arch/x86/mm/init.c: broke by commit B but fixed by using the new
-> Intel CPU model defines
-> 
-> In 6.1.99,
-> commit A is missing
-> commit B is there
-> commit C is missing
-> 
-> In 6.6.50,
-> commit A is missing
-> commit B is there
-> commit C is missing
-> 
-> Now we can fix the problem in stable kernel, by converting
-> arch/x86/mm/init.c to use the CPU model defines (even the old style
-> ones). But before that, I'm wondering if we need to backport commit B
-> in 6.1 and 6.6 stable kernel because only commit A can expose this
-> problem.
+Data mismatch found when testing ipsec tunnel with AES/GCM crypto.
+Disabling CRYPTO_AES_GCM_P10 in Kconfig for this feature.
 
-If so, can you submit the needed backports for us to apply?  That's the
-easiest way for us to take them, thanks.
+Fixes: fd0e9b3e2ee6 ("crypto: p10-aes-gcm - An accelerated AES/GCM stitched implementation")
+Fixes: cdcecfd9991f ("crypto: p10-aes-gcm - Glue code for AES/GCM stitched implementation")
+Fixes: 45a4672b9a6e2 ("crypto: p10-aes-gcm - Update Kconfig and Makefile")
 
-greg k-h
+Signed-off-by: Danny Tsen <dtsen@linux.ibm.com>
+---
+ arch/powerpc/crypto/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/arch/powerpc/crypto/Kconfig b/arch/powerpc/crypto/Kconfig
+index 09ebcbdfb34f..46a4c85e85e2 100644
+--- a/arch/powerpc/crypto/Kconfig
++++ b/arch/powerpc/crypto/Kconfig
+@@ -107,6 +107,7 @@ config CRYPTO_AES_PPC_SPE
+ 
+ config CRYPTO_AES_GCM_P10
+ 	tristate "Stitched AES/GCM acceleration support on P10 or later CPU (PPC)"
++	depends on BROKEN
+ 	depends on PPC64 && CPU_LITTLE_ENDIAN && VSX
+ 	select CRYPTO_LIB_AES
+ 	select CRYPTO_ALGAPI
+-- 
+2.43.0
+
 
