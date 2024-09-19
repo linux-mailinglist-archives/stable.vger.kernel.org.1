@@ -1,156 +1,137 @@
-Return-Path: <stable+bounces-76727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08E2897C367
-	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 06:43:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 662A397C419
+	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 08:02:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C479A28397D
-	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 04:43:53 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 93EC2B22042
+	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 06:01:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0F5C1865C;
-	Thu, 19 Sep 2024 04:43:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAF7815382E;
+	Thu, 19 Sep 2024 06:01:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="OPlNJ+bp"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nboSvK1Y"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C90A208AD;
-	Thu, 19 Sep 2024 04:43:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38BDB1514DA
+	for <stable@vger.kernel.org>; Thu, 19 Sep 2024 06:01:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726721027; cv=none; b=G0zcADJ2sjfUak8BA6mgNp6u5ll6XWanab7hhkG6jJpxt3pcLr+YVElPhoSrqgysQ8ehfqP2G0fYaZfoDm43Rb0u8Yi6H40p9GFIIxFumzL3X1IuuIJpu+ZayihzRciAUvPxm4m6V3yxy2DtfVz+9uJh2riXwUm0Icyjz4jyOWQ=
+	t=1726725694; cv=none; b=DDf41nMSUeU5YqIvWHc82EpQAIHdKx3UC9gKtY9AxfDkYa95blBpJvdNVzCc7KhI0NaUMm8MZoNjimhJZ5Po0KeHLH7OqPkF/NJVYDAH5+hDe4WTsJLl73HFPcFBNkZKkaZxcO0bVvFMyeehCJVzfI9WmAbW2jpiU2iH8haBpUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726721027; c=relaxed/simple;
-	bh=lpNgFZv9seW9we31BCKItN+jbOx7qSRiNfOfsPSNkcU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=dIn9y4FKLv7/nNDmfDtZ6pbAjq3ucItqi+3ddGTaoN784hpiYIcJ6vNj+tR6MupQUBsW9NwqMNCpAnYTL6+ZekFdP32MOoxRMpF2pKUyY/5nankciYBKWbjNQJPcT5JFsOdR4JIV7YX33c0/pujGqnBd+0FCnKH0R96LJW7uf3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=OPlNJ+bp; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: from [10.95.75.183] (unknown [167.220.238.215])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 93E9720C0A19;
-	Wed, 18 Sep 2024 21:43:39 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 93E9720C0A19
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1726721025;
-	bh=2cXZn7AsuO1/f29Ymo7/H1OKKdihpH5ofIpGs9C1Gak=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=OPlNJ+bpgLvH5/u1uymp+5eK5jLvpIg7kpgbHDIWxZNe5ftQWDKevBX59qVDYlld8
-	 vNA42RHM6o1hKiGHNIa+DD9Z0i/PX+UEoh+ObOgk2NYvDI24yQvfR7/uBOn//s9Smy
-	 YbkyJeztx5QlX8kQEnWlcxkPduMbqkOn9hl5OEko=
-Message-ID: <26d243c5-6e31-402c-ab3b-588db806ef12@linux.microsoft.com>
-Date: Thu, 19 Sep 2024 10:13:35 +0530
+	s=arc-20240116; t=1726725694; c=relaxed/simple;
+	bh=JJiPfyK4QHIwTIpjSJG6OvTKj5j/LKjnyl/O7PpiOi8=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=n1nSEEwgLHw9chp3HsfORDRzraZ/idu+XXdi2CM3H+xfFjzeG4MK6xlsx/JfBdkOXn3UhJ6aWlM2khzIICBVRh+ypi9ZybNPJ6FyBWQm+wWIgSc4fH1b/5+2E9HN3AlAyNMEWUCllq+nbeNJvfmuZV/DhwwgE1DkR18wsr6OAB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--gthelen.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nboSvK1Y; arc=none smtp.client-ip=209.85.128.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--gthelen.bounces.google.com
+Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-6ddbcc96984so7945547b3.2
+        for <stable@vger.kernel.org>; Wed, 18 Sep 2024 23:01:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1726725692; x=1727330492; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=VPGDOQhQEg5s3NDFwuqJJNmJqpj9EuV1IZIqjE32Cw0=;
+        b=nboSvK1Yon8yOOVtMxolDwN4CbXe+6fuWkwiuJquO1ijiROt+ECG2kUrxLn4Z6bgbs
+         qBsaYnP50WVyiT5D8+x082cFmiNmFm8bLFMnGEao39fvAIFNUwbBn+ZcUBDn0Meu6ZXv
+         ScZ7gVvRmeajNhy64UNkdUFiEjp/rU/kMqHQgiwQX276cuo3xCAxE+f5OnJnlV/oH8yL
+         G8IdrGKGrLp+t3XXZh+GLuIihhSzWYb/dzLgaTLSzzfVfYwYpo+ps5oDRZZ2UCAzit8S
+         ChSgrZ0L/6aNQWyKRZABvHxGOEKoyVBf17YwMAX3yf3LJccGr6ngXx6Twez8wWuNVz3n
+         o5tw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726725692; x=1727330492;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=VPGDOQhQEg5s3NDFwuqJJNmJqpj9EuV1IZIqjE32Cw0=;
+        b=mZNkzLYaCZtCyl9YMTh9JgmxqRK3UvxgZpzZ2VDtVgfxcplq5kwzbqRstXz4Y3TJ0f
+         iD1vkM2aeXcvmFxPfw3XEdy11lnhsS14NYWIw90mnH2ThfWCx7dNdWuGI2ue8zHeAPZC
+         LODGW8R5jnerA+ne+vTw8FL3plDMtNWwRopbfBovaCJ3MuYFbg6tmHQ48SIVwp6KRF5V
+         swHIoZsHvB114lgruKNPBWko0ovMlnal/sToF4e/+y8rfvJsJiq1Gcihq4DiZ5JUiSlr
+         bAYBVRb4Hyyl53iCyCdCYFb4sGcxkQAkJwcAwosvw/0WuZXpSOMRf/R1wiymMcC9IpOt
+         oPwA==
+X-Forwarded-Encrypted: i=1; AJvYcCWeQNMoklZ2OSR0N4j1d5IMLtyovxFNY7m/Gh572pEVam//eg8SDDwRSMJi4v1RoXLanejsxwY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwBOq4BoRaXyFHEl4Kg+IFjg5WFYAHJ8DgtGviX/MjWCrm0TOQT
+	rBqBpCQ493ovG8QYeLtx/4CBVkiP0wkYbvX4nysxz3nwRrviyf4XO0zgp2rHC6vjijz5O5GNrTL
+	YCA1uRA==
+X-Google-Smtp-Source: AGHT+IGERMOPhhKvLpeKAJVYE/JExDbzWwuzzZ0vNx3KklSg136h/eX+oqopAqatX15tPJy7WvSAIRBqwNeF
+X-Received: from gthelen-cloudtop.c.googlers.com ([fda3:e722:ac3:cc00:2c:2b44:ac13:f9ac])
+ (user=gthelen job=sendgmr) by 2002:a25:d851:0:b0:e1c:ed3d:7bb7 with SMTP id
+ 3f1490d57ef6-e1daff59ccemr26808276.1.1726725692080; Wed, 18 Sep 2024 23:01:32
+ -0700 (PDT)
+Date: Wed, 18 Sep 2024 23:01:30 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] x86/hyper-v: Fix hv tsc page based sched_clock for
- hibernation
-To: Michael Kelley <mhklinux@outlook.com>,
- "K . Y . Srinivasan" <kys@microsoft.com>,
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
- Dexuan Cui <decui@microsoft.com>, Thomas Gleixner <tglx@linutronix.de>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, "x86@kernel.org"
- <x86@kernel.org>, "H . Peter Anvin" <hpa@zytor.com>,
- Daniel Lezcano <daniel.lezcano@linaro.org>
-Cc: "linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <20240917053917.76787-1-namjain@linux.microsoft.com>
- <SN6PR02MB415772CE1B1F9FC03ECD0258D4622@SN6PR02MB4157.namprd02.prod.outlook.com>
-Content-Language: en-US
-From: Naman Jain <namjain@linux.microsoft.com>
-In-Reply-To: <SN6PR02MB415772CE1B1F9FC03ECD0258D4622@SN6PR02MB4157.namprd02.prod.outlook.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Message-ID: <xr93ikus2nd1.fsf@gthelen-cloudtop.c.googlers.com>
+Subject: 5.10.225 stable kernel cgroup_mutex not held assertion failure
+From: Greg Thelen <gthelen@google.com>
+To: Chen Ridong <chenridong@huawei.com>
+Cc: Tejun Heo <tj@kernel.org>, Shivani Agarwal <shivani.agarwal@broadcom.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
 
+Linux stable v5.10.226 suffers a lockdep warning when accessing
+/proc/PID/cpuset. cset_cgroup_from_root() is called without cgroup_mutex
+is held, which causes assertion failure.
 
+Bisect blames 5.10.225 commit 688325078a8b ("cgroup/cpuset: Prevent UAF
+in proc_cpuset_show()"). I've have not easily reproduced the problem
+that this change fixes, so I'm not sure if it's best to revert the fix
+or adapt it to meet the 5.10 locking expectations.
 
-On 9/19/2024 12:07 AM, Michael Kelley wrote:
-> From: Naman Jain <namjain@linux.microsoft.com> Sent: Monday, September 16, 2024 10:39 PM
->>
->> read_hv_sched_clock_tsc() assumes that the Hyper-V clock counter is
->> bigger than the variable hv_sched_clock_offset, which is cached during
->> early boot, but depending on the timing this assumption may be false
->> when a hibernated VM starts again (the clock counter starts from 0
->> again) and is resuming back (Note: hv_init_tsc_clocksource() is not
->> called during hibernation/resume); consequently,
->> read_hv_sched_clock_tsc() may return a negative integer (which is
->> interpreted as a huge positive integer since the return type is u64)
->> and new kernel messages are prefixed with huge timestamps before
->> read_hv_sched_clock_tsc() grows big enough (which typically takes
->> several seconds).
->>
->> Fix the issue by saving the Hyper-V clock counter just before the
->> suspend, and using it to correct the hv_sched_clock_offset in
->> resume. This makes hv tsc page based sched_clock continuous and ensures
->> that post resume, it starts from where it left off during suspend.
->> Override x86_platform.save_sched_clock_state and
->> x86_platform.restore_sched_clock_state routines to correct this as soon
->> as possible.
->>
->> Note: if Invariant TSC is available, the issue doesn't happen because
->> 1) we don't register read_hv_sched_clock_tsc() for sched clock:
->> See commit e5313f1c5404 ("clocksource/drivers/hyper-v: Rework
->> clocksource and sched clock setup");
->> 2) the common x86 code adjusts TSC similarly: see
->> __restore_processor_state() ->  tsc_verify_tsc_adjust(true) and
->> x86_platform.restore_sched_clock_state().
->>
->> Cc: stable@vger.kernel.org
->> Fixes: 1349401ff1aa ("clocksource/drivers/hyper-v: Suspend/resume Hyper-V
->> clocksource for hibernation")
->> Co-developed-by: Dexuan Cui <decui@microsoft.com>
->> Signed-off-by: Dexuan Cui <decui@microsoft.com>
->> Signed-off-by: Naman Jain <namjain@linux.microsoft.com>
->> ---
->> Changes from v2:
->> https://lore.kernel.org/all/20240911045632.3757-1-namjain@linux.microsoft.com/
->> Addressed Michael's comments:
->> * Changed commit msg to include information on making timestamps
->>    continuous
->> * Changed subject to reflect the new file being changed
->> * Changed variable name for saving offset/counters
->> * Moved comment on new function introduced from header file to function
->>    definition.
->> * Removed the equations in comments
->> * Rebased to latest linux-next tip
->>
->> Changes from v1:
->> https://lore.kernel.org/all/20240909053923.8512-1-namjain@linux.microsoft.com/
->> * Reorganized code as per Michael's comment, and moved the logic to x86
->> specific files, to keep hyperv_timer.c arch independent.
->>
->> ---
->>   arch/x86/kernel/cpu/mshyperv.c     | 58 ++++++++++++++++++++++++++++++
->>   drivers/clocksource/hyperv_timer.c | 14 +++++++-
->>   include/clocksource/hyperv_timer.h |  2 ++
->>   3 files changed, 73 insertions(+), 1 deletion(-)
-> 
-> This all looks good to me now. Thanks for indulging all my comments. :-)
-> 
-> One minor nit: The "Subject:" prefix should not have a dash in "hyper-v".
-> The goal is to be consistent in the prefixes used for a particular file instead
-> of wandering all over the place. If you check the commit history for
-> arch/x86/kernel/cpu/mshyperv.c, you'll see that it is "x86/hyperv", not
-> "x86/hyperv-v".
-> 
-> This is super picky, so don't respin just for this. The maintainer can
-> probably fix it when accepting the patch if there are no other changes.
-> 
-> Reviewed-by: Michael Kelley <mhklinux@outlook.com>
+The lockdep complaint:
 
-Thank you Michael for reviewing. I'll keep this in mind while posting
-any patch in future.
-
-Regards,
-Naman
-
-
+$ cat /proc/1/cpuset
+$ dmesg
+[  198.744891] ------------[ cut here ]------------
+[  198.744918] WARNING: CPU: 4 PID: 9301 at kernel/cgroup/cgroup.c:1395  
+cset_cgroup_from_root+0xb2/0xd0
+[  198.744957] RIP: 0010:cset_cgroup_from_root+0xb2/0xd0
+[  198.744960] Code: 02 00 00 74 11 48 8b 09 48 39 cb 75 eb eb 19 49 83 c6  
+10 4c 89 f0 48 85 c0 74 0d 5b 41 5e c3 48 8b 43 60 48 85 c0 75 f3 0f 0b  
+<0f> 0b 83 3d 69 01 ee 01 00 0f 85 78 ff ff ff eb 8b 0f 0b eb 87 66
+[  198.744962] RSP: 0018:ffffb492608a7ce8 EFLAGS: 00010046
+[  198.744977] RAX: 0000000000000000 RBX: ffffffff8f4171b8 RCX:  
+cc949de848c33e00
+[  198.744979] RDX: 0000000000001000 RSI: ffffffff8f415450 RDI:  
+ffff92e5417c4dc0
+[  198.744981] RBP: ffff9303467e3f00 R08: 0000000000000008 R09:  
+ffffffff9122d568
+[  198.744983] R10: ffff92e5417c4380 R11: 0000000000000000 R12:  
+ffff92e3d9506000
+[  198.744984] R13: 0000000000000000 R14: ffff92e443a96000 R15:  
+ffff92e3d9506000
+[  198.744987] FS:  00007f15d94ed740(0000) GS:ffff9302bf500000(0000)  
+knlGS:0000000000000000
+[  198.744988] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  198.744990] CR2: 00007f15d94ca000 CR3: 00000002816ca003 CR4:  
+00000000001706e0
+[  198.744992] Call Trace:
+[  198.744996]  ? __warn+0xcd/0x1c0
+[  198.745000]  ? cset_cgroup_from_root+0xb2/0xd0
+[  198.745008]  ? report_bug+0x87/0xf0
+[  198.745015]  ? handle_bug+0x42/0x80
+[  198.745017]  ? exc_invalid_op+0x16/0x70
+[  198.745021]  ? asm_exc_invalid_op+0x12/0x20
+[  198.745030]  ? cset_cgroup_from_root+0xb2/0xd0
+[  198.745034]  ? cset_cgroup_from_root+0x28/0xd0
+[  198.745038]  cgroup_path_ns_locked+0x23/0x50
+[  198.745044]  proc_cpuset_show+0x115/0x210
+[  198.745049]  proc_single_show+0x4a/0xa0
+[  198.745056]  seq_read_iter+0x14d/0x400
+[  198.745063]  seq_read+0x103/0x130
+[  198.745074]  vfs_read+0xea/0x320
+[  198.745078]  ? do_user_addr_fault+0x25b/0x390
+[  198.745085]  ? do_user_addr_fault+0x25b/0x390
+[  198.745090]  ksys_read+0x70/0xe0
+[  198.745096]  do_syscall_64+0x2d/0x40
+[  198.745099]  entry_SYSCALL_64_after_hwframe+0x61/0xcb
 
