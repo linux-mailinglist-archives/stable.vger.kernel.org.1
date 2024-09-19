@@ -1,100 +1,122 @@
-Return-Path: <stable+bounces-76742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5DC697C66A
-	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 10:58:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91C3E97C686
+	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 11:04:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DD951C20EA4
-	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 08:58:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A9CA51C2031A
+	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 09:04:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2A7819925D;
-	Thu, 19 Sep 2024 08:58:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACC59194C92;
+	Thu, 19 Sep 2024 09:04:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DujjDfU3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QYtk649D"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABFF2179AE
-	for <stable@vger.kernel.org>; Thu, 19 Sep 2024 08:58:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B32812E48
+	for <stable@vger.kernel.org>; Thu, 19 Sep 2024 09:04:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726736303; cv=none; b=RJ9PlaeMhr2OgeD+tqeug/46UuwnKxo+YgWudH+yETV26jOEgYn9H0eht2iJbi/FgCj4+vGwKo7qRuK+8vaXishgxqqDZ9AoR+sjhuTpP9c+N8h5tiJgBBzV+5LtHYYSk/Mi3hd7TzxcSAUDBIUO1KQbsE4RcUjhjKfMwg3WMJI=
+	t=1726736667; cv=none; b=P+Xl8K3SAItdqfSTGwWY0npebPYOpp0eL+ie8L2Jip14otW2LB9dbQPR+o8niVXbgVr6kaM3K8KORGzSl9MjEb/j5NdxU+2MibZ06V8L85trrMB9bWY6ohTkvJFlMZYvgCogVFZavY9GoQP9zhpDsjLZbTUXdONW24aV743RVF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726736303; c=relaxed/simple;
-	bh=Xm7sv8UXsail7gevUUuGHKRIlpV192FyltCvLKTIvRY=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=VLzxFhik0aTZo937dS0qHgvwwZ9tR3I1fIWUpjlAVbttkEOCAiC/db+wMXaF0tBMDYjrhbeSvy4YYlNXhAxdRYAbGE8aN+tz+k/L0MsdnUen/TYnstqC5MOlt4lU+q+lpyRFLAF5JzUDHgIwyejqyqzeiEdN8tNPnkJrcbUnQNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DujjDfU3; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1726736302; x=1758272302;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=Xm7sv8UXsail7gevUUuGHKRIlpV192FyltCvLKTIvRY=;
-  b=DujjDfU3teeGaMa30cNbiJR97I9553b7HohZLChNP/Ovmpds9v5yw9Ob
-   4tsYhUzU/hbnG4sDaTT0hvrZkAHmYJAmrk32pUQB2TjvI4XWw6UVQreE5
-   pn5HaxPkEbAEL1yssEzvwWA1E9dZ5ABydBpiFDXeA3K2iOSJiYkA60yWd
-   lfzqQ2ZQUdQ73c78GIPBekV7ZYSym3w3XlLj9CGzYPhzcPSpbad5aRWw7
-   gRb+52OGVv3V1uoviBTaTvlR9YeL0SR41pNqMUUMC/AwcXR9LfGAH9muD
-   VmCNicaImRTMCYT5bix4XM/WyktK/x//lsQyo9gz4j//iXkW97YSi6rMT
-   A==;
-X-CSE-ConnectionGUID: JNnb3BEJQ6GDMRawgIgZXA==
-X-CSE-MsgGUID: xdttSi97QcqKGzIyTyj36g==
-X-IronPort-AV: E=McAfee;i="6700,10204,11199"; a="43203818"
-X-IronPort-AV: E=Sophos;i="6.10,241,1719903600"; 
-   d="scan'208";a="43203818"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2024 01:58:21 -0700
-X-CSE-ConnectionGUID: AROtHpNzTeudKvnElpJQ3Q==
-X-CSE-MsgGUID: 2H1ehCFXTw6rRcNWQjNc6w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,241,1719903600"; 
-   d="scan'208";a="69747968"
-Received: from lkp-server01.sh.intel.com (HELO 53e96f405c61) ([10.239.97.150])
-  by orviesa010.jf.intel.com with ESMTP; 19 Sep 2024 01:58:20 -0700
-Received: from kbuild by 53e96f405c61 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1srCzR-000D72-1m;
-	Thu, 19 Sep 2024 08:58:17 +0000
-Date: Thu, 19 Sep 2024 16:57:27 +0800
-From: kernel test robot <lkp@intel.com>
-To: Wei Fang <wei.fang@nxp.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH net 1/3] net: enetc: remove xdp_drops statistic from
- enetc_xdp_drop()
-Message-ID: <Zuvnd29QNu93qtg9@3bb1e60d1c37>
+	s=arc-20240116; t=1726736667; c=relaxed/simple;
+	bh=zfFDPQ5o/x1KGXrYGc0/sVOiOCfx7QtkeQf0Zwk+lwo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Obg3KRy0Dqw7p2M8tprJz2GFV58DWAVeXSM8dnCk3q5n963+MaSaQXlKi2Guo8dDAEkg7oub7V+n+NGlrNWaFeBcbv/H/mpVvlH7kgQeQL3391oCfZGvO+vhUoW4i21Us7VB+KaeAImEg3Twbt5nngzgUM1rKqirygHG8Y8Crv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QYtk649D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE313C4CEC4;
+	Thu, 19 Sep 2024 09:04:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1726736667;
+	bh=zfFDPQ5o/x1KGXrYGc0/sVOiOCfx7QtkeQf0Zwk+lwo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QYtk649D4PDeKFONuJXYv+JpBQhLW/n3TKikkhaP5E6vDQSbre/CbO0aoXMXgxmW6
+	 YYvUIuv0B7ZCcSLyxX8/ZrG5xfNSwqx6WlWDVGw8EygyfyfLM73ffz/kjGv+6+lLwg
+	 XDJqI/ofOyToCOIeb23i8+NPerjAH8h2oWt/6bTQ=
+Date: Thu, 19 Sep 2024 11:04:23 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: "Wan, Qin (Thin Client RnD)" <qin.wan@hp.com>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>,
+	"Gagniuc, Alexandru" <alexandru.gagniuc@hp.com>
+Subject: Re: Request to apply patches to v6.6 to fix thunderbolt issue
+Message-ID: <2024091925-elixir-joylessly-9f33@gregkh>
+References: <MW4PR84MB151669954C1D210A0FED92128D632@MW4PR84MB1516.NAMPRD84.PROD.OUTLOOK.COM>
+ <MW4PR84MB1516C1E8175FF8931ACF8AB18D632@MW4PR84MB1516.NAMPRD84.PROD.OUTLOOK.COM>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240919084104.661180-2-wei.fang@nxp.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <MW4PR84MB1516C1E8175FF8931ACF8AB18D632@MW4PR84MB1516.NAMPRD84.PROD.OUTLOOK.COM>
 
-Hi,
+On Thu, Sep 19, 2024 at 08:38:52AM +0000, Wan, Qin (Thin Client RnD) wrote:
+> Hello,
+> 
+>    There is an issue found on v6.6.16: Plug in thunderbolt G4 dock with monitor connected after system boots up. The monitor shows nothing when wake up from S3 sometimes. The failure rate is above 50%.
+>    The kernel reports “UBSAN: shift-out-of-bounds in drivers/gpu/drm/display/drm_dp_mst_topology.c:4416:36”. The call stack is shown at the bottom of this email.
+>    This failure is fixed in v6.9-rc1. 
+>    We request to merge below commit to v6.6.
+> 
+>   6b8ac54f31f985d3abb0b4212187838dd8ea4227
+>  thunderbolt: Fix debug log when DisplayPort adapter not available for pairing
+> 
+>  fe8a0293c922ee8bc1ff0cf9048075afb264004a
+>  thunderbolt: Use tb_tunnel_dbg() where possible to make logging more consistent
+> 
+>  d27bd2c37d4666bce25ec4d9ac8c6b169992f0f0
+>  thunderbolt: Expose tb_tunnel_xxx() log macros to the rest of the driver
+> 
+>   8648c6465c025c488e2855c209c0dea1a1a15184
+>  thunderbolt: Create multiple DisplayPort tunnels if there are more DP IN/OUT pairs
+> 
+>  f73edddfa2a64a185c65a33f100778169c92fc25
+>  thunderbolt: Use constants for path weight and priority
+> 
+>   4d24db0c801461adeefd7e0bdc98c79c60ccefb0
+>   thunderbolt: Use weight constants in tb_usb3_consumed_bandwidth()
+> 
+>   aa673d606078da36ebc379f041c794228ac08cb5
+>   thunderbolt: Make is_gen4_link() available to the rest of the driver
+> 
+>   582e70b0d3a412d15389a3c9c07a44791b311715
+>    thunderbolt: Change bandwidth reservations to comply USB4 v2
+> 
+>    2bfeca73e94567c1a117ca45d2e8a25d63e5bd2c
+> 　thunderbolt: Introduce tb_port_path_direction_downstream()
+> 　
+> 　956c3abe72fb6a651b8cf77c28462f7e5b6a48b1
+> 　thunderbolt: Introduce tb_for_each_upstream_port_on_path()
+> 　
+> 　c4ff14436952c3d0dd05769d76cf48e73a253b48
+> 　thunderbolt: Introduce tb_switch_depth()
+> 　
+> 　81af2952e60603d12415e1a6fd200f8073a2ad8b
+> 　thunderbolt: Add support for asymmetric link
+> 　
+> 　3e36528c1127b20492ffaea53930bcc3df46a718
+> 　thunderbolt: Configure asymmetric link if needed and bandwidth allows
+> 　
+> 　b4734507ac55cc7ea1380e20e83f60fcd7031955
+> 　thunderbolt: Improve DisplayPort tunnel setup process to be more robust
 
-Thanks for your patch.
+Can you send these as a backported series with your signed-off-by to
+show that you have tested these to verify that they work properly in the
+6.6 kernel tree?  That will make them much easier to apply, and track
+over time.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+Also, you should cc: the relevant maintainers/developers of those
+changes to allow them to comment if they should be backported or not.
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+thanks,
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH net 1/3] net: enetc: remove xdp_drops statistic from enetc_xdp_drop()
-Link: https://lore.kernel.org/stable/20240919084104.661180-2-wei.fang%40nxp.com
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+greg k-h
 
