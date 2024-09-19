@@ -1,276 +1,175 @@
-Return-Path: <stable+bounces-76774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44C5B97CDD3
-	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 20:50:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7BA7D97CDD5
+	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 20:52:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 694861C21776
-	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 18:50:05 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1763F284D4D
+	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 18:52:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AB951BC46;
-	Thu, 19 Sep 2024 18:50:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B7F21CD2C;
+	Thu, 19 Sep 2024 18:52:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="hmfFxqyK"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KLurUU4s"
 X-Original-To: stable@vger.kernel.org
-Received: from 009.lax.mailroute.net (009.lax.mailroute.net [199.89.1.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B43322612;
-	Thu, 19 Sep 2024 18:49:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4797F291E;
+	Thu, 19 Sep 2024 18:52:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726771800; cv=none; b=dt513mVABw9la3xKs52PBkU8tJDv8bxXkvqe2QiAyPmas36QcvhJF2uJgaSLADSf5ShX8gr9pDRCRGAa9WWE0IWF/g2feRtjdqevwSeS+sTnHe7H1o90N0VZCgr2RXIA4ycqh/JEpV+7VY+Yawgd7VNi3+KC99O6o34UBWPmee0=
+	t=1726771933; cv=none; b=JkNM2GDCyRamCcVCXY9apSVqeu0m69MRf1hxYr9AvpwrfFm58bduTP46WMmcBKevH544y8m+YUzN6nX7h4kDZMtazbkkWJ6+z2ZmSsvv9egyvzT/rV3hHrqtEFlnO8znip5u7MGYYu7BcfE2srgXfQRSpbMZsmhsPYUXFpOytOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726771800; c=relaxed/simple;
-	bh=/TylInyXpNzv6ZDnzDfgqa5QAFwKPnJ+r/MBb/q+ll4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pAyiffJ4uU5Nz+71sQA5UFT2PHMXCD4ysEh8n6PRVfIsfBwHgiHOCPoSm3d7SC+YRazNRFJBaXVQGYhcD5M2qStMXDKQ88OeZByjCcQPf4U8I3zwCuAYFYIO9jpjtMRBuEY/fDi2DZWoL1CSChcjY3H+deZCTj8Z5sOQW74+G1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=hmfFxqyK; arc=none smtp.client-ip=199.89.1.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
-Received: from localhost (localhost [127.0.0.1])
-	by 009.lax.mailroute.net (Postfix) with ESMTP id 4X8l1r4CGBzlgMVg;
-	Thu, 19 Sep 2024 18:49:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
-	content-transfer-encoding:content-type:content-type:in-reply-to
-	:from:from:content-language:references:subject:subject
-	:user-agent:mime-version:date:date:message-id:received:received;
-	 s=mr01; t=1726771778; x=1729363779; bh=W4NpPLc14tJ/Fx1/86QfUQVW
-	/u1BXw8j2afYzA93uxk=; b=hmfFxqyKHDBG8IlPa8uJvSA1zi5bkTIB6X/FnLIw
-	jblAt5xmpnmiJE8IvgigjJ5bXJlUH0/SFqDmyxT9Nr5oMbQg46tOP/5iy9LQBPef
-	kzdP0aqnadp9R+hECPuOL5nNaxM2RmAX5gD7vMXgEeKqFTbL+tfMs3quXpnVFmmM
-	0ueWAuOod6QbVMpZGyg3iiUjUxECqn2PwD2u2gbqzA/JFq4sQtC1UiCr+eoqn7Pz
-	ix8bDu9+FCWx1L918OxujiKJBtHkuW21wj7gKAcqu7BNbvaHxNfbX28tSUud/T8c
-	dpOXzMAaIi1H7VEgj82gAi4hi9t7EFOgxeomTDbxD0DnWQ==
-X-Virus-Scanned: by MailRoute
-Received: from 009.lax.mailroute.net ([127.0.0.1])
- by localhost (009.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
- id U8-ZFBmmmX41; Thu, 19 Sep 2024 18:49:38 +0000 (UTC)
-Received: from [100.66.154.22] (unknown [104.135.204.82])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: bvanassche@acm.org)
-	by 009.lax.mailroute.net (Postfix) with ESMTPSA id 4X8l1X2YGnzlgMVY;
-	Thu, 19 Sep 2024 18:49:36 +0000 (UTC)
-Message-ID: <beeec868-b4ac-4025-859b-35a828cd2f8e@acm.org>
-Date: Thu, 19 Sep 2024 11:49:35 -0700
+	s=arc-20240116; t=1726771933; c=relaxed/simple;
+	bh=gJ4IWCfyHQTyAa+Kg5oyCF1nbi/ZbieJ5/JWjqzNrmM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=kKrOyYcqGvdPJpQrV/ddpIv6dVngW0k3lPNZeV1OLiX6cfeSbQp6K5aGE6qPGdghzi4u/D3tUQykidESKp8OvAsz7rylllwByiYMWP3WqHHR9RLk/+4oO78CzgUCeSMAK/nP1gdDcmK/n6BZHYATeMd7zl2h578ZMPqii7jB5zc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KLurUU4s; arc=none smtp.client-ip=209.85.208.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2f75c205e4aso14237551fa.0;
+        Thu, 19 Sep 2024 11:52:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1726771930; x=1727376730; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/U1C4mUu4VDiFkBMlpROb2ZCYD26GbiPKZSxK9yppTk=;
+        b=KLurUU4s4bldixsfCslZBwPbNckw1zblT5tVSMykrFspAhFq0FhuxDomtPiA4Sy1Ph
+         E3+p6KqoDG2GrTHYeuX9xDfx9ZvW2GQE3DsjJfFym8GDf5AvA0jmRkBJyxEXA3AWdOs9
+         D4T/oMgRoANhSiSDce8IutS2BxlTIw4DdF+qr4+kdnnBctQkrb2jAxmHy3LDI0NKDNl9
+         N+Bfh0Tq0V9BLsJqKTBo8KU9lSM0Ih9onqNEDB/733joaB2+ceQfi3h2MRzJJT0raYPU
+         vs3ngpOzOBeBntmg8n0Tku+9xH247Es6UheFkp+90qZH0ASLBYWADSGJhJPe2aOFnP9+
+         hMEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726771930; x=1727376730;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/U1C4mUu4VDiFkBMlpROb2ZCYD26GbiPKZSxK9yppTk=;
+        b=Mmo+pHoFzheJb9JHJpGOlSrEfS8m+UZQzmzexAlfcMLMTMjlYs+Zr8tvITFFt+V3vY
+         SyTuwZ8QIhsGlcNtMFCF/mttPiTnw8x1RNVVeItmrUvlGewukeJ64YJeVBB4gPyxHAXs
+         2tu0RrNcL2PZUfWtD4klb+vOd3BAQ8M6pX57NwZsflJAmZAJzRNTO7oiCJ8owgL+nD9W
+         QaKvP88msEiVMM7GcznTG+6H8GQ3jybtas1r+3BU2wy3Sgh+McCRyRni+wMppvf7F+QH
+         qSt8LKm1QI01E5Vac6iH/Bxok9etsi+OBmAPsFB/QG983I5m/AEzH8xqS1JWAe8ajlWq
+         lhSA==
+X-Forwarded-Encrypted: i=1; AJvYcCUNVAbzcztGkRKEEa5969TawtieofCN9iCKN97VbYf8sa3Wrw1ank+gIkUZcZe1z6T9OqKpREZC0LI=@vger.kernel.org, AJvYcCUoJSCUNstjz3N1ule5d81wdGE6f0Og6TBqigLFg08TNwSzmuufK49Me140F+j/RG41f2ZjymlfRDVkabnz@vger.kernel.org, AJvYcCXF/ROJ7y0MNrxOTPzcmoZr9/kh4N1Tic4PqcHwg0hd/BAEV5eyXhZsOsrRwn4YNusD+aPxEmND@vger.kernel.org
+X-Gm-Message-State: AOJu0YygnfMSd2J9VytoLBiSfHYp0Ujd3+KdkbmqWJEnqefuc+xcLiAc
+	mtvLXWtvYixRDFLsKN5Ctq5sRVgC06c3eaoIQjcWzR0gWclR47Ez
+X-Google-Smtp-Source: AGHT+IEwLSaQuYkgJI3L+iKFj+a62LBltSQOe/bdEeJFTU8ZeTslhYKgdz8G3ouvO2latWGRKJ8CnQ==
+X-Received: by 2002:a2e:4a19:0:b0:2f3:fd6a:d170 with SMTP id 38308e7fff4ca-2f7cc5adbf8mr102801fa.36.1726771929935;
+        Thu, 19 Sep 2024 11:52:09 -0700 (PDT)
+Received: from localhost ([95.79.225.241])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2f79d37f949sm16792061fa.93.2024.09.19.11.52.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 19 Sep 2024 11:52:08 -0700 (PDT)
+From: Serge Semin <fancer.lancer@gmail.com>
+To: Viresh Kumar <vireshk@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Andy Shevchenko <andy@kernel.org>,
+	Vinod Koul <vkoul@kernel.org>,
+	Ferry Toth <fntoth@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Ferry Toth <ftoth@exalondelft.nl>,
+	Serge Semin <fancer.lancer@gmail.com>,
+	dmaengine@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v2] dmaengine: dw: Select only supported masters for ACPI devices
+Date: Thu, 19 Sep 2024 21:51:48 +0300
+Message-ID: <20240919185151.7331-1-fancer.lancer@gmail.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240919135854.16124-1-fancer.lancer@gmail.com>
+References: <20240919135854.16124-1-fancer.lancer@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 2/2] ufs: core: requeue aborted request
-To: =?UTF-8?B?UGV0ZXIgV2FuZyAo546L5L+h5Y+LKQ==?= <peter.wang@mediatek.com>,
- "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
- "avri.altman@wdc.com" <avri.altman@wdc.com>,
- "jejb@linux.ibm.com" <jejb@linux.ibm.com>,
- "alim.akhtar@samsung.com" <alim.akhtar@samsung.com>,
- "martin.petersen@oracle.com" <martin.petersen@oracle.com>
-Cc: "linux-mediatek@lists.infradead.org"
- <linux-mediatek@lists.infradead.org>,
- =?UTF-8?B?SmlhamllIEhhbyAo6YOd5Yqg6IqCKQ==?= <jiajie.hao@mediatek.com>,
- =?UTF-8?B?Q0MgQ2hvdSAo5ZGo5b+X5p2wKQ==?= <cc.chou@mediatek.com>,
- =?UTF-8?B?RWRkaWUgSHVhbmcgKOm7g+aZuuWCkSk=?= <eddie.huang@mediatek.com>,
- =?UTF-8?B?QWxpY2UgQ2hhbyAo6LaZ54+u5Z2HKQ==?= <Alice.Chao@mediatek.com>,
- "quic_nguyenb@quicinc.com" <quic_nguyenb@quicinc.com>,
- wsd_upstream <wsd_upstream@mediatek.com>,
- =?UTF-8?B?RWQgVHNhaSAo6JSh5a6X6LuSKQ==?= <Ed.Tsai@mediatek.com>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- =?UTF-8?B?TGluIEd1aSAo5qGC5p6XKQ==?= <Lin.Gui@mediatek.com>,
- =?UTF-8?B?Q2h1bi1IdW5nIFd1ICjlt6vpp7/lro8p?= <Chun-hung.Wu@mediatek.com>,
- =?UTF-8?B?VHVuLXl1IFl1ICjmuLjmlabogb8p?= <Tun-yu.Yu@mediatek.com>,
- =?UTF-8?B?Q2hhb3RpYW4gSmluZyAo5LqV5pyd5aSpKQ==?=
- <Chaotian.Jing@mediatek.com>, =?UTF-8?B?UG93ZW4gS2FvICjpq5jkvK/mlocp?=
- <Powen.Kao@mediatek.com>, =?UTF-8?B?TmFvbWkgQ2h1ICjmnLHoqaDnlLAp?=
- <Naomi.Chu@mediatek.com>, =?UTF-8?B?UWlsaW4gVGFuICjosK3pupLpup8p?=
- <Qilin.Tan@mediatek.com>
-References: <20240910073035.25974-1-peter.wang@mediatek.com>
- <20240910073035.25974-3-peter.wang@mediatek.com>
- <e42abf07-ba6b-4301-8717-8d5b01d56640@acm.org>
- <04e392c00986ac798e881dcd347ff5045cf61708.camel@mediatek.com>
- <858c4b6b-fcbc-4d51-8641-051aeda387c5@acm.org>
- <524e9da9196cc0acf497ff87eba3a8043b780332.camel@mediatek.com>
- <6203d7c9-b33c-4bf1-aca3-5fc8ba5636b9@acm.org>
- <6fc025d7ffb9d702a117381fb5da318b40a24246.camel@mediatek.com>
- <46d8be04-10db-4de1-8a59-6cd402bcecb1@acm.org>
- <61a1678cad16dcb15f1e215ff1c47476666f0ee8.camel@mediatek.com>
- <78c7fc74-81c2-40e4-b050-1d65dec96d0a@acm.org>
- <f350a1dee5a03347b5e88b9d7249223ce7b72c08.camel@mediatek.com>
-Content-Language: en-US
-From: Bart Van Assche <bvanassche@acm.org>
-In-Reply-To: <f350a1dee5a03347b5e88b9d7249223ce7b72c08.camel@mediatek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On 9/19/24 5:16 AM, Peter Wang (=E7=8E=8B=E4=BF=A1=E5=8F=8B) wrote:
-> The four case flows for abort are as follows:
-> ----------------------------------------------------------------
->=20
-> Case1: DBR ufshcd_abort
+The recently submitted fix-commit revealed a problem in the iDMA32
+platform code. Even though the controller supported only a single master
+the dw_dma_acpi_filter() method hard-coded two master interfaces with IDs
+0 and 1. As a result the sanity check implemented in the commit
+b336268dde75 ("dmaengine: dw: Add peripheral bus width verification") got
+incorrect interface data width and thus prevented the client drivers
+from configuring the DMA-channel with the EINVAL error returned. E.g. the
+next error was printed for the PXA2xx SPI controller driver trying to
+configure the requested channels:
 
-Please follow the terminology from the UFSHCI 4.0 standard and use the
-word "legacy" instead of "DBR".
+> [  164.525604] pxa2xx_spi_pci 0000:00:07.1: DMA slave config failed
+> [  164.536105] pxa2xx_spi_pci 0000:00:07.1: failed to get DMA TX descriptor
+> [  164.543213] spidev spi-SPT0001:00: SPI transfer failed: -16
 
-> In this case, you can see that ufshcd_release_scsi_cmd will
-> definitely be called.
->=20
-> ufshcd_abort()
->    ufshcd_try_to_abort_task()		// It should trigger an
-> interrupt, but the tensor might not
->    get outstanding_lock
->    clear outstanding_reqs tag
->    ufshcd_release_scsi_cmd()
->    release outstanding_lock
->=20
-> ufshcd_intr()
->    ufshcd_sl_intr()
->      ufshcd_transfer_req_compl()
->        ufshcd_poll()
->          get outstanding_lock
->          clear outstanding_reqs tag
->          release outstanding_lock		=09
->          __ufshcd_transfer_req_compl()
->            ufshcd_compl_one_cqe()
->            cmd->result =3D DID_REQUEUE	// mediatek may need quirk
-> change DID_ABORT to DID_REQUEUE
->            ufshcd_release_scsi_cmd()
->            scsi_done();
->=20
-> In most cases, ufshcd_intr will not reach scsi_done because the
-> outstanding_reqs tag is cleared by the original thread.
-> Therefore, whether there is an interrupt or not doesn't affect
-> the result because the ISR will do nothing in most cases.
->=20
-> In a very low chance, the ISR will reach scsi_done and notify
-> SCSI to requeue, and the original thread will not
-> call ufshcd_release_scsi_cmd.
-> MediaTek may need to change DID_ABORT to DID_REQUEUE in this
-> situation, or perhaps not handle this ISR at all.
+The problem would have been spotted much earlier if the iDMA32 controller
+supported more than one master interfaces. But since it supports just a
+single master and the iDMA32-specific code just ignores the master IDs in
+the CTLLO preparation method, the issue has been gone unnoticed so far.
 
-Please modify ufshcd_compl_one_cqe() such that it ignores commands
-with status OCS_ABORTED. This will make the UFSHCI driver behave in
-the same way for all UFSHCI controllers, whether or not clearing a
-command triggers a completion interrupt.
+Fix the problem by specifying a single master ID for both memory and
+peripheral devices on the ACPI-based platforms if there is only one master
+available on the controller. Thus the issue noticed for the iDMA32
+controllers will be eliminated and the ACPI-probed DW DMA controllers will
+be configured with the correct master ID by default.
 
-> ----------------------------------------------------------------
->=20
-> Case2: MCQ ufshcd_abort
->=20
-> In the case of MCQ ufshcd_abort, you can also see that
-> ufshcd_release_scsi_cmd will definitely be called too.
-> However, there seems to be a problem here, as
-> ufshcd_release_scsi_cmd might be called twice.
-> This is because cmd is not null in ufshcd_release_scsi_cmd,
-> which the previous version would set cmd to null.
-> Skipping OCS: ABORTED in ufshcd_compl_one_cqe indeed
-> can avoid this problem. This part needs further
-> consideration on how to handle it.
->=20
-> ufshcd_abort()
->    ufshcd_mcq_abort()
->      ufshcd_try_to_abort_task()	// will trigger ISR
->      ufshcd_release_scsi_cmd()
->=20
-> ufs_mtk_mcq_intr()
->    ufshcd_mcq_poll_cqe_lock()
->      ufshcd_mcq_process_cqe()
->        ufshcd_compl_one_cqe()
->          cmd->result =3D DID_ABORT
->          ufshcd_release_scsi_cmd() // will release twice
->          scsi_done()
+Cc: stable@vger.kernel.org
+Fixes: b336268dde75 ("dmaengine: dw: Add peripheral bus width verification")
+Fixes: 199244d69458 ("dmaengine: dw: add support of iDMA 32-bit hardware")
+Reported-by: Ferry Toth <fntoth@gmail.com>
+Closes: https://lore.kernel.org/dmaengine/ZuXbCKUs1iOqFu51@black.fi.intel.com/
+Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Closes: https://lore.kernel.org/dmaengine/ZuXgI-VcHpMgbZ91@black.fi.intel.com/
+Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
 
-Do you agree that this case can be addressed with the
-ufshcd_compl_one_cqe() change proposed above?
+---
 
-> ----------------------------------------------------------------
->=20
-> Case3: DBR ufshcd_err_handler
->=20
-> In the case of the DBR mode error handler, it's the same;
-> ufshcd_release_scsi_cmd will also be executed, and scsi_done
-> will definitely be used to notify SCSI to requeue.
->=20
-> ufshcd_err_handler()
->    ufshcd_abort_all()
->      ufshcd_abort_one()
->        ufshcd_try_to_abort_task()	// It should trigger an
-> interrupt, but the tensor might not
->      ufshcd_complete_requests()
->        ufshcd_transfer_req_compl()
->          ufshcd_poll()
->            get outstanding_lock
->            clear outstanding_reqs tag
->            release outstanding_lock=09
->            __ufshcd_transfer_req_compl()
->              ufshcd_compl_one_cqe()
->                cmd->result =3D DID_REQUEUE // mediatek may need quirk
-> change DID_ABORT to DID_REQUEUE
->                ufshcd_release_scsi_cmd()
->                scsi_done()
->=20
-> ufshcd_intr()
->    ufshcd_sl_intr()
->      ufshcd_transfer_req_compl()
->        ufshcd_poll()
->          get outstanding_lock
->          clear outstanding_reqs tag
->          release outstanding_lock		=09
->          __ufshcd_transfer_req_compl()
->            ufshcd_compl_one_cqe()
->            cmd->result =3D DID_REQUEUE // mediatek may need quirk chang=
-e
-> DID_ABORT to DID_REQUEUE
->            ufshcd_release_scsi_cmd()
->            scsi_done();
->=20
-> At this time, the same actions are taken regardless of whether
-> there is an ISR, and with the protection of outstanding_lock,
-> only one thread will execute ufshcd_release_scsi_cmd and scsi_done.
-> ----------------------------------------------------------------
->=20
-> Case4: MCQ ufshcd_err_handler
->=20
-> It's the same with MCQ mode; there is protection from the cqe lock,
-> so only one thread will execute. What my patch 2 aims to do is to
-> change DID_ABORT to DID_REQUEUE in this situation.
->=20
-> ufshcd_err_handler()
->    ufshcd_abort_all()
->      ufshcd_abort_one()
->        ufshcd_try_to_abort_task()	// will trigger irq thread
->      ufshcd_complete_requests()
->        ufshcd_mcq_compl_pending_transfer()
->          ufshcd_mcq_poll_cqe_lock()
->            ufshcd_mcq_process_cqe()
->              ufshcd_compl_one_cqe()
->                cmd->result =3D DID_ABORT // should change to DID_REQUEU=
-E
->                ufshcd_release_scsi_cmd()
->                scsi_done()
->=20
-> ufs_mtk_mcq_intr()
->    ufshcd_mcq_poll_cqe_lock()
->      ufshcd_mcq_process_cqe()
->        ufshcd_compl_one_cqe()
->          cmd->result =3D DID_ABORT  // should change to DID_REQUEUE
->          ufshcd_release_scsi_cmd()
->          scsi_done()
+Note I haven't got any device with the Intel Merrifield iDMA32 + SPI
+PXA2xx pair to test out the solution. So any tests are very welcome. But
+based on Andy' (see the reported-by links) and my investigations the fix
+seems correct.
 
-For legacy and MCQ mode, I prefer the following behavior for
-ufshcd_abort_all():
-* ufshcd_compl_one_cqe() ignores commands with status OCS_ABORTED.
-* ufshcd_release_scsi_cmd() is called either by ufshcd_abort_one() or
-   by ufshcd_abort_all().
+Link: https://lore.kernel.org/dmaengine/20240919135854.16124-1-fancer.lancer@gmail.com/
+Changelog v2:
+- Implement only the "fallback" conditional statement (@Andy)
+- Fix incorrect NoF masters literal (@Andy)
+- Drop redundant empty line (@Andy)
+---
+ drivers/dma/dw/acpi.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-Do you agree with making the changes proposed above?
+diff --git a/drivers/dma/dw/acpi.c b/drivers/dma/dw/acpi.c
+index c510c109d2c3..806620f5a406 100644
+--- a/drivers/dma/dw/acpi.c
++++ b/drivers/dma/dw/acpi.c
+@@ -8,6 +8,7 @@
+ 
+ static bool dw_dma_acpi_filter(struct dma_chan *chan, void *param)
+ {
++	struct dw_dma *dw = to_dw_dma(chan->device);
+ 	struct acpi_dma_spec *dma_spec = param;
+ 	struct dw_dma_slave slave = {
+ 		.dma_dev = dma_spec->dev,
+@@ -17,6 +18,13 @@ static bool dw_dma_acpi_filter(struct dma_chan *chan, void *param)
+ 		.p_master = 1,
+ 	};
+ 
++	/*
++	 * Fallback to using a single interface for both memory and peripheral
++	 * device if there is only one master I/F supported (e.g. iDMA32)
++	 */
++	if (dw->pdata->nr_masters == 1)
++		slave.p_master = 0;
++
+ 	return dw_dma_filter(chan, &slave);
+ }
+ 
+-- 
+2.43.0
 
-Thank you,
-
-Bart.
 
