@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-76772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76773-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 323E997CDB9
-	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 20:37:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A4A497CDBA
+	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 20:37:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 56DBF1C22116
-	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 18:37:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E8BC1C20F75
+	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 18:37:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FBFC1419A9;
-	Thu, 19 Sep 2024 18:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31DCA23774;
+	Thu, 19 Sep 2024 18:35:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="GaMOckj/"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="IR0ToXNP"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2052.outbound.protection.outlook.com [40.107.102.52])
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2081.outbound.protection.outlook.com [40.107.223.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E467A130495
-	for <stable@vger.kernel.org>; Thu, 19 Sep 2024 18:35:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.102.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B5F22AF0D
+	for <stable@vger.kernel.org>; Thu, 19 Sep 2024 18:35:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.81
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726770906; cv=fail; b=L0d3qhtXM2/lvwraPJhuCC9jbcUki/AyGKxBOTfVoslimpiPrh0ic0IJprQPyjI1IE3ZBxn//bZXzLv2fHb5JNfNz+GEA4kQpATB4we1KJ7VtxFspSTfnf4mzYVlRkgp+fBZWRtPe+fA10yfZZ3irtSugZ70vmx/FfPRgjAUMBA=
+	t=1726770917; cv=fail; b=UMjSEjiNx1iNR8xuc9X1pH6/4T34gyV1sdQ2HWrF4+oE+X8LDZMCam88jV+Zip4AkECuD6ipI/PQH3W+IQI/pRlsuX4wxaLJjQFSORdiZpwYny7h0yD3WKTgE86I2C0TT0BFN/UMh6DElB9h7YXD8qC9tv0ue8t6EmOoktQJab0=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726770906; c=relaxed/simple;
-	bh=UnYmM1wHucO37BMzoWh+e63CJ7vbWAF0/YFBXgqK2fM=;
+	s=arc-20240116; t=1726770917; c=relaxed/simple;
+	bh=pruOK6T6Oi4lh4n/uUCXQflLKjHc9FSihcSNCdvnsBE=;
 	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hFvUsNiZPNLFfJD1aXSJwb467CCo6ExvFO5WJphlkgEACtvXy5AuuPuRdj2ixRSz+GsItXlk5aQc3tTskIHMmg0QYYl94PSi71QrvcUQuNAZQSSRWUHTPjUddiSUPhoFH8xSyewb2cfH17QSKcllBWhkRaw+WRNAKr9POxjaSWU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=GaMOckj/; arc=fail smtp.client-ip=40.107.102.52
+	 MIME-Version:Content-Type; b=eAkKhUDB8ItUpwWHjzwDAZny3ky0hILAZ5t4zlmyo7MBgP2VQ1E2YLg6ch+0lX4etdhEW4hfmIq30SMxxnFoFmfbC4b+M4VZZGFUWr98qLkSTNkkjIfiEr6r2dKbmE/lTjy+PDAvUBnapBvYlyir6avgs7RB9/cK6k7Ew8VNhkU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=IR0ToXNP; arc=fail smtp.client-ip=40.107.223.81
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=CuuoLYZO0ThjNqB9geNm696NSiprYtMrP5XEZPHBD/kuDhWL3vAmfMjlqrtV40CJp036NRTl8d5o859/BRged/9ccoTi9nHJgSlSEWdnFWmfYTI+rmcLhAwV1S8yP2TchZBonj2MwK1l68Dulex0Qlt9z8PQRJb1flnVDsE4V2ACu3gj2GeuU8HYoghzB6nn2EG95OBpEIZYaKXvx/9+AgCQUzKxRcwTGzLSqICqljQHn01rop8uWRqkaSf9IvDPFJokR292BxIFWhJiHc+al0rzPgpUUupDXRXhK7y5tqNIr/FUdR41ujyhZHUowQlf1ofdC+/sFhWf0RIfPdgLMA==
+ b=I7uS5q0DUENcqZpEM/0spgkPkQnekiS2RcKO8+SdcWuRyt1iPvHTCQNN2+KGcZsu7RoLMYJ9AihXh7CS3FFVldpr53iP57MUJU6S7XpWJ6pcFARCZbXmR+dMvgmkPm3ePaXiKgR2/MQGCod+hL/xQFBp5PdGnAwBY1PtshhYMmeakIzRspHCBD/uDIjOtNm0DIc/SfOMHR+P9vIVRVpGkfiIL8eoch9gxHaX08m/ay//RQotvnf5wTKow4m/a5xnUWHOZyDEKmFndSpDvotc0INv1dZP3LFQWVMGO/ullbnRd2OR/LxlIAwDNTarLWkvHChOPZ+zPoPPFMo69KbFSA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=CM2dEANxK4xMui/NHNKFzKqJx3Ia24NHCzzQ/d6CrAc=;
- b=LJiSgBPvj7Y2m5z3FI7pRNWE3dQ3WuIgFSAaUazcbbVsLecXC+jK4h3z3h1NwfxD+30dKQOWs3y4QX/RFNtZGZR+ZAonmUI1ely2F5mQMYtL99Z8dul/Kle5APWVBC5r85vkCFyo/ZkiSMaSXt+ZcUzH9sli0wCE/TBHWzs5kA0WLQjVNSLI8n3VVgIJM2a95NazaBtvHoMt0jffqtWVjlFa2DcNZydW9SCS6/NXMswXg4xHrxB5n/wrxK0+HAhnGKDwy+izqjDSyc5p6le6v/eLS5CGYuJLGGwUG04OappdA9HSPc4CXkWiWsm95JfRHCwQzj+XJtdzh75FO4O+Ew==
+ bh=aeRCSru406pyWT3r5/WRwMXp7Lvs3Doye8Qf05brZuw=;
+ b=BPC7sff1Tkp6CKGX6n6oshiFHHfl2eKdELTp1zoACfRleCUg29CDpERp3AS1IcgGzWSK/MdyONvvsPBEPC2WzRudVuXuuUt3YLhskaD4aVUe/Z2b7BaIj8M9J6c38P6u8TujB58pOfbE/N8sSHKUKmYnQdxSDGWsirbrb3PURqLbQvO0UzmDa/8EQS9HxJidX23ijOvAElB/2C0KUkph2UlQQUdoMGa3OSQKL0peR3njR4S0tJyVIRXgVRthuDa56Z6SVUwJnc41J86fP0BWAtRM9SVaM3kiAwRornrvQNnnsDIdBmP1yH+8PUNFWjaACRvkcdxaEFVKdqRhv7yQ9A==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
  165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
  dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
  header.from=amd.com; dkim=none (message not signed); arc=none (0)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=CM2dEANxK4xMui/NHNKFzKqJx3Ia24NHCzzQ/d6CrAc=;
- b=GaMOckj/47uCixEWCxKt1xtZStKo88FDq/LqgLnUR6JHRiynxOtg9QTYsgm5vwG97sTbVzVa+Tdz0Z6mMXcNM+vn8igr99wb/o5GFpyJ5DwuZY1P2zjDHcPB/XlDDMLH1R4ec8Ur8lUbZzIxbXjPZjTUeIgBp3S2v4NlMZblORA=
-Received: from BLAPR03CA0037.namprd03.prod.outlook.com (2603:10b6:208:32d::12)
- by PH7PR12MB6467.namprd12.prod.outlook.com (2603:10b6:510:1f5::14) with
+ bh=aeRCSru406pyWT3r5/WRwMXp7Lvs3Doye8Qf05brZuw=;
+ b=IR0ToXNPgIwyTF3a6zA07zwwa0fCC+gcGLuw6j8QdJV94JSxU9CQh4pS4OIAtYJhMT60DFeWFE8L0xvDCEayepiGZYlGydxhqH7wl1Aj+zlZFF4tdNn5nD2IarwNxYrpxYZmVrrp6Uv/XRFg5EI+bdBBBqsYZU5jqeSnI+FCFuI=
+Received: from BL1P223CA0017.NAMP223.PROD.OUTLOOK.COM (2603:10b6:208:2c4::22)
+ by DS0PR12MB7851.namprd12.prod.outlook.com (2603:10b6:8:14a::8) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7962.23; Thu, 19 Sep
- 2024 18:35:00 +0000
-Received: from BN3PEPF0000B074.namprd04.prod.outlook.com
- (2603:10b6:208:32d:cafe::28) by BLAPR03CA0037.outlook.office365.com
- (2603:10b6:208:32d::12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7982.22; Thu, 19 Sep
+ 2024 18:35:09 +0000
+Received: from BN3PEPF0000B077.namprd04.prod.outlook.com
+ (2603:10b6:208:2c4:cafe::41) by BL1P223CA0017.outlook.office365.com
+ (2603:10b6:208:2c4::22) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7939.30 via Frontend
- Transport; Thu, 19 Sep 2024 18:34:59 +0000
+ Transport; Thu, 19 Sep 2024 18:35:09 +0000
 X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
  smtp.mailfrom=amd.com; dkim=none (message not signed)
  header.d=none;dmarc=pass action=none header.from=amd.com;
@@ -63,20 +63,16 @@ Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
  165.204.84.17 as permitted sender) receiver=protection.outlook.com;
  client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
 Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN3PEPF0000B074.mail.protection.outlook.com (10.167.243.119) with Microsoft
+ BN3PEPF0000B077.mail.protection.outlook.com (10.167.243.122) with Microsoft
  SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.7918.13 via Frontend Transport; Thu, 19 Sep 2024 18:34:59 +0000
-Received: from SATLEXMB06.amd.com (10.181.40.147) by SATLEXMB04.amd.com
+ 15.20.7918.13 via Frontend Transport; Thu, 19 Sep 2024 18:35:09 +0000
+Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 19 Sep
- 2024 13:34:59 -0500
-Received: from SATLEXMB04.amd.com (10.181.40.145) by SATLEXMB06.amd.com
- (10.181.40.147) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Thu, 19 Sep
- 2024 13:34:58 -0500
+ 2024 13:35:04 -0500
 Received: from aaurabin-suse.amd.com (10.180.168.240) by SATLEXMB04.amd.com
  (10.181.40.145) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
- Transport; Thu, 19 Sep 2024 13:34:57 -0500
+ Transport; Thu, 19 Sep 2024 13:35:04 -0500
 From: Aurabindo Pillai <aurabindo.pillai@amd.com>
 To: <amd-gfx@lists.freedesktop.org>
 CC: Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>,
@@ -85,13 +81,12 @@ CC: Harry Wentland <harry.wentland@amd.com>, Leo Li <sunpeng.li@amd.com>,
  Li" <roman.li@amd.com>, Wayne Lin <wayne.lin@amd.com>, Tom Chung
 	<chiahsuan.chung@amd.com>, Fangzhi Zuo <jerry.zuo@amd.com>, Zaeem Mohamed
 	<zaeem.mohamed@amd.com>, Solomon Chiu <solomon.chiu@amd.com>, Daniel Wheeler
-	<daniel.wheeler@amd.com>, Charlene Liu <Charlene.Liu@amd.com>, "Mario
- Limonciello" <mario.limonciello@amd.com>, Alex Deucher
-	<alexander.deucher@amd.com>, <stable@vger.kernel.org>, Nicholas Kazlauskas
-	<nicholas.kazlauskas@amd.com>
-Subject: [PATCH 12/21] drm/amd/display: avoid set dispclk to 0
-Date: Thu, 19 Sep 2024 14:33:30 -0400
-Message-ID: <20240919183435.1896209-13-aurabindo.pillai@amd.com>
+	<daniel.wheeler@amd.com>, Alex Hung <alex.hung@amd.com>, Mario Limonciello
+	<mario.limonciello@amd.com>, Alex Deucher <alexander.deucher@amd.com>,
+	<stable@vger.kernel.org>
+Subject: [PATCH 18/21] drm/amd/display: Add HDR workaround for specific eDP
+Date: Thu, 19 Sep 2024 14:33:36 -0400
+Message-ID: <20240919183435.1896209-19-aurabindo.pillai@amd.com>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240919183435.1896209-1-aurabindo.pillai@amd.com>
 References: <20240919183435.1896209-1-aurabindo.pillai@amd.com>
@@ -103,81 +98,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
+Received-SPF: None (SATLEXMB04.amd.com: aurabindo.pillai@amd.com does not
+ designate permitted sender hosts)
 X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN3PEPF0000B074:EE_|PH7PR12MB6467:EE_
-X-MS-Office365-Filtering-Correlation-Id: 0cc2d722-87d9-435e-4366-08dcd8d9c48b
+X-MS-TrafficTypeDiagnostic: BN3PEPF0000B077:EE_|DS0PR12MB7851:EE_
+X-MS-Office365-Filtering-Correlation-Id: b4268a17-702e-47df-0cc6-08dcd8d9ca8d
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|82310400026|1800799024|36860700013;
+	BCL:0;ARA:13230040|82310400026|1800799024|376014|36860700013;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?qmB/5tTvyFsV4E3G0DPm0uhhgkKC2x7iUDOak+x5cOrYGV0HpJ/hSwI73Am+?=
- =?us-ascii?Q?XSbkXhdqUqhmJ4Uv9hxmWRh8SIfBqU8Y8cNITT5LGk+0idKZqJ61akXfGBow?=
- =?us-ascii?Q?aemqnZN7bPpwsqpR/0vEEaZoPT1gV0anj6YRdC+jx5JoFUi5RfRAO4zwX4b4?=
- =?us-ascii?Q?ncf9jN/sAVDV2isqx36KDNLgl7Wmcx+OIbYTgLL0RVMtpwvwJ5oFUEJNWHWq?=
- =?us-ascii?Q?+AgtvAlzaAsHTqfGX6+92NFyvPnUQCQzD9QQiJlh1NYlDU3PJM2bhxjxQt22?=
- =?us-ascii?Q?rfGb95vtSS/h2+04IOB9/gkm1yZDQG2alw/2bTsTu3ycCg6AaWaRnAinOQdO?=
- =?us-ascii?Q?vgPIIN5kYRXiaiPgnfY2q8xWOpFCxleTgURErIuTmcUehVta3IlBvKpOHk3S?=
- =?us-ascii?Q?m+BJBs36UuBNZx59pbmWPZvVY/O50WfCUmT5xbTu4w23iIDd3+kZt6jDK+Fv?=
- =?us-ascii?Q?1BvakqaYOmFjOxQL4VYV/oN+BHa9Zb+rUlk6E4fjOO+DoF0olDaK9ERzyBev?=
- =?us-ascii?Q?bu/YG8ZLFGeULM8TXGn+N+qCJduP8Rwty/QPfnfioePDM5VttDsvNZZH8w1a?=
- =?us-ascii?Q?41wOmsIU4D9IVYs6zY5A8MBmY/Hb3iR6O6G7UYDMWb2yKDqKmvUkabbFNhJB?=
- =?us-ascii?Q?Su14I0shsUcwx20lU6UYbpuQeijwdYXj9JE4MHcIdYyL3wCM0TR8o++cDur2?=
- =?us-ascii?Q?QNoI94mudar7BcUpQGx1LmaWa6jG6rwyhtZG5U4orl2sWXgJqPelXYCEZXw3?=
- =?us-ascii?Q?SvdrUWFc+1R4pkwkk6PUhNpnqsXa8+e9ukGWDTZadt8HjnJ4dvcLJgq3p0/E?=
- =?us-ascii?Q?88C8cwPsfXc85mKwUfhySKl5ut1c6swS7nhmXhIOYwQo2j1Cwpeu3lzZMIEc?=
- =?us-ascii?Q?5M+lQlrUMPkq7P8BRegr0x3TUqRg/JqnVFZlUI3Wq1YzMgwiaibf/rzbRcVt?=
- =?us-ascii?Q?2dqeoDkeY4/qjxV+kYjuaIcguVnTnPZ8FBciDf+c1Un7ez5whpsX1gI5maOD?=
- =?us-ascii?Q?Xi+P4mr9NQB2VLwQG19rprR3NN4+PCHFAmy1Gbffz/8YuqSUcY3ZXghqDsR0?=
- =?us-ascii?Q?+4UIf6CXq/CVUenKBeT1Xf4jbYs+QnJp7hFOt+fCyotRaJ2RNUTAr/feAItD?=
- =?us-ascii?Q?zl87wZkgLSN/lkZP3z5wdDDonIKu6Ut9jY6EokqOStoJJoa5mhXDOCSVDZJw?=
- =?us-ascii?Q?Ab0BjS4+f+GlxL1EeRTQzUmuFy1jLT/TqJjcMyoGXCTUS2jHEqP6ambM1H10?=
- =?us-ascii?Q?dmKncPyYvjWc1jUpWmiVAHSebbMETNPsDmn3wbIf2K+kWVQUeES2UaWbhptu?=
- =?us-ascii?Q?Bicmuwb+n/zBrLEFhXxy+teC9W9ESMv+hi0P+esNGcXNq1sVWRqVlCBQfv2U?=
- =?us-ascii?Q?w5KeUjhOEHfzrLRBKe7Bmttec3hzcUD4NpgAB2T4blN7NPGE9dQugIv2y9GB?=
- =?us-ascii?Q?c2jkrsVs6xKjedf27iXKVS2SO7Fa06+k?=
+	=?us-ascii?Q?f1X4AMypERCKIWfFCUk2+3u2C+5Oqrpm/AWvuqRGKDvDu7xCfvHGKGrIB0OL?=
+ =?us-ascii?Q?vHV7e8yeXjaPPN+dTKZlIfQ47mwgEB3YOaDWkdOQiyBOMaSnYlWy5Cz2ymCu?=
+ =?us-ascii?Q?pHbWPiuMi3wwY8aZCPTw6dwfC8afM277S8w/60XN7MvgUN2IS3gau3ijjxaS?=
+ =?us-ascii?Q?/A1mKgLf7vhkDLXgogem6E4wv12O9uQ2NrdiwMOcNsZ3JmidsCcm7ArDrrQ3?=
+ =?us-ascii?Q?xqlSFBAzvlc3JPlJFMobjn43xPQMsCRCb4vlnJFe4F91T4VUF9ahMksUXrpS?=
+ =?us-ascii?Q?P3q/0MTf9F0N6F3CqsBdqFTr9XOzaX96liI5HHn04QdZOR7jLnlxJaD2m2kh?=
+ =?us-ascii?Q?VPyBIdg58pX8+468hbJJEx70Fb08KC6sPsMHA/wepUu2gIZuDVhZzxa3gRhC?=
+ =?us-ascii?Q?+9MWMeQulR23BQ6CnveiQH5dXmTK3uD+YTmmbfXmshYmiA7qBkd0TKw5ZL8X?=
+ =?us-ascii?Q?0W8iSFkzljKWyO+Su1UJsSN+T2m9A2259e9a6FruPfQvjRhdqASuVwgDC8Og?=
+ =?us-ascii?Q?7jwFtPNtU0orRpK7rBRA9Hl+27w9j5IupHloI1+6yMckwzQk94ANNDoRsG6E?=
+ =?us-ascii?Q?4UfE7FrgAstAVEwOAlV8NjkkkhTt8N1yV1spSa90qPAiG1nDuyvaQrIOTtOp?=
+ =?us-ascii?Q?uvRgKQA6qc9Fu3UOfQCm+3pRN3rhQEWV033OCnT6B15GIW/tAXdAsvBzsoOV?=
+ =?us-ascii?Q?JVI2hrEPCMiqIg/UWmWhW313ZHK9ZYoaEEc2kv/ytm80LTLOsFHgS5b7Xwm7?=
+ =?us-ascii?Q?q7yNLbqQq5Cx6R5dO7eTHNxn/AiKn3aMxqsiy7nCjI23VjC7pu/rgjPeUTY4?=
+ =?us-ascii?Q?0ons5EfvwAEi3IJruaYiFEPFVFzBYDU2ts0WI9xfwBU+2YvDMjOhVlxsoZBh?=
+ =?us-ascii?Q?aOy4Tjd47vHb/kV2td4kQ0N6CQnAjOnaH5oFAgbxbNDHdZnVw2WIHfIAQPpZ?=
+ =?us-ascii?Q?FYvCJHKDb6qW2+1r9JQhphYzYPM2C2ROZvMQtit0J0DUdhMxp6XKJSmmPrOW?=
+ =?us-ascii?Q?7TABemT7mMzQmmVVFlvhw+lFFOo7jbptnFMj/rLWbXcsYK4fB36Kz13xWrwo?=
+ =?us-ascii?Q?wjM5WtKvwIfS/+pToiTCvkAgSEaVi1qBTkmONMIy1oR1HfHEpPyd3di8cWln?=
+ =?us-ascii?Q?Mm+EpmXZv2FzcBkEsJErDSH54a8mMAT/nMz4EN8vDCQ0aHYoak4b9cCe6ZNX?=
+ =?us-ascii?Q?r54PPXbArlhiMOgMtvuYXzYywOAdo1gOvwIwLKWjaGuU/nJ626lpjxgXURkM?=
+ =?us-ascii?Q?YnBUta3aKKpQpU0q0bG4MzwkYiFL0xsRZjqq+AZ1qnaof3Xl5YJFEcGQGg/6?=
+ =?us-ascii?Q?151Vlz+duvGXIgj6cyq8Ywjz?=
 X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(82310400026)(1800799024)(36860700013);DIR:OUT;SFP:1101;
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(376014)(36860700013);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Sep 2024 18:34:59.5481
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 Sep 2024 18:35:09.6887
  (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 0cc2d722-87d9-435e-4366-08dcd8d9c48b
+X-MS-Exchange-CrossTenant-Network-Message-Id: b4268a17-702e-47df-0cc6-08dcd8d9ca8d
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
 X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
 X-MS-Exchange-CrossTenant-AuthSource:
-	BN3PEPF0000B074.namprd04.prod.outlook.com
+	BN3PEPF0000B077.namprd04.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Anonymous
 X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB6467
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7851
 
-From: Charlene Liu <Charlene.Liu@amd.com>
+From: Alex Hung <alex.hung@amd.com>
 
-[why]
-set dispclk to 0 cause stability issue.
+[WHY & HOW]
+Some eDP panels suffer from flicking when HDR is enabled in KDE. This
+quirk works around it by skipping VSC that is incompatible with eDP
+panels.
+
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/3151
 
 Cc: Mario Limonciello <mario.limonciello@amd.com>
 Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Signed-off-by: Charlene Liu <Charlene.Liu@amd.com>
+Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
 Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
 ---
- drivers/gpu/drm/amd/display/dc/resource/dcn351/dcn351_resource.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c     | 11 ++++++++++-
+ .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c |  4 ++++
+ drivers/gpu/drm/amd/display/dc/dc_types.h             |  1 +
+ 3 files changed, 15 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn351/dcn351_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn351/dcn351_resource.c
-index da9101b83e8c..70abd32ce2ad 100644
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn351/dcn351_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn351/dcn351_resource.c
-@@ -766,6 +766,7 @@ static const struct dc_debug_options debug_defaults_drv = {
- 	.disable_dmub_reallow_idle = false,
- 	.static_screen_wait_frames = 2,
- 	.notify_dpia_hr_bw = true,
-+	.min_disp_clk_khz = 50000,
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 3fe7fe707a8a..3bf2db3b3059 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -6735,12 +6735,21 @@ create_stream_for_sink(struct drm_connector *connector,
+ 	if (stream->signal == SIGNAL_TYPE_DISPLAY_PORT ||
+ 	    stream->signal == SIGNAL_TYPE_DISPLAY_PORT_MST ||
+ 	    stream->signal == SIGNAL_TYPE_EDP) {
++		const struct dc_edid_caps *edid_caps;
++		unsigned int disable_colorimetry = 0;
++
++		if (aconnector->dc_sink) {
++			edid_caps = &aconnector->dc_sink->edid_caps;
++			disable_colorimetry = edid_caps->panel_patch.disable_colorimetry;
++		}
++
+ 		//
+ 		// should decide stream support vsc sdp colorimetry capability
+ 		// before building vsc info packet
+ 		//
+ 		stream->use_vsc_sdp_for_colorimetry = stream->link->dpcd_caps.dpcd_rev.raw >= 0x14 &&
+-						      stream->link->dpcd_caps.dprx_feature.bits.VSC_SDP_COLORIMETRY_SUPPORTED;
++						      stream->link->dpcd_caps.dprx_feature.bits.VSC_SDP_COLORIMETRY_SUPPORTED &&
++						      !disable_colorimetry;
+ 
+ 		if (stream->out_transfer_func.tf == TRANSFER_FUNCTION_GAMMA22)
+ 			tf = TRANSFER_FUNC_GAMMA_22;
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
+index 39b82c73a0dd..b62b0406a6d1 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_helpers.c
+@@ -73,6 +73,10 @@ static void apply_edid_quirks(struct edid *edid, struct dc_edid_caps *edid_caps)
+ 		DRM_DEBUG_DRIVER("Clearing DPCD 0x317 on monitor with panel id %X\n", panel_id);
+ 		edid_caps->panel_patch.remove_sink_ext_caps = true;
+ 		break;
++	case drm_edid_encode_panel_id('S', 'D', 'C', 0x4154):
++		DRM_DEBUG_DRIVER("Disabling VSC on monitor with panel id %X\n", panel_id);
++		edid_caps->panel_patch.disable_colorimetry = true;
++		break;
+ 	default:
+ 		return;
+ 	}
+diff --git a/drivers/gpu/drm/amd/display/dc/dc_types.h b/drivers/gpu/drm/amd/display/dc/dc_types.h
+index 2bbafd1cdce4..b0b7102fdbc7 100644
+--- a/drivers/gpu/drm/amd/display/dc/dc_types.h
++++ b/drivers/gpu/drm/amd/display/dc/dc_types.h
+@@ -178,6 +178,7 @@ struct dc_panel_patch {
+ 	unsigned int skip_avmute;
+ 	unsigned int mst_start_top_delay;
+ 	unsigned int remove_sink_ext_caps;
++	unsigned int disable_colorimetry;
+ 	uint8_t blankstream_before_otg_off;
  };
  
- static const struct dc_panel_config panel_config_defaults = {
 -- 
 2.46.0
 
