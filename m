@@ -1,50 +1,55 @@
-Return-Path: <stable+bounces-76761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0C7397CADA
-	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 16:18:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3303C97CAFC
+	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 16:29:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B282A285562
-	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 14:18:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 668781C21FD5
+	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 14:29:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B54C119E827;
-	Thu, 19 Sep 2024 14:18:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2DA419F470;
+	Thu, 19 Sep 2024 14:29:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="R6mb2oGu"
+	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="ngGKABLq"
 X-Original-To: stable@vger.kernel.org
 Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AA9D1DFF0
-	for <stable@vger.kernel.org>; Thu, 19 Sep 2024 14:18:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7765219B59D;
+	Thu, 19 Sep 2024 14:29:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726755529; cv=none; b=c8B260iWYpPbTTlAjl/8pOxBpcuNMYluMmLmEqQIaJJcc5tAGXU0AsKIYVggWWKmXR4mXKkxhUKSyauqBltqyci09w8zAZRlEHY0UHht/9qeXtFSVYYNDOx43VlDlyub0+8+qnDNB3KBjRP0kF7UJLM1YbQZ/epR8gkHmGXIedY=
+	t=1726756162; cv=none; b=PzlEi6ZUsAssztw5RX1n+pDdWkMXCJdW2Cfjm3ubIXcNZOCcAEGwvSwI4gSZY9mA8JmZj05SdExpQlQzaztjCCsEqRja+TWit5zYOLhMhgs7CIaiur+swhAxXsKy9l7rMe7rg/2kX7mfAEy5p159QJhI8wrc/XsWqDOfxPfnOLE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726755529; c=relaxed/simple;
-	bh=qgMd4ThCSi8effxjeCSWVkiDs8OsQjAWiaxgn5Nd9dg=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=fwxNe1eHwnRnXiT+dSIiJxwDOVVsfSTHo60SPXIahJl/F7gF7Lt55ROJ/qao7cJ2cHx3Df87X3iYL9SlCMBjvlix77HW67htg39c27XMXN7LAwt5BFbHUbVpiNna3f5sRlN9at41SarwPJ3LkR7E2Q/WFkge8F5Gxm45x/SuMoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=R6mb2oGu; arc=none smtp.client-ip=95.143.211.150
+	s=arc-20240116; t=1726756162; c=relaxed/simple;
+	bh=dEim+1ctxtagkbl+oGq/0XtscAlXznSuyl1GSgBREzg=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=pv9SfHf7aETs5+DfJUDMuRB3IouR8GIpUNkJJ7W7RnaXr1B8P5Z9kx8v8p8bTLwnzY5q0mu8xz6d1LNDIDlJbiaValhtPOww7vOkgezVxLZykkxBACd7F684NbY1AuKv228Lkv4hAG73siUwptIThMZCAm2eXw+LkRyeS+jpfHc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=ngGKABLq; arc=none smtp.client-ip=95.143.211.150
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
 From: Denis Arefev <arefev@swemel.ru>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
-	t=1726755515;
+	t=1726756155;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=snyx7wTJ0ORUFxkCD6kpfLUgT5IHRFn/VSM1qztSJ6Y=;
-	b=R6mb2oGuleVWrqoUORjvhEiCw3x3DG6N9WVJmkOHbHhuOJYL8qGWTMiZm8AQx5RXP4pO9o
-	YnCXL6ISs7gdxK3omo2PjuYjexQNq9VO5SarNWNWltvRKf40JlLya8q0ba1K7gjj+fooK3
-	2k6w9MzbTXNgrmay1TAjkvuTFwPZzQw=
-To: darefyev@mail.ru
-Cc: stable@vger.kernel.org
+	bh=YA659z4YWAtrDo7+8ziQ0grbGRsnS0px4OMQ2HtoYw0=;
+	b=ngGKABLqQia64371BWnSepwRmodugz6xhk7L2BHMr1onzABxAL5KUW5cy4ncIXxI0cOtms
+	dQa7GZvZ75SOIAj74DG1fOOxHbq7W3aOrAo8bqRJCo1crIuDwXoCWeP+vLak8Nn4I0tvCB
+	Kuvpb4MSsQTh2Js7U6LMehDj85W0/fw=
+To: stable@vger.kernel.org,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Michael Hennerich <michael.hennerich@analog.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	linux-input@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	lvc-project@linuxtesting.org
 Subject: [PATCH 5/10] Input: adp5588-keys - added a check key_val
-Date: Thu, 19 Sep 2024 17:18:34 +0300
-Message-Id: <20240919141834.100309-1-arefev@swemel.ru>
+Date: Thu, 19 Sep 2024 17:29:14 +0300
+Message-Id: <20240919142914.100609-1-arefev@swemel.ru>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -64,6 +69,7 @@ the kpad->keycode array.
 
 Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
+Fixes: 69a4af606ed4 ("Input: adp5588-keys - support GPI events for ADP5588 devices")
 Cc: stable@vger.kernel.org
 Signed-off-by: Denis Arefev <arefev@swemel.ru>
 ---
