@@ -1,253 +1,114 @@
-Return-Path: <stable+bounces-76729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FC4D97C541
-	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 09:49:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57AEF97C573
+	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 09:59:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7ECCA1F22B21
-	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 07:49:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 90D0E1C230DD
+	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 07:59:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF1B1195B28;
-	Thu, 19 Sep 2024 07:48:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 460C81990C3;
+	Thu, 19 Sep 2024 07:58:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vjYmtvcS"
 X-Original-To: stable@vger.kernel.org
-Received: from MSK-MAILEDGE.securitycode.ru (msk-mailedge.securitycode.ru [195.133.217.143])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9DC119597F;
-	Thu, 19 Sep 2024 07:48:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.133.217.143
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 850B9199247
+	for <stable@vger.kernel.org>; Thu, 19 Sep 2024 07:58:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726732121; cv=none; b=dCplOxAjJjmJAu3xHuWWmwRwZX8ef5BU/qy9yekuTUX0ZXBff5usPhJ6iqGOrxra9vd/DOCzd1dBL2olbpf3hyZ+5u/UQsgyixLfD+A1Z0hgecT9vPJyWU6MBtQH3hQjtY+JjwmHJXSv18F1o0mupPCeadvVbgkqWWCk7YfNXdQ=
+	t=1726732701; cv=none; b=YL9WawEH0EPTgoMNCvcKY/oqayrPDf5hzDURyNd8W/60LUWBlmRpPoL1xUSOioT48BHE/H33gl2OXOZy7ow4DJmTNkCV4ovjM6r02B2N9/gIL8ONBC3CQQiIJyyNS9Mb6s6MRpyKC0dr8Qa2uUtMqorATJ71jmYX8XIYEtzeCXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726732121; c=relaxed/simple;
-	bh=ZUIY1bTq7tcStG9n2brMp/RAUcRJFzU/Eqq1FFpE2NQ=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=oaV3/M8NiUhQUkTFRYCzaLlTGL6eIX/tyYdAHIt6/q15s3nL9EHWxedNj16M4KiLKya7I5LkpAN9fQuqktzWFeOooaqSvVyrejzq+WiMcErbk+NzWdlelAN/AZBfM1it59ZYOVvdD7v143FjLmx1My8LF8nvhewX26JyGicQx54=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=securitycode.ru; spf=pass smtp.mailfrom=securitycode.ru; arc=none smtp.client-ip=195.133.217.143
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=securitycode.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=securitycode.ru
-From: George Rurikov <g.ryurikov@securitycode.ru>
-To: Kashyap Desai <kashyap.desai@broadcom.com>
-CC: George Rurikov <g.ryurikov@securitycode.ru>, Sumit Saxena
-	<sumit.saxena@broadcom.com>, Shivasharan S
-	<shivasharan.srikanteshwara@broadcom.com>, Chandrakanth patil
-	<chandrakanth.patil@broadcom.com>, "James E.J. Bottomley"
-	<James.Bottomley@HansenPartnership.com>, "Martin K. Petersen"
-	<martin.petersen@oracle.com>, <megaraidlinux.pdl@broadcom.com>,
-	<linux-scsi@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<stable@vger.kernel.org>
-Subject: [PATCH] scsi: megaraid: Remove redundant check in megasas_init_fw()
-Date: Thu, 19 Sep 2024 10:48:07 +0300
-Message-ID: <20240919074807.930749-1-g.ryurikov@securitycode.ru>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1726732701; c=relaxed/simple;
+	bh=WciClgTHJkLxD4j92bv2MUEd3DG3FNExk2qmnPfm9+U=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=h61I7xEI9NH8kcYaw2zDCjg3YnfnqE1fL4VgP/XJ/CjORYqhwSd9m3mPni/dGZMTxNbjV7MpNa/oRhy6xDIc9heFzD1tXbIF2kPjg8SR8ocZInWOeHbuk73nQXexhFK7DLvcgP8IeUuQxrJ8UtYv/IqVMvh7EAysBzwVe3/w/Cc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--amitsd.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vjYmtvcS; arc=none smtp.client-ip=209.85.128.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--amitsd.bounces.google.com
+Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-6886cd07673so9744067b3.3
+        for <stable@vger.kernel.org>; Thu, 19 Sep 2024 00:58:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1726732698; x=1727337498; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=69+vMPB39Nce2muEw4aTqVSjlA0uEHJjncDbiLtv5gU=;
+        b=vjYmtvcS+9zGKi0YapGU/7rQlCN04LZ+3KvYpclw8MtzEsMfR9uwH8sFjmZSiSj7hp
+         Fs+2DTLavIwQsUK8O7LjWP+qRgADPz2IV1kjp4xaXTLL+pi/o2ZKzoHGqQVDKGkYJrwv
+         tZxK5r2LtMahQp3EiM0pUh9vjNOSrh4gn0F8BflWLtvZjY2RLuHj0rtQ6tQX6vclG+G/
+         JqvJjMFK00daSZ+zb0I/j/K09l66wFdGtIeZs4eyuWnod2NlLBUUjX3Au2mPqraoQsz1
+         G+dTs7RfKryVSUnBTwEDX+X3ckpvPua97vTRrK2eUymVPcODGGCcnTU3XT32S2d7Sw6P
+         d7zQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726732698; x=1727337498;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=69+vMPB39Nce2muEw4aTqVSjlA0uEHJjncDbiLtv5gU=;
+        b=KHW2nNUCgUN4jW/J8enIczg5iSZGhRLNt1S3WTjFuZLLk+02Vpd/SPalnb2awKNxsV
+         z1/vJYE9rc+dW9KJ18B02zknDX/lA3EdzDHX56uGGD+b7xkoAQLhtVjEtAaBfcwIgDdb
+         y4z8RQtWvdcF8YnsVot7MaHy82Of/c03gSOq9eRyXOX12oYl6Pf+XNhYs8PYvGcqmjLQ
+         Kw8VjX2ySfFooOUCoZcHWPfCNjZE3g9aWYnQph7iN9tZqR3tTzimgggiVKIV236cFeJq
+         7aG0Pmgv1Xdrxp6Bh+C5BaSv9u5a209egtEYQWTCVvcJjPwxmRm8fceXSkvNSNESCQb9
+         z1ng==
+X-Forwarded-Encrypted: i=1; AJvYcCWFHmeoHyQ3H+R1UiOeCaBhwsPMR27lc96KWONyW+Y+qw1Wm+xjGs6BcPwDFNeGoYQsM1MaN6g=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywqkk8GwT6cAir9tW5rwNKbK2WCkgtgv4SFrbiMljDpISYggLFM
+	vDAh6IqVpyOM17iwfCPK6LIjMSFqErKtSfu+Rn16W17YOeSDnTD/bgUgqM+xt3+BHsP3WvjWmcd
+	E0g==
+X-Google-Smtp-Source: AGHT+IFz4w5/l29GVVe3xj63AjJzWeR5yG9Sn8t/5B2QJ8WqvAQ1J6BUi7WySrK69nuf790coN5CeJTLSs4=
+X-Received: from amitsd-gti.c.googlers.com ([fda3:e722:ac3:cc00:20:ed76:c0a8:827])
+ (user=amitsd job=sendgmr) by 2002:a05:690c:6e88:b0:6de:19f:34d7 with SMTP id
+ 00721157ae682-6de019f7ae7mr534007b3.2.1726732698562; Thu, 19 Sep 2024
+ 00:58:18 -0700 (PDT)
+Date: Thu, 19 Sep 2024 00:58:12 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
-X-ClientProxiedBy: SPB-EX2.Securitycode.ru (172.16.24.92) To
- MSK-EX2.Securitycode.ru (172.17.8.92)
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.46.0.792.g87dc391469-goog
+Message-ID: <20240919075815.332017-1-amitsd@google.com>
+Subject: [PATCH v1] usb: typec: Fix arg check for usb_power_delivery_unregister_capabilities
+From: Amit Sunil Dhamne <amitsd@google.com>
+To: gregkh@linuxfoundation.org, heikki.krogerus@linux.intel.com
+Cc: badhri@google.com, kyletso@google.com, rdbabiera@google.com, 
+	linux-kernel@vger.kernel.org, linux-usb@vger.kernel.org, 
+	Amit Sunil Dhamne <amitsd@google.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-This is cosmetic fix.
-
-The memory for 'fusion' (instance->ctrl_context) is allocated in
-megasas_alloc_ctrl_mem() in a call to megasas_alloc_fusion_context().
-A possible allocation error is handled after megasas_alloc_ctrl_mem()
-with a fail_alloc_dma_buf label transition.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+usb_power_delivery_register_capabilities() returns ERR_PTR in case of
+failure. usb_power_delivery_unregister_capabilities() we only check
+argument ("cap") for NULL. A more robust check would be checking for
+ERR_PTR as well.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: George Rurikov <g.ryurikov@securitycode.ru>
+Fixes: 662a60102c12 ("usb: typec: Separate USB Power Delivery from USB Type-C")
+Signed-off-by: Amit Sunil Dhamne <amitsd@google.com>
+Reviewed-by: Badhri Jagan Sridharan <badhri@google.com>
 ---
- drivers/scsi/megaraid/megaraid_sas_base.c | 111 +++++++++++-----------
- 1 file changed, 54 insertions(+), 57 deletions(-)
+ drivers/usb/typec/pd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/megaraid/megaraid_sas_base.c b/drivers/scsi/megar=
-aid/megaraid_sas_base.c
-index 6c79c350a4d5..e4823680e009 100644
---- a/drivers/scsi/megaraid/megaraid_sas_base.c
-+++ b/drivers/scsi/megaraid/megaraid_sas_base.c
-@@ -6149,68 +6149,65 @@ static int megasas_init_fw(struct megasas_instance =
-*instance)
+diff --git a/drivers/usb/typec/pd.c b/drivers/usb/typec/pd.c
+index d78c04a421bc..761fe4dddf1b 100644
+--- a/drivers/usb/typec/pd.c
++++ b/drivers/usb/typec/pd.c
+@@ -519,7 +519,7 @@ EXPORT_SYMBOL_GPL(usb_power_delivery_register_capabilities);
+  */
+ void usb_power_delivery_unregister_capabilities(struct usb_power_delivery_capabilities *cap)
+ {
+-	if (!cap)
++	if (IS_ERR_OR_NULL(cap))
+ 		return;
+ 
+ 	device_for_each_child(&cap->dev, NULL, remove_pdo);
 
-                scratch_pad_1 =3D megasas_readl
-                        (instance, &instance->reg_set->outbound_scratch_pad=
-_1);
--               /* Check max MSI-X vectors */
--               if (fusion) {
--                       if (instance->adapter_type =3D=3D THUNDERBOLT_SERIE=
-S) {
--                               /* Thunderbolt Series*/
--                               instance->msix_vectors =3D (scratch_pad_1
--                                       & MR_MAX_REPLY_QUEUES_OFFSET) + 1;
--                       } else {
--                               instance->msix_vectors =3D ((scratch_pad_1
--                                       & MR_MAX_REPLY_QUEUES_EXT_OFFSET)
--                                       >> MR_MAX_REPLY_QUEUES_EXT_OFFSET_S=
-HIFT) + 1;
--
--                               /*
--                                * For Invader series, > 8 MSI-x vectors
--                                * supported by FW/HW implies combined
--                                * reply queue mode is enabled.
--                                * For Ventura series, > 16 MSI-x vectors
--                                * supported by FW/HW implies combined
--                                * reply queue mode is enabled.
--                                */
--                               switch (instance->adapter_type) {
--                               case INVADER_SERIES:
--                                       if (instance->msix_vectors > 8)
--                                               instance->msix_combined =3D=
- true;
--                                       break;
--                               case AERO_SERIES:
--                               case VENTURA_SERIES:
--                                       if (instance->msix_vectors > 16)
--                                               instance->msix_combined =3D=
- true;
--                                       break;
--                               }
+base-commit: 68d4209158f43a558c5553ea95ab0c8975eab18c
+-- 
+2.46.0.792.g87dc391469-goog
 
--                               if (rdpq_enable)
--                                       instance->is_rdpq =3D (scratch_pad_=
-1 & MR_RDPQ_MODE_OFFSET) ?
--                                                               1 : 0;
-+               if (instance->adapter_type =3D=3D THUNDERBOLT_SERIES) {
-+                       /* Thunderbolt Series*/
-+                       instance->msix_vectors =3D (scratch_pad_1
-+                               & MR_MAX_REPLY_QUEUES_OFFSET) + 1;
-+               } else {
-+                       instance->msix_vectors =3D ((scratch_pad_1
-+                               & MR_MAX_REPLY_QUEUES_EXT_OFFSET)
-+                               >> MR_MAX_REPLY_QUEUES_EXT_OFFSET_SHIFT) + =
-1;
-
--                               if (instance->adapter_type >=3D INVADER_SER=
-IES &&
--                                   !instance->msix_combined) {
--                                       instance->msix_load_balance =3D tru=
-e;
--                                       instance->smp_affinity_enable =3D f=
-alse;
--                               }
-+                       /*
-+                               * For Invader series, > 8 MSI-x vectors
-+                               * supported by FW/HW implies combined
-+                               * reply queue mode is enabled.
-+                               * For Ventura series, > 16 MSI-x vectors
-+                               * supported by FW/HW implies combined
-+                               * reply queue mode is enabled.
-+                               */
-+                       switch (instance->adapter_type) {
-+                       case INVADER_SERIES:
-+                               if (instance->msix_vectors > 8)
-+                                       instance->msix_combined =3D true;
-+                               break;
-+                       case AERO_SERIES:
-+                       case VENTURA_SERIES:
-+                               if (instance->msix_vectors > 16)
-+                                       instance->msix_combined =3D true;
-+                               break;
-+                       }
-
--                               /* Save 1-15 reply post index address to lo=
-cal memory
--                                * Index 0 is already saved from reg offset
--                                * MPI2_REPLY_POST_HOST_INDEX_OFFSET
--                                */
--                               for (loop =3D 1; loop < MR_MAX_MSIX_REG_ARR=
-AY; loop++) {
--                                       instance->reply_post_host_index_add=
-r[loop] =3D
--                                               (u32 __iomem *)
--                                               ((u8 __iomem *)instance->re=
-g_set +
--                                               MPI2_SUP_REPLY_POST_HOST_IN=
-DEX_OFFSET
--                                               + (loop * 0x10));
--                               }
-+                       if (rdpq_enable)
-+                               instance->is_rdpq =3D (scratch_pad_1 & MR_R=
-DPQ_MODE_OFFSET) ?
-+                                                       1 : 0;
-+
-+                       if (instance->adapter_type >=3D INVADER_SERIES &&
-+                               !instance->msix_combined) {
-+                               instance->msix_load_balance =3D true;
-+                               instance->smp_affinity_enable =3D false;
-                        }
-
--                       dev_info(&instance->pdev->dev,
--                                "firmware supports msix\t: (%d)",
--                                instance->msix_vectors);
--                       if (msix_vectors)
--                               instance->msix_vectors =3D min(msix_vectors=
-,
--                                       instance->msix_vectors);
--               } else /* MFI adapters */
--                       instance->msix_vectors =3D 1;
-+                       /* Save 1-15 reply post index address to local memo=
-ry
-+                               * Index 0 is already saved from reg offset
-+                               * MPI2_REPLY_POST_HOST_INDEX_OFFSET
-+                               */
-+                       for (loop =3D 1; loop < MR_MAX_MSIX_REG_ARRAY; loop=
-++) {
-+                               instance->reply_post_host_index_addr[loop] =
-=3D
-+                                       (u32 __iomem *)
-+                                       ((u8 __iomem *)instance->reg_set +
-+                                       MPI2_SUP_REPLY_POST_HOST_INDEX_OFFS=
-ET
-+                                       + (loop * 0x10));
-+                       }
-+               }
-+
-+               dev_info(&instance->pdev->dev,
-+                               "firmware supports msix\t: (%d)",
-+                               instance->msix_vectors);
-+               if (msix_vectors)
-+                       instance->msix_vectors =3D min(msix_vectors,
-+                               instance->msix_vectors);
-
-
-                /*
---
-2.34.1
-
-=D0=97=D0=B0=D1=8F=D0=B2=D0=BB=D0=B5=D0=BD=D0=B8=D0=B5 =D0=BE =D0=BA=D0=BE=
-=D0=BD=D1=84=D0=B8=D0=B4=D0=B5=D0=BD=D1=86=D0=B8=D0=B0=D0=BB=D1=8C=D0=BD=D0=
-=BE=D1=81=D1=82=D0=B8
-
-=D0=94=D0=B0=D0=BD=D0=BD=D0=BE=D0=B5 =D1=8D=D0=BB=D0=B5=D0=BA=D1=82=D1=80=
-=D0=BE=D0=BD=D0=BD=D0=BE=D0=B5 =D0=BF=D0=B8=D1=81=D1=8C=D0=BC=D0=BE =D0=B8 =
-=D0=BB=D1=8E=D0=B1=D1=8B=D0=B5 =D0=BF=D1=80=D0=B8=D0=BB=D0=BE=D0=B6=D0=B5=
-=D0=BD=D0=B8=D1=8F =D0=BA =D0=BD=D0=B5=D0=BC=D1=83 =D1=8F=D0=B2=D0=BB=D1=8F=
-=D1=8E=D1=82=D1=81=D1=8F =D0=BA=D0=BE=D0=BD=D1=84=D0=B8=D0=B4=D0=B5=D0=BD=
-=D1=86=D0=B8=D0=B0=D0=BB=D1=8C=D0=BD=D1=8B=D0=BC=D0=B8 =D0=B8 =D0=BF=D1=80=
-=D0=B5=D0=B4=D0=BD=D0=B0=D0=B7=D0=BD=D0=B0=D1=87=D0=B5=D0=BD=D1=8B =D0=B8=
-=D1=81=D0=BA=D0=BB=D1=8E=D1=87=D0=B8=D1=82=D0=B5=D0=BB=D1=8C=D0=BD=D0=BE =
-=D0=B4=D0=BB=D1=8F =D0=B0=D0=B4=D1=80=D0=B5=D1=81=D0=B0=D1=82=D0=B0. =D0=95=
-=D1=81=D0=BB=D0=B8 =D0=92=D1=8B =D0=BD=D0=B5 =D1=8F=D0=B2=D0=BB=D1=8F=D0=B5=
-=D1=82=D0=B5=D1=81=D1=8C =D0=B0=D0=B4=D1=80=D0=B5=D1=81=D0=B0=D1=82=D0=BE=
-=D0=BC =D0=B4=D0=B0=D0=BD=D0=BD=D0=BE=D0=B3=D0=BE =D0=BF=D0=B8=D1=81=D1=8C=
-=D0=BC=D0=B0, =D0=BF=D0=BE=D0=B6=D0=B0=D0=BB=D1=83=D0=B9=D1=81=D1=82=D0=B0,=
- =D1=83=D0=B2=D0=B5=D0=B4=D0=BE=D0=BC=D0=B8=D1=82=D0=B5 =D0=BD=D0=B5=D0=BC=
-=D0=B5=D0=B4=D0=BB=D0=B5=D0=BD=D0=BD=D0=BE =D0=BE=D1=82=D0=BF=D1=80=D0=B0=
-=D0=B2=D0=B8=D1=82=D0=B5=D0=BB=D1=8F, =D0=BD=D0=B5 =D1=80=D0=B0=D1=81=D0=BA=
-=D1=80=D1=8B=D0=B2=D0=B0=D0=B9=D1=82=D0=B5 =D1=81=D0=BE=D0=B4=D0=B5=D1=80=
-=D0=B6=D0=B0=D0=BD=D0=B8=D0=B5 =D0=B4=D1=80=D1=83=D0=B3=D0=B8=D0=BC =D0=BB=
-=D0=B8=D1=86=D0=B0=D0=BC, =D0=BD=D0=B5 =D0=B8=D1=81=D0=BF=D0=BE=D0=BB=D1=8C=
-=D0=B7=D1=83=D0=B9=D1=82=D0=B5 =D0=B5=D0=B3=D0=BE =D0=B2 =D0=BA=D0=B0=D0=BA=
-=D0=B8=D1=85-=D0=BB=D0=B8=D0=B1=D0=BE =D1=86=D0=B5=D0=BB=D1=8F=D1=85, =D0=
-=BD=D0=B5 =D1=85=D1=80=D0=B0=D0=BD=D0=B8=D1=82=D0=B5 =D0=B8 =D0=BD=D0=B5 =
-=D0=BA=D0=BE=D0=BF=D0=B8=D1=80=D1=83=D0=B9=D1=82=D0=B5 =D0=B8=D0=BD=D1=84=
-=D0=BE=D1=80=D0=BC=D0=B0=D1=86=D0=B8=D1=8E =D0=BB=D1=8E=D0=B1=D1=8B=D0=BC =
-=D1=81=D0=BF=D0=BE=D1=81=D0=BE=D0=B1=D0=BE=D0=BC.
 
