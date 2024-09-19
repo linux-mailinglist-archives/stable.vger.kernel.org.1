@@ -1,129 +1,111 @@
-Return-Path: <stable+bounces-76750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76751-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1049D97C85C
-	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 13:13:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A20F497C876
+	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 13:18:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9FC8D2861F2
-	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 11:13:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1BD27B21C71
+	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 11:18:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D47A519D09E;
-	Thu, 19 Sep 2024 11:13:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3928219AD7D;
+	Thu, 19 Sep 2024 11:18:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b="K4sa8IFl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XmqBG8ns"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0016f401.pphosted.com (mx0b-0016f401.pphosted.com [67.231.156.173])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0617E19D069;
-	Thu, 19 Sep 2024 11:13:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.156.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8637194083;
+	Thu, 19 Sep 2024 11:18:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726744392; cv=none; b=XMPYXgoJiSp3CEea8qiO67c10hIX6IM0N22OeKwACUL+mL1KnKjq29/8vfgnz55/0WEGUqLPKz1yniBsp428FxscU1FF7nH0kLoe1dzhs32Mnaro7p7IQBs6LmgH3vYLfngdktWXc0Zq1iiKRjo7CjIeuZCbNnc2mU76BsRO824=
+	t=1726744724; cv=none; b=VVYySHwTfVChhRGMgY0fr0CPNe/mGmrRc6YWMWQn8ckVSGwmcSgIZG4/qrxlLWN6Es5qIjT6xIEBoRlefyI/jB1+xs/wEHzCzhn9H8nyPSk0piL3Igog6s9+6ba7AQ5g9rxAX065MOYht5k/a0Je+9AxfI3P8xcjpKUDclx1LTU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726744392; c=relaxed/simple;
-	bh=mSW5lrlRXkBe3hdDmc5mspa++Cwa8m7fyWTdlSWbjLI=;
-	h=Date:From:To:CC:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=XS9u58WSsh4IbiRKS5T5IITVbYOCK8wgmFaiMjoAFdofcUZ/udZA8K5+rvsnnHP62P5W0WgSDUZ9z4nP1fjAq3kKsIUWNSlhf/DxEY3mXaBOlwd7HEE98reqdi2DK3AsEz7lbz4sxztWv7kzcS+97Ivfytmk4sw03zJ7INt72Ys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com; spf=pass smtp.mailfrom=marvell.com; dkim=pass (2048-bit key) header.d=marvell.com header.i=@marvell.com header.b=K4sa8IFl; arc=none smtp.client-ip=67.231.156.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=marvell.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=marvell.com
-Received: from pps.filterd (m0045851.ppops.net [127.0.0.1])
-	by mx0b-0016f401.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48J9FxlA010349;
-	Thu, 19 Sep 2024 04:12:44 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=marvell.com; h=
-	cc:content-type:date:from:message-id:mime-version:subject:to; s=
-	pfpt0220; bh=4VXw//KqD9XDky/B2uSXxs9gq021yHn+0xx/I/0/7RU=; b=K4s
-	a8IFl/tTqP/Ew7Xa4hxhUpdzxy7pzKBkroAO1MrD4djWPjDfwPdrdGGlDBpSQL7C
-	fBiiZiidy5NQo/2OUVn9esxm+8YnDnTG32cJDUKX3o2I8GX0MLWgy0ucLOlYImh9
-	TD6xzZb2iO+6MPgS9oM3Yaz4iEDACYWmdtNaZb2sDMxmyauk3qGqklNoH6j0F7Gg
-	tv61SzaWbLDBRB6cQMNleDKbx+QaTUrl4JLsaw9H2eDRmU3/x+5e5GqGcq/de+q2
-	yoi1bfB3xkFAoiQ6FIo5mf/xj0FWF1VtCQ2x5UzDRG6l3sdWTVmOOJrfw9x3n+X7
-	up0o54XWcn7ZGm87jAw==
-Received: from dc5-exch05.marvell.com ([199.233.59.128])
-	by mx0b-0016f401.pphosted.com (PPS) with ESMTPS id 41rh5mgg18-8
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 19 Sep 2024 04:12:44 -0700 (PDT)
-Received: from DC5-EXCH05.marvell.com (10.69.176.209) by
- DC5-EXCH05.marvell.com (10.69.176.209) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.4; Thu, 19 Sep 2024 04:12:37 -0700
-Received: from maili.marvell.com (10.69.176.80) by DC5-EXCH05.marvell.com
- (10.69.176.209) with Microsoft SMTP Server id 15.2.1544.4 via Frontend
- Transport; Thu, 19 Sep 2024 04:12:37 -0700
-Received: from test-OptiPlex-Tower-Plus-7010 (unknown [10.29.37.157])
-	by maili.marvell.com (Postfix) with SMTP id BD9FB3F7088;
-	Thu, 19 Sep 2024 04:12:32 -0700 (PDT)
-Date: Thu, 19 Sep 2024 16:42:31 +0530
-From: Subbaraya Sundeep <sbhatta@marvell.com>
-To: Wei Fang <wei.fang@nxp.com>
-CC: <davem@davemloft.net>, <edumazet@google.com>, <kuba@kernel.org>,
-        <pabeni@redhat.com>, <claudiu.manoil@nxp.com>,
-        <vladimir.oltean@nxp.com>, <ast@kernel.org>, <daniel@iogearbox.net>,
-        <hawk@kernel.org>, <john.fastabend@gmail.com>,
-        <linux-kernel@vger.kernel.org>, <netdev@vger.kernel.org>,
-        <bpf@vger.kernel.org>, <stable@vger.kernel.org>, <imx@lists.linux.dev>
-Subject: Re: [PATCH net 3/3] net: enetc: reset xdp_tx_in_flight when updating
- bpf program
-Message-ID: <ZuwHHx2HiRlRipkw@test-OptiPlex-Tower-Plus-7010>
+	s=arc-20240116; t=1726744724; c=relaxed/simple;
+	bh=hIkLd8AvzpCoLbV7CT9rjtimplqyC+/Fv5vdmWL3vtI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FqIhtzP3VrnfGkJXEqOG0GUgiA/3ElUNdYCL6WrKM5sP5B3U7jdjAQPLupCZAYB3gBX57wz3lkVQ8lOYw7I1vTrDRN5pVZxFUN7KDetiZasnPDnJ652AKsQTSP2Ci5JcoFyDamkiVzP+mwnCjBWsefzpqHmE0na+T6Q/XFEfmiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XmqBG8ns; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0196C4CEC4;
+	Thu, 19 Sep 2024 11:18:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1726744723;
+	bh=hIkLd8AvzpCoLbV7CT9rjtimplqyC+/Fv5vdmWL3vtI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=XmqBG8ns2uJ+6E4E/IgTH8qLWzDPEqlixy+wG/Zne4Mt1niENwCleA7LucsTqxgTW
+	 qle3tzZtULuoXOjL0rJkxq/x1lJOeFLe8IDNSPFWznBJuogRumfG7J6Q8t0TJyrI1F
+	 o3x2t7G9a6J9FaICAQWcTCuWUIe71Oxk/mwNZ2NE=
+Date: Thu, 19 Sep 2024 13:18:39 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Xi Ruoyao <xry111@xry111.site>
+Cc: shankerwangmiao@gmail.com, stable@vger.kernel.org,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH 0/3] Backport statx(..., NULL, AT_EMPTY_PATH, ...)
+Message-ID: <2024091900-sloppy-swept-0a2e@gregkh>
+References: <20240918-statx-stable-linux-6-10-y-v1-0-8364a071074f@gmail.com>
+ <2024091801-segment-lurk-e67b@gregkh>
+ <f6ecd24e0fdb1327dad41f41c3ac31477ca00c9f.camel@xry111.site>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-X-Proofpoint-ORIG-GUID: 9N_ww12_J25Yyry8OhKS8Urjg7gQOvsI
-X-Proofpoint-GUID: 9N_ww12_J25Yyry8OhKS8Urjg7gQOvsI
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <f6ecd24e0fdb1327dad41f41c3ac31477ca00c9f.camel@xry111.site>
 
-On 2024-09-19 at 14:11:04, Wei Fang (wei.fang@nxp.com) wrote:
-> When running "xdp-bench tx eno0" to test the XDP_TX feature of ENETC
-> on LS1028A, it was found that if the command was re-run multiple times,
-> Rx could not receive the frames, and the result of xdo-bench showed
-> that the rx rate was 0.
+On Thu, Sep 19, 2024 at 01:37:17AM +0800, Xi Ruoyao wrote:
+> On Wed, 2024-09-18 at 19:33 +0200, Greg Kroah-Hartman wrote:
+> > On Wed, Sep 18, 2024 at 10:01:18PM +0800, Miao Wang via B4 Relay wrote:
+> > > Commit 0ef625bba6fb ("vfs: support statx(..., NULL, AT_EMPTY_PATH,
+> > > ...)") added support for passing in NULL when AT_EMPTY_PATH is given,
+> > > improving performance when statx is used for fetching stat informantion
+> > > from a given fd, which is especially important for 32-bit platforms.
+> > > This commit also improved the performance when an empty string is given
+> > > by short-circuiting the handling of such paths.
+> > > 
+> > > This series is based on the commits in the Linus’ tree. Sligth
+> > > modifications are applied to the context of the patches for cleanly
+> > > applying.
+> > > 
+> > > Tested-by: Xi Ruoyao <xry111@xry111.site>
+> > > Signed-off-by: Miao Wang <shankerwangmiao@gmail.com>
+> > 
+> > This really looks like a brand new feature wanting to be backported, so
+> > why does it qualify under the stable kernel rules as fixing something?
+> > 
+> > I am willing to take some kinds of "fixes performance issues" new
+> > features when the subsystem maintainers agree and ask for it, but that
+> > doesn't seem to be the case here, and so without their approval and
+> > agreement that this is relevant, we can't accept them.
 > 
-> root@ls1028ardb:~# ./xdp-bench tx eno0
-> Hairpinning (XDP_TX) packets on eno0 (ifindex 3; driver fsl_enetc)
-> Summary                      2046 rx/s                  0 err,drop/s
-> Summary                         0 rx/s                  0 err,drop/s
-> Summary                         0 rx/s                  0 err,drop/s
-> Summary                         0 rx/s                  0 err,drop/s
-> 
-> By observing the Rx PIR and CIR registers, we found that CIR is always
-> equal to 0x7FF and PIR is always 0x7FE, which means that the Rx ring
-> is full and can no longer accommodate other Rx frames. Therefore, it
-> is obvious that the RX BD ring has not been cleaned up.
-> 
-> Further analysis of the code revealed that the Rx BD ring will only
-> be cleaned if the "cleaned_cnt > xdp_tx_in_flight" condition is met.
-> Therefore, some debug logs were added to the driver and the current
-> values of cleaned_cnt and xdp_tx_in_flight were printed when the Rx
-> BD ring was full. The logs are as follows.
-> 
-> [  178.762419] [XDP TX] >> cleaned_cnt:1728, xdp_tx_in_flight:2140
-> [  178.771387] [XDP TX] >> cleaned_cnt:1941, xdp_tx_in_flight:2110
-> [  178.776058] [XDP TX] >> cleaned_cnt:1792, xdp_tx_in_flight:2110
-> 
-> From the results, we can see that the maximum value of xdp_tx_in_flight
-> has reached 2140. However, the size of the Rx BD ring is only 2048. This
-> is incredible, so checked the code again and found that the driver did
-> not reset xdp_tx_in_flight when installing or uninstalling bpf program,
-> resulting in xdp_tx_in_flight still retaining the value after the last
-> command was run.
-> 
-> Fixes: c33bfaf91c4c ("net: enetc: set up XDP program under enetc_reconfigure()")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> Unfortunately the performance issue fix and the new feature are in the
+> same commit.  Is it acceptable to separate out the performance fix part
+> for stable?  (Basically remove "if (!path) return true;" from the 1st
+> patch.)
 
-Reviewed-by: Subbaraya Sundeep <sbhatta@marvell.com>
+What prevents you, if you wish to have the increased performance, from
+just moving to a newer kernel version?  We add new features and
+improvements like this all the time, why is this one so special to
+warrant doing backports.  Especially with no maintainer or subsystem
+developer asking for this to be done?
 
-Thanks,
-Sundeep
+thanks,
+
+greg k-h
 
