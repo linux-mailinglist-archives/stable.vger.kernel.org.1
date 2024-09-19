@@ -1,145 +1,163 @@
-Return-Path: <stable+bounces-76767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DB9D97CB28
-	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 16:45:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E808697CB7B
+	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 17:14:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00C161F247ED
-	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 14:45:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A2E24286462
+	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 15:14:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CC2F19F113;
-	Thu, 19 Sep 2024 14:45:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C128A1A0718;
+	Thu, 19 Sep 2024 15:14:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VIN+eXj3"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aJUGnVw6"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5716019B3CB;
-	Thu, 19 Sep 2024 14:45:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BA491DDC9;
+	Thu, 19 Sep 2024 15:14:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726757152; cv=none; b=LplxYmPe0RACyOjPMyN+o4pwQ5+wydXhd+V4iPzB8WK6JIlyfh2Pe40Gn6woHdS4HgSQaazqjVElnKqlhYYyBS3HLuw5bfxrcZdmABB5VV/98VJPG8JYmPLdEpO8wMT65PDRQR/hjt+cJXrUycx/bCcbudTJ3RWn38VDC5kCisE=
+	t=1726758890; cv=none; b=gZwZ82VULaAIgakp8LDif/NZu3I/54X5alSLrxKIlem50jX4oGZpbOBE7CtKV1WiksMvnC692w9IS5fFETsfb9UvzsSQ7HN9x0jox5KEPsInENw91Ux4WnGqV93j8853R9O5VeAvZ3lmOdkFi+jm4SJB2RO/11Rh6eaZxFX9C74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726757152; c=relaxed/simple;
-	bh=pSfwgrTPvnmFiOqh3pT2jvWaxAtgqdoC3kyn+7ZtUTA=;
+	s=arc-20240116; t=1726758890; c=relaxed/simple;
+	bh=bs/WrVjBQrZpossCbAukjZW6SEcrlcT90cEERdte3RA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JeHlKMB8g8G4sSZG8/m6oyLQVpeeWl9jeAE3Abykn8+sQMR45Km6+Yb1TQg8l+uRV/gmpyAbx2yK5/UpDDh3C2mJGjwXc/ozqT8INdBh+KjCVSGjWJd8Fswofp1AVJGQ8v13j2zyMr/e3bvx7LryyrwhGdsGmmxhETxEu82qbV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VIN+eXj3; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a8d2b24b7a8so377815266b.1;
-        Thu, 19 Sep 2024 07:45:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1726757149; x=1727361949; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=BnMoVwbaYU2xar7OIpkgN7D8RCu0vLhUDD2HtUB2qh8=;
-        b=VIN+eXj3A8D5YmDnnpmZew0H7vY26qsBSiDXGwCUMED0l4+ql96tPClGXViE/ErO4i
-         H0WVJg4Qv3cNaIyiTDqL51bsCx2b0vQZ1fiG+mIcXcOmWKtd3O+FMmKLk8IZY2109BRn
-         COzPea2TPTeHdp8O3JJm+irgacB0RQ6LE2nSLl+oTlVUN3Ojz6/w8geAqW0dvgnrH3xa
-         XRSpn1q9P9SELy1rvWaUvVXqMGAFJ9UxDtQnFek3dhE6lnyQ48jTK3KUj5ZkDp4R1heT
-         P+nc1iSkz1aKIHGMsxhA1VGb5iFrGRxdD79knJXXXpr9MgTQmzY5hOF0aZkiB2t7qZfd
-         izmg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726757149; x=1727361949;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BnMoVwbaYU2xar7OIpkgN7D8RCu0vLhUDD2HtUB2qh8=;
-        b=CBjGOT7iozG47qZWRpEmqi3BRQxENjCaCj3Ctzr0s9HRCYrh2vu4DD50EYzfVmGMBe
-         NsaJrQ7CEcm0xQbVcjupq/XM1A0JygecC/1+HhpdO8DJFkSNEoWAb++2hCe7V9CendFg
-         fvAJYZLAyafjY/y0j/RNhOWu6TYZlHzir776eDKY2twxjXAb8ftHjAXI12jRvrNHWAeh
-         QCTj5VkshU5moGy83tv2jQkvgnRdq0XuywVUSi7NVWuLLeuulBr6aKEwvFVZcbJ476Sl
-         xe7d3WP4Td/MQxaHNhf098+akBqZZz1/gDP6yteMQ4N0TOwD8w4YG+QUhswGCVuRWeWU
-         7qwQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVpesHG5sGbzrYal8yQVBw6LcxS72HAjM0yICluCEwW6qAXIXjt1IitLEfnOnrAy55gMeGgIhGjRfbQ4ela@vger.kernel.org, AJvYcCXooovU9MVh3JvfsuKY0jNVa+BQ9RdJz7iqDPS9hHRzucelj5aLSUdqoo8MLCqr8ZlwCcgjTooykeOiJA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzJefytcZKlgoe+AF9vVX1cIsz/5SFPOSXU8dWJ53oY9CQOt9XJ
-	BN0fZVys9+IXInSRXhWK8cUs2QwMKx14wli9Sn0SlKyqmKrAa54a
-X-Google-Smtp-Source: AGHT+IEvFr3SE6FxalseTQjkOWlEA8ju3/yO+4QAFrVm7xyZgf7fPTziPJ5TPH6keQrARIAI39garw==
-X-Received: by 2002:a17:907:3da0:b0:a8d:2bc7:6331 with SMTP id a640c23a62f3a-a90c1e4e209mr357428366b.27.1726757148347;
-        Thu, 19 Sep 2024 07:45:48 -0700 (PDT)
-Received: from google.com ([83.68.141.146])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a90610f43d2sm735326966b.87.2024.09.19.07.45.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 19 Sep 2024 07:45:47 -0700 (PDT)
-Date: Thu, 19 Sep 2024 14:45:45 +0000
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Denis Arefev <arefev@swemel.ru>
-Cc: stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Michael Hennerich <michael.hennerich@analog.com>,
-	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org
-Subject: Re: [PATCH 5/10] Input: adp5588-keys - added a check key_val
-Message-ID: <Zuw5GZ2k3T-JKhHK@google.com>
-References: <20240919142914.100609-1-arefev@swemel.ru>
+	 Content-Type:Content-Disposition:In-Reply-To; b=kTL4C7phfwX9LnG+u2vCN+OlYUHeeQwdsx4NuT24kHMuVXJYO60cnOac//95yK4lKpbyc2KJdTVfwaSKbwgv9FJP1O0a9LYSxHBNKx2J3fStWZLCD3glE9oJVNnblbYfhonv6T9M2viMcP2VuAwsmXkGr/4m/c2CekbHHP5O6ug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aJUGnVw6; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1726758853; x=1758294853;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=bs/WrVjBQrZpossCbAukjZW6SEcrlcT90cEERdte3RA=;
+  b=aJUGnVw6VPJWaF7gQFzc+2q/zJa5zBGPv4PLpPzRrg7+7VjcMEBDpQEE
+   Pd+PNw+/OQzAHeFweJtxyXKEbr1Y21yodkPJyONXFHHSQ0p1D9ivClaLk
+   ho/JTv6a+qDKy4Zw17vleNqThFEb6r9hjIvUlYSpJvq941u3rauJCZ6U1
+   SPXx0Ar1hPJulZ5izCV7PCbymiOX2lUFo4MLH4BTq7mLU5VAThSN94occ
+   bdmVqfgMxpTbxeJ03RUsV8kJcuzM0/B5wWKaF068ZzF9JapG6ffBcE7wL
+   bRteINIJmwW1dQweyeQibiZ3XzNmeFZbkoSEad3tLSUwLIMHKi60+QcPe
+   Q==;
+X-CSE-ConnectionGUID: QvchbXdWTjS2ckPH+CpzKQ==
+X-CSE-MsgGUID: 2mqlaZFPS7uCdwI+9rJLtw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11200"; a="13593856"
+X-IronPort-AV: E=Sophos;i="6.10,242,1719903600"; 
+   d="scan'208";a="13593856"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2024 08:14:11 -0700
+X-CSE-ConnectionGUID: LTcZlT2rRB6VDUUi6LdloQ==
+X-CSE-MsgGUID: Rb9g5FT1SbWSKfDr5Mpv8Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,242,1719903600"; 
+   d="scan'208";a="100799247"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2024 08:14:09 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1srIr9-0000000AZL5-0Bnp;
+	Thu, 19 Sep 2024 18:14:07 +0300
+Date: Thu, 19 Sep 2024 18:14:06 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Serge Semin <fancer.lancer@gmail.com>
+Cc: Viresh Kumar <vireshk@kernel.org>, Vinod Koul <vkoul@kernel.org>,
+	Ferry Toth <fntoth@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] dmaengine: dw: Select only supported masters for ACPI
+ devices
+Message-ID: <Zuw_vllDMRKD-sC8@smile.fi.intel.com>
+References: <20240919135854.16124-1-fancer.lancer@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240919142914.100609-1-arefev@swemel.ru>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240919135854.16124-1-fancer.lancer@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-Hi Denis,
+On Thu, Sep 19, 2024 at 04:58:14PM +0300, Serge Semin wrote:
+> The recently submitted fix-commit revealed a problem in the iDMA32
+> platform code. Even though the controller supported only a single master
+> the dw_dma_acpi_filter() method hard-coded two master interfaces with IDs
+> 0 and 1. As a result the sanity check implemented in the commit
+> b336268dde75 ("dmaengine: dw: Add peripheral bus width verification") got
+> incorrect interface data width and thus prevented the client drivers
+> from configuring the DMA-channel with the EINVAL error returned. E.g. the
+> next error was printed for the PXA2xx SPI controller driver trying to
+> configure the requested channels:
+> 
+> > [  164.525604] pxa2xx_spi_pci 0000:00:07.1: DMA slave config failed
+> > [  164.536105] pxa2xx_spi_pci 0000:00:07.1: failed to get DMA TX descriptor
+> > [  164.543213] spidev spi-SPT0001:00: SPI transfer failed: -16
+> 
+> The problem would have been spotted much earlier if the iDMA32 controller
+> supported more than one master interfaces. But since it supports just a
+> single master and the iDMA32-specific code just ignores the master IDs in
+> the CTLLO preparation method, the issue has been gone unnoticed so far.
+> 
+> Fix the problem by specifying a single master ID for both memory and
+> peripheral devices on the ACPI-based platforms if there is only one master
+> available on the controller. Thus the issue noticed for the iDMA32
+> controllers will be eliminated and the ACPI-probed DW DMA controllers will
+> be configured with the correct master ID by default.
 
-On Thu, Sep 19, 2024 at 05:29:14PM +0300, Denis Arefev wrote:
-> No upstream commit exists for this commit.
+...
 
-Sorry, what does this mean?
+>  static bool dw_dma_acpi_filter(struct dma_chan *chan, void *param)
+>  {
+> +	struct dw_dma *dw = to_dw_dma(chan->device);
+>  	struct acpi_dma_spec *dma_spec = param;
+>  	struct dw_dma_slave slave = {
+>  		.dma_dev = dma_spec->dev,
+>  		.src_id = dma_spec->slave_id,
+>  		.dst_id = dma_spec->slave_id,
+>  		.m_master = 0,
+> -		.p_master = 1,
 
-> 
-> If the adp5588_read function returns 0, then there will be an
-> overflow of the kpad->keycode[key_val - 1] buffer.
-> 
-> If the adp5588_read function returns a negative value, then the
-> logic is broken - the wrong value is used as an index of
-> the kpad->keycode array.
-> 
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
-> 
-> Fixes: 69a4af606ed4 ("Input: adp5588-keys - support GPI events for ADP5588 devices")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Denis Arefev <arefev@swemel.ru>
-> ---
->  drivers/input/keyboard/adp5588-keys.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/input/keyboard/adp5588-keys.c b/drivers/input/keyboard/adp5588-keys.c
-> index 90a59b973d00..19be8054eb5f 100644
-> --- a/drivers/input/keyboard/adp5588-keys.c
-> +++ b/drivers/input/keyboard/adp5588-keys.c
-> @@ -272,6 +272,8 @@ static void adp5588_report_events(struct adp5588_kpad *kpad, int ev_cnt)
->  		int key = adp5588_read(kpad->client, Key_EVENTA + i);
->  		int key_val = key & KEY_EV_MASK;
+I would leave this line as is and it makes more consistent in my opinion with
+the below comments which starts with the words "Fallback to...".
+
+>  	};
 >  
-> +		if (key_val <= 0)
-> +			continue;
+> +	/*
+> +	 * Fallback to using a single interface for both memory and peripheral
+> +	 * device if there is only one master I/F supported (e.g. iDMA32)
+> +	 */
+> +	if (dw->pdata->nr_masters == 0)
 
-We should be checking the original value (key) and not masked value.
-Masked value will never be negative.
+Why '== 0' and not '== 1'? Or '>= 2' if you wish to be on the save side (however,
+that '== 0' case is not obvious to me — do we really have that IRL?).
 
-		int key, key_vali, key_press;
+> +		slave.p_master = 0;
+> +	else
+> +		slave.p_master = 1;
 
-		key = adp5588_read(kpad->client, Key_EVENTA + i);
-		if (key < 0)
-			continue;
+> +
+> +
 
-		key_val = key & key & KEY_EV_MASK;
-		key_press = key & KEY_EV_PRESSED;
-		if (key_val >= GPI_PIN_BASE && key_val <= GPI_PIN_END) {
-			...
-		} else if (key_val > 0) {
-			...
-		}
+One blank line is enough.
 
-Thanks.
+>  	return dw_dma_filter(chan, &slave);
+>  }
+
+...
+
+P.S. I'll test it later this or next week, if Ferry wouldn't beat me up to it.
 
 -- 
-Dmitry
+With Best Regards,
+Andy Shevchenko
+
+
 
