@@ -1,274 +1,124 @@
-Return-Path: <stable+bounces-76782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7848D97CE52
-	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 21:57:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D64497CE61
+	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 22:06:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D1AC1C21D5B
-	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 19:57:20 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ACCECB22975
+	for <lists+stable@lfdr.de>; Thu, 19 Sep 2024 20:06:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE865131BDF;
-	Thu, 19 Sep 2024 19:57:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DE2D140E5F;
+	Thu, 19 Sep 2024 20:06:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b="e8IXxE+Y"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hYv5l73F"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.swemel.ru (mx.swemel.ru [95.143.211.150])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4555E139CFA
-	for <stable@vger.kernel.org>; Thu, 19 Sep 2024 19:57:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.143.211.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 857A63A1AC;
+	Thu, 19 Sep 2024 20:06:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726775838; cv=none; b=lAyoqA/Mjyn2kUpU7HLKC5s0hoQhJHGN1okJS0z2/vpWHZLKomyS1ZG1wZSeSaAr64xFVg7OS0z6IeolsQvt5tPGkRcKLC9diHFre3RTeQa5qtppgUC5Xys6fwvosaUOJpRzUNl8H6ZGgS6DHC/f/i5OzdZP5ZTYfSs2d2CTkS4=
+	t=1726776391; cv=none; b=J+u1IcR4+WP5EQ/Ycb9mVGsh1TSt2tse9VvMt+QRWCn5XkFdngxtC1jpPjlWXlHATqg2AgJo9KxVmBIzuIM/nkbWTDJNfwLR1SWS8/mzIa9N2HB4HrsPLa46JgBuxGx3nSFnBjO+NHXBnuMQeAZ7o7ymaQs+fzqYHGJhSHTksT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726775838; c=relaxed/simple;
-	bh=asKAv2JLEFJ2mcEgCv3pY9YGphfMlPIjUcQ7DN7iGjo=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=pIIVSljPE6gyYEb3IouuZWlBPqBzhUmcoKvQEQ05u4MCebMHQlUSZm3CGFX3e1X07f3oigZBL5k5Ev7Wz/Iot/b0a1sczezHZndjn9CX9I19JRtEDPbiWDMaA3/QUHrzbdgsAn15IuwLHy2R2pYt1XgA/bo4SLDPrJ2usGxPBSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru; spf=pass smtp.mailfrom=swemel.ru; dkim=pass (1024-bit key) header.d=swemel.ru header.i=@swemel.ru header.b=e8IXxE+Y; arc=none smtp.client-ip=95.143.211.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=swemel.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=swemel.ru
-From: Andrey Kalachev <kalachev@swemel.ru>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=swemel.ru; s=mail;
-	t=1726775834;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/T/lRwwZdTLkO2iXWLTT0Ql8AA5YQmz02ed6HhgKic8=;
-	b=e8IXxE+YxjzE+HI9PDrGSx5wqvKeFnUE+lnnphC6ORCgnhfHTBXySwJdhR0lv51u9UX9/q
-	3Rfe2jdQJ9cez0iUVLB5+fOSiLMe6yKfqgv/518SO8y15XYg/V+6SeZCIU2ToApSUc9uJb
-	2EqZdDhGPiY5NKRYBeiAYCHQnskn6ko=
-To: stable@vger.kernel.org
-Cc: Andrey Kalachev <kalachev@swemel.ru>,
-	lvc-project@linuxtesting.org,
-	dchinner@redhat.com,
-	hch@lst.de,
-	djwong@kernel.org,
-	syzbot+66f256de193ab682584f@syzkaller.appspotmail.com,
-	syzbot+904ffc7f25c759741787@syzkaller.appspotmail.com
-Subject: [PATCH 5.15.y, 6.1.y] xfs: journal geometry is not properly bounds checked
-Date: Thu, 19 Sep 2024 22:56:23 +0300
-Message-Id: <20240919195623.27624-4-kalachev@swemel.ru>
-In-Reply-To: <20240919195623.27624-1-kalachev@swemel.ru>
-References: <20240919195623.27624-1-kalachev@swemel.ru>
+	s=arc-20240116; t=1726776391; c=relaxed/simple;
+	bh=XjN0oSMKjxqwxkOHJOTdBU2OHtVCEa6+hxnDLEA3Nrk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=D4JC9s3x0uJMgB7/s7omht8ubgFqhVKVNjII/FSVp4+qnPhwMa7cXA0QJKwLBw5NjFMRVnzEKeaW4m969GmR4Ti0krSziSTrwpBreR84rjxSS1XCkFQEheJUu26o+H5K3xt+zh9jD4ZoazM4xR8Hzxw2tDBOK61RTqWUTAyHxn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hYv5l73F; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1726776390; x=1758312390;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=XjN0oSMKjxqwxkOHJOTdBU2OHtVCEa6+hxnDLEA3Nrk=;
+  b=hYv5l73FcFRY/QcaDAzRwbG+FrcPqervXhfRh1DBEgmXzlWaU0bllBwh
+   QdbgsV3Us79GMNHaATlZm7fZH9LMoixqUTK2kmxeGGHSzCD8Hz0jf2r+F
+   HREkMH61uxnAYCcBTiEwymeGHXxQk7lej5aYxyZbRcwvsiXb7GjaCkNUP
+   md/F6IQCtx3cjYnGQ83MXtDkuEirdn+G3eAW6EcfCnWuvApiOVe4w0Sr6
+   27KVoQyK4MG+TMmidjHdkX2t7nStESK9Uu7CoAme19d0KQ0ZfEaNPB1RD
+   0LRRYaiepKfxPTbPSCUPJoHK4gqzKJtuWiZmC6skHEJPaxKOHPmYFeGck
+   g==;
+X-CSE-ConnectionGUID: SzKBei91SkiSx4y5keDw4g==
+X-CSE-MsgGUID: f6bGWtf3R+qvH3WkfUydbw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11200"; a="25289362"
+X-IronPort-AV: E=Sophos;i="6.10,242,1719903600"; 
+   d="scan'208";a="25289362"
+Received: from fmviesa003.fm.intel.com ([10.60.135.143])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2024 13:06:29 -0700
+X-CSE-ConnectionGUID: x9OG1XstSeeGeCAcRv8Eqw==
+X-CSE-MsgGUID: PM6gh1Q7SmugdCKrnPa6NQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,242,1719903600"; 
+   d="scan'208";a="74167365"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 Sep 2024 13:06:27 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1srNQ0-0000000AgQy-25PB;
+	Thu, 19 Sep 2024 23:06:24 +0300
+Date: Thu, 19 Sep 2024 23:06:24 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Serge Semin <fancer.lancer@gmail.com>
+Cc: Viresh Kumar <vireshk@kernel.org>, Vinod Koul <vkoul@kernel.org>,
+	Ferry Toth <fntoth@gmail.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Ferry Toth <ftoth@exalondelft.nl>, dmaengine@vger.kernel.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] dmaengine: dw: Select only supported masters for ACPI
+ devices
+Message-ID: <ZuyEQOIztvUrO0gO@smile.fi.intel.com>
+References: <20240919135854.16124-1-fancer.lancer@gmail.com>
+ <20240919185151.7331-1-fancer.lancer@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240919185151.7331-1-fancer.lancer@gmail.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-From: Dave Chinner <dchinner@redhat.com>
+On Thu, Sep 19, 2024 at 09:51:48PM +0300, Serge Semin wrote:
+> The recently submitted fix-commit revealed a problem in the iDMA32
+> platform code. Even though the controller supported only a single master
+> the dw_dma_acpi_filter() method hard-coded two master interfaces with IDs
+> 0 and 1. As a result the sanity check implemented in the commit
+> b336268dde75 ("dmaengine: dw: Add peripheral bus width verification") got
+> incorrect interface data width and thus prevented the client drivers
+> from configuring the DMA-channel with the EINVAL error returned. E.g. the
+> next error was printed for the PXA2xx SPI controller driver trying to
+> configure the requested channels:
+> 
+> > [  164.525604] pxa2xx_spi_pci 0000:00:07.1: DMA slave config failed
+> > [  164.536105] pxa2xx_spi_pci 0000:00:07.1: failed to get DMA TX descriptor
+> > [  164.543213] spidev spi-SPT0001:00: SPI transfer failed: -16
+> 
+> The problem would have been spotted much earlier if the iDMA32 controller
+> supported more than one master interfaces. But since it supports just a
+> single master and the iDMA32-specific code just ignores the master IDs in
+> the CTLLO preparation method, the issue has been gone unnoticed so far.
+> 
+> Fix the problem by specifying a single master ID for both memory and
+> peripheral devices on the ACPI-based platforms if there is only one master
+> available on the controller. Thus the issue noticed for the iDMA32
+> controllers will be eliminated and the ACPI-probed DW DMA controllers will
+> be configured with the correct master ID by default.
 
-[ Upstream commit f1e1765aad7de7a8b8102044fc6a44684bc36180 ]
+Tested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Seems this fixes the bug I have seen.
+Ferry, can you confirm?
 
-If the journal geometry results in a sector or log stripe unit
-validation problem, it indicates that we cannot set the log up to
-safely write to the the journal. In these cases, we must abort the
-mount because the corruption needs external intervention to resolve.
-Similarly, a journal that is too large cannot be written to safely,
-either, so we shouldn't allow those geometries to mount, either.
-
-If the log is too small, we risk having transaction reservations
-overruning the available log space and the system hanging waiting
-for space it can never provide. This is purely a runtime hang issue,
-not a corruption issue as per the first cases listed above. We abort
-mounts of the log is too small for V5 filesystems, but we must allow
-v4 filesystems to mount because, historically, there was no log size
-validity checking and so some systems may still be out there with
-undersized logs.
-
-The problem is that on V4 filesystems, when we discover a log
-geometry problem, we skip all the remaining checks and then allow
-the log to continue mounting. This mean that if one of the log size
-checks fails, we skip the log stripe unit check. i.e. we allow the
-mount because a "non-fatal" geometry is violated, and then fail to
-check the hard fail geometries that should fail the mount.
-
-Move all these fatal checks to the superblock verifier, and add a
-new check for the two log sector size geometry variables having the
-same values. This will prevent any attempt to mount a log that has
-invalid or inconsistent geometries long before we attempt to mount
-the log.
-
-However, for the minimum log size checks, we can only do that once
-we've setup up the log and calculated all the iclog sizes and
-roundoffs. Hence this needs to remain in the log mount code after
-the log has been initialised. It is also the only case where we
-should allow a v4 filesystem to continue running, so leave that
-handling in place, too.
-
-Signed-off-by: Dave Chinner <dchinner@redhat.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Andrey Kalachev <kalachev@swemel.ru>
----
- fs/xfs/libxfs/xfs_sb.c | 56 +++++++++++++++++++++++++++++++++++++++++-
- fs/xfs/xfs_log.c       | 47 +++++++++++------------------------
- 2 files changed, 70 insertions(+), 33 deletions(-)
-
-diff --git a/fs/xfs/libxfs/xfs_sb.c b/fs/xfs/libxfs/xfs_sb.c
-index bf2cca78304e..c24a38272cb7 100644
---- a/fs/xfs/libxfs/xfs_sb.c
-+++ b/fs/xfs/libxfs/xfs_sb.c
-@@ -413,7 +413,6 @@ xfs_validate_sb_common(
- 	    sbp->sb_inodelog < XFS_DINODE_MIN_LOG			||
- 	    sbp->sb_inodelog > XFS_DINODE_MAX_LOG			||
- 	    sbp->sb_inodesize != (1 << sbp->sb_inodelog)		||
--	    sbp->sb_logsunit > XLOG_MAX_RECORD_BSIZE			||
- 	    sbp->sb_inopblock != howmany(sbp->sb_blocksize,sbp->sb_inodesize) ||
- 	    XFS_FSB_TO_B(mp, sbp->sb_agblocks) < XFS_MIN_AG_BYTES	||
- 	    XFS_FSB_TO_B(mp, sbp->sb_agblocks) > XFS_MAX_AG_BYTES	||
-@@ -431,6 +430,61 @@ xfs_validate_sb_common(
- 		return -EFSCORRUPTED;
- 	}
- 
-+	/*
-+	 * Logs that are too large are not supported at all. Reject them
-+	 * outright. Logs that are too small are tolerated on v4 filesystems,
-+	 * but we can only check that when mounting the log. Hence we skip
-+	 * those checks here.
-+	 */
-+	if (sbp->sb_logblocks > XFS_MAX_LOG_BLOCKS) {
-+		xfs_notice(mp,
-+		"Log size 0x%x blocks too large, maximum size is 0x%llx blocks",
-+			 sbp->sb_logblocks, XFS_MAX_LOG_BLOCKS);
-+		return -EFSCORRUPTED;
-+	}
-+
-+	if (XFS_FSB_TO_B(mp, sbp->sb_logblocks) > XFS_MAX_LOG_BYTES) {
-+		xfs_warn(mp,
-+		"log size 0x%llx bytes too large, maximum size is 0x%llx bytes",
-+			 XFS_FSB_TO_B(mp, sbp->sb_logblocks),
-+			 XFS_MAX_LOG_BYTES);
-+		return -EFSCORRUPTED;
-+	}
-+
-+	/*
-+	 * Do not allow filesystems with corrupted log sector or stripe units to
-+	 * be mounted. We cannot safely size the iclogs or write to the log if
-+	 * the log stripe unit is not valid.
-+	 */
-+	if (sbp->sb_versionnum & XFS_SB_VERSION_SECTORBIT) {
-+		if (sbp->sb_logsectsize != (1U << sbp->sb_logsectlog)) {
-+			xfs_notice(mp,
-+			"log sector size in bytes/log2 (0x%x/0x%x) must match",
-+				sbp->sb_logsectsize, 1U << sbp->sb_logsectlog);
-+			return -EFSCORRUPTED;
-+		}
-+	} else if (sbp->sb_logsectsize || sbp->sb_logsectlog) {
-+		xfs_notice(mp,
-+		"log sector size in bytes/log2 (0x%x/0x%x) are not zero",
-+			sbp->sb_logsectsize, sbp->sb_logsectlog);
-+		return -EFSCORRUPTED;
-+	}
-+
-+	if (sbp->sb_logsunit > 1) {
-+		if (sbp->sb_logsunit % sbp->sb_blocksize) {
-+			xfs_notice(mp,
-+		"log stripe unit 0x%x bytes must be a multiple of block size",
-+				sbp->sb_logsunit);
-+			return -EFSCORRUPTED;
-+		}
-+		if (sbp->sb_logsunit > XLOG_MAX_RECORD_BSIZE) {
-+			xfs_notice(mp,
-+		"log stripe unit 0x%x bytes over maximum size (0x%x bytes)",
-+				sbp->sb_logsunit, XLOG_MAX_RECORD_BSIZE);
-+			return -EFSCORRUPTED;
-+		}
-+	}
-+
- 	/* Validate the realtime geometry; stolen from xfs_repair */
- 	if (sbp->sb_rextsize * sbp->sb_blocksize > XFS_MAX_RTEXTSIZE ||
- 	    sbp->sb_rextsize * sbp->sb_blocksize < XFS_MIN_RTEXTSIZE) {
-diff --git a/fs/xfs/xfs_log.c b/fs/xfs/xfs_log.c
-index d9aa5eab02c3..59c982297503 100644
---- a/fs/xfs/xfs_log.c
-+++ b/fs/xfs/xfs_log.c
-@@ -639,7 +639,6 @@ xfs_log_mount(
- 	int		num_bblks)
- {
- 	struct xlog	*log;
--	bool		fatal = xfs_has_crc(mp);
- 	int		error = 0;
- 	int		min_logfsbs;
- 
-@@ -661,53 +660,37 @@ xfs_log_mount(
- 	mp->m_log = log;
- 
- 	/*
--	 * Validate the given log space and drop a critical message via syslog
--	 * if the log size is too small that would lead to some unexpected
--	 * situations in transaction log space reservation stage.
-+	 * Now that we have set up the log and it's internal geometry
-+	 * parameters, we can validate the given log space and drop a critical
-+	 * message via syslog if the log size is too small. A log that is too
-+	 * small can lead to unexpected situations in transaction log space
-+	 * reservation stage. The superblock verifier has already validated all
-+	 * the other log geometry constraints, so we don't have to check those
-+	 * here.
- 	 *
--	 * Note: we can't just reject the mount if the validation fails.  This
--	 * would mean that people would have to downgrade their kernel just to
--	 * remedy the situation as there is no way to grow the log (short of
--	 * black magic surgery with xfs_db).
-+	 * Note: For v4 filesystems, we can't just reject the mount if the
-+	 * validation fails.  This would mean that people would have to
-+	 * downgrade their kernel just to remedy the situation as there is no
-+	 * way to grow the log (short of black magic surgery with xfs_db).
- 	 *
--	 * We can, however, reject mounts for CRC format filesystems, as the
-+	 * We can, however, reject mounts for V5 format filesystems, as the
- 	 * mkfs binary being used to make the filesystem should never create a
- 	 * filesystem with a log that is too small.
- 	 */
- 	min_logfsbs = xfs_log_calc_minimum_size(mp);
--
- 	if (mp->m_sb.sb_logblocks < min_logfsbs) {
- 		xfs_warn(mp,
- 		"Log size %d blocks too small, minimum size is %d blocks",
- 			 mp->m_sb.sb_logblocks, min_logfsbs);
--		error = -EINVAL;
--	} else if (mp->m_sb.sb_logblocks > XFS_MAX_LOG_BLOCKS) {
--		xfs_warn(mp,
--		"Log size %d blocks too large, maximum size is %lld blocks",
--			 mp->m_sb.sb_logblocks, XFS_MAX_LOG_BLOCKS);
--		error = -EINVAL;
--	} else if (XFS_FSB_TO_B(mp, mp->m_sb.sb_logblocks) > XFS_MAX_LOG_BYTES) {
--		xfs_warn(mp,
--		"log size %lld bytes too large, maximum size is %lld bytes",
--			 XFS_FSB_TO_B(mp, mp->m_sb.sb_logblocks),
--			 XFS_MAX_LOG_BYTES);
--		error = -EINVAL;
--	} else if (mp->m_sb.sb_logsunit > 1 &&
--		   mp->m_sb.sb_logsunit % mp->m_sb.sb_blocksize) {
--		xfs_warn(mp,
--		"log stripe unit %u bytes must be a multiple of block size",
--			 mp->m_sb.sb_logsunit);
--		error = -EINVAL;
--		fatal = true;
--	}
--	if (error) {
-+
- 		/*
- 		 * Log check errors are always fatal on v5; or whenever bad
- 		 * metadata leads to a crash.
- 		 */
--		if (fatal) {
-+		if (xfs_has_crc(mp)) {
- 			xfs_crit(mp, "AAIEEE! Log failed size checks. Abort!");
- 			ASSERT(0);
-+			error = -EINVAL;
- 			goto out_free_log;
- 		}
- 		xfs_crit(mp, "Log size out of supported range.");
 -- 
-2.30.2
+With Best Regards,
+Andy Shevchenko
+
 
 
