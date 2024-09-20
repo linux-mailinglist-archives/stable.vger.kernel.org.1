@@ -1,64 +1,54 @@
-Return-Path: <stable+bounces-76792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id C065F97D340
-	for <lists+stable@lfdr.de>; Fri, 20 Sep 2024 11:02:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A54B197D344
+	for <lists+stable@lfdr.de>; Fri, 20 Sep 2024 11:03:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 59D45B2127C
-	for <lists+stable@lfdr.de>; Fri, 20 Sep 2024 09:02:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D6E2F1C23B10
+	for <lists+stable@lfdr.de>; Fri, 20 Sep 2024 09:03:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6753126ADD;
-	Fri, 20 Sep 2024 09:02:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E7435466B;
+	Fri, 20 Sep 2024 09:03:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yd+uO6vp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kjA93GLd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 160A3273FE;
-	Fri, 20 Sep 2024 09:02:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4133A26ADD;
+	Fri, 20 Sep 2024 09:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726822947; cv=none; b=XS2WzAIVa2IkoBOfxwZiJ57dt/r3DHxAoRfORrhpjpyEbR/cAtoZuqeOquuRFrZ6/bwOLXxWzY2wOKIk3of8fqHauJ7cDhEJ3x+gDXubH1XyFzqZNerknjuj/JqTBXSGUbrub41AICFbbY4M1COUXbb1QGBB36QqBRnsAmYnEOE=
+	t=1726822990; cv=none; b=fM45kFmc+jmKgpH5QoaxnnEq6bK52lGCUeIUSljyFFmPrudKe3X1ytFRlaipU4j/2QnPOVOrv6nggIBEJXuSqo1FntyJCTU6Vx35r4eIO9VRljzIJuG7W5Qg+ribPAf7UnElRbC/ySfR76nZ6vhuQSyik/PU2TVQnvT3IpJ6OAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726822947; c=relaxed/simple;
-	bh=vL40QuaqUyXmvlqNrC3awGYHeM3daaijDcC2ZZTSI08=;
+	s=arc-20240116; t=1726822990; c=relaxed/simple;
+	bh=T9rfR01McZkPyR8+9RiFb/Mr0S/GZzf/+jc4afE/C4Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Rln7fxHmxtZjwlOW8U2ASvwmDvNHZx3jmJOzd1MANIiolcrwCA/raepTZgGQqHDsKDCGfgBJzRxonVjfNgA8Po8aOZnwe89mHsYEN6YpqsT6JKYSOJnp9bHWTgNXXJ+UYFoOD7qdakVy6GdHfQxx3aDIjMqoirtOf4Roici65Xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yd+uO6vp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D108C4CEC3;
-	Fri, 20 Sep 2024 09:02:26 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=LxPbg6lR+QSsR73/kW9yL7fnfZreuF0n917KmLKWz3lEM6hXxJajUwQBy+d+I8inek6V9XMgC8bMcaY/5+gUgDmB3qNFhEiu6bXN7euTHU5OZuaqT8NtGt06YOEgFkS+OICtVt2EyDvCLkfua39gntfbdCgoRciLSO/loRPmkCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kjA93GLd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58BBAC4CEC3;
+	Fri, 20 Sep 2024 09:03:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726822946;
-	bh=vL40QuaqUyXmvlqNrC3awGYHeM3daaijDcC2ZZTSI08=;
+	s=k20201202; t=1726822989;
+	bh=T9rfR01McZkPyR8+9RiFb/Mr0S/GZzf/+jc4afE/C4Q=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Yd+uO6vprzIJUiCsDBFJ8zc0zk0lbcseywLXrXlXESPY/aDEQFgqn/I4jas8C5CWj
-	 Tl7/x0Zlwu0B65kB3OKVu/EBeiiilFjUtxbx1t95XvK2ICG4iErusyjoBuOaJ+26YF
-	 uaneRm8bc7HtsGfX6UTMGt0W4fsFO85exx4A5wWu0tST7ILtTJ4uKVMR13gWKMlASi
-	 D6gobQS4cibPyFQHbjfvkDKYGPPLR9hkmmw53PpqCH05LnL3OJi3TG7FNE6dmMvCP0
-	 +AWWBvPE+2nbWdDGkyPqVfhblHKcd4/H3kK3MLEnvitHXDF5QSBBZ45PGJW+02Ff0f
-	 nkZsLI2BePojA==
-Received: from johan by theta with local (Exim 4.98)
-	(envelope-from <johan@kernel.org>)
-	id 1srZWw-0000000023k-1uWu;
-	Fri, 20 Sep 2024 11:02:22 +0200
-Date: Fri, 20 Sep 2024 11:02:22 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Chris Lew <quic_clew@quicinc.com>
-Cc: Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] soc: qcom: pd_mapper: fix ADSP PD maps
-Message-ID: <Zu06HiEpA--LbaoU@hovoldconsulting.com>
-References: <20240918-x1e-fix-pdm-pdr-v1-1-cefc79bb33d1@linaro.org>
- <Zu0wb-RSwnlb0Lma@hovoldconsulting.com>
- <sziblrb4ggjzehl7fqwrh3bnedvwizh2vgymxu56zmls2whkup@yziunmooga7b>
+	b=kjA93GLdvV6KVPbUEI2XtRST31VQKW5MVVJH+bP9e5yF+mjFcViPAj4wAjvjFwzW6
+	 +dhNuDPi9wgMU+icgKmOZPbLX/VPtwASnKMT94FMWVp05+MhvPKcEqjMsnY5BvyPCP
+	 mqNqFck/LpJRq7Uf9o77+BqiQ9ieEsTbgLqskO9EcVmUBjkPkQ8TasiT0hJqcgqg3d
+	 oICGcI8AgnlAECPos9j/CIq1s3zTkGAXf9wzVo7JI6THPcw1fnsaY0F8DL8ocebYXb
+	 nQOzS0APZ8G/K2jxHx+u3YkWL23Ghlb5MOIPGCbgBqkV/i4V3FD9vleTSYBdDPR6Sz
+	 Qii3TaMlBi/1w==
+Date: Fri, 20 Sep 2024 11:03:05 +0200
+From: Andi Shyti <andi.shyti@kernel.org>
+To: Ard Biesheuvel <ardb+git@google.com>
+Cc: linux-i2c@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>, 
+	stable@vger.kernel.org, Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Subject: Re: [PATCH] i2c/synquacer: Deal with optional PCLK correctly
+Message-ID: <dmwsrw6mwt3zsksxxb35qokhtf3setobeybhd34w52typxx4ld@zbjvamsqwfxt>
+References: <20240912104630.1868285-2-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,32 +57,28 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <sziblrb4ggjzehl7fqwrh3bnedvwizh2vgymxu56zmls2whkup@yziunmooga7b>
+In-Reply-To: <20240912104630.1868285-2-ardb+git@google.com>
 
-On Fri, Sep 20, 2024 at 11:49:46AM +0300, Dmitry Baryshkov wrote:
-> On Fri, Sep 20, 2024 at 10:21:03AM GMT, Johan Hovold wrote:
-> > On Wed, Sep 18, 2024 at 04:02:39PM +0300, Dmitry Baryshkov wrote:
-> > > On X1E8 devices root ADSP domain should have tms/pdr_enabled registered.
-> > > Change the PDM domain data that is used for X1E80100 ADSP.
-> > 
-> > Please expand the commit message so that it explains why this is
-> > needed and not just describes what the patch does.
+Hi Ard,
+
+On Thu, Sep 12, 2024 at 12:46:31PM GMT, Ard Biesheuvel wrote:
+> From: Ard Biesheuvel <ardb@kernel.org>
 > 
-> Unfortunately in this case I have no idea. It marks the domain as
-> restartable (?), this is what json files for CRD and T14s do. Maybe
-> Chris can comment more.
-
-Chris, could you help sort out if and why this change is needed?
-
-	https://lore.kernel.org/all/20240918-x1e-fix-pdm-pdr-v1-1-cefc79bb33d1@linaro.org/	
-
-> > What is the expected impact of this and is there any chance that this is
-> > related to some of the in-kernel pd-mapper regression I've reported
-> > (e.g. audio not being registered and failing with a PDR error)?
-> > 
-> > 	https://lore.kernel.org/all/ZthVTC8dt1kSdjMb@hovoldconsulting.com/
+> ACPI boot does not provide clocks and regulators, but instead, provides
+> the PCLK rate directly, and enables the clock in firmware. So deal
+> gracefully with this.
 > 
-> Still debugging this, sidetracked by OSS / LPC.
+> Fixes: 55750148e559 ("i2c: synquacer: Fix an error handling path in synquacer_i2c_probe()")
+> Cc: <stable@vger.kernel.org>
+> Cc: Andi Shyti <andi.shyti@kernel.org>
+> Cc: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 
-Johan
+I'm sorry for the delay, but I needed to wait for the previous
+batch of fixes to be merged.
+
+Merged to i2c/i2c-host-next.
+
+Thanks,
+Andi
 
