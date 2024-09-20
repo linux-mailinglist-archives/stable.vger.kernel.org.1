@@ -1,70 +1,68 @@
-Return-Path: <stable+bounces-76834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76835-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41CAD97D80E
-	for <lists+stable@lfdr.de>; Fri, 20 Sep 2024 18:10:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C090E97D826
+	for <lists+stable@lfdr.de>; Fri, 20 Sep 2024 18:16:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B73F0B2459E
-	for <lists+stable@lfdr.de>; Fri, 20 Sep 2024 16:10:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F35B51C232DE
+	for <lists+stable@lfdr.de>; Fri, 20 Sep 2024 16:16:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDF3717CA16;
-	Fri, 20 Sep 2024 16:10:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1949217F389;
+	Fri, 20 Sep 2024 16:16:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from ganesha.gnumonks.org (ganesha.gnumonks.org [213.95.27.120])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from exchange.fintech.ru (exchange.fintech.ru [195.54.195.159])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F7FC11CA9;
-	Fri, 20 Sep 2024 16:10:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.27.120
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7792AC148;
+	Fri, 20 Sep 2024 16:16:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.54.195.159
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726848637; cv=none; b=YiMvFzPIoVBtlKm4DGp8rs5R7jPU0kgKYXu5NpeE/t0fMPjX4G2vHJPxKp+XvbQZGtP3I7SXVzLmgsunaXn7qG7L2B9bM/dHMgUPpAquLBNUZMV79vxiJZSFFVkF7R6oAFRd76Ged9UVXXHp2r7KVz9u/WaRup1BMWyceoISPvY=
+	t=1726848997; cv=none; b=LTsAdS4+OA33JmtqIXMjr6CVjsPSsemzDB3qEBr8X7Vy2Hn1/By+mSaxi5c/dA/8F9KrQpiMw5cmq/geVxxTaZIA6+m3dMFtXmLyKIQ45/eqJJChAHRMe1J3AIk3Gk+1d7Tvbw7lsKwJ7/4xbxc0hbMkEUwVweTXPJNjOLeoRcU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726848637; c=relaxed/simple;
-	bh=KjpPeZkBuxH8lsrHDzxyYpX5hyYv26XHOkxvl+zAWPQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uxqyvvtMB/x+GA2w0+FknWsjS9CFCwv9vUk1/vIUDn0VPsUoC0NW14bBPv3vgIdPYD7SDd/Ypd9drPPyY9nOzs1FinQiqni2N8cFSkbeP+0JmAxSRqoh19X8ub7GprUgYSGSQLnGA45HEzg78D89oa78ElstuM+3PM6bYlYfE2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=gnumonks.org; arc=none smtp.client-ip=213.95.27.120
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gnumonks.org
-Received: from [78.30.37.63] (port=41210 helo=gnumonks.org)
-	by ganesha.gnumonks.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <pablo@gnumonks.org>)
-	id 1srgD7-006n9e-LZ; Fri, 20 Sep 2024 18:10:23 +0200
-Date: Fri, 20 Sep 2024 18:10:20 +0200
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: Florian Westphal <fw@strlen.de>
-Cc: stable@vger.kernel.org,
-	netfilter-devel <netfilter-devel@vger.kernel.org>
-Subject: Re: stable request: netfilter:  make cgroupsv2 matching work with
- namespaces
-Message-ID: <Zu2ebGu9vSXxp6cw@calendula>
-References: <20240920101146.GA10413@breakpoint.cc>
+	s=arc-20240116; t=1726848997; c=relaxed/simple;
+	bh=pP9QBZ2rj+9jC0RtFYBHQarl6zNZqGJ/s+i2EcjgUxs=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=lbozd1lXFMTEcj2Q37r6rbH3RsyyskJP7UCc0GMLduIdnL+ZH9np/83KL2EaX4WmCreZNGySaoTEukKpAIwDQ6cBT9vMT7ikOd8Bwqjr6nN07a8KutRquYR45rKdMJHY0ij0I0eIBdlMfEMB3Ozf6BqfxQQGR8cO8OUY6kBbbhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fintech.ru; spf=pass smtp.mailfrom=fintech.ru; arc=none smtp.client-ip=195.54.195.159
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fintech.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fintech.ru
+Received: from Ex16-01.fintech.ru (10.0.10.18) by exchange.fintech.ru
+ (195.54.195.159) with Microsoft SMTP Server (TLS) id 14.3.498.0; Fri, 20 Sep
+ 2024 19:16:23 +0300
+Received: from localhost (10.0.253.138) by Ex16-01.fintech.ru (10.0.10.18)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2242.4; Fri, 20 Sep
+ 2024 19:16:23 +0300
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+To: <stable@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: Nikita Zhandarovich <n.zhandarovich@fintech.ru>, Ping-Ke Shih
+	<pkshih@realtek.com>, Kalle Valo <kvalo@codeaurora.org>, "David S. Miller"
+	<davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Dan Carpenter
+	<dan.carpenter@oracle.com>, <linux-wireless@vger.kernel.org>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<lvc-project@linuxtesting.org>
+Subject: [PATCH 5.10 0/1] rtlwifi: rtl8192de: fix ofdm power compensation
+Date: Fri, 20 Sep 2024 09:16:17 -0700
+Message-ID: <20240920161618.21780-1-n.zhandarovich@fintech.ru>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240920101146.GA10413@breakpoint.cc>
-X-Spam-Score: -1.9 (-)
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: Ex16-02.fintech.ru (10.0.10.19) To Ex16-01.fintech.ru
+ (10.0.10.18)
 
-On Fri, Sep 20, 2024 at 12:11:46PM +0200, Florian Westphal wrote:
-> Hello,
-> 
-> please consider picking up:
-> 7f3287db6543 ("netfilter: nft_socket: make cgroupsv2 matching work with namespaces")
-> and its followup fix,
-> 7052622fccb1 ("netfilter: nft_socket: Fix a NULL vs IS_ERR() bug in nft_socket_cgroup_subtree_level()")
->
-> It should cherry-pick fine for 6.1 and later.
-> I'm not sure a 5.15 backport is worth it, as its not a crash fix and
-> noone has reported this problem so far with a 5.15 kernel.
+This patch aims to prevent reliably encountered buffer overflow in
+rtl92d_dm_txpower_tracking_callback_thermalmeter() caused by
+accessing 'ofdm_index[]' array of size 2 with index 'i' equal to 2,
+which in turn is possible if value of 'is2t' is 'true'.
 
-I can take of these backports.
+The issue in question has been fixed by the following upstream
+patch that can be cleanly applied to 5.10 stable branch.
 
