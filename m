@@ -1,119 +1,62 @@
-Return-Path: <stable+bounces-76802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0E1A97D3C2
-	for <lists+stable@lfdr.de>; Fri, 20 Sep 2024 11:38:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9427897D405
+	for <lists+stable@lfdr.de>; Fri, 20 Sep 2024 12:11:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DF551F2564E
-	for <lists+stable@lfdr.de>; Fri, 20 Sep 2024 09:38:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C5F811C20D42
+	for <lists+stable@lfdr.de>; Fri, 20 Sep 2024 10:11:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8D1A139D13;
-	Fri, 20 Sep 2024 09:38:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="a3kWlhvp"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCA0B8174E;
+	Fri, 20 Sep 2024 10:11:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
+Received: from Chamillionaire.breakpoint.cc (Chamillionaire.breakpoint.cc [91.216.245.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 763831CD2C;
-	Fri, 20 Sep 2024 09:38:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB2A01F60A;
+	Fri, 20 Sep 2024 10:11:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.216.245.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726825090; cv=none; b=rZP3EysnAHl2n6T1rzc/cNUhHoVJJ8iR7fbrGlAf43I+H4glIRMK/qxxSG58GPrfFsX1m/voR0zFMwtXo5Xe8FNyD9eJzwoGkXzQ48xX3nkym3JboOfGV3jl5KRn+5XymWOgdsBuQspWG+SKCqzu1b0EPd4Krw7XAerjqUmnZYc=
+	t=1726827110; cv=none; b=kOqiUNyMeyvJcbRRhhwILmEY1BQbERMe2zygfraqo/7YYsygqaiY4RR3TVTkUoMs4Wt9pBdqXKHjliKGg49iBp/iEy90DwzFtBQCi3vgW6k/gId/hLQa1tRUTkle4aVaOYfeZ27dAwKVNltq2OitNxLFVEXNHgAyOTM4vIELAq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726825090; c=relaxed/simple;
-	bh=zrcIwAMuAWkfsz35vSNkxOlMouu2YIEF3sxN+NveNUU=;
-	h=From:To:CC:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=QeRLLmoGw5mMLx0qjmWgjKqoGLVJA10a8ON7bl0M9jh3buRd7qeb2eQ8UTBFZylnyzJjk3vhBUAMmMCRT6QbFspuW7yEpMrbCNWfvS1TUjsFumQTGoNvaEWu8Se2tHUqNVSWA8tTvztRCD+zGmMv/HXW0UJHHILcCGVGlxB/blk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=a3kWlhvp; arc=none smtp.client-ip=198.47.19.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
-Received: from lelv0265.itg.ti.com ([10.180.67.224])
-	by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 48K9bKjn025160;
-	Fri, 20 Sep 2024 04:37:20 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
-	s=ti-com-17Q1; t=1726825040;
-	bh=D0mskHRaG8uO51XB0w+Qjupk2ywjqNEa2TOnwxQtqhQ=;
-	h=From:To:CC:Subject:In-Reply-To:References:Date;
-	b=a3kWlhvpf7IkGjWVT7lDFl5kpISZbS1j+VWuBtJR9VfBSU3nRHit4EI73t62rGy8m
-	 hMuak9pesVjAl9mfLUqywH+IJBAmsyq72nQxbgDpafsse10uCQUWAmJ3Q3itijTb/k
-	 Qfx183o9yeTivmeYQ6bqd1Ht+sdtxnzoXLoHXf5w=
-Received: from DFLE107.ent.ti.com (dfle107.ent.ti.com [10.64.6.28])
-	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 48K9bKDD015708
-	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
-	Fri, 20 Sep 2024 04:37:20 -0500
-Received: from DFLE108.ent.ti.com (10.64.6.29) by DFLE107.ent.ti.com
- (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 20
- Sep 2024 04:37:20 -0500
-Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE108.ent.ti.com
- (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
- Frontend Transport; Fri, 20 Sep 2024 04:37:20 -0500
-Received: from localhost (kamlesh.dhcp.ti.com [172.24.227.123])
-	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 48K9bJLg087632;
-	Fri, 20 Sep 2024 04:37:20 -0500
-From: Kamlesh Gurudasani <kamlesh@ti.com>
-To: Danny Tsen <dtsen@linux.ibm.com>, <linux-crypto@vger.kernel.org>
-CC: <stable@vger.kernel.org>, <herbert@gondor.apana.org.au>,
-        <leitao@debian.org>, <nayna@linux.ibm.com>, <appro@cryptogams.org>,
-        <linux-kernel@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
-        <mpe@ellerman.id.au>, <ltcgcw@linux.vnet.ibm.com>, <dtsen@us.ibm.com>,
-        Danny
- Tsen <dtsen@linux.ibm.com>
-Subject: Re: [PATCH v3] crypto: Removing CRYPTO_AES_GCM_P10.
-In-Reply-To: <20240919113637.144343-1-dtsen@linux.ibm.com>
-References: <20240919113637.144343-1-dtsen@linux.ibm.com>
-Date: Fri, 20 Sep 2024 15:07:19 +0530
-Message-ID: <87ldzmll80.fsf@kamlesh.i-did-not-set--mail-host-address--so-tickle-me>
+	s=arc-20240116; t=1726827110; c=relaxed/simple;
+	bh=ulAoXO+hBjXHkD2BJC1plB0VA1QJHPDMHah5ZYwi9Ps=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=UnpDwJ1LG12A7xGerzAQdMSP6f9oDKBc9Zx7SIxEUiVyxxQ1u6a5/I+mhag0ma4YOULfgRR8aXGqTT0FLSx2awFOuX7ZFRG7fA4o2lkIcT+1TWZ06jFk/9v88+zSjre94UR69e5OU6dN2/46ClzgvAAKjMz6ae6PS9I/fkMxiek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de; spf=pass smtp.mailfrom=strlen.de; arc=none smtp.client-ip=91.216.245.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=strlen.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=strlen.de
+Received: from fw by Chamillionaire.breakpoint.cc with local (Exim 4.92)
+	(envelope-from <fw@strlen.de>)
+	id 1srac6-0002is-2E; Fri, 20 Sep 2024 12:11:46 +0200
+Date: Fri, 20 Sep 2024 12:11:46 +0200
+From: Florian Westphal <fw@strlen.de>
+To: stable@vger.kernel.org
+Cc: netfilter-devel <netfilter-devel@vger.kernel.org>
+Subject: stable request: netfilter:  make cgroupsv2 matching work with
+ namespaces
+Message-ID: <20240920101146.GA10413@breakpoint.cc>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-Danny Tsen <dtsen@linux.ibm.com> writes:
+Hello,
 
-> Data mismatch found when testing ipsec tunnel with AES/GCM crypto.
-> Disabling CRYPTO_AES_GCM_P10 in Kconfig for this feature.
->
-> Fixes: fd0e9b3e2ee6 ("crypto: p10-aes-gcm - An accelerated AES/GCM stitched implementation")
-> Fixes: cdcecfd9991f ("crypto: p10-aes-gcm - Glue code for AES/GCM stitched implementation")
-> Fixes: 45a4672b9a6e2 ("crypto: p10-aes-gcm - Update Kconfig and Makefile")
->
-> Signed-off-by: Danny Tsen <dtsen@linux.ibm.com>
-nitpick
-checkpatch complains
-Please use correct Fixes: style 'Fixes: <12 chars of sha1> ("<title line>")' -
-ie: 'Fixes: 45a4672b9a6e ("crypto: p10-aes-gcm - Update Kconfig and
-Makefile")'
+please consider picking up:
+7f3287db6543 ("netfilter: nft_socket: make cgroupsv2 matching work with namespaces")
+and its followup fix,
+7052622fccb1 ("netfilter: nft_socket: Fix a NULL vs IS_ERR() bug in nft_socket_cgroup_subtree_level()")
 
-There is no rule for 12 characters, but it is generally preferred.
-I guess it is just a typo for you as you have correctly added other
-Fixes tag.
-
-If you end up re-spinning, please correct this
-
-Also, just to understand,
-
-"A Fixes: tag indicates that the patch fixes an issue in a previous
- commit. It is used to make it easy to determine where a bug originated,
- which can help review a bug fix"
-
-from 
-https://docs.kernel.org/process/submitting-patches.html
-
-should there not be just single Fixes tag? as bug originated from one
-commit, may be the commit that actually broke the functionality.
-
-P.S.
-Not expert on this, just trying to learn.
-
-Kamlesh
+It should cherry-pick fine for 6.1 and later.
+I'm not sure a 5.15 backport is worth it, as its not a crash fix and
+noone has reported this problem so far with a 5.15 kernel.
 
