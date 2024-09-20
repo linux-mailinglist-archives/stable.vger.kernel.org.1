@@ -1,121 +1,145 @@
-Return-Path: <stable+bounces-76836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76837-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11D5897D82B
-	for <lists+stable@lfdr.de>; Fri, 20 Sep 2024 18:17:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6791497D830
+	for <lists+stable@lfdr.de>; Fri, 20 Sep 2024 18:17:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD1D2284086
-	for <lists+stable@lfdr.de>; Fri, 20 Sep 2024 16:17:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D1BE5B22C4D
+	for <lists+stable@lfdr.de>; Fri, 20 Sep 2024 16:17:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E66C4183CA6;
-	Fri, 20 Sep 2024 16:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FB0D17E47A;
+	Fri, 20 Sep 2024 16:17:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Nj64M9N3"
 X-Original-To: stable@vger.kernel.org
-Received: from exchange.fintech.ru (exchange.fintech.ru [195.54.195.159])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-SHA384 (256/256 bits))
+Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3540C18005B;
-	Fri, 20 Sep 2024 16:16:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.54.195.159
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97CEC14900E;
+	Fri, 20 Sep 2024 16:17:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726849001; cv=none; b=UcRrzqAQVioPzlheYEjNhPSva1lpfFBwoST6mjBLzDMTwNtZ9ab/2JMLHARtnnXDo68UZlUULBycB0GMEDG4nVdXj2x54I0V7gs6euVX8FTPpTiQIkFyu/vv7OTGSax+yE61D0gjFyDyMup1ZENktAr1tT2+iFNNWCq70t/2y+M=
+	t=1726849035; cv=none; b=bdShM1NlAHQMXayx3VBjx3CqwmHu5dxnQsxm6Qf/2watr7QMJZTDf7NtNBndVogefIxnDg2Tzrd/ubrWL6foAMlgtvAAxTDHpATQ4VKIunJn3Q3fVQwQckq1lJEdR4tPHKFeV6oeqhHql3fSIfrWcE1rTP+O/Fea4hspQhEYaIk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726849001; c=relaxed/simple;
-	bh=5hFXnoW6ooKL6vv2N9VsYM6DZuuYE8fcOIy2YKi8hMw=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ERjkFKDMSfrgCQOyoRZze8AHFFkoOZAKP3cMSnM/lHEKA0jbASD997QUGExXfv3sgcOq3uIKu0ynz/AeBjP3/2Deu0FMHgxJU6wy+rruGzrJKqSpvO2lL/Yrt/nV/ORyC0N3169SBnhHZr/tatg4/MGMlBtkzA7U5taVHpsfEKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fintech.ru; spf=pass smtp.mailfrom=fintech.ru; arc=none smtp.client-ip=195.54.195.159
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=fintech.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fintech.ru
-Received: from Ex16-01.fintech.ru (10.0.10.18) by exchange.fintech.ru
- (195.54.195.159) with Microsoft SMTP Server (TLS) id 14.3.498.0; Fri, 20 Sep
- 2024 19:16:28 +0300
-Received: from localhost (10.0.253.138) by Ex16-01.fintech.ru (10.0.10.18)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2242.4; Fri, 20 Sep
- 2024 19:16:27 +0300
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-To: <stable@vger.kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: Nikita Zhandarovich <n.zhandarovich@fintech.ru>, Ping-Ke Shih
-	<pkshih@realtek.com>, Kalle Valo <kvalo@codeaurora.org>, "David S. Miller"
-	<davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, Dan Carpenter
-	<dan.carpenter@oracle.com>, <linux-wireless@vger.kernel.org>,
-	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<lvc-project@linuxtesting.org>
-Subject: [PATCH 5.10 1/1] rtlwifi: rtl8192de: fix ofdm power compensation
-Date: Fri, 20 Sep 2024 09:16:18 -0700
-Message-ID: <20240920161618.21780-2-n.zhandarovich@fintech.ru>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240920161618.21780-1-n.zhandarovich@fintech.ru>
-References: <20240920161618.21780-1-n.zhandarovich@fintech.ru>
+	s=arc-20240116; t=1726849035; c=relaxed/simple;
+	bh=HuuF0HTQ6WFY+mXiK4pXlbFhB5BaCKiY2zhgmUaNu9E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nVCUQAQzPryOZ4d1Xp68fqMY+DwihZAWFnFSPF0sgmoNDATZU5xbP0eXApEKaGxgTNoCq0wgaIy29d1YrbYxmvRURkBaha8RlQQ4T6wJvQnYbM0HssqN/dkZ4A9Mul+oMtT7gCCe5RMEt+b2+PDx+CwemfRAYMXh6c5BKqJiLxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Nj64M9N3; arc=none smtp.client-ip=209.85.208.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2f74e468baeso25709731fa.2;
+        Fri, 20 Sep 2024 09:17:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1726849032; x=1727453832; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yus/AQyI3rsCXQIWU3lsDABmOqGllelGHD+9XPDtl5E=;
+        b=Nj64M9N3Z8dhcU56U7nQkJQy3kHeowv/X9ouXOMatXyM1sQmFwJsbTgXRJlV0YA7sd
+         3QsDek2bIVqk1yYUMLq+1EhFBeEQo95nL/5S5rDc3d+kWQLAAbC99nNZhi31t/5ARlqg
+         3w5ZVx7RNwi7zkSEzNkxm+O7kPQY8cMLF+jIdin0fLvfI9DuSHtWdRP6lim+JF48X6aM
+         BplcsyimKAChC0tQFMYxIYBMux7bJ/RJxXvzqzbItEP9LGnBEMlCh0U7qp0VWeXmtU+x
+         1cGOjsbivnV6qVKowMA5DLPKi8wJ9CYSXZ3LakszMkHBuLzAq/+VlSTvo4WnyYIA+cZs
+         K4Ug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726849032; x=1727453832;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=yus/AQyI3rsCXQIWU3lsDABmOqGllelGHD+9XPDtl5E=;
+        b=aB0K3yNz9CpDGLqVoceyNnGuWuYgCpx4PQHL6aaIYRPlRwxsfl1T0y+Y9cmBZ9vjP/
+         15h4wT+vAOAgApAHMJqq29yi7vckEnwNxAPLCHeBOB1nuh8q5vZVCKGb5SjAzfpQVvMQ
+         NV+PICe9txXxdioIBu05Tcc/MqrV/UoCvCoI5ZvEeYw+nCSo2GSeJpCuFJ7H5KgraLVK
+         +/BGEtYauVA6RNiuo/mytfGAkNTlWR4JonG3eTtqd0pTWcExlNM4sKh1VdkTDEYH6+Sa
+         zc9DgditwEQqKTi6tU5X+RRbDPBtqAzr/oTbOBhDOah1m/n3Ym1BpK6NgMzHyZ34l6ce
+         2czw==
+X-Forwarded-Encrypted: i=1; AJvYcCWrYVmm9iVZdxkUf7IYvyLcMjJt6vK5NIT/tEz9BSLPysIl5vx6lPFor/gab6BWs4cz+6jyv1eR@vger.kernel.org, AJvYcCXZcE+6M3JKzN/sqGZv36XYu50lcbMBthGD9e0mfPP++ln3J52q+2TdT5HDPNBbTfjuEupGx2q6zzg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywq8JawW6LPt/S6vDTaRtkug4EzME0VteLPHvU4Wv5LRTcJhBZE
+	k6dKxZRTqAUNiN2ZWQ8Dv72yk7yaelbcIlDIzJ7asbyxTj+NIsTPe3NH05yZT2BrRr5jZf37Cqc
+	9trgqX6JMyhvdpzz/fHiMnHIhhjY=
+X-Google-Smtp-Source: AGHT+IHo9BDi/pflKc3O3aaWxueD/163MygMaTuY1VPxsuWcW3rm/uyqrSfTPlmBoWGONGKWDf8+AHlcmIp3wpBErq0=
+X-Received: by 2002:a05:651c:150b:b0:2f1:929b:af03 with SMTP id
+ 38308e7fff4ca-2f7cb329399mr23628841fa.30.1726849031286; Fri, 20 Sep 2024
+ 09:17:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: Ex16-02.fintech.ru (10.0.10.19) To Ex16-01.fintech.ru
- (10.0.10.18)
+References: <20240920122621.215397-1-sunjunchao2870@gmail.com> <Zu2FWuonuO97Q6V8@infradead.org>
+In-Reply-To: <Zu2FWuonuO97Q6V8@infradead.org>
+From: Julian Sun <sunjunchao2870@gmail.com>
+Date: Sat, 21 Sep 2024 00:17:00 +0800
+Message-ID: <CAHB1NagASLvnGiwB1kQwG4qEn+U_2SNxMfG+wnZ9C29d-Ov6Sg@mail.gmail.com>
+Subject: Re: [PATCH 1/3] xfs: Do not unshare ranges beyond EOF
+To: Christoph Hellwig <hch@infradead.org>
+Cc: linux-fsdevel@vger.kernel.org, linux-xfs@vger.kernel.org, 
+	chandan.babu@oracle.com, djwong@kernel.org, stable@vger.kernel.org, 
+	syzbot+296b1c84b9cbf306e5a0@syzkaller.appspotmail.com, 
+	Dave Chinner <david@fromorbit.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+Christoph Hellwig <hch@infradead.org> =E4=BA=8E2024=E5=B9=B49=E6=9C=8820=E6=
+=97=A5=E5=91=A8=E4=BA=94 22:23=E5=86=99=E9=81=93=EF=BC=9A
+>
+> On Fri, Sep 20, 2024 at 08:26:21PM +0800, Julian Sun wrote:
+> > Attempting to unshare extents beyond EOF will trigger
+> > the need zeroing case, which in turn triggers a warning.
+> > Therefore, let's skip the unshare process if extents are
+> > beyond EOF.
+> >
+> > Reported-and-tested-by: syzbot+296b1c84b9cbf306e5a0@syzkaller.appspotma=
+il.com
+> > Closes: https://syzkaller.appspot.com/bug?extid=3D296b1c84b9cbf306e5a0
+> > Fixes: 32a38a499104 ("iomap: use write_begin to read pages to unshare")
+> > Inspired-by: Dave Chinner <david@fromorbit.com>
+> > Signed-off-by: Julian Sun <sunjunchao2870@gmail.com>
+> > ---
+> >  fs/xfs/xfs_reflink.c | 4 ++++
+> >  1 file changed, 4 insertions(+)
+> >
+> > diff --git a/fs/xfs/xfs_reflink.c b/fs/xfs/xfs_reflink.c
+> > index 6fde6ec8092f..65509ff6aba0 100644
+> > --- a/fs/xfs/xfs_reflink.c
+> > +++ b/fs/xfs/xfs_reflink.c
+> > @@ -3,6 +3,7 @@
+> >   * Copyright (C) 2016 Oracle.  All Rights Reserved.
+> >   * Author: Darrick J. Wong <darrick.wong@oracle.com>
+> >   */
+> > +#include "linux/fs.h"
+>
+> This really should not be needed (and is the wrong way to include
+> non-local headers anyway).
 
-commit 3f79e541593fecc2a90687eb7162e15a499caa33 upstream.
+Yes, it was added automatically by vscode... I will recheck the patch
+before sending it.
+>
+> >  #include "xfs.h"
+> >  #include "xfs_fs.h"
+> >  #include "xfs_shared.h"
+> > @@ -1669,6 +1670,9 @@ xfs_reflink_unshare(
+> >
+> >       if (!xfs_is_reflink_inode(ip))
+> >               return 0;
+> > +     /* don't try to unshare any ranges beyond EOF. */
+> > +     if (offset + len > i_size_read(inode))
+> > +             len =3D i_size_read(inode) - offset;
+>
+> So i_size is a byte granularity value, but later on iomap_file_unshare
+> operates on blocks.  If you reduce the value like this here this means
+> we can't ever unshare the last block of a file if the file size is
+> not block aligned, which feels odd.
 
-ofdm_index[] is used to indicate how many power compensation is needed to
-current thermal value. For internal PA module or 2.4G band, the min_index
-is different from other cases.
+Got it, will fix it in patch v2. Thanks for your review and explantion.
+>
 
-This issue originally is reported by Dan. He found the size of ofdm_index[]
-is 2, but access index 'i' may be equal to 2 if 'rf' is 2 in case of
-'is2t'.
-
-In fact, the chunk of code is added to wrong place, so move it back to
-proper place, and then power compensation and buffer overflow are fixed.
-
-Reported-by: Dan Carpenter <dan.carpenter@oracle.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Kalle Valo <kvalo@codeaurora.org>
-Link: https://lore.kernel.org/r/20201207031903.7599-1-pkshih@realtek.com
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
----
- drivers/net/wireless/realtek/rtlwifi/rtl8192de/dm.c | 13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/dm.c b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/dm.c
-index b3f25a228532..6cc9c7649eda 100644
---- a/drivers/net/wireless/realtek/rtlwifi/rtl8192de/dm.c
-+++ b/drivers/net/wireless/realtek/rtlwifi/rtl8192de/dm.c
-@@ -986,18 +986,19 @@ static void rtl92d_dm_txpower_tracking_callback_thermalmeter(
- 			rtlpriv->dm.cck_index);
- 	}
- 	for (i = 0; i < rf; i++) {
--		if (ofdm_index[i] > OFDM_TABLE_SIZE_92D - 1)
-+		if (ofdm_index[i] > OFDM_TABLE_SIZE_92D - 1) {
- 			ofdm_index[i] = OFDM_TABLE_SIZE_92D - 1;
--		else if (ofdm_index[i] < ofdm_min_index)
-+		} else if (internal_pa ||
-+			   rtlhal->current_bandtype == BAND_ON_2_4G) {
-+			if (ofdm_index[i] < ofdm_min_index_internal_pa)
-+				ofdm_index[i] = ofdm_min_index_internal_pa;
-+		} else if (ofdm_index[i] < ofdm_min_index) {
- 			ofdm_index[i] = ofdm_min_index;
-+		}
- 	}
- 	if (rtlhal->current_bandtype == BAND_ON_2_4G) {
- 		if (cck_index > CCK_TABLE_SIZE - 1) {
- 			cck_index = CCK_TABLE_SIZE - 1;
--		} else if (internal_pa ||
--			   rtlhal->current_bandtype == BAND_ON_2_4G) {
--			if (ofdm_index[i] < ofdm_min_index_internal_pa)
--				ofdm_index[i] = ofdm_min_index_internal_pa;
- 		} else if (cck_index < 0) {
- 			cck_index = 0;
- 		}
--- 
-2.25.1
-
+Thanks,
+--=20
+Julian Sun <sunjunchao2870@gmail.com>
 
