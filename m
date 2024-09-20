@@ -1,166 +1,119 @@
-Return-Path: <stable+bounces-76801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EE1897D3AB
-	for <lists+stable@lfdr.de>; Fri, 20 Sep 2024 11:33:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0E1A97D3C2
+	for <lists+stable@lfdr.de>; Fri, 20 Sep 2024 11:38:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5FB871C23CD7
-	for <lists+stable@lfdr.de>; Fri, 20 Sep 2024 09:33:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5DF551F2564E
+	for <lists+stable@lfdr.de>; Fri, 20 Sep 2024 09:38:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DE4013AD06;
-	Fri, 20 Sep 2024 09:33:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8D1A139D13;
+	Fri, 20 Sep 2024 09:38:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="HL3nKabx"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="a3kWlhvp"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fllv0015.ext.ti.com (fllv0015.ext.ti.com [198.47.19.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DA8133985
-	for <stable@vger.kernel.org>; Fri, 20 Sep 2024 09:33:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 763831CD2C;
+	Fri, 20 Sep 2024 09:38:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.141
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726824814; cv=none; b=eEZ0KKUmx6ZNA5nEZvKkXKpfGT8Hh4qN9QSSxkJDeQUz2+h1MnxcPui4lbrASgZmDY9rlHqzUWzVm5yT2auuw9e3aEe8LZZTs9zmf0u9y9q4IK8EneaVc6HTgrQQSXC5whGc2Hg6LlMuSqCKnfVJcsRsrKBU6hk8fcrHVNU9sNY=
+	t=1726825090; cv=none; b=rZP3EysnAHl2n6T1rzc/cNUhHoVJJ8iR7fbrGlAf43I+H4glIRMK/qxxSG58GPrfFsX1m/voR0zFMwtXo5Xe8FNyD9eJzwoGkXzQ48xX3nkym3JboOfGV3jl5KRn+5XymWOgdsBuQspWG+SKCqzu1b0EPd4Krw7XAerjqUmnZYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726824814; c=relaxed/simple;
-	bh=ZllCOAIlqEFkJuGBN7DnQ6ERmuR0KccvKqhqJjzU+9U=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Gcm8Cwh49aScnxj+GXtXH9lnyTbjiENfii2i2EXe/1UXLYIXLsqFKzzfqzP99n71oNgz/rO9l7CWQaT2TAIrN71M4MeWrxCk6uMtXSce3QNw4DN7Le22OnxM2+tMSjBVWL21b+lZezB/eSV5zSFludrY4hIs8MJ3yMbQpGF5qac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=HL3nKabx; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2068bee21d8so19861675ad.2
-        for <stable@vger.kernel.org>; Fri, 20 Sep 2024 02:33:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1726824811; x=1727429611; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zjDICCYdMHK9p7Vg6FZCstajk3nIc6y5STGdL+C9iIk=;
-        b=HL3nKabxsicmVuLOXk6UAUWjdsSu/1QhnV4PD74zYDw56l8VQnfovEBhJxMVngugb1
-         A0zOV67webqs/qTrFl6DxFr5kyidgix0FdqsdCsJLiMxTeM12LeiV/gPolJYKiVuBUDu
-         gRUmzvdRD3/smflKMkvjoBoNBKmQSFlPU60oE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726824811; x=1727429611;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zjDICCYdMHK9p7Vg6FZCstajk3nIc6y5STGdL+C9iIk=;
-        b=Dhqyc0C6/JAlzCOHforsh1OqGJC9+LGGHhRAI/tLIRnbEO7YoBci8I1pUvp52nRXHy
-         xFvXLz49VzGXqFqv5HIgGT0s6bY3RVWORY5Mw+EB13Xm+kIG6SUM+D6mooKZlLL8B62j
-         i0jh+pavB7HaFjlT8xSiJ8xncM7GrcTCqQ5CreC9QcqeC5sSiXi2WBPWm8J6zOghmGVg
-         KQKMuD5er6F6xSZEDy/3r0a08ceBXVWkRab9Gnxaxh8P/jlBPzU3xx4QvuLFtPDl6DHu
-         3B3XTsM31+qxMWq0f0a06w//qAVv6vX+0FJrzcoEiZoAPz+XPUM5gaHzjFm8+ZLHJl+g
-         GOqA==
-X-Forwarded-Encrypted: i=1; AJvYcCXTII+U9CDaR4Z23ef0p8AkTT8sCPoncwvLU9tUZylWxE43NmhRqqXrTBwXNGl7WDXPlnqZyL4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyYKRIig7s4/DdeKsHCSUVHweFfzVFUBGwzXuYUIO5F4Kvg+N5z
-	tUklNaB7BovWp0O9WskzQefyryKN5dJOeBvhPcNjf6Y+GpPxpZKcSxxe/o9FiQ==
-X-Google-Smtp-Source: AGHT+IGzYqWtcLKjVx7ZjBwW06hxxEP0BFYiYRaSYnmmStMwHRUjNQRiqIn0/PreFojq0PGVQRDxeA==
-X-Received: by 2002:a17:903:191:b0:207:1913:8bae with SMTP id d9443c01a7336-208d8397c1amr25156115ad.14.1726824811514;
-        Fri, 20 Sep 2024 02:33:31 -0700 (PDT)
-Received: from shivania.eng.vmware.com ([66.170.99.1])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20794602c3asm91638755ad.92.2024.09.20.02.33.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Sep 2024 02:33:31 -0700 (PDT)
-From: Shivani Agarwal <shivani.agarwal@broadcom.com>
-To: pchelkin@ispras.ru,
-	gregkh@linuxfoundation.org,
-	stable@vger.kernel.org
-Cc: chenridong@huawei.com,
-	gthelen@google.com,
-	lvc-project@linuxtesting.org,
-	mkoutny@suse.com,
-	shivani.agarwal@broadcom.com,
-	tj@kernel.org,
-	lizefan.x@bytedance.com,
-	cgroups@vger.kernel.org,
-	ajay.kaher@broadcom.com,
-	alexey.makhalov@broadcom.com,
-	vasavi.sirnapalli@broadcom.com,
-	Waiman Long <longman@redhat.com>,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Yafang Shao <laoar.shao@gmail.com>,
-	Yosry Ahmed <yosryahmed@google.com>
-Subject: [PATCH v5.4] cgroup: Move rcu_head up near the top of cgroup_root
-Date: Fri, 20 Sep 2024 02:33:22 -0700
-Message-Id: <20240920093322.101414-1-shivani.agarwal@broadcom.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20240919-5e2d9ccca61f5022e0b574af-pchelkin@ispras.ru>
-References: <20240919-5e2d9ccca61f5022e0b574af-pchelkin@ispras.ru>
+	s=arc-20240116; t=1726825090; c=relaxed/simple;
+	bh=zrcIwAMuAWkfsz35vSNkxOlMouu2YIEF3sxN+NveNUU=;
+	h=From:To:CC:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=QeRLLmoGw5mMLx0qjmWgjKqoGLVJA10a8ON7bl0M9jh3buRd7qeb2eQ8UTBFZylnyzJjk3vhBUAMmMCRT6QbFspuW7yEpMrbCNWfvS1TUjsFumQTGoNvaEWu8Se2tHUqNVSWA8tTvztRCD+zGmMv/HXW0UJHHILcCGVGlxB/blk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=a3kWlhvp; arc=none smtp.client-ip=198.47.19.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from lelv0265.itg.ti.com ([10.180.67.224])
+	by fllv0015.ext.ti.com (8.15.2/8.15.2) with ESMTP id 48K9bKjn025160;
+	Fri, 20 Sep 2024 04:37:20 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1726825040;
+	bh=D0mskHRaG8uO51XB0w+Qjupk2ywjqNEa2TOnwxQtqhQ=;
+	h=From:To:CC:Subject:In-Reply-To:References:Date;
+	b=a3kWlhvpf7IkGjWVT7lDFl5kpISZbS1j+VWuBtJR9VfBSU3nRHit4EI73t62rGy8m
+	 hMuak9pesVjAl9mfLUqywH+IJBAmsyq72nQxbgDpafsse10uCQUWAmJ3Q3itijTb/k
+	 Qfx183o9yeTivmeYQ6bqd1Ht+sdtxnzoXLoHXf5w=
+Received: from DFLE107.ent.ti.com (dfle107.ent.ti.com [10.64.6.28])
+	by lelv0265.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 48K9bKDD015708
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Fri, 20 Sep 2024 04:37:20 -0500
+Received: from DFLE108.ent.ti.com (10.64.6.29) by DFLE107.ent.ti.com
+ (10.64.6.28) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Fri, 20
+ Sep 2024 04:37:20 -0500
+Received: from lelvsmtp5.itg.ti.com (10.180.75.250) by DFLE108.ent.ti.com
+ (10.64.6.29) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23 via
+ Frontend Transport; Fri, 20 Sep 2024 04:37:20 -0500
+Received: from localhost (kamlesh.dhcp.ti.com [172.24.227.123])
+	by lelvsmtp5.itg.ti.com (8.15.2/8.15.2) with ESMTP id 48K9bJLg087632;
+	Fri, 20 Sep 2024 04:37:20 -0500
+From: Kamlesh Gurudasani <kamlesh@ti.com>
+To: Danny Tsen <dtsen@linux.ibm.com>, <linux-crypto@vger.kernel.org>
+CC: <stable@vger.kernel.org>, <herbert@gondor.apana.org.au>,
+        <leitao@debian.org>, <nayna@linux.ibm.com>, <appro@cryptogams.org>,
+        <linux-kernel@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
+        <mpe@ellerman.id.au>, <ltcgcw@linux.vnet.ibm.com>, <dtsen@us.ibm.com>,
+        Danny
+ Tsen <dtsen@linux.ibm.com>
+Subject: Re: [PATCH v3] crypto: Removing CRYPTO_AES_GCM_P10.
+In-Reply-To: <20240919113637.144343-1-dtsen@linux.ibm.com>
+References: <20240919113637.144343-1-dtsen@linux.ibm.com>
+Date: Fri, 20 Sep 2024 15:07:19 +0530
+Message-ID: <87ldzmll80.fsf@kamlesh.i-did-not-set--mail-host-address--so-tickle-me>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-C2ProcessedOrg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
 
-From: Waiman Long <longman@redhat.com>
+Danny Tsen <dtsen@linux.ibm.com> writes:
 
-commit a7fb0423c201ba12815877a0b5a68a6a1710b23a upstream.
+> Data mismatch found when testing ipsec tunnel with AES/GCM crypto.
+> Disabling CRYPTO_AES_GCM_P10 in Kconfig for this feature.
+>
+> Fixes: fd0e9b3e2ee6 ("crypto: p10-aes-gcm - An accelerated AES/GCM stitched implementation")
+> Fixes: cdcecfd9991f ("crypto: p10-aes-gcm - Glue code for AES/GCM stitched implementation")
+> Fixes: 45a4672b9a6e2 ("crypto: p10-aes-gcm - Update Kconfig and Makefile")
+>
+> Signed-off-by: Danny Tsen <dtsen@linux.ibm.com>
+nitpick
+checkpatch complains
+Please use correct Fixes: style 'Fixes: <12 chars of sha1> ("<title line>")' -
+ie: 'Fixes: 45a4672b9a6e ("crypto: p10-aes-gcm - Update Kconfig and
+Makefile")'
 
-Commit d23b5c577715 ("cgroup: Make operations on the cgroup root_list RCU
-safe") adds a new rcu_head to the cgroup_root structure and kvfree_rcu()
-for freeing the cgroup_root.
+There is no rule for 12 characters, but it is generally preferred.
+I guess it is just a typo for you as you have correctly added other
+Fixes tag.
 
-The current implementation of kvfree_rcu(), however, has the limitation
-that the offset of the rcu_head structure within the larger data
-structure must be less than 4096 or the compilation will fail. See the
-macro definition of __is_kvfree_rcu_offset() in include/linux/rcupdate.h
-for more information.
+If you end up re-spinning, please correct this
 
-By putting rcu_head below the large cgroup structure, any change to the
-cgroup structure that makes it larger run the risk of causing build
-failure under certain configurations. Commit 77070eeb8821 ("cgroup:
-Avoid false cacheline sharing of read mostly rstat_cpu") happens to be
-the last straw that breaks it. Fix this problem by moving the rcu_head
-structure up before the cgroup structure.
+Also, just to understand,
 
-Fixes: d23b5c577715 ("cgroup: Make operations on the cgroup root_list RCU safe")
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Closes: https://lore.kernel.org/lkml/20231207143806.114e0a74@canb.auug.org.au/
-Signed-off-by: Waiman Long <longman@redhat.com>
-Acked-by: Yafang Shao <laoar.shao@gmail.com>
-Reviewed-by: Yosry Ahmed <yosryahmed@google.com>
-Reviewed-by: Michal Koutný <mkoutny@suse.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-[Shivani: Modified to apply on v5.4.y]
-Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
----
- include/linux/cgroup-defs.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+"A Fixes: tag indicates that the patch fixes an issue in a previous
+ commit. It is used to make it easy to determine where a bug originated,
+ which can help review a bug fix"
 
-diff --git a/include/linux/cgroup-defs.h b/include/linux/cgroup-defs.h
-index 1803c222e204..4042d9e509a6 100644
---- a/include/linux/cgroup-defs.h
-+++ b/include/linux/cgroup-defs.h
-@@ -467,6 +467,10 @@ struct cgroup_root {
- 	/* Unique id for this hierarchy. */
- 	int hierarchy_id;
- 
-+	/* A list running through the active hierarchies */
-+	struct list_head root_list;
-+	struct rcu_head rcu;
-+
- 	/* The root cgroup.  Root is destroyed on its release. */
- 	struct cgroup cgrp;
- 
-@@ -476,10 +480,6 @@ struct cgroup_root {
- 	/* Number of cgroups in the hierarchy, used only for /proc/cgroups */
- 	atomic_t nr_cgrps;
- 
--	/* A list running through the active hierarchies */
--	struct list_head root_list;
--	struct rcu_head rcu;
--
- 	/* Hierarchy-specific flags */
- 	unsigned int flags;
- 
--- 
-2.39.4
+from 
+https://docs.kernel.org/process/submitting-patches.html
 
+should there not be just single Fixes tag? as bug originated from one
+commit, may be the commit that actually broke the functionality.
+
+P.S.
+Not expert on this, just trying to learn.
+
+Kamlesh
 
