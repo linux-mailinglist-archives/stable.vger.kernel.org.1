@@ -1,210 +1,122 @@
-Return-Path: <stable+bounces-76832-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B04A97D7ED
-	for <lists+stable@lfdr.de>; Fri, 20 Sep 2024 17:58:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CF5497D80A
+	for <lists+stable@lfdr.de>; Fri, 20 Sep 2024 18:10:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C5327B21FD3
-	for <lists+stable@lfdr.de>; Fri, 20 Sep 2024 15:58:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 901F61C225AD
+	for <lists+stable@lfdr.de>; Fri, 20 Sep 2024 16:10:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F87917C7BE;
-	Fri, 20 Sep 2024 15:58:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D706117BEC8;
+	Fri, 20 Sep 2024 16:10:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="H8tWhv+x"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R3pylaOe"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B71C17B500;
-	Fri, 20 Sep 2024 15:58:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C51B11CA9;
+	Fri, 20 Sep 2024 16:10:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726847907; cv=none; b=VfhKpZE75W8fP6NJRBsJtxgyIyqveYOK2biGvHyZ6wfMKHNkxZR8rzhaj9kK8M716BuVwC0pXWtv51+eaHFamYnO1smnd/UDR+PE0+3F+1cN5w7tqbHOqCpcarMBAQgqvhaTZPT5Ez3aMuX7oGtRvuQNoHOTTfSiWR1N8AM728g=
+	t=1726848624; cv=none; b=Qd4PMtQ06md1L/x+85++7tITufffGZHN4LeETgScYCI4k9cDJo24RL8+epxGqvaTHaF5qAs9/6GU0apStvopJ5f6/VXmreiQ8rWPBKntE176YzDfpPHlDhkxDVo5LUtDkGn5gVn0Yd6NzlAZZ4JbRLgWBxCv7OsJaeM+VsC5NII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726847907; c=relaxed/simple;
-	bh=zLM+YLXaA5lEuFe9YAJfou02iRG8+n5NAeXbA0HlgeU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rWJmjIV9Pt6j4mTGAIz1OhhhIKvFfn8pmqWVawlNICOxoYE0/rJc7UEdOjRxwFkM3Q/GB0zG5noKrwAMRjGYe+lYIQ3bBV7z/s5XnIWQTbt0aHbbh2RDNAiuHNkrERuKzwqDSCnjf14jJZusvcjP6e8COQBZXP6UwNDAoK1o1RQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=H8tWhv+x; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1726847905; x=1758383905;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=zLM+YLXaA5lEuFe9YAJfou02iRG8+n5NAeXbA0HlgeU=;
-  b=H8tWhv+x+WMax0Ra+VVf21kxEAQv7IrMn76eEv3zZ13h/a+qVtNTzfv3
-   zuyeAHFs83yRSd68z0bJZOdB6ng0KSVDm66HS4sXeTb6WjPP/Zxs67T/w
-   azkJuVY5IQnjp1dNTRIXE6G/DcgOvuVFYewAtRhr3p9ctk3AbUxYWX1sa
-   00/9npRoRDX2BTaxTmRFgTBj/b2uWfvwY1n3HX0JOFH2ceW0zFWlwse9K
-   9Ce28C6MdeCKG68PqkKJP7iLZmK9TXLGTOEFtf0lPEx12wiqnS47q/030
-   Taif5e7V7fcpOSuY+UFi+66CpB2CnzHYxwp3Ev5jVG9Oz7Ag/CXjGe5g5
-   w==;
-X-CSE-ConnectionGUID: iaXai1Z8Roy5Z6eOgkjr5Q==
-X-CSE-MsgGUID: 8WK5JKuHSFq491jVGnJX4A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11201"; a="29589909"
-X-IronPort-AV: E=Sophos;i="6.10,244,1719903600"; 
-   d="scan'208";a="29589909"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Sep 2024 08:58:25 -0700
-X-CSE-ConnectionGUID: 2drIpfLHTQihvx03s8xsDQ==
-X-CSE-MsgGUID: b0r/LDokS4Ss+PC+ekgAww==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,244,1719903600"; 
-   d="scan'208";a="75306215"
-Received: from black.fi.intel.com ([10.237.72.28])
-  by orviesa004.jf.intel.com with ESMTP; 20 Sep 2024 08:58:23 -0700
-Received: by black.fi.intel.com (Postfix, from userid 1003)
-	id E4FA71C2; Fri, 20 Sep 2024 18:58:21 +0300 (EEST)
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-To: Serge Semin <fancer.lancer@gmail.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	dmaengine@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Viresh Kumar <vireshk@kernel.org>,
-	Vinod Koul <vkoul@kernel.org>,
-	stable@vger.kernel.org,
-	Ferry Toth <fntoth@gmail.com>
-Subject: [PATCH v3 1/1] dmaengine: dw: Select only supported masters for ACPI devices
-Date: Fri, 20 Sep 2024 18:56:17 +0300
-Message-ID: <20240920155820.3340081-1-andriy.shevchenko@linux.intel.com>
-X-Mailer: git-send-email 2.43.0.rc1.1336.g36b5255a03ac
+	s=arc-20240116; t=1726848624; c=relaxed/simple;
+	bh=RWEMaJGaXsfxEE0C0lo9T9ZyPmvAAJNaokH0TQxxmw0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lDvvdFIzlrMnnPqqY5A6as1jFV8rCONSGrbqy7jjadnoOa2Jawo+ftPOFsdHVl/HUkjqweNoLqxP7yfNj0F8cdOqVxdqGGxoQ6c1+t4bNsvMSxmD6qDn1piz7J4X62lJdQBAo/hhLnUoIhsSMUp6lkl1xGrnPW43kjcZ5nPMb0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R3pylaOe; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5c25f01879fso2690900a12.1;
+        Fri, 20 Sep 2024 09:10:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1726848621; x=1727453421; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Cr7XGOcXUziTvyQlX8y4MaSV3P+QXr0/0cPRJVwRwZw=;
+        b=R3pylaOeye/T9XNN9JS7dUvXb/NhqFgdGBSTGZ+GJaNxw/Q1wr1d+TYiZY3Huoft/F
+         x64731mQjWt5cAcLb2U5INz4KHwQzZ/C2LOz/0ZxeeSwpWI9InFEg4a8BZ0u41ejVdkJ
+         NshTb85y4rNfooePpz/V0Z406PPArN2ma5WooRuwTV1ZOfTE2iDNZTS8q89dMQImAFFu
+         xs5oBBFQjYc2mM9leAIjUFyn9YkPGVK3RO0KTpRK7p3FMJMlAszKqeJzM/HR5MrxVC9K
+         1Q7MkMzMw2V4kcBNArUsQRtLS0lhaEYgORS2GiO+0CzKSluVcYE0gYbUt3FrAJ4cbR0S
+         Ddcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726848621; x=1727453421;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Cr7XGOcXUziTvyQlX8y4MaSV3P+QXr0/0cPRJVwRwZw=;
+        b=NituikGtLZnrSDVUzvcKtp/ZlJv3iPqbv54uirG7qAFKbyGd7oCckQClJRBM2PunDO
+         cSZEmQaxbvBGOGdre953GxEZlgQxj/WDL6CEvYfnmO3uv+cS97Z/e6WcrGWMesQ0yFrW
+         TCnmjJtgOfR/5icfEkTzhWP60D1KC1YSIeOwvrWweQ5Nf1XVakhQOUM0M4TVgzo20B+7
+         HOu6W1XXa/xhdkhtpPuC5lUFyHaEU+BAaYoP/Z9EReTtQPHL3qrwKuxuCu1vJtJgFPXG
+         ggbRCFyyiM+6GEPmLDaaYEgoDJVQC4v540i1NVTjmkt9+P1vv5fDZVhgy1v3IgSB+KFR
+         aptg==
+X-Forwarded-Encrypted: i=1; AJvYcCU7QSmX0YvKch4vwkWxTIwQ07AQ2kzO8zLnOVYtphSto3w9ovmsat2uJVTJm/+vJPOF9+T455asUeeU@vger.kernel.org, AJvYcCUCJd1ozGQ1UhAkGhfGyuZfepK4auhdBbANKo3mw5Jvjf7Gkipt1S50o3JXABirUc8WoHIwOVqH@vger.kernel.org, AJvYcCVVYgUDf3SlgZ1hZ2Fc1BM44y5nQWg634mv6iEsBEs6XPQut3VePqEgsE/+TcEQYH4dI+pKkkErlkz91rEn@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz9H5geGu69a5JRF5g/07BqsNllXUVNmoAjtxm7YED7JRk0Qigu
+	x2vSXpQQNvHdzJhN2jVs4jPP+oz0rVtCk7nQb6XY9m5OJCOhVxt65vplK0Tskvy7siCLx/oyc+B
+	C2cYWKWIaJ+bpJtLv3iusa1lPe0o=
+X-Google-Smtp-Source: AGHT+IGB1VoPgmOEpq+79L6y06ORo5qnfiSPcOleFXvXlBXrfzDDPKj98YPlqM00JgvUC/DGeu1v7WP7Lhtg0Vobn2o=
+X-Received: by 2002:a05:6402:3588:b0:5c3:cc6d:19eb with SMTP id
+ 4fb4d7f45d1cf-5c464a384b5mr2119053a12.2.1726848621078; Fri, 20 Sep 2024
+ 09:10:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240920123022.215863-1-sunjunchao2870@gmail.com>
+ <Zu2EcEnlW1KJfzzR@infradead.org> <20240920143727.GB21853@frogsfrogsfrogs>
+ <Zu2NeawWugiaWxKA@infradead.org> <20240920150213.GD21853@frogsfrogsfrogs> <Zu2PsafDRpsu3Ryu@infradead.org>
+In-Reply-To: <Zu2PsafDRpsu3Ryu@infradead.org>
+From: Julian Sun <sunjunchao2870@gmail.com>
+Date: Sat, 21 Sep 2024 00:10:10 +0800
+Message-ID: <CAHB1NagfhamaCnV_spH_uSU4u0sDWrESVy3uU=TfGN51tSBm6A@mail.gmail.com>
+Subject: Re: [PATCH 3/3] vfs: return -EOVERFLOW in generic_remap_checks() when
+ overflow check fails
+To: Christoph Hellwig <hch@infradead.org>
+Cc: "Darrick J. Wong" <djwong@kernel.org>, linux-fsdevel@vger.kernel.org, 
+	linux-xfs@vger.kernel.org, viro@zeniv.linux.org.uk, brauner@kernel.org, 
+	jack@suse.cz, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Serge Semin <fancer.lancer@gmail.com>
+Christoph Hellwig <hch@infradead.org> =E4=BA=8E2024=E5=B9=B49=E6=9C=8820=E6=
+=97=A5=E5=91=A8=E4=BA=94 23:07=E5=86=99=E9=81=93=EF=BC=9A
+>
+> On Fri, Sep 20, 2024 at 08:02:13AM -0700, Darrick J. Wong wrote:
+> > > Which isn't exactly the integer overflow case described here :)
+> >
+> > Hm?  This patch is touching the error code you get for failing alignmen=
+t
+> > checks, not the one you get for failing check_add_overflow.  EOVERFLOW
+> > seems like an odd return code for unaligned arguments.  Though you're
+> > right that EINVAL is verrry vague.
+>
+> I misread the patch (or rather mostly read the description).  Yes,
+> -EOVERFLOW is rather odd here.  And generic_copy_file_checks doesn't
+> even have alignment checks, so the message is wrong as well.  I'll
+> wait for Jun what the intention was here - maybe the diff got
+> misapplied and this was supposed to be applied to an  overflow
+> check that returns -EINVAL?
 
-The recently submitted fix-commit revealed a problem in the iDMA 32-bit
-platform code. Even though the controller supported only a single master
-the dw_dma_acpi_filter() method hard-coded two master interfaces with IDs
-0 and 1. As a result the sanity check implemented in the commit
-b336268dde75 ("dmaengine: dw: Add peripheral bus width verification")
-got incorrect interface data width and thus prevented the client drivers
-from configuring the DMA-channel with the EINVAL error returned. E.g.,
-the next error was printed for the PXA2xx SPI controller driver trying
-to configure the requested channels:
+Yeah... The patch was originally intended for overflow check and
+sourced from [1], differs from its description. After applying it to
+the latest kernel version, there were no warnings or errors, but I
+suspect there may be an issue with the git apply process. I'll fix it
+in the patch v2, thanks.
 
-> [  164.525604] pxa2xx_spi_pci 0000:00:07.1: DMA slave config failed
-> [  164.536105] pxa2xx_spi_pci 0000:00:07.1: failed to get DMA TX descriptor
-> [  164.543213] spidev spi-SPT0001:00: SPI transfer failed: -16
+[1]: https://lore.kernel.org/linux-fsdevel/20240906033202.1252195-1-sunjunc=
+hao2870@gmail.com/
+>
 
-The problem would have been spotted much earlier if the iDMA 32-bit
-controller supported more than one master interfaces. But since it
-supports just a single master and the iDMA 32-bit specific code just
-ignores the master IDs in the CTLLO preparation method, the issue has
-been gone unnoticed so far.
-
-Fix the problem by specifying the default master ID for both memory
-and peripheral devices in the driver data. Thus the issue noticed for
-the iDMA 32-bit controllers will be eliminated and the ACPI-probed
-DW DMA controllers will be configured with the correct master ID by
-default.
-
-Cc: stable@vger.kernel.org
-Fixes: b336268dde75 ("dmaengine: dw: Add peripheral bus width verification")
-Fixes: 199244d69458 ("dmaengine: dw: add support of iDMA 32-bit hardware")
-Reported-by: Ferry Toth <fntoth@gmail.com>
-Closes: https://lore.kernel.org/dmaengine/ZuXbCKUs1iOqFu51@black.fi.intel.com/
-Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Closes: https://lore.kernel.org/dmaengine/ZuXgI-VcHpMgbZ91@black.fi.intel.com/
-Co-developed-by: Serge Semin <fancer.lancer@gmail.com>
-Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
----
-v3: rewrote to use driver_data
-v2: https://lore.kernel.org/r/20240919185151.7331-1-fancer.lancer@gmail.com
-
- drivers/dma/dw/acpi.c     | 6 ++++--
- drivers/dma/dw/internal.h | 8 ++++++++
- drivers/dma/dw/pci.c      | 4 ++--
- 3 files changed, 14 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/dma/dw/acpi.c b/drivers/dma/dw/acpi.c
-index c510c109d2c3..b6452fffa657 100644
---- a/drivers/dma/dw/acpi.c
-+++ b/drivers/dma/dw/acpi.c
-@@ -8,13 +8,15 @@
- 
- static bool dw_dma_acpi_filter(struct dma_chan *chan, void *param)
- {
-+	struct dw_dma *dw = to_dw_dma(chan->device);
-+	struct dw_dma_chip_pdata *data = dev_get_drvdata(dw->dma.dev);
- 	struct acpi_dma_spec *dma_spec = param;
- 	struct dw_dma_slave slave = {
- 		.dma_dev = dma_spec->dev,
- 		.src_id = dma_spec->slave_id,
- 		.dst_id = dma_spec->slave_id,
--		.m_master = 0,
--		.p_master = 1,
-+		.m_master = data->m_master,
-+		.p_master = data->p_master,
- 	};
- 
- 	return dw_dma_filter(chan, &slave);
-diff --git a/drivers/dma/dw/internal.h b/drivers/dma/dw/internal.h
-index 779b3cbcf30d..99d9f61b2254 100644
---- a/drivers/dma/dw/internal.h
-+++ b/drivers/dma/dw/internal.h
-@@ -51,11 +51,15 @@ struct dw_dma_chip_pdata {
- 	int (*probe)(struct dw_dma_chip *chip);
- 	int (*remove)(struct dw_dma_chip *chip);
- 	struct dw_dma_chip *chip;
-+	u8 m_master;
-+	u8 p_master;
- };
- 
- static __maybe_unused const struct dw_dma_chip_pdata dw_dma_chip_pdata = {
- 	.probe = dw_dma_probe,
- 	.remove = dw_dma_remove,
-+	.m_master = 0,
-+	.p_master = 1,
- };
- 
- static const struct dw_dma_platform_data idma32_pdata = {
-@@ -72,6 +76,8 @@ static __maybe_unused const struct dw_dma_chip_pdata idma32_chip_pdata = {
- 	.pdata = &idma32_pdata,
- 	.probe = idma32_dma_probe,
- 	.remove = idma32_dma_remove,
-+	.m_master = 0,
-+	.p_master = 0,
- };
- 
- static const struct dw_dma_platform_data xbar_pdata = {
-@@ -88,6 +94,8 @@ static __maybe_unused const struct dw_dma_chip_pdata xbar_chip_pdata = {
- 	.pdata = &xbar_pdata,
- 	.probe = idma32_dma_probe,
- 	.remove = idma32_dma_remove,
-+	.m_master = 0,
-+	.p_master = 0,
- };
- 
- int dw_dma_fill_pdata(struct device *dev, struct dw_dma_platform_data *pdata);
-diff --git a/drivers/dma/dw/pci.c b/drivers/dma/dw/pci.c
-index adf2d69834b8..a3aae3d1c093 100644
---- a/drivers/dma/dw/pci.c
-+++ b/drivers/dma/dw/pci.c
-@@ -56,10 +56,10 @@ static int dw_pci_probe(struct pci_dev *pdev, const struct pci_device_id *pid)
- 	if (ret)
- 		return ret;
- 
--	dw_dma_acpi_controller_register(chip->dw);
--
- 	pci_set_drvdata(pdev, data);
- 
-+	dw_dma_acpi_controller_register(chip->dw);
-+
- 	return 0;
- }
- 
--- 
-2.43.0.rc1.1336.g36b5255a03ac
-
+Thanks,
+--=20
+Julian Sun <sunjunchao2870@gmail.com>
 
