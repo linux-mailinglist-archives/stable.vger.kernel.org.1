@@ -1,196 +1,143 @@
-Return-Path: <stable+bounces-76838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 468C497D900
-	for <lists+stable@lfdr.de>; Fri, 20 Sep 2024 19:26:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9260F97D9A0
+	for <lists+stable@lfdr.de>; Fri, 20 Sep 2024 20:39:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E42681F22C15
-	for <lists+stable@lfdr.de>; Fri, 20 Sep 2024 17:26:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 59A27284538
+	for <lists+stable@lfdr.de>; Fri, 20 Sep 2024 18:39:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C14122AEF1;
-	Fri, 20 Sep 2024 17:26:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2190117BB21;
+	Fri, 20 Sep 2024 18:39:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TyzzhJPT"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="QC6KPhG5"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA3281EF1D
-	for <stable@vger.kernel.org>; Fri, 20 Sep 2024 17:26:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58A6B156F2B;
+	Fri, 20 Sep 2024 18:39:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726853193; cv=none; b=KA2DO2UhNc1+IFxjWntNVQ5MDCGBumNPVtE2kE7EDjFxGNkpCgs6XZsa2Y4eaelfKn8DZBiwAfH9gPo0CQY+y7w7nxf4vghQoblPWmv3sgOf5CKVUa7kVTZDB1ioVNy8KC+NeF62wObnZ7l0VK/yA1ckFKGAFE4xlWZSThYtBnM=
+	t=1726857562; cv=none; b=n12/Nkv9wn7abuDQmspwmMGQP2RV2l9c9gK1oS8dMCde9la/N/VqgyLSAMXmii3rWPy5WAcru6N5dgXuUZxjxtiCSOLsl7u7wFMNSnm8HCkjXxGSLZ6FNPNRr2qJJ7at4e0LaCGSGTmAMrr2+kcSUKHdxKup/aeaG8ZJHz0/jzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726853193; c=relaxed/simple;
-	bh=99J/E8a3Dd5i7gMfkBZzBX9Boeg1oCZlNmlkkdALR1c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=I7xNplnNGKnRKL45mHb62gXL6XnjSsWxz19jiCvrD+40j2iDpVJbF1s1Ytz3TFjVwI+ZwQ4Z65i6gMQacsjxUw/lB2xfV7FxJTN6rcv34MMsLO3Qn5+hEOWjAfoSTzIVjYyANeqNK6vPXao2TbjGbsbd3tVXvcDJQOoD1/yZiFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TyzzhJPT; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1726853192; x=1758389192;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=99J/E8a3Dd5i7gMfkBZzBX9Boeg1oCZlNmlkkdALR1c=;
-  b=TyzzhJPT/7FBaZSLsIs4XFuEX843oYJftTPElFiMZfX1+T8Sj4ZueY6E
-   ijt7/CUs6qW0mrVcxyxlrAswUOLAVTgDRvlpZhULaVnEgZMnudt4rXdvs
-   XZYYhdeXS6blDkkh/KHV7SuEFq3ZSfKdItkb/cxupGKmq08E6kKKb/5RP
-   1R6TmeGjGMJPkOdn860u6C6nno3PY52SvDd8FobIezvCCFeXNm+U/lnTL
-   F+joUPkqOfQ/DJL/NGFqvW2l7BksBoAyMWeyc0/TKCY5ZvWzw3V8AFjhu
-   FJBoVRrG5+2rL3yFlht0WZSMUQGnDYKJmGmaz+USEaYsDTl8KkWn6oZ58
-   g==;
-X-CSE-ConnectionGUID: bZVa0n1bQnasVAxIPeR5Jg==
-X-CSE-MsgGUID: BzuIhi97QUanHCMkaAK8pg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11201"; a="51289082"
-X-IronPort-AV: E=Sophos;i="6.10,244,1719903600"; 
-   d="scan'208";a="51289082"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Sep 2024 10:26:31 -0700
-X-CSE-ConnectionGUID: VnXQZk9zRfG1xKemdVNpvA==
-X-CSE-MsgGUID: Q4cVWDIbS9SE7WgdIqvXhw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,244,1719903600"; 
-   d="scan'208";a="74919705"
-Received: from opintica-mobl1 (HELO mwauld-desk.intel.com) ([10.245.245.19])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Sep 2024 10:26:30 -0700
-From: Matthew Auld <matthew.auld@intel.com>
-To: intel-xe@lists.freedesktop.org
-Cc: Matthew Brost <matthew.brost@intel.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] drm/xe: fix UAF around queue destruction
-Date: Fri, 20 Sep 2024 18:26:00 +0100
-Message-ID: <20240920172559.208358-2-matthew.auld@intel.com>
-X-Mailer: git-send-email 2.46.0
+	s=arc-20240116; t=1726857562; c=relaxed/simple;
+	bh=1T/lgYDGhoKWKe/iewrgMynEOMOM9YDpp7ygWqqgofo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=P9o08s/kQloY6iJYVaAxkwy0OrKcgrncgTHUk8cfwGPFctOQPqvu0wDi1YLIsabmo6ACIpaKkQ0Pft14SFOTS48ciREt70AtnXxGkY0APWgZZ4zVEsd5vmeGkoos6Yk6kkbBJR2/+NLRLjn6icF5XVPD4DT0sA8Lb2X7Myr8xlQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=QC6KPhG5; arc=none smtp.client-ip=199.89.1.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 008.lax.mailroute.net (Postfix) with ESMTP id 4X9LlD5KGHz6ClY9H;
+	Fri, 20 Sep 2024 18:39:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1726857552; x=1729449553; bh=AdEEt3u0eY6KT/KDZt7EFUB/
+	vvIuBAZCZRyYfatoQtQ=; b=QC6KPhG50IMXHhtddPfTQobHuMeducQhYT/Csx3/
+	5BFtDYko6WTw45NrlhTVJGdZE91nndwEZU9TIpLDwnrRCfRCsaOgf4B1U2e6lozd
+	GljV4rCls8+GHcTm3qX/K8jgWT+CwUM3ONKiZjDx/q3Lqa99Pazg9nu10Nbqt2ky
+	jwLzcPq8MtTijyIcG41XOKaw401plORhIaRfNs6AVPTsNJx6tjTXMMi4QIj8Ytcp
+	eEaM33s2vM4XVfFWm9u0lUmImKWrwJ5h0uVRqbz+mHgb75EBiD0JvuTDQESM4nXX
+	D091BuufdWJXO0c2lbxj6OhrA36e8xe6H2F/BEQvLi/Zww==
+X-Virus-Scanned: by MailRoute
+Received: from 008.lax.mailroute.net ([127.0.0.1])
+ by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id RZSk16_plGrt; Fri, 20 Sep 2024 18:39:12 +0000 (UTC)
+Received: from [100.66.154.22] (unknown [104.135.204.82])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4X9Ll20h3fz6ClY9C;
+	Fri, 20 Sep 2024 18:39:09 +0000 (UTC)
+Message-ID: <ec301d5f-cfee-41ce-ae1a-5679b2da2cce@acm.org>
+Date: Fri, 20 Sep 2024 11:39:09 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 2/2] ufs: core: requeue aborted request
+To: =?UTF-8?B?UGV0ZXIgV2FuZyAo546L5L+h5Y+LKQ==?= <peter.wang@mediatek.com>,
+ "linux-scsi@vger.kernel.org" <linux-scsi@vger.kernel.org>,
+ "avri.altman@wdc.com" <avri.altman@wdc.com>,
+ "jejb@linux.ibm.com" <jejb@linux.ibm.com>,
+ "alim.akhtar@samsung.com" <alim.akhtar@samsung.com>,
+ "martin.petersen@oracle.com" <martin.petersen@oracle.com>
+Cc: "linux-mediatek@lists.infradead.org"
+ <linux-mediatek@lists.infradead.org>,
+ =?UTF-8?B?SmlhamllIEhhbyAo6YOd5Yqg6IqCKQ==?= <jiajie.hao@mediatek.com>,
+ =?UTF-8?B?Q0MgQ2hvdSAo5ZGo5b+X5p2wKQ==?= <cc.chou@mediatek.com>,
+ =?UTF-8?B?RWRkaWUgSHVhbmcgKOm7g+aZuuWCkSk=?= <eddie.huang@mediatek.com>,
+ =?UTF-8?B?QWxpY2UgQ2hhbyAo6LaZ54+u5Z2HKQ==?= <Alice.Chao@mediatek.com>,
+ "quic_nguyenb@quicinc.com" <quic_nguyenb@quicinc.com>,
+ wsd_upstream <wsd_upstream@mediatek.com>,
+ =?UTF-8?B?RWQgVHNhaSAo6JSh5a6X6LuSKQ==?= <Ed.Tsai@mediatek.com>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ =?UTF-8?B?TGluIEd1aSAo5qGC5p6XKQ==?= <Lin.Gui@mediatek.com>,
+ =?UTF-8?B?Q2h1bi1IdW5nIFd1ICjlt6vpp7/lro8p?= <Chun-hung.Wu@mediatek.com>,
+ =?UTF-8?B?VHVuLXl1IFl1ICjmuLjmlabogb8p?= <Tun-yu.Yu@mediatek.com>,
+ =?UTF-8?B?Q2hhb3RpYW4gSmluZyAo5LqV5pyd5aSpKQ==?=
+ <Chaotian.Jing@mediatek.com>, =?UTF-8?B?UG93ZW4gS2FvICjpq5jkvK/mlocp?=
+ <Powen.Kao@mediatek.com>, =?UTF-8?B?TmFvbWkgQ2h1ICjmnLHoqaDnlLAp?=
+ <Naomi.Chu@mediatek.com>, =?UTF-8?B?UWlsaW4gVGFuICjosK3pupLpup8p?=
+ <Qilin.Tan@mediatek.com>
+References: <20240910073035.25974-1-peter.wang@mediatek.com>
+ <20240910073035.25974-3-peter.wang@mediatek.com>
+ <e42abf07-ba6b-4301-8717-8d5b01d56640@acm.org>
+ <04e392c00986ac798e881dcd347ff5045cf61708.camel@mediatek.com>
+ <858c4b6b-fcbc-4d51-8641-051aeda387c5@acm.org>
+ <524e9da9196cc0acf497ff87eba3a8043b780332.camel@mediatek.com>
+ <6203d7c9-b33c-4bf1-aca3-5fc8ba5636b9@acm.org>
+ <6fc025d7ffb9d702a117381fb5da318b40a24246.camel@mediatek.com>
+ <46d8be04-10db-4de1-8a59-6cd402bcecb1@acm.org>
+ <61a1678cad16dcb15f1e215ff1c47476666f0ee8.camel@mediatek.com>
+ <78c7fc74-81c2-40e4-b050-1d65dec96d0a@acm.org>
+ <f350a1dee5a03347b5e88b9d7249223ce7b72c08.camel@mediatek.com>
+ <beeec868-b4ac-4025-859b-35a828cd2f8e@acm.org>
+ <4f9e2ac99bcb981b11dc6454165818c5de6fd4d6.camel@mediatek.com>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <4f9e2ac99bcb981b11dc6454165818c5de6fd4d6.camel@mediatek.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
 
-We currently do stuff like queuing the final destruction step on a
-random system wq, which will outlive the driver instance. With bad
-timing we can teardown the driver with one or more work workqueue still
-being alive leading to various UAF splats. Add a fini step to ensure
-user queues are properly torn down. At this point GuC should already be
-nuked so queue itself should no longer be referenced from hw pov.
+On 9/19/24 7:02 PM, Peter Wang (=E7=8E=8B=E4=BF=A1=E5=8F=8B) wrote:
+> On Thu, 2024-09-19 at 11:49 -0700, Bart Van Assche wrote:
+>> For legacy and MCQ mode, I prefer the following behavior for
+>> ufshcd_abort_all():
+>> * ufshcd_compl_one_cqe() ignores commands with status OCS_ABORTED.
+>> * ufshcd_release_scsi_cmd() is called either by ufshcd_abort_one() or
+>>     by ufshcd_abort_all().
+>>
+>> Do you agree with making the changes proposed above?
+>=20
+> This might not work, as SDB mode doesn't ignore
+> OCS: INVALID_OCS_VALUE but rather notifies SCSI to requeue.
 
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/2317
-Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
-Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-Cc: Matthew Brost <matthew.brost@intel.com>
-Cc: <stable@vger.kernel.org> # v6.8+
----
- drivers/gpu/drm/xe/xe_device.c       |  6 +++++-
- drivers/gpu/drm/xe/xe_device_types.h |  3 +++
- drivers/gpu/drm/xe/xe_guc_submit.c   | 32 +++++++++++++++++++++++++++-
- 3 files changed, 39 insertions(+), 2 deletions(-)
+cmd->result should be ignored for aborted commands. Hence,
+how OCS_INVALID_COMMAND_STATUS is translated by
+ufshcd_transfer_rsp_status() is not relevant for aborted commands.
 
-diff --git a/drivers/gpu/drm/xe/xe_device.c b/drivers/gpu/drm/xe/xe_device.c
-index cb5a9fd820cf..90b3478ed7cd 100644
---- a/drivers/gpu/drm/xe/xe_device.c
-+++ b/drivers/gpu/drm/xe/xe_device.c
-@@ -297,6 +297,9 @@ static void xe_device_destroy(struct drm_device *dev, void *dummy)
- 	if (xe->unordered_wq)
- 		destroy_workqueue(xe->unordered_wq);
- 
-+	if (xe->destroy_wq)
-+		destroy_workqueue(xe->destroy_wq);
-+
- 	ttm_device_fini(&xe->ttm);
- }
- 
-@@ -360,8 +363,9 @@ struct xe_device *xe_device_create(struct pci_dev *pdev,
- 	xe->preempt_fence_wq = alloc_ordered_workqueue("xe-preempt-fence-wq", 0);
- 	xe->ordered_wq = alloc_ordered_workqueue("xe-ordered-wq", 0);
- 	xe->unordered_wq = alloc_workqueue("xe-unordered-wq", 0, 0);
-+	xe->destroy_wq = alloc_workqueue("xe-destroy-wq", 0, 0);
- 	if (!xe->ordered_wq || !xe->unordered_wq ||
--	    !xe->preempt_fence_wq) {
-+	    !xe->preempt_fence_wq || !xe->destroy_wq) {
- 		/*
- 		 * Cleanup done in xe_device_destroy via
- 		 * drmm_add_action_or_reset register above
-diff --git a/drivers/gpu/drm/xe/xe_device_types.h b/drivers/gpu/drm/xe/xe_device_types.h
-index 5ad96d283a71..515385b916cc 100644
---- a/drivers/gpu/drm/xe/xe_device_types.h
-+++ b/drivers/gpu/drm/xe/xe_device_types.h
-@@ -422,6 +422,9 @@ struct xe_device {
- 	/** @unordered_wq: used to serialize unordered work, mostly display */
- 	struct workqueue_struct *unordered_wq;
- 
-+	/** @destroy_wq: used to serialize user destroy work, like queue */
-+	struct workqueue_struct *destroy_wq;
-+
- 	/** @tiles: device tiles */
- 	struct xe_tile tiles[XE_MAX_TILES_PER_DEVICE];
- 
-diff --git a/drivers/gpu/drm/xe/xe_guc_submit.c b/drivers/gpu/drm/xe/xe_guc_submit.c
-index fbbe6a487bbb..66441efa0bcd 100644
---- a/drivers/gpu/drm/xe/xe_guc_submit.c
-+++ b/drivers/gpu/drm/xe/xe_guc_submit.c
-@@ -276,10 +276,37 @@ static struct workqueue_struct *get_submit_wq(struct xe_guc *guc)
- }
- #endif
- 
-+static void guc_exec_queue_fini_async(struct xe_exec_queue *q);
-+
-+static void xe_guc_submit_fini(struct xe_guc *guc)
-+{
-+	struct xe_device *xe = guc_to_xe(guc);
-+	struct xe_exec_queue *q;
-+	unsigned long index;
-+
-+	mutex_lock(&guc->submission_state.lock);
-+	xa_for_each(&guc->submission_state.exec_queue_lookup, index, q) {
-+		struct xe_gpu_scheduler *sched = &q->guc->sched;
-+
-+		xe_assert(xe, !kref_read(&q->refcount));
-+
-+		xe_sched_submission_stop(sched);
-+
-+		if (exec_queue_registered(q) && !exec_queue_wedged(q))
-+			guc_exec_queue_fini_async(q);
-+	}
-+	mutex_unlock(&guc->submission_state.lock);
-+
-+	drain_workqueue(xe->destroy_wq);
-+
-+	xe_assert(xe, xa_empty(&guc->submission_state.exec_queue_lookup));
-+}
-+
- static void guc_submit_fini(struct drm_device *drm, void *arg)
- {
- 	struct xe_guc *guc = arg;
- 
-+	xe_guc_submit_fini(guc);
- 	xa_destroy(&guc->submission_state.exec_queue_lookup);
- 	free_submit_wq(guc);
- }
-@@ -1268,13 +1295,16 @@ static void __guc_exec_queue_fini_async(struct work_struct *w)
- 
- static void guc_exec_queue_fini_async(struct xe_exec_queue *q)
- {
-+	struct xe_guc *guc = exec_queue_to_guc(q);
-+	struct xe_device *xe = guc_to_xe(guc);
-+
- 	INIT_WORK(&q->guc->fini_async, __guc_exec_queue_fini_async);
- 
- 	/* We must block on kernel engines so slabs are empty on driver unload */
- 	if (q->flags & EXEC_QUEUE_FLAG_PERMANENT || exec_queue_wedged(q))
- 		__guc_exec_queue_fini_async(&q->guc->fini_async);
- 	else
--		queue_work(system_wq, &q->guc->fini_async);
-+		queue_work(xe->destroy_wq, &q->guc->fini_async);
- }
- 
- static void __guc_exec_queue_fini(struct xe_guc *guc, struct xe_exec_queue *q)
--- 
-2.46.0
+> So what we need to correct is to notify SCSI to requeue
+> when MCQ mode receives OCS: ABORTED as well.
+
+Unless the host controller violates the UFSHCI specification, the
+command status is not set for aborted commands in legacy mode. Let's
+keep the code uniform for legacy mode, MCQ mode, compliant and non-
+ompliant controllers and not rely on the command status for aborted
+commands.
+
+Thanks,
+
+Bart.
 
 
