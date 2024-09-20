@@ -1,69 +1,69 @@
-Return-Path: <stable+bounces-76797-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 530C497D399
-	for <lists+stable@lfdr.de>; Fri, 20 Sep 2024 11:28:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3B8F97D39C
+	for <lists+stable@lfdr.de>; Fri, 20 Sep 2024 11:30:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E25B01F25D29
-	for <lists+stable@lfdr.de>; Fri, 20 Sep 2024 09:28:57 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A04FAB23343
+	for <lists+stable@lfdr.de>; Fri, 20 Sep 2024 09:30:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E433714A093;
-	Fri, 20 Sep 2024 09:28:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD3E913D610;
+	Fri, 20 Sep 2024 09:29:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="WeV4/Ant"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="h5SFab9i"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35910143898
-	for <stable@vger.kernel.org>; Fri, 20 Sep 2024 09:28:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF23D7DA87
+	for <stable@vger.kernel.org>; Fri, 20 Sep 2024 09:29:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726824492; cv=none; b=H4znNZrIK8zix+V0qWgHcfAN3KAnKKKPXX6mGL+WVVIa07YS3y0h3vdtZWM+LVIK2EkAJwF3J3d7RMCTeU/5laqA36RKejEx+n+gdrEY+2AcERn/+Nc1RnyhX7Ov0ThCmNly2x0nyR2g+Mq3EdJjz0z8NyfRLEQ7WMWsol3bAFU=
+	t=1726824567; cv=none; b=Ilwn5KcE7Qj9SrJu7/NH9xFUQBAiGGFGlqtJdUeZvs6YV1ot7fZpLRtrwbqrHRjUqA9vijI0wlwFkLEKDk6C6k+eblIdIL8ZL2oAUYwm0Clg/T2/Zgeq6MKTwXetkYAUFdeUwfs8unhXr8e5k0+MtZzYjU6a7uZWj+ZpNTLpFZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726824492; c=relaxed/simple;
-	bh=Y5Lhb1lEZ1zJkOQ249BuEkfmGYxxn+oEQD4Mg33C1U0=;
+	s=arc-20240116; t=1726824567; c=relaxed/simple;
+	bh=OK1BPg2c347cJWfiwvBnva3E4LM3n5XtQ0M3Nf3QdzA=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=kCNK4jPxpFoGvhuwLZWMJ6zbBvT4Kp8dwtUDGXIrC+Cpmxhyexd1uupTzoE+RFv8DmZr2cd9qwGsonFKZiH/k5Lpp10fSKgejJF+PiJeZYageViTYd58gJbXuXS5Y89vz7W4tBn2F3JLyJyk7mz+u2JUtlSLl+19HW4qa19XUug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=WeV4/Ant; arc=none smtp.client-ip=209.85.214.176
+	 MIME-Version; b=juPGAqDHWtll8g0z+z8D3hQLbBC9FO/hSLwCrwcG1EAbXughmTc01QUznQbkIYhn9LLLkk9Z14HGP6PoCCVcno6WjxeXLhaqtPPV2gAZC+C+xhGm0FT3y59/48TGL4kmcXyAOYMdveMC877xH+mKIZ2SUZrFW7o75Lwjw8pbuvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=h5SFab9i; arc=none smtp.client-ip=209.85.214.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-206f9b872b2so15879745ad.3
-        for <stable@vger.kernel.org>; Fri, 20 Sep 2024 02:28:11 -0700 (PDT)
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2057835395aso21095115ad.3
+        for <stable@vger.kernel.org>; Fri, 20 Sep 2024 02:29:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1726824490; x=1727429290; darn=vger.kernel.org;
+        d=broadcom.com; s=google; t=1726824565; x=1727429365; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Y5Lhb1lEZ1zJkOQ249BuEkfmGYxxn+oEQD4Mg33C1U0=;
-        b=WeV4/Ant8anK6ymmz3ErqlUilpSc1Ql5d8aEE2jGDa3ATyB5tN3dFe6JCpZe7N6s+N
-         IX4g5QayvR4Tw5ttqLSm74FBRaA+GRN3nlp+21Iq86Hj4Dq5JaN8EBbgk+9OQHRCCkxr
-         DuwoPCSHUSBlVn5/i7H/7+yhxJfZSmYPTArcg=
+        bh=hSnGEnOTkyY80dZlv3hsxDLTFJVq0qKWNdJjMRPuL7g=;
+        b=h5SFab9iCqDQ9bYab198mJSki0ZY4tnY/rpXNgik++7gpi22F+3P6oJ/W+dc+IpWet
+         iG5CiuIZxs4GM9NEdGCKcMv4X9xKp5HMMLQbqd8zBJOOKgpFKqrRDtVlFNGq4DdDAWup
+         D5oYnVWswzeuVEakmfkMPdywqI1d1ZNU7CoTo=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726824490; x=1727429290;
+        d=1e100.net; s=20230601; t=1726824565; x=1727429365;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Y5Lhb1lEZ1zJkOQ249BuEkfmGYxxn+oEQD4Mg33C1U0=;
-        b=sfYRvSPfrMGHLtGYBzcPI2jkuoT5VUIstuE8g9jo3tRpxY8f7MCkL7KA4gViYYSIz7
-         zgm5NffZ/uZNTh2qJpsAtNe+0qemGJJkLyghD/iVFsuFnj145ESkdN+ZDvOqdvywjYPN
-         tMTlZTvawcPxvNO/sQdg1V72ab4hKlNzpF/hVNXjntCocGWuRUFxPtBj+O7d3L9J3UfJ
-         sR89BPV04CcnsY4LQxRqFhHykyCCGUc6pPlXioi6+FKpBwQlMUaAVfTVKQtLfsitVi1F
-         6XsbP+h1S0e5mNFz699aSxIBfS0tP59ELC6lEa9wyUsQgqPsV2alCYXBC0yN2wszGJJQ
-         aiTg==
-X-Forwarded-Encrypted: i=1; AJvYcCVlMek02xfCE7e/KPpaw3+o8pjweVLqX25nSLOuZmPZuLykhh44SRd4Umxh5qqS9arsoV1+EWs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzGCzpPzMLvWxtpMFqmOFObZGG5JKsksjW4YS78TuimfbK78ga1
-	XSmZqL66T3NN2v65MXkAHYH2v8NPBa/1znkr8VqWLJRWFBoZalcr46rCHmcg8Q==
-X-Google-Smtp-Source: AGHT+IGFdhtqLL0p/NC041FHjjv9PTjEG7ihD72i2Hj/9Obz9C0AtvY6ONBsnIzpaxi1QD136eHrpg==
-X-Received: by 2002:a17:902:ea12:b0:206:9818:5439 with SMTP id d9443c01a7336-208d980773bmr22015025ad.19.1726824490364;
-        Fri, 20 Sep 2024 02:28:10 -0700 (PDT)
+        bh=hSnGEnOTkyY80dZlv3hsxDLTFJVq0qKWNdJjMRPuL7g=;
+        b=wF73uk6Yo3zjSo4NME1gfeefMeTMSihn1iT7JaxVYGr3dy3W1yvNJ6aY5N41fdBl30
+         cgeNhmVE0WnQ+i4YZRaZbStO7EgiSqlvvcI+nbrEDIurAw3Gdwv5nfeCYZrePnuqisp5
+         PLR2NllMl1wnVxCaRBOWuiJJN5nwJpwciNUrycwV4AMfa4JbLM/hjTnMXxC6Jixhy9x7
+         5NGucG2X2caKm85LoV2s/z/09AM/a46vqtCaQAMt/yr65oNugsET7wUPoPoj/cyvXx+s
+         jF88RFlj3sgk0YqOGuB2/UoMKwvlUVHknwUzylqDXljgY1H0wz+2HZlyyTZgQhvHeLMJ
+         yo/Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUUrgUD6ziCRuVnQ01ZHWof+oiuZWytUDSg+EzOa0aQwGartCQ+twh1XzLp3gzEJUoSA+v1q3A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxCgHGAKx5l9u4+ZdrY9yN7D/TV2Pg/92hta+k59F8JKYynL1oT
+	jHII21yaU+IrY0qrfNw2mlMKQt6gzndKM86EjOyMi6IEgwLMlKeNT2Y/LgqWGA==
+X-Google-Smtp-Source: AGHT+IH37Bjv++HS2PvnJMQud7IZ3lofoOVAV/d9QZ4v0NQnhQaJlz+w75vPQ+Dn5Ad6y7n4seRG4Q==
+X-Received: by 2002:a17:902:ce0e:b0:205:9510:1fb7 with SMTP id d9443c01a7336-208d8343aeemr29518545ad.14.1726824565160;
+        Fri, 20 Sep 2024 02:29:25 -0700 (PDT)
 Received: from shivania.eng.vmware.com ([66.170.99.1])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-207946d19c0sm91985695ad.146.2024.09.20.02.28.08
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2079473586esm91254485ad.277.2024.09.20.02.29.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Sep 2024 02:28:09 -0700 (PDT)
+        Fri, 20 Sep 2024 02:29:24 -0700 (PDT)
 From: Shivani Agarwal <shivani.agarwal@broadcom.com>
 To: pchelkin@ispras.ru,
 	gregkh@linuxfoundation.org,
@@ -76,10 +76,13 @@ Cc: chenridong@huawei.com,
 	tj@kernel.org,
 	lizefan.x@bytedance.com,
 	cgroups@vger.kernel.org,
-	ajay.kaher@broadcom.com
-Subject: Re: 5.10.225 stable kernel cgroup_mutex not held assertion failure
-Date: Fri, 20 Sep 2024 02:28:03 -0700
-Message-Id: <20240920092803.101047-1-shivani.agarwal@broadcom.com>
+	ajay.kaher@broadcom.com,
+	alexey.makhalov@broadcom.com,
+	vasavi.sirnapalli@broadcom.com,
+	Yafang Shao <laoar.shao@gmail.com>
+Subject: [PATCH v4.19] cgroup: Make operations on the cgroup root_list RCU safe
+Date: Fri, 20 Sep 2024 02:29:14 -0700
+Message-Id: <20240920092914.101171-1-shivani.agarwal@broadcom.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20240919-5e2d9ccca61f5022e0b574af-pchelkin@ispras.ru>
 References: <20240919-5e2d9ccca61f5022e0b574af-pchelkin@ispras.ru>
@@ -91,32 +94,132 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-> we've also encountered this problem. The thing is that commit 688325078a8b
-> ("cgroup/cpuset: Prevent UAF in proc_cpuset_show()") relies on the RCU
-> synchronization changes introduced by commit d23b5c577715 ("cgroup: Make
-> operations on the cgroup root_list RCU safe") which wasn't backported to
-> 5.10 as it couldn't be cleanly applied there. That commit converted access
-> to the root_list synchronization from depending on cgroup mutex to be
-> RCU-safe.
+From: Yafang Shao <laoar.shao@gmail.com>
 
-> 5.15 also has this problem, while 6.1 and later stables have the backport
-> of this RCU-changing commit so they are not affected. As mentioned by
-> Michal here:
-> https://lore.kernel.org/stable/xrc6s5oyf3b5hflsffklogluuvd75h2khanrke2laes3en5js2@6kvpkcxs7ufj/
+commit d23b5c577715892c87533b13923306acc6243f93 upstream.
 
-> In the next email I'll send the adapted to 5.10/5.15 commit along with its
-> upstream-fix to avoid build failure in some situations. Would be nice if
-> you give them a try. Thanks!
+At present, when we perform operations on the cgroup root_list, we must
+hold the cgroup_mutex, which is a relatively heavyweight lock. In reality,
+we can make operations on this list RCU-safe, eliminating the need to hold
+the cgroup_mutex during traversal. Modifications to the list only occur in
+the cgroup root setup and destroy paths, which should be infrequent in a
+production environment. In contrast, traversal may occur frequently.
+Therefore, making it RCU-safe would be beneficial.
 
-Thanks Fedor.
+Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+[fp: adapt to 5.10 mainly because of changes made by e210a89f5b07
+ ("cgroup.c: add helper __cset_cgroup_from_root to cleanup duplicated
+ codes")]
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+[Shivani: Modified to apply on v4.19.y]
+Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
+---
+ include/linux/cgroup-defs.h     |  1 +
+ kernel/cgroup/cgroup-internal.h |  2 +-
+ kernel/cgroup/cgroup.c          | 23 ++++++++++++++++-------
+ 3 files changed, 18 insertions(+), 8 deletions(-)
 
-Upstream commit 1be59c97c83c is merged in 5.4 with commit 10aeaa47e4aa and
-in 4.19 with commit 27d6dbdc6485. The issue is reproducible in 5.4 and 4.19
-also.
+diff --git a/include/linux/cgroup-defs.h b/include/linux/cgroup-defs.h
+index 56442d3b651d..1803c222e204 100644
+--- a/include/linux/cgroup-defs.h
++++ b/include/linux/cgroup-defs.h
+@@ -478,6 +478,7 @@ struct cgroup_root {
+ 
+ 	/* A list running through the active hierarchies */
+ 	struct list_head root_list;
++	struct rcu_head rcu;
+ 
+ 	/* Hierarchy-specific flags */
+ 	unsigned int flags;
+diff --git a/kernel/cgroup/cgroup-internal.h b/kernel/cgroup/cgroup-internal.h
+index 4168e7d97e87..b96bbbc4b19c 100644
+--- a/kernel/cgroup/cgroup-internal.h
++++ b/kernel/cgroup/cgroup-internal.h
+@@ -151,7 +151,7 @@ extern struct list_head cgroup_roots;
+ 
+ /* iterate across the hierarchies */
+ #define for_each_root(root)						\
+-	list_for_each_entry((root), &cgroup_roots, root_list)
++	list_for_each_entry_rcu((root), &cgroup_roots, root_list)
+ 
+ /**
+  * for_each_subsys - iterate all enabled cgroup subsystems
+diff --git a/kernel/cgroup/cgroup.c b/kernel/cgroup/cgroup.c
+index 30c058806702..39f5c00cca29 100644
+--- a/kernel/cgroup/cgroup.c
++++ b/kernel/cgroup/cgroup.c
+@@ -1246,7 +1246,7 @@ void cgroup_free_root(struct cgroup_root *root)
+ {
+ 	if (root) {
+ 		idr_destroy(&root->cgroup_idr);
+-		kfree(root);
++		kfree_rcu(root, rcu);
+ 	}
+ }
+ 
+@@ -1280,7 +1280,7 @@ static void cgroup_destroy_root(struct cgroup_root *root)
+ 	spin_unlock_irq(&css_set_lock);
+ 
+ 	if (!list_empty(&root->root_list)) {
+-		list_del(&root->root_list);
++		list_del_rcu(&root->root_list);
+ 		cgroup_root_count--;
+ 	}
+ 
+@@ -1333,7 +1333,6 @@ static struct cgroup *cset_cgroup_from_root(struct css_set *cset,
+ {
+ 	struct cgroup *res = NULL;
+ 
+-	lockdep_assert_held(&cgroup_mutex);
+ 	lockdep_assert_held(&css_set_lock);
+ 
+ 	if (cset == &init_css_set) {
+@@ -1353,13 +1352,23 @@ static struct cgroup *cset_cgroup_from_root(struct css_set *cset,
+ 		}
+ 	}
+ 
+-	BUG_ON(!res);
++	/*
++	 * If cgroup_mutex is not held, the cgrp_cset_link will be freed
++	 * before we remove the cgroup root from the root_list. Consequently,
++	 * when accessing a cgroup root, the cset_link may have already been
++	 * freed, resulting in a NULL res_cgroup. However, by holding the
++	 * cgroup_mutex, we ensure that res_cgroup can't be NULL.
++	 * If we don't hold cgroup_mutex in the caller, we must do the NULL
++	 * check.
++	 */
+ 	return res;
+ }
+ 
+ /*
+  * Return the cgroup for "task" from the given hierarchy. Must be
+- * called with cgroup_mutex and css_set_lock held.
++ * called with css_set_lock held to prevent task's groups from being modified.
++ * Must be called with either cgroup_mutex or rcu read lock to prevent the
++ * cgroup root from being destroyed.
+  */
+ struct cgroup *task_cgroup_from_root(struct task_struct *task,
+ 				     struct cgroup_root *root)
+@@ -1922,7 +1931,7 @@ void init_cgroup_root(struct cgroup_root *root, struct cgroup_sb_opts *opts)
+ {
+ 	struct cgroup *cgrp = &root->cgrp;
+ 
+-	INIT_LIST_HEAD(&root->root_list);
++	INIT_LIST_HEAD_RCU(&root->root_list);
+ 	atomic_set(&root->nr_cgrps, 1);
+ 	cgrp->root = root;
+ 	init_cgroup_housekeeping(cgrp);
+@@ -2004,7 +2013,7 @@ int cgroup_setup_root(struct cgroup_root *root, u16 ss_mask, int ref_flags)
+ 	 * care of subsystems' refcounts, which are explicitly dropped in
+ 	 * the failure exit path.
+ 	 */
+-	list_add(&root->root_list, &cgroup_roots);
++	list_add_rcu(&root->root_list, &cgroup_roots);
+ 	cgroup_root_count++;
+ 
+ 	/*
+-- 
+2.39.4
 
-I am sending the backport patch of d23b5c577715 and a7fb0423c201 for 5.4 and
-4.19 in the next email.
-
-Thanks,
-Shivani
 
