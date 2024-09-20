@@ -1,100 +1,135 @@
-Return-Path: <stable+bounces-76813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B355D97D569
-	for <lists+stable@lfdr.de>; Fri, 20 Sep 2024 14:32:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 198C097D56E
+	for <lists+stable@lfdr.de>; Fri, 20 Sep 2024 14:40:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 382E8B216F7
-	for <lists+stable@lfdr.de>; Fri, 20 Sep 2024 12:32:56 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A296E283D80
+	for <lists+stable@lfdr.de>; Fri, 20 Sep 2024 12:40:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FA8F5680;
-	Fri, 20 Sep 2024 12:32:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74B381E53A;
+	Fri, 20 Sep 2024 12:40:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eRdb5gs9"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EOemehYx"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACA031B85FC
-	for <stable@vger.kernel.org>; Fri, 20 Sep 2024 12:32:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 230AD1E498
+	for <stable@vger.kernel.org>; Fri, 20 Sep 2024 12:39:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726835572; cv=none; b=oqAR+RWDfDgFNfaDiLiz3vUwcG6d6THuUTqjDDAGtEx8u7z7z/NR8rxZ+V6MY2d4Irb/PUfOmdOBMQWHoaA681TpvDdB43YihgFXRX2zWIQrn7AexMH4By31KrawyC2cBZWiVhul7Sn6vuFZ4r4LUMpr3QwoIezRitfoaDagFGw=
+	t=1726836000; cv=none; b=dgR+gbwiMWnPgzDI4fthqc2mcqIZ4l2uycVfpffO6cBOkxz4owKFt/ozwBVNDwRHNz+V7egna4V4pmi1T5amdhEBhESrToBUjczHUzACwthWegElIYMA4ZVxQ4xgqmBKuNH0GoBgshnLvQU+SJTdnW2xDBnoJ6DDOlLMov1ZtHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726835572; c=relaxed/simple;
-	bh=6Rm9T4lC9u79gPJH1MrFRUOfw7oM+hVD1/mmQEGYbtI=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=EjwVTMerKKVamYGpjeqKLyK+6bN0Ka0okWrr0QA43bvdYnxPvBGZgtDLPPwHLRiGK4/gqLW6viBauXJ1W1n11oLhF77fu2wNgHcdqWiiagW8+5XOdjIb+04W0lTWIMosXx0fG68EiKqYX94t7fJgSTBO8M0oGaEIH+hN/uXsKP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eRdb5gs9; arc=none smtp.client-ip=192.198.163.9
+	s=arc-20240116; t=1726836000; c=relaxed/simple;
+	bh=umP9Eh3HHtH+2RE7AoiWYIkD8ktJgdL3V3Hkgr4Mwgs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cFnnweePaI8593OFfcYxUEYi264YWVB1objgnUv7nEdRmgjzoVk4bhYINvC9u2wWrHOsEHxrAaimO+7nf8+XHyZnplVq9XdReZdOT/p3Ot5DQSlKYEq5VgVKisEaFUwkFAa94qONLFQKiT4E5dgQyngaG8FlDHfSr8xzX377ns0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EOemehYx; arc=none smtp.client-ip=192.198.163.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1726835571; x=1758371571;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=6Rm9T4lC9u79gPJH1MrFRUOfw7oM+hVD1/mmQEGYbtI=;
-  b=eRdb5gs9Sve2dSfhnrbNhZBbJ2uPy7t75Ys7ozvOOrmVdofCGglW3+kb
-   Kj73WuDsgJjzlYwxqWBqOlLEzCo3XE0DLpE2XlP/8/XMmXbEn/wST4/Yn
-   t1GSsANkolfM+xphmYftqqAe9mCgPcj9cDcKTYMIWGX+V/COKMZrjb8Vt
-   5FKfERwr1h5a73XIOR9YjD3XM52EY3Rg4bvOffI6hUVSe+Z1ED921Je+4
-   rrj0fliRN6LjOZN4D6ZHqav1Fx+srbixaBvWlJwXYjp+Xaa4v9V9ItBVs
-   9XLD5D9Enjvusm17T/f7yaYXrh+IjftY4n1ZaKlYod/7VCGvxBZSFQBnJ
+  t=1726835998; x=1758371998;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=umP9Eh3HHtH+2RE7AoiWYIkD8ktJgdL3V3Hkgr4Mwgs=;
+  b=EOemehYxSlK8IleP5E4dAq2A9hoIg7icH/Ia3eGCSRwbgvJVk7RBFPam
+   2MwxLIr4CWauZTsh88wtKTlGZrJ6D0+9haFORBJAtVEUWnkLEZ2Is6Zb+
+   U/kHhgFuchIsxMIZMsixUJ+6xM2i7Kvk98hLP4U5eL5FQfLUm3sNE8+Xs
+   JYQ7yV8wUWF+7kHYK9kDA61zFlpX8CniI1guLf2lr79J/jZv3fz7lfHb3
+   TlmSjaNzxP3rLpIhd0da0F4NE3aRQb6unxwxq80/HDFrtPFSfAIDxily9
+   dmJ58/FQfFHv237GagHV9loaFYY2svSq1HIAvB36eqWvjdlTF0ZzeB7GV
    g==;
-X-CSE-ConnectionGUID: bHNZnbuNSZSkNSrFeVeoRQ==
-X-CSE-MsgGUID: Q52jsFIdTxOYjjddo5F2CA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11200"; a="36505737"
+X-CSE-ConnectionGUID: koW3qm54TGiwLoJW+gX0uw==
+X-CSE-MsgGUID: EqW1eVm5Tdq9rQHFmxx57A==
+X-IronPort-AV: E=McAfee;i="6700,10204,11200"; a="26023948"
 X-IronPort-AV: E=Sophos;i="6.10,244,1719903600"; 
-   d="scan'208";a="36505737"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Sep 2024 05:32:50 -0700
-X-CSE-ConnectionGUID: MEPxaVRTRR2/SIph7V7hww==
-X-CSE-MsgGUID: VLScHFjMSReLtJkqdUNAwg==
+   d="scan'208";a="26023948"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Sep 2024 05:39:57 -0700
+X-CSE-ConnectionGUID: YrW+I/n3SfmdJl1aGMzDmg==
+X-CSE-MsgGUID: 12CzCK0cSwe6JVIHthg97Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.10,244,1719903600"; 
-   d="scan'208";a="75070578"
-Received: from lkp-server01.sh.intel.com (HELO 53e96f405c61) ([10.239.97.150])
-  by orviesa005.jf.intel.com with ESMTP; 20 Sep 2024 05:32:49 -0700
-Received: from kbuild by 53e96f405c61 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1srcoY-000EOX-0J;
-	Fri, 20 Sep 2024 12:32:46 +0000
-Date: Fri, 20 Sep 2024 20:31:50 +0800
-From: kernel test robot <lkp@intel.com>
-To: Julian Sun <sunjunchao2870@gmail.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH 3/3] vfs: return -EOVERFLOW in generic_remap_checks()
- when overflow check fails
-Message-ID: <Zu1rNpdMj09RwpKZ@483fc80b4b15>
+   d="scan'208";a="70416793"
+Received: from opintica-mobl1 (HELO mwauld-desk.intel.com) ([10.245.245.19])
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Sep 2024 05:39:56 -0700
+From: Matthew Auld <matthew.auld@intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: Matthew Brost <matthew.brost@intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] drm/xe/guc_submit: fix UAF in run_job()
+Date: Fri, 20 Sep 2024 13:38:07 +0100
+Message-ID: <20240920123806.176709-2-matthew.auld@intel.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240920123022.215863-1-sunjunchao2870@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-Hi,
+The initial kref from dma_fence_init() should match up with whatever
+signals the fence, however here we are submitting the job first to the
+hw and only then grabbing the extra ref and even then we touch some
+fence state before this. This might be too late if the fence is
+signalled before we can grab the extra ref. Rather always grab the
+refcount early before we do the submission part.
 
-Thanks for your patch.
+Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/2811
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: <stable@vger.kernel.org> # v6.8+
+---
+ drivers/gpu/drm/xe/xe_guc_submit.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
-
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH 3/3] vfs: return -EOVERFLOW in generic_remap_checks() when overflow check fails
-Link: https://lore.kernel.org/stable/20240920123022.215863-1-sunjunchao2870%40gmail.com
-
+diff --git a/drivers/gpu/drm/xe/xe_guc_submit.c b/drivers/gpu/drm/xe/xe_guc_submit.c
+index fbbe6a487bbb..b33f3d23a068 100644
+--- a/drivers/gpu/drm/xe/xe_guc_submit.c
++++ b/drivers/gpu/drm/xe/xe_guc_submit.c
+@@ -766,12 +766,15 @@ guc_exec_queue_run_job(struct drm_sched_job *drm_job)
+ 	struct xe_guc *guc = exec_queue_to_guc(q);
+ 	struct xe_device *xe = guc_to_xe(guc);
+ 	bool lr = xe_exec_queue_is_lr(q);
++	struct dma_fence *fence;
+ 
+ 	xe_assert(xe, !(exec_queue_destroyed(q) || exec_queue_pending_disable(q)) ||
+ 		  exec_queue_banned(q) || exec_queue_suspended(q));
+ 
+ 	trace_xe_sched_job_run(job);
+ 
++	dma_fence_get(job->fence);
++
+ 	if (!exec_queue_killed_or_banned_or_wedged(q) && !xe_sched_job_is_error(job)) {
+ 		if (!exec_queue_registered(q))
+ 			register_exec_queue(q);
+@@ -782,12 +785,16 @@ guc_exec_queue_run_job(struct drm_sched_job *drm_job)
+ 
+ 	if (lr) {
+ 		xe_sched_job_set_error(job, -EOPNOTSUPP);
+-		return NULL;
++		fence = NULL;
+ 	} else if (test_and_set_bit(JOB_FLAG_SUBMIT, &job->fence->flags)) {
+-		return job->fence;
++		fence = job->fence;
+ 	} else {
+-		return dma_fence_get(job->fence);
++		fence = dma_fence_get(job->fence);
+ 	}
++
++	dma_fence_put(job->fence);
++
++	return fence;
+ }
+ 
+ static void guc_exec_queue_free_job(struct drm_sched_job *drm_job)
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+2.46.0
 
 
