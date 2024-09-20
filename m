@@ -1,100 +1,113 @@
-Return-Path: <stable+bounces-76812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4599D97D566
-	for <lists+stable@lfdr.de>; Fri, 20 Sep 2024 14:30:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17D7F97D563
+	for <lists+stable@lfdr.de>; Fri, 20 Sep 2024 14:30:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E64C51F23804
-	for <lists+stable@lfdr.de>; Fri, 20 Sep 2024 12:30:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D231E2841AB
+	for <lists+stable@lfdr.de>; Fri, 20 Sep 2024 12:30:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FC2D8494;
-	Fri, 20 Sep 2024 12:30:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EB241E53A;
+	Fri, 20 Sep 2024 12:30:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VXjK3MiV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j72DXoR/"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78A4A6FD5
-	for <stable@vger.kernel.org>; Fri, 20 Sep 2024 12:30:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2F4279FE;
+	Fri, 20 Sep 2024 12:30:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726835451; cv=none; b=cd1R66xzRXzwuXFt+iqU2i3A5fquQCeojSwwSRkzTAirUTR+43yg93GOHuEtZvvMCi095ASdr6boJgR1W/7WHgcuWJDXOFh+7AyyFWY08PSfvreW5kpGkw+4oLTthOs+IlCW93ua6dtbosD7SWni9KgUhtPFtM1rQAZDuHRAJh8=
+	t=1726835431; cv=none; b=lYNztgpFIPDDQ/KbxJD34L9H9EFvEzgpJ37VE5tJjpa15KaVgT2k6msSx/vehWImoROo7EIabIWAM3mIFw0XccIPEtoa/fizGB+CC6jl+scCWbknSP4vTJ3atWDbwQ2Es44FdNh+Dqi7PB5G45nwaDrNYv/9vhXyz8KrXOzd/cc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726835451; c=relaxed/simple;
-	bh=jnEUeVtfOZOIT1IMk/BasFNOEoxebd5+xbBcGPr4DI8=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=q783MNr5a1nlOrvTLrIkc9DUDAP+sOGFyfY4TzUWTXoMjWvKRD//Cj5MCdI7S+sPqWsyx0YQwUz+9/M6mU3zegHRrr68kpfKuKObUw4PJ1dsMeQ/YM6EqCKmY7Jg9/wtPLu1htNEELmthEapG8K/3Yh91H8ikETzUwdgVW2cRzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VXjK3MiV; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1726835449; x=1758371449;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=jnEUeVtfOZOIT1IMk/BasFNOEoxebd5+xbBcGPr4DI8=;
-  b=VXjK3MiVIIfJyITbKjb522fXAWRU8sE5kgQeYWQB1K8Si88N+NPZAKtE
-   HpzLCp6n4XgEEwED6DYWslIYmHfthtnUVGHBKNe9eXnv+Bw+GbetsTES1
-   0WV1aqysHy/quvL61zEWnVXDzzFqYAyKmQI9jwUSSWoK4U8K2BNQMVJGu
-   yRHNSuPiSRawuzJD39HP5BynxT2pgI2MAfhbqt/efcTARolsVwMQUsa5y
-   Jg48Isln/dU6VKw74VgTvTUk6UFG3U7W48ulR+F8Nd6ou9tuExWoJ6svr
-   vrz3rXM67S0OaEZDBFYMfwxcw2NWlnJwLqZZ7RecnRh49Z+sj7M2dRaxx
-   Q==;
-X-CSE-ConnectionGUID: RY3KbD/zQ/+umy315q8unA==
-X-CSE-MsgGUID: XIKt0MVVQj+ZTirdbVGKLg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11200"; a="25783058"
-X-IronPort-AV: E=Sophos;i="6.10,244,1719903600"; 
-   d="scan'208";a="25783058"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 Sep 2024 05:30:49 -0700
-X-CSE-ConnectionGUID: 4yl44i5LTJamPcVwi9BwyA==
-X-CSE-MsgGUID: Gq6tNk/nSS6WLaUJVlzmMg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,244,1719903600"; 
-   d="scan'208";a="101117334"
-Received: from lkp-server01.sh.intel.com (HELO 53e96f405c61) ([10.239.97.150])
-  by fmviesa001.fm.intel.com with ESMTP; 20 Sep 2024 05:30:48 -0700
-Received: from kbuild by 53e96f405c61 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1srcmb-000EOL-3C;
-	Fri, 20 Sep 2024 12:30:46 +0000
-Date: Fri, 20 Sep 2024 20:30:02 +0800
-From: kernel test robot <lkp@intel.com>
-To: Julian Sun <sunjunchao2870@gmail.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH 2/3] vfs: Fix implicit conversion problem when testing
- overflow case
-Message-ID: <Zu1qyk7bJYUaxMf7@483fc80b4b15>
+	s=arc-20240116; t=1726835431; c=relaxed/simple;
+	bh=vXL+U8ZESkDW3Fz7CembrXw7G0oLm5YisvxKnt8RenU=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=J1M4wPZg2Xct/KW4Yg3qaIUK5fPqqf71Km1Cb9FIa1Zeum/09s8qRS73gaqkmGZ13H0rJBQyWAT8xQOf+HPqhOsWfMz1MB2wv9yWf7U07qS4ywCudeK1JM9BN3OIAoqpMccKrQ1rsOTFFuqon1zlS7wWVFq6ZqvXQBcLLIsGY5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j72DXoR/; arc=none smtp.client-ip=209.85.216.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2daaa9706a9so1753355a91.1;
+        Fri, 20 Sep 2024 05:30:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1726835428; x=1727440228; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Q3rt44kILya/FqXwE7282lJPi+mCIQi4p14blEdUGEI=;
+        b=j72DXoR/SprDxSji90oTpAOgRjmWtIVw0MPuIWxjs5uXe0mX4iH5nk8bZ4wxIinqcI
+         vU9fwAy+ze0diHdPZYFPBPV0VZtR9I9GXZ+XjXbPSRTZmmZfEH2iicQu6DTUPXf2tX8v
+         hdWfzgMN8yWV64itNDvNwk+aTwdkg3JF4SF8briTO8xUr9VPgp2JUJgKYaydEyIKp7gy
+         ARhMK/zh+QFGyG9neR6aSt2QB4yX0DsMQlFB5IR9RC0/y+EWYlQIkHhpNeU4W9k58UCC
+         SNbNcsCWlj3V7Vwu9AeBWx1OuKw6dPrG1+uqE6vqthqZHF8RfhuS3IAMa0m6Xwe2Nwbj
+         gPgA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726835428; x=1727440228;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Q3rt44kILya/FqXwE7282lJPi+mCIQi4p14blEdUGEI=;
+        b=ctk+G8dS4cHpR7YiXQv2vN+mPwfh1pKL7zvbQXRKW8/IbwRg/zl/ucGaKj+ex3Clwd
+         WPaeY2bJpNGG1lpT/kdV7Xd1SpgvR+2ZCJhLWmQSscjLkBO8DU063MCYqCIHJ8TcI8tw
+         06MsjRH3jh5cwr9egyIaQs4O+69IvMPxSXxJEObQspPFW7ZzltUJGs4LV3ZvKviXbC2C
+         tdjV9NKPU1o/lLldQJRFgPHR55i+q/xJuTF6BtdjpRV5t5Rayr0/9aEJB99kTv431Mpf
+         vocdppaO1F9JQLwrQap2UZqSI7ltlhyxUSPmU5g8VJ/LrG4SPC0tOW9y8chNXuzE5pLD
+         ph7w==
+X-Forwarded-Encrypted: i=1; AJvYcCVSAxMMOJVquGJqORiIMxqVgYae42yrgL1IAcR5ZiTSj+3jECxm3nXcjhOaQ117Qvq3jQvDfm0VGeU=@vger.kernel.org, AJvYcCWdsOdJm85tj2bXfJ81uTiGs4LvH1z1mL1HY3A57HmbCWJdQO0vlc4ziERWK2qUmv2YrLgTPpPl@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz7CxBSLz5E93dkQmOV6baV0M2W5gyw7+ys/Sn0+27N0siohgtJ
+	OFOmHQrBv+cJcwwBQXU15GjI61ABthtkqHD7e3/AhAHl0xvDNW+659yWKK16
+X-Google-Smtp-Source: AGHT+IF6OJMj3uXNKT4dsEF2MiKr4TPtyooRzradxtXH9Wn1TlHix4eQ+dNsZR+YJQ9ThxwgLRqRPA==
+X-Received: by 2002:a17:90b:1c8c:b0:2d8:9c97:3c33 with SMTP id 98e67ed59e1d1-2dd7f6b7597mr3778730a91.28.1726835428233;
+        Fri, 20 Sep 2024 05:30:28 -0700 (PDT)
+Received: from localhost ([38.207.141.200])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2dd7f8302edsm1794926a91.16.2024.09.20.05.30.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 20 Sep 2024 05:30:27 -0700 (PDT)
+From: Julian Sun <sunjunchao2870@gmail.com>
+To: linux-fsdevel@vger.kernel.org,
+	linux-xfs@vger.kernel.org
+Cc: viro@zeniv.linux.org.uk,
+	brauner@kernel.org,
+	jack@suse.cz,
+	stable@vger.kernel.org,
+	Julian Sun <sunjunchao2870@gmail.com>
+Subject: [PATCH 3/3] vfs: return -EOVERFLOW in generic_remap_checks() when overflow check fails
+Date: Fri, 20 Sep 2024 20:30:22 +0800
+Message-Id: <20240920123022.215863-1-sunjunchao2870@gmail.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240920122851.215641-1-sunjunchao2870@gmail.com>
+Content-Transfer-Encoding: 8bit
 
-Hi,
+Keep it consistent with the handling of the same check within
+generic_copy_file_checks().
+Also, returning -EOVERFLOW in this case is more appropriate.
 
-Thanks for your patch.
+Signed-off-by: Julian Sun <sunjunchao2870@gmail.com>
+---
+ fs/remap_range.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
-
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH 2/3] vfs: Fix implicit conversion problem when testing overflow case
-Link: https://lore.kernel.org/stable/20240920122851.215641-1-sunjunchao2870%40gmail.com
-
+diff --git a/fs/remap_range.c b/fs/remap_range.c
+index 6fdeb3c8cb70..a26521ded5c8 100644
+--- a/fs/remap_range.c
++++ b/fs/remap_range.c
+@@ -42,7 +42,7 @@ static int generic_remap_checks(struct file *file_in, loff_t pos_in,
+ 
+ 	/* The start of both ranges must be aligned to an fs block. */
+ 	if (!IS_ALIGNED(pos_in, bs) || !IS_ALIGNED(pos_out, bs))
+-		return -EINVAL;
++		return -EOVERFLOW;
+ 
+ 	/* Ensure offsets don't wrap. */
+ 	if (check_add_overflow(pos_in, count, &tmp) ||
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+2.39.2
 
 
