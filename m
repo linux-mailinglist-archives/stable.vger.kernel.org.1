@@ -1,158 +1,151 @@
-Return-Path: <stable+bounces-76854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8D38097DD26
-	for <lists+stable@lfdr.de>; Sat, 21 Sep 2024 14:09:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3F5C97DD6B
+	for <lists+stable@lfdr.de>; Sat, 21 Sep 2024 16:18:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B105A1C20B7B
-	for <lists+stable@lfdr.de>; Sat, 21 Sep 2024 12:09:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 54D0D1F21A2D
+	for <lists+stable@lfdr.de>; Sat, 21 Sep 2024 14:18:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A97A1779BC;
-	Sat, 21 Sep 2024 12:08:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA2CF143887;
+	Sat, 21 Sep 2024 14:18:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fd/Ttpe/"
+	dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b="SAnnsd0I";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="gSyr5Saj"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fout1-smtp.messagingengine.com (fout1-smtp.messagingengine.com [103.168.172.144])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46F1F38FAD;
-	Sat, 21 Sep 2024 12:08:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 685BD3D64;
+	Sat, 21 Sep 2024 14:18:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726920521; cv=none; b=X8QhP+0UM2FVReQ0X2mQ2VE1/C6oS5DIbo9sIWGcvgMD2Ip/pUQOeGmEdeITheM3VeE/tfpB4pFOUTB6eDORnQjUEwOsZm43Um4ojjaLkt/aYavP3YvGGAGuz2APYjVtmD3v9ZVCJgVlyNQm4HS6FRnekUzOi2OIG474ESn2aIY=
+	t=1726928293; cv=none; b=HOgXyvS4TIY1kJWmiskfe93mmO/HzPXPSQkk3d5UQSP5tw8uHs5SWFGK9WxsyUFX6GE6Ru/6IV+LP5skmn7ZRcJDXS9r1mjTDNHxVzMto87NX8dVY7yasToLCTM7dPcxUp99MdcNDG23QFsQdAVyAYaCvJt3Y8ikMqZLDRbPiaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726920521; c=relaxed/simple;
-	bh=SOjzs+v7eOzqwKR2G9Ne4OiyrZ1NGf7Gf9sTP1nFP5U=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V+UtM4fWYjHe1yJf2n4rqKQHpzS3lQ0ZZ6o5axX6y7z/w8sVAc85tyIay0AIVzYuCDbGo04igCapHNt4Ln9taoxOY6tIhjlfwxUIy1MfqZLSAA83pEcWzVNcFeVGM1ZukkkwK0PmCPrXrvcV3g9l5LqqaCnUhB/RmfDmji3r2uw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fd/Ttpe/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7603EC4CEC2;
-	Sat, 21 Sep 2024 12:08:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726920520;
-	bh=SOjzs+v7eOzqwKR2G9Ne4OiyrZ1NGf7Gf9sTP1nFP5U=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fd/Ttpe/Z/Ej6Gy+jSS+qHgZn94zmhs+S2KBDGEam7ViCbpuNxYCYTTwZe1QXQnNr
-	 +W5v/v1xdET1KZsxq1ZSy8Rxe6ufNFxo1vDbOaoG5BZdzE5Cqa5cfkaloCWVGNCVXH
-	 8eKxX7VIRfiAQ2bFvoKiydVuLSWRpfj+N8UHOODnLqNbscJk7nj60AcoYZy0RM1lcd
-	 ATojI4nJwusjhexfLE/dkLRtuS0MFfK5XguyxXl/p+KxYrufc/h+JF6W14+ybq3L8w
-	 ZFZRgtXOkivXuBogvCA5oC6zxF8Klavo3lcErgIvVtB9GAWT873Jb/EqRbip1ZfUCl
-	 dkiq+4BzJy6Sg==
-From: Jarkko Sakkinen <jarkko@kernel.org>
-To: linux-integrity@vger.kernel.org
-Cc: James.Bottomley@HansenPartnership.com,
-	roberto.sassu@huawei.com,
-	mapengyu@gmail.com,
-	Jarkko Sakkinen <jarkko@kernel.org>,
-	stable@vger.kernel.org,
-	Mimi Zohar <zohar@linux.ibm.com>,
-	David Howells <dhowells@redhat.com>,
-	Paul Moore <paul@paul-moore.com>,
-	James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Peter Huewe <peterhuewe@gmx.de>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	keyrings@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v5 5/5] tpm: flush the auth session only when /dev/tpm0 is open
-Date: Sat, 21 Sep 2024 15:08:05 +0300
-Message-ID: <20240921120811.1264985-6-jarkko@kernel.org>
-X-Mailer: git-send-email 2.46.1
-In-Reply-To: <20240921120811.1264985-1-jarkko@kernel.org>
-References: <20240921120811.1264985-1-jarkko@kernel.org>
+	s=arc-20240116; t=1726928293; c=relaxed/simple;
+	bh=1xSNkVCgoXdttsVQU1hXaQ4G6ChXH0I/NQgJDoh/vAI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=j03oGmarTLFrgvOlMS1TXzibH94Z08g/2VqZhd6zSGlttrYshO9QpCyM0qsUp7QIa96Hcu2i6D303pp4nZJTY0Ndfy8R45wW19f7/O7LvtCRJr2YwYftDV04JBr7z99+Z6bdmeX1w0lW+PCrCq5UoqSSBF8XXZcdnT2pmPiiUKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net; spf=pass smtp.mailfrom=jannau.net; dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b=SAnnsd0I; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=gSyr5Saj; arc=none smtp.client-ip=103.168.172.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jannau.net
+Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
+	by mailfout.phl.internal (Postfix) with ESMTP id 7359113801E6;
+	Sat, 21 Sep 2024 10:18:10 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-05.internal (MEProxy); Sat, 21 Sep 2024 10:18:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jannau.net; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm3; t=1726928290; x=1727014690; bh=giKd9Yzx4/
+	NYlFb8znG9bVy2N/ZlsJq164ObM2aoCA4=; b=SAnnsd0IXyV5YKnEP5FwJCPEb3
+	JKdPI4GDgoJ5NgNnGruG9i9f2IjSArn3anee5E4T0gvHF+2q7K6kBjdXsaZMQxxp
+	XNlLVdeTQMW+M09skvuEzJdq/nOP3vysUYpOwpRZvXnnVdMFeXkCyrD1K5eVknyH
+	ws7Cp65BwrNY3TTFdjelPhIn45ChRFF5BRUCeUdP5ew4DaqrfTwabj3ognX0WgH0
+	4Wy6CnD4FZRwjfh4bHt5q9SOtB+bW+Wwr1b4j4rhni/JuykIcHvLJh94TKEiMK+6
+	idoGLUriepuUHu+q7Vqq7p3lnscd0W0rZJJHLtKDp3mhycdbOouun2sgpDOg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm2; t=1726928290; x=1727014690; bh=giKd9Yzx4/NYlFb8znG9bVy2N/Zl
+	sJq164ObM2aoCA4=; b=gSyr5SajhClRmaNxcn2+uvFNX2HOt7aSv2/mOC6n6e1T
+	WGd59AOf0As3qqhk+La4QofZa/XsR5nz9IJOfKHjWdIrZL0yl/6C84sHyPlPXip1
+	W6NkBbwTC16dXdxO7l7NWt47ttLdaQF9by+jAM8ynXeVFNQeephdIr3yxcKLnwBk
+	8RxzNw1ksk84my/LPJRPvFfKeqnRx9CY/jI6QZsadZQq9ynaEYdUuRnZ0e+i2j5l
+	31XCna5xCZBKKwglJzCNgSjN6WkB5BZOjsNx7hZ0u9WzDvWGXEuybeOW3ehM+GL0
+	FVPOXbNVwspbCyTp35QAue4XILjj/nyEsSTgC4956Q==
+X-ME-Sender: <xms:oNXuZiPsQRUSqIjX8wFL5r9wIQiKa2XuEYi3sSNBHJ85GA6GFP3eIg>
+    <xme:oNXuZg8Zc5nw5LzA5bm5ln1O1PAF9Cg8Rugg0CzTEbRakfufRecAotrhYsOPX2_5T
+    tuxDaRst8M79HSSou0>
+X-ME-Received: <xmr:oNXuZpR9udFjLxblGqqqk3UIHdEmduz3f790TzdnNmOIhr2MfDosOibxX_U1r7TqBgFlwix1TrFqeaZTjX7iEcKchjy0p9qEtYU>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudelhedgjeeiucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtjeen
+    ucfhrhhomheplfgrnhhnvgcuifhruhhnrghuuceojhgrnhhnvgesjhgrnhhnrghurdhnvg
+    htqeenucggtffrrghtthgvrhhnpeetkeegfffhhfekhfdtveejueevtdefkeehgeekgeel
+    teeluddugeeuvddukeeuffenucffohhmrghinhepghhithhhuhgsrdgtohhmnecuvehluh
+    hsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepjhgrnhhnvgesjhgr
+    nhhnrghurdhnvghtpdhnsggprhgtphhtthhopedugedpmhhouggvpehsmhhtphhouhhtpd
+    hrtghpthhtoheprhhosggutghlrghrkhesghhmrghilhdrtghomhdprhgtphhtthhopegu
+    rhhiqdguvghvvghlsehlihhsthhsrdhfrhgvvgguvghskhhtohhprdhorhhgpdhrtghpth
+    htoheprhhosggutghlrghrkhestghhrhhomhhiuhhmrdhorhhgpdhrtghpthhtoheplhhi
+    nhgrsegrshgrhhhilhhinhgrrdhnvghtpdhrtghpthhtohepshhtrggslhgvsehvghgvrh
+    drkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhtuhhikhhovhekleesghhmrghilhdr
+    tghomhdprhgtphhtthhopehmrghtthhhvgifrdgsrhhoshhtsehinhhtvghlrdgtohhmpd
+    hrtghpthhtohepmhgrrghrthgvnhdrlhgrnhhkhhhorhhstheslhhinhhugidrihhnthgv
+    lhdrtghomhdprhgtphhtthhopehmrhhiphgrrhgusehkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:oNXuZivcIFTAwJOCzln0lyQPizft33icJ8HXbwj4NUh4aLHDTp7AKw>
+    <xmx:oNXuZqcktNUenXy6skZ0jnOfMsN5sQx_1fGB0VySoUh_d6Zdz72aLw>
+    <xmx:oNXuZm1BfPOTZoh4DOTwAROW7JeIFST_6s609F2H7dfoMq4PkeQr1Q>
+    <xmx:oNXuZu9ayZeaeoZrLWr3W1MVd-DC7vggeZxNpxcn1JfuUIs8cObUSQ>
+    <xmx:otXuZl3oT0V2JP4j-_hwn19Pd6C7QOp9AtMrqEPC15IdupnXm0xtCDHg>
+Feedback-ID: i449149f6:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
+ 21 Sep 2024 10:18:08 -0400 (EDT)
+Date: Sat, 21 Sep 2024 16:18:06 +0200
+From: Janne Grunau <janne@jannau.net>
+To: Rob Clark <robdclark@gmail.com>
+Cc: dri-devel@lists.freedesktop.org, Rob Clark <robdclark@chromium.org>,
+	Asahi Lina <lina@asahilina.net>, stable@vger.kernel.org,
+	Luben Tuikov <ltuikov89@gmail.com>,
+	Matthew Brost <matthew.brost@intel.com>,
+	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+	Danilo Krummrich <dakr@redhat.com>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] drm/sched: Fix dynamic job-flow control race
+Message-ID: <Zu7Vnr7y4fS6KZaY@robin>
+References: <20240913202301.16772-1-robdclark@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240913202301.16772-1-robdclark@gmail.com>
 
-Instead of flushing and reloading the auth session for every single
-transaction, keep the session open unless /dev/tpm0 is used. In practice
-this means applying TPM2_SA_CONTINUE_SESSION to the session attributes.
-Flush the session always when /dev/tpm0 is written.
+On Fri, Sep 13, 2024 at 01:23:01PM -0700, Rob Clark wrote:
+> From: Rob Clark <robdclark@chromium.org>
+> 
+> Fixes a race condition reported here: https://github.com/AsahiLinux/linux/issues/309#issuecomment-2238968609
+> 
+> The whole premise of lockless access to a single-producer-single-
+> consumer queue is that there is just a single producer and single
+> consumer.  That means we can't call drm_sched_can_queue() (which is
+> about queueing more work to the hw, not to the spsc queue) from
+> anywhere other than the consumer (wq).
+> 
+> This call in the producer is just an optimization to avoid scheduling
+> the consuming worker if it cannot yet queue more work to the hw.  It
+> is safe to drop this optimization to avoid the race condition.
+> 
+> Suggested-by: Asahi Lina <lina@asahilina.net>
+> Fixes: a78422e9dff3 ("drm/sched: implement dynamic job-flow control")
+> Closes: https://github.com/AsahiLinux/linux/issues/309
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Rob Clark <robdclark@chromium.org>
+> ---
+>  drivers/gpu/drm/scheduler/sched_entity.c | 4 ++--
+>  drivers/gpu/drm/scheduler/sched_main.c   | 7 ++-----
+>  include/drm/gpu_scheduler.h              | 2 +-
+>  3 files changed, 5 insertions(+), 8 deletions(-)
 
-Reported-by: Pengyu Ma <mapengyu@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219229
-Cc: stable@vger.kernel.org # v6.10+
-Fixes: 7ca110f2679b ("tpm: Address !chip->auth in tpm_buf_append_hmac_session*()")
-Tested-by: Pengyu Ma <mapengyu@gmail.com>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
----
-v5:
-- No changes.
-v4:
-- Changed as bug.
-v3:
-- Refined the commit message.
-- Removed the conditional for applying TPM2_SA_CONTINUE_SESSION only when
-  /dev/tpm0 is open. It is not required as the auth session is flushed,
-  not saved.
-v2:
-- A new patch.
----
- drivers/char/tpm/tpm-chip.c       | 1 +
- drivers/char/tpm/tpm-dev-common.c | 1 +
- drivers/char/tpm/tpm-interface.c  | 1 +
- drivers/char/tpm/tpm2-sessions.c  | 3 +++
- 4 files changed, 6 insertions(+)
+Tested for several hours with CONFIG_PREMPT=y and kasan with a similar
+workload as in the github issue without reports or oopses.
 
-diff --git a/drivers/char/tpm/tpm-chip.c b/drivers/char/tpm/tpm-chip.c
-index 0ea00e32f575..7a6bb30d1f32 100644
---- a/drivers/char/tpm/tpm-chip.c
-+++ b/drivers/char/tpm/tpm-chip.c
-@@ -680,6 +680,7 @@ void tpm_chip_unregister(struct tpm_chip *chip)
- 	rc = tpm_try_get_ops(chip);
- 	if (!rc) {
- 		if (chip->flags & TPM_CHIP_FLAG_TPM2) {
-+			tpm2_end_auth_session(chip);
- 			tpm2_flush_context(chip, chip->null_key);
- 			chip->null_key = 0;
- 		}
-diff --git a/drivers/char/tpm/tpm-dev-common.c b/drivers/char/tpm/tpm-dev-common.c
-index 4eaa8e05c291..a3ed7a99a394 100644
---- a/drivers/char/tpm/tpm-dev-common.c
-+++ b/drivers/char/tpm/tpm-dev-common.c
-@@ -29,6 +29,7 @@ static ssize_t tpm_dev_transmit(struct tpm_chip *chip, struct tpm_space *space,
- 
- #ifdef CONFIG_TCG_TPM2_HMAC
- 	if (chip->flags & TPM_CHIP_FLAG_TPM2) {
-+		tpm2_end_auth_session(chip);
- 		tpm2_flush_context(chip, chip->null_key);
- 		chip->null_key = 0;
- 	}
-diff --git a/drivers/char/tpm/tpm-interface.c b/drivers/char/tpm/tpm-interface.c
-index bfa47d48b0f2..2363018fa8fb 100644
---- a/drivers/char/tpm/tpm-interface.c
-+++ b/drivers/char/tpm/tpm-interface.c
-@@ -381,6 +381,7 @@ int tpm_pm_suspend(struct device *dev)
- 	if (!rc) {
- 		if (chip->flags & TPM_CHIP_FLAG_TPM2) {
- #ifdef CONFIG_TCG_TPM2_HMAC
-+			tpm2_end_auth_session(chip);
- 			tpm2_flush_context(chip, chip->null_key);
- 			chip->null_key = 0;
- #endif
-diff --git a/drivers/char/tpm/tpm2-sessions.c b/drivers/char/tpm/tpm2-sessions.c
-index a8d3d5d52178..38b92ad9e75f 100644
---- a/drivers/char/tpm/tpm2-sessions.c
-+++ b/drivers/char/tpm/tpm2-sessions.c
-@@ -333,6 +333,9 @@ void tpm_buf_append_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf,
- 	}
- 
- #ifdef CONFIG_TCG_TPM2_HMAC
-+	/* The first write to /dev/tpm{rm0} will flush the session. */
-+	attributes |= TPM2_SA_CONTINUE_SESSION;
-+
- 	/*
- 	 * The Architecture Guide requires us to strip trailing zeros
- 	 * before computing the HMAC
--- 
-2.46.1
+Feel free to add
+Tested-by: Janne Grunau <j@jannau.net>
 
+thanks,
+Janne
 
