@@ -1,139 +1,147 @@
-Return-Path: <stable+bounces-76845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76846-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EFF597DBA1
-	for <lists+stable@lfdr.de>; Sat, 21 Sep 2024 06:25:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C895297DBBE
+	for <lists+stable@lfdr.de>; Sat, 21 Sep 2024 07:17:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CC0421C20EFD
-	for <lists+stable@lfdr.de>; Sat, 21 Sep 2024 04:25:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 77BF61F22471
+	for <lists+stable@lfdr.de>; Sat, 21 Sep 2024 05:17:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 617018489;
-	Sat, 21 Sep 2024 04:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34E8224211;
+	Sat, 21 Sep 2024 05:16:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b="MkFXIxcJ"
+	dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b="Id95Uh0T"
 X-Original-To: stable@vger.kernel.org
-Received: from out203-205-221-236.mail.qq.com (out203-205-221-236.mail.qq.com [203.205.221.236])
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B015C2CA2
-	for <stable@vger.kernel.org>; Sat, 21 Sep 2024 04:25:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.205.221.236
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11BAA320E;
+	Sat, 21 Sep 2024 05:16:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726892713; cv=none; b=sXd9IIhAhE70+LY1A7t5rji0uZTvqWVR6tFZamAa15+tih5oXQtO6nArNfkxMuIzzMbQ+HqnppfSB7+GYbB1FSRGlJqG1THtSjqghDTAZ8nAYiMP6BvrI4sssFdecbFOAf/kBvDZNwH0+fAx+YZhysxDjJgBNupbaf54DyTVimQ=
+	t=1726895819; cv=none; b=AhRpCnDtRt6AOMzfJ/OWMkI6BktAYv8as769h70mNFy3uqsxZ92vMbwsjYY1YSjZIVtVK/OMxE88r/OKHBvPiOWCScvuxDBzO1sV6ChHRK8bUYxnFdkaExT49D4Ai0pVn0ZBmyrG6gYlG29e+uE1K3ajrD62LXr1Av6VWR6H57Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726892713; c=relaxed/simple;
-	bh=V1PefNuNUX1W8DPxztiGedYQq/5eL0sx159cg3dDBL8=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=st1mEJDpjyfRQWfsRFqq+7ftv8IH2QUkW27ZfyIy+DAs1loHVqYtg/ispr7yMDhGB0cD4TXFQIEgTDwcprqk6ePEcrXfZzvQmh9U3HZgpexEbefE5Zam0qcW9O4Bd85jTN+Ltj4IGAgJTB/4iWVEtLM7Pxm+PkPrSXI2ZYosBYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com; spf=pass smtp.mailfrom=foxmail.com; dkim=pass (1024-bit key) header.d=foxmail.com header.i=@foxmail.com header.b=MkFXIxcJ; arc=none smtp.client-ip=203.205.221.236
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=foxmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=foxmail.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=foxmail.com;
-	s=s201512; t=1726892400;
-	bh=8k7t2Ri5sXxQ/RAsFjcnWOjPnF0X/aiQc9N7U48LDno=;
-	h=From:To:Cc:Subject:Date;
-	b=MkFXIxcJRhqZ9pj4eSc3FduybI3l6ubF+4FUO4ij6TZUucWAANPuNXCwiHMoQ4wL4
-	 UcN3dT7j2Img1+TePXAEwIyKy9KLuGEkDd04uez6bJwXsRkwZsNGb4Is0G9WbP1EsN
-	 v13nRczNRdl/FZM5n5juNz75oxLDRVOCygPhe6fs=
-Received: from localhost.localdomain ([114.246.200.160])
-	by newxmesmtplogicsvrsza29-0.qq.com (NewEsmtp) with SMTP
-	id 4F90487B; Sat, 21 Sep 2024 12:19:57 +0800
-X-QQ-mid: xmsmtpt1726892397tuimln7vm
-Message-ID: <tencent_24E2A9BE4AABB32749444F024DF30F0A2F08@qq.com>
-X-QQ-XMAILINFO: NkHKfw09D6j8tVgdWSpMpXtfIXTBe7Mb+d7bPUz54ayPScihTs5dMkwvNjWb8S
-	 0+pU62J79DwaKbLa6198he3QSc5gpZfQWFAKuUTiG5BBjE+VbEuY/RA4ZldKWuMBAZJ/CtfdbVZk
-	 Lem/zHtiu+TtwmBIZrZrnEn8zsCJBJglutTphyt8LHnZ/9A1OW6NHEedt43EzLSY0Xi0RwS7HXSI
-	 +mc7Re9Ql1899wqFnZyGzeYS+V1k6xqBS4aYKOXfqByzgkYizXEID+Dhp/Blw5z7OudASyHIfy5G
-	 JDqjvKVSvRWIcYbhP9P57w91tSKYKKzEqIYhqc3PWz3XfCO1Le9r4CEw5BT8dWYHGMPc9iyn0eSG
-	 MppewjZHlEq54qXDPQlauCdDQ+M0nKajM1EiNZwHzEHOU6D6ZJeym12n+PISLhfb/qhF8MpvYgVI
-	 VJYRC/RTxq7VUtQNQG4zq32Cq0DY35lP7twm532Bcdq9vddP5mp5B+4KRL7cv0JwDpdOnbv/p5Q7
-	 OEABkcaIlFNIl1tlPrUgMi0JYZXTJatTO4G7YFoYtGt97nzKttOnlpbr7BrsM+pQHvYc1YqMvbf1
-	 8Ouhab2XZoxk/IJr2LjtcYeJkncc88ssfz8UBXvC3mL48DhODoLKA7IoCC9D1yo0nti/X7wIvb35
-	 q9bRUAgh8rPzb5rxj3F0/RJtYDu1CVOY4kEgHW8tjVAEOMNiSnuqT+nI39Sf+y1XWG4QtgrsIcOj
-	 PV3bBaRVAwFfE8EtAP/s+saP/quQwQgQwubRV+09zk4AMnaU9QsWhj0qOD3JTRuERD5xgYL0PhRn
-	 dYhaI7Y7+RsjqVStL2fAF3fOO0LYIVq8Uw7tfqkeliq3zyG5NaN3KB3mxqB2CPVvApm/EfnWugcm
-	 8pn3mMqKGX0a0tKyTwel5CB1eIGvsxK2QxzWG81ailnB+qd0FHK3NVyvgX0nW5dt+NaBKngd2H6c
-	 4WEEs3Yso5UsK9NIvlpHYIrVtxAv10zF5N0sl+qlSG6h9ybuiqKTSCO0Xe0c6qAlwm6aXZE4H+nu
-	 vEbt0acY8FV882T4Zj
-X-QQ-XMRINFO: MPJ6Tf5t3I/ycC2BItcBVIA=
-From: Jiawei Ye <jiawei.ye@foxmail.com>
-To: yejiawei@bit.edu.cn
-Cc: stable@vger.kernel.org,
-	Miquel Raynal <miquel.raynal@bootlin.com>
-Subject: [PATCH v2] mac802154: Fix potential RCU dereference issue in mac802154_scan_worker
-Date: Sat, 21 Sep 2024 04:19:56 +0000
-X-OQ-MSGID: <20240921041956.3315644-1-jiawei.ye@foxmail.com>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1726895819; c=relaxed/simple;
+	bh=ScQl6UYtagc5vPNtjCqcvlPuXz//URKuWT/fOGD5SFo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZmGVm8saB313DlgjSl78ZoKuHelf8Y7zTvDvL74+cHuiDv4utHxN97pJmNZdLGhfliW3wXZBAgYgz0RI/dgw53wkSWuYQ0t1JNVAuDpwRaQAxMgGXLh5QpK9osbga4KWRydQG/Y08+XTViq2SZtXTz2FfpamLm+5+2xtjWm9dpE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au; spf=pass smtp.mailfrom=canb.auug.org.au; dkim=pass (2048-bit key) header.d=canb.auug.org.au header.i=@canb.auug.org.au header.b=Id95Uh0T; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canb.auug.org.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canb.auug.org.au
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canb.auug.org.au;
+	s=201702; t=1726895806;
+	bh=qyx/dHX7YUt7tYPdVE5RWKeFUCXghcIpaCAzPuASVKA=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=Id95Uh0TMdJVZiDEBKIrjFEpwJCF9A1H/c/voUcjFf9gh5bnQcyoiu77PbCHWvM3W
+	 07SUJ5XFJ8nnlFheNhmmfp67Edcp66LSRIN+sZtk6Dx7qT/FKHKN4U2uBdr9ptL2TI
+	 i2l/2ihF0fwG2U1K7e+zjqDAVcGdzywGlICGZSYVoPd08ashLz7hRLEG9uP0eKD4et
+	 WnrPQk8az/kxSzG1Zcx0HtL+3UahEY0p1xW2HUb5SOlfBnB+84L/VJkKd+7CUttfHS
+	 hkQjphjGLYEu1d41Yc+Lds62wBd7ORIZgL4MmDam0uJX2o0Pjuqb67bI8Vw2P9H9uV
+	 988q5puR1c9TQ==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4X9ctj1Syrz4x8Y;
+	Sat, 21 Sep 2024 15:16:44 +1000 (AEST)
+Date: Sat, 21 Sep 2024 15:16:42 +1000
+From: Stephen Rothwell <sfr@canb.auug.org.au>
+To: Kamlesh Gurudasani <kamlesh@ti.com>
+Cc: Danny Tsen <dtsen@linux.ibm.com>, <linux-crypto@vger.kernel.org>,
+ <stable@vger.kernel.org>, <herbert@gondor.apana.org.au>,
+ <leitao@debian.org>, <nayna@linux.ibm.com>, <appro@cryptogams.org>,
+ <linux-kernel@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>,
+ <mpe@ellerman.id.au>, <ltcgcw@linux.vnet.ibm.com>, <dtsen@us.ibm.com>
+Subject: Re: [PATCH v3] crypto: Removing CRYPTO_AES_GCM_P10.
+Message-ID: <20240921151642.60b89e86@canb.auug.org.au>
+In-Reply-To: <87ldzmll80.fsf@kamlesh.i-did-not-set--mail-host-address--so-tickle-me>
+References: <20240919113637.144343-1-dtsen@linux.ibm.com>
+	<87ldzmll80.fsf@kamlesh.i-did-not-set--mail-host-address--so-tickle-me>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; boundary="Sig_/jhSltXngbv+WsRpVn7yvHAs";
+ protocol="application/pgp-signature"; micalg=pgp-sha256
 
-In the `mac802154_scan_worker` function, the `scan_req->type` field was
-accessed after the RCU read-side critical section was unlocked. According
-to RCU usage rules, this is illegal and can lead to unpredictable
-behavior, such as accessing memory that has been updated or causing
-use-after-free issues.
+--Sig_/jhSltXngbv+WsRpVn7yvHAs
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: quoted-printable
 
-This possible bug was identified using a static analysis tool developed
-by myself, specifically designed to detect RCU-related issues.
+Hi Kamlesh,
 
-To address this, the `scan_req->type` value is now stored in a local
-variable `scan_req_type` while still within the RCU read-side critical
-section. The `scan_req_type` is then used after the RCU lock is released,
-ensuring that the type value is safely accessed without violating RCU
-rules.
+On Fri, 20 Sep 2024 15:07:19 +0530 Kamlesh Gurudasani <kamlesh@ti.com> wrot=
+e:
+>
+> Danny Tsen <dtsen@linux.ibm.com> writes:
+>=20
+> > Data mismatch found when testing ipsec tunnel with AES/GCM crypto.
+> > Disabling CRYPTO_AES_GCM_P10 in Kconfig for this feature.
+> >
+> > Fixes: fd0e9b3e2ee6 ("crypto: p10-aes-gcm - An accelerated AES/GCM stit=
+ched implementation")
+> > Fixes: cdcecfd9991f ("crypto: p10-aes-gcm - Glue code for AES/GCM stitc=
+hed implementation")
+> > Fixes: 45a4672b9a6e2 ("crypto: p10-aes-gcm - Update Kconfig and Makefil=
+e")
+> >
+> > Signed-off-by: Danny Tsen <dtsen@linux.ibm.com> =20
+> nitpick
+> checkpatch complains
+> Please use correct Fixes: style 'Fixes: <12 chars of sha1> ("<title line>=
+")' -
+> ie: 'Fixes: 45a4672b9a6e ("crypto: p10-aes-gcm - Update Kconfig and
+> Makefile")'
+>=20
+> There is no rule for 12 characters, but it is generally preferred.
+> I guess it is just a typo for you as you have correctly added other
+> Fixes tag.
 
-Fixes: e2c3e6f53a7a ("mac802154: Handle active scanning")
-Signed-off-by: Jiawei Ye <jiawei.ye@foxmail.com>
-Cc: stable@vger.kernel.org
-Acked-by: Miquel Raynal <miquel.raynal@bootlin.com>
----
-Changelog:
+It should be at least 12 hex digits i.e. more is fine.  It is possible
+that some commits need more than 12 hex digits of the SHA1 to be
+uniquely identified in some git repositories already.  I guess
+checkpatch needs a patch.
 
-v1->v2: -Repositioned the enum nl802154_scan_types scan_req_type
-declaration between struct cfg802154_scan_request *scan_req and struct
-ieee802154_sub_if_data *sdata to comply with the reverse Christmas tree
-rule.
----
- net/mac802154/scan.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+> Also, just to understand,
+>=20
+> "A Fixes: tag indicates that the patch fixes an issue in a previous
+>  commit. It is used to make it easy to determine where a bug originated,
+>  which can help review a bug fix"
+>=20
+> from=20
+> https://docs.kernel.org/process/submitting-patches.html
+>=20
+> should there not be just single Fixes tag? as bug originated from one
+> commit, may be the commit that actually broke the functionality.
 
-diff --git a/net/mac802154/scan.c b/net/mac802154/scan.c
-index 1c0eeaa76560..a6dab3cc3ad8 100644
---- a/net/mac802154/scan.c
-+++ b/net/mac802154/scan.c
-@@ -176,6 +176,7 @@ void mac802154_scan_worker(struct work_struct *work)
- 	struct ieee802154_local *local =
- 		container_of(work, struct ieee802154_local, scan_work.work);
- 	struct cfg802154_scan_request *scan_req;
-+	enum nl802154_scan_types scan_req_type;
- 	struct ieee802154_sub_if_data *sdata;
- 	unsigned int scan_duration = 0;
- 	struct wpan_phy *wpan_phy;
-@@ -209,6 +210,7 @@ void mac802154_scan_worker(struct work_struct *work)
- 	}
- 
- 	wpan_phy = scan_req->wpan_phy;
-+	scan_req_type = scan_req->type;
- 	scan_req_duration = scan_req->duration;
- 
- 	/* Look for the next valid chan */
-@@ -246,7 +248,7 @@ void mac802154_scan_worker(struct work_struct *work)
- 		goto end_scan;
- 	}
- 
--	if (scan_req->type == NL802154_SCAN_ACTIVE) {
-+	if (scan_req_type == NL802154_SCAN_ACTIVE) {
- 		ret = mac802154_transmit_beacon_req(local, sdata);
- 		if (ret)
- 			dev_err(&sdata->dev->dev,
--- 
-2.34.1
+While we generally prefer that a patch only fix one bug, it is very
+possible that the bug may have been introduced in more than one commit
+e.g. in different files.
 
+--=20
+Cheers,
+Stephen Rothwell
+
+--Sig_/jhSltXngbv+WsRpVn7yvHAs
+Content-Type: application/pgp-signature
+Content-Description: OpenPGP digital signature
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAEBCAAdFiEENIC96giZ81tWdLgKAVBC80lX0GwFAmbuVroACgkQAVBC80lX
+0GzFnwf/e23oe9Qw1Ca7dvh9xkyu30hNMVeham1rhS6bKpc17gT0szzMz8eWWdln
+m4DiWnBXv3x7L07rJ22+fiEtO9N6KZMKW5PWJzEQElsBzmMJfrSwgo/eUnODTZZx
+3LpE0RV0scL9+XdTaM1nOjy5nOHXG33QR3llmtXuJ/PG+RrEARjBXctl6tF/8uzp
+UI8R/NmiDozwvMXb+xGaTfxemK9CDZX0HRgY28XdRlz+Tz8j3FwEJQ7vdAJanzgp
+poRsA7urS2fg2KQBRVFL2oFaW/9OVWuoYmB4eXF971g0qOyBCMg8smG5n4TdRKsM
+8uHloMPT9uun/CL6E4onHEIgjddfvQ==
+=S5Bm
+-----END PGP SIGNATURE-----
+
+--Sig_/jhSltXngbv+WsRpVn7yvHAs--
 
