@@ -1,285 +1,234 @@
-Return-Path: <stable+bounces-76842-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFA1697D9F4
-	for <lists+stable@lfdr.de>; Fri, 20 Sep 2024 22:08:21 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18BF597DB31
+	for <lists+stable@lfdr.de>; Sat, 21 Sep 2024 03:23:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 451E0B21D97
-	for <lists+stable@lfdr.de>; Fri, 20 Sep 2024 20:08:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD6F6283515
+	for <lists+stable@lfdr.de>; Sat, 21 Sep 2024 01:23:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC4A518453D;
-	Fri, 20 Sep 2024 20:08:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 117652F29;
+	Sat, 21 Sep 2024 01:23:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LquIpaDo"
+	dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b="EkdKrIAB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from CY4PR05CU001.outbound.protection.outlook.com (mail-westcentralusazon11020128.outbound.protection.outlook.com [40.93.198.128])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13D1961FCF;
-	Fri, 20 Sep 2024 20:08:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726862892; cv=none; b=tAbJM2MMuQbejfafK00vmYCbf6pjGHImeNLLWoP3dp6KcgaSuW4O38ITx902K8mCtt3ccTjRSAUCzjzfVVvYrwljSCa9g4/+W6RY1O9hHfwqTLJ/LZPInbO8QfCe+z3ZjOpShNFew7PH/0g7d9kXy4nRKfCD1C/swg2H1TrhXsk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726862892; c=relaxed/simple;
-	bh=FyCY36yI5w0lTSq34HxZmH4EPDjzQfp2huhYuiHkwRA=;
-	h=From:Content-Type:Mime-Version:Subject:Message-Id:Date:Cc:To; b=lClN/U9l9fMJbdRg8xZ9TXe/OplwTHYtNaNlkaTbJMTkGa0KQUIkksT/dcGVI1ClEv+rq2fncQHXd93cnd1bWV81UBh//UrzNnXbYksMSZn7Hg0oVpSG4Mq+LBOfhDQSlcWtDS+oODv3ShyutXOZmBo9IBfdrS4PJtirzP/DlOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LquIpaDo; arc=none smtp.client-ip=209.85.210.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-718d8d6af8fso1792152b3a.3;
-        Fri, 20 Sep 2024 13:08:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1726862890; x=1727467690; darn=vger.kernel.org;
-        h=to:cc:date:message-id:subject:mime-version
-         :content-transfer-encoding:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=jqXxksIhdYu3U6EyI/SaQCdXTyiEORhvEkCurrA15Ic=;
-        b=LquIpaDooPK9WJ+6Fl04RLTvu2Lrn6TbaaSv0SKcvQN7vcIS4NHJGLuHalpYt4qr2I
-         PuOhgI7RjvTI3bjylnl3X/GUVYx2rrdAChrQNU4QLRrrdUmgocysnwd901OkRWIrxiPp
-         9nnpBkSTTsQhjxcWCiUhDfVK5Qonz8dI1yXbAHIFXs0V2xK0IYcT50CZZZ/JVccJ3Y8W
-         Pnn/nShq/dCY8oTPM4jOxcbPTQ1Oem/hchB5wZQ0cnefXWftd9/OdTFBLQDAVIMajKmp
-         dyARWi6sQpPTlyVInVKwHvGgxg8wOLud0CX+SYLHNqGYyS7uOps4C8mA+wJIblsp1oSG
-         7m1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726862890; x=1727467690;
-        h=to:cc:date:message-id:subject:mime-version
-         :content-transfer-encoding:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jqXxksIhdYu3U6EyI/SaQCdXTyiEORhvEkCurrA15Ic=;
-        b=vqLlsrzSrtYmEbBXyq/O0zIo/TgXPGSGqzCS5wCM0Mw/N8BIu4dtCmiQg/agMkwG8m
-         nyAMSXZGoLHH7ToXkMjZfGAwKDuxEtGTXOB0qK+lY2Lo7tOAqZBCTrU4RPUBUw7m2tMk
-         s4+7Pf3OM3U3cpU8dGh4f5SWBgrhZHVf1n2EXajuEQzYfw321/swMrV8oFxlzR6J84aj
-         1Uj2n3gVjVqhW1K/giZCnh2XJV/5NbNaBn7/o4acKesqvoBG5wl87wvz7qGF4Dx2d6P8
-         YdNfprdwmOSPbEiKs6oToK+kw5L1FTvUm9d4/WH5xUaUDzhGxas0unktSHpZj/rK2Cm5
-         Q4tw==
-X-Forwarded-Encrypted: i=1; AJvYcCVK1LPJhTKIpa10+2Boy904lODZ6Df7ilD9wOUsgmWSRCtGKmsBRvxnoGCnyNl196W9ttFZcnSyGZSC@vger.kernel.org, AJvYcCVe7pDMJwMjTr3Hw9xyMoHUMj9GmApdyUQBtAfGMdv0VH42C8MjEIj2qowtK++4Nm4mk33fTin5mBTnQRqg@vger.kernel.org
-X-Gm-Message-State: AOJu0YwtfC9offX8Dzfk7mNGFWm9fz4YimPJ9kUUtjbae4P1MGtlNla3
-	NBYilGH/Xxnv9gnfrcH0fFPeMVg2YzBpI5dKRphGHdsKuTO/BTn+
-X-Google-Smtp-Source: AGHT+IFnZTuVUXfi09IMvJbRV9nzRJbWPXCtMyEyTm2x1nnbKFEaAJF7P+WRaiwkpd1Vvtm+qwMHRA==
-X-Received: by 2002:a05:6a20:b68a:b0:1d0:2533:1a42 with SMTP id adf61e73a8af0-1d30a8ecf33mr4553539637.9.1726862890221;
-        Fri, 20 Sep 2024 13:08:10 -0700 (PDT)
-Received: from smtpclient.apple ([2601:645:c600:8760:2cea:7b3a:57f3:3330])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7db4998ff14sm11207518a12.66.2024.09.20.13.08.09
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 20 Sep 2024 13:08:09 -0700 (PDT)
-From: James Young <pronoiac@gmail.com>
-Content-Type: text/plain;
-	charset=utf-8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ACFE1878;
+	Sat, 21 Sep 2024 01:23:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.198.128
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1726881797; cv=fail; b=XM4ErsJTHN3KOLzCwmD3t8gaNIb/a5gGV/Gi5Gv07OvnVBzY1NNMgKDM4UxpyAMl8TbLBoi6C6kJef7rAu1e2xeOYlkkCoTU/cEk1Znew845QidGNNss8PnA80Bq8LMk214Dlmg2DpWOj1LX0lN6ngd6W2z8fo+JuJ23sa4l8Rs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1726881797; c=relaxed/simple;
+	bh=2l0wZecVIdiWMbqV1kOcBLtJpsJNIIX8Kv/7FkImwVc=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=fxjTD13fRDYtF+HH2lkrMX2Dxd9ov3w7fnR66rtnIh9SHcLi5YXFFFbyOunPOwpwp+VI+OON/C2OHJAWslWrqiw6a1x7O+j3yBMoRMtUVqlKLMLLzj1LAx5hCErQgI6TW6Y2htljliU+uJUPd9uVdImvj7YSyANxhNgA2jL1vjs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com; spf=pass smtp.mailfrom=microsoft.com; dkim=pass (1024-bit key) header.d=microsoft.com header.i=@microsoft.com header.b=EkdKrIAB; arc=fail smtp.client-ip=40.93.198.128
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=microsoft.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=X+5B4UR8Du9qTEzMxMTEQL0HXORibBfz1WPzIMFpp/qkKJIZo9RD84yI4TM/o0zPujMbHP8ni/yFw49rGJGzHNz3mKzxoKpHxDm0MxJE++6/zFTiYoiqToYll6kEBYSTDYuFA6g8GhzasuyVIa2IAYq4f3Pj/bAwjHLqu6Z3kmjUwd8C0JWCqQu0Fb3sw2W28bk2bGDnqtlkKCVf9I7SN2rqtqwXmbqmv6XfUpROZlXkvbbIz+TaiWPOkKYUK0JtECoAma9gKesqcj3dBQBjUGOABbjuLYfEbgyvu+uQ/vtJow5vP16549HexmsjBeLG20LqzR3Dq63SNRwDyQvGwA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=V/PqEy6hgbPVDO2hl9KHeGr5p9fS5DjGe+bIz94W25s=;
+ b=r/EpTGTkVKrqNtwWfeMppzB4rlbLM2crmZ0dwR97bpK4cHkNqhTvAUMgwerSbptAi0FLpP43Jzorfr/IfGR/Ei7DBbqMVCSdG2ybdMS/Zdl9XGqCNWnjbCgSS4gnEf9iEE7jtcOmbv04gD36y1bxhkYSDf67CUKhYY6dl8TAu58bDu6wKF90tWRELdyWDIqUpD9575EA3vSI+qncpSGd1EOA1pEKqAFjKkXStNOYMINncesLXb2yBYH11vKYs8w8Mec4stwyYM5blyPU2PwIK4Z34CL6tSSXpQ4LGszRWV5WBPk3K8O+q4VrRKPIpJHEemH2Ty9jZYMJxox4RyPWfg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=microsoft.com; dmarc=pass action=none
+ header.from=microsoft.com; dkim=pass header.d=microsoft.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=V/PqEy6hgbPVDO2hl9KHeGr5p9fS5DjGe+bIz94W25s=;
+ b=EkdKrIABFCRjVGjhdgVYyX7qhk1ZLM9i31klil97Le2UIukRGEUrgu7jZ8+5v9eNUoErJZLTuzp8zyrxzxuEMsMy/wWaJFZhmabEu8ehp+NKd2Me7oy9lJvRM8YUN47Vnr0C9/jf44yUR4pBL84JT3v9GXz4z+rLRV/cClrw7kU=
+Received: from SA1PR21MB1317.namprd21.prod.outlook.com (2603:10b6:806:1f0::9)
+ by IA1PR21MB3474.namprd21.prod.outlook.com (2603:10b6:208:3e1::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8005.6; Sat, 21 Sep
+ 2024 01:23:09 +0000
+Received: from SA1PR21MB1317.namprd21.prod.outlook.com
+ ([fe80::67ed:774d:42d4:f6ef]) by SA1PR21MB1317.namprd21.prod.outlook.com
+ ([fe80::67ed:774d:42d4:f6ef%2]) with mapi id 15.20.8005.001; Sat, 21 Sep 2024
+ 01:23:09 +0000
+From: Dexuan Cui <decui@microsoft.com>
+To: Saurabh Singh Sengar <ssengar@linux.microsoft.com>
+CC: KY Srinivasan <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Long Li <longli@microsoft.com>, Greg
+ Kroah-Hartman <gregkh@linuxfoundation.org>, "open list:Hyper-V/Azure CORE AND
+ DRIVERS" <linux-hyperv@vger.kernel.org>, open list
+	<linux-kernel@vger.kernel.org>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>
+Subject: RE: [PATCH] tools: hv: Fix a complier warning in the fcopy uio daemon
+Thread-Topic: [PATCH] tools: hv: Fix a complier warning in the fcopy uio
+ daemon
+Thread-Index: AQHbBa7gIEV5tinScU2GNNSWWBWHb7JhfQKA
+Date: Sat, 21 Sep 2024 01:23:09 +0000
+Message-ID:
+ <SA1PR21MB13172712A02F3C9EEB156131BF6D2@SA1PR21MB1317.namprd21.prod.outlook.com>
+References: <20240910004433.50254-1-decui@microsoft.com>
+ <20240913073058.GA24840@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+In-Reply-To:
+ <20240913073058.GA24840@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+msip_labels:
+ MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ActionId=cb713484-3b3e-45cf-931f-d02213ff3885;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_ContentBits=0;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Enabled=true;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Method=Standard;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_Name=Internal;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SetDate=2024-09-21T01:18:39Z;MSIP_Label_f42aa342-8706-4288-bd11-ebb85995028c_SiteId=72f988bf-86f1-41af-91ab-2d7cd011db47;
+authentication-results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=microsoft.com;
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: SA1PR21MB1317:EE_|IA1PR21MB3474:EE_
+x-ms-office365-filtering-correlation-id: 40f5facb-4498-4fd4-a55f-08dcd9dbf415
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam:
+ BCL:0;ARA:13230040|376014|1800799024|10070799003|366016|38070700018;
+x-microsoft-antispam-message-info:
+ =?us-ascii?Q?7ly+KI9qEMxDE9kuMjn4ym4CNUy0J1FexJCnEI/eKCWWtfvsvNjjOHes8YHh?=
+ =?us-ascii?Q?7bWZXQA40VckbLnwlbujwuAmiaL2oOPj//2/7aF0pH+t4+de4CoW0pieNIe1?=
+ =?us-ascii?Q?DPrGyNKv6V7+XHyGeDF+shk+0FuNbo5oyzYyC270Gg1tNIoAGEbFDbGQtgeL?=
+ =?us-ascii?Q?Zt3PjK/6XCkgFI1u+T21lrxAjLIWrnwuqhcYL/NMtCLjtw9KsG7TjNZ4/fQu?=
+ =?us-ascii?Q?mIZmFGlFTga2s0l/kiVBh/499jvf7fM8yR8LV4DRmejsw9WjysYlZyZN9uZr?=
+ =?us-ascii?Q?OrVUCshCCJlyZreSVOipd06Pu1a7xf7KEgQu4OeRIEttELG2zdRjNZyB4HO8?=
+ =?us-ascii?Q?Z+eD4znLCgXw70tduxjnowuXO94CyeeDVSxEp0umVEhUoxUFFnfKQHO9vk/D?=
+ =?us-ascii?Q?P2CcEcb4IhkQTiDG2CzkB5croV1Kkz0jVMAYo/RwJ4Zs8IHuetnoHviwfqO0?=
+ =?us-ascii?Q?eC13t6yK4h1rAmcrNMFwAaQauFY+gGouK3w3UF42hK5SZUhGEarhBf4r+8+Q?=
+ =?us-ascii?Q?gGnIwzgwO3b2QK4N6LiamS8ETfwG3B1n5MIXJfxZK5s279/H0FFb+KdXqR1R?=
+ =?us-ascii?Q?zfDO4Jvw7YnfFDCzupOMLb6TLnvbf3yGQ7bQ+IP7bQeQFuP2K0vHE7oYk1l8?=
+ =?us-ascii?Q?agTsnXYYn2M54/VR5Q2mJw17vrMrPTMUo7y0aTTkTmqq34p/Id42hmc6AMJB?=
+ =?us-ascii?Q?uK3sUPvd61i7R8jdfNcFx5W+MDhFGAKhFZxWiCJdJBcgTJaKDBMm4k1Ajgvh?=
+ =?us-ascii?Q?n9PAawOBh4jFuP2+rv8LkWRbhAcexLDrMT8Q7JlzmYiHPKqkltzqEtm9C1s8?=
+ =?us-ascii?Q?SpcvQYvJGwdaPk2+uUHos+oTPBdINnHQyJGGk15sG0n64Oc5nI9McqQVfWxW?=
+ =?us-ascii?Q?6hHzr+bPELVIccWiGzfXiPliuXGR77ENwa0Uhj4egt1jknVWmS8NpSnMn24B?=
+ =?us-ascii?Q?iugRKP8FFdRaYLkLMpOIw4+9pPtGgnlSFrGiP6gP9fe3PI/Ni75iKQHk6kbp?=
+ =?us-ascii?Q?XMeZQ7dOhfskCbP9CiWZANLECI7PW2omZqQm/DmbOJbkdBtrKAwtN6fvT9oS?=
+ =?us-ascii?Q?HcBoLXlir8/SnHsgMbxkrpx1TMVeFSC/Z67/t6yBSNVPRHhqR5X/eakh2VIC?=
+ =?us-ascii?Q?fFNMsXEyfIo3segH0Yyy32v6QNh0Gn5MkR03BaYvNoUfIQPnBdv4KAp+0kxq?=
+ =?us-ascii?Q?ZU9qYTs/ruyW3XPBp0zrLbIhgI5en0iLnKcRrHk8IlM9Ixlffxan7t2IXFgY?=
+ =?us-ascii?Q?RwAWlwRznUapKJ8EBOg9f68ZFG+CLI75Cz7f8U4tcODAqlKSM8qBtPyZVoct?=
+ =?us-ascii?Q?pJFjFar8tx+TvNVcwIKdY+Af6lteYR2qzb9vb4NoHGxlag=3D=3D?=
+x-forefront-antispam-report:
+ CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SA1PR21MB1317.namprd21.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(10070799003)(366016)(38070700018);DIR:OUT;SFP:1102;
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0:
+ =?us-ascii?Q?AREWmI53akUzuUmAuRqqz7tVbCHDsNZZ8dVXY9+BALp5uD7r8vFhntj5becK?=
+ =?us-ascii?Q?/3ggy6IshNk2nmM+dX+itNQPdajZDuOTR74yNi9IuKtRDEYfOSZzIKSpWhF3?=
+ =?us-ascii?Q?S9irKFLRzCOgfgHQ7aYJOIqSUOMhb5Ow9NeItfMovhAA5W2McwLr9tnpUz5z?=
+ =?us-ascii?Q?6x99KvyEoNKRk/X27SZaTxUS+vb+Bc4xXE70+wWPI00K+68YsZH6A5aSR9sf?=
+ =?us-ascii?Q?b6Ly4fjeBnjVUwT9gr2jbYkIQrsvKS9jCcvQqabUMZftvVKA+kLVGKxw6Vhj?=
+ =?us-ascii?Q?gf4v7sg6amfdQIkOor044UNb8x4uYeM10J9TBF9IZEz9HRIFZq0QE9rmOtmk?=
+ =?us-ascii?Q?eMyx6/MFPJtdhicsORcE5nFUSsBx6xflh4pyUFYk0UR/BXOV6I5mb4Ai5arX?=
+ =?us-ascii?Q?RKayIUDCr5jxpzl6chjoSmg5Vg8m/UheW3aJTTNCY6GG95A3DaXChIrQoOB/?=
+ =?us-ascii?Q?SSzuTgHHWAtPqv4CELDPXKM7P4EN0r5u6DxTtNqSi3T2SAiFzw1epysXBdqK?=
+ =?us-ascii?Q?e5jGyhSe16J2p5pVmbxrjqs0sWYtfMe3D+OsDgQ29QNQCHkbzFHime7ebqVj?=
+ =?us-ascii?Q?GopbL/UBMd54XvlRRhVUgIl6e7wuHTreYIwCN3A8Q4PVhqv3Wjw8VjaWnssm?=
+ =?us-ascii?Q?KeiLinoEjfd8/jNP0JVeLoHgNT1p1qxckLhzOFOpCl9eXN07HPn1/zDIneCF?=
+ =?us-ascii?Q?bFvey/05214GYKe3DPW+lClxu4XQ7E9pBhrT8R8F3bFTQHy3hD90vWa5mwIN?=
+ =?us-ascii?Q?KhWx6VfBsKGvgJHKOaMslyQajAcKyJ+mDz/9RJjmEVlx9CaLBWJcMxkbVyny?=
+ =?us-ascii?Q?tisDgXgnkveZ51Gah07R+SmvPV2k62aeYH7eeGHrFMxsPH+XqyE0/NgYbPaP?=
+ =?us-ascii?Q?LBiDTf272hXic/mZ8j9qcSJvQkVhLwxjtPDwipkvCd0FX09J9LhlMFJSl0d4?=
+ =?us-ascii?Q?y4dWYiwpvWNrbuS0kBc/q0gFWQvu9GoKXuy70EYur1G4rEMMYpOCrNqha4R4?=
+ =?us-ascii?Q?driWPrkVt1AsLLJ3RVOrb6ZqDAXtS1p9fCCO9leRjPa9u7Bc1CHtlt36+DZ1?=
+ =?us-ascii?Q?6Etm3Aagct3IeIFX9oVYZmgu7+9BkxxB3nuO4vtQKR+XhCZNKOFZW1lWKpjV?=
+ =?us-ascii?Q?Cb8ya8EMoXtYT2/38zILZttTsgNjelfgbI8ETJWepjx4lWdxg9Bi3E4PRIvz?=
+ =?us-ascii?Q?YkGO7KCrdN6WAb1o/VeUztPm9VFUyN0KOze5ycqd5YS97LKsZzoU5Ywf/ZXP?=
+ =?us-ascii?Q?nEPq22YPwTu95OC1bTWX4ZOr1z5eDgB7VCDZnpMfsK+PZEB2InpD02agl3zq?=
+ =?us-ascii?Q?7xHtl/Bdx6EoVGG6Z93WQc3w0Ere11+5mtsXJ2uDmxxxT7wcEw2+Z+uTlNwO?=
+ =?us-ascii?Q?uFFJBVgH+jii0HhlxfX6vP0KuPRKqaLZ8jiPRZz1mEZL3i6vUA4G5FFMJ/Bc?=
+ =?us-ascii?Q?D9cPQjX4Tnf+39bycvwr05Ejgb64f0/05wS0NKeeA8x7J0sn2Ykce8WQk5dA?=
+ =?us-ascii?Q?N224Jy1QV4HaJlm6tedBD+mVyFr7462U0PMzJlllCVEIdAQyDQyCs4Ng/CQh?=
+ =?us-ascii?Q?i9uzHsUighZYuolQ/NaibpahfOaG3hJMJb8cniPPHMQqgZYtjEf/mQyj9pDz?=
+ =?us-ascii?Q?GXwLBzedVeAjp2L+yA2inGOYIMWTDV0Jc/XCn2cZIfqO?=
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51\))
-Subject: [REGRESSION] Corruption on cifs / smb write on ARM, kernels 6.3-6.9
-Message-Id: <DFC1DAC5-5C6C-4DC2-807A-DAF12E4B7882@gmail.com>
-Date: Fri, 20 Sep 2024 13:07:58 -0700
-Cc: stable@vger.kernel.org,
- regressions@lists.linux.dev,
- linux-cifs@vger.kernel.org,
- David Howells <dhowells@redhat.com>,
- linux-kernel@vger.kernel.org,
- Steve French <sfrench@samba.org>
-To: pronoiac+kernel@gmail.com
-X-Mailer: Apple Mail (2.3776.700.51)
+MIME-Version: 1.0
+X-OriginatorOrg: microsoft.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: SA1PR21MB1317.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 40f5facb-4498-4fd4-a55f-08dcd9dbf415
+X-MS-Exchange-CrossTenant-originalarrivaltime: 21 Sep 2024 01:23:09.5695
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: 72f988bf-86f1-41af-91ab-2d7cd011db47
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: E/NshAvl2aRsCJjvEHX10jGXzyOzC/u95xxKsuF8QmfRp6UcqLGyrNjtkgCCUasWR20YatzstrWLPVAKDXhLOA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR21MB3474
 
-I was benchmarking some compressors, piping to and from a network share =
-on a NAS, and some consistently wrote corrupted data.
+> From: Saurabh Singh Sengar <ssengar@linux.microsoft.com>
+> Sent: Friday, September 13, 2024 12:31 AM
+> To: Dexuan Cui <decui@microsoft.com>
+> Cc: KY Srinivasan <kys@microsoft.com>; Haiyang Zhang
+> <haiyangz@microsoft.com>; Wei Liu <wei.liu@kernel.org>; Long Li
+> <longli@microsoft.com>; Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org>; open list:Hyper-V/Azure CORE AND DRIVERS
+> <linux-hyperv@vger.kernel.org>; open list <linux-kernel@vger.kernel.org>;
+> stable@vger.kernel.org
+> Subject: Re: [PATCH] tools: hv: Fix a complier warning in the fcopy uio
+> daemon
+>=20
+> On Tue, Sep 10, 2024 at 12:44:32AM +0000, Dexuan Cui wrote:
+> > hv_fcopy_uio_daemon.c:436:53: warning: '%s' directive output may be
+> truncated
+> > writing up to 14 bytes into a region of size 10 [-Wformat-truncation=3D=
+]
+> >   436 |  snprintf(uio_dev_path, sizeof(uio_dev_path), "/dev/%s",
+> uio_name);
+>=20
+> Makefile today doesn't have -Wformat-truncation flag enabled, I tried to =
+add
+> -Wformat-truncation=3D2 but I don't see any error in this file.
+>=20
+> Do you mind sharing more details how you get this error ?
+>=20
+> - Saurabh
 
+This repros in a Ubuntu 20.04 VM:
 
-First, apologies in advance:
-* if I'm not in the right place. I tried to follow the directions from =
-the Regressions guide - =
-https://www.kernel.org/doc/html/latest/admin-guide/reporting-regressions.h=
-tml
-* I know there's a ton of context I don't know
-* I=E2=80=99m trying a different mail app, because the first one looked =
-concussed with plain text. This might be worse.
+root@decui-u2004-2024-0920:~/linux/tools/hv# cat /etc/os-release
+NAME=3D"Ubuntu"
+VERSION=3D"20.04.6 LTS (Focal Fossa)"
+...
 
+root@decui-u2004-2024-0920:~/linux/tools/hv# gcc --version
+gcc (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0
+Copyright (C) 2019 Free Software Foundation, Inc.
+This is free software; see the source for copying conditions.  There is NO
+warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
 
-The detailed description:
-I was benchmarking some compressors on Debian on a Raspberry Pi, piping =
-to and from a network share on a NAS, and found that some consistently =
-had issues writing to my NAS. Specifically:
-* lzop
-* pigz - parallel gzip
-* pbzip2 - parallel bzip2
-
-This is dependent on kernel version. I've done a survey, below.
-
-While I tripped over the issue on a Debian port (Debian 12, bookworm, =
-kernel v6.6), I compiled my own vanilla / mainline kernels for testing =
-and reporting this.
-
-
-Even more details:
-The Pi and the Synology NAS are directly connected by Gigabit Ethernet. =
-Both sides are using self-assigned IP addresses. I'll note that at boot, =
-getting the Pi to see the NAS requires some nudging of avahi-autoipd; =
-while I think it's stable before testing, I'm not positive, and =
-reconnection issues might be in play.
-
-The files in question are tars of sparse file systems, about 270 gig, =
-compressing down to 10-30 gig.
-
-Compression seems to work, without complaint; decompression crashes the =
-process, usually within the first gig of the compressed file. The output =
-of the stream doesn't match what ends up written to disk.
-
-Trying decompression during compression gets further along than it does =
-after compression finishes; this might point toward something with =
-writes and caches.
-
-A previous attempt involved rpi-update, which:
-* good: let me install kernels without building myself
-* bad: updated the bootloader and firmware, to bleeding edge, with =
-possible regressions; it definitely muddied the results of my tests
-I started over with a fresh install, and no results involving rpi-update =
-are included in this email.
-
-
-A survey of major branches:
-* 5.15.167, LTS - good
-* 6.1.109, LTS - good
-* 6.2.16 - good
-* 6.3.13 - bad
-* 6.4.16 - bad
-* 6.5.13 - bad
-* 6.6.50, LTS - bad
-* 6.7.12 - bad
-* 6.8.12 - bad
-* 6.9.12 - bad
-* 6.10.9 - good
-* 6.11.0 - good
-
-I tried, but couldn't fully build 4.19.322 or 6.0.19, due to issues with =
-modules.
-
-
-Important commits:
-It looked like both the breakage and the fix came in during rc1 =
-releases.
-
-Breakage, v6.3-rc1:
-I manually bisected commits in fs/smb* and fs/cifs.
-
-3d78fe73fa12 cifs: Build the RDMA SGE list directly from an iterator
-> lzop and pigz worked. last working. test in progress: pbzip2
-
-607aea3cc2a8 cifs: Remove unused code
-> lzop didn't work. first broken
-
-
-Fix, v6.10-rc1:
-I manually bisected commits in fs/smb.
-
-69c3c023af25 cifs: Implement netfslib hooks
-> lzop didn't work. last broken one
-
-3ee1a1fc3981 cifs: Cut over to using netfslib
-> lzop, pigz, pbzip2, all worked. first fixed one
-
-
-To test / reproduce:
-It looks like this, on a mounted network share, with extra pv for =
-progress meters:
-
-cat 1tb-rust-ext4.img.tar.gz | \
-  gzip -d | \
-  lzop -1 > \
-  1tb-rust-ext4.img.tar.lzop
-  # wait 40 minutes
-
-cat 1tb-rust-ext4.img.tar.lzop | \
-  lzop -d | \
-  sha1sum
-  # either it works, and shows the right checksum
-  # or it crashes early, due to a corrupt file, and shows an incorrect =
-checksum
-
-As I re-read this, I realize it might look like the compressor behaves =
-differently. I added a "tee $output | sha1sum; sha1sum $output" and ran =
-it on a broken version. The checksums from the pipe and for the file on =
-disk are different.
-
-
-Assorted info:
-This is a Raspberry Pi 4, with 4 GiB RAM, running Debian 12, bookworm, =
-or a port.
-
-mount.cifs version: 7.0
-
-# cat /proc/sys/kernel/tainted
-1024
-
-# cat /proc/version
-Linux version 6.2.0-3d78fe73f-v8-pronoiac+ (pronoiac@bisect) (gcc =
-(Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40) #21 =
-SMP PREEMPT Thu Sep 19 16:51:22 PDT 2024
-
-
-DebugData:=20
-/proc/fs/cifs/DebugData
-Display Internal CIFS Data Structures for Debugging
----------------------------------------------------
-CIFS Version 2.41
-Features: =
-DFS,FSCACHE,STATS2,DEBUG,ALLOW_INSECURE_LEGACY,CIFS_POSIX,UPCALL(SPNEGO),X=
-ATTR,ACL
-CIFSMaxBufSize: 16384
-Active VFS Requests: 1
-
-Servers:
-1) ConnectionId: 0x1 Hostname: drums.local
-Number of credits: 8062 Dialect 0x300
-TCP status: 1 Instance: 1
-Local Users To Server: 1 SecMode: 0x1 Req On Wire: 2
-In Send: 1 In MaxReq Wait: 0
-
-        Sessions:
-        1) Address: 169.254.132.219 Uses: 1 Capability: 0x300047        =
-Session Status: 1
-        Security type: RawNTLMSSP  SessionId: 0x4969841e
-        User: 1000 Cred User: 0
-
-        Shares:
-        0) IPC: \\drums.local\IPC$ Mounts: 1 DevInfo: 0x0 Attributes: =
-0x0
-        PathComponentMax: 0 Status: 1 type: 0 Serial Number: 0x0
-        Share Capabilities: None        Share Flags: 0x0
-        tid: 0xeb093f0b Maximal Access: 0x1f00a9
-
-        1) \\drums.local\billions Mounts: 1 DevInfo: 0x20 Attributes: =
-0x5007f
-        PathComponentMax: 255 Status: 1 type: DISK Serial Number: =
-0x735a9af5
-        Share Capabilities: None Aligned, Partition Aligned,    Share =
-Flags: 0x0
-        tid: 0x5e6832e6 Optimal sector size: 0x200      Maximal Access: =
-0x1f01ff
-
-
-        MIDs:
-        State: 2 com: 9 pid: 3117 cbdata: 00000000e003293e mid 962892
-
-        State: 2 com: 9 pid: 3117 cbdata: 000000002610602a mid 962956
-
---
-
-
-
-Let me know how I can help.
-The process of iterating can take hours, and it's not automated, so my =
-resources are limited.
-
-#regzbot introduced: 607aea3cc2a8
-#regzbot fix: 3ee1a1fc3981
-
--James
-
+root@decui-u2004-2024-0920:~/linux/tools/hv# make clean; make
+...
+make -f /root/linux/tools/build/Makefile.build dir=3D. obj=3Dhv_fcopy_uio_d=
+aemon
+make[1]: Entering directory '/root/linux/tools/hv'
+  CC      hv_fcopy_uio_daemon.o
+hv_fcopy_uio_daemon.c: In function 'main':
+hv_fcopy_uio_daemon.c:443:53: warning: '%s' directive output may be truncat=
+ed writing up to 14 bytes into a region of size 10 [-Wformat-truncation=3D]
+  443 |  snprintf(uio_dev_path, sizeof(uio_dev_path), "/dev/%s", uio_name);
+      |                                                     ^~   ~~~~~~~~
+In file included from /usr/include/stdio.h:867,
+                 from hv_fcopy_uio_daemon.c:20:
+/usr/include/x86_64-linux-gnu/bits/stdio2.h:67:10: note: '__builtin___snpri=
+ntf_chk' output between 6 and 20 bytes into a destination of size 15
+   67 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - =
+1,
+      |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~=
+~~
+   68 |        __bos (__s), __fmt, __va_arg_pack ());
+      |        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  CC      vmbus_bufring.o
+  LD      hv_fcopy_uio_daemon-in.o
+make[1]: Leaving directory '/root/linux/tools/hv'
+  LINK    hv_fcopy_uio_daemon
 
