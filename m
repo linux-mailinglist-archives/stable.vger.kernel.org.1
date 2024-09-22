@@ -1,136 +1,238 @@
-Return-Path: <stable+bounces-76868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2C6497E3F0
-	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 00:18:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6A7F97E444
+	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 01:55:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3634A1F214EA
-	for <lists+stable@lfdr.de>; Sun, 22 Sep 2024 22:18:17 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F794281364
+	for <lists+stable@lfdr.de>; Sun, 22 Sep 2024 23:55:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8729A80BF8;
-	Sun, 22 Sep 2024 22:18:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eAmrJcNQ"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F0A877105;
+	Sun, 22 Sep 2024 23:55:45 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out28-85.mail.aliyun.com (out28-85.mail.aliyun.com [115.124.28.85])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3EFD745CB;
-	Sun, 22 Sep 2024 22:17:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C85C242042;
+	Sun, 22 Sep 2024 23:55:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.85
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727043481; cv=none; b=fEbCWJN93PtCpHluCvpv3H6OrJ2kUmiLw8HfIIAerXLT+/5CZ3EWBRIKY5BatYF/K7sCL1fmEQwy1V1RQzO600pDJoAMLnqkeGbCtNAvE8lE16wgK3dbN3mafWbrcfSCrMfqEi8DxKs+GwwutVi1EFAsVxkd48iDBi8jUVCPDNE=
+	t=1727049344; cv=none; b=t/AOj/vZy0w+PpDgggbWdLFNc5tm2zLeC8eWhnI1B4aGZhWXEksqDp2MeYHaIQFDIpCqnBXUuEdeBMES2T2SmcxurbELkIIt8IztZlYRK/jpCNJHVJgLm1JPUVOl16bEgDSr+TQDgRMOv0Z0kPAvK21oDySZyodAOMRVADyuDHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727043481; c=relaxed/simple;
-	bh=P5p+Hh0ofpp5AZDc1SNz04zJpI/e4lfi7LuPsD2A6qE=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=bLNkVwWa2cEkvOtfbi8VDlQqP/xA7zUdjxqZDjCHsArleUXOVlNMR1VvbC7eXwNwvhs80UXpABdhMp8ct8cfq2LEFXxZKvrT72QCAujngCfVFEe5ama7yfo6IZXGa/JNHaPC5+Y0b3TxTBjQFI3vj9M8XxRy3ie9PEtnJ61lxj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eAmrJcNQ; arc=none smtp.client-ip=209.85.218.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a8a7596b7dfso643066266b.0;
-        Sun, 22 Sep 2024 15:17:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727043478; x=1727648278; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=u5CVvTrJ2msrTdCqfd00y+3rlkucKNIEprj9js6Ycgc=;
-        b=eAmrJcNQLgAE3d+x3zZk8Siu8epv8ZYf4ZRndIWswacga7CPsZaqO8I67kc5r13uTh
-         6qullRpaq35nerUUAj9rbyppWzL49EwLZFPvyyzVUqusb4sPGnYgPFP2y3v7567RlFlX
-         R37iQfuZcMIVomjzWzBgxCJ1q/Vo7I/Xdvf4Q+v/eijKXUFZmO2Xh2uVQveLmUzmogqb
-         7AgcQt7pIHTzWGpDZRdd10IUxwicMhpymv6SyxPG1clbHOYtykscswteQzRpoaTh+L7A
-         mruNOqXHqGa8oh1Ni6OSaMaRRYn87RPkV1kF3Tm5w7BCQEC49BdT3Kur0pTI6ZKEgzDg
-         Jp8Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727043478; x=1727648278;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=u5CVvTrJ2msrTdCqfd00y+3rlkucKNIEprj9js6Ycgc=;
-        b=vQ9m9zTWeXEd6rhczc56I4uTQHxhB43jy2qQOjjqXFffkFVmhfaxi9nZ8JAE6Iod5E
-         vUrlU5/wN9ZmyD1sJCTZjWTUmBmpH033BmwbUPQrgL3f0kp/3CcrLqP20YUHs1AcmHS+
-         TueIu2Wt7nXrDoUNc0FkVrUMLicwykoY7aXbefgTeEQyrMxGikrmpUMUZ34xQlegfhiT
-         11fvjQeznZoVIq7HpZ16ioLECBSXjutLxSaD6jf5ZadRyfpGOt/a6J7bKiTrBqNmpXJZ
-         +VPx/B0Tkx0ZovrKYVw1qzQMPOEJ5V162yOfO9vtsFTTyv/EJpYVJvawuWS8URaSgGaR
-         DMzA==
-X-Forwarded-Encrypted: i=1; AJvYcCWH+3neGU2r1Iu+vmzB2BcEBNutauOhQT5dl+dOvEpPB8V3YRObydZdy0jEm9ybZa4QlFvr3ertQeBT@vger.kernel.org, AJvYcCX36LSPgjomVUZ/QO9NwxZcEf684B9QglIPdhoLwk4dMtvgr3Z0t3137EnXF1wuSX4BEqXSlJmAqAzy6hya@vger.kernel.org, AJvYcCXQyh+1LmbRsshoPsAjpAKS4o9ySBXFrXnlKhgurFrHRQ9pn0hrEdB/utq1ceMvgxLF2Z2sm6e0@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw4pZfbLxsIQf+nk+aV9FGai+qhM3w/13PikQ1+gB+K2Wa+yaC4
-	hGxY7tYuOBmHZSgTgIO7hWlMIz01P4Pt5nbf+w76sF5P/9atUqtY
-X-Google-Smtp-Source: AGHT+IH+aJcOSwRSwLKBjNRT5UbMZ7j3xwWo8W/b/ZzJI95Ju3+4wm0A0S/8IaToy++ymoZoYMjXdw==
-X-Received: by 2002:a17:907:1c2a:b0:a8d:4954:c209 with SMTP id a640c23a62f3a-a90c1d6e85fmr1493271766b.22.1727043477642;
-        Sun, 22 Sep 2024 15:17:57 -0700 (PDT)
-Received: from [127.0.1.1] (84-115-213-37.cable.dynamic.surfer.at. [84.115.213.37])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a90611164d0sm1126202066b.91.2024.09.22.15.17.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Sep 2024 15:17:57 -0700 (PDT)
-From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
-Date: Mon, 23 Sep 2024 00:17:49 +0200
-Subject: [PATCH v2 01/10] iio: light: veml6030: fix ALS sensor resolution
+	s=arc-20240116; t=1727049344; c=relaxed/simple;
+	bh=V6gp0Uk7RbpnyDUOqVK5X6HdHQDAce7AF24wSEJbj+M=;
+	h=Date:From:To:Subject:Cc:In-Reply-To:References:Message-Id:
+	 MIME-Version:Content-Type; b=sKPbWOLMpadbgpL2xp117NKVIgXI05AIxMEsa0p4gg5KQ2eQhAckV+t5O8pUQ9jU2vWNrI7+p2GGbDgXTawqLB/Ko7DCHmRJR8BqzVUmUnmVfp0agzCrNgrVSS56cnvh7AgJXlB9i6tZJLcfZcMQyp3uZon7PLTNj9KrE+ZfFn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=e16-tech.com; spf=pass smtp.mailfrom=e16-tech.com; arc=none smtp.client-ip=115.124.28.85
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=e16-tech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=e16-tech.com
+Received: from 192.168.2.112(mailfrom:wangyugui@e16-tech.com fp:SMTPD_---.ZQEkZnP_1727049328)
+          by smtp.aliyun-inc.com;
+          Mon, 23 Sep 2024 07:55:29 +0800
+Date: Mon, 23 Sep 2024 07:55:29 +0800
+From: Wang Yugui <wangyugui@e16-tech.com>
+To: James Young <pronoiac@gmail.com>
+Subject: Re: [REGRESSION] Corruption on cifs / smb write on ARM, kernels 6.3-6.9
+Cc: pronoiac+kernel@gmail.com,
+ stable@vger.kernel.org,
+ regressions@lists.linux.dev,
+ linux-cifs@vger.kernel.org,
+ David Howells <dhowells@redhat.com>,
+ linux-kernel@vger.kernel.org,
+ Steve French <sfrench@samba.org>
+In-Reply-To: <DFC1DAC5-5C6C-4DC2-807A-DAF12E4B7882@gmail.com>
+References: <DFC1DAC5-5C6C-4DC2-807A-DAF12E4B7882@gmail.com>
+Message-Id: <20240923075527.3B9A.409509F4@e16-tech.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240923-veml6035-v2-1-58c72a0df31c@gmail.com>
-References: <20240923-veml6035-v2-0-58c72a0df31c@gmail.com>
-In-Reply-To: <20240923-veml6035-v2-0-58c72a0df31c@gmail.com>
-To: Jonathan Cameron <jic23@kernel.org>, 
- Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Rishi Gupta <gupt21@gmail.com>
-Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
- linux-kernel@vger.kernel.org, 
- Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
- Javier Carrasco <javier.carrasco.cruz@gmail.com>, stable@vger.kernel.org
-X-Mailer: b4 0.14-dev
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1727043474; l=1280;
- i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
- bh=P5p+Hh0ofpp5AZDc1SNz04zJpI/e4lfi7LuPsD2A6qE=;
- b=Bg+7vLzgVF/f4i9k91dsQi/UvD/TqLno9y6miJDc8bW232GLgF57qaQ67ZMtKdjTknCSNCEQC
- /mECX+fBw+OAXD3jSmX/zC2wFNus2W8l5rH+yFeGLuuZRP+cz8iZr0Q
-X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
- pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
+Content-Type: text/plain; charset="GB2312"
+Content-Transfer-Encoding: 8bit
+X-Mailer: Becky! ver. 2.81.07 [en]
 
-The driver still uses the sensor resolution provided in the datasheet
-until Rev. 1.6, 28-Apr-2022, which was updated with Rev 1.7,
-28-Nov-2023. The original ambient light resolution has been updated from
-0.0036 lx/ct to 0.0042 lx/ct, which is the value that can be found in
-the current device datasheet.
+Hi,
 
-Update the default resolution for IT = 100 ms and GAIN = 1/8 from the
-original 4608 mlux/cnt to the current value from the "Resolution and
-maximum detection range" table (Application Note 84367, page 5), 5376
-mlux/cnt.
+> I was benchmarking some compressors, piping to and from a network share on a NAS, and some consistently wrote corrupted data.
+> 
+> 
+> First, apologies in advance:
+> * if I'm not in the right place. I tried to follow the directions from the Regressions guide - https://www.kernel.org/doc/html/latest/admin-guide/reporting-regressions.html
+> * I know there's a ton of context I don't know
+> * I¡¯m trying a different mail app, because the first one looked concussed with plain text. This might be worse.
+> 
+> 
+> The detailed description:
+> I was benchmarking some compressors on Debian on a Raspberry Pi, piping to and from a network share on a NAS, and found that some consistently had issues writing to my NAS. Specifically:
+> * lzop
+> * pigz - parallel gzip
+> * pbzip2 - parallel bzip2
+> 
+> This is dependent on kernel version. I've done a survey, below.
+> 
+> While I tripped over the issue on a Debian port (Debian 12, bookworm, kernel v6.6), I compiled my own vanilla / mainline kernels for testing and reporting this.
+> 
+> 
+> Even more details:
+> The Pi and the Synology NAS are directly connected by Gigabit Ethernet. Both sides are using self-assigned IP addresses. I'll note that at boot, getting the Pi to see the NAS requires some nudging of avahi-autoipd; while I think it's stable before testing, I'm not positive, and reconnection issues might be in play.
+> 
+> The files in question are tars of sparse file systems, about 270 gig, compressing down to 10-30 gig.
+> 
+> Compression seems to work, without complaint; decompression crashes the process, usually within the first gig of the compressed file. The output of the stream doesn't match what ends up written to disk.
+> 
+> Trying decompression during compression gets further along than it does after compression finishes; this might point toward something with writes and caches.
+> 
+> A previous attempt involved rpi-update, which:
+> * good: let me install kernels without building myself
+> * bad: updated the bootloader and firmware, to bleeding edge, with possible regressions; it definitely muddied the results of my tests
+> I started over with a fresh install, and no results involving rpi-update are included in this email.
+> 
+> 
+> A survey of major branches:
+> * 5.15.167, LTS - good
+> * 6.1.109, LTS - good
+> * 6.2.16 - good
+> * 6.3.13 - bad
+> * 6.4.16 - bad
+> * 6.5.13 - bad
+> * 6.6.50, LTS - bad
+> * 6.7.12 - bad
+> * 6.8.12 - bad
+> * 6.9.12 - bad
+> * 6.10.9 - good
+> * 6.11.0 - good
+> 
+> I tried, but couldn't fully build 4.19.322 or 6.0.19, due to issues with modules.
+> 
+> 
+> Important commits:
+> It looked like both the breakage and the fix came in during rc1 releases.
+> 
+> Breakage, v6.3-rc1:
+> I manually bisected commits in fs/smb* and fs/cifs.
+> 
+> 3d78fe73fa12 cifs: Build the RDMA SGE list directly from an iterator
+> > lzop and pigz worked. last working. test in progress: pbzip2
+> 
+> 607aea3cc2a8 cifs: Remove unused code
+> > lzop didn't work. first broken
+> 
+> 
+> Fix, v6.10-rc1:
+> I manually bisected commits in fs/smb.
+> 
+> 69c3c023af25 cifs: Implement netfslib hooks
+> > lzop didn't work. last broken one
+> 
+> 3ee1a1fc3981 cifs: Cut over to using netfslib
+> > lzop, pigz, pbzip2, all worked. first fixed one
+> 
+> 
+> To test / reproduce:
+> It looks like this, on a mounted network share, with extra pv for progress meters:
+> 
+> cat 1tb-rust-ext4.img.tar.gz | \
+>   gzip -d | \
+>   lzop -1 > \
+>   1tb-rust-ext4.img.tar.lzop
+>   # wait 40 minutes
+> 
+> cat 1tb-rust-ext4.img.tar.lzop | \
+>   lzop -d | \
+>   sha1sum
+>   # either it works, and shows the right checksum
+>   # or it crashes early, due to a corrupt file, and shows an incorrect checksum
+> 
+> As I re-read this, I realize it might look like the compressor behaves differently. I added a "tee $output | sha1sum; sha1sum $output" and ran it on a broken version. The checksums from the pipe and for the file on disk are different.
+> 
+> 
+> Assorted info:
+> This is a Raspberry Pi 4, with 4 GiB RAM, running Debian 12, bookworm, or a port.
+> 
+> mount.cifs version: 7.0
+> 
+> # cat /proc/sys/kernel/tainted
+> 1024
+> 
+> # cat /proc/version
+> Linux version 6.2.0-3d78fe73f-v8-pronoiac+ (pronoiac@bisect) (gcc (Debian 12.2.0-14) 12.2.0, GNU ld (GNU Binutils for Debian) 2.40) #21 SMP PREEMPT Thu Sep 19 16:51:22 PDT 2024
+> 
+> 
+> DebugData: 
+> /proc/fs/cifs/DebugData
+> Display Internal CIFS Data Structures for Debugging
+> ---------------------------------------------------
+> CIFS Version 2.41
+> Features: DFS,FSCACHE,STATS2,DEBUG,ALLOW_INSECURE_LEGACY,CIFS_POSIX,UPCALL(SPNEGO),XATTR,ACL
+> CIFSMaxBufSize: 16384
+> Active VFS Requests: 1
+> 
+> Servers:
+> 1) ConnectionId: 0x1 Hostname: drums.local
+> Number of credits: 8062 Dialect 0x300
+> TCP status: 1 Instance: 1
+> Local Users To Server: 1 SecMode: 0x1 Req On Wire: 2
+> In Send: 1 In MaxReq Wait: 0
+> 
+>         Sessions:
+>         1) Address: 169.254.132.219 Uses: 1 Capability: 0x300047        Session Status: 1
+>         Security type: RawNTLMSSP  SessionId: 0x4969841e
+>         User: 1000 Cred User: 0
+> 
+>         Shares:
+>         0) IPC: \\drums.local\IPC$ Mounts: 1 DevInfo: 0x0 Attributes: 0x0
+>         PathComponentMax: 0 Status: 1 type: 0 Serial Number: 0x0
+>         Share Capabilities: None        Share Flags: 0x0
+>         tid: 0xeb093f0b Maximal Access: 0x1f00a9
+> 
+>         1) \\drums.local\billions Mounts: 1 DevInfo: 0x20 Attributes: 0x5007f
+>         PathComponentMax: 255 Status: 1 type: DISK Serial Number: 0x735a9af5
+>         Share Capabilities: None Aligned, Partition Aligned,    Share Flags: 0x0
+>         tid: 0x5e6832e6 Optimal sector size: 0x200      Maximal Access: 0x1f01ff
+> 
+> 
+>         MIDs:
+>         State: 2 com: 9 pid: 3117 cbdata: 00000000e003293e mid 962892
+> 
+>         State: 2 com: 9 pid: 3117 cbdata: 000000002610602a mid 962956
+> 
+> --
+> 
+> 
+> 
+> Let me know how I can help.
+> The process of iterating can take hours, and it's not automated, so my resources are limited.
+> 
+> #regzbot introduced: 607aea3cc2a8
+> #regzbot fix: 3ee1a1fc3981
 
-Cc: stable@vger.kernel.org
-Fixes: 7b779f573c48 ("iio: light: add driver for veml6030 ambient light sensor")
-Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
----
- drivers/iio/light/veml6030.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+I checked 607aea3cc2a8, it just removed some code in #if 0 ... #endif.
+so this regression is not introduced in 607aea3cc2a8,  but the reproduce
+frequency is changed here.
 
-diff --git a/drivers/iio/light/veml6030.c b/drivers/iio/light/veml6030.c
-index 4c436c5e0787..a3dfe56b7eec 100644
---- a/drivers/iio/light/veml6030.c
-+++ b/drivers/iio/light/veml6030.c
-@@ -780,7 +780,7 @@ static int veml6030_hw_init(struct iio_dev *indio_dev)
- 
- 	/* Cache currently active measurement parameters */
- 	data->cur_gain = 3;
--	data->cur_resolution = 4608;
-+	data->cur_resolution = 5376;
- 	data->cur_integration_time = 3;
- 
- 	return ret;
 
--- 
-2.43.0
+Another issue in 6.6.y maybe related
+https://lore.kernel.org/linux-fsdevel/9e8f8872-f51b-4a09-a92c-49218748dd62@meta.com/T/
+
+Do this regression still happen after the following patches are applied?
+
+a60cc288a1a2 :Luis Chamberlain: test_xarray: add tests for advanced multi-index use
+a08c7193e4f1 :Sidhartha Kumar: mm/filemap: remove hugetlb special casing in filemap.c
+6212eb4d7a63 :Hongbo Li: mm/filemap: avoid type conversion
+
+de60fd8ddeda :Kairui Song: mm/filemap: return early if failed to allocate memory for split
+b2ebcf9d3d5a :Kairui Song: mm/filemap: clean up hugetlb exclusion code
+a4864671ca0b :Kairui Song: lib/xarray: introduce a new helper xas_get_order
+6758c1128ceb :Kairui Song: mm/filemap: optimize filemap folio adding
+
+
+Best Regards
+Wang Yugui (wangyugui@e16-tech.com)
+2024/09/23
 
 
