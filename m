@@ -1,180 +1,151 @@
-Return-Path: <stable+bounces-76862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3BB0B97E23F
-	for <lists+stable@lfdr.de>; Sun, 22 Sep 2024 17:17:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 409E197E29E
+	for <lists+stable@lfdr.de>; Sun, 22 Sep 2024 19:02:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B8DB51F211EA
-	for <lists+stable@lfdr.de>; Sun, 22 Sep 2024 15:17:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C10D91F21929
+	for <lists+stable@lfdr.de>; Sun, 22 Sep 2024 17:02:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1569EC8C0;
-	Sun, 22 Sep 2024 15:17:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BDD22A8CD;
+	Sun, 22 Sep 2024 17:01:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cw4zMfIl"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FAybw/64"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7380833C8;
-	Sun, 22 Sep 2024 15:17:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B6021CFB9;
+	Sun, 22 Sep 2024 17:01:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727018242; cv=none; b=lvwtA0r4Nq5lVrsEu9GwvdPwS+JgoB38OPBLvn6wC7XcA3zpmAP2YKdiQbg/QLS62RuCwj+g/Bi1srvTalwloryPKHjcKi36MIw9rMriIPZQPk3eyU6TF9H5ke7SaNMh8G3wG3SX+VC6naTCygmT27JfbAIbb48m5uVbGI+ryps=
+	t=1727024515; cv=none; b=iCNFw9TRB+wCTYZonMzqiLPX2JRuCFwJMWzWTq8/eUH/SdrBEXiRXI2Hyw9aPr9spLiFAMeQvpNZzqSXU10gr0vIkXMsJtuWLlUsTqZ02F1rimp+HGNp8AOOf50RZVcia+0yOkdEVNnrvjDzwu7cqSGdfiMZxNzlPIsPaE8CJbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727018242; c=relaxed/simple;
-	bh=QSgQcHKTsQqU2dL5yFThQ9AcmScauQffEc7sJWDlGZY=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Ve6uQ0w7CeM84P01s2Q1rQCZLw45Q4IqrjA3jr+DbgGghhpTw//VqK+YwkjIfiYwbx/caVzRxo17YSCOVRKoFVtmMny2QqLoeXl88aCPBIlsf86aSE3PgNnh+cPS7queGqJplJAHouhjGVRfKZV2RVVotuTBeaU8Pm2J2Xb4hJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cw4zMfIl; arc=none smtp.client-ip=209.85.210.176
+	s=arc-20240116; t=1727024515; c=relaxed/simple;
+	bh=W0Q3t1cD54SXXSBH7q4jVSfQ0CDLGNlbuw5viLLpA7U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=O1KrcMoUqgV29/8CyWKcQjp8DwrmG706NVuBlHba2yA0ZO3N5scsSe1Kb3zXwmz4CCLllm2iIaSYrmlKGJmEbLFXZVFzAdt8SFvyagzbyZBwD+o2pO8NLRG18zjmEOQ5+Z8HtCpuxR69qOvXZw4c966soxlRueQCWHDIaH1dtOY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FAybw/64; arc=none smtp.client-ip=209.85.128.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-71798a15ce5so3179411b3a.0;
-        Sun, 22 Sep 2024 08:17:21 -0700 (PDT)
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-42e748f78d6so28006775e9.0;
+        Sun, 22 Sep 2024 10:01:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727018241; x=1727623041; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Yg9rpCm4RXYexUUVsqyUtYoPeyurZbpl3+7GtcV4Rgo=;
-        b=cw4zMfIlFMTMxyTcmZF9lWfloW3iFxDPty80EmdWyhNVQWBTw+ru9Jp3G4HhHJnIGw
-         1+Oqs91meKuYzZ8xBlvc/OtEof24Lz1JB5e/r30ONFaCls12WPnqkz733+l1Nxrcei2Y
-         nU7NCiyuc4psKjSGcSMKmlgUiRCNy5YWeAyaGgUWP/qmoW8KqPWLo6eMybW3G7kDopmp
-         UW1oTCwkJf3gz/R2Cx+AYbgxzkoA+el9kFEAGxyyf9WD39kuiwvAipvTCoIfFv/NqxRO
-         s082Nsh38NuBM/cz/nrMU17zlBrgvMcLpPXMC0yXSMcM3ZmsLPmEmmzXSc/sO65meAa1
-         M9UA==
+        d=gmail.com; s=20230601; t=1727024512; x=1727629312; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=e6OYj2UJLtKO0PzA2lDG8Hf51QXdlmbxTS6bMeQGk50=;
+        b=FAybw/646ad8wCLqdeUJPrL57SCol+w9qHfNKJwW/RYRFeXfmKZtL4DqtTt+jaKgef
+         0nSx1uKncFCni2+SMDU2wupQlmvUlv8xdSlUVLLmO/Bh8io5Ux+vaY1zR50xNFK8bcO+
+         OXkwlKj9b72pcw1HgHaSJ9f51ZrS4uX/QXG9mCbDxjs5IIg8oqgQHJHy+D8LeahUe9mV
+         nU3cywUkN3VFF6m4smT237SDooxclgT6N6yFGLi7xSZwH8vAaO7saw0WhRXn9HR2wMvg
+         PfmCRv0ob4/DFV5/iORApc9S3luFb6vo6gPi4IIo3BOjRJYkbmfBi6SqSlXThiysW6eO
+         jbcQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727018241; x=1727623041;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Yg9rpCm4RXYexUUVsqyUtYoPeyurZbpl3+7GtcV4Rgo=;
-        b=uicFKRfgzKuRE3ebVVdukTR4XVwWnpjODa5mjsEEUDo/TXdluAcdJNmh+geftspCBN
-         sjnwH46bXT8ZX59UZqEWo+bKRu/CFC946VCanQvZ8M+bY0YQQUtKBEIPPd5kLnjwQmJx
-         dvqcc9ThYBBzV0mu6yVt/QC/INjoNV7AZxPgtyPBF5uj6Y2jtovW8dW+UyvXGL1rRSJl
-         ktORMtSGLUArbY96tWIArwfKlFlqkjZmgretE6FtwC/u79K+Wmf/6iN1yuHDbc4VKu+2
-         tjOuA5LICzF66oVAgyqDkFRkC4+hWuNyPm79lxLuE8ynisOtu2XQshJtGxae3oKS+rfL
-         5Agw==
-X-Forwarded-Encrypted: i=1; AJvYcCUMV8gkspK1nxJ3xlkTmHcTCLFzIO04emObwQ6KiR9ewnsnoaVbpbVyNxKipPAiAWFCm8AEQ3EK@vger.kernel.org, AJvYcCX3x9K9c1WzpK9MHi5WS5Xt3uGZgMCPLC3OkR/PlNnggFbMfCTK/EBFm5knyPZnoprywqdzKOG0V0y+WQY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzdsPkTy8yqvmQp9GM0QcgsNYqVlJR1Rcq7YOJHnuWfM4p0c1cd
-	IdAoiW2mLzSzVXbL16LW7gN3hTTwTbYc8kNW5WgCKs/SvEemadNE
-X-Google-Smtp-Source: AGHT+IGXwmO/d3rlzE42aoJl6QCpT/8USlZLB1g/7Kyd3ZgVzZUzzBWo5L/ILlvxaPVb8SSLP0kNcw==
-X-Received: by 2002:a05:6a20:8410:b0:1d3:1ce:3f2d with SMTP id adf61e73a8af0-1d301ce3fc0mr19178671637.20.1727018240499;
-        Sun, 22 Sep 2024 08:17:20 -0700 (PDT)
-Received: from kernelexploit-virtual-machine.localdomain ([121.185.186.233])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7db498d98adsm14100178a12.7.2024.09.22.08.17.17
+        d=1e100.net; s=20230601; t=1727024512; x=1727629312;
+        h=in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=e6OYj2UJLtKO0PzA2lDG8Hf51QXdlmbxTS6bMeQGk50=;
+        b=umWQAif1DxoGf+nzFm5YjVIpcmGt3xeXIC0duDw8fhbcYAjjAmbRSB+eTjAwSbhfCY
+         Li+mc31CjzlyssTThxKAYRfIcJWHbhC6Y4ppSyRwajKDVebn5xmSZAvk9pECDwKaXmPA
+         U7COxhzQmmMWslEE6eSI/6uP5M/YN3ov706+JOzaO87E2SX04MMOB4jl51P064vMptwr
+         yqYF4vIG23N63TY0mepHtyvTNhW85//vOUls0w5BJl88dOYtiHE0CtCQtZ8BgpZ3WS6c
+         aW/MbN67w2x5kPjFCYd2JtyDj7KYzOrkKUkJXGlTG2juws3r/GXhzD5gueQUgZv+dafy
+         V7Rg==
+X-Forwarded-Encrypted: i=1; AJvYcCVFLbqVpYE8s0drJg1GNtJeyGcDzO+SjxrKV3jII4Y3Zq3HiyWXHFoKC3Y1o8sDNQS/wepSuK8iJ2zN@vger.kernel.org, AJvYcCWjcXei0g/oON2AGHR3R4ZIAcMMCsJ2heKFY4f1FZ9ju5h2tNRz2XIevFckFQnUScMmAz8kzTvG@vger.kernel.org, AJvYcCX74z/0nY6T28K7a3Yd0NdQoNBxHd15p/rzRj+b+/T5uI0e7FnDngbwXOMaOiq9XxnKldGFildvVaN/CpL3@vger.kernel.org
+X-Gm-Message-State: AOJu0YxVV+AGMrDH14c5SoETEQtP+VPQNiwvHQLNSYmdmXyarclC3EGn
+	iuczfEjSBXgyVu6TJ3xg26w6h5EwuXTy2IDaSIc03srwfRBAjzBy
+X-Google-Smtp-Source: AGHT+IF+lPG/TGg29MYlU3BmR+FnM5mK3gvHfmebpJCRc6aD+5GdQAF0EcnCJztjRJv/IukZAZEtFw==
+X-Received: by 2002:a05:600c:358e:b0:428:1310:b6b5 with SMTP id 5b1f17b1804b1-42e7c1a3916mr61839915e9.34.1727024511350;
+        Sun, 22 Sep 2024 10:01:51 -0700 (PDT)
+Received: from localhost ([94.19.228.143])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42e754c643csm104582835e9.45.2024.09.22.10.01.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Sep 2024 08:17:20 -0700 (PDT)
-From: Jeongjun Park <aha310510@gmail.com>
-To: akpm@linux-foundation.org
-Cc: wangkefeng.wang@huawei.com,
-	ziy@nvidia.com,
-	willy@infradead.org,
-	david@redhat.com,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	syzbot <syzkaller@googlegroups.com>,
-	Jeongjun Park <aha310510@gmail.com>
-Subject: [PATCH] mm: migrate: fix data-race in migrate_folio_unmap()
-Date: Mon, 23 Sep 2024 00:17:08 +0900
-Message-Id: <20240922151708.33949-1-aha310510@gmail.com>
-X-Mailer: git-send-email 2.34.1
+        Sun, 22 Sep 2024 10:01:50 -0700 (PDT)
+Date: Sun, 22 Sep 2024 20:01:49 +0300
+From: Andrey Skvortsov <andrej.skvortzov@gmail.com>
+To: Dragan Simic <dsimic@manjaro.org>
+Cc: linux-sunxi@lists.linux.dev, robh@kernel.org, krzk+dt@kernel.org,
+	conor+dt@kernel.org, wens@csie.org, jernej.skrabec@gmail.com,
+	samuel@sholland.org, devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Ondrej Jirman <megi@xff.cz>
+Subject: Re: [PATCH] arm64: dts: allwinner: pinephone: Add mount matrix to
+ accelerometer
+Message-ID: <ZvBNfeg9uowsM9ub@skv.local>
+Mail-Followup-To: Andrey Skvortsov <andrej.skvortzov@gmail.com>,
+	Dragan Simic <dsimic@manjaro.org>, linux-sunxi@lists.linux.dev,
+	robh@kernel.org, krzk+dt@kernel.org, conor+dt@kernel.org,
+	wens@csie.org, jernej.skrabec@gmail.com, samuel@sholland.org,
+	devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+	Ondrej Jirman <megi@xff.cz>
+References: <129f0c754d071cca1db5d207d9d4a7bd9831dff7.1726773282.git.dsimic@manjaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <129f0c754d071cca1db5d207d9d4a7bd9831dff7.1726773282.git.dsimic@manjaro.org>
 
-I found a report from syzbot [1]
+On 24-09-19 21:15, Dragan Simic wrote:
+> The way InvenSense MPU-6050 accelerometer is mounted on the user-facing side
+> of the Pine64 PinePhone mainboard, which makes it rotated 90 degrees counter-
+> clockwise, [1] requires the accelerometer's x- and y-axis to be swapped, and
+> the direction of the accelerometer's y-axis to be inverted.
+> 
+> Rectify this by adding a mount-matrix to the accelerometer definition in the
+> Pine64 PinePhone dtsi file.
+> 
+> [1] https://files.pine64.org/doc/PinePhone/PinePhone%20mainboard%20bottom%20placement%20v1.1%2020191031.pdf
+> 
+> Fixes: 91f480d40942 ("arm64: dts: allwinner: Add initial support for Pine64 PinePhone")
+> Cc: stable@vger.kernel.org
+> Helped-by: Ondrej Jirman <megi@xff.cz>
+> Helped-by: Andrey Skvortsov <andrej.skvortzov@gmail.com>
+> Signed-off-by: Dragan Simic <dsimic@manjaro.org>
+> ---
+> 
+> Notes:
+>     See also the linux-sunxi thread [2] that has led to this patch, which
+>     provides a rather detailed analysis with additional details and pictures.
+>     This patch effectively replaces the patch submitted in that thread.
+>     
+>     [2] https://lore.kernel.org/linux-sunxi/20240916204521.2033218-1-andrej.skvortzov@gmail.com/T/#u
+> 
+>  arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi | 3 +++
+>  1 file changed, 3 insertions(+)
+> 
+> diff --git a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
+> index 6eab61a12cd8..b844759f52c0 100644
+> --- a/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
+> +++ b/arch/arm64/boot/dts/allwinner/sun50i-a64-pinephone.dtsi
+> @@ -212,6 +212,9 @@ accelerometer@68 {
+>  		interrupts = <7 5 IRQ_TYPE_EDGE_RISING>; /* PH5 */
+>  		vdd-supply = <&reg_dldo1>;
+>  		vddio-supply = <&reg_dldo1>;
+> +		mount-matrix = "0", "1", "0",
+> +			       "-1", "0", "0",
+> +			       "0", "0", "1";
+>  	};
+>  };
+>  
 
-When __folio_test_movable() is called in migrate_folio_unmap() to read
-folio->mapping, a data race occurs because the folio is read without
-protecting it with folio_lock.
+I've applied the patch to next-20240920, built and run on a
+device. Sensor now works as expected. Screen rotating in Phosh
+according to the device orientation.
 
-This can cause unintended behavior because folio->mapping is initialized
-to a NULL value. Therefore, I think it is appropriate to call
-__folio_test_movable() under the protection of folio_lock to prevent
-data-race.
+Reviewed-by: Andrey Skvortsov <andrej.skvortzov@gmail.com>
 
-[1]
-
-==================================================================
-BUG: KCSAN: data-race in __filemap_remove_folio / migrate_pages_batch
-
-write to 0xffffea0004b81dd8 of 8 bytes by task 6348 on cpu 0:
- page_cache_delete mm/filemap.c:153 [inline]
- __filemap_remove_folio+0x1ac/0x2c0 mm/filemap.c:233
- filemap_remove_folio+0x6b/0x1f0 mm/filemap.c:265
- truncate_inode_folio+0x42/0x50 mm/truncate.c:178
- shmem_undo_range+0x25b/0xa70 mm/shmem.c:1028
- shmem_truncate_range mm/shmem.c:1144 [inline]
- shmem_evict_inode+0x14d/0x530 mm/shmem.c:1272
- evict+0x2f0/0x580 fs/inode.c:731
- iput_final fs/inode.c:1883 [inline]
- iput+0x42a/0x5b0 fs/inode.c:1909
- dentry_unlink_inode+0x24f/0x260 fs/dcache.c:412
- __dentry_kill+0x18b/0x4c0 fs/dcache.c:615
- dput+0x5c/0xd0 fs/dcache.c:857
- __fput+0x3fb/0x6d0 fs/file_table.c:439
- ____fput+0x1c/0x30 fs/file_table.c:459
- task_work_run+0x13a/0x1a0 kernel/task_work.c:228
- resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
- exit_to_user_mode_loop kernel/entry/common.c:114 [inline]
- exit_to_user_mode_prepare include/linux/entry-common.h:328 [inline]
- __syscall_exit_to_user_mode_work kernel/entry/common.c:207 [inline]
- syscall_exit_to_user_mode+0xbe/0x130 kernel/entry/common.c:218
- do_syscall_64+0xd6/0x1c0 arch/x86/entry/common.c:89
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-read to 0xffffea0004b81dd8 of 8 bytes by task 6342 on cpu 1:
- __folio_test_movable include/linux/page-flags.h:699 [inline]
- migrate_folio_unmap mm/migrate.c:1199 [inline]
- migrate_pages_batch+0x24c/0x1940 mm/migrate.c:1797
- migrate_pages_sync mm/migrate.c:1963 [inline]
- migrate_pages+0xff1/0x1820 mm/migrate.c:2072
- do_mbind mm/mempolicy.c:1390 [inline]
- kernel_mbind mm/mempolicy.c:1533 [inline]
- __do_sys_mbind mm/mempolicy.c:1607 [inline]
- __se_sys_mbind+0xf76/0x1160 mm/mempolicy.c:1603
- __x64_sys_mbind+0x78/0x90 mm/mempolicy.c:1603
- x64_sys_call+0x2b4d/0x2d60 arch/x86/include/generated/asm/syscalls_64.h:238
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xc9/0x1c0 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-value changed: 0xffff888127601078 -> 0x0000000000000000
-
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Cc: stable@vger.kernel.org
-Fixes: 7e2a5e5ab217 ("mm: migrate: use __folio_test_movable()")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
----
- mm/migrate.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/mm/migrate.c b/mm/migrate.c
-index 923ea80ba744..e62dac12406b 100644
---- a/mm/migrate.c
-+++ b/mm/migrate.c
-@@ -1118,7 +1118,7 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
- 	int rc = -EAGAIN;
- 	int old_page_state = 0;
- 	struct anon_vma *anon_vma = NULL;
--	bool is_lru = !__folio_test_movable(src);
-+	bool is_lru;
- 	bool locked = false;
- 	bool dst_locked = false;
- 
-@@ -1172,6 +1172,7 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
- 	locked = true;
- 	if (folio_test_mlocked(src))
- 		old_page_state |= PAGE_WAS_MLOCKED;
-+	is_lru = !__folio_test_movable(src);
- 
- 	if (folio_test_writeback(src)) {
- 		/*
---
+-- 
+Best regards,
+Andrey Skvortsov
 
