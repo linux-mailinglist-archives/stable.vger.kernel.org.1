@@ -1,245 +1,160 @@
-Return-Path: <stable+bounces-76866-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7477E97E3DF
-	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 00:01:23 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4452497E3ED
+	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 00:18:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2C64C281268
-	for <lists+stable@lfdr.de>; Sun, 22 Sep 2024 22:01:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 959CEB20BA9
+	for <lists+stable@lfdr.de>; Sun, 22 Sep 2024 22:18:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B9BC57CB5;
-	Sun, 22 Sep 2024 22:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E12DC7DA95;
+	Sun, 22 Sep 2024 22:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HXRyo+dD"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EE8SLfxM"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f182.google.com (mail-lj1-f182.google.com [209.85.208.182])
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB4F8BA27;
-	Sun, 22 Sep 2024 22:01:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE2321A28D;
+	Sun, 22 Sep 2024 22:17:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727042476; cv=none; b=sLR7LIqnSt3CfvajpvdYTOt7jHKnJjsUdOWJJGtOZtMWfm6PEqo7+cp920xjtgFTeeZ1yJ0GGzkDQxsX53ZbnfR7ass5TLkcB42c2/NOCL0ty2KSWOQzTsPj5jJiz40Vg6NPnMBUGZvjSMohoJdX/P7G4EQVOF5NgUi7gqmSG8Y=
+	t=1727043479; cv=none; b=ba9yCDrslS3aJUBQjld1RnOlWtB4cC2pkto3OGSbtQ7tC+bI9Tf+1PEiyU0pmCCi71xodQWVNj61tSjSTBtvfRrS75qyDdfsBY5i5DMmx+sHXiAHZ1HsY/P/QpVwl+VjNpW/U/QM+zH+kpzGUeLY07exUxdOjQSvyc567bUu3os=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727042476; c=relaxed/simple;
-	bh=p/soAmu2RO/C/tIiPLNsU9CGkT9SOqHWOAcgrtxrKUs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GxUBnRe5X9MDTaUxAvfcPqi7ougnbST7JL5HO/rjFPvbUwYkLxg/tVxy6JRtBchWWRKxgX8ugKIKb+l7GE3x9u+9fBEno4Fo5DRniDr4t75n2nq7M5ELUB4j5BYjl9tigto5Aog7nU+ATez57kMhuMgkj8b/JI0769FMtBl90ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HXRyo+dD; arc=none smtp.client-ip=209.85.208.182
+	s=arc-20240116; t=1727043479; c=relaxed/simple;
+	bh=zRfTlsewnL1gK1p7evRw5lN7oPTz7Qc3Kk9b9YTEMvw=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=VSq6HOq1BDDLYy0hdxgUzc1QUOfmOSDk9QQ52Okw1T5d2KkkaKItoFkeAZj+1MzH8hG+hwUIRV+y8k8iSkvXe/MC7bip6yl6xFV/qHzIjsR/B5TAZSMsWshvDLPq2TmW4MssO8nz4yveb/BI8Fi0lBY+9FA9L2S6yvmxZQvirWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EE8SLfxM; arc=none smtp.client-ip=209.85.218.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2f7ba97ebaaso33147161fa.2;
-        Sun, 22 Sep 2024 15:01:14 -0700 (PDT)
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-a8d2b24b7a8so870569666b.1;
+        Sun, 22 Sep 2024 15:17:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727042473; x=1727647273; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2F11MlRDxchXHUfNoGUmT3jqqaQlLJ0vF51YAc/EHvI=;
-        b=HXRyo+dDrcBxnQRXNWNHXmk3z806/trLjMxWUWWqCyNVh41ymn4FOo1XBzV2cA+1Wv
-         LqPoqCD/042ovTdKBlMoo+/bDtdIeO2LVk2B9SBMC26Jq4aOckX0TybNC97F/PvZOYgi
-         tZ7mULqk07/W4PhHRt8AspEqiDKyWawrfZAUzvXrEhmrYF6ZEjlhK61Ri6oJpuqqLqt3
-         EwoXmCz1DVp9VjTlfL7yMbVJ2qO4jih6p9tbra9k+MR0YvvuNtFPpOacsSd7W4eyc9z+
-         uvNZWIhsmjsQ68MPXAaaDj8/Lfi+hJRlMBYjlzLZlWegUodkObxkwkUJpfTjTtGkVH7b
-         ySZA==
+        d=gmail.com; s=20230601; t=1727043476; x=1727648276; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=fXK3DVY3ahAKT/DIqxZKZqCTgkhuDK8+IBLRUjvJckg=;
+        b=EE8SLfxMYEjbc47L45ryMSZiyXLmVOxrJSejmReis2c1Zn8bfIEw2j81H4vXtu1iNT
+         wCWhRlWn8O9+P4XLyMo4oCfG40jRI9tmebeOBnO2Nr/1GzMv8iH0byWA9Q7PE5XnunwF
+         aem6TYivHBKCuf6FQDd5U0Bq7FXEZuW6IFNlIbq3vew0eDEL8xAwlipgbowGMMU3Dvtd
+         TAud+ae4+SoQsFIgfhaJ+x2K3fj0PuNWnHo8XjIBCU3ROwyDt0oGMlTXeAW+Nw/Vp/w9
+         dOybPanPg+hlMeBAStpabNPObeJlkqzs/fmpHfj4XxSzUFfldgOjgl6JZJjtL911XRQN
+         ByFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727042473; x=1727647273;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2F11MlRDxchXHUfNoGUmT3jqqaQlLJ0vF51YAc/EHvI=;
-        b=M3KEEJPAGxFjufQjXWYQ83MnRKZOAk9hbHrKRCZCDm8AUX8tnMlx0FML+7+SloX3n0
-         KAA1lgFkg+xGt/+zY4l4pRwlxsewP9UsjXGy5vLbN7YOM11SwjlyzRl9zydYzFakbk03
-         1+kdlSA4hUqS10fle+qhq8sK6TZUBFs0RIN/d4knxEzuv+TgMxcXJD/rZhzfexp5bJr4
-         wpjQ6ybmRVFoMvYr+HxjHZ34UGkKm3cfc2JP9vCzvQD30I8FvSlCj75aGUi6Bt7cCRTu
-         LalMUv5R0DChXU672aPuCdt5kIRQ1PDjLFYci3yXxqwdiW3H5MBV1IEAeFhjYZeMgNH3
-         Ix7Q==
-X-Forwarded-Encrypted: i=1; AJvYcCW+/K3UZvHfA+/6m+n7jce52r777YzojY9ltYoT86+H4IehfpJd3eDMP2f5wqrY5A68tK/MH95GP10ud5s=@vger.kernel.org, AJvYcCXeI6rR9h9IeHm8QxhW4lKxi4WmvBPUjEhgeT+zpOR3wE6aLrxCbYydcSCUL3psRmDGvRdt01XQ@vger.kernel.org
-X-Gm-Message-State: AOJu0YzFd/Fjxq4RE2bptBj7Amp4TP1A9vFChWkVAwz5yk2dUmZZqjjl
-	f/qivSX+Rm1d5df3++8ApBvvmZAyMSggMQHfKRlbr4A3fCByunIW
-X-Google-Smtp-Source: AGHT+IHoMN+jbmkGmsI79k6tPTCnxW9JGzS5bl8JjwANPmEVlA9q1UNuJg8M6/Th+aIbrGdfopLxrw==
-X-Received: by 2002:a2e:1312:0:b0:2f5:839:2982 with SMTP id 38308e7fff4ca-2f7cc36597fmr33254601fa.12.1727042472462;
-        Sun, 22 Sep 2024 15:01:12 -0700 (PDT)
-Received: from mobilestation ([95.79.225.241])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2f79d3007basm27545231fa.32.2024.09.22.15.01.09
+        d=1e100.net; s=20230601; t=1727043476; x=1727648276;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fXK3DVY3ahAKT/DIqxZKZqCTgkhuDK8+IBLRUjvJckg=;
+        b=G/l4TbipvpRXQr5XHLc+7eVTx3DaOTJYrxGTpnQez6UviptoJko20nq85CXddIc9Wp
+         wfrPcW2VLp8Kx/iZWtRh2H+RLxctcT0Cfcx0Br4xAwGs0ZJvpFg0+6irW2PsiFl0h4ch
+         QzSTeh5hp/q1/tyCmz/BVrqfGNThr9GjYw5w6GxtdTHxsyCb/xRAqeg0VElUsjIVdBog
+         gQ2vsklu3q4DnzxsvOAYntaPjmTbGd1bWcR0BKLMB/MLARpRKgRACiztcPP9x5UDJnBr
+         TvGndVVqML1qfRA2e+XCpNCeRoOdZJVW9r7ehwgTScSTXmYc6iBnQrzZcl3AmCzrTN/X
+         CtzA==
+X-Forwarded-Encrypted: i=1; AJvYcCVCNNfqbF/p6dWxCeLz9J/AKkrJTJcyyHWLotDS0x78nmTw2J9PVDQ31EZuW8CVdgVJEvy1Hber@vger.kernel.org, AJvYcCWJPE9Zi94ynYNO0ib92u5tuBPUqa4X4W2xAlfcTYzLcqxyJssIkm+4gXD5AumYJhXj2Drbj5nguxkyhMtY@vger.kernel.org, AJvYcCWXdWOVMd2Vo4AK2qsIW9AC5J5NAbw4TzA+aXQSBEYK0zFfAYAhNNie0fsdD9mCoi/KhLNhhSn4VP9M@vger.kernel.org
+X-Gm-Message-State: AOJu0YzyXJkXfaNBNUj/3hBWrCB9WiIe8ducLCHVuGEOtlk0ylcGg16W
+	Hj/GL+XqM3fipE3Nf9iU+XsyvIidW4dHslICVc0+bb8Tcpac1Okr
+X-Google-Smtp-Source: AGHT+IG9qeopRd4C78uB2wWAtr8cWA2Ma5YJbHKJewHULosUL/5/iVc2DQEkm0crIXcSRbCD1fp3Cw==
+X-Received: by 2002:a17:906:7951:b0:a7a:acae:340b with SMTP id a640c23a62f3a-a90d364468bmr935185366b.31.1727043476131;
+        Sun, 22 Sep 2024 15:17:56 -0700 (PDT)
+Received: from [127.0.1.1] (84-115-213-37.cable.dynamic.surfer.at. [84.115.213.37])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a90611164d0sm1126202066b.91.2024.09.22.15.17.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Sep 2024 15:01:10 -0700 (PDT)
-Date: Mon, 23 Sep 2024 01:01:08 +0300
-From: Serge Semin <fancer.lancer@gmail.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Viresh Kumar <vireshk@kernel.org>, Vinod Koul <vkoul@kernel.org>, stable@vger.kernel.org, 
-	Ferry Toth <fntoth@gmail.com>
-Subject: Re: [PATCH v3 1/1] dmaengine: dw: Select only supported masters for
- ACPI devices
-Message-ID: <ajcqxw6in7364m6bp2wncym65mlqf57fxr6pc4aor3xbokx2cu@2wve6fdtu3vz>
-References: <20240920155820.3340081-1-andriy.shevchenko@linux.intel.com>
+        Sun, 22 Sep 2024 15:17:55 -0700 (PDT)
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Subject: [PATCH v2 00/10] iio: light: veml6030: fix issues and add support
+ for veml6035
+Date: Mon, 23 Sep 2024 00:17:48 +0200
+Message-Id: <20240923-veml6035-v2-0-58c72a0df31c@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240920155820.3340081-1-andriy.shevchenko@linux.intel.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAIyX8GYC/03MQQ6CMBCF4auQWVszLYitK+9hWJQ6wCRATWsaD
+ endrcSFy//l5dsgUmCKcKk2CJQ4sl9LqEMFbrLrSILvpUGhatBgLRItc4v1SZytkb1DrV07QLk
+ /Ag382qlbV3ri+PThvctJftcfIv+QJAUK7NE4dAYbqa/jYnk+Or9Al3P+AO4gu0agAAAA
+To: Jonathan Cameron <jic23@kernel.org>, 
+ Lars-Peter Clausen <lars@metafoo.de>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Rishi Gupta <gupt21@gmail.com>
+Cc: linux-iio@vger.kernel.org, devicetree@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, 
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>, 
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>, stable@vger.kernel.org, 
+ Conor Dooley <conor.dooley@microchip.com>
+X-Mailer: b4 0.14-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1727043474; l=2726;
+ i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
+ bh=zRfTlsewnL1gK1p7evRw5lN7oPTz7Qc3Kk9b9YTEMvw=;
+ b=9B0SznKXvbzDhytqyeV3UxnP+6MXKYHz/aR5mGwyxvD9QwQyDCAlq090BxugIjHvBDx7uFwDM
+ 45JrP6dNiAhA4Odw5smL6fzOZEH6L7rXwQSGG/4IDfWc88p4YHJTi4b
+X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
+ pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
-Hi Andy
+This series updates the driver for the veml6030 ALS and adds support for
+the veml6035, which shares most of its functionality with the former.
 
-On Fri, Sep 20, 2024 at 06:56:17PM +0300, Andy Shevchenko wrote:
-> From: Serge Semin <fancer.lancer@gmail.com>
-> 
-> The recently submitted fix-commit revealed a problem in the iDMA 32-bit
-> platform code. Even though the controller supported only a single master
-> the dw_dma_acpi_filter() method hard-coded two master interfaces with IDs
-> 0 and 1. As a result the sanity check implemented in the commit
-> b336268dde75 ("dmaengine: dw: Add peripheral bus width verification")
-> got incorrect interface data width and thus prevented the client drivers
-> from configuring the DMA-channel with the EINVAL error returned. E.g.,
-> the next error was printed for the PXA2xx SPI controller driver trying
-> to configure the requested channels:
-> 
-> > [  164.525604] pxa2xx_spi_pci 0000:00:07.1: DMA slave config failed
-> > [  164.536105] pxa2xx_spi_pci 0000:00:07.1: failed to get DMA TX descriptor
-> > [  164.543213] spidev spi-SPT0001:00: SPI transfer failed: -16
-> 
-> The problem would have been spotted much earlier if the iDMA 32-bit
-> controller supported more than one master interfaces. But since it
-> supports just a single master and the iDMA 32-bit specific code just
-> ignores the master IDs in the CTLLO preparation method, the issue has
-> been gone unnoticed so far.
-> 
-> Fix the problem by specifying the default master ID for both memory
-> and peripheral devices in the driver data. Thus the issue noticed for
-> the iDMA 32-bit controllers will be eliminated and the ACPI-probed
-> DW DMA controllers will be configured with the correct master ID by
-> default.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: b336268dde75 ("dmaengine: dw: Add peripheral bus width verification")
-> Fixes: 199244d69458 ("dmaengine: dw: add support of iDMA 32-bit hardware")
-> Reported-by: Ferry Toth <fntoth@gmail.com>
-> Closes: https://lore.kernel.org/dmaengine/ZuXbCKUs1iOqFu51@black.fi.intel.com/
-> Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> Closes: https://lore.kernel.org/dmaengine/ZuXgI-VcHpMgbZ91@black.fi.intel.com/
-> Co-developed-by: Serge Semin <fancer.lancer@gmail.com>
-> Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
-> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-> ---
-> v3: rewrote to use driver_data
-> v2: https://lore.kernel.org/r/20240919185151.7331-1-fancer.lancer@gmail.com
+The most relevant updates for the veml6030 are the resolution correction
+to meet the datasheet update that took place with Rev 1.7, 28-Nov-2023,
+a fix to avoid a segmentation fault when reading the
+in_illuminance_period_available attribute, and the removal of the
+processed value for the WHITE channel, as it uses the ALS resolution.
 
-IMO v2 looked better for me. I am sure you know, but Master IDs is a
-platform-specific thing specific for each slave/peripheral device
-connected to the DMA controller. Depending on the chip design one
-peripheral device can be accessed over the one master IDs, another
-device/memory may have another master connected (can be up to four
-master IDs in general). That's why the master IDs have been declared
-in the dw_dma_slave structure. So adding them to struct
-dw_dma_chip_pdata doesn't seem like a good idea seeing it contains the
-generic DW DMA controller info. On the contrary my implementation
-seems a bit more coherent since it just changes the default slave IDs
-defined in the dw_dma_acpi_filter() method and initialized in the
-dw_dma_slave instance without adding slave-specific fields to the
-generic controller data.
+Vishay does not host the Product Information Notification where the
+resolution correction was introduced, but it can still be found
+online[1], and the corrected value is the one listed on the latest
+version of the datasheet[2] (Rev. 1.7, 28-Nov-2023) and application
+note[3] (Rev. 17-Jan-2024).
 
-What seems like a much better alternative to the both approaches, is
-to use the dw_dma_slave instance defined in the mrfld_spi_setup()
-method for the Intel Merrifield SPI PXA2xx DMA-interface in
-drivers/spi/spi-pxa2xx-pci.c. But AFAICT that data is left unused
-since the DMA-engine handle and connection parameters are determined
-by the channel name. Right? Is it possible to make use of the
-filter-function specified to the dma_request_slave_channel_compat()
-method?
+Link: https://www.farnell.com/datasheets/4379688.pdf [1]
+Link: https://www.vishay.com/docs/84366/veml6030.pdf [2]
+Link: https://www.vishay.com/docs/84367/designingveml6030.pdf [3]
 
--Serge(y)
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+---
+Changes in v2:
+- Rebase to iio/testing, dropping applied patches [1/7], [4/7].
+- Drop [3/7] (applied to iio/fixes-togreg).
+- Add patch to use dev_err_probe() in probe error paths.
+- Add patch to use read_avail() for available attributes.
+- Add patches to use to support a regulator.
+- Add patch to ensure that the device is powered off in error paths
+  after powering it on.
+- Add patch to drop processed values from the WHITE channel.
+- Use fsleep() instead of usleep_range() in veml6030_als_pwr_on()
+- Link to v1: https://lore.kernel.org/r/20240913-veml6035-v1-0-0b09c0c90418@gmail.com
 
-> 
->  drivers/dma/dw/acpi.c     | 6 ++++--
->  drivers/dma/dw/internal.h | 8 ++++++++
->  drivers/dma/dw/pci.c      | 4 ++--
->  3 files changed, 14 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/dma/dw/acpi.c b/drivers/dma/dw/acpi.c
-> index c510c109d2c3..b6452fffa657 100644
-> --- a/drivers/dma/dw/acpi.c
-> +++ b/drivers/dma/dw/acpi.c
-> @@ -8,13 +8,15 @@
->  
->  static bool dw_dma_acpi_filter(struct dma_chan *chan, void *param)
->  {
-> +	struct dw_dma *dw = to_dw_dma(chan->device);
-> +	struct dw_dma_chip_pdata *data = dev_get_drvdata(dw->dma.dev);
->  	struct acpi_dma_spec *dma_spec = param;
->  	struct dw_dma_slave slave = {
->  		.dma_dev = dma_spec->dev,
->  		.src_id = dma_spec->slave_id,
->  		.dst_id = dma_spec->slave_id,
-> -		.m_master = 0,
-> -		.p_master = 1,
-> +		.m_master = data->m_master,
-> +		.p_master = data->p_master,
->  	};
->  
->  	return dw_dma_filter(chan, &slave);
-> diff --git a/drivers/dma/dw/internal.h b/drivers/dma/dw/internal.h
-> index 779b3cbcf30d..99d9f61b2254 100644
-> --- a/drivers/dma/dw/internal.h
-> +++ b/drivers/dma/dw/internal.h
-> @@ -51,11 +51,15 @@ struct dw_dma_chip_pdata {
->  	int (*probe)(struct dw_dma_chip *chip);
->  	int (*remove)(struct dw_dma_chip *chip);
->  	struct dw_dma_chip *chip;
-> +	u8 m_master;
-> +	u8 p_master;
->  };
->  
->  static __maybe_unused const struct dw_dma_chip_pdata dw_dma_chip_pdata = {
->  	.probe = dw_dma_probe,
->  	.remove = dw_dma_remove,
-> +	.m_master = 0,
-> +	.p_master = 1,
->  };
->  
->  static const struct dw_dma_platform_data idma32_pdata = {
-> @@ -72,6 +76,8 @@ static __maybe_unused const struct dw_dma_chip_pdata idma32_chip_pdata = {
->  	.pdata = &idma32_pdata,
->  	.probe = idma32_dma_probe,
->  	.remove = idma32_dma_remove,
-> +	.m_master = 0,
-> +	.p_master = 0,
->  };
->  
->  static const struct dw_dma_platform_data xbar_pdata = {
-> @@ -88,6 +94,8 @@ static __maybe_unused const struct dw_dma_chip_pdata xbar_chip_pdata = {
->  	.pdata = &xbar_pdata,
->  	.probe = idma32_dma_probe,
->  	.remove = idma32_dma_remove,
-> +	.m_master = 0,
-> +	.p_master = 0,
->  };
->  
->  int dw_dma_fill_pdata(struct device *dev, struct dw_dma_platform_data *pdata);
-> diff --git a/drivers/dma/dw/pci.c b/drivers/dma/dw/pci.c
-> index adf2d69834b8..a3aae3d1c093 100644
-> --- a/drivers/dma/dw/pci.c
-> +++ b/drivers/dma/dw/pci.c
-> @@ -56,10 +56,10 @@ static int dw_pci_probe(struct pci_dev *pdev, const struct pci_device_id *pid)
->  	if (ret)
->  		return ret;
->  
-> -	dw_dma_acpi_controller_register(chip->dw);
-> -
->  	pci_set_drvdata(pdev, data);
->  
-> +	dw_dma_acpi_controller_register(chip->dw);
-> +
->  	return 0;
->  }
->  
-> -- 
-> 2.43.0.rc1.1336.g36b5255a03ac
-> 
+---
+Javier Carrasco (10):
+      iio: light: veml6030: fix ALS sensor resolution
+      iio: light: veml6030: add set up delay after any power on sequence
+      iio: light: veml6030: use dev_err_probe()
+      dt-bindings: iio: light: veml6030: add vdd-supply property
+      iio: light: veml6030: add support for a regulator
+      iio: light: veml6030: use read_avail() for available attributes
+      iio: light: veml6030: drop processed info for white channel
+      iio: light: veml6030: power off device in probe error paths
+      dt-bindings: iio: light: veml6030: add veml6035
+      iio: light: veml6030: add support for veml6035
+
+ .../bindings/iio/light/vishay,veml6030.yaml        |  43 +-
+ drivers/iio/light/Kconfig                          |   4 +-
+ drivers/iio/light/veml6030.c                       | 453 ++++++++++++++++-----
+ 3 files changed, 391 insertions(+), 109 deletions(-)
+---
+base-commit: 8bea3878a1511bceadc2fbf284b00bcc5a2ef28d
+change-id: 20240903-veml6035-7a91bc088c6f
+
+Best regards,
+-- 
+Javier Carrasco <javier.carrasco.cruz@gmail.com>
+
 
