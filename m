@@ -1,81 +1,156 @@
-Return-Path: <stable+bounces-76883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5148497E756
-	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 10:15:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BACAD97E773
+	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 10:21:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 074341F21890
-	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 08:15:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6FDFB281841
+	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 08:21:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28727188918;
-	Mon, 23 Sep 2024 08:14:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21FE919341D;
+	Mon, 23 Sep 2024 08:21:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Y+u9hkm8"
 X-Original-To: stable@vger.kernel.org
-Received: from proxmox-new.maurer-it.com (proxmox-new.maurer-it.com [94.136.29.106])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8E881885B3;
-	Mon, 23 Sep 2024 08:14:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.136.29.106
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C626101E6;
+	Mon, 23 Sep 2024 08:21:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727079284; cv=none; b=Qtd62wJLjr+VBH0LHswbcht3CgyecstLsAR0oeavzBQcVbgwbRE3v94OCuZkhuF/pcCT9oDo7CsMDCQ0YS2682JHeAqzHG9xzK3ZXHXIvCRjgCPDXvAhvcSpjkW5JzdzoMDAU/cNtqVjJsobK+zGUo2A4JvCgQj675wUCZf8uGE=
+	t=1727079704; cv=none; b=sa/LzlkimKTJJ6p0OQ+uRikdfa1QVdsj0VuOMoY/LU2CO0ssBdlhNemWTDy76golBqd7lVt9btTda+0CinvLUuCqHzBuDfzeBFRbDSiaqsGNIDhwswKdfSQL5rwbZfrjXxvKMo8LgCUOVGzMvhxvlEUbataGNLvPFGgKv6m0lm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727079284; c=relaxed/simple;
-	bh=mZrSmMEhLS54H+lIyWQEQCE/6YN/Jq3+SronXI1rado=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nxZKjUmmtYT+hefSIUv7tDACNzPKU22uj4/S+OS2T8qqh3ETM1cIrXHMurQwAYNnu/ZPZea3sW/4ikEp2cCPeBUm86mdoIkxQhepYABWPo41rfQMIiYZS0/mHaEiRVUnuwasQgXU5RY0tpToVdNXUa81r/O40j6qRczEde62kFg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com; spf=pass smtp.mailfrom=proxmox.com; arc=none smtp.client-ip=94.136.29.106
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proxmox.com
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
-	by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 99809481F5;
-	Mon, 23 Sep 2024 10:06:36 +0200 (CEST)
-Message-ID: <1690e7d0-6119-4fe3-a53b-d4977e7042a2@proxmox.com>
-Date: Mon, 23 Sep 2024 10:06:35 +0200
+	s=arc-20240116; t=1727079704; c=relaxed/simple;
+	bh=AhBArCA00fHDd85KD8nAgXjfaoO4k8Sawy/JQYap8f0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PBnLORqZgxSWB2wEUHf/OiGtskMaQawonJ4z0lwHfbxgwhxOXzqcDGfUOqJVFrmVncmoBVffBJ+LTrKPpllj+AMkk4mVlbPIWqukBc04szDHUJeE5EipFF/+uGJsOkRUeaoLRDZteIq5LKCHEFDtpBr00X/4gPgl6SOHX6uzlLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Y+u9hkm8; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1727079703; x=1758615703;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=AhBArCA00fHDd85KD8nAgXjfaoO4k8Sawy/JQYap8f0=;
+  b=Y+u9hkm8ug9rvoFIfBi7OdViKk/gi7pnYCXzjCDirzUe/vd5lWHtB0TK
+   aobs2efrQa+3lVRjomSiRsIKodyF7oEvOqLfr8Qls6PC1jSXXHSfW6uCp
+   eWRYLgqTNYFNe+KoQkUHYCSqltKvdW+426s+cQz815X5kCceZBeh/ZG5x
+   GzGinrxjnMRhUQ+yxpLBWSqMfivPYVC7Zl0jFy67m8BqUypa62vW1q9DC
+   WCllZ8Vouk+5EDa0ntXrO/s3BZvE8QLdXoNXhn1381gy0Xy7GUKppAktV
+   0/KCZ5UO6/4a6IEiYPy5jIb7pAFdqFzT535VySo0eJaImoRc5u1r3Jdqi
+   A==;
+X-CSE-ConnectionGUID: 8xiqCuKFTAayNZGcySTCaQ==
+X-CSE-MsgGUID: bpDB/AuiRmuFlPo/vuVX4w==
+X-IronPort-AV: E=McAfee;i="6700,10204,11202"; a="36680228"
+X-IronPort-AV: E=Sophos;i="6.10,250,1719903600"; 
+   d="scan'208";a="36680228"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2024 01:21:42 -0700
+X-CSE-ConnectionGUID: 6uBB5GAnQeqQ+IU64FDK+g==
+X-CSE-MsgGUID: H/KDjnfpRy+R0NV1dhzzjw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,250,1719903600"; 
+   d="scan'208";a="71303187"
+Received: from smile.fi.intel.com ([10.237.72.54])
+  by orviesa006.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2024 01:21:40 -0700
+Received: from andy by smile.fi.intel.com with local (Exim 4.98)
+	(envelope-from <andriy.shevchenko@linux.intel.com>)
+	id 1sseKA-0000000BtFM-0AKM;
+	Mon, 23 Sep 2024 11:21:38 +0300
+Date: Mon, 23 Sep 2024 11:21:37 +0300
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+To: Serge Semin <fancer.lancer@gmail.com>
+Cc: dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Viresh Kumar <vireshk@kernel.org>, Vinod Koul <vkoul@kernel.org>,
+	stable@vger.kernel.org, Ferry Toth <fntoth@gmail.com>
+Subject: Re: [PATCH v3 1/1] dmaengine: dw: Select only supported masters for
+ ACPI devices
+Message-ID: <ZvElEesYTX-89u_g@smile.fi.intel.com>
+References: <20240920155820.3340081-1-andriy.shevchenko@linux.intel.com>
+ <ajcqxw6in7364m6bp2wncym65mlqf57fxr6pc4aor3xbokx2cu@2wve6fdtu3vz>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION]: cephfs: file corruption when reading content via
- in-kernel ceph client
-To: Xiubo Li <xiubli@redhat.com>, David Howells <dhowells@redhat.com>,
- Jeff Layton <jlayton@kernel.org>, Ilya Dryomov <idryomov@gmail.com>
-Cc: regressions@lists.linux.dev, ceph-devel@vger.kernel.org,
- stable@vger.kernel.org
-References: <85bef384-4aef-4294-b604-83508e2fc350@proxmox.com>
- <0e60c3b8-f9af-489a-ba6f-968cb12b55dd@redhat.com>
- <1679397305.24654.1725606946541@webmail.proxmox.com>
- <5335cdb5-7735-463e-907b-617774d6f01a@redhat.com>
-Content-Language: en-US, de-DE
-From: Christian Ebner <c.ebner@proxmox.com>
-In-Reply-To: <5335cdb5-7735-463e-907b-617774d6f01a@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ajcqxw6in7364m6bp2wncym65mlqf57fxr6pc4aor3xbokx2cu@2wve6fdtu3vz>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
 
-On 9/6/24 13:09, Xiubo Li wrote:
+On Mon, Sep 23, 2024 at 01:01:08AM +0300, Serge Semin wrote:
+> On Fri, Sep 20, 2024 at 06:56:17PM +0300, Andy Shevchenko wrote:
+
+...
+
+> > Fix the problem by specifying the default master ID for both memory
+> > and peripheral devices in the driver data. Thus the issue noticed for
+> > the iDMA 32-bit controllers will be eliminated and the ACPI-probed
+> > DW DMA controllers will be configured with the correct master ID by
+> > default.
+
+> > ---
+> > v3: rewrote to use driver_data
+> > v2: https://lore.kernel.org/r/20240919185151.7331-1-fancer.lancer@gmail.com
 > 
-> Sure, thanks in advance.
-> 
-> I will work on this next week or later because I am occupied by some 
-> other stuff recently.
-> 
+> IMO v2 looked better for me.
 
-There is some further information I can provide regarding this:
-Further testing with the reproducer and the current mainline kernel 
-shows that the issue might be fixed.
+I disagree, obviously, since I sent a v3.
+(I can drop your authorship and tags in v4)
 
-Bisection of the possible fix points to ee4cdf7b ("netfs: Speed up 
-buffered reading").
+> I am sure you know, but Master IDs is a
+> platform-specific thing specific for each slave/peripheral device
+> connected to the DMA controller. Depending on the chip design one
+> peripheral device can be accessed over the one master IDs, another
+> device/memory may have another master connected (can be up to four
+> master IDs in general). That's why the master IDs have been declared
+> in the dw_dma_slave structure.
 
-Could this additional information help to boil down the part that fixes 
-the cephfs issues so that the fix can be backported to current stable?
+Correct.
 
-Regards,
-Christian Ebner
+> So adding them to struct
+> dw_dma_chip_pdata doesn't seem like a good idea seeing it contains the
+> generic DW DMA controller info.
+
+So far there is no evidence that the channels are integrated differently on
+the same DMA controller over all hardware that uses this IP.
+
+> On the contrary my implementation
+> seems a bit more coherent since it just changes the default slave IDs
+> defined in the dw_dma_acpi_filter() method and initialized in the
+> dw_dma_slave instance without adding slave-specific fields to the
+> generic controller data.
+
+The default enumeration for PCI + ACPI or pure ACPI devices is not
+changed with my patch, but actually makes it better (increases granularity).
+The defaults are platform specific and that's what driver_data is for.
+
+While you like your solution, the problem with it that it doesn't cover
+different orders, so it's half-baked solution, I think. Mine doesn't
+change the status quo about integration (see above) and has better approach
+regarding different ordering. Both implementations have a flaw regarding per-channel master configuration.
+
+> What seems like a much better alternative to the both approaches, is
+> to use the dw_dma_slave instance defined in the mrfld_spi_setup()
+> method for the Intel Merrifield SPI PXA2xx DMA-interface in
+> drivers/spi/spi-pxa2xx-pci.c. But AFAICT that data is left unused
+> since the DMA-engine handle and connection parameters are determined
+> by the channel name. Right? Is it possible to make use of the
+> filter-function specified to the dma_request_slave_channel_compat()
+> method?
+
+Unfortunately no, in ACPI case the only data we use is the name (index) of
+the channel in the respective resources. Everything else is done automatically.
+
+-- 
+With Best Regards,
+Andy Shevchenko
+
 
 
