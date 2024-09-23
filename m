@@ -1,97 +1,121 @@
-Return-Path: <stable+bounces-76892-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76894-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 680F897E8EA
-	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 11:40:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C69397E97A
+	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 12:08:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A25E2819A5
-	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 09:40:51 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1BDADB2166B
+	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 10:08:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30F4F195390;
-	Mon, 23 Sep 2024 09:40:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B673199929;
+	Mon, 23 Sep 2024 10:06:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="js9dQvA0"
+	dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b="K8ZbEipB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fllv0016.ext.ti.com (fllv0016.ext.ti.com [198.47.19.142])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CD52194ACF;
-	Mon, 23 Sep 2024 09:40:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2D06195FD1;
+	Mon, 23 Sep 2024 10:06:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.47.19.142
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727084439; cv=none; b=OKvVvOfqrmzyPlritUYUHQGwlPsumveCV1LO/o5UMOiurY+BV51fZIx2ya5KMRx6DO6wyAWEnlVHEf2u3EYsn2ZdbZCw7B0RMhzlQvyN0rjXIDwSOm7gMCDXiZIcTHHEj32QQ6jzHX5rGbBYRRCHBQv7ExZZY9g5ksD7RJOeGdE=
+	t=1727085987; cv=none; b=tXUmLgJB/bTaY9skqy5JJ+SXqjzPJ010TcIGkUTPKQ/QjWF4tX0fA4BYczlo3ynWZB2JcQbv+mFOF5/vfy7BvW2U+/OsNba19CSgBXQPoBa4Z6UVyL8J5lxXgvS1rW4uUQ7bOpvVqWj7RSJpLiqcmT6sgvb797aZVD/HuuOfyQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727084439; c=relaxed/simple;
-	bh=E/gsmqOjoVPVa8WGzv0WJ61S2WKDROzRfE09bTLPij8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=j392KE423+PjZ5gPJB5WGO247JIk3K+QH775rIK3xWMp62qKuVWnpSzkNJf8VtaYq7sGmd64g118Q3DMw6MbpyWZNXPlmqKtXCyDas+98OBZCJdprGQ7KerVqd9cmgKVpZddQ8pkjIf8NkjsBW5YKx3jlMcpTXL6OS/aG1t9Z8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=js9dQvA0; arc=none smtp.client-ip=217.194.8.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
-Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
-	by mail11.truemail.it (Postfix) with ESMTPA id 7CE9D1FBE3;
-	Mon, 23 Sep 2024 11:40:33 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
-	s=default; t=1727084433;
-	bh=zaP3Uo3n4OZ6NzL/Ea1OjTTd80bogQ3TTVKEJkWIqfs=; h=From:To:Subject;
-	b=js9dQvA0WEInrEutEkwyOEfyfqtCjn9u2F/53EkJv9fjGLTa6Bx6g8IqpQzNms5Jv
-	 vD9Voy4I3grWjfUlSA015zqKswBJREFq1QEK3j7VpS9a3FEJv0OBHbhWeb6B+yfLdx
-	 TyI/Cz9NGHhodLfZ7Hrg61SCBSWG2ED0Dj+4SxG6TLmybGZ4TvNltbUPu3B5U6/XCM
-	 06x2ZWqRC3SKJ7CAhnDyWgoCL9EH+IjiqBmx+RB/ULjk9rp7yFrYg6O/JHjVSneKU+
-	 fih8wkJUCeJ/v9fjG0OoHWaJlOn/0oDrTBzkW3x6hf/ZzjaV5R7S2HisxaMldGsO9K
-	 CCqeRTi7co2rQ==
-Date: Mon, 23 Sep 2024 11:40:29 +0200
-From: Francesco Dolcini <francesco@dolcini.it>
-To: Keerthy <j-keerthy@ti.com>, Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Parth Pancholi <parth105105@gmail.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
-	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Parth Pancholi <parth.pancholi@toradex.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] gpio: davinci: fix lazy disable
-Message-ID: <20240923094029.GA124572@francesco-nb>
+	s=arc-20240116; t=1727085987; c=relaxed/simple;
+	bh=dYERMYiqBcu5v+Xw3cVsKRtYwwRlvcKA6xAVzDs3h7I=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=LzBKgrYoQhpkUPIZJ4OWVUy4yO/mr7ve4IHB1WeRfDix9pd7eRHZHrC3kBuLN4w+t6pKV2bKOzP0gIHz9g2snyO9rjJL3lJfC+15chC5+la4qezPSm41rNR5M3x209UPaeubfO9Q/9CIisy/MbyHssAq7/HIb4taVzUy20fCqis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com; spf=pass smtp.mailfrom=ti.com; dkim=pass (1024-bit key) header.d=ti.com header.i=@ti.com header.b=K8ZbEipB; arc=none smtp.client-ip=198.47.19.142
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=ti.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ti.com
+Received: from fllv0035.itg.ti.com ([10.64.41.0])
+	by fllv0016.ext.ti.com (8.15.2/8.15.2) with ESMTP id 48NA63o8023688;
+	Mon, 23 Sep 2024 05:06:03 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ti.com;
+	s=ti-com-17Q1; t=1727085963;
+	bh=dYERMYiqBcu5v+Xw3cVsKRtYwwRlvcKA6xAVzDs3h7I=;
+	h=From:To:CC:Subject:Date:References:In-Reply-To;
+	b=K8ZbEipBBe0XcMAsO6eY+QKTaU6JhtW4EgvyNYsr1O/qOd3OzJfgHp5FQpE2dH7Kt
+	 zAVWMLwDvAe7+1I6ekP2++aFBAr05dZLpa22AxvcssRsVCBXvBGKZsSlTU3AItleDE
+	 kBj0RgE3B23fZbskcmhI6LfX/8/CfI+AQQbBt5Og=
+Received: from DFLE101.ent.ti.com (dfle101.ent.ti.com [10.64.6.22])
+	by fllv0035.itg.ti.com (8.15.2/8.15.2) with ESMTPS id 48NA636D033721
+	(version=TLSv1.2 cipher=AES256-GCM-SHA384 bits=256 verify=FAIL);
+	Mon, 23 Sep 2024 05:06:03 -0500
+Received: from DFLE105.ent.ti.com (10.64.6.26) by DFLE101.ent.ti.com
+ (10.64.6.22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA256_P256) id 15.1.2507.23; Mon, 23
+ Sep 2024 05:06:02 -0500
+Received: from DFLE105.ent.ti.com ([fe80::48d3:ae6d:c4d6:9f16]) by
+ DFLE105.ent.ti.com ([fe80::48d3:ae6d:c4d6:9f16%17]) with mapi id
+ 15.01.2507.023; Mon, 23 Sep 2024 05:06:02 -0500
+From: "J, KEERTHY" <j-keerthy@ti.com>
+To: Francesco Dolcini <francesco@dolcini.it>,
+        Bartosz Golaszewski
+	<brgl@bgdev.pl>
+CC: Parth Pancholi <parth105105@gmail.com>,
+        Linus Walleij
+	<linus.walleij@linaro.org>,
+        Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
+        "linux-gpio@vger.kernel.org" <linux-gpio@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        Parth Pancholi
+	<parth.pancholi@toradex.com>,
+        "stable@vger.kernel.org"
+	<stable@vger.kernel.org>
+Subject: RE: [PATCH] gpio: davinci: fix lazy disable
+Thread-Topic: [PATCH] gpio: davinci: fix lazy disable
+Thread-Index: AQHbDZylrBCROVfrq0Gl42vnUfRSUbJlJPSg
+Date: Mon, 23 Sep 2024 10:06:02 +0000
+Message-ID: <b2c39198c3ac450e8fa332cfc4d15fbc@ti.com>
 References: <20240828133207.493961-1-parth105105@gmail.com>
  <CAMRc=MdyNFzNy_GndBDOUL23Rv0WxGG8mRd5DRD28pE=XuhfmQ@mail.gmail.com>
+ <20240923094029.GA124572@francesco-nb>
+In-Reply-To: <20240923094029.GA124572@francesco-nb>
+Accept-Language: en-US
+Content-Language: en-US
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+x-c2processedorg: 333ef613-75bf-4e12-a4b1-8e3623f5dcea
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: base64
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMRc=MdyNFzNy_GndBDOUL23Rv0WxGG8mRd5DRD28pE=XuhfmQ@mail.gmail.com>
 
-Hello Keerthy,
-
-On Mon, Sep 02, 2024 at 02:08:30PM +0200, Bartosz Golaszewski wrote:
-> On Wed, Aug 28, 2024 at 3:32 PM Parth Pancholi <parth105105@gmail.com> wrote:
-> >
-> > From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
-> >
-> > On a few platforms such as TI's AM69 device, disable_irq()
-> > fails to keep track of the interrupts that happen between
-> > disable_irq() and enable_irq() and those interrupts are missed.
-> > Use the ->irq_unmask() and ->irq_mask() methods instead
-> > of ->irq_enable() and ->irq_disable() to correctly keep track of
-> > edges when disable_irq is called.
-> > This solves the issue of disable_irq() not working as expected
-> > on such platforms.
-> >
-> > Fixes: 23265442b02b ("ARM: davinci: irq_data conversion.")
-> > Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
-> > Signed-off-by: Parth Pancholi <parth.pancholi@toradex.com>
-> > Cc: stable@vger.kernel.org
-> > ---
-> 
-> It looks good to me but I'd like to have an Ack from Keerthy on this.
-
-Keerthy, just a gentle ping on this, can you help?
-
-Francesco
-
+DQoNCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBGcmFuY2VzY28gRG9sY2luaSA8
+ZnJhbmNlc2NvQGRvbGNpbmkuaXQ+IA0KU2VudDogTW9uZGF5LCBTZXB0ZW1iZXIgMjMsIDIwMjQg
+MzoxMCBQTQ0KVG86IEosIEtFRVJUSFkgPGota2VlcnRoeUB0aS5jb20+OyBCYXJ0b3N6IEdvbGFz
+emV3c2tpIDxicmdsQGJnZGV2LnBsPg0KQ2M6IFBhcnRoIFBhbmNob2xpIDxwYXJ0aDEwNTEwNUBn
+bWFpbC5jb20+OyBMaW51cyBXYWxsZWlqIDxsaW51cy53YWxsZWlqQGxpbmFyby5vcmc+OyBFbWFu
+dWVsZSBHaGlkb2xpIDxlbWFudWVsZS5naGlkb2xpQHRvcmFkZXguY29tPjsgbGludXgtZ3Bpb0B2
+Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmc7IFBhcnRoIFBhbmNo
+b2xpIDxwYXJ0aC5wYW5jaG9saUB0b3JhZGV4LmNvbT47IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmcN
+ClN1YmplY3Q6IFJlOiBbUEFUQ0hdIGdwaW86IGRhdmluY2k6IGZpeCBsYXp5IGRpc2FibGUNCg0K
+SGVsbG8gS2VlcnRoeSwNCg0KT24gTW9uLCBTZXAgMDIsIDIwMjQgYXQgMDI6MDg6MzBQTSArMDIw
+MCwgQmFydG9zeiBHb2xhc3pld3NraSB3cm90ZToNCj4gT24gV2VkLCBBdWcgMjgsIDIwMjQgYXQg
+MzozMuKAr1BNIFBhcnRoIFBhbmNob2xpIDxwYXJ0aDEwNTEwNUBnbWFpbC5jb20+IHdyb3RlOg0K
+PiA+DQo+ID4gRnJvbTogRW1hbnVlbGUgR2hpZG9saSA8ZW1hbnVlbGUuZ2hpZG9saUB0b3JhZGV4
+LmNvbT4NCj4gPg0KPiA+IE9uIGEgZmV3IHBsYXRmb3JtcyBzdWNoIGFzIFRJJ3MgQU02OSBkZXZp
+Y2UsIGRpc2FibGVfaXJxKCkNCj4gPiBmYWlscyB0byBrZWVwIHRyYWNrIG9mIHRoZSBpbnRlcnJ1
+cHRzIHRoYXQgaGFwcGVuIGJldHdlZW4NCj4gPiBkaXNhYmxlX2lycSgpIGFuZCBlbmFibGVfaXJx
+KCkgYW5kIHRob3NlIGludGVycnVwdHMgYXJlIG1pc3NlZC4NCj4gPiBVc2UgdGhlIC0+aXJxX3Vu
+bWFzaygpIGFuZCAtPmlycV9tYXNrKCkgbWV0aG9kcyBpbnN0ZWFkDQo+ID4gb2YgLT5pcnFfZW5h
+YmxlKCkgYW5kIC0+aXJxX2Rpc2FibGUoKSB0byBjb3JyZWN0bHkga2VlcCB0cmFjayBvZg0KPiA+
+IGVkZ2VzIHdoZW4gZGlzYWJsZV9pcnEgaXMgY2FsbGVkLg0KPiA+IFRoaXMgc29sdmVzIHRoZSBp
+c3N1ZSBvZiBkaXNhYmxlX2lycSgpIG5vdCB3b3JraW5nIGFzIGV4cGVjdGVkDQo+ID4gb24gc3Vj
+aCBwbGF0Zm9ybXMuDQo+ID4NCj4gPiBGaXhlczogMjMyNjU0NDJiMDJiICgiQVJNOiBkYXZpbmNp
+OiBpcnFfZGF0YSBjb252ZXJzaW9uLiIpDQo+ID4gU2lnbmVkLW9mZi1ieTogRW1hbnVlbGUgR2hp
+ZG9saSA8ZW1hbnVlbGUuZ2hpZG9saUB0b3JhZGV4LmNvbT4NCj4gPiBTaWduZWQtb2ZmLWJ5OiBQ
+YXJ0aCBQYW5jaG9saSA8cGFydGgucGFuY2hvbGlAdG9yYWRleC5jb20+DQo+ID4gQ2M6IHN0YWJs
+ZUB2Z2VyLmtlcm5lbC5vcmcNCj4gPiAtLS0NCj4gDQo+IEl0IGxvb2tzIGdvb2QgdG8gbWUgYnV0
+IEknZCBsaWtlIHRvIGhhdmUgYW4gQWNrIGZyb20gS2VlcnRoeSBvbiB0aGlzLg0KDQpLZWVydGh5
+LCBqdXN0IGEgZ2VudGxlIHBpbmcgb24gdGhpcywgY2FuIHlvdSBoZWxwPw0KDQo+IEFja2VkLWJ5
+OiBLZWVydGh5IDxqLWtlZXJ0aHlAdGkuY29tPg0KDQpGcmFuY2VzY28NCg0K
 
