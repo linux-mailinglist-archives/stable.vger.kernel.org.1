@@ -1,98 +1,97 @@
-Return-Path: <stable+bounces-76875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5044997E60E
-	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 08:34:41 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AD3A97E61A
+	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 08:38:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F05231F21365
-	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 06:34:40 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C72F3B20AD8
+	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 06:38:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2046412E5D;
-	Mon, 23 Sep 2024 06:34:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fstab.de header.i=@fstab.de header.b="XXu6Ea7f"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EF4217C79;
+	Mon, 23 Sep 2024 06:38:24 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D1D612E5B
-	for <stable@vger.kernel.org>; Mon, 23 Sep 2024 06:34:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DECE212E4D
+	for <stable@vger.kernel.org>; Mon, 23 Sep 2024 06:38:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727073276; cv=none; b=Ge+rQ9HrmolQptggP8o0RgA3bXXT4l++qiNOkvc1gyvOcoCDBgmppHValIoink4S4wm7dw3fCQpconWtxHwHP5KPiWBTLb2iEnZ+GIW1addvQ3JhyKmdCXRP6bdI0oVb0EjON0FYwb54eKYeJO8fX+LDz1SeMUoNc20gX3j4rHY=
+	t=1727073503; cv=none; b=Ki88rWLW0LsSSHeJ6koFMAIBFQD5j8cFDQN9+KKpEmmsUWUx5VhnBJUFr+zkxRA6W+w1rtTxBosaaU/QsHhBpUNnGLbWBFJvNSKhKysCwF0mqUkAOpLjsIhDTFdRavMnwTQS2s2kZrXhKhr3O0L+cOL1mTvhyg+1Xe8UGiK5dkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727073276; c=relaxed/simple;
-	bh=figRSM5uwXBz+DqKm9Y8ViKtaULHMXexiRKciLKh50s=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=AU1yoikZ+CBgU0fDNT1YjnDrdxQsKir2iYRCpH7MW1PIQ5zXvtOaecMV5mJT0/uTP8A08rNLn9l6zdmH2Ktt8R/ZJnQVDvOhtiBu0x1gFpkNxki4fQY6RF7sPFgDN2bynGfdUfo0SoHAFB8Kkd6fv3YBV2sBgtHnzcHVUMPwBtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fstab.de; spf=pass smtp.mailfrom=fstab.de; dkim=pass (2048-bit key) header.d=fstab.de header.i=@fstab.de header.b=XXu6Ea7f; arc=none smtp.client-ip=209.85.219.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fstab.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fstab.de
-Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-6c54b1f52f7so26293236d6.3
-        for <stable@vger.kernel.org>; Sun, 22 Sep 2024 23:34:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fstab.de; s=google; t=1727073274; x=1727678074; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=figRSM5uwXBz+DqKm9Y8ViKtaULHMXexiRKciLKh50s=;
-        b=XXu6Ea7fuQBNGgUCHBLwk2UUqfRVj+YyVtJRlvz5TN+gs0apbKh7WH6qt4u8NeHnrd
-         sElrvOSsGZHRbU63HJAqeSkxPn9DBMZr8dylMfvodrbJO2+KdmD1WnMRalXVHFL2lsS9
-         zhHYhWDU7883s6sgn9fQaxz2kTyyGKTYfpKQKREYM1XQXE438459kPCOFATSpVrgryuw
-         F4icYxMI4MufPl+ijKPhi36vhYviT64Aw/F+7/QfXQhzpoWpR4LSJycvywTWSM+F5UeJ
-         KddEBOc+msLU7q17YEBjvYxMmBjHeRr42aTx0s/i4+h82yOk14Q+J4Eh+DL1mCK6cpMT
-         yuqw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727073274; x=1727678074;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=figRSM5uwXBz+DqKm9Y8ViKtaULHMXexiRKciLKh50s=;
-        b=vsic2k7AuOPgbur+u1CFxG4ETlnkPW/wVN9cIGBgllxiNeQJ5gY1ifTWxJ0V8Gs+/w
-         3SN365i8/iTgnm7v7Sr7OHkyswlWAp6jgG63bFi8456BR46WmV0b/vws5yO1DLBIMkV0
-         lmyDWLegDyS6LfegXm2/5L20KRKWBIIeySRUK8Hp2aaObrixv/4eJ7Lf2EEOeRKNqRWq
-         gCzacvjJqEsFldFvAD1wohBJQDfYOJAMrdRAlWaB54sRLKLrxm646FweEHKfSmpsh+WM
-         YiDxUDLGCwJwhc39G/kGpjBf7Y/qapXlMbFpgireZd16Qdw7VZE0JIKS93vB941XR0tl
-         JAEQ==
-X-Gm-Message-State: AOJu0YwWtDhtJZwSd4yNLAbOWVsxCP4DD5ECmxaMfX1yT/CRKPERlH5m
-	ZvRBpFXRCpeRFBrCmPhfTo8T2D7rzkO0xHq1TOBwn1WWZDy4ylwuwDmGaXdDmilSWtmGuk+a3QE
-	2ORPPXsxQxK2u8oQp7d/uq+wFQixPIZP0BlHqxv1P8yLiezNjXLh4jg==
-X-Google-Smtp-Source: AGHT+IEe0Zy6MhQISPBXaDCPM/WYVBEi1fTtVz5ghNsYw9MwlfuQwCVE1xCje7qKRKsBXQR+uJ9+UZLjDvO/To1/kLY=
-X-Received: by 2002:a05:6214:2f8f:b0:6c7:c650:962b with SMTP id
- 6a1803df08f44-6c7c650966dmr131212646d6.51.1727073274090; Sun, 22 Sep 2024
- 23:34:34 -0700 (PDT)
+	s=arc-20240116; t=1727073503; c=relaxed/simple;
+	bh=LE5Y70/D+IdyXH+CLIcB0nN7fGObMqsBbkUoeTItoqc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=o0VVno/zqlgM4eI4deG1Yq2yD4LfKZH1H+LtPDr5UEnzRKY3+DQ0rG8V+A7Qa9m1wC4RwQ1Er6F9GvPT8PcNsVE3fa/nPM1YXFaqj5riNsaxIMA2aPsWWlCfQVCBS+V1GU5QGSAqo9VyTqexuqSMmoBxOt5J4wnA0AnaX0nA148=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.163.235])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4XBtbR0RX6z4f3jMW
+	for <stable@vger.kernel.org>; Mon, 23 Sep 2024 14:37:55 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id 295741A058E
+	for <stable@vger.kernel.org>; Mon, 23 Sep 2024 14:38:11 +0800 (CST)
+Received: from [10.67.109.184] (unknown [10.67.109.184])
+	by APP4 (Coremail) with SMTP id gCh0CgAnqMTPDPFmNC9uCA--.34217S2;
+	Mon, 23 Sep 2024 14:38:09 +0800 (CST)
+Message-ID: <2bd9fdba-d916-4453-a0d9-a1a5b827a454@huaweicloud.com>
+Date: Mon, 23 Sep 2024 14:38:07 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: =?UTF-8?Q?Fabian_St=C3=A4ber?= <fabian@fstab.de>
-Date: Mon, 23 Sep 2024 08:34:23 +0200
-Message-ID: <CAPX310gmJeYhE2C6-==rKSDh6wAmoR8R5-pjEOgYD3AP+Si+0w@mail.gmail.com>
-Subject: Dell WD19TB Thunderbolt Dock not working with kernel > 6.6.28-1
-To: stable@vger.kernel.org
-Cc: regressions@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.10] bpf: Fix mismatch memory accounting for devmap maps
+To: kernel test robot <lkp@intel.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+References: <Zu1QdPBf_QnYCxbS@3bb1e60d1c37>
+Content-Language: en-US
+From: Pu Lehui <pulehui@huaweicloud.com>
+In-Reply-To: <Zu1QdPBf_QnYCxbS@3bb1e60d1c37>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:gCh0CgAnqMTPDPFmNC9uCA--.34217S2
+X-Coremail-Antispam: 1UD129KBjvdXoWruw15GrWUGw1kAFyDAr1xuFg_yoWxZrb_tr
+	4j9F98G3yUJr4rKF48trsavrWkKFWkZr9Yqr4xCrWxGwnrJFn8ZF4agFyfZas7Xas5ZFyY
+	gFyqqwnF9w4SqjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbO8YFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20E
+	Y4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwV
+	A0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0cI8IcVCY1x02
+	67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxV
+	AFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2
+	j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7x
+	kEbVWUJVW8JwACjcxG0xvEwIxGrwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWU
+	JVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67
+	kF1VAFwI0_Jrv_JF1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY
+	6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0x
+	vEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2Kfnx
+	nUUI43ZEXa7IU1CPfJUUUUU==
+X-CM-SenderInfo: psxovxtxl6x35dzhxuhorxvhhfrp/
 
-Hi,
 
-I got a Dell WD19TBS Thunderbolt Dock, and it has been working with
-Linux for years without issues. However, updating to
-linux-lts-6.6.29-1 or newer breaks the USB ports on my Dock. Using the
-latest non-LTS kernel doesn't help, it also breaks the USB ports.
 
-Downgrading the kernel to linux-lts-6.6.28-1 works. This is the last
-working version.
+On 2024/9/20 18:37, kernel test robot wrote:
+> Hi,
+> 
+> Thanks for your patch.
+> 
+> FYI: kernel test robot notices the stable kernel rule is not satisfied.
+> 
+> The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-3
+> 
+> Rule: The upstream commit ID must be specified with a separate line above the commit text.
+> Subject: [PATCH 5.10] bpf: Fix mismatch memory accounting for devmap maps
+> Link: https://lore.kernel.org/stable/20240920103950.3931497-1-pulehui%40huaweicloud.com
+> 
+> Please ignore this mail if the patch is not relevant for upstream.
+> 
 
-I opened a thread on the Arch Linux forum
-https://bbs.archlinux.org/viewtopic.php?id=299604 with some dmesg
-output. However, it sounds like this is a regression in the Linux
-kernel, so I'm posting this here as well.
+This fix only involves 5.10, other versions are no problem.
 
-Let me know if you need any more info.
-
-Thanks a lot
-
-Fabian
 
