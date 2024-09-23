@@ -1,191 +1,251 @@
-Return-Path: <stable+bounces-76915-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76916-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99A1197EE97
-	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 17:56:38 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 230B397EE99
+	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 17:56:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 251051F22025
-	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 15:56:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA0652819F3
+	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 15:56:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EF5419C55E;
-	Mon, 23 Sep 2024 15:56:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2AE2919C56B;
+	Mon, 23 Sep 2024 15:56:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="d2YGUQeT"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Jn7UhH/M"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2068.outbound.protection.outlook.com [40.107.94.68])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D40E779F5;
-	Mon, 23 Sep 2024 15:56:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.68
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727106993; cv=fail; b=ZiPNrIkhzL5VCQrvQjxNJRQEShPmTZxQdhGYcneAmTlWYfOjeN1+X0hxRqaiY6h8fKji+orsqTwYz+S5gi/TtiNtdU3pP+iruiK+y2rIYcBBzYpmcKGOJ9Df5LZQumuOrHB0NbkaAazpHJWVz/niIfAWNNkRWFPzSvsXpXETFqg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727106993; c=relaxed/simple;
-	bh=CLuWb5sfSFQNMdEcL/T9ZMvpwPntZQL77ngp/tZzXNA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=ovZh2I5SH16tkHweMb4yqzsUX6zqggPkk8KMDVX+dw9xjIOY81ro7uvmY+srz0dm5jPpXetgfqiy7EZ5fC472qW6mpr6xNQ8gSihOQ71IVHJnK7BQX3IZt+sBPqPmXdV9iAPYmc9xE/Vjn3HlhzHk6fXv9bWNWR/ToMUwcw3FRg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=d2YGUQeT; arc=fail smtp.client-ip=40.107.94.68
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=NEyEYspFe7oF5caUZCZvYT3VoWF28r/otwZCIFLAN+ts0KyBsMPQPLAFS0JpUrOmsmFX1fJSQS2hSeabWJIjRDCfngz7RrcBpcB2bBFCTR93l1IKvdh73vXx710TdSlGzBKr+lM1+IoD3jd1QZUoyojvzrcd18l4Q6SbgCWpK3rcVn5BFdEhfuLp8FnZ2fEYfpQMfxdqS2q4eiH2Qzj5zGBNZU64nIORtif5xf3CbDZDKO8zGAl3HfhzzKlo3All9tsStVaN7EvYaLnT0F27Z4ooV/OPC4wu/mV3GM+B2JUjfAK9/820JdlzNFUnMEIHtbqEVRmCJSoqa+HsZ0wlLQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dBo4zy+4REuPs0wUWnbmD2hpDcKO7pK8GwvAdGoogl4=;
- b=EVUKWN12Ht3I6cr4uopDAkYMAe+QGblG3pWa3nRqf1K/rVEjhiYFSmOHwFH41k+spiLNHeKMscF0syruaKfNwuX51VX+ZDjAFL5uXvuG2KnzUUdeA7PQfcl0cp5q6rIp0ZYKuDxuYkrBYDSzqvI0OwDpzszyyyZuhhx05WTWCx+0i48sEuoteMSCfMnTflDHIXCgpqUnPiVKWUcRW9vJIYxl/V+OGPdO4sOv6E6JkzYy1gP2KDPOEunnwUSQLVF3ApVe7kmJqc9CpsB+nM/NDdA7aKHRKIWexE1Xtw2gCKoZx/vt0HG6buCYeVqC9qB4oA7qr0puXvC87VwVVJVvzA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dBo4zy+4REuPs0wUWnbmD2hpDcKO7pK8GwvAdGoogl4=;
- b=d2YGUQeTFe80lizWG7BSSbos8IBJj4TrsEks6t3rmmyCe95bW9yXPNMSflZSYXRlPeumQnJn/1kdoDfxhY/MT640HMfsTTtrg0QZE8QH0es+WN5/bR367mACBzf+r2+vJDbboc6jZa4i6W6EwPlXSuAxKo8dunOHhR3YCC4v8vc=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from BL1PR12MB5995.namprd12.prod.outlook.com (2603:10b6:208:39b::20)
- by MW6PR12MB8833.namprd12.prod.outlook.com (2603:10b6:303:23f::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7982.27; Mon, 23 Sep
- 2024 15:56:29 +0000
-Received: from BL1PR12MB5995.namprd12.prod.outlook.com
- ([fe80::7298:510:d37d:fa92]) by BL1PR12MB5995.namprd12.prod.outlook.com
- ([fe80::7298:510:d37d:fa92%5]) with mapi id 15.20.7982.022; Mon, 23 Sep 2024
- 15:56:29 +0000
-Date: Mon, 23 Sep 2024 10:56:25 -0500
-From: John Allen <john.allen@amd.com>
-To: bp@alien8.de, x86@kernel.org
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] x86/CPU/AMD: Only apply Zenbleed fix for Zen2 during
- late microcode load
-Message-ID: <ZvGPqWckmaEyYBz4@AUSJOHALLEN.amd.com>
-References: <20240923154112.26985-1-john.allen@amd.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240923154112.26985-1-john.allen@amd.com>
-X-ClientProxiedBy: YT4PR01CA0409.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:b01:10b::14) To BL1PR12MB5995.namprd12.prod.outlook.com
- (2603:10b6:208:39b::20)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FF3E1993B9
+	for <stable@vger.kernel.org>; Mon, 23 Sep 2024 15:56:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727107009; cv=none; b=HhTRs6By501Bz+fmIsuU8FhdMORm4v9YVA1SaVnuRR20gvEDkX/vL5FhKBJWKS/hKEATzptcVrFB/tBWcbHcRVUNf68hj5A0t13hYzfyhbJZqpmQoSMXSi2Dyrffk5Hx0bn+dfzK5pOixL8v19+3PQxUuHWKCWdCMHFQFicm/ag=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727107009; c=relaxed/simple;
+	bh=Sfcv3UiGe4fFEkLKPP5hazoawbszqENOM95UKgdF2ao=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=OxKrefAUT+YLp8kWG8wp+P9i/n3/A8ptvmDirh3ArgFJy6cqVoaxwXvbJPIfYqBWYAxejeiOuAJ4RMdN3/6oKv0HTe+RW3HAND03tOTnsh2EhZ22wk06GJfAUJcNXR7NUUa6hBWz48Icgv8DL/FlujSf+RjMkkWdeHzvzLMseIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Jn7UhH/M; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1727107006;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=iP3SkhF549Gc6brUSlweb2Vjw8EwOroSOBVuS2ghez0=;
+	b=Jn7UhH/MlntZDpZClW3vDKkBJEVARFUsi3lYSB/q5yiRw9gQ5nus0KfVo3k20EDBkC5Uwe
+	4N7Gvks8WnYshQtd3CL9uZBNr2rDiY2g6zklZkkuYL0+puR7MQS74bgNTnuUEisL+biLY/
+	NAAAerrFsKQo6MI+4EaIeE2CVhhpqFI=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-504-KwGkv85bPFaEP7PwZpjB_g-1; Mon, 23 Sep 2024 11:56:45 -0400
+X-MC-Unique: KwGkv85bPFaEP7PwZpjB_g-1
+Received: by mail-lj1-f199.google.com with SMTP id 38308e7fff4ca-2f7538dc9d7so28084571fa.1
+        for <stable@vger.kernel.org>; Mon, 23 Sep 2024 08:56:45 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727107004; x=1727711804;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:user-agent
+         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=iP3SkhF549Gc6brUSlweb2Vjw8EwOroSOBVuS2ghez0=;
+        b=JGRrh5JkakegmOFdkYRVuFCISY3nv0Aj1LQwBEpRxcsePC2N+GLKOXqTWhWFjeGCW/
+         ycFXfGk1UKcSDnZvisaFBukDOA/OqBy021KbLssfesa1GknBz0qMaP8SsqKhkewGmwuV
+         roCNnJd3yZh4+Cn5A4VahGnc6WnKpHdZubTobpZmlcT3rLIsnQ5thVwNHMAKRz8w+uuO
+         sciBClsaaaIri7W47/cXgAma+xSuBZfkhXf+SAI88ygsCsKiLR9jyNPa9O//U78f3T5M
+         v0KocTtFF2MdcCH1bIX/IX6FG0UqciY/dAQr2X2j1GV2rk8CtvKq3TKOnCd3rogDiPmA
+         FuhQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWNn9v1fzAwoXmbEwPbAnp2Kylsd+qG0QX6sVoDt22P5xRxv/vu3elo8BFt759oDiDCbUZwLtY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwlbzQbsu0gzx4JgAqslfC/lrpTsfh10qU3RQnuvB2ojArZbMlP
+	uROeffRbg2xLdEWe3wChz/lR85Lir4A8H9HNwFADUe5yOU81+ZT7qvEriA5IKiAzwl2p06kbVl3
+	Z0p9JxqKzzeFLCXLQ8dypQrGySW21Pt2xIbYcaLOQM+KYC5Cth6gwKg==
+X-Received: by 2002:a2e:809:0:b0:2f7:4c9d:7a83 with SMTP id 38308e7fff4ca-2f7cc5baef2mr48377121fa.40.1727107004076;
+        Mon, 23 Sep 2024 08:56:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFM0cX/xCUpbnPcURk/407mJfEncclVpDoCWCgm3Go/koit2Hybq9kArBgHN3IpRpvUi0ILDg==
+X-Received: by 2002:a2e:809:0:b0:2f7:4c9d:7a83 with SMTP id 38308e7fff4ca-2f7cc5baef2mr48376981fa.40.1727107003532;
+        Mon, 23 Sep 2024 08:56:43 -0700 (PDT)
+Received: from [10.5.48.152] (90-181-218-29.rco.o2.cz. [90.181.218.29])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c42bb5f4f1sm10472622a12.53.2024.09.23.08.56.40
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 23 Sep 2024 08:56:42 -0700 (PDT)
+Message-ID: <31e90b74-8bd1-4bfe-9384-8d479735d2be@redhat.com>
+Date: Mon, 23 Sep 2024 17:56:40 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BL1PR12MB5995:EE_|MW6PR12MB8833:EE_
-X-MS-Office365-Filtering-Correlation-Id: bc76d282-86a0-4950-3374-08dcdbe849ad
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?4u2n2BB+giNORA4dm9wN20FuN5hhNCBkFgoTQ5w5F8w9fPH9ZCWn5HYH6Kie?=
- =?us-ascii?Q?pOYhWrQkNEsVShByYCLpcY0/u1WOLJAF3GDW54FDQkScOtosnnZlfFNlYoF5?=
- =?us-ascii?Q?Gljh2o4GjDTIset6e9EWhL3zhH16469zVwUoHI4jM5UwSorzAaZJzICKI0hF?=
- =?us-ascii?Q?okuAqhruO5aFQdYcsrODWeXCZlfhpSj1e2i0NIYPLlq+uUAtw6gC8J4mfRoB?=
- =?us-ascii?Q?mswqovW4yI1EMgP13jM/uMfzVxK6VRDNps4Rv7o0AEiciokieAaifoRBGadA?=
- =?us-ascii?Q?IGlRcBfO7M9CytwWh7Pdn6/A7gtsd54QVUq1Szkjqe3CvHL1d0+yh4OctxNu?=
- =?us-ascii?Q?ocluyW70sC7CdKEOlgMjc53oIeObz61JoKIPWLueSSdEPDw0ZsM4ZZLelupc?=
- =?us-ascii?Q?vqfYu5BBUrxHUlYelx7tk60Af6+9B7UA96hoAz3sxsuG+MG3d+NGiP8RZFGU?=
- =?us-ascii?Q?RTZDoQgD/Qbf0gc4WRRvMx1tGk28DBXkr29dpmTpR+z2/x/kgl6X95l1v0mJ?=
- =?us-ascii?Q?xGE6ZjMe6tOLL9MiEmXY95L7j4l6IexqmS/f8iKJSW8zjOY3032AL0MItQcK?=
- =?us-ascii?Q?tDmOpAouERNdm/yPTRwW2JdbAlJ5CYL95eBXHdlcfZ9Dk9U29l/NZXd3CHHS?=
- =?us-ascii?Q?g7nYWTHNg3w55jse5ATuzkJLsbwTucRA7nnTfWrxpYWOSysbRPfdyNqmxnIC?=
- =?us-ascii?Q?5dc/k2In3bzkhl/jxtNIqVipgYbkDzINToNgC+vyjHeMHj2JVBWFzZBSAtPN?=
- =?us-ascii?Q?k/L0M8zC8nXEAFgWYHgF7PfYV+oQiZhdDdTUA3a2OEs+/xQUcS+0LPVR8si6?=
- =?us-ascii?Q?pASAXPe26NV4JApDKmLt/lv/hgYlOUHqLi6qa42UNKxUNjdt0/pMOcZ4ydQN?=
- =?us-ascii?Q?zM9lAs1alTCvnMZwo7abs/m4YJqEDnAsEQrdAsfxoipZA4ek4j9J6aYR3ut0?=
- =?us-ascii?Q?dcjGwnD1zx67MMe4rfRQuHxsSjqvGhBx+U7iMXvs/Oi6BhPl9ItfoI8eGeLN?=
- =?us-ascii?Q?2R7OnZsvWzwW/H9DPmTTWIbhS0XpNKdWqDPjxgj1QFiVE/zybtVM03gNpdTN?=
- =?us-ascii?Q?U1XUrpxtsZsxGaaTWOBPo6k1WxJkkTCPIt8j5vyufVaRxqA+7bYluKjXUPyD?=
- =?us-ascii?Q?ZxRuS0LJmM3Fb/MyuW1YyWa98e87SID1qir2/1MXGtChXAYrs3m3kr0RsTou?=
- =?us-ascii?Q?XhPwLm4vEl/u1PT97X9dh/nn36fUZunCcU3jCsqM1NHgejYW2rDeFdsJXtu5?=
- =?us-ascii?Q?0K5/I0MIqYaWL+RuqiANkZwzLDA5PdrRvRTiIrhW+bkyGqDjivYe6R0UzvHg?=
- =?us-ascii?Q?+6/VB3pGvq3uAea09q+ZvJeXPtfN7QBb5MaVc/xdjSKL8Q=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL1PR12MB5995.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?mPCMZPWtMXvcTCGpCV42aJjSIp6bdvMRETjHfoCUoO3Uc9btH7lKewAvL6Di?=
- =?us-ascii?Q?7Tflr2af6OHH2bYFRGeO4WGxgUHuM3QHj3qACUUcPOO7i257Q/nxvoKzAeiP?=
- =?us-ascii?Q?eMcHRO1tPJ7HvKFvm2di0k79jU7sU97dgbXeRcuWpqU64MP/TcUR9tyW/tNk?=
- =?us-ascii?Q?bpSQlmxGLbd+P0m0eH4MkU5GJHLWS3wWDWb8n1qK71FVzn9iX3r8oKANlA0t?=
- =?us-ascii?Q?qY9uq3kWKwv/SaaFiFMEKh8s8gWerAb736GLL2FVOUgS+nSvXjkfY/guPuKW?=
- =?us-ascii?Q?nAHxsuFuTju+7Jt7xgk014sQ6eqikZkSscESZ4BVl2E3LI7sHqMxFyZQrI1Z?=
- =?us-ascii?Q?tKTN3MGYZSNI9Tdon46D6kysGTQcweHpUh7qoYKVzuXViWgITcx5sZiaqdbD?=
- =?us-ascii?Q?uGo7zPL07/4g2kVYt7aFnHgH16Tel10j5M0IlJ3dmc8HtPSVUAsHBMdOxlje?=
- =?us-ascii?Q?tM+d5CCU6CEe+oFJowhXtnS2J5Xguk3LoGCLNg2ewu0h6M2d+4pZWl7kKjaV?=
- =?us-ascii?Q?dBI4+mtFb96X7tGcF817ownMF/3qY9HNzmHS6AeN3tlwTMZoCi2WAA3CNmUX?=
- =?us-ascii?Q?cJmShoIUGKygxnQmMigCmp+3aMLfJ+DNds3IpQDlUtkVjjhXNqzha7ky7t1e?=
- =?us-ascii?Q?gzdtjL+PWgGPBFKtHeloqVH5+AtVI2fZUHRwxX5gZyJOibnp6+4pzWSYboOC?=
- =?us-ascii?Q?q7hcV73yLmiXncdhDtEUpDOGaxhPDAOuovrrUoQTCkNKjGyCE6xFReNVk5ue?=
- =?us-ascii?Q?zHatUsWOxkrA0pWq+dpCtcoLdlf9V/VWnAIHLev5e1imrJvk3blF6VvB8EbK?=
- =?us-ascii?Q?fbnQjG30vWzam9+/QNQs5MRaABadhfRtNmHa/UZHYqCRWpsVen+2xHS6gdu8?=
- =?us-ascii?Q?uwdvY7LScr2aTZ8sVR2LCRE3SBelVRwWuSJv/4Z02fMj87MMsQjXhOoVPchB?=
- =?us-ascii?Q?pUTvu2TpqBK0eDHvVl8xV4JQJ8xnk5nY7Km/iQtVc+T/25aw325CKh2FHntg?=
- =?us-ascii?Q?yb8l6COlx+f+UGzc7HUyXG3O8Lt1SQ+X/lPrwkuo69TToFXe1KkLYeve/7BW?=
- =?us-ascii?Q?wYa6+ovXsM30wD/fl2A6m4/Qhi7GpR3B/8JSLhqkamo3y0+/It8kzClQyefq?=
- =?us-ascii?Q?wJxt42seccXPTch2w59wBrT4g8OqQPEfCfHabr8tZz6HkAIWy8t0gKkhtMwX?=
- =?us-ascii?Q?kyLYwVa4ZJAA7zJESeo7McnSYRqrK2CkhovFFD7Z7b1NbeTZKRGwAWtZRyPa?=
- =?us-ascii?Q?j6azpVpmO27cXPTSf+XbnTjsNdwx7eGhtpDPQm4uajlJJq8gH9oaslufcWJu?=
- =?us-ascii?Q?2tkodA6QUY1aS2xloTmar4wAXTdDoaY2VEJwIskit4QBFxdownvxx2XUkTcK?=
- =?us-ascii?Q?PL6xhy7mwvIZYJW9dWuFZE3KDvz2KBJFwNxo0p8fHTr1AUYD7UoOfGMyUueg?=
- =?us-ascii?Q?hQmPKuIA0heksTb1K47Zam9J9UpuO8M0bx/rc6MYMCj2x961e/SR+r6aklYq?=
- =?us-ascii?Q?Vi9XeMyjO6VLEpN2eUxT11KInJypvXFaJxpb4MKts6khNUqNn4DntT3p4V33?=
- =?us-ascii?Q?8jExZy0saLziBW9dOUSElU1C5tKi0qKWWDUj6fyf?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: bc76d282-86a0-4950-3374-08dcdbe849ad
-X-MS-Exchange-CrossTenant-AuthSource: BL1PR12MB5995.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Sep 2024 15:56:29.6116
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: WssyO9Q8e8zJusCgMejAORLNxsIMQSkh3ADYF6jgcVss49lakPwV0qtWHT/jVdvmldoXq7vnCT1+9pRF1BIEXw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW6PR12MB8833
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm: migrate: fix data-race in migrate_folio_unmap()
+To: Jeongjun Park <aha310510@gmail.com>, akpm@linux-foundation.org
+Cc: wangkefeng.wang@huawei.com, ziy@nvidia.com, willy@infradead.org,
+ linux-mm@kvack.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ syzbot <syzkaller@googlegroups.com>
+References: <20240922151708.33949-1-aha310510@gmail.com>
+From: David Hildenbrand <david@redhat.com>
+Content-Language: en-US
+Autocrypt: addr=david@redhat.com; keydata=
+ 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
+ WNyWQQ==
+Organization: Red Hat
+In-Reply-To: <20240922151708.33949-1-aha310510@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Mon, Sep 23, 2024 at 03:41:12PM +0000, John Allen wrote:
-> A problem was introduced with f69759b ("x86/CPU/AMD: Move Zenbleed check to
-> the Zen2 init function") where a bit in the DE_CFG MSR is getting set after
-> a microcode late load.
+On 22.09.24 17:17, Jeongjun Park wrote:
+> I found a report from syzbot [1]
 > 
-> The problem is that the microcode late load path calls into
-> amd_check_microcode and subsequently zen2_zenbleed_check. Since the patch
-> removes the cpu_has_amd_erratum check from zen2_zenbleed_check, this will
-> cause all non-Zen2 cpus to go through the function and set the bit in the
-> DE_CFG MSR.
+> When __folio_test_movable() is called in migrate_folio_unmap() to read
+> folio->mapping, a data race occurs because the folio is read without
+> protecting it with folio_lock.
 > 
-> Call into the zenbleed fix path on Zen2 cpus only.
+> This can cause unintended behavior because folio->mapping is initialized
+> to a NULL value. Therefore, I think it is appropriate to call
+> __folio_test_movable() under the protection of folio_lock to prevent
+> data-race.
 > 
-> Fixes: f69759be251d ("x86/CPU/AMD: Move Zenbleed check to the Zen2 init function")
 
-Should probably go into stable as well.
+We hold a folio reference, would we really see PAGE_MAPPING_MOVABLE 
+flip? Hmm
 
-Cc: <stable@vger.kernel.org>
+Even a racing __ClearPageMovable() would still leave 
+PAGE_MAPPING_MOVABLE set.
 
-> Signed-off-by: John Allen <john.allen@amd.com>
+> [1]
+> 
+> ==================================================================
+> BUG: KCSAN: data-race in __filemap_remove_folio / migrate_pages_batch
+> 
+> write to 0xffffea0004b81dd8 of 8 bytes by task 6348 on cpu 0:
+>   page_cache_delete mm/filemap.c:153 [inline]
+>   __filemap_remove_folio+0x1ac/0x2c0 mm/filemap.c:233
+>   filemap_remove_folio+0x6b/0x1f0 mm/filemap.c:265
+>   truncate_inode_folio+0x42/0x50 mm/truncate.c:178
+>   shmem_undo_range+0x25b/0xa70 mm/shmem.c:1028
+>   shmem_truncate_range mm/shmem.c:1144 [inline]
+>   shmem_evict_inode+0x14d/0x530 mm/shmem.c:1272
+>   evict+0x2f0/0x580 fs/inode.c:731
+>   iput_final fs/inode.c:1883 [inline]
+>   iput+0x42a/0x5b0 fs/inode.c:1909
+>   dentry_unlink_inode+0x24f/0x260 fs/dcache.c:412
+>   __dentry_kill+0x18b/0x4c0 fs/dcache.c:615
+>   dput+0x5c/0xd0 fs/dcache.c:857
+>   __fput+0x3fb/0x6d0 fs/file_table.c:439
+>   ____fput+0x1c/0x30 fs/file_table.c:459
+>   task_work_run+0x13a/0x1a0 kernel/task_work.c:228
+>   resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
+>   exit_to_user_mode_loop kernel/entry/common.c:114 [inline]
+>   exit_to_user_mode_prepare include/linux/entry-common.h:328 [inline]
+>   __syscall_exit_to_user_mode_work kernel/entry/common.c:207 [inline]
+>   syscall_exit_to_user_mode+0xbe/0x130 kernel/entry/common.c:218
+>   do_syscall_64+0xd6/0x1c0 arch/x86/entry/common.c:89
+>   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> 
+> read to 0xffffea0004b81dd8 of 8 bytes by task 6342 on cpu 1:
+>   __folio_test_movable include/linux/page-flags.h:699 [inline]
+>   migrate_folio_unmap mm/migrate.c:1199 [inline]
+>   migrate_pages_batch+0x24c/0x1940 mm/migrate.c:1797
+>   migrate_pages_sync mm/migrate.c:1963 [inline]
+>   migrate_pages+0xff1/0x1820 mm/migrate.c:2072
+>   do_mbind mm/mempolicy.c:1390 [inline]
+>   kernel_mbind mm/mempolicy.c:1533 [inline]
+>   __do_sys_mbind mm/mempolicy.c:1607 [inline]
+>   __se_sys_mbind+0xf76/0x1160 mm/mempolicy.c:1603
+>   __x64_sys_mbind+0x78/0x90 mm/mempolicy.c:1603
+>   x64_sys_call+0x2b4d/0x2d60 arch/x86/include/generated/asm/syscalls_64.h:238
+>   do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+>   do_syscall_64+0xc9/0x1c0 arch/x86/entry/common.c:83
+>   entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> 
+> value changed: 0xffff888127601078 -> 0x0000000000000000
+
+Note that this doesn't flip PAGE_MAPPING_MOVABLE, just some unrelated bits.
+
+> 
+> Reported-by: syzbot <syzkaller@googlegroups.com>
+> Cc: stable@vger.kernel.org
+> Fixes: 7e2a5e5ab217 ("mm: migrate: use __folio_test_movable()")
+> Signed-off-by: Jeongjun Park <aha310510@gmail.com>
 > ---
->  arch/x86/kernel/cpu/amd.c | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
+>   mm/migrate.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> diff --git a/arch/x86/kernel/cpu/amd.c b/arch/x86/kernel/cpu/amd.c
-> index 015971adadfc..368344e1394b 100644
-> --- a/arch/x86/kernel/cpu/amd.c
-> +++ b/arch/x86/kernel/cpu/amd.c
-> @@ -1202,5 +1202,6 @@ void amd_check_microcode(void)
->  	if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD)
->  		return;
->  
-> -	on_each_cpu(zenbleed_check_cpu, NULL, 1);
-> +	if (boot_cpu_has(X86_FEATURE_ZEN2))
-> +		on_each_cpu(zenbleed_check_cpu, NULL, 1);
->  }
-> -- 
-> 2.34.1
-> 
+> diff --git a/mm/migrate.c b/mm/migrate.c
+> index 923ea80ba744..e62dac12406b 100644
+> --- a/mm/migrate.c
+> +++ b/mm/migrate.c
+> @@ -1118,7 +1118,7 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
+>   	int rc = -EAGAIN;
+>   	int old_page_state = 0;
+>   	struct anon_vma *anon_vma = NULL;
+> -	bool is_lru = !__folio_test_movable(src);
+> +	bool is_lru;
+>   	bool locked = false;
+>   	bool dst_locked = false;
+>   
+> @@ -1172,6 +1172,7 @@ static int migrate_folio_unmap(new_folio_t get_new_folio,
+>   	locked = true;
+>   	if (folio_test_mlocked(src))
+>   		old_page_state |= PAGE_WAS_MLOCKED;
+> +	is_lru = !__folio_test_movable(src);
+
+
+Looks straight forward, though
+
+Acked-by: David Hildenbrand <david@redhat.com>
+
+
+-- 
+Cheers,
+
+David / dhildenb
+
 
