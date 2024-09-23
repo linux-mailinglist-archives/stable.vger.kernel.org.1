@@ -1,55 +1,63 @@
-Return-Path: <stable+bounces-76932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A45D97EFF4
-	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 19:49:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 318A197EFE7
+	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 19:41:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 24BAB1F22068
-	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 17:49:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 626751C21524
+	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 17:41:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6E0F19F40F;
-	Mon, 23 Sep 2024 17:49:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53EEF19F11A;
+	Mon, 23 Sep 2024 17:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b="Vj2GTC40"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="PMDKWNu5"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.smtpout.orange.fr (smtp-23.smtpout.orange.fr [80.12.242.23])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from 009.lax.mailroute.net (009.lax.mailroute.net [199.89.1.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 040AF19E98E;
-	Mon, 23 Sep 2024 17:49:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.12.242.23
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 850572907;
+	Mon, 23 Sep 2024 17:41:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727113775; cv=none; b=JvnE18Uu1zfcs6a4aVSmkMD6ZZNL1aUiF8Ddc3gY3a51k3RO4H3n4fXsYIrIMhr/Zw8pCVpC7nAHiTGfWk372MhCulmcomy2TBVB8E22DaGy/ATKY3UeM8Ox+EIyHcglxOfDrG4Hmxug1tMsrbEVSLBnaPKNNgRya5PF8OsRGU0=
+	t=1727113307; cv=none; b=YAsSGjOBxRi3qVMMElov52Oi1ue8CCEJ0MhHE4SihHDZbKEFh4T0Wo/5VV8QTNszN/drUKfeh5gp0ndumnODEYVAWCr2+lgPyP/XY2anhcf7MME9NtqPgRqKTPrMBM6gLJGKChaykdSTO3Tgfl0JU+sD9YuxoecdltXtH2kgYSc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727113775; c=relaxed/simple;
-	bh=fW/2G+S1k2HxLvPCQ/EgaFLF7W5MmBH3WEeAVb5ugJI=;
+	s=arc-20240116; t=1727113307; c=relaxed/simple;
+	bh=zsLQDuXO9h+lUZGA2Y/gZsaNyvuuunXi6nnTY1IlqYg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LYaXnpD2WnEQ9xjwGr0ZXYmqqjw7QAJYirChs+/ZR/4yTJBvqpPBRjYocNOWZB4v57L3QQzL9qZi3RxuOCTiugjCABlE2iLgE0HRk7KadJ96S56jD9R6At4s5lekB/ny29rgMj8wegMS8M1bEuj3bJMPSCyQmu4Od3eZvT0AniE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr; spf=pass smtp.mailfrom=wanadoo.fr; dkim=pass (2048-bit key) header.d=wanadoo.fr header.i=@wanadoo.fr header.b=Vj2GTC40; arc=none smtp.client-ip=80.12.242.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=wanadoo.fr
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=wanadoo.fr
-Received: from [192.168.1.37] ([90.11.132.44])
-	by smtp.orange.fr with ESMTPA
-	id sn2xskkHDKyjDsn2xsMS1L; Mon, 23 Sep 2024 19:40:28 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=wanadoo.fr;
-	s=t20230301; t=1727113228;
-	bh=tA69b6jolyXcZI7KcLlBCkaVX/5x0DGi73pMrAgE16E=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From;
-	b=Vj2GTC40KZEfkWANLsirjwuwRTvW18DQUjoQXtxyvIXnFeyM6JR2DME7kwLNnqaTV
-	 AMcJEoI5NKxrE66RkPZpveBPCYQatztilCPJqF/KYoxYoyCn0/hOllSifh5lq/gWZa
-	 mWrdHpQ3E5+nyBn0TtBeY2F0T/zp92t1XHgShNmIkp1bxhttiOfu2Pdvi06DDysrvV
-	 leWrWB4UBQD4KjyReF6dR4FI7G46gPiwm87iJ8UvUUGqRoLnPkMAM3Ln/VqnN0Vjvm
-	 78hZ60nv3FpzsKWtrznDF+He003apMVOE+8AuM9u9VxnQutvNjA8+zyJfWFOvPzQSw
-	 szQhA4W64cqVA==
-X-ME-Helo: [192.168.1.37]
-X-ME-Auth: bWFyaW9uLmphaWxsZXRAd2FuYWRvby5mcg==
-X-ME-Date: Mon, 23 Sep 2024 19:40:28 +0200
-X-ME-IP: 90.11.132.44
-Message-ID: <c8a4e62e-6c24-4b06-ac86-64cc4697bc2f@wanadoo.fr>
-Date: Mon, 23 Sep 2024 19:40:27 +0200
+	 In-Reply-To:Content-Type; b=XtKa1Mvgyksg1eP5Pue1gK5I/K141LCKqiF1xVm6BFu5nFo4i/vYF6VxBjBtYC3NAUPSLLrNKZlfh/s1m5NaGboodvjfNBDe6AyJAKyDvw2piGwGlrikzfGRRB6wEcLP0uVaUhMXxpyp58ZC2U7J282DGLvm/fJMTQqzPc2AfyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=PMDKWNu5; arc=none smtp.client-ip=199.89.1.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 009.lax.mailroute.net (Postfix) with ESMTP id 4XC9KH6C3PzlgVnN;
+	Mon, 23 Sep 2024 17:41:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1727113294; x=1729705295; bh=hCfyiYRkz3qnlnF9157O5c+j
+	5eJUigXGJaHinzu20CQ=; b=PMDKWNu5Ek2TVszod9Xhk7B02hYbkWNhsLzz8RNe
+	q3HS+8DKS5rga7vERezrzbn9ynzaMIBUsml/sLqnw1wiphXqIIibRF9rPshgOS8y
+	aFSVZWRQ7hageaiVCgxDUN0jZMd9dqc8MfMKcYzXp4lD6UGYsOExfakWcfrOe+yf
+	MmDQdXJEVmPljlse238jBVj+TeQefEwWYrfBQ2tyNZxOQKWPDrBdVUi/8h8JiPTu
+	xJ8uU3qLwRNoDJyFf4RLVs7Gj43D5Aq/Drd3jAdo+X1dgvIaBl1enqYb9KAE0oBO
+	1geQnIPLdHwW8qCN2Piq+GREaDBG16CBxJ+BpznGPj0xyA==
+X-Virus-Scanned: by MailRoute
+Received: from 009.lax.mailroute.net ([127.0.0.1])
+ by localhost (009.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id QeQFpulL2OoT; Mon, 23 Sep 2024 17:41:34 +0000 (UTC)
+Received: from [100.66.154.22] (unknown [104.135.204.82])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 009.lax.mailroute.net (Postfix) with ESMTPSA id 4XC9K64CmXzlgVnF;
+	Mon, 23 Sep 2024 17:41:30 +0000 (UTC)
+Message-ID: <fa8a4c1a-e583-496b-a0a2-bd86f86af508@acm.org>
+Date: Mon, 23 Sep 2024 10:41:28 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,90 +65,62 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3] zram: don't free statically defined names
-To: Andrey Skvortsov <andrej.skvortzov@gmail.com>,
- Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>,
- Minchan Kim <minchan@kernel.org>,
- Sergey Senozhatsky <senozhatsky@chromium.org>, Jens Axboe <axboe@kernel.dk>,
- Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
- linux-block@vger.kernel.org
-Cc: stable@vger.kernel.org
-References: <20240923164843.1117010-1-andrej.skvortzov@gmail.com>
-Content-Language: en-US, fr-FR
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-In-Reply-To: <20240923164843.1117010-1-andrej.skvortzov@gmail.com>
+Subject: Re: [PATCH v1 1/1] ufs: core: set SDEV_OFFLINE when ufs shutdown.
+To: Seunghwan Baek <sh8267.baek@samsung.com>, linux-kernel@vger.kernel.org,
+ linux-scsi@vger.kernel.org, martin.petersen@oracle.com,
+ James.Bottomley@HansenPartnership.com, avri.altman@wdc.com,
+ alim.akhtar@samsung.com
+Cc: grant.jung@samsung.com, jt77.jang@samsung.com, junwoo80.lee@samsung.com,
+ dh0421.hwang@samsung.com, jangsub.yi@samsung.com, sh043.lee@samsung.com,
+ cw9316.lee@samsung.com, wkon.kim@samsung.com, stable@vger.kernel.org
+References: <20240829093913.6282-1-sh8267.baek@samsung.com>
+ <CGME20240829093921epcas1p35d28696b0f79e2ae39d8e3690f088e64@epcas1p3.samsung.com>
+ <20240829093913.6282-2-sh8267.baek@samsung.com>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <20240829093913.6282-2-sh8267.baek@samsung.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-Le 23/09/2024 à 18:48, Andrey Skvortsov a écrit :
-> When CONFIG_ZRAM_MULTI_COMP isn't set ZRAM_SECONDARY_COMP can hold
-> default_compressor, because it's the same offset as ZRAM_PRIMARY_COMP,
-> so we need to make sure that we don't attempt to kfree() the
-> statically defined compressor name.
-> 
-> This is detected by KASAN.
-> 
-> ==================================================================
->    Call trace:
->     kfree+0x60/0x3a0
->     zram_destroy_comps+0x98/0x198 [zram]
->     zram_reset_device+0x22c/0x4a8 [zram]
->     reset_store+0x1bc/0x2d8 [zram]
->     dev_attr_store+0x44/0x80
->     sysfs_kf_write+0xfc/0x188
->     kernfs_fop_write_iter+0x28c/0x428
->     vfs_write+0x4dc/0x9b8
->     ksys_write+0x100/0x1f8
->     __arm64_sys_write+0x74/0xb8
->     invoke_syscall+0xd8/0x260
->     el0_svc_common.constprop.0+0xb4/0x240
->     do_el0_svc+0x48/0x68
->     el0_svc+0x40/0xc8
->     el0t_64_sync_handler+0x120/0x130
->     el0t_64_sync+0x190/0x198
-> ==================================================================
-> 
-> Signed-off-by: Andrey Skvortsov <andrej.skvortzov@gmail.com>
-> Fixes: 684826f8271a ("zram: free secondary algorithms names")
-> Cc: <stable@vger.kernel.org>
-> ---
-> 
-> Changes in v2:
->   - removed comment from source code about freeing statically defined compression
->   - removed part of KASAN report from commit description
->   - added information about CONFIG_ZRAM_MULTI_COMP into commit description
-> 
-> Changes in v3:
->   - modified commit description based on Sergey's comment
->   - changed start for-loop to ZRAM_PRIMARY_COMP
-> 
-> 
->   drivers/block/zram/zram_drv.c | 6 ++++--
->   1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-> index c3d245617083d..ad9c9bc3ccfc5 100644
-> --- a/drivers/block/zram/zram_drv.c
-> +++ b/drivers/block/zram/zram_drv.c
-> @@ -2115,8 +2115,10 @@ static void zram_destroy_comps(struct zram *zram)
->   		zram->num_active_comps--;
+On 8/29/24 2:39 AM, Seunghwan Baek wrote:
+> diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+> index a6f818cdef0e..4ac1492787c2 100644
+> --- a/drivers/ufs/core/ufshcd.c
+> +++ b/drivers/ufs/core/ufshcd.c
+> @@ -10215,7 +10215,9 @@ static void ufshcd_wl_shutdown(struct device *dev)
+>   	shost_for_each_device(sdev, hba->host) {
+>   		if (sdev == hba->ufs_device_wlun)
+>   			continue;
+> -		scsi_device_quiesce(sdev);
+> +		mutex_lock(&sdev->state_mutex);
+> +		scsi_device_set_state(sdev, SDEV_OFFLINE);
+> +		mutex_unlock(&sdev->state_mutex);
 >   	}
->   
-> -	for (prio = ZRAM_SECONDARY_COMP; prio < ZRAM_MAX_COMPS; prio++) {
-> -		kfree(zram->comp_algs[prio]);
-> +	for (prio = ZRAM_PRIMARY_COMP; prio < ZRAM_MAX_COMPS; prio++) {
-> +		/* Do not free statically defined compression algorithms */
-> +		if (zram->comp_algs[prio] != default_compressor)
-> +			kfree(zram->comp_algs[prio]);
+>   	__ufshcd_wl_suspend(hba, UFS_SHUTDOWN_PM);
 
-Hi,
+Why to keep one scsi_device_quiesce() call and convert the other call?
+Please consider something like this change:
 
-maybe kfree_const() to be more future proof and less verbose?
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index e808350c6774..914770dff18f 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -10134,11 +10134,10 @@ static void ufshcd_wl_shutdown(struct device *dev)
 
-CJ
+  	/* Turn on everything while shutting down */
+  	ufshcd_rpm_get_sync(hba);
+-	scsi_device_quiesce(sdev);
+  	shost_for_each_device(sdev, hba->host) {
+-		if (sdev == hba->ufs_device_wlun)
+-			continue;
+-		scsi_device_quiesce(sdev);
++		mutex_lock(&sdev->state_mutex);
++		scsi_device_set_state(sdev, SDEV_OFFLINE);
++		mutex_unlock(&sdev->state_mutex);
+  	}
+  	__ufshcd_wl_suspend(hba, UFS_SHUTDOWN_PM);
 
->   		zram->comp_algs[prio] = NULL;
->   	}
->   
+Thanks,
 
+Bart.
 
