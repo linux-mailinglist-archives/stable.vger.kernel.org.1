@@ -1,232 +1,219 @@
-Return-Path: <stable+bounces-76937-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C3B397F195
-	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 22:15:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 626BD97F193
+	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 22:15:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0D556281DC9
-	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 20:15:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 858741C21888
+	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 20:15:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 687821A08A3;
-	Mon, 23 Sep 2024 20:15:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EDB71A08A3;
+	Mon, 23 Sep 2024 20:15:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZhwpZ3WV"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0BaoH5OZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F26C836126;
-	Mon, 23 Sep 2024 20:15:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1BFE19F41A
+	for <stable@vger.kernel.org>; Mon, 23 Sep 2024 20:15:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727122548; cv=none; b=Px8mDFsTxGUZ4dWPdsrurkW9yKZSIXoq5mamHgKLM8RCNKh7IqydVdbdf5xfY9HALxAmW0xvrbcEpNZBZhtCGU+1bXwcGDGwVK/v35Cl/Uyy2vYdL7KpWp7/ebZu6m4+t8T1r0iowbFNRZ8tmlTK4Yhm9ZNm3AKxLUvG8T26P9E=
+	t=1727122533; cv=none; b=PlkwOsYvh68+EVGPWnY4knbn4RMZH/Z83doBNMuz/OxhKD49h7JoE3Fcgqpw9HUAvT3mP6PKWRevYKA9ZcKU+tWT57a2PaThc5kmNJNRIAPzSGdytFhte5estrTJuBiYBoxL2XqkJzYAVT0BA5IJMcWnvAfyU6jLUlACi7oN16A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727122548; c=relaxed/simple;
-	bh=wNpFDbj7PPOA+nXw14Q42Hk1QSaBxdvFRbuXkuNfBjI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hzD7h+dix9+BavYHrZwJjmqXwOZbQAa3UTR/QHl7A71MIqvbRJ9j2KXvPAhyapXE/EfVl1YOkZESsjX9h+/i/lOCWU5y0i5tjhgkaGTijXRHdjXTTPE5RbXhrFp9e3MpAJvWozj3wZtg5znGVjBWCj9wQuYflKx4mtAs47dnrN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZhwpZ3WV; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1727122546; x=1758658546;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=wNpFDbj7PPOA+nXw14Q42Hk1QSaBxdvFRbuXkuNfBjI=;
-  b=ZhwpZ3WVUm9yDxhNbzt0scmaZVE7+OkOpPdq10dR2BiuJleDG9wSJx7n
-   HsWw9G3W11K9fJ502cUX7vMxcX2rH+vSpOrNBWM2Qg0daaAr4fqtG75YY
-   P2Cgsnw78guWKieETsxnoC5lk8z25Y175m7kndk4eqxiOcuv6sHcIMvBU
-   9VnATyxyznnYlm+f2KQG5lEfFByN+uKipJLfA68PRbQ/vxzhWg+t1TFr5
-   u87Z9V9EyDnLmWJy8XlUbGOAvDqKoeK9qTkCJ+Z61z+qTlDdqJdfVth99
-   3NtaejloH9P7nvzzrMNpo6Y89dBcm6h+WaAvcuKvMWOci7qUH98vI2+e5
-   g==;
-X-CSE-ConnectionGUID: OyLislo1ShudBb/upXXUOQ==
-X-CSE-MsgGUID: o2mrKTnFQOu5qDZFP2Hlqw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11204"; a="26282284"
-X-IronPort-AV: E=Sophos;i="6.10,252,1719903600"; 
-   d="scan'208";a="26282284"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2024 13:15:46 -0700
-X-CSE-ConnectionGUID: ixLLyd4cQxiDz4dSSrcPAg==
-X-CSE-MsgGUID: IdpIgqqcQAqalR2buqrdiw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,252,1719903600"; 
-   d="scan'208";a="76103494"
-Received: from lkp-server01.sh.intel.com (HELO 53e96f405c61) ([10.239.97.150])
-  by orviesa004.jf.intel.com with ESMTP; 23 Sep 2024 13:15:43 -0700
-Received: from kbuild by 53e96f405c61 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sspTA-000HZm-2m;
-	Mon, 23 Sep 2024 20:15:40 +0000
-Date: Tue, 24 Sep 2024 04:15:15 +0800
-From: kernel test robot <lkp@intel.com>
-To: Oliver Neukum <oneukum@suse.com>, gregkh@linuxfoundation.org,
-	linux-usb@vger.kernel.org, stable@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>
-Subject: Re: [PATCH] usb: yurex: make waiting on yurex_write interruptible
-Message-ID: <202409240433.Bl9ay4Ua-lkp@intel.com>
-References: <20240923141649.148563-1-oneukum@suse.com>
+	s=arc-20240116; t=1727122533; c=relaxed/simple;
+	bh=0H6ENbvlTQSEZxIo+1obedDkpsYcANjKsRp/QdY+1z8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mxJJjBcdkgu9QSvQnLdSFeavmFEtzVvPfhKBaoQdIzrP6tRbWNbIyiJXuS9e5PodZDhNwiQmAn186hAQBTlUg9Qf6xprrx80mRen4+irD1+n8bql9kO8j3yRSpsGMUYDvtInFLqq8HBTD7ovXaVZGufeoCYfXysFfpZw+Moaxj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0BaoH5OZ; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-20546b8e754so11655ad.1
+        for <stable@vger.kernel.org>; Mon, 23 Sep 2024 13:15:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1727122531; x=1727727331; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cTuhI0jObA1thj5wXELvo1EktSlaWbvDYhEVGakUX6o=;
+        b=0BaoH5OZaK4t3V4lrtsS2DV8XUo2gRRQgruZ4DypyHtgdt/HWfyvY9MIPsDkN8Mqbj
+         BhQDjsZClnq5SkrY4VaoMyeRPtJMEt1jJgh3nSuo3R6dOhOc7eotz26DFdJfXeHQXqeJ
+         xzuLmpn7BBvMbSTodgrv5Xhdh8AfGFgkIVQbl9Nc3vBy7xkZrBeyG7ZhkHFzQiRCsm8h
+         brM+5LEoKINm24sbHM0VAMQG8814fOqfskHZtjMKpDHK/DJWUNvQYN87jJGL/Uxw6Lmq
+         HSl4n0mtrpkuIehgiqoiBvcxXDIkxRSXlrQDU5YH1L+WDKM0P4UjZsE8GMVcvsEyJ4Il
+         Lsvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727122531; x=1727727331;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cTuhI0jObA1thj5wXELvo1EktSlaWbvDYhEVGakUX6o=;
+        b=KSBThWSkohxVV0ij4kcrSKX965wtxOnhu4D3GIUzGCCF8+rXxtqvnkI5OxFzdCAXoW
+         fMqn+6KNw+hPx2CxlJ3eW7s4n9znEoZRcAnBOT543vP19n9Cg2aYXQzKYQ0a0GBWBky+
+         oQSuSkhvKhI/x8OkPw61Y8ynMyWdLxMW8/JfdCbZW6f0sM3PV/mXae4BGvNcBEjZ5gCV
+         pvsNlCx7skPHc3cO9GJ9NgbgI7yFw2YN9FFgYUZahpEKqbZpbNMJVeIf5rfhXhpHRSwa
+         BGA4ygFmyHQDYWRiEX3oyOUUNq4X96pWCS0A1mYmX7GuwliGlEygiZY52tyRlrEUxLxO
+         +Mmw==
+X-Forwarded-Encrypted: i=1; AJvYcCVcdULq/OS5ndwCbi91J5YPUPRJ7qZAwIUYPXRYBpfSYaL7sOgvIafY+PCOyJvGDolKQikTRV8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy5tOgFJvIbS6F3RDWqX9brfTVgpQT8vvsV+qwJx44h9B7AOg+t
+	RY4KZYl2A1RykIPLMa7XQw1SGXI+oduZpLR+jfSmkprA+xIzIkpnw35/URwWU3hrESaQhcmcpT/
+	a/eBA1mcs2eegNW6Xi8S9pJ78mohafi/DtDiJ
+X-Google-Smtp-Source: AGHT+IHmh02yXm9i2/a395bH2npymCVb0LAxjXgYhMK0kTeo0IfylvI3/ai3urygr3mdT8sWUE48LgPgqLYcSWrvHyE=
+X-Received: by 2002:a17:903:24d:b0:206:d6a4:e13a with SMTP id
+ d9443c01a7336-20aeedf40b3mr625565ad.26.1727122530929; Mon, 23 Sep 2024
+ 13:15:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240923141649.148563-1-oneukum@suse.com>
+References: <8f2e20f2fc894398da371517c6c8111aba072fb1.camel@kernel.org>
+ <20240909163610.2148932-1-ovt@google.com> <84f2415b4d5bb42dc7e26518983f53a997647130.camel@hammerspace.com>
+ <CACGj0ChtssX4hCCEnD9hah+-ioxmAB8SzFjJR3Uk1FEWMizv-A@mail.gmail.com>
+ <8d95e5334c664d10a751e5791c8291959217524e.camel@hammerspace.com> <CACGj0CgobBUv9CgpAhw+XWFwJY7+A0MryOTyukXz8Jsoc9hdQw@mail.gmail.com>
+In-Reply-To: <CACGj0CgobBUv9CgpAhw+XWFwJY7+A0MryOTyukXz8Jsoc9hdQw@mail.gmail.com>
+From: Oleksandr Tymoshenko <ovt@google.com>
+Date: Mon, 23 Sep 2024 13:15:17 -0700
+Message-ID: <CACGj0ChbuJ=p6WT62rYWarB=E6Uf3Cs_rz7icDPo5uH3GgVpmQ@mail.gmail.com>
+Subject: Re: [PATCH] NFSv4: fix a mount deadlock in NFS v4.1 client
+To: Trond Myklebust <trondmy@hammerspace.com>
+Cc: "anna@kernel.org" <anna@kernel.org>, "jbongio@google.com" <jbongio@google.com>, 
+	"linux-nfs@vger.kernel.org" <linux-nfs@vger.kernel.org>, 
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Oliver,
+Hi Trond,
 
-kernel test robot noticed the following build warnings:
+Following up on this: do you have plans to submit the patch you proposed
+or do you want me to rework my submission along the lines you proposed?
 
-[auto build test WARNING on usb/usb-testing]
-[also build test WARNING on usb/usb-next usb/usb-linus westeri-thunderbolt/next linus/master v6.11 next-20240923]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Oliver-Neukum/usb-yurex-make-waiting-on-yurex_write-interruptible/20240923-221833
-base:   https://git.kernel.org/pub/scm/linux/kernel/git/gregkh/usb.git usb-testing
-patch link:    https://lore.kernel.org/r/20240923141649.148563-1-oneukum%40suse.com
-patch subject: [PATCH] usb: yurex: make waiting on yurex_write interruptible
-config: x86_64-buildonly-randconfig-004-20240924 (https://download.01.org/0day-ci/archive/20240924/202409240433.Bl9ay4Ua-lkp@intel.com/config)
-compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240924/202409240433.Bl9ay4Ua-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202409240433.Bl9ay4Ua-lkp@intel.com/
-
-All warnings (new ones prefixed by >>):
-
->> drivers/usb/misc/yurex.c:444:6: warning: variable 'retval' is used uninitialized whenever 'if' condition is true [-Wsometimes-uninitialized]
-     444 |         if (count == 0)
-         |             ^~~~~~~~~~
-   drivers/usb/misc/yurex.c:524:9: note: uninitialized use occurs here
-     524 |         return retval;
-         |                ^~~~~~
-   drivers/usb/misc/yurex.c:444:2: note: remove the 'if' if its condition is always false
-     444 |         if (count == 0)
-         |         ^~~~~~~~~~~~~~~
-     445 |                 goto error;
-         |                 ~~~~~~~~~~
-   drivers/usb/misc/yurex.c:433:24: note: initialize the variable 'retval' to silence this warning
-     433 |         int i, set = 0, retval;
-         |                               ^
-         |                                = 0
-   1 warning generated.
-
-
-vim +444 drivers/usb/misc/yurex.c
-
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  428  
-1cc373c654acde Sudip Mukherjee     2014-10-10  429  static ssize_t yurex_write(struct file *file, const char __user *user_buffer,
-1cc373c654acde Sudip Mukherjee     2014-10-10  430  			   size_t count, loff_t *ppos)
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  431  {
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  432  	struct usb_yurex *dev;
-e9cac1c1ecfe84 Oliver Neukum       2024-09-23  433  	int i, set = 0, retval;
-7e10f14ebface4 Ben Hutchings       2018-08-15  434  	char buffer[16 + 1];
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  435  	char *data = buffer;
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  436  	unsigned long long c, c2 = 0;
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  437  	signed long timeout = 0;
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  438  	DEFINE_WAIT(wait);
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  439  
-7e10f14ebface4 Ben Hutchings       2018-08-15  440  	count = min(sizeof(buffer) - 1, count);
-113ad911ad4a1c Arjun Sreedharan    2014-08-19  441  	dev = file->private_data;
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  442  
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  443  	/* verify that we actually have some data to write */
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29 @444  	if (count == 0)
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  445  		goto error;
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  446  
-e9cac1c1ecfe84 Oliver Neukum       2024-09-23  447  	retval = mutex_lock_interruptible(&dev->io_mutex);
-e9cac1c1ecfe84 Oliver Neukum       2024-09-23  448  	if (retval < 0)
-e9cac1c1ecfe84 Oliver Neukum       2024-09-23  449  		return -EINTR;
-e9cac1c1ecfe84 Oliver Neukum       2024-09-23  450  
-aafb00a977cf7d Johan Hovold        2019-10-09  451  	if (dev->disconnected) {		/* already disconnected */
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  452  		mutex_unlock(&dev->io_mutex);
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  453  		retval = -ENODEV;
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  454  		goto error;
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  455  	}
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  456  
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  457  	if (copy_from_user(buffer, user_buffer, count)) {
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  458  		mutex_unlock(&dev->io_mutex);
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  459  		retval = -EFAULT;
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  460  		goto error;
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  461  	}
-7e10f14ebface4 Ben Hutchings       2018-08-15  462  	buffer[count] = 0;
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  463  	memset(dev->cntl_buffer, CMD_PADDING, YUREX_BUF_SIZE);
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  464  
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  465  	switch (buffer[0]) {
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  466  	case CMD_ANIMATE:
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  467  	case CMD_LED:
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  468  		dev->cntl_buffer[0] = buffer[0];
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  469  		dev->cntl_buffer[1] = buffer[1];
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  470  		dev->cntl_buffer[2] = CMD_EOF;
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  471  		break;
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  472  	case CMD_READ:
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  473  	case CMD_VERSION:
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  474  		dev->cntl_buffer[0] = buffer[0];
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  475  		dev->cntl_buffer[1] = 0x00;
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  476  		dev->cntl_buffer[2] = CMD_EOF;
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  477  		break;
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  478  	case CMD_SET:
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  479  		data++;
-0d9b6d49fe39bd Gustavo A. R. Silva 2020-07-07  480  		fallthrough;
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  481  	case '0' ... '9':
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  482  		set = 1;
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  483  		c = c2 = simple_strtoull(data, NULL, 0);
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  484  		dev->cntl_buffer[0] = CMD_SET;
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  485  		for (i = 1; i < 6; i++) {
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  486  			dev->cntl_buffer[i] = (c>>32) & 0xff;
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  487  			c <<= 8;
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  488  		}
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  489  		buffer[6] = CMD_EOF;
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  490  		break;
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  491  	default:
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  492  		mutex_unlock(&dev->io_mutex);
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  493  		return -EINVAL;
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  494  	}
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  495  
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  496  	/* send the data as the control msg */
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  497  	prepare_to_wait(&dev->waitq, &wait, TASK_INTERRUPTIBLE);
-aadd6472d904c3 Greg Kroah-Hartman  2012-05-01  498  	dev_dbg(&dev->interface->dev, "%s - submit %c\n", __func__,
-aadd6472d904c3 Greg Kroah-Hartman  2012-05-01  499  		dev->cntl_buffer[0]);
-f176ede3a3bde5 Alan Stern          2020-08-10  500  	retval = usb_submit_urb(dev->cntl_urb, GFP_ATOMIC);
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  501  	if (retval >= 0)
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  502  		timeout = schedule_timeout(YUREX_WRITE_TIMEOUT);
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  503  	finish_wait(&dev->waitq, &wait);
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  504  
-372c93131998c0 Johan Hovold        2020-12-14  505  	/* make sure URB is idle after timeout or (spurious) CMD_ACK */
-372c93131998c0 Johan Hovold        2020-12-14  506  	usb_kill_urb(dev->cntl_urb);
-372c93131998c0 Johan Hovold        2020-12-14  507  
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  508  	mutex_unlock(&dev->io_mutex);
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  509  
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  510  	if (retval < 0) {
-45714104b9e85f Greg Kroah-Hartman  2012-04-20  511  		dev_err(&dev->interface->dev,
-45714104b9e85f Greg Kroah-Hartman  2012-04-20  512  			"%s - failed to send bulk msg, error %d\n",
-45714104b9e85f Greg Kroah-Hartman  2012-04-20  513  			__func__, retval);
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  514  		goto error;
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  515  	}
-93907620b30860 Oliver Neukum       2024-09-12  516  	if (set && timeout) {
-93907620b30860 Oliver Neukum       2024-09-12  517  		spin_lock_irq(&dev->lock);
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  518  		dev->bbu = c2;
-93907620b30860 Oliver Neukum       2024-09-12  519  		spin_unlock_irq(&dev->lock);
-93907620b30860 Oliver Neukum       2024-09-12  520  	}
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  521  	return timeout ? count : -EIO;
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  522  
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  523  error:
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  524  	return retval;
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  525  }
-6bc235a2e24a5e Tomoki Sekiyama     2010-09-29  526  
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+On Tue, Sep 10, 2024 at 2:08=E2=80=AFPM Oleksandr Tymoshenko <ovt@google.co=
+m> wrote:
+>
+> On Mon, Sep 9, 2024 at 5:22=E2=80=AFPM Trond Myklebust <trondmy@hammerspa=
+ce.com> wrote:
+> >
+> > On Mon, 2024-09-09 at 16:06 -0700, Oleksandr Tymoshenko wrote:
+> > > On Mon, Sep 9, 2024 at 10:56=E2=80=AFAM Trond Myklebust
+> > > <trondmy@hammerspace.com> wrote:
+> > > >
+> > > > On Mon, 2024-09-09 at 16:36 +0000, Oleksandr Tymoshenko wrote:
+> > > > > > > nfs41_init_clientid does not signal a failure condition from
+> > > > > > > nfs4_proc_exchange_id and nfs4_proc_create_session to a
+> > > > > > > client
+> > > > > > > which
+> > > > > > > may
+> > > > > > > lead to mount syscall indefinitely blocked in the following
+> > > > > > > stack
+> > > > >
+> > > > > > NACK. This will break all sorts of recovery scenarios, because
+> > > > > > it
+> > > > > > doesn't distinguish between an initial 'mount' and a server
+> > > > > > reboot
+> > > > > > recovery situation.
+> > > > > > Even in the case where we are in the initial mount, it also
+> > > > > > doesn't
+> > > > > > distinguish between transient errors such as NFS4ERR_DELAY or
+> > > > > > reboot
+> > > > > > errors such as NFS4ERR_STALE_CLIENTID, etc.
+> > > > >
+> > > > > > Exactly what is the scenario that is causing your hang? Let's
+> > > > > > try
+> > > > > > to
+> > > > > > address that with a more targeted fix.
+> > > > >
+> > > > > The scenario is as follows: there are several NFS servers and
+> > > > > several
+> > > > > production machines with multiple NFS mounts. This is a
+> > > > > containerized
+> > > > > multi-tennant workflow so every tennant gets its own NFS mount to
+> > > > > access their
+> > > > > data. At some point nfs41_init_clientid fails in the initial
+> > > > > mount.nfs call
+> > > > > and all subsequent mount.nfs calls just hang in
+> > > > > nfs_wait_client_init_complete
+> > > > > until the original one, where nfs4_proc_exchange_id has failed,
+> > > > > is
+> > > > > killed.
+> > > > >
+> > > > > The cause of the nfs41_init_clientid failure in the production
+> > > > > case
+> > > > > is a timeout.
+> > > > > The following error message is observed in logs:
+> > > > >   NFS: state manager: lease expired failed on NFSv4 server <ip>
+> > > > > with
+> > > > > error 110
+> > > > >
+> > > >
+> > > > How about something like the following fix then?
+> > > > 8<-----------------------------------------------
+> > > > From eb402b489bb0d0ada1a3dd9101d4d7e193402e46 Mon Sep 17 00:00:00
+> > > > 2001
+> > > > Message-ID:
+> > > > <eb402b489bb0d0ada1a3dd9101d4d7e193402e46.1725904471.git.trond.mykl
+> > > > ebust@hammerspace.com>
+> > > > From: Trond Myklebust <trond.myklebust@hammerspace.com>
+> > > > Date: Mon, 9 Sep 2024 13:47:07 -0400
+> > > > Subject: [PATCH] NFSv4: Fail mounts if the lease setup times out
+> > > >
+> > > > If the server is down when the client is trying to mount, so that
+> > > > the
+> > > > calls to exchange_id or create_session fail, then we should allow
+> > > > the
+> > > > mount system call to fail rather than hang and block other
+> > > > mount/umount
+> > > > calls.
+> > > >
+> > > > Reported-by: Oleksandr Tymoshenko <ovt@google.com>
+> > > > Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+> > > > ---
+> > > >  fs/nfs/nfs4state.c | 6 ++++++
+> > > >  1 file changed, 6 insertions(+)
+> > > >
+> > > > diff --git a/fs/nfs/nfs4state.c b/fs/nfs/nfs4state.c
+> > > > index 30aba1dedaba..59dcdf9bc7b4 100644
+> > > > --- a/fs/nfs/nfs4state.c
+> > > > +++ b/fs/nfs/nfs4state.c
+> > > > @@ -2024,6 +2024,12 @@ static int
+> > > > nfs4_handle_reclaim_lease_error(struct nfs_client *clp, int status)
+> > > >                 nfs_mark_client_ready(clp, -EPERM);
+> > > >                 clear_bit(NFS4CLNT_LEASE_CONFIRM, &clp->cl_state);
+> > > >                 return -EPERM;
+> > > > +       case -ETIMEDOUT:
+> > > > +               if (clp->cl_cons_state =3D=3D NFS_CS_SESSION_INITIN=
+G) {
+> > > > +                       nfs_mark_client_ready(clp, -EIO);
+> > > > +                       return -EIO;
+> > > > +               }
+> > > > +               fallthrough;
+> > > >         case -EACCES:
+> > > >         case -NFS4ERR_DELAY:
+> > > >         case -EAGAIN:
+> > > > --
+> > >
+> > > This patch fixes the issue in my simulated environment. ETIMEDOUT is
+> > > the error code that
+> > > was observed in the production env but I guess it's not the only
+> > > possible one. Would it make
+> > > sense to handle all error conditions in the NFS_CS_SESSION_INITING
+> > > state or are there
+> > > some others that are recoverable?
+> > >
+> >
+> > The only other one that I'm thinking might want to be treated similarly
+> > is the above EACCES error. That's because that is only returned if
+> > there is a problem with your RPCSEC_GSS/krb5 credential. I was thinking
+> > of changing that one too in the same patch, but came to the conclusion
+> > it would be better to treat the two issues with separate fixes.
+> >
+> > The other error conditions are all supposed to be transient NFS level
+> > errors. They should not be treated as fatal.
+>
+> Sounds good. Will you submit this patch to the mainline kernel? If so
+> please add me to Cc. Thanks for looking into this.
 
