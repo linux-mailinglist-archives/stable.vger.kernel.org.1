@@ -1,150 +1,145 @@
-Return-Path: <stable+bounces-76898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3249B97EBAE
-	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 14:46:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0887F97EBEF
+	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 15:00:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA7A428225F
-	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 12:46:15 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDE311C2159B
+	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 13:00:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7023419755E;
-	Mon, 23 Sep 2024 12:46:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3EBF1990D2;
+	Mon, 23 Sep 2024 12:58:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ebeaGNDV"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ejB41VDB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f54.google.com (mail-lf1-f54.google.com [209.85.167.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91D21944F;
-	Mon, 23 Sep 2024 12:46:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54FFB80C0C
+	for <stable@vger.kernel.org>; Mon, 23 Sep 2024 12:58:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727095571; cv=none; b=kxYHkVwUSSdQFelfd0etFPnqD+SE8EQS+oRb3WXWeBWrI89v9Zvjx+NZKIIl4BVmkoko9dJyREHtUN7X0tvQzKrPCXk9H+7B8CwxElkQLmm74AE0ZbmPxF0YMP3kIgfhZsUCfd9dlUrijNbIq8pLThaOKusMLLDxzGeVeACvOQs=
+	t=1727096330; cv=none; b=J139KPRUg1sOT8KsEKnsN7+APUpqdwvRiU51NL/ihHL2CkgwmBRe4Z6+v8lgIn5rqCDMfjmj4+6jcQB94gj//iyQatyD91zquc2weUWTd6zBAtL5MdhCWxQaDSQlMzirnOR3B7DrD+j77xki2k8Lgy7SgvGj3J0u/hCcHdFe/B8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727095571; c=relaxed/simple;
-	bh=H791qJ884RzCrJmXRNtoB/IAOFb3uexgCzojgbcvjao=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OoGJK8u1CkY3SLGRLjsWofNoqV6pYxGsR3w0WyObGWCuNhI4T3vqTlpk5GP1rg7ju7xtb85/GzuRCmksr/vs+kTjJMz3P5cyKCprNb+9EQ1L6SGVbOMb3E52LjZcEUrS6oSpmOvUCAYtGhvM2iFQnDeOpRr/tnIUE31eAFBwn30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ebeaGNDV; arc=none smtp.client-ip=209.85.167.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-537a2a2c74fso630917e87.0;
-        Mon, 23 Sep 2024 05:46:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727095568; x=1727700368; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Qe32yvUb9M7AG5s5hippFPkJFtAeLbHm336wqeEbh3M=;
-        b=ebeaGNDVbV5J/0cYhqfhQ3UP8uWhRRgbFV0/N9NwVCkIL0v6CkJuHMsQU23oF1oxrQ
-         yhrt6W+Ce2+mIbaGZSCLoSzJN9pDyz0B7CkCMDoyJUJr27i+A8rsuz/OuQdPH9vHObDH
-         jgxIGdFEh/SyfBhZQ4apJnniYqsz8OuRsLrsL47zvm5sPgKaNtPJ6cQl2w7qr96NF5Nm
-         8neKdvrxWdaYFP8NYG8df3oARs5NPgdSNw80gXpO1vW2UFwA/RjhGzA6MYo3jshbaKNo
-         zpY2tuR/9bOomcKUSgAeSKzE5JhCiApOjDFwJVvGZREnSy69qmMfuCZlTcOijKtTJ8Tv
-         yEsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727095568; x=1727700368;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Qe32yvUb9M7AG5s5hippFPkJFtAeLbHm336wqeEbh3M=;
-        b=jcBXx3F7L5z3WmISdqh+dbsXevQv0s9IF6U7RdVzr1clLC+PWLr7LFgsAc6344X5n9
-         XTXz2hGe8qpUHI7GI8cC8O3lu45LBKLK0a3SlyOWQc7I4osvpQ2igWBNSZQmW0subh6y
-         SB0FZxpNDbUwD6e6yDKLvOBlaMZCiIqVG29b5w1bt3tzgMRyLjvSdnYU6RblbPpkxX6x
-         I9qAsM7aAy6aPB6YHbitDCqeDCMxGEcw9iPfrdpL44+opjJJosXtq7irTCaks4IjIyVy
-         m3wz71hq9hitsaxDQnR1ZcN/iKraFxwLA1zuSW3RxP6Snns2jns5xr+JOqnaVUU9itXg
-         RqfA==
-X-Forwarded-Encrypted: i=1; AJvYcCVJrsHpfLrP2rplPkg7LrZcZ5hbre55iQqSS+rYvIAKwP23zw/MgdNW8Ow1C8vrgABCrdx6a+DadTVJCuw=@vger.kernel.org, AJvYcCWSMGmeCWO4vQLBwMyD0fnRYkxxS6VAdfKq0cTgLosCdvsjpJNW6OTRarcT+eudE3kqhuwAPWO0@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw+/wb3CAjIpkrSd3PhcryeSpJP7XjWfVkcn0ns9FY37yZOdarE
-	bHeD/yI1YTnd6Uzo9GWghZ1oXRpX9FAT33LcgFcp5p+blM0AViJg6kp1oA==
-X-Google-Smtp-Source: AGHT+IHk6NjA1nCO9EGYuyJyNTjpXX7J+9fc5rK0kGf2gQON0pK7wvVqX5mVF2/DtDvbkTM3NkdroQ==
-X-Received: by 2002:a05:6512:1105:b0:52e:fa08:f0f5 with SMTP id 2adb3069b0e04-536abb33545mr3660434e87.13.1727095567270;
-        Mon, 23 Sep 2024 05:46:07 -0700 (PDT)
-Received: from mobilestation ([178.176.56.174])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5368704c35esm3290102e87.77.2024.09.23.05.46.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Sep 2024 05:46:06 -0700 (PDT)
-Date: Mon, 23 Sep 2024 15:46:04 +0300
-From: Serge Semin <fancer.lancer@gmail.com>
-To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: dmaengine@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Viresh Kumar <vireshk@kernel.org>, Vinod Koul <vkoul@kernel.org>, stable@vger.kernel.org, 
-	Ferry Toth <fntoth@gmail.com>
-Subject: Re: [PATCH v3 1/1] dmaengine: dw: Select only supported masters for
- ACPI devices
-Message-ID: <onfkegjjn7psbhc44fhjmp5ttbuthiscpccywaxxwabalpmudo@xhfdlxi762o6>
-References: <20240920155820.3340081-1-andriy.shevchenko@linux.intel.com>
- <ajcqxw6in7364m6bp2wncym65mlqf57fxr6pc4aor3xbokx2cu@2wve6fdtu3vz>
- <ZvElEesYTX-89u_g@smile.fi.intel.com>
- <7cy2ho5lysh4tqk3vqz6rv67dadsi33bszx234vpu7bvslnddp@ed6zxezx7nwf>
- <ZvFecC6u0rFczFR9@smile.fi.intel.com>
+	s=arc-20240116; t=1727096330; c=relaxed/simple;
+	bh=7ngXVKCh1STEoKdjuAOoCj9RlsZ6ADtQyYwb6tD4Mbc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eHT6C0vgjz8/POzP9o9e7USiHai6oXTmvVrxQkx8DEAoPsSPNaUXbmU2o2mtqtURCr8dK2MZ3pY1VIB3LnHq2pwGm9Xn/i0NaxKzvh2Zkj9ZE2ME4BSEvDzaxIQCWx7PhLj7bG0bFRlg1m25rX2/9bY+xUy4tAvlOzRgIredPsI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ejB41VDB; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1727096329; x=1758632329;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=7ngXVKCh1STEoKdjuAOoCj9RlsZ6ADtQyYwb6tD4Mbc=;
+  b=ejB41VDBu7Oa3RsAxPY9nzC+qCHvFpkHX1CSZFZurmEVCcIj0kpJxqtw
+   80Yc6w21RlsZ+8WTwuiMF4tBPL8a0tN+kCOD97n9cP9RkJLCSDWn4MsWU
+   YQ/hJtBAo0jJQk/y6SR0/vVDd592Ro4cVD4Wb4CMJWy5RGCELCQegE26p
+   n0JzWE52QEdT1j7ky8Rr8g1jr99lTekVi07LbB3iI4bPE1/5fGk8yCEKN
+   EoKGxWFmc7COYVkmPC889JNxgcpqblXGqnYbb9EQL6feZw3wrsIzBcigI
+   A6Cix9I5ddB9IqP2sLyD7+R5l5EK3jbUT6705Kw9ajg2saVUHcmq0hhiU
+   A==;
+X-CSE-ConnectionGUID: 61Z91eMEQWK/kjl8ewIxOg==
+X-CSE-MsgGUID: iUWY6ZycRhKyBkbL00XGbw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11204"; a="26160077"
+X-IronPort-AV: E=Sophos;i="6.10,251,1719903600"; 
+   d="scan'208";a="26160077"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2024 05:58:48 -0700
+X-CSE-ConnectionGUID: sT2NRJGUQ0aUlw57rsAdgA==
+X-CSE-MsgGUID: OgUZrcsQQX2m+dweGYqBWg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,251,1719903600"; 
+   d="scan'208";a="101910403"
+Received: from johunt-mobl9.ger.corp.intel.com (HELO mwauld-desk.intel.com) ([10.245.245.234])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2024 05:58:46 -0700
+From: Matthew Auld <matthew.auld@intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: Matthew Brost <matthew.brost@intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH 1/2] drm/xe/vm: move xa_alloc to prevent UAF
+Date: Mon, 23 Sep 2024 13:57:34 +0100
+Message-ID: <20240923125733.62883-3-matthew.auld@intel.com>
+X-Mailer: git-send-email 2.46.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZvFecC6u0rFczFR9@smile.fi.intel.com>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Sep 23, 2024 at 03:26:24PM +0300, Andy Shevchenko wrote:
-> On Mon, Sep 23, 2024 at 02:57:27PM +0300, Serge Semin wrote:
-> > On Mon, Sep 23, 2024 at 11:21:37AM +0300, Andy Shevchenko wrote:
-> > > On Mon, Sep 23, 2024 at 01:01:08AM +0300, Serge Semin wrote:
-> > > > On Fri, Sep 20, 2024 at 06:56:17PM +0300, Andy Shevchenko wrote:
-> 
-> ...
-> 
-> 
-> Yes, I still prefer mine.
-> 
-> > But, again IMO, it seems to be
-> > better to add the default_{m,p}_master/d{p,m}_master/etc fields to the
-> > dw_dma_platform_data structure since the platform-specific controller
-> > settings have been consolidated in there. The dw_dma_chip_pdata
-> > structure looks as more like generic driver data storage.
-> 
-> I don't think that is correct place for it. The platform data is specific
-> to the DMA controller as a whole and having there the master configuration
-> will mean to have the arrays of them. This OTOH will break the OF setup
-> where this comes from the slave descriptions and may not be provided with
-> DMA controller, making it imbalanced. Yes, I may agree with you that chip data
-> is not a good place either, but at least it isolates the case to PCI + ACPI /
-> pure ACPI devices (and in particular we won't need to alter Intel Quark case).
-> 
+Evil user can guess the next id of the vm before the ioctl completes and
+then call vm destroy ioctl to trigger UAF since create ioctl is still
+referencing the same vm. Move the xa_alloc all the way to the end to
+prevent this.
 
-> Ideally, we should parse the additional properties from ACPI for this kind
-> of DMA controllers to get this from the _slave_ resources. Currently this is
-> not done, but anyone may propose a such
+Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: <stable@vger.kernel.org> # v6.8+
+---
+ drivers/gpu/drm/xe/xe_vm.c | 22 ++++++++++------------
+ 1 file changed, 10 insertions(+), 12 deletions(-)
 
-I guess it would also mean to fix all the firmware as well, wouldn't it?
-Do the Intel/AMD/etc ACPI firmware currently provide such a data? In
-anyway it would be inapplicable for the legacy hardware anyway.
+diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
+index a3d7cb7cfd22..f7182ef3d8e6 100644
+--- a/drivers/gpu/drm/xe/xe_vm.c
++++ b/drivers/gpu/drm/xe/xe_vm.c
+@@ -1765,12 +1765,6 @@ int xe_vm_create_ioctl(struct drm_device *dev, void *data,
+ 	if (IS_ERR(vm))
+ 		return PTR_ERR(vm);
+ 
+-	mutex_lock(&xef->vm.lock);
+-	err = xa_alloc(&xef->vm.xa, &id, vm, xa_limit_32b, GFP_KERNEL);
+-	mutex_unlock(&xef->vm.lock);
+-	if (err)
+-		goto err_close_and_put;
+-
+ 	if (xe->info.has_asid) {
+ 		down_write(&xe->usm.lock);
+ 		err = xa_alloc_cyclic(&xe->usm.asid_to_vm, &asid, vm,
+@@ -1778,12 +1772,11 @@ int xe_vm_create_ioctl(struct drm_device *dev, void *data,
+ 				      &xe->usm.next_asid, GFP_KERNEL);
+ 		up_write(&xe->usm.lock);
+ 		if (err < 0)
+-			goto err_free_id;
++			goto err_close_and_put;
+ 
+ 		vm->usm.asid = asid;
+ 	}
+ 
+-	args->vm_id = id;
+ 	vm->xef = xe_file_get(xef);
+ 
+ 	/* Record BO memory for VM pagetable created against client */
+@@ -1796,12 +1789,17 @@ int xe_vm_create_ioctl(struct drm_device *dev, void *data,
+ 	args->reserved[0] = xe_bo_main_addr(vm->pt_root[0]->bo, XE_PAGE_SIZE);
+ #endif
+ 
+-	return 0;
+-
+-err_free_id:
++	/* user id alloc must always be last in ioctl to prevent UAF */
+ 	mutex_lock(&xef->vm.lock);
+-	xa_erase(&xef->vm.xa, id);
++	err = xa_alloc(&xef->vm.xa, &id, vm, xa_limit_32b, GFP_KERNEL);
+ 	mutex_unlock(&xef->vm.lock);
++	if (err)
++		goto err_close_and_put;
++
++	args->vm_id = id;
++
++	return 0;
++
+ err_close_and_put:
+ 	xe_vm_close_and_put(vm);
+ 
+-- 
+2.46.1
 
-> (would you like to volunteer?).
-
-not really.) Maybe in some long-distance future when I get to meet a
-device on the ACPI-based platform with the DW DMAC + some peripheral
-experiencing the denoted problem, I'll think about implementing what
-we've discussed here.
-
-> 
-> ...
-> 
-> TL;DR: If you are okay with your authorship in v3, I prefer it over other
-> versions with the explanations given in this email thread.
-
-Ok. Let's leave it as of your preference.
-
--Serge(y)
-
-> 
-> -- 
-> With Best Regards,
-> Andy Shevchenko
-> 
-> 
 
