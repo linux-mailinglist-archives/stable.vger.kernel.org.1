@@ -1,100 +1,146 @@
-Return-Path: <stable+bounces-76904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D19197EC55
-	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 15:32:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A2EF597ECEB
+	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 16:17:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B069CB219AF
-	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 13:32:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DBF58B2194A
+	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 14:17:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A64051991B0;
-	Mon, 23 Sep 2024 13:32:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B623197554;
+	Mon, 23 Sep 2024 14:16:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ab/TTFh+"
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="RtVYo/io";
+	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="DyVBgZIZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17CF082866
-	for <stable@vger.kernel.org>; Mon, 23 Sep 2024 13:32:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71C8C10F7;
+	Mon, 23 Sep 2024 14:16:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727098349; cv=none; b=VVn9RM08Bro++Cg2tNEP3MicQQZknycmiS6c17SFghxFNTrTttBt5XPqb6CWM2qW2nFID1V/tyU8wQPcmfnVAhbXKX+atHlc1eZ2Aj/qbW9N2EFl6oGbmp6SCmCOElP2pjya+YpqS3b8Bc+xxNgwvjX3xasqEw8otMWhnnsB+n4=
+	t=1727101017; cv=none; b=ECjju+xLSjyODwhbaEMkxtxM72PHj/D/iQiZjW+l/f6b941m+MGxFdHiJ1iyk1UF27jYF5UyTFRIOd4tBKk9HR92m3qzkfIpjRsa//QrQ31kVpD5THvOfSRGGuYjEfQswAtm9Y3Hg05n94J7zU6/FXLMliGcevGWuRn++EPcZhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727098349; c=relaxed/simple;
-	bh=XWITp/fCzbCKojKSeH6yhMy88P1a/1om4wLqVQVQjdw=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=lH1GCN4jMyVpEX4u8sWgQRNfLjDF7hSwFVz9LvKTp6maZftAeaUXJ8vY1oJdTrSS96Ip4H/po3sfDDxvvQa4uUV0TELSLzzoS8UF37IQcKP/07tMR0lYrC6CDBchj0zZGZX9xaHVd2vilRnKk25R5pe0jMRLneizuWsiP5IavpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ab/TTFh+; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1727098347; x=1758634347;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=XWITp/fCzbCKojKSeH6yhMy88P1a/1om4wLqVQVQjdw=;
-  b=ab/TTFh+0dWEVTvZTy/jdCQ8nkpcMQftOeKDLbztrFuiQ4/dRPmbxhZA
-   TK4fhIICASeBA9VxqZhcUtiAA2Ug80vqxdhG4MF/6ohpxU6rPWJZP5I44
-   KpqakOrl2MSWKF17wLf6inF/g5qtB7oU705WpmBqMtRFI11nds03cGA+R
-   fWTF0UOwviqBWj9uVk4JKKts5KwHYnZjS93MUOSTbx0B7G05ILQuAGozb
-   JUV3plvHIVeSjy/oA+1/hevoJwrEVg+dOQfSpAUBGDR5Ttxh0wBOoflgJ
-   G237rki/jB6RBgJUB3OYSyUXgl83PaLTP6h9aqNjZ5cyWaNEIlHCT4tMO
-   g==;
-X-CSE-ConnectionGUID: kapuG06/RVmECvDUGcS1jQ==
-X-CSE-MsgGUID: XxCflZByRumIM5vSnqzcZg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11204"; a="43517548"
-X-IronPort-AV: E=Sophos;i="6.10,251,1719903600"; 
-   d="scan'208";a="43517548"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2024 06:32:26 -0700
-X-CSE-ConnectionGUID: DllLAKL6SCu1Y6uakOmH/g==
-X-CSE-MsgGUID: 2Ouv1CYGR2en9hOvZJmrGg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,251,1719903600"; 
-   d="scan'208";a="71340228"
-Received: from lkp-server01.sh.intel.com (HELO 53e96f405c61) ([10.239.97.150])
-  by fmviesa010.fm.intel.com with ESMTP; 23 Sep 2024 06:32:25 -0700
-Received: from kbuild by 53e96f405c61 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1ssjAt-000HEK-1h;
-	Mon, 23 Sep 2024 13:32:23 +0000
-Date: Mon, 23 Sep 2024 21:32:02 +0800
-From: kernel test robot <lkp@intel.com>
-To: Danny Tsen <dtsen@linux.ibm.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH 1/3] crypto: Re-write AES/GCM stitched implementation for
- ppcle64.
-Message-ID: <ZvFt0lAQ8ucFk1Pt@483fc80b4b15>
+	s=arc-20240116; t=1727101017; c=relaxed/simple;
+	bh=ffsN+B8i9wwxmm54ykTW5O3U7+XiB+deDuykjj3u76o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=sqdQDezsdFqVUJx1iUXoXDmFzAK9g7Yw0FHV3JmkfVYrVS7wVHnO0pWfKdx6U1/VBTVdDfG03ZYpbfLx284sMxpVtPTKHEatH5sZEwTeoQ8yjlqJotDXjdFQyYaM9Qeaj3MvADNlbHqTnA3ToIO3tJtnlktH3Nqg9tBp8Ibkk8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=RtVYo/io; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=DyVBgZIZ; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 614F821DB8;
+	Mon, 23 Sep 2024 14:16:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1727101012; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=vy3r3kjKM26aBsWsuVuahNpyztjcHkCjXvxlsDEnO2I=;
+	b=RtVYo/ioFvlvZ8tt0CcZIzykm8WHpGKs4bAcgQ/r0dRrzi2gCST647LIQ5KvinlnpRu2MV
+	43e7xt/VlXVyVP551eEPTiV6w8iwBP2DwOg4eAYiSDQ9SA7UqDOMO2r39yo7tCncYY3YKr
+	Y2k+4kKVnBw3ePDlwBHkTvJQDsq7Oeg=
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
+	t=1727101011; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
+	bh=vy3r3kjKM26aBsWsuVuahNpyztjcHkCjXvxlsDEnO2I=;
+	b=DyVBgZIZRjiKaXNU7dBmlr0b8kn9VVFJsCf02jcVzzMLsRG5VeX34gf/bl8ewD42I2upYz
+	IIo0jC7aEXtY+YiIx1zHWGTMz4B9J1SvANx5zr1v+rdXiG2lQhFubcXq7KABxHZj9h6HGZ
+	jErfwDb27sTIscH+HMNUgXMlazkVNlM=
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 3FBC213A64;
+	Mon, 23 Sep 2024 14:16:51 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id aZlVDlN48WZOXwAAD6G6ig
+	(envelope-from <oneukum@suse.com>); Mon, 23 Sep 2024 14:16:51 +0000
+From: Oliver Neukum <oneukum@suse.com>
+To: gregkh@linuxfoundation.org,
+	linux-usb@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Oliver Neukum <oneukum@suse.com>
+Subject: [PATCH] usb: yurex: make waiting on yurex_write interruptible
+Date: Mon, 23 Sep 2024 16:16:43 +0200
+Message-ID: <20240923141649.148563-1-oneukum@suse.com>
+X-Mailer: git-send-email 2.46.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240923133040.4630-2-dtsen@linux.ibm.com>
+Content-Transfer-Encoding: 8bit
+X-Spam-Level: 
+X-Spamd-Result: default: False [-2.80 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_MISSING_CHARSET(0.50)[];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MIME_TRACE(0.00)[0:+];
+	TO_DN_SOME(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	ARC_NA(0.00)[];
+	DKIM_SIGNED(0.00)[suse.com:s=susede1];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_THREE(0.00)[4];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.com:email,suse.com:mid];
+	RCVD_TLS_ALL(0.00)[]
+X-Spam-Score: -2.80
+X-Spam-Flag: NO
 
-Hi,
+The IO yurex_write() needs to wait for in order to have a device
+ready for writing again can take a long time time.
+Consequently the sleep is done in an interruptible state.
+Therefore others waiting for yurex_write() itself to finish should
+use mutex_lock_interruptible.
 
-Thanks for your patch.
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Fixes: 6bc235a2e24a5 ("USB: add driver for Meywa-Denki & Kayac YUREX")
+---
+ drivers/usb/misc/yurex.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
-
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH 1/3] crypto: Re-write AES/GCM stitched implementation for ppcle64.
-Link: https://lore.kernel.org/stable/20240923133040.4630-2-dtsen%40linux.ibm.com
-
+diff --git a/drivers/usb/misc/yurex.c b/drivers/usb/misc/yurex.c
+index 4a9859e03f6b..0deffdc8205f 100644
+--- a/drivers/usb/misc/yurex.c
++++ b/drivers/usb/misc/yurex.c
+@@ -430,7 +430,7 @@ static ssize_t yurex_write(struct file *file, const char __user *user_buffer,
+ 			   size_t count, loff_t *ppos)
+ {
+ 	struct usb_yurex *dev;
+-	int i, set = 0, retval = 0;
++	int i, set = 0, retval;
+ 	char buffer[16 + 1];
+ 	char *data = buffer;
+ 	unsigned long long c, c2 = 0;
+@@ -444,7 +444,10 @@ static ssize_t yurex_write(struct file *file, const char __user *user_buffer,
+ 	if (count == 0)
+ 		goto error;
+ 
+-	mutex_lock(&dev->io_mutex);
++	retval = mutex_lock_interruptible(&dev->io_mutex);
++	if (retval < 0)
++		return -EINTR;
++
+ 	if (dev->disconnected) {		/* already disconnected */
+ 		mutex_unlock(&dev->io_mutex);
+ 		retval = -ENODEV;
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
+2.46.1
 
 
