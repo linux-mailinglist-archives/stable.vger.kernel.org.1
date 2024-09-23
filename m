@@ -1,146 +1,81 @@
-Return-Path: <stable+bounces-76882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19F7A97E71E
-	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 10:04:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5148497E756
+	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 10:15:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8A414B20988
-	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 08:04:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 074341F21890
+	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 08:15:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 993CC62A02;
-	Mon, 23 Sep 2024 08:03:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="U4J09e/5"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28727188918;
+	Mon, 23 Sep 2024 08:14:44 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mailgw02.mediatek.com (unknown [210.61.82.184])
+Received: from proxmox-new.maurer-it.com (proxmox-new.maurer-it.com [94.136.29.106])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B8CB374C3;
-	Mon, 23 Sep 2024 08:03:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.61.82.184
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8E881885B3;
+	Mon, 23 Sep 2024 08:14:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.136.29.106
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727078635; cv=none; b=g9B4eIKygR2ptOcJBfKDZnCyZZLvs5kz19xU7L5mQvAeTI5icd7jM5JjD8YzzHxi2ULd/2GUnmVMyZch72xVbE6oLHkbpBO3G+PKx+uTvfQhNnDrBRiE0fDCk0WaXEbCjU90PFs4R/vA8o1xwD37zTuy8dOABBrr2bITN0HR7Yk=
+	t=1727079284; cv=none; b=Qtd62wJLjr+VBH0LHswbcht3CgyecstLsAR0oeavzBQcVbgwbRE3v94OCuZkhuF/pcCT9oDo7CsMDCQ0YS2682JHeAqzHG9xzK3ZXHXIvCRjgCPDXvAhvcSpjkW5JzdzoMDAU/cNtqVjJsobK+zGUo2A4JvCgQj675wUCZf8uGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727078635; c=relaxed/simple;
-	bh=9g6mH65weF44bLQevwU1JtpQ/d+yi8uM5z152woSbYc=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UMzc9BeZR7KviOS0hEfaZJ5R9T6ldZM6JgOjbCIz1O+n7IWW2Hz3pp97Z4j0gswPjs5DwJuWzbtIqBikWb46Y8d67SeNdxCrxQPpSef9YnUCF3wxrf1Jrqqgto80D8m3iXdrpJoE38V1Dm9hhk+Tcq6PfQZqPVARKrOg8OVc5TM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=U4J09e/5; arc=none smtp.client-ip=210.61.82.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 5c094900798211ef8b96093e013ec31c-20240923
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=LQLPSb8ldyG1OVVh0BB+yFOhjzNrq/gu6sGXkPkLj9A=;
-	b=U4J09e/57QQPgf1VzqWeHfLyTSIUvSg+iEo5rQ/L6xJJVLdi9VL94l2W8faiOgRpTq9wZfnmX8HkO1Qg6iXSoVseuQKBuW6ONdGjDGrzT16APy02STAccpTLrE8JCc97sSQ4wz3rP8Zr6H3gNtf0HIZgZKjhMexrJTdj2SU9QZc=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.41,REQID:6eb2f748-e9ef-452b-b5d6-794e93885455,IP:0,U
-	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:-5
-X-CID-META: VersionHash:6dc6a47,CLOUDID:e7639dd0-7921-4900-88a1-3aef019a55ce,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-	RL:11|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
-	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_ULN,TF_CID_SPAM_SNR
-X-UUID: 5c094900798211ef8b96093e013ec31c-20240923
-Received: from mtkmbs11n1.mediatek.inc [(172.21.101.185)] by mailgw02.mediatek.com
-	(envelope-from <peter.wang@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1545641284; Mon, 23 Sep 2024 16:03:46 +0800
-Received: from mtkmbs11n1.mediatek.inc (172.21.101.185) by
- MTKMBS09N1.mediatek.inc (172.21.101.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Mon, 23 Sep 2024 16:03:45 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs11n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Mon, 23 Sep 2024 16:03:45 +0800
-From: <peter.wang@mediatek.com>
-To: <linux-scsi@vger.kernel.org>, <martin.petersen@oracle.com>,
-	<avri.altman@wdc.com>, <alim.akhtar@samsung.com>, <jejb@linux.ibm.com>
-CC: <wsd_upstream@mediatek.com>, <linux-mediatek@lists.infradead.org>,
-	<peter.wang@mediatek.com>, <chun-hung.wu@mediatek.com>,
-	<alice.chao@mediatek.com>, <cc.chou@mediatek.com>,
-	<chaotian.jing@mediatek.com>, <jiajie.hao@mediatek.com>,
-	<powen.kao@mediatek.com>, <qilin.tan@mediatek.com>, <lin.gui@mediatek.com>,
-	<tun-yu.yu@mediatek.com>, <eddie.huang@mediatek.com>,
-	<naomi.chu@mediatek.com>, <ed.tsai@mediatek.com>, <bvanassche@acm.org>,
-	<quic_nguyenb@quicinc.com>, <stable@vger.kernel.org>
-Subject: [PATCH v8 1/3] ufs: core: fix the issue of ICU failure
-Date: Mon, 23 Sep 2024 16:03:42 +0800
-Message-ID: <20240923080344.19084-2-peter.wang@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20240923080344.19084-1-peter.wang@mediatek.com>
-References: <20240923080344.19084-1-peter.wang@mediatek.com>
+	s=arc-20240116; t=1727079284; c=relaxed/simple;
+	bh=mZrSmMEhLS54H+lIyWQEQCE/6YN/Jq3+SronXI1rado=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nxZKjUmmtYT+hefSIUv7tDACNzPKU22uj4/S+OS2T8qqh3ETM1cIrXHMurQwAYNnu/ZPZea3sW/4ikEp2cCPeBUm86mdoIkxQhepYABWPo41rfQMIiYZS0/mHaEiRVUnuwasQgXU5RY0tpToVdNXUa81r/O40j6qRczEde62kFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com; spf=pass smtp.mailfrom=proxmox.com; arc=none smtp.client-ip=94.136.29.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proxmox.com
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+	by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 99809481F5;
+	Mon, 23 Sep 2024 10:06:36 +0200 (CEST)
+Message-ID: <1690e7d0-6119-4fe3-a53b-d4977e7042a2@proxmox.com>
+Date: Mon, 23 Sep 2024 10:06:35 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK: N
+User-Agent: Mozilla Thunderbird
+Subject: Re: [REGRESSION]: cephfs: file corruption when reading content via
+ in-kernel ceph client
+To: Xiubo Li <xiubli@redhat.com>, David Howells <dhowells@redhat.com>,
+ Jeff Layton <jlayton@kernel.org>, Ilya Dryomov <idryomov@gmail.com>
+Cc: regressions@lists.linux.dev, ceph-devel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <85bef384-4aef-4294-b604-83508e2fc350@proxmox.com>
+ <0e60c3b8-f9af-489a-ba6f-968cb12b55dd@redhat.com>
+ <1679397305.24654.1725606946541@webmail.proxmox.com>
+ <5335cdb5-7735-463e-907b-617774d6f01a@redhat.com>
+Content-Language: en-US, de-DE
+From: Christian Ebner <c.ebner@proxmox.com>
+In-Reply-To: <5335cdb5-7735-463e-907b-617774d6f01a@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Peter Wang <peter.wang@mediatek.com>
+On 9/6/24 13:09, Xiubo Li wrote:
+> 
+> Sure, thanks in advance.
+> 
+> I will work on this next week or later because I am occupied by some 
+> other stuff recently.
+> 
 
-When setting the ICU bit without using read-modify-write,
-SQRTCy will restart SQ again and receive an RTC return
-error code 2 (Failure - SQ not stopped).
+There is some further information I can provide regarding this:
+Further testing with the reproducer and the current mainline kernel 
+shows that the issue might be fixed.
 
-Additionally, the error log has been modified so that
-this type of error can be observed.
+Bisection of the possible fix points to ee4cdf7b ("netfs: Speed up 
+buffered reading").
 
-Fixes: ab248643d3d6 ("scsi: ufs: core: Add error handling for MCQ mode")
-Cc: stable@vger.kernel.org
-Signed-off-by: Peter Wang <peter.wang@mediatek.com>
-Reviewed-by: Bao D. Nguyen <quic_nguyenb@quicinc.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
----
- drivers/ufs/core/ufs-mcq.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+Could this additional information help to boil down the part that fixes 
+the cephfs issues so that the fix can be backported to current stable?
 
-diff --git a/drivers/ufs/core/ufs-mcq.c b/drivers/ufs/core/ufs-mcq.c
-index 5891cdacd0b3..3903947dbed1 100644
---- a/drivers/ufs/core/ufs-mcq.c
-+++ b/drivers/ufs/core/ufs-mcq.c
-@@ -539,7 +539,7 @@ int ufshcd_mcq_sq_cleanup(struct ufs_hba *hba, int task_tag)
- 	struct scsi_cmnd *cmd = lrbp->cmd;
- 	struct ufs_hw_queue *hwq;
- 	void __iomem *reg, *opr_sqd_base;
--	u32 nexus, id, val;
-+	u32 nexus, id, val, rtc;
- 	int err;
- 
- 	if (hba->quirks & UFSHCD_QUIRK_MCQ_BROKEN_RTC)
-@@ -569,17 +569,18 @@ int ufshcd_mcq_sq_cleanup(struct ufs_hba *hba, int task_tag)
- 	opr_sqd_base = mcq_opr_base(hba, OPR_SQD, id);
- 	writel(nexus, opr_sqd_base + REG_SQCTI);
- 
--	/* SQRTCy.ICU = 1 */
--	writel(SQ_ICU, opr_sqd_base + REG_SQRTC);
-+	/* Initiate Cleanup */
-+	writel(readl(opr_sqd_base + REG_SQRTC) | SQ_ICU,
-+		opr_sqd_base + REG_SQRTC);
- 
- 	/* Poll SQRTSy.CUS = 1. Return result from SQRTSy.RTC */
- 	reg = opr_sqd_base + REG_SQRTS;
- 	err = read_poll_timeout(readl, val, val & SQ_CUS, 20,
- 				MCQ_POLL_US, false, reg);
--	if (err)
--		dev_err(hba->dev, "%s: failed. hwq=%d, tag=%d err=%ld\n",
--			__func__, id, task_tag,
--			FIELD_GET(SQ_ICU_ERR_CODE_MASK, readl(reg)));
-+	rtc = FIELD_GET(SQ_ICU_ERR_CODE_MASK, readl(reg));
-+	if (err || rtc)
-+		dev_err(hba->dev, "%s: failed. hwq=%d, tag=%d err=%d RTC=%d\n",
-+			__func__, id, task_tag, err, rtc);
- 
- 	if (ufshcd_mcq_sq_start(hba, hwq))
- 		err = -ETIMEDOUT;
--- 
-2.45.2
+Regards,
+Christian Ebner
 
 
