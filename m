@@ -1,103 +1,97 @@
-Return-Path: <stable+bounces-76893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8708697E8F2
-	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 11:43:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 680F897E8EA
+	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 11:40:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25D9B1F21BBC
-	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 09:43:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2A25E2819A5
+	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 09:40:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD14A194A4C;
-	Mon, 23 Sep 2024 09:43:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30F4F195390;
+	Mon, 23 Sep 2024 09:40:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=permerror (0-bit key) header.d=hardfalcon.net header.i=@hardfalcon.net header.b="IBKhZlrP"
+	dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b="js9dQvA0"
 X-Original-To: stable@vger.kernel.org
-Received: from 0.smtp.remotehost.it (0.smtp.remotehost.it [213.190.28.75])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail11.truemail.it (mail11.truemail.it [217.194.8.81])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39E31D528
-	for <stable@vger.kernel.org>; Mon, 23 Sep 2024 09:43:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.190.28.75
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CD52194ACF;
+	Mon, 23 Sep 2024 09:40:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.194.8.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727084604; cv=none; b=eePWcEOv9lAQyjiMyQ7CqDlS/Tc7g7DX/23YU6r6blF8LmBMKdkakVRL3tdVXScMcG0T8tnMper3ySHUO/1l8MZe/L8Yzvsl1+15RlAc/VNMoEs05cCzcPqI3U9DNVYaT4Kkr6XqUPPIFd0N5FpWY1cVz3nXtAR60My6g6hi8Vg=
+	t=1727084439; cv=none; b=OKvVvOfqrmzyPlritUYUHQGwlPsumveCV1LO/o5UMOiurY+BV51fZIx2ya5KMRx6DO6wyAWEnlVHEf2u3EYsn2ZdbZCw7B0RMhzlQvyN0rjXIDwSOm7gMCDXiZIcTHHEj32QQ6jzHX5rGbBYRRCHBQv7ExZZY9g5ksD7RJOeGdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727084604; c=relaxed/simple;
-	bh=3KmzN9q0YrVYUTc2bw+QN62wo7282TimYa9ts4FIiLM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:Cc:From:
-	 In-Reply-To:Content-Type; b=NIB2uPFdDPFwQDjnc4VvorDjQmOkq9rO/0hQ52Rg10ZNsVY946qJEB8voFv1q7sfZmNmAjAq/qX8GvDtik4PIzzNB4IWEehhFqM77cbBDsTv8sTYHUe7/NTiBj9NK6dJZp+zwCUolwS/ZHhPUm1b+sRmBCYRQ7AjrOiQ8Qxa8ps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hardfalcon.net; spf=pass smtp.mailfrom=hardfalcon.net; dkim=permerror (0-bit key) header.d=hardfalcon.net header.i=@hardfalcon.net header.b=IBKhZlrP; arc=none smtp.client-ip=213.190.28.75
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hardfalcon.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hardfalcon.net
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=hardfalcon.net;
-	s=dkim_2024-02-03; t=1727084232;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xUxgnPmHdxKwloKsrhXtwk3dtfWEHo7DThCIS8M/UD0=;
-	b=IBKhZlrPKoENOpz/zOJ3p+Wbz+7sPfF8RQkn+NaU/fAYRvZRE2Kqo/XsH3pgxpHmwBblvi
-	QiadBxc4VeMhWNCQ==
-Message-ID: <178b4702-101e-4ca4-856a-c9fd5401670a@hardfalcon.net>
-Date: Mon, 23 Sep 2024 11:37:10 +0200
+	s=arc-20240116; t=1727084439; c=relaxed/simple;
+	bh=E/gsmqOjoVPVa8WGzv0WJ61S2WKDROzRfE09bTLPij8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=j392KE423+PjZ5gPJB5WGO247JIk3K+QH775rIK3xWMp62qKuVWnpSzkNJf8VtaYq7sGmd64g118Q3DMw6MbpyWZNXPlmqKtXCyDas+98OBZCJdprGQ7KerVqd9cmgKVpZddQ8pkjIf8NkjsBW5YKx3jlMcpTXL6OS/aG1t9Z8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it; spf=pass smtp.mailfrom=dolcini.it; dkim=pass (2048-bit key) header.d=dolcini.it header.i=@dolcini.it header.b=js9dQvA0; arc=none smtp.client-ip=217.194.8.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=dolcini.it
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dolcini.it
+Received: from francesco-nb (93-49-2-63.ip317.fastwebnet.it [93.49.2.63])
+	by mail11.truemail.it (Postfix) with ESMTPA id 7CE9D1FBE3;
+	Mon, 23 Sep 2024 11:40:33 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dolcini.it;
+	s=default; t=1727084433;
+	bh=zaP3Uo3n4OZ6NzL/Ea1OjTTd80bogQ3TTVKEJkWIqfs=; h=From:To:Subject;
+	b=js9dQvA0WEInrEutEkwyOEfyfqtCjn9u2F/53EkJv9fjGLTa6Bx6g8IqpQzNms5Jv
+	 vD9Voy4I3grWjfUlSA015zqKswBJREFq1QEK3j7VpS9a3FEJv0OBHbhWeb6B+yfLdx
+	 TyI/Cz9NGHhodLfZ7Hrg61SCBSWG2ED0Dj+4SxG6TLmybGZ4TvNltbUPu3B5U6/XCM
+	 06x2ZWqRC3SKJ7CAhnDyWgoCL9EH+IjiqBmx+RB/ULjk9rp7yFrYg6O/JHjVSneKU+
+	 fih8wkJUCeJ/v9fjG0OoHWaJlOn/0oDrTBzkW3x6hf/ZzjaV5R7S2HisxaMldGsO9K
+	 CCqeRTi7co2rQ==
+Date: Mon, 23 Sep 2024 11:40:29 +0200
+From: Francesco Dolcini <francesco@dolcini.it>
+To: Keerthy <j-keerthy@ti.com>, Bartosz Golaszewski <brgl@bgdev.pl>
+Cc: Parth Pancholi <parth105105@gmail.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
+	linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Parth Pancholi <parth.pancholi@toradex.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] gpio: davinci: fix lazy disable
+Message-ID: <20240923094029.GA124572@francesco-nb>
+References: <20240828133207.493961-1-parth105105@gmail.com>
+ <CAMRc=MdyNFzNy_GndBDOUL23Rv0WxGG8mRd5DRD28pE=XuhfmQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: Patch "ASoC: SOF: mediatek: Add missing board compatible" has
- been added to the 6.10-stable tree
-To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
-References: <20240919193644.756037-1-sashal () kernel ! org>
-Content-Language: en-US, de-DE
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-From: Pascal Ernster <git@hardfalcon.net>
-In-Reply-To: <20240919193644.756037-1-sashal () kernel ! org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAMRc=MdyNFzNy_GndBDOUL23Rv0WxGG8mRd5DRD28pE=XuhfmQ@mail.gmail.com>
 
-[2024-09-19 21:36] Sasha Levin:
-> This is a note to let you know that I've just added the patch titled
+Hello Keerthy,
+
+On Mon, Sep 02, 2024 at 02:08:30PM +0200, Bartosz Golaszewski wrote:
+> On Wed, Aug 28, 2024 at 3:32 PM Parth Pancholi <parth105105@gmail.com> wrote:
+> >
+> > From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+> >
+> > On a few platforms such as TI's AM69 device, disable_irq()
+> > fails to keep track of the interrupts that happen between
+> > disable_irq() and enable_irq() and those interrupts are missed.
+> > Use the ->irq_unmask() and ->irq_mask() methods instead
+> > of ->irq_enable() and ->irq_disable() to correctly keep track of
+> > edges when disable_irq is called.
+> > This solves the issue of disable_irq() not working as expected
+> > on such platforms.
+> >
+> > Fixes: 23265442b02b ("ARM: davinci: irq_data conversion.")
+> > Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+> > Signed-off-by: Parth Pancholi <parth.pancholi@toradex.com>
+> > Cc: stable@vger.kernel.org
+> > ---
 > 
->      ASoC: SOF: mediatek: Add missing board compatible
-> 
-> to the 6.10-stable tree which can be found at:
->      http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-> 
-> The filename of the patch is:
->       asoc-sof-mediatek-add-missing-board-compatible.patch
-> and it can be found in the queue-6.10 subdirectory.
-> 
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
+> It looks good to me but I'd like to have an Ack from Keerthy on this.
 
+Keerthy, just a gentle ping on this, can you help?
 
-Hi Sasha,
+Francesco
 
-
-it seems that in your commits to the stable-queue repo on 2024-09-19 
-around 15:36 -0400 / 19:36 UTC, every patch was added twice. This 
-affects all supported stable version branches from 6.10 down to 4.19 (a 
-single commit per version branch):
-
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/commit/?id=19260ab5db68912b2983aecb3a5e778a908e4a30
-
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/commit/?id=f95efa9ab525da0bfaa852bfd27ed453c1bde67e
-
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/commit/?id=e9452f2ddd7affa8424fcd7cbc8816d92a74bd70
-
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/commit/?id=678cff8b6a095767aee1c6b750ccd10362bcbe82
-
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/commit/?id=0f5b9efe8e5fcd26d35af38d43a459a99b648c67
-
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/commit/?id=0c554a1406f2ce8c4d5357fc474af50857cead46
-
-https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/commit/?id=8ce8b1c9dcf3f5625be3a6a4afd5815c55c0ea49
-
-
-Regards
-Pascal
 
