@@ -1,111 +1,167 @@
-Return-Path: <stable+bounces-76938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48A8197F1BA
-	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 22:39:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6247897F13C
+	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 21:36:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8FA0CB20F83
-	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 20:39:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 28627282FDD
+	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 19:36:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45F88DDA8;
-	Mon, 23 Sep 2024 20:39:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BA2B1A01DB;
+	Mon, 23 Sep 2024 19:36:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rMsxwI8h"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e/nlwspq"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED74A1C3D
-	for <stable@vger.kernel.org>; Mon, 23 Sep 2024 20:39:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 832B71A01BC;
+	Mon, 23 Sep 2024 19:36:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727123967; cv=none; b=MiXuT0V48uYYC7B6stbOMJQsetd9AfYCG8JC11xqRTXxLmgNvStHqSBUzdQlhJ2Gq1E1XZB2HYCSdnG4kB2+90LX7GgaEv0NAE/2W/wVzoXXQI4BonN1OwIMvTZ3Iwu31H9tIIEjht0ffDZy3sCo6sV2hUZv3Mw2XP/VcoyULec=
+	t=1727120205; cv=none; b=LOp8NJW+sNhWcEUY2Pbka2OU8dR+XFVFG0qNCKcZPE9m4+rPrPPqUIrt03txAo/zzovX54Ymh3SgrtxfMqu64bGK+q2QfLfEsB3H1H0cRNuzVGQiX97FEVr75KVoYg+qqlWwtWLw3zyas6l4dV1SU5GshKgk0pIsjeJfiI5eP74=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727123967; c=relaxed/simple;
-	bh=Vok+nUD9jwQiUS6fQwWSLCfiD8EF+9DguVhUw6Hibh4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LlXNL3FKfLfoYuOuYyi2surQCDqDw4x4/mD9ACS+6e347RaXLv0iHV6U1XYMl+wslGEG9m7Ytk7Y6VnOZuhdGb1IDPxuXZk1E2FCm++K/sEQBeLnd8bT1GcD3QMsNikhBOGQ65CP/w17dZcMf1v4lCDkpKkH6Jzm1X+fF3dIDUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rMsxwI8h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31373C4CEC4;
-	Mon, 23 Sep 2024 20:39:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727123965;
-	bh=Vok+nUD9jwQiUS6fQwWSLCfiD8EF+9DguVhUw6Hibh4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rMsxwI8h9blXT4p6/Mi7BdfxaKLTxBHcbzw4v73zDiFVkNphi71Nh353lPJ1Wp/nT
-	 Qt6V1peYs2URxrTuIGPxQzinlgNSHDKy011v9mvO87/eqb2LUydIK5UV6Aq08bQ+KQ
-	 /HTr+4KwFn5BPtp2fFNn/mbJ4zf3/pyOVP+oLHSyJxU1ddyddlxSdsiWkIlC2h6A08
-	 zWBqY0sG3ecUhsk54hQavuUUOKh6gjOU6cdXDntY2GlG9XG6AUiTRnA+sGYnPO6YgU
-	 5vGsIFBlHZW7xImYi5lhHGknncCcR3fKzdvDhou7zfA1XkNGeylRzEpEc7uNrEJCui
-	 eydU9DcytEuxg==
-Date: Mon, 23 Sep 2024 13:56:43 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: Pascal Ernster <git@hardfalcon.net>
-Cc: stable@vger.kernel.org, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: Patch "ASoC: SOF: mediatek: Add missing board compatible" has
- been added to the 6.10-stable tree
-Message-ID: <ZvGr21XDAVwnnAlt@sashalap>
-References: <20240919193644.756037-1-sashalkernel!org>
- <178b4702-101e-4ca4-856a-c9fd5401670a@hardfalcon.net>
+	s=arc-20240116; t=1727120205; c=relaxed/simple;
+	bh=bmBv1vObL8RI83ZhIdKmWULk4c6V2BAm7FsDQiuAEVY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uuaIb9Q6v9+vi61zIZG9oLpYA4SolySKPOOJ9ZGAgi6nQg/dDDay4cAJ71Il8I+UVvV/0PwPSEkuDHn15w2dZwTO2WQBuROQ2C+igjPRrzhV2GZm0ItJrZnq3XrinMmjZL9EssL1gHLKnP0IIrXTbPOwbt/OSSRh/4yX5c8WjtI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e/nlwspq; arc=none smtp.client-ip=209.85.128.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-6dddca05a60so50645227b3.0;
+        Mon, 23 Sep 2024 12:36:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1727120202; x=1727725002; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=SCIetOQWA8mbVkxhV2ImPQ/8Xy4Tc3hHpfKz+JTFGXA=;
+        b=e/nlwspqZ0t2PNjOTJIVk5itnJKcbn8mHus/awhQseAmKU7N3hnXryJkgUAKOEhk+A
+         ywGgkUOmZeZ01G8tTk3cYuDhTAfxJTktE6M7yt7++qql/2N0cQAy/SyzJgmUkrs8e8VE
+         Q07L2DRXwIDicueybkmF96Pwil6TXaTOTjldKy36qJhANAoPahjbsmjZ00tmWBWxRneX
+         GpUTK/UYZTl0bm30Q/NcOzzgwxW5C7BWYjVannopfKM3yncgnoR6sMbMSnPVK/fymBWQ
+         6WLHfQXMnzLOxOdn9SN9yNzsGuSn3qGknhb0v/RKI29dGIsugwkog/jpJPaotK9rbX5o
+         dpCg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727120202; x=1727725002;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=SCIetOQWA8mbVkxhV2ImPQ/8Xy4Tc3hHpfKz+JTFGXA=;
+        b=snh9ajTDS8kaqdf2CV9Rdz3gfnnn+GlcHO+Hxk6EbusBo138pHSjMo5432Lg8eypVv
+         saKqqV3juoEPvo2pO3FC6/pykqdfFyvcOx5xTqPE+WZ9IRpJui3JPu80RXHlixwE4YEL
+         VrGGEMh6Q3zoB2G7XFA9Xmmu+HKuwePjkfcDyjBavXUVX5/McF+Jl8zlWhWoCjBwYxKi
+         cT3eUvyqwVZy0vBLZ8FgLuRruJI+IGK7VaS6AoeA0mpw0VRNfOHuadFfZ5+022Hw4oeh
+         gAUEeU1yDJxcJA2kY9d9UawYdx8JSWi80x9ZJSziYmMlrke9QaDwAjupAPe7xRXPz6kn
+         uPAw==
+X-Forwarded-Encrypted: i=1; AJvYcCVx7n0hrJEXX6+Fd4W1EiBIw1Y0oAtvQ4r1P4E5/cAzlt+uMIn3AwXSrwXwe9b2AeCYql+LR+25K7Ggz5Kx@vger.kernel.org, AJvYcCWCBVJjlOq9JFTbFqHa3+EoQ686nPo5ZwFJ3GcwZNUiM4tS0bolkmPSdAX0UkC7esKb5lDbdV4q64ja@vger.kernel.org, AJvYcCWyctHGJJetPG3ElI08C58uN3f2lX4NcJvfE7GCNMFM4kb5HF5ZQvt3h5HR4d26W/apX/frPs2l@vger.kernel.org
+X-Gm-Message-State: AOJu0YzWxZ9uDPVg2YPeJGvgNvlpg3vCowYNJ0Totn0i+pZBr/J26f/j
+	eOUQMjD+9E9Vq5J8UD55un4dv//L/MHLkZ4Zv9phUzxukVzNip5sLAIlcOFtnfVAImNW+dZbJm7
+	xvBuArv4pg9v4rNblgs7Vq7HBJng=
+X-Google-Smtp-Source: AGHT+IG3wnQLnjt9RPE6DrvarHQo+N74IMHJjYo2aNgXunkCZeItx/hYB0d1rM4qFbIP6RIGbhWxroMQroDieS/1oF4=
+X-Received: by 2002:a05:690c:2508:b0:652:e900:550a with SMTP id
+ 00721157ae682-6e20886da73mr5993527b3.19.1727120202432; Mon, 23 Sep 2024
+ 12:36:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <178b4702-101e-4ca4-856a-c9fd5401670a@hardfalcon.net>
+References: <DFC1DAC5-5C6C-4DC2-807A-DAF12E4B7882@gmail.com> <20240923075527.3B9A.409509F4@e16-tech.com>
+In-Reply-To: <20240923075527.3B9A.409509F4@e16-tech.com>
+From: james young <pronoiac@gmail.com>
+Date: Mon, 23 Sep 2024 12:36:30 -0700
+Message-ID: <CABaPp_iqgUw3TffQHrVYUoVoh03Rx0UjvrNw0ALStF8FxufFrg@mail.gmail.com>
+Subject: Re: [REGRESSION] Corruption on cifs / smb write on ARM, kernels 6.3-6.9
+To: Wang Yugui <wangyugui@e16-tech.com>
+Cc: pronoiac+kernel@gmail.com, stable@vger.kernel.org, 
+	regressions@lists.linux.dev, linux-cifs@vger.kernel.org, 
+	David Howells <dhowells@redhat.com>, linux-kernel@vger.kernel.org, 
+	Steve French <sfrench@samba.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 23, 2024 at 11:37:10AM +0200, Pascal Ernster wrote:
->[2024-09-19 21:36] Sasha Levin:
->>This is a note to let you know that I've just added the patch titled
->>
->>     ASoC: SOF: mediatek: Add missing board compatible
->>
->>to the 6.10-stable tree which can be found at:
->>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
->>
->>The filename of the patch is:
->>      asoc-sof-mediatek-add-missing-board-compatible.patch
->>and it can be found in the queue-6.10 subdirectory.
->>
->>If you, or anyone else, feels it should not be added to the stable tree,
->>please let <stable@vger.kernel.org> know about it.
->
->
->Hi Sasha,
->
->
->it seems that in your commits to the stable-queue repo on 2024-09-19 
->around 15:36 -0400 / 19:36 UTC, every patch was added twice. This 
->affects all supported stable version branches from 6.10 down to 4.19 
->(a single commit per version branch):
->
->https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/commit/?id=19260ab5db68912b2983aecb3a5e778a908e4a30
->
->https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/commit/?id=f95efa9ab525da0bfaa852bfd27ed453c1bde67e
->
->https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/commit/?id=e9452f2ddd7affa8424fcd7cbc8816d92a74bd70
->
->https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/commit/?id=678cff8b6a095767aee1c6b750ccd10362bcbe82
->
->https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/commit/?id=0f5b9efe8e5fcd26d35af38d43a459a99b648c67
->
->https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/commit/?id=0c554a1406f2ce8c4d5357fc474af50857cead46
->
->https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/commit/?id=8ce8b1c9dcf3f5625be3a6a4afd5815c55c0ea49
+Hey there -
 
-You're right, fixed now.
+On Sun, Sep 22, 2024 at 4:55=E2=80=AFPM Wang Yugui <wangyugui@e16-tech.com>=
+ wrote:
+>
+> Hi,
+>
+> > I was benchmarking some compressors, piping to and from a network share=
+ on a NAS, and some consistently wrote corrupted data.
 
-I blame jetlag...
+> > Important commits:
+> > It looked like both the breakage and the fix came in during rc1 release=
+s.
+> >
+> > Breakage, v6.3-rc1:
+> > I manually bisected commits in fs/smb* and fs/cifs.
+> >
+> > 3d78fe73fa12 cifs: Build the RDMA SGE list directly from an iterator
+> > > lzop and pigz worked. last working. test in progress: pbzip2
 
-Thanks!
+This is a first for me: lzop was fine, but pbzip2 still had issues,
+roughly a clock hour into compression. (When lzop has issues, it's
+usually within a minute or two.)
 
--- 
-Thanks,
-Sasha
+
+> > 607aea3cc2a8 cifs: Remove unused code
+> > > lzop didn't work. first broken
+> >
+> >
+> > Fix, v6.10-rc1:
+> > I manually bisected commits in fs/smb.
+> >
+> > 69c3c023af25 cifs: Implement netfslib hooks
+> > > lzop didn't work. last broken one
+> >
+> > 3ee1a1fc3981 cifs: Cut over to using netfslib
+> > > lzop, pigz, pbzip2, all worked. first fixed one
+
+> I checked 607aea3cc2a8, it just removed some code in #if 0 ... #endif.
+> so this regression is not introduced in 607aea3cc2a8,  but the reproduce
+> frequency is changed here.
+
+I agree. The pbzip2 results above, regarding the break bisection I
+landed on: they mark when it became more of an issue, but not when it
+started.
+
+I could re-run tests and dig into possible false negatives. It'll be
+slower going, though.
+
+
+> Another issue in 6.6.y maybe related
+> https://lore.kernel.org/linux-fsdevel/9e8f8872-f51b-4a09-a92c-49218748dd6=
+2@meta.com/T/
+
+In comparison: I'm relieved that my issue is something that can be
+tested within hours, on one device.
+
+
+> Do this regression still happen after the following patches are applied?
+>
+> a60cc288a1a2 :Luis Chamberlain: test_xarray: add tests for advanced multi=
+-index use
+> a08c7193e4f1 :Sidhartha Kumar: mm/filemap: remove hugetlb special casing =
+in filemap.c
+> 6212eb4d7a63 :Hongbo Li: mm/filemap: avoid type conversion
+>
+> de60fd8ddeda :Kairui Song: mm/filemap: return early if failed to allocate=
+ memory for split
+> b2ebcf9d3d5a :Kairui Song: mm/filemap: clean up hugetlb exclusion code
+> a4864671ca0b :Kairui Song: lib/xarray: introduce a new helper xas_get_ord=
+er
+> 6758c1128ceb :Kairui Song: mm/filemap: optimize filemap folio adding
+
+No luck: I cherry-picked those commits into 6.6.52, and upon testing
+lzop, the file didn't match the stream, and decompression failed.
+
+Thank you for investigating, and giving me something to try!
+
+-James
 
