@@ -1,105 +1,118 @@
-Return-Path: <stable+bounces-76889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6F8D97E836
-	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 11:09:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5919597E850
+	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 11:15:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C5852817E2
-	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 09:08:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF826280DED
+	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 09:15:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B4681946CC;
-	Mon, 23 Sep 2024 09:08:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C3E2194A66;
+	Mon, 23 Sep 2024 09:15:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="zTjHjh2s"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="I8/EPNmh"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DAAA28684
-	for <stable@vger.kernel.org>; Mon, 23 Sep 2024 09:08:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F776194A45
+	for <stable@vger.kernel.org>; Mon, 23 Sep 2024 09:15:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727082534; cv=none; b=ENzICpFJ1JYippALu9CO1FfwMmu7uVKkRL0KZ5attRjry80bwww08OYgIiJ25WEGOgfhb3vycEnszzikLj2WL6bjgSalTytQvBwUIKUPYQWgCy9ep4cWVzX6ct6UpcnPd0FELotve2UCDVkGxd3gPOaQLdOtB9pfnD9MtO7CuxU=
+	t=1727082907; cv=none; b=YO+z26cqOWzPz03DNNEQomN3mliwH9hgTxdm8k8y/6+Mk05KBgGewEmc53ScfA5FTuIbgDzsVXaer+jpK0HhNm5vPHWFbsI+/9D79/+SJfCVGPxBs9bAZlf3OQtFJMfZG3G+ZOz5SUB6L0XnEDONgNdDTpdSQiPUo2N8kYBqArE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727082534; c=relaxed/simple;
-	bh=JELDF/Zw79oZ0FUIS2rLWoMNSuxFhGD3+cD8JeDI/eg=;
+	s=arc-20240116; t=1727082907; c=relaxed/simple;
+	bh=vpM1/ppe8/w/bc48g7obGsulWKXsimiE83aP/y0ewLQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lsYV0Szq+W7ZgNELfex9f2po4Uo1021J1VOlY3BsGKZ2gNMlDwqlVWi8cDjKOzlIy9LcZxQpPDJQUNNTghWUX6bxAJKTRuLIo/pggCjE4nRFG74YVWqPjFn5l+cn0k5oEr9LwSMFoKdlxpaoTY9ufWyhdhiK5Sofu1a2m2JoVvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=zTjHjh2s; arc=none smtp.client-ip=209.85.167.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-5365b6bd901so4575280e87.2
-        for <stable@vger.kernel.org>; Mon, 23 Sep 2024 02:08:52 -0700 (PDT)
+	 To:Cc:Content-Type; b=TBnl9IHYXOcckylEBcNxfCBjIEw2yp/dVQBxVqdppPWL1poJyn5oBRCVmNS4h3/xhPGcHRBD1eQ11eHBbksiR30nx+hsdb57mp4ma4nCaODzVyvsnFQpDVfjBnqTjoJbKqsViUxOt1T1A2bKOsvGPoBjz1iEkKtM7jXXaHqiwrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=I8/EPNmh; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-42e7b7bef42so23191585e9.3
+        for <stable@vger.kernel.org>; Mon, 23 Sep 2024 02:15:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1727082531; x=1727687331; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1727082904; x=1727687704; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=JELDF/Zw79oZ0FUIS2rLWoMNSuxFhGD3+cD8JeDI/eg=;
-        b=zTjHjh2sMWoJu5owFEYbdlF+4UWLgteX9a/kwFOebMBVFAkyzWrdbET+h1rjkA8shv
-         oydzO7mndNH1A3PvJJjPtScGFUJi/lg5FGllkwawkz5tZYhxp4crGQLOjZ1MnQVF/2+l
-         a2vNArGW8Z0IISmFYUf5D67EJMvhrW7B8fPOa4OWTwX5rHdfLgI732hWcveOkl+25tj6
-         VQYIgvG1vLhghsfbLmuDsuGpEZCaZ+P8Tym7K6U9WS+SO9kfKYsf/o0houN481hnA567
-         wMmHlZP79Kx0IQT5yKRXshkU8sMtyeekXVdBy2rtz89TelrTwQbwfM+kKGhy9FMocUSg
-         2whA==
+        bh=vpM1/ppe8/w/bc48g7obGsulWKXsimiE83aP/y0ewLQ=;
+        b=I8/EPNmhGaUZaSU3COsfo/H0l+L6i0dJxoOUrmMVfP6+r4MyOi6nLc8dm4zKorvyLn
+         ZHLy55QjsJMmCdZ6JaPscEZuvtbftT6M4RVz+j77+swI537raY+ryt1Cs/CpoIA4u6EO
+         T675OUUZFNc5ggSe8iIadERPbB7fbcaJk82xIGW77k2XL/Gkw+t5pTnXYuOjWWjkE6Dd
+         8EibbrHrGtVQnc7XhDhexJtR33Eimugt7sFDiEAIyqcjwLk6dr7xTA0R7Q14TdA7G0hV
+         2rREVQHMYlH160i7tQ95bVMY57vH4Fb4bbdtUOkfJbX4jdEk2Khjc969vSMQjqRU6Gpu
+         lHVw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727082531; x=1727687331;
+        d=1e100.net; s=20230601; t=1727082904; x=1727687704;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=JELDF/Zw79oZ0FUIS2rLWoMNSuxFhGD3+cD8JeDI/eg=;
-        b=gOsp8fGMOeF42Lfx9qhcX2PA5ApBRMMqobC43J4fy7WfBXt55qhu222peYGv6etsbf
-         2URDQmMEky2isehGyDUeDtPRkQgT4NoY1BYPVQNFvEv+N+8QrEkhAOLyrpHhm+KLQoHA
-         sm3cXe1Ue/sv6Ai8t9romyTrTtCqBrVBBbuFYhb/kCgtZXbDgrnSNM1u2JAzhhs7ld4d
-         QlkOWpO/Pv7kZEDu2dtRn0YyEPOug/JGoDi3VTAne+2GQ7NVU0w2QvkfgsXQHSrWv57v
-         mkU5a3TiwFn/OJ06t4JXVM2IpsPjwK3bW48G1MNSC3QPXQsHjV9bgrAmVBlf/DtVTYan
-         VDhQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU0VFRomquUUOhoPNaUPQAxljBibVTPFDE9hLGiXCVM1HXHrF24q3NNQ1q1YPRNyChU/ky48Fw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz4ZM1fjG+KyG4Qez8RfMvJH7VG0imsAo590PKFlF2k10asmMZq
-	/wm4TzkLyxTOWaDUA+R+/iHTJf/Zr3Zpv4PUBBUEkqXdeB3uXdMKKZqBm5HB4OC5oDIu5Iocvme
-	WVPS4wx1Vc4TsTWIc25ZAoUSEiyg1bQrmqhKoSA==
-X-Google-Smtp-Source: AGHT+IHo5OqAsBLecq0W7uEgoSonYeSP+z4Hl3h5JMui3ZaIwaomJwFKc1/L2fAHd4MtYPhb8fguCO69PRbjQ+Nc6rM=
-X-Received: by 2002:a05:6512:3a84:b0:536:550e:7804 with SMTP id
- 2adb3069b0e04-536ad161b01mr4635287e87.18.1727082531360; Mon, 23 Sep 2024
- 02:08:51 -0700 (PDT)
+        bh=vpM1/ppe8/w/bc48g7obGsulWKXsimiE83aP/y0ewLQ=;
+        b=MIetsOImk1/cwg8bkiLyxdBKlYcewnXl1mU6eR5OpdXbCPGDK/J2MZCHYtDMa6MHJz
+         JAsG78HUHVBsiS/pTcEetjIkmglJuw0aOQaHlAdQgqupFQzoBsxnTWoMpPG1/N7mklVg
+         fl0DUPOfRL+iJ2U0XxYW8AIfGe3/V0ndujVcJSBN8NvHuDBuH9a55jdd6hkdWyiAIKMN
+         rMYBgi5l7qKUZ3XfAS5HiLMsC211gSXnlZlKOpZvEDt4Uyt6YJu1IkfdDbM7gVD7jRYT
+         x2AHEFlfEnQtrsWZea5ifY9hEfese5GqrojQNYZd/m6cUHE8pstKfjjWD8zFBIBoFvCm
+         nJZw==
+X-Forwarded-Encrypted: i=1; AJvYcCVpYg/T/ruPwyevSKWgnN/DlqA7Rt5Aq0F75/Tm19WdDPe2oxj/1f23MR1RGYoqtZheMzxj0bY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzpalrzdxuOlvV93D/ypfuBiefSYGTecF6DoOcb3mcHsOZsWS+k
+	R/TrT+Xk64htVWkPwVFPoNJZ0v6xPN4Svu2gizCz2DeIjlMYbRJ1saUceiTqaMDEGfVuKqy9olD
+	KrHfKreZFU/SuzNImg0mYG0iG1xii1s+8JteR
+X-Google-Smtp-Source: AGHT+IFNogOZ10d6lAwRereUdharZqJEJzF8DMsrbOxZ6T/iGtyA5ahCyYkUVrD0jWXnj2O5vwdKizZE4/hyjaxs9i4=
+X-Received: by 2002:adf:ea46:0:b0:374:c4e2:3ca7 with SMTP id
+ ffacd0b85a97d-37a43129148mr6055444f8f.5.1727082904194; Mon, 23 Sep 2024
+ 02:15:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240905020917.356534-1-make24@iscas.ac.cn>
-In-Reply-To: <20240905020917.356534-1-make24@iscas.ac.cn>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Mon, 23 Sep 2024 11:08:40 +0200
-Message-ID: <CACRpkdZYnwbpqSLrxaOZ-0rbbQq7XHjznnCqOx1Pk=8kPiYL9w@mail.gmail.com>
-Subject: Re: [PATCH] pinctrl: check devm_kasprintf() returned value
-To: Ma Ke <make24@iscas.ac.cn>
-Cc: marcan@marcan.st, sven@svenpeter.dev, alyssa@rosenzweig.io, maz@kernel.org, 
-	joey.gouly@arm.com, stan@corellium.com, asahi@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-gpio@vger.kernel.org, 
+References: <20240915-locked-by-sync-fix-v2-1-1a8d89710392@google.com> <20240915163622.5f3365fe.gary@garyguo.net>
+In-Reply-To: <20240915163622.5f3365fe.gary@garyguo.net>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 23 Sep 2024 11:14:52 +0200
+Message-ID: <CAH5fLgigL5muhhWNvYHbGUf+7eZnvfoZkXpUMXQqNeP4sn-6fw@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: sync: require `T: Sync` for `LockedBy::access`
+To: Gary Guo <gary@garyguo.net>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Trevor Gross <tmgross@umich.edu>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, rust-for-linux@vger.kernel.org, 
 	linux-kernel@vger.kernel.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 5, 2024 at 4:09=E2=80=AFAM Ma Ke <make24@iscas.ac.cn> wrote:
-
-> devm_kasprintf() can return a NULL pointer on failure but this returned
-> value is not checked. Fix this lack and check the returned value.
+On Sun, Sep 15, 2024 at 5:36=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
 >
-> Found by code review.
+> On Sun, 15 Sep 2024 14:41:28 +0000
+> Alice Ryhl <aliceryhl@google.com> wrote:
 >
-> Cc: stable@vger.kernel.org
-> Fixes: a0f160ffcb83 ("pinctrl: add pinctrl/GPIO driver for Apple SoCs")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+> > The `LockedBy::access` method only requires a shared reference to the
+> > owner, so if we have shared access to the `LockedBy` from several
+> > threads at once, then two threads could call `access` in parallel and
+> > both obtain a shared reference to the inner value. Thus, require that
+> > `T: Sync` when calling the `access` method.
+> >
+> > An alternative is to require `T: Sync` in the `impl Sync for LockedBy`.
+> > This patch does not choose that approach as it gives up the ability to
+> > use `LockedBy` with `!Sync` types, which is okay as long as you only us=
+e
+> > `access_mut`.
+> >
+> > Cc: stable@vger.kernel.org
+> > Fixes: 7b1f55e3a984 ("rust: sync: introduce `LockedBy`")
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+>
+> Reviewed-by: Gary Guo <gary@garyguo.net>
+>
+> You probably also want to have a Suggested-by to credit Boqun for
+> suggesting the current implementation.
 
-Good catch!
+That's fine. Miguel can add that when he picks this.
 
-Patch applied for fixes.
-
-Yours,
-Linus Walleij
+Alice
 
