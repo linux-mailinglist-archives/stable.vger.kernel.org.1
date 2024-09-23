@@ -1,155 +1,95 @@
-Return-Path: <stable+bounces-76928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76930-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC9F897EF85
-	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 18:49:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD14697EFDB
+	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 19:31:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 329B9B21F1A
-	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 16:49:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 692CFB216D0
+	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 17:31:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1E6B19E995;
-	Mon, 23 Sep 2024 16:48:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58FB819EEC9;
+	Mon, 23 Sep 2024 17:31:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Med12sKp"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="23BeIyal"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD34DF60;
-	Mon, 23 Sep 2024 16:48:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88F0A15D1;
+	Mon, 23 Sep 2024 17:31:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727110135; cv=none; b=KqL71kg1IP2HgeSW5SRrykVEmk7BvtJj0Q8qbZDqgHNtEwHlutWvJ8/0C4EoZVmpwGfdPR/ABCWgogOS2+jpixgCsR7UrqxZtWRW1GlzonCqNRSz82B+yMNPPUypOThmTR44nkS4cLii9PVO2Ve/1zpHr7DN0NIsL1tRerbhZXQ=
+	t=1727112712; cv=none; b=NfbO3MJbGAci3Af8RUrTanSRlGKzMJ3QfDE0ieD7QLbZN+/gwp1Pxo7516jKe2Y9io20lsaMJn0yZS1MHRI8n23o2TtOI7HLjlQSAJXEIORCtknu4wuQw6ZlOF94DH5TfuQFyAu01A3RJkp76lyaD1JfaxsGCTBMEMvUbRyQ/jk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727110135; c=relaxed/simple;
-	bh=X4iwtPBM51ziRrceO3QdT6g1PRZE4IhgMtL2UmG7LZ8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=axK6btIHE6atQJ4+81aDXFk2MuMEr1Rb6/UYyAnsm+iSi3AsumuoC0+QiUj2WrTJwVjBLEiGxMQmEgwPeLseawAO1+aZc9wh0NZakdVhJecWCxntrWb93v7rQvMoZdGZ4GLVKwVnpWmOIUpJH2donqBY0o3NXb0OtC5t2Hl2lLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Med12sKp; arc=none smtp.client-ip=209.85.128.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-42cc8782869so43787385e9.2;
-        Mon, 23 Sep 2024 09:48:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727110132; x=1727714932; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=GSWdaUAIYBXCymZNBFOL2fQ+V5QkB1tVGt6L1heAaJ4=;
-        b=Med12sKpMfMo87oPQRC5+S4fURs+vpSEa4mpk4SMj1GxTgLHu2o/SrYRwoBItQM/HT
-         /Sijsu4MzLqdgmf3FmeLsbaQRIr25dtSpUDuuaFLDh1X/SGFxRiuGuxsXFYNlfOc3f70
-         CVnW3l62sPMuJvCAiIrqiNKBowd1HGAI4P7o4Iui/i+U3fZMQvGyQRAsmCfh21PAGxfS
-         lDkXflarmDpIiD7Joi+ex3WDRTX7UfJXyh9vTh8ktq3b2IFFJrRLZDt+E7aNeqRkpNfY
-         bfkF+S8B3exm9E/ZJGLH3cqukt0OFJxL7oF8vXTeDnXMFIhbWBOk0cqyFKeabEwPAD/Q
-         ojyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727110132; x=1727714932;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=GSWdaUAIYBXCymZNBFOL2fQ+V5QkB1tVGt6L1heAaJ4=;
-        b=dMIyZgOLDrDFJEvgoP5wMm9qQkxfjx/FDqsLsVJJ72pBkEu/VHfzBQczz7oRuDloKz
-         yX3pwumVAB/5aar69cswJRRdfRipfLkJWYRW9tKdlcR38b5IQ42KY9jKEN1TovLTXvhn
-         v1i5gpDcF9kSLgMxWoCPcPA2c7JiQk4MF06n1xbXky/Ykk5RCOt4tfzGv7+5XTIaZhyZ
-         3CbBBdS3lc6dHbDXa9x7C2KasteDjyj1E/IdRuVfvs541bXI/vyQUbTmMurhftAG4g+q
-         QQ/7eBImF0FKdi8+kyAKY9C7j2XpnpniFd1uNnBaQrpAicdhmwJ7Wr2Cb7ZpEYPUe7jL
-         FF5g==
-X-Forwarded-Encrypted: i=1; AJvYcCUOdYh+et/mjT4+DoWztH1sMCET5pqUSjgKTdd7cdobwneOwK/sL06bu8gKPjM34Se+izBeI9QbZLfLkg==@vger.kernel.org, AJvYcCX9BBpPTsJwUos0AuEKTqqyjA1Z7Y06Tu5p0R9fYo1DBHHBBMEicjtB1vFmm2ts51RiJlkzzSYv@vger.kernel.org, AJvYcCXaRtyQ0eYxtFfAdPSQjCgrFtHMvxZJA5La1e8ynULZsuibWs+wsVMOjdsQi2ZMjfpKi5xnN1zJVZ94FW2q@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw3oZbeD1begBwxo9dOrg+oWd5LfoY4HmsNw2MdS+Cqs2j/FOlQ
-	pZjgSegsvNyrPzj6sXj6jLgsNUtR6LHRNDRSj61p6ce/i4Hb3yBV
-X-Google-Smtp-Source: AGHT+IHPU6wCXBsJs8+wEQmq9WExOqEQI5tcapZXJYh3UOfJ8NuHwYDjCC/t/ElcVLnRjtCsF6u3SA==
-X-Received: by 2002:a5d:664a:0:b0:374:bb00:31eb with SMTP id ffacd0b85a97d-37a42252c99mr6787406f8f.6.1727110132022;
-        Mon, 23 Sep 2024 09:48:52 -0700 (PDT)
-Received: from localhost.localdomain ([94.19.228.143])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-378e78002besm25041308f8f.67.2024.09.23.09.48.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Sep 2024 09:48:51 -0700 (PDT)
-From: Andrey Skvortsov <andrej.skvortzov@gmail.com>
-To: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>,
-	Minchan Kim <minchan@kernel.org>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Jens Axboe <axboe@kernel.dk>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-kernel@vger.kernel.org,
-	linux-block@vger.kernel.org
-Cc: Andrey Skvortsov <andrej.skvortzov@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH v3] zram: don't free statically defined names
-Date: Mon, 23 Sep 2024 19:48:43 +0300
-Message-ID: <20240923164843.1117010-1-andrej.skvortzov@gmail.com>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1727112712; c=relaxed/simple;
+	bh=40rs9ZJYvUrK7g9KIL5niqwlLMK8H1EN1ciEegYswQk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ob+sEn/KIJMvrrh4sMdP0xu5U5GFfYsl3TPJPvcy79rXLU3pztOdv5efNGtV4Wm4XFEb7SECNdxXlP899Xw3wKA5QDOjHZf8ubdHv8Cv4KNT2X1N54GH0IQi47yy+BNEF50d7N/b2ltr/husNTS7FQFSqog2YJzdixxMjQTWzGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=23BeIyal; arc=none smtp.client-ip=199.89.1.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 008.lax.mailroute.net (Postfix) with ESMTP id 4XC95r3WX2z6ClY9d;
+	Mon, 23 Sep 2024 17:31:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1727112699; x=1729704700; bh=40rs9ZJYvUrK7g9KIL5niqwl
+	LMK8H1EN1ciEegYswQk=; b=23BeIyalq1fR/PvyX95ggjGDsAdQjaxCjrdU8d1h
+	qrrEl2uFIhAxwIA8pL+2eWFloktyI9ZtjcE/1d/PefNYD+T6VgxbKSAIEVgJHqp5
+	f2xq0Bd/5wush+iZCjCvoJ/wMP8jR+cZFDoX8FD+kyJYKPOiTAA5dBKeblQcMZHu
+	8ngi9XQvoS8kkPxyuRB418JloYe5wprpDECWhkoAe6eDJy7yCh+wnCNSxFfNZbjx
+	Yv0S4VyN+ns3sOVWMcdr/lV0sJfBeL0m+SDNYApj8openSmiteuoI/jclvRpMQNK
+	Iy67fUv0seEFkcsT7Kzyew+CjAxznbMRyRToBDQG+GZZNw==
+X-Virus-Scanned: by MailRoute
+Received: from 008.lax.mailroute.net ([127.0.0.1])
+ by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id 8YFiwgf2yGLY; Mon, 23 Sep 2024 17:31:39 +0000 (UTC)
+Received: from [100.66.154.22] (unknown [104.135.204.82])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4XC95g5fgbz6ClY9c;
+	Mon, 23 Sep 2024 17:31:35 +0000 (UTC)
+Message-ID: <a6cf0ed9-5a0d-4b63-96cf-8ac9da1cbbdd@acm.org>
+Date: Mon, 23 Sep 2024 10:31:33 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 1/1] ufs: core: set SDEV_OFFLINE when ufs shutdown.
+To: Seunghwan Baek <sh8267.baek@samsung.com>, linux-kernel@vger.kernel.org,
+ linux-scsi@vger.kernel.org, martin.petersen@oracle.com,
+ James.Bottomley@HansenPartnership.com, avri.altman@wdc.com,
+ alim.akhtar@samsung.com
+Cc: grant.jung@samsung.com, jt77.jang@samsung.com, junwoo80.lee@samsung.com,
+ dh0421.hwang@samsung.com, jangsub.yi@samsung.com, sh043.lee@samsung.com,
+ cw9316.lee@samsung.com, wkon.kim@samsung.com, stable@vger.kernel.org
+References: <20240829093913.6282-1-sh8267.baek@samsung.com>
+ <CGME20240829093921epcas1p35d28696b0f79e2ae39d8e3690f088e64@epcas1p3.samsung.com>
+ <20240829093913.6282-2-sh8267.baek@samsung.com>
+ <015101db0d8d$daacd030$90067090$@samsung.com>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <015101db0d8d$daacd030$90067090$@samsung.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-When CONFIG_ZRAM_MULTI_COMP isn't set ZRAM_SECONDARY_COMP can hold
-default_compressor, because it's the same offset as ZRAM_PRIMARY_COMP,
-so we need to make sure that we don't attempt to kfree() the
-statically defined compressor name.
+On 9/23/24 12:54 AM, Seunghwan Baek wrote:
+> Could you please review this patch? It's been almost a month.
+> If you have any opinions about this patch, share and comment it.
 
-This is detected by KASAN.
+Thanks for the reminder. I'm not sure why this patch got overlooked but
+I will take a look.
 
-==================================================================
-  Call trace:
-   kfree+0x60/0x3a0
-   zram_destroy_comps+0x98/0x198 [zram]
-   zram_reset_device+0x22c/0x4a8 [zram]
-   reset_store+0x1bc/0x2d8 [zram]
-   dev_attr_store+0x44/0x80
-   sysfs_kf_write+0xfc/0x188
-   kernfs_fop_write_iter+0x28c/0x428
-   vfs_write+0x4dc/0x9b8
-   ksys_write+0x100/0x1f8
-   __arm64_sys_write+0x74/0xb8
-   invoke_syscall+0xd8/0x260
-   el0_svc_common.constprop.0+0xb4/0x240
-   do_el0_svc+0x48/0x68
-   el0_svc+0x40/0xc8
-   el0t_64_sync_handler+0x120/0x130
-   el0t_64_sync+0x190/0x198
-==================================================================
-
-Signed-off-by: Andrey Skvortsov <andrej.skvortzov@gmail.com>
-Fixes: 684826f8271a ("zram: free secondary algorithms names")
-Cc: <stable@vger.kernel.org>
----
-
-Changes in v2:
- - removed comment from source code about freeing statically defined compression
- - removed part of KASAN report from commit description
- - added information about CONFIG_ZRAM_MULTI_COMP into commit description
-
-Changes in v3:
- - modified commit description based on Sergey's comment
- - changed start for-loop to ZRAM_PRIMARY_COMP
-
-
- drivers/block/zram/zram_drv.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index c3d245617083d..ad9c9bc3ccfc5 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -2115,8 +2115,10 @@ static void zram_destroy_comps(struct zram *zram)
- 		zram->num_active_comps--;
- 	}
- 
--	for (prio = ZRAM_SECONDARY_COMP; prio < ZRAM_MAX_COMPS; prio++) {
--		kfree(zram->comp_algs[prio]);
-+	for (prio = ZRAM_PRIMARY_COMP; prio < ZRAM_MAX_COMPS; prio++) {
-+		/* Do not free statically defined compression algorithms */
-+		if (zram->comp_algs[prio] != default_compressor)
-+			kfree(zram->comp_algs[prio]);
- 		zram->comp_algs[prio] = NULL;
- 	}
- 
--- 
-2.45.2
+Bart.
 
 
