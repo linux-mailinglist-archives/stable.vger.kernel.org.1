@@ -1,132 +1,100 @@
-Return-Path: <stable+bounces-76902-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76904-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 021D297EC4F
-	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 15:31:30 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D19197EC55
+	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 15:32:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 835B2B21AE1
-	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 13:31:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B069CB219AF
+	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 13:32:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5C83199E8F;
-	Mon, 23 Sep 2024 13:31:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A64051991B0;
+	Mon, 23 Sep 2024 13:32:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="hg9wFZ6R"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ab/TTFh+"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 710E619993B;
-	Mon, 23 Sep 2024 13:31:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17CF082866
+	for <stable@vger.kernel.org>; Mon, 23 Sep 2024 13:32:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727098270; cv=none; b=a4flBj/Dnb+E2xuWqthSf4Yiywkf5ucEsR6lfREc3t4uE1CI2MDcNEREPXsVIcwZENvqEfBOKBFQuImtZmn0kctQ3IyosqlwCtu0+M5KHyRXHoT6c35kpC/N+g6/+nC42DeZhfgqv1w+AD+pCSi2Z0B1xib0MsScqePqT0jbK7g=
+	t=1727098349; cv=none; b=VVn9RM08Bro++Cg2tNEP3MicQQZknycmiS6c17SFghxFNTrTttBt5XPqb6CWM2qW2nFID1V/tyU8wQPcmfnVAhbXKX+atHlc1eZ2Aj/qbW9N2EFl6oGbmp6SCmCOElP2pjya+YpqS3b8Bc+xxNgwvjX3xasqEw8otMWhnnsB+n4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727098270; c=relaxed/simple;
-	bh=Ss/EtoccCyESZ7ERJmnmcrAqXBKWTB53fXWkCP6srxY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=swJkpcwMPKHP7SuwE4OTf7sDYhMSnKi6Xe+G6sGk1cZjN0VwG0XuJxqTE3jXUbQFAOd3nZ++nYw8ImdZJtZMsGFTrzw03222ogX97veNmCxvRd6r4IREQsa3PHQxxM1VcDKndypn/MbRRKwktBwfkyyaw7sU1NJ7uFja/BxGkV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=hg9wFZ6R; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48N1qrBw022199;
-	Mon, 23 Sep 2024 13:30:54 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=from
-	:to:cc:subject:date:message-id:in-reply-to:references
-	:mime-version:content-transfer-encoding; s=pp1; bh=u7k5SwI6chCIk
-	sCZz8Hi2DUWn3zMg3MUHqjtPjnnnwI=; b=hg9wFZ6Rd1sP01JpFDlNGN2PJ51ZU
-	bKCifHe2jBfpBc6+baLTY2cvHfl+vZbmWn2OfMPELbLatvzSlue1TGrHqlRLN3WO
-	UiW863CvPoUVDAwI7NXNrozA7zKqecGtiqZ+sSWm8bGyfwhXX0y/6kloCbE1Bp2W
-	7XWgBVU18ykMTAvWv7nwuXcP9TaUtHUtCtkMB2GT1o9dxUErrDMUnCsTtAGuympY
-	6K1pqZ29fYHRHpl/RCWzlJfhbfCJX1oHyDTDVXqiqgiPdAXLQ867nZp8IZ4uZJ2r
-	Kty9flSJmqOBehZNEhyQa1cn2/0gHSIcEbLdH9XsPeGR71w29wZvg6gaw==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 41sntw46ek-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 23 Sep 2024 13:30:54 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 48NAwTQn008701;
-	Mon, 23 Sep 2024 13:30:51 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 41t8v0xww8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 23 Sep 2024 13:30:51 +0000
-Received: from smtpav03.wdc07v.mail.ibm.com (smtpav03.wdc07v.mail.ibm.com [10.39.53.230])
-	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 48NDUnGh33489364
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 23 Sep 2024 13:30:50 GMT
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C16FD5805A;
-	Mon, 23 Sep 2024 13:30:49 +0000 (GMT)
-Received: from smtpav03.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1D6985805C;
-	Mon, 23 Sep 2024 13:30:49 +0000 (GMT)
-Received: from ltcden12-lp3.aus.stglabs.ibm.com (unknown [9.40.195.53])
-	by smtpav03.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 23 Sep 2024 13:30:49 +0000 (GMT)
-From: Danny Tsen <dtsen@linux.ibm.com>
-To: linux-crypto@vger.kernel.org
-Cc: stable@vger.kernel.org, herbert@gondor.apana.org.au, leitao@debian.org,
-        nayna@linux.ibm.com, appro@cryptogams.org,
-        linux-kernel@vger.kernel.org, linuxppc-dev@lists.ozlabs.org,
-        mpe@ellerman.id.au, ltcgcw@linux.vnet.ibm.com, dtsen@us.ibm.com,
-        Danny Tsen <dtsen@linux.ibm.com>
-Subject: [PATCH 3/3] crypto: added CRYPTO_SIMD in Kconfig for CRYPTO_AES_GCM_P10.
-Date: Mon, 23 Sep 2024 09:30:40 -0400
-Message-ID: <20240923133040.4630-4-dtsen@linux.ibm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240923133040.4630-1-dtsen@linux.ibm.com>
-References: <20240923133040.4630-1-dtsen@linux.ibm.com>
+	s=arc-20240116; t=1727098349; c=relaxed/simple;
+	bh=XWITp/fCzbCKojKSeH6yhMy88P1a/1om4wLqVQVQjdw=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=lH1GCN4jMyVpEX4u8sWgQRNfLjDF7hSwFVz9LvKTp6maZftAeaUXJ8vY1oJdTrSS96Ip4H/po3sfDDxvvQa4uUV0TELSLzzoS8UF37IQcKP/07tMR0lYrC6CDBchj0zZGZX9xaHVd2vilRnKk25R5pe0jMRLneizuWsiP5IavpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ab/TTFh+; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1727098347; x=1758634347;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=XWITp/fCzbCKojKSeH6yhMy88P1a/1om4wLqVQVQjdw=;
+  b=ab/TTFh+0dWEVTvZTy/jdCQ8nkpcMQftOeKDLbztrFuiQ4/dRPmbxhZA
+   TK4fhIICASeBA9VxqZhcUtiAA2Ug80vqxdhG4MF/6ohpxU6rPWJZP5I44
+   KpqakOrl2MSWKF17wLf6inF/g5qtB7oU705WpmBqMtRFI11nds03cGA+R
+   fWTF0UOwviqBWj9uVk4JKKts5KwHYnZjS93MUOSTbx0B7G05ILQuAGozb
+   JUV3plvHIVeSjy/oA+1/hevoJwrEVg+dOQfSpAUBGDR5Ttxh0wBOoflgJ
+   G237rki/jB6RBgJUB3OYSyUXgl83PaLTP6h9aqNjZ5cyWaNEIlHCT4tMO
+   g==;
+X-CSE-ConnectionGUID: kapuG06/RVmECvDUGcS1jQ==
+X-CSE-MsgGUID: XxCflZByRumIM5vSnqzcZg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11204"; a="43517548"
+X-IronPort-AV: E=Sophos;i="6.10,251,1719903600"; 
+   d="scan'208";a="43517548"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2024 06:32:26 -0700
+X-CSE-ConnectionGUID: DllLAKL6SCu1Y6uakOmH/g==
+X-CSE-MsgGUID: 2Ouv1CYGR2en9hOvZJmrGg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,251,1719903600"; 
+   d="scan'208";a="71340228"
+Received: from lkp-server01.sh.intel.com (HELO 53e96f405c61) ([10.239.97.150])
+  by fmviesa010.fm.intel.com with ESMTP; 23 Sep 2024 06:32:25 -0700
+Received: from kbuild by 53e96f405c61 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1ssjAt-000HEK-1h;
+	Mon, 23 Sep 2024 13:32:23 +0000
+Date: Mon, 23 Sep 2024 21:32:02 +0800
+From: kernel test robot <lkp@intel.com>
+To: Danny Tsen <dtsen@linux.ibm.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH 1/3] crypto: Re-write AES/GCM stitched implementation for
+ ppcle64.
+Message-ID: <ZvFt0lAQ8ucFk1Pt@483fc80b4b15>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: VMTLlQ3Y2GYVfKo8jqx_hYOZoqfcDzAQ
-X-Proofpoint-GUID: VMTLlQ3Y2GYVfKo8jqx_hYOZoqfcDzAQ
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-23_10,2024-09-23_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 malwarescore=0 spamscore=0
- mlxscore=0 lowpriorityscore=0 suspectscore=0 clxscore=1015
- priorityscore=1501 adultscore=0 mlxlogscore=864 bulkscore=0 phishscore=0
- impostorscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2408220000 definitions=main-2409230099
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240923133040.4630-2-dtsen@linux.ibm.com>
 
-Added CRYPTO_SIMD for CRYPTO_AES_GCM_P10.
+Hi,
 
-Fixes: 45a4672b9a6e ("crypto: p10-aes-gcm - Update Kconfig and Makefile")
+Thanks for your patch.
 
-Signed-off-by: Danny Tsen <dtsen@linux.ibm.com>
----
- arch/powerpc/crypto/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-diff --git a/arch/powerpc/crypto/Kconfig b/arch/powerpc/crypto/Kconfig
-index 46a4c85e85e2..951a43726461 100644
---- a/arch/powerpc/crypto/Kconfig
-+++ b/arch/powerpc/crypto/Kconfig
-@@ -107,12 +107,12 @@ config CRYPTO_AES_PPC_SPE
- 
- config CRYPTO_AES_GCM_P10
- 	tristate "Stitched AES/GCM acceleration support on P10 or later CPU (PPC)"
--	depends on BROKEN
- 	depends on PPC64 && CPU_LITTLE_ENDIAN && VSX
- 	select CRYPTO_LIB_AES
- 	select CRYPTO_ALGAPI
- 	select CRYPTO_AEAD
- 	select CRYPTO_SKCIPHER
-+	select CRYPTO_SIMD
- 	help
- 	  AEAD cipher: AES cipher algorithms (FIPS-197)
- 	  GCM (Galois/Counter Mode) authenticated encryption mode (NIST SP800-38D)
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH 1/3] crypto: Re-write AES/GCM stitched implementation for ppcle64.
+Link: https://lore.kernel.org/stable/20240923133040.4630-2-dtsen%40linux.ibm.com
+
 -- 
-2.43.0
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
