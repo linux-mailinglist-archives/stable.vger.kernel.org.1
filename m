@@ -1,109 +1,103 @@
-Return-Path: <stable+bounces-76891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76893-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6471B97E855
-	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 11:15:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8708697E8F2
+	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 11:43:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E99ADB21007
-	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 09:15:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25D9B1F21BBC
+	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 09:43:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10119194A67;
-	Mon, 23 Sep 2024 09:15:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD14A194A4C;
+	Mon, 23 Sep 2024 09:43:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="JXcTn7ju"
+	dkim=permerror (0-bit key) header.d=hardfalcon.net header.i=@hardfalcon.net header.b="IBKhZlrP"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from 0.smtp.remotehost.it (0.smtp.remotehost.it [213.190.28.75])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA53E194123
-	for <stable@vger.kernel.org>; Mon, 23 Sep 2024 09:15:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39E31D528
+	for <stable@vger.kernel.org>; Mon, 23 Sep 2024 09:43:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.190.28.75
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727082918; cv=none; b=g3OymVgXgST9+RioTRf3qgV6pfl+XAejFTuHRIKYnBOjfBG2KCvrTwdiifWccfOBD5KMHWOUEUGOUhTkFHmgtzPKioqTfEZHQqQnR+kJ2NI2ow2I3jUU2i7yYyIMiWotMs5Q9egrnV/plLxndZfdJGb+WKCVs67hY1zGCctrioQ=
+	t=1727084604; cv=none; b=eePWcEOv9lAQyjiMyQ7CqDlS/Tc7g7DX/23YU6r6blF8LmBMKdkakVRL3tdVXScMcG0T8tnMper3ySHUO/1l8MZe/L8Yzvsl1+15RlAc/VNMoEs05cCzcPqI3U9DNVYaT4Kkr6XqUPPIFd0N5FpWY1cVz3nXtAR60My6g6hi8Vg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727082918; c=relaxed/simple;
-	bh=l9Bx3i72WLmyjAwVDpDo7xamY2Wn7yIoE8/sEWQgZJU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=e0ESP9rmYtMFOmyZAqP73lB06qoifrKjI1MQoD9h0N1h8yDVzlst8yq/VSZgCNAoXvmibvP5S+BcQVVCJ1DaOjQP1fSE+3GPlXROlGU2hkXFXKv9Z/zwtIGWlOawOZkxdtKF7+xVQMu+vv8jtjBMQRYQL+dhEYd2Lpv96kq/40c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=JXcTn7ju; arc=none smtp.client-ip=209.85.167.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-5365aec6fc1so4288594e87.3
-        for <stable@vger.kernel.org>; Mon, 23 Sep 2024 02:15:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1727082914; x=1727687714; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=l9Bx3i72WLmyjAwVDpDo7xamY2Wn7yIoE8/sEWQgZJU=;
-        b=JXcTn7juDE92YK21naA9GWkCsBWZNWTMkpcd8eJWQmuiDJukEHs7l+G4eZz8GIC4P4
-         jz+NTJN4zNyAx6XNWiQbkKGhVev2RFMG0nuQq36jrNmkdxMQ10PtIx2FmuUqaXftqPtp
-         nqdbcd9s+czeGZp/3x+rEwxYiDPrYOeo9f2C1b3Y71poDI5zcrXpF9veg2ZBuENuJ8xp
-         v9enfyVTI8j7l5XhVeeV0HqeHI+Jdq4Q46ZyUjsTPyiOoWl+h5w9yZVX8a5tDrP7gFBF
-         QAYgD0gsGXFyn/kUd7Ykjcwrv6K9z+IOWpZCHfBZvg3Pt0BM0ctFccxG6FDu6iNZN96J
-         Q1ew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727082914; x=1727687714;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=l9Bx3i72WLmyjAwVDpDo7xamY2Wn7yIoE8/sEWQgZJU=;
-        b=sXuFzw/rK7t/3CcQva8Yoqfx29EzhUESAhs8qamdu2ixDQw4ZKP+OWrRKLzi+XgEEo
-         aW0SwSIsFUh6f/zPrFZiHCXUl7m41pY0CL+lmYT9qBEEdsKXAjN5qVBzg5vxdgX4B0qz
-         wDGU+hiQRoisYB905zkRSTtK24nHdfi4syxcxvpraHkqo26TtigRKPS5XpuMTCiDQkyf
-         zL1WoGqHXfidJZE3+cTUmEz0Bx00vU2qg7C/UVwoD/CV+IqRuBz2ihYew62kiPrbcxl5
-         MQs0VqKSkInYIE1HV1ZraN3sNw9Az20cTYSSKw6JPVmeJjX2/8K/lZPUixk9hWtVXuYE
-         HD9w==
-X-Forwarded-Encrypted: i=1; AJvYcCUnba7Yth9eJkXSrJVi5HbScokgDw1FkP2OiwGMS5GyA7aGJiRVabzwieWAoei2g2PTLTjNXEw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzq55dJcEj1U75MWKJ1KsuHBPljSFh75iBhn3cq+H4B1Y1XLZ/L
-	U95LVGTDLCM3ctUQIPCwDP/T+tFx+axIgrz4/kVyRZiYRsTzdHNiDf7pCKfPH1Ql9i+Z0IqKhmm
-	mFo31xtopdxFc8oxYPZwzwdNYeyDnOUxkhxJQZw==
-X-Google-Smtp-Source: AGHT+IGm9GYGA96TsHIKMdbS8Ksl+Y69UudH4mPSC68ZSc5eoQB7wn4Q3RxtR+3CXYd3V8oySBmv3CffJB4G3FFeKZ8=
-X-Received: by 2002:a05:6512:10cb:b0:536:2337:7de6 with SMTP id
- 2adb3069b0e04-536ac2f5b22mr4443437e87.34.1727082913853; Mon, 23 Sep 2024
- 02:15:13 -0700 (PDT)
+	s=arc-20240116; t=1727084604; c=relaxed/simple;
+	bh=3KmzN9q0YrVYUTc2bw+QN62wo7282TimYa9ts4FIiLM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:Cc:From:
+	 In-Reply-To:Content-Type; b=NIB2uPFdDPFwQDjnc4VvorDjQmOkq9rO/0hQ52Rg10ZNsVY946qJEB8voFv1q7sfZmNmAjAq/qX8GvDtik4PIzzNB4IWEehhFqM77cbBDsTv8sTYHUe7/NTiBj9NK6dJZp+zwCUolwS/ZHhPUm1b+sRmBCYRQ7AjrOiQ8Qxa8ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hardfalcon.net; spf=pass smtp.mailfrom=hardfalcon.net; dkim=permerror (0-bit key) header.d=hardfalcon.net header.i=@hardfalcon.net header.b=IBKhZlrP; arc=none smtp.client-ip=213.190.28.75
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hardfalcon.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hardfalcon.net
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=hardfalcon.net;
+	s=dkim_2024-02-03; t=1727084232;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xUxgnPmHdxKwloKsrhXtwk3dtfWEHo7DThCIS8M/UD0=;
+	b=IBKhZlrPKoENOpz/zOJ3p+Wbz+7sPfF8RQkn+NaU/fAYRvZRE2Kqo/XsH3pgxpHmwBblvi
+	QiadBxc4VeMhWNCQ==
+Message-ID: <178b4702-101e-4ca4-856a-c9fd5401670a@hardfalcon.net>
+Date: Mon, 23 Sep 2024 11:37:10 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240906100326.624445-1-make24@iscas.ac.cn>
-In-Reply-To: <20240906100326.624445-1-make24@iscas.ac.cn>
-From: Linus Walleij <linus.walleij@linaro.org>
-Date: Mon, 23 Sep 2024 11:15:03 +0200
-Message-ID: <CACRpkdYEH+xEeD+pCpe_LPotaWp95X38NHouP4746bww3-hzXQ@mail.gmail.com>
-Subject: Re: [PATCH v3] pinctrl: stm32: check devm_kasprintf() returned value
-To: Ma Ke <make24@iscas.ac.cn>
-Cc: mcoquelin.stm32@gmail.com, alexandre.torgue@foss.st.com, 
-	bartosz.golaszewski@linaro.org, patrice.chotard@foss.st.com, 
-	antonio.borneo@foss.st.com, s.shtylyov@omp.ru, valentin.caron@foss.st.com, 
-	peng.fan@nxp.com, akpm@linux-foundation.org, linux-gpio@vger.kernel.org, 
-	linux-stm32@st-md-mailman.stormreply.com, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Subject: Re: Patch "ASoC: SOF: mediatek: Add missing board compatible" has
+ been added to the 6.10-stable tree
+To: Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org
+References: <20240919193644.756037-1-sashal () kernel ! org>
+Content-Language: en-US, de-DE
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Pascal Ernster <git@hardfalcon.net>
+In-Reply-To: <20240919193644.756037-1-sashal () kernel ! org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Sep 6, 2024 at 12:03=E2=80=AFPM Ma Ke <make24@iscas.ac.cn> wrote:
+[2024-09-19 21:36] Sasha Levin:
+> This is a note to let you know that I've just added the patch titled
+> 
+>      ASoC: SOF: mediatek: Add missing board compatible
+> 
+> to the 6.10-stable tree which can be found at:
+>      http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> 
+> The filename of the patch is:
+>       asoc-sof-mediatek-add-missing-board-compatible.patch
+> and it can be found in the queue-6.10 subdirectory.
+> 
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
 
-> devm_kasprintf() can return a NULL pointer on failure but this returned
-> value is not checked. Fix this lack and check the returned value.
->
-> Found by code review.
->
-> Cc: stable@vger.kernel.org
-> Fixes: 32c170ff15b0 ("pinctrl: stm32: set default gpio line names using p=
-in names")
-> Signed-off-by: Ma Ke <make24@iscas.ac.cn>
 
-Patch applied for fixes.
+Hi Sasha,
 
-Thanks for working on these malloc details, much appreciated!
 
-Yours,
-Linus Walleij
+it seems that in your commits to the stable-queue repo on 2024-09-19 
+around 15:36 -0400 / 19:36 UTC, every patch was added twice. This 
+affects all supported stable version branches from 6.10 down to 4.19 (a 
+single commit per version branch):
+
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/commit/?id=19260ab5db68912b2983aecb3a5e778a908e4a30
+
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/commit/?id=f95efa9ab525da0bfaa852bfd27ed453c1bde67e
+
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/commit/?id=e9452f2ddd7affa8424fcd7cbc8816d92a74bd70
+
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/commit/?id=678cff8b6a095767aee1c6b750ccd10362bcbe82
+
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/commit/?id=0f5b9efe8e5fcd26d35af38d43a459a99b648c67
+
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/commit/?id=0c554a1406f2ce8c4d5357fc474af50857cead46
+
+https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/commit/?id=8ce8b1c9dcf3f5625be3a6a4afd5815c55c0ea49
+
+
+Regards
+Pascal
 
