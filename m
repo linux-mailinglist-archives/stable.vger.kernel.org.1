@@ -1,219 +1,178 @@
-Return-Path: <stable+bounces-76936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76939-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 626BD97F193
-	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 22:15:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55CD5983A60
+	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 01:17:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 858741C21888
-	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 20:15:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E763FB2258F
+	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 22:42:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EDB71A08A3;
-	Mon, 23 Sep 2024 20:15:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AC9684E14;
+	Mon, 23 Sep 2024 22:41:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0BaoH5OZ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TkVopzGh"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1BFE19F41A
-	for <stable@vger.kernel.org>; Mon, 23 Sep 2024 20:15:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A40D2907;
+	Mon, 23 Sep 2024 22:41:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727122533; cv=none; b=PlkwOsYvh68+EVGPWnY4knbn4RMZH/Z83doBNMuz/OxhKD49h7JoE3Fcgqpw9HUAvT3mP6PKWRevYKA9ZcKU+tWT57a2PaThc5kmNJNRIAPzSGdytFhte5estrTJuBiYBoxL2XqkJzYAVT0BA5IJMcWnvAfyU6jLUlACi7oN16A=
+	t=1727131313; cv=none; b=uQLnASsUYdWd01hzh9GbnjCYnM1j+VRciXnwDVvNi7CFnezYdgufQNMBUhXFzpSbHFnD/XDXprq2Aje1rH+GFsIP52XUaxILQ7K+vDaiuL0s9Rj7N0mnnhL8g7gEuRK+hnfTIUpZBoYGCCmV1WHsOzK9/92XSqLbnBkyrBb9S1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727122533; c=relaxed/simple;
-	bh=0H6ENbvlTQSEZxIo+1obedDkpsYcANjKsRp/QdY+1z8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mxJJjBcdkgu9QSvQnLdSFeavmFEtzVvPfhKBaoQdIzrP6tRbWNbIyiJXuS9e5PodZDhNwiQmAn186hAQBTlUg9Qf6xprrx80mRen4+irD1+n8bql9kO8j3yRSpsGMUYDvtInFLqq8HBTD7ovXaVZGufeoCYfXysFfpZw+Moaxj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0BaoH5OZ; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-20546b8e754so11655ad.1
-        for <stable@vger.kernel.org>; Mon, 23 Sep 2024 13:15:31 -0700 (PDT)
+	s=arc-20240116; t=1727131313; c=relaxed/simple;
+	bh=acQ5Pnzd1240AHA1UDSkE0rzkawSJCtsodK0HhGjupY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=vGpc6bE+aHrN8X1b+450kZHweTtmlekUHuJIICa/JsA0DhPsAZ7JYR3Heqd3AENnLhbjiuVVVTiaFUXjOz8CdF3a2oipG1l9DQHplaYTtALyQ8yPmStkRk1kGTCYFcK+B/nrYYUYNP9dIPg/cDpeF3lXd+jEoUKeR2dSYUUZfxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TkVopzGh; arc=none smtp.client-ip=209.85.208.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-5c5bca6603aso2074085a12.1;
+        Mon, 23 Sep 2024 15:41:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1727122531; x=1727727331; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cTuhI0jObA1thj5wXELvo1EktSlaWbvDYhEVGakUX6o=;
-        b=0BaoH5OZaK4t3V4lrtsS2DV8XUo2gRRQgruZ4DypyHtgdt/HWfyvY9MIPsDkN8Mqbj
-         BhQDjsZClnq5SkrY4VaoMyeRPtJMEt1jJgh3nSuo3R6dOhOc7eotz26DFdJfXeHQXqeJ
-         xzuLmpn7BBvMbSTodgrv5Xhdh8AfGFgkIVQbl9Nc3vBy7xkZrBeyG7ZhkHFzQiRCsm8h
-         brM+5LEoKINm24sbHM0VAMQG8814fOqfskHZtjMKpDHK/DJWUNvQYN87jJGL/Uxw6Lmq
-         HSl4n0mtrpkuIehgiqoiBvcxXDIkxRSXlrQDU5YH1L+WDKM0P4UjZsE8GMVcvsEyJ4Il
-         Lsvg==
+        d=gmail.com; s=20230601; t=1727131310; x=1727736110; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:mail-followup-to:message-id:subject:cc:to
+         :from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=0mLSVu9L4HSBxCS6PoRCoaDYO+/BcP/6sIijJJk1cM4=;
+        b=TkVopzGhojoWJZuP+5q2nf/+m81FlUchh8AY2jqVjk3mUSdlfWBwfSSJ6wbtxEfSLM
+         GAm7t3oJTn2k7E3pxXiLyzXnpHcotVND13GmApvnmREXKCOpS/0bkqQ7z90HV1Y13S+j
+         ZPRftuLD3deE77LOft//aWVbf/MhXBPcF97PRkKFA5FuJ/7lZLDNUVHI/MJDzHdMtAkT
+         5NGGKp3S3QCKSqXwMPxk/wOnrEUiuyA7V/ii6t/30a82+9LfP/ihWk2jMWiZhONwBOjj
+         g1n/Vwa8m/ygvsuxHfilxWyjrh6hjCnRC2SptGSye6oYrxDHIBcVi5wjTbSZHozI7vAq
+         rzkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727122531; x=1727727331;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cTuhI0jObA1thj5wXELvo1EktSlaWbvDYhEVGakUX6o=;
-        b=KSBThWSkohxVV0ij4kcrSKX965wtxOnhu4D3GIUzGCCF8+rXxtqvnkI5OxFzdCAXoW
-         fMqn+6KNw+hPx2CxlJ3eW7s4n9znEoZRcAnBOT543vP19n9Cg2aYXQzKYQ0a0GBWBky+
-         oQSuSkhvKhI/x8OkPw61Y8ynMyWdLxMW8/JfdCbZW6f0sM3PV/mXae4BGvNcBEjZ5gCV
-         pvsNlCx7skPHc3cO9GJ9NgbgI7yFw2YN9FFgYUZahpEKqbZpbNMJVeIf5rfhXhpHRSwa
-         BGA4ygFmyHQDYWRiEX3oyOUUNq4X96pWCS0A1mYmX7GuwliGlEygiZY52tyRlrEUxLxO
-         +Mmw==
-X-Forwarded-Encrypted: i=1; AJvYcCVcdULq/OS5ndwCbi91J5YPUPRJ7qZAwIUYPXRYBpfSYaL7sOgvIafY+PCOyJvGDolKQikTRV8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy5tOgFJvIbS6F3RDWqX9brfTVgpQT8vvsV+qwJx44h9B7AOg+t
-	RY4KZYl2A1RykIPLMa7XQw1SGXI+oduZpLR+jfSmkprA+xIzIkpnw35/URwWU3hrESaQhcmcpT/
-	a/eBA1mcs2eegNW6Xi8S9pJ78mohafi/DtDiJ
-X-Google-Smtp-Source: AGHT+IHmh02yXm9i2/a395bH2npymCVb0LAxjXgYhMK0kTeo0IfylvI3/ai3urygr3mdT8sWUE48LgPgqLYcSWrvHyE=
-X-Received: by 2002:a17:903:24d:b0:206:d6a4:e13a with SMTP id
- d9443c01a7336-20aeedf40b3mr625565ad.26.1727122530929; Mon, 23 Sep 2024
- 13:15:30 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1727131310; x=1727736110;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:mail-followup-to:message-id:subject:cc:to
+         :from:date:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0mLSVu9L4HSBxCS6PoRCoaDYO+/BcP/6sIijJJk1cM4=;
+        b=uTwg9rJlurmOd3p9C57Y4C063kAxqcBuF07A2GohvQkfLcP+WQe2LW5aJYR0DwdiAV
+         QJZrL9Ru+S+eOP1RI0JAdRI748cg97/sEdSpOB0f8ARquRPQStCLHrC4IwQDRVHPUjwh
+         mZeaNVw4/CiAFz/SHUlw+J7y21+7+PkWFVHULkjzprUJSSqTsX/4k1V2uV0ObvHHLFON
+         lwguJujN9prhTqT9ZssENo071du1KWDmqSwdrx1zv7al4Ay/xu+cujuZZw9QevgS1leQ
+         OW5WxgZmemZqMe/c8qEyd3E/iHjKHf/aa3HNHEqOczmWQ3bIf4ynbR5h84hPCkRXg/gI
+         G/Yw==
+X-Forwarded-Encrypted: i=1; AJvYcCUC1pVPZT0lnxnFXgeEftVnoa4ofO8UArHdZoTUxg3bYD8zOUbCw6RjlT6xU/VYDIUp5trKIjKk@vger.kernel.org, AJvYcCUEZ6eTozMzu/XR43mO0Zl1w8nGWGGrengDCE+A18ZuGpOlvem7Nm8az41FPLFsI1cBbHYmK6hwETNlMg==@vger.kernel.org, AJvYcCVR5aVbxawMg5TDIrPQVYiVQBdvJCxIvoYDoP5cPPOfdf3Q4fw0o6rsrU4HzuhxD8fluF1Spj3ga51yrRP+@vger.kernel.org
+X-Gm-Message-State: AOJu0YwL6fZASkRobU/VtdTscwgHbHHDM0IvPsW0QA3B7GdVflqSIi9Y
+	W09uzpJQJMjj3D5h+LRD9joH04fLjO2ZZyaen0OGIl11dELN2lAc
+X-Google-Smtp-Source: AGHT+IF5GT9BxceuPGXm9hIQeBh6VgNixEhx7RT03nonjeZH/Lkby1khb/iWWCk6+GdsPoYKqOE8PQ==
+X-Received: by 2002:a17:907:9450:b0:a8d:7b7d:8c39 with SMTP id a640c23a62f3a-a90d59266demr1315351666b.43.1727131309679;
+        Mon, 23 Sep 2024 15:41:49 -0700 (PDT)
+Received: from localhost ([94.19.228.143])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9393134c33sm8770666b.197.2024.09.23.15.41.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 23 Sep 2024 15:41:48 -0700 (PDT)
+Date: Tue, 24 Sep 2024 01:41:48 +0300
+From: Andrey Skvortsov <andrej.skvortzov@gmail.com>
+To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Cc: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>,
+	Minchan Kim <minchan@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v3] zram: don't free statically defined names
+Message-ID: <ZvHurCYlCoi1ZTCX@skv.local>
+Mail-Followup-To: Andrey Skvortsov <andrej.skvortzov@gmail.com>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>,
+	Minchan Kim <minchan@kernel.org>,
+	Sergey Senozhatsky <senozhatsky@chromium.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
+	stable@vger.kernel.org
+References: <20240923164843.1117010-1-andrej.skvortzov@gmail.com>
+ <c8a4e62e-6c24-4b06-ac86-64cc4697bc2f@wanadoo.fr>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <8f2e20f2fc894398da371517c6c8111aba072fb1.camel@kernel.org>
- <20240909163610.2148932-1-ovt@google.com> <84f2415b4d5bb42dc7e26518983f53a997647130.camel@hammerspace.com>
- <CACGj0ChtssX4hCCEnD9hah+-ioxmAB8SzFjJR3Uk1FEWMizv-A@mail.gmail.com>
- <8d95e5334c664d10a751e5791c8291959217524e.camel@hammerspace.com> <CACGj0CgobBUv9CgpAhw+XWFwJY7+A0MryOTyukXz8Jsoc9hdQw@mail.gmail.com>
-In-Reply-To: <CACGj0CgobBUv9CgpAhw+XWFwJY7+A0MryOTyukXz8Jsoc9hdQw@mail.gmail.com>
-From: Oleksandr Tymoshenko <ovt@google.com>
-Date: Mon, 23 Sep 2024 13:15:17 -0700
-Message-ID: <CACGj0ChbuJ=p6WT62rYWarB=E6Uf3Cs_rz7icDPo5uH3GgVpmQ@mail.gmail.com>
-Subject: Re: [PATCH] NFSv4: fix a mount deadlock in NFS v4.1 client
-To: Trond Myklebust <trondmy@hammerspace.com>
-Cc: "anna@kernel.org" <anna@kernel.org>, "jbongio@google.com" <jbongio@google.com>, 
-	"linux-nfs@vger.kernel.org" <linux-nfs@vger.kernel.org>, 
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <c8a4e62e-6c24-4b06-ac86-64cc4697bc2f@wanadoo.fr>
 
-Hi Trond,
+On 24-09-23 19:40, Christophe JAILLET wrote:
+> Le 23/09/2024 à 18:48, Andrey Skvortsov a écrit :
+> > When CONFIG_ZRAM_MULTI_COMP isn't set ZRAM_SECONDARY_COMP can hold
+> > default_compressor, because it's the same offset as ZRAM_PRIMARY_COMP,
+> > so we need to make sure that we don't attempt to kfree() the
+> > statically defined compressor name.
+> > 
+> > This is detected by KASAN.
+> > 
+> > ==================================================================
+> >    Call trace:
+> >     kfree+0x60/0x3a0
+> >     zram_destroy_comps+0x98/0x198 [zram]
+> >     zram_reset_device+0x22c/0x4a8 [zram]
+> >     reset_store+0x1bc/0x2d8 [zram]
+> >     dev_attr_store+0x44/0x80
+> >     sysfs_kf_write+0xfc/0x188
+> >     kernfs_fop_write_iter+0x28c/0x428
+> >     vfs_write+0x4dc/0x9b8
+> >     ksys_write+0x100/0x1f8
+> >     __arm64_sys_write+0x74/0xb8
+> >     invoke_syscall+0xd8/0x260
+> >     el0_svc_common.constprop.0+0xb4/0x240
+> >     do_el0_svc+0x48/0x68
+> >     el0_svc+0x40/0xc8
+> >     el0t_64_sync_handler+0x120/0x130
+> >     el0t_64_sync+0x190/0x198
+> > ==================================================================
+> > 
+> > Signed-off-by: Andrey Skvortsov <andrej.skvortzov@gmail.com>
+> > Fixes: 684826f8271a ("zram: free secondary algorithms names")
+> > Cc: <stable@vger.kernel.org>
+> > ---
+> > 
+> > Changes in v2:
+> >   - removed comment from source code about freeing statically defined compression
+> >   - removed part of KASAN report from commit description
+> >   - added information about CONFIG_ZRAM_MULTI_COMP into commit description
+> > 
+> > Changes in v3:
+> >   - modified commit description based on Sergey's comment
+> >   - changed start for-loop to ZRAM_PRIMARY_COMP
+> > 
+> > 
+> >   drivers/block/zram/zram_drv.c | 6 ++++--
+> >   1 file changed, 4 insertions(+), 2 deletions(-)
+> > 
+> > diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
+> > index c3d245617083d..ad9c9bc3ccfc5 100644
+> > --- a/drivers/block/zram/zram_drv.c
+> > +++ b/drivers/block/zram/zram_drv.c
+> > @@ -2115,8 +2115,10 @@ static void zram_destroy_comps(struct zram *zram)
+> >   		zram->num_active_comps--;
+> >   	}
+> > -	for (prio = ZRAM_SECONDARY_COMP; prio < ZRAM_MAX_COMPS; prio++) {
+> > -		kfree(zram->comp_algs[prio]);
+> > +	for (prio = ZRAM_PRIMARY_COMP; prio < ZRAM_MAX_COMPS; prio++) {
+> > +		/* Do not free statically defined compression algorithms */
+> > +		if (zram->comp_algs[prio] != default_compressor)
+> > +			kfree(zram->comp_algs[prio]);
+> 
+> Hi,
+> 
+> maybe kfree_const() to be more future proof and less verbose?
 
-Following up on this: do you have plans to submit the patch you proposed
-or do you want me to rework my submission along the lines you proposed?
+kfree_const() will not work if zram is built as a module. It works
+only for .rodata for kernel image. [1]
 
-On Tue, Sep 10, 2024 at 2:08=E2=80=AFPM Oleksandr Tymoshenko <ovt@google.co=
-m> wrote:
->
-> On Mon, Sep 9, 2024 at 5:22=E2=80=AFPM Trond Myklebust <trondmy@hammerspa=
-ce.com> wrote:
-> >
-> > On Mon, 2024-09-09 at 16:06 -0700, Oleksandr Tymoshenko wrote:
-> > > On Mon, Sep 9, 2024 at 10:56=E2=80=AFAM Trond Myklebust
-> > > <trondmy@hammerspace.com> wrote:
-> > > >
-> > > > On Mon, 2024-09-09 at 16:36 +0000, Oleksandr Tymoshenko wrote:
-> > > > > > > nfs41_init_clientid does not signal a failure condition from
-> > > > > > > nfs4_proc_exchange_id and nfs4_proc_create_session to a
-> > > > > > > client
-> > > > > > > which
-> > > > > > > may
-> > > > > > > lead to mount syscall indefinitely blocked in the following
-> > > > > > > stack
-> > > > >
-> > > > > > NACK. This will break all sorts of recovery scenarios, because
-> > > > > > it
-> > > > > > doesn't distinguish between an initial 'mount' and a server
-> > > > > > reboot
-> > > > > > recovery situation.
-> > > > > > Even in the case where we are in the initial mount, it also
-> > > > > > doesn't
-> > > > > > distinguish between transient errors such as NFS4ERR_DELAY or
-> > > > > > reboot
-> > > > > > errors such as NFS4ERR_STALE_CLIENTID, etc.
-> > > > >
-> > > > > > Exactly what is the scenario that is causing your hang? Let's
-> > > > > > try
-> > > > > > to
-> > > > > > address that with a more targeted fix.
-> > > > >
-> > > > > The scenario is as follows: there are several NFS servers and
-> > > > > several
-> > > > > production machines with multiple NFS mounts. This is a
-> > > > > containerized
-> > > > > multi-tennant workflow so every tennant gets its own NFS mount to
-> > > > > access their
-> > > > > data. At some point nfs41_init_clientid fails in the initial
-> > > > > mount.nfs call
-> > > > > and all subsequent mount.nfs calls just hang in
-> > > > > nfs_wait_client_init_complete
-> > > > > until the original one, where nfs4_proc_exchange_id has failed,
-> > > > > is
-> > > > > killed.
-> > > > >
-> > > > > The cause of the nfs41_init_clientid failure in the production
-> > > > > case
-> > > > > is a timeout.
-> > > > > The following error message is observed in logs:
-> > > > >   NFS: state manager: lease expired failed on NFSv4 server <ip>
-> > > > > with
-> > > > > error 110
-> > > > >
-> > > >
-> > > > How about something like the following fix then?
-> > > > 8<-----------------------------------------------
-> > > > From eb402b489bb0d0ada1a3dd9101d4d7e193402e46 Mon Sep 17 00:00:00
-> > > > 2001
-> > > > Message-ID:
-> > > > <eb402b489bb0d0ada1a3dd9101d4d7e193402e46.1725904471.git.trond.mykl
-> > > > ebust@hammerspace.com>
-> > > > From: Trond Myklebust <trond.myklebust@hammerspace.com>
-> > > > Date: Mon, 9 Sep 2024 13:47:07 -0400
-> > > > Subject: [PATCH] NFSv4: Fail mounts if the lease setup times out
-> > > >
-> > > > If the server is down when the client is trying to mount, so that
-> > > > the
-> > > > calls to exchange_id or create_session fail, then we should allow
-> > > > the
-> > > > mount system call to fail rather than hang and block other
-> > > > mount/umount
-> > > > calls.
-> > > >
-> > > > Reported-by: Oleksandr Tymoshenko <ovt@google.com>
-> > > > Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-> > > > ---
-> > > >  fs/nfs/nfs4state.c | 6 ++++++
-> > > >  1 file changed, 6 insertions(+)
-> > > >
-> > > > diff --git a/fs/nfs/nfs4state.c b/fs/nfs/nfs4state.c
-> > > > index 30aba1dedaba..59dcdf9bc7b4 100644
-> > > > --- a/fs/nfs/nfs4state.c
-> > > > +++ b/fs/nfs/nfs4state.c
-> > > > @@ -2024,6 +2024,12 @@ static int
-> > > > nfs4_handle_reclaim_lease_error(struct nfs_client *clp, int status)
-> > > >                 nfs_mark_client_ready(clp, -EPERM);
-> > > >                 clear_bit(NFS4CLNT_LEASE_CONFIRM, &clp->cl_state);
-> > > >                 return -EPERM;
-> > > > +       case -ETIMEDOUT:
-> > > > +               if (clp->cl_cons_state =3D=3D NFS_CS_SESSION_INITIN=
-G) {
-> > > > +                       nfs_mark_client_ready(clp, -EIO);
-> > > > +                       return -EIO;
-> > > > +               }
-> > > > +               fallthrough;
-> > > >         case -EACCES:
-> > > >         case -NFS4ERR_DELAY:
-> > > >         case -EAGAIN:
-> > > > --
-> > >
-> > > This patch fixes the issue in my simulated environment. ETIMEDOUT is
-> > > the error code that
-> > > was observed in the production env but I guess it's not the only
-> > > possible one. Would it make
-> > > sense to handle all error conditions in the NFS_CS_SESSION_INITING
-> > > state or are there
-> > > some others that are recoverable?
-> > >
-> >
-> > The only other one that I'm thinking might want to be treated similarly
-> > is the above EACCES error. That's because that is only returned if
-> > there is a problem with your RPCSEC_GSS/krb5 credential. I was thinking
-> > of changing that one too in the same patch, but came to the conclusion
-> > it would be better to treat the two issues with separate fixes.
-> >
-> > The other error conditions are all supposed to be transient NFS level
-> > errors. They should not be treated as fatal.
->
-> Sounds good. Will you submit this patch to the mainline kernel? If so
-> please add me to Cc. Thanks for looking into this.
+1. https://elixir.bootlin.com/linux/v6.11/source/include/asm-generic/sections.h#L177
+
+-- 
+Best regards,
+Andrey Skvortsov
 
