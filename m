@@ -1,97 +1,88 @@
-Return-Path: <stable+bounces-76876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76877-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AD3A97E61A
-	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 08:38:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1BA197E620
+	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 08:45:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C72F3B20AD8
-	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 06:38:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72D4328118A
+	for <lists+stable@lfdr.de>; Mon, 23 Sep 2024 06:45:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EF4217C79;
-	Mon, 23 Sep 2024 06:38:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E66B9182BD;
+	Mon, 23 Sep 2024 06:45:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cwiD89Pb"
 X-Original-To: stable@vger.kernel.org
-Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DECE212E4D
-	for <stable@vger.kernel.org>; Mon, 23 Sep 2024 06:38:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DB0479E1;
+	Mon, 23 Sep 2024 06:45:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727073503; cv=none; b=Ki88rWLW0LsSSHeJ6koFMAIBFQD5j8cFDQN9+KKpEmmsUWUx5VhnBJUFr+zkxRA6W+w1rtTxBosaaU/QsHhBpUNnGLbWBFJvNSKhKysCwF0mqUkAOpLjsIhDTFdRavMnwTQS2s2kZrXhKhr3O0L+cOL1mTvhyg+1Xe8UGiK5dkU=
+	t=1727073914; cv=none; b=h7KV84ITKmw78KqHsb45Qul4lZaxtOHt/e4/UCAhsiHhhJrZqg1V7Ly2nLJ1qPt4o12ZDHlMT+1pIlKOlQRUk8wm+CInnZvwwXUqKg7nRXZg8XtPNpbE7PQEQ+A5R4KUR0fB+N7sgwapJX9X3xUc/S09zWDQoLwD65eGsDb6z58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727073503; c=relaxed/simple;
-	bh=LE5Y70/D+IdyXH+CLIcB0nN7fGObMqsBbkUoeTItoqc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=o0VVno/zqlgM4eI4deG1Yq2yD4LfKZH1H+LtPDr5UEnzRKY3+DQ0rG8V+A7Qa9m1wC4RwQ1Er6F9GvPT8PcNsVE3fa/nPM1YXFaqj5riNsaxIMA2aPsWWlCfQVCBS+V1GU5QGSAqo9VyTqexuqSMmoBxOt5J4wnA0AnaX0nA148=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.235])
-	by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4XBtbR0RX6z4f3jMW
-	for <stable@vger.kernel.org>; Mon, 23 Sep 2024 14:37:55 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id 295741A058E
-	for <stable@vger.kernel.org>; Mon, 23 Sep 2024 14:38:11 +0800 (CST)
-Received: from [10.67.109.184] (unknown [10.67.109.184])
-	by APP4 (Coremail) with SMTP id gCh0CgAnqMTPDPFmNC9uCA--.34217S2;
-	Mon, 23 Sep 2024 14:38:09 +0800 (CST)
-Message-ID: <2bd9fdba-d916-4453-a0d9-a1a5b827a454@huaweicloud.com>
-Date: Mon, 23 Sep 2024 14:38:07 +0800
+	s=arc-20240116; t=1727073914; c=relaxed/simple;
+	bh=C8xxTFY5vBhvSGx1onfQ86a5vc9rr46CcQqRUnx/07I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lXTZnU7B0XD4+tg1UoQlw+wVrAnqeRRRtUAplVFeYkgsHeaAncYcVOCZZEiGvim2Z36xzMdec355Qm/UGD7qIptQXJWzN1dpqFcHd6dj5HgPj5vk3CMNUTysuVNrfn7vhou5EXoVlCBU/vu4Y5++YbKaPIp9X+hE/5+OR2CYojI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cwiD89Pb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 898ADC4CEC4;
+	Mon, 23 Sep 2024 06:45:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1727073913;
+	bh=C8xxTFY5vBhvSGx1onfQ86a5vc9rr46CcQqRUnx/07I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cwiD89PbtGFjfZumScTsE1bUIEuYYgZytGQyEFIexdgBd3wYyKTg44plUDKzVZRyr
+	 0UyVr6h5iIIW1n/muqWlfLF0E1CYyG0tgWvs6erYiNI7ylOegWBAqbxAgBnHjZUiM8
+	 ZR3OaOuz6m73uNQzXKuoHh5lnJbpsQX/uIDS4X+I=
+Date: Mon, 23 Sep 2024 08:45:12 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Fabian =?iso-8859-1?Q?St=E4ber?= <fabian@fstab.de>
+Cc: stable@vger.kernel.org, regressions@lists.linux.dev,
+	linux-usb@vger.kernel.org
+Subject: Re: Dell WD19TB Thunderbolt Dock not working with kernel > 6.6.28-1
+Message-ID: <2024092318-pregnancy-handwoven-3458@gregkh>
+References: <CAPX310gmJeYhE2C6-==rKSDh6wAmoR8R5-pjEOgYD3AP+Si+0w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.10] bpf: Fix mismatch memory accounting for devmap maps
-To: kernel test robot <lkp@intel.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-References: <Zu1QdPBf_QnYCxbS@3bb1e60d1c37>
-Content-Language: en-US
-From: Pu Lehui <pulehui@huaweicloud.com>
-In-Reply-To: <Zu1QdPBf_QnYCxbS@3bb1e60d1c37>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:gCh0CgAnqMTPDPFmNC9uCA--.34217S2
-X-Coremail-Antispam: 1UD129KBjvdXoWruw15GrWUGw1kAFyDAr1xuFg_yoWxZrb_tr
-	4j9F98G3yUJr4rKF48trsavrWkKFWkZr9Yqr4xCrWxGwnrJFn8ZF4agFyfZas7Xas5ZFyY
-	gFyqqwnF9w4SqjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbO8YFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20E
-	Y4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwV
-	A0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVW5JVW7JwA2z4x0Y4vE2Ix0cI8IcVCY1x02
-	67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxV
-	AFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2
-	j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7x
-	kEbVWUJVW8JwACjcxG0xvEwIxGrwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWU
-	JVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67
-	kF1VAFwI0_Jrv_JF1lIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY
-	6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0x
-	vEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2Kfnx
-	nUUI43ZEXa7IU1CPfJUUUUU==
-X-CM-SenderInfo: psxovxtxl6x35dzhxuhorxvhhfrp/
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAPX310gmJeYhE2C6-==rKSDh6wAmoR8R5-pjEOgYD3AP+Si+0w@mail.gmail.com>
 
-
-
-On 2024/9/20 18:37, kernel test robot wrote:
+On Mon, Sep 23, 2024 at 08:34:23AM +0200, Fabian Stäber wrote:
 > Hi,
-> 
-> Thanks for your patch.
-> 
-> FYI: kernel test robot notices the stable kernel rule is not satisfied.
-> 
-> The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-3
-> 
-> Rule: The upstream commit ID must be specified with a separate line above the commit text.
-> Subject: [PATCH 5.10] bpf: Fix mismatch memory accounting for devmap maps
-> Link: https://lore.kernel.org/stable/20240920103950.3931497-1-pulehui%40huaweicloud.com
-> 
-> Please ignore this mail if the patch is not relevant for upstream.
-> 
 
-This fix only involves 5.10, other versions are no problem.
+Adding the linux-usb list.
 
+> I got a Dell WD19TBS Thunderbolt Dock, and it has been working with
+> Linux for years without issues. However, updating to
+> linux-lts-6.6.29-1 or newer breaks the USB ports on my Dock. Using the
+> latest non-LTS kernel doesn't help, it also breaks the USB ports.
+> 
+> Downgrading the kernel to linux-lts-6.6.28-1 works. This is the last
+> working version.
+> 
+> I opened a thread on the Arch Linux forum
+> https://bbs.archlinux.org/viewtopic.php?id=299604 with some dmesg
+> output. However, it sounds like this is a regression in the Linux
+> kernel, so I'm posting this here as well.
+> 
+> Let me know if you need any more info.
+
+Is there any way you can use 'git bisect' to test inbetween kernel
+versions/commits to find the offending change?
+
+Does the non-lts arch kernel work properly?
+
+thanks,
+
+greg k-h
 
