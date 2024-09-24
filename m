@@ -1,155 +1,104 @@
-Return-Path: <stable+bounces-76987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41704984525
-	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 13:50:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EC5CF984568
+	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 14:02:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BCB32B20ED1
-	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 11:50:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3519285C21
+	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 12:02:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CEFC012BF25;
-	Tue, 24 Sep 2024 11:50:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5621148823;
+	Tue, 24 Sep 2024 12:01:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RB21x9yd"
 X-Original-To: stable@vger.kernel.org
-Received: from MSK-MAILEDGE.securitycode.ru (msk-mailedge.securitycode.ru [195.133.217.143])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f68.google.com (mail-ej1-f68.google.com [209.85.218.68])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2D1912A14C;
-	Tue, 24 Sep 2024 11:50:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.133.217.143
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9D3317C222;
+	Tue, 24 Sep 2024 12:01:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.68
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727178619; cv=none; b=VEmuZpri0oqj3BjNXrTqWaqi+FF7Z5w0dfqqzxduZ9wzg1RSMfT3smINJJc25Buim2o7MxLiUXIEwsC0BXFMrrqFlvhZiI6xROj7cI16Bje5Dvw68H2xKNZw/8Gx5gPam7i9TB0hIRobRgiNgyKO+oB6DxqNxSu+13RszkM3OFA=
+	t=1727179283; cv=none; b=uSu52zIUrZJmjK/8AXqjN53D/4Ig9LzRq9aivj4h22992G3kZ741ofQitm478aj7GVCbWMJysqtq2pzrTrD2S/XK4hG76g74ywN1Ir+JZMEElvXtszpE60iu0AuFsnZLczm+KEixI1IfvPJpP4H6nB07qeRFoJljxc8N9f7vX7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727178619; c=relaxed/simple;
-	bh=m9gcGOwO2HgNBdo2N/ChjcvYpjqTaGiYsQEoY3muEZs=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ts+SXqNNlUwHSZKdq0dsNSG8P6mZ8FqWyHCje9FIixs3KQKZxwDrntkxoyBxGvS/2eWPdKNYF39I2VpxYCITujFtSmU9T6Q1qGrRMXBAYoHblax3DQU1LV+MDwJwgdqvy7nq0ofMla4Z63LqpCw1NF0fYZu6F3KyDtJaBimonnM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=securitycode.ru; spf=pass smtp.mailfrom=securitycode.ru; arc=none smtp.client-ip=195.133.217.143
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=securitycode.ru
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=securitycode.ru
-From: George Rurikov <g.ryurikov@securitycode.ru>
-To: Christoph Hellwig <hch@lst.de>
-CC: George Rurikov <g.ryurikov@securitycode.ru>, Sagi Grimberg
-	<sagi@grimberg.me>, Chaitanya Kulkarni <kch@nvidia.com>, Keith Busch
-	<kbusch@kernel.org>, Israel Rukshin <israelr@mellanox.com>, Max Gurtovoy
-	<maxg@mellanox.com>, Jens Axboe <axboe@kernel.dk>,
-	<linux-nvme@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-	<stable@vger.kernel.org>
-Subject: [PATCH] nvme: rdma: Add check for queue in nvmet_rdma_cm_handler()
-Date: Tue, 24 Sep 2024 14:49:46 +0300
-Message-ID: <20240924114946.1090615-1-g.ryurikov@securitycode.ru>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1727179283; c=relaxed/simple;
+	bh=D2wkM8MceUdpaz5tbti6HFcDG2ZYxeGIAjkCyA9IpVw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=py9z1e/XX3/Sbu2uGFtGDgENusNAzHHiGm777AV5uhapVP/u+jPnjwQIC/bgaKXj/1EWG2xM2H9EMncjXE8ElnwjsGzyfTs47Lzu+LJLSTbThMT8QCAi4IrcJE7Fzl0wkx1C5TYXtyRcz/2EbtQKApEOYWs+uwv1uEMv763YQOs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RB21x9yd; arc=none smtp.client-ip=209.85.218.68
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f68.google.com with SMTP id a640c23a62f3a-a8d446adf6eso840633166b.2;
+        Tue, 24 Sep 2024 05:01:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1727179280; x=1727784080; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=D2wkM8MceUdpaz5tbti6HFcDG2ZYxeGIAjkCyA9IpVw=;
+        b=RB21x9yd1leqUY7hB/C+obVNjtMUBvxqM+H4RCkr0HaSVNfZVaPBenSYhB2DKnlHIw
+         pCZZkTofN7iKE9CaxuajkAB0tU7ndlmQJAwW0xFGmi3lqhC6QZkUzYmnheibNXlWCTDa
+         BrnNn2txFKbCHvhUBoFt/wKTpL/GxLwCFCqtxhLAwNHWrqb+M8IudyP5FjbFV6DPOWiS
+         YE3k6MUxeH1p++Pv8L8OyvOY/L/1Rdtqxe6W6VG9AclFJ0zUgRgr0C1Hevnz3CiRWmtk
+         lY4Hs0aNh76mAO6DfrSwFPFi7IgwhDo+rRiqKAjTVI4tsWSkNOJKFJc5Ihzm5h2YtYOy
+         D8Jw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727179280; x=1727784080;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=D2wkM8MceUdpaz5tbti6HFcDG2ZYxeGIAjkCyA9IpVw=;
+        b=toN/hjoYFNkJe+VNDUKp93nQ+M6YHFhbyAIFqPMFgnuIrRsxgfBPCPZWnYPb7vn3cm
+         3DBDWvQiqLpEZv4h9aeuTmV5c7o9qle1rCUJhztTvaGdDxSICZqD3rx3lEoSXp5SpyeK
+         7dx6HTqYlh46QW6MNnjISfc21APTMBSEDTTlyjQ89zCTmGjdt0ZgIlLpDmDXU/+jfQGm
+         /kE2gEzpoNkMBb5YN2PEyxMCh1DDRNgOmbNR82FWpiX0FM8oxMZsQV+89J5KOIR/0e/N
+         E7lS+HtjJNs4wDrsxIRQu+CeIBKOo5jLIEJKysf7+AZvVsVXQrTtc6vqEsYykvAyDXgI
+         sKrw==
+X-Forwarded-Encrypted: i=1; AJvYcCUPmTDeGGqVgtRPvS3tllzbIEaeBWaPuLTeLIFMF16iBwSppkBQjcLVxFeI2piliw+rkyQ65ueB@vger.kernel.org, AJvYcCVUSQQ9YHT7ZnxdhUy7DXjvxk7yaVaPr6pQ7ki/zrQzmJVOTFJ+OCivK17ZqQ4NcDP3UGn4AsGeUD26uOk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzB9ashJ+a5ylrcO/s7pfC6KMNYYY00CpGLCFFZBuQ6/Ve/FL7d
+	6X+pdmXcutP8jb1qw366KQI/ilWXSNtg85+fxy67x8QocE+DeXybVsVIjq3Q+NgbU9TkizgBNtZ
+	Pl6SpJFi9i8DI1aFen5/YHoGkS14=
+X-Google-Smtp-Source: AGHT+IFj3aAX7TONduQVRl0aDVye9cHiXiB1Q9dRt5Ij0vv8gJiBD7Z0JZgMv9QkrrMa2dqXYtZEeUy71igP0MXxbek=
+X-Received: by 2002:a17:907:e246:b0:a90:d1e1:eeb3 with SMTP id
+ a640c23a62f3a-a90d50d0521mr1357512066b.44.1727179279902; Tue, 24 Sep 2024
+ 05:01:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
-X-ClientProxiedBy: MSK-EX1.Securitycode.ru (172.17.8.91) To
- MSK-EX2.Securitycode.ru (172.17.8.92)
+References: <20240913091053.14220-1-chenqiuji666@gmail.com> <ZvKNVut_V9fiiaaT@phenom.ffwll.local>
+In-Reply-To: <ZvKNVut_V9fiiaaT@phenom.ffwll.local>
+From: Qiu-ji Chen <chenqiuji666@gmail.com>
+Date: Tue, 24 Sep 2024 20:01:06 +0800
+Message-ID: <CANgpojXKgZXjeCO9MYr83=p-Kz0_Migm4c9-4qTidHYp=G+fMg@mail.gmail.com>
+Subject: Re: [PATCH] drm/vc4: Fix atomicity violation in vc4_crtc_send_vblank()
+To: Qiu-ji Chen <chenqiuji666@gmail.com>, mripard@kernel.org, 
+	dave.stevenson@raspberrypi.com, kernel-list@raspberrypi.com, 
+	maarten.lankhorst@linux.intel.com, tzimmermann@suse.de, airlied@gmail.com, 
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+	baijiaju1990@gmail.com, stable@vger.kernel.org, simona.vetter@ffwll.ch
+Cc: daniel@ffwll.ch
+Content-Type: text/plain; charset="UTF-8"
 
-After having been assigned to a NULL value at rdma.c:1758, pointer 'queue'
-is passed as 1st parameter in call to function
-'nvmet_rdma_queue_established' at rdma.c:1773, as 1st parameter in call
-to function 'nvmet_rdma_queue_disconnect' at rdma.c:1787 and as 2nd
-parameter in call to function 'nvmet_rdma_queue_connect_fail' at
-rdma.c:1800, where it is dereferenced.
+Hi,
 
-I understand, that driver is confident that the
-RDMA_CM_EVENT_CONNECT_REQUEST event will occur first and perform
-initialization, but maliciously prepared hardware could send events in
-violation of the protocol. Nothing guarantees that the sequence of events
-will start with RDMA_CM_EVENT_CONNECT_REQUEST.
+In the drm_device structure, it is mentioned: "@event_lock: Protects
+@vblank_event_list and event delivery in general." I believe that the
+validity check and the subsequent null assignment operation are part
+of the event delivery process, and all of these should be protected by
+the event_lock. If there is no lock protection before the validity
+check, it is possible for a null crtc->state->event to be passed into
+the drm_crtc_send_vblank_event() function, leading to a null pointer
+dereference error.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE
+We have observed its callers and found that they are from the
+drm_crtc_helper_funcs driver interface. We believe that functions
+within driver interfaces can be concurrent, potentially causing a data
+race on crtc->state->event.
 
-Fixes: e1a2ee249b19 ("nvmet-rdma: Fix use after free in nvmet_rdma_cm_handl=
-er()")
-Cc: stable@vger.kernel.org
-Signed-off-by: George Rurikov <g.ryurikov@securitycode.ru>
----
- drivers/nvme/target/rdma.c | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/nvme/target/rdma.c b/drivers/nvme/target/rdma.c
-index 1b6264fa5803..becebc95f349 100644
---- a/drivers/nvme/target/rdma.c
-+++ b/drivers/nvme/target/rdma.c
-@@ -1770,8 +1770,10 @@ static int nvmet_rdma_cm_handler(struct rdma_cm_id *=
-cm_id,
-                ret =3D nvmet_rdma_queue_connect(cm_id, event);
-                break;
-        case RDMA_CM_EVENT_ESTABLISHED:
--               nvmet_rdma_queue_established(queue);
--               break;
-+               if (!queue) {
-+                       nvmet_rdma_queue_established(queue);
-+                       break;
-+               }
-        case RDMA_CM_EVENT_ADDR_CHANGE:
-                if (!queue) {
-                        struct nvmet_rdma_port *port =3D cm_id->context;
-@@ -1782,8 +1784,10 @@ static int nvmet_rdma_cm_handler(struct rdma_cm_id *=
-cm_id,
-                fallthrough;
-        case RDMA_CM_EVENT_DISCONNECTED:
-        case RDMA_CM_EVENT_TIMEWAIT_EXIT:
--               nvmet_rdma_queue_disconnect(queue);
--               break;
-+               if (!queue) {
-+                       nvmet_rdma_queue_disconnect(queue);
-+                       break;
-+               }
-        case RDMA_CM_EVENT_DEVICE_REMOVAL:
-                ret =3D nvmet_rdma_device_removal(cm_id, queue);
-                break;
-@@ -1793,8 +1797,10 @@ static int nvmet_rdma_cm_handler(struct rdma_cm_id *=
-cm_id,
-                fallthrough;
-        case RDMA_CM_EVENT_UNREACHABLE:
-        case RDMA_CM_EVENT_CONNECT_ERROR:
--               nvmet_rdma_queue_connect_fail(cm_id, queue);
--               break;
-+               if (!queue) {
-+                       nvmet_rdma_queue_connect_fail(cm_id, queue);
-+                       break;
-+               }
-        default:
-                pr_err("received unrecognized RDMA CM event %d\n",
-                        event->event);
---
-2.34.1
-
-=D0=97=D0=B0=D1=8F=D0=B2=D0=BB=D0=B5=D0=BD=D0=B8=D0=B5 =D0=BE =D0=BA=D0=BE=
-=D0=BD=D1=84=D0=B8=D0=B4=D0=B5=D0=BD=D1=86=D0=B8=D0=B0=D0=BB=D1=8C=D0=BD=D0=
-=BE=D1=81=D1=82=D0=B8
-
-=D0=94=D0=B0=D0=BD=D0=BD=D0=BE=D0=B5 =D1=8D=D0=BB=D0=B5=D0=BA=D1=82=D1=80=
-=D0=BE=D0=BD=D0=BD=D0=BE=D0=B5 =D0=BF=D0=B8=D1=81=D1=8C=D0=BC=D0=BE =D0=B8 =
-=D0=BB=D1=8E=D0=B1=D1=8B=D0=B5 =D0=BF=D1=80=D0=B8=D0=BB=D0=BE=D0=B6=D0=B5=
-=D0=BD=D0=B8=D1=8F =D0=BA =D0=BD=D0=B5=D0=BC=D1=83 =D1=8F=D0=B2=D0=BB=D1=8F=
-=D1=8E=D1=82=D1=81=D1=8F =D0=BA=D0=BE=D0=BD=D1=84=D0=B8=D0=B4=D0=B5=D0=BD=
-=D1=86=D0=B8=D0=B0=D0=BB=D1=8C=D0=BD=D1=8B=D0=BC=D0=B8 =D0=B8 =D0=BF=D1=80=
-=D0=B5=D0=B4=D0=BD=D0=B0=D0=B7=D0=BD=D0=B0=D1=87=D0=B5=D0=BD=D1=8B =D0=B8=
-=D1=81=D0=BA=D0=BB=D1=8E=D1=87=D0=B8=D1=82=D0=B5=D0=BB=D1=8C=D0=BD=D0=BE =
-=D0=B4=D0=BB=D1=8F =D0=B0=D0=B4=D1=80=D0=B5=D1=81=D0=B0=D1=82=D0=B0. =D0=95=
-=D1=81=D0=BB=D0=B8 =D0=92=D1=8B =D0=BD=D0=B5 =D1=8F=D0=B2=D0=BB=D1=8F=D0=B5=
-=D1=82=D0=B5=D1=81=D1=8C =D0=B0=D0=B4=D1=80=D0=B5=D1=81=D0=B0=D1=82=D0=BE=
-=D0=BC =D0=B4=D0=B0=D0=BD=D0=BD=D0=BE=D0=B3=D0=BE =D0=BF=D0=B8=D1=81=D1=8C=
-=D0=BC=D0=B0, =D0=BF=D0=BE=D0=B6=D0=B0=D0=BB=D1=83=D0=B9=D1=81=D1=82=D0=B0,=
- =D1=83=D0=B2=D0=B5=D0=B4=D0=BE=D0=BC=D0=B8=D1=82=D0=B5 =D0=BD=D0=B5=D0=BC=
-=D0=B5=D0=B4=D0=BB=D0=B5=D0=BD=D0=BD=D0=BE =D0=BE=D1=82=D0=BF=D1=80=D0=B0=
-=D0=B2=D0=B8=D1=82=D0=B5=D0=BB=D1=8F, =D0=BD=D0=B5 =D1=80=D0=B0=D1=81=D0=BA=
-=D1=80=D1=8B=D0=B2=D0=B0=D0=B9=D1=82=D0=B5 =D1=81=D0=BE=D0=B4=D0=B5=D1=80=
-=D0=B6=D0=B0=D0=BD=D0=B8=D0=B5 =D0=B4=D1=80=D1=83=D0=B3=D0=B8=D0=BC =D0=BB=
-=D0=B8=D1=86=D0=B0=D0=BC, =D0=BD=D0=B5 =D0=B8=D1=81=D0=BF=D0=BE=D0=BB=D1=8C=
-=D0=B7=D1=83=D0=B9=D1=82=D0=B5 =D0=B5=D0=B3=D0=BE =D0=B2 =D0=BA=D0=B0=D0=BA=
-=D0=B8=D1=85-=D0=BB=D0=B8=D0=B1=D0=BE =D1=86=D0=B5=D0=BB=D1=8F=D1=85, =D0=
-=BD=D0=B5 =D1=85=D1=80=D0=B0=D0=BD=D0=B8=D1=82=D0=B5 =D0=B8 =D0=BD=D0=B5 =
-=D0=BA=D0=BE=D0=BF=D0=B8=D1=80=D1=83=D0=B9=D1=82=D0=B5 =D0=B8=D0=BD=D1=84=
-=D0=BE=D1=80=D0=BC=D0=B0=D1=86=D0=B8=D1=8E =D0=BB=D1=8E=D0=B1=D1=8B=D0=BC =
-=D1=81=D0=BF=D0=BE=D1=81=D0=BE=D0=B1=D0=BE=D0=BC.
+Qiu-ji Chen
 
