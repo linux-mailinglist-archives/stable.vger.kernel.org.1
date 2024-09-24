@@ -1,69 +1,69 @@
-Return-Path: <stable+bounces-76957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3A03983C93
-	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 07:59:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 959FE983D5A
+	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 08:51:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 599F028237A
-	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 05:59:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A530283DF1
+	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 06:51:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45DD353363;
-	Tue, 24 Sep 2024 05:58:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 538335A79B;
+	Tue, 24 Sep 2024 06:51:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="egmwlRTu"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="UdrwcHEb"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E6104962B
-	for <stable@vger.kernel.org>; Tue, 24 Sep 2024 05:58:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8C4454FB5
+	for <stable@vger.kernel.org>; Tue, 24 Sep 2024 06:51:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727157537; cv=none; b=eFaRZXozO6HP8MxfngouuMk7A5VVbybtQE24ou5b5mgN75E4lfNsBWM4dck8lRZlApYmv5E+E1QDvb9T875e8tk67B8qYI5mWMgoWK7Owu75iK6cB9s/m3bXPqBnl20XNt4bZYHThsSGali+iS+bmVzbmheFSJcePNQhBrFJxpI=
+	t=1727160663; cv=none; b=g/RinmF6WlxnzRgIjnGoPVuXfbcWicIEG0FzJS868kZpVLz7nHEejBjy7/XEy0ew4X+Na0WyJEsMGnhYJyz6oysWEzP9s6yJ33j+h6PeRnB1oTe3lqcmitoz7DdQqc0ArTHD7uN2iBpnWpmN2YhX8qyI0b4REFi7I4x/Ablc5fk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727157537; c=relaxed/simple;
-	bh=ob21lybJrdERUbqkYpjIHA94wyFzwUG+tzNd5PyOx7M=;
+	s=arc-20240116; t=1727160663; c=relaxed/simple;
+	bh=LpsqiJvMgPeFGUk+BZZEvqNyd7oNQvz6Lh1UHfN/Jdg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MyugzLZkax7lwENiojxYex05yODRt3a3hqYsBIdVX15QbMJugqtLZVuKxpZtMK6ukcBdzz+cXfisKmnM3emyaQ4tuii+V4TZi5lBQs0Rr1hSDeRmzfoSv20Hihs3Toe7KKBqqh7TYREU6jCuiXmBtu8WOcBl1zG7W9i/v18DjpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=egmwlRTu; arc=none smtp.client-ip=209.85.214.180
+	 Content-Type:Content-Disposition:In-Reply-To; b=cMFaX6XqwDZrrg3FQCxYsCt4QXgFQZp1THEZNXdEtn8Dn/QTf/rHQi3DG8mG1brDg7j+t1eaLw0iol53ZdSZGKy4kQgL/BAMPd8i1BHdaEcgnengH0cJ5bpV8u5GZ7j/uIWCtukZDTgqEl21dM9LuNk4wrqZJkqTZiZXF566RvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=UdrwcHEb; arc=none smtp.client-ip=209.85.214.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2068a7c9286so51159575ad.1
-        for <stable@vger.kernel.org>; Mon, 23 Sep 2024 22:58:55 -0700 (PDT)
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-20570b42f24so56481715ad.1
+        for <stable@vger.kernel.org>; Mon, 23 Sep 2024 23:51:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1727157535; x=1727762335; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1727160661; x=1727765461; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yRtIYDanldq3DTAtfPE2b78bokU628Re5ejpctfqrkE=;
-        b=egmwlRTuiyKC4XEhCx+Qz0uk55Zvaok1L5Df5M4EldpRMyulwqUqWz8FUQBV4sfUzX
-         CwlQAW7k7UJQyfmwwyIOr+2RfhHGyxm3RfGTAUipxBcQie+Rmmju4AN1FK9SBcmzJRfe
-         PqQsDohF3QEP8o7nTmucUZGtfCognaKbz0dKU=
+        bh=E/4TVrZGAPYYZ9jgK0SoUaboMFGCpBKiH3t0JiBxkdE=;
+        b=UdrwcHEbdf618KJiMNMrIGqYphlbDhR9+dV3iUpzKuq+OdtdTXARO577wptxGjIXEa
+         2PgX30ITBo6mU52q0nKCYEO7FjXCurWnadY0QoRN69jMhBblbilGLk0ebz23qXwjkU5R
+         d4pxHnwcfptku4iRn2bbaQ0a5ylT/1yhGwp6Q=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727157535; x=1727762335;
+        d=1e100.net; s=20230601; t=1727160661; x=1727765461;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=yRtIYDanldq3DTAtfPE2b78bokU628Re5ejpctfqrkE=;
-        b=ZHMpMZnYh3HZphJrkf/fkLfQiVY0EgvlZfAnU8Jq+eyJBLiVYLPv8SIjrAxPJva/Y/
-         eZOTxywWFm7j87OvxXt2GlIs/QSxCWk7jIz7xRVVNs3FvddphZjGjagum3m5qLM9kRZV
-         axHrxcKrRTdv7dwF5vSWNaXrKy5gin/jaXkuZCr9oskLO10+IhjS6CTJAHK6uWYp47e/
-         jzGFLTsGJSCfOrOcv4Pca22wuOAhax9qi6/O7N1Rn7LoQe6CoMrEEwmHc6/+BfAYrjRK
-         Gpq3fVYb1DXj5CTARb9ebdicnblH7fVB/XQChF4fhoD5mvgnp87TgQB+RY8BDQWRhi5s
-         euMA==
-X-Forwarded-Encrypted: i=1; AJvYcCUROtazA1qid53mPJA1ZU8MXp8EcH1vW3KW3PYSU7IX/EkYWYoIfJUWlWD9qrbj3tkmNVqpYco=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxJ9jyAwaqneR7ByGrlPo1lmRyVf0KfDIjKdWEBW5tGxxZB+yT0
-	FtCpwrSfqj39frvXR7E2SusXCsDTRSaXJMf0+0dQKgd1KK5yLuQY9CVJe1qpZw==
-X-Google-Smtp-Source: AGHT+IEb2Cn0zNdg8UplHAxAAyvpzeRYOYRjPnX0YOgSQ3eHhbrWgDCH7EhJ/T20eSMR4UZqEpLKFw==
-X-Received: by 2002:a17:902:db05:b0:1fb:62e8:ae98 with SMTP id d9443c01a7336-208d833b445mr215821195ad.3.1727157534724;
-        Mon, 23 Sep 2024 22:58:54 -0700 (PDT)
+        bh=E/4TVrZGAPYYZ9jgK0SoUaboMFGCpBKiH3t0JiBxkdE=;
+        b=MguMkFzfZb44YHfW+Ro5KhxcTFeImYnduwCzM5BaahNS7FhgNZbR1cKmSXofwRSX0Q
+         9yzDOqOrK5hdmWBUEXzuXsVnlq4jki3fmTe09zohQX4vCuCnuI678EZijyDGhCqkjRx3
+         hkBgvPDP05OsVR70YZnLSmpJS1yf5DRQ3erQb2WUQfAcsHtQAsI7HjsKYUGHXdCfbME3
+         Mpn8sDrqPzOi58fL+IZfgbgojAj7uDv3RQeuUZFOfErtHnrKYlucCYHGJk51NtCYy+gL
+         s5r2BhIA0IlEnD2iF/XGtbLxBU6DP49QzgCwgzkrm4B+itnbH7mWYmHgEvEp6If9+EQj
+         NF/A==
+X-Forwarded-Encrypted: i=1; AJvYcCVf8b6e3pSFSSew2+2Pw+nCfmQOvmQtUbYNyK1KyQDd2vu4EKjbA6OTGnTVVui5UEtc6A2OVrI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzehxkEVVggHHNe85aSQ3YperlVlegVpW0qaRK0yELr4SF2q93y
+	K8n31iCoJip/ggSvSH4Pt7GPZH2SfsA2CUjM7t5hTTn+WfbBrm0Qc2ArCnmlZQ==
+X-Google-Smtp-Source: AGHT+IHL8eRo0RSvvbNDTCkEkAe7y/UEEpovG0ZqtEloktAHurr+zf+J8pOugx0pBfpmpOm/9jfvfA==
+X-Received: by 2002:a17:903:41c9:b0:201:f1eb:bf98 with SMTP id d9443c01a7336-208d840ace4mr182071705ad.54.1727160661152;
+        Mon, 23 Sep 2024 23:51:01 -0700 (PDT)
 Received: from google.com ([2401:fa00:8f:203:93d1:1107:fd24:adf0])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20af1726745sm4172335ad.111.2024.09.23.22.58.52
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20af1818a88sm4874115ad.210.2024.09.23.23.50.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Sep 2024 22:58:54 -0700 (PDT)
-Date: Tue, 24 Sep 2024 14:58:50 +0900
+        Mon, 23 Sep 2024 23:51:00 -0700 (PDT)
+Date: Tue, 24 Sep 2024 15:50:56 +0900
 From: Sergey Senozhatsky <senozhatsky@chromium.org>
 To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 Cc: Andrey Skvortsov <andrej.skvortzov@gmail.com>,
@@ -74,7 +74,7 @@ Cc: Andrey Skvortsov <andrej.skvortzov@gmail.com>,
 	stable@vger.kernel.org,
 	Sergey Senozhatsky <senozhatsky@chromium.org>
 Subject: Re: [PATCH v3] zram: don't free statically defined names
-Message-ID: <20240924055850.GN38742@google.com>
+Message-ID: <20240924065056.GP38742@google.com>
 References: <20240923164843.1117010-1-andrej.skvortzov@gmail.com>
  <c8a4e62e-6c24-4b06-ac86-64cc4697bc2f@wanadoo.fr>
  <ZvHurCYlCoi1ZTCX@skv.local>
@@ -95,149 +95,18 @@ On (24/09/24 14:49), Sergey Senozhatsky wrote:
 > [..]
 > > > kfree_const() will not work if zram is built as a module. It works
 > > > only for .rodata for kernel image. [1]
-> > >
+> > > 
 > > > 1. https://elixir.bootlin.com/linux/v6.11/source/include/asm-generic/sections.h#L177
-> > >
-> >
+> > > 
+> > 
 > > If so, then it is likely that it is not correctly used elsewhere.
-> >
+> > 
 > > https://elixir.bootlin.com/linux/v6.11/source/drivers/dax/kmem.c#L289
 > > https://elixir.bootlin.com/linux/v6.11/source/drivers/firmware/arm_scmi/bus.c#L341
 > > https://elixir.bootlin.com/linux/v6.11/source/drivers/input/touchscreen/chipone_icn8505.c#L379
->
-> icn8505_probe_acpi() uses kfree_const(subsys)...
->
-> subsys is returned from acpi_get_subsystem_id() which only
-> does
-> 		sub = kstrdup(obj->string.pointer, GFP_KERNEL);
->
-> However, if acpi_get_subsystem_id() returns an error then
-> icn8505_probe_acpi() does
->
-> 		subsys = "unknown";
->
-> and I suspect that kfree_const(subsys) can, in fact, explode?
 
-A trivial test to replicate icn8505_probe_acpi() error path
-
-(zram built as a module)
-
----
-diff --git a/drivers/block/zram/zram_drv.c b/drivers/block/zram/zram_drv.c
-index d3329a67e805..5cd65dd7dafa 100644
---- a/drivers/block/zram/zram_drv.c
-+++ b/drivers/block/zram/zram_drv.c
-@@ -2719,11 +2719,21 @@ static void destroy_devices(void)
-        cpuhp_remove_multi_state(CPUHP_ZCOMP_PREPARE);
- }
-
-+static void boom(void)
-+{
-+       char *str = "unknown";
-+
-+       pr_err(":: kfree_const() %s\n", str);
-+       kfree_const(str);
-+}
-+
- static int __init zram_init(void)
- {
-        struct zram_table_entry zram_te;
-        int ret;
-
-+       boom();
-+
-        BUILD_BUG_ON(__NR_ZRAM_PAGEFLAGS > sizeof(zram_te.flags) * 8);
-
-        ret = cpuhp_setup_state_multi(CPUHP_ZCOMP_PREPARE, "block/zram:prepare",
----
-
-
-[   15.494947] zram: :: kfree_const() unknown
-[..]
-[   15.498085] WARNING: CPU: 5 PID: 420 at mm/slub.c:4690 free_large_kmalloc+0x18/0xb0
-[   15.500393] Modules linked in: zram(+) 842_decompress 842_compress zsmalloc zstd_compress lz4hc_compress lz4_compress zlib_deflate
-[   15.503405] CPU: 5 UID: 0 PID: 420 Comm: modprobe Tainted: G                 N 6.11.0-next-20240920+ #727
-[   15.506013] Tainted: [N]=TEST
-[   15.506792] RIP: 0010:free_large_kmalloc+0x18/0xb0
-[..]
-[   15.531487] Call Trace:
-[   15.532102]  <TASK>
-[   15.532616]  ? __warn+0x12d/0x340
-[   15.533409]  ? free_large_kmalloc+0x18/0xb0
-[   15.534397]  ? free_large_kmalloc+0x18/0xb0
-[   15.535426]  ? report_bug+0x170/0x380
-[   15.536365]  ? handle_bug+0x5c/0xa0
-[   15.537206]  ? exc_invalid_op+0x16/0x40
-[   15.538155]  ? asm_exc_invalid_op+0x16/0x20
-[   15.539189]  ? free_large_kmalloc+0x18/0xb0
-[   15.540194]  init_module+0x25/0xffb [zram]
-[   15.541173]  do_one_initcall+0x130/0x450
-[   15.542143]  ? __cfi_init_module+0x5/0x5 [zram]
-[   15.543282]  ? stack_depot_save_flags+0x25/0x700
-[   15.544413]  ? stack_trace_save+0xb3/0x150
-[   15.545428]  ? kasan_save_track+0x3c/0x60
-[   15.546401]  ? kasan_save_track+0x2b/0x60
-[   15.547364]  ? __kasan_kmalloc+0x6e/0x80
-[   15.548350]  ? do_init_module+0x16e/0x890
-[   15.549348]  ? __se_sys_finit_module+0x513/0x7e0
-[   15.550437]  ? do_syscall_64+0x71/0x110
-[   15.551385]  ? entry_SYSCALL_64_after_hwframe+0x4b/0x53
-[   15.552662]  ? stack_depot_save_flags+0x25/0x700
-[   15.553751]  ? stack_trace_save+0xb3/0x150
-[   15.554754]  ? __create_object+0x62/0x110
-[   15.555767]  ? do_raw_spin_unlock+0x5a/0x950
-[   15.556778]  ? __create_object+0x62/0x110
-[   15.557727]  ? _raw_spin_unlock_irqrestore+0x31/0x40
-[   15.558928]  ? __create_object+0x62/0x110
-[   15.559947]  ? kasan_unpoison+0x49/0x70
-[   15.560855]  ? __asan_register_globals+0x54/0x70
-[   15.561976]  do_init_module+0x36a/0x890
-[   15.562940]  __se_sys_finit_module+0x513/0x7e0
-[   15.564034]  do_syscall_64+0x71/0x110
-[   15.564948]  entry_SYSCALL_64_after_hwframe+0x4b/0x53
-[..]
-[   15.894538] kernel BUG at include/linux/mm.h:1140!
-[   15.895727] Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
-[   15.897003] CPU: 5 UID: 0 PID: 420 Comm: modprobe Tainted: G    B   W        N 6.11.0-next-20240920+ #727
-[   15.899215] Tainted: [B]=BAD_PAGE, [W]=WARN, [N]=TEST
-[   15.900395] RIP: 0010:free_large_kmalloc+0xaa/0xb0
-[..]
-[   15.924239] Call Trace:
-[   15.924836]  <TASK>
-[   15.925343]  ? __die_body+0x66/0xb0
-[   15.926183]  ? die+0xa0/0xc0
-[   15.926873]  ? do_trap+0xf4/0x2e0
-[   15.927671]  ? free_large_kmalloc+0xaa/0xb0
-[   15.928665]  ? do_error_trap+0xfc/0x180
-[   15.929567]  ? free_large_kmalloc+0xaa/0xb0
-[   15.930550]  ? handle_invalid_op+0x4f/0x60
-[   15.931529]  ? free_large_kmalloc+0xaa/0xb0
-[   15.932513]  ? exc_invalid_op+0x2f/0x40
-[   15.933422]  ? asm_exc_invalid_op+0x16/0x20
-[   15.934413]  ? free_large_kmalloc+0xaa/0xb0
-[   15.935410]  init_module+0x25/0xffb [zram]
-[   15.936375]  do_one_initcall+0x130/0x450
-[   15.937306]  ? __cfi_init_module+0x5/0x5 [zram]
-[   15.938550]  ? stack_depot_save_flags+0x25/0x700
-[   15.939799]  ? stack_trace_save+0xb3/0x150
-[   15.940786]  ? kasan_save_track+0x3c/0x60
-[   15.941755]  ? kasan_save_track+0x2b/0x60
-[   15.942729]  ? __kasan_kmalloc+0x6e/0x80
-[   15.943697]  ? do_init_module+0x16e/0x890
-[   15.944665]  ? __se_sys_finit_module+0x513/0x7e0
-[   15.945782]  ? do_syscall_64+0x71/0x110
-[   15.946716]  ? entry_SYSCALL_64_after_hwframe+0x4b/0x53
-[   15.947978]  ? stack_depot_save_flags+0x25/0x700
-[   15.949091]  ? stack_trace_save+0xb3/0x150
-[   15.950082]  ? __create_object+0x62/0x110
-[   15.951052]  ? do_raw_spin_unlock+0x5a/0x950
-[   15.952094]  ? __create_object+0x62/0x110
-[   15.953064]  ? _raw_spin_unlock_irqrestore+0x31/0x40
-[   15.954255]  ? __create_object+0x62/0x110
-[   15.955221]  ? kasan_unpoison+0x49/0x70
-[   15.956154]  ? __asan_register_globals+0x54/0x70
-[   15.957261]  do_init_module+0x36a/0x890
-[   15.958199]  __se_sys_finit_module+0x513/0x7e0
-[   15.959282]  do_syscall_64+0x71/0x110
-[   15.960172]  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+OK there are too many users of kfree_const() in drivers/ so
+un-exporting it is not an option, that was a silly idea.  We
+probably need to walk through them and make sure that they
+don't kfree_const() modules' .rodata
 
