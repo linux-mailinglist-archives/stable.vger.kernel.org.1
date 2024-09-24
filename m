@@ -1,30 +1,30 @@
-Return-Path: <stable+bounces-76980-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E3269843FA
-	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 12:48:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E43A984466
+	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 13:21:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 028BD2885EB
-	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 10:48:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0E01C283E5B
+	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 11:21:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AA2F1A3A9A;
-	Tue, 24 Sep 2024 10:48:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0D601A3AB6;
+	Tue, 24 Sep 2024 11:20:58 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from MSK-MAILEDGE.securitycode.ru (msk-mailedge.securitycode.ru [195.133.217.143])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 018E919E972;
-	Tue, 24 Sep 2024 10:48:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7E031A270;
+	Tue, 24 Sep 2024 11:20:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.133.217.143
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727174889; cv=none; b=iKMPpfM1o68a6NfObiVK70iDlJOgLXXleYaC994vQoA7mWFexFPRxu0ZdQ4zzeR5KfqIIabuLpJciKtaY31Klt4ZlqUKcKi5fHNXd353hDBjyBMOEwSGB/AIAA3Y8Q1nzvEOBdBdukZL6DVGEE6TGZ6z5mNi2IIEfBQ48rJYfp4=
+	t=1727176858; cv=none; b=p2ibdU5EHJQImgNyGN5CX9J6b6Dpptiafk7Mxl2aD42pzZvqN9NpJf98idp/ePRz6l6beXxyCw2nR37ZPMLqvVQ6lSvxyveFgCwEUnmHD8q1NuGbywN5mp0K7doxvlPN21xQMnA3evBP7lLCOSKU9qLsOr9QmRSy8GqaA0WL2Jw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727174889; c=relaxed/simple;
-	bh=GKn+W0VDsGgKD/6+iLR+VS9JVxXQWyiz/c9pZjsf4Dw=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=JNrjexjb9OcM0PAtETmBvZYd7H1WEkUGLF96uvwWKzKBrgv7mCR5v71wdaXYxX/X7hUYzaIX+8aqHTIMeJaAS4bbB7UgKZuC7I4LmL4Waz7xugaUvKzyj+GkBnVKQbNwAb3VCFCrN8BH2nyOpVnvuFqpHyHe38FD1RVHvWyRZG4=
+	s=arc-20240116; t=1727176858; c=relaxed/simple;
+	bh=8digug/2eny5eemeKKr826HxeviLtUFg+wRijkLLm4g=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=DlJtoUTkhhI6HcWJDaHYE3ibBvxnKYmoQ5bAU2BxoWILiy7rrEy4C8oxsjgUQHyuB6Q11EOx0f61hgBjxqvHr5z7CYCXQ4jWt2/1WPAESiuKa03YWSo+uy8Kr6A7Xrx9NFLfyIcixuJ8Iz4HNbEgPf3hOZmLIOmNBx8F9Sb2cCw=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=securitycode.ru; spf=pass smtp.mailfrom=securitycode.ru; arc=none smtp.client-ip=195.133.217.143
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=securitycode.ru
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=securitycode.ru
@@ -37,8 +37,8 @@ CC: George Rurikov <g.ryurikov@securitycode.ru>, Rodrigo Vivi
 	<intel-xe@lists.freedesktop.org>, <dri-devel@lists.freedesktop.og>,
 	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
 Subject: [PATCH] drm: Add check for encoder in intel_get_crtc_new_encoder()
-Date: Tue, 24 Sep 2024 13:47:22 +0300
-Message-ID: <20240924104722.1049588-1-g.ryurikov@securitycode.ru>
+Date: Tue, 24 Sep 2024 14:20:23 +0300
+Message-ID: <20240924112023.1071395-1-g.ryurikov@securitycode.ru>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -67,26 +67,25 @@ Fixes: e12d6218fda2 ("drm/i915: Reduce bigjoiner special casing")
 Cc: stable@vger.kernel.org
 Signed-off-by: George Rurikov <g.ryurikov@securitycode.ru>
 ---
- drivers/gpu/drm/i915/display/intel_display.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/i915/display/intel_display.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/gpu/drm/i915/display/intel_display.c b/drivers/gpu/drm=
 /i915/display/intel_display.c
-index b4ef4d59da1a..a5e24d64f909 100644
+index b4ef4d59da1a..1f25b12e5f67 100644
 --- a/drivers/gpu/drm/i915/display/intel_display.c
 +++ b/drivers/gpu/drm/i915/display/intel_display.c
-@@ -819,9 +819,10 @@ intel_get_crtc_new_encoder(const struct intel_atomic_s=
+@@ -819,9 +819,11 @@ intel_get_crtc_new_encoder(const struct intel_atomic_s=
 tate *state,
                 num_encoders++;
         }
 
 -       drm_WARN(state->base.dev, num_encoders !=3D 1,
--                "%d encoders for pipe %c\n",
--                num_encoders, pipe_name(primary_crtc->pipe));
-+       if (encoder)
++       if (encoder) {
 +               drm_WARN(state->base.dev, num_encoders !=3D 1,
-+                       "%d encoders for pipe %c\n",
-+                       num_encoders, pipe_name(primary_crtc->pipe));
+                 "%d encoders for pipe %c\n",
+                 num_encoders, pipe_name(primary_crtc->pipe));
++       }
 
         return encoder;
  }
