@@ -1,120 +1,164 @@
-Return-Path: <stable+bounces-77007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F13499849CD
-	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 18:40:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56FE09849D0
+	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 18:41:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D45D1C20E77
-	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 16:40:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC9C41F263FE
+	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 16:41:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB6A11AB6D9;
-	Tue, 24 Sep 2024 16:40:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 191731AC42A;
+	Tue, 24 Sep 2024 16:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="jC8Rlx9s"
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="nmoPLdUa"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C951450EE;
-	Tue, 24 Sep 2024 16:40:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 254FF1AB6EC;
+	Tue, 24 Sep 2024 16:40:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727196009; cv=none; b=OMtNXUgu4h/ssxGaCA/x5JNF3v9m8/yCsrb0+xehHT+AxNh/zAZTLHQ8pFBrYRsA1G08cijDFR6lsh0vn2iqgJIaHnon9F+sSmsdTieQT+iFZRqfl7I3TI1KS4p8VzbAqNoGlljXoHoxt9y7wmfy3415ZSirhOvz93tclz4sMOE=
+	t=1727196055; cv=none; b=bM33kWBWYXNKYX0loBXox1l1zVgSvfqKLl9Y9G9kmmW6N7qlUqtWzZFDphB3FnAeIsNDo4B+KLT2IuByStr9kQxGi+kQd2e44OGSlugUMybhBWOcQGMxT8l0UYGTKiDtwEGHDdEmtGFXYAkJxW++BJbECpsnUbMWAr/ZIBiB72Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727196009; c=relaxed/simple;
-	bh=xj6w9URrBWds9umEiqeHVQAcJUYo6SBiWT/Uq+bRy48=;
-	h=Date:To:From:Subject:Message-Id; b=aQ2FKgsQyg6w7Owo/kzsJrVehel9DHO3gEZU8O8SHl/Tv/u8d+pbqZcHBMHTanRB0kcUPm2vpjnc3G1UnF1GItX6aH4bLnD6/bzai4sx1n2MeTicRTcruEtDu2hjIzb0eDP0QPCQegqnrtUeo5aEsXQx/9VgvIgl/E3434DIIsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=jC8Rlx9s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BD08C4CEC4;
-	Tue, 24 Sep 2024 16:40:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1727196009;
-	bh=xj6w9URrBWds9umEiqeHVQAcJUYo6SBiWT/Uq+bRy48=;
-	h=Date:To:From:Subject:From;
-	b=jC8Rlx9sT1aSLxzdOekwHIxV62aWbR84MSMcICFdVzLMyivp/RoYTzLedvNTuqbmf
-	 rd1Zd+Qs51aZgl5EV13WEFYGk2WM3a/W85/jFd5OCeRtteKGkiAftyG3GCC8bhV6Dq
-	 WYiiURbdYHvUQUTDmiZxqtqfx/pJM5ZtPZQmW/9Y=
-Date: Tue, 24 Sep 2024 09:40:08 -0700
-To: mm-commits@vger.kernel.org,steffen.klassert@secunet.com,stable@vger.kernel.org,longman@redhat.com,herbert@gondor.apana.org.au,daniel.m.jordan@oracle.com,kamlesh@ti.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [alternative-merged] padata-honor-the-callers-alignment-in-case-of-chunk_size-0.patch removed from -mm tree
-Message-Id: <20240924164009.0BD08C4CEC4@smtp.kernel.org>
+	s=arc-20240116; t=1727196055; c=relaxed/simple;
+	bh=c4/FXaABwTV61KcHglbl6e2JQeLbds1ZzvF3ocQXVAs=;
+	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DyTJnZgYVb5YLueqpgpRjS/3nA0KUePMJt04I+aQwnlQUywSNSgB/jr6I0nWeuQoq+vT+tw/8DpY4qEkYsWji4X6cGFM8mTJ0BQesIo//C6SID/D+ixPLB0yo75VZYhSjFcpzivm5wELrP1h5jZp9/9V2rp4FOS/kvJjYV6f5ro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=nmoPLdUa; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48O8H3YN021730;
+	Tue, 24 Sep 2024 16:40:50 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=1aXdEYh5NFr5tG7RMivDvlqL
+	RnRj5TY7endHsnkXyH0=; b=nmoPLdUaBwvQZYy/MS5xYORaUMxgDJ/0eI+V7akD
+	IyKWAheosOW0VkaJbQxvmkgp5akhoE/Sum/Yz7Tn9hV3EXuauL0ACC8WtChCpfQf
+	zGGHRCDzAXzbx6NTSvDmnVDtteNMmpJ7Y6q/2qQ+Y3LDB2m6bQ9e0u6nowhI34fZ
+	fmkf3Dza0d71ayLCjNcqpbJ7VZABVeVdvRGcbBZe12vfqtop5/Ff8paMRI5LduXn
+	r9GxLQbEf7FsWk3lJuFbj00QW8UAlsVQEFDDxySmsyFq1NnLe/oI3OJagd/XOQNA
+	jse3WmjGTZPemKmz6YFqbiFM1s1U9EGRWmJzD6sNKPHS5w==
+Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41sqe9920h-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 24 Sep 2024 16:40:49 +0000 (GMT)
+Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
+	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 48OGenZ1016815
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 24 Sep 2024 16:40:49 GMT
+Received: from hu-bjorande-lv.qualcomm.com (10.49.16.6) by
+ nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Tue, 24 Sep 2024 09:40:48 -0700
+Date: Tue, 24 Sep 2024 09:40:47 -0700
+From: Bjorn Andersson <quic_bjorande@quicinc.com>
+To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+CC: Chris Lew <quic_clew@quicinc.com>, Johan Hovold <johan@kernel.org>,
+        "Bjorn
+ Andersson" <andersson@kernel.org>,
+        Konrad Dybcio <konradybcio@kernel.org>,
+        Stephan Gerhold <stephan.gerhold@linaro.org>,
+        <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+        <stable@vger.kernel.org>
+Subject: Re: [PATCH] soc: qcom: pd_mapper: fix ADSP PD maps
+Message-ID: <ZvLrj+gYaBzgwdLu@hu-bjorande-lv.qualcomm.com>
+References: <20240918-x1e-fix-pdm-pdr-v1-1-cefc79bb33d1@linaro.org>
+ <Zu0wb-RSwnlb0Lma@hovoldconsulting.com>
+ <sziblrb4ggjzehl7fqwrh3bnedvwizh2vgymxu56zmls2whkup@yziunmooga7b>
+ <Zu06HiEpA--LbaoU@hovoldconsulting.com>
+ <18e971c6-a0ef-4d48-a592-ec035b05d2b7@quicinc.com>
+ <5pl7cewea6bfweqcnratmcb7r2plyzwyofsmcjixtkzwx7aih5@tm5c34mmzzb7>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <5pl7cewea6bfweqcnratmcb7r2plyzwyofsmcjixtkzwx7aih5@tm5c34mmzzb7>
+X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
+ nalasex01c.na.qualcomm.com (10.47.97.35)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: IE5gG0BAvEar2M4iPUOUCp5ZQjuGtk_c
+X-Proofpoint-GUID: IE5gG0BAvEar2M4iPUOUCp5ZQjuGtk_c
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
+ mlxlogscore=999 spamscore=0 lowpriorityscore=0 adultscore=0 mlxscore=0
+ suspectscore=0 malwarescore=0 phishscore=0 impostorscore=0 clxscore=1011
+ bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2408220000 definitions=main-2409240119
 
+On Fri, Sep 20, 2024 at 05:07:13PM +0300, Dmitry Baryshkov wrote:
+> On Fri, Sep 20, 2024 at 07:00:11AM GMT, Chris Lew wrote:
+> > 
+> > 
+> > On 9/20/2024 2:02 AM, Johan Hovold wrote:
+> > > On Fri, Sep 20, 2024 at 11:49:46AM +0300, Dmitry Baryshkov wrote:
+> > > > On Fri, Sep 20, 2024 at 10:21:03AM GMT, Johan Hovold wrote:
+> > > > > On Wed, Sep 18, 2024 at 04:02:39PM +0300, Dmitry Baryshkov wrote:
+> > > > > > On X1E8 devices root ADSP domain should have tms/pdr_enabled registered.
+> > > > > > Change the PDM domain data that is used for X1E80100 ADSP.
+> > > > > 
+> > > > > Please expand the commit message so that it explains why this is
+> > > > > needed and not just describes what the patch does.
+> > > > 
+> > > > Unfortunately in this case I have no idea. It marks the domain as
+> > > > restartable (?), this is what json files for CRD and T14s do. Maybe
+> > > > Chris can comment more.
+> > > 
+> > > Chris, could you help sort out if and why this change is needed?
+> > > 
+> > > 	https://lore.kernel.org/all/20240918-x1e-fix-pdm-pdr-v1-1-cefc79bb33d1@linaro.org/	
+> > > 
+> > 
+> > I don't think this change would help with the issue reported by Johan. From
+> > a quick glance, I couldn't find where exactly the restartable attribute is
+> > used, but this type of change would only matter when the ChargerPD is
+> > started or restarted.
+> 
+> This raises a question: should we care at all about the pdr_enabled? Is
+> it fine to drop it fromm all PD maps?
+> 
 
-The quilt patch titled
-     Subject: padata: honor the caller's alignment in case of chunk_size 0
-has been removed from the -mm tree.  Its filename was
-     padata-honor-the-callers-alignment-in-case-of-chunk_size-0.patch
+There's definitely benefits to pdr_enabled. I'd expect you could have
+examples such as audio firmware restarting without USB Type-C being
+reset.
 
-This patch was dropped because an alternative patch was or shall be merged
+So, the appropriate path forward would be to figure out how we can
+properly test the various levels of restarts in a continuous fashion and
+make sure it's enabled where it can be...
 
-------------------------------------------------------
-From: Kamlesh Gurudasani <kamlesh@ti.com>
-Subject: padata: honor the caller's alignment in case of chunk_size 0
-Date: Thu, 22 Aug 2024 02:32:52 +0530
+Regards,
+Bjorn
 
-In the case where we are forcing the ps.chunk_size to be at least 1, we
-are ignoring the caller's alignment.
-
-Move the forcing of ps.chunk_size to be at least 1 before rounding it up
-to caller's alignment, so that caller's alignment is honored.
-
-While at it, use max() to force the ps.chunk_size to be at least 1 to
-improve readability.
-
-Link: https://lkml.kernel.org/r/20240822-max-v1-1-cb4bc5b1c101@ti.com
-Fixes: 6d45e1c948a8 ("padata: Fix possible divide-by-0 panic in padata_mt_helper()")
-Signed-off-by: Kamlesh Gurudasani <kamlesh@ti.com>
-Acked-by: Waiman Long <longman@redhat.com>
-Cc: Daniel Jordan <daniel.m.jordan@oracle.com>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: Steffen Klassert <steffen.klassert@secunet.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- kernel/padata.c |   12 ++++--------
- 1 file changed, 4 insertions(+), 8 deletions(-)
-
---- a/kernel/padata.c~padata-honor-the-callers-alignment-in-case-of-chunk_size-0
-+++ a/kernel/padata.c
-@@ -509,21 +509,17 @@ void __init padata_do_multithreaded(stru
- 
- 	/*
- 	 * Chunk size is the amount of work a helper does per call to the
--	 * thread function.  Load balance large jobs between threads by
-+	 * thread function. Load balance large jobs between threads by
- 	 * increasing the number of chunks, guarantee at least the minimum
- 	 * chunk size from the caller, and honor the caller's alignment.
-+	 * Ensure chunk_size is at least 1 to prevent divide-by-0
-+	 * panic in padata_mt_helper().
- 	 */
- 	ps.chunk_size = job->size / (ps.nworks * load_balance_factor);
- 	ps.chunk_size = max(ps.chunk_size, job->min_chunk);
-+	ps.chunk_size = max(ps.chunk_size, 1ul);
- 	ps.chunk_size = roundup(ps.chunk_size, job->align);
- 
--	/*
--	 * chunk_size can be 0 if the caller sets min_chunk to 0. So force it
--	 * to at least 1 to prevent divide-by-0 panic in padata_mt_helper().`
--	 */
--	if (!ps.chunk_size)
--		ps.chunk_size = 1U;
--
- 	list_for_each_entry(pw, &works, pw_list)
- 		if (job->numa_aware) {
- 			int old_node = atomic_read(&last_used_nid);
-_
-
-Patches currently in -mm which might be from kamlesh@ti.com are
-
-
+> > 
+> > The PMIC_GLINK channel probing in rpmsg is dependent on ChargerPD starting,
+> > so we know ChargerPD can start with or without this change.
+> > 
+> > I can give this change a try next week to help give a better analysis.
+> > 
+> > > > > What is the expected impact of this and is there any chance that this is
+> > > > > related to some of the in-kernel pd-mapper regression I've reported
+> > > > > (e.g. audio not being registered and failing with a PDR error)?
+> > > > > 
+> > > > > 	https://lore.kernel.org/all/ZthVTC8dt1kSdjMb@hovoldconsulting.com/
+> > > > 
+> > > > Still debugging this, sidetracked by OSS / LPC.
+> > > 
+> > > Johan
+> 
+> -- 
+> With best wishes
+> Dmitry
+> 
+> 
 
