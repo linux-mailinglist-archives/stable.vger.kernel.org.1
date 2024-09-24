@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-77059-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77060-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 662E3984E12
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 00:47:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31529984EB1
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 01:07:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 720881C23514
-	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 22:47:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E657E284C0E
+	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 23:07:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A45FB176FA5;
-	Tue, 24 Sep 2024 22:47:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8FAC183CCD;
+	Tue, 24 Sep 2024 23:07:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="RS+DkPU0"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="UXxwi6tl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5101814F9D0;
-	Tue, 24 Sep 2024 22:47:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64B9A146A73;
+	Tue, 24 Sep 2024 23:07:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727218023; cv=none; b=d/KC6URiIaz6ZffDCcE9WksTfrZMQ6ZZl9vtJNnyNq3Y0d57pEPuaXCeDZPFB5NDe1wb3nwlWuLrqvWnmdxKGfMAgtKGF8ogKkgZemLvEBWtpNaTFqT84ueHSa82TdUWaCS8TGZCUaTjawTiVtDl3/+FW6kifdxS7/rlCyLMd+g=
+	t=1727219247; cv=none; b=W9o0VMEQGjz+LioM0Pou3hH5lsVePdVlaN9xI7LHC9vNFa8kIcO/5xiSmlZbUmzCjyk1qJooZPMGQyjrB8lAN56iijAeFcgFbByNXhjJW55SdES9aM+1bwRwDYGmxfuvTtF2BCzMURcWXrnZmA1O4XzbDCbKx6r3pNfYx0Vsf4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727218023; c=relaxed/simple;
-	bh=dpq2+c2jgsrmGjcEwkpMySA5s8CWB9zh3viGbGdpqdk=;
-	h=Date:To:From:Subject:Message-Id; b=FtRrd1ITsWdgrmKWGpw5m8fOu/33b5Fmy4cg2XqjL1HdQWkFOLMmOsXSQAiwwQcnw1+JvVjUlzE+5TaTJQPSt/pfYhA+v12C2UIdYviq0qkDTREzlBoi8bu3EIWHMafkiI3oyXV5z4DuQeIkykNrrp2PiBZzYrZmen8tDzPDiZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=RS+DkPU0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E050EC4CEC4;
-	Tue, 24 Sep 2024 22:47:02 +0000 (UTC)
+	s=arc-20240116; t=1727219247; c=relaxed/simple;
+	bh=vC6aDKJ6N8lOC042IhCs5Tj7l+oGTa2aNH48qAZSDno=;
+	h=Date:To:From:Subject:Message-Id; b=AQSo2exixArP6NjERVYU9K9tAwSUgiL5kyIYIus1yoBhDsyzYTcfzlWAF5N4xw8rB2+WcgvWbo9Xgisn9PXFp2WAZe5kxGCnwX059FPguPulUGj9RaTw2U5TAhcrWkbweaS6yDBb7sFvTsgq7k46a3mZbozOhHqYhK8GnuyapAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=UXxwi6tl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE988C4CEC4;
+	Tue, 24 Sep 2024 23:07:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1727218023;
-	bh=dpq2+c2jgsrmGjcEwkpMySA5s8CWB9zh3viGbGdpqdk=;
+	s=korg; t=1727219245;
+	bh=vC6aDKJ6N8lOC042IhCs5Tj7l+oGTa2aNH48qAZSDno=;
 	h=Date:To:From:Subject:From;
-	b=RS+DkPU0DVxpn3kfc4IfqzCIvsbmfTTBmB7Uh9yIhH2J702JiJIPuVzXzjBqCkkHq
-	 CtdZXYyWibEshzWc+fz5OtjcGJ7vWTj8ImgqSMya2yYdnjohEn0mlrol3DkwgUR4Ij
-	 LQbnVoBLBD5AF65nmzEvbccWZ0B2Cj+bLHPUwXdw=
-Date: Tue, 24 Sep 2024 15:47:02 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,peterz@infradead.org,jpoimboe@kernel.org,yangtiezhu@loongson.cn,akpm@linux-foundation.org
+	b=UXxwi6tl/K+15yQJzdrlFzWAGMjTuajAq91wNMwNh2Mjjhidm6XKyL7u3ZzhLJzsE
+	 IEuWIYsG0Td+mZNd+82Cu3MsR1I/7QxH9CozXxPaqaEkwX/Ncnf0ef7ayRr3qwV2WY
+	 gXXz1WCrpwDdeRXWa/DH7LbGgo9zdPY9QjDYClKs=
+Date: Tue, 24 Sep 2024 16:07:25 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,skhan@linuxfoundation.org,jhubbard@nvidia.com,david@redhat.com,usama.anjum@collabora.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + compilerh-specify-correct-attribute-for-rodatac_jump_table.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240924224702.E050EC4CEC4@smtp.kernel.org>
+Subject: + kselftests-mm-fix-wrong-__nr_userfaultfd-value.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240924230725.CE988C4CEC4@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,12 +50,12 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The patch titled
-     Subject: compiler.h: specify correct attribute for .rodata..c_jump_table
+     Subject: kselftests: mm: fix wrong __NR_userfaultfd value
 has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     compilerh-specify-correct-attribute-for-rodatac_jump_table.patch
+     kselftests-mm-fix-wrong-__nr_userfaultfd-value.patch
 
 This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/compilerh-specify-correct-attribute-for-rodatac_jump_table.patch
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/kselftests-mm-fix-wrong-__nr_userfaultfd-value.patch
 
 This patch will later appear in the mm-hotfixes-unstable branch at
     git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
@@ -73,71 +73,60 @@ branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 and is updated there every 2-3 working days
 
 ------------------------------------------------------
-From: Tiezhu Yang <yangtiezhu@loongson.cn>
-Subject: compiler.h: specify correct attribute for .rodata..c_jump_table
-Date: Tue, 24 Sep 2024 14:27:10 +0800
+From: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Subject: kselftests: mm: fix wrong __NR_userfaultfd value
+Date: Mon, 23 Sep 2024 10:38:36 +0500
 
-Currently, there is an assembler message when generating kernel/bpf/core.o
-under CONFIG_OBJTOOL with LoongArch compiler toolchain:
+grep -rnIF "#define __NR_userfaultfd"
+tools/include/uapi/asm-generic/unistd.h:681:#define __NR_userfaultfd 282
+arch/x86/include/generated/uapi/asm/unistd_32.h:374:#define
+__NR_userfaultfd 374
+arch/x86/include/generated/uapi/asm/unistd_64.h:327:#define
+__NR_userfaultfd 323
+arch/x86/include/generated/uapi/asm/unistd_x32.h:282:#define
+__NR_userfaultfd (__X32_SYSCALL_BIT + 323)
+arch/arm/include/generated/uapi/asm/unistd-eabi.h:347:#define
+__NR_userfaultfd (__NR_SYSCALL_BASE + 388)
+arch/arm/include/generated/uapi/asm/unistd-oabi.h:359:#define
+__NR_userfaultfd (__NR_SYSCALL_BASE + 388)
+include/uapi/asm-generic/unistd.h:681:#define __NR_userfaultfd 282
 
-  Warning: setting incorrect section attributes for .rodata..c_jump_table
+The number is dependent on the architecture. The above data shows that:
+x86	374
+x86_64	323
 
-This is because the section ".rodata..c_jump_table" should be readonly,
-but there is a "W" (writable) part of the flags:
+The value of __NR_userfaultfd was changed to 282 when asm-generic/unistd.h
+was included.  It makes the test to fail every time as the correct number
+of this syscall on x86_64 is 323.  Fix the header to asm/unistd.h.
 
-  $ readelf -S kernel/bpf/core.o | grep -A 1 "rodata..c"
-  [34] .rodata..c_j[...] PROGBITS         0000000000000000  0000d2e0
-       0000000000000800  0000000000000000  WA       0     0     8
-
-There is no above issue on x86 due to the generated section flag is only
-"A" (allocatable). In order to silence the warning on LoongArch, specify
-the attribute like ".rodata..c_jump_table,\"a\",@progbits #" explicitly,
-then the section attribute of ".rodata..c_jump_table" must be readonly
-in the kernel/bpf/core.o file.
-
-Before:
-
-  $ objdump -h kernel/bpf/core.o | grep -A 1 "rodata..c"
-   21 .rodata..c_jump_table 00000800  0000000000000000  0000000000000000  0000d2e0  2**3
-                  CONTENTS, ALLOC, LOAD, RELOC, DATA
-
-After:
-
-  $ objdump -h kernel/bpf/core.o | grep -A 1 "rodata..c"
-   21 .rodata..c_jump_table 00000800  0000000000000000  0000000000000000  0000d2e0  2**3
-                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, DATA
-
-By the way, AFAICT, maybe the root cause is related with the different
-compiler behavior of various archs, so to some extent this change is a
-workaround for LoongArch, and also there is no effect for x86 which is the
-only port supported by objtool before LoongArch with this patch.
-
-Link: https://lkml.kernel.org/r/20240924062710.1243-1-yangtiezhu@loongson.cn
-Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: <stable@vger.kernel.org>	[6.9+]
+Link: https://lkml.kernel.org/r/20240923053836.3270393-1-usama.anjum@collabora.com
+Fixes: a5c6bc590094 ("selftests/mm: remove local __NR_* definitions")
+Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
+Reviewed-by: David Hildenbrand <david@redhat.com>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- include/linux/compiler.h |    2 +-
+ tools/testing/selftests/mm/pagemap_ioctl.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/linux/compiler.h~compilerh-specify-correct-attribute-for-rodatac_jump_table
-+++ a/include/linux/compiler.h
-@@ -133,7 +133,7 @@ void ftrace_likely_update(struct ftrace_
- #define annotate_unreachable() __annotate_unreachable(__COUNTER__)
- 
- /* Annotate a C jump table to allow objtool to follow the code flow */
--#define __annotate_jump_table __section(".rodata..c_jump_table")
-+#define __annotate_jump_table __section(".rodata..c_jump_table,\"a\",@progbits #")
- 
- #else /* !CONFIG_OBJTOOL */
- #define annotate_reachable()
+--- a/tools/testing/selftests/mm/pagemap_ioctl.c~kselftests-mm-fix-wrong-__nr_userfaultfd-value
++++ a/tools/testing/selftests/mm/pagemap_ioctl.c
+@@ -15,7 +15,7 @@
+ #include <sys/ioctl.h>
+ #include <sys/stat.h>
+ #include <math.h>
+-#include <asm-generic/unistd.h>
++#include <asm/unistd.h>
+ #include <pthread.h>
+ #include <sys/resource.h>
+ #include <assert.h>
 _
 
-Patches currently in -mm which might be from yangtiezhu@loongson.cn are
+Patches currently in -mm which might be from usama.anjum@collabora.com are
 
-compilerh-specify-correct-attribute-for-rodatac_jump_table.patch
+kselftests-mm-fix-wrong-__nr_userfaultfd-value.patch
 
 
