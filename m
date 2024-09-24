@@ -1,213 +1,247 @@
-Return-Path: <stable+bounces-76997-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id E17D29846F5
-	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 15:43:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD527984716
+	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 15:55:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F4321C228BD
-	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 13:43:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8FC201F23115
+	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 13:55:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77DE51A7AE3;
-	Tue, 24 Sep 2024 13:43:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 399031A7067;
+	Tue, 24 Sep 2024 13:55:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="hvlaqnVh";
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="K5i7Zs8j"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="gSXnDIGv"
 X-Original-To: stable@vger.kernel.org
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2071.outbound.protection.outlook.com [40.107.243.71])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 802D114F124;
-	Tue, 24 Sep 2024 13:43:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727185414; cv=none; b=ckMjhaHMGBHjhq09WHG5XR4XHaI3KZLW6BQWLMVgFoEfg0Ydb9n6l+r7I0nAuqrXECQRBN3UIlxyvFbi8KPLcPbusRiFnaqiV1zur1qBZSBBW/LK+/ustQeJz5NsQF8gqspOp16DYWOhonbXd9zojVCFg/sDk+snMQi4A096acQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727185414; c=relaxed/simple;
-	bh=A4rveCzomZ1idWkEzSTfURP3q9bY55z7OgRVltQ+MoQ=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=YnxZnK8agRevr12Bc6QcZs8td159VRaGcmXOMDy0tsX411UswcyvL22no0hYT11GFcxkuAFa14uqtuHGItY0X7GuSMYbrZ628wu15Mf+GFaK2fe8uTg9r59Z0HSBxCkRe1uEoJ5A2NlbajPHuF4tUs/Fwi/7MNAOxTrnJ9aWMZM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=hvlaqnVh; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=K5i7Zs8j; arc=none smtp.client-ip=96.44.175.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1727185408;
-	bh=A4rveCzomZ1idWkEzSTfURP3q9bY55z7OgRVltQ+MoQ=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=hvlaqnVhhIntzgRHJwR+6MLZ1NABIIQtevSX8tOh9YqBO/k9LMcO96Yl0F/reXsBs
-	 UYXFZqHqXmqURTVgNJ5sojB8ybbyY0qLz5cGyntdFO33Yy+QQDX+Vb9GrnqZWrTVSQ
-	 tL2QL2NdRBxuZu3OdM1k6RDJPC+Pnrbt/Hkf8slg=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 58354128118D;
-	Tue, 24 Sep 2024 09:43:28 -0400 (EDT)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id u2T_K8uaGlx7; Tue, 24 Sep 2024 09:43:28 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1727185407;
-	bh=A4rveCzomZ1idWkEzSTfURP3q9bY55z7OgRVltQ+MoQ=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=K5i7Zs8jXnQjEwI8wXDZnvljzC7feuPBSuezGUNoZYUVvIMxLsN03N1Nj+QamgTqP
-	 4pp3GbeoixMO3Sm0/PMdCzxF/qu5q6u/s9vjWITBudZRDXHLVJfSjVxVUj2b7tBtao
-	 cSXznDF5/yI6sKPBV6w0dJhhCOxCUUVG1Ll6IPEE=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits))
-	(Client did not present a certificate)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id C3B9C1280EA1;
-	Tue, 24 Sep 2024 09:43:26 -0400 (EDT)
-Message-ID: <00cf0bdb3ebfaec7c4607c8c09e55f2e538402f1.camel@HansenPartnership.com>
-Subject: Re: [PATCH v5 5/5] tpm: flush the auth session only when /dev/tpm0
- is open
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Jarkko Sakkinen <jarkko@kernel.org>, linux-integrity@vger.kernel.org
-Cc: roberto.sassu@huawei.com, mapengyu@gmail.com, stable@vger.kernel.org,
- Mimi Zohar <zohar@linux.ibm.com>, David Howells <dhowells@redhat.com>, Paul
- Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, "Serge E.
- Hallyn" <serge@hallyn.com>, Peter Huewe <peterhuewe@gmx.de>, Jason
- Gunthorpe <jgg@ziepe.ca>, keyrings@vger.kernel.org,
- linux-security-module@vger.kernel.org,  linux-kernel@vger.kernel.org
-Date: Tue, 24 Sep 2024 09:43:25 -0400
-In-Reply-To: <20240921120811.1264985-6-jarkko@kernel.org>
-References: <20240921120811.1264985-1-jarkko@kernel.org>
-	 <20240921120811.1264985-6-jarkko@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D6E31DDEA
+	for <stable@vger.kernel.org>; Tue, 24 Sep 2024 13:55:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.71
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727186125; cv=fail; b=pGde5jelhNp6YCtOozcHbTEBH7/13siS12htnb0u0D9y16GAwQfpvCgnipVV0Dy43Gx4qeiLJeq5+Ex1Wi5fpySUXpiJ8MII3ptIZrWHznaN5/nkO1WfoYgBhJ+j8yX2asAD23ADDtGY45A/akCnFicyXWggpi2lySSMK0pTIWo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727186125; c=relaxed/simple;
+	bh=HkXYE4aSwya1MOVSLQxOrdPWIbl63P660sMTitEY7KE=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=ctbcBn52le5xK/9v7ADRx8h76ttyo4x93SA7EBO/pGAR5B6/t3jkRm+FEmmj6OlR06Ul7cMXgPrFen51NJgtkfeusvYnMpRJrgNjSh0UfFxwmQk2+OeIh87N6xADi4rNP92gT9a5Dd6xM3XdiLFTUJbCAgNyZUx4+FKQZHVNSlA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=gSXnDIGv; arc=fail smtp.client-ip=40.107.243.71
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Rie0RwGHw0lGMRkdAOGNHxt8dbJtilqbevRYD/cFZnqzTqgLB7LLTSXhmJIVK720WS1LAd1LA4MukjzD9vUHZ0vmXzmrGkfwGj1bEHALchvCP+EoDp6v+RM6N6Pq9LXz+sWr2WHhbnljxjXcYcB6LbXrBFAcARNb0OxmLAdIzCyGQMT+EWy0lZaMH3YJHbq72AsVVAKRCkkbSObDILTFmyBs99lsEB/0GztB4XPrX0bTC3VycASQuaL8trGr2ZbmrIx3bA7X0afMofTkP9J59hX/W4o8E0KUmPto3ZLHTTOYSbk8yg1NDZRCWVn5MFT33bMMN1YKPMg5ogy7hsElfQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2gLXTgJPq3Ej0U5vzPNBDnkkUWK49Y4Z3croy8pzdmc=;
+ b=R35sVEwHw+zqLBgqWPTJpSbPfsT7XPpqLqACskyKX1BoiMB9pggvc6C+mKqByjHSjTgAGOGkFmpFveDDhl9pSmMP6r1vzeW+XNvNEPizI0N6Xtaqovemwj4QdRXrDiSIc0FaLshlGoAaDkqMereyYjnPmILQB/UKdlD7uZBVuKEk7hA+TsCpChh3XIgxKIWNFDQ5pavURekUD7sDgmcWaPni5SUiMoMBTCym+CibLwBUkKYG6En2r0ExhwwZRXD/yHj11e1lLZNH9Szcd6piClLcURlREWEjOW/UM4HmfT1bszprv6ipU7L8CBh9tjZN6CWKnWV682g538z/OlFc+w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2gLXTgJPq3Ej0U5vzPNBDnkkUWK49Y4Z3croy8pzdmc=;
+ b=gSXnDIGvvQM2GzU4gEiH6SZDLjlSTPlc1zqNryV6KZLxIPFxilV/wnfOn4gCT/fcfi9cAqvY9A14eF4EM1g5xl0+6aCYML/RYwfD7Iaj0C+xGpHnLBGlBsag+61bTv1LNMH7hnaEDLY+zRzKT4PmivGm9tYCfbIAPX0DPa4jRUk=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
+ by IA0PR12MB7603.namprd12.prod.outlook.com (2603:10b6:208:439::9) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7982.28; Tue, 24 Sep
+ 2024 13:55:19 +0000
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::46fb:96f2:7667:7ca5]) by PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::46fb:96f2:7667:7ca5%2]) with mapi id 15.20.7982.012; Tue, 24 Sep 2024
+ 13:55:18 +0000
+Message-ID: <4dcce6db-cdb1-4378-8fea-8540ec7539ef@amd.com>
+Date: Tue, 24 Sep 2024 15:55:11 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/8] drm/sched: Always wake up correct scheduler in
+ drm_sched_entity_push_job
+To: Tvrtko Ursulin <tursulin@igalia.com>, amd-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org
+Cc: kernel-dev@igalia.com, Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+ Alex Deucher <alexander.deucher@amd.com>, Luben Tuikov
+ <ltuikov89@gmail.com>, Matthew Brost <matthew.brost@intel.com>,
+ David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+ Philipp Stanner <pstanner@redhat.com>, stable@vger.kernel.org
+References: <20240924101914.2713-1-tursulin@igalia.com>
+ <20240924101914.2713-3-tursulin@igalia.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+In-Reply-To: <20240924101914.2713-3-tursulin@igalia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: FR0P281CA0046.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:48::23) To PH7PR12MB5685.namprd12.prod.outlook.com
+ (2603:10b6:510:13c::22)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|IA0PR12MB7603:EE_
+X-MS-Office365-Filtering-Correlation-Id: ec48869d-ba33-4323-16aa-08dcdca08614
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?UGl0dkliY3hXSDFPcC91VU00b0hML1VESjI0S3JiL2RCdUZiZXc0VXJUWlpj?=
+ =?utf-8?B?SVZmaFljR0o5ZGpTY2JuRGZGWi9Bcm55WEEvUnVONFd1ZCtpak5xM05SdWM5?=
+ =?utf-8?B?ajBoTjVJVHNwM1MvZDREZmVYT2RWbHNLaG9jQWlmSm12QllBOVphdnJ0YnAy?=
+ =?utf-8?B?MVU4Ly9hTWZhTXAydUNHR00rTmdJY0ZXNzBoZWtEbnQzQjJLS2VHWW96T2NV?=
+ =?utf-8?B?U1lUcEtEdkRibWZkTDltNUtPR2d6UGlUTDlHVU9jKzU0RWdWbFQ4RVZRTkpD?=
+ =?utf-8?B?aGZRSmNTbkJXVVpvM3JTR2FaVllzcXBxNk5KZHVhMjVFT3RRdUh3M1U5Snkr?=
+ =?utf-8?B?Uk1JUlNPdzVFK1cxandONFE5TldONzBxM1cvbWpLWllqTkErVTBZb2t1eG15?=
+ =?utf-8?B?d1B4UXFsM3hObTVDWEhnMlVtR1ZXdVRuQk5tVE1uTzZubEthYk4wREl0WWVR?=
+ =?utf-8?B?MzBOZzBlZUN1bURhR1JlOVV2azYzRXNjSTJBU1REMUg4UUppNWpTM05WUFBu?=
+ =?utf-8?B?bktPMHo5UUw0dkN6T2JJQi9vNHpHQUd2aktOTVJrODJRcW4vZWpXUUpGMWNm?=
+ =?utf-8?B?ZjNoMm5LaHFhc0hUZ2hLYytSdXV5KzZGMFY0YWRqNCtJbDBQczNnTytNeXg4?=
+ =?utf-8?B?Z3ZLSi9BVFZZZHp3SmRheTczSU9ySTdqeDNqNHRmem9tNFpIZFdHc2t4czN6?=
+ =?utf-8?B?MFdnSEJUUnpTYlNCSGZjdm1PZzR5L0duZVJVbGZkQXd0T0RlaDhlNmZ2OHoz?=
+ =?utf-8?B?aEhZdW0wV29mY3pKL0YrRFA4QXNGa0QwZVMyemgyT3ZPZmo3QkZuZEVvN3pv?=
+ =?utf-8?B?Yk1NaGlqaTQyVURCTFNtSXR3clhQaGx6M1l0Q2M0TUlVcGxLYmpVRVRwL3Vp?=
+ =?utf-8?B?b2gxUFRZM0MwNEZHUk1mcE0zTnpqd0pFNWpPbmcybEo1eGljL21MNEdXM0lI?=
+ =?utf-8?B?R3ViNEo0WTJwRTdJZXowbzRYNTJiRm14VTNiS1ZMRm4xb2g0VDUyb1E0Vkg1?=
+ =?utf-8?B?UFA0cmM0Z3NhazBkMlkwY29VYXdwdTgvWGFmYndKOVdrVW5pZGZHVk45QnpV?=
+ =?utf-8?B?RmRCMi9ObjBlaTZtT1ZoT1ZBb0x2UFkyRUZPekxrbmxLd3FxWXk4UTRFNk1p?=
+ =?utf-8?B?R0xOd2pUbDlrVDhUaDlBWWRSR3Z6TW9DZVVwOWc2eGJwREk4b3VZMDFVTVdt?=
+ =?utf-8?B?MlpsSmNvcmltelE4MXJ3MVcxbyswc0svdzlHVGJ0M05wKzltWFhYc3I5WkVo?=
+ =?utf-8?B?Wno3cE8zZ1ZpbkxuYWo1dnJRR2g2MDlxeFhnWUlzUDhtbWlKc05ReTNmejBU?=
+ =?utf-8?B?QmJnSmRuU2VIUUVZdll1L2NYNzRTaWNtZmYyS3dnVTBlNlhvTEVpU0Rlc2NE?=
+ =?utf-8?B?eENrbmU5YUVoMno3d3haYUpJRjNZbGJYQVZ2bGk5MW9MbzY2VXNuaWJHQlJD?=
+ =?utf-8?B?MDU3VXhIRVBweXBzQkhweFhkcW0zdWVZU2tRdE5wZWpSbis0Sk5HaWpxbWZU?=
+ =?utf-8?B?cHJXSlluenZsNWtwdS9KMi96Rzc0MDZHNDZtVi9pTkRKYVlZZTdOYldqT0NE?=
+ =?utf-8?B?Um1aNmxIaFJFSlZZS0Jjd245cHgvaEFzN2NvSWlnSnlGOEwrank4dFZjalZJ?=
+ =?utf-8?B?alIvYnFxMTg5TmFGNnpZTUlaYzhJQTgwNjVydXRZNGFvZjkzMU9uMExIVkZK?=
+ =?utf-8?B?UVliVTRkSlUzeHpqVlRDc3dNUzJIcmo4aXd3QjVEeUMyaUJ0N1hRVmxaM3Nm?=
+ =?utf-8?B?SjUyWDdmVW85Y2VDUGkzNDlCNXlrZUw0K0kyeGJtUUxNWTA3ZXZhSElGTFJV?=
+ =?utf-8?B?N1dZU2ZZMTZNeVpFd0p3UT09?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?c25zaXNLUEdSL1Z0SHAwd0drUXhoRmp2SW5qN1J1QmFtbmp3OVd5WXVtSWY1?=
+ =?utf-8?B?Mk50Wk1WREQ1VDF5cFhIcUpiRDcvUXJvWGJPa2xNeDNjeUdJcktXaWNUYWlq?=
+ =?utf-8?B?Z2swUFV0WlRpbXIrUDZCUEF0VGNlTlVzWXRGNHdESVhueE9hY1hROFh1WVRH?=
+ =?utf-8?B?N2JwMFREMkJ2dGZBYkhhb2xDSWRtR0JOeXJCdlJOSklNVzY4ek9uYmtTdXlt?=
+ =?utf-8?B?ZzBvTTFubmFaU3R0YTM0Y21rNENqYWo1OGpjKzQ2ajczdEt4TjgyNmpraktG?=
+ =?utf-8?B?c25sRHJVQUY4N0IzdUZlanhZYytveG9uSHlSUktIbVNXWTNrWm83RTNoM1NT?=
+ =?utf-8?B?bDJBdndtSm5VSGU3Zy85RlpLc3FsY2tCeXBoVXgzNjV4SjZxam9yTzFmTkVW?=
+ =?utf-8?B?V0xESWNZMlF1MHA3Zmh4YjNOV3VWNlZrS0t2RmNNUW80QzlDQmU3dzR2ZjJw?=
+ =?utf-8?B?d3R6K0xFRENGSnRuM3VCd21CeDl1WDJCZWtWdXFDNFV2ZFZOTnBzd2tnai8r?=
+ =?utf-8?B?NVJzUG9TVndRSllML0RhUVhtck5XSlFoamtpa0JENUlIV3VPekdURW9vMVB6?=
+ =?utf-8?B?alg2UkFIMnZpTjNaS0RXeGo2bnBGekJ5WVZ3R3BUMFNBenJtQjhKdHZNLzN3?=
+ =?utf-8?B?UTZYbzIzeWx4Ymw4TXU1MEhwQ0NmcjZvRDluRVRweDl4U2ltVGZYcnJwekQ4?=
+ =?utf-8?B?UjhTTm13aGVVdUZQdG1NamFkbkZzcXFLdXR1Zi9BRDd5cmpVRXFBNnB4QVND?=
+ =?utf-8?B?dTJxalpLaENMQjBXYnhEbk9tRmNPc3VrVTE3dTREdFhmSmxMWElTR1BFenda?=
+ =?utf-8?B?U1preUVSb1Q2eVVKYnNkU2hUOU4wWWhCSVFjc3NXNWk4UHJlb0krREkvZS9U?=
+ =?utf-8?B?Ump6NFk0VmJ1RHhBeGJpTGRhNjJQdDB6ZHBWekJ5dkhwVFJBOHVsY3pTQ1RJ?=
+ =?utf-8?B?bHlnTHRnSUlvSlJoN0tkZTFpTmxMREJqN0xWcnZGMnN6UmthMnAyNzFtdlYz?=
+ =?utf-8?B?S0hweE04VnM5R1RGdnNKakh0R1lwRklLb0dVUktaU0N5VUVjdDZkN1hVS0hk?=
+ =?utf-8?B?dVZaM2FiL3ZiL2Frb0V1R3puazkzenQ3OXQyVG1RdllOY0hlS29TQm9RbXhw?=
+ =?utf-8?B?VUdiWmhkV1FaQlEvNlZQT3djRXliNmI5ZTJIZ2lrc291TnE5NEhGdktHempv?=
+ =?utf-8?B?cUc1VHZPeklvWndzK3NtdlpXS1hRc21YOEVmbzZtejQxbEJTQTQ4ekJnWWxK?=
+ =?utf-8?B?bGtSdHd1OVdyVUtsYmhod05zTURTOVluZm8xSFkyZUthbW1RVzhJVlBBaHJK?=
+ =?utf-8?B?TEJpRi9lL2ozdXkwME9NSUlUSWxIQmdyc1RZNDdYT2prQktaKzFWVlphQXZG?=
+ =?utf-8?B?aXcwVE40alRYcmlhNG5OR09jZXdTOW8xaTZEdGM0WWoxaDRGbEdJUjhoR0dT?=
+ =?utf-8?B?WWxGRHlBbkMyUndybzZoZVg2amtsZ1dhc21keDJnL2VORkZ2QnU2NlM5OEtz?=
+ =?utf-8?B?dHNKVit0eWE0aVFDdVhyRWg2c1MrUXB0ZUZ0RXV1d1JFTmF0NDM1cG9CRlpJ?=
+ =?utf-8?B?SWlvRFdaNzB2ck5Nd0YrR3pLQnVIUHZrMFAwWlBUSmcwZnk3L0d0UlB1K05j?=
+ =?utf-8?B?ZC9nOU1MTkRTMGp1elRWdWxhTVBoRVltV25EWG1XOW9Ud2VlY1RjTWpEa3Vq?=
+ =?utf-8?B?MTFlYUtjSUpsNTA2cGZyZkhueU5OR0krQmk3RVNKVDlXRzVvZkJCMEVWZEJR?=
+ =?utf-8?B?YWhFMUQyVWVUckNZLzdObVFoMXhZN0NGckVDMzdsRVU1TEg0MjlmRmdmajNr?=
+ =?utf-8?B?VGZpbHp3VTEvamdMU1ovSXVKaFBEQjBNV1Jpd0hZdWszZkZkdmEwR1JwdW9X?=
+ =?utf-8?B?c3UrMTdLaWZhYUNCMVVUbjROeDVsc0JtNWh1VFJSQlBrVkpod2hTK2I4YVBF?=
+ =?utf-8?B?cUtCWlBzd3RMOExOY1ZqUmZ5TXoxbXNkOFU1SWpidUpBdnBSWW5menR0bHEx?=
+ =?utf-8?B?TnhEc0JPNTJRb3h1UnZqNnZZYXI0cy9hclo3YkI5TDhJL0FkQVNsN3BrRmtB?=
+ =?utf-8?B?eGUrTmdtYmpaanJEUzBSTjczaHBpRGFubnZEclBEOUw1d1JEVDhISnpobWhi?=
+ =?utf-8?Q?FfPw6GsRsJJcSWAKJ/vviZCbd?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: ec48869d-ba33-4323-16aa-08dcdca08614
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 24 Sep 2024 13:55:18.4688
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: diL5oKAA3CYnV1Q5j7wuXkXqfL1rii5cS4blT/BSBt4JCABUEGNmwnkoGx72Q9ez
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7603
 
-On Sat, 2024-09-21 at 15:08 +0300, Jarkko Sakkinen wrote:
-> Instead of flushing and reloading the auth session for every single
-> transaction, keep the session open unless /dev/tpm0 is used. In
-> practice this means applying TPM2_SA_CONTINUE_SESSION to the session
-> attributes. Flush the session always when /dev/tpm0 is written.
+I've pushed the first to drm-misc-next, but that one here fails to apply 
+cleanly.
 
-Patch looks fine but this description is way too terse to explain how
-it works.
+Christian.
 
-I would suggest:
-
-Boot time elongation as a result of adding sessions has been reported
-as an issue in https://bugzilla.kernel.org/show_bug.cgi?id=219229
-
-The root cause is the addition of session overhead to
-tpm2_pcr_extend().  This overhead can be reduced by not creating and
-destroying a session for each invocation of the function.  Do this by
-keeping a session resident in the TPM for reuse by any session based
-TPM command.  The current flow of TPM commands in the kernel supports
-this because tpm2_end_session() is only called for tpm errors because
-most commands don't continue the session and expect the session to be
-flushed on success.  Thus we can add the continue session flag to
-session creation to ensure the session won't be flushed except on
-error, which is a rare case.
-
-Since the session consumes a slot in the TPM it must not be seen by
-userspace but we can flush it whenever a command write occurs and re-
-create it again on the next kernel session use.  Since TPM use in boot
-is somewhat rare this allows considerable reuse of the in-kernel
-session and shortens boot time:
-
-<give figures>
-
-
-
-> 
-> Reported-by: Pengyu Ma <mapengyu@gmail.com>
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219229
-> Cc: stable@vger.kernel.org # v6.10+
-> Fixes: 7ca110f2679b ("tpm: Address !chip->auth in
-> tpm_buf_append_hmac_session*()")
-> Tested-by: Pengyu Ma <mapengyu@gmail.com>
-> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-> ---
-> v5:
-> - No changes.
-> v4:
-> - Changed as bug.
-> v3:
-> - Refined the commit message.
-> - Removed the conditional for applying TPM2_SA_CONTINUE_SESSION only
-> when
->   /dev/tpm0 is open. It is not required as the auth session is
-> flushed,
->   not saved.
+Am 24.09.24 um 12:19 schrieb Tvrtko Ursulin:
+> From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+>
+> Since drm_sched_entity_modify_sched() can modify the entities run queue,
+> lets make sure to only dereference the pointer once so both adding and
+> waking up are guaranteed to be consistent.
+>
+> Alternative of moving the spin_unlock to after the wake up would for now
+> be more problematic since the same lock is taken inside
+> drm_sched_rq_update_fifo().
+>
 > v2:
-> - A new patch.
+>   * Improve commit message. (Philipp)
+>   * Cache the scheduler pointer directly. (Christian)
+>
+> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+> Fixes: b37aced31eb0 ("drm/scheduler: implement a function to modify sched list")
+> Cc: Christian König <christian.koenig@amd.com>
+> Cc: Alex Deucher <alexander.deucher@amd.com>
+> Cc: Luben Tuikov <ltuikov89@gmail.com>
+> Cc: Matthew Brost <matthew.brost@intel.com>
+> Cc: David Airlie <airlied@gmail.com>
+> Cc: Daniel Vetter <daniel@ffwll.ch>
+> Cc: Philipp Stanner <pstanner@redhat.com>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: <stable@vger.kernel.org> # v5.7+
+> Reviewed-by: Christian König <christian.koenig@amd.com>
 > ---
->  drivers/char/tpm/tpm-chip.c       | 1 +
->  drivers/char/tpm/tpm-dev-common.c | 1 +
->  drivers/char/tpm/tpm-interface.c  | 1 +
->  drivers/char/tpm/tpm2-sessions.c  | 3 +++
->  4 files changed, 6 insertions(+)
-> 
-> diff --git a/drivers/char/tpm/tpm-chip.c b/drivers/char/tpm/tpm-
-> chip.c
-> index 0ea00e32f575..7a6bb30d1f32 100644
-> --- a/drivers/char/tpm/tpm-chip.c
-> +++ b/drivers/char/tpm/tpm-chip.c
-> @@ -680,6 +680,7 @@ void tpm_chip_unregister(struct tpm_chip *chip)
->         rc = tpm_try_get_ops(chip);
->         if (!rc) {
->                 if (chip->flags & TPM_CHIP_FLAG_TPM2) {
-> +                       tpm2_end_auth_session(chip);
->                         tpm2_flush_context(chip, chip->null_key);
->                         chip->null_key = 0;
->                 }
-> diff --git a/drivers/char/tpm/tpm-dev-common.c
-> b/drivers/char/tpm/tpm-dev-common.c
-> index 4eaa8e05c291..a3ed7a99a394 100644
-> --- a/drivers/char/tpm/tpm-dev-common.c
-> +++ b/drivers/char/tpm/tpm-dev-common.c
-> @@ -29,6 +29,7 @@ static ssize_t tpm_dev_transmit(struct tpm_chip
-> *chip, struct tpm_space *space,
->  
->  #ifdef CONFIG_TCG_TPM2_HMAC
->         if (chip->flags & TPM_CHIP_FLAG_TPM2) {
-> +               tpm2_end_auth_session(chip);
->                 tpm2_flush_context(chip, chip->null_key);
->                 chip->null_key = 0;
->         }
-> diff --git a/drivers/char/tpm/tpm-interface.c b/drivers/char/tpm/tpm-
-> interface.c
-> index bfa47d48b0f2..2363018fa8fb 100644
-> --- a/drivers/char/tpm/tpm-interface.c
-> +++ b/drivers/char/tpm/tpm-interface.c
-> @@ -381,6 +381,7 @@ int tpm_pm_suspend(struct device *dev)
->         if (!rc) {
->                 if (chip->flags & TPM_CHIP_FLAG_TPM2) {
->  #ifdef CONFIG_TCG_TPM2_HMAC
-> +                       tpm2_end_auth_session(chip);
->                         tpm2_flush_context(chip, chip->null_key);
->                         chip->null_key = 0;
->  #endif
-> diff --git a/drivers/char/tpm/tpm2-sessions.c
-> b/drivers/char/tpm/tpm2-sessions.c
-> index a8d3d5d52178..38b92ad9e75f 100644
-> --- a/drivers/char/tpm/tpm2-sessions.c
-> +++ b/drivers/char/tpm/tpm2-sessions.c
-> @@ -333,6 +333,9 @@ void tpm_buf_append_hmac_session(struct tpm_chip
-> *chip, struct tpm_buf *buf,
->         }
->  
->  #ifdef CONFIG_TCG_TPM2_HMAC
-> +       /* The first write to /dev/tpm{rm0} will flush the session.
-> */
-> +       attributes |= TPM2_SA_CONTINUE_SESSION;
+>   drivers/gpu/drm/scheduler/sched_entity.c | 10 ++++++++--
+>   1 file changed, 8 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/scheduler/sched_entity.c b/drivers/gpu/drm/scheduler/sched_entity.c
+> index 0e002c17fcb6..a75eede8bf8d 100644
+> --- a/drivers/gpu/drm/scheduler/sched_entity.c
+> +++ b/drivers/gpu/drm/scheduler/sched_entity.c
+> @@ -599,6 +599,9 @@ void drm_sched_entity_push_job(struct drm_sched_job *sched_job)
+>   
+>   	/* first job wakes up scheduler */
+>   	if (first) {
+> +		struct drm_gpu_scheduler *sched;
+> +		struct drm_sched_rq *rq;
 > +
->         /*
->          * The Architecture Guide requires us to strip trailing zeros
->          * before computing the HMAC
-
-Code is fine, with the change log update, you can add
-
-Reviewed-by: James Bottomley <James.Bottomley@HansenPartnership.com>
-
+>   		/* Add the entity to the run queue */
+>   		spin_lock(&entity->rq_lock);
+>   		if (entity->stopped) {
+> @@ -608,13 +611,16 @@ void drm_sched_entity_push_job(struct drm_sched_job *sched_job)
+>   			return;
+>   		}
+>   
+> -		drm_sched_rq_add_entity(entity->rq, entity);
+> +		rq = entity->rq;
+> +		sched = rq->sched;
+> +
+> +		drm_sched_rq_add_entity(rq, entity);
+>   		spin_unlock(&entity->rq_lock);
+>   
+>   		if (drm_sched_policy == DRM_SCHED_POLICY_FIFO)
+>   			drm_sched_rq_update_fifo(entity, submit_ts);
+>   
+> -		drm_sched_wakeup(entity->rq->sched);
+> +		drm_sched_wakeup(sched);
+>   	}
+>   }
+>   EXPORT_SYMBOL(drm_sched_entity_push_job);
 
 
