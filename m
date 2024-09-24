@@ -1,130 +1,221 @@
-Return-Path: <stable+bounces-77047-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77048-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 129F3984B3F
-	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 20:45:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FF97984B6E
+	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 21:07:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BC8671F20582
-	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 18:45:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC5CD1F22F53
+	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 19:07:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 941391AC8B5;
-	Tue, 24 Sep 2024 18:44:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6305682488;
+	Tue, 24 Sep 2024 19:07:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hewVFhhz"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j24V+Ywm"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-lj1-f176.google.com (mail-lj1-f176.google.com [209.85.208.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F32A1AD9E8
-	for <stable@vger.kernel.org>; Tue, 24 Sep 2024 18:44:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 557CE8C1A;
+	Tue, 24 Sep 2024 19:07:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727203455; cv=none; b=K3G59TCtxizESXECzZJGSFqlHbuIYzvQ5eL/jSIkPUTOWFg5K6tP4Xg+Jv4ZHdFeJHGN2N/M4kGSVntt9kWK5PAppjABK1xpguk1QsriTeIr4RiNvKPGD1D7p2F6ftAVRZ/P2EdIeyFDX4i3TULPi2XPzLb9OH5oDPVRN68Ufs0=
+	t=1727204845; cv=none; b=olhZHCKWqqV3GjrOUQAMzpVaFXPLPTYRXJRcPCwus7tcG8jC+wILGSCBnhEJMpGwEIGaEBShalsp7YAfqnyc/NT9NbdwiqdxSReiVoEfYvGUcvNFcnNYjQlt6tayCKumWfBdPVSRZGa50oM90ZO05Zs61C77KgcCs5ssOyxwVGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727203455; c=relaxed/simple;
-	bh=04CSVSNbQAoz5nJrui7w9wr9IJQYbvvCjU2rJHdTZ0Q=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=MGOn8Lub3Ahr+PLAC3MzsKq2g2aAGWd7fnEY5hAnAz8nPdHdc/6PjH+6kWWJpI7+OEqhVewSRdpxwdc2vltgp/NAbhaDX+4GUoHPTe5MGqOSoXJhuo+Vw68X0dObFrga95iTsj2gNpIOiH+Nr2w1ThXGELuIb8n7ui0MPksUN+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--cmllamas.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hewVFhhz; arc=none smtp.client-ip=209.85.215.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--cmllamas.bounces.google.com
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-7d50dadb7f8so84564a12.0
-        for <stable@vger.kernel.org>; Tue, 24 Sep 2024 11:44:13 -0700 (PDT)
+	s=arc-20240116; t=1727204845; c=relaxed/simple;
+	bh=nJbmR+xL2BQa3HaKO/EyCb2/CvS+m2cc5H/lZldfiWE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=n0/9Q/IAmtl/s6cVxUW9/+5GIcK98U/gXvaGcRtJChjb1Omse9rJEEyinpxUK6yXSNA+0MuKfV/Hwa1F8pEFCkDwcX+x1W5nZJtzzAcxQ4gPjQuPkHGFbgme5Zd+4dnbeu9H1jiRaCRNkTOvRKFVbZhZvI5yGZ3LSP5Dgl70qEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j24V+Ywm; arc=none smtp.client-ip=209.85.208.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f176.google.com with SMTP id 38308e7fff4ca-2f75f116d11so59576681fa.1;
+        Tue, 24 Sep 2024 12:07:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1727203453; x=1727808253; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2WbeoTgd2+9GtK/0uZbn6j9cZRGaoAw7YTDGHmlJEwk=;
-        b=hewVFhhzJ88PLDi46vxv7W2eDE0atPzfZNSfzwXmpyjbzk8RyktM70wsdIPqMUlIF2
-         xFV+RDvRMGUjy/W2PMArtGoSwi2emHqE6xhFMCh2VGBlRyAB4DrBQ4pXzwNQ61l9J7fz
-         N21DqmY3qA8jPZTxeiCz7ebnzwr+xEzYB4nr2htY1zD+/CKfLaUzSo12MbqRYxJTlzUe
-         pj48o8ppqUq9Q9awkMDaNj9gw4BCp02YtzaHtE5b0825jLT8YYkckcsfB/B65A5wBj7M
-         XSiBiuq7gGcgis+BLeM6g/zw47AxBjBGjAi0vkJrSmgCVL3q8joBC1QZmqthoyu0clu3
-         fziw==
+        d=gmail.com; s=20230601; t=1727204841; x=1727809641; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=SAaH1NEwA9lOj6mrZXQD3aHN2nJjKeYxfLBQMiilRl8=;
+        b=j24V+YwmgeHpRkhHbz8Gakww51d0XC1tTaCaViab2F5Yytc5kIrf5FK+vYeThYvdUj
+         gJWAmywMW6k959TfKhyoxJLjQtkIqXkZ6nGbInpTpOjuB1qIhhOx1osqIcjwSnH/dx6w
+         k9GQpCtrq1yPKjebvf88nT6Jv7YZK6iTsR77ZF6QJtzjJ/gjntpFU2kt9tsmgli6R6BT
+         kseS1n2PLypd5b+eFtUfzmYhmMMgRGfw+cM/SEovKS1g/x7Wn+sKY00Kvm9B66VnfDDs
+         lPwbkPY8GBHHhN8LHNp1lmabe8c/i6YCoGdQsJDsyHiz+FU3XOVl2t5wfIIzRrJSwNkH
+         XF0Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727203453; x=1727808253;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2WbeoTgd2+9GtK/0uZbn6j9cZRGaoAw7YTDGHmlJEwk=;
-        b=qtEk8k/6OkFBNqJOcOj0ofXX4Z7Yy0M6rKZTQnMRnUe+Ok5PSS3ZZROAjo/HmQCrSk
-         8DzS3NcbFJrs6+HuAIy1pJ/GCBY4RFgmua8hJlvi67uOZAQ9ELBv3zKFjqfKddDlla6i
-         pJbStL6SpozneAJFUlH1kPEJkRDUlsBnoYV9+Ro2jZNgnmsR9fS+5yzkZWh8S9gl91wk
-         F+ExJkBaxtGxt9bH4SEN1hSvXqkZ+gmpG5WHHidkVHEXxzncxXpjaXWy8yzcb+oOdv00
-         2P6cAoPbZS+S0BMwpCd0yLYxApuEUL4fpPllHAWV3+d4dmWwsvwQOUoahbv8SWuH/BSI
-         tb6w==
-X-Forwarded-Encrypted: i=1; AJvYcCWnZppprFZn4Iu6uT+N8LU2YjCLFt5cirmHGGjkWRZRWYreWP9/mk7xQZatY0by5CXDwAI7M0I=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzp5uPxiD8GxOB2Ivcc7ivsiJ4TWnflmXcHwJ8Elg5u3MeiWMOK
-	6SXe7Hkm97YH4w41qbAzGrgPZZaTgGLLkt7yCjyBIR1azF0SuHVVn+asNFJnk4q7MupeoWoy4Vj
-	3J1Rr+Rhyyw==
-X-Google-Smtp-Source: AGHT+IHcLZagAFVZvHn7R6Bk0sNRHbmj4BNbuwjtI6JLKo9USznZI2FyUOXL0EqWX8s17YI5FdFghtjemXEFKQ==
-X-Received: from xllamas.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5070])
- (user=cmllamas job=sendgmr) by 2002:a17:90b:3a8f:b0:2db:f123:60b2 with SMTP
- id 98e67ed59e1d1-2e06ac92ae5mr428a91.4.1727203453216; Tue, 24 Sep 2024
- 11:44:13 -0700 (PDT)
-Date: Tue, 24 Sep 2024 18:43:56 +0000
-In-Reply-To: <20240924184401.76043-1-cmllamas@google.com>
+        d=1e100.net; s=20230601; t=1727204841; x=1727809641;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SAaH1NEwA9lOj6mrZXQD3aHN2nJjKeYxfLBQMiilRl8=;
+        b=M6LAMzk/HYvlUcM1E/eyHZycpgaX2wUu/dW4OCXNU+SyB53fBlEbnzLT+3VG49osT7
+         XNldwmsgNXJMgpfhjeJEtq6vrrdYs3pJENDS8cg9StAeDudRvgQXGe9hzCQU8kGnWGfM
+         conb2gUXyUp+XpqPo33HEqUchVrhDFH8Q6sxp93tpbGa0ZOwseKOSEx+4H8YXHBx+AO0
+         kvMGl38iQwbFFeuH5kYODb/33lECu4JpT9a+8XIUpO8Ecwcxl6G5erS3UqKv2pEzzhZn
+         y9yd7sJEp72l8Eal98a2cgyIQNNgMP6s92idI57/JKHKW4fO1Zrdi7BeuZAXmwwqlOay
+         LsSg==
+X-Forwarded-Encrypted: i=1; AJvYcCU96GJ/r6TnPw2zgDEMjNEzEOkzlCkDdA50N9m1oo2BK8fhgfOwgqXT7kjDNpOe9orKK7EHnb4jO3IBvdsY@vger.kernel.org, AJvYcCV+VQvdLbvg2OeBukFS5Od70hSlDuwsYezadMD9bc4+zFfOpTWQ8Uh4aKJoyeiDj2ItnCkvbs3y@vger.kernel.org, AJvYcCXXfT5ITfU09Z2zFHkBP0KytfgJYu3I3rPlusvrJLq8cvkeVZOvNunESSAphMGKqcP/k5maSsHFskk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy3jLgg+VS78wLJSI+vFhy5Y+1yBlU/veSW5jayYDClCe8oQIXN
+	zFkpRWGxTn/64e8mZxtE8U6yDLKwkvjjI0J7gVZJNMLizrmT/TyT
+X-Google-Smtp-Source: AGHT+IGW+FPRFXS7Qejs1TqprRdEg80hXsFE8A7Qb5Mo08LGXjik0xl4AeSzj1yidjaHSObrSIXAog==
+X-Received: by 2002:a05:651c:211d:b0:2f1:5561:4b66 with SMTP id 38308e7fff4ca-2f91ca733efmr2305391fa.44.1727204841002;
+        Tue, 24 Sep 2024 12:07:21 -0700 (PDT)
+Received: from ?IPV6:2a02:a466:68ed:1:de6e:765:1390:c103? (2a02-a466-68ed-1-de6e-765-1390-c103.fixed6.kpn.net. [2a02:a466:68ed:1:de6e:765:1390:c103])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c5cf49d23asm1071749a12.41.2024.09.24.12.07.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 24 Sep 2024 12:07:20 -0700 (PDT)
+Message-ID: <d6ebb78b-a369-4958-9ce1-8d0647d3410a@gmail.com>
+Date: Tue, 24 Sep 2024 21:07:19 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20240924184401.76043-1-cmllamas@google.com>
-X-Mailer: git-send-email 2.46.0.792.g87dc391469-goog
-Message-ID: <20240924184401.76043-5-cmllamas@google.com>
-Subject: [PATCH 4/4] binder: fix BINDER_WORK_FROZEN_BINDER debug logs
-From: Carlos Llamas <cmllamas@google.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"=?UTF-8?q?Arve=20Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Christian Brauner <brauner@kernel.org>, 
-	Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, 
-	Yu-Ting Tseng <yutingtseng@google.com>
-Cc: linux-kernel@vger.kernel.org, kernel-team@android.com, 
-	Alice Ryhl <aliceryhl@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 1/1] dmaengine: dw: Select only supported masters for
+ ACPI devices
+To: Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+ Serge Semin <fancer.lancer@gmail.com>, dmaengine@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Cc: Viresh Kumar <vireshk@kernel.org>, Vinod Koul <vkoul@kernel.org>,
+ stable@vger.kernel.org
+References: <20240920155820.3340081-1-andriy.shevchenko@linux.intel.com>
+Content-Language: en-US
+From: Ferry Toth <fntoth@gmail.com>
+In-Reply-To: <20240920155820.3340081-1-andriy.shevchenko@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-The BINDER_WORK_FROZEN_BINDER type is not handled in the binder_logs
-entries and it shows up as "unknown work" when logged:
+Hi,
 
-  proc 649
-  context binder-test
-    thread 649: l 00 need_return 0 tr 0
-    ref 13: desc 1 node 8 s 1 w 0 d 0000000053c4c0c3
-    unknown work: type 10
-
-This patch add the freeze work type and is now logged as such:
-
-  proc 637
-  context binder-test
-    thread 637: l 00 need_return 0 tr 0
-    ref 8: desc 1 node 3 s 1 w 0 d 00000000dc39e9c6
-    has frozen binder
-
-Fixes: d579b04a52a1 ("binder: frozen notification")
-Cc: stable@vger.kernel.org
-Signed-off-by: Carlos Llamas <cmllamas@google.com>
----
- drivers/android/binder.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/android/binder.c b/drivers/android/binder.c
-index d955135ee37a..2be9f3559ed7 100644
---- a/drivers/android/binder.c
-+++ b/drivers/android/binder.c
-@@ -6408,6 +6408,9 @@ static void print_binder_work_ilocked(struct seq_file *m,
- 	case BINDER_WORK_CLEAR_DEATH_NOTIFICATION:
- 		seq_printf(m, "%shas cleared death notification\n", prefix);
- 		break;
-+	case BINDER_WORK_FROZEN_BINDER:
-+		seq_printf(m, "%shas frozen binder\n", prefix);
-+		break;
- 	default:
- 		seq_printf(m, "%sunknown work: type %d\n", prefix, w->type);
- 		break;
--- 
-2.46.0.792.g87dc391469-goog
-
+Op 20-09-2024 om 17:56 schreef Andy Shevchenko:
+> From: Serge Semin <fancer.lancer@gmail.com>
+> 
+> The recently submitted fix-commit revealed a problem in the iDMA 32-bit
+> platform code. Even though the controller supported only a single master
+> the dw_dma_acpi_filter() method hard-coded two master interfaces with IDs
+> 0 and 1. As a result the sanity check implemented in the commit
+> b336268dde75 ("dmaengine: dw: Add peripheral bus width verification")
+> got incorrect interface data width and thus prevented the client drivers
+> from configuring the DMA-channel with the EINVAL error returned. E.g.,
+> the next error was printed for the PXA2xx SPI controller driver trying
+> to configure the requested channels:
+> 
+>> [  164.525604] pxa2xx_spi_pci 0000:00:07.1: DMA slave config failed
+>> [  164.536105] pxa2xx_spi_pci 0000:00:07.1: failed to get DMA TX descriptor
+>> [  164.543213] spidev spi-SPT0001:00: SPI transfer failed: -16
+> 
+> The problem would have been spotted much earlier if the iDMA 32-bit
+> controller supported more than one master interfaces. But since it
+> supports just a single master and the iDMA 32-bit specific code just
+> ignores the master IDs in the CTLLO preparation method, the issue has
+> been gone unnoticed so far.
+> 
+> Fix the problem by specifying the default master ID for both memory
+> and peripheral devices in the driver data. Thus the issue noticed for
+> the iDMA 32-bit controllers will be eliminated and the ACPI-probed
+> DW DMA controllers will be configured with the correct master ID by
+> default.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: b336268dde75 ("dmaengine: dw: Add peripheral bus width verification")
+> Fixes: 199244d69458 ("dmaengine: dw: add support of iDMA 32-bit hardware")
+> Reported-by: Ferry Toth <fntoth@gmail.com>
+> Closes: https://lore.kernel.org/dmaengine/ZuXbCKUs1iOqFu51@black.fi.intel.com/
+> Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> Closes: https://lore.kernel.org/dmaengine/ZuXgI-VcHpMgbZ91@black.fi.intel.com/
+> Co-developed-by: Serge Semin <fancer.lancer@gmail.com>
+> Signed-off-by: Serge Semin <fancer.lancer@gmail.com>
+> Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+> ---
+> v3: rewrote to use driver_data
+> v2: https://lore.kernel.org/r/20240919185151.7331-1-fancer.lancer@gmail.com
+> 
+>   drivers/dma/dw/acpi.c     | 6 ++++--
+>   drivers/dma/dw/internal.h | 8 ++++++++
+>   drivers/dma/dw/pci.c      | 4 ++--
+>   3 files changed, 14 insertions(+), 4 deletions(-)
+> 
+> diff --git a/drivers/dma/dw/acpi.c b/drivers/dma/dw/acpi.c
+> index c510c109d2c3..b6452fffa657 100644
+> --- a/drivers/dma/dw/acpi.c
+> +++ b/drivers/dma/dw/acpi.c
+> @@ -8,13 +8,15 @@
+>   
+>   static bool dw_dma_acpi_filter(struct dma_chan *chan, void *param)
+>   {
+> +	struct dw_dma *dw = to_dw_dma(chan->device);
+> +	struct dw_dma_chip_pdata *data = dev_get_drvdata(dw->dma.dev);
+>   	struct acpi_dma_spec *dma_spec = param;
+>   	struct dw_dma_slave slave = {
+>   		.dma_dev = dma_spec->dev,
+>   		.src_id = dma_spec->slave_id,
+>   		.dst_id = dma_spec->slave_id,
+> -		.m_master = 0,
+> -		.p_master = 1,
+> +		.m_master = data->m_master,
+> +		.p_master = data->p_master,
+>   	};
+>   
+>   	return dw_dma_filter(chan, &slave);
+> diff --git a/drivers/dma/dw/internal.h b/drivers/dma/dw/internal.h
+> index 779b3cbcf30d..99d9f61b2254 100644
+> --- a/drivers/dma/dw/internal.h
+> +++ b/drivers/dma/dw/internal.h
+> @@ -51,11 +51,15 @@ struct dw_dma_chip_pdata {
+>   	int (*probe)(struct dw_dma_chip *chip);
+>   	int (*remove)(struct dw_dma_chip *chip);
+>   	struct dw_dma_chip *chip;
+> +	u8 m_master;
+> +	u8 p_master;
+>   };
+>   
+>   static __maybe_unused const struct dw_dma_chip_pdata dw_dma_chip_pdata = {
+>   	.probe = dw_dma_probe,
+>   	.remove = dw_dma_remove,
+> +	.m_master = 0,
+> +	.p_master = 1,
+>   };
+>   
+>   static const struct dw_dma_platform_data idma32_pdata = {
+> @@ -72,6 +76,8 @@ static __maybe_unused const struct dw_dma_chip_pdata idma32_chip_pdata = {
+>   	.pdata = &idma32_pdata,
+>   	.probe = idma32_dma_probe,
+>   	.remove = idma32_dma_remove,
+> +	.m_master = 0,
+> +	.p_master = 0,
+>   };
+>   
+>   static const struct dw_dma_platform_data xbar_pdata = {
+> @@ -88,6 +94,8 @@ static __maybe_unused const struct dw_dma_chip_pdata xbar_chip_pdata = {
+>   	.pdata = &xbar_pdata,
+>   	.probe = idma32_dma_probe,
+>   	.remove = idma32_dma_remove,
+> +	.m_master = 0,
+> +	.p_master = 0,
+>   };
+>   
+>   int dw_dma_fill_pdata(struct device *dev, struct dw_dma_platform_data *pdata);
+> diff --git a/drivers/dma/dw/pci.c b/drivers/dma/dw/pci.c
+> index adf2d69834b8..a3aae3d1c093 100644
+> --- a/drivers/dma/dw/pci.c
+> +++ b/drivers/dma/dw/pci.c
+> @@ -56,10 +56,10 @@ static int dw_pci_probe(struct pci_dev *pdev, const struct pci_device_id *pid)
+>   	if (ret)
+>   		return ret;
+>   
+> -	dw_dma_acpi_controller_register(chip->dw);
+> -
+>   	pci_set_drvdata(pdev, data);
+>   
+> +	dw_dma_acpi_controller_register(chip->dw);
+> +
+>   	return 0;
+>   }
+>   
+Tested-by: Ferry Toth <fntoth@gmail.com> (Intel Edison-Arduino)
 
