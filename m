@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-77004-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEABF98493D
-	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 18:09:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE9F0984959
+	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 18:13:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 42C221F24F83
-	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 16:09:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8000A28639A
+	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 16:13:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8695B1AB6F3;
-	Tue, 24 Sep 2024 16:08:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42F231ABEA8;
+	Tue, 24 Sep 2024 16:13:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VaOgDa+N"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ad8Dnb8E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 408721A76B0;
-	Tue, 24 Sep 2024 16:08:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4A2A1AAE2D;
+	Tue, 24 Sep 2024 16:13:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727194102; cv=none; b=VdKi8rfZ5mkJm8MxO/Au5qwxYoGU6yPFg5ycI/hS1VS+a6aYSv1ygtQfDQjSKDQJMppKw/6ayNJYjFVfgm1+OsdKmGNBSfV6R1GlIAqRrjdf0ekRkwq0MBqJ/1UAFTzhNSfZJtcfp54eu2CFBVcv6d4/DQDjzHu0tfSckZzhK6A=
+	t=1727194406; cv=none; b=P0eq0hwKpb3255kC2syFQsQNcd+x+BTDWunE6BCSdiiSQRhuooGdXamLAdTPqB9qMYi0EiCfEm0BSMjmZJ8LHIPPcY4ZVODZnfXmbK/AoIoEoVLvX8erj26FJhl1b0XiLvvthxpTQYBQ1PskWX4hhpLQa1rHzXSmbnfz/e/y7ag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727194102; c=relaxed/simple;
-	bh=cfihUGMaE7+jiIDMlxuKgtEOnxw2LBQUmrnZV+sF6no=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=SU2+TCumtYluWF0D0IISYozB8Ejle25hHNizGMUQIFvzBFhleINOFQbuMoslGitEa8U1o3y6mpnK74RWp7AbwbTTtwo8nfmNo95S7oVMpOtbbEkrsxNZBVLHbWeIEpPoIBnLtYXUp6YFflZ4qyi/CFZ5dB0YXVur9mJ+ZIp0PZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VaOgDa+N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61335C4CEC4;
-	Tue, 24 Sep 2024 16:08:21 +0000 (UTC)
+	s=arc-20240116; t=1727194406; c=relaxed/simple;
+	bh=E0HPrDszblN8VJOrdeajUB6d3Yu9y1ethcovl037+/Y=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=WeXcnxoXIllSx8FKXZHXBHh/uP14v4UxbK/8BbPMqPQwMRWEHe7tNocEpdU6Jx1+g+JIKBeW0S6pi7VgD/NSZ564mBMF4NmT0ZCHTWmOALZXK016g/L7pU5qBcHK1yR9MSPEMoKiafPpKwbgbN1SOAtYWukHpN4PORsG/ICT/8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ad8Dnb8E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32743C4CEC4;
+	Tue, 24 Sep 2024 16:13:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727194101;
-	bh=cfihUGMaE7+jiIDMlxuKgtEOnxw2LBQUmrnZV+sF6no=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=VaOgDa+NpoS/mw1r7b2OerVrP8DCV61bPf8g7nfcrGbfHI//eUBkM6DQ12KpDjFzc
-	 NdYvpGLwJ3G5HEGmUuX2MToJ4cZUsEojJZGyGyBRtFjbSuRGzW2jMZX6+4FaN/GDta
-	 hdQoTzLJd5YkOkHrNgoHw692qecRyXraVLCvcPyJfOLixAUlfMykc75rJfTVAhGanK
-	 XUpuveh9b74G50iC3NC7lmC+Sl867J5Hn3JxkJOFLJ63w5wUs6ahE+bF3cqagyMVTf
-	 THeLg0pziVs0HaTLMBwm84F/Eent9femZhodm1wkT4x8eYWSYLthv2rA7iDtKWmUmP
-	 K0G/oUvfFP57g==
+	s=k20201202; t=1727194405;
+	bh=E0HPrDszblN8VJOrdeajUB6d3Yu9y1ethcovl037+/Y=;
+	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
+	b=Ad8Dnb8EqPqZinbGTzO5qT5OFHfyOKf8U4aYdnE+7SpB67uToO/3xAZFLyTeENSaA
+	 JwyFzaqBIyJELb5NKowe+uJQyEzXEcLvNly3KsD4ebsris/OeTkhLoS3AglFJ00xcE
+	 E5CogEHigEWGM+2w0pY/jAHJVaRPOGiGscbJK0YoWyPDEPpSjGxTre2+9KXmzrMXHd
+	 CjfEQcgdsTRXSekynfj16KcGoeF39/Kc1s8DvOcMYKIq2mSyt8mFPBDwnibfmj/LF5
+	 /bKxvW0sCmpS1Uy7KB3b4Ch/TyaavMFBx+75fkpudNZYViL0qrW2us9BjOqKk+FipQ
+	 mCkx9i3vqHieg==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -49,208 +49,265 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 24 Sep 2024 19:08:17 +0300
-Message-Id: <D4EN7IQUAUKB.YJJOI927HJY7@kernel.org>
-Cc: <mona.vij@intel.com>, <kailun.qin@intel.com>, <stable@vger.kernel.org>
-Subject: Re: [PATCH v6 3/3] x86/sgx: Resolve EREMOVE page vs EAUG page data
- race
+Date: Tue, 24 Sep 2024 19:13:22 +0300
+Message-Id: <D4ENBEH902OY.2HO91169I3HV0@kernel.org>
+To: "James Bottomley" <James.Bottomley@HansenPartnership.com>,
+ <linux-integrity@vger.kernel.org>
+Cc: <roberto.sassu@huawei.com>, <mapengyu@gmail.com>,
+ <stable@vger.kernel.org>, "Mimi Zohar" <zohar@linux.ibm.com>, "David
+ Howells" <dhowells@redhat.com>, "Paul Moore" <paul@paul-moore.com>, "James
+ Morris" <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, "Peter
+ Huewe" <peterhuewe@gmx.de>, "Jason Gunthorpe" <jgg@ziepe.ca>,
+ <keyrings@vger.kernel.org>, <linux-security-module@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v5 4/5] tpm: Allocate chip->auth in
+ tpm2_start_auth_session()
 From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Dmitrii Kuvaiskii" <dmitrii.kuvaiskii@intel.com>,
- <dave.hansen@linux.intel.com>, <kai.huang@intel.com>,
- <haitao.huang@linux.intel.com>, <reinette.chatre@intel.com>,
- <linux-sgx@vger.kernel.org>, <linux-kernel@vger.kernel.org>
 X-Mailer: aerc 0.18.2
-References: <20240924094914.3873462-1-dmitrii.kuvaiskii@intel.com>
- <20240924094914.3873462-4-dmitrii.kuvaiskii@intel.com>
-In-Reply-To: <20240924094914.3873462-4-dmitrii.kuvaiskii@intel.com>
+References: <20240921120811.1264985-1-jarkko@kernel.org>
+ <20240921120811.1264985-5-jarkko@kernel.org>
+ <12e17497239dd9b47059b03a0273e2d995371278.camel@HansenPartnership.com>
+In-Reply-To: <12e17497239dd9b47059b03a0273e2d995371278.camel@HansenPartnership.com>
 
-On Tue Sep 24, 2024 at 12:49 PM EEST, Dmitrii Kuvaiskii wrote:
-> Two enclave threads may try to add and remove the same enclave page
-> simultaneously (e.g., if the SGX runtime supports both lazy allocation
-> and MADV_DONTNEED semantics). Consider some enclave page added to the
-> enclave. User space decides to temporarily remove this page (e.g.,
-> emulating the MADV_DONTNEED semantics) on CPU1. At the same time, user
-> space performs a memory access on the same page on CPU2, which results
-> in a #PF and ultimately in sgx_vma_fault(). Scenario proceeds as
-> follows:
+On Tue Sep 24, 2024 at 4:33 PM EEST, James Bottomley wrote:
+> On Sat, 2024-09-21 at 15:08 +0300, Jarkko Sakkinen wrote:
+> > Move allocation of chip->auth to tpm2_start_auth_session() so that
+> > the field can be used as flag to tell whether auth session is active
+> > or not.
+> >=20
+> > Cc: stable@vger.kernel.org=C2=A0# v6.10+
+> > Fixes: 699e3efd6c64 ("tpm: Add HMAC session start and end functions")
+> > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+> > ---
+> > v5:
+> > - No changes.
+> > v4:
+> > - Change to bug.
+> > v3:
+> > - No changes.
+> > v2:
+> > - A new patch.
+> > ---
+> > =C2=A0drivers/char/tpm/tpm2-sessions.c | 43 +++++++++++++++++++--------=
+---
+> > --
+> > =C2=A01 file changed, 25 insertions(+), 18 deletions(-)
+> >=20
+> > diff --git a/drivers/char/tpm/tpm2-sessions.c
+> > b/drivers/char/tpm/tpm2-sessions.c
+> > index 1aef5b1f9c90..a8d3d5d52178 100644
+> > --- a/drivers/char/tpm/tpm2-sessions.c
+> > +++ b/drivers/char/tpm/tpm2-sessions.c
+> > @@ -484,7 +484,8 @@ static void tpm2_KDFe(u8 z[EC_PT_SZ], const char
+> > *str, u8 *pt_u, u8 *pt_v,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0sha256_final(&sctx, out=
+);
+> > =C2=A0}
+> > =C2=A0
+> > -static void tpm_buf_append_salt(struct tpm_buf *buf, struct tpm_chip
+> > *chip)
+> > +static void tpm_buf_append_salt(struct tpm_buf *buf, struct tpm_chip
+> > *chip,
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct tpm2_auth *auth)
 >
-> /*
->  * CPU1: User space performs
->  * ioctl(SGX_IOC_ENCLAVE_REMOVE_PAGES)
->  * on enclave page X
->  */
-> sgx_encl_remove_pages() {
+> This addition of auth as an argument is a bit unnecessary.  You can set
+> chip->auth before calling this and it will all function.  Since there's
+> no error leg in tpm2_start_auth_session unless the session creation
+> itself fails and the guarantee of the ops lock is single threading this
+> chip->auth can be nulled again in that error leg.
 >
->   mutex_lock(&encl->lock);
->
->   entry =3D sgx_encl_load_page(encl);
->   /*
->    * verify that page is
->    * trimmed and accepted
->    */
->
->   mutex_unlock(&encl->lock);
->
->   /*
->    * remove PTE entry; cannot
->    * be performed under lock
->    */
->   sgx_zap_enclave_ptes(encl);
->                                  /*
->                                   * Fault on CPU2 on same page X
->                                   */
->                                  sgx_vma_fault() {
->                                    /*
->                                     * PTE entry was removed, but the
->                                     * page is still in enclave's xarray
->                                     */
->                                    xa_load(&encl->page_array) !=3D NULL -=
->
->                                    /*
->                                     * SGX driver thinks that this page
->                                     * was swapped out and loads it
->                                     */
->                                    mutex_lock(&encl->lock);
->                                    /*
->                                     * this is effectively a no-op
->                                     */
->                                    entry =3D sgx_encl_load_page_in_vma();
->                                    /*
->                                     * add PTE entry
->                                     *
->                                     * *BUG*: a PTE is installed for a
->                                     * page in process of being removed
->                                     */
->                                    vmf_insert_pfn(...);
->
->                                    mutex_unlock(&encl->lock);
->                                    return VM_FAULT_NOPAGE;
->                                  }
->   /*
->    * continue with page removal
->    */
->   mutex_lock(&encl->lock);
->
->   sgx_encl_free_epc_page(epc_page) {
->     /*
->      * remove page via EREMOVE
->      */
->     /*
->      * free EPC page
->      */
->     sgx_free_epc_page(epc_page);
->   }
->
->   xa_erase(&encl->page_array);
->
->   mutex_unlock(&encl->lock);
-> }
->
-> Here, CPU1 removed the page. However CPU2 installed the PTE entry on the
-> same page. This enclave page becomes perpetually inaccessible (until
-> another SGX_IOC_ENCLAVE_REMOVE_PAGES ioctl). This is because the page is
-> marked accessible in the PTE entry but is not EAUGed, and any subsequent
-> access to this page raises a fault: with the kernel believing there to
-> be a valid VMA, the unlikely error code X86_PF_SGX encountered by code
-> path do_user_addr_fault() -> access_error() causes the SGX driver's
-> sgx_vma_fault() to be skipped and user space receives a SIGSEGV instead.
-> The userspace SIGSEGV handler cannot perform EACCEPT because the page
-> was not EAUGed. Thus, the user space is stuck with the inaccessible
-> page.
->
-> Fix this race by forcing the fault handler on CPU2 to back off if the
-> page is currently being removed (on CPU1). This is achieved by
-> setting SGX_ENCL_PAGE_BUSY flag right-before the first mutex_unlock() in
-> sgx_encl_remove_pages(). Upon loading the page, CPU2 checks whether this
-> page is busy, and if yes then CPU2 backs off and waits until the page is
-> completely removed. After that, any memory access to this page results
-> in a normal "allocate and EAUG a page on #PF" flow.
->
-> Additionally fix a similar race: user space converts a normal enclave
-> page to a TCS page (via SGX_IOC_ENCLAVE_MODIFY_TYPES) on CPU1, and at
-> the same time, user space performs a memory access on the same page on
-> CPU2. This fix is not strictly necessary (this particular race would
-> indicate a bug in a user space application), but it gives a consistent
-> rule: if an enclave page is under certain operation by the kernel with
-> the mapping removed, then other threads trying to access that page are
-> temporarily blocked and should retry.
->
-> Fixes: 9849bb27152c1 ("x86/sgx: Support complete page removal")
-> Fixes: 45d546b8c109d ("x86/sgx: Support modifying SGX page type")
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Kai Huang <kai.huang@intel.com>
-> Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-> Signed-off-by: Dmitrii Kuvaiskii <dmitrii.kuvaiskii@intel.com>
-> ---
->  arch/x86/kernel/cpu/sgx/encl.h  |  3 ++-
->  arch/x86/kernel/cpu/sgx/ioctl.c | 17 +++++++++++++++++
->  2 files changed, 19 insertions(+), 1 deletion(-)
->
-> diff --git a/arch/x86/kernel/cpu/sgx/encl.h b/arch/x86/kernel/cpu/sgx/enc=
-l.h
-> index b566b8ad5f33..96b11e8fb770 100644
-> --- a/arch/x86/kernel/cpu/sgx/encl.h
-> +++ b/arch/x86/kernel/cpu/sgx/encl.h
-> @@ -22,7 +22,8 @@
->  /* 'desc' bits holding the offset in the VA (version array) page. */
->  #define SGX_ENCL_PAGE_VA_OFFSET_MASK	GENMASK_ULL(11, 3)
-> =20
-> -/* 'desc' bit indicating that the page is busy (being reclaimed). */
-> +/* 'desc' bit indicating that the page is busy (being reclaimed, removed=
- or
-> + * converted to a TCS page). */
->  #define SGX_ENCL_PAGE_BUSY	BIT(2)
-> =20
->  /*
-> diff --git a/arch/x86/kernel/cpu/sgx/ioctl.c b/arch/x86/kernel/cpu/sgx/io=
-ctl.c
-> index b65ab214bdf5..c6f936440438 100644
-> --- a/arch/x86/kernel/cpu/sgx/ioctl.c
-> +++ b/arch/x86/kernel/cpu/sgx/ioctl.c
-> @@ -969,12 +969,22 @@ static long sgx_enclave_modify_types(struct sgx_enc=
-l *encl,
->  			/*
->  			 * Do not keep encl->lock because of dependency on
->  			 * mmap_lock acquired in sgx_zap_enclave_ptes().
-> +			 *
-> +			 * Releasing encl->lock leads to a data race: while CPU1
-> +			 * performs sgx_zap_enclave_ptes() and removes the PTE
-> +			 * entry for the enclave page, CPU2 may attempt to load
-> +			 * this page (because the page is still in enclave's
-> +			 * xarray). To prevent CPU2 from loading the page, mark
-> +			 * the page as busy before unlock and unmark after lock
-> +			 * again.
->  			 */
-> +			entry->desc |=3D SGX_ENCL_PAGE_BUSY;
->  			mutex_unlock(&encl->lock);
-> =20
->  			sgx_zap_enclave_ptes(encl, addr);
-> =20
->  			mutex_lock(&encl->lock);
-> +			entry->desc &=3D ~SGX_ENCL_PAGE_BUSY;
-> =20
->  			sgx_mark_page_reclaimable(entry->epc_page);
->  		}
-> @@ -1141,7 +1151,14 @@ static long sgx_encl_remove_pages(struct sgx_encl =
-*encl,
->  		/*
->  		 * Do not keep encl->lock because of dependency on
->  		 * mmap_lock acquired in sgx_zap_enclave_ptes().
-> +		 *
-> +		 * Releasing encl->lock leads to a data race: while CPU1
-> +		 * performs sgx_zap_enclave_ptes() and removes the PTE entry
-> +		 * for the enclave page, CPU2 may attempt to load this page
-> +		 * (because the page is still in enclave's xarray). To prevent
-> +		 * CPU2 from loading the page, mark the page as busy.
->  		 */
-> +		entry->desc |=3D SGX_ENCL_PAGE_BUSY;
->  		mutex_unlock(&encl->lock);
-> =20
->  		sgx_zap_enclave_ptes(encl, addr);
+> If you want to keep the flow proposed in the patch, the change from how
+> it works now to how it works with this patch needs documenting in the
+> change log
 
-Just acknowledging that my tag hold also for this version. Good job!
+OK, I don't want to overgrow the diff so +1 for this.
 
-All the diff's are as tight as they can get, which is awesome.
+>
+> > =C2=A0{
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct crypto_kpp *kpp;
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct kpp_request *req=
+;
+> > @@ -543,7 +544,7 @@ static void tpm_buf_append_salt(struct tpm_buf
+> > *buf, struct tpm_chip *chip)
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0sg_set_buf(&s[0], chip-=
+>null_ec_key_x, EC_PT_SZ);
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0sg_set_buf(&s[1], chip-=
+>null_ec_key_y, EC_PT_SZ);
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0kpp_request_set_input(r=
+eq, s, EC_PT_SZ*2);
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0sg_init_one(d, chip->auth->s=
+alt, EC_PT_SZ);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0sg_init_one(d, auth->salt, E=
+C_PT_SZ);
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0kpp_request_set_output(=
+req, d, EC_PT_SZ);
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0crypto_kpp_compute_shar=
+ed_secret(req);
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0kpp_request_free(req);
+> > @@ -554,8 +555,7 @@ static void tpm_buf_append_salt(struct tpm_buf
+> > *buf, struct tpm_chip *chip)
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * This works because K=
+DFe fully consumes the secret before
+> > it
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 * writes the salt
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 */
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0tpm2_KDFe(chip->auth->salt, =
+"SECRET", x, chip->null_ec_key_x,
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0 chip->auth->salt);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0tpm2_KDFe(auth->salt, "SECRE=
+T", x, chip->null_ec_key_x, auth-
+> > >salt);
+> > =C2=A0
+> > =C2=A0 out:
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0crypto_free_kpp(kpp);
+> > @@ -854,6 +854,8 @@ int tpm_buf_check_hmac_response(struct tpm_chip
+> > *chip, struct tpm_buf *buf,
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+/* manually close the session if it wasn't
+> > consumed */
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
+tpm2_flush_context(chip, auth->handle);
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0memzero_explicit(auth, sizeof(*auth));
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0kfree(auth);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0chip->auth =3D NULL;
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0} else {
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0/* reset for next use=C2=A0 */
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0auth->session =3D TPM_HEADER_SIZE;
+> > @@ -882,6 +884,8 @@ void tpm2_end_auth_session(struct tpm_chip *chip)
+> > =C2=A0
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0tpm2_flush_context(chip=
+, auth->handle);
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0memzero_explicit(auth, =
+sizeof(*auth));
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0kfree(auth);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0chip->auth =3D NULL;
+> > =C2=A0}
+> > =C2=A0EXPORT_SYMBOL(tpm2_end_auth_session);
+> > =C2=A0
+> > @@ -970,25 +974,29 @@ static int tpm2_load_null(struct tpm_chip
+> > *chip, u32 *null_key)
+> > =C2=A0 */
+> > =C2=A0int tpm2_start_auth_session(struct tpm_chip *chip)
+> > =C2=A0{
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct tpm2_auth *auth;
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct tpm_buf buf;
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct tpm2_auth *auth =3D c=
+hip->auth;
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0int rc;
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0u32 null_key;
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0int rc;
+> > =C2=A0
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (!auth) {
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0dev_warn_once(&chip->dev, "auth session is not
+> > active\n");
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (chip->auth) {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0dev_warn_once(&chip->dev, "auth session is
+> > active\n");
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0return 0;
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
+> > =C2=A0
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0auth =3D kzalloc(sizeof(*aut=
+h), GFP_KERNEL);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (!auth)
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0return -ENOMEM;
+> > +
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0rc =3D tpm2_load_null(c=
+hip, &null_key);
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (rc)
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0goto out;
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0goto err;
+> > =C2=A0
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0auth->session =3D TPM_H=
+EADER_SIZE;
+> > =C2=A0
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0rc =3D tpm_buf_init(&bu=
+f, TPM2_ST_NO_SESSIONS,
+> > TPM2_CC_START_AUTH_SESS);
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (rc)
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0goto out;
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0goto err;
+> > =C2=A0
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/* salt key handle */
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0tpm_buf_append_u32(&buf=
+, null_key);
+> > @@ -1000,7 +1008,7 @@ int tpm2_start_auth_session(struct tpm_chip
+> > *chip)
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0tpm_buf_append(&buf, au=
+th->our_nonce, sizeof(auth-
+> > >our_nonce));
+> > =C2=A0
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/* append encrypted sal=
+t and squirrel away unencrypted in
+> > auth */
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0tpm_buf_append_salt(&buf, ch=
+ip);
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0tpm_buf_append_salt(&buf, ch=
+ip, auth);
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/* session type (HMAC, =
+audit or policy) */
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0tpm_buf_append_u8(&buf,=
+ TPM2_SE_HMAC);
+> > =C2=A0
+> > @@ -1021,10 +1029,13 @@ int tpm2_start_auth_session(struct tpm_chip
+> > *chip)
+> > =C2=A0
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0tpm_buf_destroy(&buf);
+> > =C2=A0
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (rc)
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0goto out;
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (rc =3D=3D TPM2_RC_SUCCES=
+S) {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0chip->auth =3D auth;
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0return 0;
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0}
+> > =C2=A0
+> > - out:
+> > +err:
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0kfree(auth);
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return rc;
+> > =C2=A0}
+> > =C2=A0EXPORT_SYMBOL(tpm2_start_auth_session);
+> > @@ -1371,10 +1382,6 @@ int tpm2_sessions_init(struct tpm_chip *chip)
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (rc)
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0return rc;
+> > =C2=A0
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0chip->auth =3D kmalloc(sizeo=
+f(*chip->auth), GFP_KERNEL);
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (!chip->auth)
+> > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0return -ENOMEM;
+> > -
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return rc;
+> > =C2=A0}
+> > =C2=A0#endif /* CONFIG_TCG_TPM2_HMAC */
+>
+> Other than the comment above
+>
+> Reviewed-by: James Bottomley <James.Bottomley@HansenPartnership.com>
+
+Just in case, I'll address the comment so please check also v6.
 
 BR, Jarkko
 
