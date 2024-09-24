@@ -1,112 +1,124 @@
-Return-Path: <stable+bounces-76958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 959FE983D5A
-	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 08:51:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D199983D5E
+	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 08:51:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A530283DF1
-	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 06:51:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 130E51F2369A
+	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 06:51:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 538335A79B;
-	Tue, 24 Sep 2024 06:51:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="UdrwcHEb"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 082EA6EB5C;
+	Tue, 24 Sep 2024 06:51:14 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8C4454FB5
-	for <stable@vger.kernel.org>; Tue, 24 Sep 2024 06:51:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDB273E499
+	for <stable@vger.kernel.org>; Tue, 24 Sep 2024 06:51:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727160663; cv=none; b=g/RinmF6WlxnzRgIjnGoPVuXfbcWicIEG0FzJS868kZpVLz7nHEejBjy7/XEy0ew4X+Na0WyJEsMGnhYJyz6oysWEzP9s6yJ33j+h6PeRnB1oTe3lqcmitoz7DdQqc0ArTHD7uN2iBpnWpmN2YhX8qyI0b4REFi7I4x/Ablc5fk=
+	t=1727160673; cv=none; b=R5hg2W8XW82ADHUu6XiveJ3GgD8epyfXX9Q/H8gGGnanXsDkbc9LZeQ8+9D4+WaKCxOqPiZ9eEAP+sM6TbG14QyX5ipyKE65qQaRM5Cx4I3IRHHllspgn/jx66tpz1AKW/+3S3Ig21AbTVSYkMuZyaE8jLtZNs0dYvbVZAzL+gA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727160663; c=relaxed/simple;
-	bh=LpsqiJvMgPeFGUk+BZZEvqNyd7oNQvz6Lh1UHfN/Jdg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cMFaX6XqwDZrrg3FQCxYsCt4QXgFQZp1THEZNXdEtn8Dn/QTf/rHQi3DG8mG1brDg7j+t1eaLw0iol53ZdSZGKy4kQgL/BAMPd8i1BHdaEcgnengH0cJ5bpV8u5GZ7j/uIWCtukZDTgqEl21dM9LuNk4wrqZJkqTZiZXF566RvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=UdrwcHEb; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-20570b42f24so56481715ad.1
-        for <stable@vger.kernel.org>; Mon, 23 Sep 2024 23:51:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1727160661; x=1727765461; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=E/4TVrZGAPYYZ9jgK0SoUaboMFGCpBKiH3t0JiBxkdE=;
-        b=UdrwcHEbdf618KJiMNMrIGqYphlbDhR9+dV3iUpzKuq+OdtdTXARO577wptxGjIXEa
-         2PgX30ITBo6mU52q0nKCYEO7FjXCurWnadY0QoRN69jMhBblbilGLk0ebz23qXwjkU5R
-         d4pxHnwcfptku4iRn2bbaQ0a5ylT/1yhGwp6Q=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727160661; x=1727765461;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=E/4TVrZGAPYYZ9jgK0SoUaboMFGCpBKiH3t0JiBxkdE=;
-        b=MguMkFzfZb44YHfW+Ro5KhxcTFeImYnduwCzM5BaahNS7FhgNZbR1cKmSXofwRSX0Q
-         9yzDOqOrK5hdmWBUEXzuXsVnlq4jki3fmTe09zohQX4vCuCnuI678EZijyDGhCqkjRx3
-         hkBgvPDP05OsVR70YZnLSmpJS1yf5DRQ3erQb2WUQfAcsHtQAsI7HjsKYUGHXdCfbME3
-         Mpn8sDrqPzOi58fL+IZfgbgojAj7uDv3RQeuUZFOfErtHnrKYlucCYHGJk51NtCYy+gL
-         s5r2BhIA0IlEnD2iF/XGtbLxBU6DP49QzgCwgzkrm4B+itnbH7mWYmHgEvEp6If9+EQj
-         NF/A==
-X-Forwarded-Encrypted: i=1; AJvYcCVf8b6e3pSFSSew2+2Pw+nCfmQOvmQtUbYNyK1KyQDd2vu4EKjbA6OTGnTVVui5UEtc6A2OVrI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzehxkEVVggHHNe85aSQ3YperlVlegVpW0qaRK0yELr4SF2q93y
-	K8n31iCoJip/ggSvSH4Pt7GPZH2SfsA2CUjM7t5hTTn+WfbBrm0Qc2ArCnmlZQ==
-X-Google-Smtp-Source: AGHT+IHL8eRo0RSvvbNDTCkEkAe7y/UEEpovG0ZqtEloktAHurr+zf+J8pOugx0pBfpmpOm/9jfvfA==
-X-Received: by 2002:a17:903:41c9:b0:201:f1eb:bf98 with SMTP id d9443c01a7336-208d840ace4mr182071705ad.54.1727160661152;
-        Mon, 23 Sep 2024 23:51:01 -0700 (PDT)
-Received: from google.com ([2401:fa00:8f:203:93d1:1107:fd24:adf0])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20af1818a88sm4874115ad.210.2024.09.23.23.50.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Sep 2024 23:51:00 -0700 (PDT)
-Date: Tue, 24 Sep 2024 15:50:56 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Cc: Andrey Skvortsov <andrej.skvortzov@gmail.com>,
-	Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>,
-	Minchan Kim <minchan@kernel.org>, Jens Axboe <axboe@kernel.dk>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
-	stable@vger.kernel.org,
-	Sergey Senozhatsky <senozhatsky@chromium.org>
-Subject: Re: [PATCH v3] zram: don't free statically defined names
-Message-ID: <20240924065056.GP38742@google.com>
-References: <20240923164843.1117010-1-andrej.skvortzov@gmail.com>
- <c8a4e62e-6c24-4b06-ac86-64cc4697bc2f@wanadoo.fr>
- <ZvHurCYlCoi1ZTCX@skv.local>
- <8294e492-5811-44de-8ee2-5f460a065f54@wanadoo.fr>
- <20240924054951.GM38742@google.com>
+	s=arc-20240116; t=1727160673; c=relaxed/simple;
+	bh=15eo4TyxcJOP/+fo7M57tCN8fQGnDjXxQdyb0TOAAKk=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=fXHkBdtmV0Zhbee308ztex3X+1lFTy5yDD/+m/xLwbt7Cs4afTicUkpum+MUE5kx1gpsX51C68tv688dFpeceNbYbi/UtuPTcFDhrLnbPkdr4unZ0LSfSqQyhT4xzclsoMltXO20ojOnA41vfsP6MVvv/nuYELlnCVaiyHy7vT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1sszO3-0003Gl-9Q; Tue, 24 Sep 2024 08:51:03 +0200
+Received: from [2a0a:edc0:0:b01:1d::7b] (helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1sszO2-0018Ri-IY; Tue, 24 Sep 2024 08:51:02 +0200
+Received: from pengutronix.de (unknown [IPv6:2a01:4f8:1c1c:29e9:22:41ff:fe00:1400])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (prime256v1) server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id C1AF434198E;
+	Tue, 24 Sep 2024 06:51:01 +0000 (UTC)
+Date: Tue, 24 Sep 2024 08:51:00 +0200
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: stable@vger.kernel.org
+Cc: gregkh@linuxfoundation.org, sashal@kernel.org, 
+	Francesco Dolcini <francesco@dolcini.it>, Marc Kleine-Budde <mkl@pengutronix.de>, 
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>, linux-can@vger.kernel.org, 
+	Thomas Kopp <thomas.kopp@microchip.com>, kernel@pengutronix.de
+Subject: mcp251xfd: please add to the stable trees
+Message-ID: <20240924-truthful-authentic-basilisk-aaab90-mkl@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="mysrjg5j2zurblds"
 Content-Disposition: inline
-In-Reply-To: <20240924054951.GM38742@google.com>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 
-On (24/09/24 14:49), Sergey Senozhatsky wrote:
-> On (24/09/24 07:21), Christophe JAILLET wrote:
-> [..]
-> > > kfree_const() will not work if zram is built as a module. It works
-> > > only for .rodata for kernel image. [1]
-> > > 
-> > > 1. https://elixir.bootlin.com/linux/v6.11/source/include/asm-generic/sections.h#L177
-> > > 
-> > 
-> > If so, then it is likely that it is not correctly used elsewhere.
-> > 
-> > https://elixir.bootlin.com/linux/v6.11/source/drivers/dax/kmem.c#L289
-> > https://elixir.bootlin.com/linux/v6.11/source/drivers/firmware/arm_scmi/bus.c#L341
-> > https://elixir.bootlin.com/linux/v6.11/source/drivers/input/touchscreen/chipone_icn8505.c#L379
 
-OK there are too many users of kfree_const() in drivers/ so
-un-exporting it is not an option, that was a silly idea.  We
-probably need to walk through them and make sure that they
-don't kfree_const() modules' .rodata
+--mysrjg5j2zurblds
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
+
+Hello stable-team,
+
+Francesco Dolcini reported a regression on v6.6.52 [1], it turns out
+since v6.6.51~34 a.k.a. 5ea24ddc26a7 ("can: mcp251xfd: rx: add
+workaround for erratum DS80000789E 6 of mcp2518fd") the mcp25xfd driver
+is broken.
+
+Cherry picking the following commits fixes the problem:
+
+51b2a7216122 ("can: mcp251xfd: properly indent labels")
+a7801540f325 ("can: mcp251xfd: move mcp251xfd_timestamp_start()/stop() into=
+ mcp251xfd_chip_start/stop()")
+
+Please pick these patches for
+
+- 6.10.x
+- 6.6.x
+- 6.1.x
+
+[1] https://lore.kernel.org/all/20240923115310.GA138774@francesco-nb
+
+regards,
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--mysrjg5j2zurblds
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEUEC6huC2BN0pvD5fKDiiPnotvG8FAmbyYVAACgkQKDiiPnot
+vG8o2gf/c9vzrwNc60LjRrnQBHLiIydOJmdbOarFLzeu1EkOPfJ13KGZwyrvtSNw
+OJEJ/XPMg3meRj/cy5+3Q0UhhT8k+zxoirjyTNMcda9TVBLUA9w5lHtllKnjSks5
+9IXkemuCYieSrvo5xIfO7SZcGcFhq5N6diIUJ6XX5A2ls9s3OLIN8p4lq42IQmEi
+INhpJqeA3IECRnTJmMM1coMiH/Kwe7tE8XwWmQdtqIShrH3fUWGqpLT63LZJca2F
+jDJ+5zmBlrK09INm53QO2iTZzlADXjxKt/Ibxwr2SuMotbf8mSO1D+E3prQiCdui
+0dSznCXxwlgIUEhTMeYZiWTQjNVDGA==
+=7zU2
+-----END PGP SIGNATURE-----
+
+--mysrjg5j2zurblds--
 
