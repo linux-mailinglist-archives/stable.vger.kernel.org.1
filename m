@@ -1,145 +1,101 @@
-Return-Path: <stable+bounces-77012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F603984ACF
-	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 20:23:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70A68984AD2
+	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 20:25:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A46C9282465
-	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 18:23:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9A07E1C21141
+	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 18:25:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 186381AC433;
-	Tue, 24 Sep 2024 18:22:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C66C1AC43E;
+	Tue, 24 Sep 2024 18:25:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="Dk6pALFL"
+	dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b="xIjA5nAE"
 X-Original-To: stable@vger.kernel.org
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6334E11CA0;
-	Tue, 24 Sep 2024 18:22:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from 008.lax.mailroute.net (008.lax.mailroute.net [199.89.1.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BD3111CA0;
+	Tue, 24 Sep 2024 18:25:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=199.89.1.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727202177; cv=none; b=Y4drxIuHuoB08X/a+jt6GEcG5c3hCDQVToYDNXFqIfSHne4HBqwOFY6VFWpSHjz4VsLTZmbJHdK0q4WmBiX5Pt5LE2do5VK5NTtjabPWMPnotK+EwLMr7xUNj6N7qofuvxV0dDTJAvDWQusUPOY1gaKevN96UTmP5eA24mG2jF8=
+	t=1727202306; cv=none; b=AMi8LKluqaaY0x+4Rz47guW+yf7feGcpxcMtJaLkzOkhuIvI4KxSFS+bb+bAizkrecSgMcjpBmdOoBu2xHu7OYSZDo4i3diw4yDnLA+JNbVrnbabv+IwLZSxz2Z8MRD1uuWtN5s0lteaBc1mCWT/e1awxeRzCaFeCqTE6pn0LVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727202177; c=relaxed/simple;
-	bh=TUwq8CJ3h1KyuGejnrJdKWp5w35wORDJxiEqbkcXqnY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EK9QwXiMtA2zwgTM8xScoanFL4+8hl4NdfxD6IT4MDB0QXp4JFwY3V6H0ZKpO45MJsV9QP0ARCSEGpuogx5b54O2F724g8OscASZdIRcGbG8YBJYNihQTuLW6hkf3Tma+TQ94vnZgN8l2xnHvlNiPzOdOh78aprSo1ZHJeSFBqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=Dk6pALFL; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
-Received: by linux.microsoft.com (Postfix, from userid 1127)
-	id 17AB120C6497; Tue, 24 Sep 2024 11:22:50 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 17AB120C6497
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1727202170;
-	bh=Sp511I3MRZE6mycvGCLM5CjDhuHrm3NCeyezfu9e2+o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Dk6pALFL+0XgJD6mtcKlYy+XqoazUImW8ZPyXrCT5YyZywaYLlvTmQHtKwubRRrdX
-	 XFhofekAZSJATBqycvP+mI6/Ya8nd5jTS2KvGoH8Ni+b5kd7gk999Y5cB3DchYoBJQ
-	 0ik1rCzIMNu+KuOH17sZ1QvECYIbA6wZK1z/ctlQ=
-Date: Tue, 24 Sep 2024 11:22:50 -0700
-From: Saurabh Singh Sengar <ssengar@linux.microsoft.com>
-To: Dexuan Cui <decui@microsoft.com>
-Cc: KY Srinivasan <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>, Long Li <longli@microsoft.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	"open list:Hyper-V/Azure CORE AND DRIVERS" <linux-hyperv@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH] tools: hv: Fix a complier warning in the fcopy uio daemon
-Message-ID: <20240924182250.GA14242@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
-References: <20240910004433.50254-1-decui@microsoft.com>
- <20240913073058.GA24840@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
- <SA1PR21MB13172712A02F3C9EEB156131BF6D2@SA1PR21MB1317.namprd21.prod.outlook.com>
+	s=arc-20240116; t=1727202306; c=relaxed/simple;
+	bh=rgLearlYjzMnQfkJz/s3WeZnp9Ywf6QnlUcddXy54bE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=c6Ym6a4idUYPzLVqDI/UnQqYC7gY7ThuWEKgduKlwr9kgZbtXc53qtRQ23Ht34wTijIoCOQr6IgMlvhuWx+uQVzHhn4I+0UX3QEZHrxgg0Sm+8K9rekKGF2wCouLZz/kBzkkaNvr5EXr+KQuVwgicYQn151WVc4dKiu320uybds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org; spf=pass smtp.mailfrom=acm.org; dkim=pass (2048-bit key) header.d=acm.org header.i=@acm.org header.b=xIjA5nAE; arc=none smtp.client-ip=199.89.1.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=acm.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=acm.org
+Received: from localhost (localhost [127.0.0.1])
+	by 008.lax.mailroute.net (Postfix) with ESMTP id 4XCpDp2nrmz6ClY9X;
+	Tue, 24 Sep 2024 18:24:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=acm.org; h=
+	content-transfer-encoding:content-type:content-type:in-reply-to
+	:from:from:content-language:references:subject:subject
+	:user-agent:mime-version:date:date:message-id:received:received;
+	 s=mr01; t=1727202293; x=1729794294; bh=ka1L/rTl/2S2yfrGC6e0Apm9
+	4DZy23YfTKQUPFek9FQ=; b=xIjA5nAEchXHvqDuOAhcmxGDXr2wBmjI+90m8hbL
+	ac678sRb1E5freXs3xcnYO6+5z9n2e9PKH1imyuMy1mvr7G28w4vMv6QjlYfUoHV
+	GV68dTiOG9okWzwD8/dmWXgRub2SRdZdFjdgduGVkChMTebJwggY5Oxul3ZpeIpo
+	uqacwWeG0g7ngfJX6/diyLAJPw03gPDEOTyapxOuxfNVwA0aNLrpAjYli1lSmqiY
+	pmgWSYQGnOkKAUG2clTtdBF3mxQAZGIpMBwY88zCCQFtsf0I3gFmZvy5Kvz1r4ky
+	WfQgi8bKiNUxp8dWGEs2VFFTyuVy5RS5rQxvhUIjDDLKRg==
+X-Virus-Scanned: by MailRoute
+Received: from 008.lax.mailroute.net ([127.0.0.1])
+ by localhost (008.lax [127.0.0.1]) (mroute_mailscanner, port 10029) with LMTP
+ id lHziY71Vt7vE; Tue, 24 Sep 2024 18:24:53 +0000 (UTC)
+Received: from [100.66.154.22] (unknown [104.135.204.82])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bvanassche@acm.org)
+	by 008.lax.mailroute.net (Postfix) with ESMTPSA id 4XCpDg5X6zz6ClY9W;
+	Tue, 24 Sep 2024 18:24:51 +0000 (UTC)
+Message-ID: <1845f326-e9eb-4351-9ed1-fce373c82cb0@acm.org>
+Date: Tue, 24 Sep 2024 11:24:50 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <SA1PR21MB13172712A02F3C9EEB156131BF6D2@SA1PR21MB1317.namprd21.prod.outlook.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
-
-On Sat, Sep 21, 2024 at 01:23:09AM +0000, Dexuan Cui wrote:
-> > From: Saurabh Singh Sengar <ssengar@linux.microsoft.com>
-> > Sent: Friday, September 13, 2024 12:31 AM
-> > To: Dexuan Cui <decui@microsoft.com>
-> > Cc: KY Srinivasan <kys@microsoft.com>; Haiyang Zhang
-> > <haiyangz@microsoft.com>; Wei Liu <wei.liu@kernel.org>; Long Li
-> > <longli@microsoft.com>; Greg Kroah-Hartman
-> > <gregkh@linuxfoundation.org>; open list:Hyper-V/Azure CORE AND DRIVERS
-> > <linux-hyperv@vger.kernel.org>; open list <linux-kernel@vger.kernel.org>;
-> > stable@vger.kernel.org
-> > Subject: Re: [PATCH] tools: hv: Fix a complier warning in the fcopy uio
-> > daemon
-> > 
-> > On Tue, Sep 10, 2024 at 12:44:32AM +0000, Dexuan Cui wrote:
-> > > hv_fcopy_uio_daemon.c:436:53: warning: '%s' directive output may be
-> > truncated
-> > > writing up to 14 bytes into a region of size 10 [-Wformat-truncation=]
-> > >   436 |  snprintf(uio_dev_path, sizeof(uio_dev_path), "/dev/%s",
-> > uio_name);
-> > 
-> > Makefile today doesn't have -Wformat-truncation flag enabled, I tried to add
-> > -Wformat-truncation=2 but I don't see any error in this file.
-> > 
-> > Do you mind sharing more details how you get this error ?
-> > 
-> > - Saurabh
-> 
-> This repros in a Ubuntu 20.04 VM:
-> 
-> root@decui-u2004-2024-0920:~/linux/tools/hv# cat /etc/os-release
-> NAME="Ubuntu"
-> VERSION="20.04.6 LTS (Focal Fossa)"
-> ...
-> 
-> root@decui-u2004-2024-0920:~/linux/tools/hv# gcc --version
-> gcc (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0
-> Copyright (C) 2019 Free Software Foundation, Inc.
-> This is free software; see the source for copying conditions.  There is NO
-> warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
-> 
-> root@decui-u2004-2024-0920:~/linux/tools/hv# make clean; make
-> ...
-> make -f /root/linux/tools/build/Makefile.build dir=. obj=hv_fcopy_uio_daemon
-> make[1]: Entering directory '/root/linux/tools/hv'
->   CC      hv_fcopy_uio_daemon.o
-> hv_fcopy_uio_daemon.c: In function 'main':
-> hv_fcopy_uio_daemon.c:443:53: warning: '%s' directive output may be truncated writing up to 14 bytes into a region of size 10 [-Wformat-truncation=]
->   443 |  snprintf(uio_dev_path, sizeof(uio_dev_path), "/dev/%s", uio_name);
->       |                                                     ^~   ~~~~~~~~
-> In file included from /usr/include/stdio.h:867,
->                  from hv_fcopy_uio_daemon.c:20:
-> /usr/include/x86_64-linux-gnu/bits/stdio2.h:67:10: note: '__builtin___snprintf_chk' output between 6 and 20 bytes into a destination of size 15
->    67 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
->       |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->    68 |        __bos (__s), __fmt, __va_arg_pack ());
->       |        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
->   CC      vmbus_bufring.o
->   LD      hv_fcopy_uio_daemon-in.o
-> make[1]: Leaving directory '/root/linux/tools/hv'
->   LINK    hv_fcopy_uio_daemon
-
-Thanks for the details. Looks this is the behaviour of old gcc versions.
-How about fixing it like this :
-
---- a/tools/hv/hv_fcopy_uio_daemon.c
-+++ b/tools/hv/hv_fcopy_uio_daemon.c
-@@ -35,7 +35,7 @@
- #define WIN8_SRV_MINOR         1
- #define WIN8_SRV_VERSION       (WIN8_SRV_MAJOR << 16 | WIN8_SRV_MINOR)
-
--#define MAX_FOLDER_NAME                15
-+#define MAX_FOLDER_NAME                10
- #define MAX_PATH_LEN           15
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1 1/1] ufs: core: set SDEV_OFFLINE when ufs shutdown.
+To: Seunghwan Baek <sh8267.baek@samsung.com>, linux-kernel@vger.kernel.org,
+ linux-scsi@vger.kernel.org, martin.petersen@oracle.com,
+ James.Bottomley@HansenPartnership.com, avri.altman@wdc.com,
+ alim.akhtar@samsung.com
+Cc: grant.jung@samsung.com, jt77.jang@samsung.com, junwoo80.lee@samsung.com,
+ dh0421.hwang@samsung.com, jangsub.yi@samsung.com, sh043.lee@samsung.com,
+ cw9316.lee@samsung.com, wkon.kim@samsung.com, stable@vger.kernel.org
+References: <20240829093913.6282-1-sh8267.baek@samsung.com>
+ <CGME20240829093921epcas1p35d28696b0f79e2ae39d8e3690f088e64@epcas1p3.samsung.com>
+ <20240829093913.6282-2-sh8267.baek@samsung.com>
+ <fa8a4c1a-e583-496b-a0a2-bd86f86af508@acm.org>
+ <003201db0e27$df93f250$9ebbd6f0$@samsung.com>
+Content-Language: en-US
+From: Bart Van Assche <bvanassche@acm.org>
+In-Reply-To: <003201db0e27$df93f250$9ebbd6f0$@samsung.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
 
-- Saurabh
+On 9/23/24 7:17 PM, Seunghwan Baek wrote:> That's because SSU (Start 
+Stop Unit) command must be sent during
+> shutdown process. If SDEV_OFFLINE is set for wlun, SSU command cannot
+> be sent because it is rejected by the scsi layer. Therefore, we
+> consider to set SDEV_QUIESCE for wlun, and set SDEV_OFFLINE for other
+> lus.
+Right. Since ufshcd_wl_shutdown() is expected to stop all DMA related to
+the UFS host, shouldn't there be a scsi_device_quiesce(sdev) call after
+the __ufshcd_wl_suspend(hba, UFS_SHUTDOWN_PM) call?
 
+Thanks,
+
+Bart.
 
