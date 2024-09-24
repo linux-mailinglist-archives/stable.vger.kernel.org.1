@@ -1,112 +1,231 @@
-Return-Path: <stable+bounces-77056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9769E984D4B
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 00:04:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8930D984D69
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 00:10:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3EC451F24B4E
-	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 22:04:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 146601F23438
+	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 22:10:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB3CA13D8A3;
-	Tue, 24 Sep 2024 22:03:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4245F13B59E;
+	Tue, 24 Sep 2024 22:10:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fromorbit-com.20230601.gappssmtp.com header.i=@fromorbit-com.20230601.gappssmtp.com header.b="kdzyzaWV"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="CG9B5id5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D3EF42A8F
-	for <stable@vger.kernel.org>; Tue, 24 Sep 2024 22:03:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E82ED12E1C2;
+	Tue, 24 Sep 2024 22:10:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727215436; cv=none; b=pAL+wOHHdvRGYDBYJf2tbkQtvGJUqkpj0OrEYVxVasXerheBA2QObv9wZxI0KcA0Ghwazm3Y6xLesd6q4igyky/YZWKmcd851vzjaU4Mgg/9sH95DZ71rivezLgVm5WTBNj28r4RdkCh1ag/Zuqvl6A8DmJtRfOmkfdtAHmK88s=
+	t=1727215805; cv=none; b=Dfx1mm4FiDkB1oBL8tc3fBRbMI87yfsTZG57WE4a0ycLXm5FqoRysurnDoZ7FlD8ZY5tkAWkuZ0p26++rvyBykrgzUTfZm2L2WY4O5YgI+I7NI6ypOVoCT14YHXUE1aHfpCxjnLpAetlb2bV5rR9wjRhji96z1XetuFTNwwwpOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727215436; c=relaxed/simple;
-	bh=Di3HHVeMmvsPvxJZ02RPKqpJDdCNdHt5T9u4XXK2OJA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VgOPsxD4mEczTxO76IjborZRAJzVAMJ4wjHw+7vX11usqRkmI9Mo7Nxl01nkTd9WVv8cwMbNl/vaF9BZBwrBjnPibFFTkXoPboNpIdgf/K3O7jRqRi0Wi+jpdjMM/94LAxN+dnY5oHvtDqT7rDdzf92gbr8WRYA9attiAH2UlcU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fromorbit.com; spf=pass smtp.mailfrom=fromorbit.com; dkim=pass (2048-bit key) header.d=fromorbit-com.20230601.gappssmtp.com header.i=@fromorbit-com.20230601.gappssmtp.com header.b=kdzyzaWV; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fromorbit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fromorbit.com
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-7198cb6bb02so4362978b3a.3
-        for <stable@vger.kernel.org>; Tue, 24 Sep 2024 15:03:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fromorbit-com.20230601.gappssmtp.com; s=20230601; t=1727215434; x=1727820234; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=GEs+9DP+HE2tK5M1HclRjQdhyaSyms1rELLomIrD//s=;
-        b=kdzyzaWVuXKSTjbDfZF/3IMS820IIgL02WVNLfjxFk5VQVcjKbiJGXwlKYdBG8wltU
-         Rz8K4sUMKTUq4VDst+tCEe4Oq32GZ+dZgcqK1XqnEFQkNbWe1EUMLn6NNvrLb+VeQROq
-         N7QMod6PoUXEjjJDxcRrambAo6zcEeZvc60tKvxaQE44ZQ5Az/c0dbMoVYi07qcEYG9q
-         RBpNkgvr77+J/On8aCwlPCiarGMJ/DY+LB8oV5fvYoRDEc3YuzBUZcuqRmapkXmXhmdr
-         DbZotR4g3i92QLs61obu5H1ENQvzgArt5chcT7rYZ8bg3zYDxZaFAqq0JVxM7UEhGbp7
-         1SjQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727215434; x=1727820234;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GEs+9DP+HE2tK5M1HclRjQdhyaSyms1rELLomIrD//s=;
-        b=FMZcHe85MgJXq2EwNihntp1MoJ8QKAj0k+7vVeNuY7DpVlpfY/20PuxIOSBJvslaTH
-         bIoCoCw/KNg+DRoLzE4oaHJNvkaNNPSfm3q4dOTANxKyrU7f9H5pGIqgSG40QuU1CDn4
-         +WKXhe2Ey5VTCsr0W59YKVVmHul6K4Xs7XPn8QND0p5zSileK8kcibTvNcqqjI1gwcxc
-         9zI5Co/9u7OdBphU1K6jXJ64kWfs+vGVbLlgoDGko/rLED6QxGf4kuJqBfHHm6dntwPN
-         Rr3KJHQtxXO4oPV4l/auAKajXWCWuwrj0PQ0pRyeZ7312WZbt0m66zWFQF3dNtjXgImE
-         2C8Q==
-X-Gm-Message-State: AOJu0Yw2sBHJXRth9pe0cQmrdv9sMwP3Vy0DOtKypNPnvRLMwJV656BY
-	CtFrBTZdkF9W9IgfPFoHRMidDm08p3z/AR8BMEQVniqYdrBwfYoDZP+NFObXRusdge5eY4c3tJJ
-	T
-X-Google-Smtp-Source: AGHT+IHr/pTSH7JQH7QpJpwhHbi24g03qWDkFXAfKmtvvfuiQsgnuZctfyMui+Rb0qd8IWWwkBBIJw==
-X-Received: by 2002:a05:6300:668a:b0:1d3:4301:3c86 with SMTP id adf61e73a8af0-1d4c6f2c90cmr879386637.7.1727215434408;
-        Tue, 24 Sep 2024 15:03:54 -0700 (PDT)
-Received: from dread.disaster.area (pa49-179-78-197.pa.nsw.optusnet.com.au. [49.179.78.197])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71afc9c5a9bsm1611318b3a.186.2024.09.24.15.03.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Sep 2024 15:03:53 -0700 (PDT)
-Received: from dave by dread.disaster.area with local (Exim 4.96)
-	(envelope-from <david@fromorbit.com>)
-	id 1stDdO-009bHt-13;
-	Wed, 25 Sep 2024 08:03:50 +1000
-Date: Wed, 25 Sep 2024 08:03:50 +1000
-From: Dave Chinner <david@fromorbit.com>
-To: Leah Rumancik <leah.rumancik@gmail.com>
-Cc: stable@vger.kernel.org, linux-xfs@vger.kernel.org, amir73il@gmail.com,
-	chandan.babu@oracle.com, cem@kernel.org, catherine.hoang@oracle.com
-Subject: Re: [PATCH 6.1 00/26] xfs backports to catch 6.1.y up to 6.6
-Message-ID: <ZvM3RhJxJuMeARbV@dread.disaster.area>
-References: <20240924183851.1901667-1-leah.rumancik@gmail.com>
+	s=arc-20240116; t=1727215805; c=relaxed/simple;
+	bh=ZouNSQxNtv53EHNUliTepdMDaxaseR1Dc2NUnq5+I/s=;
+	h=Date:To:From:Subject:Message-Id; b=Sn6oNkDECqH92XFP9z9u2gkV2XMFoKod5ZQefUAN/3o4rHX97PNsRtOEeQmzKtPKn0iOvxZgykb0BwH0yoQaIurK9aNrpLpxn1rRUVApl805cnK42TYbzXKhZHRtqxNrdhpSXhzG6YD4cEh6kYFI35uDgWWYOxRxo29YWM1antI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=CG9B5id5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63510C4CEC6;
+	Tue, 24 Sep 2024 22:10:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1727215804;
+	bh=ZouNSQxNtv53EHNUliTepdMDaxaseR1Dc2NUnq5+I/s=;
+	h=Date:To:From:Subject:From;
+	b=CG9B5id5YjQqrdVS+U+9I+L0d8UOQ4MbqdJbmKcNKcp7wNlhmeCFg58mzrfTxWBWC
+	 IVgZyg2row5j6lkFCQ4vz5WqQqbURlpiCyDAYFawX9rm0Q3PUiQu0X9OcPiLNw0rPq
+	 aKaqfjhzCRkqKp0vXK8MS826frsRBU1Vtzm/qqKo=
+Date: Tue, 24 Sep 2024 15:10:03 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mark@fasheh.com,junxiao.bi@oracle.com,joseph.qi@linux.alibaba.com,jlbec@evilplan.org,ghe@suse.com,gechangwei@live.cn,gautham.ananthakrishna@oracle.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + ocfs2-reserve-space-for-inline-xattr-before-attaching-reflink-tree.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240924221004.63510C4CEC6@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240924183851.1901667-1-leah.rumancik@gmail.com>
 
-On Tue, Sep 24, 2024 at 11:38:25AM -0700, Leah Rumancik wrote:
-> Hello again,
-> 
-> Here is the next set of XFS backports, this set is for 6.1.y and I will
-> be following up with a set for 5.15.y later. There were some good
-> suggestions made at LSF to survey test coverage to cut back on
-> testing but I've been a bit swamped and a backport set was overdue.
-> So for this set, I have run the auto group 3 x 8 configs with no
-> regressions seen. Let me know if you spot any issues.
-> 
-> This set has already been ack'd on the XFS list.
 
-Hi Leah, can you pick up this recently requested fix for the series,
-too?
+The patch titled
+     Subject: ocfs2: reserve space for inline xattr before attaching reflink tree
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     ocfs2-reserve-space-for-inline-xattr-before-attaching-reflink-tree.patch
 
-https://lore.kernel.org/linux-xfs/20240923155752.8443-1-kalachev@swemel.ru/T/
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/ocfs2-reserve-space-for-inline-xattr-before-attaching-reflink-tree.patch
 
--Dave.
--- 
-Dave Chinner
-david@fromorbit.com
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Gautham Ananthakrishna <gautham.ananthakrishna@oracle.com>
+Subject: ocfs2: reserve space for inline xattr before attaching reflink tree
+Date: Wed, 18 Sep 2024 06:38:44 +0000
+
+One of our customers reported a crash and a corrupted ocfs2 filesystem. 
+The crash was due to the detection of corruption.  Upon troubleshooting,
+the fsck -fn output showed the below corruption
+
+[EXTENT_LIST_FREE] Extent list in owner 33080590 claims 230 as the next free chain record,
+but fsck believes the largest valid value is 227.  Clamp the next record value? n
+
+The stat output from the debugfs.ocfs2 showed the following corruption
+where the "Next Free Rec:" had overshot the "Count:" in the root metadata
+block.
+
+        Inode: 33080590   Mode: 0640   Generation: 2619713622 (0x9c25a856)
+        FS Generation: 904309833 (0x35e6ac49)
+        CRC32: 00000000   ECC: 0000
+        Type: Regular   Attr: 0x0   Flags: Valid
+        Dynamic Features: (0x16) HasXattr InlineXattr Refcounted
+        Extended Attributes Block: 0  Extended Attributes Inline Size: 256
+        User: 0 (root)   Group: 0 (root)   Size: 281320357888
+        Links: 1   Clusters: 141738
+        ctime: 0x66911b56 0x316edcb8 -- Fri Jul 12 06:02:30.829349048 2024
+        atime: 0x66911d6b 0x7f7a28d -- Fri Jul 12 06:11:23.133669517 2024
+        mtime: 0x66911b56 0x12ed75d7 -- Fri Jul 12 06:02:30.317552087 2024
+        dtime: 0x0 -- Wed Dec 31 17:00:00 1969
+        Refcount Block: 2777346
+        Last Extblk: 2886943   Orphan Slot: 0
+        Sub Alloc Slot: 0   Sub Alloc Bit: 14
+        Tree Depth: 1   Count: 227   Next Free Rec: 230
+        ## Offset        Clusters       Block#
+        0  0             2310           2776351
+        1  2310          2139           2777375
+        2  4449          1221           2778399
+        3  5670          731            2779423
+        4  6401          566            2780447
+        .......          ....           .......
+        .......          ....           .......
+
+The issue was in the reflink workfow while reserving space for inline
+xattr.  The problematic function is ocfs2_reflink_xattr_inline().  By the
+time this function is called the reflink tree is already recreated at the
+destination inode from the source inode.  At this point, this function
+reserves space for inline xattrs at the destination inode without even
+checking if there is space at the root metadata block.  It simply reduces
+the l_count from 243 to 227 thereby making space of 256 bytes for inline
+xattr whereas the inode already has extents beyond this index (in this
+case upto 230), thereby causing corruption.
+
+The fix for this is to reserve space for inline metadata at the destination
+inode before the reflink tree gets recreated. The customer has verified the
+fix.
+
+Link: https://lkml.kernel.org/r/20240918063844.1830332-1-gautham.ananthakrishna@oracle.com
+Fixes: ef962df057aa ("ocfs2: xattr: fix inlined xattr reflink")
+Signed-off-by: Gautham Ananthakrishna <gautham.ananthakrishna@oracle.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ fs/ocfs2/refcounttree.c |   26 ++++++++++++++++++++++++--
+ fs/ocfs2/xattr.c        |   11 +----------
+ 2 files changed, 25 insertions(+), 12 deletions(-)
+
+--- a/fs/ocfs2/refcounttree.c~ocfs2-reserve-space-for-inline-xattr-before-attaching-reflink-tree
++++ a/fs/ocfs2/refcounttree.c
+@@ -25,6 +25,7 @@
+ #include "namei.h"
+ #include "ocfs2_trace.h"
+ #include "file.h"
++#include "symlink.h"
+ 
+ #include <linux/bio.h>
+ #include <linux/blkdev.h>
+@@ -4148,8 +4149,9 @@ static int __ocfs2_reflink(struct dentry
+ 	int ret;
+ 	struct inode *inode = d_inode(old_dentry);
+ 	struct buffer_head *new_bh = NULL;
++	struct ocfs2_inode_info *oi = OCFS2_I(inode);
+ 
+-	if (OCFS2_I(inode)->ip_flags & OCFS2_INODE_SYSTEM_FILE) {
++	if (oi->ip_flags & OCFS2_INODE_SYSTEM_FILE) {
+ 		ret = -EINVAL;
+ 		mlog_errno(ret);
+ 		goto out;
+@@ -4175,6 +4177,26 @@ static int __ocfs2_reflink(struct dentry
+ 		goto out_unlock;
+ 	}
+ 
++	if ((oi->ip_dyn_features & OCFS2_HAS_XATTR_FL) &&
++	    (oi->ip_dyn_features & OCFS2_INLINE_XATTR_FL)) {
++		/*
++		 * Adjust extent record count to reserve space for extended attribute.
++		 * Inline data count had been adjusted in ocfs2_duplicate_inline_data().
++		 */
++		struct ocfs2_inode_info *new_oi = OCFS2_I(new_inode);
++
++		if (!(new_oi->ip_dyn_features & OCFS2_INLINE_DATA_FL) &&
++		    !(ocfs2_inode_is_fast_symlink(new_inode))) {
++			struct ocfs2_dinode *new_di = (struct ocfs2_dinode *)new_bh->b_data;
++			struct ocfs2_dinode *old_di = (struct ocfs2_dinode *)old_bh->b_data;
++			struct ocfs2_extent_list *el = &new_di->id2.i_list;
++			int inline_size = le16_to_cpu(old_di->i_xattr_inline_size);
++
++			le16_add_cpu(&el->l_count, -(inline_size /
++					sizeof(struct ocfs2_extent_rec)));
++		}
++	}
++
+ 	ret = ocfs2_create_reflink_node(inode, old_bh,
+ 					new_inode, new_bh, preserve);
+ 	if (ret) {
+@@ -4182,7 +4204,7 @@ static int __ocfs2_reflink(struct dentry
+ 		goto inode_unlock;
+ 	}
+ 
+-	if (OCFS2_I(inode)->ip_dyn_features & OCFS2_HAS_XATTR_FL) {
++	if (oi->ip_dyn_features & OCFS2_HAS_XATTR_FL) {
+ 		ret = ocfs2_reflink_xattrs(inode, old_bh,
+ 					   new_inode, new_bh,
+ 					   preserve);
+--- a/fs/ocfs2/xattr.c~ocfs2-reserve-space-for-inline-xattr-before-attaching-reflink-tree
++++ a/fs/ocfs2/xattr.c
+@@ -6511,16 +6511,7 @@ static int ocfs2_reflink_xattr_inline(st
+ 	}
+ 
+ 	new_oi = OCFS2_I(args->new_inode);
+-	/*
+-	 * Adjust extent record count to reserve space for extended attribute.
+-	 * Inline data count had been adjusted in ocfs2_duplicate_inline_data().
+-	 */
+-	if (!(new_oi->ip_dyn_features & OCFS2_INLINE_DATA_FL) &&
+-	    !(ocfs2_inode_is_fast_symlink(args->new_inode))) {
+-		struct ocfs2_extent_list *el = &new_di->id2.i_list;
+-		le16_add_cpu(&el->l_count, -(inline_size /
+-					sizeof(struct ocfs2_extent_rec)));
+-	}
++
+ 	spin_lock(&new_oi->ip_lock);
+ 	new_oi->ip_dyn_features |= OCFS2_HAS_XATTR_FL | OCFS2_INLINE_XATTR_FL;
+ 	new_di->i_dyn_features = cpu_to_le16(new_oi->ip_dyn_features);
+_
+
+Patches currently in -mm which might be from gautham.ananthakrishna@oracle.com are
+
+ocfs2-reserve-space-for-inline-xattr-before-attaching-reflink-tree.patch
+
 
