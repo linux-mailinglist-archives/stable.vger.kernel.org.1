@@ -1,286 +1,135 @@
-Return-Path: <stable+bounces-77052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5398984C94
-	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 23:11:50 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AAF8984CDD
+	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 23:25:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D74551C23053
-	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 21:11:49 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8B0BDB236D7
+	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 21:25:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A573413D251;
-	Tue, 24 Sep 2024 21:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CA80146A93;
+	Tue, 24 Sep 2024 21:24:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=toxicpanda-com.20230601.gappssmtp.com header.i=@toxicpanda-com.20230601.gappssmtp.com header.b="tagKePUV"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ye3C+TBq"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5646813C9A9
-	for <stable@vger.kernel.org>; Tue, 24 Sep 2024 21:11:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D039146A87
+	for <stable@vger.kernel.org>; Tue, 24 Sep 2024 21:24:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727212306; cv=none; b=qMUZJyAcGty1amXTtzcE3I5RTbpT56XDZffEdLhrvsLn2298KMkKMsWbrkkOzH0U4rgCRkRtmYs7er9zM+3Pfhtjvxiwo7cC/gvf18JmFI+e7ZpyV3tuc58f0OVk2VcVklaOKYi9Lxi4QDzJxlAdtgxP0TTq0Os0tWIf9tMqIms=
+	t=1727213043; cv=none; b=MyaY2SMIimn8M0ChjaPNm1cJg2208HV4aZjYNZlcGTuchbK8Oltky4ypA1DjTg9J1P6/BhzCgbS+Wg88R31uhV4umNQ489VatmP3a7sylfH4paG8ngCcUFc/L9WukCpzeZiiWwHXXr/anhqv/QT2VmyaxXKBwWm6rPTwdOPux/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727212306; c=relaxed/simple;
-	bh=tnqLo0XIue4Z3wHUlnSUUK4HL/FiRaMM4yEFDQbxv5o=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eYkzTAIkRgyI939DL2rb4uINaXfOVuC7HwliSkLnlDllDi5jbOSrObZ8U50FSxQU4eBZ77WpyCmo4MwpkSRmTkyxsE1e9Yg8EXY1yyO3O0yV1GrlHi7OFomI7LclHbMqLY44nLdNGf9HyRwtDezszxcS5grgDShG/GEqZEDO6/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com; spf=none smtp.mailfrom=toxicpanda.com; dkim=pass (2048-bit key) header.d=toxicpanda-com.20230601.gappssmtp.com header.i=@toxicpanda-com.20230601.gappssmtp.com header.b=tagKePUV; arc=none smtp.client-ip=209.85.128.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=toxicpanda.com
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-6de05b9fd0bso49441007b3.1
-        for <stable@vger.kernel.org>; Tue, 24 Sep 2024 14:11:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=toxicpanda-com.20230601.gappssmtp.com; s=20230601; t=1727212303; x=1727817103; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=p4gSwcrx2D3Z2LvMOpdxJci412zEjS/9V/3phabBvE0=;
-        b=tagKePUVhde6FBo6yC7gAcAPG7q2PhjwbqjJqAhMrHtDpFXuPH3xnczPzyHixb8C9i
-         X4dSZzS2fKO3CVKuQaa1iaUXi5zSjeOv5oCK0psY9os3QpM1k89UsPk72b626m2BFOqM
-         EMw3ZyV5A6gs6+Sr/7dnfeFb5nuQH8SBPp6Sj9KbZqKxuhJh400HYA7DXMyVFY4uFOfS
-         yHMizI/x3OUivO/VPi3FIY4fEJtjJFgPkXo9UWChHGpVyMFmTLISpcsvwsLz2zVgcb1A
-         KQEe5/T2q85f9SROF8Eky5nYClywwGIxh5la4mhTEFjxkOSiJg2+lk5NPAUyIehPVh58
-         VIxw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727212303; x=1727817103;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=p4gSwcrx2D3Z2LvMOpdxJci412zEjS/9V/3phabBvE0=;
-        b=ZjBwCZNpY1lk9TahKkBMYY0Ae4pxhnH85q9GGgmwuHTUlTBfu58S3xS5w2ISBGREBc
-         HiRibk6BXafxIuVtdTduao4/dZbbn+y183sQRQMaUjiyRDY9FljdwrNFlAdtcbC85PmT
-         UnRwxB8H3Bz3YBgOPEayQMeOURACM5gl5ir+e/f21mh0wxgzf5TgpOQfZJhNGLwFb1e5
-         0MRPkwSrBz4F9bCkXeFNlRfHEB+5ojSZ6qv6sYmAdcyqXIzKOAVyaFZArg6TdHUEq7Ez
-         /UAJjU1U7qBUhM9zzeNjyJLvD2t7omyVG6WUXptUwVqogvcR2+Bz6nkleMhVsDC103n6
-         fUZw==
-X-Gm-Message-State: AOJu0YwlcEN2a/I4H1lNk44BZrhfFpTDfoFpNKPjfJTn08x6RzZ7Z0SU
-	0GFGt/kdBOBGTvqxUY5lUUJP0Y9KPl1Ws/4jHqVBCPwD/czNXS+eiXLZVBtFs7k=
-X-Google-Smtp-Source: AGHT+IGOJn1SA8z0t9ifuOGYmhYI7orQ3ak5PAjYWiVCNbieRdTwopcqXtciyMVHil2XBvTq936lFA==
-X-Received: by 2002:a05:690c:112:b0:6e2:1570:2d4a with SMTP id 00721157ae682-6e21da61dd8mr6919587b3.30.1727212302864;
-        Tue, 24 Sep 2024 14:11:42 -0700 (PDT)
-Received: from localhost (syn-076-182-020-124.res.spectrum.com. [76.182.20.124])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-6e20d28062dsm3791977b3.125.2024.09.24.14.11.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Sep 2024 14:11:41 -0700 (PDT)
-From: Josef Bacik <josef@toxicpanda.com>
-To: linux-btrfs@vger.kernel.org,
-	kernel-team@fb.com
-Cc: stable@vger.kernel.org
-Subject: [PATCH] btrfs: drop the backref cache during relocation if we commit
-Date: Tue, 24 Sep 2024 17:11:37 -0400
-Message-ID: <68766e66ed15ca2e7550585ed09434249db912a2.1727212293.git.josef@toxicpanda.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1727213043; c=relaxed/simple;
+	bh=VpaCwH0tvpXrXrqkogXmPmUbk2lTJRh3kdaMbA97Y8M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Dr/qzK9eKaUpJwtFLW+jGkuNELBRv3SX/hHzoggxZOGYd6jTlUXAULKuAa5k8shz9tDeiD7NhVX5qPTwzsxwIUr1jg5a9DY27a6uoyr6RBMzX35mLQTx05XVEIbBDehJqsFOgMq2etiMXlpDeb+A0GoZ+nDpZA5fe509B3sn0NE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ye3C+TBq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2C7AC4CEC6
+	for <stable@vger.kernel.org>; Tue, 24 Sep 2024 21:24:02 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727213042;
+	bh=VpaCwH0tvpXrXrqkogXmPmUbk2lTJRh3kdaMbA97Y8M=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Ye3C+TBqO2z28f9G+01yXiwDWDNezz/i3gR0S7qXDKT+HUckDoPLS7QkWOp3Kg+vA
+	 LbK6pb7/cJYtC5R45U6KsDj8Rwu07zkYYxMEl+3sYj4ZOHTHKDlLmwXfcL850OJ1JM
+	 XUE4ROHnfCSOChjWjcYGp3wb8p6y9rene/s8tthh+fIdqUv8YyWpNgKX0yn2NAvYfg
+	 0yA9w1AlvrcbG8l84opfdWTQmgalYQxQ0NarhAMIwHkm61UWQe+xvuf4M53iuN10JM
+	 5Ih831YA7bIApjTiB1YglwVbZbl6JTs+4rckrCGfE6K+fiTlmPsVX9kBkWJoCS0lQJ
+	 PRmPV20boLRNQ==
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-6ddceaaa9ddso52057957b3.1
+        for <stable@vger.kernel.org>; Tue, 24 Sep 2024 14:24:02 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCVdtFGlbCW3YynHMYOfiFn1A3WzqsIPQqUIy68mj5lfiiNqCMemv83cAbuaJ+1YSD/v5w7iEBU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzBrpRKAUQHlOdO4C95VfD/CP3ut/LevRzhcuPT7NOs7CeCpTUw
+	fwZoR/4/SF1zBIiQarVxkxhtHia/TwlvzW2ooNnseTwmzrcoJyV/RRmksuo821h/tPIhF+d944X
+	tbqaaWVS4CVHjCF3yhesjcJ7JDdHeKFMudYXeCQ==
+X-Google-Smtp-Source: AGHT+IG+4wSBU/xx18St6qUUR5v1Snuoo4O4LMphOaTpEffHhcTiiuv0BSr6OU9e4wyoFlnXXYJtKNh0D27cNf0+7/k=
+X-Received: by 2002:a05:690c:f8f:b0:6dd:f9ea:895f with SMTP id
+ 00721157ae682-6e21d70072amr8708607b3.12.1727213042128; Tue, 24 Sep 2024
+ 14:24:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240905-lru-flag-v2-1-8a2d9046c594@kernel.org>
+In-Reply-To: <20240905-lru-flag-v2-1-8a2d9046c594@kernel.org>
+From: Chris Li <chrisl@kernel.org>
+Date: Tue, 24 Sep 2024 14:23:51 -0700
+X-Gmail-Original-Message-ID: <CACePvbV6mqi7A0AhCYP1umejz6QBR91ueTSH_enJZoLe=N_pWw@mail.gmail.com>
+Message-ID: <CACePvbV6mqi7A0AhCYP1umejz6QBR91ueTSH_enJZoLe=N_pWw@mail.gmail.com>
+Subject: Re: [PATCH v2] mm: vmscan.c: fix OOM on swap stress test
+To: Andrew Morton <akpm@linux-foundation.org>, yangge <yangge1116@126.com>
+Cc: Yu Zhao <yuzhao@google.com>, David Hildenbrand <david@redhat.com>, Hugh Dickins <hughd@google.com>, 
+	baolin.wang@linux.alibaba.com, Kairui Song <ryncsn@gmail.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Since the inception of relocation we have maintained the backref cache
-across transaction commits, updating the backref cache with the new
-bytenr whenever we COW'ed blocks that were in the cache, and then
-updating their bytenr once we detected a transaction id change.
+I forgot to CC stable on this fix.
 
-This works as long as we're only ever modifying blocks, not changing the
-structure of the tree.
+Chris
 
-However relocation does in fact change the structure of the tree.  For
-example, if we are relocating a data extent, we will look up all the
-leaves that point to this data extent.  We will then call
-do_relocation() on each of these leaves, which will COW down to the leaf
-and then update the file extent location.
-
-But, a key feature of do_relocation is the pending list.  This is all
-the pending nodes that we modified when we updated the file extent item.
-We will then process all of these blocks via finish_pending_nodes, which
-calls do_relocation() on all of the nodes that led up to that leaf.
-
-The purpose of this is to make sure we don't break sharing unless we
-absolutely have to.  Consider the case that we have 3 snapshots that all
-point to this leaf through the same nodes, the initial COW would have
-created a whole new path.  If we did this for all 3 snapshots we would
-end up with 3x the number of nodes we had originally.  To avoid this we
-will cycle through each of the snapshots that point to each of these
-nodes and update their pointers to point at the new nodes.
-
-Once we update the pointer to the new node we will drop the node we
-removed the link for and all of its children via btrfs_drop_subtree().
-This is essentially just btrfs_drop_snapshot(), but for an arbitrary
-point in the snapshot.
-
-The problem with this is that we will never reflect this in the backref
-cache.  If we do this btrfs_drop_snapshot() for a node that is in the
-backref tree, we will leave the node in the backref tree.  This becomes
-a problem when we change the transid, as now the backref cache has
-entire subtrees that no longer exist, but exist as if they still are
-pointed to by the same roots.
-
-In the best case scenario you end up with "adding refs to an existing
-tree ref" errors from insert_inline_extent_backref(), where we attempt
-to link in nodes on roots that are no longer valid.
-
-Worst case you will double free some random block and re-use it when
-there's still references to the block.
-
-This is extremely subtle, and the consequences are quite bad.  There
-isn't a way to make sure our backref cache is consistent between
-transid's.
-
-In order to fix this we need to simply evict the entire backref cache
-anytime we cross transid's.  This reduces performance in that we have to
-rebuild this backref cache every time we change transid's, but fixes the
-bug.
-
-This has existed since relocation was added, and is a pretty critical
-bug.  There's a lot more cleanup that can be done now that this
-functionality is going away, but this patch is as small as possible in
-order to fix the problem and make it easy for us to backport it to all
-the kernels it needs to be backported to.
-
-Followup series will dismantle more of this code and simplify relocation
-drastically to remove this functionality.
-
-We have a reproducer that reproduced the corruption within a few minutes
-of running.  With this patch it survives several iterations/hours of
-running the reproducer.
-
-Fixes: 3fd0a5585eb9 ("Btrfs: Metadata ENOSPC handling for balance")
-Cc: stable@vger.kernel.org
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
----
- fs/btrfs/backref.c    | 12 ++++---
- fs/btrfs/relocation.c | 76 +++----------------------------------------
- 2 files changed, 13 insertions(+), 75 deletions(-)
-
-diff --git a/fs/btrfs/backref.c b/fs/btrfs/backref.c
-index e2f478ecd7fd..f8e1d5b2c512 100644
---- a/fs/btrfs/backref.c
-+++ b/fs/btrfs/backref.c
-@@ -3179,10 +3179,14 @@ void btrfs_backref_release_cache(struct btrfs_backref_cache *cache)
- 		btrfs_backref_cleanup_node(cache, node);
- 	}
- 
--	cache->last_trans = 0;
--
--	for (i = 0; i < BTRFS_MAX_LEVEL; i++)
--		ASSERT(list_empty(&cache->pending[i]));
-+	for (i = 0; i < BTRFS_MAX_LEVEL; i++) {
-+		while (!list_empty(&cache->pending[i])) {
-+			node = list_first_entry(&cache->pending[i],
-+						struct btrfs_backref_node,
-+						list);
-+			btrfs_backref_cleanup_node(cache, node);
-+		}
-+	}
- 	ASSERT(list_empty(&cache->pending_edge));
- 	ASSERT(list_empty(&cache->useless_node));
- 	ASSERT(list_empty(&cache->changed));
-diff --git a/fs/btrfs/relocation.c b/fs/btrfs/relocation.c
-index ea4ed85919ec..aaa9cac213f1 100644
---- a/fs/btrfs/relocation.c
-+++ b/fs/btrfs/relocation.c
-@@ -232,70 +232,6 @@ static struct btrfs_backref_node *walk_down_backref(
- 	return NULL;
- }
- 
--static void update_backref_node(struct btrfs_backref_cache *cache,
--				struct btrfs_backref_node *node, u64 bytenr)
--{
--	struct rb_node *rb_node;
--	rb_erase(&node->rb_node, &cache->rb_root);
--	node->bytenr = bytenr;
--	rb_node = rb_simple_insert(&cache->rb_root, node->bytenr, &node->rb_node);
--	if (rb_node)
--		btrfs_backref_panic(cache->fs_info, bytenr, -EEXIST);
--}
--
--/*
-- * update backref cache after a transaction commit
-- */
--static int update_backref_cache(struct btrfs_trans_handle *trans,
--				struct btrfs_backref_cache *cache)
--{
--	struct btrfs_backref_node *node;
--	int level = 0;
--
--	if (cache->last_trans == 0) {
--		cache->last_trans = trans->transid;
--		return 0;
--	}
--
--	if (cache->last_trans == trans->transid)
--		return 0;
--
--	/*
--	 * detached nodes are used to avoid unnecessary backref
--	 * lookup. transaction commit changes the extent tree.
--	 * so the detached nodes are no longer useful.
--	 */
--	while (!list_empty(&cache->detached)) {
--		node = list_entry(cache->detached.next,
--				  struct btrfs_backref_node, list);
--		btrfs_backref_cleanup_node(cache, node);
--	}
--
--	while (!list_empty(&cache->changed)) {
--		node = list_entry(cache->changed.next,
--				  struct btrfs_backref_node, list);
--		list_del_init(&node->list);
--		BUG_ON(node->pending);
--		update_backref_node(cache, node, node->new_bytenr);
--	}
--
--	/*
--	 * some nodes can be left in the pending list if there were
--	 * errors during processing the pending nodes.
--	 */
--	for (level = 0; level < BTRFS_MAX_LEVEL; level++) {
--		list_for_each_entry(node, &cache->pending[level], list) {
--			BUG_ON(!node->pending);
--			if (node->bytenr == node->new_bytenr)
--				continue;
--			update_backref_node(cache, node, node->new_bytenr);
--		}
--	}
--
--	cache->last_trans = 0;
--	return 1;
--}
--
- static bool reloc_root_is_dead(const struct btrfs_root *root)
- {
- 	/*
-@@ -551,9 +487,6 @@ static int clone_backref_node(struct btrfs_trans_handle *trans,
- 	struct btrfs_backref_edge *new_edge;
- 	struct rb_node *rb_node;
- 
--	if (cache->last_trans > 0)
--		update_backref_cache(trans, cache);
--
- 	rb_node = rb_simple_search(&cache->rb_root, src->commit_root->start);
- 	if (rb_node) {
- 		node = rb_entry(rb_node, struct btrfs_backref_node, rb_node);
-@@ -3698,10 +3631,11 @@ static noinline_for_stack int relocate_block_group(struct reloc_control *rc)
- 			break;
- 		}
- restart:
--		if (update_backref_cache(trans, &rc->backref_cache)) {
--			btrfs_end_transaction(trans);
--			trans = NULL;
--			continue;
-+		if (rc->backref_cache.last_trans == 0) {
-+			rc->backref_cache.last_trans = trans->transid;
-+		} else if (rc->backref_cache.last_trans != trans->transid) {
-+			btrfs_backref_release_cache(&rc->backref_cache);
-+			rc->backref_cache.last_trans = trans->transid;
- 		}
- 
- 		ret = find_next_extent(rc, path, &key);
--- 
-2.43.0
-
+On Thu, Sep 5, 2024 at 1:08=E2=80=AFAM Chris Li <chrisl@kernel.org> wrote:
+>
+> I found a regression on mm-unstable during my swap stress test,
+> using tmpfs to compile linux. The test OOM very soon after
+> the make spawns many cc processes.
+>
+> It bisects down to this change: 33dfe9204f29b415bbc0abb1a50642d1ba94f5e9
+> (mm/gup: clear the LRU flag of a page before adding to LRU batch)
+>
+> Yu Zhao propose the fix: "I think this is one of the potential side
+> effects -- Huge mentioned earlier about isolate_lru_folios():"
+>
+> I test that with it the swap stress test no longer OOM.
+>
+> Link: https://lore.kernel.org/r/CAOUHufYi9h0kz5uW3LHHS3ZrVwEq-kKp8S6N-MZU=
+mErNAXoXmw@mail.gmail.com/
+> Fixes: 33dfe9204f29 ("mm/gup: clear the LRU flag of a page before adding =
+to LRU batch")
+> Suggested-by: Yu Zhao <yuzhao@google.com>
+> Suggested-by: Hugh Dickins <hughd@google.com>
+> Tested-by: Chris Li <chrisl@kernel.org>
+> Closes: https://lore.kernel.org/all/CAF8kJuNP5iTj2p07QgHSGOJsiUfYpJ2f4R1Q=
+5-3BN9JiD9W_KA@mail.gmail.com/
+> Signed-off-by: Chris Li <chrisl@kernel.org>
+> ---
+> Changes in v2:
+> - Add Closes tag suggested by Yu and Thorsten.
+> - Link to v1: https://lore.kernel.org/r/20240904-lru-flag-v1-1-36638d6a52=
+4c@kernel.org
+> ---
+>  mm/vmscan.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/mm/vmscan.c b/mm/vmscan.c
+> index a9b6a8196f95..96abf4a52382 100644
+> --- a/mm/vmscan.c
+> +++ b/mm/vmscan.c
+> @@ -4323,7 +4323,7 @@ static bool sort_folio(struct lruvec *lruvec, struc=
+t folio *folio, struct scan_c
+>         }
+>
+>         /* ineligible */
+> -       if (zone > sc->reclaim_idx) {
+> +       if (!folio_test_lru(folio) || zone > sc->reclaim_idx) {
+>                 gen =3D folio_inc_gen(lruvec, folio, false);
+>                 list_move_tail(&folio->lru, &lrugen->folios[gen][type][zo=
+ne]);
+>                 return true;
+>
+> ---
+> base-commit: 756ca36d643324d028b325a170e73e392b9590cd
+> change-id: 20240904-lru-flag-2af2f955740e
+>
+> Best regards,
+> --
+> Chris Li <chrisl@kernel.org>
+>
 
