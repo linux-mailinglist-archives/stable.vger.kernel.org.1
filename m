@@ -1,152 +1,106 @@
-Return-Path: <stable+bounces-77009-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0389C984AA5
-	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 20:05:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78D86984AAE
+	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 20:07:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 00C7EB245B8
-	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 18:05:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3931D2869C7
+	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 18:07:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41AFA1AD9E2;
-	Tue, 24 Sep 2024 18:04:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC20B1AC450;
+	Tue, 24 Sep 2024 18:07:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="Epzz2bKJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lZOcuDMh"
 X-Original-To: stable@vger.kernel.org
-Received: from nbd.name (nbd.name [46.4.11.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C92B81AD3E1;
-	Tue, 24 Sep 2024 18:04:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86B2E1581F8;
+	Tue, 24 Sep 2024 18:07:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727201051; cv=none; b=dj1aJTK/T2rWo/BmjYwqO6GMDv5MxvjQvBXQjr5a8YrnKZL3/o2DT9H5uhAa1O/Ti6BqeOwlKBxA9F2NGuTND0LMFN4EPPLhwTLI/4SLlTkn23vFfI7yEz7DMcA7tqXYYR58HBwZp7VOeUBHdsrM+o2WWLGfI1YRghwV2E7hqgQ=
+	t=1727201247; cv=none; b=u+rpkSBRQ6gW9hdDxR3xbth6RGtYjZ5MXZvnkXrzSIMXtenGoDpc99BLrIFy34ix4NN6+1tFibEafn7nXejyQF68BLKaIOngXQVCw7eqzxz5uEKI/zEPxyK3o17Y/tCHu/8fet3f8iCG9viTtDmGuoehJ8O4/thFO9Pw7uhWoq0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727201051; c=relaxed/simple;
-	bh=Tz+z0RN4yoLTsuKVlKhsT40Bqa0WNU0TUwEaefUxnVg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UBTgP1MDJZX5Q10i7IBD67zdW2/sH2tr39t5gYcbVl5ouMXMPnc+6KzySWVbhbzb2rrk9tVP9daVR9OJj5GTJB1NBQq3yRxMWSHbZ2MY559/FsbLJ7WlEd6CXZQLXaa7+M4aIHF6rC5C43Qz40LPKwESo7+flbVGHX0T3Ehj9SU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=Epzz2bKJ; arc=none smtp.client-ip=46.4.11.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
-	s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
-	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
-	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=uqSxozaaX0MbZR9PhUHEUeHeH8rVYjYdcmkgtgwPdWs=; b=Epzz2bKJnEnZPy4eOhqBQoiRz1
-	N1pczWQQtfyk5UpYxYavqt4inI5OTPmB/piwCUbWdL5p8eBZP3EXwMogOXu+HwUA7d4L3mNjmM5+4
-	461UpxsMG5OCLoBQElyI6/ONf4rhpmLMq8GTnLOccrVY8zf3K9h4wcXxkOY5Ii9Xr5EA=;
-Received: from p4ff130c8.dip0.t-ipconnect.de ([79.241.48.200] helo=nf.local)
-	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.96)
-	(envelope-from <nbd@nbd.name>)
-	id 1st9dM-000ROG-11;
-	Tue, 24 Sep 2024 19:47:32 +0200
-Message-ID: <da09e77a-a293-41b0-a46f-861dd5775ba2@nbd.name>
-Date: Tue, 24 Sep 2024 19:47:20 +0200
+	s=arc-20240116; t=1727201247; c=relaxed/simple;
+	bh=r0Qo7isWNui7uOUPcqe/GIVDS+0O7xChj8EAgM3CfL4=;
+	h=Mime-Version:Content-Type:Date:Message-Id:From:To:Cc:Subject:
+	 References:In-Reply-To; b=leheBKrIrwIBwSWu/rE1SrKl53eOFQuVdPKB8/8oq2S/+dH2WGLx62ilae21ZALNgsQsnoVgQVw3LVVvjCSKDR3ursNhAdc4CSZAnjKVmAGQTaWjjhaxH8qdq5UYAeP3SINdbw2+rU8uyaLFnqgrD6erAakrKLECtQzZrV0Ko0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lZOcuDMh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C879FC4CEC4;
+	Tue, 24 Sep 2024 18:07:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727201247;
+	bh=r0Qo7isWNui7uOUPcqe/GIVDS+0O7xChj8EAgM3CfL4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=lZOcuDMhxbB1s/qyEZ8igBAUEiz7OhlJ3PVgm70oWsmkfJvU/w2LaRlIuqMUZtsGZ
+	 U2UB7gFzauQoUe9hovN/7MSUuvkukYSkmEMRvHNK7RBMVY6Ch/N0QJocsbm3OvZ+LO
+	 ZE2KoutzxG8KTMkm7YAr0i/09DcjTMarmjClZ88SHalWjbQWTGgKZG0jNoXyVdPN+Q
+	 d+S3i7cXfgH9C6UPLTsZO57kiodxg6T6Eh2Ahf6y/9vNkFPMlF6Tgbt1hZzY+IP1IQ
+	 bBa3C7pTZp8p/ZgL2Z9enTkkz8YDzprUCHpXqR8bUreg2Yb9YExLMZKyt+2ipeMI/n
+	 MP3PSheqMiGyQ==
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] gso: fix gso fraglist segmentation after pull from
- frag_list
-To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, netdev@vger.kernel.org
-Cc: davem@davemloft.net, kuba@kernel.org, edumazet@google.com,
- pabeni@redhat.com, stable@vger.kernel.org, maze@google.com,
- shiming.cheng@mediatek.com, daniel@iogearbox.net, lena.wang@mediatek.com,
- herbert@gondor.apana.org.au, Willem de Bruijn <willemb@google.com>
-References: <20240922150450.3873767-1-willemdebruijn.kernel@gmail.com>
-From: Felix Fietkau <nbd@nbd.name>
-Content-Language: en-US
-Autocrypt: addr=nbd@nbd.name; keydata=
- xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
- ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
- Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
- AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
- vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
- wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
- TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
- l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
- dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
- HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
- VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
- CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
- VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
- Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
- DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
- wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
- f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
- aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
- FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
- TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
- GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
- cL98efvrjdstUfTCP2pfetyN
-In-Reply-To: <20240922150450.3873767-1-willemdebruijn.kernel@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 24 Sep 2024 21:07:23 +0300
+Message-Id: <D4EPQPFA8RGN.2PO6UNTDFI6IT@kernel.org>
+From: "Jarkko Sakkinen" <jarkko@kernel.org>
+To: "James Bottomley" <James.Bottomley@HansenPartnership.com>,
+ <linux-integrity@vger.kernel.org>
+Cc: <roberto.sassu@huawei.com>, <mapengyu@gmail.com>,
+ <stable@vger.kernel.org>, "Mimi Zohar" <zohar@linux.ibm.com>, "David
+ Howells" <dhowells@redhat.com>, "Paul Moore" <paul@paul-moore.com>, "James
+ Morris" <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, "Peter
+ Huewe" <peterhuewe@gmx.de>, "Jason Gunthorpe" <jgg@ziepe.ca>,
+ <keyrings@vger.kernel.org>, <linux-security-module@vger.kernel.org>,
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v5 5/5] tpm: flush the auth session only when /dev/tpm0
+ is open
+X-Mailer: aerc 0.18.2
+References: <20240921120811.1264985-1-jarkko@kernel.org>
+ <20240921120811.1264985-6-jarkko@kernel.org>
+ <00cf0bdb3ebfaec7c4607c8c09e55f2e538402f1.camel@HansenPartnership.com>
+In-Reply-To: <00cf0bdb3ebfaec7c4607c8c09e55f2e538402f1.camel@HansenPartnership.com>
 
-On 22.09.24 17:03, Willem de Bruijn wrote:
-> From: Willem de Bruijn <willemb@google.com>
-> 
-> Detect gso fraglist skbs with corrupted geometry (see below) and
-> pass these to skb_segment instead of skb_segment_list, as the first
-> can segment them correctly.
-> 
-> Valid SKB_GSO_FRAGLIST skbs
-> - consist of two or more segments
-> - the head_skb holds the protocol headers plus first gso_size
-> - one or more frag_list skbs hold exactly one segment
-> - all but the last must be gso_size
-> 
-> Optional datapath hooks such as NAT and BPF (bpf_skb_pull_data) can
-> modify these skbs, breaking these invariants.
-> 
-> In extreme cases they pull all data into skb linear. For UDP, this
-> causes a NULL ptr deref in __udpv4_gso_segment_list_csum at
-> udp_hdr(seg->next)->dest.
-> 
-> Detect invalid geometry due to pull, by checking head_skb size.
-> Don't just drop, as this may blackhole a destination. Convert to be
-> able to pass to regular skb_segment.
-> 
-> Link: https://lore.kernel.org/netdev/20240428142913.18666-1-shiming.cheng@mediatek.com/
-> Fixes: 3a1296a38d0c ("net: Support GRO/GSO fraglist chaining.")
-> Signed-off-by: Willem de Bruijn <willemb@google.com>
-> Cc: stable@vger.kernel.org
-> 
-> ---
-> diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
-> index d842303587af..e457fa9143a6 100644
-> --- a/net/ipv4/udp_offload.c
-> +++ b/net/ipv4/udp_offload.c
-> @@ -296,8 +296,16 @@ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
->   		return NULL;
->   	}
->   
-> -	if (skb_shinfo(gso_skb)->gso_type & SKB_GSO_FRAGLIST)
-> -		return __udp_gso_segment_list(gso_skb, features, is_ipv6);
-> +	if (skb_shinfo(gso_skb)->gso_type & SKB_GSO_FRAGLIST) {
-> +		 /* Detect modified geometry and pass these to skb_segment. */
-> +		if (skb_pagelen(gso_skb) - sizeof(*uh) == skb_shinfo(gso_skb)->gso_size)
-> +			return __udp_gso_segment_list(gso_skb, features, is_ipv6);
-> +
-> +		 /* Setup csum, as fraglist skips this in udp4_gro_receive. */
-> +		gso_skb->csum_start = skb_transport_header(gso_skb) - gso_skb->head;
-> +		gso_skb->csum_offset = offsetof(struct udphdr, check);
-> +		gso_skb->ip_summed = CHECKSUM_PARTIAL;
-> +	}
+On Tue Sep 24, 2024 at 4:43 PM EEST, James Bottomley wrote:
+> On Sat, 2024-09-21 at 15:08 +0300, Jarkko Sakkinen wrote:
+> > Instead of flushing and reloading the auth session for every single
+> > transaction, keep the session open unless /dev/tpm0 is used. In
+> > practice this means applying TPM2_SA_CONTINUE_SESSION to the session
+> > attributes. Flush the session always when /dev/tpm0 is written.
+>
+> Patch looks fine but this description is way too terse to explain how
+> it works.
+>
+> I would suggest:
+>
+> Boot time elongation as a result of adding sessions has been reported
+> as an issue in https://bugzilla.kernel.org/show_bug.cgi?id=3D219229
+>
+> The root cause is the addition of session overhead to
+> tpm2_pcr_extend().  This overhead can be reduced by not creating and
+> destroying a session for each invocation of the function.  Do this by
+> keeping a session resident in the TPM for reuse by any session based
+> TPM command.  The current flow of TPM commands in the kernel supports
+> this because tpm2_end_session() is only called for tpm errors because
+> most commands don't continue the session and expect the session to be
+> flushed on success.  Thus we can add the continue session flag to
+> session creation to ensure the session won't be flushed except on
+> error, which is a rare case.
 
-It seems to me that the TCP code would need something similar. Do you 
-think the same approach would work there as well?
+I need to disagree on this as I don't even have PCR extends in my
+boot sequence and it still adds overhead. Have you verified this
+from the reporter?
 
-Thanks,
+There's bunch of things that use auth session, like trusted keys.
+Making such claim that PCR extend is the reason is nonsense.
 
-- Felix
+BR, Jarkko
 
