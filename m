@@ -1,121 +1,205 @@
-Return-Path: <stable+bounces-76947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 328B7983B38
-	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 04:30:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 80BF8983B43
+	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 04:40:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3ABE1B22622
-	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 02:30:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DC3A7B2251F
+	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 02:40:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C640CA6B;
-	Tue, 24 Sep 2024 02:29:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5829CC8EB;
+	Tue, 24 Sep 2024 02:40:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b="dWELgFwA"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="P0ItYPpy"
 X-Original-To: stable@vger.kernel.org
-Received: from rtits2.realtek.com.tw (rtits2.realtek.com [211.75.126.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67D1D18D;
-	Tue, 24 Sep 2024 02:29:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=211.75.126.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ED9FC8CE;
+	Tue, 24 Sep 2024 02:40:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727144998; cv=none; b=mP4TylSKCfBUShylePI5gydqiTjLgA5YjnsO0zbrhJGmYVx1x29iNgDxSufXPguOMt7EPgdtQAy38Vjom/zJklz4tvmMac82Oh7jmcFFjPu+6t1O1VhVKftyapyMTaDhz0rhyn9ya2fUDvWfxg/mmvQgDl4M9/KugPyIvCsTnD8=
+	t=1727145616; cv=none; b=QWEmwfXcydOsEDtR2tE+nhxqysZf/g9LiQySG9FRLpqc5QVBU7zUlS5ylYQF7eV2+rYFwL0zTpowEkbWFXZJVgypwtBSa7U9qKKZCHri8uKSMb9XEg1a4d9R5csj51c9xbUy1+VcX9D3yDFRACNAccFBdINhlt5aaGjYlPy4AlA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727144998; c=relaxed/simple;
-	bh=QRXBIaQoBdvKIIgUBGyLszNnmweWx2ShJLcMibTbGP4=;
-	h=From:To:CC:Subject:Date:Message-ID:References:Content-Type:
-	 MIME-Version; b=F72DR3msB94Cs1+nmzEW3mj6IZNapnGpriyQZbt9IPlxfdgqtnOgP98TEDRwz8SLEHxx4p+gFU5RsNNj1FJITHj486y9NMyh3UIc4w2IWUhif4k/8qyVPsDl1Y5sdWezpGhbf4lJZjItepz/iV+c/yWERuXz0zQawKx5Gi/oJkk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com; spf=pass smtp.mailfrom=realtek.com; dkim=temperror (0-bit key) header.d=realtek.com header.i=@realtek.com header.b=dWELgFwA; arc=none smtp.client-ip=211.75.126.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=realtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=realtek.com
-X-SpamFilter-By: ArmorX SpamTrap 5.78 with qID 48O2TnD522250472, This message is accepted by code: ctloc85258
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=realtek.com; s=dkim;
-	t=1727144990; bh=QRXBIaQoBdvKIIgUBGyLszNnmweWx2ShJLcMibTbGP4=;
-	h=From:To:CC:Subject:Date:Message-ID:References:Content-Type:
-	 Content-Transfer-Encoding:MIME-Version;
-	b=dWELgFwA0+/KjuGY98SvtYW932pon9hInHvN0TkxWNzf55jMVkRGo9Y3PIquq8t3G
-	 wx4CnBQuq84fMK+/HK7fQhrdmLhUbLy6Iwa4ltkmLOwrT1L6FkQ4TRAkJYSloBk+4k
-	 arGZFX5l+myrTLqyUAWZfI+5/u5Zq5jeOaY2PQvUcNP36pU8J5i/KZ979Uc/JnUW1A
-	 9bASydGWT+NCCzFc4luSt+NeWWX7N+BDNDCTuzMunFu/4RKF9ZVQQajnfBLE1K5fnQ
-	 6PKFul2SjkMIHi4LbTbQrXis0Ln2PcKOhPSxb1RSVkW+d0HJgGZ+5MLOM1qF3R9t1e
-	 kKHQYAyJenkEA==
-Received: from mail.realtek.com (rtexh36505.realtek.com.tw[172.21.6.25])
-	by rtits2.realtek.com.tw (8.15.2/3.05/5.92) with ESMTPS id 48O2TnD522250472
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 24 Sep 2024 10:29:49 +0800
-Received: from RTEXMBS01.realtek.com.tw (172.21.6.94) by
- RTEXH36505.realtek.com.tw (172.21.6.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 24 Sep 2024 10:29:50 +0800
-Received: from RTEXMBS04.realtek.com.tw (172.21.6.97) by
- RTEXMBS01.realtek.com.tw (172.21.6.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.35; Tue, 24 Sep 2024 10:29:49 +0800
-Received: from RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f]) by
- RTEXMBS04.realtek.com.tw ([fe80::2882:4142:db9:db1f%11]) with mapi id
- 15.01.2507.035; Tue, 24 Sep 2024 10:29:49 +0800
-From: Ping-Ke Shih <pkshih@realtek.com>
-To: =?utf-8?B?TWFyY2VsIFdlacOfZW5iYWNo?= <mweissenbach@ignaz.org>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-CC: "regressions@lists.linux.dev" <regressions@lists.linux.dev>,
-        "linux-wireless@vger.kernel.org" <linux-wireless@vger.kernel.org>
-Subject: RE: RTL8852BE wifi no longer working after 6.11 upgrade
-Thread-Topic: RTL8852BE wifi no longer working after 6.11 upgrade
-Thread-Index: AQHbCMemb6H6HxFviUGmiPt2/8qxPLJdDI+A//+Vo4CAAJ3wIP//qTkAgAFYScCAB/0z0A==
-Date: Tue, 24 Sep 2024 02:29:49 +0000
-Message-ID: <3784ba9d7af34d41b439b7ee0d9e9f8f@realtek.com>
-References: <63a3ef5acd70454e9f8db114204e2e2d@realtek.com>
- <20240918114718.Horde.TpiB1MVH0uadLCQXUbR5WtB@ignaz.org> 
-Accept-Language: en-US, zh-TW
-Content-Language: zh-TW
-x-kse-serverinfo: RTEXMBS01.realtek.com.tw, 9
-x-kse-antispam-interceptor-info: fallback
-x-kse-antivirus-interceptor-info: fallback
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: base64
+	s=arc-20240116; t=1727145616; c=relaxed/simple;
+	bh=AxIeSno/1DoU++XQOIvkR6IyM7d89vGa8e+sDw3eF1g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Nqakfc4CJyA5shCLCN2XE+9U4+1hv6hEANqWnciFKO7KvINOja0IOPTUTlv3hWr7CLUzDQCohI1EmpuE7dQwIa2Cx7wzRrXWv9zzRcUcTkLUn4b71PYF7/8vCRnGWURFsGNpzMXR/4haX9TSaMFqrW62sj15FGCtZTPjXyzlN/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=P0ItYPpy; arc=none smtp.client-ip=198.175.65.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1727145615; x=1758681615;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=AxIeSno/1DoU++XQOIvkR6IyM7d89vGa8e+sDw3eF1g=;
+  b=P0ItYPpyWPw5kG1QsCmzjvAw0EQ7pfbn5kpUJdCjjAMA4pSKeO0Cml+O
+   B1vF25gvlhJ09tYfwdoOVrUmYi9oSiSZXYLs/wLFHvPT9ezEXgTd7Rgil
+   pKSm4jDKdiKxHD7ie3gHbF69iZma+mYNVaEfh/4P/UHIIcra1VKJYqXJz
+   GuiqhDYve0P0+kglpkfb5w/ETbl1ZG9RCBKBJIkxWlwkg0X6tEI0Ab2An
+   6dyS8rUpUdTiJDdpOV9rZ92s0YwwdVOtSMKTotJqbTjTbXmRFXnNQseTn
+   kIc3JgyyWNOJDTZrceF/bq88LZ1iGQPjS1g/rW8xAS4oxHHoPm0oDzIwM
+   g==;
+X-CSE-ConnectionGUID: aoapjH3tTFONNgf2+ZF4gA==
+X-CSE-MsgGUID: DHUMkAZwRcCURcWzntHP9Q==
+X-IronPort-AV: E=McAfee;i="6700,10204,11204"; a="29835816"
+X-IronPort-AV: E=Sophos;i="6.10,253,1719903600"; 
+   d="scan'208";a="29835816"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2024 19:40:14 -0700
+X-CSE-ConnectionGUID: 7aoVqqMLRMutRrlIwUo6hg==
+X-CSE-MsgGUID: 5yg3wsnDQOGGUZY47dBnjg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,253,1719903600"; 
+   d="scan'208";a="70857713"
+Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
+  by fmviesa007.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2024 19:40:13 -0700
+Date: Mon, 23 Sep 2024 19:45:51 -0700
+From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+To: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
+Cc: "Zhang, Rui" <rui.zhang@intel.com>,
+	"regressions@leemhuis.info" <regressions@leemhuis.info>,
+	"Neri, Ricardo" <ricardo.neri@intel.com>,
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+	"bp@alien8.de" <bp@alien8.de>,
+	"Gupta, Pawan Kumar" <pawan.kumar.gupta@intel.com>,
+	"regressions@lists.linux.dev" <regressions@lists.linux.dev>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"Luck, Tony" <tony.luck@intel.com>,
+	"thomas.lindroth@gmail.com" <thomas.lindroth@gmail.com>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [STABLE REGRESSION] Possible missing backport of x86_match_cpu()
+ change in v6.1.96
+Message-ID: <20240924024551.GA13538@ranerica-svr.sc.intel.com>
+References: <eb709d67-2a8d-412f-905d-f3777d897bfa@gmail.com>
+ <a79fa3cc-73ef-4546-b110-1f448480e3e6@leemhuis.info>
+ <2024081217-putt-conform-4b53@gregkh>
+ <05ced22b5b68e338795c8937abb8141d9fa188e6.camel@intel.com>
+ <2024091900-unimpeded-catalyst-b09f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-KSE-AntiSpam-Interceptor-Info: fallback
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <2024091900-unimpeded-catalyst-b09f@gregkh>
+User-Agent: Mutt/1.9.4 (2018-02-28)
 
-UGluZy1LZSBTaGloIHdyb3RlOg0KPiBNYXJjZWwgV2Vpw59lbmJhY2ggPG13ZWlzc2VuYmFjaEBp
-Z25hei5vcmc+IHdyb3RlOg0KPiA+IEZpcnN0IG9mIGFsbCwgdGhhbmsgeW91IHNvIG11Y2ggZm9y
-IHlvdXIgdGltZSBhbmQgd29yayENCj4gPg0KPiA+IEkgaG9wZSBpIGRvbid0IGNhdXNlIGFueSBj
-b25mdXNpb24gYW5kIHRoaXMgcXVlc3Rpb24gbWF5IGJlIGJhc2VkIG9uIG15IGxhY2sgb2YgIHVu
-ZGVyc3RhbmRpbmcgdGhlIHBhdGNoLA0KPiA+IGkgYWxtb3N0IGRvbid0IGRhcmUgdG8gYXNrLCBi
-dXQgZG9lcyB0aGlzIHF1aXJrIG9ubHkgZ2V0cyBpbnRvIGFmZmVjdCwgd2hlbiBzb21lb25lIHVz
-ZXMgdGhlIHNhbWUgbWFpbmJvYXJkDQo+ID4gaSB1c2U/IElzIHRoaXMgYW4gcmF0aGVyIHJhcmUg
-Y2FzZSB0aGF0IHByb2JhYmx5IHdvbid0IGVmZmVjdCBvdGhlciBwZW9wbGU/DQo+ID4NCj4gPiBJ
-IGNhbid0IGp1ZGdlIHRoYXQgc28gcGxlYXNlIGRvbid0IGdldCBtZSB3cm9uZywgYnV0IGkgZmVl
-bCBhIGJpdCB1bmVhc3kgYWJvdXQgdGhpcy4gSSBhc3N1bWUgdGhhdCBtb3N0DQo+ID4gZmlzdCB0
-aW1lIExpbnV4IHVzZXJzIHRoYXQgaGF2ZSBzaW1pbGFyIChidXQgbm90IHRoZSBzYW1lKSBwbGF0
-Zm9ybSwgd2hlcmUgdGhpcyBxdWlyayB3aWxsIG5vdCBnZXQgYXBwbGllZA0KPiA+IGFuZCB0aGV5
-IGVuZCB1cCB3aXRoIG5vbi13b3JraW5nIHdpZmksIGp1c3Qgbm90aWNlIHRoYXQgd2lmaSBkb2Vz
-bid0IHdvcmsgYW5kIGdpdmUgdXAgb24gTGludXggYW5kIHJlbWVtYmVyDQo+ID4gaXQgYXMgIk15
-IFdpZmkgZXZlbiBkaWRuJ3Qgd29yayB0aGVyZSIuDQo+ID4NCj4gPiBBcyBhIGxvbmcgdGltZSBH
-ZW50b28gdXNlciwgaSBoYXZlIHRoZSBjYXBhYmlsaXR5IHRvIGJ1aWxkIG15IG93biBrZXJuZWwg
-YW5kIHByb3ZpZGUgZmVlZGJhY2sgdGhhdCBjYW4NCj4gaGVscA0KPiA+IGZpeCB0aGlzIGlzc3Vl
-LCBidXQgaSBhc3N1bWUgbW9zdCB1c2VycyBkb24ndC4gSSB3b3VsZCBhc3N1bWUgYW4gVWJ1bnR1
-IHVzZXJzIHdpbGwganVzdCByZW1vdmUgdGhlIFVidW50dQ0KPiA+IHBhcnRpdGlvbiBhbmQgY2Fs
-bHMgaXQgYSBkYXkgY29udGludWluZyB1c2luZyBXaW5kb3dzLiBJIGFtIGEgYml0IHdvcnJpZWQg
-YW5kIHdvbmRlciwgaWYgdGhlcmUgbWF5YmUgYQ0KPiB3YXkNCj4gPiB0byBmaXggdGhhdCwgdGhh
-dCBpcyBpbmRlcGVuZGVudCBvbiBteSBzcGVjaWZpYyBoYXJkd2FyZS9tYWluYm9hcmQuDQo+ID4N
-Cj4gPiBPZiBjb3Vyc2UsIGZlZWwgZnJlZSB0byBjb3JyZWN0IG1lIGlmIGkgYW0gZ2V0dGluZyBz
-b21ldGhpbmcgd3JvbmcgaGVyZSwgaW0gbmVpdGhlciBhbiBLZXJuZWwgbm9yIEMgZXhwZXJ0DQo+
-ID4gYW5kIHRoYW5rIHlvdSBmb3IgeW91ciB0aW1lIGFnYWluLg0KPiA+DQo+IA0KPiBZb3UgYXJl
-IHJpZ2h0LiBJIHdhcyBub3QgYXdhcmUgb2YgdGhhdC4gSSB3aWxsIGRpc2N1c3MgcGVvcGxlIGlu
-dGVybmFsbHkgYW5kIHJlY29uc2lkZXIgdGhlIHNvbHV0aW9uLg0KDQpXaXRoIGludGVybmFsIGRp
-c2N1c3Npb24sIHRoZSBlYXJseSBjaGlwcyBpbmNsdWRpbmcgUlRMODg1MkJFIGhhdmUgaW50ZXJv
-cGVyYWJpbGl0eQ0KcHJvYmxlbSB3aXRoIHNvbWUgcGxhdGZvcm1zLCBzbyB3ZSBkZWNpZGUgdG8g
-cm9sbGJhY2sgdG8gMzItYml0IERNQSBmb3IgdGhlc2UgY2hpcHMsDQphbmQgb25seSBlbmFibGUg
-MzYtYml0IERNQSBmb3IgdGVzdGVkIHBsYXRmb3Jtcy4gDQoNClBsZWFzZSBoZWxwIHRvIHRlc3Qg
-aWYgWzFdIHdvcmtzIHRvIHlvdS4gDQoNClsxXSBodHRwczovL2xvcmUua2VybmVsLm9yZy9saW51
-eC13aXJlbGVzcy8yMDI0MDkyNDAyMTYzMy4xOTg2MS0xLXBrc2hpaEByZWFsdGVrLmNvbS9ULyN1
-DQoNCg==
+On Thu, Sep 19, 2024 at 01:19:27PM +0200, gregkh@linuxfoundation.org wrote:
+> On Wed, Sep 18, 2024 at 06:54:33AM +0000, Zhang, Rui wrote:
+> > On Mon, 2024-08-12 at 14:11 +0200, Greg KH wrote:
+> > > On Wed, Aug 07, 2024 at 10:15:23AM +0200, Thorsten Leemhuis wrote:
+> > > > [CCing the x86 folks, Greg, and the regressions list]
+> > > > 
+> > > > Hi, Thorsten here, the Linux kernel's regression tracker.
+> > > > 
+> > > > On 30.07.24 18:41, Thomas Lindroth wrote:
+> > > > > I upgraded from kernel 6.1.94 to 6.1.99 on one of my machines and
+> > > > > noticed that
+> > > > > the dmesg line "Incomplete global flushes, disabling PCID" had
+> > > > > disappeared from
+> > > > > the log.
+> > > > 
+> > > > Thomas, thx for the report. FWIW, mainline developers like the x86
+> > > > folks
+> > > > or Tony are free to focus on mainline and leave stable/longterm
+> > > > series
+> > > > to other people -- some nevertheless help out regularly or
+> > > > occasionally.
+> > > > So with a bit of luck this mail will make one of them care enough
+> > > > to
+> > > > provide a 6.1 version of what you afaics called the "existing fix"
+> > > > in
+> > > > mainline (2eda374e883ad2 ("x86/mm: Switch to new Intel CPU model
+> > > > defines") [v6.10-rc1]) that seems to be missing in 6.1.y. But if
+> > > > not I
+> > > > suspect it might be up to you to prepare and submit a 6.1.y variant
+> > > > of
+> > > > that fix, as you seem to care and are able to test the patch.
+> > > 
+> > > Needs to go to 6.6.y first, right?  But even then, it does not apply
+> > > to
+> > > 6.1.y cleanly, so someone needs to send a backported (and tested)
+> > > series
+> > > to us at stable@vger.kernel.org and we will be glad to queue them up
+> > > then.
+> > > 
+> > > thanks,
+> > > 
+> > > greg k-h
+> > 
+> > There are three commits involved.
+> > 
+> > commit A:
+> >    4db64279bc2b (""x86/cpu: Switch to new Intel CPU model defines"") 
+> >    This commit replaces
+> >       X86_MATCH_INTEL_FAM6_MODEL(ANY, 1),             /* SNC */
+> >    with
+> >       X86_MATCH_VFM(INTEL_ANY,         1),    /* SNC */
+> >    This is a functional change because the family info is replaced with
+> > 0. And this exposes a x86_match_cpu() problem that it breaks when the
+> > vendor/family/model/stepping/feature fields are all zeros.
+> > 
+> > commit B:
+> >    93022482b294 ("x86/cpu: Fix x86_match_cpu() to match just
+> > X86_VENDOR_INTEL")
+> >    It addresses the x86_match_cpu() problem by introducing a valid flag
+> > and set the flag in the Intel CPU model defines.
+> >    This fixes commit A, but it actually breaks the x86_cpu_id
+> > structures that are constructed without using the Intel CPU model
+> > defines, like arch/x86/mm/init.c.
+> > 
+> > commit C:
+> >    2eda374e883a ("x86/mm: Switch to new Intel CPU model defines")
+> >    arch/x86/mm/init.c: broke by commit B but fixed by using the new
+> > Intel CPU model defines
+> > 
+> > In 6.1.99,
+> > commit A is missing
+> > commit B is there
+> > commit C is missing
+> > 
+> > In 6.6.50,
+> > commit A is missing
+> > commit B is there
+> > commit C is missing
+> > 
+> > Now we can fix the problem in stable kernel, by converting
+> > arch/x86/mm/init.c to use the CPU model defines (even the old style
+> > ones). But before that, I'm wondering if we need to backport commit B
+> > in 6.1 and 6.6 stable kernel because only commit A can expose this
+> > problem.
+> 
+> If so, can you submit the needed backports for us to apply?  That's the
+> easiest way for us to take them, thanks.
+
+I audited all the uses of x86_match_cpu(match). All callers that construct
+the `match` argument using the family of X86_MATCH_* macros from arch/x86/
+include/asm/cpu_device_id.h function correctly because the commit B has
+been backported to v6.1.99 and to v6.6.50 -- 93022482b294 ("x86/cpu: Fix
+x86_match_cpu() to match just X86_VENDOR_INTEL").
+
+Only those callers that use their own thing to compose the `match` argument
+are buggy:
+    * arch/x86/mm/init.c
+    * drivers/powercap/intel_rapl_msr.c (only in 6.1.99)
+
+Summarizing, v6.1.99 needs these two commits from mainline
+    * d05b5e0baf42 ("powercap: RAPL: fix invalid initialization for
+      pl4_supported field")
+    * 2eda374e883a ("x86/mm: Switch to new Intel CPU model defines")
+
+v6.6.50 only needs the second commit.
+
+I will submit these backports.
+
+Thanks and BR,
+Ricardo
 
