@@ -1,173 +1,99 @@
-Return-Path: <stable+bounces-76968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 866379840D9
-	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 10:44:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72E899840E9
+	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 10:46:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4B123287D2F
-	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 08:44:36 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 282FF1F217C2
+	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 08:46:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFEA215442A;
-	Tue, 24 Sep 2024 08:44:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 973D9149DF0;
+	Tue, 24 Sep 2024 08:46:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="WA+S9Btw";
-	dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b="Dr8RsPwC"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WkTe3WzG"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7743D15381F;
-	Tue, 24 Sep 2024 08:44:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B08151537C9
+	for <stable@vger.kernel.org>; Tue, 24 Sep 2024 08:46:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727167462; cv=none; b=P0iSKUCvofGJiJeEpjxt3mE65//QLAIx+MNBKcGVeaFZzntVbUp4x+LONeYMxe/kTU1I5FOkRF+O+9BSzZULC8kEc5G9MdqIFgljtBi3zXSM7g/9iERFxrEXdCsVaTKDLF4pqXvhnTnk4w4FhSTPzp7VUHFJiTArTRsQ9QwlJwo=
+	t=1727167573; cv=none; b=sRY+aUbOkd2EcgTRVsmN2Z2q3+pcXE5aq6ZTjdBLjp0IX1fjNyLEZFTW5kPEUG0JlsTn12EGl87j1Zu5VC86NI5k4WVemh2cOyaQF7i5ENtSTaZ91f3y+jokgAlC19zRLLYukyVGUN8h9c7/a7nbTStVAQuj85b/EquhMZuKsrM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727167462; c=relaxed/simple;
-	bh=iUvcV1AO+x2dwAvCRVsFAHn407sb5o2UaGfcf3tmW84=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LyEX2OcEkNqpBQ+ZjkIky4+gip3DWr1vDR7ugG6jUwSUdppLyoxFPv7mZNADaOAFOJ61Wvid0gkbuUQiQw/eArbAHxRl8rJLlcF0eUQKscaPjJMYAXIqHhlDTvTXhYDS8ZtIPIYRtAtFww2ZnCXiqjweYPQbQLvPfZk3bI4GWu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=WA+S9Btw; dkim=pass (1024-bit key) header.d=suse.com header.i=@suse.com header.b=Dr8RsPwC; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 6B14D2122C;
-	Tue, 24 Sep 2024 08:44:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1727167458; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=OJ6DiioJcBSkZacAGniMJvAV4UxnnfYlO18vC5BmkJE=;
-	b=WA+S9BtwhGJKiblq4ajTJf2+YR2p1XupbbbmDze6b18vKA3ZxsumwRQ0GPUsxsj1PRIb4I
-	+M8uUWrN1LDhOn0KmDCdVEZdm0EE3EFYao5IlXouCgu4E0LIc57NQ12dA8rRSEp8Ny+aaz
-	Zf/xLZbe3uCC/QdlA89Bp0QdbtX9V2k=
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.com header.s=susede1 header.b=Dr8RsPwC
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.com; s=susede1;
-	t=1727167457; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=OJ6DiioJcBSkZacAGniMJvAV4UxnnfYlO18vC5BmkJE=;
-	b=Dr8RsPwCmBvSyhgmykapcF/shcjtzbfOMu+iHdqRzEm+OGEV93gxwIB0Jqtv0gBzXdDu9d
-	rs9Sm8FV4PpQAICRmyd8ITMzyo+9VpX/H9a6xxYIFSnA03iq+jQMLxF3wdJTb3ZHMvDIjo
-	rbcHv6V6a6n9YkVX95WM0ll4N2k9wXQ=
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 487E81386E;
-	Tue, 24 Sep 2024 08:44:17 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id sBWEEOF78matewAAD6G6ig
-	(envelope-from <oneukum@suse.com>); Tue, 24 Sep 2024 08:44:17 +0000
-From: Oliver Neukum <oneukum@suse.com>
-To: gregkh@linuxfoundation.org,
-	linux-usb@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Oliver Neukum <oneukum@suse.com>
-Subject: [PATCHv2] usb: yurex: make waiting on yurex_write interruptible
-Date: Tue, 24 Sep 2024 10:43:45 +0200
-Message-ID: <20240924084415.300557-1-oneukum@suse.com>
-X-Mailer: git-send-email 2.46.1
+	s=arc-20240116; t=1727167573; c=relaxed/simple;
+	bh=Ce69RvO5h0xWZhvC2+Rg6PshsL5YrP6R63bLK1StmlY=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=PMt0/ODDC1xo0nrIIi8mkG2b4drk88Gqpvf76quHkLXyY+GBN6md/C3tZpoeea9H14JwwaNUTizoOlc/knm5OCE0kRnzqMRqojk67duVvTlVaJvm9WNsTRRYbzdZjo3E6fY1iNEBnuZGsdcnSSFZJYDQnryPpowVraUJBJoiBTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WkTe3WzG; arc=none smtp.client-ip=198.175.65.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1727167571; x=1758703571;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=Ce69RvO5h0xWZhvC2+Rg6PshsL5YrP6R63bLK1StmlY=;
+  b=WkTe3WzGN0zvtMoRMX3CiC5DUjFcV3p3PcoehVh/7rRUTqDn0TwVPnZ/
+   /yMS/ehDaSA46jlVQ6xIr2ItO8oAOEZRF++C3m52syOwdSlqX+2bIa4um
+   ebnBWGacWdxUsZDHkKABxQXTL+yoURObScJPiwWstpHFOX8r9DrjBlh2C
+   HVAYIqgzDRbIZLHLA5oNHd1PtXfbXlXcHVxjWTf9X3mbtCvmuyXkXklmh
+   IpjgwOjmj87W0jd3st6rwjuTSUrMuEJ02LhaW57fn9HvJAZLM40OOvKgO
+   6M6WAOR9xsN5yx2ufDutFGZjkDfPdF54+Hm+EJ3i+Iho46ZYNorP6ozQ5
+   w==;
+X-CSE-ConnectionGUID: fbMgGphLRw2P4hnQymVy3Q==
+X-CSE-MsgGUID: OKb7PceJQqaYOASjW+imkw==
+X-IronPort-AV: E=McAfee;i="6700,10204,11204"; a="26242902"
+X-IronPort-AV: E=Sophos;i="6.10,254,1719903600"; 
+   d="scan'208";a="26242902"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2024 01:46:10 -0700
+X-CSE-ConnectionGUID: N0Azc3ZLRKWQoTzs/Bfavw==
+X-CSE-MsgGUID: /8cJdfqpTN2nkk5bJ6BK9Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,254,1719903600"; 
+   d="scan'208";a="75869777"
+Received: from lkp-server01.sh.intel.com (HELO 53e96f405c61) ([10.239.97.150])
+  by fmviesa004.fm.intel.com with ESMTP; 24 Sep 2024 01:46:09 -0700
+Received: from kbuild by 53e96f405c61 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1st1BO-000I7x-2V;
+	Tue, 24 Sep 2024 08:46:06 +0000
+Date: Tue, 24 Sep 2024 16:45:23 +0800
+From: kernel test robot <lkp@intel.com>
+To: Oliver Neukum <oneukum@suse.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCHv2] usb: yurex: make waiting on yurex_write interruptible
+Message-ID: <ZvJ8I9B3nIMpWGnY@5849f93d069a>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 6B14D2122C
-X-Spam-Score: -3.01
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	R_DKIM_ALLOW(-0.20)[suse.com:s=susede1];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DKIM_SIGNED(0.00)[suse.com:s=susede1];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_TRACE(0.00)[suse.com:+];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	DWL_DNSWL_BLOCKED(0.00)[suse.com:dkim];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	RCPT_COUNT_THREE(0.00)[4];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.com:dkim,suse.com:mid,suse.com:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Flag: NO
-X-Spam-Level: 
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240924084415.300557-1-oneukum@suse.com>
 
-The IO yurex_write() needs to wait for in order to have a device
-ready for writing again can take a long time time.
-Consequently the sleep is done in an interruptible state.
-Therefore others waiting for yurex_write() itself to finish should
-use mutex_lock_interruptible.
+Hi,
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Fixes: 6bc235a2e24a5 ("USB: add driver for Meywa-Denki & Kayac YUREX")
----
+Thanks for your patch.
 
-v2: fix uninitialized variable
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
- drivers/usb/misc/iowarrior.c | 4 ----
- drivers/usb/misc/yurex.c     | 5 ++++-
- 2 files changed, 4 insertions(+), 5 deletions(-)
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
 
-diff --git a/drivers/usb/misc/iowarrior.c b/drivers/usb/misc/iowarrior.c
-index cfc985001e5b..65cc53431976 100644
---- a/drivers/usb/misc/iowarrior.c
-+++ b/drivers/usb/misc/iowarrior.c
-@@ -892,7 +892,6 @@ static int iowarrior_probe(struct usb_interface *interface,
- static void iowarrior_disconnect(struct usb_interface *interface)
- {
- 	struct iowarrior *dev = usb_get_intfdata(interface);
--	int minor = dev->minor;
- 
- 	usb_deregister_dev(interface, &iowarrior_class);
- 
-@@ -916,9 +915,6 @@ static void iowarrior_disconnect(struct usb_interface *interface)
- 		mutex_unlock(&dev->mutex);
- 		iowarrior_delete(dev);
- 	}
--
--	dev_info(&interface->dev, "I/O-Warror #%d now disconnected\n",
--		 minor - IOWARRIOR_MINOR_BASE);
- }
- 
- /* usb specific object needed to register this driver with the usb subsystem */
-diff --git a/drivers/usb/misc/yurex.c b/drivers/usb/misc/yurex.c
-index 4a9859e03f6b..316634f782c6 100644
---- a/drivers/usb/misc/yurex.c
-+++ b/drivers/usb/misc/yurex.c
-@@ -444,7 +444,10 @@ static ssize_t yurex_write(struct file *file, const char __user *user_buffer,
- 	if (count == 0)
- 		goto error;
- 
--	mutex_lock(&dev->io_mutex);
-+	retval = mutex_lock_interruptible(&dev->io_mutex);
-+	if (retval < 0)
-+		return -EINTR;
-+
- 	if (dev->disconnected) {		/* already disconnected */
- 		mutex_unlock(&dev->io_mutex);
- 		retval = -ENODEV;
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCHv2] usb: yurex: make waiting on yurex_write interruptible
+Link: https://lore.kernel.org/stable/20240924084415.300557-1-oneukum%40suse.com
+
 -- 
-2.46.1
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
