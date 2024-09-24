@@ -1,173 +1,170 @@
-Return-Path: <stable+bounces-77049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77050-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70804984BCC
-	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 21:51:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB5D3984C16
+	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 22:19:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E85F01F23BE9
-	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 19:51:01 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4575CB230A1
+	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 20:19:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9D9B12E1C2;
-	Tue, 24 Sep 2024 19:50:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3074113A87E;
+	Tue, 24 Sep 2024 20:19:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PVg3USFI"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="nzcYq89x"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ua1-f44.google.com (mail-ua1-f44.google.com [209.85.222.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0049A40BF2;
-	Tue, 24 Sep 2024 19:50:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C101B335C7;
+	Tue, 24 Sep 2024 20:19:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727207456; cv=none; b=N88nEuWu+n+xUQWSfFLebPbhTm2eEAwIRlSZrKnWyy8kx8QHxyPjnrUyoD+Byo1DmyHBG3JgKipJxiOSxyF1Kmt6sI3XSf3YXfHYHXYCnlwdso60Xgr1PO0sQclJZQVvkPmFF9pvrdHfgxhJnrx1K4LEJOX9tJVVI7uAgvTEEcU=
+	t=1727209158; cv=none; b=eLuvtSwlPUML5Lnfa1VWdcxQVf/H2Rvwr4TUPvHr/OH+W4l9cFypbtgJ22VfcP47xcJnDGrP5U2TsFKQmfBcDdD5jELdUtb28j7EWJiGLpLX7hH8JpnAYlN80wdf1jqa6ZxvQKw4VLz8nplH6fO3lE0zPLGufDyRBqfeIxDPOEg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727207456; c=relaxed/simple;
-	bh=YcKqjUQWGYnWxJY+NKRQhkbgtYCI8SyZyH4HHCGKXTE=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=QW3Ca0vOZdAEc2MI5+oXgAB7MNnHFsfj//l6KGgu6RdkQERRieyTGA2V0fmae23m1ad9PQCSzjXW5Wq3AMTmIKQqRP3mo8GQYDQzH1AkGXOip0XLzOP05GFMDGURvge31HbXUB8dVFRvuNsQVvjuqlO01+MyWuYVQAqj4ngA6U4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PVg3USFI; arc=none smtp.client-ip=209.85.222.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ua1-f44.google.com with SMTP id a1e0cc1a2514c-846c36009d5so1611062241.2;
-        Tue, 24 Sep 2024 12:50:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727207454; x=1727812254; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=A9fLKAgs4Ts7Ftd9D/PvaKgR2A/xj7hugr2Nvm3u+J0=;
-        b=PVg3USFIdo+9jRF0zpi3s7Vc0CYYdWU/116hNsoj1GTwtlCFfz/i9gJ2pOjduUYake
-         dpQ1XcVqRGujb7eG066qQ/M/DduuqoIU1g7EWdSOrWrXWmLfzaoWeo67Ms+du4Nj7Omk
-         Xnhl2SNEWj4p+xJ/WmhJ5nAwKezoZ1dRYFS27YSvaE74P46jaMwiFw+G4EQazB8FR88b
-         NB000kP5yT0rLEgOburszG0l1LcI0NLO05Zj2voWN4Dx8a25Q3lERvFKyTF00FptPiDz
-         53V8F+QMQwBjyN6Pi8moP56xpzMU4szHNYI0B6QmcZ9BAjfgn6ijLf5M9VmoBZTuZ73g
-         i3rA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727207454; x=1727812254;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=A9fLKAgs4Ts7Ftd9D/PvaKgR2A/xj7hugr2Nvm3u+J0=;
-        b=eCcs1tTccodqYjjqEYyJ/cLVlc6NIqoo3q0Q+Ju2N4LK5dSCGUUEC53YuhYkmov1aT
-         qG68ZTZo5wdC9dNO4+77vkDHMaIKZh5ApwlJPKAbDpBMI9AhvKyNqwedJM48a+IoGfvQ
-         Q6X6MDKHRi05IP6bPICJeZVVoF1yGGyiAmni7TBPzttfg3PwAObrviPGddiwIatGCQs6
-         sNQAX5Ob5kK8+BL8UegcpA0byd/cOUzjRMEatr1JDc+ZZ9n0pC1GNNAyrUqtPEDKXoRf
-         jknHKCbxTxL6CcXN0R9ydLoqBafsYuDHwJNDZLVncmz/IvT7jaNtoAjvGcRTi3lkNwzB
-         Km8w==
-X-Forwarded-Encrypted: i=1; AJvYcCWD7xpvJZP2U/rDPOqQDR09Z1qtMhumS4B7Y9EWC9nBcZbNgVFFqzlTqRLV+4e3K4qEXVNe+Ts=@vger.kernel.org, AJvYcCXFN8HPJHdpvOjVzvG+bqPoOgE7iJdP7AbPypMhlEqsDFhUi662cfSlUqR9ZeDo0RI2hJOB/84N@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx9HsWHUDFM+E7FquETVT/atDcOEz3Ab1udt5pO+UsM2V46o5J3
-	8C6mV8PBlybkC2SU99A7b0Fs/OuqFUgvEZE4GS3I9ysZ67Qs0BS/
-X-Google-Smtp-Source: AGHT+IEDvwydDPMyvQlQ1uj4ntKAx3iktmnPdXlRSl6L6idBnNQqiPHXls5Lb+3ECM7z+lJAxOZN+w==
-X-Received: by 2002:a05:6102:5121:b0:49b:dd03:2476 with SMTP id ada2fe7eead31-4a15dd1d5eemr839306137.21.1727207453655;
-        Tue, 24 Sep 2024 12:50:53 -0700 (PDT)
-Received: from localhost (23.67.48.34.bc.googleusercontent.com. [34.48.67.23])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6cb0f4c2f51sm9446786d6.31.2024.09.24.12.50.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Sep 2024 12:50:53 -0700 (PDT)
-Date: Tue, 24 Sep 2024 15:50:52 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Felix Fietkau <nbd@nbd.name>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- netdev@vger.kernel.org
-Cc: davem@davemloft.net, 
- kuba@kernel.org, 
- edumazet@google.com, 
- pabeni@redhat.com, 
- stable@vger.kernel.org, 
- maze@google.com, 
- shiming.cheng@mediatek.com, 
- daniel@iogearbox.net, 
- lena.wang@mediatek.com, 
- herbert@gondor.apana.org.au, 
- Willem de Bruijn <willemb@google.com>
-Message-ID: <66f3181c4fd22_3382d294b6@willemb.c.googlers.com.notmuch>
-In-Reply-To: <da09e77a-a293-41b0-a46f-861dd5775ba2@nbd.name>
-References: <20240922150450.3873767-1-willemdebruijn.kernel@gmail.com>
- <da09e77a-a293-41b0-a46f-861dd5775ba2@nbd.name>
-Subject: Re: [PATCH net] gso: fix gso fraglist segmentation after pull from
- frag_list
+	s=arc-20240116; t=1727209158; c=relaxed/simple;
+	bh=1joLIRtZQRC+M9dBzb6rczr74nB0c7Eor6G3C1jYOK0=;
+	h=Date:To:From:Subject:Message-Id; b=Mcv45Od0fH0RlJVl7Y9lFK3ojl/Aqy9ZYKdw/rSoPbdRAY0oMf7u7B/lrtrVuBVVqbY5BEjr0YEiK62E7AiMmS/js7yJXs/8kQePYb3Hp4crenFF+T19DvoQ53nhbNq0fr7bCjpxRiVP3sr9tlWtga77ckN1lp5JBSJJvKTZayk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=nzcYq89x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5524BC4CEC4;
+	Tue, 24 Sep 2024 20:19:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1727209157;
+	bh=1joLIRtZQRC+M9dBzb6rczr74nB0c7Eor6G3C1jYOK0=;
+	h=Date:To:From:Subject:From;
+	b=nzcYq89xmnL1jiHMiled3QbDmdE6Pylw/ivtQb8CfunsWjo+ulJvWt7zH4moaY/io
+	 agiJT9/bYvT/zBqD17FjO15YBKUFZKV5FsrlAjlThBX2SPFx88UEP4Y0c+Q1mAwRLd
+	 BCvVo55R5vLOBI/SWNIAVfFCTnn4XTicxHyIOT9Q=
+Date: Tue, 24 Sep 2024 13:19:16 -0700
+To: mm-commits@vger.kernel.org,ziy@nvidia.com,willy@infradead.org,wangkefeng.wang@huawei.com,syzkaller@googlegroups.com,stable@vger.kernel.org,david@redhat.com,aha310510@gmail.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-migrate-annotate-data-race-in-migrate_folio_unmap.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240924201917.5524BC4CEC4@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
 
-Felix Fietkau wrote:
-> On 22.09.24 17:03, Willem de Bruijn wrote:
-> > From: Willem de Bruijn <willemb@google.com>
-> > 
-> > Detect gso fraglist skbs with corrupted geometry (see below) and
-> > pass these to skb_segment instead of skb_segment_list, as the first
-> > can segment them correctly.
-> > 
-> > Valid SKB_GSO_FRAGLIST skbs
-> > - consist of two or more segments
-> > - the head_skb holds the protocol headers plus first gso_size
-> > - one or more frag_list skbs hold exactly one segment
-> > - all but the last must be gso_size
-> > 
-> > Optional datapath hooks such as NAT and BPF (bpf_skb_pull_data) can
-> > modify these skbs, breaking these invariants.
-> > 
-> > In extreme cases they pull all data into skb linear. For UDP, this
-> > causes a NULL ptr deref in __udpv4_gso_segment_list_csum at
-> > udp_hdr(seg->next)->dest.
-> > 
-> > Detect invalid geometry due to pull, by checking head_skb size.
-> > Don't just drop, as this may blackhole a destination. Convert to be
-> > able to pass to regular skb_segment.
-> > 
-> > Link: https://lore.kernel.org/netdev/20240428142913.18666-1-shiming.cheng@mediatek.com/
-> > Fixes: 3a1296a38d0c ("net: Support GRO/GSO fraglist chaining.")
-> > Signed-off-by: Willem de Bruijn <willemb@google.com>
-> > Cc: stable@vger.kernel.org
-> > 
-> > ---
-> > diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
-> > index d842303587af..e457fa9143a6 100644
-> > --- a/net/ipv4/udp_offload.c
-> > +++ b/net/ipv4/udp_offload.c
-> > @@ -296,8 +296,16 @@ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
-> >   		return NULL;
-> >   	}
-> >   
-> > -	if (skb_shinfo(gso_skb)->gso_type & SKB_GSO_FRAGLIST)
-> > -		return __udp_gso_segment_list(gso_skb, features, is_ipv6);
-> > +	if (skb_shinfo(gso_skb)->gso_type & SKB_GSO_FRAGLIST) {
-> > +		 /* Detect modified geometry and pass these to skb_segment. */
-> > +		if (skb_pagelen(gso_skb) - sizeof(*uh) == skb_shinfo(gso_skb)->gso_size)
-> > +			return __udp_gso_segment_list(gso_skb, features, is_ipv6);
-> > +
-> > +		 /* Setup csum, as fraglist skips this in udp4_gro_receive. */
-> > +		gso_skb->csum_start = skb_transport_header(gso_skb) - gso_skb->head;
-> > +		gso_skb->csum_offset = offsetof(struct udphdr, check);
-> > +		gso_skb->ip_summed = CHECKSUM_PARTIAL;
-> > +	}
-> 
-> It seems to me that the TCP code would need something similar.
 
-I think you're right, thanks.
+The patch titled
+     Subject: mm: migrate: annotate data-race in migrate_folio_unmap()
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-migrate-annotate-data-race-in-migrate_folio_unmap.patch
 
-Separate patch, as different Fixes, of course.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-migrate-annotate-data-race-in-migrate_folio_unmap.patch
 
-> Do you think the same approach would work there as well?
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-tcp4_gro_complete seems to mirror udp4_gro_receive in returning early
-before setting up checksum offload. So likely yes.
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-The script I shared to reproduce for UDP can hopefully be reused
-easily to also generate these packets with TCP.
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Jeongjun Park <aha310510@gmail.com>
+Subject: mm: migrate: annotate data-race in migrate_folio_unmap()
+Date: Tue, 24 Sep 2024 22:00:53 +0900
+
+I found a report from syzbot [1]
+
+This report shows that the value can be changed, but in reality, the
+value of __folio_set_movable() cannot be changed because it holds the
+folio refcount.
+
+Therefore, it is appropriate to add an annotate to make KCSAN
+ignore that data-race.
+
+[1]
+
+==================================================================
+BUG: KCSAN: data-race in __filemap_remove_folio / migrate_pages_batch
+
+write to 0xffffea0004b81dd8 of 8 bytes by task 6348 on cpu 0:
+ page_cache_delete mm/filemap.c:153 [inline]
+ __filemap_remove_folio+0x1ac/0x2c0 mm/filemap.c:233
+ filemap_remove_folio+0x6b/0x1f0 mm/filemap.c:265
+ truncate_inode_folio+0x42/0x50 mm/truncate.c:178
+ shmem_undo_range+0x25b/0xa70 mm/shmem.c:1028
+ shmem_truncate_range mm/shmem.c:1144 [inline]
+ shmem_evict_inode+0x14d/0x530 mm/shmem.c:1272
+ evict+0x2f0/0x580 fs/inode.c:731
+ iput_final fs/inode.c:1883 [inline]
+ iput+0x42a/0x5b0 fs/inode.c:1909
+ dentry_unlink_inode+0x24f/0x260 fs/dcache.c:412
+ __dentry_kill+0x18b/0x4c0 fs/dcache.c:615
+ dput+0x5c/0xd0 fs/dcache.c:857
+ __fput+0x3fb/0x6d0 fs/file_table.c:439
+ ____fput+0x1c/0x30 fs/file_table.c:459
+ task_work_run+0x13a/0x1a0 kernel/task_work.c:228
+ resume_user_mode_work include/linux/resume_user_mode.h:50 [inline]
+ exit_to_user_mode_loop kernel/entry/common.c:114 [inline]
+ exit_to_user_mode_prepare include/linux/entry-common.h:328 [inline]
+ __syscall_exit_to_user_mode_work kernel/entry/common.c:207 [inline]
+ syscall_exit_to_user_mode+0xbe/0x130 kernel/entry/common.c:218
+ do_syscall_64+0xd6/0x1c0 arch/x86/entry/common.c:89
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+read to 0xffffea0004b81dd8 of 8 bytes by task 6342 on cpu 1:
+ __folio_test_movable include/linux/page-flags.h:699 [inline]
+ migrate_folio_unmap mm/migrate.c:1199 [inline]
+ migrate_pages_batch+0x24c/0x1940 mm/migrate.c:1797
+ migrate_pages_sync mm/migrate.c:1963 [inline]
+ migrate_pages+0xff1/0x1820 mm/migrate.c:2072
+ do_mbind mm/mempolicy.c:1390 [inline]
+ kernel_mbind mm/mempolicy.c:1533 [inline]
+ __do_sys_mbind mm/mempolicy.c:1607 [inline]
+ __se_sys_mbind+0xf76/0x1160 mm/mempolicy.c:1603
+ __x64_sys_mbind+0x78/0x90 mm/mempolicy.c:1603
+ x64_sys_call+0x2b4d/0x2d60 arch/x86/include/generated/asm/syscalls_64.h:238
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xc9/0x1c0 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+value changed: 0xffff888127601078 -> 0x0000000000000000
+
+Link: https://lkml.kernel.org/r/20240924130053.107490-1-aha310510@gmail.com
+Fixes: 7e2a5e5ab217 ("mm: migrate: use __folio_test_movable()")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Zi Yan <ziy@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/migrate.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+--- a/mm/migrate.c~mm-migrate-annotate-data-race-in-migrate_folio_unmap
++++ a/mm/migrate.c
+@@ -1196,7 +1196,7 @@ static int migrate_folio_unmap(new_folio
+ 	int rc = -EAGAIN;
+ 	int old_page_state = 0;
+ 	struct anon_vma *anon_vma = NULL;
+-	bool is_lru = !__folio_test_movable(src);
++	bool is_lru = data_race(!__folio_test_movable(src));
+ 	bool locked = false;
+ 	bool dst_locked = false;
  
-> Thanks,
-> 
-> - Felix
+_
 
+Patches currently in -mm which might be from aha310510@gmail.com are
+
+mm-migrate-annotate-data-race-in-migrate_folio_unmap.patch
+mm-percpu-fix-typo-to-pcpu_alloc_noprof-description.patch
 
 
