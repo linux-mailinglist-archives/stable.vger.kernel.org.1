@@ -1,129 +1,145 @@
-Return-Path: <stable+bounces-77011-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9822E984AC5
-	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 20:14:12 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F603984ACF
+	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 20:23:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AD415B21FB2
-	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 18:14:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A46C9282465
+	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 18:23:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 851A01ACDE3;
-	Tue, 24 Sep 2024 18:13:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 186381AC433;
+	Tue, 24 Sep 2024 18:22:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oXwAE6cO"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="Dk6pALFL"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B8F21AC8AC;
-	Tue, 24 Sep 2024 18:13:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6334E11CA0;
+	Tue, 24 Sep 2024 18:22:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727201636; cv=none; b=OM48sbxkMZ9T13hnRVO1REsaBZtpJX/5ISZGileeiN3IaXiebJHdlMUWbytOKflYzsdHzJIdCQVF+f+51A3T0vboOiAN0P4iSWG61Lc15iAkaLnbMAzKeXPd8CE+oMQgIumLi0EJ8V2spQETAlW1NAWojnxuHMdibfcz+wU++cM=
+	t=1727202177; cv=none; b=Y4drxIuHuoB08X/a+jt6GEcG5c3hCDQVToYDNXFqIfSHne4HBqwOFY6VFWpSHjz4VsLTZmbJHdK0q4WmBiX5Pt5LE2do5VK5NTtjabPWMPnotK+EwLMr7xUNj6N7qofuvxV0dDTJAvDWQusUPOY1gaKevN96UTmP5eA24mG2jF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727201636; c=relaxed/simple;
-	bh=OCs5Cqpje9S80KFQv8p9Oyg1vEGfixvfhJk33BIA/Yo=;
-	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
-	 References:In-Reply-To; b=VmcfKcFri66xA4e08f57pbNpSAprzVhUc73a+doQ58yNoQsdsx48C9LczbNaLdzk6QFRcHzclFR9yIgcJ+mTIueqUj0pUwhSc5a4WMbVylVkY7GSUf5GPW/b62ITQEFuFh0AGn4URbSo1XP8cCO2vDUhL3cqRJI19QJ6udAJ2WM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oXwAE6cO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A363CC4CECF;
-	Tue, 24 Sep 2024 18:13:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727201636;
-	bh=OCs5Cqpje9S80KFQv8p9Oyg1vEGfixvfhJk33BIA/Yo=;
-	h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
-	b=oXwAE6cOdDZMZ72nGMSAI/qrKVqOOjIrZgljPNUpSl+bNiJH3H9S5aDjXxztfnHNt
-	 m9PlQjwNItAKrFXWKQfIX2opxvrVOP3Z0W3Rmy7fwXRbnrORUImnHCBA2/OyFqzZsU
-	 EuGd6OsAkpqLmK1Co1k+1B9ceYWwLNWHfUSxtI6iHnJZ1tuQuljHZJs4lmO2t1kD4N
-	 PPQYTVeaqgNEI7fhTgdwkGfKKpml2AiCcJp+F1oQzDXyclppznJ0lR54TLHdjkrsi4
-	 0TfjWryYYaMzNapt2zsQUpv7Um1U/0Stwf6gFxQYWJTIv2LteGUGGL0lwvNdZTmeEn
-	 XWxtcCMqDbkaQ==
+	s=arc-20240116; t=1727202177; c=relaxed/simple;
+	bh=TUwq8CJ3h1KyuGejnrJdKWp5w35wORDJxiEqbkcXqnY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EK9QwXiMtA2zwgTM8xScoanFL4+8hl4NdfxD6IT4MDB0QXp4JFwY3V6H0ZKpO45MJsV9QP0ARCSEGpuogx5b54O2F724g8OscASZdIRcGbG8YBJYNihQTuLW6hkf3Tma+TQ94vnZgN8l2xnHvlNiPzOdOh78aprSo1ZHJeSFBqM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=Dk6pALFL; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1127)
+	id 17AB120C6497; Tue, 24 Sep 2024 11:22:50 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 17AB120C6497
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1727202170;
+	bh=Sp511I3MRZE6mycvGCLM5CjDhuHrm3NCeyezfu9e2+o=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Dk6pALFL+0XgJD6mtcKlYy+XqoazUImW8ZPyXrCT5YyZywaYLlvTmQHtKwubRRrdX
+	 XFhofekAZSJATBqycvP+mI6/Ya8nd5jTS2KvGoH8Ni+b5kd7gk999Y5cB3DchYoBJQ
+	 0ik1rCzIMNu+KuOH17sZ1QvECYIbA6wZK1z/ctlQ=
+Date: Tue, 24 Sep 2024 11:22:50 -0700
+From: Saurabh Singh Sengar <ssengar@linux.microsoft.com>
+To: Dexuan Cui <decui@microsoft.com>
+Cc: KY Srinivasan <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>, Long Li <longli@microsoft.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	"open list:Hyper-V/Azure CORE AND DRIVERS" <linux-hyperv@vger.kernel.org>,
+	open list <linux-kernel@vger.kernel.org>,
+	"stable@vger.kernel.org" <stable@vger.kernel.org>
+Subject: Re: [PATCH] tools: hv: Fix a complier warning in the fcopy uio daemon
+Message-ID: <20240924182250.GA14242@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+References: <20240910004433.50254-1-decui@microsoft.com>
+ <20240913073058.GA24840@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+ <SA1PR21MB13172712A02F3C9EEB156131BF6D2@SA1PR21MB1317.namprd21.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 24 Sep 2024 21:13:52 +0300
-Message-Id: <D4EPVO0KWRLK.2RQK9L93QM4VB@kernel.org>
-To: "James Bottomley" <James.Bottomley@HansenPartnership.com>,
- <linux-integrity@vger.kernel.org>
-Cc: <roberto.sassu@huawei.com>, <mapengyu@gmail.com>,
- <stable@vger.kernel.org>, "Mimi Zohar" <zohar@linux.ibm.com>, "David
- Howells" <dhowells@redhat.com>, "Paul Moore" <paul@paul-moore.com>, "James
- Morris" <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, "Peter
- Huewe" <peterhuewe@gmx.de>, "Jason Gunthorpe" <jgg@ziepe.ca>,
- <keyrings@vger.kernel.org>, <linux-security-module@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v5 4/5] tpm: Allocate chip->auth in
- tpm2_start_auth_session()
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-X-Mailer: aerc 0.18.2
-References: <20240921120811.1264985-1-jarkko@kernel.org>
- <20240921120811.1264985-5-jarkko@kernel.org>
- <12e17497239dd9b47059b03a0273e2d995371278.camel@HansenPartnership.com>
-In-Reply-To: <12e17497239dd9b47059b03a0273e2d995371278.camel@HansenPartnership.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <SA1PR21MB13172712A02F3C9EEB156131BF6D2@SA1PR21MB1317.namprd21.prod.outlook.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 
-On Tue Sep 24, 2024 at 4:33 PM EEST, James Bottomley wrote:
-> On Sat, 2024-09-21 at 15:08 +0300, Jarkko Sakkinen wrote:
-> > Move allocation of chip->auth to tpm2_start_auth_session() so that
-> > the field can be used as flag to tell whether auth session is active
-> > or not.
-> >=20
-> > Cc: stable@vger.kernel.org=C2=A0# v6.10+
-> > Fixes: 699e3efd6c64 ("tpm: Add HMAC session start and end functions")
-> > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-> > ---
-> > v5:
-> > - No changes.
-> > v4:
-> > - Change to bug.
-> > v3:
-> > - No changes.
-> > v2:
-> > - A new patch.
-> > ---
-> > =C2=A0drivers/char/tpm/tpm2-sessions.c | 43 +++++++++++++++++++--------=
----
-> > --
-> > =C2=A01 file changed, 25 insertions(+), 18 deletions(-)
-> >=20
-> > diff --git a/drivers/char/tpm/tpm2-sessions.c
-> > b/drivers/char/tpm/tpm2-sessions.c
-> > index 1aef5b1f9c90..a8d3d5d52178 100644
-> > --- a/drivers/char/tpm/tpm2-sessions.c
-> > +++ b/drivers/char/tpm/tpm2-sessions.c
-> > @@ -484,7 +484,8 @@ static void tpm2_KDFe(u8 z[EC_PT_SZ], const char
-> > *str, u8 *pt_u, u8 *pt_v,
-> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0sha256_final(&sctx, out=
-);
-> > =C2=A0}
-> > =C2=A0
-> > -static void tpm_buf_append_salt(struct tpm_buf *buf, struct tpm_chip
-> > *chip)
-> > +static void tpm_buf_append_salt(struct tpm_buf *buf, struct tpm_chip
-> > *chip,
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
-=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=
-=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct tpm2_auth *auth)
->
-> This addition of auth as an argument is a bit unnecessary.  You can set
-> chip->auth before calling this and it will all function.  Since there's
-> no error leg in tpm2_start_auth_session unless the session creation
-> itself fails and the guarantee of the ops lock is single threading this
-> chip->auth can be nulled again in that error leg.
->
-> If you want to keep the flow proposed in the patch, the change from how
-> it works now to how it works with this patch needs documenting in the
-> change log
+On Sat, Sep 21, 2024 at 01:23:09AM +0000, Dexuan Cui wrote:
+> > From: Saurabh Singh Sengar <ssengar@linux.microsoft.com>
+> > Sent: Friday, September 13, 2024 12:31 AM
+> > To: Dexuan Cui <decui@microsoft.com>
+> > Cc: KY Srinivasan <kys@microsoft.com>; Haiyang Zhang
+> > <haiyangz@microsoft.com>; Wei Liu <wei.liu@kernel.org>; Long Li
+> > <longli@microsoft.com>; Greg Kroah-Hartman
+> > <gregkh@linuxfoundation.org>; open list:Hyper-V/Azure CORE AND DRIVERS
+> > <linux-hyperv@vger.kernel.org>; open list <linux-kernel@vger.kernel.org>;
+> > stable@vger.kernel.org
+> > Subject: Re: [PATCH] tools: hv: Fix a complier warning in the fcopy uio
+> > daemon
+> > 
+> > On Tue, Sep 10, 2024 at 12:44:32AM +0000, Dexuan Cui wrote:
+> > > hv_fcopy_uio_daemon.c:436:53: warning: '%s' directive output may be
+> > truncated
+> > > writing up to 14 bytes into a region of size 10 [-Wformat-truncation=]
+> > >   436 |  snprintf(uio_dev_path, sizeof(uio_dev_path), "/dev/%s",
+> > uio_name);
+> > 
+> > Makefile today doesn't have -Wformat-truncation flag enabled, I tried to add
+> > -Wformat-truncation=2 but I don't see any error in this file.
+> > 
+> > Do you mind sharing more details how you get this error ?
+> > 
+> > - Saurabh
+> 
+> This repros in a Ubuntu 20.04 VM:
+> 
+> root@decui-u2004-2024-0920:~/linux/tools/hv# cat /etc/os-release
+> NAME="Ubuntu"
+> VERSION="20.04.6 LTS (Focal Fossa)"
+> ...
+> 
+> root@decui-u2004-2024-0920:~/linux/tools/hv# gcc --version
+> gcc (Ubuntu 9.4.0-1ubuntu1~20.04.2) 9.4.0
+> Copyright (C) 2019 Free Software Foundation, Inc.
+> This is free software; see the source for copying conditions.  There is NO
+> warranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+> 
+> root@decui-u2004-2024-0920:~/linux/tools/hv# make clean; make
+> ...
+> make -f /root/linux/tools/build/Makefile.build dir=. obj=hv_fcopy_uio_daemon
+> make[1]: Entering directory '/root/linux/tools/hv'
+>   CC      hv_fcopy_uio_daemon.o
+> hv_fcopy_uio_daemon.c: In function 'main':
+> hv_fcopy_uio_daemon.c:443:53: warning: '%s' directive output may be truncated writing up to 14 bytes into a region of size 10 [-Wformat-truncation=]
+>   443 |  snprintf(uio_dev_path, sizeof(uio_dev_path), "/dev/%s", uio_name);
+>       |                                                     ^~   ~~~~~~~~
+> In file included from /usr/include/stdio.h:867,
+>                  from hv_fcopy_uio_daemon.c:20:
+> /usr/include/x86_64-linux-gnu/bits/stdio2.h:67:10: note: '__builtin___snprintf_chk' output between 6 and 20 bytes into a destination of size 15
+>    67 |   return __builtin___snprintf_chk (__s, __n, __USE_FORTIFY_LEVEL - 1,
+>       |          ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>    68 |        __bos (__s), __fmt, __va_arg_pack ());
+>       |        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+>   CC      vmbus_bufring.o
+>   LD      hv_fcopy_uio_daemon-in.o
+> make[1]: Leaving directory '/root/linux/tools/hv'
+>   LINK    hv_fcopy_uio_daemon
 
-I checked this through and have to disagree with it. We don't want
-to set chip->auth before the whole start auth session is successful
+Thanks for the details. Looks this is the behaviour of old gcc versions.
+How about fixing it like this :
 
-BR, Jarkko
+--- a/tools/hv/hv_fcopy_uio_daemon.c
++++ b/tools/hv/hv_fcopy_uio_daemon.c
+@@ -35,7 +35,7 @@
+ #define WIN8_SRV_MINOR         1
+ #define WIN8_SRV_VERSION       (WIN8_SRV_MAJOR << 16 | WIN8_SRV_MINOR)
+
+-#define MAX_FOLDER_NAME                15
++#define MAX_FOLDER_NAME                10
+ #define MAX_PATH_LEN           15
+
+
+- Saurabh
+
 
