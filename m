@@ -1,79 +1,76 @@
-Return-Path: <stable+bounces-77051-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77052-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC254984C3D
-	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 22:39:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B5398984C94
+	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 23:11:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D07C31C20CB3
-	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 20:39:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D74551C23053
+	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 21:11:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECD7513B58A;
-	Tue, 24 Sep 2024 20:39:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A573413D251;
+	Tue, 24 Sep 2024 21:11:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Uy/r2ZOm"
+	dkim=pass (2048-bit key) header.d=toxicpanda-com.20230601.gappssmtp.com header.i=@toxicpanda-com.20230601.gappssmtp.com header.b="tagKePUV"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-vs1-f47.google.com (mail-vs1-f47.google.com [209.85.217.47])
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E38B1386C6
-	for <stable@vger.kernel.org>; Tue, 24 Sep 2024 20:39:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5646813C9A9
+	for <stable@vger.kernel.org>; Tue, 24 Sep 2024 21:11:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727210385; cv=none; b=nNV3qLGk0Azs4SGiRcNgOLm8G+I+s1WWBXT4jdiMo1ER9oNtD+cPpgW/ug0SP9AOWsUn60deqCYWmCWKChuM7bvzD3/s3laHp4f2GbxqYH2Ix1708ubmhbTQlkObuPHZtxIhAAB6NowR4mfDQZE1conwCHPL+24c/vrOgNsfu0A=
+	t=1727212306; cv=none; b=qMUZJyAcGty1amXTtzcE3I5RTbpT56XDZffEdLhrvsLn2298KMkKMsWbrkkOzH0U4rgCRkRtmYs7er9zM+3Pfhtjvxiwo7cC/gvf18JmFI+e7ZpyV3tuc58f0OVk2VcVklaOKYi9Lxi4QDzJxlAdtgxP0TTq0Os0tWIf9tMqIms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727210385; c=relaxed/simple;
-	bh=ELHE7oebsWYWkfbLNh0r+gr3tRafuD8VoIiLRusJfDQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JGIja/AJKZ5e/IKAjgFRHs9T/zP+/ydgWUfbDipmvgHL7o+a2nbdXFbrI3WhB6bB3iCix66LMT+TOzPxTjwLohYsL5ovc/Dls8JeulYaSTsrH0fR6WHxEaZb1ld16v7YGPMf2oiuPqSJuDB34Nl7ZmYe30X+sjFt4sppKx9j1uA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Uy/r2ZOm; arc=none smtp.client-ip=209.85.217.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vs1-f47.google.com with SMTP id ada2fe7eead31-49bc44e52d0so1985934137.1
-        for <stable@vger.kernel.org>; Tue, 24 Sep 2024 13:39:43 -0700 (PDT)
+	s=arc-20240116; t=1727212306; c=relaxed/simple;
+	bh=tnqLo0XIue4Z3wHUlnSUUK4HL/FiRaMM4yEFDQbxv5o=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=eYkzTAIkRgyI939DL2rb4uINaXfOVuC7HwliSkLnlDllDi5jbOSrObZ8U50FSxQU4eBZ77WpyCmo4MwpkSRmTkyxsE1e9Yg8EXY1yyO3O0yV1GrlHi7OFomI7LclHbMqLY44nLdNGf9HyRwtDezszxcS5grgDShG/GEqZEDO6/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com; spf=none smtp.mailfrom=toxicpanda.com; dkim=pass (2048-bit key) header.d=toxicpanda-com.20230601.gappssmtp.com header.i=@toxicpanda-com.20230601.gappssmtp.com header.b=tagKePUV; arc=none smtp.client-ip=209.85.128.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=toxicpanda.com
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-6de05b9fd0bso49441007b3.1
+        for <stable@vger.kernel.org>; Tue, 24 Sep 2024 14:11:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727210382; x=1727815182; darn=vger.kernel.org;
+        d=toxicpanda-com.20230601.gappssmtp.com; s=20230601; t=1727212303; x=1727817103; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=nWJuIRWUsoXfEXtLHHT5XqXUYZvIS9PsnSwT6v1dcuc=;
-        b=Uy/r2ZOmXfkF7TuevWuujJ0Bk1iwGPx1b9VYbEI33bazCcSSvOIaHO5Ie2jR8KE1IR
-         WNJhSDtLT8AzBjk+CwrCTLOtf0eek+zFDN7p/U8gLEUIa6JPsJ5jslnO2hcbr2fOvj6Y
-         ZQlSSzOo2+hs6p5jIrXWCP83/HjC7HLZJCxBYyFQNabtmjSU82RSnHSwTaW2RdsR4sTH
-         sry9AfjMizRdLYTOUSX/uKdNAI1Lvw3tab0MYTu68FvXLS43x6jKmbeqN90HKG1jErip
-         yh8FcyMp4y0p+bZ4j/iCWc5CDmroJLVu0dkHtflDPoh53cae+O+OSqFOopoPeTar5TzQ
-         tmyA==
+        bh=p4gSwcrx2D3Z2LvMOpdxJci412zEjS/9V/3phabBvE0=;
+        b=tagKePUVhde6FBo6yC7gAcAPG7q2PhjwbqjJqAhMrHtDpFXuPH3xnczPzyHixb8C9i
+         X4dSZzS2fKO3CVKuQaa1iaUXi5zSjeOv5oCK0psY9os3QpM1k89UsPk72b626m2BFOqM
+         EMw3ZyV5A6gs6+Sr/7dnfeFb5nuQH8SBPp6Sj9KbZqKxuhJh400HYA7DXMyVFY4uFOfS
+         yHMizI/x3OUivO/VPi3FIY4fEJtjJFgPkXo9UWChHGpVyMFmTLISpcsvwsLz2zVgcb1A
+         KQEe5/T2q85f9SROF8Eky5nYClywwGIxh5la4mhTEFjxkOSiJg2+lk5NPAUyIehPVh58
+         VIxw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727210382; x=1727815182;
+        d=1e100.net; s=20230601; t=1727212303; x=1727817103;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=nWJuIRWUsoXfEXtLHHT5XqXUYZvIS9PsnSwT6v1dcuc=;
-        b=irjqCtkvk+5XdyrcA49j/6jMuOhsFRBUJbWTzTToXKT47QqVbKTgMwuHLU5NHAQY5D
-         tvL0sbd6dud51sesWDEMMSwsevizOB5ptda9nzQGn++TlnaZ/tuNs4Qv8AqmW+v0yQUn
-         vtynGMe7XSh8GbmWxqjv9Psddu+QAw0DHOY9OqhqYiLOcDd77htYHWTi+be8kdbwx5MA
-         /dXU0t//MMUh2Mf269HcLe5cH+n1mtp+42hjSF8DC01objI2iQrSR7NeuBQCuFg98PJG
-         MOzuif1aQv3cUFCtHtDf1USVMM/HhVZRIZUvv+Ei7ZPvYrJKFVuKsbk8XtXB7Dbo5WiB
-         SkCg==
-X-Gm-Message-State: AOJu0Yw5nmpokWsDkDhSUUEClAjC9R/Kf1E6pjk0AqoeOgVMh0LH27Nh
-	yB/rrRaxV+ZCVbaJrvV6CRCU6oSnq2I/a1MehsmxG+urreihP4jn4YC78U3f
-X-Google-Smtp-Source: AGHT+IETdxJTZxha+rqx356GCvh2PL8DM5E5uYzcXkLmcFm9T+Ge6m/K3diH50JM9/3WneniJpW8bg==
-X-Received: by 2002:a05:6102:94f:b0:49b:cfe3:a303 with SMTP id ada2fe7eead31-4a15dc62844mr1040115137.9.1727210382370;
-        Tue, 24 Sep 2024 13:39:42 -0700 (PDT)
-Received: from diogo-jahchan-ASUS-TUF-Gaming-A15-FA507RM-FA507RM.. ([200.4.98.18])
-        by smtp.gmail.com with ESMTPSA id ada2fe7eead31-4a151860053sm1307695137.24.2024.09.24.13.39.39
+        bh=p4gSwcrx2D3Z2LvMOpdxJci412zEjS/9V/3phabBvE0=;
+        b=ZjBwCZNpY1lk9TahKkBMYY0Ae4pxhnH85q9GGgmwuHTUlTBfu58S3xS5w2ISBGREBc
+         HiRibk6BXafxIuVtdTduao4/dZbbn+y183sQRQMaUjiyRDY9FljdwrNFlAdtcbC85PmT
+         UnRwxB8H3Bz3YBgOPEayQMeOURACM5gl5ir+e/f21mh0wxgzf5TgpOQfZJhNGLwFb1e5
+         0MRPkwSrBz4F9bCkXeFNlRfHEB+5ojSZ6qv6sYmAdcyqXIzKOAVyaFZArg6TdHUEq7Ez
+         /UAJjU1U7qBUhM9zzeNjyJLvD2t7omyVG6WUXptUwVqogvcR2+Bz6nkleMhVsDC103n6
+         fUZw==
+X-Gm-Message-State: AOJu0YwlcEN2a/I4H1lNk44BZrhfFpTDfoFpNKPjfJTn08x6RzZ7Z0SU
+	0GFGt/kdBOBGTvqxUY5lUUJP0Y9KPl1Ws/4jHqVBCPwD/czNXS+eiXLZVBtFs7k=
+X-Google-Smtp-Source: AGHT+IGOJn1SA8z0t9ifuOGYmhYI7orQ3ak5PAjYWiVCNbieRdTwopcqXtciyMVHil2XBvTq936lFA==
+X-Received: by 2002:a05:690c:112:b0:6e2:1570:2d4a with SMTP id 00721157ae682-6e21da61dd8mr6919587b3.30.1727212302864;
+        Tue, 24 Sep 2024 14:11:42 -0700 (PDT)
+Received: from localhost (syn-076-182-020-124.res.spectrum.com. [76.182.20.124])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-6e20d28062dsm3791977b3.125.2024.09.24.14.11.41
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Sep 2024 13:39:41 -0700 (PDT)
-From: Diogo Jahchan Koike <djahchankoike@gmail.com>
-To: stable@vger.kernel.org
-Cc: gregkh@linuxfoundation.org,
-	Josef Bacik <josef@toxicpanda.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Diogo Jahchan Koike <djahchankoike@gmail.com>
-Subject: [PATCH 6.1.y] btrfs: calculate the right space for delayed refs when updating global reserve
-Date: Tue, 24 Sep 2024 17:38:52 -0300
-Message-ID: <20240924203916.713326-1-djahchankoike@gmail.com>
+        Tue, 24 Sep 2024 14:11:41 -0700 (PDT)
+From: Josef Bacik <josef@toxicpanda.com>
+To: linux-btrfs@vger.kernel.org,
+	kernel-team@fb.com
+Cc: stable@vger.kernel.org
+Subject: [PATCH] btrfs: drop the backref cache during relocation if we commit
+Date: Tue, 24 Sep 2024 17:11:37 -0400
+Message-ID: <68766e66ed15ca2e7550585ed09434249db912a2.1727212293.git.josef@toxicpanda.com>
 X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -83,124 +80,206 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Filipe Manana <fdmanana@suse.com>
+Since the inception of relocation we have maintained the backref cache
+across transaction commits, updating the backref cache with the new
+bytenr whenever we COW'ed blocks that were in the cache, and then
+updating their bytenr once we detected a transaction id change.
 
-commit f8f210dc84709804c9f952297f2bfafa6ea6b4bd upstream.
+This works as long as we're only ever modifying blocks, not changing the
+structure of the tree.
 
-When updating the global block reserve, we account for the 6 items needed
-by an unlink operation and the 6 delayed references for each one of those
-items. However the calculation for the delayed references is not correct
-in case we have the free space tree enabled, as in that case we need to
-touch the free space tree as well and therefore need twice the number of
-bytes. So use the btrfs_calc_delayed_ref_bytes() helper to calculate the
-number of bytes need for the delayed references at
-btrfs_update_global_block_rsv().
+However relocation does in fact change the structure of the tree.  For
+example, if we are relocating a data extent, we will look up all the
+leaves that point to this data extent.  We will then call
+do_relocation() on each of these leaves, which will COW down to the leaf
+and then update the file extent location.
 
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-[Diogo: this patch has been cherry-picked from the original commit;
-conflicts included lack of a define (picked from commit 5630e2bcfe223)
-and lack of btrfs_calc_delayed_ref_bytes (picked from commit 0e55a54502b97)
-- changed const struct -> struct for compatibility.]
-Signed-off-by: Diogo Jahchan Koike <djahchankoike@gmail.com>
+But, a key feature of do_relocation is the pending list.  This is all
+the pending nodes that we modified when we updated the file extent item.
+We will then process all of these blocks via finish_pending_nodes, which
+calls do_relocation() on all of the nodes that led up to that leaf.
 
+The purpose of this is to make sure we don't break sharing unless we
+absolutely have to.  Consider the case that we have 3 snapshots that all
+point to this leaf through the same nodes, the initial COW would have
+created a whole new path.  If we did this for all 3 snapshots we would
+end up with 3x the number of nodes we had originally.  To avoid this we
+will cycle through each of the snapshots that point to each of these
+nodes and update their pointers to point at the new nodes.
+
+Once we update the pointer to the new node we will drop the node we
+removed the link for and all of its children via btrfs_drop_subtree().
+This is essentially just btrfs_drop_snapshot(), but for an arbitrary
+point in the snapshot.
+
+The problem with this is that we will never reflect this in the backref
+cache.  If we do this btrfs_drop_snapshot() for a node that is in the
+backref tree, we will leave the node in the backref tree.  This becomes
+a problem when we change the transid, as now the backref cache has
+entire subtrees that no longer exist, but exist as if they still are
+pointed to by the same roots.
+
+In the best case scenario you end up with "adding refs to an existing
+tree ref" errors from insert_inline_extent_backref(), where we attempt
+to link in nodes on roots that are no longer valid.
+
+Worst case you will double free some random block and re-use it when
+there's still references to the block.
+
+This is extremely subtle, and the consequences are quite bad.  There
+isn't a way to make sure our backref cache is consistent between
+transid's.
+
+In order to fix this we need to simply evict the entire backref cache
+anytime we cross transid's.  This reduces performance in that we have to
+rebuild this backref cache every time we change transid's, but fixes the
+bug.
+
+This has existed since relocation was added, and is a pretty critical
+bug.  There's a lot more cleanup that can be done now that this
+functionality is going away, but this patch is as small as possible in
+order to fix the problem and make it easy for us to backport it to all
+the kernels it needs to be backported to.
+
+Followup series will dismantle more of this code and simplify relocation
+drastically to remove this functionality.
+
+We have a reproducer that reproduced the corruption within a few minutes
+of running.  With this patch it survives several iterations/hours of
+running the reproducer.
+
+Fixes: 3fd0a5585eb9 ("Btrfs: Metadata ENOSPC handling for balance")
+Cc: stable@vger.kernel.org
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
 ---
-Fixes WARNING in btrfs_chunk_alloc (2) [0]
-[0]: https://syzkaller.appspot.com/bug?extid=57de2b05959bc1e659af
----
- fs/btrfs/block-rsv.c   | 16 +++++++++-------
- fs/btrfs/block-rsv.h   | 12 ++++++++++++
- fs/btrfs/delayed-ref.h | 21 +++++++++++++++++++++
- 3 files changed, 42 insertions(+), 7 deletions(-)
+ fs/btrfs/backref.c    | 12 ++++---
+ fs/btrfs/relocation.c | 76 +++----------------------------------------
+ 2 files changed, 13 insertions(+), 75 deletions(-)
 
-diff --git a/fs/btrfs/block-rsv.c b/fs/btrfs/block-rsv.c
-index ec96285357e0..f7e3d6c2e302 100644
---- a/fs/btrfs/block-rsv.c
-+++ b/fs/btrfs/block-rsv.c
-@@ -378,17 +378,19 @@ void btrfs_update_global_block_rsv(struct btrfs_fs_info *fs_info)
+diff --git a/fs/btrfs/backref.c b/fs/btrfs/backref.c
+index e2f478ecd7fd..f8e1d5b2c512 100644
+--- a/fs/btrfs/backref.c
++++ b/fs/btrfs/backref.c
+@@ -3179,10 +3179,14 @@ void btrfs_backref_release_cache(struct btrfs_backref_cache *cache)
+ 		btrfs_backref_cleanup_node(cache, node);
+ 	}
  
- 	/*
- 	 * But we also want to reserve enough space so we can do the fallback
--	 * global reserve for an unlink, which is an additional 5 items (see the
--	 * comment in __unlink_start_trans for what we're modifying.)
-+	 * global reserve for an unlink, which is an additional
-+	 * BTRFS_UNLINK_METADATA_UNITS items.
- 	 *
- 	 * But we also need space for the delayed ref updates from the unlink,
--	 * so its 10, 5 for the actual operation, and 5 for the delayed ref
--	 * updates.
-+	 * so add BTRFS_UNLINK_METADATA_UNITS units for delayed refs, one for
-+	 * each unlink metadata item.
- 	 */
--	min_items += 10;
+-	cache->last_trans = 0;
 -
-+	min_items += BTRFS_UNLINK_METADATA_UNITS;
-+
- 	num_bytes = max_t(u64, num_bytes,
--			  btrfs_calc_insert_metadata_size(fs_info, min_items));
-+			  btrfs_calc_insert_metadata_size(fs_info, min_items) +
-+			  btrfs_calc_delayed_ref_bytes(fs_info,
-+					       BTRFS_UNLINK_METADATA_UNITS));
+-	for (i = 0; i < BTRFS_MAX_LEVEL; i++)
+-		ASSERT(list_empty(&cache->pending[i]));
++	for (i = 0; i < BTRFS_MAX_LEVEL; i++) {
++		while (!list_empty(&cache->pending[i])) {
++			node = list_first_entry(&cache->pending[i],
++						struct btrfs_backref_node,
++						list);
++			btrfs_backref_cleanup_node(cache, node);
++		}
++	}
+ 	ASSERT(list_empty(&cache->pending_edge));
+ 	ASSERT(list_empty(&cache->useless_node));
+ 	ASSERT(list_empty(&cache->changed));
+diff --git a/fs/btrfs/relocation.c b/fs/btrfs/relocation.c
+index ea4ed85919ec..aaa9cac213f1 100644
+--- a/fs/btrfs/relocation.c
++++ b/fs/btrfs/relocation.c
+@@ -232,70 +232,6 @@ static struct btrfs_backref_node *walk_down_backref(
+ 	return NULL;
+ }
  
- 	spin_lock(&sinfo->lock);
- 	spin_lock(&block_rsv->lock);
-diff --git a/fs/btrfs/block-rsv.h b/fs/btrfs/block-rsv.h
-index 578c3497a455..662c52b4bd44 100644
---- a/fs/btrfs/block-rsv.h
-+++ b/fs/btrfs/block-rsv.h
-@@ -50,6 +50,18 @@ struct btrfs_block_rsv {
- 	u64 qgroup_rsv_reserved;
- };
- 
-+/*
-+ * Number of metadata items necessary for an unlink operation:
-+ *
-+ * 1 for the possible orphan item
-+ * 1 for the dir item
-+ * 1 for the dir index
-+ * 1 for the inode ref
-+ * 1 for the inode
-+ * 1 for the parent inode
-+ */
-+#define BTRFS_UNLINK_METADATA_UNITS		6
-+
- void btrfs_init_block_rsv(struct btrfs_block_rsv *rsv, enum btrfs_rsv_type type);
- void btrfs_init_root_block_rsv(struct btrfs_root *root);
- struct btrfs_block_rsv *btrfs_alloc_block_rsv(struct btrfs_fs_info *fs_info,
-diff --git a/fs/btrfs/delayed-ref.h b/fs/btrfs/delayed-ref.h
-index d6304b690ec4..5c6bb23d45a5 100644
---- a/fs/btrfs/delayed-ref.h
-+++ b/fs/btrfs/delayed-ref.h
-@@ -253,6 +253,27 @@ extern struct kmem_cache *btrfs_delayed_extent_op_cachep;
- int __init btrfs_delayed_ref_init(void);
- void __cold btrfs_delayed_ref_exit(void);
- 
-+static inline u64 btrfs_calc_delayed_ref_bytes(struct btrfs_fs_info *fs_info,
-+					       int num_delayed_refs)
-+{
-+	u64 num_bytes;
-+
-+	num_bytes = btrfs_calc_insert_metadata_size(fs_info, num_delayed_refs);
-+
-+	/*
-+	 * We have to check the mount option here because we could be enabling
-+	 * the free space tree for the first time and don't have the compat_ro
-+	 * option set yet.
-+	 *
-+	 * We need extra reservations if we have the free space tree because
-+	 * we'll have to modify that tree as well.
-+	 */
-+	if (btrfs_test_opt(fs_info, FREE_SPACE_TREE))
-+		num_bytes *= 2;
-+
-+	return num_bytes;
-+}
-+
- static inline void btrfs_init_generic_ref(struct btrfs_ref *generic_ref,
- 				int action, u64 bytenr, u64 len, u64 parent)
+-static void update_backref_node(struct btrfs_backref_cache *cache,
+-				struct btrfs_backref_node *node, u64 bytenr)
+-{
+-	struct rb_node *rb_node;
+-	rb_erase(&node->rb_node, &cache->rb_root);
+-	node->bytenr = bytenr;
+-	rb_node = rb_simple_insert(&cache->rb_root, node->bytenr, &node->rb_node);
+-	if (rb_node)
+-		btrfs_backref_panic(cache->fs_info, bytenr, -EEXIST);
+-}
+-
+-/*
+- * update backref cache after a transaction commit
+- */
+-static int update_backref_cache(struct btrfs_trans_handle *trans,
+-				struct btrfs_backref_cache *cache)
+-{
+-	struct btrfs_backref_node *node;
+-	int level = 0;
+-
+-	if (cache->last_trans == 0) {
+-		cache->last_trans = trans->transid;
+-		return 0;
+-	}
+-
+-	if (cache->last_trans == trans->transid)
+-		return 0;
+-
+-	/*
+-	 * detached nodes are used to avoid unnecessary backref
+-	 * lookup. transaction commit changes the extent tree.
+-	 * so the detached nodes are no longer useful.
+-	 */
+-	while (!list_empty(&cache->detached)) {
+-		node = list_entry(cache->detached.next,
+-				  struct btrfs_backref_node, list);
+-		btrfs_backref_cleanup_node(cache, node);
+-	}
+-
+-	while (!list_empty(&cache->changed)) {
+-		node = list_entry(cache->changed.next,
+-				  struct btrfs_backref_node, list);
+-		list_del_init(&node->list);
+-		BUG_ON(node->pending);
+-		update_backref_node(cache, node, node->new_bytenr);
+-	}
+-
+-	/*
+-	 * some nodes can be left in the pending list if there were
+-	 * errors during processing the pending nodes.
+-	 */
+-	for (level = 0; level < BTRFS_MAX_LEVEL; level++) {
+-		list_for_each_entry(node, &cache->pending[level], list) {
+-			BUG_ON(!node->pending);
+-			if (node->bytenr == node->new_bytenr)
+-				continue;
+-			update_backref_node(cache, node, node->new_bytenr);
+-		}
+-	}
+-
+-	cache->last_trans = 0;
+-	return 1;
+-}
+-
+ static bool reloc_root_is_dead(const struct btrfs_root *root)
  {
+ 	/*
+@@ -551,9 +487,6 @@ static int clone_backref_node(struct btrfs_trans_handle *trans,
+ 	struct btrfs_backref_edge *new_edge;
+ 	struct rb_node *rb_node;
+ 
+-	if (cache->last_trans > 0)
+-		update_backref_cache(trans, cache);
+-
+ 	rb_node = rb_simple_search(&cache->rb_root, src->commit_root->start);
+ 	if (rb_node) {
+ 		node = rb_entry(rb_node, struct btrfs_backref_node, rb_node);
+@@ -3698,10 +3631,11 @@ static noinline_for_stack int relocate_block_group(struct reloc_control *rc)
+ 			break;
+ 		}
+ restart:
+-		if (update_backref_cache(trans, &rc->backref_cache)) {
+-			btrfs_end_transaction(trans);
+-			trans = NULL;
+-			continue;
++		if (rc->backref_cache.last_trans == 0) {
++			rc->backref_cache.last_trans = trans->transid;
++		} else if (rc->backref_cache.last_trans != trans->transid) {
++			btrfs_backref_release_cache(&rc->backref_cache);
++			rc->backref_cache.last_trans = trans->transid;
+ 		}
+ 
+ 		ret = find_next_extent(rc, path, &key);
 -- 
 2.43.0
 
