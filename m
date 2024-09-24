@@ -1,164 +1,152 @@
-Return-Path: <stable+bounces-77008-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77009-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56FE09849D0
-	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 18:41:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0389C984AA5
+	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 20:05:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CC9C41F263FE
-	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 16:41:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 00C7EB245B8
+	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 18:05:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 191731AC42A;
-	Tue, 24 Sep 2024 16:40:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41AFA1AD9E2;
+	Tue, 24 Sep 2024 18:04:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="nmoPLdUa"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="Epzz2bKJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
+Received: from nbd.name (nbd.name [46.4.11.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 254FF1AB6EC;
-	Tue, 24 Sep 2024 16:40:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C92B81AD3E1;
+	Tue, 24 Sep 2024 18:04:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727196055; cv=none; b=bM33kWBWYXNKYX0loBXox1l1zVgSvfqKLl9Y9G9kmmW6N7qlUqtWzZFDphB3FnAeIsNDo4B+KLT2IuByStr9kQxGi+kQd2e44OGSlugUMybhBWOcQGMxT8l0UYGTKiDtwEGHDdEmtGFXYAkJxW++BJbECpsnUbMWAr/ZIBiB72Q=
+	t=1727201051; cv=none; b=dj1aJTK/T2rWo/BmjYwqO6GMDv5MxvjQvBXQjr5a8YrnKZL3/o2DT9H5uhAa1O/Ti6BqeOwlKBxA9F2NGuTND0LMFN4EPPLhwTLI/4SLlTkn23vFfI7yEz7DMcA7tqXYYR58HBwZp7VOeUBHdsrM+o2WWLGfI1YRghwV2E7hqgQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727196055; c=relaxed/simple;
-	bh=c4/FXaABwTV61KcHglbl6e2JQeLbds1ZzvF3ocQXVAs=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DyTJnZgYVb5YLueqpgpRjS/3nA0KUePMJt04I+aQwnlQUywSNSgB/jr6I0nWeuQoq+vT+tw/8DpY4qEkYsWji4X6cGFM8mTJ0BQesIo//C6SID/D+ixPLB0yo75VZYhSjFcpzivm5wELrP1h5jZp9/9V2rp4FOS/kvJjYV6f5ro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=nmoPLdUa; arc=none smtp.client-ip=205.220.168.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
-Received: from pps.filterd (m0279866.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48O8H3YN021730;
-	Tue, 24 Sep 2024 16:40:50 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
-	cc:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=qcppdkim1; bh=1aXdEYh5NFr5tG7RMivDvlqL
-	RnRj5TY7endHsnkXyH0=; b=nmoPLdUaBwvQZYy/MS5xYORaUMxgDJ/0eI+V7akD
-	IyKWAheosOW0VkaJbQxvmkgp5akhoE/Sum/Yz7Tn9hV3EXuauL0ACC8WtChCpfQf
-	zGGHRCDzAXzbx6NTSvDmnVDtteNMmpJ7Y6q/2qQ+Y3LDB2m6bQ9e0u6nowhI34fZ
-	fmkf3Dza0d71ayLCjNcqpbJ7VZABVeVdvRGcbBZe12vfqtop5/Ff8paMRI5LduXn
-	r9GxLQbEf7FsWk3lJuFbj00QW8UAlsVQEFDDxySmsyFq1NnLe/oI3OJagd/XOQNA
-	jse3WmjGTZPemKmz6YFqbiFM1s1U9EGRWmJzD6sNKPHS5w==
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41sqe9920h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 24 Sep 2024 16:40:49 +0000 (GMT)
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-	by NALASPPMTA04.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 48OGenZ1016815
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 24 Sep 2024 16:40:49 GMT
-Received: from hu-bjorande-lv.qualcomm.com (10.49.16.6) by
- nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.9; Tue, 24 Sep 2024 09:40:48 -0700
-Date: Tue, 24 Sep 2024 09:40:47 -0700
-From: Bjorn Andersson <quic_bjorande@quicinc.com>
-To: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-CC: Chris Lew <quic_clew@quicinc.com>, Johan Hovold <johan@kernel.org>,
-        "Bjorn
- Andersson" <andersson@kernel.org>,
-        Konrad Dybcio <konradybcio@kernel.org>,
-        Stephan Gerhold <stephan.gerhold@linaro.org>,
-        <linux-arm-msm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        <stable@vger.kernel.org>
-Subject: Re: [PATCH] soc: qcom: pd_mapper: fix ADSP PD maps
-Message-ID: <ZvLrj+gYaBzgwdLu@hu-bjorande-lv.qualcomm.com>
-References: <20240918-x1e-fix-pdm-pdr-v1-1-cefc79bb33d1@linaro.org>
- <Zu0wb-RSwnlb0Lma@hovoldconsulting.com>
- <sziblrb4ggjzehl7fqwrh3bnedvwizh2vgymxu56zmls2whkup@yziunmooga7b>
- <Zu06HiEpA--LbaoU@hovoldconsulting.com>
- <18e971c6-a0ef-4d48-a592-ec035b05d2b7@quicinc.com>
- <5pl7cewea6bfweqcnratmcb7r2plyzwyofsmcjixtkzwx7aih5@tm5c34mmzzb7>
+	s=arc-20240116; t=1727201051; c=relaxed/simple;
+	bh=Tz+z0RN4yoLTsuKVlKhsT40Bqa0WNU0TUwEaefUxnVg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UBTgP1MDJZX5Q10i7IBD67zdW2/sH2tr39t5gYcbVl5ouMXMPnc+6KzySWVbhbzb2rrk9tVP9daVR9OJj5GTJB1NBQq3yRxMWSHbZ2MY559/FsbLJ7WlEd6CXZQLXaa7+M4aIHF6rC5C43Qz40LPKwESo7+flbVGHX0T3Ehj9SU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=Epzz2bKJ; arc=none smtp.client-ip=46.4.11.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+	s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=uqSxozaaX0MbZR9PhUHEUeHeH8rVYjYdcmkgtgwPdWs=; b=Epzz2bKJnEnZPy4eOhqBQoiRz1
+	N1pczWQQtfyk5UpYxYavqt4inI5OTPmB/piwCUbWdL5p8eBZP3EXwMogOXu+HwUA7d4L3mNjmM5+4
+	461UpxsMG5OCLoBQElyI6/ONf4rhpmLMq8GTnLOccrVY8zf3K9h4wcXxkOY5Ii9Xr5EA=;
+Received: from p4ff130c8.dip0.t-ipconnect.de ([79.241.48.200] helo=nf.local)
+	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96)
+	(envelope-from <nbd@nbd.name>)
+	id 1st9dM-000ROG-11;
+	Tue, 24 Sep 2024 19:47:32 +0200
+Message-ID: <da09e77a-a293-41b0-a46f-861dd5775ba2@nbd.name>
+Date: Tue, 24 Sep 2024 19:47:20 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <5pl7cewea6bfweqcnratmcb7r2plyzwyofsmcjixtkzwx7aih5@tm5c34mmzzb7>
-X-ClientProxiedBy: nalasex01b.na.qualcomm.com (10.47.209.197) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: IE5gG0BAvEar2M4iPUOUCp5ZQjuGtk_c
-X-Proofpoint-GUID: IE5gG0BAvEar2M4iPUOUCp5ZQjuGtk_c
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 priorityscore=1501
- mlxlogscore=999 spamscore=0 lowpriorityscore=0 adultscore=0 mlxscore=0
- suspectscore=0 malwarescore=0 phishscore=0 impostorscore=0 clxscore=1011
- bulkscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.19.0-2408220000 definitions=main-2409240119
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] gso: fix gso fraglist segmentation after pull from
+ frag_list
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, netdev@vger.kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, edumazet@google.com,
+ pabeni@redhat.com, stable@vger.kernel.org, maze@google.com,
+ shiming.cheng@mediatek.com, daniel@iogearbox.net, lena.wang@mediatek.com,
+ herbert@gondor.apana.org.au, Willem de Bruijn <willemb@google.com>
+References: <20240922150450.3873767-1-willemdebruijn.kernel@gmail.com>
+From: Felix Fietkau <nbd@nbd.name>
+Content-Language: en-US
+Autocrypt: addr=nbd@nbd.name; keydata=
+ xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
+ ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
+ Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
+ AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
+ vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
+ wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
+ TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
+ l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
+ dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
+ HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
+ VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
+ CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
+ VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
+ Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
+ DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
+ wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
+ f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
+ aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
+ FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
+ TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
+ GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
+ cL98efvrjdstUfTCP2pfetyN
+In-Reply-To: <20240922150450.3873767-1-willemdebruijn.kernel@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, Sep 20, 2024 at 05:07:13PM +0300, Dmitry Baryshkov wrote:
-> On Fri, Sep 20, 2024 at 07:00:11AM GMT, Chris Lew wrote:
-> > 
-> > 
-> > On 9/20/2024 2:02 AM, Johan Hovold wrote:
-> > > On Fri, Sep 20, 2024 at 11:49:46AM +0300, Dmitry Baryshkov wrote:
-> > > > On Fri, Sep 20, 2024 at 10:21:03AM GMT, Johan Hovold wrote:
-> > > > > On Wed, Sep 18, 2024 at 04:02:39PM +0300, Dmitry Baryshkov wrote:
-> > > > > > On X1E8 devices root ADSP domain should have tms/pdr_enabled registered.
-> > > > > > Change the PDM domain data that is used for X1E80100 ADSP.
-> > > > > 
-> > > > > Please expand the commit message so that it explains why this is
-> > > > > needed and not just describes what the patch does.
-> > > > 
-> > > > Unfortunately in this case I have no idea. It marks the domain as
-> > > > restartable (?), this is what json files for CRD and T14s do. Maybe
-> > > > Chris can comment more.
-> > > 
-> > > Chris, could you help sort out if and why this change is needed?
-> > > 
-> > > 	https://lore.kernel.org/all/20240918-x1e-fix-pdm-pdr-v1-1-cefc79bb33d1@linaro.org/	
-> > > 
-> > 
-> > I don't think this change would help with the issue reported by Johan. From
-> > a quick glance, I couldn't find where exactly the restartable attribute is
-> > used, but this type of change would only matter when the ChargerPD is
-> > started or restarted.
+On 22.09.24 17:03, Willem de Bruijn wrote:
+> From: Willem de Bruijn <willemb@google.com>
 > 
-> This raises a question: should we care at all about the pdr_enabled? Is
-> it fine to drop it fromm all PD maps?
+> Detect gso fraglist skbs with corrupted geometry (see below) and
+> pass these to skb_segment instead of skb_segment_list, as the first
+> can segment them correctly.
 > 
+> Valid SKB_GSO_FRAGLIST skbs
+> - consist of two or more segments
+> - the head_skb holds the protocol headers plus first gso_size
+> - one or more frag_list skbs hold exactly one segment
+> - all but the last must be gso_size
+> 
+> Optional datapath hooks such as NAT and BPF (bpf_skb_pull_data) can
+> modify these skbs, breaking these invariants.
+> 
+> In extreme cases they pull all data into skb linear. For UDP, this
+> causes a NULL ptr deref in __udpv4_gso_segment_list_csum at
+> udp_hdr(seg->next)->dest.
+> 
+> Detect invalid geometry due to pull, by checking head_skb size.
+> Don't just drop, as this may blackhole a destination. Convert to be
+> able to pass to regular skb_segment.
+> 
+> Link: https://lore.kernel.org/netdev/20240428142913.18666-1-shiming.cheng@mediatek.com/
+> Fixes: 3a1296a38d0c ("net: Support GRO/GSO fraglist chaining.")
+> Signed-off-by: Willem de Bruijn <willemb@google.com>
+> Cc: stable@vger.kernel.org
+> 
+> ---
+> diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
+> index d842303587af..e457fa9143a6 100644
+> --- a/net/ipv4/udp_offload.c
+> +++ b/net/ipv4/udp_offload.c
+> @@ -296,8 +296,16 @@ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
+>   		return NULL;
+>   	}
+>   
+> -	if (skb_shinfo(gso_skb)->gso_type & SKB_GSO_FRAGLIST)
+> -		return __udp_gso_segment_list(gso_skb, features, is_ipv6);
+> +	if (skb_shinfo(gso_skb)->gso_type & SKB_GSO_FRAGLIST) {
+> +		 /* Detect modified geometry and pass these to skb_segment. */
+> +		if (skb_pagelen(gso_skb) - sizeof(*uh) == skb_shinfo(gso_skb)->gso_size)
+> +			return __udp_gso_segment_list(gso_skb, features, is_ipv6);
+> +
+> +		 /* Setup csum, as fraglist skips this in udp4_gro_receive. */
+> +		gso_skb->csum_start = skb_transport_header(gso_skb) - gso_skb->head;
+> +		gso_skb->csum_offset = offsetof(struct udphdr, check);
+> +		gso_skb->ip_summed = CHECKSUM_PARTIAL;
+> +	}
 
-There's definitely benefits to pdr_enabled. I'd expect you could have
-examples such as audio firmware restarting without USB Type-C being
-reset.
+It seems to me that the TCP code would need something similar. Do you 
+think the same approach would work there as well?
 
-So, the appropriate path forward would be to figure out how we can
-properly test the various levels of restarts in a continuous fashion and
-make sure it's enabled where it can be...
+Thanks,
 
-Regards,
-Bjorn
-
-> > 
-> > The PMIC_GLINK channel probing in rpmsg is dependent on ChargerPD starting,
-> > so we know ChargerPD can start with or without this change.
-> > 
-> > I can give this change a try next week to help give a better analysis.
-> > 
-> > > > > What is the expected impact of this and is there any chance that this is
-> > > > > related to some of the in-kernel pd-mapper regression I've reported
-> > > > > (e.g. audio not being registered and failing with a PDR error)?
-> > > > > 
-> > > > > 	https://lore.kernel.org/all/ZthVTC8dt1kSdjMb@hovoldconsulting.com/
-> > > > 
-> > > > Still debugging this, sidetracked by OSS / LPC.
-> > > 
-> > > Johan
-> 
-> -- 
-> With best wishes
-> Dmitry
-> 
-> 
+- Felix
 
