@@ -1,158 +1,112 @@
-Return-Path: <stable+bounces-77055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61F23984D10
-	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 23:51:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9769E984D4B
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 00:04:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D8C3D1F2405F
-	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 21:51:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3EC451F24B4E
+	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 22:04:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C56C6146A6B;
-	Tue, 24 Sep 2024 21:51:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB3CA13D8A3;
+	Tue, 24 Sep 2024 22:03:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="kxQorgTc";
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="kxQorgTc"
+	dkim=pass (2048-bit key) header.d=fromorbit-com.20230601.gappssmtp.com header.i=@fromorbit-com.20230601.gappssmtp.com header.b="kdzyzaWV"
 X-Original-To: stable@vger.kernel.org
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBC3413F43B;
-	Tue, 24 Sep 2024 21:51:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D3EF42A8F
+	for <stable@vger.kernel.org>; Tue, 24 Sep 2024 22:03:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727214703; cv=none; b=GshpaFCU6kQo1WaTQNZgyhqwjm8f6OL01sdASkjbrXnkAcBa38s0hfN7BVNYKDbWdSbf7LPZfTwIFZnsiMzwDzhPFtLHvHef8DrDVbNnVvdiv3sXfGIbRMkwBfwHnrKzu0klNRhFZ1dv/TLjPfOPN+tChGIYD38hrVoA49kPqzE=
+	t=1727215436; cv=none; b=pAL+wOHHdvRGYDBYJf2tbkQtvGJUqkpj0OrEYVxVasXerheBA2QObv9wZxI0KcA0Ghwazm3Y6xLesd6q4igyky/YZWKmcd851vzjaU4Mgg/9sH95DZ71rivezLgVm5WTBNj28r4RdkCh1ag/Zuqvl6A8DmJtRfOmkfdtAHmK88s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727214703; c=relaxed/simple;
-	bh=WvrlGdS7gZqfl1m7PPSjfpZgCon5PYfxv6FOC15+ljk=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=UxulwtRoKk9k8xAtDoGj5J09RdFWoOrUrTiEugftzIzgICCFTLZi+PWUQrGpZMN+sUZtDwKGM4K874Dx6d18S+9ICs4EhcnNlicTSZnH0FcfqJPgIUm5zV0qBWMV+at57YNn+K6OBsBLE0UKtXcXnwIAYN6LrEZtuBVQgnciw5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=kxQorgTc; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=kxQorgTc; arc=none smtp.client-ip=96.44.175.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1727214700;
-	bh=WvrlGdS7gZqfl1m7PPSjfpZgCon5PYfxv6FOC15+ljk=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=kxQorgTcqLizcCjdwi3KoQDLZK42hxn5WPfMoTQXMcZ3+vaeoySfij3mfVmB8Tcds
-	 xRnCpBoEWOu4ZFy8QPAdSIvKJufkerMp7nfMJSr29nab/nrsfjY5ujLXDauTwapBXO
-	 5zPLC7mBxLmWkXwJgY3lrOuJUDLNWEE2RvnrDxNI=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 97432128746A;
-	Tue, 24 Sep 2024 17:51:40 -0400 (EDT)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id nadPx_b3Iijt; Tue, 24 Sep 2024 17:51:40 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1727214700;
-	bh=WvrlGdS7gZqfl1m7PPSjfpZgCon5PYfxv6FOC15+ljk=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=kxQorgTcqLizcCjdwi3KoQDLZK42hxn5WPfMoTQXMcZ3+vaeoySfij3mfVmB8Tcds
-	 xRnCpBoEWOu4ZFy8QPAdSIvKJufkerMp7nfMJSr29nab/nrsfjY5ujLXDauTwapBXO
-	 5zPLC7mBxLmWkXwJgY3lrOuJUDLNWEE2RvnrDxNI=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id 27F4E12873CB;
-	Tue, 24 Sep 2024 17:51:39 -0400 (EDT)
-Message-ID: <2b4c10ca905070158a4bc2fb78d5d5b0f32950ad.camel@HansenPartnership.com>
-Subject: Re: [PATCH v5 5/5] tpm: flush the auth session only when /dev/tpm0
- is open
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Jarkko Sakkinen <jarkko@kernel.org>, linux-integrity@vger.kernel.org
-Cc: roberto.sassu@huawei.com, mapengyu@gmail.com, stable@vger.kernel.org,
- Mimi Zohar <zohar@linux.ibm.com>, David Howells <dhowells@redhat.com>, Paul
- Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, "Serge E.
- Hallyn" <serge@hallyn.com>, Peter Huewe <peterhuewe@gmx.de>, Jason
- Gunthorpe <jgg@ziepe.ca>, keyrings@vger.kernel.org,
- linux-security-module@vger.kernel.org,  linux-kernel@vger.kernel.org
-Date: Tue, 24 Sep 2024 17:51:36 -0400
-In-Reply-To: <D4EU5PQLA7BO.2J5MI195F8CIF@kernel.org>
-References: <20240921120811.1264985-1-jarkko@kernel.org>
-	 <20240921120811.1264985-6-jarkko@kernel.org>
-	 <00cf0bdb3ebfaec7c4607c8c09e55f2e538402f1.camel@HansenPartnership.com>
-	 <D4EPQPFA8RGN.2PO6UNTDFI6IT@kernel.org>
-	 <f9e2072909d462af72a9f3833b2d76e50894e70a.camel@HansenPartnership.com>
-	 <D4EU5PQLA7BO.2J5MI195F8CIF@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+	s=arc-20240116; t=1727215436; c=relaxed/simple;
+	bh=Di3HHVeMmvsPvxJZ02RPKqpJDdCNdHt5T9u4XXK2OJA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VgOPsxD4mEczTxO76IjborZRAJzVAMJ4wjHw+7vX11usqRkmI9Mo7Nxl01nkTd9WVv8cwMbNl/vaF9BZBwrBjnPibFFTkXoPboNpIdgf/K3O7jRqRi0Wi+jpdjMM/94LAxN+dnY5oHvtDqT7rDdzf92gbr8WRYA9attiAH2UlcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fromorbit.com; spf=pass smtp.mailfrom=fromorbit.com; dkim=pass (2048-bit key) header.d=fromorbit-com.20230601.gappssmtp.com header.i=@fromorbit-com.20230601.gappssmtp.com header.b=kdzyzaWV; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fromorbit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fromorbit.com
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-7198cb6bb02so4362978b3a.3
+        for <stable@vger.kernel.org>; Tue, 24 Sep 2024 15:03:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fromorbit-com.20230601.gappssmtp.com; s=20230601; t=1727215434; x=1727820234; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=GEs+9DP+HE2tK5M1HclRjQdhyaSyms1rELLomIrD//s=;
+        b=kdzyzaWVuXKSTjbDfZF/3IMS820IIgL02WVNLfjxFk5VQVcjKbiJGXwlKYdBG8wltU
+         Rz8K4sUMKTUq4VDst+tCEe4Oq32GZ+dZgcqK1XqnEFQkNbWe1EUMLn6NNvrLb+VeQROq
+         N7QMod6PoUXEjjJDxcRrambAo6zcEeZvc60tKvxaQE44ZQ5Az/c0dbMoVYi07qcEYG9q
+         RBpNkgvr77+J/On8aCwlPCiarGMJ/DY+LB8oV5fvYoRDEc3YuzBUZcuqRmapkXmXhmdr
+         DbZotR4g3i92QLs61obu5H1ENQvzgArt5chcT7rYZ8bg3zYDxZaFAqq0JVxM7UEhGbp7
+         1SjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727215434; x=1727820234;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GEs+9DP+HE2tK5M1HclRjQdhyaSyms1rELLomIrD//s=;
+        b=FMZcHe85MgJXq2EwNihntp1MoJ8QKAj0k+7vVeNuY7DpVlpfY/20PuxIOSBJvslaTH
+         bIoCoCw/KNg+DRoLzE4oaHJNvkaNNPSfm3q4dOTANxKyrU7f9H5pGIqgSG40QuU1CDn4
+         +WKXhe2Ey5VTCsr0W59YKVVmHul6K4Xs7XPn8QND0p5zSileK8kcibTvNcqqjI1gwcxc
+         9zI5Co/9u7OdBphU1K6jXJ64kWfs+vGVbLlgoDGko/rLED6QxGf4kuJqBfHHm6dntwPN
+         Rr3KJHQtxXO4oPV4l/auAKajXWCWuwrj0PQ0pRyeZ7312WZbt0m66zWFQF3dNtjXgImE
+         2C8Q==
+X-Gm-Message-State: AOJu0Yw2sBHJXRth9pe0cQmrdv9sMwP3Vy0DOtKypNPnvRLMwJV656BY
+	CtFrBTZdkF9W9IgfPFoHRMidDm08p3z/AR8BMEQVniqYdrBwfYoDZP+NFObXRusdge5eY4c3tJJ
+	T
+X-Google-Smtp-Source: AGHT+IHr/pTSH7JQH7QpJpwhHbi24g03qWDkFXAfKmtvvfuiQsgnuZctfyMui+Rb0qd8IWWwkBBIJw==
+X-Received: by 2002:a05:6300:668a:b0:1d3:4301:3c86 with SMTP id adf61e73a8af0-1d4c6f2c90cmr879386637.7.1727215434408;
+        Tue, 24 Sep 2024 15:03:54 -0700 (PDT)
+Received: from dread.disaster.area (pa49-179-78-197.pa.nsw.optusnet.com.au. [49.179.78.197])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71afc9c5a9bsm1611318b3a.186.2024.09.24.15.03.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Sep 2024 15:03:53 -0700 (PDT)
+Received: from dave by dread.disaster.area with local (Exim 4.96)
+	(envelope-from <david@fromorbit.com>)
+	id 1stDdO-009bHt-13;
+	Wed, 25 Sep 2024 08:03:50 +1000
+Date: Wed, 25 Sep 2024 08:03:50 +1000
+From: Dave Chinner <david@fromorbit.com>
+To: Leah Rumancik <leah.rumancik@gmail.com>
+Cc: stable@vger.kernel.org, linux-xfs@vger.kernel.org, amir73il@gmail.com,
+	chandan.babu@oracle.com, cem@kernel.org, catherine.hoang@oracle.com
+Subject: Re: [PATCH 6.1 00/26] xfs backports to catch 6.1.y up to 6.6
+Message-ID: <ZvM3RhJxJuMeARbV@dread.disaster.area>
+References: <20240924183851.1901667-1-leah.rumancik@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240924183851.1901667-1-leah.rumancik@gmail.com>
 
-On Wed, 2024-09-25 at 00:35 +0300, Jarkko Sakkinen wrote:
-> On Tue Sep 24, 2024 at 9:40 PM EEST, James Bottomley wrote:
-> > On Tue, 2024-09-24 at 21:07 +0300, Jarkko Sakkinen wrote:
-> > > On Tue Sep 24, 2024 at 4:43 PM EEST, James Bottomley wrote:
-> > > > On Sat, 2024-09-21 at 15:08 +0300, Jarkko Sakkinen wrote:
-> > > > > Instead of flushing and reloading the auth session for every
-> > > > > single transaction, keep the session open unless /dev/tpm0 is
-> > > > > used. In practice this means applying
-> > > > > TPM2_SA_CONTINUE_SESSION to the session attributes. Flush the
-> > > > > session always when /dev/tpm0 is written.
-> > > > 
-> > > > Patch looks fine but this description is way too terse to
-> > > > explain how it works.
-> > > > 
-> > > > I would suggest:
-> > > > 
-> > > > Boot time elongation as a result of adding sessions has been
-> > > > reported as an issue in
-> > > > https://bugzilla.kernel.org/show_bug.cgi?id=219229
-> > > > 
-> > > > The root cause is the addition of session overhead to
-> > > > tpm2_pcr_extend().  This overhead can be reduced by not
-> > > > creating and destroying a session for each invocation of the
-> > > > function. Do this by keeping a session resident in the TPM for
-> > > > reuse by any session based TPM command.  The current flow of
-> > > > TPM commands in the kernel supports this because
-> > > > tpm2_end_session() is only called for tpm errors because most
-> > > > commands don't continue the session and expect the session to
-> > > > be flushed on success.  Thus we can add the continue session
-> > > > flag to session creation to ensure the session won't be flushed
-> > > > except on error, which is a rare case.
-> > > 
-> > > I need to disagree on this as I don't even have PCR extends in my
-> > > boot sequence and it still adds overhead. Have you verified this
-> > > from the reporter?
-> > > 
-> > > There's bunch of things that use auth session, like trusted keys.
-> > > Making such claim that PCR extend is the reason is nonsense.
-> > 
-> > Well, the bug report does say it's the commit adding sessions to
-> > the PCR extends that causes the delay:
-> > 
-> > https://bugzilla.kernel.org/show_bug.cgi?id=219229#c5
-> > 
-> > I don't know what else to tell you.
+On Tue, Sep 24, 2024 at 11:38:25AM -0700, Leah Rumancik wrote:
+> Hello again,
 > 
-> As far as I've tested this bug I've been able to generate similar
-> costs with anything using HMAC encryption. PCR extend op itself
-> should have same cost with or without encryption AFAIK.
+> Here is the next set of XFS backports, this set is for 6.1.y and I will
+> be following up with a set for 5.15.y later. There were some good
+> suggestions made at LSF to survey test coverage to cut back on
+> testing but I've been a bit swamped and a backport set was overdue.
+> So for this set, I have run the auto group 3 x 8 configs with no
+> regressions seen. Let me know if you spot any issues.
+> 
+> This set has already been ack'd on the XFS list.
 
-That's true, but the only significant TPM operation in the secure boot
-path is the PCR extend for IMA.  The RNG stuff is there a bit, but
-there are other significant delays in seeding the entropy pool.  During
-boot with IMA enabled, you can do hundreds of binary measurements,
-hence the slow down.
+Hi Leah, can you pick up this recently requested fix for the series,
+too?
 
-> I guess I need provide benchmarks on this to prove that PCR extend is
-> not the only site that is affected.
+https://lore.kernel.org/linux-xfs/20240923155752.8443-1-kalachev@swemel.ru/T/
 
-Well, on the per operation figures, it's obviously not, a standard TPM
-operation gets a significant overhead because of sessions. However, it
-is the only site that causes a large boot slowdown because of the
-number of the number of measurements IMA does on boot.
-
-Regards,
-
-James
-
+-Dave.
+-- 
+Dave Chinner
+david@fromorbit.com
 
