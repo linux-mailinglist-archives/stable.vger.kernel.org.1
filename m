@@ -1,266 +1,153 @@
-Return-Path: <stable+bounces-76995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76996-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86C7E9846CE
-	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 15:33:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B10EC9846D9
+	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 15:37:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 07D421F24331
-	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 13:33:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 767B9281810
+	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 13:37:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA0AA1A7AF2;
-	Tue, 24 Sep 2024 13:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4085C1A7249;
+	Tue, 24 Sep 2024 13:37:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="YXq4bgsf";
-	dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b="YXq4bgsf"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="c7AqGC7Y"
 X-Original-To: stable@vger.kernel.org
-Received: from bedivere.hansenpartnership.com (bedivere.hansenpartnership.com [96.44.175.130])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AD941A3A9C;
-	Tue, 24 Sep 2024 13:33:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=96.44.175.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05A251E505
+	for <stable@vger.kernel.org>; Tue, 24 Sep 2024 13:37:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727184817; cv=none; b=ChFqNckVqQ9eiPzJGVXk9jC+DJ3Tqi051eS66Lz9ELzYnq2cwW0Bgw58thKdCpPri0w7o0w08twbJRQfk53LM2Wf+pGrQqnIBhC4QR8T4HI7GQ4VxcfAVBKwtNtim7kCVvb1Vcm9RcAhl5DnvvKBG4BAxER5av5N1OYzqjlOEkI=
+	t=1727185052; cv=none; b=IgOHhneT6XANW/tsOrdRNXfBtYyooQABeIbKQjJHw295RVPwxjowwMX1OWrgmqeA5YMBcmv0iAymqUTaYKyUr4Ci4wg8g2Z9/CuB2ZwCXIZuHyI7zrt1pKZdg7jg0yZsoDIf3OCItECjBfWbXEuDvPYub6ChtCZ7sWLka/1+tpQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727184817; c=relaxed/simple;
-	bh=mbGoAUpUUbUuilJ7AHRgBLUhYKSQwMRi4QXDEsoCvWE=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=DvtsIJ8pD4A4OoJA5p9lwgcU0ANxPDH1fbRPk8qK8TKlFZTJoBAVJ5Ln4ebf5MTp4Fl6veUCRiPlyFojGY4nd5CdfX/WM90OXYfhZcdLgBhj6Ip5tF5VOjJxsrsQKn6vL5Dba8ISHPxJ6HydQ5CPtTOCG61vPhwU2Xin6IYRYtc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com; spf=pass smtp.mailfrom=HansenPartnership.com; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=YXq4bgsf; dkim=pass (1024-bit key) header.d=hansenpartnership.com header.i=@hansenpartnership.com header.b=YXq4bgsf; arc=none smtp.client-ip=96.44.175.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=HansenPartnership.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=HansenPartnership.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1727184814;
-	bh=mbGoAUpUUbUuilJ7AHRgBLUhYKSQwMRi4QXDEsoCvWE=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=YXq4bgsfhiTv/+ZDRCzpsvzBc8wrG08EWnvUwJjnorIY5EJlvt+caHDGpAK4L2YB0
-	 ZBYk4lIGHPSZIJDGLM/xrA6pqkDSFO/OxilWunN2XcWxlUlseFGCrbdhIGLlaZ127D
-	 SWUJ1Z4qgyKp69mun4HqVklP/TWFmg4Z1DNRgqLM=
-Received: from localhost (localhost [127.0.0.1])
-	by bedivere.hansenpartnership.com (Postfix) with ESMTP id 59D611287B39;
-	Tue, 24 Sep 2024 09:33:34 -0400 (EDT)
-Received: from bedivere.hansenpartnership.com ([127.0.0.1])
- by localhost (bedivere.hansenpartnership.com [127.0.0.1]) (amavis, port 10024)
- with ESMTP id 3yan6ws8wMA7; Tue, 24 Sep 2024 09:33:34 -0400 (EDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-	d=hansenpartnership.com; s=20151216; t=1727184814;
-	bh=mbGoAUpUUbUuilJ7AHRgBLUhYKSQwMRi4QXDEsoCvWE=;
-	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:From;
-	b=YXq4bgsfhiTv/+ZDRCzpsvzBc8wrG08EWnvUwJjnorIY5EJlvt+caHDGpAK4L2YB0
-	 ZBYk4lIGHPSZIJDGLM/xrA6pqkDSFO/OxilWunN2XcWxlUlseFGCrbdhIGLlaZ127D
-	 SWUJ1Z4qgyKp69mun4HqVklP/TWFmg4Z1DNRgqLM=
-Received: from lingrow.int.hansenpartnership.com (unknown [IPv6:2601:5c4:4302:c21::a774])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	by bedivere.hansenpartnership.com (Postfix) with ESMTPSA id D45051285D46;
-	Tue, 24 Sep 2024 09:33:32 -0400 (EDT)
-Message-ID: <12e17497239dd9b47059b03a0273e2d995371278.camel@HansenPartnership.com>
-Subject: Re: [PATCH v5 4/5] tpm: Allocate chip->auth in
- tpm2_start_auth_session()
-From: James Bottomley <James.Bottomley@HansenPartnership.com>
-To: Jarkko Sakkinen <jarkko@kernel.org>, linux-integrity@vger.kernel.org
-Cc: roberto.sassu@huawei.com, mapengyu@gmail.com, stable@vger.kernel.org,
- Mimi Zohar <zohar@linux.ibm.com>, David Howells <dhowells@redhat.com>, Paul
- Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, "Serge E.
- Hallyn" <serge@hallyn.com>, Peter Huewe <peterhuewe@gmx.de>, Jason
- Gunthorpe <jgg@ziepe.ca>, keyrings@vger.kernel.org,
- linux-security-module@vger.kernel.org,  linux-kernel@vger.kernel.org
-Date: Tue, 24 Sep 2024 09:33:30 -0400
-In-Reply-To: <20240921120811.1264985-5-jarkko@kernel.org>
-References: <20240921120811.1264985-1-jarkko@kernel.org>
-	 <20240921120811.1264985-5-jarkko@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-User-Agent: Evolution 3.42.4 
+	s=arc-20240116; t=1727185052; c=relaxed/simple;
+	bh=1coDdoI3FQjwjHSKdOOaReMrK64BktDVhJoYCrWpeFA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=CAX04JlWg2i1zr3dV3tJ0VCP/Fg6UH3iKIBxToHtqVFYZQ9oegVx5yRMRTcADV+ZwkuNW4wmScwpuJhsb2cHzYz38oh6nvg+f0Q+iu7L7cxWKGZAcW7MdIoRddcvNIoNR3pAkCeyl9rmANpTFFIlqlV9J9HWdi8OumQi3BLw85s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=c7AqGC7Y; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1727185048;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=m3ZMnWSltBVqByR/5ym5WHRFLuJsdiXWp7fp/aKe+pg=;
+	b=c7AqGC7Y7bjOsDGW+Rv6sKHEestkNaXyfZLpJlZszCYMbFd02IQBERJKAyUaqPNa8qDBjq
+	aAOazIyKvc+UwI1vt1UOepLVJ8KO4WLVNrE3EJvMw1yD3g+CrOgDBK4gK+zkxd5zzcEuWp
+	Mvbn901LuylsqrAsXnX+zpnwZCjmsHE=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-547-pUtvYtyOPmSGVYdPJpINDA-1; Tue, 24 Sep 2024 09:37:26 -0400
+X-MC-Unique: pUtvYtyOPmSGVYdPJpINDA-1
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-42cb635b108so39057305e9.2
+        for <stable@vger.kernel.org>; Tue, 24 Sep 2024 06:37:26 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727185045; x=1727789845;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=m3ZMnWSltBVqByR/5ym5WHRFLuJsdiXWp7fp/aKe+pg=;
+        b=rt3dLRIk5oNV88/FlETMcbU5ys1GeKPWVwVfVJDskFYPv+BxgiF6rQRqQxMc+EvtNa
+         zH/xgrjpBdxCfhMdTI4H0JTi8E1UYHVbds1wSGPoeh71XLXnru9Fln7Cdx6ijmzU1N9m
+         IJD4k5ZIsPc0U08rIIYWfF4Js4wC5wKV4n91g4hFv9GUZm9oTYMmWpKkWwLjOFVHi3AW
+         H70ws9+2pobvLL7YNMVpZPHV3Rolx51ihhzvH911eui7WBxjlSAldUb1S+5bx9CkHAEf
+         qqrzzRoMDhsIOQ6ECMRpQLEwr2klg5DTRHFEXd+GHbXVa8niG00DV1xSXuflDgO61zuQ
+         zF0Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXRMr/vwihGdeXdPiOtzHir5lkJF+p6tRWfXpqEewqyW6nyFz9tdxe0fYodsHExFQBzNqDmE4M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwB/kImLIXxBDua2Tk0QMMjD+hS4AVnzCfApq26H+F1IKMEiD58
+	3NmlpMhDxSNgQ9vkwlJ0y0JyMuGX1kaATZmeoUTe0GAQb8r80hxoxnjvgK/WAK2cIZYGBi7Tnvu
+	gpfZW9IBT0Q5V3/TzwEULcTcymgE0/f52QetDjuZiFMO7zRjySO+JDg==
+X-Received: by 2002:a05:600c:4ed2:b0:42c:b9dd:93ee with SMTP id 5b1f17b1804b1-42e7adbdf3fmr106404145e9.34.1727185045160;
+        Tue, 24 Sep 2024 06:37:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHAGSCJGChfO0p/dVmzD7aUd+YN0JjwCVik6wNggfJqRwa1bUk53dA48t1HKhd+ZLlCkGswjA==
+X-Received: by 2002:a05:600c:4ed2:b0:42c:b9dd:93ee with SMTP id 5b1f17b1804b1-42e7adbdf3fmr106403925e9.34.1727185044775;
+        Tue, 24 Sep 2024 06:37:24 -0700 (PDT)
+Received: from localhost (62-151-111-63.jazzfree.ya.com. [62.151.111.63])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37cbc2c139esm1614306f8f.27.2024.09.24.06.37.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 24 Sep 2024 06:37:24 -0700 (PDT)
+From: Javier Martinez Canillas <javierm@redhat.com>
+To: Thomas Zimmermann <tzimmermann@suse.de>, alexander.deucher@amd.com,
+ chaitanya.kumar.borah@intel.com
+Cc: dri-devel@lists.freedesktop.org, Thomas Zimmermann
+ <tzimmermann@suse.de>, Helge Deller <deller@gmx.de>, Sam Ravnborg
+ <sam@ravnborg.org>, Daniel Vetter <daniel.vetter@ffwll.ch>, "Linux
+ regression tracking (Thorsten Leemhuis)" <regressions@leemhuis.info>,
+ stable@vger.kernel.org
+Subject: Re: [PATCH] firmware/sysfb: Disable sysfb for firmware buffers with
+ unknown parent
+In-Reply-To: <20240924084227.262271-1-tzimmermann@suse.de>
+References: <20240924084227.262271-1-tzimmermann@suse.de>
+Date: Tue, 24 Sep 2024 15:37:23 +0200
+Message-ID: <87ldzh8964.fsf@minerva.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-On Sat, 2024-09-21 at 15:08 +0300, Jarkko Sakkinen wrote:
-> Move allocation of chip->auth to tpm2_start_auth_session() so that
-> the field can be used as flag to tell whether auth session is active
-> or not.
-> 
-> Cc: stable@vger.kernel.org # v6.10+
-> Fixes: 699e3efd6c64 ("tpm: Add HMAC session start and end functions")
-> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Thomas Zimmermann <tzimmermann@suse.de> writes:
+
+Hello Thomas,
+
+> The sysfb framebuffer handling only operates on graphics devices
+> that provide the system's firmware framebuffer. If that device is
+> not known, assume that any graphics device has been initialized by
+> firmware.
+>
+> Fixes a problem on i915 where sysfb does not release the firmware
+> framebuffer after the native graphics driver loaded.
+>
+> Reported-by: Borah, Chaitanya Kumar <chaitanya.kumar.borah@intel.com>
+> Closes: https://lore.kernel.org/dri-devel/SJ1PR11MB6129EFB8CE63D1EF6D932F94B96F2@SJ1PR11MB6129.namprd11.prod.outlook.com/
+> Closes: https://gitlab.freedesktop.org/drm/i915/kernel/-/issues/12160
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Fixes: b49420d6a1ae ("video/aperture: optionally match the device in sysfb_disable()")
+> Cc: Javier Martinez Canillas <javierm@redhat.com>
+> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: Helge Deller <deller@gmx.de>
+> Cc: Sam Ravnborg <sam@ravnborg.org>
+> Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+> Cc: Alex Deucher <alexander.deucher@amd.com>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: Linux regression tracking (Thorsten Leemhuis) <regressions@leemhuis.info>
+> Cc: <stable@vger.kernel.org> # v6.11+
 > ---
-> v5:
-> - No changes.
-> v4:
-> - Change to bug.
-> v3:
-> - No changes.
-> v2:
-> - A new patch.
-> ---
->  drivers/char/tpm/tpm2-sessions.c | 43 +++++++++++++++++++-----------
-> --
->  1 file changed, 25 insertions(+), 18 deletions(-)
-> 
-> diff --git a/drivers/char/tpm/tpm2-sessions.c
-> b/drivers/char/tpm/tpm2-sessions.c
-> index 1aef5b1f9c90..a8d3d5d52178 100644
-> --- a/drivers/char/tpm/tpm2-sessions.c
-> +++ b/drivers/char/tpm/tpm2-sessions.c
-> @@ -484,7 +484,8 @@ static void tpm2_KDFe(u8 z[EC_PT_SZ], const char
-> *str, u8 *pt_u, u8 *pt_v,
->         sha256_final(&sctx, out);
->  }
->  
-> -static void tpm_buf_append_salt(struct tpm_buf *buf, struct tpm_chip
-> *chip)
-> +static void tpm_buf_append_salt(struct tpm_buf *buf, struct tpm_chip
-> *chip,
-> +                               struct tpm2_auth *auth)
+>  drivers/firmware/sysfb.c | 4 +++-
+>  1 file changed, 3 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/firmware/sysfb.c b/drivers/firmware/sysfb.c
+> index 02a07d3d0d40..a3df782fa687 100644
+> --- a/drivers/firmware/sysfb.c
+> +++ b/drivers/firmware/sysfb.c
+> @@ -67,9 +67,11 @@ static bool sysfb_unregister(void)
+>  void sysfb_disable(struct device *dev)
+>  {
+>  	struct screen_info *si = &screen_info;
+> +	struct device *parent;
+>  
+>  	mutex_lock(&disable_lock);
+> -	if (!dev || dev == sysfb_parent_dev(si)) {
+> +	parent = sysfb_parent_dev(si);
+> +	if (!dev || !parent || dev == parent) {
+>  		sysfb_unregister();
+>  		disabled = true;
+>  	}
 
-This addition of auth as an argument is a bit unnecessary.  You can set
-chip->auth before calling this and it will all function.  Since there's
-no error leg in tpm2_start_auth_session unless the session creation
-itself fails and the guarantee of the ops lock is single threading this
-chip->auth can be nulled again in that error leg.
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
 
-If you want to keep the flow proposed in the patch, the change from how
-it works now to how it works with this patch needs documenting in the
-change log
+-- 
+Best regards,
 
->  {
->         struct crypto_kpp *kpp;
->         struct kpp_request *req;
-> @@ -543,7 +544,7 @@ static void tpm_buf_append_salt(struct tpm_buf
-> *buf, struct tpm_chip *chip)
->         sg_set_buf(&s[0], chip->null_ec_key_x, EC_PT_SZ);
->         sg_set_buf(&s[1], chip->null_ec_key_y, EC_PT_SZ);
->         kpp_request_set_input(req, s, EC_PT_SZ*2);
-> -       sg_init_one(d, chip->auth->salt, EC_PT_SZ);
-> +       sg_init_one(d, auth->salt, EC_PT_SZ);
->         kpp_request_set_output(req, d, EC_PT_SZ);
->         crypto_kpp_compute_shared_secret(req);
->         kpp_request_free(req);
-> @@ -554,8 +555,7 @@ static void tpm_buf_append_salt(struct tpm_buf
-> *buf, struct tpm_chip *chip)
->          * This works because KDFe fully consumes the secret before
-> it
->          * writes the salt
->          */
-> -       tpm2_KDFe(chip->auth->salt, "SECRET", x, chip->null_ec_key_x,
-> -                 chip->auth->salt);
-> +       tpm2_KDFe(auth->salt, "SECRET", x, chip->null_ec_key_x, auth-
-> >salt);
->  
->   out:
->         crypto_free_kpp(kpp);
-> @@ -854,6 +854,8 @@ int tpm_buf_check_hmac_response(struct tpm_chip
-> *chip, struct tpm_buf *buf,
->                         /* manually close the session if it wasn't
-> consumed */
->                         tpm2_flush_context(chip, auth->handle);
->                 memzero_explicit(auth, sizeof(*auth));
-> +               kfree(auth);
-> +               chip->auth = NULL;
->         } else {
->                 /* reset for next use  */
->                 auth->session = TPM_HEADER_SIZE;
-> @@ -882,6 +884,8 @@ void tpm2_end_auth_session(struct tpm_chip *chip)
->  
->         tpm2_flush_context(chip, auth->handle);
->         memzero_explicit(auth, sizeof(*auth));
-> +       kfree(auth);
-> +       chip->auth = NULL;
->  }
->  EXPORT_SYMBOL(tpm2_end_auth_session);
->  
-> @@ -970,25 +974,29 @@ static int tpm2_load_null(struct tpm_chip
-> *chip, u32 *null_key)
->   */
->  int tpm2_start_auth_session(struct tpm_chip *chip)
->  {
-> +       struct tpm2_auth *auth;
->         struct tpm_buf buf;
-> -       struct tpm2_auth *auth = chip->auth;
-> -       int rc;
->         u32 null_key;
-> +       int rc;
->  
-> -       if (!auth) {
-> -               dev_warn_once(&chip->dev, "auth session is not
-> active\n");
-> +       if (chip->auth) {
-> +               dev_warn_once(&chip->dev, "auth session is
-> active\n");
->                 return 0;
->         }
->  
-> +       auth = kzalloc(sizeof(*auth), GFP_KERNEL);
-> +       if (!auth)
-> +               return -ENOMEM;
-> +
->         rc = tpm2_load_null(chip, &null_key);
->         if (rc)
-> -               goto out;
-> +               goto err;
->  
->         auth->session = TPM_HEADER_SIZE;
->  
->         rc = tpm_buf_init(&buf, TPM2_ST_NO_SESSIONS,
-> TPM2_CC_START_AUTH_SESS);
->         if (rc)
-> -               goto out;
-> +               goto err;
->  
->         /* salt key handle */
->         tpm_buf_append_u32(&buf, null_key);
-> @@ -1000,7 +1008,7 @@ int tpm2_start_auth_session(struct tpm_chip
-> *chip)
->         tpm_buf_append(&buf, auth->our_nonce, sizeof(auth-
-> >our_nonce));
->  
->         /* append encrypted salt and squirrel away unencrypted in
-> auth */
-> -       tpm_buf_append_salt(&buf, chip);
-> +       tpm_buf_append_salt(&buf, chip, auth);
->         /* session type (HMAC, audit or policy) */
->         tpm_buf_append_u8(&buf, TPM2_SE_HMAC);
->  
-> @@ -1021,10 +1029,13 @@ int tpm2_start_auth_session(struct tpm_chip
-> *chip)
->  
->         tpm_buf_destroy(&buf);
->  
-> -       if (rc)
-> -               goto out;
-> +       if (rc == TPM2_RC_SUCCESS) {
-> +               chip->auth = auth;
-> +               return 0;
-> +       }
->  
-> - out:
-> +err:
-> +       kfree(auth);
->         return rc;
->  }
->  EXPORT_SYMBOL(tpm2_start_auth_session);
-> @@ -1371,10 +1382,6 @@ int tpm2_sessions_init(struct tpm_chip *chip)
->         if (rc)
->                 return rc;
->  
-> -       chip->auth = kmalloc(sizeof(*chip->auth), GFP_KERNEL);
-> -       if (!chip->auth)
-> -               return -ENOMEM;
-> -
->         return rc;
->  }
->  #endif /* CONFIG_TCG_TPM2_HMAC */
-
-Other than the comment above
-
-Reviewed-by: James Bottomley <James.Bottomley@HansenPartnership.com>
+Javier Martinez Canillas
+Core Platforms
+Red Hat
 
 
