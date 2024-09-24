@@ -1,69 +1,69 @@
-Return-Path: <stable+bounces-76955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-76956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFCA9983C70
-	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 07:42:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D219F983C7A
+	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 07:50:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B0833281850
-	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 05:42:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 27D74B21730
+	for <lists+stable@lfdr.de>; Tue, 24 Sep 2024 05:50:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BB2246447;
-	Tue, 24 Sep 2024 05:41:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B8E145BE3;
+	Tue, 24 Sep 2024 05:49:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="HewoBtYU"
+	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="fjnUQH0Y"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AE6644C68
-	for <stable@vger.kernel.org>; Tue, 24 Sep 2024 05:41:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DCA71DDE9
+	for <stable@vger.kernel.org>; Tue, 24 Sep 2024 05:49:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727156517; cv=none; b=rDdyc/JFpUs2Eee/tiJCMtgJmKp0xTHk77OWynG02gbZcdfPVQ48pNdoYe4P4sOHa1PEfcf6z5IAqdlm46H4q57BYwRHffqGIVKKSUQ6CZVRty2KnWnxtDtIC53Qqjc/aQSF6QOx8RZVg84WK/Uik0pnWTG5sdNdkgssFI6H3sQ=
+	t=1727156997; cv=none; b=NbUe/0N8olkO1vtJ8qta0sjPH5v+7wI7p3l9sRGgeU2H5l30EE6Gy6KGjTw9JvBeD1pkTpjaKlR3LvDI/QenQ7RgZVv7IpjnlWF8tZOHkf8hMruHJIfRprqIZqzElIB7RPbbgZf4pcgDZqCUTDkYTdASQRepH1rsmIA/cFNpaFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727156517; c=relaxed/simple;
-	bh=jH6sv8FNLFl/Kif28e2IwbxyIC15AJwFwxX0qKHVeUI=;
+	s=arc-20240116; t=1727156997; c=relaxed/simple;
+	bh=IHmyCsJ2ptNJcZq7+QBTYiUWHkb8vQGS0wBc7LRNcFM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qMCdowN58N53k6lFobL0wf7QABFgHIX5kPdjHIBK0PRaXnTo+HhCsOqivygKegXwq879XUPOWsWaCmwAIjTrwqmhR9qgm9LiwOftAk8DBPuPAGHeJL7z9Q0WHN1E3BD8Z7qgXgddomv6I8REGm2NBfqb9oVsvS9IPppA677fM5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=HewoBtYU; arc=none smtp.client-ip=209.85.215.169
+	 Content-Type:Content-Disposition:In-Reply-To; b=Aij4HzmouK6F4MLpt+CF2tV6PuNlay1yXkM035TyBT/vxNg3MIpoOxVP3twlXIiAmpVPTKCweHXat2QUejzzDr/feN5WMAIcf05steY5YArIeWulcEp3GB0i+9MJW51Ybn8acBboku8i3z8vXle6mKgGLdgrZ8zhC+E5ir2oA3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=fjnUQH0Y; arc=none smtp.client-ip=209.85.214.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-7b0c9bbddb4so3460880a12.3
-        for <stable@vger.kernel.org>; Mon, 23 Sep 2024 22:41:56 -0700 (PDT)
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-20696938f86so40048895ad.3
+        for <stable@vger.kernel.org>; Mon, 23 Sep 2024 22:49:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1727156516; x=1727761316; darn=vger.kernel.org;
+        d=chromium.org; s=google; t=1727156995; x=1727761795; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=cge31yltZ3LBqF6Zjp76yFNSwmaUL6JImZQbh8KHv9Q=;
-        b=HewoBtYUFcwrDJxS/LiYKia4PdxpxNFPuST4Jd7FT8su7mdpEkHebJPWVow345IjLX
-         SC19yurgWbb/Vtl6/kNTDclLo826TtFg+THGLxZuNwD1/kPIXKlyi11K1mZEFIe4oIPh
-         WxXGuOwc6n5fSErJnkVE+381ZWQYOWA6vsmOQ=
+        bh=PYI2lNzS3mPSYH5DJezr946Q6mbRGtoEfc4GBWwmg4g=;
+        b=fjnUQH0Y6rY97jlRNyjrf7zetMrRNW71V/i/5nupwKjEUgIv8rJ1pTXwMdKOvHnXYq
+         /E2zlBLl6r3STz6pcIcTxnPbrtEX0pw+afPYbeO72SFNXOg7/VmtSyD7msYqCcNpt3TB
+         0DZZ6bFxHc7/r2QGTMR/8S1LklLwtIp6hsk5g=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727156516; x=1727761316;
+        d=1e100.net; s=20230601; t=1727156995; x=1727761795;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=cge31yltZ3LBqF6Zjp76yFNSwmaUL6JImZQbh8KHv9Q=;
-        b=A3QGyLSK7kA8US3IkB3owH+nBulkNCUR8SIR6WAwG792xb3Ko7efjVvObt3S49Wu4F
-         NQxvarhaQDNyPvbg8zrOtx8aDIwLS/ncRt2WF039tAHVVnAaZgxFz57xyu3l+krKFHB4
-         T4mhMBHOAr+lQIDUJKacZDESh8Ap9ReOQKNepjok3ys0OM068H0fgdsviddEzNi7BWaf
-         n35riNcVi1hxuX2sc74GtiQWcl2FIgmyvQP6J9VPsul/LCG+XORE1NaN+yLjHLL9tv5s
-         +xE+h+AVCpBbjblskdVB8ykCvzjq8+9yr14iC9msVSPi4Cl3y113mCg0+F7JKGsVRWlj
-         O1/Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUTKLv3MJAbCBs3JEF/wgk2BtSLT1dBeBwysNuIPFjGZblOs3nI+i+TgcSFMSq89swiSV/El4I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwLIh1FulkVW0RZ6V8nQ+mT2n16TQM4em7lMtAIcP2YgFzn0ygp
-	AE8SLgB5y99uEa2Fps8S6y3gGkxUMjMw70UKekWS8Xec1IOjh5nvcG/AOL+XuA==
-X-Google-Smtp-Source: AGHT+IG1lZisxJAgOWdpQ4rLYMltGE4fxYOV29zGec732JAMjhEQW5CudTcv6H4bnb03Tqzw7xN0QQ==
-X-Received: by 2002:a05:6a21:168e:b0:1ce:e725:1723 with SMTP id adf61e73a8af0-1d30a9d8901mr19524958637.45.1727156515684;
-        Mon, 23 Sep 2024 22:41:55 -0700 (PDT)
+        bh=PYI2lNzS3mPSYH5DJezr946Q6mbRGtoEfc4GBWwmg4g=;
+        b=Bwb8deQQRaTpdaYKzFRcgr3+712M2EDKEUBqyyNIWdQ1awzNLx1xi0+vyAVPugB5Zn
+         KlurJGFB9A2cl/iyRj0hBvOx4WsqKac38G6YmTyi3eVRkHONjV1sgswASv9930udNB6l
+         BdL7nmbaBr1FivqIij5xYcM676FSuRL91Cs79Vvrja+hgFKSuzkvMiEZ8BVmje0F9p+B
+         qZ4pth9kGHcK3QzlZZ5lJHQhu3yhy7/87cyh3eXGtpZSrnW55L0EIoi4Bksa5Ggm+Kxf
+         L/UyNd71L4kBOgYbucn24DHvirAy8Y8OPzCsSBJNBnUbSLf27XIGmCYeDylkhAQfj+hT
+         NQWQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXHhLQPFgdG79ermgkD7X7fh04w9+wdeEoBlSHaQTi45EQeq896f1Rwxlevk2Z2OB7UG1nrLpM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwiSRXhY8qZkqUe4XPnnXssS9PXW2rJzr4NvCbXm73T+GRpsr1+
+	gpLBv5WCB2zLSQE2CwZGFUv0yK0xgkmj3047fficGRCY/In1bRNLginlvpRJJg==
+X-Google-Smtp-Source: AGHT+IHztI+J2ZvVRtkiLGXrytJk7K2WqX3n6bQgX5YRfGcO/PyT6VvUsBkFbUTVymLI3nql0+SBSg==
+X-Received: by 2002:a17:903:32c4:b0:1fd:9c2d:2f27 with SMTP id d9443c01a7336-208d982b24cmr230022655ad.24.1727156995523;
+        Mon, 23 Sep 2024 22:49:55 -0700 (PDT)
 Received: from google.com ([2401:fa00:8f:203:93d1:1107:fd24:adf0])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e058ee6110sm590246a91.8.2024.09.23.22.41.53
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20af16e070dsm4062615ad.9.2024.09.23.22.49.53
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 23 Sep 2024 22:41:55 -0700 (PDT)
-Date: Tue, 24 Sep 2024 14:41:51 +0900
+        Mon, 23 Sep 2024 22:49:55 -0700 (PDT)
+Date: Tue, 24 Sep 2024 14:49:51 +0900
 From: Sergey Senozhatsky <senozhatsky@chromium.org>
 To: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 Cc: Andrey Skvortsov <andrej.skvortzov@gmail.com>,
@@ -75,7 +75,7 @@ Cc: Andrey Skvortsov <andrej.skvortzov@gmail.com>,
 	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
 	stable@vger.kernel.org
 Subject: Re: [PATCH v3] zram: don't free statically defined names
-Message-ID: <20240924054151.GL38742@google.com>
+Message-ID: <20240924054951.GM38742@google.com>
 References: <20240923164843.1117010-1-andrej.skvortzov@gmail.com>
  <c8a4e62e-6c24-4b06-ac86-64cc4697bc2f@wanadoo.fr>
  <ZvHurCYlCoi1ZTCX@skv.local>
@@ -91,10 +91,7 @@ Content-Disposition: inline
 In-Reply-To: <8294e492-5811-44de-8ee2-5f460a065f54@wanadoo.fr>
 
 On (24/09/24 07:21), Christophe JAILLET wrote:
-> > > Hi,
-> > > 
-> > > maybe kfree_const() to be more future proof and less verbose?
-> > 
+[..]
 > > kfree_const() will not work if zram is built as a module. It works
 > > only for .rodata for kernel image. [1]
 > > 
@@ -102,22 +99,21 @@ On (24/09/24 07:21), Christophe JAILLET wrote:
 > > 
 > 
 > If so, then it is likely that it is not correctly used elsewhere.
+> 
+> https://elixir.bootlin.com/linux/v6.11/source/drivers/dax/kmem.c#L289
+> https://elixir.bootlin.com/linux/v6.11/source/drivers/firmware/arm_scmi/bus.c#L341
+> https://elixir.bootlin.com/linux/v6.11/source/drivers/input/touchscreen/chipone_icn8505.c#L379
 
-Oh, apparently there are drivers that use it...
+icn8505_probe_acpi() uses kfree_const(subsys)...
 
-So I suspect it works when you do
+subsys is returned from acpi_get_subsystem_id() which only
+does
+		sub = kstrdup(obj->string.pointer, GFP_KERNEL);
 
-	kstrdup_const()
-	kfree_const()
+However, if acpi_get_subsystem_id() returns an error then
+icn8505_probe_acpi() does
 
-// I only looked at drivers/firmware/arm_scmi/bus.c
+		subsys = "unknown";
 
-kstrdup_const() can't tell module's .rodata so it does plain
-kstrdup() and then kfree_const() (for the same reason) does
-plain kfree().
-
-But calling kfree_const() on something that has not been
-kstrdup_const() is unlikely to work as intended for modules.
-
-So I guess kfree_const() works only when paired with kstrdup_const().
+and I suspect that kfree_const(subsys) can, in fact, explode?
 
