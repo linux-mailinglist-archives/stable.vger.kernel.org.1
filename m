@@ -1,58 +1,62 @@
-Return-Path: <stable+bounces-77379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77380-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E51E985C80
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:48:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 968B5985C85
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:48:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0C3E8284986
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:48:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2ED8F1F211CF
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:48:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 141161714B3;
-	Wed, 25 Sep 2024 11:59:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14A951D049B;
+	Wed, 25 Sep 2024 11:59:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JShIwDgE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h7gbMDn1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C245C1D0162;
-	Wed, 25 Sep 2024 11:59:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1A4B1AD9E8;
+	Wed, 25 Sep 2024 11:59:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727265580; cv=none; b=H2MulySpjqJ5JGiQ5zBkOi/7oM2QjN3qujya/jQBG0dBNxweqDmbt9CjvD1XAB8eeKLVyBuo4J1Zo9cgeOZpf9Caj1wXK43xz5O8pobWIFn+pTaNjZWFJS1QNCAn6nTXKvW8ugfDxsUNgUsifQyZClpnfulpYYJ65EwgGj6AZEE=
+	t=1727265582; cv=none; b=pmrgu5wTLkjJGjkquBdFeaBR2vWGpARCpfzxsYoUUDt7bqLHYFxTeOnoI3zbosCzZmhX1xH9mUn9DqtLV365a+ODdt9kVnf+eaX8rtsGQvG/+B3u+spTgin5XmtBt2xsl2eehuNS06IVXiWigcPprqdDhfGpv0rMNY1umvEIURc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727265580; c=relaxed/simple;
-	bh=Ohhi8k8R187QiFgr3vx1uB0EkOOzrESJdh5GYE0JEOg=;
+	s=arc-20240116; t=1727265582; c=relaxed/simple;
+	bh=mtleRGQxpxz5aakz3BXw/SFcsgVUMQDfpikGYjuiYI0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LdqbaXcV4WVHz+MwQURBoM0Iv5tqTGzulbMzAGR5aPEuu/zdBssiaLRwrLPQ470zlFpe3CndJ8nfhFFhDn16XBBWUt3pPfwfrwtWH53MZcmVmr3u963YtTWyvBbpkPV/cGqfdinKcwTNsfg6B23A86U2i+oE1lGpdev811vQUaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JShIwDgE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93F94C4CECE;
-	Wed, 25 Sep 2024 11:59:39 +0000 (UTC)
+	 MIME-Version; b=fce2U8iiJvX/PtJ57mkvKLo3cd3G+DEFHArYhCdJrh33VbqMVBiFWF7PXoOD3j8Xi6YY3Py5CXT8HUhwrdCFkslmC0lciNYMF62HksI2Up2G6ZgdlOIMGtj4jP/V2DTz7afznv8iMzOPW/48ba2j39FhOzNGdw6dmcnrHNHzS7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h7gbMDn1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27810C4CEC3;
+	Wed, 25 Sep 2024 11:59:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727265580;
-	bh=Ohhi8k8R187QiFgr3vx1uB0EkOOzrESJdh5GYE0JEOg=;
+	s=k20201202; t=1727265582;
+	bh=mtleRGQxpxz5aakz3BXw/SFcsgVUMQDfpikGYjuiYI0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JShIwDgEUUPdN5Po2wPAy4+99DOLRfI2Li/2W2ZE5PSfEjn/TI+S18ovQhu+ekE8J
-	 7LqyZ82QO1tRAYLqLN5RaGosnInNqhZQVsGv5tZDhpvA6gNmUAovXtkL3ENK4tC45a
-	 GxRp9lSkoP1N2DlOYhBCUswv7kWgI5RORTEAhqKDUGbEJJuyh2tFMcxV9wMR8ODYLF
-	 KxlTXIsseOZqcyL2CERUWlYp89VHwI4rYBUWW3wXipUszAwA8oguNxhCNCa73e1mDb
-	 C2gSOmdvV9xHIKa42jvT/aeJPgUQkTQspEn932J6vHRg0arqzMLWpKbuhM1hOWxpdm
-	 suLo4nED4N/Rw==
+	b=h7gbMDn1SKyd8Qmly/7zhWAHA/3uh0BOgZo9BI3Q2VLcREUbsYdE1C3f4FH45gQbv
+	 clzVBMVlONTOuHLc86v0c7aapIVembOEfdtQC3w9JRYzKrMIMTkvYIrmJJYN2KZH6W
+	 YAkI9/wfFD6Ltl7pqyMKtRbneH54IFI5rBJgUpbJkuIQS7tzVmLgslJZsqbAENqHRZ
+	 W48H4FLM0dRsEEwm4omP1w0dtDZ68/UZhmRboqEexYTN/+fpY9iTTGTc4U9KszIDjn
+	 7DWJtW/FYcnyafUoVtnQSe1YDeLazqoSFZVuQ17R2HSQzAV0Af60EQ6etDC50KNWNX
+	 KFjp7cLZPSSFg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Pei Xiao <xiaopei01@kylinos.cn>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+Cc: Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	robert.moore@intel.com,
-	linux-acpi@vger.kernel.org,
-	acpica-devel@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.10 034/197] ACPICA: check null return of ACPI_ALLOCATE_ZEROED() in acpi_db_convert_to_package()
-Date: Wed, 25 Sep 2024 07:50:53 -0400
-Message-ID: <20240925115823.1303019-34-sashal@kernel.org>
+	jmaloy@redhat.com,
+	ying.xue@windriver.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org,
+	tipc-discussion@lists.sourceforge.net
+Subject: [PATCH AUTOSEL 6.10 035/197] tipc: guard against string buffer overrun
+Date: Wed, 25 Sep 2024 07:50:54 -0400
+Message-ID: <20240925115823.1303019-35-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925115823.1303019-1-sashal@kernel.org>
 References: <20240925115823.1303019-1-sashal@kernel.org>
@@ -67,38 +71,51 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.11
 Content-Transfer-Encoding: 8bit
 
-From: Pei Xiao <xiaopei01@kylinos.cn>
+From: Simon Horman <horms@kernel.org>
 
-[ Upstream commit a5242874488eba2b9062985bf13743c029821330 ]
+[ Upstream commit 6555a2a9212be6983d2319d65276484f7c5f431a ]
 
-ACPICA commit 4d4547cf13cca820ff7e0f859ba83e1a610b9fd0
+Smatch reports that copying media_name and if_name to name_parts may
+overwrite the destination.
 
-ACPI_ALLOCATE_ZEROED() may fail, elements might be NULL and will cause
-NULL pointer dereference later.
+ .../bearer.c:166 bearer_name_validate() error: strcpy() 'media_name' too large for 'name_parts->media_name' (32 vs 16)
+ .../bearer.c:167 bearer_name_validate() error: strcpy() 'if_name' too large for 'name_parts->if_name' (1010102 vs 16)
 
-Link: https://github.com/acpica/acpica/commit/4d4547cf
-Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
-Link: https://patch.msgid.link/tencent_4A21A2865B8B0A0D12CAEBEB84708EDDB505@qq.com
-[ rjw: Subject and changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+This does seem to be the case so guard against this possibility by using
+strscpy() and failing if truncation occurs.
+
+Introduced by commit b97bf3fd8f6a ("[TIPC] Initial merge")
+
+Compile tested only.
+
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20240801-tipic-overrun-v2-1-c5b869d1f074@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpica/dbconvert.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/tipc/bearer.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/acpica/dbconvert.c b/drivers/acpi/acpica/dbconvert.c
-index 2b84ac093698a..8dbab69320499 100644
---- a/drivers/acpi/acpica/dbconvert.c
-+++ b/drivers/acpi/acpica/dbconvert.c
-@@ -174,6 +174,8 @@ acpi_status acpi_db_convert_to_package(char *string, union acpi_object *object)
- 	elements =
- 	    ACPI_ALLOCATE_ZEROED(DB_DEFAULT_PKG_ELEMENTS *
- 				 sizeof(union acpi_object));
-+	if (!elements)
-+		return (AE_NO_MEMORY);
+diff --git a/net/tipc/bearer.c b/net/tipc/bearer.c
+index 5a526ebafeb4b..3c9e25f6a1d22 100644
+--- a/net/tipc/bearer.c
++++ b/net/tipc/bearer.c
+@@ -163,8 +163,12 @@ static int bearer_name_validate(const char *name,
  
- 	this = string;
- 	for (i = 0; i < (DB_DEFAULT_PKG_ELEMENTS - 1); i++) {
+ 	/* return bearer name components, if necessary */
+ 	if (name_parts) {
+-		strcpy(name_parts->media_name, media_name);
+-		strcpy(name_parts->if_name, if_name);
++		if (strscpy(name_parts->media_name, media_name,
++			    TIPC_MAX_MEDIA_NAME) < 0)
++			return 0;
++		if (strscpy(name_parts->if_name, if_name,
++			    TIPC_MAX_IF_NAME) < 0)
++			return 0;
+ 	}
+ 	return 1;
+ }
 -- 
 2.43.0
 
