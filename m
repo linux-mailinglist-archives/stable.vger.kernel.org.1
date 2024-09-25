@@ -1,231 +1,314 @@
-Return-Path: <stable+bounces-77711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C04D9986411
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 17:47:34 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E464986441
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 17:57:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E281B1C2648D
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:47:33 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2E0111F28FDF
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:57:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72D2E199A2;
-	Wed, 25 Sep 2024 15:47:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E6691AACB;
+	Wed, 25 Sep 2024 15:57:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="KIXJwj8n";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="Cj9KVPYA"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="2QiSRjzM";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="fGk4FfR/";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="KKPBTOat";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="yf0iwNtl"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92E6B1D5ADB;
-	Wed, 25 Sep 2024 15:47:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727279250; cv=fail; b=a3n63iqKrIRV/E6sZ543Qca+ntVt5hi2bphDNba888KvnUL54dNs+EoppVwjQt9zfnnC5paRZO8Dr+5bFyfu339iLLZ367Y+Qef/zrHz/9nZQSyZDdDcnBSkdtk+SSQ1OdcC5npsnBHo/tgZq5AQUGsaO5r6y8Nn5UUCcPZW7pY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727279250; c=relaxed/simple;
-	bh=TIlBvTe2xsl/TqpmOcMNbJZbrAh+Cr9laJNnNaYQ3pk=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=tOTU3moAuIJs9KOERS35si2LEoFPcqfvQR8hpY6amJYy3n+z+3aGfj1kDQuhp2W4s2mZm3O/TidYGg+k2bGZFboKPenWoCqmeLYzLnfCawM5hANaCwmgJOSGOpR6ohGqpnUFNghwUaXN/bBjli+PmB7iO8SmPmB2v8M0aw87BS0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=KIXJwj8n; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=Cj9KVPYA; arc=fail smtp.client-ip=205.220.165.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48PE0Ygd025336;
-	Wed, 25 Sep 2024 15:47:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
-	from:to:cc:subject:date:message-id:references:in-reply-to
-	:content-type:content-id:content-transfer-encoding:mime-version;
-	 s=corp-2023-11-20; bh=TIlBvTe2xsl/TqpmOcMNbJZbrAh+Cr9laJNnNaYQ3
-	pk=; b=KIXJwj8nsEVTPYREXZMLOPH+F7+CvkDrsiQGNZgN1GqPDFZ/uzj3wMoBg
-	Edc2P0CojVzvOEjmGYvpZy8nEvb3O4IKp/P4mU6Vhe9q7mpWnizoQl8u+Uzd7oKs
-	HMfdmfGmXBmBHPIjKmVx9zuGab3h178Q1E61fUJ5W0wxeYZcJhlOjXaAI8dK+g/2
-	E2y5La1DhbV3TW6dQw3rDAY8Z7cB+QoqsEAywf+Ar243S94L9LDu2yNTO5zVkmRU
-	z4mdNslVOo+g4pcFv5hh5zC21cFt7+w6x2FTT4rhkc6/IQo2tFvS6BGrbHst5MOx
-	UX+mNDDxP1djTDYD55dh0/sHKqNsw==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 41sp1ajmhf-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 25 Sep 2024 15:47:14 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 48PEiINp031176;
-	Wed, 25 Sep 2024 15:47:14 GMT
-Received: from nam10-mw2-obe.outbound.protection.outlook.com (mail-mw2nam10lp2049.outbound.protection.outlook.com [104.47.55.49])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 41tkc7dvwg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 25 Sep 2024 15:47:14 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ixPZsqqfX7EBdIg9MUHLCVBhYvXDhdsPb/qQH9omEqDurs8MU4aOkT6Y9/bdhtYKgyHkhdb4dsdYlTKF7efMqRkS32dGFKLTkhOiMWoDvf5i1G+RG/7eab4Y1A1qy6JCEXkDKafpL1zX1qThWRZfLiK3mw7dsucgCLvw1FrSZ0fVYKR3kcVQqzmOjYQywMgXTYI5lSTTPhc3FQPRPhdU4XsUOgj7jlMZVXws4UN2W064gU/p+a0+JBTebLStNl3EN/OHsA7AzwP1wVSZ0wdr/3KHqdm7/mIg1gR+pHhuf2Ll2eYXThMSNTXra5NdfLK/8jt3/XY4rJTgDCOp4/TOwQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=TIlBvTe2xsl/TqpmOcMNbJZbrAh+Cr9laJNnNaYQ3pk=;
- b=WLq674teAQ0FY2VuJWXwWXU8PBu+Ta3yxW/W1B9IxnMWqEoraHbBVHMnhQj1stRUFxl0wMzaceyDEYwtRL+j6e2K13UZM9DFwJ9ENXEnaJwDdNqApPJtofqWDYFzmPQk1KTjpcnpQqiudNwZnOPUVZG8C2IQdoe1ong5LTm6Xq/t6791L1rlDlQ7fN71zVzGz/p8SciP5ovT5JMURwvbsoIUniWtV+O93z1rBMrqWFEOEUq7qt/sYlkuPYMdg3pqdAOnJQ7Wkwy+4G1X8l1hrs4PW13b8mL6iRk1oOb4XgTKVAWQSfQV2lE2eS5UyvN2Qys9z9dL0YX/gbwzWFtmpw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=TIlBvTe2xsl/TqpmOcMNbJZbrAh+Cr9laJNnNaYQ3pk=;
- b=Cj9KVPYAkSr8i94J5G7CobOIGZvtr1H6+BXD+jEgV+w+2evyBip1fFrhy2gCVKcQOhRrOBkVvgY0WGH7IezWCz81S/LOYb0QOE/A5mdxFh5t1no5fxK3AmBPZgUHdBJFQCNOryFMAyZQ5DSpGzaUj7+VeKJQfTS9FtyDrflevQI=
-Received: from BN0PR10MB5128.namprd10.prod.outlook.com (2603:10b6:408:117::24)
- by IA1PR10MB7312.namprd10.prod.outlook.com (2603:10b6:208:3fc::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8005.13; Wed, 25 Sep
- 2024 15:47:10 +0000
-Received: from BN0PR10MB5128.namprd10.prod.outlook.com
- ([fe80::743a:3154:40da:cf90]) by BN0PR10MB5128.namprd10.prod.outlook.com
- ([fe80::743a:3154:40da:cf90%6]) with mapi id 15.20.8005.010; Wed, 25 Sep 2024
- 15:47:10 +0000
-From: Chuck Lever III <chuck.lever@oracle.com>
-To: Christian Theune <ct@flyingcircus.io>
-CC: Jeff Layton <jlayton@kernel.org>,
-        Linux NFS Mailing List
-	<linux-nfs@vger.kernel.org>,
-        "stable@vger.kernel.org"
-	<stable@vger.kernel.org>,
-        "regressions@lists.linux.dev"
-	<regressions@lists.linux.dev>
-Subject: Re: nfsv41: stale file handles after VM shutdown/poweron - but works
- during warm reboot
-Thread-Topic: nfsv41: stale file handles after VM shutdown/poweron - but works
- during warm reboot
-Thread-Index: AQHbD0PXhlPu7DoLfkSg0Q/j/NNyU7JokNkAgAAMJICAAAjMAA==
-Date: Wed, 25 Sep 2024 15:47:10 +0000
-Message-ID: <120BC7A9-A1A9-45C8-BBF0-256C7107D0BC@oracle.com>
-References: <AFE3E539-B98A-465F-9860-EE142D00285F@flyingcircus.io>
- <9937A07A-F7AE-4A99-B7DE-7CF026E0F7B8@oracle.com>
- <3FB1C2D6-F409-44ED-B799-E2657759E455@flyingcircus.io>
-In-Reply-To: <3FB1C2D6-F409-44ED-B799-E2657759E455@flyingcircus.io>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-x-mailer: Apple Mail (2.3776.700.51)
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BN0PR10MB5128:EE_|IA1PR10MB7312:EE_
-x-ms-office365-filtering-correlation-id: 1d64132e-39d8-4539-505f-08dcdd795194
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|366016|376014|38070700018;
-x-microsoft-antispam-message-info:
- =?utf-8?B?RDBFSmd2Q3BPcWFJdmlST3U4WXFDNHVydXNiY29XanQwVFdNUEtHNXFQNUV1?=
- =?utf-8?B?SEV4a2lzeFlXWEdDQ2x0OFczTnVCYnhKTkxxcWRvYXAwaEN3Q2c0WmtwMk03?=
- =?utf-8?B?MktmOVdXZ0R2eXlQMHVqeE9SeDRzcFF2T3pBV2NHa1I3ajVlYkduWk5QVW1T?=
- =?utf-8?B?aDE3eHgybmdLVHoycS9mb2JLWmxQRHR3TGI5K3M1YzR5My81M29FKzhuV1No?=
- =?utf-8?B?SmFsdGJybXUyQS92WWpUMU9KL0N4MkZxT2RPNXhaVnVMWml2ekVzV3Nmc0Fn?=
- =?utf-8?B?ejA1QlVxNDJYcTMvTGJWL0JJbEExcWk3TlBTQSsyVWliMDN1MzYwbm1iN2hj?=
- =?utf-8?B?cnhUcDVoVjVtR09keHNzTy9LZWRCMmhMd2JJZXU5Y24wS1Z6RlBLQnM5MTF4?=
- =?utf-8?B?WkdXdkkyNnFoQk56eHQwRG95TldlUTBTUm5qYjFlbnFGK0M1WFNoTkhSMkwy?=
- =?utf-8?B?SEM5c29oT0RxL3lUVHZDbWhRV1crN2JIcHZNbU9pREovQ0hWcFlJREl6VHZL?=
- =?utf-8?B?bVhid3ZPOHNvV29CZlQ3MmZyWjVmNU1vZytxV1F1SXc2Z1IzTmo3OHpMVUVY?=
- =?utf-8?B?VGtzOXpRQ0VkVC9KOEdIR25NaExNK241UVppUElIQmp4WnBadzdyZWo3dHZ1?=
- =?utf-8?B?am1sNjAxdHBnRXZZSExsS2NQaTFNRFp3QVo1Wk01Y2UzM0ZnVkdUdjh1RTZy?=
- =?utf-8?B?RnVZU2t5MWdMUW9ZZU5zSkhtWVdOUmxIZGxnOTI0MXJWTGh3WHl2bERXK3hp?=
- =?utf-8?B?UlNpSUVQb2RrNGZleXJ1VlNVQ1NLWlJoVEgvZ3o4UHpZV21HTUExakRqd3U5?=
- =?utf-8?B?QldqQkpCV29RdGFTdmx6UFRNa1QxVnAwVE5NbnhobWF6bWNYQ2hLWEJoTmdD?=
- =?utf-8?B?R0tFZVkrdjQvYkNvbkNySU90dkJLYjFTOWxuR0p1RVpUVGgxNVp5QVdHZlRo?=
- =?utf-8?B?bFg2S2ZLNnQ1WTBlQmpvODVLZjNreUpmY2ZYT3hvQi90a3JyZnR4dUdtb2pJ?=
- =?utf-8?B?UDJFVzVYUUFlcnRzZkdpcHdJaDJ5LzRvUWNHR1JCcHdtVTZzWXVDZEVXL3d4?=
- =?utf-8?B?TmJnSEN5SThzRkJrSG1NSU9tTXF1NnY1REFTK2hXOGhLamR3Q1lHOGVDb3Fa?=
- =?utf-8?B?VFc3WkV1cXhyZXRVbW80NHEvMTJUNWx4bTFoZWlRbVdhTzk0cDVuNzBRTmhn?=
- =?utf-8?B?dzlPUEdoNVZyNFYxZ094K05Cc2JOUHlUUUhNbGZoNDBDa0VnbGZwMUxNRHQy?=
- =?utf-8?B?MzFPdjdoYjR2dlJlSUQxdFQ2ME55OXFZUWdUOHlzWGZROFlNRFNSWWZJKzlT?=
- =?utf-8?B?c0k2Sm0rdjAwdWRINkwyVTBRUTBPV2ZYWEEyNm5iRmltU3BxQlRMa01jSlY2?=
- =?utf-8?B?cjhwR05SK2tMOTBFdmE5Ky9nTlQ2Rkl4MG1VclpxZXNtdll4UEhGMjVZVkQ4?=
- =?utf-8?B?aDNSdGZJNVdRV3J4SkNHY3dWeEdhSStPSGdaejcrQ3k4bkZYVFhNdDZJWnhn?=
- =?utf-8?B?NG1WVnJTekp5WjFZbjYyQmxFNDJJaDBrMTJEZXp0R0NHWlk3QnI5aVV1V0Zk?=
- =?utf-8?B?ME9SRE55MSt0bE0rMVd6akhqMGU3bk5Rb2FJamtlR2FkeU5YVUk1YUN5Y0hn?=
- =?utf-8?B?cHRrWXBORkNrY1BXU2N4bitTNStrWElFOWtoeDlla2lMNGx6Z0FHSEkzcHlR?=
- =?utf-8?B?di8zcmtnZHBFKzEwOVFyeWhuczd5Qlhyd2RvaUY4ZHdBRnc1dnJDbEdFb0c1?=
- =?utf-8?B?Q1BJWDArbjloYTNjYTI5akVpZlhVL2NERTVsdlRCbEo5WHVCc09wZTU5cTgz?=
- =?utf-8?B?WXNuRkw5RzVJd0RvQXVKbE52L3NhblFBVVRGRXYvMGhXaFlCYlE5d0U3SWha?=
- =?utf-8?B?eWlWNmxMTXMrYTR4ZjlwWHl5UkFhOFVmWTUvaE1hSkxiVFE9PQ==?=
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN0PR10MB5128.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(38070700018);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?utf-8?B?Ri9Cc0V6TW1OWFVKL1NOd3BiMnFIbHBaMGdXaG4zSU5JeGFLdmUrb21YYmFt?=
- =?utf-8?B?azFNNDRKbFIzRVNqZzhsZGlhcVhQa0pWeXIzeWZTN0p4cUVUZ3ppcjRaY0VC?=
- =?utf-8?B?RDg3b1NwSE00dFZvVFR5cnpWenMwOFBTbUhna0VEclU0Zm5XQVBPcmFhTzNr?=
- =?utf-8?B?U0daeTFEd3J6cHBOVm1kR2NsUkh0OEVyY1U0VkJUQVQ0N0FWUUd6WGh4MXQw?=
- =?utf-8?B?T0t5Ny9jUDg3b0dYWjc1TTBIdlQzQm5tc2o3Tzg5WHduM3lOY28vSWdNeDNC?=
- =?utf-8?B?ZTgvVVludWs0SUpEdGRiOWw4MFNZTFp6UElTM2xRdHROaVVYcHRILytiNDJG?=
- =?utf-8?B?OTdMQ0xJT2Fha0ZsUFQwQ1AzbFNFRytnS2FKUXpRRmJsbzN2VExINmc0azYx?=
- =?utf-8?B?Y2xMQlRnOGxFMkhOaE5FdDZhcHdQOTd3b0ZaNEJPTGc1TUdqZW80eG1zUzZX?=
- =?utf-8?B?NGp6MDY1YmVUZEVVQWtmQUlKY1lFSEpQRXBNUUJaRlAxTEd5U0RaVjJBSlh4?=
- =?utf-8?B?c3pQYTZFOERIYW9IenZRYUM1S3NtOHYxM0ZiaDFsdGxQamoxQ0lsVlpkd1ls?=
- =?utf-8?B?VmVkZ0JzcUdmNmNDQlAxc1FVaTV2c2hLSUdRQndyWHZSbmpIR0d2VHp2RndZ?=
- =?utf-8?B?ZkU4ejhTSGowTmU2ZmtSSWFuU2UvOSt0NVAzMFhRWmdLRi9VcENVaEFvS2Zx?=
- =?utf-8?B?c1MzS2xlSThHTFZHQUI1UnR1bUY5Z0VJR0tTYjVnRmFmUzJMeGM4eFBBRmtp?=
- =?utf-8?B?by9oaVA0K09YSEIwTFVGSVl4ajhWbUh4YUNKaTN1K3A4WnNQRytMZVJmcjU5?=
- =?utf-8?B?V1UraDFHaUJoRkZJRVAzTUszdEZDek5hbk1VeFVBTityR1FrQUR2eXdwRVFw?=
- =?utf-8?B?ZVBac05FQW5JMWdaTENZUjVSbjRjZHZQTkRjTUJINCtsTisvWExxdXdCVDls?=
- =?utf-8?B?S0NFZXdPMkdzbTBKeFpFLzRaWUZEaXZlVk5HSEkxWFI1K3kwVThJZEtENzg2?=
- =?utf-8?B?REZUVVN0aWpzaDJTRndLN0lwV2w2WEZ5TVdLbnpDZk1xWnhEYkJ0Y25XMmZQ?=
- =?utf-8?B?Y1E5QStmMzZpOWtxY2RlaWp1WGIzMXkyZVhrdG9JVTdKQjhLWGtJcUhaWno3?=
- =?utf-8?B?YnZJNFpaM0ZXQzMzaC9oM2hNTkhER0kwSFhRcTFpUHFRTkN4S2NoakpkUHlL?=
- =?utf-8?B?elJwMVBjS1ZqQ0pyWE1KSGhoVHF4TU5yUndpcmJ6UXdEekdBa1VXRlVJbVRm?=
- =?utf-8?B?Y2lBd2lCQWo5dmROS3lJL3JDNTUxeGpjalRBNmVwaDBxUjVLcDRxaFB5V1hJ?=
- =?utf-8?B?a3N6ZmZUaFZIZWhjTXo2ZXZVVVlzdzljZk5ZdkxQS3lReUFObHBDWXJGdFov?=
- =?utf-8?B?N1JIMVZxa1Y1clc2dG1oeExsU0llR1NJNnJuTk1WWUNkbTVFOTNNaklRNHdH?=
- =?utf-8?B?ekFOSDNYdVF2ZTYxOC9BclRpdjZtRmVENFV6akJsMU84dEM0WDJRK1dwWmlP?=
- =?utf-8?B?Z1Vma2hoaXM0SVkybXdCaUlMcDgybmdrWnRHaGZMNFRJRExyNGJWempqYzdt?=
- =?utf-8?B?T0dXZ1lUdTlyeFpidVN0WHcwd2NVTVlMeDA4Ym9pZnRKa2c1U25lSVJkeTFp?=
- =?utf-8?B?YlVzanVhWFRLS2ZqZkl1WmNIcTc2NjFydEt4c1laa0Nkb2hndXZQNlBKc3Rt?=
- =?utf-8?B?eW81V1hOaDFUMmVkRy8vdXNuRGJidkczUVJ5eWRZcXNFSHFwU1hiSkhnYlFC?=
- =?utf-8?B?ZnAvQndEcmJHdWRQMUtsUjYrcmNRMGtRTG9tUENoTEM3SG1xdGxOSVhpeURt?=
- =?utf-8?B?QTlYUERZMVE4NlBnaTJVcTllTHZxTlQyNnpsNXN1b0xVdmtuWmZVMkxWZnl0?=
- =?utf-8?B?d0E2MGdBYjlGdEZiV3RXdC9VenVhczhnTUhkUlJkbnlIcFN2ZHNNdGNoRkk3?=
- =?utf-8?B?SXlkYzBPdmZJejg1NDJsV0Y5eEE4MVRWVVVlOWxYMXBRRmdXaVpOZ3lzOGhw?=
- =?utf-8?B?UCtxMmlDLzBaK0liWnNEUW40eGJFY0RHMnArRUQvdG9Zbzc0T2w2aXptTllI?=
- =?utf-8?B?bGpxcE1ySnJpbUcwUDFVaVlsS3NmR0JWVUdrOWFSRWhyeCtBNytzREFiMG5i?=
- =?utf-8?B?SFVOdXcvcDVVMzVmWFllQkpNRzNqMEEwNm1EMDgvK29yQUw0SlFOQUp3Z3Vy?=
- =?utf-8?B?UUE9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <3517F189628625468A92629F54DCC527@namprd10.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11F171B949;
+	Wed, 25 Sep 2024 15:57:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727279835; cv=none; b=hj55YNATfwM9bRhBbzfocBalW3SwtXBNId8Sb3xCtEZQ2JaK7+WVLY+g0UBsreeJQRXTy4mg4nyLOWAtqCcCHpWquSiknds4kyziXGxqsrx8xeSvfcUd2W+zP/OX6wreeQWIyKzUbVUx0Q3LbzJoM7shUuBhZPoZo+uHvVzAEQs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727279835; c=relaxed/simple;
+	bh=fliI3WurLpbz3JqE8ckBaMDYvH0f/jMx03dDRXu8KBE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PeIrGy3lfj2qDDt3Ex6EKqm2A2NanISmnTSEfetlEVAhbYv6ka5c2qOzPVH4HW6wNmEt1ELhJuedTZbOxPxQvVgyKK6lTqACoYjFTYj/7rmwsl/vpgdTSLlGjHZNOZwqWN2x6xUxzoCcjLjM78gOaX44LUY9MQPocFAf5HVmKsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=2QiSRjzM; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=fGk4FfR/; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=KKPBTOat; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=yf0iwNtl; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id D4E9B1F7CA;
+	Wed, 25 Sep 2024 15:57:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1727279831; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xz8BgoBkgBevARHxzLzwe82i2OKcUUDGcY0Ygrqdsfs=;
+	b=2QiSRjzMiHNC9a2y8FuW/0I+LkTaIqRVA+kMGOrpogrq2/Ji2VMuBAh96BgkqdP+uIz0Vn
+	jH3NliV4LDsHZnEHHysfih1clI4c6xZEBAHgU4HC02YFvKdOEvLbcakabCrcp6CPvDULhy
+	OujYmGlFKPLwUfNtT9F9xE7ExVqZxp0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1727279831;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xz8BgoBkgBevARHxzLzwe82i2OKcUUDGcY0Ygrqdsfs=;
+	b=fGk4FfR/8umU6mDEFtLGpPCJKf/3P8KRiFtneKmD/gFeg+REzNMbNAPJTXDBSEEM/A4FN4
+	MSsibvzAmT4ZXKDg==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=KKPBTOat;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=yf0iwNtl
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1727279830; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xz8BgoBkgBevARHxzLzwe82i2OKcUUDGcY0Ygrqdsfs=;
+	b=KKPBTOatbQ8/vYOW6SytHUE3wlVM8X2/vk2iTF00E35yhsaewFj/PMsub0Ye02Jqtx3hOK
+	nikysmRow0jDF/yyn4eCCN+pHUNAwjE/ZHsxAiKq08ZOnO9DhkVyvp7nXtOa+fn3gh5Z+v
+	SX2Vwh5Dfm58XqDQQQY5Y013WNrtq/0=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1727279830;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=xz8BgoBkgBevARHxzLzwe82i2OKcUUDGcY0Ygrqdsfs=;
+	b=yf0iwNtlsBws4bD6k3U1rVUtQDDzUGgWO4PEXuV/BqR9J4Ri4GApAQhURBIZW4Uc0iaG5o
+	JsaOGIto9VEzD7AQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id C3C8E13A6A;
+	Wed, 25 Sep 2024 15:57:10 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id uMPFL9Yy9GabCwAAD6G6ig
+	(envelope-from <jack@suse.cz>); Wed, 25 Sep 2024 15:57:10 +0000
+Received: by quack3.suse.cz (Postfix, from userid 1000)
+	id 761D7A0810; Wed, 25 Sep 2024 17:57:06 +0200 (CEST)
+Date: Wed, 25 Sep 2024 17:57:06 +0200
+From: Jan Kara <jack@suse.cz>
+To: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
+Cc: tytso@mit.edu, stable@vger.kernel.org,
+	Andreas Dilger <adilger.kernel@dilger.ca>, Jan Kara <jack@suse.cz>,
+	Baokun Li <libaokun1@huawei.com>,
+	=?utf-8?B?U3TDqXBoYW5l?= Graber <stgraber@stgraber.org>,
+	Christian Brauner <brauner@kernel.org>,
+	linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	linux-ext4@vger.kernel.org,
+	Wesley Hershberger <wesley.hershberger@canonical.com>
+Subject: Re: [PATCH 1/1] ext4: fix crash on BUG_ON in ext4_alloc_group_tables
+Message-ID: <20240925155706.zad2euxxuq7h6uja@quack3>
+References: <20240925143325.518508-1-aleksandr.mikhalitsyn@canonical.com>
+ <20240925143325.518508-2-aleksandr.mikhalitsyn@canonical.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	wHRg8FwIP6lc11gqPmSQeRtSx/GqOvKNKW84D4wV0jFQt99S924exFAK6Z5hdGh7l6JlJr73qbNmAcvdgvxQWKN8XMDMHWgBH3zHYDowu2sdJMGLuoyeoGmrfkH3yNNwxdX7YKwXSu0o4HPJUP2kxnStasGUGvahNcwACCRbBoNNVyUrRmaBZQ4LaYgCRHymse3CrtC5UWWlHQL1ROp95jPRAFdgZNtlao6UParEsB72LWm+5SS+UyV8lDbzgFnbz2CaRA7zEEUb2IKhmgTH8R3JGvCczz2UsZkiT4dsp7XOyp0NvP4dtc1+F/VjU6RIiPEjZpQCYFGc0lWuEbgNXl8P5hdkwDDERqRU0XA+5xFVdTWjW6QpXwTg0nbkBCymrofATQ5rzU7w6TJulydTKNo9BJiXxgcLULgblLmBMB6ZXEQ9/f9niBkLjUes9U+NyZxtvtAJUFHbMggd8npl2jCZsB+PpsuMmxrySxSTvDGy/yngT/6aK/bOLktwOFEXZ9NJKlyN4NhnS/OMVs5UmYFx9bAEmwKDmOVwUbBlL1D9kmwzcQ4jHcdPXh34P40sM8ozfDBZP3fwHsEVDkV8gANwwlN/vve7oO5wvbWMnGI=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BN0PR10MB5128.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1d64132e-39d8-4539-505f-08dcdd795194
-X-MS-Exchange-CrossTenant-originalarrivaltime: 25 Sep 2024 15:47:10.8855
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: A8itxgOWCHLFagQWMip7ARvCzn0fTlhVjew4QI46dIelLOp3d9ffqBT4q+BuUR2cF9857ExJ/9hAB4/1oESpOA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR10MB7312
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-25_10,2024-09-25_02,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 suspectscore=0 mlxlogscore=885
- phishscore=0 bulkscore=0 adultscore=0 mlxscore=0 malwarescore=0
- spamscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2408220000 definitions=main-2409250112
-X-Proofpoint-ORIG-GUID: o2C2LlowXEXKP8pSwvFeCn6x4R8JR1bY
-X-Proofpoint-GUID: o2C2LlowXEXKP8pSwvFeCn6x4R8JR1bY
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240925143325.518508-2-aleksandr.mikhalitsyn@canonical.com>
+X-Rspamd-Queue-Id: D4E9B1F7CA
+X-Spam-Score: -4.01
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-4.01 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	MID_RHS_NOT_FQDN(0.50)[];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MISSING_XM_UA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	FUZZY_BLOCKED(0.00)[rspamd.com];
+	RCPT_COUNT_TWELVE(0.00)[12];
+	DWL_DNSWL_BLOCKED(0.00)[suse.cz:dkim];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[huawei.com:email,suse.com:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.cz:email,suse.cz:dkim];
+	TO_DN_SOME(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_THREE(0.00)[3];
+	RCVD_TLS_LAST(0.00)[];
+	DKIM_TRACE(0.00)[suse.cz:+]
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Flag: NO
+X-Spam-Level: 
 
-DQo+IE9uIFNlcCAyNSwgMjAyNCwgYXQgMTE6MTXigK9BTSwgQ2hyaXN0aWFuIFRoZXVuZSA8Y3RA
-Zmx5aW5nY2lyY3VzLmlvPiB3cm90ZToNCj4gDQo+IEFuZCB3aGlsZSByaWRpbmcgbXkgYmlrZSBo
-b21lIGFuZCBnZXR0aW5nIHNvbWUgZnJlc2ggYWlyIEkgY2FtZSB0byB0aGUgc2FtZSBjb25jbHVz
-aW9uIChhZnRlciBwcmV2aW91c2x5IGJhc2hpbmcgbXkgaGVhZCBhZ2FpbnN0IHRoaXMgZm9yIGhv
-dXJzKS4NCj4gDQo+IFdlIGhhdmUgYSBzdGVwIHdoZXJlIFZNcyAodGhhdCBhcmUgYm9vdGVkIGZy
-ZXNoIG9uIHRoZSBoeXBlcnZpc29yKSBnZXQgYSByYW5kb21pemVkIFVVSUQgb24gdGhlaXIgcm9v
-dCBmaWxlc3lzdGVtIGFuZCBiZWNhdXNlIG9mICRyZWFzb25zIHdlIGRvIHRoYXQgZXZlcnkgdGlt
-ZSwgbm90IGp1c3QgZHVyaW5nIGZpcnN0IGJvb3QuIExvb2tzIGxpa2Ugd2UgbmVlZCB0byBzdG9w
-IGRvaW5nIHRoYXQuDQoNClllcywgdGhhdCdzIGV4YWN0bHkgdGhlIHByb2JsZW0uDQoNCg0KLS0N
-CkNodWNrIExldmVyDQoNCg0K
+On Wed 25-09-24 16:33:24, Alexander Mikhalitsyn wrote:
+> [   33.882936] EXT4-fs (dm-5): mounted filesystem 8aaf41b2-6ac0-4fa8-b92b-77d10e1d16ca r/w with ordered data mode. Quota mode: none.
+> [   33.888365] EXT4-fs (dm-5): resizing filesystem from 7168 to 786432 blocks
+> [   33.888740] ------------[ cut here ]------------
+> [   33.888742] kernel BUG at fs/ext4/resize.c:324!
+
+Ah, I was staring at this for a while before I understood what's going on
+(it would be great to explain this in the changelog BTW).  As far as I
+understand commit 665d3e0af4d3 ("ext4: reduce unnecessary memory allocation
+in alloc_flex_gd()") can actually make flex_gd->resize_bg larger than
+flexbg_size (for example when ogroup = flexbg_size, ngroup = 2*flexbg_size
+- 1) which then confuses things. I think that was not really intended and
+instead of fixing up ext4_alloc_group_tables() we should really change
+the logic in alloc_flex_gd() to make sure flex_gd->resize_bg never exceeds
+flexbg size. Baokun?
+
+								Honza
+
+
+> [   33.889075] Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
+> [   33.889503] CPU: 9 UID: 0 PID: 3576 Comm: resize2fs Not tainted 6.11.0+ #27
+> [   33.890039] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.15.0-1 04/01/2014
+> [   33.890705] RIP: 0010:ext4_resize_fs+0x1212/0x12d0
+> [   33.891063] Code: b8 45 31 c0 4c 89 ff 45 31 c9 31 c9 ba 0e 08 00 00 48 c7 c6 68 75 65 b8 e8 2b 79 01 00 41 b8 ea ff ff ff 41 5f e9 8d f1 ff ff <0f> 0b 48 83 bd 70 ff ff ff 00 75 32 45 31 c0 e9 53 f1 ff ff 41 b8
+> [   33.892701] RSP: 0018:ffffa97f413f3cc8 EFLAGS: 00010202
+> [   33.893081] RAX: 0000000000000018 RBX: 0000000000000001 RCX: 00000000fffffff0
+> [   33.893639] RDX: 0000000000000017 RSI: 0000000000000016 RDI: 00000000e8c2c810
+> [   33.894197] RBP: ffffa97f413f3d90 R08: 0000000000000000 R09: 0000000000008000
+> [   33.894755] R10: ffffa97f413f3cc8 R11: ffffa2c1845bfc80 R12: 0000000000000000
+> [   33.895317] R13: ffffa2c1843d6000 R14: 0000000000008000 R15: ffffa2c199963000
+> [   33.895877] FS:  00007f46efd17000(0000) GS:ffffa2c89fc40000(0000) knlGS:0000000000000000
+> [   33.896524] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [   33.896954] CR2: 00005630a4a1cc88 CR3: 000000010532c000 CR4: 0000000000350eb0
+> [   33.897516] Call Trace:
+> [   33.897638]  <TASK>
+> [   33.897728]  ? show_regs+0x6d/0x80
+> [   33.897942]  ? die+0x3c/0xa0
+> [   33.898106]  ? do_trap+0xe5/0x110
+> [   33.898311]  ? do_error_trap+0x6e/0x90
+> [   33.898555]  ? ext4_resize_fs+0x1212/0x12d0
+> [   33.898844]  ? exc_invalid_op+0x57/0x80
+> [   33.899101]  ? ext4_resize_fs+0x1212/0x12d0
+> [   33.899387]  ? asm_exc_invalid_op+0x1f/0x30
+> [   33.899675]  ? ext4_resize_fs+0x1212/0x12d0
+> [   33.899961]  ? ext4_resize_fs+0x745/0x12d0
+> [   33.900239]  __ext4_ioctl+0x4e0/0x1800
+> [   33.900489]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [   33.900832]  ? putname+0x5b/0x70
+> [   33.901028]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [   33.901374]  ? do_sys_openat2+0x87/0xd0
+> [   33.901632]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [   33.901981]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [   33.902324]  ? __x64_sys_openat+0x59/0xa0
+> [   33.902595]  ext4_ioctl+0x12/0x20
+> [   33.902802]  ? ext4_ioctl+0x12/0x20
+> [   33.903031]  __x64_sys_ioctl+0x99/0xd0
+> [   33.903277]  x64_sys_call+0x1206/0x20d0
+> [   33.903534]  do_syscall_64+0x72/0x110
+> [   33.903771]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [   33.904115]  ? irqentry_exit+0x3f/0x50
+> [   33.904362]  ? srso_alias_return_thunk+0x5/0xfbef5
+> [   33.904707]  ? exc_page_fault+0x1aa/0x7b0
+> [   33.904979]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+> [   33.905349] RIP: 0033:0x7f46efe3294f
+> [   33.905579] Code: 00 48 89 44 24 18 31 c0 48 8d 44 24 60 c7 04 24 10 00 00 00 48 89 44 24 08 48 8d 44 24 20 48 89 44 24 10 b8 10 00 00 00 0f 05 <41> 89 c0 3d 00 f0 ff ff 77 1f 48 8b 44 24 18 64 48 2b 04 25 28 00
+> [   33.907321] RSP: 002b:00007ffe9b8833a0 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+> [   33.907926] RAX: ffffffffffffffda RBX: 0000000000000001 RCX: 00007f46efe3294f
+> [   33.908487] RDX: 00007ffe9b8834a0 RSI: 0000000040086610 RDI: 0000000000000004
+> [   33.909046] RBP: 00005630a4a0b0e0 R08: 0000000000000000 R09: 00007ffe9b8832d7
+> [   33.909605] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000004
+> [   33.910165] R13: 00005630a4a0c580 R14: 00005630a4a10400 R15: 0000000000000000
+> [   33.910740]  </TASK>
+> [   33.910837] Modules linked in:
+> [   33.911049] ---[ end trace 0000000000000000 ]---
+> [   33.911428] RIP: 0010:ext4_resize_fs+0x1212/0x12d0
+> [   33.911810] Code: b8 45 31 c0 4c 89 ff 45 31 c9 31 c9 ba 0e 08 00 00 48 c7 c6 68 75 65 b8 e8 2b 79 01 00 41 b8 ea ff ff ff 41 5f e9 8d f1 ff ff <0f> 0b 48 83 bd 70 ff ff ff 00 75 32 45 31 c0 e9 53 f1 ff ff 41 b8
+> [   33.913928] RSP: 0018:ffffa97f413f3cc8 EFLAGS: 00010202
+> [   33.914313] RAX: 0000000000000018 RBX: 0000000000000001 RCX: 00000000fffffff0
+> [   33.914909] RDX: 0000000000000017 RSI: 0000000000000016 RDI: 00000000e8c2c810
+> [   33.915482] RBP: ffffa97f413f3d90 R08: 0000000000000000 R09: 0000000000008000
+> [   33.916258] R10: ffffa97f413f3cc8 R11: ffffa2c1845bfc80 R12: 0000000000000000
+> [   33.917027] R13: ffffa2c1843d6000 R14: 0000000000008000 R15: ffffa2c199963000
+> [   33.917884] FS:  00007f46efd17000(0000) GS:ffffa2c89fc40000(0000) knlGS:0000000000000000
+> [   33.918818] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [   33.919322] CR2: 00005630a4a1cc88 CR3: 000000010532c000 CR4: 0000000000350eb0
+> [   44.072293] ------------[ cut here ]------------
+> 
+> Cc: stable@vger.kernel.org # v6.8+
+> Fixes: 665d3e0af4d3 ("ext4: reduce unnecessary memory allocation in alloc_flex_gd()")
+> Cc: "Theodore Ts'o" <tytso@mit.edu>
+> Cc: Andreas Dilger <adilger.kernel@dilger.ca>
+> Cc: Jan Kara <jack@suse.cz>
+> Cc: Baokun Li <libaokun1@huawei.com>
+> Cc: Stéphane Graber <stgraber@stgraber.org>
+> Cc: Christian Brauner <brauner@kernel.org>
+> Cc: <linux-kernel@vger.kernel.org>
+> Cc: <linux-fsdevel@vger.kernel.org>
+> Cc: <linux-ext4@vger.kernel.org>
+> Reported-by: Wesley Hershberger <wesley.hershberger@canonical.com>
+> Closes: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2081231
+> Reported-by: Stéphane Graber <stgraber@stgraber.org>
+> Signed-off-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
+> ---
+>  fs/ext4/resize.c | 13 ++++++-------
+>  1 file changed, 6 insertions(+), 7 deletions(-)
+> 
+> diff --git a/fs/ext4/resize.c b/fs/ext4/resize.c
+> index e04eb08b9060..c057a7867363 100644
+> --- a/fs/ext4/resize.c
+> +++ b/fs/ext4/resize.c
+> @@ -300,8 +300,7 @@ static void free_flex_gd(struct ext4_new_flex_group_data *flex_gd)
+>   * block group.
+>   */
+>  static int ext4_alloc_group_tables(struct super_block *sb,
+> -				struct ext4_new_flex_group_data *flex_gd,
+> -				unsigned int flexbg_size)
+> +				struct ext4_new_flex_group_data *flex_gd)
+>  {
+>  	struct ext4_new_group_data *group_data = flex_gd->groups;
+>  	ext4_fsblk_t start_blk;
+> @@ -313,7 +312,7 @@ static int ext4_alloc_group_tables(struct super_block *sb,
+>  	ext4_group_t group;
+>  	ext4_group_t last_group;
+>  	unsigned overhead;
+> -	__u16 uninit_mask = (flexbg_size > 1) ? ~EXT4_BG_BLOCK_UNINIT : ~0;
+> +	__u16 uninit_mask = (flex_gd->resize_bg > 1) ? ~EXT4_BG_BLOCK_UNINIT : ~0;
+>  	int i;
+>  
+>  	BUG_ON(flex_gd->count == 0 || group_data == NULL);
+> @@ -321,8 +320,8 @@ static int ext4_alloc_group_tables(struct super_block *sb,
+>  	src_group = group_data[0].group;
+>  	last_group  = src_group + flex_gd->count - 1;
+>  
+> -	BUG_ON((flexbg_size > 1) && ((src_group & ~(flexbg_size - 1)) !=
+> -	       (last_group & ~(flexbg_size - 1))));
+> +	BUG_ON((flex_gd->resize_bg > 1) && ((src_group & ~(flex_gd->resize_bg - 1)) !=
+> +	       (last_group & ~(flex_gd->resize_bg - 1))));
+>  next_group:
+>  	group = group_data[0].group;
+>  	if (src_group >= group_data[0].group + flex_gd->count)
+> @@ -403,7 +402,7 @@ static int ext4_alloc_group_tables(struct super_block *sb,
+>  
+>  		printk(KERN_DEBUG "EXT4-fs: adding a flex group with "
+>  		       "%u groups, flexbg size is %u:\n", flex_gd->count,
+> -		       flexbg_size);
+> +		       flex_gd->resize_bg);
+>  
+>  		for (i = 0; i < flex_gd->count; i++) {
+>  			ext4_debug(
+> @@ -2158,7 +2157,7 @@ int ext4_resize_fs(struct super_block *sb, ext4_fsblk_t n_blocks_count)
+>  					 ext4_blocks_count(es));
+>  			last_update_time = jiffies;
+>  		}
+> -		if (ext4_alloc_group_tables(sb, flex_gd, flexbg_size) != 0)
+> +		if (ext4_alloc_group_tables(sb, flex_gd) != 0)
+>  			break;
+>  		err = ext4_flex_group_add(sb, resize_inode, flex_gd);
+>  		if (unlikely(err))
+> -- 
+> 2.34.1
+> 
+-- 
+Jan Kara <jack@suse.com>
+SUSE Labs, CR
 
