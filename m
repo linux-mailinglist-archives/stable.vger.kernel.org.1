@@ -1,109 +1,139 @@
-Return-Path: <stable+bounces-77062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77063-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA6EF984F79
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 02:37:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6248984F88
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 02:43:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 595B21F244CC
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 00:37:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74F9F28504D
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 00:43:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 544EE610B;
-	Wed, 25 Sep 2024 00:37:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB43A522A;
+	Wed, 25 Sep 2024 00:43:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="b9dI6Exf"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3nflN8xn"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD58F4A35
-	for <stable@vger.kernel.org>; Wed, 25 Sep 2024 00:37:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EE6CDDA1
+	for <stable@vger.kernel.org>; Wed, 25 Sep 2024 00:43:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727224646; cv=none; b=rJgWRarZwb8SsAgvuKkTHErWC04CQccO8166A3dGDVGttopRVeABLfQO94u6mgED58+IpnqDLmm7+ILjJ7AfD1aKwfnMbM0OZd7mTiofvM1yXWbEDX/Aycn+xIiAhzZk7brinvjUWVTX8Pn2zizMqzwuYCVBrG5G4lvAJxMZFCk=
+	t=1727225018; cv=none; b=SV2PDCxqHmfua3dVdxx/3aeqDIlHc5fM3RbIx0aF0MwKse1PKUl5AqA7eNt5ecfNkc3ywsqVt94A2OMu2h/+bjN/45NZwA+sUMxgSUW2ulfZa9/X1JIwAHwQcELP3HbMuwdBQwCbj4JXaq0YNHVqSfX4HjvPjFG7lrfEEJ8fmOQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727224646; c=relaxed/simple;
-	bh=Ne4vSr3cvYtPVxEhHNFux7VOXieBzrt1kuOruhtxSL0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UmFtf/B9PVPVw2x5P9L31wDCRzmE8sQ9j4fy2m+2ng1Pz5jz/0xDKy6qg7NCszfB/c8w+ihvF5XgXcE7cy2KCg5dgPgIXX+uRagCOCt7uFW/+SDq2g7prrvc+QjV1nBq5Ndg1WOlot/uZe1fTNuU4nrveHkE5susHvmrqlKYgXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=b9dI6Exf; arc=none smtp.client-ip=209.85.215.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-7d916b6a73aso3872995a12.1
-        for <stable@vger.kernel.org>; Tue, 24 Sep 2024 17:37:24 -0700 (PDT)
+	s=arc-20240116; t=1727225018; c=relaxed/simple;
+	bh=6oo9UyDI6tNCy/vrVg6StxlpjEhhMXYGLaO2tjUMhsw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=F8xs0zzVjA+DkDzjxoWxz6Am2QwAB3Vxe7prH0e3s4IFjMmpw/qAEnbsSCb4ek+kpzbM36wj7RqNgA4xoWuTDN/M2wwDPaxO9hpo1bFnVyo/uqHLo2YTx6pmvpH0P9sZ4M1RWhDtvcGbdUVQr2AmMBojGHyFYicwEqxK9mbX0wQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3nflN8xn; arc=none smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-718816be6cbso4667956b3a.1
+        for <stable@vger.kernel.org>; Tue, 24 Sep 2024 17:43:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1727224644; x=1727829444; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=qi+Ew/rpwQdNekWtvCMQfio8DRksEPNbxq/gVYTc9Bc=;
-        b=b9dI6ExfYHghZcb+6aNMSYMdVeecGzHlQ7pF5VDSD4FfPpELvS2C/+XGVYPQbGijtM
-         tORy73aiMoCF4X66byl96MkEzenZg/Pu3YCNZm6CgXFkjXzPL4ors4dXgQxC7gqkYY12
-         SahDw2Gwx2h07VUSn3plqGYpJwTRw2mhTxDTc=
+        d=google.com; s=20230601; t=1727225016; x=1727829816; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=f2SReWVorwb9BWpqJC6qNKm25K4EtD3lyA2IEQidVNI=;
+        b=3nflN8xns7tW6l9QtWnmmus+LG2JH7lYHxWVFu/4+ZlxsiK+9CJcES9xLNtEINSxx6
+         MX2Hp//Qop9vY9oTO25sEdu0S7M4RE9UMyJe/Nr91zCspg00L8QAn5L7HplxX+OAhEYI
+         S/rajt9MeGseQCc8rQzLrBiX18AVWst/FPvCfYzeNSpiaKLqr5CbDEwtKSz3pVZ4EXv1
+         Rjc7JGft6xvukcxBxqhBUehL3ETbrOs48Ybt2gEhnj4EdfHPixrUOyoKiH1ExTg+HNK5
+         sQ9dXqjJQC3ag2AKSJ4dEYxCjFTvFJsZ0AKspkuOm+M41Ya/ZHiL0ZC/PeIzOfL96g0j
+         u4hg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727224644; x=1727829444;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qi+Ew/rpwQdNekWtvCMQfio8DRksEPNbxq/gVYTc9Bc=;
-        b=aBX1pjTY8pqyzdOhYw7shak4pCLTylJ6f+gktM7D2E3j197dkDcGvD7/5qforkswAI
-         J6URt8jv6FQlNYMOWtPbNsyW42APcpNvWKtVwG6Qz1q4KBcAiiUACFMyQVBaq8RnNpAO
-         oxS8FYZjUr/kaJf8ee17+us7FFDftNw7t/+PfC1XcR7FWViEwVe94dBg7+zdLgKwGX5N
-         jh9iliWqH2FVVFAdkK0mVW87uYnMFpKAvHqLj7UwoOskbj1/f3457g9yLUAUa6uxNEhw
-         c88vleQc3afshL1mKWXLxfG9yNzahzEbHD9DIeWSoiZcvbQO7XZrGW6xERS/VLVgVwdD
-         K8aQ==
-X-Forwarded-Encrypted: i=1; AJvYcCULgCDSiASxL19FSGoYJ+QmxwAlMYql1RgZI9DsJHtJfScUdFJZzKoDETPS5wg57jqfEOnbiNE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwHMZZUF35IXHeXd5/YKwvghIUb9R5ZXCkBUZP/kpUPvi/1BFSo
-	uFiIHAp4Fs15oPKatD9m5n+J5br5A66Y/61LKnPEI0Gz7YEviU7XymKbGHScUQ==
-X-Google-Smtp-Source: AGHT+IGHpbtyH6wG5q8wpr8glm0LmNDVojnlHAVCXzzabVBkw4UaRXRI6IpMn0gx/0I09JmQAN/eSw==
-X-Received: by 2002:a17:90a:cb97:b0:2d3:d398:3c1e with SMTP id 98e67ed59e1d1-2e06afd7775mr1014848a91.36.1727224644075;
-        Tue, 24 Sep 2024 17:37:24 -0700 (PDT)
-Received: from google.com ([2401:fa00:8f:203:234f:c061:7929:9747])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e058a0899fsm1409293a91.0.2024.09.24.17.37.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 24 Sep 2024 17:37:23 -0700 (PDT)
-Date: Wed, 25 Sep 2024 09:37:18 +0900
-From: Sergey Senozhatsky <senozhatsky@chromium.org>
-To: Chris Li <chrisl@kernel.org>
-Cc: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Andrey Skvortsov <andrej.skvortzov@gmail.com>,
-	Minchan Kim <minchan@kernel.org>, Jens Axboe <axboe@kernel.dk>,
-	linux-kernel@vger.kernel.org, linux-block@vger.kernel.org,
-	stable@vger.kernel.org, Sachin Sant <sachinp@linux.ibm.com>,
-	linux-mm <linux-mm@kvack.org>
-Subject: Re: [PATCH v3] zram: don't free statically defined names
-Message-ID: <20240925003718.GA11458@google.com>
-References: <20240923164843.1117010-1-andrej.skvortzov@gmail.com>
- <20240924014241.GH38742@google.com>
- <d22cff1a-701d-4078-867d-d82caa943bab@linux.vnet.ibm.com>
- <CAF8kJuPEg1yKNmVvPbEYGME8HRoTXdHTANm+OKOZwX9B6uEtmw@mail.gmail.com>
- <CAF8kJuOs-3WZPQo0Ktyp=7DytWrL9+UrTNUGz+9n9s6urR-rtA@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1727225016; x=1727829816;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=f2SReWVorwb9BWpqJC6qNKm25K4EtD3lyA2IEQidVNI=;
+        b=fSRNl7CHHJ9EMKj0X5Uv3TsoAWUC5sbw/c85i6WgyVvEWU0aiwNg2c6cI9JGgNTPHr
+         PJeV3OC21oGT8qYA1ZWjbOUNr39ThUIOs1KBjqmbtuywNnpuF9z7h/U3dO0DeDiwXOWM
+         uNLfRGyGndduE7Rb2JEXrbga+8HxHYDLkA6bPpnG6iLg518FTXkz5B+AN5qnuzaiJijb
+         7VQbRjHlpEkgUlGy0uhsc8BU/w38H77o4TSQLC/Qcm4H3d4BB4sww3XIJn1r9qE1ap6p
+         c0aGkuG93GYmxQW4azKge+wWJP/X8O1I9qzL/4O5FvI2PV2LGnmSPl2898bV8gxeaa+P
+         Hcfw==
+X-Forwarded-Encrypted: i=1; AJvYcCUxuHTl5sIAHWb5TxM8nbUsz1YakZyBjcCkLu0shwwdWp1YV7Tr4NQjWyW9wyCPMTAsfRxM9dM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxcfYqxr2t296TT2NnwJEUoaorttWVljXHwK7+0awXXr6dUN8fD
+	63CC/QruVgO79BWtLOuMQ8lCHOknrO2m197DpBWK6VvmX1iqFQ177Jke0PRzz3ixqnmFl339PKa
+	vFZqZlpCZKmvKMh8Rqh0vMBrHcOTLshDYMReGCFNo4MEephOXrPdX
+X-Google-Smtp-Source: AGHT+IHHQJ/z9cde/B0xUGfpIZrdRHInqr7GqCqDy9WJH7CGrc1yAUxLThy1XDUDtNcSSsKNo1YXM/QOvjfHR8vCAlY=
+X-Received: by 2002:a05:6a00:2351:b0:717:86ea:d010 with SMTP id
+ d2e1a72fcca58-71b0ac43cb9mr1347871b3a.21.1727225016022; Tue, 24 Sep 2024
+ 17:43:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAF8kJuOs-3WZPQo0Ktyp=7DytWrL9+UrTNUGz+9n9s6urR-rtA@mail.gmail.com>
+References: <20240924184401.76043-1-cmllamas@google.com> <20240924184401.76043-5-cmllamas@google.com>
+In-Reply-To: <20240924184401.76043-5-cmllamas@google.com>
+From: Todd Kjos <tkjos@google.com>
+Date: Tue, 24 Sep 2024 17:43:19 -0700
+Message-ID: <CAHRSSEw8Y=ZnPvGaBKf9H7ohV-fhub0fZW96T4dHy_F=JsCJeg@mail.gmail.com>
+Subject: Re: [PATCH 4/4] binder: fix BINDER_WORK_FROZEN_BINDER debug logs
+To: Carlos Llamas <cmllamas@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Christian Brauner <brauner@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Yu-Ting Tseng <yutingtseng@google.com>, linux-kernel@vger.kernel.org, 
+	kernel-team@android.com, Alice Ryhl <aliceryhl@google.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On (24/09/24 11:29), Chris Li wrote:
-> On Tue, Sep 24, 2024 at 8:56 AM Chris Li <chrisl@kernel.org> wrote:
-[..]
-> Given the merge window is closing. I suggest just reverting this
-> change. As it is the fix also causing regression in the swap stress
-> test for me. It is possible that is my test setup issue, but reverting
-> sounds the safe bet.
+On Tue, Sep 24, 2024 at 11:44=E2=80=AFAM Carlos Llamas <cmllamas@google.com=
+> wrote:
+>
+> The BINDER_WORK_FROZEN_BINDER type is not handled in the binder_logs
+> entries and it shows up as "unknown work" when logged:
+>
+>   proc 649
+>   context binder-test
+>     thread 649: l 00 need_return 0 tr 0
+>     ref 13: desc 1 node 8 s 1 w 0 d 0000000053c4c0c3
+>     unknown work: type 10
+>
+> This patch add the freeze work type and is now logged as such:
+>
+>   proc 637
+>   context binder-test
+>     thread 637: l 00 need_return 0 tr 0
+>     ref 8: desc 1 node 3 s 1 w 0 d 00000000dc39e9c6
+>     has frozen binder
+>
+> Fixes: d579b04a52a1 ("binder: frozen notification")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Carlos Llamas <cmllamas@google.com>
 
-The patch in question is just a kfree() call that is only executed
-during zram reset and that fixes tiny memory leaks when zram is
-configured with alternative (re-compression) streams.  I cannot
-imagine how that can have any impact on runtime, that makes no
-sense to me, I'm not sure that revert is justified here.
+Acked-by: Todd Kjos <tkjos@google.com>
+
+> ---
+>  drivers/android/binder.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/drivers/android/binder.c b/drivers/android/binder.c
+> index d955135ee37a..2be9f3559ed7 100644
+> --- a/drivers/android/binder.c
+> +++ b/drivers/android/binder.c
+> @@ -6408,6 +6408,9 @@ static void print_binder_work_ilocked(struct seq_fi=
+le *m,
+>         case BINDER_WORK_CLEAR_DEATH_NOTIFICATION:
+>                 seq_printf(m, "%shas cleared death notification\n", prefi=
+x);
+>                 break;
+> +       case BINDER_WORK_FROZEN_BINDER:
+> +               seq_printf(m, "%shas frozen binder\n", prefix);
+> +               break;
+>         default:
+>                 seq_printf(m, "%sunknown work: type %d\n", prefix, w->typ=
+e);
+>                 break;
+> --
+> 2.46.0.792.g87dc391469-goog
+>
 
