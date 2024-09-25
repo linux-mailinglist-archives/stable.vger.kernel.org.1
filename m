@@ -1,58 +1,61 @@
-Return-Path: <stable+bounces-77262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 486DC985B39
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:18:58 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0D91985B3B
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:19:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E8F3B1F25709
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:18:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DF321C240AC
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:19:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E52211BA89C;
-	Wed, 25 Sep 2024 11:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04FCE1BAEDE;
+	Wed, 25 Sep 2024 11:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MecXH/wq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R3wMusr8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3AAD1BA89A;
-	Wed, 25 Sep 2024 11:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A60CE1925B7;
+	Wed, 25 Sep 2024 11:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727264865; cv=none; b=ga8jklaWsCxTrffzjPO+xSErOUXMXunnHbvPxq4peALfbsIkRGuCq38SaKAgdR1b4pzI2Zq/2mY6LNfE5bJEYIL808lBK1P7gwD0/rv4AKgCrwz0DZI+/UzlwPYn+2qsxm93E5gs7Br5+bf0k/2Zx/loiJh6s2/7HyCKjX9Ju1E=
+	t=1727264868; cv=none; b=MjJz/lvXD2lW2zeonTDGEHJxSy39T49BMR5FhkMIrUKWiDSwsqRLRWLKkHvbjqX9MD0b/200uaNuvMLuL9SnfPiBtqDIKFvgfygWR5W1tFplYHQpQGFZUKqm3F0IX8WJJFZG2m+LoEDESDz3gOi/7Ho4GzQZwuRmoVKWHygy9BY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727264865; c=relaxed/simple;
-	bh=5vZZLjv9kkxWgX/JZ7ubMaH6p8tD0cwwEtPPOROlw1g=;
+	s=arc-20240116; t=1727264868; c=relaxed/simple;
+	bh=po9f51uDucsvgf7M2G/usUCoT5pvByTwmJt47R8DjF0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mzK26382IVCDLbwcx1yT3nTn4Om7SPX9VojNLSi+EwFXPX5mEUIRzdGw8NNK5gziU3mWM+2HTnQvaIMijXblb91T4sXPWEtbQlEnqFNyp009lVGdV0lM4YC0RhLcmF3c60zqzhSSJSa6TCW19X+SPECOLMEpVOxQiZJG1Hp5ikc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MecXH/wq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76D17C4CEC3;
-	Wed, 25 Sep 2024 11:47:44 +0000 (UTC)
+	 MIME-Version; b=e1469tIK1+ahKpn0Hx3tlHT9p0kzh3dDJaH15y3uik2b0v6OigyQp5ou22WuThMIMo8SFRsHObOKuRbiDfQy9GwopqcmbK++uWpg314BAEaWSVSfTD0XWJh6mr57+zVz5pJlOzUp7qnLIFKw2aZPBDkbHkalEDSqagIXHUdEGdM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R3wMusr8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 271E1C4CEC7;
+	Wed, 25 Sep 2024 11:47:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727264865;
-	bh=5vZZLjv9kkxWgX/JZ7ubMaH6p8tD0cwwEtPPOROlw1g=;
+	s=k20201202; t=1727264868;
+	bh=po9f51uDucsvgf7M2G/usUCoT5pvByTwmJt47R8DjF0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MecXH/wqhq9ZdJiU63WzQpFnPNgT+q8ZCqzknXOEY3FLqlyiOu/V9ZIW88FZaanEm
-	 n7rScFzgGKWz7V3Es8szeovjOzQPyS6wrlUKg26DlTonfwk7tYRylRJ+v2Gm4GcOFD
-	 qE4gAuyqZRDGVxKzo0hIO0OvNrv0p4+fACr0QxGhQMvvC9noE2F0CYy3/R61xWafqk
-	 W2Lo0ckYcu0OZihqvTzOYut3jUgGoW0askBsrOEsBAGgwkm+oIiPtQCF6mUyinMEoI
-	 ZS/B8BgwkKo8BZQ3O/vFw3XMX76hzBY/AeqTJ+io4vrf1ykF1kqSs9T7hGS+t1qf8B
-	 Mm8iCO7D5fHXQ==
+	b=R3wMusr8qJqfe0vf/VVLspI8QYtRMI/Sogfxf7LsQSLBNFJpnrvLRXBHcA/PcPRn5
+	 mLMQ7m/k8o/9ZvFwK4PKp/XFTYviScepBcJ841BzbNYzQH6CXESmUFDfwDspf/BPgx
+	 Iev95yTz4fehzr6qlvOUKEWNqCzIzW7sMBte4ZVIlIxAbTkRbTtBDgrmxE4Dd5qlCX
+	 p9Qf/zEYWB7FsagUQUpmXL3yp5l3dXmyq65/yifyDooy2ZwnRGzHTUswViO2c1lqRR
+	 onsIZRbNLnxQ0I19XiRirQxNcpA6XkdMI3u8ImnvEM+NXRahSuxExosvNmiw8aUGbw
+	 UmYknwo91SxyA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Edward Adam Davis <eadavis@qq.com>,
-	syzbot+3c010e21296f33a5dc16@syzkaller.appspotmail.com,
+	syzbot+dca05492eff41f604890@syzkaller.appspotmail.com,
 	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
 	shaggy@kernel.org,
+	ghandatmanas@gmail.com,
+	juntong.deng@outlook.com,
+	peili.dev@gmail.com,
 	jfs-discussion@lists.sourceforge.net
-Subject: [PATCH AUTOSEL 6.11 164/244] jfs: Fix uaf in dbFreeBits
-Date: Wed, 25 Sep 2024 07:26:25 -0400
-Message-ID: <20240925113641.1297102-164-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.11 165/244] jfs: check if leafidx greater than num leaves per dmap tree
+Date: Wed, 25 Sep 2024 07:26:26 -0400
+Message-ID: <20240925113641.1297102-165-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925113641.1297102-1-sashal@kernel.org>
 References: <20240925113641.1297102-1-sashal@kernel.org>
@@ -69,113 +72,48 @@ Content-Transfer-Encoding: 8bit
 
 From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit d6c1b3599b2feb5c7291f5ac3a36e5fa7cedb234 ]
+[ Upstream commit d64ff0d2306713ff084d4b09f84ed1a8c75ecc32 ]
 
-[syzbot reported]
-==================================================================
-BUG: KASAN: slab-use-after-free in __mutex_lock_common kernel/locking/mutex.c:587 [inline]
-BUG: KASAN: slab-use-after-free in __mutex_lock+0xfe/0xd70 kernel/locking/mutex.c:752
-Read of size 8 at addr ffff8880229254b0 by task syz-executor357/5216
+syzbot report a out of bounds in dbSplit, it because dmt_leafidx greater
+than num leaves per dmap tree, add a checking for dmt_leafidx in dbFindLeaf.
 
-CPU: 0 UID: 0 PID: 5216 Comm: syz-executor357 Not tainted 6.11.0-rc3-syzkaller-00156-gd7a5aa4b3c00 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/27/2024
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:93 [inline]
- dump_stack_lvl+0x241/0x360 lib/dump_stack.c:119
- print_address_description mm/kasan/report.c:377 [inline]
- print_report+0x169/0x550 mm/kasan/report.c:488
- kasan_report+0x143/0x180 mm/kasan/report.c:601
- __mutex_lock_common kernel/locking/mutex.c:587 [inline]
- __mutex_lock+0xfe/0xd70 kernel/locking/mutex.c:752
- dbFreeBits+0x7ea/0xd90 fs/jfs/jfs_dmap.c:2390
- dbFreeDmap fs/jfs/jfs_dmap.c:2089 [inline]
- dbFree+0x35b/0x680 fs/jfs/jfs_dmap.c:409
- dbDiscardAG+0x8a9/0xa20 fs/jfs/jfs_dmap.c:1650
- jfs_ioc_trim+0x433/0x670 fs/jfs/jfs_discard.c:100
- jfs_ioctl+0x2d0/0x3e0 fs/jfs/ioctl.c:131
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:907 [inline]
- __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:893
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+Shaggy:
+Modified sanity check to apply to control pages as well as leaf pages.
 
-Freed by task 5218:
- kasan_save_stack mm/kasan/common.c:47 [inline]
- kasan_save_track+0x3f/0x80 mm/kasan/common.c:68
- kasan_save_free_info+0x40/0x50 mm/kasan/generic.c:579
- poison_slab_object+0xe0/0x150 mm/kasan/common.c:240
- __kasan_slab_free+0x37/0x60 mm/kasan/common.c:256
- kasan_slab_free include/linux/kasan.h:184 [inline]
- slab_free_hook mm/slub.c:2252 [inline]
- slab_free mm/slub.c:4473 [inline]
- kfree+0x149/0x360 mm/slub.c:4594
- dbUnmount+0x11d/0x190 fs/jfs/jfs_dmap.c:278
- jfs_mount_rw+0x4ac/0x6a0 fs/jfs/jfs_mount.c:247
- jfs_remount+0x3d1/0x6b0 fs/jfs/super.c:454
- reconfigure_super+0x445/0x880 fs/super.c:1083
- vfs_cmd_reconfigure fs/fsopen.c:263 [inline]
- vfs_fsconfig_locked fs/fsopen.c:292 [inline]
- __do_sys_fsconfig fs/fsopen.c:473 [inline]
- __se_sys_fsconfig+0xb6e/0xf80 fs/fsopen.c:345
- do_syscall_x64 arch/x86/entry/common.c:52 [inline]
- do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-[Analysis]
-There are two paths (dbUnmount and jfs_ioc_trim) that generate race
-condition when accessing bmap, which leads to the occurrence of uaf.
-
-Use the lock s_umount to synchronize them, in order to avoid uaf caused
-by race condition.
-
-Reported-and-tested-by: syzbot+3c010e21296f33a5dc16@syzkaller.appspotmail.com
+Reported-and-tested-by: syzbot+dca05492eff41f604890@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=dca05492eff41f604890
 Signed-off-by: Edward Adam Davis <eadavis@qq.com>
 Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_discard.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ fs/jfs/jfs_dmap.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/fs/jfs/jfs_discard.c b/fs/jfs/jfs_discard.c
-index 575cb2ba74fc8..5f4b305030ad5 100644
---- a/fs/jfs/jfs_discard.c
-+++ b/fs/jfs/jfs_discard.c
-@@ -65,7 +65,7 @@ void jfs_issue_discard(struct inode *ip, u64 blkno, u64 nblocks)
- int jfs_ioc_trim(struct inode *ip, struct fstrim_range *range)
+diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+index ccdfa38d7a682..53904e06d843b 100644
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -2944,9 +2944,10 @@ static void dbAdjTree(dmtree_t *tp, int leafno, int newval, bool is_ctl)
+ static int dbFindLeaf(dmtree_t *tp, int l2nb, int *leafidx, bool is_ctl)
  {
- 	struct inode *ipbmap = JFS_SBI(ip->i_sb)->ipbmap;
--	struct bmap *bmp = JFS_SBI(ip->i_sb)->bmap;
-+	struct bmap *bmp;
- 	struct super_block *sb = ipbmap->i_sb;
- 	int agno, agno_end;
- 	u64 start, end, minlen;
-@@ -83,10 +83,15 @@ int jfs_ioc_trim(struct inode *ip, struct fstrim_range *range)
- 	if (minlen == 0)
- 		minlen = 1;
+ 	int ti, n = 0, k, x = 0;
+-	int max_size;
++	int max_size, max_idx;
  
-+	down_read(&sb->s_umount);
-+	bmp = JFS_SBI(ip->i_sb)->bmap;
-+
- 	if (minlen > bmp->db_agsize ||
- 	    start >= bmp->db_mapsize ||
--	    range->len < sb->s_blocksize)
-+	    range->len < sb->s_blocksize) {
-+		up_read(&sb->s_umount);
- 		return -EINVAL;
-+	}
+ 	max_size = is_ctl ? CTLTREESIZE : TREESIZE;
++	max_idx = is_ctl ? LPERCTL : LPERDMAP;
  
- 	if (end >= bmp->db_mapsize)
- 		end = bmp->db_mapsize - 1;
-@@ -100,6 +105,8 @@ int jfs_ioc_trim(struct inode *ip, struct fstrim_range *range)
- 		trimmed += dbDiscardAG(ip, agno, minlen);
- 		agno++;
+ 	/* first check the root of the tree to see if there is
+ 	 * sufficient free space.
+@@ -2978,6 +2979,8 @@ static int dbFindLeaf(dmtree_t *tp, int l2nb, int *leafidx, bool is_ctl)
+ 		 */
+ 		assert(n < 4);
  	}
-+
-+	up_read(&sb->s_umount);
- 	range->len = trimmed << sb->s_blocksize_bits;
++	if (le32_to_cpu(tp->dmt_leafidx) >= max_idx)
++		return -ENOSPC;
  
- 	return 0;
+ 	/* set the return to the leftmost leaf describing sufficient
+ 	 * free space.
 -- 
 2.43.0
 
