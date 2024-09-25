@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-77622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77623-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A876985F37
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:53:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36F74985F39
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:53:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 10DF7286FAB
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:53:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB9C228AF05
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:53:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B873220FC7;
-	Wed, 25 Sep 2024 12:15:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1379E13D276;
+	Wed, 25 Sep 2024 12:15:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uhWWsFcN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nx6WfQKi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAEAC18C00F;
-	Wed, 25 Sep 2024 12:15:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C29C3220FC5;
+	Wed, 25 Sep 2024 12:15:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727266503; cv=none; b=SOSEopX5DcpzylfLhMlQ2yWDBZicNRsUcc/UelI+TkqeW1aKZpLGJbpHoF0+6jx2eollzzNNVpcG/xqlHHQ9SfmI9yPYPVE6UScpYjhWxi9VaMAbB8nPU+nxh/EmzxTFSk1iuBHKuSeK7w9UYe274R4LoMgZGnZyTdRGOpH8mTw=
+	t=1727266505; cv=none; b=d+B/TSJgnqkeLIV1v3KfQmSEVG4sHTDd29SIm2bvA6i+g7mJqilYG6C6sYlp3HQkZJW/2FoK6LHjny6zH0dWPP2Cap/I7G8MregOHzMNDcUnkoGymrikT5D5yPeidjjGPx1vmgPdppG/WqYEurntzI4Gio20iBe2gVVyGqu9Sy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727266503; c=relaxed/simple;
-	bh=2uVuhDZDMUIshitsnapNSlE48Yb+JPuyFmI2qexGfsU=;
+	s=arc-20240116; t=1727266505; c=relaxed/simple;
+	bh=RLnAnqgkxxWhHBmmluAbdBNsGy1I8W8V56sX8SNEnHo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QP1VgyMFS6kVD8PET+PPcutI9BsIBH1GLJ1fKzRaxPB3GUR3v/vMVtXBQjqL16DQKJVsSUSmMrlm6HwmHfxurlT9CE2Z/7zx6btuobsQVj8jYT6GpKORmDgsXemvh5/cTimc+wI4Fc0Pi51t2WAp3lpGaNWBRQoU5AjUQMoFGNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uhWWsFcN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13CFDC4CECE;
-	Wed, 25 Sep 2024 12:15:00 +0000 (UTC)
+	 MIME-Version; b=WX+GF/EzJNNzWfhbyqqH79Tel3KhRT8RgJYtk+L2SfeDh9I/diXBK7oAF4X7CpK27qY+2mRJpI2U4CnEk8ZxzV+GAqVE9MsnkY0BNn/UiE31ki1/n584VnzHNdhLtf/Hh0alI4cdg+chusroFkZQGvbyXakrlDvs6m/nQNDvTXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nx6WfQKi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2018BC4CEC3;
+	Wed, 25 Sep 2024 12:15:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727266502;
-	bh=2uVuhDZDMUIshitsnapNSlE48Yb+JPuyFmI2qexGfsU=;
+	s=k20201202; t=1727266505;
+	bh=RLnAnqgkxxWhHBmmluAbdBNsGy1I8W8V56sX8SNEnHo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uhWWsFcN07UFXP4OTAewh7tPPqosRE79kii5OCNSiGmFqTJHCRKuy8MwScIDyIbzh
-	 griEtU3Vbd+s4TFtst66pKtDtadaA8ZH2wveWuDinshUALd6wuYiTtDE7RDFcZlBab
-	 E3B6TQDuUHNh98N31LJ8btDMZCcJpwMiiplhyb3w8UeBQH8++0GL+UOSJV4mWS9KJl
-	 FdMkWSZZSPjINoS7sniAezch2r9BPiRP0sy0LWeXiOy1vic+GMiAbh9VZl/bENDG4Z
-	 U1we6a/Q0ETJDb+giSA32JbIE9DI4N+Tyy8SnPotVrDjl5roIwTUUQJa9cOe+kA3zu
-	 t2Uy/UT63EtOg==
+	b=Nx6WfQKiWs1TM6FmUQ9UQxfi9xpPb0ACLFuhKt9FcaXuLMTnb2srVHzulOU72jVv2
+	 P67ECEVWxGv4PL8vqwUlZG+GaMqWFaiPVJYbBmX09CnkwkIi/RayDxOqyYwZztNiuC
+	 UiUKXtKkkWSPm7OGuSISzG0/BNPFp4WcF360tIjUm7eiojnOp7fmyYx128bujutQ+U
+	 l/AgNQRxvrwLu2MFrDken0H2zAScBvZLV8vss67NDEEg2NhYLeQbrykeB41/lmPqDK
+	 7FjpG2IEyxlQjZ2Sid+D7EdXhbS3uNE9G1zDOZmOXWlIa0Gn96S0evMNMeqqf92Do6
+	 LZUoQHWkmlENA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kaixin Wang <kxwang23@m.fudan.edu.cn>,
-	Helge Deller <deller@gmx.de>,
+Cc: Roman Kisel <romank@linux.microsoft.com>,
+	Allen Pais <apais@linux.microsoft.com>,
+	Kees Cook <kees@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	kuninori.morimoto.gx@renesas.com,
-	laurent.pinchart@ideasonboard.com,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.6 075/139] fbdev: pxafb: Fix possible use after free in pxafb_task()
-Date: Wed, 25 Sep 2024 08:08:15 -0400
-Message-ID: <20240925121137.1307574-75-sashal@kernel.org>
+	viro@zeniv.linux.org.uk,
+	brauner@kernel.org,
+	nagvijay@microsoft.com,
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 076/139] coredump: Standartize and fix logging
+Date: Wed, 25 Sep 2024 08:08:16 -0400
+Message-ID: <20240925121137.1307574-76-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925121137.1307574-1-sashal@kernel.org>
 References: <20240925121137.1307574-1-sashal@kernel.org>
@@ -68,57 +69,176 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.52
 Content-Transfer-Encoding: 8bit
 
-From: Kaixin Wang <kxwang23@m.fudan.edu.cn>
+From: Roman Kisel <romank@linux.microsoft.com>
 
-[ Upstream commit 4a6921095eb04a900e0000da83d9475eb958e61e ]
+[ Upstream commit c114e9948c2b6a0b400266e59cc656b59e795bca ]
 
-In the pxafb_probe function, it calls the pxafb_init_fbinfo function,
-after which &fbi->task is associated with pxafb_task. Moreover,
-within this pxafb_init_fbinfo function, the pxafb_blank function
-within the &pxafb_ops struct is capable of scheduling work.
+The coredump code does not log the process ID and the comm
+consistently, logs unescaped comm when it does log it, and
+does not always use the ratelimited logging. That makes it
+harder to analyze logs and puts the system at the risk of
+spamming the system log incase something crashes many times
+over and over again.
 
-If we remove the module which will call pxafb_remove to make cleanup,
-it will call unregister_framebuffer function which can call
-do_unregister_framebuffer to free fbi->fb through
-put_fb_info(fb_info), while the work mentioned above will be used.
-The sequence of operations that may lead to a UAF bug is as follows:
+Fix that by logging TGID and comm (escaped) consistently and
+using the ratelimited logging always.
 
-CPU0                                                CPU1
-
-                                   | pxafb_task
-pxafb_remove                       |
-unregister_framebuffer(info)       |
-do_unregister_framebuffer(fb_info) |
-put_fb_info(fb_info)               |
-// free fbi->fb                    | set_ctrlr_state(fbi, state)
-                                   | __pxafb_lcd_power(fbi, 0)
-                                   | fbi->lcd_power(on, &fbi->fb.var)
-                                   | //use fbi->fb
-
-Fix it by ensuring that the work is canceled before proceeding
-with the cleanup in pxafb_remove.
-
-Note that only root user can remove the driver at runtime.
-
-Signed-off-by: Kaixin Wang <kxwang23@m.fudan.edu.cn>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Roman Kisel <romank@linux.microsoft.com>
+Tested-by: Allen Pais <apais@linux.microsoft.com>
+Link: https://lore.kernel.org/r/20240718182743.1959160-2-romank@linux.microsoft.com
+Signed-off-by: Kees Cook <kees@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/pxafb.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/coredump.c            | 43 +++++++++++++++-------------------------
+ include/linux/coredump.h | 22 ++++++++++++++++++++
+ 2 files changed, 38 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/video/fbdev/pxafb.c b/drivers/video/fbdev/pxafb.c
-index fa943612c4e2b..3a2427eb29f23 100644
---- a/drivers/video/fbdev/pxafb.c
-+++ b/drivers/video/fbdev/pxafb.c
-@@ -2403,6 +2403,7 @@ static void pxafb_remove(struct platform_device *dev)
- 	info = &fbi->fb;
+diff --git a/fs/coredump.c b/fs/coredump.c
+index 9d235fa14ab98..9846b4d06c3dd 100644
+--- a/fs/coredump.c
++++ b/fs/coredump.c
+@@ -583,8 +583,7 @@ void do_coredump(const kernel_siginfo_t *siginfo)
+ 		struct subprocess_info *sub_info;
  
- 	pxafb_overlay_exit(fbi);
-+	cancel_work_sync(&fbi->task);
- 	unregister_framebuffer(info);
+ 		if (ispipe < 0) {
+-			printk(KERN_WARNING "format_corename failed\n");
+-			printk(KERN_WARNING "Aborting core\n");
++			coredump_report_failure("format_corename failed, aborting core");
+ 			goto fail_unlock;
+ 		}
  
- 	pxafb_disable_controller(fbi);
+@@ -604,27 +603,21 @@ void do_coredump(const kernel_siginfo_t *siginfo)
+ 			 * right pid if a thread in a multi-threaded
+ 			 * core_pattern process dies.
+ 			 */
+-			printk(KERN_WARNING
+-				"Process %d(%s) has RLIMIT_CORE set to 1\n",
+-				task_tgid_vnr(current), current->comm);
+-			printk(KERN_WARNING "Aborting core\n");
++			coredump_report_failure("RLIMIT_CORE is set to 1, aborting core");
+ 			goto fail_unlock;
+ 		}
+ 		cprm.limit = RLIM_INFINITY;
+ 
+ 		dump_count = atomic_inc_return(&core_dump_count);
+ 		if (core_pipe_limit && (core_pipe_limit < dump_count)) {
+-			printk(KERN_WARNING "Pid %d(%s) over core_pipe_limit\n",
+-			       task_tgid_vnr(current), current->comm);
+-			printk(KERN_WARNING "Skipping core dump\n");
++			coredump_report_failure("over core_pipe_limit, skipping core dump");
+ 			goto fail_dropcount;
+ 		}
+ 
+ 		helper_argv = kmalloc_array(argc + 1, sizeof(*helper_argv),
+ 					    GFP_KERNEL);
+ 		if (!helper_argv) {
+-			printk(KERN_WARNING "%s failed to allocate memory\n",
+-			       __func__);
++			coredump_report_failure("%s failed to allocate memory", __func__);
+ 			goto fail_dropcount;
+ 		}
+ 		for (argi = 0; argi < argc; argi++)
+@@ -641,8 +634,7 @@ void do_coredump(const kernel_siginfo_t *siginfo)
+ 
+ 		kfree(helper_argv);
+ 		if (retval) {
+-			printk(KERN_INFO "Core dump to |%s pipe failed\n",
+-			       cn.corename);
++			coredump_report_failure("|%s pipe failed", cn.corename);
+ 			goto close_fail;
+ 		}
+ 	} else {
+@@ -655,10 +647,8 @@ void do_coredump(const kernel_siginfo_t *siginfo)
+ 			goto fail_unlock;
+ 
+ 		if (need_suid_safe && cn.corename[0] != '/') {
+-			printk(KERN_WARNING "Pid %d(%s) can only dump core "\
+-				"to fully qualified path!\n",
+-				task_tgid_vnr(current), current->comm);
+-			printk(KERN_WARNING "Skipping core dump\n");
++			coredump_report_failure(
++				"this process can only dump core to a fully qualified path, skipping core dump");
+ 			goto fail_unlock;
+ 		}
+ 
+@@ -727,13 +717,13 @@ void do_coredump(const kernel_siginfo_t *siginfo)
+ 		idmap = file_mnt_idmap(cprm.file);
+ 		if (!vfsuid_eq_kuid(i_uid_into_vfsuid(idmap, inode),
+ 				    current_fsuid())) {
+-			pr_info_ratelimited("Core dump to %s aborted: cannot preserve file owner\n",
+-					    cn.corename);
++			coredump_report_failure("Core dump to %s aborted: "
++				"cannot preserve file owner", cn.corename);
+ 			goto close_fail;
+ 		}
+ 		if ((inode->i_mode & 0677) != 0600) {
+-			pr_info_ratelimited("Core dump to %s aborted: cannot preserve file permissions\n",
+-					    cn.corename);
++			coredump_report_failure("Core dump to %s aborted: "
++				"cannot preserve file permissions", cn.corename);
+ 			goto close_fail;
+ 		}
+ 		if (!(cprm.file->f_mode & FMODE_CAN_WRITE))
+@@ -754,7 +744,7 @@ void do_coredump(const kernel_siginfo_t *siginfo)
+ 		 * have this set to NULL.
+ 		 */
+ 		if (!cprm.file) {
+-			pr_info("Core dump to |%s disabled\n", cn.corename);
++			coredump_report_failure("Core dump to |%s disabled", cn.corename);
+ 			goto close_fail;
+ 		}
+ 		if (!dump_vma_snapshot(&cprm))
+@@ -941,11 +931,10 @@ void validate_coredump_safety(void)
+ {
+ 	if (suid_dumpable == SUID_DUMP_ROOT &&
+ 	    core_pattern[0] != '/' && core_pattern[0] != '|') {
+-		pr_warn(
+-"Unsafe core_pattern used with fs.suid_dumpable=2.\n"
+-"Pipe handler or fully qualified core dump path required.\n"
+-"Set kernel.core_pattern before fs.suid_dumpable.\n"
+-		);
++
++		coredump_report_failure("Unsafe core_pattern used with fs.suid_dumpable=2: "
++			"pipe handler or fully qualified core dump path required. "
++			"Set kernel.core_pattern before fs.suid_dumpable.");
+ 	}
+ }
+ 
+diff --git a/include/linux/coredump.h b/include/linux/coredump.h
+index d3eba43601508..f897de8ccea8c 100644
+--- a/include/linux/coredump.h
++++ b/include/linux/coredump.h
+@@ -41,8 +41,30 @@ extern int dump_align(struct coredump_params *cprm, int align);
+ int dump_user_range(struct coredump_params *cprm, unsigned long start,
+ 		    unsigned long len);
+ extern void do_coredump(const kernel_siginfo_t *siginfo);
++
++/*
++ * Logging for the coredump code, ratelimited.
++ * The TGID and comm fields are added to the message.
++ */
++
++#define __COREDUMP_PRINTK(Level, Format, ...) \
++	do {	\
++		char comm[TASK_COMM_LEN];	\
++	\
++		get_task_comm(comm, current);	\
++		printk_ratelimited(Level "coredump: %d(%*pE): " Format "\n",	\
++			task_tgid_vnr(current), (int)strlen(comm), comm, ##__VA_ARGS__);	\
++	} while (0)	\
++
++#define coredump_report(fmt, ...) __COREDUMP_PRINTK(KERN_INFO, fmt, ##__VA_ARGS__)
++#define coredump_report_failure(fmt, ...) __COREDUMP_PRINTK(KERN_WARNING, fmt, ##__VA_ARGS__)
++
+ #else
+ static inline void do_coredump(const kernel_siginfo_t *siginfo) {}
++
++#define coredump_report(...)
++#define coredump_report_failure(...)
++
+ #endif
+ 
+ #if defined(CONFIG_COREDUMP) && defined(CONFIG_SYSCTL)
 -- 
 2.43.0
 
