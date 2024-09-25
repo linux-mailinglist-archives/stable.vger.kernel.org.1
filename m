@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-77331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A24C0985BE0
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:34:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4211D985BE4
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:34:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6484C285CFF
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:34:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7165D1C23C85
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:34:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 14C5515CD46;
-	Wed, 25 Sep 2024 11:53:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51C5B1C984B;
+	Wed, 25 Sep 2024 11:53:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uXF9uDYc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oHqTd0Xv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C12631C8FA4;
-	Wed, 25 Sep 2024 11:53:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B4FC1C8FDE;
+	Wed, 25 Sep 2024 11:53:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727265195; cv=none; b=RSaVtF5bNy0ZaKmvcy2+fcphfir/dCAewX1SaxKQ5Qcy75lGFxZdrMgpdU0rfukh1pZbS1KTvWpJax3xvO1aAER/0wOy09t4yRmHEalspd/zm6ADEoUGLDwfuiLlYx4O2IjnSXqCOVsIL3PNI7f3JcYIbMl+XzOKtNiPGII/P94=
+	t=1727265197; cv=none; b=PTLzEfvaBdf1+sE3w4EpHpUv03LX1Df5W76Uk+8POOyrzQy6EdnricunxqHj3n2OOQUihDiINXwJajuqPWucOxhOerOHScCcscKUlDK13moHp2juCdpI6jouRSNNUZmuOv6vzBmRa5zD3DESbw43Whvi7xVx5NwzzKFUip/T5oc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727265195; c=relaxed/simple;
-	bh=OnqE7hMVp7P7mOZDjM+m6mgGSt7B98LSvqkkmRJF8Ss=;
+	s=arc-20240116; t=1727265197; c=relaxed/simple;
+	bh=Ojw17ZKKk24T123yUv+cpDUl/xs1NIQdfQQaxYTjnmw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qLDUq5giukcWWRoC7NpjvLhBEQ3RACr52g9GPmXf4p1nZZC0tvZkM2u/ZF5UIMW+Z8ESn5xYNwzpgi4vXkDOmqUOF+XsDbXMLp3/g28IvrlTYJUVmoTMtSFXYArK6dYxcb0SVIwraTMiGPQct9B689o7PdVC0tdl5YwkroNXu9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uXF9uDYc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 802D1C4CEC7;
-	Wed, 25 Sep 2024 11:53:14 +0000 (UTC)
+	 MIME-Version; b=eGFqD21nahqDzRZ30a8pdCHDi3aZsBdOj8/tDo+RIZbLU8DkL4JgWKWL4OhTSTeQ4Qw9QFKtqARMnK9j+KkgUFYTT0KGpI5pYtFPWjIlkNEWwedfJORU/0ww4MgDsxOiBa8gHM4I8aTfD4nKP9i5HFlWk8sHqUPQO/h9gnceL60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oHqTd0Xv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA32BC4CEC3;
+	Wed, 25 Sep 2024 11:53:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727265195;
-	bh=OnqE7hMVp7P7mOZDjM+m6mgGSt7B98LSvqkkmRJF8Ss=;
+	s=k20201202; t=1727265196;
+	bh=Ojw17ZKKk24T123yUv+cpDUl/xs1NIQdfQQaxYTjnmw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uXF9uDYcSpdnuBG/9JII0fZwuAI7f5s8DPy13P4wi6ioaM2v5grp1OuKbo0DCdsi/
-	 4A50htuPaw6sTAreEcFbyx+eVpmBagX/3wFCdWW00ehxZrdV7OohudiPP5iTvWVNic
-	 9LjVS2XwhqV+QSgbgG5NOtYtb9iKzmB1qxCZ0kLS469Obi0dqbUCTdz8lFptI5V7YJ
-	 6JYGkD2PvfJIONTZDNsVPbwZJB2rzPqOvvbLhpbrTETT21mGomGwleMEAWtu918dnT
-	 j1ZRXSsvlLUj9yR2o5wJeQe/b1dqjMA02kU0KuEuNP9YJa9qn+RUr8Hv+fpx7u0lVh
-	 loflIzLeYrXEw==
+	b=oHqTd0XvP3jvrOOZ4fZSivf+r1cppMRMENTftwgXaoxCZmv1L3pNDxPLuuXIp1p8A
+	 KBGfLzzZaX4zzmVwSxbdGUSzi26geFSpGOKkZwLLLPkG+z3AS/Djd0gB5Qmvdzxr0C
+	 g01Z3etDUicj7jXjAp/PdUrE32d2w7iqqRtLJ2ZE4NmQw/lHBdlVSGmNyvjiujyoeH
+	 S4fyLEE3hEYrUG1InreAjkbnA42ktWUJS+K1LMRBTbnepc5pNGFadMpS6fvTTsHrOC
+	 XP8u5/8T/ql0mKhlZRgw+Yp9W9MWzzEO6RjOLkKRql8SJgAAejBV/T6hjoCdoiPyOq
+	 HNdAeuHa3pArg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hans de Goede <hdegoede@redhat.com>,
+Cc: Lizhi Xu <lizhi.xu@windriver.com>,
+	syzbot+340581ba9dceb7e06fb3@syzkaller.appspotmail.com,
+	Theodore Ts'o <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>,
-	ilpo.jarvinen@linux.intel.com,
-	platform-driver-x86@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 233/244] platform/x86: x86-android-tablets: Adjust Xiaomi Pad 2 bottom bezel touch buttons LED
-Date: Wed, 25 Sep 2024 07:27:34 -0400
-Message-ID: <20240925113641.1297102-233-sashal@kernel.org>
+	adilger.kernel@dilger.ca,
+	linux-ext4@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.11 234/244] ext4: filesystems without casefold feature cannot be mounted with siphash
+Date: Wed, 25 Sep 2024 07:27:35 -0400
+Message-ID: <20240925113641.1297102-234-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925113641.1297102-1-sashal@kernel.org>
 References: <20240925113641.1297102-1-sashal@kernel.org>
@@ -65,67 +67,40 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11
 Content-Transfer-Encoding: 8bit
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Lizhi Xu <lizhi.xu@windriver.com>
 
-[ Upstream commit df40a23cc34c200cfde559eda7ca540f3ae7bd9e ]
+[ Upstream commit 985b67cd86392310d9e9326de941c22fc9340eec ]
 
-The "input-events" LED trigger used to turn on the backlight LEDs had to
-be rewritten to use led_trigger_register_simple() + led_trigger_event()
-to fix a serious locking issue.
+When mounting the ext4 filesystem, if the default hash version is set to
+DX_HASH_SIPHASH but the casefold feature is not set, exit the mounting.
 
-This means it no longer supports using blink_brightness to set a per LED
-brightness for the trigger and it no longer sets LED_CORE_SUSPENDRESUME.
-
-Adjust the MiPad 2 bottom bezel touch buttons LED class device to match:
-
-1. Make LED_FULL the maximum brightness to fix the LED brightness
-   being very low when on.
-2. Set flags = LED_CORE_SUSPENDRESUME.
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240916090255.35548-1-hdegoede@redhat.com
+Reported-by: syzbot+340581ba9dceb7e06fb3@syzkaller.appspotmail.com
+Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+Link: https://patch.msgid.link/20240605012335.44086-1-lizhi.xu@windriver.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/x86-android-tablets/other.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ fs/ext4/super.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/platform/x86/x86-android-tablets/other.c b/drivers/platform/x86/x86-android-tablets/other.c
-index eb0e55c69dfed..2549c348c8825 100644
---- a/drivers/platform/x86/x86-android-tablets/other.c
-+++ b/drivers/platform/x86/x86-android-tablets/other.c
-@@ -670,7 +670,7 @@ static const struct software_node *ktd2026_node_group[] = {
-  * is controlled by the "pwm_soc_lpss_2" PWM output.
-  */
- #define XIAOMI_MIPAD2_LED_PERIOD_NS		19200
--#define XIAOMI_MIPAD2_LED_DEFAULT_DUTY		 6000 /* From Android kernel */
-+#define XIAOMI_MIPAD2_LED_MAX_DUTY_NS		 6000 /* From Android kernel */
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index e72145c4ae5a0..25cd0d662e31b 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -3582,6 +3582,13 @@ int ext4_feature_set_ok(struct super_block *sb, int readonly)
+ 			 "mounted without CONFIG_UNICODE");
+ 		return 0;
+ 	}
++	if (EXT4_SB(sb)->s_es->s_def_hash_version == DX_HASH_SIPHASH &&
++	    !ext4_has_feature_casefold(sb)) {
++		ext4_msg(sb, KERN_ERR,
++			 "Filesystem without casefold feature cannot be "
++			 "mounted with siphash");
++		return 0;
++	}
  
- static struct pwm_device *xiaomi_mipad2_led_pwm;
- 
-@@ -679,7 +679,7 @@ static int xiaomi_mipad2_brightness_set(struct led_classdev *led_cdev,
- {
- 	struct pwm_state state = {
- 		.period = XIAOMI_MIPAD2_LED_PERIOD_NS,
--		.duty_cycle = val,
-+		.duty_cycle = XIAOMI_MIPAD2_LED_MAX_DUTY_NS * val / LED_FULL,
- 		/* Always set PWM enabled to avoid the pin floating */
- 		.enabled = true,
- 	};
-@@ -701,11 +701,11 @@ static int __init xiaomi_mipad2_init(struct device *dev)
- 		return -ENOMEM;
- 
- 	led_cdev->name = "mipad2:white:touch-buttons-backlight";
--	led_cdev->max_brightness = XIAOMI_MIPAD2_LED_PERIOD_NS;
--	/* "input-events" trigger uses blink_brightness */
--	led_cdev->blink_brightness = XIAOMI_MIPAD2_LED_DEFAULT_DUTY;
-+	led_cdev->max_brightness = LED_FULL;
- 	led_cdev->default_trigger = "input-events";
- 	led_cdev->brightness_set_blocking = xiaomi_mipad2_brightness_set;
-+	/* Turn LED off during suspend */
-+	led_cdev->flags = LED_CORE_SUSPENDRESUME;
- 
- 	ret = devm_led_classdev_register(dev, led_cdev);
- 	if (ret)
+ 	if (readonly)
+ 		return 1;
 -- 
 2.43.0
 
