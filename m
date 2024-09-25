@@ -1,60 +1,56 @@
-Return-Path: <stable+bounces-77582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13F26985F88
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 16:00:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id BC858985FE2
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 16:08:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5CE91B2A9A7
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:43:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7BFBBB2B5A3
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:43:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CB98216A1B;
-	Wed, 25 Sep 2024 12:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1489818EFDD;
+	Wed, 25 Sep 2024 12:12:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hOd7l7v3"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iWOFpQYg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27D94216A11;
-	Wed, 25 Sep 2024 12:12:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4206216A3D;
+	Wed, 25 Sep 2024 12:12:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727266374; cv=none; b=s4lAszWvC4S7/f8bLx6FH4eHydLxC0hrxj0urui/Fa11AOUAD+RO6s+UIdgUlUDN1iNunTcAY1ww5OR9UUQovyjt3ONytsWgbXTu2SsdsJ8Q6GyKD+WglJRV9A/KLRBYWo8K/kxWSEQwp31cIdlFVdrOqDAHeSHFkSedbjEDW0U=
+	t=1727266375; cv=none; b=Q5xAX4prcZ6RI/79R/UdLi6GsbRs79sQOrgOGytvjMamlS1RCGJ5q5gz962MudVQYprzpcwuNkmDH5yESV6bnmkEuRfrZiDkqCHsHRAcknUL/8hCsLLin6zXsB2z/6uRUk7zFZm7a3fXlLG4TtzJruZXaPk/B2/R/ezH+abHoSg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727266374; c=relaxed/simple;
-	bh=xHO4gj1Zn7Caetfzh+ubln7rUIK+I0vPdmEHXe2zqqY=;
+	s=arc-20240116; t=1727266375; c=relaxed/simple;
+	bh=jJUfpjmwhJsF7UnpSXZZrof5Jsc4qCO7Lf8A0gmCb7o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NUG+qU/YzEYDB2WVBr/ov6wftE182Z66DNL3yjiTYn4+DDcM2qKE8I1WRwGgsXFvZ3qSFz2sSkpmq4MIdrJvpLJ/C5akIrlhnO+PzM9pmGQ8qv6ONVXINjOEHLC2LC6vgHXvqlWyR3SHQ1dxzEP6EU705sbSinkGU8n4VFOrtQU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hOd7l7v3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C18C2C4CEC3;
-	Wed, 25 Sep 2024 12:12:52 +0000 (UTC)
+	 MIME-Version; b=Dh/EtG4j9Bc4FOM3Mc5KNW7xnP1ZPgGqr33lrlQCvI3OVyH1XAG1DI4WyRt/WtkE4nyuo07dRaBxufh2eXCcGJuOwhNKvGZvet1NQRWzDCqi+73tCoL7s1KaNxl+/g/RccGfRiXoB9lysa7v+cuRtvcfh3PFvnmqrltx1J0FwV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iWOFpQYg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87AF2C4CEC3;
+	Wed, 25 Sep 2024 12:12:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727266374;
-	bh=xHO4gj1Zn7Caetfzh+ubln7rUIK+I0vPdmEHXe2zqqY=;
+	s=k20201202; t=1727266375;
+	bh=jJUfpjmwhJsF7UnpSXZZrof5Jsc4qCO7Lf8A0gmCb7o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hOd7l7v38voGpqBflyJ+2Le3DTB2z739Og0clGK1ug1eRPoMhXFy4KAf+NeF0c5il
-	 ZhsgiTvRdIcKQXnj6ueClY+csCTg2batA3jLxLn4lOHdJ6idlc5uTVCI8BzhPEuH4e
-	 v7ixjDIxsipX5Tu9cY43wlV77kDiDI9E63R5iacV9s/MhrpzanZ7d9uwuOdNeUNSyL
-	 wyr3AflpWSNxZxmHyt7Y+sSbxVTrOadoFd1IzppZk1O8EtIu+E6s4N0gn+K3c5qwcw
-	 t8CXPT7xUaELh0vSZXDP7h2FYBybGtzXkl7jrqDaEGDWyYbVoHH3hQHreOfbZyg+bc
-	 ehW5tmUzZhUFg==
+	b=iWOFpQYgtuffxhLVnfR33SY+zcvng910zVeB0jDEIA0S2o4qSd7VfekX8rPlX7tp+
+	 XnRuRrMg8Zhk7prh/aOdHUDzHSL7K31O/OG4ZPHK40ksHEdarjyK/NytehLp7DfkB7
+	 0jWMTCFxitNDFuCx9Nn67YjiS19YBjiyo9ETVKH13ydMSoB3jB1iP9Z6TZ/zgUxNTr
+	 Lmfs0wwr86+jk7TF8CJqmqNKXdBe6XD5T/8ysXK7Sz0xheacQ2tqLp7jpDUCH2dWCy
+	 7OFkksDQJNqWrdKX6Rg6WJPE+Ogm0X1XYrq6FvAfnYjK8xlQ4CO+164Hnnl8arfTmk
+	 zSW8+cj60q0mQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kuniyuki Iwashima <kuniyu@amazon.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>,
-	davem@davemloft.net,
-	dsahern@kernel.org,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 036/139] ipv4: Check !in_dev earlier for ioctl(SIOCSIFADDR).
-Date: Wed, 25 Sep 2024 08:07:36 -0400
-Message-ID: <20240925121137.1307574-36-sashal@kernel.org>
+	kvalo@kernel.org,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 037/139] wifi: rtw89: correct base HT rate mask for firmware
+Date: Wed, 25 Sep 2024 08:07:37 -0400
+Message-ID: <20240925121137.1307574-37-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925121137.1307574-1-sashal@kernel.org>
 References: <20240925121137.1307574-1-sashal@kernel.org>
@@ -69,50 +65,51 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.52
 Content-Transfer-Encoding: 8bit
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Ping-Ke Shih <pkshih@realtek.com>
 
-[ Upstream commit e3af3d3c5b26c33a7950e34e137584f6056c4319 ]
+[ Upstream commit 45742881f9eee2a4daeb6008e648a460dd3742cd ]
 
-dev->ip_ptr could be NULL if we set an invalid MTU.
+Coverity reported that u8 rx_mask << 24 will become signed 32 bits, which
+casting to unsigned 64 bits will do sign extension. For example,
+putting 0x80000000 (signed 32 bits) to a u64 variable will become
+0xFFFFFFFF_80000000.
 
-Even then, if we issue ioctl(SIOCSIFADDR) for a new IPv4 address,
-devinet_ioctl() allocates struct in_ifaddr and fails later in
-inet_set_ifa() because in_dev is NULL.
+The real case we meet is:
+  rx_mask[0...3] = ff ff 00 00
+  ra_mask = 0xffffffff_ff0ff000
 
-Let's move the check earlier.
+After this fix:
+  rx_mask[0...3] = ff ff 00 00
+  ra_mask = 0x00000000_ff0ff000
 
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Link: https://patch.msgid.link/20240809235406.50187-2-kuniyu@amazon.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fortunately driver does bitwise-AND with incorrect ra_mask and supported
+rates (1ss and 2ss rate only) afterward, so the final rate mask of
+original code is still correct.
+
+Addresses-Coverity-ID: 1504762 ("Unintended sign extension")
+
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20240809072012.84152-5-pkshih@realtek.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/devinet.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ drivers/net/wireless/realtek/rtw89/phy.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/ipv4/devinet.c b/net/ipv4/devinet.c
-index bc74f131fe4df..cb0c80328eebf 100644
---- a/net/ipv4/devinet.c
-+++ b/net/ipv4/devinet.c
-@@ -569,10 +569,6 @@ static int inet_set_ifa(struct net_device *dev, struct in_ifaddr *ifa)
- 
- 	ASSERT_RTNL();
- 
--	if (!in_dev) {
--		inet_free_ifa(ifa);
--		return -ENOBUFS;
--	}
- 	ipv4_devconf_setall(in_dev);
- 	neigh_parms_data_state_setall(in_dev->arp_parms);
- 	if (ifa->ifa_dev != in_dev) {
-@@ -1174,6 +1170,8 @@ int devinet_ioctl(struct net *net, unsigned int cmd, struct ifreq *ifr)
- 
- 		if (!ifa) {
- 			ret = -ENOBUFS;
-+			if (!in_dev)
-+				break;
- 			ifa = inet_alloc_ifa();
- 			if (!ifa)
- 				break;
+diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
+index 7139146cb3fad..fac83b718a30c 100644
+--- a/drivers/net/wireless/realtek/rtw89/phy.c
++++ b/drivers/net/wireless/realtek/rtw89/phy.c
+@@ -284,8 +284,8 @@ static void rtw89_phy_ra_sta_update(struct rtw89_dev *rtwdev,
+ 		csi_mode = RTW89_RA_RPT_MODE_HT;
+ 		ra_mask |= ((u64)sta->deflink.ht_cap.mcs.rx_mask[3] << 48) |
+ 			   ((u64)sta->deflink.ht_cap.mcs.rx_mask[2] << 36) |
+-			   (sta->deflink.ht_cap.mcs.rx_mask[1] << 24) |
+-			   (sta->deflink.ht_cap.mcs.rx_mask[0] << 12);
++			   ((u64)sta->deflink.ht_cap.mcs.rx_mask[1] << 24) |
++			   ((u64)sta->deflink.ht_cap.mcs.rx_mask[0] << 12);
+ 		high_rate_masks = rtw89_ra_mask_ht_rates;
+ 		if (sta->deflink.ht_cap.cap & IEEE80211_HT_CAP_RX_STBC)
+ 			stbc_en = 1;
 -- 
 2.43.0
 
