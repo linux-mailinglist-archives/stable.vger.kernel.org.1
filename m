@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-77368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BAB88985CA3
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:51:18 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50F81985C5D
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:45:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 67D82B2330C
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:45:43 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81EEB1C24A26
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:45:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81000185B57;
-	Wed, 25 Sep 2024 11:59:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D3221CEE90;
+	Wed, 25 Sep 2024 11:59:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HD2SMz+z"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e/FTC3tB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D0EC1CEAD3;
-	Wed, 25 Sep 2024 11:59:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C94DE1CEAC4;
+	Wed, 25 Sep 2024 11:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727265563; cv=none; b=Qcxl3Y79RyLyu6+qH/D8/J7qvKod/u8GAAPTxS0wgFL9N2XrVm2z/45wmdNxzDYq67d/AZ7OiKaNdwzWyO0q5k8hSzGmCfR6XvC049MF23UNlmZaQZ0czDRKtpz44lKLYk9hy92CNHgTvetkCKC7K6se/c5RRQTpNi422I4CD7M=
+	t=1727265564; cv=none; b=GxKNtUnDgQNoZwkgnqMiFfPz6hQwezz8DiRUiJzmmTlcwimRNozwEYfUbxN1KnoCys0ca+pMIRcf7vc7CAcBA4dh+wTiX+g2M8zx1yHz/CkppX20HZtZE6SfYmqX0EAbBOGDXgQEho71O5X4GmFIMLl/SWFRxIE791QmmsbC/+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727265563; c=relaxed/simple;
-	bh=NxFi/Dum8OlPTPlCCqO9FLR/Cf5ZxjiqUnVzyO7ssG4=;
+	s=arc-20240116; t=1727265564; c=relaxed/simple;
+	bh=GLGBRaOB7vwzqPbWZD30daJmxV5lZ7retN6JsiWu7vw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F4suk/ycqguv3lq764XD7+uHzeocpnOoSsV9jYN5AxFNAHXJ3Iapj//6CLEIH8TjeRN19KVsi8KzSzCWLRpXnwHPT4vcQ1TqMmY7lwHQwUv4/Dd/W6eREeeFa3xAWmMs9HuJIFDwU+RFcJxHiSVr5EIz6bhCsTcqDNLziwV7VSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HD2SMz+z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73BDCC4CEC7;
-	Wed, 25 Sep 2024 11:59:21 +0000 (UTC)
+	 MIME-Version; b=YhnwJog/+mIFrJP7tNEtur+StMCWsvWgnsYpUcH9S3R7gbryVy+K8c8ngEQEYfAldGiAi+LPy07DmsIJBc395ysiS4jzOKjEuOt/xqEoYQaBmJ8L/wZ18F19ep6mgVWoGJejZKZEhw3V26Q0b1KEVt3lcEN61++2k6QzfMg2QZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e/FTC3tB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AC76C4CECE;
+	Wed, 25 Sep 2024 11:59:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727265562;
-	bh=NxFi/Dum8OlPTPlCCqO9FLR/Cf5ZxjiqUnVzyO7ssG4=;
+	s=k20201202; t=1727265564;
+	bh=GLGBRaOB7vwzqPbWZD30daJmxV5lZ7retN6JsiWu7vw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HD2SMz+z1TXFeougPTkH/sBmXoz97nRKR/rYApeMNAg1iWBrMG0xmygbSkzxeeaoh
-	 fyCH5XOHT4l9iIINrka4ULr6xAlUBx72X3xf5XNsmuSZYqGHigZIndimqBfeVAFjit
-	 6LBP4qB6yrAjED+hAD7ByxqF4BTxVCB9Wz+n+rrinhGg1Cv+wc2zlXkIz8UlxcD06o
-	 ZwCOq1SwoqfzJtoL368mkMN7GqokolII0w7YfB3/PfXwCi8eZ2p7ofY3qjanL+DmrS
-	 qffC8Ue5+pWv/PbWAcGfeyHYZYDq2f8/wg/SlQtDcM75Oq4cg6IdJe0GJRP3MO9fqm
-	 M0ZdQyMAgCm7Q==
+	b=e/FTC3tBV+AN/DElABJY1yWiKmxymOXxNl59ZyJO2prmhJ3U9Yb27SUHamCrGXT0F
+	 dJ35+ZV+kwXA6eDaIv2vF+X5JakJkMko8CRe4VOgakHHvgQbYQ13Gy1FMRSYoIft5L
+	 0U/L+KifcCV3/JbM0Ap9xNWrKozQpPXuMwZC6SopOdMLJk5SHPJgM87/JZly5Bgy0S
+	 +69aZGhygbwg8n1x7R/GSMHFwx9nC0Mbmd11Sh6SIeqOSHBvkhlJAx8IXh4K3/9zJA
+	 pjryF73vOKbYoIAFE5Bcu7PxmGrMnIzO6wbYds/2Gg7k62R4QmeUEtJfypRBwmAWj4
+	 C3gH2x94FStnw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -50,9 +50,9 @@ Cc: Hilda Wu <hildawu@realtek.com>,
 	marcel@holtmann.org,
 	luiz.dentz@gmail.com,
 	linux-bluetooth@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 023/197] Bluetooth: btusb: Add Realtek RTL8852C support ID 0x0489:0xe122
-Date: Wed, 25 Sep 2024 07:50:42 -0400
-Message-ID: <20240925115823.1303019-23-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.10 024/197] Bluetooth: btrtl: Set msft ext address filter quirk for RTL8852B
+Date: Wed, 25 Sep 2024 07:50:43 -0400
+Message-ID: <20240925115823.1303019-24-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925115823.1303019-1-sashal@kernel.org>
 References: <20240925115823.1303019-1-sashal@kernel.org>
@@ -69,63 +69,38 @@ Content-Transfer-Encoding: 8bit
 
 From: Hilda Wu <hildawu@realtek.com>
 
-[ Upstream commit bdf9557f70e7512bb2f754abf90d9e9958745316 ]
+[ Upstream commit 9a0570948c5def5c59e588dc0e009ed850a1f5a1 ]
 
-Add the support ID (0x0489, 0xe122) to usb_device_id table for
-Realtek RTL8852C.
+For tracking multiple devices concurrently with a condition.
+The patch enables the HCI_QUIRK_USE_MSFT_EXT_ADDRESS_FILTER quirk
+on RTL8852B controller.
 
-The device info from /sys/kernel/debug/usb/devices as below.
+The quirk setting is based on commit 9e14606d8f38 ("Bluetooth: msft:
+Extended monitor tracking by address filter")
 
-T:  Bus=03 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  2 Spd=12   MxCh= 0
-D:  Ver= 1.00 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=0489 ProdID=e122 Rev= 0.00
-S:  Manufacturer=Realtek
-S:  Product=Bluetooth Radio
-S:  SerialNumber=00e04c000001
-C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+With this setting, when a pattern monitor detects a device, this
+feature issues an address monitor for tracking that device. Let the
+original pattern monitor keep monitor new devices.
 
 Signed-off-by: Hilda Wu <hildawu@realtek.com>
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/bluetooth/btrtl.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index 0927f51867c26..425419b1398d5 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -539,6 +539,8 @@ static const struct usb_device_id quirks_table[] = {
- 						     BTUSB_WIDEBAND_SPEECH },
- 	{ USB_DEVICE(0x13d3, 0x3592), .driver_info = BTUSB_REALTEK |
- 						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x0489, 0xe122), .driver_info = BTUSB_REALTEK |
-+						     BTUSB_WIDEBAND_SPEECH },
+diff --git a/drivers/bluetooth/btrtl.c b/drivers/bluetooth/btrtl.c
+index bfcb41a57655f..78b5d44558d73 100644
+--- a/drivers/bluetooth/btrtl.c
++++ b/drivers/bluetooth/btrtl.c
+@@ -1296,6 +1296,7 @@ void btrtl_set_quirks(struct hci_dev *hdev, struct btrtl_device_info *btrtl_dev)
+ 			btrealtek_set_flag(hdev, REALTEK_ALT6_CONTINUOUS_TX_CHIP);
  
- 	/* Realtek 8852BE Bluetooth devices */
- 	{ USB_DEVICE(0x0cb8, 0xc559), .driver_info = BTUSB_REALTEK |
+ 		if (btrtl_dev->project_id == CHIP_ID_8852A ||
++		    btrtl_dev->project_id == CHIP_ID_8852B ||
+ 		    btrtl_dev->project_id == CHIP_ID_8852C)
+ 			set_bit(HCI_QUIRK_USE_MSFT_EXT_ADDRESS_FILTER, &hdev->quirks);
+ 
 -- 
 2.43.0
 
