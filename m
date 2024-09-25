@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-77560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95A58985E84
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:37:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DD6F985E89
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:37:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3BEBE1F217DD
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:37:31 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DFD331F22199
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:37:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C506C1AFB08;
-	Wed, 25 Sep 2024 12:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 959111AFB35;
+	Wed, 25 Sep 2024 12:12:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hm76uEXv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KriGerOJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81F891AFB00;
-	Wed, 25 Sep 2024 12:12:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 487A71AFB2B;
+	Wed, 25 Sep 2024 12:12:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727266333; cv=none; b=qb8Sf82atrX0AVGMeahooXHUMlr+h0VZTUn8b11NaEeDs0S92H/65ovUoD6fibUbwAbVWNITEU+lP48m9S2MLO/Q1JoDAQ4pfkR20/Gd/zFiG4ivlurumwqyiPvehl2WaM66o28EQW24vuRgvKmJoM4SomZWpX6ZoeYXslD30Fo=
+	t=1727266335; cv=none; b=kltFnA/umvsf3tq52lfLozW7NAdlYGYJsroflPEyYF1kgMKsOuwa4rnRbIkB/EpU3QdY+xg0rcvevjaKW99NMrz1IySBonYAWzdMWA96nVZPKxgSjd/sSZL7dXOg9cFSoLfkRqmCOTOCQqFoOm6t2ZW9QatZg9vXDS0L2f/d4OI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727266333; c=relaxed/simple;
-	bh=OwsTIwqeIgzaZkm0UXIF2mKZDAJQPoCDmj/fblpWDOw=;
+	s=arc-20240116; t=1727266335; c=relaxed/simple;
+	bh=L1DMsbP8B/+I3BcOvtw1nDvfk9BnaaCIK2Sn+ULV7Yk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kf4sRsZSKuFNaQTRPh9PGRpb2BI/QVGdpnCne/okKY3AxR6BdME47A2BOTNxp42JNrg5gP8Mk8iF20XPFNWbsS6Uh8k6m6o0KBWDhrAYPR0NlHgT6OjFj95Q4M5FGlnzvjhmfRH8ikTsWPYKtN1WoYMe0r7BWEiwsQ3BgEV6f8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hm76uEXv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5270C4CED0;
-	Wed, 25 Sep 2024 12:12:11 +0000 (UTC)
+	 MIME-Version; b=Y5NZCyZqec2RNLRcBV/5ocA3IR1NIH56RblmbSVuSxoFXD89P5WlHLjuACcwbr332hOkcEY5t+H0OW/zIJ6RJhBMhD2XNuZd3WObxVSs9zsryD5M5kR34zrFVwYfY1DhtDVrG/vuqdnWykrY+01b5iDRHkgfzBNtpzm3NuZ+fhs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KriGerOJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC8A6C4CEC7;
+	Wed, 25 Sep 2024 12:12:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727266333;
-	bh=OwsTIwqeIgzaZkm0UXIF2mKZDAJQPoCDmj/fblpWDOw=;
+	s=k20201202; t=1727266334;
+	bh=L1DMsbP8B/+I3BcOvtw1nDvfk9BnaaCIK2Sn+ULV7Yk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hm76uEXvNl3MfUFMsu2WG6wAIx/AUKPwGgj4oF5MPsdtcZXEA5ZsI3xS37NWKw8Oe
-	 wVWE7aRrAfKSF8fRrrIcgmH1lsfYOUinhba4YTZw7szP2kV0t0rC6H3K230Rc4ZTcV
-	 NBNvQfbyPmu3ZRZqQqgsq4L6qvxVyJcEpJOIndeXFhGtoq4nnj17frkcenze2DkRUm
-	 szhDAq7l3/Dc61lZp3Uk8yPCqpMqPAQez2osXerrE978DhjNDjOeocVy7tYDhPPcnG
-	 k7kYE62unsUzEseaMSPtw1qgWGhImTd7ZZrtp82Zo+m1tCAKk3LJnCMRO6w7FqnRNw
-	 egah/AN0+O8DA==
+	b=KriGerOJqpUcz1AmnUll1wEY59EtiOsABHLx8u8u9AADlVMfVLDHpjCITN3xch67y
+	 6UzfcuTZm6AY5hvuMPwmzgCRC9mV91hMzBnFXJPyl2FFsarYlbCHiBrynjaIBls/fs
+	 Mr/zOHfyYzYXsIEXYh7vuza5jeQWBuCXwRBRiZCIIbrie73qyQIsGzLBjZsyh92ppW
+	 LWp0WZ2vj4RB7xzCNXW+Elo84r6v/q730YRRxt3ZRNstKgb9xUY4HznVtCrsC2faB9
+	 p/+BFMo1xYuoiedl6RQQoKk1mWisOGrR5rYY6cjeTkxkEIQzkIlTpKk2KBxq0zVEGX
+	 20tLZW4JdN01Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Seiji Nishikawa <snishika@redhat.com>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	yisen.zhuang@huawei.com,
-	salil.mehta@huawei.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 014/139] net: hisilicon: hns_mdio: fix OF node leak in probe()
-Date: Wed, 25 Sep 2024 08:07:14 -0400
-Message-ID: <20240925121137.1307574-14-sashal@kernel.org>
+	rafael@kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 015/139] ACPI: PAD: fix crash in exit_round_robin()
+Date: Wed, 25 Sep 2024 08:07:15 -0400
+Message-ID: <20240925121137.1307574-15-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925121137.1307574-1-sashal@kernel.org>
 References: <20240925121137.1307574-1-sashal@kernel.org>
@@ -71,34 +66,94 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.52
 Content-Transfer-Encoding: 8bit
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Seiji Nishikawa <snishika@redhat.com>
 
-[ Upstream commit e62beddc45f487b9969821fad3a0913d9bc18a2f ]
+[ Upstream commit 0a2ed70a549e61c5181bad5db418d223b68ae932 ]
 
-Driver is leaking OF node reference from
-of_parse_phandle_with_fixed_args() in probe().
+The kernel occasionally crashes in cpumask_clear_cpu(), which is called
+within exit_round_robin(), because when executing clear_bit(nr, addr) with
+nr set to 0xffffffff, the address calculation may cause misalignment within
+the memory, leading to access to an invalid memory address.
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20240827144421.52852-4-krzysztof.kozlowski@linaro.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+----------
+BUG: unable to handle kernel paging request at ffffffffe0740618
+        ...
+CPU: 3 PID: 2919323 Comm: acpi_pad/14 Kdump: loaded Tainted: G           OE  X --------- -  - 4.18.0-425.19.2.el8_7.x86_64 #1
+        ...
+RIP: 0010:power_saving_thread+0x313/0x411 [acpi_pad]
+Code: 89 cd 48 89 d3 eb d1 48 c7 c7 55 70 72 c0 e8 64 86 b0 e4 c6 05 0d a1 02 00 01 e9 bc fd ff ff 45 89 e4 42 8b 04 a5 20 82 72 c0 <f0> 48 0f b3 05 f4 9c 01 00 42 c7 04 a5 20 82 72 c0 ff ff ff ff 31
+RSP: 0018:ff72a5d51fa77ec8 EFLAGS: 00010202
+RAX: 00000000ffffffff RBX: ff462981e5d8cb80 RCX: 0000000000000000
+RDX: 0000000000000000 RSI: 0000000000000246 RDI: 0000000000000246
+RBP: ff46297556959d80 R08: 0000000000000382 R09: ff46297c8d0f38d8
+R10: 0000000000000000 R11: 0000000000000001 R12: 000000000000000e
+R13: 0000000000000000 R14: ffffffffffffffff R15: 000000000000000e
+FS:  0000000000000000(0000) GS:ff46297a800c0000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffffffffe0740618 CR3: 0000007e20410004 CR4: 0000000000771ee0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+PKRU: 55555554
+Call Trace:
+ ? acpi_pad_add+0x120/0x120 [acpi_pad]
+ kthread+0x10b/0x130
+ ? set_kthread_struct+0x50/0x50
+ ret_from_fork+0x1f/0x40
+        ...
+CR2: ffffffffe0740618
+
+crash> dis -lr ffffffffc0726923
+        ...
+/usr/src/debug/kernel-4.18.0-425.19.2.el8_7/linux-4.18.0-425.19.2.el8_7.x86_64/./include/linux/cpumask.h: 114
+0xffffffffc0726918 <power_saving_thread+776>:	mov    %r12d,%r12d
+/usr/src/debug/kernel-4.18.0-425.19.2.el8_7/linux-4.18.0-425.19.2.el8_7.x86_64/./include/linux/cpumask.h: 325
+0xffffffffc072691b <power_saving_thread+779>:	mov    -0x3f8d7de0(,%r12,4),%eax
+/usr/src/debug/kernel-4.18.0-425.19.2.el8_7/linux-4.18.0-425.19.2.el8_7.x86_64/./arch/x86/include/asm/bitops.h: 80
+0xffffffffc0726923 <power_saving_thread+787>:	lock btr %rax,0x19cf4(%rip)        # 0xffffffffc0740620 <pad_busy_cpus_bits>
+
+crash> px tsk_in_cpu[14]
+$66 = 0xffffffff
+
+crash> px 0xffffffffc072692c+0x19cf4
+$99 = 0xffffffffc0740620
+
+crash> sym 0xffffffffc0740620
+ffffffffc0740620 (b) pad_busy_cpus_bits [acpi_pad]
+
+crash> px pad_busy_cpus_bits[0]
+$42 = 0xfffc0
+----------
+
+To fix this, ensure that tsk_in_cpu[tsk_index] != -1 before calling
+cpumask_clear_cpu() in exit_round_robin(), just as it is done in
+round_robin_cpu().
+
+Signed-off-by: Seiji Nishikawa <snishika@redhat.com>
+Link: https://patch.msgid.link/20240825141352.25280-1-snishika@redhat.com
+[ rjw: Subject edit, avoid updates to the same value ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns_mdio.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/acpi/acpi_pad.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns_mdio.c b/drivers/net/ethernet/hisilicon/hns_mdio.c
-index 409a89d802208..9ffd479c75088 100644
---- a/drivers/net/ethernet/hisilicon/hns_mdio.c
-+++ b/drivers/net/ethernet/hisilicon/hns_mdio.c
-@@ -575,6 +575,7 @@ static int hns_mdio_probe(struct platform_device *pdev)
- 						MDIO_SC_RESET_ST;
- 				}
- 			}
-+			of_node_put(reg_args.np);
- 		} else {
- 			dev_warn(&pdev->dev, "find syscon ret = %#x\n", ret);
- 			mdio_dev->subctrl_vbase = NULL;
+diff --git a/drivers/acpi/acpi_pad.c b/drivers/acpi/acpi_pad.c
+index 7a453c5ff303a..71e25c7989762 100644
+--- a/drivers/acpi/acpi_pad.c
++++ b/drivers/acpi/acpi_pad.c
+@@ -131,8 +131,10 @@ static void exit_round_robin(unsigned int tsk_index)
+ {
+ 	struct cpumask *pad_busy_cpus = to_cpumask(pad_busy_cpus_bits);
+ 
+-	cpumask_clear_cpu(tsk_in_cpu[tsk_index], pad_busy_cpus);
+-	tsk_in_cpu[tsk_index] = -1;
++	if (tsk_in_cpu[tsk_index] != -1) {
++		cpumask_clear_cpu(tsk_in_cpu[tsk_index], pad_busy_cpus);
++		tsk_in_cpu[tsk_index] = -1;
++	}
+ }
+ 
+ static unsigned int idle_pct = 5; /* percentage */
 -- 
 2.43.0
 
