@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-77214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5274985A6B
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:07:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1734C985A67
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:07:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 52E09282F0A
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:07:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4793B1C23861
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:07:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A68E11B5826;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EA0E1B5812;
 	Wed, 25 Sep 2024 11:42:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lFnxtXE2"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DBYSqrbR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CA5D17BB2A;
-	Wed, 25 Sep 2024 11:42:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BA0418C931;
+	Wed, 25 Sep 2024 11:42:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727264539; cv=none; b=nVqo2/V4QCICmSWyvsTTH63/tuajgm6QBao8wdZDAhkmKy0qH89STJyYVMfuyrwQCu/TsbJ5YuAnCjB3UwAqnKZ9oF3NcsggJr80M3WgeOWg3yvJNkYy0OF47wCe7YuqR7/aNNR5+U1Imoz7TzJGsauzhMIiSLoNW0Y8JfADP/Q=
+	t=1727264539; cv=none; b=ozT2SVfbEdN7Os0DLd1LhZq0yGbFmFMYtIBDVGEWVCM5OeyNGhs9lFzRJnIIeES4d6m7UtArxa4wJWOmYjDCsrHHxyst3yg/jL+BOvw/GOaL9rTRyBglngDEo9kCTKNYlK21O8mM6I5TBi9cOuMNEf1MD9lVZ8u1UDYQN3TIZ3M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1727264539; c=relaxed/simple;
-	bh=jHudm0CECuKh1KiFB3Pzw6IIjb7GizByG8fAtQfyH6U=;
+	bh=a5FKxM9TI86GXq66al+BZuV4NLTfkQo2ArkgmdetOpw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SDx7MXyVwPmV8uycQjEXuE1+cpp2/UPzopMUDiUDMxNoK130GXtjwwrrm7sVStiT6dPWYWUwMeiOrsCWgl5N2wtcs5or2Z4SkS7oVrjjkXQ3QudtzZizHL8fA+U1w/4dl+r0sjQSRWSvbXuSmhsEXUOq1Vf4hDm3E373Rp5BY8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lFnxtXE2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44300C4CECD;
-	Wed, 25 Sep 2024 11:42:16 +0000 (UTC)
+	 MIME-Version; b=fR8+SNpaIcJbdheLv30au2ecOH+AwCT5is4wJB6q+59G0QYYOQfFXM4X6clMEfyR5IL0qpsajlw/q5jE/g56GNLgZaAcfJzoKgTI2w2l/QFYBOB3lZAmFcw3gXi37EZjzh35y0Wj3WK8qniE1Y4lXfzQPmXI+Dw2enwRznjaZ64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DBYSqrbR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11CC0C4CED3;
+	Wed, 25 Sep 2024 11:42:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727264537;
-	bh=jHudm0CECuKh1KiFB3Pzw6IIjb7GizByG8fAtQfyH6U=;
+	s=k20201202; t=1727264539;
+	bh=a5FKxM9TI86GXq66al+BZuV4NLTfkQo2ArkgmdetOpw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lFnxtXE2C3ne3woi2mgIUaRUH9UHGtZqjym4zKxgSEHHZoFip05cWDaiLC3MoiE5e
-	 hbluYByaKBsSjgKvidMk5/i5i8dJnuJGZ2mkT76NoPGW0Tf+vGi4fhOQ6k1FXNNqgt
-	 NxOR258WzFc+XKLiiHvs2E07voR7KDVojdZRD0HQkhcXwXjVz29k6kDMkxAyHnByHo
-	 irnF/n/KCCW847IkayQWFWFMFgJmVzTkwXneoh9PxuXNoxSGrpr4vvWl8NYXdKyPy3
-	 x/Yax5y928VcZhTCTKTlTSBBEJ1DtLOR44fip/LQK0msn86y18XkSFfd6dyQPZ3oao
-	 3vXoMEphavwLw==
+	b=DBYSqrbR8MYz2ea69vbbhgmqN6mU4bW/uYWJCbOhH9G30InOMOKn3fDvyZTb9g2NT
+	 Iai1QuVrxyW04xf1ke8c031YumM7Jyn9rJ8+q8khd0tTYs9PFCIxE9Pfqm8F5HeId5
+	 Tv9xlfm4zrbPG1SOlTtvSWeleMIama78UTCBTAgkPw3hKbb0dA4pijURXKrY+xL+ET
+	 dq65HheF9c15Q0Sq24773MBWe+l/PSFa8xKW768UNylThfwtxAI2rqO1wHTVjGyzG9
+	 2P5yJuyR2hiJNrBAP0sdt3lQ7MZJKrl84+OssUG1A1m7ZwGDaycjJynlu5XjPf9cC+
+	 er7JdGopqfXhw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kaixin Wang <kxwang23@m.fudan.edu.cn>,
-	Helge Deller <deller@gmx.de>,
+Cc: Ulf Hansson <ulf.hansson@linaro.org>,
+	Raghavendra Kakarla <quic_rkakarla@quicinc.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
 	Sasha Levin <sashal@kernel.org>,
-	laurent.pinchart@ideasonboard.com,
-	kuninori.morimoto.gx@renesas.com,
-	linux-fbdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.11 115/244] fbdev: pxafb: Fix possible use after free in pxafb_task()
-Date: Wed, 25 Sep 2024 07:25:36 -0400
-Message-ID: <20240925113641.1297102-115-sashal@kernel.org>
+	linux-pm@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.11 116/244] pmdomain: core: Don't hold the genpd-lock when calling dev_pm_domain_set()
+Date: Wed, 25 Sep 2024 07:25:37 -0400
+Message-ID: <20240925113641.1297102-116-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925113641.1297102-1-sashal@kernel.org>
 References: <20240925113641.1297102-1-sashal@kernel.org>
@@ -68,57 +66,62 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11
 Content-Transfer-Encoding: 8bit
 
-From: Kaixin Wang <kxwang23@m.fudan.edu.cn>
+From: Ulf Hansson <ulf.hansson@linaro.org>
 
-[ Upstream commit 4a6921095eb04a900e0000da83d9475eb958e61e ]
+[ Upstream commit b87eee38605c396f0e1fa435939960e5c6cd41d6 ]
 
-In the pxafb_probe function, it calls the pxafb_init_fbinfo function,
-after which &fbi->task is associated with pxafb_task. Moreover,
-within this pxafb_init_fbinfo function, the pxafb_blank function
-within the &pxafb_ops struct is capable of scheduling work.
+There is no need to hold the genpd-lock, while assigning the
+dev->pm_domain. In fact, it becomes a problem on a PREEMPT_RT based
+configuration as the genpd-lock may be a raw spinlock, while the lock
+acquired through the call to dev_pm_domain_set() is a regular spinlock.
 
-If we remove the module which will call pxafb_remove to make cleanup,
-it will call unregister_framebuffer function which can call
-do_unregister_framebuffer to free fbi->fb through
-put_fb_info(fb_info), while the work mentioned above will be used.
-The sequence of operations that may lead to a UAF bug is as follows:
+To fix the problem, let's simply move the calls to dev_pm_domain_set()
+outside the genpd-lock.
 
-CPU0                                                CPU1
-
-                                   | pxafb_task
-pxafb_remove                       |
-unregister_framebuffer(info)       |
-do_unregister_framebuffer(fb_info) |
-put_fb_info(fb_info)               |
-// free fbi->fb                    | set_ctrlr_state(fbi, state)
-                                   | __pxafb_lcd_power(fbi, 0)
-                                   | fbi->lcd_power(on, &fbi->fb.var)
-                                   | //use fbi->fb
-
-Fix it by ensuring that the work is canceled before proceeding
-with the cleanup in pxafb_remove.
-
-Note that only root user can remove the driver at runtime.
-
-Signed-off-by: Kaixin Wang <kxwang23@m.fudan.edu.cn>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Tested-by: Raghavendra Kakarla <quic_rkakarla@quicinc.com>  # qcm6490 with PREEMPT_RT set
+Acked-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Link: https://lore.kernel.org/r/20240527142557.321610-3-ulf.hansson@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/pxafb.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/pmdomain/core.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/video/fbdev/pxafb.c b/drivers/video/fbdev/pxafb.c
-index 2ef56fa28aff3..5ce02495cda63 100644
---- a/drivers/video/fbdev/pxafb.c
-+++ b/drivers/video/fbdev/pxafb.c
-@@ -2403,6 +2403,7 @@ static void pxafb_remove(struct platform_device *dev)
- 	info = &fbi->fb;
+diff --git a/drivers/pmdomain/core.c b/drivers/pmdomain/core.c
+index 7a61aa88c0614..7b2f8b1417de8 100644
+--- a/drivers/pmdomain/core.c
++++ b/drivers/pmdomain/core.c
+@@ -1758,7 +1758,6 @@ static int genpd_add_device(struct generic_pm_domain *genpd, struct device *dev,
+ 	genpd_lock(genpd);
  
- 	pxafb_overlay_exit(fbi);
-+	cancel_work_sync(&fbi->task);
- 	unregister_framebuffer(info);
+ 	genpd_set_cpumask(genpd, gpd_data->cpu);
+-	dev_pm_domain_set(dev, &genpd->domain);
  
- 	pxafb_disable_controller(fbi);
+ 	genpd->device_count++;
+ 	if (gd)
+@@ -1767,6 +1766,7 @@ static int genpd_add_device(struct generic_pm_domain *genpd, struct device *dev,
+ 	list_add_tail(&gpd_data->base.list_node, &genpd->dev_list);
+ 
+ 	genpd_unlock(genpd);
++	dev_pm_domain_set(dev, &genpd->domain);
+  out:
+ 	if (ret)
+ 		genpd_free_dev_data(dev, gpd_data);
+@@ -1823,12 +1823,13 @@ static int genpd_remove_device(struct generic_pm_domain *genpd,
+ 		genpd->gd->max_off_time_changed = true;
+ 
+ 	genpd_clear_cpumask(genpd, gpd_data->cpu);
+-	dev_pm_domain_set(dev, NULL);
+ 
+ 	list_del_init(&pdd->list_node);
+ 
+ 	genpd_unlock(genpd);
+ 
++	dev_pm_domain_set(dev, NULL);
++
+ 	if (genpd->detach_dev)
+ 		genpd->detach_dev(genpd, dev);
+ 
 -- 
 2.43.0
 
