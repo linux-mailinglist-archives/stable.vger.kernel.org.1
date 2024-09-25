@@ -1,60 +1,62 @@
-Return-Path: <stable+bounces-77623-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36F74985F39
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:53:24 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E888985F3B
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:53:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB9C228AF05
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:53:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1AB931F25AEF
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:53:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1379E13D276;
-	Wed, 25 Sep 2024 12:15:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE412158535;
+	Wed, 25 Sep 2024 12:15:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nx6WfQKi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bpOy0jCz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C29C3220FC5;
-	Wed, 25 Sep 2024 12:15:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7356815383F;
+	Wed, 25 Sep 2024 12:15:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727266505; cv=none; b=d+B/TSJgnqkeLIV1v3KfQmSEVG4sHTDd29SIm2bvA6i+g7mJqilYG6C6sYlp3HQkZJW/2FoK6LHjny6zH0dWPP2Cap/I7G8MregOHzMNDcUnkoGymrikT5D5yPeidjjGPx1vmgPdppG/WqYEurntzI4Gio20iBe2gVVyGqu9Sy4=
+	t=1727266507; cv=none; b=WiVeDkTQIpfsucBHZbsAT5pHB80Ox/d9VHL00Mi3v5ssGH7m6oRMFhEfsMF/8y7ySKlP9FRwTul6KICRe4WVkMekCPa2nKxmzyzu7mAQtHvqFKZvPJmnkXb09cmkiB7AVayZoecDKaUTGycJH44D/R0zOX6F9bXLjUeLnIj13Ps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727266505; c=relaxed/simple;
-	bh=RLnAnqgkxxWhHBmmluAbdBNsGy1I8W8V56sX8SNEnHo=;
+	s=arc-20240116; t=1727266507; c=relaxed/simple;
+	bh=suCNrxQSzJkrAwGBhKIIJzKCKfoECn9gNkh0FL+q5xg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WX+GF/EzJNNzWfhbyqqH79Tel3KhRT8RgJYtk+L2SfeDh9I/diXBK7oAF4X7CpK27qY+2mRJpI2U4CnEk8ZxzV+GAqVE9MsnkY0BNn/UiE31ki1/n584VnzHNdhLtf/Hh0alI4cdg+chusroFkZQGvbyXakrlDvs6m/nQNDvTXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nx6WfQKi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2018BC4CEC3;
-	Wed, 25 Sep 2024 12:15:03 +0000 (UTC)
+	 MIME-Version; b=EpWX3zVxMiyBqPs064gk81SDwxF5K+gE3IWHEJVchGrU6WmldOs7IyXkgkgn14aMQMc1d3kF0t3WI2i7jIBI7fbMTbKgnD3O9koNwkUh5jJy6+Xdrphcetl0KbFYStSBF/tHACKM+lFfEgS/N8iRVVIhZ+9C61szXbK4/n2aqQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bpOy0jCz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D68C3C4CEC7;
+	Wed, 25 Sep 2024 12:15:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727266505;
-	bh=RLnAnqgkxxWhHBmmluAbdBNsGy1I8W8V56sX8SNEnHo=;
+	s=k20201202; t=1727266507;
+	bh=suCNrxQSzJkrAwGBhKIIJzKCKfoECn9gNkh0FL+q5xg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nx6WfQKiWs1TM6FmUQ9UQxfi9xpPb0ACLFuhKt9FcaXuLMTnb2srVHzulOU72jVv2
-	 P67ECEVWxGv4PL8vqwUlZG+GaMqWFaiPVJYbBmX09CnkwkIi/RayDxOqyYwZztNiuC
-	 UiUKXtKkkWSPm7OGuSISzG0/BNPFp4WcF360tIjUm7eiojnOp7fmyYx128bujutQ+U
-	 l/AgNQRxvrwLu2MFrDken0H2zAScBvZLV8vss67NDEEg2NhYLeQbrykeB41/lmPqDK
-	 7FjpG2IEyxlQjZ2Sid+D7EdXhbS3uNE9G1zDOZmOXWlIa0Gn96S0evMNMeqqf92Do6
-	 LZUoQHWkmlENA==
+	b=bpOy0jCzpyfRVqV+aI8/G2PRp1LTxY2+lJ85bgUMTAvik+eLek4FF27NI6FRfXDMq
+	 kQX/V4rH2W2CvT78UN1Rzvoj75MBJkX2Q2VKrOK5D21kOqOaQYA6L8fCZzpoHQqqNB
+	 RttA2YriSGRIaXO2pjyXLDqhOCUN1b2i2Qp1BBcG+5QIMJhB+Txg2llnjhKD4NsRbN
+	 uTmlYfTiaNTYgPwOhXmKtVx1uDYdG8QAZtRgF4XviPIKCxjzjv01YZF7224ktvDwVp
+	 q735X1KoAFPax8LWa/2OPeCSzZXw/xrpDvPj9ra/uBra1Vw2EafWaRswwJEVbQr0X+
+	 SI9nYSZEGrUWA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Roman Kisel <romank@linux.microsoft.com>,
-	Allen Pais <apais@linux.microsoft.com>,
-	Kees Cook <kees@kernel.org>,
+Cc: "Paul E. McKenney" <paulmck@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	viro@zeniv.linux.org.uk,
-	brauner@kernel.org,
-	nagvijay@microsoft.com,
-	linux-fsdevel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 076/139] coredump: Standartize and fix logging
-Date: Wed, 25 Sep 2024 08:08:16 -0400
-Message-ID: <20240925121137.1307574-76-sashal@kernel.org>
+	dave@stgolabs.net,
+	josh@joshtriplett.org,
+	frederic@kernel.org,
+	joel@joelfernandes.org,
+	boqun.feng@gmail.com,
+	urezki@gmail.com,
+	rcu@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 077/139] rcuscale: Provide clear error when async specified without primitives
+Date: Wed, 25 Sep 2024 08:08:17 -0400
+Message-ID: <20240925121137.1307574-77-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925121137.1307574-1-sashal@kernel.org>
 References: <20240925121137.1307574-1-sashal@kernel.org>
@@ -69,176 +71,45 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.52
 Content-Transfer-Encoding: 8bit
 
-From: Roman Kisel <romank@linux.microsoft.com>
+From: "Paul E. McKenney" <paulmck@kernel.org>
 
-[ Upstream commit c114e9948c2b6a0b400266e59cc656b59e795bca ]
+[ Upstream commit 11377947b5861fa59bf77c827e1dd7c081842cc9 ]
 
-The coredump code does not log the process ID and the comm
-consistently, logs unescaped comm when it does log it, and
-does not always use the ratelimited logging. That makes it
-harder to analyze logs and puts the system at the risk of
-spamming the system log incase something crashes many times
-over and over again.
+Currently, if the rcuscale module's async module parameter is specified
+for RCU implementations that do not have async primitives such as RCU
+Tasks Rude (which now lacks a call_rcu_tasks_rude() function), there
+will be a series of splats due to calls to a NULL pointer.  This commit
+therefore warns of this situation, but switches to non-async testing.
 
-Fix that by logging TGID and comm (escaped) consistently and
-using the ratelimited logging always.
-
-Signed-off-by: Roman Kisel <romank@linux.microsoft.com>
-Tested-by: Allen Pais <apais@linux.microsoft.com>
-Link: https://lore.kernel.org/r/20240718182743.1959160-2-romank@linux.microsoft.com
-Signed-off-by: Kees Cook <kees@kernel.org>
+Signed-off-by: "Paul E. McKenney" <paulmck@kernel.org>
+Signed-off-by: Neeraj Upadhyay <neeraj.upadhyay@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/coredump.c            | 43 +++++++++++++++-------------------------
- include/linux/coredump.h | 22 ++++++++++++++++++++
- 2 files changed, 38 insertions(+), 27 deletions(-)
+ kernel/rcu/rcuscale.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/coredump.c b/fs/coredump.c
-index 9d235fa14ab98..9846b4d06c3dd 100644
---- a/fs/coredump.c
-+++ b/fs/coredump.c
-@@ -583,8 +583,7 @@ void do_coredump(const kernel_siginfo_t *siginfo)
- 		struct subprocess_info *sub_info;
- 
- 		if (ispipe < 0) {
--			printk(KERN_WARNING "format_corename failed\n");
--			printk(KERN_WARNING "Aborting core\n");
-+			coredump_report_failure("format_corename failed, aborting core");
- 			goto fail_unlock;
- 		}
- 
-@@ -604,27 +603,21 @@ void do_coredump(const kernel_siginfo_t *siginfo)
- 			 * right pid if a thread in a multi-threaded
- 			 * core_pattern process dies.
- 			 */
--			printk(KERN_WARNING
--				"Process %d(%s) has RLIMIT_CORE set to 1\n",
--				task_tgid_vnr(current), current->comm);
--			printk(KERN_WARNING "Aborting core\n");
-+			coredump_report_failure("RLIMIT_CORE is set to 1, aborting core");
- 			goto fail_unlock;
- 		}
- 		cprm.limit = RLIM_INFINITY;
- 
- 		dump_count = atomic_inc_return(&core_dump_count);
- 		if (core_pipe_limit && (core_pipe_limit < dump_count)) {
--			printk(KERN_WARNING "Pid %d(%s) over core_pipe_limit\n",
--			       task_tgid_vnr(current), current->comm);
--			printk(KERN_WARNING "Skipping core dump\n");
-+			coredump_report_failure("over core_pipe_limit, skipping core dump");
- 			goto fail_dropcount;
- 		}
- 
- 		helper_argv = kmalloc_array(argc + 1, sizeof(*helper_argv),
- 					    GFP_KERNEL);
- 		if (!helper_argv) {
--			printk(KERN_WARNING "%s failed to allocate memory\n",
--			       __func__);
-+			coredump_report_failure("%s failed to allocate memory", __func__);
- 			goto fail_dropcount;
- 		}
- 		for (argi = 0; argi < argc; argi++)
-@@ -641,8 +634,7 @@ void do_coredump(const kernel_siginfo_t *siginfo)
- 
- 		kfree(helper_argv);
- 		if (retval) {
--			printk(KERN_INFO "Core dump to |%s pipe failed\n",
--			       cn.corename);
-+			coredump_report_failure("|%s pipe failed", cn.corename);
- 			goto close_fail;
- 		}
- 	} else {
-@@ -655,10 +647,8 @@ void do_coredump(const kernel_siginfo_t *siginfo)
- 			goto fail_unlock;
- 
- 		if (need_suid_safe && cn.corename[0] != '/') {
--			printk(KERN_WARNING "Pid %d(%s) can only dump core "\
--				"to fully qualified path!\n",
--				task_tgid_vnr(current), current->comm);
--			printk(KERN_WARNING "Skipping core dump\n");
-+			coredump_report_failure(
-+				"this process can only dump core to a fully qualified path, skipping core dump");
- 			goto fail_unlock;
- 		}
- 
-@@ -727,13 +717,13 @@ void do_coredump(const kernel_siginfo_t *siginfo)
- 		idmap = file_mnt_idmap(cprm.file);
- 		if (!vfsuid_eq_kuid(i_uid_into_vfsuid(idmap, inode),
- 				    current_fsuid())) {
--			pr_info_ratelimited("Core dump to %s aborted: cannot preserve file owner\n",
--					    cn.corename);
-+			coredump_report_failure("Core dump to %s aborted: "
-+				"cannot preserve file owner", cn.corename);
- 			goto close_fail;
- 		}
- 		if ((inode->i_mode & 0677) != 0600) {
--			pr_info_ratelimited("Core dump to %s aborted: cannot preserve file permissions\n",
--					    cn.corename);
-+			coredump_report_failure("Core dump to %s aborted: "
-+				"cannot preserve file permissions", cn.corename);
- 			goto close_fail;
- 		}
- 		if (!(cprm.file->f_mode & FMODE_CAN_WRITE))
-@@ -754,7 +744,7 @@ void do_coredump(const kernel_siginfo_t *siginfo)
- 		 * have this set to NULL.
- 		 */
- 		if (!cprm.file) {
--			pr_info("Core dump to |%s disabled\n", cn.corename);
-+			coredump_report_failure("Core dump to |%s disabled", cn.corename);
- 			goto close_fail;
- 		}
- 		if (!dump_vma_snapshot(&cprm))
-@@ -941,11 +931,10 @@ void validate_coredump_safety(void)
- {
- 	if (suid_dumpable == SUID_DUMP_ROOT &&
- 	    core_pattern[0] != '/' && core_pattern[0] != '|') {
--		pr_warn(
--"Unsafe core_pattern used with fs.suid_dumpable=2.\n"
--"Pipe handler or fully qualified core dump path required.\n"
--"Set kernel.core_pattern before fs.suid_dumpable.\n"
--		);
-+
-+		coredump_report_failure("Unsafe core_pattern used with fs.suid_dumpable=2: "
-+			"pipe handler or fully qualified core dump path required. "
-+			"Set kernel.core_pattern before fs.suid_dumpable.");
+diff --git a/kernel/rcu/rcuscale.c b/kernel/rcu/rcuscale.c
+index ffdb30495e3cc..ed46d9e8c0e43 100644
+--- a/kernel/rcu/rcuscale.c
++++ b/kernel/rcu/rcuscale.c
+@@ -498,7 +498,7 @@ rcu_scale_writer(void *arg)
+ 			schedule_timeout_idle(torture_random(&tr) % writer_holdoff_jiffies + 1);
+ 		wdp = &wdpp[i];
+ 		*wdp = ktime_get_mono_fast_ns();
+-		if (gp_async) {
++		if (gp_async && !WARN_ON_ONCE(!cur_ops->async)) {
+ retry:
+ 			if (!rhp)
+ 				rhp = kmalloc(sizeof(*rhp), GFP_KERNEL);
+@@ -554,7 +554,7 @@ rcu_scale_writer(void *arg)
+ 			i++;
+ 		rcu_scale_wait_shutdown();
+ 	} while (!torture_must_stop());
+-	if (gp_async) {
++	if (gp_async && cur_ops->async) {
+ 		cur_ops->gp_barrier();
  	}
- }
- 
-diff --git a/include/linux/coredump.h b/include/linux/coredump.h
-index d3eba43601508..f897de8ccea8c 100644
---- a/include/linux/coredump.h
-+++ b/include/linux/coredump.h
-@@ -41,8 +41,30 @@ extern int dump_align(struct coredump_params *cprm, int align);
- int dump_user_range(struct coredump_params *cprm, unsigned long start,
- 		    unsigned long len);
- extern void do_coredump(const kernel_siginfo_t *siginfo);
-+
-+/*
-+ * Logging for the coredump code, ratelimited.
-+ * The TGID and comm fields are added to the message.
-+ */
-+
-+#define __COREDUMP_PRINTK(Level, Format, ...) \
-+	do {	\
-+		char comm[TASK_COMM_LEN];	\
-+	\
-+		get_task_comm(comm, current);	\
-+		printk_ratelimited(Level "coredump: %d(%*pE): " Format "\n",	\
-+			task_tgid_vnr(current), (int)strlen(comm), comm, ##__VA_ARGS__);	\
-+	} while (0)	\
-+
-+#define coredump_report(fmt, ...) __COREDUMP_PRINTK(KERN_INFO, fmt, ##__VA_ARGS__)
-+#define coredump_report_failure(fmt, ...) __COREDUMP_PRINTK(KERN_WARNING, fmt, ##__VA_ARGS__)
-+
- #else
- static inline void do_coredump(const kernel_siginfo_t *siginfo) {}
-+
-+#define coredump_report(...)
-+#define coredump_report_failure(...)
-+
- #endif
- 
- #if defined(CONFIG_COREDUMP) && defined(CONFIG_SYSCTL)
+ 	writer_n_durations[me] = i_max + 1;
 -- 
 2.43.0
 
