@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-77169-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77170-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AEDA985994
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:56:38 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74D6E985997
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:56:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C6792B21659
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 11:56:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A54D01C208C2
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 11:56:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 32AAF1A42D3;
-	Wed, 25 Sep 2024 11:39:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10F971A4B84;
+	Wed, 25 Sep 2024 11:39:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gnRfL3fp"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ebtWyxET"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E13681A42C8;
-	Wed, 25 Sep 2024 11:39:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C06A91A4B70;
+	Wed, 25 Sep 2024 11:39:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727264372; cv=none; b=beSrUd2MbCgB8G3Q7sviXFd18lNIdPbIPaC9UnK71vCQ4iMYNlamiXMGG9kOu/SCiow6gFLoF11/axDlMNHe0BDcWHtBCZhDeqBqXYlmiHb1+WFSTI8G8E53feKAHFlum1fGle154poB7ddlltGbO+tB4V+2I9Pwwk9AAOaSqUM=
+	t=1727264373; cv=none; b=l346eC77EK5nzIFB/sbS2rlTS2FBa1KM+TK/AQErgUfEUNyv9KTF3HwwH59FzAyODvA4hx+bRyBJd5z2v0HAQyNNcyp6KwVnXxp7JGRoAE1Rh9rFUMaNDIsp4eysjRmjVrjDBVKGPXq7SevnXJuBgqIftCsrv08R5ODR9NNdeDU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727264372; c=relaxed/simple;
-	bh=XIaR4b2RFvnT3nnhN99ZcSyml2A2aiinREcuo00Y1VE=;
+	s=arc-20240116; t=1727264373; c=relaxed/simple;
+	bh=6a1bwz40ZkqHZ3gLJ3mVlCkX9Gp1T/afwEeN5qlkvRg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UbMPit1NrqC5Z+lUuQzqLGzAYv0pkHNbh61Ls5WsutsBWspquZ7XqIQkDhEiCaxJYXkIyGJLRjCDO5Jyp0u7P2gJni6tsnjhb4ONSCg+rSZVeTzAmFZ2J5dkZyDVw4LvjYVWPMt7SObx5NjlL50FzbZbQbW7MvvRq1dYcA2kekk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gnRfL3fp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 847B9C4CEC7;
-	Wed, 25 Sep 2024 11:39:30 +0000 (UTC)
+	 MIME-Version; b=XeV004HelsfAGPTwkZ4whD8UrFzbOIlHAXVdLbVeFE/R9bW0Z3XFtTsFGKRxqS8EgleWrYAeHzR4KmJwppkBY6c/e5feaWNk7/I2Ibv8RYUdlw2VWheIISRjSJa+o+a2w8JXCwz1ZwRhmAuHaM6AMLFfFpvoz96O14gJhNCKQKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ebtWyxET; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FCF5C4CEC7;
+	Wed, 25 Sep 2024 11:39:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727264371;
-	bh=XIaR4b2RFvnT3nnhN99ZcSyml2A2aiinREcuo00Y1VE=;
+	s=k20201202; t=1727264373;
+	bh=6a1bwz40ZkqHZ3gLJ3mVlCkX9Gp1T/afwEeN5qlkvRg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gnRfL3fpLtdeBgqUvA9NI4o24rZuyMnh92kwJypwG5Kop/KP+VgpwrrI/l6fJXZhO
-	 piQYiV3sjGOtjE2c7sbEN7RW5nYUKLAW+jZCJzJoSAEUaZujNJxZgmcKPTiwquZ8ym
-	 YX3bx/1yuZrX9DxYWe0kStBbyosPI8I59trqnyaNG6+Z8EBDKQvavt9bIkP6oRB5D8
-	 66ncGHvdixxb96sq+3MJ+RA/rzxZ7Lf6BF0sroavcRAZhfOkmf0b5zmL4jwLDybgvo
-	 DNb/xXa5GqEfmCqTjCWiMYGK+Pmw1y4JPJLgngRv0jF23aFFuEJapeniI8Rrh3EUQj
-	 a7W6oIL2J0ILA==
+	b=ebtWyxETo09JH2KORanWLOFs+A7XKBppdM/sLtOZqMoFpY+g2w2iLm/N+BGtRrN9g
+	 6Zn/xKBemel1te31g8LHcLVN0TcDt+h0t3FdJsRKHcCrCSCZMTzoU5/OQyX7m6XTdN
+	 1J/gx2Jv2jZQYv8AOk9SzubrZdpwBj9m7zvShna/oarzSpINbFRTdXSrMU1aDbanpP
+	 EaYjz9TF4OCgrzEOeTuaryKLgiseSm339QfNWKgtIpGOyhT01Vlgrr1NCQ9Lblxw4o
+	 1gHHCXjdQ61fcyFhsZBxkN1/KuRT5KNTDL7u0L5RhIotck1YNFyIES72nGDHOSXpkl
+	 nHnkufkuBEwsQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alexey Dobriyan <adobriyan@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
+Cc: Anastasia Belova <abelova@astralinux.ru>,
+	Perry Yuan <perry.yuan@amd.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-block@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 071/244] block: fix integer overflow in BLKSECDISCARD
-Date: Wed, 25 Sep 2024 07:24:52 -0400
-Message-ID: <20240925113641.1297102-71-sashal@kernel.org>
+	ray.huang@amd.com,
+	gautham.shenoy@amd.com,
+	mario.limonciello@amd.com,
+	rafael@kernel.org,
+	linux-pm@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.11 072/244] cpufreq: amd-pstate: add check for cpufreq_cpu_get's return value
+Date: Wed, 25 Sep 2024 07:24:53 -0400
+Message-ID: <20240925113641.1297102-72-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925113641.1297102-1-sashal@kernel.org>
 References: <20240925113641.1297102-1-sashal@kernel.org>
@@ -65,73 +70,59 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11
 Content-Transfer-Encoding: 8bit
 
-From: Alexey Dobriyan <adobriyan@gmail.com>
+From: Anastasia Belova <abelova@astralinux.ru>
 
-[ Upstream commit 697ba0b6ec4ae04afb67d3911799b5e2043b4455 ]
+[ Upstream commit 5493f9714e4cdaf0ee7cec15899a231400cb1a9f ]
 
-I independently rediscovered
+cpufreq_cpu_get may return NULL. To avoid NULL-dereference check it
+and return in case of error.
 
-	commit 22d24a544b0d49bbcbd61c8c0eaf77d3c9297155
-	block: fix overflow in blk_ioctl_discard()
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-but for secure erase.
-
-Same problem:
-
-	uint64_t r[2] = {512, 18446744073709551104ULL};
-	ioctl(fd, BLKSECDISCARD, r);
-
-will enter near infinite loop inside blkdev_issue_secure_erase():
-
-	a.out: attempt to access beyond end of device
-	loop0: rw=5, sector=3399043073, nr_sectors = 1024 limit=2048
-	bio_check_eod: 3286214 callbacks suppressed
-
-Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
-Link: https://lore.kernel.org/r/9e64057f-650a-46d1-b9f7-34af391536ef@p183
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
+Reviewed-by: Perry Yuan <perry.yuan@amd.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/ioctl.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/cpufreq/amd-pstate.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/block/ioctl.c b/block/ioctl.c
-index e8e4a4190f183..44257bdfeacbf 100644
---- a/block/ioctl.c
-+++ b/block/ioctl.c
-@@ -126,7 +126,7 @@ static int blk_ioctl_discard(struct block_device *bdev, blk_mode_t mode,
- 		return -EINVAL;
+diff --git a/drivers/cpufreq/amd-pstate.c b/drivers/cpufreq/amd-pstate.c
+index 259a917da75f3..103b43e529b5f 100644
+--- a/drivers/cpufreq/amd-pstate.c
++++ b/drivers/cpufreq/amd-pstate.c
+@@ -656,7 +656,12 @@ static void amd_pstate_adjust_perf(unsigned int cpu,
+ 	unsigned long max_perf, min_perf, des_perf,
+ 		      cap_perf, lowest_nonlinear_perf;
+ 	struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
+-	struct amd_cpudata *cpudata = policy->driver_data;
++	struct amd_cpudata *cpudata;
++
++	if (!policy)
++		return;
++
++	cpudata = policy->driver_data;
  
- 	filemap_invalidate_lock(bdev->bd_mapping);
--	err = truncate_bdev_range(bdev, mode, start, start + len - 1);
-+	err = truncate_bdev_range(bdev, mode, start, end - 1);
- 	if (err)
- 		goto fail;
- 
-@@ -163,7 +163,7 @@ static int blk_ioctl_discard(struct block_device *bdev, blk_mode_t mode,
- static int blk_ioctl_secure_erase(struct block_device *bdev, blk_mode_t mode,
- 		void __user *argp)
+ 	if (policy->min != cpudata->min_limit_freq || policy->max != cpudata->max_limit_freq)
+ 		amd_pstate_update_min_max_limit(policy);
+@@ -870,11 +875,16 @@ static void amd_pstate_init_prefcore(struct amd_cpudata *cpudata)
+ static void amd_pstate_update_limits(unsigned int cpu)
  {
--	uint64_t start, len;
-+	uint64_t start, len, end;
- 	uint64_t range[2];
- 	int err;
+ 	struct cpufreq_policy *policy = cpufreq_cpu_get(cpu);
+-	struct amd_cpudata *cpudata = policy->driver_data;
++	struct amd_cpudata *cpudata;
+ 	u32 prev_high = 0, cur_high = 0;
+ 	int ret;
+ 	bool highest_perf_changed = false;
  
-@@ -178,11 +178,12 @@ static int blk_ioctl_secure_erase(struct block_device *bdev, blk_mode_t mode,
- 	len = range[1];
- 	if ((start & 511) || (len & 511))
- 		return -EINVAL;
--	if (start + len > bdev_nr_bytes(bdev))
-+	if (check_add_overflow(start, len, &end) ||
-+	    end > bdev_nr_bytes(bdev))
- 		return -EINVAL;
- 
- 	filemap_invalidate_lock(bdev->bd_mapping);
--	err = truncate_bdev_range(bdev, mode, start, start + len - 1);
-+	err = truncate_bdev_range(bdev, mode, start, end - 1);
- 	if (!err)
- 		err = blkdev_issue_secure_erase(bdev, start >> 9, len >> 9,
- 						GFP_KERNEL);
++	if (!policy)
++		return;
++
++	cpudata = policy->driver_data;
++
+ 	mutex_lock(&amd_pstate_driver_lock);
+ 	if ((!amd_pstate_prefcore) || (!cpudata->hw_prefcore))
+ 		goto free_cpufreq_put;
 -- 
 2.43.0
 
