@@ -1,62 +1,62 @@
-Return-Path: <stable+bounces-77355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77356-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8022E985C35
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:42:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A4F02985C38
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:42:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 213CD1F28455
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:42:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3A5071F28481
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:42:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6A991ABED0;
-	Wed, 25 Sep 2024 11:58:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08B9C1AC896;
+	Wed, 25 Sep 2024 11:58:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LIm3c006"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VWj/DDBn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61CAE1ABEB3;
-	Wed, 25 Sep 2024 11:58:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B11D41AC881;
+	Wed, 25 Sep 2024 11:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727265536; cv=none; b=EHpYpsx7VhKSMP9iBGWGgp00D8cNR2+/vIYYA4gWhnFVNs3+/cWexQc8QwUx8TChgRIC3sVqv9nsb/vjYleZV+SWliTX63Lce33bcFU7tPiWtspTawjj2UQT/G1I6stgYqrvuZhQkMs1grWyDuwQgjivBQVmkD/csvVFWxWQ4uw=
+	t=1727265538; cv=none; b=KndqsL/Vmfto1YBqjcQqm+ymEuI4ljXfUqdHyzfU2JAa7E9C4Vmtok6PqC9JB/iAhsh8+pBuLGUPCnf2etfiIPdGPFPlc8hIwn9WaFuwhlQ+ILEiAHebQqxU0nP2SwSdlE7JgeJRTug6NM+BJEMuZ0wCaBEfv6qHTfaVqy9X5IQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727265536; c=relaxed/simple;
-	bh=9lBC4d65KKRSmO1eJbpsc08w5T/98CswSFBKhln48QA=;
+	s=arc-20240116; t=1727265538; c=relaxed/simple;
+	bh=JRr0lm+DdTpwalhZmwzU8ENBTVCeWKugFb2zoapxBpE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rGvG1JRZuSJI4x9n74HOYC939I+FweaQ0LyxR3ER7fSpEAesInMgPaoH7aiqvf8XtzMpzXpBPFsLjo3M5A9nvO907Ms96Fa1N1d3bmgy1rh4up8sxgNuZSZbuJxlWeX9PxjcaiVqTzzEO9LxjQptlU6IjWGibbSBHUkFIFpUe9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LIm3c006; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48799C4CEC3;
-	Wed, 25 Sep 2024 11:58:54 +0000 (UTC)
+	 MIME-Version; b=FivM9F14vNe6Sk/6WcUfzt72EEvOOMz8pZ3SZo+O8Bs3Ks6VhwshuQEGIqFzaerYTT4f0UgzDtjLzN9TGiXe8PXlu5ubaW0dhGxD5WYkWaOzpNaaSrXGVdPEJ9T8exxrQQA0ARn5j+zUGRQVZ3gpbQsawNpHKBoBqfErid1TsKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VWj/DDBn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7007C4CEC7;
+	Wed, 25 Sep 2024 11:58:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727265536;
-	bh=9lBC4d65KKRSmO1eJbpsc08w5T/98CswSFBKhln48QA=;
+	s=k20201202; t=1727265538;
+	bh=JRr0lm+DdTpwalhZmwzU8ENBTVCeWKugFb2zoapxBpE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LIm3c006HRF7lnnZEgJnZVzFB23p8wxIO3d/+KDjoNwtLBn+OQKGIkz2l+GcRENI2
-	 3R2y8twPAt0SapOQYT8t6XSxYyZ72Sh1GX7SLH/LMoPiB9J5M8LHs++Rpy5fPQaJFa
-	 p/rwh3MO9G2Y49+x9oz3A4j3pH5ZbNEhP+OIkkywsLSO33OhxTPqJJ1vvORVuKdGot
-	 Fd06Qj6Sy0ZIcKdu/dCPpYQeBLiFWPCO+j+r36XjmXAGFHc3KZDcfW6Skoqo9CtsKg
-	 MYSPLiEk+mhuRfIfFFMaUFBZN0bpx1Q0VDOgH+TrgIl399GUsoHHhDueagWwUyHRtt
-	 lYtFXo8TLRwXg==
+	b=VWj/DDBnBl0UhPk6Oi7H4tpBXyYgj0IAaSDFT2xad8bidNdLP2Mj+wmr0Nqu/atjL
+	 VLEYw+jJMLG3FuD+B67RlmKDdqQ5TCWKw2gcgGXcJUnZtrDXdTlA6OFATLr+i7az6Q
+	 axovM/VzC6PjNKQCK4uGUeZQfYlv2YWd/1oLMPB2JxjEP3D2qrX3SVlVotWbTsMkDq
+	 23ecm4QLI0aRVVwlFdvAQyLG4D7YxCk1lGA3zAA2BsRUcYzErafSrFiYEHBZA37uxY
+	 timzfCuUjsY3/gk4w7RDmesw3qgTiiZzZCAHu8xD5e55aPEYzF3JS0Y0ajc/Dzsslt
+	 JYUQb/9Z8AANg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jeongjun Park <aha310510@gmail.com>,
+Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Simon Horman <horms@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	wei.liu@kernel.org,
-	paul@xen.org,
+	yisen.zhuang@huawei.com,
+	salil.mehta@huawei.com,
 	davem@davemloft.net,
 	edumazet@google.com,
 	pabeni@redhat.com,
-	xen-devel@lists.xenproject.org,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 011/197] net/xen-netback: prevent UAF in xenvif_flush_hash()
-Date: Wed, 25 Sep 2024 07:50:30 -0400
-Message-ID: <20240925115823.1303019-11-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.10 012/197] net: hisilicon: hip04: fix OF node leak in probe()
+Date: Wed, 25 Sep 2024 07:50:31 -0400
+Message-ID: <20240925115823.1303019-12-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925115823.1303019-1-sashal@kernel.org>
 References: <20240925115823.1303019-1-sashal@kernel.org>
@@ -71,48 +71,34 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.11
 Content-Transfer-Encoding: 8bit
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 0fa5e94a1811d68fbffa0725efe6d4ca62c03d12 ]
+[ Upstream commit 17555297dbd5bccc93a01516117547e26a61caf1 ]
 
-During the list_for_each_entry_rcu iteration call of xenvif_flush_hash,
-kfree_rcu does not exist inside the rcu read critical section, so if
-kfree_rcu is called when the rcu grace period ends during the iteration,
-UAF occurs when accessing head->next after the entry becomes free.
+Driver is leaking OF node reference from
+of_parse_phandle_with_fixed_args() in probe().
 
-Therefore, to solve this, you need to change it to list_for_each_entry_safe.
-
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Link: https://patch.msgid.link/20240822181109.2577354-1-aha310510@gmail.com
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20240827144421.52852-2-krzysztof.kozlowski@linaro.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/xen-netback/hash.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/hisilicon/hip04_eth.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/xen-netback/hash.c b/drivers/net/xen-netback/hash.c
-index ff96f22648efd..45ddce35f6d2c 100644
---- a/drivers/net/xen-netback/hash.c
-+++ b/drivers/net/xen-netback/hash.c
-@@ -95,7 +95,7 @@ static u32 xenvif_new_hash(struct xenvif *vif, const u8 *data,
+diff --git a/drivers/net/ethernet/hisilicon/hip04_eth.c b/drivers/net/ethernet/hisilicon/hip04_eth.c
+index b91e7a06b97f7..beb815e5289b1 100644
+--- a/drivers/net/ethernet/hisilicon/hip04_eth.c
++++ b/drivers/net/ethernet/hisilicon/hip04_eth.c
+@@ -947,6 +947,7 @@ static int hip04_mac_probe(struct platform_device *pdev)
+ 	priv->tx_coalesce_timer.function = tx_done;
  
- static void xenvif_flush_hash(struct xenvif *vif)
- {
--	struct xenvif_hash_cache_entry *entry;
-+	struct xenvif_hash_cache_entry *entry, *n;
- 	unsigned long flags;
- 
- 	if (xenvif_hash_cache_size == 0)
-@@ -103,8 +103,7 @@ static void xenvif_flush_hash(struct xenvif *vif)
- 
- 	spin_lock_irqsave(&vif->hash.cache.lock, flags);
- 
--	list_for_each_entry_rcu(entry, &vif->hash.cache.list, link,
--				lockdep_is_held(&vif->hash.cache.lock)) {
-+	list_for_each_entry_safe(entry, n, &vif->hash.cache.list, link) {
- 		list_del_rcu(&entry->link);
- 		vif->hash.cache.count--;
- 		kfree_rcu(entry, rcu);
+ 	priv->map = syscon_node_to_regmap(arg.np);
++	of_node_put(arg.np);
+ 	if (IS_ERR(priv->map)) {
+ 		dev_warn(d, "no syscon hisilicon,hip04-ppe\n");
+ 		ret = PTR_ERR(priv->map);
 -- 
 2.43.0
 
