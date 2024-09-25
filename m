@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-77203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77204-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB25A985A18
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:05:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D053985A1A
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:05:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 292EAB21E4B
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:05:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C122E1F23B74
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:05:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91F231B2EEA;
-	Wed, 25 Sep 2024 11:41:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3568D1B3738;
+	Wed, 25 Sep 2024 11:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mmvVDaYC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IQXTkZ0j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BD611B2EDD;
-	Wed, 25 Sep 2024 11:41:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E225618C335;
+	Wed, 25 Sep 2024 11:41:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727264503; cv=none; b=cLFmqzuin+8rPAqpkp/JWlSEdtY+Yz9KedYhnmqbj6g0OEbkYtF4RVukkhMlgQ2N1ySOHihSgHTz+N5UVb3CAlRWsxyJ1AGEiqEKUYYWw0NkAxC5Z4LzM8yy+2qwvwKkv3trF8/o5WH7f7C+VOjPby01S105+Z0dlUBVKePNjvw=
+	t=1727264507; cv=none; b=NXSQsgDg2zPJT3TjBpBHWsl4u+9xsyZ2XJQo3em1kPVddCnM0bU3RY+BxrJJuPjIkAEkTOVuqukZdG3n1UTozDG0TqdUwMU+T5wTahhwF9cAYvjMIEb/3rd59TK09o7DOIwcCIXDELSTTLQd1vvkyjS7LytgvuDCVimrxIDMVcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727264503; c=relaxed/simple;
-	bh=4kStu5cFgDRLN5FvWQV8v4gaCJQ4kcCDjuaA2FKp+9U=;
+	s=arc-20240116; t=1727264507; c=relaxed/simple;
+	bh=7hvrXMe7WuLPXYPFt7npfA5tdlIn08uNZaYmyprZjW4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RnT8yDd0EjKo9PYnxSs1M97wjM+MHvP5h/FIfJAAfo1sQxAMQejytCMVMgt1RADBzANhAff9lbQjM0toM2YaSmdjDfM46cwrSV3mueycrW3ddUe4OqgoFI0x7O1hIeRXQkV19P1UX3r/BnmwoAUBKjhlWWmfVR5kYDPrDyKy6Wo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mmvVDaYC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FF92C4CEC7;
-	Wed, 25 Sep 2024 11:41:42 +0000 (UTC)
+	 MIME-Version; b=SAn5RplmlO/2DX7Ubk9qD5C/avdrJyC3hA2vlcPNj9KekKOGCSILoGEfFDxac17QAxXTR4qCGc3W0SC9n28V1Qy2MRW7p4KUKfsd9RMJ4fhmfieucgQrlvBwIZAw5/bGDzYjUjgERXEAhp2mekDI1tT0K2hPBpybKwZS39btwe4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IQXTkZ0j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F91AC4CEC7;
+	Wed, 25 Sep 2024 11:41:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727264503;
-	bh=4kStu5cFgDRLN5FvWQV8v4gaCJQ4kcCDjuaA2FKp+9U=;
+	s=k20201202; t=1727264506;
+	bh=7hvrXMe7WuLPXYPFt7npfA5tdlIn08uNZaYmyprZjW4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mmvVDaYCuy6h6wTsvloRV3b2GzkmvRPI+A4sVlaaKFRQQoOOTl8yhmDwVSoq/FGmS
-	 6ub/95ykxvr+yuNkKMnoJLpu9KQDYjV7ehsaKb4ZVV08qc30Um2euW5alrAJvxKprF
-	 VyGO0z+XWAe5FLcDxaKfTRtUDbnZDiAR6EtPVZPXbx/KWmpf0EYPuldGBEalnFXkZU
-	 jnLSSPWNv2xKwrBD1P3wUJp6i2zKid3XUOuz2lzWWMYJeGU+d505ZvFwDBm9D52xaG
-	 aCL0y7ONCuleMt4+lDv0H7elinyvIPVV1sl8KsNOOh+l8DsR+1cJ3T+xDQGgbEKv3v
-	 rmg/6fbE9hgmw==
+	b=IQXTkZ0j0M9GToTrB4ZUksE5Wl82ObAUvnumuVMF90Hm8ho0kp4NuXpWJbJUUF2wf
+	 I7F+JXYWJTETDYolaCcr+a0AZa6dWDHY1rD5oC+280VlGNuLDYafehbDlSlPuIL4f7
+	 lwgFFswz5Yl9K84XOVBcwWxPTN0+V3MRBGbyCiWna8HaoYWe+xbZXHZ78MRLlz1gXU
+	 z86uGaV6m7kbBqBPMYGYv9X8yQmoj5Jw0/8n6BbLW2CAq2oe8p32fL1llXOGgspvM9
+	 PfAO+f71TyRW97nVutuD3GvV5eR6kyZIMwpowj2hi+vM+I/0vvCso/SoznHS/YKf73
+	 Fl6K28nO9xnhg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -49,9 +49,9 @@ Cc: Takashi Iwai <tiwai@suse.de>,
 	perex@perex.cz,
 	tiwai@suse.com,
 	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 105/244] ALSA: asihpi: Fix potential OOB array access
-Date: Wed, 25 Sep 2024 07:25:26 -0400
-Message-ID: <20240925113641.1297102-105-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.11 106/244] ALSA: hdsp: Break infinite MIDI input flush loop
+Date: Wed, 25 Sep 2024 07:25:27 -0400
+Message-ID: <20240925113641.1297102-106-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925113641.1297102-1-sashal@kernel.org>
 References: <20240925113641.1297102-1-sashal@kernel.org>
@@ -68,35 +68,56 @@ Content-Transfer-Encoding: 8bit
 
 From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 7b986c7430a6bb68d523dac7bfc74cbd5b44ef96 ]
+[ Upstream commit c01f3815453e2d5f699ccd8c8c1f93a5b8669e59 ]
 
-ASIHPI driver stores some values in the static array upon a response
-from the driver, and its index depends on the firmware.  We shouldn't
-trust it blindly.
+The current MIDI input flush on HDSP and HDSPM drivers relies on the
+hardware reporting the right value.  If the hardware doesn't give the
+proper value but returns -1, it may be stuck at an infinite loop.
 
-This patch adds a sanity check of the array index to fit in the array
-size.
+Add a counter and break if the loop is unexpectedly too long.
 
-Link: https://patch.msgid.link/20240808091454.30846-1-tiwai@suse.de
+Link: https://patch.msgid.link/20240808091513.31380-1-tiwai@suse.de
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/asihpi/hpimsgx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/pci/rme9652/hdsp.c  | 6 ++++--
+ sound/pci/rme9652/hdspm.c | 6 ++++--
+ 2 files changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/sound/pci/asihpi/hpimsgx.c b/sound/pci/asihpi/hpimsgx.c
-index d0caef2994818..b68e6bfbbfbab 100644
---- a/sound/pci/asihpi/hpimsgx.c
-+++ b/sound/pci/asihpi/hpimsgx.c
-@@ -708,7 +708,7 @@ static u16 HPIMSGX__init(struct hpi_message *phm,
- 		phr->error = HPI_ERROR_PROCESSING_MESSAGE;
- 		return phr->error;
- 	}
--	if (hr.error == 0) {
-+	if (hr.error == 0 && hr.u.s.adapter_index < HPI_MAX_ADAPTERS) {
- 		/* the adapter was created successfully
- 		   save the mapping for future use */
- 		hpi_entry_points[hr.u.s.adapter_index] = entry_point_func;
+diff --git a/sound/pci/rme9652/hdsp.c b/sound/pci/rme9652/hdsp.c
+index e7d1b43471a29..713ca262a0e97 100644
+--- a/sound/pci/rme9652/hdsp.c
++++ b/sound/pci/rme9652/hdsp.c
+@@ -1298,8 +1298,10 @@ static int snd_hdsp_midi_output_possible (struct hdsp *hdsp, int id)
+ 
+ static void snd_hdsp_flush_midi_input (struct hdsp *hdsp, int id)
+ {
+-	while (snd_hdsp_midi_input_available (hdsp, id))
+-		snd_hdsp_midi_read_byte (hdsp, id);
++	int count = 256;
++
++	while (snd_hdsp_midi_input_available(hdsp, id) && --count)
++		snd_hdsp_midi_read_byte(hdsp, id);
+ }
+ 
+ static int snd_hdsp_midi_output_write (struct hdsp_midi *hmidi)
+diff --git a/sound/pci/rme9652/hdspm.c b/sound/pci/rme9652/hdspm.c
+index 267c7848974ae..74215f57f4fc9 100644
+--- a/sound/pci/rme9652/hdspm.c
++++ b/sound/pci/rme9652/hdspm.c
+@@ -1838,8 +1838,10 @@ static inline int snd_hdspm_midi_output_possible (struct hdspm *hdspm, int id)
+ 
+ static void snd_hdspm_flush_midi_input(struct hdspm *hdspm, int id)
+ {
+-	while (snd_hdspm_midi_input_available (hdspm, id))
+-		snd_hdspm_midi_read_byte (hdspm, id);
++	int count = 256;
++
++	while (snd_hdspm_midi_input_available(hdspm, id) && --count)
++		snd_hdspm_midi_read_byte(hdspm, id);
+ }
+ 
+ static int snd_hdspm_midi_output_write (struct hdspm_midi *hmidi)
 -- 
 2.43.0
 
