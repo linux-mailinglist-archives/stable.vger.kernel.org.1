@@ -1,56 +1,61 @@
-Return-Path: <stable+bounces-77403-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA804985CF9
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:58:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6350A985CDD
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:56:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2A04DB24944
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:56:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 281CE286A69
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:56:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ADC11D54D3;
-	Wed, 25 Sep 2024 12:00:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B09191D54FD;
+	Wed, 25 Sep 2024 12:00:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nlwpkb6G"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hof/DnCy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B867C1D54C8;
-	Wed, 25 Sep 2024 12:00:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C21C1D54F7;
+	Wed, 25 Sep 2024 12:00:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727265647; cv=none; b=sLsaY0a00y8EUk0NSmvvVsOUerlfIKmbBfhX31kfzvGOlUfdLD6twbJtiwikM8uV8opQX0Bqo0gmBhtvbJkoBnEt+khFT3UlV0exUM/2nisDhuYyoILt4QDkszyNEbgSkKqR+hOnHBdCEQamL8+ZPt/Rk76TBzzZwolxHo9n35A=
+	t=1727265650; cv=none; b=uymYxWcuy++i2WQyaYrpVrNK5t2R7qXZk5O2CecEYXDIdV4Nv4LwvnFO43U8GU1xUXCqiQw39ckqWokAixSSk+gEwvuY4jcq6I8xzIlZgmdfZyE8QPZdAsGLTyGPD4bFzCzHYZ8z0JPOSmEtqDuyb6Y8fdVes2wsOJ3jLQ5fVLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727265647; c=relaxed/simple;
-	bh=QxlZ2PrFW2tXaV1J6jD8fqp4l9WrQ7MTgXtobGQEn1E=;
+	s=arc-20240116; t=1727265650; c=relaxed/simple;
+	bh=b1P1Wdx3yjlMsi0o72Kuft9x2BUm9JhklLNyeBmGE88=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lRdLW3nhafCJqfpeeMrLKLpm9VTS8DFLaatlTNiNvE3yItEe9tUc7SIngTeiM91a5bXNEdOUWnFrQKbKYSl0/DbldaDoX5hwJIPoCo7CUEmC+T7wribDPHB9IXXpBx9Z3oLyYiujTmqmekPvEeEOUZu4ZxVHV/VhRyZ/p98orys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nlwpkb6G; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7F82C4CEC3;
-	Wed, 25 Sep 2024 12:00:46 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oApwm6uEdQkj8eBWKRLJcTWTV5j7jVgPpukmWerE2hS8JjpmcHgVSJz59HdooEqw5V3s39N2VEgFEMInhzoEbNDLYs0T/6SUI2POFKQlzxW821BTDMtHrY+WKNLLkEm37pS3yv5rA/0D3r7uQoO+xMiFlWxC4uWdP15SgK0cVfI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hof/DnCy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC442C4CECD;
+	Wed, 25 Sep 2024 12:00:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727265647;
-	bh=QxlZ2PrFW2tXaV1J6jD8fqp4l9WrQ7MTgXtobGQEn1E=;
+	s=k20201202; t=1727265650;
+	bh=b1P1Wdx3yjlMsi0o72Kuft9x2BUm9JhklLNyeBmGE88=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nlwpkb6GdsPBGt6oxgOwUqNdYzS2IJQz8rqj7Vlu/Oi70kFCDcPeQZ4C/wzYI0A5B
-	 LyblrxLH3iZjk0WwTnTb4IH0XwDyUUnIOkEJ9cw326eu8xhLgeAyM8GFuglybuqJNT
-	 dvosYOLKVGge+psypSD/XKSRTwjZftwflPsSpzR92MwPjGrcriTotiITB8jxneC7Sb
-	 7I2ea6Rf1gBpePeHHW7RWJwyP6cCRq8k+FPjrrHHLO1CxLAeVlzSgD/2qmM6qp1klk
-	 QkYV6xbpyywuwxA9oQrF2PBYG/EKgVMrtgqf/Ox13bhGqdUoGK3HGQgCySbxOh8eAS
-	 UvMDCCIPlXhkQ==
+	b=hof/DnCyGu+77lV4zLVJ8kgX0mGPO935CHwbuy5ImHkZGvIGhtQo1dQLq+/bzHLWE
+	 OpV+MeUEr4gPmMmXaS6nGUDUlkBK1MNoxj+0icI5mOHbJ0KEaL3KyWRXThHUGisG/9
+	 sh04f6/svqWOLyLFKYVPvf/M2zNi8Wp+zVNN7mqaX5BSMHMs4cVs1LBns0ZwlLyXKM
+	 bp/Km87oViGPe/HVquHD8O/CkcCX///dbqKTgLpP3SNL0pZkYFVnjWp0TmYJaqLTyx
+	 J1OJUEGeeiYVbew/AWj5Lh/UNIdVLoqZQgBqVA12J/Nld8Rt+s2oVG0e+My3y4+N10
+	 lXMczFpwVEvZA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alexey Dobriyan <adobriyan@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>,
+Cc: Fares Mehanna <faresx@amazon.de>,
+	=?UTF-8?q?Jan=20H=20=2E=20Sch=C3=B6nherr?= <jschoenh@amazon.de>,
+	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-block@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 058/197] block: fix integer overflow in BLKSECDISCARD
-Date: Wed, 25 Sep 2024 07:51:17 -0400
-Message-ID: <20240925115823.1303019-58-sashal@kernel.org>
+	catalin.marinas@arm.com,
+	akpm@linux-foundation.org,
+	mark.rutland@arm.com,
+	ryan.roberts@arm.com,
+	linux-arm-kernel@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.10 059/197] arm64: trans_pgd: mark PTEs entries as valid to avoid dead kexec()
+Date: Wed, 25 Sep 2024 07:51:18 -0400
+Message-ID: <20240925115823.1303019-59-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925115823.1303019-1-sashal@kernel.org>
 References: <20240925115823.1303019-1-sashal@kernel.org>
@@ -60,78 +65,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.11
 Content-Transfer-Encoding: 8bit
 
-From: Alexey Dobriyan <adobriyan@gmail.com>
+From: Fares Mehanna <faresx@amazon.de>
 
-[ Upstream commit 697ba0b6ec4ae04afb67d3911799b5e2043b4455 ]
+[ Upstream commit 7eced90b202d63cdc1b9b11b1353adb1389830f9 ]
 
-I independently rediscovered
+The reasons for PTEs in the kernel direct map to be marked invalid are not
+limited to kfence / debug pagealloc machinery. In particular,
+memfd_secret() also steals pages with set_direct_map_invalid_noflush().
 
-	commit 22d24a544b0d49bbcbd61c8c0eaf77d3c9297155
-	block: fix overflow in blk_ioctl_discard()
+When building the transitional page tables for kexec from the current
+kernel's page tables, those pages need to become regular writable pages,
+otherwise, if the relocation places kexec segments over such pages, a fault
+will occur during kexec, leading to host going dark during kexec.
 
-but for secure erase.
+This patch addresses the kexec issue by marking any PTE as valid if it is
+not none. While this fixes the kexec crash, it does not address the
+security concern that if processes owning secret memory are not terminated
+before kexec, the secret content will be mapped in the new kernel without
+being scrubbed.
 
-Same problem:
-
-	uint64_t r[2] = {512, 18446744073709551104ULL};
-	ioctl(fd, BLKSECDISCARD, r);
-
-will enter near infinite loop inside blkdev_issue_secure_erase():
-
-	a.out: attempt to access beyond end of device
-	loop0: rw=5, sector=3399043073, nr_sectors = 1024 limit=2048
-	bio_check_eod: 3286214 callbacks suppressed
-
-Signed-off-by: Alexey Dobriyan <adobriyan@gmail.com>
-Link: https://lore.kernel.org/r/9e64057f-650a-46d1-b9f7-34af391536ef@p183
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Suggested-by: Jan H. Schönherr <jschoenh@amazon.de>
+Signed-off-by: Fares Mehanna <faresx@amazon.de>
+Link: https://lore.kernel.org/r/20240902163309.97113-1-faresx@amazon.de
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/ioctl.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ arch/arm64/mm/trans_pgd.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/block/ioctl.c b/block/ioctl.c
-index d570e16958961..4515d4679eefd 100644
---- a/block/ioctl.c
-+++ b/block/ioctl.c
-@@ -126,7 +126,7 @@ static int blk_ioctl_discard(struct block_device *bdev, blk_mode_t mode,
- 		return -EINVAL;
- 
- 	filemap_invalidate_lock(bdev->bd_mapping);
--	err = truncate_bdev_range(bdev, mode, start, start + len - 1);
-+	err = truncate_bdev_range(bdev, mode, start, end - 1);
- 	if (err)
- 		goto fail;
- 
-@@ -163,7 +163,7 @@ static int blk_ioctl_discard(struct block_device *bdev, blk_mode_t mode,
- static int blk_ioctl_secure_erase(struct block_device *bdev, blk_mode_t mode,
- 		void __user *argp)
- {
--	uint64_t start, len;
-+	uint64_t start, len, end;
- 	uint64_t range[2];
- 	int err;
- 
-@@ -178,11 +178,12 @@ static int blk_ioctl_secure_erase(struct block_device *bdev, blk_mode_t mode,
- 	len = range[1];
- 	if ((start & 511) || (len & 511))
- 		return -EINVAL;
--	if (start + len > bdev_nr_bytes(bdev))
-+	if (check_add_overflow(start, len, &end) ||
-+	    end > bdev_nr_bytes(bdev))
- 		return -EINVAL;
- 
- 	filemap_invalidate_lock(bdev->bd_mapping);
--	err = truncate_bdev_range(bdev, mode, start, start + len - 1);
-+	err = truncate_bdev_range(bdev, mode, start, end - 1);
- 	if (!err)
- 		err = blkdev_issue_secure_erase(bdev, start >> 9, len >> 9,
- 						GFP_KERNEL);
+diff --git a/arch/arm64/mm/trans_pgd.c b/arch/arm64/mm/trans_pgd.c
+index 5139a28130c08..0f7b484cb2ff2 100644
+--- a/arch/arm64/mm/trans_pgd.c
++++ b/arch/arm64/mm/trans_pgd.c
+@@ -42,14 +42,16 @@ static void _copy_pte(pte_t *dst_ptep, pte_t *src_ptep, unsigned long addr)
+ 		 * the temporary mappings we use during restore.
+ 		 */
+ 		__set_pte(dst_ptep, pte_mkwrite_novma(pte));
+-	} else if ((debug_pagealloc_enabled() ||
+-		   is_kfence_address((void *)addr)) && !pte_none(pte)) {
++	} else if (!pte_none(pte)) {
+ 		/*
+ 		 * debug_pagealloc will removed the PTE_VALID bit if
+ 		 * the page isn't in use by the resume kernel. It may have
+ 		 * been in use by the original kernel, in which case we need
+ 		 * to put it back in our copy to do the restore.
+ 		 *
++		 * Other cases include kfence / vmalloc / memfd_secret which
++		 * may call `set_direct_map_invalid_noflush()`.
++		 *
+ 		 * Before marking this entry valid, check the pfn should
+ 		 * be mapped.
+ 		 */
 -- 
 2.43.0
 
