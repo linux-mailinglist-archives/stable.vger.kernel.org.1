@@ -1,61 +1,67 @@
-Return-Path: <stable+bounces-77416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77417-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1B02985D10
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:00:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CDFA5985D30
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:04:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 13D83B2956D
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:59:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E56EDB29436
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:00:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA6971D86E4;
-	Wed, 25 Sep 2024 12:01:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF8281D88B4;
+	Wed, 25 Sep 2024 12:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cjAs29vZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F6MRMuCI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C5EB1D86D8;
-	Wed, 25 Sep 2024 12:01:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79F041B0139;
+	Wed, 25 Sep 2024 12:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727265686; cv=none; b=MkEjgAxDV86PHjXxMv4WcnGniTkXp7tJARmInG+mJKLgE14RBLij7gm33udgk0LGe75TVbTCHsP97tTTNAUfoeLxeao2KT4XVxNMKHb9gVWWP4PZ11uAMf1EItldKEITN6+cv4mpBmJejxIeVlM/BmAXhRM8t1RZkmNKTsO0G/4=
+	t=1727265690; cv=none; b=KVck5k1m6mu9cp+D5vAKY4lJIg5AZOFFodZ+y/4I1NGgLm3nFKZeAuknGx1NPNnwXHBhScrX+WPepX2dsQIeQ6YJb+0WTudFVj9hm4RgWybpT6QfVjD7Qi0+lZhWwA9abTrDOdFhqNRaTJ8RJEuPMBJJsIjooFJeQnHdeO7zkfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727265686; c=relaxed/simple;
-	bh=siFgHDU3+DIfq5cAByMJnmPETN9KVVCUrvCYwmjKU9s=;
+	s=arc-20240116; t=1727265690; c=relaxed/simple;
+	bh=PyseLeQpvsNGIa7+PLlAdvIqATHgC6d93pVMovqchg8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BMO6yWsvmBzwtQk71NpQwS5fMSsDDvb+AHWxIGcvuoq/ls9yG9oD1TdbZ/kB0p2J8Ln53t7F5/euT7w9YFAHLMpejCvo6O/lu+sIaYc/Q/W9v7JkTjUSLdM9Azz/1ZH3MPKh8uCk+f8QzencyNG3+CHJWvB8p3QGqUERfJCbJek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cjAs29vZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01E49C4CEC7;
-	Wed, 25 Sep 2024 12:01:24 +0000 (UTC)
+	 MIME-Version; b=S3eMFNP763MGgO8iuDcx8JCgc01VJfWykSscRzTFN2Wg/5ubhBFtGNPUY6atVnhXul8H5q7F4Dc8EV4yrEUXWBlwplNknIi8Nq3b6Qx3wiA1o+bbzNyTu7webRyBfTW+ubgLY7y070IVk/fcqBn4WSkcHtSqxsnAdIOCnNRTfYY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F6MRMuCI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5692AC4CEC7;
+	Wed, 25 Sep 2024 12:01:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727265686;
-	bh=siFgHDU3+DIfq5cAByMJnmPETN9KVVCUrvCYwmjKU9s=;
+	s=k20201202; t=1727265690;
+	bh=PyseLeQpvsNGIa7+PLlAdvIqATHgC6d93pVMovqchg8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cjAs29vZE6mNBj00nqpNSSlO6+whgvx0r+t6lRpCGZDthNJ0No9GPjIlOK/mwqWEm
-	 LdQx4G7vS4Vs8YrjjbHnY/nxoEZzR9EHgyvRp2exj4Mt/34YmkEA9IPut8e9VfAvK4
-	 b2vXDrIvC70MLkLhfLnn4m8v9XIHINOUqmpbC24ySzbxvm+hOq4n3g19p01g4BAAeE
-	 xTo0vSD7sc/zRMLRdZsEI4BJOAnZ+RtU9+y4Q5G/atwLcIF8FhuVG9aUZUFMRhhrQl
-	 HRn4IoDNJEHFKM+o5X8dA21aLgoSyZHcy6znHPEJgF53NAmt9iyT0I3HEKT5zzv/SY
-	 /u7F+1St/2rSQ==
+	b=F6MRMuCIHlzlsc+c0Gkug6aNtb243tZgZv1hlxkXsT8d3S3KxDmhY8gRivr1tslph
+	 PfKhjDV1mpqOQ0EmUBUa0IdWwuk0u+tEfsx8jS5ExGlRJkWpEo3U5q2hUfNXp1rDV/
+	 +wXaClHDeza/7LAiGBm4P5R718nRc2s6JZ236j989grMC21XeBXKSkEdp01GVNdN65
+	 lZfHZQSyZwCUEqoz8POR6h0k7eVuEHc1QVBmKNubTQS4aOgscSZBFDLOb8O0CC3eXK
+	 NcRff0Bmy7u+Mm/ny11uMwdYr1WN3zVBSjcFtrHaSMEypgvppi1A+XO4+u0DIKnGRP
+	 I10UQ5wMmgp2A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: David Howells <dhowells@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	netfs@lists.linux.dev,
-	linux-fsdevel@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>,
+Cc: Jinjie Ruan <ruanjinjie@huawei.com>,
+	Louis Peens <louis.peens@corigine.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	rostedt@goodmis.org,
-	mhiramat@kernel.org,
-	linux-trace-kernel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 071/197] netfs: Cancel dirty folios that have no storage destination
-Date: Wed, 25 Sep 2024 07:51:30 -0400
-Message-ID: <20240925115823.1303019-71-sashal@kernel.org>
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	horms@kernel.org,
+	yinjun.zhang@corigine.com,
+	james.hershaw@corigine.com,
+	ryno.swart@corigine.com,
+	johannes.berg@intel.com,
+	fei.qin@corigine.com,
+	oss-drivers@corigine.com,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.10 072/197] nfp: Use IRQF_NO_AUTOEN flag in request_irq()
+Date: Wed, 25 Sep 2024 07:51:31 -0400
+Message-ID: <20240925115823.1303019-72-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925115823.1303019-1-sashal@kernel.org>
 References: <20240925115823.1303019-1-sashal@kernel.org>
@@ -70,78 +76,44 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.11
 Content-Transfer-Encoding: 8bit
 
-From: David Howells <dhowells@redhat.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-[ Upstream commit 8f246b7c0a1be0882374f2ff831a61f0dbe77678 ]
+[ Upstream commit daaba19d357f0900b303a530ced96c78086267ea ]
 
-Kafs wants to be able to cache the contents of directories (and symlinks),
-but whilst these are downloaded from the server with the FS.FetchData RPC
-op and similar, the same as for regular files, they can't be updated by
-FS.StoreData, but rather have special operations (FS.MakeDir, etc.).
+disable_irq() after request_irq() still has a time gap in which
+interrupts can come. request_irq() with IRQF_NO_AUTOEN flag will
+disable IRQ auto-enable when request IRQ.
 
-Now, rather than redownloading a directory's content after each change made
-to that directory, kafs modifies the local blob.  This blob can be saved
-out to the cache, and since it's using netfslib, kafs just marks the folios
-dirty and lets ->writepages() on the directory take care of it, as for an
-regular file.
-
-This is fine as long as there's a cache as although the upload stream is
-disabled, there's a cache stream to drive the procedure.  But if the cache
-goes away in the meantime, suddenly there's no way do any writes and the
-code gets confused, complains "R=%x: No submit" to dmesg and leaves the
-dirty folio hanging.
-
-Fix this by just cancelling the store of the folio if neither stream is
-active.  (If there's no cache at the time of dirtying, we should just not
-mark the folio dirty).
-
-Signed-off-by: David Howells <dhowells@redhat.com>
-cc: Jeff Layton <jlayton@kernel.org>
-cc: netfs@lists.linux.dev
-cc: linux-fsdevel@vger.kernel.org
-Link: https://lore.kernel.org/r/20240814203850.2240469-23-dhowells@redhat.com/ # v2
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Reviewed-by: Louis Peens <louis.peens@corigine.com>
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Link: https://patch.msgid.link/20240911094445.1922476-4-ruanjinjie@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/netfs/write_issue.c       | 6 +++++-
- include/trace/events/netfs.h | 1 +
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/netronome/nfp/nfp_net_common.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
-index 32bc88bee5d18..3c7eb43a2ec69 100644
---- a/fs/netfs/write_issue.c
-+++ b/fs/netfs/write_issue.c
-@@ -408,13 +408,17 @@ static int netfs_write_folio(struct netfs_io_request *wreq,
- 	folio_unlock(folio);
+diff --git a/drivers/net/ethernet/netronome/nfp/nfp_net_common.c b/drivers/net/ethernet/netronome/nfp/nfp_net_common.c
+index 182ba0a8b095b..6e0929af0f725 100644
+--- a/drivers/net/ethernet/netronome/nfp/nfp_net_common.c
++++ b/drivers/net/ethernet/netronome/nfp/nfp_net_common.c
+@@ -821,14 +821,13 @@ nfp_net_prepare_vector(struct nfp_net *nn, struct nfp_net_r_vector *r_vec,
  
- 	if (fgroup == NETFS_FOLIO_COPY_TO_CACHE) {
--		if (!fscache_resources_valid(&wreq->cache_resources)) {
-+		if (!cache->avail) {
- 			trace_netfs_folio(folio, netfs_folio_trace_cancel_copy);
- 			netfs_issue_write(wreq, upload);
- 			netfs_folio_written_back(folio);
- 			return 0;
- 		}
- 		trace_netfs_folio(folio, netfs_folio_trace_store_copy);
-+	} else if (!upload->avail && !cache->avail) {
-+		trace_netfs_folio(folio, netfs_folio_trace_cancel_store);
-+		netfs_folio_written_back(folio);
-+		return 0;
- 	} else if (!upload->construct) {
- 		trace_netfs_folio(folio, netfs_folio_trace_store);
- 	} else {
-diff --git a/include/trace/events/netfs.h b/include/trace/events/netfs.h
-index 24ec3434d32ee..102696abe8c9e 100644
---- a/include/trace/events/netfs.h
-+++ b/include/trace/events/netfs.h
-@@ -140,6 +140,7 @@
- 	EM(netfs_streaming_cont_filled_page,	"mod-streamw-f+") \
- 	/* The rest are for writeback */			\
- 	EM(netfs_folio_trace_cancel_copy,	"cancel-copy")	\
-+	EM(netfs_folio_trace_cancel_store,	"cancel-store")	\
- 	EM(netfs_folio_trace_clear,		"clear")	\
- 	EM(netfs_folio_trace_clear_cc,		"clear-cc")	\
- 	EM(netfs_folio_trace_clear_g,		"clear-g")	\
+ 	snprintf(r_vec->name, sizeof(r_vec->name),
+ 		 "%s-rxtx-%d", nfp_net_name(nn), idx);
+-	err = request_irq(r_vec->irq_vector, r_vec->handler, 0, r_vec->name,
+-			  r_vec);
++	err = request_irq(r_vec->irq_vector, r_vec->handler, IRQF_NO_AUTOEN,
++			  r_vec->name, r_vec);
+ 	if (err) {
+ 		nfp_net_napi_del(&nn->dp, r_vec);
+ 		nn_err(nn, "Error requesting IRQ %d\n", r_vec->irq_vector);
+ 		return err;
+ 	}
+-	disable_irq(r_vec->irq_vector);
+ 
+ 	irq_set_affinity_hint(r_vec->irq_vector, &r_vec->affinity_mask);
+ 
 -- 
 2.43.0
 
