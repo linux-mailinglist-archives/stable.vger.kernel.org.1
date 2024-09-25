@@ -1,60 +1,57 @@
-Return-Path: <stable+bounces-77377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77378-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD4A3985C76
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:47:59 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E3B9985C7C
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:48:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 03CB31C24500
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:47:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7AE01F219CD
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:48:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBB9C1CFEC8;
-	Wed, 25 Sep 2024 11:59:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D38631D014E;
+	Wed, 25 Sep 2024 11:59:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o+fNX+q7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WCvdgZLg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A79911CFEBA;
-	Wed, 25 Sep 2024 11:59:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E8FA1CFEDC;
+	Wed, 25 Sep 2024 11:59:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727265577; cv=none; b=upMysds1+hD1armW/dPQMHWsHw4/jsl/Y0bAwXWKgl2DBX9eEXC/coHAoGDV+QJpHQh18Jd19igeEzioyXbDkhHW9WEYBsB8rdBVB4yXdauFyOW8bRS454Xxl1T70Y8h5ug2V+wNXJqEieVxl5cKpXf7e1UtaP4X4n7/o9e5MyI=
+	t=1727265579; cv=none; b=ApbgBF+rELOIWpdkWQ26/E/n7otX3OC6whtbF2KznNpzmzq39A4FhxEOVnWxo7s0jMtrNm/DokHr6zCtsRyf0BAtmiSo1EyhChvIMCRA8wKh9bani7pHIhkzvVOlA3xwEP7SHoObEFZT0vqW9dJ3yn3ZEdiAgdVfTKvir5hjt/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727265577; c=relaxed/simple;
-	bh=TTbWIZdXyMpVuDN8EeQgVRhdDYyXSiHziBvITL0YI6Y=;
+	s=arc-20240116; t=1727265579; c=relaxed/simple;
+	bh=7+qaFXH0HlkJAN23/jiRHB9vYRDP7nJCFkdPt8W6xZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tKyqKm2CBmk0M+5h++vPzlAIYlhW4we4aprd0iseVIebyXsWLHxuIZAJ0zIQVxTEYyLcDCUufLD1623dL/oO589q1vQ7YFAW0By0N4xiDunbetTg7oG6AQCeUh8AxaCqHYx/iH8AhxJxKVsSF0eCWU1MT60tQSQOhbOEcmOOaK8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o+fNX+q7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43E33C4CEC3;
-	Wed, 25 Sep 2024 11:59:36 +0000 (UTC)
+	 MIME-Version; b=W54Smz/9jbxOTi3h3KjFSHDXXd/v44kh0nlIlw/N164PNqcZhgeZNm4LFQOdOCzvgxlEefQWMXonkjd3jqJH6iYjULhuRLwL5pDW2GCFG/9KepN1KxnmbRyKFnfV/aOIJ9kLSpct4qdy5L16/ewnlFR2IMQBPG5MFXRn5KiRleU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WCvdgZLg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 207C8C4CEC3;
+	Wed, 25 Sep 2024 11:59:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727265577;
-	bh=TTbWIZdXyMpVuDN8EeQgVRhdDYyXSiHziBvITL0YI6Y=;
+	s=k20201202; t=1727265579;
+	bh=7+qaFXH0HlkJAN23/jiRHB9vYRDP7nJCFkdPt8W6xZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o+fNX+q7ghIVcBDI2dEQcmGMLoRyvuAwKilbsxQ2WzPodcBpgawpKof1xvuHWI+YW
-	 NQC9TRyEzsauzURxVGZW9ujEteacAVLlGl3N2wWPHO/pGAlUxSYz7Xfa628NI+z76j
-	 0AvvK1CsdWFbgmJUllSDAq9aw4G1KkaZcUY8qaRctmar7XId3mNaebF+E9KaQTQUHV
-	 CIIUqK1fEyCVT5ET8/ti+cL9pHgBY1+Clh8aoM9J5gkSXJ5U8frchAgKALPAXxw/rH
-	 xfdzg+MZSx0fANrLhB7sFQ5bQV3U7ta0YaOMgK812lWVFDixSfZg5L6BymNGJAFrkx
-	 KF/ETkfvM/nqQ==
+	b=WCvdgZLga4EzOMEWZn18FQipu2C2RJXa8vD2R5plMmgur2PwPxTVXEjiiaYpntAr5
+	 5ncpcKrXU8T4HWAVGHwKeFocDKUQFAf48HtUGc9UWDNhgDdO5yaad38qi8nWI4HxS9
+	 Iy7D4RfjlnmoHfCZ6JJFKEMot9crdZA05q3IdvveOMi/nRuxF5KYS7I8QXDbotPOyE
+	 dsAX5qJMKqV3ThsTssnbQvZ+n0L2OUSfDiw9r/edQugpyS/glMN8/XpvlteCZOx4+B
+	 m2IyATFolQt72fM7vfM49Ef+gMvHyKosF+wopEsiMqix+US0uqPqDohTwbMvDt8TdA
+	 pNc8krQCsGpNg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: James Chapman <jchapman@katalix.com>,
-	Tom Parkin <tparkin@katalix.com>,
-	"David S . Miller" <davem@davemloft.net>,
+Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 032/197] l2tp: don't use tunnel socket sk_user_data in ppp procfs output
-Date: Wed, 25 Sep 2024 07:50:51 -0400
-Message-ID: <20240925115823.1303019-32-sashal@kernel.org>
+	rafael@kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.10 033/197] ACPI: EC: Do not release locks during operation region accesses
+Date: Wed, 25 Sep 2024 07:50:52 -0400
+Message-ID: <20240925115823.1303019-33-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925115823.1303019-1-sashal@kernel.org>
 References: <20240925115823.1303019-1-sashal@kernel.org>
@@ -69,36 +66,164 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.11
 Content-Transfer-Encoding: 8bit
 
-From: James Chapman <jchapman@katalix.com>
+From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
 
-[ Upstream commit eeb11209e000797d555aefd642e24ed6f4e70140 ]
+[ Upstream commit dc171114926ec390ab90f46534545420ec03e458 ]
 
-l2tp's ppp procfs output can be used to show internal state of
-pppol2tp. It includes a 'user-data-ok' field, which is derived from
-the tunnel socket's sk_user_data being non-NULL. Use tunnel->sock
-being non-NULL to indicate this instead.
+It is not particularly useful to release locks (the EC mutex and the
+ACPI global lock, if present) and re-acquire them immediately thereafter
+during EC address space accesses in acpi_ec_space_handler().
 
-Signed-off-by: James Chapman <jchapman@katalix.com>
-Signed-off-by: Tom Parkin <tparkin@katalix.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+First, releasing them for a while before grabbing them again does not
+really help anyone because there may not be enough time for another
+thread to acquire them.
+
+Second, if another thread successfully acquires them and carries out
+a new EC write or read in the middle if an operation region access in
+progress, it may confuse the EC firmware, especially after the burst
+mode has been enabled.
+
+Finally, manipulating the locks after writing or reading every single
+byte of data is overhead that it is better to avoid.
+
+Accordingly, modify the code to carry out EC address space accesses
+entirely without releasing the locks.
+
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patch.msgid.link/12473338.O9o76ZdvQC@rjwysocki.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/l2tp/l2tp_ppp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/ec.c | 55 +++++++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 49 insertions(+), 6 deletions(-)
 
-diff --git a/net/l2tp/l2tp_ppp.c b/net/l2tp/l2tp_ppp.c
-index 6146e4e67bbb5..6ab8c47487161 100644
---- a/net/l2tp/l2tp_ppp.c
-+++ b/net/l2tp/l2tp_ppp.c
-@@ -1511,7 +1511,7 @@ static void pppol2tp_seq_tunnel_show(struct seq_file *m, void *v)
+diff --git a/drivers/acpi/ec.c b/drivers/acpi/ec.c
+index 38d2f6e6b12b4..25399f6dde7e2 100644
+--- a/drivers/acpi/ec.c
++++ b/drivers/acpi/ec.c
+@@ -783,6 +783,9 @@ static int acpi_ec_transaction_unlocked(struct acpi_ec *ec,
+ 	unsigned long tmp;
+ 	int ret = 0;
  
- 	seq_printf(m, "\nTUNNEL '%s', %c %d\n",
- 		   tunnel->name,
--		   (tunnel == tunnel->sock->sk_user_data) ? 'Y' : 'N',
-+		   tunnel->sock ? 'Y' : 'N',
- 		   refcount_read(&tunnel->ref_count) - 1);
- 	seq_printf(m, " %08x %ld/%ld/%ld %ld/%ld/%ld\n",
- 		   0,
++	if (t->rdata)
++		memset(t->rdata, 0, t->rlen);
++
+ 	/* start transaction */
+ 	spin_lock_irqsave(&ec->lock, tmp);
+ 	/* Enable GPE for command processing (IBF=0/OBF=1) */
+@@ -819,8 +822,6 @@ static int acpi_ec_transaction(struct acpi_ec *ec, struct transaction *t)
+ 
+ 	if (!ec || (!t) || (t->wlen && !t->wdata) || (t->rlen && !t->rdata))
+ 		return -EINVAL;
+-	if (t->rdata)
+-		memset(t->rdata, 0, t->rlen);
+ 
+ 	mutex_lock(&ec->mutex);
+ 	if (ec->global_lock) {
+@@ -847,7 +848,7 @@ static int acpi_ec_burst_enable(struct acpi_ec *ec)
+ 				.wdata = NULL, .rdata = &d,
+ 				.wlen = 0, .rlen = 1};
+ 
+-	return acpi_ec_transaction(ec, &t);
++	return acpi_ec_transaction_unlocked(ec, &t);
+ }
+ 
+ static int acpi_ec_burst_disable(struct acpi_ec *ec)
+@@ -857,7 +858,7 @@ static int acpi_ec_burst_disable(struct acpi_ec *ec)
+ 				.wlen = 0, .rlen = 0};
+ 
+ 	return (acpi_ec_read_status(ec) & ACPI_EC_FLAG_BURST) ?
+-				acpi_ec_transaction(ec, &t) : 0;
++				acpi_ec_transaction_unlocked(ec, &t) : 0;
+ }
+ 
+ static int acpi_ec_read(struct acpi_ec *ec, u8 address, u8 *data)
+@@ -873,6 +874,19 @@ static int acpi_ec_read(struct acpi_ec *ec, u8 address, u8 *data)
+ 	return result;
+ }
+ 
++static int acpi_ec_read_unlocked(struct acpi_ec *ec, u8 address, u8 *data)
++{
++	int result;
++	u8 d;
++	struct transaction t = {.command = ACPI_EC_COMMAND_READ,
++				.wdata = &address, .rdata = &d,
++				.wlen = 1, .rlen = 1};
++
++	result = acpi_ec_transaction_unlocked(ec, &t);
++	*data = d;
++	return result;
++}
++
+ static int acpi_ec_write(struct acpi_ec *ec, u8 address, u8 data)
+ {
+ 	u8 wdata[2] = { address, data };
+@@ -883,6 +897,16 @@ static int acpi_ec_write(struct acpi_ec *ec, u8 address, u8 data)
+ 	return acpi_ec_transaction(ec, &t);
+ }
+ 
++static int acpi_ec_write_unlocked(struct acpi_ec *ec, u8 address, u8 data)
++{
++	u8 wdata[2] = { address, data };
++	struct transaction t = {.command = ACPI_EC_COMMAND_WRITE,
++				.wdata = wdata, .rdata = NULL,
++				.wlen = 2, .rlen = 0};
++
++	return acpi_ec_transaction_unlocked(ec, &t);
++}
++
+ int ec_read(u8 addr, u8 *val)
+ {
+ 	int err;
+@@ -1323,6 +1347,7 @@ acpi_ec_space_handler(u32 function, acpi_physical_address address,
+ 	struct acpi_ec *ec = handler_context;
+ 	int result = 0, i, bytes = bits / 8;
+ 	u8 *value = (u8 *)value64;
++	u32 glk;
+ 
+ 	if ((address > 0xFF) || !value || !handler_context)
+ 		return AE_BAD_PARAMETER;
+@@ -1330,13 +1355,25 @@ acpi_ec_space_handler(u32 function, acpi_physical_address address,
+ 	if (function != ACPI_READ && function != ACPI_WRITE)
+ 		return AE_BAD_PARAMETER;
+ 
++	mutex_lock(&ec->mutex);
++
++	if (ec->global_lock) {
++		acpi_status status;
++
++		status = acpi_acquire_global_lock(ACPI_EC_UDELAY_GLK, &glk);
++		if (ACPI_FAILURE(status)) {
++			result = -ENODEV;
++			goto unlock;
++		}
++	}
++
+ 	if (ec->busy_polling || bits > 8)
+ 		acpi_ec_burst_enable(ec);
+ 
+ 	for (i = 0; i < bytes; ++i, ++address, ++value) {
+ 		result = (function == ACPI_READ) ?
+-			acpi_ec_read(ec, address, value) :
+-			acpi_ec_write(ec, address, *value);
++			acpi_ec_read_unlocked(ec, address, value) :
++			acpi_ec_write_unlocked(ec, address, *value);
+ 		if (result < 0)
+ 			break;
+ 	}
+@@ -1344,6 +1381,12 @@ acpi_ec_space_handler(u32 function, acpi_physical_address address,
+ 	if (ec->busy_polling || bits > 8)
+ 		acpi_ec_burst_disable(ec);
+ 
++	if (ec->global_lock)
++		acpi_release_global_lock(glk);
++
++unlock:
++	mutex_unlock(&ec->mutex);
++
+ 	switch (result) {
+ 	case -EINVAL:
+ 		return AE_BAD_PARAMETER;
 -- 
 2.43.0
 
