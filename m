@@ -1,104 +1,152 @@
-Return-Path: <stable+bounces-77089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4EB298549D
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 09:53:13 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AFAF9854EC
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 10:03:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9545328811B
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 07:53:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4CBBB1C20AE8
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 08:03:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54E21157492;
-	Wed, 25 Sep 2024 07:53:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C85F0155393;
+	Wed, 25 Sep 2024 08:03:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L09mQInY"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mGvLtCl2"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00E43154C19;
-	Wed, 25 Sep 2024 07:53:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 047341B85D1
+	for <stable@vger.kernel.org>; Wed, 25 Sep 2024 08:03:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727250788; cv=none; b=rPOgEV1DsrnywXZJYBLxEsYpy81U2LB2B/xZsCF+aJr2p9rcMRkMbuikSktcwWa+JlIgYGDGvZIcj4LOIABTYai38KjhDKyocgjwn/qAbnRLWS44BA/kHsEyY+yw11BraRUuCX3O8tHIxIcdJg8c3/juRu7vwlLoSjcL1xlJa0o=
+	t=1727251387; cv=none; b=RJRWeh56CxDZjZ5URVKypMlfMLd1ZxRrgHgKt11QzLHuh9oNllI21H7lkW3z6Y3ot9nZBn/pkvWKO7dGiWGGJcPRWW33Ni+wJsnmN30vfS/PukHWl1QbuePDYqb8Pj34p/vN57TD4E7ZJucf842HOpLvDS3CAoOVZ7P4+tu1PZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727250788; c=relaxed/simple;
-	bh=JFD+/TLICslIFiwVPjoesgFsuWrdwIUahgsyCeOj96U=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=YrahciB5Jy6knaudVu4TzS2+j8SdlzYPGztpWtJ4APsrMCDa0eAw4SnihFtmeKPcKMUJ9B6P3LufHuY0Ww44tTHvDZKVhC9s4suYLwN/PqZtgNcF5G+jjlFkZ/ylZyBDhRin9qjeXlDhUxeJEUcHAddE68f3lfXJAb8EkCMfnug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L09mQInY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AACBC4CEC3;
-	Wed, 25 Sep 2024 07:53:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727250787;
-	bh=JFD+/TLICslIFiwVPjoesgFsuWrdwIUahgsyCeOj96U=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=L09mQInYz84uGJZbZpBXxi9BygP+ozfZGhGlnbSuydVvehTh6L9NvfGD2UydxKfhL
-	 MEyFDvEZdwW4ZNQUIc929XNtKRRPo0xzQGqQfAdNbI0NlvNW0B+X7zGN5kmW5hSDC4
-	 yis/qnvflml27pBWUodCn0jc/c3NZc4+B7M6qtxG7CoGXSGnHCKi1DpAfnYkdzPPx5
-	 KL9qWYusc/Uc/H1A6o9JHV+Xl9AeQGGawy6VOADgfxrhLnSrWBmi1UQ110R3BmogeN
-	 3ObjPdwJeCowTRjRUMoTqW0I0y3MBKixy3FBcg7ziotb0kxRNO+LnRJ1Uf2+TOnffk
-	 HW61NjouL8dOQ==
+	s=arc-20240116; t=1727251387; c=relaxed/simple;
+	bh=KC4AtdJiQp/kNcVkRK65L8Wc0iJbJxqbXnpgkilXeOY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bLqkp4SGk21mi6QHUov3o6JzynZdaHss/AgGbP9BVAlU7HU/vmJMx2RBDTBct1u9MtpCKgTrGFRMdFQWxdgqN7KidfKsY2bQ8lFn+MQ3ZFGohLI+AGIWkDji6HsjhQ8siw/32t6IEfUDdgi+swfutxf8AwGr7sFUWTbt6lINphY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mGvLtCl2; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-42cc8782869so61285905e9.2
+        for <stable@vger.kernel.org>; Wed, 25 Sep 2024 01:03:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1727251384; x=1727856184; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iQ+fam/PvLhYbOWT/a/RIKh+9OFa9edBiImjSc+55Pg=;
+        b=mGvLtCl2zutrj0ej7dWUtnPtUOldd/Ay9Jioce1NXWpLetEVtmYckm8nVai84LAtoA
+         wojI+iKAoz8ro1iYNVRLi+GZVxdY5oZ/QyVXEp34UlYlhwG5n5uX4G/x1KMrLinImdLy
+         5lJAFFhUxLqtj/EEW+iuoMfejUXddV9/04Abr1gNjF1Xk5XL/ehruVreDeLZkJTtzNlx
+         sZFQEegysOIDCAI6UrmEFqybrAr0Smeoc2XjwFn4zrwzio5gtFfXxHbr88QWW5eROt2I
+         5sE7pYfJ9YOE907XSMCs3+efenhgQvLrZ92k8g2Eq2Zi6YaRwU/pFZHW+6UtBR16/via
+         O+pg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727251384; x=1727856184;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=iQ+fam/PvLhYbOWT/a/RIKh+9OFa9edBiImjSc+55Pg=;
+        b=S3gDootVZDrgQVGNci58Qm3l0FvtzE+SYFr7XgMjd5WltMDNcJg+ftJTHUwLekejCp
+         /IplZOtUZZgto/7A1xpERhzWPbVC1Lb4fpMKmERSuknopPZxYDnAKUL0OAo7/OzQRv/b
+         HY94L9L9cZ0wEbegmARHZtHbHOPb7UmjLCrU/CeOI0mUkdZQtpBmhfss/HelR963/T7V
+         Yy5YEJ9pC0veRy7d4OeAf4QabfZGoEbbeeBCF2+8rbySlDdVEiefaR/YPH7UgCb3ZWy4
+         wtfhTBZE2wHMIYxJnrK9YsSHgrzoQAlGRUsWtTG1HX2DoGRX6WFRt8jRjc85OCuJDcpy
+         LqNw==
+X-Forwarded-Encrypted: i=1; AJvYcCXSgF7P1t3vcTd91kJzr3RCfdlnA3D3IojMmyVdZgSrUaRNBRazHnthGHxI42jRkNHVR+cKCis=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwDmYSC8kJHjGodmUynw1D9IX1CC/1W3us7ZuPLKwsJGmjXcDUm
+	3iFm6XWVjCaeHWPkOUNEHvppEqYj2fjZPVDdMEQanyGpSHIK682vJNJxFj0tG4i7nn7dibYlNqz
+	23591d9wfXFO+0FwnBiplHlV4rEZ4DtlnyLOY
+X-Google-Smtp-Source: AGHT+IG243UpCCYpCs5X1QJj7bDMyujqJv7q9NWuDQfoBISSICeehUSGZ+de78uCOSs+OYVfJHxdfLjC4AVlL/jFL78=
+X-Received: by 2002:a05:600c:1d27:b0:426:61e8:fb3b with SMTP id
+ 5b1f17b1804b1-42e961362f3mr11298585e9.27.1727251384067; Wed, 25 Sep 2024
+ 01:03:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+References: <20240924184401.76043-1-cmllamas@google.com> <20240924184401.76043-3-cmllamas@google.com>
+In-Reply-To: <20240924184401.76043-3-cmllamas@google.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Wed, 25 Sep 2024 10:02:51 +0200
+Message-ID: <CAH5fLghapZJ4PbbkC8V5A6Zay-_sgTzwVpwqk6RWWUNKKyJC_Q@mail.gmail.com>
+Subject: Re: [PATCH 2/4] binder: fix OOB in binder_add_freeze_work()
+To: Carlos Llamas <cmllamas@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Christian Brauner <brauner@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, Yu-Ting Tseng <yutingtseng@google.com>, linux-kernel@vger.kernel.org, 
+	kernel-team@android.com, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 25 Sep 2024 10:53:03 +0300
-Message-Id: <D4F7AVX5A3KI.235GJ3NRMGWV@kernel.org>
-Cc: <roberto.sassu@huawei.com>, <mapengyu@gmail.com>,
- <stable@vger.kernel.org>, "Mimi Zohar" <zohar@linux.ibm.com>, "David
- Howells" <dhowells@redhat.com>, "Paul Moore" <paul@paul-moore.com>, "James
- Morris" <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, "Peter
- Huewe" <peterhuewe@gmx.de>, "Jason Gunthorpe" <jgg@ziepe.ca>,
- <keyrings@vger.kernel.org>, <linux-security-module@vger.kernel.org>,
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v5 5/5] tpm: flush the auth session only when /dev/tpm0
- is open
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Jarkko Sakkinen" <jarkko@kernel.org>, "James Bottomley"
- <James.Bottomley@HansenPartnership.com>, <linux-integrity@vger.kernel.org>
-X-Mailer: aerc 0.18.2
-References: <20240921120811.1264985-1-jarkko@kernel.org>
- <20240921120811.1264985-6-jarkko@kernel.org>
- <00cf0bdb3ebfaec7c4607c8c09e55f2e538402f1.camel@HansenPartnership.com>
- <D4EPQPFA8RGN.2PO6UNTDFI6IT@kernel.org>
- <f9e2072909d462af72a9f3833b2d76e50894e70a.camel@HansenPartnership.com>
- <D4EU5PQLA7BO.2J5MI195F8CIF@kernel.org>
- <2b4c10ca905070158a4bc2fb78d5d5b0f32950ad.camel@HansenPartnership.com>
- <D4F72OC53B3R.TJ4FDFPRDC8V@kernel.org>
- <D4F75ZA3WH4X.2LTKNXM4X60KY@kernel.org>
-In-Reply-To: <D4F75ZA3WH4X.2LTKNXM4X60KY@kernel.org>
 
-On Wed Sep 25, 2024 at 10:46 AM EEST, Jarkko Sakkinen wrote:
-> On Wed Sep 25, 2024 at 10:42 AM EEST, Jarkko Sakkinen wrote:
-> > Fair enough. I can buy this.
-> >
-> > I'll phrase it that (since it was mentioned in the bugzilla comment)
-> > in the bug in question the root is in PCR extend but since in my own
-> > tests I got overhead from trusted keys I also mention that it overally
-> > affects also that and tpm2_get_random().
+On Tue, Sep 24, 2024 at 8:44=E2=80=AFPM Carlos Llamas <cmllamas@google.com>=
+ wrote:
 >
-> I do not want to take null key flushing away although I got the
-> reasoning given the small amount of time is saved (maybe 25-50 ms
-> in my QEMU setup if I recall correctly) but it would make sense to
-> squash it auth session patch.
+> In binder_add_freeze_work() we iterate over the proc->nodes with the
+> proc->inner_lock held. However, this lock is temporarily dropped to
+> acquire the node->lock first (lock nesting order). This can race with
+> binder_deferred_release() which removes the nodes from the proc->nodes
+> rbtree and adds them into binder_dead_nodes list. This leads to a broken
+> iteration in binder_add_freeze_work() as rb_next() will use data from
+> binder_dead_nodes, triggering an out-of-bounds access:
 >
-> I'll also check 1/2 and 2/2 if I'm doing too much in them. Not
-> adding any tags to v6 and it really makes sense to develop=20
-> benchmarks and not rush with the new version now that I got
-> also your feedback, since it is past rc1 timeline.
+>   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>   BUG: KASAN: global-out-of-bounds in rb_next+0xfc/0x124
+>   Read of size 8 at addr ffffcb84285f7170 by task freeze/660
 >
-> Good target rcX would be around rc3.
+>   CPU: 8 UID: 0 PID: 660 Comm: freeze Not tainted 6.11.0-07343-ga727812a8=
+d45 #18
+>   Hardware name: linux,dummy-virt (DT)
+>   Call trace:
+>    rb_next+0xfc/0x124
+>    binder_add_freeze_work+0x344/0x534
+>    binder_ioctl+0x1e70/0x25ac
+>    __arm64_sys_ioctl+0x124/0x190
+>
+>   The buggy address belongs to the variable:
+>    binder_dead_nodes+0x10/0x40
+>   [...]
+>   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+> This is possible because proc->nodes (rbtree) and binder_dead_nodes
+> (list) share entries in binder_node through a union:
+>
+>         struct binder_node {
+>         [...]
+>                 union {
+>                         struct rb_node rb_node;
+>                         struct hlist_node dead_node;
+>                 };
+>
+> Fix the race by checking that the proc is still alive. If not, simply
+> break out of the iteration.
+>
+> Fixes: d579b04a52a1 ("binder: frozen notification")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Carlos Llamas <cmllamas@google.com>
 
-I have to admit this: I had blind spot on that PCR extend comment
-because I did not get hits on that when testing this so it definitely
-needs to be documented. I spotted it only yesterday.
+This change LGTM.
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
-BR, Jarkko
+I reviewed some other code paths to verify whether there are other
+problems with processes dying concurrently with operations on freeze
+notifications. I didn't notice any other memory safety issues, but I
+noticed that binder_request_freeze_notification returns EINVAL if you
+try to use it with a node from a dead process. That seems problematic,
+as this means that there's no way to invoke that command without
+risking an EINVAL error if the remote process dies. We should not
+return EINVAL errors on correct usage of the driver.
+
+Alice
 
