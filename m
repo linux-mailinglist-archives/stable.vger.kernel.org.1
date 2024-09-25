@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-77110-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77111-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D788698583C
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:39:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C8ED985840
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:40:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8ACD52827FE
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 11:39:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 427371C21188
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 11:40:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DD4D1891DA;
-	Wed, 25 Sep 2024 11:37:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4F3918A6A8;
+	Wed, 25 Sep 2024 11:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a1t4jkxi"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B5C7opTb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FE5B175D39;
-	Wed, 25 Sep 2024 11:37:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F2F6189F3C;
+	Wed, 25 Sep 2024 11:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727264233; cv=none; b=RFTfgds+latD5fo+jy4qPukkrrwZu5+aOnZ+ESGj2Qhp1nKv8WAah52ia5nkRkFc41dYnR8yntEtd6+D449AS2GVzf0fi6j/AuM3D/2StJ8kUELLXNDnGwHnOOvOHEuRnD4Sa8i4KqjRt5/RkhkifFWXN1hc6cllv/f1MTSKhr8=
+	t=1727264234; cv=none; b=FceA4UnrSEw8BZ4X91pAwJZuYUp3MCxD+xTXfAHM2WJvrhqkXOLgjMHhItQ0FddNgoERQigh6pDzSQ7e7X0WEdrn8ePPCHVCZfT6/aLIZ1FPG7sN+Tc+6kpP1gL4/UOxX+HQ1qOZ3lkmWI3QbVXZHDfy/A0JrTr+yl5JoQJkjy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727264233; c=relaxed/simple;
-	bh=VznNeOfa9mAiXck3yvozKYyOsh5qI3c5igMK/gXNY3k=;
+	s=arc-20240116; t=1727264234; c=relaxed/simple;
+	bh=9lBC4d65KKRSmO1eJbpsc08w5T/98CswSFBKhln48QA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kU8swH1ikDxZmd+4S3ePXwL6Q5/M1NS488RpruD/KO8bV9E8VdY3Ygx8O2eaEYDlP0Hr4AA1UYQf/5bl9tEiVf4olfd4CwhO6LJ4tEVnVWXBuEouXuDRBIzJr6BYN15FxebJdF/h4f7TIWtJiED8z3zJCn5GtyLah/xIPsm5ql0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a1t4jkxi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08475C4CEC3;
-	Wed, 25 Sep 2024 11:37:10 +0000 (UTC)
+	 MIME-Version; b=C8U5FF4t6gc9JyfnP0GY3bMqehqvCORjMy5hU/wECdBpGqEHe/vEx0DIQLXEoLcAg+JjQKymnOW8DnpzelR4tW0yyw1GzslMTJ9Bq+atTJHtx0J9XJsNkPbIQPjs6Q1u8CdX2MK97LusatNP3FP4si8Mp9XarQAuNT1hJqoS9vU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B5C7opTb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 117ECC4CECD;
+	Wed, 25 Sep 2024 11:37:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727264232;
-	bh=VznNeOfa9mAiXck3yvozKYyOsh5qI3c5igMK/gXNY3k=;
+	s=k20201202; t=1727264234;
+	bh=9lBC4d65KKRSmO1eJbpsc08w5T/98CswSFBKhln48QA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a1t4jkxi+ONfyfCzrd9vZ4Oefmbk6/7hsjcdglrR3dlFg80m5gkf0hIfkaUBSHTcF
-	 EUMls3gspIhVsAvMMj/6bHSBPM/DETSmsGlpFo3bZDq8SDbFRVn6pXPo+NYqfCkDum
-	 eNBNU3oc/191qJmrReb5HdB/9j50fz5hZIDNa97wJp0BVfXyDc37U8cudnabHhSv+T
-	 ISIC9nAtPTInc6Na5tv29QfkZswqpctp0ofcqLo9mZ04tXLXFxEWIa7wfpA6NqiBPN
-	 VTY29Qs8KAzixi0VaSlIAK+vplfzeHYyDXFvKFGecJGyGPixGH753Z2zkH4kDX4Kwp
-	 XhRS0roxkoyhg==
+	b=B5C7opTbn+4tfIxcwB/fglu0ae+/Pe5tvihcHSyYjF+6c3dHMlf80gQAx7fXiP9vX
+	 Il/e3IS0hfQNX98itZZ1fCqbqbF875x1JueLGRCgbLD30tv1JlFM4YuaQLaBIjmYG8
+	 YtgUTmiF1byN0FlIdX3ar9waFnFWSz8KYphDJFHe8eWUaYStMYIc2THpWhIDXP+UgP
+	 x1EfHxfpuzGmnImvMcrNaulG93szBXPc+UIQlTNH7QzdoFktTGaUHT5ifNpihgV5aP
+	 gHoiapXuKH6MxLxUcjgsMC5j3/FmJetnACLX3OqMxHX78NOFhIe2cUjuEgVzi4p440
+	 E4ngmJrY3SEQQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Issam Hamdi <ih@simonwunderlich.de>,
-	Kretschmer Mathias <mathias.kretschmer@fit.fraunhofer.de>,
-	Johannes Berg <johannes.berg@intel.com>,
+Cc: Jeongjun Park <aha310510@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
+	wei.liu@kernel.org,
+	paul@xen.org,
 	davem@davemloft.net,
 	edumazet@google.com,
-	kuba@kernel.org,
 	pabeni@redhat.com,
-	linux-wireless@vger.kernel.org,
+	xen-devel@lists.xenproject.org,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 012/244] wifi: cfg80211: Set correct chandef when starting CAC
-Date: Wed, 25 Sep 2024 07:23:53 -0400
-Message-ID: <20240925113641.1297102-12-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.11 013/244] net/xen-netback: prevent UAF in xenvif_flush_hash()
+Date: Wed, 25 Sep 2024 07:23:54 -0400
+Message-ID: <20240925113641.1297102-13-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925113641.1297102-1-sashal@kernel.org>
 References: <20240925113641.1297102-1-sashal@kernel.org>
@@ -72,75 +71,48 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11
 Content-Transfer-Encoding: 8bit
 
-From: Issam Hamdi <ih@simonwunderlich.de>
+From: Jeongjun Park <aha310510@gmail.com>
 
-[ Upstream commit 20361712880396e44ce80aaeec2d93d182035651 ]
+[ Upstream commit 0fa5e94a1811d68fbffa0725efe6d4ca62c03d12 ]
 
-When starting CAC in a mode other than AP mode, it return a
-"WARNING: CPU: 0 PID: 63 at cfg80211_chandef_dfs_usable+0x20/0xaf [cfg80211]"
-caused by the chandef.chan being null at the end of CAC.
+During the list_for_each_entry_rcu iteration call of xenvif_flush_hash,
+kfree_rcu does not exist inside the rcu read critical section, so if
+kfree_rcu is called when the rcu grace period ends during the iteration,
+UAF occurs when accessing head->next after the entry becomes free.
 
-Solution: Ensure the channel definition is set for the different modes
-when starting CAC to avoid getting a NULL 'chan' at the end of CAC.
+Therefore, to solve this, you need to change it to list_for_each_entry_safe.
 
- Call Trace:
-  ? show_regs.part.0+0x14/0x16
-  ? __warn+0x67/0xc0
-  ? cfg80211_chandef_dfs_usable+0x20/0xaf [cfg80211]
-  ? report_bug+0xa7/0x130
-  ? exc_overflow+0x30/0x30
-  ? handle_bug+0x27/0x50
-  ? exc_invalid_op+0x18/0x60
-  ? handle_exception+0xf6/0xf6
-  ? exc_overflow+0x30/0x30
-  ? cfg80211_chandef_dfs_usable+0x20/0xaf [cfg80211]
-  ? exc_overflow+0x30/0x30
-  ? cfg80211_chandef_dfs_usable+0x20/0xaf [cfg80211]
-  ? regulatory_propagate_dfs_state.cold+0x1b/0x4c [cfg80211]
-  ? cfg80211_propagate_cac_done_wk+0x1a/0x30 [cfg80211]
-  ? process_one_work+0x165/0x280
-  ? worker_thread+0x120/0x3f0
-  ? kthread+0xc2/0xf0
-  ? process_one_work+0x280/0x280
-  ? kthread_complete_and_exit+0x20/0x20
-  ? ret_from_fork+0x19/0x24
-
-Reported-by: Kretschmer Mathias <mathias.kretschmer@fit.fraunhofer.de>
-Signed-off-by: Issam Hamdi <ih@simonwunderlich.de>
-Link: https://patch.msgid.link/20240816142418.3381951-1-ih@simonwunderlich.de
-[shorten subject, remove OCB, reorder cases to match previous list]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Link: https://patch.msgid.link/20240822181109.2577354-1-aha310510@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/nl80211.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
+ drivers/net/xen-netback/hash.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 7397a372c78eb..b368e23847ddb 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -10143,7 +10143,20 @@ static int nl80211_start_radar_detection(struct sk_buff *skb,
+diff --git a/drivers/net/xen-netback/hash.c b/drivers/net/xen-netback/hash.c
+index ff96f22648efd..45ddce35f6d2c 100644
+--- a/drivers/net/xen-netback/hash.c
++++ b/drivers/net/xen-netback/hash.c
+@@ -95,7 +95,7 @@ static u32 xenvif_new_hash(struct xenvif *vif, const u8 *data,
  
- 	err = rdev_start_radar_detection(rdev, dev, &chandef, cac_time_ms);
- 	if (!err) {
--		wdev->links[0].ap.chandef = chandef;
-+		switch (wdev->iftype) {
-+		case NL80211_IFTYPE_AP:
-+		case NL80211_IFTYPE_P2P_GO:
-+			wdev->links[0].ap.chandef = chandef;
-+			break;
-+		case NL80211_IFTYPE_ADHOC:
-+			wdev->u.ibss.chandef = chandef;
-+			break;
-+		case NL80211_IFTYPE_MESH_POINT:
-+			wdev->u.mesh.chandef = chandef;
-+			break;
-+		default:
-+			break;
-+		}
- 		wdev->cac_started = true;
- 		wdev->cac_start_time = jiffies;
- 		wdev->cac_time_ms = cac_time_ms;
+ static void xenvif_flush_hash(struct xenvif *vif)
+ {
+-	struct xenvif_hash_cache_entry *entry;
++	struct xenvif_hash_cache_entry *entry, *n;
+ 	unsigned long flags;
+ 
+ 	if (xenvif_hash_cache_size == 0)
+@@ -103,8 +103,7 @@ static void xenvif_flush_hash(struct xenvif *vif)
+ 
+ 	spin_lock_irqsave(&vif->hash.cache.lock, flags);
+ 
+-	list_for_each_entry_rcu(entry, &vif->hash.cache.list, link,
+-				lockdep_is_held(&vif->hash.cache.lock)) {
++	list_for_each_entry_safe(entry, n, &vif->hash.cache.list, link) {
+ 		list_del_rcu(&entry->link);
+ 		vif->hash.cache.count--;
+ 		kfree_rcu(entry, rcu);
 -- 
 2.43.0
 
