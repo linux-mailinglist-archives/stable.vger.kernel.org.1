@@ -1,163 +1,173 @@
-Return-Path: <stable+bounces-77064-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B5F7984F9D
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 02:53:10 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B991985094
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 03:18:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D6D71C22B8F
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 00:53:09 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 00F29B21106
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 01:18:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B811136345;
-	Wed, 25 Sep 2024 00:53:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CA3D2AF03;
+	Wed, 25 Sep 2024 01:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=android.com header.i=@android.com header.b="kPpkFzRV"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="KLmDpLlZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2046.outbound.protection.outlook.com [40.107.243.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAC26135A54
-	for <stable@vger.kernel.org>; Wed, 25 Sep 2024 00:53:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727225583; cv=none; b=mmGCHbPE8XdgpE+Vvmdj8pcmjbtm9w69wtcPovHHElEWaQYcxI7gvbV9mPA0lerXn+0YpYKLcBFUxQnG5M9GOe7yOa8iIF5Sx5j1z9AJ2ZuYrk3WCjlgFete9XSu5xn+WjnenVM+lWfOP4QcKj2WhZ9OTJjc0Q7H8TcSiDtlc0o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727225583; c=relaxed/simple;
-	bh=Ci4/UoxRRXd5uvuxYWSx4T5/MgJvAfME+zZeKA/e0oc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FwQoCVVzs3hKzzlOWrSiDHBkIIYEzGuggRpEdMJMFnvWpUgLfGSvHp5F8hrx+ejZ0w0Yvc6uP9XRjfSGSVHRz6m16CyOZi9mAtqgYYfmPk3fitTp+90h33aOT0t993imyb2VXw/YZiYHCmlG2fTIeY9VQd8h9PDr30exqTpcJow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=android.com; spf=pass smtp.mailfrom=android.com; dkim=pass (2048-bit key) header.d=android.com header.i=@android.com header.b=kPpkFzRV; arc=none smtp.client-ip=209.85.208.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=android.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=android.com
-Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2f75b13c2a8so65551191fa.3
-        for <stable@vger.kernel.org>; Tue, 24 Sep 2024 17:53:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=android.com; s=20230601; t=1727225579; x=1727830379; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=S8FbQywdH0oWZCGZXj5Hbv7B2G2tFNgGOo6kZcwthgc=;
-        b=kPpkFzRVtxE+6FzFTW2iPA11I7blLrzEq2d8CtFRs1y6u+ns7TG8qHikKFrYCdKrw/
-         901r0rm+r3MgxwqJNmHqCUjTzQuJdZyIJnw1b3z3oZm9gBFihsvEyr3CtuulxXDxkKpc
-         dwGvhalbMvbpgmSi5K99Z/0zCgugitr4hUdAxx0Lu92FbOwHeS0jotlKP+EvgpmWATlG
-         yh9oxFiqMorO1hBSn+szu6PiY49FIBPA40gGrsUagwdwVNh4NXnY3v8eW3kJqL/1l/Fe
-         CTrxbeKSW0BUuvzXlMrErVNEjEOO6XXS9hJbItqj/m+8H/WyCjXNG9ilt5Wd3Z0nfiTt
-         +kyg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727225579; x=1727830379;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=S8FbQywdH0oWZCGZXj5Hbv7B2G2tFNgGOo6kZcwthgc=;
-        b=vNCqJEsJhhVUNh9b6Vz8YOBwmUj0JIReVPhxvjcSva5mTDza3eLE2+bXQCo3jAbtLY
-         VAkckk2h1MoKpAfLR8mtQmWOyX1Q5bhmP7P8InEmQSoMjZbNw/ZTf2utPfLYtzGOYMDd
-         CuNg25pLu9p9oo6fWZYTIOciBu18qk+K4bgotDa0jaF7cqHxk1sMsr/mrt9CqL1Er8JL
-         zO2heRCXPjG0U0M31GRQQyd0xS7peaNNtJ6HRKd7qkVGIfN+ACuy3VY99dnghvDGqfJ2
-         G15zn6sBSw5bkc5E8LPPTolfitkbQBmpO2BMJuVnkbAOHY3hQQHfHjpdIyPqYtEAAT6R
-         5e+A==
-X-Forwarded-Encrypted: i=1; AJvYcCW5z6wexwHkGpNJX9hL27+IYWYiHOQgMrsCDEYlx7Oz2/QQBQ1H8RZWoVaiky4qtv8sDODs2vk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQgpVk2HJ4NuN6Cy78oWxp1jYdL3a/5j9Q049xc6ZwDkeJtMyW
-	Bcv6O+3Xa9YNxbDOE5FYACJCMjd95+4HSsnZEXaay5qJo3dVnbagILBEZSP/yBKE2L4v4JMZl9R
-	l1WCq5OUi3d2sc8SIN7NCfiMP2Qd9UFfcU/a8
-X-Google-Smtp-Source: AGHT+IEKqWZXHJ23DqHLKjn4v9fYYdxuY4ehghseFGkkd3Td6DXyGrindh9PvHj2mgDcjz/xQVGCMaxpHu4dh7YjjOs=
-X-Received: by 2002:a05:651c:1502:b0:2f3:df8f:bfaa with SMTP id
- 38308e7fff4ca-2f91ca6ed4fmr5783971fa.36.1727225578729; Tue, 24 Sep 2024
- 17:52:58 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 640C8C125
+	for <stable@vger.kernel.org>; Wed, 25 Sep 2024 01:18:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727227086; cv=fail; b=m84h8+0Xr/Lpt1VQwIoBmH9tpoqS7ivgvzn/QkFEal3kdUcHgEefa+ZHU8wLfE4R/E8OvnE+YbuEaRjwi4VLh9jlUphm7JrcXE4P+Hip5n5bL3yyCT2SextlnDIoGekIavHlx5x/JSZ/OBOLp9OoW5dBDc5MZEqYgeFtbBtcQ6E=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727227086; c=relaxed/simple;
+	bh=tWSOEsLAIrmgupYbu+WSVdVYukQeUdtaNqT6qC1SPWI=;
+	h=Message-ID:Date:To:From:Subject:Content-Type:MIME-Version; b=R8jmIkxHjclZXzFqvLH30mQsnCgf6kJJGK1weBcExsQ/cQtxEuyGEXZWqsEFI7OhliFCh7LO4J3McJt/aJwsO+e0ZLWK9pYkqQeb6S8sGiwDP94CVp1zKM7gjMt22xMuhD/Gx/JrzmP7fOvd8Kbl0mp2prWMF/ikCNVWzB0inaw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=KLmDpLlZ; arc=fail smtp.client-ip=40.107.243.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=P3LpdyQQdyFU4kolZz+qTmaKf5oyQ2m3lXGke/NXcZ1kbfuNurFZest8SN2cHg5KLvsBeIoesyEJj1Fw7KCR/mxdrEW3yWZI9ZNcy7CRq6J1RPumkkAWyZV+TBhsGiYRKRNzLYYI6EsFZ7Gm7ATpv8ufPtDHp13p8h/yjzXs02cGpIp37n13+SnX4KTejqgaQ+yJ2RhaSv1La8zKamokuWCPhZ3A0a5BO+jS+ERJ+X3Get+LedB0tILHb0Ufk18/qDrc2FHWp38ZaVO0iYD0WFgqV/lfuIOSXZB7DgR9d0fpm8MXvDdrlaJYocMKgCEwvkLDblLGfLe+k1uKZTOTuA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=2uYM7atqBXmYCFUvmNdQA3xNZo45v6dz9VOn52vkmRY=;
+ b=RVHXbWRZ1LqaRny7Jz22YvlgET5SZRtuH+07/iYkBlNmHCXCmb2LHDQg8P7a1EIaqC58bpoJFvj6Yf13tEFIc9isiWLD/k00jAFy36mlfOdYoI5Fk/pNZ56JhLr4YswRI7MNCjKbveFwVHxmFWc7jjy4toao1HYR/dUhoSE/lFo7JtUhr75QZ66Ob6UqG6vzaTL/mmscL8bV70yKsYAbKIScUDsFlt5TQw+WfN4QPuZSf+zg8XxCAxyvLiruUfLM8vL170zLcjorImjafA+IEi2G4QLKLAvp2a0XBJl61AUWiQyVWm6ptnvN7rI8/iMTJnHjZm90ZnaMqGxSNwniIA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=2uYM7atqBXmYCFUvmNdQA3xNZo45v6dz9VOn52vkmRY=;
+ b=KLmDpLlZl67VOWFD/kc502926/elavSmP7KbaDp766o8VLBkGE5tscv5M5Rx0kX/yTY8/GDk33HbtZBW4PUREaIDT69Ubiqmw5dHu/AfXzaQEN49JObnKbNZDbObZhkCrO2QKVM18oDor7GNmXLPjHtRqEqDGNV7jw3vYCPPyt0=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from DS7PR12MB6095.namprd12.prod.outlook.com (2603:10b6:8:9c::19) by
+ DM4PR12MB6591.namprd12.prod.outlook.com (2603:10b6:8:8e::13) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7982.25; Wed, 25 Sep 2024 01:18:02 +0000
+Received: from DS7PR12MB6095.namprd12.prod.outlook.com
+ ([fe80::c48a:6eaf:96b0:8405]) by DS7PR12MB6095.namprd12.prod.outlook.com
+ ([fe80::c48a:6eaf:96b0:8405%6]) with mapi id 15.20.7982.022; Wed, 25 Sep 2024
+ 01:18:01 +0000
+Message-ID: <ec0891d9-ac9a-48f5-ab96-4cdb428897c2@amd.com>
+Date: Tue, 24 Sep 2024 20:18:00 -0500
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To: "stable@vger.kernel.org" <stable@vger.kernel.org>
+From: Mario Limonciello <mario.limonciello@amd.com>
+Subject: Power consumption fix for ACP 7 devices
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SA1P222CA0195.NAMP222.PROD.OUTLOOK.COM
+ (2603:10b6:806:3c4::8) To DS7PR12MB6095.namprd12.prod.outlook.com
+ (2603:10b6:8:9c::19)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240924184401.76043-1-cmllamas@google.com> <20240924184401.76043-4-cmllamas@google.com>
-In-Reply-To: <20240924184401.76043-4-cmllamas@google.com>
-From: Todd Kjos <tkjos@android.com>
-Date: Tue, 24 Sep 2024 17:52:47 -0700
-Message-ID: <CAD0t5oNFc0UtFpsPVWBVTzZbEgqy+PeuW4uv1_sNM=+Aqbu2kA@mail.gmail.com>
-Subject: Re: [PATCH 3/4] binder: fix freeze UAF in binder_release_work()
-To: Carlos Llamas <cmllamas@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, 
-	Christian Brauner <brauner@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
-	Yu-Ting Tseng <yutingtseng@google.com>, linux-kernel@vger.kernel.org, 
-	kernel-team@android.com, Alice Ryhl <aliceryhl@google.com>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS7PR12MB6095:EE_|DM4PR12MB6591:EE_
+X-MS-Office365-Filtering-Correlation-Id: e4a82eee-fffc-4eec-cc33-08dcdcffe617
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?MVQ0MklvclRvb0ZUTm02Sk4yU1hYZ3VzSFB5QTFsdzVheU9Sa0JwSWJXNm55?=
+ =?utf-8?B?WFpJMG1lM3RNd0xZQ0F5dmt4VllQNjNTWjNaWlZGOTREWll0TCtKNS9ZZUJk?=
+ =?utf-8?B?M0V5bTNJSlVXcUVxNEhDSVI4azdBZVNoWWlxb3FraHI4elFkUWQ2UkdaTkwy?=
+ =?utf-8?B?MVZrVHN2U0R1K3JLV0Y3ZHpIUUdIc25sZGtkODFTT0VzalhjNGZkc1djRjFk?=
+ =?utf-8?B?RHVNWlFaTW1kSVRRaHVDdTcxR3FwMklRUFBIaVdBY0dEKzJ3WG5JUVhLanhx?=
+ =?utf-8?B?Y0hWZ3J6NmJJa2JUMHNmdk0xaUk3TjZjMFZSZXowYXVPenNndTNCOEJuWFVu?=
+ =?utf-8?B?YUpPVTI4NXNoREhkNVY4NkJpVnlQenYyV1p3QWRnM1Iwek9sUUFyUHY0K0p2?=
+ =?utf-8?B?RzdZZ1lsM0JPQWJhSEdBcENFTDZ1TGVVZGQvZWJmL2doRHdLUHpaZmhVa056?=
+ =?utf-8?B?WmlqWDRnNWo3YWhvWFRlU2VTaWRXdk9WakxIOWEvb3Noa0M3eU5SaU1UMnJj?=
+ =?utf-8?B?M3pDK0ZLOERiY0NtdXRhcGR6d2lEU254WmU5Wi9lanlNT0tFQTZGQ3pNTWl6?=
+ =?utf-8?B?em9vNW0wMkVpMlkxYjRaR2k5aTBhV3grZTZHMFlpUFZyYkMxbk9vN0FRdTc1?=
+ =?utf-8?B?R0JidWE2NmVKcFZkbC8rQi9oaWNkVkVxYkVab0tiZVFycjI0VnhlUUtFS2Nm?=
+ =?utf-8?B?QWhzWitmOTJHT3FBTHdhZDNaempXb3VFcTJBaWZGWGRkYnVlUG5CZ0hvQzhh?=
+ =?utf-8?B?SUZtQjhWV3ExaHQzVTVJazRTTk5hVXNBVzc0TVNjQkVNZTVIZXNOeUwwbDY2?=
+ =?utf-8?B?LzNRd0hTalZBTUhwZnExdzlhTzhRT1YvZGtIaFE3SGlZOVFFVTUwUHJLN1VB?=
+ =?utf-8?B?SzNlV0tkNTVJbjBUSUQrVkdwajZjQTlLQUNneEczTHpuN2NQa3hIR0lrTmUy?=
+ =?utf-8?B?aVo2Tlc3RnJBbU9LcUpuSE9SanJDVlJwTVlmdWQ5SGMvTDVpRWN1OUhrVkR4?=
+ =?utf-8?B?a3NxZ0puQUwwMXNSRytmNlhuSGhQR09GRE13TE8xK2ZleEFlcnJ5RHlGdXAv?=
+ =?utf-8?B?MHQzdEdzVktrd21nT2F5NlhLNTViOURaWXc2MUVtSUt0YWxVblFTMUJPTGF6?=
+ =?utf-8?B?OXJLcVl1VW8wd0ZENUVaVkhlTlFOdm9XY3RPTXFINllIRlhURDlhUHdGRVNY?=
+ =?utf-8?B?V1pubGtXTE5lc0w1MS9DZ215WVZQQUtGNVZXeEJCeUoySWxKSmVrMm5KcFJ2?=
+ =?utf-8?B?TmZrWjlKcEhYcjY0Zk1VV1FqS0N2RkNPMzFtOU81bHlSaGpvTGtaai9IRGg2?=
+ =?utf-8?B?Vk9wZXdNNlMvaldCeTZuVzVQb2FlNVJ1MnlqQWhjQ2gvbnpLaEtXcC9QYU9k?=
+ =?utf-8?B?c1F3b2VDRXp2aUtKUDduTGgvMktUajhDa0VaK3ltOXN6dEJyYXNqYlUrN2Rl?=
+ =?utf-8?B?SHpHZ0JJekwyRFoyMGtoaVhOTDFiWnRDZ3haTUYzcDZwNm9NeTJ0Vm5zNG5T?=
+ =?utf-8?B?dXUzWDVjRXRWd24zMjRpWFNtWE9DdGFod2FXeDh2bE5sN3R0bWJWZFZqT0Zh?=
+ =?utf-8?B?em9kNnN2cXozWmJqZHhoU1ZoeXZLaFMvbzQybU1ra3crWnlJcnJTSVBCMExK?=
+ =?utf-8?B?czJiV3JmdWM2Q2VSU3VRNmNOaUxCeTNDVmFmUEtEbzAydlVLb3JpYXhqUVN4?=
+ =?utf-8?B?a1E5bmV3N1FHY0liakNLOWtVaTQxcHdrQmNQVlUrRVFNWWhyOGxUTm1nPT0=?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB6095.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?WmNiTmxLR1BQaTlibkZWWm9Nc2c4Z1hDUDRUbmRnU0JOZEdqT3VrWjh3TzRO?=
+ =?utf-8?B?MDZxZGd4Q2g4UG9hcDlaZFJJMDI1dkVUcTVkL1RlMVZaWFlJejFEYzVCemFr?=
+ =?utf-8?B?a2hQNENqNWN2QlZuRVBZMHIrQ1BoQTJOcmp3WFN4ck40di8wQzIzV05BOXR6?=
+ =?utf-8?B?WVZqc1p0cjBqLzZDYTRDWVRDZ2l2Y0hoUEhUNVhLdUxEQ2dmZGlXZkFuV25Z?=
+ =?utf-8?B?NFBiYnRhVVJHdHRNb29zNDVVbTNLQmhTZDc1NzcrZnRQSktFN3g4aGFwMFVR?=
+ =?utf-8?B?aFJEMnVUQUhodFJrYkFWaGE3bFR6U05rV1Q3MmRMT2xJaloybzYvWkFacDQz?=
+ =?utf-8?B?VmZoUWtyUHlteWE5NmlRaVFrVlZzU0NIM0lNTTV3WVRtdU1WK0EyZDZvZ0Vm?=
+ =?utf-8?B?b3ovcU9hdHVFTFh0N1FQa09jbmhpOTc1YjBWV2RkM3lZeDZLK3gwemNFbTIz?=
+ =?utf-8?B?dmVsK1BYNElvcmczanZsbmNQZzRiRUVINk1EdHpzd2N2Sk1lY21ybHRSQmxw?=
+ =?utf-8?B?MWRFMUxwV29YWE5hN1ZURkJLRTgxUktZUUN3ZFhGSzFER0Rtc2pJUHFEbTNX?=
+ =?utf-8?B?Wmc5clkrWXVVdTh2N0hibUpDaHQxU0FFdkxrNGFycURkc3RhSWFXcDdpeWI2?=
+ =?utf-8?B?cjlBMmYrYTBDZDBHcVpwQzJ5MGJtcjh3UzI4QlFMbFpleVB5bE1wZktHbDlP?=
+ =?utf-8?B?VXAvcVNrRGUzbEMwQmtrZUFnTE9yT1MwOXY1MjRKY2IxUnozdUhBZm81WnZm?=
+ =?utf-8?B?ME16ZUNZN1BKalVad09YSmNmalp2Z1VaZ1hZdUp1MnlraE1qbWZnQTdqazgw?=
+ =?utf-8?B?SXVEVENaUGVCNjJraEZtWkZVTGN1OXNBOHFsQ0ZiekNIWFpCMXVWYjFTaHZR?=
+ =?utf-8?B?My9KYzFCVU1PcFAvZzZwa1IvQm1MazcrTEpmcFV1RGhYOXdLcVJEZTVzMk5L?=
+ =?utf-8?B?Q0Z3ZTRUdjJTSzcwdVZUTjRNVEFqSTBuWXE4N3ZaTis0ZFltTGRkZVFtUWxW?=
+ =?utf-8?B?K0IvQzk5WmwrMFlHNER5R1Z6d1l2MUxSQ3RuelpIMWl0RVlvN2xtOUNVZnE5?=
+ =?utf-8?B?NmxmM2E1ZTJPYnoxR2lkV05CYUNNY0hNS1U5VDc1c2tLUW8zZm9TcUtFMjhK?=
+ =?utf-8?B?UVhod0lEMHVQaCtuWTd3NU1ZeXZYRndacUlFNk04NmJxdHRRd3hqNm9GMTlF?=
+ =?utf-8?B?NHpKM3NKeWNMV05wcEE1ekRObEd6aVYvWkhQMWtxOFVrb256eFJSUkJGa00z?=
+ =?utf-8?B?VXFDTmp1Y2daMGc0bDJkWDNNbk5XUTNRZkFsZTdsSWx3M3RucTgxYzhManBo?=
+ =?utf-8?B?NEFFcWpVdXcxYWlxalNZQzZLWEZ2RTYwZ0pWdmRZeWxlTnVsWkRKSGtvQnRi?=
+ =?utf-8?B?Mks0YkxucGJXZFByUHVBVkk4Uk9DU0FyWHZZUFZxSk5FOVQveEkyOWhXbXBF?=
+ =?utf-8?B?Z01IRmhWMFJZeWlHeEhmb1F5eHJWdjc2L0EwbjdGT0JhVnNUbnptaU5pN2Q5?=
+ =?utf-8?B?clNpbEZicTRlb3RHWlJXcGFCdTRJazl0eUtjcGJOT0MxK1lISDhsZWZObWkv?=
+ =?utf-8?B?ZTZlUlVTbWhYWkNic0RISHVBRTI5cFEvOGRxVHFFZFpWYzNqcCtQR2RJaDlo?=
+ =?utf-8?B?cm01R3o2R0VwV21ycHBXZ0ZlNFNxNjJmcnJFeFVDNTBxYzBvN2NmaEJ0TFM4?=
+ =?utf-8?B?UnpWOExaOGtTcHRrRU1Ud0JUeC90Y1lKMUF3RDBjbFBZQW1EOVZSd0VSd3J0?=
+ =?utf-8?B?ai81dG5HWVpndVQ5NkFtVURlVUhnTUIrRDJCaXBHOWp4bkNvRTJsUDFlcGZ1?=
+ =?utf-8?B?cmZVSXo3cncyVHgvakd3TnZLZEdGWXI3d2U0MHFiQ2FlZlRIYjlKYTl2RHZ3?=
+ =?utf-8?B?OTBOODJWaWowbEdtU2tsc2tReWt6ekJraEt6N0UwRHpMWHVWUWYySThGUmhO?=
+ =?utf-8?B?N0lSa09BN1E0czZ4NFZOKzduTndzby9hQ3c2T0ZSWHNMSDVSTzA0cUtoOFVk?=
+ =?utf-8?B?bVdTYWJKbjR3ZmNGaERkU2o4d2lJMkhqS2ZhQlpxSFN2dnJ5UXNEbFJBeWcx?=
+ =?utf-8?B?cFJ5OTJLV0s2QlpKbWtsZHBQbEIzd0xRWVZUYlhsYTQvUEpJRGxnZ1k3NXh5?=
+ =?utf-8?Q?+7lEjSpkSDchadZaw/84TgaZ8?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e4a82eee-fffc-4eec-cc33-08dcdcffe617
+X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB6095.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Sep 2024 01:18:01.6802
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: vRQzweCDr+zzAgNgQyn6f7dco4RXZ9nmnMd8Vv3Bbf3/B3n6dd4YEWx9CMy7SQoPso83LFY4kUGu6pk3Ng0tgg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR12MB6591
 
-On Tue, Sep 24, 2024 at 11:44=E2=80=AFAM Carlos Llamas <cmllamas@google.com=
-> wrote:
->
-> When a binder reference is cleaned up, any freeze work queued in the
-> associated process should also be removed. Otherwise, the reference is
-> freed while its ref->freeze.work is still queued in proc->work leading
-> to a use-after-free issue as shown by the following KASAN report:
->
->   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->   BUG: KASAN: slab-use-after-free in binder_release_work+0x398/0x3d0
->   Read of size 8 at addr ffff31600ee91488 by task kworker/5:1/211
->
->   CPU: 5 UID: 0 PID: 211 Comm: kworker/5:1 Not tainted 6.11.0-rc7-00382-g=
-fc6c92196396 #22
->   Hardware name: linux,dummy-virt (DT)
->   Workqueue: events binder_deferred_func
->   Call trace:
->    binder_release_work+0x398/0x3d0
->    binder_deferred_func+0xb60/0x109c
->    process_one_work+0x51c/0xbd4
->    worker_thread+0x608/0xee8
->
->   Allocated by task 703:
->    __kmalloc_cache_noprof+0x130/0x280
->    binder_thread_write+0xdb4/0x42a0
->    binder_ioctl+0x18f0/0x25ac
->    __arm64_sys_ioctl+0x124/0x190
->    invoke_syscall+0x6c/0x254
->
->   Freed by task 211:
->    kfree+0xc4/0x230
->    binder_deferred_func+0xae8/0x109c
->    process_one_work+0x51c/0xbd4
->    worker_thread+0x608/0xee8
->   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
-> This commit fixes the issue by ensuring any queued freeze work is removed
-> when cleaning up a binder reference.
->
-> Fixes: d579b04a52a1 ("binder: frozen notification")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Carlos Llamas <cmllamas@google.com>
+Hi,
 
-Acked-by: Todd Kjos <tkjos@android.com>
+Can you please bring this commit into linux-6.11.y?
 
-> ---
->  drivers/android/binder.c | 6 ++++++
->  1 file changed, 6 insertions(+)
->
-> diff --git a/drivers/android/binder.c b/drivers/android/binder.c
-> index 8bca2de6fa24..d955135ee37a 100644
-> --- a/drivers/android/binder.c
-> +++ b/drivers/android/binder.c
-> @@ -1225,6 +1225,12 @@ static void binder_cleanup_ref_olocked(struct bind=
-er_ref *ref)
->                 binder_dequeue_work(ref->proc, &ref->death->work);
->                 binder_stats_deleted(BINDER_STAT_DEATH);
->         }
-> +
-> +       if (ref->freeze) {
-> +               binder_dequeue_work(ref->proc, &ref->freeze->work);
-> +               binder_stats_deleted(BINDER_STAT_FREEZE);
-> +       }
-> +
->         binder_stats_deleted(BINDER_STAT_REF);
->  }
->
-> --
-> 2.46.0.792.g87dc391469-goog
->
+commit c35fad6f7e0d ("ASoC: amd: acp: add ZSC control register 
+programming sequence")
+
+This helps with power consumption on the affected platforms.
+
+Thanks,
 
