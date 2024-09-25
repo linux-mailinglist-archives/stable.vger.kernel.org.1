@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-77369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77370-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50F81985C5D
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:45:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 423F0985C5F
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:46:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 81EEB1C24A26
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:45:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7294D1C24877
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:46:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D3221CEE90;
-	Wed, 25 Sep 2024 11:59:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B3131CEEB1;
+	Wed, 25 Sep 2024 11:59:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e/FTC3tB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z6nKYjk1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C94DE1CEAC4;
-	Wed, 25 Sep 2024 11:59:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288A31CEEA9;
+	Wed, 25 Sep 2024 11:59:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727265564; cv=none; b=GxKNtUnDgQNoZwkgnqMiFfPz6hQwezz8DiRUiJzmmTlcwimRNozwEYfUbxN1KnoCys0ca+pMIRcf7vc7CAcBA4dh+wTiX+g2M8zx1yHz/CkppX20HZtZE6SfYmqX0EAbBOGDXgQEho71O5X4GmFIMLl/SWFRxIE791QmmsbC/+4=
+	t=1727265566; cv=none; b=LJe7npsG4iHjlWt10xmW/biYYoMx2hfz+783c3CBSKiTaOi4ANh/ANjCBcGqb8/DbBITqC1zLSu2777KeFdfj1ZSU1S+FKWHTZ8LPFwzNr2TGHmmSNhRfPZiVK04FI50adqk1n2eT639Gk6/NWQznCjnl1OLuMcwsKy2hKjBRc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727265564; c=relaxed/simple;
-	bh=GLGBRaOB7vwzqPbWZD30daJmxV5lZ7retN6JsiWu7vw=;
+	s=arc-20240116; t=1727265566; c=relaxed/simple;
+	bh=tDosBEpQ0p+pvDe/oeuUkL2tz+nvxMO8a+E/xdlrT50=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YhnwJog/+mIFrJP7tNEtur+StMCWsvWgnsYpUcH9S3R7gbryVy+K8c8ngEQEYfAldGiAi+LPy07DmsIJBc395ysiS4jzOKjEuOt/xqEoYQaBmJ8L/wZ18F19ep6mgVWoGJejZKZEhw3V26Q0b1KEVt3lcEN61++2k6QzfMg2QZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e/FTC3tB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AC76C4CECE;
-	Wed, 25 Sep 2024 11:59:23 +0000 (UTC)
+	 MIME-Version; b=bsccUqnvHMe05Mo1dajLSCxsAhLw/yzvckq4oBmfkBGcNuHZjxIbbuJOHudYWKNhKw4+8UgBrZcM2djmPTWhR3HgcaxRPOMHwwYuTf8/4fYVYlzzo/BOVesvORiubMJwcV5iIjfoyPy86kSASUj5fAU52Yiyajmx4WnR7zXWKSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z6nKYjk1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5537C4CEC7;
+	Wed, 25 Sep 2024 11:59:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727265564;
-	bh=GLGBRaOB7vwzqPbWZD30daJmxV5lZ7retN6JsiWu7vw=;
+	s=k20201202; t=1727265565;
+	bh=tDosBEpQ0p+pvDe/oeuUkL2tz+nvxMO8a+E/xdlrT50=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e/FTC3tBV+AN/DElABJY1yWiKmxymOXxNl59ZyJO2prmhJ3U9Yb27SUHamCrGXT0F
-	 dJ35+ZV+kwXA6eDaIv2vF+X5JakJkMko8CRe4VOgakHHvgQbYQ13Gy1FMRSYoIft5L
-	 0U/L+KifcCV3/JbM0Ap9xNWrKozQpPXuMwZC6SopOdMLJk5SHPJgM87/JZly5Bgy0S
-	 +69aZGhygbwg8n1x7R/GSMHFwx9nC0Mbmd11Sh6SIeqOSHBvkhlJAx8IXh4K3/9zJA
-	 pjryF73vOKbYoIAFE5Bcu7PxmGrMnIzO6wbYds/2Gg7k62R4QmeUEtJfypRBwmAWj4
-	 C3gH2x94FStnw==
+	b=Z6nKYjk1JBjNvKkrPqSo74/EBDDvRO0nTDf0u1gdlr5ksqnaQS5CWZBP0r8X1O5E9
+	 ynAO6Vn9Cxxa3aaGcDMtmHnjQJe7tIpa43TCOoBkN0mupZiQunT9S1rs+x+hKN4a09
+	 jGXXu1q3uUOREetLV002L8hsSmnU6UTEqfJyjNtAkVYpv+FDKbdl5JHFtrgTIADGtz
+	 zFHRZyKUyKt1WmbQsLekf31DgErpzjglE++HWny6OJDhY+NawMH2jVteWsIBYnBvtY
+	 Kkvfun3jTLKA+yL00lIrjCP0pxX034N8spPbL3/c+/wv6C1kWbdioPmIPA4hFpRy4A
+	 sbX1PZeZadplA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hilda Wu <hildawu@realtek.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+Cc: Hans de Goede <hdegoede@redhat.com>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	marcel@holtmann.org,
-	luiz.dentz@gmail.com,
-	linux-bluetooth@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 024/197] Bluetooth: btrtl: Set msft ext address filter quirk for RTL8852B
-Date: Wed, 25 Sep 2024 07:50:43 -0400
-Message-ID: <20240925115823.1303019-24-sashal@kernel.org>
+	rafael@kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.10 025/197] ACPI: video: Add force_vendor quirk for Panasonic Toughbook CF-18
+Date: Wed, 25 Sep 2024 07:50:44 -0400
+Message-ID: <20240925115823.1303019-25-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925115823.1303019-1-sashal@kernel.org>
 References: <20240925115823.1303019-1-sashal@kernel.org>
@@ -67,40 +66,43 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.11
 Content-Transfer-Encoding: 8bit
 
-From: Hilda Wu <hildawu@realtek.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 9a0570948c5def5c59e588dc0e009ed850a1f5a1 ]
+[ Upstream commit eb7b0f12e13ba99e64e3a690c2166895ed63b437 ]
 
-For tracking multiple devices concurrently with a condition.
-The patch enables the HCI_QUIRK_USE_MSFT_EXT_ADDRESS_FILTER quirk
-on RTL8852B controller.
+The Panasonic Toughbook CF-18 advertises both native and vendor backlight
+control interfaces. But only the vendor one actually works.
 
-The quirk setting is based on commit 9e14606d8f38 ("Bluetooth: msft:
-Extended monitor tracking by address filter")
+acpi_video_get_backlight_type() will pick the non working native backlight
+by default, add a quirk to select the working vendor backlight instead.
 
-With this setting, when a pattern monitor detects a device, this
-feature issues an address monitor for tracking that device. Let the
-original pattern monitor keep monitor new devices.
-
-Signed-off-by: Hilda Wu <hildawu@realtek.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://patch.msgid.link/20240907124419.21195-1-hdegoede@redhat.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btrtl.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/acpi/video_detect.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/bluetooth/btrtl.c b/drivers/bluetooth/btrtl.c
-index bfcb41a57655f..78b5d44558d73 100644
---- a/drivers/bluetooth/btrtl.c
-+++ b/drivers/bluetooth/btrtl.c
-@@ -1296,6 +1296,7 @@ void btrtl_set_quirks(struct hci_dev *hdev, struct btrtl_device_info *btrtl_dev)
- 			btrealtek_set_flag(hdev, REALTEK_ALT6_CONTINUOUS_TX_CHIP);
+diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
+index ff6f260433a11..48cf850dd08c7 100644
+--- a/drivers/acpi/video_detect.c
++++ b/drivers/acpi/video_detect.c
+@@ -254,6 +254,14 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
+ 		DMI_MATCH(DMI_PRODUCT_NAME, "PCG-FRV35"),
+ 		},
+ 	},
++	{
++	 .callback = video_detect_force_vendor,
++	 /* Panasonic Toughbook CF-18 */
++	 .matches = {
++		DMI_MATCH(DMI_SYS_VENDOR, "Matsushita Electric Industrial"),
++		DMI_MATCH(DMI_PRODUCT_NAME, "CF-18"),
++		},
++	},
  
- 		if (btrtl_dev->project_id == CHIP_ID_8852A ||
-+		    btrtl_dev->project_id == CHIP_ID_8852B ||
- 		    btrtl_dev->project_id == CHIP_ID_8852C)
- 			set_bit(HCI_QUIRK_USE_MSFT_EXT_ADDRESS_FILTER, &hdev->quirks);
- 
+ 	/*
+ 	 * Toshiba models with Transflective display, these need to use
 -- 
 2.43.0
 
