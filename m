@@ -1,59 +1,61 @@
-Return-Path: <stable+bounces-77516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77517-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7922985DFF
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:25:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 229A6985E02
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:25:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D72551C251F6
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:25:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF5D21F24D06
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:25:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20A261CC410;
-	Wed, 25 Sep 2024 12:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F354A1CC43B;
+	Wed, 25 Sep 2024 12:08:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h6azMLUC"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oQ+5Kx7R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D38281CC407;
-	Wed, 25 Sep 2024 12:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9CD61CC433;
+	Wed, 25 Sep 2024 12:08:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727266087; cv=none; b=g2uGt4MvfCvNPPc79QoJnJL/Jwi9MkRUpnCKCcNYSlk9I7fiJJSK6+qhWCFocvB42ldDZ0Wff6RhPeMt1oIMeHKXML4Oi98fToftgCJ3XipDI5/+O0Irl3N6wdmbD7JSkCZhfERXk4se00xq0nu4v3El3lQCffH4iWb5qRYCKr0=
+	t=1727266089; cv=none; b=TyMeVb8NMW/ganxRPx1mrKekOqPZ+DMNt4Y/GRhLsSKtOipgthSwuufyiHgd8WX6F44UJdA+f5PDKqcLVPT2HHBOJRmP0xV8Kdc8MzNvD9K3AjUKdwKTBowIVO1k9Cw7y9ce3ZrytAu0EwRf/1NDI85XAoNYcZJPYYrpH3/JN0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727266087; c=relaxed/simple;
-	bh=uwvlE86YHQU/hfeMbPJqPOnWFDozBb2zVNDOcuYEcH8=;
+	s=arc-20240116; t=1727266089; c=relaxed/simple;
+	bh=gxJBHHp0cLluPhOBJOAPaZQVHFfaNFmxu507kUIqS+c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sUX+rVnTEUMdFE9+GzPfhFoM+MDR4VxV3iqrvJ3/I7TQb5qR+cx8NfJsdcWdYwswvm2POjTk6TjIgiFej1DH6ro4KaB7Gqt0HcyoLMl1g0DcRbv43BdGjmzUKppUBh9AGxy3120Fj0Egy24OsWP2UAfWUHfiCwRhZ/9jcRt8I/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h6azMLUC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99644C4CEC3;
-	Wed, 25 Sep 2024 12:08:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mYHKaXRB4Nrparh/B4f/ARyeOHNthRHTOFps7zzlTe8X4F9mohceDc/lhL2Us19Ke4REdUXDdcM0Z026Yh6Z9O/Etlevkm68nyeb6n7CLVLkAfm1zHxbCh/BR6h65nofVjELfBc+Zf8VMGzINNOB6QsOB6b0/sZI2fgkcvZeSrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oQ+5Kx7R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CB7BC4CECD;
+	Wed, 25 Sep 2024 12:08:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727266087;
-	bh=uwvlE86YHQU/hfeMbPJqPOnWFDozBb2zVNDOcuYEcH8=;
+	s=k20201202; t=1727266089;
+	bh=gxJBHHp0cLluPhOBJOAPaZQVHFfaNFmxu507kUIqS+c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h6azMLUC7B4AQ/fg8BvnuYsTXPvbv4Cd5Me47OIsCUTAQd4pYmhTf53lv5kUdmvJ7
-	 ERiYCNW1Gmwa7A9GeB5ROzQvlzrwZ1quuTXgP6/7lQr3536lUcSwWABKDNhpxQ7Ioo
-	 XjL4NP4tgt3QX/7z8YlYOuOSVrTCEkjI9xl2HqZpnbz6jz0IVPfhlZBtQxF/IZieYO
-	 ERZmftNwpWdx9DxY0Zkfm8hXYxiOeDiQ7veQNYXIB3GsF8AMXx+LmMHy/AwTKzpAlk
-	 kNZ8w+Nj3plNMP3iez9Mnods2KEIaaw+OHFh9bykFX6SvxQ2bQASTYQCxnZEeTS2l9
-	 HRzmfmM8iOAaA==
+	b=oQ+5Kx7RFM4WxlEP9r5SQGTcc6hCgmum/R16kAZTaIhrKV/fbPDOs/ihwbjO8O0/R
+	 n7/zlxYwcHgIfAZ7kuKn31N7rhNxTvdxTQKRLtBbQ65PYuPxiEKgKh2XU5Eae2Q6eb
+	 w7W8Z1UfQSQMQL61iBNkWeiSNEZigeBHutAjwJi7gwOf0O63Q4nI242K3wbn9F+KBD
+	 tNVrf7K228ZxnLACmEz5OkFJsm1270tQgRQn84IQZKrHsCbWXb7Ec8zRjVGa3ZZVN5
+	 +iKQJijUqksCZSl3vKiaAB8HM5noymBnX+uPbh3g2WLU9d4zgK6Bil5T54n1pvaZX6
+	 +vWrPmLvYAl6A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Finn Thain <fthain@linux-m68k.org>,
-	Stan Johnson <userm57@yahoo.com>,
-	"Martin K . Petersen" <martin.petersen@oracle.com>,
+Cc: Geert Uytterhoeven <geert+renesas@glider.be>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	schmitzmic@gmail.com,
-	James.Bottomley@HansenPartnership.com,
-	linux-scsi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 168/197] scsi: NCR5380: Initialize buffer for MSG IN and STATUS transfers
-Date: Wed, 25 Sep 2024 07:53:07 -0400
-Message-ID: <20240925115823.1303019-168-sashal@kernel.org>
+	christian.koenig@amd.com,
+	Xinhui.Pan@amd.com,
+	airlied@gmail.com,
+	daniel@ffwll.ch,
+	amd-gfx@lists.freedesktop.org,
+	dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.10 169/197] drm/radeon/r100: Handle unknown family in r100_cp_init_microcode()
+Date: Wed, 25 Sep 2024 07:53:08 -0400
+Message-ID: <20240925115823.1303019-169-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925115823.1303019-1-sashal@kernel.org>
 References: <20240925115823.1303019-1-sashal@kernel.org>
@@ -63,53 +65,141 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.11
 Content-Transfer-Encoding: 8bit
 
-From: Finn Thain <fthain@linux-m68k.org>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 1c71065df2df693d208dd32758171c1dece66341 ]
+[ Upstream commit c6dbab46324b1742b50dc2fb5c1fee2c28129439 ]
 
-Following an incomplete transfer in MSG IN phase, the driver would not
-notice the problem and would make use of invalid data. Initialize 'tmp'
-appropriately and bail out if no message was received. For STATUS phase,
-preserve the existing status code unless a new value was transferred.
+With -Werror:
 
-Tested-by: Stan Johnson <userm57@yahoo.com>
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-Link: https://lore.kernel.org/r/52e02a8812ae1a2d810d7f9f7fd800c3ccc320c4.1723001788.git.fthain@linux-m68k.org
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+    In function ‘r100_cp_init_microcode’,
+	inlined from ‘r100_cp_init’ at drivers/gpu/drm/radeon/r100.c:1136:7:
+    include/linux/printk.h:465:44: error: ‘%s’ directive argument is null [-Werror=format-overflow=]
+      465 | #define printk(fmt, ...) printk_index_wrap(_printk, fmt, ##__VA_ARGS__)
+	  |                                            ^
+    include/linux/printk.h:437:17: note: in definition of macro ‘printk_index_wrap’
+      437 |                 _p_func(_fmt, ##__VA_ARGS__);                           \
+	  |                 ^~~~~~~
+    include/linux/printk.h:508:9: note: in expansion of macro ‘printk’
+      508 |         printk(KERN_ERR pr_fmt(fmt), ##__VA_ARGS__)
+	  |         ^~~~~~
+    drivers/gpu/drm/radeon/r100.c:1062:17: note: in expansion of macro ‘pr_err’
+     1062 |                 pr_err("radeon_cp: Failed to load firmware \"%s\"\n", fw_name);
+	  |                 ^~~~~~
+
+Fix this by converting the if/else if/... construct into a proper
+switch() statement with a default to handle the error case.
+
+As a bonus, the generated code is ca. 100 bytes smaller (with gcc 11.4.0
+targeting arm32).
+
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/NCR5380.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/radeon/r100.c | 70 ++++++++++++++++++++++-------------
+ 1 file changed, 45 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/scsi/NCR5380.c b/drivers/scsi/NCR5380.c
-index cea3a79d538e4..a99221ead3e00 100644
---- a/drivers/scsi/NCR5380.c
-+++ b/drivers/scsi/NCR5380.c
-@@ -1807,8 +1807,11 @@ static void NCR5380_information_transfer(struct Scsi_Host *instance)
- 				return;
- 			case PHASE_MSGIN:
- 				len = 1;
-+				tmp = 0xff;
- 				data = &tmp;
- 				NCR5380_transfer_pio(instance, &phase, &len, &data, 0);
-+				if (tmp == 0xff)
-+					break;
- 				ncmd->message = tmp;
+diff --git a/drivers/gpu/drm/radeon/r100.c b/drivers/gpu/drm/radeon/r100.c
+index 0b1e19345f43a..bfd42e3e161e9 100644
+--- a/drivers/gpu/drm/radeon/r100.c
++++ b/drivers/gpu/drm/radeon/r100.c
+@@ -1016,45 +1016,65 @@ static int r100_cp_init_microcode(struct radeon_device *rdev)
  
- 				switch (tmp) {
-@@ -1996,6 +1999,7 @@ static void NCR5380_information_transfer(struct Scsi_Host *instance)
- 				break;
- 			case PHASE_STATIN:
- 				len = 1;
-+				tmp = ncmd->status;
- 				data = &tmp;
- 				NCR5380_transfer_pio(instance, &phase, &len, &data, 0);
- 				ncmd->status = tmp;
+ 	DRM_DEBUG_KMS("\n");
+ 
+-	if ((rdev->family == CHIP_R100) || (rdev->family == CHIP_RV100) ||
+-	    (rdev->family == CHIP_RV200) || (rdev->family == CHIP_RS100) ||
+-	    (rdev->family == CHIP_RS200)) {
++	switch (rdev->family) {
++	case CHIP_R100:
++	case CHIP_RV100:
++	case CHIP_RV200:
++	case CHIP_RS100:
++	case CHIP_RS200:
+ 		DRM_INFO("Loading R100 Microcode\n");
+ 		fw_name = FIRMWARE_R100;
+-	} else if ((rdev->family == CHIP_R200) ||
+-		   (rdev->family == CHIP_RV250) ||
+-		   (rdev->family == CHIP_RV280) ||
+-		   (rdev->family == CHIP_RS300)) {
++		break;
++
++	case CHIP_R200:
++	case CHIP_RV250:
++	case CHIP_RV280:
++	case CHIP_RS300:
+ 		DRM_INFO("Loading R200 Microcode\n");
+ 		fw_name = FIRMWARE_R200;
+-	} else if ((rdev->family == CHIP_R300) ||
+-		   (rdev->family == CHIP_R350) ||
+-		   (rdev->family == CHIP_RV350) ||
+-		   (rdev->family == CHIP_RV380) ||
+-		   (rdev->family == CHIP_RS400) ||
+-		   (rdev->family == CHIP_RS480)) {
++		break;
++
++	case CHIP_R300:
++	case CHIP_R350:
++	case CHIP_RV350:
++	case CHIP_RV380:
++	case CHIP_RS400:
++	case CHIP_RS480:
+ 		DRM_INFO("Loading R300 Microcode\n");
+ 		fw_name = FIRMWARE_R300;
+-	} else if ((rdev->family == CHIP_R420) ||
+-		   (rdev->family == CHIP_R423) ||
+-		   (rdev->family == CHIP_RV410)) {
++		break;
++
++	case CHIP_R420:
++	case CHIP_R423:
++	case CHIP_RV410:
+ 		DRM_INFO("Loading R400 Microcode\n");
+ 		fw_name = FIRMWARE_R420;
+-	} else if ((rdev->family == CHIP_RS690) ||
+-		   (rdev->family == CHIP_RS740)) {
++		break;
++
++	case CHIP_RS690:
++	case CHIP_RS740:
+ 		DRM_INFO("Loading RS690/RS740 Microcode\n");
+ 		fw_name = FIRMWARE_RS690;
+-	} else if (rdev->family == CHIP_RS600) {
++		break;
++
++	case CHIP_RS600:
+ 		DRM_INFO("Loading RS600 Microcode\n");
+ 		fw_name = FIRMWARE_RS600;
+-	} else if ((rdev->family == CHIP_RV515) ||
+-		   (rdev->family == CHIP_R520) ||
+-		   (rdev->family == CHIP_RV530) ||
+-		   (rdev->family == CHIP_R580) ||
+-		   (rdev->family == CHIP_RV560) ||
+-		   (rdev->family == CHIP_RV570)) {
++		break;
++
++	case CHIP_RV515:
++	case CHIP_R520:
++	case CHIP_RV530:
++	case CHIP_R580:
++	case CHIP_RV560:
++	case CHIP_RV570:
+ 		DRM_INFO("Loading R500 Microcode\n");
+ 		fw_name = FIRMWARE_R520;
++		break;
++
++	default:
++		DRM_ERROR("Unsupported Radeon family %u\n", rdev->family);
++		return -EINVAL;
+ 	}
+ 
+ 	err = request_firmware(&rdev->me_fw, fw_name, rdev->dev);
 -- 
 2.43.0
 
