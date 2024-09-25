@@ -1,167 +1,142 @@
-Return-Path: <stable+bounces-77082-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77083-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63E8B98534B
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 08:55:31 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71E8F98537D
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 09:14:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B8184B2387E
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 06:55:28 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A2C3F1C2311E
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 07:14:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E93F915699E;
-	Wed, 25 Sep 2024 06:55:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99E25156220;
+	Wed, 25 Sep 2024 07:14:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="TSFhwR7W"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ijrXJEzo"
 X-Original-To: stable@vger.kernel.org
-Received: from mailout1.samsung.com (mailout1.samsung.com [203.254.224.24])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86B39155A25
-	for <stable@vger.kernel.org>; Wed, 25 Sep 2024 06:55:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.24
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B448132103
+	for <stable@vger.kernel.org>; Wed, 25 Sep 2024 07:14:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727247312; cv=none; b=XZUYNu2KrH8GUJ6bWEVx2HObmtBb8NtDQRX1ZNtfas82bjQ5353dmD1aX51ZUWbn7Ox8Prc0cBanNNeL5X/aCzCkWR99xb79hcJrDHOTKNPBmXdRBmqAPlDVZO8OvORQluXWqhbFQCugQraOkR2qKxzLe6oGCuxpuoeuN2paUf4=
+	t=1727248484; cv=none; b=ll8g8R7gC94IaVBeJlED8sdh+VHcWAgI/eeRU6biwlfBYCEQF6tdpUnGSlNKkQtjC2O0LW536iYTxP95kx6X7xBntcoY8eYGF3nG4imtFzjEXUc3LemKeHnisU+ZFwyZ2poSeXO7Yg7KYkb5GLy0ivXRIZ8POxbGkdDuz35mIbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727247312; c=relaxed/simple;
-	bh=4gOKKEtz+0EI6rj3HqZT27xWK2qDolfvA8v4vKsZ6RU=;
-	h=From:To:Cc:In-Reply-To:Subject:Date:Message-ID:MIME-Version:
-	 Content-Type:References; b=c3yU81A+D6KEwABLeF70oOzFhmyBgflpHgck7VwVyTtspgy1if9C1/NHfN0iW++nlz0ZlqaCEAQXmBq3jnH1UWW+GWA9cYBFkYl+jPRFprZyffHlTnUIfh/grDcJSkJZF/slfaL52YNoyJsNNKaDFujVaUwqoGBRqawVBVXWqjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=TSFhwR7W; arc=none smtp.client-ip=203.254.224.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
-Received: from epcas1p2.samsung.com (unknown [182.195.41.46])
-	by mailout1.samsung.com (KnoxPortal) with ESMTP id 20240925065501epoutp0184f0fb2b796860baa277b139c5f068ea~4akTzrNDQ3167131671epoutp01e
-	for <stable@vger.kernel.org>; Wed, 25 Sep 2024 06:55:01 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20240925065501epoutp0184f0fb2b796860baa277b139c5f068ea~4akTzrNDQ3167131671epoutp01e
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1727247301;
-	bh=npWzJrPmcJ7bQMNX0h6hcxv6OusSwWpLI++E+L4EUvU=;
-	h=From:To:Cc:In-Reply-To:Subject:Date:References:From;
-	b=TSFhwR7WVS85pq9Zo++PTL//bWIhraLamMrsIFsALm8sUybNg2gfxb5fqTomEiZb/
-	 Hu4dsUxgx4BZlKXk0APs+J/xKwZh1RblcB08Mdmz6c1Rbfti9i4MXt8f00Km7qG6aQ
-	 ZVrnwnInkr4oaTUdSRfCZFtSo98NOosOcmexkpwA=
-Received: from epsnrtp4.localdomain (unknown [182.195.42.165]) by
-	epcas1p2.samsung.com (KnoxPortal) with ESMTP id
-	20240925065500epcas1p230985f5aa54f41a5df2549418f732a7c~4akTDSehl0821208212epcas1p2e;
-	Wed, 25 Sep 2024 06:55:00 +0000 (GMT)
-Received: from epsmgec1p1-new.samsung.com (unknown [182.195.38.243]) by
-	epsnrtp4.localdomain (Postfix) with ESMTP id 4XD6tD3zJkz4x9Q1; Wed, 25 Sep
-	2024 06:55:00 +0000 (GMT)
-Received: from epcas1p3.samsung.com ( [182.195.41.47]) by
-	epsmgec1p1-new.samsung.com (Symantec Messaging Gateway) with SMTP id
-	5E.6E.19509.4C3B3F66; Wed, 25 Sep 2024 15:55:00 +0900 (KST)
-Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
-	epcas1p3.samsung.com (KnoxPortal) with ESMTPA id
-	20240925065459epcas1p3b8e701fd0228bc2670f22cf253a3b02f~4akSaJnxP2690826908epcas1p3I;
-	Wed, 25 Sep 2024 06:54:59 +0000 (GMT)
-Received: from epsmgms1p2new.samsung.com (unknown [182.195.42.42]) by
-	epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
-	20240925065459epsmtrp2e39f8de490b2cc6f2afb472e175b4937~4akSZP00F1786117861epsmtrp26;
-	Wed, 25 Sep 2024 06:54:59 +0000 (GMT)
-X-AuditID: b6c32a4c-17bc070000004c35-0a-66f3b3c4a89b
-Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
-	epsmgms1p2new.samsung.com (Symantec Messaging Gateway) with SMTP id
-	7C.67.08456.3C3B3F66; Wed, 25 Sep 2024 15:54:59 +0900 (KST)
-Received: from sh8267baek02 (unknown [10.253.99.49]) by epsmtip1.samsung.com
-	(KnoxPortal) with ESMTPA id
-	20240925065459epsmtip18e825fae86b1134e725dde1488ddc4da~4akSHH87I1980719807epsmtip1w;
-	Wed, 25 Sep 2024 06:54:59 +0000 (GMT)
-From: "Seunghwan Baek" <sh8267.baek@samsung.com>
-To: "'Bart Van Assche'" <bvanassche@acm.org>,
-	<linux-kernel@vger.kernel.org>, <linux-scsi@vger.kernel.org>,
-	<martin.petersen@oracle.com>, <James.Bottomley@HansenPartnership.com>,
-	<avri.altman@wdc.com>, <alim.akhtar@samsung.com>
-Cc: <grant.jung@samsung.com>, <jt77.jang@samsung.com>,
-	<junwoo80.lee@samsung.com>, <dh0421.hwang@samsung.com>,
-	<jangsub.yi@samsung.com>, <sh043.lee@samsung.com>, <cw9316.lee@samsung.com>,
-	<wkon.kim@samsung.com>, <stable@vger.kernel.org>
-In-Reply-To: <1845f326-e9eb-4351-9ed1-fce373c82cb0@acm.org>
-Subject: RE: [PATCH v1 1/1] ufs: core: set SDEV_OFFLINE when ufs shutdown.
-Date: Wed, 25 Sep 2024 15:54:59 +0900
-Message-ID: <08b901db0f17$d6a20b50$83e621f0$@samsung.com>
+	s=arc-20240116; t=1727248484; c=relaxed/simple;
+	bh=RQewIJ5jgRSChN9kL832GTgVw+SPwAtAdiiaLGzOHtM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TuEKFRK6vtMHgGNms9Y1IEUUEQGxQssu71T4CDYIb8NeGPvcwGSONGnUF4jTFcM+2blKHF2pfFb4hLAsj7dvZDvm3N3EZ1rlQP+HdI0uav5C05jbbgiUQcY0Cw0nQaSK0y/kaQoaJSzOhnf4eDg0RUlCnEEK+ZRAVPWEpp+eZ/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ijrXJEzo; arc=none smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1727248483; x=1758784483;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=RQewIJ5jgRSChN9kL832GTgVw+SPwAtAdiiaLGzOHtM=;
+  b=ijrXJEzokBEvOx9YuOKtspxl4sq3DBYZ7VjEB1+aTCAppdtknZCNs9Nb
+   D7mqJkaYas9mWo4LR4bfbYHaRw4pqpGPlF5gt2Z+Hh2S8ug+iqCf94KWW
+   PfkeLFTO186b7eNhMJ2lVHuXjiRerakFE4TGsti2qkpVm0OC7rd5Sflut
+   vOHuRjBULyPpaCyVi981zBlENuekbBTpRoCyjDvtYQImiebIs+baFLtrj
+   NtYKFRlPczdtZvXs4F6goI7j0rjmuKaavXzOawTZqX11K51MMOklBrozB
+   TfnVEytuxfFsILYw0ZgCflcW3CsIp+TSLC5BnkxtXLtcRJPDDKV0OWX4P
+   Q==;
+X-CSE-ConnectionGUID: +G12KtWcSeCTS7EDFmsmUQ==
+X-CSE-MsgGUID: F8oeZ3tHSz63qzZc3PkeiQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11205"; a="43799266"
+X-IronPort-AV: E=Sophos;i="6.10,256,1719903600"; 
+   d="scan'208";a="43799266"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2024 00:14:42 -0700
+X-CSE-ConnectionGUID: Lnf2aRSkSzyoV37u0Q2UCA==
+X-CSE-MsgGUID: SRW01/YcTWeTyHHXvP+Zjg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,256,1719903600"; 
+   d="scan'208";a="76185436"
+Received: from mlehtone-mobl.ger.corp.intel.com (HELO mwauld-desk.intel.com) ([10.245.244.236])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2024 00:14:41 -0700
+From: Matthew Auld <matthew.auld@intel.com>
+To: intel-xe@lists.freedesktop.org
+Cc: Matthew Brost <matthew.brost@intel.com>,
+	stable@vger.kernel.org
+Subject: [PATCH v2 1/2] drm/xe/vm: move xa_alloc to prevent UAF
+Date: Wed, 25 Sep 2024 08:14:27 +0100
+Message-ID: <20240925071426.144015-3-matthew.auld@intel.com>
+X-Mailer: git-send-email 2.46.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-X-Mailer: Microsoft Outlook 16.0
-Thread-Index: AQITd6wvsWq6bg+5ypABxh1kBxxfMwHy7pIVAtyJc3gCDAIdKwI4d05OAHuLQEuxqsQ7wA==
-Content-Language: ko
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrHJsWRmVeSWpSXmKPExsWy7bCmvu6RzZ/TDJacl7F4MG8bm8XLn1fZ
-	LKZ9+MlsMeNUG6vFvmsn2S1+/V3PbrGxn8OiY+tkJosdz8+wW+z628xkcXnXHDaL7us72CyW
-	H//HZNH0Zx+LxYKNjxgtNl/6xuIg4HH5irfHtEmn2Dw+Pr3F4tG3ZRWjx+dNch7tB7qZAtii
-	sm0yUhNTUosUUvOS81My89JtlbyD453jTc0MDHUNLS3MlRTyEnNTbZVcfAJ03TJzgM5WUihL
-	zCkFCgUkFhcr6dvZFOWXlqQqZOQXl9gqpRak5BSYFegVJ+YWl+al6+WlllgZGhgYmQIVJmRn
-	fF5nUDCVs2Lzvz72BsbD7F2MnBwSAiYSZ5etZ+pi5OIQEtjDKDG/dxMLhPOJUWL3+hvsEM43
-	RonNbzczw7QcenUYKrGXUeLIxLuMEM5LRonT7YsYQarYBAwkmn8cBKsSAUns2HIdbDAzyOAt
-	f46xgFRxClhLPH+xgRXEFhbwkvix7QQTiM0ioCrx4Mg7sH28ApYS7/9sYoGwBSVOznwCZjML
-	yEtsfzsH6iYFiZ9Pl4HNEREIk1j69TgjRI2IxOzONmaQxRICdzgk9v07wAjR4CLRuLgFqllY
-	4tXxLdDwkJL4/G4vG4RdLLFw4yQWiOYWRonry/9ANdtLNLc2AxVxAG3QlFi/Sx9iGZ/Eu689
-	rCBhCQFeiY42IYhqVYlTG7ZCdUpLXG9uYIWwPSQ2rtvPPIFRcRaS12YheW0WkhdmISxbwMiy
-	ilEqtaA4Nz012bDAUDcvtRwe58n5uZsYwQlby2cH4/f1f/UOMTJxMB5ilOBgVhLhnXTzY5oQ
-	b0piZVVqUX58UWlOavEhRlNggE9klhJNzgfmjLySeEMTSwMTMyMTC2NLYzMlcd4zV8pShQTS
-	E0tSs1NTC1KLYPqYODilGph6Ex2DmA+tieu/c/dN80/+9iOT2q8d383+/Hfi2qI1+/ufqMnM
-	eBxa/jBW4fB3xkPXVphZ3/u0bsqLP58vp/ytPHlIveSFrGXwW//HeZLfrBlNmjh4jHN2vudc
-	pb9gUtth/mvFlxJr5nD8cS1aHBrGt1+9xGy2YwTbTIYGR7XLtyfebtVYcNw13k12vqrbdNfT
-	PKtKT9y+7tn/37MxdkbKJNHgkxd/3DCaEujWMm+/32G9hbXhEkE6Yee2XRd//MlelFvm7wIm
-	kaX5hxaa9y7Y37JRSbMnz6P7XovAyS0+qd/0J/il8h27t6fZ/2fvPY17P9Ls7vzTmh+u/PlS
-	enHiDhVLoUUsTyZHy0kJFHxWYinOSDTUYi4qTgQArUJSXmEEAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrCIsWRmVeSWpSXmKPExsWy7bCSnO7hzZ/TDC4dNrR4MG8bm8XLn1fZ
-	LKZ9+MlsMeNUG6vFvmsn2S1+/V3PbrGxn8OiY+tkJosdz8+wW+z628xkcXnXHDaL7us72CyW
-	H//HZNH0Zx+LxYKNjxgtNl/6xuIg4HH5irfHtEmn2Dw+Pr3F4tG3ZRWjx+dNch7tB7qZAtii
-	uGxSUnMyy1KL9O0SuDI+rzMomMpZsflfH3sD42H2LkZODgkBE4lDr0BsLg4hgd2MEpMmXGeD
-	SEhLPD7wkrGLkQPIFpY4fLgYouY5o8S9vQ2sIDVsAgYSzT8OgjWLCLxnlDj+Zx2Ywyzwh1Fi
-	zrnJbBAtJ5kkXk19ywTSwilgLfH8xQawdmEBL4kf206AxVkEVCUeHHnHDGLzClhKvP+ziQXC
-	FpQ4OfMJmM0soC3R+7CVEcKWl9j+dg4zxKkKEj+fLgObKSIQJrH063GoGhGJ2Z1tzBMYhWch
-	GTULyahZSEbNQtKygJFlFaNkakFxbnpusWGBUV5quV5xYm5xaV66XnJ+7iZGcMRqae1g3LPq
-	g94hRiYOxkOMEhzMSiK8k25+TBPiTUmsrEotyo8vKs1JLT7EKM3BoiTO++11b4qQQHpiSWp2
-	ampBahFMlomDU6qBac8Xx1WngyR77Tpf7nyc5hixz+2eSlrlzrm7PqmH7hRmOh+4dPb5vUrh
-	uQGueSkSgkJz3moptBwzrj67aV2lcovr6e0WrIz131Pmct3VC9NfsPytzB3l9xv/75h/UOWo
-	XizzYZazmhc3sOw72a05Y8diuyKm2tNs684cTt+d7+xgdU+rjavlaqmqh8PdK8b313ednHYu
-	gMeWseb3tDt/Viq+W2bzT4P7YJlfycGTb/Vqrnr11P4L8f91LmXzCk/NOoYH2RND5h/OYD9y
-	ud/kUKC2MUtz3+R60bV/duQGfltyfIpA+vcyfv9p2y8kRFpd6pmQG98/5fN/f6PGpblzFlkm
-	BE44zLQ38b/as4vNXkosxRmJhlrMRcWJAFEqB0ZHAwAA
-X-CMS-MailID: 20240925065459epcas1p3b8e701fd0228bc2670f22cf253a3b02f
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-CMS-TYPE: 101P
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20240829093921epcas1p35d28696b0f79e2ae39d8e3690f088e64
-References: <20240829093913.6282-1-sh8267.baek@samsung.com>
-	<CGME20240829093921epcas1p35d28696b0f79e2ae39d8e3690f088e64@epcas1p3.samsung.com>
-	<20240829093913.6282-2-sh8267.baek@samsung.com>
-	<fa8a4c1a-e583-496b-a0a2-bd86f86af508@acm.org>
-	<003201db0e27$df93f250$9ebbd6f0$@samsung.com>
-	<1845f326-e9eb-4351-9ed1-fce373c82cb0@acm.org>
+Content-Transfer-Encoding: 8bit
 
-> On 9/23/24 7:17 PM, Seunghwan Baek wrote:> That's because SSU (Start Stop
-> Unit) command must be sent during
-> > shutdown process. If SDEV_OFFLINE is set for wlun, SSU command cannot
-> > be sent because it is rejected by the scsi layer. Therefore, we
-> > consider to set SDEV_QUIESCE for wlun, and set SDEV_OFFLINE for other
-> > lus.
-> Right. Since ufshcd_wl_shutdown() is expected to stop all DMA related to
-> the UFS host, shouldn't there be a scsi_device_quiesce(sdev) call after
-> the __ufshcd_wl_suspend(hba, UFS_SHUTDOWN_PM) call?
-> 
-> Thanks,
-> 
-> Bart.
+Evil user can guess the next id of the vm before the ioctl completes and
+then call vm destroy ioctl to trigger UAF since create ioctl is still
+referencing the same vm. Move the xa_alloc all the way to the end to
+prevent this.
 
-Yes. __ufshcd_wl_suspend(hba, UFS_SHUTDOWN_PM) should be called after
-scsi_device_quiesce(sdev). Generally, the SSU command is the last command
-before UFS power off. Therefore, if __ufshcd_wl_suspend is performed
-before scsi_device_quiesce, other commands may be performed after the SSU
-command and UFS may not guarantee the operation of the SSU command, which
-may cause other problems. This order must be guaranteed.
+v2:
+ - Rebase
 
-And with SDEV_QUIESCE, deadlock issue cannot be avoided due to requeue.
-We need to return the i/o error with SDEV_OFFLINE to avoid the mentioned
-deadlock problem.
+Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+Cc: Matthew Brost <matthew.brost@intel.com>
+Cc: <stable@vger.kernel.org> # v6.8+
+---
+ drivers/gpu/drm/xe/xe_vm.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
+
+diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
+index 31fe31db3fdc..ce9dca4d4e87 100644
+--- a/drivers/gpu/drm/xe/xe_vm.c
++++ b/drivers/gpu/drm/xe/xe_vm.c
+@@ -1765,10 +1765,6 @@ int xe_vm_create_ioctl(struct drm_device *dev, void *data,
+ 	if (IS_ERR(vm))
+ 		return PTR_ERR(vm);
+ 
+-	err = xa_alloc(&xef->vm.xa, &id, vm, xa_limit_32b, GFP_KERNEL);
+-	if (err)
+-		goto err_close_and_put;
+-
+ 	if (xe->info.has_asid) {
+ 		down_write(&xe->usm.lock);
+ 		err = xa_alloc_cyclic(&xe->usm.asid_to_vm, &asid, vm,
+@@ -1776,12 +1772,11 @@ int xe_vm_create_ioctl(struct drm_device *dev, void *data,
+ 				      &xe->usm.next_asid, GFP_KERNEL);
+ 		up_write(&xe->usm.lock);
+ 		if (err < 0)
+-			goto err_free_id;
++			goto err_close_and_put;
+ 
+ 		vm->usm.asid = asid;
+ 	}
+ 
+-	args->vm_id = id;
+ 	vm->xef = xe_file_get(xef);
+ 
+ 	/* Record BO memory for VM pagetable created against client */
+@@ -1794,10 +1789,15 @@ int xe_vm_create_ioctl(struct drm_device *dev, void *data,
+ 	args->reserved[0] = xe_bo_main_addr(vm->pt_root[0]->bo, XE_PAGE_SIZE);
+ #endif
+ 
++	/* user id alloc must always be last in ioctl to prevent UAF */
++	err = xa_alloc(&xef->vm.xa, &id, vm, xa_limit_32b, GFP_KERNEL);
++	if (err)
++		goto err_close_and_put;
++
++	args->vm_id = id;
++
+ 	return 0;
+ 
+-err_free_id:
+-	xa_erase(&xef->vm.xa, id);
+ err_close_and_put:
+ 	xe_vm_close_and_put(vm);
+ 
+-- 
+2.46.1
 
 
