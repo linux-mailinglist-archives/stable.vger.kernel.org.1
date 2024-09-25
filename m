@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-77393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA9F6985CB1
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:52:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5C98985CB4
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:52:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A050A1F211E5
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:52:35 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 608971F240BA
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:52:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82D72189906;
-	Wed, 25 Sep 2024 12:00:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B0101AE864;
+	Wed, 25 Sep 2024 12:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ecwT8nLX"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HAU5548L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3874F1898EA;
-	Wed, 25 Sep 2024 12:00:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54D141CC8B6;
+	Wed, 25 Sep 2024 12:00:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727265609; cv=none; b=OVdZLxwb3GboVMtmXFom/pvl7Ffzo/oxajaSmfS0XDck9veZeK5q5vw7iUrcvkn1QusKBab4haTQGcoctagcPNd5oHdyz4ZAsE7OyxnITt1k9Q5IKvpiNP2Xeg77O+DbjsnTcTm8dNMnUexvW72HLyArf5f1wQ/sJPXhcwUuYwk=
+	t=1727265612; cv=none; b=Kv/SJRV0SKfGSOH44Xt1zSopwMy2sbI9uuRBiq5ikD6MH6a20d19m7+60kd29zCaDvwAz25NgV4XzhgRRrt5DrWFeLWDn0UXDtz08e8gunSQNExfREC6vT+TysHl6rZBg9/hzlP15rRYzDmH/y/eHMrA5p5kWDQCFJMOyeaRDeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727265609; c=relaxed/simple;
-	bh=XSi0x8NxZBqn6dxAK/Tny4qRBbNKVh3EjOVgQ3KxXeI=;
+	s=arc-20240116; t=1727265612; c=relaxed/simple;
+	bh=u0WGDzyHk2ozun13cuN+XFL+fQx79XzLs6qyjqdWpV4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EozPiX/Oa2RvypqAtCexWPMF954LTSoS/Lm5dXrqwK8nJB+WCuYADsKSoy0n4UjFCEn+lCRrjIRZDwJrjfVWH4wHk+02/kprEFugxZ/gs7sM3MwMq+Iy2Swh7mFFT3O/ER3T/Xd67lgO+oDPGbSvqSSk+q4fB8glovNDd4hxmGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ecwT8nLX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2979C4CECE;
-	Wed, 25 Sep 2024 12:00:07 +0000 (UTC)
+	 MIME-Version; b=MOjCVMS6je+r6+QFuBHW8I+/JvwPZH7wQBJ5FG/o1HqNHefcMk0KvR6nkOzJZi/S9MFJQANBBwGpdRNkNPHUFfWZMi/PBs+OjMuuC2UYjc4AGHlCn8geyhftwJ16EPyWcX1rSOqIdd1G8LiRS9ElTxC4qdccJcKdFrrl8D8Mi5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HAU5548L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8A30C4CEC3;
+	Wed, 25 Sep 2024 12:00:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727265609;
-	bh=XSi0x8NxZBqn6dxAK/Tny4qRBbNKVh3EjOVgQ3KxXeI=;
+	s=k20201202; t=1727265612;
+	bh=u0WGDzyHk2ozun13cuN+XFL+fQx79XzLs6qyjqdWpV4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ecwT8nLXyyXAxLbPU7I34S1uuGr6jfrQbwuOnglLMcj/KIFVE0HndperlvY3r6+ZI
-	 cdi5Xglp+D1pdU8RWWEXfOq1pmf/llYSCotXP1YiPvovGPvW/b785pRRgma5qNOAbG
-	 isClZel9ORsQF2+uY0UFCn99eCpdNHsaG2st0uC42zqWrIClSOKbzHF6x0A1kfeYOb
-	 qsRsqGkK36EM7utRdkIu+KcKD1HRXxUdwhKEbKEwUFqKhqwIevEd0Ntc+fSpgVRnjZ
-	 SpkLuoqiSiwPIN/Olspy9ICBapaAL4/dQ0jFCZJXGrZ1U3UTTdp3eVebgNWkqHCO67
-	 42EHgUnw/cdcw==
+	b=HAU5548LAXi+YspB4G8rdwTVjFWU4I+8Wc54UqKpm4vhPgVFVKrPkpVP0v2hbL66+
+	 hwyt3rBjaOLt/3sEIWYXR/XRX8g36VNIE4bOGU2t0+24qCkefwKlRB9782jcjqI6NH
+	 mTdY7ZKVIcBvjiTwzXNzsRoC8SPVpJxR7RA9q+eFO3zYXymMDWNbkVQx0j+DL6O10Y
+	 DaOPQ7BABLyBVOOALMamO+UE2K3U3pyCpFqIHkWtX/6sF+1R8jtGQMw1nuW+MBAj1i
+	 kQ0h5ql+gIcMhNo8FXP5sEln/2wMahmotZnYc2hIbik3N6Mtfq5Bkxfy1SHvrJ5NZX
+	 FymmpuIVJM7iA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jason Xing <kernelxing@tencent.com>,
-	Jade Dong <jadedong@tencent.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: Johannes Berg <johannes.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	davem@davemloft.net,
-	dsahern@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 048/197] tcp: avoid reusing FIN_WAIT2 when trying to find port in connect() process
-Date: Wed, 25 Sep 2024 07:51:07 -0400
-Message-ID: <20240925115823.1303019-48-sashal@kernel.org>
+	kvalo@kernel.org,
+	gregory.greenman@intel.com,
+	ilan.peer@intel.com,
+	emmanuel.grumbach@intel.com,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.10 049/197] wifi: iwlwifi: mvm: use correct key iteration
+Date: Wed, 25 Sep 2024 07:51:08 -0400
+Message-ID: <20240925115823.1303019-49-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925115823.1303019-1-sashal@kernel.org>
 References: <20240925115823.1303019-1-sashal@kernel.org>
@@ -70,79 +69,59 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.11
 Content-Transfer-Encoding: 8bit
 
-From: Jason Xing <kernelxing@tencent.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit 0d9e5df4a257afc3a471a82961ace9a22b88295a ]
+[ Upstream commit 4f1591d292277eec51d027405a92f0d4ef5e299e ]
 
-We found that one close-wait socket was reset by the other side
-due to a new connection reusing the same port which is beyond our
-expectation, so we have to investigate the underlying reason.
+In the cases changed here, key iteration isn't done from
+an RCU critical section, but rather using the wiphy lock
+as protection. Therefore, just use ieee80211_iter_keys().
+The link switch case can therefore also use sync commands.
 
-The following experiment is conducted in the test environment. We
-limit the port range from 40000 to 40010 and delay the time to close()
-after receiving a fin from the active close side, which can help us
-easily reproduce like what happened in production.
-
-Here are three connections captured by tcpdump:
-127.0.0.1.40002 > 127.0.0.1.9999: Flags [S], seq 2965525191
-127.0.0.1.9999 > 127.0.0.1.40002: Flags [S.], seq 2769915070
-127.0.0.1.40002 > 127.0.0.1.9999: Flags [.], ack 1
-127.0.0.1.40002 > 127.0.0.1.9999: Flags [F.], seq 1, ack 1
-// a few seconds later, within 60 seconds
-127.0.0.1.40002 > 127.0.0.1.9999: Flags [S], seq 2965590730
-127.0.0.1.9999 > 127.0.0.1.40002: Flags [.], ack 2
-127.0.0.1.40002 > 127.0.0.1.9999: Flags [R], seq 2965525193
-// later, very quickly
-127.0.0.1.40002 > 127.0.0.1.9999: Flags [S], seq 2965590730
-127.0.0.1.9999 > 127.0.0.1.40002: Flags [S.], seq 3120990805
-127.0.0.1.40002 > 127.0.0.1.9999: Flags [.], ack 1
-
-As we can see, the first flow is reset because:
-1) client starts a new connection, I mean, the second one
-2) client tries to find a suitable port which is a timewait socket
-   (its state is timewait, substate is fin_wait2)
-3) client occupies that timewait port to send a SYN
-4) server finds a corresponding close-wait socket in ehash table,
-   then replies with a challenge ack
-5) client sends an RST to terminate this old close-wait socket.
-
-I don't think the port selection algo can choose a FIN_WAIT2 socket
-when we turn on tcp_tw_reuse because on the server side there
-remain unread data. In some cases, if one side haven't call close() yet,
-we should not consider it as expendable and treat it at will.
-
-Even though, sometimes, the server isn't able to call close() as soon
-as possible like what we expect, it can not be terminated easily,
-especially due to a second unrelated connection happening.
-
-After this patch, we can see the expected failure if we start a
-connection when all the ports are occupied in fin_wait2 state:
-"Ncat: Cannot assign requested address."
-
-Reported-by: Jade Dong <jadedong@tencent.com>
-Signed-off-by: Jason Xing <kernelxing@tencent.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20240823001152.31004-1-kerneljasonxing@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20240729201718.69a2d18580c1.I2148e04d4b467d0b100beac8f7e449bfaaf775a5@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_ipv4.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/mvm/mld-key.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
-index da0f502553991..7874b3718bc3c 100644
---- a/net/ipv4/tcp_ipv4.c
-+++ b/net/ipv4/tcp_ipv4.c
-@@ -118,6 +118,9 @@ int tcp_twsk_unique(struct sock *sk, struct sock *sktw, void *twp)
- 	struct tcp_sock *tp = tcp_sk(sk);
- 	int ts_recent_stamp;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mld-key.c b/drivers/net/wireless/intel/iwlwifi/mvm/mld-key.c
+index 8a38fc4b0b0f9..455f5f4175064 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mld-key.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mld-key.c
+@@ -144,7 +144,7 @@ static void iwl_mvm_mld_update_sta_key(struct ieee80211_hw *hw,
+ 	if (sta != data->sta || key->link_id >= 0)
+ 		return;
  
-+	if (tw->tw_substate == TCP_FIN_WAIT2)
-+		reuse = 0;
-+
- 	if (reuse == 2) {
- 		/* Still does not detect *everything* that goes through
- 		 * lo, since we require a loopback src or dst address
+-	err = iwl_mvm_send_cmd_pdu(mvm, cmd_id, CMD_ASYNC, sizeof(cmd), &cmd);
++	err = iwl_mvm_send_cmd_pdu(mvm, cmd_id, 0, sizeof(cmd), &cmd);
+ 
+ 	if (err)
+ 		data->err = err;
+@@ -162,8 +162,8 @@ int iwl_mvm_mld_update_sta_keys(struct iwl_mvm *mvm,
+ 		.new_sta_mask = new_sta_mask,
+ 	};
+ 
+-	ieee80211_iter_keys_rcu(mvm->hw, vif, iwl_mvm_mld_update_sta_key,
+-				&data);
++	ieee80211_iter_keys(mvm->hw, vif, iwl_mvm_mld_update_sta_key,
++			    &data);
+ 	return data.err;
+ }
+ 
+@@ -402,7 +402,7 @@ void iwl_mvm_sec_key_remove_ap(struct iwl_mvm *mvm,
+ 	if (!sec_key_ver)
+ 		return;
+ 
+-	ieee80211_iter_keys_rcu(mvm->hw, vif,
+-				iwl_mvm_sec_key_remove_ap_iter,
+-				(void *)(uintptr_t)link_id);
++	ieee80211_iter_keys(mvm->hw, vif,
++			    iwl_mvm_sec_key_remove_ap_iter,
++			    (void *)(uintptr_t)link_id);
+ }
 -- 
 2.43.0
 
