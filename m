@@ -1,72 +1,71 @@
-Return-Path: <stable+bounces-77476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA10C985D9E
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:16:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15491985D9F
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:16:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B1FB8283F00
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:16:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B43DB1F25806
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:16:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 377611B3B10;
-	Wed, 25 Sep 2024 12:05:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13AA11B3B1B;
+	Wed, 25 Sep 2024 12:06:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FtzCTGR4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SwWfmWHw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E985E1B3B0C;
-	Wed, 25 Sep 2024 12:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7F0017AE05;
+	Wed, 25 Sep 2024 12:06:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727265957; cv=none; b=oLgfewh7AjG4l6ny7+f5yV0WdTbgQVgTQm8VZWC9Kujvx9C/j/cET2LliWhyisYEWNhwkWOZlZ+Xovj3PeE5Pcgwj0K6zFefD6dtJrOPSw6RCm2Au5AzziG2nw+TfViAUCbtWa1brmShh6EUG8D+l/FuSnn8vC6QB/8D4w5sCfs=
+	t=1727265960; cv=none; b=fcjW15Vmjdq8fsaWdsG5LqNKyz/1mLOj7f+ivTP5YoQ/krHxQyM6dSb0dNwqOr41MVaoU2gy6h7p9WzkI9M2BqaRfB2U6ku5sMJU6aRbtd45JoxgE6FhsQ0JAiETppWFoW+b5TpOPygZZGrTGclnofOV1u38YMnbdCTgh6RKo5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727265957; c=relaxed/simple;
-	bh=ujap9nP6fJ3nYvuMwyBy8y6L9hzDKrCNpRzePXstE3U=;
+	s=arc-20240116; t=1727265960; c=relaxed/simple;
+	bh=eRuln8e9VHwpZLNjSbN8jXsnIosW8yfjYZ0mOiU/ZO0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aDQP8kppmN9kAAVIZs3NLNAuoCw20PIRngVlLyytZPa+acA6xO0jv5WN25Khwg8LhTLyB7pCasQO9lArlONSoe4SxAhho61PYWccmCTw5BCVhLVG9LJFKv6mnG9DZavD4WbQ29wc1XKKoBKU2gFeuIPZ+XnFHbmBz8DTrKejFPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FtzCTGR4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01E7BC4CEC3;
-	Wed, 25 Sep 2024 12:05:53 +0000 (UTC)
+	 MIME-Version; b=MEaFB9L76RqlJJrgU2FpCU3A3eIeHediDgUNcDuUtEasYpXz0CeovxfDaTRdDi4SgXvC6PJnpxS8vDypPg4GE62TH8UzMapVyF2+VBXG6YRkWQT7QHksHzQ3De3MKoZAgf4K90nSNxlXwICIwKI/NBLJcw9tOw92ANUBE/sP2Qc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SwWfmWHw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 492E2C4CEC3;
+	Wed, 25 Sep 2024 12:05:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727265956;
-	bh=ujap9nP6fJ3nYvuMwyBy8y6L9hzDKrCNpRzePXstE3U=;
+	s=k20201202; t=1727265960;
+	bh=eRuln8e9VHwpZLNjSbN8jXsnIosW8yfjYZ0mOiU/ZO0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FtzCTGR4dtXlrvoWiTTWEZpcwd704LOe0zuc0g/V56LNj9fwsIcVhhRkjEvX35dda
-	 6GmgreX93FSFduzKTyHhbF23/q9KqbxIi8bPKTsr6l3YqdofefzqvgQw2tg8DWTO7Z
-	 0zH/veuq6TxIqz9CUNLO9dt+4PZ81Gw4quicetFWlifGcTGfkvsOywabbOmwbmwhA7
-	 dfIr710av6sopIZJDBG0K6NTxia8/pAGRyj+8/U285GGpd+fXSYwvZxFDVYFfRgxcX
-	 PIRlBFNCR1UlwhGN1+6HKLRJD3ugRw5Lbce0Rr11qKGL7hZvC5JDIWr3asoSkX9F3d
-	 w+Sy5suQFIWxg==
+	b=SwWfmWHwFICNvcz/l8Kf2fDQsOcVDmD3GMeZRcUU1Um+0IHlHZwRXoHWCoPCMS38G
+	 tN9rgJpm77INQ+eEjRv+YcxpdqyMso49FR3sA4bbvQWU+354m3RBHYsG6l7GiUAgkW
+	 OBM+V5xMWKOpHvuk/S6r5Evx8X9QrOBs7lsypcAaC3JJGNZvpYo+b9diqpWvZ5nTig
+	 2vUfzxP0MDMgXCxakUQts6q7xhqwt09cDF6a2YpQj75aAR9lUUq20UpYzhg0d8WMfR
+	 sbVgPVB51jIURMX15CMyi5ctq5Mk/FQS9wzw7JIXq0wYC3gFcNPr6bdiwLWwy0NecZ
+	 g4MpqyjCzV++A==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alex Hung <alex.hung@amd.com>,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
+Cc: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
 	Tom Chung <chiahsuan.chung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	harry.wentland@amd.com,
 	sunpeng.li@amd.com,
-	Rodrigo.Siqueira@amd.com,
 	christian.koenig@amd.com,
 	Xinhui.Pan@amd.com,
 	airlied@gmail.com,
 	daniel@ffwll.ch,
-	alvin.lee2@amd.com,
-	wenjing.liu@amd.com,
-	sungjoon.kim@amd.com,
-	aurabindo.pillai@amd.com,
-	dillon.varone@amd.com,
+	mwen@igalia.com,
+	joshua@froggi.es,
+	marek.olsak@amd.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.10 131/197] drm/amd/display: Check null pointers before using dc->clk_mgr
-Date: Wed, 25 Sep 2024 07:52:30 -0400
-Message-ID: <20240925115823.1303019-131-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.10 132/197] drm/amd/display: Add null check for 'afb' in amdgpu_dm_plane_handle_cursor_update (v2)
+Date: Wed, 25 Sep 2024 07:52:31 -0400
+Message-ID: <20240925115823.1303019-132-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925115823.1303019-1-sashal@kernel.org>
 References: <20240925115823.1303019-1-sashal@kernel.org>
@@ -81,44 +80,51 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.11
 Content-Transfer-Encoding: 8bit
 
-From: Alex Hung <alex.hung@amd.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit 95d9e0803e51d5a24276b7643b244c7477daf463 ]
+[ Upstream commit cd9e9e0852d501f169aa3bb34e4b413d2eb48c37 ]
 
-[WHY & HOW]
-dc->clk_mgr is null checked previously in the same function, indicating
-it might be null.
+This commit adds a null check for the 'afb' variable in the
+amdgpu_dm_plane_handle_cursor_update function. Previously, 'afb' was
+assumed to be null, but was used later in the code without a null check.
+This could potentially lead to a null pointer dereference.
 
-Passing "dc" to "dc->hwss.apply_idle_power_optimizations", which
-dereferences null "dc->clk_mgr". (The function pointer resolves to
-"dcn35_apply_idle_power_optimizations".)
+Changes since v1:
+- Moved the null check for 'afb' to the line where 'afb' is used. (Alex)
 
-This fixes 1 FORWARD_NULL issue reported by Coverity.
+Fixes the below:
+drivers/gpu/drm/amd/amdgpu/../display/amdgpu_dm/amdgpu_dm_plane.c:1298 amdgpu_dm_plane_handle_cursor_update() error: we previously assumed 'afb' could be null (see line 1252)
 
-Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Cc: Tom Chung <chiahsuan.chung@amd.com>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Cc: Roman Li <roman.li@amd.com>
+Cc: Alex Hung <alex.hung@amd.com>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Co-developed-by: Alex Hung <alex.hung@amd.com>
 Signed-off-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc.c | 3 ++-
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c | 3 ++-
  1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
-index 3bd18e862945f..daeb80abf435f 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
-@@ -5211,7 +5211,8 @@ void dc_allow_idle_optimizations_internal(struct dc *dc, bool allow, char const
- 	if (allow == dc->idle_optimizations_allowed)
- 		return;
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
+index 7d47acdd11d55..fe7a99aee47dd 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
+@@ -1285,7 +1285,8 @@ void amdgpu_dm_plane_handle_cursor_update(struct drm_plane *plane,
+ 	    adev->dm.dc->caps.color.dpp.gamma_corr)
+ 		attributes.attribute_flags.bits.ENABLE_CURSOR_DEGAMMA = 1;
  
--	if (dc->hwss.apply_idle_power_optimizations && dc->hwss.apply_idle_power_optimizations(dc, allow))
-+	if (dc->hwss.apply_idle_power_optimizations && dc->clk_mgr != NULL &&
-+	    dc->hwss.apply_idle_power_optimizations(dc, allow))
- 		dc->idle_optimizations_allowed = allow;
- }
+-	attributes.pitch = afb->base.pitches[0] / afb->base.format->cpp[0];
++	if (afb)
++		attributes.pitch = afb->base.pitches[0] / afb->base.format->cpp[0];
  
+ 	if (crtc_state->stream) {
+ 		mutex_lock(&adev->dm.dc_lock);
 -- 
 2.43.0
 
