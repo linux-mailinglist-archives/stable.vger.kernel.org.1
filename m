@@ -1,354 +1,254 @@
-Return-Path: <stable+bounces-77716-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 776F19864A1
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 18:18:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5EA49864EC
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 18:36:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F2DA11F22190
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 16:18:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D2571F26229
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 16:36:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3DA93D0A9;
-	Wed, 25 Sep 2024 16:17:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2973543154;
+	Wed, 25 Sep 2024 16:36:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="waZd9n2j"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ntGqkhX6"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D323219E0
-	for <stable@vger.kernel.org>; Wed, 25 Sep 2024 16:17:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.123
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727281078; cv=none; b=l8OsnD4ql2bhd4LzziPgoFgoi6ZaPYNsDpGrXqat14tO4Cg1VMXXJa+dLnnTWLK8r2PmpNj1Ph8Zi3pHOz/UBv9YgFUwoa7QLSrvTK8UCqtFs+n6E7G3b26vuY7oV/F5o79bwA5/AVplXnzf8asoR92eAILNDlFqsn0/TUTcMZ4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727281078; c=relaxed/simple;
-	bh=g9E8zPJQZ+WKtz/NOzLnwgbBUCFBXvSj04Z75GvLJZQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ahkTspAvrW+XPf8PflZlgU1382zgrZNPBxWdYtWi0z9qMpuZ6knHB8VhrEIbCxPttejxWnO73t1rXbIMOP+Ai2CwflyfhW2EbbzMEwJSpEoWwLVSAOyCi/daDQKZkGmgaASoWYJESHPNvKvn7XGlvlw5EspHMC+4MeskXkyvYSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=waZd9n2j; arc=none smtp.client-ip=185.125.188.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
-Received: from mail-ua1-f72.google.com (mail-ua1-f72.google.com [209.85.222.72])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 7FA273FB61
-	for <stable@vger.kernel.org>; Wed, 25 Sep 2024 16:17:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1727281072;
-	bh=KEgQnWZ+UHxrm0MMWG0A0YgheYaHlx7qOY6QwfASbDE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type;
-	b=waZd9n2jTVAMr+zlvebWzdSaQNSCafbiKGSPASfP96te8bfQ08pdZEN2pimL4d7RF
-	 ApaL7iBF3lm2Gz5vNwmXCWE8MEswovcbJyXbl6TeXEz4FIVzYZWyr3srSAegsP7CJW
-	 OZbqEhAnseMjISb0srFEgwbubEM+Y8lCtnCWJPL+KRJbFF+hVRpKsq+xbVfJE8zIFx
-	 ArY6MxAdhrTXsGIsPXplD8AjOLoOoTVNDpAsSSLRO2cYVU0upudWs1ter9I64NYH+a
-	 OVhQCXsrZGc15JFzEPZWzbu1Y4iMsvg5XRpfxC6UpAIuMe4I/Nd3SNkSvzE/F79KP3
-	 Z210Kbd+p6oAQ==
-Received: by mail-ua1-f72.google.com with SMTP id a1e0cc1a2514c-846b7018e5eso842151241.0
-        for <stable@vger.kernel.org>; Wed, 25 Sep 2024 09:17:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727281071; x=1727885871;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KEgQnWZ+UHxrm0MMWG0A0YgheYaHlx7qOY6QwfASbDE=;
-        b=OToQVDbDMX3tSgt95eFfk8EPcutTSNfAO6dEc8JnqYd4PGZNVAyGTmqgpyyhtNxTtJ
-         TZ9VzxfH9Kb7Wb3MfDOtYv3/TN1eW1hEmGn7XxZggySwiELaPNvZLjPdBdPQ5tFW8q33
-         YfFZlk94O/SzABDIVYD/2dmr73TaR2jMrvD5LTO8Fac4AM1g7aJQ+dqhBRqgkaQTZ3YT
-         QaRudfBznNylShMPxuvP/Re42RHnEwf/sVHaNzHkBsmRheaxeVe39Lo+K54qVyBmEsiM
-         lcsa6qibSf4LonY4Ix9VBUInjJqZF1eKWaOdbdXrzK1X3gpT8mQvaqPMfwM152ACcCnu
-         tuxQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU+taYZTfO1wnYB+ltv28AsEG6iKTy5pt5HhLwRpxzclhnq5FAk7V0HufSRDsbmXfkBmSYh5xA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx0beSBXFcC68ftU5m2LTfdBfEC8ABMKKw6HGh0BawebWMLSSCO
-	QU3dA6O9w3SGF1jw8P0tQ2hY7QFmlasGuHG4MKe5sWJ6fGbZuMKn+SKeBdb1fI5IV+68GoI42Ov
-	DfCK4wJB91n4nBTgLhLZQOeAPrqjpjPxo5BZ8sM32/jeAg7E2z2MCr0cMYpuhUVoJFnF/FJyg0h
-	5Qquoo18FHEBl/OZsIqGqEdIpilZDolXq73fX8U2Nbo6Xl
-X-Received: by 2002:a05:6122:3193:b0:503:d876:5e0a with SMTP id 71dfb90a1353d-5073bf2c77fmr313439e0c.0.1727281070951;
-        Wed, 25 Sep 2024 09:17:50 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFZZuyYU0WAWeXCej3QTUblc6Uv7YSQNlxDGc/5pLtnfQpPZc0N61MMk4ehu32sSNA43VULOeWPMn3L/LXLhPg=
-X-Received: by 2002:a05:6122:3193:b0:503:d876:5e0a with SMTP id
- 71dfb90a1353d-5073bf2c77fmr313362e0c.0.1727281070421; Wed, 25 Sep 2024
- 09:17:50 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 002CD3A1BA
+	for <stable@vger.kernel.org>; Wed, 25 Sep 2024 16:36:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.19
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727282169; cv=fail; b=uzWbAzPYdktdA9y/Ll13rOCrMjYIfJrIhb8XtSChEnD3k8JovcxjVYENUUF9uq3Mc3d6bJXbKfYfSTUfIC9zH1MD5AQxhpUdfcO33NeYSnWKtftc+PSla6QGe7bl6Zq1aLpNQA9yg0Gg+NLE2W1RUT9sx/oMIX29H3nosfwNTJc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727282169; c=relaxed/simple;
+	bh=kMLT/Y+QYCKr8chTTd7S7AwZPivicgXsNgNhajYNw0A=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=nkvshZF0n4X1hQeHCmJ3oERZOKogGHa1v7LMFAJHhfPjec7O7dCdlNRyi0tSYhiGwZ0aCBJXDtngM0u4E7CiFIKDdk66g4gUJKGlug5b/NgV9ZVAy0mid+77ip6+1lWENEqcL7gguLmPzm12USq9Hh0lP/lyBrt2TvfKX3JJI0c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ntGqkhX6; arc=fail smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1727282168; x=1758818168;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=kMLT/Y+QYCKr8chTTd7S7AwZPivicgXsNgNhajYNw0A=;
+  b=ntGqkhX68S1AWhk5+77JsvGlGcFcJ0UWQEVew+der8VQaRvVxIQ8Amdi
+   kR35dOIziIy7CCJ9QtCTamPyqlwOwCfTqttzfNaqk/mHo2gByVa4fpn4f
+   xcOT05lWAy7B4tIFchXCM1JYWln2dI7Ke/GUdep/it2Ma+LonAHo/9V/1
+   XjL0hgw2nppEp/u+VsA3mdao0mODcqXj7UEZ03cv5CxDd8NThI+oiJYJP
+   ms1adWyNWXsHU3lCWhqzR0/cEjF938brgfYcvSZKckRNb6Ad4le8s0f3q
+   CblE8ROB+b6o9ZBLTw0OrVtLvDYLyJ2IMQt3rYu1epx2rZkYX/5nFN7Rg
+   A==;
+X-CSE-ConnectionGUID: YN93eR3LS0S+ersFZgl1sQ==
+X-CSE-MsgGUID: pQpItcivTXWHHWS76a4c9g==
+X-IronPort-AV: E=McAfee;i="6700,10204,11206"; a="26216622"
+X-IronPort-AV: E=Sophos;i="6.10,257,1719903600"; 
+   d="scan'208";a="26216622"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2024 09:36:07 -0700
+X-CSE-ConnectionGUID: /TuIHTpPQjyo8BseSl4wkg==
+X-CSE-MsgGUID: bFkhRcd7Sky5hqLa7KX9Zw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,257,1719903600"; 
+   d="scan'208";a="76763011"
+Received: from orsmsx603.amr.corp.intel.com ([10.22.229.16])
+  by orviesa004.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 25 Sep 2024 09:36:07 -0700
+Received: from orsmsx610.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39; Wed, 25 Sep 2024 09:36:06 -0700
+Received: from orsedg603.ED.cps.intel.com (10.7.248.4) by
+ orsmsx610.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.39 via Frontend Transport; Wed, 25 Sep 2024 09:36:06 -0700
+Received: from NAM04-BN8-obe.outbound.protection.outlook.com (104.47.74.48) by
+ edgegateway.intel.com (134.134.137.100) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.1.2507.39; Wed, 25 Sep 2024 09:36:06 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=xbVOgTdlnUNa/1tkkjEXApYFvSVPBjrTiBMvZLrlb4eaq88GZKSsEjMXHbC1fm8B0MGSa2D8OUNCkr2kFge5Wgup5PQvS8vtZtRmKkzIIxGasu03gYkAtfaq/BpglI6o5NeYXs+U4Psf6Z4xnlpW7FW31EDJVoDEhC7lgmg1QB0B9IkYx0JaZlzGwhndKSRUrHWPKRRZXjdLZq/idx8L2i1QBFqzK/UbJg1fSAMeJH5qEi6o5/ghhw5UAQWRjQhEmgXMeRdQtnArSNXcYYLsD3HAGLNL9sp+g701dKSZBS2dGlBmqQx5OJloGCVAwv4Tz9Hxu3E4IBRHpP/Jpz8LLw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=71jxrCmdVwGbOmk9oV860gxNo+ylWf10hjk6FOb99do=;
+ b=yQg37rilmV9x8G62K6acRYHfYupuCzjPkoq0Y1M1vwzvLTfNZPnSHupyt1ckY+PCAmfBcM49cnRcUm4gtOlrR1yJ6AWySGLDRpJ12gVLeubd+1gzFbs7jxNtKRTDxnVwNyQg8rsF4UZKfr+KqgiRGXdrX3tVBUyYSTuvdOV/CWHiVSRenYys9h3+oCGRoM5XB55E3DZPxOjKWjuu6yEpSTu7C7/1IcCBSExRh488f/UoFEXS5fJcpsLTu9rYjYXg8M1+32Nt1QN9r6Lh7aXZ3ktuzEclVEqzuRiJntyLcc5rRZ96cf1kWyat+2bQlDz2AwQnuO4w4ebOhnou4b5Mcg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com (2603:10b6:510:212::12)
+ by SJ1PR11MB6129.namprd11.prod.outlook.com (2603:10b6:a03:488::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7982.25; Wed, 25 Sep
+ 2024 16:36:02 +0000
+Received: from PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::9e94:e21f:e11a:332]) by PH7PR11MB6522.namprd11.prod.outlook.com
+ ([fe80::9e94:e21f:e11a:332%6]) with mapi id 15.20.7982.022; Wed, 25 Sep 2024
+ 16:36:02 +0000
+Date: Wed, 25 Sep 2024 16:33:58 +0000
+From: Matthew Brost <matthew.brost@intel.com>
+To: Matthew Auld <matthew.auld@intel.com>
+CC: <intel-xe@lists.freedesktop.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH v2 1/2] drm/xe/vm: move xa_alloc to prevent UAF
+Message-ID: <ZvQ7doZ1OdK4e4Ax@DUT025-TGLU.fm.intel.com>
+References: <20240925071426.144015-3-matthew.auld@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20240925071426.144015-3-matthew.auld@intel.com>
+X-ClientProxiedBy: BYAPR03CA0018.namprd03.prod.outlook.com
+ (2603:10b6:a02:a8::31) To PH7PR11MB6522.namprd11.prod.outlook.com
+ (2603:10b6:510:212::12)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240925143325.518508-1-aleksandr.mikhalitsyn@canonical.com>
- <20240925143325.518508-2-aleksandr.mikhalitsyn@canonical.com> <20240925155706.zad2euxxuq7h6uja@quack3>
-In-Reply-To: <20240925155706.zad2euxxuq7h6uja@quack3>
-From: Aleksandr Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
-Date: Wed, 25 Sep 2024 18:17:39 +0200
-Message-ID: <CAEivzxfjnKq2fgCfYwhZukAO-ZfoUiC5n0Y5yaUpuz-y7kDf+g@mail.gmail.com>
-Subject: Re: [PATCH 1/1] ext4: fix crash on BUG_ON in ext4_alloc_group_tables
-To: Jan Kara <jack@suse.cz>
-Cc: tytso@mit.edu, stable@vger.kernel.org, 
-	Andreas Dilger <adilger.kernel@dilger.ca>, Baokun Li <libaokun1@huawei.com>, 
-	=?UTF-8?Q?St=C3=A9phane_Graber?= <stgraber@stgraber.org>, 
-	Christian Brauner <brauner@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-ext4@vger.kernel.org, 
-	Wesley Hershberger <wesley.hershberger@canonical.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR11MB6522:EE_|SJ1PR11MB6129:EE_
+X-MS-Office365-Filtering-Correlation-Id: ac9f9337-cb84-4aa7-5fc4-08dcdd8024db
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|366016|1800799024;
+X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?7/jHNcfEbqBAXT5Yp7pCVvbdNa65q1wk5vxingyBtU6CoxUhgT0VFHpxDiq+?=
+ =?us-ascii?Q?/Fq8TvS3KQzGfAOR3Y4d+FKX7GrIWZtSGD4v9TT/PohKOqGbwHTtXeugIEPN?=
+ =?us-ascii?Q?rYcsqe4p2QWANT8Zmo3exj2RzMb6uxLibr/te1T9uYnfHwc23VWs0UJ825g/?=
+ =?us-ascii?Q?We2k3Cm92kHqzvoqOFRqoeKVGEYQdl6gSiZnkKXFCwOxtwOz9zXwl5Q+4LSZ?=
+ =?us-ascii?Q?TDr33XtA8XgDboIhTBKqbUAUXzDc5WXlRMDT85By00z7Nog4tZUYkdLNu7lh?=
+ =?us-ascii?Q?sHLlyuML7GuL2w2w9O/c55GTjSRZE2fEEoqYO/5sIVaoiK7J7U1RkAdBp8wW?=
+ =?us-ascii?Q?my225si/bDAUGq9JgTD7VNgtOHTgayGEX2oPo/alHsfBoyt6bjlgkQNjOGBO?=
+ =?us-ascii?Q?EgC4jgxISx9jNT8shTfoz1tUCZ3C9cZbC8vAOQAvED0fEb2Q6vE9D02b14fH?=
+ =?us-ascii?Q?EpcHk98Bf8q93Je7A5YrFMAN6GwYYOBX5GHgD0p4Sm+Ml4RlEu18rT+4jPzo?=
+ =?us-ascii?Q?J9qH+Sgt3NAg+RccQFEnESzQIaVpdMy44996mu9T9x/DzSgtm8WRx7lkedJ2?=
+ =?us-ascii?Q?c2I7Io7n+ejspCAnfeu+KM453CcFqR3mU6x3q9C49Zj7K1DtJcLUuowy18cW?=
+ =?us-ascii?Q?fns0n8yCgHP7Nuqw0t/5I6Qvv7xmGalSl42ifivtrq2ew4ed3q2NnKymxKwE?=
+ =?us-ascii?Q?v8NdSdRF03PzbeLUz6KY3rPbFeN44thyVhuIhXRrtMfSqT3VKpaiATZH5E+H?=
+ =?us-ascii?Q?rIl85u7L8twiTCXmWm0kbb2+srNQXOcZof/trkcYwPMpROOXigw4vIs03OD7?=
+ =?us-ascii?Q?jgM6xggb8i9+9/GORKgA9YLUFhPWCtSFyMkvwOuf549R6SSR1R55p1W2+KpW?=
+ =?us-ascii?Q?piy6WCm9OIyYKLgfPcghrofGqp2Y71R19u9Jm2pdYrzAqMyC7CEfZ87k+TmK?=
+ =?us-ascii?Q?xxHSPOX2pH/+j03uNPiKd3tvWPQAtzSKbnTEQQburnhCtp1xbGg5mWj1WCvI?=
+ =?us-ascii?Q?FBmC8qHtfvpNykn0HERNEn7cd+lxfSYuE+ZRjp40OwsUUIXwXKBmRbJoNn0B?=
+ =?us-ascii?Q?DqH86zAcrn0Mdat7mmHjwgdh/FHMiCWBMWtcTO+p1uAq7PQoiU1alWAC0j+i?=
+ =?us-ascii?Q?QPp2yeIN0g/3mmuIxbDboGorcVP6cWUHFc5iYy8WwAH5YlQAZWYTF51PJIGJ?=
+ =?us-ascii?Q?/dtVO5SZDzsbAhoIO3pe7r5Q/kMcFzJIpF+YWUip/sRzHqgHHeYBsKh+Gl6J?=
+ =?us-ascii?Q?6SkAQyyafFT6mR3VrQk6hMEhRnlO6zBfO8iasaz9UG1O9G2kSZj6uMdbCwGJ?=
+ =?us-ascii?Q?rt9xHzn2n0Y2c7BdQmCWPmAIjmDuOQ6NAZuCFv0AmnP6/Q=3D=3D?=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR11MB6522.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(366016)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?TQj81PJ2/VyQ2CK35hlZQ9iyX2zLjkflf7JsKIzTKPXTCd/Opb+ZMDtj6vns?=
+ =?us-ascii?Q?idJcFZ1Q9qIT0rEp9zYegqR6+CRaCBQZo8PtqPbLRVY+raMntYSjxW7lHsu2?=
+ =?us-ascii?Q?GU09cySRmpAGxbV/Dvc/4303zqCvfj3MLS/A5mfB9etuQ2vLHdHQ4OPJTdkI?=
+ =?us-ascii?Q?jxqu80q+Avo1Atim9zNFagOn3+HT2TnyH9X55KSsgQToU+fzD8OiRW0PRC2O?=
+ =?us-ascii?Q?JI/6lN8sqRkJ2FvhGBeP9GBMdMHuh8o6KVaDlVU12yghaChwrvkgLoy6UIOI?=
+ =?us-ascii?Q?1JgwlX1+3QJorNu7xNpu8cLRQEsI8j4xDXrY2mntp7aAKtuvlcwAJkrlLnab?=
+ =?us-ascii?Q?swYvji6iOTmEQscUy1O/YplgS9jMSEBhlufAPop6lvn6bqG3m3gw++25Ytqv?=
+ =?us-ascii?Q?AGrlbz5d30iqUkTyaTKVFAlqb7pLoY5zl6PDF5myFPi/VSDAGAdkDEu3kXH6?=
+ =?us-ascii?Q?Rx6yyhRR3K6Dkzm2/yJfruoy82LPUdR086S560vbsHWgLJ5dmQpRUGJfHVvm?=
+ =?us-ascii?Q?YYz+TDJu4PqEiptFpAc4OKaREWKB90Z09Wmgz14XjNZ1MhCtHYlrTYshHBiJ?=
+ =?us-ascii?Q?6Szz8KY4Z0AIRgdvgew6NDTk0VNzg/nGj3b2dm45sp2Vx+f3N+EZ1nGBWx6t?=
+ =?us-ascii?Q?JuUf/BJ6k+EI7z1BbAZRk4/jOY//+O7d2CIQSsVDuK+2Uz2K14Jk5Z7lW5dW?=
+ =?us-ascii?Q?pgtriOpVZpTnG37Fk06cSMAGK2GeDxMroyir7tihqs3xWdCo3MkG821PwQa9?=
+ =?us-ascii?Q?ll+TG0sjOaLVvlxXxUA3AKRz9KSoi+b+OQfxo2iXkH/msvHnYurnZooVL/+A?=
+ =?us-ascii?Q?5XEPT8v+/y2WOAy1FukFaZIe+4J9k98mpi+wL/cUTIeRzzJYqrUakV59HntC?=
+ =?us-ascii?Q?ghJxb5rERuxCcicu9m0U9Oh0c9p2kxOr0ewqs6SHrUHVbJC+g+9mm9UNzKqM?=
+ =?us-ascii?Q?9sZhtyn+5YLJPjDJyv+UzGh73nUBzpTKdVwHMQ2shOqBqWZWRrFH0tzgxojB?=
+ =?us-ascii?Q?VZgsE7Oo6exRj2AP/wXdk5db+PGcKVzV2es1+98U0d5YVIGXLXqZgkoC9uA1?=
+ =?us-ascii?Q?C6Rerrr+T1/s0xVPcb99+/H/6pEDLK+f9TnwfAsqKEdN+/9EFnKgxdE0D3Gs?=
+ =?us-ascii?Q?5eQaWoNhTwGON2BWkROKCatvKEcwwsbWMdESa9/utn8XZPhQATw9tH7deZHO?=
+ =?us-ascii?Q?iGliQiFSAYl5AM+9GoqD4NPrDP1D0zEd/tAG5ZT634/wP4o7J1tiksSJAya7?=
+ =?us-ascii?Q?Jmtk1MdLjcq78K7bx0QJOR8JKNT9jzmrSGiOZbwsV7hqO4HUMOvmg8Xu4sEG?=
+ =?us-ascii?Q?uO0nWtt39qWg9vx0GowFexb446dLZL+r+JXf9ijml1x16iXYhcmJ+6EzFpYq?=
+ =?us-ascii?Q?FkXeFlKvSAnpAb4J7KVdX7mkMXwT9qKwmcU5AV0VEespK2jgKfSCmXKVgpFS?=
+ =?us-ascii?Q?oSFo2Yb+1mqzV+5gge6rnMTt7fFUjRrlO908Lkz718IHXO5gjS7bTJ8Lyf0u?=
+ =?us-ascii?Q?ldPmVWcaO5k6B+UQE2ueLFwOaAdbZe0Y6PvLYftfXdA7QnJXze9RzZzEVre6?=
+ =?us-ascii?Q?ULrJPD3bWrcQfxyK+t2pzFu/jnd53ZKhKOR4ApEAcXES51bykzS+ofvvpp77?=
+ =?us-ascii?Q?KA=3D=3D?=
+X-MS-Exchange-CrossTenant-Network-Message-Id: ac9f9337-cb84-4aa7-5fc4-08dcdd8024db
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR11MB6522.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Sep 2024 16:36:02.5015
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: +pZsad92UabeMaUDBfIy+gkHedJkEl/VCMdQCF0O1qe1QD38We1hOlEgd2A7DNaRFCz6ToajKKB7pxSkq5NyDA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ1PR11MB6129
+X-OriginatorOrg: intel.com
 
-On Wed, Sep 25, 2024 at 5:57=E2=80=AFPM Jan Kara <jack@suse.cz> wrote:
->
-> On Wed 25-09-24 16:33:24, Alexander Mikhalitsyn wrote:
-> > [   33.882936] EXT4-fs (dm-5): mounted filesystem 8aaf41b2-6ac0-4fa8-b9=
-2b-77d10e1d16ca r/w with ordered data mode. Quota mode: none.
-> > [   33.888365] EXT4-fs (dm-5): resizing filesystem from 7168 to 786432 =
-blocks
-> > [   33.888740] ------------[ cut here ]------------
-> > [   33.888742] kernel BUG at fs/ext4/resize.c:324!
->
-> Ah, I was staring at this for a while before I understood what's going on
-> (it would be great to explain this in the changelog BTW).  As far as I
-> understand commit 665d3e0af4d3 ("ext4: reduce unnecessary memory allocati=
-on
-> in alloc_flex_gd()") can actually make flex_gd->resize_bg larger than
-> flexbg_size (for example when ogroup =3D flexbg_size, ngroup =3D 2*flexbg=
-_size
-> - 1) which then confuses things. I think that was not really intended and
+On Wed, Sep 25, 2024 at 08:14:27AM +0100, Matthew Auld wrote:
+> Evil user can guess the next id of the vm before the ioctl completes and
+> then call vm destroy ioctl to trigger UAF since create ioctl is still
+> referencing the same vm. Move the xa_alloc all the way to the end to
+> prevent this.
+> 
+> v2:
+>  - Rebase
+> 
+> Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
+> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
+> Cc: Matthew Brost <matthew.brost@intel.com>
 
-Hi Jan,
+Reviewed-by: Matthew Brost <matthew.brost@intel.com>
 
-First of all, thanks for your reaction/review on this one ;-)
-
-You are absolutely right, have just checked with our reproducer and
-this modification:
-
-diff --git a/fs/ext4/resize.c b/fs/ext4/resize.c
-index e04eb08b9060..530a918f0cab 100644
---- a/fs/ext4/resize.c
-+++ b/fs/ext4/resize.c
-@@ -258,6 +258,8 @@ static struct ext4_new_flex_group_data
-*alloc_flex_gd(unsigned int flexbg_size,
-                flex_gd->resize_bg =3D 1 << max(fls(last_group - o_group + =
-1),
-                                              fls(n_group - last_group));
-
-+       BUG_ON(flex_gd->resize_bg > flexbg_size);
-+
-        flex_gd->groups =3D kmalloc_array(flex_gd->resize_bg,
-                                        sizeof(struct ext4_new_group_data),
-                                        GFP_NOFS);
-
-and yes, it crashes on this BUG_ON. So it looks like instead of making
-flex_gd->resize_bg to be smaller
-than flexbg_size in most cases we can actually have an opposite effect
-here. I guess we really need to fix alloc_flex_gd() too.
-
-> instead of fixing up ext4_alloc_group_tables() we should really change
-> the logic in alloc_flex_gd() to make sure flex_gd->resize_bg never exceed=
-s
-> flexbg size. Baokun?
-
-At the same time, if I understand the code right, as we can have
-flex_gd->resize_bg !=3D flexbg_size after
-5d1935ac02ca5a ("ext4: avoid online resizing failures due to oversized
-flex bg") and
-665d3e0af4d3 ("ext4: reduce unnecessary memory allocation in alloc_flex_gd(=
-)")
-we should always refer to flex_gd->resize_bg value which means that
-ext4_alloc_group_tables() fix is needed too.
-Am I correct in my understanding?
-
->
->                                                                 Honza
-
-Kind regards,
-Alex
-
->
->
-> > [   33.889075] Oops: invalid opcode: 0000 [#1] PREEMPT SMP NOPTI
-> > [   33.889503] CPU: 9 UID: 0 PID: 3576 Comm: resize2fs Not tainted 6.11=
-.0+ #27
-> > [   33.890039] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), B=
-IOS 1.15.0-1 04/01/2014
-> > [   33.890705] RIP: 0010:ext4_resize_fs+0x1212/0x12d0
-> > [   33.891063] Code: b8 45 31 c0 4c 89 ff 45 31 c9 31 c9 ba 0e 08 00 00=
- 48 c7 c6 68 75 65 b8 e8 2b 79 01 00 41 b8 ea ff ff ff 41 5f e9 8d f1 ff ff=
- <0f> 0b 48 83 bd 70 ff ff ff 00 75 32 45 31 c0 e9 53 f1 ff ff 41 b8
-> > [   33.892701] RSP: 0018:ffffa97f413f3cc8 EFLAGS: 00010202
-> > [   33.893081] RAX: 0000000000000018 RBX: 0000000000000001 RCX: 0000000=
-0fffffff0
-> > [   33.893639] RDX: 0000000000000017 RSI: 0000000000000016 RDI: 0000000=
-0e8c2c810
-> > [   33.894197] RBP: ffffa97f413f3d90 R08: 0000000000000000 R09: 0000000=
-000008000
-> > [   33.894755] R10: ffffa97f413f3cc8 R11: ffffa2c1845bfc80 R12: 0000000=
-000000000
-> > [   33.895317] R13: ffffa2c1843d6000 R14: 0000000000008000 R15: ffffa2c=
-199963000
-> > [   33.895877] FS:  00007f46efd17000(0000) GS:ffffa2c89fc40000(0000) kn=
-lGS:0000000000000000
-> > [   33.896524] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> > [   33.896954] CR2: 00005630a4a1cc88 CR3: 000000010532c000 CR4: 0000000=
-000350eb0
-> > [   33.897516] Call Trace:
-> > [   33.897638]  <TASK>
-> > [   33.897728]  ? show_regs+0x6d/0x80
-> > [   33.897942]  ? die+0x3c/0xa0
-> > [   33.898106]  ? do_trap+0xe5/0x110
-> > [   33.898311]  ? do_error_trap+0x6e/0x90
-> > [   33.898555]  ? ext4_resize_fs+0x1212/0x12d0
-> > [   33.898844]  ? exc_invalid_op+0x57/0x80
-> > [   33.899101]  ? ext4_resize_fs+0x1212/0x12d0
-> > [   33.899387]  ? asm_exc_invalid_op+0x1f/0x30
-> > [   33.899675]  ? ext4_resize_fs+0x1212/0x12d0
-> > [   33.899961]  ? ext4_resize_fs+0x745/0x12d0
-> > [   33.900239]  __ext4_ioctl+0x4e0/0x1800
-> > [   33.900489]  ? srso_alias_return_thunk+0x5/0xfbef5
-> > [   33.900832]  ? putname+0x5b/0x70
-> > [   33.901028]  ? srso_alias_return_thunk+0x5/0xfbef5
-> > [   33.901374]  ? do_sys_openat2+0x87/0xd0
-> > [   33.901632]  ? srso_alias_return_thunk+0x5/0xfbef5
-> > [   33.901981]  ? srso_alias_return_thunk+0x5/0xfbef5
-> > [   33.902324]  ? __x64_sys_openat+0x59/0xa0
-> > [   33.902595]  ext4_ioctl+0x12/0x20
-> > [   33.902802]  ? ext4_ioctl+0x12/0x20
-> > [   33.903031]  __x64_sys_ioctl+0x99/0xd0
-> > [   33.903277]  x64_sys_call+0x1206/0x20d0
-> > [   33.903534]  do_syscall_64+0x72/0x110
-> > [   33.903771]  ? srso_alias_return_thunk+0x5/0xfbef5
-> > [   33.904115]  ? irqentry_exit+0x3f/0x50
-> > [   33.904362]  ? srso_alias_return_thunk+0x5/0xfbef5
-> > [   33.904707]  ? exc_page_fault+0x1aa/0x7b0
-> > [   33.904979]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> > [   33.905349] RIP: 0033:0x7f46efe3294f
-> > [   33.905579] Code: 00 48 89 44 24 18 31 c0 48 8d 44 24 60 c7 04 24 10=
- 00 00 00 48 89 44 24 08 48 8d 44 24 20 48 89 44 24 10 b8 10 00 00 00 0f 05=
- <41> 89 c0 3d 00 f0 ff ff 77 1f 48 8b 44 24 18 64 48 2b 04 25 28 00
-> > [   33.907321] RSP: 002b:00007ffe9b8833a0 EFLAGS: 00000246 ORIG_RAX: 00=
-00000000000010
-> > [   33.907926] RAX: ffffffffffffffda RBX: 0000000000000001 RCX: 00007f4=
-6efe3294f
-> > [   33.908487] RDX: 00007ffe9b8834a0 RSI: 0000000040086610 RDI: 0000000=
-000000004
-> > [   33.909046] RBP: 00005630a4a0b0e0 R08: 0000000000000000 R09: 00007ff=
-e9b8832d7
-> > [   33.909605] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000=
-000000004
-> > [   33.910165] R13: 00005630a4a0c580 R14: 00005630a4a10400 R15: 0000000=
-000000000
-> > [   33.910740]  </TASK>
-> > [   33.910837] Modules linked in:
-> > [   33.911049] ---[ end trace 0000000000000000 ]---
-> > [   33.911428] RIP: 0010:ext4_resize_fs+0x1212/0x12d0
-> > [   33.911810] Code: b8 45 31 c0 4c 89 ff 45 31 c9 31 c9 ba 0e 08 00 00=
- 48 c7 c6 68 75 65 b8 e8 2b 79 01 00 41 b8 ea ff ff ff 41 5f e9 8d f1 ff ff=
- <0f> 0b 48 83 bd 70 ff ff ff 00 75 32 45 31 c0 e9 53 f1 ff ff 41 b8
-> > [   33.913928] RSP: 0018:ffffa97f413f3cc8 EFLAGS: 00010202
-> > [   33.914313] RAX: 0000000000000018 RBX: 0000000000000001 RCX: 0000000=
-0fffffff0
-> > [   33.914909] RDX: 0000000000000017 RSI: 0000000000000016 RDI: 0000000=
-0e8c2c810
-> > [   33.915482] RBP: ffffa97f413f3d90 R08: 0000000000000000 R09: 0000000=
-000008000
-> > [   33.916258] R10: ffffa97f413f3cc8 R11: ffffa2c1845bfc80 R12: 0000000=
-000000000
-> > [   33.917027] R13: ffffa2c1843d6000 R14: 0000000000008000 R15: ffffa2c=
-199963000
-> > [   33.917884] FS:  00007f46efd17000(0000) GS:ffffa2c89fc40000(0000) kn=
-lGS:0000000000000000
-> > [   33.918818] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> > [   33.919322] CR2: 00005630a4a1cc88 CR3: 000000010532c000 CR4: 0000000=
-000350eb0
-> > [   44.072293] ------------[ cut here ]------------
-> >
-> > Cc: stable@vger.kernel.org # v6.8+
-> > Fixes: 665d3e0af4d3 ("ext4: reduce unnecessary memory allocation in all=
-oc_flex_gd()")
-> > Cc: "Theodore Ts'o" <tytso@mit.edu>
-> > Cc: Andreas Dilger <adilger.kernel@dilger.ca>
-> > Cc: Jan Kara <jack@suse.cz>
-> > Cc: Baokun Li <libaokun1@huawei.com>
-> > Cc: St=C3=A9phane Graber <stgraber@stgraber.org>
-> > Cc: Christian Brauner <brauner@kernel.org>
-> > Cc: <linux-kernel@vger.kernel.org>
-> > Cc: <linux-fsdevel@vger.kernel.org>
-> > Cc: <linux-ext4@vger.kernel.org>
-> > Reported-by: Wesley Hershberger <wesley.hershberger@canonical.com>
-> > Closes: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2081231
-> > Reported-by: St=C3=A9phane Graber <stgraber@stgraber.org>
-> > Signed-off-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.c=
-om>
-> > ---
-> >  fs/ext4/resize.c | 13 ++++++-------
-> >  1 file changed, 6 insertions(+), 7 deletions(-)
-> >
-> > diff --git a/fs/ext4/resize.c b/fs/ext4/resize.c
-> > index e04eb08b9060..c057a7867363 100644
-> > --- a/fs/ext4/resize.c
-> > +++ b/fs/ext4/resize.c
-> > @@ -300,8 +300,7 @@ static void free_flex_gd(struct ext4_new_flex_group=
-_data *flex_gd)
-> >   * block group.
-> >   */
-> >  static int ext4_alloc_group_tables(struct super_block *sb,
-> > -                             struct ext4_new_flex_group_data *flex_gd,
-> > -                             unsigned int flexbg_size)
-> > +                             struct ext4_new_flex_group_data *flex_gd)
-> >  {
-> >       struct ext4_new_group_data *group_data =3D flex_gd->groups;
-> >       ext4_fsblk_t start_blk;
-> > @@ -313,7 +312,7 @@ static int ext4_alloc_group_tables(struct super_blo=
-ck *sb,
-> >       ext4_group_t group;
-> >       ext4_group_t last_group;
-> >       unsigned overhead;
-> > -     __u16 uninit_mask =3D (flexbg_size > 1) ? ~EXT4_BG_BLOCK_UNINIT :=
- ~0;
-> > +     __u16 uninit_mask =3D (flex_gd->resize_bg > 1) ? ~EXT4_BG_BLOCK_U=
-NINIT : ~0;
-> >       int i;
-> >
-> >       BUG_ON(flex_gd->count =3D=3D 0 || group_data =3D=3D NULL);
-> > @@ -321,8 +320,8 @@ static int ext4_alloc_group_tables(struct super_blo=
-ck *sb,
-> >       src_group =3D group_data[0].group;
-> >       last_group  =3D src_group + flex_gd->count - 1;
-> >
-> > -     BUG_ON((flexbg_size > 1) && ((src_group & ~(flexbg_size - 1)) !=
-=3D
-> > -            (last_group & ~(flexbg_size - 1))));
-> > +     BUG_ON((flex_gd->resize_bg > 1) && ((src_group & ~(flex_gd->resiz=
-e_bg - 1)) !=3D
-> > +            (last_group & ~(flex_gd->resize_bg - 1))));
-> >  next_group:
-> >       group =3D group_data[0].group;
-> >       if (src_group >=3D group_data[0].group + flex_gd->count)
-> > @@ -403,7 +402,7 @@ static int ext4_alloc_group_tables(struct super_blo=
-ck *sb,
-> >
-> >               printk(KERN_DEBUG "EXT4-fs: adding a flex group with "
-> >                      "%u groups, flexbg size is %u:\n", flex_gd->count,
-> > -                    flexbg_size);
-> > +                    flex_gd->resize_bg);
-> >
-> >               for (i =3D 0; i < flex_gd->count; i++) {
-> >                       ext4_debug(
-> > @@ -2158,7 +2157,7 @@ int ext4_resize_fs(struct super_block *sb, ext4_f=
-sblk_t n_blocks_count)
-> >                                        ext4_blocks_count(es));
-> >                       last_update_time =3D jiffies;
-> >               }
-> > -             if (ext4_alloc_group_tables(sb, flex_gd, flexbg_size) !=
-=3D 0)
-> > +             if (ext4_alloc_group_tables(sb, flex_gd) !=3D 0)
-> >                       break;
-> >               err =3D ext4_flex_group_add(sb, resize_inode, flex_gd);
-> >               if (unlikely(err))
-> > --
-> > 2.34.1
-> >
-> --
-> Jan Kara <jack@suse.com>
-> SUSE Labs, CR
+> Cc: <stable@vger.kernel.org> # v6.8+
+> ---
+>  drivers/gpu/drm/xe/xe_vm.c | 16 ++++++++--------
+>  1 file changed, 8 insertions(+), 8 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/xe/xe_vm.c b/drivers/gpu/drm/xe/xe_vm.c
+> index 31fe31db3fdc..ce9dca4d4e87 100644
+> --- a/drivers/gpu/drm/xe/xe_vm.c
+> +++ b/drivers/gpu/drm/xe/xe_vm.c
+> @@ -1765,10 +1765,6 @@ int xe_vm_create_ioctl(struct drm_device *dev, void *data,
+>  	if (IS_ERR(vm))
+>  		return PTR_ERR(vm);
+>  
+> -	err = xa_alloc(&xef->vm.xa, &id, vm, xa_limit_32b, GFP_KERNEL);
+> -	if (err)
+> -		goto err_close_and_put;
+> -
+>  	if (xe->info.has_asid) {
+>  		down_write(&xe->usm.lock);
+>  		err = xa_alloc_cyclic(&xe->usm.asid_to_vm, &asid, vm,
+> @@ -1776,12 +1772,11 @@ int xe_vm_create_ioctl(struct drm_device *dev, void *data,
+>  				      &xe->usm.next_asid, GFP_KERNEL);
+>  		up_write(&xe->usm.lock);
+>  		if (err < 0)
+> -			goto err_free_id;
+> +			goto err_close_and_put;
+>  
+>  		vm->usm.asid = asid;
+>  	}
+>  
+> -	args->vm_id = id;
+>  	vm->xef = xe_file_get(xef);
+>  
+>  	/* Record BO memory for VM pagetable created against client */
+> @@ -1794,10 +1789,15 @@ int xe_vm_create_ioctl(struct drm_device *dev, void *data,
+>  	args->reserved[0] = xe_bo_main_addr(vm->pt_root[0]->bo, XE_PAGE_SIZE);
+>  #endif
+>  
+> +	/* user id alloc must always be last in ioctl to prevent UAF */
+> +	err = xa_alloc(&xef->vm.xa, &id, vm, xa_limit_32b, GFP_KERNEL);
+> +	if (err)
+> +		goto err_close_and_put;
+> +
+> +	args->vm_id = id;
+> +
+>  	return 0;
+>  
+> -err_free_id:
+> -	xa_erase(&xef->vm.xa, id);
+>  err_close_and_put:
+>  	xe_vm_close_and_put(vm);
+>  
+> -- 
+> 2.46.1
+> 
 
