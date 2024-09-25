@@ -1,63 +1,65 @@
-Return-Path: <stable+bounces-77523-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AD15985E0C
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:26:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E8AF985E4D
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:32:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5F7828D0D9
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:26:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5C8CBB29C0E
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:27:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5E1E1B5EC9;
-	Wed, 25 Sep 2024 12:08:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C20F820B1EF;
+	Wed, 25 Sep 2024 12:08:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VI22SQww"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dnlmuNmm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F5001B5803;
-	Wed, 25 Sep 2024 12:08:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62F0220B1E8;
+	Wed, 25 Sep 2024 12:08:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727266110; cv=none; b=Rc1P2cWY83jHZzx80INNXUS1QdSKWPYAsLTsQWy9C16uqEpp6ojvJ/YAzpDE3dNXbE+F1h3P4Tnveh1Mohn/ZJQziIEfdgfpyIeviI6wWaJ8bK6DtPq7LoyvmPg9QIemafaB0X5BlkmQ8SbaleJNH3yWV877uvS2xaUi0mnJcus=
+	t=1727266112; cv=none; b=mGeLYdMJ0ayX38T8Pz3wTjkmiRton7HdyZJIVmfXT6zTOBMGWGQBVN8Ev6C5Oi7V3PUPwy18lqyseVrviUIlcIHTfGnfftswuDyqmO+jonbgTlYuYNKN7B1IGOlp4n8ygYWwimoXB/3/yq4nuNk013FBfbUkVwoFTku2OPXhPzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727266110; c=relaxed/simple;
-	bh=DIhr0J1rmpdOZj57I74FlI06C9ruFqKjd5Nk6Bk903k=;
+	s=arc-20240116; t=1727266112; c=relaxed/simple;
+	bh=B5QuL0qqSIR5MOesCll76x9q2bnI8oUj3OEh00t2cqU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qAGSDtH3iGoAWsp8MPIHTnhLCRZzz/kAPeVKQJMlAWpegpSAB4VZcG7t5fOEY0hnxEgc25Q8xmjIW8iEo3aK6A1p/ILViI2+jCUiW3Bz1J9q6x9zBrkk/bSUcwBcp3mDGN/Y07CZhHgGItAh9W3zA1a3wgNSFTwBVFEc4I+f2yw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VI22SQww; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A4DFC4CEC3;
-	Wed, 25 Sep 2024 12:08:28 +0000 (UTC)
+	 MIME-Version; b=Ik3EMMevdnpSOzAnhAQhsWSxzkLKnmHe9inN1g1Ia3iwc+/94znFmCQD1bLvV9ozI41EhcyGTbtqDNe2whiKdikOzzMAcE4HWiwgCc/7GdvBZPSLpdmFbRmxKA2r1m2TX+lEWEzSRHLloBwGFErQcxJWe2XzMU6FJPLHrpV44aY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dnlmuNmm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77ED2C4CECD;
+	Wed, 25 Sep 2024 12:08:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727266110;
-	bh=DIhr0J1rmpdOZj57I74FlI06C9ruFqKjd5Nk6Bk903k=;
+	s=k20201202; t=1727266112;
+	bh=B5QuL0qqSIR5MOesCll76x9q2bnI8oUj3OEh00t2cqU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VI22SQwwlE6mhrsS6EUKW/BFyth8ASZmQhIxeW8QTrHuoEVKha/nuVzd7i6i10dU6
-	 Pt52qUsjJQ/GLZHYss8Wio17lVMAGBUra1C51U548Fxu+RPJpPRLWcsNcKvIGTEw9K
-	 GetcPi6Na1mrUJ0i3l0GHGBtWf5RnuKmzx/2s8ADH4mx+GTKLeHUo+qCauytSfdlZ4
-	 Xg8+O/mrwm79epATu8zz/prkUHmXeKdq2wWfP0tlx9hEP2AUTtLHvt8/NohgRriE9F
-	 +e1e0o1/gXw/4aMx0fmyxJs6D56kGWGJsRa59vgEn0vpDDK4jubw4LoFiiSCGnHzFe
-	 YFuz/HuDgZdiA==
+	b=dnlmuNmm6UjJjf5wihXRTT1XVjwmWEgqBJgiINoG1MisfoxJJjdxsDEpuYyla7BKW
+	 JLdZbfAeA+5jE5pU7Rhz8OAfKIAqkIJOfk74YhaoPt/QOi+8BJFQt4wUClKKxWLdH0
+	 4sYDXBha+eNQr2GEwbQjomdmdomZ0+LaZb6C98nSoAzJ3DnzSVM7N7IRblU9EaZ4VZ
+	 lFHN9bKjiB8Zgw0jZhBUkmE4lR4tzk5X6sSCGUUidiJj4OStGnsBYTNfQ35gEudoME
+	 8Bn2E5vecHCtDhK7LlvKSto86W8VPDP4SIXtJyumjWHRDLQJIJeTToK5ucC2BBrJSf
+	 mNiLcgeT1Cfrg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hawking Zhang <Hawking.Zhang@amd.com>,
-	Tao Zhou <tao.zhou1@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Matthew Brost <matthew.brost@intel.com>,
+	Jagmeet Randhawa <jagmeet.randhawa@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	Felix.Kuehling@amd.com,
-	christian.koenig@amd.com,
-	Xinhui.Pan@amd.com,
+	lucas.demarchi@intel.com,
+	thomas.hellstrom@linux.intel.com,
+	rodrigo.vivi@intel.com,
+	maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org,
+	tzimmermann@suse.de,
 	airlied@gmail.com,
 	daniel@ffwll.ch,
-	amd-gfx@lists.freedesktop.org,
+	intel-xe@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.10 175/197] drm/amdkfd: Check int source id for utcl2 poison event
-Date: Wed, 25 Sep 2024 07:53:14 -0400
-Message-ID: <20240925115823.1303019-175-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.10 176/197] drm/xe: Drop warn on xe_guc_pc_gucrc_disable in guc pc fini
+Date: Wed, 25 Sep 2024 07:53:15 -0400
+Message-ID: <20240925115823.1303019-176-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925115823.1303019-1-sashal@kernel.org>
 References: <20240925115823.1303019-1-sashal@kernel.org>
@@ -72,74 +74,33 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.11
 Content-Transfer-Encoding: 8bit
 
-From: Hawking Zhang <Hawking.Zhang@amd.com>
+From: Matthew Brost <matthew.brost@intel.com>
 
-[ Upstream commit db6341a9168d2a24ded526277eeab29724d76e9d ]
+[ Upstream commit a323782567812ee925e9b7926445532c7afe331b ]
 
-Traditional utcl2 fault_status polling does not
-work in SRIOV environment. The polling of fault
-status register from guest side will be dropped
-by hardware.
+Not a big deal if CT is down as driver is unloading, no need to warn.
 
-Driver should switch to check utcl2 interrupt
-source id to identify utcl2 poison event. It is
-set to 1 when poisoned data interrupts are
-signaled.
-
-v2: drop the unused local variable (Tao)
-
-Signed-off-by: Hawking Zhang <Hawking.Zhang@amd.com>
-Reviewed-by: Tao Zhou <tao.zhou1@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Matthew Brost <matthew.brost@intel.com>
+Reviewed-by: Jagmeet Randhawa <jagmeet.randhawa@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240820172958.1095143-4-matthew.brost@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/amd/amdkfd/kfd_int_process_v9.c    | 18 +-----------------
- drivers/gpu/drm/amd/amdkfd/soc15_int.h         |  1 +
- 2 files changed, 2 insertions(+), 17 deletions(-)
+ drivers/gpu/drm/xe/xe_guc_pc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v9.c b/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v9.c
-index 78dde62fb04ad..c282f5253c445 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v9.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v9.c
-@@ -414,25 +414,9 @@ static void event_interrupt_wq_v9(struct kfd_node *dev,
- 		   client_id == SOC15_IH_CLIENTID_UTCL2) {
- 		struct kfd_vm_fault_info info = {0};
- 		uint16_t ring_id = SOC15_RING_ID_FROM_IH_ENTRY(ih_ring_entry);
--		uint32_t node_id = SOC15_NODEID_FROM_IH_ENTRY(ih_ring_entry);
--		uint32_t vmid_type = SOC15_VMID_TYPE_FROM_IH_ENTRY(ih_ring_entry);
--		int hub_inst = 0;
- 		struct kfd_hsa_memory_exception_data exception_data;
+diff --git a/drivers/gpu/drm/xe/xe_guc_pc.c b/drivers/gpu/drm/xe/xe_guc_pc.c
+index 23382ced4ea74..69f8b6fdaeaea 100644
+--- a/drivers/gpu/drm/xe/xe_guc_pc.c
++++ b/drivers/gpu/drm/xe/xe_guc_pc.c
+@@ -897,7 +897,7 @@ static void xe_guc_pc_fini(struct drm_device *drm, void *arg)
+ 	struct xe_guc_pc *pc = arg;
  
--		/* gfxhub */
--		if (!vmid_type && dev->adev->gfx.funcs->ih_node_to_logical_xcc) {
--			hub_inst = dev->adev->gfx.funcs->ih_node_to_logical_xcc(dev->adev,
--				node_id);
--			if (hub_inst < 0)
--				hub_inst = 0;
--		}
--
--		/* mmhub */
--		if (vmid_type && client_id == SOC15_IH_CLIENTID_VMC)
--			hub_inst = node_id / 4;
--
--		if (amdgpu_amdkfd_ras_query_utcl2_poison_status(dev->adev,
--					hub_inst, vmid_type)) {
-+		if (source_id == SOC15_INTSRC_VMC_UTCL2_POISON) {
- 			event_interrupt_poison_consumption_v9(dev, pasid, client_id);
- 			return;
- 		}
-diff --git a/drivers/gpu/drm/amd/amdkfd/soc15_int.h b/drivers/gpu/drm/amd/amdkfd/soc15_int.h
-index 10138676f27fd..e5c0205f26181 100644
---- a/drivers/gpu/drm/amd/amdkfd/soc15_int.h
-+++ b/drivers/gpu/drm/amd/amdkfd/soc15_int.h
-@@ -29,6 +29,7 @@
- #define SOC15_INTSRC_CP_BAD_OPCODE	183
- #define SOC15_INTSRC_SQ_INTERRUPT_MSG	239
- #define SOC15_INTSRC_VMC_FAULT		0
-+#define SOC15_INTSRC_VMC_UTCL2_POISON	1
- #define SOC15_INTSRC_SDMA_TRAP		224
- #define SOC15_INTSRC_SDMA_ECC		220
- #define SOC21_INTSRC_SDMA_TRAP		49
+ 	XE_WARN_ON(xe_force_wake_get(gt_to_fw(pc_to_gt(pc)), XE_FORCEWAKE_ALL));
+-	XE_WARN_ON(xe_guc_pc_gucrc_disable(pc));
++	xe_guc_pc_gucrc_disable(pc);
+ 	XE_WARN_ON(xe_guc_pc_stop(pc));
+ 	xe_force_wake_put(gt_to_fw(pc_to_gt(pc)), XE_FORCEWAKE_ALL);
+ }
 -- 
 2.43.0
 
