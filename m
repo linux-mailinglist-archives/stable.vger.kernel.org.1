@@ -1,61 +1,61 @@
-Return-Path: <stable+bounces-77601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77D53985F03
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:48:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B191B985F06
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:48:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8FC691C24CF9
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:48:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E33931C25A60
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:48:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F27D1B07B0;
-	Wed, 25 Sep 2024 12:13:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E37E51B07DB;
+	Wed, 25 Sep 2024 12:13:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dl1ytu/i"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GJW9zGr3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58EDA1B07A7;
-	Wed, 25 Sep 2024 12:13:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 979921B07D7;
+	Wed, 25 Sep 2024 12:13:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727266427; cv=none; b=RnzbpEen4o+zMr2YW9DFiwplcJuDPZNQ3QWSwT4Bn04VNZCQODYjIpamDz/CflLiDnO54IAYpx/BVy2ttk/drsJq7E9Ad+K36wRoA0LAshefRPfgIN/ZqnpcD3/4iHH3ZmuaDFTZpS/CSw371VBVoeVQgDMjpjYaEIXqmvhCvRY=
+	t=1727266430; cv=none; b=GxAXEXBM23MKqPAKK3ofJNWjjhbZ0nN2k4PbdTsMsCoR271/djLKobiW23kskQ+bbWRObg1G6YCHzj0XD7nCsA8uz1GUQPdPlScKx/D3iSQaDDp08beNYVX4HF3F5O88PiokrZ5Q02s/SlWBOGlWmEbbf9q5P23/gnq4Y5M+ZMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727266427; c=relaxed/simple;
-	bh=bWnVQq/FSskDyqp8JhBvKiekpyhQd+d4A7dAmfZL4I0=;
+	s=arc-20240116; t=1727266430; c=relaxed/simple;
+	bh=9pfYlAgLwWtJ0bQCsbD+2e5EHHneINBPCQH6bPb+y8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IUe9i4d/Z1B2YcobMKkCHSARfb/mCtsfZaKyInUoC0Ai5ug8ek+MXVKc9ICi8efh663l8X2AToO9A4+luFi5yiPbSkoScYgzScETLsm2VMvp/6aWcOSnxRjZHCVMzFISYphYYa8PDXmdlRiqDIAnEyioaEpxJbhYztQS9tVXwpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dl1ytu/i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82918C4CEC3;
-	Wed, 25 Sep 2024 12:13:44 +0000 (UTC)
+	 MIME-Version; b=CzXvrdQW+c5pbBSWp8ar7EjuSISOzgrGzdCeT+2HgukjZLp+XZ64yX+3hN7oJ0cY0yMeTOXi8/reQM5iWcAftWyKM21nJEstFIkFPOjiJEFZGv8UwaTeXHG3tAYbqGl5MohKLI56hnzp/CAh8jc+GTrxeYA5tqwuh9DmnRdOd6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GJW9zGr3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19306C4CEC7;
+	Wed, 25 Sep 2024 12:13:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727266425;
-	bh=bWnVQq/FSskDyqp8JhBvKiekpyhQd+d4A7dAmfZL4I0=;
+	s=k20201202; t=1727266430;
+	bh=9pfYlAgLwWtJ0bQCsbD+2e5EHHneINBPCQH6bPb+y8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dl1ytu/i4gSSnpYLZFyHZPLoBnLsxtq4MqTdTmxdDHjgW4i6mN8giZCrNEy4Csi3/
-	 dtjsl0QW/zV0RL5ovJD0213qIaEG+mZOMLwGTWmzJMN9IXUxbZ1ukMyt+cHCDXsIt3
-	 TZpo9DS9gQlF7Ryi1cUhnuvwXrDFACRK6ZJg/au3LKTnVmgke/lQTzu8Y3L9x7ZyRe
-	 FoPERBDpp/+uzLXtqgXONjJcjrNAXtKTHYzOgjmvq03xeFuK+dmayS/URTjK3Cbll9
-	 DelhfoDcaNJId12xZ0f1Jw/qmWWw2CLMcosKEUzYqQjWdjgoYtJt7Hz4dTnyjOZdbC
-	 5b00i/DPYz/Lw==
+	b=GJW9zGr3a6QI7yTsz4L9JxLBDvv+ojrby8OaLsgDHfrSccYwEcWSL169dg0fnkbcV
+	 P7WiMwdYNXSgjsXbaPxv4YiCvpeUgpjyuYn34hOiF7IRC51g4xB9i+9Utcrvl2pRkU
+	 9eZJox6H0AZNMtGBX8C2ulcASoEpabyA1UlpkcbLo/c3SHriH9bvWDn8RIHkqmiQ+O
+	 ogEjLHMZ6D9hqyx454PPugUaw+zl+927OuJXeD0N+1wtvDAFZjp4Pp+hFVKVDPUiJi
+	 YcezEyWVC5J0YfjifFpVvfdnRYZZ1gMs/jUOqPxM29TPq+4A/zXhCY3hgBgV4BAJ0z
+	 AjD7HlQMbsmug==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Sascha Hauer <s.hauer@pengutronix.de>,
-	Jakub Kicinski <kuba@kernel.org>,
+Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Brian Norris <briannorris@chromium.org>,
+	Kalle Valo <kvalo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	borisp@nvidia.com,
-	john.fastabend@gmail.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 054/139] net: tls: wait for async completion on last message
-Date: Wed, 25 Sep 2024 08:07:54 -0400
-Message-ID: <20240925121137.1307574-54-sashal@kernel.org>
+	kees@kernel.org,
+	yu-hao.lin@nxp.com,
+	dmantipov@yandex.ru,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 055/139] wifi: mwifiex: Fix memcpy() field-spanning write warning in mwifiex_cmd_802_11_scan_ext()
+Date: Wed, 25 Sep 2024 08:07:55 -0400
+Message-ID: <20240925121137.1307574-55-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925121137.1307574-1-sashal@kernel.org>
 References: <20240925121137.1307574-1-sashal@kernel.org>
@@ -70,49 +70,59 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.52
 Content-Transfer-Encoding: 8bit
 
-From: Sascha Hauer <s.hauer@pengutronix.de>
+From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
 
-[ Upstream commit 54001d0f2fdbc7852136a00f3e6fc395a9547ae5 ]
+[ Upstream commit 498365e52bebcbc36a93279fe7e9d6aec8479cee ]
 
-When asynchronous encryption is used KTLS sends out the final data at
-proto->close time. This becomes problematic when the task calling
-close() receives a signal. In this case it can happen that
-tcp_sendmsg_locked() called at close time returns -ERESTARTSYS and the
-final data is not sent.
+Replace one-element array with a flexible-array member in
+`struct host_cmd_ds_802_11_scan_ext`.
 
-The described situation happens when KTLS is used in conjunction with
-io_uring, as io_uring uses task_work_add() to add work to the current
-userspace task. A discussion of the problem along with a reproducer can
-be found in [1] and [2]
+With this, fix the following warning:
 
-Fix this by waiting for the asynchronous encryption to be completed on
-the final message. With this there is no data left to be sent at close
-time.
+elo 16 17:51:58 surfacebook kernel: ------------[ cut here ]------------
+elo 16 17:51:58 surfacebook kernel: memcpy: detected field-spanning write (size 243) of single field "ext_scan->tlv_buffer" at drivers/net/wireless/marvell/mwifiex/scan.c:2239 (size 1)
+elo 16 17:51:58 surfacebook kernel: WARNING: CPU: 0 PID: 498 at drivers/net/wireless/marvell/mwifiex/scan.c:2239 mwifiex_cmd_802_11_scan_ext+0x83/0x90 [mwifiex]
 
-[1] https://lore.kernel.org/all/20231010141932.GD3114228@pengutronix.de/
-[2] https://lore.kernel.org/all/20240315100159.3898944-1-s.hauer@pengutronix.de/
-
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Link: https://patch.msgid.link/20240904-ktls-wait-async-v1-1-a62892833110@pengutronix.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Closes: https://lore.kernel.org/linux-hardening/ZsZNgfnEwOcPdCly@black.fi.intel.com/
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Acked-by: Brian Norris <briannorris@chromium.org>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://patch.msgid.link/ZsZa5xRcsLq9D+RX@elsanto
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tls/tls_sw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/marvell/mwifiex/fw.h   | 2 +-
+ drivers/net/wireless/marvell/mwifiex/scan.c | 3 +--
+ 2 files changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/net/tls/tls_sw.c b/net/tls/tls_sw.c
-index df166f6afad82..904dae0df7a47 100644
---- a/net/tls/tls_sw.c
-+++ b/net/tls/tls_sw.c
-@@ -1201,7 +1201,7 @@ static int tls_sw_sendmsg_locked(struct sock *sk, struct msghdr *msg,
+diff --git a/drivers/net/wireless/marvell/mwifiex/fw.h b/drivers/net/wireless/marvell/mwifiex/fw.h
+index 62f3c9a52a1d5..a3be37526697b 100644
+--- a/drivers/net/wireless/marvell/mwifiex/fw.h
++++ b/drivers/net/wireless/marvell/mwifiex/fw.h
+@@ -1587,7 +1587,7 @@ struct host_cmd_ds_802_11_scan_rsp {
  
- 	if (!num_async) {
- 		goto send_end;
--	} else if (num_zc) {
-+	} else if (num_zc || eor) {
- 		int err;
+ struct host_cmd_ds_802_11_scan_ext {
+ 	u32   reserved;
+-	u8    tlv_buffer[1];
++	u8    tlv_buffer[];
+ } __packed;
  
- 		/* Wait for pending encryptions to get completed */
+ struct mwifiex_ie_types_bss_mode {
+diff --git a/drivers/net/wireless/marvell/mwifiex/scan.c b/drivers/net/wireless/marvell/mwifiex/scan.c
+index 72904c275461e..5be817d9854a6 100644
+--- a/drivers/net/wireless/marvell/mwifiex/scan.c
++++ b/drivers/net/wireless/marvell/mwifiex/scan.c
+@@ -2543,8 +2543,7 @@ int mwifiex_ret_802_11_scan_ext(struct mwifiex_private *priv,
+ 	ext_scan_resp = &resp->params.ext_scan;
+ 
+ 	tlv = (void *)ext_scan_resp->tlv_buffer;
+-	buf_left = le16_to_cpu(resp->size) - (sizeof(*ext_scan_resp) + S_DS_GEN
+-					      - 1);
++	buf_left = le16_to_cpu(resp->size) - (sizeof(*ext_scan_resp) + S_DS_GEN);
+ 
+ 	while (buf_left >= sizeof(struct mwifiex_ie_types_header)) {
+ 		type = le16_to_cpu(tlv->type);
 -- 
 2.43.0
 
