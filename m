@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-77373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77374-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 53489985C6A
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:46:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C229D985C6C
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:47:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1945B287BB3
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:46:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A90128846F
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:47:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B2781CF5D6;
-	Wed, 25 Sep 2024 11:59:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BC201CF5F6;
+	Wed, 25 Sep 2024 11:59:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fOCAdn3R"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IuyzjiGV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 577F81AD9C6;
-	Wed, 25 Sep 2024 11:59:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2423A1CF5EA;
+	Wed, 25 Sep 2024 11:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727265571; cv=none; b=kUhQWUVyavpuNs2MNG6VD7mi92u6rGTrYsjcVMFmVNoFMie/CWCY/dyJypOmau2+oip6MZqOoFjqC7mZiwRL3FMzYDToe5a6EyJSj/PMQ6ZGvRnYMSJCEJvarjDfnzj5YIJMdMgkjTy96do890HMHfNnCSl8ZFFSZkT5Zeoq19o=
+	t=1727265573; cv=none; b=DQxDNaWzFLgaS6Fe5jWgBarHbcPsUFYWVnJSRGbjWb72a7oghLia28ouMZR4LCgaWAIxmKr7nGo4s1AHW6jJVfKlRcvgNMLGvkcrE2LiijJTDdgv3/VtPOUQ3NHcFxscjJkmXzLNihVYxW9oRhICfsBo8CmA3EfFlfgGRjfB4HQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727265571; c=relaxed/simple;
-	bh=rzIADt+limQfgDebFDhfMYzyKXz+7AETzjgDComMaOI=;
+	s=arc-20240116; t=1727265573; c=relaxed/simple;
+	bh=jFr7uu1TQUwZVhdUqJfZcFkq8Z+1od8tbXbQq+2lMHs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VGQOTFUfitKVHntkzRc80+ocN5wvvlWYAGY0mpP8mQt9FN4iG69NNxEAiF6T4VMHsqgnY3X30B84p9lJq/52MPjz6qycoaFC5F8ezmYo8EZXuBFLd1NoSc09d9etVJiLYOqJiVNkUKSefe4rX3aoUX8zkaphePy4gc3eUFkwE+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fOCAdn3R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB47EC4CEC7;
-	Wed, 25 Sep 2024 11:59:29 +0000 (UTC)
+	 MIME-Version; b=WvDHXQCLWZ8FAYtGWsXFyy9aaXzTOlibTr5c3oYLtquEUeGWjgDkxYX5tYz0keDea3FBzpZ3aAZBHxkvM3ntEE5YvxYSqthFv5bfFACP4E1h+pTtn9WjHmHGMXI3q8Umm+zm2hSW6G4yWotUlqY+Q2NAZOYWn/le7xAGEvmQxa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IuyzjiGV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54D55C4CECF;
+	Wed, 25 Sep 2024 11:59:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727265570;
-	bh=rzIADt+limQfgDebFDhfMYzyKXz+7AETzjgDComMaOI=;
+	s=k20201202; t=1727265572;
+	bh=jFr7uu1TQUwZVhdUqJfZcFkq8Z+1od8tbXbQq+2lMHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fOCAdn3Rhznvg7IQ9II8UnKY3Pq0MbSEKXWIEHdcmBuFuklNk5ObfjSXSStV2nznC
-	 /bEij9uybh2Ab/ESnEfUDv/z+rHs5W3zVe5fzK+RBOX+T9Tzf4mx/Ho+QlZ67rZd+y
-	 grCHMEiSpy+J0jrUsOjIw3K2FtF6ExGsxjnkZsbigCU6iOh5jBAZ+gEsAJWfMGOqDi
-	 NWhGFQajXrOnnt660xiPfzNGEHrV0E/P2ufZyT/W6+c7Mmqib0PkhEH98/oFHpCNDg
-	 WZcSRX3a7RkqBmgJpmlRBmrtTal4Ue6RD/0WYjNhpATIBkNysaF/Bcd2YIsRAQnj5A
-	 yRPBsCyZsUW0w==
+	b=IuyzjiGVb5cHsiM6AiOn0Ahu4Xbq8shwKM9/rHHPde38kCzuwRGm8r/BNy92o8nT2
+	 AivqCrwlAZRkv6aYGcjct9T5TXAXkKsFOfSr2i+EOAKoKofDp0p02SZoAUxJH1okb5
+	 sPcKUp0Mns2/NeBia+PDYL6o981zf1x7Z1mg4sdtY8uXwPb9+SNWAd4lSrAxUphJys
+	 3nKYllsoR9nWv2hYC8vwdzOo3M+XPks/nRAUOsnPR2okcP+qxzBJJN4Qq5O9Wji+qs
+	 Vh5ocamQoVMQt5LtgF6QetDtbuFi/LeWRkOkwh2nb01JLNT2TziuZQpp7nb8qpZD/F
+	 ULV2/g8tmJvMA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Keith Busch <kbusch@kernel.org>,
-	Robert Beckett <bob.beckett@collabora.com>,
+Cc: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>,
-	sagi@grimberg.me,
-	linux-nvme@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.10 028/197] nvme-pci: qdepth 1 quirk
-Date: Wed, 25 Sep 2024 07:50:47 -0400
-Message-ID: <20240925115823.1303019-28-sashal@kernel.org>
+	kvalo@kernel.org,
+	jjohnson@kernel.org,
+	linux-wireless@vger.kernel.org,
+	ath12k@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.10 029/197] wifi: ath12k: fix array out-of-bound access in SoC stats
+Date: Wed, 25 Sep 2024 07:50:48 -0400
+Message-ID: <20240925115823.1303019-29-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925115823.1303019-1-sashal@kernel.org>
 References: <20240925115823.1303019-1-sashal@kernel.org>
@@ -66,88 +68,41 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.11
 Content-Transfer-Encoding: 8bit
 
-From: Keith Busch <kbusch@kernel.org>
+From: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
 
-[ Upstream commit 83bdfcbdbe5d901c5fa432decf12e1725a840a56 ]
+[ Upstream commit e106b7ad13c1d246adaa57df73edb8f8b8acb240 ]
 
-Another device has been reported to be unreliable if we have more than
-one outstanding command. In this new case, data corruption may occur.
-Since we have two devices now needing this quirky behavior, make a
-generic quirk flag.
+Currently, the ath12k_soc_dp_stats::hal_reo_error array is defined with a
+maximum size of DP_REO_DST_RING_MAX. However, the ath12k_dp_rx_process()
+function access ath12k_soc_dp_stats::hal_reo_error using the REO
+destination SRNG ring ID, which is incorrect. SRNG ring ID differ from
+normal ring ID, and this usage leads to out-of-bounds array access. To
+fix this issue, modify ath12k_dp_rx_process() to use the normal ring ID
+directly instead of the SRNG ring ID to avoid out-of-bounds array access.
 
-The same Apple quirk is clearly not "temporary", so update the comment
-while moving it.
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
 
-Link: https://lore.kernel.org/linux-nvme/191d810a4e3.fcc6066c765804.973611676137075390@collabora.com/
-Reported-by: Robert Beckett <bob.beckett@collabora.com>
-Reviewed-by: Christoph Hellwig hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Signed-off-by: Karthikeyan Periyasamy <quic_periyasa@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://patch.msgid.link/20240704070811.4186543-2-quic_periyasa@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/nvme.h |  5 +++++
- drivers/nvme/host/pci.c  | 18 +++++++++---------
- 2 files changed, 14 insertions(+), 9 deletions(-)
+ drivers/net/wireless/ath/ath12k/dp_rx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvme/host/nvme.h b/drivers/nvme/host/nvme.h
-index 5e66bcb34d530..ff1769172778b 100644
---- a/drivers/nvme/host/nvme.h
-+++ b/drivers/nvme/host/nvme.h
-@@ -89,6 +89,11 @@ enum nvme_quirks {
- 	 */
- 	NVME_QUIRK_NO_DEEPEST_PS		= (1 << 5),
+diff --git a/drivers/net/wireless/ath/ath12k/dp_rx.c b/drivers/net/wireless/ath/ath12k/dp_rx.c
+index 3cdc4c51d6dfe..f8767496fa543 100644
+--- a/drivers/net/wireless/ath/ath12k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath12k/dp_rx.c
+@@ -2702,7 +2702,7 @@ int ath12k_dp_rx_process(struct ath12k_base *ab, int ring_id,
+ 		if (push_reason !=
+ 		    HAL_REO_DEST_RING_PUSH_REASON_ROUTING_INSTRUCTION) {
+ 			dev_kfree_skb_any(msdu);
+-			ab->soc_stats.hal_reo_error[dp->reo_dst_ring[ring_id].ring_id]++;
++			ab->soc_stats.hal_reo_error[ring_id]++;
+ 			continue;
+ 		}
  
-+	/*
-+	 *  Problems seen with concurrent commands
-+	 */
-+	NVME_QUIRK_QDEPTH_ONE			= (1 << 6),
-+
- 	/*
- 	 * Set MEDIUM priority on SQ creation
- 	 */
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 18d85575cdb48..fde4073fa418e 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -2528,15 +2528,8 @@ static int nvme_pci_enable(struct nvme_dev *dev)
- 	else
- 		dev->io_sqes = NVME_NVM_IOSQES;
- 
--	/*
--	 * Temporary fix for the Apple controller found in the MacBook8,1 and
--	 * some MacBook7,1 to avoid controller resets and data loss.
--	 */
--	if (pdev->vendor == PCI_VENDOR_ID_APPLE && pdev->device == 0x2001) {
-+	if (dev->ctrl.quirks & NVME_QUIRK_QDEPTH_ONE) {
- 		dev->q_depth = 2;
--		dev_warn(dev->ctrl.device, "detected Apple NVMe controller, "
--			"set queue depth=%u to work around controller resets\n",
--			dev->q_depth);
- 	} else if (pdev->vendor == PCI_VENDOR_ID_SAMSUNG &&
- 		   (pdev->device == 0xa821 || pdev->device == 0xa822) &&
- 		   NVME_CAP_MQES(dev->ctrl.cap) == 0) {
-@@ -3401,6 +3394,8 @@ static const struct pci_device_id nvme_id_table[] = {
- 				NVME_QUIRK_BOGUS_NID, },
- 	{ PCI_VDEVICE(REDHAT, 0x0010),	/* Qemu emulated controller */
- 		.driver_data = NVME_QUIRK_BOGUS_NID, },
-+	{ PCI_DEVICE(0x1217, 0x8760), /* O2 Micro 64GB Steam Deck */
-+		.driver_data = NVME_QUIRK_QDEPTH_ONE },
- 	{ PCI_DEVICE(0x126f, 0x2262),	/* Silicon Motion generic */
- 		.driver_data = NVME_QUIRK_NO_DEEPEST_PS |
- 				NVME_QUIRK_BOGUS_NID, },
-@@ -3535,7 +3530,12 @@ static const struct pci_device_id nvme_id_table[] = {
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMAZON, 0xcd02),
- 		.driver_data = NVME_QUIRK_DMA_ADDRESS_BITS_48, },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_APPLE, 0x2001),
--		.driver_data = NVME_QUIRK_SINGLE_VECTOR },
-+		/*
-+		 * Fix for the Apple controller found in the MacBook8,1 and
-+		 * some MacBook7,1 to avoid controller resets and data loss.
-+		 */
-+		.driver_data = NVME_QUIRK_SINGLE_VECTOR |
-+				NVME_QUIRK_QDEPTH_ONE },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_APPLE, 0x2003) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_APPLE, 0x2005),
- 		.driver_data = NVME_QUIRK_SINGLE_VECTOR |
 -- 
 2.43.0
 
