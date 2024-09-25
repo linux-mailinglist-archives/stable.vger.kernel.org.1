@@ -1,57 +1,64 @@
-Return-Path: <stable+bounces-77174-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77175-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6B309859A3
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:57:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E39E89859A5
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:58:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7DAA1C22A7F
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 11:57:42 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 971921F24B16
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 11:58:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 376231AB520;
-	Wed, 25 Sep 2024 11:39:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1431189516;
+	Wed, 25 Sep 2024 11:39:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F9kPV/kE"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YwU5XQcw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E53431AB504;
-	Wed, 25 Sep 2024 11:39:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEA15188A01;
+	Wed, 25 Sep 2024 11:39:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727264383; cv=none; b=f+gMvA7KsrbZV9f7nzsZYDgc4GguMlEd8GaMaPTSmCPG6KfQqMAsijzrHsZMILWcaPgLaZThn7CaoJylyOmEinasIWiwNwAXzpVO89Ipf8EtzG4C1QzUM4dPEZFRjrfCXmprJ/5ePTngYl2fNZ3pCPzez6elpR9gbGUdyxn+1Ok=
+	t=1727264387; cv=none; b=PPurbqYG1XOORrtCYiBkhqMlzWtCvmByzOODIov+aUxcsKI7JMZimZW5pOPr6qRCWsbPBvjO9N33LwGQMtmaQBk4nLVirm9EU39WL1A0AKABtEO+f0606whXNs7uxzocABhi8NhcUEIknoDo/DRsojN6Hmo7zkYHh44H6c5Re+Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727264383; c=relaxed/simple;
-	bh=NDKFUcHo39S3JcK037MgD4trZzK54A0vUtbeOc/5DyU=;
+	s=arc-20240116; t=1727264387; c=relaxed/simple;
+	bh=c5m3Bnbl5dphbPfrSx66MXOe3qY4VE3SBmFhPptmC+E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VQ8Xhnt/9gXBJN22AR3Bkc9wvK/+qO2TPsf9N9aENOTsZcfjfk7rV3m+fPxL2euyEvhmFjd7dFxFokXyOehyPFkd44IlRpW2zp5QDWpQEY4bmzUTF67R7nQoX22lahifmFnOYLqhUEhca5IJFQgCyY3gz/9NxTTAzq9pDuoP+yY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F9kPV/kE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E26BC4CEC3;
-	Wed, 25 Sep 2024 11:39:41 +0000 (UTC)
+	 MIME-Version; b=qTnEMUMcF4cCG3HOG6ApY8JwiX2pLpA1X9Fk9UkwHHTiKB95gIH3fY4HxR2FJ4tp+EqWemyGHI2N/dEMhFV25ZQuL3sU6wdA7WfwS+6I2jLxi0UstK1dAfQKRYeGpcnrgR/1pbIspZGyoa6IZXXI2Zy9Z6Jz5bxk6XG8d14N8yw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YwU5XQcw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48D37C4CEC7;
+	Wed, 25 Sep 2024 11:39:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727264382;
-	bh=NDKFUcHo39S3JcK037MgD4trZzK54A0vUtbeOc/5DyU=;
+	s=k20201202; t=1727264386;
+	bh=c5m3Bnbl5dphbPfrSx66MXOe3qY4VE3SBmFhPptmC+E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F9kPV/kEqrWXQ93UTZvS5DSslpI2M3EcuebdRehfS+FdSMJZUapTTbw48CPs9t/SW
-	 moPek+x0yWIkXm6U8WDKF06Ft3VA3XzKPkmdyN54wBDpzaBUVeINNPkMfBBgSBD5do
-	 1pp9lUov/BOOITa5A6U/tEtVPZ2q3GN6F5OK0ZpI2gQ+y1RZBIk7kz9HFsTNrsriDW
-	 NpjIfsyFAIiDPzqky/tK1Z/1BZc5o3wRx6mfjbstJtd5wJKKUdHOgB+2A32FSWBhkL
-	 uIvebK+g31oeAk+QgU6Gu4NgIvHB2hL7obsX44geyy2mA80gEDE9VkM9h7UFmf6s1C
-	 AplRiXa3EgqUQ==
+	b=YwU5XQcw1D4njcSnWHfxwg3ylscrJpcZ1F8V3dGToO4CXUcXHvgII6XGZuil8wsin
+	 WZrj3Q3bIb2e1DwySDOCNqa79cZVkFrPmZapwFPl7MXwuAE3HIBdjryRJgbHR7Rbbm
+	 IyoCe+VpZ1we3vBwkSkGJQY5/wKGLxxYRrYB0W931jVy8Tkxm+PaaWBkjqMSTErnuR
+	 tzrSwVxyKcXTi3ngXqzckmS+ogtV42ezqFbmeFgv6P4vwEFOX5QN54+Mloyl27YTjC
+	 Uk2lD4JuQ1mFRBiG3Pq9dtP56OB23YEcvgxu6WAeEZvkEtdltMlJfjB5viqIpcpfsC
+	 46c2AcFz2ZNQg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Zong-Zhe Yang <kevin_yang@realtek.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+Cc: Daniel Sneddon <daniel.sneddon@linux.intel.com>,
+	"Shanavas . K . S" <shanavasks@gmail.com>,
+	Borislav Petkov <bp@alien8.de>,
 	Sasha Levin <sashal@kernel.org>,
-	kvalo@kernel.org,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 076/244] wifi: rtw89: avoid reading out of bounds when loading TX power FW elements
-Date: Wed, 25 Sep 2024 07:24:57 -0400
-Message-ID: <20240925113641.1297102-76-sashal@kernel.org>
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	peterz@infradead.org,
+	vegard.nossum@oracle.com,
+	tony.luck@intel.com,
+	pawan.kumar.gupta@linux.intel.com
+Subject: [PATCH AUTOSEL 6.11 077/244] x86/bugs: Add missing NO_SSB flag
+Date: Wed, 25 Sep 2024 07:24:58 -0400
+Message-ID: <20240925113641.1297102-77-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925113641.1297102-1-sashal@kernel.org>
 References: <20240925113641.1297102-1-sashal@kernel.org>
@@ -66,57 +73,44 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11
 Content-Transfer-Encoding: 8bit
 
-From: Zong-Zhe Yang <kevin_yang@realtek.com>
+From: Daniel Sneddon <daniel.sneddon@linux.intel.com>
 
-[ Upstream commit ed2e4bb17a4884cf29c3347353d8aabb7265b46c ]
+[ Upstream commit 23e12b54acf621f4f03381dca91cc5f1334f21fd ]
 
-Because the loop-expression will do one more time before getting false from
-cond-expression, the original code copied one more entry size beyond valid
-region.
+The Moorefield and Lightning Mountain Atom processors are
+missing the NO_SSB flag in the vulnerabilities whitelist.
+This will cause unaffected parts to incorrectly be reported
+as vulnerable. Add the missing flag.
 
-Fix it by moving the entry copy to loop-body.
+These parts are currently out of service and were verified
+internally with archived documentation that they need the
+NO_SSB flag.
 
-Signed-off-by: Zong-Zhe Yang <kevin_yang@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20240902015803.20420-1-pkshih@realtek.com
+Closes: https://lore.kernel.org/lkml/CAEJ9NQdhh+4GxrtG1DuYgqYhvc0hi-sKZh-2niukJ-MyFLntAA@mail.gmail.com/
+Reported-by: Shanavas.K.S <shanavasks@gmail.com>
+Signed-off-by: Daniel Sneddon <daniel.sneddon@linux.intel.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20240829192437.4074196-1-daniel.sneddon@linux.intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/core.h | 18 ++++++++++++------
- 1 file changed, 12 insertions(+), 6 deletions(-)
+ arch/x86/kernel/cpu/common.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/core.h b/drivers/net/wireless/realtek/rtw89/core.h
-index 11fa003a9788c..a7ec7eed83812 100644
---- a/drivers/net/wireless/realtek/rtw89/core.h
-+++ b/drivers/net/wireless/realtek/rtw89/core.h
-@@ -3909,16 +3909,22 @@ struct rtw89_txpwr_conf {
- 	const void *data;
- };
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index d4e539d4e158c..be307c9ef263d 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -1165,8 +1165,8 @@ static const __initconst struct x86_cpu_id cpu_vuln_whitelist[] = {
  
-+static inline bool rtw89_txpwr_entcpy(void *entry, const void *cursor, u8 size,
-+				      const struct rtw89_txpwr_conf *conf)
-+{
-+	u8 valid_size = min(size, conf->ent_sz);
-+
-+	memcpy(entry, cursor, valid_size);
-+	return true;
-+}
-+
- #define rtw89_txpwr_conf_valid(conf) (!!(conf)->data)
+ 	VULNWL_INTEL(INTEL_CORE_YONAH,		NO_SSB),
  
- #define rtw89_for_each_in_txpwr_conf(entry, cursor, conf) \
--	for (typecheck(const void *, cursor), (cursor) = (conf)->data, \
--	     memcpy(&(entry), cursor, \
--		    min_t(u8, sizeof(entry), (conf)->ent_sz)); \
-+	for (typecheck(const void *, cursor), (cursor) = (conf)->data; \
- 	     (cursor) < (conf)->data + (conf)->num_ents * (conf)->ent_sz; \
--	     (cursor) += (conf)->ent_sz, \
--	     memcpy(&(entry), cursor, \
--		    min_t(u8, sizeof(entry), (conf)->ent_sz)))
-+	     (cursor) += (conf)->ent_sz) \
-+		if (rtw89_txpwr_entcpy(&(entry), cursor, sizeof(entry), conf))
+-	VULNWL_INTEL(INTEL_ATOM_AIRMONT_MID,	NO_L1TF | MSBDS_ONLY | NO_SWAPGS | NO_ITLB_MULTIHIT),
+-	VULNWL_INTEL(INTEL_ATOM_AIRMONT_NP,	NO_L1TF | NO_SWAPGS | NO_ITLB_MULTIHIT),
++	VULNWL_INTEL(INTEL_ATOM_AIRMONT_MID,	NO_SSB | NO_L1TF | NO_SWAPGS | NO_ITLB_MULTIHIT | MSBDS_ONLY),
++	VULNWL_INTEL(INTEL_ATOM_AIRMONT_NP,	NO_SSB | NO_L1TF | NO_SWAPGS | NO_ITLB_MULTIHIT),
  
- struct rtw89_txpwr_byrate_data {
- 	struct rtw89_txpwr_conf conf;
+ 	VULNWL_INTEL(INTEL_ATOM_GOLDMONT,	NO_MDS | NO_L1TF | NO_SWAPGS | NO_ITLB_MULTIHIT | NO_MMIO),
+ 	VULNWL_INTEL(INTEL_ATOM_GOLDMONT_D,	NO_MDS | NO_L1TF | NO_SWAPGS | NO_ITLB_MULTIHIT | NO_MMIO),
 -- 
 2.43.0
 
