@@ -1,62 +1,61 @@
-Return-Path: <stable+bounces-77183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFC499859CD
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:00:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AB429859D1
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:00:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DE0828467D
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:00:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 404121F2041D
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:00:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B97BF1AED39;
-	Wed, 25 Sep 2024 11:40:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FDF31AED5A;
+	Wed, 25 Sep 2024 11:40:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KGsKLIq+"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ulNxVt6B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 733271AED35;
-	Wed, 25 Sep 2024 11:40:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14C411AED4D;
+	Wed, 25 Sep 2024 11:40:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727264413; cv=none; b=Z7SPXzcqQ2Zh1aVkr3srEh8cn3joBU5x/zJng0geEpp0psJTKbgWlI0MDkb0cavmRBbVvdE/NgTzSK1L6agKOvCcuh6648f51WArc+aICOpotw+ayrwCzSoQYyicwdPS4E63SsPnBqPg6A7i5MkwsilBgajEeoCC3Fs2zaLjKrM=
+	t=1727264415; cv=none; b=af5YQ90PGUohIa0FaAzeypOWm/v9jp6THo7F+a+d7iHKOJCJRcdb1v6IgbMTJM1pkrH1C5OuLDmzxWPhj2hB46jUIoexzMKb2Me0AtQBhDc8rh12hgpUg7UqDe+Te5C8TsMq4Ga7B0DXrRzjd0VkvxdcdU8kpDRrpFnC2sqAIek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727264413; c=relaxed/simple;
-	bh=m6g1/T++F9gxi9y9LjBZx6JGGbo3MyCMDcOYnbkWviQ=;
+	s=arc-20240116; t=1727264415; c=relaxed/simple;
+	bh=29/0Evw/Ct649xv2s42Fn0NvJ7869yMChaP7sa3u7PI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oUw7t84p/mTgO6lhpzdBMwtIeqWTH651vHIiwRFJ9lG+86yxz0kZpAiMJHWYrzDqVnMdVDZBIiXLWKmBh+nkWI+9kHRZ8oU+86yvreR7AoABsxQ+A436l6Kq6M+wAZljXvtFY6InCYSwE4ysV9ZtFh4358KpDYGrTqL/lRstmjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KGsKLIq+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86EECC4CEC3;
-	Wed, 25 Sep 2024 11:40:11 +0000 (UTC)
+	 MIME-Version; b=uy+hrO6Oms2xgFoa3Njq16UKRRlqHtyCBUBdiX7BC7o67vetJ8RogG6PkdH9+IuUhbjHsdWQiE97YdXk0ZC/3gGSW0D6UbIP+KpWMeCOIZ0+M5W2PNYR50NFcwLgwSQLYCLfZC2xq9dtzrKsLZCZMRQXNioSlTMZLadiwnMqo7A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ulNxVt6B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 954FAC4CECD;
+	Wed, 25 Sep 2024 11:40:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727264413;
-	bh=m6g1/T++F9gxi9y9LjBZx6JGGbo3MyCMDcOYnbkWviQ=;
+	s=k20201202; t=1727264415;
+	bh=29/0Evw/Ct649xv2s42Fn0NvJ7869yMChaP7sa3u7PI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KGsKLIq+DiDd2MdCt4VO1r8N48ZMFfX/ItBM4Y/q9qofpnHBWo0TEI7OP8NpibRJi
-	 wPduOmhaPuYTMLbozAbEeZwmF1oS6LXsP8smFFH8iysUeaiU5EpNR1TupqrqSHMhvZ
-	 uJprZUNZz0Igw+EAGLZJyDXbDihsEYSjGr/lx+NWMOE2ZE9WzQrsmPCNytKn1+OHcR
-	 i+BtHhu9b55FDaw9hw95HPXw/LnnfscwT6Eaf2tge++SYk1eVxUovb3LVnIGH5NLOS
-	 eQ5R3BmFvb91sdojYqKDxvijpBELO/fgufGKKZQRcuvj56FTJ4jJWX8gFsFxsjUOyD
-	 BFLGhOib72F8Q==
+	b=ulNxVt6BohzdJYEbAIPZCxGx+WQ1mWpnPqGyE5CAU/zYIyIski/MU/Vc1YLG25ixj
+	 C1tlE8QHkHd4YExzsFZPe7u0jP8zYjCjBdjHLD6jMt9CCNLm8jLI1WoR4KkRxYAwZM
+	 x+UEejPfhGROULYlLyUDu23GAzetRVA+MAKs93p06nCEyjNf5YgZV1cGfS31dfeIDM
+	 0HJ2S+csUIsfJEIwSou4KHNz1Q9fO7guXEwhlSHhJBOL70FTg/KoY5dl9ytBdTUyyf
+	 4fkSjuQw2IwjZc/1sG/MCEDt3oaOV/DW057gSRPN1So4htEor9oMXw1KnChROlrLke
+	 lEZ+AFOW2ThGw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Brian Norris <briannorris@chromium.org>,
-	Kalle Valo <kvalo@kernel.org>,
+Cc: David Howells <dhowells@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	netfs@lists.linux.dev,
+	linux-fsdevel@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	francesco.dolcini@toradex.com,
-	kees@kernel.org,
-	yu-hao.lin@nxp.com,
-	dmantipov@yandex.ru,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 085/244] wifi: mwifiex: Fix memcpy() field-spanning write warning in mwifiex_cmd_802_11_scan_ext()
-Date: Wed, 25 Sep 2024 07:25:06 -0400
-Message-ID: <20240925113641.1297102-85-sashal@kernel.org>
+	rostedt@goodmis.org,
+	mhiramat@kernel.org,
+	linux-trace-kernel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.11 086/244] netfs: Cancel dirty folios that have no storage destination
+Date: Wed, 25 Sep 2024 07:25:07 -0400
+Message-ID: <20240925113641.1297102-86-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925113641.1297102-1-sashal@kernel.org>
 References: <20240925113641.1297102-1-sashal@kernel.org>
@@ -71,59 +70,78 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11
 Content-Transfer-Encoding: 8bit
 
-From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+From: David Howells <dhowells@redhat.com>
 
-[ Upstream commit 498365e52bebcbc36a93279fe7e9d6aec8479cee ]
+[ Upstream commit 8f246b7c0a1be0882374f2ff831a61f0dbe77678 ]
 
-Replace one-element array with a flexible-array member in
-`struct host_cmd_ds_802_11_scan_ext`.
+Kafs wants to be able to cache the contents of directories (and symlinks),
+but whilst these are downloaded from the server with the FS.FetchData RPC
+op and similar, the same as for regular files, they can't be updated by
+FS.StoreData, but rather have special operations (FS.MakeDir, etc.).
 
-With this, fix the following warning:
+Now, rather than redownloading a directory's content after each change made
+to that directory, kafs modifies the local blob.  This blob can be saved
+out to the cache, and since it's using netfslib, kafs just marks the folios
+dirty and lets ->writepages() on the directory take care of it, as for an
+regular file.
 
-elo 16 17:51:58 surfacebook kernel: ------------[ cut here ]------------
-elo 16 17:51:58 surfacebook kernel: memcpy: detected field-spanning write (size 243) of single field "ext_scan->tlv_buffer" at drivers/net/wireless/marvell/mwifiex/scan.c:2239 (size 1)
-elo 16 17:51:58 surfacebook kernel: WARNING: CPU: 0 PID: 498 at drivers/net/wireless/marvell/mwifiex/scan.c:2239 mwifiex_cmd_802_11_scan_ext+0x83/0x90 [mwifiex]
+This is fine as long as there's a cache as although the upload stream is
+disabled, there's a cache stream to drive the procedure.  But if the cache
+goes away in the meantime, suddenly there's no way do any writes and the
+code gets confused, complains "R=%x: No submit" to dmesg and leaves the
+dirty folio hanging.
 
-Reported-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Closes: https://lore.kernel.org/linux-hardening/ZsZNgfnEwOcPdCly@black.fi.intel.com/
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Brian Norris <briannorris@chromium.org>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/ZsZa5xRcsLq9D+RX@elsanto
+Fix this by just cancelling the store of the folio if neither stream is
+active.  (If there's no cache at the time of dirtying, we should just not
+mark the folio dirty).
+
+Signed-off-by: David Howells <dhowells@redhat.com>
+cc: Jeff Layton <jlayton@kernel.org>
+cc: netfs@lists.linux.dev
+cc: linux-fsdevel@vger.kernel.org
+Link: https://lore.kernel.org/r/20240814203850.2240469-23-dhowells@redhat.com/ # v2
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwifiex/fw.h   | 2 +-
- drivers/net/wireless/marvell/mwifiex/scan.c | 3 +--
- 2 files changed, 2 insertions(+), 3 deletions(-)
+ fs/netfs/write_issue.c       | 6 +++++-
+ include/trace/events/netfs.h | 1 +
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/fw.h b/drivers/net/wireless/marvell/mwifiex/fw.h
-index 3adc447b715f6..5b072120e3f21 100644
---- a/drivers/net/wireless/marvell/mwifiex/fw.h
-+++ b/drivers/net/wireless/marvell/mwifiex/fw.h
-@@ -1587,7 +1587,7 @@ struct host_cmd_ds_802_11_scan_rsp {
+diff --git a/fs/netfs/write_issue.c b/fs/netfs/write_issue.c
+index 3f7e37e50c7d0..3ae287bb19a0a 100644
+--- a/fs/netfs/write_issue.c
++++ b/fs/netfs/write_issue.c
+@@ -410,13 +410,17 @@ static int netfs_write_folio(struct netfs_io_request *wreq,
+ 	folio_unlock(folio);
  
- struct host_cmd_ds_802_11_scan_ext {
- 	u32   reserved;
--	u8    tlv_buffer[1];
-+	u8    tlv_buffer[];
- } __packed;
- 
- struct mwifiex_ie_types_bss_mode {
-diff --git a/drivers/net/wireless/marvell/mwifiex/scan.c b/drivers/net/wireless/marvell/mwifiex/scan.c
-index 0326b121747cb..17ce84f5207e3 100644
---- a/drivers/net/wireless/marvell/mwifiex/scan.c
-+++ b/drivers/net/wireless/marvell/mwifiex/scan.c
-@@ -2530,8 +2530,7 @@ int mwifiex_ret_802_11_scan_ext(struct mwifiex_private *priv,
- 	ext_scan_resp = &resp->params.ext_scan;
- 
- 	tlv = (void *)ext_scan_resp->tlv_buffer;
--	buf_left = le16_to_cpu(resp->size) - (sizeof(*ext_scan_resp) + S_DS_GEN
--					      - 1);
-+	buf_left = le16_to_cpu(resp->size) - (sizeof(*ext_scan_resp) + S_DS_GEN);
- 
- 	while (buf_left >= sizeof(struct mwifiex_ie_types_header)) {
- 		type = le16_to_cpu(tlv->type);
+ 	if (fgroup == NETFS_FOLIO_COPY_TO_CACHE) {
+-		if (!fscache_resources_valid(&wreq->cache_resources)) {
++		if (!cache->avail) {
+ 			trace_netfs_folio(folio, netfs_folio_trace_cancel_copy);
+ 			netfs_issue_write(wreq, upload);
+ 			netfs_folio_written_back(folio);
+ 			return 0;
+ 		}
+ 		trace_netfs_folio(folio, netfs_folio_trace_store_copy);
++	} else if (!upload->avail && !cache->avail) {
++		trace_netfs_folio(folio, netfs_folio_trace_cancel_store);
++		netfs_folio_written_back(folio);
++		return 0;
+ 	} else if (!upload->construct) {
+ 		trace_netfs_folio(folio, netfs_folio_trace_store);
+ 	} else {
+diff --git a/include/trace/events/netfs.h b/include/trace/events/netfs.h
+index 606b4a0f92dae..edcc3b3a3ecf8 100644
+--- a/include/trace/events/netfs.h
++++ b/include/trace/events/netfs.h
+@@ -141,6 +141,7 @@
+ 	EM(netfs_streaming_cont_filled_page,	"mod-streamw-f+") \
+ 	/* The rest are for writeback */			\
+ 	EM(netfs_folio_trace_cancel_copy,	"cancel-copy")	\
++	EM(netfs_folio_trace_cancel_store,	"cancel-store")	\
+ 	EM(netfs_folio_trace_clear,		"clear")	\
+ 	EM(netfs_folio_trace_clear_cc,		"clear-cc")	\
+ 	EM(netfs_folio_trace_clear_g,		"clear-g")	\
 -- 
 2.43.0
 
