@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-77340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id D693C985BFD
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:36:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1730E985C00
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:37:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 13B141C247D8
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:36:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 475001C24497
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:37:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F1A31CBE9C;
-	Wed, 25 Sep 2024 11:53:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 049C61CC143;
+	Wed, 25 Sep 2024 11:53:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fgXw3DG4"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XyXYLrSC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D205B1A08AB;
-	Wed, 25 Sep 2024 11:53:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACC621CBEB9;
+	Wed, 25 Sep 2024 11:53:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727265211; cv=none; b=kwzhLtn+XZF8ArLVU+H3xwfSy4JEuN8pqxgfQEcCfYCfK810KWu//gO0H5+/tRMQ+/IYNLoHvILqYZ0pqrW1M8NqngZY6GfwVJzLuMwtodwa7aLLT6/A3piRjBY9hnz+fvdQsKeUmgnbAARmG729vR9gF7qxLkuxZnr7W1iW884=
+	t=1727265213; cv=none; b=nd/Koof7l0c+ciOAsI71qeYMVbHP6w9Q8lHqtotD8k1/bN4feVDRTn7WW0RCSsaSkOkIc6SN5TSRdWfnruumHc/kyle5WSGvjV3VeWnzH4jZrGh2Ev7StNf73EMUIGPg00v1iz6mRiVuIFzcoWAbaunnjsQv0/pNy6kDS0xdt+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727265211; c=relaxed/simple;
-	bh=gqUbvQt8vmr6+fqLEweAASRSTZ/+RqF0wVvOsjajWyU=;
+	s=arc-20240116; t=1727265213; c=relaxed/simple;
+	bh=PXYsEtrSdXpaRURxZQhAtlJjznCOG6BAByR7SGjYabo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hlvCsvEmoL8cwW7Xl7ntA+2FVyK2W7/jxj99l7AxjcMutQXft4palFZucXhmXIgQMc0rFeRJwcpHiuibtmgolS2QnDBhasieNb+HxE8wIIgPzy55zAYCbZxcr3IsLFlSEVuLovqgJGOWRK+04tZV5l1rv57UQLIEuGLQaM2sx8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fgXw3DG4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54955C4CECD;
-	Wed, 25 Sep 2024 11:53:29 +0000 (UTC)
+	 MIME-Version; b=SCiWzM82qduy6aq7itCBTOmupvjZnb9vladgBhJgDil5Bb2imQ8U0gm7xirje+8UTLg3BWdUiK/wn52bjhyPuBVTxjuzuZxXDtiauOj4u+OFMLb6xFULn7BbaHTByOmO8S1pOxJuFp5LzLYCWBQhw2vngXfq4K2tQ7mMWBsH6Oo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XyXYLrSC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5876C4CEC7;
+	Wed, 25 Sep 2024 11:53:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727265210;
-	bh=gqUbvQt8vmr6+fqLEweAASRSTZ/+RqF0wVvOsjajWyU=;
+	s=k20201202; t=1727265212;
+	bh=PXYsEtrSdXpaRURxZQhAtlJjznCOG6BAByR7SGjYabo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fgXw3DG4bJQUA9pFZbN6qen1ct+WohKZI8KD+Sglymh7rZb1EE3WXGTyZ8+0janit
-	 ZXCAXQdxME9Z9V5SrRSuJ5IbhSJjNoXklsq7eU5ZdxhfAE0MaHK8qB3CwJwDVzDDqM
-	 kNPrThRfGWOzSb9ySbmNA2OAswc44Ql5C2B+eOZTaWfgy6hvNWhlyklsUv6VLvBsSf
-	 023g9rmw5tmuKRJESEalRr0RGuUjNb+YLn1KTu4f2iiDeUuhnuQzYkrfTbkDe+iFUk
-	 6DUCWEjpD6YiFeRBEUvPANU0QGNOMyhT3KLRp3HFBNhW+uC7hMu6cm8e+1H2Xv/kTn
-	 j8Sr+AGY58wPg==
+	b=XyXYLrSC/4i8Xwb93Pv/Qb5F3She+4quoJZjqyKT4zT+w9/FoFchFAiSKDidV+Fj7
+	 XYB26Aeo3SmkzL8DK+UmxbgVKOhXN0re7J3uQMKk1m8OXrNsUB7qnya4Mi1LTepx/S
+	 nKM/f7VAAZ0Brs7zUiHIBEjmdWfRe0P6N9nsH+cZo/aA9bLlt0M26egn9vNVXbQ1vj
+	 9MWbhvyFkXYVUGTQq0JxomL23sv0wSEhYyX+nR1B6ctZhCPEvcxOH59lGZCjDE5Yul
+	 gtJSvdlMcB4Z3DFdlW8RoT+16kd9KHarRfz1A/QryjvXoJQUVbGT7LIfSDkN61WMzj
+	 TimP31ATn5JOA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Christoph Hellwig <hch@lst.de>,
-	"Darrick J . Wong" <djwong@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
+Cc: Kuan-Wei Chiu <visitorckw@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Quentin Monnet <qmo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-xfs@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 242/244] iomap: handle a post-direct I/O invalidate race in iomap_write_delalloc_release
-Date: Wed, 25 Sep 2024 07:27:43 -0400
-Message-ID: <20240925113641.1297102-242-sashal@kernel.org>
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	bpf@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.11 243/244] bpftool: Fix undefined behavior in qsort(NULL, 0, ...)
+Date: Wed, 25 Sep 2024 07:27:44 -0400
+Message-ID: <20240925113641.1297102-243-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925113641.1297102-1-sashal@kernel.org>
 References: <20240925113641.1297102-1-sashal@kernel.org>
@@ -67,46 +68,55 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11
 Content-Transfer-Encoding: 8bit
 
-From: Christoph Hellwig <hch@lst.de>
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
 
-[ Upstream commit 7a9d43eace888a0ee6095035997bb138425844d3 ]
+[ Upstream commit f04e2ad394e2755d0bb2d858ecb5598718bf00d5 ]
 
-When direct I/O completions invalidates the page cache it holds neither the
-i_rwsem nor the invalidate_lock so it can be racing with
-iomap_write_delalloc_release.  If the search for the end of the region that
-contains data returns the start offset we hit such a race and just need to
-look for the end of the newly created hole instead.
+When netfilter has no entry to display, qsort is called with
+qsort(NULL, 0, ...). This results in undefined behavior, as UBSan
+reports:
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20240910043949.3481298-2-hch@lst.de
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+net.c:827:2: runtime error: null pointer passed as argument 1, which is declared to never be null
+
+Although the C standard does not explicitly state whether calling qsort
+with a NULL pointer when the size is 0 constitutes undefined behavior,
+Section 7.1.4 of the C standard (Use of library functions) mentions:
+
+"Each of the following statements applies unless explicitly stated
+otherwise in the detailed descriptions that follow: If an argument to a
+function has an invalid value (such as a value outside the domain of
+the function, or a pointer outside the address space of the program, or
+a null pointer, or a pointer to non-modifiable storage when the
+corresponding parameter is not const-qualified) or a type (after
+promotion) not expected by a function with variable number of
+arguments, the behavior is undefined."
+
+To avoid this, add an early return when nf_link_info is NULL to prevent
+calling qsort with a NULL pointer.
+
+Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Reviewed-by: Quentin Monnet <qmo@kernel.org>
+Link: https://lore.kernel.org/bpf/20240910150207.3179306-1-visitorckw@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/iomap/buffered-io.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ tools/bpf/bpftool/net.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-index d745f718bcde8..ca928cc9be49a 100644
---- a/fs/iomap/buffered-io.c
-+++ b/fs/iomap/buffered-io.c
-@@ -1241,7 +1241,15 @@ static int iomap_write_delalloc_release(struct inode *inode,
- 			error = data_end;
- 			goto out_unlock;
- 		}
--		WARN_ON_ONCE(data_end <= start_byte);
-+
-+		/*
-+		 * If we race with post-direct I/O invalidation of the page cache,
-+		 * there might be no data left at start_byte.
-+		 */
-+		if (data_end == start_byte)
-+			continue;
-+
-+		WARN_ON_ONCE(data_end < start_byte);
- 		WARN_ON_ONCE(data_end > scan_end_byte);
+diff --git a/tools/bpf/bpftool/net.c b/tools/bpf/bpftool/net.c
+index ad2ea6cf2db11..0f2106218e1f0 100644
+--- a/tools/bpf/bpftool/net.c
++++ b/tools/bpf/bpftool/net.c
+@@ -824,6 +824,9 @@ static void show_link_netfilter(void)
+ 		nf_link_count++;
+ 	}
  
- 		error = iomap_write_delalloc_scan(inode, &punch_start_byte,
++	if (!nf_link_info)
++		return;
++
+ 	qsort(nf_link_info, nf_link_count, sizeof(*nf_link_info), netfilter_link_compar);
+ 
+ 	for (id = 0; id < nf_link_count; id++) {
 -- 
 2.43.0
 
