@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-77302-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5F13985B97
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:27:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6EEC3985B9C
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:27:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8AAAC287126
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:27:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 36A41287464
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:27:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C96119B586;
-	Wed, 25 Sep 2024 11:51:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F2FA1C2306;
+	Wed, 25 Sep 2024 11:51:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HI9ACeKy"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QGsTuSpu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AC7819B3CE;
-	Wed, 25 Sep 2024 11:51:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6DA81C1AD9;
+	Wed, 25 Sep 2024 11:51:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727265072; cv=none; b=fSPVvIBrx0wfYsngjDhoVUQKBYE7WpaiqTR8gS+0h0sPAqZ3OELCYQbEkWly3AR6XyNEjpTbHJY7IpRAVm0GTWy+RPt/w6PBxzd6G/go/YuZN4X6dm7ZkKvQSaQ7QXlYSqWdomDN1VuV7GYNMvqJnANW0+5Pc6i1P1lIhbPuwyw=
+	t=1727265073; cv=none; b=J+EHRL/WCeuYvdW3QulE47P5hScFqLpthij2YFQaEs2RdKyGwH2XZIn+EEehEqTgAS1/SsOyPCLGS1uqR0GD8eZYBLaNZNAZzYaUt7Jfyt5ScQCK8WuVN8j28Nc1QNHOoKO4604smjPmwtg0CpGXU/mfqgKmXmdyTUpcI8VTuR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727265072; c=relaxed/simple;
-	bh=Ksqu8nOUQTfxeTp6k0Uxh8iY+BnEDmfD+McJOdXyPRQ=;
+	s=arc-20240116; t=1727265073; c=relaxed/simple;
+	bh=1QP5ayxrDR5BQGpkmtWaF03CGFmV/OvpiA5aYPYCc9U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Er5MUy7q18WMYIXdpVur3IxNOGqwcxgfMz4iTQOLFtEC3etIGtcpCbbdl7bK9CDFSdHM2Zn0dB91eL6RuSRintm8cZL+DCNCoMIwrsRS+73CCqKzyL/fZZ6SBh+QRB1FctsPozuTBglC7DgT7pybxBTBdKNT2NqW2g9ufNCQs6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HI9ACeKy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFECCC4CED2;
-	Wed, 25 Sep 2024 11:51:09 +0000 (UTC)
+	 MIME-Version; b=XZuifqWeo3ejDBJcSsanqSNDWbTALPxKqwT+KaPYFFS53+6F3BeyKA9CNkoUd2r3pjb1JVxecGBLqo+bdU/BcynhD2ErCOCBH8+Wh3ThzxdDxRYHSlgWT3rS+/5wabE9bwbjgQJtc2X/I9s77mmb6gXVVolyLJeIHe+RJMV9OyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QGsTuSpu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B4A6C4CEC7;
+	Wed, 25 Sep 2024 11:51:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727265071;
-	bh=Ksqu8nOUQTfxeTp6k0Uxh8iY+BnEDmfD+McJOdXyPRQ=;
+	s=k20201202; t=1727265073;
+	bh=1QP5ayxrDR5BQGpkmtWaF03CGFmV/OvpiA5aYPYCc9U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HI9ACeKynUC1pH+ak6et/54lqv/yg/t5ARxJYObfLcm/swT4SmAjB9eSKab1LcUIz
-	 ovKRkH7hRSMsYZ/XyMfiamb+Rm6r94tQFEyckG6ChABM9fSfrrA38h4FgBzWlED/WF
-	 nmKKrxZEPm4TfACrtgMJsPZR0th3+3W58IFoO/ms3Anr4co2v9tR3NWM9tKhf3y/jR
-	 Cg0br8HcTVyFV+GTo0P59FgPW7xU3hsieebQA423oNz+RFQfvLN1aacPnU1TJn45t9
-	 LKjLIRJEU0zVLX/fsUGOIHEhwR87+MqMWxjayREPSii6yWtWDiAZ27td766Oj2KdAV
-	 wKqsydWj7X6Ow==
+	b=QGsTuSpuUIFULNgJomzvUZsXHXlVOb+oLZTAIeqDqARfNcVe8ORwJafsKMQK54diV
+	 RcerCUZxxc90ErcdaGSix4jhXQf/VzsRHdpR/p8EudO10eGbcRP3kyl3PNGmf1sMrl
+	 3nUc2zZcbPPCcFrcC9tieq4xaav+a9j/ximKPgE9onkuQaYYLrDj1dyRYFRnBM7K44
+	 wHqh0BNQIhobGQTJXvbXc1IN+91y4vOjGW6FvLG7vWfXAYjQ2m1HrReosnFeEGwKDd
+	 R4P1AXaIqeWefbZBqk5DfP9H2FIZhBL7lOAaJ3dYexR1seN3mV1lzjC18fAXrf8eE9
+	 t/u+Ut0SCLkqw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Tim Huang <tim.huang@amd.com>,
-	Jesse Zhang <jesse.zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Peter Zijlstra <peterz@infradead.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	christian.koenig@amd.com,
-	Xinhui.Pan@amd.com,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	electrodeyt@gmail.com,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.11 204/244] drm/amdgpu: fix unchecked return value warning for amdgpu_atombios
-Date: Wed, 25 Sep 2024 07:27:05 -0400
-Message-ID: <20240925113641.1297102-204-sashal@kernel.org>
+	mingo@redhat.com,
+	acme@kernel.org,
+	linux-perf-users@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.11 205/244] perf: Fix event_function_call() locking
+Date: Wed, 25 Sep 2024 07:27:06 -0400
+Message-ID: <20240925113641.1297102-205-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925113641.1297102-1-sashal@kernel.org>
 References: <20240925113641.1297102-1-sashal@kernel.org>
@@ -72,108 +68,61 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11
 Content-Transfer-Encoding: 8bit
 
-From: Tim Huang <tim.huang@amd.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit 92549780e32718d64a6d08bbbb3c6fffecb541c7 ]
+[ Upstream commit 558abc7e3f895049faa46b08656be4c60dc6e9fd ]
 
-This resolves the unchecded return value warning reported by Coverity.
+All the event_function/@func call context already uses perf_ctx_lock()
+except for the !ctx->is_active case. Make it all consistent.
 
-Signed-off-by: Tim Huang <tim.huang@amd.com>
-Reviewed-by: Jesse Zhang <jesse.zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
+Reviewed-by: Namhyung Kim <namhyung@kernel.org>
+Link: https://lore.kernel.org/r/20240807115550.138301094@infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_atombios.c | 35 ++++++++++++--------
- 1 file changed, 21 insertions(+), 14 deletions(-)
+ kernel/events/core.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_atombios.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_atombios.c
-index 7dc102f0bc1d3..0c8975ac5af9e 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_atombios.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_atombios.c
-@@ -1018,8 +1018,9 @@ int amdgpu_atombios_get_clock_dividers(struct amdgpu_device *adev,
- 		if (clock_type == COMPUTE_ENGINE_PLL_PARAM) {
- 			args.v3.ulClockParams = cpu_to_le32((clock_type << 24) | clock);
+diff --git a/kernel/events/core.c b/kernel/events/core.c
+index b21c8f24a9876..4339df585d42d 100644
+--- a/kernel/events/core.c
++++ b/kernel/events/core.c
+@@ -263,6 +263,7 @@ static int event_function(void *info)
+ static void event_function_call(struct perf_event *event, event_f func, void *data)
+ {
+ 	struct perf_event_context *ctx = event->ctx;
++	struct perf_cpu_context *cpuctx = this_cpu_ptr(&perf_cpu_context);
+ 	struct task_struct *task = READ_ONCE(ctx->task); /* verified in event_function */
+ 	struct event_function_struct efs = {
+ 		.event = event,
+@@ -291,22 +292,22 @@ static void event_function_call(struct perf_event *event, event_f func, void *da
+ 	if (!task_function_call(task, event_function, &efs))
+ 		return;
  
--			amdgpu_atom_execute_table(adev->mode_info.atom_context, index, (uint32_t *)&args,
--				sizeof(args));
-+			if (amdgpu_atom_execute_table(adev->mode_info.atom_context,
-+			    index, (uint32_t *)&args, sizeof(args)))
-+				return -EINVAL;
+-	raw_spin_lock_irq(&ctx->lock);
++	perf_ctx_lock(cpuctx, ctx);
+ 	/*
+ 	 * Reload the task pointer, it might have been changed by
+ 	 * a concurrent perf_event_context_sched_out().
+ 	 */
+ 	task = ctx->task;
+ 	if (task == TASK_TOMBSTONE) {
+-		raw_spin_unlock_irq(&ctx->lock);
++		perf_ctx_unlock(cpuctx, ctx);
+ 		return;
+ 	}
+ 	if (ctx->is_active) {
+-		raw_spin_unlock_irq(&ctx->lock);
++		perf_ctx_unlock(cpuctx, ctx);
+ 		goto again;
+ 	}
+ 	func(event, NULL, ctx, data);
+-	raw_spin_unlock_irq(&ctx->lock);
++	perf_ctx_unlock(cpuctx, ctx);
+ }
  
- 			dividers->post_div = args.v3.ucPostDiv;
- 			dividers->enable_post_div = (args.v3.ucCntlFlag &
-@@ -1039,8 +1040,9 @@ int amdgpu_atombios_get_clock_dividers(struct amdgpu_device *adev,
- 			if (strobe_mode)
- 				args.v5.ucInputFlag = ATOM_PLL_INPUT_FLAG_PLL_STROBE_MODE_EN;
- 
--			amdgpu_atom_execute_table(adev->mode_info.atom_context, index, (uint32_t *)&args,
--				sizeof(args));
-+			if (amdgpu_atom_execute_table(adev->mode_info.atom_context,
-+			    index, (uint32_t *)&args, sizeof(args)))
-+				return -EINVAL;
- 
- 			dividers->post_div = args.v5.ucPostDiv;
- 			dividers->enable_post_div = (args.v5.ucCntlFlag &
-@@ -1058,8 +1060,9 @@ int amdgpu_atombios_get_clock_dividers(struct amdgpu_device *adev,
- 		/* fusion */
- 		args.v4.ulClock = cpu_to_le32(clock);	/* 10 khz */
- 
--		amdgpu_atom_execute_table(adev->mode_info.atom_context, index, (uint32_t *)&args,
--			sizeof(args));
-+		if (amdgpu_atom_execute_table(adev->mode_info.atom_context,
-+		    index, (uint32_t *)&args, sizeof(args)))
-+			return -EINVAL;
- 
- 		dividers->post_divider = dividers->post_div = args.v4.ucPostDiv;
- 		dividers->real_clock = le32_to_cpu(args.v4.ulClock);
-@@ -1070,8 +1073,9 @@ int amdgpu_atombios_get_clock_dividers(struct amdgpu_device *adev,
- 		args.v6_in.ulClock.ulComputeClockFlag = clock_type;
- 		args.v6_in.ulClock.ulClockFreq = cpu_to_le32(clock);	/* 10 khz */
- 
--		amdgpu_atom_execute_table(adev->mode_info.atom_context, index, (uint32_t *)&args,
--			sizeof(args));
-+		if (amdgpu_atom_execute_table(adev->mode_info.atom_context,
-+		    index, (uint32_t *)&args, sizeof(args)))
-+			return -EINVAL;
- 
- 		dividers->whole_fb_div = le16_to_cpu(args.v6_out.ulFbDiv.usFbDiv);
- 		dividers->frac_fb_div = le16_to_cpu(args.v6_out.ulFbDiv.usFbDivFrac);
-@@ -1113,8 +1117,9 @@ int amdgpu_atombios_get_memory_pll_dividers(struct amdgpu_device *adev,
- 			if (strobe_mode)
- 				args.ucInputFlag |= MPLL_INPUT_FLAG_STROBE_MODE_EN;
- 
--			amdgpu_atom_execute_table(adev->mode_info.atom_context, index, (uint32_t *)&args,
--				sizeof(args));
-+			if (amdgpu_atom_execute_table(adev->mode_info.atom_context,
-+			    index, (uint32_t *)&args, sizeof(args)))
-+				return -EINVAL;
- 
- 			mpll_param->clkfrac = le16_to_cpu(args.ulFbDiv.usFbDivFrac);
- 			mpll_param->clkf = le16_to_cpu(args.ulFbDiv.usFbDiv);
-@@ -1211,8 +1216,9 @@ int amdgpu_atombios_get_max_vddc(struct amdgpu_device *adev, u8 voltage_type,
- 		args.v2.ucVoltageMode = 0;
- 		args.v2.usVoltageLevel = 0;
- 
--		amdgpu_atom_execute_table(adev->mode_info.atom_context, index, (uint32_t *)&args,
--			sizeof(args));
-+		if (amdgpu_atom_execute_table(adev->mode_info.atom_context,
-+		    index, (uint32_t *)&args, sizeof(args)))
-+			return -EINVAL;
- 
- 		*voltage = le16_to_cpu(args.v2.usVoltageLevel);
- 		break;
-@@ -1221,8 +1227,9 @@ int amdgpu_atombios_get_max_vddc(struct amdgpu_device *adev, u8 voltage_type,
- 		args.v3.ucVoltageMode = ATOM_GET_VOLTAGE_LEVEL;
- 		args.v3.usVoltageLevel = cpu_to_le16(voltage_id);
- 
--		amdgpu_atom_execute_table(adev->mode_info.atom_context, index, (uint32_t *)&args,
--			sizeof(args));
-+		if (amdgpu_atom_execute_table(adev->mode_info.atom_context,
-+		    index, (uint32_t *)&args, sizeof(args)))
-+			return -EINVAL;
- 
- 		*voltage = le16_to_cpu(args.v3.usVoltageLevel);
- 		break;
+ /*
 -- 
 2.43.0
 
