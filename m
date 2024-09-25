@@ -1,144 +1,109 @@
-Return-Path: <stable+bounces-77072-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77073-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09A9E9851A7
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 05:53:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D7F79851C3
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 06:04:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3098D1C20EB4
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 03:53:25 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D8D0AB21EC9
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 04:04:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B868914AD2E;
-	Wed, 25 Sep 2024 03:53:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9409314B08E;
+	Wed, 25 Sep 2024 04:04:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jL+EICzd"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nA88GzKs"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3B4920E6
-	for <stable@vger.kernel.org>; Wed, 25 Sep 2024 03:53:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53EFE13AA53
+	for <stable@vger.kernel.org>; Wed, 25 Sep 2024 04:04:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727236401; cv=none; b=Y+DMVC6WjryBl1uPBPboYL9SWp8wXIRG521AjkGv1gDrbbq9V6a0+plPujHMHt38BHdHh8EdB+OvcoUOTk6Zcay5nH+HxCHM/YxgonZLwOKge6lm4pQO3mOoQjF9bNCDMjcll33AWrJU/xRpk5zI5NNqynT5x0+B40Gi54qra3w=
+	t=1727237063; cv=none; b=Iw/rn+8zn9XSOCVWQTGZb/hIAl6baOnKnyQRJNZqL7BC+5FQOcsWw1eAWAh+bZUXUalaO9qtDKYkA/kCZtN+LS0gxFd3nKMqFCIZeUxljU1m56J0kla87fLFiO8vDutOEQZK9oPRGyl1T6jBfWeQgOiRweUzegK93eGkCStAWiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727236401; c=relaxed/simple;
-	bh=ktotHi6B2/4z8R9XImAcsxBT80Jja3JEXN2e+OeJZAU=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=uPLolre3K6BI4yJXY4oM72CSp1q2oe8agkGoaoWTn+bDkfGjj6YUJi83kcn7pzT/ufRa+VvmTHdAX77vMmgoyNkdgADPjKnLfwa6YZJ3kDfJScKA9n3WWCvd0sdmQvZrEJnM6EtS3Q3mjOx4OMLirTN9VTfnSzHj1X3FhwVlBKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jL+EICzd; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1727236399; x=1758772399;
-  h=from:to:cc:subject:date:message-id;
-  bh=ktotHi6B2/4z8R9XImAcsxBT80Jja3JEXN2e+OeJZAU=;
-  b=jL+EICzdjPvmDt+MZAW5/IqMZz5b+QVehD6jiwL0hJfYuE2eOq3JW+2L
-   iI3VZLNUIm2lf9gzxUqk7QTGiVDGZAnM2gf3bg1FqnqMSuTGbEw8Ftv0Z
-   j/AV4xVeTXtadwDnnIxwzPppxkiSNhJ9OLcQLBtUmxuERZvjWx4dp1rLm
-   MYR90QOg2OLyV6D/qj38TzGajoK/lpYXAdO3CdSQ+c7hwwWg664QXSgt+
-   eFlJJGuaOZSL8mInsbZSueBaohRQ2lV+PGwgUjLSTM7fXfTZy1sSGCvhS
-   GWrKHEkmyqY4JhU2ckOnJPTEK8NoxcfmkaeXqf8GglOMlxH522Xyv8rFv
-   w==;
-X-CSE-ConnectionGUID: GWvs2jBWT1edmzzDZht11g==
-X-CSE-MsgGUID: RdqjWmVMRY2t9VeKlai6hA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11205"; a="37640757"
-X-IronPort-AV: E=Sophos;i="6.10,256,1719903600"; 
-   d="scan'208";a="37640757"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Sep 2024 20:53:19 -0700
-X-CSE-ConnectionGUID: t/YTVD46SumXr5lQ2zYqcg==
-X-CSE-MsgGUID: LtoW6G3RRUaYQG2WT/RdLA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,256,1719903600"; 
-   d="scan'208";a="71780874"
-Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
-  by fmviesa008.fm.intel.com with ESMTP; 24 Sep 2024 20:53:19 -0700
-From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-To: stable@vger.kernel.org
-Cc: x86@kernel.org,
-	Tony Luck <tony.luck@intel.com>,
-	"Pawan Kumar Gupta" <pawan.kumar.gupta@intel.com>,
-	Zhang Rui <rui.zhang@intel.com>,
-	Thomas Lindroth <thomas.lindroth@gmail.com>,
-	Ricardo Neri <ricardo.neri@intel.com>
-Subject: [PATCH 6.6.y] x86/mm: Switch to new Intel CPU model defines
-Date: Tue, 24 Sep 2024 20:58:57 -0700
-Message-Id: <20240925035857.15487-1-ricardo.neri-calderon@linux.intel.com>
-X-Mailer: git-send-email 2.17.1
+	s=arc-20240116; t=1727237063; c=relaxed/simple;
+	bh=p6aXdQCsCQDb+qv4Oe0hGSlkljpbIyMoGX6UwtO7y4I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PGQYv1X05FcbF1n1Zku3qoG2TL4rOSLbRMNpVbgSq4t1dwilkFidy9/715/pQuHp+JZ0n26jD9cOXJU3KbDC37gC/f5/52H2H10ldNkJKHCNnqSHDPuH/w141F1er0m5T4rjUoAEwxo6ZS6KYuU1C3dQ718wODK5GI9SbiDlQVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nA88GzKs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C754C4CECD
+	for <stable@vger.kernel.org>; Wed, 25 Sep 2024 04:04:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727237063;
+	bh=p6aXdQCsCQDb+qv4Oe0hGSlkljpbIyMoGX6UwtO7y4I=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=nA88GzKs5XmLWrndPrDBLIlm2YKSyzxjfTMeUcwyCTPPvNIylFyR9KPMoFnsRigln
+	 N5p5eiokmbwRNFB8e1m7FQtXltuKRfr6os8y9ARhe/aWfV6h/haikvrl4Vnew+Ouoa
+	 LYkNp9zgCqUA1VhD86WOVRzQRxKTrhSFhCkV6HIezFfP8yxytc51u8eyJWw4/FVgOQ
+	 FAcE5YV6H8NBTr+d4cd7x4TMq1Ptr874yhL8hO36EixErjyAzRw+6C+IlpFukgHbx5
+	 t1fHJ134zbPhaxJNFyuegXX2IdAnkA0bWqp+3dBgXajEbIxKGZEb4XX+N2N9pDrXJ1
+	 juJlN63g8Fiqg==
+Received: by mail-il1-f175.google.com with SMTP id e9e14a558f8ab-3a1a4f2cc29so83785ab.1
+        for <stable@vger.kernel.org>; Tue, 24 Sep 2024 21:04:22 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCW14Vd7q03IhJcSo48Vv6WkbpkQFww544C4kvjb6z7UdShJu2M369bcT/6h8lx4TmNtnQgsWwk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxVdTD6M5gFv6DfH0qyFWZic98vDcssxux2Ho6aPiw1/PrKNmxr
+	k8Yx/Imd8O4nxUsG4y1INY5t7fABamD+QodaxFoYaZybw84jHlxnkHHzaxM9axFo3dAgKSymERW
+	/lCs6H2gFCih0MyrwofdkRWuAqzCnKufvyylD
+X-Google-Smtp-Source: AGHT+IELrtiyu4mKIo4xDH5TOC5IAATMzMKE7/IoB9tmPJ03N/88XGcxL4jb93lXI1QLJzXHw4dM7zmW4R0m7d9um7c=
+X-Received: by 2002:a05:6e02:1fec:b0:376:3026:9dfc with SMTP id
+ e9e14a558f8ab-3a2703e74f4mr1275375ab.24.1727237062258; Tue, 24 Sep 2024
+ 21:04:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20240923164843.1117010-1-andrej.skvortzov@gmail.com>
+ <20240924014241.GH38742@google.com> <d22cff1a-701d-4078-867d-d82caa943bab@linux.vnet.ibm.com>
+ <CAF8kJuPEg1yKNmVvPbEYGME8HRoTXdHTANm+OKOZwX9B6uEtmw@mail.gmail.com>
+ <CAF8kJuOs-3WZPQo0Ktyp=7DytWrL9+UrTNUGz+9n9s6urR-rtA@mail.gmail.com> <20240925003718.GA11458@google.com>
+In-Reply-To: <20240925003718.GA11458@google.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Tue, 24 Sep 2024 21:04:10 -0700
+X-Gmail-Original-Message-ID: <CAF8kJuNDzk21jZR1+TkGdMOrXdQcfa+=bxLF6FhyuXzRwT4Y9Q@mail.gmail.com>
+Message-ID: <CAF8kJuNDzk21jZR1+TkGdMOrXdQcfa+=bxLF6FhyuXzRwT4Y9Q@mail.gmail.com>
+Subject: Re: [PATCH v3] zram: don't free statically defined names
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Andrey Skvortsov <andrej.skvortzov@gmail.com>, Minchan Kim <minchan@kernel.org>, 
+	Jens Axboe <axboe@kernel.dk>, linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, 
+	stable@vger.kernel.org, Sachin Sant <sachinp@linux.ibm.com>, 
+	linux-mm <linux-mm@kvack.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Tony Luck <tony.luck@intel.com>
+On Tue, Sep 24, 2024 at 5:37=E2=80=AFPM Sergey Senozhatsky
+<senozhatsky@chromium.org> wrote:
+>
+> On (24/09/24 11:29), Chris Li wrote:
+> > On Tue, Sep 24, 2024 at 8:56=E2=80=AFAM Chris Li <chrisl@kernel.org> wr=
+ote:
+> [..]
+> > Given the merge window is closing. I suggest just reverting this
+> > change. As it is the fix also causing regression in the swap stress
+> > test for me. It is possible that is my test setup issue, but reverting
+> > sounds the safe bet.
+>
+> The patch in question is just a kfree() call that is only executed
+> during zram reset and that fixes tiny memory leaks when zram is
+> configured with alternative (re-compression) streams.  I cannot
+> imagine how that can have any impact on runtime, that makes no
+> sense to me, I'm not sure that revert is justified here.
+>
+After some discussion with Sergey, we have more progress on
+understanding the swap stress test regression.
+One of the triggering conditions is I don't have zram lz4 config
+enabled, (the config option name has changed) and the test script
+tries to set lz4 on zram and fails. It will fall back to the lzo.
+Anyway, if I have zram lz4 configured, my stress test can pass with
+the fix. Still I don't understand why disabling lz4 config can trigger
+it. Need to dig more.
 
-[ Upstream commit 2eda374e883ad297bd9fe575a16c1dc850346075 ]
+Agree that we don't need to revert this.
 
-New CPU #defines encode vendor and family as well as model.
-
-[ dhansen: vertically align 0's in invlpg_miss_ids[] ]
-
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/all/20240424181518.41946-1-tony.luck%40intel.com
-[ Ricardo: I used the old match macro X86_MATCH_INTEL_FAM6_MODEL()
-  instead of X86_MATCH_VFM() as in the upstream commit. ]
-Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
----
-I tested this backport on an Alder Lake system. Now pr_info("Incomplete
-global flushes, disabling PCID") is back in dmesg. I also tested on a
-Meteor Lake system, which is not affected by the INVLPG issue. The message
-in question is not there before and after the backport, as expected.
-
-This backport fixes the last remaining caller of x86_match_cpu()
-that does not use the family of X86_MATCH_*() macros.
-
-Thomas Lindroth intially reported the regression in
-https://lore.kernel.org/all/eb709d67-2a8d-412f-905d-f3777d897bfa@gmail.com/
-
-Maybe Tony and/or the x86 maintainers can ack this backport?
----
- arch/x86/mm/init.c | 16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
-
-diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
-index 679893ea5e68..6215dfa23578 100644
---- a/arch/x86/mm/init.c
-+++ b/arch/x86/mm/init.c
-@@ -261,21 +261,17 @@ static void __init probe_page_size_mask(void)
- 	}
- }
- 
--#define INTEL_MATCH(_model) { .vendor  = X86_VENDOR_INTEL,	\
--			      .family  = 6,			\
--			      .model = _model,			\
--			    }
- /*
-  * INVLPG may not properly flush Global entries
-  * on these CPUs when PCIDs are enabled.
-  */
- static const struct x86_cpu_id invlpg_miss_ids[] = {
--	INTEL_MATCH(INTEL_FAM6_ALDERLAKE   ),
--	INTEL_MATCH(INTEL_FAM6_ALDERLAKE_L ),
--	INTEL_MATCH(INTEL_FAM6_ATOM_GRACEMONT ),
--	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE  ),
--	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE_P),
--	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE_S),
-+	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE,      0),
-+	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE_L,    0),
-+	X86_MATCH_INTEL_FAM6_MODEL(ATOM_GRACEMONT, 0),
-+	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE,     0),
-+	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_P,   0),
-+	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_S,   0),
- 	{}
- };
- 
--- 
-2.34.1
-
+Chris
 
