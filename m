@@ -1,57 +1,62 @@
-Return-Path: <stable+bounces-77470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77471-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66305985D8F
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:14:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6242B985D91
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:14:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B98F1C20FF7
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:14:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8349E1C25000
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:14:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E10CD1EC014;
-	Wed, 25 Sep 2024 12:05:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A4D31B3728;
+	Wed, 25 Sep 2024 12:05:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YZuJICVj"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J/SG1Npw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 982C11B2EF6;
-	Wed, 25 Sep 2024 12:05:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C40B20010D;
+	Wed, 25 Sep 2024 12:05:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727265923; cv=none; b=AQ6FZrw0/h6stkCfMSpLQn6blhWB68rkpS/1cWNNyPrhE17p76H/Pw4Q8VhVLXoxjE/vEDu87ThsXx4CDBpjezfuxjfCv5jhNXLLFmnlUr9QuV2dh4gZa7PzYQqQbEpucFDtPE8Vo+4xGwL2koe0/FsGhMA33Io0UgjImQ0mLa4=
+	t=1727265925; cv=none; b=iWOV4F9ma6idd8On3oVgkhYL5s/lKvgYqTCXntDliFTYTgA/dY5ldcycTSih9QdsLE3D4/Z3f83+0c3LPet0f08UJJUzkKgEoEdKNjfKP27+zsm/hYAaFl/QuC/b0smdutmdaYEZLqfbLu5mT6w1cdu0e49cI94s0a5qC00yGAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727265923; c=relaxed/simple;
-	bh=PVqW7TtDbvhf11U/Tzj8Y84GMR5alsGy/6n8mfUubrI=;
+	s=arc-20240116; t=1727265925; c=relaxed/simple;
+	bh=DIgccXoM7l0r0k5D5IXzP36HlpO+6jZM1+Rqh+3F1xk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EwqFOZN0FvHB0InSJfVn5Px8gLPWqG+SrqKGou9NCPrlcPQRaB3WP6gZqzGaBH/c/D0I9y0oQ6kYkNcqme3HzesWpTRbi+Jp+xE2fbO3kP+1jwRCy3cI3/p+jy943R+k/8yR42SoVjnS9O/TICqvwAWlu4UfanNrTjOTUlineh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YZuJICVj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BBBBC4CEC3;
-	Wed, 25 Sep 2024 12:05:22 +0000 (UTC)
+	 MIME-Version; b=VrnmEXgjvgMyK1yg3ORRux+E6Ulr0JZ6PwZLjJRtjAUrGbNH8fdO8/XPxZJY1JsBYARNzCYa0vmz+DKBZFOptl/m9NDVXn9p1T7ZoVyGBWGDpR8uZSEqrYJBB5XLwqH2a62bjDhn0ebEGf4teMRiT5EPWM+Ug5wEQNh9x2DIzbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J/SG1Npw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85A8AC4CECD;
+	Wed, 25 Sep 2024 12:05:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727265923;
-	bh=PVqW7TtDbvhf11U/Tzj8Y84GMR5alsGy/6n8mfUubrI=;
+	s=k20201202; t=1727265925;
+	bh=DIgccXoM7l0r0k5D5IXzP36HlpO+6jZM1+Rqh+3F1xk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YZuJICVjrvpTxxo7f9VF8wQW7rDkie/4K9bB1pPV8WeSZEgeUQconWJY+iZe5+/uF
-	 ycm8YlgcDUihAqzVr1Ke6vjC+/W+f63X8hc8ZcCMnwIor+VjZLgmKcooiChOedv8Xi
-	 QSnt//6Vam86mrZ7JMuIMBtT4x4UiKZrCTPfQgiR2pe+DqPv8DI8Z4h/cVE70mewr7
-	 7CK8LIHd/tZMx9/+YkvVtrTfMgyz4wplkj7BI7KFSU3MiXvmFA0I5qRbT7sW4op55E
-	 uiOCbNtGNQz/y7lJL+FPI/QTKRY/8oFjWD3g6dCzRvPNOgdv8WwU1wtGRSjM7arJBF
-	 95J0xZl5aDGSg==
+	b=J/SG1Npw1gR/3SpPWkFZWIxYQ6T5zDQmitR1Sj7jvhndwN7OHpI4HPqLCSEl3onzn
+	 mXuf8mGBONvFrYs8TQZ/gtUZl9/QsbZPTRDGv1jBzJIWwx2JHO640sw32wr6CNDqvP
+	 JyzrBEW16RQ5OvD83FGC8ZUzHvO0xySSBCBmd+UKQTaMN+pPmA3UWE6txm+RzGWCN6
+	 PlDc1h8O4WvktYohNa1N2Myp8MPKw+9y0n1LK0YhRkVNVt5e+VVXjkIr6a6H4Uv0kL
+	 6Rv/Pxzh4iQm+GHGTcBTGB194hEArKwjbS5oep/ONS9hRrZM2l4k0DePVum7E/1JNn
+	 wBffVPrbW7P2Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Damien Le Moal <dlemoal@kernel.org>,
-	Niklas Cassel <cassel@kernel.org>,
-	Igor Pylypiv <ipylypiv@google.com>,
+Cc: David Strahan <David.Strahan@microchip.com>,
+	Scott Benesh <scott.benesh@microchip.com>,
+	Scott Teel <scott.teel@microchip.com>,
+	Mike McGowen <mike.mcgowen@microchip.com>,
+	Don Brace <don.brace@microchip.com>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-ide@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 125/197] ata: sata_sil: Rename sil_blacklist to sil_quirks
-Date: Wed, 25 Sep 2024 07:52:24 -0400
-Message-ID: <20240925115823.1303019-125-sashal@kernel.org>
+	James.Bottomley@HansenPartnership.com,
+	storagedev@microchip.com,
+	linux-scsi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.10 126/197] scsi: smartpqi: Add new controller PCI IDs
+Date: Wed, 25 Sep 2024 07:52:25 -0400
+Message-ID: <20240925115823.1303019-126-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925115823.1303019-1-sashal@kernel.org>
 References: <20240925115823.1303019-1-sashal@kernel.org>
@@ -66,59 +71,191 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.11
 Content-Transfer-Encoding: 8bit
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: David Strahan <David.Strahan@microchip.com>
 
-[ Upstream commit 93b0f9e11ce511353c65b7f924cf5f95bd9c3aba ]
+[ Upstream commit 0e21e73384d324f75ea16f3d622cfc433fa6209b ]
 
-Rename the array sil_blacklist to sil_quirks as this name is more
-neutral and is also consistent with how this driver define quirks with
-the SIL_QUIRK_XXX flags.
+All PCI ID entries in hex.
 
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Niklas Cassel <cassel@kernel.org>
-Reviewed-by: Igor Pylypiv <ipylypiv@google.com>
+Add new inagile PCI IDs:
+                                             VID  / DID  / SVID / SDID
+                                             ----   ----   ----   ----
+            SMART-HBA 8242-24i               9005 / 028f / 1ff9 / 0045
+            RAID 8236-16i                    9005 / 028f / 1ff9 / 0046
+            RAID 8240-24i                    9005 / 028f / 1ff9 / 0047
+            SMART-HBA 8238-16i               9005 / 028f / 1ff9 / 0048
+            PM8222-SHBA                      9005 / 028f / 1ff9 / 004a
+            RAID PM8204-2GB                  9005 / 028f / 1ff9 / 004b
+            RAID PM8204-4GB                  9005 / 028f / 1ff9 / 004c
+            PM8222-HBA                       9005 / 028f / 1ff9 / 004f
+            MT0804M6R                        9005 / 028f / 1ff9 / 0051
+            MT0801M6E                        9005 / 028f / 1ff9 / 0052
+            MT0808M6R                        9005 / 028f / 1ff9 / 0053
+            MT0800M6H                        9005 / 028f / 1ff9 / 0054
+            RS0800M5H24i                     9005 / 028f / 1ff9 / 006b
+            RS0800M5E8i                      9005 / 028f / 1ff9 / 006c
+            RS0800M5H8i                      9005 / 028f / 1ff9 / 006d
+            RS0804M5R16i                     9005 / 028f / 1ff9 / 006f
+            RS0800M5E24i                     9005 / 028f / 1ff9 / 0070
+            RS0800M5H16i                     9005 / 028f / 1ff9 / 0071
+            RS0800M5E16i                     9005 / 028f / 1ff9 / 0072
+            RT0800M7E                        9005 / 028f / 1ff9 / 0086
+            RT0800M7H                        9005 / 028f / 1ff9 / 0087
+            RT0804M7R                        9005 / 028f / 1ff9 / 0088
+            RT0808M7R                        9005 / 028f / 1ff9 / 0089
+            RT1608M6R16i                     9005 / 028f / 1ff9 / 00a1
+
+Add new h3c pci_id:
+                                             VID  / DID  / SVID / SDID
+                                             ----   ----   ----   ----
+            UN RAID P4408-Mr-2               9005 / 028f / 193d / 1110
+
+Add new powerleader pci ids:
+                                             VID  / DID  / SVID / SDID
+                                             ----   ----   ----   ----
+            PL SmartROC PM8204               9005 / 028f / 1f3a / 0104
+
+Reviewed-by: Scott Benesh <scott.benesh@microchip.com>
+Reviewed-by: Scott Teel <scott.teel@microchip.com>
+Reviewed-by: Mike McGowen <mike.mcgowen@microchip.com>
+Signed-off-by: David Strahan <David.Strahan@microchip.com>
+Signed-off-by: Don Brace <don.brace@microchip.com>
+Link: https://lore.kernel.org/r/20240711194704.982400-2-don.brace@microchip.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/sata_sil.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/scsi/smartpqi/smartpqi_init.c | 104 ++++++++++++++++++++++++++
+ 1 file changed, 104 insertions(+)
 
-diff --git a/drivers/ata/sata_sil.c b/drivers/ata/sata_sil.c
-index cc77c02482843..df095659bae0f 100644
---- a/drivers/ata/sata_sil.c
-+++ b/drivers/ata/sata_sil.c
-@@ -128,7 +128,7 @@ static const struct pci_device_id sil_pci_tbl[] = {
- static const struct sil_drivelist {
- 	const char *product;
- 	unsigned int quirk;
--} sil_blacklist [] = {
-+} sil_quirks[] = {
- 	{ "ST320012AS",		SIL_QUIRK_MOD15WRITE },
- 	{ "ST330013AS",		SIL_QUIRK_MOD15WRITE },
- 	{ "ST340017AS",		SIL_QUIRK_MOD15WRITE },
-@@ -600,8 +600,8 @@ static void sil_thaw(struct ata_port *ap)
-  *	list, and apply the fixups to only the specific
-  *	devices/hosts/firmwares that need it.
-  *
-- *	20040111 - Seagate drives affected by the Mod15Write bug are blacklisted
-- *	The Maxtor quirk is in the blacklist, but I'm keeping the original
-+ *	20040111 - Seagate drives affected by the Mod15Write bug are quirked
-+ *	The Maxtor quirk is in sil_quirks, but I'm keeping the original
-  *	pessimistic fix for the following reasons...
-  *	- There seems to be less info on it, only one device gleaned off the
-  *	Windows	driver, maybe only one is affected.  More info would be greatly
-@@ -620,9 +620,9 @@ static void sil_dev_config(struct ata_device *dev)
- 
- 	ata_id_c_string(dev->id, model_num, ATA_ID_PROD, sizeof(model_num));
- 
--	for (n = 0; sil_blacklist[n].product; n++)
--		if (!strcmp(sil_blacklist[n].product, model_num)) {
--			quirks = sil_blacklist[n].quirk;
-+	for (n = 0; sil_quirks[n].product; n++)
-+		if (!strcmp(sil_quirks[n].product, model_num)) {
-+			quirks = sil_quirks[n].quirk;
- 			break;
- 		}
- 
+diff --git a/drivers/scsi/smartpqi/smartpqi_init.c b/drivers/scsi/smartpqi/smartpqi_init.c
+index 24c7cb285dca0..9166dfa1fedc3 100644
+--- a/drivers/scsi/smartpqi/smartpqi_init.c
++++ b/drivers/scsi/smartpqi/smartpqi_init.c
+@@ -9472,6 +9472,10 @@ static const struct pci_device_id pqi_pci_id_table[] = {
+ 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
+ 			       0x193d, 0x110b)
+ 	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x193d, 0x1110)
++	},
+ 	{
+ 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
+ 			       0x193d, 0x8460)
+@@ -9588,6 +9592,14 @@ static const struct pci_device_id pqi_pci_id_table[] = {
+ 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
+ 			       0x1bd4, 0x0089)
+ 	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x00a1)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1f3a, 0x0104)
++	},
+ 	{
+ 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
+ 			       0x19e5, 0xd227)
+@@ -10180,6 +10192,98 @@ static const struct pci_device_id pqi_pci_id_table[] = {
+ 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
+ 			       0x1137, 0x02fa)
+ 	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x0045)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x0046)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x0047)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x0048)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x004a)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x004b)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x004c)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x004f)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x0051)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x0052)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x0053)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x0054)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x006b)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x006c)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x006d)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x006f)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x0070)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x0071)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x0072)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x0086)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x0087)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x0088)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x0089)
++	},
+ 	{
+ 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
+ 				0x1e93, 0x1000)
 -- 
 2.43.0
 
