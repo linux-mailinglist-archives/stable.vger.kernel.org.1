@@ -1,63 +1,59 @@
-Return-Path: <stable+bounces-77650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD0E4985F7F
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:59:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E233A985F83
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:59:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id ED8EB1C2134D
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:59:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AAAA628BE97
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:59:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0138F19048D;
-	Wed, 25 Sep 2024 12:16:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6D291D356E;
+	Wed, 25 Sep 2024 12:16:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jpthn2xb"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ODXtqwG+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B339319046E;
-	Wed, 25 Sep 2024 12:16:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 750B71D3566;
+	Wed, 25 Sep 2024 12:16:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727266583; cv=none; b=rWmzXaBy9LBSWOqv7zdscEkWeWTvZYyPLwKaos1I3EwGJjFE7vqGtNSRSzxkuAklIV/AkSAM0m9+iw/pGnLL3g97IkNNijQTUb2DzuoT5iwN9GH6EecYnIIKpv8EZGo+95Bw/BSmPJgq/CE5Nl8M+rybZ2wNvZH2nFB6VEGodTY=
+	t=1727266585; cv=none; b=HZQTPTkwyVliOGir7Ny3Ov98sSc8lPf/ovpAnRCgatJ4JYbo/cYeYOqogiLLl3adaFwPqaZPhRuDS7YPOWLnSXClUtus2texBnd7WjiviojNm/9zCpS6YKl25XPFdJxzoZWNiI6tOVI8n80jhzbNxOwARejcFXm2M/48ZHynKLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727266583; c=relaxed/simple;
-	bh=WVbg0f0njlEu1mtGwAixfC3leEq04t5oI9+Nz38LmmU=;
+	s=arc-20240116; t=1727266585; c=relaxed/simple;
+	bh=AHPXr8YKzjWBvpnPv9rXURtZuaHbB76qeYlqku5w/5Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AU61ELTwr5HPnCUU7l786XeQr+OQQBTusBOTYhRMOr/+0mTjduz7iGFBJFqq2nlDI/NZ3RMzVsV+e9wLhBlc2sA54dY7gczb2nq7ywcG8rjUaW862MoFDLJVulvO3wKb6S+B9aflyR9ZNbYL7T66oJQgYgVjKB3x3rQfJhR0+v4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jpthn2xb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2C7EC4CEC7;
-	Wed, 25 Sep 2024 12:16:21 +0000 (UTC)
+	 MIME-Version; b=DM3YDyfmDcaZajw9x/TCGs/TR8sXXkUP6BvAhmfb1R0hq0iMD+2flw77T9QEhQL4vInnfBa71VuocZwqVNbGaGlxCrRvMqGFb3XKpe3+O+WwB0zQRnSX/Fg0oT4vqA4R/+nizw2GO9Di1VZwKK90rUchFGfpgWO8pgsRiHX0gQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ODXtqwG+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0BA2C4CEC7;
+	Wed, 25 Sep 2024 12:16:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727266583;
-	bh=WVbg0f0njlEu1mtGwAixfC3leEq04t5oI9+Nz38LmmU=;
+	s=k20201202; t=1727266585;
+	bh=AHPXr8YKzjWBvpnPv9rXURtZuaHbB76qeYlqku5w/5Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Jpthn2xbzoe6dwT9DZ+wfsl3YMzZBTCmU8qQQNvLffiCAi0+FLVB+tPQfc96ChO4m
-	 MinWuvibyMcafLifLfRKFQilUX7EQT+i2/CQtQK/nL7WyHQ2HmfQY0crlSb6jYBqnL
-	 YJlecGh4PUqj/odTIKiDurohB7qg8w8eeBEw0LNCNj18vq/WfSaUqq0LCSnGYXxHNe
-	 bOYl9mlqtOvuQYrcJXLlOqt3ozxiT4N2N3txK2v0EwYzD+KshYzK6texbI+8p1WXJP
-	 2lhUlGVKfeR0eZ+tiInMgnCbTsdiscai0D95IiHh5tmN5a/y6Rcaozvllxfm2RPCyv
-	 MVFp+2t/l+tag==
+	b=ODXtqwG+S6Qpe4eFSLJeCoVOTcu3QjggfFIsX/8FzF670T3HWLa4049xxi8e7YrdV
+	 87XBn+xTTauvDN7WSONYg282+DfpRS6yrppPmDOXQIml8Gg9O30uZrU3xeXdHORDNI
+	 7uhIVELeEXiaGH4ZhAxQ2bm/CpU33bOdUX8NDnWGm9S/pELGRlA+/vbCOd/c3+O21/
+	 48ku/Z8injkSW0aC8b4U1y3UDlRrubjk6HMucRhPzhCG5B0SsZu2S6j0DIlaFf9Oag
+	 m1gbmp+Rvs3+7fkyN5BU+rT+F1weRpHkKm7PeE3LJ39gIX3zMZh6rohlOTE5OS2ePP
+	 doSF651HsJ/JA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jesse Zhang <jesse.zhang@amd.com>,
-	Tim Huang <tim.huang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Vishnu Sankar <vishnuocv@gmail.com>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>,
-	Felix.Kuehling@amd.com,
-	christian.koenig@amd.com,
-	Xinhui.Pan@amd.com,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.6 103/139] drm/amdkfd: Fix resource leak in criu restore queue
-Date: Wed, 25 Sep 2024 08:08:43 -0400
-Message-ID: <20240925121137.1307574-103-sashal@kernel.org>
+	jikos@kernel.org,
+	bentiss@kernel.org,
+	linux-input@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 104/139] HID: multitouch: Add support for Thinkpad X12 Gen 2 Kbd Portfolio
+Date: Wed, 25 Sep 2024 08:08:44 -0400
+Message-ID: <20240925121137.1307574-104-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925121137.1307574-1-sashal@kernel.org>
 References: <20240925121137.1307574-1-sashal@kernel.org>
@@ -72,33 +68,52 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.52
 Content-Transfer-Encoding: 8bit
 
-From: Jesse Zhang <jesse.zhang@amd.com>
+From: Vishnu Sankar <vishnuocv@gmail.com>
 
-[ Upstream commit aa47fe8d3595365a935921a90d00bc33ee374728 ]
+[ Upstream commit 65b72ea91a257a5f0cb5a26b01194d3dd4b85298 ]
 
-To avoid memory leaks, release q_extra_data when exiting the restore queue.
-v2: Correct the proto (Alex)
+This applies similar quirks used by previous generation device, so that
+Trackpoint and buttons on the touchpad works.  New USB KBD PID 0x61AE for
+Thinkpad X12 Tab is added.
 
-Signed-off-by: Jesse Zhang <jesse.zhang@amd.com>
-Reviewed-by: Tim Huang <tim.huang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Vishnu Sankar <vishnuocv@gmail.com>
+Reviewed-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/hid/hid-ids.h        | 1 +
+ drivers/hid/hid-multitouch.c | 6 ++++++
+ 2 files changed, 7 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c b/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
-index dbc75ca84375a..0583af4e84fa3 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
-@@ -982,6 +982,7 @@ int kfd_criu_restore_queue(struct kfd_process *p,
- 		pr_debug("Queue id %d was restored successfully\n", queue_id);
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index ad4e5c5a38ad2..62e879fc2390b 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -786,6 +786,7 @@
+ #define USB_DEVICE_ID_LENOVO_X1_TAB	0x60a3
+ #define USB_DEVICE_ID_LENOVO_X1_TAB3	0x60b5
+ #define USB_DEVICE_ID_LENOVO_X12_TAB	0x60fe
++#define USB_DEVICE_ID_LENOVO_X12_TAB2	0x61ae
+ #define USB_DEVICE_ID_LENOVO_OPTICAL_USB_MOUSE_600E	0x600e
+ #define USB_DEVICE_ID_LENOVO_PIXART_USB_MOUSE_608D	0x608d
+ #define USB_DEVICE_ID_LENOVO_PIXART_USB_MOUSE_6019	0x6019
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index 17efe6e2a1a44..8ddfa4548f7c5 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -2084,6 +2084,12 @@ static const struct hid_device_id mt_devices[] = {
+ 			   USB_VENDOR_ID_LENOVO,
+ 			   USB_DEVICE_ID_LENOVO_X12_TAB) },
  
- 	kfree(q_data);
-+	kfree(q_extra_data);
- 
- 	return ret;
- }
++	/* Lenovo X12 TAB Gen 2 */
++	{ .driver_data = MT_CLS_WIN_8_FORCE_MULTI_INPUT_NSMU,
++		HID_DEVICE(BUS_USB, HID_GROUP_MULTITOUCH_WIN_8,
++			   USB_VENDOR_ID_LENOVO,
++			   USB_DEVICE_ID_LENOVO_X12_TAB2) },
++
+ 	/* Logitech devices */
+ 	{ .driver_data = MT_CLS_NSMU,
+ 		HID_DEVICE(BUS_BLUETOOTH, HID_GROUP_MULTITOUCH_WIN_8,
 -- 
 2.43.0
 
