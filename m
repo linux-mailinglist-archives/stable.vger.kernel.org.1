@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-77333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43FCC985BE7
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:34:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B51B6985BE9
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:34:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0BB7A2857A4
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:34:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7ACD028734A
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:34:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AA341C9DD9;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C19811C9DEF;
 	Wed, 25 Sep 2024 11:53:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fUrGqeFK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CGVsAYro"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 332131A0700;
-	Wed, 25 Sep 2024 11:53:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7948F1C8FDE;
+	Wed, 25 Sep 2024 11:53:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727265200; cv=none; b=GVAr8OwD0ASg2ZEwsXWP4ierUH3B5tg/Myx89qvUjcr+PCpC/qdqc78KCe1ZkoMc28u2XHx2Urj1C7uApaUToABEArSf2qn/HMR9nEf0w64x9pluvhD35hXD/FwNV8GE6ZStr5jytcXzwmqGv5kZYaPwbzEhKdQCmM7YI963C7g=
+	t=1727265200; cv=none; b=BgSwL+lvkKHDR10hgc+Ja2xyTM2UubtueJEx6U9LKnmeYK89C7+HjOy3EGg/ygo7ml9hC0va/Z5WSyQ7jO7Ttjc31QSG+AEknJuWvG5WonFylWlr9Zlym7YPRqF1URhA2yZofVDJsiwbrSmMU0l7v9jnQJ9KOyDuJIiGsqxJcQI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1727265200; c=relaxed/simple;
-	bh=7a+u2aQp9KkjT17IDYDnpdLVIEQuezHMJ9IEQG72aew=;
+	bh=AJKGa4seFwf7BNn2mymUTwSgrHFAiwrq59tF22yxf3Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gX7LYYLyGyUEkSG0AeZxfxNp2rJQan0/MVKvh/UbUL9jClS8hKVU58mLZYFfTEFI/kJEAOR5S66/Ntqi+0xCBNci0Yy8GYgpr4ZYwuuThglBGoit4f/oBVhV+nGg+bz61KLGm6NKbfg93skT9d3eJMfFExsxp+A3UN5egpShVFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fUrGqeFK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65080C4CEC3;
-	Wed, 25 Sep 2024 11:53:17 +0000 (UTC)
+	 MIME-Version; b=OlBuIrDVukk6u5G81plF3PsP7WGHSiiLYPRDcoo81kOZeSIvb6yBTWY+KCcGoEIvylNKKwEyQ4rg9Xh8DtL9E4HQfB8u1JRT7992PgZRqfQPK3k7FvdfsNSdIc7SEsfLPLAVIQTX204FEx6Duj45IpTA26aC7uTpcjNo7oDGLFQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CGVsAYro; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 534C7C4CECD;
+	Wed, 25 Sep 2024 11:53:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727265198;
-	bh=7a+u2aQp9KkjT17IDYDnpdLVIEQuezHMJ9IEQG72aew=;
+	s=k20201202; t=1727265200;
+	bh=AJKGa4seFwf7BNn2mymUTwSgrHFAiwrq59tF22yxf3Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fUrGqeFKsqTqy6GqCLNQeA3JD7MxiKF4u9D+5t8ojOSfEJi7nMhDG1oX3RvFc4LG+
-	 grFHLHRfTO57jBWwvjFIPySVA4KU7iNDVxM7wqg5nQoXSZSGGDiXRWn9wfHvLwCUth
-	 cIaqFcBTHegecMi9m/PYtD14TZGLdm50ECdxLVhLwB84Cu+n3l9AirD23hawVRJF7h
-	 buJfcfqrFjioROvMpA/UKaZvPTqryQ7oRN6yEwPekeBsai0ts0arPmHopz2rwqqF39
-	 y5342KPmEkRocIf1IOY6f5cngB2m8ry9Txn2on1rYDJ3LYir4NhACGiJeAOK0fBo3c
-	 RS3rVCMY9fayg==
+	b=CGVsAYro5FU9GsmZB0f520/I+C8jUORolnDGWwz0zLxHh5G7Pr25F+9d9wyDqyHP0
+	 viNhcg3gU10VJBtB/2rMQzjouUfwds6WCR2sTL/FiyJ7aoq/APXRtyQ3cBU+5WCDOt
+	 UltU06RNkbjxe3r/eHQQa5U4oG9EsWlNR5/F6Ejso9rFzZEL+1CcoZY2cMyA7H0cVb
+	 bu9HOywwm17CSnJBKFEcbu2p+VzeTjYaP8s4njy/FOVsu/l2B75pHeCYZ/H/eoYm/t
+	 0+yhR/NKPMC1hj2tixN69lOVDlha9QXG8mcJcOkaxDVtEnogjOB0sXD9IMXHZk3FpB
+	 uCYFek5I5W5ag==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
-	Theodore Ts'o <tytso@mit.edu>,
+Cc: Juntong Deng <juntong.deng@outlook.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	adilger.kernel@dilger.ca,
-	linux-ext4@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 235/244] ext4: don't set SB_RDONLY after filesystem errors
-Date: Wed, 25 Sep 2024 07:27:36 -0400
-Message-ID: <20240925113641.1297102-235-sashal@kernel.org>
+	daniel@iogearbox.net,
+	andrii@kernel.org,
+	bpf@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.11 236/244] bpf: Make the pointer returned by iter next method valid
+Date: Wed, 25 Sep 2024 07:27:37 -0400
+Message-ID: <20240925113641.1297102-236-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925113641.1297102-1-sashal@kernel.org>
 References: <20240925113641.1297102-1-sashal@kernel.org>
@@ -67,54 +67,106 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11
 Content-Transfer-Encoding: 8bit
 
-From: Jan Kara <jack@suse.cz>
+From: Juntong Deng <juntong.deng@outlook.com>
 
-[ Upstream commit d3476f3dad4ad68ae5f6b008ea6591d1520da5d8 ]
+[ Upstream commit 4cc8c50c9abcb2646a7a4fcef3cea5dcb30c06cf ]
 
-When the filesystem is mounted with errors=remount-ro, we were setting
-SB_RDONLY flag to stop all filesystem modifications. We knew this misses
-proper locking (sb->s_umount) and does not go through proper filesystem
-remount procedure but it has been the way this worked since early ext2
-days and it was good enough for catastrophic situation damage
-mitigation. Recently, syzbot has found a way (see link) to trigger
-warnings in filesystem freezing because the code got confused by
-SB_RDONLY changing under its hands. Since these days we set
-EXT4_FLAGS_SHUTDOWN on the superblock which is enough to stop all
-filesystem modifications, modifying SB_RDONLY shouldn't be needed. So
-stop doing that.
+Currently we cannot pass the pointer returned by iter next method as
+argument to KF_TRUSTED_ARGS or KF_RCU kfuncs, because the pointer
+returned by iter next method is not "valid".
 
-Link: https://lore.kernel.org/all/000000000000b90a8e061e21d12f@google.com
-Reported-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Link: https://patch.msgid.link/20240805201241.27286-1-jack@suse.cz
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+This patch sets the pointer returned by iter next method to be valid.
+
+This is based on the fact that if the iterator is implemented correctly,
+then the pointer returned from the iter next method should be valid.
+
+This does not make NULL pointer valid. If the iter next method has
+KF_RET_NULL flag, then the verifier will ask the ebpf program to
+check NULL pointer.
+
+KF_RCU_PROTECTED iterator is a special case, the pointer returned by
+iter next method should only be valid within RCU critical section,
+so it should be with MEM_RCU, not PTR_TRUSTED.
+
+Another special case is bpf_iter_num_next, which returns a pointer with
+base type PTR_TO_MEM. PTR_TO_MEM should not be combined with type flag
+PTR_TRUSTED (PTR_TO_MEM already means the pointer is valid).
+
+The pointer returned by iter next method of other types of iterators
+is with PTR_TRUSTED.
+
+In addition, this patch adds get_iter_from_state to help us get the
+current iterator from the current state.
+
+Signed-off-by: Juntong Deng <juntong.deng@outlook.com>
+Link: https://lore.kernel.org/r/AM6PR03MB584869F8B448EA1C87B7CDA399962@AM6PR03MB5848.eurprd03.prod.outlook.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/super.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ kernel/bpf/verifier.c | 26 ++++++++++++++++++++++----
+ 1 file changed, 22 insertions(+), 4 deletions(-)
 
-diff --git a/fs/ext4/super.c b/fs/ext4/super.c
-index 25cd0d662e31b..e8e32cf3e2228 100644
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -735,11 +735,12 @@ static void ext4_handle_error(struct super_block *sb, bool force_ro, int error,
- 
- 	ext4_msg(sb, KERN_CRIT, "Remounting filesystem read-only");
- 	/*
--	 * Make sure updated value of ->s_mount_flags will be visible before
--	 * ->s_flags update
-+	 * EXT4_FLAGS_SHUTDOWN was set which stops all filesystem
-+	 * modifications. We don't set SB_RDONLY because that requires
-+	 * sb->s_umount semaphore and setting it without proper remount
-+	 * procedure is confusing code such as freeze_super() leading to
-+	 * deadlocks and other problems.
- 	 */
--	smp_wmb();
--	sb->s_flags |= SB_RDONLY;
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index d8520095ca030..3b20c3e614e19 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -7987,6 +7987,15 @@ static int widen_imprecise_scalars(struct bpf_verifier_env *env,
+ 	return 0;
  }
  
- static void update_super_work(struct work_struct *work)
++static struct bpf_reg_state *get_iter_from_state(struct bpf_verifier_state *cur_st,
++						 struct bpf_kfunc_call_arg_meta *meta)
++{
++	int iter_frameno = meta->iter.frameno;
++	int iter_spi = meta->iter.spi;
++
++	return &cur_st->frame[iter_frameno]->stack[iter_spi].spilled_ptr;
++}
++
+ /* process_iter_next_call() is called when verifier gets to iterator's next
+  * "method" (e.g., bpf_iter_num_next() for numbers iterator) call. We'll refer
+  * to it as just "iter_next()" in comments below.
+@@ -8071,12 +8080,10 @@ static int process_iter_next_call(struct bpf_verifier_env *env, int insn_idx,
+ 	struct bpf_verifier_state *cur_st = env->cur_state, *queued_st, *prev_st;
+ 	struct bpf_func_state *cur_fr = cur_st->frame[cur_st->curframe], *queued_fr;
+ 	struct bpf_reg_state *cur_iter, *queued_iter;
+-	int iter_frameno = meta->iter.frameno;
+-	int iter_spi = meta->iter.spi;
+ 
+ 	BTF_TYPE_EMIT(struct bpf_iter);
+ 
+-	cur_iter = &env->cur_state->frame[iter_frameno]->stack[iter_spi].spilled_ptr;
++	cur_iter = get_iter_from_state(cur_st, meta);
+ 
+ 	if (cur_iter->iter.state != BPF_ITER_STATE_ACTIVE &&
+ 	    cur_iter->iter.state != BPF_ITER_STATE_DRAINED) {
+@@ -8104,7 +8111,7 @@ static int process_iter_next_call(struct bpf_verifier_env *env, int insn_idx,
+ 		if (!queued_st)
+ 			return -ENOMEM;
+ 
+-		queued_iter = &queued_st->frame[iter_frameno]->stack[iter_spi].spilled_ptr;
++		queued_iter = get_iter_from_state(queued_st, meta);
+ 		queued_iter->iter.state = BPF_ITER_STATE_ACTIVE;
+ 		queued_iter->iter.depth++;
+ 		if (prev_st)
+@@ -12671,6 +12678,17 @@ static int check_kfunc_call(struct bpf_verifier_env *env, struct bpf_insn *insn,
+ 			regs[BPF_REG_0].btf = desc_btf;
+ 			regs[BPF_REG_0].type = PTR_TO_BTF_ID;
+ 			regs[BPF_REG_0].btf_id = ptr_type_id;
++
++			if (is_iter_next_kfunc(&meta)) {
++				struct bpf_reg_state *cur_iter;
++
++				cur_iter = get_iter_from_state(env->cur_state, &meta);
++
++				if (cur_iter->type & MEM_RCU) /* KF_RCU_PROTECTED */
++					regs[BPF_REG_0].type |= MEM_RCU;
++				else
++					regs[BPF_REG_0].type |= PTR_TRUSTED;
++			}
+ 		}
+ 
+ 		if (is_kfunc_ret_null(&meta)) {
 -- 
 2.43.0
 
