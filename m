@@ -1,65 +1,63 @@
-Return-Path: <stable+bounces-77522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCBFA985E0A
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:26:46 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AD15985E0C
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:26:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 084221C23FF0
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:26:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C5F7828D0D9
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:26:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B8D620AACD;
-	Wed, 25 Sep 2024 12:08:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5E1E1B5EC9;
+	Wed, 25 Sep 2024 12:08:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NajnH/+J"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VI22SQww"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB98A20AAA2;
-	Wed, 25 Sep 2024 12:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F5001B5803;
+	Wed, 25 Sep 2024 12:08:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727266108; cv=none; b=dfYI/NkmnXXiOl+BJCZQbx09W4TUcGdYkIRDFyoCCklhqQz1SbY4qvuVAwtvJih8E6zwiya4FIxBEMk8XQJ88/tI+QyRkQQhGAQoKkUBeZCJ/dCCTesVR11lAQKo8ZVKA785Ggb4uY7drAgZU1gqYgm5JMatUEWhd4NqPnFQl2k=
+	t=1727266110; cv=none; b=Rc1P2cWY83jHZzx80INNXUS1QdSKWPYAsLTsQWy9C16uqEpp6ojvJ/YAzpDE3dNXbE+F1h3P4Tnveh1Mohn/ZJQziIEfdgfpyIeviI6wWaJ8bK6DtPq7LoyvmPg9QIemafaB0X5BlkmQ8SbaleJNH3yWV877uvS2xaUi0mnJcus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727266108; c=relaxed/simple;
-	bh=OB6NENlvZSwTU8nlAMQ/WpdGI0kcmwA0lqhEFOvXgMo=;
+	s=arc-20240116; t=1727266110; c=relaxed/simple;
+	bh=DIhr0J1rmpdOZj57I74FlI06C9ruFqKjd5Nk6Bk903k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l7v8lpZYN1CtMB2+V/aoD7LuUHa3Hn78T2kCYOPtHayTOq0/q7s7zUy+X0J2j3t4Tq8AIJH0F7pk0DSbfhynUP4+kMu59EjUESUZoUg/NRtM8lFoI7tCmeQJckexy5PVeEYhIlzOTpMmXJekPjSr1qWZgZC5sLyJftIwEKPCuAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NajnH/+J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DEFCC4CECE;
-	Wed, 25 Sep 2024 12:08:25 +0000 (UTC)
+	 MIME-Version; b=qAGSDtH3iGoAWsp8MPIHTnhLCRZzz/kAPeVKQJMlAWpegpSAB4VZcG7t5fOEY0hnxEgc25Q8xmjIW8iEo3aK6A1p/ILViI2+jCUiW3Bz1J9q6x9zBrkk/bSUcwBcp3mDGN/Y07CZhHgGItAh9W3zA1a3wgNSFTwBVFEc4I+f2yw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VI22SQww; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A4DFC4CEC3;
+	Wed, 25 Sep 2024 12:08:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727266107;
-	bh=OB6NENlvZSwTU8nlAMQ/WpdGI0kcmwA0lqhEFOvXgMo=;
+	s=k20201202; t=1727266110;
+	bh=DIhr0J1rmpdOZj57I74FlI06C9ruFqKjd5Nk6Bk903k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NajnH/+JmiBMy5VAgdgw6FXMxUQOkc11CxvDTp0KpPrQbtzIFPNO7i4E5mhaCIlnf
-	 8G6Ky593bWXciP1lknTZy8P4g5cbe0myym7NmrPIvhhTVlbloE8L7RQ9CukW8Xp3KR
-	 /oZ+PHFDGa1DTgrYvTp/qLuf1xKus0IOP7kzuCgPf4m5oRYCU5H5wpBotaDhFiI652
-	 F/38t+9NPMjJEC4PHed+AYn3Rdeo7LUnc4rCquH7TqWRAzexK9v7cue9SpBFyyFIcQ
-	 etxIZfBIZVjvgoVGAGTRQDVEVm9Hu3GHtQNBuacovhG3B2uk4eSCUR918rJi/q5jyx
-	 2q6hFRK3B+Zlg==
+	b=VI22SQwwlE6mhrsS6EUKW/BFyth8ASZmQhIxeW8QTrHuoEVKha/nuVzd7i6i10dU6
+	 Pt52qUsjJQ/GLZHYss8Wio17lVMAGBUra1C51U548Fxu+RPJpPRLWcsNcKvIGTEw9K
+	 GetcPi6Na1mrUJ0i3l0GHGBtWf5RnuKmzx/2s8ADH4mx+GTKLeHUo+qCauytSfdlZ4
+	 Xg8+O/mrwm79epATu8zz/prkUHmXeKdq2wWfP0tlx9hEP2AUTtLHvt8/NohgRriE9F
+	 +e1e0o1/gXw/4aMx0fmyxJs6D56kGWGJsRa59vgEn0vpDDK4jubw4LoFiiSCGnHzFe
+	 YFuz/HuDgZdiA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Tim Huang <tim.huang@amd.com>,
-	Jesse Zhang <jesse.zhang@amd.com>,
+Cc: Hawking Zhang <Hawking.Zhang@amd.com>,
+	Tao Zhou <tao.zhou1@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	kenneth.feng@amd.com,
+	Felix.Kuehling@amd.com,
 	christian.koenig@amd.com,
 	Xinhui.Pan@amd.com,
 	airlied@gmail.com,
 	daniel@ffwll.ch,
-	kevinyang.wang@amd.com,
-	Jun.Ma2@amd.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.10 174/197] drm/amd/pm: ensure the fw_info is not null before using it
-Date: Wed, 25 Sep 2024 07:53:13 -0400
-Message-ID: <20240925115823.1303019-174-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.10 175/197] drm/amdkfd: Check int source id for utcl2 poison event
+Date: Wed, 25 Sep 2024 07:53:14 -0400
+Message-ID: <20240925115823.1303019-175-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925115823.1303019-1-sashal@kernel.org>
 References: <20240925115823.1303019-1-sashal@kernel.org>
@@ -74,34 +72,74 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.11
 Content-Transfer-Encoding: 8bit
 
-From: Tim Huang <tim.huang@amd.com>
+From: Hawking Zhang <Hawking.Zhang@amd.com>
 
-[ Upstream commit 186fb12e7a7b038c2710ceb2fb74068f1b5d55a4 ]
+[ Upstream commit db6341a9168d2a24ded526277eeab29724d76e9d ]
 
-This resolves the dereference null return value warning
-reported by Coverity.
+Traditional utcl2 fault_status polling does not
+work in SRIOV environment. The polling of fault
+status register from guest side will be dropped
+by hardware.
 
-Signed-off-by: Tim Huang <tim.huang@amd.com>
-Reviewed-by: Jesse Zhang <jesse.zhang@amd.com>
+Driver should switch to check utcl2 interrupt
+source id to identify utcl2 poison event. It is
+set to 1 when poisoned data interrupts are
+signaled.
+
+v2: drop the unused local variable (Tao)
+
+Signed-off-by: Hawking Zhang <Hawking.Zhang@amd.com>
+Reviewed-by: Tao Zhou <tao.zhou1@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/powerplay/hwmgr/processpptables.c | 2 ++
- 1 file changed, 2 insertions(+)
+ .../gpu/drm/amd/amdkfd/kfd_int_process_v9.c    | 18 +-----------------
+ drivers/gpu/drm/amd/amdkfd/soc15_int.h         |  1 +
+ 2 files changed, 2 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/processpptables.c b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/processpptables.c
-index 5794b64507bf9..56a2257525806 100644
---- a/drivers/gpu/drm/amd/pm/powerplay/hwmgr/processpptables.c
-+++ b/drivers/gpu/drm/amd/pm/powerplay/hwmgr/processpptables.c
-@@ -1185,6 +1185,8 @@ static int init_overdrive_limits(struct pp_hwmgr *hwmgr,
- 	fw_info = smu_atom_get_data_table(hwmgr->adev,
- 			 GetIndexIntoMasterTable(DATA, FirmwareInfo),
- 			 &size, &frev, &crev);
-+	PP_ASSERT_WITH_CODE(fw_info != NULL,
-+			    "Missing firmware info!", return -EINVAL);
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v9.c b/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v9.c
+index 78dde62fb04ad..c282f5253c445 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v9.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_int_process_v9.c
+@@ -414,25 +414,9 @@ static void event_interrupt_wq_v9(struct kfd_node *dev,
+ 		   client_id == SOC15_IH_CLIENTID_UTCL2) {
+ 		struct kfd_vm_fault_info info = {0};
+ 		uint16_t ring_id = SOC15_RING_ID_FROM_IH_ENTRY(ih_ring_entry);
+-		uint32_t node_id = SOC15_NODEID_FROM_IH_ENTRY(ih_ring_entry);
+-		uint32_t vmid_type = SOC15_VMID_TYPE_FROM_IH_ENTRY(ih_ring_entry);
+-		int hub_inst = 0;
+ 		struct kfd_hsa_memory_exception_data exception_data;
  
- 	if ((fw_info->ucTableFormatRevision == 1)
- 	    && (le16_to_cpu(fw_info->usStructureSize) >= sizeof(ATOM_FIRMWARE_INFO_V1_4)))
+-		/* gfxhub */
+-		if (!vmid_type && dev->adev->gfx.funcs->ih_node_to_logical_xcc) {
+-			hub_inst = dev->adev->gfx.funcs->ih_node_to_logical_xcc(dev->adev,
+-				node_id);
+-			if (hub_inst < 0)
+-				hub_inst = 0;
+-		}
+-
+-		/* mmhub */
+-		if (vmid_type && client_id == SOC15_IH_CLIENTID_VMC)
+-			hub_inst = node_id / 4;
+-
+-		if (amdgpu_amdkfd_ras_query_utcl2_poison_status(dev->adev,
+-					hub_inst, vmid_type)) {
++		if (source_id == SOC15_INTSRC_VMC_UTCL2_POISON) {
+ 			event_interrupt_poison_consumption_v9(dev, pasid, client_id);
+ 			return;
+ 		}
+diff --git a/drivers/gpu/drm/amd/amdkfd/soc15_int.h b/drivers/gpu/drm/amd/amdkfd/soc15_int.h
+index 10138676f27fd..e5c0205f26181 100644
+--- a/drivers/gpu/drm/amd/amdkfd/soc15_int.h
++++ b/drivers/gpu/drm/amd/amdkfd/soc15_int.h
+@@ -29,6 +29,7 @@
+ #define SOC15_INTSRC_CP_BAD_OPCODE	183
+ #define SOC15_INTSRC_SQ_INTERRUPT_MSG	239
+ #define SOC15_INTSRC_VMC_FAULT		0
++#define SOC15_INTSRC_VMC_UTCL2_POISON	1
+ #define SOC15_INTSRC_SDMA_TRAP		224
+ #define SOC15_INTSRC_SDMA_ECC		220
+ #define SOC21_INTSRC_SDMA_TRAP		49
 -- 
 2.43.0
 
