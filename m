@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-77515-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77516-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7199F985DFC
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:25:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7922985DFF
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:25:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 37B22286610
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:25:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D72551C251F6
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:25:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBEFC1B5836;
-	Wed, 25 Sep 2024 12:08:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20A261CC410;
+	Wed, 25 Sep 2024 12:08:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UOmCb/iA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h6azMLUC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87BF5208E6F;
-	Wed, 25 Sep 2024 12:08:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D38281CC407;
+	Wed, 25 Sep 2024 12:08:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727266086; cv=none; b=qSAGbGjs8q1srMJEcsGqLXK9mRKdjruZMdqyz9oNipPvFqFyG3aI3h80EJy0hq3CAkS0AAxrNP3ZRM1BGxdly7duKZO9Z5D+3oO1Rp+l65GV+Kw8y4QYjzyDFcfnC1N4cGWKUWtfVSIOOUKrwJH/ABzdLMdaJ+0T1BeoV+ynICo=
+	t=1727266087; cv=none; b=g2uGt4MvfCvNPPc79QoJnJL/Jwi9MkRUpnCKCcNYSlk9I7fiJJSK6+qhWCFocvB42ldDZ0Wff6RhPeMt1oIMeHKXML4Oi98fToftgCJ3XipDI5/+O0Irl3N6wdmbD7JSkCZhfERXk4se00xq0nu4v3El3lQCffH4iWb5qRYCKr0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727266086; c=relaxed/simple;
-	bh=qViNjhDnwURNqBMyggd43t6rbIrnVfxZrwhGkjgTn6Y=;
+	s=arc-20240116; t=1727266087; c=relaxed/simple;
+	bh=uwvlE86YHQU/hfeMbPJqPOnWFDozBb2zVNDOcuYEcH8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=j3S/IU37dKTSznDnxQ/pZWJsz+dYP5K3izz4RIffRvygHme4w/FaP2Jt+7D9DUa2FdG5HevPgoZ5aKAL8hKYfjsrarO+lu/o/KvUx074Rzlj1Dp6/EfL5wacPGV2MxXGt/OV6rz1TSrmogXll4MKjEhLWe85l+RUOp/Eaio2xoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UOmCb/iA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05731C4CECD;
-	Wed, 25 Sep 2024 12:08:04 +0000 (UTC)
+	 MIME-Version; b=sUX+rVnTEUMdFE9+GzPfhFoM+MDR4VxV3iqrvJ3/I7TQb5qR+cx8NfJsdcWdYwswvm2POjTk6TjIgiFej1DH6ro4KaB7Gqt0HcyoLMl1g0DcRbv43BdGjmzUKppUBh9AGxy3120Fj0Egy24OsWP2UAfWUHfiCwRhZ/9jcRt8I/U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h6azMLUC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99644C4CEC3;
+	Wed, 25 Sep 2024 12:08:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727266086;
-	bh=qViNjhDnwURNqBMyggd43t6rbIrnVfxZrwhGkjgTn6Y=;
+	s=k20201202; t=1727266087;
+	bh=uwvlE86YHQU/hfeMbPJqPOnWFDozBb2zVNDOcuYEcH8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UOmCb/iAKJdoHyEh7fTd1d9t+xDu0W8xzdKFGF6lPuFTVuX7TF4mjmt/jtGnt4Foy
-	 tnSFgEd4A2MTnxagNaG3PljXNghOknSCOxrNSlNBdf+Cg79nhdXDFpDquk/YR1LuNh
-	 H64oYIwL/J3DUs11Vk5spN6qe0fay1wac6nwyU30zz9RDhW0uYqK1JcMWAotU7sooy
-	 3sU5H+oECZbd7P4ihXZejO2LYdLF8FZ+G5rcFtpi0NODDdpmere1nPsMFliL2qIIYX
-	 xy6D01BIM428VMLfYwCsk2XLpvEyv34WMafzjlKOcN+8eS/q5Nb1tD4ZBYBuKXuNiB
-	 itg+T/bH8E0AA==
+	b=h6azMLUC7B4AQ/fg8BvnuYsTXPvbv4Cd5Me47OIsCUTAQd4pYmhTf53lv5kUdmvJ7
+	 ERiYCNW1Gmwa7A9GeB5ROzQvlzrwZ1quuTXgP6/7lQr3536lUcSwWABKDNhpxQ7Ioo
+	 XjL4NP4tgt3QX/7z8YlYOuOSVrTCEkjI9xl2HqZpnbz6jz0IVPfhlZBtQxF/IZieYO
+	 ERZmftNwpWdx9DxY0Zkfm8hXYxiOeDiQ7veQNYXIB3GsF8AMXx+LmMHy/AwTKzpAlk
+	 kNZ8w+Nj3plNMP3iez9Mnods2KEIaaw+OHFh9bykFX6SvxQ2bQASTYQCxnZEeTS2l9
+	 HRzmfmM8iOAaA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Peter Zijlstra <peterz@infradead.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Namhyung Kim <namhyung@kernel.org>,
+Cc: Finn Thain <fthain@linux-m68k.org>,
+	Stan Johnson <userm57@yahoo.com>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
-	mingo@redhat.com,
-	acme@kernel.org,
-	linux-perf-users@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 167/197] perf: Fix event_function_call() locking
-Date: Wed, 25 Sep 2024 07:53:06 -0400
-Message-ID: <20240925115823.1303019-167-sashal@kernel.org>
+	schmitzmic@gmail.com,
+	James.Bottomley@HansenPartnership.com,
+	linux-scsi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.10 168/197] scsi: NCR5380: Initialize buffer for MSG IN and STATUS transfers
+Date: Wed, 25 Sep 2024 07:53:07 -0400
+Message-ID: <20240925115823.1303019-168-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925115823.1303019-1-sashal@kernel.org>
 References: <20240925115823.1303019-1-sashal@kernel.org>
@@ -68,61 +68,48 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.11
 Content-Transfer-Encoding: 8bit
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Finn Thain <fthain@linux-m68k.org>
 
-[ Upstream commit 558abc7e3f895049faa46b08656be4c60dc6e9fd ]
+[ Upstream commit 1c71065df2df693d208dd32758171c1dece66341 ]
 
-All the event_function/@func call context already uses perf_ctx_lock()
-except for the !ctx->is_active case. Make it all consistent.
+Following an incomplete transfer in MSG IN phase, the driver would not
+notice the problem and would make use of invalid data. Initialize 'tmp'
+appropriately and bail out if no message was received. For STATUS phase,
+preserve the existing status code unless a new value was transferred.
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Kan Liang <kan.liang@linux.intel.com>
-Reviewed-by: Namhyung Kim <namhyung@kernel.org>
-Link: https://lore.kernel.org/r/20240807115550.138301094@infradead.org
+Tested-by: Stan Johnson <userm57@yahoo.com>
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+Link: https://lore.kernel.org/r/52e02a8812ae1a2d810d7f9f7fd800c3ccc320c4.1723001788.git.fthain@linux-m68k.org
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/events/core.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/scsi/NCR5380.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/kernel/events/core.c b/kernel/events/core.c
-index 081d9692ce747..e18a07de9920a 100644
---- a/kernel/events/core.c
-+++ b/kernel/events/core.c
-@@ -263,6 +263,7 @@ static int event_function(void *info)
- static void event_function_call(struct perf_event *event, event_f func, void *data)
- {
- 	struct perf_event_context *ctx = event->ctx;
-+	struct perf_cpu_context *cpuctx = this_cpu_ptr(&perf_cpu_context);
- 	struct task_struct *task = READ_ONCE(ctx->task); /* verified in event_function */
- 	struct event_function_struct efs = {
- 		.event = event,
-@@ -291,22 +292,22 @@ static void event_function_call(struct perf_event *event, event_f func, void *da
- 	if (!task_function_call(task, event_function, &efs))
- 		return;
+diff --git a/drivers/scsi/NCR5380.c b/drivers/scsi/NCR5380.c
+index cea3a79d538e4..a99221ead3e00 100644
+--- a/drivers/scsi/NCR5380.c
++++ b/drivers/scsi/NCR5380.c
+@@ -1807,8 +1807,11 @@ static void NCR5380_information_transfer(struct Scsi_Host *instance)
+ 				return;
+ 			case PHASE_MSGIN:
+ 				len = 1;
++				tmp = 0xff;
+ 				data = &tmp;
+ 				NCR5380_transfer_pio(instance, &phase, &len, &data, 0);
++				if (tmp == 0xff)
++					break;
+ 				ncmd->message = tmp;
  
--	raw_spin_lock_irq(&ctx->lock);
-+	perf_ctx_lock(cpuctx, ctx);
- 	/*
- 	 * Reload the task pointer, it might have been changed by
- 	 * a concurrent perf_event_context_sched_out().
- 	 */
- 	task = ctx->task;
- 	if (task == TASK_TOMBSTONE) {
--		raw_spin_unlock_irq(&ctx->lock);
-+		perf_ctx_unlock(cpuctx, ctx);
- 		return;
- 	}
- 	if (ctx->is_active) {
--		raw_spin_unlock_irq(&ctx->lock);
-+		perf_ctx_unlock(cpuctx, ctx);
- 		goto again;
- 	}
- 	func(event, NULL, ctx, data);
--	raw_spin_unlock_irq(&ctx->lock);
-+	perf_ctx_unlock(cpuctx, ctx);
- }
- 
- /*
+ 				switch (tmp) {
+@@ -1996,6 +1999,7 @@ static void NCR5380_information_transfer(struct Scsi_Host *instance)
+ 				break;
+ 			case PHASE_STATIN:
+ 				len = 1;
++				tmp = ncmd->status;
+ 				data = &tmp;
+ 				NCR5380_transfer_pio(instance, &phase, &len, &data, 0);
+ 				ncmd->status = tmp;
 -- 
 2.43.0
 
