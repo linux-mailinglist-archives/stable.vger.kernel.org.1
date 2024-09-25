@@ -1,66 +1,63 @@
-Return-Path: <stable+bounces-77269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F8AA985B4A
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:20:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A66F985B4C
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:20:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 599FC286AA5
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:20:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1B619286D86
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:20:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABCE01BC068;
-	Wed, 25 Sep 2024 11:48:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C358E1BC085;
+	Wed, 25 Sep 2024 11:48:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PvAxzPMv"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AoQyoMVY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 684991922F9;
-	Wed, 25 Sep 2024 11:48:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FAD01BC078;
+	Wed, 25 Sep 2024 11:48:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727264886; cv=none; b=Ux36C0kVb6WlqIEhKFsZqXFqTJj2mcA9CCNymDUmfRmVStIL/yTORWA8zFSfRHVyQ2qmq7HF/JD/NCRUca5woHAqMt679hPxHubPBb+WcCq9aviErhbz0SvZaIRVSUg8OSvsE4d/s6f7HqoQTUmmxMGFusWBMmOBwdwW5LGWE9Y=
+	t=1727264888; cv=none; b=ZXF2lVxwjeRFu534SE+Q4OLKplFNfcgvGBxMuXrRyJVdd7PaNLy1g3KXkOSwyQFzMxRVLOKeVyQpTlV1I0c+v2KsyH61GHQJUaeJQv5Qe09x07KSnr5LYIuZSeXjysvG06Wr4RecgsqceeO9Zj06eof9AtuJT9JmIiTIb4hYNvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727264886; c=relaxed/simple;
-	bh=/jogK1MMdwj6REs5/GO1TXbIHyYfWZbcYxgds7txnm4=;
+	s=arc-20240116; t=1727264888; c=relaxed/simple;
+	bh=ARkVUnORyoSpvvi/osT4jVUA26xo6uc7NC7M7vXNZhM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kzaEnQMzE7ALBnao2f98tRbl71F1oQy1ZBMm+zimPjUjB2hMRgdrIEuYQCpwjFAvm3r+3iI2TcsSgWZard3HEmkHVYjCoUXo9srLJoBvXU+2Q0o6wh1+dFEAOEjTdOs04h2BGEFX9LeASYV71jRZhq4DD8E+H1zsxZkmd8I1PNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PvAxzPMv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01539C4CECD;
-	Wed, 25 Sep 2024 11:48:03 +0000 (UTC)
+	 MIME-Version; b=usa2K4uKXRvpGd2f306C5QbHmz9YdXNuXQu2wY1JU4uSc35Vu2ZVVpt/+vVueMcM5tQwvdR9EfI0UgzaBbemmnhRGjH7jUk3bGwkc7oSr/TT4yyFKSDvHNs8l29Uy1eROjRyqqoBpYiRc+SzCBX2Dre0K8xDgj6N7EuBqgjIrkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AoQyoMVY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DA4FC4CEC7;
+	Wed, 25 Sep 2024 11:48:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727264885;
-	bh=/jogK1MMdwj6REs5/GO1TXbIHyYfWZbcYxgds7txnm4=;
+	s=k20201202; t=1727264887;
+	bh=ARkVUnORyoSpvvi/osT4jVUA26xo6uc7NC7M7vXNZhM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PvAxzPMvCTFlv00J5mRi9GWjhpVrUW9stqktEZSYyZrBU6o10TLl3A2Alk+ogGJQA
-	 kGEGZHPcJGFcWnCHvQph3UwvrqOxu3vqdF41Hzjo4WAFH+bLrhPBocHKnZ+2vvjIc1
-	 KWjTOzOENOY6v9B4A2+aT2bnmsUzopJ2IKVP8BQum2CvXI+y2zboi6cBiFG2fUHFZ1
-	 SUuZtle5TjqVgzaKy0TeEGqsmq95kijVE4IQYJmZE3/ReXZaqXW/sVIf24k0vhpvK/
-	 00Q2LxMseCV6L3C/Y+Q9ozcNkilIx7MUQw+DSlpTBj0eowd5OU0utVfH/U7G06ZvLY
-	 waQV6wk9pl2JQ==
+	b=AoQyoMVYZNn4J39X69YkObNyaqMfPOCLP5uPuSmmStSD2WQcMQ72CW8FnZpaJ/Y6W
+	 6A62kPGH0b9TGnzooWAQuzdJCBuL2G0QB9PAWJjUTZzX/0MJkCKSIvK89E2n08aXth
+	 /eudl/IinpxFqHi99QrMO+gf8iG2m/cKcBh0o8nwB4B4JIeMeWdVZYz3T4U8qYOoi0
+	 3LOvprOoLNMSf8sBMTCQkQbVsWBhS4l5unRZNenreildNOQkF9GB9ihXt6QtV8piF0
+	 Z2a1U5gKO9RXio9ZdMKgp9IaZbPrDz+RVg2/mNCFFZ9Bl0H6eRKyLGIX+4ouUAC/9w
+	 k/hN2jtUm0srA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Peng Liu <liupeng01@kylinos.cn>,
+Cc: Jesse Zhang <jesse.zhang@amd.com>,
+	Tim Huang <tim.huang@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
+	Felix.Kuehling@amd.com,
 	christian.koenig@amd.com,
 	Xinhui.Pan@amd.com,
 	airlied@gmail.com,
 	daniel@ffwll.ch,
-	sunil.khatri@amd.com,
-	Prike.Liang@amd.com,
-	Tim.Huang@amd.com,
-	kevinyang.wang@amd.com,
-	pierre-eric.pelloux-prayer@amd.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.11 171/244] drm/amdgpu: enable gfxoff quirk on HP 705G4
-Date: Wed, 25 Sep 2024 07:26:32 -0400
-Message-ID: <20240925113641.1297102-171-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.11 172/244] drm/amdkfd: Fix resource leak in criu restore queue
+Date: Wed, 25 Sep 2024 07:26:33 -0400
+Message-ID: <20240925113641.1297102-172-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925113641.1297102-1-sashal@kernel.org>
 References: <20240925113641.1297102-1-sashal@kernel.org>
@@ -75,36 +72,33 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11
 Content-Transfer-Encoding: 8bit
 
-From: Peng Liu <liupeng01@kylinos.cn>
+From: Jesse Zhang <jesse.zhang@amd.com>
 
-[ Upstream commit 2c7795e245d993bcba2f716a8c93a5891ef910c9 ]
+[ Upstream commit aa47fe8d3595365a935921a90d00bc33ee374728 ]
 
-Enabling gfxoff quirk results in perfectly usable
-graphical user interface on HP 705G4 DM with R5 2400G.
+To avoid memory leaks, release q_extra_data when exiting the restore queue.
+v2: Correct the proto (Alex)
 
-Without the quirk, X server is completely unusable as
-every few seconds there is gpu reset due to ring gfx timeout.
-
-Signed-off-by: Peng Liu <liupeng01@kylinos.cn>
+Signed-off-by: Jesse Zhang <jesse.zhang@amd.com>
+Reviewed-by: Tim Huang <tim.huang@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
-index 9360a4425c4ae..fc4153a87f947 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v9_0.c
-@@ -1303,6 +1303,8 @@ static const struct amdgpu_gfxoff_quirk amdgpu_gfxoff_quirk_list[] = {
- 	{ 0x1002, 0x69af, 0x106b, 0x019a, 0xc0 },
- 	/* https://bbs.openkylin.top/t/topic/171497 */
- 	{ 0x1002, 0x15d8, 0x19e5, 0x3e14, 0xc2 },
-+	/* HP 705G4 DM with R5 2400G */
-+	{ 0x1002, 0x15dd, 0x103c, 0x8464, 0xd6 },
- 	{ 0, 0, 0, 0, 0 },
- };
+diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c b/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
+index 36f0460cbffe6..e0f19f3ae2207 100644
+--- a/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
++++ b/drivers/gpu/drm/amd/amdkfd/kfd_process_queue_manager.c
+@@ -988,6 +988,7 @@ int kfd_criu_restore_queue(struct kfd_process *p,
+ 		pr_debug("Queue id %d was restored successfully\n", queue_id);
  
+ 	kfree(q_data);
++	kfree(q_extra_data);
+ 
+ 	return ret;
+ }
 -- 
 2.43.0
 
