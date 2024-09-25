@@ -1,153 +1,93 @@
-Return-Path: <stable+bounces-77592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77512-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25C8A985EE4
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:46:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3A5F985DF4
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:24:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D3F7B288001
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:46:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9B00B1F24F5D
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:24:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A54121891E;
-	Wed, 25 Sep 2024 12:13:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FpeAIOfL"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CF6E20850F;
+	Wed, 25 Sep 2024 12:07:59 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from szxga04-in.huawei.com (szxga04-in.huawei.com [45.249.212.190])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1220321891F;
-	Wed, 25 Sep 2024 12:13:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12B2D1B5829;
+	Wed, 25 Sep 2024 12:07:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.190
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727266399; cv=none; b=hzkC0F9duUkkH98WUTrFv/9Xbuf/q7HJlOinUna8gdyiRHbVvNbM5gvJgx0CxESkQ6mLAxKm78j0JpdA4Eczd8J9lc04f8mZiFwXHgKtSpGySOGVKk+wkQd28bLxyFjjvFDMqLjfjBVWfcSmjEE1I6vdgvhl6CrYUgF8d1SHEto=
+	t=1727266079; cv=none; b=oiE3FcAqfXn1L7SSU6lzk8BmWCipY0jcJ6W1quqRVz9LLvRb/UAT9QG9sWrNZGo0meoB9IQUHXf9Zld1L52Xtv42AdOnehzxMsoftP8cLyrwDh1BzqtuasUIORjYbkhkDTlD//iZ85dHuxqW7DBSmR+nRFdhHBO84cpr1zKxlec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727266399; c=relaxed/simple;
-	bh=quONDP1PgDCsYhaL8Fa2b6bc8N4D7K966aocxPuPG9o=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bhZYWKVFLcpYc2HE5I17kxWmzWhkSdlTbFacZVkt399omNsXDCHq4OTD6Wv8ibVB0rJ8NFOHZdTnd0GUXCZhSLoX49cZs48oFSAtGX8y98VvyjRrQulP4cgrj+FX1zSnWtEFzTww9sA9vrKR5wd10gShlDnua5qycGLAyEl1hzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FpeAIOfL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D426C4CEC3;
-	Wed, 25 Sep 2024 12:13:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727266397;
-	bh=quONDP1PgDCsYhaL8Fa2b6bc8N4D7K966aocxPuPG9o=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FpeAIOfLK5PmKRdXaVLo8xM6NcBIHDjeC5NPKR13H4W1dJChqBMtdXTk2KoSFQa9h
-	 2I5Smv2Ag04FZTc1ILTH454zBOZ/4P83WOrZulM7Stp0JbwwyeCGaqgBGi/4PQn6cL
-	 vKzTM4iGJ8gAfhHZ6LrsKqo3Fqqw+cFD9AOTQ0PBpiqGScjM80jfGLmgLfCME+NcNB
-	 QdSlGWBjPGncwspEXAiuMK/woBg9iNOosruWevRJYJKIFi3GHxIz6EwkTEgt5I1tjK
-	 8H22URf+4Z+Lr8Ztj4tuiNe6fmpQh0Y9bjgmb7S5cVAKXcHTFVzO8y5vPGfSnjO62M
-	 NXKaXRZuhBguQ==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Johannes Berg <johannes.berg@intel.com>,
-	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	linux-wireless@vger.kernel.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 046/139] wifi: mac80211: fix RCU list iterations
-Date: Wed, 25 Sep 2024 08:07:46 -0400
-Message-ID: <20240925121137.1307574-46-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240925121137.1307574-1-sashal@kernel.org>
-References: <20240925121137.1307574-1-sashal@kernel.org>
+	s=arc-20240116; t=1727266079; c=relaxed/simple;
+	bh=cdhkjTe9uFvt2/UW/vfC2+D1KZldNIpOdMEaT30Az7I=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=qw6u6woYDbiXXDDcqVaEM517yOLnSnBarjJQOiLTG7avIJB4Ne/zs6U+g/hLqRFISq+OVH2j4iL4caT6AuD/LCI85VopTR+wFbfDM7q72j/MOaHuyXupL30ZQsZ96Xsgc+RHyScFPi+3RORGrbnQLSIzNtXBS85eSGZnTc2AlBI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.190
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+Received: from mail.maildlp.com (unknown [172.19.163.17])
+	by szxga04-in.huawei.com (SkyGuard) with ESMTP id 4XDFpl1Jh6z20pKZ;
+	Wed, 25 Sep 2024 20:07:27 +0800 (CST)
+Received: from kwepemd200011.china.huawei.com (unknown [7.221.188.251])
+	by mail.maildlp.com (Postfix) with ESMTPS id 843231A0188;
+	Wed, 25 Sep 2024 20:07:48 +0800 (CST)
+Received: from cgs.huawei.com (10.244.148.83) by
+ kwepemd200011.china.huawei.com (7.221.188.251) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1258.34; Wed, 25 Sep 2024 20:07:47 +0800
+From: Gaosheng Cui <cuigaosheng1@huawei.com>
+To: <gregkh@linuxfoundation.org>, <rafael@kernel.org>,
+	<akpm@linux-foundation.org>, <thunder.leizhen@huawei.com>,
+	<cuigaosheng1@huawei.com>, <wangweiyang2@huawei.com>
+CC: <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: [PATCH -next 1/2] kobject: fix memory leak in kset_register() due to uninitialized kset->kobj.ktype
+Date: Wed, 25 Sep 2024 20:07:46 +0800
+Message-ID: <20240925120747.1930709-2-cuigaosheng1@huawei.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20240925120747.1930709-1-cuigaosheng1@huawei.com>
+References: <20240925120747.1930709-1-cuigaosheng1@huawei.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.52
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: dggems701-chm.china.huawei.com (10.3.19.178) To
+ kwepemd200011.china.huawei.com (7.221.188.251)
 
-From: Johannes Berg <johannes.berg@intel.com>
+If a kset with uninitialized kset->kobj.ktype be registered,
+kset_register() will return error, and the kset.kobj.name allocated
+by kobject_set_name() will be leaked.
 
-[ Upstream commit ac35180032fbc5d80b29af00ba4881815ceefcb6 ]
+To mitigate this, we free the name in kset_register() when an error
+is encountered due to uninitialized kset->kobj.ktype.
 
-There are a number of places where RCU list iteration is
-used, but that aren't (always) called with RCU held. Use
-just list_for_each_entry() in most, and annotate iface
-iteration with the required locks.
-
-Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20240827094939.ed8ac0b2f897.I8443c9c3c0f8051841353491dae758021b53115e@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 4d0fe8c52bb3 ("kobject: Add sanity check for kset->kobj.ktype in kset_register()")
+Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
 ---
- net/mac80211/chan.c | 4 +++-
- net/mac80211/mlme.c | 2 +-
- net/mac80211/scan.c | 2 +-
- net/mac80211/util.c | 4 +++-
- 4 files changed, 8 insertions(+), 4 deletions(-)
+ lib/kobject.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/mac80211/chan.c b/net/mac80211/chan.c
-index 68952752b5990..c09aed6a3cfcc 100644
---- a/net/mac80211/chan.c
-+++ b/net/mac80211/chan.c
-@@ -245,7 +245,9 @@ ieee80211_get_max_required_bw(struct ieee80211_sub_if_data *sdata,
- 	enum nl80211_chan_width max_bw = NL80211_CHAN_WIDTH_20_NOHT;
- 	struct sta_info *sta;
+diff --git a/lib/kobject.c b/lib/kobject.c
+index 72fa20f405f1..ecca72622933 100644
+--- a/lib/kobject.c
++++ b/lib/kobject.c
+@@ -862,6 +862,8 @@ int kset_register(struct kset *k)
+ 		return -EINVAL;
  
--	list_for_each_entry_rcu(sta, &sdata->local->sta_list, list) {
-+	lockdep_assert_wiphy(sdata->local->hw.wiphy);
-+
-+	list_for_each_entry(sta, &sdata->local->sta_list, list) {
- 		if (sdata != sta->sdata &&
- 		    !(sta->sdata->bss && sta->sdata->bss == sdata->bss))
- 			continue;
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index 42e2c84ed2484..b14c809bcdea3 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -732,7 +732,7 @@ static bool ieee80211_add_vht_ie(struct ieee80211_sub_if_data *sdata,
- 		bool disable_mu_mimo = false;
- 		struct ieee80211_sub_if_data *other;
- 
--		list_for_each_entry_rcu(other, &local->interfaces, list) {
-+		list_for_each_entry(other, &local->interfaces, list) {
- 			if (other->vif.bss_conf.mu_mimo_owner) {
- 				disable_mu_mimo = true;
- 				break;
-diff --git a/net/mac80211/scan.c b/net/mac80211/scan.c
-index 3d68db738cde4..ea554e21e7a19 100644
---- a/net/mac80211/scan.c
-+++ b/net/mac80211/scan.c
-@@ -489,7 +489,7 @@ static void __ieee80211_scan_completed(struct ieee80211_hw *hw, bool aborted)
- 	 * the scan was in progress; if there was none this will
- 	 * just be a no-op for the particular interface.
- 	 */
--	list_for_each_entry_rcu(sdata, &local->interfaces, list) {
-+	list_for_each_entry(sdata, &local->interfaces, list) {
- 		if (ieee80211_sdata_running(sdata))
- 			wiphy_work_queue(sdata->local->hw.wiphy, &sdata->work);
+ 	if (!k->kobj.ktype) {
++		kfree_const(k->kobj.name);
++		k->kobj.name = NULL;
+ 		pr_err("must have a ktype to be initialized properly!\n");
+ 		return -EINVAL;
  	}
-diff --git a/net/mac80211/util.c b/net/mac80211/util.c
-index d682c32821a11..02b5aaad2a155 100644
---- a/net/mac80211/util.c
-+++ b/net/mac80211/util.c
-@@ -745,7 +745,9 @@ static void __iterate_interfaces(struct ieee80211_local *local,
- 	struct ieee80211_sub_if_data *sdata;
- 	bool active_only = iter_flags & IEEE80211_IFACE_ITER_ACTIVE;
- 
--	list_for_each_entry_rcu(sdata, &local->interfaces, list) {
-+	list_for_each_entry_rcu(sdata, &local->interfaces, list,
-+				lockdep_is_held(&local->iflist_mtx) ||
-+				lockdep_is_held(&local->hw.wiphy->mtx)) {
- 		switch (sdata->vif.type) {
- 		case NL80211_IFTYPE_MONITOR:
- 			if (!(sdata->u.mntr.flags & MONITOR_FLAG_ACTIVE))
 -- 
-2.43.0
+2.25.1
 
 
