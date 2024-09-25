@@ -1,65 +1,61 @@
-Return-Path: <stable+bounces-77141-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A020A9858F0
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:48:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C9EA9858F7
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:48:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0C3DFB242D1
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 11:48:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F16128128D
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 11:48:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4976B192D83;
-	Wed, 25 Sep 2024 11:38:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72F16193067;
+	Wed, 25 Sep 2024 11:38:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jAUbRg6W"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RXN1lfxd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0287419259B;
-	Wed, 25 Sep 2024 11:38:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CC02183CD2;
+	Wed, 25 Sep 2024 11:38:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727264294; cv=none; b=NdtbXYGcAABloePCfcyHIRs6fIW1XbnqdhGL2mjvNdpGK9QX1y1DRFG4qky815jq+Q+89Z4cbtx3mGMQbjeciYcCj4ZOVRP+PDpfWUvssE1AtK6sbFuWCcCuRb9OQXit2N4dujhxR7YlHeP//prl/NiqCXw0qIncC3oFFbUfyFU=
+	t=1727264296; cv=none; b=bCV4Cdhj1xG2/ysEU1UnnzTo7lpIR/nRZ/6W/jrhPYFHE0ByV4vIdGgFGsIYityD8bGHNQM1MxykwPp+H++5gWyY60CFcw7CdJM0kxu5Q5X9mT7GKbT+MQkn+1PRGzfJzD6LglDt6wE1MQB9F+c8iYNwrM1h4qDebLPbh4BmqZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727264294; c=relaxed/simple;
-	bh=99xJ4NyRMEs2/5u6Lk55kVSZFinGZvr9bsh/6t6RxRs=;
+	s=arc-20240116; t=1727264296; c=relaxed/simple;
+	bh=yH36a8k35/aZy1UjhKV7SrI4bspgyi3+ORHp/5gofHs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fZJbq6+W1pty31iRPPFcD/CeitlATUFO5vwzEHAoLAQgrLU3sO5pyOT1By3PSfthVtJ5VRbZwWNb1LNz0zJ5rfa7h1HJfAZdvv/dckovgI/66eOljbvfFGUsXRgCUu9BJGY3icPlDiqyA58nagNrBlIckQ+/mq+SFpOiNebkfQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jAUbRg6W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E09FC4CEC3;
-	Wed, 25 Sep 2024 11:38:12 +0000 (UTC)
+	 MIME-Version; b=ZbE3ujr8du952rYGBiQ6NW+Bkl3dYyvYPodM8a/s+c+6trc/0mPaoON+oT91foYXLIFbi6d+v0I3DOrwMjR66URftuPs7in0snpbKcb4WcVvdfdozVAE/UTzL96ENWXEfSGIr8lacXzbtFCRAfRUuVlxg9ALAeW8algbzqHKKz8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RXN1lfxd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6232EC4CEC3;
+	Wed, 25 Sep 2024 11:38:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727264293;
-	bh=99xJ4NyRMEs2/5u6Lk55kVSZFinGZvr9bsh/6t6RxRs=;
+	s=k20201202; t=1727264295;
+	bh=yH36a8k35/aZy1UjhKV7SrI4bspgyi3+ORHp/5gofHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jAUbRg6WnvPgKSXN1LEIv8tiZ/LKxrKhoOH5/9EW2vn4pNBw0YVo8SCwYzX20TJVw
-	 sXcbMt2yReiC2vbqeXjryi+V9+iMOO4vl5jOEqkHn4tMZkwaL6VWxKkLu4dPwZgy71
-	 JSOPQA5cgFhLfeE36/fMr9jyWTHg2AogNNnM6dB9+jJtMP9k99fPFQf9t8YvbkRIz/
-	 UQAkADDimNaamUqjIzKsNQM+Gr921e8lH38DoOhe1fcyZQMDpqFx/Ynd0ACACh703O
-	 rJ+XsG/8Qe2Vohr983cvcUgtYOO0hTnq3hU1Vvhdvt9OL2/qSxdD7097lnhBHJ2YJN
-	 cZyUIIkoIF3SA==
+	b=RXN1lfxdt6sQP2Zbwf/7qmyV09BdjkO64Ie0mq4KWux6f6Wj6VeWceXOLBMfuWMl8
+	 IfdE5bAhN9AqJa/tikz+SnrSiCEGt97THYnlLwa5Z+O/sIS03j+Yr0T+Q79pm/AmW+
+	 dVsgrfSn3eEc/etMfYmc+pfEXR9xiiWaiECQvcAhhn7dr5xXh+VY8unXhGUPAnczj5
+	 ml16v1iQOeqkmHd7+v90HhCobhbS95j1jQyUgfK98nhTURTT06o5jVxGj9XN02hCG/
+	 vpvlOiEC6FUzZScwp6RPcTojkIiszvSt8OScVHgjVyqj+TgGcYemunK+BGyICpqUEY
+	 R871DU+nMxHiw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S . Miller" <davem@davemloft.net>,
+Cc: Simon Horman <horms@kernel.org>,
+	Marcin Wojtas <marcin.s.wojtas@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
+	linux@armlinux.org.uk,
+	davem@davemloft.net,
+	edumazet@google.com,
 	pabeni@redhat.com,
-	almasrymina@google.com,
-	asml.silence@gmail.com,
-	lorenzo@kernel.org,
-	bigeasy@linutronix.de,
-	dhowells@redhat.com,
-	liangchen.linux@gmail.com,
-	aleksander.lobakin@intel.com,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 043/244] net: skbuff: sprinkle more __GFP_NOWARN on ingress allocs
-Date: Wed, 25 Sep 2024 07:24:24 -0400
-Message-ID: <20240925113641.1297102-43-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.11 044/244] net: mvpp2: Increase size of queue_name buffer
+Date: Wed, 25 Sep 2024 07:24:25 -0400
+Message-ID: <20240925113641.1297102-44-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925113641.1297102-1-sashal@kernel.org>
 References: <20240925113641.1297102-1-sashal@kernel.org>
@@ -74,77 +70,56 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11
 Content-Transfer-Encoding: 8bit
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Simon Horman <horms@kernel.org>
 
-[ Upstream commit c89cca307b20917da739567a255a68a0798ee129 ]
+[ Upstream commit 91d516d4de48532d967a77967834e00c8c53dfe6 ]
 
-build_skb() and frag allocations done with GFP_ATOMIC will
-fail in real life, when system is under memory pressure,
-and there's nothing we can do about that. So no point
-printing warnings.
+Increase size of queue_name buffer from 30 to 31 to accommodate
+the largest string written to it. This avoids truncation in
+the possibly unlikely case where the string is name is the
+maximum size.
 
+Flagged by gcc-14:
+
+  .../mvpp2_main.c: In function 'mvpp2_probe':
+  .../mvpp2_main.c:7636:32: warning: 'snprintf' output may be truncated before the last format character [-Wformat-truncation=]
+   7636 |                  "stats-wq-%s%s", netdev_name(priv->port_list[0]->dev),
+        |                                ^
+  .../mvpp2_main.c:7635:9: note: 'snprintf' output between 10 and 31 bytes into a destination of size 30
+   7635 |         snprintf(priv->queue_name, sizeof(priv->queue_name),
+        |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   7636 |                  "stats-wq-%s%s", netdev_name(priv->port_list[0]->dev),
+        |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+   7637 |                  priv->port_count > 1 ? "+" : "");
+        |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Introduced by commit 118d6298f6f0 ("net: mvpp2: add ethtool GOP statistics").
+I am not flagging this as a bug as I am not aware that it is one.
+
+Compile tested only.
+
+Signed-off-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Marcin Wojtas <marcin.s.wojtas@gmail.com>
+Link: https://patch.msgid.link/20240806-mvpp2-namelen-v1-1-6dc773653f2f@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/skbuff.c | 15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/marvell/mvpp2/mvpp2.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 83f8cd8aa2d16..de2a044cc6656 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -314,8 +314,8 @@ void *__napi_alloc_frag_align(unsigned int fragsz, unsigned int align_mask)
- 	fragsz = SKB_DATA_ALIGN(fragsz);
+diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2.h b/drivers/net/ethernet/marvell/mvpp2/mvpp2.h
+index e809f91c08fb9..9e02e4367bec8 100644
+--- a/drivers/net/ethernet/marvell/mvpp2/mvpp2.h
++++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2.h
+@@ -1088,7 +1088,7 @@ struct mvpp2 {
+ 	unsigned int max_port_rxqs;
  
- 	local_lock_nested_bh(&napi_alloc_cache.bh_lock);
--	data = __page_frag_alloc_align(&nc->page, fragsz, GFP_ATOMIC,
--				       align_mask);
-+	data = __page_frag_alloc_align(&nc->page, fragsz,
-+				       GFP_ATOMIC | __GFP_NOWARN, align_mask);
- 	local_unlock_nested_bh(&napi_alloc_cache.bh_lock);
- 	return data;
+ 	/* Workqueue to gather hardware statistics */
+-	char queue_name[30];
++	char queue_name[31];
+ 	struct workqueue_struct *stats_queue;
  
-@@ -330,7 +330,8 @@ void *__netdev_alloc_frag_align(unsigned int fragsz, unsigned int align_mask)
- 		struct page_frag_cache *nc = this_cpu_ptr(&netdev_alloc_cache);
- 
- 		fragsz = SKB_DATA_ALIGN(fragsz);
--		data = __page_frag_alloc_align(nc, fragsz, GFP_ATOMIC,
-+		data = __page_frag_alloc_align(nc, fragsz,
-+					       GFP_ATOMIC | __GFP_NOWARN,
- 					       align_mask);
- 	} else {
- 		local_bh_disable();
-@@ -349,7 +350,7 @@ static struct sk_buff *napi_skb_cache_get(void)
- 	local_lock_nested_bh(&napi_alloc_cache.bh_lock);
- 	if (unlikely(!nc->skb_count)) {
- 		nc->skb_count = kmem_cache_alloc_bulk(net_hotdata.skbuff_cache,
--						      GFP_ATOMIC,
-+						      GFP_ATOMIC | __GFP_NOWARN,
- 						      NAPI_SKB_CACHE_BULK,
- 						      nc->skb_cache);
- 		if (unlikely(!nc->skb_count)) {
-@@ -418,7 +419,8 @@ struct sk_buff *slab_build_skb(void *data)
- 	struct sk_buff *skb;
- 	unsigned int size;
- 
--	skb = kmem_cache_alloc(net_hotdata.skbuff_cache, GFP_ATOMIC);
-+	skb = kmem_cache_alloc(net_hotdata.skbuff_cache,
-+			       GFP_ATOMIC | __GFP_NOWARN);
- 	if (unlikely(!skb))
- 		return NULL;
- 
-@@ -469,7 +471,8 @@ struct sk_buff *__build_skb(void *data, unsigned int frag_size)
- {
- 	struct sk_buff *skb;
- 
--	skb = kmem_cache_alloc(net_hotdata.skbuff_cache, GFP_ATOMIC);
-+	skb = kmem_cache_alloc(net_hotdata.skbuff_cache,
-+			       GFP_ATOMIC | __GFP_NOWARN);
- 	if (unlikely(!skb))
- 		return NULL;
- 
+ 	/* Debugfs root entry */
 -- 
 2.43.0
 
