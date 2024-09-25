@@ -1,61 +1,60 @@
-Return-Path: <stable+bounces-77381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32C20985C89
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:49:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BBC8F985C8D
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:49:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 611B81C247CF
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:49:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 789B2288036
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:49:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE4531D094A;
-	Wed, 25 Sep 2024 11:59:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FAE01D0DC7;
+	Wed, 25 Sep 2024 11:59:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XRzZN4XQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MRIfpA6m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97ED21D048B;
-	Wed, 25 Sep 2024 11:59:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE3EC1D097C;
+	Wed, 25 Sep 2024 11:59:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727265584; cv=none; b=Qv9qW8cBxR1XosyLKNWuANrBc4Es2g9EBeizQ66DSZ7PQzkh/02AH8ZM4Ztz3df0idOMzEFe6LLnGMWugmbmEVKXr4ge20HLK5ZfFGsY0iAenDjocDvshLRMBrKayDhHP/3jtEJ2G3L7FolYmV7VJJ7/4j2r8grx/yFeR6nPPww=
+	t=1727265586; cv=none; b=jmae5aIm5q5XtARhDzMH4c9jYUlaJVASTDlgOGPPalKh1DAbr5yWx4HuHVpul0TxDyZCOxEcT8jDEl61vHBddUQcQ4MWGZSfXfwAlvK9lDjEblfY8i0pbHmlA4B6PNfPcIb5OncUoJPRb6/dWh0UZ8wyDXAyShSGRpy0BykcloI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727265584; c=relaxed/simple;
-	bh=yH36a8k35/aZy1UjhKV7SrI4bspgyi3+ORHp/5gofHs=;
+	s=arc-20240116; t=1727265586; c=relaxed/simple;
+	bh=i8Ddac0wgO2fY7sABcvAsuECZ7AXGgf8fgPecamxW/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BdZmLtLBBFSSQnlAKZ0/rEGvY7lyfUoXHihCxI9a9BJg1aHoNLLP1Vr5NCo7gZy1eNlNsAWmqVXGhzYBsmmT8CRys//UgYUZBdWEPYezLJr5nNVw8uiEtLI/1+GhmB4Zk9hh+bl39ZjQADPm94zHpTFig0NdW3oVF25eoCAU7Cc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XRzZN4XQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23DC8C4CECD;
-	Wed, 25 Sep 2024 11:59:43 +0000 (UTC)
+	 MIME-Version; b=BGzBH1hgj2b8Te1bQyrggs/WBxQEdJ+pbFaNFh05l3xltahrj4zXaUhXD16F2StwHzgQs5Z575hA+UZPFyXkbqJw268dUaJ1+AQN4hFyet8CPf3CPnYn+udzH/e2Y/xf8ZfTgZ7DVNpbo+ZAWE8o04+/rCfMyjoXkpoQlnSnU0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MRIfpA6m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AE5AC4CEC3;
+	Wed, 25 Sep 2024 11:59:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727265584;
-	bh=yH36a8k35/aZy1UjhKV7SrI4bspgyi3+ORHp/5gofHs=;
+	s=k20201202; t=1727265586;
+	bh=i8Ddac0wgO2fY7sABcvAsuECZ7AXGgf8fgPecamxW/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XRzZN4XQI911Q+z4O2rcyes7KnBiOUDuFqe98h3EQzX8SExYv4XCtcn0idnosTEqy
-	 7lzASMuh8BEY8z0gJv6TOFAhfabuUt6RUBPZN4PEDPo9wd7syqWg4iWskMBa5Z5jqv
-	 8EDvtwn5Dsxtd/TkfNMcRDfeSQG0JWO4iSwf4JC5DinoKQHEpBRAIAD/6qr0I0l+lX
-	 uDxWGv9FJnbZ20mgvh3k8yZuD8lAx4W1yibr6h+slnyfB8WXfdWOuqMHnuenZMJwje
-	 S3N6s+KZJZ4jAFBdSAcUiLazqYG1R7PysirZDninX46TuxPVvkM4MH66kqbzovweUo
-	 AuZtQIutLdyxg==
+	b=MRIfpA6mL2X+jvU0ieGqPkS/PC8bkWyCNY5/e/n568zns3wF2Y0l+rySMGKhJrHKE
+	 4JG7RwUJQ8y0pMhotF2WJgYBPYvWi84i3/YRtqEp61zXfzeLsUh7Wu0mSoanFesrJb
+	 iPF4o5NXSoggXeS+H1U2JeLFsg431NRzgL/llsE/oJwq1jGyan4Mwm8+H4SwDxZ1vn
+	 yjhNVR2+Smi5ez/YdeCZoW72gQ/kwOyEI1NijOPkazwSyCM6LWRrvTI4pllndH4RUu
+	 oiS5AAUjVHITCVTO01vy98GxKa70Ps1q2NjG9wn2hUHqTm1MHNZWTdHiLM25+hXHwu
+	 JL1zuMMJvwLyA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Simon Horman <horms@kernel.org>,
-	Marcin Wojtas <marcin.s.wojtas@gmail.com>,
+	Michael Chan <michael.chan@broadcom.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux@armlinux.org.uk,
 	davem@davemloft.net,
 	edumazet@google.com,
 	pabeni@redhat.com,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 036/197] net: mvpp2: Increase size of queue_name buffer
-Date: Wed, 25 Sep 2024 07:50:55 -0400
-Message-ID: <20240925115823.1303019-36-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.10 037/197] bnxt_en: Extend maximum length of version string by 1 byte
+Date: Wed, 25 Sep 2024 07:50:56 -0400
+Message-ID: <20240925115823.1303019-37-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925115823.1303019-1-sashal@kernel.org>
 References: <20240925115823.1303019-1-sashal@kernel.org>
@@ -72,54 +71,38 @@ Content-Transfer-Encoding: 8bit
 
 From: Simon Horman <horms@kernel.org>
 
-[ Upstream commit 91d516d4de48532d967a77967834e00c8c53dfe6 ]
+[ Upstream commit ffff7ee843c351ce71d6e0d52f0f20bea35e18c9 ]
 
-Increase size of queue_name buffer from 30 to 31 to accommodate
-the largest string written to it. This avoids truncation in
-the possibly unlikely case where the string is name is the
-maximum size.
+This corrects an out-by-one error in the maximum length of the package
+version string. The size argument of snprintf includes space for the
+trailing '\0' byte, so there is no need to allow extra space for it by
+reducing the value of the size argument by 1.
 
-Flagged by gcc-14:
-
-  .../mvpp2_main.c: In function 'mvpp2_probe':
-  .../mvpp2_main.c:7636:32: warning: 'snprintf' output may be truncated before the last format character [-Wformat-truncation=]
-   7636 |                  "stats-wq-%s%s", netdev_name(priv->port_list[0]->dev),
-        |                                ^
-  .../mvpp2_main.c:7635:9: note: 'snprintf' output between 10 and 31 bytes into a destination of size 30
-   7635 |         snprintf(priv->queue_name, sizeof(priv->queue_name),
-        |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   7636 |                  "stats-wq-%s%s", netdev_name(priv->port_list[0]->dev),
-        |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-   7637 |                  priv->port_count > 1 ? "+" : "");
-        |                  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Introduced by commit 118d6298f6f0 ("net: mvpp2: add ethtool GOP statistics").
-I am not flagging this as a bug as I am not aware that it is one.
-
+Found by inspection.
 Compile tested only.
 
 Signed-off-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Marcin Wojtas <marcin.s.wojtas@gmail.com>
-Link: https://patch.msgid.link/20240806-mvpp2-namelen-v1-1-6dc773653f2f@kernel.org
+Reviewed-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://patch.msgid.link/20240813-bnxt-str-v2-1-872050a157e7@kernel.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/mvpp2/mvpp2.h | 2 +-
+ drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/mvpp2/mvpp2.h b/drivers/net/ethernet/marvell/mvpp2/mvpp2.h
-index e809f91c08fb9..9e02e4367bec8 100644
---- a/drivers/net/ethernet/marvell/mvpp2/mvpp2.h
-+++ b/drivers/net/ethernet/marvell/mvpp2/mvpp2.h
-@@ -1088,7 +1088,7 @@ struct mvpp2 {
- 	unsigned int max_port_rxqs;
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
+index 79c09c1cdf936..0032c4ebd7e12 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
+@@ -4146,7 +4146,7 @@ static void bnxt_get_pkgver(struct net_device *dev)
  
- 	/* Workqueue to gather hardware statistics */
--	char queue_name[30];
-+	char queue_name[31];
- 	struct workqueue_struct *stats_queue;
- 
- 	/* Debugfs root entry */
+ 	if (!bnxt_get_pkginfo(dev, buf, sizeof(buf))) {
+ 		len = strlen(bp->fw_ver_str);
+-		snprintf(bp->fw_ver_str + len, FW_VER_STR_LEN - len - 1,
++		snprintf(bp->fw_ver_str + len, FW_VER_STR_LEN - len,
+ 			 "/pkg %s", buf);
+ 	}
+ }
 -- 
 2.43.0
 
