@@ -1,57 +1,68 @@
-Return-Path: <stable+bounces-77365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77366-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D5C4985C52
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:44:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 917B0985C54
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:45:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 097D6287EE1
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:44:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C17AF1C24A3A
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:45:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EA7B1CDFAC;
-	Wed, 25 Sep 2024 11:59:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B14B41CDFD7;
+	Wed, 25 Sep 2024 11:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="trhY/+AB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HDZKpS+w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2733E1CDA3B;
-	Wed, 25 Sep 2024 11:59:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A12C1AD404;
+	Wed, 25 Sep 2024 11:59:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727265554; cv=none; b=nIKJ1WTUMGP8YHmJpOYmg/7OsmIDd5XGk9qxqkspk9Up/rPX+dA1mz8gwxVNGD8MEWydVQ4hYVDTWLEkbwS60iKn8Q2Z+WTcH4gAO+pdyL9PDIq0PF7sUD7VgcJDrxCrh2/kWkLb+JW5uVqhj57ZzuwhDeikH0Sg90lIjmOsigw=
+	t=1727265559; cv=none; b=IVawEh++/RLx7NQUiHprW7IPbs20jTZl74/sTX9WvNVPmKymJZc9jwhQBwQv1dmk0WbUZTyfAvtEZxJ1TCmWxUurhSMhSSuZamkBnX7BaTuEutjKMP/hHi8h1KauIZMkAC34lMZ/3taog5O7/Jr9UtfFAjKOn6OUdNQZNCTZ77Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727265554; c=relaxed/simple;
-	bh=qpxkqniFqsfE95JUiw6oouGT8Ul4rggjTRmcJRWXDBo=;
+	s=arc-20240116; t=1727265559; c=relaxed/simple;
+	bh=UTnyrC6+eQGfN6gBoDqD4hpWuNu1GAI4ICtRKrZvAu8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bYrjBGVWSJwL0f1lCpJIVPOq+lAFMLT2gVkaL2JW1NDZiyXdPfdtptkkbOGpXsM70789RA8GQnUW/WDHTh2I3tO6Dcf+1p8/cjIn4AFfbeZ69yedzErC/qvxOJp+RvmaKZMAyeeLQBWE/CXytSkG+FhvG8XRLGqQOgBkY/k5sgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=trhY/+AB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09E2BC4CECD;
-	Wed, 25 Sep 2024 11:59:12 +0000 (UTC)
+	 MIME-Version; b=ld+Vo+P9pCv0W9EDXq5Su6uY9lfxNv5skU5lvkCSTOFC076wCSzD/Xx5o54RfrP9eZBwj0wO+jvD3erGPGwgH08Ejezz9zKMUQ8f6WdL79oYxY886MW6kPWyuiUdYMjsKsyHUq8hsycWtl4iOH1sHILGOq9SyPCEN2mSS/RY68I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HDZKpS+w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DBA4C4CEC3;
+	Wed, 25 Sep 2024 11:59:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727265554;
-	bh=qpxkqniFqsfE95JUiw6oouGT8Ul4rggjTRmcJRWXDBo=;
+	s=k20201202; t=1727265558;
+	bh=UTnyrC6+eQGfN6gBoDqD4hpWuNu1GAI4ICtRKrZvAu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=trhY/+AB04GoXJVm8Whl9cSGAZKuPitnPjcbS7YfG7H7Xum/ejZWa72YBHby0VtHb
-	 ZCVZx3zbFh/CRCc4TWymrebZOtbsxOOVPY803RG0G7eHTzvLvBnu5ZIt1A/e9Pkk0g
-	 MSflWjXUoyopu2XliNCcMQQDuXxxuxXm+2RTGxlMv8kir0+njSQoQar0CVhdobYyF+
-	 RaLGOgZIaLS++yR7VOrjO8ivyt39JG4Nn8oaBjb9HSwDIjylVU4YTElIw4qXWIz0Of
-	 zMCgOtv2dLDjIeBri/MrQ5ht+7I9aAGJ+FA/dmzfYQB6ITKfId89Z2wyWbUZ9vnN0l
-	 OuFLGqZWJRcjQ==
+	b=HDZKpS+wby4zn/fV6ztuGh5wuzt95e/OOWuPqRxm2L56nAAp7oEaqGpA7Pd9JI7HQ
+	 71xr8eES2f/MikjMqaM9cJqiO9QYVRIu8dlPi0bKA4z0nAfi3FL2/HWYxRY025LLxt
+	 BXEvTrojmxtrbJhTO7gp2jQviFvTTZXT7fTFcHGl7pnFZmbtr45y86X9W+2jqBG48X
+	 JGPVZ3lyn9cO/AtByHEuyGJcfOdmJa8Fg6F4WE2+GJe6WEORvK75jjdkfFzCRLc4xc
+	 Dbbsuse2uiPY+upmSoW+EaEMABH3tiPsMBfVZnrv6ulD3cGBwSWXDCK+YFqLBKgWIx
+	 lpBKYpnl/mvnQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Tamim Khan <tamim@fusetak.com>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+Cc: Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>,
-	rafael@kernel.org,
-	linux-acpi@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 020/197] ACPI: resource: Skip IRQ override on Asus Vivobook Go E1404GAB
-Date: Wed, 25 Sep 2024 07:50:39 -0400
-Message-ID: <20240925115823.1303019-20-sashal@kernel.org>
+	lorenzo@kernel.org,
+	ryder.lee@mediatek.com,
+	kvalo@kernel.org,
+	matthias.bgg@gmail.com,
+	angelogioacchino.delregno@collabora.com,
+	shayne.chen@mediatek.com,
+	chui-hao.chiu@mediatek.com,
+	meichia.chiu@mediatek.com,
+	johannes.berg@intel.com,
+	quic_adisi@quicinc.com,
+	sean.wang@mediatek.com,
+	linux-wireless@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	linux-mediatek@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.10 021/197] wifi: mt76: mt7915: disable tx worker during tx BA session enable/disable
+Date: Wed, 25 Sep 2024 07:50:40 -0400
+Message-ID: <20240925115823.1303019-21-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925115823.1303019-1-sashal@kernel.org>
 References: <20240925115823.1303019-1-sashal@kernel.org>
@@ -66,46 +77,44 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.11
 Content-Transfer-Encoding: 8bit
 
-From: Tamim Khan <tamim@fusetak.com>
+From: Felix Fietkau <nbd@nbd.name>
 
-[ Upstream commit 49e9cc315604972cc14868cb67831e3e8c3f1470 ]
+[ Upstream commit 256cbd26fbafb30ba3314339106e5c594e9bd5f9 ]
 
-Like other Asus Vivobooks, the Asus Vivobook Go E1404GAB has a DSDT
-that describes IRQ 1 as ActiveLow, while the kernel overrides to Edge_High.
+Avoids firmware race condition.
 
-This override prevents the internal keyboard from working.
-
-Fix the problem by adding this laptop to the table that prevents the kernel
-from overriding the IRQ.
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219212
-Signed-off-by: Tamim Khan <tamim@fusetak.com>
-Link: https://patch.msgid.link/20240903014317.38858-1-tamim@fusetak.com
-[ rjw: Changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://patch.msgid.link/20240827093011.18621-7-nbd@nbd.name
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/resource.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
-index df5d5a554b388..c65c72c515e67 100644
---- a/drivers/acpi/resource.c
-+++ b/drivers/acpi/resource.c
-@@ -503,6 +503,13 @@ static const struct dmi_system_id irq1_level_low_skip_override[] = {
- 			DMI_MATCH(DMI_BOARD_NAME, "B2502FBA"),
- 		},
- 	},
-+	{
-+		/* Asus Vivobook Go E1404GAB */
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
-+			DMI_MATCH(DMI_BOARD_NAME, "E1404GAB"),
-+		},
-+	},
- 	{
- 		/* Asus Vivobook E1504GA */
- 		.matches = {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index 9599adf104b16..758249b20c222 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -690,13 +690,17 @@ int mt7915_mcu_add_tx_ba(struct mt7915_dev *dev,
+ {
+ 	struct mt7915_sta *msta = (struct mt7915_sta *)params->sta->drv_priv;
+ 	struct mt7915_vif *mvif = msta->vif;
++	int ret;
+ 
++	mt76_worker_disable(&dev->mt76.tx_worker);
+ 	if (enable && !params->amsdu)
+ 		msta->wcid.amsdu = false;
++	ret = mt76_connac_mcu_sta_ba(&dev->mt76, &mvif->mt76, params,
++				     MCU_EXT_CMD(STA_REC_UPDATE),
++				     enable, true);
++	mt76_worker_enable(&dev->mt76.tx_worker);
+ 
+-	return mt76_connac_mcu_sta_ba(&dev->mt76, &mvif->mt76, params,
+-				      MCU_EXT_CMD(STA_REC_UPDATE),
+-				      enable, true);
++	return ret;
+ }
+ 
+ int mt7915_mcu_add_rx_ba(struct mt7915_dev *dev,
 -- 
 2.43.0
 
