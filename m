@@ -1,147 +1,163 @@
-Return-Path: <stable+bounces-77065-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5440C985091
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 03:13:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B5F7984F9D
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 02:53:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F17471F21C9D
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 01:13:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5D6D71C22B8F
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 00:53:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E08925336B;
-	Wed, 25 Sep 2024 01:09:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B811136345;
+	Wed, 25 Sep 2024 00:53:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=android.com header.i=@android.com header.b="kPpkFzRV"
 X-Original-To: stable@vger.kernel.org
-Received: from mailhost.m5p.com (mailhost.m5p.com [74.104.188.4])
+Received: from mail-lj1-f171.google.com (mail-lj1-f171.google.com [209.85.208.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85D98DDA6
-	for <stable@vger.kernel.org>; Wed, 25 Sep 2024 01:09:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.104.188.4
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAC26135A54
+	for <stable@vger.kernel.org>; Wed, 25 Sep 2024 00:53:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727226589; cv=none; b=T7jsVHQG78VvYPhBrj56QngZfX5VUbMGvulpPkfVTSoSLis7JL3ZBXQ5WO8psk9O6zK2omBHSnA4N/QnV6lAPhA+WUaGaFiYbS1OWCP27Gz0l5IqYe4eK69GXrB4He9FDq0dLLT42FOAJeo77un7iAYx5rjSPSanMf+ENJAvX8M=
+	t=1727225583; cv=none; b=mmGCHbPE8XdgpE+Vvmdj8pcmjbtm9w69wtcPovHHElEWaQYcxI7gvbV9mPA0lerXn+0YpYKLcBFUxQnG5M9GOe7yOa8iIF5Sx5j1z9AJ2ZuYrk3WCjlgFete9XSu5xn+WjnenVM+lWfOP4QcKj2WhZ9OTJjc0Q7H8TcSiDtlc0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727226589; c=relaxed/simple;
-	bh=gmYT3Xhb1sy7FpiYtJile2lqEnWT1QUgxCz2yd0yloI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UtzaYCp/Db7fL2RReIhq1/LDDLYrj911evsX9WBe9JpYOAzdaDTlKVXIv9hM1pjLMCVoIdrLJN6IO3GyqDlIvbZOGS+WGghUP1W9hlo+HDzI1WY201vMf+z6uO+0Bsz99HQ0DkgU3xpDtQFbdgmhRaJKzvdJC7OzYlK1qhR6dpE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=m5p.com; spf=pass smtp.mailfrom=m5p.com; arc=none smtp.client-ip=74.104.188.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=m5p.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=m5p.com
-Received: from m5p.com (mailhost.m5p.com [IPv6:2001:470:1f07:15ff:0:0:0:f7])
-	by mailhost.m5p.com (8.18.1/8.17.1) with ESMTPS id 48P0mAe2019775
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NO);
-	Tue, 24 Sep 2024 20:48:15 -0400 (EDT)
-	(envelope-from ehem@m5p.com)
-Received: (from ehem@localhost)
-	by m5p.com (8.18.1/8.15.2/Submit) id 48P0m5gn019774;
-	Tue, 24 Sep 2024 17:48:05 -0700 (PDT)
-	(envelope-from ehem)
-Date: Tue, 24 Sep 2024 17:48:05 -0700
-From: Elliott Mitchell <ehem+xen@m5p.com>
-To: Takashi Iwai <tiwai@suse.de>
-Cc: Andrew Cooper <andrew.cooper3@citrix.com>,
-        Ariadne Conill <ariadne@ariadne.space>, xen-devel@lists.xenproject.org,
-        alsa-devel@alsa-project.org, stable@vger.kernel.org,
-        Christoph Hellwig <hch@infradead.org>
-Subject: Re: [PATCH] Revert "ALSA: memalloc: Workaround for Xen PV"
-Message-ID: <ZvNdxXCNu4Uc5gc_@mattapan.m5p.com>
-References: <20240906184209.25423-1-ariadne@ariadne.space>
- <877cbnewib.wl-tiwai@suse.de>
- <9eda21ac-2ce7-47d5-be49-65b941e76340@citrix.com>
- <Zt9UQJcYT58LtuRV@mattapan.m5p.com>
- <8734m77o7k.wl-tiwai@suse.de>
+	s=arc-20240116; t=1727225583; c=relaxed/simple;
+	bh=Ci4/UoxRRXd5uvuxYWSx4T5/MgJvAfME+zZeKA/e0oc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FwQoCVVzs3hKzzlOWrSiDHBkIIYEzGuggRpEdMJMFnvWpUgLfGSvHp5F8hrx+ejZ0w0Yvc6uP9XRjfSGSVHRz6m16CyOZi9mAtqgYYfmPk3fitTp+90h33aOT0t993imyb2VXw/YZiYHCmlG2fTIeY9VQd8h9PDr30exqTpcJow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=android.com; spf=pass smtp.mailfrom=android.com; dkim=pass (2048-bit key) header.d=android.com header.i=@android.com header.b=kPpkFzRV; arc=none smtp.client-ip=209.85.208.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=android.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=android.com
+Received: by mail-lj1-f171.google.com with SMTP id 38308e7fff4ca-2f75b13c2a8so65551191fa.3
+        for <stable@vger.kernel.org>; Tue, 24 Sep 2024 17:53:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=android.com; s=20230601; t=1727225579; x=1727830379; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=S8FbQywdH0oWZCGZXj5Hbv7B2G2tFNgGOo6kZcwthgc=;
+        b=kPpkFzRVtxE+6FzFTW2iPA11I7blLrzEq2d8CtFRs1y6u+ns7TG8qHikKFrYCdKrw/
+         901r0rm+r3MgxwqJNmHqCUjTzQuJdZyIJnw1b3z3oZm9gBFihsvEyr3CtuulxXDxkKpc
+         dwGvhalbMvbpgmSi5K99Z/0zCgugitr4hUdAxx0Lu92FbOwHeS0jotlKP+EvgpmWATlG
+         yh9oxFiqMorO1hBSn+szu6PiY49FIBPA40gGrsUagwdwVNh4NXnY3v8eW3kJqL/1l/Fe
+         CTrxbeKSW0BUuvzXlMrErVNEjEOO6XXS9hJbItqj/m+8H/WyCjXNG9ilt5Wd3Z0nfiTt
+         +kyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727225579; x=1727830379;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=S8FbQywdH0oWZCGZXj5Hbv7B2G2tFNgGOo6kZcwthgc=;
+        b=vNCqJEsJhhVUNh9b6Vz8YOBwmUj0JIReVPhxvjcSva5mTDza3eLE2+bXQCo3jAbtLY
+         VAkckk2h1MoKpAfLR8mtQmWOyX1Q5bhmP7P8InEmQSoMjZbNw/ZTf2utPfLYtzGOYMDd
+         CuNg25pLu9p9oo6fWZYTIOciBu18qk+K4bgotDa0jaF7cqHxk1sMsr/mrt9CqL1Er8JL
+         zO2heRCXPjG0U0M31GRQQyd0xS7peaNNtJ6HRKd7qkVGIfN+ACuy3VY99dnghvDGqfJ2
+         G15zn6sBSw5bkc5E8LPPTolfitkbQBmpO2BMJuVnkbAOHY3hQQHfHjpdIyPqYtEAAT6R
+         5e+A==
+X-Forwarded-Encrypted: i=1; AJvYcCW5z6wexwHkGpNJX9hL27+IYWYiHOQgMrsCDEYlx7Oz2/QQBQ1H8RZWoVaiky4qtv8sDODs2vk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxQgpVk2HJ4NuN6Cy78oWxp1jYdL3a/5j9Q049xc6ZwDkeJtMyW
+	Bcv6O+3Xa9YNxbDOE5FYACJCMjd95+4HSsnZEXaay5qJo3dVnbagILBEZSP/yBKE2L4v4JMZl9R
+	l1WCq5OUi3d2sc8SIN7NCfiMP2Qd9UFfcU/a8
+X-Google-Smtp-Source: AGHT+IEKqWZXHJ23DqHLKjn4v9fYYdxuY4ehghseFGkkd3Td6DXyGrindh9PvHj2mgDcjz/xQVGCMaxpHu4dh7YjjOs=
+X-Received: by 2002:a05:651c:1502:b0:2f3:df8f:bfaa with SMTP id
+ 38308e7fff4ca-2f91ca6ed4fmr5783971fa.36.1727225578729; Tue, 24 Sep 2024
+ 17:52:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8734m77o7k.wl-tiwai@suse.de>
+References: <20240924184401.76043-1-cmllamas@google.com> <20240924184401.76043-4-cmllamas@google.com>
+In-Reply-To: <20240924184401.76043-4-cmllamas@google.com>
+From: Todd Kjos <tkjos@android.com>
+Date: Tue, 24 Sep 2024 17:52:47 -0700
+Message-ID: <CAD0t5oNFc0UtFpsPVWBVTzZbEgqy+PeuW4uv1_sNM=+Aqbu2kA@mail.gmail.com>
+Subject: Re: [PATCH 3/4] binder: fix freeze UAF in binder_release_work()
+To: Carlos Llamas <cmllamas@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
+	Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, 
+	Christian Brauner <brauner@kernel.org>, Suren Baghdasaryan <surenb@google.com>, 
+	Yu-Ting Tseng <yutingtseng@google.com>, linux-kernel@vger.kernel.org, 
+	kernel-team@android.com, Alice Ryhl <aliceryhl@google.com>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 10, 2024 at 01:17:03PM +0200, Takashi Iwai wrote:
-> On Mon, 09 Sep 2024 22:02:08 +0200,
-> Elliott Mitchell wrote:
-> > 
-> > On Sat, Sep 07, 2024 at 11:38:50AM +0100, Andrew Cooper wrote:
-> > > 
-> > > Individual subsystems ought not to know or care about XENPV; it's a
-> > > layering violation.
-> > > 
-> > > If the main APIs don't behave properly, then it probably means we've got
-> > > a bug at a lower level (e.g. Xen SWIOTLB is a constant source of fun)
-> > > which is probably affecting other subsystems too.
-> > 
-> > This is a big problem.  Debian bug #988477 (https://bugs.debian.org/988477)
-> > showed up in May 2021.  While some characteristics are quite different,
-> > the time when it was first reported is similar to the above and it is
-> > also likely a DMA bug with Xen.
-> 
-> Yes, some incompatible behavior has been seen on Xen wrt DMA buffer
-> handling, as it seems.  But note that, in the case of above, it was
-> triggered by the change in the sound driver side, hence we needed a
-> quick workaround there.  The result was to move back to the old method
-> for Xen in the end.
-> 
-> As already mentioned in another mail, the whole code was changed for
-> 6.12, and the revert isn't applicable in anyway.
-> 
-> So I'm going to submit another patch to drop this Xen PV-specific
-> workaround for 6.12.  The new code should work without the workaround
-> (famous last words).  If the problem happens there, I'd rather leave
-> it to Xen people ;)
+On Tue, Sep 24, 2024 at 11:44=E2=80=AFAM Carlos Llamas <cmllamas@google.com=
+> wrote:
+>
+> When a binder reference is cleaned up, any freeze work queued in the
+> associated process should also be removed. Otherwise, the reference is
+> freed while its ref->freeze.work is still queued in proc->work leading
+> to a use-after-free issue as shown by the following KASAN report:
+>
+>   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>   BUG: KASAN: slab-use-after-free in binder_release_work+0x398/0x3d0
+>   Read of size 8 at addr ffff31600ee91488 by task kworker/5:1/211
+>
+>   CPU: 5 UID: 0 PID: 211 Comm: kworker/5:1 Not tainted 6.11.0-rc7-00382-g=
+fc6c92196396 #22
+>   Hardware name: linux,dummy-virt (DT)
+>   Workqueue: events binder_deferred_func
+>   Call trace:
+>    binder_release_work+0x398/0x3d0
+>    binder_deferred_func+0xb60/0x109c
+>    process_one_work+0x51c/0xbd4
+>    worker_thread+0x608/0xee8
+>
+>   Allocated by task 703:
+>    __kmalloc_cache_noprof+0x130/0x280
+>    binder_thread_write+0xdb4/0x42a0
+>    binder_ioctl+0x18f0/0x25ac
+>    __arm64_sys_ioctl+0x124/0x190
+>    invoke_syscall+0x6c/0x254
+>
+>   Freed by task 211:
+>    kfree+0xc4/0x230
+>    binder_deferred_func+0xae8/0x109c
+>    process_one_work+0x51c/0xbd4
+>    worker_thread+0x608/0xee8
+>   =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>
+> This commit fixes the issue by ensuring any queued freeze work is removed
+> when cleaning up a binder reference.
+>
+> Fixes: d579b04a52a1 ("binder: frozen notification")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Carlos Llamas <cmllamas@google.com>
 
-I've seen that patch, but haven't seen any other activity related to
-this sound problem.  I'm wondering whether the problem got fixed by
-something else, there is activity on different lists I don't see, versus
-no activity until Qubes OS discovers it is again broken.
+Acked-by: Todd Kjos <tkjos@android.com>
 
-
-An overview of the other bug which may or may not be the same as this
-sound card bug:
-
-Both reproductions of the RAID1 bug have been on systems with AMD
-processors.  This may indicate this is distinct, but could also mean only
-people who get AMD processors are wary enough of flash to bother with
-RAID1 on flash devices.  Presently I suspect it is the latter, but not
-very many people are bothering with RAID1 with flash.
-
-Only systems with IOMMUv2 (full IOMMU, not merely GART) are effected.
-
-Samsung SATA devices are severely effected.
-
-Crucial/Micron NVMe devices are mildly effected.
-
-Crucial/Micron SATA devices are uneffected.
-
-
-Specifications for Samsung SATA and Crucial/Micron SATA devices are
-fairly similar.  Similar IOps, similar bandwith capabilities.
-
-Crucial/Micron NVMe devices have massively superior specifications to
-the Samsung SATA devices.  Yet the Crucial/Micron NVMe devices are less
-severely effected than the Samsung SATA devices.
-
-
-This seems likely to be a latency issue.  Could be when commands are sent
-to the Samsung SATA devices, they are fast enough to start executing them
-before the IOMMU is ready.
-
-This could match with the sound driver issue.  Since the sound hardware
-is able to execute its first command with minimal latency, that is when
-the problem occurs.  If the first command gets through, the second
-command is likely executed with some delay and the IOMMU is reliably
-ready.
-
-
--- 
-(\___(\___(\______          --=> 8-) EHM <=--          ______/)___/)___/)
- \BS (    |         ehem+sigmsg@m5p.com  PGP 87145445         |    )   /
-  \_CS\   |  _____  -O #include <stddisclaimer.h> O-   _____  |   /  _/
-8A19\___\_|_/58D2 7E3D DDF4 7BA6 <-PGP-> 41D1 B375 37D0 8714\_|_/___/5445
-
-
+> ---
+>  drivers/android/binder.c | 6 ++++++
+>  1 file changed, 6 insertions(+)
+>
+> diff --git a/drivers/android/binder.c b/drivers/android/binder.c
+> index 8bca2de6fa24..d955135ee37a 100644
+> --- a/drivers/android/binder.c
+> +++ b/drivers/android/binder.c
+> @@ -1225,6 +1225,12 @@ static void binder_cleanup_ref_olocked(struct bind=
+er_ref *ref)
+>                 binder_dequeue_work(ref->proc, &ref->death->work);
+>                 binder_stats_deleted(BINDER_STAT_DEATH);
+>         }
+> +
+> +       if (ref->freeze) {
+> +               binder_dequeue_work(ref->proc, &ref->freeze->work);
+> +               binder_stats_deleted(BINDER_STAT_FREEZE);
+> +       }
+> +
+>         binder_stats_deleted(BINDER_STAT_REF);
+>  }
+>
+> --
+> 2.46.0.792.g87dc391469-goog
+>
 
