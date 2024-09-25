@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-77464-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4C89985D84
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:13:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id D96A4985D86
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:13:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D60231C24E95
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:13:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9D742283A7F
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:13:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FA0F1B29B1;
-	Wed, 25 Sep 2024 12:04:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F48918C039;
+	Wed, 25 Sep 2024 12:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kg6VJB8J"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ha7ma3XU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DEDE18BC35;
-	Wed, 25 Sep 2024 12:04:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CE4E18C034;
+	Wed, 25 Sep 2024 12:05:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727265890; cv=none; b=PsRXlvt6a4I4RIbUMytvrCGy9kTQ2chnM2caJj/u+nkEANAibPdmiuLLChsy/i3zcyJHXRthIF4lSToQ8KcU+axdRAJnDoyLuUmsHgpEFZVI0TFkPrdaCWhL+YXJ7K9tC7qe0HQK8eDXOYUAXKWP/BXuNHaglwdIrR1voV6F3RI=
+	t=1727265901; cv=none; b=O2kIBr5B4vr45U35tjeB66NKiyNCH1M6LIi03xwp8pjd6ZxFyviIyqo6mNQDJ9nTr1pu9SJGovW/WQnVm5XPSzwMcwzdMi9+LZ4emXmn/8D9RxNkSGT7xuafxYqrTiqoppi7jahT1DapAyulD2QJZo07Fc3mvZk9KBBqsZm298E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727265890; c=relaxed/simple;
-	bh=0BJP31CFh9sabb3zMJFok1j++lOYUZlh7qRAywB2rJs=;
+	s=arc-20240116; t=1727265901; c=relaxed/simple;
+	bh=c//5nxdTaX2TjLFHUwfqNFlchniex8lG7yZz3ZDyeKw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OvWKyUrmNKMDek4IM1SCG/j1RvgDH3Y+MXItuiNALL5D75DwMO4MV4kQIMoue3gy3n8GNGAPQ9kiNNXn+4KnNcRP1jtfhLtlHZ7vCHTJrgY/y/gT0MtJhXSVGB7B3yTAYrjXwcR0I8wjzudhLg1E5r6vBISQtx0b7jz4ar0p7T8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kg6VJB8J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CB0DC4CEC3;
-	Wed, 25 Sep 2024 12:04:47 +0000 (UTC)
+	 MIME-Version; b=huQDCX33xNxYzLlAwjBkr7/V+o6lU61wpW4NEI8UX9Q08mi21GImCKMLE0A3ViEi7eli2RxTIVOVb5qWpm5j8Bq4SDmUTrG5T1J9dMJUoMzQlHqCGF+y1cTiDitb40Tt7BtdQtjflM2ijiGYIaIp8weJg3A2YW0OCqX7GRu3f9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ha7ma3XU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4118BC4CEC3;
+	Wed, 25 Sep 2024 12:04:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727265889;
-	bh=0BJP31CFh9sabb3zMJFok1j++lOYUZlh7qRAywB2rJs=;
+	s=k20201202; t=1727265901;
+	bh=c//5nxdTaX2TjLFHUwfqNFlchniex8lG7yZz3ZDyeKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kg6VJB8JqTKxRSIRns+jy6jRgB3vCfcQVCay0svhPdbqZjwjD/8RmeNgOFVGEyzD9
-	 mAIvLyvk6TWQNIrbxCI5m+Q4MTBb5aUdjrY5tQITLKQpxd9LpSJhTk9HljacVOvceR
-	 RRVSb4t9WLiCDAkGOx80Ytskn2WvmUZ+QTsgjMO6p4VC8eMqwbKmlQNiZURiNKrkM/
-	 1pBtwxhjWiUtPGEGoK602dVFy6p+e/V69u+pYwTJq8grMSGIUV//BfXbT4pKgUCHww
-	 74Y3jbPckdOFOeBvXC1ytkN9HxGJCZ224eX0RCX1JnrMzXNt8X7gp8Mm8ltdYNPtKP
-	 WBSD6NueOP4Zw==
+	b=ha7ma3XUekciqRBkXnxR6KZrxh4U7Hp8KGts6gaA1ADIaNd2tF8+rLJU0woOLRRfU
+	 TcmxUP55A5rP/L2Yccbbeqfew4xi8FK2Wve+d0QfgiW/zSTJhbPCBJwlQdaSw4cIBV
+	 zBZKIBBJUvEMaQH+sKnGpt4Knhk+ir8l61FArKWnTjAZXO6oUauf3OwD/oiCDahqWP
+	 Py0s47i9y6BLLLlw2t4ZvU6eBI6dZstQ6Nw3Lk/2TQIch7rvKJJqOsIkPzIA/+jI5C
+	 iVPjNnT1WiIfqhxN+2dvPz/8YNETkeMw6J/l9aMHnl55zpD3snojEKgELIwlzH14MM
+	 Y5OJYzV0ShTqA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -59,14 +59,16 @@ Cc: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
 	Xinhui.Pan@amd.com,
 	airlied@gmail.com,
 	daniel@ffwll.ch,
-	mwen@igalia.com,
-	hanghong.ma@amd.com,
+	alvin.lee2@amd.com,
+	samson.tam@amd.com,
 	dillon.varone@amd.com,
+	wenjing.liu@amd.com,
+	ilya.bakoulin@amd.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.10 119/197] drm/amd/display: Add NULL check for clk_mgr and clk_mgr->funcs in dcn30_init_hw
-Date: Wed, 25 Sep 2024 07:52:18 -0400
-Message-ID: <20240925115823.1303019-119-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.10 120/197] drm/amd/display: Add NULL check for clk_mgr in dcn32_init_hw
+Date: Wed, 25 Sep 2024 07:52:19 -0400
+Message-ID: <20240925115823.1303019-120-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925115823.1303019-1-sashal@kernel.org>
 References: <20240925115823.1303019-1-sashal@kernel.org>
@@ -83,18 +85,18 @@ Content-Transfer-Encoding: 8bit
 
 From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit cba7fec864172dadd953daefdd26e01742b71a6a ]
+[ Upstream commit c395fd47d1565bd67671f45cca281b3acc2c31ef ]
 
 This commit addresses a potential null pointer dereference issue in the
-`dcn30_init_hw` function. The issue could occur when `dc->clk_mgr` or
-`dc->clk_mgr->funcs` is null.
+`dcn32_init_hw` function. The issue could occur when `dc->clk_mgr` is
+null.
 
-The fix adds a check to ensure `dc->clk_mgr` and `dc->clk_mgr->funcs` is
-not null before accessing its functions. This prevents a potential null
-pointer dereference.
+The fix adds a check to ensure `dc->clk_mgr` is not null before
+accessing its functions. This prevents a potential null pointer
+dereference.
 
 Reported by smatch:
-drivers/gpu/drm/amd/amdgpu/../display/dc/hwss/dcn30/dcn30_hwseq.c:789 dcn30_init_hw() error: we previously assumed 'dc->clk_mgr' could be null (see line 628)
+drivers/gpu/drm/amd/amdgpu/../display/dc/hwss/dcn32/dcn32_hwseq.c:961 dcn32_init_hw() error: we previously assumed 'dc->clk_mgr' could be null (see line 782)
 
 Cc: Tom Chung <chiahsuan.chung@amd.com>
 Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
@@ -108,14 +110,14 @@ Reviewed-by: Alex Hung <alex.hung@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c | 7 ++++---
+ drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c | 7 ++++---
  1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c
-index 4c47061533050..f3422a323b71a 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c
-@@ -622,7 +622,7 @@ void dcn30_init_hw(struct dc *dc)
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c
+index b8e884368dc6e..8759c14a63226 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c
+@@ -752,7 +752,7 @@ void dcn32_init_hw(struct dc *dc)
  	uint32_t backlight = MAX_BACKLIGHT_LEVEL;
  	uint32_t user_level = MAX_BACKLIGHT_LEVEL;
  
@@ -124,7 +126,7 @@ index 4c47061533050..f3422a323b71a 100644
  		dc->clk_mgr->funcs->init_clocks(dc->clk_mgr);
  
  	// Initialize the dccg
-@@ -783,11 +783,12 @@ void dcn30_init_hw(struct dc *dc)
+@@ -931,10 +931,11 @@ void dcn32_init_hw(struct dc *dc)
  	if (!dcb->funcs->is_accelerated_mode(dcb) && dc->res_pool->hubbub->funcs->init_watermarks)
  		dc->res_pool->hubbub->funcs->init_watermarks(dc->res_pool->hubbub);
  
@@ -132,7 +134,6 @@ index 4c47061533050..f3422a323b71a 100644
 +	if (dc->clk_mgr && dc->clk_mgr->funcs && dc->clk_mgr->funcs->notify_wm_ranges)
  		dc->clk_mgr->funcs->notify_wm_ranges(dc->clk_mgr);
  
- 	//if softmax is enabled then hardmax will be set by a different call
 -	if (dc->clk_mgr->funcs->set_hard_max_memclk && !dc->clk_mgr->dc_mode_softmax_enabled)
 +	if (dc->clk_mgr && dc->clk_mgr->funcs && dc->clk_mgr->funcs->set_hard_max_memclk &&
 +	    !dc->clk_mgr->dc_mode_softmax_enabled)
