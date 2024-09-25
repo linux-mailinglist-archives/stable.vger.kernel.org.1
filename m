@@ -1,68 +1,63 @@
-Return-Path: <stable+bounces-77565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77566-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8384D985E99
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:38:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EA62985E9D
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:39:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4AC01289C0B
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:38:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DD2D71F218B4
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:39:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11CD6212F17;
-	Wed, 25 Sep 2024 12:12:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 406C31D0788;
+	Wed, 25 Sep 2024 12:12:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pJ0S6+2g"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qEyjckme"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE9D9212F0E;
-	Wed, 25 Sep 2024 12:12:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF35C1D078C;
+	Wed, 25 Sep 2024 12:12:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727266344; cv=none; b=H3rfJYowPDlKZEjOysUAinuy5U9A1BPyKLdceXUN/buhqHkYYPzt7sdjpzYaJzAVIOykx8aaU6dlRfTMXV39LyvN3PO9Tynnu52dVXqW3hCcG0sQdU44yxanci9UyvS9wYf0Irf6Rh29j9Fyr8NO8vo8o1lN+RJuHg9g26E2beE=
+	t=1727266348; cv=none; b=sP8nDoAr83ueI1FVutQwbsMV1M5wGlGRPxviYlIlnPj/Y85EOUXU9me6SlrzKjEac6MS41SOcscMUQYU4zFGqnqXWjH+yuxb3qVSERXuXfok+WH89UO7uzIAT4AendtM5wkR3FuJGveGJRusvfM4h6Gk4NxmY/XRLit/4spvCGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727266344; c=relaxed/simple;
-	bh=3D2z+0SsT8huZ7rlh5ty6QMMg2TVj6QXTKvgfOUzK20=;
+	s=arc-20240116; t=1727266348; c=relaxed/simple;
+	bh=0NBvuPXswHaz7CQCzj43Yy17NgK7h6H+upnPzF9YFdI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WQqJeF5jLJtmwXeD4yVV0pik9iWzo3ve//sI8xKO7wkD+qG4Y9OJruQQ+C89LBzIFEqt/lwNs9vvx6sCE+DEZL8KzEDJ+YdGW6J3Q5L5w6VwZhqbheWFJhoka1V83sZH88BI2yUCFrocKG1dRE6ER0za7CGDKKXK2rPgmHZYvpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pJ0S6+2g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 445E8C4CEC7;
-	Wed, 25 Sep 2024 12:12:22 +0000 (UTC)
+	 MIME-Version; b=H7yj+M3ZaDB99fykTxhlMx2iYkmon7YtXe6gdsa1B9iStFA6HzKvuNPG6ZUZdkxNpNysorKcGXkN3PxpDZutYxddmz432HcQyqfi7LvfNmhgZ1eZGCaycUykElG6CQr4GCeIjRLNmDdIIZVlswAnYi/Kku0Xs3JE1LMfvP9SfTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qEyjckme; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1DF3C4CECD;
+	Wed, 25 Sep 2024 12:12:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727266344;
-	bh=3D2z+0SsT8huZ7rlh5ty6QMMg2TVj6QXTKvgfOUzK20=;
+	s=k20201202; t=1727266346;
+	bh=0NBvuPXswHaz7CQCzj43Yy17NgK7h6H+upnPzF9YFdI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pJ0S6+2gdwxgCKrf5bqQrGX7JzEj9IXIG0IIZqMAwDKuZIa9cgCiAJFe0vWgMv4HD
-	 xEz1j/DlRBl5kgvD2+xmx4Udwfalou0bkSsLnLAx1/+NiKrV/uaCaZwU72iBfby0pi
-	 66y0iP2PGKPVwpwCmQBOoGj16WCeIkpNsuCUdrnNPl3Yz7EN6xoNEMw82gzGz+iR4B
-	 JfQMi3OlHZtRcqJ6v0KXXcS7gZYm/jLN6XJsaG84skAr46GnZQhUeP8iq+bDiKG63O
-	 6fQz+kDHbUIgCCCyTp406lY1/jCMVo3TicncP5QuWyIEEjDfzC1ndxe89M7NJWMHQH
-	 uW/zi19h9AgHw==
+	b=qEyjckmexsk2zvsgrQyP/AJCQebKoy6u4TTDH+MfA2SOFKEABVhUWKmM73noRcWj9
+	 PS8QBkna1EyO94tLjAKfVM4xNCc8EN4hpnevdgsVC+gW5ctsZkul22+0jVosDtKtVZ
+	 XC9cbiNNqYp9kcVW0EqOyJJhf950uyLKVfIRQrz3f66cHNbNOthjwzvcIAaLVTqYge
+	 5upO8ARcd55SA8ST0kaYRYg9SfRRqXFXGMYE95P1U/Igy4HT/e0DSSsDznfcUkBPLq
+	 qJOQdIPgRHWda2Bmsqm1dEd/cbigGZs+lMFU0l1Z14T/r6xL6eoviLskOtEPirY5CK
+	 1EtLi/hlqJeRA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Felix Fietkau <nbd@nbd.name>,
+Cc: Dmitry Antipov <dmantipov@yandex.ru>,
+	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
+	"David S . Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>,
-	lorenzo@kernel.org,
-	ryder.lee@mediatek.com,
-	kvalo@kernel.org,
-	matthias.bgg@gmail.com,
-	angelogioacchino.delregno@collabora.com,
-	shayne.chen@mediatek.com,
-	chui-hao.chiu@mediatek.com,
-	meichia.chiu@mediatek.com,
-	johannes.berg@intel.com,
-	quic_adisi@quicinc.com,
-	sean.wang@mediatek.com,
-	linux-wireless@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-mediatek@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.6 019/139] wifi: mt76: mt7915: disable tx worker during tx BA session enable/disable
-Date: Wed, 25 Sep 2024 08:07:19 -0400
-Message-ID: <20240925121137.1307574-19-sashal@kernel.org>
+	jhs@mojatatu.com,
+	xiyou.wangcong@gmail.com,
+	jiri@resnulli.us,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 020/139] net: sched: consistently use rcu_replace_pointer() in taprio_change()
+Date: Wed, 25 Sep 2024 08:07:20 -0400
+Message-ID: <20240925121137.1307574-20-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925121137.1307574-1-sashal@kernel.org>
 References: <20240925121137.1307574-1-sashal@kernel.org>
@@ -77,44 +72,40 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.52
 Content-Transfer-Encoding: 8bit
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 256cbd26fbafb30ba3314339106e5c594e9bd5f9 ]
+[ Upstream commit d5c4546062fd6f5dbce575c7ea52ad66d1968678 ]
 
-Avoids firmware race condition.
+According to Vinicius (and carefully looking through the whole
+https://syzkaller.appspot.com/bug?extid=b65e0af58423fc8a73aa
+once again), txtime branch of 'taprio_change()' is not going to
+race against 'advance_sched()'. But using 'rcu_replace_pointer()'
+in the former may be a good idea as well.
 
-Link: https://patch.msgid.link/20240827093011.18621-7-nbd@nbd.name
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Suggested-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ net/sched/sch_taprio.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-index 272e55ef8e2d2..5fba103bfd65d 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
-@@ -688,13 +688,17 @@ int mt7915_mcu_add_tx_ba(struct mt7915_dev *dev,
- {
- 	struct mt7915_sta *msta = (struct mt7915_sta *)params->sta->drv_priv;
- 	struct mt7915_vif *mvif = msta->vif;
-+	int ret;
+diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
+index 418d4a846d04a..87090d6790362 100644
+--- a/net/sched/sch_taprio.c
++++ b/net/sched/sch_taprio.c
+@@ -1975,7 +1975,9 @@ static int taprio_change(struct Qdisc *sch, struct nlattr *opt,
+ 			goto unlock;
+ 		}
  
-+	mt76_worker_disable(&dev->mt76.tx_worker);
- 	if (enable && !params->amsdu)
- 		msta->wcid.amsdu = false;
-+	ret = mt76_connac_mcu_sta_ba(&dev->mt76, &mvif->mt76, params,
-+				     MCU_EXT_CMD(STA_REC_UPDATE),
-+				     enable, true);
-+	mt76_worker_enable(&dev->mt76.tx_worker);
- 
--	return mt76_connac_mcu_sta_ba(&dev->mt76, &mvif->mt76, params,
--				      MCU_EXT_CMD(STA_REC_UPDATE),
--				      enable, true);
-+	return ret;
- }
- 
- int mt7915_mcu_add_rx_ba(struct mt7915_dev *dev,
+-		rcu_assign_pointer(q->admin_sched, new_admin);
++		/* Not going to race against advance_sched(), but still */
++		admin = rcu_replace_pointer(q->admin_sched, new_admin,
++					    lockdep_rtnl_is_held());
+ 		if (admin)
+ 			call_rcu(&admin->rcu, taprio_free_sched_cb);
+ 	} else {
 -- 
 2.43.0
 
