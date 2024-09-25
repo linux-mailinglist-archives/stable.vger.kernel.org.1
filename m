@@ -1,233 +1,376 @@
-Return-Path: <stable+bounces-77729-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id EA82198676E
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 22:10:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2063598677D
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 22:17:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5C7C6B2135C
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 20:10:45 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8C497B21A95
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 20:17:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E354146593;
-	Wed, 25 Sep 2024 20:10:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39736146A6B;
+	Wed, 25 Sep 2024 20:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="AA3TO+Hg"
+	dkim=pass (2048-bit key) header.d=toxicpanda-com.20230601.gappssmtp.com header.i=@toxicpanda-com.20230601.gappssmtp.com header.b="Ztk+aoGN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-yw1-f182.google.com (mail-yw1-f182.google.com [209.85.128.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B00DE1F94C;
-	Wed, 25 Sep 2024 20:10:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1193628E8
+	for <stable@vger.kernel.org>; Wed, 25 Sep 2024 20:17:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727295039; cv=none; b=BNqqceNVY5TT7Z+smQbZhfT+Gw5v/8YB1s5N37hYGcc3pHIecQg4eE6oT81DzGwLJHs62ZGXQqQMmSnqDHQOg/tyVlrNDdvU56YNy994QH5d703bv/hHiZENllNuQAAxYLm5ri+OOqhe1o3vFqHv7pO4nzeVgFeX5oRawzlZ06c=
+	t=1727295459; cv=none; b=QVxr5ewFclsctCzt+8Lp01jGnDsaKql8hcYpuPnxbmlyzuPfbRYc5yKlhpt3toPKZkMYQFvbIcqSEc/GbF5S67q6oQgXWzY+LXcXyRiDCHnZhf1PTm5uwTXa6YI0gp2hTpYQeYoms34D/00U8NbMWU0YG5tJ+bvleA1lBzLavFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727295039; c=relaxed/simple;
-	bh=hLxdskNRRdNZtRPuTHsLy1cHsopxxozgAUxq3VyXRqY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KnPlNw1Ni0hcBDBW+hvn2xDKTNjai/GFfTw75A01SQqcNwnLLCGmIV14Wo2Ds7cr4CZgaqYSPbREla+cQr4O7ZYaYnEkE1SUiKsy65cBvESY8ODZ4jlmmbcWngJcIlW/GKM2/FXWccmlQ+hjXfWHBYG2uHqjGiIOXKTblzOrIZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=AA3TO+Hg; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-206bd1c6ccdso1473725ad.3;
-        Wed, 25 Sep 2024 13:10:37 -0700 (PDT)
+	s=arc-20240116; t=1727295459; c=relaxed/simple;
+	bh=1F+pOoTT3KZZndL4hANlflemEzTKuqJA9yxqX2Kv1hg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MaBKefYwBBoE8vytHJhbd/vVB3h7K8/Cj/VPNNUNLunCrWmJepeUecmpCnVKhL2Myze7DJiUy3D0+7Y3rd2Woo/8C6SZSBocXKflA+ZSDPRmKDQ0F4pt6FqBlVrTJAWMGH0ofEaBJyhp/M2kTRrynCTvjBavaLrg8Mr1aakSCD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com; spf=none smtp.mailfrom=toxicpanda.com; dkim=pass (2048-bit key) header.d=toxicpanda-com.20230601.gappssmtp.com header.i=@toxicpanda-com.20230601.gappssmtp.com header.b=Ztk+aoGN; arc=none smtp.client-ip=209.85.128.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=toxicpanda.com
+Received: by mail-yw1-f182.google.com with SMTP id 00721157ae682-6dbb24ee2ebso3024737b3.1
+        for <stable@vger.kernel.org>; Wed, 25 Sep 2024 13:17:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1727295037; x=1727899837; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=E0Q4FugCe7sn8SMQy2y1X+wwncOJwqePtQZMDheIXf4=;
-        b=AA3TO+HgVpBFoGc16m7cUBmXzktCQJzaBepvc+29itgW5iiLUNDdi7yF3hJ9qGBhmZ
-         n4cozAuXmaNAADrrqWCeuZQBUY9qm16F6UEqBLkONAGJMm4AhH5hXiHDnYPCX8TDGAs2
-         Pk9BqZQIKuwqI7e2/ubYSuVuejI13DVlIvT28t0e9gJxVremaxno5uDLy5MosXUtS9ic
-         yIiip5VUSg479j7eyCwiN82N7nAkxzypSQbo2i+XHbs+uqYfjeEQWv9knp1NHjQKTyea
-         bcEDZnxVDIMpmoYuyKBAkFKl8zP8MumIGcRmelrUD2NxbmR3kIox4IWp59cbBOEx5yEd
-         EgbA==
+        d=toxicpanda-com.20230601.gappssmtp.com; s=20230601; t=1727295456; x=1727900256; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=iDITRgiaK5n2n4iWh204/20WaEgGngKYA5mIc+ZfZKk=;
+        b=Ztk+aoGNzNVjUI/INdaYqD9t5tA7uD8Oei+k/NSI+lqghRFZSPk0ZUdgCBbxH71M1A
+         jXykbYK5ig+SwHthjM306gxFs5odqxAxiHA42AFZXCm0f3F8cWpgwModzoxd6fa9fkdG
+         EQj6yW/FNMnuj2i5D4NDjvIbjGm8riwpJimrLy00ESIFI7qhUfgNTCB1xQnwIz+Rtz7p
+         Ht4l6rHGPc43mD1dYBGWP2y1N9WUYQZzX7ZyF0t4ZuovczjKLcFs4S8vEfFWTFWqTyFY
+         vvoIvXnbJnfJBauv/B+ACmyO6qYSR7ydwHstNyrRuBXZZb26cWeKFjeRQTXX+VkvqFjS
+         zNzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727295037; x=1727899837;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=E0Q4FugCe7sn8SMQy2y1X+wwncOJwqePtQZMDheIXf4=;
-        b=imVkHjgpLBwAhrpCQTJAdKsFc0wsSXHyQ3F2M3x0c55LqmRKzZbdlKXDas1TpdpdO9
-         WxEGdJyqXbaihLwSGhf9ij7FUnrxDbZXeVm38B8Dln8rr8LiHx50di/uGDTAyWi2uocl
-         QUI4F4/gp+11UcVE4UqEHM+CQCoV3NhGWjhXEzMjdFSo5NLORQNYxuyR+t6KX5nkNliM
-         nF6lj6tWcMKE0eeDtbrqw7cgAjwniyzE+3dL9tlC44zO83H/iF9a9Jgmd+wPDJ1nX47a
-         VMclnGTIEeWSPqTM7CpwEYeg3CfqnG3069Q+DjXL75a/xX4H3l5wUNEcNKIjkro/PMJe
-         wHBw==
-X-Forwarded-Encrypted: i=1; AJvYcCUTB6K7pO5mfot167cSzvbDtTGLTiF8/SeKPBRK/ecWGeRLZ888boe8kdSC3JBbjSI+KgaE8wW+@vger.kernel.org, AJvYcCUjfzqp9OJrOCmxjHiN8k5pE0JnqTVP7DDk18VXI8NISndbFQjlR8ypSVXVYbTI9C0CPoUsWK7RJU9vCpk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwJlxhjKcOWdg4Cj2qdPVGLb4DT1ScK3AqvDYrZ0ocgzMYQxXrz
-	g6pWeMF8fONX8a1vysmN3BIbRHXMdCIkWK3I+knJ+TXoLqc+oERMnZGROoJ6PsRpwo3MEQ3Arzw
-	+fIFa1t7ZxmYp0mzZwWIiV7KnuZw=
-X-Google-Smtp-Source: AGHT+IGCOWvHWEUBxGxHoNzs8SQWmesgz6UsMD49z3Jmcc4GwM6UD45zyniAE253U3751P7pVRLYxBPXbonaOjby/mw=
-X-Received: by 2002:a17:902:d4c6:b0:205:7e3f:9e31 with SMTP id
- d9443c01a7336-20afc6429a0mr39006245ad.60.1727295036833; Wed, 25 Sep 2024
- 13:10:36 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1727295456; x=1727900256;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=iDITRgiaK5n2n4iWh204/20WaEgGngKYA5mIc+ZfZKk=;
+        b=OtC3gGekfpRtJjXGFf++xyNgxlWdrcivusvP6u5DrXOE5HZVUI3k2QOo1jXFwZ9YZH
+         T2oRTohFnZvEEClJlRoC06ryYqtzv0MGgaYrXZpyf8SmVgMgELZcyMxRvxYPyAFUj6dN
+         QttrfUjHe3YgdD7uFSWX3H+8rlX7Qi9nynDFsk7SorOHHJmi06+xXwjP+wpk/OZZKbGq
+         wz4wAs0RRlw30UoNFPxobqfuUUOagP4NGGBw/DLwYWRGn99h2iOsdNS4nXsQ+kNcOSWx
+         hEIQlMOA73trLQXy8MpG6oTguAjRsBwbzQMaFQ7s5z08zgm9LcfiOCGe0TKfTh5BmyGY
+         IUmw==
+X-Forwarded-Encrypted: i=1; AJvYcCVfV18fDADlnv8Q1PAsdXOdr9h6CSggpWXznSn/4BWBksUzXdJGezuTZhQP5Lf/KBCyZbpHw/k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyXeM9Yrj/r1vdt35zF59JMaMHmgsxHJnuhh7RrNH5dGplNB2R8
+	P0nRr2IwtNycHjwDThlcri7ft/j8vgqlbSxs1vTHetOcqWtb/H3Dj9tvN3CDk4M=
+X-Google-Smtp-Source: AGHT+IG+qKzjSB0ShoEtgnotPwyD4iza4Oto+ZTiThMsS1fEIyCxOOh8N3ZJZ4s3P4erNDSV1h00Ag==
+X-Received: by 2002:a05:690c:10d:b0:6e2:1a7f:20d3 with SMTP id 00721157ae682-6e21da219b2mr31687387b3.37.1727295455702;
+        Wed, 25 Sep 2024 13:17:35 -0700 (PDT)
+Received: from localhost (syn-076-182-020-124.res.spectrum.com. [76.182.20.124])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-6e20d27fedbsm7259617b3.115.2024.09.25.13.17.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Sep 2024 13:17:34 -0700 (PDT)
+Date: Wed, 25 Sep 2024 16:17:34 -0400
+From: Josef Bacik <josef@toxicpanda.com>
+To: Boris Burkov <boris@bur.io>
+Cc: linux-btrfs@vger.kernel.org, kernel-team@fb.com, stable@vger.kernel.org
+Subject: Re: [PATCH] btrfs: drop the backref cache during relocation if we
+ commit
+Message-ID: <20240925201734.GA296133@perftesting>
+References: <68766e66ed15ca2e7550585ed09434249db912a2.1727212293.git.josef@toxicpanda.com>
+ <20240925190743.GA2997332@zen.localdomain>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <bd0b8d63-f543-480e-85b4-2b8cec178c38@linaro.org> <20240910151600.18659-1-abelova@astralinux.ru>
-In-Reply-To: <20240910151600.18659-1-abelova@astralinux.ru>
-From: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Date: Wed, 25 Sep 2024 22:10:25 +0200
-Message-ID: <CAFBinCCVL5idjip8NtDTimid+H0xmoMT1807SBj0-dFaH+hbkQ@mail.gmail.com>
-Subject: Re: [PATCH v2] drm/meson: switch to a managed drm device
-To: Anastasia Belova <abelova@astralinux.ru>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>, 
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
-	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, 
-	Kevin Hilman <khilman@baylibre.com>, Jerome Brunet <jbrunet@baylibre.com>, 
-	dri-devel@lists.freedesktop.org, linux-amlogic@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	lvc-project@linuxtesting.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240925190743.GA2997332@zen.localdomain>
 
-Hi Anastasia,
+On Wed, Sep 25, 2024 at 12:07:43PM -0700, Boris Burkov wrote:
+> On Tue, Sep 24, 2024 at 05:11:37PM -0400, Josef Bacik wrote:
+> > Since the inception of relocation we have maintained the backref cache
+> > across transaction commits, updating the backref cache with the new
+> > bytenr whenever we COW'ed blocks that were in the cache, and then
+> > updating their bytenr once we detected a transaction id change.
+> > 
+> > This works as long as we're only ever modifying blocks, not changing the
+> > structure of the tree.
+> > 
+> > However relocation does in fact change the structure of the tree.  For
+> > example, if we are relocating a data extent, we will look up all the
+> > leaves that point to this data extent.  We will then call
+> > do_relocation() on each of these leaves, which will COW down to the leaf
+> > and then update the file extent location.
+> > 
+> > But, a key feature of do_relocation is the pending list.  This is all
+> > the pending nodes that we modified when we updated the file extent item.
+> > We will then process all of these blocks via finish_pending_nodes, which
+> > calls do_relocation() on all of the nodes that led up to that leaf.
+> > 
+> > The purpose of this is to make sure we don't break sharing unless we
+> > absolutely have to.  Consider the case that we have 3 snapshots that all
+> > point to this leaf through the same nodes, the initial COW would have
+> > created a whole new path.  If we did this for all 3 snapshots we would
+> > end up with 3x the number of nodes we had originally.  To avoid this we
+> > will cycle through each of the snapshots that point to each of these
+> > nodes and update their pointers to point at the new nodes.
+> > 
+> > Once we update the pointer to the new node we will drop the node we
+> > removed the link for and all of its children via btrfs_drop_subtree().
+> > This is essentially just btrfs_drop_snapshot(), but for an arbitrary
+> > point in the snapshot.
+> > 
+> > The problem with this is that we will never reflect this in the backref
+> > cache.  If we do this btrfs_drop_snapshot() for a node that is in the
+> > backref tree, we will leave the node in the backref tree.  This becomes
+> > a problem when we change the transid, as now the backref cache has
+> > entire subtrees that no longer exist, but exist as if they still are
+> > pointed to by the same roots.
+> > 
+> > In the best case scenario you end up with "adding refs to an existing
+> > tree ref" errors from insert_inline_extent_backref(), where we attempt
+> > to link in nodes on roots that are no longer valid.
+> > 
+> > Worst case you will double free some random block and re-use it when
+> > there's still references to the block.
+> > 
+> > This is extremely subtle, and the consequences are quite bad.  There
+> > isn't a way to make sure our backref cache is consistent between
+> > transid's.
+> > 
+> > In order to fix this we need to simply evict the entire backref cache
+> > anytime we cross transid's.  This reduces performance in that we have to
+> > rebuild this backref cache every time we change transid's, but fixes the
+> > bug.
+> > 
+> > This has existed since relocation was added, and is a pretty critical
+> > bug.  There's a lot more cleanup that can be done now that this
+> > functionality is going away, but this patch is as small as possible in
+> > order to fix the problem and make it easy for us to backport it to all
+> > the kernels it needs to be backported to.
+> > 
+> > Followup series will dismantle more of this code and simplify relocation
+> > drastically to remove this functionality.
+> 
+> +1
+> 
+> > 
+> > We have a reproducer that reproduced the corruption within a few minutes
+> > of running.  With this patch it survives several iterations/hours of
+> > running the reproducer.
+> > 
+> > Fixes: 3fd0a5585eb9 ("Btrfs: Metadata ENOSPC handling for balance")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+> > ---
+> >  fs/btrfs/backref.c    | 12 ++++---
+> >  fs/btrfs/relocation.c | 76 +++----------------------------------------
+> >  2 files changed, 13 insertions(+), 75 deletions(-)
+> > 
+> > diff --git a/fs/btrfs/backref.c b/fs/btrfs/backref.c
+> > index e2f478ecd7fd..f8e1d5b2c512 100644
+> > --- a/fs/btrfs/backref.c
+> > +++ b/fs/btrfs/backref.c
+> > @@ -3179,10 +3179,14 @@ void btrfs_backref_release_cache(struct btrfs_backref_cache *cache)
+> >  		btrfs_backref_cleanup_node(cache, node);
+> >  	}
+> >  
+> > -	cache->last_trans = 0;
+> > -
+> > -	for (i = 0; i < BTRFS_MAX_LEVEL; i++)
+> > -		ASSERT(list_empty(&cache->pending[i]));
+> > +	for (i = 0; i < BTRFS_MAX_LEVEL; i++) {
+> > +		while (!list_empty(&cache->pending[i])) {
+> > +			node = list_first_entry(&cache->pending[i],
+> > +						struct btrfs_backref_node,
+> > +						list);
+> > +			btrfs_backref_cleanup_node(cache, node);
+> > +		}
+> > +	}
+> 
+> Non blocking suggestion:
+> 
+> The fact that this cleanup has to keep an accurate view of the leaves
+> while it runs feels like overkill. If we just maintained a linked list
+> of all the nodes/edges we could call kfree on all of them. I think the
+> existing rbtree of nodes would probably just work too?
+> 
+> I think just adding the pending instead of assuming it's empty makes
+> sense, though.
 
-thank you for picking this up and apologies for my late reply.
+This is one of the cleanups that's coming, because we keep a list of everything
+in either ->leaves or ->detached, and now we can have them in the pending list.
+The cleanup function assumes that everything that is handled at this point so
+everything should be empty.
 
-On Tue, Sep 10, 2024 at 5:17=E2=80=AFPM Anastasia Belova <abelova@astralinu=
-x.ru> wrote:
-[...]
-> @@ -215,7 +210,7 @@ static int meson_drv_bind_master(struct device *dev, =
-bool has_components)
->         regs =3D devm_platform_ioremap_resource_byname(pdev, "vpu");
->         if (IS_ERR(regs)) {
->                 ret =3D PTR_ERR(regs);
-> -               goto free_drm;
-> +               goto remove_encoders;
-can't we just return PTR_ERR(regs) here since all resources above are
-now automatically free (as they are devm_* managed)?
+This is obviously silly, so the cleanup is to iterate the rbtree and free that
+way and not have all this stuff.
 
->         }
->
->         priv->io_base =3D regs;
-> @@ -223,13 +218,13 @@ static int meson_drv_bind_master(struct device *dev=
-, bool has_components)
->         res =3D platform_get_resource_byname(pdev, IORESOURCE_MEM, "hhi")=
-;
->         if (!res) {
->                 ret =3D -EINVAL;
-> -               goto free_drm;
-> +               goto remove_encoders;
-same here, can't we just return -EINVAL directly?
+We were only calling this after we were completely done with the loop for
+backref cache, so the pending lists should have been empty if there was an error
+and cleaned up before calling this function.
 
->         }
->         /* Simply ioremap since it may be a shared register zone */
->         regs =3D devm_ioremap(dev, res->start, resource_size(res));
->         if (!regs) {
->                 ret =3D -EADDRNOTAVAIL;
-> -               goto free_drm;
-> +               goto remove_encoders;
-also just return -EADDRNOTAVAIL directly
+But now because we're calling it every time we have to make sure we evict the
+pending list ourselves.
 
->         }
->
->         priv->hhi =3D devm_regmap_init_mmio(dev, regs,
-> @@ -237,18 +232,18 @@ static int meson_drv_bind_master(struct device *dev=
-, bool has_components)
->         if (IS_ERR(priv->hhi)) {
->                 dev_err(&pdev->dev, "Couldn't create the HHI regmap\n");
->                 ret =3D PTR_ERR(priv->hhi);
-either return PTR_ERR(priv->hhi) here or convert the dev_err to
-dev_err_probe and return it's value
+Again, this was done for simplicity sake, the problem is bad enough we want it
+to be backported as widely as possible, so all other cleanup stuff is going to
+be done separately.
 
-> -               goto free_drm;
-> +               goto remove_encoders;
->         }
->
->         priv->canvas =3D meson_canvas_get(dev);
->         if (IS_ERR(priv->canvas)) {
->                 ret =3D PTR_ERR(priv->canvas);
-> -               goto free_drm;
-> +               goto remove_encoders;
-return PTR_ERR(priv->canvas);
+> 
+> >  	ASSERT(list_empty(&cache->pending_edge));
+> >  	ASSERT(list_empty(&cache->useless_node));
+> >  	ASSERT(list_empty(&cache->changed));
+> > diff --git a/fs/btrfs/relocation.c b/fs/btrfs/relocation.c
+> > index ea4ed85919ec..aaa9cac213f1 100644
+> > --- a/fs/btrfs/relocation.c
+> > +++ b/fs/btrfs/relocation.c
+> > @@ -232,70 +232,6 @@ static struct btrfs_backref_node *walk_down_backref(
+> >  	return NULL;
+> >  }
+> >  
+> > -static void update_backref_node(struct btrfs_backref_cache *cache,
+> > -				struct btrfs_backref_node *node, u64 bytenr)
+> > -{
+> > -	struct rb_node *rb_node;
+> > -	rb_erase(&node->rb_node, &cache->rb_root);
+> > -	node->bytenr = bytenr;
+> > -	rb_node = rb_simple_insert(&cache->rb_root, node->bytenr, &node->rb_node);
+> > -	if (rb_node)
+> > -		btrfs_backref_panic(cache->fs_info, bytenr, -EEXIST);
+> > -}
+> > -
+> > -/*
+> > - * update backref cache after a transaction commit
+> > - */
+> > -static int update_backref_cache(struct btrfs_trans_handle *trans,
+> > -				struct btrfs_backref_cache *cache)
+> > -{
+> > -	struct btrfs_backref_node *node;
+> > -	int level = 0;
+> > -
+> > -	if (cache->last_trans == 0) {
+> > -		cache->last_trans = trans->transid;
+> > -		return 0;
+> > -	}
+> > -
+> > -	if (cache->last_trans == trans->transid)
+> > -		return 0;
+> > -
+> > -	/*
+> > -	 * detached nodes are used to avoid unnecessary backref
+> > -	 * lookup. transaction commit changes the extent tree.
+> > -	 * so the detached nodes are no longer useful.
+> > -	 */
+> > -	while (!list_empty(&cache->detached)) {
+> > -		node = list_entry(cache->detached.next,
+> > -				  struct btrfs_backref_node, list);
+> > -		btrfs_backref_cleanup_node(cache, node);
+> > -	}
+> > -
+> > -	while (!list_empty(&cache->changed)) {
+> > -		node = list_entry(cache->changed.next,
+> > -				  struct btrfs_backref_node, list);
+> > -		list_del_init(&node->list);
+> > -		BUG_ON(node->pending);
+> > -		update_backref_node(cache, node, node->new_bytenr);
+> > -	}
+> > -
+> > -	/*
+> > -	 * some nodes can be left in the pending list if there were
+> > -	 * errors during processing the pending nodes.
+> > -	 */
+> > -	for (level = 0; level < BTRFS_MAX_LEVEL; level++) {
+> > -		list_for_each_entry(node, &cache->pending[level], list) {
+> > -			BUG_ON(!node->pending);
+> > -			if (node->bytenr == node->new_bytenr)
+> > -				continue;
+> > -			update_backref_node(cache, node, node->new_bytenr);
+> > -		}
+> > -	}
+> > -
+> > -	cache->last_trans = 0;
+> > -	return 1;
+> > -}
+> > -
+> >  static bool reloc_root_is_dead(const struct btrfs_root *root)
+> >  {
+> >  	/*
+> > @@ -551,9 +487,6 @@ static int clone_backref_node(struct btrfs_trans_handle *trans,
+> >  	struct btrfs_backref_edge *new_edge;
+> >  	struct rb_node *rb_node;
+> >  
+> > -	if (cache->last_trans > 0)
+> > -		update_backref_cache(trans, cache);
+> > -
+> 
+> This looks suspicious to me. You said in the commit message that we need
+> to nuke the cache any time we cross a transid. However, here, you detect
+> a changed transid s.t. we would be calling update (presumably for some
+> reason someone felt was important) but now we are just skipping it.
+> 
+> Why is this correct/safe? Do we need to dump the cache here too? Are we
+> never going to hit this because of some implicit synchronization between
+> this post snapshot path and the cache-blowing-up you added to
+> relocate_block_group?
+> 
+> And if we need to dump the cache here to be safe, are you sure the other
+> places we can go into the relocation code from outside
+> relocate_block_group are safe to interact with an old cache too? I'm
+> thinking of btrfs_reloc_cow_block primarily.
 
->         }
->
->         ret =3D meson_canvas_alloc(priv->canvas, &priv->canvas_id_osd1);
->         if (ret)
-> -               goto free_drm;
-> +               goto remove_encoders;
-meson_canvas_alloc() is the first non devm_* managed allocation.
-so this is the last time we can simply "return ret;", starting with
-the next error case we need goto for cleaning up resources.
+This is an extremely subtle part.  clone_backref_node() is called when we create
+the reloc root, which can happen out of band of the relocation, so outside of
+the relocate_block_group loop.
 
->         ret =3D meson_canvas_alloc(priv->canvas, &priv->canvas_id_vd1_0);
->         if (ret)
->                 goto free_canvas_osd1;
-(starting from here the goto free_... is needed and this one is
-actually already correct)
+This was made to work in conjunction with the updating logic, so we had to call
+it here in order to make sure the code in clone found the right nodes, because
+src->commit_root->start would have been in ->new_bytenr if we hadn't updated the
+backref cache yet.
 
-> @@ -261,7 +256,7 @@ static int meson_drv_bind_master(struct device *dev, =
-bool has_components)
->
->         priv->vsync_irq =3D platform_get_irq(pdev, 0);
->
-> -       ret =3D drm_vblank_init(drm, 1);
-> +       ret =3D drm_vblank_init(&priv->drm, 1);
->         if (ret)
->                 goto free_canvas_vd1_2;
->
-> @@ -284,10 +279,10 @@ static int meson_drv_bind_master(struct device *dev=
-, bool has_components)
->         ret =3D drmm_mode_config_init(drm);
->         if (ret)
->                 goto free_canvas_vd1_2;
-> -       drm->mode_config.max_width =3D 3840;
-> -       drm->mode_config.max_height =3D 2160;
-> -       drm->mode_config.funcs =3D &meson_mode_config_funcs;
-> -       drm->mode_config.helper_private =3D &meson_mode_config_helpers;
-> +       priv->drm.mode_config.max_width =3D 3840;
-> +       priv->drm.mode_config.max_height =3D 2160;
-> +       priv->drm.mode_config.funcs =3D &meson_mode_config_funcs;
-> +       priv->drm.mode_config.helper_private =3D &meson_mode_config_helpe=
-rs;
->
->         /* Hardware Initialization */
->
-> @@ -308,9 +303,9 @@ static int meson_drv_bind_master(struct device *dev, =
-bool has_components)
->                 goto exit_afbcd;
->
->         if (has_components) {
-> -               ret =3D component_bind_all(dev, drm);
-> +               ret =3D component_bind_all(dev, &priv->drm);
->                 if (ret) {
-> -                       dev_err(drm->dev, "Couldn't bind all components\n=
-");
-> +                       dev_err(priv->drm.dev, "Couldn't bind all compone=
-nts\n");
->                         /* Do not try to unbind */
->                         has_components =3D false;
->                         goto exit_afbcd;
-just below this we have:
-    ret =3D meson_encoder_hdmi_probe(priv);
-    if (ret)
-        goto exit_afbcd;
-I think this is the place where we need to call component_unbind_all,
-so we need some kind of "goto unbind_components;" here.
-All other "goto exit_afbcd;" below will need to be converted to "goto
-unbind_components;" (or whichever name you choose) as well.
+Now we don't care, if it happens out of band we actually don't want to keep
+those cloned backref cache, so the relocate block group loop will evict the
+cache and rebuild it anyway.
 
-Also the ordering where component_unbind_all() is incorrect. It's been
-incorrect even before your patch - but maybe now is the right time to
-clean it up?
+If this happens where it should, eg select_reloc_root, then the cache will be
+uptodate and src->commit_root->start will match what exists in the backref
+cache.
 
-I had to double check because I was surprised about the calls to
-meson_encoder_{cvbs,dsi,hdmi}_remove(priv);
-It turns out that it's safe to call these three functions at any time
-because they only ever do something if their _probe() counterpart has
-been called.
+This is safe specifically because in the relocate block group loop we will evict
+everything, and then any reloc root creation that happens once we have the
+bacrekf cache in place will be synchronized appropriately.
 
+> 
+> >  	rb_node = rb_simple_search(&cache->rb_root, src->commit_root->start);
+> >  	if (rb_node) {
+> >  		node = rb_entry(rb_node, struct btrfs_backref_node, rb_node);
+> > @@ -3698,10 +3631,11 @@ static noinline_for_stack int relocate_block_group(struct reloc_control *rc)
+> >  			break;
+> >  		}
+> >  restart:
+> > -		if (update_backref_cache(trans, &rc->backref_cache)) {
+> > -			btrfs_end_transaction(trans);
+> > -			trans = NULL;
+> > -			continue;
+> > +		if (rc->backref_cache.last_trans == 0) {
+> > +			rc->backref_cache.last_trans = trans->transid;
+> > +		} else if (rc->backref_cache.last_trans != trans->transid) {
+> > +			btrfs_backref_release_cache(&rc->backref_cache);
+> > +			rc->backref_cache.last_trans = trans->transid;
+> 
+> Non blocking suggestion:
+> This feels like it could be simpler if we initialized last_trans to 0
+> after allocated the reloc_control, then we could just check if we need
+> to release, then unconditionally update.
 
+Do you mean this?
 
-Best regards,
-Martin
+if (rc->backref_cache.last_trans != trans->transid) {
+	if (rc->backref_cache.last_trans)
+		btrfs_backref_release_cache(&rc->backref_cache);
+	rc->backref_cache.last_trans = trans->transid;
+}
+
+Thanks,
+
+Josef
 
