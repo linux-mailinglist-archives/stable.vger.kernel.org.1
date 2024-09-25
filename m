@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-77535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5668985E2C
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:29:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FC66985E87
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:37:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4998E1F252C4
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:29:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 50096B2E85C
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:29:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 880201CD6E0;
-	Wed, 25 Sep 2024 12:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 644251B655C;
+	Wed, 25 Sep 2024 12:09:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Uy/yzK8B"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Sp+Uzek3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41F3F1B654F;
-	Wed, 25 Sep 2024 12:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A2CA1CD718;
+	Wed, 25 Sep 2024 12:09:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727266141; cv=none; b=iC0Ww3hH5Ib4jTKY3PG1W8BmITYtksUpilBYo0jYAZhKLm+hyZYIme23CmghP5DkWBxpZTVIO6klOny82IRl5Dv6Whdd71gYaxLhYZTCoBPI7hYh5XODbA64fFHgD7cVfb2xK1wt0SBqlyYpuvoHHenPNxEm61HJP7C5RzybP8A=
+	t=1727266144; cv=none; b=hku0xrGddHmnEfqL9qh50qGftAWIgMgWd6xJL2yXbmOQqEKEqYtrbj7HF9X2sy866sra+AasyzvyHI+PFvfvHiPRr8SiPsvfbbZk1WlI3VMANF6fs1YhoOFcFpWDsN6Y120ePfSyMBAckb7LydapprQBtQRUOhDwDHLCfAvrODY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727266141; c=relaxed/simple;
-	bh=OnqE7hMVp7P7mOZDjM+m6mgGSt7B98LSvqkkmRJF8Ss=;
+	s=arc-20240116; t=1727266144; c=relaxed/simple;
+	bh=qpYx8OjX7ycSGpl7GFmz/VnJk/uHyp/q0kLf2J/2q2w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a4iCre6fKJ5GrxrP70zXQIP2cWsvxLsQVbB7WKX+ju9HBVKiyCiT+nflEkmkyMUeW17HP/OA0oGcC+Fi+IHWA5BFolTQWOkeLUOPt7v/ptYvQZeT0C65CeqGfJPSSHhiZxCyysfUiUl1hDQSfFafIfk8NwRahaL1kGmZeB2X08Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Uy/yzK8B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47D8DC4CECE;
-	Wed, 25 Sep 2024 12:09:00 +0000 (UTC)
+	 MIME-Version; b=ES+yVvfdjDBiy91+Ux1BlAUtvf0CZdv1eHr+PjeOy3sxt4mOY57Shp8Zl4N8gkHDtvriz3Wv707T6/2dXrEzlv1qg+/t3pvJH8/WduAWa2OQKlTqeO9rJl1G+Ff/wQG/Um8aHF+Ed1uZIQmcnT+lK8PEHdx/08+59ar9necgIsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Sp+Uzek3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9980CC4CEC3;
+	Wed, 25 Sep 2024 12:09:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727266141;
-	bh=OnqE7hMVp7P7mOZDjM+m6mgGSt7B98LSvqkkmRJF8Ss=;
+	s=k20201202; t=1727266142;
+	bh=qpYx8OjX7ycSGpl7GFmz/VnJk/uHyp/q0kLf2J/2q2w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Uy/yzK8BxJJJ1yhL4W/UL6o9+xgYO+YkbRLwFpRWOm3GSGDy1EvR8BRV4IDoEeBUX
-	 YaOTKTGJ11+r7q9AgAuKG0c55jn8EC/Mm282yLjX64ET8WKFhtMhbq6hyNnhrub1+B
-	 cG+NemGDX5Aeo+15UupBZJSiDm+SXUO0C2yfA+pl0cUpAbWsSyj6uMmGhJVpKFaGxJ
-	 LSfRyG6yUIKxpCXAB287ToM4KcG1mOmY0+laxy+94wtP5efa1v2/Xy6pBgd3AfunfN
-	 ywypwOrHAhaPmiuIXBxkdgM2Km6upMq9/jpawy5ph/3tQieG7pHQvNEtJd8J8396sV
-	 6YUbzfka3olyw==
+	b=Sp+Uzek33e4rkWC3HJAH6OUxbzrAfE7ATrPi/I/aUS6J4GPwMA/55kw5cIVmmwapf
+	 b22XXEXP4La3ivpbSuWMi2EI4nUTwuXPr5fnwfjbcLwqPr79nOk7tGI95Ii+xo4XLU
+	 DT1VIWM/maWgRZO91YFlSZIy9wmU2tEgVskMGeEDTGMksuEgg7P4qsGtZuYzkkAdq5
+	 bN+Yd0or/+cHjvkjVvIviuG+JMCFp2f8NMcgcjCj7e8j3dsh2dWyrKesR51LF/l2hy
+	 TDPiQ/lbN4kSL07K/Oea+SnGEXOrtrLx34HnfJbwKHsqPgqdr92DCiFdeGENs2a1JT
+	 gqIWdIfmrtiFw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Hans de Goede <hdegoede@redhat.com>,
+Cc: Jan Kara <jack@suse.cz>,
+	Christian Brauner <brauner@kernel.org>,
+	Theodore Ts'o <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>,
-	ilpo.jarvinen@linux.intel.com,
-	platform-driver-x86@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 187/197] platform/x86: x86-android-tablets: Adjust Xiaomi Pad 2 bottom bezel touch buttons LED
-Date: Wed, 25 Sep 2024 07:53:26 -0400
-Message-ID: <20240925115823.1303019-187-sashal@kernel.org>
+	adilger.kernel@dilger.ca,
+	linux-ext4@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.10 188/197] ext4: don't set SB_RDONLY after filesystem errors
+Date: Wed, 25 Sep 2024 07:53:27 -0400
+Message-ID: <20240925115823.1303019-188-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925115823.1303019-1-sashal@kernel.org>
 References: <20240925115823.1303019-1-sashal@kernel.org>
@@ -65,67 +67,54 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.11
 Content-Transfer-Encoding: 8bit
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit df40a23cc34c200cfde559eda7ca540f3ae7bd9e ]
+[ Upstream commit d3476f3dad4ad68ae5f6b008ea6591d1520da5d8 ]
 
-The "input-events" LED trigger used to turn on the backlight LEDs had to
-be rewritten to use led_trigger_register_simple() + led_trigger_event()
-to fix a serious locking issue.
+When the filesystem is mounted with errors=remount-ro, we were setting
+SB_RDONLY flag to stop all filesystem modifications. We knew this misses
+proper locking (sb->s_umount) and does not go through proper filesystem
+remount procedure but it has been the way this worked since early ext2
+days and it was good enough for catastrophic situation damage
+mitigation. Recently, syzbot has found a way (see link) to trigger
+warnings in filesystem freezing because the code got confused by
+SB_RDONLY changing under its hands. Since these days we set
+EXT4_FLAGS_SHUTDOWN on the superblock which is enough to stop all
+filesystem modifications, modifying SB_RDONLY shouldn't be needed. So
+stop doing that.
 
-This means it no longer supports using blink_brightness to set a per LED
-brightness for the trigger and it no longer sets LED_CORE_SUSPENDRESUME.
-
-Adjust the MiPad 2 bottom bezel touch buttons LED class device to match:
-
-1. Make LED_FULL the maximum brightness to fix the LED brightness
-   being very low when on.
-2. Set flags = LED_CORE_SUSPENDRESUME.
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240916090255.35548-1-hdegoede@redhat.com
+Link: https://lore.kernel.org/all/000000000000b90a8e061e21d12f@google.com
+Reported-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Link: https://patch.msgid.link/20240805201241.27286-1-jack@suse.cz
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/x86-android-tablets/other.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ fs/ext4/super.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/platform/x86/x86-android-tablets/other.c b/drivers/platform/x86/x86-android-tablets/other.c
-index eb0e55c69dfed..2549c348c8825 100644
---- a/drivers/platform/x86/x86-android-tablets/other.c
-+++ b/drivers/platform/x86/x86-android-tablets/other.c
-@@ -670,7 +670,7 @@ static const struct software_node *ktd2026_node_group[] = {
-  * is controlled by the "pwm_soc_lpss_2" PWM output.
-  */
- #define XIAOMI_MIPAD2_LED_PERIOD_NS		19200
--#define XIAOMI_MIPAD2_LED_DEFAULT_DUTY		 6000 /* From Android kernel */
-+#define XIAOMI_MIPAD2_LED_MAX_DUTY_NS		 6000 /* From Android kernel */
+diff --git a/fs/ext4/super.c b/fs/ext4/super.c
+index c682fb927b64b..307083e519034 100644
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -735,11 +735,12 @@ static void ext4_handle_error(struct super_block *sb, bool force_ro, int error,
  
- static struct pwm_device *xiaomi_mipad2_led_pwm;
+ 	ext4_msg(sb, KERN_CRIT, "Remounting filesystem read-only");
+ 	/*
+-	 * Make sure updated value of ->s_mount_flags will be visible before
+-	 * ->s_flags update
++	 * EXT4_FLAGS_SHUTDOWN was set which stops all filesystem
++	 * modifications. We don't set SB_RDONLY because that requires
++	 * sb->s_umount semaphore and setting it without proper remount
++	 * procedure is confusing code such as freeze_super() leading to
++	 * deadlocks and other problems.
+ 	 */
+-	smp_wmb();
+-	sb->s_flags |= SB_RDONLY;
+ }
  
-@@ -679,7 +679,7 @@ static int xiaomi_mipad2_brightness_set(struct led_classdev *led_cdev,
- {
- 	struct pwm_state state = {
- 		.period = XIAOMI_MIPAD2_LED_PERIOD_NS,
--		.duty_cycle = val,
-+		.duty_cycle = XIAOMI_MIPAD2_LED_MAX_DUTY_NS * val / LED_FULL,
- 		/* Always set PWM enabled to avoid the pin floating */
- 		.enabled = true,
- 	};
-@@ -701,11 +701,11 @@ static int __init xiaomi_mipad2_init(struct device *dev)
- 		return -ENOMEM;
- 
- 	led_cdev->name = "mipad2:white:touch-buttons-backlight";
--	led_cdev->max_brightness = XIAOMI_MIPAD2_LED_PERIOD_NS;
--	/* "input-events" trigger uses blink_brightness */
--	led_cdev->blink_brightness = XIAOMI_MIPAD2_LED_DEFAULT_DUTY;
-+	led_cdev->max_brightness = LED_FULL;
- 	led_cdev->default_trigger = "input-events";
- 	led_cdev->brightness_set_blocking = xiaomi_mipad2_brightness_set;
-+	/* Turn LED off during suspend */
-+	led_cdev->flags = LED_CORE_SUSPENDRESUME;
- 
- 	ret = devm_led_classdev_register(dev, led_cdev);
- 	if (ret)
+ static void update_super_work(struct work_struct *work)
 -- 
 2.43.0
 
