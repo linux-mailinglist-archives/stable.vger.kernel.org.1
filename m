@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-77266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11CD7985B44
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:19:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2669E985B46
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:20:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C83242868D2
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:19:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADC17286907
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:20:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FD0B1BB6B7;
-	Wed, 25 Sep 2024 11:47:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DF561BBBDA;
+	Wed, 25 Sep 2024 11:47:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="o79MXMJA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cH+iXB2Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD71E1BB6B0;
-	Wed, 25 Sep 2024 11:47:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE04A1BBBD6;
+	Wed, 25 Sep 2024 11:47:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727264874; cv=none; b=Jjs3J96z8ClFJ4sx0giBO1dNtp0svoKsGpekw22bY7+0GlaEA216DUFFDuq+z4oe0U2Jlq7JgbNhcMRqsGWJoDuTue/GSNf0R1LSISIY6RE45bh1gIoHrH4yn87V3VUFTk3/rkkR9xFFSeiwySPZk4dcdC6JOuVbxRMonhjYC5U=
+	t=1727264877; cv=none; b=NozdOXnLVkesOf/IQPz8c7W0soOYrz3dUry4vCUhQTYn53E/EnU491KQiL9qEDiB9Vv18jRnmRYbXIkg3kaSn+1AbXvxkXu4Y+9jQnyq/NPrFx4hE1Znd8CYZyghUzKgmw0ZgG2CoBwf2Q95++5C8zhucpu+5BrfgUqLAvHl2mY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727264874; c=relaxed/simple;
-	bh=Jp/7mKD0NQ8tcuVLRYP6ppFFsuSAfFVkzvYBDI8NlO4=;
+	s=arc-20240116; t=1727264877; c=relaxed/simple;
+	bh=EO3zMFmMKBLdYWvuMS3VyKOlAkOlRsoa9ugS8Fsa7MM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GNeHXYyjUc3F+Sx1u6dKYDpYuwNePcFmXK9WvnWnfPzNXyot/rE4STsjDEJRoP7DXb1qcyij2bpSpx2Yi1NIB2QIWHfg47y69dYXH8jZnWE+dqKg42GS9JOsLcGGgtGEfsoE7d94u8cPIltCbjioyyNX0Pi6TKsgHiTY5J4qaFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=o79MXMJA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10145C4CEC3;
-	Wed, 25 Sep 2024 11:47:52 +0000 (UTC)
+	 MIME-Version; b=LOr9ow32C+tzyFyumkZhGUbWj84OC1l2XcdExmOS9+lwmYI/96WPuBzPTN4e0TAYzmG6zdulxyoWTcHn8seZQwbf5oL42EPufOYvfcHY8zn2KxelIPMIBLARzq/zRY9eQRvupl5C20CkupEo8ZsDyCrGUfu2J3rkjcnPdZQ0wH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cH+iXB2Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31E94C4CEC3;
+	Wed, 25 Sep 2024 11:47:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727264874;
-	bh=Jp/7mKD0NQ8tcuVLRYP6ppFFsuSAfFVkzvYBDI8NlO4=;
+	s=k20201202; t=1727264877;
+	bh=EO3zMFmMKBLdYWvuMS3VyKOlAkOlRsoa9ugS8Fsa7MM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o79MXMJAfV9+dVtcEvjjTUDOgT9J7gqg5osjiUCNR1dVOHlcY7kqsH4kvSsOfs7cQ
-	 fbCDl/rPUDhWcHNN6/yDrsl4rCZfx+C1gyAj/BTLW5Zrb0YZZ/uo2E7qm9L/bC5S4z
-	 aotF703FTkUNJEBVeGwtEd9S9A/XFoyMJJKM5zZoamr23kL9yKeKRXr++MB8zK6rHS
-	 c+Qs1BZSzOt7wOOMm6IZ04unVeXxoxknfmmcaxwr/jIVWSEeptz8qywQVgV5TNVhn6
-	 DFFp7ir2rTlIi1oNyWVmpC/pe+avVpgCIMbfEz58oY4ngaJXT3ZaPEV4LFIltqKDKZ
-	 1Lb7i7F+gqG3w==
+	b=cH+iXB2Q6kn7yyCBtw2R1tDSaXD505BYLEbyDhRgmtpKkZq8A4LscVHLBGzNRfFsl
+	 HX6v6JdaMO/EqqgLWXHA9608kkK2+tqVafm2Bp2stkP8hQh5bqASulChqh2it3AXMi
+	 bjYjzYhc32sPVVGwLgkayLH7rpt4Qltscq7pAfoCZgB0z9MttQMoWaiAdeQlUoNZIM
+	 2Dv1uhifgUMZ1ULA+6YlfENRToMS7bFQUjS6c5yx5Jb8hvSyWMKc3ujeFoVLmege7z
+	 KUnvhL7wpVBCg+bqDcSXnNN3sbK3Z5zTXHeblSkKF+mSAmJNtQ818n/v4NeE6i3lVN
+	 Z8IVz0ENJWQGw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Rob Clark <robdclark@chromium.org>,
+Cc: Zhao Mengmeng <zhaomengmeng@kylinos.cn>,
+	syzbot+02341e0daa42a15ce130@syzkaller.appspotmail.com,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
-	robdclark@gmail.com,
-	quic_abhinavk@quicinc.com,
-	dmitry.baryshkov@linaro.org,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	linux-arm-msm@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	freedreno@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.11 168/244] drm/msm/adreno: Assign msm_gpu->pdev earlier to avoid nullptrs
-Date: Wed, 25 Sep 2024 07:26:29 -0400
-Message-ID: <20240925113641.1297102-168-sashal@kernel.org>
+	shaggy@kernel.org,
+	llfamsec@gmail.com,
+	walmeida@microsoft.com,
+	brauner@kernel.org,
+	gregkh@linuxfoundation.org,
+	jfs-discussion@lists.sourceforge.net
+Subject: [PATCH AUTOSEL 6.11 169/244] jfs: Fix uninit-value access of new_ea in ea_buffer
+Date: Wed, 25 Sep 2024 07:26:30 -0400
+Message-ID: <20240925113641.1297102-169-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925113641.1297102-1-sashal@kernel.org>
 References: <20240925113641.1297102-1-sashal@kernel.org>
@@ -72,59 +71,55 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11
 Content-Transfer-Encoding: 8bit
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Zhao Mengmeng <zhaomengmeng@kylinos.cn>
 
-[ Upstream commit 16007768551d5bfe53426645401435ca8d2ef54f ]
+[ Upstream commit 2b59ffad47db1c46af25ccad157bb3b25147c35c ]
 
-There are some cases, such as the one uncovered by Commit 46d4efcccc68
-("drm/msm/a6xx: Avoid a nullptr dereference when speedbin setting fails")
-where
+syzbot reports that lzo1x_1_do_compress is using uninit-value:
 
-msm_gpu_cleanup() : platform_set_drvdata(gpu->pdev, NULL);
+=====================================================
+BUG: KMSAN: uninit-value in lzo1x_1_do_compress+0x19f9/0x2510 lib/lzo/lzo1x_compress.c:178
 
-is called on gpu->pdev == NULL, as the GPU device has not been fully
-initialized yet.
+...
 
-Turns out that there's more than just the aforementioned path that
-causes this to happen (e.g. the case when there's speedbin data in the
-catalog, but opp-supported-hw is missing in DT).
+Uninit was stored to memory at:
+ ea_put fs/jfs/xattr.c:639 [inline]
 
-Assigning msm_gpu->pdev earlier seems like the least painful solution
-to this, therefore do so.
+...
 
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/602742/
-Signed-off-by: Rob Clark <robdclark@chromium.org>
+Local variable ea_buf created at:
+ __jfs_setxattr+0x5d/0x1ae0 fs/jfs/xattr.c:662
+ __jfs_xattr_set+0xe6/0x1f0 fs/jfs/xattr.c:934
+
+=====================================================
+
+The reason is ea_buf->new_ea is not initialized properly.
+
+Fix this by using memset to empty its content at the beginning
+in ea_get().
+
+Reported-by: syzbot+02341e0daa42a15ce130@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=02341e0daa42a15ce130
+Signed-off-by: Zhao Mengmeng <zhaomengmeng@kylinos.cn>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/adreno_gpu.c | 1 +
- drivers/gpu/drm/msm/msm_gpu.c           | 1 -
- 2 files changed, 1 insertion(+), 1 deletion(-)
+ fs/jfs/xattr.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/adreno/adreno_gpu.c b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
-index ecc3fc5cec227..1079cfd6d9c7b 100644
---- a/drivers/gpu/drm/msm/adreno/adreno_gpu.c
-+++ b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
-@@ -1083,6 +1083,7 @@ int adreno_gpu_init(struct drm_device *drm, struct platform_device *pdev,
- 	adreno_gpu->chip_id = config->chip_id;
+diff --git a/fs/jfs/xattr.c b/fs/jfs/xattr.c
+index 2999ed5d83f5e..0fb05e314edf6 100644
+--- a/fs/jfs/xattr.c
++++ b/fs/jfs/xattr.c
+@@ -434,6 +434,8 @@ static int ea_get(struct inode *inode, struct ea_buffer *ea_buf, int min_size)
+ 	int rc;
+ 	int quota_allocation = 0;
  
- 	gpu->allow_relocs = config->info->family < ADRENO_6XX_GEN1;
-+	gpu->pdev = pdev;
- 
- 	/* Only handle the core clock when GMU is not in use (or is absent). */
- 	if (adreno_has_gmu_wrapper(adreno_gpu) ||
-diff --git a/drivers/gpu/drm/msm/msm_gpu.c b/drivers/gpu/drm/msm/msm_gpu.c
-index 3666b42b4ecd7..a274b84664237 100644
---- a/drivers/gpu/drm/msm/msm_gpu.c
-+++ b/drivers/gpu/drm/msm/msm_gpu.c
-@@ -931,7 +931,6 @@ int msm_gpu_init(struct drm_device *drm, struct platform_device *pdev,
- 	if (IS_ERR(gpu->gpu_cx))
- 		gpu->gpu_cx = NULL;
- 
--	gpu->pdev = pdev;
- 	platform_set_drvdata(pdev, &gpu->adreno_smmu);
- 
- 	msm_devfreq_init(gpu);
++	memset(&ea_buf->new_ea, 0, sizeof(ea_buf->new_ea));
++
+ 	/* When fsck.jfs clears a bad ea, it doesn't clear the size */
+ 	if (ji->ea.flag == 0)
+ 		ea_size = 0;
 -- 
 2.43.0
 
