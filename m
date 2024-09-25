@@ -1,65 +1,64 @@
-Return-Path: <stable+bounces-77192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45BFA9859E2
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:02:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1731A9859E4
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:02:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D801328103F
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:02:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CA87628431C
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:02:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E23C18B487;
-	Wed, 25 Sep 2024 11:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57A321B14E8;
+	Wed, 25 Sep 2024 11:41:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V/JZMmAK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FwSlp9yR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47D2F18BBAD;
-	Wed, 25 Sep 2024 11:40:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FD371B14E2;
+	Wed, 25 Sep 2024 11:41:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727264461; cv=none; b=kMbfe+qy/SeJHCmW5z6euqenkHqz2uwhvzaVOFS46U19jjIf6juBjCDuWciUn1Yw+KRagaLw8PH6srwc0IjVFrH7iMQ34GpfETyTinmMoTdUeULbasIr4FjkSFo7M4jdcooueUhkGpiDGGyV/ElI9rKKuJncDdxv0gk3uedM08c=
+	t=1727264465; cv=none; b=EhvmzSGOWrcoSktoPQ2a4F9LOE56ynTQQbpZaufGAYg18o3xxzLBQ4gi2WHvbbGRnbFVCmKLZ14oh0ngqniwZzYJOp86q87hMecwTsdKzjg6cxqvb7l9btFZTGHa3RQZnfWrFQ3qITY0fC2Wgozm9r15kUWEpPtE2fE9hD8XMps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727264461; c=relaxed/simple;
-	bh=eRwXZ+GNKqm/FvwfjBgi2psn1uvQBB3ff2KBMY18YsY=;
+	s=arc-20240116; t=1727264465; c=relaxed/simple;
+	bh=PvkRraFHL62DspiQpE+oGVrgsT4aaHFu9FFhLXeVTkQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f/MHhV9LptQGPrF5kstCFujRN5KqizDboQbY1lqnyisuwWCkh7o52t0DQFCV2jod2oCGZbH8UevHqaurhir5lL4i6cBFpYwKGriBVIsAChS4dgW0R81/IqYckj7R7m4PdEQ3XXgjj0OhTseMCm0/ROKK1mIZIgFLnooCeOJbCYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V/JZMmAK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1247AC4CEC3;
-	Wed, 25 Sep 2024 11:40:57 +0000 (UTC)
+	 MIME-Version; b=Eyf/hkHYapPqueZLqP0ZjLQoPwaOPlxAxONL5vPI4NCH4zCyp+ujTxx7Kxq5RGZsNb8gwP02WQLHngZqyvpYhCo4cHq+4PblGr2VkVUxXLJ4KTBy6GbFWEJ0ZYz5BLZLQFylFcBwavCVGE32omaVvI1PspPhW1qsAm7BczpqBJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FwSlp9yR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8AA2C4CEC3;
+	Wed, 25 Sep 2024 11:41:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727264459;
-	bh=eRwXZ+GNKqm/FvwfjBgi2psn1uvQBB3ff2KBMY18YsY=;
+	s=k20201202; t=1727264464;
+	bh=PvkRraFHL62DspiQpE+oGVrgsT4aaHFu9FFhLXeVTkQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V/JZMmAKlEfNp2Hl5fbVLA6uxvyMkqLShxKJDDWPyIEeHAJiyrt05Swu9FlGOgwzO
-	 WUZ3FYhe3qIcSTJ8lNcL5fwxgrkNdb/leS2VFUF+CI47MT2zXjKf41hlVzaSzUsMgL
-	 MTuoDMzmrp4MVv4kw6wNS8ivrM5z3EPX8WJS2jDMh4CVDoXGY8rNzetb1Gud9VGJSV
-	 l1EUpIFGC1ePD0kOoOQxL3l2zZQ2nXSwGYZT6WvEXLKubvCDACnH5fE+5aEwmFSBCK
-	 YIxlWZ+bsSZUKJC88VpUBpDIg731oWwBOPilacCBJLgOOGKKjFdAHAiC+hLfB4xHbV
-	 RXsUXffNQqzww==
+	b=FwSlp9yR2KIE+75jV3YqFRkNUIV2XMauqhpVzV+G1P/LzBAN/pbwDdNVYlW85PsKa
+	 iWOY36/zZoS64rFs4ysjFwd1fzN6EyCRA+K7cj3ZMM+0kQVJ25N9t5oEWgiJ4+azX3
+	 xHsDpTRUIFg6805/rK20m1pdNFDnSq+8D+/x9bDDchQ08GXaXzeNRpOBpxFbGtTfVU
+	 KyFD3FNvwvhFzC6yVCFtIL5tgdlTnY+tjNwsU5v47qI6sMuOkLOj5yIYWKTjwVnkfk
+	 L6CajZXQ1fvvZqYyAsMwJAdwuOmSc/ZMlxjw78s8yb3t0QJph6PClgH3tHiFkx1Umj
+	 0ttXhD2SN05hg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Cyan Nyan <cyan.vtb@gmail.com>,
-	Asahi Lina <lina@asahilina.net>,
+Cc: Asahi Lina <lina@asahilina.net>,
 	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>,
 	perex@perex.cz,
 	tiwai@suse.com,
+	g@b4.vu,
+	k.kosik@outlook.com,
+	s@srd.tw,
+	cyan.vtb@gmail.com,
 	mbarriolinares@gmail.com,
 	soyjuanarbol@gmail.com,
-	wangdicheng@kylinos.cn,
-	belegdol+github@gmail.com,
-	mmccarthy@mcintoshlabs.com,
-	whalechang@google.com,
 	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 094/244] ALSA: usb-audio: Add quirk for RME Digiface USB
-Date: Wed, 25 Sep 2024 07:25:15 -0400
-Message-ID: <20240925113641.1297102-94-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.11 095/244] ALSA: usb-audio: Add mixer quirk for RME Digiface USB
+Date: Wed, 25 Sep 2024 07:25:16 -0400
+Message-ID: <20240925113641.1297102-95-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925113641.1297102-1-sashal@kernel.org>
 References: <20240925113641.1297102-1-sashal@kernel.org>
@@ -74,297 +73,480 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11
 Content-Transfer-Encoding: 8bit
 
-From: Cyan Nyan <cyan.vtb@gmail.com>
+From: Asahi Lina <lina@asahilina.net>
 
-[ Upstream commit c032044e9672408c534d64a6df2b1ba14449e948 ]
+[ Upstream commit 611a96f6acf2e74fe28cb90908a9c183862348ce ]
 
-Add trivial support for audio streaming on the RME Digiface USB. Binds
-only to the first interface to allow userspace to directly drive the
-complex I/O and matrix mixer controls.
+Implement sync, output format, and input status mixer controls, to allow
+the interface to be used as a straight ADAT/SPDIF (+ Headphones) I/O
+interface.
 
-Signed-off-by: Cyan Nyan <cyan.vtb@gmail.com>
-[Lina: Added 2x/4x sample rate support & boot/format quirks]
-Co-developed-by: Asahi Lina <lina@asahilina.net>
+This does not implement the matrix mixer, output gain controls, or input
+level meter feedback. The full mixer interface is only really usable
+using a dedicated userspace control app (there are too many mixer nodes
+for alsamixer to be usable), so for now we leave it up to userspace to
+directly control these features using raw USB control messages. This is
+similar to how it's done with some FireWire interfaces (ffado-mixer).
+
 Signed-off-by: Asahi Lina <lina@asahilina.net>
-Link: https://patch.msgid.link/20240903-rme-digiface-v2-1-71b06c912e97@asahilina.net
+Link: https://patch.msgid.link/20240903-rme-digiface-v2-2-71b06c912e97@asahilina.net
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/quirks-table.h | 171 ++++++++++++++++++++++++++++++++++++++-
- sound/usb/quirks.c       |  58 +++++++++++++
- 2 files changed, 228 insertions(+), 1 deletion(-)
+ sound/usb/mixer_quirks.c | 413 +++++++++++++++++++++++++++++++++++++++
+ sound/usb/quirks-table.h |   1 +
+ 2 files changed, 414 insertions(+)
 
-diff --git a/sound/usb/quirks-table.h b/sound/usb/quirks-table.h
-index 8d22de8bc2a96..631b9ab80f6cd 100644
---- a/sound/usb/quirks-table.h
-+++ b/sound/usb/quirks-table.h
-@@ -3604,6 +3604,175 @@ YAMAHA_DEVICE(0x7010, "UB99"),
- 		}
- 	}
- },
--
-+{
-+	/* Only claim interface 0 */
-+	.match_flags = USB_DEVICE_ID_MATCH_VENDOR |
-+		       USB_DEVICE_ID_MATCH_PRODUCT |
-+		       USB_DEVICE_ID_MATCH_INT_CLASS |
-+		       USB_DEVICE_ID_MATCH_INT_NUMBER,
-+	.idVendor = 0x2a39,
-+	.idProduct = 0x3f8c,
-+	.bInterfaceClass = USB_CLASS_VENDOR_SPEC,
-+	.bInterfaceNumber = 0,
-+	QUIRK_DRIVER_INFO {
-+		QUIRK_DATA_COMPOSITE {
-+			/*
-+			 * Three modes depending on sample rate band,
-+			 * with different channel counts for in/out
-+			 */
-+			{
-+				QUIRK_DATA_AUDIOFORMAT(0) {
-+					.formats = SNDRV_PCM_FMTBIT_S32_LE,
-+					.channels = 34, // outputs
-+					.fmt_bits = 24,
-+					.iface = 0,
-+					.altsetting = 1,
-+					.altset_idx = 1,
-+					.endpoint = 0x02,
-+					.ep_idx = 1,
-+					.ep_attr = USB_ENDPOINT_XFER_ISOC |
-+						USB_ENDPOINT_SYNC_ASYNC,
-+					.rates = SNDRV_PCM_RATE_32000 |
-+						SNDRV_PCM_RATE_44100 |
-+						SNDRV_PCM_RATE_48000,
-+					.rate_min = 32000,
-+					.rate_max = 48000,
-+					.nr_rates = 3,
-+					.rate_table = (unsigned int[]) {
-+						32000, 44100, 48000,
-+					},
-+					.sync_ep = 0x81,
-+					.sync_iface = 0,
-+					.sync_altsetting = 1,
-+					.sync_ep_idx = 0,
-+					.implicit_fb = 1,
-+				},
-+			},
-+			{
-+				QUIRK_DATA_AUDIOFORMAT(0) {
-+					.formats = SNDRV_PCM_FMTBIT_S32_LE,
-+					.channels = 18, // outputs
-+					.fmt_bits = 24,
-+					.iface = 0,
-+					.altsetting = 1,
-+					.altset_idx = 1,
-+					.endpoint = 0x02,
-+					.ep_idx = 1,
-+					.ep_attr = USB_ENDPOINT_XFER_ISOC |
-+						USB_ENDPOINT_SYNC_ASYNC,
-+					.rates = SNDRV_PCM_RATE_64000 |
-+						SNDRV_PCM_RATE_88200 |
-+						SNDRV_PCM_RATE_96000,
-+					.rate_min = 64000,
-+					.rate_max = 96000,
-+					.nr_rates = 3,
-+					.rate_table = (unsigned int[]) {
-+						64000, 88200, 96000,
-+					},
-+					.sync_ep = 0x81,
-+					.sync_iface = 0,
-+					.sync_altsetting = 1,
-+					.sync_ep_idx = 0,
-+					.implicit_fb = 1,
-+				},
-+			},
-+			{
-+				QUIRK_DATA_AUDIOFORMAT(0) {
-+					.formats = SNDRV_PCM_FMTBIT_S32_LE,
-+					.channels = 10, // outputs
-+					.fmt_bits = 24,
-+					.iface = 0,
-+					.altsetting = 1,
-+					.altset_idx = 1,
-+					.endpoint = 0x02,
-+					.ep_idx = 1,
-+					.ep_attr = USB_ENDPOINT_XFER_ISOC |
-+						USB_ENDPOINT_SYNC_ASYNC,
-+					.rates = SNDRV_PCM_RATE_KNOT |
-+						SNDRV_PCM_RATE_176400 |
-+						SNDRV_PCM_RATE_192000,
-+					.rate_min = 128000,
-+					.rate_max = 192000,
-+					.nr_rates = 3,
-+					.rate_table = (unsigned int[]) {
-+						128000, 176400, 192000,
-+					},
-+					.sync_ep = 0x81,
-+					.sync_iface = 0,
-+					.sync_altsetting = 1,
-+					.sync_ep_idx = 0,
-+					.implicit_fb = 1,
-+				},
-+			},
-+			{
-+				QUIRK_DATA_AUDIOFORMAT(0) {
-+					.formats = SNDRV_PCM_FMTBIT_S32_LE,
-+					.channels = 32, // inputs
-+					.fmt_bits = 24,
-+					.iface = 0,
-+					.altsetting = 1,
-+					.altset_idx = 1,
-+					.endpoint = 0x81,
-+					.ep_attr = USB_ENDPOINT_XFER_ISOC |
-+						USB_ENDPOINT_SYNC_ASYNC,
-+					.rates = SNDRV_PCM_RATE_32000 |
-+						SNDRV_PCM_RATE_44100 |
-+						SNDRV_PCM_RATE_48000,
-+					.rate_min = 32000,
-+					.rate_max = 48000,
-+					.nr_rates = 3,
-+					.rate_table = (unsigned int[]) {
-+						32000, 44100, 48000,
-+					}
-+				}
-+			},
-+			{
-+				QUIRK_DATA_AUDIOFORMAT(0) {
-+					.formats = SNDRV_PCM_FMTBIT_S32_LE,
-+					.channels = 16, // inputs
-+					.fmt_bits = 24,
-+					.iface = 0,
-+					.altsetting = 1,
-+					.altset_idx = 1,
-+					.endpoint = 0x81,
-+					.ep_attr = USB_ENDPOINT_XFER_ISOC |
-+						USB_ENDPOINT_SYNC_ASYNC,
-+					.rates = SNDRV_PCM_RATE_64000 |
-+						SNDRV_PCM_RATE_88200 |
-+						SNDRV_PCM_RATE_96000,
-+					.rate_min = 64000,
-+					.rate_max = 96000,
-+					.nr_rates = 3,
-+					.rate_table = (unsigned int[]) {
-+						64000, 88200, 96000,
-+					}
-+				}
-+			},
-+			{
-+				QUIRK_DATA_AUDIOFORMAT(0) {
-+					.formats = SNDRV_PCM_FMTBIT_S32_LE,
-+					.channels = 8, // inputs
-+					.fmt_bits = 24,
-+					.iface = 0,
-+					.altsetting = 1,
-+					.altset_idx = 1,
-+					.endpoint = 0x81,
-+					.ep_attr = USB_ENDPOINT_XFER_ISOC |
-+						USB_ENDPOINT_SYNC_ASYNC,
-+					.rates = SNDRV_PCM_RATE_KNOT |
-+						SNDRV_PCM_RATE_176400 |
-+						SNDRV_PCM_RATE_192000,
-+					.rate_min = 128000,
-+					.rate_max = 192000,
-+					.nr_rates = 3,
-+					.rate_table = (unsigned int[]) {
-+						128000, 176400, 192000,
-+					}
-+				}
-+			},
-+			QUIRK_COMPOSITE_END
-+		}
-+	}
-+},
- #undef USB_DEVICE_VENDOR_SPEC
- #undef USB_AUDIO_DEVICE
-diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
-index e7b68c67852e9..73da862a012c6 100644
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -1389,6 +1389,27 @@ static int snd_usb_motu_m_series_boot_quirk(struct usb_device *dev)
+diff --git a/sound/usb/mixer_quirks.c b/sound/usb/mixer_quirks.c
+index 8cbfb65846047..74abc44be77ca 100644
+--- a/sound/usb/mixer_quirks.c
++++ b/sound/usb/mixer_quirks.c
+@@ -14,6 +14,7 @@
+  *	    Przemek Rudy (prudy1@o2.pl)
+  */
+ 
++#include <linux/bitfield.h>
+ #include <linux/hid.h>
+ #include <linux/init.h>
+ #include <linux/math64.h>
+@@ -2926,6 +2927,415 @@ static int snd_bbfpro_controls_create(struct usb_mixer_interface *mixer)
  	return 0;
  }
  
-+static int snd_usb_rme_digiface_boot_quirk(struct usb_device *dev)
++/*
++ * RME Digiface USB
++ */
++
++#define RME_DIGIFACE_READ_STATUS 17
++#define RME_DIGIFACE_STATUS_REG0L 0
++#define RME_DIGIFACE_STATUS_REG0H 1
++#define RME_DIGIFACE_STATUS_REG1L 2
++#define RME_DIGIFACE_STATUS_REG1H 3
++#define RME_DIGIFACE_STATUS_REG2L 4
++#define RME_DIGIFACE_STATUS_REG2H 5
++#define RME_DIGIFACE_STATUS_REG3L 6
++#define RME_DIGIFACE_STATUS_REG3H 7
++
++#define RME_DIGIFACE_CTL_REG1 16
++#define RME_DIGIFACE_CTL_REG2 18
++
++/* Reg is overloaded, 0-7 for status halfwords or 16 or 18 for control registers */
++#define RME_DIGIFACE_REGISTER(reg, mask) (((reg) << 16) | (mask))
++#define RME_DIGIFACE_INVERT BIT(31)
++
++/* Nonconst helpers */
++#define field_get(_mask, _reg) (((_reg) & (_mask)) >> (ffs(_mask) - 1))
++#define field_prep(_mask, _val) (((_val) << (ffs(_mask) - 1)) & (_mask))
++
++static int snd_rme_digiface_write_reg(struct snd_kcontrol *kcontrol, int item, u16 mask, u16 val)
 +{
-+	/* Disable mixer, internal clock, all outputs ADAT, 48kHz, TMS off */
-+	snd_usb_ctl_msg(dev, usb_sndctrlpipe(dev, 0),
-+			16, 0x40, 0x2410, 0x7fff, NULL, 0);
-+	snd_usb_ctl_msg(dev, usb_sndctrlpipe(dev, 0),
-+			18, 0x40, 0x0104, 0xffff, NULL, 0);
++	struct usb_mixer_elem_list *list = snd_kcontrol_chip(kcontrol);
++	struct snd_usb_audio *chip = list->mixer->chip;
++	struct usb_device *dev = chip->dev;
++	int err;
 +
-+	/* Disable loopback for all inputs */
-+	for (int ch = 0; ch < 32; ch++)
-+		snd_usb_ctl_msg(dev, usb_sndctrlpipe(dev, 0),
-+				22, 0x40, 0x400, ch, NULL, 0);
++	err = snd_usb_ctl_msg(dev, usb_sndctrlpipe(dev, 0),
++			      item,
++			      USB_DIR_OUT | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
++			      val, mask, NULL, 0);
++	if (err < 0)
++		dev_err(&dev->dev,
++			"unable to issue control set request %d (ret = %d)",
++			item, err);
++	return err;
++}
 +
-+	/* Unity gain for all outputs */
-+	for (int ch = 0; ch < 34; ch++)
-+		snd_usb_ctl_msg(dev, usb_sndctrlpipe(dev, 0),
-+				21, 0x40, 0x9000, 0x100 + ch, NULL, 0);
++static int snd_rme_digiface_read_status(struct snd_kcontrol *kcontrol, u32 status[4])
++{
++	struct usb_mixer_elem_list *list = snd_kcontrol_chip(kcontrol);
++	struct snd_usb_audio *chip = list->mixer->chip;
++	struct usb_device *dev = chip->dev;
++	__le32 buf[4];
++	int err;
++
++	err = snd_usb_ctl_msg(dev, usb_rcvctrlpipe(dev, 0),
++			      RME_DIGIFACE_READ_STATUS,
++			      USB_DIR_IN | USB_TYPE_VENDOR | USB_RECIP_DEVICE,
++			      0, 0,
++			      buf, sizeof(buf));
++	if (err < 0) {
++		dev_err(&dev->dev,
++			"unable to issue status read request (ret = %d)",
++			err);
++	} else {
++		for (int i = 0; i < ARRAY_SIZE(buf); i++)
++			status[i] = le32_to_cpu(buf[i]);
++	}
++	return err;
++}
++
++static int snd_rme_digiface_get_status_val(struct snd_kcontrol *kcontrol)
++{
++	int err;
++	u32 status[4];
++	bool invert = kcontrol->private_value & RME_DIGIFACE_INVERT;
++	u8 reg = (kcontrol->private_value >> 16) & 0xff;
++	u16 mask = kcontrol->private_value & 0xffff;
++	u16 val;
++
++	err = snd_rme_digiface_read_status(kcontrol, status);
++	if (err < 0)
++		return err;
++
++	switch (reg) {
++	/* Status register halfwords */
++	case RME_DIGIFACE_STATUS_REG0L ... RME_DIGIFACE_STATUS_REG3H:
++		break;
++	case RME_DIGIFACE_CTL_REG1: /* Control register 1, present in halfword 3L */
++		reg = RME_DIGIFACE_STATUS_REG3L;
++		break;
++	case RME_DIGIFACE_CTL_REG2: /* Control register 2, present in halfword 3H */
++		reg = RME_DIGIFACE_STATUS_REG3H;
++		break;
++	default:
++		return -EINVAL;
++	}
++
++	if (reg & 1)
++		val = status[reg >> 1] >> 16;
++	else
++		val = status[reg >> 1] & 0xffff;
++
++	if (invert)
++		val ^= mask;
++
++	return field_get(mask, val);
++}
++
++static int snd_rme_digiface_rate_get(struct snd_kcontrol *kcontrol,
++				     struct snd_ctl_elem_value *ucontrol)
++{
++	int freq = snd_rme_digiface_get_status_val(kcontrol);
++
++	if (freq < 0)
++		return freq;
++	if (freq >= ARRAY_SIZE(snd_rme_rate_table))
++		return -EIO;
++
++	ucontrol->value.integer.value[0] = snd_rme_rate_table[freq];
++	return 0;
++}
++
++static int snd_rme_digiface_enum_get(struct snd_kcontrol *kcontrol,
++				     struct snd_ctl_elem_value *ucontrol)
++{
++	int val = snd_rme_digiface_get_status_val(kcontrol);
++
++	if (val < 0)
++		return val;
++
++	ucontrol->value.enumerated.item[0] = val;
++	return 0;
++}
++
++static int snd_rme_digiface_enum_put(struct snd_kcontrol *kcontrol,
++				     struct snd_ctl_elem_value *ucontrol)
++{
++	bool invert = kcontrol->private_value & RME_DIGIFACE_INVERT;
++	u8 reg = (kcontrol->private_value >> 16) & 0xff;
++	u16 mask = kcontrol->private_value & 0xffff;
++	u16 val = field_prep(mask, ucontrol->value.enumerated.item[0]);
++
++	if (invert)
++		val ^= mask;
++
++	return snd_rme_digiface_write_reg(kcontrol, reg, mask, val);
++}
++
++static int snd_rme_digiface_current_sync_get(struct snd_kcontrol *kcontrol,
++				     struct snd_ctl_elem_value *ucontrol)
++{
++	int ret = snd_rme_digiface_enum_get(kcontrol, ucontrol);
++
++	/* 7 means internal for current sync */
++	if (ucontrol->value.enumerated.item[0] == 7)
++		ucontrol->value.enumerated.item[0] = 0;
++
++	return ret;
++}
++
++static int snd_rme_digiface_sync_state_get(struct snd_kcontrol *kcontrol,
++					   struct snd_ctl_elem_value *ucontrol)
++{
++	u32 status[4];
++	int err;
++	bool valid, sync;
++
++	err = snd_rme_digiface_read_status(kcontrol, status);
++	if (err < 0)
++		return err;
++
++	valid = status[0] & BIT(kcontrol->private_value);
++	sync = status[0] & BIT(5 + kcontrol->private_value);
++
++	if (!valid)
++		ucontrol->value.enumerated.item[0] = SND_RME_CLOCK_NOLOCK;
++	else if (!sync)
++		ucontrol->value.enumerated.item[0] = SND_RME_CLOCK_LOCK;
++	else
++		ucontrol->value.enumerated.item[0] = SND_RME_CLOCK_SYNC;
++	return 0;
++}
++
++
++static int snd_rme_digiface_format_info(struct snd_kcontrol *kcontrol,
++					struct snd_ctl_elem_info *uinfo)
++{
++	static const char *const format[] = {
++		"ADAT", "S/PDIF"
++	};
++
++	return snd_ctl_enum_info(uinfo, 1,
++				 ARRAY_SIZE(format), format);
++}
++
++
++static int snd_rme_digiface_sync_source_info(struct snd_kcontrol *kcontrol,
++					     struct snd_ctl_elem_info *uinfo)
++{
++	static const char *const sync_sources[] = {
++		"Internal", "Input 1", "Input 2", "Input 3", "Input 4"
++	};
++
++	return snd_ctl_enum_info(uinfo, 1,
++				 ARRAY_SIZE(sync_sources), sync_sources);
++}
++
++static int snd_rme_digiface_rate_info(struct snd_kcontrol *kcontrol,
++				      struct snd_ctl_elem_info *uinfo)
++{
++	uinfo->type = SNDRV_CTL_ELEM_TYPE_INTEGER;
++	uinfo->count = 1;
++	uinfo->value.integer.min = 0;
++	uinfo->value.integer.max = 200000;
++	uinfo->value.integer.step = 0;
++	return 0;
++}
++
++static const struct snd_kcontrol_new snd_rme_digiface_controls[] = {
++	{
++		.iface = SNDRV_CTL_ELEM_IFACE_MIXER,
++		.name = "Input 1 Sync",
++		.access = SNDRV_CTL_ELEM_ACCESS_READ | SNDRV_CTL_ELEM_ACCESS_VOLATILE,
++		.info = snd_rme_sync_state_info,
++		.get = snd_rme_digiface_sync_state_get,
++		.private_value = 0,
++	},
++	{
++		.iface = SNDRV_CTL_ELEM_IFACE_MIXER,
++		.name = "Input 1 Format",
++		.access = SNDRV_CTL_ELEM_ACCESS_READ | SNDRV_CTL_ELEM_ACCESS_VOLATILE,
++		.info = snd_rme_digiface_format_info,
++		.get = snd_rme_digiface_enum_get,
++		.private_value = RME_DIGIFACE_REGISTER(RME_DIGIFACE_STATUS_REG0H, BIT(0)) |
++			RME_DIGIFACE_INVERT,
++	},
++	{
++		.iface = SNDRV_CTL_ELEM_IFACE_MIXER,
++		.name = "Input 1 Rate",
++		.access = SNDRV_CTL_ELEM_ACCESS_READ | SNDRV_CTL_ELEM_ACCESS_VOLATILE,
++		.info = snd_rme_digiface_rate_info,
++		.get = snd_rme_digiface_rate_get,
++		.private_value = RME_DIGIFACE_REGISTER(RME_DIGIFACE_STATUS_REG1L, GENMASK(3, 0)),
++	},
++	{
++		.iface = SNDRV_CTL_ELEM_IFACE_MIXER,
++		.name = "Input 2 Sync",
++		.access = SNDRV_CTL_ELEM_ACCESS_READ | SNDRV_CTL_ELEM_ACCESS_VOLATILE,
++		.info = snd_rme_sync_state_info,
++		.get = snd_rme_digiface_sync_state_get,
++		.private_value = 1,
++	},
++	{
++		.iface = SNDRV_CTL_ELEM_IFACE_MIXER,
++		.name = "Input 2 Format",
++		.access = SNDRV_CTL_ELEM_ACCESS_READ | SNDRV_CTL_ELEM_ACCESS_VOLATILE,
++		.info = snd_rme_digiface_format_info,
++		.get = snd_rme_digiface_enum_get,
++		.private_value = RME_DIGIFACE_REGISTER(RME_DIGIFACE_STATUS_REG0L, BIT(13)) |
++			RME_DIGIFACE_INVERT,
++	},
++	{
++		.iface = SNDRV_CTL_ELEM_IFACE_MIXER,
++		.name = "Input 2 Rate",
++		.access = SNDRV_CTL_ELEM_ACCESS_READ | SNDRV_CTL_ELEM_ACCESS_VOLATILE,
++		.info = snd_rme_digiface_rate_info,
++		.get = snd_rme_digiface_rate_get,
++		.private_value = RME_DIGIFACE_REGISTER(RME_DIGIFACE_STATUS_REG1L, GENMASK(7, 4)),
++	},
++	{
++		.iface = SNDRV_CTL_ELEM_IFACE_MIXER,
++		.name = "Input 3 Sync",
++		.access = SNDRV_CTL_ELEM_ACCESS_READ | SNDRV_CTL_ELEM_ACCESS_VOLATILE,
++		.info = snd_rme_sync_state_info,
++		.get = snd_rme_digiface_sync_state_get,
++		.private_value = 2,
++	},
++	{
++		.iface = SNDRV_CTL_ELEM_IFACE_MIXER,
++		.name = "Input 3 Format",
++		.access = SNDRV_CTL_ELEM_ACCESS_READ | SNDRV_CTL_ELEM_ACCESS_VOLATILE,
++		.info = snd_rme_digiface_format_info,
++		.get = snd_rme_digiface_enum_get,
++		.private_value = RME_DIGIFACE_REGISTER(RME_DIGIFACE_STATUS_REG0L, BIT(14)) |
++			RME_DIGIFACE_INVERT,
++	},
++	{
++		.iface = SNDRV_CTL_ELEM_IFACE_MIXER,
++		.name = "Input 3 Rate",
++		.access = SNDRV_CTL_ELEM_ACCESS_READ | SNDRV_CTL_ELEM_ACCESS_VOLATILE,
++		.info = snd_rme_digiface_rate_info,
++		.get = snd_rme_digiface_rate_get,
++		.private_value = RME_DIGIFACE_REGISTER(RME_DIGIFACE_STATUS_REG1L, GENMASK(11, 8)),
++	},
++	{
++		.iface = SNDRV_CTL_ELEM_IFACE_MIXER,
++		.name = "Input 4 Sync",
++		.access = SNDRV_CTL_ELEM_ACCESS_READ | SNDRV_CTL_ELEM_ACCESS_VOLATILE,
++		.info = snd_rme_sync_state_info,
++		.get = snd_rme_digiface_sync_state_get,
++		.private_value = 3,
++	},
++	{
++		.iface = SNDRV_CTL_ELEM_IFACE_MIXER,
++		.name = "Input 4 Format",
++		.access = SNDRV_CTL_ELEM_ACCESS_READ | SNDRV_CTL_ELEM_ACCESS_VOLATILE,
++		.info = snd_rme_digiface_format_info,
++		.get = snd_rme_digiface_enum_get,
++		.private_value = RME_DIGIFACE_REGISTER(RME_DIGIFACE_STATUS_REG0L, GENMASK(15, 12)) |
++			RME_DIGIFACE_INVERT,
++	},
++	{
++		.iface = SNDRV_CTL_ELEM_IFACE_MIXER,
++		.name = "Input 4 Rate",
++		.access = SNDRV_CTL_ELEM_ACCESS_READ | SNDRV_CTL_ELEM_ACCESS_VOLATILE,
++		.info = snd_rme_digiface_rate_info,
++		.get = snd_rme_digiface_rate_get,
++		.private_value = RME_DIGIFACE_REGISTER(RME_DIGIFACE_STATUS_REG1L, GENMASK(3, 0)),
++	},
++	{
++		.iface = SNDRV_CTL_ELEM_IFACE_MIXER,
++		.name = "Output 1 Format",
++		.access = SNDRV_CTL_ELEM_ACCESS_READWRITE,
++		.info = snd_rme_digiface_format_info,
++		.get = snd_rme_digiface_enum_get,
++		.put = snd_rme_digiface_enum_put,
++		.private_value = RME_DIGIFACE_REGISTER(RME_DIGIFACE_CTL_REG2, BIT(0)),
++	},
++	{
++		.iface = SNDRV_CTL_ELEM_IFACE_MIXER,
++		.name = "Output 2 Format",
++		.access = SNDRV_CTL_ELEM_ACCESS_READWRITE,
++		.info = snd_rme_digiface_format_info,
++		.get = snd_rme_digiface_enum_get,
++		.put = snd_rme_digiface_enum_put,
++		.private_value = RME_DIGIFACE_REGISTER(RME_DIGIFACE_CTL_REG2, BIT(1)),
++	},
++	{
++		.iface = SNDRV_CTL_ELEM_IFACE_MIXER,
++		.name = "Output 3 Format",
++		.access = SNDRV_CTL_ELEM_ACCESS_READWRITE,
++		.info = snd_rme_digiface_format_info,
++		.get = snd_rme_digiface_enum_get,
++		.put = snd_rme_digiface_enum_put,
++		.private_value = RME_DIGIFACE_REGISTER(RME_DIGIFACE_CTL_REG2, BIT(3)),
++	},
++	{
++		.iface = SNDRV_CTL_ELEM_IFACE_MIXER,
++		.name = "Output 4 Format",
++		.access = SNDRV_CTL_ELEM_ACCESS_READWRITE,
++		.info = snd_rme_digiface_format_info,
++		.get = snd_rme_digiface_enum_get,
++		.put = snd_rme_digiface_enum_put,
++		.private_value = RME_DIGIFACE_REGISTER(RME_DIGIFACE_CTL_REG2, BIT(4)),
++	},
++	{
++		.iface = SNDRV_CTL_ELEM_IFACE_MIXER,
++		.name = "Sync Source",
++		.access = SNDRV_CTL_ELEM_ACCESS_READWRITE,
++		.info = snd_rme_digiface_sync_source_info,
++		.get = snd_rme_digiface_enum_get,
++		.put = snd_rme_digiface_enum_put,
++		.private_value = RME_DIGIFACE_REGISTER(RME_DIGIFACE_CTL_REG1, GENMASK(2, 0)),
++	},
++	{
++		.iface = SNDRV_CTL_ELEM_IFACE_MIXER,
++		.name = "Current Sync Source",
++		.access = SNDRV_CTL_ELEM_ACCESS_READ | SNDRV_CTL_ELEM_ACCESS_VOLATILE,
++		.info = snd_rme_digiface_sync_source_info,
++		.get = snd_rme_digiface_current_sync_get,
++		.private_value = RME_DIGIFACE_REGISTER(RME_DIGIFACE_STATUS_REG0L, GENMASK(12, 10)),
++	},
++	{
++		/*
++		 * This is writeable, but it is only set by the PCM rate.
++		 * Mixer apps currently need to drive the mixer using raw USB requests,
++		 * so they can also change this that way to configure the rate for
++		 * stand-alone operation when the PCM is closed.
++		 */
++		.iface = SNDRV_CTL_ELEM_IFACE_MIXER,
++		.name = "System Rate",
++		.access = SNDRV_CTL_ELEM_ACCESS_READ | SNDRV_CTL_ELEM_ACCESS_VOLATILE,
++		.info = snd_rme_rate_info,
++		.get = snd_rme_digiface_rate_get,
++		.private_value = RME_DIGIFACE_REGISTER(RME_DIGIFACE_CTL_REG1, GENMASK(6, 3)),
++	},
++	{
++		.iface = SNDRV_CTL_ELEM_IFACE_MIXER,
++		.name = "Current Rate",
++		.access = SNDRV_CTL_ELEM_ACCESS_READ | SNDRV_CTL_ELEM_ACCESS_VOLATILE,
++		.info = snd_rme_rate_info,
++		.get = snd_rme_digiface_rate_get,
++		.private_value = RME_DIGIFACE_REGISTER(RME_DIGIFACE_STATUS_REG1H, GENMASK(7, 4)),
++	}
++};
++
++static int snd_rme_digiface_controls_create(struct usb_mixer_interface *mixer)
++{
++	int err, i;
++
++	for (i = 0; i < ARRAY_SIZE(snd_rme_digiface_controls); ++i) {
++		err = add_single_ctl_with_resume(mixer, 0,
++						 NULL,
++						 &snd_rme_digiface_controls[i],
++						 NULL);
++		if (err < 0)
++			return err;
++	}
 +
 +	return 0;
 +}
 +
  /*
-  * Setup quirks
-  */
-@@ -1616,6 +1637,8 @@ int snd_usb_apply_boot_quirk(struct usb_device *dev,
- 		    get_iface_desc(intf->altsetting)->bInterfaceNumber < 3)
- 			return snd_usb_motu_microbookii_boot_quirk(dev);
+  * Pioneer DJ DJM Mixers
+  *
+@@ -3484,6 +3894,9 @@ int snd_usb_mixer_apply_create_quirk(struct usb_mixer_interface *mixer)
+ 	case USB_ID(0x2a39, 0x3fb0): /* RME Babyface Pro FS */
+ 		err = snd_bbfpro_controls_create(mixer);
  		break;
 +	case USB_ID(0x2a39, 0x3f8c): /* RME Digiface USB */
-+		return snd_usb_rme_digiface_boot_quirk(dev);
- 	}
- 
- 	return 0;
-@@ -1771,6 +1794,38 @@ static void mbox3_set_format_quirk(struct snd_usb_substream *subs,
- 		dev_warn(&subs->dev->dev, "MBOX3: Couldn't set the sample rate");
- }
- 
-+static const int rme_digiface_rate_table[] = {
-+	32000, 44100, 48000, 0,
-+	64000, 88200, 96000, 0,
-+	128000, 176400, 192000, 0,
-+};
-+
-+static int rme_digiface_set_format_quirk(struct snd_usb_substream *subs)
-+{
-+	unsigned int cur_rate = subs->data_endpoint->cur_rate;
-+	u16 val;
-+	int speed_mode;
-+	int id;
-+
-+	for (id = 0; id < ARRAY_SIZE(rme_digiface_rate_table); id++) {
-+		if (rme_digiface_rate_table[id] == cur_rate)
-+			break;
-+	}
-+
-+	if (id >= ARRAY_SIZE(rme_digiface_rate_table))
-+		return -EINVAL;
-+
-+	/* 2, 3, 4 for 1x, 2x, 4x */
-+	speed_mode = (id >> 2) + 2;
-+	val = (id << 3) | (speed_mode << 12);
-+
-+	/* Set the sample rate */
-+	snd_usb_ctl_msg(subs->stream->chip->dev,
-+		usb_sndctrlpipe(subs->stream->chip->dev, 0),
-+		16, 0x40, val, 0x7078, NULL, 0);
-+	return 0;
-+}
-+
- void snd_usb_set_format_quirk(struct snd_usb_substream *subs,
- 			      const struct audioformat *fmt)
- {
-@@ -1795,6 +1850,9 @@ void snd_usb_set_format_quirk(struct snd_usb_substream *subs,
- 	case USB_ID(0x0dba, 0x5000):
- 		mbox3_set_format_quirk(subs, fmt); /* Digidesign Mbox 3 */
- 		break;
-+	case USB_ID(0x2a39, 0x3f8c): /* RME Digiface USB */
-+		rme_digiface_set_format_quirk(subs);
++		err = snd_rme_digiface_controls_create(mixer);
 +		break;
- 	}
- }
- 
+ 	case USB_ID(0x2b73, 0x0017): /* Pioneer DJ DJM-250MK2 */
+ 		err = snd_djm_controls_create(mixer, SND_DJM_250MK2_IDX);
+ 		break;
+diff --git a/sound/usb/quirks-table.h b/sound/usb/quirks-table.h
+index 631b9ab80f6cd..24c981c9b2405 100644
+--- a/sound/usb/quirks-table.h
++++ b/sound/usb/quirks-table.h
+@@ -3620,6 +3620,7 @@ YAMAHA_DEVICE(0x7010, "UB99"),
+ 			 * Three modes depending on sample rate band,
+ 			 * with different channel counts for in/out
+ 			 */
++			{ QUIRK_DATA_STANDARD_MIXER(0) },
+ 			{
+ 				QUIRK_DATA_AUDIOFORMAT(0) {
+ 					.formats = SNDRV_PCM_FMTBIT_S32_LE,
 -- 
 2.43.0
 
