@@ -1,72 +1,63 @@
-Return-Path: <stable+bounces-77478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B92ED985DA1
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:16:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6999C985DA3
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:16:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DA5571C214FD
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:16:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 210BB1F24DE9
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:16:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDF101B3B21;
-	Wed, 25 Sep 2024 12:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FA401B3B31;
+	Wed, 25 Sep 2024 12:06:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WjLtkE6/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JiAgALf/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A06B18C336;
-	Wed, 25 Sep 2024 12:06:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DA5718C344;
+	Wed, 25 Sep 2024 12:06:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727265965; cv=none; b=dCa3B3bkHSVitNGO0vBEJLomIfxcUNxfmoYgY1frDm98jPqfDW/d+RUwxIeZeOJZWJHdr7o52gLfTRZrIZXVRNmEbLNlnyxQ0h/7iaN2kygKJuMWeLUXwTHIMvJVi6ps0lFGEI0LImHMt1veMzG9j3o14dsSStOF1nORpF7t5UU=
+	t=1727265974; cv=none; b=o4kc+6YVYR+LPzcMz0L04f9V82WcDw8bQn58H5sWPWSHk6dOZhWkUHeeyK0QqnWYnAdYqzkThYHR/07jqOwNOTcBHb2TDA3DsgE30kV3u1v9+TsbseCoObotzFzwCFK9/B4LAAFMPuOOaNcJt5aV67lqgG5P+1jqkzllTIow71c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727265965; c=relaxed/simple;
-	bh=RnRQaCfxna+JYck5F1g62zVfD6VK1LmF1xVZdgTzab8=;
+	s=arc-20240116; t=1727265974; c=relaxed/simple;
+	bh=HKyQQwQXqC934qpnYwhQK2yV8yYAIvsvzhH8wsD/nrU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bpEOj+ptCVGR8IsARIG/qxql8vW+INuijfVUwdB/TVGgpC2kCV+at/sojOBDsAU0Y34Re0uifvBOZ2OfP9ggjYdEsvB1TSMN1Vkj3r1wBANogCMg25R5W2gWpdZV8M+M9ELgsgQiU4JlQvgBPGdvklt8ISH3C//ZEYpIbDDGYoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WjLtkE6/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABA29C4CEC3;
-	Wed, 25 Sep 2024 12:06:02 +0000 (UTC)
+	 MIME-Version; b=MoDAnTIKeX5wzTkOxlpdjKLEXMy6ycoaYID0gsCSmbmM6LwJQO6Vx7mCOHoyY8q661Yfn+btnNrGpsqLCSTHsLUi7kNrkC1hFtBZVoBvjJueNMWKbEilF42d06mU1i88MdghsKWTPhUFaH3xkVreiI950qPf73qcj6i92kRodxg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JiAgALf/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A297C4CEC7;
+	Wed, 25 Sep 2024 12:06:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727265965;
-	bh=RnRQaCfxna+JYck5F1g62zVfD6VK1LmF1xVZdgTzab8=;
+	s=k20201202; t=1727265974;
+	bh=HKyQQwQXqC934qpnYwhQK2yV8yYAIvsvzhH8wsD/nrU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WjLtkE6/KEZx5BoNB6rm8W/nLI+bhKVZMFR5Yh2RMns2jog7P2yhSs0f/AOxTY3QD
-	 Mn3O8O+t3dFqtrGZDxSWK3o/vFbFTKFRC6uKUlRrZxnsI3hCYvQwWlG5GeKiRK5jj5
-	 liExn6pJtvNM1S1/FiLE5IeXcsWjeacKcNVuuIgf5bHvLjPF4AD3g0v5H9hPPmSm8L
-	 oiwRcEXqFaCQnfTYEGfPDph8N5/JBT8haYwUj3Y48aqEPg9qVQlx9hplgEY0Y3wlVL
-	 u85I09h3iuxiWOcoI0kD1iwgYsPheyfE89e6dP/Sp/ac+GRWrf0H3OqDztBfNf+xbQ
-	 K7JVZQRVAB/vA==
+	b=JiAgALf/YKRpld4puIQYU0f/TRAhU79lW99o+dGSvLLEE421qpDWCwpMZP4OP/sLi
+	 ilLMYS9Odhyc3AOR5hFiFgmus2MiQXMnbISpTEEdjHk5ewTI6LPSKbgBUEbTzltcNP
+	 MqDKDLlFXA0/6nUaFEh4ZRvAaUOKTUyRAnc0ivS0i0EuVa/BNcp5qDRb+tnMWuqQn7
+	 tcdq3J4ip2rfW1IRF4HLMblqUfzUzed/0lu9L5mYzP4PMlmPZhe9B3jFeRZgDi4U1e
+	 spRdmxfUJMoGHZq3Hz2+UHcq6Ngl3TqvVM26+3ObME0JyE7JP5QvSQaaGINPQ0abLR
+	 TyUSLvxT9Hvvw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Tim Huang <tim.huang@amd.com>,
-	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+Cc: Yang Wang <kevinyang.wang@amd.com>,
+	Tao Zhou <tao.zhou1@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	harry.wentland@amd.com,
-	sunpeng.li@amd.com,
-	Rodrigo.Siqueira@amd.com,
 	christian.koenig@amd.com,
 	Xinhui.Pan@amd.com,
 	airlied@gmail.com,
 	daniel@ffwll.ch,
-	lewis.huang@amd.com,
-	chiahsuan.chung@amd.com,
-	alex.hung@amd.com,
-	dennis.chan@amd.com,
-	srinivasan.shanmugam@amd.com,
+	Hawking.Zhang@amd.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.10 133/197] drm/amd/display: fix double free issue during amdgpu module unload
-Date: Wed, 25 Sep 2024 07:52:32 -0400
-Message-ID: <20240925115823.1303019-133-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.10 134/197] drm/amdgpu: add list empty check to avoid null pointer issue
+Date: Wed, 25 Sep 2024 07:52:33 -0400
+Message-ID: <20240925115823.1303019-134-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925115823.1303019-1-sashal@kernel.org>
 References: <20240925115823.1303019-1-sashal@kernel.org>
@@ -81,77 +72,59 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.11
 Content-Transfer-Encoding: 8bit
 
-From: Tim Huang <tim.huang@amd.com>
+From: Yang Wang <kevinyang.wang@amd.com>
 
-[ Upstream commit 20b5a8f9f4670a8503aa9fa95ca632e77c6bf55d ]
+[ Upstream commit 4416377ae1fdc41a90b665943152ccd7ff61d3c5 ]
 
-Flexible endpoints use DIGs from available inflexible endpoints,
-so only the encoders of inflexible links need to be freed.
-Otherwise, a double free issue may occur when unloading the
-amdgpu module.
+Add list empty check to avoid null pointer issues in some corner cases.
+- list_for_each_entry_safe()
 
-[  279.190523] RIP: 0010:__slab_free+0x152/0x2f0
-[  279.190577] Call Trace:
-[  279.190580]  <TASK>
-[  279.190582]  ? show_regs+0x69/0x80
-[  279.190590]  ? die+0x3b/0x90
-[  279.190595]  ? do_trap+0xc8/0xe0
-[  279.190601]  ? do_error_trap+0x73/0xa0
-[  279.190605]  ? __slab_free+0x152/0x2f0
-[  279.190609]  ? exc_invalid_op+0x56/0x70
-[  279.190616]  ? __slab_free+0x152/0x2f0
-[  279.190642]  ? asm_exc_invalid_op+0x1f/0x30
-[  279.190648]  ? dcn10_link_encoder_destroy+0x19/0x30 [amdgpu]
-[  279.191096]  ? __slab_free+0x152/0x2f0
-[  279.191102]  ? dcn10_link_encoder_destroy+0x19/0x30 [amdgpu]
-[  279.191469]  kfree+0x260/0x2b0
-[  279.191474]  dcn10_link_encoder_destroy+0x19/0x30 [amdgpu]
-[  279.191821]  link_destroy+0xd7/0x130 [amdgpu]
-[  279.192248]  dc_destruct+0x90/0x270 [amdgpu]
-[  279.192666]  dc_destroy+0x19/0x40 [amdgpu]
-[  279.193020]  amdgpu_dm_fini+0x16e/0x200 [amdgpu]
-[  279.193432]  dm_hw_fini+0x26/0x40 [amdgpu]
-[  279.193795]  amdgpu_device_fini_hw+0x24c/0x400 [amdgpu]
-[  279.194108]  amdgpu_driver_unload_kms+0x4f/0x70 [amdgpu]
-[  279.194436]  amdgpu_pci_remove+0x40/0x80 [amdgpu]
-[  279.194632]  pci_device_remove+0x3a/0xa0
-[  279.194638]  device_remove+0x40/0x70
-[  279.194642]  device_release_driver_internal+0x1ad/0x210
-[  279.194647]  driver_detach+0x4e/0xa0
-[  279.194650]  bus_remove_driver+0x6f/0xf0
-[  279.194653]  driver_unregister+0x33/0x60
-[  279.194657]  pci_unregister_driver+0x44/0x90
-[  279.194662]  amdgpu_exit+0x19/0x1f0 [amdgpu]
-[  279.194939]  __do_sys_delete_module.isra.0+0x198/0x2f0
-[  279.194946]  __x64_sys_delete_module+0x16/0x20
-[  279.194950]  do_syscall_64+0x58/0x120
-[  279.194954]  entry_SYSCALL_64_after_hwframe+0x6e/0x76
-[  279.194980]  </TASK>
-
-Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
-Signed-off-by: Tim Huang <tim.huang@amd.com>
-Reviewed-by: Roman Li <roman.li@amd.com>
-Signed-off-by: Roman Li <roman.li@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Yang Wang <kevinyang.wang@amd.com>
+Reviewed-by: Tao Zhou <tao.zhou1@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/link/link_factory.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_aca.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/link/link_factory.c b/drivers/gpu/drm/amd/display/dc/link/link_factory.c
-index 72df9bdfb23ff..608491f860b29 100644
---- a/drivers/gpu/drm/amd/display/dc/link/link_factory.c
-+++ b/drivers/gpu/drm/amd/display/dc/link/link_factory.c
-@@ -385,7 +385,7 @@ static void link_destruct(struct dc_link *link)
- 	if (link->panel_cntl)
- 		link->panel_cntl->funcs->destroy(&link->panel_cntl);
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_aca.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_aca.c
+index 9baee7c246b6d..a513819b72311 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_aca.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_aca.c
+@@ -80,6 +80,9 @@ static void aca_banks_release(struct aca_banks *banks)
+ {
+ 	struct aca_bank_node *node, *tmp;
  
--	if (link->link_enc) {
-+	if (link->link_enc && !link->is_dig_mapping_flexible) {
- 		/* Update link encoder resource tracking variables. These are used for
- 		 * the dynamic assignment of link encoders to streams. Virtual links
- 		 * are not assigned encoder resources on creation.
++	if (list_empty(&banks->list))
++		return;
++
+ 	list_for_each_entry_safe(node, tmp, &banks->list, node) {
+ 		list_del(&node->node);
+ 		kvfree(node);
+@@ -562,9 +565,13 @@ static void aca_error_fini(struct aca_error *aerr)
+ 	struct aca_bank_error *bank_error, *tmp;
+ 
+ 	mutex_lock(&aerr->lock);
++	if (list_empty(&aerr->list))
++		goto out_unlock;
++
+ 	list_for_each_entry_safe(bank_error, tmp, &aerr->list, node)
+ 		aca_bank_error_remove(aerr, bank_error);
+ 
++out_unlock:
+ 	mutex_destroy(&aerr->lock);
+ }
+ 
+@@ -680,6 +687,9 @@ static void aca_manager_fini(struct aca_handle_manager *mgr)
+ {
+ 	struct aca_handle *handle, *tmp;
+ 
++	if (list_empty(&mgr->list))
++		return;
++
+ 	list_for_each_entry_safe(handle, tmp, &mgr->list, node)
+ 		amdgpu_aca_remove_handle(handle);
+ }
 -- 
 2.43.0
 
