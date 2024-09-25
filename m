@@ -1,65 +1,58 @@
-Return-Path: <stable+bounces-77619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C56F985F2F
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:52:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7125F985F32
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:52:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BCF6C1C25CF0
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:52:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A25EF1C25E37
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:52:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D50618890E;
-	Wed, 25 Sep 2024 12:14:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CEAF2207F1;
+	Wed, 25 Sep 2024 12:14:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cHtAGEEQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vA0IIIfV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CEB81D1E79;
-	Wed, 25 Sep 2024 12:14:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB50B2207E5;
+	Wed, 25 Sep 2024 12:14:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727266496; cv=none; b=PcEU7t0kzV4F+uL8AjWY+BOzE5wRXWFbM4DQJQaV/Njp/oah6UQGIOTq6HwlGt1dj2xy6rmIF/qlg1Zc1r4DegyTRsXBpr3HtbJy/R9MZ2V8PFdsA1rHeTAjzuHcYQNIvu7mGMwCDNXULhGosaqMvlMc46DEYYFF83CgXMw5MbI=
+	t=1727266498; cv=none; b=TazMlpOMFK6zwZh29JsKqrryO7Kc4KXo3ouY0Cx6rszqA2aNWSme73FY0aQc1JPyagA1hBCP/NInLvH1qDveh2hPQE0Mu8nzCrrj+/pGphrhnX89AB7F/BD6pLqMLAy4CN/j8oCx0qu6aBQld06PCEMFcyRmMHywT6OvzVFR5JQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727266496; c=relaxed/simple;
-	bh=GF6eKAowSz400PxZ3jqJaBpuMNbtqxtZXvOaGdw70Qo=;
+	s=arc-20240116; t=1727266498; c=relaxed/simple;
+	bh=84Rhq/UE1HwUGX63uMq0z2ShlifERp66qxV0V3E24gM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UBwh4v3AwbQauuoYsfQ0D6u6EK+lAqMQb6x1BlY6209XYYYByWnNhNeCtv6/M1aNMvC0vlUjl2qlnXL4somtmVeFUQfWx5/NVmDgaaruDFPm4m4T2IoR3wDd/LNpOE+7nDPKkbDguanm97FxIJcG0JohgnakyioYNqH9dYMeOvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cHtAGEEQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1C3AC4CECD;
-	Wed, 25 Sep 2024 12:14:53 +0000 (UTC)
+	 MIME-Version; b=Ddi8ifj+oWQbl9QI5dLTZo/cGalgbjZVAZ//ySaYrzHFVf4A2W69zZ3Qo2djtgsV/Nhlu4C5RLYXleBS/uEmakHj4eb/VsDHBQUJUo7KCySLPlrPOudMd+iDDGKILt3UZQkXe2sMfMENSMLt8Krbsin0LpMhzt0MGOV1YKREfFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vA0IIIfV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64D6DC4CEC7;
+	Wed, 25 Sep 2024 12:14:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727266495;
-	bh=GF6eKAowSz400PxZ3jqJaBpuMNbtqxtZXvOaGdw70Qo=;
+	s=k20201202; t=1727266497;
+	bh=84Rhq/UE1HwUGX63uMq0z2ShlifERp66qxV0V3E24gM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cHtAGEEQ4z8danmzFSW8L7fl2va6vjU65gz3X/FcDF4N194odx3hE/vaDfEe6Bys4
-	 pSpkrHPOkLdcCwgRtYdiyryXy7oYwESiWdW4LOVHYMZaMxrCQayl1Ue+ZOowm5LzgY
-	 4KZ7kgGv3FRD+bPcd7GO50IlcBCNC/b9BPZA9+ECe74Nk6esENk1A+pmZYCVI/tb6D
-	 M2bVi5VbjdS6sVi5M7/v4iM/A/CRSzaFiPwMebwTR80fcCCbgKpBzlHLITcnF3LV/4
-	 rs9e58TI4QXCN48MelxLa/v4ySiKroxclXkuMZrLSLiU01IBbpNJes3ahX3pjUX2RW
-	 h+n5/YcYgd13Q==
+	b=vA0IIIfVLNxkuHBrI3PcJg8207RYJl6vCi58pzpyrvk35g+ukoshBOcZjMtnFPYuZ
+	 T397me+otCGC7z69wUqLcc00Gh9H3A1mTwpK4ai1dYbHO+q1OCKwSQfsfqVHGGgFya
+	 7vU3pWnVnSFkZ2RjUSLGwzXlPsneN2X2Hf3016yUI2kf8tfRri0jayv3iWZMl8+xET
+	 W2vGSDXqmoJddHT63p8rx3qDZD6iL8cb2r763sIx3g+PTGDkUFuNIO5QT87+pQhuJV
+	 cq3dHzgOgER0WS4dczETve6Ql8MWyf3S72aoEED9AGUL68q5anVzp1GA65k0zMUb3M
+	 TRu79aVtK1EwQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kees Cook <kees@kernel.org>,
-	Mirsad Todorovac <mtodorovac69@gmail.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"Gustavo A . R . Silva" <gustavoars@kernel.org>,
+Cc: Denis Pauk <pauk.denis@gmail.com>,
+	Attila <attila@fulop.one>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	bp@alien8.de,
-	x86@kernel.org,
-	daniel.sneddon@linux.intel.com,
-	jpoimboe@kernel.org,
-	brgerst@gmail.com,
-	pawan.kumar.gupta@linux.intel.com
-Subject: [PATCH AUTOSEL 6.6 072/139] x86/syscall: Avoid memcpy() for ia32 syscall_get_arguments()
-Date: Wed, 25 Sep 2024 08:08:12 -0400
-Message-ID: <20240925121137.1307574-72-sashal@kernel.org>
+	jdelvare@suse.com,
+	linux-hwmon@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 073/139] hwmon: (nct6775) add G15CF to ASUS WMI monitoring list
+Date: Wed, 25 Sep 2024 08:08:13 -0400
+Message-ID: <20240925121137.1307574-73-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925121137.1307574-1-sashal@kernel.org>
 References: <20240925121137.1307574-1-sashal@kernel.org>
@@ -69,72 +62,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.52
 Content-Transfer-Encoding: 8bit
 
-From: Kees Cook <kees@kernel.org>
+From: Denis Pauk <pauk.denis@gmail.com>
 
-[ Upstream commit d19d638b1e6cf746263ef60b7d0dee0204d8216a ]
+[ Upstream commit 1f432e4cf1dd3ecfec5ed80051b4611632a0fd51 ]
 
-Modern (fortified) memcpy() prefers to avoid writing (or reading) beyond
-the end of the addressed destination (or source) struct member:
+Boards G15CF has got a nct6775 chip, but by default there's no use of it
+because of resource conflict with WMI method.
 
-In function ‘fortify_memcpy_chk’,
-    inlined from ‘syscall_get_arguments’ at ./arch/x86/include/asm/syscall.h:85:2,
-    inlined from ‘populate_seccomp_data’ at kernel/seccomp.c:258:2,
-    inlined from ‘__seccomp_filter’ at kernel/seccomp.c:1231:3:
-./include/linux/fortify-string.h:580:25: error: call to ‘__read_overflow2_field’ declared with attribute warning: detected read beyond size of field (2nd parameter); maybe use struct_group()? [-Werror=attribute-warning]
-  580 |                         __read_overflow2_field(q_size_field, size);
-      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Add the board to the WMI monitoring list.
 
-As already done for x86_64 and compat mode, do not use memcpy() to
-extract syscall arguments from struct pt_regs but rather just perform
-direct assignments. Binary output differences are negligible, and actually
-ends up using less stack space:
-
--       sub    $0x84,%esp
-+       sub    $0x6c,%esp
-
-and less text size:
-
-   text    data     bss     dec     hex filename
-  10794     252       0   11046    2b26 gcc-32b/kernel/seccomp.o.stock
-  10714     252       0   10966    2ad6 gcc-32b/kernel/seccomp.o.after
-
-Closes: https://lore.kernel.org/lkml/9b69fb14-df89-4677-9c82-056ea9e706f5@gmail.com/
-Reported-by: Mirsad Todorovac <mtodorovac69@gmail.com>
-Signed-off-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
-Tested-by: Mirsad Todorovac <mtodorovac69@gmail.com>
-Link: https://lore.kernel.org/all/20240708202202.work.477-kees%40kernel.org
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=204807
+Signed-off-by: Denis Pauk <pauk.denis@gmail.com>
+Tested-by: Attila <attila@fulop.one>
+Message-ID: <20240812152652.1303-1-pauk.denis@gmail.com>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/syscall.h | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/hwmon/nct6775-platform.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/include/asm/syscall.h b/arch/x86/include/asm/syscall.h
-index 03bb950eba690..228a42585d5c9 100644
---- a/arch/x86/include/asm/syscall.h
-+++ b/arch/x86/include/asm/syscall.h
-@@ -82,7 +82,12 @@ static inline void syscall_get_arguments(struct task_struct *task,
- 					 struct pt_regs *regs,
- 					 unsigned long *args)
- {
--	memcpy(args, &regs->bx, 6 * sizeof(args[0]));
-+	args[0] = regs->bx;
-+	args[1] = regs->cx;
-+	args[2] = regs->dx;
-+	args[3] = regs->si;
-+	args[4] = regs->di;
-+	args[5] = regs->bp;
- }
- 
- static inline int syscall_get_arch(struct task_struct *task)
+diff --git a/drivers/hwmon/nct6775-platform.c b/drivers/hwmon/nct6775-platform.c
+index 81bf03dad6bbc..706a662dd077d 100644
+--- a/drivers/hwmon/nct6775-platform.c
++++ b/drivers/hwmon/nct6775-platform.c
+@@ -1269,6 +1269,7 @@ static const char * const asus_msi_boards[] = {
+ 	"EX-B760M-V5 D4",
+ 	"EX-H510M-V3",
+ 	"EX-H610M-V3 D4",
++	"G15CF",
+ 	"PRIME A620M-A",
+ 	"PRIME B560-PLUS",
+ 	"PRIME B560-PLUS AC-HES",
 -- 
 2.43.0
 
