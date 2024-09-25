@@ -1,77 +1,79 @@
-Return-Path: <stable+bounces-77703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36D3B9861BD
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 17:00:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B001F9861C2
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 17:01:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB95C289405
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:00:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3569B1F2C318
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:01:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9825618C93F;
-	Wed, 25 Sep 2024 14:34:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4147219F48B;
+	Wed, 25 Sep 2024 14:34:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="mD1W8heg"
+	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="CO+ijkY7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EDAD18C939
-	for <stable@vger.kernel.org>; Wed, 25 Sep 2024 14:34:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40E5825757
+	for <stable@vger.kernel.org>; Wed, 25 Sep 2024 14:34:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.122
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727274846; cv=none; b=dPih6F6EEL4jOczuIx+NztCeDLXmyYYOp2nyLvl5Bl+jp8fxptGDKm5F52V09L4J5b/btL8abUQ9qVRp6RDClTb1oTY3KcEyVW0J5uxFHpaLwqu0k3sAWuhmASZTilnLcTcaJvJvX2woE6YDNE5wXtkAUsrdarOWh3BrctKO+J8=
+	t=1727274858; cv=none; b=tNOwHsREUh0oS/q/sB5cfNjGMO1IB15+zVCGDapoQlx+xyyRbzrwuMqctwEyvMOXFizCo/hEstI7UC34MWYv+hS2IBPtnecNx+lzDxZGl2dMUxi+A7CsC5kfdK7t5aUcZOWVxX9IiIv8erjcsQqCjgPJeyX8XVIpdPYvf0Jtkao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727274846; c=relaxed/simple;
-	bh=diAMlwEmIc31dAh/E1f912CF6mSdX3qEXeARlvF6e+4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=hw+bHA/QckoInV2DkJhrsnZcy3HqclhYVSrz4BahXgrjOFYixpVKU8CGIQjibLhZvpgjTlS5mF14W+w04o8Hsdtp0Z3IS0BRcuFIxAsRty0O/cwug3ejlWyTTjPuTdNj02dXpJsloLUYVxVx3jTDEQp1+haDNn9VkxFvRHLE2kw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=mD1W8heg; arc=none smtp.client-ip=185.125.188.122
+	s=arc-20240116; t=1727274858; c=relaxed/simple;
+	bh=AtqtjEkK+AUk6ACyf9LCOO3NLZRZooSD2Sf1HPC6BGo=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=BjajDCRWqBnMW/YpDwdnGP9iYk/foQMX/SGkBHeNBIv35PYh1a1YK7G2dWzxwuKQvBTqIeShG72uhsKWP0TpQWoGFSIfi/VSv4HvoM5TKrLsi2ErXkCV9XxGy4kesQ7vo8b4q0kvXYHBw4aF+tci0UxNlwPDhFp8U6qRmRzeVdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=CO+ijkY7; arc=none smtp.client-ip=185.125.188.122
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com [209.85.218.72])
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com [209.85.208.70])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 9683C3F231
-	for <stable@vger.kernel.org>; Wed, 25 Sep 2024 14:34:01 +0000 (UTC)
+	by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id CFA954064B
+	for <stable@vger.kernel.org>; Wed, 25 Sep 2024 14:34:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1727274841;
-	bh=IOx8To2TCRCnkrRgvwNDKzzd5Ho7q0DXUkJ0rDtdRMQ=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type;
-	b=mD1W8hegvL//QmKV2KV0OS4pWAYim6WjAAP9rFKztW/SEMOF4ZFAKXWjN27rkrNnL
-	 6aS6BzYh/YwnE32vh3h7T/C2hMMsZ11hi3Ut8IMor4DoAxuO66Zd/sF8aP3xCN7pbr
-	 VY5Yuy9AUWaczy9JezTwPcUEzjE+nA3FXCl8N8X0Ko1a5taE1Z1rq+x7it9tIDZYkt
-	 gquAxCS6gx4eCzXdwrKcAX7qh1AplzKFOqK3JsHygao2/fn2lGqAaN36811U9s34F5
-	 NnMKyLH8ges1OlUay9HxLG6hI1g85zG0z/o3ldKMxIG8R2mLqapEtcRr4IUiR+Kqcv
-	 xxNLIy4StRmmA==
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-a8a84b60255so536415266b.1
-        for <stable@vger.kernel.org>; Wed, 25 Sep 2024 07:34:01 -0700 (PDT)
+	s=20210705; t=1727274853;
+	bh=GxKPrnIU1I3GU0CvN/XzCRoFswb4aJWlE53TgvU92Rk=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type;
+	b=CO+ijkY7fa3uGd4SHJvGO85Z5BTneW1t0p05Rn4608iW5FrXKiCzLy721++s8HQ+n
+	 3qFpvRQUbir0zD5BsxTn2NZxBeQ3/oyyzFQK4B1v4RZzf5RGK/FTYvS/eLaYGfysZS
+	 54oC6dc69vkzO6KOijQVCei07ZCIAIMDoMurbsNAteANetKN3trem9yHq0rOKJQj02
+	 E5Z09Rh6AKUe971O5eOrcAxxFWs4dIIZDyBbGyiMU0+CmmmRm7ZAEkoi+FrEFvtBdd
+	 94DI5Vzx/KQxKRWmaexvsgY+DyPwRD58JJ2NaKxMOt34sE8g5fstFs3l5xEVXWWz34
+	 qLAQTwDaBgAfQ==
+Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-5c25cf44030so4242270a12.0
+        for <stable@vger.kernel.org>; Wed, 25 Sep 2024 07:34:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727274841; x=1727879641;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=IOx8To2TCRCnkrRgvwNDKzzd5Ho7q0DXUkJ0rDtdRMQ=;
-        b=HLRV1j+rn+APEuf3cdb4V6uBqK0PM6uc7K6qzvFbmRFVdEV2zr+0+nAdiA+b2C4nFO
-         9S8GLZM+qanoN3E51snLjh6i81dds2s9jPClABYPeWgmwBrIMkuXYZQ8mkrNQOCm3ZRV
-         O/CV7/S8ovjO5fXaHmz1cYEu3XwVYwPmIZzZgozqNYE6lDndz+PLsgHymUXR/h2mcn/p
-         jlN6Ful8zsLj2uFXPuSfZWGOoOjFKeokKEvgKHwc18i03N6299NrLjk3gElLoIQWOybs
-         lNDmAJp1vnkcoYBcrPbhFAry5kyVQcVEMJk82+nqWB93ByLqSN0p3ADFJG548doDl70j
-         4NUw==
-X-Gm-Message-State: AOJu0YyIMUJ5LLwaC13ttl3KusCBwUklv+h8YUYmBUXOXyWZbiDaMULn
-	XmKUk5kVGRJOQcqCH/OTMN9wOZudlXR48FzHoANN15/raVFpp76XCuSFeu64Z0mIcNUA8zBKh6w
-	gH/eiCWIi22auOLpoULR0L2ZhAI50DZ9gaVjT8mqipDt+QGoAUh5RvYZ9YTDy9O1gimb4bA==
-X-Received: by 2002:a17:907:9444:b0:a8d:29b7:ecf3 with SMTP id a640c23a62f3a-a93a0325da2mr338062066b.13.1727274840868;
-        Wed, 25 Sep 2024 07:34:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFFLsEUWtGKMVnsB9Bpth1JGRAwgTtpINOh/ia+dJ5By5L1JL7Z5+0zfg0sxlhc2JUbuJhAHQ==
-X-Received: by 2002:a17:907:9444:b0:a8d:29b7:ecf3 with SMTP id a640c23a62f3a-a93a0325da2mr338059266b.13.1727274840409;
-        Wed, 25 Sep 2024 07:34:00 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1727274852; x=1727879652;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GxKPrnIU1I3GU0CvN/XzCRoFswb4aJWlE53TgvU92Rk=;
+        b=pYQJp29T37YWGE90J/9WdKaDBqixv23pr+g3XNexae1D3jV3SIjFjQfUhPM5ysEggZ
+         zlzLNNY76jsydixrDqKVwlvgU8HKkdPSlwt9O6ZAefxa8kyNvz9QGrxU++wbN0BtrS0H
+         jqR8G+PRwM8Tk1hxDPPdLyMrR+L3HyXH3A0+UMWp6KnVp30Ce4PM0hUOW6g3aTRaS5Ax
+         3hkykdJXfjFuswnpCCCiBaRwL4RNt1tvOAYwD81ztKgZsdVycP3PxatkwhSDUQZDqZZZ
+         UcBoDKf8KXD7BUjMfA4WeSQ7447n/Cb7BHdz9GSmGlenQ6hN09WIpGB9Lb9fv5Fas5rc
+         SzeA==
+X-Gm-Message-State: AOJu0YzkpSIeotP36HOjUkYrpcH4vl4T7r+aAM6WPv//Kl5cA5SNkyhW
+	GgRUPSJa5bKnovw5Z17g/O3Uc5xOQH/skKktcUK9DblI0FRBLLgwwKw+dYcRs0/ncqNmUmumqpR
+	Ylt1hpEgsr+9E8AI/8Ah0PlNL06vHanEUlgFBw7bnjBz4kaE6w5cFM6Yv7FX+0Fk1kXsNVQ==
+X-Received: by 2002:a17:907:7f03:b0:a8d:caa:7ffb with SMTP id a640c23a62f3a-a93a03c3145mr233906666b.29.1727274852369;
+        Wed, 25 Sep 2024 07:34:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEkMud1tdev4JvCJ8nbs1UnCYmFH6la1yKrhtQLh+31n3CMfO83TaOsVrSzbVkkFuTuqpO8SA==
+X-Received: by 2002:a17:907:7f03:b0:a8d:caa:7ffb with SMTP id a640c23a62f3a-a93a03c3145mr233903666b.29.1727274851863;
+        Wed, 25 Sep 2024 07:34:11 -0700 (PDT)
 Received: from amikhalitsyn.. ([188.192.113.77])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a93930cad0asm213137366b.118.2024.09.25.07.33.59
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a93930cad0asm213137366b.118.2024.09.25.07.34.10
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 25 Sep 2024 07:33:59 -0700 (PDT)
+        Wed, 25 Sep 2024 07:34:11 -0700 (PDT)
 From: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
 To: tytso@mit.edu
 Cc: stable@vger.kernel.org,
@@ -85,10 +87,12 @@ Cc: stable@vger.kernel.org,
 	linux-ext4@vger.kernel.org,
 	Wesley Hershberger <wesley.hershberger@canonical.com>,
 	Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
-Subject: [PATCH 0/1] ext4: fix crash on BUG_ON in ext4_alloc_group_tables
-Date: Wed, 25 Sep 2024 16:33:23 +0200
-Message-Id: <20240925143325.518508-1-aleksandr.mikhalitsyn@canonical.com>
+Subject: [PATCH 1/1] ext4: fix crash on BUG_ON in ext4_alloc_group_tables
+Date: Wed, 25 Sep 2024 16:33:24 +0200
+Message-Id: <20240925143325.518508-2-aleksandr.mikhalitsyn@canonical.com>
 X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20240925143325.518508-1-aleksandr.mikhalitsyn@canonical.com>
+References: <20240925143325.518508-1-aleksandr.mikhalitsyn@canonical.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -97,23 +101,6 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-
-A long story behind this one, first of all, we (LXD project folks) started to see issues
-in our tests on GitHub Actions ubuntu22.04 runners after they've got updated from 6.5 to 6.8-based kernel
-and this was reported on Launchpad tracker [1] by Wesley Hershberger.
-
-At the same time, Stéphane Graber from LXC containers project saw the same problem on Incus testsuite (also
-on Github Actions).
-
-Then we had a debugging session together with Stéphane and he found a quite minimalistic reproducer:
-curl https://pkgs.zabbly.com/get/incus-daily | sudo sh
-sudo apt-get install lvm2 --yes
-sudo incus storage create default lvm volume.size=25MiB size=1GiB
-sudo incus image copy images:alpine/edge local: --alias testimage
-sudo incus profile device add default root disk pool=default path=/ size=3GiB
-sudo incus create testimage a1
-
-this thing produces the following output in kernel logs:
 
 [   33.882936] EXT4-fs (dm-5): mounted filesystem 8aaf41b2-6ac0-4fa8-b92b-77d10e1d16ca r/w with ordered data mode. Quota mode: none.
 [   33.888365] EXT4-fs (dm-5): resizing filesystem from 7168 to 786432 blocks
@@ -187,15 +174,8 @@ this thing produces the following output in kernel logs:
 [   33.919322] CR2: 00005630a4a1cc88 CR3: 000000010532c000 CR4: 0000000000350eb0
 [   44.072293] ------------[ cut here ]------------
 
-This patch is attempt to fix it and I can confirm that after applying it everything works just fine.
-At the same time, I'm not knowledgable in ext4 filesystem code so careful review is required here.
-
-Kind regards,
-Alex
-
 Cc: stable@vger.kernel.org # v6.8+
 Fixes: 665d3e0af4d3 ("ext4: reduce unnecessary memory allocation in alloc_flex_gd()")
-Link: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2081231 [1]
 Cc: "Theodore Ts'o" <tytso@mit.edu>
 Cc: Andreas Dilger <adilger.kernel@dilger.ca>
 Cc: Jan Kara <jack@suse.cz>
@@ -206,15 +186,65 @@ Cc: <linux-kernel@vger.kernel.org>
 Cc: <linux-fsdevel@vger.kernel.org>
 Cc: <linux-ext4@vger.kernel.org>
 Reported-by: Wesley Hershberger <wesley.hershberger@canonical.com>
+Closes: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2081231
 Reported-by: Stéphane Graber <stgraber@stgraber.org>
 Signed-off-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
-
-Alexander Mikhalitsyn (1):
-  ext4: fix BUG at fs/ext4/resize.c
-
+---
  fs/ext4/resize.c | 13 ++++++-------
  1 file changed, 6 insertions(+), 7 deletions(-)
 
+diff --git a/fs/ext4/resize.c b/fs/ext4/resize.c
+index e04eb08b9060..c057a7867363 100644
+--- a/fs/ext4/resize.c
++++ b/fs/ext4/resize.c
+@@ -300,8 +300,7 @@ static void free_flex_gd(struct ext4_new_flex_group_data *flex_gd)
+  * block group.
+  */
+ static int ext4_alloc_group_tables(struct super_block *sb,
+-				struct ext4_new_flex_group_data *flex_gd,
+-				unsigned int flexbg_size)
++				struct ext4_new_flex_group_data *flex_gd)
+ {
+ 	struct ext4_new_group_data *group_data = flex_gd->groups;
+ 	ext4_fsblk_t start_blk;
+@@ -313,7 +312,7 @@ static int ext4_alloc_group_tables(struct super_block *sb,
+ 	ext4_group_t group;
+ 	ext4_group_t last_group;
+ 	unsigned overhead;
+-	__u16 uninit_mask = (flexbg_size > 1) ? ~EXT4_BG_BLOCK_UNINIT : ~0;
++	__u16 uninit_mask = (flex_gd->resize_bg > 1) ? ~EXT4_BG_BLOCK_UNINIT : ~0;
+ 	int i;
+ 
+ 	BUG_ON(flex_gd->count == 0 || group_data == NULL);
+@@ -321,8 +320,8 @@ static int ext4_alloc_group_tables(struct super_block *sb,
+ 	src_group = group_data[0].group;
+ 	last_group  = src_group + flex_gd->count - 1;
+ 
+-	BUG_ON((flexbg_size > 1) && ((src_group & ~(flexbg_size - 1)) !=
+-	       (last_group & ~(flexbg_size - 1))));
++	BUG_ON((flex_gd->resize_bg > 1) && ((src_group & ~(flex_gd->resize_bg - 1)) !=
++	       (last_group & ~(flex_gd->resize_bg - 1))));
+ next_group:
+ 	group = group_data[0].group;
+ 	if (src_group >= group_data[0].group + flex_gd->count)
+@@ -403,7 +402,7 @@ static int ext4_alloc_group_tables(struct super_block *sb,
+ 
+ 		printk(KERN_DEBUG "EXT4-fs: adding a flex group with "
+ 		       "%u groups, flexbg size is %u:\n", flex_gd->count,
+-		       flexbg_size);
++		       flex_gd->resize_bg);
+ 
+ 		for (i = 0; i < flex_gd->count; i++) {
+ 			ext4_debug(
+@@ -2158,7 +2157,7 @@ int ext4_resize_fs(struct super_block *sb, ext4_fsblk_t n_blocks_count)
+ 					 ext4_blocks_count(es));
+ 			last_update_time = jiffies;
+ 		}
+-		if (ext4_alloc_group_tables(sb, flex_gd, flexbg_size) != 0)
++		if (ext4_alloc_group_tables(sb, flex_gd) != 0)
+ 			break;
+ 		err = ext4_flex_group_add(sb, resize_inode, flex_gd);
+ 		if (unlikely(err))
 -- 
 2.34.1
 
