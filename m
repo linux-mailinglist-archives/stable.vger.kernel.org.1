@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-77367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1217985C57
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:45:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BAB88985CA3
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:51:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 610C8285191
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:45:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 67D82B2330C
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:45:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 680FA1CEAAF;
-	Wed, 25 Sep 2024 11:59:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81000185B57;
+	Wed, 25 Sep 2024 11:59:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PBU7Jk3V"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HD2SMz+z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 206301CEAA7;
-	Wed, 25 Sep 2024 11:59:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D0EC1CEAD3;
+	Wed, 25 Sep 2024 11:59:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727265561; cv=none; b=ZKgvPGrFO6ThEjYDKW0hKt77JUTs0+PAyB7ZGYTrrm8+7/pxpx/N5B71zFRwKBvwIqdfXdd3+95BQogspvYLgfoZIYamKN46pmk5lOk8SN9FM4adcmxH7DxF1uonajpAbUF64u5KcLPzSYH14x5g1YnHXgpTIOubwXxyOCto6qY=
+	t=1727265563; cv=none; b=Qcxl3Y79RyLyu6+qH/D8/J7qvKod/u8GAAPTxS0wgFL9N2XrVm2z/45wmdNxzDYq67d/AZ7OiKaNdwzWyO0q5k8hSzGmCfR6XvC049MF23UNlmZaQZ0czDRKtpz44lKLYk9hy92CNHgTvetkCKC7K6se/c5RRQTpNi422I4CD7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727265561; c=relaxed/simple;
-	bh=ZOgeyq49+WUZGyWLbqHvx44tkSNLRsVZ/Gp4SZjno5g=;
+	s=arc-20240116; t=1727265563; c=relaxed/simple;
+	bh=NxFi/Dum8OlPTPlCCqO9FLR/Cf5ZxjiqUnVzyO7ssG4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RNr4f4ZRaQJQ8/nLafUhec5S8U8Ecf4UEgaDmkhqZxoKRb/mb44QJLpqmoleX7nJdbkVqSfrE/Afbj8RGPr55XD8plF1G4VE0zHdBQFB65Sc51qjewPxlBUNbqDOL36PhyCGKjclijHZf+LhmEsYdohCQZ2Sbxkhy8riTWzxx6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PBU7Jk3V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D34E0C4CEDB;
-	Wed, 25 Sep 2024 11:59:18 +0000 (UTC)
+	 MIME-Version; b=F4suk/ycqguv3lq764XD7+uHzeocpnOoSsV9jYN5AxFNAHXJ3Iapj//6CLEIH8TjeRN19KVsi8KzSzCWLRpXnwHPT4vcQ1TqMmY7lwHQwUv4/Dd/W6eREeeFa3xAWmMs9HuJIFDwU+RFcJxHiSVr5EIz6bhCsTcqDNLziwV7VSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HD2SMz+z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73BDCC4CEC7;
+	Wed, 25 Sep 2024 11:59:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727265560;
-	bh=ZOgeyq49+WUZGyWLbqHvx44tkSNLRsVZ/Gp4SZjno5g=;
+	s=k20201202; t=1727265562;
+	bh=NxFi/Dum8OlPTPlCCqO9FLR/Cf5ZxjiqUnVzyO7ssG4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PBU7Jk3VM5DoOAr/R+in1tObP56hzFo1EuSRdGpiDjhxMoVdoDRPg/tkpXUzLykPj
-	 1kxRwB0vIBVm1TAQW31iRYBJpohObj4EQE16Q8J6caqU7/ykVSqylAKVob3ikLNvaH
-	 5dd8fu3N2B1jKD0zG6uu6M1KaEybSgi54oDcXnU18tboJ7rWmpFF3eMRaO0bGcPOcw
-	 d3FqKlQy9O7iFYo8tonEmNDjFL1X9pT0fclmvsiYkhkLM7ntebUSDkZO+K1MUr2JEw
-	 KzEGu83xW1PkA7LPsN8o/qco5Udcz150PtFiBql1MYLTNBxahITNtFCKbfSMFKkZwu
-	 96eKRh1Ve3OZQ==
+	b=HD2SMz+z1TXFeougPTkH/sBmXoz97nRKR/rYApeMNAg1iWBrMG0xmygbSkzxeeaoh
+	 fyCH5XOHT4l9iIINrka4ULr6xAlUBx72X3xf5XNsmuSZYqGHigZIndimqBfeVAFjit
+	 6LBP4qB6yrAjED+hAD7ByxqF4BTxVCB9Wz+n+rrinhGg1Cv+wc2zlXkIz8UlxcD06o
+	 ZwCOq1SwoqfzJtoL368mkMN7GqokolII0w7YfB3/PfXwCi8eZ2p7ofY3qjanL+DmrS
+	 qffC8Ue5+pWv/PbWAcGfeyHYZYDq2f8/wg/SlQtDcM75Oq4cg6IdJe0GJRP3MO9fqm
+	 M0ZdQyMAgCm7Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Dmitry Antipov <dmantipov@yandex.ru>,
-	Vinicius Costa Gomes <vinicius.gomes@intel.com>,
-	"David S . Miller" <davem@davemloft.net>,
+Cc: Hilda Wu <hildawu@realtek.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	jhs@mojatatu.com,
-	xiyou.wangcong@gmail.com,
-	jiri@resnulli.us,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 022/197] net: sched: consistently use rcu_replace_pointer() in taprio_change()
-Date: Wed, 25 Sep 2024 07:50:41 -0400
-Message-ID: <20240925115823.1303019-22-sashal@kernel.org>
+	marcel@holtmann.org,
+	luiz.dentz@gmail.com,
+	linux-bluetooth@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.10 023/197] Bluetooth: btusb: Add Realtek RTL8852C support ID 0x0489:0xe122
+Date: Wed, 25 Sep 2024 07:50:42 -0400
+Message-ID: <20240925115823.1303019-23-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925115823.1303019-1-sashal@kernel.org>
 References: <20240925115823.1303019-1-sashal@kernel.org>
@@ -72,40 +67,65 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.11
 Content-Transfer-Encoding: 8bit
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Hilda Wu <hildawu@realtek.com>
 
-[ Upstream commit d5c4546062fd6f5dbce575c7ea52ad66d1968678 ]
+[ Upstream commit bdf9557f70e7512bb2f754abf90d9e9958745316 ]
 
-According to Vinicius (and carefully looking through the whole
-https://syzkaller.appspot.com/bug?extid=b65e0af58423fc8a73aa
-once again), txtime branch of 'taprio_change()' is not going to
-race against 'advance_sched()'. But using 'rcu_replace_pointer()'
-in the former may be a good idea as well.
+Add the support ID (0x0489, 0xe122) to usb_device_id table for
+Realtek RTL8852C.
 
-Suggested-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Acked-by: Vinicius Costa Gomes <vinicius.gomes@intel.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+The device info from /sys/kernel/debug/usb/devices as below.
+
+T:  Bus=03 Lev=01 Prnt=01 Port=02 Cnt=01 Dev#=  2 Spd=12   MxCh= 0
+D:  Ver= 1.00 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=0489 ProdID=e122 Rev= 0.00
+S:  Manufacturer=Realtek
+S:  Product=Bluetooth Radio
+S:  SerialNumber=00e04c000001
+C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+
+Signed-off-by: Hilda Wu <hildawu@realtek.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_taprio.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/bluetooth/btusb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/sched/sch_taprio.c b/net/sched/sch_taprio.c
-index b284a06b5a75f..847e1cc6052ec 100644
---- a/net/sched/sch_taprio.c
-+++ b/net/sched/sch_taprio.c
-@@ -1952,7 +1952,9 @@ static int taprio_change(struct Qdisc *sch, struct nlattr *opt,
- 			goto unlock;
- 		}
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index 0927f51867c26..425419b1398d5 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -539,6 +539,8 @@ static const struct usb_device_id quirks_table[] = {
+ 						     BTUSB_WIDEBAND_SPEECH },
+ 	{ USB_DEVICE(0x13d3, 0x3592), .driver_info = BTUSB_REALTEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
++	{ USB_DEVICE(0x0489, 0xe122), .driver_info = BTUSB_REALTEK |
++						     BTUSB_WIDEBAND_SPEECH },
  
--		rcu_assign_pointer(q->admin_sched, new_admin);
-+		/* Not going to race against advance_sched(), but still */
-+		admin = rcu_replace_pointer(q->admin_sched, new_admin,
-+					    lockdep_rtnl_is_held());
- 		if (admin)
- 			call_rcu(&admin->rcu, taprio_free_sched_cb);
- 	} else {
+ 	/* Realtek 8852BE Bluetooth devices */
+ 	{ USB_DEVICE(0x0cb8, 0xc559), .driver_info = BTUSB_REALTEK |
 -- 
 2.43.0
 
