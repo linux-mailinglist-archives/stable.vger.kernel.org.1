@@ -1,78 +1,69 @@
-Return-Path: <stable+bounces-77300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F178985B94
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:27:14 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27985985B95
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:27:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 08425B2690A
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:27:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C554B1F273AA
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:27:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDD6A184551;
-	Wed, 25 Sep 2024 11:51:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B353419ABC7;
+	Wed, 25 Sep 2024 11:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Q+AlX7bZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gysEpwlV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9934616DEDF;
-	Wed, 25 Sep 2024 11:51:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F4A619ABBF;
+	Wed, 25 Sep 2024 11:51:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727265063; cv=none; b=dHv2ZfbBQ0muYrLCIA7iIwWh9lgyeZ1gykqByC6nsBtGYs14+xy/WXKHnkEvG/1b9UEAowT/pceYQDCYhRtF1caqyK7IRiTHSx3vDN+EVslNpvk0P42uYqCudzDcEEXKFbAkdbd/dcRHXuVc0NidHxgFqZCNEuzT7xUPN0477aI=
+	t=1727265068; cv=none; b=FH+lE9kQFWNLnHPlsudkQFv55bjrEOvoOk+KsTI68Y/nRgvigKYq+OMFQIYH3+AEgfJ6ASd2hQYcpq8US2sshwChwIAcrZl/He4GdVTljJmX8peMXK4Fkkqek+W4EMMXDt9tVUHubmztVKaS1kDs1we6Itdm737N8VeWvUMT5Oo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727265063; c=relaxed/simple;
-	bh=IRYTNB+jCbKqwSnAW5SlGOXSdtMMgG6Ioqz+djcTV14=;
+	s=arc-20240116; t=1727265068; c=relaxed/simple;
+	bh=oGQnSzjkJ9ii2c2vUWL5h9SFe4jaWw+1mulU4/XGYm4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xlka9W+7Rr2g4bJieByF2ZtJYEs/4ow8LueuCtSzy/w93+g2BLxgbLHEWrOeeG+9uBvKbR0hOhBKmAVHTi0qZJ1oOvfQ3om6Xp6I+Tpbk5TEoWHayJfj3d1EjQ0Avd3YF5eswKP2Lyuvqraxp0PnWNIU+XvsOZ4rbOor4jKi1ao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Q+AlX7bZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D51B0C4CEC3;
-	Wed, 25 Sep 2024 11:50:59 +0000 (UTC)
+	 MIME-Version; b=n1Aexg6b0Mt1Jo67zjK0B+QB8lUXOJ9Hn7yI3LzvD3f9gEGeRhruYRDc8jziyd8je7rJBMN9IlgOZyWHl/BiLBH3IaS0UWkCu5VSbUtLn9jabVnisZl3JnCkyK5wo+0W1OixSdAxcnKcMua1MNlAUEtnDPHIY065r3J2BBkthOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gysEpwlV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4BC4C4CEC3;
+	Wed, 25 Sep 2024 11:51:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727265063;
-	bh=IRYTNB+jCbKqwSnAW5SlGOXSdtMMgG6Ioqz+djcTV14=;
+	s=k20201202; t=1727265068;
+	bh=oGQnSzjkJ9ii2c2vUWL5h9SFe4jaWw+1mulU4/XGYm4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q+AlX7bZBxHz0UBvVqVa9EpwTsyq3r3og5uAtujHM6TCNBt2y8RTkl2UAYeKMthjz
-	 OutW4B32GmB5o/X2wGRvk81ZSxWk/n/6t49wzDw2CGu9+vymdJj5CezF+h8Syo5uG2
-	 RNjjSrwwbgklm++3LeunjuieBCaB2ED9jOqdCU6U0jNBO+bi4tk6qrE9oHVVlIltUk
-	 GFZH0bdCmu4nlMUMZh8jllAZIveG6bD48i2MSfVr4p5hY23B2QZJtDw2sxPaNYdySE
-	 l8PHFeJHcTQqvXD6MikNKB9HB35m3Kl+NJi73O0Bk9x7JuR7HLVqTSW2ubbGQCvKxy
-	 83XD/qOo3a0Bw==
+	b=gysEpwlV2ISjlx4GdkLsGvEHlwtOT2YFyMDxVOKSQaR0Ay831yyzy6gqEKZTh9a1S
+	 75xtmSakIeSb6OQVUfsAJTxkm+2sff2/ZJdDNpwMJDZPo+y+xP4kpouWkxF0a6dc+Q
+	 wYqKKWNnjedx2JwVmylAwEdH3TNMd5W5GOfbEkj4go/PrfcT1OiVsp9HL3tbijQ1qP
+	 vXMUwF52nIYDfAHLJCP6I9Fno6lAnXUoJw+2xHxGG8GlNSxSzANXetX5rfjcXxRD8/
+	 gwuzZwTZB96gPuMAd3eDKdHKGjiVYN3whRPGnsePZ9PAw/o+jC+UV6g7B9O257x/5z
+	 Me5B79GO0Bzew==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Dillon Varone <dillon.varone@amd.com>,
-	Alvin Lee <alvin.lee2@amd.com>,
-	Wayne Lin <wayne.lin@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
+Cc: Tim Huang <tim.huang@amd.com>,
+	Jesse Zhang <jesse.zhang@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	harry.wentland@amd.com,
-	sunpeng.li@amd.com,
-	Rodrigo.Siqueira@amd.com,
 	christian.koenig@amd.com,
 	Xinhui.Pan@amd.com,
 	airlied@gmail.com,
 	daniel@ffwll.ch,
-	alex.hung@amd.com,
-	aurabindo.pillai@amd.com,
-	daniel.sa@amd.com,
-	chaitanya.dhere@amd.com,
-	roman.li@amd.com,
-	jun.lei@amd.com,
-	wenjing.liu@amd.com,
-	joshua.aberback@amd.com,
-	nicholas.kazlauskas@amd.com,
-	Qingqing.Zhuo@amd.com,
-	gateeger@amd.com,
+	Hawking.Zhang@amd.com,
+	Jack.Xiao@amd.com,
+	srinivasan.shanmugam@amd.com,
+	tao.zhou1@amd.com,
+	mario.limonciello@amd.com,
+	Stanley.Yang@amd.com,
+	victorchengchi.lu@amd.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.11 202/244] drm/amd/display: Force enable 3DLUT DMA check for dcn401 in DML
-Date: Wed, 25 Sep 2024 07:27:03 -0400
-Message-ID: <20240925113641.1297102-202-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.11 203/244] drm/amdgpu: fix unchecked return value warning for amdgpu_gfx
+Date: Wed, 25 Sep 2024 07:27:04 -0400
+Message-ID: <20240925113641.1297102-203-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925113641.1297102-1-sashal@kernel.org>
 References: <20240925113641.1297102-1-sashal@kernel.org>
@@ -87,87 +78,70 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11
 Content-Transfer-Encoding: 8bit
 
-From: Dillon Varone <dillon.varone@amd.com>
+From: Tim Huang <tim.huang@amd.com>
 
-[ Upstream commit b8dc6ca028d9a39196a3a066b9ef2d4a5eca475d ]
+[ Upstream commit c0277b9d7c2ee9ee5dbc948548984f0fbb861301 ]
 
-[WHY]
-Currently TR0 (trip 0) is not properly budgeting for urgent latency in
-DML2.1. This results in overly aggressive prefetch schedules that are
-vulnerable to request return jitter, resulting in severe underflow at
-the start of the frame.
+This resolves the unchecded return value warning reported by Coverity.
 
-[HOW]
-Forcing 3DLUT DMA check to enable causes urgent latency to be budgeted
-properly into the prefetch schedule, avoiding the vulnerability.
-
-Reviewed-by: Alvin Lee <alvin.lee2@amd.com>
-Signed-off-by: Dillon Varone <dillon.varone@amd.com>
-Signed-off-by: Wayne Lin <wayne.lin@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Tim Huang <tim.huang@amd.com>
+Reviewed-by: Jesse Zhang <jesse.zhang@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../amd/display/dc/dml2/dml21/dml21_translation_helper.c    | 6 ++++--
- drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.h          | 1 +
- .../drm/amd/display/dc/resource/dcn401/dcn401_resource.c    | 1 +
- 3 files changed, 6 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_translation_helper.c b/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_translation_helper.c
-index 06387b8b0aee5..825b3bfc0bed5 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_translation_helper.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml21/dml21_translation_helper.c
-@@ -827,6 +827,7 @@ static void populate_dml21_plane_config_from_plane_state(struct dml2_context *dm
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
+index 1849510a308ad..3ff39d3ec317c 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_gfx.c
+@@ -882,8 +882,11 @@ int amdgpu_gfx_ras_late_init(struct amdgpu_device *adev, struct ras_common_if *r
+ 	int r;
  
- 	if (plane_state->mcm_luts.lut3d_data.lut3d_src == DC_CM2_TRANSFER_FUNC_SOURCE_VIDMEM) {
- 		plane->tdlut.setup_for_tdlut = true;
+ 	if (amdgpu_ras_is_supported(adev, ras_block->block)) {
+-		if (!amdgpu_persistent_edc_harvesting_supported(adev))
+-			amdgpu_ras_reset_error_status(adev, AMDGPU_RAS_BLOCK__GFX);
++		if (!amdgpu_persistent_edc_harvesting_supported(adev)) {
++			r = amdgpu_ras_reset_error_status(adev, AMDGPU_RAS_BLOCK__GFX);
++			if (r)
++				return r;
++		}
+ 
+ 		r = amdgpu_ras_block_late_init(adev, ras_block);
+ 		if (r)
+@@ -1027,7 +1030,10 @@ uint32_t amdgpu_kiq_rreg(struct amdgpu_device *adev, uint32_t reg, uint32_t xcc_
+ 		pr_err("critical bug! too many kiq readers\n");
+ 		goto failed_unlock;
+ 	}
+-	amdgpu_ring_alloc(ring, 32);
++	r = amdgpu_ring_alloc(ring, 32);
++	if (r)
++		goto failed_unlock;
 +
- 		switch (plane_state->mcm_luts.lut3d_data.gpu_mem_params.layout) {
- 		case DC_CM2_GPU_MEM_LAYOUT_3D_SWIZZLE_LINEAR_RGB:
- 		case DC_CM2_GPU_MEM_LAYOUT_3D_SWIZZLE_LINEAR_BGR:
-@@ -836,6 +837,7 @@ static void populate_dml21_plane_config_from_plane_state(struct dml2_context *dm
- 			plane->tdlut.tdlut_addressing_mode = dml2_tdlut_simple_linear;
- 			break;
- 		}
+ 	amdgpu_ring_emit_rreg(ring, reg, reg_val_offs);
+ 	r = amdgpu_fence_emit_polling(ring, &seq, MAX_KIQ_REG_WAIT);
+ 	if (r)
+@@ -1093,7 +1099,10 @@ void amdgpu_kiq_wreg(struct amdgpu_device *adev, uint32_t reg, uint32_t v, uint3
+ 	}
+ 
+ 	spin_lock_irqsave(&kiq->ring_lock, flags);
+-	amdgpu_ring_alloc(ring, 32);
++	r = amdgpu_ring_alloc(ring, 32);
++	if (r)
++		goto failed_unlock;
 +
- 		switch (plane_state->mcm_luts.lut3d_data.gpu_mem_params.size) {
- 		case DC_CM2_GPU_MEM_SIZE_171717:
- 			plane->tdlut.tdlut_width_mode = dml2_tdlut_width_17_cube;
-@@ -844,8 +846,8 @@ static void populate_dml21_plane_config_from_plane_state(struct dml2_context *dm
- 			//plane->tdlut.tdlut_width_mode = dml2_tdlut_width_flatten; // dml2_tdlut_width_flatten undefined
- 			break;
- 		}
--	} else
--		plane->tdlut.setup_for_tdlut = false;
-+	}
-+	plane->tdlut.setup_for_tdlut |= dml_ctx->config.force_tdlut_enable;
+ 	amdgpu_ring_emit_wreg(ring, reg, v);
+ 	r = amdgpu_fence_emit_polling(ring, &seq, MAX_KIQ_REG_WAIT);
+ 	if (r)
+@@ -1129,6 +1138,7 @@ void amdgpu_kiq_wreg(struct amdgpu_device *adev, uint32_t reg, uint32_t v, uint3
  
- 	plane->dynamic_meta_data.enable = false;
- 	plane->dynamic_meta_data.lines_before_active_required = 0;
-diff --git a/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.h b/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.h
-index 023325e8f6e22..0f944fcfd5a5b 100644
---- a/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.h
-+++ b/drivers/gpu/drm/amd/display/dc/dml2/dml2_wrapper.h
-@@ -236,6 +236,7 @@ struct dml2_configuration_options {
- 
- 	bool use_clock_dc_limits;
- 	bool gpuvm_enable;
-+	bool force_tdlut_enable;
- 	struct dml2_soc_bb *bb_from_dmub;
- };
- 
-diff --git a/drivers/gpu/drm/amd/display/dc/resource/dcn401/dcn401_resource.c b/drivers/gpu/drm/amd/display/dc/resource/dcn401/dcn401_resource.c
-index 3e76732ac0dca..ec676d269d33f 100644
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn401/dcn401_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn401/dcn401_resource.c
-@@ -2099,6 +2099,7 @@ static bool dcn401_resource_construct(
- 	dc->dml2_options.use_native_soc_bb_construction = true;
- 	dc->dml2_options.minimize_dispclk_using_odm = true;
- 	dc->dml2_options.map_dc_pipes_with_callbacks = true;
-+	dc->dml2_options.force_tdlut_enable = true;
- 
- 	resource_init_common_dml2_callbacks(dc, &dc->dml2_options);
- 	dc->dml2_options.callbacks.can_support_mclk_switch_using_fw_based_vblank_stretch = &dcn30_can_support_mclk_switch_using_fw_based_vblank_stretch;
+ failed_undo:
+ 	amdgpu_ring_undo(ring);
++failed_unlock:
+ 	spin_unlock_irqrestore(&kiq->ring_lock, flags);
+ failed_kiq_write:
+ 	dev_err(adev->dev, "failed to write reg:%x\n", reg);
 -- 
 2.43.0
 
