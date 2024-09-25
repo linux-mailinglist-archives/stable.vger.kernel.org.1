@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-77319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA572985BC0
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:31:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49F49985BC3
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:31:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 097E91C2453E
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:31:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0AFC4286FBB
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:31:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 410A719F439;
-	Wed, 25 Sep 2024 11:52:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBAE519F433;
+	Wed, 25 Sep 2024 11:52:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fl2iBLTr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EiF/W+dJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F33B0185628;
-	Wed, 25 Sep 2024 11:52:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 775EA1C4611;
+	Wed, 25 Sep 2024 11:52:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727265162; cv=none; b=SgA5iNes9xVX9mMaDZiZKKMxcc4hIvMoYgjeSvbSRjvlsXxcuzEBgv6ZDV5bNgSEz8RHo17x3qAp05SNJC3svdjDnCVYj0SvbLjxRBBikBruJ+i7KeVfDX+nlMmKzA0U6WTAvhpyFdREYUCkhC6jK5y5V4pDFmN3ESdIP4XYcGk=
+	t=1727265163; cv=none; b=rnVxYCm15tfl9slqGNI+ioHL7vWfnwj4jiC6lzyQc7Nx8OOWIU74PKmAVPTb3OuvE0pZYaBIob1tg8VI5qHh9vGT8CP52SoWJ6B3wRLv/S9MhKmC1E8Saiff49BCm+H3iov0YQof0K/QjDPJl3SWmQENdZ3v1q9Od9znES9eJJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727265162; c=relaxed/simple;
-	bh=dbDoaenS2JiEt3m25szAgyBcrRLV6AE6DACT1SCRILc=;
+	s=arc-20240116; t=1727265163; c=relaxed/simple;
+	bh=m2ROjprRWhTVD3wZGN+3R3wT6CoVz83aRSUjazL7pI8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W3Lx4Cf2/ZvXm0KRE7E9TJb2/D+Abt3luP2YxT2tBRP2kKuYyhE06fErwX3sq8DHPXRaqrQxH+Nfy5AOT21ZgrenVX4QZiLqn1PuVWpT172o2ZUnEMqHZ79rjxcR0SqwZCdmP6EM8gKvATlfMrgmVrBnSdQp3FoOWiFNI4gYPdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fl2iBLTr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E64E5C4CECD;
-	Wed, 25 Sep 2024 11:52:39 +0000 (UTC)
+	 MIME-Version; b=Ihk9Ju+cCc/O8IVffHYJFmEP76mZsn5M5IDwNTmSqM/d78bNpkfSk56mueJFgmoon2aUeMPkKBswN85qZlEBhO5ySoIKjkNhQ/V22VaJTGFA/WS9UMyVPXM1ciW1WVYa7UkEFXcxI3EFPQ3F9JvNlqTiSPzKPTCL88eQ5jAxyWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EiF/W+dJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BA31C4CEC3;
+	Wed, 25 Sep 2024 11:52:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727265161;
-	bh=dbDoaenS2JiEt3m25szAgyBcrRLV6AE6DACT1SCRILc=;
+	s=k20201202; t=1727265163;
+	bh=m2ROjprRWhTVD3wZGN+3R3wT6CoVz83aRSUjazL7pI8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Fl2iBLTrbOT2X2MIdK7i7WTTBakFS67UhcXXa6wQyOu7f5QEcomp+xvBQ8HVHbqeq
-	 djSUfVALLKDoFbxNemghPAFV22ABHM2K47Q2xq09QbKdswGmyUsr5aLzX3gp6BByin
-	 ycSvbfywzG8ymKZluaHEjvnLS2fylzYWKhSukDsS5ow6CVSnAUTtbH1m2wJrWJzRm9
-	 S1UzAfNV33IT0artlSAXS3UgkDsBRRapOXmJuo7E1F+xctuCatCUcJ17pSNrOu8BdG
-	 /PdOSTAdufBk4iNJaGBfHhLrRT8QNBEaxS1I/C9+Ms6RTGEgBHgFxg6sZnvRU6FnIS
-	 kCfyr0WeMwpKA==
+	b=EiF/W+dJFB3lNxQZRWlw2dd+/IFKJQlNsfEBYpNJcffH2uqopZYQFQ/eZ2C88Rv1x
+	 s+Vm2QATKyCnzYLXOQuqWbSo3mCTlZ180o/dBh3KlqY0j/bz8XP4y9N2sEHXqsj14q
+	 QodXBIjXnpcGWE7un579Vc0SeMIerJ3llqvGOMFGdbcLSQ6mP9+IcYP69t5s9sumHM
+	 2qje+QEw3tdrddQhwQymC8LUIV2JZ7tKn4MbsolfOlC+zRYBnvb+WpH4q96Uv+VVc2
+	 WVzvZ2lAC4eFG2fZ9X+7thle6d61BOco3PLRrt8NWLJI8Ytnr4qrtwpWAWRbsBjy2n
+	 kyDizlMEAnvTQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Haren Myneni <haren@linux.ibm.com>,
-	kernel test robot <lkp@intel.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
+Cc: Amir Goldstein <amir73il@gmail.com>,
+	Fei Lv <feilv@asrmicro.com>,
 	Sasha Levin <sashal@kernel.org>,
-	nathanl@linux.ibm.com,
-	bgray@linux.ibm.com,
-	linuxppc-dev@lists.ozlabs.org
-Subject: [PATCH AUTOSEL 6.11 221/244] powerpc/pseries: Use correct data types from pseries_hp_errorlog struct
-Date: Wed, 25 Sep 2024 07:27:22 -0400
-Message-ID: <20240925113641.1297102-221-sashal@kernel.org>
+	miklos@szeredi.hu,
+	linux-unionfs@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.11 222/244] ovl: fsync after metadata copy-up
+Date: Wed, 25 Sep 2024 07:27:23 -0400
+Message-ID: <20240925113641.1297102-222-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925113641.1297102-1-sashal@kernel.org>
 References: <20240925113641.1297102-1-sashal@kernel.org>
@@ -68,154 +66,129 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11
 Content-Transfer-Encoding: 8bit
 
-From: Haren Myneni <haren@linux.ibm.com>
+From: Amir Goldstein <amir73il@gmail.com>
 
-[ Upstream commit b76e0d4215b6b622127ebcceaa7f603313ceaec4 ]
+[ Upstream commit 7d6899fb69d25e1bc6f4700b7c1d92e6b608593d ]
 
-_be32 type is defined for some elements in pseries_hp_errorlog
-struct but also used them u32 after be32_to_cpu() conversion.
+For upper filesystems which do not use strict ordering of persisting
+metadata changes (e.g. ubifs), when overlayfs file is modified for
+the first time, copy up will create a copy of the lower file and
+its parent directories in the upper layer. Permission lost of the
+new upper parent directory was observed during power-cut stress test.
 
-Example: In handle_dlpar_errorlog()
-hp_elog->_drc_u.drc_index = be32_to_cpu(hp_elog->_drc_u.drc_index);
+Fix by moving the fsync call to after metadata copy to make sure that the
+metadata copied up directory and files persists to disk before renaming
+from tmp to final destination.
 
-And later assigned to u32 type
-dlpar_cpu() - u32 drc_index = hp_elog->_drc_u.drc_index;
+With metacopy enabled, this change will hurt performance of workloads
+such as chown -R, so we keep the legacy behavior of fsync only on copyup
+of data.
 
-This incorrect usage is giving the following warnings and the
-patch resolve these warnings with the correct assignment.
-
-arch/powerpc/platforms/pseries/dlpar.c:398:53: sparse: sparse:
-incorrect type in argument 1 (different base types) @@
-expected unsigned int [usertype] drc_index @@
-got restricted __be32 [usertype] drc_index @@
-...
-arch/powerpc/platforms/pseries/dlpar.c:418:43: sparse: sparse:
-incorrect type in assignment (different base types) @@
-expected restricted __be32 [usertype] drc_count @@
-got unsigned int [usertype] @@
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202408182142.wuIKqYae-lkp@intel.com/
-Closes: https://lore.kernel.org/oe-kbuild-all/202408182302.o7QRO45S-lkp@intel.com/
-Signed-off-by: Haren Myneni <haren@linux.ibm.com>
-
-v3:
-- Fix warnings from using incorrect data types in pseries_hp_errorlog
-  struct
-v2:
-- Remove pr_info() and TODO comments
-- Update more information in the commit logs
-
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20240822025028.938332-1-haren@linux.ibm.com
+Link: https://lore.kernel.org/linux-unionfs/CAOQ4uxj-pOvmw1-uXR3qVdqtLjSkwcR9nVKcNU_vC10Zyf2miQ@mail.gmail.com/
+Reported-and-tested-by: Fei Lv <feilv@asrmicro.com>
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/pseries/dlpar.c          | 17 -----------------
- arch/powerpc/platforms/pseries/hotplug-cpu.c    |  2 +-
- arch/powerpc/platforms/pseries/hotplug-memory.c | 16 ++++++++--------
- arch/powerpc/platforms/pseries/pmem.c           |  2 +-
- 4 files changed, 10 insertions(+), 27 deletions(-)
+ fs/overlayfs/copy_up.c | 43 ++++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 39 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/platforms/pseries/dlpar.c b/arch/powerpc/platforms/pseries/dlpar.c
-index 47f8eabd1bee3..9873b916b2370 100644
---- a/arch/powerpc/platforms/pseries/dlpar.c
-+++ b/arch/powerpc/platforms/pseries/dlpar.c
-@@ -334,23 +334,6 @@ int handle_dlpar_errorlog(struct pseries_hp_errorlog *hp_elog)
+diff --git a/fs/overlayfs/copy_up.c b/fs/overlayfs/copy_up.c
+index a5ef2005a2cc5..051a802893a18 100644
+--- a/fs/overlayfs/copy_up.c
++++ b/fs/overlayfs/copy_up.c
+@@ -243,8 +243,24 @@ static int ovl_verify_area(loff_t pos, loff_t pos2, loff_t len, loff_t totlen)
+ 	return 0;
+ }
+ 
++static int ovl_sync_file(struct path *path)
++{
++	struct file *new_file;
++	int err;
++
++	new_file = ovl_path_open(path, O_LARGEFILE | O_RDONLY);
++	if (IS_ERR(new_file))
++		return PTR_ERR(new_file);
++
++	err = vfs_fsync(new_file, 0);
++	fput(new_file);
++
++	return err;
++}
++
+ static int ovl_copy_up_file(struct ovl_fs *ofs, struct dentry *dentry,
+-			    struct file *new_file, loff_t len)
++			    struct file *new_file, loff_t len,
++			    bool datasync)
  {
- 	int rc;
+ 	struct path datapath;
+ 	struct file *old_file;
+@@ -342,7 +358,8 @@ static int ovl_copy_up_file(struct ovl_fs *ofs, struct dentry *dentry,
  
--	/* pseries error logs are in BE format, convert to cpu type */
--	switch (hp_elog->id_type) {
--	case PSERIES_HP_ELOG_ID_DRC_COUNT:
--		hp_elog->_drc_u.drc_count =
--				be32_to_cpu(hp_elog->_drc_u.drc_count);
--		break;
--	case PSERIES_HP_ELOG_ID_DRC_INDEX:
--		hp_elog->_drc_u.drc_index =
--				be32_to_cpu(hp_elog->_drc_u.drc_index);
--		break;
--	case PSERIES_HP_ELOG_ID_DRC_IC:
--		hp_elog->_drc_u.ic.count =
--				be32_to_cpu(hp_elog->_drc_u.ic.count);
--		hp_elog->_drc_u.ic.index =
--				be32_to_cpu(hp_elog->_drc_u.ic.index);
--	}
--
- 	switch (hp_elog->resource) {
- 	case PSERIES_HP_ELOG_RESOURCE_MEM:
- 		rc = dlpar_memory(hp_elog);
-diff --git a/arch/powerpc/platforms/pseries/hotplug-cpu.c b/arch/powerpc/platforms/pseries/hotplug-cpu.c
-index e62835a12d73f..6838a0fcda296 100644
---- a/arch/powerpc/platforms/pseries/hotplug-cpu.c
-+++ b/arch/powerpc/platforms/pseries/hotplug-cpu.c
-@@ -757,7 +757,7 @@ int dlpar_cpu(struct pseries_hp_errorlog *hp_elog)
- 	u32 drc_index;
- 	int rc;
- 
--	drc_index = hp_elog->_drc_u.drc_index;
-+	drc_index = be32_to_cpu(hp_elog->_drc_u.drc_index);
- 
- 	lock_device_hotplug();
- 
-diff --git a/arch/powerpc/platforms/pseries/hotplug-memory.c b/arch/powerpc/platforms/pseries/hotplug-memory.c
-index 3fe3ddb30c04b..38dc4f7c9296b 100644
---- a/arch/powerpc/platforms/pseries/hotplug-memory.c
-+++ b/arch/powerpc/platforms/pseries/hotplug-memory.c
-@@ -817,16 +817,16 @@ int dlpar_memory(struct pseries_hp_errorlog *hp_elog)
- 	case PSERIES_HP_ELOG_ACTION_ADD:
- 		switch (hp_elog->id_type) {
- 		case PSERIES_HP_ELOG_ID_DRC_COUNT:
--			count = hp_elog->_drc_u.drc_count;
-+			count = be32_to_cpu(hp_elog->_drc_u.drc_count);
- 			rc = dlpar_memory_add_by_count(count);
- 			break;
- 		case PSERIES_HP_ELOG_ID_DRC_INDEX:
--			drc_index = hp_elog->_drc_u.drc_index;
-+			drc_index = be32_to_cpu(hp_elog->_drc_u.drc_index);
- 			rc = dlpar_memory_add_by_index(drc_index);
- 			break;
- 		case PSERIES_HP_ELOG_ID_DRC_IC:
--			count = hp_elog->_drc_u.ic.count;
--			drc_index = hp_elog->_drc_u.ic.index;
-+			count = be32_to_cpu(hp_elog->_drc_u.ic.count);
-+			drc_index = be32_to_cpu(hp_elog->_drc_u.ic.index);
- 			rc = dlpar_memory_add_by_ic(count, drc_index);
- 			break;
- 		default:
-@@ -838,16 +838,16 @@ int dlpar_memory(struct pseries_hp_errorlog *hp_elog)
- 	case PSERIES_HP_ELOG_ACTION_REMOVE:
- 		switch (hp_elog->id_type) {
- 		case PSERIES_HP_ELOG_ID_DRC_COUNT:
--			count = hp_elog->_drc_u.drc_count;
-+			count = be32_to_cpu(hp_elog->_drc_u.drc_count);
- 			rc = dlpar_memory_remove_by_count(count);
- 			break;
- 		case PSERIES_HP_ELOG_ID_DRC_INDEX:
--			drc_index = hp_elog->_drc_u.drc_index;
-+			drc_index = be32_to_cpu(hp_elog->_drc_u.drc_index);
- 			rc = dlpar_memory_remove_by_index(drc_index);
- 			break;
- 		case PSERIES_HP_ELOG_ID_DRC_IC:
--			count = hp_elog->_drc_u.ic.count;
--			drc_index = hp_elog->_drc_u.ic.index;
-+			count = be32_to_cpu(hp_elog->_drc_u.ic.count);
-+			drc_index = be32_to_cpu(hp_elog->_drc_u.ic.index);
- 			rc = dlpar_memory_remove_by_ic(count, drc_index);
- 			break;
- 		default:
-diff --git a/arch/powerpc/platforms/pseries/pmem.c b/arch/powerpc/platforms/pseries/pmem.c
-index 3c290b9ed01b3..0f1d45f32e4a4 100644
---- a/arch/powerpc/platforms/pseries/pmem.c
-+++ b/arch/powerpc/platforms/pseries/pmem.c
-@@ -121,7 +121,7 @@ int dlpar_hp_pmem(struct pseries_hp_errorlog *hp_elog)
- 		return -EINVAL;
+ 		len -= bytes;
  	}
+-	if (!error && ovl_should_sync(ofs))
++	/* call fsync once, either now or later along with metadata */
++	if (!error && ovl_should_sync(ofs) && datasync)
+ 		error = vfs_fsync(new_file, 0);
+ out_fput:
+ 	fput(old_file);
+@@ -574,6 +591,7 @@ struct ovl_copy_up_ctx {
+ 	bool indexed;
+ 	bool metacopy;
+ 	bool metacopy_digest;
++	bool metadata_fsync;
+ };
  
--	drc_index = hp_elog->_drc_u.drc_index;
-+	drc_index = be32_to_cpu(hp_elog->_drc_u.drc_index);
+ static int ovl_link_up(struct ovl_copy_up_ctx *c)
+@@ -634,7 +652,8 @@ static int ovl_copy_up_data(struct ovl_copy_up_ctx *c, const struct path *temp)
+ 	if (IS_ERR(new_file))
+ 		return PTR_ERR(new_file);
  
- 	lock_device_hotplug();
+-	err = ovl_copy_up_file(ofs, c->dentry, new_file, c->stat.size);
++	err = ovl_copy_up_file(ofs, c->dentry, new_file, c->stat.size,
++			       !c->metadata_fsync);
+ 	fput(new_file);
  
+ 	return err;
+@@ -701,6 +720,10 @@ static int ovl_copy_up_metadata(struct ovl_copy_up_ctx *c, struct dentry *temp)
+ 		err = ovl_set_attr(ofs, temp, &c->stat);
+ 	inode_unlock(temp->d_inode);
+ 
++	/* fsync metadata before moving it into upper dir */
++	if (!err && ovl_should_sync(ofs) && c->metadata_fsync)
++		err = ovl_sync_file(&upperpath);
++
+ 	return err;
+ }
+ 
+@@ -860,7 +883,8 @@ static int ovl_copy_up_tmpfile(struct ovl_copy_up_ctx *c)
+ 
+ 	temp = tmpfile->f_path.dentry;
+ 	if (!c->metacopy && c->stat.size) {
+-		err = ovl_copy_up_file(ofs, c->dentry, tmpfile, c->stat.size);
++		err = ovl_copy_up_file(ofs, c->dentry, tmpfile, c->stat.size,
++				       !c->metadata_fsync);
+ 		if (err)
+ 			goto out_fput;
+ 	}
+@@ -1135,6 +1159,17 @@ static int ovl_copy_up_one(struct dentry *parent, struct dentry *dentry,
+ 	    !kgid_has_mapping(current_user_ns(), ctx.stat.gid))
+ 		return -EOVERFLOW;
+ 
++	/*
++	 * With metacopy disabled, we fsync after final metadata copyup, for
++	 * both regular files and directories to get atomic copyup semantics
++	 * on filesystems that do not use strict metadata ordering (e.g. ubifs).
++	 *
++	 * With metacopy enabled we want to avoid fsync on all meta copyup
++	 * that will hurt performance of workloads such as chown -R, so we
++	 * only fsync on data copyup as legacy behavior.
++	 */
++	ctx.metadata_fsync = !OVL_FS(dentry->d_sb)->config.metacopy &&
++			     (S_ISREG(ctx.stat.mode) || S_ISDIR(ctx.stat.mode));
+ 	ctx.metacopy = ovl_need_meta_copy_up(dentry, ctx.stat.mode, flags);
+ 
+ 	if (parent) {
 -- 
 2.43.0
 
