@@ -1,60 +1,60 @@
-Return-Path: <stable+bounces-77581-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75D4B985EC6
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:43:20 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13F26985F88
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 16:00:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B11B1C24EAC
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:43:19 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5CE91B2A9A7
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:43:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B37EC1D0E3C;
-	Wed, 25 Sep 2024 12:12:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CB98216A1B;
+	Wed, 25 Sep 2024 12:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g7X5IaAu"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hOd7l7v3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66B231D0E34;
-	Wed, 25 Sep 2024 12:12:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27D94216A11;
+	Wed, 25 Sep 2024 12:12:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727266372; cv=none; b=dY+VOQ9ODdOn3vf+a5TMojUGve2s/PmDbMfvQISEQeYAltNoIMMDd/Ke2LAHiMHpQqEqY5YyFpOSAt/uTEUCBTP4E7fex1oLXeDAuaSsJYvefPEtXzRBnUbwdJ9iFW4d6rfJDn6HyYHibsUFsjQX+/X21XMCK4zfvi0lUjfC+H0=
+	t=1727266374; cv=none; b=s4lAszWvC4S7/f8bLx6FH4eHydLxC0hrxj0urui/Fa11AOUAD+RO6s+UIdgUlUDN1iNunTcAY1ww5OR9UUQovyjt3ONytsWgbXTu2SsdsJ8Q6GyKD+WglJRV9A/KLRBYWo8K/kxWSEQwp31cIdlFVdrOqDAHeSHFkSedbjEDW0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727266372; c=relaxed/simple;
-	bh=9IRNg8ZOA1sAvJKuEazEXaenBvmF93GsAjK4zvuSPXE=;
+	s=arc-20240116; t=1727266374; c=relaxed/simple;
+	bh=xHO4gj1Zn7Caetfzh+ubln7rUIK+I0vPdmEHXe2zqqY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PIcE0BHpEm/tsaSwN3GJXGzXuRSeoKyV6NUv1rG/AVoHIjwX6axjH0iUi8MqyydIpKFCEk4D10i03ta07uX2V4eB4YhVY8hkudDqm4Rwz0PghdAba1aVoNgKjw+hJJ1xiRCWQMWIeywZkku6vnsF3sJnetqdHL7sdIyBaGF3qiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g7X5IaAu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 076DCC4CEC7;
-	Wed, 25 Sep 2024 12:12:50 +0000 (UTC)
+	 MIME-Version; b=NUG+qU/YzEYDB2WVBr/ov6wftE182Z66DNL3yjiTYn4+DDcM2qKE8I1WRwGgsXFvZ3qSFz2sSkpmq4MIdrJvpLJ/C5akIrlhnO+PzM9pmGQ8qv6ONVXINjOEHLC2LC6vgHXvqlWyR3SHQ1dxzEP6EU705sbSinkGU8n4VFOrtQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hOd7l7v3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C18C2C4CEC3;
+	Wed, 25 Sep 2024 12:12:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727266372;
-	bh=9IRNg8ZOA1sAvJKuEazEXaenBvmF93GsAjK4zvuSPXE=;
+	s=k20201202; t=1727266374;
+	bh=xHO4gj1Zn7Caetfzh+ubln7rUIK+I0vPdmEHXe2zqqY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g7X5IaAucKhhoj/NPNMA249mxeoa48dEAOluqUCr+4xCUjb+QqTyzt8loBIBAfYpl
-	 pGElcDicS1sd6/ylML5Me20Mm+LLciGN/MWM642P5q4ekSm381R59YJNDg9hKjy4fK
-	 p1lVeGh15JYWqI3Ek6pgU0tQ0yV//YrmsEFGrLTJgKoJ2E0gmFgY0ky2Sli4x+dWBd
-	 2MV7BpgEmZ6YaE4+XUNB+rz33my81DvRSKmvgw+MVhjOWtSnfGqHH4hRSEeWtblVVZ
-	 Fi2gmW5mQJ/v913yAG+XbfyamnwJMjSIBsvSevqx+5jrn9rT6T9dDAjZFmWTX+5mCs
-	 7PBGrzU2vUrmQ==
+	b=hOd7l7v38voGpqBflyJ+2Le3DTB2z739Og0clGK1ug1eRPoMhXFy4KAf+NeF0c5il
+	 ZhsgiTvRdIcKQXnj6ueClY+csCTg2batA3jLxLn4lOHdJ6idlc5uTVCI8BzhPEuH4e
+	 v7ixjDIxsipX5Tu9cY43wlV77kDiDI9E63R5iacV9s/MhrpzanZ7d9uwuOdNeUNSyL
+	 wyr3AflpWSNxZxmHyt7Y+sSbxVTrOadoFd1IzppZk1O8EtIu+E6s4N0gn+K3c5qwcw
+	 t8CXPT7xUaELh0vSZXDP7h2FYBybGtzXkl7jrqDaEGDWyYbVoHH3hQHreOfbZyg+bc
+	 ehW5tmUzZhUFg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Simon Horman <horms@kernel.org>,
-	Michael Chan <michael.chan@broadcom.com>,
+Cc: Kuniyuki Iwashima <kuniyu@amazon.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
 	davem@davemloft.net,
+	dsahern@kernel.org,
 	edumazet@google.com,
 	pabeni@redhat.com,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 035/139] bnxt_en: Extend maximum length of version string by 1 byte
-Date: Wed, 25 Sep 2024 08:07:35 -0400
-Message-ID: <20240925121137.1307574-35-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 036/139] ipv4: Check !in_dev earlier for ioctl(SIOCSIFADDR).
+Date: Wed, 25 Sep 2024 08:07:36 -0400
+Message-ID: <20240925121137.1307574-36-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925121137.1307574-1-sashal@kernel.org>
 References: <20240925121137.1307574-1-sashal@kernel.org>
@@ -69,40 +69,50 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.52
 Content-Transfer-Encoding: 8bit
 
-From: Simon Horman <horms@kernel.org>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit ffff7ee843c351ce71d6e0d52f0f20bea35e18c9 ]
+[ Upstream commit e3af3d3c5b26c33a7950e34e137584f6056c4319 ]
 
-This corrects an out-by-one error in the maximum length of the package
-version string. The size argument of snprintf includes space for the
-trailing '\0' byte, so there is no need to allow extra space for it by
-reducing the value of the size argument by 1.
+dev->ip_ptr could be NULL if we set an invalid MTU.
 
-Found by inspection.
-Compile tested only.
+Even then, if we issue ioctl(SIOCSIFADDR) for a new IPv4 address,
+devinet_ioctl() allocates struct in_ifaddr and fails later in
+inet_set_ifa() because in_dev is NULL.
 
-Signed-off-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://patch.msgid.link/20240813-bnxt-str-v2-1-872050a157e7@kernel.org
+Let's move the check earlier.
+
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://patch.msgid.link/20240809235406.50187-2-kuniyu@amazon.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/devinet.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-index 3c36dd8051485..2e7ddbca9d53b 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ethtool.c
-@@ -3021,7 +3021,7 @@ static void bnxt_get_pkgver(struct net_device *dev)
+diff --git a/net/ipv4/devinet.c b/net/ipv4/devinet.c
+index bc74f131fe4df..cb0c80328eebf 100644
+--- a/net/ipv4/devinet.c
++++ b/net/ipv4/devinet.c
+@@ -569,10 +569,6 @@ static int inet_set_ifa(struct net_device *dev, struct in_ifaddr *ifa)
  
- 	if (!bnxt_get_pkginfo(dev, buf, sizeof(buf))) {
- 		len = strlen(bp->fw_ver_str);
--		snprintf(bp->fw_ver_str + len, FW_VER_STR_LEN - len - 1,
-+		snprintf(bp->fw_ver_str + len, FW_VER_STR_LEN - len,
- 			 "/pkg %s", buf);
- 	}
- }
+ 	ASSERT_RTNL();
+ 
+-	if (!in_dev) {
+-		inet_free_ifa(ifa);
+-		return -ENOBUFS;
+-	}
+ 	ipv4_devconf_setall(in_dev);
+ 	neigh_parms_data_state_setall(in_dev->arp_parms);
+ 	if (ifa->ifa_dev != in_dev) {
+@@ -1174,6 +1170,8 @@ int devinet_ioctl(struct net *net, unsigned int cmd, struct ifreq *ifr)
+ 
+ 		if (!ifa) {
+ 			ret = -ENOBUFS;
++			if (!in_dev)
++				break;
+ 			ifa = inet_alloc_ifa();
+ 			if (!ifa)
+ 				break;
 -- 
 2.43.0
 
