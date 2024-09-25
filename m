@@ -1,65 +1,58 @@
-Return-Path: <stable+bounces-77676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CEF998603E
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 16:18:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 171FE98604B
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 16:19:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 31FF9B31334
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:06:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ED5E9B2E2CD
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:07:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1852E22AA8D;
-	Wed, 25 Sep 2024 12:17:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A58C522B9CD;
+	Wed, 25 Sep 2024 12:17:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="byyqIXJ8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fS1WtrCM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE0A422AA7D;
-	Wed, 25 Sep 2024 12:17:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B44422B9C1;
+	Wed, 25 Sep 2024 12:17:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727266670; cv=none; b=R2LSiCND4+Xcz3WcHokCXu5XnJwOtkCVlKQJfK9AiYMaEw5hZ+XOgfcqwPZYxDit23jefCs0Vm+08S08D7EYjo6ZH/xCqMc7xDO3x1FZXlSvlIFR6n8LNGNMPkOq/USj2Hx91bfXR8fx3cRIzIUulQlt2Eo+elAKSGtTjGKwP70=
+	t=1727266677; cv=none; b=nzuXisVhg6hfCACZveQ3FTAJVnTBpwQnwMnOpT1CL3ISnf3DpMbo6mfrOc+W6VB1SwIVnuKB8jOD0JlUg/0YF0+IC67DloYAyryPpNUBu7wZJkH60wcLfyMh1t0TB0slNnNMIM5lgRLCQbVneP4E6sYac4OPQ52WHH5i+68NADA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727266670; c=relaxed/simple;
-	bh=0CNEPWq4RZvRIWKF8Bn/2ZdESenKkYkmew7bFKIHEtU=;
+	s=arc-20240116; t=1727266677; c=relaxed/simple;
+	bh=nIIKd5YSZSnaNbBoRTtv9QLwV4f15ukMLK8I3+PHJ/I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bzLbiQfSijedzvhid3R3iF+jrq594IWqMSykcLk9yWUM/Qq/ovmHfXrWNSoz0BQja2sE9Wb2Jk0T6pTQFPVzwfSXCdiN4AP/nsPjSpwWvdRsLXZeIfvzGp1FnmOZgSmQ9NxS8Oer6FLDZts59a9uWR8aoh7FYmMcscCOdtSfR8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=byyqIXJ8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA332C4CEC7;
-	Wed, 25 Sep 2024 12:17:48 +0000 (UTC)
+	 MIME-Version; b=P2CFziSDLUhuliIvRgmh2x6/1cCc5DuYkYkdw12rC5MQwP3b0hfLA5/7QDs9zLwrGd2u78iJe6PTPR32rxwe7loUGIT51wzJRJfctfZkFnEJsxwt7pHv3Ygu+BpDheIVdyYSRrGJSm+eXmnQIxoOJthpkMCForgLBnrvG/cIiLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fS1WtrCM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D068FC4CED0;
+	Wed, 25 Sep 2024 12:17:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727266670;
-	bh=0CNEPWq4RZvRIWKF8Bn/2ZdESenKkYkmew7bFKIHEtU=;
+	s=k20201202; t=1727266676;
+	bh=nIIKd5YSZSnaNbBoRTtv9QLwV4f15ukMLK8I3+PHJ/I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=byyqIXJ81rxi8WSpYQdUQx8syAqfJKoRg0wWXPflSccNEpKGgTrWm8OScy0t8puBT
-	 9OkVMz+uasb71d5AKmRSgGAtYCKW+EMsAd7tBSR+Gtc5S9cgbDOD6EJW9OohtVUmeK
-	 92qVPJPzWBMdH3j1a4nEH0pUL9bc8hLJKlembXpaVyhzH/aB7VHDIV4ObZUCaVvVsS
-	 O75cjbfaaAhSJ7EULjvRxOLz5i/LPI5ll5jNxj8t8ELo4HzZAU4931K771tAtBNTQr
-	 2rAiOZTgnzHZThfgkCpz7liq5gmCbtr7SvhIk8QLhms+CePb03MMS1H82wZhqOexYx
-	 FOmXMf4liPfmw==
+	b=fS1WtrCMZ933IqEGGrqsBU3YENHyyvkwmpQNEyRwUSPlaKR6TPzX5BHfIr0IhugdC
+	 a0j2C79LTSJl0i5MkFm0KV/zjxMzIaj2689R1RpeXpvKMYMbn6JDEZpPC3akaq+bvA
+	 jknosDqm3DArdCpH+msZ1I6u8+BP6c2n77OcjKlWdQ6dkTINVHc7KqDjH6xvxsNu8A
+	 XU5Cz1dC1iNVs7mDiP0x7uoocN4Ic5yaNLVJqRIYlYJZBcrks2k0e+tcvAGLuxVvnK
+	 BufkMtIgrCRhmJWIp3clEi8WTrxLX7aFZ1aQRbc6IDIyQXygVfbiMbhokrXybyL3AO
+	 ZXD9fNZDK5iJA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alex Deucher <alexander.deucher@amd.com>,
-	Vitaly Prosyak <vitaly.prosyak@amd.com>,
+Cc: Juntong Deng <juntong.deng@outlook.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	christian.koenig@amd.com,
-	Xinhui.Pan@amd.com,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	sunil.khatri@amd.com,
-	zhenguo.yin@amd.com,
-	kevinyang.wang@amd.com,
-	Jun.Ma2@amd.com,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.6 128/139] drm/amdgpu/gfx10: use rlc safe mode for soft recovery
-Date: Wed, 25 Sep 2024 08:09:08 -0400
-Message-ID: <20240925121137.1307574-128-sashal@kernel.org>
+	daniel@iogearbox.net,
+	andrii@kernel.org,
+	bpf@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 132/139] bpf: Make the pointer returned by iter next method valid
+Date: Wed, 25 Sep 2024 08:09:12 -0400
+Message-ID: <20240925121137.1307574-132-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925121137.1307574-1-sashal@kernel.org>
 References: <20240925121137.1307574-1-sashal@kernel.org>
@@ -74,33 +67,106 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.52
 Content-Transfer-Encoding: 8bit
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Juntong Deng <juntong.deng@outlook.com>
 
-[ Upstream commit ead60e9c4e29c8574cae1be4fe3af1d9a978fb0f ]
+[ Upstream commit 4cc8c50c9abcb2646a7a4fcef3cea5dcb30c06cf ]
 
-Protect the MMIO access with safe mode.
+Currently we cannot pass the pointer returned by iter next method as
+argument to KF_TRUSTED_ARGS or KF_RCU kfuncs, because the pointer
+returned by iter next method is not "valid".
 
-Acked-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+This patch sets the pointer returned by iter next method to be valid.
+
+This is based on the fact that if the iterator is implemented correctly,
+then the pointer returned from the iter next method should be valid.
+
+This does not make NULL pointer valid. If the iter next method has
+KF_RET_NULL flag, then the verifier will ask the ebpf program to
+check NULL pointer.
+
+KF_RCU_PROTECTED iterator is a special case, the pointer returned by
+iter next method should only be valid within RCU critical section,
+so it should be with MEM_RCU, not PTR_TRUSTED.
+
+Another special case is bpf_iter_num_next, which returns a pointer with
+base type PTR_TO_MEM. PTR_TO_MEM should not be combined with type flag
+PTR_TRUSTED (PTR_TO_MEM already means the pointer is valid).
+
+The pointer returned by iter next method of other types of iterators
+is with PTR_TRUSTED.
+
+In addition, this patch adds get_iter_from_state to help us get the
+current iterator from the current state.
+
+Signed-off-by: Juntong Deng <juntong.deng@outlook.com>
+Link: https://lore.kernel.org/r/AM6PR03MB584869F8B448EA1C87B7CDA399962@AM6PR03MB5848.eurprd03.prod.outlook.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/bpf/verifier.c | 26 ++++++++++++++++++++++----
+ 1 file changed, 22 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-index cd594b92c6129..53c99bc6abb33 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-@@ -8748,7 +8748,9 @@ static void gfx_v10_0_ring_soft_recovery(struct amdgpu_ring *ring,
- 	value = REG_SET_FIELD(value, SQ_CMD, MODE, 0x01);
- 	value = REG_SET_FIELD(value, SQ_CMD, CHECK_VMID, 1);
- 	value = REG_SET_FIELD(value, SQ_CMD, VM_ID, vmid);
-+	amdgpu_gfx_rlc_enter_safe_mode(adev, 0);
- 	WREG32_SOC15(GC, 0, mmSQ_CMD, value);
-+	amdgpu_gfx_rlc_exit_safe_mode(adev, 0);
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 9d5699942273e..2cc5288820354 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -7846,6 +7846,15 @@ static int widen_imprecise_scalars(struct bpf_verifier_env *env,
+ 	return 0;
  }
  
- static void
++static struct bpf_reg_state *get_iter_from_state(struct bpf_verifier_state *cur_st,
++						 struct bpf_kfunc_call_arg_meta *meta)
++{
++	int iter_frameno = meta->iter.frameno;
++	int iter_spi = meta->iter.spi;
++
++	return &cur_st->frame[iter_frameno]->stack[iter_spi].spilled_ptr;
++}
++
+ /* process_iter_next_call() is called when verifier gets to iterator's next
+  * "method" (e.g., bpf_iter_num_next() for numbers iterator) call. We'll refer
+  * to it as just "iter_next()" in comments below.
+@@ -7930,12 +7939,10 @@ static int process_iter_next_call(struct bpf_verifier_env *env, int insn_idx,
+ 	struct bpf_verifier_state *cur_st = env->cur_state, *queued_st, *prev_st;
+ 	struct bpf_func_state *cur_fr = cur_st->frame[cur_st->curframe], *queued_fr;
+ 	struct bpf_reg_state *cur_iter, *queued_iter;
+-	int iter_frameno = meta->iter.frameno;
+-	int iter_spi = meta->iter.spi;
+ 
+ 	BTF_TYPE_EMIT(struct bpf_iter);
+ 
+-	cur_iter = &env->cur_state->frame[iter_frameno]->stack[iter_spi].spilled_ptr;
++	cur_iter = get_iter_from_state(cur_st, meta);
+ 
+ 	if (cur_iter->iter.state != BPF_ITER_STATE_ACTIVE &&
+ 	    cur_iter->iter.state != BPF_ITER_STATE_DRAINED) {
+@@ -7963,7 +7970,7 @@ static int process_iter_next_call(struct bpf_verifier_env *env, int insn_idx,
+ 		if (!queued_st)
+ 			return -ENOMEM;
+ 
+-		queued_iter = &queued_st->frame[iter_frameno]->stack[iter_spi].spilled_ptr;
++		queued_iter = get_iter_from_state(queued_st, meta);
+ 		queued_iter->iter.state = BPF_ITER_STATE_ACTIVE;
+ 		queued_iter->iter.depth++;
+ 		if (prev_st)
+@@ -12020,6 +12027,17 @@ static int check_kfunc_call(struct bpf_verifier_env *env, struct bpf_insn *insn,
+ 			regs[BPF_REG_0].btf = desc_btf;
+ 			regs[BPF_REG_0].type = PTR_TO_BTF_ID;
+ 			regs[BPF_REG_0].btf_id = ptr_type_id;
++
++			if (is_iter_next_kfunc(&meta)) {
++				struct bpf_reg_state *cur_iter;
++
++				cur_iter = get_iter_from_state(env->cur_state, &meta);
++
++				if (cur_iter->type & MEM_RCU) /* KF_RCU_PROTECTED */
++					regs[BPF_REG_0].type |= MEM_RCU;
++				else
++					regs[BPF_REG_0].type |= PTR_TRUSTED;
++			}
+ 		}
+ 
+ 		if (is_kfunc_ret_null(&meta)) {
 -- 
 2.43.0
 
