@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-77642-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77643-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B746985F6D
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:58:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2270F985F6F
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:58:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2179828A8A0
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:58:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A2CEC1F25E0E
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:58:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFB6B19005D;
-	Wed, 25 Sep 2024 12:16:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 710A9224EBB;
+	Wed, 25 Sep 2024 12:16:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d8BN8Yz0"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EW2mjJFh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ECFB19005F;
-	Wed, 25 Sep 2024 12:16:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E236224EB5;
+	Wed, 25 Sep 2024 12:16:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727266560; cv=none; b=OgYSig1hhI1AwX8wnyiYa1U1pCG3Y6DXNKkM4VzSi3uAULMsH/nAsny0yRWTDvlPXIUk2gs2rVxLo/YETeB2EGGU+K04kJYzu8+cU2x14x9vuvqGEEr+zk48Fu51de8jvtuXyZ25rtao/1b8+n28M9RTpsAgilFKk3S2k1DvuCc=
+	t=1727266563; cv=none; b=OHGTrJyN74XKbeNLOc4T3KmHjf9Agw5un/HEu1rs3+zEykJPJdHtsEfuhaGVtNX11S67VG4aiw+97TCNqQ9Be068T04BQk9Tshnml7vIh/JV5XcOT1ZExyyopfaH71iC3Uu1P1Wiz4GI44jkn58DU7rnv2od6Xtg4n1dUiAix4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727266560; c=relaxed/simple;
-	bh=WLwmC3Hm2bLkBxNh72GWwvU1jxkOWIZutATITZQts04=;
+	s=arc-20240116; t=1727266563; c=relaxed/simple;
+	bh=5vZZLjv9kkxWgX/JZ7ubMaH6p8tD0cwwEtPPOROlw1g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mUDu1BLqd1t/Gav9x0hHAmqtmg+Q56/XwQ9HI6vf1DVoqPgiI7P32/jpG/m364aosYOsTfTuuJvhJ310Y7z8Tx2vM/wh26d87Rdczah3GeNZ1f/SgCLYpYSt+us/nkV56ff6KZ+5pINUCbHSGBuFe4zBTJV1cox9LFdts/K11Q4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d8BN8Yz0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2772C4CEC3;
-	Wed, 25 Sep 2024 12:15:58 +0000 (UTC)
+	 MIME-Version; b=VYKiE9Y9kHa8hhurciZ98/j9KI6dvJeXCtAlt/abVQ5I/auoQxrOft9OzA3yqkrrM2jLfLd3f/C5PbYhjVeQYtRseST08ZAtbEkG2AM76wmP1Yg7IA5ZIHcocxNpGvvBsMyiDo9+ntAdcuQhXTX28tSR6HRLsedLPkbY5ASkMIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EW2mjJFh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1130C4CEC3;
+	Wed, 25 Sep 2024 12:16:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727266560;
-	bh=WLwmC3Hm2bLkBxNh72GWwvU1jxkOWIZutATITZQts04=;
+	s=k20201202; t=1727266563;
+	bh=5vZZLjv9kkxWgX/JZ7ubMaH6p8tD0cwwEtPPOROlw1g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d8BN8Yz0IaENWMZ2NGQjMCOcANXdXWX03wqqym3ayqs95kNeGdU9KT3bMrptPvbUQ
-	 9p0Ymrumh2tHBFVJ4RVGJpuRWytfH59suEudQcBmhhRVvwd8tRp5NiUJVxeJfeQeXF
-	 bXwH85t65kiyUYbyspMhWSXE7NcWbf8kh8CW0yU/S4h87AbGac9sRRV70ueA/Uz4fL
-	 ozsDfGiTOwXfRXZKtR9i2TavD7Myd1iIYrH9KM1HVsUi5K6+cc/SPAOVAUbtEf45HE
-	 kH52e07b/hp/CmeNBtSpDUOPAQ5QMM5UVmVSapED39G4Mt1UrHAEQbGbJqdBnTfV6w
-	 66Aezufigrz5g==
+	b=EW2mjJFhJZMjnKf1nuOJoEOw2cduexjpnrSK18j9HOQ/N0C2zfWs22OMgowuOQw21
+	 O4EWPFobrKU7ToNYgRkg1mzpuya3MUuNBYqq/xO+QkxHqgwjyariy0evbVVLFuYQas
+	 /O8A1QUGtHtdocTbtragjFyS26lCqKNgJs6id5pykXftMj3NiuZzsSECGVRvlD4tTk
+	 V7il2duIA9gfDga14ZAY1JIXR3M2K8LRMPXo0Ohhvdxg7pZlpL34lHTxx2F5S9knkM
+	 xn9Zsm8AnD5NR1u7aQMmIuZGYCZjobMogAokuIrPpddB0XmPGsw2JA6TiyC+ld9blY
+	 2SRfN+KeUXl7w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Remington Brasga <rbrasga@uci.edu>,
-	syzbot+e38d703eeb410b17b473@syzkaller.appspotmail.com,
+Cc: Edward Adam Davis <eadavis@qq.com>,
+	syzbot+3c010e21296f33a5dc16@syzkaller.appspotmail.com,
 	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
 	shaggy@kernel.org,
-	ghandatmanas@gmail.com,
-	juntong.deng@outlook.com,
-	osmtendev@gmail.com,
-	peili.dev@gmail.com,
-	eadavis@qq.com,
 	jfs-discussion@lists.sourceforge.net
-Subject: [PATCH AUTOSEL 6.6 095/139] jfs: UBSAN: shift-out-of-bounds in dbFindBits
-Date: Wed, 25 Sep 2024 08:08:35 -0400
-Message-ID: <20240925121137.1307574-95-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 096/139] jfs: Fix uaf in dbFreeBits
+Date: Wed, 25 Sep 2024 08:08:36 -0400
+Message-ID: <20240925121137.1307574-96-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925121137.1307574-1-sashal@kernel.org>
 References: <20240925121137.1307574-1-sashal@kernel.org>
@@ -72,33 +67,115 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.52
 Content-Transfer-Encoding: 8bit
 
-From: Remington Brasga <rbrasga@uci.edu>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit b0b2fc815e514221f01384f39fbfbff65d897e1c ]
+[ Upstream commit d6c1b3599b2feb5c7291f5ac3a36e5fa7cedb234 ]
 
-Fix issue with UBSAN throwing shift-out-of-bounds warning.
+[syzbot reported]
+==================================================================
+BUG: KASAN: slab-use-after-free in __mutex_lock_common kernel/locking/mutex.c:587 [inline]
+BUG: KASAN: slab-use-after-free in __mutex_lock+0xfe/0xd70 kernel/locking/mutex.c:752
+Read of size 8 at addr ffff8880229254b0 by task syz-executor357/5216
 
-Reported-by: syzbot+e38d703eeb410b17b473@syzkaller.appspotmail.com
-Signed-off-by: Remington Brasga <rbrasga@uci.edu>
+CPU: 0 UID: 0 PID: 5216 Comm: syz-executor357 Not tainted 6.11.0-rc3-syzkaller-00156-gd7a5aa4b3c00 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 06/27/2024
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:93 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:119
+ print_address_description mm/kasan/report.c:377 [inline]
+ print_report+0x169/0x550 mm/kasan/report.c:488
+ kasan_report+0x143/0x180 mm/kasan/report.c:601
+ __mutex_lock_common kernel/locking/mutex.c:587 [inline]
+ __mutex_lock+0xfe/0xd70 kernel/locking/mutex.c:752
+ dbFreeBits+0x7ea/0xd90 fs/jfs/jfs_dmap.c:2390
+ dbFreeDmap fs/jfs/jfs_dmap.c:2089 [inline]
+ dbFree+0x35b/0x680 fs/jfs/jfs_dmap.c:409
+ dbDiscardAG+0x8a9/0xa20 fs/jfs/jfs_dmap.c:1650
+ jfs_ioc_trim+0x433/0x670 fs/jfs/jfs_discard.c:100
+ jfs_ioctl+0x2d0/0x3e0 fs/jfs/ioctl.c:131
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:907 [inline]
+ __se_sys_ioctl+0xfc/0x170 fs/ioctl.c:893
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+
+Freed by task 5218:
+ kasan_save_stack mm/kasan/common.c:47 [inline]
+ kasan_save_track+0x3f/0x80 mm/kasan/common.c:68
+ kasan_save_free_info+0x40/0x50 mm/kasan/generic.c:579
+ poison_slab_object+0xe0/0x150 mm/kasan/common.c:240
+ __kasan_slab_free+0x37/0x60 mm/kasan/common.c:256
+ kasan_slab_free include/linux/kasan.h:184 [inline]
+ slab_free_hook mm/slub.c:2252 [inline]
+ slab_free mm/slub.c:4473 [inline]
+ kfree+0x149/0x360 mm/slub.c:4594
+ dbUnmount+0x11d/0x190 fs/jfs/jfs_dmap.c:278
+ jfs_mount_rw+0x4ac/0x6a0 fs/jfs/jfs_mount.c:247
+ jfs_remount+0x3d1/0x6b0 fs/jfs/super.c:454
+ reconfigure_super+0x445/0x880 fs/super.c:1083
+ vfs_cmd_reconfigure fs/fsopen.c:263 [inline]
+ vfs_fsconfig_locked fs/fsopen.c:292 [inline]
+ __do_sys_fsconfig fs/fsopen.c:473 [inline]
+ __se_sys_fsconfig+0xb6e/0xf80 fs/fsopen.c:345
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0xf3/0x230 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+[Analysis]
+There are two paths (dbUnmount and jfs_ioc_trim) that generate race
+condition when accessing bmap, which leads to the occurrence of uaf.
+
+Use the lock s_umount to synchronize them, in order to avoid uaf caused
+by race condition.
+
+Reported-and-tested-by: syzbot+3c010e21296f33a5dc16@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
 Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_dmap.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/jfs/jfs_discard.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index 5713994328cbc..ccdfa38d7a682 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -3022,7 +3022,7 @@ static int dbFindBits(u32 word, int l2nb)
+diff --git a/fs/jfs/jfs_discard.c b/fs/jfs/jfs_discard.c
+index 575cb2ba74fc8..5f4b305030ad5 100644
+--- a/fs/jfs/jfs_discard.c
++++ b/fs/jfs/jfs_discard.c
+@@ -65,7 +65,7 @@ void jfs_issue_discard(struct inode *ip, u64 blkno, u64 nblocks)
+ int jfs_ioc_trim(struct inode *ip, struct fstrim_range *range)
+ {
+ 	struct inode *ipbmap = JFS_SBI(ip->i_sb)->ipbmap;
+-	struct bmap *bmp = JFS_SBI(ip->i_sb)->bmap;
++	struct bmap *bmp;
+ 	struct super_block *sb = ipbmap->i_sb;
+ 	int agno, agno_end;
+ 	u64 start, end, minlen;
+@@ -83,10 +83,15 @@ int jfs_ioc_trim(struct inode *ip, struct fstrim_range *range)
+ 	if (minlen == 0)
+ 		minlen = 1;
  
- 	/* scan the word for nb free bits at nb alignments.
- 	 */
--	for (bitno = 0; mask != 0; bitno += nb, mask >>= nb) {
-+	for (bitno = 0; mask != 0; bitno += nb, mask = (mask >> nb)) {
- 		if ((mask & word) == mask)
- 			break;
++	down_read(&sb->s_umount);
++	bmp = JFS_SBI(ip->i_sb)->bmap;
++
+ 	if (minlen > bmp->db_agsize ||
+ 	    start >= bmp->db_mapsize ||
+-	    range->len < sb->s_blocksize)
++	    range->len < sb->s_blocksize) {
++		up_read(&sb->s_umount);
+ 		return -EINVAL;
++	}
+ 
+ 	if (end >= bmp->db_mapsize)
+ 		end = bmp->db_mapsize - 1;
+@@ -100,6 +105,8 @@ int jfs_ioc_trim(struct inode *ip, struct fstrim_range *range)
+ 		trimmed += dbDiscardAG(ip, agno, minlen);
+ 		agno++;
  	}
++
++	up_read(&sb->s_umount);
+ 	range->len = trimmed << sb->s_blocksize_bits;
+ 
+ 	return 0;
 -- 
 2.43.0
 
