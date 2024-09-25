@@ -1,123 +1,122 @@
-Return-Path: <stable+bounces-77688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CF36985FEF
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 16:09:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 159F3986079
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 16:24:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B92D91F21F77
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:09:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 633E1B30363
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:09:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BE0D22D726;
-	Wed, 25 Sep 2024 12:18:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04E191D55A0;
+	Wed, 25 Sep 2024 12:18:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gwhi87nC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="croZ6UPG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 027BA1BA27F;
-	Wed, 25 Sep 2024 12:18:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5B0C22C3C5;
+	Wed, 25 Sep 2024 12:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727266689; cv=none; b=NxVZuvIJtROO+W/rq3zay1Xi2kiccZHpEVlbTNmpYT0Ax+svrsHOXGcO/q+2Zp1gVmwq3xM7VVi0STscIoWG98U9Z7gl6TEhDMaF9T2sgAjM6nj5sVTMLNb+WlYI/vlmOyAC73Khpenk9V+Z9vQ5fHveU4STtfTzxRH+hIpifRA=
+	t=1727266686; cv=none; b=ZO/rgOB14LlneXMsx7/88LVuTj2wJ49ERuI351oEsh5yrQTyYRDqacropRFc+jBKg3aIJDaCflCPc6WUQT2gEgQoqSQGMIZr4oaIfau+6FdzPF5kpXJm51PVHi8MuhVTJtkjvvyjZlCJIC3G2/wkP3pRXdtP21nKjGF2TW63UAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727266689; c=relaxed/simple;
-	bh=IVhzTf/i6sKHDHhMn++HReGMeGNvP7ugazgPhMwmERw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Lc2sSed8D6wjnQKgyQ5TCiRDvlXZc/jS7UIWdRIik0/bUPizyEJThh2RMoMcgXdqmrkRnisoix+VMQqP30pjBQ4Ekfbor0O7il67OulsD6F/PfMDZKR1ex3YJr8I7XXONYMF9YYIBzmxuHS8FirJXkig7y0QufLHVH9oDY6TuTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gwhi87nC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ACDCC4CED0;
-	Wed, 25 Sep 2024 12:18:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727266688;
-	bh=IVhzTf/i6sKHDHhMn++HReGMeGNvP7ugazgPhMwmERw=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gwhi87nC3HYzJRlFNj3yvOKDznUPMRTRM+Y/xgVLMO0x847Cn4+bhnjgy4b3AcLvq
-	 YJ38leBggwx24eYEYbTTUn6O4M31lGphuNdjwBnxZAC/pSpjXt/u8J1355+tG74sia
-	 e58CuPel3sCBktS8NMY3vhUhVSU3Sh9NsvQg0N39dUFKM8iNeQZC+9XPXzFe+D1Woq
-	 Y/zx9vs28MgERwcsQxG76IyLXG700nB+gQM0J6yEhRs1d/1ELI73Cx0ewMNv2ObaYM
-	 tLNDKFSFHSpp4w1NfGiUOnsa3OAmppoo3wfdhUrGHKgi+UhOGinewebv2/Rjgp6q/C
-	 NM+Qw4xq1DtBQ==
-From: Sasha Levin <sashal@kernel.org>
-To: linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Cc: Kuan-Wei Chiu <visitorckw@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Quentin Monnet <qmo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	bpf@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 139/139] bpftool: Fix undefined behavior in qsort(NULL, 0, ...)
-Date: Wed, 25 Sep 2024 08:09:19 -0400
-Message-ID: <20240925121137.1307574-139-sashal@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240925121137.1307574-1-sashal@kernel.org>
-References: <20240925121137.1307574-1-sashal@kernel.org>
+	s=arc-20240116; t=1727266686; c=relaxed/simple;
+	bh=WYbX/CYBzzvA0ZfKnz90ChZuthLl9se19UtmvW4qUEI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PXQqK6wJslFnJEeOZv+fVAEjxk7yuoqAZu9Tm8olcYmgxqWNXjgM0IDxvyo/NphwwKYkzAMlJRsyntuRo6/Zuc+MUj2Iw5t1J1lqPP3TGTDwkm3VoPXdVJKiPsI2ymQbOKbFyELaqx4GrzudwiwAQgWy3sx/MYxZtaoIBZdqGN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=croZ6UPG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C49CC4CEC3;
+	Wed, 25 Sep 2024 12:18:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1727266686;
+	bh=WYbX/CYBzzvA0ZfKnz90ChZuthLl9se19UtmvW4qUEI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=croZ6UPGprZAJSjf0wJwbyfqPwCA2datii0S8U5MolJ8XkVLBH5Llns4Oy+e8POS5
+	 3KbzEc1zLmslvG4H65+v5H3XZ8/u2ek5/AiiFDyg3JCAcJ6i3iRUBAY2zQdRlHRtpT
+	 xXypFo6xn1PqUO1kAhZempBHDQFj0TCpak4yuBdg=
+Date: Wed, 25 Sep 2024 14:18:01 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Gaosheng Cui <cuigaosheng1@huawei.com>
+Cc: rafael@kernel.org, akpm@linux-foundation.org,
+	thunder.leizhen@huawei.com, wangweiyang2@huawei.com,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH -next 1/2] kobject: fix memory leak in kset_register()
+ due to uninitialized kset->kobj.ktype
+Message-ID: <2024092552-buckskin-frivolous-3728@gregkh>
+References: <20240925120747.1930709-1-cuigaosheng1@huawei.com>
+ <20240925120747.1930709-2-cuigaosheng1@huawei.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.6.52
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240925120747.1930709-2-cuigaosheng1@huawei.com>
 
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
+On Wed, Sep 25, 2024 at 08:07:46PM +0800, Gaosheng Cui wrote:
+> If a kset with uninitialized kset->kobj.ktype be registered,
+> kset_register() will return error, and the kset.kobj.name allocated
+> by kobject_set_name() will be leaked.
+> 
+> To mitigate this, we free the name in kset_register() when an error
+> is encountered due to uninitialized kset->kobj.ktype.
+> 
+> Fixes: 4d0fe8c52bb3 ("kobject: Add sanity check for kset->kobj.ktype in kset_register()")
+> Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
+> ---
+>  lib/kobject.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/lib/kobject.c b/lib/kobject.c
+> index 72fa20f405f1..ecca72622933 100644
+> --- a/lib/kobject.c
+> +++ b/lib/kobject.c
+> @@ -862,6 +862,8 @@ int kset_register(struct kset *k)
+>  		return -EINVAL;
+>  
+>  	if (!k->kobj.ktype) {
+> +		kfree_const(k->kobj.name);
+> +		k->kobj.name = NULL;
+>  		pr_err("must have a ktype to be initialized properly!\n");
+>  		return -EINVAL;
+>  	}
+> -- 
+> 2.25.1
+> 
 
-[ Upstream commit f04e2ad394e2755d0bb2d858ecb5598718bf00d5 ]
+Hi,
 
-When netfilter has no entry to display, qsort is called with
-qsort(NULL, 0, ...). This results in undefined behavior, as UBSan
-reports:
+This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
+a patch that has triggered this response.  He used to manually respond
+to these common problems, but in order to save his sanity (he kept
+writing the same thing over and over, yet to different people), I was
+created.  Hopefully you will not take offence and will fix the problem
+in your patch and resubmit it so that it can be accepted into the Linux
+kernel tree.
 
-net.c:827:2: runtime error: null pointer passed as argument 1, which is declared to never be null
+You are receiving this message because of the following common error(s)
+as indicated below:
 
-Although the C standard does not explicitly state whether calling qsort
-with a NULL pointer when the size is 0 constitutes undefined behavior,
-Section 7.1.4 of the C standard (Use of library functions) mentions:
+- You have marked a patch with a "Fixes:" tag for a commit that is in an
+  older released kernel, yet you do not have a cc: stable line in the
+  signed-off-by area at all, which means that the patch will not be
+  applied to any older kernel releases.  To properly fix this, please
+  follow the documented rules in the
+  Documentation/process/stable-kernel-rules.rst file for how to resolve
+  this.
 
-"Each of the following statements applies unless explicitly stated
-otherwise in the detailed descriptions that follow: If an argument to a
-function has an invalid value (such as a value outside the domain of
-the function, or a pointer outside the address space of the program, or
-a null pointer, or a pointer to non-modifiable storage when the
-corresponding parameter is not const-qualified) or a type (after
-promotion) not expected by a function with variable number of
-arguments, the behavior is undefined."
+If you wish to discuss this problem further, or you have questions about
+how to resolve this issue, please feel free to respond to this email and
+Greg will reply once he has dug out from the pending patches received
+from other developers.
 
-To avoid this, add an early return when nf_link_info is NULL to prevent
-calling qsort with a NULL pointer.
+thanks,
 
-Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Reviewed-by: Quentin Monnet <qmo@kernel.org>
-Link: https://lore.kernel.org/bpf/20240910150207.3179306-1-visitorckw@gmail.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- tools/bpf/bpftool/net.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/tools/bpf/bpftool/net.c b/tools/bpf/bpftool/net.c
-index fd54ff436493f..28e9417a5c2e3 100644
---- a/tools/bpf/bpftool/net.c
-+++ b/tools/bpf/bpftool/net.c
-@@ -819,6 +819,9 @@ static void show_link_netfilter(void)
- 		nf_link_count++;
- 	}
- 
-+	if (!nf_link_info)
-+		return;
-+
- 	qsort(nf_link_info, nf_link_count, sizeof(*nf_link_info), netfilter_link_compar);
- 
- 	for (id = 0; id < nf_link_count; id++) {
--- 
-2.43.0
-
+greg k-h's patch email bot
 
