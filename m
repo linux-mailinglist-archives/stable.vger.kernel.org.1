@@ -1,110 +1,107 @@
-Return-Path: <stable+bounces-77361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77547-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72D31985C48
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:43:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51205985E58
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:33:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2F6232876DE
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:43:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 182DE28A121
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:33:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B1D41CCB3C;
-	Wed, 25 Sep 2024 11:59:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8D7C185B4A;
+	Wed, 25 Sep 2024 12:11:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rLPlk8t5"
 X-Original-To: stable@vger.kernel.org
-Received: from ganesha.gnumonks.org (ganesha.gnumonks.org [213.95.27.120])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 212EB1AD3EB;
-	Wed, 25 Sep 2024 11:59:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.95.27.120
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6112681AB4;
+	Wed, 25 Sep 2024 12:11:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727265548; cv=none; b=QVt20YP792wZ/M0B2nDRIA79+W8U2MDRGwpmGAy3J5jnqqt41E1hdjSCbfFPGDbCxDGAb6itQQxiC65f52U0rvyP9NixAVpYAox+Evbo5PGnUfx//3juGEce8JtfhSGRPkprPuf1OF62d1trNoTTwWBJy8ncn/Loqt3I0yThCD0=
+	t=1727266300; cv=none; b=ZC2ErCDY33YrpmSAypwxfwgvB8IRl8F2GgaJaflCU+NJ5FFQPgtF+UEpQXCrSVzNveATV5qigHva3Z/O8wcEX+ZchMkMskADf7INWqwpxUyXcg+MBmLH+rleYUrfAAXomhTcnabpz9w8cdcgL952+7WbqhIzKarcmvaRlXiqRa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727265548; c=relaxed/simple;
-	bh=PkRn6B9qktnCgt3WPUj+Onnd2cdwn+uHLAqfIQhypuo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uNog1TsMelXycvsODGBzmsev9feGSII4Yh2sxSuBvTIvdw6plhVYAsBVUJHxWH5c1/x3ecbwyyhPcPDcQFIFb7mUqTMdb9SDon5uh3X3QDbKU0Cvy30BnRjfVK5U5Bu0YtDC0qSbjWqX9+8C223uvF+/g1fnJWo8WRL3Db78WA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org; spf=pass smtp.mailfrom=gnumonks.org; arc=none smtp.client-ip=213.95.27.120
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=netfilter.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gnumonks.org
-Received: from [78.30.37.63] (port=53292 helo=gnumonks.org)
-	by ganesha.gnumonks.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <pablo@gnumonks.org>)
-	id 1stQfT-0005hv-Pc; Wed, 25 Sep 2024 13:58:53 +0200
-Date: Wed, 25 Sep 2024 13:58:50 +0200
-From: Pablo Neira Ayuso <pablo@netfilter.org>
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-	Florian Westphal <fw@strlen.de>, kadlec@netfilter.org,
-	davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-	pabeni@redhat.com, netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org, netdev@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 6.11 049/244] netfilter: nf_tables: don't
- initialize registers in nft_do_chain()
-Message-ID: <ZvP6-utbwqWmP5_0@calendula>
-References: <20240925113641.1297102-1-sashal@kernel.org>
- <20240925113641.1297102-49-sashal@kernel.org>
+	s=arc-20240116; t=1727266300; c=relaxed/simple;
+	bh=H3WswCX31WbKLjBejmaLiRprmM8lk+Py/aH6yCQt4cg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=tIoK/Z3oBpT9OdCxTNWJCRqyelnAIyQPmda5oGOQCZKhqsr5qFKVDEpqVVY6CWSyfnhfhlFMbJYy6munomUD7ezLkXmk0GT9LUZiZZCcwNjeldNSt5PDUxtkbJlHoA3wrCtfr48Y7iCLvQb4AnNTjU7j2Byez9Kr5DrO80syWzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rLPlk8t5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDC94C4CEC3;
+	Wed, 25 Sep 2024 12:11:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727266299;
+	bh=H3WswCX31WbKLjBejmaLiRprmM8lk+Py/aH6yCQt4cg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=rLPlk8t5vFhHa7LAbXmAd5eTqCWL4BFSgKi6b7LakPOTByV0hvsBBsaerbz7sCTK1
+	 Hj0s1vtb2uOKkbL/fF16TSmZupU+J7eftxBc+5RGuunaHXLj+aOYw5lJy4TpdjoEPu
+	 McsNPvlxXaI/Eeeinu8jO04V3VOVgASAu8qQenxuhsmIWlaM5Pv6OIkK8KNVNsX9IF
+	 pgS3jrYVMcFCa8IWNRWHjiWzccP5dR8kg0FGQRZtQ2kABq10teXAACmYBcZLC6fLYd
+	 /S4Nf97m30xC2wzDbSzfKBpi/YoKkyBv2MjWDpSoWSXCMX3qhwI8Q4PpMsB9nc0vKY
+	 f0cvrHCoRBdCg==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: Dmitry Kandybka <d.kandybka@gmail.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
+	Sasha Levin <sashal@kernel.org>,
+	kvalo@kernel.org,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 001/139] wifi: ath9k: fix possible integer overflow in ath9k_get_et_stats()
+Date: Wed, 25 Sep 2024 08:07:01 -0400
+Message-ID: <20240925121137.1307574-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240925113641.1297102-49-sashal@kernel.org>
-X-Spam-Score: -1.9 (-)
+Content-Type: text/plain; charset=UTF-8
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.6.52
+Content-Transfer-Encoding: 8bit
 
-Hi Sasha,
+From: Dmitry Kandybka <d.kandybka@gmail.com>
 
-This commit requires:
+[ Upstream commit 3f66f26703093886db81f0610b97a6794511917c ]
 
-commit 14fb07130c7ddd257e30079b87499b3f89097b09
-Author: Florian Westphal <fw@strlen.de>
-Date:   Tue Aug 20 11:56:13 2024 +0200
+In 'ath9k_get_et_stats()', promote TX stats counters to 'u64'
+to avoid possible integer overflow. Compile tested only.
 
-    netfilter: nf_tables: allow loads only when register is initialized
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-so either drop it or pull-in this dependency for 6.11
+Signed-off-by: Dmitry Kandybka <d.kandybka@gmail.com>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://patch.msgid.link/20240725111743.14422-1-d.kandybka@gmail.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/net/wireless/ath/ath9k/debug.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Thanks.
+diff --git a/drivers/net/wireless/ath/ath9k/debug.c b/drivers/net/wireless/ath/ath9k/debug.c
+index a0376a6787b8d..aaad285042864 100644
+--- a/drivers/net/wireless/ath/ath9k/debug.c
++++ b/drivers/net/wireless/ath/ath9k/debug.c
+@@ -1325,11 +1325,11 @@ void ath9k_get_et_stats(struct ieee80211_hw *hw,
+ 	struct ath_softc *sc = hw->priv;
+ 	int i = 0;
+ 
+-	data[i++] = (sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_BE)].tx_pkts_all +
++	data[i++] = ((u64)sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_BE)].tx_pkts_all +
+ 		     sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_BK)].tx_pkts_all +
+ 		     sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_VI)].tx_pkts_all +
+ 		     sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_VO)].tx_pkts_all);
+-	data[i++] = (sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_BE)].tx_bytes_all +
++	data[i++] = ((u64)sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_BE)].tx_bytes_all +
+ 		     sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_BK)].tx_bytes_all +
+ 		     sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_VI)].tx_bytes_all +
+ 		     sc->debug.stats.txstats[PR_QNUM(IEEE80211_AC_VO)].tx_bytes_all);
+-- 
+2.43.0
 
-On Wed, Sep 25, 2024 at 07:24:30AM -0400, Sasha Levin wrote:
-> From: Florian Westphal <fw@strlen.de>
-> 
-> [ Upstream commit c88baabf16d1ef74ab8832de9761226406af5507 ]
-> 
-> revert commit 4c905f6740a3 ("netfilter: nf_tables: initialize registers in
-> nft_do_chain()").
-> 
-> Previous patch makes sure that loads from uninitialized registers are
-> detected from the control plane. in this case rule blob auto-zeroes
-> registers.  Thus the explicit zeroing is not needed anymore.
-> 
-> Signed-off-by: Florian Westphal <fw@strlen.de>
-> Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  net/netfilter/nf_tables_core.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/net/netfilter/nf_tables_core.c b/net/netfilter/nf_tables_core.c
-> index a48d5f0e2f3e1..75598520b0fa0 100644
-> --- a/net/netfilter/nf_tables_core.c
-> +++ b/net/netfilter/nf_tables_core.c
-> @@ -256,7 +256,7 @@ nft_do_chain(struct nft_pktinfo *pkt, void *priv)
->  	const struct net *net = nft_net(pkt);
->  	const struct nft_expr *expr, *last;
->  	const struct nft_rule_dp *rule;
-> -	struct nft_regs regs = {};
-> +	struct nft_regs regs;
->  	unsigned int stackptr = 0;
->  	struct nft_jumpstack jumpstack[NFT_JUMP_STACK_SIZE];
->  	bool genbit = READ_ONCE(net->nft.gencursor);
-> -- 
-> 2.43.0
-> 
 
