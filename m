@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-77542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 993C5985E40
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:31:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02207985E43
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:31:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CCD22891E9
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:31:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B95E62895A0
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:31:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0721E20E8F5;
-	Wed, 25 Sep 2024 12:09:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E73320EDD5;
+	Wed, 25 Sep 2024 12:09:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nlhkUrpM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SGaB6LLH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3B2A20E8DE;
-	Wed, 25 Sep 2024 12:09:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 454EF20EDC8;
+	Wed, 25 Sep 2024 12:09:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727266152; cv=none; b=j+bgA7PoGuEXkUmarHpw5tlOVk+/SQTKGnN1F8IT1HZop8+IiLgLZATtYUurSSAAhURb9a45NUq30ZuAT9dr/knrRF6Ud54es55N6BdjhqwtwxO3sIk0cR62oNAaUL6Km9ip1l8aubMbOIBOdxTmivWDjC0UxF2+f8EBzxRuoVo=
+	t=1727266154; cv=none; b=cmtSgyKNi8xm3D8gtZFyWYIk+AUzasKhrqo1iXZefDj54eKXj/vda2btm8c4jKZr3PS7/gZaKBO0/h38umjUh9oZBNE45pR0chgkAVCFUVhaXN6zMDgaUBgYqB9yjqBlySXexXr1+hxkZ4qISrPWrRuJWWQ2C54FuR4C0jXCtGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727266152; c=relaxed/simple;
-	bh=5ipd+6i1vmYzbqSVixtByEgWCPbCf8XMcpZSqw510BY=;
+	s=arc-20240116; t=1727266154; c=relaxed/simple;
+	bh=DLRwwhJALq3terZc9vA18D/Jwar7g4IeRYQBGkk+6nw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J5UXzF43OBliVhgewFQw2hSv/YfpUFYmeZ4LP3wl8KmAe2y7a9Q6Xa+F66YCbP3PaW3h9fmpV7mPpewDnXG3UGkW7dvPmS715hH4xg8bORhrMN4Bvlp1vd4y1TBKpSfCC2FNeDcOs6JWNES642NRirWF6qMT9iXhbgyTlAGewhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nlhkUrpM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70F5BC4CEC7;
-	Wed, 25 Sep 2024 12:09:11 +0000 (UTC)
+	 MIME-Version; b=Q0S6cUifDyAp9Xh4FDyT7NXMSUTg7wOYeVyhdLjOvNTQftZl0T4DlNQd0YLgNwjao79y9Ml2AtvmuALpBX7Jvl0y9fneemyv9HWsmNynqOrVTZ3KejIe6O3X73VNTwlpgiVHgSyntvyHReEUP98gVnjAOL7VvzGGLISSpNXQoKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SGaB6LLH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 194C3C4CEC3;
+	Wed, 25 Sep 2024 12:09:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727266152;
-	bh=5ipd+6i1vmYzbqSVixtByEgWCPbCf8XMcpZSqw510BY=;
+	s=k20201202; t=1727266154;
+	bh=DLRwwhJALq3terZc9vA18D/Jwar7g4IeRYQBGkk+6nw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nlhkUrpMF0X/kpC/VxaBpaSjzcxvA5MnC+9f4d2zf2HwDMlKO02bKZEAxl1jNjbLt
-	 39OjxcC7yNGjmGCIam3hgBPb4J5PKU+PdIHDB1iuzVGbTau3wrYTc5tvWrnt06UpgV
-	 9GIabbDepyS86PAp3plTkMw5eWLBn1opIVJ269Jbp3spalYfpmzMKVHIEkXojxvd1a
-	 Yg5LIIJpnWfOjSAJ5Nv+qRTXRFnLDHpwot+Fi7idbmthmlKpw6FOda+mtkDxiClrfC
-	 e2mGrlkV36LtYYvkxD7RnWwlE81I4QbNzw+qBXPXAmnSoffhv1JXIzNswkd7FXqLAz
-	 uHue0FThu/kGw==
+	b=SGaB6LLH34joF/KfpkTUQxJVGDVtb3mmAb0szlobqPH/kFL9gARHK1haG0JBYawtM
+	 Bu6f6nWDx3ine/2L4dMbR44iHCyAdngGL88XMv6jmt9w3NC4f69GgGwHqsB5qdVoEG
+	 kqfQyN3X1H4z10MIyml1qVIaLX8MNO+mISkw9pp3q0glnD/5tMYCWsZV3ogIJM6spk
+	 57NqP2YEY3z5+r09ezVw+HBN+7AgseBByNxVWImQbiSyw5gTNUQs6qNSqlKT173qhU
+	 RZobSuRJiUAW8XrAMYcbaIoteEBUJBeYL4702vjEQMouELiToP+GZ6jrzvEQL4hzFq
+	 CmUAWCn1Gb+dw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kuan-Wei Chiu <visitorckw@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Quentin Monnet <qmo@kernel.org>,
+Cc: Christoph Hellwig <hch@lst.de>,
+	"Darrick J . Wong" <djwong@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	bpf@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 194/197] bpftool: Fix undefined behavior caused by shifting into the sign bit
-Date: Wed, 25 Sep 2024 07:53:33 -0400
-Message-ID: <20240925115823.1303019-194-sashal@kernel.org>
+	linux-xfs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.10 195/197] iomap: handle a post-direct I/O invalidate race in iomap_write_delalloc_release
+Date: Wed, 25 Sep 2024 07:53:34 -0400
+Message-ID: <20240925115823.1303019-195-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925115823.1303019-1-sashal@kernel.org>
 References: <20240925115823.1303019-1-sashal@kernel.org>
@@ -68,53 +67,46 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.11
 Content-Transfer-Encoding: 8bit
 
-From: Kuan-Wei Chiu <visitorckw@gmail.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 4cdc0e4ce5e893bc92255f5f734d983012f2bc2e ]
+[ Upstream commit 7a9d43eace888a0ee6095035997bb138425844d3 ]
 
-Replace shifts of '1' with '1U' in bitwise operations within
-__show_dev_tc_bpf() to prevent undefined behavior caused by shifting
-into the sign bit of a signed integer. By using '1U', the operations
-are explicitly performed on unsigned integers, avoiding potential
-integer overflow or sign-related issues.
+When direct I/O completions invalidates the page cache it holds neither the
+i_rwsem nor the invalidate_lock so it can be racing with
+iomap_write_delalloc_release.  If the search for the end of the region that
+contains data returns the start offset we hit such a race and just need to
+look for the end of the newly created hole instead.
 
-Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Quentin Monnet <qmo@kernel.org>
-Link: https://lore.kernel.org/bpf/20240908140009.3149781-1-visitorckw@gmail.com
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20240910043949.3481298-2-hch@lst.de
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/bpf/bpftool/net.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/iomap/buffered-io.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/tools/bpf/bpftool/net.c b/tools/bpf/bpftool/net.c
-index 968714b4c3d45..ad2ea6cf2db11 100644
---- a/tools/bpf/bpftool/net.c
-+++ b/tools/bpf/bpftool/net.c
-@@ -482,9 +482,9 @@ static void __show_dev_tc_bpf(const struct ip_devname_ifindex *dev,
- 		if (prog_flags[i] || json_output) {
- 			NET_START_ARRAY("prog_flags", "%s ");
- 			for (j = 0; prog_flags[i] && j < 32; j++) {
--				if (!(prog_flags[i] & (1 << j)))
-+				if (!(prog_flags[i] & (1U << j)))
- 					continue;
--				NET_DUMP_UINT_ONLY(1 << j);
-+				NET_DUMP_UINT_ONLY(1U << j);
- 			}
- 			NET_END_ARRAY("");
+diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+index d505636035af3..74ee76f772d86 100644
+--- a/fs/iomap/buffered-io.c
++++ b/fs/iomap/buffered-io.c
+@@ -1226,7 +1226,15 @@ static int iomap_write_delalloc_release(struct inode *inode,
+ 			error = data_end;
+ 			goto out_unlock;
  		}
-@@ -493,9 +493,9 @@ static void __show_dev_tc_bpf(const struct ip_devname_ifindex *dev,
- 			if (link_flags[i] || json_output) {
- 				NET_START_ARRAY("link_flags", "%s ");
- 				for (j = 0; link_flags[i] && j < 32; j++) {
--					if (!(link_flags[i] & (1 << j)))
-+					if (!(link_flags[i] & (1U << j)))
- 						continue;
--					NET_DUMP_UINT_ONLY(1 << j);
-+					NET_DUMP_UINT_ONLY(1U << j);
- 				}
- 				NET_END_ARRAY("");
- 			}
+-		WARN_ON_ONCE(data_end <= start_byte);
++
++		/*
++		 * If we race with post-direct I/O invalidation of the page cache,
++		 * there might be no data left at start_byte.
++		 */
++		if (data_end == start_byte)
++			continue;
++
++		WARN_ON_ONCE(data_end < start_byte);
+ 		WARN_ON_ONCE(data_end > scan_end_byte);
+ 
+ 		error = iomap_write_delalloc_scan(inode, &punch_start_byte,
 -- 
 2.43.0
 
