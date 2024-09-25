@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-77225-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77226-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC8DD985A9E
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:10:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0069F985AA0
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:10:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A6F31C23A8C
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:10:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6A10285337
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:10:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8018A1B9836;
-	Wed, 25 Sep 2024 11:42:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2257F1B9848;
+	Wed, 25 Sep 2024 11:42:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jmuZnRqw"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BA7jwV1P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39A5418D62A;
-	Wed, 25 Sep 2024 11:42:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB5791B983E;
+	Wed, 25 Sep 2024 11:42:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727264567; cv=none; b=sJDHLUsZuECGoxtMIBTD+rnVzuAyowccdCj4dZ+/bw/CRRWT0fhqYaeyhzCAz8XO1Zy1EEsiKOri8lIQzGqxaYVJSUGmvvWM3XnsgMgv/YaNv7q3esrmd778DO9SV9gE3ScUMs9bU7S8ANYyKlrcqvdP9MXIhJlMsWO2MQA/3Xo=
+	t=1727264568; cv=none; b=m6Az+lN0YD5KNDbD4zS59Wtv7vPfvr1CRZ8N4kF3ZQCJM3eKrUdi6qUUGe8oDuw4VI0ubm4/EormHFU4lTFsYc0aKm8tZa+2Ra4nyCz9fA6LjPB3q3BhI5/elQsLFFhnbRvniCrU+UTzw6Lpq3uvJ1+/3ML5JW8GfxO7Fsirl98=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727264567; c=relaxed/simple;
-	bh=xms7ViOyUI70csMqmncv45lshdBzXLRmzelz18ADYcs=;
+	s=arc-20240116; t=1727264568; c=relaxed/simple;
+	bh=RHqHJ7c2Y9l9bwIgNIcZEW59qYpxVf4yfh5atNTB+Dc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PlYfvuo/R8cUdMFyS5H/cBPaEAoclOiQL6DfY47MKk2cSQq6t/3DAtWNF9yhN4swZMDS8wR4vKUnqiklm3tcwRiIXPzE/gEVz2jJA9Lsp5nbjc18l5cKCD9K9ynj0fWHUqN7h3dvSYS4G5MmyhoyWvYbKyCk+MY+tZG6cPYK1Wg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jmuZnRqw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39B04C4CEC7;
-	Wed, 25 Sep 2024 11:42:45 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NnwJt0VgG3/ZvhcDPIvmtDoO8t9AJ8tAXKKOrPWCyD1TqDgsgwmvS18wpzZFUb5Fc1dwWrEphHGw1G7f54ERguHanTAYeDtqiYmY/WnfN8XeAoAf49BMM2m0QcV4xkgRMZY5+/1BLg8TIqn1CmYpwIqvMvCG6UWTnQ7Wj3xiUWA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BA7jwV1P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5632BC4CECD;
+	Wed, 25 Sep 2024 11:42:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727264566;
-	bh=xms7ViOyUI70csMqmncv45lshdBzXLRmzelz18ADYcs=;
+	s=k20201202; t=1727264568;
+	bh=RHqHJ7c2Y9l9bwIgNIcZEW59qYpxVf4yfh5atNTB+Dc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jmuZnRqwmGPNLMGCRUfHgp2fStytm79mNKKp4VZtV6Xxu0aWWXdsTGiNQeN9hUKeV
-	 GVzhHPjvmgjkOMdafKV+9E3IttGbc8/iOX+ipUe0V4XB2dneKGhGtRhIhCg57dqZE3
-	 JYnf/Css4i9OM5Fu1oCB9jkOruI0tX0ayd1g0CBKS0+TvxUVpxZVqfh18iI7ZfkKRz
-	 xIVOWpE3fywz/GnDcinq8v8Ve3rYpt+8uiAW66UD10BeJB13mVUsZ8FecmMt4upub6
-	 QRWP1p8OpVBQnQ/SMSM6JnDRlRuoO72Au276kzscj/RkFNZOI36BXydXZb1Y7DX5kx
-	 4gv8ezSA4K9zA==
+	b=BA7jwV1POB7kacmB8yf4ISy5ZipGtl5hprHlPz6OxYRBjmvpGIHw3T01tfoTZCHF8
+	 2LD/dv093ILRHTNlVP2UuTD8oGI9IZQ3NO679+vD3B10le06SweHndbGh0rBMEnkpB
+	 7FyLrrxJdKZWlRN45i5BPpf/Xs7UPBuqQWJ5T2ffMgyW3KR0q2Qt5YD7o2e4TssLQ4
+	 cqFU4IS4QZquk03rj/9u6CP4gLoyeJGl97L4G2tK7RrWVp0egrcMqxXmESEdYULD9m
+	 FNFN8mnu7o7x0oFS9szdfvsoXGlNjxKqpKkkfCBXhUvkfgU7bn8wndAX35e95HNWAt
+	 y03uK3BUjx/zA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jason Gunthorpe <jgg@nvidia.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Will Deacon <will@kernel.org>,
+Cc: =?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	joro@8bytes.org,
-	jgg@ziepe.ca,
-	mshavit@google.com,
-	smostafa@google.com,
-	baolu.lu@linux.intel.com,
-	linux-arm-kernel@lists.infradead.org,
-	iommu@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.11 127/244] iommu/arm-smmu-v3: Do not use devm for the cd table allocations
-Date: Wed, 25 Sep 2024 07:25:48 -0400
-Message-ID: <20240925113641.1297102-127-sashal@kernel.org>
+	lizefan.x@bytedance.com,
+	hannes@cmpxchg.org,
+	cgroups@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.11 128/244] cgroup: Disallow mounting v1 hierarchies without controller implementation
+Date: Wed, 25 Sep 2024 07:25:49 -0400
+Message-ID: <20240925113641.1297102-128-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925113641.1297102-1-sashal@kernel.org>
 References: <20240925113641.1297102-1-sashal@kernel.org>
@@ -67,106 +62,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11
 Content-Transfer-Encoding: 8bit
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Michal Koutný <mkoutny@suse.com>
 
-[ Upstream commit 47b2de35cab2b683f69d03515c2658c2d8515323 ]
+[ Upstream commit 3c41382e920f1dd5c9f432948fe799c07af1cced ]
 
-The master->cd_table is entirely contained within the struct
-arm_smmu_master which is guaranteed to be freed by the core code under
-arm_smmu_release_device().
+The configs that disable some v1 controllers would still allow mounting
+them but with no controller-specific files. (Making such hierarchies
+equivalent to named v1 hierarchies.) To achieve behavior consistent with
+actual out-compilation of a whole controller, the mounts should treat
+respective controllers as non-existent.
 
-There is no reason to use devm here, arm_smmu_free_cd_tables() is reliably
-called to free the CD related memory. Remove it and save some memory.
+Wrap implementation into a helper function, leverage legacy_files to
+detect compiled out controllers. The effect is that mounts on v1 would
+fail and produce a message like:
+  [ 1543.999081] cgroup: Unknown subsys name 'memory'
 
-Tested-by: Nicolin Chen <nicolinc@nvidia.com>
-Reviewed-by: Nicolin Chen <nicolinc@nvidia.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Link: https://lore.kernel.org/r/5-v4-6416877274e1+1af-smmuv3_tidy_jgg@nvidia.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Michal Koutný <mkoutny@suse.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 29 +++++++++------------
- 1 file changed, 13 insertions(+), 16 deletions(-)
+ kernel/cgroup/cgroup-v1.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-index a7d2a6b8a4980..8a419e88a920e 100644
---- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-+++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-@@ -1185,8 +1185,8 @@ static int arm_smmu_alloc_cd_leaf_table(struct arm_smmu_device *smmu,
- {
- 	size_t size = CTXDESC_L2_ENTRIES * (CTXDESC_CD_DWORDS << 3);
- 
--	l1_desc->l2ptr = dmam_alloc_coherent(smmu->dev, size,
--					     &l1_desc->l2ptr_dma, GFP_KERNEL);
-+	l1_desc->l2ptr = dma_alloc_coherent(smmu->dev, size,
-+					    &l1_desc->l2ptr_dma, GFP_KERNEL);
- 	if (!l1_desc->l2ptr) {
- 		dev_warn(smmu->dev,
- 			 "failed to allocate context descriptor table\n");
-@@ -1400,17 +1400,17 @@ static int arm_smmu_alloc_cd_tables(struct arm_smmu_master *master)
- 		cd_table->num_l1_ents = DIV_ROUND_UP(max_contexts,
- 						  CTXDESC_L2_ENTRIES);
- 
--		cd_table->l1_desc = devm_kcalloc(smmu->dev, cd_table->num_l1_ents,
--					      sizeof(*cd_table->l1_desc),
--					      GFP_KERNEL);
-+		cd_table->l1_desc = kcalloc(cd_table->num_l1_ents,
-+					    sizeof(*cd_table->l1_desc),
-+					    GFP_KERNEL);
- 		if (!cd_table->l1_desc)
- 			return -ENOMEM;
- 
- 		l1size = cd_table->num_l1_ents * (CTXDESC_L1_DESC_DWORDS << 3);
- 	}
- 
--	cd_table->cdtab = dmam_alloc_coherent(smmu->dev, l1size, &cd_table->cdtab_dma,
--					   GFP_KERNEL);
-+	cd_table->cdtab = dma_alloc_coherent(smmu->dev, l1size,
-+					     &cd_table->cdtab_dma, GFP_KERNEL);
- 	if (!cd_table->cdtab) {
- 		dev_warn(smmu->dev, "failed to allocate context descriptor\n");
- 		ret = -ENOMEM;
-@@ -1421,7 +1421,7 @@ static int arm_smmu_alloc_cd_tables(struct arm_smmu_master *master)
- 
- err_free_l1:
- 	if (cd_table->l1_desc) {
--		devm_kfree(smmu->dev, cd_table->l1_desc);
-+		kfree(cd_table->l1_desc);
- 		cd_table->l1_desc = NULL;
- 	}
- 	return ret;
-@@ -1441,21 +1441,18 @@ static void arm_smmu_free_cd_tables(struct arm_smmu_master *master)
- 			if (!cd_table->l1_desc[i].l2ptr)
- 				continue;
- 
--			dmam_free_coherent(smmu->dev, size,
--					   cd_table->l1_desc[i].l2ptr,
--					   cd_table->l1_desc[i].l2ptr_dma);
-+			dma_free_coherent(smmu->dev, size,
-+					  cd_table->l1_desc[i].l2ptr,
-+					  cd_table->l1_desc[i].l2ptr_dma);
- 		}
--		devm_kfree(smmu->dev, cd_table->l1_desc);
--		cd_table->l1_desc = NULL;
-+		kfree(cd_table->l1_desc);
- 
- 		l1size = cd_table->num_l1_ents * (CTXDESC_L1_DESC_DWORDS << 3);
- 	} else {
- 		l1size = cd_table->num_l1_ents * (CTXDESC_CD_DWORDS << 3);
- 	}
- 
--	dmam_free_coherent(smmu->dev, l1size, cd_table->cdtab, cd_table->cdtab_dma);
--	cd_table->cdtab_dma = 0;
--	cd_table->cdtab = NULL;
-+	dma_free_coherent(smmu->dev, l1size, cd_table->cdtab, cd_table->cdtab_dma);
+diff --git a/kernel/cgroup/cgroup-v1.c b/kernel/cgroup/cgroup-v1.c
+index b9dbf6bf2779d..784337694a4be 100644
+--- a/kernel/cgroup/cgroup-v1.c
++++ b/kernel/cgroup/cgroup-v1.c
+@@ -46,6 +46,12 @@ bool cgroup1_ssid_disabled(int ssid)
+ 	return cgroup_no_v1_mask & (1 << ssid);
  }
  
- /* Stream table manipulation functions */
++static bool cgroup1_subsys_absent(struct cgroup_subsys *ss)
++{
++	/* Check also dfl_cftypes for file-less controllers, i.e. perf_event */
++	return ss->legacy_cftypes == NULL && ss->dfl_cftypes;
++}
++
+ /**
+  * cgroup_attach_task_all - attach task 'tsk' to all cgroups of task 'from'
+  * @from: attach to all cgroups of a given task
+@@ -932,7 +938,8 @@ int cgroup1_parse_param(struct fs_context *fc, struct fs_parameter *param)
+ 		if (ret != -ENOPARAM)
+ 			return ret;
+ 		for_each_subsys(ss, i) {
+-			if (strcmp(param->key, ss->legacy_name))
++			if (strcmp(param->key, ss->legacy_name) ||
++			    cgroup1_subsys_absent(ss))
+ 				continue;
+ 			if (!cgroup_ssid_enabled(i) || cgroup1_ssid_disabled(i))
+ 				return invalfc(fc, "Disabled controller '%s'",
+@@ -1024,7 +1031,8 @@ static int check_cgroupfs_options(struct fs_context *fc)
+ 	mask = ~((u16)1 << cpuset_cgrp_id);
+ #endif
+ 	for_each_subsys(ss, i)
+-		if (cgroup_ssid_enabled(i) && !cgroup1_ssid_disabled(i))
++		if (cgroup_ssid_enabled(i) && !cgroup1_ssid_disabled(i) &&
++		    !cgroup1_subsys_absent(ss))
+ 			enabled |= 1 << i;
+ 
+ 	ctx->subsys_mask &= enabled;
 -- 
 2.43.0
 
