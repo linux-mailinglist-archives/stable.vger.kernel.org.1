@@ -1,61 +1,64 @@
-Return-Path: <stable+bounces-77172-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31EC398599C
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:57:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FCAB98599F
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:57:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id BE5BAB20D02
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 11:57:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7BFCE1C20936
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 11:57:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64AD818754E;
-	Wed, 25 Sep 2024 11:39:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98C6E1A76BE;
+	Wed, 25 Sep 2024 11:39:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jLCAlRJK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c4493yRP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 230461A7048;
-	Wed, 25 Sep 2024 11:39:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 545661A726A;
+	Wed, 25 Sep 2024 11:39:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727264379; cv=none; b=p02nWnZ8fv6g0bg3fm0Ub6HLHB2cSbQbtuc1LZ5czHsYa425GqG1dVAGr/mD0Z5IRJn7vaTDXaobCGylezAP5+3LMsJP+5m7VsO94nMvepeUVjAr5oQJYb3Y/gfJFm/4ZRb0ALVzvmb2vIIsgVw3h7hWlYRXL54bZLPAA50WlAM=
+	t=1727264381; cv=none; b=AbXlf+9pJb+CMU/7uiYEjrdp9hbldw9M9F5JhFP5Mn7NbqYg8btVYwJqqXlh61tcMWOtw8U3uPNJzW+8peAF6BwNshpbx/XPkYY1YrLfp0QakuzfQtPapjVowJwWWPXBa4YsxuUD7TFyWlFCHavxm4f6B4vhSqvF9r8I53zJ2Uk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727264379; c=relaxed/simple;
-	bh=b1P1Wdx3yjlMsi0o72Kuft9x2BUm9JhklLNyeBmGE88=;
+	s=arc-20240116; t=1727264381; c=relaxed/simple;
+	bh=Pb6ZUZpF21AKLI5dPOYrEq51md+n1GRLbVMHVy5aPYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HaL+xs7zj3RRAZn33l4S5VRxQhrL82D7UT7Yp/77fY6X4U8wj9WoFHvUnUb00lQ2utUNEC7SrljJf/x7E64GaTmuHaDXqYv+aejiFCzpK+xrcjPNUq+Jv7wEkuuIYt0Ll4JOoKW2IU5O026Vn7KJ7/2sAcw1RqsR2PabGDD0eoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jLCAlRJK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A501C4CEC3;
-	Wed, 25 Sep 2024 11:39:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mnpKsV7EvXM11610/NL/cRgGnPIlzcUcFt7FJWUUBPeFLHbB6DCm2Uw0X58t1oPceYgdZSZD5eWQj6EJFk9I8zt+ukSM70gDyIlPYqyCD7V0AXwMguMjBf9PYsGDFNn1dbw1ewUF3Ma67bivfQAixjY7nMa17giYHWNljcKT3Ac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c4493yRP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32CBDC4CEC7;
+	Wed, 25 Sep 2024 11:39:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727264378;
-	bh=b1P1Wdx3yjlMsi0o72Kuft9x2BUm9JhklLNyeBmGE88=;
+	s=k20201202; t=1727264380;
+	bh=Pb6ZUZpF21AKLI5dPOYrEq51md+n1GRLbVMHVy5aPYo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jLCAlRJKFx8V6Doce0pcKmslKYO/33joKTWA81okkbHKhwzIxWTxPEuldDPZ+YY6U
-	 5cX0tCyG22n+Q1g/2oY7Wne289kWYB0ufkSAsgNmPseEhkAEeW6AwzxP+lGbG1+7J7
-	 i1/VWgAhWjNhJHb87E6bgCxPSlUDolruYcw/sE1x6zPMMwmFwkNlDOYYrNUKBC3CqW
-	 yTC1flULx3b9BoZv1WUFDlXBZguX9wdhDIJpRKOpAvOZ90yoZlk2tFZ/r9zt9lYcbt
-	 gjKga8RnDrOH9MvnlwSIxbwl4lqq8rh/oRKsV+hfJOBusjwUAFTcMuhY8k5HD3DUN4
-	 2k7G8NG+wu0GA==
+	b=c4493yRPnBu6MpJuDV6WEHxQYSCHQ5rPmR6+mAdAopGYjLJEpR8ZLTSkXOxM7xtFz
+	 bHwnSA05TwkyOxHFe1N1MKC7/ZgmtDpKGDuOlXg1eHg9BW2/VOJc5FmY8n2mOpFOWz
+	 l2tB8BelBmXfj8cIRxVNMSPdRHqA8JOWTAtdmxmLIKYtzh210vIxfkuAbROPsfOZQJ
+	 cPTqu9jIjA3CJZhY88xaj8PHS3N4zQHfGFO3515Ln4YYOIwG4GMyFD0JRsT7n1R86i
+	 zC1Le42d0klVIp4Cv+/jzpC6r8j3lrU1vVLgKuGXTS/wfDyL+IgaVdl+xKw7Jw5d95
+	 IUd3OPy4+s+sA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Fares Mehanna <faresx@amazon.de>,
-	=?UTF-8?q?Jan=20H=20=2E=20Sch=C3=B6nherr?= <jschoenh@amazon.de>,
-	Will Deacon <will@kernel.org>,
+Cc: =?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	catalin.marinas@arm.com,
-	akpm@linux-foundation.org,
-	ryan.roberts@arm.com,
-	mark.rutland@arm.com,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.11 074/244] arm64: trans_pgd: mark PTEs entries as valid to avoid dead kexec()
-Date: Wed, 25 Sep 2024 07:24:55 -0400
-Message-ID: <20240925113641.1297102-74-sashal@kernel.org>
+	hkallweit1@gmail.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.11 075/244] net: phy: Check for read errors in SIOCGMIIREG
+Date: Wed, 25 Sep 2024 07:24:56 -0400
+Message-ID: <20240925113641.1297102-75-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925113641.1297102-1-sashal@kernel.org>
 References: <20240925113641.1297102-1-sashal@kernel.org>
@@ -71,57 +74,77 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11
 Content-Transfer-Encoding: 8bit
 
-From: Fares Mehanna <faresx@amazon.de>
+From: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
 
-[ Upstream commit 7eced90b202d63cdc1b9b11b1353adb1389830f9 ]
+[ Upstream commit 569bf6d481b0b823c3c9c3b8be77908fd7caf66b ]
 
-The reasons for PTEs in the kernel direct map to be marked invalid are not
-limited to kfence / debug pagealloc machinery. In particular,
-memfd_secret() also steals pages with set_direct_map_invalid_noflush().
+When reading registers from the PHY using the SIOCGMIIREG IOCTL any
+errors returned from either mdiobus_read() or mdiobus_c45_read() are
+ignored, and parts of the returned error is passed as the register value
+back to user-space.
 
-When building the transitional page tables for kexec from the current
-kernel's page tables, those pages need to become regular writable pages,
-otherwise, if the relocation places kexec segments over such pages, a fault
-will occur during kexec, leading to host going dark during kexec.
+For example, if mdiobus_c45_read() is used with a bus that do not
+implement the read_c45() callback -EOPNOTSUPP is returned. This is
+however directly stored in mii_data->val_out and returned as the
+registers content. As val_out is a u16 the error code is truncated and
+returned as a plausible register value.
 
-This patch addresses the kexec issue by marking any PTE as valid if it is
-not none. While this fixes the kexec crash, it does not address the
-security concern that if processes owning secret memory are not terminated
-before kexec, the secret content will be mapped in the new kernel without
-being scrubbed.
+Fix this by first checking the return value for errors before returning
+it as the register content.
 
-Suggested-by: Jan H. Schönherr <jschoenh@amazon.de>
-Signed-off-by: Fares Mehanna <faresx@amazon.de>
-Link: https://lore.kernel.org/r/20240902163309.97113-1-faresx@amazon.de
-Signed-off-by: Will Deacon <will@kernel.org>
+Before this patch,
+
+    # phytool read eth0/0:1/0
+    0xffa1
+
+After this change,
+
+    $ phytool read eth0/0:1/0
+    error: phy_read (-95)
+
+Signed-off-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Tested-by: Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20240903171536.628930-1-niklas.soderlund+renesas@ragnatech.se
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/mm/trans_pgd.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/phy/phy.c | 17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm64/mm/trans_pgd.c b/arch/arm64/mm/trans_pgd.c
-index 5139a28130c08..0f7b484cb2ff2 100644
---- a/arch/arm64/mm/trans_pgd.c
-+++ b/arch/arm64/mm/trans_pgd.c
-@@ -42,14 +42,16 @@ static void _copy_pte(pte_t *dst_ptep, pte_t *src_ptep, unsigned long addr)
- 		 * the temporary mappings we use during restore.
- 		 */
- 		__set_pte(dst_ptep, pte_mkwrite_novma(pte));
--	} else if ((debug_pagealloc_enabled() ||
--		   is_kfence_address((void *)addr)) && !pte_none(pte)) {
-+	} else if (!pte_none(pte)) {
- 		/*
- 		 * debug_pagealloc will removed the PTE_VALID bit if
- 		 * the page isn't in use by the resume kernel. It may have
- 		 * been in use by the original kernel, in which case we need
- 		 * to put it back in our copy to do the restore.
- 		 *
-+		 * Other cases include kfence / vmalloc / memfd_secret which
-+		 * may call `set_direct_map_invalid_noflush()`.
-+		 *
- 		 * Before marking this entry valid, check the pfn should
- 		 * be mapped.
- 		 */
+diff --git a/drivers/net/phy/phy.c b/drivers/net/phy/phy.c
+index 785182fa5fe01..b88d857ea23b8 100644
+--- a/drivers/net/phy/phy.c
++++ b/drivers/net/phy/phy.c
+@@ -342,14 +342,19 @@ int phy_mii_ioctl(struct phy_device *phydev, struct ifreq *ifr, int cmd)
+ 		if (mdio_phy_id_is_c45(mii_data->phy_id)) {
+ 			prtad = mdio_phy_id_prtad(mii_data->phy_id);
+ 			devad = mdio_phy_id_devad(mii_data->phy_id);
+-			mii_data->val_out = mdiobus_c45_read(
+-				phydev->mdio.bus, prtad, devad,
+-				mii_data->reg_num);
++			ret = mdiobus_c45_read(phydev->mdio.bus, prtad, devad,
++					       mii_data->reg_num);
++
+ 		} else {
+-			mii_data->val_out = mdiobus_read(
+-				phydev->mdio.bus, mii_data->phy_id,
+-				mii_data->reg_num);
++			ret = mdiobus_read(phydev->mdio.bus, mii_data->phy_id,
++					   mii_data->reg_num);
+ 		}
++
++		if (ret < 0)
++			return ret;
++
++		mii_data->val_out = ret;
++
+ 		return 0;
+ 
+ 	case SIOCSMIIREG:
 -- 
 2.43.0
 
