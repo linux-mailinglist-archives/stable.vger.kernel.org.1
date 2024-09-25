@@ -1,62 +1,64 @@
-Return-Path: <stable+bounces-77187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C5BE9859D8
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:01:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id C860C9859DA
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:01:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AEFE91C236F7
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:01:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 597391F21860
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:01:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88BB21B0132;
-	Wed, 25 Sep 2024 11:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D77318B469;
+	Wed, 25 Sep 2024 11:40:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HjMk2jse"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iHQboYTw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 464921B012B;
-	Wed, 25 Sep 2024 11:40:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDD8317624F;
+	Wed, 25 Sep 2024 11:40:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727264426; cv=none; b=k9hQLnl5I1kUBKXxrd1VogoqNEWj0k7ql3sjFqURoQp23DAvnpKm+JMbpcjyv2/K/mFCohxsXbTB9NjIe0mVJmyMLNWoLsqWpHqGPzDzpVN+a+1vbfCG639TSQMo9lAUgePkvlc9tHBXNuV4BuO+31hLa2yKkUyWFULQBFiSpVw=
+	t=1727264431; cv=none; b=kyM7ShkzKDFNfd6vhtZ4ms/sj7O22Q/wU0nwE0wRen7L167PRP9Co0qqeie08eP/AGXCaCjTU5D9rrEqfswTAUwsoIn9G19vHtNVCAYQAjoXlYdllep3gcsu3/TiEU2WHsf8+sxK9e1a3j8gzueYL24hvYjoEJDN+OHyC8UtEWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727264426; c=relaxed/simple;
-	bh=eY6CaTPrbIw6JVjRw/wi01WOdt7z8xWaDckHtDFr7WI=;
+	s=arc-20240116; t=1727264431; c=relaxed/simple;
+	bh=jp5RwJPG4dX6LvwrpYrkupTj/D0RLYc9evHQDiYRWwQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OjvnUwi/M2MUQFL2WoLjFdYfxbesMTCrc/8rdvT/BBSZX6p0H952+CeJS7EheoFlPfTY1QT7JUWkSEZNjwec1VX6Y7uOmlsxKdJ18Vqcs5CKG58AgcA7ygbaM230Uq2xE6uRp3ONdpqXLPeXNAEfOVqCI6Y2D0RlzVO9/nLKlqM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HjMk2jse; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8FB1C4CEC3;
-	Wed, 25 Sep 2024 11:40:24 +0000 (UTC)
+	 MIME-Version; b=JYQQsIMtHEOczVUozwuqPU5KZNgOZy0hLseGOzq0WHXxCpXNoN/s6pY7ADabv3g6P7YYDA9aKhRR6yTRAww728dA7sED4ys+8aPGmW84ZJwB/qTVuHZbM7VYMiD4aPkfZ0JMKc9Zh14vYWBhc6tF8X7qQblsi0T4hl3u3uzHp04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iHQboYTw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 117DFC4CEC3;
+	Wed, 25 Sep 2024 11:40:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727264426;
-	bh=eY6CaTPrbIw6JVjRw/wi01WOdt7z8xWaDckHtDFr7WI=;
+	s=k20201202; t=1727264430;
+	bh=jp5RwJPG4dX6LvwrpYrkupTj/D0RLYc9evHQDiYRWwQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HjMk2jse3IRD6aUPFpp5s996fCx/nsmEOwZwjSCNmZ+wm1mixM9xD0fvty8rERQZq
-	 pql3EGprOn95Yydb+I31uPz6EzRR7bjA7B4Hfrc1QxWLJXRg5rj+9A25G1VL4RBdB7
-	 nLIfH9qfSVsgFGtHKzFgbL5o2pefGcf99fvhgj7AgmoPxR8Uz8C6kimgAw/sngODTF
-	 6g5iKLXBO5lhy2iuEEJh8qHI6vuPYyO0lCdGaYg6RB29xNApP2YQTaa85oRkooFejh
-	 AUdc22uLkkzfVEeibCk48ELRAMT90utacf9UNwsFk/pUbzDT0vU7O5OyR2dBd+O82W
-	 y0Kpg/sMVvZcA==
+	b=iHQboYTwiWRpJ9au1RNM85h9cFJ00aGxqcWObqMLf+edKBn/YLWjKpmZxW8ku1Wnq
+	 xVXIQK0MXz8IwoZyCVSTBC+OyFVwc0QXN2ikx5oxSmPUNobZqn8HA61RAq4nHTUWx5
+	 v3AsyAp1uBC4M9fYoIL6APIvcSsfFcwGI5XJjBFrz6g/E8GxEN5Mg9k8ROljBvDNF4
+	 r/BsHqpDbVfC/yC79FIogkaRC7BI7duWfA7/dnmTb7bhePJzR3LKCA/Avx87FhOJLI
+	 cqoKa6/DKR6Up0tRZqqKDxW28JJ+4fEZEvCL8KQQOpzPc2gbkMsTWESvOTLdlMr2Vq
+	 F6XofMBvw8jLQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: Thomas Gleixner <tglx@linutronix.de>,
-	Breno Leitao <leitao@debian.org>,
-	Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+	Rob Newcater <rob@durendal.co.uk>,
+	Christian Heusel <christian@heusel.eu>,
+	Borislav Petkov <bp@alien8.de>,
 	Sasha Levin <sashal@kernel.org>,
 	mingo@redhat.com,
-	bp@alien8.de,
 	dave.hansen@linux.intel.com,
 	x86@kernel.org,
-	ahuang12@lenovo.com,
-	maz@kernel.org
-Subject: [PATCH AUTOSEL 6.11 089/244] x86/ioapic: Handle allocation failures gracefully
-Date: Wed, 25 Sep 2024 07:25:10 -0400
-Message-ID: <20240925113641.1297102-89-sashal@kernel.org>
+	peterz@infradead.org,
+	arjan@linux.intel.com,
+	jacob.jun.pan@linux.intel.com,
+	andrew.cooper3@citrix.com
+Subject: [PATCH AUTOSEL 6.11 090/244] x86/apic: Remove logical destination mode for 64-bit
+Date: Wed, 25 Sep 2024 07:25:11 -0400
+Message-ID: <20240925113641.1297102-90-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925113641.1297102-1-sashal@kernel.org>
 References: <20240925113641.1297102-1-sashal@kernel.org>
@@ -73,149 +75,225 @@ Content-Transfer-Encoding: 8bit
 
 From: Thomas Gleixner <tglx@linutronix.de>
 
-[ Upstream commit 830802a0fea8fb39d3dc9fb7d6b5581e1343eb1f ]
+[ Upstream commit 838ba7733e4e3a94a928e8d0a058de1811a58621 ]
 
-Breno observed panics when using failslab under certain conditions during
-runtime:
+Logical destination mode of the local APIC is used for systems with up to
+8 CPUs. It has an advantage over physical destination mode as it allows to
+target multiple CPUs at once with IPIs.
 
-   can not alloc irq_pin_list (-1,0,20)
-   Kernel panic - not syncing: IO-APIC: failed to add irq-pin. Can not proceed
+That advantage was definitely worth it when systems with up to 8 CPUs
+were state of the art for servers and workstations, but that's history.
 
-   panic+0x4e9/0x590
-   mp_irqdomain_alloc+0x9ab/0xa80
-   irq_domain_alloc_irqs_locked+0x25d/0x8d0
-   __irq_domain_alloc_irqs+0x80/0x110
-   mp_map_pin_to_irq+0x645/0x890
-   acpi_register_gsi_ioapic+0xe6/0x150
-   hpet_open+0x313/0x480
+Aside of that there are systems which fail to work with logical destination
+mode as the ACPI/DMI quirks show and there are AMD Zen1 systems out there
+which fail when interrupt remapping is enabled as reported by Rob and
+Christian. The latter problem can be cured by firmware updates, but not all
+OEMs distribute the required changes.
 
-That's a pointless panic which is a leftover of the historic IO/APIC code
-which panic'ed during early boot when the interrupt allocation failed.
+Physical destination mode is guaranteed to work because it is the only way
+to get a CPU up and running via the INIT/INIT/STARTUP sequence.
 
-The only place which might justify panic is the PIT/HPET timer_check() code
-which tries to figure out whether the timer interrupt is delivered through
-the IO/APIC. But that code does not require to handle interrupt allocation
-failures. If the interrupt cannot be allocated then timer delivery fails
-and it either panics due to that or falls back to legacy mode.
+As the number of CPUs keeps increasing, logical destination mode becomes a
+less used code path so there is no real good reason to keep it around.
 
-Cure this by removing the panic wrapper around __add_pin_to_irq_node() and
-making mp_irqdomain_alloc() aware of the failure condition and handle it as
-any other failure in this function gracefully.
+Therefore remove logical destination mode support for 64-bit and default to
+physical destination mode.
 
-Reported-by: Breno Leitao <leitao@debian.org>
+Reported-by: Rob Newcater <rob@durendal.co.uk>
+Reported-by: Christian Heusel <christian@heusel.eu>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Breno Leitao <leitao@debian.org>
-Tested-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Link: https://lore.kernel.org/all/ZqfJmUF8sXIyuSHN@gmail.com
-Link: https://lore.kernel.org/all/20240802155440.275200843@linutronix.de
+Tested-by: Borislav Petkov (AMD) <bp@alien8.de>
+Tested-by: Rob Newcater <rob@durendal.co.uk>
+Link: https://lore.kernel.org/all/877cd5u671.ffs@tglx
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/apic/io_apic.c | 46 ++++++++++++++++------------------
- 1 file changed, 22 insertions(+), 24 deletions(-)
+ arch/x86/include/asm/apic.h         |   8 --
+ arch/x86/kernel/apic/apic_flat_64.c | 119 ++--------------------------
+ 2 files changed, 7 insertions(+), 120 deletions(-)
 
-diff --git a/arch/x86/kernel/apic/io_apic.c b/arch/x86/kernel/apic/io_apic.c
-index 477b740b2f267..d1ec1dcb637af 100644
---- a/arch/x86/kernel/apic/io_apic.c
-+++ b/arch/x86/kernel/apic/io_apic.c
-@@ -352,27 +352,26 @@ static void ioapic_mask_entry(int apic, int pin)
-  * shared ISA-space IRQs, so we have to support them. We are super
-  * fast in the common case, and fast for shared ISA-space IRQs.
+diff --git a/arch/x86/include/asm/apic.h b/arch/x86/include/asm/apic.h
+index 9327eb00e96d0..be2045a18e69b 100644
+--- a/arch/x86/include/asm/apic.h
++++ b/arch/x86/include/asm/apic.h
+@@ -345,20 +345,12 @@ extern struct apic *apic;
+  * APIC drivers are probed based on how they are listed in the .apicdrivers
+  * section. So the order is important and enforced by the ordering
+  * of different apic driver files in the Makefile.
+- *
+- * For the files having two apic drivers, we use apic_drivers()
+- * to enforce the order with in them.
   */
--static int __add_pin_to_irq_node(struct mp_chip_data *data,
--				 int node, int apic, int pin)
-+static bool add_pin_to_irq_node(struct mp_chip_data *data, int node, int apic, int pin)
- {
- 	struct irq_pin_list *entry;
+ #define apic_driver(sym)					\
+ 	static const struct apic *__apicdrivers_##sym __used		\
+ 	__aligned(sizeof(struct apic *))			\
+ 	__section(".apicdrivers") = { &sym }
  
--	/* don't allow duplicates */
--	for_each_irq_pin(entry, data->irq_2_pin)
-+	/* Don't allow duplicates */
-+	for_each_irq_pin(entry, data->irq_2_pin) {
- 		if (entry->apic == apic && entry->pin == pin)
--			return 0;
-+			return true;
-+	}
- 
- 	entry = kzalloc_node(sizeof(struct irq_pin_list), GFP_ATOMIC, node);
- 	if (!entry) {
--		pr_err("can not alloc irq_pin_list (%d,%d,%d)\n",
--		       node, apic, pin);
--		return -ENOMEM;
-+		pr_err("Cannot allocate irq_pin_list (%d,%d,%d)\n", node, apic, pin);
-+		return false;
- 	}
-+
- 	entry->apic = apic;
- 	entry->pin = pin;
- 	list_add_tail(&entry->list, &data->irq_2_pin);
+-#define apic_drivers(sym1, sym2)					\
+-	static struct apic *__apicdrivers_##sym1##sym2[2] __used	\
+-	__aligned(sizeof(struct apic *))				\
+-	__section(".apicdrivers") = { &sym1, &sym2 }
 -
--	return 0;
-+	return true;
- }
+ extern struct apic *__apicdrivers[], *__apicdrivers_end[];
  
- static void __remove_pin_from_irq(struct mp_chip_data *data, int apic, int pin)
-@@ -387,13 +386,6 @@ static void __remove_pin_from_irq(struct mp_chip_data *data, int apic, int pin)
- 		}
- }
+ /*
+diff --git a/arch/x86/kernel/apic/apic_flat_64.c b/arch/x86/kernel/apic/apic_flat_64.c
+index f37ad3392fec9..e0308d8c4e6c2 100644
+--- a/arch/x86/kernel/apic/apic_flat_64.c
++++ b/arch/x86/kernel/apic/apic_flat_64.c
+@@ -8,129 +8,25 @@
+  * Martin Bligh, Andi Kleen, James Bottomley, John Stultz, and
+  * James Cleverdon.
+  */
+-#include <linux/cpumask.h>
+ #include <linux/export.h>
+-#include <linux/acpi.h>
  
--static void add_pin_to_irq_node(struct mp_chip_data *data,
--				int node, int apic, int pin)
+-#include <asm/jailhouse_para.h>
+ #include <asm/apic.h>
+ 
+ #include "local.h"
+ 
+-static struct apic apic_physflat;
+-static struct apic apic_flat;
+-
+-struct apic *apic __ro_after_init = &apic_flat;
+-EXPORT_SYMBOL_GPL(apic);
+-
+-static int flat_acpi_madt_oem_check(char *oem_id, char *oem_table_id)
 -{
--	if (__add_pin_to_irq_node(data, node, apic, pin))
--		panic("IO-APIC: failed to add irq-pin. Can not proceed\n");
+-	return 1;
 -}
 -
- /*
-  * Reroute an IRQ to a different pin.
-  */
-@@ -1002,8 +994,7 @@ static int alloc_isa_irq_from_domain(struct irq_domain *domain,
- 	if (irq_data && irq_data->parent_data) {
- 		if (!mp_check_pin_attr(irq, info))
- 			return -EBUSY;
--		if (__add_pin_to_irq_node(irq_data->chip_data, node, ioapic,
--					  info->ioapic.pin))
-+		if (!add_pin_to_irq_node(irq_data->chip_data, node, ioapic, info->ioapic.pin))
- 			return -ENOMEM;
- 	} else {
- 		info->flags |= X86_IRQ_ALLOC_LEGACY;
-@@ -3017,10 +3008,8 @@ int mp_irqdomain_alloc(struct irq_domain *domain, unsigned int virq,
- 		return -ENOMEM;
- 
- 	ret = irq_domain_alloc_irqs_parent(domain, virq, nr_irqs, info);
--	if (ret < 0) {
--		kfree(data);
--		return ret;
--	}
-+	if (ret < 0)
-+		goto free_data;
- 
- 	INIT_LIST_HEAD(&data->irq_2_pin);
- 	irq_data->hwirq = info->ioapic.pin;
-@@ -3029,7 +3018,10 @@ int mp_irqdomain_alloc(struct irq_domain *domain, unsigned int virq,
- 	irq_data->chip_data = data;
- 	mp_irqdomain_get_attr(mp_pin_to_gsi(ioapic, pin), data, info);
- 
--	add_pin_to_irq_node(data, ioapic_alloc_attr_node(info), ioapic, pin);
-+	if (!add_pin_to_irq_node(data, ioapic_alloc_attr_node(info), ioapic, pin)) {
-+		ret = -ENOMEM;
-+		goto free_irqs;
-+	}
- 
- 	mp_preconfigure_entry(data);
- 	mp_register_handler(virq, data->is_level);
-@@ -3044,6 +3036,12 @@ int mp_irqdomain_alloc(struct irq_domain *domain, unsigned int virq,
- 		    ioapic, mpc_ioapic_id(ioapic), pin, virq,
- 		    data->is_level, data->active_low);
- 	return 0;
-+
-+free_irqs:
-+	irq_domain_free_irqs_parent(domain, virq, nr_irqs);
-+free_data:
-+	kfree(data);
-+	return ret;
+-static void _flat_send_IPI_mask(unsigned long mask, int vector)
+-{
+-	unsigned long flags;
+-
+-	local_irq_save(flags);
+-	__default_send_IPI_dest_field(mask, vector, APIC_DEST_LOGICAL);
+-	local_irq_restore(flags);
+-}
+-
+-static void flat_send_IPI_mask(const struct cpumask *cpumask, int vector)
+-{
+-	unsigned long mask = cpumask_bits(cpumask)[0];
+-
+-	_flat_send_IPI_mask(mask, vector);
+-}
+-
+-static void
+-flat_send_IPI_mask_allbutself(const struct cpumask *cpumask, int vector)
+-{
+-	unsigned long mask = cpumask_bits(cpumask)[0];
+-	int cpu = smp_processor_id();
+-
+-	if (cpu < BITS_PER_LONG)
+-		__clear_bit(cpu, &mask);
+-
+-	_flat_send_IPI_mask(mask, vector);
+-}
+-
+-static u32 flat_get_apic_id(u32 x)
++static u32 physflat_get_apic_id(u32 x)
+ {
+ 	return (x >> 24) & 0xFF;
  }
  
- void mp_irqdomain_free(struct irq_domain *domain, unsigned int virq,
+-static int flat_probe(void)
++static int physflat_probe(void)
+ {
+ 	return 1;
+ }
+ 
+-static struct apic apic_flat __ro_after_init = {
+-	.name				= "flat",
+-	.probe				= flat_probe,
+-	.acpi_madt_oem_check		= flat_acpi_madt_oem_check,
+-
+-	.dest_mode_logical		= true,
+-
+-	.disable_esr			= 0,
+-
+-	.init_apic_ldr			= default_init_apic_ldr,
+-	.cpu_present_to_apicid		= default_cpu_present_to_apicid,
+-
+-	.max_apic_id			= 0xFE,
+-	.get_apic_id			= flat_get_apic_id,
+-
+-	.calc_dest_apicid		= apic_flat_calc_apicid,
+-
+-	.send_IPI			= default_send_IPI_single,
+-	.send_IPI_mask			= flat_send_IPI_mask,
+-	.send_IPI_mask_allbutself	= flat_send_IPI_mask_allbutself,
+-	.send_IPI_allbutself		= default_send_IPI_allbutself,
+-	.send_IPI_all			= default_send_IPI_all,
+-	.send_IPI_self			= default_send_IPI_self,
+-	.nmi_to_offline_cpu		= true,
+-
+-	.read				= native_apic_mem_read,
+-	.write				= native_apic_mem_write,
+-	.eoi				= native_apic_mem_eoi,
+-	.icr_read			= native_apic_icr_read,
+-	.icr_write			= native_apic_icr_write,
+-	.wait_icr_idle			= apic_mem_wait_icr_idle,
+-	.safe_wait_icr_idle		= apic_mem_wait_icr_idle_timeout,
+-};
+-
+-/*
+- * Physflat mode is used when there are more than 8 CPUs on a system.
+- * We cannot use logical delivery in this case because the mask
+- * overflows, so use physical mode.
+- */
+ static int physflat_acpi_madt_oem_check(char *oem_id, char *oem_table_id)
+ {
+-#ifdef CONFIG_ACPI
+-	/*
+-	 * Quirk: some x86_64 machines can only use physical APIC mode
+-	 * regardless of how many processors are present (x86_64 ES7000
+-	 * is an example).
+-	 */
+-	if (acpi_gbl_FADT.header.revision >= FADT2_REVISION_ID &&
+-		(acpi_gbl_FADT.flags & ACPI_FADT_APIC_PHYSICAL)) {
+-		printk(KERN_DEBUG "system APIC only can use physical flat");
+-		return 1;
+-	}
+-
+-	if (!strncmp(oem_id, "IBM", 3) && !strncmp(oem_table_id, "EXA", 3)) {
+-		printk(KERN_DEBUG "IBM Summit detected, will use apic physical");
+-		return 1;
+-	}
+-#endif
+-
+-	return 0;
+-}
+-
+-static int physflat_probe(void)
+-{
+-	return apic == &apic_physflat || num_possible_cpus() > 8 || jailhouse_paravirt();
++	return 1;
+ }
+ 
+ static struct apic apic_physflat __ro_after_init = {
+@@ -146,7 +42,7 @@ static struct apic apic_physflat __ro_after_init = {
+ 	.cpu_present_to_apicid		= default_cpu_present_to_apicid,
+ 
+ 	.max_apic_id			= 0xFE,
+-	.get_apic_id			= flat_get_apic_id,
++	.get_apic_id			= physflat_get_apic_id,
+ 
+ 	.calc_dest_apicid		= apic_default_calc_apicid,
+ 
+@@ -166,8 +62,7 @@ static struct apic apic_physflat __ro_after_init = {
+ 	.wait_icr_idle			= apic_mem_wait_icr_idle,
+ 	.safe_wait_icr_idle		= apic_mem_wait_icr_idle_timeout,
+ };
++apic_driver(apic_physflat);
+ 
+-/*
+- * We need to check for physflat first, so this order is important.
+- */
+-apic_drivers(apic_physflat, apic_flat);
++struct apic *apic __ro_after_init = &apic_physflat;
++EXPORT_SYMBOL_GPL(apic);
 -- 
 2.43.0
 
