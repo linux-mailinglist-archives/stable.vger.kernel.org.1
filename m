@@ -1,63 +1,62 @@
-Return-Path: <stable+bounces-77451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F1C0985D6C
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:10:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id A077A985D6E
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:10:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6FEE61C24DE5
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:10:07 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 476EE1F20EDE
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:10:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B4EE1E1A34;
-	Wed, 25 Sep 2024 12:03:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C73E1E2003;
+	Wed, 25 Sep 2024 12:03:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q06Ph0TL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="s083TyZ1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BD7D1B1D63;
-	Wed, 25 Sep 2024 12:03:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD6FA1E1A3B;
+	Wed, 25 Sep 2024 12:03:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727265815; cv=none; b=ItvdTbwyvQwhY22G3KhZ0Yz5Ta4sWY9x6vnNBZsBcNkyOsK6XMG/TQYJv8yuNTxISPZFiuoeg20uF213ZS5jhhDfKgGhRh2tP1LWeDPV6K9q4vQc5XxKbpnayMSSLNizwl1Hmz5S2hhXmilC4UW5ZTjcXhYpXJl1nhxtwiO7DKk=
+	t=1727265816; cv=none; b=DlDqjiW/s7gji0HOeJwRxiZIHxMY1Yv5gyp2WB8mYCrCJ4989GPWt4Y9JrFdjIEM4q+X4x60pEmokvu8xNO5djZVYaXZTAogLuaGx4tal+4Fd4479pf7nq9Gw78eynixqHx4FM1IQJfohEIx5DuZt+aKsgAi0zP8IoNzHU9jRVM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727265815; c=relaxed/simple;
-	bh=o3U4KoOQmPPsjXHJMwUWVTulpN/T+liSlDbD9IS5vbM=;
+	s=arc-20240116; t=1727265816; c=relaxed/simple;
+	bh=sG+YR21KKAj/tfJpOX/8rEsopszcBLwNQ0dcCogdoT0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iyzWKAXSs3z6QKY9DVxlGQBlc1YE2HWuxjJ/Rp2Bo2cvNQ5HgdIDvU6KPFbW+NrHKejGAJmQOk8BMjoozxAt5SXQ8YJNUq56QGdnNm4TFju9yXd1zegcfYRj1ChbFRlIE7KG1YHbolR0isRs+O8EhP+E4FeI6CzY6fttzSHxZIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q06Ph0TL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1340AC4CEC3;
-	Wed, 25 Sep 2024 12:03:32 +0000 (UTC)
+	 MIME-Version; b=HejboHzpn2lBHdp1JY37IskAHoR7Xwizw+KH9eJ9TFIZrHFSOtKBUST9A89BDuXmY8FwlWg4pA6gvvhX4T9Bh0ekJpiQ+g1fHXhq8j5Qoh5ZFlZFrVDZAGFwlw/DD8BLLl2LbwWbq2YydVnQSdACoWTKUG8YkIijd/yP1V6HZmo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=s083TyZ1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27337C4CECD;
+	Wed, 25 Sep 2024 12:03:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727265814;
-	bh=o3U4KoOQmPPsjXHJMwUWVTulpN/T+liSlDbD9IS5vbM=;
+	s=k20201202; t=1727265816;
+	bh=sG+YR21KKAj/tfJpOX/8rEsopszcBLwNQ0dcCogdoT0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q06Ph0TL3XzrnxgavEUNIxGiL/JbDXq0Qsd7fWIgH/WkojtwdDakYWholFLk57VEZ
-	 iBlSYIi03lRUwRiKINjQU01sPegC1gGuLVmWB1gOhqiF+QoFm/k0Nb6ttJq28TMPpI
-	 RpfZ3obSONzYTam4D1AdZwLu7qdb1qrhv3juu9eVHxiV1FQMkcBlGrKqeDCBAHk6f9
-	 5Gyl0L9y+QST42+RgpZmy0IMGPuf4lw8B/3pyW3FKgqbGzPziFKv8Qpv/w9P9spPeF
-	 ziCh8/JRZySp2htJfayxYjNvzqiHn/FCwW4LYWdMmlj/htqER1H2nWBcih3MpcoLLx
-	 4wmNPe3a9Vd4Q==
+	b=s083TyZ1N0xJQAi1YNPXLyz1Urz+PpMn199S4ZwAsB7/ejb06pRwxmakcYiglM/Oo
+	 X5q+bmo5sRN1+Yx1dtgIJ1NJNTw6KAlqBy5AeHxEy+A3k27xH6ssqa8kMA/ayXkAet
+	 gHKBN89IQmpg15heheum1Lg4ad2Mo4NeoTCqPo/8msIWcqk2+N9J/u78cXwWGCy3EO
+	 +4vTngj8ZMkNunDeN+2G2owEJtQI7GZ6d0wQUkje4FgOEmZ5S59SqSfcxcTDihB8uZ
+	 y1yKlJAOeKjZME00yHcLpS7/ZAdYbqiNz0VcVqYRNFxRfoWq7mVV1gzcstWIqk9lu6
+	 ilwwXt+T589Gg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Mostafa Saleh <smostafa@google.com>,
-	Will Deacon <will@kernel.org>,
+Cc: Lu Baolu <baolu.lu@linux.intel.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Jerry Snitselaar <jsnitsel@redhat.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>,
+	dwmw2@infradead.org,
 	joro@8bytes.org,
-	jgg@ziepe.ca,
-	nicolinc@nvidia.com,
-	mshavit@google.com,
-	baolu.lu@linux.intel.com,
-	jsnitsel@redhat.com,
-	linux-arm-kernel@lists.infradead.org,
+	will@kernel.org,
 	iommu@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.10 106/197] iommu/arm-smmu-v3: Match Stall behaviour for S2
-Date: Wed, 25 Sep 2024 07:52:05 -0400
-Message-ID: <20240925115823.1303019-106-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.10 107/197] iommu/vt-d: Always reserve a domain ID for identity setup
+Date: Wed, 25 Sep 2024 07:52:06 -0400
+Message-ID: <20240925115823.1303019-107-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925115823.1303019-1-sashal@kernel.org>
 References: <20240925115823.1303019-1-sashal@kernel.org>
@@ -67,94 +66,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.11
 Content-Transfer-Encoding: 8bit
 
-From: Mostafa Saleh <smostafa@google.com>
+From: Lu Baolu <baolu.lu@linux.intel.com>
 
-[ Upstream commit ce7cb08e22e09f43649b025c849a3ae3b80833c4 ]
+[ Upstream commit 2c13012e09190174614fd6901857a1b8c199e17d ]
 
-According to the spec (ARM IHI 0070 F.b), in
-"5.5 Fault configuration (A, R, S bits)":
-    A STE with stage 2 translation enabled and STE.S2S == 0 is
-    considered ILLEGAL if SMMU_IDR0.STALL_MODEL == 0b10.
+We will use a global static identity domain. Reserve a static domain ID
+for it.
 
-Also described in the pseudocode “SteIllegal()”
-    if STE.Config == '11x' then
-        [..]
-        if eff_idr0_stall_model == '10' && STE.S2S == '0' then
-            // stall_model forcing stall, but S2S == 0
-            return TRUE;
-
-Which means, S2S must be set when stall model is
-"ARM_SMMU_FEAT_STALL_FORCE", but currently the driver ignores that.
-
-Although, the driver can do the minimum and only set S2S for
-“ARM_SMMU_FEAT_STALL_FORCE”, it is more consistent to match S1
-behaviour, which also sets it for “ARM_SMMU_FEAT_STALL” if the
-master has requested stalls.
-
-Also, since S2 stalls are enabled now, report them to the IOMMU layer
-and for VFIO devices it will fail anyway as VFIO doesn’t register an
-iopf handler.
-
-Signed-off-by: Mostafa Saleh <smostafa@google.com>
-Link: https://lore.kernel.org/r/20240830110349.797399-2-smostafa@google.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
+Link: https://lore.kernel.org/r/20240809055431.36513-4-baolu.lu@linux.intel.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c | 8 +++-----
- drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h | 1 +
- 2 files changed, 4 insertions(+), 5 deletions(-)
+ drivers/iommu/intel/iommu.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-index f456bcf1890ba..1f38669b711d3 100644
---- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-+++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.c
-@@ -1000,7 +1000,8 @@ void arm_smmu_get_ste_used(const __le64 *ent, __le64 *used_bits)
- 		used_bits[2] |=
- 			cpu_to_le64(STRTAB_STE_2_S2VMID | STRTAB_STE_2_VTCR |
- 				    STRTAB_STE_2_S2AA64 | STRTAB_STE_2_S2ENDI |
--				    STRTAB_STE_2_S2PTW | STRTAB_STE_2_S2R);
-+				    STRTAB_STE_2_S2PTW | STRTAB_STE_2_S2S |
-+				    STRTAB_STE_2_S2R);
- 		used_bits[3] |= cpu_to_le64(STRTAB_STE_3_S2TTB_MASK);
- 	}
+diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+index e9bea0305c268..eed67326976d3 100644
+--- a/drivers/iommu/intel/iommu.c
++++ b/drivers/iommu/intel/iommu.c
+@@ -1462,10 +1462,10 @@ static int iommu_init_domains(struct intel_iommu *iommu)
+ 	 * entry for first-level or pass-through translation modes should
+ 	 * be programmed with a domain id different from those used for
+ 	 * second-level or nested translation. We reserve a domain id for
+-	 * this purpose.
++	 * this purpose. This domain id is also used for identity domain
++	 * in legacy mode.
+ 	 */
+-	if (sm_supported(iommu))
+-		set_bit(FLPT_DEFAULT_DID, iommu->domain_ids);
++	set_bit(FLPT_DEFAULT_DID, iommu->domain_ids);
  
-@@ -1629,6 +1630,7 @@ void arm_smmu_make_s2_domain_ste(struct arm_smmu_ste *target,
- 		STRTAB_STE_2_S2ENDI |
- #endif
- 		STRTAB_STE_2_S2PTW |
-+		(master->stall_enabled ? STRTAB_STE_2_S2S : 0) |
- 		STRTAB_STE_2_S2R);
- 
- 	target->data[3] = cpu_to_le64(pgtbl_cfg->arm_lpae_s2_cfg.vttbr &
-@@ -1722,10 +1724,6 @@ static int arm_smmu_handle_evt(struct arm_smmu_device *smmu, u64 *evt)
- 		return -EOPNOTSUPP;
- 	}
- 
--	/* Stage-2 is always pinned at the moment */
--	if (evt[1] & EVTQ_1_S2)
--		return -EFAULT;
--
- 	if (!(evt[1] & EVTQ_1_STALL))
- 		return -EOPNOTSUPP;
- 
-diff --git a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
-index 1242a086c9f94..d9c2f763eaba4 100644
---- a/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
-+++ b/drivers/iommu/arm/arm-smmu-v3/arm-smmu-v3.h
-@@ -264,6 +264,7 @@ struct arm_smmu_ste {
- #define STRTAB_STE_2_S2AA64		(1UL << 51)
- #define STRTAB_STE_2_S2ENDI		(1UL << 52)
- #define STRTAB_STE_2_S2PTW		(1UL << 54)
-+#define STRTAB_STE_2_S2S		(1UL << 57)
- #define STRTAB_STE_2_S2R		(1UL << 58)
- 
- #define STRTAB_STE_3_S2TTB_MASK		GENMASK_ULL(51, 4)
+ 	return 0;
+ }
 -- 
 2.43.0
 
