@@ -1,74 +1,73 @@
-Return-Path: <stable+bounces-77638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39894985FDB
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 16:07:52 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C9A7985F66
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:57:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2A8E3B28B58
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:57:12 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 51CFD1F25177
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:57:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A2D817E00C;
-	Wed, 25 Sep 2024 12:15:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 069CC1D2B10;
+	Wed, 25 Sep 2024 12:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RLPHCyDH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Buc81z9x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58A74223F0F;
-	Wed, 25 Sep 2024 12:15:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B634B1D2B0B;
+	Wed, 25 Sep 2024 12:15:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727266543; cv=none; b=BTeV9sm+W9es/40Yg6N4PRsdpYY3werMplfbKu1EfDQVzZy6foCWQDU+ivrBHb+KI8cb9JRFoh+EqCMuMznghn7HgoE4SWfpVsu+ATUnKyTA9ydUxo3Od9BtvrQf6hFv+w4+ZzyLGGB1a6H37LGS8TBfidT/x3XUgVER4Sy0aq4=
+	t=1727266548; cv=none; b=kt7xTkkvjSHp3r61mA/CO+ecuMXU4UtDxhotrqsi9gqgmmOoWH7YTHifkF+yEgU3Y8CW7Od8r/auDRL2pyQKGDW0oRqVIJZOrtbi05BtODU5Z90PZLuko6L+GJhN8hWKWQ3weHY7Vk+HJZQfYrPfdL/rpul216SVyW4dVRGXM8g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727266543; c=relaxed/simple;
-	bh=+xT6rDDVtNf1Vv0lcTbElWaZT4Ymn1b56abe/VjLz5w=;
+	s=arc-20240116; t=1727266548; c=relaxed/simple;
+	bh=5bfg9Np6bY0Jpv5tAQ9Z9bpL4qFbDPQOKp0xgywQmGA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OGmDIUxX46bS+bPlRY3prxlbZQ3IRjuROGs9R8NPBDR5hfDpoElTzVwT2b8Nge2DnpQHsOtayf5ImS29LGQMdBJaYvaVPn9nuNF3FSzBOslKwJUxDnbBKIVQDscr0mV28CHDaXHjI7hznGqRQ+EAUmR3GXMob7s0TaMCLzVL9AI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RLPHCyDH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E128C4CEC7;
-	Wed, 25 Sep 2024 12:15:40 +0000 (UTC)
+	 MIME-Version; b=rI7URLOicQzpjcx3z+f+7QXe2GUgUEDwpmuJ8p++a+y6FTuuYRCS0urP5u0H4f4bwpkQfcwbv6/tP6qaWq3/LQj2XfiKGt3PumK+B/WGLi4G/jEVN1VkInJFO4+x2/FYr75loaXAaW72n4b+a14CX/5R1I/P6tNHZ47NGZ0WCnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Buc81z9x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98D34C4CECD;
+	Wed, 25 Sep 2024 12:15:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727266543;
-	bh=+xT6rDDVtNf1Vv0lcTbElWaZT4Ymn1b56abe/VjLz5w=;
+	s=k20201202; t=1727266548;
+	bh=5bfg9Np6bY0Jpv5tAQ9Z9bpL4qFbDPQOKp0xgywQmGA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RLPHCyDH6KWypDMvRqZzk0L0ss3LOeDWpH9dysl/zz1XPDHuz/d3F2ivIlioYWXiN
-	 3N+QeNXo3JDI6pghqiCioYb26H+464DcIC7TYkEeuZm1ABHM3b8+EH5pT7hH3ZDg+u
-	 J++a2EcPILKLxgbabyqG9p4xL8EsfIL736HEqnDKAIul4ufItWzcM4nSgQnn5CgPkO
-	 awLbE8L0G5CN1nXExf4vuTke5VCEBWZoMdeD7px1NPDq6nEtseewPaJRxTqWgAAMyZ
-	 IoJo7rcJxARt5ok/WcOGa3smCq7+aSeePpBKa11c7pBTA3g3iO6MLh0u4FDJ8ElP/U
-	 eGSLM/gee+1jw==
+	b=Buc81z9x9aKAC3hfA+FtsiCtWTYZsxGix5hG2KaOZbrIaeinpeiw8sdQl+ErqTar1
+	 UYyggqmlHxq0T7OluxuVJlxoAnlYx22vgXfXCXIfs0cEe9S6nn04Pf2xIITwC3Fsg2
+	 u8fkyvRd/IgMRWClY9MsAHZKiJ+BNLZAE0gTcEzWyXzwK8iIKMIQXrTxIwCeRU0Sh+
+	 v57xYnBbC5DC7v4RUJ26cX3gpXhDDU1pDJ2j5wa9C3GZg/1VZhWrdFRHqcMmBQxftQ
+	 WDtg9fPXgUuT8fuyE4AR98uskzgOE1Ax2sLm1LXmj5jswij1HqfvSHj4Cotea/WXlC
+	 uaWRFJdKyjGTA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+Cc: Alex Hung <alex.hung@amd.com>,
+	Rodrigo Siqueira <rodrigo.siqueira@amd.com>,
 	Tom Chung <chiahsuan.chung@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Harry Wentland <harry.wentland@amd.com>,
-	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
+	harry.wentland@amd.com,
 	sunpeng.li@amd.com,
+	Rodrigo.Siqueira@amd.com,
 	christian.koenig@amd.com,
 	Xinhui.Pan@amd.com,
 	airlied@gmail.com,
 	daniel@ffwll.ch,
-	wenjing.liu@amd.com,
 	alvin.lee2@amd.com,
-	george.shen@amd.com,
+	wayne.lin@amd.com,
+	wenjing.liu@amd.com,
+	sungjoon.kim@amd.com,
+	aurabindo.pillai@amd.com,
 	dillon.varone@amd.com,
-	gabe.teeger@amd.com,
 	amd-gfx@lists.freedesktop.org,
 	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.6 091/139] drm/amd/display: Handle null 'stream_status' in 'planes_changed_for_existing_stream'
-Date: Wed, 25 Sep 2024 08:08:31 -0400
-Message-ID: <20240925121137.1307574-91-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 092/139] drm/amd/display: Check null pointers before using dc->clk_mgr
+Date: Wed, 25 Sep 2024 08:08:32 -0400
+Message-ID: <20240925121137.1307574-92-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925121137.1307574-1-sashal@kernel.org>
 References: <20240925121137.1307574-1-sashal@kernel.org>
@@ -83,49 +82,44 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.52
 Content-Transfer-Encoding: 8bit
 
-From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+From: Alex Hung <alex.hung@amd.com>
 
-[ Upstream commit 8141f21b941710ecebe49220b69822cab3abd23d ]
+[ Upstream commit 95d9e0803e51d5a24276b7643b244c7477daf463 ]
 
-This commit adds a null check for 'stream_status' in the function
-'planes_changed_for_existing_stream'. Previously, the code assumed
-'stream_status' could be null, but did not handle the case where it was
-actually null. This could lead to a null pointer dereference.
+[WHY & HOW]
+dc->clk_mgr is null checked previously in the same function, indicating
+it might be null.
 
-Reported by smatch:
-drivers/gpu/drm/amd/amdgpu/../display/dc/core/dc_resource.c:3784 planes_changed_for_existing_stream() error: we previously assumed 'stream_status' could be null (see line 3774)
+Passing "dc" to "dc->hwss.apply_idle_power_optimizations", which
+dereferences null "dc->clk_mgr". (The function pointer resolves to
+"dcn35_apply_idle_power_optimizations".)
 
-Cc: Tom Chung <chiahsuan.chung@amd.com>
-Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Cc: Roman Li <roman.li@amd.com>
-Cc: Alex Hung <alex.hung@amd.com>
-Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Cc: Harry Wentland <harry.wentland@amd.com>
-Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
-Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
+This fixes 1 FORWARD_NULL issue reported by Coverity.
+
+Reviewed-by: Rodrigo Siqueira <rodrigo.siqueira@amd.com>
+Signed-off-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Tom Chung <chiahsuan.chung@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc_resource.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/core/dc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-index 733e445331ea5..4b34bc9d4e4be 100644
---- a/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_resource.c
-@@ -2877,8 +2877,10 @@ static bool planes_changed_for_existing_stream(struct dc_state *context,
- 		}
- 	}
+diff --git a/drivers/gpu/drm/amd/display/dc/core/dc.c b/drivers/gpu/drm/amd/display/dc/core/dc.c
+index 0b2eb2a6c8e14..a7a6f6c5c7655 100644
+--- a/drivers/gpu/drm/amd/display/dc/core/dc.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc.c
+@@ -4716,7 +4716,8 @@ void dc_allow_idle_optimizations(struct dc *dc, bool allow)
+ 	if (allow == dc->idle_optimizations_allowed)
+ 		return;
  
--	if (!stream_status)
-+	if (!stream_status) {
- 		ASSERT(0);
-+		return false;
-+	}
+-	if (dc->hwss.apply_idle_power_optimizations && dc->hwss.apply_idle_power_optimizations(dc, allow))
++	if (dc->hwss.apply_idle_power_optimizations && dc->clk_mgr != NULL &&
++	    dc->hwss.apply_idle_power_optimizations(dc, allow))
+ 		dc->idle_optimizations_allowed = allow;
+ }
  
- 	for (i = 0; i < set_count; i++)
- 		if (set[i].stream == stream)
 -- 
 2.43.0
 
