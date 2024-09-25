@@ -1,62 +1,58 @@
-Return-Path: <stable+bounces-77629-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id EFDCA985F4B
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:54:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id ECE15985F4D
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:55:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B33DC285642
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:54:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B52442874FD
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:55:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7FEE118EFF1;
-	Wed, 25 Sep 2024 12:15:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 158CE2225AD;
+	Wed, 25 Sep 2024 12:15:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uquDa7JQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PBs+pHeQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38F2B18892C;
-	Wed, 25 Sep 2024 12:15:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C41062225A2;
+	Wed, 25 Sep 2024 12:15:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727266517; cv=none; b=mIhBv9GTB5x5Zf6qTi4B2IB81hLDB6aSMA/MyhhSSiWh+mTHY51QsXQM7yzO3yvHFBe9M1VWHi0YYq6dRt5COpVBB+ep2e+QGy7w/xxbBgqMAGMRwwpOAUHxodHkDzQbMMc8f9lJSxRPig1Fkc3dtiiNLgTA+pA3JVGV9RndRm0=
+	t=1727266518; cv=none; b=FLppD77K9DlHDkXAHWnuJoEIbR/3YZk8zaG8Sh9W8cE4xO4af5EugY8ozszPAwconfi2wri2EVxVzmJW+vj/RgmkA5+u7Aaul/RcLy01aIM8z9cAIwNEPUZrt3VpS7KqbELVY6wyRw+O27VF2t8vHCyhHXfhoLLaQfseT1p50lU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727266517; c=relaxed/simple;
-	bh=MVrHshqS6okqmx33IUUgWFbOHXM5m6ZOziCB0z65Fv4=;
+	s=arc-20240116; t=1727266518; c=relaxed/simple;
+	bh=2QsXvxIzmY/soKU9ltxARFqrs8sEr76VyVnjWZsYaE0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pe0QkOgIWBg7QSnxE38hmV5IY6fuqLjQj8sbhMJPnMslW3puwchpyUpCV9N8ZRzaRB9zJffKyWrnkJTqd5rmtE/InJ4sQsZ234VJhiiK1h2TbT2BpV1Lnd0QJFsDUpslK23WPX+iv8hIrkBALKMT4f68VJyQLYj5leavUZnJ0CU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uquDa7JQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96965C4CEC7;
-	Wed, 25 Sep 2024 12:15:15 +0000 (UTC)
+	 MIME-Version:Content-Type; b=obczRS7noutzfarEN/tVdNPFvuDW8JzTXS841G3tDTP15cyEMyxdk8X7e1VCqS5DTzGpkGuuRYFaN+6gtsc41MEh5eikGzdl+JtFmtlVDjIu+v0WGn5yp2PO2NXNRetuKAx1izi3oPPLmHMUHDtTc9V5fwvC6Y794WwCBOqWCKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PBs+pHeQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93A25C4CECE;
+	Wed, 25 Sep 2024 12:15:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727266517;
-	bh=MVrHshqS6okqmx33IUUgWFbOHXM5m6ZOziCB0z65Fv4=;
+	s=k20201202; t=1727266518;
+	bh=2QsXvxIzmY/soKU9ltxARFqrs8sEr76VyVnjWZsYaE0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uquDa7JQL0z+5dTRRJAg1PNq1bUZc2jn35p+CrlM0BGMHMwMwjEhuewJlDXG7J1Ek
-	 z9nkvqltAs1k0MjZnR/PixQbYyXci+nL2ACauKy+rEYZXtzr/R4sVpuXnACAUhHpyF
-	 sYiPoVFUv6FrF5I4xz4fMn72Ifdc4SPugRXM3vnxoAjb7DK/QMUJgFAMwRahbfwOjx
-	 sE+SbEKuEiaccov1ZCLuoLaLVC+aFC/u+LD1SyZvkDVev+4eHXyjxjShxzdo/L52cR
-	 m3IIlJmK9vuzqOB2WM1dQqAq1Yrqygco90EyZo3wvN0JdKJvV8Me4cswsoODqj5rOa
-	 riObZQRcVYNPA==
+	b=PBs+pHeQkkpHSkInt2q0SAzMf6ZH5R89b/0qFHzpG40wnunJrZFvzcX7LmTZfZz3g
+	 9NvyHWEBF9d5kVotB2FI4HQA51wOqggl4EFSrmB0yVDiv1J70xa1q+on0ORtNrH6xi
+	 D3iFLpgTtqzzohGXqKTKLWsaLTBFEuhBS2BR7I1DGVeAls/sTNWldT8jTlxZZp64kK
+	 a6HlTCWuZ/YaFm+wxQiHwdRPZfebiD1A2z6wXNmdZsLNhMx6D2g79u5I2jCTv+phuC
+	 rVPft9T31oWlfehRisE7havyyK76wJ86teAr5+ls1/UlZ5Y3cIsRaiQkVoKkcLFm4h
+	 opesXdL5WOB5Q==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Sanjay K Kumar <sanjay.k.kumar@intel.com>,
-	Jacob Pan <jacob.jun.pan@linux.intel.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Lu Baolu <baolu.lu@linux.intel.com>,
-	Joerg Roedel <jroedel@suse.de>,
+Cc: =?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	dwmw2@infradead.org,
-	joro@8bytes.org,
-	will@kernel.org,
-	iommu@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.6 082/139] iommu/vt-d: Fix potential lockup if qi_submit_sync called with 0 count
-Date: Wed, 25 Sep 2024 08:08:22 -0400
-Message-ID: <20240925121137.1307574-82-sashal@kernel.org>
+	lizefan.x@bytedance.com,
+	hannes@cmpxchg.org,
+	cgroups@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 083/139] cgroup: Disallow mounting v1 hierarchies without controller implementation
+Date: Wed, 25 Sep 2024 08:08:23 -0400
+Message-ID: <20240925121137.1307574-83-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925121137.1307574-1-sashal@kernel.org>
 References: <20240925121137.1307574-1-sashal@kernel.org>
@@ -66,130 +62,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.52
 Content-Transfer-Encoding: 8bit
 
-From: Sanjay K Kumar <sanjay.k.kumar@intel.com>
+From: Michal Koutný <mkoutny@suse.com>
 
-[ Upstream commit 3cf74230c139f208b7fb313ae0054386eee31a81 ]
+[ Upstream commit 3c41382e920f1dd5c9f432948fe799c07af1cced ]
 
-If qi_submit_sync() is invoked with 0 invalidation descriptors (for
-instance, for DMA draining purposes), we can run into a bug where a
-submitting thread fails to detect the completion of invalidation_wait.
-Subsequently, this led to a soft lockup. Currently, there is no impact
-by this bug on the existing users because no callers are submitting
-invalidations with 0 descriptors. This fix will enable future users
-(such as DMA drain) calling qi_submit_sync() with 0 count.
+The configs that disable some v1 controllers would still allow mounting
+them but with no controller-specific files. (Making such hierarchies
+equivalent to named v1 hierarchies.) To achieve behavior consistent with
+actual out-compilation of a whole controller, the mounts should treat
+respective controllers as non-existent.
 
-Suppose thread T1 invokes qi_submit_sync() with non-zero descriptors, while
-concurrently, thread T2 calls qi_submit_sync() with zero descriptors. Both
-threads then enter a while loop, waiting for their respective descriptors
-to complete. T1 detects its completion (i.e., T1's invalidation_wait status
-changes to QI_DONE by HW) and proceeds to call reclaim_free_desc() to
-reclaim all descriptors, potentially including adjacent ones of other
-threads that are also marked as QI_DONE.
+Wrap implementation into a helper function, leverage legacy_files to
+detect compiled out controllers. The effect is that mounts on v1 would
+fail and produce a message like:
+  [ 1543.999081] cgroup: Unknown subsys name 'memory'
 
-During this time, while T2 is waiting to acquire the qi->q_lock, the IOMMU
-hardware may complete the invalidation for T2, setting its status to
-QI_DONE. However, if T1's execution of reclaim_free_desc() frees T2's
-invalidation_wait descriptor and changes its status to QI_FREE, T2 will
-not observe the QI_DONE status for its invalidation_wait and will
-indefinitely remain stuck.
-
-This soft lockup does not occur when only non-zero descriptors are
-submitted.In such cases, invalidation descriptors are interspersed among
-wait descriptors with the status QI_IN_USE, acting as barriers. These
-barriers prevent the reclaim code from mistakenly freeing descriptors
-belonging to other submitters.
-
-Considered the following example timeline:
-	T1			T2
-========================================
-	ID1
-	WD1
-	while(WD1!=QI_DONE)
-	unlock
-				lock
-	WD1=QI_DONE*		WD2
-				while(WD2!=QI_DONE)
-				unlock
-	lock
-	WD1==QI_DONE?
-	ID1=QI_DONE		WD2=DONE*
-	reclaim()
-	ID1=FREE
-	WD1=FREE
-	WD2=FREE
-	unlock
-				soft lockup! T2 never sees QI_DONE in WD2
-
-Where:
-ID = invalidation descriptor
-WD = wait descriptor
-* Written by hardware
-
-The root of the problem is that the descriptor status QI_DONE flag is used
-for two conflicting purposes:
-1. signal a descriptor is ready for reclaim (to be freed)
-2. signal by the hardware that a wait descriptor is complete
-
-The solution (in this patch) is state separation by using QI_FREE flag
-for #1.
-
-Once a thread's invalidation descriptors are complete, their status would
-be set to QI_FREE. The reclaim_free_desc() function would then only
-free descriptors marked as QI_FREE instead of those marked as
-QI_DONE. This change ensures that T2 (from the previous example) will
-correctly observe the completion of its invalidation_wait (marked as
-QI_DONE).
-
-Signed-off-by: Sanjay K Kumar <sanjay.k.kumar@intel.com>
-Signed-off-by: Jacob Pan <jacob.jun.pan@linux.intel.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Link: https://lore.kernel.org/r/20240728210059.1964602-1-jacob.jun.pan@linux.intel.com
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Signed-off-by: Michal Koutný <mkoutny@suse.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/intel/dmar.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ kernel/cgroup/cgroup-v1.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/iommu/intel/dmar.c b/drivers/iommu/intel/dmar.c
-index 84f0459e503cf..7a38e18b18196 100644
---- a/drivers/iommu/intel/dmar.c
-+++ b/drivers/iommu/intel/dmar.c
-@@ -1202,9 +1202,7 @@ static void free_iommu(struct intel_iommu *iommu)
-  */
- static inline void reclaim_free_desc(struct q_inval *qi)
- {
--	while (qi->desc_status[qi->free_tail] == QI_DONE ||
--	       qi->desc_status[qi->free_tail] == QI_ABORT) {
--		qi->desc_status[qi->free_tail] = QI_FREE;
-+	while (qi->desc_status[qi->free_tail] == QI_FREE && qi->free_tail != qi->free_head) {
- 		qi->free_tail = (qi->free_tail + 1) % QI_LENGTH;
- 		qi->free_cnt++;
- 	}
-@@ -1439,8 +1437,16 @@ int qi_submit_sync(struct intel_iommu *iommu, struct qi_desc *desc,
- 		raw_spin_lock(&qi->q_lock);
- 	}
+diff --git a/kernel/cgroup/cgroup-v1.c b/kernel/cgroup/cgroup-v1.c
+index 9cb00ebe9ac6d..01149e47e1a72 100644
+--- a/kernel/cgroup/cgroup-v1.c
++++ b/kernel/cgroup/cgroup-v1.c
+@@ -46,6 +46,12 @@ bool cgroup1_ssid_disabled(int ssid)
+ 	return cgroup_no_v1_mask & (1 << ssid);
+ }
  
--	for (i = 0; i < count; i++)
--		qi->desc_status[(index + i) % QI_LENGTH] = QI_DONE;
-+	/*
-+	 * The reclaim code can free descriptors from multiple submissions
-+	 * starting from the tail of the queue. When count == 0, the
-+	 * status of the standalone wait descriptor at the tail of the queue
-+	 * must be set to QI_FREE to allow the reclaim code to proceed.
-+	 * It is also possible that descriptors from one of the previous
-+	 * submissions has to be reclaimed by a subsequent submission.
-+	 */
-+	for (i = 0; i <= count; i++)
-+		qi->desc_status[(index + i) % QI_LENGTH] = QI_FREE;
++static bool cgroup1_subsys_absent(struct cgroup_subsys *ss)
++{
++	/* Check also dfl_cftypes for file-less controllers, i.e. perf_event */
++	return ss->legacy_cftypes == NULL && ss->dfl_cftypes;
++}
++
+ /**
+  * cgroup_attach_task_all - attach task 'tsk' to all cgroups of task 'from'
+  * @from: attach to all cgroups of a given task
+@@ -932,7 +938,8 @@ int cgroup1_parse_param(struct fs_context *fc, struct fs_parameter *param)
+ 		if (ret != -ENOPARAM)
+ 			return ret;
+ 		for_each_subsys(ss, i) {
+-			if (strcmp(param->key, ss->legacy_name))
++			if (strcmp(param->key, ss->legacy_name) ||
++			    cgroup1_subsys_absent(ss))
+ 				continue;
+ 			if (!cgroup_ssid_enabled(i) || cgroup1_ssid_disabled(i))
+ 				return invalfc(fc, "Disabled controller '%s'",
+@@ -1024,7 +1031,8 @@ static int check_cgroupfs_options(struct fs_context *fc)
+ 	mask = ~((u16)1 << cpuset_cgrp_id);
+ #endif
+ 	for_each_subsys(ss, i)
+-		if (cgroup_ssid_enabled(i) && !cgroup1_ssid_disabled(i))
++		if (cgroup_ssid_enabled(i) && !cgroup1_ssid_disabled(i) &&
++		    !cgroup1_subsys_absent(ss))
+ 			enabled |= 1 << i;
  
- 	reclaim_free_desc(qi);
- 	raw_spin_unlock_irqrestore(&qi->q_lock, flags);
+ 	ctx->subsys_mask &= enabled;
 -- 
 2.43.0
 
