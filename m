@@ -1,60 +1,61 @@
-Return-Path: <stable+bounces-77588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77589-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B068985ED9
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:45:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9C74985FAF
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 16:03:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0D3531C256C4
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:45:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DAE17B2B35A
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:45:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22DCE21791E;
-	Wed, 25 Sep 2024 12:13:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46BD21D14F8;
+	Wed, 25 Sep 2024 12:13:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pS/avvEO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YM7sZJqc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA9FB217915;
-	Wed, 25 Sep 2024 12:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 002401D14ED;
+	Wed, 25 Sep 2024 12:13:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727266386; cv=none; b=Q1hRZ70jPjNEASouLl3MMN0mUXUcnYIWqejuWmy+D3QNV5rxAvqSxhB4B89DqvoRRINEiR8xtUenamv4ld8ouxYmOdMH1JBz3sn6ov98ms3pnnzHE/lUE48Ab5xahGd7r0ouX64WDnN/JTSSBixAkqxd+mtfk7Ho19KnwerRURQ=
+	t=1727266389; cv=none; b=QUaVD6cwbQ0kDFwbIThxInxkvT9UiPELjQk5DlqnSaZXSs6lNI5J07x/sISiX/tauUorq4wCor9EoooY+QffhQIcioXmPve+oPrRv/giU7pt/9R/XUv1PessOGo+0Lbx8bvNqIIsLvB5ZFWob3r7j1GtTk/y2wBUQmmrqW7fIH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727266386; c=relaxed/simple;
-	bh=lNsX2PUTbrpcPmh4/XGLpB4kD7q++jX5lt21AAe53jE=;
+	s=arc-20240116; t=1727266389; c=relaxed/simple;
+	bh=w69zHY5WGGQGuMEnH4vTSQUuCHg4t5goKv+0g4Ys2Vc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KOaMA1i1BRw0auggqZWAohxxv9+X7mw6Los/HtOlVJ9s5uTyHq+vr3PUcvm/rNAVNLw7RQhIx8kljl6x/VOJ9xeu2yvtvyKX0hj74ZAs75nx5LOGH1Y4DHsR5OxyYwoGZqFWCaYIpSyrFxZ8r98FUvecVG8LogOMUzcgCGxzOMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pS/avvEO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CCAFC4CEC7;
-	Wed, 25 Sep 2024 12:13:05 +0000 (UTC)
+	 MIME-Version; b=H24Ls79T9WV9zTgeubcJ4xnxQ+dZr0tdqbiphpYAFC+TVJKC/GFUd6bJvEl+sBbbrJJe/F5Bth2pXdNRagWUNHdNR+giJZ3YoVS8IE9AEdfFnw1P4vR/Y0hd6aAWCRkjrM/B5/M0WgnXK1Ofaibi6pdL+gJhutzcNIcxZMcxwxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YM7sZJqc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3790CC4CEC3;
+	Wed, 25 Sep 2024 12:13:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727266386;
-	bh=lNsX2PUTbrpcPmh4/XGLpB4kD7q++jX5lt21AAe53jE=;
+	s=k20201202; t=1727266388;
+	bh=w69zHY5WGGQGuMEnH4vTSQUuCHg4t5goKv+0g4Ys2Vc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pS/avvEOTScCz0juqtOkBYskDkvahkRdDthq2j0LYE2NVq/X0fdomUNheh35UjsOM
-	 1pGaTVUVql7OEK4qQS5G29ek0oZMimthX+yZUBiCwmbgIWpyn/SEFcDTo/PcpNnZ+8
-	 NYEzk5Z8YKi4V0LNohq1WwMuLSoFx1KQNaGxrQzh84W+Wf8wj6RelxuFOLYLzldzUi
-	 LkIti0KfgpKEWghBgqDeHzYGRuBxT3M8ajx6elz1kGda13XNpYmpDMdrmRAb/ICIV4
-	 dNIj5GbByvEpbKI9bzKPi/3rxIFO+Cg3unDrFT5A2HA4+acx7pl/3/bOBTctFRKdtC
-	 y+6d48Daz70Ew==
+	b=YM7sZJqcm2Ni3EaLuHakd3T8RRfIloM9N4ZY6qfXYnizAVdGNRkUESoGPfb6SNU7b
+	 50R3PbFAcjCphgxKlegbFp730UeqpDr7+fbAb4QJx7AZM6Lqy6od2REuQcWrpu0Oi/
+	 +ScXL+dW9NeBLsQM6Z45YhRP75P7TgbGIGUy7JkjTgdtpAtFET+xt5fUDyqAwJ2txL
+	 ex6hvG33qk5DtEXjOXGvjGpfddUwZcuMKrm3sx7H+/5OF88Mb2xn8YO4aGQY1cxK3R
+	 b9Rp489D4INxnsow6eskzq3Xi13owQC3LyGsE0hoj39rFELFBZHTJnlJCSHw/Ppd5d
+	 Shew7mn/tH+2g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Breno Leitao <leitao@debian.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+Cc: Jason Xing <kernelxing@tencent.com>,
+	Jade Dong <jadedong@tencent.com>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
 	davem@davemloft.net,
-	edumazet@google.com,
-	horms@kernel.org,
+	dsahern@kernel.org,
+	pabeni@redhat.com,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 042/139] netpoll: Ensure clean state on setup failures
-Date: Wed, 25 Sep 2024 08:07:42 -0400
-Message-ID: <20240925121137.1307574-42-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 043/139] tcp: avoid reusing FIN_WAIT2 when trying to find port in connect() process
+Date: Wed, 25 Sep 2024 08:07:43 -0400
+Message-ID: <20240925121137.1307574-43-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925121137.1307574-1-sashal@kernel.org>
 References: <20240925121137.1307574-1-sashal@kernel.org>
@@ -69,104 +70,79 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.52
 Content-Transfer-Encoding: 8bit
 
-From: Breno Leitao <leitao@debian.org>
+From: Jason Xing <kernelxing@tencent.com>
 
-[ Upstream commit ae5a0456e0b4cfd7e61619e55251ffdf1bc7adfb ]
+[ Upstream commit 0d9e5df4a257afc3a471a82961ace9a22b88295a ]
 
-Modify netpoll_setup() and __netpoll_setup() to ensure that the netpoll
-structure (np) is left in a clean state if setup fails for any reason.
-This prevents carrying over misconfigured fields in case of partial
-setup success.
+We found that one close-wait socket was reset by the other side
+due to a new connection reusing the same port which is beyond our
+expectation, so we have to investigate the underlying reason.
 
-Key changes:
-- np->dev is now set only after successful setup, ensuring it's always
-  NULL if netpoll is not configured or if netpoll_setup() fails.
-- np->local_ip is zeroed if netpoll setup doesn't complete successfully.
-- Added DEBUG_NET_WARN_ON_ONCE() checks to catch unexpected states.
-- Reordered some operations in __netpoll_setup() for better logical flow.
+The following experiment is conducted in the test environment. We
+limit the port range from 40000 to 40010 and delay the time to close()
+after receiving a fin from the active close side, which can help us
+easily reproduce like what happened in production.
 
-These changes improve the reliability of netpoll configuration, since it
-assures that the structure is fully initialized or totally unset.
+Here are three connections captured by tcpdump:
+127.0.0.1.40002 > 127.0.0.1.9999: Flags [S], seq 2965525191
+127.0.0.1.9999 > 127.0.0.1.40002: Flags [S.], seq 2769915070
+127.0.0.1.40002 > 127.0.0.1.9999: Flags [.], ack 1
+127.0.0.1.40002 > 127.0.0.1.9999: Flags [F.], seq 1, ack 1
+// a few seconds later, within 60 seconds
+127.0.0.1.40002 > 127.0.0.1.9999: Flags [S], seq 2965590730
+127.0.0.1.9999 > 127.0.0.1.40002: Flags [.], ack 2
+127.0.0.1.40002 > 127.0.0.1.9999: Flags [R], seq 2965525193
+// later, very quickly
+127.0.0.1.40002 > 127.0.0.1.9999: Flags [S], seq 2965590730
+127.0.0.1.9999 > 127.0.0.1.40002: Flags [S.], seq 3120990805
+127.0.0.1.40002 > 127.0.0.1.9999: Flags [.], ack 1
 
-Suggested-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Breno Leitao <leitao@debian.org>
-Link: https://patch.msgid.link/20240822111051.179850-2-leitao@debian.org
+As we can see, the first flow is reset because:
+1) client starts a new connection, I mean, the second one
+2) client tries to find a suitable port which is a timewait socket
+   (its state is timewait, substate is fin_wait2)
+3) client occupies that timewait port to send a SYN
+4) server finds a corresponding close-wait socket in ehash table,
+   then replies with a challenge ack
+5) client sends an RST to terminate this old close-wait socket.
+
+I don't think the port selection algo can choose a FIN_WAIT2 socket
+when we turn on tcp_tw_reuse because on the server side there
+remain unread data. In some cases, if one side haven't call close() yet,
+we should not consider it as expendable and treat it at will.
+
+Even though, sometimes, the server isn't able to call close() as soon
+as possible like what we expect, it can not be terminated easily,
+especially due to a second unrelated connection happening.
+
+After this patch, we can see the expected failure if we start a
+connection when all the ports are occupied in fin_wait2 state:
+"Ncat: Cannot assign requested address."
+
+Reported-by: Jade Dong <jadedong@tencent.com>
+Signed-off-by: Jason Xing <kernelxing@tencent.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20240823001152.31004-1-kerneljasonxing@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/netpoll.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ net/ipv4/tcp_ipv4.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/core/netpoll.c b/net/core/netpoll.c
-index 55bcacf67df3b..e082139004093 100644
---- a/net/core/netpoll.c
-+++ b/net/core/netpoll.c
-@@ -626,12 +626,9 @@ int __netpoll_setup(struct netpoll *np, struct net_device *ndev)
- 	const struct net_device_ops *ops;
- 	int err;
+diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+index 96d235bcf5cb2..df3ddf31f8e67 100644
+--- a/net/ipv4/tcp_ipv4.c
++++ b/net/ipv4/tcp_ipv4.c
+@@ -116,6 +116,9 @@ int tcp_twsk_unique(struct sock *sk, struct sock *sktw, void *twp)
+ 	const struct tcp_timewait_sock *tcptw = tcp_twsk(sktw);
+ 	struct tcp_sock *tp = tcp_sk(sk);
  
--	np->dev = ndev;
--	strscpy(np->dev_name, ndev->name, IFNAMSIZ);
--
- 	if (ndev->priv_flags & IFF_DISABLE_NETPOLL) {
- 		np_err(np, "%s doesn't support polling, aborting\n",
--		       np->dev_name);
-+		       ndev->name);
- 		err = -ENOTSUPP;
- 		goto out;
- 	}
-@@ -649,7 +646,7 @@ int __netpoll_setup(struct netpoll *np, struct net_device *ndev)
- 
- 		refcount_set(&npinfo->refcnt, 1);
- 
--		ops = np->dev->netdev_ops;
-+		ops = ndev->netdev_ops;
- 		if (ops->ndo_netpoll_setup) {
- 			err = ops->ndo_netpoll_setup(ndev, npinfo);
- 			if (err)
-@@ -660,6 +657,8 @@ int __netpoll_setup(struct netpoll *np, struct net_device *ndev)
- 		refcount_inc(&npinfo->refcnt);
- 	}
- 
-+	np->dev = ndev;
-+	strscpy(np->dev_name, ndev->name, IFNAMSIZ);
- 	npinfo->netpoll = np;
- 
- 	/* last thing to do is link it to the net device structure */
-@@ -677,6 +676,7 @@ EXPORT_SYMBOL_GPL(__netpoll_setup);
- int netpoll_setup(struct netpoll *np)
- {
- 	struct net_device *ndev = NULL;
-+	bool ip_overwritten = false;
- 	struct in_device *in_dev;
- 	int err;
- 
-@@ -741,6 +741,7 @@ int netpoll_setup(struct netpoll *np)
- 			}
- 
- 			np->local_ip.ip = ifa->ifa_local;
-+			ip_overwritten = true;
- 			np_info(np, "local IP %pI4\n", &np->local_ip.ip);
- 		} else {
- #if IS_ENABLED(CONFIG_IPV6)
-@@ -757,6 +758,7 @@ int netpoll_setup(struct netpoll *np)
- 					    !!(ipv6_addr_type(&np->remote_ip.in6) & IPV6_ADDR_LINKLOCAL))
- 						continue;
- 					np->local_ip.in6 = ifp->addr;
-+					ip_overwritten = true;
- 					err = 0;
- 					break;
- 				}
-@@ -787,6 +789,9 @@ int netpoll_setup(struct netpoll *np)
- 	return 0;
- 
- put:
-+	DEBUG_NET_WARN_ON_ONCE(np->dev);
-+	if (ip_overwritten)
-+		memset(&np->local_ip, 0, sizeof(np->local_ip));
- 	netdev_put(ndev, &np->dev_tracker);
- unlock:
- 	rtnl_unlock();
++	if (tw->tw_substate == TCP_FIN_WAIT2)
++		reuse = 0;
++
+ 	if (reuse == 2) {
+ 		/* Still does not detect *everything* that goes through
+ 		 * lo, since we require a loopback src or dst address
 -- 
 2.43.0
 
