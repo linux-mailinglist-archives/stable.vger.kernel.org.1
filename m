@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-77357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C707985C3B
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:42:49 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 205CC985C3E
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:43:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BA71F1F28DAA
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:42:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D0F55285747
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:43:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D08851ACDF6;
-	Wed, 25 Sep 2024 11:59:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB1161CC884;
+	Wed, 25 Sep 2024 11:59:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qlVAsvg5"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tf092sjc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8297D1714C6;
-	Wed, 25 Sep 2024 11:59:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8459A1C32E9;
+	Wed, 25 Sep 2024 11:59:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727265542; cv=none; b=hkN0TEOa4L8FUILif699CB3uQpD9d6QFdxHv+ka7saMJzdQx3wFsmiPGepqy5elqwAKtGfS9zEX0roj1R7F9pv+sBjucAjmc+wqBZtEv0wvEZcoQdaEAu0m4Pv3iOZdxGhZYdCq3En7Q5PeKol01mBnMbQdaxwWLFLDAp4y3TYQ=
+	t=1727265544; cv=none; b=oneAB+xvpjHkXIQk6aXTeSC++c09oZW83Ty/4tXYq4NxoYgtP5tPW2IVHtmHA2ito6luxld3/Icp3Fisc3q6LxHCNVNJyYpg/iuMU2EF/ZYln4vRYWM4l2W4lIUhXgmqqZTpyUp/YADsmcFqptdEwhLCBRABJAoq+dqXSID3MDc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727265542; c=relaxed/simple;
-	bh=GBAo6MwrULjwRQNw5KThPU7V3CJYVg5MOj1bngCwdMs=;
+	s=arc-20240116; t=1727265544; c=relaxed/simple;
+	bh=Fo5xBJHXU4CNwnOmk14HOBVh5ZuqGt3jlBtjF4mgNp4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jo6sRkGGGlhMi+AKfceXm5GMRaCwZUQiQ6gTGx92E8BNDPHOf8YliXkXciliwaR3NmZIObjV/Kg5WB0mcDAGywF4pMRU+Y+ydJfP7ds3hxIrWPC4X+8xV+3H8PAANHmYZw62AdtUHSnPbuZcenAHFCgisshHDYOgPX1levYD72o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qlVAsvg5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4683FC4CEC3;
-	Wed, 25 Sep 2024 11:59:00 +0000 (UTC)
+	 MIME-Version; b=DZaGNwi3VyXRhESjlJ+a7K+pueps5ifZv4XB4ybunwMIZrPXF4yypuPJJ5gZmXgC38e59KZhRj0UAgCEAmrAAOZdWFpdC6use+QlyKg/Tc7dfb5BhRTZzkvth3eOGFQAjLDFy56sC/kifagPm+YQywifsxmOx6oeMwZD8TRNs+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tf092sjc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 981C5C4CEC7;
+	Wed, 25 Sep 2024 11:59:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727265542;
-	bh=GBAo6MwrULjwRQNw5KThPU7V3CJYVg5MOj1bngCwdMs=;
+	s=k20201202; t=1727265544;
+	bh=Fo5xBJHXU4CNwnOmk14HOBVh5ZuqGt3jlBtjF4mgNp4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qlVAsvg5vNTW3vI//LKfurMRgc3yEYXDdG0BWWZXmcEBah5VikPhuWCwl+7+Jcrue
-	 httWIqGnLzu25DoDtIrAWxGPZOLX0a8yjWQbQZLNysaYP9aSKxDyC7ommkPUsnShwi
-	 dyk2x0SsBgtCbZuSOYUJyqc96JmjXO+u17lIFnOLtFvbFfR7x3MRRCN1gGKDCl5i64
-	 yT8WNUTsZjv6QZTyUwaxyLLZpfLmiSaumIJYDkUCv6wMkA8PuA3uVJAc4pmthkCSwm
-	 56kgoMvGEzC+pfB8U/dRn5XbsU4ofvddM4MMAE4ADBMzM5dSq64ST3TmmnN9Q2RZuI
-	 jKo9F7+9D1ZQQ==
+	b=Tf092sjc7cvAkJSoR/goIE1jTdKfIdkYQQfhopRfw6ofnliLA6ZAWRXQRsua3Cl6D
+	 vr0faHkFD30vtZHaQXaduv7qF6TYyDawn8MTBRjNBcaMFESe3KFrzXfMt+g1JjFD3n
+	 Qp8rTI74TMUXwsyRygeKYdq+zRGjZAz2Cc6JWnNHc7uo5jBNpC0zLl260HB8Ujd0mh
+	 e7YjlnNyZubrSPNGXguMYcjD2yDbBVqeD3ombzMjPlwBTREX5qu84ITjlCdc5AC00/
+	 +zBIcYuEIBW/v9ga0SiF+/nNKaWACeau2h7CTaksz9BU9lEKHcigbMkuO5zVbWDE/W
+	 kkdTw1EECjIOw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
@@ -53,13 +53,10 @@ Cc: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	davem@davemloft.net,
 	edumazet@google.com,
 	pabeni@redhat.com,
-	shaojijie@huawei.com,
-	wojciech.drewek@intel.com,
-	liuyonglong@huawei.com,
 	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 013/197] net: hisilicon: hns_dsaf_mac: fix OF node leak in hns_mac_get_info()
-Date: Wed, 25 Sep 2024 07:50:32 -0400
-Message-ID: <20240925115823.1303019-13-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.10 014/197] net: hisilicon: hns_mdio: fix OF node leak in probe()
+Date: Wed, 25 Sep 2024 07:50:33 -0400
+Message-ID: <20240925115823.1303019-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925115823.1303019-1-sashal@kernel.org>
 References: <20240925115823.1303019-1-sashal@kernel.org>
@@ -76,32 +73,32 @@ Content-Transfer-Encoding: 8bit
 
 From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 5680cf8d34e1552df987e2f4bb1bff0b2a8c8b11 ]
+[ Upstream commit e62beddc45f487b9969821fad3a0913d9bc18a2f ]
 
 Driver is leaking OF node reference from
-of_parse_phandle_with_fixed_args() in hns_mac_get_info().
+of_parse_phandle_with_fixed_args() in probe().
 
 Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20240827144421.52852-3-krzysztof.kozlowski@linaro.org
+Link: https://patch.msgid.link/20240827144421.52852-4-krzysztof.kozlowski@linaro.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns/hns_dsaf_mac.c | 1 +
+ drivers/net/ethernet/hisilicon/hns_mdio.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns/hns_dsaf_mac.c b/drivers/net/ethernet/hisilicon/hns/hns_dsaf_mac.c
-index f75668c479351..616a2768e5048 100644
---- a/drivers/net/ethernet/hisilicon/hns/hns_dsaf_mac.c
-+++ b/drivers/net/ethernet/hisilicon/hns/hns_dsaf_mac.c
-@@ -933,6 +933,7 @@ static int hns_mac_get_info(struct hns_mac_cb *mac_cb)
- 			mac_cb->cpld_ctrl = NULL;
+diff --git a/drivers/net/ethernet/hisilicon/hns_mdio.c b/drivers/net/ethernet/hisilicon/hns_mdio.c
+index ed73707176c1a..8a047145f0c50 100644
+--- a/drivers/net/ethernet/hisilicon/hns_mdio.c
++++ b/drivers/net/ethernet/hisilicon/hns_mdio.c
+@@ -575,6 +575,7 @@ static int hns_mdio_probe(struct platform_device *pdev)
+ 						MDIO_SC_RESET_ST;
+ 				}
+ 			}
++			of_node_put(reg_args.np);
  		} else {
- 			syscon = syscon_node_to_regmap(cpld_args.np);
-+			of_node_put(cpld_args.np);
- 			if (IS_ERR_OR_NULL(syscon)) {
- 				dev_dbg(mac_cb->dev, "no cpld-syscon found!\n");
- 				mac_cb->cpld_ctrl = NULL;
+ 			dev_warn(&pdev->dev, "find syscon ret = %#x\n", ret);
+ 			mdio_dev->subctrl_vbase = NULL;
 -- 
 2.43.0
 
