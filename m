@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-77680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 171FE98604B
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 16:19:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C2AE985FEC
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 16:09:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ED5E9B2E2CD
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:07:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A76E1F25F3F
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:09:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A58C522B9CD;
-	Wed, 25 Sep 2024 12:17:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 624E01D55B1;
+	Wed, 25 Sep 2024 12:18:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fS1WtrCM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VBljBbCV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B44422B9C1;
-	Wed, 25 Sep 2024 12:17:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1290C1D55A2;
+	Wed, 25 Sep 2024 12:18:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727266677; cv=none; b=nzuXisVhg6hfCACZveQ3FTAJVnTBpwQnwMnOpT1CL3ISnf3DpMbo6mfrOc+W6VB1SwIVnuKB8jOD0JlUg/0YF0+IC67DloYAyryPpNUBu7wZJkH60wcLfyMh1t0TB0slNnNMIM5lgRLCQbVneP4E6sYac4OPQ52WHH5i+68NADA=
+	t=1727266687; cv=none; b=mWVlGgzMiuvJCbACoBFfen3fF6fMQXksQr/LrcgefrR+FhaobbVK/IXubnBIWgc8FHXjdOkdljYk9cJ3RNmYjSdTYSeTrmUohDzFvMPbCTFEQlASizq9ZUxWqc0VN1EVrcdocneFakRa4ViGPEW3oxw5SiqichyeqUSjeT0E9lg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727266677; c=relaxed/simple;
-	bh=nIIKd5YSZSnaNbBoRTtv9QLwV4f15ukMLK8I3+PHJ/I=;
+	s=arc-20240116; t=1727266687; c=relaxed/simple;
+	bh=bBwdSrHKlREvdmD7IQIorAcY3I+8xCMaVmhxKor0NHc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P2CFziSDLUhuliIvRgmh2x6/1cCc5DuYkYkdw12rC5MQwP3b0hfLA5/7QDs9zLwrGd2u78iJe6PTPR32rxwe7loUGIT51wzJRJfctfZkFnEJsxwt7pHv3Ygu+BpDheIVdyYSRrGJSm+eXmnQIxoOJthpkMCForgLBnrvG/cIiLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fS1WtrCM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D068FC4CED0;
-	Wed, 25 Sep 2024 12:17:55 +0000 (UTC)
+	 MIME-Version; b=XezrTYMJ87nbQ1ji06224rwfb6Mjl1XA3ne/6cZ+nVH0+PMKApO1R2cqs5+gSy0vmcNYMyc/FxnsowjrkeEinZGpSpaw0wB+4Le7RjT5hHIHxEM65k79QqI/g5SgqXZIvb4sKt/+tb1vSap3WBxT1JOzEfupLZ3Imb6mgd8cSsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VBljBbCV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D84B3C4CEC7;
+	Wed, 25 Sep 2024 12:18:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727266676;
-	bh=nIIKd5YSZSnaNbBoRTtv9QLwV4f15ukMLK8I3+PHJ/I=;
+	s=k20201202; t=1727266686;
+	bh=bBwdSrHKlREvdmD7IQIorAcY3I+8xCMaVmhxKor0NHc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fS1WtrCMZ933IqEGGrqsBU3YENHyyvkwmpQNEyRwUSPlaKR6TPzX5BHfIr0IhugdC
-	 a0j2C79LTSJl0i5MkFm0KV/zjxMzIaj2689R1RpeXpvKMYMbn6JDEZpPC3akaq+bvA
-	 jknosDqm3DArdCpH+msZ1I6u8+BP6c2n77OcjKlWdQ6dkTINVHc7KqDjH6xvxsNu8A
-	 XU5Cz1dC1iNVs7mDiP0x7uoocN4Ic5yaNLVJqRIYlYJZBcrks2k0e+tcvAGLuxVvnK
-	 BufkMtIgrCRhmJWIp3clEi8WTrxLX7aFZ1aQRbc6IDIyQXygVfbiMbhokrXybyL3AO
-	 ZXD9fNZDK5iJA==
+	b=VBljBbCVLs/h1KcWUrfNvprzWcUkK/8iHWcQ++BwZBsa9PHoPXfUgU0Ima8KZTIBn
+	 AQo1yZwEeXtewZ3vZ5JKa1iNoCN/tU3locVFB+yjj/fLiyW/5G5VWZMGuk1oPkRhuu
+	 hBUHlqPt8N2aK9SVHEdm8AXKwTuI5nT3+96glyWcWhK2RjebAfhkj+t4e/pZ9ySuOA
+	 KHP1QD4V7wlCj9H9+/CAr/UpLWX86NL4ja8X3rP/TR0qj2AfpCw/9MKkBqB+Rgn5Gn
+	 ALo7pyj9nR/dwZIiN8AM5hUtOrhzT1kZOBdOiKjFYyMcBFuLX+xlwfL0Iq0AplBOfT
+	 R7MvrVU+iT3+w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Juntong Deng <juntong.deng@outlook.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+Cc: Christoph Hellwig <hch@lst.de>,
+	"Darrick J . Wong" <djwong@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	daniel@iogearbox.net,
-	andrii@kernel.org,
-	bpf@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 132/139] bpf: Make the pointer returned by iter next method valid
-Date: Wed, 25 Sep 2024 08:09:12 -0400
-Message-ID: <20240925121137.1307574-132-sashal@kernel.org>
+	linux-xfs@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 138/139] iomap: handle a post-direct I/O invalidate race in iomap_write_delalloc_release
+Date: Wed, 25 Sep 2024 08:09:18 -0400
+Message-ID: <20240925121137.1307574-138-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925121137.1307574-1-sashal@kernel.org>
 References: <20240925121137.1307574-1-sashal@kernel.org>
@@ -67,106 +67,46 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.52
 Content-Transfer-Encoding: 8bit
 
-From: Juntong Deng <juntong.deng@outlook.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 4cc8c50c9abcb2646a7a4fcef3cea5dcb30c06cf ]
+[ Upstream commit 7a9d43eace888a0ee6095035997bb138425844d3 ]
 
-Currently we cannot pass the pointer returned by iter next method as
-argument to KF_TRUSTED_ARGS or KF_RCU kfuncs, because the pointer
-returned by iter next method is not "valid".
+When direct I/O completions invalidates the page cache it holds neither the
+i_rwsem nor the invalidate_lock so it can be racing with
+iomap_write_delalloc_release.  If the search for the end of the region that
+contains data returns the start offset we hit such a race and just need to
+look for the end of the newly created hole instead.
 
-This patch sets the pointer returned by iter next method to be valid.
-
-This is based on the fact that if the iterator is implemented correctly,
-then the pointer returned from the iter next method should be valid.
-
-This does not make NULL pointer valid. If the iter next method has
-KF_RET_NULL flag, then the verifier will ask the ebpf program to
-check NULL pointer.
-
-KF_RCU_PROTECTED iterator is a special case, the pointer returned by
-iter next method should only be valid within RCU critical section,
-so it should be with MEM_RCU, not PTR_TRUSTED.
-
-Another special case is bpf_iter_num_next, which returns a pointer with
-base type PTR_TO_MEM. PTR_TO_MEM should not be combined with type flag
-PTR_TRUSTED (PTR_TO_MEM already means the pointer is valid).
-
-The pointer returned by iter next method of other types of iterators
-is with PTR_TRUSTED.
-
-In addition, this patch adds get_iter_from_state to help us get the
-current iterator from the current state.
-
-Signed-off-by: Juntong Deng <juntong.deng@outlook.com>
-Link: https://lore.kernel.org/r/AM6PR03MB584869F8B448EA1C87B7CDA399962@AM6PR03MB5848.eurprd03.prod.outlook.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20240910043949.3481298-2-hch@lst.de
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 26 ++++++++++++++++++++++----
- 1 file changed, 22 insertions(+), 4 deletions(-)
+ fs/iomap/buffered-io.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 9d5699942273e..2cc5288820354 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -7846,6 +7846,15 @@ static int widen_imprecise_scalars(struct bpf_verifier_env *env,
- 	return 0;
- }
- 
-+static struct bpf_reg_state *get_iter_from_state(struct bpf_verifier_state *cur_st,
-+						 struct bpf_kfunc_call_arg_meta *meta)
-+{
-+	int iter_frameno = meta->iter.frameno;
-+	int iter_spi = meta->iter.spi;
-+
-+	return &cur_st->frame[iter_frameno]->stack[iter_spi].spilled_ptr;
-+}
-+
- /* process_iter_next_call() is called when verifier gets to iterator's next
-  * "method" (e.g., bpf_iter_num_next() for numbers iterator) call. We'll refer
-  * to it as just "iter_next()" in comments below.
-@@ -7930,12 +7939,10 @@ static int process_iter_next_call(struct bpf_verifier_env *env, int insn_idx,
- 	struct bpf_verifier_state *cur_st = env->cur_state, *queued_st, *prev_st;
- 	struct bpf_func_state *cur_fr = cur_st->frame[cur_st->curframe], *queued_fr;
- 	struct bpf_reg_state *cur_iter, *queued_iter;
--	int iter_frameno = meta->iter.frameno;
--	int iter_spi = meta->iter.spi;
- 
- 	BTF_TYPE_EMIT(struct bpf_iter);
- 
--	cur_iter = &env->cur_state->frame[iter_frameno]->stack[iter_spi].spilled_ptr;
-+	cur_iter = get_iter_from_state(cur_st, meta);
- 
- 	if (cur_iter->iter.state != BPF_ITER_STATE_ACTIVE &&
- 	    cur_iter->iter.state != BPF_ITER_STATE_DRAINED) {
-@@ -7963,7 +7970,7 @@ static int process_iter_next_call(struct bpf_verifier_env *env, int insn_idx,
- 		if (!queued_st)
- 			return -ENOMEM;
- 
--		queued_iter = &queued_st->frame[iter_frameno]->stack[iter_spi].spilled_ptr;
-+		queued_iter = get_iter_from_state(queued_st, meta);
- 		queued_iter->iter.state = BPF_ITER_STATE_ACTIVE;
- 		queued_iter->iter.depth++;
- 		if (prev_st)
-@@ -12020,6 +12027,17 @@ static int check_kfunc_call(struct bpf_verifier_env *env, struct bpf_insn *insn,
- 			regs[BPF_REG_0].btf = desc_btf;
- 			regs[BPF_REG_0].type = PTR_TO_BTF_ID;
- 			regs[BPF_REG_0].btf_id = ptr_type_id;
-+
-+			if (is_iter_next_kfunc(&meta)) {
-+				struct bpf_reg_state *cur_iter;
-+
-+				cur_iter = get_iter_from_state(env->cur_state, &meta);
-+
-+				if (cur_iter->type & MEM_RCU) /* KF_RCU_PROTECTED */
-+					regs[BPF_REG_0].type |= MEM_RCU;
-+				else
-+					regs[BPF_REG_0].type |= PTR_TRUSTED;
-+			}
+diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+index 6b89b5589ba28..9cac1ba6bb523 100644
+--- a/fs/iomap/buffered-io.c
++++ b/fs/iomap/buffered-io.c
+@@ -1177,7 +1177,15 @@ static int iomap_write_delalloc_release(struct inode *inode,
+ 			error = data_end;
+ 			goto out_unlock;
  		}
+-		WARN_ON_ONCE(data_end <= start_byte);
++
++		/*
++		 * If we race with post-direct I/O invalidation of the page cache,
++		 * there might be no data left at start_byte.
++		 */
++		if (data_end == start_byte)
++			continue;
++
++		WARN_ON_ONCE(data_end < start_byte);
+ 		WARN_ON_ONCE(data_end > scan_end_byte);
  
- 		if (is_kfunc_ret_null(&meta)) {
+ 		error = iomap_write_delalloc_scan(inode, &punch_start_byte,
 -- 
 2.43.0
 
