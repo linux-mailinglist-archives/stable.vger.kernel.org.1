@@ -1,56 +1,63 @@
-Return-Path: <stable+bounces-77583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77584-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC858985FE2
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 16:08:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC1F8985ECF
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:44:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7BFBBB2B5A3
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:43:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDEFB1C25626
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:44:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1489818EFDD;
-	Wed, 25 Sep 2024 12:12:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E29D71D0F67;
+	Wed, 25 Sep 2024 12:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iWOFpQYg"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QL0G51iQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4206216A3D;
-	Wed, 25 Sep 2024 12:12:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 965581D0F5B;
+	Wed, 25 Sep 2024 12:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727266375; cv=none; b=Q5xAX4prcZ6RI/79R/UdLi6GsbRs79sQOrgOGytvjMamlS1RCGJ5q5gz962MudVQYprzpcwuNkmDH5yESV6bnmkEuRfrZiDkqCHsHRAcknUL/8hCsLLin6zXsB2z/6uRUk7zFZm7a3fXlLG4TtzJruZXaPk/B2/R/ezH+abHoSg=
+	t=1727266377; cv=none; b=UV2el92p8D4nKXvsET7tlV8kzHy9Qc4BoPOzOQxoYBEkMtAcaR2XbUOyJIm549XHtFkp/8sLXUmzz6Xh1sl/WwV7b6KNXjUta8piVnRUob4WN1QjNJVayANbakc5B6C8ObkVQCEf7wRJbqG5kq2b9phKAVsDYqNSpiDa8ROKgks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727266375; c=relaxed/simple;
-	bh=jJUfpjmwhJsF7UnpSXZZrof5Jsc4qCO7Lf8A0gmCb7o=;
+	s=arc-20240116; t=1727266377; c=relaxed/simple;
+	bh=9SJN0SgPf+AkuIT/R5MeKY9JII9J8ldz2TPbpr0c1RE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dh/EtG4j9Bc4FOM3Mc5KNW7xnP1ZPgGqr33lrlQCvI3OVyH1XAG1DI4WyRt/WtkE4nyuo07dRaBxufh2eXCcGJuOwhNKvGZvet1NQRWzDCqi+73tCoL7s1KaNxl+/g/RccGfRiXoB9lysa7v+cuRtvcfh3PFvnmqrltx1J0FwV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iWOFpQYg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87AF2C4CEC3;
-	Wed, 25 Sep 2024 12:12:54 +0000 (UTC)
+	 MIME-Version; b=MvSL0LHYW7V/HZqoy+xtJN8kk0K4rr9Eo/LASjAtPW1lgkp6J5zgvrzt1ZdYsXXDRmOFUDtxkt2JLiVBWl54Ab10HHqEjjczdqk8BwPgjzJ88842U5L6lW0wwTJr24/AIy502dnm1VVGQ5yxw3yGgQxL63XYM6VFQoqE6iF0a7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QL0G51iQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6F61C4CECD;
+	Wed, 25 Sep 2024 12:12:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727266375;
-	bh=jJUfpjmwhJsF7UnpSXZZrof5Jsc4qCO7Lf8A0gmCb7o=;
+	s=k20201202; t=1727266377;
+	bh=9SJN0SgPf+AkuIT/R5MeKY9JII9J8ldz2TPbpr0c1RE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iWOFpQYgtuffxhLVnfR33SY+zcvng910zVeB0jDEIA0S2o4qSd7VfekX8rPlX7tp+
-	 XnRuRrMg8Zhk7prh/aOdHUDzHSL7K31O/OG4ZPHK40ksHEdarjyK/NytehLp7DfkB7
-	 0jWMTCFxitNDFuCx9Nn67YjiS19YBjiyo9ETVKH13ydMSoB3jB1iP9Z6TZ/zgUxNTr
-	 Lmfs0wwr86+jk7TF8CJqmqNKXdBe6XD5T/8ysXK7Sz0xheacQ2tqLp7jpDUCH2dWCy
-	 7OFkksDQJNqWrdKX6Rg6WJPE+Ogm0X1XYrq6FvAfnYjK8xlQ4CO+164Hnnl8arfTmk
-	 zSW8+cj60q0mQ==
+	b=QL0G51iQYyQvhvIusn2n6XaVW7JEaWhIznaO2RGagMxXLeuM73DKG5uS3XkPC2hyq
+	 V+9QEEHyIXfqbAfjJfy5dNL0Xjc8c4TemydKKkrJMzpHlwJlPAfvpXIlHjMeRdp8Ua
+	 0eRx3UMJ6dM01Cq72wTrj8vhV+1dfexLop9m8rHw3tuVYD/ZKr0AoXb59I5H6gyXww
+	 lLybrcehVIRxeXvPpyKt9ws5ofLmRqnVpr50VRBrgVydR5f1ux1JuYZgz3e19y4VIF
+	 d0qk/t4l/VKxipuntpLnnYOUFj3mx6GBFFN3xRLuD9I/P5PPIS8pUfLk2LhbGzgCED
+	 utR8uF8ovlyRQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ping-Ke Shih <pkshih@realtek.com>,
+Cc: Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>,
-	kvalo@kernel.org,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.6 037/139] wifi: rtw89: correct base HT rate mask for firmware
-Date: Wed, 25 Sep 2024 08:07:37 -0400
-Message-ID: <20240925121137.1307574-37-sashal@kernel.org>
+	kadlec@netfilter.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.6 038/139] netfilter: nf_tables: don't initialize registers in nft_do_chain()
+Date: Wed, 25 Sep 2024 08:07:38 -0400
+Message-ID: <20240925121137.1307574-38-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925121137.1307574-1-sashal@kernel.org>
 References: <20240925121137.1307574-1-sashal@kernel.org>
@@ -65,51 +72,37 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.6.52
 Content-Transfer-Encoding: 8bit
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 45742881f9eee2a4daeb6008e648a460dd3742cd ]
+[ Upstream commit c88baabf16d1ef74ab8832de9761226406af5507 ]
 
-Coverity reported that u8 rx_mask << 24 will become signed 32 bits, which
-casting to unsigned 64 bits will do sign extension. For example,
-putting 0x80000000 (signed 32 bits) to a u64 variable will become
-0xFFFFFFFF_80000000.
+revert commit 4c905f6740a3 ("netfilter: nf_tables: initialize registers in
+nft_do_chain()").
 
-The real case we meet is:
-  rx_mask[0...3] = ff ff 00 00
-  ra_mask = 0xffffffff_ff0ff000
+Previous patch makes sure that loads from uninitialized registers are
+detected from the control plane. in this case rule blob auto-zeroes
+registers.  Thus the explicit zeroing is not needed anymore.
 
-After this fix:
-  rx_mask[0...3] = ff ff 00 00
-  ra_mask = 0x00000000_ff0ff000
-
-Fortunately driver does bitwise-AND with incorrect ra_mask and supported
-rates (1ss and 2ss rate only) afterward, so the final rate mask of
-original code is still correct.
-
-Addresses-Coverity-ID: 1504762 ("Unintended sign extension")
-
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20240809072012.84152-5-pkshih@realtek.com
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/phy.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/netfilter/nf_tables_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
-index 7139146cb3fad..fac83b718a30c 100644
---- a/drivers/net/wireless/realtek/rtw89/phy.c
-+++ b/drivers/net/wireless/realtek/rtw89/phy.c
-@@ -284,8 +284,8 @@ static void rtw89_phy_ra_sta_update(struct rtw89_dev *rtwdev,
- 		csi_mode = RTW89_RA_RPT_MODE_HT;
- 		ra_mask |= ((u64)sta->deflink.ht_cap.mcs.rx_mask[3] << 48) |
- 			   ((u64)sta->deflink.ht_cap.mcs.rx_mask[2] << 36) |
--			   (sta->deflink.ht_cap.mcs.rx_mask[1] << 24) |
--			   (sta->deflink.ht_cap.mcs.rx_mask[0] << 12);
-+			   ((u64)sta->deflink.ht_cap.mcs.rx_mask[1] << 24) |
-+			   ((u64)sta->deflink.ht_cap.mcs.rx_mask[0] << 12);
- 		high_rate_masks = rtw89_ra_mask_ht_rates;
- 		if (sta->deflink.ht_cap.cap & IEEE80211_HT_CAP_RX_STBC)
- 			stbc_en = 1;
+diff --git a/net/netfilter/nf_tables_core.c b/net/netfilter/nf_tables_core.c
+index 711c22ab701dd..3b0b6c28cca5e 100644
+--- a/net/netfilter/nf_tables_core.c
++++ b/net/netfilter/nf_tables_core.c
+@@ -256,7 +256,7 @@ nft_do_chain(struct nft_pktinfo *pkt, void *priv)
+ 	const struct net *net = nft_net(pkt);
+ 	const struct nft_expr *expr, *last;
+ 	const struct nft_rule_dp *rule;
+-	struct nft_regs regs = {};
++	struct nft_regs regs;
+ 	unsigned int stackptr = 0;
+ 	struct nft_jumpstack jumpstack[NFT_JUMP_STACK_SIZE];
+ 	bool genbit = READ_ONCE(net->nft.gencursor);
 -- 
 2.43.0
 
