@@ -1,100 +1,113 @@
-Return-Path: <stable+bounces-77696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A0F69860C2
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 16:32:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D71D898610A
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 16:39:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4F26288466
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:32:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 811551F2241A
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:39:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D9BD17BB26;
-	Wed, 25 Sep 2024 13:25:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="T1k15y4h"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 151E6187859;
+	Wed, 25 Sep 2024 13:51:50 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from MSK-MAILEDGE.securitycode.ru (msk-mailedge.securitycode.ru [195.133.217.143])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6527118C936
-	for <stable@vger.kernel.org>; Wed, 25 Sep 2024 13:25:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C690B187349;
+	Wed, 25 Sep 2024 13:51:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.133.217.143
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727270722; cv=none; b=hXGzBl3k+K3jkTzgl+FvSBOA2DUStSqLdvK9jsS48+pnTxNjjeKO+cd1N1XG/9cn21rMCAY0kWikw1/9zCL51X6vmx54UYG11JnBSLcbukR4+nNOEcvSF0che7d7c9WrZ4oOGfJexacG0uEfulvxVZwbxlEt1rvmdMcUXC/+fak=
+	t=1727272309; cv=none; b=g9uRcHF2qD2P26rhVQcbjeh5iqurIjqJ2fRKOGBsbwvgyif13zP3mAkEX08QnACUwaoZNA58Fb1uFBc8K1ouGstb8+HeA95sr4P16GUiouY47JDrq1lhJpMwFLfLL1XzkmRgmz2NPJ0dvLiP3u3fPpaHq8ls3hOZz8GAFLxxoJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727270722; c=relaxed/simple;
-	bh=2JteTvAbmc00AHrkef6ooggrZhytJf4QtwqafmPHan8=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=cMO2GzTI2FSl45kvaQJjIsGvUlMv0jifObdfmQk8ZB1+2PqgEno234SoUpUFk0i+9nCTArO4AyGc+HGKrPEvWinChTYr/RrLNscFhKw9j8DG251qDDhXwb9O9lyk8Jlj6KyIGrcvVqabyNcSB6SSFfGm4NPCn+4MB60D6uK1wXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=T1k15y4h; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1727270722; x=1758806722;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=2JteTvAbmc00AHrkef6ooggrZhytJf4QtwqafmPHan8=;
-  b=T1k15y4ha5edi+5gXXZkcQOVAW2M0msw/KuEKymdV12IvzofD84Ugk/z
-   r3HfKXIUgiBrSq68Tf3RidV05gMnZva6qfuRCfpMFJld853HCdU+l4Ona
-   2cK3YPz3v+0dYNusfDExub1/TGGAydeoDlffeRozvYmR02uMgHCwC5Ofr
-   /B5U9uZNMsVhLhfaOU1AqEHl+29OPuXwAcoza0koq7Nv1Pu5FFN9rKjfI
-   f1uXF9i/2adKJKcOkLBXg5rw25cz5haEFNTXldWWBjWPnLrptrTAAgXuV
-   AL3q6fjxiYT2jyVswTHoUvsFXDhOkobFOpQo8fUGvtw+EgIpnU43rF7ky
-   g==;
-X-CSE-ConnectionGUID: IPFQQRVORaqUerN5XDMjaQ==
-X-CSE-MsgGUID: NOQavUtGQsO02q9BIbcm9w==
-X-IronPort-AV: E=McAfee;i="6700,10204,11206"; a="37458715"
-X-IronPort-AV: E=Sophos;i="6.10,257,1719903600"; 
-   d="scan'208";a="37458715"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2024 06:25:21 -0700
-X-CSE-ConnectionGUID: 6yRlcm7tSzaK7ZD0/HIRzQ==
-X-CSE-MsgGUID: iqR4b6YXSYaORjTahwRtLw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,257,1719903600"; 
-   d="scan'208";a="71915685"
-Received: from lkp-server01.sh.intel.com (HELO 53e96f405c61) ([10.239.97.150])
-  by fmviesa008.fm.intel.com with ESMTP; 25 Sep 2024 06:25:20 -0700
-Received: from kbuild by 53e96f405c61 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1stS17-000JZ5-0q;
-	Wed, 25 Sep 2024 13:25:17 +0000
-Date: Wed, 25 Sep 2024 21:25:03 +0800
-From: kernel test robot <lkp@intel.com>
-To: Gaosheng Cui <cuigaosheng1@huawei.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH -next 2/2] kobject: fix memory leak when
- kobject_add_varg() returns error
-Message-ID: <ZvQPL0_3_qEWNLNZ@5849f93d069a>
+	s=arc-20240116; t=1727272309; c=relaxed/simple;
+	bh=LJMspkkmkJNMuzldXg0HbzppHr8ThVXxB8kGMLh1ytY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=vFotEizjqZS/woZ4kZXrnRPn7+DyMJU4gJ8HweEZAK9zyeTbdobSAIF5p3Mi0RqGQDNRrTARYBZ7iOj963xem+pFNXsGMKCQgOxFa7KkHkCezRXtTkEXSlyI16MheXzoANOr2+OzxeGj3ZEXkXPHcZnYdFjQOayNvr4VWgcDiF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=securitycode.ru; spf=pass smtp.mailfrom=securitycode.ru; arc=none smtp.client-ip=195.133.217.143
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=securitycode.ru
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=securitycode.ru
+From: George Rurikov <g.ryurikov@securitycode.ru>
+To: Heiner Kallweit <hkallweit1@gmail.com>
+CC: George Rurikov <g.ryurikov@securitycode.ru>, <nic_swsd@realtek.com>,
+	"David S. Miller" <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	<netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<stable@vger.kernel.org>
+Subject: [PATCH] r8169: Potential divizion by zero in rtl_set_coalesce()
+Date: Wed, 25 Sep 2024 16:51:06 +0300
+Message-ID: <20240925135106.2084111-1-g.ryurikov@securitycode.ru>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240925120747.1930709-3-cuigaosheng1@huawei.com>
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+X-ClientProxiedBy: SPB-EX1.Securitycode.ru (172.16.24.91) To
+ MSK-EX2.Securitycode.ru (172.17.8.92)
 
-Hi,
+Variable 'scale', whose possible value set allows a zero value in a check
+at r8169_main.c:2014, is used as a denominator at r8169_main.c:2040 and
+r8169_main.c:2042.
 
-Thanks for your patch.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+Fixes: 2815b30535a0 ("r8169: merge scale for tx and rx irq coalescing")
+Cc: stable@vger.kernel.org
+Signed-off-by: George Rurikov <g.ryurikov@securitycode.ru>
+---
+ drivers/net/ethernet/realtek/r8169_main.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethern=
+et/realtek/r8169_main.c
+index 45ac8befba29..b97e68cfcfad 100644
+--- a/drivers/net/ethernet/realtek/r8169_main.c
++++ b/drivers/net/ethernet/realtek/r8169_main.c
+@@ -2011,7 +2011,7 @@ static int rtl_set_coalesce(struct net_device *dev,
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH -next 2/2] kobject: fix memory leak when kobject_add_varg() returns error
-Link: https://lore.kernel.org/stable/20240925120747.1930709-3-cuigaosheng1%40huawei.com
+        coal_usec_max =3D max(ec->rx_coalesce_usecs, ec->tx_coalesce_usecs)=
+;
+        scale =3D rtl_coalesce_choose_scale(tp, coal_usec_max, &cp01);
+-       if (scale < 0)
++       if (scale <=3D 0)
+                return scale;
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+        /* Accept max_frames=3D1 we returned in rtl_get_coalesce. Accept it
+--
+2.34.1
 
+=D0=97=D0=B0=D1=8F=D0=B2=D0=BB=D0=B5=D0=BD=D0=B8=D0=B5 =D0=BE =D0=BA=D0=BE=
+=D0=BD=D1=84=D0=B8=D0=B4=D0=B5=D0=BD=D1=86=D0=B8=D0=B0=D0=BB=D1=8C=D0=BD=D0=
+=BE=D1=81=D1=82=D0=B8
 
-
+=D0=94=D0=B0=D0=BD=D0=BD=D0=BE=D0=B5 =D1=8D=D0=BB=D0=B5=D0=BA=D1=82=D1=80=
+=D0=BE=D0=BD=D0=BD=D0=BE=D0=B5 =D0=BF=D0=B8=D1=81=D1=8C=D0=BC=D0=BE =D0=B8 =
+=D0=BB=D1=8E=D0=B1=D1=8B=D0=B5 =D0=BF=D1=80=D0=B8=D0=BB=D0=BE=D0=B6=D0=B5=
+=D0=BD=D0=B8=D1=8F =D0=BA =D0=BD=D0=B5=D0=BC=D1=83 =D1=8F=D0=B2=D0=BB=D1=8F=
+=D1=8E=D1=82=D1=81=D1=8F =D0=BA=D0=BE=D0=BD=D1=84=D0=B8=D0=B4=D0=B5=D0=BD=
+=D1=86=D0=B8=D0=B0=D0=BB=D1=8C=D0=BD=D1=8B=D0=BC=D0=B8 =D0=B8 =D0=BF=D1=80=
+=D0=B5=D0=B4=D0=BD=D0=B0=D0=B7=D0=BD=D0=B0=D1=87=D0=B5=D0=BD=D1=8B =D0=B8=
+=D1=81=D0=BA=D0=BB=D1=8E=D1=87=D0=B8=D1=82=D0=B5=D0=BB=D1=8C=D0=BD=D0=BE =
+=D0=B4=D0=BB=D1=8F =D0=B0=D0=B4=D1=80=D0=B5=D1=81=D0=B0=D1=82=D0=B0. =D0=95=
+=D1=81=D0=BB=D0=B8 =D0=92=D1=8B =D0=BD=D0=B5 =D1=8F=D0=B2=D0=BB=D1=8F=D0=B5=
+=D1=82=D0=B5=D1=81=D1=8C =D0=B0=D0=B4=D1=80=D0=B5=D1=81=D0=B0=D1=82=D0=BE=
+=D0=BC =D0=B4=D0=B0=D0=BD=D0=BD=D0=BE=D0=B3=D0=BE =D0=BF=D0=B8=D1=81=D1=8C=
+=D0=BC=D0=B0, =D0=BF=D0=BE=D0=B6=D0=B0=D0=BB=D1=83=D0=B9=D1=81=D1=82=D0=B0,=
+ =D1=83=D0=B2=D0=B5=D0=B4=D0=BE=D0=BC=D0=B8=D1=82=D0=B5 =D0=BD=D0=B5=D0=BC=
+=D0=B5=D0=B4=D0=BB=D0=B5=D0=BD=D0=BD=D0=BE =D0=BE=D1=82=D0=BF=D1=80=D0=B0=
+=D0=B2=D0=B8=D1=82=D0=B5=D0=BB=D1=8F, =D0=BD=D0=B5 =D1=80=D0=B0=D1=81=D0=BA=
+=D1=80=D1=8B=D0=B2=D0=B0=D0=B9=D1=82=D0=B5 =D1=81=D0=BE=D0=B4=D0=B5=D1=80=
+=D0=B6=D0=B0=D0=BD=D0=B8=D0=B5 =D0=B4=D1=80=D1=83=D0=B3=D0=B8=D0=BC =D0=BB=
+=D0=B8=D1=86=D0=B0=D0=BC, =D0=BD=D0=B5 =D0=B8=D1=81=D0=BF=D0=BE=D0=BB=D1=8C=
+=D0=B7=D1=83=D0=B9=D1=82=D0=B5 =D0=B5=D0=B3=D0=BE =D0=B2 =D0=BA=D0=B0=D0=BA=
+=D0=B8=D1=85-=D0=BB=D0=B8=D0=B1=D0=BE =D1=86=D0=B5=D0=BB=D1=8F=D1=85, =D0=
+=BD=D0=B5 =D1=85=D1=80=D0=B0=D0=BD=D0=B8=D1=82=D0=B5 =D0=B8 =D0=BD=D0=B5 =
+=D0=BA=D0=BE=D0=BF=D0=B8=D1=80=D1=83=D0=B9=D1=82=D0=B5 =D0=B8=D0=BD=D1=84=
+=D0=BE=D1=80=D0=BC=D0=B0=D1=86=D0=B8=D1=8E =D0=BB=D1=8E=D0=B1=D1=8B=D0=BC =
+=D1=81=D0=BF=D0=BE=D1=81=D0=BE=D0=B1=D0=BE=D0=BC.
 
