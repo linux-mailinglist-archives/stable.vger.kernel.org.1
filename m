@@ -1,65 +1,57 @@
-Return-Path: <stable+bounces-77529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81982985E1A
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:28:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8C56985EA2
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:39:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B2F891C2155F
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:28:13 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5B775B2E076
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:28:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91F0B1B6535;
-	Wed, 25 Sep 2024 12:08:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55AF320C153;
+	Wed, 25 Sep 2024 12:08:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IKWh6fwQ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cN9+//Tk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C6731B653C;
-	Wed, 25 Sep 2024 12:08:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C19720C14D;
+	Wed, 25 Sep 2024 12:08:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727266129; cv=none; b=hgbevn0UFp4x8NJZckX8wr2cjR34GmT7GkPJyAbCplr12UAK3egVr4+nw3PVrXJsr9rzwRXcWhnW2oAWRRX36qObl2ukTi12TquCcSti590f4CkQoWfM18T8m4Ok8l3KMFeJXjtMKmXy1qm/7yLHF859JLyP0qQtmSHC6MmwUug=
+	t=1727266131; cv=none; b=hw5entDJUCrFpvDw5SCI4IMYrlBGIvAA+rirq/LjCc10JjZpdjxAsk2DbmKc+A5FLme1ztWXrA0eT/Hx4maFjTAf6UB+hEUD0H/wkU6G618Ro9wmAAZHeBYydl69ZnB0F2v0pGtYgO2YitsvWzooLac/SCuKNopMYWMYFITiuSM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727266129; c=relaxed/simple;
-	bh=LC8pAFstEtE61gtgjCCenRyq0lLhQld7aNIfNo1FJsw=;
+	s=arc-20240116; t=1727266131; c=relaxed/simple;
+	bh=OnV7qzzwH6NPn/520Cf5g/lY+BS9FbbTVsUT194JJPA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W8fXEmeqszkv5mEuUtzY+VOBDDRmgSVynk8gsv7SbKdqWqGpdKMayuzxqpk60clPYtmTKyIQyc7x2qRxVLpz+dKnbe5Gyl9+sGurFjcg4jEMpsAlgEeatAp+pHxFbxPjzHWuluqb8ie5LL+fbbU048As3LJayrkl4Nl3O44U+qU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IKWh6fwQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6880AC4CEC3;
-	Wed, 25 Sep 2024 12:08:47 +0000 (UTC)
+	 MIME-Version; b=K4TXVF3kPj0zXZTWWOr0ex8NYzG4IuJ8FQzinGvpstdl0F6LSNGmR5c0da4zPmFLB4eVVq6mfboE4+gnRdbXNpBOcn7MFrpKG8+Mfvk74rv0FxS3gjxR/z76M8xuHOKqNLybMMk4ddY7l8es2T41xeX+NaM/rJALoZiiWU74At4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cN9+//Tk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9EDBC4CEC7;
+	Wed, 25 Sep 2024 12:08:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727266129;
-	bh=LC8pAFstEtE61gtgjCCenRyq0lLhQld7aNIfNo1FJsw=;
+	s=k20201202; t=1727266130;
+	bh=OnV7qzzwH6NPn/520Cf5g/lY+BS9FbbTVsUT194JJPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IKWh6fwQmWKdOZPeYn8th/oy/7V6qDQRPlB/0LC2uo152HzFRfQnkOXyC11qxgz34
-	 6W6VX7/5Zc2upFBjjTd4Z8vy0ZBb6HH0tq2IthgFzbz9VIi7gdyANsYH/OhgjpoUnV
-	 41HkzcKZyg3gYFydoxP2H2PsaYcU/JH1khSSspIrUB6x1iaCbWV5TglI4cctoESDOp
-	 klOnSelxo6rJFrNQ/yQdkdMforeSexMsuGe0UVoIuyAjiisrh+GlWTH8aPXI+J0E8e
-	 9caFFJxwAAw6P5Aji1Y8OeqJbGs3YB9k7pcOWtd81RzN8hLSHIoD1+4fJKs6g58+ef
-	 04ggHTmIdYjvA==
+	b=cN9+//TkTOvgi6MvwLAWUJBx/iF7E+xTO4kxN/KZgKasYqq5+6WAYHVhJmSAc5+vD
+	 0OxSf78Z05wKuWyDijLqv8GGU/07UrolDKdZ9ZPZX3sF4EDvW2jLWpl3jwJAJo7upG
+	 Hk8ileB1drrMSbckaS6BS1q9aSIOWyN5A9PzyLSH0B59TADiVn2VfZgWZOLXzym6wk
+	 EpOZ18B/xJAWkJd5VObmc2z7qMRu8714nsONbiWIyU42I73xjr9oOilbVLQfyEJauc
+	 wF/8zrFwJ4LJLMPk9eZe4ZYQeMJ9XAAd53Le9j1c7CDNHv0TlEFv3Sl7LlM04mykUa
+	 JXUaV+tZm2rxA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Alex Deucher <alexander.deucher@amd.com>,
-	Vitaly Prosyak <vitaly.prosyak@amd.com>,
+Cc: Gergo Koteles <soyer@irl.hu>,
+	Hans de Goede <hdegoede@redhat.com>,
 	Sasha Levin <sashal@kernel.org>,
-	christian.koenig@amd.com,
-	Xinhui.Pan@amd.com,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
-	sunil.khatri@amd.com,
-	zhenguo.yin@amd.com,
-	kevinyang.wang@amd.com,
-	Jun.Ma2@amd.com,
-	amd-gfx@lists.freedesktop.org,
-	dri-devel@lists.freedesktop.org
-Subject: [PATCH AUTOSEL 6.10 181/197] drm/amdgpu/gfx10: use rlc safe mode for soft recovery
-Date: Wed, 25 Sep 2024 07:53:20 -0400
-Message-ID: <20240925115823.1303019-181-sashal@kernel.org>
+	ilpo.jarvinen@linux.intel.com,
+	platform-driver-x86@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.10 182/197] platform/x86: lenovo-ymc: Ignore the 0x0 state
+Date: Wed, 25 Sep 2024 07:53:21 -0400
+Message-ID: <20240925115823.1303019-182-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925115823.1303019-1-sashal@kernel.org>
 References: <20240925115823.1303019-1-sashal@kernel.org>
@@ -74,33 +66,44 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.11
 Content-Transfer-Encoding: 8bit
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Gergo Koteles <soyer@irl.hu>
 
-[ Upstream commit ead60e9c4e29c8574cae1be4fe3af1d9a978fb0f ]
+[ Upstream commit d9dca215708d32e7f88ac0591fbb187cbf368adb ]
 
-Protect the MMIO access with safe mode.
+While booting, Lenovo 14ARB7 reports 'lenovo-ymc: Unknown key 0 pressed'
+warning. This is caused by lenovo_ymc_probe() calling lenovo_ymc_notify()
+at probe time to get the initial tablet-mode-switch state and the key-code
+lenovo_ymc_notify() reads from the firmware is not initialized at probe
+time yet on the Lenovo 14ARB7.
 
-Acked-by: Vitaly Prosyak <vitaly.prosyak@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+The hardware/firmware does an ACPI notify on the WMI device itself when
+it initializes the tablet-mode-switch state later on.
+
+Add 0x0 YMC state to the sparse keymap to silence the warning.
+
+Signed-off-by: Gergo Koteles <soyer@irl.hu>
+Link: https://lore.kernel.org/r/08ab73bb74c4ad448409f2ce707b1148874a05ce.1724340562.git.soyer@irl.hu
+[hdegoede@redhat.com: Reword commit message]
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c | 2 ++
+ drivers/platform/x86/lenovo-ymc.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-index 536287ddd2ec1..6204336750c6a 100644
---- a/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-+++ b/drivers/gpu/drm/amd/amdgpu/gfx_v10_0.c
-@@ -8897,7 +8897,9 @@ static void gfx_v10_0_ring_soft_recovery(struct amdgpu_ring *ring,
- 	value = REG_SET_FIELD(value, SQ_CMD, MODE, 0x01);
- 	value = REG_SET_FIELD(value, SQ_CMD, CHECK_VMID, 1);
- 	value = REG_SET_FIELD(value, SQ_CMD, VM_ID, vmid);
-+	amdgpu_gfx_rlc_enter_safe_mode(adev, 0);
- 	WREG32_SOC15(GC, 0, mmSQ_CMD, value);
-+	amdgpu_gfx_rlc_exit_safe_mode(adev, 0);
- }
+diff --git a/drivers/platform/x86/lenovo-ymc.c b/drivers/platform/x86/lenovo-ymc.c
+index e0bbd6a14a89c..bd9f95404c7cb 100644
+--- a/drivers/platform/x86/lenovo-ymc.c
++++ b/drivers/platform/x86/lenovo-ymc.c
+@@ -43,6 +43,8 @@ struct lenovo_ymc_private {
+ };
  
- static void
+ static const struct key_entry lenovo_ymc_keymap[] = {
++	/* Ignore the uninitialized state */
++	{ KE_IGNORE, 0x00 },
+ 	/* Laptop */
+ 	{ KE_SW, 0x01, { .sw = { SW_TABLET_MODE, 0 } } },
+ 	/* Tablet */
 -- 
 2.43.0
 
