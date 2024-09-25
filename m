@@ -1,59 +1,65 @@
-Return-Path: <stable+bounces-77346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77347-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75E3B985C25
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:40:21 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0AEC985C2A
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:40:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2FBA1B2A15B
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:39:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3DE4EB2A1C4
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:39:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5A601A3041;
-	Wed, 25 Sep 2024 11:58:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C80561A38C6;
+	Wed, 25 Sep 2024 11:58:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ed4eM4X8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WaTuzN8Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CDC918785E;
-	Wed, 25 Sep 2024 11:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 731A41A3052;
+	Wed, 25 Sep 2024 11:58:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727265512; cv=none; b=URjgORvTrS9MEvUZQDZ1lbgQ1z5bUkF0QRSySWekx5ZtES+6cG1h9zibyCNsV1j+QzewOQDB0Y/Df6TXd74RThOKreJLGpkccuJsr0VBIs5A/gJOd0CzMR38rSb98ENbC+X3zpkUxAv1x66tNpipfBWN+uC/2fmg79n/sXNY1Ow=
+	t=1727265513; cv=none; b=ejqgM11Oi8iJsjgIMnzO88VBZQG57HqEvHY6++HtjWSceWnlfVZbf39oA5MA+GJBtmeGmSQURSqYnPDKOC26nnO7cg+UwB+xxEd2fsMDSo4yHpzv5DUoQRuBnaFhvyiSh3GbQRHJo3LLOqn2nCO9WyhkFknVmSTJxbLgPK6xpgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727265512; c=relaxed/simple;
-	bh=04L9H7rILcMMC3wyWIRI4MWyb1bdq6z06FXZZkEPWok=;
+	s=arc-20240116; t=1727265513; c=relaxed/simple;
+	bh=BCRPbZGT2cytSH/WPYdWdJfSm5/GQ9nDnLyBHUbxs8Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nPnNVK3loxNbzP4q9GK35EWvDfE76057DwHmA7nBILJJiEfMHYY2sJEhLNQw8CZCXz1m7RNFydsdluZsU18d5vff2AfeFH6Kl6iMPJcQp2qjM74DiM1a2j8sElJnvVDZkV5xif1lki83Rl/660COvfO/shrOvyJTuFjiahjNOo8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ed4eM4X8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 027A5C4CEC7;
-	Wed, 25 Sep 2024 11:58:28 +0000 (UTC)
+	 MIME-Version; b=sJMzr217DDqPDsiXIRxY+J51PYjDriVtAQoRpfzMaqFaOWEyoWvS3M1MvuVcFo0Uvk8INJ9zwHQLxbaZvLQRH1OH5oF09/f1Mg0/hcGfffxNZ78yMvE3ksocG/3ccyXOq4pdwjClEjTlS5f1SDBqKWItzOHvz47YpMfynFj4GxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WaTuzN8Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB260C4CECF;
+	Wed, 25 Sep 2024 11:58:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727265510;
-	bh=04L9H7rILcMMC3wyWIRI4MWyb1bdq6z06FXZZkEPWok=;
+	s=k20201202; t=1727265513;
+	bh=BCRPbZGT2cytSH/WPYdWdJfSm5/GQ9nDnLyBHUbxs8Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ed4eM4X8F86IHk+BE1/nkQceRgAEhFKmOfj3J6vvAswwgkjBSJ1nDGKpd6uqzXxvK
-	 fiW4V1Xldm3CkGZV3Qe/HvfseKPZNmKmqygPogTbnU7Myd1xsEbLif204ESqQmkpGD
-	 JgF1f1MGSGkQ717Y7wUMFs5XKh3MebE+qjKkTyv/lMbZNdhQnX1qSAoFXStuNlDuWa
-	 ToF4dSYWhUupI1ufg64MQQcseHdc8IcDkEvw2AV0zoKFOqzZnmnyUd5vBNna+52kXd
-	 A3j7Bqjo0lKN4mRb4Yje/LvpvQhCa30QcxX0bZKvl9hxlbBVTSJwRjHE6XQmce6Lur
-	 nDtlTrbF8kfXw==
+	b=WaTuzN8Zsl6d0xWYRTltEXBawv/UHAnvSbbgIloA3lxNa3CrD+B62RTDMJA1V6kfb
+	 4e+NmyNgdFH5tuFcFFy03BF5rWGObArJ0cftLHhQAJiThuYlA+SapbWOA516Sn2Sri
+	 EvaYWN7sXOElZ8wt8rCKN+CldRhZ56AceNqQ6T7nsqtsMGJmIQfuL7w0/yOx6lMBbE
+	 m8EZxCcJRCuTJ1QifSxODvyw4UkUpawx1c4DEKFv1WHS9HYfEJZcrd2fdG1vPDqAY0
+	 4NvmbumOsyRfr4z4GuyGH/+DNxuU+rRwKVwMAkzQP2cGZN1qDDRWKOK83pXzXb++13
+	 qEHbZyPICNazw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	syzbot+98afa303be379af6cdb2@syzkaller.appspotmail.com,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+Cc: Fangrui Song <maskray@google.com>,
+	Jan Beulich <jbeulich@suse.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>,
-	toke@toke.dk,
-	kvalo@kernel.org,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 003/197] wifi: ath9k_htc: Use __skb_set_length() for resetting urb before resubmit
-Date: Wed, 25 Sep 2024 07:50:22 -0400
-Message-ID: <20240925115823.1303019-3-sashal@kernel.org>
+	davem@davemloft.net,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	nathan@kernel.org,
+	linux-crypto@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.10 004/197] crypto: x86/sha256 - Add parentheses around macros' single arguments
+Date: Wed, 25 Sep 2024 07:50:23 -0400
+Message-ID: <20240925115823.1303019-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925115823.1303019-1-sashal@kernel.org>
 References: <20240925115823.1303019-1-sashal@kernel.org>
@@ -63,59 +69,95 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.11
 Content-Transfer-Encoding: 8bit
 
-From: Toke Høiland-Jørgensen <toke@redhat.com>
+From: Fangrui Song <maskray@google.com>
 
-[ Upstream commit 94745807f3ebd379f23865e6dab196f220664179 ]
+[ Upstream commit 3363c460ef726ba693704dbcd73b7e7214ccc788 ]
 
-Syzbot points out that skb_trim() has a sanity check on the existing length of
-the skb, which can be uninitialised in some error paths. The intent here is
-clearly just to reset the length to zero before resubmitting, so switch to
-calling __skb_set_length(skb, 0) directly. In addition, __skb_set_length()
-already contains a call to skb_reset_tail_pointer(), so remove the redundant
-call.
+The macros FOUR_ROUNDS_AND_SCHED and DO_4ROUNDS rely on an
+unexpected/undocumented behavior of the GNU assembler, which might
+change in the future
+(https://sourceware.org/bugzilla/show_bug.cgi?id=32073).
 
-The syzbot report came from ath9k_hif_usb_reg_in_cb(), but there's a similar
-usage of skb_trim() in ath9k_hif_usb_rx_cb(), change both while we're at it.
+    M (1) (2) // 1 arg !? Future: 2 args
+    M 1 + 2   // 1 arg !? Future: 3 args
 
-Reported-by: syzbot+98afa303be379af6cdb2@syzkaller.appspotmail.com
-Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://patch.msgid.link/20240812142447.12328-1-toke@toke.dk
+    M 1 2     // 2 args
+
+Add parentheses around the single arguments to support future GNU
+assembler and LLVM integrated assembler (when the IsOperator hack from
+the following link is dropped).
+
+Link: https://github.com/llvm/llvm-project/commit/055006475e22014b28a070db1bff41ca15f322f0
+Signed-off-by: Fangrui Song <maskray@google.com>
+Reviewed-by: Jan Beulich <jbeulich@suse.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath9k/hif_usb.c | 6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ arch/x86/crypto/sha256-avx2-asm.S | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/hif_usb.c b/drivers/net/wireless/ath/ath9k/hif_usb.c
-index 0c7841f952287..a3733c9b484e4 100644
---- a/drivers/net/wireless/ath/ath9k/hif_usb.c
-+++ b/drivers/net/wireless/ath/ath9k/hif_usb.c
-@@ -716,8 +716,7 @@ static void ath9k_hif_usb_rx_cb(struct urb *urb)
- 	}
+diff --git a/arch/x86/crypto/sha256-avx2-asm.S b/arch/x86/crypto/sha256-avx2-asm.S
+index 0ffb072be9561..0bbec1c75cd0b 100644
+--- a/arch/x86/crypto/sha256-avx2-asm.S
++++ b/arch/x86/crypto/sha256-avx2-asm.S
+@@ -592,22 +592,22 @@ SYM_TYPED_FUNC_START(sha256_transform_rorx)
+ 	leaq	K256+0*32(%rip), INP		## reuse INP as scratch reg
+ 	vpaddd	(INP, SRND), X0, XFER
+ 	vmovdqa XFER, 0*32+_XFER(%rsp, SRND)
+-	FOUR_ROUNDS_AND_SCHED	_XFER + 0*32
++	FOUR_ROUNDS_AND_SCHED	(_XFER + 0*32)
  
- resubmit:
--	skb_reset_tail_pointer(skb);
--	skb_trim(skb, 0);
-+	__skb_set_length(skb, 0);
+ 	leaq	K256+1*32(%rip), INP
+ 	vpaddd	(INP, SRND), X0, XFER
+ 	vmovdqa XFER, 1*32+_XFER(%rsp, SRND)
+-	FOUR_ROUNDS_AND_SCHED	_XFER + 1*32
++	FOUR_ROUNDS_AND_SCHED	(_XFER + 1*32)
  
- 	usb_anchor_urb(urb, &hif_dev->rx_submitted);
- 	ret = usb_submit_urb(urb, GFP_ATOMIC);
-@@ -754,8 +753,7 @@ static void ath9k_hif_usb_reg_in_cb(struct urb *urb)
- 	case -ESHUTDOWN:
- 		goto free_skb;
- 	default:
--		skb_reset_tail_pointer(skb);
--		skb_trim(skb, 0);
-+		__skb_set_length(skb, 0);
+ 	leaq	K256+2*32(%rip), INP
+ 	vpaddd	(INP, SRND), X0, XFER
+ 	vmovdqa XFER, 2*32+_XFER(%rsp, SRND)
+-	FOUR_ROUNDS_AND_SCHED	_XFER + 2*32
++	FOUR_ROUNDS_AND_SCHED	(_XFER + 2*32)
  
- 		goto resubmit;
- 	}
+ 	leaq	K256+3*32(%rip), INP
+ 	vpaddd	(INP, SRND), X0, XFER
+ 	vmovdqa XFER, 3*32+_XFER(%rsp, SRND)
+-	FOUR_ROUNDS_AND_SCHED	_XFER + 3*32
++	FOUR_ROUNDS_AND_SCHED	(_XFER + 3*32)
+ 
+ 	add	$4*32, SRND
+ 	cmp	$3*4*32, SRND
+@@ -618,12 +618,12 @@ SYM_TYPED_FUNC_START(sha256_transform_rorx)
+ 	leaq	K256+0*32(%rip), INP
+ 	vpaddd	(INP, SRND), X0, XFER
+ 	vmovdqa XFER, 0*32+_XFER(%rsp, SRND)
+-	DO_4ROUNDS	_XFER + 0*32
++	DO_4ROUNDS	(_XFER + 0*32)
+ 
+ 	leaq	K256+1*32(%rip), INP
+ 	vpaddd	(INP, SRND), X1, XFER
+ 	vmovdqa XFER, 1*32+_XFER(%rsp, SRND)
+-	DO_4ROUNDS	_XFER + 1*32
++	DO_4ROUNDS	(_XFER + 1*32)
+ 	add	$2*32, SRND
+ 
+ 	vmovdqa	X2, X0
+@@ -651,8 +651,8 @@ SYM_TYPED_FUNC_START(sha256_transform_rorx)
+ 	xor	SRND, SRND
+ .align 16
+ .Lloop3:
+-	DO_4ROUNDS	 _XFER + 0*32 + 16
+-	DO_4ROUNDS	 _XFER + 1*32 + 16
++	DO_4ROUNDS	(_XFER + 0*32 + 16)
++	DO_4ROUNDS	(_XFER + 1*32 + 16)
+ 	add	$2*32, SRND
+ 	cmp	$4*4*32, SRND
+ 	jb	.Lloop3
 -- 
 2.43.0
 
