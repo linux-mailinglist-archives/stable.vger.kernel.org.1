@@ -1,143 +1,112 @@
-Return-Path: <stable+bounces-77707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC36B986264
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 17:12:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17943986379
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 17:28:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9CEFB2885A5
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:12:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C22711F278E6
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:28:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEE7C178364;
-	Wed, 25 Sep 2024 15:02:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5250817BB4;
+	Wed, 25 Sep 2024 15:15:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gpNkHAMj"
+	dkim=pass (1024-bit key) header.d=flyingcircus.io header.i=@flyingcircus.io header.b="Ktwhe62L"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from mail.flyingcircus.io (mail.flyingcircus.io [212.122.41.197])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA79318990B
-	for <stable@vger.kernel.org>; Wed, 25 Sep 2024 15:02:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B2161CA85;
+	Wed, 25 Sep 2024 15:15:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.122.41.197
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727276527; cv=none; b=i8DiCpUcYOZZ5hVu4cSbaTxki7V9LYPcytGo5VQSKf/Svyf7aiJwRX86O0GEf0sjlx6WxTB/UQY2f1R8aOvPs1DJMv/oLH4VZLL8AtSwHZxnWbgGhQkDnT8ADiyBw6OZagA4L4bNHCbOobrfq6F+2CZFgZszna1yut7nWfm+qSo=
+	t=1727277358; cv=none; b=pq99te5FmByLPuia3Uo90NIvAGvIjPLKTMQGNom6uOvGsKC6CcI3gklpuOBUg2IiMy9IOod+MCFyIHbmUfIUHo3La+M8SM1AHpQ0zGdFq/8Lp1Hvl/NWV7pF5/M6hWlh/B+iN15lS4oqSmPB2xBrsw5BFXXFaxJ5S7EhkJRTHhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727276527; c=relaxed/simple;
-	bh=cfsaHYVmMR7Cf1CKVGZ37iUniOWxb/XlzErNhCkIecI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=n34s68deqWw0djEab0rlK1jhGJCr8c2k1NBRSaVAFx8BUzbrwlaQt5ZjCUmW3APjuOtZ1s7NdqKbe2PlOU4k4a3CQw4zJAB+XpFfhv7F9cx6QLFGaePDUalaOIp6r0l3yzp5lXXhU/1W9vqRR4VSo6fZv9fRijiZuA72Vw9dIOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gpNkHAMj; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1727276525; x=1758812525;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references;
-  bh=cfsaHYVmMR7Cf1CKVGZ37iUniOWxb/XlzErNhCkIecI=;
-  b=gpNkHAMjyuCqMXn097gQeeOkbq38YkLNMQR+Bg5gvK/VirZrRIU+SXd1
-   Zntv19EaGMefrWq0XlyY8tPZ0X5dihcwaOq6/EfehXN+UWD6L+kFXuvPX
-   rV6kJ4Zk369AdHxBujuqW87QZ3CMlmUY/rTeXRIFbtzbSnzPL3XocJwxw
-   4azLpiQ1QSHLP1ZyKSqAp328n6lMRcP3aS0r6e0YtoWZzKaQN5KtMju63
-   +snInz3Q7mCVlK11tADpwVcaXzzDPdZWXfDeVujTYg3Qbd0Hj20D+o4uH
-   WjEjfods3A2k3KuU0IQ69+P2QUNzibZL49rGsqdliYtBMqu0720tWyfAp
-   w==;
-X-CSE-ConnectionGUID: sddO2NC0R3+noP8jNd5uaw==
-X-CSE-MsgGUID: mI6NPANYSb6zoVeVBlHkkg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11206"; a="26194387"
-X-IronPort-AV: E=Sophos;i="6.10,257,1719903600"; 
-   d="scan'208";a="26194387"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2024 08:01:59 -0700
-X-CSE-ConnectionGUID: IM5mMKGJSD6rLXIWIOQbYw==
-X-CSE-MsgGUID: IzQ34whfQBKwkUNGE+Z3qw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,257,1719903600"; 
-   d="scan'208";a="72256161"
-Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
-  by orviesa007.jf.intel.com with ESMTP; 25 Sep 2024 08:01:59 -0700
-From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-To: stable@vger.kernel.org
-Cc: x86@kernel.org,
-	Tony Luck <tony.luck@intel.com>,
-	"Pawan Kumar Gupta" <pawan.kumar.gupta@intel.com>,
-	Zhang Rui <rui.zhang@intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>,
-	Thomas Lindroth <thomas.lindroth@gmail.com>,
-	Ricardo Neri <ricardo.neri@intel.com>
-Subject: [PATCH 6.1.y 2/2] x86/mm: Switch to new Intel CPU model defines
-Date: Wed, 25 Sep 2024 08:07:37 -0700
-Message-Id: <20240925150737.16882-3-ricardo.neri-calderon@linux.intel.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20240925150737.16882-1-ricardo.neri-calderon@linux.intel.com>
-References: <20240925150737.16882-1-ricardo.neri-calderon@linux.intel.com>
+	s=arc-20240116; t=1727277358; c=relaxed/simple;
+	bh=jPXETytddQOKLiox9CBonx4NSFTwxl03nKC5h9JefRw=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=iw7DTIO8F5U0bgP53GXqrVkAjjsAEuaQ3FGVnt8qo90B0KGA3B7qj7Nqe32eFQmrHPW0GOuGaI8X88D1zLSBU0UcJM1JcT+vYtxcRWEmAagI0gxdb9y6VbDkK+o/T65a4W5h8MxMsh/PBV/jLg4+N5/Evh2h6ox6eG1gHFNEYVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=flyingcircus.io; spf=pass smtp.mailfrom=flyingcircus.io; dkim=pass (1024-bit key) header.d=flyingcircus.io header.i=@flyingcircus.io header.b=Ktwhe62L; arc=none smtp.client-ip=212.122.41.197
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=flyingcircus.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flyingcircus.io
+Content-Type: text/plain;
+	charset=utf-8
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flyingcircus.io;
+	s=mail; t=1727277352;
+	bh=jPXETytddQOKLiox9CBonx4NSFTwxl03nKC5h9JefRw=;
+	h=Subject:From:In-Reply-To:Date:Cc:References:To;
+	b=Ktwhe62LpW5fb+3wNjs4dxdIX0czSXY8/rjigbdxgXCxLjYEhjIPmqKkeIlk5gY9O
+	 USb+tm0kxB9cY5QgIxa+FqEST6DvkHABjviYxpFoWNehIKLd8kkJSSQ3MYj0h2DPWz
+	 ZuhFM9ushlIpwc6h1H0YlJvJ4ep1bw/quurpeiZE=
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3818.100.11.1.3\))
+Subject: Re: nfsv41: stale file handles after VM shutdown/poweron - but works
+ during warm reboot
+From: Christian Theune <ct@flyingcircus.io>
+In-Reply-To: <9937A07A-F7AE-4A99-B7DE-7CF026E0F7B8@oracle.com>
+Date: Wed, 25 Sep 2024 17:15:31 +0200
+Cc: Jeff Layton <jlayton@kernel.org>,
+ Linux NFS Mailing List <linux-nfs@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ "regressions@lists.linux.dev" <regressions@lists.linux.dev>
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <3FB1C2D6-F409-44ED-B799-E2657759E455@flyingcircus.io>
+References: <AFE3E539-B98A-465F-9860-EE142D00285F@flyingcircus.io>
+ <9937A07A-F7AE-4A99-B7DE-7CF026E0F7B8@oracle.com>
+To: Chuck Lever III <chuck.lever@oracle.com>
 
-From: Tony Luck <tony.luck@intel.com>
+Hi,
 
-[ Upstream commit 2eda374e883ad297bd9fe575a16c1dc850346075 ]
+> On 25. Sep 2024, at 16:32, Chuck Lever III <chuck.lever@oracle.com> =
+wrote:
+>=20
+> I'm not entirely certain what you mean by "cold restart" versus
+> "warm restart" but for the moment I will assume that "cold restart"
+> means you reboot the NFS server host, and "warm restart" means
+> you simply cycle the NFS service (eg systemctl restart nfs-server).
 
-New CPU #defines encode vendor and family as well as model.
+The NFS server is a VM: the "warm reboot" keeps the hypervisor process =
+active and only performs an internal start within the VM. The =E2=80=9Ccol=
+d reboot=E2=80=9D performs a shutdown/poweroff, the hypervisor process =
+exits and then a new VM hypervisor process is started again.
 
-[ dhansen: vertically align 0's in invlpg_miss_ids[] ]
+> STALE means the file handle no longer exists on the server. This
+> can mean the file system was unexported and thus is no longer
+> accessible.
+>=20
+> In your case, I'm guessing that what is happening on a cold
+> restart is the exported file system is replaced; for example
+> a tmpfs. Or, maybe reboot removes exported files.
 
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/all/20240424181518.41946-1-tony.luck%40intel.com
-[ Ricardo: I used the old match macro X86_MATCH_INTEL_FAM6_MODEL()
-  instead of X86_MATCH_VFM() as in the upstream commit.
-  I also kept the ALDERLAKE_N name instead of ATOM_GRACEMONT. Both refer
-  to the same CPU model. ]
-Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
----
-I tested this backport on an Alder Lake system. Now pr_info("Incomplete
-global flushes, disabling PCID") is back in dmesg. I also tested on a
-Meteor Lake system, which unaffected by the INVLPG issue. The message in
-question is not there before and after the backport, as expected.
----
- arch/x86/mm/init.c | 16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
+And while riding my bike home and getting some fresh air I came to the =
+same conclusion (after previously bashing my head against this for =
+hours).
 
-diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
-index 913287b9340c..ed861ef33f80 100644
---- a/arch/x86/mm/init.c
-+++ b/arch/x86/mm/init.c
-@@ -262,21 +262,17 @@ static void __init probe_page_size_mask(void)
- 	}
- }
- 
--#define INTEL_MATCH(_model) { .vendor  = X86_VENDOR_INTEL,	\
--			      .family  = 6,			\
--			      .model = _model,			\
--			    }
- /*
-  * INVLPG may not properly flush Global entries
-  * on these CPUs when PCIDs are enabled.
-  */
- static const struct x86_cpu_id invlpg_miss_ids[] = {
--	INTEL_MATCH(INTEL_FAM6_ALDERLAKE   ),
--	INTEL_MATCH(INTEL_FAM6_ALDERLAKE_L ),
--	INTEL_MATCH(INTEL_FAM6_ALDERLAKE_N ),
--	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE  ),
--	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE_P),
--	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE_S),
-+	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE,      0),
-+	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE_L,    0),
-+	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE_N,    0),
-+	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE,     0),
-+	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_P,   0),
-+	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_S,   0),
- 	{}
- };
- 
--- 
-2.34.1
+We have a step where VMs (that are booted fresh on the hypervisor) get a =
+randomized UUID on their root filesystem and because of $reasons we do =
+that every time, not just during first boot. Looks like we need to stop =
+doing that.=20
+
+My problem goes away once I fix the fsid in the exports, but I don=E2=80=99=
+t think I want to dig a deeper hole.
+
+Sorry for the noise and thanks for the hint (which seems even arrived =
+telepathically).
+
+Cheers,
+Christian
+
+--=20
+Christian Theune =C2=B7 ct@flyingcircus.io =C2=B7 +49 345 219401 0
+Flying Circus Internet Operations GmbH =C2=B7 https://flyingcircus.io
+Leipziger Str. 70/71 =C2=B7 06108 Halle (Saale) =C2=B7 Deutschland
+HR Stendal HRB 21169 =C2=B7 Gesch=C3=A4ftsf=C3=BChrer: Christian Theune, =
+Christian Zagrodnick
 
 
