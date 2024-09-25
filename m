@@ -1,58 +1,65 @@
-Return-Path: <stable+bounces-77103-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5921A985823
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:37:52 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4735C985828
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:38:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 079C2B20943
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 11:37:50 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A5B15B20F4C
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 11:38:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A805D1684A3;
-	Wed, 25 Sep 2024 11:36:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49CF9183CB1;
+	Wed, 25 Sep 2024 11:36:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="S+guAPOM"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jm/oC18t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6370317CA16;
-	Wed, 25 Sep 2024 11:36:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1AF0183090;
+	Wed, 25 Sep 2024 11:36:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727264211; cv=none; b=bk6Tf7hPzk5nULYgEBCLH1cTilgs5YPc/gc/T8DTAMkdbKoa3nY1V7AdwHu4VX5Kd4A51eu+egkOAb/VL0ynjt2lyNlTqVROUK1vS6TY347E8LhYTQSpEZjHAFir2pDCXyy9aHRWvd2WOP3ghTFU5LPjhFCB7WvfQVeXccmMmWY=
+	t=1727264214; cv=none; b=u+10YhbTGlcgc7TVuNOcPkJ+BEQbjOvsc+xFiFsQhbRcRjG44YVv/HJbOjzBsKgxtCM2TtuzN1N5QtYUnNVWyHavd6TJ4H1PQTLzNm5eOfh4Mm9si+2dxgbgicrL4kSBYb8mOlDOcLJcv7gPBufYwHoqQusMwmhpSBSAzauS6JI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727264211; c=relaxed/simple;
-	bh=1KFSo2JJR5BRcSgzdzgu8XCHZUUmjaS5k4pywFzQCNc=;
+	s=arc-20240116; t=1727264214; c=relaxed/simple;
+	bh=BCRPbZGT2cytSH/WPYdWdJfSm5/GQ9nDnLyBHUbxs8Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o3gHPGk9lNgLfQvtX/CB8vDAbd+Cpdl7euCfQjpSkcHJ7HK5Vbh8UVrdaR+Vy1WuSbABnlfy6PyMohIvrJ80jG+psMr8iL9vJsahZCYdcfNccCdqgMBIgDmPk3QlQ/aZ5MjzXLX23O8pj/FvbL9anDSSP4UKvZ+KuhlXYlhrSpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=S+guAPOM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39A47C4CEC7;
-	Wed, 25 Sep 2024 11:36:50 +0000 (UTC)
+	 MIME-Version; b=EuSw4me6bsrV5mGseZImRhc+1HSDHdgH6TX5O55+gBsMZkM48zyx/UsQjzQn7fXGB02eOfrH2X37Ai9S+AhIQ6tc0zZ8uABfo14Y/l3WzT1MgYUTB/+YAtEfDUQo/27zqQK5uTlKiN/4J9uag7cGunnpsszNZoGu0F1iOiCadDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jm/oC18t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC92BC4CED7;
+	Wed, 25 Sep 2024 11:36:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727264211;
-	bh=1KFSo2JJR5BRcSgzdzgu8XCHZUUmjaS5k4pywFzQCNc=;
+	s=k20201202; t=1727264213;
+	bh=BCRPbZGT2cytSH/WPYdWdJfSm5/GQ9nDnLyBHUbxs8Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S+guAPOMGZ14rxao4C14fiyGoQDSC15PIvqt0Kv+zKB7/CfKvnD27r2m9RlECaM4I
-	 8wzjNcB4JK8q0vz0k3z+fs3HUi/uxuORbiQmBqocrm8i6LVUQQJKXP7pKczkXBJ8OJ
-	 CRI4Kjp1f5b3nCAuL+53L4wiRxG1IU+oezRnI/v+c+4YpjNvMl6IQ4GiXNKASgRVnE
-	 yOLndeANoV/wHAdeiQvx2HfVrKJSP77j2GoK+MDO+L3bfLOiSua9Gp5MhuJp7/g08W
-	 doPPtY86no6ChQxqpeBXZ3xusgW+2yMSPAR9tkPVAJ+c1xL1kB8ewVJvj5LiAYNUJh
-	 OZU+n2CsFWtSA==
+	b=Jm/oC18tNbe5zfdQTz1A3a+I0iHCL4xWfRll61oAAgvthBZSAcd7SMe0ylI76Ghd2
+	 i3KBAhS6iSjFQXyr+l13fdOw5ShfvmHB9LIpzN97MDK0teLCtuMVpdj5wGbBafzeGB
+	 aPRPzxVzJcVl1OjiVxkipg1cIVrSHbQYjWOXxgNOekEv3Tw/EYTZUeAbreeB3qK5hp
+	 Am436ikYur1OqQ1HwVidZSXrDPHLXiCBNLlL3wl2xfc71KTDxE3QcelHDoBCyTF1SL
+	 s15lufzzJuYhkLP02r0b0PV1X1lGT14svGdAXt3x+gMLmosGeMXCGfOlv9s+/rQ2j3
+	 hNvcacu3LH/7w==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Kai-Heng Feng <kai.heng.feng@canonical.com>,
-	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
+Cc: Fangrui Song <maskray@google.com>,
+	Jan Beulich <jbeulich@suse.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>,
-	jacob.jun.pan@linux.intel.com,
-	lenb@kernel.org,
-	linux-pm@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 005/244] intel_idle: Disable promotion to C1E on Jasper Lake and Elkhart Lake
-Date: Wed, 25 Sep 2024 07:23:46 -0400
-Message-ID: <20240925113641.1297102-5-sashal@kernel.org>
+	davem@davemloft.net,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	nathan@kernel.org,
+	linux-crypto@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.11 006/244] crypto: x86/sha256 - Add parentheses around macros' single arguments
+Date: Wed, 25 Sep 2024 07:23:47 -0400
+Message-ID: <20240925113641.1297102-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925113641.1297102-1-sashal@kernel.org>
 References: <20240925113641.1297102-1-sashal@kernel.org>
@@ -67,74 +74,90 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11
 Content-Transfer-Encoding: 8bit
 
-From: Kai-Heng Feng <kai.heng.feng@canonical.com>
+From: Fangrui Song <maskray@google.com>
 
-[ Upstream commit 5bb33212b5c664396e5de4cd5a2999abb84a3978 ]
+[ Upstream commit 3363c460ef726ba693704dbcd73b7e7214ccc788 ]
 
-PCIe ethernet throughut is sub-optimal on Jasper Lake and Elkhart Lake.
+The macros FOUR_ROUNDS_AND_SCHED and DO_4ROUNDS rely on an
+unexpected/undocumented behavior of the GNU assembler, which might
+change in the future
+(https://sourceware.org/bugzilla/show_bug.cgi?id=32073).
 
-The CPU can take long time to exit to C0 to handle IRQ and perform DMA
-when C1E has been entered.
+    M (1) (2) // 1 arg !? Future: 2 args
+    M 1 + 2   // 1 arg !? Future: 3 args
 
-For this reason, adjust intel_idle to disable promotion to C1E and still
-use C-states from ACPI _CST on those two platforms.
+    M 1 2     // 2 args
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=219023
-Signed-off-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Link: https://patch.msgid.link/20240820041128.102452-1-kai.heng.feng@canonical.com
-[ rjw: Subject and changelog edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Add parentheses around the single arguments to support future GNU
+assembler and LLVM integrated assembler (when the IsOperator hack from
+the following link is dropped).
+
+Link: https://github.com/llvm/llvm-project/commit/055006475e22014b28a070db1bff41ca15f322f0
+Signed-off-by: Fangrui Song <maskray@google.com>
+Reviewed-by: Jan Beulich <jbeulich@suse.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/idle/intel_idle.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ arch/x86/crypto/sha256-avx2-asm.S | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/idle/intel_idle.c b/drivers/idle/intel_idle.c
-index 9aab7abc2ae90..ac1c6f4f9c7f2 100644
---- a/drivers/idle/intel_idle.c
-+++ b/drivers/idle/intel_idle.c
-@@ -1475,6 +1475,10 @@ static const struct idle_cpu idle_cpu_dnv __initconst = {
- 	.use_acpi = true,
- };
+diff --git a/arch/x86/crypto/sha256-avx2-asm.S b/arch/x86/crypto/sha256-avx2-asm.S
+index 0ffb072be9561..0bbec1c75cd0b 100644
+--- a/arch/x86/crypto/sha256-avx2-asm.S
++++ b/arch/x86/crypto/sha256-avx2-asm.S
+@@ -592,22 +592,22 @@ SYM_TYPED_FUNC_START(sha256_transform_rorx)
+ 	leaq	K256+0*32(%rip), INP		## reuse INP as scratch reg
+ 	vpaddd	(INP, SRND), X0, XFER
+ 	vmovdqa XFER, 0*32+_XFER(%rsp, SRND)
+-	FOUR_ROUNDS_AND_SCHED	_XFER + 0*32
++	FOUR_ROUNDS_AND_SCHED	(_XFER + 0*32)
  
-+static const struct idle_cpu idle_cpu_tmt __initconst = {
-+	.disable_promotion_to_c1e = true,
-+};
-+
- static const struct idle_cpu idle_cpu_snr __initconst = {
- 	.state_table = snr_cstates,
- 	.disable_promotion_to_c1e = true,
-@@ -1538,6 +1542,8 @@ static const struct x86_cpu_id intel_idle_ids[] __initconst = {
- 	X86_MATCH_VFM(INTEL_ATOM_GOLDMONT,	&idle_cpu_bxt),
- 	X86_MATCH_VFM(INTEL_ATOM_GOLDMONT_PLUS,	&idle_cpu_bxt),
- 	X86_MATCH_VFM(INTEL_ATOM_GOLDMONT_D,	&idle_cpu_dnv),
-+	X86_MATCH_VFM(INTEL_ATOM_TREMONT,       &idle_cpu_tmt),
-+	X86_MATCH_VFM(INTEL_ATOM_TREMONT_L,     &idle_cpu_tmt),
- 	X86_MATCH_VFM(INTEL_ATOM_TREMONT_D,	&idle_cpu_snr),
- 	X86_MATCH_VFM(INTEL_ATOM_CRESTMONT,	&idle_cpu_grr),
- 	X86_MATCH_VFM(INTEL_ATOM_CRESTMONT_X,	&idle_cpu_srf),
-@@ -2075,7 +2081,7 @@ static void __init intel_idle_cpuidle_driver_init(struct cpuidle_driver *drv)
+ 	leaq	K256+1*32(%rip), INP
+ 	vpaddd	(INP, SRND), X0, XFER
+ 	vmovdqa XFER, 1*32+_XFER(%rsp, SRND)
+-	FOUR_ROUNDS_AND_SCHED	_XFER + 1*32
++	FOUR_ROUNDS_AND_SCHED	(_XFER + 1*32)
  
- 	drv->state_count = 1;
+ 	leaq	K256+2*32(%rip), INP
+ 	vpaddd	(INP, SRND), X0, XFER
+ 	vmovdqa XFER, 2*32+_XFER(%rsp, SRND)
+-	FOUR_ROUNDS_AND_SCHED	_XFER + 2*32
++	FOUR_ROUNDS_AND_SCHED	(_XFER + 2*32)
  
--	if (icpu)
-+	if (icpu && icpu->state_table)
- 		intel_idle_init_cstates_icpu(drv);
- 	else
- 		intel_idle_init_cstates_acpi(drv);
-@@ -2209,7 +2215,11 @@ static int __init intel_idle_init(void)
+ 	leaq	K256+3*32(%rip), INP
+ 	vpaddd	(INP, SRND), X0, XFER
+ 	vmovdqa XFER, 3*32+_XFER(%rsp, SRND)
+-	FOUR_ROUNDS_AND_SCHED	_XFER + 3*32
++	FOUR_ROUNDS_AND_SCHED	(_XFER + 3*32)
  
- 	icpu = (const struct idle_cpu *)id->driver_data;
- 	if (icpu) {
--		cpuidle_state_table = icpu->state_table;
-+		if (icpu->state_table)
-+			cpuidle_state_table = icpu->state_table;
-+		else if (!intel_idle_acpi_cst_extract())
-+			return -ENODEV;
-+
- 		auto_demotion_disable_flags = icpu->auto_demotion_disable_flags;
- 		if (icpu->disable_promotion_to_c1e)
- 			c1e_promotion = C1E_PROMOTION_DISABLE;
+ 	add	$4*32, SRND
+ 	cmp	$3*4*32, SRND
+@@ -618,12 +618,12 @@ SYM_TYPED_FUNC_START(sha256_transform_rorx)
+ 	leaq	K256+0*32(%rip), INP
+ 	vpaddd	(INP, SRND), X0, XFER
+ 	vmovdqa XFER, 0*32+_XFER(%rsp, SRND)
+-	DO_4ROUNDS	_XFER + 0*32
++	DO_4ROUNDS	(_XFER + 0*32)
+ 
+ 	leaq	K256+1*32(%rip), INP
+ 	vpaddd	(INP, SRND), X1, XFER
+ 	vmovdqa XFER, 1*32+_XFER(%rsp, SRND)
+-	DO_4ROUNDS	_XFER + 1*32
++	DO_4ROUNDS	(_XFER + 1*32)
+ 	add	$2*32, SRND
+ 
+ 	vmovdqa	X2, X0
+@@ -651,8 +651,8 @@ SYM_TYPED_FUNC_START(sha256_transform_rorx)
+ 	xor	SRND, SRND
+ .align 16
+ .Lloop3:
+-	DO_4ROUNDS	 _XFER + 0*32 + 16
+-	DO_4ROUNDS	 _XFER + 1*32 + 16
++	DO_4ROUNDS	(_XFER + 0*32 + 16)
++	DO_4ROUNDS	(_XFER + 1*32 + 16)
+ 	add	$2*32, SRND
+ 	cmp	$4*4*32, SRND
+ 	jb	.Lloop3
 -- 
 2.43.0
 
