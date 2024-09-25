@@ -1,64 +1,57 @@
-Return-Path: <stable+bounces-77120-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70608985862
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:42:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 335FF985865
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:42:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28ADF1F23694
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 11:42:27 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ECA3E2859F1
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 11:42:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4C1B18CBF1;
-	Wed, 25 Sep 2024 11:37:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 300B018CC1A;
+	Wed, 25 Sep 2024 11:37:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CCR0hNXZ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O98+yD24"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BAD218CBE6;
-	Wed, 25 Sep 2024 11:37:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF7F918C912;
+	Wed, 25 Sep 2024 11:37:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727264252; cv=none; b=RPV/z7X0HDiGnFS7v9HULNYbmPoy6MuUt2ay9VsUxcNFru9w1o+MlHitdfqpiPiMugIhfgAWyif9OszsZ7pEryx0gTD8iHcG0p2aNnLoP43oHBVLckO+JwE2tpI6JyOeVdjPApZuqgzFHAYmpR/fi4NR+DOhBdyMZkpYvc+Ha0w=
+	t=1727264254; cv=none; b=a6ETU1uKIbSGSuFoslZ+veY2K5d7m8c3EW71r91DfK3JKKI1jTnuF+V7fpfQzCBt71wcolNf0sz7JaQyZ9XDzcf0GTMqOqldJ0fejfzwH8y2jtmu+D1mDiIymnQ6mfZhOPljugGANBEykO+a2LjLCND8V+CvE6LTWYzajAk14OI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727264252; c=relaxed/simple;
-	bh=ciuVZY1rdMMVrvRZTkT1u1DqPLrRARwpj3mewshSF6s=;
+	s=arc-20240116; t=1727264254; c=relaxed/simple;
+	bh=qpxkqniFqsfE95JUiw6oouGT8Ul4rggjTRmcJRWXDBo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fmMHc5u3IvupBs1RcRF6Gl3LAB5/+w0FFt3S/992ApxIX78v7lDIB3U75hUT3+MauwRiwaCSs35B3yCue8e6Hz8vhS5zR9NWgoLJDpzN7r127DtA/nykFsS2aWS20adFUULcPXTisix0ESUTQn0uaaGWWyVN8Rrk8u91wrH7n2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CCR0hNXZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B6CEC4CECE;
-	Wed, 25 Sep 2024 11:37:30 +0000 (UTC)
+	 MIME-Version; b=mQk3081LZBXS/Koj3RTkbpPuJjY2dM2nRS1Y/HlfJAYNrjtcntYni82ezdXMlCXaAqT5SCthdp3KXAKBdRGG1K+z6FtWo9HRlXJDKltbq1wFQLxr9CREr68N38BbzgEp3a6L4L1CsCoND+NvcLoGwA9ZPtj92UQ2LZ4dHl5u5ms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O98+yD24; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C80B1C4CECD;
+	Wed, 25 Sep 2024 11:37:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727264252;
-	bh=ciuVZY1rdMMVrvRZTkT1u1DqPLrRARwpj3mewshSF6s=;
+	s=k20201202; t=1727264253;
+	bh=qpxkqniFqsfE95JUiw6oouGT8Ul4rggjTRmcJRWXDBo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CCR0hNXZ/VIJ460pr70204/jp3Nib1t7do9NiATNdT+aLHvn3cV8IuFq18PLMAJ/H
-	 /F4rigSp36IK5YbdESUgvJYDFsN70rVnrLx5Jauf86+pQJzc1g+oKNVjWeYjHr6Glu
-	 tNC7L6MSKNDoKE8ysYkzt5NHb/yClvn7UPMuoeZknwZPOQtp1Bi1JppOi1EdSzrtsz
-	 PKtIJ1s7dmgiJQ5+Wz3EyRHqnHs52xrO+Hy0RM1oMdFHvm/kDv2aF1NZnexglkonAV
-	 ecbm4qztCfNmc1+q477sjPf7kTwPufFlWHkcWspy+RVC6lL0PoJvuLUus16MMKQ/t6
-	 MQhS26sJ/1P4Q==
+	b=O98+yD24PtMyM53aCr7fY6MBdTbsA4M5iTWtJ1YIpQWswKYYI3DfQV9zOiW/1Sro9
+	 yjJ4ZiTjfzkKx/GN8P6UhP+7QW22914oKo47orrDKC85qmHVPAs45C4YmiO//mqjxx
+	 IpYIXeFWR1R4ij9zMm7bPNlrJLn4KEYqX/ODTvlAgw+C2NuP14ir8Jzr3BLaBDfTIY
+	 9monHS5ty2ynP6EnepocTGCBxwAZPuKr9g4Ts6r7PCc6WvukQ5y8gmeCMHrfJV8y1r
+	 dbafXRNFy1ulOy/QphZK6wtAKAGHaW6q+1CwNCkUJjot0tcCC7NjMQGwy6UWj5Sl7E
+	 KNJYhj+4HdseA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Vitaly Lifshits <vitaly.lifshits@intel.com>,
-	Dima Ruinskiy <dima.ruinskiy@intel.com>,
-	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+Cc: Tamim Khan <tamim@fusetak.com>,
+	"Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	przemyslaw.kitszel@intel.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	kuba@kernel.org,
-	pabeni@redhat.com,
-	intel-wired-lan@lists.osuosl.org,
-	netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 022/244] e1000e: avoid failing the system during pm_suspend
-Date: Wed, 25 Sep 2024 07:24:03 -0400
-Message-ID: <20240925113641.1297102-22-sashal@kernel.org>
+	rafael@kernel.org,
+	linux-acpi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.11 023/244] ACPI: resource: Skip IRQ override on Asus Vivobook Go E1404GAB
+Date: Wed, 25 Sep 2024 07:24:04 -0400
+Message-ID: <20240925113641.1297102-23-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925113641.1297102-1-sashal@kernel.org>
 References: <20240925113641.1297102-1-sashal@kernel.org>
@@ -73,102 +66,46 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11
 Content-Transfer-Encoding: 8bit
 
-From: Vitaly Lifshits <vitaly.lifshits@intel.com>
+From: Tamim Khan <tamim@fusetak.com>
 
-[ Upstream commit 0a6ad4d9e1690c7faa3a53f762c877e477093657 ]
+[ Upstream commit 49e9cc315604972cc14868cb67831e3e8c3f1470 ]
 
-Occasionally when the system goes into pm_suspend, the suspend might fail
-due to a PHY access error on the network adapter. Previously, this would
-have caused the whole system to fail to go to a low power state.
-An example of this was reported in the following Bugzilla:
-https://bugzilla.kernel.org/show_bug.cgi?id=205015
+Like other Asus Vivobooks, the Asus Vivobook Go E1404GAB has a DSDT
+that describes IRQ 1 as ActiveLow, while the kernel overrides to Edge_High.
 
-[ 1663.694828] e1000e 0000:00:19.0 eth0: Failed to disable ULP
-[ 1664.731040] asix 2-3:1.0 eth1: link up, 100Mbps, full-duplex, lpa 0xC1E1
-[ 1665.093513] e1000e 0000:00:19.0 eth0: Hardware Error
-[ 1665.596760] e1000e 0000:00:19.0: pci_pm_resume+0x0/0x80 returned 0 after 2975399 usecs
+This override prevents the internal keyboard from working.
 
-and then the system never recovers from it, and all the following suspend failed due to this
-[22909.393854] PM: pci_pm_suspend(): e1000e_pm_suspend+0x0/0x760 [e1000e] returns -2
-[22909.393858] PM: dpm_run_callback(): pci_pm_suspend+0x0/0x160 returns -2
-[22909.393861] PM: Device 0000:00:1f.6 failed to suspend async: error -2
+Fix the problem by adding this laptop to the table that prevents the kernel
+from overriding the IRQ.
 
-This can be avoided by changing the return values of __e1000_shutdown and
-e1000e_pm_suspend functions so that they always return 0 (success). This
-is consistent with what other drivers do.
-
-If the e1000e driver encounters a hardware error during suspend, potential
-side effects include slightly higher power draw or non-working wake on
-LAN. This is preferred to a system-level suspend failure, and a warning
-message is written to the system log, so that the user can be aware that
-the LAN controller experienced a problem during suspend.
-
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=205015
-Suggested-by: Dima Ruinskiy <dima.ruinskiy@intel.com>
-Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
-Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=219212
+Signed-off-by: Tamim Khan <tamim@fusetak.com>
+Link: https://patch.msgid.link/20240903014317.38858-1-tamim@fusetak.com
+[ rjw: Changelog edits ]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/e1000e/netdev.c | 19 +++++++++++--------
- 1 file changed, 11 insertions(+), 8 deletions(-)
+ drivers/acpi/resource.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
-index 360ee26557f77..f103249b12fac 100644
---- a/drivers/net/ethernet/intel/e1000e/netdev.c
-+++ b/drivers/net/ethernet/intel/e1000e/netdev.c
-@@ -6671,8 +6671,10 @@ static int __e1000_shutdown(struct pci_dev *pdev, bool runtime)
- 		if (adapter->flags2 & FLAG2_HAS_PHY_WAKEUP) {
- 			/* enable wakeup by the PHY */
- 			retval = e1000_init_phy_wakeup(adapter, wufc);
--			if (retval)
--				return retval;
-+			if (retval) {
-+				e_err("Failed to enable wakeup\n");
-+				goto skip_phy_configurations;
-+			}
- 		} else {
- 			/* enable wakeup by the MAC */
- 			ew32(WUFC, wufc);
-@@ -6693,8 +6695,10 @@ static int __e1000_shutdown(struct pci_dev *pdev, bool runtime)
- 			 * or broadcast.
- 			 */
- 			retval = e1000_enable_ulp_lpt_lp(hw, !runtime);
--			if (retval)
--				return retval;
-+			if (retval) {
-+				e_err("Failed to enable ULP\n");
-+				goto skip_phy_configurations;
-+			}
- 		}
- 	}
- 
-@@ -6726,6 +6730,7 @@ static int __e1000_shutdown(struct pci_dev *pdev, bool runtime)
- 		hw->phy.ops.release(hw);
- 	}
- 
-+skip_phy_configurations:
- 	/* Release control of h/w to f/w.  If f/w is AMT enabled, this
- 	 * would have already happened in close and is redundant.
- 	 */
-@@ -6968,15 +6973,13 @@ static int e1000e_pm_suspend(struct device *dev)
- 	e1000e_pm_freeze(dev);
- 
- 	rc = __e1000_shutdown(pdev, false);
--	if (rc) {
--		e1000e_pm_thaw(dev);
--	} else {
-+	if (!rc) {
- 		/* Introduce S0ix implementation */
- 		if (adapter->flags2 & FLAG2_ENABLE_S0IX_FLOWS)
- 			e1000e_s0ix_entry_flow(adapter);
- 	}
- 
--	return rc;
-+	return 0;
- }
- 
- static int e1000e_pm_resume(struct device *dev)
+diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+index df5d5a554b388..c65c72c515e67 100644
+--- a/drivers/acpi/resource.c
++++ b/drivers/acpi/resource.c
+@@ -503,6 +503,13 @@ static const struct dmi_system_id irq1_level_low_skip_override[] = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "B2502FBA"),
+ 		},
+ 	},
++	{
++		/* Asus Vivobook Go E1404GAB */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
++			DMI_MATCH(DMI_BOARD_NAME, "E1404GAB"),
++		},
++	},
+ 	{
+ 		/* Asus Vivobook E1504GA */
+ 		.matches = {
 -- 
 2.43.0
 
