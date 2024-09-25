@@ -1,98 +1,74 @@
-Return-Path: <stable+bounces-77077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77078-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64BC69852DB
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 08:19:54 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B284C985314
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 08:43:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 23F8528415F
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 06:19:53 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5405F1F2175C
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 06:43:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9604D154C0C;
-	Wed, 25 Sep 2024 06:19:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76B14155385;
+	Wed, 25 Sep 2024 06:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b="s02RzJVN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IaWassz3"
 X-Original-To: stable@vger.kernel.org
-Received: from sipsolutions.net (s3.sipsolutions.net [168.119.38.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E607D14C582;
-	Wed, 25 Sep 2024 06:19:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=168.119.38.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 341F14C91;
+	Wed, 25 Sep 2024 06:43:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727245188; cv=none; b=Vd9zsj3e1zVj6VcOQF0Cu47OlD0DjDI6FhEIwq1hlVi8fD/BU+CnZGvFxdV1Kfrt6xhuJNCHZrA+S8od8i2bg/qeo75bUn4xhAhqWrJSEAVRCv2l/PujBvZWMYaVW1Iuj7wQWpWT4/8Y/xeBCYCf5aXX/1g8Y+8kdXb/7RKfGms=
+	t=1727246617; cv=none; b=D4kptBZpRL2ApWCq6grznG3HYVj+odRDjHlApL/I7jKTcTwxz4lA+tY0NMEt/z3kIwSmpAlOTj18UN3pFZLXoJfG0gNygJq2ezpc25+kac12RUYS65pf6f4FUur/j9RhynXPHqlhX0iqySRZuEAraFsK416VJ8Uej+Td1Yh86vI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727245188; c=relaxed/simple;
-	bh=n9nDb3Wi4o/YeyVwY1aUIZSbkGwud/4Fwk8YQLrIdtg=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ibTsOzSSps7BysIdMW8MKj8+gZodv5qsmAdfonCc0J5cs1IXYj3McV5rWt7RSB4Sd/3iZAHhuVUqrDH2Po83li4Ir117iRiaESGgT4/ESUSgZSTyhCaH0lhCuDpTT4cs8XGl4Ju64RHLokrNcUk0ebP/fZX8qEiy8r7MEYOSvmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net; spf=pass smtp.mailfrom=sipsolutions.net; dkim=pass (2048-bit key) header.d=sipsolutions.net header.i=@sipsolutions.net header.b=s02RzJVN; arc=none smtp.client-ip=168.119.38.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sipsolutions.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sipsolutions.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=sipsolutions.net; s=mail; h=MIME-Version:Content-Transfer-Encoding:
-	Content-Type:References:In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:Resent-To:
-	Resent-Cc:Resent-Message-ID; bh=n9nDb3Wi4o/YeyVwY1aUIZSbkGwud/4Fwk8YQLrIdtg=;
-	t=1727245187; x=1728454787; b=s02RzJVNkSw6APTnUJBVU5qh/Npc6wdVpesMmSac+aeh357
-	8rbR/3siYfrY/4yvqzm6pncKbIWMc27GIiXgmj+buo6EjpcBCqTSA9b5LaVAIQeZctd37TiI7lhI9
-	3xEaCwLyyjGXn+ZhXA4c3xDKmzphqbbuvYxeFgxTTaY+Uhl5pwlUmIFV4zgYqKh9T5AnWy6oS7b1e
-	42fauzIz9jMwNjj1/Cx0KZC/rROwffkPxjIoFGUhb0HuuJ0M1PMd1W64A4V8UefSHdq9LHi/7HSJo
-	tt0Hr+J6Xz8sAjGmnjA2gGcV94cesxz9ONGOGlLQt9ttPg0O1ReMTrhNp0CGB4CQ==;
-Received: by sipsolutions.net with esmtpsa (TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256)
-	(Exim 4.97)
-	(envelope-from <johannes@sipsolutions.net>)
-	id 1stLND-000000008go-0PBf;
-	Wed, 25 Sep 2024 08:19:39 +0200
-Message-ID: <13c3221f0cf2c5586dc34e8dcf6758c9e4e6cd4c.camel@sipsolutions.net>
-Subject: Re: rtw88: rtw8822cu: Kernel warning in cfg80211: disconnect_work
- at net/wireless/core.h:231 on CPU 0
-From: Johannes Berg <johannes@sipsolutions.net>
-To: Ping-Ke Shih <pkshih@realtek.com>, "petter@technux.se"
- <petter@technux.se>,  "linux-wireless@vger.kernel.org"
- <linux-wireless@vger.kernel.org>, stable@vger.kernel.org, Sasha Levin
- <sashal@kernel.org>
-Cc: "rtl8821cerfe2@gmail.com" <rtl8821cerfe2@gmail.com>,
- "morrownr@gmail.com" <morrownr@gmail.com>, "s.hauer@pengutronix.de"
- <s.hauer@pengutronix.de>
-Date: Wed, 25 Sep 2024 08:19:38 +0200
-In-Reply-To: <9d243087654c4f3492d0046b7444c6a6@realtek.com>
-References: <80de30f72595480a2e061dc462191c9f@technux.se>
-	 <9d243087654c4f3492d0046b7444c6a6@realtek.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
+	s=arc-20240116; t=1727246617; c=relaxed/simple;
+	bh=gg8K0lKkwpEQ+IR9p1o5doJ/7nt9zyDJTGn8t7oZjwM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PraTOwnbiX049TGsSxlZQtz+w1iYRSBOxgo/theE/gVlyIJGtg3fLR71u4eE2YLgIcPPEzh5Y24xCWqMC1LkCcAW9KX5MVdbmAKxM15Wj4XBB02E1xBvQTo7gIkyCRflnBPhQQGSzI2nGMzg1HPL++GA8JB8n89lbnDb7a4TbA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IaWassz3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 341EAC4CEC3;
+	Wed, 25 Sep 2024 06:43:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1727246616;
+	bh=gg8K0lKkwpEQ+IR9p1o5doJ/7nt9zyDJTGn8t7oZjwM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=IaWassz3flVg8qeWKmsZCdq8emfCoLa2ExYoUW8pwuDu7sqTxhorkhRQ5n63i41py
+	 N3+WdMRNXfrnOUjgBIWO7N6JSdU8dceklJxl7+Wtn3Y+m2/4T/YTHqBRWGxv54hBMN
+	 vU1TyPXGPjhiw94f7URbbqBHE+KbzORG0WrdtGKI=
+Date: Wed, 25 Sep 2024 08:43:34 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Chris Li <chrisl@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, yangge <yangge1116@126.com>,
+	Yu Zhao <yuzhao@google.com>, David Hildenbrand <david@redhat.com>,
+	Hugh Dickins <hughd@google.com>, baolin.wang@linux.alibaba.com,
+	Kairui Song <ryncsn@gmail.com>, linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] mm: vmscan.c: fix OOM on swap stress test
+Message-ID: <2024092527-fresh-lying-1847@gregkh>
+References: <20240905-lru-flag-v2-1-8a2d9046c594@kernel.org>
+ <CACePvbV6mqi7A0AhCYP1umejz6QBR91ueTSH_enJZoLe=N_pWw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-malware-bazaar: not-scanned
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CACePvbV6mqi7A0AhCYP1umejz6QBR91ueTSH_enJZoLe=N_pWw@mail.gmail.com>
 
-On Wed, 2024-09-25 at 03:30 +0000, Ping-Ke Shih wrote:
+On Tue, Sep 24, 2024 at 02:23:51PM -0700, Chris Li wrote:
+> I forgot to CC stable on this fix.
 
+<formletter>
 
-> I think the cause is picking commit 268f84a82753=20
-> ("wifi: cfg80211: check wiphy mutex is held for wdev mutex"), and
-> cfg80211_is_all_idle() called by disconnect_work() uses wdev_lock()
-> but not wiphy_lock().=20
+This is not the correct way to submit patches for inclusion in the
+stable kernel tree.  Please read:
+    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+for how to do this properly.
 
-Yeah seems like a stable only problem (CC them), this is with kernel
-version 6.6.51-00141-ga1649b6f8ed6 according to the warning.
-
-> I'm not sure if we should simply revert the picked commit 268f84a82753
-> or should pick more commits.
-
-I don't see why it was picked up in the first place, so I guess I'd say
-remove it. We won't want to redo the locking on a stable kernel, I'd
-think.
-
-> By the way, I think the latest kernel will not throw these messages.
-
-Agree, that seems unlikely.
-
-johannes
+</formletter>
 
