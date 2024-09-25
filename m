@@ -1,63 +1,69 @@
-Return-Path: <stable+bounces-77158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E29E985971
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:53:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A69A5985973
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:53:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E1AD2281921
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 11:53:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6B4A3281CC6
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 11:53:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C490A1A0B12;
-	Wed, 25 Sep 2024 11:38:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7177381AB4;
+	Wed, 25 Sep 2024 11:39:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LVyVZ85h"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CKODyYvm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7971281AB4;
-	Wed, 25 Sep 2024 11:38:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AD0C1A0BD9;
+	Wed, 25 Sep 2024 11:39:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727264339; cv=none; b=lINHfb/0DHaEDcGdh0kMeoALOQgyWSRxZarV3MJC14a/mcicz5jGTMsyZTbqAkImTpiEx58v3O0joQ0SFja6MwLikJC+hfPA/X//y/lATUotAW0HHQjETshdMtz1TlvYZ/MouswlBaihS3qkbqtkAmrURoRVSRfTXZpLZXpBZ4g=
+	t=1727264345; cv=none; b=HBEUR/tjFwCVf6BcmgkTC40p7QcC+ctOVRcu2w3b1ilcAwAeHfe+yNBi0J0KLhwLQIWz9J9McSj2zleVQ65+ffgjQ807YqXWR3jUHzOXPviiJwW7Hfi7MLpM+6pXUe95rG4ZH6FiOMSJHw8VhaWriiEIrW8m3rUdVwETG1wQZXc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727264339; c=relaxed/simple;
-	bh=GBsbo7IFzTYhDq3+ukaOAtQG/zZeRYQZxfjfOTdqrnc=;
+	s=arc-20240116; t=1727264345; c=relaxed/simple;
+	bh=446wkpH8icSTeDLBK2xDgroNp0rLQWSfdW+D7dkJ2oI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a4X+HObGQsvuZKYEW7NzR44utD0fsazhAR6sTdXlTJWl2kquzQWUishlkhNNY/+470EgGvOju4Z0NFHxXSoqPT/wYU6DFCthgI9kMMv7E3/r1bm/bHPaTOW+iLkqjMhg6USJkrgp2Cc16bE/4x6B40JQdE+Bx/C4yEqiNZ03FUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LVyVZ85h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9C60C4CEC3;
-	Wed, 25 Sep 2024 11:38:57 +0000 (UTC)
+	 MIME-Version; b=nQ+N6LVNla7vwom5ETcoWRNelQG1NwEjXjVsCOvMJJ4Bh0bi7ZuUPd0j8O/bOhRWNAoKdO2Or6fONgP6BroP2/gAOPg+BoEL/jK0iHYcwWimSf41aVzDgalRnvJCGmWz5GkdwhXWTmjY7i32iULIQ4pDMWx9GAACtbbe0/vU7rc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CKODyYvm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF665C4CECD;
+	Wed, 25 Sep 2024 11:39:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727264339;
-	bh=GBsbo7IFzTYhDq3+ukaOAtQG/zZeRYQZxfjfOTdqrnc=;
+	s=k20201202; t=1727264345;
+	bh=446wkpH8icSTeDLBK2xDgroNp0rLQWSfdW+D7dkJ2oI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LVyVZ85hIHC3ChJ1+kSWRnlKd8hWtQSwGjwbYtRdsofaJel99ZGV0sg2DkN/zgqO6
-	 +Jowrz56vTEUiW6BVu3bQvufCRdLOjlgQsOr7F1dpOnVgSEEncfJGTiX4Yqb+jkMUY
-	 r1vTJfPlS8uIEpmHMji87jznlMA6MkaTXvDxuN/Z5ZfM6n5B4nl5jMUjR0Wwkbhtxo
-	 hNG8ZkiNfdFhby43nEZk4kdycKJJ7woRv3GisiGd/HgnQqwfvUpHrgIFQwdqORMNxo
-	 DhR1eRLYppvek/3EC/RN8iqiLw5rJQkhSyu8RvA2x+E9XW36Il9CKqHXv4E/RTlje7
-	 p7qm0Vz7TnjUA==
+	b=CKODyYvmoVuXHDe8Aaw8KQa0N2TB9PFC83poy/yZzc+Yf6X8SQOydYcAEAGPVgyUW
+	 bjJmV4XdV4oZWV80rrjwDiC1ID6aMiM+9iw3o4UMaC9njLJaH3gscaJE6iMlx3HGBI
+	 DxF1gzahXcMC0vlyUPAUfvIlFf0uRQTvu8+mdYH5H/an4iLZB+Iz/wIuR7lz4LKu68
+	 RuA7Bu3H3gAjbTqKYnDFodTIgj7xlXrob5q3anKFIXlsQL1IHQcfpb+sEN+YBeByNr
+	 yYTeXfcgttQ6/vgJ3UaUI1Ee+BuZfVrCpoarEbl7XnENyiR9uW25hW8ABml3YvHtGf
+	 pjAyVNV9cjtFg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+Cc: Nikunj A Dadhania <nikunj@amd.com>,
+	Tom Lendacky <thomas.lendacky@amd.com>,
+	Borislav Petkov <bp@alien8.de>,
 	Sasha Levin <sashal@kernel.org>,
-	kvalo@kernel.org,
-	gregory.greenman@intel.com,
-	davem@davemloft.net,
-	edumazet@google.com,
-	emmanuel.grumbach@intel.com,
-	daniel.gabay@intel.com,
-	shaul.triebitz@intel.com,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 060/244] wifi: iwlwifi: mvm: avoid NULL pointer dereference
-Date: Wed, 25 Sep 2024 07:24:41 -0400
-Message-ID: <20240925113641.1297102-60-sashal@kernel.org>
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	ashish.kalra@amd.com,
+	michael.roth@amd.com,
+	brijesh.singh@amd.com,
+	ardb@kernel.org,
+	kevinloughlin@google.com,
+	tzimmermann@suse.de,
+	dan.j.williams@intel.com,
+	sathyanarayanan.kuppuswamy@linux.intel.com,
+	u.kleine-koenig@pengutronix.de
+Subject: [PATCH AUTOSEL 6.11 061/244] virt: sev-guest: Ensure the SNP guest messages do not exceed a page
+Date: Wed, 25 Sep 2024 07:24:42 -0400
+Message-ID: <20240925113641.1297102-61-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925113641.1297102-1-sashal@kernel.org>
 References: <20240925113641.1297102-1-sashal@kernel.org>
@@ -72,73 +78,59 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11
 Content-Transfer-Encoding: 8bit
 
-From: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+From: Nikunj A Dadhania <nikunj@amd.com>
 
-[ Upstream commit 557a6cd847645e667f3b362560bd7e7c09aac284 ]
+[ Upstream commit 2b9ac0b84c2cae91bbaceab62df4de6d503421ec ]
 
-iwl_mvm_tx_skb_sta() and iwl_mvm_tx_mpdu() verify that the mvmvsta
-pointer is not NULL.
-It retrieves this pointer using iwl_mvm_sta_from_mac80211, which is
-dereferencing the ieee80211_sta pointer.
-If sta is NULL, iwl_mvm_sta_from_mac80211 will dereference a NULL
-pointer.
-Fix this by checking the sta pointer before retrieving the mvmsta
-from it. If sta is not NULL, then mvmsta isn't either.
+Currently, struct snp_guest_msg includes a message header (96 bytes) and
+a payload (4000 bytes). There is an implicit assumption here that the
+SNP message header will always be 96 bytes, and with that assumption the
+payload array size has been set to 4000 bytes - a magic number. If any
+new member is added to the SNP message header, the SNP guest message
+will span more than a page.
 
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Reviewed-by: Johannes Berg <johannes.berg@intel.com>
-Link: https://patch.msgid.link/20240825191257.880921ce23b7.I340052d70ab6d3410724ce955eb00da10e08188f@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Instead of using a magic number for the payload, declare struct
+snp_guest_msg in a way that payload plus the message header do not
+exceed a page.
+
+  [ bp: Massage. ]
+
+Suggested-by: Tom Lendacky <thomas.lendacky@amd.com>
+Signed-off-by: Nikunj A Dadhania <nikunj@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20240731150811.156771-5-nikunj@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/tx.c | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ arch/x86/include/asm/sev.h              | 2 +-
+ drivers/virt/coco/sev-guest/sev-guest.c | 2 ++
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-index 7ff5ea5e7aca5..db926b2f4d8d5 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/tx.c
-@@ -1203,6 +1203,9 @@ static int iwl_mvm_tx_mpdu(struct iwl_mvm *mvm, struct sk_buff *skb,
- 	bool is_ampdu = false;
- 	int hdrlen;
+diff --git a/arch/x86/include/asm/sev.h b/arch/x86/include/asm/sev.h
+index 79bbe2be900eb..ee34ab00a8d6d 100644
+--- a/arch/x86/include/asm/sev.h
++++ b/arch/x86/include/asm/sev.h
+@@ -164,7 +164,7 @@ struct snp_guest_msg_hdr {
  
-+	if (WARN_ON_ONCE(!sta))
-+		return -1;
+ struct snp_guest_msg {
+ 	struct snp_guest_msg_hdr hdr;
+-	u8 payload[4000];
++	u8 payload[PAGE_SIZE - sizeof(struct snp_guest_msg_hdr)];
+ } __packed;
+ 
+ struct sev_guest_platform_data {
+diff --git a/drivers/virt/coco/sev-guest/sev-guest.c b/drivers/virt/coco/sev-guest/sev-guest.c
+index 6fc7884ea0a11..c86be0cd8ecd2 100644
+--- a/drivers/virt/coco/sev-guest/sev-guest.c
++++ b/drivers/virt/coco/sev-guest/sev-guest.c
+@@ -1090,6 +1090,8 @@ static int __init sev_guest_probe(struct platform_device *pdev)
+ 	void __iomem *mapping;
+ 	int ret;
+ 
++	BUILD_BUG_ON(sizeof(struct snp_guest_msg) > PAGE_SIZE);
 +
- 	mvmsta = iwl_mvm_sta_from_mac80211(sta);
- 	fc = hdr->frame_control;
- 	hdrlen = ieee80211_hdrlen(fc);
-@@ -1210,9 +1213,6 @@ static int iwl_mvm_tx_mpdu(struct iwl_mvm *mvm, struct sk_buff *skb,
- 	if (IWL_MVM_NON_TRANSMITTING_AP && ieee80211_is_probe_resp(fc))
- 		return -1;
- 
--	if (WARN_ON_ONCE(!mvmsta))
--		return -1;
--
- 	if (WARN_ON_ONCE(mvmsta->deflink.sta_id == IWL_MVM_INVALID_STA))
- 		return -1;
- 
-@@ -1343,7 +1343,7 @@ static int iwl_mvm_tx_mpdu(struct iwl_mvm *mvm, struct sk_buff *skb,
- int iwl_mvm_tx_skb_sta(struct iwl_mvm *mvm, struct sk_buff *skb,
- 		       struct ieee80211_sta *sta)
- {
--	struct iwl_mvm_sta *mvmsta = iwl_mvm_sta_from_mac80211(sta);
-+	struct iwl_mvm_sta *mvmsta;
- 	struct ieee80211_tx_info info;
- 	struct sk_buff_head mpdus_skbs;
- 	struct ieee80211_vif *vif;
-@@ -1352,9 +1352,11 @@ int iwl_mvm_tx_skb_sta(struct iwl_mvm *mvm, struct sk_buff *skb,
- 	struct sk_buff *orig_skb = skb;
- 	const u8 *addr3;
- 
--	if (WARN_ON_ONCE(!mvmsta))
-+	if (WARN_ON_ONCE(!sta))
- 		return -1;
- 
-+	mvmsta = iwl_mvm_sta_from_mac80211(sta);
-+
- 	if (WARN_ON_ONCE(mvmsta->deflink.sta_id == IWL_MVM_INVALID_STA))
- 		return -1;
+ 	if (!cc_platform_has(CC_ATTR_GUEST_SEV_SNP))
+ 		return -ENODEV;
  
 -- 
 2.43.0
