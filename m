@@ -1,59 +1,93 @@
-Return-Path: <stable+bounces-77709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77710-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B1E19863CD
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 17:40:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1301A9863E5
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 17:42:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4C0028911D
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:40:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C71A128B90A
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:42:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F56E79C4;
-	Wed, 25 Sep 2024 15:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E93531D5AD6;
+	Wed, 25 Sep 2024 15:42:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="JR0ZAFKt"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ht7cQ0fx"
 X-Original-To: stable@vger.kernel.org
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 333311D5ABD;
-	Wed, 25 Sep 2024 15:40:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A10D1171C
+	for <stable@vger.kernel.org>; Wed, 25 Sep 2024 15:42:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727278811; cv=none; b=D3Wjnt3laS1nroPetVwH2XHwSdWDSyEBNKYwBCFilR07y0vQzBT6CQfWWJHZzUoi46etNrwbWCColBxwNABd2AYEZlhHbOIW38hTXxug/waQYsVTK7tC9oCForMHS+K6rlf6i1hmz2DffNyIThLtfy6Pkd3fx+C/i37RW14ftzo=
+	t=1727278958; cv=none; b=TcBU3kLXrn+RaYR7RyhAxWBbXTOK+DjjoxS4awv7SiUmNcIuCuktbikotTyEo8xFdvmzNBzez4cF8mfAvYryba1zJ5mXImjzpVPcgf4/waInqjGpma0iA+LHAIbTxSrZdm7FKkkYDAZtJA5qfrl+ygHwj3TOD0VenxkcXIydH58=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727278811; c=relaxed/simple;
-	bh=kL8HG8Xwa+i7w3XjeWLMDj9WPGvuks109dxhfgzU49k=;
+	s=arc-20240116; t=1727278958; c=relaxed/simple;
+	bh=xvnATvHCa+83G2f/pWeX9sm67m0mNXNq2Eh56EOEAuU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gHGsskiByLi+sxOpc0kvUn0IuTGK5EHtVLOk4dEb9h99XcMO2zKnDXGH4Qawc2DcXO93YzOFDHlSdFIZOB3xlXpvX/mWk+zEQZA0hqZZB0f86dyf+KRVgsrdA2OQMSvVdWSpA3D1aS3bbjGLsqs1S2JLaxdDbgua3v68SmPEl+g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=JR0ZAFKt; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=q77yhq1cjviFHLXOxf/F3ZQcus4c7vEqJGBAAXfzwWM=; b=JR0ZAFKtKim2yR550of1N1F1Q1
-	/JCk7LL7jvgFcrysPJyNlo3wO0/vgPCH2NQRNIij845O+MY2zijXjnFCvs9PTX6atmcz56czB4LIr
-	GNd/kk4yE3sem4uG/IeEEcMjZrA4vihVIYMaovwUcwS1h6vS2yUBJFvh055A8hLeXgSk=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1stU77-008InE-8a; Wed, 25 Sep 2024 17:39:37 +0200
-Date: Wed, 25 Sep 2024 17:39:37 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: George Rurikov <g.ryurikov@securitycode.ru>
-Cc: Heiner Kallweit <hkallweit1@gmail.com>, nic_swsd@realtek.com,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] r8169: Potential divizion by zero in rtl_set_coalesce()
-Message-ID: <060a134b-63ea-4dc1-a5f3-980b2bb4334f@lunn.ch>
-References: <20240925135106.2084111-1-g.ryurikov@securitycode.ru>
+	 Content-Type:Content-Disposition:In-Reply-To; b=G0+scapU2AHFUo5PG3ZbfphFFQmdvvkUAyKWw8Tn6WE1lguMnZ0zAEUSaPlzw/gPD8P1NgvSDPZjyP1Ox7Rb2dFNnl4xtfyn5YO2MnAUtLMuM31eQro8cPRoSJmV3BSLHUPGig2TK/UNosd1P+0Py/HSwvD+EDd0BTM0x2iUGt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ht7cQ0fx; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-42cc43454d5so56732405e9.3
+        for <stable@vger.kernel.org>; Wed, 25 Sep 2024 08:42:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1727278954; x=1727883754; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=g0mFpqnpoinOCXBInQEuDDX6aMSTJM1UcQ5ZlfmwjZY=;
+        b=ht7cQ0fxNiApLr3EzG2PLcCXlc/G3QN7e6uEDGmq07RgiXco2w9IWoRtLzSrGXlx5S
+         SMRCdarmwNtLA61KQI1TJozgw80ptxncIrfRDZ/1meY2LvnqNNZNcxT9tPIxwLwA/6bE
+         R6kSivyPz3aCNWX0yc3mcL4K8DCRAjHXIuhA+sYJUOqQ+Ohn5ss9a6qifALC65nem5bu
+         03AeCH+B2kN7m2oLxjMdm9xkETWpPkrUBhQkajZMgyUwpRStKI4Z/zj3I5LoYP8L1uzD
+         68iAOuQX3Vef6ZKBzGyfRWVrTv58+sxhoaNx9lzqip3P6PpMPBUJ1gAY3V99fg44F4bu
+         oE+w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727278954; x=1727883754;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=g0mFpqnpoinOCXBInQEuDDX6aMSTJM1UcQ5ZlfmwjZY=;
+        b=vzr3p7IrFgjn08uNH9CjIqoawzo90ksVAsJe/XnFw41p3B/V1w5HsAjxQDvZy54QVu
+         2JvEQ7TuAHd5ixqCuUcATy2ZdgTsgbf0YeEzKJfgM3ia3Bfg1e2kC44cAt5qyJcD6BxN
+         TARKboImM+uOOsuueCaoch0M5T+WCGsxFEfIJzn1D8ibBJ4usWNtVJG5ImtGmPa7l2oW
+         0FyvvhF8ahI1DHj0nnyyJGf2H6o1Q0WiGa/qgLe1OVmfuQMpTcvRJ/8HlA2+vOIafbA0
+         aNhYvQgYeOLge3zBlpjHP1qz+39Hz7b3Bk6ZJZkcmMsZwBYsW9Mtb+c9PD+PfG/YGfCR
+         BROw==
+X-Forwarded-Encrypted: i=1; AJvYcCUu3c9UAu/JADTu0xakOwjwQxK6ximFhq7efE46rW/2rba9yfJFhU1AQsnFOkIv8E5VoBVr7g8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2a1BIrVtfkoXVFw9P1wpIGftSdVPXMxZe/qPH+JAXIZXA+zic
+	PEE0Cz4melWR0q+uCRgFyezYfaBAZ5OIrJAv/l+icsZWw5lCHa+vA5LuN6HkU6w=
+X-Google-Smtp-Source: AGHT+IEta/pHJEdAqwxpYPQh0rMmpm7cy3Xt5wwkMG/IZHQd+x44gnkhq/00wpsMnZ0byD/D2gbRjA==
+X-Received: by 2002:a05:600c:4f54:b0:426:6f27:379a with SMTP id 5b1f17b1804b1-42e9610ac8cmr18509225e9.13.1727278954480;
+        Wed, 25 Sep 2024 08:42:34 -0700 (PDT)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37cbc2cec21sm4288174f8f.52.2024.09.25.08.42.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 25 Sep 2024 08:42:33 -0700 (PDT)
+Date: Wed, 25 Sep 2024 18:42:29 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Georgi Djakov <djakov@kernel.org>
+Cc: Naresh Kamboju <naresh.kamboju@linaro.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+	conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org,
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Uwe =?iso-8859-1?Q?Kleine-K=F6nig?= <u.kleine-koenig@pengutronix.de>,
+	Srini Kandagatla <srinivas.kandagatla@linaro.org>,
+	Anders Roxell <anders.roxell@linaro.org>, linux-spi@vger.kernel.org,
+	Linux PM <linux-pm@vger.kernel.org>
+Subject: Re: [PATCH 6.1 00/63] 6.1.111-rc1 review
+Message-ID: <32aa7502-ae52-4119-9e72-6347c32f1f23@stanley.mountain>
+References: <20240916114221.021192667@linuxfoundation.org>
+ <CA+G9fYtsjFtddG8i+k-SpV8U6okL0p4zpsTiwGfNH5GUA8dWAA@mail.gmail.com>
+ <b0dfa622-f4f7-4f76-9d67-621544cb2212@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,45 +96,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240925135106.2084111-1-g.ryurikov@securitycode.ru>
+In-Reply-To: <b0dfa622-f4f7-4f76-9d67-621544cb2212@kernel.org>
 
-On Wed, Sep 25, 2024 at 04:51:06PM +0300, George Rurikov wrote:
-> Variable 'scale', whose possible value set allows a zero value in a check
-> at r8169_main.c:2014, is used as a denominator at r8169_main.c:2040 and
-> r8169_main.c:2042.
-> 
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
-> 
-> Fixes: 2815b30535a0 ("r8169: merge scale for tx and rx irq coalescing")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: George Rurikov <g.ryurikov@securitycode.ru>
-> ---
->  drivers/net/ethernet/realtek/r8169_main.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/net/ethernet/realtek/r8169_main.c b/drivers/net/ethernet/realtek/r8169_main.c
-> index 45ac8befba29..b97e68cfcfad 100644
-> --- a/drivers/net/ethernet/realtek/r8169_main.c
-> +++ b/drivers/net/ethernet/realtek/r8169_main.c
-> @@ -2011,7 +2011,7 @@ static int rtl_set_coalesce(struct net_device *dev,
-> 
->         coal_usec_max = max(ec->rx_coalesce_usecs, ec->tx_coalesce_usecs);
->         scale = rtl_coalesce_choose_scale(tp, coal_usec_max, &cp01);
-> -       if (scale < 0)
-> +       if (scale <= 0)
->                 return scale;
+On Wed, Sep 18, 2024 at 03:08:13PM +0300, Georgi Djakov wrote:
+> > Warning log:
+> > --------
+> > [    0.000000] Booting Linux on physical CPU 0x0000000000 [0x517f803c]
+> > [    0.000000] Linux version 6.1.111-rc1 (tuxmake@tuxmake)
+> > (aarch64-linux-gnu-gcc (Debian 13.3.0-5) 13.3.0, GNU ld (GNU Binutils
+> > for Debian) 2.43) #1 SMP PREEMPT @1726489583
+> > [    0.000000] Machine model: Thundercomm Dragonboard 845c
+> > ...
+> > [    7.841428] ------------[ cut here ]------------
+> > [    7.841431] WARNING: CPU: 4 PID: 492 at
+> > drivers/interconnect/core.c:685 __icc_enable
+> > (drivers/interconnect/core.c:685 (discriminator 7))
+> > [    7.841442] Modules linked in: soundwire_bus(+) venus_core(+)
+> > qcom_camss(+) drm_dp_aux_bus bluetooth(+) qcom_stats mac80211(+)
+> > videobuf2_dma_sg drm_display_helper i2c_qcom_geni(+) i2c_qcom_cci
+> > camcc_sdm845(+) v4l2_mem2mem qcom_q6v5_mss(+) videobuf2_memops
+> > reset_qcom_pdc spi_geni_qcom(+) videobuf2_v4l2 phy_qcom_qmp_usb(+)
+> > videobuf2_common gpi(+) qcom_rng cfg80211 phy_qcom_qmp_ufs ufs_qcom(+)
+> > coresight_stm phy_qcom_qmp_pcie stm_core rfkill slim_qcom_ngd_ctrl
+> > qrtr pdr_interface lmh qcom_wdt slimbus icc_osm_l3 qcom_q6v5_pas(+)
+> > icc_bwmon llcc_qcom qcom_pil_info qcom_q6v5 qcom_sysmon qcom_common
+> > qcom_glink_smem qmi_helpers mdt_loader display_connector
+> > drm_kms_helper drm socinfo rmtfs_mem
+> > [    7.841494] CPU: 4 PID: 492 Comm: (udev-worker) Not tainted 6.1.111-rc1 #1
+> > [    7.841497] Hardware name: Thundercomm Dragonboard 845c (DT)
+> > [    7.841499] pstate: 80400005 (Nzcv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+> > [    7.841502] pc : __icc_enable (drivers/interconnect/core.c:685
+> > (discriminator 7))
+> > [    7.841505] lr : icc_disable (drivers/interconnect/core.c:708)
+> > [    7.841508] sp : ffff800008b23660
+> > [    7.841509] x29: ffff800008b23660 x28: ffff800008b23c20 x27: 0000000000000000
+> > [    7.841513] x26: ffffdd85da6ea1c0 x25: 0000000000000008 x24: 00000000000f4240
+> > [    7.841516] x23: 0000000000000000 x22: ffff46a58b7ca580 x21: 0000000000000001
+> > [    7.841519] x20: ffff46a58b7ca5c0 x19: ffff46a58b54a800 x18: 0000000000000000
+> > [    7.841522] x17: 0000000000000000 x16: 0000000000000000 x15: 0000000000000000
+> > [    7.841525] x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000000
+> > [    7.841528] x11: fefefefefefefeff x10: 0000000000000bf0 x9 : ffffdd85d8c9b0bc
+> > [    7.841531] x8 : ffff800008b22f58 x7 : 0000000000000000 x6 : 0000000000024404
+> > [    7.841535] x5 : 0000000000000000 x4 : ffff46a58b64b180 x3 : ffffdd85daa5e810
+> > [    7.841537] x2 : 0000000000000000 x1 : 0000000000000000 x0 : 0000000000000000
+> > [    7.841541] Call trace:
+> > [    7.841542] __icc_enable (drivers/interconnect/core.c:685 (discriminator 7))
+> > [    7.841545] icc_disable (drivers/interconnect/core.c:708)
+> > [    7.841547] geni_icc_disable (drivers/soc/qcom/qcom-geni-se.c:862)
+> > [    7.841553] spi_geni_runtime_suspend+0x3c/0x4c spi_geni_qcom
+> > [    7.841561] pm_generic_runtime_suspend (drivers/base/power/generic_ops.c:28)
+> > [    7.841565] __rpm_callback (drivers/base/power/runtime.c:395)
+> > [    7.841568] rpm_callback (drivers/base/power/runtime.c:532)
+> > [    7.841570] rpm_suspend (drivers/base/power/runtime.c:672)
+> > [    7.841572] rpm_idle (drivers/base/power/runtime.c:504 (discriminator 1))
+> > [    7.841574] update_autosuspend (drivers/base/power/runtime.c:1662)
+> > [    7.841576] pm_runtime_disable_action (include/linux/spinlock.h:401
+> > drivers/base/power/runtime.c:1703 include/linux/pm_runtime.h:599
+> > drivers/base/power/runtime.c:1517)
+> > [    7.841579] devm_action_release (drivers/base/devres.c:720)
+> > [    7.841581] release_nodes (drivers/base/devres.c:503)
+> > [    7.841583] devres_release_all (drivers/base/devres.c:532)
+> > [    7.841585] device_unbind_cleanup (drivers/base/dd.c:531)
+> > [    7.841589] really_probe (drivers/base/dd.c:710)
+> > [    7.841592] __driver_probe_device (drivers/base/dd.c:785)
+> > [    7.841594] driver_probe_device (drivers/base/dd.c:815)
+> > [    7.841596] __driver_attach (drivers/base/dd.c:1202)
+> > [    7.841598] bus_for_each_dev (drivers/base/bus.c:301)
+> > [    7.841600] driver_attach (drivers/base/dd.c:1219)
+> > [    7.841602] bus_add_driver (drivers/base/bus.c:618)
+> > [    7.841604] driver_register (drivers/base/driver.c:246)
+> > [    7.841607] __platform_driver_register (drivers/base/platform.c:868)
+> > [    7.841609] spi_geni_driver_init+0x28/0x1000 spi_geni_qcom
 
-Please think about this. Say scale is 0, and you return it. It appears
-the call has worked, but in fact it did nothing.
 
-I much prefer a division by 0, causing a splat, than the silent bug
-you just added.
+So it looks like spi_geni_probe() calls geni_icc_get() which fails.  It must
+be with -EPROBE_DEFER otherwise we would get a printk.  This could happen if
+of_icc_get_from_provider() fails for example.  There are two callers.  These
+were the only possibilities that I saw which didn't lead to a warning message.
 
-Also, please could you explain the code path which results in scale
-being 0.
+The automatic cleanup tries to suspend and triggers the warning IS_ERR() warning
+in __icc_enable().
 
-    Andrew
+	if (WARN_ON(IS_ERR(path) || !path->num_nodes))
 
----
-pw-bot: cr
+The best option is probably to disable the warning for EPROBE_DEFER.  Another
+two options would be to disable the warning entirely.  A third option would be
+to do a work-around for EPROBE_DEFER in geni_icc_get().
+
+Please, could you take a look and give the Reported-by tag to Naresh?  Or I
+could send this patch if you want.
+
+regards,
+dan carpenter
+
+diff --git a/drivers/interconnect/core.c b/drivers/interconnect/core.c
+index 4526ff2e1bd5..0caf8ead6573 100644
+--- a/drivers/interconnect/core.c
++++ b/drivers/interconnect/core.c
+@@ -682,6 +682,8 @@ static int __icc_enable(struct icc_path *path, bool enable)
+ 	if (!path)
+ 		return 0;
+ 
++	if (IS_ERR(path) && (PTR_ERR(path) == -EPROBE_DEFER))
++		return 0;
+ 	if (WARN_ON(IS_ERR(path) || !path->num_nodes))
+ 		return -EINVAL;
+ 
 
