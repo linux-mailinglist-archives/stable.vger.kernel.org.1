@@ -1,75 +1,62 @@
-Return-Path: <stable+bounces-77245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77246-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id BBD1B985AD0
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:15:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4794985AD8
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:15:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6BCCC1F247AC
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:15:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A2C5B229C3
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:15:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0482718892D;
-	Wed, 25 Sep 2024 11:45:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B48C3189525;
+	Wed, 25 Sep 2024 11:46:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ly7QgBXT"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mXyPvy7v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE16C188907;
-	Wed, 25 Sep 2024 11:45:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C30E188CA8;
+	Wed, 25 Sep 2024 11:46:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727264758; cv=none; b=jc8oGaixDjZdeisyJNY8LptUbNWfWGNM7pDM7mcv94uxO+gQCHAXbbb6xZuO7zD26pbG2oCy7ZmroggOobZf1C13ByspN6PW/g9xIA+7XNRIGKX5Jkf6mSLoKCsgDBNuA7B8AYiTQ+9p1RJsXuGUmIZmwTAgkVxxxZhkkXu+09A=
+	t=1727264760; cv=none; b=EpTNZUBCotl11oF/scYsCl+8CKrDgvTMumfoMy2CYCDulw8uzjW2H/xnforjcBWVeFmEC6alHT0g/NUUc5Ahc7MGcWWSX+Hrd1ZFp04Q+mW8XS8dUtfye2fiNOVoT+y5/8MtazZ7W+rpniqI9las93U8DEvhQ9a/VQS2OT8uxss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727264758; c=relaxed/simple;
-	bh=k9RDrPj+Z2firOORPKM9HyK8UpTlqYHTGGRiT3jYDFg=;
+	s=arc-20240116; t=1727264760; c=relaxed/simple;
+	bh=DIgccXoM7l0r0k5D5IXzP36HlpO+6jZM1+Rqh+3F1xk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GUkopRbNbo2VboBeuZ73JpaD3JYtK47nqGZMfkd7kwHU5jJQQvuwaVU0AWgGH4U3qIlrVB8Ab1fz8uMt549jNhlYKfFpcSd9MULRyaCCkvmHdqYbt6s05PMMA5znzjID5C07BB1dyT9INfpxpsPQNXmEelp89TLceUx12US2AUI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ly7QgBXT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64329C4CEC3;
-	Wed, 25 Sep 2024 11:45:55 +0000 (UTC)
+	 MIME-Version; b=PjsE4nlpdmV+JMuAWejGShGrcFr0tX/J8QTtkcpOFaJI1NbU6e3PM2d8uvR7GzdipMZYZWDA9TZ0uGZGEeOPF7Jjrut4da/5qC6cv62EECMnBzuWnvb75NPf07mc7o7V/Kz3diqsv12oJbllGtFrxjTFI3ZYMiFskD1ZJBowsW8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mXyPvy7v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8462C4CEC7;
+	Wed, 25 Sep 2024 11:45:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727264758;
-	bh=k9RDrPj+Z2firOORPKM9HyK8UpTlqYHTGGRiT3jYDFg=;
+	s=k20201202; t=1727264760;
+	bh=DIgccXoM7l0r0k5D5IXzP36HlpO+6jZM1+Rqh+3F1xk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ly7QgBXT28jlqT/UK+RDgO6Jt/ynuKX1WOPRdgAiNWr6oh0eFEGPa0rivNZAEYUvV
-	 a1xcXZ2l3iaI2zCAkYcednxTtdIQya9+oJ1hXWjG68A11kLDNyveHW8ueRymGkfGLB
-	 lzS685/WkeJPaKzrchyDT/QQ6vdqoEAl2LNfxLKMsLI44BJ9pe38LVkFlhEPidpF4s
-	 7zCktnKur101Z84fZaehXVSY6Ys0x3k/kA/Ud49JJbGsZFPSuYIurAejENGwJnecp2
-	 yoXiwiztE+8VgkUmubKlbUaHf/TNxkeh2PXTicJEZ39h8JsotMvTezyRUEcoQFbu5v
-	 0CXPFzM+7ojdQ==
+	b=mXyPvy7vLnUdlZVJryoU3J6TIIcoVLQG3wgKWeEjjTb14IHMkHTfzDE8S07t5jJXC
+	 cLiDkBqaQ4QR+T2nUviEqWB3BGeNrqbfKyvC+nhgfKceAOEd6zqHtYatZoBLbZgpWD
+	 QINRNdGIqI20w6ouP5I+r1T+0T+OFbxJb7PVtIzzZ3x9/PRxZMfZjoZmYxSvtFwgvA
+	 t7hdXw29o7RXQoPyVNeRo8vtqAC8P0MifZ1b0777AHM5c8Hwai6pEnUTFP3c9hMaJt
+	 UlpafglVDplpCx2/tF3oWEZAnLHWEd91Zr2gsHJJCdNyiPdyXIFdHMbTIw3RrxJtS4
+	 yHnP0DQlV88wQ==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Jiri Olsa <olsajiri@gmail.com>,
-	Oleg Nesterov <oleg@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
+Cc: David Strahan <David.Strahan@microchip.com>,
+	Scott Benesh <scott.benesh@microchip.com>,
+	Scott Teel <scott.teel@microchip.com>,
+	Mike McGowen <mike.mcgowen@microchip.com>,
+	Don Brace <don.brace@microchip.com>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>,
-	ast@kernel.org,
-	daniel@iogearbox.net,
-	andrii@kernel.org,
-	eddyz87@gmail.com,
-	shuah@kernel.org,
-	mcoquelin.stm32@gmail.com,
-	alexandre.torgue@foss.st.com,
-	thinker.li@gmail.com,
-	martin.lau@kernel.org,
-	geliang@kernel.org,
-	bentiss@kernel.org,
-	jrife@google.com,
-	alan.maguire@oracle.com,
-	dxu@dxuuu.xyz,
-	davemarchevsky@fb.com,
-	bpf@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-stm32@st-md-mailman.stormreply.com,
-	linux-arm-kernel@lists.infradead.org
-Subject: [PATCH AUTOSEL 6.11 147/244] selftests/bpf: fix uprobe.path leak in bpf_testmod
-Date: Wed, 25 Sep 2024 07:26:08 -0400
-Message-ID: <20240925113641.1297102-147-sashal@kernel.org>
+	James.Bottomley@HansenPartnership.com,
+	storagedev@microchip.com,
+	linux-scsi@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.11 148/244] scsi: smartpqi: Add new controller PCI IDs
+Date: Wed, 25 Sep 2024 07:26:09 -0400
+Message-ID: <20240925113641.1297102-148-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925113641.1297102-1-sashal@kernel.org>
 References: <20240925113641.1297102-1-sashal@kernel.org>
@@ -84,33 +71,191 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11
 Content-Transfer-Encoding: 8bit
 
-From: Jiri Olsa <olsajiri@gmail.com>
+From: David Strahan <David.Strahan@microchip.com>
 
-[ Upstream commit db61e6a4eee5a7884b2cafeaf407895f253bbaa7 ]
+[ Upstream commit 0e21e73384d324f75ea16f3d622cfc433fa6209b ]
 
-testmod_unregister_uprobe() forgets to path_put(&uprobe.path).
+All PCI ID entries in hex.
 
-Signed-off-by: Jiri Olsa <olsajiri@gmail.com>
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20240801132724.GA8791@redhat.com
+Add new inagile PCI IDs:
+                                             VID  / DID  / SVID / SDID
+                                             ----   ----   ----   ----
+            SMART-HBA 8242-24i               9005 / 028f / 1ff9 / 0045
+            RAID 8236-16i                    9005 / 028f / 1ff9 / 0046
+            RAID 8240-24i                    9005 / 028f / 1ff9 / 0047
+            SMART-HBA 8238-16i               9005 / 028f / 1ff9 / 0048
+            PM8222-SHBA                      9005 / 028f / 1ff9 / 004a
+            RAID PM8204-2GB                  9005 / 028f / 1ff9 / 004b
+            RAID PM8204-4GB                  9005 / 028f / 1ff9 / 004c
+            PM8222-HBA                       9005 / 028f / 1ff9 / 004f
+            MT0804M6R                        9005 / 028f / 1ff9 / 0051
+            MT0801M6E                        9005 / 028f / 1ff9 / 0052
+            MT0808M6R                        9005 / 028f / 1ff9 / 0053
+            MT0800M6H                        9005 / 028f / 1ff9 / 0054
+            RS0800M5H24i                     9005 / 028f / 1ff9 / 006b
+            RS0800M5E8i                      9005 / 028f / 1ff9 / 006c
+            RS0800M5H8i                      9005 / 028f / 1ff9 / 006d
+            RS0804M5R16i                     9005 / 028f / 1ff9 / 006f
+            RS0800M5E24i                     9005 / 028f / 1ff9 / 0070
+            RS0800M5H16i                     9005 / 028f / 1ff9 / 0071
+            RS0800M5E16i                     9005 / 028f / 1ff9 / 0072
+            RT0800M7E                        9005 / 028f / 1ff9 / 0086
+            RT0800M7H                        9005 / 028f / 1ff9 / 0087
+            RT0804M7R                        9005 / 028f / 1ff9 / 0088
+            RT0808M7R                        9005 / 028f / 1ff9 / 0089
+            RT1608M6R16i                     9005 / 028f / 1ff9 / 00a1
+
+Add new h3c pci_id:
+                                             VID  / DID  / SVID / SDID
+                                             ----   ----   ----   ----
+            UN RAID P4408-Mr-2               9005 / 028f / 193d / 1110
+
+Add new powerleader pci ids:
+                                             VID  / DID  / SVID / SDID
+                                             ----   ----   ----   ----
+            PL SmartROC PM8204               9005 / 028f / 1f3a / 0104
+
+Reviewed-by: Scott Benesh <scott.benesh@microchip.com>
+Reviewed-by: Scott Teel <scott.teel@microchip.com>
+Reviewed-by: Mike McGowen <mike.mcgowen@microchip.com>
+Signed-off-by: David Strahan <David.Strahan@microchip.com>
+Signed-off-by: Don Brace <don.brace@microchip.com>
+Link: https://lore.kernel.org/r/20240711194704.982400-2-don.brace@microchip.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/bpf_testmod/bpf_testmod.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/scsi/smartpqi/smartpqi_init.c | 104 ++++++++++++++++++++++++++
+ 1 file changed, 104 insertions(+)
 
-diff --git a/tools/testing/selftests/bpf/bpf_testmod/bpf_testmod.c b/tools/testing/selftests/bpf/bpf_testmod/bpf_testmod.c
-index fd28c1157bd3d..72f565af4f829 100644
---- a/tools/testing/selftests/bpf/bpf_testmod/bpf_testmod.c
-+++ b/tools/testing/selftests/bpf/bpf_testmod/bpf_testmod.c
-@@ -477,6 +477,7 @@ static void testmod_unregister_uprobe(void)
- 	if (uprobe.offset) {
- 		uprobe_unregister(d_real_inode(uprobe.path.dentry),
- 				  uprobe.offset, &uprobe.consumer);
-+		path_put(&uprobe.path);
- 		uprobe.offset = 0;
- 	}
- 
+diff --git a/drivers/scsi/smartpqi/smartpqi_init.c b/drivers/scsi/smartpqi/smartpqi_init.c
+index 24c7cb285dca0..9166dfa1fedc3 100644
+--- a/drivers/scsi/smartpqi/smartpqi_init.c
++++ b/drivers/scsi/smartpqi/smartpqi_init.c
+@@ -9472,6 +9472,10 @@ static const struct pci_device_id pqi_pci_id_table[] = {
+ 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
+ 			       0x193d, 0x110b)
+ 	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x193d, 0x1110)
++	},
+ 	{
+ 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
+ 			       0x193d, 0x8460)
+@@ -9588,6 +9592,14 @@ static const struct pci_device_id pqi_pci_id_table[] = {
+ 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
+ 			       0x1bd4, 0x0089)
+ 	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x00a1)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1f3a, 0x0104)
++	},
+ 	{
+ 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
+ 			       0x19e5, 0xd227)
+@@ -10180,6 +10192,98 @@ static const struct pci_device_id pqi_pci_id_table[] = {
+ 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
+ 			       0x1137, 0x02fa)
+ 	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x0045)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x0046)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x0047)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x0048)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x004a)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x004b)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x004c)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x004f)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x0051)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x0052)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x0053)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x0054)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x006b)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x006c)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x006d)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x006f)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x0070)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x0071)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x0072)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x0086)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x0087)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x0088)
++	},
++	{
++		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
++			       0x1ff9, 0x0089)
++	},
+ 	{
+ 		PCI_DEVICE_SUB(PCI_VENDOR_ID_ADAPTEC2, 0x028f,
+ 				0x1e93, 0x1000)
 -- 
 2.43.0
 
