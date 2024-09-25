@@ -1,73 +1,63 @@
-Return-Path: <stable+bounces-77440-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C065985D68
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:09:37 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71939985D43
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:06:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E1391B2C063
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:06:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D44141F2689F
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:06:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7623D1B1509;
-	Wed, 25 Sep 2024 12:03:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 778F51DCB0E;
+	Wed, 25 Sep 2024 12:03:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cogH9ler"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cN0fihap"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3043C176FB8;
-	Wed, 25 Sep 2024 12:03:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FEE01B151C;
+	Wed, 25 Sep 2024 12:03:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727265788; cv=none; b=C24mLZmXNSUVukJFJtl3DXTlNATaQ+TH+VK6Jlw/8qHoO/3HYOCwRpjMlzi5JfPhPWT0UbcTL1FqQfsoKr44vrjiDWhGw0Xi3RkN33NVbfzSGpLU63ZsNpaLUd9RkuTTzRFx8wY1xpjFCZRHa2cg2VWa9wVasCdm3KedCaLuXro=
+	t=1727265790; cv=none; b=KRhlycayt9BnWozzE1v1VstIV8PTebbECniUS08JjQLcrXai3wx0zwLDz2tFVmpAYGpl2aXEplxt/mgatwIv41bj9t2uGmsW7+sve9QNefE1eoInfM78YuA7HXj5CFfTPU1o0GXpf4SXT1VQ/5SNXlezeH0fCr9E4CMbYkEw4pA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727265788; c=relaxed/simple;
-	bh=DtkkKUYmMlHP2TuazWt4IZv+jxsp3Z3kbXQDu7abOYk=;
+	s=arc-20240116; t=1727265790; c=relaxed/simple;
+	bh=gPyCaQBr7NLarP2vBYL0XSUiR4CN0EBLo5GXq/LLkHs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ubWKimt6xvcTiK8WF6izDVviczNOytw7UvCmlKhARaxsif+nY2S0+lwGa67vO6ZHnZ5XkHglZCxMi6p/qXQSZtTH0ja75GJKyUKzbkXNp8Pzbch1Ab/kgHpOH/f52iH7GAUq48W1J5SoQ2dbURFsFQaWwJnsWCpwVoKHc6+o/3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cogH9ler; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14619C4CEC7;
-	Wed, 25 Sep 2024 12:03:04 +0000 (UTC)
+	 MIME-Version; b=mz+iv0i62Ww9Wf2cRgNLY++xxEdI0Rbw8lndjFZX8gT5NSyo1C1gj6bQ6GIOqKPhZJ1HwuWGpuM/5etiHw+BBecdMr5PF5WHFgEEDZGkxvGQCHKW5jRfP0YqL4/wZbBx6S5KiVoUjd1UKx4tTxIRUVgxyWhA+9nKNamiZhCmcvE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cN0fihap; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50C4BC4CECF;
+	Wed, 25 Sep 2024 12:03:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727265787;
-	bh=DtkkKUYmMlHP2TuazWt4IZv+jxsp3Z3kbXQDu7abOYk=;
+	s=k20201202; t=1727265790;
+	bh=gPyCaQBr7NLarP2vBYL0XSUiR4CN0EBLo5GXq/LLkHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cogH9lerd0ZDTpvOr0O9GCCc+h9ki98jIr7hoW+3TXrToa/Xd/YuEhMHn8IhnK3rc
-	 U1h8sAYif4yakqfUCIPpsuxw1C5UpG1zRL1icUG5n6saUYk5mw0WhbvbLZ+sGKG5Ki
-	 1Z/FMSkBu47Gqg7r+AUpvdb66JlTMA5T1IkruZrqaQE8LTgGWzlFy5SGKA6w4aChdA
-	 MgSs1IE1wdugUUTDzz24PcTIp2ICF60Y0Pd5mBUSNDGmvwcd9zePftoHw9VWaLYaZm
-	 gJnBfPxTmv2ex+Qrq50Q3cMK+0YTXoylgzRn0b22Ctjp+CBQNiJ+YhZCEEqOj93jQh
-	 rhu6haElna95w==
+	b=cN0fihapi9zO98PVDN62OnolfXYY0T0vtMAgzXREOkaRxVlBNPyG98z4NpbEwKwZG
+	 UeHwZBotnoJCa0756NmZ496stjea3L5TOlyr8OV16PYrRRSAFnVTHRqSuloYWAkq9I
+	 1c01oUJWmiS7SagZ6xt3OcK34UzqwASFku4Thr5HcBmnUB2zR6IHfNGZL2IDp+2NX9
+	 rIua6fOL+Rnefo6jws/RMipl9phSPlHI8m212zOS21YZ48ew5vMSbMJcY7Dy9EVMck
+	 el55R2oyJgNFT4M2CwNtyLfsYEvEXo1NPPlFLUKoKSQIfcTWW0a3b8cGVi4GF/wPvn
+	 Z2YSAxvm6gEjg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+Cc: Zqiang <qiang.zhang1211@gmail.com>,
+	Zhixu Liu <zhixu.liu@gmail.com>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	cezary.rojewski@intel.com,
-	liam.r.girdwood@linux.intel.com,
-	ranjani.sridharan@linux.intel.com,
-	kai.vehmanen@linux.intel.com,
-	perex@perex.cz,
-	tiwai@suse.com,
-	pierre-louis.bossart@linux.dev,
-	hdegoede@redhat.com,
-	kuninori.morimoto.gx@renesas.com,
-	tomlohave@gmail.com,
-	alban.boye@protonmail.com,
-	chao.song@linux.intel.com,
-	christophe.jaillet@wanadoo.fr,
-	alsa-devel@alsa-project.org,
-	linux-sound@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 095/197] ASoC: Intel: boards: always check the result of acpi_dev_get_first_match_dev()
-Date: Wed, 25 Sep 2024 07:51:54 -0400
-Message-ID: <20240925115823.1303019-95-sashal@kernel.org>
+	paulmck@kernel.org,
+	frederic@kernel.org,
+	joel@joelfernandes.org,
+	josh@joshtriplett.org,
+	boqun.feng@gmail.com,
+	urezki@gmail.com,
+	rcu@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.10 096/197] rcu-tasks: Fix access non-existent percpu rtpcp variable in rcu_tasks_need_gpcb()
+Date: Wed, 25 Sep 2024 07:51:55 -0400
+Message-ID: <20240925115823.1303019-96-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925115823.1303019-1-sashal@kernel.org>
 References: <20240925115823.1303019-1-sashal@kernel.org>
@@ -77,174 +67,264 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.11
 Content-Transfer-Encoding: 8bit
 
-From: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+From: Zqiang <qiang.zhang1211@gmail.com>
 
-[ Upstream commit 14e91ddd5c02d8c3e5a682ebfa0546352b459911 ]
+[ Upstream commit fd70e9f1d85f5323096ad313ba73f5fe3d15ea41 ]
 
-The code seems mostly copy-pasted, with some machine drivers
-forgetting to test if the 'adev' result is NULL.
+For kernels built with CONFIG_FORCE_NR_CPUS=y, the nr_cpu_ids is
+defined as NR_CPUS instead of the number of possible cpus, this
+will cause the following system panic:
 
-Add this check when missing, and use -ENOENT consistently as an error
-code.
+smpboot: Allowing 4 CPUs, 0 hotplug CPUs
+...
+setup_percpu: NR_CPUS:512 nr_cpumask_bits:512 nr_cpu_ids:512 nr_node_ids:1
+...
+BUG: unable to handle page fault for address: ffffffff9911c8c8
+Oops: 0000 [#1] PREEMPT SMP PTI
+CPU: 0 PID: 15 Comm: rcu_tasks_trace Tainted: G W
+6.6.21 #1 5dc7acf91a5e8e9ac9dcfc35bee0245691283ea6
+RIP: 0010:rcu_tasks_need_gpcb+0x25d/0x2c0
+RSP: 0018:ffffa371c00a3e60 EFLAGS: 00010082
+CR2: ffffffff9911c8c8 CR3: 000000040fa20005 CR4: 00000000001706f0
+Call Trace:
+<TASK>
+? __die+0x23/0x80
+? page_fault_oops+0xa4/0x180
+? exc_page_fault+0x152/0x180
+? asm_exc_page_fault+0x26/0x40
+? rcu_tasks_need_gpcb+0x25d/0x2c0
+? __pfx_rcu_tasks_kthread+0x40/0x40
+rcu_tasks_one_gp+0x69/0x180
+rcu_tasks_kthread+0x94/0xc0
+kthread+0xe8/0x140
+? __pfx_kthread+0x40/0x40
+ret_from_fork+0x34/0x80
+? __pfx_kthread+0x40/0x40
+ret_from_fork_asm+0x1b/0x80
+</TASK>
 
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/alsa-devel/918944d2-3d00-465e-a9d1-5d57fc966113@stanley.mountain/T/#u
-Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Link: https://patch.msgid.link/20240827123215.258859-4-yung-chuan.liao@linux.intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Considering that there may be holes in the CPU numbers, use the
+maximum possible cpu number, instead of nr_cpu_ids, for configuring
+enqueue and dequeue limits.
+
+[ neeraj.upadhyay: Fix htmldocs build error reported by Stephen Rothwell ]
+
+Closes: https://lore.kernel.org/linux-input/CALMA0xaTSMN+p4xUXkzrtR5r6k7hgoswcaXx7baR_z9r5jjskw@mail.gmail.com/T/#u
+Reported-by: Zhixu Liu <zhixu.liu@gmail.com>
+Signed-off-by: Zqiang <qiang.zhang1211@gmail.com>
+Signed-off-by: Neeraj Upadhyay <neeraj.upadhyay@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/boards/bytcht_cx2072x.c | 4 ++++
- sound/soc/intel/boards/bytcht_da7213.c  | 4 ++++
- sound/soc/intel/boards/bytcht_es8316.c  | 2 +-
- sound/soc/intel/boards/bytcr_rt5640.c   | 2 +-
- sound/soc/intel/boards/bytcr_rt5651.c   | 2 +-
- sound/soc/intel/boards/cht_bsw_rt5645.c | 4 ++++
- sound/soc/intel/boards/cht_bsw_rt5672.c | 4 ++++
- sound/soc/intel/boards/sof_es8336.c     | 2 +-
- sound/soc/intel/boards/sof_wm8804.c     | 4 ++++
- 9 files changed, 24 insertions(+), 4 deletions(-)
+ kernel/rcu/tasks.h | 82 ++++++++++++++++++++++++++++++----------------
+ 1 file changed, 53 insertions(+), 29 deletions(-)
 
-diff --git a/sound/soc/intel/boards/bytcht_cx2072x.c b/sound/soc/intel/boards/bytcht_cx2072x.c
-index df3c2a7b64d23..8c2b4ab764bba 100644
---- a/sound/soc/intel/boards/bytcht_cx2072x.c
-+++ b/sound/soc/intel/boards/bytcht_cx2072x.c
-@@ -255,7 +255,11 @@ static int snd_byt_cht_cx2072x_probe(struct platform_device *pdev)
- 		snprintf(codec_name, sizeof(codec_name), "i2c-%s",
- 			 acpi_dev_name(adev));
- 		byt_cht_cx2072x_dais[dai_index].codecs->name = codec_name;
-+	} else {
-+		dev_err(&pdev->dev, "Error cannot find '%s' dev\n", mach->id);
-+		return -ENOENT;
- 	}
+diff --git a/kernel/rcu/tasks.h b/kernel/rcu/tasks.h
+index ba3440a45b6dd..bc8429ada7a51 100644
+--- a/kernel/rcu/tasks.h
++++ b/kernel/rcu/tasks.h
+@@ -34,6 +34,7 @@ typedef void (*postgp_func_t)(struct rcu_tasks *rtp);
+  * @rtp_blkd_tasks: List of tasks blocked as readers.
+  * @rtp_exit_list: List of tasks in the latter portion of do_exit().
+  * @cpu: CPU number corresponding to this entry.
++ * @index: Index of this CPU in rtpcp_array of the rcu_tasks structure.
+  * @rtpp: Pointer to the rcu_tasks structure.
+  */
+ struct rcu_tasks_percpu {
+@@ -49,6 +50,7 @@ struct rcu_tasks_percpu {
+ 	struct list_head rtp_blkd_tasks;
+ 	struct list_head rtp_exit_list;
+ 	int cpu;
++	int index;
+ 	struct rcu_tasks *rtpp;
+ };
+ 
+@@ -76,6 +78,7 @@ struct rcu_tasks_percpu {
+  * @call_func: This flavor's call_rcu()-equivalent function.
+  * @wait_state: Task state for synchronous grace-period waits (default TASK_UNINTERRUPTIBLE).
+  * @rtpcpu: This flavor's rcu_tasks_percpu structure.
++ * @rtpcp_array: Array of pointers to rcu_tasks_percpu structure of CPUs in cpu_possible_mask.
+  * @percpu_enqueue_shift: Shift down CPU ID this much when enqueuing callbacks.
+  * @percpu_enqueue_lim: Number of per-CPU callback queues in use for enqueuing.
+  * @percpu_dequeue_lim: Number of per-CPU callback queues in use for dequeuing.
+@@ -110,6 +113,7 @@ struct rcu_tasks {
+ 	call_rcu_func_t call_func;
+ 	unsigned int wait_state;
+ 	struct rcu_tasks_percpu __percpu *rtpcpu;
++	struct rcu_tasks_percpu **rtpcp_array;
+ 	int percpu_enqueue_shift;
+ 	int percpu_enqueue_lim;
+ 	int percpu_dequeue_lim;
+@@ -182,6 +186,8 @@ module_param(rcu_task_collapse_lim, int, 0444);
+ static int rcu_task_lazy_lim __read_mostly = 32;
+ module_param(rcu_task_lazy_lim, int, 0444);
+ 
++static int rcu_task_cpu_ids;
 +
- 	acpi_dev_put(adev);
+ /* RCU tasks grace-period state for debugging. */
+ #define RTGS_INIT		 0
+ #define RTGS_WAIT_WAIT_CBS	 1
+@@ -245,6 +251,8 @@ static void cblist_init_generic(struct rcu_tasks *rtp)
+ 	int cpu;
+ 	int lim;
+ 	int shift;
++	int maxcpu;
++	int index = 0;
  
- 	/* override platform name, if required */
-diff --git a/sound/soc/intel/boards/bytcht_da7213.c b/sound/soc/intel/boards/bytcht_da7213.c
-index 08c598b7e1eee..9178bbe8d9950 100644
---- a/sound/soc/intel/boards/bytcht_da7213.c
-+++ b/sound/soc/intel/boards/bytcht_da7213.c
-@@ -258,7 +258,11 @@ static int bytcht_da7213_probe(struct platform_device *pdev)
- 		snprintf(codec_name, sizeof(codec_name),
- 			 "i2c-%s", acpi_dev_name(adev));
- 		dailink[dai_index].codecs->name = codec_name;
-+	} else {
-+		dev_err(&pdev->dev, "Error cannot find '%s' dev\n", mach->id);
-+		return -ENOENT;
+ 	if (rcu_task_enqueue_lim < 0) {
+ 		rcu_task_enqueue_lim = 1;
+@@ -254,14 +262,9 @@ static void cblist_init_generic(struct rcu_tasks *rtp)
  	}
+ 	lim = rcu_task_enqueue_lim;
+ 
+-	if (lim > nr_cpu_ids)
+-		lim = nr_cpu_ids;
+-	shift = ilog2(nr_cpu_ids / lim);
+-	if (((nr_cpu_ids - 1) >> shift) >= lim)
+-		shift++;
+-	WRITE_ONCE(rtp->percpu_enqueue_shift, shift);
+-	WRITE_ONCE(rtp->percpu_dequeue_lim, lim);
+-	smp_store_release(&rtp->percpu_enqueue_lim, lim);
++	rtp->rtpcp_array = kcalloc(num_possible_cpus(), sizeof(struct rcu_tasks_percpu *), GFP_KERNEL);
++	BUG_ON(!rtp->rtpcp_array);
 +
- 	acpi_dev_put(adev);
+ 	for_each_possible_cpu(cpu) {
+ 		struct rcu_tasks_percpu *rtpcp = per_cpu_ptr(rtp->rtpcpu, cpu);
  
- 	/* override platform name, if required */
-diff --git a/sound/soc/intel/boards/bytcht_es8316.c b/sound/soc/intel/boards/bytcht_es8316.c
-index 77b91ea4dc32c..3539c9ff0fd2c 100644
---- a/sound/soc/intel/boards/bytcht_es8316.c
-+++ b/sound/soc/intel/boards/bytcht_es8316.c
-@@ -562,7 +562,7 @@ static int snd_byt_cht_es8316_mc_probe(struct platform_device *pdev)
- 		byt_cht_es8316_dais[dai_index].codecs->name = codec_name;
- 	} else {
- 		dev_err(dev, "Error cannot find '%s' dev\n", mach->id);
--		return -ENXIO;
-+		return -ENOENT;
+@@ -273,14 +276,29 @@ static void cblist_init_generic(struct rcu_tasks *rtp)
+ 		INIT_WORK(&rtpcp->rtp_work, rcu_tasks_invoke_cbs_wq);
+ 		rtpcp->cpu = cpu;
+ 		rtpcp->rtpp = rtp;
++		rtpcp->index = index;
++		rtp->rtpcp_array[index] = rtpcp;
++		index++;
+ 		if (!rtpcp->rtp_blkd_tasks.next)
+ 			INIT_LIST_HEAD(&rtpcp->rtp_blkd_tasks);
+ 		if (!rtpcp->rtp_exit_list.next)
+ 			INIT_LIST_HEAD(&rtpcp->rtp_exit_list);
++		maxcpu = cpu;
  	}
  
- 	codec_dev = acpi_get_first_physical_node(adev);
-diff --git a/sound/soc/intel/boards/bytcr_rt5640.c b/sound/soc/intel/boards/bytcr_rt5640.c
-index db4a33680d948..4479825c08b5e 100644
---- a/sound/soc/intel/boards/bytcr_rt5640.c
-+++ b/sound/soc/intel/boards/bytcr_rt5640.c
-@@ -1693,7 +1693,7 @@ static int snd_byt_rt5640_mc_probe(struct platform_device *pdev)
- 		byt_rt5640_dais[dai_index].codecs->name = byt_rt5640_codec_name;
- 	} else {
- 		dev_err(dev, "Error cannot find '%s' dev\n", mach->id);
--		return -ENXIO;
-+		return -ENOENT;
- 	}
- 
- 	codec_dev = acpi_get_first_physical_node(adev);
-diff --git a/sound/soc/intel/boards/bytcr_rt5651.c b/sound/soc/intel/boards/bytcr_rt5651.c
-index 8514b79f389bb..1f54da98aacf4 100644
---- a/sound/soc/intel/boards/bytcr_rt5651.c
-+++ b/sound/soc/intel/boards/bytcr_rt5651.c
-@@ -926,7 +926,7 @@ static int snd_byt_rt5651_mc_probe(struct platform_device *pdev)
- 		byt_rt5651_dais[dai_index].codecs->name = byt_rt5651_codec_name;
- 	} else {
- 		dev_err(dev, "Error cannot find '%s' dev\n", mach->id);
--		return -ENXIO;
-+		return -ENOENT;
- 	}
- 
- 	codec_dev = acpi_get_first_physical_node(adev);
-diff --git a/sound/soc/intel/boards/cht_bsw_rt5645.c b/sound/soc/intel/boards/cht_bsw_rt5645.c
-index 1da9ceee4d593..ac23a8b7cafca 100644
---- a/sound/soc/intel/boards/cht_bsw_rt5645.c
-+++ b/sound/soc/intel/boards/cht_bsw_rt5645.c
-@@ -582,7 +582,11 @@ static int snd_cht_mc_probe(struct platform_device *pdev)
- 		snprintf(cht_rt5645_codec_name, sizeof(cht_rt5645_codec_name),
- 			 "i2c-%s", acpi_dev_name(adev));
- 		cht_dailink[dai_index].codecs->name = cht_rt5645_codec_name;
-+	} else {
-+		dev_err(&pdev->dev, "Error cannot find '%s' dev\n", mach->id);
-+		return -ENOENT;
- 	}
+-	pr_info("%s: Setting shift to %d and lim to %d rcu_task_cb_adjust=%d.\n", rtp->name,
+-			data_race(rtp->percpu_enqueue_shift), data_race(rtp->percpu_enqueue_lim), rcu_task_cb_adjust);
++	rcu_task_cpu_ids = maxcpu + 1;
++	if (lim > rcu_task_cpu_ids)
++		lim = rcu_task_cpu_ids;
++	shift = ilog2(rcu_task_cpu_ids / lim);
++	if (((rcu_task_cpu_ids - 1) >> shift) >= lim)
++		shift++;
++	WRITE_ONCE(rtp->percpu_enqueue_shift, shift);
++	WRITE_ONCE(rtp->percpu_dequeue_lim, lim);
++	smp_store_release(&rtp->percpu_enqueue_lim, lim);
 +
- 	/* acpi_get_first_physical_node() returns a borrowed ref, no need to deref */
- 	codec_dev = acpi_get_first_physical_node(adev);
- 	acpi_dev_put(adev);
-diff --git a/sound/soc/intel/boards/cht_bsw_rt5672.c b/sound/soc/intel/boards/cht_bsw_rt5672.c
-index d68e5bc755dee..c6c469d51243e 100644
---- a/sound/soc/intel/boards/cht_bsw_rt5672.c
-+++ b/sound/soc/intel/boards/cht_bsw_rt5672.c
-@@ -479,7 +479,11 @@ static int snd_cht_mc_probe(struct platform_device *pdev)
- 		snprintf(drv->codec_name, sizeof(drv->codec_name),
- 			 "i2c-%s", acpi_dev_name(adev));
- 		cht_dailink[dai_index].codecs->name = drv->codec_name;
-+	}  else {
-+		dev_err(&pdev->dev, "Error cannot find '%s' dev\n", mach->id);
-+		return -ENOENT;
- 	}
-+
- 	acpi_dev_put(adev);
++	pr_info("%s: Setting shift to %d and lim to %d rcu_task_cb_adjust=%d rcu_task_cpu_ids=%d.\n",
++			rtp->name, data_race(rtp->percpu_enqueue_shift), data_race(rtp->percpu_enqueue_lim),
++			rcu_task_cb_adjust, rcu_task_cpu_ids);
+ }
  
- 	/* Use SSP0 on Bay Trail CR devices */
-diff --git a/sound/soc/intel/boards/sof_es8336.c b/sound/soc/intel/boards/sof_es8336.c
-index c1fcc156a5752..809532238c44f 100644
---- a/sound/soc/intel/boards/sof_es8336.c
-+++ b/sound/soc/intel/boards/sof_es8336.c
-@@ -681,7 +681,7 @@ static int sof_es8336_probe(struct platform_device *pdev)
- 			dai_links[0].codecs->dai_name = "ES8326 HiFi";
- 	} else {
- 		dev_err(dev, "Error cannot find '%s' dev\n", mach->id);
--		return -ENXIO;
-+		return -ENOENT;
+ // Compute wakeup time for lazy callback timer.
+@@ -348,7 +366,7 @@ static void call_rcu_tasks_generic(struct rcu_head *rhp, rcu_callback_t func,
+ 			rtpcp->rtp_n_lock_retries = 0;
+ 		}
+ 		if (rcu_task_cb_adjust && ++rtpcp->rtp_n_lock_retries > rcu_task_contend_lim &&
+-		    READ_ONCE(rtp->percpu_enqueue_lim) != nr_cpu_ids)
++		    READ_ONCE(rtp->percpu_enqueue_lim) != rcu_task_cpu_ids)
+ 			needadjust = true;  // Defer adjustment to avoid deadlock.
+ 	}
+ 	// Queuing callbacks before initialization not yet supported.
+@@ -368,10 +386,10 @@ static void call_rcu_tasks_generic(struct rcu_head *rhp, rcu_callback_t func,
+ 	raw_spin_unlock_irqrestore_rcu_node(rtpcp, flags);
+ 	if (unlikely(needadjust)) {
+ 		raw_spin_lock_irqsave(&rtp->cbs_gbl_lock, flags);
+-		if (rtp->percpu_enqueue_lim != nr_cpu_ids) {
++		if (rtp->percpu_enqueue_lim != rcu_task_cpu_ids) {
+ 			WRITE_ONCE(rtp->percpu_enqueue_shift, 0);
+-			WRITE_ONCE(rtp->percpu_dequeue_lim, nr_cpu_ids);
+-			smp_store_release(&rtp->percpu_enqueue_lim, nr_cpu_ids);
++			WRITE_ONCE(rtp->percpu_dequeue_lim, rcu_task_cpu_ids);
++			smp_store_release(&rtp->percpu_enqueue_lim, rcu_task_cpu_ids);
+ 			pr_info("Switching %s to per-CPU callback queuing.\n", rtp->name);
+ 		}
+ 		raw_spin_unlock_irqrestore(&rtp->cbs_gbl_lock, flags);
+@@ -444,6 +462,8 @@ static int rcu_tasks_need_gpcb(struct rcu_tasks *rtp)
+ 
+ 	dequeue_limit = smp_load_acquire(&rtp->percpu_dequeue_lim);
+ 	for (cpu = 0; cpu < dequeue_limit; cpu++) {
++		if (!cpu_possible(cpu))
++			continue;
+ 		struct rcu_tasks_percpu *rtpcp = per_cpu_ptr(rtp->rtpcpu, cpu);
+ 
+ 		/* Advance and accelerate any new callbacks. */
+@@ -481,7 +501,7 @@ static int rcu_tasks_need_gpcb(struct rcu_tasks *rtp)
+ 	if (rcu_task_cb_adjust && ncbs <= rcu_task_collapse_lim) {
+ 		raw_spin_lock_irqsave(&rtp->cbs_gbl_lock, flags);
+ 		if (rtp->percpu_enqueue_lim > 1) {
+-			WRITE_ONCE(rtp->percpu_enqueue_shift, order_base_2(nr_cpu_ids));
++			WRITE_ONCE(rtp->percpu_enqueue_shift, order_base_2(rcu_task_cpu_ids));
+ 			smp_store_release(&rtp->percpu_enqueue_lim, 1);
+ 			rtp->percpu_dequeue_gpseq = get_state_synchronize_rcu();
+ 			gpdone = false;
+@@ -496,7 +516,9 @@ static int rcu_tasks_need_gpcb(struct rcu_tasks *rtp)
+ 			pr_info("Completing switch %s to CPU-0 callback queuing.\n", rtp->name);
+ 		}
+ 		if (rtp->percpu_dequeue_lim == 1) {
+-			for (cpu = rtp->percpu_dequeue_lim; cpu < nr_cpu_ids; cpu++) {
++			for (cpu = rtp->percpu_dequeue_lim; cpu < rcu_task_cpu_ids; cpu++) {
++				if (!cpu_possible(cpu))
++					continue;
+ 				struct rcu_tasks_percpu *rtpcp = per_cpu_ptr(rtp->rtpcpu, cpu);
+ 
+ 				WARN_ON_ONCE(rcu_segcblist_n_cbs(&rtpcp->cblist));
+@@ -511,30 +533,32 @@ static int rcu_tasks_need_gpcb(struct rcu_tasks *rtp)
+ // Advance callbacks and invoke any that are ready.
+ static void rcu_tasks_invoke_cbs(struct rcu_tasks *rtp, struct rcu_tasks_percpu *rtpcp)
+ {
+-	int cpu;
+-	int cpunext;
+ 	int cpuwq;
+ 	unsigned long flags;
+ 	int len;
++	int index;
+ 	struct rcu_head *rhp;
+ 	struct rcu_cblist rcl = RCU_CBLIST_INITIALIZER(rcl);
+ 	struct rcu_tasks_percpu *rtpcp_next;
+ 
+-	cpu = rtpcp->cpu;
+-	cpunext = cpu * 2 + 1;
+-	if (cpunext < smp_load_acquire(&rtp->percpu_dequeue_lim)) {
+-		rtpcp_next = per_cpu_ptr(rtp->rtpcpu, cpunext);
+-		cpuwq = rcu_cpu_beenfullyonline(cpunext) ? cpunext : WORK_CPU_UNBOUND;
+-		queue_work_on(cpuwq, system_wq, &rtpcp_next->rtp_work);
+-		cpunext++;
+-		if (cpunext < smp_load_acquire(&rtp->percpu_dequeue_lim)) {
+-			rtpcp_next = per_cpu_ptr(rtp->rtpcpu, cpunext);
+-			cpuwq = rcu_cpu_beenfullyonline(cpunext) ? cpunext : WORK_CPU_UNBOUND;
++	index = rtpcp->index * 2 + 1;
++	if (index < num_possible_cpus()) {
++		rtpcp_next = rtp->rtpcp_array[index];
++		if (rtpcp_next->cpu < smp_load_acquire(&rtp->percpu_dequeue_lim)) {
++			cpuwq = rcu_cpu_beenfullyonline(rtpcp_next->cpu) ? rtpcp_next->cpu : WORK_CPU_UNBOUND;
+ 			queue_work_on(cpuwq, system_wq, &rtpcp_next->rtp_work);
++			index++;
++			if (index < num_possible_cpus()) {
++				rtpcp_next = rtp->rtpcp_array[index];
++				if (rtpcp_next->cpu < smp_load_acquire(&rtp->percpu_dequeue_lim)) {
++					cpuwq = rcu_cpu_beenfullyonline(rtpcp_next->cpu) ? rtpcp_next->cpu : WORK_CPU_UNBOUND;
++					queue_work_on(cpuwq, system_wq, &rtpcp_next->rtp_work);
++				}
++			}
+ 		}
  	}
  
- 	codec_dev = acpi_get_first_physical_node(adev);
-diff --git a/sound/soc/intel/boards/sof_wm8804.c b/sound/soc/intel/boards/sof_wm8804.c
-index 4cb0d463bf404..9c5b3f8f09f36 100644
---- a/sound/soc/intel/boards/sof_wm8804.c
-+++ b/sound/soc/intel/boards/sof_wm8804.c
-@@ -270,7 +270,11 @@ static int sof_wm8804_probe(struct platform_device *pdev)
- 		snprintf(codec_name, sizeof(codec_name),
- 			 "%s%s", "i2c-", acpi_dev_name(adev));
- 		dailink[dai_index].codecs->name = codec_name;
-+	} else {
-+		dev_err(&pdev->dev, "Error cannot find '%s' dev\n", mach->id);
-+		return -ENOENT;
- 	}
-+
- 	acpi_dev_put(adev);
- 
- 	snd_soc_card_set_drvdata(card, ctx);
+-	if (rcu_segcblist_empty(&rtpcp->cblist) || !cpu_possible(cpu))
++	if (rcu_segcblist_empty(&rtpcp->cblist))
+ 		return;
+ 	raw_spin_lock_irqsave_rcu_node(rtpcp, flags);
+ 	rcu_segcblist_advance(&rtpcp->cblist, rcu_seq_current(&rtp->tasks_gp_seq));
 -- 
 2.43.0
 
