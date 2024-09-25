@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-77541-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77542-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2626A985E62
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:34:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 993C5985E40
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:31:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F0459B2EBD0
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:31:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CCD22891E9
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:31:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A379320E8D1;
-	Wed, 25 Sep 2024 12:09:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0721E20E8F5;
+	Wed, 25 Sep 2024 12:09:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VpS5UIWU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nlhkUrpM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DF6320E8C8;
-	Wed, 25 Sep 2024 12:09:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3B2A20E8DE;
+	Wed, 25 Sep 2024 12:09:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727266151; cv=none; b=pHr1kNXjKkF9r5Ko8uYV0dNdpfMueNTYKzDpAhAKzo1XINnGKOakE4oCvNI1CkcrkRETF37sBYPxCDXpV9To8CDHrMXnXnuOiLyinNPm4io3/Ovs2FIxNz9crXngIfDTk/KXxruwxQK5fTAJuFXAXJ44PpLFEm+y4ksbFGKYCg0=
+	t=1727266152; cv=none; b=j+bgA7PoGuEXkUmarHpw5tlOVk+/SQTKGnN1F8IT1HZop8+IiLgLZATtYUurSSAAhURb9a45NUq30ZuAT9dr/knrRF6Ud54es55N6BdjhqwtwxO3sIk0cR62oNAaUL6Km9ip1l8aubMbOIBOdxTmivWDjC0UxF2+f8EBzxRuoVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727266151; c=relaxed/simple;
-	bh=v2mvxM65+HybBi/a2juuSaSOAdhlM+sU0raG1huyRQ0=;
+	s=arc-20240116; t=1727266152; c=relaxed/simple;
+	bh=5ipd+6i1vmYzbqSVixtByEgWCPbCf8XMcpZSqw510BY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V6zVCigYLniKIqotj/R8DVzGyQ+EkYUjl47IJMZs8kTVbcIT/QpTdmW2xwBCfaDmBjrjpUeph/rhvfx2gKT77EBJUu8/y3CrsEFqzx+h/IGTfMRy89HjZGWNPjSKBECYWjcl0v3d4LbOAG0TbO4/NQvroiGXnRZKX5uhaHn/Cpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VpS5UIWU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCB9AC4CEC3;
-	Wed, 25 Sep 2024 12:09:09 +0000 (UTC)
+	 MIME-Version; b=J5UXzF43OBliVhgewFQw2hSv/YfpUFYmeZ4LP3wl8KmAe2y7a9Q6Xa+F66YCbP3PaW3h9fmpV7mPpewDnXG3UGkW7dvPmS715hH4xg8bORhrMN4Bvlp1vd4y1TBKpSfCC2FNeDcOs6JWNES642NRirWF6qMT9iXhbgyTlAGewhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nlhkUrpM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70F5BC4CEC7;
+	Wed, 25 Sep 2024 12:09:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727266151;
-	bh=v2mvxM65+HybBi/a2juuSaSOAdhlM+sU0raG1huyRQ0=;
+	s=k20201202; t=1727266152;
+	bh=5ipd+6i1vmYzbqSVixtByEgWCPbCf8XMcpZSqw510BY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VpS5UIWUL4tOicYXLnj3fNQVyuWndMdc44A3yRAz4a0GMkAWnDY0lcIQv0tsuFTrl
-	 g6N1kHxg23m1slMGcDaY8yZ0dEIyX+A2JmUkMrLWLpXqBKJrqEoaaGa+EEGy4HTCrA
-	 kdkSDebdZu7N5uycozh6NZPAN42nJQmOeWUaBz2XazAEMoo9bxg4Wx2asDBf76tiYa
-	 3sY78DCxXvh9dWrjK78a/ObJ49dul2pnq92fAS+QPIe13lk+lQa8WrASZsNNtueI7I
-	 mwOBil3BgQu+myx4OMH5f7pz+/ZXhC3wn3ko5V+79qbIzwAmGAyq4WdPafWoYi1h9h
-	 OdhiFdLWwKyAw==
+	b=nlhkUrpMF0X/kpC/VxaBpaSjzcxvA5MnC+9f4d2zf2HwDMlKO02bKZEAxl1jNjbLt
+	 39OjxcC7yNGjmGCIam3hgBPb4J5PKU+PdIHDB1iuzVGbTau3wrYTc5tvWrnt06UpgV
+	 9GIabbDepyS86PAp3plTkMw5eWLBn1opIVJ269Jbp3spalYfpmzMKVHIEkXojxvd1a
+	 Yg5LIIJpnWfOjSAJ5Nv+qRTXRFnLDHpwot+Fi7idbmthmlKpw6FOda+mtkDxiClrfC
+	 e2mGrlkV36LtYYvkxD7RnWwlE81I4QbNzw+qBXPXAmnSoffhv1JXIzNswkd7FXqLAz
+	 uHue0FThu/kGw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Artem Sadovnikov <ancowi69@gmail.com>,
-	Ritesh Harjani <ritesh.list@gmail.com>,
-	Mikhail Ukhin <mish.uxin2012@yandex.ru>,
-	Theodore Ts'o <tytso@mit.edu>,
+Cc: Kuan-Wei Chiu <visitorckw@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Quentin Monnet <qmo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	adilger.kernel@dilger.ca,
-	linux-ext4@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 193/197] ext4: fix i_data_sem unlock order in ext4_ind_migrate()
-Date: Wed, 25 Sep 2024 07:53:32 -0400
-Message-ID: <20240925115823.1303019-193-sashal@kernel.org>
+	ast@kernel.org,
+	daniel@iogearbox.net,
+	bpf@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.10 194/197] bpftool: Fix undefined behavior caused by shifting into the sign bit
+Date: Wed, 25 Sep 2024 07:53:33 -0400
+Message-ID: <20240925115823.1303019-194-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925115823.1303019-1-sashal@kernel.org>
 References: <20240925115823.1303019-1-sashal@kernel.org>
@@ -68,53 +68,53 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.11
 Content-Transfer-Encoding: 8bit
 
-From: Artem Sadovnikov <ancowi69@gmail.com>
+From: Kuan-Wei Chiu <visitorckw@gmail.com>
 
-[ Upstream commit cc749e61c011c255d81b192a822db650c68b313f ]
+[ Upstream commit 4cdc0e4ce5e893bc92255f5f734d983012f2bc2e ]
 
-Fuzzing reports a possible deadlock in jbd2_log_wait_commit.
+Replace shifts of '1' with '1U' in bitwise operations within
+__show_dev_tc_bpf() to prevent undefined behavior caused by shifting
+into the sign bit of a signed integer. By using '1U', the operations
+are explicitly performed on unsigned integers, avoiding potential
+integer overflow or sign-related issues.
 
-This issue is triggered when an EXT4_IOC_MIGRATE ioctl is set to require
-synchronous updates because the file descriptor is opened with O_SYNC.
-This can lead to the jbd2_journal_stop() function calling
-jbd2_might_wait_for_commit(), potentially causing a deadlock if the
-EXT4_IOC_MIGRATE call races with a write(2) system call.
-
-This problem only arises when CONFIG_PROVE_LOCKING is enabled. In this
-case, the jbd2_might_wait_for_commit macro locks jbd2_handle in the
-jbd2_journal_stop function while i_data_sem is locked. This triggers
-lockdep because the jbd2_journal_start function might also lock the same
-jbd2_handle simultaneously.
-
-Found by Linux Verification Center (linuxtesting.org) with syzkaller.
-
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Co-developed-by: Mikhail Ukhin <mish.uxin2012@yandex.ru>
-Signed-off-by: Mikhail Ukhin <mish.uxin2012@yandex.ru>
-Signed-off-by: Artem Sadovnikov <ancowi69@gmail.com>
-Rule: add
-Link: https://lore.kernel.org/stable/20240404095000.5872-1-mish.uxin2012%40yandex.ru
-Link: https://patch.msgid.link/20240829152210.2754-1-ancowi69@gmail.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Kuan-Wei Chiu <visitorckw@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Quentin Monnet <qmo@kernel.org>
+Link: https://lore.kernel.org/bpf/20240908140009.3149781-1-visitorckw@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/migrate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/bpf/bpftool/net.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/fs/ext4/migrate.c b/fs/ext4/migrate.c
-index d98ac2af8199f..a5e1492bbaaa5 100644
---- a/fs/ext4/migrate.c
-+++ b/fs/ext4/migrate.c
-@@ -663,8 +663,8 @@ int ext4_ind_migrate(struct inode *inode)
- 	if (unlikely(ret2 && !ret))
- 		ret = ret2;
- errout:
--	ext4_journal_stop(handle);
- 	up_write(&EXT4_I(inode)->i_data_sem);
-+	ext4_journal_stop(handle);
- out_unlock:
- 	ext4_writepages_up_write(inode->i_sb, alloc_ctx);
- 	return ret;
+diff --git a/tools/bpf/bpftool/net.c b/tools/bpf/bpftool/net.c
+index 968714b4c3d45..ad2ea6cf2db11 100644
+--- a/tools/bpf/bpftool/net.c
++++ b/tools/bpf/bpftool/net.c
+@@ -482,9 +482,9 @@ static void __show_dev_tc_bpf(const struct ip_devname_ifindex *dev,
+ 		if (prog_flags[i] || json_output) {
+ 			NET_START_ARRAY("prog_flags", "%s ");
+ 			for (j = 0; prog_flags[i] && j < 32; j++) {
+-				if (!(prog_flags[i] & (1 << j)))
++				if (!(prog_flags[i] & (1U << j)))
+ 					continue;
+-				NET_DUMP_UINT_ONLY(1 << j);
++				NET_DUMP_UINT_ONLY(1U << j);
+ 			}
+ 			NET_END_ARRAY("");
+ 		}
+@@ -493,9 +493,9 @@ static void __show_dev_tc_bpf(const struct ip_devname_ifindex *dev,
+ 			if (link_flags[i] || json_output) {
+ 				NET_START_ARRAY("link_flags", "%s ");
+ 				for (j = 0; link_flags[i] && j < 32; j++) {
+-					if (!(link_flags[i] & (1 << j)))
++					if (!(link_flags[i] & (1U << j)))
+ 						continue;
+-					NET_DUMP_UINT_ONLY(1 << j);
++					NET_DUMP_UINT_ONLY(1U << j);
+ 				}
+ 				NET_END_ARRAY("");
+ 			}
 -- 
 2.43.0
 
