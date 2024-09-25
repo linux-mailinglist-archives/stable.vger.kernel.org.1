@@ -1,146 +1,235 @@
-Return-Path: <stable+bounces-77098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56F599856F9
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:12:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0C09985815
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:36:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00BC21F24EC2
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 10:12:02 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F1D491C235F2
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 11:36:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4E1815C158;
-	Wed, 25 Sep 2024 10:11:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CBCF137775;
+	Wed, 25 Sep 2024 11:36:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="hCA/imow"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HSeSGlt0"
 X-Original-To: stable@vger.kernel.org
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58C9C15B149;
-	Wed, 25 Sep 2024 10:11:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5603114600D;
+	Wed, 25 Sep 2024 11:36:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727259118; cv=none; b=kHaK3APRDAuNCpmCnShlwzNsPLzYuq+4/cP7emchr2YN0rclE6NeJ8RM6uaUrsW+MbtmPmgPzulhcZJlYBZJySxWUJiIYS3PlrnBZyTYxoKgoBQKQfT7FqAQgqIvVQMmGIXlIsvg58pmzNqWiW/vbXnStHVy7VPOFyqoPmYp7uI=
+	t=1727264205; cv=none; b=iv/OFXXCWHNlUIUhEL6dz/ELSpM7XMXn9pSxPONYGdZta1VcblKSQ2Ka+UulnTq13MLNr1hV2EVf/w2v06/ooZ9F8A+GLSYM82XNj/GCNSnXLFot3N38eAoSqIt1hWPPMDMCcZFfpmkVGXzCJtqA37AnxZCvBrLQhT47YNi4E6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727259118; c=relaxed/simple;
-	bh=9g6mH65weF44bLQevwU1JtpQ/d+yi8uM5z152woSbYc=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WAnEBZAd93/dI4SpcjOodQTTzjbKAQrxFsie75ErnT5ockE12wC6V4g7mgWcnx0U7XhafCeEZLBO/P2jekr+wNVd4d13+mQT8TVey0z5Z/SDbjyjXE8rv9Is4lmpm3aGlyuQii+X67Zj08FQhKxNvNkFDJvcRWuy1IEyVgkGbt4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=hCA/imow; arc=none smtp.client-ip=60.244.123.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 93b81b247b2611efb66947d174671e26-20240925
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=LQLPSb8ldyG1OVVh0BB+yFOhjzNrq/gu6sGXkPkLj9A=;
-	b=hCA/imowfHpos5RD65wBNJ8Kb1hS5FcyzjKTH4zti6icoHAVWGwvHuIPQZIJ+nWS5f9QLfxylzTAy7dXyaWTro1FT+gxIIMPoUL7fFzo+eSouPIiahT69HPEUtcuicapnGO4ocmwqlvy/wWJlPLxzvLNq83FA59YNClFvYTcQ8w=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.41,REQID:b536769e-e9f1-44ab-b992-b30c1357b67c,IP:0,U
-	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-	:release,TS:-5
-X-CID-META: VersionHash:6dc6a47,CLOUDID:a4913b18-b42d-49a6-94d2-a75fa0df01d2,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-	RL:11|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
-	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
-X-UUID: 93b81b247b2611efb66947d174671e26-20240925
-Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw01.mediatek.com
-	(envelope-from <peter.wang@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1387716413; Wed, 25 Sep 2024 18:11:48 +0800
-Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
- MTKMBS09N2.mediatek.inc (172.21.101.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Wed, 25 Sep 2024 03:11:47 -0700
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Wed, 25 Sep 2024 18:11:47 +0800
-From: <peter.wang@mediatek.com>
-To: <linux-scsi@vger.kernel.org>, <martin.petersen@oracle.com>,
-	<avri.altman@wdc.com>, <alim.akhtar@samsung.com>, <jejb@linux.ibm.com>
-CC: <wsd_upstream@mediatek.com>, <linux-mediatek@lists.infradead.org>,
-	<peter.wang@mediatek.com>, <chun-hung.wu@mediatek.com>,
-	<alice.chao@mediatek.com>, <cc.chou@mediatek.com>,
-	<chaotian.jing@mediatek.com>, <jiajie.hao@mediatek.com>,
-	<powen.kao@mediatek.com>, <qilin.tan@mediatek.com>, <lin.gui@mediatek.com>,
-	<tun-yu.yu@mediatek.com>, <eddie.huang@mediatek.com>,
-	<naomi.chu@mediatek.com>, <ed.tsai@mediatek.com>, <bvanassche@acm.org>,
-	<quic_nguyenb@quicinc.com>, <stable@vger.kernel.org>
-Subject: [PATCH v9 1/3] ufs: core: fix the issue of ICU failure
-Date: Wed, 25 Sep 2024 17:55:44 +0800
-Message-ID: <20240925095546.19492-2-peter.wang@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20240925095546.19492-1-peter.wang@mediatek.com>
-References: <20240925095546.19492-1-peter.wang@mediatek.com>
+	s=arc-20240116; t=1727264205; c=relaxed/simple;
+	bh=I5bIXa22exgxe+5x5zFMEn5BHaDoaPhYpbvWX4H8Fz4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NQdvSsclwRzu0SERqtreBwSVqy9ewK+RHJCse2oNBh/HE4zzfwT7ybTv91xRigPb9/u4Xl9C/KtA82m9IVmyX08yTW9rxazApm2E3GyHKiSjrnL0s1sUcHfcGPHH6KPZg8nSvLZZ2XuoUyB+yGZnLKnp5UScV9MozTo6LMOsJCs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HSeSGlt0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AD70C4CEC3;
+	Wed, 25 Sep 2024 11:36:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727264204;
+	bh=I5bIXa22exgxe+5x5zFMEn5BHaDoaPhYpbvWX4H8Fz4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=HSeSGlt0B22r2L/z0HGFAh+TrxC6dYYrtDoIMT1P/AsFxaAn2ufllOwSkJhpl16is
+	 qZVKiZqgAwNYZhAq8iNDYLUkRkb0VC1boIkCHaeK1m2ZYwAXl3WgbsHMYxFiAqMWUF
+	 cPRkHLHcc+ogBY75JCijLhq4vrGnwabEFmGHTadSTu7i11708inPamEKH+qKytJBB+
+	 qmvku+TSRoH+nKwUxnRWTccKwTk/Bt3JWRzPG2Me0xRTDznodhoSG5JCpw9jBCMcGB
+	 7kG+n7aaZQcOm5VY8MJMV0z3U1IOhVzyVaGn2IWp8Gdmgy53AAHp5cPYYESgvi2EjJ
+	 EHKuqFQz2Noxg==
+From: Sasha Levin <sashal@kernel.org>
+To: linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Cc: James Chapman <jchapman@katalix.com>,
+	Tom Parkin <tparkin@katalix.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	samuel.thibault@ens-lyon.org,
+	thorsten.blum@toblux.com,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.11 001/244] l2tp: prevent possible tunnel refcount underflow
+Date: Wed, 25 Sep 2024 07:23:42 -0400
+Message-ID: <20240925113641.1297102-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK: N
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.11
+Content-Transfer-Encoding: 8bit
 
-From: Peter Wang <peter.wang@mediatek.com>
+From: James Chapman <jchapman@katalix.com>
 
-When setting the ICU bit without using read-modify-write,
-SQRTCy will restart SQ again and receive an RTC return
-error code 2 (Failure - SQ not stopped).
+[ Upstream commit 24256415d18695b46da06c93135f5b51c548b950 ]
 
-Additionally, the error log has been modified so that
-this type of error can be observed.
+When a session is created, it sets a backpointer to its tunnel. When
+the session refcount drops to 0, l2tp_session_free drops the tunnel
+refcount if session->tunnel is non-NULL. However, session->tunnel is
+set in l2tp_session_create, before the tunnel refcount is incremented
+by l2tp_session_register, which leaves a small window where
+session->tunnel is non-NULL when the tunnel refcount hasn't been
+bumped.
 
-Fixes: ab248643d3d6 ("scsi: ufs: core: Add error handling for MCQ mode")
-Cc: stable@vger.kernel.org
-Signed-off-by: Peter Wang <peter.wang@mediatek.com>
-Reviewed-by: Bao D. Nguyen <quic_nguyenb@quicinc.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Moving the assignment to l2tp_session_register is trivial but
+l2tp_session_create calls l2tp_session_set_header_len which uses
+session->tunnel to get the tunnel's encap. Add an encap arg to
+l2tp_session_set_header_len to avoid using session->tunnel.
+
+If l2tpv3 sessions have colliding IDs, it is possible for
+l2tp_v3_session_get to race with l2tp_session_register and fetch a
+session which doesn't yet have session->tunnel set. Add a check for
+this case.
+
+Signed-off-by: James Chapman <jchapman@katalix.com>
+Signed-off-by: Tom Parkin <tparkin@katalix.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufs-mcq.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ net/l2tp/l2tp_core.c    | 24 +++++++++++++++++-------
+ net/l2tp/l2tp_core.h    |  3 ++-
+ net/l2tp/l2tp_netlink.c |  4 +++-
+ net/l2tp/l2tp_ppp.c     |  3 ++-
+ 4 files changed, 24 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/ufs/core/ufs-mcq.c b/drivers/ufs/core/ufs-mcq.c
-index 5891cdacd0b3..3903947dbed1 100644
---- a/drivers/ufs/core/ufs-mcq.c
-+++ b/drivers/ufs/core/ufs-mcq.c
-@@ -539,7 +539,7 @@ int ufshcd_mcq_sq_cleanup(struct ufs_hba *hba, int task_tag)
- 	struct scsi_cmnd *cmd = lrbp->cmd;
- 	struct ufs_hw_queue *hwq;
- 	void __iomem *reg, *opr_sqd_base;
--	u32 nexus, id, val;
-+	u32 nexus, id, val, rtc;
- 	int err;
+diff --git a/net/l2tp/l2tp_core.c b/net/l2tp/l2tp_core.c
+index 2e86f520f7994..a9cbcbc9d016d 100644
+--- a/net/l2tp/l2tp_core.c
++++ b/net/l2tp/l2tp_core.c
+@@ -254,7 +254,14 @@ struct l2tp_session *l2tp_v3_session_get(const struct net *net, struct sock *sk,
  
- 	if (hba->quirks & UFSHCD_QUIRK_MCQ_BROKEN_RTC)
-@@ -569,17 +569,18 @@ int ufshcd_mcq_sq_cleanup(struct ufs_hba *hba, int task_tag)
- 	opr_sqd_base = mcq_opr_base(hba, OPR_SQD, id);
- 	writel(nexus, opr_sqd_base + REG_SQCTI);
+ 		hash_for_each_possible_rcu(pn->l2tp_v3_session_htable, session,
+ 					   hlist, key) {
+-			if (session->tunnel->sock == sk &&
++			/* session->tunnel may be NULL if another thread is in
++			 * l2tp_session_register and has added an item to
++			 * l2tp_v3_session_htable but hasn't yet added the
++			 * session to its tunnel's session_list.
++			 */
++			struct l2tp_tunnel *tunnel = READ_ONCE(session->tunnel);
++
++			if (tunnel && tunnel->sock == sk &&
+ 			    refcount_inc_not_zero(&session->ref_count)) {
+ 				rcu_read_unlock_bh();
+ 				return session;
+@@ -482,6 +489,7 @@ int l2tp_session_register(struct l2tp_session *session,
+ 	}
  
--	/* SQRTCy.ICU = 1 */
--	writel(SQ_ICU, opr_sqd_base + REG_SQRTC);
-+	/* Initiate Cleanup */
-+	writel(readl(opr_sqd_base + REG_SQRTC) | SQ_ICU,
-+		opr_sqd_base + REG_SQRTC);
+ 	l2tp_tunnel_inc_refcount(tunnel);
++	WRITE_ONCE(session->tunnel, tunnel);
+ 	list_add(&session->list, &tunnel->session_list);
  
- 	/* Poll SQRTSy.CUS = 1. Return result from SQRTSy.RTC */
- 	reg = opr_sqd_base + REG_SQRTS;
- 	err = read_poll_timeout(readl, val, val & SQ_CUS, 20,
- 				MCQ_POLL_US, false, reg);
--	if (err)
--		dev_err(hba->dev, "%s: failed. hwq=%d, tag=%d err=%ld\n",
--			__func__, id, task_tag,
--			FIELD_GET(SQ_ICU_ERR_CODE_MASK, readl(reg)));
-+	rtc = FIELD_GET(SQ_ICU_ERR_CODE_MASK, readl(reg));
-+	if (err || rtc)
-+		dev_err(hba->dev, "%s: failed. hwq=%d, tag=%d err=%d RTC=%d\n",
-+			__func__, id, task_tag, err, rtc);
+ 	if (tunnel->version == L2TP_HDR_VER_3) {
+@@ -797,7 +805,8 @@ void l2tp_recv_common(struct l2tp_session *session, struct sk_buff *skb,
+ 		if (!session->lns_mode && !session->send_seq) {
+ 			trace_session_seqnum_lns_enable(session);
+ 			session->send_seq = 1;
+-			l2tp_session_set_header_len(session, tunnel->version);
++			l2tp_session_set_header_len(session, tunnel->version,
++						    tunnel->encap);
+ 		}
+ 	} else {
+ 		/* No sequence numbers.
+@@ -818,7 +827,8 @@ void l2tp_recv_common(struct l2tp_session *session, struct sk_buff *skb,
+ 		if (!session->lns_mode && session->send_seq) {
+ 			trace_session_seqnum_lns_disable(session);
+ 			session->send_seq = 0;
+-			l2tp_session_set_header_len(session, tunnel->version);
++			l2tp_session_set_header_len(session, tunnel->version,
++						    tunnel->encap);
+ 		} else if (session->send_seq) {
+ 			pr_debug_ratelimited("%s: recv data has no seq numbers when required. Discarding.\n",
+ 					     session->name);
+@@ -1663,7 +1673,8 @@ EXPORT_SYMBOL_GPL(l2tp_session_delete);
+ /* We come here whenever a session's send_seq, cookie_len or
+  * l2specific_type parameters are set.
+  */
+-void l2tp_session_set_header_len(struct l2tp_session *session, int version)
++void l2tp_session_set_header_len(struct l2tp_session *session, int version,
++				 enum l2tp_encap_type encap)
+ {
+ 	if (version == L2TP_HDR_VER_2) {
+ 		session->hdr_len = 6;
+@@ -1672,7 +1683,7 @@ void l2tp_session_set_header_len(struct l2tp_session *session, int version)
+ 	} else {
+ 		session->hdr_len = 4 + session->cookie_len;
+ 		session->hdr_len += l2tp_get_l2specific_len(session);
+-		if (session->tunnel->encap == L2TP_ENCAPTYPE_UDP)
++		if (encap == L2TP_ENCAPTYPE_UDP)
+ 			session->hdr_len += 4;
+ 	}
+ }
+@@ -1686,7 +1697,6 @@ struct l2tp_session *l2tp_session_create(int priv_size, struct l2tp_tunnel *tunn
+ 	session = kzalloc(sizeof(*session) + priv_size, GFP_KERNEL);
+ 	if (session) {
+ 		session->magic = L2TP_SESSION_MAGIC;
+-		session->tunnel = tunnel;
  
- 	if (ufshcd_mcq_sq_start(hba, hwq))
- 		err = -ETIMEDOUT;
+ 		session->session_id = session_id;
+ 		session->peer_session_id = peer_session_id;
+@@ -1724,7 +1734,7 @@ struct l2tp_session *l2tp_session_create(int priv_size, struct l2tp_tunnel *tunn
+ 			memcpy(&session->peer_cookie[0], &cfg->peer_cookie[0], cfg->peer_cookie_len);
+ 		}
+ 
+-		l2tp_session_set_header_len(session, tunnel->version);
++		l2tp_session_set_header_len(session, tunnel->version, tunnel->encap);
+ 
+ 		refcount_set(&session->ref_count, 1);
+ 
+diff --git a/net/l2tp/l2tp_core.h b/net/l2tp/l2tp_core.h
+index 8ac81bc1bc6fa..6c25c196cc222 100644
+--- a/net/l2tp/l2tp_core.h
++++ b/net/l2tp/l2tp_core.h
+@@ -260,7 +260,8 @@ void l2tp_recv_common(struct l2tp_session *session, struct sk_buff *skb,
+ int l2tp_udp_encap_recv(struct sock *sk, struct sk_buff *skb);
+ 
+ /* Transmit path helpers for sending packets over the tunnel socket. */
+-void l2tp_session_set_header_len(struct l2tp_session *session, int version);
++void l2tp_session_set_header_len(struct l2tp_session *session, int version,
++				 enum l2tp_encap_type encap);
+ int l2tp_xmit_skb(struct l2tp_session *session, struct sk_buff *skb);
+ 
+ /* Pseudowire management.
+diff --git a/net/l2tp/l2tp_netlink.c b/net/l2tp/l2tp_netlink.c
+index d105030520f95..fc43ecbd128cc 100644
+--- a/net/l2tp/l2tp_netlink.c
++++ b/net/l2tp/l2tp_netlink.c
+@@ -692,8 +692,10 @@ static int l2tp_nl_cmd_session_modify(struct sk_buff *skb, struct genl_info *inf
+ 		session->recv_seq = nla_get_u8(info->attrs[L2TP_ATTR_RECV_SEQ]);
+ 
+ 	if (info->attrs[L2TP_ATTR_SEND_SEQ]) {
++		struct l2tp_tunnel *tunnel = session->tunnel;
++
+ 		session->send_seq = nla_get_u8(info->attrs[L2TP_ATTR_SEND_SEQ]);
+-		l2tp_session_set_header_len(session, session->tunnel->version);
++		l2tp_session_set_header_len(session, tunnel->version, tunnel->encap);
+ 	}
+ 
+ 	if (info->attrs[L2TP_ATTR_LNS_MODE])
+diff --git a/net/l2tp/l2tp_ppp.c b/net/l2tp/l2tp_ppp.c
+index 3596290047b28..4f25c1212cacb 100644
+--- a/net/l2tp/l2tp_ppp.c
++++ b/net/l2tp/l2tp_ppp.c
+@@ -1205,7 +1205,8 @@ static int pppol2tp_session_setsockopt(struct sock *sk,
+ 			po->chan.hdrlen = val ? PPPOL2TP_L2TP_HDR_SIZE_SEQ :
+ 				PPPOL2TP_L2TP_HDR_SIZE_NOSEQ;
+ 		}
+-		l2tp_session_set_header_len(session, session->tunnel->version);
++		l2tp_session_set_header_len(session, session->tunnel->version,
++					    session->tunnel->encap);
+ 		break;
+ 
+ 	case PPPOL2TP_SO_LNSMODE:
 -- 
-2.45.2
+2.43.0
 
 
