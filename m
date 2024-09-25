@@ -1,152 +1,146 @@
-Return-Path: <stable+bounces-77097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77098-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8A6A98565D
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 11:30:42 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56F599856F9
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:12:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 70BF6284405
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 09:30:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 00BC21F24EC2
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 10:12:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0947F15B54E;
-	Wed, 25 Sep 2024 09:30:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4E1815C158;
+	Wed, 25 Sep 2024 10:11:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="DlmIiUbb"
+	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="hCA/imow"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B887313AA53;
-	Wed, 25 Sep 2024 09:30:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58C9C15B149;
+	Wed, 25 Sep 2024 10:11:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727256636; cv=none; b=HvooN77g4s+a21J2uD39OSdGKOBs/FXuYjgkEUaB1wkR4xT93naOHsD04EMLbutps2fkkoYnb66uKfIzRVNdkcYFe2JOspeFUsKTDaD7SD7Vzv7cc+hoVbMTseOgI/fq8en8Vv0dHe51ILINEj72Yyi+1Ftr+fmds+OqNw4rtbc=
+	t=1727259118; cv=none; b=kHaK3APRDAuNCpmCnShlwzNsPLzYuq+4/cP7emchr2YN0rclE6NeJ8RM6uaUrsW+MbtmPmgPzulhcZJlYBZJySxWUJiIYS3PlrnBZyTYxoKgoBQKQfT7FqAQgqIvVQMmGIXlIsvg58pmzNqWiW/vbXnStHVy7VPOFyqoPmYp7uI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727256636; c=relaxed/simple;
-	bh=GNZNgJHmdsf7x6AVCHa2KLXudfTWAf1UoTDhQRpdXeE=;
-	h=Date:To:From:Subject:Message-Id; b=WefNGzCz7huLozc7KbdrFLOVByE4/jHRdnis9b1fWtAItFGUZcjr1cuOa6yaDKBIEU3b0UIIwFEr5AW/lGqbRSWde5utuueV3sem2a431cXDW7DFhE+tULTEws4JcwbT96+ReUmEkTELjIp/yfUmjvALmvNxvu9k3fq/pTQt9DY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=DlmIiUbb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33920C4CEC3;
-	Wed, 25 Sep 2024 09:30:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1727256636;
-	bh=GNZNgJHmdsf7x6AVCHa2KLXudfTWAf1UoTDhQRpdXeE=;
-	h=Date:To:From:Subject:From;
-	b=DlmIiUbb88fKC38NPoy0eMibKGPMP6hzGnTjXoRUCZ5qB8eFflpACEpzCBfvMHEnE
-	 ZArAsuMkNmJCP25Oh87CnARsOhdAfwb5Gb4J6WbcbpFffbbrHGYEEm9smrW0srky52
-	 WZ0JI+WWEpKBDSeTCrbQ+z+y6gCE/j+ppptev+Gg=
-Date: Wed, 25 Sep 2024 02:30:35 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mark@fasheh.com,junxiao.bi@oracle.com,jlbec@evilplan.org,heming.zhao@suse.com,ghe@suse.com,gechangwei@live.cn,joseph.qi@linux.alibaba.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + ocfs2-fix-uninit-value-in-ocfs2_get_block.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240925093036.33920C4CEC3@smtp.kernel.org>
+	s=arc-20240116; t=1727259118; c=relaxed/simple;
+	bh=9g6mH65weF44bLQevwU1JtpQ/d+yi8uM5z152woSbYc=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=WAnEBZAd93/dI4SpcjOodQTTzjbKAQrxFsie75ErnT5ockE12wC6V4g7mgWcnx0U7XhafCeEZLBO/P2jekr+wNVd4d13+mQT8TVey0z5Z/SDbjyjXE8rv9Is4lmpm3aGlyuQii+X67Zj08FQhKxNvNkFDJvcRWuy1IEyVgkGbt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=hCA/imow; arc=none smtp.client-ip=60.244.123.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
+X-UUID: 93b81b247b2611efb66947d174671e26-20240925
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
+	h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=LQLPSb8ldyG1OVVh0BB+yFOhjzNrq/gu6sGXkPkLj9A=;
+	b=hCA/imowfHpos5RD65wBNJ8Kb1hS5FcyzjKTH4zti6icoHAVWGwvHuIPQZIJ+nWS5f9QLfxylzTAy7dXyaWTro1FT+gxIIMPoUL7fFzo+eSouPIiahT69HPEUtcuicapnGO4ocmwqlvy/wWJlPLxzvLNq83FA59YNClFvYTcQ8w=;
+X-CID-P-RULE: Release_Ham
+X-CID-O-INFO: VERSION:1.1.41,REQID:b536769e-e9f1-44ab-b992-b30c1357b67c,IP:0,U
+	RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
+	:release,TS:-5
+X-CID-META: VersionHash:6dc6a47,CLOUDID:a4913b18-b42d-49a6-94d2-a75fa0df01d2,B
+	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
+	RL:11|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
+	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
+X-CID-BVR: 0
+X-CID-BAS: 0,_,0,_
+X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
+X-UUID: 93b81b247b2611efb66947d174671e26-20240925
+Received: from mtkmbs11n2.mediatek.inc [(172.21.101.187)] by mailgw01.mediatek.com
+	(envelope-from <peter.wang@mediatek.com>)
+	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
+	with ESMTP id 1387716413; Wed, 25 Sep 2024 18:11:48 +0800
+Received: from mtkmbs13n1.mediatek.inc (172.21.101.193) by
+ MTKMBS09N2.mediatek.inc (172.21.101.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.26; Wed, 25 Sep 2024 03:11:47 -0700
+Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
+ mtkmbs13n1.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
+ 15.2.1118.26 via Frontend Transport; Wed, 25 Sep 2024 18:11:47 +0800
+From: <peter.wang@mediatek.com>
+To: <linux-scsi@vger.kernel.org>, <martin.petersen@oracle.com>,
+	<avri.altman@wdc.com>, <alim.akhtar@samsung.com>, <jejb@linux.ibm.com>
+CC: <wsd_upstream@mediatek.com>, <linux-mediatek@lists.infradead.org>,
+	<peter.wang@mediatek.com>, <chun-hung.wu@mediatek.com>,
+	<alice.chao@mediatek.com>, <cc.chou@mediatek.com>,
+	<chaotian.jing@mediatek.com>, <jiajie.hao@mediatek.com>,
+	<powen.kao@mediatek.com>, <qilin.tan@mediatek.com>, <lin.gui@mediatek.com>,
+	<tun-yu.yu@mediatek.com>, <eddie.huang@mediatek.com>,
+	<naomi.chu@mediatek.com>, <ed.tsai@mediatek.com>, <bvanassche@acm.org>,
+	<quic_nguyenb@quicinc.com>, <stable@vger.kernel.org>
+Subject: [PATCH v9 1/3] ufs: core: fix the issue of ICU failure
+Date: Wed, 25 Sep 2024 17:55:44 +0800
+Message-ID: <20240925095546.19492-2-peter.wang@mediatek.com>
+X-Mailer: git-send-email 2.18.0
+In-Reply-To: <20240925095546.19492-1-peter.wang@mediatek.com>
+References: <20240925095546.19492-1-peter.wang@mediatek.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain
+X-MTK: N
 
+From: Peter Wang <peter.wang@mediatek.com>
 
-The patch titled
-     Subject: ocfs2: fix uninit-value in ocfs2_get_block()
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     ocfs2-fix-uninit-value-in-ocfs2_get_block.patch
+When setting the ICU bit without using read-modify-write,
+SQRTCy will restart SQ again and receive an RTC return
+error code 2 (Failure - SQ not stopped).
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/ocfs2-fix-uninit-value-in-ocfs2_get_block.patch
+Additionally, the error log has been modified so that
+this type of error can be observed.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Joseph Qi <joseph.qi@linux.alibaba.com>
-Subject: ocfs2: fix uninit-value in ocfs2_get_block()
-Date: Wed, 25 Sep 2024 17:06:00 +0800
-
-syzbot reported an uninit-value BUG:
-
-BUG: KMSAN: uninit-value in ocfs2_get_block+0xed2/0x2710 fs/ocfs2/aops.c:159
-ocfs2_get_block+0xed2/0x2710 fs/ocfs2/aops.c:159
-do_mpage_readpage+0xc45/0x2780 fs/mpage.c:225
-mpage_readahead+0x43f/0x840 fs/mpage.c:374
-ocfs2_readahead+0x269/0x320 fs/ocfs2/aops.c:381
-read_pages+0x193/0x1110 mm/readahead.c:160
-page_cache_ra_unbounded+0x901/0x9f0 mm/readahead.c:273
-do_page_cache_ra mm/readahead.c:303 [inline]
-force_page_cache_ra+0x3b1/0x4b0 mm/readahead.c:332
-force_page_cache_readahead mm/internal.h:347 [inline]
-generic_fadvise+0x6b0/0xa90 mm/fadvise.c:106
-vfs_fadvise mm/fadvise.c:185 [inline]
-ksys_fadvise64_64 mm/fadvise.c:199 [inline]
-__do_sys_fadvise64 mm/fadvise.c:214 [inline]
-__se_sys_fadvise64 mm/fadvise.c:212 [inline]
-__x64_sys_fadvise64+0x1fb/0x3a0 mm/fadvise.c:212
-x64_sys_call+0xe11/0x3ba0
-arch/x86/include/generated/asm/syscalls_64.h:222
-do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
-entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-This is because when ocfs2_extent_map_get_blocks() fails, p_blkno is
-uninitialized.  So the error log will trigger the above uninit-value
-access.
-
-The error log is out-of-date since get_blocks() was removed long time ago.
-And the error code will be logged in ocfs2_extent_map_get_blocks() once
-ocfs2_get_cluster() fails, so fix this by only logging inode and block.
-
-Link: https://syzkaller.appspot.com/bug?extid=9709e73bae885b05314b
-Link: https://lkml.kernel.org/r/20240925090600.3643376-1-joseph.qi@linux.alibaba.com
-Fixes: ccd979bdbce9 ("[PATCH] OCFS2: The Second Oracle Cluster Filesystem")
-Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reported-by: syzbot+9709e73bae885b05314b@syzkaller.appspotmail.com
-Tested-by: syzbot+9709e73bae885b05314b@syzkaller.appspotmail.com
-Cc: Heming Zhao <heming.zhao@suse.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Gang He <ghe@suse.com>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: ab248643d3d6 ("scsi: ufs: core: Add error handling for MCQ mode")
+Cc: stable@vger.kernel.org
+Signed-off-by: Peter Wang <peter.wang@mediatek.com>
+Reviewed-by: Bao D. Nguyen <quic_nguyenb@quicinc.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
 ---
+ drivers/ufs/core/ufs-mcq.c | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
- fs/ocfs2/aops.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
-
---- a/fs/ocfs2/aops.c~ocfs2-fix-uninit-value-in-ocfs2_get_block
-+++ a/fs/ocfs2/aops.c
-@@ -156,9 +156,8 @@ int ocfs2_get_block(struct inode *inode,
- 	err = ocfs2_extent_map_get_blocks(inode, iblock, &p_blkno, &count,
- 					  &ext_flags);
- 	if (err) {
--		mlog(ML_ERROR, "Error %d from get_blocks(0x%p, %llu, 1, "
--		     "%llu, NULL)\n", err, inode, (unsigned long long)iblock,
--		     (unsigned long long)p_blkno);
-+		mlog(ML_ERROR, "get_blocks() failed, inode: 0x%p, "
-+		     "block: %llu\n", inode, (unsigned long long)iblock);
- 		goto bail;
- 	}
+diff --git a/drivers/ufs/core/ufs-mcq.c b/drivers/ufs/core/ufs-mcq.c
+index 5891cdacd0b3..3903947dbed1 100644
+--- a/drivers/ufs/core/ufs-mcq.c
++++ b/drivers/ufs/core/ufs-mcq.c
+@@ -539,7 +539,7 @@ int ufshcd_mcq_sq_cleanup(struct ufs_hba *hba, int task_tag)
+ 	struct scsi_cmnd *cmd = lrbp->cmd;
+ 	struct ufs_hw_queue *hwq;
+ 	void __iomem *reg, *opr_sqd_base;
+-	u32 nexus, id, val;
++	u32 nexus, id, val, rtc;
+ 	int err;
  
-_
-
-Patches currently in -mm which might be from joseph.qi@linux.alibaba.com are
-
-ocfs2-fix-uninit-value-in-ocfs2_get_block.patch
+ 	if (hba->quirks & UFSHCD_QUIRK_MCQ_BROKEN_RTC)
+@@ -569,17 +569,18 @@ int ufshcd_mcq_sq_cleanup(struct ufs_hba *hba, int task_tag)
+ 	opr_sqd_base = mcq_opr_base(hba, OPR_SQD, id);
+ 	writel(nexus, opr_sqd_base + REG_SQCTI);
+ 
+-	/* SQRTCy.ICU = 1 */
+-	writel(SQ_ICU, opr_sqd_base + REG_SQRTC);
++	/* Initiate Cleanup */
++	writel(readl(opr_sqd_base + REG_SQRTC) | SQ_ICU,
++		opr_sqd_base + REG_SQRTC);
+ 
+ 	/* Poll SQRTSy.CUS = 1. Return result from SQRTSy.RTC */
+ 	reg = opr_sqd_base + REG_SQRTS;
+ 	err = read_poll_timeout(readl, val, val & SQ_CUS, 20,
+ 				MCQ_POLL_US, false, reg);
+-	if (err)
+-		dev_err(hba->dev, "%s: failed. hwq=%d, tag=%d err=%ld\n",
+-			__func__, id, task_tag,
+-			FIELD_GET(SQ_ICU_ERR_CODE_MASK, readl(reg)));
++	rtc = FIELD_GET(SQ_ICU_ERR_CODE_MASK, readl(reg));
++	if (err || rtc)
++		dev_err(hba->dev, "%s: failed. hwq=%d, tag=%d err=%d RTC=%d\n",
++			__func__, id, task_tag, err, rtc);
+ 
+ 	if (ufshcd_mcq_sq_start(hba, hwq))
+ 		err = -ETIMEDOUT;
+-- 
+2.45.2
 
 
