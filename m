@@ -1,58 +1,64 @@
-Return-Path: <stable+bounces-77363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED1CC985C4B
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:44:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C3F4985C4F
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 14:44:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B8B61C2491A
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:44:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6CB111C24985
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 12:44:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A40811CCEF0;
-	Wed, 25 Sep 2024 11:59:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CDAD1CDA26;
+	Wed, 25 Sep 2024 11:59:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F/3gUqP8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SqBOzoMY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EE871AD3EB;
-	Wed, 25 Sep 2024 11:59:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 029151CDA1A;
+	Wed, 25 Sep 2024 11:59:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727265550; cv=none; b=vFSeN/aYR8G/xq9YmtXVcjPccAZU2CSRIkbMI4PQ2ylkDVRK1wB5pM+Es2ap9Vy9YUoHhM+kPJjI/fkVcjzUigcBllUx3jwC2rG7EdksqdwkjmV6Ymvw56X5Q1iIbV+W1tHCyascgst57JFndhFNO6sVMYY5HLLqjd0Pa9q0Yb0=
+	t=1727265553; cv=none; b=TYc4YtmH0tF1yvuVo70LoLEHOmqUgdOJvZ/E1bTJk9JC5fd7Yz0bvHi+HvvJpS+OZU0swPmzwKHel5JC65uvRVi5EwFP2uolWxqOtSJ13iijhiWFCy0F6zZDYAEE93TVDZACuSsB+cxez/3uJQABZJtUrxbHeZ7lMwyd2uCXD1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727265550; c=relaxed/simple;
-	bh=EK0+SipkcdrDogVWkLHzlJq2Ddq5HTNuGcYsS+qjXG0=;
+	s=arc-20240116; t=1727265553; c=relaxed/simple;
+	bh=evpAucpxGw2NfOXO+jcEMrOdRcUXped8HsEbvQi2geE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FC/K/0HCgvFfGLJa7/TB3fYTZNGU4UZ7rO5IUR+0wBTvvmI9Z7bIheeP0ncNMaznHxCQUCp3jgWUsDXMbWGwEHqH6iVf0sEREz812xkVeWxB08GunximyGU5y5GCWFkCyLQiShnKtGw/eUkgXfr5VzuPHSRAOB32nm7QC2GMg3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F/3gUqP8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35880C4CECD;
-	Wed, 25 Sep 2024 11:59:09 +0000 (UTC)
+	 MIME-Version; b=pgOuN2SajYof6AnPBEwi0pBEdaY+CU9eqNW26bBYiQ8qjKbvBi7DbC7oKz9OKX6gZMQPTgacJQ+ip20OZHWozJYdlo0z3uNcidoWCiHjelbdqYhDSATeCFwIl1ndSi48zwB6eHki700j8as5z7pH2+cYBv5Wcc+un78tCd2eqK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SqBOzoMY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAE9EC4CEC3;
+	Wed, 25 Sep 2024 11:59:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727265550;
-	bh=EK0+SipkcdrDogVWkLHzlJq2Ddq5HTNuGcYsS+qjXG0=;
+	s=k20201202; t=1727265552;
+	bh=evpAucpxGw2NfOXO+jcEMrOdRcUXped8HsEbvQi2geE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F/3gUqP8lI9vD5yGzJlCAht1SBdFvxPUkZ9Hwd5d3sjmAU415ikp3bqZnT5ggzROE
-	 dSh9W+tnrsdcOyypc4Rv9LSVnkWKBA8Be+perB/oP5zvpdCp4ZVAIHgkfINoe0G4mU
-	 8KXAGPv+In3wFiZb5SKeDIzVjuEpeWyVLPhQzblz0Nm8iBaK2mqbHtBe/jK8S7v4av
-	 nTZh9FcKiZMHJMi10WJ9rX63fWr0GWOawrnFOAeDBvbkUxfp998emG1W7lR/FVTO1l
-	 OlCMMa9efq68GpRqF138KdPINLdOExRct+7mtFE1Fj+et4qXI28F6QvL23YP1bOy6w
-	 6LUoUPgCukrtA==
+	b=SqBOzoMY5amqP38pxEL4f0LU6u5bxAXdxmRCD+HO2EDTBSJa7sHfx+2n9XbsCjQq0
+	 cLrd7JrvMlHbwO0YB2hHwzarl5Njr+MY27RFPTRUfTcH3lD2ECYi3s3Ws0/LI8ct2m
+	 NIYD6t1VuRTA+ZgOFaBRbY8Ep4Ik575g0SzE4e4Ir7WwIcEvaU/yohOdZbWSPsFFkE
+	 Cov+VC7q0Yj+TW9MGPNJspKnQduHsmkek92BFhU8zMiPO4yuq/D9GXywn7tPkI+klI
+	 EK4C6d5NU0Wh4rARftDc5QT+JH6aAVJ6D71s898P0ukfpkCMQbgALEWdJA74s/ORl6
+	 J5uomDm3uw83g==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Li Zhijian <lizhijian@fujitsu.com>,
-	Jan Kara <jack@suse.cz>,
-	Christian Brauner <brauner@kernel.org>,
+Cc: Vitaly Lifshits <vitaly.lifshits@intel.com>,
+	Dima Ruinskiy <dima.ruinskiy@intel.com>,
+	Mor Bar-Gabay <morx.bar.gabay@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>,
-	viro@zeniv.linux.org.uk,
-	linux-fsdevel@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.10 018/197] fs/inode: Prevent dump_mapping() accessing invalid dentry.d_name.name
-Date: Wed, 25 Sep 2024 07:50:37 -0400
-Message-ID: <20240925115823.1303019-18-sashal@kernel.org>
+	przemyslaw.kitszel@intel.com,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	intel-wired-lan@lists.osuosl.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.10 019/197] e1000e: avoid failing the system during pm_suspend
+Date: Wed, 25 Sep 2024 07:50:38 -0400
+Message-ID: <20240925115823.1303019-19-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925115823.1303019-1-sashal@kernel.org>
 References: <20240925115823.1303019-1-sashal@kernel.org>
@@ -67,134 +73,102 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.10.11
 Content-Transfer-Encoding: 8bit
 
-From: Li Zhijian <lizhijian@fujitsu.com>
+From: Vitaly Lifshits <vitaly.lifshits@intel.com>
 
-[ Upstream commit 7f7b850689ac06a62befe26e1fd1806799e7f152 ]
+[ Upstream commit 0a6ad4d9e1690c7faa3a53f762c877e477093657 ]
 
-It's observed that a crash occurs during hot-remove a memory device,
-in which user is accessing the hugetlb. See calltrace as following:
+Occasionally when the system goes into pm_suspend, the suspend might fail
+due to a PHY access error on the network adapter. Previously, this would
+have caused the whole system to fail to go to a low power state.
+An example of this was reported in the following Bugzilla:
+https://bugzilla.kernel.org/show_bug.cgi?id=205015
 
-------------[ cut here ]------------
-WARNING: CPU: 1 PID: 14045 at arch/x86/mm/fault.c:1278 do_user_addr_fault+0x2a0/0x790
-Modules linked in: kmem device_dax cxl_mem cxl_pmem cxl_port cxl_pci dax_hmem dax_pmem nd_pmem cxl_acpi nd_btt cxl_core crc32c_intel nvme virtiofs fuse nvme_core nfit libnvdimm dm_multipath scsi_dh_rdac scsi_dh_emc s
-mirror dm_region_hash dm_log dm_mod
-CPU: 1 PID: 14045 Comm: daxctl Not tainted 6.10.0-rc2-lizhijian+ #492
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-RIP: 0010:do_user_addr_fault+0x2a0/0x790
-Code: 48 8b 00 a8 04 0f 84 b5 fe ff ff e9 1c ff ff ff 4c 89 e9 4c 89 e2 be 01 00 00 00 bf 02 00 00 00 e8 b5 ef 24 00 e9 42 fe ff ff <0f> 0b 48 83 c4 08 4c 89 ea 48 89 ee 4c 89 e7 5b 5d 41 5c 41 5d 41
-RSP: 0000:ffffc90000a575f0 EFLAGS: 00010046
-RAX: ffff88800c303600 RBX: 0000000000000000 RCX: 0000000000000000
-RDX: 0000000000001000 RSI: ffffffff82504162 RDI: ffffffff824b2c36
-RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000000 R12: ffffc90000a57658
-R13: 0000000000001000 R14: ffff88800bc2e040 R15: 0000000000000000
-FS:  00007f51cb57d880(0000) GS:ffff88807fd00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000001000 CR3: 00000000072e2004 CR4: 00000000001706f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- ? __warn+0x8d/0x190
- ? do_user_addr_fault+0x2a0/0x790
- ? report_bug+0x1c3/0x1d0
- ? handle_bug+0x3c/0x70
- ? exc_invalid_op+0x14/0x70
- ? asm_exc_invalid_op+0x16/0x20
- ? do_user_addr_fault+0x2a0/0x790
- ? exc_page_fault+0x31/0x200
- exc_page_fault+0x68/0x200
-<...snip...>
-BUG: unable to handle page fault for address: 0000000000001000
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- PGD 800000000ad92067 P4D 800000000ad92067 PUD 7677067 PMD 0
- Oops: Oops: 0000 [#1] PREEMPT SMP PTI
- ---[ end trace 0000000000000000 ]---
- BUG: unable to handle page fault for address: 0000000000001000
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- PGD 800000000ad92067 P4D 800000000ad92067 PUD 7677067 PMD 0
- Oops: Oops: 0000 [#1] PREEMPT SMP PTI
- CPU: 1 PID: 14045 Comm: daxctl Kdump: loaded Tainted: G        W          6.10.0-rc2-lizhijian+ #492
- Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
- RIP: 0010:dentry_name+0x1f4/0x440
-<...snip...>
-? dentry_name+0x2fa/0x440
-vsnprintf+0x1f3/0x4f0
-vprintk_store+0x23a/0x540
-vprintk_emit+0x6d/0x330
-_printk+0x58/0x80
-dump_mapping+0x10b/0x1a0
-? __pfx_free_object_rcu+0x10/0x10
-__dump_page+0x26b/0x3e0
-? vprintk_emit+0xe0/0x330
-? _printk+0x58/0x80
-? dump_page+0x17/0x50
-dump_page+0x17/0x50
-do_migrate_range+0x2f7/0x7f0
-? do_migrate_range+0x42/0x7f0
-? offline_pages+0x2f4/0x8c0
-offline_pages+0x60a/0x8c0
-memory_subsys_offline+0x9f/0x1c0
-? lockdep_hardirqs_on+0x77/0x100
-? _raw_spin_unlock_irqrestore+0x38/0x60
-device_offline+0xe3/0x110
-state_store+0x6e/0xc0
-kernfs_fop_write_iter+0x143/0x200
-vfs_write+0x39f/0x560
-ksys_write+0x65/0xf0
-do_syscall_64+0x62/0x130
+[ 1663.694828] e1000e 0000:00:19.0 eth0: Failed to disable ULP
+[ 1664.731040] asix 2-3:1.0 eth1: link up, 100Mbps, full-duplex, lpa 0xC1E1
+[ 1665.093513] e1000e 0000:00:19.0 eth0: Hardware Error
+[ 1665.596760] e1000e 0000:00:19.0: pci_pm_resume+0x0/0x80 returned 0 after 2975399 usecs
 
-Previously, some sanity check have been done in dump_mapping() before
-the print facility parsing '%pd' though, it's still possible to run into
-an invalid dentry.d_name.name.
+and then the system never recovers from it, and all the following suspend failed due to this
+[22909.393854] PM: pci_pm_suspend(): e1000e_pm_suspend+0x0/0x760 [e1000e] returns -2
+[22909.393858] PM: dpm_run_callback(): pci_pm_suspend+0x0/0x160 returns -2
+[22909.393861] PM: Device 0000:00:1f.6 failed to suspend async: error -2
 
-Since dump_mapping() only needs to dump the filename only, retrieve it
-by itself in a safer way to prevent an unnecessary crash.
+This can be avoided by changing the return values of __e1000_shutdown and
+e1000e_pm_suspend functions so that they always return 0 (success). This
+is consistent with what other drivers do.
 
-Note that either retrieving the filename with '%pd' or
-strncpy_from_kernel_nofault(), the filename could be unreliable.
+If the e1000e driver encounters a hardware error during suspend, potential
+side effects include slightly higher power draw or non-working wake on
+LAN. This is preferred to a system-level suspend failure, and a warning
+message is written to the system log, so that the user can be aware that
+the LAN controller experienced a problem during suspend.
 
-Signed-off-by: Li Zhijian <lizhijian@fujitsu.com>
-Link: https://lore.kernel.org/r/20240826055503.1522320-1-lizhijian@fujitsu.com
-Reviewed-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=205015
+Suggested-by: Dima Ruinskiy <dima.ruinskiy@intel.com>
+Signed-off-by: Vitaly Lifshits <vitaly.lifshits@intel.com>
+Tested-by: Mor Bar-Gabay <morx.bar.gabay@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/inode.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/intel/e1000e/netdev.c | 19 +++++++++++--------
+ 1 file changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/fs/inode.c b/fs/inode.c
-index f5add7222c98e..bdff0ff61570b 100644
---- a/fs/inode.c
-+++ b/fs/inode.c
-@@ -593,6 +593,7 @@ void dump_mapping(const struct address_space *mapping)
- 	struct hlist_node *dentry_first;
- 	struct dentry *dentry_ptr;
- 	struct dentry dentry;
-+	char fname[64] = {};
- 	unsigned long ino;
- 
- 	/*
-@@ -629,11 +630,14 @@ void dump_mapping(const struct address_space *mapping)
- 		return;
+diff --git a/drivers/net/ethernet/intel/e1000e/netdev.c b/drivers/net/ethernet/intel/e1000e/netdev.c
+index 3cd161c6672be..e23eedc791d66 100644
+--- a/drivers/net/ethernet/intel/e1000e/netdev.c
++++ b/drivers/net/ethernet/intel/e1000e/netdev.c
+@@ -6671,8 +6671,10 @@ static int __e1000_shutdown(struct pci_dev *pdev, bool runtime)
+ 		if (adapter->flags2 & FLAG2_HAS_PHY_WAKEUP) {
+ 			/* enable wakeup by the PHY */
+ 			retval = e1000_init_phy_wakeup(adapter, wufc);
+-			if (retval)
+-				return retval;
++			if (retval) {
++				e_err("Failed to enable wakeup\n");
++				goto skip_phy_configurations;
++			}
+ 		} else {
+ 			/* enable wakeup by the MAC */
+ 			ew32(WUFC, wufc);
+@@ -6693,8 +6695,10 @@ static int __e1000_shutdown(struct pci_dev *pdev, bool runtime)
+ 			 * or broadcast.
+ 			 */
+ 			retval = e1000_enable_ulp_lpt_lp(hw, !runtime);
+-			if (retval)
+-				return retval;
++			if (retval) {
++				e_err("Failed to enable ULP\n");
++				goto skip_phy_configurations;
++			}
+ 		}
  	}
  
-+	if (strncpy_from_kernel_nofault(fname, dentry.d_name.name, 63) < 0)
-+		strscpy(fname, "<invalid>");
- 	/*
--	 * if dentry is corrupted, the %pd handler may still crash,
--	 * but it's unlikely that we reach here with a corrupt mapping
-+	 * Even if strncpy_from_kernel_nofault() succeeded,
-+	 * the fname could be unreliable
+@@ -6726,6 +6730,7 @@ static int __e1000_shutdown(struct pci_dev *pdev, bool runtime)
+ 		hw->phy.ops.release(hw);
+ 	}
+ 
++skip_phy_configurations:
+ 	/* Release control of h/w to f/w.  If f/w is AMT enabled, this
+ 	 * would have already happened in close and is redundant.
  	 */
--	pr_warn("aops:%ps ino:%lx dentry name:\"%pd\"\n", a_ops, ino, &dentry);
-+	pr_warn("aops:%ps ino:%lx dentry name(?):\"%s\"\n",
-+		a_ops, ino, fname);
+@@ -6968,15 +6973,13 @@ static int e1000e_pm_suspend(struct device *dev)
+ 	e1000e_pm_freeze(dev);
+ 
+ 	rc = __e1000_shutdown(pdev, false);
+-	if (rc) {
+-		e1000e_pm_thaw(dev);
+-	} else {
++	if (!rc) {
+ 		/* Introduce S0ix implementation */
+ 		if (adapter->flags2 & FLAG2_ENABLE_S0IX_FLOWS)
+ 			e1000e_s0ix_entry_flow(adapter);
+ 	}
+ 
+-	return rc;
++	return 0;
  }
  
- void clear_inode(struct inode *inode)
+ static int e1000e_pm_resume(struct device *dev)
 -- 
 2.43.0
 
