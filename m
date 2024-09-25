@@ -1,57 +1,60 @@
-Return-Path: <stable+bounces-77617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77618-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17656985F67
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:57:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2674985F2D
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 15:52:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7D035B2AA62
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:52:04 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E2FF51C25D9D
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:52:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D2B6188901;
-	Wed, 25 Sep 2024 12:14:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0892E1D1E83;
+	Wed, 25 Sep 2024 12:14:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rcXwrzXD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NF4Prtyj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB18D21F430;
-	Wed, 25 Sep 2024 12:14:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2BBF1D1E7B;
+	Wed, 25 Sep 2024 12:14:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727266491; cv=none; b=DLyikP0jTdJhW68KTQzaurqJNmTfYtL9ZzSYkaz8kSf1jx4Ta/c4WIoiVLHVwYI3gOLFGrItR1CWCa8ObDXZn+hzH0Dska9r8MCwrtRBBFDFoNxF95Bjq2dfxfo14Lfrj5KufhqqZ7UVsWDbj8mJf1wmRzmYkRn3RHSQ3FZ6WNw=
+	t=1727266492; cv=none; b=p6xIoOHJGPYxKTQZ8xm4qUJnsnZ7B1p5gz2Ip6YLSxo+GI6s9eJnS2+Mklji3QT0WzvfVHd7c0+Rb79niX5k33jaln5afMr4HPqKSyzzNkC87/ZZWbqhc1ri0yRh7RZicSivxBL/tymb8ck65AIQBkIc1Q8gnayhPvSXL5yOmmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727266491; c=relaxed/simple;
-	bh=pqDl/oLKye0IY1Vk4RElG6W96LZcmJEPguI00iQo6Zc=;
+	s=arc-20240116; t=1727266492; c=relaxed/simple;
+	bh=PG/vvvlJIiTk2olPbjMrsEl8S0N5MM3UIN0ccEDP9Hk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AJIKqAZ/g1GY7Q029sxA3W0uH0ZQhQ3xwWFvVtQe0tJFDcJWZWTU8X2y+uAG//yIPvhcsadPGEwY78gBqLiOAiqxptOv8c7lCe0J32wdJce++76V0EaDUnpLJATyb3LrVeIoqGlmrxPvoGIoBFVBab0UYY86gFOw/AetnIaxv24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rcXwrzXD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78F7AC4CEC7;
-	Wed, 25 Sep 2024 12:14:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cVrFon/qjznCN6N5JpjYO1Z5wsR9wSAFWohTg9YeTsUMvx1lHrf9iMgt/oLoEmGmTzKpKu4lH8X8+jadY0vRtv374OVbIIhHtlIAfym8YV3OCEx/l8SYojQWfwOuiNsLS9SeQTFePGJNDP8AibNLY7RoOCaeDD7KGb/5uKfhaAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NF4Prtyj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00C26C4CECD;
+	Wed, 25 Sep 2024 12:14:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727266490;
-	bh=pqDl/oLKye0IY1Vk4RElG6W96LZcmJEPguI00iQo6Zc=;
+	s=k20201202; t=1727266492;
+	bh=PG/vvvlJIiTk2olPbjMrsEl8S0N5MM3UIN0ccEDP9Hk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rcXwrzXD0b9xMlDmXf7HFDTCEwM3L9awLcq+4JnfJEM9mifA3XNtJ0mJWdxGv5N3J
-	 qWarl9tGRmReK/F1VsTtpy8W0o5SkqqCpgFbbr250jXbmz2m5kEgvlasS2TJGGvwWc
-	 oHe40Y37TdYmWOYVJI6OrxIA+uSWSqcJFB2lz6gkkGXdHKdetZN8g+eg5jacKqj/s5
-	 mDAfHMRpSdDo1SbW6BTkFho5F6gvp5C51AhFQ8lyy2wu+VZIG/cy5WpXM6621tUpTP
-	 igxGh1hh1o5yewEg1Y4ZHOEFwV/NTk2Sk1NVd5TVfjj8DrD1viI2tNLNgULydeDG1w
-	 ijmeyqll0BMnQ==
+	b=NF4PrtyjPNDpfA3Et4kGxYu251FceC2noIwAqlGAxilXlfjsHhxFW8/jxHErjoMxv
+	 CbiAoBQyL93x+jTMnCAInl23Z6S4bZgVaahhFQFcP2z/2NJj+rTH5kpzSfFS5qn+CS
+	 Ga+7aXA9gTU3lwclnGQlhShoiWjWJUVmQta9FKzfr0W3nwa2C8jNxEXZEPOjx08BPV
+	 zJ0caCjscK+wLbzkHBokhM4dlw9q4If7TuUGeAla1qNWcl1mEbHVTR7Fx+7AdvrbIJ
+	 UmvsC4kgkMWNzxDtrP9dmdNq8Nw4BaZkv66n5VViDKTBHZGNP3eqAZ65eiEz7DXX+Z
+	 0n2T00oQTuJbg==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
 Cc: =?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <linux@weissschuh.net>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Willy Tarreau <w@1wt.eu>,
 	Sasha Levin <sashal@kernel.org>,
+	shuah@kernel.org,
 	nathan@kernel.org,
+	linux-kselftest@vger.kernel.org,
 	llvm@lists.linux.dev
-Subject: [PATCH AUTOSEL 6.6 070/139] tools/nolibc: powerpc: limit stack-protector workaround to GCC
-Date: Wed, 25 Sep 2024 08:08:10 -0400
-Message-ID: <20240925121137.1307574-70-sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.6 071/139] selftests/nolibc: avoid passing NULL to printf("%s")
+Date: Wed, 25 Sep 2024 08:08:11 -0400
+Message-ID: <20240925121137.1307574-71-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925121137.1307574-1-sashal@kernel.org>
 References: <20240925121137.1307574-1-sashal@kernel.org>
@@ -69,34 +72,45 @@ Content-Transfer-Encoding: 8bit
 
 From: Thomas Weißschuh <linux@weissschuh.net>
 
-[ Upstream commit 1daea158d0aae0770371f3079305a29fdb66829e ]
+[ Upstream commit f1a58f61d88642ae1e6e97e9d72d73bc70a93cb8 ]
 
-As mentioned in the comment, the workaround for
-__attribute__((no_stack_protector)) is only necessary on GCC.
-Avoid applying the workaround on clang, as clang does not recognize
-__attribute__((__optimize__)) and would fail.
+Clang on higher optimization levels detects that NULL is passed to
+printf("%s") and warns about it.
+While printf() from nolibc gracefully handles that NULL,
+it is undefined behavior as per POSIX, so the warning is reasonable.
+Avoid the warning by transforming NULL into a non-NULL placeholder.
 
+Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
 Acked-by: Willy Tarreau <w@1wt.eu>
-Link: https://lore.kernel.org/r/20240807-nolibc-llvm-v2-3-c20f2f5fc7c2@weissschuh.net
+Link: https://lore.kernel.org/r/20240807-nolibc-llvm-v2-8-c20f2f5fc7c2@weissschuh.net
 Signed-off-by: Thomas Weißschuh <linux@weissschuh.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/include/nolibc/arch-powerpc.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/nolibc/nolibc-test.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/include/nolibc/arch-powerpc.h b/tools/include/nolibc/arch-powerpc.h
-index ac212e6185b26..41ebd394b90c7 100644
---- a/tools/include/nolibc/arch-powerpc.h
-+++ b/tools/include/nolibc/arch-powerpc.h
-@@ -172,7 +172,7 @@
- 	_ret;                                                                \
- })
+diff --git a/tools/testing/selftests/nolibc/nolibc-test.c b/tools/testing/selftests/nolibc/nolibc-test.c
+index 1fc4998f06bf6..4aaafbfc2f973 100644
+--- a/tools/testing/selftests/nolibc/nolibc-test.c
++++ b/tools/testing/selftests/nolibc/nolibc-test.c
+@@ -522,7 +522,7 @@ int expect_strzr(const char *expr, int llen)
+ {
+ 	int ret = 0;
  
--#ifndef __powerpc64__
-+#if !defined(__powerpc64__) && !defined(__clang__)
- /* FIXME: For 32-bit PowerPC, with newer gcc compilers (e.g. gcc 13.1.0),
-  * "omit-frame-pointer" fails with __attribute__((no_stack_protector)) but
-  * works with __attribute__((__optimize__("-fno-stack-protector")))
+-	llen += printf(" = <%s> ", expr);
++	llen += printf(" = <%s> ", expr ? expr : "(null)");
+ 	if (expr) {
+ 		ret = 1;
+ 		result(llen, FAIL);
+@@ -541,7 +541,7 @@ int expect_strnz(const char *expr, int llen)
+ {
+ 	int ret = 0;
+ 
+-	llen += printf(" = <%s> ", expr);
++	llen += printf(" = <%s> ", expr ? expr : "(null)");
+ 	if (!expr) {
+ 		ret = 1;
+ 		result(llen, FAIL);
 -- 
 2.43.0
 
