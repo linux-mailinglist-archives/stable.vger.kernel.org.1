@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-77145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D329098590E
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:49:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35CED985918
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 13:50:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0928AB20E39
-	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 11:49:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A6A39B24CC0
+	for <lists+stable@lfdr.de>; Wed, 25 Sep 2024 11:49:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 361CD197A93;
-	Wed, 25 Sep 2024 11:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25EF5199384;
+	Wed, 25 Sep 2024 11:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i6Jh++YW"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FHqJ3UH0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6009183CA0;
-	Wed, 25 Sep 2024 11:38:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA3CE1991BA;
+	Wed, 25 Sep 2024 11:38:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727264300; cv=none; b=dFLusFCGL9CAdEQu0jpe1otZOlzfDB5qNNWypSDs3JwCzH3quBKJTBz4gBNbbHWmAe/LFU8PssV9t/cfiXCM0b7TPRHd/DhFTzIQZL7oI/cstrOPmWApD51QfRyyTYYgBmA/5f6sIKk7JTb1CXo6q8UwdCYp0X0c21agNYDm+nw=
+	t=1727264302; cv=none; b=BGL56fTpL6Il2l2yXt/jPVmrg5Lr7RjbMwKlH6JtWTpZMsumRCYWgV+e2TNc2vPd+sT1h2wNL61+yusULmkuQ+PmoRZSWl0W8p/JiQojbEQeVHk/BY//bChkEPs5AhuiMDlbhICExevlK5VFraB5Co/f89InraFvA6QMi8x3yow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727264300; c=relaxed/simple;
-	bh=0YdqiPmqWJ80w4iDGHYKByNoVcDMMLR38yEVGczeIQc=;
+	s=arc-20240116; t=1727264302; c=relaxed/simple;
+	bh=IGkEYTcWB1iSZayrlGRyGBAcMDd3GmfLmIovV+2stys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pe332kmZdIY4tW/DwDTaHQGPOuUaGaWds+KVmYn5ObtEpjsIT+WNkmTe2XKATHqizK8ovidh1xRcX5rxg5y0eMpwVbQpPysWE1+tLeql56yxOI6E0vRHiRHjaJnmGzmUkX2G4lOpCyE5/FMpWnSq/5knPQpLV2VTeuVjbWkCyWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i6Jh++YW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCE3FC4CEC3;
-	Wed, 25 Sep 2024 11:38:19 +0000 (UTC)
+	 MIME-Version; b=IQ5u8gCN61UBZHp4/hZePrXCOm6g4y0i3joi9fcB78wEAAiv2W5c4qtHHFGUMQ0vhjaLkSl4WDoX6C1Z+6wVykZJiPeb5swCIH5t5O0cwvtIdj8JsMGMXIR7jH1nG3VanS6DL6MxhqvIy6Xqf57q2zdOKhPx5CJwWPR5xc/2H3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FHqJ3UH0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42E76C4CECD;
+	Wed, 25 Sep 2024 11:38:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727264300;
-	bh=0YdqiPmqWJ80w4iDGHYKByNoVcDMMLR38yEVGczeIQc=;
+	s=k20201202; t=1727264302;
+	bh=IGkEYTcWB1iSZayrlGRyGBAcMDd3GmfLmIovV+2stys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i6Jh++YWG3vlVEgedo2LoSr3BDOeBG3dGlA6NWqlPFgGVtgQmf8bMXnKvyFwgwQr4
-	 IUctxBArgXYSxEyYh07kgGnkG7NFiO/DwJGe4X7UL9XwkXKq8k2F+f9HjNL2r0KkW+
-	 i5DncMKlIzPuGTh29hqN6Rg6+JieZCHEt1Zi4qbhW4EBcLUuawA2lvDm/czy7UZ1Yc
-	 NbKXwswwDKp+VTZNMPIKC8x1CdiTPg1rXU91D4ecMXz9fXX22JeGOuqHl4Ncnird0T
-	 g18l/j9DgC5HDMBmnAzPx7TORVjVNbKRej329q6sEU5t3DcTZjOfsKeAo/53WJJEgY
-	 k+uoyNXWHC29A==
+	b=FHqJ3UH0cFxtTQVhbgUwW/70/cnrr2D7U57hp8/KriuSu3KinkCK8ptP/IvYHFD/d
+	 80swnT/IXD8VvSVh4eOsm3hT0nu5j25jZJSmJxVeL05C2lQJSvHed1pP2g7eLYoEBD
+	 0S0gUZYmUWre0AEWxwd2GpHogvE+MZRfAimj5VFzVqlA7APPdWAc4bz+mm1aQXJOjX
+	 Sjc3YBXtNYsj+Ekde4ozQR8kumVfIpCG1lBz0eHZ5q/wjLCWdTsm3cTL2R6P4zhigL
+	 93MsBw370CLaFRQjvRSGpo7t4q1dtee7pNNBZ+DsePi2qW7C/H8klZB71P95Vu/ZPM
+	 Db8RHj7DZ77LA==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Cc: Ping-Ke Shih <pkshih@realtek.com>,
+Cc: Pablo Neira Ayuso <pablo@netfilter.org>,
 	Sasha Levin <sashal@kernel.org>,
-	kvalo@kernel.org,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.11 047/244] wifi: rtw89: correct base HT rate mask for firmware
-Date: Wed, 25 Sep 2024 07:24:28 -0400
-Message-ID: <20240925113641.1297102-47-sashal@kernel.org>
+	kadlec@netfilter.org,
+	davem@davemloft.net,
+	edumazet@google.com,
+	kuba@kernel.org,
+	pabeni@redhat.com,
+	netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org,
+	netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.11 048/244] netfilter: nf_tables: do not remove elements if set backend implements .abort
+Date: Wed, 25 Sep 2024 07:24:29 -0400
+Message-ID: <20240925113641.1297102-48-sashal@kernel.org>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20240925113641.1297102-1-sashal@kernel.org>
 References: <20240925113641.1297102-1-sashal@kernel.org>
@@ -65,51 +71,57 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.11
 Content-Transfer-Encoding: 8bit
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 45742881f9eee2a4daeb6008e648a460dd3742cd ]
+[ Upstream commit c9526aeb4998393171d85225ff540e28c7d4ab86 ]
 
-Coverity reported that u8 rx_mask << 24 will become signed 32 bits, which
-casting to unsigned 64 bits will do sign extension. For example,
-putting 0x80000000 (signed 32 bits) to a u64 variable will become
-0xFFFFFFFF_80000000.
+pipapo set backend maintains two copies of the datastructure, removing
+the elements from the copy that is going to be discarded slows down
+the abort path significantly, from several minutes to few seconds after
+this patch.
 
-The real case we meet is:
-  rx_mask[0...3] = ff ff 00 00
-  ra_mask = 0xffffffff_ff0ff000
+This patch was previously reverted by
 
-After this fix:
-  rx_mask[0...3] = ff ff 00 00
-  ra_mask = 0x00000000_ff0ff000
+  f86fb94011ae ("netfilter: nf_tables: revert do not remove elements if set backend implements .abort")
 
-Fortunately driver does bitwise-AND with incorrect ra_mask and supported
-rates (1ss and 2ss rate only) afterward, so the final rate mask of
-original code is still correct.
+but it is now possible since recent work by Florian Westphal to perform
+on-demand clone from insert/remove path:
 
-Addresses-Coverity-ID: 1504762 ("Unintended sign extension")
+  532aec7e878b ("netfilter: nft_set_pipapo: remove dirty flag")
+  3f1d886cc7c3 ("netfilter: nft_set_pipapo: move cloning of match info to insert/removal path")
+  a238106703ab ("netfilter: nft_set_pipapo: prepare pipapo_get helper for on-demand clone")
+  c5444786d0ea ("netfilter: nft_set_pipapo: merge deactivate helper into caller")
+  6c108d9bee44 ("netfilter: nft_set_pipapo: prepare walk function for on-demand clone")
+  8b8a2417558c ("netfilter: nft_set_pipapo: prepare destroy function for on-demand clone")
+  80efd2997fb9 ("netfilter: nft_set_pipapo: make pipapo_clone helper return NULL")
+  a590f4760922 ("netfilter: nft_set_pipapo: move prove_locking helper around")
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20240809072012.84152-5-pkshih@realtek.com
+after this series, the clone is fully released once aborted, no need to
+take it back to previous state. Thus, no stale reference to elements can
+occur.
+
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/phy.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/netfilter/nf_tables_api.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/phy.c b/drivers/net/wireless/realtek/rtw89/phy.c
-index ad11d1414874a..c038e5ca3e45a 100644
---- a/drivers/net/wireless/realtek/rtw89/phy.c
-+++ b/drivers/net/wireless/realtek/rtw89/phy.c
-@@ -353,8 +353,8 @@ static void rtw89_phy_ra_sta_update(struct rtw89_dev *rtwdev,
- 		csi_mode = RTW89_RA_RPT_MODE_HT;
- 		ra_mask |= ((u64)sta->deflink.ht_cap.mcs.rx_mask[3] << 48) |
- 			   ((u64)sta->deflink.ht_cap.mcs.rx_mask[2] << 36) |
--			   (sta->deflink.ht_cap.mcs.rx_mask[1] << 24) |
--			   (sta->deflink.ht_cap.mcs.rx_mask[0] << 12);
-+			   ((u64)sta->deflink.ht_cap.mcs.rx_mask[1] << 24) |
-+			   ((u64)sta->deflink.ht_cap.mcs.rx_mask[0] << 12);
- 		high_rate_masks = rtw89_ra_mask_ht_rates;
- 		if (sta->deflink.ht_cap.cap & IEEE80211_HT_CAP_RX_STBC)
- 			stbc_en = 1;
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 0a2f793469589..ee428997a0731 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -10782,7 +10782,10 @@ static int __nf_tables_abort(struct net *net, enum nfnl_abort_action action)
+ 				break;
+ 			}
+ 			te = nft_trans_container_elem(trans);
+-			nft_setelem_remove(net, te->set, te->elem_priv);
++			if (!te->set->ops->abort ||
++			    nft_setelem_is_catchall(te->set, te->elem_priv))
++				nft_setelem_remove(net, te->set, te->elem_priv);
++
+ 			if (!nft_setelem_is_catchall(te->set, te->elem_priv))
+ 				atomic_dec(&te->set->nelems);
+ 
 -- 
 2.43.0
 
