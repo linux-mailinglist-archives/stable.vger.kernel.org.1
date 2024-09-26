@@ -1,210 +1,141 @@
-Return-Path: <stable+bounces-77805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EF29987757
-	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 18:11:00 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCFC898775B
+	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 18:11:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 70AE81C22846
-	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 16:10:59 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4B14BB23E64
+	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 16:11:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43B6B15B118;
-	Thu, 26 Sep 2024 16:10:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DD38158559;
+	Thu, 26 Sep 2024 16:11:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lWra4QLk"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DUYHjp1Y"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57E7515A4B0;
-	Thu, 26 Sep 2024 16:10:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C79113B5B4;
+	Thu, 26 Sep 2024 16:11:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727367041; cv=none; b=n/x8MT+MF2ADAaV7rGL/fnPoiBAD/hrifmOG2PKIxyoQToUQ65bY9/41QyDTEPea6htGBhx6mulKiRIiKt29D/3sj7E/2DORT9LZ45LgmgNh/IpW9fC6xWgwRBF068p/pippNfW1TZyFAZ5DGdPLyqNUkuuGhK7xWH+XIW45Iag=
+	t=1727367093; cv=none; b=V5CV91PRY+6z1dgeaDzjwmHdRFf/7JLaQ+5aye5mpmM80/1Q0hhCZGGWaefPXmtxYrVWaa0wc8VfsDFaD1Q/yTLtKwS0wjegrv+uU6MDrTsJlI5hzeDLEg8WmG/vgWOvFdT2mJWSaARPh0xZ2yzCtfJ7nqw/QgUEg1HRURodTD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727367041; c=relaxed/simple;
-	bh=Ojz4YdQa8AG+7jrZEpC6wSBAWB4NbUgef4n7LG7D+Cg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tge0M7nNKm2DeaW7PuSHZYEcBZTn2fmnK9mxiO0b84F0XyMVbBH431qaQzdJHn4l/Ga1hHGO6cVtnEQSusBTCuqn9Aio/a7iFajWXKVj01HOwmqGvX7R0xIXEVw8+88U9q+p1I81y2EpfaembWagamhsJCEfngj8yznZJP3A1CA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lWra4QLk; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1727367039; x=1758903039;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Ojz4YdQa8AG+7jrZEpC6wSBAWB4NbUgef4n7LG7D+Cg=;
-  b=lWra4QLk+As/bUbfNteAMxYX2vpH5hyWoCK7RSN2b+QRC5JVHs2pNnYf
-   jp8JDj6C5qu2cNV6jUEuhOhpT4e5vXSo4hOID9843d8pYDPuWT8PIHXLG
-   Dxa1QlMMcKEaglXHzEidQlKRpcnn5HW12xPsL06OEWjmS84vsWCxDfBuE
-   fKvLactj48UgXcBTxoWAzMEETe54J9LVytD5a2+AbHanJFnx/WeqhfzM6
-   KB0G4s9d4KX4/GfTX07mKWOd9SuXTdjSXKXweenDFHEWOB5yrW5D/d98H
-   8nN3OBHljspXe/S0vYxEm7UDnbNV8QO7CLqLy7lqIYli43MGl5shAgU88
-   Q==;
-X-CSE-ConnectionGUID: bngjd3HFQ1OjQ9wlfXOwfg==
-X-CSE-MsgGUID: fKTvZcKTS3Walm8DE2SLug==
-X-IronPort-AV: E=McAfee;i="6700,10204,11207"; a="30273649"
-X-IronPort-AV: E=Sophos;i="6.11,155,1725346800"; 
-   d="scan'208";a="30273649"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Sep 2024 09:10:38 -0700
-X-CSE-ConnectionGUID: R962TzAvRP2WYWxRdt38NA==
-X-CSE-MsgGUID: WYZHYSjkQ8GmQn8p6vjCSA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,155,1725346800"; 
-   d="scan'208";a="77040367"
-Received: from ellisnea-mobl1.amr.corp.intel.com (HELO desk) ([10.125.147.235])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Sep 2024 09:10:39 -0700
-Date: Thu, 26 Sep 2024 09:10:31 -0700
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-To: Uros Bizjak <ubizjak@gmail.com>
-Cc: Andrew Cooper <andrew.cooper3@citrix.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	linux-kernel@vger.kernel.org, x86@kernel.org,
-	Robert Gill <rtgill82@gmail.com>,
-	Jari Ruusu <jariruusu@protonmail.com>,
-	Brian Gerst <brgerst@gmail.com>,
-	"Linux regression tracking (Thorsten Leemhuis)" <regressions@leemhuis.info>,
-	antonio.gomez.iglesias@linux.intel.com,
-	daniel.sneddon@linux.intel.com, stable@vger.kernel.org
-Subject: Re: [PATCH v7 3/3] x86/bugs: Use code segment selector for VERW
- operand
-Message-ID: <20240926161031.dcohgbkbqs4bk32n@desk>
-References: <20240925-fix-dosemu-vm86-v7-0-1de0daca2d42@linux.intel.com>
- <20240925-fix-dosemu-vm86-v7-3-1de0daca2d42@linux.intel.com>
- <5703f2d8-7ca0-4f01-a954-c0eb1de930b4@citrix.com>
- <20240925234616.2ublphj3vbluawb3@desk>
- <20240926001729.2unwdxtcnnkf3k3t@desk>
- <555e220d-7ff5-58e4-7ca8-282ca88d8392@gmail.com>
+	s=arc-20240116; t=1727367093; c=relaxed/simple;
+	bh=shJSHXjlK547ydVvMCQRSZN4pxzvR+ilNKJfQM11QHE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=sAkVyAUaBI3Myk9KItRww+c6qAc0otJFNtyELkoy2byJCuF0mXzUwsTahvLfHjh+onjSudoLF4PDzYShHu0sa5eBX4Z+ybYjVHyv1Qtf0oygY5zeVIZRQo0VFXRpQ3nfKNeWBBULFIXL0eLqXLp+kfgb9KHhxJBN8lGcaeEP874=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DUYHjp1Y; arc=none smtp.client-ip=209.85.216.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2e09a36f54eso64680a91.1;
+        Thu, 26 Sep 2024 09:11:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1727367090; x=1727971890; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=shJSHXjlK547ydVvMCQRSZN4pxzvR+ilNKJfQM11QHE=;
+        b=DUYHjp1Yn3hI6HqL2aIF3/eP+HMhRcDEJq0XtwBGOnGmQBGq2THiYbS6DNHch4qj9n
+         JZLNHH5FL8TdE4yxOnEtCpdUVanl82YkHgSj48CDSZlR04cAjnI/cmFpOaNGIkKx5YmG
+         lO9AtZF4hzl83gpbyop9cXKWKlh+Y2FtQnsHRqJMZdlUuN75Km/e5dc+OVKyDJYcDJaA
+         vG1Q7Pb3ZFlJ7S7qrsTVDTy/IMHBgy0C8yc0pWfODBpNNVmaOUz9Lryfuom6L8VG3lkO
+         F5E5Rek1IzWl3LzJrO+4NXWSz2qs9BgLEBilukyB1Ngdk4jhbiV+ZZxs0G94CY16fL+1
+         XGzA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727367090; x=1727971890;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=shJSHXjlK547ydVvMCQRSZN4pxzvR+ilNKJfQM11QHE=;
+        b=WSkcEuAfHs1mGHkxxh+idwrh/U+CvQAEhqLMT1rhb+L58UzW31pceZEH1fV+jFGPVu
+         ybDOZ9TcVahbCvGZPDL/nh24mnPfuA0VttQfpWjY4LytYQlPjFEi0ZCR7avwOm8PolI4
+         iYnYr/A5HkhHHhLx3iIAENQFlAHVAnAyvgNd861B0+pCQt8xxQGZ5Bgs7J4Ig1ERBwgw
+         fQfS8tTiYlGRABcyURWPikRSXdQarEzGiahWI5aO7z8JKimfCtHoQKnRJ//+o4NSIl24
+         uMiqk60PQxC2wPcgVfL7gO2/BcTGFTFGe/mQIeg91srK9l12lXKxsOxogo3ebRblUh0j
+         ca5w==
+X-Forwarded-Encrypted: i=1; AJvYcCVF7W52mFUh6DF9kPQMBk1Bxvh9vuA4ISvERsWOvmExYYPH7jZL7dgttIfT63dbbgJVx8sPeWgT2ErLpbs=@vger.kernel.org, AJvYcCWuk1uPWCcytoTflLm55tdmmdyOdbv4ep943Hl31GPQsnDeK0G3vxvIxAvt/3IP1vjjd2BEODlL@vger.kernel.org, AJvYcCXOuLgxMPwElXiq8BCaCfsMA/lm7eo+PxCZkjD8WK+Db7iqvAc41PGBcBzSFIikxKcCSX6RFbfEIRqqBAy0KAc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxLbv0m1XD1I1P9T+bFImruLOF4a9G1sVKi2YoyXTgW8RIAwGeN
+	gdS2rihpYWnFIHeJsMFLZJv2pKDtW/6t7p4rs/6w0kdZcMw5jPG4WiM7Dm6X2z0AQUKtItKrjM6
+	c2VfyGiMSt0VVf9NmEFSZqc8vXAQ=
+X-Google-Smtp-Source: AGHT+IHOPDH1wb+stuy0EfXx5p0HnQnqPFmeGMm37xP4Tf5VJjlZHx1w8z7puUade36nUeULNJZImKA1mSHvAcplnsI=
+X-Received: by 2002:a17:90a:a78a:b0:2e0:876c:8cbe with SMTP id
+ 98e67ed59e1d1-2e0b8ee52a2mr104368a91.7.1727367090120; Thu, 26 Sep 2024
+ 09:11:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <555e220d-7ff5-58e4-7ca8-282ca88d8392@gmail.com>
+References: <20240917000848.720765-1-jmontleo@redhat.com> <20240917000848.720765-2-jmontleo@redhat.com>
+ <334EBB3A-6ABF-4FBF-89D2-DF3A6DCCCEA2@kernel.org> <20240917142950.48d800ac@eugeo>
+ <31885EDD-EF6D-4EF1-94CA-276BA7A340B7@kernel.org> <CANiq72=KdF2zrcHJEH+YGv9Mn6szsHrZpEWb_y2QkFzButm3Ag@mail.gmail.com>
+ <20240926-plated-guts-e84b822c40cc@spud>
+In-Reply-To: <20240926-plated-guts-e84b822c40cc@spud>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 26 Sep 2024 18:11:17 +0200
+Message-ID: <CANiq72=ShT8O0GcN8G-YRE1CB8Z9Ztr-ZNcQ6cphHYvDGanTKg@mail.gmail.com>
+Subject: Re: [PATCH] RISC-V: Fix building rust when using GCC toolchain
+To: Conor Dooley <conor@kernel.org>
+Cc: Gary Guo <gary@garyguo.net>, Jason Montleon <jmontleo@redhat.com>, ojeda@kernel.org, 
+	alex.gaynor@gmail.com, boqun.feng@gmail.com, bjorn3_gh@protonmail.com, 
+	benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com, 
+	paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu, 
+	nathan@kernel.org, ndesaulniers@google.com, morbo@google.com, 
+	justinstitt@google.com, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
+	llvm@lists.linux.dev, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 26, 2024 at 04:52:53PM +0200, Uros Bizjak wrote:
-> > diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
-> > index e18a6aaf414c..4228a1fd2c2e 100644
-> > --- a/arch/x86/include/asm/nospec-branch.h
-> > +++ b/arch/x86/include/asm/nospec-branch.h
-> > @@ -318,14 +318,21 @@
-> >   /*
-> >    * Macro to execute VERW instruction that mitigate transient data sampling
-> >    * attacks such as MDS. On affected systems a microcode update overloaded VERW
-> > - * instruction to also clear the CPU buffers. VERW clobbers CFLAGS.ZF. Using %cs
-> > - * to reference VERW operand avoids a #GP fault for an arbitrary user %ds in
-> > - * 32-bit mode.
-> > + * instruction to also clear the CPU buffers. VERW clobbers CFLAGS.ZF.
-> >    *
-> >    * Note: Only the memory operand variant of VERW clears the CPU buffers.
-> >    */
-> >   .macro CLEAR_CPU_BUFFERS
-> > -	ALTERNATIVE "", __stringify(verw %cs:_ASM_RIP(mds_verw_sel)), X86_FEATURE_CLEAR_CPU_BUF
-> > +#ifdef CONFIG_X86_64
-> > +	ALTERNATIVE "", __stringify(verw _ASM_RIP(mds_verw_sel)), X86_FEATURE_CLEAR_CPU_BUF
-> 
-> You should drop _ASM_RIP here and direclty use (%rip). This way, you also
-> won't need __stringify:
-> 
-> ALTERNATIVE "", "verw mds_verw_sel(%rip)", X86_FEATURE_CLEAR_CPU_BUF
-> 
-> > +#else
-> > +	/*
-> > +	 * In 32bit mode, the memory operand must be a %cs reference. The data
-> > +	 * segments may not be usable (vm86 mode), and the stack segment may not
-> > +	 * be flat (ESPFIX32).
-> > +	 */
-> > +	ALTERNATIVE "", __stringify(verw %cs:mds_verw_sel), X86_FEATURE_CLEAR_CPU_BUF
-> 
-> Also here, no need for __stringify:
-> 
-> ALTERNATIVE "", "verw %cs:mds_verw_sel", X86_FEATURE_CLEAR_CPU_BUF
-> 
-> This is in fact what Andrew proposed in his review.
+On Thu, Sep 26, 2024 at 5:56=E2=80=AFPM Conor Dooley <conor@kernel.org> wro=
+te:
+>
+> Mixed builds are allowed on the c side, since we can figure out what the
 
-Thanks for pointing out, I completely missed that part. Below is how it
-looks like with stringify gone:
+I am not sure what you mean by allowed on the C side. For out-of-tree
+modules you mean?
 
---- >8 ---
-Subject: [PATCH] x86/bugs: Use code segment selector for VERW operand
+> versions of each tool are. If there's a way to detect the version of
+> libclang in use by the rust side, then I would be okay with mixed gcc +
+> rustc builds.
 
-Robert Gill reported below #GP in 32-bit mode when dosemu software was
-executing vm86() system call:
+If you mean the libclang used by bindgen, yes, we have such a check
+(warning) in scripts/rust_is_available.sh. We can also have it as a
+Kconfig symbol if needed.
 
-  general protection fault: 0000 [#1] PREEMPT SMP
-  CPU: 4 PID: 4610 Comm: dosemu.bin Not tainted 6.6.21-gentoo-x86 #1
-  Hardware name: Dell Inc. PowerEdge 1950/0H723K, BIOS 2.7.0 10/30/2010
-  EIP: restore_all_switch_stack+0xbe/0xcf
-  EAX: 00000000 EBX: 00000000 ECX: 00000000 EDX: 00000000
-  ESI: 00000000 EDI: 00000000 EBP: 00000000 ESP: ff8affdc
-  DS: 0000 ES: 0000 FS: 0000 GS: 0033 SS: 0068 EFLAGS: 00010046
-  CR0: 80050033 CR2: 00c2101c CR3: 04b6d000 CR4: 000406d0
-  Call Trace:
-   show_regs+0x70/0x78
-   die_addr+0x29/0x70
-   exc_general_protection+0x13c/0x348
-   exc_bounds+0x98/0x98
-   handle_exception+0x14d/0x14d
-   exc_bounds+0x98/0x98
-   restore_all_switch_stack+0xbe/0xcf
-   exc_bounds+0x98/0x98
-   restore_all_switch_stack+0xbe/0xcf
+Regarding rustc's LLVM version, I wanted to have a similar check in
+scripts/rust_is_available.sh (also a warning), but it would have been
+quite noisy, and if LTO is not enabled it should generally be OK. So
+we are adding instead a Kconfig symbol for that, which will be used
+for a couple things. Gary has a WIP patch for this one.
 
-This only happens in 32-bit mode when VERW based mitigations like MDS/RFDS
-are enabled. This is because segment registers with an arbitrary user value
-can result in #GP when executing VERW. Intel SDM vol. 2C documents the
-following behavior for VERW instruction:
+> Yes, I would rather this was not applied at all. My plan was to send a
+> patch making HAVE_RUST depend on CC_IS_CLANG, but just ain't got around
+> to it yet, partly cos I was kinda hoping to mention this to you guys at
+> LPC last week, but I never got the chance to talk to any rust people (or
+> go to any rust talks either!).
 
-  #GP(0) - If a memory operand effective address is outside the CS, DS, ES,
-	   FS, or GS segment limit.
+To be clear, that `depends on` would need to be only for RISC-V, i.e.
+other architectures are "OK" with those. It is really, really
+experimental, as we have always warned, but some people is using it
+successfully, apparently.
 
-CLEAR_CPU_BUFFERS macro executes VERW instruction before returning to user
-space. Use %cs selector to reference VERW operand. This ensures VERW will
-not #GP for an arbitrary user %ds.
+> Sure, I can add a comment there.
 
-Fixes: a0e2dab44d22 ("x86/entry_32: Add VERW just before userspace transition")
-Cc: stable@vger.kernel.org # 5.10+
-Reported-by: Robert Gill <rtgill82@gmail.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218707
-Closes: https://lore.kernel.org/all/8c77ccfd-d561-45a1-8ed5-6b75212c7a58@leemhuis.info/
-Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
-Suggested-by: Brian Gerst <brgerst@gmail.com>
-Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
----
- arch/x86/include/asm/nospec-branch.h | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+Thanks!
 
-diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
-index ff5f1ecc7d1e..96b410b1d4e8 100644
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -323,7 +323,16 @@
-  * Note: Only the memory operand variant of VERW clears the CPU buffers.
-  */
- .macro CLEAR_CPU_BUFFERS
--	ALTERNATIVE "", __stringify(verw _ASM_RIP(mds_verw_sel)), X86_FEATURE_CLEAR_CPU_BUF
-+#ifdef CONFIG_X86_64
-+	ALTERNATIVE "", "verw mds_verw_sel(%rip)", X86_FEATURE_CLEAR_CPU_BUF
-+#else
-+	/*
-+	 * In 32bit mode, the memory operand must be a %cs reference. The data
-+	 * segments may not be usable (vm86 mode), and the stack segment may not
-+	 * be flat (ESPFIX32).
-+	 */
-+	ALTERNATIVE "", "verw %cs:mds_verw_sel", X86_FEATURE_CLEAR_CPU_BUF
-+#endif
- .endm
- 
- #ifdef CONFIG_X86_64
--- 
-2.34.1
+> In sorta related news, is there a plan for config "options" that will
+> allow us to detect gcc-rs or the gcc rust backend?
 
+gccrs is way too early to even think about that. rustc_codegen_gcc,
+yeah, if needed, we can add a symbol for that when we start supporting
+the backend.
+
+Cheers,
+Miguel
 
