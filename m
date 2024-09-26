@@ -1,125 +1,152 @@
-Return-Path: <stable+bounces-77800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 299749876C2
-	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 17:43:37 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98AFB9876CC
+	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 17:46:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D27C51F270DD
-	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 15:43:36 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4EF792862E8
+	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 15:46:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4CE81531CC;
-	Thu, 26 Sep 2024 15:43:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 37D73156C70;
+	Thu, 26 Sep 2024 15:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="vHtxVj2y";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="QGp6NLnH"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="J67VL/6n"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5D4B152165;
-	Thu, 26 Sep 2024 15:43:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F6862206E
+	for <stable@vger.kernel.org>; Thu, 26 Sep 2024 15:46:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727365410; cv=none; b=JCsayktzztRlf8XbNAiIZfZODxlO9SEwfFXi3wBYsOJyNcJBhbFufMFrfCKcna5sNrVm9jvlwzmuFOIBS+9hH8p+MtrF/5R4ymVTDl9yER0an2sLHnzMH061fpRg9vo80bonrwA0IU6I88/CU+/h+Be7mquivO7dpG31Xl392rg=
+	t=1727365607; cv=none; b=bG73dW50ZPn9M+kBbve9hT2LJn1VGS+x2uwMVK9VKDZEpeZsXF0VHfGTzibDqYsRNqNDW4waRu1YlPuz/l/p0U6E642f9J1V8YI1Q20DGJaiD4Bf14kAiOI9PCy/yCpM72EuYWx42VozKKBOS2ZPdE5vKUOCVzGApOW6zddGXO8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727365410; c=relaxed/simple;
-	bh=LsaecnkOmRFc2Rb85nI2WQzfb4PTcDIVvWPaTLkMmKU=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FSVSUYfXo17ZNGBAVxyvMfIAeyYYztJn3k0VDFBvLkMWolv4PAvj4Nu5LUsFgNJm9//0lBUDx9Mw/7yaaBKwxzYH8IAZsURULKBdL3J6T3tCXTyHaZIoo0CfXd3sZhMV6nHhhvZWOFmnWdBYwtxSyST9EtSs/nCYWUaC2Hp3Amo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=vHtxVj2y; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=QGp6NLnH; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: Nam Cao <namcao@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1727365406;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=vZ/HKgnyH2HmTsoqiD2jM9GAYr4moWSHAgynrG+F/AQ=;
-	b=vHtxVj2yfehMPNOP5iiUaLPrtxiKreiaFchKIbhXVouWyk4l770aQfemwxS44NUbPTOjyK
-	Y2k1BGYQwyOTU/h2Xm5depaeU0IjAnkyL7DSCT8RLIUyAudKqhVO2g4dZ+aE3BkNo8Hmur
-	ZDHO715TXOYflWj8dc6D/anlY7NQiWCR5G5uP7YzO/EkTC97bF5QiW0I9UU2swsaK8U0rp
-	zKxBZT8IsewPNvb7bW8tY8wdODTwfUWNde4b6Bmkhw+PoBCEazYr2ZzaIRYF5XGBVGbTgX
-	LUhKvTUHoI5RHzhGqvhAntUXf2jpT3ihh6SNbdco/K0fBjm9NlVxije3ZRqNtw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1727365406;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=vZ/HKgnyH2HmTsoqiD2jM9GAYr4moWSHAgynrG+F/AQ=;
-	b=QGp6NLnHhrwLB/1PcErLd2XM1lSocD1JGiXGFmlJtdoqe4XlvnwChgIDEBL+VZcU2WbZil
-	jgoYPvSSG9jFxKAQ==
-To: Thomas Gleixner <tglx@linutronix.de>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	Marc Zyngier <maz@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org
-Cc: Nam Cao <namcao@linutronix.de>,
-	stable@vger.kernel.org
-Subject: [PATCH] irqchip/sifive-plic: Unmask interrupt in plic_irq_enable()
-Date: Thu, 26 Sep 2024 17:43:15 +0200
-Message-Id: <20240926154315.1244200-1-namcao@linutronix.de>
+	s=arc-20240116; t=1727365607; c=relaxed/simple;
+	bh=SuHI94/NJuRKFCunzRbAg6UvpyQ5uCb4T3j4SVdB1nQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=ZOsK/PhMSkiU5+3p7GFuUZWriM/BLUuLiBitxTExOPGp19oyvkSiwi5DKg9dmqmWyNxaAvWoOKaAgf5xLZATV+xS8bww9smu+SZ8k2vB+GuKFvFbWQifRN2HESWk9zMHleayWBBtsUrycZ44px9yP2LIJTt7M4vKDHeamQa0Qe0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=J67VL/6n; arc=none smtp.client-ip=209.85.208.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2f75f116d11so13326271fa.1
+        for <stable@vger.kernel.org>; Thu, 26 Sep 2024 08:46:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1727365603; x=1727970403; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=SLuFDJ+OJh2cs6DQqYJ4Myy9hkcubhtgAstbmRPjdOo=;
+        b=J67VL/6ntJvs2a+41QrFjwUCaHax3mGHvYqJwJydQ9acz7ysBStE3AnzjWIaWSWkHr
+         F9bdieefNNhsOXm5lVR6uRqPOPpnUoUVHd7ZVpUkprg3QEGuEHLKr0k6ZFzk+oYpi+1+
+         ZQTxUW9ahhVQjD4YhswkorssnftkWcRA4Vo0nab/pKTVQyPOpmDB7OVY5RWh8Zn/TAxj
+         dm+ItQfmeQvQc8gn13fQlGwOpWdUKoeJqHXYRHMmV/HUhSqBsBQ3LAlBwtxrZ2RijBhu
+         geNcLPSvKb1ZGO7pESwsWlmuZssux+qiChOQEV5c+3VFuZrCL+TQ3PJPAlfyTzRPpKzM
+         IpHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727365603; x=1727970403;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=SLuFDJ+OJh2cs6DQqYJ4Myy9hkcubhtgAstbmRPjdOo=;
+        b=Tpey/0DO3FIGUxgZQFmLYk5bZumDOJiVLihFONDMS2/wcaiAvP1qrBXUqqdDYdaLMo
+         cImnZoFr3/kfH7aoH8RREEfDmBYZOlfF7SRXYUC/oOGHbn7krAnQIpIbrnaSN7IeRs8s
+         h4S3liiXM8UY5sXbeBllwULTDp4WjSGtyBSxZbzHASHp1nvzb5BZtv/wkXr7TUEtoxTA
+         cAWYPT1MMqyOL/Xik+KvLNIbiuyjwjlOUA4mzhhjvLJ7br8iMMZSke4+3q22RVRUksOM
+         mhh4jMtalaVJAGO3zOSI1ZorAouotZEKtIysXfrstlStwo67HbGHy4VsCtubAtIaXecv
+         N2UA==
+X-Forwarded-Encrypted: i=1; AJvYcCXFKDEjIZmeivgqmm+hyAhjIfOXmaVFJ5GGmidoQfuTaAD4Qo210Wi98HvOp4Rss8UTH95Av1Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzPc3Y67Q7mub83qq3/QgS8cdjK3g07UaSE5NHkuBPHaVHX9Eys
+	0IVBUUb5ZK3DqmioN2C7l8QI1xPHaqhbZf0Sg0GWZhveh1eGVEpkaSr3/ZrMY8Y=
+X-Google-Smtp-Source: AGHT+IH3ucAQlIkL4Yfv7P8gDAIdffffiN8uilUFYJ1cSSVcwOP1JZLskf0ivdeCi+lEu2kGOIIm+Q==
+X-Received: by 2002:a05:651c:b12:b0:2f7:90b9:7534 with SMTP id 38308e7fff4ca-2f9d3e479aemr922871fa.11.1727365603023;
+        Thu, 26 Sep 2024 08:46:43 -0700 (PDT)
+Received: from [127.0.0.1] ([176.61.106.227])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c882405166sm75744a12.9.2024.09.26.08.46.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Sep 2024 08:46:42 -0700 (PDT)
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Subject: [PATCH 0/4] ov08x40: Enable use of ov08x40 on Qualcomm X1E80100
+ CRD
+Date: Thu, 26 Sep 2024 16:46:36 +0100
+Message-Id: <20240926-b4-master-24-11-25-ov08x40-v1-0-e4d5fbd3b58a@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIANyB9WYC/x3MSwqEMAwA0KtI1hNoQ6yOVxlcRI2ahR9aEUG8+
+ xSXb/NuSBpNEzTFDVFPS7atGf5TQD/LOinakA3kiN2XAnaMi6RDIxKj90glbqerL3bYh5GrSkS
+ CMORgjzra9ea/9nn+W/zqoGwAAAA=
+X-Change-ID: 20240926-b4-master-24-11-25-ov08x40-c6f477aaa6a4
+To: Sakari Ailus <sakari.ailus@linux.intel.com>, 
+ Jason Chen <jason.z.chen@intel.com>, 
+ Mauro Carvalho Chehab <mchehab@kernel.org>, 
+ Sergey Senozhatsky <senozhatsky@chromium.org>, 
+ Hans Verkuil <hverkuil-cisco@xs4all.nl>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>
+Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ devicetree@vger.kernel.org, Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.15-dev-dedf8
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1576;
+ i=bryan.odonoghue@linaro.org; h=from:subject:message-id;
+ bh=SuHI94/NJuRKFCunzRbAg6UvpyQ5uCb4T3j4SVdB1nQ=;
+ b=owEBbQKS/ZANAwAIASJxO7Ohjcg6AcsmYgBm9YHgAIZlJYGVPLuMr80jeHY/pnREkUHMuDyZO
+ SwuXxIrvmCJAjMEAAEIAB0WIQTmk/sqq6Nt4Rerb7QicTuzoY3IOgUCZvWB4AAKCRAicTuzoY3I
+ Om5bD/9LR8ePOIbXN45DmQCg1+WdeWDs1nItKFUq6V/shmQbqBlhuQqzlq19WdGxWomeuQ7fx+r
+ RCPaSy2lTmGj47biItBF6Gi/48RcOGFpk6OIEGJmqgxmfr0yj9D+mYpiWS2el3b0kvCmSHSjPZk
+ 6u3PtPLeqGToobWWplsemgF6w0jjoQea5l55rP8kqmPvXIZkubtJayRrsxAhMlZD835ffGwL7hO
+ /2ZJ/rFhPZoc+nwrrpOTxQ8ngGVP36zzqfSGoUGOGDuAwxhE9YxOlpc27HywtDgw8VqI/DyY3wz
+ tezMgR9zEDi0pTncDuOeIlKYragCaIqKb3QVO4CsYPf48byytJHBun87+Qs0bqgAfxN4xnSQe3y
+ L478K8d/+Gr60SCyJHghrnF9rja97H0pj8JWzak7owqmBjYIkrr7dSTSuhigxnerx3cr7qD6wPD
+ NQJtuNNxHEfrLqTDA9q3c/DRee3Tm3GauEVWbqZu9ByiLKUrV5wGejc8ub/cuZfjt/BQNJbX5M0
+ QBuckkSdoAZZNgxJInR/vyYbnSd+uTNEiviv0DnZ50p0o1LHXNXdBfZP/lPFpDa0CAIlK4WrnoR
+ BF3kHJa5gYAGUAhXVp1nQCQm71sxPnztcqSaIZ4dCpp/VObox+rRSjc0JMDnxKfcNtEk9EScW5R
+ rXBNdoJTPVuK+Uw==
+X-Developer-Key: i=bryan.odonoghue@linaro.org; a=openpgp;
+ fpr=E693FB2AABA36DE117AB6FB422713BB3A18DC83A
 
-It is possible that an interrupt is disabled and masked at the same time.
-When the interrupt is enabled again by enable_irq(), only plic_irq_enable()
-is called, not plic_irq_unmask(). The interrupt remains masked and never
-raises.
+This series brings fixes and updates to ov08x40 which allows for use of
+this sensor on the Qualcomm x1e80100 CRD but also on any other dts based
+system.
 
-An example where interrupt is both disabled and masked is when
-handle_fasteoi_irq() is the handler, and IRQS_ONESHOT is set. The interrupt
-handler:
-  1. Mask the interrupt
-  2. Handle the interrupt
-  3. Check if interrupt is still enabled, and unmask it (see
-     cond_unmask_eoi_irq())
+Firstly there's a fix for the pseudo burst mode code that was added in
+8f667d202384 ("media: ov08x40: Reduce start streaming time"). Not every I2C
+controller can handle an arbitrary sized write, this is the case on
+Qualcomm CAMSS/CCI I2C sensor interfaces which limit the transaction size
+and communicate this limit via I2C quirks. A simple fix to optionally break
+up the large submitted burst into chunks not exceeding adapter->quirk size
+fixes.
 
-If another task disables the interrupt in the middle of the above steps,
-the interrupt will not get unmasked, and will remain masked when it is
-enabled in the future.
+Secondly then is addition of a yaml description for the ov08x40 and
+extension of the driver to support OF probe and powering on of the power
+rails from the driver instead of from ACPI.
 
-The problem is occasionally observed when PREEMPT_RT is enabled, because
-PREEMPT_RT add the IRQS_ONESHOT flag. But PREEMPT_RT only makes the
-problem more likely to appear, the bug has been around since
-commit a1706a1c5062 ("irqchip/sifive-plic: Separate the enable and mask
-operations").
+Once done the sensor works without further modification on the Qualcomm
+x1e80100 CRD.
 
-Fix it by unmasking interrupt in plic_irq_enable().
-
-Fixes: a1706a1c5062 ("irqchip/sifive-plic: Separate the enable and mask ope=
-rations").
-Signed-off-by: Nam Cao <namcao@linutronix.de>
-Cc: stable@vger.kernel.org
+Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 ---
- drivers/irqchip/irq-sifive-plic.c | 3 +++
- 1 file changed, 3 insertions(+)
+Bryan O'Donoghue (4):
+      media: ov08x40: Fix burst write sequence
+      media: dt-bindings: Add OmniVision OV08X40
+      media: ov08x40: Rename ext_clk to xvclk
+      media: ov08x40: Add OF probe support
 
-diff --git a/drivers/irqchip/irq-sifive-plic.c b/drivers/irqchip/irq-sifive=
--plic.c
-index 2f6ef5c495bd..0efbf14ec9fa 100644
---- a/drivers/irqchip/irq-sifive-plic.c
-+++ b/drivers/irqchip/irq-sifive-plic.c
-@@ -128,6 +128,9 @@ static inline void plic_irq_toggle(const struct cpumask=
- *mask,
-=20
- static void plic_irq_enable(struct irq_data *d)
- {
-+	struct plic_priv *priv =3D irq_data_get_irq_chip_data(d);
-+
-+	writel(1, priv->regs + PRIORITY_BASE + d->hwirq * PRIORITY_PER_ID);
- 	plic_irq_toggle(irq_data_get_effective_affinity_mask(d), d, 1);
- }
-=20
---=20
-2.39.5
+ .../bindings/media/i2c/ovti,ov08x40.yaml           | 130 ++++++++++++++++
+ drivers/media/i2c/ov08x40.c                        | 172 ++++++++++++++++++---
+ 2 files changed, 283 insertions(+), 19 deletions(-)
+---
+base-commit: 2b7275670032a98cba266bd1b8905f755b3e650f
+change-id: 20240926-b4-master-24-11-25-ov08x40-c6f477aaa6a4
+
+Best regards,
+-- 
+Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
 
