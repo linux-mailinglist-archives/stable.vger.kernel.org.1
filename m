@@ -1,170 +1,287 @@
-Return-Path: <stable+bounces-77798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5ACE1987694
-	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 17:34:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C1DF987680
+	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 17:28:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9F3872816BE
-	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 15:34:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EC5261F2565F
+	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 15:28:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78B5C159217;
-	Thu, 26 Sep 2024 15:33:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B17A314B959;
+	Thu, 26 Sep 2024 15:28:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="G0gY/3KF"
+	dkim=pass (2048-bit key) header.d=toxicpanda-com.20230601.gappssmtp.com header.i=@toxicpanda-com.20230601.gappssmtp.com header.b="ziWqze4j"
 X-Original-To: stable@vger.kernel.org
-Received: from mailout1.samsung.com (mailout1.samsung.com [203.254.224.24])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com [209.85.219.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8084C158A13
-	for <stable@vger.kernel.org>; Thu, 26 Sep 2024 15:33:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.24
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC9A743AB9
+	for <stable@vger.kernel.org>; Thu, 26 Sep 2024 15:28:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727364837; cv=none; b=SqyaGB25faatOXAAq/0uocvEl5lLao28d9LYpk8SbjkRRvjf93DBWlhPWhg42oQdALv2U94jH6pUou7vfY7vWDcrZ+E8B5s220pizR6Rptq5zY7ITQeFQ1ocCEldSWex5XF9umbx3uGMgjvS3ePhW7fdjrYvXgwWT56woqBQX3s=
+	t=1727364485; cv=none; b=GLAPiQstj2Rn6ONTBfHVZ6DRmhUmEBo1TtD74morzaDobr4q0B3uh+JLrxCKlAscO9pz5PkkDgMmbLHUhe+IK8bYYBLV/ZBxoIficd793vignzR+qVyTnwGHy3qvizva9GR2hGRdVFIz0FM7b0I6Xbj5Bg3iIyi4WKLEpkuuT2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727364837; c=relaxed/simple;
-	bh=vBy7OFug84v0/K0Vd+HlF324zw+uJF9x+kHFONfOVqg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:Content-Type:
-	 References; b=t1jhJ17Xn/xRuIzb5NduhCWiZe4w/pbwHa8/Pgop0kAZQU+ZTsGQ9i9IlM/ROZunSvS60Q0E9Z025X6VqnsqJln+P7u7oNJ9QP+AUCe9xpjZpEnuRPDcQ/mBjB1mn0AHm8NOCLQi7GLI2nlA0EuArhicjCkIMxlE4puxtLDLwKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=G0gY/3KF; arc=none smtp.client-ip=203.254.224.24
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
-Received: from epcas5p4.samsung.com (unknown [182.195.41.42])
-	by mailout1.samsung.com (KnoxPortal) with ESMTP id 20240926153353epoutp0140c5e85f65aa757286f76288649e190f~41SoUJdeQ1264712647epoutp01k
-	for <stable@vger.kernel.org>; Thu, 26 Sep 2024 15:33:53 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20240926153353epoutp0140c5e85f65aa757286f76288649e190f~41SoUJdeQ1264712647epoutp01k
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1727364833;
-	bh=sfSiZshNltBPyKbM7f8L8Q015QrPMyWEOljZ3sJgHEM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G0gY/3KF8nTo8NdaGCkvM8DI5uwIH8CSK9gi2PNEeEkrDNIe4TKta9kM2dJ4B/0vD
-	 pdcbB4qjOJDba51gitUi3Vpk5sIHVam94uz/DMlItZe4ocNkA2OmxV7rujwMJt6bvr
-	 blPtutntFlwKyzkSHfvbx9wVoHFLKieSjgM2ak8M=
-Received: from epsnrtp1.localdomain (unknown [182.195.42.162]) by
-	epcas5p4.samsung.com (KnoxPortal) with ESMTP id
-	20240926153353epcas5p4240c7cc9f029c2ea1399802f17fbb5d2~41SnovrrP1931019310epcas5p4_;
-	Thu, 26 Sep 2024 15:33:53 +0000 (GMT)
-Received: from epsmgec5p1-new.samsung.com (unknown [182.195.38.176]) by
-	epsnrtp1.localdomain (Postfix) with ESMTP id 4XDyLR6Mqyz4x9Pp; Thu, 26 Sep
-	2024 15:33:51 +0000 (GMT)
-Received: from epcas5p3.samsung.com ( [182.195.41.41]) by
-	epsmgec5p1-new.samsung.com (Symantec Messaging Gateway) with SMTP id
-	8A.7E.19863.FDE75F66; Fri, 27 Sep 2024 00:33:51 +0900 (KST)
-Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
-	epcas5p2.samsung.com (KnoxPortal) with ESMTPA id
-	20240926144743epcas5p2047d01217bf90d6d52ec97c9b3094c82~40qUQ3poA0768307683epcas5p2s;
-	Thu, 26 Sep 2024 14:47:43 +0000 (GMT)
-Received: from epsmgmcp1.samsung.com (unknown [182.195.42.82]) by
-	epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
-	20240926144743epsmtrp18cdee3eada09707edfebfe34e564a663~40qUPXza90487704877epsmtrp1V;
-	Thu, 26 Sep 2024 14:47:43 +0000 (GMT)
-X-AuditID: b6c32a50-c73ff70000004d97-7c-66f57edfe441
-Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
-	epsmgmcp1.samsung.com (Symantec Messaging Gateway) with SMTP id
-	16.EF.19367.F0475F66; Thu, 26 Sep 2024 23:47:43 +0900 (KST)
-Received: from cheetah.sa.corp.samsungelectronics.net (unknown
-	[107.109.115.53]) by epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20240926144741epsmtip1a45675997190fef8c60891441d978414~40qSJO4m81883918839epsmtip1x;
-	Thu, 26 Sep 2024 14:47:41 +0000 (GMT)
-From: Varada Pavani <v.pavani@samsung.com>
-To: krzk@kernel.org, aswani.reddy@samsung.com, pankaj.dubey@samsung.com,
-	s.nawrocki@samsung.com, cw00.choi@samsung.com, alim.akhtar@samsung.com,
-	mturquette@baylibre.com, sboyd@kernel.org,
-	linux-samsung-soc@vger.kernel.org, linux-clk@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Cc: gost.dev@samsung.com, Varada Pavani <v.pavani@samsung.com>,
-	stable@vger.kernel.org
-Subject: [PATCH 2/2] clk: samsung: Fixes PLL locktime for PLL142XX used on
- FSD platfom
-Date: Thu, 26 Sep 2024 20:15:13 +0530
-Message-Id: <20240926144513.71349-3-v.pavani@samsung.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20240926144513.71349-1-v.pavani@samsung.com>
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFmphk+LIzCtJLcpLzFFi42LZdlhTU/d+3dc0g4sX9S0ezNvGZnFo81Z2
-	i+tfnrNa3Dywk8ni/PkN7BabHl9jtfjYc4/V4vKuOWwWM87vY7K4eMrVYtHWL+wWh9+0s1r8
-	u7aRxWLBxkeMFht6X7E78Hu8v9HK7rFpVSebx+Yl9R59W1YxenzeJBfAGpVtk5GamJJapJCa
-	l5yfkpmXbqvkHRzvHG9qZmCoa2hpYa6kkJeYm2qr5OIToOuWmQN0rJJCWWJOKVAoILG4WEnf
-	zqYov7QkVSEjv7jEVim1ICWnwKRArzgxt7g0L10vL7XEytDAwMgUqDAhO+PL40VsBZs5K55f
-	7GdrYHzE3sXIySEhYCLRdX8ukM3FISSwh1Hi1Yt3bBDOJ0aJj629bCBVYM6ePguYjl+3uqGK
-	djJKPLg3BcppZZKYfO4nK0gVm4CWxOqpy8FsEYEjTBJ/TqSC2MwCERK7Gm+CTRUGsru6X4Dd
-	wSKgKnF/+2Owel4BS4lnK36xQGyTl1i94QAziM0pYCVx+vFJVpBlEgJ/2SVedn9i6mLkAHJc
-	JA7OlICoF5Z4dXwL1G9SEi/729ghSpIl2j9xQ4RzJC7tXsUEYdtLHLgyhwWkhFlAU2L9Ln2I
-	sKzE1FPrmCAu5pPo/f0EqpxXYsc8GFtJYueOCVC2hMTT1WvYIGwPiRdTt7NDwq2XUeJxv+gE
-	RrlZCBsWMDKuYpRKLSjOTU9NNi0w1M1LLYfHWXJ+7iZGcHLUCtjBuHrDX71DjEwcjIcYJTiY
-	lUR4J938mCbEm5JYWZValB9fVJqTWnyI0RQYfBOZpUST84HpOa8k3tDE0sDEzMzMxNLYzFBJ
-	nPd169wUIYH0xJLU7NTUgtQimD4mDk6pBqbiLD6nZ40GYi8/GwguL7ObNeXxj7qgMOVFHw57
-	uK1s7kiaKVvw8eJchcqzE1usPPZtc0y82HPcqIr5POv1tKXsv7P2rl94Yev5Pp8bx9j/feQ7
-	qHK86ZbGCffPxQo6Ey8yt9gkZpbJbLGWmZi/ddXUM3vlQkt2FVxeGdM/q7/myq9Gd4tdnbmz
-	RLrTdj9Wcq2a9qwiWlSxKd7ULSzuR4+2iMAG4bM+m47KvWOsLzGVvZoYLuN2xMmr1rN14lGr
-	co9OncQTkxMP7Yi5W6gVxb/n78zbRbmqVxPavTma6mXO9BulbL5XKs+8PPF0+hX3Dw+kFqz1
-	VVzzeYlI7c/3G7gOVYT/VVN+PnX60/PBEUosxRmJhlrMRcWJAP/QbXMXBAAA
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrJLMWRmVeSWpSXmKPExsWy7bCSnC5/ydc0g/+bJCwezNvGZnFo81Z2
-	i+tfnrNa3Dywk8ni/PkN7BabHl9jtfjYc4/V4vKuOWwWM87vY7K4eMrVYtHWL+wWh9+0s1r8
-	u7aRxWLBxkeMFht6X7E78Hu8v9HK7rFpVSebx+Yl9R59W1YxenzeJBfAGsVlk5Kak1mWWqRv
-	l8CV8eXxIraCzZwVzy/2szUwPmLvYuTkkBAwkfh1q5uti5GLQ0hgO6PExuaLLBAJCYmd31qZ
-	IWxhiZX/nrNDFDUzSSw/Pp0VJMEmoCWxeupyVpCEiMAlJokDR56AjWUWiJJ43bqSsYuRg0NY
-	IExi9XsukDCLgKrE/e2PwXp5BSwlnq34BbVMXmL1hgNgyzgFrCROPz4JViMEVPPu/ga2CYx8
-	CxgZVjGKphYU56bnJhcY6hUn5haX5qXrJefnbmIEh65W0A7GZev/6h1iZOJgPMQowcGsJMI7
-	6ebHNCHelMTKqtSi/Pii0pzU4kOM0hwsSuK8yjmdKUIC6YklqdmpqQWpRTBZJg5OqQYmd0mm
-	WksFi7uiG9bNXRHnJtC96LBmuszOpLbN+sbm7U+mFAts+b6PsTnvqJRLZuUhjZ/vIm079ft5
-	zz95FPkmIP/ZrSlPDV9cL/8nobzwfTVbqPiu0wEcV9y5DnBlz84ojftv/ClqbyjTzjDhL7sm
-	O3wxvbRMzKGl9tLm39cLYzJ8WaY5XLLpnayptu2b4Mr7d0LeBLrk9i3fccoycw5DP4sF13pp
-	aZeC/UusxQ/mGB3jCivbm1zGfqWKlWviw9Lp9xv35j38n7hTxk03dc37TwdVNh5eE9DKLPh4
-	ddOHc/vemy7b179++163hqv/L6Ywvu2Yme27zbrC7+h10cPv9dX2v5V729657+RNubm6SizF
-	GYmGWsxFxYkAfL4ykswCAAA=
-X-CMS-MailID: 20240926144743epcas5p2047d01217bf90d6d52ec97c9b3094c82
-X-Msg-Generator: CA
-Content-Type: text/plain; charset="utf-8"
-X-Sendblock-Type: REQ_APPROVE
-CMS-TYPE: 105P
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20240926144743epcas5p2047d01217bf90d6d52ec97c9b3094c82
-References: <20240926144513.71349-1-v.pavani@samsung.com>
-	<CGME20240926144743epcas5p2047d01217bf90d6d52ec97c9b3094c82@epcas5p2.samsung.com>
+	s=arc-20240116; t=1727364485; c=relaxed/simple;
+	bh=rEfB5Hpjcg7xRZHA0gQSGFbP4BGJq/Y5/N+J7RTlKac=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rTVKtN0ooAeSPGGdyAawWJs7ssMlDcNAXi0b5aNjz1Yyr/13dY359YIDBCrO3O8FN2DyIoqkiEJoSowqpEN71kdI2StOqNDKN3ivNTFJRxGRCvQhfBJ+nmptluZl2HcMA1fk/FXjwewh/xr9pJlananHhnvUD1icIzCigVsf44k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com; spf=none smtp.mailfrom=toxicpanda.com; dkim=pass (2048-bit key) header.d=toxicpanda-com.20230601.gappssmtp.com header.i=@toxicpanda-com.20230601.gappssmtp.com header.b=ziWqze4j; arc=none smtp.client-ip=209.85.219.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=toxicpanda.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=toxicpanda.com
+Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-e026a2238d8so1121595276.0
+        for <stable@vger.kernel.org>; Thu, 26 Sep 2024 08:28:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=toxicpanda-com.20230601.gappssmtp.com; s=20230601; t=1727364482; x=1727969282; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=IYxTMIJYtEcyqMbG1j/lJfbh1tgoURUED47VmaAmgG4=;
+        b=ziWqze4jonRhNJEG9eCuqpOkbn4dWWhzLEQ+pn25P9ya2IQkboyfhUVON7lSdwGTLX
+         ZsSWemhP26EHluvFc6VY8qnwdingTvOercHTPHXL9UmvooFp2Cd+9Ini11QJhJJl+5gA
+         GvX9NnlfDC/g+fguQF345IZamek7/UlFGfFT18PqFn8n/xb7A4rKfzfto+KGCBHoP3tE
+         XkybDBBsH6FMD9JFRSY78T1Q8bW7CNQqES5qGLXBLoAFX6AMoxeaLrdW0d4500P1u+gF
+         AdQJrsgmNMY+O7n6KJnFRaQDLXLV0qZYZnDKWLvHiwRLruul1lzjGKR1oi4OrmRyJDvR
+         yhSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727364482; x=1727969282;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=IYxTMIJYtEcyqMbG1j/lJfbh1tgoURUED47VmaAmgG4=;
+        b=K69M+rGVNBIvZA99+bojZWz/UBWFzyltnYWGlAT13Q7PWlNvz7GYEyDflEetoKM2Yy
+         0QuxNCXKbGM4QNMk0ZbIRHfBUA8LDAre0v9Ms6kmkp04QmPrzGSA9QBOecxR58UR3WeA
+         hxW1CpgkhIyS0DHCaaDzRcfC/Lvtg+sQcfr+W80nOoCg7qFZdKo5ilneJODqHGGyrfqm
+         9ROHGnI+L0yq4YowNVFo2dlET99SOiAeSsGWlML9zdqaJpMBNrOKDIjEZ3Xfozlt/TQT
+         9aGeB9HrTx/Ai+DKZDtU+oSROx+PmhXEScQlD6WYV0Q//RMlb20aDAy/sbUQ+Vkz2cow
+         fdjw==
+X-Gm-Message-State: AOJu0Yy0ayXz2DI4DyHNbUAvHrc0KJg8Iar0qoZeIaBQ1mIfRW3s5mLM
+	4eHPnNxzN/BZlPGST34PybdWXPC6m3+HrCYJ+6GhtFeRc+V/oxV6LcxnZiXywrY=
+X-Google-Smtp-Source: AGHT+IH81f1Xl63uVw5FJxSyiQADqcbWbHehBGRcauaW624fvJFG8y2FfHau3Oz0W/eTfvLh51lL2w==
+X-Received: by 2002:a05:6902:118f:b0:e1d:ad92:d748 with SMTP id 3f1490d57ef6-e24d7823d82mr5418917276.8.1727364482532;
+        Thu, 26 Sep 2024 08:28:02 -0700 (PDT)
+Received: from localhost (syn-076-182-020-124.res.spectrum.com. [76.182.20.124])
+        by smtp.gmail.com with ESMTPSA id 3f1490d57ef6-e25e6c31c4bsm15937276.62.2024.09.26.08.28.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Sep 2024 08:28:01 -0700 (PDT)
+From: Josef Bacik <josef@toxicpanda.com>
+To: linux-btrfs@vger.kernel.org,
+	kernel-team@fb.com
+Cc: stable@vger.kernel.org,
+	Boris Burkov <boris@bur.io>
+Subject: [PATCH v2] btrfs: drop the backref cache during relocation if we commit
+Date: Thu, 26 Sep 2024 11:27:56 -0400
+Message-ID: <6db9c462e7fd4c4923c222c9f4cc286946e12afc.1727364472.git.josef@toxicpanda.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Add PLL locktime for PLL142XX controller.
+Since the inception of relocation we have maintained the backref cache
+across transaction commits, updating the backref cache with the new
+bytenr whenever we COW'ed blocks that were in the cache, and then
+updating their bytenr once we detected a transaction id change.
 
-Fixes: 4f346005aaed ("clk: samsung: fsd: Add initial clock support")
+This works as long as we're only ever modifying blocks, not changing the
+structure of the tree.
+
+However relocation does in fact change the structure of the tree.  For
+example, if we are relocating a data extent, we will look up all the
+leaves that point to this data extent.  We will then call
+do_relocation() on each of these leaves, which will COW down to the leaf
+and then update the file extent location.
+
+But, a key feature of do_relocation is the pending list.  This is all
+the pending nodes that we modified when we updated the file extent item.
+We will then process all of these blocks via finish_pending_nodes, which
+calls do_relocation() on all of the nodes that led up to that leaf.
+
+The purpose of this is to make sure we don't break sharing unless we
+absolutely have to.  Consider the case that we have 3 snapshots that all
+point to this leaf through the same nodes, the initial COW would have
+created a whole new path.  If we did this for all 3 snapshots we would
+end up with 3x the number of nodes we had originally.  To avoid this we
+will cycle through each of the snapshots that point to each of these
+nodes and update their pointers to point at the new nodes.
+
+Once we update the pointer to the new node we will drop the node we
+removed the link for and all of its children via btrfs_drop_subtree().
+This is essentially just btrfs_drop_snapshot(), but for an arbitrary
+point in the snapshot.
+
+The problem with this is that we will never reflect this in the backref
+cache.  If we do this btrfs_drop_snapshot() for a node that is in the
+backref tree, we will leave the node in the backref tree.  This becomes
+a problem when we change the transid, as now the backref cache has
+entire subtrees that no longer exist, but exist as if they still are
+pointed to by the same roots.
+
+In the best case scenario you end up with "adding refs to an existing
+tree ref" errors from insert_inline_extent_backref(), where we attempt
+to link in nodes on roots that are no longer valid.
+
+Worst case you will double free some random block and re-use it when
+there's still references to the block.
+
+This is extremely subtle, and the consequences are quite bad.  There
+isn't a way to make sure our backref cache is consistent between
+transid's.
+
+In order to fix this we need to simply evict the entire backref cache
+anytime we cross transid's.  This reduces performance in that we have to
+rebuild this backref cache every time we change transid's, but fixes the
+bug.
+
+This has existed since relocation was added, and is a pretty critical
+bug.  There's a lot more cleanup that can be done now that this
+functionality is going away, but this patch is as small as possible in
+order to fix the problem and make it easy for us to backport it to all
+the kernels it needs to be backported to.
+
+Followup series will dismantle more of this code and simplify relocation
+drastically to remove this functionality.
+
+We have a reproducer that reproduced the corruption within a few minutes
+of running.  With this patch it survives several iterations/hours of
+running the reproducer.
+
+Fixes: 3fd0a5585eb9 ("Btrfs: Metadata ENOSPC handling for balance")
 Cc: stable@vger.kernel.org
-Signed-off-by: Varada Pavani <v.pavani@samsung.com>
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
 ---
- drivers/clk/samsung/clk-pll.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ fs/btrfs/backref.c    | 12 ++++---
+ fs/btrfs/relocation.c | 75 ++-----------------------------------------
+ 2 files changed, 11 insertions(+), 76 deletions(-)
 
-diff --git a/drivers/clk/samsung/clk-pll.c b/drivers/clk/samsung/clk-pll.c
-index 4be879ab917e..d4c5ae20de4f 100644
---- a/drivers/clk/samsung/clk-pll.c
-+++ b/drivers/clk/samsung/clk-pll.c
-@@ -206,6 +206,7 @@ static const struct clk_ops samsung_pll3000_clk_ops = {
-  */
- /* Maximum lock time can be 270 * PDIV cycles */
- #define PLL35XX_LOCK_FACTOR	(270)
-+#define PLL142XX_LOCK_FACTOR	(150)
- 
- #define PLL35XX_MDIV_MASK       (0x3FF)
- #define PLL35XX_PDIV_MASK       (0x3F)
-@@ -272,7 +273,11 @@ static int samsung_pll35xx_set_rate(struct clk_hw *hw, unsigned long drate,
+diff --git a/fs/btrfs/backref.c b/fs/btrfs/backref.c
+index e2f478ecd7fd..f8e1d5b2c512 100644
+--- a/fs/btrfs/backref.c
++++ b/fs/btrfs/backref.c
+@@ -3179,10 +3179,14 @@ void btrfs_backref_release_cache(struct btrfs_backref_cache *cache)
+ 		btrfs_backref_cleanup_node(cache, node);
  	}
  
- 	/* Set PLL lock time. */
--	writel_relaxed(rate->pdiv * PLL35XX_LOCK_FACTOR,
-+	if (pll->type == pll_142xx)
-+		writel_relaxed(rate->pdiv * PLL142XX_LOCK_FACTOR,
-+			pll->lock_reg);
-+	else
-+		writel_relaxed(rate->pdiv * PLL35XX_LOCK_FACTOR,
- 			pll->lock_reg);
+-	cache->last_trans = 0;
+-
+-	for (i = 0; i < BTRFS_MAX_LEVEL; i++)
+-		ASSERT(list_empty(&cache->pending[i]));
++	for (i = 0; i < BTRFS_MAX_LEVEL; i++) {
++		while (!list_empty(&cache->pending[i])) {
++			node = list_first_entry(&cache->pending[i],
++						struct btrfs_backref_node,
++						list);
++			btrfs_backref_cleanup_node(cache, node);
++		}
++	}
+ 	ASSERT(list_empty(&cache->pending_edge));
+ 	ASSERT(list_empty(&cache->useless_node));
+ 	ASSERT(list_empty(&cache->changed));
+diff --git a/fs/btrfs/relocation.c b/fs/btrfs/relocation.c
+index ea4ed85919ec..cf1dfeaaf2d8 100644
+--- a/fs/btrfs/relocation.c
++++ b/fs/btrfs/relocation.c
+@@ -232,70 +232,6 @@ static struct btrfs_backref_node *walk_down_backref(
+ 	return NULL;
+ }
  
- 	/* Change PLL PMS values */
+-static void update_backref_node(struct btrfs_backref_cache *cache,
+-				struct btrfs_backref_node *node, u64 bytenr)
+-{
+-	struct rb_node *rb_node;
+-	rb_erase(&node->rb_node, &cache->rb_root);
+-	node->bytenr = bytenr;
+-	rb_node = rb_simple_insert(&cache->rb_root, node->bytenr, &node->rb_node);
+-	if (rb_node)
+-		btrfs_backref_panic(cache->fs_info, bytenr, -EEXIST);
+-}
+-
+-/*
+- * update backref cache after a transaction commit
+- */
+-static int update_backref_cache(struct btrfs_trans_handle *trans,
+-				struct btrfs_backref_cache *cache)
+-{
+-	struct btrfs_backref_node *node;
+-	int level = 0;
+-
+-	if (cache->last_trans == 0) {
+-		cache->last_trans = trans->transid;
+-		return 0;
+-	}
+-
+-	if (cache->last_trans == trans->transid)
+-		return 0;
+-
+-	/*
+-	 * detached nodes are used to avoid unnecessary backref
+-	 * lookup. transaction commit changes the extent tree.
+-	 * so the detached nodes are no longer useful.
+-	 */
+-	while (!list_empty(&cache->detached)) {
+-		node = list_entry(cache->detached.next,
+-				  struct btrfs_backref_node, list);
+-		btrfs_backref_cleanup_node(cache, node);
+-	}
+-
+-	while (!list_empty(&cache->changed)) {
+-		node = list_entry(cache->changed.next,
+-				  struct btrfs_backref_node, list);
+-		list_del_init(&node->list);
+-		BUG_ON(node->pending);
+-		update_backref_node(cache, node, node->new_bytenr);
+-	}
+-
+-	/*
+-	 * some nodes can be left in the pending list if there were
+-	 * errors during processing the pending nodes.
+-	 */
+-	for (level = 0; level < BTRFS_MAX_LEVEL; level++) {
+-		list_for_each_entry(node, &cache->pending[level], list) {
+-			BUG_ON(!node->pending);
+-			if (node->bytenr == node->new_bytenr)
+-				continue;
+-			update_backref_node(cache, node, node->new_bytenr);
+-		}
+-	}
+-
+-	cache->last_trans = 0;
+-	return 1;
+-}
+-
+ static bool reloc_root_is_dead(const struct btrfs_root *root)
+ {
+ 	/*
+@@ -551,9 +487,6 @@ static int clone_backref_node(struct btrfs_trans_handle *trans,
+ 	struct btrfs_backref_edge *new_edge;
+ 	struct rb_node *rb_node;
+ 
+-	if (cache->last_trans > 0)
+-		update_backref_cache(trans, cache);
+-
+ 	rb_node = rb_simple_search(&cache->rb_root, src->commit_root->start);
+ 	if (rb_node) {
+ 		node = rb_entry(rb_node, struct btrfs_backref_node, rb_node);
+@@ -3698,11 +3631,9 @@ static noinline_for_stack int relocate_block_group(struct reloc_control *rc)
+ 			break;
+ 		}
+ restart:
+-		if (update_backref_cache(trans, &rc->backref_cache)) {
+-			btrfs_end_transaction(trans);
+-			trans = NULL;
+-			continue;
+-		}
++		if (rc->backref_cache.last_trans != trans->transid)
++			btrfs_backref_release_cache(&rc->backref_cache);
++		rc->backref_cache.last_trans = trans->transid;
+ 
+ 		ret = find_next_extent(rc, path, &key);
+ 		if (ret < 0)
 -- 
-2.17.1
+2.43.0
 
 
