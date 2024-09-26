@@ -1,234 +1,151 @@
-Return-Path: <stable+bounces-77818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0D67987A26
-	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 22:40:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4618D987A45
+	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 23:04:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F6BD1F21F12
-	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 20:40:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CEF2A284963
+	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 21:04:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C9E01741C9;
-	Thu, 26 Sep 2024 20:40:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C71B15A85B;
+	Thu, 26 Sep 2024 21:04:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nDfrMDkA"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="vBsYZ8wq"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1EEA146586
-	for <stable@vger.kernel.org>; Thu, 26 Sep 2024 20:40:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.11
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727383243; cv=fail; b=XroFppCDqhiiFc3KytYejtajSNT2VrsNfDW/jo7nMfbKrTe7T3UxfNlBoeQs64v/bMGxzzmQDZxu7ZilZTDsaaj67oOpHiOvnQjSc1HcuXkPY7cpL1BjITb30Dusriy2krBleY/XkjlTl2fvSDWe2L7ojz0uwNh6kTsvwCQdOM0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727383243; c=relaxed/simple;
-	bh=DkVjtq+vy+glIGCfpah5tRXbZB8+1/YSHC7soJZLIeg=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=QaXTktA2Z/dbBD/79611IyDHfyH+MdfCEoh8S0WraGxrXuew/Af03TaCqPwPyObxW5BQoCM9mk3ku3C1h/5KrgnhnP1nlNJlWpVIXbir7UcxtWwo0GM2BdktcY9RdjcZavXft8hZ7hZ2PxRHkkauxzztrj5FE6e/8PJcqJLJwOk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nDfrMDkA; arc=fail smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1727383242; x=1758919242;
-  h=date:from:to:cc:subject:message-id:references:
-   in-reply-to:mime-version;
-  bh=DkVjtq+vy+glIGCfpah5tRXbZB8+1/YSHC7soJZLIeg=;
-  b=nDfrMDkAr7ZJvKZGHhM5oIOXqCHXR+wZyfreP0HXl3oeXBBDSXpWfJGQ
-   /TF41rNzj2RXyEnenQcMOSynhb+pAARqFgpV7bMODRNxH3j+PCsiv40sL
-   P5wIadyXqALINB77dMnefjQdIyVyAHMHz1Nkr+GDYMWnPlSKNrx29ToS5
-   DUPOn+5Cqyk7qxw4o3BYyZnvI6zRa/HczVqGmg0NCXJfdZcJD4dM+8H84
-   QekeFm3VYqfehC5hZMzgdEFQg+DWy2SwBSUw7wzE94OW1vVzdV4olMbNK
-   cJS0KJVCCE/djfOS3JluVhLxMSWBpqebVHMuK1Gene4lZbD4T3CP9zzlG
-   g==;
-X-CSE-ConnectionGUID: 1RzLdb9FR2ibVZgbHU9DBg==
-X-CSE-MsgGUID: WM/TxcaJTHqGnQpNTWRvDw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11207"; a="37095076"
-X-IronPort-AV: E=Sophos;i="6.11,156,1725346800"; 
-   d="scan'208";a="37095076"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 Sep 2024 13:40:40 -0700
-X-CSE-ConnectionGUID: i8WvUfm5Rkm1yxMKgnp8bg==
-X-CSE-MsgGUID: vdNj46oXRXedTW4M0+6Xcw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,156,1725346800"; 
-   d="scan'208";a="103102469"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
-  by fmviesa001.fm.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 26 Sep 2024 13:40:40 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Thu, 26 Sep 2024 13:40:39 -0700
-Received: from fmsedg602.ED.cps.intel.com (10.1.192.136) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Thu, 26 Sep 2024 13:40:39 -0700
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (104.47.66.48) by
- edgegateway.intel.com (192.55.55.71) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Thu, 26 Sep 2024 13:40:38 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=b7Ct9gxtJumR0hBIhajfl1Ki5q3zRCuyziXfADKEyhFYUCRoP4WZuQ3LfexSG9qguNH9VF04HYf/A86PzHL23+pJmd2kv0m8Nay9DGyZAUdiRfpToRM7hwJm4YwzVSuIGzF09yTYnREr0xRswHYJmu7adTPH5WMtkcl5p7YSVxKBzKDhLqv5KjVBPOKFHYs9Qvc8ZJDEtbbiMkYr/StgbUdxwVVer782IIOSjIKVF/wOK+5dJWZgyuan4fkSbKDO04Q4Wk4AYJWvtuhC86NAwr18VwWJ4ngLSeQxnelnqVJZKrXKGo3kwP6uACuYGYgVr68w8GqyzwGJFpdML6xG/g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=cfxUql+OK9w6fI8x4U12umryFH0ldCM+Nw5ftBcMpB4=;
- b=CAQk4Vpde3A5cCWUf1rdBb9UOy2+0bhKqc/I+2lDdoE54+AakGk3n/jEGAydjV/fexUnE+jLUyVKbzYTNy0zBULxt8z+82+kUaOFqCYJuAxA96Lk21xSGgAvH6AQgYsf0RCW9AsKQuLhgPXw0dcghO9/Mt8JkDHh/N3r9Y7ifj3e0e6zzy0KIdga40cRu8ClaSmKKvEy82VjF3j2CLOK7/8bKj4tWucpc86EF5Cuj1GlAyO/5+xOgAx9HZG03S0wVuO/NRuADadZQ3ejmNi5x/+1pL4IMVvnjkOXOIzDaYm4baMDY2+3iP720UzPWJ9MWD4UY0c4zBHIUo1TAyizDA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from BYAPR11MB2854.namprd11.prod.outlook.com (2603:10b6:a02:c9::12)
- by LV3PR11MB8531.namprd11.prod.outlook.com (2603:10b6:408:1b6::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7982.26; Thu, 26 Sep
- 2024 20:40:36 +0000
-Received: from BYAPR11MB2854.namprd11.prod.outlook.com
- ([fe80::8a98:4745:7147:ed42]) by BYAPR11MB2854.namprd11.prod.outlook.com
- ([fe80::8a98:4745:7147:ed42%5]) with mapi id 15.20.7962.022; Thu, 26 Sep 2024
- 20:40:36 +0000
-Date: Thu, 26 Sep 2024 16:40:32 -0400
-From: Rodrigo Vivi <rodrigo.vivi@intel.com>
-To: Jani Nikula <jani.nikula@intel.com>
-CC: <intel-gfx@lists.freedesktop.org>, <intel-xe@lists.freedesktop.org>,
-	Matthew Auld <matthew.auld@intel.com>, Anshuman Gupta
-	<anshuman.gupta@intel.com>, Andi Shyti <andi.shyti@linux.intel.com>, "Nathan
- Chancellor" <nathan@kernel.org>, <stable@vger.kernel.org>
-Subject: Re: [PATCH v2 1/6] drm/i915/gem: fix bitwise and logical AND mixup
-Message-ID: <ZvXGwFBbOa7-035L@intel.com>
-References: <cover.1726680898.git.jani.nikula@intel.com>
- <643cc0a4d12f47fd8403d42581e83b1e9c4543c7.1726680898.git.jani.nikula@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <643cc0a4d12f47fd8403d42581e83b1e9c4543c7.1726680898.git.jani.nikula@intel.com>
-X-ClientProxiedBy: MW4PR03CA0027.namprd03.prod.outlook.com
- (2603:10b6:303:8f::32) To BYAPR11MB2854.namprd11.prod.outlook.com
- (2603:10b6:a02:c9::12)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 226C2535D8;
+	Thu, 26 Sep 2024 21:04:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727384647; cv=none; b=iOYBI9owejuh9Xjf6QqxK8iFJheRWcqUfEbNG8vvozHsYMLNjKshaPigQGNJyKlpkT4C1gnox+Rw1uJF5gGmEemOoVc7BXB0GGKfS0n2zBLNCWte/t+FE8du/o3AEdqZ4VeL/a/XRMdOE5biwDYYK18kH4dElxx7PSTvlJCnpoM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727384647; c=relaxed/simple;
+	bh=myBxhbvXkF+uFjwKaGsVG7dtZn9U/SVQvtjmBJDw5RE=;
+	h=Date:To:From:Subject:Message-Id; b=rBaDBH57O3f+NQGwIDibBwYIreZp6rhxM9yCLGs/3dg+5Aa7ncP7MmQV7iHRbxiWHHnj2vR1LuZooiBJcRMoh256N8g3dcReoRzt3fksVm3GBFcimj9nfeMazBolGYwfefG1qnKC5gflDzHCuow8dNP9mGufkhwGwhBB1F1WYV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=vBsYZ8wq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97543C4CEC5;
+	Thu, 26 Sep 2024 21:04:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1727384646;
+	bh=myBxhbvXkF+uFjwKaGsVG7dtZn9U/SVQvtjmBJDw5RE=;
+	h=Date:To:From:Subject:From;
+	b=vBsYZ8wq6kILgTIBcq/OW+l7aHykya8XqWXfScsnJHNRkGLbRDvZDvOu6Ky5IpjSP
+	 kS2S95C+CmtMi8IHRmuWPZUQjj2NX/E4TewmbuNzyyzwuGNlPEjcqdSa9BvAgFiIBc
+	 MJBy0REIdDiqUTIS4j5ToprySI9D6oF8ECn8PK6Y=
+Date: Thu, 26 Sep 2024 14:04:05 -0700
+To: mm-commits@vger.kernel.org,willy@infradead.org,vbabka@suse.cz,stable@vger.kernel.org,sidhartha.kumar@oracle.com,Liam.Howlett@oracle.com,lorenzo.stoakes@oracle.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-hotfixes-stable] tools-fix-shared-radix-tree-build.patch removed from -mm tree
+Message-Id: <20240926210406.97543C4CEC5@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BYAPR11MB2854:EE_|LV3PR11MB8531:EE_
-X-MS-Office365-Filtering-Correlation-Id: 712049f4-a62d-4c0f-e944-08dcde6b79b3
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024;
-X-Microsoft-Antispam-Message-Info: =?us-ascii?Q?hZa3hbL+XyI5RXeG1qUaQb7vAmw3YwQopKlkKLnI1OCTab32qO6e68Ok2rrG?=
- =?us-ascii?Q?WueT/rL7fpwCugAODYiBVK9EFer52g/0Z5yU8UTp996vMF5cn9p66DxHrPJo?=
- =?us-ascii?Q?gmOGPq6VvLjdxFcvqLrj/tboZrZ5pqupqx9KjmG8Sd8NGO4Xrcl+W6/K1viq?=
- =?us-ascii?Q?XihalrP7gmsvWmH8/h1fq2VaGZJkdU8//emT3r5FYHdDPWLumYvJtYF39PwW?=
- =?us-ascii?Q?/2S6/YoLC1L4f4Vd0OM25Hu0gY3JxR+gnbvWy+ey5gD24i0AWxNFEr920yRf?=
- =?us-ascii?Q?DTg1a8R2JlZ8xgHvCsKu89pUgzAWIxs5KQ5XM0ou0sM12B4qN/nxQGiTFJFb?=
- =?us-ascii?Q?GwqQJbv9U1pNjd9GLlkd5aLaQw6ZKDIxYFWIMo6A0i1OImkS3OjgeQW/LTc5?=
- =?us-ascii?Q?GC7ahzBc5UW0f+KxOJOmltbN6zlOtOdibVCf6zJSgeOdoXwApa4vBgh4hgPw?=
- =?us-ascii?Q?qDgYqFftFk9ehIJ5OUxInXQexF9h+IH3U3tmGXZk17i8crpj9+p3r1BYoi9j?=
- =?us-ascii?Q?tEHNkXKvZpecMdoBad210RDlN01HLrpH4peXqqYwumUM/VzL4NUGz1EznC2P?=
- =?us-ascii?Q?hNC8poqlG6EMnDYSQD/oCHBUyH9w+JEDCI/zaF1HrCnzPHoi3WI2P8zoOGev?=
- =?us-ascii?Q?I4/AXviGHqC1o5v+cDw2yKGoT8Pv87ej07tbJYbIFg+SLKe3O0CF1Sz2kRDE?=
- =?us-ascii?Q?1nZD+BJaFmY+lv5BkFf3H7nn4L13nN8dvPSdA7Nac9wjjlohE1yu7j62PQYX?=
- =?us-ascii?Q?ZbyzVmKEZrsUCB3KpQH4r09bvGJSHcyRiD0fw8Latj5AByzft8m9d/+8VzTp?=
- =?us-ascii?Q?iRb+Gj7QU0h3b42o81w7lQfKMRp4zLj0URx7mURXBtMxbz1nfsrACduUv/OR?=
- =?us-ascii?Q?7e5O/XHwafOWO3Z+v0EHO/vQd6P85v0G6zCLlXuKi2/9CWRtMEyPC768MYds?=
- =?us-ascii?Q?wGsj1E18MUCG7B5melVwHXjJDpQHhj5r18ijSxoBDC6E2IezDy+b5oSd/WGV?=
- =?us-ascii?Q?OQIj/xzEgCvOJG5oLFrl4cee/Xz2jR9JOvKzR4ZLkddtctEOzgDUnmycH6uJ?=
- =?us-ascii?Q?YEI0Bm1XcT40X4vVth9GqgIZ+3dO9Sy/uvXjCwyus71P9Tl2rHga2AAPWEqu?=
- =?us-ascii?Q?y7PKPd1kxdmbCAlSgCd51MEqAZbHVCrYMluHZXthRBzePnGEXpopEWhMQ3At?=
- =?us-ascii?Q?9xKwbaJ8xTk5gBOSNPaubUB9poOJ29mSQJRFuGZpKz3JOlrEG083wVE2iQiu?=
- =?us-ascii?Q?Ws5Y0F2U7tNyzXm6ScoHfL92fPbd3d7qSdmGNjPZvA=3D=3D?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR11MB2854.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?OMvfgLhtTqBNVHuFadQqFnJyM61GXuQZ65xdoRxahkVb/GQwzWcQNBYDMPqq?=
- =?us-ascii?Q?fWFaQIudFz7icjX42eoJO6OK80Qi8GVRGmKp4kvUouE13qaL39XQV+jG7zun?=
- =?us-ascii?Q?GdSb9FusA0a3alGQpbBzOy5/0VjPfIcBSEFqhMJBSFq6MHBevVPPaVxGMe1r?=
- =?us-ascii?Q?/khXZq7WzvK/zKHOm8JbyjYORZ9Ho7tbakeFBxlVY1ovKQfjh8ZTBPsDafUx?=
- =?us-ascii?Q?CpUqjVbJCF/izZL2dTt+4cqsLqaASSVUTF6CVUTaNwEDRKH7WOHV60634LRu?=
- =?us-ascii?Q?SpKkC4VtXClef5NmAknYY1UDaT/ULQvup6DQU4xn1vS0iTnCZO1TKtII/KzC?=
- =?us-ascii?Q?w3bNy2c18YStElDcSz7xlWi6YG8piqsuoyKa1pQ1fimIftnis9g3ax7HQK/w?=
- =?us-ascii?Q?FoMYTZEz1fYPk8pHv0ROnhR0rWIteX74799CAKvcDUozCRRHEbeOYcmLAsZn?=
- =?us-ascii?Q?CHxBBtK2z9DFPdtWlzGIAE37tPujnnsUEVyc00g/IjJqtxslmF+tdjUNB331?=
- =?us-ascii?Q?DgXrpof5eT/6tau/peswcpjoUaRQKTKGBkxaFb57wFpKGthMCNy04UMJepFd?=
- =?us-ascii?Q?J6iy2ssnIRR4DXD9KgoF8Fb1NtEAq3df0PsaeKlR+AFVr9Kft3FhntgpWyth?=
- =?us-ascii?Q?2C5MNe5DhzOr7fMIkn0fH6Zh4NFuMkK+IpWY1k1bc4xCpO6fNz59Uvw/cbNJ?=
- =?us-ascii?Q?7mvrwzsN2WCLlSdoVdESWV9fmEtMSM9gE/p415sb0u2pbVM+zCr/KbvX8JuV?=
- =?us-ascii?Q?0AwoywV3X0um980BpUZG4RIarne830vY5Kwqs//SomHaiUHuobh5wMsxM/6e?=
- =?us-ascii?Q?okn9TJqloFZRDTZIwA5IlaKtQD1q3cWwciemLf6M3kjz8cNpTAabk5exELCu?=
- =?us-ascii?Q?m6660/+jeF3eNIHD16QObwsl/xtJptooOZcYotKzB8hhjzGRVjQleM9C75rE?=
- =?us-ascii?Q?sMXrZGWUsqBecxig+DbLzXjKwgA4kV8lYWypgtj0ubpOibj2Wa5A6/NODtH8?=
- =?us-ascii?Q?6KctebcjOHCb9ExN9hzj3cyQ5qtVCgnKLRYjqeSgaAYUoLif7PSpM8HxcPOV?=
- =?us-ascii?Q?fFO53jZ/BNtIfGploODnQr0m9H9tmFi5bwmhgLTPdHnvMZoSl3lhUJznyrvX?=
- =?us-ascii?Q?0dsNTMUH6UMS1Swu645KH3b54MgZvn/3+qvwnJ7NxrlJDGF3AEHXSqEQT2tj?=
- =?us-ascii?Q?H0c/KYFa73lHJVY774c3uxHRJ42ohvZRlz3icAJZPRRhEEGoJLzyKCwFTE9M?=
- =?us-ascii?Q?C1/c1LU8nOnf2PFV39MUqduEnChgeMIWd7X9+sr3Vq+qnzymfNmkXWJvfNTz?=
- =?us-ascii?Q?hQTaRRokkbNuambS+ZDA0/17236xcUKXc7gmW1b2IbFxooumbGamqIjhm7vB?=
- =?us-ascii?Q?CkiAxXQnaREwVj3djFBVEKSW6CXC9ByKc6Am6nykFfMRCzkdrY5Crzd9K18F?=
- =?us-ascii?Q?vb+hT6VApr3p8iQLx8PdwUN4gdplPzECbTJRCLQSqCFDlUwlgQItpdthjEsp?=
- =?us-ascii?Q?qvOGSK6VgUoEsCN9ua6GpW44Yrl9ioMG1rN7JOwd4T84fAITK9O8fTQwcMZ5?=
- =?us-ascii?Q?ICxZr+Av1fmFBnQ4YnbfO1YuXQaKddxO078eFSUGn6d25PStmTv6OKcJTn5X?=
- =?us-ascii?Q?NA=3D=3D?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: 712049f4-a62d-4c0f-e944-08dcde6b79b3
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR11MB2854.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 26 Sep 2024 20:40:36.7955
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: To39QvY76OYgmMy/q40gPJjCGdNalgzFAVrKzDqiftDGZqKgRczrFpQ30zLtGhL+a1W9rOkwY0tAAEpNSlz76A==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR11MB8531
-X-OriginatorOrg: intel.com
 
-On Wed, Sep 18, 2024 at 08:35:43PM +0300, Jani Nikula wrote:
-> CONFIG_DRM_I915_USERFAULT_AUTOSUSPEND is an int, defaulting to 250. When
-> the wakeref is non-zero, it's either -1 or a dynamically allocated
-> pointer, depending on CONFIG_DRM_I915_DEBUG_RUNTIME_PM. It's likely that
-> the code works by coincidence with the bitwise AND, but with
-> CONFIG_DRM_I915_DEBUG_RUNTIME_PM=y, there's the off chance that the
-> condition evaluates to false, and intel_wakeref_auto() doesn't get
-> called. Switch to the intended logical AND.
-> 
-> v2: Use != to avoid clang -Wconstant-logical-operand (Nathan)
 
-oh, this is ugly!
+The quilt patch titled
+     Subject: tools: fix shared radix-tree build
+has been removed from the -mm tree.  Its filename was
+     tools-fix-shared-radix-tree-build.patch
 
-Wouldn't it be better then to use IS_ENABLED() macro?
+This patch was dropped because it was merged into the mm-hotfixes-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-> 
-> Fixes: ad74457a6b5a ("drm/i915/dgfx: Release mmap on rpm suspend")
-> Cc: Matthew Auld <matthew.auld@intel.com>
-> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
-> Cc: Anshuman Gupta <anshuman.gupta@intel.com>
-> Cc: Andi Shyti <andi.shyti@linux.intel.com>
-> Cc: Nathan Chancellor <nathan@kernel.org>
-> Cc: <stable@vger.kernel.org> # v6.1+
-> Reviewed-by: Matthew Auld <matthew.auld@intel.com> # v1
-> Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com> # v1
-> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-> ---
->  drivers/gpu/drm/i915/gem/i915_gem_ttm.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpu/drm/i915/gem/i915_gem_ttm.c b/drivers/gpu/drm/i915/gem/i915_gem_ttm.c
-> index 5c72462d1f57..b22e2019768f 100644
-> --- a/drivers/gpu/drm/i915/gem/i915_gem_ttm.c
-> +++ b/drivers/gpu/drm/i915/gem/i915_gem_ttm.c
-> @@ -1131,7 +1131,7 @@ static vm_fault_t vm_fault_ttm(struct vm_fault *vmf)
->  		GEM_WARN_ON(!i915_ttm_cpu_maps_iomem(bo->resource));
->  	}
->  
-> -	if (wakeref & CONFIG_DRM_I915_USERFAULT_AUTOSUSPEND)
-> +	if (wakeref && CONFIG_DRM_I915_USERFAULT_AUTOSUSPEND != 0)
->  		intel_wakeref_auto(&to_i915(obj->base.dev)->runtime_pm.userfault_wakeref,
->  				   msecs_to_jiffies_timeout(CONFIG_DRM_I915_USERFAULT_AUTOSUSPEND));
->  
-> -- 
-> 2.39.2
-> 
+------------------------------------------------------
+From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Subject: tools: fix shared radix-tree build
+Date: Tue, 24 Sep 2024 19:07:24 +0100
+
+The shared radix-tree build is not correctly recompiling when
+lib/maple_tree.c and lib/test_maple_tree.c are modified - fix this by
+adding these core components to the SHARED_DEPS list.
+
+Additionally, add missing header guards to shared header files.
+
+Link: https://lkml.kernel.org/r/20240924180724.112169-1-lorenzo.stoakes@oracle.com
+Fixes: 74579d8dab47 ("tools: separate out shared radix-tree components")
+Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Tested-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
+Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ tools/testing/shared/maple-shared.h  |    4 ++++
+ tools/testing/shared/shared.h        |    4 ++++
+ tools/testing/shared/shared.mk       |    4 +++-
+ tools/testing/shared/xarray-shared.h |    4 ++++
+ 4 files changed, 15 insertions(+), 1 deletion(-)
+
+--- a/tools/testing/shared/maple-shared.h~tools-fix-shared-radix-tree-build
++++ a/tools/testing/shared/maple-shared.h
+@@ -1,4 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0+ */
++#ifndef __MAPLE_SHARED_H__
++#define __MAPLE_SHARED_H__
+ 
+ #define CONFIG_DEBUG_MAPLE_TREE
+ #define CONFIG_MAPLE_SEARCH
+@@ -7,3 +9,5 @@
+ #include <stdlib.h>
+ #include <time.h>
+ #include "linux/init.h"
++
++#endif /* __MAPLE_SHARED_H__ */
+--- a/tools/testing/shared/shared.h~tools-fix-shared-radix-tree-build
++++ a/tools/testing/shared/shared.h
+@@ -1,4 +1,6 @@
+ /* SPDX-License-Identifier: GPL-2.0 */
++#ifndef __SHARED_H__
++#define __SHARED_H__
+ 
+ #include <linux/types.h>
+ #include <linux/bug.h>
+@@ -31,3 +33,5 @@
+ #ifndef dump_stack
+ #define dump_stack()	assert(0)
+ #endif
++
++#endif /* __SHARED_H__ */
+--- a/tools/testing/shared/shared.mk~tools-fix-shared-radix-tree-build
++++ a/tools/testing/shared/shared.mk
+@@ -15,7 +15,9 @@ SHARED_DEPS = Makefile ../shared/shared.
+ 	../../../include/linux/maple_tree.h \
+ 	../../../include/linux/radix-tree.h \
+ 	../../../lib/radix-tree.h \
+-	../../../include/linux/idr.h
++	../../../include/linux/idr.h \
++	../../../lib/maple_tree.c \
++	../../../lib/test_maple_tree.c
+ 
+ ifndef SHIFT
+ 	SHIFT=3
+--- a/tools/testing/shared/xarray-shared.h~tools-fix-shared-radix-tree-build
++++ a/tools/testing/shared/xarray-shared.h
+@@ -1,4 +1,8 @@
+ /* SPDX-License-Identifier: GPL-2.0+ */
++#ifndef __XARRAY_SHARED_H__
++#define __XARRAY_SHARED_H__
+ 
+ #define XA_DEBUG
+ #include "shared.h"
++
++#endif /* __XARRAY_SHARED_H__ */
+_
+
+Patches currently in -mm which might be from lorenzo.stoakes@oracle.com are
+
+selftests-mm-add-pkey_sighandler_xx-hugetlb_dio-to-gitignore.patch
+mm-refactor-mm_access-to-not-return-null.patch
+mm-refactor-mm_access-to-not-return-null-fix.patch
+mm-madvise-unrestrict-process_madvise-for-current-process.patch
+
 
