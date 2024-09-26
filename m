@@ -1,155 +1,127 @@
-Return-Path: <stable+bounces-77775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C119198706C
-	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 11:40:27 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F39E987100
+	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 12:06:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8183A282328
-	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 09:40:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3C61A1C21AD2
+	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 10:06:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 167AF1AB6D1;
-	Thu, 26 Sep 2024 09:40:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EF6518E34D;
+	Thu, 26 Sep 2024 10:06:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b="IyNOjoyf"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
+Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22891192595;
-	Thu, 26 Sep 2024 09:40:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E76E618786D
+	for <stable@vger.kernel.org>; Thu, 26 Sep 2024 10:06:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727343619; cv=none; b=J5UGYjcpzvOi6hYGACqyzqEqcvxAzaYEkoEg12ljKq8yHL5pkOYuYUSJPBoITWDXy71jL7zngN6+WDAYFAN2ZWSgJuy450fn9t3LBOikfgLwG+mI45R5QLxwBC6imzjnuUgQWlIuAql4sKh8h4TKO175/hjBQBRC0geFHUuu/3Q=
+	t=1727345206; cv=none; b=YM23LaS+SMTofDDe9RQNjyIBmlJsmYNaQ5+SypkB8ZQ8FM9Nx91PIXB7LlMRKMcoLbA0iMw37mrvSb/QV8TTeTunL7aDikwFcnSc3zmO2VRCUKJS3nZe5R0fyB3jq0OPWDHrGsaZppifIIiTEJB3Eu9SdVzONa4W1C+5arUeY1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727343619; c=relaxed/simple;
-	bh=j5iS1eZfSgz0dyYQCRuSlGIaWvz6i6/69lu2DSXDUcw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=NTRKwGeIEg+D4oN3iLPKQr3+hyCB4fdIz/6pms1oNyW63PfUDh2JUCXGxB1UN2HtnZ4QXDc0VwKZ8kyxHuqz8BMGtjeXV7ZPccxxsGH3h/LUBAvBPge2r7xuB3jDjCkgyrIWNUnITBOurZDFc0CBlPNBXJHs0OcwbsdPGR0nU3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.163])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4XDpTN3VJqz2QTth;
-	Thu, 26 Sep 2024 17:39:20 +0800 (CST)
-Received: from dggpeml100021.china.huawei.com (unknown [7.185.36.148])
-	by mail.maildlp.com (Postfix) with ESMTPS id DB7DB180019;
-	Thu, 26 Sep 2024 17:40:08 +0800 (CST)
-Received: from [127.0.0.1] (10.174.177.174) by dggpeml100021.china.huawei.com
- (7.185.36.148) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 26 Sep
- 2024 17:40:08 +0800
-Message-ID: <4ce5c69c-fda7-4d5b-a09e-ea8bbca46a89@huawei.com>
-Date: Thu, 26 Sep 2024 17:40:07 +0800
+	s=arc-20240116; t=1727345206; c=relaxed/simple;
+	bh=Brgos7CnbGWGJd2NtGmjE5E3I+CrnBntojNJAEtJTMs=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hiNsT2JFNw9jvEdBTJmF9T9uMlZS0Fe5rA6LQmvEApWMS+8mJqR7IgfZPg3Ua3YVWBY8kLvOIgyDJ77CJuFHppUBsju5PdCKs1IFpMiH64WtNqezv7HOXfC1yH+UUwK8F8LVNig2njVyayw8e6fgEnBrKUxcMGDsXezny4EaKpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com; spf=pass smtp.mailfrom=quicinc.com; dkim=pass (2048-bit key) header.d=quicinc.com header.i=@quicinc.com header.b=IyNOjoyf; arc=none smtp.client-ip=205.220.180.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=quicinc.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=quicinc.com
+Received: from pps.filterd (m0279873.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48Q7LqcP012448
+	for <stable@vger.kernel.org>; Thu, 26 Sep 2024 10:06:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=
+	cc:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=qcppdkim1; bh=
+	gqsoG9dX1i/Jsd1PxLP9Cg2HimFmmvo9dg/nrBtxc7g=; b=IyNOjoyfayfHL1lz
+	nF4ZB5NgVp5Oia9GneUgiJIY6uFOfuIzdNaQYTnwVPPBsIwZ7v9Vpcl8snb8AzMx
+	0AZEB7G9wdb6+UWirJckuTmIvW78vJRo9i373hCkX/whYl//YQW6lux04MSVTpAw
+	9Ica/pj+v254SM01NZ5W2MzN3X4V28WMQ049CD785Sv1HJ8kqN3letO/c+xPxSFP
+	Q1U3oznBDdVbseBQHjH0EnSMq5d/oBN5PhIEivANVOzXMofhvc93VgfZhpphzcYV
+	3omKUzYTeMkG3fg0quQLIPnrMzTBUAfb3Gs3u6mqcE+sk38DZGc4c2a4/GjL9d85
+	I4JlXw==
+Received: from nasanppmta03.qualcomm.com (i-global254.qualcomm.com [199.106.103.254])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 41skgnfje2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <stable@vger.kernel.org>; Thu, 26 Sep 2024 10:06:43 +0000 (GMT)
+Received: from nasanex01b.na.qualcomm.com (nasanex01b.na.qualcomm.com [10.46.141.250])
+	by NASANPPMTA03.qualcomm.com (8.18.1.2/8.18.1.2) with ESMTPS id 48QA6gxo026307
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT)
+	for <stable@vger.kernel.org>; Thu, 26 Sep 2024 10:06:42 GMT
+Received: from hu-vikramsa-hyd.qualcomm.com (10.80.80.8) by
+ nasanex01b.na.qualcomm.com (10.46.141.250) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.9; Thu, 26 Sep 2024 03:06:38 -0700
+From: Vikram Sharma <quic_vikramsa@quicinc.com>
+To: <kernel@quicinc.com>
+CC: <stable@vger.kernel.org>
+Subject: [PATCH v3 03/10] media: qcom: camss: Fix potential crash if domain attach fails
+Date: Thu, 26 Sep 2024 15:35:30 +0530
+Message-ID: <20240926100537.1900411-4-quic_vikramsa@quicinc.com>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20240926100537.1900411-1-quic_vikramsa@quicinc.com>
+References: <20240926100537.1900411-1-quic_vikramsa@quicinc.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] ext4: fix crash on BUG_ON in ext4_alloc_group_tables
-To: Aleksandr Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
-CC: Jan Kara <jack@suse.cz>, <tytso@mit.edu>, <stable@vger.kernel.org>,
-	Andreas Dilger <adilger.kernel@dilger.ca>, =?UTF-8?Q?St=C3=A9phane_Graber?=
-	<stgraber@stgraber.org>, Christian Brauner <brauner@kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
-	<linux-ext4@vger.kernel.org>, Wesley Hershberger
-	<wesley.hershberger@canonical.com>, Yang Erkun <yangerkun@huawei.com>
-References: <20240925143325.518508-1-aleksandr.mikhalitsyn@canonical.com>
- <20240925143325.518508-2-aleksandr.mikhalitsyn@canonical.com>
- <20240925155706.zad2euxxuq7h6uja@quack3>
- <CAEivzxfjnKq2fgCfYwhZukAO-ZfoUiC5n0Y5yaUpuz-y7kDf+g@mail.gmail.com>
- <dcda93dd-f2ef-4419-ae73-7d3c55b5df8f@huawei.com>
- <CAEivzxdnAt3WbVmMLpb+HCBSrwkX6vesMvK3onc+Zc9wzv1EtA@mail.gmail.com>
-Content-Language: en-US
-From: Baokun Li <libaokun1@huawei.com>
-In-Reply-To: <CAEivzxdnAt3WbVmMLpb+HCBSrwkX6vesMvK3onc+Zc9wzv1EtA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- dggpeml100021.china.huawei.com (7.185.36.148)
+Content-Type: text/plain
+X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
+ nasanex01b.na.qualcomm.com (10.46.141.250)
+X-QCInternal: smtphost
+X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
+X-Proofpoint-ORIG-GUID: 6wQHu57P-mG0s2p7RU4DPaMSDixOzmkQ
+X-Proofpoint-GUID: 6wQHu57P-mG0s2p7RU4DPaMSDixOzmkQ
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1039,Hydra:6.0.680,FMLib:17.12.60.29
+ definitions=2024-09-06_09,2024-09-06_01,2024-09-02_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 clxscore=1011 bulkscore=0
+ mlxlogscore=999 adultscore=0 suspectscore=0 phishscore=0 impostorscore=0
+ spamscore=0 mlxscore=0 priorityscore=1501 lowpriorityscore=0
+ malwarescore=0 classifier=spam adjust=0 reason=mlx scancount=1
+ engine=8.19.0-2408220000 definitions=main-2409260066
 
-On 2024/9/26 17:23, Aleksandr Mikhalitsyn wrote:
-> On Thu, Sep 26, 2024 at 10:50 AM Baokun Li <libaokun1@huawei.com> wrote:
->> On 2024/9/26 0:17, Aleksandr Mikhalitsyn wrote:
->>> On Wed, Sep 25, 2024 at 5:57 PM Jan Kara <jack@suse.cz> wrote:
->>>> On Wed 25-09-24 16:33:24, Alexander Mikhalitsyn wrote:
->>>>> [   33.882936] EXT4-fs (dm-5): mounted filesystem 8aaf41b2-6ac0-4fa8-b92b-77d10e1d16ca r/w with ordered data mode. Quota mode: none.
->>>>> [   33.888365] EXT4-fs (dm-5): resizing filesystem from 7168 to 786432 blocks
->>>>> [   33.888740] ------------[ cut here ]------------
->>>>> [   33.888742] kernel BUG at fs/ext4/resize.c:324!
->>>> Ah, I was staring at this for a while before I understood what's going on
->>>> (it would be great to explain this in the changelog BTW).  As far as I
->>>> understand commit 665d3e0af4d3 ("ext4: reduce unnecessary memory allocation
->>>> in alloc_flex_gd()") can actually make flex_gd->resize_bg larger than
->>>> flexbg_size (for example when ogroup = flexbg_size, ngroup = 2*flexbg_size
->>>> - 1) which then confuses things. I think that was not really intended and
->>> Hi Jan,
->>>
->>> First of all, thanks for your reaction/review on this one ;-)
->>>
->>> You are absolutely right, have just checked with our reproducer and
->>> this modification:
->>>
->>> diff --git a/fs/ext4/resize.c b/fs/ext4/resize.c
->>> index e04eb08b9060..530a918f0cab 100644
->>> --- a/fs/ext4/resize.c
->>> +++ b/fs/ext4/resize.c
->>> @@ -258,6 +258,8 @@ static struct ext4_new_flex_group_data
->>> *alloc_flex_gd(unsigned int flexbg_size,
->>>                   flex_gd->resize_bg = 1 << max(fls(last_group - o_group + 1),
->>>                                                 fls(n_group - last_group));
->>>
->>> +       BUG_ON(flex_gd->resize_bg > flexbg_size);
->>> +
->>>           flex_gd->groups = kmalloc_array(flex_gd->resize_bg,
->>>                                           sizeof(struct ext4_new_group_data),
->>>                                           GFP_NOFS);
->>>
->>> and yes, it crashes on this BUG_ON. So it looks like instead of making
->>> flex_gd->resize_bg to be smaller
->>> than flexbg_size in most cases we can actually have an opposite effect
->>> here. I guess we really need to fix alloc_flex_gd() too.
->>>
->>>> instead of fixing up ext4_alloc_group_tables() we should really change
->>>> the logic in alloc_flex_gd() to make sure flex_gd->resize_bg never exceeds
->>>> flexbg size. Baokun?
->>> At the same time, if I understand the code right, as we can have
->>> flex_gd->resize_bg != flexbg_size after
->>> 5d1935ac02ca5a ("ext4: avoid online resizing failures due to oversized
->>> flex bg") and
->>> 665d3e0af4d3 ("ext4: reduce unnecessary memory allocation in alloc_flex_gd()")
->>> we should always refer to flex_gd->resize_bg value which means that
->>> ext4_alloc_group_tables() fix is needed too.
->>> Am I correct in my understanding?
->> Hi Alex,
-> Hi Baokun,
->
->> These two are not exactly equivalent.
->>
->> The flex_gd->resize_bg is only used to determine how many block groups we
->> allocate memory to, i.e., the maximum number of block groups per resize.
->> And the flexbg_size is used to make some judgement on flexible block
->> groups, for example, the BUG_ON triggered in the issue is to make sure
->> src_group and last_group must be in the same flexible block group.
-> Huge thanks for explaining this!
->
-> Then I guess it's better if you send a patch with your fix.
-> Feel free to add my Tested-by tag.
-Okay, I'll send a patch later.
->
-> Question to you and Jan. Do you guys think that it makes sense to try
-> to create a minimal reproducer for this problem without Incus/LXD involved?
-> (only e2fsprogs, lvm tools, etc)
->
-> I guess this test can be put in the xfstests test suite, right?
->
-> Kind regards,
-> Alex
-I think it makes sense, and it's good to have more use cases to look
-around some corners. If you have an idea, let it go.
+Fix a potential crash in camss by ensuring detach is skipped if attach
+is unsuccessful.
 
-Regards, Baokun
+Fixes: d89751c61279 ("media: qcom: camss: Add support for named power-domains")
+CC: stable@vger.kernel.org
+Signed-off-by: Vikram Sharma <quic_vikramsa@quicinc.com>
+---
+ drivers/media/platform/qcom/camss/camss.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/media/platform/qcom/camss/camss.c b/drivers/media/platform/qcom/camss/camss.c
+index d64985ca6e88..b6658df37709 100644
+--- a/drivers/media/platform/qcom/camss/camss.c
++++ b/drivers/media/platform/qcom/camss/camss.c
+@@ -2131,8 +2131,7 @@ static int camss_configure_pd(struct camss *camss)
+ 		camss->genpd = dev_pm_domain_attach_by_name(camss->dev,
+ 							    camss->res->pd_name);
+ 		if (IS_ERR(camss->genpd)) {
+-			ret = PTR_ERR(camss->genpd);
+-			goto fail_pm;
++			return PTR_ERR(camss->genpd);
+ 		}
+ 	}
+ 
+@@ -2149,7 +2148,7 @@ static int camss_configure_pd(struct camss *camss)
+ 			ret = -ENODEV;
+ 		else
+ 			ret = PTR_ERR(camss->genpd);
+-		goto fail_pm;
++		return ret;
+ 	}
+ 	camss->genpd_link = device_link_add(camss->dev, camss->genpd,
+ 					    DL_FLAG_STATELESS | DL_FLAG_PM_RUNTIME |
+-- 
+2.25.1
 
 
