@@ -1,129 +1,118 @@
-Return-Path: <stable+bounces-77785-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77786-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20D759874EE
-	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 15:58:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B78EC987527
+	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 16:11:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0172C1F272A4
-	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 13:58:36 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1442FB25A98
+	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 14:11:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EB9676034;
-	Thu, 26 Sep 2024 13:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5008C13049E;
+	Thu, 26 Sep 2024 14:11:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jdyhqOXG"
 X-Original-To: stable@vger.kernel.org
-Received: from szxga05-in.huawei.com (szxga05-in.huawei.com [45.249.212.191])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4255576036;
-	Thu, 26 Sep 2024 13:58:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.191
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 852BC1C6B2;
+	Thu, 26 Sep 2024 14:11:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727359110; cv=none; b=r7gvkuTCPlTwPFAS6nwEFyZipGFOK5TnmxMbzfO/Nn+cbToZzcDd3784KzdtRiT58D6VpQIo3qt0JcUHmNAeCd4IlwL4iZqYfKyk2nCEAhrKpg7d35fPfZBm44JWu4LQLcJvtZg72Fzs50jVqKPx12JqpbvXj43SeMfgEmQPYXw=
+	t=1727359875; cv=none; b=LS2UbbiyUNDFgJN0Cm/AmpnYPpIaWNewhNgIKXQZPDRFmSnVXtzEVCIg3Wuz91Fv83pMohWqiSRi9Q2VBQ9f3InmHd4QqFp5R/QE93XOlrKVp0R62otBm+urQd1a9DVcOw+uuclLa0eGccv61uUs0CMb8W8aKxkxaTBAsHHt+Mc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727359110; c=relaxed/simple;
-	bh=03IWg7hthrX9YAFa4mhsvQw+NMi35KFaWCirLsTNyiw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=K4qDG5yZ1ziV0K0CE+00qeqQCQXC/MeCIvGEaVje1cDo9oBjW6wP2TaR7M47A1mmjWWgww/h84SlLNijAJRFaa3kF5qJwaraEyV/dQfrHV7XPbTk4pudy2ovKZVlswVOxhExWoRtIshEf6Vh++rSkv6MaTOBWzNnYkna9vo5Ej0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; arc=none smtp.client-ip=45.249.212.191
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
-Received: from mail.maildlp.com (unknown [172.19.88.163])
-	by szxga05-in.huawei.com (SkyGuard) with ESMTP id 4XDw7s3VYSz1HJpM;
-	Thu, 26 Sep 2024 21:54:33 +0800 (CST)
-Received: from dggpeml100021.china.huawei.com (unknown [7.185.36.148])
-	by mail.maildlp.com (Postfix) with ESMTPS id 38A40180019;
-	Thu, 26 Sep 2024 21:58:25 +0800 (CST)
-Received: from [127.0.0.1] (10.174.177.174) by dggpeml100021.china.huawei.com
- (7.185.36.148) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 26 Sep
- 2024 21:58:24 +0800
-Message-ID: <941f8157-6515-40d3-98bd-ca1c659ef9e0@huawei.com>
-Date: Thu, 26 Sep 2024 21:58:24 +0800
+	s=arc-20240116; t=1727359875; c=relaxed/simple;
+	bh=zX3vHfR8xbWntn/vpFvoUpImdYIX8C5SEnXFhPjoFwQ=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=lTs21p1iyVBmQ76Xcdg1C/WnAuPLbyLCY+XGlImAW9F/QFLz0DBL7mgXuaz1tDe3DLwmsHmNdMVjIeCA7tlrxSrQ+rLt5cdsFK1a2aUlB8bpHudX8oiwOE+bWrsI5VCD2mu6ARENOpEuT4AVrUhN++FY1LuyU+EnE19ouSoMe+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jdyhqOXG; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a8d0d82e76aso149783566b.3;
+        Thu, 26 Sep 2024 07:11:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1727359872; x=1727964672; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=CDj3iawezG7IzycZoHk/gCboN7MNfLe3KE8kce4C2MA=;
+        b=jdyhqOXG94YcXT9vf6kEvAuEDfqyBF0iSNdppXDrfPuidS8R/jkm42spFgILtHF5yN
+         N/GvGCfPb/oswLUd2YXoIebV2Gnav+RBHMkgRUSvyuXX2I2MRHe7JLfUYLdylhii/FrY
+         3xR3cmG9VSKkNYF22YOYq5RvXqXyoQ9AUIirD9d/++69zejNOf3RzpFS7OK7BfWG6ZIn
+         XikizxKVeamdoQCZQPYlHJis58DSXfthGUXjaDwCL0xO9P1J/lHE5RRSyZzAxRN0Ig8f
+         SWHI3nJuIMVfVjTxq5oGZ7Cgzzcx2NTHJSkwe5QwBZ39SRJgupa7fbnd/ljKi8gzdGWZ
+         kVGw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727359872; x=1727964672;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=CDj3iawezG7IzycZoHk/gCboN7MNfLe3KE8kce4C2MA=;
+        b=NRHBUaI8sn0i6K4LnWfS9hZuI4iBK5Scag4JJf0kIKHTEaf7YbiPhSJ0ZKSdQy1bIy
+         q3pUUEsuq3UNbiDsRESKek9xkf7G/Y+OPIjXAgk6PDqIAEBjv2taZB0eI8HA/MF1PTZz
+         e/QV1YijbjdBjgGaLIs0PL2ysNSXflX+ZeGGJN/m150cF0E6QOnA4J7mz+h1EDZxQvWu
+         xhPBjdLHpQMgVVsT0Slvm2t2N0pjd+ENY7g1/damtPF94XsJsetarsIuVP1T2oPgL8ML
+         tf1c2Zy6OuO1DYeXjZ4RwZyGeIvB2d3JqUMRYBmWcgwBIbDwqNSfDtC0HU0Fr14lcIA+
+         pOyA==
+X-Forwarded-Encrypted: i=1; AJvYcCVCGdd+qwlR7654fsud01drabpd21jHnvL1u3KNlMcY13M8BY9jkdNmHJcbTU1D8fyNck/6v+pNh0Gn@vger.kernel.org, AJvYcCVnw6KksbcpRKYTryIeyYFkOyi5Y/1uSOMj2B0C6V7RWlRyfnDPlmceGPqzqXz914xY7tazviIW@vger.kernel.org, AJvYcCW/baiGFox+mSY44Oct6cmcZ/WsbM2zkM0rh50cpvMLg0aodBUcyI+hWuj6Uejbps/17NdgFGJYjJmB4Tib@vger.kernel.org
+X-Gm-Message-State: AOJu0YzzyC54Fmk1lxpPwu9NQIaoT5zhnhIZih5iPUm+MniveO64GUJp
+	hBXHY9pC8n3Kn90CRpk6DZCnD7CE66bPGoOoUgqnaMQowywoHcXl
+X-Google-Smtp-Source: AGHT+IEJb7XaJlOyGAXgo4sI5OC/CcIgkPFEegV3xD2va6CSXOVueTeYr2vjusIwWyYsCnGaAlw3AQ==
+X-Received: by 2002:a17:907:6d1c:b0:a86:a41c:29b with SMTP id a640c23a62f3a-a93a033ca24mr744169766b.8.1727359871465;
+        Thu, 26 Sep 2024 07:11:11 -0700 (PDT)
+Received: from [127.0.1.1] (2a02-8389-41cf-e200-4e5f-6907-08e4-04ed.cable.dynamic.v6.surfer.at. [2a02:8389:41cf:e200:4e5f:6907:8e4:4ed])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a93c27776cesm2498866b.40.2024.09.26.07.11.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Sep 2024 07:11:10 -0700 (PDT)
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Subject: [PATCH 0/2] pinctrl: intel: platform: fix error path in
+ device_for_each_child_node()
+Date: Thu, 26 Sep 2024 16:11:01 +0200
+Message-Id: <20240926-intel-pinctrl-platform-scoped-v1-0-5ee4c936eea3@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] ext4: fix crash on BUG_ON in ext4_alloc_group_tables
-To: Aleksandr Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
-CC: Jan Kara <jack@suse.cz>, <tytso@mit.edu>, <stable@vger.kernel.org>,
-	Andreas Dilger <adilger.kernel@dilger.ca>, =?UTF-8?Q?St=C3=A9phane_Graber?=
-	<stgraber@stgraber.org>, Christian Brauner <brauner@kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
-	<linux-ext4@vger.kernel.org>, Wesley Hershberger
-	<wesley.hershberger@canonical.com>, Yang Erkun <yangerkun@huawei.com>
-References: <20240925143325.518508-1-aleksandr.mikhalitsyn@canonical.com>
- <20240925143325.518508-2-aleksandr.mikhalitsyn@canonical.com>
- <20240925155706.zad2euxxuq7h6uja@quack3>
- <CAEivzxfjnKq2fgCfYwhZukAO-ZfoUiC5n0Y5yaUpuz-y7kDf+g@mail.gmail.com>
- <dcda93dd-f2ef-4419-ae73-7d3c55b5df8f@huawei.com>
- <CAEivzxdnAt3WbVmMLpb+HCBSrwkX6vesMvK3onc+Zc9wzv1EtA@mail.gmail.com>
- <4ce5c69c-fda7-4d5b-a09e-ea8bbca46a89@huawei.com>
- <CAEivzxekNfuGw_aK2yq91OpzJfhg_RDDWO2Onm6kZ-ioh3GaUg@mail.gmail.com>
-Content-Language: en-US
-From: Baokun Li <libaokun1@huawei.com>
-In-Reply-To: <CAEivzxekNfuGw_aK2yq91OpzJfhg_RDDWO2Onm6kZ-ioh3GaUg@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: dggems705-chm.china.huawei.com (10.3.19.182) To
- dggpeml100021.china.huawei.com (7.185.36.148)
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAHVr9WYC/x3MQQqEMAxA0atI1gZiR8SZqwwuOm3UgNOWtIgg3
+ t3i6vM2/4TMKpzh05ygvEuWGCq6tgG32rAwiq8GQ6antxlQQuENkwRXtHazZY76x+xiYo/D6In
+ oZ1+u81AfSXmW4/l/p+u6AQMeVcpvAAAA
+To: Mika Westerberg <mika.westerberg@linux.intel.com>, 
+ Andy Shevchenko <andy@kernel.org>, Linus Walleij <linus.walleij@linaro.org>
+Cc: Andy Shevchenko <andriy.shevchenko@linux.intel.com>, 
+ linux-gpio@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ Javier Carrasco <javier.carrasco.cruz@gmail.com>, stable@vger.kernel.org
+X-Mailer: b4 0.14-dev
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1727359869; l=790;
+ i=javier.carrasco.cruz@gmail.com; s=20240312; h=from:subject:message-id;
+ bh=zX3vHfR8xbWntn/vpFvoUpImdYIX8C5SEnXFhPjoFwQ=;
+ b=AncAm9sbDoMww99+F+bbJP7+u6lAot2aqR+ssyXHKRxuYz5ZCoHIRGRbFdje/0GHgSTYViWAB
+ PWjHHlKYhrzD5IQAeEpVejnBNay4VsoG8PviAMOJHZKvNswj+EL9fNj
+X-Developer-Key: i=javier.carrasco.cruz@gmail.com; a=ed25519;
+ pk=lzSIvIzMz0JhJrzLXI0HAdPwsNPSSmEn6RbS+PTS9aQ=
 
-On 2024/9/26 19:32, Aleksandr Mikhalitsyn wrote:
->>> Question to you and Jan. Do you guys think that it makes sense to try
->>> to create a minimal reproducer for this problem without Incus/LXD involved?
->>> (only e2fsprogs, lvm tools, etc)
->>>
->>> I guess this test can be put in the xfstests test suite, right?
->>>
->>> Kind regards,
->>> Alex
->> I think it makes sense, and it's good to have more use cases to look
->> around some corners. If you have an idea, let it go.
-> Minimal reproducer:
->
-> mkdir -p /tmp/ext4_crash/mnt
-> EXT4_CRASH_IMG="/tmp/ext4_crash/disk.img"
-> rm -f $EXT4_CRASH_IMG
-> truncate $EXT4_CRASH_IMG --size 25MiB
-> EXT4_CRASH_DEV=$(losetup --find --nooverlap --direct-io=on --show
-> $EXT4_CRASH_IMG)
-> mkfs.ext4 -E nodiscard,lazy_itable_init=0,lazy_journal_init=0 $EXT4_CRASH_DEV
-> mount $EXT4_CRASH_DEV /tmp/ext4_crash/mnt
-> truncate $EXT4_CRASH_IMG --size 3GiB
-> losetup -c $EXT4_CRASH_DEV
-> resize2fs $EXT4_CRASH_DEV
->
-Hi Alex,
+This series fixes an error path where the reference of a child node is
+not decremented upon early return. When at it, a trivial comma/semicolon
+substitution I found by chance has been added to improve code clarity.
 
-This replicator didn't replicate the issue in my VM, so I took a deeper
-look. The reproduction of the problem requires the following:
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+---
+Javier Carrasco (2):
+      pinctrl: intel: platform: fix error path in device_for_each_child_node()
+      pinctrl: intel: platform: use semicolon instead of comma in ncommunities assignment
 
-o_group = flexbg_size * 2 * n;
-o_size = (o_group + 1) * group_size;
-n_group: [o_group + flexbg_size, o_group + flexbg_size * 2)
+ drivers/pinctrl/intel/pinctrl-intel-platform.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
+---
+base-commit: 92fc9636d1471b7f68bfee70c776f7f77e747b97
+change-id: 20240926-intel-pinctrl-platform-scoped-68d000ba3c1d
 
-Take n=1,flexbg_size=16 as an example:
-                                                  last:47
-|----------------|----------------|o---------------|--------------n-|
-                                   old:32 >>>           new:62
-
-Thus the replicator can be simplified as:
-
-img=test.img
-truncate -s 600M $img
-mkfs.ext4 -F $img -b 1024 -G 16 264M
-dev=`losetup -f --show $img`
-mkdir -p /tmp/test
-mount $dev /tmp/test
-resize2fs $dev 504M
-
-
+Best regards,
 -- 
-Cheers,
-Baokun
+Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
 
