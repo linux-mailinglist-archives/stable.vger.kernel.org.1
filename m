@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-77830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2170987A50
-	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 23:04:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68AC9987A51
+	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 23:04:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B557A284A57
-	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 21:04:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 131D31F21525
+	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 21:04:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80A7F185E50;
-	Thu, 26 Sep 2024 21:04:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5242186295;
+	Thu, 26 Sep 2024 21:04:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="VEU+ZBYr"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="V6yBxt8c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 405E1184544;
-	Thu, 26 Sep 2024 21:04:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 644F312F59C;
+	Thu, 26 Sep 2024 21:04:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727384662; cv=none; b=XIRGKxEJW7Yjm8YbbIe7zYeqt0gsjsS+Fxf2gRE4eiUpkE6+A0lhyEh+AWlqVUlHzAFZdj020WNHKoNWWdahvluxK15qhyY/b+KiPmlrnxdEQfZ7RpKpfxOMIbF66KpeqgMEHEInc6rqsPbMM1IPFjxyu4m6SvzUu6s/Vaqdy5k=
+	t=1727384666; cv=none; b=c0maZ5QGnTKMH1+Lf9vYbygqW3AdrFRLJoi5ezLyQNurQtId3u1f/5CAU5SGfap/lykwvAQJA729rGMurTELUuKzUIpeyH9TMqoO9BMcVOen4tGz2OcvrYbmhw7OasH/ZKmT3pqW87XFodomT1a+ZVXNa5x82yVhimQB9/MHUBs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727384662; c=relaxed/simple;
-	bh=oZ77fK3WLlMadIj9uxk5jsRHxUznuNrYBD5aryV2Z8s=;
-	h=Date:To:From:Subject:Message-Id; b=OWKDwhh9Ptdkmr7DGYzHtTpnuFqRjCndYB/dfTznZ8nGNUQNlsPR97Hu5uSz9lRur7Nad1eAIcsDjUCheRGE/Xtp2ksoPAp1SohuUk0wXREi4KXbKfj1aldluaTFYB8OkX+UDtykvqzeWYeLoLI7TgeyQWtOp4upr9jSFGW+3WY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=VEU+ZBYr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10343C4CEC5;
-	Thu, 26 Sep 2024 21:04:22 +0000 (UTC)
+	s=arc-20240116; t=1727384666; c=relaxed/simple;
+	bh=oya1ePRMiXGKM3xMDTrnTlV/vIzqfre1aee1S/E4J4Q=;
+	h=Date:To:From:Subject:Message-Id; b=nJjz+Y76vUP8q44N86EvH9iBZ17r1yG9Hj8gAVQEX/0k633W3Sg6224N633lcxWvzGfin/oZhGXnXBj9Ay4Yh5Qf2aorMt2DGO5LYvn6v+O2Brxq/jaLs+RLrEJELNQBJ0XvW78OgVQQpKi+aPrCGeVU7cctvFaVsu4cQO5p8vg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=V6yBxt8c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3742CC4CEC5;
+	Thu, 26 Sep 2024 21:04:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1727384662;
-	bh=oZ77fK3WLlMadIj9uxk5jsRHxUznuNrYBD5aryV2Z8s=;
+	s=korg; t=1727384666;
+	bh=oya1ePRMiXGKM3xMDTrnTlV/vIzqfre1aee1S/E4J4Q=;
 	h=Date:To:From:Subject:From;
-	b=VEU+ZBYrgUxx9qHhIll8P9BXqO6aEuhvnrjwawtZgQMx21sXL5rG6vNEjLKo/emkX
-	 9F8TUdk7uahB0P9CeNCSYqC3HWMwycbOxFPu8ylUFSX1T7XsVNlHBYcEIoSGtDO22U
-	 lVMGvfFgXlC81g4rxndusvtWxKncF+SqUzOxmgFE=
-Date: Thu, 26 Sep 2024 14:04:21 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,skhan@linuxfoundation.org,jhubbard@nvidia.com,david@redhat.com,usama.anjum@collabora.com,akpm@linux-foundation.org
+	b=V6yBxt8cOBeT9QRuye2j/2zbXmXKZfk8e15jKysiBVqdP7p1hXbLdmG7cGw2LDGa/
+	 sSTXHhHHqaMRxWmGDubYidtQ5C74q2EB9CG3bDqM8UD8CyvVWC8xkJWfaAylB54hbZ
+	 Bt8jtf/kaLguNb/ARL2wvoCSAUMzDnbBOIJfg100=
+Date: Thu, 26 Sep 2024 14:04:25 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mark@fasheh.com,junxiao.bi@oracle.com,jlbec@evilplan.org,heming.zhao@suse.com,ghe@suse.com,gechangwei@live.cn,joseph.qi@linux.alibaba.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] kselftests-mm-fix-wrong-__nr_userfaultfd-value.patch removed from -mm tree
-Message-Id: <20240926210422.10343C4CEC5@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] ocfs2-fix-uninit-value-in-ocfs2_get_block.patch removed from -mm tree
+Message-Id: <20240926210426.3742CC4CEC5@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,67 +50,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: kselftests: mm: fix wrong __NR_userfaultfd value
+     Subject: ocfs2: fix uninit-value in ocfs2_get_block()
 has been removed from the -mm tree.  Its filename was
-     kselftests-mm-fix-wrong-__nr_userfaultfd-value.patch
+     ocfs2-fix-uninit-value-in-ocfs2_get_block.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Subject: kselftests: mm: fix wrong __NR_userfaultfd value
-Date: Mon, 23 Sep 2024 10:38:36 +0500
+From: Joseph Qi <joseph.qi@linux.alibaba.com>
+Subject: ocfs2: fix uninit-value in ocfs2_get_block()
+Date: Wed, 25 Sep 2024 17:06:00 +0800
 
-grep -rnIF "#define __NR_userfaultfd"
-tools/include/uapi/asm-generic/unistd.h:681:#define __NR_userfaultfd 282
-arch/x86/include/generated/uapi/asm/unistd_32.h:374:#define
-__NR_userfaultfd 374
-arch/x86/include/generated/uapi/asm/unistd_64.h:327:#define
-__NR_userfaultfd 323
-arch/x86/include/generated/uapi/asm/unistd_x32.h:282:#define
-__NR_userfaultfd (__X32_SYSCALL_BIT + 323)
-arch/arm/include/generated/uapi/asm/unistd-eabi.h:347:#define
-__NR_userfaultfd (__NR_SYSCALL_BASE + 388)
-arch/arm/include/generated/uapi/asm/unistd-oabi.h:359:#define
-__NR_userfaultfd (__NR_SYSCALL_BASE + 388)
-include/uapi/asm-generic/unistd.h:681:#define __NR_userfaultfd 282
+syzbot reported an uninit-value BUG:
 
-The number is dependent on the architecture. The above data shows that:
-x86	374
-x86_64	323
+BUG: KMSAN: uninit-value in ocfs2_get_block+0xed2/0x2710 fs/ocfs2/aops.c:159
+ocfs2_get_block+0xed2/0x2710 fs/ocfs2/aops.c:159
+do_mpage_readpage+0xc45/0x2780 fs/mpage.c:225
+mpage_readahead+0x43f/0x840 fs/mpage.c:374
+ocfs2_readahead+0x269/0x320 fs/ocfs2/aops.c:381
+read_pages+0x193/0x1110 mm/readahead.c:160
+page_cache_ra_unbounded+0x901/0x9f0 mm/readahead.c:273
+do_page_cache_ra mm/readahead.c:303 [inline]
+force_page_cache_ra+0x3b1/0x4b0 mm/readahead.c:332
+force_page_cache_readahead mm/internal.h:347 [inline]
+generic_fadvise+0x6b0/0xa90 mm/fadvise.c:106
+vfs_fadvise mm/fadvise.c:185 [inline]
+ksys_fadvise64_64 mm/fadvise.c:199 [inline]
+__do_sys_fadvise64 mm/fadvise.c:214 [inline]
+__se_sys_fadvise64 mm/fadvise.c:212 [inline]
+__x64_sys_fadvise64+0x1fb/0x3a0 mm/fadvise.c:212
+x64_sys_call+0xe11/0x3ba0
+arch/x86/include/generated/asm/syscalls_64.h:222
+do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
+entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-The value of __NR_userfaultfd was changed to 282 when asm-generic/unistd.h
-was included.  It makes the test to fail every time as the correct number
-of this syscall on x86_64 is 323.  Fix the header to asm/unistd.h.
+This is because when ocfs2_extent_map_get_blocks() fails, p_blkno is
+uninitialized.  So the error log will trigger the above uninit-value
+access.
 
-Link: https://lkml.kernel.org/r/20240923053836.3270393-1-usama.anjum@collabora.com
-Fixes: a5c6bc590094 ("selftests/mm: remove local __NR_* definitions")
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Reviewed-by: Shuah Khan <skhan@linuxfoundation.org>
-Reviewed-by: David Hildenbrand <david@redhat.com>
-Cc: John Hubbard <jhubbard@nvidia.com>
+The error log is out-of-date since get_blocks() was removed long time ago.
+And the error code will be logged in ocfs2_extent_map_get_blocks() once
+ocfs2_get_cluster() fails, so fix this by only logging inode and block.
+
+Link: https://syzkaller.appspot.com/bug?extid=9709e73bae885b05314b
+Link: https://lkml.kernel.org/r/20240925090600.3643376-1-joseph.qi@linux.alibaba.com
+Fixes: ccd979bdbce9 ("[PATCH] OCFS2: The Second Oracle Cluster Filesystem")
+Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reported-by: syzbot+9709e73bae885b05314b@syzkaller.appspotmail.com
+Tested-by: syzbot+9709e73bae885b05314b@syzkaller.appspotmail.com
+Cc: Heming Zhao <heming.zhao@suse.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Jun Piao <piaojun@huawei.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- tools/testing/selftests/mm/pagemap_ioctl.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ocfs2/aops.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/tools/testing/selftests/mm/pagemap_ioctl.c~kselftests-mm-fix-wrong-__nr_userfaultfd-value
-+++ a/tools/testing/selftests/mm/pagemap_ioctl.c
-@@ -15,7 +15,7 @@
- #include <sys/ioctl.h>
- #include <sys/stat.h>
- #include <math.h>
--#include <asm-generic/unistd.h>
-+#include <asm/unistd.h>
- #include <pthread.h>
- #include <sys/resource.h>
- #include <assert.h>
+--- a/fs/ocfs2/aops.c~ocfs2-fix-uninit-value-in-ocfs2_get_block
++++ a/fs/ocfs2/aops.c
+@@ -156,9 +156,8 @@ int ocfs2_get_block(struct inode *inode,
+ 	err = ocfs2_extent_map_get_blocks(inode, iblock, &p_blkno, &count,
+ 					  &ext_flags);
+ 	if (err) {
+-		mlog(ML_ERROR, "Error %d from get_blocks(0x%p, %llu, 1, "
+-		     "%llu, NULL)\n", err, inode, (unsigned long long)iblock,
+-		     (unsigned long long)p_blkno);
++		mlog(ML_ERROR, "get_blocks() failed, inode: 0x%p, "
++		     "block: %llu\n", inode, (unsigned long long)iblock);
+ 		goto bail;
+ 	}
+ 
 _
 
-Patches currently in -mm which might be from usama.anjum@collabora.com are
+Patches currently in -mm which might be from joseph.qi@linux.alibaba.com are
 
 
 
