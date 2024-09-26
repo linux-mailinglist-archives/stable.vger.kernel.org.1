@@ -1,136 +1,111 @@
-Return-Path: <stable+bounces-77831-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68AC9987A51
-	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 23:04:50 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 332D5987A9C
+	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 23:19:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 131D31F21525
-	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 21:04:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ED25C28346D
+	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 21:19:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5242186295;
-	Thu, 26 Sep 2024 21:04:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55E2B18754F;
+	Thu, 26 Sep 2024 21:18:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="V6yBxt8c"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aNY7D4YN"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 644F312F59C;
-	Thu, 26 Sep 2024 21:04:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2837186285;
+	Thu, 26 Sep 2024 21:18:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727384666; cv=none; b=c0maZ5QGnTKMH1+Lf9vYbygqW3AdrFRLJoi5ezLyQNurQtId3u1f/5CAU5SGfap/lykwvAQJA729rGMurTELUuKzUIpeyH9TMqoO9BMcVOen4tGz2OcvrYbmhw7OasH/ZKmT3pqW87XFodomT1a+ZVXNa5x82yVhimQB9/MHUBs=
+	t=1727385537; cv=none; b=Y77Yflg9fwT0lF29Ym3XJIqZ/DveubV2C3xYcoM2Kerq9psg4ep7Woo6VTpOEtsz27/e7nsd3qIWkjrAkjhoqGI9vak1ccbh9pQidLq/3k37UI4/xyz8YMQKzi4v1+U1QWoGaqbpl353qY16Vz5nXRUixfF1QnjqJmGoAfzeD3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727384666; c=relaxed/simple;
-	bh=oya1ePRMiXGKM3xMDTrnTlV/vIzqfre1aee1S/E4J4Q=;
-	h=Date:To:From:Subject:Message-Id; b=nJjz+Y76vUP8q44N86EvH9iBZ17r1yG9Hj8gAVQEX/0k633W3Sg6224N633lcxWvzGfin/oZhGXnXBj9Ay4Yh5Qf2aorMt2DGO5LYvn6v+O2Brxq/jaLs+RLrEJELNQBJ0XvW78OgVQQpKi+aPrCGeVU7cctvFaVsu4cQO5p8vg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=V6yBxt8c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3742CC4CEC5;
-	Thu, 26 Sep 2024 21:04:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1727384666;
-	bh=oya1ePRMiXGKM3xMDTrnTlV/vIzqfre1aee1S/E4J4Q=;
-	h=Date:To:From:Subject:From;
-	b=V6yBxt8cOBeT9QRuye2j/2zbXmXKZfk8e15jKysiBVqdP7p1hXbLdmG7cGw2LDGa/
-	 sSTXHhHHqaMRxWmGDubYidtQ5C74q2EB9CG3bDqM8UD8CyvVWC8xkJWfaAylB54hbZ
-	 Bt8jtf/kaLguNb/ARL2wvoCSAUMzDnbBOIJfg100=
-Date: Thu, 26 Sep 2024 14:04:25 -0700
-To: mm-commits@vger.kernel.org,stable@vger.kernel.org,piaojun@huawei.com,mark@fasheh.com,junxiao.bi@oracle.com,jlbec@evilplan.org,heming.zhao@suse.com,ghe@suse.com,gechangwei@live.cn,joseph.qi@linux.alibaba.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] ocfs2-fix-uninit-value-in-ocfs2_get_block.patch removed from -mm tree
-Message-Id: <20240926210426.3742CC4CEC5@smtp.kernel.org>
+	s=arc-20240116; t=1727385537; c=relaxed/simple;
+	bh=LGh5AsLI6sNnLV9SP7iQOLWKOrIBJ3RbUytzbBRYuHk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Gd4aqlOZVi8NNoFrZeiY28tdRslSUJNvqoW6TF/am6OUvw2F/bdw3flDTYMDtPPaAq/hDFjf780j8aEzTYlYJL7f1ns8gY8/oxJRPJDXr/cFrbGmd1WsS/3QAql31zO0QaRuZjyUD3mqBJK5jK65VA+EyQ9T6pLhiIkHITqGcr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aNY7D4YN; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2e0a47fda44so167003a91.1;
+        Thu, 26 Sep 2024 14:18:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1727385535; x=1727990335; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LGh5AsLI6sNnLV9SP7iQOLWKOrIBJ3RbUytzbBRYuHk=;
+        b=aNY7D4YNqMeYhfSNUZ8Bj6EQ1OmFWZSyOJ2HJ+Cs9EftHrRSlnZOzjUdoKKabhGST0
+         JzzYJFT7F7IQhVrIV0OeEYX73LxUycdWVlyFfFxFhQ7i8nqtY5uH9hvnIVlFgL1pSCO4
+         g1/22mPkmebW0J6Du7kBGe4d8LFiBTxAXv/jTQDbH4D2LN9ehmbbgx9gRIa5UujuLbae
+         XuNa5XA8N0aaDa6nf2aKuef4uoW0QOILpQfJqZiXEZ+unAD9XnOseDe7eT1GeGY/slwV
+         uMlga4nFe/wb/0a77dziGH0MuDLvqGVPZ+NBWhrpHmpSscnXf+v0Gult7/L3B1zAFRdK
+         4Zdg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727385535; x=1727990335;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LGh5AsLI6sNnLV9SP7iQOLWKOrIBJ3RbUytzbBRYuHk=;
+        b=hDmNOl9nuUQZfNF/OqKFQJJfivEo8V02bGuXBO+8qb1mqzmtkgeEFxXMLHj+RMBz3E
+         IYHGtcS7JaZOqumpjJllu8uml7D57f0CdX90cZR75d1SO1Mf5SmVqB19NiChA6Mnajly
+         CJY9cL40l55MYY+mTko6DdwhZqGNgwuFga8v9anKuGd2uNtZCsnqwwTReY6Y79J0QkZc
+         FARdtidtuB42m891uCOLnG7wYQaRninIPcsKnVzwxxakloq62k6acEeUUb7VcJuNOBGb
+         a8EEeqr5pqKNTl7uuAvTOwdbA5Uj9oCDiw6dSoymiJf9gDpqzpkPyitBXI1NRk6h3xEw
+         dEnQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUFXkINVgquy3YVg6fsLcqiSIUaYAbatPkiNcd3/zG5+/2ohcW/pHIVdiq09PsxuILUTfs2GGvIgrBEGMU=@vger.kernel.org, AJvYcCUrhswl38WcdTDhG4eQRg756Pmxc9r6idtmFzuX4E2qi95guW5XCzrlwlV2g/du+xB+8Hqn6laL@vger.kernel.org, AJvYcCVQVbisLzOyGFcBQsCq2m0oYVEu96PxKXtTQCesNdgv5+faHEGe8qxv5booP+ZUYIHJdWCJOFhbwWxvk5vT9HA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxdqFGOiYRYt22QXEq1t55pePg1Cdc2o4f+97fZY5DRKOBM0yeo
+	MAjQPGMNgAfy8Y9YbA8MQF/wdUyjxXGOEKgTBWjHxQSVpxt5yOivBFcPwM416B2JeqADxk/l9yq
+	1ue/8ng9x4ZDMgMDMDGxs2XYEuWI=
+X-Google-Smtp-Source: AGHT+IGFtmXJkGXxZMp0hLont/4szEaqvFF8nPib6ydvuDhzQc3QsxRdvYh7ZnuMYvt371eM5bxZUq+fjBGol09742c=
+X-Received: by 2002:a17:90a:ee87:b0:2e0:9d3d:3666 with SMTP id
+ 98e67ed59e1d1-2e0b87701a0mr542895a91.2.1727385535065; Thu, 26 Sep 2024
+ 14:18:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20240915-locked-by-sync-fix-v2-1-1a8d89710392@google.com>
+In-Reply-To: <20240915-locked-by-sync-fix-v2-1-1a8d89710392@google.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 26 Sep 2024 23:18:41 +0200
+Message-ID: <CANiq72mTnHNTzCX_FtSp53cjUj0rF-yCAoShN77RotMcz0L4Hw@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: sync: require `T: Sync` for `LockedBy::access`
+To: Alice Ryhl <aliceryhl@google.com>, Boqun Feng <boqun.feng@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Trevor Gross <tmgross@umich.edu>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Sun, Sep 15, 2024 at 4:41=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
+rote:
+>
+> The `LockedBy::access` method only requires a shared reference to the
+> owner, so if we have shared access to the `LockedBy` from several
+> threads at once, then two threads could call `access` in parallel and
+> both obtain a shared reference to the inner value. Thus, require that
+> `T: Sync` when calling the `access` method.
+>
+> An alternative is to require `T: Sync` in the `impl Sync for LockedBy`.
+> This patch does not choose that approach as it gives up the ability to
+> use `LockedBy` with `!Sync` types, which is okay as long as you only use
+> `access_mut`.
+>
+> Cc: stable@vger.kernel.org
+> Fixes: 7b1f55e3a984 ("rust: sync: introduce `LockedBy`")
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-The quilt patch titled
-     Subject: ocfs2: fix uninit-value in ocfs2_get_block()
-has been removed from the -mm tree.  Its filename was
-     ocfs2-fix-uninit-value-in-ocfs2_get_block.patch
+Applied to `rust-fixes` with Boqun's Suggested-by -- thanks!
 
-This patch was dropped because it was merged into the mm-hotfixes-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-------------------------------------------------------
-From: Joseph Qi <joseph.qi@linux.alibaba.com>
-Subject: ocfs2: fix uninit-value in ocfs2_get_block()
-Date: Wed, 25 Sep 2024 17:06:00 +0800
-
-syzbot reported an uninit-value BUG:
-
-BUG: KMSAN: uninit-value in ocfs2_get_block+0xed2/0x2710 fs/ocfs2/aops.c:159
-ocfs2_get_block+0xed2/0x2710 fs/ocfs2/aops.c:159
-do_mpage_readpage+0xc45/0x2780 fs/mpage.c:225
-mpage_readahead+0x43f/0x840 fs/mpage.c:374
-ocfs2_readahead+0x269/0x320 fs/ocfs2/aops.c:381
-read_pages+0x193/0x1110 mm/readahead.c:160
-page_cache_ra_unbounded+0x901/0x9f0 mm/readahead.c:273
-do_page_cache_ra mm/readahead.c:303 [inline]
-force_page_cache_ra+0x3b1/0x4b0 mm/readahead.c:332
-force_page_cache_readahead mm/internal.h:347 [inline]
-generic_fadvise+0x6b0/0xa90 mm/fadvise.c:106
-vfs_fadvise mm/fadvise.c:185 [inline]
-ksys_fadvise64_64 mm/fadvise.c:199 [inline]
-__do_sys_fadvise64 mm/fadvise.c:214 [inline]
-__se_sys_fadvise64 mm/fadvise.c:212 [inline]
-__x64_sys_fadvise64+0x1fb/0x3a0 mm/fadvise.c:212
-x64_sys_call+0xe11/0x3ba0
-arch/x86/include/generated/asm/syscalls_64.h:222
-do_syscall_x64 arch/x86/entry/common.c:52 [inline]
-do_syscall_64+0xcd/0x1e0 arch/x86/entry/common.c:83
-entry_SYSCALL_64_after_hwframe+0x77/0x7f
-
-This is because when ocfs2_extent_map_get_blocks() fails, p_blkno is
-uninitialized.  So the error log will trigger the above uninit-value
-access.
-
-The error log is out-of-date since get_blocks() was removed long time ago.
-And the error code will be logged in ocfs2_extent_map_get_blocks() once
-ocfs2_get_cluster() fails, so fix this by only logging inode and block.
-
-Link: https://syzkaller.appspot.com/bug?extid=9709e73bae885b05314b
-Link: https://lkml.kernel.org/r/20240925090600.3643376-1-joseph.qi@linux.alibaba.com
-Fixes: ccd979bdbce9 ("[PATCH] OCFS2: The Second Oracle Cluster Filesystem")
-Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reported-by: syzbot+9709e73bae885b05314b@syzkaller.appspotmail.com
-Tested-by: syzbot+9709e73bae885b05314b@syzkaller.appspotmail.com
-Cc: Heming Zhao <heming.zhao@suse.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Gang He <ghe@suse.com>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- fs/ocfs2/aops.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
-
---- a/fs/ocfs2/aops.c~ocfs2-fix-uninit-value-in-ocfs2_get_block
-+++ a/fs/ocfs2/aops.c
-@@ -156,9 +156,8 @@ int ocfs2_get_block(struct inode *inode,
- 	err = ocfs2_extent_map_get_blocks(inode, iblock, &p_blkno, &count,
- 					  &ext_flags);
- 	if (err) {
--		mlog(ML_ERROR, "Error %d from get_blocks(0x%p, %llu, 1, "
--		     "%llu, NULL)\n", err, inode, (unsigned long long)iblock,
--		     (unsigned long long)p_blkno);
-+		mlog(ML_ERROR, "get_blocks() failed, inode: 0x%p, "
-+		     "block: %llu\n", inode, (unsigned long long)iblock);
- 		goto bail;
- 	}
- 
-_
-
-Patches currently in -mm which might be from joseph.qi@linux.alibaba.com are
-
-
+Cheers,
+Miguel
 
