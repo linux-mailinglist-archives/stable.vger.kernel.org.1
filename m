@@ -1,224 +1,275 @@
-Return-Path: <stable+bounces-77746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20695986A5D
-	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 03:04:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FFF6986ACC
+	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 03:58:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 976F91F21842
-	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 01:04:56 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C038F1F22822
+	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 01:58:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 665CD157490;
-	Thu, 26 Sep 2024 01:04:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4375C17335E;
+	Thu, 26 Sep 2024 01:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KUqGxOpB"
+	dkim=pass (1024-bit key) header.d=hp.com header.i=@hp.com header.b="aCF2HqAL"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from us-smtp-delivery-162.mimecast.com (us-smtp-delivery-162.mimecast.com [170.10.129.162])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 715BD139B;
-	Thu, 26 Sep 2024 01:04:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE96337B
+	for <stable@vger.kernel.org>; Thu, 26 Sep 2024 01:58:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.162
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727312691; cv=none; b=mOB//SAoj1XgvE+ADaRfMo7u0bXl6X3pImu4ZuGd7ml86C3hn/TxGXy9huWj619hPVS2FmLb0ZHiQw2ff/UgeiNBI7RVUHi2pmwl95mRLeqE056O3mB8VfJKFKsaboIYZZsBMTiWxZA5m3RzJPHkZ9Q/b+IfuCyqX0w2JQGV/yE=
+	t=1727315899; cv=none; b=Y/qE2lpGUV3FFkvgEmDyYZO7xfGHDCZStej2ZAsDVpRGttNX0cnCR2aNprrn4W2BJ2A2DCk78W1ZEeRfGX7v+2dSBs9e+/aO1+tRF/zqXr1nF6yi6RLm9Jv38lqWiGttU99TPew4tuxOpAYaHZIZOAoIp60ZMptbDLFuLtdXERE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727312691; c=relaxed/simple;
-	bh=QvlnnNUVYxnwOzsWATvhGRZbzYi5uagbR8NvXqupzlg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=g8MFuYGRe1O5Dlm0AvsYgwFJRNolQkOl4/IdNDj8pxxHINVbPhNNeR1l0pyAbL6rLG2Kce+K7HWzyq7cTDGZnSFdxMJXJgE1xx0L3lXl3gq4HaGB22YtVDoPQGl9syRXXw7zLjZTt0C5xOIvsyzVdqEqZME46Xcqn5lbRyxMY5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KUqGxOpB; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1727312690; x=1758848690;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=QvlnnNUVYxnwOzsWATvhGRZbzYi5uagbR8NvXqupzlg=;
-  b=KUqGxOpBe8yYq28AynK4ks+UkIjDRur489NY/XDD/XcRxQE9wNsQzR0I
-   equtXXV6LHpVjKdf1ztwdHn8GLIwB/bxbD4jezVAluD3u0Anzrz1ko1Nj
-   kfXgViqCVj22wEnKqRW77RRZPCeE8d4qTcXum5OCmdjJyzdYOYotqxkhT
-   4TxUBTf1n6xLGflP86FC0JW/BxcC66DLXszvHsJzb4RKojKB0TpF8G61O
-   cBv5Qnrz9umq93WpOOFwlJaQ4vxNygkNZdASyq+ru1jJF1/0JnzXpjgII
-   tqXtm3Y0L91ALuBo9kXGrAHF/+EpuQ8uUtcJ3/ZLodVATsnPfWqg7hK+A
-   g==;
-X-CSE-ConnectionGUID: PPfHcGvFSxam1+lTEB0f6g==
-X-CSE-MsgGUID: 9z6gcjKnTMqpA85QW/rOzg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11206"; a="48921163"
-X-IronPort-AV: E=Sophos;i="6.10,258,1719903600"; 
-   d="scan'208";a="48921163"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2024 18:04:48 -0700
-X-CSE-ConnectionGUID: E+yqVkt4SDGhw4Bu6ten7A==
-X-CSE-MsgGUID: tksoldQWT+SDIQabVb+4HA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,258,1719903600"; 
-   d="scan'208";a="72752985"
-Received: from fecarpio-mobl.amr.corp.intel.com (HELO desk) ([10.125.147.229])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2024 18:04:47 -0700
-Date: Wed, 25 Sep 2024 18:04:40 -0700
-From: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-To: Andrew Cooper <andrew.cooper3@citrix.com>
-Cc: Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	linux-kernel@vger.kernel.org, x86@kernel.org,
-	Robert Gill <rtgill82@gmail.com>,
-	Jari Ruusu <jariruusu@protonmail.com>,
-	Brian Gerst <brgerst@gmail.com>,
-	"Linux regression tracking (Thorsten Leemhuis)" <regressions@leemhuis.info>,
-	antonio.gomez.iglesias@linux.intel.com,
-	daniel.sneddon@linux.intel.com, stable@vger.kernel.org
-Subject: Re: [PATCH v7 3/3] x86/bugs: Use code segment selector for VERW
- operand
-Message-ID: <20240926010440.oz42o7onxmmkejvn@desk>
-References: <20240925-fix-dosemu-vm86-v7-0-1de0daca2d42@linux.intel.com>
- <20240925-fix-dosemu-vm86-v7-3-1de0daca2d42@linux.intel.com>
- <5703f2d8-7ca0-4f01-a954-c0eb1de930b4@citrix.com>
- <20240925234616.2ublphj3vbluawb3@desk>
- <20240926001729.2unwdxtcnnkf3k3t@desk>
- <4ca44b13-2442-4d59-8716-df43c3692a8a@citrix.com>
+	s=arc-20240116; t=1727315899; c=relaxed/simple;
+	bh=kJ6qI6xLbbu3ItSrKU6pnkexiUUVk8aWy6MvwmCGZjQ=;
+	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
+	 MIME-Version:Content-Type; b=HFQD+WFcj27OUWU7+U/0yeoLbWbcKOYq1B2jvkhM0ubkty1qdiiSmTdZaUPiKQcJE/ovLimUkO1cCvmyaGI32BbMz7JgyYEiDiaGOqBgHS+PwvUMrtAMp44Vo7jKN3EDppnphbPWWiXSPrC9LbvD3YBFHYWTw2EdhYts8hN9d7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hp.com; spf=pass smtp.mailfrom=hp.com; dkim=pass (1024-bit key) header.d=hp.com header.i=@hp.com header.b=aCF2HqAL; arc=none smtp.client-ip=170.10.129.162
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hp.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hp.com; s=mimecast20180716;
+	t=1727315894;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kJ6qI6xLbbu3ItSrKU6pnkexiUUVk8aWy6MvwmCGZjQ=;
+	b=aCF2HqALRE8sqb8/oNa9zCXVizFTmiY1/jdV9d55I39wDpmbTwPizwdCPtJE8CD2Z+aOnd
+	fF/LTrU4glYdNl8bEzV++IsG2Cor9XB7BpryMiV2GNAb6E4aqqAzK+RTEkZll7/elmI2WC
+	G3qmqoS/Mqm3myfe0FoTjVOinGcfbhE=
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com
+ (mail-mw2nam10lp2041.outbound.protection.outlook.com [104.47.55.41]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-335-Ntll1154MhSZJUzkc31ENw-1; Wed, 25 Sep 2024 21:58:13 -0400
+X-MC-Unique: Ntll1154MhSZJUzkc31ENw-1
+Received: from EA2PR84MB3780.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:303:25b::18)
+ by PH0PR84MB1953.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:510:160::10) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7982.16; Thu, 26 Sep
+ 2024 01:58:09 +0000
+Received: from EA2PR84MB3780.NAMPRD84.PROD.OUTLOOK.COM
+ ([fe80::af88:ed17:72c3:3f4e]) by EA2PR84MB3780.NAMPRD84.PROD.OUTLOOK.COM
+ ([fe80::af88:ed17:72c3:3f4e%4]) with mapi id 15.20.7982.022; Thu, 26 Sep 2024
+ 01:58:09 +0000
+From: "Wang, Wade" <wade.wang@hp.com>
+To: Terry Junge <linuxhid@cosmicgizmosystems.com>, Benjamin Tissoires
+	<bentiss@kernel.org>
+CC: "jikos@kernel.org" <jikos@kernel.org>, "linux-input@vger.kernel.org"
+	<linux-input@vger.kernel.org>, "linux-kernel@vger.kernel.org"
+	<linux-kernel@vger.kernel.org>, "stable@vger.kernel.org"
+	<stable@vger.kernel.org>
+Subject: RE: [PATCH] HID: plantronics: Update to map micmute controls
+Thread-Topic: [PATCH] HID: plantronics: Update to map micmute controls
+Thread-Index: AQHbDvyAJRxpPdoqekCWSH3hIjpGNLJpS/pw
+Date: Thu, 26 Sep 2024 01:58:09 +0000
+Message-ID: <EA2PR84MB37807C9F2191AFE41F9372328B6A2@EA2PR84MB3780.NAMPRD84.PROD.OUTLOOK.COM>
+References: <20240913060800.1325954-1-wade.wang@hp.com>
+ <s36bnt7ptdarrxpejm6n62gf3rvvwfagmmpyq4unpv3hn7v2jf@up2vjv7shl2q>
+ <EA2PR84MB378051BB14F857BA84E662818B602@EA2PR84MB3780.NAMPRD84.PROD.OUTLOOK.COM>
+ <EA2PR84MB378082C6FA58AA25258DC74B8B682@EA2PR84MB3780.NAMPRD84.PROD.OUTLOOK.COM>
+ <bc92e409-cebe-4da1-a225-c48915c5dcba@cosmicgizmosystems.com>
+In-Reply-To: <bc92e409-cebe-4da1-a225-c48915c5dcba@cosmicgizmosystems.com>
+Accept-Language: en-US
+X-MS-Has-Attach: 
+X-MS-TNEF-Correlator: 
+x-ms-publictraffictype: Email
+x-ms-traffictypediagnostic: EA2PR84MB3780:EE_|PH0PR84MB1953:EE_
+x-ms-office365-filtering-correlation-id: 1fcecab8-70fd-4bae-7bcf-08dcddceabef
+x-ms-exchange-senderadcheck: 1
+x-ms-exchange-antispam-relay: 0
+x-microsoft-antispam: BCL:0;ARA:13230040|366016|376014|1800799024|38070700018
+x-microsoft-antispam-message-info: =?utf-8?B?c0NKMlBSL3JabW9zM2hTcUpqejBxb2FzWk9oNUVFa0dieUlEQ1NOSHoyN21r?=
+ =?utf-8?B?NDJQcEw4cEtwdklMemNiT0wvVlI2a0lXWmFhT2ZsV3dBVzJ2ZWFTaDNVS2dl?=
+ =?utf-8?B?akR6RjFUZHFzUzRUKzhzNS8rZDI0VHAyVUJjRjVzRElhSzlQaDlNWWpUd1lU?=
+ =?utf-8?B?RTdObjFTVlFpVGVuQmp2Ykdrc2RrMytJZDQyOHJxcGRIYUNjMHZ3aEphY1Za?=
+ =?utf-8?B?L3FUQllneSs5dk12K05ERlhqUldUeEd5YmxuWnVDUE16bFhEZm8vQUpQRGlw?=
+ =?utf-8?B?VTkrakM3bjREL1IveE1ZbGZkSTFlTEQyNUZMcnpCV0wzWktSLyszN2NnNk1o?=
+ =?utf-8?B?T1gyaE80UzZkbXVzQy9nZjY0cUEzMEpoNU1iY0ErZmN6UStJRVJQejgxbHBl?=
+ =?utf-8?B?d2FVY1ZqM1RJdmRYQzg2NWdkSWI5djBKZFNhUmpwQXVTUHRXdThQcVVWSkhy?=
+ =?utf-8?B?YUc4a3F1c3p0K0pOcklISjhuU0NiUXJIbGVTRmdvRUVnNGRLcUF3c1Uya083?=
+ =?utf-8?B?czZNVk4yNmFjNWVteldDQUYzMklyTXNTMlhvbjR0QUtMMk53L2d4NXFBaUVV?=
+ =?utf-8?B?WUNQUWRRejJackdUQWVhbGxVSVZRWEd4QkhnTmVveWtMWFc3d3UyS2V3MGho?=
+ =?utf-8?B?N3hWa3dlRmZmaGZ6TFlsa21yU3VwcFQvNS9yaG9icWlROUE4ZEFXajVUT1p3?=
+ =?utf-8?B?bG9TaE1IUmxOQmFaNGFPWVhXMHBDUzVDNHkxRUZ6cEk3SFlRNkNQVWc3UTEx?=
+ =?utf-8?B?QnlHa0xVTTlFc09pQkRRVmJ2STNZVFk1bGJvQmd4MHFyVnJRVkdEMmdhQ0tH?=
+ =?utf-8?B?Nkc2UTlHdkZLVktqTzQvZWhhaSs5eHlYSytYeDB2YlFqc0RCdXBSSzhGSUpG?=
+ =?utf-8?B?Q0Z6bnE1QklHTUpNRnVpRFNWK0dyT0ttS2xRc2V0MDkvNnowc1lOdnl1TmVO?=
+ =?utf-8?B?c2txWTE0OTZxeEtDUysxeGdaLzZTcEttV29VVzg5TzU4ZG95TDFMSUh2Q0Ft?=
+ =?utf-8?B?dGRLVUs2VVdZVnI3MURwZHRaM2ZrVjZsVHU3eGtmQWJmbEI1aDZ6SGJmeWt1?=
+ =?utf-8?B?NzBGVUN0dlhhOXI1SDlMU3diZ3l1OG1lVXlyS282a1Fic1krc2QrQ29Mbm12?=
+ =?utf-8?B?TStOQ1o5WjZlOEpISUEvbVBwUWgzb0RXWnh6ZEdaYXhLOXk3SHBFQjZOMTA3?=
+ =?utf-8?B?bTRJVThvRkFjUXVQQnhjeDE5VDFRTkJ4OUpXRkIxYjdSZTUwbnB2RGFNZDV1?=
+ =?utf-8?B?R3hjaHlqS1YwQVRJMmR3dDdleUduZmdtUUxuVEsxcmtGb3J4bVFpTkpKNml0?=
+ =?utf-8?B?d1FqaUF5V2tMQzdWa09UVStaUmxwMGxNbU5IQlVnY2ZjL2w3Q2xsVDZJK1ZE?=
+ =?utf-8?B?RUFmTVExcTk2S2pwS2VsOTNEV1RYanVKUm8yUzBuU2xrWlk3SHR0eW02ci9B?=
+ =?utf-8?B?VzhqTmpURkNXRTNiNnRRS0NvK1diaDJmZ2NKVGZTMnBaSTBwVzFLZ3F0RXJm?=
+ =?utf-8?B?Skc4cnBBUXkxT3d5R0MzVGVJeEw1T29ncllLZnRqaVdRNUxOcHVoODJ6TzBo?=
+ =?utf-8?B?dk9oQkFYa2RDMkIyMFdBbGlWOWNIeFdKTFJnZ2hyOW4xczk0U2VXWHJCZ2FC?=
+ =?utf-8?B?M0QxbUpKS1VlM3NrQ1MrVEh4ZUdhWDR1L0Jlc1dwN2kwQXc3SUhmdTN0Wnd3?=
+ =?utf-8?B?eXJKK2Q5U2dKL3RqNEc3L3ZBNDJVOTNoQjl4RTVsbTkwZS9XdEJuY3VLUUha?=
+ =?utf-8?B?REM4bjB4L0R4RXNvNnVzMU5YMWVYL0hRSERSNDBBaG1nUUpMZ1F3ek92cEVE?=
+ =?utf-8?B?aU0vVFFJSldKMFZSaDkxZz09?=
+x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:EA2PR84MB3780.NAMPRD84.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(38070700018);DIR:OUT;SFP:1101
+x-ms-exchange-antispam-messagedata-chunkcount: 1
+x-ms-exchange-antispam-messagedata-0: =?utf-8?B?UVE5d3NUeWVUWWxtNWpSK0JaQ1pLMUgybmppVTMzQVJib0xBdE9mNTFrUkdS?=
+ =?utf-8?B?cHFjTWdSYnJTSGJsYW40QnhJNmNHOFU3Zkp2VWgwYlFKcEk2ZERwWm9GSW5F?=
+ =?utf-8?B?S2pneXFXY1VoaXQ5YThiVUdBbmVWNWhHUlIxWW5rY1lPM1o5VmFiVjZaditC?=
+ =?utf-8?B?eUk0RHVhWE1SNFp5OE52OWpVQzVBeGVadGE1QVNWeFFETjNHV2IzVnhBdGty?=
+ =?utf-8?B?aG04UVRYRGZaR1NIMFhlbU9ySzB2N2Z2SGtaeXFrNzdpSlJKSW5mS0hYV3Zm?=
+ =?utf-8?B?YTlTbDlEK1J6THllOTFYYk5BTVF1SkJkemV2K1lldEZPTlZUUHJMUkN0Y3cy?=
+ =?utf-8?B?SXo0WUxBbUZ1TXNhRTAraEliMzNQU0thVG1jSnMybXl1Zjk0SHRZRzNtRCth?=
+ =?utf-8?B?SmYwS1FZcU4zVmw1M0RnaHU3cjIwWTAycGRKeHNoZHo2RXI1TkpRL1hKZVRy?=
+ =?utf-8?B?UkYydzFiVzI3MHM3Y095V0UzUG5BbjBtc2VqOXJucDMzbEZlU2xhZWYrb1Fv?=
+ =?utf-8?B?eFZuOHZzelhXQitKUHhsK2N2ZlEzOTVYWDRrTGFmTHlsRzZIOFNNdzFsK28x?=
+ =?utf-8?B?NTloMXV5UFFOcy9GakdYazBIUUQ2VCtGU05oSGhTSTQ5T1ZoMkt3SlF2YktJ?=
+ =?utf-8?B?ZFhqNlFaR2k0bjBqbS9Pb0FjdmhkVnNLdklzV0t6SC9tK3VNQ2VrOHFWV0NB?=
+ =?utf-8?B?ZEh4OGRpZEtUWiszOGozTUZlenJ6TkF3ZE9BZlJXb3hKdUJnOGl4WEplSTZD?=
+ =?utf-8?B?SE42bjVqaDV2eURZeFU1VExMR01VYUk4RlViSFhkUmNkQXdvSW4wNGdBbGlI?=
+ =?utf-8?B?OG0yVU9UVHowUEtkYXcwOWl4Q1JzUjllUU9TNExFRzJ1cmI2NHVMWVVudkli?=
+ =?utf-8?B?WjZtS3VLOFlPUkNsUXErdDhoaTZLUXdnOEpUWTV1KzVNWDZWM25ZcHAwTGcx?=
+ =?utf-8?B?aEU0MUlrb1RxR3V3V0pKK0I2L05OMGJyWDVvMEFwR1MxSlhzeityVmgwVmd3?=
+ =?utf-8?B?Y1RaQXdMZEdXS0ZicFZqZm9PLzZSdytrSlA3dG1tMlJCYmN5dlRySmNjeFNv?=
+ =?utf-8?B?cnlPenBnN0doUjNVZXhuRFZOUTJwMGUvbEVHZzhxWFBLRERvWWtIRi9zTFVu?=
+ =?utf-8?B?UWp0T0Q2enZPZlZROEFZWWROTWJsVzhDNFlVVHRSTU1hS1hNZ0NWcmYxWkpy?=
+ =?utf-8?B?YmwyU2FId29sNU82NjlrYzRyQ0VBb1hnSzlNdm43M3VYOUpLSHorMkRTOEF3?=
+ =?utf-8?B?eWlCcXAyTDFoUmdOZDlGTk5GTnE3Z0FBbGI0Zkcycm1RTU4zWm1Jc1ZUVDRK?=
+ =?utf-8?B?dVovbzkrbkRHREtYMGVMd09lV2pNckVGS044STNOQVZ3RVZnTFBXallFOUlm?=
+ =?utf-8?B?ME0rL3dTVkdCS3MxU0RMQjFsZG9scDNDWk5qKzFKQkhiTHgzR1dYV3RKZGhE?=
+ =?utf-8?B?U3lpRGFNRUtXMi9Ca0RmdWRzZDNZRy9TODJRZWoxUSt5dnFhWm5RWWVhV0pZ?=
+ =?utf-8?B?Ty9lc0orQlR5WDZ6ZThpc2cvRnROMENDc2ZxRDM4c1ZOU1lCNXNMTU02MThr?=
+ =?utf-8?B?azgwV0dVR3UycUhXV0tUMXc2ZXlnL3BZbk5mQmQ2Y3JoSDU0WnUyd1d5bWxR?=
+ =?utf-8?B?dGUvZFVMcTFiSlZRdVRjb0Q3TUZSWDZ1QWJyRWFwNjhQVzlGOTc5cXVROU95?=
+ =?utf-8?B?akxvYTJBcDBCNkJKQTFCZ1MwS1VFd2NyK2RtalRkS0Z0SmRJNXNnYXExYkhW?=
+ =?utf-8?B?RjY2TE0rMzBQQVVEcWdzaXk1VmVCSVhoa2RZQU4vNmdmSU0rdU9aTmUrRGZr?=
+ =?utf-8?B?SDF6NFJ4b2QwSDRYSVg4ckkxd0JMV3FXWkNad3Y0VGhBVDJ2dWFzbS9NWC9o?=
+ =?utf-8?B?UHVHTWxiaHZuOFJJb0JDL3RvWWZxZEYweERBNmdMekVjUXlRbWFqelhrS2tY?=
+ =?utf-8?B?SWpQdURWQ1RvMHdZaHNSZ2o0TzJGOW9Gb1hIa1dDR0J4M1FQZE9aSEpQL3Np?=
+ =?utf-8?B?OFJpWkhqTUNyUXU5NVorM0g3YzdreEE4UnpwRG5kMmt2TDJmOFk0S0pkSjlE?=
+ =?utf-8?B?WHRRTng4b2ErczNKdlBMY2ZTRVgxajN2R0ZGcS9pZGh3bjUyOGRKcWpnY3I2?=
+ =?utf-8?Q?IylU=3D?=
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <4ca44b13-2442-4d59-8716-df43c3692a8a@citrix.com>
+X-OriginatorOrg: hp.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-AuthSource: EA2PR84MB3780.NAMPRD84.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-Network-Message-Id: 1fcecab8-70fd-4bae-7bcf-08dcddceabef
+X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Sep 2024 01:58:09.6920
+ (UTC)
+X-MS-Exchange-CrossTenant-fromentityheader: Hosted
+X-MS-Exchange-CrossTenant-id: ca7981a2-785a-463d-b82a-3db87dfc3ce6
+X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
+X-MS-Exchange-CrossTenant-userprincipalname: I7PWdu4hfwCzToorAZSsf/32vSATiHCGX5G9yDGqk9UfvxtX6e9NzsThNKBDTKHmS0Mg+oD+/AoKPkPI5NeoIQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR84MB1953
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: hp.com
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
 
-On Thu, Sep 26, 2024 at 01:32:19AM +0100, Andrew Cooper wrote:
-> On 26/09/2024 1:17 am, Pawan Gupta wrote:
-> > On Wed, Sep 25, 2024 at 04:46:23PM -0700, Pawan Gupta wrote:
-> >> On Thu, Sep 26, 2024 at 12:29:00AM +0100, Andrew Cooper wrote:
-> >>> On 25/09/2024 11:25 pm, Pawan Gupta wrote:
-> >>>> Robert Gill reported below #GP in 32-bit mode when dosemu software was
-> >>>> executing vm86() system call:
-> >>>>
-> >>>>   general protection fault: 0000 [#1] PREEMPT SMP
-> >>>>   CPU: 4 PID: 4610 Comm: dosemu.bin Not tainted 6.6.21-gentoo-x86 #1
-> >>>>   Hardware name: Dell Inc. PowerEdge 1950/0H723K, BIOS 2.7.0 10/30/2010
-> >>>>   EIP: restore_all_switch_stack+0xbe/0xcf
-> >>>>   EAX: 00000000 EBX: 00000000 ECX: 00000000 EDX: 00000000
-> >>>>   ESI: 00000000 EDI: 00000000 EBP: 00000000 ESP: ff8affdc
-> >>>>   DS: 0000 ES: 0000 FS: 0000 GS: 0033 SS: 0068 EFLAGS: 00010046
-> >>>>   CR0: 80050033 CR2: 00c2101c CR3: 04b6d000 CR4: 000406d0
-> >>>>   Call Trace:
-> >>>>    show_regs+0x70/0x78
-> >>>>    die_addr+0x29/0x70
-> >>>>    exc_general_protection+0x13c/0x348
-> >>>>    exc_bounds+0x98/0x98
-> >>>>    handle_exception+0x14d/0x14d
-> >>>>    exc_bounds+0x98/0x98
-> >>>>    restore_all_switch_stack+0xbe/0xcf
-> >>>>    exc_bounds+0x98/0x98
-> >>>>    restore_all_switch_stack+0xbe/0xcf
-> >>>>
-> >>>> This only happens in 32-bit mode when VERW based mitigations like MDS/RFDS
-> >>>> are enabled. This is because segment registers with an arbitrary user value
-> >>>> can result in #GP when executing VERW. Intel SDM vol. 2C documents the
-> >>>> following behavior for VERW instruction:
-> >>>>
-> >>>>   #GP(0) - If a memory operand effective address is outside the CS, DS, ES,
-> >>>> 	   FS, or GS segment limit.
-> >>>>
-> >>>> CLEAR_CPU_BUFFERS macro executes VERW instruction before returning to user
-> >>>> space. Use %cs selector to reference VERW operand. This ensures VERW will
-> >>>> not #GP for an arbitrary user %ds.
-> >>>>
-> >>>> Fixes: a0e2dab44d22 ("x86/entry_32: Add VERW just before userspace transition")
-> >>>> Cc: stable@vger.kernel.org # 5.10+
-> >>>> Reported-by: Robert Gill <rtgill82@gmail.com>
-> >>>> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=218707
-> >>>> Closes: https://lore.kernel.org/all/8c77ccfd-d561-45a1-8ed5-6b75212c7a58@leemhuis.info/
-> >>>> Suggested-by: Dave Hansen <dave.hansen@linux.intel.com>
-> >>>> Suggested-by: Brian Gerst <brgerst@gmail.com>
-> >>>> Signed-off-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
-> >>>> ---
-> >>>>  arch/x86/include/asm/nospec-branch.h | 6 ++++--
-> >>>>  1 file changed, 4 insertions(+), 2 deletions(-)
-> >>>>
-> >>>> diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
-> >>>> index ff5f1ecc7d1e..e18a6aaf414c 100644
-> >>>> --- a/arch/x86/include/asm/nospec-branch.h
-> >>>> +++ b/arch/x86/include/asm/nospec-branch.h
-> >>>> @@ -318,12 +318,14 @@
-> >>>>  /*
-> >>>>   * Macro to execute VERW instruction that mitigate transient data sampling
-> >>>>   * attacks such as MDS. On affected systems a microcode update overloaded VERW
-> >>>> - * instruction to also clear the CPU buffers. VERW clobbers CFLAGS.ZF.
-> >>>> + * instruction to also clear the CPU buffers. VERW clobbers CFLAGS.ZF. Using %cs
-> >>>> + * to reference VERW operand avoids a #GP fault for an arbitrary user %ds in
-> >>>> + * 32-bit mode.
-> >>>>   *
-> >>>>   * Note: Only the memory operand variant of VERW clears the CPU buffers.
-> >>>>   */
-> >>>>  .macro CLEAR_CPU_BUFFERS
-> >>>> -	ALTERNATIVE "", __stringify(verw _ASM_RIP(mds_verw_sel)), X86_FEATURE_CLEAR_CPU_BUF
-> >>>> +	ALTERNATIVE "", __stringify(verw %cs:_ASM_RIP(mds_verw_sel)), X86_FEATURE_CLEAR_CPU_BUF
-> >>>>  .endm
-> >>> People ought rightly to double-take at this using %cs and not %ss. 
-> >>> There is a good reason, but it needs describing explicitly.  May I
-> >>> suggest the following:
-> >>>
-> >>> *...
-> >>> * In 32bit mode, the memory operand must be a %cs reference.  The data
-> >>> segments may not be usable (vm86 mode), and the stack segment may not be
-> >>> flat (espfix32).
-> >>> *...
-> >> Thanks for the suggestion. I will include this.
-> >>
-> >>>  .macro CLEAR_CPU_BUFFERS
-> >>> #ifdef __x86_64__
-> >>>     ALTERNATIVE "", "verw mds_verw_sel(%rip)", X86_FEATURE_CLEAR_CPU_BUF
-> >>> #else
-> >>>     ALTERNATIVE "", "verw %cs:mds_verw_sel", X86_FEATURE_CLEAR_CPU_BUF
-> >>> #endif
-> >>>  .endm
-> >>>
-> >>> This also lets you drop _ASM_RIP().  It's a cute idea, but is more
-> >>> confusion than it's worth, because there's no such thing in 32bit mode.
-> >>>
-> >>> "%cs:_ASM_RIP(mds_verw_sel)" reads as if it does nothing, because it
-> >>> really doesn't in 64bit mode.
-> >> Right, will drop _ASM_RIP() in 32-bit mode and %cs in 64-bit mode.
-> > Its probably too soon for next version, pasting the patch here:
-> >
-> > ---8<---
-> > diff --git a/arch/x86/include/asm/nospec-branch.h b/arch/x86/include/asm/nospec-branch.h
-> > index e18a6aaf414c..4228a1fd2c2e 100644
-> > --- a/arch/x86/include/asm/nospec-branch.h
-> > +++ b/arch/x86/include/asm/nospec-branch.h
-> > @@ -318,14 +318,21 @@
-> >  /*
-> >   * Macro to execute VERW instruction that mitigate transient data sampling
-> >   * attacks such as MDS. On affected systems a microcode update overloaded VERW
-> > - * instruction to also clear the CPU buffers. VERW clobbers CFLAGS.ZF. Using %cs
-> > - * to reference VERW operand avoids a #GP fault for an arbitrary user %ds in
-> > - * 32-bit mode.
-> > + * instruction to also clear the CPU buffers. VERW clobbers CFLAGS.ZF.
-> >   *
-> >   * Note: Only the memory operand variant of VERW clears the CPU buffers.
-> >   */
-> >  .macro CLEAR_CPU_BUFFERS
-> > -	ALTERNATIVE "", __stringify(verw %cs:_ASM_RIP(mds_verw_sel)), X86_FEATURE_CLEAR_CPU_BUF
-> > +#ifdef CONFIG_X86_64
-> > +	ALTERNATIVE "", __stringify(verw _ASM_RIP(mds_verw_sel)), X86_FEATURE_CLEAR_CPU_BUF
-> > +#else
-> > +	/*
-> > +	 * In 32bit mode, the memory operand must be a %cs reference. The data
-> > +	 * segments may not be usable (vm86 mode), and the stack segment may not
-> > +	 * be flat (ESPFIX32).
-> > +	 */
-> 
-> I was intending for this to replace the "Using %cs" sentence, as a new
-> paragraph in that main comment block.
+SGkgVGVycnksDQoNCjEuIFBlciBvdXIgdGVzdGluZywgUG9seSBoZWFkc2V0IHdpbGwgbWFpbnRh
+aW4gTXV0ZSBzdGF0dXMgYXQgaGVhZHNldCBzaWRlLCB3aGF0ZXZlciBob3N0IHNlbmQgZmVlZGJh
+Y2sgb3Igbm90Lg0KMi4gTXV0ZSBsZWQgaXMgb2ZmIHdoZW4gUG9seSBVU0IgaGVhZHNldCBjb25u
+ZWN0IHRvIGhvc3QsIHNvIGhvc3Qgd2lsbCBrZWVwIHNhbWUgTXV0ZSBzdGF0dXMgd2l0aCBoZWFk
+c2V0IGJlY2F1c2Ugb2YgdG9nZ2xlIE11dGUga2V5IGV2ZW50Lg0KMy4gRXZlbiBVYnVudHUgYW5k
+IENocm9tZWJvb2tzIGhhdmUgdG8gZmVlZGJhY2sgUG9seSBoZWFkc2V0IG11dGUgc3RhdGUsIGl0
+IHNob3VsZCBiZSBkb25lIGF0IHVzZXIgc3BhY2UgaW5zdGVhZCBvZiBrZXJuZWwuIFRoZSBwcmVj
+b25kaXRpb24gaXMga2VybmVsIHNob3VsZCByZXBvcnQgTXV0ZSBrZXkgZXZlbnQgZmlyc3QsIHRo
+ZW4gdXNlciBzcGFjZSBoYXMgY2hhbmNlIHRvIGRvIHRoaXMga2luZCBvZiBpbXByb3ZlbWVudCBp
+biBmdXR1cmUNCg0KU28gZm9sbG93aW5nIHN0YW5kYXJkIEhJRCBydWxlIGlzIG5lY2Vzc2FyeS4N
+Cg0KQlRXLCBvbiBNU0ZUIFdpbmRvd3MsIEFmdGVyIHJlY2VpdmUgbXV0ZSBrZXksIHRoZSBob3N0
+IHN3aXRjaCB0aGUgbXV0ZSBjb250cm9sIHN0YXR1cyBvZiB0aGUgYXVkaW8gY29udHJvbCBpbnRl
+cmZhY2UsIHdoYXRldmVyIG11dGUgc3RhdHVzIGluIGhlYWRzZXQgRlcgaXMgY29ycmVjdCBvciBu
+b3QuIEkgdGhpbmsgaXQgbWFrZSBzZW5zZSB0aGFuIExFRCBwYWdlIG11dGUgTEVELg0KDQpUaGFu
+a3MsDQpXYWRlDQoNCi0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQpGcm9tOiBUZXJyeSBKdW5n
+ZSA8bGludXhoaWRAY29zbWljZ2l6bW9zeXN0ZW1zLmNvbT4gDQpTZW50OiBXZWRuZXNkYXksIFNl
+cHRlbWJlciAyNSwgMjAyNCAxMTozMiBBTQ0KVG86IFdhbmcsIFdhZGUgPHdhZGUud2FuZ0BocC5j
+b20+OyBCZW5qYW1pbiBUaXNzb2lyZXMgPGJlbnRpc3NAa2VybmVsLm9yZz4NCkNjOiBqaWtvc0Br
+ZXJuZWwub3JnOyBsaW51eC1pbnB1dEB2Z2VyLmtlcm5lbC5vcmc7IGxpbnV4LWtlcm5lbEB2Z2Vy
+Lmtlcm5lbC5vcmc7IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmcNClN1YmplY3Q6IFJlOiBbUEFUQ0hd
+IEhJRDogcGxhbnRyb25pY3M6IFVwZGF0ZSB0byBtYXAgbWljbXV0ZSBjb250cm9scw0KDQpDQVVU
+SU9OOiBFeHRlcm5hbCBFbWFpbA0KDQpIaSBXYWRlLA0KDQpJIHJldGlyZWQgZnJvbSBQbGFudHJv
+bmljcyBpbiAyMDIwLiBUaGUgb3JpZ2luYWwgZHJpdmVyIGRpZCBub3QgYWxsb3cgbXV0ZSBidXR0
+b24gdG8gYmUgbWFwcGVkIGFzIHRoZXJlIHdlcmUgbXV0ZSBzeW5jaHJvbml6YXRpb24gaXNzdWVz
+Lg0KDQpUaGUgaGVhZHNldCBuZWVkcyB0byByZWNlaXZlIHNvbWUgdHlwZSBvZiBmZWVkYmFjayBm
+cm9tIHRoZSBob3N0IHdoZW4gaXQgc2VuZHMgdGhlIG11dGUgZXZlbnQgaW4gb3JkZXIgdG8gc3lu
+Y2hyb25pemUgd2l0aCB0aGUgaG9zdCwgaWRlYWxseSB0aGUgaG9zdCBzZXR0aW5nIG9yIGNsZWFy
+aW5nIHRoZSBtdXRlIGNvbnRyb2wgaW4gdGhlIGF1ZGlvIGNvbnRyb2wgaW50ZXJmYWNlIGJ1dCBz
+ZXR0aW5nL2NsZWFyaW5nIHRoZSBtdXRlIExFRCB3b3VsZCBhbHNvIHdvcmsuDQoNCkF0IHRoZSB0
+aW1lIFVidW50dSBhbmQgQ2hyb21lYm9va3MgZGlkIG5vdCBmZWVkYmFjayBtdXRlIHN0YXRlIGFu
+ZCBpdCB3YXMgcG9zc2libGUgdG8gbXV0ZSBmcm9tIHRoZSBoZWFkc2V0IGFuZCB0aGVuIHVubXV0
+ZSBmcm9tIHRoZSBtaXhlciBvciBrZXlib2FyZCBhbmQgdGhlIGhlYWRzZXQgd291bGQgc3RheSBt
+dXRlZC4gVGhlIG9ubHkgd2F5IHRvIHVubXV0ZSB3YXMgd2l0aCB0aGUgaGVhZHNldCBidXR0b24u
+IFRoaXMgd2FzIGFuIHVuYWNjZXB0YWJsZSB1c2VyIGV4cGVyaWVuY2Ugc28gd2UgYmxvY2tlZCBt
+YXBwaW5nLg0KDQpJZiB5b3Ugd2FudCB0byB0cnkgbWFwcGluZyBtdXRlIGV2ZW50IHRoZW4geW91
+IGFsc28gbmVlZCB0byBhbGxvdyBtYXBwaW5nIHRoZSBtdXRlIExFRCBmb3IgcG9zc2libGUgaG9z
+dCBmZWVkYmFjay4NCg0KKEhJRF9VUF9URUxFUEhPTlkgfCAweDJmKSBpcyB0ZWxlcGhvbnkgcGFn
+ZSBtdXRlIGJ1dHRvbiAoSElEX1VQX0xFRCB8IDB4MDkpIGlzIExFRCBwYWdlIG11dGUgTEVEDQoN
+ClRoZW4geW91IG5lZWQgdG8gdGVzdCBtb3JlIHRoYW4ganVzdCB0aGUgZXZlbnQgZ2V0dGluZyB0
+byB1c2VyIHNwYWNlLg0KWW91IG5lZWQgdG8gY2hlY2sgbXV0ZSBzeW5jaHJvbml6YXRpb24gd2l0
+aCB0aGUgaG9zdCBtaXhlciB1bmRlciBhbGwgbXV0ZS91bm11dGUgdXNlIGNhc2VzLg0KDQpSZWdh
+cmRzLA0KVGVycnkgSnVuZ2UNCg0KDQpPbiA5LzI0LzI0IDI6MDAgQU0sIFdhbmcsIFdhZGUgd3Jv
+dGU6DQo+IEhpIEJlbmphbWluIGFuZCBHcmVnLA0KPg0KPiBNYXkgSSBrbm93IHRoZSByZXZpZXcg
+cHJvZ3Jlc3MgYW5kIGFueXRoaW5nIEkgbmVlZCB0byBjaGFuZ2U/IFRoYW5rcw0KPg0KPiBSZWdh
+cmRzDQo+IFdhZGUNCj4NCj4gLS0tLS1PcmlnaW5hbCBNZXNzYWdlLS0tLS0NCj4gRnJvbTogV2Fu
+ZywgV2FkZQ0KPiBTZW50OiBNb25kYXksIFNlcHRlbWJlciAxNiwgMjAyNCA0OjEzIFBNDQo+IFRv
+OiBCZW5qYW1pbiBUaXNzb2lyZXMgPGJlbnRpc3NAa2VybmVsLm9yZz4NCj4gQ2M6IGppa29zQGtl
+cm5lbC5vcmc7IGxpbnV4LWlucHV0QHZnZXIua2VybmVsLm9yZzsgDQo+IGxpbnV4LWtlcm5lbEB2
+Z2VyLmtlcm5lbC5vcmc7IHN0YWJsZUB2Z2VyLmtlcm5lbC5vcmcNCj4gU3ViamVjdDogUkU6IFtQ
+QVRDSF0gSElEOiBwbGFudHJvbmljczogVXBkYXRlIHRvIG1hcCBtaWNtdXRlIGNvbnRyb2xzDQo+
+DQo+IEhpIEJlbmphbWluLA0KPg0KPiBUaGlzIHBhdGNoIGlzIGZvciBhbGwgUG9seSBIUyBkZXZp
+Y2VzLCBhbmQgaXQgZG9lcyBub3QgZGVwZW5kcyBvbiBvdGhlciBwYXRjaGVzLCBpdCBjYW4gYXBw
+bHkgZGlyZWN0bHkgYnkgIiBnaXQgYW0gLTMiLg0KPg0KPiBXaXRoIHRoaXMgcGF0Y2gsIE1pY011
+dGUgYnV0dG9uIGtleSBldmVudCB3aWxsIGJlIHNlbmQgdG8gdXNlciBzcGFjZSwgSSBoYXZlIHRl
+c3RlZCBvbiB0aGUgYmVsb3cgUG9seSBkZXZpY2VzOg0KPiAgICAgICAgICBQbGFudHJvbmljcyBF
+bmNvcmVQcm8gNTAwIFNlcmllcw0KPiAgICAgICAgICBQbGFudHJvbmljcyBCbGFja3dpcmVfMzMy
+NSBTZXJpZXMNCj4gICAgICAgICAgUG9seSBWb3lhZ2VyIDQzMjAgSFMgKyBCVDcwMCBEb25nbGUN
+Cj4NCj4gUmVnYXJkcw0KPiBXYWRlDQo+DQo+IC0tLS0tT3JpZ2luYWwgTWVzc2FnZS0tLS0tDQo+
+IEZyb206IEJlbmphbWluIFRpc3NvaXJlcyA8YmVudGlzc0BrZXJuZWwub3JnPg0KPiBTZW50OiBG
+cmlkYXksIFNlcHRlbWJlciAxMywgMjAyNCAxMDowNCBQTQ0KPiBUbzogV2FuZywgV2FkZSA8d2Fk
+ZS53YW5nQGhwLmNvbT4NCj4gQ2M6IGppa29zQGtlcm5lbC5vcmc7IGxpbnV4LWlucHV0QHZnZXIu
+a2VybmVsLm9yZzsgDQo+IGxpbnV4LWtlcm5lbEB2Z2VyLmtlcm5lbC5vcmc7IHN0YWJsZUB2Z2Vy
+Lmtlcm5lbC5vcmcNCj4gU3ViamVjdDogUmU6IFtQQVRDSF0gSElEOiBwbGFudHJvbmljczogVXBk
+YXRlIHRvIG1hcCBtaWNtdXRlIGNvbnRyb2xzDQo+DQo+IENBVVRJT046IEV4dGVybmFsIEVtYWls
+DQo+DQo+IE9uIFNlcCAxMyAyMDI0LCBXYWRlIFdhbmcgd3JvdGU6DQo+PiB0ZWxlcGhvbnkgcGFn
+ZSBvZiBQbGFudHJvbmljcyBoZWFkc2V0IGlzIGlnbm9yZWQgY3VycmVudGx5LCBpdCBjYXVzZWQg
+DQo+PiBtaWNtdXRlIGJ1dHRvbiBubyBmdW5jdGlvbiwgTm93IGZvbGxvdyBuYXRpdmUgSElEIGtl
+eSBtYXBwaW5nIGZvciANCj4+IHRlbGVwaG9ueSBwYWdlIG1hcCwgdGVsZXBob255IG1pY211dGUg
+a2V5IGlzIGVuYWJsZWQgYnkgZGVmYXVsdA0KPg0KPiBGb3Igd2hpY2ggZGV2aWNlcyB0aGlzIHBh
+dGNoIGlzIHJlcXVpcmVkPyBJcyBpdCByZWxhdGVkIHRvIHRoZSBvdGhlciBwYXRjaCB5b3Ugc2Vu
+dCB0b2RheT8gSWYgc28gcGxlYXNlIG1ha2UgYSBtZW50aW9uIG9mIHRoZSBjb25jZXJuZWQgZGV2
+aWNlcyBhbmQgbWFrZSBzdXJlIGJvdGggcGF0Y2hlcyBhcmUgc2VudCBpbiBhIHNpbmdsZSB2MyBz
+ZXJpZXMuDQo+DQo+IEFsc28sIGhhdmUgeW91IHRlc3RlZCB0aGlzIGNoYW5nZSB3aXRoIG90aGVy
+IFBsYW50cm9uaWNzIGhlYWRzZXRzPyBXaGVyZSB0aGVyZSBhbnkgY2hhbmdlcyBpbiBiZWhhdmlv
+ciBmcm9tIHRoZW0/DQo+DQo+IENoZWVycywNCj4gQmVuamFtaW4NCj4NCj4+DQo+PiBDYzogc3Rh
+YmxlQHZnZXIua2VybmVsLm9yZw0KPj4gU2lnbmVkLW9mZi1ieTogV2FkZSBXYW5nIDx3YWRlLndh
+bmdAaHAuY29tPg0KPj4gLS0tDQo+PiAgIGRyaXZlcnMvaGlkL2hpZC1wbGFudHJvbmljcy5jIHwg
+NCArKy0tDQo+PiAgIDEgZmlsZSBjaGFuZ2VkLCAyIGluc2VydGlvbnMoKyksIDIgZGVsZXRpb25z
+KC0pDQo+Pg0KPj4gZGlmZiAtLWdpdCBhL2RyaXZlcnMvaGlkL2hpZC1wbGFudHJvbmljcy5jIA0K
+Pj4gYi9kcml2ZXJzL2hpZC9oaWQtcGxhbnRyb25pY3MuYyBpbmRleCAyYTE5ZjM2NDZlY2IuLjJk
+MTc1MzRmY2U2MQ0KPj4gMTAwNjQ0DQo+PiAtLS0gYS9kcml2ZXJzL2hpZC9oaWQtcGxhbnRyb25p
+Y3MuYw0KPj4gKysrIGIvZHJpdmVycy9oaWQvaGlkLXBsYW50cm9uaWNzLmMNCj4+IEBAIC03Nywx
+MCArNzcsMTAgQEAgc3RhdGljIGludCBwbGFudHJvbmljc19pbnB1dF9tYXBwaW5nKHN0cnVjdCBo
+aWRfZGV2aWNlICpoZGV2LA0KPj4gICAgICAgICAgICAgICAgfQ0KPj4gICAgICAgIH0NCj4+ICAg
+ICAgICAvKiBoYW5kbGUgc3RhbmRhcmQgdHlwZXMgLSBwbHRfdHlwZSBpcyAweGZmYTB1dXV1IG9y
+IDB4ZmZhMnV1dXUgKi8NCj4+IC0gICAgIC8qICdiYXNpYyB0ZWxlcGhvbnkgY29tcGxpYW50JyAt
+IGFsbG93IGRlZmF1bHQgY29uc3VtZXIgcGFnZSBtYXAgKi8NCj4+ICsgICAgIC8qICdiYXNpYyB0
+ZWxlcGhvbnkgY29tcGxpYW50JyAtIGFsbG93IGRlZmF1bHQgY29uc3VtZXIgJiANCj4+ICsgdGVs
+ZXBob255IHBhZ2UgbWFwICovDQo+PiAgICAgICAgZWxzZSBpZiAoKHBsdF90eXBlICYgSElEX1VT
+QUdFKSA+PSBQTFRfQkFTSUNfVEVMRVBIT05ZICYmDQo+PiAgICAgICAgICAgICAgICAgKHBsdF90
+eXBlICYgSElEX1VTQUdFKSAhPSBQTFRfQkFTSUNfRVhDRVBUSU9OKSB7DQo+PiAtICAgICAgICAg
+ICAgIGlmIChQTFRfQUxMT1dfQ09OU1VNRVIpDQo+PiArICAgICAgICAgICAgIGlmIChQTFRfQUxM
+T1dfQ09OU1VNRVIgfHwgKHVzYWdlLT5oaWQgJiBISURfVVNBR0VfUEFHRSkgDQo+PiArID09IEhJ
+RF9VUF9URUxFUEhPTlkpDQo+PiAgICAgICAgICAgICAgICAgICAgICAgIGdvdG8gZGVmYXVsdGVk
+Ow0KPj4gICAgICAgIH0NCj4+ICAgICAgICAvKiBub3QgJ2Jhc2ljIHRlbGVwaG9ueScgLSBhcHBs
+eSBsZWdhY3kgbWFwcGluZyAqLw0KPj4gLS0NCj4+IDIuMzQuMQ0KPj4NCj4NCj4NCg0K
 
-The reason I added the comment to 32-bit leg is because most readers will
-not care about 32-bit mode. The comment will mostly be a distraction for
-majority. People who care about 32-bit mode will read the comment in 32-bit
-leg. I can move the comment to main block if you still want.
 
