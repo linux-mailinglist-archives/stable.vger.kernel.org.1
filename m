@@ -1,78 +1,122 @@
-Return-Path: <stable+bounces-77781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5DE59873EE
-	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 14:56:15 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC0FD98744B
+	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 15:15:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2FD131F223B8
-	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 12:56:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9DC72287992
+	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 13:15:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5EF118B1A;
-	Thu, 26 Sep 2024 12:56:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D9EF1CAB8;
+	Thu, 26 Sep 2024 13:15:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="YpSjNKKe"
+	dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b="rVDKN7PB"
 X-Original-To: stable@vger.kernel.org
 Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
 	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4E9712B73;
-	Thu, 26 Sep 2024 12:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E2144D8C8;
+	Thu, 26 Sep 2024 13:15:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=83.149.199.84
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727355369; cv=none; b=YKglIKwuhiNXh+qZ9PnMFqjveRgoso2VBlvKifCexpHKxTcpQXmJYRF5tPP1u4BnLhJ5ikqYygQf3uc4pHoWcB1WOKRSM0t10N6+RfIGyrwJcZVQroSDS6wrhcWsgQkcm50f7l6X6Ti7KxZ/96W30kWEuO6Dx/MMHG6dTXt+ihM=
+	t=1727356545; cv=none; b=tGdtZUEeu87WFvfZkyffAlTh63sro3qeLbqBs7gtKpj638qw6cwc6i3ibK/pcZX2dLIHyfs+y02vG8pr9+IKwu2mM9uC8eDSP+94VZCwjY7CRcBFzcrRXnIM01z8riF03EtuNDtvKJyamL1cKmf+e7cmOcBIzMeUp8Xgs3h3C0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727355369; c=relaxed/simple;
-	bh=Pgw05YNsAcMe/Ex72yusBrrrRiMTYpRCUiIhvzeDrz0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bu2Xfxo7l6Z9TMXNNPL4WR6Q8F2zDbKSIy2nPdY5iw9KVvX5gk8G/pxIV6zgPfFR+5bA07ecDf8ltM5Gp0AfReUWrh4BverNrsqzz7zVD2HRpFCNJNinCNpouWJenWC/tTXYTlVM76IhJIAneuHdxEF6xKfbjyjAm+Hx0OTAF5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=YpSjNKKe; arc=none smtp.client-ip=83.149.199.84
+	s=arc-20240116; t=1727356545; c=relaxed/simple;
+	bh=Li+NL/XbowcT+3OQ1OlrXptD+jGxB2P+QLxIIe9FIvk=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=B767iHcvQ6URAJ81SOoYzX3y/PL2qcivbyTV9ikrMsX9hfRIXn53V08zd0DBhAosKQNX0h9YT/+I4JBoM9X/HUQDf3XPwTTmWW5o5ySWJAdyaNO/H5gBKHFdtdxlxLGrp1eFbUutgtuvljUw2LKnnEflXGaqr93vrModrlt8Na4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru; spf=pass smtp.mailfrom=ispras.ru; dkim=pass (1024-bit key) header.d=ispras.ru header.i=@ispras.ru header.b=rVDKN7PB; arc=none smtp.client-ip=83.149.199.84
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ispras.ru
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ispras.ru
-Received: from fpc (unknown [10.10.165.10])
-	by mail.ispras.ru (Postfix) with ESMTPSA id EFF5240769D4;
-	Thu, 26 Sep 2024 12:56:03 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru EFF5240769D4
+Received: from fpc.intra.ispras.ru (unknown [10.10.165.10])
+	by mail.ispras.ru (Postfix) with ESMTPSA id 1A22840769D4;
+	Thu, 26 Sep 2024 13:15:41 +0000 (UTC)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 1A22840769D4
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-	s=default; t=1727355364;
-	bh=kzCP6gCWqEbVq/wqivZZeB6QattMUigWibOG/rUDeEI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YpSjNKKeCpz6XllMr5Wg/hGoC17hlWl9Oi1TspcXLZ3ZySB5Pl+a7WATEy56yAZdr
-	 t1v4N/DMfgKPIYcYZ/hxGApirZZ2+9bW/uBYGe/irjGLpyiBhO94OxDpVhiMyHpZUg
-	 1QrUd8Gp1fCOqRpu29Cm/MoRL09RmEyUnKx9IDA4=
-Date: Thu, 26 Sep 2024 15:55:59 +0300
+	s=default; t=1727356541;
+	bh=V+1BZuk4NADDOeMBUufinelDNbmT7wM3ps2z/rjNJpg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=rVDKN7PBCgiGyh+UHOSHd79VqylkxFbk6bMGovFBy+NyutDD6FwWwHWsWXv0n7v/R
+	 wgpwIWZ0Ae4ZjMjGYyaUMSce7dzgXOB6Fz74lxrSPdRbuAbdvQr3MCxBvgFWgL2/Mk
+	 fi5xMb43n9l71gtypxNkFKXVozMDOSU/xnoPa2hY=
 From: Fedor Pchelkin <pchelkin@ispras.ru>
-To: Ping-Ke Shih <pkshih@realtek.com>, stable@vger.kernel.org
-Cc: linux-wireless@vger.kernel.org, johannes@sipsolutions.net,
+To: stable@vger.kernel.org
+Cc: Fedor Pchelkin <pchelkin@ispras.ru>,
+	Ping-Ke Shih <pkshih@realtek.com>,
+	Johannes Berg <johannes@sipsolutions.net>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH stable 6.6] Revert "wifi: cfg80211: check wiphy mutex is
- held for wdev mutex"
-Message-ID: <20240926-e996eb88183b3fc4a05bb4eb-pchelkin@ispras.ru>
-References: <20240926-0b7fe990233f57538c94891d-pchelkin@ispras.ru>
+	Sasha Levin <sashal@kernel.org>,
+	linux-wireless@vger.kernel.org
+Subject: [PATCH 6.1] Revert "wifi: cfg80211: check wiphy mutex is held for wdev mutex"
+Date: Thu, 26 Sep 2024 16:14:37 +0300
+Message-Id: <20240926131437.34326-1-pchelkin@ispras.ru>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240926-0b7fe990233f57538c94891d-pchelkin@ispras.ru>
+Content-Transfer-Encoding: 8bit
 
-On Thu, 26. Sep 15:32, Fedor Pchelkin wrote:
-> The patch was also backported to 5.15 and 6.1 stables where it's causing
-> the same splats.
-> https://lore.kernel.org/stable/20240918-d150ee61d40b8f327d65bbf3-pchelkin@ispras.ru/
-> 
-> Need to revert it there, too. Should I send the explicit reverts to the
-> mailing list?
+This reverts commit 19d13ec00a8b1d60c5cc06bd0006b91d5bd8d46f.
 
-And I missed the In-Reply-To tag so that the context is missed, sorry..
-Please ignore this one.
+The reverted commit is based on implementation of wiphy locking that isn't
+planned to redo on a stable kernel, so revert it to avoid warnings in
+different parts of wireless stack where wdev_lock() is held, like:
 
-I'll send the reply to the suitable mail-thread and will prepare the
-explicit reverts.
+WARNING: CPU: 0 PID: 4727 at net/wireless/core.h:231 cfg80211_is_all_idle net/wireless/sme.c:692 [inline]
+WARNING: CPU: 0 PID: 4727 at net/wireless/core.h:231 disconnect_work+0x246/0x340 net/wireless/sme.c:706
+Modules linked in:
+CPU: 0 PID: 4727 Comm: kworker/0:8 Not tainted 6.1.111-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+Workqueue: events disconnect_work
+RIP: 0010:wdev_lock net/wireless/core.h:231 [inline]
+Call Trace:
+ <TASK>
+ process_one_work+0x8a9/0x11d0 kernel/workqueue.c:2292
+ worker_thread+0xa47/0x1200 kernel/workqueue.c:2439
+ kthread+0x28d/0x320 kernel/kthread.c:376
+ ret_from_fork+0x1f/0x30 arch/x86/entry/entry_64.S:295
+
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+---
+ net/wireless/core.h | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
+
+diff --git a/net/wireless/core.h b/net/wireless/core.h
+index 8118b8614ac6..ee980965a7cf 100644
+--- a/net/wireless/core.h
++++ b/net/wireless/core.h
+@@ -228,7 +228,6 @@ void cfg80211_register_wdev(struct cfg80211_registered_device *rdev,
+ static inline void wdev_lock(struct wireless_dev *wdev)
+ 	__acquires(wdev)
+ {
+-	lockdep_assert_held(&wdev->wiphy->mtx);
+ 	mutex_lock(&wdev->mtx);
+ 	__acquire(wdev->mtx);
+ }
+@@ -236,16 +235,11 @@ static inline void wdev_lock(struct wireless_dev *wdev)
+ static inline void wdev_unlock(struct wireless_dev *wdev)
+ 	__releases(wdev)
+ {
+-	lockdep_assert_held(&wdev->wiphy->mtx);
+ 	__release(wdev->mtx);
+ 	mutex_unlock(&wdev->mtx);
+ }
+ 
+-static inline void ASSERT_WDEV_LOCK(struct wireless_dev *wdev)
+-{
+-	lockdep_assert_held(&wdev->wiphy->mtx);
+-	lockdep_assert_held(&wdev->mtx);
+-}
++#define ASSERT_WDEV_LOCK(wdev) lockdep_assert_held(&(wdev)->mtx)
+ 
+ static inline bool cfg80211_has_monitors_only(struct cfg80211_registered_device *rdev)
+ {
+-- 
+2.39.5
+
 
