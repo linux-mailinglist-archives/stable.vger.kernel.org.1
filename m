@@ -1,179 +1,125 @@
-Return-Path: <stable+bounces-77768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 451D0986FC5
-	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 11:16:48 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 82C79986FD0
+	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 11:17:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 67CED1C2374E
-	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 09:16:47 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3E64D281833
+	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 09:17:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C28951A7AD0;
-	Thu, 26 Sep 2024 09:16:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2CF21A38E6;
+	Thu, 26 Sep 2024 09:17:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b="YQG9FEOi"
+	dkim=fail reason="signature verification failed" (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b="rJqhRxg4"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
+Received: from nbd.name (nbd.name [46.4.11.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A760A13D62B
-	for <stable@vger.kernel.org>; Thu, 26 Sep 2024 09:16:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.125.188.123
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1B7F1537A8;
+	Thu, 26 Sep 2024 09:17:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.4.11.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727342196; cv=none; b=qHFWjpWrO83AyOP/HA9g3UovjhufSYqDkj6HWu4WhpgNjLNsGEm6p/J+TJr7xMxsNK+WRcoDeAsf25Y84A8MRetulS6CvWgXD6mncAvLJYVkwLoVQlU6U3F/j3j2zSVyTcJOnOIp8z5q0eqSFsX6V/wWLFr9HPhG+gdXVrwClVk=
+	t=1727342267; cv=none; b=bW48aaqq5rRnH1KERbuu9k9vD/OgRHiqrsZWd+MSdp5BglYIhHCgpb1nXSq92k1IEH6HQwQ9b913dAfA3FnKSVbtD2l03iBrPkX32L4pBT7lqFWL5NpVVrYHltp/1JwdpTM5UBzMAT9y60M87QbhbGvjg95w+tRgnOkLqHJdR4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727342196; c=relaxed/simple;
-	bh=7PkzOUnuPkgQ3LtHursG8Iucx2zFyr8ihELw1sXDK/M=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oBBatzccutsGj0k7y0rrkgakGhGIlvNz+EoddhVYzcd4r0n3U5Qb48+WtW/kLECUiD3Qfb3okk+CJ2x+KnDriPzZDOqlqw8G3dI443LIiMPts7OuwmxMcgIuIHA6eT7BHFJ8b+FLtMnyQK0zsK9vfY3BSUrjZ7NuCTJc7FTsPUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com; spf=pass smtp.mailfrom=canonical.com; dkim=pass (2048-bit key) header.d=canonical.com header.i=@canonical.com header.b=YQG9FEOi; arc=none smtp.client-ip=185.125.188.123
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=canonical.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=canonical.com
-Received: from mail-vk1-f199.google.com (mail-vk1-f199.google.com [209.85.221.199])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id 224093F180
-	for <stable@vger.kernel.org>; Thu, 26 Sep 2024 09:16:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-	s=20210705; t=1727342187;
-	bh=kdMJjD4opcK8pwxBZ4G695jfmJjislpk7/g9KxdUbMA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type;
-	b=YQG9FEOiOGEesE/vjhGrI/K7ngzkMv8d2Uxk3xLiIu7f3aXxEtqsbelUKPkbOgfYI
-	 l7arXDJN9S+cB81ex8TTP/fVxUKp4oMh+Uwj0hYmlL1hNKnY3+B7dmP6AXSaOdhoaQ
-	 HnUt4JEAlD3Pp1taM90NXj1hx1ljHtqQOSBBwx9yYE5Yg/8J2ABOdfwIL9cxxc0yEh
-	 VRTRmwMhuGV2+MOESJyy8pZ7Bkc3IZgejl+e4OjxHV8jPdoCMfI5sTr8q9mPgYEXBV
-	 6OP/xr462LiJLFaiV4Px5JkYOVI4Po4JBNPPlxnWWqblStya1wVK7+4xxFl5Je4f+v
-	 M8RjBQCqbGWEw==
-Received: by mail-vk1-f199.google.com with SMTP id 71dfb90a1353d-502d011b041so250898e0c.2
-        for <stable@vger.kernel.org>; Thu, 26 Sep 2024 02:16:27 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727342186; x=1727946986;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=kdMJjD4opcK8pwxBZ4G695jfmJjislpk7/g9KxdUbMA=;
-        b=LxZOtPGeKcb4fBmC+K/wVAl/uOChvVV63DIZGTEhR7CujvhXBj0NWv45NHN1ssPD8T
-         wAsGhcz7I538n73qNf6Hv7A5ccD04DtOjb+2nlis2aI6Q3bpCYhpRbMU5JEbqkH/Pgb9
-         LCfP0ySuZAPuoIAlHcvEZCV7f0BAltz+wxvYKKxQAxuiqNwx/h1p0L6th+FU2OAA6cLC
-         5XPOg2BsQnquWVLjogFggjwEZcG/PhTMhm9ompR2LjK+CCiPD11tNjPveGgYH6Hmlu4D
-         VmEBSzhuBZM4Mmabk582vNkueSJVVCv1iZysdZo9mrFm2saINwOIYZiIO/A50HH+9EOO
-         akmA==
-X-Forwarded-Encrypted: i=1; AJvYcCVKysQyi5LNCuuYZBrFmueG71z+hUDspVa3R+n7Qo4ddx8TDQl+xBrrC7ZDb3dVTTpIreOgJF4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzu/3pPYxXut4iQdmP2WTfMbu2zTMtq57pxz8xy0zabdoZUcn9b
-	xhIf+FIbm4lPys4cDlsGG/jT6R690srDQgJ3K+sXY4Cm3uh9+LPTJ+Pd3kImnCbIDpgUokRKdb5
-	HxYJBLjHnpbvmTrIB5uTtGTNbSFqBtSxscAytOOyU7mwUUJyYZEQeRJa8Ai7VAQC1azKjYHf1b9
-	npDOtSCYZZcVNP1ZF+fjrc3ESIKp0VmK3gHhdZ3ysXmkn4
-X-Received: by 2002:a05:6122:1ad2:b0:4ef:53ad:97bd with SMTP id 71dfb90a1353d-505c1d785f8mr6687405e0c.3.1727342185768;
-        Thu, 26 Sep 2024 02:16:25 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHR3msiAwchookUE9Ihf5EsDoE38TLBraGCf/1zdqN40ufE7jE1N/koOITa7IqCiTgfKipTai/pknyfcKtKkPI=
-X-Received: by 2002:a05:6122:1ad2:b0:4ef:53ad:97bd with SMTP id
- 71dfb90a1353d-505c1d785f8mr6687385e0c.3.1727342185405; Thu, 26 Sep 2024
- 02:16:25 -0700 (PDT)
+	s=arc-20240116; t=1727342267; c=relaxed/simple;
+	bh=uWoviCagIDzNcaj6dcBu/83WgK6mT1q3axkyXVUhNqw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=eM1UYPyGClhACdKhYvtp1bJ48uaytKstneUn14Po/Y3y9vpAUs0R5SACbL7A+bH771uuBvkH88/ecgoNMNEpxw8RHoTeyx2h2R5TAV7Sfm7rl6eCxjleaYTfj4kiTXzoCA1bDh8C93iCVOj3iLFy2Qnn+LiZqoZTjARbDMxxn2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name; spf=none smtp.mailfrom=nbd.name; dkim=pass (1024-bit key) header.d=nbd.name header.i=@nbd.name header.b=rJqhRxg4; arc=none smtp.client-ip=46.4.11.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nbd.name
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=nbd.name
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=nbd.name;
+	s=20160729; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=jdh5APkkz5QJ+pHXD6WZ3pE5bjKYt07eMwQdL/qBTgs=; b=rJqhRxg47kcLNe2JU2A0i3vdyU
+	fZL90CGOTcyC/4WT8MP2WqxCxOjKPKcV6P9TOiqvfGqRiW/qbG93AlUUQ4nfJiO8l7v45xgRYGEP1
+	9QwHPXd49xLQUEzHQ+Cirum7vPXq8YGDy4iebwR6hBOSqkYqmCG9JKQ/yeifZjSWT5Zc=;
+Received: from p4ff130c8.dip0.t-ipconnect.de ([79.241.48.200] helo=nf.local)
+	by ds12 with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
+	(Exim 4.96)
+	(envelope-from <nbd@nbd.name>)
+	id 1stkcy-001K50-1F;
+	Thu, 26 Sep 2024 11:17:36 +0200
+Message-ID: <daf225a9-8194-40c6-b797-8ab37de773a0@nbd.name>
+Date: Thu, 26 Sep 2024 11:17:34 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240925143325.518508-1-aleksandr.mikhalitsyn@canonical.com>
- <20240925143325.518508-2-aleksandr.mikhalitsyn@canonical.com>
- <20240925155706.zad2euxxuq7h6uja@quack3> <142a28f9-5954-47f6-9c0c-26f7c142dbc1@huawei.com>
-In-Reply-To: <142a28f9-5954-47f6-9c0c-26f7c142dbc1@huawei.com>
-From: Aleksandr Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
-Date: Thu, 26 Sep 2024 11:16:07 +0200
-Message-ID: <CAEivzxc-b-QDx8AEdHEwa06Q2TYgZZkw2PWQ+K_Lyf+oyTM1Zg@mail.gmail.com>
-Subject: Re: [PATCH 1/1] ext4: fix crash on BUG_ON in ext4_alloc_group_tables
-To: Baokun Li <libaokun1@huawei.com>
-Cc: Jan Kara <jack@suse.cz>, tytso@mit.edu, stable@vger.kernel.org, 
-	Andreas Dilger <adilger.kernel@dilger.ca>, =?UTF-8?Q?St=C3=A9phane_Graber?= <stgraber@stgraber.org>, 
-	Christian Brauner <brauner@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, linux-ext4@vger.kernel.org, 
-	Wesley Hershberger <wesley.hershberger@canonical.com>, Yang Erkun <yangerkun@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] gso: fix gso fraglist segmentation after pull from
+ frag_list
+To: Willem de Bruijn <willemdebruijn.kernel@gmail.com>, netdev@vger.kernel.org
+Cc: davem@davemloft.net, kuba@kernel.org, edumazet@google.com,
+ pabeni@redhat.com, stable@vger.kernel.org, maze@google.com,
+ shiming.cheng@mediatek.com, daniel@iogearbox.net, lena.wang@mediatek.com,
+ herbert@gondor.apana.org.au, Willem de Bruijn <willemb@google.com>
+References: <20240922150450.3873767-1-willemdebruijn.kernel@gmail.com>
+From: Felix Fietkau <nbd@nbd.name>
+Content-Language: en-US
+Autocrypt: addr=nbd@nbd.name; keydata=
+ xsDiBEah5CcRBADIY7pu4LIv3jBlyQ/2u87iIZGe6f0f8pyB4UjzfJNXhJb8JylYYRzIOSxh
+ ExKsdLCnJqsG1PY1mqTtoG8sONpwsHr2oJ4itjcGHfn5NJSUGTbtbbxLro13tHkGFCoCr4Z5
+ Pv+XRgiANSpYlIigiMbOkide6wbggQK32tC20QxUIwCg4k6dtV/4kwEeiOUfErq00TVqIiEE
+ AKcUi4taOuh/PQWx/Ujjl/P1LfJXqLKRPa8PwD4j2yjoc9l+7LptSxJThL9KSu6gtXQjcoR2
+ vCK0OeYJhgO4kYMI78h1TSaxmtImEAnjFPYJYVsxrhay92jisYc7z5R/76AaELfF6RCjjGeP
+ wdalulG+erWju710Bif7E1yjYVWeA/9Wd1lsOmx6uwwYgNqoFtcAunDaMKi9xVQW18FsUusM
+ TdRvTZLBpoUAy+MajAL+R73TwLq3LnKpIcCwftyQXK5pEDKq57OhxJVv1Q8XkA9Dn1SBOjNB
+ l25vJDFAT9ntp9THeDD2fv15yk4EKpWhu4H00/YX8KkhFsrtUs69+vZQwc0cRmVsaXggRmll
+ dGthdSA8bmJkQG5iZC5uYW1lPsJgBBMRAgAgBQJGoeQnAhsjBgsJCAcDAgQVAggDBBYCAwEC
+ HgECF4AACgkQ130UHQKnbvXsvgCgjsAIIOsY7xZ8VcSm7NABpi91yTMAniMMmH7FRenEAYMa
+ VrwYTIThkTlQzsFNBEah5FQQCACMIep/hTzgPZ9HbCTKm9xN4bZX0JjrqjFem1Nxf3MBM5vN
+ CYGBn8F4sGIzPmLhl4xFeq3k5irVg/YvxSDbQN6NJv8o+tP6zsMeWX2JjtV0P4aDIN1pK2/w
+ VxcicArw0VYdv2ZCarccFBgH2a6GjswqlCqVM3gNIMI8ikzenKcso8YErGGiKYeMEZLwHaxE
+ Y7mTPuOTrWL8uWWRL5mVjhZEVvDez6em/OYvzBwbkhImrryF29e3Po2cfY2n7EKjjr3/141K
+ DHBBdgXlPNfDwROnA5ugjjEBjwkwBQqPpDA7AYPvpHh5vLbZnVGu5CwG7NAsrb2isRmjYoqk
+ wu++3117AAMFB/9S0Sj7qFFQcD4laADVsabTpNNpaV4wAgVTRHKV/kC9luItzwDnUcsZUPdQ
+ f3MueRJ3jIHU0UmRBG3uQftqbZJj3ikhnfvyLmkCNe+/hXhPu9sGvXyi2D4vszICvc1KL4RD
+ aLSrOsROx22eZ26KqcW4ny7+va2FnvjsZgI8h4sDmaLzKczVRIiLITiMpLFEU/VoSv0m1F4B
+ FtRgoiyjFzigWG0MsTdAN6FJzGh4mWWGIlE7o5JraNhnTd+yTUIPtw3ym6l8P+gbvfoZida0
+ TspgwBWLnXQvP5EDvlZnNaKa/3oBes6z0QdaSOwZCRA3QSLHBwtgUsrT6RxRSweLrcabwkkE
+ GBECAAkFAkah5FQCGwwACgkQ130UHQKnbvW2GgCeMncXpbbWNT2AtoAYICrKyX5R3iMAoMhw
+ cL98efvrjdstUfTCP2pfetyN
+In-Reply-To: <20240922150450.3873767-1-willemdebruijn.kernel@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Sep 26, 2024 at 10:29=E2=80=AFAM Baokun Li <libaokun1@huawei.com> w=
-rote:
->
-> On 2024/9/25 23:57, Jan Kara wrote:
-> > On Wed 25-09-24 16:33:24, Alexander Mikhalitsyn wrote:
-> >> [   33.882936] EXT4-fs (dm-5): mounted filesystem 8aaf41b2-6ac0-4fa8-b=
-92b-77d10e1d16ca r/w with ordered data mode. Quota mode: none.
-> >> [   33.888365] EXT4-fs (dm-5): resizing filesystem from 7168 to 786432=
- blocks
-> >> [   33.888740] ------------[ cut here ]------------
-> >> [   33.888742] kernel BUG at fs/ext4/resize.c:324!
-> > Ah, I was staring at this for a while before I understood what's going =
-on
-> > (it would be great to explain this in the changelog BTW).  As far as I
-> > understand commit 665d3e0af4d3 ("ext4: reduce unnecessary memory alloca=
-tion
-> > in alloc_flex_gd()") can actually make flex_gd->resize_bg larger than
-> > flexbg_size (for example when ogroup =3D flexbg_size, ngroup =3D 2*flex=
-bg_size
-> > - 1) which then confuses things. I think that was not really intended a=
-nd
-> > instead of fixing up ext4_alloc_group_tables() we should really change
-> > the logic in alloc_flex_gd() to make sure flex_gd->resize_bg never exce=
-eds
-> > flexbg size. Baokun?
-> >
-> >                                                               Honza
->
-> Hi Honza,
->
-> Your analysis is absolutely correct. It's a bug!
-> Thank you for locating this issue=EF=BC=81
-> An extra 1 should not be added when calculating resize_bg in
-> alloc_flex_gd().
->
->
-> Hi Aleksandr,
+On 22.09.24 17:03, Willem de Bruijn wrote:
+> From: Willem de Bruijn <willemb@google.com>
+> 
+> Detect gso fraglist skbs with corrupted geometry (see below) and
+> pass these to skb_segment instead of skb_segment_list, as the first
+> can segment them correctly.
+> 
+> Valid SKB_GSO_FRAGLIST skbs
+> - consist of two or more segments
+> - the head_skb holds the protocol headers plus first gso_size
+> - one or more frag_list skbs hold exactly one segment
+> - all but the last must be gso_size
+> 
+> Optional datapath hooks such as NAT and BPF (bpf_skb_pull_data) can
+> modify these skbs, breaking these invariants.
+> 
+> In extreme cases they pull all data into skb linear. For UDP, this
+> causes a NULL ptr deref in __udpv4_gso_segment_list_csum at
+> udp_hdr(seg->next)->dest.
+> 
+> Detect invalid geometry due to pull, by checking head_skb size.
+> Don't just drop, as this may blackhole a destination. Convert to be
+> able to pass to regular skb_segment.
+> 
+> Link: https://lore.kernel.org/netdev/20240428142913.18666-1-shiming.cheng@mediatek.com/
+> Fixes: 3a1296a38d0c ("net: Support GRO/GSO fraglist chaining.")
+> Signed-off-by: Willem de Bruijn <willemb@google.com>
+> Cc: stable@vger.kernel.org
 
-Hi Baokun,
-
->
-> Could you help test if the following changes work?
-
-I can confirm that this patch helps.
-
-Tested-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
-
-Kind regards,
-Alex
-
->
->
-> Thanks,
-> Baokun
->
-> ---
->
-> diff --git a/fs/ext4/resize.c b/fs/ext4/resize.c
-> index e04eb08b9060..1f01a7632149 100644
-> --- a/fs/ext4/resize.c
-> +++ b/fs/ext4/resize.c
-> @@ -253,10 +253,12 @@ static struct ext4_new_flex_group_data
-> *alloc_flex_gd(unsigned int flexbg_size,
->          /* Avoid allocating large 'groups' array if not needed */
->          last_group =3D o_group | (flex_gd->resize_bg - 1);
->          if (n_group <=3D last_group)
-> -               flex_gd->resize_bg =3D 1 << fls(n_group - o_group + 1);
-> +               flex_gd->resize_bg =3D 1 << fls(n_group - o_group);
->          else if (n_group - last_group < flex_gd->resize_bg)
-> -               flex_gd->resize_bg =3D 1 << max(fls(last_group - o_group =
-+ 1),
-> +               flex_gd->resize_bg =3D 1 << max(fls(last_group - o_group)=
-,
->                                                fls(n_group - last_group))=
-;
->
->          flex_gd->groups =3D kmalloc_array(flex_gd->resize_bg,
->                                          sizeof(struct ext4_new_group_dat=
-a),
->
+Reviewed-by: Felix Fietkau <nbd@nbd.name>
 
