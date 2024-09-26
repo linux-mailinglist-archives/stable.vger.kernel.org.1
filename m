@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-77819-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77820-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4618D987A45
-	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 23:04:13 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78B10987A46
+	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 23:04:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CEF2A284963
-	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 21:04:11 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id DEFB21F24A0F
+	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 21:04:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C71B15A85B;
-	Thu, 26 Sep 2024 21:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90092184544;
+	Thu, 26 Sep 2024 21:04:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="vBsYZ8wq"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="LNYjgQjZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 226C2535D8;
-	Thu, 26 Sep 2024 21:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EB8C28371;
+	Thu, 26 Sep 2024 21:04:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727384647; cv=none; b=iOYBI9owejuh9Xjf6QqxK8iFJheRWcqUfEbNG8vvozHsYMLNjKshaPigQGNJyKlpkT4C1gnox+Rw1uJF5gGmEemOoVc7BXB0GGKfS0n2zBLNCWte/t+FE8du/o3AEdqZ4VeL/a/XRMdOE5biwDYYK18kH4dElxx7PSTvlJCnpoM=
+	t=1727384649; cv=none; b=mFMZwMZIeXtrqpM3JsoINkmCdQJAtOv4gQFijFYDiO26J6Jssd4nBMJPrcjDLHOHblkmC3UNv8b2TEg3HvNoJLRy0x8CJ6aAWAULa4yMinLID1Sx0bpbg+yCoSwasAMFR3J9IYksIooV7MYSMc3TNO/j8XG8APaWMkoXLOpM9+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727384647; c=relaxed/simple;
-	bh=myBxhbvXkF+uFjwKaGsVG7dtZn9U/SVQvtjmBJDw5RE=;
-	h=Date:To:From:Subject:Message-Id; b=rBaDBH57O3f+NQGwIDibBwYIreZp6rhxM9yCLGs/3dg+5Aa7ncP7MmQV7iHRbxiWHHnj2vR1LuZooiBJcRMoh256N8g3dcReoRzt3fksVm3GBFcimj9nfeMazBolGYwfefG1qnKC5gflDzHCuow8dNP9mGufkhwGwhBB1F1WYV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=vBsYZ8wq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97543C4CEC5;
-	Thu, 26 Sep 2024 21:04:06 +0000 (UTC)
+	s=arc-20240116; t=1727384649; c=relaxed/simple;
+	bh=VvBdKj+W2U5/Yt/pOj/u0EVQCdwIdQoRAskCLA2c6hI=;
+	h=Date:To:From:Subject:Message-Id; b=lFvnMWUhz2OuNGehbmA4S2ZFkXDwTx1KZRB81ZEfefz2C6FGF+iSYxx6lInYA+IF1tBGBjEHYcO78l0NHLix2zy7MJhWXPj46RM0TUQYQGSPp0/Pgx10nrdFzMb3FQu3CEU8Ls5jT/r/F3/RQ2P8L7fxK6BlnXob5rCNLqvfZ6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=LNYjgQjZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA507C4CEC7;
+	Thu, 26 Sep 2024 21:04:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1727384646;
-	bh=myBxhbvXkF+uFjwKaGsVG7dtZn9U/SVQvtjmBJDw5RE=;
+	s=korg; t=1727384648;
+	bh=VvBdKj+W2U5/Yt/pOj/u0EVQCdwIdQoRAskCLA2c6hI=;
 	h=Date:To:From:Subject:From;
-	b=vBsYZ8wq6kILgTIBcq/OW+l7aHykya8XqWXfScsnJHNRkGLbRDvZDvOu6Ky5IpjSP
-	 kS2S95C+CmtMi8IHRmuWPZUQjj2NX/E4TewmbuNzyyzwuGNlPEjcqdSa9BvAgFiIBc
-	 MJBy0REIdDiqUTIS4j5ToprySI9D6oF8ECn8PK6Y=
-Date: Thu, 26 Sep 2024 14:04:05 -0700
-To: mm-commits@vger.kernel.org,willy@infradead.org,vbabka@suse.cz,stable@vger.kernel.org,sidhartha.kumar@oracle.com,Liam.Howlett@oracle.com,lorenzo.stoakes@oracle.com,akpm@linux-foundation.org
+	b=LNYjgQjZnpfWjPjOSs/HWbBuSxDuBaAHz3voi1FFc+kbI01KgzpWyp07tzdNhA4/V
+	 4XY7NX3louEvO8pXU80ubkkcx/LRTAVi+5R/4/HY5xV7OyOHARlm3AaJg11q0lvh+Y
+	 HrGPAAsz5xgtIyOPO8cqt5nY1GSgwzk760iLcClc=
+Date: Thu, 26 Sep 2024 14:04:08 -0700
+To: mm-commits@vger.kernel.org,willy@infradead.org,vivek.kasireddy@intel.com,stable@vger.kernel.org,peterx@redhat.com,muchun.song@linux.dev,jgg@nvidia.com,david@redhat.com,steven.sistare@oracle.com,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] tools-fix-shared-radix-tree-build.patch removed from -mm tree
-Message-Id: <20240926210406.97543C4CEC5@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-filemap-fix-filemap_get_folios_contig-thp-panic.patch removed from -mm tree
+Message-Id: <20240926210408.CA507C4CEC7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,102 +50,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: tools: fix shared radix-tree build
+     Subject: mm/filemap: fix filemap_get_folios_contig THP panic
 has been removed from the -mm tree.  Its filename was
-     tools-fix-shared-radix-tree-build.patch
+     mm-filemap-fix-filemap_get_folios_contig-thp-panic.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Subject: tools: fix shared radix-tree build
-Date: Tue, 24 Sep 2024 19:07:24 +0100
+From: Steve Sistare <steven.sistare@oracle.com>
+Subject: mm/filemap: fix filemap_get_folios_contig THP panic
+Date: Tue, 3 Sep 2024 07:25:17 -0700
 
-The shared radix-tree build is not correctly recompiling when
-lib/maple_tree.c and lib/test_maple_tree.c are modified - fix this by
-adding these core components to the SHARED_DEPS list.
+Patch series "memfd-pin huge page fixes".
 
-Additionally, add missing header guards to shared header files.
+Fix multiple bugs that occur when using memfd_pin_folios with hugetlb
+pages and THP.  The hugetlb bugs only bite when the page is not yet
+faulted in when memfd_pin_folios is called.  The THP bug bites when the
+starting offset passed to memfd_pin_folios is not huge page aligned.  See
+the commit messages for details.
 
-Link: https://lkml.kernel.org/r/20240924180724.112169-1-lorenzo.stoakes@oracle.com
-Fixes: 74579d8dab47 ("tools: separate out shared radix-tree components")
-Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Tested-by: Sidhartha Kumar <sidhartha.kumar@oracle.com>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+
+This patch (of 5):
+
+memfd_pin_folios on memory backed by THP panics if the requested start
+offset is not huge page aligned:
+
+BUG: kernel NULL pointer dereference, address: 0000000000000036
+RIP: 0010:filemap_get_folios_contig+0xdf/0x290
+RSP: 0018:ffffc9002092fbe8 EFLAGS: 00010202
+RAX: 0000000000000002 RBX: 0000000000000002 RCX: 0000000000000002
+
+The fault occurs here, because xas_load returns a folio with value 2:
+
+    filemap_get_folios_contig()
+        for (folio = xas_load(&xas); folio && xas.xa_index <= end;
+                        folio = xas_next(&xas)) {
+                ...
+                if (!folio_try_get(folio))   <-- BOOM
+
+"2" is an xarray sibling entry.  We get it because memfd_pin_folios does
+not round the indices passed to filemap_get_folios_contig to huge page
+boundaries for THP, so we load from the middle of a huge page range see a
+sibling.  (It does round for hugetlbfs, at the is_file_hugepages test).
+
+To fix, if the folio is a sibling, then return the next index as the
+starting point for the next call to filemap_get_folios_contig.
+
+Link: https://lkml.kernel.org/r/1725373521-451395-1-git-send-email-steven.sistare@oracle.com
+Link: https://lkml.kernel.org/r/1725373521-451395-2-git-send-email-steven.sistare@oracle.com
+Fixes: 89c1905d9c14 ("mm/gup: introduce memfd_pin_folios() for pinning memfd folios")
+Signed-off-by: Steve Sistare <steven.sistare@oracle.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>
 Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Vivek Kasireddy <vivek.kasireddy@intel.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- tools/testing/shared/maple-shared.h  |    4 ++++
- tools/testing/shared/shared.h        |    4 ++++
- tools/testing/shared/shared.mk       |    4 +++-
- tools/testing/shared/xarray-shared.h |    4 ++++
- 4 files changed, 15 insertions(+), 1 deletion(-)
+ mm/filemap.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/tools/testing/shared/maple-shared.h~tools-fix-shared-radix-tree-build
-+++ a/tools/testing/shared/maple-shared.h
-@@ -1,4 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0+ */
-+#ifndef __MAPLE_SHARED_H__
-+#define __MAPLE_SHARED_H__
+--- a/mm/filemap.c~mm-filemap-fix-filemap_get_folios_contig-thp-panic
++++ a/mm/filemap.c
+@@ -2196,6 +2196,10 @@ unsigned filemap_get_folios_contig(struc
+ 		if (xa_is_value(folio))
+ 			goto update_start;
  
- #define CONFIG_DEBUG_MAPLE_TREE
- #define CONFIG_MAPLE_SEARCH
-@@ -7,3 +9,5 @@
- #include <stdlib.h>
- #include <time.h>
- #include "linux/init.h"
++		/* If we landed in the middle of a THP, continue at its end. */
++		if (xa_is_sibling(folio))
++			goto update_start;
 +
-+#endif /* __MAPLE_SHARED_H__ */
---- a/tools/testing/shared/shared.h~tools-fix-shared-radix-tree-build
-+++ a/tools/testing/shared/shared.h
-@@ -1,4 +1,6 @@
- /* SPDX-License-Identifier: GPL-2.0 */
-+#ifndef __SHARED_H__
-+#define __SHARED_H__
+ 		if (!folio_try_get(folio))
+ 			goto retry;
  
- #include <linux/types.h>
- #include <linux/bug.h>
-@@ -31,3 +33,5 @@
- #ifndef dump_stack
- #define dump_stack()	assert(0)
- #endif
-+
-+#endif /* __SHARED_H__ */
---- a/tools/testing/shared/shared.mk~tools-fix-shared-radix-tree-build
-+++ a/tools/testing/shared/shared.mk
-@@ -15,7 +15,9 @@ SHARED_DEPS = Makefile ../shared/shared.
- 	../../../include/linux/maple_tree.h \
- 	../../../include/linux/radix-tree.h \
- 	../../../lib/radix-tree.h \
--	../../../include/linux/idr.h
-+	../../../include/linux/idr.h \
-+	../../../lib/maple_tree.c \
-+	../../../lib/test_maple_tree.c
- 
- ifndef SHIFT
- 	SHIFT=3
---- a/tools/testing/shared/xarray-shared.h~tools-fix-shared-radix-tree-build
-+++ a/tools/testing/shared/xarray-shared.h
-@@ -1,4 +1,8 @@
- /* SPDX-License-Identifier: GPL-2.0+ */
-+#ifndef __XARRAY_SHARED_H__
-+#define __XARRAY_SHARED_H__
- 
- #define XA_DEBUG
- #include "shared.h"
-+
-+#endif /* __XARRAY_SHARED_H__ */
 _
 
-Patches currently in -mm which might be from lorenzo.stoakes@oracle.com are
+Patches currently in -mm which might be from steven.sistare@oracle.com are
 
-selftests-mm-add-pkey_sighandler_xx-hugetlb_dio-to-gitignore.patch
-mm-refactor-mm_access-to-not-return-null.patch
-mm-refactor-mm_access-to-not-return-null-fix.patch
-mm-madvise-unrestrict-process_madvise-for-current-process.patch
 
 
