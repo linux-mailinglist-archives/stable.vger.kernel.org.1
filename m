@@ -1,47 +1,47 @@
-Return-Path: <stable+bounces-77828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77829-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CEA7987A4E
-	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 23:04:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58CB7987A4F
+	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 23:04:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF486284AC2
-	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 21:04:37 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7D0511C227C8
+	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 21:04:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CACBC185B69;
-	Thu, 26 Sep 2024 21:04:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ABDE18592D;
+	Thu, 26 Sep 2024 21:04:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="MDnhLVFb"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="CeaFFzZ0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8860B184556;
-	Thu, 26 Sep 2024 21:04:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4861B184544;
+	Thu, 26 Sep 2024 21:04:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727384659; cv=none; b=JRrrAEzxThUfx99I0Einc+Wa5zoaUzzTCTlieda4VPlZSoQHuLQA+BRVAS5tqO5tV/Va3xRMWXzDgX8vvMyyBQ9qJr8yW0tmRRg1zn7PWT8gytZyW1vuZp+UzmKfj/gLOvPp7D18+IRq9ElhBnCPXJSdR8ZVdyPbYsP+zFxNIgY=
+	t=1727384661; cv=none; b=PF/Y+ZtdvEvoqcHQGNKKIsc2VLwhrfN7b8EU//SeuykCa8aCxtkAPTZYI1OLOnyPdzfNZPvnBcp6iR6pEQ5XhvOs4MvFMvqUPzOooilox7TZZ5N8sabt+F91qcl52leoToVHxAdTamAB5kbWynNXllEVnqjjbEIMBkMCbde62a8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727384659; c=relaxed/simple;
-	bh=9Fi9n4pu634gmjGsIHRvNmdNUvgrQ/o/fVpX5AxNvkY=;
-	h=Date:To:From:Subject:Message-Id; b=eAf8AasfUj+huzUTLtZSgzrT+Lfh25zYk66MZa4F/dM98HQgUHwthSaQmmqCDVusGXVN5tPHbNUEsX/2V6gwK2iOsKwJRlf5edo9LwVM2Q0w/EuENh5B1JnFzEE29r93NaEb6glAsAkaz6myMbG0S92HM8/hpY4v3Baq4BK//TE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=MDnhLVFb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 246BFC4CEC5;
-	Thu, 26 Sep 2024 21:04:18 +0000 (UTC)
+	s=arc-20240116; t=1727384661; c=relaxed/simple;
+	bh=2QiXmwATO2PQRl8qp/YEt04Lq/XRjvzs4kEBezlAi+Y=;
+	h=Date:To:From:Subject:Message-Id; b=AZxzCXYaLmoth5jn2XTMcMnKFtg2tLWYbJQdYE9GrggS2QxBMXaZofTy2XLBGVIH3LmKKpGQ71/MGxm/1YiPzfIsUnwVCFJC341ZSIRjtrd468a7RLtkobuTZQLK7xmwSg4QvnOeThtB8tBA1uTJvbMN0LVhBE2azUoBcW1ZDBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=CeaFFzZ0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C4D1C4CEC5;
+	Thu, 26 Sep 2024 21:04:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1727384658;
-	bh=9Fi9n4pu634gmjGsIHRvNmdNUvgrQ/o/fVpX5AxNvkY=;
+	s=korg; t=1727384661;
+	bh=2QiXmwATO2PQRl8qp/YEt04Lq/XRjvzs4kEBezlAi+Y=;
 	h=Date:To:From:Subject:From;
-	b=MDnhLVFbU3iXX66LzV49rsxpocIG6I2oNQ9f34RqjYs5v+lVz96vYW7ftNgoB5AMm
-	 DPf+Mf6tlYa6YPg+IwZAqjEdQlrOiDV5od02X1ZGd7I5O2xG21IWj+rsUxaAiGYwTy
-	 Z2Cp1wADFMt70bq8Mf5N57bO5IGyNW/w8e0V2R2A=
-Date: Thu, 26 Sep 2024 14:04:17 -0700
-To: mm-commits@vger.kernel.org,syzbot+e0055ea09f1f5e6fabdd@syzkaller.appspotmail.com,stable@vger.kernel.org,piaojun@huawei.com,mark@fasheh.com,junxiao.bi@oracle.com,joseph.qi@linux.alibaba.com,jlbec@evilplan.org,ghe@suse.com,gechangwei@live.cn,pvmohammedanees2003@gmail.com,akpm@linux-foundation.org
+	b=CeaFFzZ07K/QpYxOcHstbPHS0cxUELGu26jJxl2F1VadGClCZlEJcs43xQ2YCjPK+
+	 9SPiPfCrsHNef4fY6yfA3FsUBqhXB+1T3umM3gyVH0xkMwt1vDyB3cuJj1n7KcZlIw
+	 o0AD/+ezcYBguEgj51nuSVZWlhgBEHOt986RXy2M=
+Date: Thu, 26 Sep 2024 14:04:20 -0700
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,peterz@infradead.org,jpoimboe@kernel.org,yangtiezhu@loongson.cn,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] ocfs2-fix-deadlock-in-ocfs2_get_system_file_inode.patch removed from -mm tree
-Message-Id: <20240926210418.246BFC4CEC5@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] compilerh-specify-correct-attribute-for-rodatac_jump_table.patch removed from -mm tree
+Message-Id: <20240926210421.1C4D1C4CEC5@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,89 +50,78 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: ocfs2: fix deadlock in ocfs2_get_system_file_inode
+     Subject: compiler.h: specify correct attribute for .rodata..c_jump_table
 has been removed from the -mm tree.  Its filename was
-     ocfs2-fix-deadlock-in-ocfs2_get_system_file_inode.patch
+     compilerh-specify-correct-attribute-for-rodatac_jump_table.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Mohammed Anees <pvmohammedanees2003@gmail.com>
-Subject: ocfs2: fix deadlock in ocfs2_get_system_file_inode
-Date: Tue, 24 Sep 2024 09:32:57 +0000
+From: Tiezhu Yang <yangtiezhu@loongson.cn>
+Subject: compiler.h: specify correct attribute for .rodata..c_jump_table
+Date: Tue, 24 Sep 2024 14:27:10 +0800
 
-syzbot has found a possible deadlock in ocfs2_get_system_file_inode [1].
+Currently, there is an assembler message when generating kernel/bpf/core.o
+under CONFIG_OBJTOOL with LoongArch compiler toolchain:
 
-The scenario is depicted here,
+  Warning: setting incorrect section attributes for .rodata..c_jump_table
 
-	CPU0					CPU1
-lock(&ocfs2_file_ip_alloc_sem_key);
-                               lock(&osb->system_file_mutex);
-                               lock(&ocfs2_file_ip_alloc_sem_key);
-lock(&osb->system_file_mutex);
+This is because the section ".rodata..c_jump_table" should be readonly,
+but there is a "W" (writable) part of the flags:
 
-The function calls which could lead to this are:
+  $ readelf -S kernel/bpf/core.o | grep -A 1 "rodata..c"
+  [34] .rodata..c_j[...] PROGBITS         0000000000000000  0000d2e0
+       0000000000000800  0000000000000000  WA       0     0     8
 
-CPU0
-ocfs2_mknod - lock(&ocfs2_file_ip_alloc_sem_key);
-.
-.
-.
-ocfs2_get_system_file_inode - lock(&osb->system_file_mutex);
+There is no above issue on x86 due to the generated section flag is only
+"A" (allocatable). In order to silence the warning on LoongArch, specify
+the attribute like ".rodata..c_jump_table,\"a\",@progbits #" explicitly,
+then the section attribute of ".rodata..c_jump_table" must be readonly
+in the kernel/bpf/core.o file.
 
-CPU1 -
-ocfs2_fill_super - lock(&osb->system_file_mutex);
-.
-.
-.
-ocfs2_read_virt_blocks - lock(&ocfs2_file_ip_alloc_sem_key);
+Before:
 
-This issue can be resolved by making the down_read -> down_read_try
-in the ocfs2_read_virt_blocks.
+  $ objdump -h kernel/bpf/core.o | grep -A 1 "rodata..c"
+   21 .rodata..c_jump_table 00000800  0000000000000000  0000000000000000  0000d2e0  2**3
+                  CONTENTS, ALLOC, LOAD, RELOC, DATA
 
-[1] https://syzkaller.appspot.com/bug?extid=e0055ea09f1f5e6fabdd
+After:
 
-Link: https://lkml.kernel.org/r/20240924093257.7181-1-pvmohammedanees2003@gmail.com
-Signed-off-by: Mohammed Anees <pvmohammedanees2003@gmail.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reported-by: <syzbot+e0055ea09f1f5e6fabdd@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=e0055ea09f1f5e6fabdd
-Tested-by: syzbot+e0055ea09f1f5e6fabdd@syzkaller.appspotmail.com
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Gang He <ghe@suse.com>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc:  <stable@vger.kernel.org>
+  $ objdump -h kernel/bpf/core.o | grep -A 1 "rodata..c"
+   21 .rodata..c_jump_table 00000800  0000000000000000  0000000000000000  0000d2e0  2**3
+                  CONTENTS, ALLOC, LOAD, RELOC, READONLY, DATA
+
+By the way, AFAICT, maybe the root cause is related with the different
+compiler behavior of various archs, so to some extent this change is a
+workaround for LoongArch, and also there is no effect for x86 which is the
+only port supported by objtool before LoongArch with this patch.
+
+Link: https://lkml.kernel.org/r/20240924062710.1243-1-yangtiezhu@loongson.cn
+Signed-off-by: Tiezhu Yang <yangtiezhu@loongson.cn>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: <stable@vger.kernel.org>	[6.9+]
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- fs/ocfs2/extent_map.c |    8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ include/linux/compiler.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ocfs2/extent_map.c~ocfs2-fix-deadlock-in-ocfs2_get_system_file_inode
-+++ a/fs/ocfs2/extent_map.c
-@@ -973,7 +973,13 @@ int ocfs2_read_virt_blocks(struct inode
- 	}
+--- a/include/linux/compiler.h~compilerh-specify-correct-attribute-for-rodatac_jump_table
++++ a/include/linux/compiler.h
+@@ -133,7 +133,7 @@ void ftrace_likely_update(struct ftrace_
+ #define annotate_unreachable() __annotate_unreachable(__COUNTER__)
  
- 	while (done < nr) {
--		down_read(&OCFS2_I(inode)->ip_alloc_sem);
-+		if (!down_read_trylock(&OCFS2_I(inode)->ip_alloc_sem)) {
-+			rc = -EAGAIN;
-+			mlog(ML_ERROR,
-+				 "Inode #%llu ip_alloc_sem is temporarily unavailable\n",
-+				 (unsigned long long)OCFS2_I(inode)->ip_blkno);
-+			break;
-+		}
- 		rc = ocfs2_extent_map_get_blocks(inode, v_block + done,
- 						 &p_block, &p_count, NULL);
- 		up_read(&OCFS2_I(inode)->ip_alloc_sem);
+ /* Annotate a C jump table to allow objtool to follow the code flow */
+-#define __annotate_jump_table __section(".rodata..c_jump_table")
++#define __annotate_jump_table __section(".rodata..c_jump_table,\"a\",@progbits #")
+ 
+ #else /* !CONFIG_OBJTOOL */
+ #define annotate_reachable()
 _
 
-Patches currently in -mm which might be from pvmohammedanees2003@gmail.com are
+Patches currently in -mm which might be from yangtiezhu@loongson.cn are
 
-ocfs2-fix-typo-in-comment.patch
 
 
