@@ -1,157 +1,159 @@
-Return-Path: <stable+bounces-77792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6D919875C3
-	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 16:38:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A9BB9875CC
+	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 16:40:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2B77CB25D57
-	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 14:38:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6662EB28BD8
+	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 14:40:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A84562B9CD;
-	Thu, 26 Sep 2024 14:38:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D920D14F9DD;
+	Thu, 26 Sep 2024 14:39:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hp.com header.i=@hp.com header.b="kMZzz/as"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PPmBFAez"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-162.mimecast.com (us-smtp-delivery-162.mimecast.com [170.10.129.162])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4D3B49634
-	for <stable@vger.kernel.org>; Thu, 26 Sep 2024 14:37:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.162
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31755149C42
+	for <stable@vger.kernel.org>; Thu, 26 Sep 2024 14:39:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727361482; cv=none; b=SpB2iUBszDaRG+YBdBIQ7dPHTAJgtJp1Jgz2+p+WJUGORRlH2tBaUqsvO0qA2vC/o6LMAmdygEN3bhGYRVnB0KfNiw7yPCmj7F9DWbFPzRZ8b7Ze8GjiRU5zbZk9RmdS/7mt1jLmD35HtVyFKz3/xIwPo5aSTmTLRPHxB5Z2ebw=
+	t=1727361592; cv=none; b=Sf73/SPdAR7O0VnSB52blYtreyIVvS9EGHN4DF+cgzcxpFVLU4q5pO4BPz9q12KDZQlEEs2gfbZLcLPJ0INN9shEyc3cZO4kjgfbCtZmK84jmOjYDJrMJF3UgLUl7epjOcA+ytw/L7UBjMCm0tawyaIs4o0paNpzhnAI8bdISp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727361482; c=relaxed/simple;
-	bh=aHpqVet/RmCFdbBd8x73KMxgCBS0pIu/IKY1RHuyXjw=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Zbyy7r9smajI/IJm0X9x3lYQeh4fo6wyzht8nju3mrq1PixHzqfehXdg0qU0sR1rtIllVwLL0ktukfA5qOSXEiQ1UmH0QznoguDX0lAxEsvXmqL3/V84t6Wmxs/J/AXJyoKqG80Y3Wbn2abmgIJfDrqoj/bFs5/FkeB1cvwUBWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hp.com; spf=pass smtp.mailfrom=hp.com; dkim=pass (1024-bit key) header.d=hp.com header.i=@hp.com header.b=kMZzz/as; arc=none smtp.client-ip=170.10.129.162
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hp.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hp.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hp.com; s=mimecast20180716;
-	t=1727361478;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=aHpqVet/RmCFdbBd8x73KMxgCBS0pIu/IKY1RHuyXjw=;
-	b=kMZzz/as27f8FK4yJeWafRj54po6B3OlZ3neAestp7yHsJ8D8CyWa+flaY6iRor/+gotZZ
-	LmMjvGsiRNGirNcKN9A5xDdwNN/deZdSkft61/5yVhgGmijpAMePliodi9GMXVuCqaZLwj
-	0Xv9m4NPna5GfAWkEXybVsLj1aoVdrE=
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com
- (mail-dm6nam12lp2174.outbound.protection.outlook.com [104.47.59.174]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-187-hMS-fqJAOtSxNrGriNvNxQ-1; Thu, 26 Sep 2024 10:37:58 -0400
-X-MC-Unique: hMS-fqJAOtSxNrGriNvNxQ-1
-Received: from SJ0PR84MB2088.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:a03:437::8)
- by SA1PR84MB3383.NAMPRD84.PROD.OUTLOOK.COM (2603:10b6:806:3d9::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7982.28; Thu, 26 Sep
- 2024 14:37:55 +0000
-Received: from SJ0PR84MB2088.NAMPRD84.PROD.OUTLOOK.COM
- ([fe80::8cc2:658d:eae8:3d8d]) by SJ0PR84MB2088.NAMPRD84.PROD.OUTLOOK.COM
- ([fe80::8cc2:658d:eae8:3d8d%7]) with mapi id 15.20.7982.022; Thu, 26 Sep 2024
- 14:37:55 +0000
-From: "Gagniuc, Alexandru" <alexandru.gagniuc@hp.com>
-To: "stable@vger.kernel.org" <stable@vger.kernel.org>
-CC: "Zhang, Eniac" <eniac-xw.zhang@hp.com>
-Subject: [PATCH v6.6] nvme-pci: qdepth 1 quirk
-Thread-Topic: [PATCH v6.6] nvme-pci: qdepth 1 quirk
-Thread-Index: AQHbECEjydg6PoyAWkiJlqcGaTPpng==
-Date: Thu, 26 Sep 2024 14:37:54 +0000
-Message-ID: <SJ0PR84MB2088FFBE6477CC164DFBE5D28F6A2@SJ0PR84MB2088.NAMPRD84.PROD.OUTLOOK.COM>
-Accept-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-msip_labels: 
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: SJ0PR84MB2088:EE_|SA1PR84MB3383:EE_
-x-ms-office365-filtering-correlation-id: 7ab0247e-17a4-495f-f867-08dcde38cee2
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|1800799024|376014|366016|38070700018
-x-microsoft-antispam-message-info: =?iso-8859-1?Q?9Uj7wjQmn1I30GoWWH2ZWkY5m2hjdawb6M7qXCGHeb6MtUDy1k6PQGlk37?=
- =?iso-8859-1?Q?C5Sg2YJfeqWC7yl8dKYyIP8PIM4kSSfqKyGHkpC8JWLKsj2hGj/3LMvj46?=
- =?iso-8859-1?Q?7OmVegkV+DheEZxO+CEkuhtx+lqWrfGLDnnU13vurV7dpikcO9bDOOxZoN?=
- =?iso-8859-1?Q?deL7QnSv/tvVwIVaiIM+cKine89lbGf0F85/Ejlc12ePPVZIc5PfcqWYY7?=
- =?iso-8859-1?Q?eykvz0Y61ZC0dC2ikTqyHKn3FTABFYNWuLc3+MR15xW6ar6m/6hP4NQ9ZQ?=
- =?iso-8859-1?Q?YkeVlicXuDeW6nXtpr08gStVCWm/3OgawMneQDgCyofQ7pER+2L/2LFiIN?=
- =?iso-8859-1?Q?2PsiWHFY9PwxWSqXe/bTna8ICJyBtFCJaA2fnDRB9wwKe7jTwilV/c2NGv?=
- =?iso-8859-1?Q?uu1NZHWIpcfyLcbhh3TKWvI6AL7CrwrKA3yZWWWZYX2Rel+4jIcbU9GOKP?=
- =?iso-8859-1?Q?UOP+6/Qj2tibR9hFeypUJMJdsOxJ0pCgxI0dmdD0KTkR5IS20ngCevzQMk?=
- =?iso-8859-1?Q?1QYfWaA2N2dMCmoshn7nLdhE0btLU9VrtEcbR8RTxS9gIjkJOsQMjpxlDx?=
- =?iso-8859-1?Q?tMpqk9lUFSrD9Rkxej//cyq1kJt9dy86jtZOTPC0CBHXiBGFXOsHogt+lm?=
- =?iso-8859-1?Q?by8GWqUDysDSGwjCYWoMvmhXa35UsBxi13hkm6XZo3C6h9RV57ymYZ1nfJ?=
- =?iso-8859-1?Q?HelYVqcurzl8GfUix5HJpk2W0tcwLz+bRhm9NN7ESpMqokopB8ZaxSI8r3?=
- =?iso-8859-1?Q?NQcVE8eLJ2tPNjHja2FqlUdcec/FpCubDWivBGa1Uq1zPN9TB1wKyuoBd8?=
- =?iso-8859-1?Q?s/ZFkpB+DpHlNcsYBs0qL16URHNGDx8oJ538NRoE5YDdeb6WbXP7BQbgkY?=
- =?iso-8859-1?Q?rPvN/gBXppJT7AJyXTZtQsIqPd/ejsd0qbqp3ai9F7UR8ALjC5CdQrF3RE?=
- =?iso-8859-1?Q?+DqCBZVZpmrALJOSuiMHKlbMNzEprb3X8LbQTfgEpnzCBPbvEy+uotQDK6?=
- =?iso-8859-1?Q?d+GXuWNe1SyXP6jtiQuoDY06R7WLwgLSVp8g0NrzOVZkhr5xg2htFhPJ/6?=
- =?iso-8859-1?Q?0wil9gr7IYL5YW4E6kJ00lTZfxy9hPG5uVHsWdXAWW/lIjuQbqzm1uFxbW?=
- =?iso-8859-1?Q?Gg/4U+pquBxPOtU/2OdFWh11v64SnQ5hrdgEJ6FsffZs0ZINdp0rF6gOSh?=
- =?iso-8859-1?Q?Py2GI5tUWCbxQuDYdBPLisiUZ8hSEzesWMvu6zuXjX8xDsj++q0OV8jF9O?=
- =?iso-8859-1?Q?IKUypFFCVCWtUQJ4KuEEvnpqw4g0QCGp6oOSmrM1+8HjnTHOEBygOVCwlm?=
- =?iso-8859-1?Q?ygnXqgvl0LzHQ0VitOWz/TyyE9YIBUCcbVvYFBiBixiqufZroOerpC5u9y?=
- =?iso-8859-1?Q?YWOSE5xRP7Gk6dBe93bkBO9KqWg2DKgA=3D=3D?=
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SJ0PR84MB2088.NAMPRD84.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(38070700018);DIR:OUT;SFP:1101
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?iso-8859-1?Q?Vc/bzYzdrlEey6EPFtoSV4ErVMiUeBaf/tZGquyUy3j4vqoFg+bUn8d6pQ?=
- =?iso-8859-1?Q?Bl6RPTMS6o3u6jGSMQLZFa5jfq5gR4LJYX3mMpzw7OUG/guA8aZguzDdGm?=
- =?iso-8859-1?Q?9KLLKrS6vRHqaYsaMOeicXSEw3Ade+Iy/yBfNbrnfJ6mZdfLol5VXBZ2HS?=
- =?iso-8859-1?Q?KhHjNdL6E1UKSbx40HrXbLXcHyoYC9oBYeQqKXSOXE0zl0Fhf6GoS0Gw5g?=
- =?iso-8859-1?Q?RiqA5IjRmcavLMIQJI7mNa+Ec8W5dmOD8oySlEi+Z40PXx5YRxtCJDK4Ng?=
- =?iso-8859-1?Q?800HKNUcDcZiOpX3NI6zBJVCVK8/idh9SNFc3aHGRlJlEw1hfpXr4/JKVu?=
- =?iso-8859-1?Q?BHfYFjxXpCMvHU1G6iPvybo+bZcJYL3xvfpGyMq2lKPYCXopGlNU+caT/4?=
- =?iso-8859-1?Q?EK9WUKo+wF0iBIRrWuqVQ9deMf0K4TfenA54DjnseAHTDr/M2gJwCZOuNp?=
- =?iso-8859-1?Q?BVsDZBmbNbg0ybabo5cF3Pq/P05qv50p7hz5mh+i0kjxFBzbnJCB+SwF84?=
- =?iso-8859-1?Q?QED2ivXDEd+fghNa1vwbE9h73CXtnJaaFkfg5xPmMfQEnH5iSm8p1FC1xc?=
- =?iso-8859-1?Q?ydgnptRAMoOclbuMasrFfJLd3SkovnvwNS++F0vBhPEUSkWHSMQfx0YzSG?=
- =?iso-8859-1?Q?NfHQ1P6mGTQt4cgOD0qgHYFPv1OhLEUoPxCazlcD5C4Ofh4VOlqQ9VNdIr?=
- =?iso-8859-1?Q?IJpjVCX36MKoS5NckJiGXtJzFj3iypRAF0FJt3ABwFzXw+PH2PVUDTaaJ5?=
- =?iso-8859-1?Q?4QrJVToVfCXvFdY5z7xrbU5f7BW4CBfM2WmENc5kMGnAegEbAy92D6CQMe?=
- =?iso-8859-1?Q?C2oR2K8+ZgexONUxIT/jyo7XNPdKj81hVEj1jgWhOdfS3CjiqVGWeZDgdb?=
- =?iso-8859-1?Q?uhrjHeltV4bp7fidMwTprRJCxYga4hOLbTtHaxDnKPnxjqTglcWWHrt3cp?=
- =?iso-8859-1?Q?t5u0PEOc//+vaq3HFIguw7R6c8Du86KqYAXWZqmFEt/LEtSvNN1trbSKEO?=
- =?iso-8859-1?Q?VGtRig8KNlWgXi1tu8PqaQDyRBT0JuW5HX8O2ODn4E4osP/ZzS3rTiOyK+?=
- =?iso-8859-1?Q?NvFH4LlsjA9mpiMrLe69aMAihyODhg6V+rO+WTzrmvQNcdXM0rSFNp2vJt?=
- =?iso-8859-1?Q?LQ6jWVtfcowqpAXaXwkxlLp+g9dvII+1/IrlbXdCcFE67Dx/oiqY3a5j8H?=
- =?iso-8859-1?Q?0yt2BXe1SuF654PwpIBkebSFUcqT7M11w++T/Nt3kIoEWatwOB3KAGN1/o?=
- =?iso-8859-1?Q?ZcoRM6cIic06IBR1sq87k1NHoMPlwuFNxt7I4jNztY1YreqScvjid+QpS+?=
- =?iso-8859-1?Q?8RRRpYXM0B+sB5F/RXGAvLsKYMLhG14RB1X/bbSeIXJHxatrIXjrSzZtaE?=
- =?iso-8859-1?Q?Lmvejeak7dbBteoGPFwgZmByw+US0iUZ8+/cLlgpP88WAr14EsiOYjKygu?=
- =?iso-8859-1?Q?RePBgnYcC9EpWA/vHea2JstjLmvWn3U0gjzdSi6YvSi318Er3huej67IDR?=
- =?iso-8859-1?Q?ct+9r2OfbMu2gp6rghMrhlaWKQpqpDqpwsw1CiinP+jqdn1N6vQOv8ox3N?=
- =?iso-8859-1?Q?0ldchnxczThlJOzOrfj9jOxfl/Bs1BoS4tP2M4HsFXbPejuQdHzExp7Z5g?=
- =?iso-8859-1?Q?jV8IR75vRbIqa0gMcs4qvKZO5nSDS+Z5n5?=
+	s=arc-20240116; t=1727361592; c=relaxed/simple;
+	bh=wfIyskPySyjPNW1pLmibdEptSD2xFwaJ+VXx4/SJsw8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JD7mqqsDYwl6h2A4GgNoSZEE8KJmCj3rc4CTBtClKe3sPzrelx7mMfTxisfJtelEqe0qKJtBzEuPT9GfeQ5E5a3yOEJH8h6VsPLSz5peslHUaZmfOm0UZqMpy6drI2NDUoNAJ+jvoxd4/VLB3HHfR9XHLe3LlYH/ELExgihLtBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PPmBFAez; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-207349fa3d7so199005ad.1
+        for <stable@vger.kernel.org>; Thu, 26 Sep 2024 07:39:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1727361590; x=1727966390; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=h9Kx4TvG8rWCki80hYYN6JcEZKQM9F21l0z7iQwPKdk=;
+        b=PPmBFAezVUdIZRkycEmCJ52yvEPMuniL2kJYVxDGGc1WMv5t1V68AQq0jCnC5uLq+A
+         L8hbcvQva9U4tYs19r5EpW4jasw7gdXAEzEx3jxEArA7Pf3iATi/HRNxuC8ZFJB8EG2O
+         cpq0dhKCjoVaJO9WwbQ2uKQofZbDwRuRycDsZx7gmCxrUYzTzCbJZWQU5FzUSXYAUgu+
+         SwGl69NPYk4gXWqBq2LgkZuDopNPDSak17d/p4RSR/Jv6JdcvrYpnojw/Hg8CFzAhSQ3
+         pMZHJdm5HvdiOBk827xel/SxJOKLF+S30AB5aSud9I2lk3ITKEntaODrMoh4O6p6pfDD
+         hI7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727361590; x=1727966390;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=h9Kx4TvG8rWCki80hYYN6JcEZKQM9F21l0z7iQwPKdk=;
+        b=VXwJxRSGMrUZCeqP+RQJEC2mFt/ImjSbAkrjUbSPwsrkR+i17kBSfi6v0wqjq7c5hr
+         qrzvRUQxU8CmG2y+zo3r/nF/uLmvPJDU05rEZtvRVpzu/WDhGDEN8Lc1QOiY/ofEHllX
+         DZE8CXujC7Xn6jdODk2kxRU8z1oobDnoa9Xu+g9Y8xGlWF54ED6E4hk60h77QT3Wx11I
+         9Np6znpJ3TM3WNXvmRVtsyVpWRF3pZITnlvNRib9EK+HjxAUJbNeNm6wzFYS11JABj0r
+         MII4XEKGhLW3V+0LjBH98nSjSJmTLiSpoYRmGrqSobbYLKEmUFST9ygX5TJVBO8OcBgR
+         8QpA==
+X-Forwarded-Encrypted: i=1; AJvYcCXPVdx4GgxRisCSP7bzRicuNSFUKYXuCcBCRW+h9aRKfjQjI5CXGdd4+8tAQmuRv7/Q2DCMo7E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxzUi4SrhbQWaoIKPKud3WXeebnFEgMWli59Qu8MAnOInlcOm3c
+	H62JWXK/DIJKl4oX1yozZHUKipihwB1hNePFC1eMN/kFPU0Xm84C+i0DZ/CvqA==
+X-Google-Smtp-Source: AGHT+IGqEw3AUY+vCnhHKos8GOabvXEypIRu6p3mjprWFoppCBU2eR5CREeDDbhv652YGeOXfhzoGg==
+X-Received: by 2002:a17:903:41ca:b0:201:e2db:7be3 with SMTP id d9443c01a7336-20b20390211mr2538525ad.21.1727361590132;
+        Thu, 26 Sep 2024 07:39:50 -0700 (PDT)
+Received: from google.com (201.215.168.34.bc.googleusercontent.com. [34.168.215.201])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20af185482asm39276555ad.244.2024.09.26.07.39.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 26 Sep 2024 07:39:49 -0700 (PDT)
+Date: Thu, 26 Sep 2024 14:39:45 +0000
+From: Carlos Llamas <cmllamas@google.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Yu-Ting Tseng <yutingtseng@google.com>,
+	linux-kernel@vger.kernel.org, kernel-team@android.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH 2/4] binder: fix OOB in binder_add_freeze_work()
+Message-ID: <ZvVyHCZituk8fhi-@google.com>
+References: <20240924184401.76043-1-cmllamas@google.com>
+ <20240924184401.76043-3-cmllamas@google.com>
+ <CAH5fLghapZJ4PbbkC8V5A6Zay-_sgTzwVpwqk6RWWUNKKyJC_Q@mail.gmail.com>
+ <ZvRM6RHstUiTSsk4@google.com>
+ <CAH5fLggK3qZCXezUPg-xodUqeWRsVwZw=ywenvLAtfVRD3AgHw@mail.gmail.com>
+ <ZvRRJiRe7zwyPeY7@google.com>
+ <CAH5fLgiqgWy9BVpQ8dE6hMNvDopEMVT-4w3DffXONDo3t6NqEw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-OriginatorOrg: hp.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: SJ0PR84MB2088.NAMPRD84.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-Network-Message-Id: 7ab0247e-17a4-495f-f867-08dcde38cee2
-X-MS-Exchange-CrossTenant-originalarrivaltime: 26 Sep 2024 14:37:54.9661
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: ca7981a2-785a-463d-b82a-3db87dfc3ce6
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: j6tLRNOp6qaX1febX3B21uoJPcW1wAGPPEbSwE2Smgaq5im9a4yNyafvyFeIH9uptnWrT31cxKE3HHGR+u3hjbhMLK/kyEmxGHCtlffM9bs=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR84MB3383
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: hp.com
-Content-Language: en-US
-Content-Type: text/plain; charset=WINDOWS-1252
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAH5fLgiqgWy9BVpQ8dE6hMNvDopEMVT-4w3DffXONDo3t6NqEw@mail.gmail.com>
 
-Please consider adding the following commit to v6.6:=0A=0A83bdfcbdbe5d ("nv=
-me-pci: qdepth 1 quirk")=0A=0AThis resolves filesystem corruption and rando=
-m drive drop-outs on machines with O2micro NVME drives, including a number =
-of HP Thinclients.=0A=0AAlex
+On Thu, Sep 26, 2024 at 10:06:14AM +0200, Alice Ryhl wrote:
+> On Wed, Sep 25, 2024 at 8:06 PM Carlos Llamas <cmllamas@google.com> wrote:
+> >
+> > On Wed, Sep 25, 2024 at 07:52:37PM +0200, Alice Ryhl wrote:
+> > > > > I reviewed some other code paths to verify whether there are other
+> > > > > problems with processes dying concurrently with operations on freeze
+> > > > > notifications. I didn't notice any other memory safety issues, but I
+> > > >
+> > > > Yeah most other paths are protected with binder_procs_lock mutex.
+> > > >
+> > > > > noticed that binder_request_freeze_notification returns EINVAL if you
+> > > > > try to use it with a node from a dead process. That seems problematic,
+> > > > > as this means that there's no way to invoke that command without
+> > > > > risking an EINVAL error if the remote process dies. We should not
+> > > > > return EINVAL errors on correct usage of the driver.
+> > > >
+> > > > Agreed, this should probably be -ESRCH or something. I'll add it to v2,
+> > > > thanks for the suggestion.
+> > >
+> > > Well, maybe? I think it's best to not return errnos from these
+> > > commands at all, as they obscure how many commands were processed.
+> >
+> > This is problematic, particularly when it's a multi-command buffer.
+> > Userspace doesn't really know which one failed and if any of them
+> > succeeded. Agreed.
+> >
+> > >
+> > > Since the node still exists even if the process dies, perhaps we can
+> > > just let you create the freeze notification even if it's dead? We can
+> > > make it end up in the same state as if you request a freeze
+> > > notification and the process then dies afterwards.
+> >
+> > It's a dead node, there is no process associated with it. It would be
+> > incorrect to setup the notification as it doesn't have a frozen status
+> > anymore. We can't determine the ref->node->proc->is_frozen?
+> >
+> > We could silently fail and skip the notification, but I don't know if
+> > userspace will attempt to release it later... and fail with EINVAL.
+> 
+> I mean, userspace *has* to be able to deal with the case where the
+> process dies *right after* the freeze notification is registered. If
+> we make the behavior where it's already dead be the same as that case,
+> then we're not giving userspace any new things it needs to care about.
 
+This is a fair point. To make it happen though, we would need to modify
+the behavior of the request a bit. If the node is dead, we could still
+attach the freeze notification to the reference but then we would skip
+sending the "current" frozen state. This last bit won't be guaranteed
+anymore. I _suppose_ this is ok, since as you mention, userspace should
+have to deal with the process dying anyway.
+
+I honestly don't really like this "fake successful" approach but then we
+don't handle driver errors very well either. So it might be worth it to
+avoid propagating this "dead node" error if we can. I'll do this for v2.
+
+Thanks,
+Carlos Llamas
 
