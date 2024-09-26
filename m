@@ -1,167 +1,136 @@
-Return-Path: <stable+bounces-77759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id F361C986EB4
-	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 10:24:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 216CD986EB8
+	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 10:25:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9C4431F228D7
-	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 08:24:15 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C1B0B1F21A7D
+	for <lists+stable@lfdr.de>; Thu, 26 Sep 2024 08:25:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 312EF1A4B6F;
-	Thu, 26 Sep 2024 08:24:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A32A1A4B8F;
+	Thu, 26 Sep 2024 08:25:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZYXJPGm"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b="lnOot4Ci"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from gloria.sntech.de (gloria.sntech.de [185.11.138.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7B50135A53;
-	Thu, 26 Sep 2024 08:24:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF736188CB8;
+	Thu, 26 Sep 2024 08:25:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.11.138.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727339051; cv=none; b=n6L7JtvJQU1wImHGmjguSNI/rsS3XlkUTEwbJvUAnwT2OfTuRivDLbUCU/WqXd6lyTmAKZzBuv/u1A0bLHQ5K4ZRPp017aliejfehw4wP3sqPDiVPUv9XrsXL5qg0/EvjXYDNf8d+NAsRu2iYKziEBrOWFTZ1v3dNt1RZ0jvbBc=
+	t=1727339109; cv=none; b=KaY6XJ0Bh7S16amkZScYYHgUVH40snKgy47eyZUgje29cxrr0D1J3VjgfA20QcuTKNnCeBZDzktIxQYnHSBNw8E3l0ZwqZR2fGv/oT1frAXHxRCWGTDGRVan2EG+ciqFusuFBbezc8jdBGO/1o2bAwh2l3YQqXYeR2Az/jmwO3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727339051; c=relaxed/simple;
-	bh=qn1S5gIZmj+pt/uixqcwFQeYW2j1CqFYmNJS6MoqW/c=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aK6BHQrKKvSv5NGr8JG3o0A6ko+Z07byTLMv+dfLO0M++RTEq7NM0HjD6Nu6My56GQWYk0RRh5eNs5SxtFQCeX1Rkbx52RCEF4RDIXK136SxjAaJ/X0lDLruullRsdCmwm96cjAQ/sLMzQ0RmU/zAdH6As+h+FgdcmTFPY2hG6M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZYXJPGm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E028DC4CEC5;
-	Thu, 26 Sep 2024 08:24:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727339050;
-	bh=qn1S5gIZmj+pt/uixqcwFQeYW2j1CqFYmNJS6MoqW/c=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XZYXJPGmJP9/1VQAh5fjYjCEW+S51EIRE6ZSDu6enCJgc6L6W9m0aqV4AjauohoNP
-	 2aColS5TodmTbBxJOBdt7QXDE9UIAUj1ZWRslIFYDyjb1XyxsZU0o7yX+R7XmpUzxw
-	 9Ky8Toazeve5TwhwUpIQgIhyX2pj8K2xu6KAWBaE=
-Date: Thu, 26 Sep 2024 10:24:03 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: greearb@candelatech.com
-Cc: netdev@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v2] Revert "vrf: Remove unnecessary RCU-bh critical
- section"
-Message-ID: <2024092650-clarify-marshland-1117@gregkh>
-References: <20240925185216.1990381-1-greearb@candelatech.com>
+	s=arc-20240116; t=1727339109; c=relaxed/simple;
+	bh=nzAJ58vyoHQtO3NGE8PRselJtg6kTzIF26rnk3ElbXE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DWfSd9KjzdrvB9BBcZMbv7F+JaJq2UG1Hq/PmPlDKpMt8r+HVpt4/7dHVVxgspFbpLDyVohSbBycbU4fgx8ZKOhsSItHRSCftKEiOqC5EnABlp9CQnfm/hMqmwm0uo/UykmpwIi+dtzyvGOuwmZJTf2GkBwNeH5wZ0FKSCWVits=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de; spf=pass smtp.mailfrom=sntech.de; dkim=pass (2048-bit key) header.d=sntech.de header.i=@sntech.de header.b=lnOot4Ci; arc=none smtp.client-ip=185.11.138.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=sntech.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sntech.de
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=sntech.de;
+	s=gloria202408; h=Content-Type:Content-Transfer-Encoding:MIME-Version:
+	References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=iBsC3mABl+He9E398zbyg48Y1tA2wfpFLTdtcZVXHtw=; b=lnOot4CiQs6jGk5N9O6UHusTzf
+	tvYsmgjHyv9XLkoSuitf8eT7HDY5YYLgia0z0d3nLQjR5w0ONlV+THk+5btwcvK1AossjagBYT04Q
+	36QKSrnVjx6fzIuEwCitbw9rAUEPuq2K3UaHmTTEInfHIGYF7LvN8XHRGhylDaI/rAzGCVh6Hbdo2
+	lR8CKW/yC+j2BIRi/lYeDjsCBGhMnoC6BnuepvEbkcbXzDJtOrzEZJhH7AkoM0KVGq9+JBL6klYme
+	Lprgc7g7kRcFIMIH0AYMFdzKCLvJhv684BMiN07OhWgMpJT8s1psLwLwfAhF3SVGRHcHme8Q3oGQ4
+	xYRmqqxA==;
+Received: from 85-160-70-253.reb.o2.cz ([85.160.70.253] helo=phil.localnet)
+	by gloria.sntech.de with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <heiko@sntech.de>)
+	id 1stjnu-0001ez-D4; Thu, 26 Sep 2024 10:24:50 +0200
+From: Heiko Stuebner <heiko@sntech.de>
+To: linux-rockchip@lists.infradead.org, Dragan Simic <dsimic@manjaro.org>
+Cc: linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ devicetree@vger.kernel.org, robh@kernel.org, krzk+dt@kernel.org,
+ conor+dt@kernel.org, stable@vger.kernel.org
+Subject:
+ Re: [PATCH] arm64: dts: rockchip: Move L3 cache under CPUs in RK356x SoC dtsi
+Date: Thu, 26 Sep 2024 10:24:49 +0200
+Message-ID: <3938446.fW5hKsROvD@phil>
+In-Reply-To:
+ <da07c30302cdb032dbda434438f89692a6cb0a2d.1727336728.git.dsimic@manjaro.org>
+References:
+ <da07c30302cdb032dbda434438f89692a6cb0a2d.1727336728.git.dsimic@manjaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240925185216.1990381-1-greearb@candelatech.com>
+Content-Transfer-Encoding: 7Bit
+Content-Type: text/plain; charset="us-ascii"
 
-On Wed, Sep 25, 2024 at 11:52:16AM -0700, greearb@candelatech.com wrote:
-> From: Ben Greear <greearb@candelatech.com>
+Am Donnerstag, 26. September 2024, 09:49:18 CEST schrieb Dragan Simic:
+> Move the "l3_cache" node under the "cpus" node in the dtsi file for Rockchip
+> RK356x SoCs.  There's no need for this cache node to be at the higher level.
 > 
-> This reverts commit 504fc6f4f7f681d2a03aa5f68aad549d90eab853.
-> 
-> dev_queue_xmit_nit needs to run with bh locking, otherwise
-> it conflicts with packets coming in from a nic in softirq
-> context and packets being transmitted from user context.
-> 
-> ================================
-> WARNING: inconsistent lock state
-> 6.11.0 #1 Tainted: G        W
-> --------------------------------
-> inconsistent {IN-SOFTIRQ-W} -> {SOFTIRQ-ON-W} usage.
-> btserver/134819 [HC0[0]:SC0[0]:HE1:SE1] takes:
-> ffff8882da30c118 (rlock-AF_PACKET){+.?.}-{2:2}, at: tpacket_rcv+0x863/0x3b30
-> {IN-SOFTIRQ-W} state was registered at:
->   lock_acquire+0x19a/0x4f0
->   _raw_spin_lock+0x27/0x40
->   packet_rcv+0xa33/0x1320
->   __netif_receive_skb_core.constprop.0+0xcb0/0x3a90
->   __netif_receive_skb_list_core+0x2c9/0x890
->   netif_receive_skb_list_internal+0x610/0xcc0
->   napi_complete_done+0x1c0/0x7c0
->   igb_poll+0x1dbb/0x57e0 [igb]
->   __napi_poll.constprop.0+0x99/0x430
->   net_rx_action+0x8e7/0xe10
->   handle_softirqs+0x1b7/0x800
->   __irq_exit_rcu+0x91/0xc0
->   irq_exit_rcu+0x5/0x10
->   [snip]
-> 
-> other info that might help us debug this:
->  Possible unsafe locking scenario:
-> 
->        CPU0
->        ----
->   lock(rlock-AF_PACKET);
->   <Interrupt>
->     lock(rlock-AF_PACKET);
-> 
->  *** DEADLOCK ***
-> 
-> Call Trace:
->  <TASK>
->  dump_stack_lvl+0x73/0xa0
->  mark_lock+0x102e/0x16b0
->  __lock_acquire+0x9ae/0x6170
->  lock_acquire+0x19a/0x4f0
->  _raw_spin_lock+0x27/0x40
->  tpacket_rcv+0x863/0x3b30
->  dev_queue_xmit_nit+0x709/0xa40
->  vrf_finish_direct+0x26e/0x340 [vrf]
->  vrf_l3_out+0x5f4/0xe80 [vrf]
->  __ip_local_out+0x51e/0x7a0
-> [snip]
-> 
-> Fixes: 504fc6f4f7f6 ("vrf: Remove unnecessary RCU-bh critical section")
-> Link: https://lore.kernel.org/netdev/05765015-f727-2f30-58da-2ad6fa7ea99f@candelatech.com/T/
-> 
-> Signed-off-by: Ben Greear <greearb@candelatech.com>
+> Fixes: 8612169a05c5 ("arm64: dts: rockchip: Add cache information to the SoC dtsi for RK356x")
+> Cc: stable@vger.kernel.org
+
+I think the commit message needs a bit more rationale on why this is a
+stable-worthy fix. Because from the move and commit message it reads
+like a styling choice ;-) .
+
+I do agree that it makes more sense as child of cpus, but the commit
+message should also elaborate on why that would matter for stable.
+
+
+Heiko
+
+> Signed-off-by: Dragan Simic <dsimic@manjaro.org>
 > ---
+>  arch/arm64/boot/dts/rockchip/rk356x.dtsi | 24 ++++++++++++------------
+>  1 file changed, 12 insertions(+), 12 deletions(-)
 > 
-> v2:  Edit patch description.
-> 
->  drivers/net/vrf.c | 2 ++
->  net/core/dev.c    | 1 +
->  2 files changed, 3 insertions(+)
-> 
-> diff --git a/drivers/net/vrf.c b/drivers/net/vrf.c
-> index 4d8ccaf9a2b4..4087f72f0d2b 100644
-> --- a/drivers/net/vrf.c
-> +++ b/drivers/net/vrf.c
-> @@ -608,7 +608,9 @@ static void vrf_finish_direct(struct sk_buff *skb)
->  		eth_zero_addr(eth->h_dest);
->  		eth->h_proto = skb->protocol;
+> diff --git a/arch/arm64/boot/dts/rockchip/rk356x.dtsi b/arch/arm64/boot/dts/rockchip/rk356x.dtsi
+> index 4690be841a1c..9f7136e5d553 100644
+> --- a/arch/arm64/boot/dts/rockchip/rk356x.dtsi
+> +++ b/arch/arm64/boot/dts/rockchip/rk356x.dtsi
+> @@ -113,19 +113,19 @@ cpu3: cpu@300 {
+>  			d-cache-sets = <128>;
+>  			next-level-cache = <&l3_cache>;
+>  		};
+> -	};
 >  
-> +		rcu_read_lock_bh();
->  		dev_queue_xmit_nit(skb, vrf_dev);
-> +		rcu_read_unlock_bh();
+> -	/*
+> -	 * There are no private per-core L2 caches, but only the
+> -	 * L3 cache that appears to the CPU cores as L2 caches
+> -	 */
+> -	l3_cache: l3-cache {
+> -		compatible = "cache";
+> -		cache-level = <2>;
+> -		cache-unified;
+> -		cache-size = <0x80000>;
+> -		cache-line-size = <64>;
+> -		cache-sets = <512>;
+> +		/*
+> +		 * There are no private per-core L2 caches, but only the
+> +		 * L3 cache that appears to the CPU cores as L2 caches
+> +		 */
+> +		l3_cache: l3-cache {
+> +			compatible = "cache";
+> +			cache-level = <2>;
+> +			cache-unified;
+> +			cache-size = <0x80000>;
+> +			cache-line-size = <64>;
+> +			cache-sets = <512>;
+> +		};
+>  	};
 >  
->  		skb_pull(skb, ETH_HLEN);
->  	}
-> diff --git a/net/core/dev.c b/net/core/dev.c
-> index cd479f5f22f6..566e69a38eed 100644
-> --- a/net/core/dev.c
-> +++ b/net/core/dev.c
-> @@ -2285,6 +2285,7 @@ EXPORT_SYMBOL_GPL(dev_nit_active);
->  /*
->   *	Support routine. Sends outgoing frames to any network
->   *	taps currently in use.
-> + *	BH must be disabled before calling this.
->   */
->  
->  void dev_queue_xmit_nit(struct sk_buff *skb, struct net_device *dev)
-> -- 
-> 2.42.0
-> 
+>  	cpu0_opp_table: opp-table-0 {
 > 
 
-<formletter>
 
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
 
-</formletter>
+
 
