@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-77965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78056-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 14BBB98846E
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:27:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D2F019884E2
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:32:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFB2D1F22EED
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:27:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7C1BAB21C58
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:32:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3242518A95D;
-	Fri, 27 Sep 2024 12:27:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F22018C32C;
+	Fri, 27 Sep 2024 12:31:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OCw4LBbm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SsotxTbR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4CE017B515;
-	Fri, 27 Sep 2024 12:27:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E1C718C02B;
+	Fri, 27 Sep 2024 12:31:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440048; cv=none; b=QrdXCzzP4a5NM1P1f8Qrne8vjVcYChooMVujHe65yDFzWmrw+2MlRKLyNHNLLLwtpwcUMCI4akuMKTpk/pe0kHZoLZWKu1OEL74W6z17ulDk6Nv574Yrx1W910cVjE+MMKR7Cr/piQS2asa1nrvBDmE3KIE8JKMvtdGUJQLtYnE=
+	t=1727440302; cv=none; b=k4EXeCtImW7A1uEpiz4ay7b4VGsF2rA6TwFzF7xlFt+O0kURRU7wA5B+mRs3b2QZpBmmkiDceWrAqe3sG/gIgOrUPoZQ27GhLsZJeTUyLViMbh2kDWjeuxQsVyL13ctc375tlB7sfyn72Ft2Fj69RBSfnj2djvkiBPya7fJaOJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440048; c=relaxed/simple;
-	bh=ETtNj2dNofSHjM/On2PytW5YCpPwX8V4GAbcQbBj6FQ=;
+	s=arc-20240116; t=1727440302; c=relaxed/simple;
+	bh=gMTSSFKMrWLfqJKAi+bZ1nNOg8B0046rEcbKew6xEf4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=riYOI10KovHGN/xaZgwqm5Mon4vthC14EqK9bHErDLvRycCm15h+oKUaTbApm/+GIuU+lPL9Pup5cKV3qQSmKYIihYzhftfHc2QbgFSHxArKd539MjLGm+Z7O4uR7qpJwS4PxIW00fxABneKM9QHNmNuUFB28fCqn/M0jwY9rMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OCw4LBbm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 746CAC4CEC4;
-	Fri, 27 Sep 2024 12:27:27 +0000 (UTC)
+	 MIME-Version; b=Rqs0qUD11L0qjeQwIC5ePmOasONjHEl+B7U0SA0agCNKPdTO2mwZ/+CTocOtIFN2bciYoRf76KB6uCHMbcDNhDMu8sBH2CWLBzl3bTwZScVV/G1mbRlMv0GF4mGAM+VrPAjdH003Bcubwkgn1jKNW6I4iG7+Ed0DmxR2XdM1sko=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SsotxTbR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95E71C4CEC4;
+	Fri, 27 Sep 2024 12:31:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440047;
-	bh=ETtNj2dNofSHjM/On2PytW5YCpPwX8V4GAbcQbBj6FQ=;
+	s=korg; t=1727440301;
+	bh=gMTSSFKMrWLfqJKAi+bZ1nNOg8B0046rEcbKew6xEf4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OCw4LBbmq9PajvACdhnT7sysZBrp+mr+0ks6WRIxWdXhVTB/wqFoxfLcqvXsC6agP
-	 k7hLNUCL8Q8C8pzNY1KvVWYqeFlMHpZ6DcrpZwhKQTM7nY8HpwWWmGQwo9V3KjPOQD
-	 kioUG+1/XH2qytplIWwn1Ahth7InjGFCKySfJx7E=
+	b=SsotxTbRNLyjM8j8NOHpPBiPOtvNNMl0/sBfmz8HABdExTRpEKxc7zIDOmzj2/Xwu
+	 /IhaRGFEhLmty7Jbyp8TwmTlwoZvN5zE+J6uQAhzrUB9cDSZU46sATgEdouNOV8d6P
+	 sSQEXmYQJ91xuEKHZsDJU+KkJU2/yACHH98KcCzY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Tianyang Zhang <zhangtianyang@loongson.cn>,
+	Sherry Yang <sherry.yang@oracle.com>,
+	Justin Tee <justin.tee@broadcom.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 14/58] LoongArch: Define ARCH_IRQ_INIT_FLAGS as IRQ_NOPROBE
-Date: Fri, 27 Sep 2024 14:23:16 +0200
-Message-ID: <20240927121719.393481803@linuxfoundation.org>
+Subject: [PATCH 6.1 06/73] scsi: lpfc: Fix overflow build issue
+Date: Fri, 27 Sep 2024 14:23:17 +0200
+Message-ID: <20240927121720.139412759@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121718.789211866@linuxfoundation.org>
-References: <20240927121718.789211866@linuxfoundation.org>
+In-Reply-To: <20240927121719.897851549@linuxfoundation.org>
+References: <20240927121719.897851549@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: Sherry Yang <sherry.yang@oracle.com>
 
-[ Upstream commit 274ea3563e5ab9f468c15bfb9d2492803a66d9be ]
+[ Upstream commit 3417c9574e368f0330637505f00d3814ca8854d2 ]
 
-Currently we call irq_set_noprobe() in a loop for all IRQs, but indeed
-it only works for IRQs below NR_IRQS_LEGACY because at init_IRQ() only
-legacy interrupts have been allocated.
+Build failed while enabling "CONFIG_GCOV_KERNEL=y" and
+"CONFIG_GCOV_PROFILE_ALL=y" with following error:
 
-Instead, we can define ARCH_IRQ_INIT_FLAGS as IRQ_NOPROBE in asm/hwirq.h
-and the core will automatically set the flag for all interrupts.
+BUILDSTDERR: drivers/scsi/lpfc/lpfc_bsg.c: In function 'lpfc_get_cgnbuf_info':
+BUILDSTDERR: ./include/linux/fortify-string.h:114:33: error: '__builtin_memcpy' accessing 18446744073709551615 bytes at offsets 0 and 0 overlaps 9223372036854775807 bytes at offset -9223372036854775808 [-Werror=restrict]
+BUILDSTDERR:   114 | #define __underlying_memcpy     __builtin_memcpy
+BUILDSTDERR:       |                                 ^
+BUILDSTDERR: ./include/linux/fortify-string.h:637:9: note: in expansion of macro '__underlying_memcpy'
+BUILDSTDERR:   637 |         __underlying_##op(p, q, __fortify_size);                        \
+BUILDSTDERR:       |         ^~~~~~~~~~~~~
+BUILDSTDERR: ./include/linux/fortify-string.h:682:26: note: in expansion of macro '__fortify_memcpy_chk'
+BUILDSTDERR:   682 | #define memcpy(p, q, s)  __fortify_memcpy_chk(p, q, s,                  \
+BUILDSTDERR:       |                          ^~~~~~~~~~~~~~~~~~~~
+BUILDSTDERR: drivers/scsi/lpfc/lpfc_bsg.c:5468:9: note: in expansion of macro 'memcpy'
+BUILDSTDERR:  5468 |         memcpy(cgn_buff, cp, cinfosz);
+BUILDSTDERR:       |         ^~~~~~
 
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Tianyang Zhang <zhangtianyang@loongson.cn>
+This happens from the commit 06bb7fc0feee ("kbuild: turn on -Wrestrict by
+default"). Address this issue by using size_t type.
+
+Signed-off-by: Sherry Yang <sherry.yang@oracle.com>
+Link: https://lore.kernel.org/r/20240821065131.1180791-1-sherry.yang@oracle.com
+Reviewed-by: Justin Tee <justin.tee@broadcom.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/include/asm/hw_irq.h | 2 ++
- arch/loongarch/kernel/irq.c         | 3 ---
- 2 files changed, 2 insertions(+), 3 deletions(-)
+ drivers/scsi/lpfc/lpfc_bsg.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/loongarch/include/asm/hw_irq.h b/arch/loongarch/include/asm/hw_irq.h
-index af4f4e8fbd858..8156ffb674159 100644
---- a/arch/loongarch/include/asm/hw_irq.h
-+++ b/arch/loongarch/include/asm/hw_irq.h
-@@ -9,6 +9,8 @@
+diff --git a/drivers/scsi/lpfc/lpfc_bsg.c b/drivers/scsi/lpfc/lpfc_bsg.c
+index 2373dad016033..fc300febe9140 100644
+--- a/drivers/scsi/lpfc/lpfc_bsg.c
++++ b/drivers/scsi/lpfc/lpfc_bsg.c
+@@ -5409,7 +5409,7 @@ lpfc_get_cgnbuf_info(struct bsg_job *job)
+ 	struct get_cgnbuf_info_req *cgnbuf_req;
+ 	struct lpfc_cgn_info *cp;
+ 	uint8_t *cgn_buff;
+-	int size, cinfosz;
++	size_t size, cinfosz;
+ 	int  rc = 0;
  
- extern atomic_t irq_err_count;
- 
-+#define ARCH_IRQ_INIT_FLAGS	IRQ_NOPROBE
-+
- /*
-  * interrupt-retrigger: NOP for now. This may not be appropriate for all
-  * machines, we'll see ...
-diff --git a/arch/loongarch/kernel/irq.c b/arch/loongarch/kernel/irq.c
-index f4991c03514f4..adac8fcbb2aca 100644
---- a/arch/loongarch/kernel/irq.c
-+++ b/arch/loongarch/kernel/irq.c
-@@ -102,9 +102,6 @@ void __init init_IRQ(void)
- 	mp_ops.init_ipi();
- #endif
- 
--	for (i = 0; i < NR_IRQS; i++)
--		irq_set_noprobe(i);
--
- 	for_each_possible_cpu(i) {
- 		page = alloc_pages_node(cpu_to_node(i), GFP_KERNEL, order);
- 
+ 	if (job->request_len < sizeof(struct fc_bsg_request) +
 -- 
 2.43.0
 
