@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-77960-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8747A988469
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:27:19 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64E8D988471
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:27:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E4C61F22554
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:27:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32C3C2814C7
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:27:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DF3B18BC26;
-	Fri, 27 Sep 2024 12:27:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8737118BC1D;
+	Fri, 27 Sep 2024 12:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lzwqXJIz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fKHwm9gH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DCD418A95D;
-	Fri, 27 Sep 2024 12:27:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4779417B515;
+	Fri, 27 Sep 2024 12:27:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440034; cv=none; b=JMhTPq161SvMKmimpUGazP7aTLHaaBaOgBxwUq6/8IFIX3MJBfcgT2QBXc+l3NKSdd3qj1E4m9pTxIMNlX/lGfBViKmxXGKwlhuqExpIaD082oq4OfWhZ2S90lma1FY0AGwEFxUeUCCEIKRqg7sIb0JEiDIA02igk0ZXF5bMAUQ=
+	t=1727440056; cv=none; b=ZSIjJwZbTsioq1DoG+JdaM01PhHICWUprHpd6lUwvRkrcpGthACsbrhCoCK/uDMv9JKOS6k4+TkY65YKvZaF/QxqV8ix/fe14XNC+ZSTE9rSMTWjsKRZjIKeVCZ6V3sEW0F6I7PPq+F5gXfWCfQG8JEzKuaIlZdgaUEz893gVUY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440034; c=relaxed/simple;
-	bh=2zisp8x68nN8yLdJpOg0bW65qyyf5lc1GMwwnYEdcVs=;
+	s=arc-20240116; t=1727440056; c=relaxed/simple;
+	bh=qCG/e0e2GgQR7RPPdOYxNSbFh31Ut0XWvittWo3fr2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OmPXykVfleogAfiascFK7J05HXQzs/Q1p5yzmKIJKGaFqyrNS7px15VpBHwaeqazMH2RBJqd5l3yY+AM1recXT+ObRydnKsIeftC12QWiCPjwVG2Rp5lCDAbLtMGwFz2+KIzhY/CGWizUtEW9Nk2sTeuGeJRCVwc3VJxlDydYfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lzwqXJIz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92037C4CEC4;
-	Fri, 27 Sep 2024 12:27:13 +0000 (UTC)
+	 MIME-Version; b=hZBLaGsHG4flJ2RV3YUJasv8E8BfgcOZmAoIjkWfAUuZF3z8lRqKBHDqhEeu8afSU/mgjWKs8oB4B4bSFX/IczTQONShsLUfv6FR6Z6ld9MbB1l1+hlsKLonxc48Dl+YwTAbsR7dH1dgjpQSoaHfC8oYfSkQmFaqtBlLV6QfItY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fKHwm9gH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9481C4CEC6;
+	Fri, 27 Sep 2024 12:27:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440033;
-	bh=2zisp8x68nN8yLdJpOg0bW65qyyf5lc1GMwwnYEdcVs=;
+	s=korg; t=1727440056;
+	bh=qCG/e0e2GgQR7RPPdOYxNSbFh31Ut0XWvittWo3fr2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lzwqXJIz6rEQwSIAeD0jrUIimAstGuYUbHPbrXen/vpR4M8bdv5KUR1brNy0AiE8J
-	 lqFw+ToL6AhKDHellSaKpDA8Ei0Xecn1IUNpMFsvPVkRnmrdCAs4g7s4jYn+vHbyZI
-	 9bmYaEXrGBBGvM5BE7+1r7YjYIdLEknK+i/AL5oE=
+	b=fKHwm9gHJrMluDs6JVZh/fDEbHxRDNI8sX9XMGT5Z1rBpIux4KBqjhZBY6CukPltv
+	 +1Un8hUJ9+vxrjKa4ogeWNVVv6dljYC1QG7QfjgzYNnzGUwNYJSEQxMFABAUScUWCS
+	 m4rZjLAHQU69dJmCXfMC6C24n88I6O5YGKNrfQS4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Albert=20Jakie=C5=82a?= <jakiela@google.com>,
-	Chen-Yu Tsai <wenst@chromium.org>,
+	YR Yang <yr.yang@mediatek.com>,
+	Fei Shao <fshao@chromium.org>,
+	Trevor Wu <trevor.wu@mediatek.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 01/58] ASoC: SOF: mediatek: Add missing board compatible
-Date: Fri, 27 Sep 2024 14:23:03 +0200
-Message-ID: <20240927121718.844285413@linuxfoundation.org>
+Subject: [PATCH 6.10 02/58] ASoC: mediatek: mt8188: Mark AFE_DAC_CON0 register as volatile
+Date: Fri, 27 Sep 2024 14:23:04 +0200
+Message-ID: <20240927121718.877305007@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20240927121718.789211866@linuxfoundation.org>
 References: <20240927121718.789211866@linuxfoundation.org>
@@ -61,42 +62,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Albert Jakieła <jakiela@google.com>
+From: YR Yang <yr.yang@mediatek.com>
 
-[ Upstream commit c0196faaa927321a63e680427e075734ee656e42 ]
+[ Upstream commit ff9f065318e17a1a97981d9e535fcfc6ce5d5614 ]
 
-Add Google Dojo compatible.
+Add AFE Control Register 0 to the volatile_register.
+AFE_DAC_CON0 can be modified by both the SOF and ALSA drivers.
+If this register is read and written in cache mode, the cached value
+might not reflect the actual value when the register is modified by
+another driver. It can cause playback or capture failures. Therefore,
+it is necessary to add AFE_DAC_CON0 to the list of volatile registers.
 
-Signed-off-by: Albert Jakieła <jakiela@google.com>
-Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
-Link: https://patch.msgid.link/20240809135627.544429-1-jakiela@google.com
+Signed-off-by: YR Yang <yr.yang@mediatek.com>
+Reviewed-by: Fei Shao <fshao@chromium.org>
+Reviewed-by: Trevor Wu <trevor.wu@mediatek.com>
+Link: https://patch.msgid.link/20240801084326.1472-1-yr.yang@mediatek.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/mediatek/mt8195/mt8195.c | 3 +++
- 1 file changed, 3 insertions(+)
+ sound/soc/mediatek/mt8188/mt8188-afe-pcm.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/sof/mediatek/mt8195/mt8195.c b/sound/soc/sof/mediatek/mt8195/mt8195.c
-index 8d3fc167cd810..b9d4508bbb85d 100644
---- a/sound/soc/sof/mediatek/mt8195/mt8195.c
-+++ b/sound/soc/sof/mediatek/mt8195/mt8195.c
-@@ -574,6 +574,9 @@ static struct snd_sof_of_mach sof_mt8195_machs[] = {
- 	{
- 		.compatible = "google,tomato",
- 		.sof_tplg_filename = "sof-mt8195-mt6359-rt1019-rt5682.tplg"
-+	}, {
-+		.compatible = "google,dojo",
-+		.sof_tplg_filename = "sof-mt8195-mt6359-max98390-rt5682.tplg"
- 	}, {
- 		.compatible = "mediatek,mt8195",
- 		.sof_tplg_filename = "sof-mt8195.tplg"
+diff --git a/sound/soc/mediatek/mt8188/mt8188-afe-pcm.c b/sound/soc/mediatek/mt8188/mt8188-afe-pcm.c
+index ccb6c1f3adc7d..73e5c63aeec87 100644
+--- a/sound/soc/mediatek/mt8188/mt8188-afe-pcm.c
++++ b/sound/soc/mediatek/mt8188/mt8188-afe-pcm.c
+@@ -2748,6 +2748,7 @@ static bool mt8188_is_volatile_reg(struct device *dev, unsigned int reg)
+ 	case AFE_ASRC12_NEW_CON9:
+ 	case AFE_LRCK_CNT:
+ 	case AFE_DAC_MON0:
++	case AFE_DAC_CON0:
+ 	case AFE_DL2_CUR:
+ 	case AFE_DL3_CUR:
+ 	case AFE_DL6_CUR:
 -- 
 2.43.0
 
