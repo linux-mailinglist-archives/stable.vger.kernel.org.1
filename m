@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-78005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77924-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21EBF988498
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:29:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B70B988439
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:25:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CD6AE2815B8
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:29:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57FD52802B8
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:25:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46F8D18BC1C;
-	Fri, 27 Sep 2024 12:29:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2EF018BC0D;
+	Fri, 27 Sep 2024 12:25:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vYwNzXKk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wNpScSbR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 067EB17B515;
-	Fri, 27 Sep 2024 12:29:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A38361779BD;
+	Fri, 27 Sep 2024 12:25:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440159; cv=none; b=hMnd/L0UFGEecUub427RO2EdAlDfX35tMchrvOgTd8CTyV8FeDFkUFHoRbTVIwPN9aaeHLlKUy1ZJZaBNlI8USJmNSpWd5yOK6MQfrvEOJqQEJcfMLifWuxplNLEQm5QxdztgUcvGHj3Uhkk3NP2Is6i/73F3Y8Rhf+hqR6RQ30=
+	t=1727439933; cv=none; b=aQVfmQajLK1M++WD/+gqz2CB4vQIP46glRcB93cDoajWtw1a7kfY/Tth4CM1TI+5prbKJ11UebMcSFrsWa0v9Q79sc7vDVWxPMGF3u9G9nWivwiMhLTY42XCTIAoNh6aUKny6tOYvBGbK50pAW2k8PpfvMh0kcrsoOcrQW64NHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440159; c=relaxed/simple;
-	bh=UoP2lS5RLYeNfvFuOdqla1ZI2Y/nqEhwlYI9BpZNRbw=;
+	s=arc-20240116; t=1727439933; c=relaxed/simple;
+	bh=1Fx4u+YajHdXTa2VCBvudtGJDk0y3zkJ2WdvmxgoKZM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RX1LIZuei34dqSzi04jPFoEYzGCzbqJ8uAuJNJtQIZQsrk1+DMlAf/eK1/QEpVDKam6graWTLYpz4MT3R/zIUDq7sbbdVsiQ5mi8zwWRYovStcGtRN07daKFcV0IrKo2k1TXpojyM6uU1dKzNb5nxJCAv4CmZRN6f13geZNEdEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vYwNzXKk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88112C4CEC4;
-	Fri, 27 Sep 2024 12:29:18 +0000 (UTC)
+	 MIME-Version; b=MlyZzrUURc51jFBo7QhCRAAZRI93m/G3d+w2KLW8w+obRoBT82eaHLqcga70Vr5jd0kSyC2I562A5jqiG3wbt5K6BHSsiMVQav6BHmJxq+xoDHONWT3aezjFAb82nNOq92jw0ml1GlXgXMzyQpYRelXeb30RWZ+xQ2l7LgVfLGQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wNpScSbR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2841C4CEC4;
+	Fri, 27 Sep 2024 12:25:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440158;
-	bh=UoP2lS5RLYeNfvFuOdqla1ZI2Y/nqEhwlYI9BpZNRbw=;
+	s=korg; t=1727439933;
+	bh=1Fx4u+YajHdXTa2VCBvudtGJDk0y3zkJ2WdvmxgoKZM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vYwNzXKkitl9etxtdzO/QlVQSGBaUrGj6ggm90qe3WfE4a3ctwZrNnmFWAKi63rFC
-	 y7Hmd5gzrStWzpyoop1/Oflh0TvMbBCJSrOC6oKFbmXD/bwQ5jqKuTfB6XkCcqNUvA
-	 qpBvMUPZ5X2hr7PFe9yJncGraodNSowyTaklmkgg=
+	b=wNpScSbRGiWPDm6XSsqJKM5F9bMl2EpRe2+BNiHUy9Wf8JuQURFbk5HEY3V4s0Ign
+	 o1eU2/cz823HS6jG83EaI+mmdYXDesx6iuwHeqBgJfllAIZXXS7e98fUpqQgI83fkp
+	 ctwRnwYNdmcLtx1Kt7wwNFkNB5FET5i6LxhZCoEY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Gabay <daniel.gabay@intel.com>,
-	Ilan Peer <ilan.peer@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 17/58] wifi: iwlwifi: mvm: fix iwl_mvm_scan_fits() calculation
+Subject: [PATCH 6.6 27/54] spi: spidev: Add an entry for elgin,jg10309-01
 Date: Fri, 27 Sep 2024 14:23:19 +0200
-Message-ID: <20240927121719.513710986@linuxfoundation.org>
+Message-ID: <20240927121720.830373657@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121718.789211866@linuxfoundation.org>
-References: <20240927121718.789211866@linuxfoundation.org>
+In-Reply-To: <20240927121719.714627278@linuxfoundation.org>
+References: <20240927121719.714627278@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,80 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Gabay <daniel.gabay@intel.com>
+From: Fabio Estevam <festevam@gmail.com>
 
-[ Upstream commit d44162280899c3fc2c6700e21e491e71c3c96e3d ]
+[ Upstream commit 5f3eee1eef5d0edd23d8ac0974f56283649a1512 ]
 
-The calculation should consider also the 6GHz IE's len, fix that.
-In addition, in iwl_mvm_sched_scan_start() the scan_fits helper is
-called only in case non_psc_incldued is true, but it should be called
-regardless, fix that as well.
+The rv1108-elgin-r1 board has an LCD controlled via SPI in userspace.
+The marking on the LCD is JG10309-01.
 
-Signed-off-by: Daniel Gabay <daniel.gabay@intel.com>
-Reviewed-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20240825191257.7db825442fd2.I99f4d6587709de02072fd57957ec7472331c6b1d@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Add the "elgin,jg10309-01" compatible string.
+
+Signed-off-by: Fabio Estevam <festevam@gmail.com>
+Reviewed-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://patch.msgid.link/20240828180057.3167190-2-festevam@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 23 ++++++++++---------
- 1 file changed, 12 insertions(+), 11 deletions(-)
+ drivers/spi/spidev.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-index 7615c91a55c62..89adc6421eeee 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-@@ -837,8 +837,8 @@ static inline bool iwl_mvm_scan_fits(struct iwl_mvm *mvm, int n_ssids,
- 	return ((n_ssids <= PROBE_OPTION_MAX) &&
- 		(n_channels <= mvm->fw->ucode_capa.n_scan_channels) &
- 		(ies->common_ie_len +
--		 ies->len[NL80211_BAND_2GHZ] +
--		 ies->len[NL80211_BAND_5GHZ] <=
-+		 ies->len[NL80211_BAND_2GHZ] + ies->len[NL80211_BAND_5GHZ] +
-+		 ies->len[NL80211_BAND_6GHZ] <=
- 		 iwl_mvm_max_scan_ie_fw_cmd_room(mvm)));
- }
- 
-@@ -3179,18 +3179,16 @@ int iwl_mvm_sched_scan_start(struct iwl_mvm *mvm,
- 		params.n_channels = j;
- 	}
- 
--	if (non_psc_included &&
--	    !iwl_mvm_scan_fits(mvm, req->n_ssids, ies, params.n_channels)) {
--		kfree(params.channels);
--		return -ENOBUFS;
-+	if (!iwl_mvm_scan_fits(mvm, req->n_ssids, ies, params.n_channels)) {
-+		ret = -ENOBUFS;
-+		goto out;
- 	}
- 
- 	uid = iwl_mvm_build_scan_cmd(mvm, vif, &hcmd, &params, type);
--
--	if (non_psc_included)
--		kfree(params.channels);
--	if (uid < 0)
--		return uid;
-+	if (uid < 0) {
-+		ret = uid;
-+		goto out;
-+	}
- 
- 	ret = iwl_mvm_send_cmd(mvm, &hcmd);
- 	if (!ret) {
-@@ -3208,6 +3206,9 @@ int iwl_mvm_sched_scan_start(struct iwl_mvm *mvm,
- 		mvm->sched_scan_pass_all = SCHED_SCAN_PASS_ALL_DISABLED;
- 	}
- 
-+out:
-+	if (non_psc_included)
-+		kfree(params.channels);
- 	return ret;
- }
- 
+diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
+index b97206d47ec6d..edc47a97cbe41 100644
+--- a/drivers/spi/spidev.c
++++ b/drivers/spi/spidev.c
+@@ -735,6 +735,7 @@ static int spidev_of_check(struct device *dev)
+ static const struct of_device_id spidev_dt_ids[] = {
+ 	{ .compatible = "cisco,spi-petra", .data = &spidev_of_check },
+ 	{ .compatible = "dh,dhcom-board", .data = &spidev_of_check },
++	{ .compatible = "elgin,jg10309-01", .data = &spidev_of_check },
+ 	{ .compatible = "lineartechnology,ltc2488", .data = &spidev_of_check },
+ 	{ .compatible = "lwn,bk4", .data = &spidev_of_check },
+ 	{ .compatible = "menlo,m53cpld", .data = &spidev_of_check },
 -- 
 2.43.0
 
