@@ -1,149 +1,121 @@
-Return-Path: <stable+bounces-78109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78110-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BC429885ED
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:59:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1B09988627
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 15:20:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BF418282332
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:59:21 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D25FC1C222CD
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 13:20:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C15B618BC1E;
-	Fri, 27 Sep 2024 12:59:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4F409461;
+	Fri, 27 Sep 2024 13:20:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="N+jLYx2F"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J+d+qCBs"
 X-Original-To: stable@vger.kernel.org
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B24F818872F;
-	Fri, 27 Sep 2024 12:59:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.237.130.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 330414C98
+	for <stable@vger.kernel.org>; Fri, 27 Sep 2024 13:20:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727441958; cv=none; b=qhcFaWuVT31sYtUdIaaPoqyHWnlla6N/7Lz5JTcrbATmkSJH/CKC+rAdUI+LwMSHbpXse7duCS8P6C94HFmrYvIIrIHH02w7WdnCEUQ9nzNo+JKSRkO20wxjam+Z3lzt1mVKzsWCBfYJrvdQaWMnV28z/R65Sr4xdBLgulqXLJw=
+	t=1727443221; cv=none; b=a9a8QyCLGXbGxIs/ECFNdM/HnyqWUkDjwHyHYNZAxscpbwWKQmDpBT593xLvgZWm62jTXvhVOu5VHZP/sj5r/ere3sRAYkujFTbr+N+eH7s4cAE06RHKX8fz5xD6x+NRdXbNrCwBbPnRBAEutvYc4zo/xdQAB3NayW5RAV0PuPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727441958; c=relaxed/simple;
-	bh=MgHA6QrlFDqD0b39Bjeh4xZCqnAdUcrIa0qC+IxrJ8g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=j5815qpoDvW37T+v5lMQsGyie8e1fQebTLJrXENJynphjO1baJPpx0YM9+5WkVr6zwTelDm7e4blwjT3baGc4T/oG9J68arIYdSU1VYlvsrkWboyFVOsROVNh0nQdg96eASAuPRSpKgw1n7nD5PLCqWC9mkCBmZkaGemCjsrdTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=N+jLYx2F; arc=none smtp.client-ip=80.237.130.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=leemhuis.info; s=he214686; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:From:
-	Sender:Reply-To:Subject:Date:Message-ID:To:Cc:MIME-Version:Content-Type:
-	Content-Transfer-Encoding:Content-ID:Content-Description:In-Reply-To:
-	References; bh=LCDzsMM/uMsr1Jh/JXxraXhth4C18YjmMU5EvAUKBtY=; t=1727441956;
-	x=1727873956; b=N+jLYx2FKShSUSjo6dTbk6R9viHLYK7Np+yiFN+LVTbrpf9c88VwpC9NvjXPp
-	0tvSqPbeG/0TNFTGZt7xcCQv2rHqxkJFlORQ8S4x7RhdXwynkoV2HKa5UieEKfc1/6/1D0aKBPCAe
-	lLN6N7/AmTwSNZKSFG7LL0RCeATjyh9oVtF5DI/QpECf3cNWzMJCVHdKgWZJJ60BNcl73PHE5UgBi
-	izghZL1talUVoNqTS4T8dCV3pkRHXLFKjoWPK5IXWG0FIS95EeR2Obrjb8IZJ3PllP9dCl6rx+NJ1
-	bZe4TdgZL7LAkiZti9naLOhtfbRzvBut9bn86m0kXs4niwcwgA==;
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-	by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-	id 1suAZ0-0006eM-IU; Fri, 27 Sep 2024 14:59:14 +0200
-Message-ID: <ac9c7c92-a03f-49de-a0ae-147e804161b6@leemhuis.info>
-Date: Fri, 27 Sep 2024 14:59:14 +0200
+	s=arc-20240116; t=1727443221; c=relaxed/simple;
+	bh=XLEq1M/49fUMTjfhqFfpf7ALhKCShm0WYNc+42j6yLw=;
+	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=U0qAodK4y2NK4RpMKrKzjs9W40XXby56llz2fsdhLioKrXeUQndjQfh2heW2SoboVR6NZzUzE8jFD+CgaOr/h/VT+zNoVwWokQ94nazkcTY2HA1DjJdrrg70ghD7RzZF2u+3qwU7vXCE0tKT2vDzevzd1iYcQb+5+xWVTV8r7dI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J+d+qCBs; arc=none smtp.client-ip=209.85.208.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2f75c0b78fbso23902361fa.1
+        for <stable@vger.kernel.org>; Fri, 27 Sep 2024 06:20:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1727443218; x=1728048018; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=FDLCOPi5QpNo5CUL/g9mtdJyv1l5jh4HEp5d5eTLWQQ=;
+        b=J+d+qCBsIYyiUJahDFP5GOw4FRZItFb9tj9c2+qkDtvXs63wVd2bNxjKjQfv5BdYBV
+         0gvAtI9rsNPDIcnemH+R8HFZzdKksyZaax1pmuv0TRA2L0jxXL2umpQBkpmN0cifHiPc
+         WEutdZI1yT5CMQtJkOk9hri/ryUQ5ZzNU8ivyro4UY7JbhX0cNx96nLpze5AKCMONNTR
+         SJCwoRgTC5Vcm5RlaTzk1u7XhLUTyGWflyhi5X8D77TLi4A/5gh/eYutAhXASEDIIdcI
+         fy3/zAfath9eBZFECoTiVXWRMHrsZ7Za3xH+hZGE7GfGVYjVM8LTc7sS/PxeLJHnKuM0
+         gn8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727443218; x=1728048018;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=FDLCOPi5QpNo5CUL/g9mtdJyv1l5jh4HEp5d5eTLWQQ=;
+        b=jvfJT6QuycWFhZ5EMsdH9yZsQM9r8gmh+2ax7gOoAjbZ8FQI6U7Fn64biNsv9vyEOT
+         uW1F4Fjm2iRwKwjjVcIOhqCkuBPw55MMU2CkqmdpkKA889xd9vv8vjxX4v5iS2tlPPFC
+         QNBgCkzjbuohZr5K2BWD1uu5cDYLl+Nf6RNqm0aRZKM532LtQvT07gNVqC1sjyTdhtGV
+         fe262umY1c+OeQ24lbaLKdZL4aA98vBRd9DGzHLGGf3ko17kQNNeSBmWdMKtmty6i4QZ
+         N/OJVZbc0Hr/URxITv7QmisK3fZzX+K3ygCbGqX07xYtR7kr1/z1gK1p9S17n3OYyXZl
+         csUA==
+X-Gm-Message-State: AOJu0Yxo/JrLL73ttFKGz5L48GRIkgxSuLGOg9A6SW1tj3uSzM4D1I8y
+	p5GHt5772Q/EVv16r/9sUS+ix1UUvJgm8+/DGsg+6jF9//0e4bBoO944vnoGktE7yHC020llAWM
+	/i9IPYWi1RsKWQV2CKjAveeJuuXhAV6Df
+X-Google-Smtp-Source: AGHT+IEUHQwZRK7jrAp9Ut+mkqO3YlI8KASsn2Gfd6yMLa0Dxv5U5m/LgKll+4N2LhE3PMxqHzUwm/udd+k9TeVx/+A=
+X-Received: by 2002:a2e:a541:0:b0:2f7:cba9:6098 with SMTP id
+ 38308e7fff4ca-2f9d3e78d0bmr23175501fa.19.1727443217855; Fri, 27 Sep 2024
+ 06:20:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: How do we track regressions affecting multiple (stable) trees?
-To: Christian Heusel <christian@heusel.eu>, regressions@lists.linux.dev
-Cc: stable@vger.kernel.org
-References: <2e6fc26a-26f8-4fb0-af5b-261e3eda6416@heusel.eu>
-From: Thorsten Leemhuis <regressions@leemhuis.info>
-Content-Language: en-US, de-DE
-In-Reply-To: <2e6fc26a-26f8-4fb0-af5b-261e3eda6416@heusel.eu>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1727441956;897c2ef4;
-X-HE-SMSGID: 1suAZ0-0006eM-IU
+From: Sim Brahmi <sh4224hs@gmail.com>
+Date: Fri, 27 Sep 2024 15:20:06 +0200
+Message-ID: <CAMZnB+fOn6YWNx5U8PYkF=wLgE-E4mcixJJQkysK=CM6JYbE7A@mail.gmail.com>
+Subject: self-debug using ptrace bad behavior?
+To: stable@vger.kernel.org
+Cc: regressions@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On 27.09.24 14:24, Christian Heusel wrote:
-> 
-> I wondered a few times in the last months how we could properly track
-> regressions for the stable series, as I'm always a bit unsure how proper
-> use of regzbot would look for these cases.
-> 
-> For issues that affect mainline usually just the commit itself is
-> specified with the relevant "#regzbot introduced: ..." invocation, but
-> how would one do this if the stable trees are also affected? Do we need
-> to specify "#regzbot introduced" for each backported version of the
-> upstream commit?!
+Hello,
 
-No, as there (most of the time, see below) is not much point in doing so
-(afaics!). And you'd need a separate mailing list thread or bugzilla
-ticket for each of them as well, which gets messy (but might be worth it
-for cases like the "[0]" you linked to!).
+I am unsure if this is the 'correct' behavior for ptrace.
 
-To explain the current state of things:
+If you run ptrace_traceme followed by ptrace_attach, then the process
+attaches its own parent to itself and cannot be attached by another
+thing. The attach call errors out, but GDB does report something
+attached to it.  I am unsure if Bash does this itself perhaps.
 
-Usually when a regression affects multiple stable series it also happens
-in mainline. Then it should just be tracked it as mainline regression,
-as Greg almost always will wait for the fix to hit mainline anyway --
-and then usually will backport the fix on his own, as long as it has a
-fixes tag.
+It's a bit hard for me to reason about because my debugging skills are
+bad and trying 'strace' with bash -c ./thing, or just on the thing
+itself gives -1 on both ptrace calls as strace attaches to it.
+similarly with GDB. Unsure how to debug this.
 
-Sooner or later this ideally should be improved with additional features
-in regzbot:
+https://gist.github.com/x64-elf-sh42/83393e319ad8280b8704fbe3f499e381
+to compile simply:
+gcc test.c -o thingy
 
-* A way to tell regzbot "this mainline regression does not affect the
-following stable series" (they usually do, so coming from the negative
-side of things is likely the right thing).
+This code works on my machine which is:
+Linux 6.1.0-25-amd64 #1 SMP PREEMPT_DYNAMIC Debian 6.1.106-3
+(2024-08-26) x86_64 GNU/Linux
 
-* The webui on the page for stable kernels should list all mainline
-regressions that affect stable series as well, because the culprit was
-backported to them (unless they were marked to not happen there, see
-previous point) -- and should continue to do so until the mainlined fix
-lands in those stable series as well.
+GDB -p on the pid reports that another pid is attached and the
+operation is illegal. That other pid is the bash shell that i spawned
+this binary from (code in gist).
 
-One case then afaics remains uncovered: regressions that happen in more
-than one stable series, but not in mainline (for example because some
-per-requisite is missing in all of those series). Not sure, some way to
-tell regzbot "this affects multiple stable series" is likely the right
-slution for that.
+it's useful for anti-debugging, but it seems odd it will attach it's
+parent to the process since that's not actually doing the attach call.
+If anything i'd expect the pid attached to itself, rather than the
+parent getting attached.
 
-In the end all of that should not be really simple to implement, but not
-hard either -- but well, due to lack of funding development currently is
-mostly stopped. :-/
+The first call to ptrace (traceme) gets return value 0. The second
+call  (attach) gets return value -1. That does seem correct, but yet
+there is something 'attached' when i try to use GDB.
 
-Hopefully things will improve soon again. But even then there are imho
-more important features that need to be addressed first. :-/
+If I only do the traceme call, it does not get attached by Bash, so it
+looks totally like the 'attach' call has a side effect of attaching
+the parent, rather than just only failing.
 
-> IMO this is especially interesting because sometimes getting a patchset
-> to fix the older trees can take quite some time since possibly backport
-> dependencies have to be found or even custom patches need to be written,
-> as it i.e. was the case [here][0].
 
-The above should hand this case afaics. If not, please let me know.
+Kind regards,
 
-> This led to fixes for the linux-6.1.y
-> branch landing a bit later which would be good to track with regzbot so
-> it does not fall through the cracks.
-> 
-> Maybe there already is a regzbot facility to do this that I have just
-> missed, but I thought if there is people on the lists will know :)
-
-The idea to handle stable better is pretty much in my head sind
-regzbot's early days, but you know how it is: there only so many hours
-in a day.
-
-> P.S.: I hope everybody had a great time at the conferences! I hope to
-> also make it next year ..
-
-FWIW, sounds that will require and intercontinental flight next year.
-:-/ But fwiw, a few people consider doing a kernel track at CLT oder
-Frosscon next year; and next year I might go to Kernel Recipes again is
-the timing is better.
-
-> [0]: https://lore.kernel.org/all/66bcb6f68172f_adbf529471@willemb.c.googlers.com.notmuch/
-
-HTH, ciao, Thorsten
+~sh42
 
