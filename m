@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-77966-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77922-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DC92598846F
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:27:32 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6B6E988437
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:25:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A1A9C281309
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:27:31 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1A0171C21EE2
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:25:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 027A718A955;
-	Fri, 27 Sep 2024 12:27:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C04718BC0A;
+	Fri, 27 Sep 2024 12:25:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FyBKF9If"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lC7wkE3S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B35751865ED;
-	Fri, 27 Sep 2024 12:27:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B49A18BC1D;
+	Fri, 27 Sep 2024 12:25:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440050; cv=none; b=s7ioyJ/EjjKHMqCUtqlN6cvfSZyRnqTuW5VZg8ru3hkbfVyQowOwY1RTLieZpHLL3Ay0HQsoBHJ8LsJSMUkJ2qyhx/JYBhmD51PbRwywSl1CKmxBmu+cM1pM3xJdxxBi5U08fw4ePd9FJhTM2ym8a6r1RsbLbX3DUVY+Ot5kDgI=
+	t=1727439928; cv=none; b=CFiD7l1bJR6X1VPzzlccDmOCnR6wgOHdtCbTj4wRuyAReycsIw8uf98ELqqrXbzHdstXU0+wdbXiZByrVcDAEgXX4aM4d6AkyQdoabAfvINnUyUvaR99otdoYBbQycQT8G3SFNQ+Ab8RIPFonD48uJCD408GzbiDpv7g6Oa8v1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440050; c=relaxed/simple;
-	bh=WXACQRx5mi7zB+vj97I90XYVzWeTcrpzn2si4wmQvMI=;
+	s=arc-20240116; t=1727439928; c=relaxed/simple;
+	bh=Rdd3ynJaiVhfiMj4qc4oSG6f1NS2ElpMPDHNGvZb15Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pCeIFrkVudYIoh1B1mnn2nZel3C80xhViBaUVgqYl2t3fUiMxiOqJa+cgIthl4BjLV5BrrVo3NDCaLm/WAFBoIqAZED/yP7cqTaKUqaEQfWUZgr8GnuKzb8JD/sd8Q4fekAeHlDIabhsjrViGchrn7a3fIFOu+Czonu93L9SNfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FyBKF9If; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40DB4C4CEC4;
-	Fri, 27 Sep 2024 12:27:30 +0000 (UTC)
+	 MIME-Version; b=RCKBEFtvDByu4TB8OYYuj7TBJSwgkFTZ7XdcESeCtH/B6AC8fv0skR9aMFIetnGgjXGUpDPdPqGX5U9kguURoOvb/OwNinxwYJCxJNNh3UhyQlCFj5IVt/VAxV1Fqsucysp/Z36AyopguMhGWbuDxLmm4PXMJ4hHj+AaijLyjc8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lC7wkE3S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65D8BC4CEC4;
+	Fri, 27 Sep 2024 12:25:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440050;
-	bh=WXACQRx5mi7zB+vj97I90XYVzWeTcrpzn2si4wmQvMI=;
+	s=korg; t=1727439927;
+	bh=Rdd3ynJaiVhfiMj4qc4oSG6f1NS2ElpMPDHNGvZb15Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FyBKF9If/QG542zNX3r+6Ts3ol6ps1T2VfrAZNF/DI0VP3DawwaNl/ZSqX9sCreBE
-	 hYgizDSfRdEzougCLYyPfyOaRgrwZwyF+IZB6Lqgn3oMXfgd2qutDfAQWEJMsQiAVg
-	 6tf7hPvIVLSr7jmZxbKUfioKHTH+dF+XYBH0CVAs=
+	b=lC7wkE3S1hQLd6YB40NFoJxTeLj73iYAF2lVukjoBu3ltSoyp+8iaXjvaFYlormSt
+	 1ga5fKtx2FCIGjYt2an38HOSNEsosl2pHKSAeBE/onJxpOI5+9rus7zTc1g2XlVIEM
+	 +kaurKqpRaYMT12SKUaIlr9VEvvJgRfHCKwxAYkI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bibo Mao <maobibo@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>,
+	Liao Chen <liaochen4@huawei.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 15/58] LoongArch: KVM: Invalidate guest steal time address on vCPU reset
+Subject: [PATCH 6.6 25/54] ASoC: tda7419: fix module autoloading
 Date: Fri, 27 Sep 2024 14:23:17 +0200
-Message-ID: <20240927121719.436164314@linuxfoundation.org>
+Message-ID: <20240927121720.747748601@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121718.789211866@linuxfoundation.org>
-References: <20240927121718.789211866@linuxfoundation.org>
+In-Reply-To: <20240927121719.714627278@linuxfoundation.org>
+References: <20240927121719.714627278@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bibo Mao <maobibo@loongson.cn>
+From: Liao Chen <liaochen4@huawei.com>
 
-[ Upstream commit 4956e07f05e239b274d042618a250c9fa3e92629 ]
+[ Upstream commit 934b44589da9aa300201a00fe139c5c54f421563 ]
 
-If ParaVirt steal time feature is enabled, there is a percpu gpa address
-passed from guest vCPU and host modifies guest memory space with this gpa
-address. When vCPU is reset normally, it will notify host and invalidate
-gpa address.
+Add MODULE_DEVICE_TABLE(), so modules could be properly autoloaded
+based on the alias from of_device_id table.
 
-However if VM is crashed and VMM reboots VM forcely, the vCPU reboot
-notification callback will not be called in VM. Host needs invalidate
-the gpa address, else host will modify guest memory during VM reboots.
-Here it is invalidated from the vCPU KVM_REG_LOONGARCH_VCPU_RESET ioctl
-interface.
-
-Also funciton kvm_reset_timer() is removed at vCPU reset stage, since SW
-emulated timer is only used in vCPU block state. When a vCPU is removed
-from the block waiting queue, kvm_restore_timer() is called and SW timer
-is cancelled. And the timer register is also cleared at VMM when a vCPU
-is reset.
-
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Liao Chen <liaochen4@huawei.com>
+Link: https://patch.msgid.link/20240826084924.368387-4-liaochen4@huawei.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/include/asm/kvm_vcpu.h | 1 -
- arch/loongarch/kvm/timer.c            | 7 -------
- arch/loongarch/kvm/vcpu.c             | 2 +-
- 3 files changed, 1 insertion(+), 9 deletions(-)
+ sound/soc/codecs/tda7419.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/loongarch/include/asm/kvm_vcpu.h b/arch/loongarch/include/asm/kvm_vcpu.h
-index 590a92cb54165..d741c3e9933a5 100644
---- a/arch/loongarch/include/asm/kvm_vcpu.h
-+++ b/arch/loongarch/include/asm/kvm_vcpu.h
-@@ -76,7 +76,6 @@ static inline void kvm_restore_lasx(struct loongarch_fpu *fpu) { }
- #endif
+diff --git a/sound/soc/codecs/tda7419.c b/sound/soc/codecs/tda7419.c
+index e187d74a17376..3914deb060cac 100644
+--- a/sound/soc/codecs/tda7419.c
++++ b/sound/soc/codecs/tda7419.c
+@@ -623,6 +623,7 @@ static const struct of_device_id tda7419_of_match[] = {
+ 	{ .compatible = "st,tda7419" },
+ 	{ },
+ };
++MODULE_DEVICE_TABLE(of, tda7419_of_match);
  
- void kvm_init_timer(struct kvm_vcpu *vcpu, unsigned long hz);
--void kvm_reset_timer(struct kvm_vcpu *vcpu);
- void kvm_save_timer(struct kvm_vcpu *vcpu);
- void kvm_restore_timer(struct kvm_vcpu *vcpu);
- 
-diff --git a/arch/loongarch/kvm/timer.c b/arch/loongarch/kvm/timer.c
-index bcc6b6d063d91..74a4b5c272d60 100644
---- a/arch/loongarch/kvm/timer.c
-+++ b/arch/loongarch/kvm/timer.c
-@@ -188,10 +188,3 @@ void kvm_save_timer(struct kvm_vcpu *vcpu)
- 	kvm_save_hw_gcsr(csr, LOONGARCH_CSR_ESTAT);
- 	preempt_enable();
- }
--
--void kvm_reset_timer(struct kvm_vcpu *vcpu)
--{
--	write_gcsr_timercfg(0);
--	kvm_write_sw_gcsr(vcpu->arch.csr, LOONGARCH_CSR_TCFG, 0);
--	hrtimer_cancel(&vcpu->arch.swtimer);
--}
-diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
-index 9e8030d451290..0b53f4d9fddf9 100644
---- a/arch/loongarch/kvm/vcpu.c
-+++ b/arch/loongarch/kvm/vcpu.c
-@@ -572,7 +572,7 @@ static int kvm_set_one_reg(struct kvm_vcpu *vcpu,
- 				vcpu->kvm->arch.time_offset = (signed long)(v - drdtime());
- 			break;
- 		case KVM_REG_LOONGARCH_VCPU_RESET:
--			kvm_reset_timer(vcpu);
-+			vcpu->arch.st.guest_addr = 0;
- 			memset(&vcpu->arch.irq_pending, 0, sizeof(vcpu->arch.irq_pending));
- 			memset(&vcpu->arch.irq_clear, 0, sizeof(vcpu->arch.irq_clear));
- 			break;
+ static struct i2c_driver tda7419_driver = {
+ 	.driver = {
 -- 
 2.43.0
 
