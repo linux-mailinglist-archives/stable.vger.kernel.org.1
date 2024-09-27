@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-77936-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78036-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCB4898844E
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:26:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CF8F9884CD
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:32:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FD6F2814D6
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:26:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C770F1C22531
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:32:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 845B818BC3B;
-	Fri, 27 Sep 2024 12:26:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0599E18D645;
+	Fri, 27 Sep 2024 12:30:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xgtI/Ou2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xJs/EwNP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43D0718BB91;
-	Fri, 27 Sep 2024 12:26:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B722618A6C4;
+	Fri, 27 Sep 2024 12:30:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727439967; cv=none; b=NTWwUf7jBrLsMnssbaK9cK0dvjQCeFgU9C7ByDmqI/DAjLLzytPEMDNgazLWL9B6LGGuwXO/QgjujFwqzaZ9/B1MpIwxwHKvOd1cNpNm4rMBP0Qr37Vd+BgTe7Fz/hZ1MXGATZq4oJBM1l7CV/IrLqKkVY7br7qX8DuaQ49z/co=
+	t=1727440245; cv=none; b=OXhPiNwISApNeVwMCaxxhSt6Bhz/uA4nZLrnKpqLdr2/5VStlRawOzbLM+DxKtDLzeKuIp5x3n2/xCogMrXnOTO3sE65PPeXGydER59uB8lxwZUXEjMrzDWTTS9/HxOsHZn6dm7yCCw+nBez8w7DStHX20I4Kasi3TEUGACb12k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727439967; c=relaxed/simple;
-	bh=6FOp+NVYoyMOE7v+SMhrrXXSpsCQaLP4s6etK7BJJUI=;
+	s=arc-20240116; t=1727440245; c=relaxed/simple;
+	bh=lKXURDZVwN7yIuqDFMalkhH3NQOx8qi/eBfyV65wf0U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W8f89rKC3bH28HhjsQUKa7dFS210QBMGikMNGIsj5NUQG9IFrbK+8XmIJyGwXGbfCHX7TS7Fp9buXvrEwsA4xXpvuLUlOVn56FNaWe3huV6iPm8FwWlQ53vp3IVoGkiH4DSLRJGnou2SwteAWZ9pWjbeRE4iGKAGkjnJ+/0WWcc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xgtI/Ou2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C355BC4CEC4;
-	Fri, 27 Sep 2024 12:26:06 +0000 (UTC)
+	 MIME-Version; b=MlrD//5Dp4iHD+5S396cPsJ6HvPjjWl/1EmYX89xzvK90ySEQ1Z0n8WmTLEcQ0DfDQV8gPw10Qz6IxIz5Sib77WyRHBjWba+4PQrDk84grsz1opibkhkbjfy800RBPWpzR+pNeLL5ROfGnhhTC0uth/hNv/yYiHMtEhUrSBumKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xJs/EwNP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E927C4CEC4;
+	Fri, 27 Sep 2024 12:30:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727439967;
-	bh=6FOp+NVYoyMOE7v+SMhrrXXSpsCQaLP4s6etK7BJJUI=;
+	s=korg; t=1727440245;
+	bh=lKXURDZVwN7yIuqDFMalkhH3NQOx8qi/eBfyV65wf0U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xgtI/Ou2KenOf8yMcTP7k3zWQlSKHw5ncE5R3hCiJV0+6m3rac/bxWND9Q4eIsEty
-	 Sf70oySoaqIkbTxOEvw5Br9z1FZiTm6RFmu+FdLoRw+IhLJ12hJkl/TK21dD9pRR3C
-	 UVkMg7MShUyP8XLVobgR7m7wVt1A6Pv+GTdhwVVA=
+	b=xJs/EwNPiVUFC8xpX4TUmG4gN6y6gVwt+hDjWA6HEuK3IeaVoHmakA6WCEmzAA7Do
+	 25w25pG4laELalq9tY7naOvlrdX1z/70OQIjfvMMmDGuxs40M9bLroWMKtepaXU7Ye
+	 zycB33z8joyOd84cauXFOj3+ofZ7YtuKfLD4u4DQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rickard Andersson <rickaran@axis.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>,
+	Daniel Gabay <daniel.gabay@intel.com>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 32/54] smb: client: fix hang in wait_for_response() for negproto
+Subject: [PATCH 6.1 13/73] wifi: iwlwifi: mvm: fix iwl_mvm_scan_fits() calculation
 Date: Fri, 27 Sep 2024 14:23:24 +0200
-Message-ID: <20240927121721.042698469@linuxfoundation.org>
+Message-ID: <20240927121720.388095077@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121719.714627278@linuxfoundation.org>
-References: <20240927121719.714627278@linuxfoundation.org>
+In-Reply-To: <20240927121719.897851549@linuxfoundation.org>
+References: <20240927121719.897851549@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +64,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Daniel Gabay <daniel.gabay@intel.com>
 
-[ Upstream commit 7ccc1465465d78e6411b7bd730d06e7435802b5c ]
+[ Upstream commit d44162280899c3fc2c6700e21e491e71c3c96e3d ]
 
-Call cifs_reconnect() to wake up processes waiting on negotiate
-protocol to handle the case where server abruptly shut down and had no
-chance to properly close the socket.
+The calculation should consider also the 6GHz IE's len, fix that.
+In addition, in iwl_mvm_sched_scan_start() the scan_fits helper is
+called only in case non_psc_incldued is true, but it should be called
+regardless, fix that as well.
 
-Simple reproducer:
-
-  ssh 192.168.2.100 pkill -STOP smbd
-  mount.cifs //192.168.2.100/test /mnt -o ... [never returns]
-
-Cc: Rickard Andersson <rickaran@axis.com>
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Daniel Gabay <daniel.gabay@intel.com>
+Reviewed-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20240825191257.7db825442fd2.I99f4d6587709de02072fd57957ec7472331c6b1d@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/connect.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 23 ++++++++++---------
+ 1 file changed, 12 insertions(+), 11 deletions(-)
 
-diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
-index d2307162a2de1..e325e06357ffb 100644
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -656,6 +656,19 @@ allocate_buffers(struct TCP_Server_Info *server)
- static bool
- server_unresponsive(struct TCP_Server_Info *server)
- {
-+	/*
-+	 * If we're in the process of mounting a share or reconnecting a session
-+	 * and the server abruptly shut down (e.g. socket wasn't closed, packet
-+	 * had been ACK'ed but no SMB response), don't wait longer than 20s to
-+	 * negotiate protocol.
-+	 */
-+	spin_lock(&server->srv_lock);
-+	if (server->tcpStatus == CifsInNegotiate &&
-+	    time_after(jiffies, server->lstrp + 20 * HZ)) {
-+		spin_unlock(&server->srv_lock);
-+		cifs_reconnect(server, false);
-+		return true;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+index b58441c2af730..20c5cc72e4269 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+@@ -824,8 +824,8 @@ static inline bool iwl_mvm_scan_fits(struct iwl_mvm *mvm, int n_ssids,
+ 	return ((n_ssids <= PROBE_OPTION_MAX) &&
+ 		(n_channels <= mvm->fw->ucode_capa.n_scan_channels) &
+ 		(ies->common_ie_len +
+-		 ies->len[NL80211_BAND_2GHZ] +
+-		 ies->len[NL80211_BAND_5GHZ] <=
++		 ies->len[NL80211_BAND_2GHZ] + ies->len[NL80211_BAND_5GHZ] +
++		 ies->len[NL80211_BAND_6GHZ] <=
+ 		 iwl_mvm_max_scan_ie_fw_cmd_room(mvm)));
+ }
+ 
+@@ -2935,18 +2935,16 @@ int iwl_mvm_sched_scan_start(struct iwl_mvm *mvm,
+ 		params.n_channels = j;
+ 	}
+ 
+-	if (non_psc_included &&
+-	    !iwl_mvm_scan_fits(mvm, req->n_ssids, ies, params.n_channels)) {
+-		kfree(params.channels);
+-		return -ENOBUFS;
++	if (!iwl_mvm_scan_fits(mvm, req->n_ssids, ies, params.n_channels)) {
++		ret = -ENOBUFS;
++		goto out;
+ 	}
+ 
+ 	uid = iwl_mvm_build_scan_cmd(mvm, vif, &hcmd, &params, type);
+-
+-	if (non_psc_included)
+-		kfree(params.channels);
+-	if (uid < 0)
+-		return uid;
++	if (uid < 0) {
++		ret = uid;
++		goto out;
 +	}
- 	/*
- 	 * We need to wait 3 echo intervals to make sure we handle such
- 	 * situations right:
-@@ -667,7 +680,6 @@ server_unresponsive(struct TCP_Server_Info *server)
- 	 * 65s kernel_recvmsg times out, and we see that we haven't gotten
- 	 *     a response in >60s.
- 	 */
--	spin_lock(&server->srv_lock);
- 	if ((server->tcpStatus == CifsGood ||
- 	    server->tcpStatus == CifsNeedNegotiate) &&
- 	    (!server->ops->can_echo || server->ops->can_echo(server)) &&
+ 
+ 	ret = iwl_mvm_send_cmd(mvm, &hcmd);
+ 	if (!ret) {
+@@ -2963,6 +2961,9 @@ int iwl_mvm_sched_scan_start(struct iwl_mvm *mvm,
+ 		mvm->sched_scan_pass_all = SCHED_SCAN_PASS_ALL_DISABLED;
+ 	}
+ 
++out:
++	if (non_psc_included)
++		kfree(params.channels);
+ 	return ret;
+ }
+ 
 -- 
 2.43.0
 
