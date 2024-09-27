@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-78007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9DCF98849A
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:29:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 649379884F1
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:32:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 88BADB23ACB
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:29:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 954911C2039A
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:32:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D97A218BC1C;
-	Fri, 27 Sep 2024 12:29:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D42E18C32F;
+	Fri, 27 Sep 2024 12:32:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XaAQfgyH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="10vcQqSp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A03918A6C3;
-	Fri, 27 Sep 2024 12:29:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CCA53C3C;
+	Fri, 27 Sep 2024 12:32:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440164; cv=none; b=ltawNJDX68M4Am71tOtWsvqpc2K7ksH/8U20CV2oSjq5P0u0qjHToW+mfoPbZpifJewTx5h8/84JnI2YWjJ6UKAwHvojNp/xH/C65EBY5Hm20ClaqZ7688fCAf3DyGyXDOw92rsk9MXKVpV8hM7JP4dzQwu15qJGQ42Lkyi0CFs=
+	t=1727440342; cv=none; b=lLU6PcFMggfErYi0nzhng3VajtpbO9BbC734P9AcSrLGpJ+/XvmZ1GgSbCCv9qWlIV0anE06y9J6iw4KhIZnvjAiH8fd0iDtd/WnJ3oHrsG2r2bL+XXoeQKZBQ6hyVi+It0vLDrKvxceQSOOFLTGpv2RVscJ94klrNwJssWOm+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440164; c=relaxed/simple;
-	bh=72BFvm86UoUNs0lwQOhi3hV+FZbQrl12+OKeO6bOGyg=;
+	s=arc-20240116; t=1727440342; c=relaxed/simple;
+	bh=QGyVEhJmVC+LhSc+fHbYvM8LCp0jrpScE2GKG+XlWo0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LwwqWVqj8tdb78YFDW81+jBfqSfJ9ST8efGHP5qmlO2yL0qcGebpCPFNvTWGcoe49kr22IGaPSWkYgByNlslrv62X654mJcJCiH1+gxfTWullrUiJF8C+Aab+F8xFK3zDrN7uzySugsDxqEA9KzBRY+ZK+3o4XsbwgIoLH3doKc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XaAQfgyH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E230C4CEC4;
-	Fri, 27 Sep 2024 12:29:23 +0000 (UTC)
+	 MIME-Version; b=mOUl4ky/M1MvdTCOLzxe5pu/5OBB4NX77JoA+x3Zd/EpGpU10gvvPQbscau47qbPoihF5ZdYgkn5c8gVfgG9YKCtECgB5Ic3e8U7V8sYvnsqJo0u4mRPpdnbCIeETROgNxULyk7MCihCCebmfTy62yuG+4AVBRLtY+eVoSaB/8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=10vcQqSp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF5A1C4CEC4;
+	Fri, 27 Sep 2024 12:32:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440164;
-	bh=72BFvm86UoUNs0lwQOhi3hV+FZbQrl12+OKeO6bOGyg=;
+	s=korg; t=1727440342;
+	bh=QGyVEhJmVC+LhSc+fHbYvM8LCp0jrpScE2GKG+XlWo0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XaAQfgyHRGGyoPabnrcD8/yR6gx9GMvBAWUUXFd1BT/xZTgcFRca4HRpizOyTtTE9
-	 S9UURMKF7qixiaDOO3rhqQAStwE0ORCGmfxcx9mw24VuEtV8KXfDrE7fbTaltzrAzv
-	 4vffr9tRXGKLuYoEzBjPZrw8s+/NphUzzecv1PEY=
+	b=10vcQqSpLLyXVBvHG6YM4ey7Ezd239x9hC6nQLRtdE38w3DxtFZnPMOfbsLgo8aVe
+	 cpX26ZJQjcl+mHixszCHJ+k0C8JXAxFSnm9937Oax4jIqHsQ6sNoZmQ3fjYdwBdbwB
+	 7DN0O1NaJFn5boPanPSDbMQXsO/sdZuEANL/ntvI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.10 56/58] can: mcp251xfd: move mcp251xfd_timestamp_start()/stop() into mcp251xfd_chip_start/stop()
-Date: Fri, 27 Sep 2024 14:23:58 +0200
-Message-ID: <20240927121721.121457919@linuxfoundation.org>
+	Shiyang Ruan <ruansy.fnst@fujitsu.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Leah Rumancik <leah.rumancik@gmail.com>,
+	Chandan Babu R <chandanbabu@kernel.org>
+Subject: [PATCH 6.1 48/73] xfs: fix the calculation for "end" and "length"
+Date: Fri, 27 Sep 2024 14:23:59 +0200
+Message-ID: <20240927121721.856647329@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121718.789211866@linuxfoundation.org>
-References: <20240927121718.789211866@linuxfoundation.org>
+In-Reply-To: <20240927121719.897851549@linuxfoundation.org>
+References: <20240927121719.897851549@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,111 +63,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Shiyang Ruan <ruansy.fnst@fujitsu.com>
 
-commit a7801540f325d104de5065850a003f1d9bdc6ad3 upstream.
+[ Upstream commit 5cf32f63b0f4c520460c1a5dd915dc4f09085f29 ]
 
-The mcp251xfd wakes up from Low Power or Sleep Mode when SPI activity
-is detected. To avoid this, make sure that the timestamp worker is
-stopped before shutting down the chip.
+The value of "end" should be "start + length - 1".
 
-Split the starting of the timestamp worker out of
-mcp251xfd_timestamp_init() into the separate function
-mcp251xfd_timestamp_start().
-
-Call mcp251xfd_timestamp_init() before mcp251xfd_chip_start(), move
-mcp251xfd_timestamp_start() to mcp251xfd_chip_start(). In this way,
-mcp251xfd_timestamp_stop() can be called unconditionally by
-mcp251xfd_chip_stop().
-
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Shiyang Ruan <ruansy.fnst@fujitsu.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Acked-by: Chandan Babu R <chandanbabu@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c      |    8 +++++---
- drivers/net/can/spi/mcp251xfd/mcp251xfd-timestamp.c |    7 +++++--
- drivers/net/can/spi/mcp251xfd/mcp251xfd.h           |    1 +
- 3 files changed, 11 insertions(+), 5 deletions(-)
+ fs/xfs/xfs_notify_failure.c |    9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
-@@ -744,6 +744,7 @@ static void mcp251xfd_chip_stop(struct m
+--- a/fs/xfs/xfs_notify_failure.c
++++ b/fs/xfs/xfs_notify_failure.c
+@@ -114,7 +114,8 @@ xfs_dax_notify_ddev_failure(
+ 	int			error = 0;
+ 	xfs_fsblock_t		fsbno = XFS_DADDR_TO_FSB(mp, daddr);
+ 	xfs_agnumber_t		agno = XFS_FSB_TO_AGNO(mp, fsbno);
+-	xfs_fsblock_t		end_fsbno = XFS_DADDR_TO_FSB(mp, daddr + bblen);
++	xfs_fsblock_t		end_fsbno = XFS_DADDR_TO_FSB(mp,
++							     daddr + bblen - 1);
+ 	xfs_agnumber_t		end_agno = XFS_FSB_TO_AGNO(mp, end_fsbno);
  
- 	mcp251xfd_chip_interrupts_disable(priv);
- 	mcp251xfd_chip_rx_int_disable(priv);
-+	mcp251xfd_timestamp_stop(priv);
- 	mcp251xfd_chip_sleep(priv);
- }
+ 	error = xfs_trans_alloc_empty(mp, &tp);
+@@ -210,7 +211,7 @@ xfs_dax_notify_failure(
+ 	ddev_end = ddev_start + bdev_nr_bytes(mp->m_ddev_targp->bt_bdev) - 1;
  
-@@ -763,6 +764,8 @@ static int mcp251xfd_chip_start(struct m
- 	if (err)
- 		goto out_chip_stop;
+ 	/* Ignore the range out of filesystem area */
+-	if (offset + len < ddev_start)
++	if (offset + len - 1 < ddev_start)
+ 		return -ENXIO;
+ 	if (offset > ddev_end)
+ 		return -ENXIO;
+@@ -222,8 +223,8 @@ xfs_dax_notify_failure(
+ 		len -= ddev_start - offset;
+ 		offset = 0;
+ 	}
+-	if (offset + len > ddev_end)
+-		len -= ddev_end - offset;
++	if (offset + len - 1 > ddev_end)
++		len = ddev_end - offset + 1;
  
-+	mcp251xfd_timestamp_start(priv);
-+
- 	err = mcp251xfd_set_bittiming(priv);
- 	if (err)
- 		goto out_chip_stop;
-@@ -1610,11 +1613,12 @@ static int mcp251xfd_open(struct net_dev
- 	if (err)
- 		goto out_mcp251xfd_ring_free;
- 
-+	mcp251xfd_timestamp_init(priv);
-+
- 	err = mcp251xfd_chip_start(priv);
- 	if (err)
- 		goto out_transceiver_disable;
- 
--	mcp251xfd_timestamp_init(priv);
- 	clear_bit(MCP251XFD_FLAGS_DOWN, priv->flags);
- 	can_rx_offload_enable(&priv->offload);
- 
-@@ -1648,7 +1652,6 @@ out_destroy_workqueue:
- out_can_rx_offload_disable:
- 	can_rx_offload_disable(&priv->offload);
- 	set_bit(MCP251XFD_FLAGS_DOWN, priv->flags);
--	mcp251xfd_timestamp_stop(priv);
- out_transceiver_disable:
- 	mcp251xfd_transceiver_disable(priv);
- out_mcp251xfd_ring_free:
-@@ -1674,7 +1677,6 @@ static int mcp251xfd_stop(struct net_dev
- 	free_irq(ndev->irq, priv);
- 	destroy_workqueue(priv->wq);
- 	can_rx_offload_disable(&priv->offload);
--	mcp251xfd_timestamp_stop(priv);
- 	mcp251xfd_chip_stop(priv, CAN_STATE_STOPPED);
- 	mcp251xfd_transceiver_disable(priv);
- 	mcp251xfd_ring_free(priv);
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-timestamp.c
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-timestamp.c
-@@ -48,9 +48,12 @@ void mcp251xfd_timestamp_init(struct mcp
- 	cc->shift = 1;
- 	cc->mult = clocksource_hz2mult(priv->can.clock.freq, cc->shift);
- 
--	timecounter_init(&priv->tc, &priv->cc, ktime_get_real_ns());
--
- 	INIT_DELAYED_WORK(&priv->timestamp, mcp251xfd_timestamp_work);
-+}
-+
-+void mcp251xfd_timestamp_start(struct mcp251xfd_priv *priv)
-+{
-+	timecounter_init(&priv->tc, &priv->cc, ktime_get_real_ns());
- 	schedule_delayed_work(&priv->timestamp,
- 			      MCP251XFD_TIMESTAMP_WORK_DELAY_SEC * HZ);
- }
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd.h
-@@ -957,6 +957,7 @@ int mcp251xfd_ring_alloc(struct mcp251xf
- int mcp251xfd_handle_rxif(struct mcp251xfd_priv *priv);
- int mcp251xfd_handle_tefif(struct mcp251xfd_priv *priv);
- void mcp251xfd_timestamp_init(struct mcp251xfd_priv *priv);
-+void mcp251xfd_timestamp_start(struct mcp251xfd_priv *priv);
- void mcp251xfd_timestamp_stop(struct mcp251xfd_priv *priv);
- 
- void mcp251xfd_tx_obj_write_sync(struct work_struct *work);
+ 	return xfs_dax_notify_ddev_failure(mp, BTOBB(offset), BTOBB(len),
+ 			mf_flags);
 
 
 
