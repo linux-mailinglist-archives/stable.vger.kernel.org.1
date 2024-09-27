@@ -1,213 +1,148 @@
-Return-Path: <stable+bounces-77860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9BD56987DEB
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 07:42:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0738987E1F
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 08:07:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EA0CC1F2196E
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 05:42:21 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 22235283FDE
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 06:07:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C85FD175D48;
-	Fri, 27 Sep 2024 05:42:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BFB715C133;
+	Fri, 27 Sep 2024 06:07:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="STIgCIvA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gtXqCfDX"
 X-Original-To: stable@vger.kernel.org
-Received: from relay-us1.mymailcheap.com (relay-us1.mymailcheap.com [51.81.35.219])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBB6A1482E2;
-	Fri, 27 Sep 2024 05:42:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.81.35.219
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1999F2E630
+	for <stable@vger.kernel.org>; Fri, 27 Sep 2024 06:07:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727415734; cv=none; b=lXo+zkYRfce3Kfvzw5L1sDzCCyxoy7+x/IaydlCsdTnSUtODdQJgMFcwT1+V+/Q+F7BkUzxce2IN+VeA+AAeTVZp7Y9UoNvK2gTOlqnVWsiq3v2s3m9J3vcfjyUEQ7RY3jeNDVr4YmO+KCoJQpnJGzuPlqV24Ljb8wPZ+HuYlJI=
+	t=1727417256; cv=none; b=nmipnSuLr5XGXfXcNP626au2IxZLsx/+EVBisxiGjtfr6zT45pFPtLE2XhAaNTu4VPFWX5joOw9PL6VOVMxQVpQby4lQMqrlKLtI5JQeoocKk3pZqvIBRI67c5rkqCdww8REw5/4JgBA8G8IUact8AfjCjXg/EzfgN/eIfHAzfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727415734; c=relaxed/simple;
-	bh=T/fL2yq9tBoba5IhlMXnsNngOGBBV8VhjaWX89GHVYo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=tHfCRhFrsNcng4M55Sqpuwg6o/p/OhWuzzZYwULubTOiRoByVKO8MyCdA+HcjBvsCD6fyzOWJUKL8iEf2yrNL3KXdUOot55I7Rf5v2j4hCh/ksg3iRHFMKLK5X+wXEysCI30p+SMTTysN+9+qTsMVu2trZUMmqh86ZvVH2Bmzys=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=STIgCIvA; arc=none smtp.client-ip=51.81.35.219
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
-Received: from relay5.mymailcheap.com (relay5.mymailcheap.com [159.100.248.207])
-	by relay-us1.mymailcheap.com (Postfix) with ESMTPS id 0415A202B2;
-	Fri, 27 Sep 2024 05:32:09 +0000 (UTC)
-Received: from relay1.mymailcheap.com (relay1.mymailcheap.com [144.217.248.100])
-	by relay5.mymailcheap.com (Postfix) with ESMTPS id BEA1126042;
-	Fri, 27 Sep 2024 05:31:59 +0000 (UTC)
-Received: from nf1.mymailcheap.com (nf1.mymailcheap.com [51.75.14.91])
-	by relay1.mymailcheap.com (Postfix) with ESMTPS id 24F283E88C;
-	Fri, 27 Sep 2024 05:31:52 +0000 (UTC)
-Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
-	by nf1.mymailcheap.com (Postfix) with ESMTPSA id 131E14075D;
-	Fri, 27 Sep 2024 05:31:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
-	t=1727415110; bh=T/fL2yq9tBoba5IhlMXnsNngOGBBV8VhjaWX89GHVYo=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=STIgCIvA+HNIleeMnxogPV7Y/eBejpRUBf/lJ+UGP170entokzgyEyn9z2lABHYAn
-	 KzwhOhY3JEB14sH0hULBulktG54E1NUni3HcFF5I+u6DuInHwK/V19uU01wMyCZgYA
-	 AbH1BRkG71+hV9MQ81RPyWU3udwCjA7p1PxGD4j4=
-Received: from [198.18.0.1] (unknown [58.32.43.121])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mail20.mymailcheap.com (Postfix) with ESMTPSA id 23CBE401D1;
-	Fri, 27 Sep 2024 05:31:41 +0000 (UTC)
-Message-ID: <a45f1209-ff29-4010-b035-921cb136d58d@aosc.io>
-Date: Fri, 27 Sep 2024 13:31:38 +0800
+	s=arc-20240116; t=1727417256; c=relaxed/simple;
+	bh=C8OJP7Ynkx0f8zifCJV0+ApMB1Fp/I+nMF+cnqbgY/U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DYAXJCG3SYpXU/TVeCaaV4qVu2UfmkZLT8X79ECSdrM+JYDR/p5xbxZZqE24BQwN0daUW1sRm5RYpyZXOL4+CXiMfWYMjTB+gx+5NKBT84bQE6c07SkmkLmGqy48ZQy9Ge/DEjh9S284XHncYS8T1R8nvzElNK1YdHvEJx3za/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gtXqCfDX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37E0BC4CEC4;
+	Fri, 27 Sep 2024 06:07:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1727417255;
+	bh=C8OJP7Ynkx0f8zifCJV0+ApMB1Fp/I+nMF+cnqbgY/U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=gtXqCfDXsqgKTnvoBSKkyzlfzsyb01XxIggvzqJebztn3bPFwtcjnmDptAP0+Iri+
+	 uVuKW5j8+aXpCE6bpO3TtVzYnWXlG6+0UE4iZ4TlxszxL55dmvg21DjWENXtQ3hQjs
+	 yal/lS2bg0x52sY4g+htxr0rp+iVGBhIWd2SVjaI=
+Date: Fri, 27 Sep 2024 08:07:32 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: "Gagniuc, Alexandru" <alexandru.gagniuc@hp.com>
+Cc: "stable@vger.kernel.org" <stable@vger.kernel.org>, qin.wan@hp.com
+Subject: Re: Request to apply patches to v6.6 to fix thunderbolt issue
+Message-ID: <2024092710-monsieur-deferral-71b7@gregkh>
+References: <MW4PR84MB151669954C1D210A0FED92128D632@MW4PR84MB1516.NAMPRD84.PROD.OUTLOOK.COM>
+ <MW4PR84MB1516C1E8175FF8931ACF8AB18D632@MW4PR84MB1516.NAMPRD84.PROD.OUTLOOK.COM>
+ <2024091925-elixir-joylessly-9f33@gregkh>
+ <ZvWIQW5o5sTKvfJE@jam-buntu>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Thunderbird Daily
-Subject: Re: [PATCH V2 3/3] SH: cpuinfo: Fix a warning for
- CONFIG_CPUMASK_OFFSTACK
-To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
- Huacai Chen <chenhuacai@gmail.com>
-Cc: Huacai Chen <chenhuacai@loongson.cn>, Arnd Bergmann <arnd@arndb.de>,
- Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
- Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
- loongarch@lists.linux.dev, linux-arch@vger.kernel.org,
- linux-kernel@vger.kernel.org, Guo Ren <guoren@kernel.org>,
- Xuerui Wang <kernel@xen0n.name>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
- linux-mips@vger.kernel.org, linux-sh@vger.kernel.org, stable@vger.kernel.org
-References: <20220714084136.570176-1-chenhuacai@loongson.cn>
- <20220714084136.570176-3-chenhuacai@loongson.cn>
- <3a5a4bee5c0739a3b988a328376a6eed3c385fda.camel@physik.fu-berlin.de>
- <CAAhV-H5bw3xcym2-GpyntQEad1h2eB8xDQGwVr_bRRKAOakzoQ@mail.gmail.com>
- <8947f91ba1a10f98723a5982f0fc13ee589d3bf7.camel@physik.fu-berlin.de>
-Content-Language: en-US
-From: Kexy Biscuit <kexybiscuit@aosc.io>
-In-Reply-To: <8947f91ba1a10f98723a5982f0fc13ee589d3bf7.camel@physik.fu-berlin.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Rspamd-Server: nf1.mymailcheap.com
-X-Rspamd-Queue-Id: 131E14075D
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-1.46 / 10.00];
-	BAYES_HAM(-1.37)[90.69%];
-	MIME_GOOD(-0.10)[text/plain];
-	XM_UA_NO_VERSION(0.01)[];
-	ARC_NA(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_COUNT_ONE(0.00)[1];
-	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_TO(0.00)[physik.fu-berlin.de,gmail.com];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[16];
-	FROM_EQ_ENVFROM(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	TO_DN_SOME(0.00)[]
+In-Reply-To: <ZvWIQW5o5sTKvfJE@jam-buntu>
 
-On 3/19/2024 1:12 AM, John Paul Adrian Glaubitz wrote:
-> Hi Hucai,
+On Thu, Sep 26, 2024 at 07:35:38PM +0000, Gagniuc, Alexandru wrote:
+> On Thu, Sep 19, 2024 at 11:04:23AM +0200, Greg KH wrote:
+> > On Thu, Sep 19, 2024 at 08:38:52AM +0000, Wan, Qin (Thin Client RnD) wrote:
+> > > Hello,
+> > > 
+> > >    There is an issue found on v6.6.16: Plug in thunderbolt G4 dock with monitor connected after system boots up. The monitor shows nothing when wake up from S3 sometimes. The failure rate is above 50%.
+> > >    The kernel reports “UBSAN: shift-out-of-bounds in drivers/gpu/drm/display/drm_dp_mst_topology.c:4416:36”. The call stack is shown at the bottom of this email.
+> > >    This failure is fixed in v6.9-rc1. 
+> > >    We request to merge below commit to v6.6.
+> > > 
+> > >   6b8ac54f31f985d3abb0b4212187838dd8ea4227
+> > >  thunderbolt: Fix debug log when DisplayPort adapter not available for pairing
+> > > 
+> > >  fe8a0293c922ee8bc1ff0cf9048075afb264004a
+> > >  thunderbolt: Use tb_tunnel_dbg() where possible to make logging more consistent
+> > > 
+> > >  d27bd2c37d4666bce25ec4d9ac8c6b169992f0f0
+> > >  thunderbolt: Expose tb_tunnel_xxx() log macros to the rest of the driver
+> > > 
+> > >   8648c6465c025c488e2855c209c0dea1a1a15184
+> > >  thunderbolt: Create multiple DisplayPort tunnels if there are more DP IN/OUT pairs
+> > > 
+> > >  f73edddfa2a64a185c65a33f100778169c92fc25
+> > >  thunderbolt: Use constants for path weight and priority
+> > > 
+> > >   4d24db0c801461adeefd7e0bdc98c79c60ccefb0
+> > >   thunderbolt: Use weight constants in tb_usb3_consumed_bandwidth()
+> > > 
+> > >   aa673d606078da36ebc379f041c794228ac08cb5
+> > >   thunderbolt: Make is_gen4_link() available to the rest of the driver
+> > > 
+> > >   582e70b0d3a412d15389a3c9c07a44791b311715
+> > >    thunderbolt: Change bandwidth reservations to comply USB4 v2
+> > > 
+> > >    2bfeca73e94567c1a117ca45d2e8a25d63e5bd2c
+> > > 　thunderbolt: Introduce tb_port_path_direction_downstream()
+> > > 　
+> > > 　956c3abe72fb6a651b8cf77c28462f7e5b6a48b1
+> > > 　thunderbolt: Introduce tb_for_each_upstream_port_on_path()
+> > > 　
+> > > 　c4ff14436952c3d0dd05769d76cf48e73a253b48
+> > > 　thunderbolt: Introduce tb_switch_depth()
+> > > 　
+> > > 　81af2952e60603d12415e1a6fd200f8073a2ad8b
+> > > 　thunderbolt: Add support for asymmetric link
+> > > 　
+> > > 　3e36528c1127b20492ffaea53930bcc3df46a718
+> > > 　thunderbolt: Configure asymmetric link if needed and bandwidth allows
+> > > 　
+> > > 　b4734507ac55cc7ea1380e20e83f60fcd7031955
+> > > 　thunderbolt: Improve DisplayPort tunnel setup process to be more robust
+> > 
+> > Can you send these as a backported series with your signed-off-by to
+> > show that you have tested these to verify that they work properly in the
+> > 6.6 kernel tree?  That will make them much easier to apply, and track
+> > over time.
+> > 
 > 
-> On Mon, 2024-03-18 at 22:21 +0800, Huacai Chen wrote:
->> Hi, SuperH maintainers,
->>
->> On Wed, Feb 8, 2023 at 8:59 PM John Paul Adrian Glaubitz
->> <glaubitz@physik.fu-berlin.de> wrote:
->>>
->>> On Thu, 2022-07-14 at 16:41 +0800, Huacai Chen wrote:
->>>> When CONFIG_CPUMASK_OFFSTACK and CONFIG_DEBUG_PER_CPU_MAPS is selected,
->>>> cpu_max_bits_warn() generates a runtime warning similar as below while
->>>> we show /proc/cpuinfo. Fix this by using nr_cpu_ids (the runtime limit)
->>>> instead of NR_CPUS to iterate CPUs.
->>>>
->>>> [    3.052463] ------------[ cut here ]------------
->>>> [    3.059679] WARNING: CPU: 3 PID: 1 at include/linux/cpumask.h:108 show_cpuinfo+0x5e8/0x5f0
->>>> [    3.070072] Modules linked in: efivarfs autofs4
->>>> [    3.076257] CPU: 0 PID: 1 Comm: systemd Not tainted 5.19-rc5+ #1052
->>>> [    3.099465] Stack : 9000000100157b08 9000000000f18530 9000000000cf846c 9000000100154000
->>>> [    3.109127]         9000000100157a50 0000000000000000 9000000100157a58 9000000000ef7430
->>>> [    3.118774]         90000001001578e8 0000000000000040 0000000000000020 ffffffffffffffff
->>>> [    3.128412]         0000000000aaaaaa 1ab25f00eec96a37 900000010021de80 900000000101c890
->>>> [    3.138056]         0000000000000000 0000000000000000 0000000000000000 0000000000aaaaaa
->>>> [    3.147711]         ffff8000339dc220 0000000000000001 0000000006ab4000 0000000000000000
->>>> [    3.157364]         900000000101c998 0000000000000004 9000000000ef7430 0000000000000000
->>>> [    3.167012]         0000000000000009 000000000000006c 0000000000000000 0000000000000000
->>>> [    3.176641]         9000000000d3de08 9000000001639390 90000000002086d8 00007ffff0080286
->>>> [    3.186260]         00000000000000b0 0000000000000004 0000000000000000 0000000000071c1c
->>>> [    3.195868]         ...
->>>> [    3.199917] Call Trace:
->>>> [    3.203941] [<90000000002086d8>] show_stack+0x38/0x14c
->>>> [    3.210666] [<9000000000cf846c>] dump_stack_lvl+0x60/0x88
->>>> [    3.217625] [<900000000023d268>] __warn+0xd0/0x100
->>>> [    3.223958] [<9000000000cf3c90>] warn_slowpath_fmt+0x7c/0xcc
->>>> [    3.231150] [<9000000000210220>] show_cpuinfo+0x5e8/0x5f0
->>>> [    3.238080] [<90000000004f578c>] seq_read_iter+0x354/0x4b4
->>>> [    3.245098] [<90000000004c2e90>] new_sync_read+0x17c/0x1c4
->>>> [    3.252114] [<90000000004c5174>] vfs_read+0x138/0x1d0
->>>> [    3.258694] [<90000000004c55f8>] ksys_read+0x70/0x100
->>>> [    3.265265] [<9000000000cfde9c>] do_syscall+0x7c/0x94
->>>> [    3.271820] [<9000000000202fe4>] handle_syscall+0xc4/0x160
->>>> [    3.281824] ---[ end trace 8b484262b4b8c24c ]---
->>>>
->>>> Cc: stable@vger.kernel.org
->>>> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
->>>> ---
->>>>   arch/sh/kernel/cpu/proc.c | 2 +-
->>>>   1 file changed, 1 insertion(+), 1 deletion(-)
->>>>
->>>> diff --git a/arch/sh/kernel/cpu/proc.c b/arch/sh/kernel/cpu/proc.c
->>>> index a306bcd6b341..5f6d0e827bae 100644
->>>> --- a/arch/sh/kernel/cpu/proc.c
->>>> +++ b/arch/sh/kernel/cpu/proc.c
->>>> @@ -132,7 +132,7 @@ static int show_cpuinfo(struct seq_file *m, void *v)
->>>>
->>>>   static void *c_start(struct seq_file *m, loff_t *pos)
->>>>   {
->>>> -     return *pos < NR_CPUS ? cpu_data + *pos : NULL;
->>>> +     return *pos < nr_cpu_ids ? cpu_data + *pos : NULL;
->>>>   }
->>>>   static void *c_next(struct seq_file *m, void *v, loff_t *pos)
->>>>   {
->>>
->>> I build-tested the patch and also booted the patched kernel successfully
->>> on my SH-7785LCR board.
->>>
->>> Showing the contents of /proc/cpuinfo works fine, too:
->>>
->>> root@tirpitz:~> cat /proc/cpuinfo
->>> machine         : SH7785LCR
->>> processor       : 0
->>> cpu family      : sh4a
->>> cpu type        : SH7785
->>> cut             : 7.x
->>> cpu flags       : fpu perfctr llsc
->>> cache type      : split (harvard)
->>> icache size     : 32KiB (4-way)
->>> dcache size     : 32KiB (4-way)
->>> address sizes   : 32 bits physical
->>> bogomips        : 599.99
->>> root@tirpitz:~>
->>>
->>> Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
->>>
->>> I am not sure yet whether the change is also correct as I don't know whether
->>> it's possible to change the number of CPUs at runtime on SuperH.
->> Can this patch be merged? This is the only one still unmerged in the
->> whole series.
+> We used the below command to apply the patches. Is this helpful, or is 
+> resubmitting the series still required? If so, what script do you use to add
+> the "upstream commit" lines to the commit message?
 > 
-> Thanks for the reminder. I will pick it up for 6.10.
-> 
-> Got sick this week, so I can't pick up anymore patches for 6.9 and will just
-> send Linus a PR later this week.
-> 
-> Adrian
-> 
+> git cherry-pick 6b8ac54f31f9 fe8a0293c922 d27bd2c37d46 8648c6465c02 \
+>                 f73edddfa2a6 4d24db0c8014 aa673d606078 582e70b0d3a4 \
+>                 2bfeca73e945 956c3abe72fb c4ff14436952 81af2952e606 \
+>                 3e36528c1127 b4734507ac55
 
-Gentle ping on this, can we get this patch merged into 6.12?
+It's a bit helpful, but I would still like to see the full series from
+you, with your signed-off-by to prove that you tested this all properly
+and take responsibility for the backports :)
 
--- 
-Best Regards,
-Kexy Biscuit
+I do have a script, called 'c2p' in the stable-queue/scripts/ directory
+that adds the needed "upstream commit" information, but odds are it's
+easier for you to do that by hand instead of trying to get that to work
+with your directory structures.
+
+> It's commit 709f7c7172ae ("thunderbolt: Improve DisplayPort tunnel setup
+> process to be more robust") which solves the issue, and the pthers are
+> dependencies.
+
+Odd, you don't have that commit id in the above 'git cherry-pick' list,
+so how could it be the solution here?
+
+confused,
+
+greg k-h
 
