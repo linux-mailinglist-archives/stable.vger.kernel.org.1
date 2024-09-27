@@ -1,82 +1,83 @@
-Return-Path: <stable+bounces-77872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77873-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67B0F987F42
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 09:20:11 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F61E987F48
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 09:20:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2B8FD281744
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 07:20:10 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A11A1C22CF1
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 07:20:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2F7517D373;
-	Fri, 27 Sep 2024 07:20:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D55C617D373;
+	Fri, 27 Sep 2024 07:20:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yYFwDvC/"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="w5MeYwfA"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3A7D165EED
-	for <stable@vger.kernel.org>; Fri, 27 Sep 2024 07:20:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36843165F19
+	for <stable@vger.kernel.org>; Fri, 27 Sep 2024 07:20:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727421605; cv=none; b=bjIHyxzBCmuoxCZx9L8lTLd+WQlShJz8A43q9/dmc2L8w8rYA11a5OA7JHtVGW5DNkWWJubS94KZI4ZURgKtNjkY7XeTpFuN+REAIL5gKQaaJwCw9scoa/lQZXZdDc1uNJLph0n6LEByIkbthnYVwxJB6CVN+qUEy+ImP7d67HQ=
+	t=1727421644; cv=none; b=lHMO97qFnDcYwMBawHZx7rWTe80PYQ89yJgGe65Pbd2Xoom6/N556M8oMe8xpEF6295hkdZVx3lyEfRSVOsiPwtBLDsWB46Vt4BwXJpCz/xT0sRCJvvCvqPP0Y9uZ74sfq40EBX3U97w6958JIcJ/Vgevpv1TyVnaqIDv7rg/9I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727421605; c=relaxed/simple;
-	bh=UUer5AsU0EapduGbbVyKKaf43fdmVgfcN66T6aF1Q4M=;
+	s=arc-20240116; t=1727421644; c=relaxed/simple;
+	bh=qjitOK1YcSMSW6NZgtW9NMEyqllfS2BvU1QtZXtn/+I=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Z05n2kMPfK1SrT+1rVxMbpHm8Vgo2PwbroqL0UaT3+3Y3ZlUwT6PtWMxEDW1uIKoFLISFa9hVCCKb55VE+CWurxlQqa0izy0KPkVG6GgqaCfQob00liWEHEsNkvoO4alhxZROsK/CVw3ldzsBvH8wJsnfPgsitkUKgIba+Vj8g4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=yYFwDvC/; arc=none smtp.client-ip=209.85.221.50
+	 To:Cc:Content-Type; b=bUuezOddbN+kkNaB8VoS3RBQjiuRD6c6gvu9mxwiD2JG+O/a8LkuoBsuHoM8kFYk+5Ysmq7e7L8Ow6eYbtNWLj3ATQKqovjKmS34ENfqMH9dmos7FkBxtP4iJGXlEuk8g6j7dgya7GQsjzKWlIRQG4KQCzUH97ubFqNliqhhrhU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=w5MeYwfA; arc=none smtp.client-ip=209.85.128.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-37ccd81de57so1195440f8f.0
-        for <stable@vger.kernel.org>; Fri, 27 Sep 2024 00:20:03 -0700 (PDT)
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-42cae102702so14621445e9.0
+        for <stable@vger.kernel.org>; Fri, 27 Sep 2024 00:20:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1727421602; x=1728026402; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1727421641; x=1728026441; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=UUer5AsU0EapduGbbVyKKaf43fdmVgfcN66T6aF1Q4M=;
-        b=yYFwDvC/zymG0ut07yu3u9MELIZW3rRFgusdg3uljrqmEFr6YT2AkXQWLUUv9LUvqn
-         Neh0J07+pTWaehz7fYIvZ2A2yYxXCT7ZdAFvIM5Gp0gflcQnvUySQbeFCMJLr91ZaAxb
-         Vhr14odb+2uYLGkIDZ852Saws+/CS053zogjoIjzq7AOVmvcVqey5irFJEtmHc6X1zx/
-         kXbUrXUI+Yk9nMxoCqw1TEhPYSGx7dNhCc0gX5jAJ2RfREIg/T9BRoePQqJA7rrvFEJP
-         tHeNzww7R13ucyPIgX3ksd2Zkfx9ljldAN52C+uFBIHtdWPPituirqGIt1QBNb/Gj6EJ
-         mN0g==
+        bh=WJwjg54ez6LY3LSCq+PwluXFVCb5wSM0uXPFYvorjEM=;
+        b=w5MeYwfA4SKOSZARC85zCA4Ypcqg3zFx7fx0fovP77ObIsiiCTzYJ7b3XKBY7WwB4l
+         iWf4Qi5jPsrFjg97W4D/79CMgSl/giJXJBRTtFdW7CoL2Q5THus62xNKq3HX+TI+c+yh
+         0md6pACUFa3RiihiBRUrE5LysMc1DMdcyswJJKk9H9y28R8e5R/stl5NhkDAanioWy9C
+         Wk2ydRvbr3CBkEahqo8m4WKPf0pVAUHWWl5chee3sPYUWEh8OPOHEBPtsNCLLycihLlJ
+         6aBEET93J7HbhqzM2OYDt/K5bftscAlhpUwAll3mqyVdpnIqLCagyTFSOqZTEuFXfiV/
+         8ptg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727421602; x=1728026402;
+        d=1e100.net; s=20230601; t=1727421641; x=1728026441;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=UUer5AsU0EapduGbbVyKKaf43fdmVgfcN66T6aF1Q4M=;
-        b=WdDM+XMJIkbjpDj8OGHXZ8qzJ3x+C4rOJmOhmiXLK2rbozmvbhqF2tBEqnGUxqMpv2
-         wqB8hcCpasFkr88QRWf3BoZQEGKsSvTV8EZYM2d9N7QKBKVBEHUP8W+/WlNLW24oRz5L
-         R7+vbZEw+EUXSS0hYzZSpFC04PV1G22OjR/BL9bp/IB7W3QRwfLyaAQBTfL79v78ImS+
-         xbNIO9Jq5xUSoFQZBq+HY8Az4K4+5L2yxhoU0OBnzh+htQOhpFcNT+zVBYbHW7zMvtz4
-         sUAnkEEJEGpg7sc7DnAo+U/cd9DGId6+Jgg8Z4VvkTwBt1C3zIePzoESLBURTN5O3/eQ
-         QfnQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVU8V7dAwfYCFVKcl8ShUHp5mkPtXmUhfXMNv4R0Dcl157MTlToUtk7xkBlNkoJS0e/f0sg56M=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxu5vbAyHAa1ZCnVQxmNBX99edm2egnj2rN+VU66FD/gD2yXaG7
-	0SuCIOnVCvRtiHF5CRaYBkt9ijyW9+aGuL2GuBc92aV7hJPiSk/C8UydwqmNcws8tlvyV3w8LpC
-	91N0sgPrvd4WAeYhwnAlbE/36m8yuruA/yB4M
-X-Google-Smtp-Source: AGHT+IFDjmGSn5W7hvNBqPXKxR5dvdDqGDDzbiagFCPcdJ+stGo59h9JFQ1gTQgOukiRs4WwBDXmp/Tlduf4VHIEEDg=
-X-Received: by 2002:a5d:4e07:0:b0:374:bb1a:eebb with SMTP id
- ffacd0b85a97d-37cd56dfb91mr1412551f8f.25.1727421602051; Fri, 27 Sep 2024
- 00:20:02 -0700 (PDT)
+        bh=WJwjg54ez6LY3LSCq+PwluXFVCb5wSM0uXPFYvorjEM=;
+        b=HWljpgnMkMw/d70/LLjkHCMl149somQ6ajoOwMlpp0MFdf51GoTF5IZPrgK/gmn9t8
+         l+DnseiUTnKVw89fJeSAvIOKeYFQNM7elpbSMcGvnfgxdPPaG3nM+88SEaTAfz3KJjK/
+         asWaBBJC9A4+i5OYXwBLQsT2/AVy47SvDjxYPa02EgFGkXLst7a6aOt/gtuZGR/S7EwA
+         OqGbYYPUmz/6koxSNa6ClJIzCikoajXYq/uiJaKX2TZGwJxBGnwTHDcmmt0XeN5m8/fJ
+         rshhaKdr0P6bNfSocQsXnZfUhjz2hGnQQC+4AqJ58OOyd6g8peEGp3kt1ZjKi3vEQ0cj
+         UFHg==
+X-Forwarded-Encrypted: i=1; AJvYcCVs1N3LMvSp3Irix9V/jwFiq9PMa/1/ls0iEwaVmli3h1ssnCGPh7paZHMuFGww3VRvruPRbtA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxvIZ5tdRnpUZMV16e9UO2+JEVPg6iVDeLqiyifZ/6sicbr/86n
+	0nZfuNr+wsvjg8IVQ1nD/DfRQbtX9a1KCn5Kz0xNHlffDifvtvMKrbl8yauF0IcbIW/bV0oKDDs
+	Ao1uvznul6Jx/2JnT616vhCRVxTRK7gNyDx+l
+X-Google-Smtp-Source: AGHT+IFzipfJaikoBI3u0lKydpv4uIgowVvGRMmPknfxC0GWHUwO1YMtKorNy6Qd6NIoiNxS3Rs/8IVP5gi21RdfBtU=
+X-Received: by 2002:adf:dd8e:0:b0:374:c8d1:70be with SMTP id
+ ffacd0b85a97d-37cd5b31966mr1223185f8f.38.1727421641522; Fri, 27 Sep 2024
+ 00:20:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240926233632.821189-1-cmllamas@google.com> <20240926233632.821189-9-cmllamas@google.com>
-In-Reply-To: <20240926233632.821189-9-cmllamas@google.com>
+References: <20240926233632.821189-1-cmllamas@google.com> <20240926233632.821189-6-cmllamas@google.com>
+In-Reply-To: <20240926233632.821189-6-cmllamas@google.com>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 27 Sep 2024 09:19:50 +0200
-Message-ID: <CAH5fLgg=yYNFzsM=Jj5ALtKgaza+rXord-yg08_nDM15T15w0Q@mail.gmail.com>
-Subject: Re: [PATCH v2 8/8] binder: add delivered_freeze to debugfs output
+Date: Fri, 27 Sep 2024 09:20:29 +0200
+Message-ID: <CAH5fLgia2rRVfL7_sy25fLJ+63iYVsWX=wDvPsziYGcUNwjoXQ@mail.gmail.com>
+Subject: Re: [PATCH v2 5/8] binder: fix BINDER_WORK_CLEAR_FREEZE_NOTIFICATION
+ debug logs
 To: Carlos Llamas <cmllamas@google.com>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
 	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
@@ -86,15 +87,24 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ld
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 27, 2024 at 1:37=E2=80=AFAM Carlos Llamas <cmllamas@google.com>=
+On Fri, Sep 27, 2024 at 1:36=E2=80=AFAM Carlos Llamas <cmllamas@google.com>=
  wrote:
 >
-> Add the pending proc->delivered_freeze work to the debugfs output. This
-> information was omitted in the original implementation of the freeze
-> notification and can be valuable for debugging issues.
+> proc 699
+> context binder-test
+>   thread 699: l 00 need_return 0 tr 0
+>   ref 25: desc 1 node 20 s 1 w 0 d 00000000c03e09a3
+>   unknown work: type 11
+>
+> proc 640
+> context binder-test
+>   thread 640: l 00 need_return 0 tr 0
+>   ref 8: desc 1 node 3 s 1 w 0 d 000000002bb493e1
+>   has cleared freeze notification
 >
 > Fixes: d579b04a52a1 ("binder: frozen notification")
 > Cc: stable@vger.kernel.org
+> Suggested-by: Alice Ryhl <aliceryhl@google.com>
 > Signed-off-by: Carlos Llamas <cmllamas@google.com>
 
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
