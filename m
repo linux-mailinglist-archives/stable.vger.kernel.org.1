@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-78099-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78022-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EA19988513
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:33:49 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13D309884B0
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:30:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F33A1C22FCB
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:33:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BAC4C1F22AF4
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:30:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6C1718A95D;
-	Fri, 27 Sep 2024 12:33:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 055D63C3C;
+	Fri, 27 Sep 2024 12:30:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FQ1n+3Xw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DAaz2s8e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A568A1802AB;
-	Fri, 27 Sep 2024 12:33:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7ABA1E507;
+	Fri, 27 Sep 2024 12:30:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440419; cv=none; b=FEtMI8YEQqK73MdG3Wqll+L8KOfRCQ8k47C6WZh1xXLJE3lKlMNgnXgI0wr7dYUojgfto2DLQVn007IUyVBSPjsLosneC8ecCSaAKPcPFNIitB861r1RDO5jM6O5T9h7JKEGF4roTPzQRGt2+SBNDhPJTz1W0XulO2FZKDD0a08=
+	t=1727440206; cv=none; b=D9mnbdjtDhSsFzIR93xahYUI5rJB+LO/5eU9ML6vveKklAPHK8et493kk85jwejq/pT23hNB2H3rpt333X1VeNFOsuQvguoRYcRbs/DX1MnuqyWWoqaPbQlmEk+ZtukoxWDD8Yy1D91g/wXaVGmiJCYcn82xcPCD9daaK/1fFlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440419; c=relaxed/simple;
-	bh=NS27vEnUCIl87mjIR7GnCLHFYLam47tx5a1mjr4a4BY=;
+	s=arc-20240116; t=1727440206; c=relaxed/simple;
+	bh=awioz8hkqkzHLo2orXBBPwx1SQKxd6l3/qerDiQNFVo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xwy+xuTxnTLwnipcZkRwvnlmlMt3/RMHc1tJxcUUV5bUSUcpd6DrDgQkGKUG/QUsIi+6u9ayXNtgDqHPy5ZXO0J8HXgphqjzdo0mpZ0FhGV8TujCBvpFv53huCc1Z+Ey1ZXtQmM9IVfLceDlC8Wtvm5QLCYWL3BK/Xz6hpvaaWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FQ1n+3Xw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 350D9C4CEC4;
-	Fri, 27 Sep 2024 12:33:39 +0000 (UTC)
+	 MIME-Version; b=B1UZvCgXzjogTPrH78bEE+LaMYN7V4P1KFDYlX484eU4fRKmwhY5dph/nBaovo2JmarANK6gNh2gZdnnhgGn4Y/HW0stgC8IVQGoD/CFbmL4ZeDXz4YKMf5OnIEvJXWxJ1A//BSOIrJlNkvngE0nqzYdVVnk5x7E90wX74sX7/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DAaz2s8e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE5B4C4CECE;
+	Fri, 27 Sep 2024 12:30:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440419;
-	bh=NS27vEnUCIl87mjIR7GnCLHFYLam47tx5a1mjr4a4BY=;
+	s=korg; t=1727440206;
+	bh=awioz8hkqkzHLo2orXBBPwx1SQKxd6l3/qerDiQNFVo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FQ1n+3Xwoq3vbFlNgkhOnsLWT+WekU4u17F6Kmy5ES3YxY7Irod/44Rlu/ZAUohxN
-	 P2+WXaNVocRVDHaw8KuZehC4nAqcNpcgJJ7yP7RLMUcaQeODkThWEEkUWNZujovGPo
-	 Vv5tqqPTKRAwa31XaCCxktmUEKblKHsSirWcAApw=
+	b=DAaz2s8ei5DtfYRGCTQXQyzcTejApJPoiXsW5M5frCn/nckMfV4BAtJtG9YUgS7rG
+	 aQ7+HGvkRj2LUWZf0JUDil8RQsMgOzLTewJzYqnkf6wDvE3zlkaT4Hy8+cSu3MATAN
+	 WZpQRnnK8fSYOdLhHLRJ/0YzU/i/vnQBaD7sE9bQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kent Gibson <warthog618@gmail.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: [PATCH 6.1 64/73] gpiolib: cdev: Ignore reconfiguration without direction
+	Edward Adam Davis <eadavis@qq.com>,
+	stable <stable@kernel.org>,
+	syzbot+9d34f80f841e948c3fdb@syzkaller.appspotmail.com
+Subject: [PATCH 6.11 12/12] USB: usbtmc: prevent kernel-usb-infoleak
 Date: Fri, 27 Sep 2024 14:24:15 +0200
-Message-ID: <20240927121722.477541295@linuxfoundation.org>
+Message-ID: <20240927121715.757754022@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121719.897851549@linuxfoundation.org>
-References: <20240927121719.897851549@linuxfoundation.org>
+In-Reply-To: <20240927121715.213013166@linuxfoundation.org>
+References: <20240927121715.213013166@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kent Gibson <warthog618@gmail.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-commit b440396387418fe2feaacd41ca16080e7a8bc9ad upstream.
+commit 625fa77151f00c1bd00d34d60d6f2e710b3f9aad upstream.
 
-linereq_set_config() behaves badly when direction is not set.
-The configuration validation is borrowed from linereq_create(), where,
-to verify the intent of the user, the direction must be set to in order to
-effect a change to the electrical configuration of a line. But, when
-applied to reconfiguration, that validation does not allow for the unset
-direction case, making it possible to clear flags set previously without
-specifying the line direction.
+The syzbot reported a kernel-usb-infoleak in usbtmc_write,
+we need to clear the structure before filling fields.
 
-Adding to the inconsistency, those changes are not immediately applied by
-linereq_set_config(), but will take effect when the line value is next get
-or set.
-
-For example, by requesting a configuration with no flags set, an output
-line with GPIO_V2_LINE_FLAG_ACTIVE_LOW and GPIO_V2_LINE_FLAG_OPEN_DRAIN
-set could have those flags cleared, inverting the sense of the line and
-changing the line drive to push-pull on the next line value set.
-
-Skip the reconfiguration of lines for which the direction is not set, and
-only reconfigure the lines for which direction is set.
-
-Fixes: a54756cb24ea ("gpiolib: cdev: support GPIO_V2_LINE_SET_CONFIG_IOCTL")
-Signed-off-by: Kent Gibson <warthog618@gmail.com>
-Link: https://lore.kernel.org/r/20240626052925.174272-3-warthog618@gmail.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Fixes: 4ddc645f40e9 ("usb: usbtmc: Add ioctl for vendor specific write")
+Reported-and-tested-by: syzbot+9d34f80f841e948c3fdb@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=9d34f80f841e948c3fdb
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Cc: stable <stable@kernel.org>
+Link: https://lore.kernel.org/r/tencent_9649AA6EC56EDECCA8A7D106C792D1C66B06@qq.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpio/gpiolib-cdev.c |   12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/usb/class/usbtmc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpio/gpiolib-cdev.c
-+++ b/drivers/gpio/gpiolib-cdev.c
-@@ -1523,12 +1523,14 @@ static long linereq_set_config_unlocked(
- 		line = &lr->lines[i];
- 		desc = lr->lines[i].desc;
- 		flags = gpio_v2_line_config_flags(lc, i);
--		gpio_v2_line_config_flags_to_desc_flags(flags, &desc->flags);
--		edflags = flags & GPIO_V2_LINE_EDGE_DETECTOR_FLAGS;
- 		/*
--		 * Lines have to be requested explicitly for input
--		 * or output, else the line will be treated "as is".
-+		 * Lines not explicitly reconfigured as input or output
-+		 * are left unchanged.
- 		 */
-+		if (!(flags & GPIO_V2_LINE_DIRECTION_FLAGS))
-+			continue;
-+		gpio_v2_line_config_flags_to_desc_flags(flags, &desc->flags);
-+		edflags = flags & GPIO_V2_LINE_EDGE_DETECTOR_FLAGS;
- 		if (flags & GPIO_V2_LINE_FLAG_OUTPUT) {
- 			int val = gpio_v2_line_config_output_value(lc, i);
+--- a/drivers/usb/class/usbtmc.c
++++ b/drivers/usb/class/usbtmc.c
+@@ -754,7 +754,7 @@ static struct urb *usbtmc_create_urb(voi
+ 	if (!urb)
+ 		return NULL;
  
-@@ -1536,7 +1538,7 @@ static long linereq_set_config_unlocked(
- 			ret = gpiod_direction_output(desc, val);
- 			if (ret)
- 				return ret;
--		} else if (flags & GPIO_V2_LINE_FLAG_INPUT) {
-+		} else {
- 			ret = gpiod_direction_input(desc);
- 			if (ret)
- 				return ret;
+-	dmabuf = kmalloc(bufsize, GFP_KERNEL);
++	dmabuf = kzalloc(bufsize, GFP_KERNEL);
+ 	if (!dmabuf) {
+ 		usb_free_urb(urb);
+ 		return NULL;
 
 
 
