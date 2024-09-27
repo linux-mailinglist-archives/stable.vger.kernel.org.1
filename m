@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-78003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D3B3988492
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:29:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C347988461
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:27:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4E0D11C210DC
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:29:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99E8E1C23274
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:27:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B348F18BB91;
-	Fri, 27 Sep 2024 12:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCBD618BC3A;
+	Fri, 27 Sep 2024 12:26:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j8iMOE7t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uhJHzMya"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 721BC17B515;
-	Fri, 27 Sep 2024 12:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BFD318A95D;
+	Fri, 27 Sep 2024 12:26:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440153; cv=none; b=YVjm5oy2tZd5PptluR6DL0rEc80iB57c8gu8xJnzmD93/3rIF7dqYXgpKJJh86D38M7gYaTu9i8WCIX8tJR26DLv1euJKw3C+VgUvavR6xDWsvH/weSbSStt4A6vhjq/Qq6pHQFfHD5BGTPsSi4VutIdQN1HNEH5oJQA1agz02U=
+	t=1727440014; cv=none; b=gGOH7NsIlHvrgBOFkVfQGrYgpBZV5sFd4V65V4vc07/kdoPzsCUe+0RCD246kydgOEP3QyVDdDw2HZ7Rm14GvV18101vbpoM7bAz1S5TPnFr2BrJdzcWL11rwTkyl0eeJewET2jBnDlIIoLK9wFnNBxb3gSQaNa1Fn8TV/2InXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440153; c=relaxed/simple;
-	bh=h1p6pJTNwNk4Zep2qW4Qn4/uMI48+3Dx+rozGP/zgGQ=;
+	s=arc-20240116; t=1727440014; c=relaxed/simple;
+	bh=jHZVW6jPse82CY2XbrfXtYQp+bnb2TCCEEaxYC0n/rg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cQmQ/niUCyYNq8L2rDrhnJtsJRIZP/HcdVSs7eNk0QO+LYaduLwr5UN5Lj7WWgfbnSs/avdlO0YAPSkyJ79Uh+IFCL4kYsw+/Iu80UqWRecvdVSmv1FYJiU9tnGg/4RE+e1eadrZg5ADA6wmD89FnmkN5IDgogoCuwJ2rf8V5Bw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j8iMOE7t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00850C4CEC4;
-	Fri, 27 Sep 2024 12:29:12 +0000 (UTC)
+	 MIME-Version; b=lUSLiybIFSUMg7xQM+cc3gV91JcbitbujRZP1XmJr6r66QlYwAKG2LrQm0bBxjrXOEZ+E5GxqS/agvv1FhN9xY6wpCXf51DB8+O1NeMq45SL4qPkhknglEe3VuIIlwqVJxZSVMQ6dJu1txzvrBPAMpSOQPkhs+Vjb4Ok5xsiIus=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uhJHzMya; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1114C4CEC4;
+	Fri, 27 Sep 2024 12:26:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440153;
-	bh=h1p6pJTNwNk4Zep2qW4Qn4/uMI48+3Dx+rozGP/zgGQ=;
+	s=korg; t=1727440014;
+	bh=jHZVW6jPse82CY2XbrfXtYQp+bnb2TCCEEaxYC0n/rg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j8iMOE7tURC/UnmVWVRWAnbJYP46oOIkCHPXhCLOUrSwUASftyOOIN1gypjSw5lFy
-	 XcC/knOjhX64CMKzNINvrZOWF7vF9JvTFqbUJC079x7TqBcTvAaaCtiUerPn2UVoau
-	 8DnhIf9f2HhvRM0RslAAaiN/Hu9hruxAOIulYRPI=
+	b=uhJHzMyazsSk9FpJGmF/pFM/2mq/O07kzWdv+kb3ancfYYB55rquAU16XNGRhnIXm
+	 yqvd8bV2kw3i6WrpVFWxJ/JDyLZJWkRMVnARhMQ/kSrLa3m+lGcQqsWhVG1i8w0ify
+	 5Yo8WOQ9v2gC4tpEeKaoNZXJVvDhWYWam/IA1agE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Yibin Ding <yibin.ding@unisoc.com>,
+	Hongyu Jin <hongyu.jin@unisoc.com>,
+	Eric Biggers <ebiggers@google.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 25/58] ASoC: Intel: soc-acpi-cht: Make Lenovo Yoga Tab 3 X90F DMI match less strict
+Subject: [PATCH 6.6 35/54] block: Fix where bio IO priority gets set
 Date: Fri, 27 Sep 2024 14:23:27 +0200
-Message-ID: <20240927121719.821917295@linuxfoundation.org>
+Message-ID: <20240927121721.162565262@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121718.789211866@linuxfoundation.org>
-References: <20240927121718.789211866@linuxfoundation.org>
+In-Reply-To: <20240927121719.714627278@linuxfoundation.org>
+References: <20240927121719.714627278@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +67,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Hongyu Jin <hongyu.jin@unisoc.com>
 
-[ Upstream commit 839a4ec06f75cec8fec2cc5fc14e921d0c3f7369 ]
+[ Upstream commit f3c89983cb4fc00be64eb0d5cbcfcdf2cacb965e ]
 
-There are 2G and 4G RAM versions of the Lenovo Yoga Tab 3 X90F and it
-turns out that the 2G version has a DMI product name of
-"CHERRYVIEW D1 PLATFORM" where as the 4G version has
-"CHERRYVIEW C0 PLATFORM". The sys-vendor + product-version check are
-unique enough that the product-name check is not necessary.
+Commit 82b74cac2849 ("blk-ioprio: Convert from rqos policy to direct
+call") pushed setting bio I/O priority down into blk_mq_submit_bio()
+-- which is too low within block core's submit_bio() because it
+skips setting I/O priority for block drivers that implement
+fops->submit_bio() (e.g. DM, MD, etc).
 
-Drop the product-name check so that the existing DMI match for the 4G
-RAM version also matches the 2G RAM version.
+Fix this by moving bio_set_ioprio() up from blk-mq.c to blk-core.c and
+call it from submit_bio().  This ensures all block drivers call
+bio_set_ioprio() during initial bio submission.
 
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://patch.msgid.link/20240823074305.16873-1-hdegoede@redhat.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: a78418e6a04c ("block: Always initialize bio IO priority on submit")
+Co-developed-by: Yibin Ding <yibin.ding@unisoc.com>
+Signed-off-by: Yibin Ding <yibin.ding@unisoc.com>
+Signed-off-by: Hongyu Jin <hongyu.jin@unisoc.com>
+Reviewed-by: Eric Biggers <ebiggers@google.com>
+Reviewed-by: Mikulas Patocka <mpatocka@redhat.com>
+[snitzer: revised commit header]
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20240130202638.62600-2-snitzer@kernel.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/common/soc-acpi-intel-cht-match.c | 1 -
- 1 file changed, 1 deletion(-)
+ block/blk-core.c | 10 ++++++++++
+ block/blk-mq.c   | 10 ----------
+ 2 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/sound/soc/intel/common/soc-acpi-intel-cht-match.c b/sound/soc/intel/common/soc-acpi-intel-cht-match.c
-index 5e2ec60e2954b..e4c3492a0c282 100644
---- a/sound/soc/intel/common/soc-acpi-intel-cht-match.c
-+++ b/sound/soc/intel/common/soc-acpi-intel-cht-match.c
-@@ -84,7 +84,6 @@ static const struct dmi_system_id lenovo_yoga_tab3_x90[] = {
- 		/* Lenovo Yoga Tab 3 Pro YT3-X90, codec missing from DSDT */
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Intel Corporation"),
--			DMI_MATCH(DMI_PRODUCT_NAME, "CHERRYVIEW D1 PLATFORM"),
- 			DMI_MATCH(DMI_PRODUCT_VERSION, "Blade3-10A-001"),
- 		},
- 	},
+diff --git a/block/blk-core.c b/block/blk-core.c
+index bf058cea9016a..4f25d2c4bc705 100644
+--- a/block/blk-core.c
++++ b/block/blk-core.c
+@@ -49,6 +49,7 @@
+ #include "blk-pm.h"
+ #include "blk-cgroup.h"
+ #include "blk-throttle.h"
++#include "blk-ioprio.h"
+ 
+ struct dentry *blk_debugfs_root;
+ 
+@@ -819,6 +820,14 @@ void submit_bio_noacct(struct bio *bio)
+ }
+ EXPORT_SYMBOL(submit_bio_noacct);
+ 
++static void bio_set_ioprio(struct bio *bio)
++{
++	/* Nobody set ioprio so far? Initialize it based on task's nice value */
++	if (IOPRIO_PRIO_CLASS(bio->bi_ioprio) == IOPRIO_CLASS_NONE)
++		bio->bi_ioprio = get_current_ioprio();
++	blkcg_set_ioprio(bio);
++}
++
+ /**
+  * submit_bio - submit a bio to the block device layer for I/O
+  * @bio: The &struct bio which describes the I/O
+@@ -841,6 +850,7 @@ void submit_bio(struct bio *bio)
+ 		count_vm_events(PGPGOUT, bio_sectors(bio));
+ 	}
+ 
++	bio_set_ioprio(bio);
+ 	submit_bio_noacct(bio);
+ }
+ EXPORT_SYMBOL(submit_bio);
+diff --git a/block/blk-mq.c b/block/blk-mq.c
+index 7cc315527a44c..733d72f4d1cc9 100644
+--- a/block/blk-mq.c
++++ b/block/blk-mq.c
+@@ -40,7 +40,6 @@
+ #include "blk-stat.h"
+ #include "blk-mq-sched.h"
+ #include "blk-rq-qos.h"
+-#include "blk-ioprio.h"
+ 
+ static DEFINE_PER_CPU(struct llist_head, blk_cpu_done);
+ static DEFINE_PER_CPU(call_single_data_t, blk_cpu_csd);
+@@ -2956,14 +2955,6 @@ static bool blk_mq_can_use_cached_rq(struct request *rq, struct blk_plug *plug,
+ 	return true;
+ }
+ 
+-static void bio_set_ioprio(struct bio *bio)
+-{
+-	/* Nobody set ioprio so far? Initialize it based on task's nice value */
+-	if (IOPRIO_PRIO_CLASS(bio->bi_ioprio) == IOPRIO_CLASS_NONE)
+-		bio->bi_ioprio = get_current_ioprio();
+-	blkcg_set_ioprio(bio);
+-}
+-
+ /**
+  * blk_mq_submit_bio - Create and send a request to block device.
+  * @bio: Bio pointer.
+@@ -2988,7 +2979,6 @@ void blk_mq_submit_bio(struct bio *bio)
+ 	blk_status_t ret;
+ 
+ 	bio = blk_queue_bounce(bio, q);
+-	bio_set_ioprio(bio);
+ 
+ 	if (plug) {
+ 		rq = rq_list_peek(&plug->cached_rq);
 -- 
 2.43.0
 
