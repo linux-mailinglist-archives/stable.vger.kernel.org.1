@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-77985-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77940-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C773988484
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:28:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AFC2A988452
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:26:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01BA8281727
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:28:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74414281471
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:26:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE03918BC23;
-	Fri, 27 Sep 2024 12:28:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84ABE18BC29;
+	Fri, 27 Sep 2024 12:26:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="12Rtmc6T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dwstwC2l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D59718BC1F;
-	Fri, 27 Sep 2024 12:28:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4422C18BC1D;
+	Fri, 27 Sep 2024 12:26:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440103; cv=none; b=A+E8ayzHakjxg5luJxCRqM/cBBawXKNVwWdg5BTz6EbsY7N4NUe0sMnkuKmZGQQ6z32/vYYBWG3Ra9yjWVsyvooYfxv0W2rYxzEN1cTh1Tav2RNuxrduU/37XcWmZTntx+wUCERwy9eda+2YHtVsLKYgZ6sTCuLfst1CIUPnowY=
+	t=1727439978; cv=none; b=MK0wVC6NoFt1dCvuhpRSDcfhdfF397GSoj8STuLVmeg5hoYORmDOERJtmFK8icSyF+i0ywHJ8pCacl6+VAxi6kIh8FYd1kmenWumgV4ezl22dcBDWkly9qUZEyWNIXtDqMbhjVpQAg51ZSKQSHRPbiBKK16ELwaY2j3g2V6s6B8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440103; c=relaxed/simple;
-	bh=mKOavfI7Bo0IiVAZOKwAbCSd+USO9hkAmLNVMlLQbkY=;
+	s=arc-20240116; t=1727439978; c=relaxed/simple;
+	bh=GDeR6F5rZAzuofEBcDy3FUfmRBYD3XrXsflsIKUNvLo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=c0O/Z9ThQdcQ3gpD0OdDWSshXEBsF2B4+le5iLU7ZGi9Hk7oTg3lvcGIL1teoOWZxNSgBNzg6LkTYmK3NvXxxEGtlgqz7BOY+vB/p4ckpBuc6JsYdRWP8xgvskqI/PD8khKfgMyRYfNjzVw+zzmVDIpXaxHTZNV/ltSTbHLTW4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=12Rtmc6T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E99D7C4CECE;
-	Fri, 27 Sep 2024 12:28:22 +0000 (UTC)
+	 MIME-Version; b=Zlgbtm6sZksgIZ+apMqQu8z8spsU7h5AkNt/aSv3JMNZ8aINKOPEnzcV0XclL+YbVKvk+M1Jewm/uzu1j44WOAnqQEX0YcuvrTdpPtysXdmr7GPiwX1SlgsmleQ/C0DA+COchASMoXZjVOvCL6p5IoFIJLcj3+KDIbhYkKBwS18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dwstwC2l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6D60C4CEC4;
+	Fri, 27 Sep 2024 12:26:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440103;
-	bh=mKOavfI7Bo0IiVAZOKwAbCSd+USO9hkAmLNVMlLQbkY=;
+	s=korg; t=1727439978;
+	bh=GDeR6F5rZAzuofEBcDy3FUfmRBYD3XrXsflsIKUNvLo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=12Rtmc6ThAHnjV2iDl9YrGtAcAyceJ11rl/MVlAvre4f8YLjCAA2QEufTFWley9gs
-	 EsiKZVFz34XoKDbSiTL5qksmlbOV6UBqyRGRrgVAk8pHeVgKcAhV01kBPNBkNVlM+5
-	 s/+fwAxN8N+XJ3y/7v4spGGYeUtvoWwhybwBegSs=
+	b=dwstwC2lhQ3FnznYgV52Ar2FZrH/34v4m2Z4kYSKFIgK5tG7cn1n1DVSmdqQx3BtX
+	 qj1Kvz/eiOVvMzXDPQ0hJOn27/ZsiFJhU0mv5v9woifjpPWgXu2y+Zy3m7XyRhUdXB
+	 wpXzqntKF/9tmE+FfbBolk0C5QKN95Tm6KQHybzU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
-	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
-	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
-	Bard Liao <yung-chuan.liao@linux.intel.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 34/58] ALSA: hda: add HDMI codec ID for Intel PTL
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 44/54] netfilter: nft_socket: Fix a NULL vs IS_ERR() bug in nft_socket_cgroup_subtree_level()
 Date: Fri, 27 Sep 2024 14:23:36 +0200
-Message-ID: <20240927121720.170949888@linuxfoundation.org>
+Message-ID: <20240927121721.580894857@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121718.789211866@linuxfoundation.org>
-References: <20240927121718.789211866@linuxfoundation.org>
+In-Reply-To: <20240927121719.714627278@linuxfoundation.org>
+References: <20240927121719.714627278@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,45 +61,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit e9481d9b83f8d9b3251aa428b02d8eba89d839ff ]
+commit 7052622fccb1efb850c6b55de477f65d03525a30 upstream.
 
-Add HDMI codec ID for Intel Panther Lake platform.
+The cgroup_get_from_path() function never returns NULL, it returns error
+pointers.  Update the error handling to match.
 
-Signed-off-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
-Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
-Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
-Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
-Link: https://patch.msgid.link/20240830072458.110831-1-yung-chuan.liao@linux.intel.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7f3287db6543 ("netfilter: nft_socket: make cgroupsv2 matching work with namespaces")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Acked-by: Florian Westphal <fw@strlen.de>
+Acked-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Link: https://patch.msgid.link/bbc0c4e0-05cc-4f44-8797-2f4b3920a820@stanley.mountain
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_hdmi.c | 1 +
- 1 file changed, 1 insertion(+)
+ net/netfilter/nft_socket.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/pci/hda/patch_hdmi.c b/sound/pci/hda/patch_hdmi.c
-index 78042ac2b71f2..643e0496b0936 100644
---- a/sound/pci/hda/patch_hdmi.c
-+++ b/sound/pci/hda/patch_hdmi.c
-@@ -4639,6 +4639,7 @@ HDA_CODEC_ENTRY(0x8086281d, "Meteor Lake HDMI",	patch_i915_adlp_hdmi),
- HDA_CODEC_ENTRY(0x8086281e, "Battlemage HDMI",	patch_i915_adlp_hdmi),
- HDA_CODEC_ENTRY(0x8086281f, "Raptor Lake P HDMI",	patch_i915_adlp_hdmi),
- HDA_CODEC_ENTRY(0x80862820, "Lunar Lake HDMI",	patch_i915_adlp_hdmi),
-+HDA_CODEC_ENTRY(0x80862822, "Panther Lake HDMI",	patch_i915_adlp_hdmi),
- HDA_CODEC_ENTRY(0x80862880, "CedarTrail HDMI",	patch_generic_hdmi),
- HDA_CODEC_ENTRY(0x80862882, "Valleyview2 HDMI",	patch_i915_byt_hdmi),
- HDA_CODEC_ENTRY(0x80862883, "Braswell HDMI",	patch_i915_byt_hdmi),
--- 
-2.43.0
-
+--- a/net/netfilter/nft_socket.c
++++ b/net/netfilter/nft_socket.c
+@@ -61,8 +61,8 @@ static noinline int nft_socket_cgroup_su
+ 	struct cgroup *cgrp = cgroup_get_from_path("/");
+ 	int level;
+ 
+-	if (!cgrp)
+-		return -ENOENT;
++	if (IS_ERR(cgrp))
++		return PTR_ERR(cgrp);
+ 
+ 	level = cgrp->level;
+ 
 
 
 
