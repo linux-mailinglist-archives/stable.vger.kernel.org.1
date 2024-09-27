@@ -1,140 +1,246 @@
-Return-Path: <stable+bounces-77904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FC8D988422
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:24:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8F5E9884F7
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:33:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D60A228154D
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:24:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 566761F23407
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:33:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9816318BB91;
-	Fri, 27 Sep 2024 12:24:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4BE618C901;
+	Fri, 27 Sep 2024 12:32:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b="NaLIuosm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JabJs6sL"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.kundenserver.de (mout.kundenserver.de [217.72.192.74])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8EC518C00D;
-	Fri, 27 Sep 2024 12:24:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.72.192.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B8218C358;
+	Fri, 27 Sep 2024 12:32:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727439852; cv=none; b=NNJixtM6qBIAvYDB3KZeSAlZpHoryvvAgaFbDMGFceiLwltpEybn22pwbHyp4/568X5x99NvoyELa6XhbOp+q7+WvqetUO781eRk/LUWbHJLRG5UV2yT7SkkDE4f21py7ESMgq5a+hhkCLFSieemEfDaccLr/ZCEEAmms3R+mRE=
+	t=1727440350; cv=none; b=pXmau9lByCxFmFdoONDvpGsCxG3GchpkdjsfwSw9R3k+ijYW65wguE7VLiPLGpgAxHcKkOfsIv+yGNRSgB+U9HB/iizQJQ/eda4cuy9yBMozHq0UoqKAw6sAJvNDk6f530dzRUxHSAECl33o8L7Ver/eZW5Pj9ToHJpW3NM5Dgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727439852; c=relaxed/simple;
-	bh=UQ5JGAQjcS9YxwrwHB2AYa0apBAuFOpcKQkp/NJzVI4=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition; b=re59TXT+s7kW8GDg7sDqogmUxQCdqkrcFbIVe2UmzDJ+SMyE+l605YB7b7uRwF75PGDFHlZF6MPJ1iZNwYxIK7rRiZdRod5ysJq0ZUYG5nKTDwGUea3VRxNH4GASzAF4+r23E3u+ySfcgcDgLDwFyVlLXhmKBtoTx3KnpvLgI4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu; spf=pass smtp.mailfrom=heusel.eu; dkim=pass (2048-bit key) header.d=heusel.eu header.i=christian@heusel.eu header.b=NaLIuosm; arc=none smtp.client-ip=217.72.192.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=heusel.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=heusel.eu
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=heusel.eu;
-	s=s1-ionos; t=1727439841; x=1728044641; i=christian@heusel.eu;
-	bh=UQ5JGAQjcS9YxwrwHB2AYa0apBAuFOpcKQkp/NJzVI4=;
-	h=X-UI-Sender-Class:Date:From:To:Cc:Subject:Message-ID:
-	 MIME-Version:Content-Type:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=NaLIuosmBC8LWUmSMHh3SPTe4GmdVk4Mg84/lCbpDQ+tCF45TqP6kzFfREW1D68l
-	 8fKX7ThLXusKZ/jK/3zwkZqvLXSx9odAxjZ1MpVEDKIET1rB2odDvAbfmucCLat1m
-	 RwVkgy4OJX2bJTnG1RKnCf0XS/c95mDpsGOVndGPXBp8u289k05e8TNWXpcVYrOK2
-	 2y5J1e+CQVG/EO+QwWhwfi3TKd/L9suJJMD9rr3jyOs4k99dJNCrYiv1HOXsCPyRC
-	 XQuoyUvnggDKB+vZbzBCd7rollpuBQn1eBd5dM4NUU0hxs2kuwlbXpJV0IWGdLJch
-	 vxvGamg0D10l026yhg==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from localhost ([84.170.92.4]) by mrelayeu.kundenserver.de (mreue108
- [212.227.15.183]) with ESMTPSA (Nemesis) id 1N4R0a-1rsoRr2QZK-012EXG; Fri, 27
- Sep 2024 14:24:01 +0200
-Date: Fri, 27 Sep 2024 14:24:01 +0200
-From: Christian Heusel <christian@heusel.eu>
-To: regressions@lists.linux.dev
-Cc: stable@vger.kernel.org
-Subject: How do we track regressions affecting multiple (stable) trees?
-Message-ID: <2e6fc26a-26f8-4fb0-af5b-261e3eda6416@heusel.eu>
+	s=arc-20240116; t=1727440350; c=relaxed/simple;
+	bh=+SiVWrNa5OpGieO1KFuJ83gibPidVr9Iz8mAYHQkvMc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=HlKhqwDPRpxqsnqDBs2o1KCRM0hNrRQyH1l6ZNul1azMR0j69YFocI5PIICNmO/c+f9WrTK+agK2xcSGpoL/LjhSZu5GfGhrhJKOd9V/6Nx57U10JBMFuXBh46GqMEacwt4fOWQN72yzNh2ZQK0aD57/Zv8DxBje3qm4QkHxwSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JabJs6sL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 288A5C4CEC4;
+	Fri, 27 Sep 2024 12:32:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1727440350;
+	bh=+SiVWrNa5OpGieO1KFuJ83gibPidVr9Iz8mAYHQkvMc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=JabJs6sLTVAolUkisn1zZW2vmvhxyP7Vmj2MwtKQGDd5+mTVdS0CW2WBoqDlhF2CV
+	 Xdn5SB8COgWBKNZSYTp8zPI7T2i2V7kzX5b3TrU2xuMnoRuxY+oERhQDT3V+1HEvqn
+	 3M/sOpIZq6UvNcHK0QxcrJOg382wFN/f6DUQNG4E=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Dave Chinner <dchinner@redhat.com>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Christoph Hellwig <hch@lst.de>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Chandan Babu R <chandanbabu@kernel.org>,
+	Leah Rumancik <leah.rumancik@gmail.com>
+Subject: [PATCH 6.1 51/73] xfs: fix unlink vs cluster buffer instantiation race
+Date: Fri, 27 Sep 2024 14:24:02 +0200
+Message-ID: <20240927121721.977658809@linuxfoundation.org>
+X-Mailer: git-send-email 2.46.2
+In-Reply-To: <20240927121719.897851549@linuxfoundation.org>
+References: <20240927121719.897851549@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="4g67fpjasknl5cxz"
-Content-Disposition: inline
-X-Provags-ID: V03:K1:AEhuDUQkx1n7idHbutt3g6tQwayslwWRFlLxsJFOmKM5KdPD/Oz
- /sB79KOnCo36KoC4x3LXTzStt499JS5TZ9oz+jlW+VzOoflFMxwd4+xLUvLjRnoUkt5Y7mv
- jn+/NDTgveZIvO0Gn/tFq5jMVhYP4QATrzAg0u5NvQEwCtuHTEwppoCfWJUGVDGPIL0L+fP
- YFtMi/8PcJfEavZNfVMig==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:17reSYlFIyE=;HUy+lyZMeCclffuEOe1r3y9iHSP
- FnQbQMs6PXyCtOZc/qps/xkdIAXKBqxOa7gJfdxJKtDl3YmQgkmt3/LUXpvQcJks1hv1m22vl
- fqSIu/kRQQQvnLlE8Z+HjZIgv7WO7FZ7oxzDYz0E3I+jzTiq43rsJ9dCovBS8rYsAgEJM1mf2
- +1OH7c4+cT8snX3AGnsZokP39YVLyOiyW92eLCOFRDkrxiKzvWNtcYalb7fYFQqF9PuDFcA4Q
- 7LM8/Mk3uuX6WMRejiPqL82gwdPXhHMJ9/8OhqeKjRehIcQRvX5iR4jtqSLOEIVG1xz4mFiKI
- aBsxvQ/ilNDGziqhQjW34FFN4uD0B4Fzx/w0nxEPr15EjB5xgY3rY91IS5zqi/zvDqU+5PLT8
- snTG/IgdpN48geuDvDLJpZb2vilSghiVU5LhrNvzO+aWxAx8ilbOk7VuaXlxOtcaekYGmfDzT
- Ej+KyDSMqpie92Rx1SSInY8IeU3jYAJrYNOhkyY1GAyKQlAJVq3Dt58K5T1GhVu0LzGo0qDht
- HR/IKldkD4hs6Ez857WFQLlOn/HPOHIKNJZf/Jq7JWeWbAjRnoCuvuTUzl2Z2W0oSc5LD4yM3
- ySU9NgkXP3n/kv6BROsYr/spC3LqUKkUj+Ak5Ewgwu+FDUAvPu0KZ/kyKzj+rk5QH+InBYvIA
- JM+dyeOWccpwrLV+Qo13QNJb9OyBd2o1Mh8M/0jOZVS4ZjzxPdTgwOrczpQskSbPO6jXRSMtU
- OJSlDwasx2I1jbJSbNM1ocxNu400EyhnQ==
+Content-Transfer-Encoding: 8bit
+
+6.1-stable review patch.  If anyone has any objections, please let me know.
+
+------------------
+
+From: Dave Chinner <dchinner@redhat.com>
+
+[ Upstream commit 348a1983cf4cf5099fc398438a968443af4c9f65 ]
+
+Luis has been reporting an assert failure when freeing an inode
+cluster during inode inactivation for a while. The assert looks
+like:
+
+ XFS: Assertion failed: bp->b_flags & XBF_DONE, file: fs/xfs/xfs_trans_buf.c, line: 241
+ ------------[ cut here ]------------
+ kernel BUG at fs/xfs/xfs_message.c:102!
+ Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN NOPTI
+ CPU: 4 PID: 73 Comm: kworker/4:1 Not tainted 6.10.0-rc1 #4
+ Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+ Workqueue: xfs-inodegc/loop5 xfs_inodegc_worker [xfs]
+ RIP: 0010:assfail (fs/xfs/xfs_message.c:102) xfs
+ RSP: 0018:ffff88810188f7f0 EFLAGS: 00010202
+ RAX: 0000000000000000 RBX: ffff88816e748250 RCX: 1ffffffff844b0e7
+ RDX: 0000000000000004 RSI: ffff88810188f558 RDI: ffffffffc2431fa0
+ RBP: 1ffff11020311f01 R08: 0000000042431f9f R09: ffffed1020311e9b
+ R10: ffff88810188f4df R11: ffffffffac725d70 R12: ffff88817a3f4000
+ R13: ffff88812182f000 R14: ffff88810188f998 R15: ffffffffc2423f80
+ FS:  0000000000000000(0000) GS:ffff8881c8400000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 000055fe9d0f109c CR3: 000000014426c002 CR4: 0000000000770ef0
+ DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+ DR3: 0000000000000000 DR6: 00000000fffe07f0 DR7: 0000000000000400
+ PKRU: 55555554
+ Call Trace:
+  <TASK>
+ xfs_trans_read_buf_map (fs/xfs/xfs_trans_buf.c:241 (discriminator 1)) xfs
+ xfs_imap_to_bp (fs/xfs/xfs_trans.h:210 fs/xfs/libxfs/xfs_inode_buf.c:138) xfs
+ xfs_inode_item_precommit (fs/xfs/xfs_inode_item.c:145) xfs
+ xfs_trans_run_precommits (fs/xfs/xfs_trans.c:931) xfs
+ __xfs_trans_commit (fs/xfs/xfs_trans.c:966) xfs
+ xfs_inactive_ifree (fs/xfs/xfs_inode.c:1811) xfs
+ xfs_inactive (fs/xfs/xfs_inode.c:2013) xfs
+ xfs_inodegc_worker (fs/xfs/xfs_icache.c:1841 fs/xfs/xfs_icache.c:1886) xfs
+ process_one_work (kernel/workqueue.c:3231)
+ worker_thread (kernel/workqueue.c:3306 (discriminator 2) kernel/workqueue.c:3393 (discriminator 2))
+ kthread (kernel/kthread.c:389)
+ ret_from_fork (arch/x86/kernel/process.c:147)
+ ret_from_fork_asm (arch/x86/entry/entry_64.S:257)
+  </TASK>
+
+And occurs when the the inode precommit handlers is attempt to look
+up the inode cluster buffer to attach the inode for writeback.
+
+The trail of logic that I can reconstruct is as follows.
+
+	1. the inode is clean when inodegc runs, so it is not
+	   attached to a cluster buffer when precommit runs.
+
+	2. #1 implies the inode cluster buffer may be clean and not
+	   pinned by dirty inodes when inodegc runs.
+
+	3. #2 implies that the inode cluster buffer can be reclaimed
+	   by memory pressure at any time.
+
+	4. The assert failure implies that the cluster buffer was
+	   attached to the transaction, but not marked done. It had
+	   been accessed earlier in the transaction, but not marked
+	   done.
+
+	5. #4 implies the cluster buffer has been invalidated (i.e.
+	   marked stale).
+
+	6. #5 implies that the inode cluster buffer was instantiated
+	   uninitialised in the transaction in xfs_ifree_cluster(),
+	   which only instantiates the buffers to invalidate them
+	   and never marks them as done.
+
+Given factors 1-3, this issue is highly dependent on timing and
+environmental factors. Hence the issue can be very difficult to
+reproduce in some situations, but highly reliable in others. Luis
+has an environment where it can be reproduced easily by g/531 but,
+OTOH, I've reproduced it only once in ~2000 cycles of g/531.
+
+I think the fix is to have xfs_ifree_cluster() set the XBF_DONE flag
+on the cluster buffers, even though they may not be initialised. The
+reasons why I think this is safe are:
+
+	1. A buffer cache lookup hit on a XBF_STALE buffer will
+	   clear the XBF_DONE flag. Hence all future users of the
+	   buffer know they have to re-initialise the contents
+	   before use and mark it done themselves.
+
+	2. xfs_trans_binval() sets the XFS_BLI_STALE flag, which
+	   means the buffer remains locked until the journal commit
+	   completes and the buffer is unpinned. Hence once marked
+	   XBF_STALE/XFS_BLI_STALE by xfs_ifree_cluster(), the only
+	   context that can access the freed buffer is the currently
+	   running transaction.
+
+	3. #2 implies that future buffer lookups in the currently
+	   running transaction will hit the transaction match code
+	   and not the buffer cache. Hence XBF_STALE and
+	   XFS_BLI_STALE will not be cleared unless the transaction
+	   initialises and logs the buffer with valid contents
+	   again. At which point, the buffer will be marked marked
+	   XBF_DONE again, so having XBF_DONE already set on the
+	   stale buffer is a moot point.
+
+	4. #2 also implies that any concurrent access to that
+	   cluster buffer will block waiting on the buffer lock
+	   until the inode cluster has been fully freed and is no
+	   longer an active inode cluster buffer.
+
+	5. #4 + #1 means that any future user of the disk range of
+	   that buffer will always see the range of disk blocks
+	   covered by the cluster buffer as not done, and hence must
+	   initialise the contents themselves.
+
+	6. Setting XBF_DONE in xfs_ifree_cluster() then means the
+	   unlinked inode precommit code will see a XBF_DONE buffer
+	   from the transaction match as it expects. It can then
+	   attach the stale but newly dirtied inode to the stale
+	   but newly dirtied cluster buffer without unexpected
+	   failures. The stale buffer will then sail through the
+	   journal and do the right thing with the attached stale
+	   inode during unpin.
+
+Hence the fix is just one line of extra code. The explanation of
+why we have to set XBF_DONE in xfs_ifree_cluster, OTOH, is long and
+complex....
+
+Fixes: 82842fee6e59 ("xfs: fix AGF vs inode cluster buffer deadlock")
+Signed-off-by: Dave Chinner <dchinner@redhat.com>
+Tested-by: Luis Chamberlain <mcgrof@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Acked-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ fs/xfs/xfs_inode.c |   23 +++++++++++++++++++----
+ 1 file changed, 19 insertions(+), 4 deletions(-)
+
+--- a/fs/xfs/xfs_inode.c
++++ b/fs/xfs/xfs_inode.c
+@@ -2297,11 +2297,26 @@ xfs_ifree_cluster(
+ 		 * This buffer may not have been correctly initialised as we
+ 		 * didn't read it from disk. That's not important because we are
+ 		 * only using to mark the buffer as stale in the log, and to
+-		 * attach stale cached inodes on it. That means it will never be
+-		 * dispatched for IO. If it is, we want to know about it, and we
+-		 * want it to fail. We can acheive this by adding a write
+-		 * verifier to the buffer.
++		 * attach stale cached inodes on it.
++		 *
++		 * For the inode that triggered the cluster freeing, this
++		 * attachment may occur in xfs_inode_item_precommit() after we
++		 * have marked this buffer stale.  If this buffer was not in
++		 * memory before xfs_ifree_cluster() started, it will not be
++		 * marked XBF_DONE and this will cause problems later in
++		 * xfs_inode_item_precommit() when we trip over a (stale, !done)
++		 * buffer to attached to the transaction.
++		 *
++		 * Hence we have to mark the buffer as XFS_DONE here. This is
++		 * safe because we are also marking the buffer as XBF_STALE and
++		 * XFS_BLI_STALE. That means it will never be dispatched for
++		 * IO and it won't be unlocked until the cluster freeing has
++		 * been committed to the journal and the buffer unpinned. If it
++		 * is written, we want to know about it, and we want it to
++		 * fail. We can acheive this by adding a write verifier to the
++		 * buffer.
+ 		 */
++		bp->b_flags |= XBF_DONE;
+ 		bp->b_ops = &xfs_inode_buf_ops;
+ 
+ 		/*
 
 
---4g67fpjasknl5cxz
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-
-Hello everyone,
-
-I wondered a few times in the last months how we could properly track
-regressions for the stable series, as I'm always a bit unsure how proper
-use of regzbot would look for these cases.
-
-For issues that affect mainline usually just the commit itself is
-specified with the relevant "#regzbot introduced: ..." invocation, but
-how would one do this if the stable trees are also affected? Do we need
-to specify "#regzbot introduced" for each backported version of the
-upstream commit?!
-
-IMO this is especially interesting because sometimes getting a patchset
-to fix the older trees can take quite some time since possibly backport
-dependencies have to be found or even custom patches need to be written,
-as it i.e. was the case [here][0]. This led to fixes for the linux-6.1.y
-branch landing a bit later which would be good to track with regzbot so
-it does not fall through the cracks.
-
-Maybe there already is a regzbot facility to do this that I have just
-missed, but I thought if there is people on the lists will know :)
-
-Cheers,
-Chris
-
-P.S.: I hope everybody had a great time at the conferences! I hope to
-also make it next year ..
-
-[0]: https://lore.kernel.org/all/66bcb6f68172f_adbf529471@willemb.c.googlers.com.notmuch/
-
---4g67fpjasknl5cxz
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQIzBAABCAAdFiEEb3ea3iR6a4oPcswTwEfU8yi1JYUFAmb2o+AACgkQwEfU8yi1
-JYXmgRAAqEj1D/g9vr3Yuk48vIZn4vl6JtnVms++hJVW7GwrGy9/6NSMaijsQYkQ
-lhgQHMh86WXp4htxb19QvZuQTc5Gmy3cmEhxV5ynJQF/SRgiq4jxJkv5XjMFi6re
-l93GNvX2Z1pmX2Rp2HScDYP7heZ25TeOH9sONowT0uAjNVas2EmdbehopQUt/n+C
-0vfRbvT1qwmDXz1pikT15JWANJLNB0uT051cAI6mKsUhtNVu3TEzqm1VJ1xS5zaX
-IaAtA09kKSZI5X/QI6o0qlnxVdafrqJP439z2fdmS7FRu2vsl/84yRe6sa7q+/LO
-AEVw6Rd425DOB/fELxY98mGdD3w7tacoLz3qBAFGlOB7zTfE3JV9kWPaHklCRJ1C
-kDgm2lXW+e6lWlBGxEmU0LbES/HUaxDjfbqsna+j87wrRaHRB/euys8ZKilU1riO
-AgH6c378OCQaboyx6j1qGP1DHmdUGl9adCIvD0siUfIseOycagL1Rho1fa23TwAj
-lcPgfiV3Vd/wSTbikBZLJeQSDQxYpWCgBe/aZ/kLCUz2cyrdE9GKWVA40EhmLHn4
-Qdq6t1YUkjeQpiJf1fuTIRxOFjTNvHLtIy9mTt5mTmjMzzPkSECVdKDWIaThjLAv
-Gewq0TOpESTQSfbIch0rypQCax+hucGzzScM+/WWkSBtP02cNKM=
-=WpeS
------END PGP SIGNATURE-----
-
---4g67fpjasknl5cxz--
 
