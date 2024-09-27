@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-78029-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78092-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D73E9884BC
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:30:44 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4730098850A
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:33:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BCFFB2815FA
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:30:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 69B931C22F4E
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:33:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E67218453A;
-	Fri, 27 Sep 2024 12:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A780C18BC30;
+	Fri, 27 Sep 2024 12:33:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nYOE/drs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a42dmstC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F06E4189BBF;
-	Fri, 27 Sep 2024 12:30:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64668136352;
+	Fri, 27 Sep 2024 12:33:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440226; cv=none; b=aNfMOILOPd6DqfJaN8rgw68IXhMYaKA/Yf1TDVs+y8+8tpoyGZbs7x3OnIMdKm3T2jjoBss5Fn4kAZ1M8jWg6fYfuPfXDCgDyqOZ95PV4288GoqpwLZdlDiSQmHlyoJsyFe2PXVwkM6TeF7kokX9FO99z7Ew08t6kOyl/b+6/ZM=
+	t=1727440400; cv=none; b=Eeo5srSY+CWOQP5rWBXQgX6Hd2Zt1FNwctSS3r3b/1kRXFN6LgUSdYeNs/k7MPFeNA4s+zqcVoj7Xx5ttQngqz5P0j5LMW+8ffg/IZL9VrBAXxJWIxiM4CRQijUyP0NPk9nPy3SpuS5poNhvb+7GsfQcxAGoIwsidcRXRwETAeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440226; c=relaxed/simple;
-	bh=esGsG5cHb2AmcJ1Y2rkGWfKqMN68aUSoXernVfvRKkY=;
+	s=arc-20240116; t=1727440400; c=relaxed/simple;
+	bh=R//a2faMPgL3WN80s/82l31bNV5jCaYK7GWr4+v3s1A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aDE+3DIdTBlVrOj1R43lPCwqeTrwo13eYaVVyxo77q1vYhy5SdeeqTP8nw1OopuEM+dU4T62cQyOFA/7DsRoFJ9ORoIkG0pte03eyAL86OpqjjI7XzUkCLlNcTbhHHSD6568hDNRD0vSB7d6z/sz6DeIWKQJDGrITv1r4sYwFRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nYOE/drs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D4AAC4CEC4;
-	Fri, 27 Sep 2024 12:30:25 +0000 (UTC)
+	 MIME-Version; b=JX8fokbZ4ju7AbOFplviQ42Vfv+yYY7PuQ25P0RcYWYW4JRwJYjktynJ0PiO5bxdS7JuHrC1Wi/lQwgJOIkzBGL6MJ6xZt4n6fQFwt7g5UrO0IKw/mjHsaunGthxwthoxXMvl2EtIMmTPyegSRQNx6p5BYDgKzyA6okcsDaeCKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a42dmstC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E96F0C4CEC6;
+	Fri, 27 Sep 2024 12:33:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440225;
-	bh=esGsG5cHb2AmcJ1Y2rkGWfKqMN68aUSoXernVfvRKkY=;
+	s=korg; t=1727440400;
+	bh=R//a2faMPgL3WN80s/82l31bNV5jCaYK7GWr4+v3s1A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nYOE/drsCPVqqYAsxhZXGHCRVghmWfiOT6RwTmWpXX+N8DJS8yxGHbgrKyu+1gU35
-	 XjjRPxqgReeehew6q0xteWA/05untFOJJCeIluw8ppJc5di5Gr+INoqiFwVc6lvk3g
-	 KA7ehqoLubMpciLYp+xzAZ1Rxr0kC1ntOebXmz2g=
+	b=a42dmstCGRURFkkrCWUm+rTU5o+BU7Tjg/c6c+9d4ITkP19avp800bilYhunwRGSo
+	 yKZ7ZmP9eeLFUwuDhvRvqLcWXBoInppPjgdtG6lVyoNfPD8D2y1siFwEGWSc4hBj92
+	 iwiJE7vCAFDT3KQI3sDu6HrdOrRDV02reqygmuBk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	netfilter-devel@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kiran K <kiran.k@intel.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Thomas Leroy <thomas.leroy@suse.com>
-Subject: [PATCH 6.11 08/12] Bluetooth: btintel_pcie: Allocate memory for driver private data
-Date: Fri, 27 Sep 2024 14:24:11 +0200
-Message-ID: <20240927121715.604802414@linuxfoundation.org>
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 6.1 61/73] netfilter: nft_set_pipapo: walk over current view on netlink dump
+Date: Fri, 27 Sep 2024 14:24:12 +0200
+Message-ID: <20240927121722.372865628@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121715.213013166@linuxfoundation.org>
-References: <20240927121715.213013166@linuxfoundation.org>
+In-Reply-To: <20240927121719.897851549@linuxfoundation.org>
+References: <20240927121719.897851549@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +61,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kiran K <kiran.k@intel.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 7ffaa200251871980af12e57649ad57c70bf0f43 upstream.
+commit 29b359cf6d95fd60730533f7f10464e95bd17c73 upstream.
 
-Fix driver not allocating memory for struct btintel_data which is used
-to store internal data.
+The generation mask can be updated while netlink dump is in progress.
+The pipapo set backend walk iterator cannot rely on it to infer what
+view of the datastructure is to be used. Add notation to specify if user
+wants to read/update the set.
 
-Fixes: 6e65a09f9275 ("Bluetooth: btintel_pcie: Add *setup* function to download firmware")
-Signed-off-by: Kiran K <kiran.k@intel.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Cc: Thomas Leroy <thomas.leroy@suse.com>
+Based on patch from Florian Westphal.
+
+Fixes: 2b84e215f874 ("netfilter: nft_set_pipapo: .walk does not deal with generations")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btintel_pcie.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/netfilter/nf_tables.h |   13 +++++++++++++
+ net/netfilter/nf_tables_api.c     |    5 +++++
+ net/netfilter/nft_set_pipapo.c    |    5 +++--
+ 3 files changed, 21 insertions(+), 2 deletions(-)
 
---- a/drivers/bluetooth/btintel_pcie.c
-+++ b/drivers/bluetooth/btintel_pcie.c
-@@ -1208,7 +1208,7 @@ static int btintel_pcie_setup_hdev(struc
- 	int err;
- 	struct hci_dev *hdev;
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -296,9 +296,22 @@ struct nft_set_elem {
+ 	void			*priv;
+ };
  
--	hdev = hci_alloc_dev();
-+	hdev = hci_alloc_dev_priv(sizeof(struct btintel_data));
- 	if (!hdev)
- 		return -ENOMEM;
++/**
++ * enum nft_iter_type - nftables set iterator type
++ *
++ * @NFT_ITER_READ: read-only iteration over set elements
++ * @NFT_ITER_UPDATE: iteration under mutex to update set element state
++ */
++enum nft_iter_type {
++	NFT_ITER_UNSPEC,
++	NFT_ITER_READ,
++	NFT_ITER_UPDATE,
++};
++
+ struct nft_set;
+ struct nft_set_iter {
+ 	u8		genmask;
++	enum nft_iter_type type:8;
+ 	unsigned int	count;
+ 	unsigned int	skip;
+ 	int		err;
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -628,6 +628,7 @@ static void nft_map_deactivate(const str
+ {
+ 	struct nft_set_iter iter = {
+ 		.genmask	= nft_genmask_next(ctx->net),
++		.type		= NFT_ITER_UPDATE,
+ 		.fn		= nft_mapelem_deactivate,
+ 	};
  
+@@ -5143,6 +5144,7 @@ int nf_tables_bind_set(const struct nft_
+ 		}
+ 
+ 		iter.genmask	= nft_genmask_next(ctx->net);
++		iter.type	= NFT_ITER_UPDATE;
+ 		iter.skip 	= 0;
+ 		iter.count	= 0;
+ 		iter.err	= 0;
+@@ -5218,6 +5220,7 @@ static void nft_map_activate(const struc
+ {
+ 	struct nft_set_iter iter = {
+ 		.genmask	= nft_genmask_next(ctx->net),
++		.type		= NFT_ITER_UPDATE,
+ 		.fn		= nft_mapelem_activate,
+ 	};
+ 
+@@ -5574,6 +5577,7 @@ static int nf_tables_dump_set(struct sk_
+ 	args.cb			= cb;
+ 	args.skb		= skb;
+ 	args.iter.genmask	= nft_genmask_cur(net);
++	args.iter.type		= NFT_ITER_READ;
+ 	args.iter.skip		= cb->args[0];
+ 	args.iter.count		= 0;
+ 	args.iter.err		= 0;
+@@ -6957,6 +6961,7 @@ static int nft_set_flush(struct nft_ctx
+ {
+ 	struct nft_set_iter iter = {
+ 		.genmask	= genmask,
++		.type		= NFT_ITER_UPDATE,
+ 		.fn		= nft_setelem_flush,
+ 	};
+ 
+--- a/net/netfilter/nft_set_pipapo.c
++++ b/net/netfilter/nft_set_pipapo.c
+@@ -2042,13 +2042,14 @@ static void nft_pipapo_walk(const struct
+ 			    struct nft_set_iter *iter)
+ {
+ 	struct nft_pipapo *priv = nft_set_priv(set);
+-	struct net *net = read_pnet(&set->net);
+ 	const struct nft_pipapo_match *m;
+ 	const struct nft_pipapo_field *f;
+ 	int i, r;
+ 
++	WARN_ON_ONCE(iter->type == NFT_ITER_UNSPEC);
++
+ 	rcu_read_lock();
+-	if (iter->genmask == nft_genmask_cur(net))
++	if (iter->type == NFT_ITER_READ)
+ 		m = rcu_dereference(priv->match);
+ 	else
+ 		m = priv->clone;
 
 
 
