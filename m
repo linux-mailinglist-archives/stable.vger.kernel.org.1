@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-77875-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C2D9987F98
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 09:41:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8178E987FAA
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 09:45:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B0A5CB21871
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 07:41:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 416CC284782
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 07:45:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3330E17C9F6;
-	Fri, 27 Sep 2024 07:41:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 010231741EF;
+	Fri, 27 Sep 2024 07:45:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jq68H/De"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nYjo2oDW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC5B4165EE3
-	for <stable@vger.kernel.org>; Fri, 27 Sep 2024 07:41:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2272208D7;
+	Fri, 27 Sep 2024 07:45:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727422903; cv=none; b=MwETHY7UuW3burUQpq470xhk/mwFA6VLZfPepAZzYCy4ULmSxdfq6UBIq3/Gk3yNX09fXkLCYw9e2N+ZEmmmylxbCOp+yUpHXH3efDykwAvga/On7EadsED1lflDM4Nn05UeiGQ8WbxaWV4xDMUjtNyobATOp6SF+UAkaRCa9d4=
+	t=1727423118; cv=none; b=ZoAj4dx4XNPb9euN35E+1YQHgBp96dPVvJJzYQEtXkbY2GNqMXtNVycFeIIltB+ScsimET70ywm5wMjuqF11UmYH9Dc56dIsF3uuFsd4MhXeo2WEgj53I7DWMQR7ta8bg9b7FHw5R143ToA1aqjuH+trp9m3gnY3OkivR2fbnfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727422903; c=relaxed/simple;
-	bh=h+SdPEdFTij33hhfMitM7mLHKdLNFA74P6pcl9mJGts=;
+	s=arc-20240116; t=1727423118; c=relaxed/simple;
+	bh=rBgOSWaCJbouiaRTqHjhkGz0iyAJZ4V5lZ0PrKkhQ+E=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IGvouRJVpIaL9O/3iB71KaqkoqsPC7E7361HZM7kZvT5OgJpqV2RlNkycesn6SfVVuG+034zK/pA734wGRKT0K8v3tparFkhQ76uJgypfHhfX5CXQPCynNdDGkBCX2mAnJShJBTdWt44y4FyJ9M7EfM3X09Tn8FzpqR8zjcwjSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jq68H/De; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DB8DC4CEC4;
-	Fri, 27 Sep 2024 07:41:42 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=dOyqEKeN7OCNLOT6PShITmDJRrgMqrugJFpjFDRZBCvnWPB84i/vezC4jLiPr+3nviq2N7zleZaS947aq1UbVvFZgZcII1FjZCGoXz1DQKB7E9MMZaINqUBxwngZ7TBDH0jbLIP8Mm813TAGhUttVtq5EXmuWJITU208x1ZHqjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nYjo2oDW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4080C4CEC4;
+	Fri, 27 Sep 2024 07:45:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727422903;
-	bh=h+SdPEdFTij33hhfMitM7mLHKdLNFA74P6pcl9mJGts=;
+	s=korg; t=1727423118;
+	bh=rBgOSWaCJbouiaRTqHjhkGz0iyAJZ4V5lZ0PrKkhQ+E=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jq68H/DeezFrB8xe30yxde3zoCIIoU1FZRTmFCJgN62jHloEfbpf0apLH9Kp8b0R9
-	 0IuEEHOjqzkrWOQUPquvhvH/7y7qma4yDCac8QDDTcvSJADU6hXEDC2/L2VE2hiQqG
-	 utVLN+bpk+F6AL24w6fhYQ7IlVT17PaTn0cjhLUQ=
-Date: Fri, 27 Sep 2024 09:41:32 +0200
+	b=nYjo2oDWZ/nMDzao3gyi4Gr91qTMR4P7PVJRMM8pZZFMctr2c+xuFEKX8x6NnZIHV
+	 LLyOvk3jb+RNq2fqlCLu0n6ZnIjoysJy7jb4fWBBMAhnXnbFNyGf0NfmWVv4gogFUI
+	 nGLgtPvTOcVvL+D5OLo07RmuIQs8hvCK7JrbzqXc=
+Date: Fri, 27 Sep 2024 09:45:06 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Mario Limonciello <superm1@kernel.org>
-Cc: stable@vger.kernel.org
-Subject: Re: Fix regression from "drm/amd/display: Fix MST BW calculation
- Regression"
-Message-ID: <2024092752-taunt-pushing-7654@gregkh>
-References: <9c551c15-b23d-4911-99ee-352fad143295@kernel.org>
+To: Pablo Neira Ayuso <pablo@netfilter.org>
+Cc: netfilter-devel@vger.kernel.org, sashal@kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH -stable,5.10 0/2]  Netfilter fixes for -stable
+Message-ID: <2024092758-hula-delouse-6c18@gregkh>
+References: <20240917202550.188220-1-pablo@netfilter.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,31 +54,21 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <9c551c15-b23d-4911-99ee-352fad143295@kernel.org>
+In-Reply-To: <20240917202550.188220-1-pablo@netfilter.org>
 
-On Mon, Sep 23, 2024 at 11:23:57PM -0500, Mario Limonciello wrote:
-> Hello,
+On Tue, Sep 17, 2024 at 10:25:48PM +0200, Pablo Neira Ayuso wrote:
+> Hi Greg, Sasha,
 > 
-> The commit 338567d17627 ("drm/amd/display: Fix MST BW calculation
-> Regression") caused a regression with some MST displays due to a mistake.
+> This batch contains a backport for fixes for 5.10-stable:
 > 
-> For 6.11.y here is the series of commits that fixes it:
+> The following list shows the backported patches, I am using original commit
+> IDs for reference:
 > 
-> commit 4599aef0c97b ("drm/amd/display: Fix Synaptics Cascaded Panamera DSC
-> Determination")
+> 1) 29b359cf6d95 ("netfilter: nft_set_pipapo: walk over current view on netlink dump")
+> 
+> 2) efefd4f00c96 ("netfilter: nf_tables: missing iterator type in lookup walk")
 
-I don't see this commit in Linus's tree :(
-
-> commit ecc4038ec1de ("drm/amd/display: Add DSC Debug Log")
-> commit b2b4afb9cf07 ("drm/amdgpu/display: Fix a mistake in revert commit")
-
-Nor either of these :(
-
-> Can you please bring them back to 6.11.y?
-
-Are you sure you are looking at the right tree?
-
-thanks,
+All backports now queued up, thanks!
 
 greg k-h
 
