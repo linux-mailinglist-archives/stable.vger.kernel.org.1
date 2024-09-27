@@ -1,138 +1,91 @@
-Return-Path: <stable+bounces-78144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0B4C9889E5
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 20:07:43 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8B5819889F8
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 20:16:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5BE1AB22168
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 18:07:41 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C4AA1F221CC
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 18:16:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BA221C1AD8;
-	Fri, 27 Sep 2024 18:07:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3891B1C2307;
+	Fri, 27 Sep 2024 18:15:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="OYR46klB"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YRz4V+y+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48D141C1AD1;
-	Fri, 27 Sep 2024 18:07:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA17D136E28;
+	Fri, 27 Sep 2024 18:15:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727460449; cv=none; b=Lmkvt22LOhYHffjBWdi++3VkS02sSI4RWYZXeWEQvJ6AZKFNRnt0+mVY/Vw3MgqaBIFK1vY/eDTugzchXymIZgTQb42QyU8a6lZZBpBBLRto4F0jGqXyW0v7PuIAINxSpXLoHskj8iagM5aEbXiPDlDKhkbepBHa1EYe0Xj/Cns=
+	t=1727460959; cv=none; b=efwrvDzLHZYq3XmJevVn2AxDmk13Iale6NwGskKM3+NEYtVAWK2y3wiAiDFm0HuJOsCS6C8Wn9bc7itXQG1GuQHSEAujbZEoA5ZJMls/vvJTY+keqtV76VxvJQpMJNhD3hJvwPmv7P2s5zgmhaMdEO5VQnQ4sN5pJTQsqb3SnGk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727460449; c=relaxed/simple;
-	bh=36ZwAxe9BvZG5ueesbdD3W4C1xaXJY5vy7rDAwY19bI=;
-	h=Date:To:From:Subject:Message-Id; b=aB7/jhijh9pl8HJba5lieh/SKMP1tLfmoqbza4SQA0eTnLv0V9WshjLXd9raAF25PlnoPqKBOIAnBQHkpHq8hDneHqn/LnpPHCpSQya8BLg2Ioh25gSfIwUD5NrcDsZO/XJtLeK4VfgYHhiOqzs+c1kNsaNKUlx9uxhequzssSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=OYR46klB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BECE2C4CEC4;
-	Fri, 27 Sep 2024 18:07:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1727460448;
-	bh=36ZwAxe9BvZG5ueesbdD3W4C1xaXJY5vy7rDAwY19bI=;
-	h=Date:To:From:Subject:From;
-	b=OYR46klBZhGPEJogvfd8S90Vsk0St05BCQKlWEml9775Obui8y+m0D7IzglmolwCT
-	 YiF30m5MqqCjd+fV0wLuqP3lm+JdmqTMlC7vZ7uy2npQ7ApMMALeySpK3a1oork+lj
-	 soD3Vta9ARxANAeRyx5P8bnroljXh6xMWFZIHv5o=
-Date: Fri, 27 Sep 2024 11:07:28 -0700
-To: mm-commits@vger.kernel.org,usama.anjum@collabora.com,stable@vger.kernel.org,shuah@kernel.org,ritesh.list@gmail.com,rcampbell@nvidia.com,przemyslaw.kitszel@intel.com,keescook@chromium.org,jglisse@redhat.com,jgg@mellanox.com,broonie@kernel.org,donettom@linux.ibm.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + selftests-mm-fixed-incorrect-buffer-mirror-size-in-hmm2-double_map-test.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240927180728.BECE2C4CEC4@smtp.kernel.org>
+	s=arc-20240116; t=1727460959; c=relaxed/simple;
+	bh=VsXoDAk/3cgXnKaNj9IIe1/ClxMRI1S89qYD1FBDWjI=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=uEgwTD4b8lrmiMDtbn9UFP07Jpw3ZcWjJo1dGkbBz6uv5d6LkpqAHxXSO5+w+ltJKIz8I494LpMPGqoDVs6BydErUswtKTffkmk5Ix7fXLMZyY2LDFg39LRoQj2lXq4TOF3yca8vNFOCb/eR9gDYWaJILfFf1YXkDu5vWLhZl7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YRz4V+y+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BE14C4CEC7;
+	Fri, 27 Sep 2024 18:15:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727460957;
+	bh=VsXoDAk/3cgXnKaNj9IIe1/ClxMRI1S89qYD1FBDWjI=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=YRz4V+y+76TPvXCCHF6p3SZH/WWhAjhQ7qHx7bVrEEWS8Z6/orbgNWcRTJr0Iu5iI
+	 bufKra0ucZske2c26x6r3rBd4fJHKBFqXpx/cwCqMTt43gNJ39Dkv2ihArqs24AbhM
+	 s8WeBgV4b0hzYBgNJa5bJyNXkCko0o8koy26xaHhXdqktKdBBPgeQ6Ag2wGcnybI9K
+	 iYmal/+CtFF0raFtVMd6HWdAY0spCP87tJGovzX5hlTFqCugugsIB5kSCngzjAEdSq
+	 dZ4zDs9K5UCjwfGKw85soR2fWAdYvAciwX1Wen48lCfUKS7OeWpemdbDvmJFMGv1Bp
+	 PLf24FhNrssXQ==
+Date: Fri, 27 Sep 2024 20:15:55 +0200 (CEST)
+From: Jiri Kosina <jikos@kernel.org>
+To: Benjamin Tissoires <bentiss@kernel.org>
+cc: linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
+    bpf@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH HID] HID: bpf: fix cfi stubs for hid_bpf_ops
+In-Reply-To: <20240927-fix-hid-bpf-stubs-v1-1-5bbf125f247c@kernel.org>
+Message-ID: <nycvar.YFH.7.76.2409272015390.31206@cbobk.fhfr.pm>
+References: <20240927-fix-hid-bpf-stubs-v1-1-5bbf125f247c@kernel.org>
+User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 
+On Fri, 27 Sep 2024, Benjamin Tissoires wrote:
 
-The patch titled
-     Subject: selftests/mm: fix incorrect buffer->mirror size in hmm2 double_map test
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     selftests-mm-fixed-incorrect-buffer-mirror-size-in-hmm2-double_map-test.patch
+> With the introduction of commit e42ac1418055 ("bpf: Check unsupported ops
+> from the bpf_struct_ops's cfi_stubs"), a HID-BPF struct_ops containing
+> a .hid_hw_request() or a .hid_hw_output_report() was failing to load
+> as the cfi stubs were not defined.
+> 
+> Fix that by defining those simple static functions and restore HID-BPF
+> functionality.
+> 
+> This was detected with the HID selftests suddenly failing on Linus' tree.
+> 
+> Cc: stable@vger.kernel.org # v6.11+
+> Fixes: 9286675a2aed ("HID: bpf: add HID-BPF hooks for hid_hw_output_report")
+> Fixes: 8bd0488b5ea5 ("HID: bpf: add HID-BPF hooks for hid_hw_raw_requests")
+> Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+> ---
+> Hi,
+> 
+> This commit should directly go in Linus tree before we start creating
+> topic branches for 6.13 given that the CI is now failing on our HID
+> master branch.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/selftests-mm-fixed-incorrect-buffer-mirror-size-in-hmm2-double_map-test.patch
+Applied now to for-6.12/upstream-fixes, thanks Benjamin.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Donet Tom <donettom@linux.ibm.com>
-Subject: selftests/mm: fix incorrect buffer->mirror size in hmm2 double_map test
-Date: Fri, 27 Sep 2024 00:07:52 -0500
-
-The hmm2 double_map test was failing due to an incorrect buffer->mirror
-size.  The buffer->mirror size was 6, while buffer->ptr size was 6 *
-PAGE_SIZE.  The test failed because the kernel's copy_to_user function was
-attempting to copy a 6 * PAGE_SIZE buffer to buffer->mirror.  Since the
-size of buffer->mirror was incorrect, copy_to_user failed.
-
-This patch corrects the buffer->mirror size to 6 * PAGE_SIZE.
-
-Test Result without this patch
-==============================
- #  RUN           hmm2.hmm2_device_private.double_map ...
- # hmm-tests.c:1680:double_map:Expected ret (-14) == 0 (0)
- # double_map: Test terminated by assertion
- #          FAIL  hmm2.hmm2_device_private.double_map
- not ok 53 hmm2.hmm2_device_private.double_map
-
-Test Result with this patch
-===========================
- #  RUN           hmm2.hmm2_device_private.double_map ...
- #            OK  hmm2.hmm2_device_private.double_map
- ok 53 hmm2.hmm2_device_private.double_map
-
-Link: https://lkml.kernel.org/r/20240927050752.51066-1-donettom@linux.ibm.com
-Fixes: fee9f6d1b8df ("mm/hmm/test: add selftests for HMM")
-Signed-off-by: Donet Tom <donettom@linux.ibm.com>
-Reviewed-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
-Cc: Jérôme Glisse <jglisse@redhat.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Cc: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Ralph Campbell <rcampbell@nvidia.com>
-Cc: Jason Gunthorpe <jgg@mellanox.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- tools/testing/selftests/mm/hmm-tests.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/tools/testing/selftests/mm/hmm-tests.c~selftests-mm-fixed-incorrect-buffer-mirror-size-in-hmm2-double_map-test
-+++ a/tools/testing/selftests/mm/hmm-tests.c
-@@ -1657,7 +1657,7 @@ TEST_F(hmm2, double_map)
- 
- 	buffer->fd = -1;
- 	buffer->size = size;
--	buffer->mirror = malloc(npages);
-+	buffer->mirror = malloc(size);
- 	ASSERT_NE(buffer->mirror, NULL);
- 
- 	/* Reserve a range of addresses. */
-_
-
-Patches currently in -mm which might be from donettom@linux.ibm.com are
-
-selftests-mm-fixed-incorrect-buffer-mirror-size-in-hmm2-double_map-test.patch
+-- 
+Jiri Kosina
+SUSE Labs
 
 
