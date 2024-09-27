@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-77924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B70B988439
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:25:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 032789884E3
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:32:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 57FD52802B8
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:25:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 292A91C22C0E
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:32:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2EF018BC0D;
-	Fri, 27 Sep 2024 12:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E04E918C922;
+	Fri, 27 Sep 2024 12:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wNpScSbR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GoOGAWJm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A38361779BD;
-	Fri, 27 Sep 2024 12:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E3E818C02B;
+	Fri, 27 Sep 2024 12:31:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727439933; cv=none; b=aQVfmQajLK1M++WD/+gqz2CB4vQIP46glRcB93cDoajWtw1a7kfY/Tth4CM1TI+5prbKJ11UebMcSFrsWa0v9Q79sc7vDVWxPMGF3u9G9nWivwiMhLTY42XCTIAoNh6aUKny6tOYvBGbK50pAW2k8PpfvMh0kcrsoOcrQW64NHY=
+	t=1727440306; cv=none; b=D571Y3xttfQ0vcROX25YaKq2DdCym9d+7tZxIRpgpDbc7g/wDHUX8woQ5wzxtWKILPUlUgPGVnjK0zQoMO9PKTlUoqtXrxcKyzC+HK89Dp0hia6vqiTcXmMDQfbBzbeB5inT1HLHa18iVE3Jt1yZzkv/VPzUyaVQxmJT+T+ulAI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727439933; c=relaxed/simple;
-	bh=1Fx4u+YajHdXTa2VCBvudtGJDk0y3zkJ2WdvmxgoKZM=;
+	s=arc-20240116; t=1727440306; c=relaxed/simple;
+	bh=unjbsM1e5RW0c4y+kF3MWl7TimJJrPrHqcqg2XV1H9s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MlyZzrUURc51jFBo7QhCRAAZRI93m/G3d+w2KLW8w+obRoBT82eaHLqcga70Vr5jd0kSyC2I562A5jqiG3wbt5K6BHSsiMVQav6BHmJxq+xoDHONWT3aezjFAb82nNOq92jw0ml1GlXgXMzyQpYRelXeb30RWZ+xQ2l7LgVfLGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wNpScSbR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2841C4CEC4;
-	Fri, 27 Sep 2024 12:25:32 +0000 (UTC)
+	 MIME-Version; b=TcpTTMqknuOnpi1wupfshw5pPQT44NtdEfRTFJZ40194/v+3Hzjtj+Zd/9jHLIp1nll6LKgQvNMMQgkR0oXZAWXr5f+U1k7rHxXyxX/HpYthIF7TjeYzz5J3SpcPq7P3Jbv3Avs7FUHqCKlunc/c/6a8AKir76qKIV6Zly0/lfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GoOGAWJm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27528C4CEC4;
+	Fri, 27 Sep 2024 12:31:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727439933;
-	bh=1Fx4u+YajHdXTa2VCBvudtGJDk0y3zkJ2WdvmxgoKZM=;
+	s=korg; t=1727440306;
+	bh=unjbsM1e5RW0c4y+kF3MWl7TimJJrPrHqcqg2XV1H9s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wNpScSbRGiWPDm6XSsqJKM5F9bMl2EpRe2+BNiHUy9Wf8JuQURFbk5HEY3V4s0Ign
-	 o1eU2/cz823HS6jG83EaI+mmdYXDesx6iuwHeqBgJfllAIZXXS7e98fUpqQgI83fkp
-	 ctwRnwYNdmcLtx1Kt7wwNFkNB5FET5i6LxhZCoEY=
+	b=GoOGAWJm/Zq6IquFi4WMuF8yJx9MkgL+5G+jRfpPdlWfQAekOJWjR/y9yjUFIe850
+	 +Bgd0Cms4YcWTs3UIpdoaw0/EuJ6VQQNCT3GAmfkfi4V2G5zrFrmvvSlIn7IrzzQiA
+	 HtVTWNpI02Faa0Oc95FZRXmKT9DBsNA24pfROedQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fabio Estevam <festevam@gmail.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Mark Brown <broonie@kernel.org>,
+	Ross Brown <true.robot.ross@gmail.com>,
+	Eugene Shalygin <eugene.shalygin@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 27/54] spi: spidev: Add an entry for elgin,jg10309-01
+Subject: [PATCH 6.1 08/73] hwmon: (asus-ec-sensors) remove VRM temp X570-E GAMING
 Date: Fri, 27 Sep 2024 14:23:19 +0200
-Message-ID: <20240927121720.830373657@linuxfoundation.org>
+Message-ID: <20240927121720.220728100@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121719.714627278@linuxfoundation.org>
-References: <20240927121719.714627278@linuxfoundation.org>
+In-Reply-To: <20240927121719.897851549@linuxfoundation.org>
+References: <20240927121719.897851549@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +63,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fabio Estevam <festevam@gmail.com>
+From: Ross Brown <true.robot.ross@gmail.com>
 
-[ Upstream commit 5f3eee1eef5d0edd23d8ac0974f56283649a1512 ]
+[ Upstream commit 9efaebc0072b8e95505544bf385c20ee8a29d799 ]
 
-The rv1108-elgin-r1 board has an LCD controlled via SPI in userspace.
-The marking on the LCD is JG10309-01.
+X570-E GAMING does not have VRM temperature sensor.
 
-Add the "elgin,jg10309-01" compatible string.
-
-Signed-off-by: Fabio Estevam <festevam@gmail.com>
-Reviewed-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patch.msgid.link/20240828180057.3167190-2-festevam@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Ross Brown <true.robot.ross@gmail.com>
+Signed-off-by: Eugene Shalygin <eugene.shalygin@gmail.com>
+Link: https://lore.kernel.org/r/20240730062320.5188-2-eugene.shalygin@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spidev.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/hwmon/asus-ec-sensors.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index b97206d47ec6d..edc47a97cbe41 100644
---- a/drivers/spi/spidev.c
-+++ b/drivers/spi/spidev.c
-@@ -735,6 +735,7 @@ static int spidev_of_check(struct device *dev)
- static const struct of_device_id spidev_dt_ids[] = {
- 	{ .compatible = "cisco,spi-petra", .data = &spidev_of_check },
- 	{ .compatible = "dh,dhcom-board", .data = &spidev_of_check },
-+	{ .compatible = "elgin,jg10309-01", .data = &spidev_of_check },
- 	{ .compatible = "lineartechnology,ltc2488", .data = &spidev_of_check },
- 	{ .compatible = "lwn,bk4", .data = &spidev_of_check },
- 	{ .compatible = "menlo,m53cpld", .data = &spidev_of_check },
+diff --git a/drivers/hwmon/asus-ec-sensors.c b/drivers/hwmon/asus-ec-sensors.c
+index b4d65916b3c00..d893cfd1cb829 100644
+--- a/drivers/hwmon/asus-ec-sensors.c
++++ b/drivers/hwmon/asus-ec-sensors.c
+@@ -369,7 +369,7 @@ static const struct ec_board_info board_info_strix_b550_i_gaming = {
+ 
+ static const struct ec_board_info board_info_strix_x570_e_gaming = {
+ 	.sensors = SENSOR_SET_TEMP_CHIPSET_CPU_MB |
+-		SENSOR_TEMP_T_SENSOR | SENSOR_TEMP_VRM |
++		SENSOR_TEMP_T_SENSOR |
+ 		SENSOR_FAN_CHIPSET | SENSOR_CURR_CPU |
+ 		SENSOR_IN_CPU_CORE,
+ 	.mutex_path = ASUS_HW_ACCESS_MUTEX_ASMX,
 -- 
 2.43.0
 
