@@ -1,64 +1,56 @@
-Return-Path: <stable+bounces-78054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77945-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id C80459884DE
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:32:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CEB25988459
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:27:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0508F1C2127F
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:32:25 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C48D281230
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:26:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CF5918C02E;
-	Fri, 27 Sep 2024 12:31:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7697318C005;
+	Fri, 27 Sep 2024 12:26:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GCvgqUFM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QG7mrr8K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFC251E507;
-	Fri, 27 Sep 2024 12:31:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 365C218C010;
+	Fri, 27 Sep 2024 12:26:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440296; cv=none; b=lMLKbYQDyihMkAxrmOqReKwrVsv1OA0zq1UIDxoK+ZUJOI1HAj3wEDF+6OZ1qu1AyGU2P9a7wgQycEDJtTdfyNaah4KujOUd0fEziLg7wdrIchx+N5EDlhFEsyXRPwh2T4rKjjRPA0R3QdDgVdpGGvRlKeIAvoz4qKPGcUtobVE=
+	t=1727439992; cv=none; b=lKBUQXVxFc0sFivsxYJj0aPUA6fOgK5rqgJ37wz4iVqTY4xbRAPC2G7zhoCc+8JLEv7nOfVtrPTtg7TKyD2NcdOj7yygaygXixqV3SRvGJRNr6yLHbAesJOvUlhg+u3nltjRmromQh3wySBwg/Q5Jfso8YVpiLUpihC77GpSzak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440296; c=relaxed/simple;
-	bh=hrDwlFGknjWuutbffX+TpacnJDj3ypuQnXTd/X9TTXU=;
+	s=arc-20240116; t=1727439992; c=relaxed/simple;
+	bh=H8vgCAY3ZG1QSy85W6464KrXg0Mefee9w0hBP3vb0OM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UlDlwkb/6r9o2zRYp+xA3PdSrpiLwVHMn6y1R2kU9aLYjZoXpIHT9OH26YPZUqhIL6lVcxiu8f+jryN9rzGXtKnofhK2WyvIhyiM1erIny8SIXTHz5zD/rMYPLALbg5g0vfi3112RWtWqdyjhl/MWrHfG4TaGXayzM/0G+9cxeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GCvgqUFM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE3E7C4CEC4;
-	Fri, 27 Sep 2024 12:31:34 +0000 (UTC)
+	 MIME-Version; b=fmAx17OJZ9gxcnkyHAs8ZksLdflYIttas533UXcP8NlX1uAEH3186uGY2K40dHILk/3BTmrq+O3s8ArUd4Kr8FjPTy9Jvazcy9qDLrcJdyS1XnZVRkTMbEF+/D/F4VVS78RnaO8D7rPf2h+zZO0yXkqUu0xvpEB7jE7bSRtheWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QG7mrr8K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4811C4CEC4;
+	Fri, 27 Sep 2024 12:26:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440295;
-	bh=hrDwlFGknjWuutbffX+TpacnJDj3ypuQnXTd/X9TTXU=;
+	s=korg; t=1727439992;
+	bh=H8vgCAY3ZG1QSy85W6464KrXg0Mefee9w0hBP3vb0OM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GCvgqUFM54v62WgzRi7VWZa8ATPOIOp61POmF75xOKoRt4vcWZUuUtyz0HSz49lpD
-	 ZMX9gJOe4TcgzfdRyua7lzCWSSHupk59Um9aSEFR2jcqwJEcEbPfqu+OBcPyvnWKSs
-	 XwqnJpl3FTElwApZchkvgxEttorFRDeCR/Y20/QE=
+	b=QG7mrr8KPfmKXncz5mcmve/1TgSQtmyIx4LBOFNmnr5pJHY9I8jXxsx0Caadezyzf
+	 co65bwnuyoQdutpXorN7Lq9CQwdoTKmLUpmD1EeaV5jfVHsd6wT3WxodzNM/QXhBZT
+	 n1rEracG+nMVL8rmOhxLPtVkhNirDdK8ZkY+HEGI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ferry Meng <mengferry@linux.alibaba.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	lei lu <llfamsec@gmail.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Gang He <ghe@suse.com>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 30/73] ocfs2: add bounds checking to ocfs2_xattr_find_entry()
+	Robert Beckett <bob.beckett@collabora.com>,
+	Keith Busch <kbusch@kernel.org>,
+	"Gagniuc, Alexandru" <alexandru.gagniuc@hp.com>
+Subject: [PATCH 6.6 49/54] nvme-pci: qdepth 1 quirk
 Date: Fri, 27 Sep 2024 14:23:41 +0200
-Message-ID: <20240927121721.110977637@linuxfoundation.org>
+Message-ID: <20240927121721.777083304@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121719.897851549@linuxfoundation.org>
-References: <20240927121719.897851549@linuxfoundation.org>
+In-Reply-To: <20240927121719.714627278@linuxfoundation.org>
+References: <20240927121719.714627278@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,90 +62,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ferry Meng <mengferry@linux.alibaba.com>
+From: Keith Busch <kbusch@kernel.org>
 
-[ Upstream commit 9e3041fecdc8f78a5900c3aa51d3d756e73264d6 ]
+commit 83bdfcbdbe5d901c5fa432decf12e1725a840a56 upstream.
 
-Add a paranoia check to make sure it doesn't stray beyond valid memory
-region containing ocfs2 xattr entries when scanning for a match.  It will
-prevent out-of-bound access in case of crafted images.
+Another device has been reported to be unreliable if we have more than
+one outstanding command. In this new case, data corruption may occur.
+Since we have two devices now needing this quirky behavior, make a
+generic quirk flag.
 
-Link: https://lkml.kernel.org/r/20240520024024.1976129-1-joseph.qi@linux.alibaba.com
-Signed-off-by: Ferry Meng <mengferry@linux.alibaba.com>
-Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reported-by: lei lu <llfamsec@gmail.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Gang He <ghe@suse.com>
-Cc: Jun Piao <piaojun@huawei.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: af77c4fc1871 ("ocfs2: strict bound check before memcmp in ocfs2_xattr_find_entry()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The same Apple quirk is clearly not "temporary", so update the comment
+while moving it.
+
+Link: https://lore.kernel.org/linux-nvme/191d810a4e3.fcc6066c765804.973611676137075390@collabora.com/
+Reported-by: Robert Beckett <bob.beckett@collabora.com>
+Reviewed-by: Christoph Hellwig hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Cc: "Gagniuc, Alexandru" <alexandru.gagniuc@hp.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/xattr.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/nvme/host/nvme.h |    5 +++++
+ drivers/nvme/host/pci.c  |   18 +++++++++---------
+ 2 files changed, 14 insertions(+), 9 deletions(-)
 
-diff --git a/fs/ocfs2/xattr.c b/fs/ocfs2/xattr.c
-index 55699c5735413..61213b7e4dfbe 100644
---- a/fs/ocfs2/xattr.c
-+++ b/fs/ocfs2/xattr.c
-@@ -1066,7 +1066,7 @@ ssize_t ocfs2_listxattr(struct dentry *dentry,
- 	return i_ret + b_ret;
- }
+--- a/drivers/nvme/host/nvme.h
++++ b/drivers/nvme/host/nvme.h
+@@ -89,6 +89,11 @@ enum nvme_quirks {
+ 	NVME_QUIRK_NO_DEEPEST_PS		= (1 << 5),
  
--static int ocfs2_xattr_find_entry(int name_index,
-+static int ocfs2_xattr_find_entry(struct inode *inode, int name_index,
- 				  const char *name,
- 				  struct ocfs2_xattr_search *xs)
- {
-@@ -1080,6 +1080,10 @@ static int ocfs2_xattr_find_entry(int name_index,
- 	name_len = strlen(name);
- 	entry = xs->here;
- 	for (i = 0; i < le16_to_cpu(xs->header->xh_count); i++) {
-+		if ((void *)entry >= xs->end) {
-+			ocfs2_error(inode->i_sb, "corrupted xattr entries");
-+			return -EFSCORRUPTED;
-+		}
- 		cmp = name_index - ocfs2_xattr_get_type(entry);
- 		if (!cmp)
- 			cmp = name_len - entry->xe_name_len;
-@@ -1170,7 +1174,7 @@ static int ocfs2_xattr_ibody_get(struct inode *inode,
- 	xs->base = (void *)xs->header;
- 	xs->here = xs->header->xh_entries;
+ 	/*
++	 *  Problems seen with concurrent commands
++	 */
++	NVME_QUIRK_QDEPTH_ONE			= (1 << 6),
++
++	/*
+ 	 * Set MEDIUM priority on SQ creation
+ 	 */
+ 	NVME_QUIRK_MEDIUM_PRIO_SQ		= (1 << 7),
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -2526,15 +2526,8 @@ static int nvme_pci_enable(struct nvme_d
+ 	else
+ 		dev->io_sqes = NVME_NVM_IOSQES;
  
--	ret = ocfs2_xattr_find_entry(name_index, name, xs);
-+	ret = ocfs2_xattr_find_entry(inode, name_index, name, xs);
- 	if (ret)
- 		return ret;
- 	size = le64_to_cpu(xs->here->xe_value_size);
-@@ -2702,7 +2706,7 @@ static int ocfs2_xattr_ibody_find(struct inode *inode,
- 
- 	/* Find the named attribute. */
- 	if (oi->ip_dyn_features & OCFS2_INLINE_XATTR_FL) {
--		ret = ocfs2_xattr_find_entry(name_index, name, xs);
-+		ret = ocfs2_xattr_find_entry(inode, name_index, name, xs);
- 		if (ret && ret != -ENODATA)
- 			return ret;
- 		xs->not_found = ret;
-@@ -2837,7 +2841,7 @@ static int ocfs2_xattr_block_find(struct inode *inode,
- 		xs->end = (void *)(blk_bh->b_data) + blk_bh->b_size;
- 		xs->here = xs->header->xh_entries;
- 
--		ret = ocfs2_xattr_find_entry(name_index, name, xs);
-+		ret = ocfs2_xattr_find_entry(inode, name_index, name, xs);
- 	} else
- 		ret = ocfs2_xattr_index_block_find(inode, blk_bh,
- 						   name_index,
--- 
-2.43.0
-
+-	/*
+-	 * Temporary fix for the Apple controller found in the MacBook8,1 and
+-	 * some MacBook7,1 to avoid controller resets and data loss.
+-	 */
+-	if (pdev->vendor == PCI_VENDOR_ID_APPLE && pdev->device == 0x2001) {
++	if (dev->ctrl.quirks & NVME_QUIRK_QDEPTH_ONE) {
+ 		dev->q_depth = 2;
+-		dev_warn(dev->ctrl.device, "detected Apple NVMe controller, "
+-			"set queue depth=%u to work around controller resets\n",
+-			dev->q_depth);
+ 	} else if (pdev->vendor == PCI_VENDOR_ID_SAMSUNG &&
+ 		   (pdev->device == 0xa821 || pdev->device == 0xa822) &&
+ 		   NVME_CAP_MQES(dev->ctrl.cap) == 0) {
+@@ -3399,6 +3392,8 @@ static const struct pci_device_id nvme_i
+ 				NVME_QUIRK_BOGUS_NID, },
+ 	{ PCI_VDEVICE(REDHAT, 0x0010),	/* Qemu emulated controller */
+ 		.driver_data = NVME_QUIRK_BOGUS_NID, },
++	{ PCI_DEVICE(0x1217, 0x8760), /* O2 Micro 64GB Steam Deck */
++		.driver_data = NVME_QUIRK_QDEPTH_ONE },
+ 	{ PCI_DEVICE(0x126f, 0x2262),	/* Silicon Motion generic */
+ 		.driver_data = NVME_QUIRK_NO_DEEPEST_PS |
+ 				NVME_QUIRK_BOGUS_NID, },
+@@ -3531,7 +3526,12 @@ static const struct pci_device_id nvme_i
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_AMAZON, 0xcd02),
+ 		.driver_data = NVME_QUIRK_DMA_ADDRESS_BITS_48, },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_APPLE, 0x2001),
+-		.driver_data = NVME_QUIRK_SINGLE_VECTOR },
++		/*
++		 * Fix for the Apple controller found in the MacBook8,1 and
++		 * some MacBook7,1 to avoid controller resets and data loss.
++		 */
++		.driver_data = NVME_QUIRK_SINGLE_VECTOR |
++				NVME_QUIRK_QDEPTH_ONE },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_APPLE, 0x2003) },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_APPLE, 0x2005),
+ 		.driver_data = NVME_QUIRK_SINGLE_VECTOR |
 
 
 
