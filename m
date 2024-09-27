@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-77941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77987-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7ED98988455
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:26:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A8637988486
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:28:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AEA7E1C22C77
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:26:51 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CFA991C20DB9
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:28:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5520D18C03A;
-	Fri, 27 Sep 2024 12:26:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A42218BC1C;
+	Fri, 27 Sep 2024 12:28:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G8H4OnV7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mojTSyWC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 108E41779BD;
-	Fri, 27 Sep 2024 12:26:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBBEE1865ED;
+	Fri, 27 Sep 2024 12:28:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727439981; cv=none; b=scLDVboRNMQEsCTOgsuLc6Lc6LYMai0DOIi5wDZdGdG75cCI/gVPtuxE1mK+bDUJLAwZb6qHPXzWvzCxF9sl2o0tTwUbEiPm4S0gFa+EKj99A3A8m5/u8G2lMuO0yOsIjnkqQ+JhxNG5ayMSnakFpjlCZPobXC3zwENCnlAU2CU=
+	t=1727440109; cv=none; b=C4LuFFfKUgV4pk83rBptbNjCvhUqapY+/LRYOzO6XnhT6hu2xAEtAoAbqqstE6BxtzEjqIW9NhwqVrIIZi40Aq3PDw/yWtcoXdgNDcwBkI54rS6ePWQMkUF8W4bIFFlH3FZFTnSqO5G1dX4SQG2wlyeh8yEeIym9nJQiJSeTMfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727439981; c=relaxed/simple;
-	bh=9Q+M9RQlsApJxGY1uSiuDckMtHUi7XSUUYMMeFVQqUA=;
+	s=arc-20240116; t=1727440109; c=relaxed/simple;
+	bh=8r2b+jI9L22F2EVfUJIynxgJ1zpb6/bl8ACO+NmkOTc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cJXYiPSm10j8owak0gEmvJ4/b5pCOzz5WsdW919DjOpCCjvQ405BABd7uIK2Awnte1WRi5xM0SHUmOqFirJVbW6vHW+h11ZL0ZPIwabTtL3+E8WY95bftykrvvqJ9Yy9savq3dECAcFJtRIPRzdlFN0V0SHANYQtkubFDPPTVaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G8H4OnV7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ECA2C4CEC4;
-	Fri, 27 Sep 2024 12:26:20 +0000 (UTC)
+	 MIME-Version; b=gPuflSXYd78hM69h82jr9tc3enI8+rLRqtZZ27XknMLXx+J3exGTplxzlPFS9kBUlEougREwqhnFVkW8O4MAN01sb94UhkLlfbhdWj8++DBenFRp2/jdHb73YQ0k2oYdZBbCwkA3HpuuPSiIUVMsit+BSuji96Swxizw66IZwq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mojTSyWC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 755F8C4CECE;
+	Fri, 27 Sep 2024 12:28:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727439980;
-	bh=9Q+M9RQlsApJxGY1uSiuDckMtHUi7XSUUYMMeFVQqUA=;
+	s=korg; t=1727440108;
+	bh=8r2b+jI9L22F2EVfUJIynxgJ1zpb6/bl8ACO+NmkOTc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G8H4OnV7y30ami5lpmZtMat2lLhGzmEAiXzxdrtCDAz1uay9P5V+IMSju5kEWMARN
-	 cVM9LOKn6gnNHprJK+6861z2D4mzwZyD0hvODY3W2rtRGas1/eiDOnDsX7uuLUPBQq
-	 wJp31dpth+Do1meUMw6pjJOaoXZ/VqFRkwBBj4Wc=
+	b=mojTSyWCFmGybbiOj7By+hdgwMAfnhHtCSI90FA+JRpDr8ku9d6rLp/JjLqEmHEMs
+	 qFj3pBZnCUi/PpJANiTpt5dzneUX4wPytIZYme3DCgNwQ8LXs4IYd5//X2Tt+JgCGV
+	 3aKUhu3IwUZ5SbNmgJW4kwFvFsbUlTNRhsoCydlc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	netfilter-devel@vger.kernel.org
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 6.6 45/54] netfilter: nft_set_pipapo: walk over current view on netlink dump
-Date: Fri, 27 Sep 2024 14:23:37 +0200
-Message-ID: <20240927121721.624073906@linuxfoundation.org>
+	Liao Chen <liaochen4@huawei.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 36/58] spi: bcm63xx: Enable module autoloading
+Date: Fri, 27 Sep 2024 14:23:38 +0200
+Message-ID: <20240927121720.255429061@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121719.714627278@linuxfoundation.org>
-References: <20240927121719.714627278@linuxfoundation.org>
+In-Reply-To: <20240927121718.789211866@linuxfoundation.org>
+References: <20240927121718.789211866@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,116 +62,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Liao Chen <liaochen4@huawei.com>
 
-commit 29b359cf6d95fd60730533f7f10464e95bd17c73 upstream.
+[ Upstream commit 709df70a20e990d262c473ad9899314039e8ec82 ]
 
-The generation mask can be updated while netlink dump is in progress.
-The pipapo set backend walk iterator cannot rely on it to infer what
-view of the datastructure is to be used. Add notation to specify if user
-wants to read/update the set.
+Add MODULE_DEVICE_TABLE(), so modules could be properly autoloaded based
+on the alias from of_device_id table.
 
-Based on patch from Florian Westphal.
-
-Fixes: 2b84e215f874 ("netfilter: nft_set_pipapo: .walk does not deal with generations")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Liao Chen <liaochen4@huawei.com>
+Link: https://patch.msgid.link/20240831094231.795024-1-liaochen4@huawei.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netfilter/nf_tables.h |   13 +++++++++++++
- net/netfilter/nf_tables_api.c     |    5 +++++
- net/netfilter/nft_set_pipapo.c    |    5 +++--
- 3 files changed, 21 insertions(+), 2 deletions(-)
+ drivers/spi/spi-bcm63xx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -297,9 +297,22 @@ struct nft_set_elem {
- 	void			*priv;
+diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
+index aac41bd05f98f..2fb8d4e55c777 100644
+--- a/drivers/spi/spi-bcm63xx.c
++++ b/drivers/spi/spi-bcm63xx.c
+@@ -472,6 +472,7 @@ static const struct of_device_id bcm63xx_spi_of_match[] = {
+ 	{ .compatible = "brcm,bcm6358-spi", .data = &bcm6358_spi_reg_offsets },
+ 	{ },
  };
++MODULE_DEVICE_TABLE(of, bcm63xx_spi_of_match);
  
-+/**
-+ * enum nft_iter_type - nftables set iterator type
-+ *
-+ * @NFT_ITER_READ: read-only iteration over set elements
-+ * @NFT_ITER_UPDATE: iteration under mutex to update set element state
-+ */
-+enum nft_iter_type {
-+	NFT_ITER_UNSPEC,
-+	NFT_ITER_READ,
-+	NFT_ITER_UPDATE,
-+};
-+
- struct nft_set;
- struct nft_set_iter {
- 	u8		genmask;
-+	enum nft_iter_type type:8;
- 	unsigned int	count;
- 	unsigned int	skip;
- 	int		err;
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -628,6 +628,7 @@ static void nft_map_deactivate(const str
+ static int bcm63xx_spi_probe(struct platform_device *pdev)
  {
- 	struct nft_set_iter iter = {
- 		.genmask	= nft_genmask_next(ctx->net),
-+		.type		= NFT_ITER_UPDATE,
- 		.fn		= nft_mapelem_deactivate,
- 	};
- 
-@@ -5392,6 +5393,7 @@ int nf_tables_bind_set(const struct nft_
- 		}
- 
- 		iter.genmask	= nft_genmask_next(ctx->net);
-+		iter.type	= NFT_ITER_UPDATE;
- 		iter.skip 	= 0;
- 		iter.count	= 0;
- 		iter.err	= 0;
-@@ -5467,6 +5469,7 @@ static void nft_map_activate(const struc
- {
- 	struct nft_set_iter iter = {
- 		.genmask	= nft_genmask_next(ctx->net),
-+		.type		= NFT_ITER_UPDATE,
- 		.fn		= nft_mapelem_activate,
- 	};
- 
-@@ -5845,6 +5848,7 @@ static int nf_tables_dump_set(struct sk_
- 	args.skb		= skb;
- 	args.reset		= reset;
- 	args.iter.genmask	= nft_genmask_cur(net);
-+	args.iter.type		= NFT_ITER_READ;
- 	args.iter.skip		= cb->args[0];
- 	args.iter.count		= 0;
- 	args.iter.err		= 0;
-@@ -7246,6 +7250,7 @@ static int nft_set_flush(struct nft_ctx
- {
- 	struct nft_set_iter iter = {
- 		.genmask	= genmask,
-+		.type		= NFT_ITER_UPDATE,
- 		.fn		= nft_setelem_flush,
- 	};
- 
---- a/net/netfilter/nft_set_pipapo.c
-+++ b/net/netfilter/nft_set_pipapo.c
-@@ -2037,13 +2037,14 @@ static void nft_pipapo_walk(const struct
- 			    struct nft_set_iter *iter)
- {
- 	struct nft_pipapo *priv = nft_set_priv(set);
--	struct net *net = read_pnet(&set->net);
- 	const struct nft_pipapo_match *m;
- 	const struct nft_pipapo_field *f;
- 	int i, r;
- 
-+	WARN_ON_ONCE(iter->type == NFT_ITER_UNSPEC);
-+
- 	rcu_read_lock();
--	if (iter->genmask == nft_genmask_cur(net))
-+	if (iter->type == NFT_ITER_READ)
- 		m = rcu_dereference(priv->match);
- 	else
- 		m = priv->clone;
+-- 
+2.43.0
+
 
 
 
