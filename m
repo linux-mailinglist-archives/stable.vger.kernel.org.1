@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-78062-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77999-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AF9E9884E7
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:32:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF0CF988494
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:29:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5BFA61C226C3
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:32:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6943B2812AA
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:29:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5E2518C346;
-	Fri, 27 Sep 2024 12:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 903CD18BB91;
+	Fri, 27 Sep 2024 12:29:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r9xYGO05"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b5w9de5M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A40B518C016;
-	Fri, 27 Sep 2024 12:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 509FF17B515;
+	Fri, 27 Sep 2024 12:29:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440317; cv=none; b=FIZ2q1ngb9/UA7CUDSAZmZ+N3r9cC8NexeXjIqT7rO8wJb8BH6lgq7OzDiqqWIh772hIeQYtNi8EIKekHmp7Jj6ot/TEkr72i9wyTLwx16+9hoQTDYzEHA7J4M5jKgOn6ktAxmbCULZB7vtOQHjYja/zq8cL21JhE/jX0cmeUUI=
+	t=1727440142; cv=none; b=phPQEYLLY2ZQjbXvkB/JAKpIj4F3mp+QjkZiisopPNZ+Nw8KOt40nXjnBZE1bMvvejftwYSUxyVIK/YJpTZMwp3B3JL4L4uAbMBCbqHX/YZNQIJhnDB775lgVcaug5TdRpwuwKTo+mdYsQkP9D7pqUiwXzqgxywKv9qe2li9G5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440317; c=relaxed/simple;
-	bh=6aQ+8OOMsyrjvuCjYuBD5xaNj6+7Y6SV7FYLBGRcVBw=;
+	s=arc-20240116; t=1727440142; c=relaxed/simple;
+	bh=d3+9DpdHdKrqiQ4igOtrzILCMd2VOdLbfT4Ub6/FJHE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GgL2LTecwspdJ5q26RNaxbci5K8RCvOlgwzeKXhtjdhRXviU2iQpmidwD0lj4zbJ4uUSm2nX1044a8OWo+k92UDJMg4Eio27sxRq+Slstgk4e1+B69cLiNRC6VaK2FZBQE4M/0iqHvO7IKEUD5bQ2uIIwQfWGE7RDWg0Es2AAmk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r9xYGO05; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29B51C4CEC4;
-	Fri, 27 Sep 2024 12:31:56 +0000 (UTC)
+	 MIME-Version; b=tra8yjF2zlVuKLnatqC9GnQSz93QRVrYdP6C7OhPsuvRMOUB9N8//c7zL+lBXHs+4x/eu9OXqZNY1ObzTHjxmD7MHtCeXLxzzqYSXl9yr8yYEwZAx3KYiTwRJabEAhjWFBNI3vwA8wEqHHlCgGBDzT/WP6tWApUVf+umiCnbtdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b5w9de5M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D31E9C4CEC4;
+	Fri, 27 Sep 2024 12:29:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440317;
-	bh=6aQ+8OOMsyrjvuCjYuBD5xaNj6+7Y6SV7FYLBGRcVBw=;
+	s=korg; t=1727440142;
+	bh=d3+9DpdHdKrqiQ4igOtrzILCMd2VOdLbfT4Ub6/FJHE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r9xYGO05RBF4sJ/9KFR87TRcHewlTZvrFS1ZJvEcsnCx1FnUm69qVhDMSxmKKRCPE
-	 qrcu2Cp4Tj2Iy8NI3wAGyXv64Bk16lG29rZcaBcDdbii9sz7WvWRdrHYQDhFpbt5x8
-	 yrPv7T+hMCy2tTGoQA1XQkh8LzWWEnKu49TG+EPw=
+	b=b5w9de5MJtlFk4zUkLOoBpZ+HUq30nUS3AvVdtjSiNRj7c1XuoVHU0NZEmOBX9ShU
+	 xnXzYWuvIeyP4Zc01HBy2dH/d3/KEL494+tzd4miC7YF/lWjOThzce4YyQCh83m7lh
+	 r6TJKy/YwF7rAGcY/+12V/foMc6t/d8Sz7yQ6ySk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Len Brown <lenb@kernel.org>,
-	Benjamin Berg <benjamin.berg@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 12/73] wifi: iwlwifi: lower message level for FW buffer destination
+Subject: [PATCH 6.10 21/58] wifi: mac80211: free skb on error path in ieee80211_beacon_get_ap()
 Date: Fri, 27 Sep 2024 14:23:23 +0200
-Message-ID: <20240927121720.354826182@linuxfoundation.org>
+Message-ID: <20240927121719.663082440@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121719.897851549@linuxfoundation.org>
-References: <20240927121719.897851549@linuxfoundation.org>
+In-Reply-To: <20240927121718.789211866@linuxfoundation.org>
+References: <20240927121718.789211866@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit f8a129c1e10256c785164ed5efa5d17d45fbd81b ]
+[ Upstream commit 786c5be9ac29a39b6f37f1fdd2ea59d0fe35d525 ]
 
-An invalid buffer destination is not a problem for the driver and it
-does not make sense to report it with the KERN_ERR message level. As
-such, change the message to use IWL_DEBUG_FW.
+In 'ieee80211_beacon_get_ap()', free allocated skb in case of error
+returned by 'ieee80211_beacon_protect()'. Compile tested only.
 
-Reported-by: Len Brown <lenb@kernel.org>
-Closes: https://lore.kernel.org/r/CAJvTdKkcxJss=DM2sxgv_MR5BeZ4_OC-3ad6tA40TYH2yqHCWw@mail.gmail.com
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20240825191257.20abf78f05bc.Ifbcecc2ae9fb40b9698302507dcba8b922c8d856@changeid
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Link: https://patch.msgid.link/20240805142035.227847-1-dmantipov@yandex.ru
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/mac80211/tx.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c b/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c
-index 75fd386b048e9..35c60faf8e8fb 100644
---- a/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c
-+++ b/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c
-@@ -68,7 +68,8 @@ iwl_pcie_ctxt_info_dbg_enable(struct iwl_trans *trans,
- 		}
- 		break;
- 	default:
--		IWL_ERR(trans, "WRT: Invalid buffer destination\n");
-+		IWL_DEBUG_FW(trans, "WRT: Invalid buffer destination (%d)\n",
-+			     le32_to_cpu(fw_mon_cfg->buf_location));
- 	}
- out:
- 	if (dbg_flags)
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index edba4a31844fb..bca7b341dd772 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -5348,8 +5348,10 @@ ieee80211_beacon_get_ap(struct ieee80211_hw *hw,
+ 	if (beacon->tail)
+ 		skb_put_data(skb, beacon->tail, beacon->tail_len);
+ 
+-	if (ieee80211_beacon_protect(skb, local, sdata, link) < 0)
++	if (ieee80211_beacon_protect(skb, local, sdata, link) < 0) {
++		dev_kfree_skb(skb);
+ 		return NULL;
++	}
+ 
+ 	ieee80211_beacon_get_finish(hw, vif, link, offs, beacon, skb,
+ 				    chanctx_conf, csa_off_base);
 -- 
 2.43.0
 
