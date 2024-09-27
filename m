@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-77987-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78051-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A8637988486
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:28:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35D809884DC
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:32:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CFA991C20DB9
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:28:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC259281270
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:32:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A42218BC1C;
-	Fri, 27 Sep 2024 12:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D018418C911;
+	Fri, 27 Sep 2024 12:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mojTSyWC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eHA2Kgrl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBBEE1865ED;
-	Fri, 27 Sep 2024 12:28:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BDF218C334;
+	Fri, 27 Sep 2024 12:31:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440109; cv=none; b=C4LuFFfKUgV4pk83rBptbNjCvhUqapY+/LRYOzO6XnhT6hu2xAEtAoAbqqstE6BxtzEjqIW9NhwqVrIIZi40Aq3PDw/yWtcoXdgNDcwBkI54rS6ePWQMkUF8W4bIFFlH3FZFTnSqO5G1dX4SQG2wlyeh8yEeIym9nJQiJSeTMfo=
+	t=1727440287; cv=none; b=spMzPF8SnFVE+IBDB/POcnpSEgbp4slkCWYQ9/wmso8sAdMjFGI55jH6cKie11xXRDQ48r88BapbdvmiAXnKO3VrPnHdsVzhM8+0r8A9WfRvF3IALeNVRdOnMmoVUbh/kaEUPPaK8kQr3UwuX78fV9B4LdR3uw3lkgLDkdVLvkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440109; c=relaxed/simple;
-	bh=8r2b+jI9L22F2EVfUJIynxgJ1zpb6/bl8ACO+NmkOTc=;
+	s=arc-20240116; t=1727440287; c=relaxed/simple;
+	bh=djND3ORVabGT9RxN4QWB7e7dkiDPkJOffUwHQRMqvFI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gPuflSXYd78hM69h82jr9tc3enI8+rLRqtZZ27XknMLXx+J3exGTplxzlPFS9kBUlEougREwqhnFVkW8O4MAN01sb94UhkLlfbhdWj8++DBenFRp2/jdHb73YQ0k2oYdZBbCwkA3HpuuPSiIUVMsit+BSuji96Swxizw66IZwq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mojTSyWC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 755F8C4CECE;
-	Fri, 27 Sep 2024 12:28:28 +0000 (UTC)
+	 MIME-Version; b=LBeaPUvnBAnSbP/MFqyKJWtZwd1hVAxBKwz1maqRCxVuWOWzYpcZPr9aG9fTGejSUsfWh9W7leUvTtA4E/vWGVjYMnl/ax7i1HZFQSG+8KTf/bsMDtGwKc3D82bAmlK5VHPYEB+A0xA9jocMcBVzVuBA7daAOGXTRQYyZkbHUjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eHA2Kgrl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2C66C4CEC4;
+	Fri, 27 Sep 2024 12:31:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440108;
-	bh=8r2b+jI9L22F2EVfUJIynxgJ1zpb6/bl8ACO+NmkOTc=;
+	s=korg; t=1727440287;
+	bh=djND3ORVabGT9RxN4QWB7e7dkiDPkJOffUwHQRMqvFI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mojTSyWCFmGybbiOj7By+hdgwMAfnhHtCSI90FA+JRpDr8ku9d6rLp/JjLqEmHEMs
-	 qFj3pBZnCUi/PpJANiTpt5dzneUX4wPytIZYme3DCgNwQ8LXs4IYd5//X2Tt+JgCGV
-	 3aKUhu3IwUZ5SbNmgJW4kwFvFsbUlTNRhsoCydlc=
+	b=eHA2KgrlyL00ECK8jOcasW+DaHy74Qq0JYlDQM4qXpjR3Wt3WHJ0Tlgqo0culIdUy
+	 sCrdhhjtUYLMcK4yeupMOEN6pzWrbaBBeuIFHdMVgBoLSvOAqb4EMnTqS+YLDNxtEJ
+	 tBm1Q4uHBX64crufyHuKgc2Mw1OgeGielnCso3a0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liao Chen <liaochen4@huawei.com>,
-	Mark Brown <broonie@kernel.org>,
+	zhang jiao <zhangjiao2@cmss.chinamobile.com>,
+	Saurabh Sengar <ssengar@linux.microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 36/58] spi: bcm63xx: Enable module autoloading
+Subject: [PATCH 6.1 27/73] tools: hv: rm .*.cmd when make clean
 Date: Fri, 27 Sep 2024 14:23:38 +0200
-Message-ID: <20240927121720.255429061@linuxfoundation.org>
+Message-ID: <20240927121720.991898051@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121718.789211866@linuxfoundation.org>
-References: <20240927121718.789211866@linuxfoundation.org>
+In-Reply-To: <20240927121719.897851549@linuxfoundation.org>
+References: <20240927121719.897851549@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +63,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liao Chen <liaochen4@huawei.com>
+From: zhang jiao <zhangjiao2@cmss.chinamobile.com>
 
-[ Upstream commit 709df70a20e990d262c473ad9899314039e8ec82 ]
+[ Upstream commit 5e5cc1eb65256e6017e3deec04f9806f2f317853 ]
 
-Add MODULE_DEVICE_TABLE(), so modules could be properly autoloaded based
-on the alias from of_device_id table.
+rm .*.cmd when make clean
 
-Signed-off-by: Liao Chen <liaochen4@huawei.com>
-Link: https://patch.msgid.link/20240831094231.795024-1-liaochen4@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: zhang jiao <zhangjiao2@cmss.chinamobile.com>
+Reviewed-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Link: https://lore.kernel.org/r/20240902042103.5867-1-zhangjiao2@cmss.chinamobile.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <20240902042103.5867-1-zhangjiao2@cmss.chinamobile.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-bcm63xx.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/hv/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
-index aac41bd05f98f..2fb8d4e55c777 100644
---- a/drivers/spi/spi-bcm63xx.c
-+++ b/drivers/spi/spi-bcm63xx.c
-@@ -472,6 +472,7 @@ static const struct of_device_id bcm63xx_spi_of_match[] = {
- 	{ .compatible = "brcm,bcm6358-spi", .data = &bcm6358_spi_reg_offsets },
- 	{ },
- };
-+MODULE_DEVICE_TABLE(of, bcm63xx_spi_of_match);
+diff --git a/tools/hv/Makefile b/tools/hv/Makefile
+index fe770e679ae8f..5643058e2d377 100644
+--- a/tools/hv/Makefile
++++ b/tools/hv/Makefile
+@@ -47,7 +47,7 @@ $(OUTPUT)hv_fcopy_daemon: $(HV_FCOPY_DAEMON_IN)
  
- static int bcm63xx_spi_probe(struct platform_device *pdev)
- {
+ clean:
+ 	rm -f $(ALL_PROGRAMS)
+-	find $(or $(OUTPUT),.) -name '*.o' -delete -o -name '\.*.d' -delete
++	find $(or $(OUTPUT),.) -name '*.o' -delete -o -name '\.*.d' -delete -o -name '\.*.cmd' -delete
+ 
+ install: $(ALL_PROGRAMS)
+ 	install -d -m 755 $(DESTDIR)$(sbindir); \
 -- 
 2.43.0
 
