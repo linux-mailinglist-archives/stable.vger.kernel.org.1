@@ -1,61 +1,55 @@
-Return-Path: <stable+bounces-78055-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 794929884E0
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:32:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B1BE98850B
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:33:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 246F31F22623
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:32:27 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id EC327B259C1
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:33:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA41318C915;
-	Fri, 27 Sep 2024 12:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDC0B18B46D;
+	Fri, 27 Sep 2024 12:33:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dCbQxQq4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LkWDBtpT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9742518C32C;
-	Fri, 27 Sep 2024 12:31:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D444187331;
+	Fri, 27 Sep 2024 12:33:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440298; cv=none; b=Xh0Wzfp7QSgETToa0Ez4MvL2XtQZ01JtNtbU1vqGEqA6MeXAL2De0axxq5XdTCKOF9LtxrtvTET8UrRhD2Rkds4nl1oeJzPVDwE/lhVRNHUbh6RGAlywEaNT6MEOE0V+HNt/UPRyUdMMryAfCyjHI74wGLO6ukCfvheibmchl8E=
+	t=1727440397; cv=none; b=WdvAgM4A5JCpecvIHvCNYLfIc18XHu5+/VvWTfr5UwUsnLxze7N0slkrqmqq4TLJ3RU7N9sGX/9wSrqATzQs0e/ZWAn3AkJG16K/aqDQbKXBma1QfMXSMJm6gnzj136NNgrd8BDrCEYawId7ciVNSImMjqFL3Tz4Wt7V9RtsITI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440298; c=relaxed/simple;
-	bh=Z8zny9JLgtOvSR46/VgCRxIxiTKVfjZhmuqIC4VhH+E=;
+	s=arc-20240116; t=1727440397; c=relaxed/simple;
+	bh=T9sXm3hgEd+Ijftop4+LX1GKj1HEGneKS9irEqtf6nA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ibGSKbN+NeUxxZ62Aph0K4tArvHRKN7ZUGYBPZMN7TpkOkznVdrFqhXHkz+1fYxDBY88xrGUhe1lWktQ0GD9WGym2RnjU3aYpr4Tu7nGSjsATuzn0BS/ZjBmjkc5cq/TtILqn2fhIWHU2uECYt0VdtDSYj1mg7JbkqMFbZoZXBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dCbQxQq4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2C76C4CEC6;
-	Fri, 27 Sep 2024 12:31:37 +0000 (UTC)
+	 MIME-Version; b=uIa9eeKSZvV1TkqILDy7aSPOkrT6TpNSQScfJXBICsPpuVay8WjUe9hkzl3LVLAeWv2kcAmDOszJhKycqHTSdKMs6DVBDjh86YFTecDG/50j6vqlQJHqaCLggieZF3TvosCDUIJyK++8V2FfKtLewyt1OKwXXc4wwNlXeFTMzPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LkWDBtpT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D341C4CEC4;
+	Fri, 27 Sep 2024 12:33:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440298;
-	bh=Z8zny9JLgtOvSR46/VgCRxIxiTKVfjZhmuqIC4VhH+E=;
+	s=korg; t=1727440397;
+	bh=T9sXm3hgEd+Ijftop4+LX1GKj1HEGneKS9irEqtf6nA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dCbQxQq4Xb2KGS+2Orn9n5cPy3RoWaSjsnAwxSMOwVdba9V0212F9wtSgckoAdwZc
-	 1PppfFu88fewru1Wp2raN/n8Lx7EbgAzCSvRelavjuyhqa6iAotvG8B3eHY9DqT9Yg
-	 cL/I0VkmzBQVEwj/JluVDUdUr7ur3IAOV51bQht0=
+	b=LkWDBtpTHIknnJvk19KV06Kc2PXrAqE23/E23fxBcNg1K5PISFl4HbMK84+aGMJmH
+	 vUcPvCNtKQskG5yCQsQ9TOdQAwuhd1Sfsj2g7vafuPvM2iXjPpQdfq2KU4CPl11Mqi
+	 5ITiwPUK7ObpNCsrB5grIPBAWkxtLOSSO+q9PdFs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ferry Meng <mengferry@linux.alibaba.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	lei lu <llfamsec@gmail.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Gang He <ghe@suse.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Jun Piao <piaojun@huawei.com>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 31/73] ocfs2: strict bound check before memcmp in ocfs2_xattr_find_entry()
-Date: Fri, 27 Sep 2024 14:23:42 +0200
-Message-ID: <20240927121721.163902825@linuxfoundation.org>
+	syzbot+912776840162c13db1a3@syzkaller.appspotmail.com,
+	Dave Chinner <dchinner@redhat.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Leah Rumancik <leah.rumancik@gmail.com>,
+	Chandan Babu R <chandanbabu@kernel.org>
+Subject: [PATCH 6.1 32/73] xfs: dquot shrinker doesnt check for XFS_DQFLAG_FREEING
+Date: Fri, 27 Sep 2024 14:23:43 +0200
+Message-ID: <20240927121721.202973508@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20240927121719.897851549@linuxfoundation.org>
 References: <20240927121719.897851549@linuxfoundation.org>
@@ -74,68 +68,65 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ferry Meng <mengferry@linux.alibaba.com>
+From: Dave Chinner <dchinner@redhat.com>
 
-[ Upstream commit af77c4fc1871847b528d58b7fdafb4aa1f6a9262 ]
+[ Upstream commit 52f31ed228212ba572c44e15e818a3a5c74122c0 ]
 
-xattr in ocfs2 maybe 'non-indexed', which saved with additional space
-requested.  It's better to check if the memory is out of bound before
-memcmp, although this possibility mainly comes from crafted poisonous
-images.
+Resulting in a UAF if the shrinker races with some other dquot
+freeing mechanism that sets XFS_DQFLAG_FREEING before the dquot is
+removed from the LRU. This can occur if a dquot purge races with
+drop_caches.
 
-Link: https://lkml.kernel.org/r/20240520024024.1976129-2-joseph.qi@linux.alibaba.com
-Signed-off-by: Ferry Meng <mengferry@linux.alibaba.com>
-Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reported-by: lei lu <llfamsec@gmail.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Gang He <ghe@suse.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Jun Piao <piaojun@huawei.com>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: syzbot+912776840162c13db1a3@syzkaller.appspotmail.com
+Signed-off-by: Dave Chinner <dchinner@redhat.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Acked-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/xattr.c | 15 ++++++++++-----
- 1 file changed, 10 insertions(+), 5 deletions(-)
+ fs/xfs/xfs_qm.c |   16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
 
-diff --git a/fs/ocfs2/xattr.c b/fs/ocfs2/xattr.c
-index 61213b7e4dfbe..3ba40f16ef056 100644
---- a/fs/ocfs2/xattr.c
-+++ b/fs/ocfs2/xattr.c
-@@ -1072,7 +1072,7 @@ static int ocfs2_xattr_find_entry(struct inode *inode, int name_index,
- {
- 	struct ocfs2_xattr_entry *entry;
- 	size_t name_len;
--	int i, cmp = 1;
-+	int i, name_offset, cmp = 1;
+--- a/fs/xfs/xfs_qm.c
++++ b/fs/xfs/xfs_qm.c
+@@ -423,6 +423,14 @@ xfs_qm_dquot_isolate(
+ 		goto out_miss_busy;
  
- 	if (name == NULL)
- 		return -EINVAL;
-@@ -1087,10 +1087,15 @@ static int ocfs2_xattr_find_entry(struct inode *inode, int name_index,
- 		cmp = name_index - ocfs2_xattr_get_type(entry);
- 		if (!cmp)
- 			cmp = name_len - entry->xe_name_len;
--		if (!cmp)
--			cmp = memcmp(name, (xs->base +
--				     le16_to_cpu(entry->xe_name_offset)),
--				     name_len);
-+		if (!cmp) {
-+			name_offset = le16_to_cpu(entry->xe_name_offset);
-+			if ((xs->base + name_offset + name_len) > xs->end) {
-+				ocfs2_error(inode->i_sb,
-+					    "corrupted xattr entries");
-+				return -EFSCORRUPTED;
-+			}
-+			cmp = memcmp(name, (xs->base + name_offset), name_len);
-+		}
- 		if (cmp == 0)
- 			break;
- 		entry += 1;
--- 
-2.43.0
-
+ 	/*
++	 * If something else is freeing this dquot and hasn't yet removed it
++	 * from the LRU, leave it for the freeing task to complete the freeing
++	 * process rather than risk it being free from under us here.
++	 */
++	if (dqp->q_flags & XFS_DQFLAG_FREEING)
++		goto out_miss_unlock;
++
++	/*
+ 	 * This dquot has acquired a reference in the meantime remove it from
+ 	 * the freelist and try again.
+ 	 */
+@@ -441,10 +449,8 @@ xfs_qm_dquot_isolate(
+ 	 * skip it so there is time for the IO to complete before we try to
+ 	 * reclaim it again on the next LRU pass.
+ 	 */
+-	if (!xfs_dqflock_nowait(dqp)) {
+-		xfs_dqunlock(dqp);
+-		goto out_miss_busy;
+-	}
++	if (!xfs_dqflock_nowait(dqp))
++		goto out_miss_unlock;
+ 
+ 	if (XFS_DQ_IS_DIRTY(dqp)) {
+ 		struct xfs_buf	*bp = NULL;
+@@ -478,6 +484,8 @@ xfs_qm_dquot_isolate(
+ 	XFS_STATS_INC(dqp->q_mount, xs_qm_dqreclaims);
+ 	return LRU_REMOVED;
+ 
++out_miss_unlock:
++	xfs_dqunlock(dqp);
+ out_miss_busy:
+ 	trace_xfs_dqreclaim_busy(dqp);
+ 	XFS_STATS_INC(dqp->q_mount, xs_qm_dqreclaim_misses);
 
 
 
