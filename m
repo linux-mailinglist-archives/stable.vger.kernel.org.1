@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-77982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78045-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1B26988482
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:28:25 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C3A29884D5
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:32:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3E496B21AD5
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:28:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5CCCC28349F
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:32:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70C8018C00D;
-	Fri, 27 Sep 2024 12:28:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBCC718C35E;
+	Fri, 27 Sep 2024 12:31:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZQfkRumW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w3ehjURh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CCD01865ED;
-	Fri, 27 Sep 2024 12:28:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9999318C334;
+	Fri, 27 Sep 2024 12:31:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440095; cv=none; b=CADBWPRdu3ejxaWyY0Z1gTNLaaqCpGD39PECXSV6nlAdQ2Q3hFhk+AKL6+OU0I3hcZkwESBFfIEGQBt9XEfyNEsUAiOTVq5WibCOw9jP1vqFkVYZHt30l4xcYYwLxqa0sHpqo+LrOHsOo9ky95m7QiYvI9NrKakll/jHgtj9s5Y=
+	t=1727440270; cv=none; b=U4jkgMJ9YFseNBAN872Ab37AUggCoaLt9Qh4aL+QVHb4hQsh929R4PEjieFD7dHrp6w15UduLZrUMKmg0RZ3XMRO6g1uIVo+Izm07P0tHpneyTkc8wKYkAPzhd9CkvwEy3YuQO1HWZwrrO1IaOC7UA4J10cFoJAPiOOBPJ+A2Gk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440095; c=relaxed/simple;
-	bh=ztYn2/xQuJtdOgwRk8IfcifkFQpNgGAm8SE1m3xjru8=;
+	s=arc-20240116; t=1727440270; c=relaxed/simple;
+	bh=j7i18h0Cjbc219rJ6+w+9RSlzCJEEwL4Zj1w+SmHdSM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tSNYdt/9j83cHsLs/DlNXtlmnFhWx8OSM1LUn+GZouGdGXOFgF6D4pTWWkwt1AV2pL2jz/S+NIveXV3tTpBG6KvCzx0FGFm4u2O4eAuD3tOQE62jHNHOdTjLHysH0xQJZkf3RVafbJbBor8RamGs70U/F1FfbjE0OsXUYWy9Knw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZQfkRumW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE462C4CECD;
-	Fri, 27 Sep 2024 12:28:14 +0000 (UTC)
+	 MIME-Version; b=DQXeN2iRZfzOwzkgi5qSES0wCiGJENbWdvq9+x63gNKlrrlDF/jWzyLhmy4vbIFUQ37rVTXxOy8YsDNmJo3xDF+OuLuyFYd9nAt3vVFzPG3Aia3N9tpN2rftmV8Mha0ZjGDEYpKdhmxONKWHY/Dyxm7safV01F4BdomFSejy/Lk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w3ehjURh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B9CCC4CEC4;
+	Fri, 27 Sep 2024 12:31:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440095;
-	bh=ztYn2/xQuJtdOgwRk8IfcifkFQpNgGAm8SE1m3xjru8=;
+	s=korg; t=1727440270;
+	bh=j7i18h0Cjbc219rJ6+w+9RSlzCJEEwL4Zj1w+SmHdSM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZQfkRumWvAbgKSC2CfcDdPd4AeZs8hqcf1I13OmuIyR5zjb7mUzCZZX7Mev+2nlTV
-	 lRqbDkmS+1hUgvzMERrAVcj7e+sRFWrvsY8OvoyqzE5BJM43jBPtrXBUyc8B+irKF0
-	 vfs9+tVX38T2ZKH0a9ubdXizgoZXNOQW5xJVfeRw=
+	b=w3ehjURhvXag0nBqhwz5C6kyk3ZDPCxv5aDFv98R8aEabOE4xhQZ0Q1DPHNgzGjKR
+	 jyYdZ4tAk0rK4MqMgm1kzfFiEseZceXkhfQZy/HFFxTz4nVcfSB5+xrBgGxRjwn583
+	 gZyUXWOzpxqLVl70SlshKLxT5CgaAn6H5IDbuU2E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,12 +46,12 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Heiko Stuebner <heiko@sntech.de>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 31/58] spi: spidev: Add an entry for elgin,jg10309-01
+Subject: [PATCH 6.1 22/73] spi: spidev: Add an entry for elgin,jg10309-01
 Date: Fri, 27 Sep 2024 14:23:33 +0200
-Message-ID: <20240927121720.055317252@linuxfoundation.org>
+Message-ID: <20240927121720.786280957@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121718.789211866@linuxfoundation.org>
-References: <20240927121718.789211866@linuxfoundation.org>
+In-Reply-To: <20240927121719.897851549@linuxfoundation.org>
+References: <20240927121719.897851549@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,7 +63,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
@@ -86,10 +86,10 @@ Signed-off-by: Sasha Levin <sashal@kernel.org>
  1 file changed, 1 insertion(+)
 
 diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index 5304728c68c20..14bf0fa65befe 100644
+index 477c3578e7d9e..7ae032f8de63c 100644
 --- a/drivers/spi/spidev.c
 +++ b/drivers/spi/spidev.c
-@@ -731,6 +731,7 @@ static int spidev_of_check(struct device *dev)
+@@ -722,6 +722,7 @@ static int spidev_of_check(struct device *dev)
  static const struct of_device_id spidev_dt_ids[] = {
  	{ .compatible = "cisco,spi-petra", .data = &spidev_of_check },
  	{ .compatible = "dh,dhcom-board", .data = &spidev_of_check },
