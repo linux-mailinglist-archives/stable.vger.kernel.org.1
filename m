@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-77947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78001-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E9F398845D
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:27:05 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE6AC98848F
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:29:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 09BCCB21AA1
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:27:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C9F6F1F23190
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:29:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0661018C33D;
-	Fri, 27 Sep 2024 12:26:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7668418BC0D;
+	Fri, 27 Sep 2024 12:29:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R2DPh5UB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ofq8ir1p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B587218BC0D;
-	Fri, 27 Sep 2024 12:26:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3678D17B515;
+	Fri, 27 Sep 2024 12:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727439997; cv=none; b=uIgTwZtSSVuqRwySPMeCc97EeTsdOM1aAnL7VnnPdlQaqIVG7MPs/Czl8s1n4jDr5IvBQvRgSimUkCAMSzgQjsYVjOvIpZ69OMnYE2nABM7seUeniLjXQbRNkyWg7Ie7NgT4BrNGccGuJ8hA4yNKcc2tRR5BdAUbZIym1GHQp3A=
+	t=1727440148; cv=none; b=vF52zMB/9InpsvWJE9zyASDa48r3ZOQTW4NdKn5lCl2witIE+MOE0XIgmslDrKYDx3d0HYOZ0n4XwPQ+x7I2754hK1el9sY1H0evXc6NmYeRHhBWt0lA7Ed1pOJsSZuJ4S941u8IcfZAqyv4jp2f/U/4gE/aflYite5L5mAqBFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727439997; c=relaxed/simple;
-	bh=Wqba/5lLjaWUzG9s5uaLvHWjvo+KxT0KEKbn/c7KOCA=;
+	s=arc-20240116; t=1727440148; c=relaxed/simple;
+	bh=8VHwLrbK9y5j60dx+h4oeWvNqvyRq7NpMvBMJxhtKAI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k2uvp2GyfUkDaauMDWjXANeH0O1HOy+CaAUEMIOLc1KeRSDfMPKtNsu3vxDKqqgfcE29EP2SXjiEYG+6j87QlXfjfIApgYnwfqqkU2zTHnujJM20U+t8GvnoNAAaXUmezXwQovx6VyS8ksWQAoJxdE9tCRdsLk3Sdc5/88EyGB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R2DPh5UB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42584C4CECD;
-	Fri, 27 Sep 2024 12:26:37 +0000 (UTC)
+	 MIME-Version; b=R37aBJBC5eCjchNpRZ1OaHccQn8BRnRLkoJ8H6WLDEoPpiLfshqfCRhBXJpneOG8WWiVi0Ejuudq/p9hkR61V76MbgQNgQdjwjypDH6fqufYYI/KeaLkUF6wdRAafPcHmcBp/SNVJYtQPTeU7GCjXT0EnhMpw3PExzu9Qb93v0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ofq8ir1p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B52DC4CEC4;
+	Fri, 27 Sep 2024 12:29:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727439997;
-	bh=Wqba/5lLjaWUzG9s5uaLvHWjvo+KxT0KEKbn/c7KOCA=;
+	s=korg; t=1727440147;
+	bh=8VHwLrbK9y5j60dx+h4oeWvNqvyRq7NpMvBMJxhtKAI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=R2DPh5UBCAfmIuowi0j6osjtk9f8XI3lLDkD8HkcwkqbcnhcdVKZWVQN7cs9wOYlP
-	 u1AHNDHhdB9N8oF2yQkHEcOlgEe+AsRkq+114WJe7zLfHTVF+KQkhUZxW/tvpyxg6X
-	 jYkGvcbCPDGoQMQHyugmxV34E84VhUS4NKGhBFWQ=
+	b=ofq8ir1pn8+9Wwqulx/qb1YpH0zFsxu8rSKQvg+pBVlyGmDxIghU0APVRB0+G4qTE
+	 CtYzX0opYn3H8Wh9yIK/kpMUyvlwB9Ds4HlrU8NktyUfiL0OeFgWnuBDp0GzFBeR8W
+	 8a7tZv/tQGbMSzLry6olD+Yb2D2ybD6QQLPu94PI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Kelley <mhklinux@outlook.com>,
-	Roman Kisel <romank@linux.microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
+	Markus Schneider-Pargmann <msp@baylibre.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 33/54] x86/hyperv: Set X86_FEATURE_TSC_KNOWN_FREQ when Hyper-V provides frequency
+Subject: [PATCH 6.10 23/58] can: m_can: Limit coalescing to peripheral instances
 Date: Fri, 27 Sep 2024 14:23:25 +0200
-Message-ID: <20240927121721.086594316@linuxfoundation.org>
+Message-ID: <20240927121719.737748965@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121719.714627278@linuxfoundation.org>
-References: <20240927121719.714627278@linuxfoundation.org>
+In-Reply-To: <20240927121718.789211866@linuxfoundation.org>
+References: <20240927121718.789211866@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Kelley <mhklinux@outlook.com>
+From: Markus Schneider-Pargmann <msp@baylibre.com>
 
-[ Upstream commit 8fcc514809de41153b43ccbe1a0cdf7f72b78e7e ]
+[ Upstream commit e443d15b949952ee039b731d5c35bcbafa300024 ]
 
-A Linux guest on Hyper-V gets the TSC frequency from a synthetic MSR, if
-available. In this case, set X86_FEATURE_TSC_KNOWN_FREQ so that Linux
-doesn't unnecessarily do refined TSC calibration when setting up the TSC
-clocksource.
+The use of coalescing for non-peripheral chips in the current
+implementation is limited to non-existing. Disable the possibility to
+set coalescing through ethtool.
 
-With this change, a message such as this is no longer output during boot
-when the TSC is used as the clocksource:
-
-[    1.115141] tsc: Refined TSC clocksource calibration: 2918.408 MHz
-
-Furthermore, the guest and host will have exactly the same view of the
-TSC frequency, which is important for features such as the TSC deadline
-timer that are emulated by the Hyper-V host.
-
-Signed-off-by: Michael Kelley <mhklinux@outlook.com>
-Reviewed-by: Roman Kisel <romank@linux.microsoft.com>
-Link: https://lore.kernel.org/r/20240606025559.1631-1-mhklinux@outlook.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <20240606025559.1631-1-mhklinux@outlook.com>
+Signed-off-by: Markus Schneider-Pargmann <msp@baylibre.com>
+Link: https://lore.kernel.org/all/20240805183047.305630-8-msp@baylibre.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/mshyperv.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/can/m_can/m_can.c | 16 +++++++++-------
+ 1 file changed, 9 insertions(+), 7 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyperv.c
-index fac4b4116efe1..bcb2d640a0cd8 100644
---- a/arch/x86/kernel/cpu/mshyperv.c
-+++ b/arch/x86/kernel/cpu/mshyperv.c
-@@ -423,6 +423,7 @@ static void __init ms_hyperv_init_platform(void)
- 	    ms_hyperv.misc_features & HV_FEATURE_FREQUENCY_MSRS_AVAILABLE) {
- 		x86_platform.calibrate_tsc = hv_get_tsc_khz;
- 		x86_platform.calibrate_cpu = hv_get_tsc_khz;
-+		setup_force_cpu_cap(X86_FEATURE_TSC_KNOWN_FREQ);
- 	}
+diff --git a/drivers/net/can/m_can/m_can.c b/drivers/net/can/m_can/m_can.c
+index e4f0a382c2165..ddde067f593fc 100644
+--- a/drivers/net/can/m_can/m_can.c
++++ b/drivers/net/can/m_can/m_can.c
+@@ -2141,7 +2141,7 @@ static int m_can_set_coalesce(struct net_device *dev,
+ 	return 0;
+ }
  
- 	if (ms_hyperv.priv_high & HV_ISOLATION) {
+-static const struct ethtool_ops m_can_ethtool_ops = {
++static const struct ethtool_ops m_can_ethtool_ops_coalescing = {
+ 	.supported_coalesce_params = ETHTOOL_COALESCE_RX_USECS_IRQ |
+ 		ETHTOOL_COALESCE_RX_MAX_FRAMES_IRQ |
+ 		ETHTOOL_COALESCE_TX_USECS_IRQ |
+@@ -2152,18 +2152,20 @@ static const struct ethtool_ops m_can_ethtool_ops = {
+ 	.set_coalesce = m_can_set_coalesce,
+ };
+ 
+-static const struct ethtool_ops m_can_ethtool_ops_polling = {
++static const struct ethtool_ops m_can_ethtool_ops = {
+ 	.get_ts_info = ethtool_op_get_ts_info,
+ };
+ 
+-static int register_m_can_dev(struct net_device *dev)
++static int register_m_can_dev(struct m_can_classdev *cdev)
+ {
++	struct net_device *dev = cdev->net;
++
+ 	dev->flags |= IFF_ECHO;	/* we support local echo */
+ 	dev->netdev_ops = &m_can_netdev_ops;
+-	if (dev->irq)
+-		dev->ethtool_ops = &m_can_ethtool_ops;
++	if (dev->irq && cdev->is_peripheral)
++		dev->ethtool_ops = &m_can_ethtool_ops_coalescing;
+ 	else
+-		dev->ethtool_ops = &m_can_ethtool_ops_polling;
++		dev->ethtool_ops = &m_can_ethtool_ops;
+ 
+ 	return register_candev(dev);
+ }
+@@ -2349,7 +2351,7 @@ int m_can_class_register(struct m_can_classdev *cdev)
+ 	if (ret)
+ 		goto rx_offload_del;
+ 
+-	ret = register_m_can_dev(cdev->net);
++	ret = register_m_can_dev(cdev);
+ 	if (ret) {
+ 		dev_err(cdev->dev, "registering %s failed (err=%d)\n",
+ 			cdev->net->name, ret);
 -- 
 2.43.0
 
