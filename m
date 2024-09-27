@@ -1,199 +1,227 @@
-Return-Path: <stable+bounces-78134-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD4439888D9
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 18:16:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 847A69888FA
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 18:21:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 25C491F212D9
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 16:16:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 04E13B24CDF
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 16:21:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF8961714B6;
-	Fri, 27 Sep 2024 16:15:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C95BA142621;
+	Fri, 27 Sep 2024 16:21:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CM86n/2i"
+	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="U8brWSp4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay1.mymailcheap.com (relay1.mymailcheap.com [144.217.248.100])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD8B81E4AE
-	for <stable@vger.kernel.org>; Fri, 27 Sep 2024 16:15:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F9F0170854;
+	Fri, 27 Sep 2024 16:21:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=144.217.248.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727453756; cv=none; b=HIan4rCsrNYUUei0DCiZIdkpoQEjiK0SB00EWPVMPA//8f6xtdvVJevVkFxGc86fvMD3hV1dj1GtqerfJ1MMpqtTYqqmlIqLnxaboPFbLbxZyNttVnSXvnuphaNtJNkNi0yIGS0ON362SD5xg24XhacHWBbdcpTfUWBS1b5Vq/I=
+	t=1727454105; cv=none; b=GF/1ZeI0rnH/chSSoSuTlccm0Q7nYsLl0SajgsbviugsPDtTWAPXhkA4fPGNesF1ka0vg3k12YUjJRKoAMKSlVX2WyurKBX/PMmYIAR/c1IhH8MZTM/8EO69L9c7F5pWhruUg1egY8nMKXHN8LBdHk60ZkPa4difHKF479Wd4s8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727453756; c=relaxed/simple;
-	bh=LWrf4829vvOkSyoRdV+jBc8ktKiJRk8zXnM7DFOORlY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iaMqZz1lDowU0xGGw20UUBqWH4L0YWFxrwMccAKOwWm+UNMnv8y4bQ+EGCS8mBNlOOdE4ZdKA8jhi/x+w66YeUFvjQ9K8JHXIhDgRzjjO3kJBXMrld/t0Tvjh1ymxQcj6fD1XcKX+nucsVucjNzvGQr4Z1iKj5h1BOoHGUuYuo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CM86n/2i; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-378c16a4d3eso2306443f8f.1
-        for <stable@vger.kernel.org>; Fri, 27 Sep 2024 09:15:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1727453752; x=1728058552; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=UJFcC+sypFIzCwXHVb9UWjEcafVxnGH+H6m6XnmSRgU=;
-        b=CM86n/2iBlk+7lPE2kBO2RtJZdmYpr3zPC/g4kuTAGZvzPWqPP/vug0Ows9MH8yazV
-         UOFfU6b7S37+owC4gMCBs27yCo6QDNrbs71w5ahwY6FKjV1bS7kIdGzoqUgk+0ew804z
-         IPZlTIR78dcE7mtC68xiCg2SI5KkuUiZNQyUw4VKvlyP/q8jlowbFBYFMlqCo9bFVMV2
-         P6JH/nu86dYTVI7Ke2yNk3zyeiPTCRLSXv7SVLIvavlzlgvi8iQvb7O8VLyjitbDUE97
-         tfY4WGWkhRwymWd90PpdCdyMhrlm+EveNm/9EZTbTUkziODTKcSwmyMx+lcdoCUk1/kX
-         KEqA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727453752; x=1728058552;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UJFcC+sypFIzCwXHVb9UWjEcafVxnGH+H6m6XnmSRgU=;
-        b=un+FgFlF8/AlFze7MuVeN6oF0pvin9GbAId6+mz1Jx1nF6jnE7BMcH420HfT9CmSab
-         llTjCMG0vruUWu88ww1m2o/Sv5O/Yh0aKPGDOIn96dCe49UgJtsD8VWiXESxb1yt6m5r
-         6/DxhJW9DaTtIg7v5jYeVU2Ma6deO/qumGpJjgSXnCScJVpM44Zw5cNZuVyQ+G5q5D0U
-         5cBNST7ucJ7i5AFAnDgxcx76XL/KgTogXJT33hNvUChEJuvHsS4BUv19amSesqLFJlfR
-         wdLHMK5U8xxhbMpzKk6vNcliXSrzOodAk5BdQXw3z28TAxvDMr70msO//ZSh8xvnDbNe
-         NWRw==
-X-Forwarded-Encrypted: i=1; AJvYcCVlXHvm0eICWzCUegMiq2WUWUHG+YclJEDXH5rMEbnuk6UYMIMN0SuRvPwnEnm5JaUVyb8Z2OY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwyGOhmq/o3obbmc5GKMuFCjn4SxjZ0JNmdDcviijXJ3mdmDj7Z
-	UzzBuPq8Lo2QAgFU6pNI9SmMva//qAtnUppMekzuXLcMWENKB5kK1cQEP+9pmzN+AIg5N6WnnRo
-	O3+L9Irh1+YSn/5rC/46tmzviQ16EYP/yZJnH
-X-Google-Smtp-Source: AGHT+IEuEn6OejQZYQUK3EEJ9NfLijLJ9S4pYRkVna/dSItUziAucRaHoS3awJeiSTgJVbzWrqJaGWCbNMt8ofA1UbQ=
-X-Received: by 2002:a05:6000:4f0:b0:374:c1c5:43ca with SMTP id
- ffacd0b85a97d-37cd5aa6972mr3101004f8f.32.1727453751872; Fri, 27 Sep 2024
- 09:15:51 -0700 (PDT)
+	s=arc-20240116; t=1727454105; c=relaxed/simple;
+	bh=AxPMeG2FdOLZJZ+q46E4+IvQWObSATSIrFU0BmjPRSk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=tu0PgHSH76SOBOPEMRK4GQcxvCTcJMjCTZRdN69jyND7Jiulp5cys6HSZPgskkmR1YeA2JSPXaLboC/GC2DJKqKhS8dBSuioVGvVd7vnRq3L/hjutZ2T4PNxe5kKfO98lLguH5ohtOOzvGj/thFAsiRU+vLdFjCdkj8FgqGjFrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=U8brWSp4; arc=none smtp.client-ip=144.217.248.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
+Received: from nf1.mymailcheap.com (nf1.mymailcheap.com [51.75.14.91])
+	by relay1.mymailcheap.com (Postfix) with ESMTPS id 447CA3E9E8;
+	Fri, 27 Sep 2024 16:21:42 +0000 (UTC)
+Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
+	by nf1.mymailcheap.com (Postfix) with ESMTPSA id 299894075D;
+	Fri, 27 Sep 2024 16:21:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
+	t=1727454100; bh=AxPMeG2FdOLZJZ+q46E4+IvQWObSATSIrFU0BmjPRSk=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=U8brWSp4oWZ3+9xwnIoBM/tYm1gyahmvgDH33kHnAc1BOEChhkO9YWsyr2KKiHZOH
+	 ZK35u2QHUlfymMT422oV/r4i4Ax9iW1xXsJMZJeCayacZI+A+ibgMwOhLYj5q3C2S5
+	 qqul+Zc5A/pZzQR3eCbRFEgQe/MOU4GHSHFks3O8=
+Received: from [198.18.0.1] (unknown [58.32.43.121])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail20.mymailcheap.com (Postfix) with ESMTPSA id DCB0041431;
+	Fri, 27 Sep 2024 16:21:36 +0000 (UTC)
+Message-ID: <3ac98e7e-3524-45c4-90e3-ee730a5143ee@aosc.io>
+Date: Sat, 28 Sep 2024 00:21:32 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240926233632.821189-1-cmllamas@google.com> <20240926233632.821189-7-cmllamas@google.com>
- <CAH5fLggS7C4QdmDFqEy5KARUj+4oNWfstyno3d43joG5haysDw@mail.gmail.com> <CAN5Drs3TCGT1rWJjujo3FP3HxnSFUFo5hcWh=4+xhOYzDg4JqQ@mail.gmail.com>
-In-Reply-To: <CAN5Drs3TCGT1rWJjujo3FP3HxnSFUFo5hcWh=4+xhOYzDg4JqQ@mail.gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 27 Sep 2024 18:15:40 +0200
-Message-ID: <CAH5fLgjnyKtXsnPbvCFz64BBRqvWPwh6reM-myWA9AEBKFhcJg@mail.gmail.com>
-Subject: Re: [PATCH v2 6/8] binder: allow freeze notification for dead nodes
-To: Yu-Ting Tseng <yutingtseng@google.com>
-Cc: Carlos Llamas <cmllamas@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	=?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Christian Brauner <brauner@kernel.org>, 
-	Suren Baghdasaryan <surenb@google.com>, linux-kernel@vger.kernel.org, kernel-team@android.com, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Thunderbird Daily
+Subject: Re: [PATCH V2 3/3] SH: cpuinfo: Fix a warning for
+ CONFIG_CPUMASK_OFFSTACK
+To: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+ Huacai Chen <chenhuacai@gmail.com>
+Cc: Huacai Chen <chenhuacai@loongson.cn>, Arnd Bergmann <arnd@arndb.de>,
+ Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+ Yoshinori Sato <ysato@users.sourceforge.jp>, Rich Felker <dalias@libc.org>,
+ loongarch@lists.linux.dev, linux-arch@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Guo Ren <guoren@kernel.org>,
+ Xuerui Wang <kernel@xen0n.name>, Jiaxun Yang <jiaxun.yang@flygoat.com>,
+ linux-mips@vger.kernel.org, linux-sh@vger.kernel.org, stable@vger.kernel.org
+References: <20220714084136.570176-1-chenhuacai@loongson.cn>
+ <20220714084136.570176-3-chenhuacai@loongson.cn>
+ <3a5a4bee5c0739a3b988a328376a6eed3c385fda.camel@physik.fu-berlin.de>
+ <CAAhV-H5bw3xcym2-GpyntQEad1h2eB8xDQGwVr_bRRKAOakzoQ@mail.gmail.com>
+ <8947f91ba1a10f98723a5982f0fc13ee589d3bf7.camel@physik.fu-berlin.de>
+ <a45f1209-ff29-4010-b035-921cb136d58d@aosc.io>
+ <fbc1dde6650a3e729fab57decbb5bf4ef14436ce.camel@physik.fu-berlin.de>
+Content-Language: en-US
+From: Kexy Biscuit <kexybiscuit@aosc.io>
+In-Reply-To: <fbc1dde6650a3e729fab57decbb5bf4ef14436ce.camel@physik.fu-berlin.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Rspamd-Server: nf1.mymailcheap.com
+X-Rspamd-Queue-Id: 299894075D
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-2.09 / 10.00];
+	BAYES_HAM(-2.00)[95.08%];
+	MIME_GOOD(-0.10)[text/plain];
+	XM_UA_NO_VERSION(0.01)[];
+	ARC_NA(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_COUNT_ONE(0.00)[1];
+	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
+	MIME_TRACE(0.00)[0:+];
+	FREEMAIL_TO(0.00)[physik.fu-berlin.de,gmail.com];
+	MID_RHS_MATCH_FROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[16];
+	FROM_EQ_ENVFROM(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	TO_DN_SOME(0.00)[]
 
-On Fri, Sep 27, 2024 at 6:13=E2=80=AFPM Yu-Ting Tseng <yutingtseng@google.c=
-om> wrote:
->
-> On Fri, Sep 27, 2024 at 12:19=E2=80=AFAM Alice Ryhl <aliceryhl@google.com=
-> wrote:
-> >
-> > On Fri, Sep 27, 2024 at 1:37=E2=80=AFAM Carlos Llamas <cmllamas@google.=
-com> wrote:
-> > >
-> > > Alice points out that binder_request_freeze_notification() should not
-> > > return EINVAL when the relevant node is dead [1]. The node can die at
-> > > any point even if the user input is valid. Instead, allow the request
-> > > to be allocated but skip the initial notification for dead nodes. Thi=
-s
-> > > avoids propagating unnecessary errors back to userspace.
-> > >
-> > > Fixes: d579b04a52a1 ("binder: frozen notification")
-> > > Cc: stable@vger.kernel.org
-> > > Suggested-by: Alice Ryhl <aliceryhl@google.com>
-> > > Link: https://lore.kernel.org/all/CAH5fLghapZJ4PbbkC8V5A6Zay-_sgTzwVp=
-wqk6RWWUNKKyJC_Q@mail.gmail.com/ [1]
-> > > Signed-off-by: Carlos Llamas <cmllamas@google.com>
-> > > ---
-> > >  drivers/android/binder.c | 28 +++++++++++++---------------
-> > >  1 file changed, 13 insertions(+), 15 deletions(-)
-> > >
-> > > diff --git a/drivers/android/binder.c b/drivers/android/binder.c
-> > > index 73dc6cbc1681..415fc9759249 100644
-> > > --- a/drivers/android/binder.c
-> > > +++ b/drivers/android/binder.c
-> > > @@ -3856,7 +3856,6 @@ binder_request_freeze_notification(struct binde=
-r_proc *proc,
-> > >  {
-> > >         struct binder_ref_freeze *freeze;
-> > >         struct binder_ref *ref;
-> > > -       bool is_frozen;
-> > >
-> > >         freeze =3D kzalloc(sizeof(*freeze), GFP_KERNEL);
-> > >         if (!freeze)
-> > > @@ -3872,32 +3871,31 @@ binder_request_freeze_notification(struct bin=
-der_proc *proc,
-> > >         }
-> > >
-> > >         binder_node_lock(ref->node);
-> > > -
-> > > -       if (ref->freeze || !ref->node->proc) {
-> > > -               binder_user_error("%d:%d invalid BC_REQUEST_FREEZE_NO=
-TIFICATION %s\n",
-> > > -                                 proc->pid, thread->pid,
-> > > -                                 ref->freeze ? "already set" : "dead=
- node");
-> > > +       if (ref->freeze) {
-> > > +               binder_user_error("%d:%d BC_REQUEST_FREEZE_NOTIFICATI=
-ON already set\n",
-> > > +                                 proc->pid, thread->pid);
-> > >                 binder_node_unlock(ref->node);
-> > >                 binder_proc_unlock(proc);
-> > >                 kfree(freeze);
-> > >                 return -EINVAL;
-> > >         }
-> > > -       binder_inner_proc_lock(ref->node->proc);
-> > > -       is_frozen =3D ref->node->proc->is_frozen;
-> > > -       binder_inner_proc_unlock(ref->node->proc);
-> > >
-> > >         binder_stats_created(BINDER_STAT_FREEZE);
-> > >         INIT_LIST_HEAD(&freeze->work.entry);
-> > >         freeze->cookie =3D handle_cookie->cookie;
-> > >         freeze->work.type =3D BINDER_WORK_FROZEN_BINDER;
-> > > -       freeze->is_frozen =3D is_frozen;
-> > > -
-> > >         ref->freeze =3D freeze;
-> > >
-> > > -       binder_inner_proc_lock(proc);
-> > > -       binder_enqueue_work_ilocked(&ref->freeze->work, &proc->todo);
-> > > -       binder_wakeup_proc_ilocked(proc);
-> > > -       binder_inner_proc_unlock(proc);
-> > > +       if (ref->node->proc) {
-> > > +               binder_inner_proc_lock(ref->node->proc);
-> > > +               freeze->is_frozen =3D ref->node->proc->is_frozen;
-> > > +               binder_inner_proc_unlock(ref->node->proc);
-> > > +
-> > > +               binder_inner_proc_lock(proc);
-> > > +               binder_enqueue_work_ilocked(&freeze->work, &proc->tod=
-o);
-> > > +               binder_wakeup_proc_ilocked(proc);
-> > > +               binder_inner_proc_unlock(proc);
-> >
-> > This is not a problem with your change ... but, why exactly are we
-> > scheduling the BINDER_WORK_FROZEN_BINDER right after creating it? For
-> > death notications, we only schedule it immediately if the process is
-> > dead. So shouldn't we only schedule it if the process is not frozen?
-> >
-> > And if the answer is that frozen notifications are always sent
-> > immediately to notify about the current state, then we should also
-> > send one for a dead process ... maybe. I guess a dead process is not
-> > frozen?
-> Yes this is to immediately notify about the current state (frozen or
-> unfrozen). A dead process is in neither state so it feels more correct
-> not to send either?
+Hi Adrian
 
-Okay.
+On 9/27/2024 5:06 PM, John Paul Adrian Glaubitz wrote:
+> Hi,
+> 
+> On Fri, 2024-09-27 at 13:31 +0800, Kexy Biscuit wrote:
+>> On 3/19/2024 1:12 AM, John Paul Adrian Glaubitz wrote:
+>>> Hi Hucai,
+>>>
+>>> On Mon, 2024-03-18 at 22:21 +0800, Huacai Chen wrote:
+>>>> Hi, SuperH maintainers,
+>>>>
+>>>> On Wed, Feb 8, 2023 at 8:59 PM John Paul Adrian Glaubitz
+>>>> <glaubitz@physik.fu-berlin.de> wrote:
+>>>>>
+>>>>> On Thu, 2022-07-14 at 16:41 +0800, Huacai Chen wrote:
+>>>>>> When CONFIG_CPUMASK_OFFSTACK and CONFIG_DEBUG_PER_CPU_MAPS is selected,
+>>>>>> cpu_max_bits_warn() generates a runtime warning similar as below while
+>>>>>> we show /proc/cpuinfo. Fix this by using nr_cpu_ids (the runtime limit)
+>>>>>> instead of NR_CPUS to iterate CPUs.
+>>>>>>
+>>>>>> [    3.052463] ------------[ cut here ]------------
+>>>>>> [    3.059679] WARNING: CPU: 3 PID: 1 at include/linux/cpumask.h:108 show_cpuinfo+0x5e8/0x5f0
+>>>>>> [    3.070072] Modules linked in: efivarfs autofs4
+>>>>>> [    3.076257] CPU: 0 PID: 1 Comm: systemd Not tainted 5.19-rc5+ #1052
+>>>>>> [    3.099465] Stack : 9000000100157b08 9000000000f18530 9000000000cf846c 9000000100154000
+>>>>>> [    3.109127]         9000000100157a50 0000000000000000 9000000100157a58 9000000000ef7430
+>>>>>> [    3.118774]         90000001001578e8 0000000000000040 0000000000000020 ffffffffffffffff
+>>>>>> [    3.128412]         0000000000aaaaaa 1ab25f00eec96a37 900000010021de80 900000000101c890
+>>>>>> [    3.138056]         0000000000000000 0000000000000000 0000000000000000 0000000000aaaaaa
+>>>>>> [    3.147711]         ffff8000339dc220 0000000000000001 0000000006ab4000 0000000000000000
+>>>>>> [    3.157364]         900000000101c998 0000000000000004 9000000000ef7430 0000000000000000
+>>>>>> [    3.167012]         0000000000000009 000000000000006c 0000000000000000 0000000000000000
+>>>>>> [    3.176641]         9000000000d3de08 9000000001639390 90000000002086d8 00007ffff0080286
+>>>>>> [    3.186260]         00000000000000b0 0000000000000004 0000000000000000 0000000000071c1c
+>>>>>> [    3.195868]         ...
+>>>>>> [    3.199917] Call Trace:
+>>>>>> [    3.203941] [<90000000002086d8>] show_stack+0x38/0x14c
+>>>>>> [    3.210666] [<9000000000cf846c>] dump_stack_lvl+0x60/0x88
+>>>>>> [    3.217625] [<900000000023d268>] __warn+0xd0/0x100
+>>>>>> [    3.223958] [<9000000000cf3c90>] warn_slowpath_fmt+0x7c/0xcc
+>>>>>> [    3.231150] [<9000000000210220>] show_cpuinfo+0x5e8/0x5f0
+>>>>>> [    3.238080] [<90000000004f578c>] seq_read_iter+0x354/0x4b4
+>>>>>> [    3.245098] [<90000000004c2e90>] new_sync_read+0x17c/0x1c4
+>>>>>> [    3.252114] [<90000000004c5174>] vfs_read+0x138/0x1d0
+>>>>>> [    3.258694] [<90000000004c55f8>] ksys_read+0x70/0x100
+>>>>>> [    3.265265] [<9000000000cfde9c>] do_syscall+0x7c/0x94
+>>>>>> [    3.271820] [<9000000000202fe4>] handle_syscall+0xc4/0x160
+>>>>>> [    3.281824] ---[ end trace 8b484262b4b8c24c ]---
+>>>>>>
+>>>>>> Cc: stable@vger.kernel.org
+>>>>>> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+>>>>>> ---
+>>>>>>    arch/sh/kernel/cpu/proc.c | 2 +-
+>>>>>>    1 file changed, 1 insertion(+), 1 deletion(-)
+>>>>>>
+>>>>>> diff --git a/arch/sh/kernel/cpu/proc.c b/arch/sh/kernel/cpu/proc.c
+>>>>>> index a306bcd6b341..5f6d0e827bae 100644
+>>>>>> --- a/arch/sh/kernel/cpu/proc.c
+>>>>>> +++ b/arch/sh/kernel/cpu/proc.c
+>>>>>> @@ -132,7 +132,7 @@ static int show_cpuinfo(struct seq_file *m, void *v)
+>>>>>>
+>>>>>>    static void *c_start(struct seq_file *m, loff_t *pos)
+>>>>>>    {
+>>>>>> -     return *pos < NR_CPUS ? cpu_data + *pos : NULL;
+>>>>>> +     return *pos < nr_cpu_ids ? cpu_data + *pos : NULL;
+>>>>>>    }
+>>>>>>    static void *c_next(struct seq_file *m, void *v, loff_t *pos)
+>>>>>>    {
+>>>>>
+>>>>> I build-tested the patch and also booted the patched kernel successfully
+>>>>> on my SH-7785LCR board.
+>>>>>
+>>>>> Showing the contents of /proc/cpuinfo works fine, too:
+>>>>>
+>>>>> root@tirpitz:~> cat /proc/cpuinfo
+>>>>> machine         : SH7785LCR
+>>>>> processor       : 0
+>>>>> cpu family      : sh4a
+>>>>> cpu type        : SH7785
+>>>>> cut             : 7.x
+>>>>> cpu flags       : fpu perfctr llsc
+>>>>> cache type      : split (harvard)
+>>>>> icache size     : 32KiB (4-way)
+>>>>> dcache size     : 32KiB (4-way)
+>>>>> address sizes   : 32 bits physical
+>>>>> bogomips        : 599.99
+>>>>> root@tirpitz:~>
+>>>>>
+>>>>> Tested-by: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+>>>>>
+>>>>> I am not sure yet whether the change is also correct as I don't know whether
+>>>>> it's possible to change the number of CPUs at runtime on SuperH.
+>>>> Can this patch be merged? This is the only one still unmerged in the
+>>>> whole series.
+>>>
+>>> Thanks for the reminder. I will pick it up for 6.10.
+>>>
+>>> Got sick this week, so I can't pick up anymore patches for 6.9 and will just
+>>> send Linus a PR later this week.
+>>>
+>>> Adrian
+>>>
+>>
+>> Gentle ping on this, can we get this patch merged into 6.12?
+> 
+> Thanks a lot for the reminder. Since the merge window is about to close, I'll
+> pick this up for 6.13 as it hasn't been reviewed yet from what I can see.
+> 
+> I will definitely pick it up for 6.13 and I'm sorry for the very long delay.
+> 
+> However, when this patch got posted back then, I wasn't a kernel maintainer yet.
+> 
+> Adrian
+> 
 
-On the other hand, I can easily imagine userspace code being written
-with the assumption that it'll always get a notification immediately.
-That would probably result in deadlocks in the edge case where the
-process happens to be dead.
+Thank you so much for taking care of this patch, congrats on your new role!
 
-Alice
+-- 
+Best Regards,
+Kexy Biscuit
 
