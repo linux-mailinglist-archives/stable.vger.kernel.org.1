@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-78000-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77936-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B8D2988491
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:29:17 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCB4898844E
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:26:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C200C1F22B5C
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:29:06 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7FD6F2814D6
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:26:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 64D6318BB91;
-	Fri, 27 Sep 2024 12:29:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 845B818BC3B;
+	Fri, 27 Sep 2024 12:26:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w5Mi9Ipw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xgtI/Ou2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2557517B515;
-	Fri, 27 Sep 2024 12:29:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43D0718BB91;
+	Fri, 27 Sep 2024 12:26:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440145; cv=none; b=hKETVjZFzPwzpYMMYSVJFCuPibHfegYvY5AUVqQVjwMrv9menV3r/YmN7U5XVGujhvuRFzyc3u0iEKQuhXgCopKAh9upjFs0bGNAe9fkbKuPMipzXvtD+w5WHqUPYR0kONV1AueA3hTgE3OyISa9EWfo9LApxCgiuCDtLAR+ako=
+	t=1727439967; cv=none; b=NTWwUf7jBrLsMnssbaK9cK0dvjQCeFgU9C7ByDmqI/DAjLLzytPEMDNgazLWL9B6LGGuwXO/QgjujFwqzaZ9/B1MpIwxwHKvOd1cNpNm4rMBP0Qr37Vd+BgTe7Fz/hZ1MXGATZq4oJBM1l7CV/IrLqKkVY7br7qX8DuaQ49z/co=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440145; c=relaxed/simple;
-	bh=b4q7oW1S515MvJ0RU0zZ5ZV65ZrwDc4ylC/5WjjfVX4=;
+	s=arc-20240116; t=1727439967; c=relaxed/simple;
+	bh=6FOp+NVYoyMOE7v+SMhrrXXSpsCQaLP4s6etK7BJJUI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dsI08y1edN8wQbIFUbo0xpp++32t9IqSPZQhSQnQHm+EXLnKaog8o0oUZl6t5pC/RDc0wVdkon+tPEQrdSjuDF6VyRvCCH2LF3yJR70zNdA40R6UVhEbqYYrMeiTx9sWwgNMBHDYpvQ4wh/4ZreJKYjv7za/54konmQ9HvjognU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w5Mi9Ipw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4EAFC4CEC4;
-	Fri, 27 Sep 2024 12:29:04 +0000 (UTC)
+	 MIME-Version; b=W8f89rKC3bH28HhjsQUKa7dFS210QBMGikMNGIsj5NUQG9IFrbK+8XmIJyGwXGbfCHX7TS7Fp9buXvrEwsA4xXpvuLUlOVn56FNaWe3huV6iPm8FwWlQ53vp3IVoGkiH4DSLRJGnou2SwteAWZ9pWjbeRE4iGKAGkjnJ+/0WWcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xgtI/Ou2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C355BC4CEC4;
+	Fri, 27 Sep 2024 12:26:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440145;
-	bh=b4q7oW1S515MvJ0RU0zZ5ZV65ZrwDc4ylC/5WjjfVX4=;
+	s=korg; t=1727439967;
+	bh=6FOp+NVYoyMOE7v+SMhrrXXSpsCQaLP4s6etK7BJJUI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w5Mi9IpwaSYcePEBVuGl2vfUB+xho/ohoPvjX2y8Ns8XZOCP3YXB7C15yBWW+kR7p
-	 OkYyNfeZAc6dSR23rKuNIO5/HRvel4zFA93Wp01GsZL+ODHNvXtvI5qNImL5no5EkZ
-	 qMPlbXQR/DIgSVq3JpAUOJsocCVrAtIWkRsrYhKI=
+	b=xgtI/Ou2KenOf8yMcTP7k3zWQlSKHw5ncE5R3hCiJV0+6m3rac/bxWND9Q4eIsEty
+	 Sf70oySoaqIkbTxOEvw5Br9z1FZiTm6RFmu+FdLoRw+IhLJ12hJkl/TK21dD9pRR3C
+	 UVkMg7MShUyP8XLVobgR7m7wVt1A6Pv+GTdhwVVA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Rickard Andersson <rickaran@axis.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 22/58] wifi: iwlwifi: clear trans->state earlier upon error
+Subject: [PATCH 6.6 32/54] smb: client: fix hang in wait_for_response() for negproto
 Date: Fri, 27 Sep 2024 14:23:24 +0200
-Message-ID: <20240927121719.697179905@linuxfoundation.org>
+Message-ID: <20240927121721.042698469@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121718.789211866@linuxfoundation.org>
-References: <20240927121718.789211866@linuxfoundation.org>
+In-Reply-To: <20240927121719.714627278@linuxfoundation.org>
+References: <20240927121719.714627278@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +63,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Paulo Alcantara <pc@manguebit.com>
 
-[ Upstream commit 094513f8a2fbddee51b055d8035f995551f98fce ]
+[ Upstream commit 7ccc1465465d78e6411b7bd730d06e7435802b5c ]
 
-When the firmware crashes, we first told the op_mode and only then,
-changed the transport's state. This is a problem if the op_mode's
-nic_error() handler needs to send a host command: it'll see that the
-transport's state still reflects that the firmware is alive.
+Call cifs_reconnect() to wake up processes waiting on negotiate
+protocol to handle the case where server abruptly shut down and had no
+chance to properly close the socket.
 
-Today, this has no consequences since we set the STATUS_FW_ERROR bit and
-that will prevent sending host commands. iwl_fw_dbg_stop_restart_recording
-looks at this bit to know not to send a host command for example.
+Simple reproducer:
 
-To fix the hibernation, we needed to reset the firmware without having
-an error and checking STATUS_FW_ERROR to see whether the firmware is
-alive will no longer hold, so this change is necessary as well.
+  ssh 192.168.2.100 pkill -STOP smbd
+  mount.cifs //192.168.2.100/test /mnt -o ... [never returns]
 
-Change the flow a bit.
-Change trans->state before calling the op_mode's nic_error() method and
-check trans->state instead of STATUS_FW_ERROR. This will keep the
-current behavior of iwl_fw_dbg_stop_restart_recording upon firmware
-error, and it'll allow us to call iwl_fw_dbg_stop_restart_recording
-safely even if STATUS_FW_ERROR is clear, but yet, the firmware is not
-alive.
-
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20240825191257.9d7427fbdfd7.Ia056ca57029a382c921d6f7b6a6b28fc480f2f22@changeid
-[I missed this was a dependency for the hibernation fix, changed
- the commit message a bit accordingly]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Cc: Rickard Andersson <rickaran@axis.com>
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/fw/dbg.c    | 2 +-
- drivers/net/wireless/intel/iwlwifi/iwl-trans.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ fs/smb/client/connect.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-index 945ffc083d25c..79fffa82cfd92 100644
---- a/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-+++ b/drivers/net/wireless/intel/iwlwifi/fw/dbg.c
-@@ -3352,7 +3352,7 @@ void iwl_fw_dbg_stop_restart_recording(struct iwl_fw_runtime *fwrt,
+diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
+index d2307162a2de1..e325e06357ffb 100644
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -656,6 +656,19 @@ allocate_buffers(struct TCP_Server_Info *server)
+ static bool
+ server_unresponsive(struct TCP_Server_Info *server)
  {
- 	int ret __maybe_unused = 0;
- 
--	if (test_bit(STATUS_FW_ERROR, &fwrt->trans->status))
-+	if (!iwl_trans_fw_running(fwrt->trans))
- 		return;
- 
- 	if (fw_has_capa(&fwrt->fw->ucode_capa,
-diff --git a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-index b93cef7b23301..4c56dccb18a9b 100644
---- a/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-+++ b/drivers/net/wireless/intel/iwlwifi/iwl-trans.h
-@@ -1579,8 +1579,8 @@ static inline void iwl_trans_fw_error(struct iwl_trans *trans, bool sync)
- 
- 	/* prevent double restarts due to the same erroneous FW */
- 	if (!test_and_set_bit(STATUS_FW_ERROR, &trans->status)) {
--		iwl_op_mode_nic_error(trans->op_mode, sync);
- 		trans->state = IWL_TRANS_NO_FW;
-+		iwl_op_mode_nic_error(trans->op_mode, sync);
- 	}
- }
- 
++	/*
++	 * If we're in the process of mounting a share or reconnecting a session
++	 * and the server abruptly shut down (e.g. socket wasn't closed, packet
++	 * had been ACK'ed but no SMB response), don't wait longer than 20s to
++	 * negotiate protocol.
++	 */
++	spin_lock(&server->srv_lock);
++	if (server->tcpStatus == CifsInNegotiate &&
++	    time_after(jiffies, server->lstrp + 20 * HZ)) {
++		spin_unlock(&server->srv_lock);
++		cifs_reconnect(server, false);
++		return true;
++	}
+ 	/*
+ 	 * We need to wait 3 echo intervals to make sure we handle such
+ 	 * situations right:
+@@ -667,7 +680,6 @@ server_unresponsive(struct TCP_Server_Info *server)
+ 	 * 65s kernel_recvmsg times out, and we see that we haven't gotten
+ 	 *     a response in >60s.
+ 	 */
+-	spin_lock(&server->srv_lock);
+ 	if ((server->tcpStatus == CifsGood ||
+ 	    server->tcpStatus == CifsNeedNegotiate) &&
+ 	    (!server->ops->can_echo || server->ops->can_echo(server)) &&
 -- 
 2.43.0
 
