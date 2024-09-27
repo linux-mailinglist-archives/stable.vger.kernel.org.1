@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-77995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77950-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94F5798848E
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:28:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C116998845F
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:27:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1A20BB22874
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:28:53 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDEE21C23180
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:27:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 720F918BC1D;
-	Fri, 27 Sep 2024 12:28:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5634D18BC26;
+	Fri, 27 Sep 2024 12:26:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JqdwuUPY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="okA63Mf+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FAED17B515;
-	Fri, 27 Sep 2024 12:28:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1366718BC33;
+	Fri, 27 Sep 2024 12:26:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440131; cv=none; b=b3xAtZthvnd7I/1VMot5jEqIO2ICQiwH7+XPsMFYPTjZqeuj+U4xIEu3TOzqRwowlbEQvxYjQ41tpyl1cMlaq5usoWcOD4rv1XtHgaa7C6A6DuXJtEqmr7Ewpe1bq2iwC1DJs3bT80Mzk7j9BNWzZA85DC8JD6zJoj98sLYSu/w=
+	t=1727440006; cv=none; b=cfvYqu0nv7mph8F3GGTH8DvzYDKk1sMw1xoBTwubeiGqmClVHW3LNkZFt7iMWp5PY3mW3tul2y4AywIqRvJ5YLsNXQNYrBFIZ4yd3ElaHiBuQACDUI2XVzChkgLFNErW4cdBlj2dcDaa2BA3A9gSfgOu0vLrD7achvA7YXbCeHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440131; c=relaxed/simple;
-	bh=cr6/K5W3yTFs07cfLNXiql7lb4G6sheLYZ6Q3R4YPFU=;
+	s=arc-20240116; t=1727440006; c=relaxed/simple;
+	bh=YTw9Q8oI28GVkBaWJrqEPrc/D79QRjdVp0shAvuRXfs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AEzR9PAvfrQhspegra3GHQ5uiVGg2ImOg6hvaECTXvDYIRCVWoJ944ixOo/tq8q5IbA+jgAg9RpvfJ16shneAMN9GnGfKPBs2qGXT3IDPsSdBx0NsQ8ouanqBdUJi6YcLm9QAzwlS1xxPkMVsQdzGmDudXpzBaLJJq0Bc+2rfDI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JqdwuUPY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2037C4CEC4;
-	Fri, 27 Sep 2024 12:28:50 +0000 (UTC)
+	 MIME-Version; b=JmXLo6H6Yj6919VrGapcd6yD8imseCrew1Ql0eT4thFrJUeVO15nO+ytMe1jyPV/xnvKX2erb7BkhGScFs7KDxeabNnXFGp6w0yG0mX/wS1ZR8cRjr5gNakwCQEzQC8TwQuZvXZOjZagRUyvDzJ3h/6fyp8MPI6Jvs5+E32f0xg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=okA63Mf+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93DABC4CEC4;
+	Fri, 27 Sep 2024 12:26:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440131;
-	bh=cr6/K5W3yTFs07cfLNXiql7lb4G6sheLYZ6Q3R4YPFU=;
+	s=korg; t=1727440006;
+	bh=YTw9Q8oI28GVkBaWJrqEPrc/D79QRjdVp0shAvuRXfs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JqdwuUPYNK6L4+tvsXux8zvvH8lG9lvx+1j6ArWIiKAf9X9KLxpsI8A/ppeWkSxNn
-	 aCmVStvLlnKag/HkPJlluK4hpiYMDzwbNYLFq0Nl74oRX9YGpMKk2RJBO++RGou5Ke
-	 MevINptMO6jP7gokpS2ZU+bpcaQxzjFVsAohsn1I=
+	b=okA63Mf+TkGYW0juthqmUT54Vo9aIYMYaVqeQ8XSRgEQBRCbLtGpDlBjTQsXw37Rt
+	 ea21ZsWPFbDRSNnCsB6YM8KqhB9sgHXLwMTqWeC7O6CqyciKyS4JNx7PXl68sAVoWj
+	 yHyWLljFDPctWxKj6GVTg9z17icWSwxLHTSasnT8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 43/58] spi: spidev: Add missing spi_device_id for jg10309-01
+	Junhao Xie <bigfoot@classfun.cn>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.6 53/54] USB: serial: pl2303: add device id for Macrosilicon MS3020
 Date: Fri, 27 Sep 2024 14:23:45 +0200
-Message-ID: <20240927121720.525891249@linuxfoundation.org>
+Message-ID: <20240927121721.939595689@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121718.789211866@linuxfoundation.org>
-References: <20240927121718.789211866@linuxfoundation.org>
+In-Reply-To: <20240927121719.714627278@linuxfoundation.org>
+References: <20240927121719.714627278@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Junhao Xie <bigfoot@classfun.cn>
 
-[ Upstream commit 5478a4f7b94414def7b56d2f18bc2ed9b0f3f1f2 ]
+commit 7d47d22444bb7dc1b6d768904a22070ef35e1fc0 upstream.
 
-When the of_device_id entry for "elgin,jg10309-01" was added, the
-corresponding spi_device_id was forgotten, causing a warning message
-during boot-up:
+Add the device id for the Macrosilicon MS3020 which is a
+PL2303HXN based device.
 
-    SPI driver spidev has no spi_device_id for elgin,jg10309-01
-
-Fix module autoloading and shut up the warning by adding the missing
-entry.
-
-Fixes: 5f3eee1eef5d0edd ("spi: spidev: Add an entry for elgin,jg10309-01")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/54bbb9d8a8db7e52d13e266f2d4a9bcd8b42a98a.1725366625.git.geert+renesas@glider.be
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Junhao Xie <bigfoot@classfun.cn>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spidev.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/serial/pl2303.c |    1 +
+ drivers/usb/serial/pl2303.h |    4 ++++
+ 2 files changed, 5 insertions(+)
 
-diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index 14bf0fa65befe..face93a9cf203 100644
---- a/drivers/spi/spidev.c
-+++ b/drivers/spi/spidev.c
-@@ -702,6 +702,7 @@ static const struct class spidev_class = {
- static const struct spi_device_id spidev_spi_ids[] = {
- 	{ .name = "bh2228fv" },
- 	{ .name = "dh2228fv" },
-+	{ .name = "jg10309-01" },
- 	{ .name = "ltc2488" },
- 	{ .name = "sx1301" },
- 	{ .name = "bk4" },
--- 
-2.43.0
-
+--- a/drivers/usb/serial/pl2303.c
++++ b/drivers/usb/serial/pl2303.c
+@@ -118,6 +118,7 @@ static const struct usb_device_id id_tab
+ 	{ USB_DEVICE(SMART_VENDOR_ID, SMART_PRODUCT_ID) },
+ 	{ USB_DEVICE(AT_VENDOR_ID, AT_VTKIT3_PRODUCT_ID) },
+ 	{ USB_DEVICE(IBM_VENDOR_ID, IBM_PRODUCT_ID) },
++	{ USB_DEVICE(MACROSILICON_VENDOR_ID, MACROSILICON_MS3020_PRODUCT_ID) },
+ 	{ }					/* Terminating entry */
+ };
+ 
+--- a/drivers/usb/serial/pl2303.h
++++ b/drivers/usb/serial/pl2303.h
+@@ -171,3 +171,7 @@
+ /* Allied Telesis VT-Kit3 */
+ #define AT_VENDOR_ID		0x0caa
+ #define AT_VTKIT3_PRODUCT_ID	0x3001
++
++/* Macrosilicon MS3020 */
++#define MACROSILICON_VENDOR_ID		0x345f
++#define MACROSILICON_MS3020_PRODUCT_ID	0x3020
 
 
 
