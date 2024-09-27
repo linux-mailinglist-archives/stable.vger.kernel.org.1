@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-78061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77927-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1701F9884E6
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:32:35 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66C6B98843C
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:25:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6349281B68
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:32:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F0A6EB212AE
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:25:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2281C187331;
-	Fri, 27 Sep 2024 12:31:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83ADA18BC1F;
+	Fri, 27 Sep 2024 12:25:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="leWNWVrz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dVL6ZNwb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5F7C1802AB;
-	Fri, 27 Sep 2024 12:31:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41D1A18A92A;
+	Fri, 27 Sep 2024 12:25:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440314; cv=none; b=R3QFJvrzykAhxDrX2jas2NXD9i/TrkCYuMN1PJFXLVD984XMRmJqQFA81T+1zukl/cQ0oAIA7BqY+rEm5a2WTCokxhj2ILwAh9In5mML6UsFmJwf3czzsO7IsViWA3UN4ySiJDhchOy2uebql369hlXVdnUux59mkgI+5GMwBa8=
+	t=1727439942; cv=none; b=QstRbW550Bs9NWPthBWk/duKT5zY7sxUH22kV/ok3OeVqEiA+sp/UbTXRJs3qETJUk8yQm8zWIAACIzD25IYED9DrGFbBIQ9p2JDoEWidb/3GbH4MQEXg0X4sHcJDSDdHmcBDejvD/Z0V0zjd8C9D97MH4luCZHqqMyVjDkJKkE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440314; c=relaxed/simple;
-	bh=thLzb6kuaS2+OuHhD2FEn0w7HPKTQobgcLQy1uiQ6Ac=;
+	s=arc-20240116; t=1727439942; c=relaxed/simple;
+	bh=6deYkbgcL4MfLyhWoohG15pGnqW3YY18/2dkizDpVoY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ADMQctLtvl8caFNDhpUQQnqpAGjS6fJSLpt39cQDbng1/maQCuPGXXI342fo2WemUPXriut/MwB9WQfrL7YvzI544ZQakNY9l2kTS/+BK28WZnOa2S4QSE6r1Ezw0UFaRHwkZF0zOTyi7+8Kq2+MHhT+G6r9pkbZapWe40r3Ii4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=leWNWVrz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65513C4CEC4;
-	Fri, 27 Sep 2024 12:31:54 +0000 (UTC)
+	 MIME-Version; b=UObx4clsPHF2q4gPmcI85xwXTkADqudHVorSx2vFNqmaDR3n/cQnerhQ4qcMC9AAtxsg7kIrbe8b5J18eW04WQaR72jh+JMaowPZzibG0SGk2C/rT0AvafTjaOVq6azv31r/dfE0ssagEymA2F+LR3j50V/mC2P9HUQxg9ILqU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dVL6ZNwb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 946C3C4CEC4;
+	Fri, 27 Sep 2024 12:25:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440314;
-	bh=thLzb6kuaS2+OuHhD2FEn0w7HPKTQobgcLQy1uiQ6Ac=;
+	s=korg; t=1727439942;
+	bh=6deYkbgcL4MfLyhWoohG15pGnqW3YY18/2dkizDpVoY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=leWNWVrzyhEFYi8SDQOnyzJ5E8dzOAkV1IIfl0FOaxq4YfXYF/35WOGTVjdpCz4gG
-	 IzpjFBGox40UmHSnZCpVbiWZeWlaP0cVv8Y7ykGbO200wCe1vQ2/ow4CxupBsFHd4f
-	 zjgJ9k9HLP2jp1uA3Oj0EAHtpE0NZhcigCP0Hsls=
+	b=dVL6ZNwbjgTlPFuKqFJ98Oi8GeW4/+dGMFaRqBPnreZDozsz3eZDnRiX0MwpgJlBa
+	 8BDIj3RfYW9P4P6BVrPoi5rE9i64NrOOQPeUg6myFxR9lB0sNjSuRJFWRVR96TwJU0
+	 1vMyxMMGB/AozBOrB1bQwl9UpHG4b6owIvmJ2qyQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Huacai Chen <chenhuacai@loongson.cn>,
-	Tianyang Zhang <zhangtianyang@loongson.cn>,
+	"hongchi.peng" <hongchi.peng@siengine.com>,
+	Liviu Dudau <liviu.dudau@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 11/73] LoongArch: Define ARCH_IRQ_INIT_FLAGS as IRQ_NOPROBE
+Subject: [PATCH 6.6 30/54] drm: komeda: Fix an issue related to normalized zpos
 Date: Fri, 27 Sep 2024 14:23:22 +0200
-Message-ID: <20240927121720.323285468@linuxfoundation.org>
+Message-ID: <20240927121720.945151535@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121719.897851549@linuxfoundation.org>
-References: <20240927121719.897851549@linuxfoundation.org>
+In-Reply-To: <20240927121719.714627278@linuxfoundation.org>
+References: <20240927121719.714627278@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Huacai Chen <chenhuacai@loongson.cn>
+From: hongchi.peng <hongchi.peng@siengine.com>
 
-[ Upstream commit 274ea3563e5ab9f468c15bfb9d2492803a66d9be ]
+[ Upstream commit 258905cb9a6414be5c9ca4aa20ef855f8dc894d4 ]
 
-Currently we call irq_set_noprobe() in a loop for all IRQs, but indeed
-it only works for IRQs below NR_IRQS_LEGACY because at init_IRQ() only
-legacy interrupts have been allocated.
+We use komeda_crtc_normalize_zpos to normalize zpos of affected planes
+to their blending zorder in CU. If there's only one slave plane in
+affected planes and its layer_split property is enabled, order++ for
+its split layer, so that when calculating the normalized_zpos
+of master planes, the split layer of the slave plane is included, but
+the max_slave_zorder does not include the split layer and keep zero
+because there's only one slave plane in affacted planes, although we
+actually use two slave layers in this commit.
 
-Instead, we can define ARCH_IRQ_INIT_FLAGS as IRQ_NOPROBE in asm/hwirq.h
-and the core will automatically set the flag for all interrupts.
+In most cases, this bug does not result in a commit failure, but assume
+the following situation:
+    slave_layer 0: zpos = 0, layer split enabled, normalized_zpos =
+    0;(use slave_layer 2 as its split layer)
+    master_layer 0: zpos = 2, layer_split enabled, normalized_zpos =
+    2;(use master_layer 2 as its split layer)
+    master_layer 1: zpos = 4, normalized_zpos = 4;
+    master_layer 3: zpos = 5, normalized_zpos = 5;
+    kcrtc_st->max_slave_zorder = 0;
+When we use master_layer 3 as a input of CU in function
+komeda_compiz_set_input and check it with function
+komeda_component_check_input, the parameter idx is equal to
+normailzed_zpos minus max_slave_zorder, the value of idx is 5
+and is euqal to CU's max_active_inputs, so that
+komeda_component_check_input returns a -EINVAL value.
 
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Tianyang Zhang <zhangtianyang@loongson.cn>
+To fix the bug described above, when calculating the max_slave_zorder
+with the layer_split enabled, count the split layer in this calculation
+directly.
+
+Signed-off-by: hongchi.peng <hongchi.peng@siengine.com>
+Acked-by: Liviu Dudau <liviu.dudau@arm.com>
+Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240826024517.3739-1-hongchi.peng@siengine.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/include/asm/hw_irq.h | 2 ++
- arch/loongarch/kernel/irq.c         | 3 ---
- 2 files changed, 2 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/arm/display/komeda/komeda_kms.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/arch/loongarch/include/asm/hw_irq.h b/arch/loongarch/include/asm/hw_irq.h
-index af4f4e8fbd858..8156ffb674159 100644
---- a/arch/loongarch/include/asm/hw_irq.h
-+++ b/arch/loongarch/include/asm/hw_irq.h
-@@ -9,6 +9,8 @@
+diff --git a/drivers/gpu/drm/arm/display/komeda/komeda_kms.c b/drivers/gpu/drm/arm/display/komeda/komeda_kms.c
+index 9299026701f34..1a5fa7df284de 100644
+--- a/drivers/gpu/drm/arm/display/komeda/komeda_kms.c
++++ b/drivers/gpu/drm/arm/display/komeda/komeda_kms.c
+@@ -160,6 +160,7 @@ static int komeda_crtc_normalize_zpos(struct drm_crtc *crtc,
+ 	struct drm_plane *plane;
+ 	struct list_head zorder_list;
+ 	int order = 0, err;
++	u32 slave_zpos = 0;
  
- extern atomic_t irq_err_count;
+ 	DRM_DEBUG_ATOMIC("[CRTC:%d:%s] calculating normalized zpos values\n",
+ 			 crtc->base.id, crtc->name);
+@@ -199,10 +200,13 @@ static int komeda_crtc_normalize_zpos(struct drm_crtc *crtc,
+ 				 plane_st->zpos, plane_st->normalized_zpos);
  
-+#define ARCH_IRQ_INIT_FLAGS	IRQ_NOPROBE
-+
- /*
-  * interrupt-retrigger: NOP for now. This may not be appropriate for all
-  * machines, we'll see ...
-diff --git a/arch/loongarch/kernel/irq.c b/arch/loongarch/kernel/irq.c
-index 0524bf1169b74..4496649c9e68b 100644
---- a/arch/loongarch/kernel/irq.c
-+++ b/arch/loongarch/kernel/irq.c
-@@ -122,9 +122,6 @@ void __init init_IRQ(void)
- 		panic("IPI IRQ request failed\n");
- #endif
+ 		/* calculate max slave zorder */
+-		if (has_bit(drm_plane_index(plane), kcrtc->slave_planes))
++		if (has_bit(drm_plane_index(plane), kcrtc->slave_planes)) {
++			slave_zpos = plane_st->normalized_zpos;
++			if (to_kplane_st(plane_st)->layer_split)
++				slave_zpos++;
+ 			kcrtc_st->max_slave_zorder =
+-				max(plane_st->normalized_zpos,
+-				    kcrtc_st->max_slave_zorder);
++				max(slave_zpos, kcrtc_st->max_slave_zorder);
++		}
+ 	}
  
--	for (i = 0; i < NR_IRQS; i++)
--		irq_set_noprobe(i);
--
- 	for_each_possible_cpu(i) {
- 		page = alloc_pages_node(cpu_to_node(i), GFP_KERNEL, order);
- 
+ 	crtc_st->zpos_changed = true;
 -- 
 2.43.0
 
