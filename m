@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-77972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0FFA988475
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:27:51 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E019B98842D
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:25:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 6DDE2B20AF7
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:27:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0A7E71C221EE
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:25:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF6BA18BC0D;
-	Fri, 27 Sep 2024 12:27:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 908C918BC3B;
+	Fri, 27 Sep 2024 12:25:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vpyUGWKe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pdljaFRa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F21F17B515;
-	Fri, 27 Sep 2024 12:27:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D4D418BB91;
+	Fri, 27 Sep 2024 12:25:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440067; cv=none; b=RvHI/DzpdiVXDQ7onC7aOTATM/DKfRkJ6TuM+tfYr+GdlqWMOC1aKjyT9T4khMxmA5ZgKFrhNCqRoFS0EImyFhyQ/4jnZt0ZarmoEnQFbRB0pSfrlrHFriHczHFDXraQTGIz8QRQ2/97A65Z6rvCxu324tXNBVE1+JK5yvQyWNk=
+	t=1727439900; cv=none; b=m0wXcSCsVPWcwzXxoCG47etHFTT5J8Us8UfPTozbrASuMWqLj2cE9ZOoPvX2deNaVCSLQAjnmojJ8dWZPEqymExXX4i/REMu50+sJecSUS3d26k0xLK9yov493URX/veKAW0mjkSbPEfLSz9otXUFQi40mKqps00wL4oIX7W5yk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440067; c=relaxed/simple;
-	bh=UE1nKE3T24DZrmAzz+vqpitcgsiUAG3NJHaRRG/sjkA=;
+	s=arc-20240116; t=1727439900; c=relaxed/simple;
+	bh=dZM1GS68P6OA1r+Zh1YGS9nmgWxQnyG0txq2yE0PnSM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Yv7hkYMj83oecIR7+j3pm1W+YNlNQYN7/ieHNc2z0XJGPqUL3EebIoOj5Dj8xBQ/HGcVZFIQ+nAdJbse4J66I9H9qyTcHvLaXDottNJwJ2l1bgR3HejqVqIbTdGjR+zxt6Ia6EvcuPTfPArvS9A+xCLGFbv0fO24FjwnJsU0kKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vpyUGWKe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBDF0C4CEC4;
-	Fri, 27 Sep 2024 12:27:46 +0000 (UTC)
+	 MIME-Version; b=BakqDI00y1otPRnQvSmXf4ey04iF7Pi2pXOK9ELHFRXxtvs9YtRvpkqLu0Oc2ttEr+ODWJcbcZGVx2rkDKqwzwbqBfK+SBO9m7CslNEet4nOw4rUIpv8sQLRyzOUGJuXwS0OrTC8jLw7+52HpU12bdTFRjfSN5Uu3sjOJ3x3UTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pdljaFRa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89B41C4CEC4;
+	Fri, 27 Sep 2024 12:24:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440067;
-	bh=UE1nKE3T24DZrmAzz+vqpitcgsiUAG3NJHaRRG/sjkA=;
+	s=korg; t=1727439899;
+	bh=dZM1GS68P6OA1r+Zh1YGS9nmgWxQnyG0txq2yE0PnSM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vpyUGWKeQNam1jnYJY4QjovcpksYwLJ05LhUBxx2IY9JEGzGU9USBkV109KieNHdu
-	 9q++jpkv+PlhKSpMMrbreVuemnAAV7OVvRMjH8oN/37M68Dkx1yvTfYYqAkFsrBLp1
-	 vqtgUQU6oMx68XXI8Gh1Xwy84b9B4/AFV4ujhcN0=
+	b=pdljaFRaa3J90vrB9sxvsuHhaH+b85ru0kdH6Njx2LZjSflTMGy0qzkRypqrARz/T
+	 TLXj9bHknS+l3lOiN2ygPF/b+2LKsq/ooMXqZLKFB0HaU020jv5oaAgQyDwG0KVYfK
+	 nvaz2oW/p4jgWx4uIRsLEiD4y8b6D/q5/mZxwJDg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kailang Yang <kailang@realtek.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Daniel Gabay <daniel.gabay@intel.com>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 06/58] ALSA: hda/realtek - FIxed ALC285 headphone no sound
+Subject: [PATCH 6.6 16/54] wifi: iwlwifi: mvm: fix iwl_mvm_max_scan_ie_fw_cmd_room()
 Date: Fri, 27 Sep 2024 14:23:08 +0200
-Message-ID: <20240927121719.057380111@linuxfoundation.org>
+Message-ID: <20240927121720.350655007@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121718.789211866@linuxfoundation.org>
-References: <20240927121718.789211866@linuxfoundation.org>
+In-Reply-To: <20240927121719.714627278@linuxfoundation.org>
+References: <20240927121719.714627278@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,102 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kailang Yang <kailang@realtek.com>
+From: Daniel Gabay <daniel.gabay@intel.com>
 
-[ Upstream commit 1fa7b099d60ad64f559bd3b8e3f0d94b2e015514 ]
+[ Upstream commit 916a5d9c5354c426220a0a6533a5e8ea1287d6ea ]
 
-Dell platform with ALC215 ALC285 ALC289 ALC225 ALC295 ALC299, plug
-headphone or headset.
-It had a chance to get no sound from headphone.
-Replace depop procedure will solve this issue.
+Driver creates also the WFA TPC element, consider that in the
+calculation.
 
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Link: https://lore.kernel.org/d0de1b03fd174520945dde216d765223@realtek.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Daniel Gabay <daniel.gabay@intel.com>
+Reviewed-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20240825191257.e710ce446b7f.I2715c6742e9c3d160e2ba41bc4b35de370d2ce34@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 26 ++++++++++++++------------
- 1 file changed, 14 insertions(+), 12 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index f730f22d6747a..2b674691ce4b6 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -5085,6 +5085,7 @@ static void alc_headset_mode_unplugged(struct hda_codec *codec)
- 	case 0x10ec0295:
- 	case 0x10ec0289:
- 	case 0x10ec0299:
-+		alc_hp_mute_disable(codec, 75);
- 		alc_process_coef_fw(codec, alc225_pre_hsmode);
- 		alc_process_coef_fw(codec, coef0225);
- 		break;
-@@ -5310,6 +5311,7 @@ static void alc_headset_mode_default(struct hda_codec *codec)
- 	case 0x10ec0299:
- 		alc_process_coef_fw(codec, alc225_pre_hsmode);
- 		alc_process_coef_fw(codec, coef0225);
-+		alc_hp_enable_unmute(codec, 75);
- 		break;
- 	case 0x10ec0255:
- 		alc_process_coef_fw(codec, coef0255);
-@@ -5469,6 +5471,7 @@ static void alc_headset_mode_ctia(struct hda_codec *codec)
- 			alc_process_coef_fw(codec, coef0225_2);
- 		else
- 			alc_process_coef_fw(codec, coef0225_1);
-+		alc_hp_enable_unmute(codec, 75);
- 		break;
- 	case 0x10ec0867:
- 		alc_update_coefex_idx(codec, 0x57, 0x5, 1<<14, 0);
-@@ -5574,6 +5577,7 @@ static void alc_headset_mode_omtp(struct hda_codec *codec)
- 	case 0x10ec0289:
- 	case 0x10ec0299:
- 		alc_process_coef_fw(codec, coef0225);
-+		alc_hp_enable_unmute(codec, 75);
- 		break;
- 	}
- 	codec_dbg(codec, "Headset jack set to Nokia-style headset mode.\n");
-@@ -5733,12 +5737,6 @@ static void alc_determine_headset_type(struct hda_codec *codec)
- 	case 0x10ec0295:
- 	case 0x10ec0289:
- 	case 0x10ec0299:
--		snd_hda_codec_write(codec, 0x21, 0,
--			    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
--		msleep(80);
--		snd_hda_codec_write(codec, 0x21, 0,
--			    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+index c61068144c638..626620cd892f0 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+@@ -48,6 +48,8 @@
+ /* Number of iterations on the channel for mei filtered scan */
+ #define IWL_MEI_SCAN_NUM_ITER	5U
+ 
++#define WFA_TPC_IE_LEN	9
++
+ struct iwl_mvm_scan_timing_params {
+ 	u32 suspend_time;
+ 	u32 max_out_time;
+@@ -296,8 +298,8 @@ static int iwl_mvm_max_scan_ie_fw_cmd_room(struct iwl_mvm *mvm)
+ 
+ 	max_probe_len = SCAN_OFFLOAD_PROBE_REQ_SIZE;
+ 
+-	/* we create the 802.11 header and SSID element */
+-	max_probe_len -= 24 + 2;
++	/* we create the 802.11 header SSID element and WFA TPC element */
++	max_probe_len -= 24 + 2 + WFA_TPC_IE_LEN;
+ 
+ 	/* DS parameter set element is added on 2.4GHZ band if required */
+ 	if (iwl_mvm_rrm_scan_needed(mvm))
+@@ -724,8 +726,6 @@ static u8 *iwl_mvm_copy_and_insert_ds_elem(struct iwl_mvm *mvm, const u8 *ies,
+ 	return newpos;
+ }
+ 
+-#define WFA_TPC_IE_LEN	9
 -
- 		alc_process_coef_fw(codec, alc225_pre_hsmode);
- 		alc_update_coef_idx(codec, 0x67, 0xf000, 0x1000);
- 		val = alc_read_coef_idx(codec, 0x45);
-@@ -5755,15 +5753,19 @@ static void alc_determine_headset_type(struct hda_codec *codec)
- 			val = alc_read_coef_idx(codec, 0x46);
- 			is_ctia = (val & 0x00f0) == 0x00f0;
- 		}
-+		if (!is_ctia) {
-+			alc_update_coef_idx(codec, 0x45, 0x3f<<10, 0x38<<10);
-+			alc_update_coef_idx(codec, 0x49, 3<<8, 1<<8);
-+			msleep(100);
-+			val = alc_read_coef_idx(codec, 0x46);
-+			if ((val & 0x00f0) == 0x00f0)
-+				is_ctia = false;
-+			else
-+				is_ctia = true;
-+		}
- 		alc_update_coef_idx(codec, 0x4a, 7<<6, 7<<6);
- 		alc_update_coef_idx(codec, 0x4a, 3<<4, 3<<4);
- 		alc_update_coef_idx(codec, 0x67, 0xf000, 0x3000);
--
--		snd_hda_codec_write(codec, 0x21, 0,
--			    AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
--		msleep(80);
--		snd_hda_codec_write(codec, 0x21, 0,
--			    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_UNMUTE);
- 		break;
- 	case 0x10ec0867:
- 		is_ctia = true;
+ static void iwl_mvm_add_tpc_report_ie(u8 *pos)
+ {
+ 	pos[0] = WLAN_EID_VENDOR_SPECIFIC;
 -- 
 2.43.0
 
