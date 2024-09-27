@@ -1,100 +1,92 @@
-Return-Path: <stable+bounces-78107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78108-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4977698851C
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:36:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AC46988572
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:46:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6E6FE1C22E75
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:36:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7433C1C23BC9
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:46:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B79D18A6C4;
-	Fri, 27 Sep 2024 12:36:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 68A4518A957;
+	Fri, 27 Sep 2024 12:46:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Dek+i9aH"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="TNP7zoUc"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from mout.gmx.net (mout.gmx.net [212.227.15.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8211A18BB91
-	for <stable@vger.kernel.org>; Fri, 27 Sep 2024 12:36:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A851A185931;
+	Fri, 27 Sep 2024 12:46:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.15.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440583; cv=none; b=bDlp5a0evlk5Iz476gRhMUpb+Fds+xRCZ0KKvoICFQq1UWxLXKLbnQh7FIrKLE7+j+OQxtfHsGU/+/C1q/4t7GmF1hhtWzNiULr0OSnKuUknMbo7LGKw3Gntoj0ktw2fk5ptMKeD4nsE7e+/mOc4XWiLfiYz2DUO62ngvXcmues=
+	t=1727441195; cv=none; b=TbTqpg5aTANHcVYRiGPK44E0XYQyEqSrjoy/YX5ZirSQda4En//1uU4IQ9BXZKjBVCeqHSa5FuC1Qi1wisa+mHCkXvvX81uA+mrsxM2wDxjJ1sjP+nvxwgAJpS5tR4aJ1/X0avFXfPg48CKJCJ1Vu5C07TPsIXdbaSStZz2pbhM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440583; c=relaxed/simple;
-	bh=leXil3idYbJEMJ9/ZEWFlUQ3BHkuCImSu8XTukgiTv0=;
-	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
-	 Content-Disposition:In-Reply-To; b=SXkCw7zBfA8CHO5nnlXU+guKtfS9vOxscEa/KiZf1otomLkk5pIgsJwLFt2tP1R6QwlpU9ssN5+6237pR/iajhKoCmV+94aNz3hK2S6Ab7jNArdODuoBrOOiZ+iTgaqmvoqJpjxkWXHtcZQ6j0nMnd3DtQjIol7/P9GW3doVexc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Dek+i9aH; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1727440581; x=1758976581;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=leXil3idYbJEMJ9/ZEWFlUQ3BHkuCImSu8XTukgiTv0=;
-  b=Dek+i9aHbYn8dagF3TRwc0vIy5xMuG2QjyOktxGP5t4ckP6lsQLvkvH/
-   aDpr91qWBpbhlhUWmpm3nEBLAa5hZD5kDo+JY+mactYmvClDSGyW87lcE
-   1kOLN2WV8pw0zzf5ecNJnFsF+RGIi9F4UG1OD3Y5d81VpCtD8q2BcJ22e
-   sukjLtMa8gjiAtQo1ChRaIm8OdiJU+Ln5mhR/fKkp0skUPktbax6scDbW
-   cUthGOKO6R62zMMjP80XlXgjMYt+IdAZ/EoD1ABRP3dL+TAL8wu80V9K+
-   sMh4bi+N/G6enUv3ouvPoomdvQoc8v/KKgSeTrVvqf15an9/oKRqH7FM9
-   Q==;
-X-CSE-ConnectionGUID: iVhnV3iRTkajEXmfO1Mnfw==
-X-CSE-MsgGUID: JkFDRhMeSuavpmNNuoia4A==
-X-IronPort-AV: E=McAfee;i="6700,10204,11207"; a="29464751"
-X-IronPort-AV: E=Sophos;i="6.11,158,1725346800"; 
-   d="scan'208";a="29464751"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Sep 2024 05:36:21 -0700
-X-CSE-ConnectionGUID: c8RL6270SXG55bt8/LTIUw==
-X-CSE-MsgGUID: Qnp1oKRwSAmPQvt09sDQqg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,158,1725346800"; 
-   d="scan'208";a="76595687"
-Received: from lkp-server01.sh.intel.com (HELO 53e96f405c61) ([10.239.97.150])
-  by fmviesa003.fm.intel.com with ESMTP; 27 Sep 2024 05:36:20 -0700
-Received: from kbuild by 53e96f405c61 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1suACn-000M6R-2s;
-	Fri, 27 Sep 2024 12:36:17 +0000
-Date: Fri, 27 Sep 2024 20:35:58 +0800
-From: kernel test robot <lkp@intel.com>
-To: Daniele Palmas <dnlplm@gmail.com>
-Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH 1/1] USB: serial: option: add Telit FN920C04 MBIM
- compositions
-Message-ID: <Zvamrm33TYsUaRb-@5849f93d069a>
+	s=arc-20240116; t=1727441195; c=relaxed/simple;
+	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
+	h=Message-ID:Date:MIME-Version:From:To:Cc:Subject:Content-Type; b=NJ8izmn3FJfF4S6NZtWBUgw2e9eUdIp22S11kpi8ypTFtyFScFwscqI5x3/mcsF4XHXCK/4jfsUq5tiHiX5kfVDjvcVTRhnJz0KG0zZTJqv82qJQaX5N7wnEkHgAap5TDqQOEF9AwDwpgoESKaYDshUaeTpaXSubvybgkAn8Dtk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=TNP7zoUc; arc=none smtp.client-ip=212.227.15.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1727441188; x=1728045988; i=rwarsow@gmx.de;
+	bh=HtuFhXI63urBA3dRKYyXQ6GHreCYVeNttV6YM+zDLlM=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:From:To:Cc:
+	 Subject:Content-Type:Content-Transfer-Encoding:cc:
+	 content-transfer-encoding:content-type:date:from:message-id:
+	 mime-version:reply-to:subject:to;
+	b=TNP7zoUcpeo4IY8gvMmsXC6pKglqwpMDNNVcu/l81E6yQLH3SumcYuLluNJylhOi
+	 Bx7R+gN/ljuSyfmWRlUJwQd9NkQXQeMBAKIpKWC2bQYTVdOffxgxrgyE1hz8qEyUq
+	 uBIgRL+TkQKG9+xc9svMrQId6sLdFyZF9w0Rzm6E5oy9fl2Xs3VIczqzPAuWlLIh1
+	 +ftBRg9vFSyDiPYkJu2zdtaagmQ6cL4UzzkCO0hCfaGRuKGIUUAMye6xoLWHxNnrD
+	 KTR4qj8IfsdfIoQGAmeQosU8olT3e4e08VYyV3vxgYqzknX7FrQEp2C3thKycSSwQ
+	 YVhiJ6LNZisrqdndXA==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.100.20] ([46.142.34.160]) by mail.gmx.net (mrgmx005
+ [212.227.17.190]) with ESMTPSA (Nemesis) id 1N9dsV-1rpGOf2cQX-011bbF; Fri, 27
+ Sep 2024 14:46:28 +0200
+Message-ID: <4625690b-ea81-45e2-86ab-8dd41f3d7b00@gmx.de>
+Date: Fri, 27 Sep 2024 14:46:28 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240927122816.1436915-1-dnlplm@gmail.com>
+User-Agent: Mozilla Thunderbird
+From: Ronald Warsow <rwarsow@gmx.de>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Content-Language: de-DE, en-US
+Subject: Re: [PATCH 6.11 00/12] 6.11.1-rc1 review
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:GvO8w6cIpiLgWG9Yq4wJqKHExHOCNzzZHXjNhTxqbv62JQHfTxT
+ tUaoe4VlF8XqI0BY9qZ0tjE2xK73UvQz4CLZbAJK10vS43PZAlpaT24tszMp3HPj9wvp6q/
+ 8tix2UZVCiGLaa/Ra7LyJK3LcpCsJXAjou+IP7U9WIjLOkQ6YjAx/KJaNIh5nIdFFsstrEV
+ 1tXM8FfoDnDChUogNL+2A==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:Ur0Mzrw4mpU=;0eY2ajW11VWDTpE19zS+5J578GB
+ cneL3nHpl1kk8H6XK90q3A3WmRdE7LbfN2qNV+MWoh9mMgPVGmkHqaFDdEWR+cAk/6UHQZ5sM
+ kbhuzZHy8T4SsO7hKQqCaPe5g2PIMTLAyxS8msPaaclPtxFNqLQuA4SDya1cfCR17PNqGt0As
+ R9PygMMZBEyxe8X5dbnIbt5yPlVZ/2SU3QDxO8i9ZTF+ie9l+qw4ZA+4mVhP3zm/FkoQU5GCo
+ NCDs65dDkbUseoy4ljejkYWqt8upDI2B2qYVMaew+o8ipM2RMJ7kesUvxtHW6KG6tWfFaw5lb
+ LjqbLctFduZe0iDnGRlCsPoXzPvUgi8upRzz5gdmJ+lpTXqvlolFwuBXVUxgsAGZxOCHhBoKR
+ kK2hp256QeLEKNhI71zUAbmmEnJWIPf51EsPDYtyreVgxzznXiNznrh5iuwLrrSgnoNX4pu0d
+ NH0q0KNjCBHzlo9nlvTPr+DlKdwcO2JW/EWp8R6C6xMk70zANY+F+ktW6oolG6hRf4keD7TGi
+ mAe7O5ad76anrUAXg3nHVQrW7cnc8CiFpZHGGRCBK8apb3yKBSUr8wKXo1aZfgiaYxB8vUYwr
+ rcGvY/XiBGrSqi9On/tCjsKpGFGxBvcFpWQ/xg3rW4GdFBC5Uz16wdmS8ZJn8lZChUjXIbOM4
+ QOb2Oyke3DHPck7e3eJGT8PLYLFsnBCQ9D17w6ygP7wlDfCjMwV3znYqpak2yRb8a6lRctubH
+ nWwcfksUlNT4usqp52e9ZrXI7HmmwB92I3W7wi+IQnBztkX59u5O+znTYnic9ftk8a905P8vJ
+ PNoJFrducG77tytPfR52ucZw==
 
-Hi,
+Hi Greg
 
-Thanks for your patch.
+no regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+Thanks
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
-
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH 1/1] USB: serial: option: add Telit FN920C04 MBIM compositions
-Link: https://lore.kernel.org/stable/20240927122816.1436915-1-dnlplm%40gmail.com
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
-
-
-
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
 
