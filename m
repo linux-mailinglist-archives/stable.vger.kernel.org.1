@@ -1,86 +1,112 @@
-Return-Path: <stable+bounces-77880-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77881-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16A41987FD6
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 09:57:58 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EFBB987FF0
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 10:03:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 43F101C232DD
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 07:57:57 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 441051F23A59
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 08:03:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50FE5188A11;
-	Fri, 27 Sep 2024 07:57:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qrzc6Htw"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07903189518;
+	Fri, 27 Sep 2024 08:03:48 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DD5416EBE6;
-	Fri, 27 Sep 2024 07:57:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA345189505;
+	Fri, 27 Sep 2024 08:03:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727423872; cv=none; b=ZlTw1g9bJ4Ndg7xITLOSC447rpJxCuN7e/BxJ16pMYUb8Y9m4sJ6D0sVVeJckhIrilEI3XGs5ygtWvIr9EEjWrbgXb2td7uLy1lRPxZ0SI2QtuOSEe54DIpp7pbrsY8DDo8iG9fO7iMLnzA2U0Q0i47/LmXi10t4dQD52wjA0sE=
+	t=1727424227; cv=none; b=DrfpwAti9uufHLLzsvMtDxe/XoVkiLTIj1dNmd0/xiuSHx3AE2tU4fDMk42oxTr+rGp1EA+Y1iMXg7Mcl5EfMIb2CvRx0XEMolLBd8G5XAPtBCoO3mKcMtH3/2Xjjyk8ZHisYX59KWa1L3yiqV9Xkeu3zFyTO7n77je5bO8deEw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727423872; c=relaxed/simple;
-	bh=ZmTaF4/jc03LTIvMK0BOhpgNc6JKRjuItosjrR7N3zk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PhAQGexqpHzf3ZWvm6v5mMidDcJwFbgYDN0JfdgHuWe6fg7fA47iehnUaP/qerufwUoNeHCLElUGgnQHTb2NFNPRAq8FwJse+bLCtRSAx6dOO+Pviog6+W17EmzlxXs6yMn8po9lOWYEgkE8pkFc2fqqMMLVpLW7hnWt4SMsh9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qrzc6Htw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D4C9C4CEC4;
-	Fri, 27 Sep 2024 07:57:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727423871;
-	bh=ZmTaF4/jc03LTIvMK0BOhpgNc6JKRjuItosjrR7N3zk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qrzc6HtwoxrZp3+CTD1k/ZQH5Squr3u9UdkSdbuLxkHv0kL97t6VI2FCXfU3BwHI9
-	 VzM96Uv/Gbv8pwFi9yU53Tb+6fWnBThohI5dFuUZAr0hBy6x7wS3/KLOw+hsUrPLFN
-	 HobEEquZCwwCvFOCu245OWhw165FcK6El8IsoYWo=
-Date: Fri, 27 Sep 2024 09:57:40 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Marc Kleine-Budde <mkl@pengutronix.de>
-Cc: stable@vger.kernel.org, sashal@kernel.org,
-	Francesco Dolcini <francesco@dolcini.it>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	linux-can@vger.kernel.org, Thomas Kopp <thomas.kopp@microchip.com>,
-	kernel@pengutronix.de
-Subject: Re: mcp251xfd: please add to the stable trees
-Message-ID: <2024092734-tackle-outlying-ae73@gregkh>
-References: <20240924-truthful-authentic-basilisk-aaab90-mkl@pengutronix.de>
+	s=arc-20240116; t=1727424227; c=relaxed/simple;
+	bh=uMpc1Nkk8d6B/SeF+pJYBARsZQUYbdOxtdXl4SFXqjY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PWBSbEszuC2bXhUtK6gHA4uBnS3Ixuq5DewST7HwrtenQ7r1qZdNnHS0u+ILQasyHXj4ui3Ym0DG1IPnjBs85guL5upiZCRyV0nbjI7ErW6wc4Vy19cRrjWFh77HGa6V/+lnO0DRUtwE0xQ8G4g6WJ0+vxQaKqE6dMtF4eFvQbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.163.235])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTP id 4XFNJB5Pl5z4f3jR6;
+	Fri, 27 Sep 2024 16:03:22 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.112])
+	by mail.maildlp.com (Postfix) with ESMTP id 183C61A0C07;
+	Fri, 27 Sep 2024 16:03:39 +0800 (CST)
+Received: from [10.67.109.184] (unknown [10.67.109.184])
+	by APP1 (Coremail) with SMTP id cCh0CgCHsy_YZvZmyOyeCQ--.53360S2;
+	Fri, 27 Sep 2024 16:03:37 +0800 (CST)
+Message-ID: <a27e36c6-bf71-40d8-85de-4797d764046c@huaweicloud.com>
+Date: Fri, 27 Sep 2024 16:03:36 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240924-truthful-authentic-basilisk-aaab90-mkl@pengutronix.de>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.10] bpf: Fix mismatch memory accounting for devmap maps
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, bpf@vger.kernel.org,
+ Sasha Levin <sashal@kernel.org>, =?UTF-8?Q?Toke_H=C3=B8iland-J=C3=B8rgensen?=
+ <toke@redhat.com>, Roman Gushchin <guro@fb.com>,
+ Pu Lehui <pulehui@huawei.com>
+References: <20240920103950.3931497-1-pulehui@huaweicloud.com>
+ <2024092737-flick-commodity-20d5@gregkh>
+Content-Language: en-US
+From: Pu Lehui <pulehui@huaweicloud.com>
+In-Reply-To: <2024092737-flick-commodity-20d5@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:cCh0CgCHsy_YZvZmyOyeCQ--.53360S2
+X-Coremail-Antispam: 1UD129KBjvJXoWrKrWrXF18Xry7Xw1rtrWfAFb_yoW8JF4rpF
+	48Can8Kr45KrnxtrZY9F4vq3W8JwsYgFnIv34Y9ryUCayI9r1F93ySg3W5Ca43Ar9xCa12
+	qFnrX34kC348CFDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUymb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I
+	0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
+	x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
+	0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vI
+	r41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8Gjc
+	xK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0
+	cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8V
+	AvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E
+	14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07UK2NtUUUUU=
+X-CM-SenderInfo: psxovxtxl6x35dzhxuhorxvhhfrp/
 
-On Tue, Sep 24, 2024 at 08:51:00AM +0200, Marc Kleine-Budde wrote:
-> Hello stable-team,
-> 
-> Francesco Dolcini reported a regression on v6.6.52 [1], it turns out
-> since v6.6.51~34 a.k.a. 5ea24ddc26a7 ("can: mcp251xfd: rx: add
-> workaround for erratum DS80000789E 6 of mcp2518fd") the mcp25xfd driver
-> is broken.
-> 
-> Cherry picking the following commits fixes the problem:
-> 
-> 51b2a7216122 ("can: mcp251xfd: properly indent labels")
-> a7801540f325 ("can: mcp251xfd: move mcp251xfd_timestamp_start()/stop() into mcp251xfd_chip_start/stop()")
-> 
-> Please pick these patches for
-> 
-> - 6.10.x
-> - 6.6.x
-> - 6.1.x
-> 
-> [1] https://lore.kernel.org/all/20240923115310.GA138774@francesco-nb
 
-Now queued up, thanks
 
-greg k-h
+On 2024/9/27 15:56, Greg Kroah-Hartman wrote:
+> On Fri, Sep 20, 2024 at 10:39:50AM +0000, Pu Lehui wrote:
+>> From: Pu Lehui <pulehui@huawei.com>
+>>
+>> Commit 70294d8bc31f ("bpf: Eliminate rlimit-based memory accounting for
+>> devmap maps") relies on the v5.11+ basic mechanism of memcg-based memory
+>> accounting [0]. The commit cannot be independently backported to the
+>> 5.10 stable branch, otherwise the related memory when creating devmap
+>> will be unrestricted and the associated bpf selftest map_ptr will fail.
+>> Let's roll back to rlimit-based memory accounting mode for devmap and
+>> re-adapt the commit 225da02acdc9 ("bpf: Fix DEVMAP_HASH overflow check
+>> on 32-bit arches") to the 5.10 stable branch.
+>>
+>> Link: https://lore.kernel.org/bpf/20201201215900.3569844-1-guro@fb.com [0]
+>> Fixes: 225da02acdc9 ("bpf: Fix DEVMAP_HASH overflow check on 32-bit arches")
+>> Fixes: 70294d8bc31f ("bpf: Eliminate rlimit-based memory accounting for devmap maps")
+> 
+> Should we just revert these changes instead?
+
+Yes, Greg. My patch is to revert these two commits and re-adapt commit 
+225da02acdc9 ("bpf: Fix DEVMAP_HASH overflow check on 32-bit arches").
+
+Shall we need to split this patch into multiple patches?
+
+> 
+> thanks,
+> 
+> greg k-h
+
 
