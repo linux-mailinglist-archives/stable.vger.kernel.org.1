@@ -1,217 +1,175 @@
-Return-Path: <stable+bounces-77894-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED258988173
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 11:36:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 385AE9881E1
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 11:52:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8DDA281775
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 09:36:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 954D0B2184F
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 09:52:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A2E61BAEC0;
-	Fri, 27 Sep 2024 09:36:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6928F1BB6B3;
+	Fri, 27 Sep 2024 09:52:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Yqc0J3IH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SewGu2qO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D545918C017;
-	Fri, 27 Sep 2024 09:35:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 261871BB6AC;
+	Fri, 27 Sep 2024 09:52:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727429761; cv=none; b=IkHr2muecM9x4Kf9VqmzE6YsC3ElF0Fltn5HEt41W9sJcFis0FqhPAlJJrW+VsWCGD53ZDe0DjP8IV8W/ZApLWSC3o8R5BANplAY4veUn3VsApMarCrB0zmOjhnrfX+PhHBDoYfYO/M0F4uvLUoEXehxmqvpY0ydjLESCNmsAzA=
+	t=1727430744; cv=none; b=qpJSvjnewvfjLe7ChmWFfCGa1GAcKtaqOWRQIQXtlB4EtInAJyBtkQ6uS53KsJZA4chXpceH1Nr76qGRgsLsIlGViArUOi2LsrUESzIIll3w/WDLo+0+x+ibK+n+XvPlwrP3zLOxszzxl9sO+dxZa/BPFxSqVpcpiMKx76xqALg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727429761; c=relaxed/simple;
-	bh=eVciTcpsHtAZGOTgTHd20Rq/MWjkf5aWXV1FSiqpq6U=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=XnJnHehiY+mo/1EeD2H2MhOr+H1wJVPiVxtC1VBJd2fuU104oJosRMlR365Q5A7LMxuWz4wCeZWpXvOSkOfljiNW3krwfVN6OtnaTJkTiWwmWnPTA8IQ6YR4/ixd/15RVnEIAm1nDSi+YOzZIRbKth8Lc8rLmLaVCQqXVZz5Aac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Yqc0J3IH; arc=none smtp.client-ip=209.85.160.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-4582face04dso17822201cf.1;
-        Fri, 27 Sep 2024 02:35:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727429757; x=1728034557; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=j/T5vuF45xvtZpHqUulQB1LIDXs1iBkFmXTiWVqtQC8=;
-        b=Yqc0J3IHLgCaCj5qcvlXRpnjU0H3yKIcAWjuX9tflHAtwKk/N3E351hsy4Xut15dT/
-         KrPrRo0fHBClZJOyxNOcUn3FmsBHZUMmJ2DTOpm5S9QxlS+3FA5KYZI+2Vz0MBzW7uz7
-         buvnFRjZ1W2L2ycNFPUEOlvY3GGua+py5+Ik7POqIqNxEWCszr4RGmsEPV97l9qgnVsi
-         Gq7etMgIR1EKULOfLvLKDxaArbysy5Mjwh9BnODaFZXEIcpz3HmRb7qNg7EIvDC5XzG5
-         LxaW+6wn/8Bus5pdiFNo5KF4dvumzeIUx7qf7YW9+Qf+A0rz3K2IxCDelNXvmbpLO+Cb
-         eOrQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727429757; x=1728034557;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=j/T5vuF45xvtZpHqUulQB1LIDXs1iBkFmXTiWVqtQC8=;
-        b=s0gnN54rDQjplyifCwBXBPww67eAxtwGgPeUDyZURze5X7VNu7f6t82qgk5IS08OT7
-         WyV9d0AwfK0rLbv3peBTw237KEGczsvJ5A7wlEP5iWVI1SH4hIqkdCpYBBlvkhOG7jnS
-         NDSaiwjXYyP7cvKpZv7sK7t3yPgrvySoirhypAUiVZRx/wVlb221ZY/a+X/dI7Al3lfA
-         gL43s65CeX1GWARTUyp8Hx++BIcJliprmqUsJHMqd30eW55OP4S9zsla84fbYtB0gvsU
-         9FeegedYBivzq8q4mC1SPxjzgpY/E86FBdEewZZI96zy43FyWSN3u7hwftte/qy2uoRs
-         p4vg==
-X-Forwarded-Encrypted: i=1; AJvYcCU03hACcZ18ZdFi6ZrT8NhhX6QHOaEqYQA19EcCYUHalIHcS41sv5IMh8E9iaUWCjnGgoQNBMU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwGHQi3Vw4vcsVQGyaRP/BVqEewEV2pksCgtlxpp1P78/3t6Yzl
-	jV/6QWaB5t6xTQmEegHyYk8BshvKnY3AhmmVil7AHRbtAdX3kX09
-X-Google-Smtp-Source: AGHT+IFvuqLk0pDSsS2e502GBJqZgOsLKcOMi4dt8alPdN+8f2ILQPEhWrtHUdZ6kytYSsGewI9vLQ==
-X-Received: by 2002:a05:622a:34f:b0:458:1e37:f82 with SMTP id d75a77b69052e-45c949a3b08mr88344701cf.18.1727429757520;
-        Fri, 27 Sep 2024 02:35:57 -0700 (PDT)
-Received: from localhost (23.67.48.34.bc.googleusercontent.com. [34.48.67.23])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-45c9f33946esm6251561cf.68.2024.09.27.02.35.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Sep 2024 02:35:56 -0700 (PDT)
-Date: Fri, 27 Sep 2024 05:35:56 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Ben Greear <greearb@candelatech.com>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>, 
- netdev@vger.kernel.org
-Cc: stable@vger.kernel.org
-Message-ID: <66f67c7c5c1de_ba960294f7@willemb.c.googlers.com.notmuch>
-In-Reply-To: <1a2b63a4-edc7-c04d-3f80-0087a8415bc3@candelatech.com>
-References: <20240925185216.1990381-1-greearb@candelatech.com>
- <66f5235d14130_8456129436@willemb.c.googlers.com.notmuch>
- <1a2b63a4-edc7-c04d-3f80-0087a8415bc3@candelatech.com>
-Subject: Re: [PATCH v2] Revert "vrf: Remove unnecessary RCU-bh critical
- section"
+	s=arc-20240116; t=1727430744; c=relaxed/simple;
+	bh=gh3HxbhmkIkR+faLyEwUhDkIWcudrr+ZDgyMz+iog4M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=emO00tgFY4ff5b9uV1OWHYP0oMIMAtdRvJhDHofPnYEiOkx4xCvMcXmVHM+H1ZQeMMmfAUjVpHRfqJh9eQh9XloXC0dmqR0B1+6tMB7UxB+g2CCxl60VavNkOW9grhvd07VFiEnoKdYrfgGvYTbhy89uOvJdX0dej4iUUflsizY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SewGu2qO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86F44C4CECD;
+	Fri, 27 Sep 2024 09:52:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727430743;
+	bh=gh3HxbhmkIkR+faLyEwUhDkIWcudrr+ZDgyMz+iog4M=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=SewGu2qO24Wsq/Fqb0IZJkF5HlreubY1jzAYEEJm8J/VeGUr5QwmaoM88wz9uF2Io
+	 f5jtKwb1lqm0uvLuzDvMYqC9Mnu/HxLmlMMbfx0kBWM6TA9PRxymTDpD7KPBSnxtD9
+	 SxPzl15FRpGXdRLqDRJ2Kr3EQW9OB2YY4yx689Ae1cXgvc/i6yoUNXtcIanoMP/sWE
+	 lJ10Pt15ob/53d7LxJ/ownwvVjAtzaz/GC+FPGLqZRsVqF9Cv57Z9uv3PnfEInz9mS
+	 fIo0Km2Jmy9/AH0kv+ILVDz4BbH+//Jrgs/GEMiefD8Pzw+hHC/UElrpwutVnWmux1
+	 hoVzKcMwFwc6A==
+Message-ID: <8e3e34d3-9034-4701-9fe9-baa43daf23b5@kernel.org>
+Date: Fri, 27 Sep 2024 12:52:18 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] usb: dwc3: core: Prevent phy suspend during init
+To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ John Youn <John.Youn@synopsys.com>,
+ "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ "msp@baylibre.com" <msp@baylibre.com>, "Vardhan, Vibhore" <vibhore@ti.com>,
+ "Govindarajan, Sriramakrishnan" <srk@ti.com>, Dhruva Gole <d-gole@ti.com>,
+ Vishal Mahaveer <vishalm@ti.com>
+References: <cover.1713310411.git.Thinh.Nguyen@synopsys.com>
+ <e8f04e642889b4c865aaf06762cde9386e0ff830.1713310411.git.Thinh.Nguyen@synopsys.com>
+ <1519dbe7-73b6-4afc-bfe3-23f4f75d772f@kernel.org>
+ <20240926215141.6xqngt7my6ffp753@synopsys.com>
+Content-Language: en-US
+From: Roger Quadros <rogerq@kernel.org>
+In-Reply-To: <20240926215141.6xqngt7my6ffp753@synopsys.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-Ben Greear wrote:
-> On 9/26/24 02:03, Willem de Bruijn wrote:
-> > greearb@ wrote:
-> >> From: Ben Greear <greearb@candelatech.com>
-> >>
-> >> This reverts commit 504fc6f4f7f681d2a03aa5f68aad549d90eab853.
-> >>
-> >> dev_queue_xmit_nit needs to run with bh locking, otherwise
-> >> it conflicts with packets coming in from a nic in softirq
-> >> context and packets being transmitted from user context.
-> >>
-> >> ================================
-> >> WARNING: inconsistent lock state
-> >> 6.11.0 #1 Tainted: G        W
-> >> --------------------------------
-> >> inconsistent {IN-SOFTIRQ-W} -> {SOFTIRQ-ON-W} usage.
-> >> btserver/134819 [HC0[0]:SC0[0]:HE1:SE1] takes:
-> >> ffff8882da30c118 (rlock-AF_PACKET){+.?.}-{2:2}, at: tpacket_rcv+0x863/0x3b30
-> >> {IN-SOFTIRQ-W} state was registered at:
-> >>    lock_acquire+0x19a/0x4f0
-> >>    _raw_spin_lock+0x27/0x40
-> >>    packet_rcv+0xa33/0x1320
-> >>    __netif_receive_skb_core.constprop.0+0xcb0/0x3a90
-> >>    __netif_receive_skb_list_core+0x2c9/0x890
-> >>    netif_receive_skb_list_internal+0x610/0xcc0
-> >>    napi_complete_done+0x1c0/0x7c0
-> >>    igb_poll+0x1dbb/0x57e0 [igb]
-> >>    __napi_poll.constprop.0+0x99/0x430
-> >>    net_rx_action+0x8e7/0xe10
-> >>    handle_softirqs+0x1b7/0x800
-> >>    __irq_exit_rcu+0x91/0xc0
-> >>    irq_exit_rcu+0x5/0x10
-> >>    [snip]
-> >>
-> >> other info that might help us debug this:
-> >>   Possible unsafe locking scenario:
-> >>
-> >>         CPU0
-> >>         ----
-> >>    lock(rlock-AF_PACKET);
-> >>    <Interrupt>
-> >>      lock(rlock-AF_PACKET);
-> >>
-> >>   *** DEADLOCK ***
-> >>
-> >> Call Trace:
-> >>   <TASK>
-> >>   dump_stack_lvl+0x73/0xa0
-> >>   mark_lock+0x102e/0x16b0
-> >>   __lock_acquire+0x9ae/0x6170
-> >>   lock_acquire+0x19a/0x4f0
-> >>   _raw_spin_lock+0x27/0x40
-> >>   tpacket_rcv+0x863/0x3b30
-> >>   dev_queue_xmit_nit+0x709/0xa40
-> >>   vrf_finish_direct+0x26e/0x340 [vrf]
-> >>   vrf_l3_out+0x5f4/0xe80 [vrf]
-> >>   __ip_local_out+0x51e/0x7a0
-> >> [snip]
-> >>
-> >> Fixes: 504fc6f4f7f6 ("vrf: Remove unnecessary RCU-bh critical section")
-> >> Link: https://lore.kernel.org/netdev/05765015-f727-2f30-58da-2ad6fa7ea99f@candelatech.com/T/
-> >>
-> >> Signed-off-by: Ben Greear <greearb@candelatech.com>
-> > 
-> > Please Cc: all previous reviewers and folks who participated in the
-> > discussion. I entirely missed this. No need to add as Cc tags, just
-> > --cc in git send-email will do.
-> > 
-> >> ---
-> >>
-> >> v2:  Edit patch description.
-> >>
-> >>   drivers/net/vrf.c | 2 ++
-> >>   net/core/dev.c    | 1 +
-> >>   2 files changed, 3 insertions(+)
-> >>
-> >> diff --git a/drivers/net/vrf.c b/drivers/net/vrf.c
-> >> index 4d8ccaf9a2b4..4087f72f0d2b 100644
-> >> --- a/drivers/net/vrf.c
-> >> +++ b/drivers/net/vrf.c
-> >> @@ -608,7 +608,9 @@ static void vrf_finish_direct(struct sk_buff *skb)
-> >>   		eth_zero_addr(eth->h_dest);
-> >>   		eth->h_proto = skb->protocol;
-> >>   
-> >> +		rcu_read_lock_bh();
-> >>   		dev_queue_xmit_nit(skb, vrf_dev);
-> >> +		rcu_read_unlock_bh();
-> >>   
-> >>   		skb_pull(skb, ETH_HLEN);
-> >>   	}
-> >> diff --git a/net/core/dev.c b/net/core/dev.c
-> >> index cd479f5f22f6..566e69a38eed 100644
-> >> --- a/net/core/dev.c
-> >> +++ b/net/core/dev.c
-> >> @@ -2285,6 +2285,7 @@ EXPORT_SYMBOL_GPL(dev_nit_active);
-> >>   /*
-> >>    *	Support routine. Sends outgoing frames to any network
-> >>    *	taps currently in use.
-> >> + *	BH must be disabled before calling this.
-> > 
-> > Unnecessary. Especially patches for stable should be minimal to
-> > reduce the chance of conflicts.
+
+
+On 27/09/2024 00:51, Thinh Nguyen wrote:
+> Hi Roger,
 > 
-> I was asked to add this, and also asked to CC stable.
+> On Wed, Sep 25, 2024, Roger Quadros wrote:
+>> Hello Thinh,
+>>
+>> On 17/04/2024 02:41, Thinh Nguyen wrote:
+>>> GUSB3PIPECTL.SUSPENDENABLE and GUSB2PHYCFG.SUSPHY should be cleared
+>>> during initialization. Suspend during initialization can result in
+>>> undefined behavior due to clock synchronization failure, which often
+>>> seen as core soft reset timeout.
+>>>
+>>> The programming guide recommended these bits to be cleared during
+>>> initialization for DWC_usb3.0 version 1.94 and above (along with
+>>> DWC_usb31 and DWC_usb32). The current check in the driver does not
+>>> account if it's set by default setting from coreConsultant.
+>>>
+>>> This is especially the case for DRD when switching mode to ensure the
+>>> phy clocks are available to change mode. Depending on the
+>>> platforms/design, some may be affected more than others. This is noted
+>>> in the DWC_usb3x programming guide under the above registers.
+>>>
+>>> Let's just disable them during driver load and mode switching. Restore
+>>> them when the controller initialization completes.
+>>>
+>>> Note that some platforms workaround this issue by disabling phy suspend
+>>> through "snps,dis_u3_susphy_quirk" and "snps,dis_u2_susphy_quirk" when
+>>> they should not need to.
+>>>
+>>> Cc: stable@vger.kernel.org
+>>> Fixes: 9ba3aca8fe82 ("usb: dwc3: Disable phy suspend after power-on reset")
+>>> Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+>>
+>> This patch is causing system suspend failures on TI AM62 platforms [1]
+>>
+>> I will try to explain why.
+>> Before this patch, both DWC3_GUSB3PIPECTL_SUSPHY and DWC3_GUSB2PHYCFG_SUSPHY
+>> bits (hence forth called 2 SUSPHY bits) were being set during initialization
+>> and even during re-initialization after a system suspend/resume.
+>>
+>> These bits are required to be set for system suspend/resume to work correctly
+>> on AM62 platforms.
+> 
+> Is it only for suspend or both suspend and resume?
 
-Conflicting feedback is annoying, but I disagree with the other
-comment.
+I'm sure about suspend. It is not possible to toggle those bits while in system
+suspend so we can't really say if it is required exclusively for system resume or not.
 
-Not only does it potentially complicate backporting, it also is no
-longer a strict revert. In which case it must not be labeled as such.
+> 
+>>
+>> After this patch, the bits are only set when Host controller starts or
+>> when Gadget driver starts.
+>>
+>> On AM62 platform we have 2 USB controllers, one in Host and one in Dual role.
+>> Just after boot, for the Host controller we have the 2 SUSPHY bits set but
+>> for the Dual-Role controller, as no role has started the 2 SUSPHY bits are
+>> not set. Thus system suspend resume will fail.
+>>
+>> On the other hand, if we load a gadget driver just after boot then both
+>> controllers have the 2 SUSPHY bits set and system suspend resume works for
+>> the first time.
+>> However, after system resume, the core is re-initialized so the 2 SUSPHY bits
+>> are cleared for both controllers. For host controller it is never set again.
+>> For gadget controller as gadget start is called, the 2 SUSPHY bits are set
+>> again. The second system suspend resume will still fail as one controller
+>> (Host) doesn't have the 2 SUSPHY bits set.
+>>
+>> To summarize, the existing solution is not sufficient for us to have a
+>> reliable behavior. We need the 2 SUSPHY bits to be set regardless of what
+>> role we are in or whether the role has started or not.
+>>
+>> My suggestion is to move back the SUSPHY enable to end of dwc3_core_init().
+>> Then if SUSPHY needs to be disabled for DRD role switching, it should be
+>> disabled and enabled exactly there.
+>>
+>> What do you suggest?
+>>
+>> [1] - https://urldefense.com/v3/__https://lore.kernel.org/linux-arm-kernel/20240904194229.109886-1-msp@baylibre.com/__;!!A4F2R9G_pg!Y10q3gwCzryOoiXpk6DMGn74iFQIg6GloY10J16kWCbqwgS1Algo5HRg05vm38dMw8n47qmKpqJlyXt9Kqlm$ 
+>>
+> 
+> Thanks for reporting the issue.
+> 
+> This is quite an interesting behavior. As you said, we will need to
+> isolate this change to only during DRD role switch.
+> 
+> We may not necessarily just enable at the end of dwc3_core_init() since
+> that would keep the SUSPHY bits on during the DRD role switch. If this
+> issue only occurs before suspend, perhaps we can check and set these
+> bits during suspend or dwc3_core_exit() instead?
 
-Easier is to keep the revert unmodified, and add the comment to the
-commit message.
+dwc3_core_exit() is not always called in the system suspend path so it
+may not be sufficient.
 
-Most important is the Link to our earlier thread that explains the
-history.
+Any issues if we set this these bits at the end of dwc3_suspend_common()
+irrespective of runtime suspend or system suspend and operating role?
+And should we restore these bits in dwc3_resume_common() to the state they
+were before dwc3_suspend_common()?
 
-If the process appears byzantine, if you prefer I can also send it.
-
-Thanks,
-
-  Willem
-
-
+-- 
+cheers,
+-roger
 
