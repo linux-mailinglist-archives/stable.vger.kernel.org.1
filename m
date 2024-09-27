@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-77943-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BE87988458
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:26:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDD3E988488
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:28:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09AF0281056
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:26:57 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BBDF2815FA
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:28:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6A4D18C039;
-	Fri, 27 Sep 2024 12:26:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1B6A18BC1F;
+	Fri, 27 Sep 2024 12:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aXYeTnbV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VYwrjahS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A47A518C005;
-	Fri, 27 Sep 2024 12:26:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8189318BC0D;
+	Fri, 27 Sep 2024 12:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727439986; cv=none; b=XlH6bcs0nG2Iz+Jbg1omffc35EpjheWqu3zkfXEkJgwdQbyTF4v6bDP138NmFTLKrMHq6YFgWB9rvAgibJkPS0DkRzDAao9O9QMKWE1CNgs7U/J6Dot51bFQpbM2neMWGZLVQES0qxknINKKiRksvATNMzfxlfitMyQZDHMjNU8=
+	t=1727440114; cv=none; b=rmiOltFwU+DmtxJePj2R9Ld5iLr4iqt/qYdjrYEU0iLl4PNy1M6o1mkb72c9WfN3AGjbv83a2NBZvWYXr3mS+1EfGYNGXP8fUupsYyvAbMOY2f8Rqk/obiphwUqKVCpT2FDzgGbGTri9K2dEZ66Jkb487hirdcjK39gTGjOaWTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727439986; c=relaxed/simple;
-	bh=cr2ue4znZK7iOob+zYm8cCjr+8HbL6pCxLTstuhLYH8=;
+	s=arc-20240116; t=1727440114; c=relaxed/simple;
+	bh=DL9gNP4/VSkOhIC5rqvEH4J2Xh0ZLFd7itwe/kl7E0A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mSSP8YSNwzW7UYszAfhQZFeTGhI1Kz/prUC3ZSPwtagNOJodD6Kq563rXANhevYrft1DoiytGTuUZTyEsR+PUB7+i/eUvlvLbK6S/b8IvHXgTZNwhaY5fDUEVUIpZsxnC0XVKQyIevIpbfshC6uMpI2DrHPEeRD/1pMFD06Ycro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aXYeTnbV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D3D0C4CEC4;
-	Fri, 27 Sep 2024 12:26:26 +0000 (UTC)
+	 MIME-Version; b=J1hja809IUElCYDCruUVyZm9N4OK2PYq8bFFWifYfo1NHTn6F+BATYB/jYiUWbfFzbEv2Fu9JwOA1M+OBCWx5fjkcr/BEFnPX4drC2RZL2xZnRI/RVy6PmqCnLMicLIJq0+xovT51toMJgvY5BPg7++a53FoWOfeTSW5qpssZ40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VYwrjahS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CAE9C4CEC4;
+	Fri, 27 Sep 2024 12:28:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727439986;
-	bh=cr2ue4znZK7iOob+zYm8cCjr+8HbL6pCxLTstuhLYH8=;
+	s=korg; t=1727440114;
+	bh=DL9gNP4/VSkOhIC5rqvEH4J2Xh0ZLFd7itwe/kl7E0A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aXYeTnbVQE6vK6T0v1khPVFE+g/v2WPwlZNODqQWoHGoGzzI0x+bVSwFkgTAtGLcP
-	 wiFcOre1jdVfYx8vlQ06g7DDgeicebDVtlRUlhbkRZfQLfPmzeRIfRE/C231bSb7fw
-	 COxgtMdHayLg2mO84cSvaQR8AH/IZcJI194S42kI=
+	b=VYwrjahSG6GTUG3pcyyWcPkuW/V2bPv7Raodp2gKM4iVDNiRvDHzUb3IHKlJZqT9M
+	 H0LN1UZy1UbYoTpodmo+lwBEK7U+KlDZ9Cn61wtHdyb+J5f/lU+JjPvUq0IbM/uUcP
+	 F3OTgXHdw4S6ybNQU5EBGPM/k6d0UbO2nFrKSXWY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	petter@technux.se,
-	Johannes Berg <johannes@sipsolutions.net>,
-	Ping-Ke Shih <pkshih@realtek.com>
-Subject: [PATCH 6.6 47/54] Revert "wifi: cfg80211: check wiphy mutex is held for wdev mutex"
+	Rickard Andersson <rickaran@axis.com>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 37/58] smb: client: fix hang in wait_for_response() for negproto
 Date: Fri, 27 Sep 2024 14:23:39 +0200
-Message-ID: <20240927121721.700374701@linuxfoundation.org>
+Message-ID: <20240927121720.287693134@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121719.714627278@linuxfoundation.org>
-References: <20240927121719.714627278@linuxfoundation.org>
+In-Reply-To: <20240927121718.789211866@linuxfoundation.org>
+References: <20240927121718.789211866@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,69 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Paulo Alcantara <pc@manguebit.com>
 
-This reverts commit 268f84a827534c4e4c2540a4e29daa73359fc0a5 which is
-commmit 1474bc87fe57deac726cc10203f73daa6c3212f7 upstream.
+[ Upstream commit 7ccc1465465d78e6411b7bd730d06e7435802b5c ]
 
-The reverted commit is based on implementation of wiphy locking that isn't
-planned to redo on a stable kernel, so revert it to avoid warning:
+Call cifs_reconnect() to wake up processes waiting on negotiate
+protocol to handle the case where server abruptly shut down and had no
+chance to properly close the socket.
 
- WARNING: CPU: 0 PID: 9 at net/wireless/core.h:231 disconnect_work+0xb8/0x144 [cfg80211]
- CPU: 0 PID: 9 Comm: kworker/0:1 Not tainted 6.6.51-00141-ga1649b6f8ed6 #7
- Hardware name: Freescale i.MX6 SoloX (Device Tree)
- Workqueue: events disconnect_work [cfg80211]
-  unwind_backtrace from show_stack+0x10/0x14
-  show_stack from dump_stack_lvl+0x58/0x70
-  dump_stack_lvl from __warn+0x70/0x1c0
-  __warn from warn_slowpath_fmt+0x16c/0x294
-  warn_slowpath_fmt from disconnect_work+0xb8/0x144 [cfg80211]
-  disconnect_work [cfg80211] from process_one_work+0x204/0x620
-  process_one_work from worker_thread+0x1b0/0x474
-  worker_thread from kthread+0x10c/0x12c
-  kthread from ret_from_fork+0x14/0x24
+Simple reproducer:
 
-Reported-by: petter@technux.se
-Closes: https://lore.kernel.org/linux-wireless/9e98937d781c990615ef27ee0c858ff9@technux.se/T/#t
-Cc: Johannes Berg <johannes@sipsolutions.net>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  ssh 192.168.2.100 pkill -STOP smbd
+  mount.cifs //192.168.2.100/test /mnt -o ... [never returns]
+
+Cc: Rickard Andersson <rickaran@axis.com>
+Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/core.h |    8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ fs/smb/client/connect.c | 14 +++++++++++++-
+ 1 file changed, 13 insertions(+), 1 deletion(-)
 
---- a/net/wireless/core.h
-+++ b/net/wireless/core.h
-@@ -228,7 +228,6 @@ void cfg80211_register_wdev(struct cfg80
- static inline void wdev_lock(struct wireless_dev *wdev)
- 	__acquires(wdev)
+diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
+index d2307162a2de1..e325e06357ffb 100644
+--- a/fs/smb/client/connect.c
++++ b/fs/smb/client/connect.c
+@@ -656,6 +656,19 @@ allocate_buffers(struct TCP_Server_Info *server)
+ static bool
+ server_unresponsive(struct TCP_Server_Info *server)
  {
--	lockdep_assert_held(&wdev->wiphy->mtx);
- 	mutex_lock(&wdev->mtx);
- 	__acquire(wdev->mtx);
- }
-@@ -236,16 +235,11 @@ static inline void wdev_lock(struct wire
- static inline void wdev_unlock(struct wireless_dev *wdev)
- 	__releases(wdev)
- {
--	lockdep_assert_held(&wdev->wiphy->mtx);
- 	__release(wdev->mtx);
- 	mutex_unlock(&wdev->mtx);
- }
- 
--static inline void ASSERT_WDEV_LOCK(struct wireless_dev *wdev)
--{
--	lockdep_assert_held(&wdev->wiphy->mtx);
--	lockdep_assert_held(&wdev->mtx);
--}
-+#define ASSERT_WDEV_LOCK(wdev) lockdep_assert_held(&(wdev)->mtx)
- 
- static inline bool cfg80211_has_monitors_only(struct cfg80211_registered_device *rdev)
- {
++	/*
++	 * If we're in the process of mounting a share or reconnecting a session
++	 * and the server abruptly shut down (e.g. socket wasn't closed, packet
++	 * had been ACK'ed but no SMB response), don't wait longer than 20s to
++	 * negotiate protocol.
++	 */
++	spin_lock(&server->srv_lock);
++	if (server->tcpStatus == CifsInNegotiate &&
++	    time_after(jiffies, server->lstrp + 20 * HZ)) {
++		spin_unlock(&server->srv_lock);
++		cifs_reconnect(server, false);
++		return true;
++	}
+ 	/*
+ 	 * We need to wait 3 echo intervals to make sure we handle such
+ 	 * situations right:
+@@ -667,7 +680,6 @@ server_unresponsive(struct TCP_Server_Info *server)
+ 	 * 65s kernel_recvmsg times out, and we see that we haven't gotten
+ 	 *     a response in >60s.
+ 	 */
+-	spin_lock(&server->srv_lock);
+ 	if ((server->tcpStatus == CifsGood ||
+ 	    server->tcpStatus == CifsNeedNegotiate) &&
+ 	    (!server->ops->can_echo || server->ops->can_echo(server)) &&
+-- 
+2.43.0
+
 
 
 
