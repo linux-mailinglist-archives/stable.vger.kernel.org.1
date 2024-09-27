@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-77961-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C2AC98846B
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:27:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DFBD988432
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:25:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 95719B21830
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:27:20 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C8BE281E83
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:25:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1465F18BC30;
-	Fri, 27 Sep 2024 12:27:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62C4418BC0D;
+	Fri, 27 Sep 2024 12:25:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PWOShW5l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HOHnTLIx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D7D18A955;
-	Fri, 27 Sep 2024 12:27:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D351779BD;
+	Fri, 27 Sep 2024 12:25:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440036; cv=none; b=Fl/JDbzw1XPVUqBzTH3DAD2L3v5x30tkmfKyYuDuDox/WWNP7MqZRjhtfig4mIE9W4i/ATOVIIKNZnlGXIWEoAxexSGydNojM+c2/oLIAd0gaCbhK3zSBaef2den0aecVuNC+DUbgTCnkQdvWJ7OHlxMjRPxHIEXIOPTzZFx7GY=
+	t=1727439914; cv=none; b=iAgiB4YBsm2wTUdAOIufWc4N1pqMpsSPmYBsTaLFo/y6oHQmYGA6gtVueT8zbIUeovfmVsEyqOd4+7R2kOYblWSu9fzUpvF2uNZFxBGTrmXyysYPDv71HVtByLigI72+cuoS33jlOyZoSo3XA3KMJ3isRgcWHxry9udIvBGbR3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440036; c=relaxed/simple;
-	bh=8BG6utyqKWPug3qdteZdibSy0nxwuiOET+8rdHPjemU=;
+	s=arc-20240116; t=1727439914; c=relaxed/simple;
+	bh=/gBgbdRTBQ/5bb3v1rQAZqdyWaQY7dHZyZyD0fasySw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YVGGdp2jnjPimdh0oAFLVOb2+sA4JaQLJD2TA39ixBR8RbFncqMnn4/xChfyT26Q6BYeUYK5OClzBsjQQRNCEydMuvSi1I9nJ5+W3ieaOyIewxAB7hxkLnDp+08rN0jghBDanUwv4s9qgX8ZjzeeDdv4yt78kNyjetG+pwfplUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PWOShW5l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 575EBC4CEC4;
-	Fri, 27 Sep 2024 12:27:16 +0000 (UTC)
+	 MIME-Version; b=eskfcftE95mLVE8WFdbq3Gsj5vdIvstomBu0UCedGLqaFKNSXLEHOCR6ZWqklJT4lWpypbgE7gcsq29HwKP7x0Oa9CbKwdIarCN3KJwnyK/XKPHCCKqt+cQbkol1BvsvIbOswLubwM41ai1xD49qdcv9dPVylKOiSxO83aumO58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HOHnTLIx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1E22C4CEC4;
+	Fri, 27 Sep 2024 12:25:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440036;
-	bh=8BG6utyqKWPug3qdteZdibSy0nxwuiOET+8rdHPjemU=;
+	s=korg; t=1727439914;
+	bh=/gBgbdRTBQ/5bb3v1rQAZqdyWaQY7dHZyZyD0fasySw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PWOShW5ld4P6i6pky+ShTL69Ge2YxwOKz1kmukSW7qm0aeLTEUN1l93D5PXa8ugEc
-	 p7Yd4h3nHIymirZ8P/8+P4LHeJWoeLc3/n2dxND2mtqJXmEFmCU24+4d+sxcPWIw3b
-	 bgcaZPhLSYFyc9uixMNbKuMReDgYLvxhcTHkS8M0=
+	b=HOHnTLIxhyPWXE8VfNMx3tq/wqraD1UH8jXkOh478WSykNee2ut4PelsHp+90m+qw
+	 so3/58BddShc+wNCmff9Lf07nfdgXk3qz4BuoCVkaSLAB2xmuT2Rhk1YKoyT4bb6oX
+	 UrPQa/gwBxxVdE/ujB0fZr1p0Rhmku16wiK6SmrU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Mike Rapoport <rppt@kernel.org>,
-	Wei Yang <richard.weiyang@gmail.com>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 10/58] microblaze: dont treat zero reserved memory regions as error
-Date: Fri, 27 Sep 2024 14:23:12 +0200
-Message-ID: <20240927121719.216074555@linuxfoundation.org>
+Subject: [PATCH 6.6 21/54] can: mcp251xfd: mcp251xfd_ring_init(): check TX-coalescing configuration
+Date: Fri, 27 Sep 2024 14:23:13 +0200
+Message-ID: <20240927121720.560091673@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121718.789211866@linuxfoundation.org>
-References: <20240927121718.789211866@linuxfoundation.org>
+In-Reply-To: <20240927121719.714627278@linuxfoundation.org>
+References: <20240927121719.714627278@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Rapoport <rppt@kernel.org>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit 0075df288dd8a7abfe03b3766176c393063591dd ]
+[ Upstream commit ac2b81eb8b2d104033560daea886ee84531e3d0a ]
 
-Before commit 721f4a6526da ("mm/memblock: remove empty dummy entry") the
-check for non-zero of memblock.reserved.cnt in mmu_init() would always
-be true either because  memblock.reserved.cnt is initialized to 1 or
-because there were memory reservations earlier.
+When changing the interface from CAN-CC to CAN-FD mode the old
+coalescing parameters are re-used. This might cause problem, as the
+configured parameters are too big for CAN-FD mode.
 
-The removal of dummy empty entry in memblock caused this check to fail
-because now memblock.reserved.cnt is initialized to 0.
+During testing an invalid TX coalescing configuration has been seen.
+The problem should be been fixed in the previous patch, but add a
+safeguard here to ensure that the number of TEF coalescing buffers (if
+configured) is exactly the half of all TEF buffers.
 
-Remove the check for non-zero of memblock.reserved.cnt because it's
-perfectly fine to have an empty memblock.reserved array that early in
-boot.
-
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Mike Rapoport <rppt@kernel.org>
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20240729053327.4091459-1-rppt@kernel.org
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/all/20240805-mcp251xfd-fix-ringconfig-v1-2-72086f0ca5ee@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/microblaze/mm/init.c | 5 -----
- 1 file changed, 5 deletions(-)
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/arch/microblaze/mm/init.c b/arch/microblaze/mm/init.c
-index 3827dc76edd82..4520c57415797 100644
---- a/arch/microblaze/mm/init.c
-+++ b/arch/microblaze/mm/init.c
-@@ -193,11 +193,6 @@ asmlinkage void __init mmu_init(void)
- {
- 	unsigned int kstart, ksize;
+diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
+index f72582d4d3e8e..83c18035b2a24 100644
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
+@@ -290,7 +290,7 @@ int mcp251xfd_ring_init(struct mcp251xfd_priv *priv)
+ 	const struct mcp251xfd_rx_ring *rx_ring;
+ 	u16 base = 0, ram_used;
+ 	u8 fifo_nr = 1;
+-	int i;
++	int err = 0, i;
  
--	if (!memblock.reserved.cnt) {
--		pr_emerg("Error memory count\n");
--		machine_restart(NULL);
--	}
--
- 	if ((u32) memblock.memory.regions[0].size < 0x400000) {
- 		pr_emerg("Memory must be greater than 4MB\n");
- 		machine_restart(NULL);
+ 	netdev_reset_queue(priv->ndev);
+ 
+@@ -386,10 +386,18 @@ int mcp251xfd_ring_init(struct mcp251xfd_priv *priv)
+ 		netdev_err(priv->ndev,
+ 			   "Error during ring configuration, using more RAM (%u bytes) than available (%u bytes).\n",
+ 			   ram_used, MCP251XFD_RAM_SIZE);
+-		return -ENOMEM;
++		err = -ENOMEM;
+ 	}
+ 
+-	return 0;
++	if (priv->tx_obj_num_coalesce_irq &&
++	    priv->tx_obj_num_coalesce_irq * 2 != priv->tx->obj_num) {
++		netdev_err(priv->ndev,
++			   "Error during ring configuration, number of TEF coalescing buffers (%u) must be half of TEF buffers (%u).\n",
++			   priv->tx_obj_num_coalesce_irq, priv->tx->obj_num);
++		err = -EINVAL;
++	}
++
++	return err;
+ }
+ 
+ void mcp251xfd_ring_free(struct mcp251xfd_priv *priv)
 -- 
 2.43.0
 
