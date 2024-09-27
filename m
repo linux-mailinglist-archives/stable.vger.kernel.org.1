@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-77999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77959-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF0CF988494
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:29:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 242F8988468
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:27:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6943B2812AA
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:29:03 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49E571C22AA2
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:27:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 903CD18BB91;
-	Fri, 27 Sep 2024 12:29:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83F3818BC1F;
+	Fri, 27 Sep 2024 12:27:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b5w9de5M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fHXJ4oHB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 509FF17B515;
-	Fri, 27 Sep 2024 12:29:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4321E18BB91;
+	Fri, 27 Sep 2024 12:27:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440142; cv=none; b=phPQEYLLY2ZQjbXvkB/JAKpIj4F3mp+QjkZiisopPNZ+Nw8KOt40nXjnBZE1bMvvejftwYSUxyVIK/YJpTZMwp3B3JL4L4uAbMBCbqHX/YZNQIJhnDB775lgVcaug5TdRpwuwKTo+mdYsQkP9D7pqUiwXzqgxywKv9qe2li9G5w=
+	t=1727440031; cv=none; b=RrvL72bknA4zkTAIhYt9JH0oWNLDneGV5NfTxz9ZosHL7t/xLkR5VeUBQg/4hi/6qOusJFgBCxZcUd8A2AJt6Nft+UJdZKMHr0HVe6Pp4gES0+TsrT3pQnqV8ZflrZkwxCMCVbARpTNxBuZMN/9bfDm7eFqSxivuCdzPVTUiCCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440142; c=relaxed/simple;
-	bh=d3+9DpdHdKrqiQ4igOtrzILCMd2VOdLbfT4Ub6/FJHE=;
+	s=arc-20240116; t=1727440031; c=relaxed/simple;
+	bh=egkVnnTArlRcwAhEBW1H3i+eoDV5ymbT+2IGTF0JhEY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tra8yjF2zlVuKLnatqC9GnQSz93QRVrYdP6C7OhPsuvRMOUB9N8//c7zL+lBXHs+4x/eu9OXqZNY1ObzTHjxmD7MHtCeXLxzzqYSXl9yr8yYEwZAx3KYiTwRJabEAhjWFBNI3vwA8wEqHHlCgGBDzT/WP6tWApUVf+umiCnbtdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b5w9de5M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D31E9C4CEC4;
-	Fri, 27 Sep 2024 12:29:01 +0000 (UTC)
+	 MIME-Version; b=T+ZNuwumv5akpsmwrcmOfS3b/tSTgxwRLeMBz3eHcr4jZUFj75yKk9mlcya+JtR1wF6V1/zQU52tFvuGEQEeiXyEhJPB0JQiIaB2w6s6cfUKAcOhtX4ssLR1hQjYfQ1E5MwCtP51NdrzDedBJP1q+ZdOsZmmJOKq096ohljkMW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fHXJ4oHB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3AFAC4CEC4;
+	Fri, 27 Sep 2024 12:27:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440142;
-	bh=d3+9DpdHdKrqiQ4igOtrzILCMd2VOdLbfT4Ub6/FJHE=;
+	s=korg; t=1727440031;
+	bh=egkVnnTArlRcwAhEBW1H3i+eoDV5ymbT+2IGTF0JhEY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b5w9de5MJtlFk4zUkLOoBpZ+HUq30nUS3AvVdtjSiNRj7c1XuoVHU0NZEmOBX9ShU
-	 xnXzYWuvIeyP4Zc01HBy2dH/d3/KEL494+tzd4miC7YF/lWjOThzce4YyQCh83m7lh
-	 r6TJKy/YwF7rAGcY/+12V/foMc6t/d8Sz7yQ6ySk=
+	b=fHXJ4oHBfKid9FlxWmBVSTcAwMRiGjKga3isnaugUIc6zNtaR9B9D8r11IcjrLSGZ
+	 fpKX8wZL8I8GrLXmxd3Ur74mSl6X3h0dxmvFMQz+HyYsb4YCD2jGZXAd/bxNjfUvqW
+	 h3w5A0TTdNZ77E+Kg7g7hDVk4X6IZTYR+lkb6qfU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Liao Chen <liaochen4@huawei.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 21/58] wifi: mac80211: free skb on error path in ieee80211_beacon_get_ap()
+Subject: [PATCH 6.6 31/54] spi: bcm63xx: Enable module autoloading
 Date: Fri, 27 Sep 2024 14:23:23 +0200
-Message-ID: <20240927121719.663082440@linuxfoundation.org>
+Message-ID: <20240927121720.990157136@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121718.789211866@linuxfoundation.org>
-References: <20240927121718.789211866@linuxfoundation.org>
+In-Reply-To: <20240927121719.714627278@linuxfoundation.org>
+References: <20240927121719.714627278@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Liao Chen <liaochen4@huawei.com>
 
-[ Upstream commit 786c5be9ac29a39b6f37f1fdd2ea59d0fe35d525 ]
+[ Upstream commit 709df70a20e990d262c473ad9899314039e8ec82 ]
 
-In 'ieee80211_beacon_get_ap()', free allocated skb in case of error
-returned by 'ieee80211_beacon_protect()'. Compile tested only.
+Add MODULE_DEVICE_TABLE(), so modules could be properly autoloaded based
+on the alias from of_device_id table.
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Link: https://patch.msgid.link/20240805142035.227847-1-dmantipov@yandex.ru
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Liao Chen <liaochen4@huawei.com>
+Link: https://patch.msgid.link/20240831094231.795024-1-liaochen4@huawei.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/tx.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/spi/spi-bcm63xx.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
-index edba4a31844fb..bca7b341dd772 100644
---- a/net/mac80211/tx.c
-+++ b/net/mac80211/tx.c
-@@ -5348,8 +5348,10 @@ ieee80211_beacon_get_ap(struct ieee80211_hw *hw,
- 	if (beacon->tail)
- 		skb_put_data(skb, beacon->tail, beacon->tail_len);
+diff --git a/drivers/spi/spi-bcm63xx.c b/drivers/spi/spi-bcm63xx.c
+index aac41bd05f98f..2fb8d4e55c777 100644
+--- a/drivers/spi/spi-bcm63xx.c
++++ b/drivers/spi/spi-bcm63xx.c
+@@ -472,6 +472,7 @@ static const struct of_device_id bcm63xx_spi_of_match[] = {
+ 	{ .compatible = "brcm,bcm6358-spi", .data = &bcm6358_spi_reg_offsets },
+ 	{ },
+ };
++MODULE_DEVICE_TABLE(of, bcm63xx_spi_of_match);
  
--	if (ieee80211_beacon_protect(skb, local, sdata, link) < 0)
-+	if (ieee80211_beacon_protect(skb, local, sdata, link) < 0) {
-+		dev_kfree_skb(skb);
- 		return NULL;
-+	}
- 
- 	ieee80211_beacon_get_finish(hw, vif, link, offs, beacon, skb,
- 				    chanctx_conf, csa_off_base);
+ static int bcm63xx_spi_probe(struct platform_device *pdev)
+ {
 -- 
 2.43.0
 
