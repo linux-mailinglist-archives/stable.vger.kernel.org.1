@@ -1,58 +1,59 @@
-Return-Path: <stable+bounces-78012-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78090-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id F03F69884A3
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:29:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA430988508
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:33:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 5F361B2415F
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:29:42 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9C76B281818
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:33:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BEC3E18A95D;
-	Fri, 27 Sep 2024 12:29:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 351EF18BB91;
+	Fri, 27 Sep 2024 12:33:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zBw+EfRk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v00vZ2Y8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E9B418BC0D;
-	Fri, 27 Sep 2024 12:29:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E843518893F;
+	Fri, 27 Sep 2024 12:33:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440178; cv=none; b=SlHaNLbA875k0Fv1h/JUbFBFi4yJYMiMTHKnQhHFeylB2DNB40hXW4tztZIh7jsHQBBpivdRjPtaay7JjLubEQp7S0SuPpFol2+uX78S3gcJ0F/U/wVvYIdKRmKfUgXwgLrxeR+/411hp1zYBDqMTI8AG8WBA8ge6ujxHnsPel0=
+	t=1727440395; cv=none; b=KZ7V/GEB/rFHr9MDJnRz+vB7RzsVTGucode8N55BE6O+vUm2c9CuLBHIg4AnSRN4olabYl0UHwAWnZwWwQi0DV0mLYqbRJpyYygUjM0eiXsOdDU6vhXxod6a4t9Fd5laEMU9XTMXuaJqW2OGmXOFxBb2M7XB4vbnklzH+ADZsfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440178; c=relaxed/simple;
-	bh=YlOxE1O3zk/HVDtRDlIN7Ek0F56yLIzrdslyZFwaaV0=;
+	s=arc-20240116; t=1727440395; c=relaxed/simple;
+	bh=g4cM6g2U6FQPFx6q3/VJW48THhTbPFQpAY8PPCaeLhQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E/kdC4NGC7kfqIp7ZbKaIFNLuol37CUIDk6fvMGj9N1ojewChToA+qSaSp7QYCwksfFM2AaE5EXJhJ64P1hVu/dPlKEafG+taSUhlowVxHVUu47jPahBeXHT444FtTWqX+JtJQgDgsxJLnYZsAHXVxEtfYuBUpRCNUiecd331lA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zBw+EfRk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AB14C4CEC4;
-	Fri, 27 Sep 2024 12:29:37 +0000 (UTC)
+	 MIME-Version; b=vCum0QxaxF66KtS2DM2ZZ0XONueIBg9EovGcOjzj/IbyjeUy8ZU7epCdjiq+F738hEXG9irSFxJSVe8ekVF189Am+lI2htoAom4xv1GUFKiLPYaEoWFBAPbBFzq1/xNJejyr7a+THBVXS4ADw5WxEGeG7afMvFq+mQ5teY+xlgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v00vZ2Y8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74473C4CEC4;
+	Fri, 27 Sep 2024 12:33:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440178;
-	bh=YlOxE1O3zk/HVDtRDlIN7Ek0F56yLIzrdslyZFwaaV0=;
+	s=korg; t=1727440394;
+	bh=g4cM6g2U6FQPFx6q3/VJW48THhTbPFQpAY8PPCaeLhQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zBw+EfRkG9xk4Scvdfz8pQhuecN4hXnMvtwE6XsN4wYRIItegGC91UvYJEWXNRK4Z
-	 raXcxJ4AnueDVOMIxcOFc67knDkFCU6NDysD9wYZAl3dxDr76a76UBQbGapEV7zWRi
-	 xKgwoEXIuJinaOFlkOSQYGVTpGWxdpEKXnd/cc0U=
+	b=v00vZ2Y8ssm/W7o4/jvdUjP7E4Wv/IXacwND2HxIvmnPpUdHqDmzffiTvsAmXVtOf
+	 tOEQYE5eRCiyimCNdH3RRjoY6q+llsXTzpNF53wVuya/YAJiSO65vvAYkrpJ0lvXy3
+	 mOsnp2wJOyEYJ2N4H1haX3ZdOf4VpM3JvkUCkgPA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Larabel <michael@michaellarabel.com>,
-	Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>,
-	Zhang Rui <rui.zhang@intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 50/58] powercap/intel_rapl: Fix the energy-pkg event for AMD CPUs
+	Ye Bin <yebin10@huawei.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Dave Chinner <dchinner@redhat.com>,
+	Dave Chinner <david@fromorbit.com>,
+	Leah Rumancik <leah.rumancik@gmail.com>,
+	Chandan Babu R <chandanbabu@kernel.org>
+Subject: [PATCH 6.1 41/73] xfs: fix BUG_ON in xfs_getbmap()
 Date: Fri, 27 Sep 2024 14:23:52 +0200
-Message-ID: <20240927121720.846884461@linuxfoundation.org>
+Message-ID: <20240927121721.596282462@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121718.789211866@linuxfoundation.org>
-References: <20240927121718.789211866@linuxfoundation.org>
+In-Reply-To: <20240927121719.897851549@linuxfoundation.org>
+References: <20240927121719.897851549@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,131 +65,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
+From: Ye Bin <yebin10@huawei.com>
 
-[ Upstream commit 26096aed255fbac9501718174dbb24c935d8854e ]
+[ Upstream commit 8ee81ed581ff35882b006a5205100db0b57bf070 ]
 
-After commit ("x86/cpu/topology: Add support for the AMD 0x80000026 leaf"),
-on AMD processors that support extended CPUID leaf 0x80000026, the
-topology_logical_die_id() macros, no longer returns package id, instead it
-returns the CCD (Core Complex Die) id. This leads to the energy-pkg
-event scope to be modified to CCD instead of package.
+There's issue as follows:
+XFS: Assertion failed: (bmv->bmv_iflags & BMV_IF_DELALLOC) != 0, file: fs/xfs/xfs_bmap_util.c, line: 329
+------------[ cut here ]------------
+kernel BUG at fs/xfs/xfs_message.c:102!
+invalid opcode: 0000 [#1] PREEMPT SMP KASAN
+CPU: 1 PID: 14612 Comm: xfs_io Not tainted 6.3.0-rc2-next-20230315-00006-g2729d23ddb3b-dirty #422
+RIP: 0010:assfail+0x96/0xa0
+RSP: 0018:ffffc9000fa178c0 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: 0000000000000001 RCX: ffff888179a18000
+RDX: 0000000000000000 RSI: ffff888179a18000 RDI: 0000000000000002
+RBP: 0000000000000000 R08: ffffffff8321aab6 R09: 0000000000000000
+R10: 0000000000000001 R11: ffffed1105f85139 R12: ffffffff8aacc4c0
+R13: 0000000000000149 R14: ffff888269f58000 R15: 000000000000000c
+FS:  00007f42f27a4740(0000) GS:ffff88882fc00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000b92388 CR3: 000000024f006000 CR4: 00000000000006e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ xfs_getbmap+0x1a5b/0x1e40
+ xfs_ioc_getbmap+0x1fd/0x5b0
+ xfs_file_ioctl+0x2cb/0x1d50
+ __x64_sys_ioctl+0x197/0x210
+ do_syscall_64+0x39/0xb0
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
 
-For more historical context, please refer to commit 32fb480e0a2c
-("powercap/intel_rapl: Support multi-die/package"), which initially changed
-the RAPL scope from package to die for all systems, as Intel systems
-with Die enumeration have RAPL scope as die, and those without die
-enumeration are not affected. So, all systems(Intel, AMD, Hygon), worked
-correctly with topology_logical_die_id() until recently, but this changed
-after the "0x80000026 leaf" commit mentioned above.
+Above issue may happen as follows:
+         ThreadA                       ThreadB
+do_shared_fault
+ __do_fault
+  xfs_filemap_fault
+   __xfs_filemap_fault
+    filemap_fault
+                             xfs_ioc_getbmap -> Without BMV_IF_DELALLOC flag
+			      xfs_getbmap
+			       xfs_ilock(ip, XFS_IOLOCK_SHARED);
+			       filemap_write_and_wait
+ do_page_mkwrite
+  xfs_filemap_page_mkwrite
+   __xfs_filemap_fault
+    xfs_ilock(XFS_I(inode), XFS_MMAPLOCK_SHARED);
+    iomap_page_mkwrite
+     ...
+     xfs_buffered_write_iomap_begin
+      xfs_bmapi_reserve_delalloc -> Allocate delay extent
+                              xfs_ilock_data_map_shared(ip)
+	                      xfs_getbmap_report_one
+			       ASSERT((bmv->bmv_iflags & BMV_IF_DELALLOC) != 0)
+	                        -> trigger BUG_ON
 
-Future multi-die Intel systems will have package scope RAPL counters,
-but they will be using TPMI RAPL interface, which is not affected by
-this change.
+As xfs_filemap_page_mkwrite() only hold XFS_MMAPLOCK_SHARED lock, there's
+small window mkwrite can produce delay extent after file write in xfs_getbmap().
+To solve above issue, just skip delalloc extents.
 
-Replacing topology_logical_die_id() with topology_physical_package_id()
-conditionally only for AMD and Hygon fixes the energy-pkg event.
-
-On an AMD 2 socket 8 CCD Zen4 server:
-
-Before:
-
-linux$ ls /sys/class/powercap/
-intel-rapl      intel-rapl:4    intel-rapl:8:0  intel-rapl:d
-intel-rapl:0    intel-rapl:4:0  intel-rapl:9    intel-rapl:d:0
-intel-rapl:0:0  intel-rapl:5    intel-rapl:9:0  intel-rapl:e
-intel-rapl:1    intel-rapl:5:0  intel-rapl:a    intel-rapl:e:0
-intel-rapl:1:0  intel-rapl:6    intel-rapl:a:0  intel-rapl:f
-intel-rapl:2    intel-rapl:6:0  intel-rapl:b    intel-rapl:f:0
-intel-rapl:2:0  intel-rapl:7    intel-rapl:b:0
-intel-rapl:3    intel-rapl:7:0  intel-rapl:c
-intel-rapl:3:0  intel-rapl:8    intel-rapl:c:0
-
-After:
-
-linux$ ls /sys/class/powercap/
-intel-rapl  intel-rapl:0  intel-rapl:0:0  intel-rapl:1  intel-rapl:1:0
-
-Only one sysfs entry per-event per-package is created after this change.
-
-Fixes: 63edbaa48a57 ("x86/cpu/topology: Add support for the AMD 0x80000026 leaf")
-Reported-by: Michael Larabel <michael@michaellarabel.com>
-Signed-off-by: Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
-Reviewed-by: Zhang Rui <rui.zhang@intel.com>
-Link: https://patch.msgid.link/20240730044917.4680-3-Dhananjay.Ugwekar@amd.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Dave Chinner <dchinner@redhat.com>
+Signed-off-by: Dave Chinner <david@fromorbit.com>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Acked-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/powercap/intel_rapl_common.c | 34 ++++++++++++++++++++++++----
- 1 file changed, 30 insertions(+), 4 deletions(-)
+ fs/xfs/xfs_bmap_util.c |   14 ++++++--------
+ 1 file changed, 6 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/powercap/intel_rapl_common.c b/drivers/powercap/intel_rapl_common.c
-index d51d4ec8d707c..28bc6f85b6c87 100644
---- a/drivers/powercap/intel_rapl_common.c
-+++ b/drivers/powercap/intel_rapl_common.c
-@@ -2129,6 +2129,21 @@ void rapl_remove_package(struct rapl_package *rp)
- }
- EXPORT_SYMBOL_GPL(rapl_remove_package);
+--- a/fs/xfs/xfs_bmap_util.c
++++ b/fs/xfs/xfs_bmap_util.c
+@@ -314,15 +314,13 @@ xfs_getbmap_report_one(
+ 	if (isnullstartblock(got->br_startblock) ||
+ 	    got->br_startblock == DELAYSTARTBLOCK) {
+ 		/*
+-		 * Delalloc extents that start beyond EOF can occur due to
+-		 * speculative EOF allocation when the delalloc extent is larger
+-		 * than the largest freespace extent at conversion time.  These
+-		 * extents cannot be converted by data writeback, so can exist
+-		 * here even if we are not supposed to be finding delalloc
+-		 * extents.
++		 * Take the flush completion as being a point-in-time snapshot
++		 * where there are no delalloc extents, and if any new ones
++		 * have been created racily, just skip them as being 'after'
++		 * the flush and so don't get reported.
+ 		 */
+-		if (got->br_startoff < XFS_B_TO_FSB(ip->i_mount, XFS_ISIZE(ip)))
+-			ASSERT((bmv->bmv_iflags & BMV_IF_DELALLOC) != 0);
++		if (!(bmv->bmv_iflags & BMV_IF_DELALLOC))
++			return 0;
  
-+/*
-+ * RAPL Package energy counter scope:
-+ * 1. AMD/HYGON platforms use per-PKG package energy counter
-+ * 2. For Intel platforms
-+ *	2.1 CLX-AP platform has per-DIE package energy counter
-+ *	2.2 Other platforms that uses MSR RAPL are single die systems so the
-+ *          package energy counter can be considered as per-PKG/per-DIE,
-+ *          here it is considered as per-DIE.
-+ *	2.3 New platforms that use TPMI RAPL doesn't care about the
-+ *	    scope because they are not MSR/CPU based.
-+ */
-+#define rapl_msrs_are_pkg_scope()				\
-+	(boot_cpu_data.x86_vendor == X86_VENDOR_AMD ||	\
-+	 boot_cpu_data.x86_vendor == X86_VENDOR_HYGON)
-+
- /* caller to ensure CPU hotplug lock is held */
- struct rapl_package *rapl_find_package_domain_cpuslocked(int id, struct rapl_if_priv *priv,
- 							 bool id_is_cpu)
-@@ -2136,8 +2151,14 @@ struct rapl_package *rapl_find_package_domain_cpuslocked(int id, struct rapl_if_
- 	struct rapl_package *rp;
- 	int uid;
- 
--	if (id_is_cpu)
--		uid = topology_logical_die_id(id);
-+	if (id_is_cpu) {
-+		uid = rapl_msrs_are_pkg_scope() ?
-+		      topology_physical_package_id(id) : topology_logical_die_id(id);
-+		if (uid < 0) {
-+			pr_err("topology_logical_(package/die)_id() returned a negative value");
-+			return ERR_PTR(-EINVAL);
-+		}
-+	}
- 	else
- 		uid = id;
- 
-@@ -2169,9 +2190,14 @@ struct rapl_package *rapl_add_package_cpuslocked(int id, struct rapl_if_priv *pr
- 		return ERR_PTR(-ENOMEM);
- 
- 	if (id_is_cpu) {
--		rp->id = topology_logical_die_id(id);
-+		rp->id = rapl_msrs_are_pkg_scope() ?
-+			 topology_physical_package_id(id) : topology_logical_die_id(id);
-+		if ((int)(rp->id) < 0) {
-+			pr_err("topology_logical_(package/die)_id() returned a negative value");
-+			return ERR_PTR(-EINVAL);
-+		}
- 		rp->lead_cpu = id;
--		if (topology_max_dies_per_package() > 1)
-+		if (!rapl_msrs_are_pkg_scope() && topology_max_dies_per_package() > 1)
- 			snprintf(rp->name, PACKAGE_DOMAIN_NAME_LENGTH, "package-%d-die-%d",
- 				 topology_physical_package_id(id), topology_die_id(id));
- 		else
--- 
-2.43.0
-
+ 		p->bmv_oflags |= BMV_OF_DELALLOC;
+ 		p->bmv_block = -2;
 
 
 
