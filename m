@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-78026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78081-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80A6E9884B7
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:30:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C94859884FD
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:33:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0715B282FE2
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:30:39 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 847F6283522
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:33:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 662B018C012;
-	Fri, 27 Sep 2024 12:30:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BE3418A95D;
+	Fri, 27 Sep 2024 12:32:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vn+WzaeF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NR9uDASI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2325518C034;
-	Fri, 27 Sep 2024 12:30:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE7FE3C3C;
+	Fri, 27 Sep 2024 12:32:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440218; cv=none; b=TOYFzeZYafO9/oZLPZyRsaMtC1CTKqrSGAf1r+8p4nR2vLNDQFA4F8RdraIOaQcFcsyzSWjiGRqf53ug/VQ34mlzBbGAAfeE/HHv//90sJ0fKsVPGwRWWtLWZzByxrXk1kMxHM89+0jm7bkkJdlGKLU9KZpz+11N54DytB/paRA=
+	t=1727440370; cv=none; b=TWkWJjiVNuiW6GQ/Z8etzboTXvkjv7obSm20jHVwM21dHLfDy3l1uNuyMnR9hf4jvhvppIKhuMC9RWlw76gI3qib07ob31bMoQOuEAhnlG+OVHUomXBGptKxXl53xg3H3FeyS1rf3jsgagomublrNBVg1wbje4ecGrjJ8By+YZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440218; c=relaxed/simple;
-	bh=y5BFmTeSe9/AM1d26bEYjjDSnWu3iWDJ6JiKpyZJQJc=;
+	s=arc-20240116; t=1727440370; c=relaxed/simple;
+	bh=hu2Y2h/znGYO3zGKu2HObo8YJGwEV0PBQq0DvHn38HM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HulINnWhlHDlPoeRpsatP/DDOA0LcRAKrvWtyvZnVhFOV+RvVTOr+wK8OIKIfURsNYpwVguW2f9piEBz3hK0DUgvpXkL7YfGYMQQvLPFDYU0mOnj+7LWDDE8VqaQrilUuC9pCHdM49z+e7Ptj7Pbgx5G9u3yWiE1Z856u08PvAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vn+WzaeF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05D05C4CEC4;
-	Fri, 27 Sep 2024 12:30:16 +0000 (UTC)
+	 MIME-Version; b=qqVzXK4Npf0qu+DgpS8Dbbao2VA0TBZAjurm9J/t7BeSu09caOTZB040vBdOcGaKevEEIORCotkW1ILX9ktWcfRuR9sZyHyeQLVlKKutTXgl3ZjPCEiVfKCNVPfkrBgNTm5FpHn25Y+xWA4+kqn7DDhAAQlzaGvLXfAaorzSEPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NR9uDASI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7ADFDC4CEC4;
+	Fri, 27 Sep 2024 12:32:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440217;
-	bh=y5BFmTeSe9/AM1d26bEYjjDSnWu3iWDJ6JiKpyZJQJc=;
+	s=korg; t=1727440369;
+	bh=hu2Y2h/znGYO3zGKu2HObo8YJGwEV0PBQq0DvHn38HM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vn+WzaeFs7138A7qNHUwp1+wOynfbXy7G7yJwaKBs8Am1FWzY2+Jd1jOOiPd/vFzE
-	 kndiRsoKzN5in+ENfNJzzjevJ5aYklFwrfnQZmfc0O2MUoONoHSVye0x+ESXdwXGaq
-	 WHYI+O3goV2sXBL2lXJqYdKOR7iBVWw/r0P69rPA=
+	b=NR9uDASIW52w8/Iz6PC94+l6DFVUmwYH6PoAlfmWXbNX1RNbZQNWuyiEOFAH0pdvE
+	 DyWtksZuRrm8IAAnBPD6MdPUVg6fcg8zn5QFMbBL5+FD1qbXrOsE2KHEZSgcEW2raq
+	 YNK2twFhJTnUQVoI1maQGIVkXBbtt8n/mLr5kV+4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Larabel <michael@michaellarabel.com>,
-	Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>,
-	Zhang Rui <rui.zhang@intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 05/12] powercap/intel_rapl: Fix the energy-pkg event for AMD CPUs
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Dave Chinner <dchinner@redhat.com>,
+	Dave Chinner <david@fromorbit.com>,
+	Leah Rumancik <leah.rumancik@gmail.com>,
+	Chandan Babu R <chandanbabu@kernel.org>
+Subject: [PATCH 6.1 57/73] xfs: set bnobt/cntbt numrecs correctly when formatting new AGs
 Date: Fri, 27 Sep 2024 14:24:08 +0200
-Message-ID: <20240927121715.461646108@linuxfoundation.org>
+Message-ID: <20240927121722.231183900@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121715.213013166@linuxfoundation.org>
-References: <20240927121715.213013166@linuxfoundation.org>
+In-Reply-To: <20240927121719.897851549@linuxfoundation.org>
+References: <20240927121719.897851549@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,131 +64,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
+From: "Darrick J. Wong" <djwong@kernel.org>
 
-[ Upstream commit 26096aed255fbac9501718174dbb24c935d8854e ]
+[ Upstream commit 8e698ee72c4ecbbf18264568eb310875839fd601 ]
 
-After commit ("x86/cpu/topology: Add support for the AMD 0x80000026 leaf"),
-on AMD processors that support extended CPUID leaf 0x80000026, the
-topology_logical_die_id() macros, no longer returns package id, instead it
-returns the CCD (Core Complex Die) id. This leads to the energy-pkg
-event scope to be modified to CCD instead of package.
+Through generic/300, I discovered that mkfs.xfs creates corrupt
+filesystems when given these parameters:
 
-For more historical context, please refer to commit 32fb480e0a2c
-("powercap/intel_rapl: Support multi-die/package"), which initially changed
-the RAPL scope from package to die for all systems, as Intel systems
-with Die enumeration have RAPL scope as die, and those without die
-enumeration are not affected. So, all systems(Intel, AMD, Hygon), worked
-correctly with topology_logical_die_id() until recently, but this changed
-after the "0x80000026 leaf" commit mentioned above.
+Filesystems formatted with --unsupported are not supported!!
+meta-data=/dev/sda               isize=512    agcount=8, agsize=16352 blks
+         =                       sectsz=512   attr=2, projid32bit=1
+         =                       crc=1        finobt=1, sparse=1, rmapbt=1
+         =                       reflink=1    bigtime=1 inobtcount=1 nrext64=1
+data     =                       bsize=4096   blocks=130816, imaxpct=25
+         =                       sunit=32     swidth=128 blks
+naming   =version 2              bsize=4096   ascii-ci=0, ftype=1
+log      =internal log           bsize=4096   blocks=8192, version=2
+         =                       sectsz=512   sunit=32 blks, lazy-count=1
+realtime =none                   extsz=4096   blocks=0, rtextents=0
+         =                       rgcount=0    rgsize=0 blks
+Discarding blocks...Done.
+Phase 1 - find and verify superblock...
+        - reporting progress in intervals of 15 minutes
+Phase 2 - using internal log
+        - zero log...
+        - 16:30:50: zeroing log - 16320 of 16320 blocks done
+        - scan filesystem freespace and inode maps...
+agf_freeblks 25, counted 0 in ag 4
+sb_fdblocks 8823, counted 8798
 
-Future multi-die Intel systems will have package scope RAPL counters,
-but they will be using TPMI RAPL interface, which is not affected by
-this change.
+The root cause of this problem is the numrecs handling in
+xfs_freesp_init_recs, which is used to initialize a new AG.  Prior to
+calling the function, we set up the new bnobt block with numrecs == 1
+and rely on _freesp_init_recs to format that new record.  If the last
+record created has a blockcount of zero, then it sets numrecs = 0.
 
-Replacing topology_logical_die_id() with topology_physical_package_id()
-conditionally only for AMD and Hygon fixes the energy-pkg event.
+That last bit isn't correct if the AG contains the log, the start of the
+log is not immediately after the initial blocks due to stripe alignment,
+and the end of the log is perfectly aligned with the end of the AG.  For
+this case, we actually formatted a single bnobt record to handle the
+free space before the start of the (stripe aligned) log, and incremented
+arec to try to format a second record.  That second record turned out to
+be unnecessary, so what we really want is to leave numrecs at 1.
 
-On an AMD 2 socket 8 CCD Zen4 server:
+The numrecs handling itself is overly complicated because a different
+function sets numrecs == 1.  Change the bnobt creation code to start
+with numrecs set to zero and only increment it after successfully
+formatting a free space extent into the btree block.
 
-Before:
-
-linux$ ls /sys/class/powercap/
-intel-rapl      intel-rapl:4    intel-rapl:8:0  intel-rapl:d
-intel-rapl:0    intel-rapl:4:0  intel-rapl:9    intel-rapl:d:0
-intel-rapl:0:0  intel-rapl:5    intel-rapl:9:0  intel-rapl:e
-intel-rapl:1    intel-rapl:5:0  intel-rapl:a    intel-rapl:e:0
-intel-rapl:1:0  intel-rapl:6    intel-rapl:a:0  intel-rapl:f
-intel-rapl:2    intel-rapl:6:0  intel-rapl:b    intel-rapl:f:0
-intel-rapl:2:0  intel-rapl:7    intel-rapl:b:0
-intel-rapl:3    intel-rapl:7:0  intel-rapl:c
-intel-rapl:3:0  intel-rapl:8    intel-rapl:c:0
-
-After:
-
-linux$ ls /sys/class/powercap/
-intel-rapl  intel-rapl:0  intel-rapl:0:0  intel-rapl:1  intel-rapl:1:0
-
-Only one sysfs entry per-event per-package is created after this change.
-
-Fixes: 63edbaa48a57 ("x86/cpu/topology: Add support for the AMD 0x80000026 leaf")
-Reported-by: Michael Larabel <michael@michaellarabel.com>
-Signed-off-by: Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
-Reviewed-by: Zhang Rui <rui.zhang@intel.com>
-Link: https://patch.msgid.link/20240730044917.4680-3-Dhananjay.Ugwekar@amd.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f327a00745ff ("xfs: account for log space when formatting new AGs")
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Dave Chinner <dchinner@redhat.com>
+Signed-off-by: Dave Chinner <david@fromorbit.com>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Acked-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/powercap/intel_rapl_common.c | 34 ++++++++++++++++++++++++----
- 1 file changed, 30 insertions(+), 4 deletions(-)
+ fs/xfs/libxfs/xfs_ag.c |   19 +++++++++----------
+ 1 file changed, 9 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/powercap/intel_rapl_common.c b/drivers/powercap/intel_rapl_common.c
-index 8b7a5a31e8c17..5a6d05bf847ce 100644
---- a/drivers/powercap/intel_rapl_common.c
-+++ b/drivers/powercap/intel_rapl_common.c
-@@ -2129,6 +2129,21 @@ void rapl_remove_package(struct rapl_package *rp)
+--- a/fs/xfs/libxfs/xfs_ag.c
++++ b/fs/xfs/libxfs/xfs_ag.c
+@@ -415,10 +415,12 @@ xfs_freesp_init_recs(
+ 		ASSERT(start >= mp->m_ag_prealloc_blocks);
+ 		if (start != mp->m_ag_prealloc_blocks) {
+ 			/*
+-			 * Modify first record to pad stripe align of log
++			 * Modify first record to pad stripe align of log and
++			 * bump the record count.
+ 			 */
+ 			arec->ar_blockcount = cpu_to_be32(start -
+ 						mp->m_ag_prealloc_blocks);
++			be16_add_cpu(&block->bb_numrecs, 1);
+ 			nrec = arec + 1;
+ 
+ 			/*
+@@ -429,7 +431,6 @@ xfs_freesp_init_recs(
+ 					be32_to_cpu(arec->ar_startblock) +
+ 					be32_to_cpu(arec->ar_blockcount));
+ 			arec = nrec;
+-			be16_add_cpu(&block->bb_numrecs, 1);
+ 		}
+ 		/*
+ 		 * Change record start to after the internal log
+@@ -438,15 +439,13 @@ xfs_freesp_init_recs(
+ 	}
+ 
+ 	/*
+-	 * Calculate the record block count and check for the case where
+-	 * the log might have consumed all available space in the AG. If
+-	 * so, reset the record count to 0 to avoid exposure of an invalid
+-	 * record start block.
++	 * Calculate the block count of this record; if it is nonzero,
++	 * increment the record count.
+ 	 */
+ 	arec->ar_blockcount = cpu_to_be32(id->agsize -
+ 					  be32_to_cpu(arec->ar_startblock));
+-	if (!arec->ar_blockcount)
+-		block->bb_numrecs = 0;
++	if (arec->ar_blockcount)
++		be16_add_cpu(&block->bb_numrecs, 1);
  }
- EXPORT_SYMBOL_GPL(rapl_remove_package);
  
-+/*
-+ * RAPL Package energy counter scope:
-+ * 1. AMD/HYGON platforms use per-PKG package energy counter
-+ * 2. For Intel platforms
-+ *	2.1 CLX-AP platform has per-DIE package energy counter
-+ *	2.2 Other platforms that uses MSR RAPL are single die systems so the
-+ *          package energy counter can be considered as per-PKG/per-DIE,
-+ *          here it is considered as per-DIE.
-+ *	2.3 New platforms that use TPMI RAPL doesn't care about the
-+ *	    scope because they are not MSR/CPU based.
-+ */
-+#define rapl_msrs_are_pkg_scope()				\
-+	(boot_cpu_data.x86_vendor == X86_VENDOR_AMD ||	\
-+	 boot_cpu_data.x86_vendor == X86_VENDOR_HYGON)
-+
- /* caller to ensure CPU hotplug lock is held */
- struct rapl_package *rapl_find_package_domain_cpuslocked(int id, struct rapl_if_priv *priv,
- 							 bool id_is_cpu)
-@@ -2136,8 +2151,14 @@ struct rapl_package *rapl_find_package_domain_cpuslocked(int id, struct rapl_if_
- 	struct rapl_package *rp;
- 	int uid;
+ /*
+@@ -458,7 +457,7 @@ xfs_bnoroot_init(
+ 	struct xfs_buf		*bp,
+ 	struct aghdr_init_data	*id)
+ {
+-	xfs_btree_init_block(mp, bp, XFS_BTNUM_BNO, 0, 1, id->agno);
++	xfs_btree_init_block(mp, bp, XFS_BTNUM_BNO, 0, 0, id->agno);
+ 	xfs_freesp_init_recs(mp, bp, id);
+ }
  
--	if (id_is_cpu)
--		uid = topology_logical_die_id(id);
-+	if (id_is_cpu) {
-+		uid = rapl_msrs_are_pkg_scope() ?
-+		      topology_physical_package_id(id) : topology_logical_die_id(id);
-+		if (uid < 0) {
-+			pr_err("topology_logical_(package/die)_id() returned a negative value");
-+			return ERR_PTR(-EINVAL);
-+		}
-+	}
- 	else
- 		uid = id;
+@@ -468,7 +467,7 @@ xfs_cntroot_init(
+ 	struct xfs_buf		*bp,
+ 	struct aghdr_init_data	*id)
+ {
+-	xfs_btree_init_block(mp, bp, XFS_BTNUM_CNT, 0, 1, id->agno);
++	xfs_btree_init_block(mp, bp, XFS_BTNUM_CNT, 0, 0, id->agno);
+ 	xfs_freesp_init_recs(mp, bp, id);
+ }
  
-@@ -2169,9 +2190,14 @@ struct rapl_package *rapl_add_package_cpuslocked(int id, struct rapl_if_priv *pr
- 		return ERR_PTR(-ENOMEM);
- 
- 	if (id_is_cpu) {
--		rp->id = topology_logical_die_id(id);
-+		rp->id = rapl_msrs_are_pkg_scope() ?
-+			 topology_physical_package_id(id) : topology_logical_die_id(id);
-+		if ((int)(rp->id) < 0) {
-+			pr_err("topology_logical_(package/die)_id() returned a negative value");
-+			return ERR_PTR(-EINVAL);
-+		}
- 		rp->lead_cpu = id;
--		if (topology_max_dies_per_package() > 1)
-+		if (!rapl_msrs_are_pkg_scope() && topology_max_dies_per_package() > 1)
- 			snprintf(rp->name, PACKAGE_DOMAIN_NAME_LENGTH, "package-%d-die-%d",
- 				 topology_physical_package_id(id), topology_die_id(id));
- 		else
--- 
-2.43.0
-
 
 
 
