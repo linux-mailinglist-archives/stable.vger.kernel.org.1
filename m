@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-77973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77913-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31A5D988476
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:27:52 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FA0298842E
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:25:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E19EB2812AA
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:27:50 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3661D1C219A4
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:25:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73D4A18A95D;
-	Fri, 27 Sep 2024 12:27:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F48318BC3A;
+	Fri, 27 Sep 2024 12:25:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eNzDy/wY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OUoHMHeq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32E0817B515;
-	Fri, 27 Sep 2024 12:27:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEDD418BB91;
+	Fri, 27 Sep 2024 12:25:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440070; cv=none; b=oKxAEhTBFTwOXBw1ixlI0/PBwLYDM5dibarMCDRPyI+RbxmAsRPcfFR7eiEOQfuDGos8kVByLXo/PrmDlVrkSqnt+IBDwJU0v/bvwpXPJWwuiZIWar+dlkIZPi8i4UZTTKSn3GkNn1m3n8ZyaHL2MjHVA2ux4ZTDFdD+O1Qd2VM=
+	t=1727439903; cv=none; b=QhvUXDH9PD5o7jEhny7REapPoS9eULCoYpqG9RyPL32mk4wJEaZSUq+5UHUPO8eSdBhvuGKnMWDM039DhfmE7iaXoRVbNDUkOdwiBjKZ0kgWLmJnOXw0FfdLxgj30wytiaBUoxSAqiOnc/MloZcwXweYUuldGRGHfaJ61v7/vsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440070; c=relaxed/simple;
-	bh=coIraZ0EF1DMHXeHw7ZFn5siw75tk56s4aEsf1uOHLs=;
+	s=arc-20240116; t=1727439903; c=relaxed/simple;
+	bh=kxVUtgjulB3OFFzY3ZrcNsaLHm/Fl4PVScGrhVsROCM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OExF1Spvnn4QtbgkoiMvOd0hFwLF/bLnG56sGPTgNZKX21rKrthmuG4Bxc9TGXC8WBBJ7p/P83awSIgSfGAiH+AyOBBLU4dQtL9RsH2Iahcr3nE9AwxpBqgpwhIchdQpXhQvtiQGd73oierrYfv4i4i0JjfNEvCaNG2yKvxt+6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eNzDy/wY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5678C4CEC4;
-	Fri, 27 Sep 2024 12:27:49 +0000 (UTC)
+	 MIME-Version; b=hstiLruAGmT3u1uKhbkGVsuHRadSk/9oJhAXu//Fy2bCRbxxwyAp4OmO+dcLOAIxEi5VRerf8VUUy7RXZtY2e9K4SZcS+SlWSLAofncqOOI7nXAJ+Jp9989NzqAOrqKghn6stT7J9nnGaez3TcIzi+OpuRJARzDTZfOkBmoQw4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OUoHMHeq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5180CC4CEC4;
+	Fri, 27 Sep 2024 12:25:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440070;
-	bh=coIraZ0EF1DMHXeHw7ZFn5siw75tk56s4aEsf1uOHLs=;
+	s=korg; t=1727439902;
+	bh=kxVUtgjulB3OFFzY3ZrcNsaLHm/Fl4PVScGrhVsROCM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eNzDy/wYs05ZqepZDNNzDu/yxdgWGsxTx0OUfNTvLkGXPTQUnEkVp37KT1ncIxioM
-	 I1hsHr7nNu/HDLm2QR4gj8cSjFe9qG88qbzFLZLOcKVgAUCimr9oOI505bPPi/9BLO
-	 rVtWjt5ZwiJZGTPAKHwW6XKfUhC4zEAgGUD4P8SQ=
+	b=OUoHMHeq7xntq2CIi12Ma5Y8DmPwNMvsMdtLw3Gjoltyj5zepfQXY/6d6OfXqRFe5
+	 kbjkseBCfwldA7Q7TjTrV/d0J7lh35pLkQ0WLvL2f/AjD0UJSaElnlGwvvKWZRaG9Y
+	 QczA7iMCX2abL7sgZVBexI2empDLxfn2O7lfnd2g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sherry Yang <sherry.yang@oracle.com>,
-	Justin Tee <justin.tee@broadcom.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 07/58] scsi: lpfc: Fix overflow build issue
+Subject: [PATCH 6.6 17/54] wifi: iwlwifi: mvm: pause TCM when the firmware is stopped
 Date: Fri, 27 Sep 2024 14:23:09 +0200
-Message-ID: <20240927121719.103103662@linuxfoundation.org>
+Message-ID: <20240927121720.389046283@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121718.789211866@linuxfoundation.org>
-References: <20240927121718.789211866@linuxfoundation.org>
+In-Reply-To: <20240927121719.714627278@linuxfoundation.org>
+References: <20240927121719.714627278@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sherry Yang <sherry.yang@oracle.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-[ Upstream commit 3417c9574e368f0330637505f00d3814ca8854d2 ]
+[ Upstream commit 0668ebc8c2282ca1e7eb96092a347baefffb5fe7 ]
 
-Build failed while enabling "CONFIG_GCOV_KERNEL=y" and
-"CONFIG_GCOV_PROFILE_ALL=y" with following error:
+Not doing so will make us send a host command to the transport while the
+firmware is not alive, which will trigger a WARNING.
 
-BUILDSTDERR: drivers/scsi/lpfc/lpfc_bsg.c: In function 'lpfc_get_cgnbuf_info':
-BUILDSTDERR: ./include/linux/fortify-string.h:114:33: error: '__builtin_memcpy' accessing 18446744073709551615 bytes at offsets 0 and 0 overlaps 9223372036854775807 bytes at offset -9223372036854775808 [-Werror=restrict]
-BUILDSTDERR:   114 | #define __underlying_memcpy     __builtin_memcpy
-BUILDSTDERR:       |                                 ^
-BUILDSTDERR: ./include/linux/fortify-string.h:637:9: note: in expansion of macro '__underlying_memcpy'
-BUILDSTDERR:   637 |         __underlying_##op(p, q, __fortify_size);                        \
-BUILDSTDERR:       |         ^~~~~~~~~~~~~
-BUILDSTDERR: ./include/linux/fortify-string.h:682:26: note: in expansion of macro '__fortify_memcpy_chk'
-BUILDSTDERR:   682 | #define memcpy(p, q, s)  __fortify_memcpy_chk(p, q, s,                  \
-BUILDSTDERR:       |                          ^~~~~~~~~~~~~~~~~~~~
-BUILDSTDERR: drivers/scsi/lpfc/lpfc_bsg.c:5468:9: note: in expansion of macro 'memcpy'
-BUILDSTDERR:  5468 |         memcpy(cgn_buff, cp, cinfosz);
-BUILDSTDERR:       |         ^~~~~~
+bad state = 0
+WARNING: CPU: 2 PID: 17434 at drivers/net/wireless/intel/iwlwifi/iwl-trans.c:115 iwl_trans_send_cmd+0x1cb/0x1e0 [iwlwifi]
+RIP: 0010:iwl_trans_send_cmd+0x1cb/0x1e0 [iwlwifi]
+Call Trace:
+ <TASK>
+ iwl_mvm_send_cmd+0x40/0xc0 [iwlmvm]
+ iwl_mvm_config_scan+0x198/0x260 [iwlmvm]
+ iwl_mvm_recalc_tcm+0x730/0x11d0 [iwlmvm]
+ iwl_mvm_tcm_work+0x1d/0x30 [iwlmvm]
+ process_one_work+0x29e/0x640
+ worker_thread+0x2df/0x690
+ ? rescuer_thread+0x540/0x540
+ kthread+0x192/0x1e0
+ ? set_kthread_struct+0x90/0x90
+ ret_from_fork+0x22/0x30
 
-This happens from the commit 06bb7fc0feee ("kbuild: turn on -Wrestrict by
-default"). Address this issue by using size_t type.
-
-Signed-off-by: Sherry Yang <sherry.yang@oracle.com>
-Link: https://lore.kernel.org/r/20240821065131.1180791-1-sherry.yang@oracle.com
-Reviewed-by: Justin Tee <justin.tee@broadcom.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20240825191257.5abe71ca1b6b.I97a968cb8be1f24f94652d9b110ecbf6af73f89e@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/lpfc/lpfc_bsg.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/scsi/lpfc/lpfc_bsg.c b/drivers/scsi/lpfc/lpfc_bsg.c
-index 4156419c52c78..4756a3f825310 100644
---- a/drivers/scsi/lpfc/lpfc_bsg.c
-+++ b/drivers/scsi/lpfc/lpfc_bsg.c
-@@ -5410,7 +5410,7 @@ lpfc_get_cgnbuf_info(struct bsg_job *job)
- 	struct get_cgnbuf_info_req *cgnbuf_req;
- 	struct lpfc_cgn_info *cp;
- 	uint8_t *cgn_buff;
--	int size, cinfosz;
-+	size_t size, cinfosz;
- 	int  rc = 0;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+index 945524470a1e9..b2cf5aeff7e3c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+@@ -1418,6 +1418,8 @@ void iwl_mvm_stop_device(struct iwl_mvm *mvm)
  
- 	if (job->request_len < sizeof(struct fc_bsg_request) +
+ 	clear_bit(IWL_MVM_STATUS_FIRMWARE_RUNNING, &mvm->status);
+ 
++	iwl_mvm_pause_tcm(mvm, false);
++
+ 	iwl_fw_dbg_stop_sync(&mvm->fwrt);
+ 	iwl_trans_stop_device(mvm->trans);
+ 	iwl_free_fw_paging(&mvm->fwrt);
 -- 
 2.43.0
 
