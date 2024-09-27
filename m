@@ -1,57 +1,64 @@
-Return-Path: <stable+bounces-78042-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 295919884D3
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:32:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90BBC988465
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:27:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8AC52B24B0B
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:32:10 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 44E1E281336
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:27:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8C0E18C355;
-	Fri, 27 Sep 2024 12:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F2BB17B515;
+	Fri, 27 Sep 2024 12:27:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hjxC5ROL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r++C5sJn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 612E418C32F;
-	Fri, 27 Sep 2024 12:31:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1DDF18A95D;
+	Fri, 27 Sep 2024 12:27:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440262; cv=none; b=PvdxTRysvCEFf457baxb+DyXJlqF+WHHAOD7yLTNk1ah2HnK1lQk9zQRaTyUwiY901V12sfomXdqUMmibjlcVSJ5EdDZytdRLWG18eVFXYtnKZQW8ixPqP5wWJB73KEAdBWEQYi/GMtum6IYNFwxN4Si5EjRubObEKeI8XQH64I=
+	t=1727440022; cv=none; b=DAh3yCCH3jj1nVFvakGIPiD4B8Y95HfHTXKowF8lLgIiFU1p55VtO0HiURrknit7glXEAT85JRWyyaOWktv/OkZnzTIZUNHBHFt1hm1dsj2jaObtJyi9TZkm00A18vnnzGyekEdSkHQDNsoOJZikoKJWmkGDMkEHepuinRxfu2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440262; c=relaxed/simple;
-	bh=oIUUN0tCWbjl5K2epv/HC2ZYkx/0zBK59v7p8ca80pA=;
+	s=arc-20240116; t=1727440022; c=relaxed/simple;
+	bh=7Pj1sqTa3oRT0TBbdc931DM1qh8h6s5ZzP+Vc8pbFEU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GKCI5VWCCKR3BlEl90yQeI6rzc50ChZSARIn7tl+50d+Mf2XwksSzlAnFO9B6vqfYdnksFa6MKsUhqhlWpauozaF5EEA5dikP4IxMRRZvINj2zAZoIdWLxPQNV7Rjk1/ikBvnH0/ecS7+uWBzPzfWm0lLoG+glYuKFaiDFWRpnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hjxC5ROL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA030C4CEC4;
-	Fri, 27 Sep 2024 12:31:01 +0000 (UTC)
+	 MIME-Version; b=JStPYB7de3+aIWpkMBxOZ8IHXbPO94fkLXklXsVXdbaXGL3bsLTRFOz+CXPGkjXdFn5SZyGyxMd+2mhatI31lwyVTWpRhS2cH70IaT1KMKz5SbdiRkO0dEFkaVNTYShfJywUd8+YLudgD9Sk9IGYQu8CT/rmKkG5S/SinKsUBrY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r++C5sJn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37A8DC4CEC4;
+	Fri, 27 Sep 2024 12:27:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440262;
-	bh=oIUUN0tCWbjl5K2epv/HC2ZYkx/0zBK59v7p8ca80pA=;
+	s=korg; t=1727440022;
+	bh=7Pj1sqTa3oRT0TBbdc931DM1qh8h6s5ZzP+Vc8pbFEU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hjxC5ROL3Ezr2D0gF9ZEKnTykeiCGx7BKTwQMj0E2Wo630ZDZM5TZiosn+BtBf9L4
-	 6KAGuAJ0hytaOlxdlSVh4lx9nTPr6I1mD+iJtBw9ZbcowB5kTfaIRsYZ8T0F3NkRm6
-	 2RIz5dCtr9or+a9i/xeHMDdUTGgbcbOJZ4Zss16k=
+	b=r++C5sJnL94d0XlQLi3qEIqw58tG/PThzyp2sTvr78xCcOdA/veDSRSLFJNpkiVzk
+	 0q5yXA8wRhzhVCh2fuSWjRUs7gr6JgbTGmgV+oJMYN9AaSCVSO+jQOiI4+a33QZWM4
+	 OkcoFZUf0hoYOoOtU+rjBcgFT0Lf5gVDyUjRmtIk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <hdegoede@redhat.com>,
-	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Ferry Meng <mengferry@linux.alibaba.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	lei lu <llfamsec@gmail.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Gang He <ghe@suse.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Jun Piao <piaojun@huawei.com>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 19/73] ASoC: Intel: soc-acpi-cht: Make Lenovo Yoga Tab 3 X90F DMI match less strict
+Subject: [PATCH 6.6 38/54] ocfs2: strict bound check before memcmp in ocfs2_xattr_find_entry()
 Date: Fri, 27 Sep 2024 14:23:30 +0200
-Message-ID: <20240927121720.663060817@linuxfoundation.org>
+Message-ID: <20240927121721.296323601@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121719.897851549@linuxfoundation.org>
-References: <20240927121719.897851549@linuxfoundation.org>
+In-Reply-To: <20240927121719.714627278@linuxfoundation.org>
+References: <20240927121719.714627278@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,44 +70,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Ferry Meng <mengferry@linux.alibaba.com>
 
-[ Upstream commit 839a4ec06f75cec8fec2cc5fc14e921d0c3f7369 ]
+[ Upstream commit af77c4fc1871847b528d58b7fdafb4aa1f6a9262 ]
 
-There are 2G and 4G RAM versions of the Lenovo Yoga Tab 3 X90F and it
-turns out that the 2G version has a DMI product name of
-"CHERRYVIEW D1 PLATFORM" where as the 4G version has
-"CHERRYVIEW C0 PLATFORM". The sys-vendor + product-version check are
-unique enough that the product-name check is not necessary.
+xattr in ocfs2 maybe 'non-indexed', which saved with additional space
+requested.  It's better to check if the memory is out of bound before
+memcmp, although this possibility mainly comes from crafted poisonous
+images.
 
-Drop the product-name check so that the existing DMI match for the 4G
-RAM version also matches the 2G RAM version.
-
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
-Link: https://patch.msgid.link/20240823074305.16873-1-hdegoede@redhat.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Link: https://lkml.kernel.org/r/20240520024024.1976129-2-joseph.qi@linux.alibaba.com
+Signed-off-by: Ferry Meng <mengferry@linux.alibaba.com>
+Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reported-by: lei lu <llfamsec@gmail.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/common/soc-acpi-intel-cht-match.c | 1 -
- 1 file changed, 1 deletion(-)
+ fs/ocfs2/xattr.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/sound/soc/intel/common/soc-acpi-intel-cht-match.c b/sound/soc/intel/common/soc-acpi-intel-cht-match.c
-index 5e2ec60e2954b..e4c3492a0c282 100644
---- a/sound/soc/intel/common/soc-acpi-intel-cht-match.c
-+++ b/sound/soc/intel/common/soc-acpi-intel-cht-match.c
-@@ -84,7 +84,6 @@ static const struct dmi_system_id lenovo_yoga_tab3_x90[] = {
- 		/* Lenovo Yoga Tab 3 Pro YT3-X90, codec missing from DSDT */
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "Intel Corporation"),
--			DMI_MATCH(DMI_PRODUCT_NAME, "CHERRYVIEW D1 PLATFORM"),
- 			DMI_MATCH(DMI_PRODUCT_VERSION, "Blade3-10A-001"),
- 		},
- 	},
+diff --git a/fs/ocfs2/xattr.c b/fs/ocfs2/xattr.c
+index e6220f7f7cf34..29d53d1d1476b 100644
+--- a/fs/ocfs2/xattr.c
++++ b/fs/ocfs2/xattr.c
+@@ -1068,7 +1068,7 @@ static int ocfs2_xattr_find_entry(struct inode *inode, int name_index,
+ {
+ 	struct ocfs2_xattr_entry *entry;
+ 	size_t name_len;
+-	int i, cmp = 1;
++	int i, name_offset, cmp = 1;
+ 
+ 	if (name == NULL)
+ 		return -EINVAL;
+@@ -1083,10 +1083,15 @@ static int ocfs2_xattr_find_entry(struct inode *inode, int name_index,
+ 		cmp = name_index - ocfs2_xattr_get_type(entry);
+ 		if (!cmp)
+ 			cmp = name_len - entry->xe_name_len;
+-		if (!cmp)
+-			cmp = memcmp(name, (xs->base +
+-				     le16_to_cpu(entry->xe_name_offset)),
+-				     name_len);
++		if (!cmp) {
++			name_offset = le16_to_cpu(entry->xe_name_offset);
++			if ((xs->base + name_offset + name_len) > xs->end) {
++				ocfs2_error(inode->i_sb,
++					    "corrupted xattr entries");
++				return -EFSCORRUPTED;
++			}
++			cmp = memcmp(name, (xs->base + name_offset), name_len);
++		}
+ 		if (cmp == 0)
+ 			break;
+ 		entry += 1;
 -- 
 2.43.0
 
