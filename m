@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-78030-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EB829884C0
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:31:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DDED9988511
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:33:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D80F9B235FB
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:30:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B1BE1F22D1C
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:33:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0589918C906;
-	Fri, 27 Sep 2024 12:30:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6977518C02A;
+	Fri, 27 Sep 2024 12:33:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b/LZ9DLI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qpZ0iw4V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B476118C033;
-	Fri, 27 Sep 2024 12:30:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2712D18A95D;
+	Fri, 27 Sep 2024 12:33:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440228; cv=none; b=QQOPtUdeTRRKva/2PpUYNkvmqewpg8CYPRDlwv19dnHU8daRcJWV0HKWNrl+hJt/iwtR6uR4kg8ABObR4QAoZSyhlIa8gNeOVn+NA5M4yNjB32TA9YgKMXpIMcj8VLspnVkpXw8mXt2CpfEBlJz2PUQU/CyRS50VcQ6Co9PcNfM=
+	t=1727440414; cv=none; b=G8/G1l1WKW2eJSxsKZU1oHSb+mXaJb8Rdhbegxgd9xP3/0TrBHmO7UsqzX5LYr+QSycRfJVGyPbm8leihneL8MhTe+qPbpVUr5SpFWc/LqEIaBifFrfvLOJMUo2Sx1MdBRiQiYjbj4/ZWBuoNklcXnuXGnHy8Amz9rHC/A7VL9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440228; c=relaxed/simple;
-	bh=vpXi8Cdj6LtnwCahvZNDOHatOAxBtYpm28TzE7VnIMI=;
+	s=arc-20240116; t=1727440414; c=relaxed/simple;
+	bh=fdH3+ko3784gDVdBlyQFs0j5GZd0sXXkYa3etqYxTtE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k8TVnZgfwLYPWxgF5BObCmuwvogtTj1SqPXICOyBrr3nEV6lyR8CiCVTb/VjrJnP3NO5MpJIqfalXwJg7d/jFHfwbWdNcQdVDAuH+u+LgzxpFtamDzSQA/09hOMTH0qZyZnvoXu6y1layCsffzHD2Jg2Ta+aXNxzwxuCZ7XTf+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b/LZ9DLI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41DF9C4CECF;
-	Fri, 27 Sep 2024 12:30:28 +0000 (UTC)
+	 MIME-Version; b=tzcr4H3ZTfQjnzwrNVISxaaylbZjmEzq54ND6F25BGw8YTcs+LVXkDMYQDnIn3DDtv7hjPDKiMpkf1QlKxbXyxnkv+5dWaOVjP9HslxeL4OCdUTdaK2b2uAQ0Mx7XEJNd2aYVhagWNDhJ6WbeR6USXz1BrzByqpwSNdl5uDeeuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qpZ0iw4V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA757C4CEC6;
+	Fri, 27 Sep 2024 12:33:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440228;
-	bh=vpXi8Cdj6LtnwCahvZNDOHatOAxBtYpm28TzE7VnIMI=;
+	s=korg; t=1727440414;
+	bh=fdH3+ko3784gDVdBlyQFs0j5GZd0sXXkYa3etqYxTtE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b/LZ9DLIDvtbPe9LjBKCLvPOS44rTSWOMvVP/6Rlfidylpfb3n0gYJ4YBYv/nuCUU
-	 al8ld0Bs+/A/RPF9bfmt4NIBYfu6iedxZyurFOZJn00C9uPqW7L9FUF2uU5TvhREpO
-	 q0fJmvDqL8V1UVSqIDp79h5u9UV9nJHXZCQIGp1M=
+	b=qpZ0iw4VO+XxWDq6kZlK3sqvNeyBBPCk3e57K1TBCjc1HD8sKHJOrItc1JfeoTmEh
+	 SrocQRAQqJ7rqC2m3rxsF6CYEIZT4ci5uqhQqT2KP0Z7yNy6P9GPU6pe//vlZNuOA9
+	 oVRq9liR4hVuhsZ0xD12dRf50HZ0xS4Lgh+BqR+o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	netfilter-devel@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leo Li <sunpeng.li@amd.com>,
-	Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
-	Mark Brown <broonie@kernel.org>,
-	Mario Limonciello <mario.limonciello@amd.com>
-Subject: [PATCH 6.11 09/12] ASoC: amd: acp: add ZSC control register programming sequence
-Date: Fri, 27 Sep 2024 14:24:12 +0200
-Message-ID: <20240927121715.645693156@linuxfoundation.org>
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 6.1 62/73] netfilter: nf_tables: missing iterator type in lookup walk
+Date: Fri, 27 Sep 2024 14:24:13 +0200
+Message-ID: <20240927121722.408052007@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121715.213013166@linuxfoundation.org>
-References: <20240927121715.213013166@linuxfoundation.org>
+In-Reply-To: <20240927121719.897851549@linuxfoundation.org>
+References: <20240927121719.897851549@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,62 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit c35fad6f7e0d69b0e9e7e196bdbca3ed03ac24ea upstream.
+commit efefd4f00c967d00ad7abe092554ffbb70c1a793 upstream.
 
-Add ZSC Control register programming sequence for ACP D0 and D3 state
-transitions for ACP7.0 onwards. This will allow ACP to enter low power
-state when ACP enters D3 state. When ACP enters D0 State, ZSC control
-should be disabled.
+Add missing decorator type to lookup expression and tighten WARN_ON_ONCE
+check in pipapo to spot earlier that this is unset.
 
-Tested-by: Leo Li <sunpeng.li@amd.com>
-Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
-Link: https://patch.msgid.link/20240807085154.1987681-1-Vijendar.Mukunda@amd.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: Mario Limonciello <mario.limonciello@amd.com>
+Fixes: 29b359cf6d95 ("netfilter: nft_set_pipapo: walk over current view on netlink dump")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/amd/acp/acp-legacy-common.c |    5 +++++
- sound/soc/amd/acp/amd.h               |    2 ++
- 2 files changed, 7 insertions(+)
+ net/netfilter/nft_lookup.c     |    1 +
+ net/netfilter/nft_set_pipapo.c |    3 ++-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
---- a/sound/soc/amd/acp/acp-legacy-common.c
-+++ b/sound/soc/amd/acp/acp-legacy-common.c
-@@ -321,6 +321,8 @@ int acp_init(struct acp_chip_info *chip)
- 		pr_err("ACP reset failed\n");
- 		return ret;
- 	}
-+	if (chip->acp_rev >= ACP70_DEV)
-+		writel(0, chip->base + ACP_ZSC_DSP_CTRL);
- 	return 0;
- }
- EXPORT_SYMBOL_NS_GPL(acp_init, SND_SOC_ACP_COMMON);
-@@ -336,6 +338,9 @@ int acp_deinit(struct acp_chip_info *chi
+--- a/net/netfilter/nft_lookup.c
++++ b/net/netfilter/nft_lookup.c
+@@ -211,6 +211,7 @@ static int nft_lookup_validate(const str
+ 		return 0;
  
- 	if (chip->acp_rev != ACP70_DEV)
- 		writel(0, chip->base + ACP_CONTROL);
-+
-+	if (chip->acp_rev >= ACP70_DEV)
-+		writel(0x01, chip->base + ACP_ZSC_DSP_CTRL);
- 	return 0;
- }
- EXPORT_SYMBOL_NS_GPL(acp_deinit, SND_SOC_ACP_COMMON);
---- a/sound/soc/amd/acp/amd.h
-+++ b/sound/soc/amd/acp/amd.h
-@@ -103,6 +103,8 @@
- #define ACP70_PGFSM_CONTROL			ACP6X_PGFSM_CONTROL
- #define ACP70_PGFSM_STATUS			ACP6X_PGFSM_STATUS
+ 	iter.genmask	= nft_genmask_next(ctx->net);
++	iter.type	= NFT_ITER_UPDATE;
+ 	iter.skip	= 0;
+ 	iter.count	= 0;
+ 	iter.err	= 0;
+--- a/net/netfilter/nft_set_pipapo.c
++++ b/net/netfilter/nft_set_pipapo.c
+@@ -2046,7 +2046,8 @@ static void nft_pipapo_walk(const struct
+ 	const struct nft_pipapo_field *f;
+ 	int i, r;
  
-+#define ACP_ZSC_DSP_CTRL			0x0001014
-+#define ACP_ZSC_STS				0x0001018
- #define ACP_SOFT_RST_DONE_MASK	0x00010001
+-	WARN_ON_ONCE(iter->type == NFT_ITER_UNSPEC);
++	WARN_ON_ONCE(iter->type != NFT_ITER_READ &&
++		     iter->type != NFT_ITER_UPDATE);
  
- #define ACP_PGFSM_CNTL_POWER_ON_MASK            0xffffffff
+ 	rcu_read_lock();
+ 	if (iter->type == NFT_ITER_READ)
 
 
 
