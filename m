@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-77990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77944-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1256D988489
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:28:42 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E281798845A
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:27:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 92F36B22851
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:28:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 49FF7B22238
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:26:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC18818A95D;
-	Fri, 27 Sep 2024 12:28:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DFFA18C33E;
+	Fri, 27 Sep 2024 12:26:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MEoBdA2O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O3gp/v+h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BB011865ED;
-	Fri, 27 Sep 2024 12:28:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE79718C009;
+	Fri, 27 Sep 2024 12:26:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440117; cv=none; b=QZhazkpSe/bw0DhVLOp9EJdlJOIdc6MS5tCEoIXW0MmxmjFBwmzaD0+NKKO+XJZOaAGNqzKmbb3PCBn2fPLdSALcguzQs1APIqKvSVQTnZcjPfiO4u9RgT99/L0Fg/iLXViubldKLYl3gI/GxlWWVDkFtqFFTlRE9kRb2QaAyjU=
+	t=1727439989; cv=none; b=NKG3UZZO/zGSFfqnsFJTlg0DQKZdl1QUejCaG3jBkECyiNd0IcuqyasSGpMW5nR0XdpqL4LbfHHfuIi96AkW8PNYWN6DmMjEl+IcZGOcdP3oL4tL0ZPwXc9SSpTn6JN0wCqY5m2jb5QbBKBwLWX8t/6q/VezDuKG9b9TR6YUGbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440117; c=relaxed/simple;
-	bh=KY8dKhyDSm1qZS6wh4d1rfFHRpPq23nKLZ/oCXwDvmA=;
+	s=arc-20240116; t=1727439989; c=relaxed/simple;
+	bh=7gGFpwwwQuGc/IOlQ5dGCVr8v6C/pkcTBLLeolsTda8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=eUzm2e/+wW3Z6gHEqd8sQYiiQCIKDNahyjEKrSp/TgCIpJ8UT8eJ4jgAmHYiZuI5ACTr5ZcYYmsf/iEpcHRAoiX9fp+UIYs2si5Eko0gX7Z7xaFDefobXwJ87dNRjz0YmX2RZYYm7bFnZuLal1osAim9rtMaLPx/Xgn8BnvoVS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MEoBdA2O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA1F0C4CEC4;
-	Fri, 27 Sep 2024 12:28:36 +0000 (UTC)
+	 MIME-Version; b=JftGAsTSKG5N/djjnmT4RT0FejYUa7TX8InI+UMCGUCFZBXYbc0YrT+mhq3yDBhxHBnrJ5WN6rhrmclfTJ0GKpiYG/yr3rOzZ4z3+Pa10wvRJn4YoVpEqw4iyOXIxajYFXBnKtNhw1RgzmTZODuz/twetwh72hR1OHG1UggjuNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O3gp/v+h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBCDFC4CEC4;
+	Fri, 27 Sep 2024 12:26:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440117;
-	bh=KY8dKhyDSm1qZS6wh4d1rfFHRpPq23nKLZ/oCXwDvmA=;
+	s=korg; t=1727439989;
+	bh=7gGFpwwwQuGc/IOlQ5dGCVr8v6C/pkcTBLLeolsTda8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MEoBdA2OYT2pGxzwho/m+wkhsq8jgHG4Y2zZUtUv8GQEfNLmbdMOOqMWeZwOczPYp
-	 ytR9I335+gPLQR/LtUnh606JkqK4kUKfRtR8EfNdXPC27lz6mOQhWPK7qxx5HxUFqD
-	 y4Vc+Kv+i2M524o/94zP8aurOuONuOSwbPLVb7A8=
+	b=O3gp/v+hfweEFaUaZx4Ehd/TsTL+MhdBFzaPLqBo9dbBVO0OKB8UKDjVYQIBBRiPq
+	 46BH9vuabKy6Fuo/sZnDbJOoCnUZl9zw4ba7Ys8epb1JSFM9FF0O9Boc1YTSf+I0ua
+	 7bwAa/WsmjnTdL9MGjY7RuApoKy/cWIfXBbv3NBQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Luke D. Jones" <luke@ljones.dev>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 38/58] platform/x86/amd: pmf: Make ASUS GA403 quirk generic
+	Kent Gibson <warthog618@gmail.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 6.6 48/54] gpiolib: cdev: Ignore reconfiguration without direction
 Date: Fri, 27 Sep 2024 14:23:40 +0200
-Message-ID: <20240927121720.323255491@linuxfoundation.org>
+Message-ID: <20240927121721.737636555@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121718.789211866@linuxfoundation.org>
-References: <20240927121718.789211866@linuxfoundation.org>
+In-Reply-To: <20240927121719.714627278@linuxfoundation.org>
+References: <20240927121719.714627278@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +59,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luke D. Jones <luke@ljones.dev>
+From: Kent Gibson <warthog618@gmail.com>
 
-[ Upstream commit d34af755a533271f39cc7d86e49c0e74fde63a37 ]
+commit b440396387418fe2feaacd41ca16080e7a8bc9ad upstream.
 
-The original quirk should match to GA403U so that the full
-range of GA403U models can benefit.
+linereq_set_config() behaves badly when direction is not set.
+The configuration validation is borrowed from linereq_create(), where,
+to verify the intent of the user, the direction must be set to in order to
+effect a change to the electrical configuration of a line. But, when
+applied to reconfiguration, that validation does not allow for the unset
+direction case, making it possible to clear flags set previously without
+specifying the line direction.
 
-Signed-off-by: Luke D. Jones <luke@ljones.dev>
-Link: https://lore.kernel.org/r/20240831003905.1060977-1-luke@ljones.dev
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Adding to the inconsistency, those changes are not immediately applied by
+linereq_set_config(), but will take effect when the line value is next get
+or set.
+
+For example, by requesting a configuration with no flags set, an output
+line with GPIO_V2_LINE_FLAG_ACTIVE_LOW and GPIO_V2_LINE_FLAG_OPEN_DRAIN
+set could have those flags cleared, inverting the sense of the line and
+changing the line drive to push-pull on the next line value set.
+
+Skip the reconfiguration of lines for which the direction is not set, and
+only reconfigure the lines for which direction is set.
+
+Fixes: a54756cb24ea ("gpiolib: cdev: support GPIO_V2_LINE_SET_CONFIG_IOCTL")
+Signed-off-by: Kent Gibson <warthog618@gmail.com>
+Link: https://lore.kernel.org/r/20240626052925.174272-3-warthog618@gmail.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/amd/pmf/pmf-quirks.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpio/gpiolib-cdev.c |   12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/platform/x86/amd/pmf/pmf-quirks.c b/drivers/platform/x86/amd/pmf/pmf-quirks.c
-index 460444cda1b29..48870ca52b413 100644
---- a/drivers/platform/x86/amd/pmf/pmf-quirks.c
-+++ b/drivers/platform/x86/amd/pmf/pmf-quirks.c
-@@ -25,7 +25,7 @@ static const struct dmi_system_id fwbug_list[] = {
- 		.ident = "ROG Zephyrus G14",
- 		.matches = {
- 			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
--			DMI_MATCH(DMI_PRODUCT_NAME, "GA403UV"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "GA403U"),
- 		},
- 		.driver_data = &quirk_no_sps_bug,
- 	},
--- 
-2.43.0
-
+--- a/drivers/gpio/gpiolib-cdev.c
++++ b/drivers/gpio/gpiolib-cdev.c
+@@ -1565,12 +1565,14 @@ static long linereq_set_config_unlocked(
+ 		line = &lr->lines[i];
+ 		desc = lr->lines[i].desc;
+ 		flags = gpio_v2_line_config_flags(lc, i);
+-		gpio_v2_line_config_flags_to_desc_flags(flags, &desc->flags);
+-		edflags = flags & GPIO_V2_LINE_EDGE_DETECTOR_FLAGS;
+ 		/*
+-		 * Lines have to be requested explicitly for input
+-		 * or output, else the line will be treated "as is".
++		 * Lines not explicitly reconfigured as input or output
++		 * are left unchanged.
+ 		 */
++		if (!(flags & GPIO_V2_LINE_DIRECTION_FLAGS))
++			continue;
++		gpio_v2_line_config_flags_to_desc_flags(flags, &desc->flags);
++		edflags = flags & GPIO_V2_LINE_EDGE_DETECTOR_FLAGS;
+ 		if (flags & GPIO_V2_LINE_FLAG_OUTPUT) {
+ 			int val = gpio_v2_line_config_output_value(lc, i);
+ 
+@@ -1578,7 +1580,7 @@ static long linereq_set_config_unlocked(
+ 			ret = gpiod_direction_output(desc, val);
+ 			if (ret)
+ 				return ret;
+-		} else if (flags & GPIO_V2_LINE_FLAG_INPUT) {
++		} else {
+ 			ret = gpiod_direction_input(desc);
+ 			if (ret)
+ 				return ret;
 
 
 
