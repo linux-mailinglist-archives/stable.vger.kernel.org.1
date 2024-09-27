@@ -1,118 +1,357 @@
-Return-Path: <stable+bounces-77933-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05EF098844B
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:26:40 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F95D988479
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:28:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B6BD2281309
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:26:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CCAAAB21689
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:28:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B8CC18C01B;
-	Fri, 27 Sep 2024 12:25:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCBBD18BC1F;
+	Fri, 27 Sep 2024 12:27:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cjcg6Ooo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YYpFAsW6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39DB118C00D;
-	Fri, 27 Sep 2024 12:25:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7780C17B515;
+	Fri, 27 Sep 2024 12:27:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727439959; cv=none; b=ogenVCMI3qsuLzpUPk8+nAG6Yc94WZHnU/3keIp069Q3B0YEJu8nskiQX1vznIjIDkffF91BSKtBYRK0nHj0GrLHFvUmR/S3vlpGbl4TcScN0kiFlaG674AgusJlKD+q/d6Vo/Io1kYcJodZE6pnf64mSEW2dL3IZacf5enzcmY=
+	t=1727440078; cv=none; b=FnUwMJy97DeA4VZoQKLpg1HAcDMsrqUNfMRe2GviYxrSQwHC0vLyYo5beTUYH5tE6qsEQvkGvv0WTSJQ0iPVj9mz/D2UZUEkZjNh1t4dlVdNe1SI3kBnr0brHNAULOwyuYhZE+WavLTSkShtkguNAi+1JHTRLaHQaggEh2hfwIc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727439959; c=relaxed/simple;
-	bh=+3/gE7wk3rQhXNEKmf+qZltU+xBaWtnBqQrz1aH2aQY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EwTFgcx1J0vD4liet9kNGN9J0COMuMKeRzeplFk4XIOM1MXBkW/pAAdT7ZHkBjweM85nFESlhtGCCJoVhQPkrKFEGWdr77VRzeDdXHzgB8bXcvB6H3JJQp8rHnIzKEagbKoroxuzXNTPwhscj9WA+lRr5DBMCUOUCI0GvSAb2X8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cjcg6Ooo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68DD3C4CEC4;
-	Fri, 27 Sep 2024 12:25:58 +0000 (UTC)
+	s=arc-20240116; t=1727440078; c=relaxed/simple;
+	bh=RrPwdkbMT+9TMbPMe4Te+DVlw2cdVvTMg5yQq47rSPc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=eVc1vF81TfeMBn5GNMMofB7B0SyNt6QpWIP9DxCVP/XaA9FBzucNZd2bBwpcoeNimczq/wNz9xN6glfn8c2Dk0njCTkgXfjdISIq7ikwflE2JR4KYzfUPImpxAO0wBzHqySn44Z3YEyYtkPisS3KRYclrPPdSfm46kcb0cegtSk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YYpFAsW6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF6E4C4CEC4;
+	Fri, 27 Sep 2024 12:27:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727439958;
-	bh=+3/gE7wk3rQhXNEKmf+qZltU+xBaWtnBqQrz1aH2aQY=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cjcg6Oooa6kx0lOV+BXqBWQhD+KaO1Hiz3tz2/NfzDhSUdYgruKsqtMfFWa9oTS+j
-	 NyV35TKX4sbP42EQOgpkkX9CjxQqqYGjPU88QYw8BhUmfgtyFTsmc8+I2pPRSymh3E
-	 o+JL7xtJ03nOuxbY88PR7J/360SCY/jNAqEV01ik=
+	s=korg; t=1727440078;
+	bh=RrPwdkbMT+9TMbPMe4Te+DVlw2cdVvTMg5yQq47rSPc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=YYpFAsW6nOkCGU6LGuYIP2SbWbS+vLBfYNKPNR+oFaT81XR0wl1qI5aS/CN3CRIIs
+	 w03dogKiLfFX7/uZOFz0bsAnXUILrHt16yzyeZiHU182CMSVjAkpzOy1ZfG1oD1Qle
+	 wavrAxEzeKKsCSu1liWHJaCWLTfD5CIuv1iTP7lY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Mike Rapoport <rppt@kernel.org>,
-	Wei Yang <richard.weiyang@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 10/54] microblaze: dont treat zero reserved memory regions as error
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	allen.lkml@gmail.com,
+	broonie@kernel.org
+Subject: [PATCH 6.10 00/58] 6.10.12-rc1 review
 Date: Fri, 27 Sep 2024 14:23:02 +0200
-Message-ID: <20240927121720.129442670@linuxfoundation.org>
+Message-ID: <20240927121718.789211866@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121719.714627278@linuxfoundation.org>
-References: <20240927121719.714627278@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.10.12-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-6.10.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 6.10.12-rc1
+X-KernelTest-Deadline: 2024-09-29T12:17+00:00
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+This is the start of the stable review cycle for the 6.10.12 release.
+There are 58 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-------------------
+Responses should be made by Sun, 29 Sep 2024 12:17:00 +0000.
+Anything received after that time might be too late.
 
-From: Mike Rapoport <rppt@kernel.org>
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.10.12-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.10.y
+and the diffstat can be found below.
 
-[ Upstream commit 0075df288dd8a7abfe03b3766176c393063591dd ]
+thanks,
 
-Before commit 721f4a6526da ("mm/memblock: remove empty dummy entry") the
-check for non-zero of memblock.reserved.cnt in mmu_init() would always
-be true either because  memblock.reserved.cnt is initialized to 1 or
-because there were memory reservations earlier.
+greg k-h
 
-The removal of dummy empty entry in memblock caused this check to fail
-because now memblock.reserved.cnt is initialized to 0.
+-------------
+Pseudo-Shortlog of commits:
 
-Remove the check for non-zero of memblock.reserved.cnt because it's
-perfectly fine to have an empty memblock.reserved array that early in
-boot.
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 6.10.12-rc1
 
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Mike Rapoport <rppt@kernel.org>
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-Tested-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20240729053327.4091459-1-rppt@kernel.org
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- arch/microblaze/mm/init.c | 5 -----
- 1 file changed, 5 deletions(-)
+Edward Adam Davis <eadavis@qq.com>
+    USB: usbtmc: prevent kernel-usb-infoleak
 
-diff --git a/arch/microblaze/mm/init.c b/arch/microblaze/mm/init.c
-index 3827dc76edd82..4520c57415797 100644
---- a/arch/microblaze/mm/init.c
-+++ b/arch/microblaze/mm/init.c
-@@ -193,11 +193,6 @@ asmlinkage void __init mmu_init(void)
- {
- 	unsigned int kstart, ksize;
- 
--	if (!memblock.reserved.cnt) {
--		pr_emerg("Error memory count\n");
--		machine_restart(NULL);
--	}
--
- 	if ((u32) memblock.memory.regions[0].size < 0x400000) {
- 		pr_emerg("Memory must be greater than 4MB\n");
- 		machine_restart(NULL);
--- 
-2.43.0
+Junhao Xie <bigfoot@classfun.cn>
+    USB: serial: pl2303: add device id for Macrosilicon MS3020
 
+Marc Kleine-Budde <mkl@pengutronix.de>
+    can: mcp251xfd: move mcp251xfd_timestamp_start()/stop() into mcp251xfd_chip_start/stop()
+
+Marc Kleine-Budde <mkl@pengutronix.de>
+    can: mcp251xfd: properly indent labels
+
+Keith Busch <kbusch@kernel.org>
+    nvme-pci: qdepth 1 quirk
+
+Kiran K <kiran.k@intel.com>
+    Bluetooth: btintel_pcie: Allocate memory for driver private data
+
+Dan Carpenter <dan.carpenter@linaro.org>
+    netfilter: nft_socket: Fix a NULL vs IS_ERR() bug in nft_socket_cgroup_subtree_level()
+
+Florian Westphal <fw@strlen.de>
+    netfilter: nft_socket: make cgroupsv2 matching work with namespaces
+
+Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
+    powercap/intel_rapl: Fix the energy-pkg event for AMD CPUs
+
+Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
+    powercap/intel_rapl: Add support for AMD family 1Ah
+
+Michał Winiarski <michal.winiarski@intel.com>
+    drm: Expand max DRM device number to full MINORBITS
+
+Michał Winiarski <michal.winiarski@intel.com>
+    accel: Use XArray instead of IDR for minors
+
+Michał Winiarski <michal.winiarski@intel.com>
+    drm: Use XArray instead of IDR for minors
+
+Ferry Meng <mengferry@linux.alibaba.com>
+    ocfs2: strict bound check before memcmp in ocfs2_xattr_find_entry()
+
+Ferry Meng <mengferry@linux.alibaba.com>
+    ocfs2: add bounds checking to ocfs2_xattr_find_entry()
+
+Geert Uytterhoeven <geert+renesas@glider.be>
+    spi: spidev: Add missing spi_device_id for jg10309-01
+
+Kenneth Feng <kenneth.feng@amd.com>
+    drm/amd/pm: fix the pp_dpm_pcie issue on smu v14.0.2/3
+
+zhang jiao <zhangjiao2@cmss.chinamobile.com>
+    tools: hv: rm .*.cmd when make clean
+
+Michael Kelley <mhklinux@outlook.com>
+    x86/hyperv: Set X86_FEATURE_TSC_KNOWN_FREQ when Hyper-V provides frequency
+
+Larysa Zaremba <larysa.zaremba@intel.com>
+    ice: check for XDP rings instead of bpf program when unconfiguring
+
+Luke D. Jones <luke@ljones.dev>
+    platform/x86/amd: pmf: Make ASUS GA403 quirk generic
+
+Paulo Alcantara <pc@manguebit.com>
+    smb: client: fix hang in wait_for_response() for negproto
+
+Liao Chen <liaochen4@huawei.com>
+    spi: bcm63xx: Enable module autoloading
+
+hongchi.peng <hongchi.peng@siengine.com>
+    drm: komeda: Fix an issue related to normalized zpos
+
+Kai Vehmanen <kai.vehmanen@linux.intel.com>
+    ALSA: hda: add HDMI codec ID for Intel PTL
+
+Neil Armstrong <neil.armstrong@linaro.org>
+    clk: qcom: gcc-sm8650: Don't use shared clk_ops for QUPs
+
+Markuss Broks <markuss.broks@gmail.com>
+    ASoC: amd: yc: Add a quirk for MSI Bravo 17 (D7VEK)
+
+Fabio Estevam <festevam@gmail.com>
+    spi: spidev: Add an entry for elgin,jg10309-01
+
+Zhang Yi <zhangyi@everest-semi.com>
+    ASoC: mediatek: mt8188-mt6359: Modify key
+
+Liao Chen <liaochen4@huawei.com>
+    ASoC: fix module autoloading
+
+Liao Chen <liaochen4@huawei.com>
+    ASoC: tda7419: fix module autoloading
+
+Liao Chen <liaochen4@huawei.com>
+    ASoC: google: fix module autoloading
+
+Liao Chen <liaochen4@huawei.com>
+    ASoC: intel: fix module autoloading
+
+Hans de Goede <hdegoede@redhat.com>
+    ASoC: Intel: soc-acpi-cht: Make Lenovo Yoga Tab 3 X90F DMI match less strict
+
+Marc Kleine-Budde <mkl@pengutronix.de>
+    can: mcp251xfd: mcp251xfd_ring_init(): check TX-coalescing configuration
+
+Markus Schneider-Pargmann <msp@baylibre.com>
+    can: m_can: Limit coalescing to peripheral instances
+
+Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+    wifi: iwlwifi: clear trans->state earlier upon error
+
+Dmitry Antipov <dmantipov@yandex.ru>
+    wifi: mac80211: free skb on error path in ieee80211_beacon_get_ap()
+
+Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+    wifi: iwlwifi: mvm: don't wait for tx queues if firmware is dead
+
+Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+    wifi: iwlwifi: mvm: pause TCM when the firmware is stopped
+
+Daniel Gabay <daniel.gabay@intel.com>
+    wifi: iwlwifi: mvm: fix iwl_mvm_max_scan_ie_fw_cmd_room()
+
+Daniel Gabay <daniel.gabay@intel.com>
+    wifi: iwlwifi: mvm: fix iwl_mvm_scan_fits() calculation
+
+Benjamin Berg <benjamin.berg@intel.com>
+    wifi: iwlwifi: lower message level for FW buffer destination
+
+Bibo Mao <maobibo@loongson.cn>
+    LoongArch: KVM: Invalidate guest steal time address on vCPU reset
+
+Huacai Chen <chenhuacai@kernel.org>
+    LoongArch: Define ARCH_IRQ_INIT_FLAGS as IRQ_NOPROBE
+
+Jacky Chou <jacky_chou@aspeedtech.com>
+    net: ftgmac100: Ensure tx descriptor updates are visible
+
+Hans de Goede <hdegoede@redhat.com>
+    platform/x86: x86-android-tablets: Make Lenovo Yoga Tab 3 X90F DMI match less strict
+
+Mathieu Fenniak <mathieu@fenniak.net>
+    platform/x86: asus-wmi: Fix spurious rfkill on UX8406MA
+
+Mike Rapoport <rppt@kernel.org>
+    microblaze: don't treat zero reserved memory regions as error
+
+Ross Brown <true.robot.ross@gmail.com>
+    hwmon: (asus-ec-sensors) remove VRM temp X570-E GAMING
+
+Thomas Blocher <thomas.blocher@ek-dev.de>
+    pinctrl: at91: make it work with current gpiolib
+
+Sherry Yang <sherry.yang@oracle.com>
+    scsi: lpfc: Fix overflow build issue
+
+Kailang Yang <kailang@realtek.com>
+    ALSA: hda/realtek - FIxed ALC285 headphone no sound
+
+Kailang Yang <kailang@realtek.com>
+    ALSA: hda/realtek - Fixed ALC256 headphone no sound
+
+Hongbo Li <lihongbo22@huawei.com>
+    ASoC: allow module autoloading for table board_ids
+
+Hongbo Li <lihongbo22@huawei.com>
+    ASoC: allow module autoloading for table db1200_pids
+
+YR Yang <yr.yang@mediatek.com>
+    ASoC: mediatek: mt8188: Mark AFE_DAC_CON0 register as volatile
+
+Albert Jakieła <jakiela@google.com>
+    ASoC: SOF: mediatek: Add missing board compatible
+
+
+-------------
+
+Diffstat:
+
+ Makefile                                           |   4 +-
+ arch/loongarch/include/asm/hw_irq.h                |   2 +
+ arch/loongarch/include/asm/kvm_vcpu.h              |   1 -
+ arch/loongarch/kernel/irq.c                        |   3 -
+ arch/loongarch/kvm/timer.c                         |   7 --
+ arch/loongarch/kvm/vcpu.c                          |   2 +-
+ arch/microblaze/mm/init.c                          |   5 -
+ arch/x86/kernel/cpu/mshyperv.c                     |   1 +
+ drivers/accel/drm_accel.c                          | 110 ++-------------------
+ drivers/bluetooth/btintel_pcie.c                   |   2 +-
+ drivers/clk/qcom/gcc-sm8650.c                      |  56 +++++------
+ .../gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c   |   3 +
+ drivers/gpu/drm/arm/display/komeda/komeda_kms.c    |  10 +-
+ drivers/gpu/drm/drm_drv.c                          |  97 +++++++++---------
+ drivers/gpu/drm/drm_file.c                         |   2 +-
+ drivers/gpu/drm/drm_internal.h                     |   4 -
+ drivers/hwmon/asus-ec-sensors.c                    |   2 +-
+ drivers/net/can/m_can/m_can.c                      |  16 +--
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c     |  42 ++++----
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-dump.c     |   2 +-
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-regmap.c   |   2 +-
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c     |  14 ++-
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c      |   2 +-
+ .../net/can/spi/mcp251xfd/mcp251xfd-timestamp.c    |   7 +-
+ drivers/net/can/spi/mcp251xfd/mcp251xfd.h          |   1 +
+ drivers/net/ethernet/faraday/ftgmac100.c           |  26 +++--
+ drivers/net/ethernet/intel/ice/ice_lib.c           |   4 +-
+ drivers/net/ethernet/intel/ice/ice_main.c          |   4 +-
+ drivers/net/ethernet/intel/ice/ice_xsk.c           |   6 +-
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c        |   2 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-trans.h     |   2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c  |   9 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c       |   2 +
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c      |  31 +++---
+ .../wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c   |   3 +-
+ drivers/nvme/host/nvme.h                           |   5 +
+ drivers/nvme/host/pci.c                            |  18 ++--
+ drivers/pinctrl/pinctrl-at91.c                     |   5 +-
+ drivers/platform/x86/amd/pmf/pmf-quirks.c          |   2 +-
+ drivers/platform/x86/asus-nb-wmi.c                 |  20 +++-
+ drivers/platform/x86/asus-wmi.h                    |   1 +
+ drivers/platform/x86/x86-android-tablets/dmi.c     |   1 -
+ drivers/powercap/intel_rapl_common.c               |  35 ++++++-
+ drivers/scsi/lpfc/lpfc_bsg.c                       |   2 +-
+ drivers/spi/spi-bcm63xx.c                          |   1 +
+ drivers/spi/spidev.c                               |   2 +
+ drivers/usb/class/usbtmc.c                         |   2 +-
+ drivers/usb/serial/pl2303.c                        |   1 +
+ drivers/usb/serial/pl2303.h                        |   4 +
+ fs/ocfs2/xattr.c                                   |  27 +++--
+ fs/smb/client/connect.c                            |  14 ++-
+ include/drm/drm_accel.h                            |  18 +---
+ include/drm/drm_file.h                             |   5 +
+ net/mac80211/tx.c                                  |   4 +-
+ net/netfilter/nft_socket.c                         |  41 +++++++-
+ sound/pci/hda/patch_hdmi.c                         |   1 +
+ sound/pci/hda/patch_realtek.c                      |  76 +++++++++-----
+ sound/soc/amd/acp/acp-sof-mach.c                   |   2 +
+ sound/soc/amd/yc/acp6x-mach.c                      |   7 ++
+ sound/soc/au1x/db1200.c                            |   1 +
+ sound/soc/codecs/chv3-codec.c                      |   1 +
+ sound/soc/codecs/tda7419.c                         |   1 +
+ sound/soc/google/chv3-i2s.c                        |   1 +
+ sound/soc/intel/common/soc-acpi-intel-cht-match.c  |   1 -
+ sound/soc/intel/keembay/kmb_platform.c             |   1 +
+ sound/soc/mediatek/mt8188/mt8188-afe-pcm.c         |   1 +
+ sound/soc/mediatek/mt8188/mt8188-mt6359.c          |  17 +++-
+ sound/soc/sof/mediatek/mt8195/mt8195.c             |   3 +
+ tools/hv/Makefile                                  |   2 +-
+ 69 files changed, 450 insertions(+), 359 deletions(-)
 
 
 
