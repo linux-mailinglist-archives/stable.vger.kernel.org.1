@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-77968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77908-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64E8D988471
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:27:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 663AF98842A
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:25:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 32C3C2814C7
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:27:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DEAE3B219FE
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:25:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8737118BC1D;
-	Fri, 27 Sep 2024 12:27:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 345B318C016;
+	Fri, 27 Sep 2024 12:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fKHwm9gH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yxz4L78U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4779417B515;
-	Fri, 27 Sep 2024 12:27:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5E0F1779BD;
+	Fri, 27 Sep 2024 12:24:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440056; cv=none; b=ZSIjJwZbTsioq1DoG+JdaM01PhHICWUprHpd6lUwvRkrcpGthACsbrhCoCK/uDMv9JKOS6k4+TkY65YKvZaF/QxqV8ix/fe14XNC+ZSTE9rSMTWjsKRZjIKeVCZ6V3sEW0F6I7PPq+F5gXfWCfQG8JEzKuaIlZdgaUEz893gVUY=
+	t=1727439889; cv=none; b=uW+mi3/HAMkjC4AU6MUxRxLBrX8lKAFcwkHki/CJ3/uoswJEPJu7IHy12WJ0dRq6SBsSMAgppSqFHplHkPIqHeST7YynCgJbdYptasYfz/KoKt17S71OQhZvwlsEE2ae5YwvJUMRYV3dY8UjO/RxecAn0a351Q+oEdpVIok3e+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440056; c=relaxed/simple;
-	bh=qCG/e0e2GgQR7RPPdOYxNSbFh31Ut0XWvittWo3fr2c=;
+	s=arc-20240116; t=1727439889; c=relaxed/simple;
+	bh=9Vw1RLtuCWbTjJcjubsgur1wG6lEMl9mxFuky/vJNHU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hZBLaGsHG4flJ2RV3YUJasv8E8BfgcOZmAoIjkWfAUuZF3z8lRqKBHDqhEeu8afSU/mgjWKs8oB4B4bSFX/IczTQONShsLUfv6FR6Z6ld9MbB1l1+hlsKLonxc48Dl+YwTAbsR7dH1dgjpQSoaHfC8oYfSkQmFaqtBlLV6QfItY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fKHwm9gH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9481C4CEC6;
-	Fri, 27 Sep 2024 12:27:35 +0000 (UTC)
+	 MIME-Version; b=CTZbp4m8Ncz6aB9NvWUtPZaZKXbuDSJv+SYeyFlSp5TIHRmFv4OxnHsdGoZQFLY/slEO5Zy/cmbfHifOJoPPrCM3xKhnzbtUh+3tUZBuQDLDOFeCLlvsIpmG4GBqs35wq1ahxZTDQKnkBG55tYWTwQMuIzWAQJ33RvjeUkpIrIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yxz4L78U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72589C4CEC6;
+	Fri, 27 Sep 2024 12:24:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440056;
-	bh=qCG/e0e2GgQR7RPPdOYxNSbFh31Ut0XWvittWo3fr2c=;
+	s=korg; t=1727439888;
+	bh=9Vw1RLtuCWbTjJcjubsgur1wG6lEMl9mxFuky/vJNHU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fKHwm9gHJrMluDs6JVZh/fDEbHxRDNI8sX9XMGT5Z1rBpIux4KBqjhZBY6CukPltv
-	 +1Un8hUJ9+vxrjKa4ogeWNVVv6dljYC1QG7QfjgzYNnzGUwNYJSEQxMFABAUScUWCS
-	 m4rZjLAHQU69dJmCXfMC6C24n88I6O5YGKNrfQS4=
+	b=Yxz4L78UPreZe1Bf9nVs1UsyaTLARKrB1Z0DM3Zr7i0UcTSyTqADhoMXQ803OKeoj
+	 pOBkQ3FIjpaEfW3wLovHvhhO7hdBydLflEoSe2zrOtJprIhCKQbT/qoXwZWUIGAGwS
+	 rs+wZMdrfOMSyMg32mNq1h8pUq0cLf+eRSPx++KQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	YR Yang <yr.yang@mediatek.com>,
-	Fei Shao <fshao@chromium.org>,
-	Trevor Wu <trevor.wu@mediatek.com>,
-	Mark Brown <broonie@kernel.org>,
+	Jacky Chou <jacky_chou@aspeedtech.com>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 02/58] ASoC: mediatek: mt8188: Mark AFE_DAC_CON0 register as volatile
+Subject: [PATCH 6.6 12/54] net: ftgmac100: Ensure tx descriptor updates are visible
 Date: Fri, 27 Sep 2024 14:23:04 +0200
-Message-ID: <20240927121718.877305007@linuxfoundation.org>
+Message-ID: <20240927121720.207029785@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121718.789211866@linuxfoundation.org>
-References: <20240927121718.789211866@linuxfoundation.org>
+In-Reply-To: <20240927121719.714627278@linuxfoundation.org>
+References: <20240927121719.714627278@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,43 +62,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: YR Yang <yr.yang@mediatek.com>
+From: Jacky Chou <jacky_chou@aspeedtech.com>
 
-[ Upstream commit ff9f065318e17a1a97981d9e535fcfc6ce5d5614 ]
+[ Upstream commit 4186c8d9e6af57bab0687b299df10ebd47534a0a ]
 
-Add AFE Control Register 0 to the volatile_register.
-AFE_DAC_CON0 can be modified by both the SOF and ALSA drivers.
-If this register is read and written in cache mode, the cached value
-might not reflect the actual value when the register is modified by
-another driver. It can cause playback or capture failures. Therefore,
-it is necessary to add AFE_DAC_CON0 to the list of volatile registers.
+The driver must ensure TX descriptor updates are visible
+before updating TX pointer and TX clear pointer.
 
-Signed-off-by: YR Yang <yr.yang@mediatek.com>
-Reviewed-by: Fei Shao <fshao@chromium.org>
-Reviewed-by: Trevor Wu <trevor.wu@mediatek.com>
-Link: https://patch.msgid.link/20240801084326.1472-1-yr.yang@mediatek.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This resolves TX hangs observed on AST2600 when running
+iperf3.
+
+Signed-off-by: Jacky Chou <jacky_chou@aspeedtech.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/mediatek/mt8188/mt8188-afe-pcm.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/faraday/ftgmac100.c | 26 ++++++++++++++++--------
+ 1 file changed, 18 insertions(+), 8 deletions(-)
 
-diff --git a/sound/soc/mediatek/mt8188/mt8188-afe-pcm.c b/sound/soc/mediatek/mt8188/mt8188-afe-pcm.c
-index ccb6c1f3adc7d..73e5c63aeec87 100644
---- a/sound/soc/mediatek/mt8188/mt8188-afe-pcm.c
-+++ b/sound/soc/mediatek/mt8188/mt8188-afe-pcm.c
-@@ -2748,6 +2748,7 @@ static bool mt8188_is_volatile_reg(struct device *dev, unsigned int reg)
- 	case AFE_ASRC12_NEW_CON9:
- 	case AFE_LRCK_CNT:
- 	case AFE_DAC_MON0:
-+	case AFE_DAC_CON0:
- 	case AFE_DL2_CUR:
- 	case AFE_DL3_CUR:
- 	case AFE_DL6_CUR:
+diff --git a/drivers/net/ethernet/faraday/ftgmac100.c b/drivers/net/ethernet/faraday/ftgmac100.c
+index 9135b918dd490..848e41a4b1dbb 100644
+--- a/drivers/net/ethernet/faraday/ftgmac100.c
++++ b/drivers/net/ethernet/faraday/ftgmac100.c
+@@ -572,7 +572,7 @@ static bool ftgmac100_rx_packet(struct ftgmac100 *priv, int *processed)
+ 	(*processed)++;
+ 	return true;
+ 
+- drop:
++drop:
+ 	/* Clean rxdes0 (which resets own bit) */
+ 	rxdes->rxdes0 = cpu_to_le32(status & priv->rxdes0_edorr_mask);
+ 	priv->rx_pointer = ftgmac100_next_rx_pointer(priv, pointer);
+@@ -656,6 +656,11 @@ static bool ftgmac100_tx_complete_packet(struct ftgmac100 *priv)
+ 	ftgmac100_free_tx_packet(priv, pointer, skb, txdes, ctl_stat);
+ 	txdes->txdes0 = cpu_to_le32(ctl_stat & priv->txdes0_edotr_mask);
+ 
++	/* Ensure the descriptor config is visible before setting the tx
++	 * pointer.
++	 */
++	smp_wmb();
++
+ 	priv->tx_clean_pointer = ftgmac100_next_tx_pointer(priv, pointer);
+ 
+ 	return true;
+@@ -809,6 +814,11 @@ static netdev_tx_t ftgmac100_hard_start_xmit(struct sk_buff *skb,
+ 	dma_wmb();
+ 	first->txdes0 = cpu_to_le32(f_ctl_stat);
+ 
++	/* Ensure the descriptor config is visible before setting the tx
++	 * pointer.
++	 */
++	smp_wmb();
++
+ 	/* Update next TX pointer */
+ 	priv->tx_pointer = pointer;
+ 
+@@ -829,7 +839,7 @@ static netdev_tx_t ftgmac100_hard_start_xmit(struct sk_buff *skb,
+ 
+ 	return NETDEV_TX_OK;
+ 
+- dma_err:
++dma_err:
+ 	if (net_ratelimit())
+ 		netdev_err(netdev, "map tx fragment failed\n");
+ 
+@@ -851,7 +861,7 @@ static netdev_tx_t ftgmac100_hard_start_xmit(struct sk_buff *skb,
+ 	 * last fragment, so we know ftgmac100_free_tx_packet()
+ 	 * hasn't freed the skb yet.
+ 	 */
+- drop:
++drop:
+ 	/* Drop the packet */
+ 	dev_kfree_skb_any(skb);
+ 	netdev->stats.tx_dropped++;
+@@ -1344,7 +1354,7 @@ static void ftgmac100_reset(struct ftgmac100 *priv)
+ 	ftgmac100_init_all(priv, true);
+ 
+ 	netdev_dbg(netdev, "Reset done !\n");
+- bail:
++bail:
+ 	if (priv->mii_bus)
+ 		mutex_unlock(&priv->mii_bus->mdio_lock);
+ 	if (netdev->phydev)
+@@ -1543,15 +1553,15 @@ static int ftgmac100_open(struct net_device *netdev)
+ 
+ 	return 0;
+ 
+- err_ncsi:
++err_ncsi:
+ 	napi_disable(&priv->napi);
+ 	netif_stop_queue(netdev);
+- err_alloc:
++err_alloc:
+ 	ftgmac100_free_buffers(priv);
+ 	free_irq(netdev->irq, netdev);
+- err_irq:
++err_irq:
+ 	netif_napi_del(&priv->napi);
+- err_hw:
++err_hw:
+ 	iowrite32(0, priv->base + FTGMAC100_OFFSET_IER);
+ 	ftgmac100_free_rings(priv);
+ 	return err;
 -- 
 2.43.0
 
