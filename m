@@ -1,64 +1,55 @@
-Return-Path: <stable+bounces-77955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78041-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AB47988463
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:27:13 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C49DF9884D2
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:32:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D5D161F22900
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:27:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 57227B21BCB
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:32:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62F2C18C00E;
-	Fri, 27 Sep 2024 12:27:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF99218C32E;
+	Fri, 27 Sep 2024 12:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JADnRwro"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gwZmWIUJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21DED17B515;
-	Fri, 27 Sep 2024 12:27:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DB7118BC30;
+	Fri, 27 Sep 2024 12:30:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440020; cv=none; b=LNwjuLzuvkn/7ivgRra9qku8W+Y6XjKXmGWoI4eozq5gjlqwGAenVEVe4jE4mMQAkrSeHfHzUgh6bH8HkaDtWjb1TlTfo7nPsFNPstYt/jnqkXCRJI7hyKwX/mmC8QJ2KDBfFliyRA7hIdDBJB5R0O4EG3qIb0J4vElH9glPobs=
+	t=1727440259; cv=none; b=u+umON3fKS+E/2sX6kDAFCfLwnhHsG+c2qoT7GWhFq947Sww6XUSnioDc+f3xuA9RcqIFpc4Pwmf3TFygOqU2VFR98NiDNRfYNihQRUzeeY/GVSHxS7dI5pJwlR77i70DS+bUTcDixp8FJG9cTSqYARWvpt/RznRFr4fFaIwRWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440020; c=relaxed/simple;
-	bh=bDNNJUTV6b7ho0p1GmRU2kvEB5mpsl7x1i4j/tqdk/Q=;
+	s=arc-20240116; t=1727440259; c=relaxed/simple;
+	bh=WeLO0SN9PmRM5OcBM+iC3CBpVQPjHXlc2RrLZqek3J4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ud4SIKPdCX2s6dkUGec+DKR+lWB6ZY0fR7vqvbrrGJc0FKUHh0Hfw9ExNHoGiUj2yNNU5Uv9NFkWRn2MPf9DtT3INKwQVCzTL4gCCcF7F+MTc+u6na0wTwetd8R92FeRXKcc2xu82m/kIt/YrP/XDoP+3ZnYYVDSFUiAalmC0ak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JADnRwro; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 749CCC4CEC4;
-	Fri, 27 Sep 2024 12:26:59 +0000 (UTC)
+	 MIME-Version; b=FIA2G1T+lhXwHVms4t+O59itRXfRVdAAgzdaWTUsxCW8iyM+h7ZK92fLzOjxBffahiEpMcFmqjUsNxs9dZfKrofzDsSlG0aEquaE75Y8YCx6dT9g1tYfA8FsiS6QEEImPNFeWitDWed9+BiRv7hDuB0FElvdffpPEbV4kQbQB5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gwZmWIUJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B51EC4CEC4;
+	Fri, 27 Sep 2024 12:30:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440020;
-	bh=bDNNJUTV6b7ho0p1GmRU2kvEB5mpsl7x1i4j/tqdk/Q=;
+	s=korg; t=1727440259;
+	bh=WeLO0SN9PmRM5OcBM+iC3CBpVQPjHXlc2RrLZqek3J4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JADnRwro9BH9S3pYCeHKSnwVze8B0zW9/2SS5IiOR4clH0cAZ23ebBTq1Y3wqUO9A
-	 s77vWNGsOqElQaaJJvbR4RzIMGcKPKcPKzzT0jeSyWnUtiII8O9Swe6xBAKh3pkG7m
-	 A6QyAyf/s4xNPuAB+DckVfxPTsuD+uAJ2juygfzo=
+	b=gwZmWIUJZFlqQZoayk2f6Q6F+yxnwG71LgRz0ZHa6/duR3l3w/7CcG6e5ZTpjoCci
+	 sI9GOiUrnVeQ+h4PqatjF1Li1rWJxBRDi1+FCIEiteAejJzU1DLhUHRwpf02Sj9GH+
+	 d778DrBJjGZcs6lvziQVVXDN1cQP/xtS4rjyfQNw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ferry Meng <mengferry@linux.alibaba.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	lei lu <llfamsec@gmail.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Gang He <ghe@suse.com>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 37/54] ocfs2: add bounds checking to ocfs2_xattr_find_entry()
+Subject: [PATCH 6.1 18/73] can: mcp251xfd: mcp251xfd_ring_init(): check TX-coalescing configuration
 Date: Fri, 27 Sep 2024 14:23:29 +0200
-Message-ID: <20240927121721.240542789@linuxfoundation.org>
+Message-ID: <20240927121720.625883974@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121719.714627278@linuxfoundation.org>
-References: <20240927121719.714627278@linuxfoundation.org>
+In-Reply-To: <20240927121719.897851549@linuxfoundation.org>
+References: <20240927121719.897851549@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,87 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ferry Meng <mengferry@linux.alibaba.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit 9e3041fecdc8f78a5900c3aa51d3d756e73264d6 ]
+[ Upstream commit ac2b81eb8b2d104033560daea886ee84531e3d0a ]
 
-Add a paranoia check to make sure it doesn't stray beyond valid memory
-region containing ocfs2 xattr entries when scanning for a match.  It will
-prevent out-of-bound access in case of crafted images.
+When changing the interface from CAN-CC to CAN-FD mode the old
+coalescing parameters are re-used. This might cause problem, as the
+configured parameters are too big for CAN-FD mode.
 
-Link: https://lkml.kernel.org/r/20240520024024.1976129-1-joseph.qi@linux.alibaba.com
-Signed-off-by: Ferry Meng <mengferry@linux.alibaba.com>
-Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Reported-by: lei lu <llfamsec@gmail.com>
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Gang He <ghe@suse.com>
-Cc: Jun Piao <piaojun@huawei.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: af77c4fc1871 ("ocfs2: strict bound check before memcmp in ocfs2_xattr_find_entry()")
+During testing an invalid TX coalescing configuration has been seen.
+The problem should be been fixed in the previous patch, but add a
+safeguard here to ensure that the number of TEF coalescing buffers (if
+configured) is exactly the half of all TEF buffers.
+
+Link: https://lore.kernel.org/all/20240805-mcp251xfd-fix-ringconfig-v1-2-72086f0ca5ee@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/xattr.c | 12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/fs/ocfs2/xattr.c b/fs/ocfs2/xattr.c
-index b562cfef888ad..e6220f7f7cf34 100644
---- a/fs/ocfs2/xattr.c
-+++ b/fs/ocfs2/xattr.c
-@@ -1062,7 +1062,7 @@ ssize_t ocfs2_listxattr(struct dentry *dentry,
- 	return i_ret + b_ret;
+diff --git a/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c b/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
+index 0fde8154a649b..a894cb1fb9bfe 100644
+--- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
++++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c
+@@ -280,7 +280,7 @@ int mcp251xfd_ring_init(struct mcp251xfd_priv *priv)
+ 	const struct mcp251xfd_rx_ring *rx_ring;
+ 	u16 base = 0, ram_used;
+ 	u8 fifo_nr = 1;
+-	int i;
++	int err = 0, i;
+ 
+ 	netdev_reset_queue(priv->ndev);
+ 
+@@ -376,10 +376,18 @@ int mcp251xfd_ring_init(struct mcp251xfd_priv *priv)
+ 		netdev_err(priv->ndev,
+ 			   "Error during ring configuration, using more RAM (%u bytes) than available (%u bytes).\n",
+ 			   ram_used, MCP251XFD_RAM_SIZE);
+-		return -ENOMEM;
++		err = -ENOMEM;
+ 	}
+ 
+-	return 0;
++	if (priv->tx_obj_num_coalesce_irq &&
++	    priv->tx_obj_num_coalesce_irq * 2 != priv->tx->obj_num) {
++		netdev_err(priv->ndev,
++			   "Error during ring configuration, number of TEF coalescing buffers (%u) must be half of TEF buffers (%u).\n",
++			   priv->tx_obj_num_coalesce_irq, priv->tx->obj_num);
++		err = -EINVAL;
++	}
++
++	return err;
  }
  
--static int ocfs2_xattr_find_entry(int name_index,
-+static int ocfs2_xattr_find_entry(struct inode *inode, int name_index,
- 				  const char *name,
- 				  struct ocfs2_xattr_search *xs)
- {
-@@ -1076,6 +1076,10 @@ static int ocfs2_xattr_find_entry(int name_index,
- 	name_len = strlen(name);
- 	entry = xs->here;
- 	for (i = 0; i < le16_to_cpu(xs->header->xh_count); i++) {
-+		if ((void *)entry >= xs->end) {
-+			ocfs2_error(inode->i_sb, "corrupted xattr entries");
-+			return -EFSCORRUPTED;
-+		}
- 		cmp = name_index - ocfs2_xattr_get_type(entry);
- 		if (!cmp)
- 			cmp = name_len - entry->xe_name_len;
-@@ -1166,7 +1170,7 @@ static int ocfs2_xattr_ibody_get(struct inode *inode,
- 	xs->base = (void *)xs->header;
- 	xs->here = xs->header->xh_entries;
- 
--	ret = ocfs2_xattr_find_entry(name_index, name, xs);
-+	ret = ocfs2_xattr_find_entry(inode, name_index, name, xs);
- 	if (ret)
- 		return ret;
- 	size = le64_to_cpu(xs->here->xe_value_size);
-@@ -2698,7 +2702,7 @@ static int ocfs2_xattr_ibody_find(struct inode *inode,
- 
- 	/* Find the named attribute. */
- 	if (oi->ip_dyn_features & OCFS2_INLINE_XATTR_FL) {
--		ret = ocfs2_xattr_find_entry(name_index, name, xs);
-+		ret = ocfs2_xattr_find_entry(inode, name_index, name, xs);
- 		if (ret && ret != -ENODATA)
- 			return ret;
- 		xs->not_found = ret;
-@@ -2833,7 +2837,7 @@ static int ocfs2_xattr_block_find(struct inode *inode,
- 		xs->end = (void *)(blk_bh->b_data) + blk_bh->b_size;
- 		xs->here = xs->header->xh_entries;
- 
--		ret = ocfs2_xattr_find_entry(name_index, name, xs);
-+		ret = ocfs2_xattr_find_entry(inode, name_index, name, xs);
- 	} else
- 		ret = ocfs2_xattr_index_block_find(inode, blk_bh,
- 						   name_index,
+ void mcp251xfd_ring_free(struct mcp251xfd_priv *priv)
 -- 
 2.43.0
 
