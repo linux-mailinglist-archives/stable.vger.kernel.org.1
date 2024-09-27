@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-78017-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78069-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B07C89884A9
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:29:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id D77C89884EF
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:32:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 670391F22201
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:29:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 14EF71C2209F
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:32:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF88C18BC23;
-	Fri, 27 Sep 2024 12:29:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27E7018BC23;
+	Fri, 27 Sep 2024 12:32:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n7hFgcvf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BbWnwZTp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E10C18A6C3;
-	Fri, 27 Sep 2024 12:29:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA50F3C3C;
+	Fri, 27 Sep 2024 12:32:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440192; cv=none; b=DU2KtmTYOE1YfVILlSIVcQLV+ZkJ1re6QbFplgp8P9eAnefDespU9Bmt3Lx8K1afAASfjL8TUSwFqZJHhCcGl9n6NHHJO0navIXqGnmGMTXcUaxi5UJEgnqyT6tP4JIIa5YvWw5DPJj5Cr1Xh5u9OX7UbPXb4/04ojZSqj5VXOU=
+	t=1727440336; cv=none; b=fshujdxrmsGGu8pynUys3khLXpFuRuHn6xje5Bbzxpzlo8Rq2+ckOJthYOoeq+uqb5a/AeNjYLvi2gX8AlCHVqwbTdNhgvvjviH02mwi6yQEQXgPo3w8bmqFAbEjF0CwTHIBny3KVMhLLglDa4ej/r5hLIFYWCrEZU+FTeVk/pE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440192; c=relaxed/simple;
-	bh=Kwfqw2krzGFA+pYUlc3YuI+r63k6SDkiRfXKiNRiwUA=;
+	s=arc-20240116; t=1727440336; c=relaxed/simple;
+	bh=R180KTU1Ja9qVTw9Q4FYxQSeTdRO1rVAOsZbj2Wurwc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PyMqnysFQaOQgvdvt9DIWCLE+ThQLmpoooFmxtizYeWZmSHiXYBroSjj7xuzhyzyQU4b3PItQf9M3TgnxWGkCghwvf7nq/MnwMc5STEtuIR55z2425xnS+94t5YEwkbbSEgjZ/kavbmWsr9YM0RcsiMX7flJjEBQIlr9pVqogpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n7hFgcvf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD693C4CEC4;
-	Fri, 27 Sep 2024 12:29:51 +0000 (UTC)
+	 MIME-Version; b=jmXsV2T/NeKEqOywWC7G74+E2Yq4dHnwH8VBvxKuj3gegvjbijwcAsnj3ArcbgxpbSfi7WCKvUTZE79IXFYms4DJFsRqUpzsqh6qsvUvpfhiSpsXJ9nU3z8Mzj/7bITwYYlaFJSBbfsxcvGlYWZIv1oyzLG2tpJsF5iyiaQmILs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BbWnwZTp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 652B1C4CEC4;
+	Fri, 27 Sep 2024 12:32:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440192;
-	bh=Kwfqw2krzGFA+pYUlc3YuI+r63k6SDkiRfXKiNRiwUA=;
+	s=korg; t=1727440336;
+	bh=R180KTU1Ja9qVTw9Q4FYxQSeTdRO1rVAOsZbj2Wurwc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n7hFgcvfiOsiR6VSgbY7DbF815VGRHFVoonbXPOIe/frNp+nb4PqPEjeluDHg2BDd
-	 fYS+aFvewi5zoGVjjODCOPjOsydhbJWgECIHBAE29W7o07XYsLr3hSPZgmHNwgJhl1
-	 VBEuXlOd7pF5A1SiAWWIvalj/351Z0PnOwd/2g+E=
+	b=BbWnwZTpnYWi6MI4MOTv2bVgyTVn8jCn7hMC8J/g9sEI/1r+jdb/2aCm7ukP9R+dU
+	 C2s/9nChmWK8gb9dQaJiSjfMHQSEpiGBgW9fBZZaQ29oAhcslFk365+bcf14eWZE7N
+	 5uWj1tnZWmbziiYhjRmMzObKuxxhmFrFXuL7abFg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marc Kleine-Budde <mkl@pengutronix.de>
-Subject: [PATCH 6.10 55/58] can: mcp251xfd: properly indent labels
+	Long Li <leo.lilong@huawei.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Leah Rumancik <leah.rumancik@gmail.com>,
+	Chandan Babu R <chandanbabu@kernel.org>
+Subject: [PATCH 6.1 46/73] xfs: fix ag count overflow during growfs
 Date: Fri, 27 Sep 2024 14:23:57 +0200
-Message-ID: <20240927121721.079241669@linuxfoundation.org>
+Message-ID: <20240927121721.786303025@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121718.789211866@linuxfoundation.org>
-References: <20240927121718.789211866@linuxfoundation.org>
+In-Reply-To: <20240927121719.897851549@linuxfoundation.org>
+References: <20240927121719.897851549@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,150 +63,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Kleine-Budde <mkl@pengutronix.de>
+From: Long Li <leo.lilong@huaweicloud.com>
 
-commit 51b2a721612236335ddec4f3fb5f59e72a204f3a upstream.
+[ Upstream commit c3b880acadc95d6e019eae5d669e072afda24f1b ]
 
-To fix the coding style, remove the whitespace in front of labels.
+I found a corruption during growfs:
 
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+ XFS (loop0): Internal error agbno >= mp->m_sb.sb_agblocks at line 3661 of
+   file fs/xfs/libxfs/xfs_alloc.c.  Caller __xfs_free_extent+0x28e/0x3c0
+ CPU: 0 PID: 573 Comm: xfs_growfs Not tainted 6.3.0-rc7-next-20230420-00001-gda8c95746257
+ Call Trace:
+  <TASK>
+  dump_stack_lvl+0x50/0x70
+  xfs_corruption_error+0x134/0x150
+  __xfs_free_extent+0x2c1/0x3c0
+  xfs_ag_extend_space+0x291/0x3e0
+  xfs_growfs_data+0xd72/0xe90
+  xfs_file_ioctl+0x5f9/0x14a0
+  __x64_sys_ioctl+0x13e/0x1c0
+  do_syscall_64+0x39/0x80
+  entry_SYSCALL_64_after_hwframe+0x63/0xcd
+ XFS (loop0): Corruption detected. Unmount and run xfs_repair
+ XFS (loop0): Internal error xfs_trans_cancel at line 1097 of file
+   fs/xfs/xfs_trans.c.  Caller xfs_growfs_data+0x691/0xe90
+ CPU: 0 PID: 573 Comm: xfs_growfs Not tainted 6.3.0-rc7-next-20230420-00001-gda8c95746257
+ Call Trace:
+  <TASK>
+  dump_stack_lvl+0x50/0x70
+  xfs_error_report+0x93/0xc0
+  xfs_trans_cancel+0x2c0/0x350
+  xfs_growfs_data+0x691/0xe90
+  xfs_file_ioctl+0x5f9/0x14a0
+  __x64_sys_ioctl+0x13e/0x1c0
+  do_syscall_64+0x39/0x80
+  entry_SYSCALL_64_after_hwframe+0x63/0xcd
+ RIP: 0033:0x7f2d86706577
+
+The bug can be reproduced with the following sequence:
+
+ # truncate -s  1073741824 xfs_test.img
+ # mkfs.xfs -f -b size=1024 -d agcount=4 xfs_test.img
+ # truncate -s 2305843009213693952  xfs_test.img
+ # mount -o loop xfs_test.img /mnt/test
+ # xfs_growfs -D  1125899907891200  /mnt/test
+
+The root cause is that during growfs, user space passed in a large value
+of newblcoks to xfs_growfs_data_private(), due to current sb_agblocks is
+too small, new AG count will exceed UINT_MAX. Because of AG number type
+is unsigned int and it would overflow, that caused nagcount much smaller
+than the actual value. During AG extent space, delta blocks in
+xfs_resizefs_init_new_ags() will much larger than the actual value due to
+incorrect nagcount, even exceed UINT_MAX. This will cause corruption and
+be detected in __xfs_free_extent. Fix it by growing the filesystem to up
+to the maximally allowed AGs and not return EINVAL when new AG count
+overflow.
+
+Signed-off-by: Long Li <leo.lilong@huawei.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Acked-by: Chandan Babu R <chandanbabu@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c   |   34 +++++++++++------------
- drivers/net/can/spi/mcp251xfd/mcp251xfd-dump.c   |    2 -
- drivers/net/can/spi/mcp251xfd/mcp251xfd-regmap.c |    2 -
- drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c    |    2 -
- 4 files changed, 20 insertions(+), 20 deletions(-)
+ fs/xfs/libxfs/xfs_fs.h |    2 ++
+ fs/xfs/xfs_fsops.c     |   13 +++++++++----
+ 2 files changed, 11 insertions(+), 4 deletions(-)
 
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c
-@@ -791,7 +791,7 @@ static int mcp251xfd_chip_start(struct m
+--- a/fs/xfs/libxfs/xfs_fs.h
++++ b/fs/xfs/libxfs/xfs_fs.h
+@@ -257,6 +257,8 @@ typedef struct xfs_fsop_resblks {
+ #define XFS_MAX_AG_BLOCKS	(XFS_MAX_AG_BYTES / XFS_MIN_BLOCKSIZE)
+ #define XFS_MAX_CRC_AG_BLOCKS	(XFS_MAX_AG_BYTES / XFS_MIN_CRC_BLOCKSIZE)
  
- 	return 0;
++#define XFS_MAX_AGNUMBER	((xfs_agnumber_t)(NULLAGNUMBER - 1))
++
+ /* keep the maximum size under 2^31 by a small amount */
+ #define XFS_MAX_LOG_BYTES \
+ 	((2 * 1024 * 1024 * 1024ULL) - XFS_MIN_LOG_BYTES)
+--- a/fs/xfs/xfs_fsops.c
++++ b/fs/xfs/xfs_fsops.c
+@@ -115,11 +115,16 @@ xfs_growfs_data_private(
  
-- out_chip_stop:
-+out_chip_stop:
- 	mcp251xfd_dump(priv);
- 	mcp251xfd_chip_stop(priv, CAN_STATE_STOPPED);
- 
-@@ -1576,7 +1576,7 @@ static irqreturn_t mcp251xfd_irq(int irq
- 		handled = IRQ_HANDLED;
- 	} while (1);
- 
-- out_fail:
-+out_fail:
- 	can_rx_offload_threaded_irq_finish(&priv->offload);
- 
- 	netdev_err(priv->ndev, "IRQ handler returned %d (intf=0x%08x).\n",
-@@ -1641,22 +1641,22 @@ static int mcp251xfd_open(struct net_dev
- 
- 	return 0;
- 
-- out_free_irq:
-+out_free_irq:
- 	free_irq(spi->irq, priv);
-- out_destroy_workqueue:
-+out_destroy_workqueue:
- 	destroy_workqueue(priv->wq);
-- out_can_rx_offload_disable:
-+out_can_rx_offload_disable:
- 	can_rx_offload_disable(&priv->offload);
- 	set_bit(MCP251XFD_FLAGS_DOWN, priv->flags);
- 	mcp251xfd_timestamp_stop(priv);
-- out_transceiver_disable:
-+out_transceiver_disable:
- 	mcp251xfd_transceiver_disable(priv);
-- out_mcp251xfd_ring_free:
-+out_mcp251xfd_ring_free:
- 	mcp251xfd_ring_free(priv);
-- out_pm_runtime_put:
-+out_pm_runtime_put:
- 	mcp251xfd_chip_stop(priv, CAN_STATE_STOPPED);
- 	pm_runtime_put(ndev->dev.parent);
-- out_close_candev:
-+out_close_candev:
- 	close_candev(ndev);
- 
- 	return err;
-@@ -1820,9 +1820,9 @@ mcp251xfd_register_get_dev_id(const stru
- 	*effective_speed_hz_slow = xfer[0].effective_speed_hz;
- 	*effective_speed_hz_fast = xfer[1].effective_speed_hz;
- 
-- out_kfree_buf_tx:
-+out_kfree_buf_tx:
- 	kfree(buf_tx);
-- out_kfree_buf_rx:
-+out_kfree_buf_rx:
- 	kfree(buf_rx);
- 
- 	return err;
-@@ -1936,13 +1936,13 @@ static int mcp251xfd_register(struct mcp
- 
- 	return 0;
- 
-- out_unregister_candev:
-+out_unregister_candev:
- 	unregister_candev(ndev);
-- out_chip_sleep:
-+out_chip_sleep:
- 	mcp251xfd_chip_sleep(priv);
-- out_runtime_disable:
-+out_runtime_disable:
- 	pm_runtime_disable(ndev->dev.parent);
-- out_runtime_put_noidle:
-+out_runtime_put_noidle:
- 	pm_runtime_put_noidle(ndev->dev.parent);
- 	mcp251xfd_clks_and_vdd_disable(priv);
- 
-@@ -2162,9 +2162,9 @@ static int mcp251xfd_probe(struct spi_de
- 
- 	return 0;
- 
-- out_can_rx_offload_del:
-+out_can_rx_offload_del:
- 	can_rx_offload_del(&priv->offload);
-- out_free_candev:
-+out_free_candev:
- 	spi->max_speed_hz = priv->spi_max_speed_hz_orig;
- 
- 	free_candev(ndev);
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-dump.c
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-dump.c
-@@ -94,7 +94,7 @@ static void mcp251xfd_dump_registers(con
- 		kfree(buf);
+ 	nb_div = nb;
+ 	nb_mod = do_div(nb_div, mp->m_sb.sb_agblocks);
+-	nagcount = nb_div + (nb_mod != 0);
+-	if (nb_mod && nb_mod < XFS_MIN_AG_BLOCKS) {
+-		nagcount--;
+-		nb = (xfs_rfsblock_t)nagcount * mp->m_sb.sb_agblocks;
++	if (nb_mod && nb_mod >= XFS_MIN_AG_BLOCKS)
++		nb_div++;
++	else if (nb_mod)
++		nb = nb_div * mp->m_sb.sb_agblocks;
++
++	if (nb_div > XFS_MAX_AGNUMBER + 1) {
++		nb_div = XFS_MAX_AGNUMBER + 1;
++		nb = nb_div * mp->m_sb.sb_agblocks;
  	}
- 
-- out:
-+out:
- 	mcp251xfd_dump_header(iter, MCP251XFD_DUMP_OBJECT_TYPE_REG, reg);
- }
- 
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-regmap.c
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-regmap.c
-@@ -397,7 +397,7 @@ mcp251xfd_regmap_crc_read(void *context,
- 
- 		return err;
- 	}
-- out:
-+out:
- 	memcpy(val_buf, buf_rx->data, val_len);
- 
- 	return 0;
---- a/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
-+++ b/drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c
-@@ -219,7 +219,7 @@ int mcp251xfd_handle_tefif(struct mcp251
- 		total_frame_len += frame_len;
- 	}
- 
-- out_netif_wake_queue:
-+out_netif_wake_queue:
- 	len = i;	/* number of handled goods TEFs */
- 	if (len) {
- 		struct mcp251xfd_tef_ring *ring = priv->tef;
++	nagcount = nb_div;
+ 	delta = nb - mp->m_sb.sb_dblocks;
+ 	/*
+ 	 * Reject filesystems with a single AG because they are not
 
 
 
