@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-78087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40411988506
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:33:32 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA16A98849F
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:29:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D02D1B24ED5
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:33:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 862391F2197E
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:29:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D12A918C32F;
-	Fri, 27 Sep 2024 12:33:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36D5E18BC0D;
+	Fri, 27 Sep 2024 12:29:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wn/H+30C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eIyeCb2t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9103C18453A;
-	Fri, 27 Sep 2024 12:33:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E951E18A6C3;
+	Fri, 27 Sep 2024 12:29:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440386; cv=none; b=jgF062D/+To4dBFLtQt+lB586bnjM9HBxPYdO8q214z1S9Qxo6oMv2O7VnAZHIK4pRMKbuqchY4gRi3W4UrFai/9SZGJs8H3rjIIGg2F2Tcm50hTaaNXBSJ36HOBDAfKlTeWgz01QlmRCS+35n1SOj6P+Pmy/ekcgl3o0r4sqmg=
+	t=1727440173; cv=none; b=TzkXfVKcz9MlsTxrECPQ8AS5H3RySX3KB469lQ4GD75rw4l7PZz97eGfDzwK2t37Dce0tALUeocO+86biBBWOb9IpITJLlFtpxAheqEUWUKmTOxvSZ2s0tfmJvLXelFkCW1ECdIJHvKpbemFoLZH00RKyJKaTVgZDiudvD/Cv0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440386; c=relaxed/simple;
-	bh=Ne400X+2CQrPzZ4tLV4a3rRkTpvJ8p35LUI3Xe4bIqY=;
+	s=arc-20240116; t=1727440173; c=relaxed/simple;
+	bh=tZH+YV2Xm5FdPECf5iCsxCIdjlLFpQ2ca6UzutXHa/E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bBOGV6K2JPH3pz9sFMyt1aY0EQFZiKwNkvxRDBUnSoj/2YJr+XV/DFPBoNa3OG5AmkGPrfMybiF9Qn0hKTX0Qxqtwrey9TJzHw87SkLEngUQFaz/h2E8u/CRObxH374a7p4wnzGgPVLEvjCSZimQDfz8oIBXD+WZ4LyE2sOKcO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wn/H+30C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E3EFC4CEC4;
-	Fri, 27 Sep 2024 12:33:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=dDr5936V/QA5iRQ4vQHD280UTnY/kNo/kMPUg6qwJ4JjD4K3WiC4A/QLiQ18cXAmYYhVJUEjEkuvDgizAs9A0+oINdDHIIUr1JLaxUimc0bnQbHHqIoBluILN1zVrkxuhN1vD8Y72UH7AwyASOP0I3ZMS8b/lwPj1NT4AoRIX9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eIyeCb2t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77DDAC4CEC4;
+	Fri, 27 Sep 2024 12:29:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440386;
-	bh=Ne400X+2CQrPzZ4tLV4a3rRkTpvJ8p35LUI3Xe4bIqY=;
+	s=korg; t=1727440172;
+	bh=tZH+YV2Xm5FdPECf5iCsxCIdjlLFpQ2ca6UzutXHa/E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wn/H+30CxSQpymzFa+oi8SQ8arTcYHcQHesBQXa5vOstUQsQLEnMRzBp9SRWh2cxR
-	 N0DL+OE5+c63jIeVrodef59mQeIENWI4A1W96IA82gO9GCEmp9okH6YO2wS6QfcTb9
-	 ujnS7mQnlP6faffuNwYbB9apmBhfSaqllEey7IO0=
+	b=eIyeCb2tlODY/09tUjDGlpNMSaXfCx+twFt1Nu1y6iGs6uvepx9X/5zO8/qime4Sk
+	 6nqThZwTIRCP5LUDjImKnCDrJ/lGE83WMgo1pdLwckNNgC3T6psep3lOonXadMFlcc
+	 1uTSv0QX3JSfd/Bcya+l4kRFlmk5Bi9iN5786n1Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Chinner <dchinner@redhat.com>,
-	Allison Henderson <allison.henderson@oracle.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Leah Rumancik <leah.rumancik@gmail.com>,
-	Chandan Babu R <chandanbabu@kernel.org>
-Subject: [PATCH 6.1 38/73] xfs: block reservation too large for minleft allocation
-Date: Fri, 27 Sep 2024 14:23:49 +0200
-Message-ID: <20240927121721.469292951@linuxfoundation.org>
+	=?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>,
+	James Zhu <James.Zhu@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 48/58] drm: Expand max DRM device number to full MINORBITS
+Date: Fri, 27 Sep 2024 14:23:50 +0200
+Message-ID: <20240927121720.750640543@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121719.897851549@linuxfoundation.org>
-References: <20240927121719.897851549@linuxfoundation.org>
+In-Reply-To: <20240927121718.789211866@linuxfoundation.org>
+References: <20240927121718.789211866@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,104 +61,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Chinner <dchinner@redhat.com>
+From: Michał Winiarski <michal.winiarski@intel.com>
 
-[ Upstream commit d5753847b216db0e553e8065aa825cfe497ad143 ]
+[ Upstream commit 071d583e01c88272f6ff216d4f867f8f35e94d7d ]
 
-When we enter xfs_bmbt_alloc_block() without having first allocated
-a data extent (i.e. tp->t_firstblock == NULLFSBLOCK) because we
-are doing something like unwritten extent conversion, the transaction
-block reservation is used as the minleft value.
+Having a limit of 64 DRM devices is not good enough for modern world
+where we have multi-GPU servers, SR-IOV virtual functions and virtual
+devices used for testing.
+Let's utilize full minor range for DRM devices.
+To avoid regressing the existing userspace, we're still maintaining the
+numbering scheme where 0-63 is used for primary, 64-127 is reserved
+(formerly for control) and 128-191 is used for render.
+For minors >= 192, we're allocating minors dynamically on a first-come,
+first-served basis.
 
-This works for operations like unwritten extent conversion, but it
-assumes that the block reservation is only for a BMBT split. THis is
-not always true, and sometimes results in larger than necessary
-minleft values being set. We only actually need enough space for a
-btree split, something we already handle correctly in
-xfs_bmapi_write() via the xfs_bmapi_minleft() calculation.
-
-We should use xfs_bmapi_minleft() in xfs_bmbt_alloc_block() to
-calculate the number of blocks a BMBT split on this inode is going to
-require, not use the transaction block reservation that contains the
-maximum number of blocks this transaction may consume in it...
-
-Signed-off-by: Dave Chinner <dchinner@redhat.com>
-Reviewed-by: Allison Henderson <allison.henderson@oracle.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Michał Winiarski <michal.winiarski@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240823163048.2676257-4-michal.winiarski@intel.com
+Acked-by: James Zhu <James.Zhu@amd.com>
+Acked-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/libxfs/xfs_bmap.c       |    2 +-
- fs/xfs/libxfs/xfs_bmap.h       |    2 ++
- fs/xfs/libxfs/xfs_bmap_btree.c |   19 +++++++++----------
- 3 files changed, 12 insertions(+), 11 deletions(-)
+ drivers/gpu/drm/drm_drv.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/fs/xfs/libxfs/xfs_bmap.c
-+++ b/fs/xfs/libxfs/xfs_bmap.c
-@@ -4242,7 +4242,7 @@ xfs_bmapi_convert_unwritten(
- 	return 0;
+diff --git a/drivers/gpu/drm/drm_drv.c b/drivers/gpu/drm/drm_drv.c
+index a5f7b24324e30..928824b919456 100644
+--- a/drivers/gpu/drm/drm_drv.c
++++ b/drivers/gpu/drm/drm_drv.c
+@@ -121,10 +121,19 @@ static void drm_minor_alloc_release(struct drm_device *dev, void *data)
+ 	xa_erase(drm_minor_get_xa(minor->type), minor->index);
  }
  
--static inline xfs_extlen_t
-+xfs_extlen_t
- xfs_bmapi_minleft(
- 	struct xfs_trans	*tp,
- 	struct xfs_inode	*ip,
---- a/fs/xfs/libxfs/xfs_bmap.h
-+++ b/fs/xfs/libxfs/xfs_bmap.h
-@@ -220,6 +220,8 @@ int	xfs_bmap_add_extent_unwritten_real(s
- 		struct xfs_inode *ip, int whichfork,
- 		struct xfs_iext_cursor *icur, struct xfs_btree_cur **curp,
- 		struct xfs_bmbt_irec *new, int *logflagsp);
-+xfs_extlen_t xfs_bmapi_minleft(struct xfs_trans *tp, struct xfs_inode *ip,
-+		int fork);
++/*
++ * DRM used to support 64 devices, for backwards compatibility we need to maintain the
++ * minor allocation scheme where minors 0-63 are primary nodes, 64-127 are control nodes,
++ * and 128-191 are render nodes.
++ * After reaching the limit, we're allocating minors dynamically - first-come, first-serve.
++ * Accel nodes are using a distinct major, so the minors are allocated in continuous 0-MAX
++ * range.
++ */
+ #define DRM_MINOR_LIMIT(t) ({ \
+ 	typeof(t) _t = (t); \
+ 	_t == DRM_MINOR_ACCEL ? XA_LIMIT(0, ACCEL_MAX_MINORS) : XA_LIMIT(64 * _t, 64 * _t + 63); \
+ })
++#define DRM_EXTENDED_MINOR_LIMIT XA_LIMIT(192, (1 << MINORBITS) - 1)
  
- enum xfs_bmap_intent_type {
- 	XFS_BMAP_MAP = 1,
---- a/fs/xfs/libxfs/xfs_bmap_btree.c
-+++ b/fs/xfs/libxfs/xfs_bmap_btree.c
-@@ -213,18 +213,16 @@ xfs_bmbt_alloc_block(
- 	if (args.fsbno == NULLFSBLOCK) {
- 		args.fsbno = be64_to_cpu(start->l);
- 		args.type = XFS_ALLOCTYPE_START_BNO;
-+
- 		/*
--		 * Make sure there is sufficient room left in the AG to
--		 * complete a full tree split for an extent insert.  If
--		 * we are converting the middle part of an extent then
--		 * we may need space for two tree splits.
--		 *
--		 * We are relying on the caller to make the correct block
--		 * reservation for this operation to succeed.  If the
--		 * reservation amount is insufficient then we may fail a
--		 * block allocation here and corrupt the filesystem.
-+		 * If we are coming here from something like unwritten extent
-+		 * conversion, there has been no data extent allocation already
-+		 * done, so we have to ensure that we attempt to locate the
-+		 * entire set of bmbt allocations in the same AG, as
-+		 * xfs_bmapi_write() would have reserved.
- 		 */
--		args.minleft = args.tp->t_blk_res;
-+		args.minleft = xfs_bmapi_minleft(cur->bc_tp, cur->bc_ino.ip,
-+						cur->bc_ino.whichfork);
- 	} else if (cur->bc_tp->t_flags & XFS_TRANS_LOWMODE) {
- 		args.type = XFS_ALLOCTYPE_START_BNO;
- 	} else {
-@@ -248,6 +246,7 @@ xfs_bmbt_alloc_block(
- 		 * successful activate the lowspace algorithm.
- 		 */
- 		args.fsbno = 0;
-+		args.minleft = 0;
- 		args.type = XFS_ALLOCTYPE_FIRST_AG;
- 		error = xfs_alloc_vextent(&args);
- 		if (error)
+ static int drm_minor_alloc(struct drm_device *dev, enum drm_minor_type type)
+ {
+@@ -140,6 +149,9 @@ static int drm_minor_alloc(struct drm_device *dev, enum drm_minor_type type)
+ 
+ 	r = xa_alloc(drm_minor_get_xa(type), &minor->index,
+ 		     NULL, DRM_MINOR_LIMIT(type), GFP_KERNEL);
++	if (r == -EBUSY && (type == DRM_MINOR_PRIMARY || type == DRM_MINOR_RENDER))
++		r = xa_alloc(&drm_minors_xa, &minor->index,
++			     NULL, DRM_EXTENDED_MINOR_LIMIT, GFP_KERNEL);
+ 	if (r < 0)
+ 		return r;
+ 
+-- 
+2.43.0
+
 
 
 
