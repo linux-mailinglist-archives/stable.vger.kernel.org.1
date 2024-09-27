@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-77992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77946-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 033E298848B
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:28:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id F0E9398845B
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:27:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF8AE281033
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:28:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3ABC2815A5
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:27:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F7B017B515;
-	Fri, 27 Sep 2024 12:28:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ECAC18C014;
+	Fri, 27 Sep 2024 12:26:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tA2/yBDf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HEfGpk1M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D457C1865ED;
-	Fri, 27 Sep 2024 12:28:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F01CC18C011;
+	Fri, 27 Sep 2024 12:26:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440122; cv=none; b=bNnTGmqPewmyZdHoKu7CEDpgPRdiLQVT2yorORlBGyuprwXBRltOWApsCjrvw0nuZza/NyyhT0epD9inoKeT3gfZpCdPBpJ3fCYelImVF4x4G6g1L2d5QPtKeKNplO2+8KS8GcP/IxqIfk0xV4dVhnEe31/qDvxBHhgfvGmUJac=
+	t=1727439995; cv=none; b=TY8bhxzyQMmQlXO8wQr3mO/8ZevUyRRrad3KKvYGbFy9MaC7h1Dj8UZ/ne8NFqN3ScyZX1X0oXptR07kOEHAGjDjtMBftZWfbo2WdgomGIg/BkkCjXxfEZJ1O0ovmlN8AM3EtqacfitqDs2jlLvbqH577sHajdzAdetpXUocsqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440122; c=relaxed/simple;
-	bh=Q5RJATS4uWmtpcbOa6T+h6qv/6gdRQCZQYJJ+J+wxio=;
+	s=arc-20240116; t=1727439995; c=relaxed/simple;
+	bh=ZdbI8R2DH4H4W/PTTWNf0GkH3SfnqbhmIpnYQNQk0yI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SDWiuZtR1H6GE8EmfP5iwksVchNeuhMfXxJccdmeQc89aSZOUouMzZ0CbF6tdDCZVP1tWcrvmT6elfW9p9Nrc/RjDcf9LvKOW4+abhJ5ta5u8MMcOb3o2FEqav5e54hZL8AC6NKOJG1tK61k+p6C1rg00uITcQ6+JCaV0gddSX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tA2/yBDf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61793C4CEC4;
-	Fri, 27 Sep 2024 12:28:42 +0000 (UTC)
+	 MIME-Version; b=Ym0+7JM0FUDegJAYzZpxfr0UlA8fMhaTwQ11Z7ZptYGfzs1keZrYQpvPQr69+Q9dqjO4xDBdwvlvKG5fTbqah8ACD+edXuV0RmE2KqF2gxr4JAep2Q5K9ViQqPaicXaa5n7HfwQmdeEJGY0UtXEEc4Ma8GtYO86GYALEtVlS2B0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HEfGpk1M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CF84C4CEC4;
+	Fri, 27 Sep 2024 12:26:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440122;
-	bh=Q5RJATS4uWmtpcbOa6T+h6qv/6gdRQCZQYJJ+J+wxio=;
+	s=korg; t=1727439994;
+	bh=ZdbI8R2DH4H4W/PTTWNf0GkH3SfnqbhmIpnYQNQk0yI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tA2/yBDfICxBZLcHWNo4G22/NyjoUsKZMy3PHBY7lOkcQsOWkPcsATBsEVRHTZO6N
-	 1KRuxfhZyrYwe4Mr3eqOOssStov0RHayuYcCdhBPpYQBcfQh1E7jkA3x3AQRie6mh+
-	 sR4u+2a5lsL7y58K+jiwL1BhKKKNSoVj9AR/LxgA=
+	b=HEfGpk1MdiuU47YFy2cNaWQLTCo2prQeD3oDT3+vZp3jGCi/nsn1CYkB04oZqONsj
+	 +2pC5VV0EaH4r58456Cha/EfcYiWYrl0QPM75Bs3tWNpunW17JXZT3TFGVHswnxvOV
+	 6ijtIlN1yktO5WxsQtviMYhZLtMMevEcCT6hbQ7E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Kelley <mhklinux@outlook.com>,
-	Roman Kisel <romank@linux.microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 40/58] x86/hyperv: Set X86_FEATURE_TSC_KNOWN_FREQ when Hyper-V provides frequency
+	Tony Luck <tony.luck@intel.com>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+Subject: [PATCH 6.6 50/54] x86/mm: Switch to new Intel CPU model defines
 Date: Fri, 27 Sep 2024 14:23:42 +0200
-Message-ID: <20240927121720.390541428@linuxfoundation.org>
+Message-ID: <20240927121721.823822179@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121718.789211866@linuxfoundation.org>
-References: <20240927121718.789211866@linuxfoundation.org>
+In-Reply-To: <20240927121719.714627278@linuxfoundation.org>
+References: <20240927121719.714627278@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +63,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Kelley <mhklinux@outlook.com>
+From: Tony Luck <tony.luck@intel.com>
 
-[ Upstream commit 8fcc514809de41153b43ccbe1a0cdf7f72b78e7e ]
+commit 2eda374e883ad297bd9fe575a16c1dc850346075 upstream.
 
-A Linux guest on Hyper-V gets the TSC frequency from a synthetic MSR, if
-available. In this case, set X86_FEATURE_TSC_KNOWN_FREQ so that Linux
-doesn't unnecessarily do refined TSC calibration when setting up the TSC
-clocksource.
+New CPU #defines encode vendor and family as well as model.
 
-With this change, a message such as this is no longer output during boot
-when the TSC is used as the clocksource:
+[ dhansen: vertically align 0's in invlpg_miss_ids[] ]
 
-[    1.115141] tsc: Refined TSC clocksource calibration: 2918.408 MHz
-
-Furthermore, the guest and host will have exactly the same view of the
-TSC frequency, which is important for features such as the TSC deadline
-timer that are emulated by the Hyper-V host.
-
-Signed-off-by: Michael Kelley <mhklinux@outlook.com>
-Reviewed-by: Roman Kisel <romank@linux.microsoft.com>
-Link: https://lore.kernel.org/r/20240606025559.1631-1-mhklinux@outlook.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <20240606025559.1631-1-mhklinux@outlook.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/all/20240424181518.41946-1-tony.luck%40intel.com
+[ Ricardo: I used the old match macro X86_MATCH_INTEL_FAM6_MODEL()
+  instead of X86_MATCH_VFM() as in the upstream commit. ]
+Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/mshyperv.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/x86/mm/init.c |   16 ++++++----------
+ 1 file changed, 6 insertions(+), 10 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyperv.c
-index 41632fb57796d..ead967479fa63 100644
---- a/arch/x86/kernel/cpu/mshyperv.c
-+++ b/arch/x86/kernel/cpu/mshyperv.c
-@@ -424,6 +424,7 @@ static void __init ms_hyperv_init_platform(void)
- 	    ms_hyperv.misc_features & HV_FEATURE_FREQUENCY_MSRS_AVAILABLE) {
- 		x86_platform.calibrate_tsc = hv_get_tsc_khz;
- 		x86_platform.calibrate_cpu = hv_get_tsc_khz;
-+		setup_force_cpu_cap(X86_FEATURE_TSC_KNOWN_FREQ);
+--- a/arch/x86/mm/init.c
++++ b/arch/x86/mm/init.c
+@@ -261,21 +261,17 @@ static void __init probe_page_size_mask(
  	}
+ }
  
- 	if (ms_hyperv.priv_high & HV_ISOLATION) {
--- 
-2.43.0
-
+-#define INTEL_MATCH(_model) { .vendor  = X86_VENDOR_INTEL,	\
+-			      .family  = 6,			\
+-			      .model = _model,			\
+-			    }
+ /*
+  * INVLPG may not properly flush Global entries
+  * on these CPUs when PCIDs are enabled.
+  */
+ static const struct x86_cpu_id invlpg_miss_ids[] = {
+-	INTEL_MATCH(INTEL_FAM6_ALDERLAKE   ),
+-	INTEL_MATCH(INTEL_FAM6_ALDERLAKE_L ),
+-	INTEL_MATCH(INTEL_FAM6_ATOM_GRACEMONT ),
+-	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE  ),
+-	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE_P),
+-	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE_S),
++	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE,      0),
++	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE_L,    0),
++	X86_MATCH_INTEL_FAM6_MODEL(ATOM_GRACEMONT, 0),
++	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE,     0),
++	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_P,   0),
++	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_S,   0),
+ 	{}
+ };
+ 
 
 
 
