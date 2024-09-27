@@ -1,113 +1,120 @@
-Return-Path: <stable+bounces-78139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3FC8988947
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 18:46:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 162DA988962
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 18:54:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9742F284200
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 16:46:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B27E91F2178E
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 16:54:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3B201714B6;
-	Fri, 27 Sep 2024 16:46:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 230D9186609;
+	Fri, 27 Sep 2024 16:54:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="IUEsB+IA";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="0QpyIETp"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zU1KuzKy"
 X-Original-To: stable@vger.kernel.org
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 510DA139587;
-	Fri, 27 Sep 2024 16:46:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 948D5169397
+	for <stable@vger.kernel.org>; Fri, 27 Sep 2024 16:54:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727455565; cv=none; b=LaBX/IMZlIj5Ha0UBVsHM+K5qbcuIXgGpZJC+0GJ8SVM2D+120hwkMDGZ+9ve5hc3ULvnXY4gGTlOU6TV3b23VKSpLkui0ndM6l1+u2QJRXS1IKc+wGAg2tVs5+m5XdZbgQgiw//C4Yeig4zOIk4t5TAxbKHnUNjSk6Bcz9hMxA=
+	t=1727456081; cv=none; b=E+PIADA+4hQiI6C77StAzn0TYpwO402BCuHV4MjkJNEPO8Tc3XFlS13yhzoksKn1BYjxLHtTG23oFYgATt4o36NzFxXSzIj+NuT9w33PMdP+EOdZERMJiCuLIP6ubiNYpxlmi3EhQnLkFLkkiwqzjmsdx4VtJG1gTSTvRyaNmMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727455565; c=relaxed/simple;
-	bh=Dq39zctb0+M+IyvzrX8hPT9pWJireV6GwwDwnMBinqk=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=o2sF6YUrusWVCIVTry2Xpi1aty9MzvFCjrMgWdtqHWAkFpwhnd7CvEtvrM4zGv+aHSXxxclhEkYBCIHt2CUnSsxrN2eaMcSREgTb4zT7vuYylGC1EOtxL6I8+Y8vsNeH94hwmSKBnhpcS2CMtABXnr1mrUF09gBENPXlv7CtiHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=IUEsB+IA; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=0QpyIETp; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
-From: =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1727455558;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=duuwl2G3x5FNBhikPhn175qnffZs/xH8VAphAGWC7mw=;
-	b=IUEsB+IA9enHtwMdL/vLDJ0YFw+n9xoDyBRk6/96HRC4rToE7tKdmZ89Zll61tVuiMjydo
-	bK1G2L3p5fXzjkl3i+57cg12GOwPtR04r3LIj+WwAzewGHDg2fPp+mIIYmqVPEbj1IAuQM
-	ZTODKk9Lmg+Xgf6CDNPSo6kHlFTqwjcncZ94n+4CFHuNkm0RNGDe4NoZUN6CpwgZqxmEqR
-	/d7+LD0qHW8UZKmqN2GgrwlvOyMghwMXKpHL3DFK0Bej3+HMwbP0RphXLc7RyzZal73yvG
-	JZO95wlGEkz4iDYD/LrKCaWcOX+C70nNiY80ZdjXVLm91pUaZ3gqyPXVtX4AuA==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1727455558;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=duuwl2G3x5FNBhikPhn175qnffZs/xH8VAphAGWC7mw=;
-	b=0QpyIETpEcfanTxgcw7vJOJ3XHz1/iIZntGUDzbL1dAv1JsdR7VLmxxZ0RSzFwdIMpryNT
-	apZGu9u4dOX98eAA==
-Date: Fri, 27 Sep 2024 18:45:38 +0200
-Subject: [PATCH] tools/nolibc: s390: include std.h
+	s=arc-20240116; t=1727456081; c=relaxed/simple;
+	bh=O63ZucSq0CoIiw3X1i0tZTg+t+EghAHf/YIpJSXS3qU=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=g8WyehF1mjlmOFBYmAvWr420ZsUFq7ZhQvJEVY5vq7Ymd59FNWgwbIs/rXXqz9CwEVWAbwhWsLe4ndsMcmXv9pwrHv5gaCSg3LnyTI/JFnme1fxgsaE/T6RxabkMRQxDiyUlWX8Cx97Oq9tfUkoJmgeauzYwp/OYd0q6uAvrWEY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ovt.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zU1KuzKy; arc=none smtp.client-ip=209.85.215.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ovt.bounces.google.com
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-7d5a54dcaefso1975450a12.2
+        for <stable@vger.kernel.org>; Fri, 27 Sep 2024 09:54:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1727456080; x=1728060880; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=NsAYa2Y8TQz/xhZT3kI0TC0+2sPBJIbZREP+lHmFh2k=;
+        b=zU1KuzKyhD8FvPne6oVE28jcwA0bv+QMt9KrJ09uupJaG5udn3UhQ2TQlGGChVvEpL
+         oxn2ZyfMYyGZ5yN68q6S1Si9n21wtpA2i+wmwlpQCyXwvDpksG/+kA86W6j9oghDuimT
+         TtvoM6/tqoMamauF82SURkrZQzv03QkxzaJRpH328AjVT9zgGepbje6UCjH/Jxv9OXUR
+         Aj08wG8oLWzynn4GaoeVqhOnYkEcPHgYoNd4erJbOBnCuqq3GL/c+ukNIv6O4CMHnhrv
+         boN8Ii6RE4GZHtyI9DCBdvSJEhhLBRNyZOxQABN5/3et8pjhXQUsYp/I5ciO+Lus62Ns
+         qCTg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727456080; x=1728060880;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=NsAYa2Y8TQz/xhZT3kI0TC0+2sPBJIbZREP+lHmFh2k=;
+        b=OO2TUlIaCu0CMUbnommTBJ/dVJvQ5aao3rwXIFxdzXKb7sbiNnSVPQkHCwWfXCT6mc
+         tH3b70Orn+HiThJUSil2ouxarsg7gt8rAz8wBM4Rdlq5rYI3XeMSCP19e1P10J0qqVWI
+         wEugAcLKRg6BJZjHbTgai7o+4CBRiDDhP3n+18Su8WgK+pDKBiXHEVruLD8wZbkz6HTH
+         sL4SMnJtnVx0RZBZM5tQRc7bETChRhB104umIbAfNLanl2SrDACa4CsTH6gwF9ESKf3q
+         jLamerb45M/HO6+pqKU4eDiH8IkddD47HsllRCKkppyr0tdW5+6PJOcKl6S7wYpjE8b3
+         TEZw==
+X-Gm-Message-State: AOJu0Yy0xTdynDSGkUGCwyh7w6EFxcYK3T7FpGhmTk4B9senYT8+mSFG
+	xHLmeP/jUeVIjxe6kNc9NrVkcAApH+91mjSnrq7t4ljyaDzX/+Syr569VX4h2s//QDxq9cMRXXr
+	YaATvxCNnZXaJgYgj/+H3UHodhXFVxr2jXYQldgp0hkX53BhzaQX1wudQszxbOSCSJ71Rn+GAMl
+	7i8vQoZiUEXZKiA4TA
+X-Google-Smtp-Source: AGHT+IEXzEwNhC7t12kCZDwozTho0aa9WBsoD0KxZH+pGCaoafn16DZSCyVyTZTOuViWsg3r8fjH1aw=
+X-Received: from hmarynka.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:1148])
+ (user=ovt job=sendgmr) by 2002:a63:575e:0:b0:75d:16f9:c075 with SMTP id
+ 41be03b00d2f7-7e6db07f64dmr4292a12.9.1727456079184; Fri, 27 Sep 2024 09:54:39
+ -0700 (PDT)
+Date: Fri, 27 Sep 2024 16:54:35 +0000
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20240927-nolibc-s390-std-h-v1-1-30442339a6b9@linutronix.de>
-X-B4-Tracking: v=1; b=H4sIADHh9mYC/x3MQQqAIBBA0avErBswDcSuEi3SxhoIDSciiO6et
- HyL/x8QKkwCQ/NAoYuFc6ro2gbCNqeVkJdq0Er3ymmLKe/sA4pxCuVccMPgfWeiVXG2Bmp3FIp
- 8/89xet8PcaK7D2MAAAA=
-X-Change-ID: 20240927-nolibc-s390-std-h-cbb13f70fa73
-To: Willy Tarreau <w@1wt.eu>, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <linux@weissschuh.net>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
- =?utf-8?q?Thomas_Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1727455556; l=1026;
- i=thomas.weissschuh@linutronix.de; s=20240209; h=from:subject:message-id;
- bh=Dq39zctb0+M+IyvzrX8hPT9pWJireV6GwwDwnMBinqk=;
- b=RHItbtGGV9sIR5Q1cpcfUcivvYj0Q1EtXVlat1lkjCcJMvcz6dOUQBzxZcV7s/Vb04V2F4XOf
- 1gSclD3z7NcDdPDbriSORa6H5WfvFhdVQWjubRJk76uK1bq1omzOuyD
-X-Developer-Key: i=thomas.weissschuh@linutronix.de; a=ed25519;
- pk=pfvxvpFUDJV2h2nY0FidLUml22uGLSjByFbM6aqQQws=
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.46.1.824.gd892dcdcdd-goog
+Message-ID: <20240927165435.1332526-1-ovt@google.com>
+Subject: [PATCH 5.15.y] vfio/pci: fix potential memory leak in vfio_intx_enable()
+From: Oleksandr Tymoshenko <ovt@google.com>
+To: stable@vger.kernel.org
+Cc: Ye Bin <yebin10@huawei.com>, Kevin Tian <kevin.tian@intel.com>, 
+	Reinette Chatre <reinette.chatre@intel.com>, Alex Williamson <alex.williamson@redhat.com>, 
+	Sasha Levin <sashal@kernel.org>, Oleksandr Tymoshenko <ovt@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-arch-s390.h uses types from std.h, but does not include it.
-Depending on the inclusion order the compilation can fail.
-Include std.h explicitly to avoid these errors.
+From: Ye Bin <yebin10@huawei.com>
 
-Fixes: 404fa87c0eaf ("tools/nolibc: s390: provide custom implementation for sys_fork")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+[ Upstream commit 82b951e6fbd31d85ae7f4feb5f00ddd4c5d256e2 ]
+
+If kzalloc() failed will lead to 'name' memory leak.
+
+Fixes: 18c198c96a81 ("vfio/pci: Create persistent INTx handler")
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Acked-by: Reinette Chatre <reinette.chatre@intel.com>
+Link: https://lore.kernel.org/r/20240415015029.3699844-1-yebin10@huawei.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Oleksandr Tymoshenko <ovt@google.com>
 ---
- tools/include/nolibc/arch-s390.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/vfio/pci/vfio_pci_intrs.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/tools/include/nolibc/arch-s390.h b/tools/include/nolibc/arch-s390.h
-index 2ec13d8b9a2db80efa8d6cbbbd01bfa3d0059de2..f9ab83a219b8a2d5e53b0b303d8bf0bf78280d5f 100644
---- a/tools/include/nolibc/arch-s390.h
-+++ b/tools/include/nolibc/arch-s390.h
-@@ -10,6 +10,7 @@
+diff --git a/drivers/vfio/pci/vfio_pci_intrs.c b/drivers/vfio/pci/vfio_pci_intrs.c
+index cb55f96b4f03..f20512c413f7 100644
+--- a/drivers/vfio/pci/vfio_pci_intrs.c
++++ b/drivers/vfio/pci/vfio_pci_intrs.c
+@@ -181,8 +181,10 @@ static int vfio_intx_enable(struct vfio_pci_core_device *vdev,
+ 		return -ENOMEM;
  
- #include "compiler.h"
- #include "crt.h"
-+#include "std.h"
+ 	vdev->ctx = kzalloc(sizeof(struct vfio_pci_irq_ctx), GFP_KERNEL);
+-	if (!vdev->ctx)
++	if (!vdev->ctx) {
++		kfree(name);
+ 		return -ENOMEM;
++	}
  
- /* Syscalls for s390:
-  *   - registers are 64-bit
-
----
-base-commit: e477dba5442c0af7acb9e8bbbbde1108a37ed39c
-change-id: 20240927-nolibc-s390-std-h-cbb13f70fa73
-
-Best regards,
+ 	vdev->num_ctx = 1;
+ 
 -- 
-Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+2.46.1.824.gd892dcdcdd-goog
 
 
