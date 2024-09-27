@@ -1,82 +1,82 @@
-Return-Path: <stable+bounces-77889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77BF8988083
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 10:39:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE2F898808A
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 10:41:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3112F282251
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 08:39:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D34DA1C22A24
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 08:41:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73FCC18991C;
-	Fri, 27 Sep 2024 08:39:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5197189B91;
+	Fri, 27 Sep 2024 08:41:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BbVa78MD"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ADRo1J/H"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f193.google.com (mail-pl1-f193.google.com [209.85.214.193])
+Received: from mail-pj1-f66.google.com (mail-pj1-f66.google.com [209.85.216.66])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB5FF17A597;
-	Fri, 27 Sep 2024 08:39:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FF02188A13;
+	Fri, 27 Sep 2024 08:41:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727426356; cv=none; b=OmGlTzt/lCB+82Am4Z3qmjZW4H9ZMTEmcAokMipGcYe22afrk3jFNZg5/ftG41qq7pazk2vvaZPFOxlaQBQm61bZs/mMNHnmkzJdG4VZi8noF/1gyLutdQec35cFXLQpgQcPNexcJdHtvc89WDoeWBp5MJjIRfpUgar/os8yadU=
+	t=1727426466; cv=none; b=drZe6lKT0qQYjB3Xab0lqpUMCU/aSwJYpZfxDleH17fx7TpG3SPYeN+vWI6ycjcd+3X4wSGRYC/IBQ1ucm3vzRbt6HSNaiOqmT5n0JQ0l9Tokvk/f4TVqULivIW/YlUUl78F6DzSKWRt89lTqQsHBsgpbFgfmiBPe6W+jAUPxlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727426356; c=relaxed/simple;
-	bh=92RQnOORjAJsaNb2qDBDg22hmUK/J5GkQTPRwalOP1E=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=YP7L8QkWd0FYFbv8v3z8srT+2OQiddP5XLWjrHVudG4WHrDYj7eagP6I+R/LECOsso/HBh3QRFtCYhwcq36t08Y1g+1cecvLJ5yk/s3rrZ7mc3KhST7xI1QaIIBdZDNwT9rUnzG2JPevo0CMmhAXUiG9dYpVMbQJwxvdIMbdXUY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BbVa78MD; arc=none smtp.client-ip=209.85.214.193
+	s=arc-20240116; t=1727426466; c=relaxed/simple;
+	bh=AOxp4hRhw4ffiQydMMnVDt7YirAsI2cruYRs3SLM/h8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=hCtGxltUXSNsJ3/Vx/frIsXqV38+QXc51hFiI0lzhJ3wnIwN1TjUHWKrzV7A1FgjLG65sStPdPAUvewNgRhLsZnNp+U1qECEUxDYgpomrIQGG0BVs/DdMLX5hyP6rRZImKRPGQiFftuS3rNVkZcHfOvbHQzzbcqpgpwPSOQzoec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ADRo1J/H; arc=none smtp.client-ip=209.85.216.66
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f193.google.com with SMTP id d9443c01a7336-20afdad26f5so24090825ad.1;
-        Fri, 27 Sep 2024 01:39:14 -0700 (PDT)
+Received: by mail-pj1-f66.google.com with SMTP id 98e67ed59e1d1-2da4ea59658so1678569a91.0;
+        Fri, 27 Sep 2024 01:41:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727426354; x=1728031154; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1727426465; x=1728031265; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=NLH+mb52MPyjIXhx1azIc5EcwOmHKk4FSK5JYKVOnRs=;
-        b=BbVa78MDsE3wT8EcDZMByZcV7ncxjtZrE/4cL7+3e/kKDX7ASJ3nXv0Hx0Xfy6cwaH
-         B3PfnSOrja7KHi6PA644sV3/zTy5PQmRrM3Y+RIMAAd5GMrHASHd3MNQsB7zOVGS8P4l
-         8p7cMAl7JFQ3CIuj3Y/icElwm+PUFY/DlOsAiJCM+yvnFLh/Wnvpc7AjmcJO/u2UCNmo
-         YCUnPqwFeGt0tgPvxJEPABtXphN6w9rjunSjmr6FdxG+VowIkfh/J65Q+dq72DY5LsP4
-         jrOFj53psqKZUUBEOyoblXmNHxAMTxlPJ6Px2zw5z9P1d7l0bD6k41NX1q8ICgMIE6cq
-         4MGw==
+        bh=3Ydo/pKZERVs0bqoqAlHXeOYxiKkpvzcXkDRwOGg+5o=;
+        b=ADRo1J/H60Rx9VYYU+p1xOLf1alkR+0c/vwQFek2Q4wySe+nnJmh+CyXjJAJR4wCUq
+         BuVhUWfK9rG0bUdqvw9BUyD5P8yEVF22zZ0365IIQ2TyfFQdbtR78Aq+Ylwa+XKvRruz
+         ZMA+DhYu5pe6zxYeKNM+sdTWfv7sqqa22hJpsEXiS+N7eVx1t8HOt5GJ7Vx8CKLkvRI5
+         bly7zbINlNqCx1Un1l+0ZZ7EX1iqPe47iKJ8XEmQd2fRSr6xVvJLPfrql9Kp5EW683nQ
+         KaRiaim+2wDTQohYVX1bOp9js4sBUaMcy24UGtWKvBH3WL9qjV0BUZYyP2FBGgS5iS21
+         ZQ6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727426354; x=1728031154;
+        d=1e100.net; s=20230601; t=1727426465; x=1728031265;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=NLH+mb52MPyjIXhx1azIc5EcwOmHKk4FSK5JYKVOnRs=;
-        b=kpxNXxMpeEanxunessjnMUUU67noj+YdE/ds9zSBHwWYZeoNS/F49BaxiDRU4jwsee
-         wqoEqALarAUbBheuXHx9gBvboTdoJ85EqFg4qpYnP1mb55NQsr689cv2f/GR5KC5t9u7
-         +NfWNU0ISE9AOhRh6fzlyitj0eVqqA4ixhALG1fF2yLL/88U9IChhEaj5eEpjj0J4n0F
-         m/9yYqx2hUPSOL/SFxXGGSlVx82+1mNZYW4xUiAZ1k3paHBOfCgmuclmOaYzsKd7PyXT
-         OG76YWkHF6H9UWYn2iSe63byxb32UL49j+Nfs0QwD7wy7Lki2XM1jX8savXsRtYX/Hbk
-         FReA==
-X-Forwarded-Encrypted: i=1; AJvYcCUqCA/PH1KCGPsgb1D1WC+Basc2H0SyrzrUubqrGfVgYgEAEs9VGNTnfL0QOz/TwIzpcNZp1lOsNpVtREY=@vger.kernel.org, AJvYcCWWo2n8rK3wYDPmzGjSB00hWNKmiHZQQya3lepep4CMr3fSVeENRKDVnum7vSwmbW5js9148Cux@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw7k5zXLPyh3LW+kvVVatuDaW9FfiNAFTS6V8CrzHJBWH4V5OAo
-	GEtNAt5P0MYpHd2a8zib1yha7R/3IMFixedlwS01uFmc6FSW5oMYSObSZoEt9XNE4w==
-X-Google-Smtp-Source: AGHT+IGCsiNRL8D++wZZcakGR4RpsXKuis0FJ3wkBnjIimX+d6oBcz/yejgeM2DrBMWfYCsLhkGoww==
-X-Received: by 2002:a17:902:d2ce:b0:206:cc29:e4f7 with SMTP id d9443c01a7336-20b3776e0f3mr41452075ad.34.1727426354025;
-        Fri, 27 Sep 2024 01:39:14 -0700 (PDT)
+        bh=3Ydo/pKZERVs0bqoqAlHXeOYxiKkpvzcXkDRwOGg+5o=;
+        b=CT2B3i54ERMJrFxAPYSjONZ2nrEJyjM177FCCtY8Vo0vBuQp3hC6pfP+ESGjqiZRuW
+         38jS6/3yVMqRnG4PILyvuVVzkbetdnm+CsUn1HB9gHDE7MhiLmLFZLmDasiGNsz3fj/6
+         DueWl5KarbiixfdTPVL96HxmiZmWxJvIMwtuv0TNpu/PqfNZz7UuPz1MS8YBoN3hY5+t
+         c2Z8HzkStLFjGTj+SqXHWD3sgXpelIgjPJVF8kRRyc2vPT7vhjaPDWkwtUVXvl93CHDm
+         G30ODBsYPE71rpzady8rJjTBo2NqH+UC/k+RMALC12gT5FSCECk0rINX/ZmtIaOLj7Bu
+         SuPQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVXiw8yD0me202eewovZSsk3n0LZo3e3biVs6JkgXao2musNUAJRONQF1zMGTd17EDbJ5q6mjRZy630vzk=@vger.kernel.org, AJvYcCWyyDz/aEmG18K1fOizv312tEcRHiiJzSjwcNxz2MCw1s44hhc0ibCqcobCsSiFDFCl9YZ40/6F@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz0D15IeNLs+QRGMv+VmJlYg9QGbVTxiYxOjipWpLQWzpA99eQj
+	TJC5ty0Q0BtsoeooOGl23zEen6HM0C/nypVHOuC6JHVfaTCJl9bl
+X-Google-Smtp-Source: AGHT+IEMOi60RjhnrsN90Q1PLv2GM/tYKsZ2PE5A15HJTUNAtUl/wmC3n+nECtpIf0liaEVnHlkXng==
+X-Received: by 2002:a17:90a:f00a:b0:2d8:3fe8:a18e with SMTP id 98e67ed59e1d1-2e0b8872d71mr3143054a91.5.1727426464532;
+        Fri, 27 Sep 2024 01:41:04 -0700 (PDT)
 Received: from tom-QiTianM540-A739.. ([106.39.42.164])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20b37db0272sm9482975ad.114.2024.09.27.01.39.10
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e08c35fed5sm2488411a91.0.2024.09.27.01.41.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 27 Sep 2024 01:39:13 -0700 (PDT)
+        Fri, 27 Sep 2024 01:41:03 -0700 (PDT)
 From: Qiu-ji Chen <chenqiuji666@gmail.com>
-To: mchehab@kernel.org,
-	allen.lkml@gmail.com,
-	hverkuil-cisco@xs4all.nl
-Cc: linux-media@vger.kernel.org,
+To: amit@kernel.org,
+	arnd@arndb.de,
+	gregkh@linuxfoundation.org
+Cc: virtualization@lists.linux.dev,
 	linux-kernel@vger.kernel.org,
 	baijiaju1990@gmail.com,
 	Qiu-ji Chen <chenqiuji666@gmail.com>,
 	stable@vger.kernel.org
-Subject: [PATCH] drivers:media:radio: Fix atomicity violation in fmc_send_cmd()
-Date: Fri, 27 Sep 2024 16:39:02 +0800
-Message-Id: <20240927083902.7088-1-chenqiuji666@gmail.com>
+Subject: [PATCH] virtio: console: Fix atomicity violation in fill_readbuf()
+Date: Fri, 27 Sep 2024 16:40:56 +0800
+Message-Id: <20240927084056.7193-1-chenqiuji666@gmail.com>
 X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -86,19 +86,20 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Atomicity violation occurs when the fmc_send_cmd() function is executed 
-simultaneously with the modification of the fmdev->resp_skb value. 
-Consider a scenario where, after passing the validity check within the 
-function, a non-null fmdev->resp_skb variable is assigned a null value. 
-This results in an invalid fmdev->resp_skb variable passing the validity 
-check. As seen in the later part of the function, skb = fmdev->resp_skb; 
-when the invalid fmdev->resp_skb passes the check, a null pointer 
-dereference error may occur at line 478, evt_hdr = (void *)skb->data;
+The atomicity violation issue is due to the invalidation of the function 
+port_has_data()'s check caused by concurrency. Imagine a scenario where a 
+port that contains data passes the validity check but is simultaneously 
+assigned a value with no data. This could result in an empty port passing 
+the validity check, potentially leading to a null pointer dereference 
+error later in the program, which is inconsistent.
 
-To address this issue, it is recommended to include the validity check of 
-fmdev->resp_skb within the locked section of the function. This 
-modification ensures that the value of fmdev->resp_skb does not change 
-during the validation process, thereby maintaining its validity.
+To address this issue, we believe there is a problem with the original 
+logic. Since the validity check and the read operation were separated, it 
+could lead to inconsistencies between the data that passes the check and 
+the data being read. Therefore, we moved the main logic of the 
+port_has_data function into this function and placed the read operation 
+within a lock, ensuring that the validity check and read operation are 
+not separated, thus resolving the problem.
 
 This possible bug is found by an experimental static analysis tool
 developed by our team. This tool analyzes the locking APIs
@@ -106,32 +107,34 @@ to extract function pairs that can be concurrently executed, and then
 analyzes the instructions in the paired functions to identify possible
 concurrency bugs including data races and atomicity violations.
 
-Fixes: e8454ff7b9a4 ("[media] drivers:media:radio: wl128x: FM Driver Common sources")
+Fixes: 203baab8ba31 ("virtio: console: Introduce function to hand off data from host to readers")
 Cc: stable@vger.kernel.org
 Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
 ---
- drivers/media/radio/wl128x/fmdrv_common.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/char/virtio_console.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/radio/wl128x/fmdrv_common.c b/drivers/media/radio/wl128x/fmdrv_common.c
-index 3d36f323a8f8..4d032436691c 100644
---- a/drivers/media/radio/wl128x/fmdrv_common.c
-+++ b/drivers/media/radio/wl128x/fmdrv_common.c
-@@ -466,11 +466,12 @@ int fmc_send_cmd(struct fmdev *fmdev, u8 fm_op, u16 type, void *payload,
- 			   jiffies_to_msecs(FM_DRV_TX_TIMEOUT) / 1000);
- 		return -ETIMEDOUT;
- 	}
-+	spin_lock_irqsave(&fmdev->resp_skb_lock, flags);
- 	if (!fmdev->resp_skb) {
-+		spin_unlock_irqrestore(&fmdev->resp_skb_lock, flags);
- 		fmerr("Response SKB is missing\n");
- 		return -EFAULT;
- 	}
--	spin_lock_irqsave(&fmdev->resp_skb_lock, flags);
- 	skb = fmdev->resp_skb;
- 	fmdev->resp_skb = NULL;
- 	spin_unlock_irqrestore(&fmdev->resp_skb_lock, flags);
+diff --git a/drivers/char/virtio_console.c b/drivers/char/virtio_console.c
+index de7d720d99fa..5aaf07f71a4c 100644
+--- a/drivers/char/virtio_console.c
++++ b/drivers/char/virtio_console.c
+@@ -656,10 +656,14 @@ static ssize_t fill_readbuf(struct port *port, u8 __user *out_buf,
+ 	struct port_buffer *buf;
+ 	unsigned long flags;
+ 
+-	if (!out_count || !port_has_data(port))
++	if (!out_count)
+ 		return 0;
+ 
+-	buf = port->inbuf;
++	spin_lock_irqsave(&port->inbuf_lock, flags);
++	buf = port->inbuf = get_inbuf(port);
++	spin_unlock_irqrestore(&port->inbuf_lock, flags);
++	if (!buf)
++		return 0;
+ 	out_count = min(out_count, buf->len - buf->offset);
+ 
+ 	if (to_user) {
 -- 
 2.34.1
-
 
