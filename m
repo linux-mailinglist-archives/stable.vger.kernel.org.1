@@ -1,144 +1,150 @@
-Return-Path: <stable+bounces-77867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1C64987F02
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 08:57:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D9F3987F0E
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 09:01:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2F0F4B20FB8
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 06:57:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id ECF881F21E84
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 07:01:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FA81171089;
-	Fri, 27 Sep 2024 06:57:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fwIufxqt"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA978170A27;
+	Fri, 27 Sep 2024 07:01:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from bg5.exmail.qq.com (bg5.exmail.qq.com [43.155.80.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4491015B963;
-	Fri, 27 Sep 2024 06:57:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AACDEEAC6
+	for <stable@vger.kernel.org>; Fri, 27 Sep 2024 07:01:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=43.155.80.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727420269; cv=none; b=Lw7GtB5bcyWpaKP0PsV0FzJuYnI/FzosSxE9JNT5X74UjgjY8GC41XH5lM36ADguMBVcWbufsBtGpDYpSF+Hw67BWimmYbPop1cd3XBTZ35CZa/VLfPT84SOdkCOgpbt8br1ztS4HcWiGN7Am0VJ3a0jTw+saTUx4Db5+Fxe6/g=
+	t=1727420477; cv=none; b=sRSCWxN71HNtwNyp0hXyUfKXBfE3CUFeTrgxx/jxPWdiK1hMF8H0ES+400wpd3/aMhaTNdP7o6wyde7825uweG4pGaIvWN10ykYgJd6NmDf616j3my/6cKs6fSV0dYYTMey0cqdwDDNhy8PoxyAndk0rrktne8qehtJ1f9LFPRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727420269; c=relaxed/simple;
-	bh=ZBkLLKTBaN1RjLuhzJQz+joYB3PW3NEjgBMzNhvaLdI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ttvWH2pI/YExD8hyllUbnYoLwPZqEFc5uj4W62q+zKccSXNav7BcnjPpixbMYcrY+/e7u3uZGQsRYJRNi0yARBoAYJHfiIZq+DH87+gCVKSBqI5vvbdcHWfGDA+pCV3Lt3AR26mJrNq8pvF7tSWinSTFkg+t7ZBV2QHRsrstdZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fwIufxqt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E5BDC4CEC4;
-	Fri, 27 Sep 2024 06:57:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727420268;
-	bh=ZBkLLKTBaN1RjLuhzJQz+joYB3PW3NEjgBMzNhvaLdI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fwIufxqtd3FG3lteOTOIMoFr6Xh2lF3oTsqU420IGbCX9JgVr2dfZuhQWRbMs8GYC
-	 YumEFJAzJ2kTYWU7S216axRRyrKAYPMaub0WpGro+/5CKypfgx3pkZMW/hzV8L5QTn
-	 E9pNPxBpv1c6VBuRdbGvWxyA1IkxnhcXtoCmNWM4=
-Date: Fri, 27 Sep 2024 08:57:36 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Miao Wang <shankerwangmiao@gmail.com>
-Cc: Xi Ruoyao <xry111@xry111.site>, stable@vger.kernel.org,
-	Mateusz Guzik <mjguzik@gmail.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>, linux-fsdevel@vger.kernel.org
-Subject: Re: [PATCH 0/3] Backport statx(..., NULL, AT_EMPTY_PATH, ...)
-Message-ID: <2024092739-prefix-cheek-6c46@gregkh>
-References: <20240918-statx-stable-linux-6-10-y-v1-0-8364a071074f@gmail.com>
- <2024091801-segment-lurk-e67b@gregkh>
- <f6ecd24e0fdb1327dad41f41c3ac31477ca00c9f.camel@xry111.site>
- <2024091900-sloppy-swept-0a2e@gregkh>
- <D5904FCB-5681-4744-93AE-BF030307CF86@gmail.com>
+	s=arc-20240116; t=1727420477; c=relaxed/simple;
+	bh=PFnApE/C+ZHBlowwZwA9bLXw/UX4Qkv6SWf9h8FhqQs=;
+	h=From:To:Cc:References:In-Reply-To:Subject:Date:Message-ID:
+	 MIME-Version:Content-Type; b=eGRTmNF3Sk9MMHRcchAngm76SeScwBTxehaMMcRKbL3nRDywXgmjxFbJu+y+wInF6ED1C8hjyrr/Fb3+U5vnIfa3HFRkT/F7RUndMm60vcQfg4WD9tdDITGTf2pv46QXf1L6rk1Fh9mxWRtPs6TsEgOOgEDQ1wc2dyle4lbNPnI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=43.155.80.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=net-swift.com
+X-QQ-mid:Yeas7t1727420383t138t30679
+Received: from 73E00E8BC808433CB9DB281092DFBE6B (duanqiangwen@net-swift.com [60.186.242.192])
+X-QQ-SSF:00400000000000F0FI4000000000000
+From: duanqiangwen@net-swift.com
+X-BIZMAIL-ID: 11177712466447322945
+To: "'Greg Kroah-Hartman'" <gregkh@linuxfoundation.org>
+Cc: <stable@vger.kernel.org>,
+	<patches@lists.linux.dev>,
+	"'David S. Miller'" <davem@davemloft.net>,
+	"'Sasha Levin'" <sashal@kernel.org>
+References: <20240430103058.010791820@linuxfoundation.org> <20240430103059.311606449@linuxfoundation.org> <000201db1081$45ae0660$d10a1320$@net-swift.com> <2024092715-olive-disallow-e28c@gregkh>
+In-Reply-To: <2024092715-olive-disallow-e28c@gregkh>
+Subject: RE: [PATCH 6.6 044/186] net: libwx: fix alloc msix vectors failed
+Date: Fri, 27 Sep 2024 14:59:42 +0800
+Message-ID: <001701db10aa$d3fd7710$7bf86530$@net-swift.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <D5904FCB-5681-4744-93AE-BF030307CF86@gmail.com>
+Content-Type: text/plain;
+	charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Microsoft Outlook 16.0
+Thread-Index: AQFOC2zPFGIL1BJCPg2TAnlAJkwjuwHfHi+QAbIP1l4BpKpYSbNbj4Yg
+Content-Language: zh-cn
+X-QQ-SENDSIZE: 520
+Feedback-ID: Yeas:net-swift.com:qybglogicsvrgz:qybglogicsvrgz7a-0
 
-On Thu, Sep 19, 2024 at 08:18:10PM +0800, Miao Wang wrote:
-> 
-> > 2024年9月19日 19:18，Greg Kroah-Hartman <gregkh@linuxfoundation.org> 写道：
-> > 
-> > On Thu, Sep 19, 2024 at 01:37:17AM +0800, Xi Ruoyao wrote:
-> >> On Wed, 2024-09-18 at 19:33 +0200, Greg Kroah-Hartman wrote:
-> >>> On Wed, Sep 18, 2024 at 10:01:18PM +0800, Miao Wang via B4 Relay wrote:
-> >>>> Commit 0ef625bba6fb ("vfs: support statx(..., NULL, AT_EMPTY_PATH,
-> >>>> ...)") added support for passing in NULL when AT_EMPTY_PATH is given,
-> >>>> improving performance when statx is used for fetching stat informantion
-> >>>> from a given fd, which is especially important for 32-bit platforms.
-> >>>> This commit also improved the performance when an empty string is given
-> >>>> by short-circuiting the handling of such paths.
-> >>>> 
-> >>>> This series is based on the commits in the Linus’ tree. Sligth
-> >>>> modifications are applied to the context of the patches for cleanly
-> >>>> applying.
-> >>>> 
-> >>>> Tested-by: Xi Ruoyao <xry111@xry111.site>
-> >>>> Signed-off-by: Miao Wang <shankerwangmiao@gmail.com>
-> >>> 
-> >>> This really looks like a brand new feature wanting to be backported, so
-> >>> why does it qualify under the stable kernel rules as fixing something?
-> >>> 
-> >>> I am willing to take some kinds of "fixes performance issues" new
-> >>> features when the subsystem maintainers agree and ask for it, but that
-> >>> doesn't seem to be the case here, and so without their approval and
-> >>> agreement that this is relevant, we can't accept them.
-> >> 
-> >> Unfortunately the performance issue fix and the new feature are in the
-> >> same commit.  Is it acceptable to separate out the performance fix part
-> >> for stable?  (Basically remove "if (!path) return true;" from the 1st
-> >> patch.)
-> > 
-> > What prevents you, if you wish to have the increased performance, from
-> > just moving to a newer kernel version?  We add new features and
-> > improvements like this all the time, why is this one so special to
-> > warrant doing backports.  Especially with no maintainer or subsystem
-> > developer asking for this to be done?
-> 
-> We all know the long process from a new improvement getting into the mainline
-> kernel to landing in users' devices. Considering 32-bit archectures which lacks
-> 64-bit time support in fstat(), statx(fd, AT_EMPTY_PATH) is heavily relied on.
-> My intention on putting up this backport is that to quicken this process,
-> benefiting these users.
-> 
-> Another reason is about loongarch. fstat() was not included in loongarch
-> initially, until 6.11. Although the re-inclusion of fstat() is backported to
-> stable releases, we still have implementation problems on the glibc side, that
-> loongarch is the only architecture that may lack the support of fstat. If
-> dynamic probing of the existence of fstat() is implemented, this code path
-> would be only effective on loongarch, adding another layer of mess to the
-> current fstat implementation and adding maintenance burden to glibc maintainers.
-> Instead, if we choose to utilize statx(fd, NULL, AT_EMPTY_PATH), even if using
-> dynamic probing, loongarch and all other 32-bit architectures using statx() for
-> fstat() can benefit from this.
-> 
-> Based on the same reason why you have accepted the re-inclusion of fstat on
-> loongarch into the stable trees, I believe it would be potentially possible to
-> let the statx(..., NULL, AT_EMPTY_PATH, ...) get into the stable trees as well.
+> -----Original Message-----
+> From: 'Greg Kroah-Hartman' <gregkh@linuxfoundation.org>
+> Sent: 2024=E5=B9=B49=E6=9C=8827=E6=97=A5 14:53
+> To: duanqiangwen@net-swift.com
+> Cc: stable@vger.kernel.org; patches@lists.linux.dev; 'David S. Miller'
+> <davem@davemloft.net>; 'Sasha Levin' <sashal@kernel.org>
+> Subject: Re: [PATCH 6.6 044/186] net: libwx: fix alloc msix vectors =
+failed
+>=20
+> On Fri, Sep 27, 2024 at 10:02:14AM +0800, duanqiangwen@net-swift.com
+> wrote:
+> > > -----Original Message-----
+> > > From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > > Sent: 2024=E5=B9=B44=E6=9C=8830=E6=97=A5 18:38
+> > > To: stable@vger.kernel.org
+> > > Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>;
+> > > patches@lists.linux.dev; Duanqiang Wen <duanqiangwen@net-
+> swift.com>;
+> > > David S. Miller <davem@davemloft.net>; Sasha Levin
+> > > <sashal@kernel.org>
+> > > Subject: [PATCH 6.6 044/186] net: libwx: fix alloc msix vectors
+> > > failed
+> > >
+> > > 6.6-stable review patch.  If anyone has any objections, please let
+> > > me
+> > know.
+> > >
+> > > ------------------
+> > >
+> > > From: Duanqiang Wen <duanqiangwen@net-swift.com>
+> > >
+> > > [ Upstream commit 69197dfc64007b5292cc960581548f41ccd44828 ]
+> > >
+> > > driver needs queue msix vectors and one misc irq vector, but only
+> > > queue vectors need irq affinity.
+> > > when num_online_cpus is less than chip max msix vectors, driver =
+will
+> > acquire
+> > > (num_online_cpus + 1) vecotrs, and call
+> > > pci_alloc_irq_vectors_affinity functions with affinity params
+> > > without setting pre_vectors or
+> > post_vectors, it
+> > > will cause return error code -ENOSPC.
+> > > Misc irq vector is vector 0, driver need to set affinity params
+> > .pre_vectors =3D 1.
+> > >
+> > > Fixes: 3f703186113f ("net: libwx: Add irq flow functions")
+> > > Signed-off-by: Duanqiang Wen <duanqiangwen@net-swift.com>
+> > > Signed-off-by: David S. Miller <davem@davemloft.net>
+> > > Signed-off-by: Sasha Levin <sashal@kernel.org>
+> > > ---
+> > >  drivers/net/ethernet/wangxun/libwx/wx_lib.c | 2 +-
+> > >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > >
+> > > diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+> > > b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+> > > index e078f4071dc23..be434c833c69c 100644
+> > > --- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+> > > +++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
+> > > @@ -1585,7 +1585,7 @@ static void wx_set_num_queues(struct wx *wx)
+> > >   */
+> > >  static int wx_acquire_msix_vectors(struct wx *wx)  {
+> > > -	struct irq_affinity affd =3D {0, };
+> > > +	struct irq_affinity affd =3D { .pre_vectors =3D 1 };
+> > >  	int nvecs, i;
+> > >
+> > >  	nvecs =3D min_t(int, num_online_cpus(), =
+wx->mac.max_msix_vectors);
+> > > --
+> > > 2.43.0
+> > >
+> > This patch in kernel-6.6 and kernel 6.7 will cause problems. In
+> > kernel-6.6 and kernel 6.7, Wangxun txgbe & ngbe driver adjust misc =
+irq
+> > to vector 0 not yet.  How to revert it in
+> > kernel-6.6 and kernel-6.7 stable?>
+>=20
+> Please send a revert.
+>=20
+> thanks,
+>=20
+> greg k-h
+>=20
+Should I send revert to stable/master repo? I only wan't to revert it in =
+6.6.y and 6.7.y.
+How maintainer recognize this revert should be applied in different =
+tags?
 
-That was a simple patch that only affected one arch, unlike this patch
-series which touches core kernel code used by everyone.
-
-Please just encourage users of this hardware to use a newer kernel if
-they wish to take advantage of the performance increase.
-
-thanks,
-
-greg k-h
 
