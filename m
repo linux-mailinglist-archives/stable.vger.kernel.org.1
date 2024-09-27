@@ -1,180 +1,198 @@
-Return-Path: <stable+bounces-78146-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78147-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0614D988A0F
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 20:23:16 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECB9E988A1B
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 20:36:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D286A1C22A57
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 18:23:14 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A4496283603
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 18:36:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D12051C0DDC;
-	Fri, 27 Sep 2024 18:23:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 118DA1C174A;
+	Fri, 27 Sep 2024 18:36:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="he9+Knjz"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="at6SoP5z"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2055.outbound.protection.outlook.com [40.107.223.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A1BF524B0;
-	Fri, 27 Sep 2024 18:23:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727461390; cv=none; b=lc6INFfETYWvoT7Npv4p96PGBMg3ZH6ylSTf1mkOmRF/aAl5Qallwjc+2N4SBSl+8olFWveijUvrGfo+dDzjVgWYmqllmnFB0gMYSllKxAjxiz+D0dZvnh2d/edXv3x6XLXGF4yCZcJTgxQbsVf4pMWkejFc+WrjWg90xEteEFw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727461390; c=relaxed/simple;
-	bh=nYfhe1qyLkVxhTGavQXlFl3mIst3+pK1yM6ZZ6AGcnM=;
-	h=Date:To:From:Subject:Message-Id; b=ZvzpirMnQP59UTXsxHid5uUSff8OOsy9/SMCZdqPrD0eQhmW5KKm4eWm537avCHF5drAJvZmnKHlyfSNmThmHoQ1PUmHPvmxgNBwg7rRa0mEEWrQoIms5oE7VnKx+1z92BdaVZAVx7HS4hwmqaWfzkb/ZGbRDv4ECi8XhmUvAP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=he9+Knjz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AEE2C4CEC4;
-	Fri, 27 Sep 2024 18:23:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1727461390;
-	bh=nYfhe1qyLkVxhTGavQXlFl3mIst3+pK1yM6ZZ6AGcnM=;
-	h=Date:To:From:Subject:From;
-	b=he9+Knjz5PUXrvI7xmn1az5SgD6a4mJISNCjBo4jGOgaSp9oIzV2gtXbCschQ5ki4
-	 eQ4T+8n48tRjwT//seMx/5woaAulRLvSWoDXwHQdSur6MJAyAjF/VHsB7d2pyjiGoW
-	 TLold/0zCe5nuK3i/SY+1CeqW0bjOKUrShOPprPo=
-Date: Fri, 27 Sep 2024 11:23:09 -0700
-To: mm-commits@vger.kernel.org,yuzhao@google.com,yosryahmed@google.com,ying.huang@intel.com,willy@infradead.org,surenb@google.com,stable@vger.kernel.org,sj@kernel.org,minchan@kernel.org,mhocko@suse.com,liyangouwen1@oppo.com,kasong@tencent.com,kaleshsingh@google.com,hughd@google.com,hannes@cmpxchg.org,david@redhat.com,chrisl@kernel.org,v-songbaohua@oppo.com,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + mm-avoid-unconditional-one-tick-sleep-when-swapcache_prepare-fails.patch added to mm-hotfixes-unstable branch
-Message-Id: <20240927182310.0AEE2C4CEC4@smtp.kernel.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0409A13CA81;
+	Fri, 27 Sep 2024 18:36:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.223.55
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727462165; cv=fail; b=ulcBUCuL5AnmOM8YPC1vFtNvLSJCWZ+5uRb+mEhcV9WNeTB1dn2WAhMvGgwXyiNXcKCgXEwqdRvmexOB5XtmRUTIqL9tq2y+j/sXi5qrXRsPc4cSY23m602nkA04kFZNt4uUk60e4h4oxKK3ztMk+vOAR53N6hiNAMDDuauhA50=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727462165; c=relaxed/simple;
+	bh=17dBu/bJ18oec0EyF0N8adrhaj6lmfZ7CqxTn0zT7gg=;
+	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID:Date; b=U/7MbN3tOAWpPkZ+QJbrX393uTMtoSIQ6CQjkgb/g0jZXs2qgbvQlUJQZ6FmHCqGoEa5N8LBach9pziXx4W/IzfYikZEY85txlTTudpF2+80QBVdPK6PbM9c+NVenFIHVY3Ohewef3h2K3p0Mmbt85aZYf9wUc3MOg1SAK0AYvI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=at6SoP5z; arc=fail smtp.client-ip=40.107.223.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ZmzlrHGtY+P7xD2O2rZnIf0SDHtgJpPjvflJ6Cd/ZcJucCHxlss4fb8rPxDJ2IjZ6kbQTcSPOQ1/cY3d3rUaIbmhqCbTGGK+lAABTkVqW9qruNO8f7+2GDneNg0j8W9REZIMnCt31aRyWHiJs539h9/PC0Sgk6vLo9WmdsoaSVrL7s/lYWB/rLPapiOi7kTxReOJERfwBlw5CZq9B7yF+Og1Du068fU3cib1rP7TdLE7eSME8dNAngn7pFlkCtS1yBu1CUtHy5xcuIYtnU3hpqmx6PFGzcveF+c2GDMJTpSNwXNrT41ObZmN7GVa3lQzA5W4oMXf5RzY1Aevn+MQ8Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=U1OgkWGlWXVIGoHsqd1uRYgI5S2W58tB70DDDArbRYA=;
+ b=q7/Fy0BpEbQfBuwsVtRL29qa9247/R100BW2iRfmtNbSGzEwWsviFRaPpkIp772JvsLTk/3p5lnHgQ0VbGNQd2aT0YYYccA+qEtcEbm0RA66lzSFGuWsR6+beh+iAKJNerx/mmDZHKTgXZ6xggNTzqDU5pn831h3ruQYw5qo7jMmgNwxKr7cU2HFdnDwgKlnSjDCWTY5dNC3DkrF9OKEekPUlogCPe/BaDrFKDVhWQQrbJU0hGxd+DzmqcFLHNviNEdQHx3xvEWnPoK3HBwLsm3NcZrCdPoFVzQdXTty2ruIU9vw2/tv/p3cVr2Eam7pd5aBurLSJ8pj7FZ6POQmYw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=linuxfoundation.org
+ smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=U1OgkWGlWXVIGoHsqd1uRYgI5S2W58tB70DDDArbRYA=;
+ b=at6SoP5zaHr4ctBjEaUayDEpB2N9ekGniAJa0X2/TzFKyhrgNJHJ3pq4JSYNYBuqPmvS3m+zgL0vLjfp4UYN3vTiOOEWFHthuPyjNmgzvDE5qwkdYDt7gi0M39QRZnTiSjwx/AmIeT4W2nRQtw5Gi4ZszGzLHlfliA96FtwKXAMaoO5y5THE9fz4ls5tsIqMONKG2FjouWcAaIvaUPVS/NJ3OvOvaGhHhnd30gUwQWa9CwOHxOORo1Ukub3QPgBwpVnTXCG3ZvaVwwEryxuKr7Y0Ildw+PvaV3XMQFnOZwR3vvISbZgFUSkDJFjd1DQmfhYsiv/LfX8/Cy9md5qiug==
+Received: from CH0PR04CA0009.namprd04.prod.outlook.com (2603:10b6:610:76::14)
+ by PH0PR12MB7864.namprd12.prod.outlook.com (2603:10b6:510:26c::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7982.26; Fri, 27 Sep
+ 2024 18:35:57 +0000
+Received: from CH2PEPF0000009D.namprd02.prod.outlook.com
+ (2603:10b6:610:76:cafe::d4) by CH0PR04CA0009.outlook.office365.com
+ (2603:10b6:610:76::14) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8005.21 via Frontend
+ Transport; Fri, 27 Sep 2024 18:35:56 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ CH2PEPF0000009D.mail.protection.outlook.com (10.167.244.25) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8005.15 via Frontend Transport; Fri, 27 Sep 2024 18:35:56 +0000
+Received: from rnnvmail203.nvidia.com (10.129.68.9) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Fri, 27 Sep
+ 2024 11:35:43 -0700
+Received: from rnnvmail204.nvidia.com (10.129.68.6) by rnnvmail203.nvidia.com
+ (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Fri, 27 Sep
+ 2024 11:35:42 -0700
+Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
+ (10.129.68.6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4 via Frontend
+ Transport; Fri, 27 Sep 2024 11:35:41 -0700
+From: Jon Hunter <jonathanh@nvidia.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
+	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
+	<lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
+	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
+	<rwarsow@gmx.de>, <conor@kernel.org>, <allen.lkml@gmail.com>,
+	<broonie@kernel.org>, <linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH 6.1 00/73] 6.1.112-rc1 review
+In-Reply-To: <20240927121719.897851549@linuxfoundation.org>
+References: <20240927121719.897851549@linuxfoundation.org>
+X-NVConfidentiality: public
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Message-ID: <e9793705-4c56-4d06-9f02-91c7f4586296@rnnvmail204.nvidia.com>
+Date: Fri, 27 Sep 2024 11:35:41 -0700
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH2PEPF0000009D:EE_|PH0PR12MB7864:EE_
+X-MS-Office365-Filtering-Correlation-Id: 925d19ce-3970-4eaa-fd29-08dcdf2339bc
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|1800799024|7416014|36860700013|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?alM3QVNCQUhrVVk5ay9NQ2hkcHAxQ253TzFvREFlb0psMDlaZ0hEWFlKNjJB?=
+ =?utf-8?B?dWF6UmszMWg2aEhOQ1VUcy83d01ISGVuc0hmYjFoRlZLQlU3ZkZ3WFhyUjRL?=
+ =?utf-8?B?Rm9UNjM4eTN4T1RjK3dDNjRwN3E0OC9JZHo3VmpRTXptVXN0Mzl5T2lGTEsx?=
+ =?utf-8?B?THRRSFV6RjhUU3ZWdXRoZEdDdkxoeDllVHExTlJZWVNkS2MxUGx2K3ZsTCtk?=
+ =?utf-8?B?dmhDclhPQWtKYWxQejdXYlRDTjNRM3Y4NGx1WjR2ekczMVZWNDIvbGpzQkNu?=
+ =?utf-8?B?OHJtb0hKTkJmSUdMcjdWSmtCaWk1N2liSCtMTS9PWUZJQituOUZmUE1maFhh?=
+ =?utf-8?B?cS8yK0M3Yk13WnlKQ0RoZURlWmdabm1pV0ZybC9XVVVhbEg4T2ZKUnlvWXho?=
+ =?utf-8?B?b2swME5lNFFRb212S1lHa1JxVnNLd1hLZ29BNjN1UGJVYjZhMDA2S2tNZGhp?=
+ =?utf-8?B?djVRTWUwc0tDaVhodERPTFBuNTl6ZjVGbktNUlFLc1lxTTRteVh3OGNlcjlw?=
+ =?utf-8?B?WG1PeEVrMndOZXdmRWdNQUxPcnA5V3F6MW51Y2wxQklKWFlNZGZQRmhwanhh?=
+ =?utf-8?B?d0JXdzllNmZRRHhUdU5UN1lhNlo4amQ5MmtYbUM4RFprcjJaYzMxeFNjbkU2?=
+ =?utf-8?B?SmVQSUdrWFM2V0V0WHp2Snk4YTFReHc2MUsveHgyTnNZeVFBN1BVc0tSUHN3?=
+ =?utf-8?B?Y1JEeGREVVA3R3o0T0tZZDlvZjFUbUJCeTBnNkRITmFNQ2czVkNZVVYwdTRl?=
+ =?utf-8?B?TXBHSjdrZVVaVUt0TlM2UEJ6b3JFeCt0NHppVXlydnRLS3VnUzZZcy9oUmhS?=
+ =?utf-8?B?QkMvOUpXL1htZ3pkTXlkSmhpRDdnZGVPQk82VWtsWEUrUjZvdmNIdW1UK052?=
+ =?utf-8?B?WnBWUDFiM2hsaHFqK0dRRGR1a0M3MkE0REc5ZWVIM2tIZFV3SGxmWjBvWVh1?=
+ =?utf-8?B?Q1J5MVNWNXFRN0FlcVF2OWtkMDNmOC9nVjAzazZ2aWpVRi9tV3dDL2tXbTlw?=
+ =?utf-8?B?eE5xYzdSWmtLaktVeU5ISWl3VnNOUUlBVHNrMmlQL1d4YjBLZWxFS0RsaW55?=
+ =?utf-8?B?SXRuMXovMzNWRExadjd0MnlEZWZ4MnF0bkFISDJwV3B1TjRNTGJpMVpaOUNv?=
+ =?utf-8?B?SkdRYmk0dURrbjczU1VRVndDdHNrRzcwNk10SzRmZTkzdmtHNG55M1NaeG1S?=
+ =?utf-8?B?V1hlckxueU9XRkovRlVHeUJOcmd2YlIvYmpIS3VzRkFQZ0dYL0RvNTNnNmlI?=
+ =?utf-8?B?eDhuYUlKUVd4UjcxTGc1Y29lZU9YR0VMTnBYSWR6L0pWcEsrQUxmbno3WUkr?=
+ =?utf-8?B?aHdKS2xCTTlqcmo2eURrVDVCYmVVVGZZTVZzZnYrSTV3U3lINkhOazd1Ukhi?=
+ =?utf-8?B?WHFibmJJYnhEU05idDZ1Z0ozZ1BITnFLZU5FaVJEcVpZZmp4VWhhQ1J2bDF5?=
+ =?utf-8?B?OExVVElyenJqLzFvOXJCN3lvRVZRcUpiV3lCVjl6UHY5alhQd09OVkkvdHh3?=
+ =?utf-8?B?dlZTUll6NkRNTTdLOFArNWpKcWMxbGRmSnlOeE9RaTc1NElVcFRVRFhBT2tD?=
+ =?utf-8?B?bzBERmowVHFPeWxXSXVxV0U4aGM3L0R1ekJGS0JQdDdkUmdYZUp4N2hLckMv?=
+ =?utf-8?B?YlQ1dkQ0WGNkTUVMdFR0WjlVdll4b1g4WExMS0N6NjVyMTZNWFZaL0JZeXRv?=
+ =?utf-8?B?SHpOV1JtMzRkS1dEM2tVdElYcFJJWml4SFU2OUN5RWMrUnpsODd2TTVCQUlR?=
+ =?utf-8?B?Q1dtWEJYRTNqSzkyY3Y4U0FJTENFZ1NSaW5YejlGMEpVdmV5Z2xYTzRLbTJ5?=
+ =?utf-8?B?MkVJYy95N2IySnYxcklRMXduTmpLeFhGcjcvMG1IRUxyYjdXaTFKUU5TOVc3?=
+ =?utf-8?B?dExaQXhyL2VQdnNQTUFNUExKM0R5bG83T2dUNmE1ZVVXNHNsby9IQ2QwbzhE?=
+ =?utf-8?Q?1VUy5wDxYLgHVhF9NDJ4aPyPaYa1CK30?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(7416014)(36860700013)(376014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Sep 2024 18:35:56.4054
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 925d19ce-3970-4eaa-fd29-08dcdf2339bc
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	CH2PEPF0000009D.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB7864
 
+On Fri, 27 Sep 2024 14:23:11 +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.112 release.
+> There are 73 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sun, 29 Sep 2024 12:17:00 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.112-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-The patch titled
-     Subject: mm: avoid unconditional one-tick sleep when swapcache_prepare fails
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     mm-avoid-unconditional-one-tick-sleep-when-swapcache_prepare-fails.patch
+All tests passing for Tegra ...
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-avoid-unconditional-one-tick-sleep-when-swapcache_prepare-fails.patch
+Test results for stable-v6.1:
+    10 builds:	10 pass, 0 fail
+    26 boots:	26 pass, 0 fail
+    115 tests:	115 pass, 0 fail
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Linux version:	6.1.112-rc1-g4f910bc2b928
+Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
+                tegra194-p2972-0000, tegra194-p3509-0000+p3668-0000,
+                tegra20-ventana, tegra210-p2371-2180,
+                tegra210-p3450-0000, tegra30-cardhu-a04
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
 
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Barry Song <v-songbaohua@oppo.com>
-Subject: mm: avoid unconditional one-tick sleep when swapcache_prepare fails
-Date: Fri, 27 Sep 2024 09:19:36 +1200
-
-Commit 13ddaf26be32 ("mm/swap: fix race when skipping swapcache")
-introduced an unconditional one-tick sleep when `swapcache_prepare()`
-fails, which has led to reports of UI stuttering on latency-sensitive
-Android devices.  To address this, we can use a waitqueue to wake up tasks
-that fail `swapcache_prepare()` sooner, instead of always sleeping for a
-full tick.  While tasks may occasionally be woken by an unrelated
-`do_swap_page()`, this method is preferable to two scenarios: rapid
-re-entry into page faults, which can cause livelocks, and multiple
-millisecond sleeps, which visibly degrade user experience.
-
-Oven's testing shows that a single waitqueue resolves the UI stuttering
-issue.  If a 'thundering herd' problem becomes apparent later, a waitqueue
-hash similar to `folio_wait_table[PAGE_WAIT_TABLE_SIZE]` for page bit
-locks can be introduced.
-
-Link: https://lkml.kernel.org/r/20240926211936.75373-1-21cnbao@gmail.com
-Fixes: 13ddaf26be32 ("mm/swap: fix race when skipping swapcache")
-Signed-off-by: Barry Song <v-songbaohua@oppo.com>
-Reported-by: Oven Liyang <liyangouwen1@oppo.com>
-Tested-by: Oven Liyang <liyangouwen1@oppo.com>
-Cc: Kairui Song <kasong@tencent.com>
-Cc: "Huang, Ying" <ying.huang@intel.com>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Chris Li <chrisl@kernel.org>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: Yosry Ahmed <yosryahmed@google.com>
-Cc: SeongJae Park <sj@kernel.org>
-Cc: Kalesh Singh <kaleshsingh@google.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/memory.c |   13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
-
---- a/mm/memory.c~mm-avoid-unconditional-one-tick-sleep-when-swapcache_prepare-fails
-+++ a/mm/memory.c
-@@ -4192,6 +4192,8 @@ static struct folio *alloc_swap_folio(st
- }
- #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
- 
-+static DECLARE_WAIT_QUEUE_HEAD(swapcache_wq);
-+
- /*
-  * We enter with non-exclusive mmap_lock (to exclude vma changes,
-  * but allow concurrent faults), and pte mapped but not yet locked.
-@@ -4204,6 +4206,7 @@ vm_fault_t do_swap_page(struct vm_fault
- {
- 	struct vm_area_struct *vma = vmf->vma;
- 	struct folio *swapcache, *folio = NULL;
-+	DECLARE_WAITQUEUE(wait, current);
- 	struct page *page;
- 	struct swap_info_struct *si = NULL;
- 	rmap_t rmap_flags = RMAP_NONE;
-@@ -4302,7 +4305,9 @@ vm_fault_t do_swap_page(struct vm_fault
- 					 * Relax a bit to prevent rapid
- 					 * repeated page faults.
- 					 */
-+					add_wait_queue(&swapcache_wq, &wait);
- 					schedule_timeout_uninterruptible(1);
-+					remove_wait_queue(&swapcache_wq, &wait);
- 					goto out_page;
- 				}
- 				need_clear_cache = true;
-@@ -4609,8 +4614,10 @@ unlock:
- 		pte_unmap_unlock(vmf->pte, vmf->ptl);
- out:
- 	/* Clear the swap cache pin for direct swapin after PTL unlock */
--	if (need_clear_cache)
-+	if (need_clear_cache) {
- 		swapcache_clear(si, entry, nr_pages);
-+		wake_up(&swapcache_wq);
-+	}
- 	if (si)
- 		put_swap_device(si);
- 	return ret;
-@@ -4625,8 +4632,10 @@ out_release:
- 		folio_unlock(swapcache);
- 		folio_put(swapcache);
- 	}
--	if (need_clear_cache)
-+	if (need_clear_cache) {
- 		swapcache_clear(si, entry, nr_pages);
-+		wake_up(&swapcache_wq);
-+	}
- 	if (si)
- 		put_swap_device(si);
- 	return ret;
-_
-
-Patches currently in -mm which might be from v-songbaohua@oppo.com are
-
-mm-avoid-unconditional-one-tick-sleep-when-swapcache_prepare-fails.patch
-
+Jon
 
