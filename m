@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-78060-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77988-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D82059884E5
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:32:33 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36BD7988487
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:28:34 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8EBEF2838E1
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:32:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6BCD1F227D2
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:28:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BC1E18C00D;
-	Fri, 27 Sep 2024 12:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DAEF18A955;
+	Fri, 27 Sep 2024 12:28:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EyrOgId5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TG9+yxfq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B190187331;
-	Fri, 27 Sep 2024 12:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D79617B515;
+	Fri, 27 Sep 2024 12:28:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440312; cv=none; b=nBAQIrKB2CNuDDyE8vauv0sQDW1IooJVyqXWom4Hy7q1Gf/xFnixDv9ApoWh4TMoppNDLPXnnuja2XAdHwPWgIUwbeyTZ2eCitTmK/Zt47Pb2y1HYd/Bqqt73njhHRMXIg68qMA0Ugca5DLRAXRyjIi1Uqmqk1QDvBH+YB1cwZI=
+	t=1727440112; cv=none; b=HlTroYUHU/iuSvj1WwLMEXN2DwzsFgE5gQ02iSBQmNkjFdR/9bZcP+HJPAKCs9TIGjb1H7Xi05MJyFrO35dPnpWExAk3iZemZiSyxGBYFcEWsY9Y+Ngn7fUJztetICe8x/Qv9zyBRvJXlFaLjU4vlFUiUjd/LWkqhThiddoaTd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440312; c=relaxed/simple;
-	bh=upwqtgL9AnnDlM/MbFlujsunfUTuICNzGctKC25uC9w=;
+	s=arc-20240116; t=1727440112; c=relaxed/simple;
+	bh=nj2N539WVoabIzyqbgPiQ9dkIhB0QH4nC9BRn91cdBA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lGwjDiQsbo17PwyvT/EfTGbcjp32Sgi2gyLCj1igrShUww/mQiq4a0L6S/HBczF+kPprb7n11Vx/gy6DP8KcXHVE3Vu7gqaZtchW6SsDlO+sL/wsLesq4QcXdos0gM4WezZ4CnyCNt/uq3eJLLYpepd61XzVteO20QGoc1cokpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EyrOgId5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C6ECC4CEC4;
-	Fri, 27 Sep 2024 12:31:51 +0000 (UTC)
+	 MIME-Version; b=dAKq7tHSRM6l1/7fcxi4x4ci1HOK+9PSqvqPVrgfC0Z45s9V/S6PZg0Vz155mEtgpRoJt3ZmqNhgmRTkPDo4LCqyizOVGuNwAfNlNjoUX6Oggwv1FzY2xe5ZMHzMWZZlFgOxW3dmZ+08EUJXLBm7q1X0R3yTPhGHIh8pkvS5/3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TG9+yxfq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40238C4CEC4;
+	Fri, 27 Sep 2024 12:28:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440312;
-	bh=upwqtgL9AnnDlM/MbFlujsunfUTuICNzGctKC25uC9w=;
+	s=korg; t=1727440111;
+	bh=nj2N539WVoabIzyqbgPiQ9dkIhB0QH4nC9BRn91cdBA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EyrOgId5BjskUgTvVM+fsrJQEOMZNJDYbrWbJgl6RgPzj2DzkQFVLA2+dnKpu0F/X
-	 iMTl0cQgj4N4yZb43Rh1SilAlCPWnQ84n4s4O7xfbg203WMRqUpme4QU/pA8WjXpom
-	 R4c81d87fCAhD+/hn45uM2OE0T16ukbzCOl5sSe8=
+	b=TG9+yxfq9kRQ3WcLMhhchLa1/7qRXfVlcmj6yCFLxiQMpasRDg4JCN5RSEBIQm3wG
+	 mzdFJUEQWZMnhb0ph1h9nsSOHvOf9/wbldrrYU/IZzoIQPGi2FYCrsjvx8+8DKo0ym
+	 y8YiWeumi4bGXOR7APbCv8TvylBw0MRSMuDajz1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacky Chou <jacky_chou@aspeedtech.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 10/73] net: ftgmac100: Ensure tx descriptor updates are visible
+Subject: [PATCH 6.10 19/58] wifi: iwlwifi: mvm: pause TCM when the firmware is stopped
 Date: Fri, 27 Sep 2024 14:23:21 +0200
-Message-ID: <20240927121720.287106372@linuxfoundation.org>
+Message-ID: <20240927121719.594231935@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121719.897851549@linuxfoundation.org>
-References: <20240927121719.897851549@linuxfoundation.org>
+In-Reply-To: <20240927121718.789211866@linuxfoundation.org>
+References: <20240927121718.789211866@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +63,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacky Chou <jacky_chou@aspeedtech.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-[ Upstream commit 4186c8d9e6af57bab0687b299df10ebd47534a0a ]
+[ Upstream commit 0668ebc8c2282ca1e7eb96092a347baefffb5fe7 ]
 
-The driver must ensure TX descriptor updates are visible
-before updating TX pointer and TX clear pointer.
+Not doing so will make us send a host command to the transport while the
+firmware is not alive, which will trigger a WARNING.
 
-This resolves TX hangs observed on AST2600 when running
-iperf3.
+bad state = 0
+WARNING: CPU: 2 PID: 17434 at drivers/net/wireless/intel/iwlwifi/iwl-trans.c:115 iwl_trans_send_cmd+0x1cb/0x1e0 [iwlwifi]
+RIP: 0010:iwl_trans_send_cmd+0x1cb/0x1e0 [iwlwifi]
+Call Trace:
+ <TASK>
+ iwl_mvm_send_cmd+0x40/0xc0 [iwlmvm]
+ iwl_mvm_config_scan+0x198/0x260 [iwlmvm]
+ iwl_mvm_recalc_tcm+0x730/0x11d0 [iwlmvm]
+ iwl_mvm_tcm_work+0x1d/0x30 [iwlmvm]
+ process_one_work+0x29e/0x640
+ worker_thread+0x2df/0x690
+ ? rescuer_thread+0x540/0x540
+ kthread+0x192/0x1e0
+ ? set_kthread_struct+0x90/0x90
+ ret_from_fork+0x22/0x30
 
-Signed-off-by: Jacky Chou <jacky_chou@aspeedtech.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20240825191257.5abe71ca1b6b.I97a968cb8be1f24f94652d9b110ecbf6af73f89e@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/faraday/ftgmac100.c | 26 ++++++++++++++++--------
- 1 file changed, 18 insertions(+), 8 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/faraday/ftgmac100.c b/drivers/net/ethernet/faraday/ftgmac100.c
-index a03879a27b041..7adc46aa75e66 100644
---- a/drivers/net/ethernet/faraday/ftgmac100.c
-+++ b/drivers/net/ethernet/faraday/ftgmac100.c
-@@ -566,7 +566,7 @@ static bool ftgmac100_rx_packet(struct ftgmac100 *priv, int *processed)
- 	(*processed)++;
- 	return true;
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+index 498afbe4ee6be..6375cc3c48f3c 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
+@@ -1521,6 +1521,8 @@ void iwl_mvm_stop_device(struct iwl_mvm *mvm)
  
-- drop:
-+drop:
- 	/* Clean rxdes0 (which resets own bit) */
- 	rxdes->rxdes0 = cpu_to_le32(status & priv->rxdes0_edorr_mask);
- 	priv->rx_pointer = ftgmac100_next_rx_pointer(priv, pointer);
-@@ -650,6 +650,11 @@ static bool ftgmac100_tx_complete_packet(struct ftgmac100 *priv)
- 	ftgmac100_free_tx_packet(priv, pointer, skb, txdes, ctl_stat);
- 	txdes->txdes0 = cpu_to_le32(ctl_stat & priv->txdes0_edotr_mask);
+ 	clear_bit(IWL_MVM_STATUS_FIRMWARE_RUNNING, &mvm->status);
  
-+	/* Ensure the descriptor config is visible before setting the tx
-+	 * pointer.
-+	 */
-+	smp_wmb();
++	iwl_mvm_pause_tcm(mvm, false);
 +
- 	priv->tx_clean_pointer = ftgmac100_next_tx_pointer(priv, pointer);
- 
- 	return true;
-@@ -803,6 +808,11 @@ static netdev_tx_t ftgmac100_hard_start_xmit(struct sk_buff *skb,
- 	dma_wmb();
- 	first->txdes0 = cpu_to_le32(f_ctl_stat);
- 
-+	/* Ensure the descriptor config is visible before setting the tx
-+	 * pointer.
-+	 */
-+	smp_wmb();
-+
- 	/* Update next TX pointer */
- 	priv->tx_pointer = pointer;
- 
-@@ -823,7 +833,7 @@ static netdev_tx_t ftgmac100_hard_start_xmit(struct sk_buff *skb,
- 
- 	return NETDEV_TX_OK;
- 
-- dma_err:
-+dma_err:
- 	if (net_ratelimit())
- 		netdev_err(netdev, "map tx fragment failed\n");
- 
-@@ -845,7 +855,7 @@ static netdev_tx_t ftgmac100_hard_start_xmit(struct sk_buff *skb,
- 	 * last fragment, so we know ftgmac100_free_tx_packet()
- 	 * hasn't freed the skb yet.
- 	 */
-- drop:
-+drop:
- 	/* Drop the packet */
- 	dev_kfree_skb_any(skb);
- 	netdev->stats.tx_dropped++;
-@@ -1338,7 +1348,7 @@ static void ftgmac100_reset(struct ftgmac100 *priv)
- 	ftgmac100_init_all(priv, true);
- 
- 	netdev_dbg(netdev, "Reset done !\n");
-- bail:
-+bail:
- 	if (priv->mii_bus)
- 		mutex_unlock(&priv->mii_bus->mdio_lock);
- 	if (netdev->phydev)
-@@ -1537,15 +1547,15 @@ static int ftgmac100_open(struct net_device *netdev)
- 
- 	return 0;
- 
-- err_ncsi:
-+err_ncsi:
- 	napi_disable(&priv->napi);
- 	netif_stop_queue(netdev);
-- err_alloc:
-+err_alloc:
- 	ftgmac100_free_buffers(priv);
- 	free_irq(netdev->irq, netdev);
-- err_irq:
-+err_irq:
- 	netif_napi_del(&priv->napi);
-- err_hw:
-+err_hw:
- 	iowrite32(0, priv->base + FTGMAC100_OFFSET_IER);
- 	ftgmac100_free_rings(priv);
- 	return err;
+ 	iwl_fw_dbg_stop_sync(&mvm->fwrt);
+ 	iwl_trans_stop_device(mvm->trans);
+ 	iwl_free_fw_paging(&mvm->fwrt);
 -- 
 2.43.0
 
