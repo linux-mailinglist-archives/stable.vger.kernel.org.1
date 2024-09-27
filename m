@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-78097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78020-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDED9988511
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:33:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE0429884AD
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:30:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B1BE1F22D1C
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:33:45 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7C03A283D07
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:30:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6977518C02A;
-	Fri, 27 Sep 2024 12:33:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D38C18BC3B;
+	Fri, 27 Sep 2024 12:30:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qpZ0iw4V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G1HWd7Jf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2712D18A95D;
-	Fri, 27 Sep 2024 12:33:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C029218BC30;
+	Fri, 27 Sep 2024 12:30:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440414; cv=none; b=G8/G1l1WKW2eJSxsKZU1oHSb+mXaJb8Rdhbegxgd9xP3/0TrBHmO7UsqzX5LYr+QSycRfJVGyPbm8leihneL8MhTe+qPbpVUr5SpFWc/LqEIaBifFrfvLOJMUo2Sx1MdBRiQiYjbj4/ZWBuoNklcXnuXGnHy8Amz9rHC/A7VL9s=
+	t=1727440200; cv=none; b=Tt1fePDiiquE/Ole0UUeNIRRg6aS/6wvclJWljJMrK9AvYSA8/hjwHJrAuZQc4i0aNs6GY3qEhYTXqTzMuK9ylc0HpIq7hpBcxODGwx12zUTKnoTG6ekumuQsH4LcgUzJYyH1v1kx+1J1zOIuk9cZaKow+6/0g4NUdCCsG7D13g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440414; c=relaxed/simple;
-	bh=fdH3+ko3784gDVdBlyQFs0j5GZd0sXXkYa3etqYxTtE=;
+	s=arc-20240116; t=1727440200; c=relaxed/simple;
+	bh=dfUaSWzTHVDHWR/0VyDE5LNs1JgG22Y6NdG4x9gBCq0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tzcr4H3ZTfQjnzwrNVISxaaylbZjmEzq54ND6F25BGw8YTcs+LVXkDMYQDnIn3DDtv7hjPDKiMpkf1QlKxbXyxnkv+5dWaOVjP9HslxeL4OCdUTdaK2b2uAQ0Mx7XEJNd2aYVhagWNDhJ6WbeR6USXz1BrzByqpwSNdl5uDeeuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qpZ0iw4V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA757C4CEC6;
-	Fri, 27 Sep 2024 12:33:33 +0000 (UTC)
+	 MIME-Version; b=O5KAuF0BpIWTs4WlFsv7PqSRgCixRUPIQl+w0tnOD6we222PVzJ0ZTAtiCqgx9Fe2c/qG6/7tKjMj/Ik1SVMgaedtxXD8kuAT0lsISRiP3WVNHsqAMGJ5oF16jTtMTJMC8+3hvGWAeEu5bYFmWT32/cirOqUpoBh/7Pnkf11VPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G1HWd7Jf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B0DBC4CEC4;
+	Fri, 27 Sep 2024 12:30:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440414;
-	bh=fdH3+ko3784gDVdBlyQFs0j5GZd0sXXkYa3etqYxTtE=;
+	s=korg; t=1727440200;
+	bh=dfUaSWzTHVDHWR/0VyDE5LNs1JgG22Y6NdG4x9gBCq0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qpZ0iw4VO+XxWDq6kZlK3sqvNeyBBPCk3e57K1TBCjc1HD8sKHJOrItc1JfeoTmEh
-	 SrocQRAQqJ7rqC2m3rxsF6CYEIZT4ci5uqhQqT2KP0Z7yNy6P9GPU6pe//vlZNuOA9
-	 oVRq9liR4hVuhsZ0xD12dRf50HZ0xS4Lgh+BqR+o=
+	b=G1HWd7JfNwU723kEuiibQVksqYNSIV9fWQcwXi+IrIc7c/FJuGuddIx21i2bKfdku
+	 /vo8G1wVXoHtjViqAhM1/BRHA8HuZ9iugVHc4UCXEKO4PqDsB/B7b9g20pe2qD0Jjr
+	 fQrWgdjKZj4T35dsCwg2UL7GW2RM+xRAfSMxWsd4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	netfilter-devel@vger.kernel.org
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 6.1 62/73] netfilter: nf_tables: missing iterator type in lookup walk
+	Robert Beckett <bob.beckett@collabora.com>,
+	Keith Busch <kbusch@kernel.org>,
+	"Gagniuc, Alexandru" <alexandru.gagniuc@hp.com>
+Subject: [PATCH 6.11 10/12] nvme-pci: qdepth 1 quirk
 Date: Fri, 27 Sep 2024 14:24:13 +0200
-Message-ID: <20240927121722.408052007@linuxfoundation.org>
+Message-ID: <20240927121715.682431643@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121719.897851549@linuxfoundation.org>
-References: <20240927121719.897851549@linuxfoundation.org>
+In-Reply-To: <20240927121715.213013166@linuxfoundation.org>
+References: <20240927121715.213013166@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +62,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Keith Busch <kbusch@kernel.org>
 
-commit efefd4f00c967d00ad7abe092554ffbb70c1a793 upstream.
+commit 83bdfcbdbe5d901c5fa432decf12e1725a840a56 upstream.
 
-Add missing decorator type to lookup expression and tighten WARN_ON_ONCE
-check in pipapo to spot earlier that this is unset.
+Another device has been reported to be unreliable if we have more than
+one outstanding command. In this new case, data corruption may occur.
+Since we have two devices now needing this quirky behavior, make a
+generic quirk flag.
 
-Fixes: 29b359cf6d95 ("netfilter: nft_set_pipapo: walk over current view on netlink dump")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+The same Apple quirk is clearly not "temporary", so update the comment
+while moving it.
+
+Link: https://lore.kernel.org/linux-nvme/191d810a4e3.fcc6066c765804.973611676137075390@collabora.com/
+Reported-by: Robert Beckett <bob.beckett@collabora.com>
+Reviewed-by: Christoph Hellwig hch@lst.de>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
+Cc: "Gagniuc, Alexandru" <alexandru.gagniuc@hp.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_lookup.c     |    1 +
- net/netfilter/nft_set_pipapo.c |    3 ++-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ drivers/nvme/host/nvme.h |    5 +++++
+ drivers/nvme/host/pci.c  |   18 +++++++++---------
+ 2 files changed, 14 insertions(+), 9 deletions(-)
 
---- a/net/netfilter/nft_lookup.c
-+++ b/net/netfilter/nft_lookup.c
-@@ -211,6 +211,7 @@ static int nft_lookup_validate(const str
- 		return 0;
+--- a/drivers/nvme/host/nvme.h
++++ b/drivers/nvme/host/nvme.h
+@@ -91,6 +91,11 @@ enum nvme_quirks {
+ 	NVME_QUIRK_NO_DEEPEST_PS		= (1 << 5),
  
- 	iter.genmask	= nft_genmask_next(ctx->net);
-+	iter.type	= NFT_ITER_UPDATE;
- 	iter.skip	= 0;
- 	iter.count	= 0;
- 	iter.err	= 0;
---- a/net/netfilter/nft_set_pipapo.c
-+++ b/net/netfilter/nft_set_pipapo.c
-@@ -2046,7 +2046,8 @@ static void nft_pipapo_walk(const struct
- 	const struct nft_pipapo_field *f;
- 	int i, r;
+ 	/*
++	 *  Problems seen with concurrent commands
++	 */
++	NVME_QUIRK_QDEPTH_ONE			= (1 << 6),
++
++	/*
+ 	 * Set MEDIUM priority on SQ creation
+ 	 */
+ 	NVME_QUIRK_MEDIUM_PRIO_SQ		= (1 << 7),
+--- a/drivers/nvme/host/pci.c
++++ b/drivers/nvme/host/pci.c
+@@ -2563,15 +2563,8 @@ static int nvme_pci_enable(struct nvme_d
+ 	else
+ 		dev->io_sqes = NVME_NVM_IOSQES;
  
--	WARN_ON_ONCE(iter->type == NFT_ITER_UNSPEC);
-+	WARN_ON_ONCE(iter->type != NFT_ITER_READ &&
-+		     iter->type != NFT_ITER_UPDATE);
- 
- 	rcu_read_lock();
- 	if (iter->type == NFT_ITER_READ)
+-	/*
+-	 * Temporary fix for the Apple controller found in the MacBook8,1 and
+-	 * some MacBook7,1 to avoid controller resets and data loss.
+-	 */
+-	if (pdev->vendor == PCI_VENDOR_ID_APPLE && pdev->device == 0x2001) {
++	if (dev->ctrl.quirks & NVME_QUIRK_QDEPTH_ONE) {
+ 		dev->q_depth = 2;
+-		dev_warn(dev->ctrl.device, "detected Apple NVMe controller, "
+-			"set queue depth=%u to work around controller resets\n",
+-			dev->q_depth);
+ 	} else if (pdev->vendor == PCI_VENDOR_ID_SAMSUNG &&
+ 		   (pdev->device == 0xa821 || pdev->device == 0xa822) &&
+ 		   NVME_CAP_MQES(dev->ctrl.cap) == 0) {
+@@ -3442,6 +3435,8 @@ static const struct pci_device_id nvme_i
+ 				NVME_QUIRK_BOGUS_NID, },
+ 	{ PCI_VDEVICE(REDHAT, 0x0010),	/* Qemu emulated controller */
+ 		.driver_data = NVME_QUIRK_BOGUS_NID, },
++	{ PCI_DEVICE(0x1217, 0x8760), /* O2 Micro 64GB Steam Deck */
++		.driver_data = NVME_QUIRK_QDEPTH_ONE },
+ 	{ PCI_DEVICE(0x126f, 0x2262),	/* Silicon Motion generic */
+ 		.driver_data = NVME_QUIRK_NO_DEEPEST_PS |
+ 				NVME_QUIRK_BOGUS_NID, },
+@@ -3576,7 +3571,12 @@ static const struct pci_device_id nvme_i
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_AMAZON, 0xcd02),
+ 		.driver_data = NVME_QUIRK_DMA_ADDRESS_BITS_48, },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_APPLE, 0x2001),
+-		.driver_data = NVME_QUIRK_SINGLE_VECTOR },
++		/*
++		 * Fix for the Apple controller found in the MacBook8,1 and
++		 * some MacBook7,1 to avoid controller resets and data loss.
++		 */
++		.driver_data = NVME_QUIRK_SINGLE_VECTOR |
++				NVME_QUIRK_QDEPTH_ONE },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_APPLE, 0x2003) },
+ 	{ PCI_DEVICE(PCI_VENDOR_ID_APPLE, 0x2005),
+ 		.driver_data = NVME_QUIRK_SINGLE_VECTOR |
 
 
 
