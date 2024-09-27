@@ -1,187 +1,340 @@
-Return-Path: <stable+bounces-77903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77906-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5230798837A
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 13:51:36 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 444F2988425
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:24:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 73D181C22AFE
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 11:51:35 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 00789281EBC
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:24:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA14518A92B;
-	Fri, 27 Sep 2024 11:51:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03F1F18BC1F;
+	Fri, 27 Sep 2024 12:24:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ay7eqnEf"
 X-Original-To: stable@vger.kernel.org
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40DB31891BB;
-	Fri, 27 Sep 2024 11:51:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC4FE1779BD;
+	Fri, 27 Sep 2024 12:24:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727437890; cv=none; b=pqMPCbTAq0XNNtFwEtbo+ngBVOGyKfn03+OomiJFffznFs4bzNQHStSKkqIOlKAZCy8RFntmnblBd/BJlzraOHU80iglmDyk0fjmzDT8k3Io/tcbWiUqKf+YkIl0SKJAgGXQGndjb2PZX67aAo6Bm95przJbufBmhql5hj1s2DU=
+	t=1727439883; cv=none; b=unQawbNdp/Xf6+ag6jbitMBQuiYTLXEsku10n2TqtHJ7eJ3ZeRN9Cd4otv8nJPlwHnXhc1Mh8Jm05PZKeWi/CmbEdpFatIooS5NBH435wbmsRgJOHsjrQUYw9fq9Mgpiv56281cv+GaAui54omcAhmIqmFXlnVDFREVcg+D5wVg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727437890; c=relaxed/simple;
-	bh=p0EpKaiQEk2mfuQTju8wuPxLLsmdbZ6WYKGoBITiEM4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UfT4UYcHXh1tNCN7tzTjG6gjSJcYVajwT0IqxlaxB++I635np4NKNrw50wUc9JOH6ch8HIabX+o+L10gS6Yuegome5zVHZZHLnloezEOZ+1rlzs4M57JeqLEC+06TOKdAgzrfY4cxDSGlybwPUm+I4+ijkqExzL2p/tsaYnFztw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.19.163.216])
-	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4XFTLz3kTBz4f3lDc;
-	Fri, 27 Sep 2024 19:51:07 +0800 (CST)
-Received: from mail02.huawei.com (unknown [10.116.40.128])
-	by mail.maildlp.com (Postfix) with ESMTP id 8AA011A092F;
-	Fri, 27 Sep 2024 19:51:24 +0800 (CST)
-Received: from [10.174.177.174] (unknown [10.174.177.174])
-	by APP4 (Coremail) with SMTP id gCh0CgDH+8c7nPZmBKv6CQ--.23275S3;
-	Fri, 27 Sep 2024 19:51:24 +0800 (CST)
-Message-ID: <6203edb1-3d23-478c-9522-53dd9400caec@huaweicloud.com>
-Date: Fri, 27 Sep 2024 19:51:23 +0800
+	s=arc-20240116; t=1727439883; c=relaxed/simple;
+	bh=Ra2iSzl5+YL+QRzGfdRAIhKQTe20Rlh7LlXazJQpJWg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=H2AU4jklroMaeWPzdPgv0bXU3D2hpO+bWciHSw0cjBC2/BQoyIifZxIYndlgcgOX0KZabm8Q/8GtfH69RqRDq/omSc879UkNRLRAjlNUswu1J/OU4jEDqmuJzbRPng4fVGTcEVp8QdauV4Xap3OkcuqjB9pzs81Yj1m75FzJoIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ay7eqnEf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD7E1C4CEC4;
+	Fri, 27 Sep 2024 12:24:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1727439883;
+	bh=Ra2iSzl5+YL+QRzGfdRAIhKQTe20Rlh7LlXazJQpJWg=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Ay7eqnEfsIhIkJVuybsLmhuPOS7h/lEJEpxUZKPK4wlj+ur7GXqGQOt+p35NZgIpu
+	 4OY+GJkXkzcl9vF/PqH2MqAmUPsW72oIPZNxL7LCKybhw0n3TKybiA6YL+GdScSrnH
+	 UgjFqXt6T5tmeJSdhz67MrZgoMJsNNQ/w/GB9LTo=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	allen.lkml@gmail.com,
+	broonie@kernel.org
+Subject: [PATCH 6.6 00/54] 6.6.53-rc1 review
+Date: Fri, 27 Sep 2024 14:22:52 +0200
+Message-ID: <20240927121719.714627278@linuxfoundation.org>
+X-Mailer: git-send-email 2.46.2
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] ext4: fix off by one issue in alloc_flex_gd()
-To: Jan Kara <jack@suse.cz>
-Cc: linux-ext4@vger.kernel.org, tytso@mit.edu, adilger.kernel@dilger.ca,
- linux-kernel@vger.kernel.org, yi.zhang@huawei.com, yangerkun@huawei.com,
- Baokun Li <libaokun1@huawei.com>,
- Wesley Hershberger <wesley.hershberger@canonical.com>,
- =?UTF-8?Q?St=C3=A9phane_Graber?= <stgraber@stgraber.org>,
- Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>,
- Eric Sandeen <sandeen@redhat.com>, stable@vger.kernel.org,
- Yang Erkun <yangerkun@huawei.com>
-References: <20240927063620.2630898-1-libaokun@huaweicloud.com>
- <20240927105643.h4b4zunjivv4nkzu@quack3>
-Content-Language: en-US
-From: Baokun Li <libaokun@huaweicloud.com>
-In-Reply-To: <20240927105643.h4b4zunjivv4nkzu@quack3>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.53-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-6.6.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 6.6.53-rc1
+X-KernelTest-Deadline: 2024-09-29T12:17+00:00
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:gCh0CgDH+8c7nPZmBKv6CQ--.23275S3
-X-Coremail-Antispam: 1UD129KBjvJXoWxXrW3GFW5Jw13Jw45uFykXwb_yoW5KFy7pF
-	9xKa4xCryYqryUCr47J34qgF18K34kJr17XrWxXr18XFy7ZFnxGr1IgFy8CFyjkF93Cr13
-	JFs0vF1qyrnrXaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvjb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
-	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
-	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Ar0_tr1l84ACjcxK6xIIjxv20xvEc7Cj
-	xVAFwI0_Cr0_Gr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I
-	0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
-	x7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x
-	0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AF
-	wI0_Jw0_GFyl42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4
-	xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43
-	MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I
-	0E14v26r4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWU
-	JVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxUOB
-	MKDUUUU
-X-CM-SenderInfo: 5olet0hnxqqx5xdzvxpfor3voofrz/1tbiAgATBWb2bRwQYAAAsF
 
-On 2024/9/27 18:56, Jan Kara wrote:
-> On Fri 27-09-24 14:36:20, libaokun@huaweicloud.com wrote:
->> From: Baokun Li <libaokun1@huawei.com>
->>
->> Wesley reported an issue:
->>
->> ==================================================================
->> EXT4-fs (dm-5): resizing filesystem from 7168 to 786432 blocks
->> ------------[ cut here ]------------
->> kernel BUG at fs/ext4/resize.c:324!
->> CPU: 9 UID: 0 PID: 3576 Comm: resize2fs Not tainted 6.11.0+ #27
->> RIP: 0010:ext4_resize_fs+0x1212/0x12d0
->> Call Trace:
->>   __ext4_ioctl+0x4e0/0x1800
->>   ext4_ioctl+0x12/0x20
->>   __x64_sys_ioctl+0x99/0xd0
->>   x64_sys_call+0x1206/0x20d0
->>   do_syscall_64+0x72/0x110
->>   entry_SYSCALL_64_after_hwframe+0x76/0x7e
->> ==================================================================
->>
->> While reviewing the patch, Honza found that when adjusting resize_bg in
->> alloc_flex_gd(), it was possible for flex_gd->resize_bg to be bigger than
->> flexbg_size.
->>
->> The reproduction of the problem requires the following:
->>
->>   o_group = flexbg_size * 2 * n;
->>   o_size = (o_group + 1) * group_size;
->>   n_group: [o_group + flexbg_size, o_group + flexbg_size * 2)
->>   o_size = (n_group + 1) * group_size;
->>
->> Take n=0,flexbg_size=16 as an example:
->>
->>                last:15
->> |o---------------|--------------n-|
->> o_group:0    resize to      n_group:30
->>
->> The corresponding reproducer is:
->>
->> img=test.img
->> truncate -s 600M $img
->> mkfs.ext4 -F $img -b 1024 -G 16 8M
->> dev=`losetup -f --show $img`
->> mkdir -p /tmp/test
->> mount $dev /tmp/test
->> resize2fs $dev 248M
->>
->> Delete the problematic plus 1 to fix the issue, and add a WARN_ON_ONCE()
->> to prevent the issue from happening again.
-> I don't think you are adding WARN_ON_ONCE() :). Otherwise feel free to add:
->
-> Reviewed-by: Jan Kara <jack@suse.cz>
->
-> 								Honza
+This is the start of the stable review cycle for the 6.6.53 release.
+There are 54 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-Oh no, I forgot to add the added modifications! 😅
+Responses should be made by Sun, 29 Sep 2024 12:17:00 +0000.
+Anything received after that time might be too late.
 
-Thank you for your review!
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.53-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
+and the diffstat can be found below.
 
-I will send out v2. soon.
+thanks,
+
+greg k-h
+
+-------------
+Pseudo-Shortlog of commits:
+
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 6.6.53-rc1
+
+Edward Adam Davis <eadavis@qq.com>
+    USB: usbtmc: prevent kernel-usb-infoleak
+
+Junhao Xie <bigfoot@classfun.cn>
+    USB: serial: pl2303: add device id for Macrosilicon MS3020
+
+Marc Kleine-Budde <mkl@pengutronix.de>
+    can: mcp251xfd: move mcp251xfd_timestamp_start()/stop() into mcp251xfd_chip_start/stop()
+
+Marc Kleine-Budde <mkl@pengutronix.de>
+    can: mcp251xfd: properly indent labels
+
+Tony Luck <tony.luck@intel.com>
+    x86/mm: Switch to new Intel CPU model defines
+
+Keith Busch <kbusch@kernel.org>
+    nvme-pci: qdepth 1 quirk
+
+Kent Gibson <warthog618@gmail.com>
+    gpiolib: cdev: Ignore reconfiguration without direction
+
+Ping-Ke Shih <pkshih@realtek.com>
+    Revert "wifi: cfg80211: check wiphy mutex is held for wdev mutex"
+
+Pablo Neira Ayuso <pablo@netfilter.org>
+    netfilter: nf_tables: missing iterator type in lookup walk
+
+Pablo Neira Ayuso <pablo@netfilter.org>
+    netfilter: nft_set_pipapo: walk over current view on netlink dump
+
+Dan Carpenter <dan.carpenter@linaro.org>
+    netfilter: nft_socket: Fix a NULL vs IS_ERR() bug in nft_socket_cgroup_subtree_level()
+
+Florian Westphal <fw@strlen.de>
+    netfilter: nft_socket: make cgroupsv2 matching work with namespaces
+
+Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
+    powercap/intel_rapl: Add support for AMD family 1Ah
+
+Michał Winiarski <michal.winiarski@intel.com>
+    drm: Expand max DRM device number to full MINORBITS
+
+Michał Winiarski <michal.winiarski@intel.com>
+    accel: Use XArray instead of IDR for minors
+
+Michał Winiarski <michal.winiarski@intel.com>
+    drm: Use XArray instead of IDR for minors
+
+Ferry Meng <mengferry@linux.alibaba.com>
+    ocfs2: strict bound check before memcmp in ocfs2_xattr_find_entry()
+
+Ferry Meng <mengferry@linux.alibaba.com>
+    ocfs2: add bounds checking to ocfs2_xattr_find_entry()
+
+Geert Uytterhoeven <geert+renesas@glider.be>
+    spi: spidev: Add missing spi_device_id for jg10309-01
+
+Hongyu Jin <hongyu.jin@unisoc.com>
+    block: Fix where bio IO priority gets set
+
+zhang jiao <zhangjiao2@cmss.chinamobile.com>
+    tools: hv: rm .*.cmd when make clean
+
+Michael Kelley <mhklinux@outlook.com>
+    x86/hyperv: Set X86_FEATURE_TSC_KNOWN_FREQ when Hyper-V provides frequency
+
+Paulo Alcantara <pc@manguebit.com>
+    smb: client: fix hang in wait_for_response() for negproto
+
+Liao Chen <liaochen4@huawei.com>
+    spi: bcm63xx: Enable module autoloading
+
+hongchi.peng <hongchi.peng@siengine.com>
+    drm: komeda: Fix an issue related to normalized zpos
+
+Kai Vehmanen <kai.vehmanen@linux.intel.com>
+    ALSA: hda: add HDMI codec ID for Intel PTL
+
+Markuss Broks <markuss.broks@gmail.com>
+    ASoC: amd: yc: Add a quirk for MSI Bravo 17 (D7VEK)
+
+Fabio Estevam <festevam@gmail.com>
+    spi: spidev: Add an entry for elgin,jg10309-01
+
+Liao Chen <liaochen4@huawei.com>
+    ASoC: fix module autoloading
+
+Liao Chen <liaochen4@huawei.com>
+    ASoC: tda7419: fix module autoloading
+
+Liao Chen <liaochen4@huawei.com>
+    ASoC: google: fix module autoloading
+
+Liao Chen <liaochen4@huawei.com>
+    ASoC: intel: fix module autoloading
+
+Hans de Goede <hdegoede@redhat.com>
+    ASoC: Intel: soc-acpi-cht: Make Lenovo Yoga Tab 3 X90F DMI match less strict
+
+Marc Kleine-Budde <mkl@pengutronix.de>
+    can: mcp251xfd: mcp251xfd_ring_init(): check TX-coalescing configuration
+
+Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+    wifi: iwlwifi: clear trans->state earlier upon error
+
+Dmitry Antipov <dmantipov@yandex.ru>
+    wifi: mac80211: free skb on error path in ieee80211_beacon_get_ap()
+
+Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+    wifi: iwlwifi: mvm: don't wait for tx queues if firmware is dead
+
+Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+    wifi: iwlwifi: mvm: pause TCM when the firmware is stopped
+
+Daniel Gabay <daniel.gabay@intel.com>
+    wifi: iwlwifi: mvm: fix iwl_mvm_max_scan_ie_fw_cmd_room()
+
+Daniel Gabay <daniel.gabay@intel.com>
+    wifi: iwlwifi: mvm: fix iwl_mvm_scan_fits() calculation
+
+Benjamin Berg <benjamin.berg@intel.com>
+    wifi: iwlwifi: lower message level for FW buffer destination
+
+Huacai Chen <chenhuacai@kernel.org>
+    LoongArch: Define ARCH_IRQ_INIT_FLAGS as IRQ_NOPROBE
+
+Jacky Chou <jacky_chou@aspeedtech.com>
+    net: ftgmac100: Ensure tx descriptor updates are visible
+
+Hans de Goede <hdegoede@redhat.com>
+    platform/x86: x86-android-tablets: Make Lenovo Yoga Tab 3 X90F DMI match less strict
+
+Mike Rapoport <rppt@kernel.org>
+    microblaze: don't treat zero reserved memory regions as error
+
+Ross Brown <true.robot.ross@gmail.com>
+    hwmon: (asus-ec-sensors) remove VRM temp X570-E GAMING
+
+Thomas Blocher <thomas.blocher@ek-dev.de>
+    pinctrl: at91: make it work with current gpiolib
+
+Sherry Yang <sherry.yang@oracle.com>
+    scsi: lpfc: Fix overflow build issue
+
+Kailang Yang <kailang@realtek.com>
+    ALSA: hda/realtek - FIxed ALC285 headphone no sound
+
+Kailang Yang <kailang@realtek.com>
+    ALSA: hda/realtek - Fixed ALC256 headphone no sound
+
+Hongbo Li <lihongbo22@huawei.com>
+    ASoC: allow module autoloading for table board_ids
+
+Hongbo Li <lihongbo22@huawei.com>
+    ASoC: allow module autoloading for table db1200_pids
+
+YR Yang <yr.yang@mediatek.com>
+    ASoC: mediatek: mt8188: Mark AFE_DAC_CON0 register as volatile
+
+Albert Jakieła <jakiela@google.com>
+    ASoC: SOF: mediatek: Add missing board compatible
 
 
-Thanks,
-Baokun
->> Reported-by: Wesley Hershberger <wesley.hershberger@canonical.com>
->> Closes: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2081231
->> Reported-by: Stéphane Graber <stgraber@stgraber.org>
->> Closes: https://lore.kernel.org/all/20240925143325.518508-1-aleksandr.mikhalitsyn@canonical.com/
->> Tested-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
->> Tested-by: Eric Sandeen <sandeen@redhat.com>
->> Fixes: 665d3e0af4d3 ("ext4: reduce unnecessary memory allocation in alloc_flex_gd()")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Baokun Li <libaokun1@huawei.com>
->> ---
->>   fs/ext4/resize.c | 4 ++--
->>   1 file changed, 2 insertions(+), 2 deletions(-)
->>
->> diff --git a/fs/ext4/resize.c b/fs/ext4/resize.c
->> index e04eb08b9060..397970121d43 100644
->> --- a/fs/ext4/resize.c
->> +++ b/fs/ext4/resize.c
->> @@ -253,9 +253,9 @@ static struct ext4_new_flex_group_data *alloc_flex_gd(unsigned int flexbg_size,
->>   	/* Avoid allocating large 'groups' array if not needed */
->>   	last_group = o_group | (flex_gd->resize_bg - 1);
->>   	if (n_group <= last_group)
->> -		flex_gd->resize_bg = 1 << fls(n_group - o_group + 1);
->> +		flex_gd->resize_bg = 1 << fls(n_group - o_group);
->>   	else if (n_group - last_group < flex_gd->resize_bg)
->> -		flex_gd->resize_bg = 1 << max(fls(last_group - o_group + 1),
->> +		flex_gd->resize_bg = 1 << max(fls(last_group - o_group),
->>   					      fls(n_group - last_group));
->>   
->>   	flex_gd->groups = kmalloc_array(flex_gd->resize_bg,
->> -- 
->> 2.46.0
->>
--- 
-With Best Regards,
-Baokun Li
+-------------
+
+Diffstat:
+
+ Makefile                                           |   4 +-
+ arch/loongarch/include/asm/hw_irq.h                |   2 +
+ arch/loongarch/kernel/irq.c                        |   3 -
+ arch/microblaze/mm/init.c                          |   5 -
+ arch/x86/kernel/cpu/mshyperv.c                     |   1 +
+ arch/x86/mm/init.c                                 |  16 ++-
+ block/blk-core.c                                   |  10 ++
+ block/blk-mq.c                                     |  10 --
+ drivers/accel/drm_accel.c                          | 110 ++-------------------
+ drivers/gpio/gpiolib-cdev.c                        |  12 ++-
+ drivers/gpu/drm/arm/display/komeda/komeda_kms.c    |  10 +-
+ drivers/gpu/drm/drm_drv.c                          |  97 +++++++++---------
+ drivers/gpu/drm/drm_file.c                         |   2 +-
+ drivers/gpu/drm/drm_internal.h                     |   4 -
+ drivers/hwmon/asus-ec-sensors.c                    |   2 +-
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-core.c     |  42 ++++----
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-dump.c     |   2 +-
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-regmap.c   |   2 +-
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-ring.c     |  14 ++-
+ drivers/net/can/spi/mcp251xfd/mcp251xfd-tef.c      |   2 +-
+ .../net/can/spi/mcp251xfd/mcp251xfd-timestamp.c    |   7 +-
+ drivers/net/can/spi/mcp251xfd/mcp251xfd.h          |   1 +
+ drivers/net/ethernet/faraday/ftgmac100.c           |  26 +++--
+ drivers/net/wireless/intel/iwlwifi/fw/dbg.c        |   2 +-
+ drivers/net/wireless/intel/iwlwifi/iwl-trans.h     |   2 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c  |   9 +-
+ drivers/net/wireless/intel/iwlwifi/mvm/ops.c       |   2 +
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c      |  31 +++---
+ .../wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c   |   3 +-
+ drivers/nvme/host/nvme.h                           |   5 +
+ drivers/nvme/host/pci.c                            |  18 ++--
+ drivers/pinctrl/pinctrl-at91.c                     |   5 +-
+ drivers/platform/x86/x86-android-tablets/dmi.c     |   1 -
+ drivers/powercap/intel_rapl_common.c               |   1 +
+ drivers/scsi/lpfc/lpfc_bsg.c                       |   2 +-
+ drivers/spi/spi-bcm63xx.c                          |   1 +
+ drivers/spi/spidev.c                               |   2 +
+ drivers/usb/class/usbtmc.c                         |   2 +-
+ drivers/usb/serial/pl2303.c                        |   1 +
+ drivers/usb/serial/pl2303.h                        |   4 +
+ fs/ocfs2/xattr.c                                   |  27 +++--
+ fs/smb/client/connect.c                            |  14 ++-
+ include/drm/drm_accel.h                            |  18 +---
+ include/drm/drm_file.h                             |   5 +
+ include/net/netfilter/nf_tables.h                  |  13 +++
+ net/mac80211/tx.c                                  |   4 +-
+ net/netfilter/nf_tables_api.c                      |   5 +
+ net/netfilter/nft_lookup.c                         |   1 +
+ net/netfilter/nft_set_pipapo.c                     |   6 +-
+ net/netfilter/nft_socket.c                         |  41 +++++++-
+ net/wireless/core.h                                |   8 +-
+ sound/pci/hda/patch_hdmi.c                         |   1 +
+ sound/pci/hda/patch_realtek.c                      |  76 +++++++++-----
+ sound/soc/amd/acp/acp-sof-mach.c                   |   2 +
+ sound/soc/amd/yc/acp6x-mach.c                      |   7 ++
+ sound/soc/au1x/db1200.c                            |   1 +
+ sound/soc/codecs/chv3-codec.c                      |   1 +
+ sound/soc/codecs/tda7419.c                         |   1 +
+ sound/soc/google/chv3-i2s.c                        |   1 +
+ sound/soc/intel/common/soc-acpi-intel-cht-match.c  |   1 -
+ sound/soc/intel/keembay/kmb_platform.c             |   1 +
+ sound/soc/mediatek/mt8188/mt8188-afe-pcm.c         |   1 +
+ sound/soc/sof/mediatek/mt8195/mt8195.c             |   3 +
+ tools/hv/Makefile                                  |   2 +-
+ 64 files changed, 384 insertions(+), 331 deletions(-)
+
 
 
