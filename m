@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-77963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7435B98846D
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:27:27 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33F4F988434
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:25:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 819711C212E2
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:27:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB6FA28274D
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:25:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E059D18A955;
-	Fri, 27 Sep 2024 12:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1819B18BC22;
+	Fri, 27 Sep 2024 12:25:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1+P0jF48"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D+Be3Jfn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A126017B515;
-	Fri, 27 Sep 2024 12:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB8D01779BD;
+	Fri, 27 Sep 2024 12:25:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440042; cv=none; b=oij7eDpBbjUl2Ch8uxB+P9e6Z32URMsS/kQno8KBm88Gdn3rbaCKiVi3H+tRNO2LcM1Eg9EkMKBDLjuBNgWx91THl7N2ZXTYh2f9VraqCYJdPsmkmBQvAT9S3cZauwBplY6zLM8Lrbb1ZavzahU8n+KYfueYsG0eARHnuHvEWiI=
+	t=1727439919; cv=none; b=nrUht1ImlGLzoNlXJWwxmobpBM+eJkMn6YcjLbvUh6B6kbGvht600Vvh43xgLpXETV0BrzdHdHfmU58Cooa7m+aRsZew3vbp5rM7icXFRA4ipojrB7u3UavvNyNJMtcauAjdWj2fhlxkmhy6639i5d7tDx1D7RNsi3Eug4p4NR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440042; c=relaxed/simple;
-	bh=S0QegfBZWRD0ouawBjdum1NclEDf+6qDeNwtsf35v4I=;
+	s=arc-20240116; t=1727439919; c=relaxed/simple;
+	bh=PTKj0pibnGKAVKLulylxOUF01a8XLZud3Wuqk79F2+U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A3E0a+80xyChkKFE7tmbENLk9clZNRwbfu9dHLaBP3DIQ6lVtHzGFBUom1gOvKfk/Miem7lIys/o/ipJb04eLJXRJqv3qdaK2iVJoeK6Lt22RE2BM6xqHqxKfqePDyG6xeM0ch5ez5pHv/jL/TWO9ky0QJclP1Q3mwV0952wsYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1+P0jF48; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE1A2C4CEC4;
-	Fri, 27 Sep 2024 12:27:21 +0000 (UTC)
+	 MIME-Version; b=mFaTTIaE/QhHBw7C9KTbjbuVipJN6QsjUxPmJwRpLHbvxS2wfCrVRNc2f3BOISaJC7Itew1FkFHvyWYWIcZLQOXSzjv+0/FjP9GEVsoLQLCztcKvErP+4RGLaP5VnSM9Dm5wqZPruY3xlNgQ1UT+Ubs8GiWxMHDtaWSRvURRbrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D+Be3Jfn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 208A8C4CEC4;
+	Fri, 27 Sep 2024 12:25:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440042;
-	bh=S0QegfBZWRD0ouawBjdum1NclEDf+6qDeNwtsf35v4I=;
+	s=korg; t=1727439919;
+	bh=PTKj0pibnGKAVKLulylxOUF01a8XLZud3Wuqk79F2+U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1+P0jF48mPwHtoWcm8UDt3nVj3V7GdKcRSXw+j5li4XhsaVrPy3suMFI0hgHWa9gT
-	 3S8YpJLhQmmGIFm14k2jn4YumzEdSymn+zpoLAgpS/ku5dYWIJVO6GzMXcN4L0hbLk
-	 ciwWjUxBZGOCPSknMRZ0qbhaQXJo5VqH4GkRWigE=
+	b=D+Be3JfnThRLGoZ1RiCvHE1wtk6Rbxey3n5j+TrTn+vSHmsmxmajtRDtWmTj+ofjd
+	 URJtyhjev8cbTcUDod601JM0A2BJPAHxQA0lU6u8q8G+6Zwo6yhnpKfrJeqL2bTqDz
+	 vpWlrebKfsqjAhvDEz7hy9r5LFaa1WDeVSd7o0ZE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Hans de Goede <hdegoede@redhat.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 12/58] platform/x86: x86-android-tablets: Make Lenovo Yoga Tab 3 X90F DMI match less strict
+Subject: [PATCH 6.6 22/54] ASoC: Intel: soc-acpi-cht: Make Lenovo Yoga Tab 3 X90F DMI match less strict
 Date: Fri, 27 Sep 2024 14:23:14 +0200
-Message-ID: <20240927121719.298295929@linuxfoundation.org>
+Message-ID: <20240927121720.603911675@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121718.789211866@linuxfoundation.org>
-References: <20240927121718.789211866@linuxfoundation.org>
+In-Reply-To: <20240927121719.714627278@linuxfoundation.org>
+References: <20240927121719.714627278@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,16 +61,15 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit a3379eca24a7da5118a7d090da6f8eb8611acac8 ]
+[ Upstream commit 839a4ec06f75cec8fec2cc5fc14e921d0c3f7369 ]
 
 There are 2G and 4G RAM versions of the Lenovo Yoga Tab 3 X90F and it
 turns out that the 2G version has a DMI product name of
@@ -81,26 +81,26 @@ Drop the product-name check so that the existing DMI match for the 4G
 RAM version also matches the 2G RAM version.
 
 Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://lore.kernel.org/r/20240825132415.8307-1-hdegoede@redhat.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Link: https://patch.msgid.link/20240823074305.16873-1-hdegoede@redhat.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/x86-android-tablets/dmi.c | 1 -
+ sound/soc/intel/common/soc-acpi-intel-cht-match.c | 1 -
  1 file changed, 1 deletion(-)
 
-diff --git a/drivers/platform/x86/x86-android-tablets/dmi.c b/drivers/platform/x86/x86-android-tablets/dmi.c
-index 141a2d25e83be..387dd092c4dd0 100644
---- a/drivers/platform/x86/x86-android-tablets/dmi.c
-+++ b/drivers/platform/x86/x86-android-tablets/dmi.c
-@@ -140,7 +140,6 @@ const struct dmi_system_id x86_android_tablet_ids[] __initconst = {
- 		/* Lenovo Yoga Tab 3 Pro YT3-X90F */
+diff --git a/sound/soc/intel/common/soc-acpi-intel-cht-match.c b/sound/soc/intel/common/soc-acpi-intel-cht-match.c
+index 5e2ec60e2954b..e4c3492a0c282 100644
+--- a/sound/soc/intel/common/soc-acpi-intel-cht-match.c
++++ b/sound/soc/intel/common/soc-acpi-intel-cht-match.c
+@@ -84,7 +84,6 @@ static const struct dmi_system_id lenovo_yoga_tab3_x90[] = {
+ 		/* Lenovo Yoga Tab 3 Pro YT3-X90, codec missing from DSDT */
  		.matches = {
  			DMI_MATCH(DMI_SYS_VENDOR, "Intel Corporation"),
 -			DMI_MATCH(DMI_PRODUCT_NAME, "CHERRYVIEW D1 PLATFORM"),
  			DMI_MATCH(DMI_PRODUCT_VERSION, "Blade3-10A-001"),
  		},
- 		.driver_data = (void *)&lenovo_yt3_info,
+ 	},
 -- 
 2.43.0
 
