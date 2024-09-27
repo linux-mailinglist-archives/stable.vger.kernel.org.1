@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-78066-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78014-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C18B9884EC
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:32:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CB2A9884A6
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:29:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E7AFBB22A61
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:32:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BAD4F282A10
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:29:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CA2D18B46D;
-	Fri, 27 Sep 2024 12:32:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5703518BC1D;
+	Fri, 27 Sep 2024 12:29:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nlMfwmDD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dzm0moc9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0222136352;
-	Fri, 27 Sep 2024 12:32:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15B9018A95D;
+	Fri, 27 Sep 2024 12:29:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440329; cv=none; b=lbRMaaHMCdPC8fkuHff20zVUtqVK267oW7qjCxW7Z3691w76tSiJHx0tZn1RsM9vE9sqC/kpTFCzbFTQ22euJG7kucGFoTuBUPPZUCdxCfc0VPYR+I/k4nVUMWW/RQyssc1wyX5Dtes3bc8MdVyb/2BvMg8yJVN7dsT1actGN0s=
+	t=1727440184; cv=none; b=djt0IFaBs6sKEpP+97njJbB4Y8g4YsVJ/mbDIBylZnMZ8SbDyUdF1avGsi4pdWXkYfwjMGfIQDo0UfXGXOC3Fa1VEjKZKG+FUxDmODNErMaLBPn3DbJW2S7+IPIErzY4/UZG+Ws3CHcY7jP6Mi2GdUqBLNynrm/69SosgfmcC4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440329; c=relaxed/simple;
-	bh=4geJ6LqHYN6Whkg8FNULT+Ah5Y6CHPtQCUCkS+BpMoE=;
+	s=arc-20240116; t=1727440184; c=relaxed/simple;
+	bh=Ok5/FAiZoR0VEQ7q6Vhp9Q83Mnykclf49bYV2aCWZKk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pvcuylEWU1xd3jShWXb0GdB4/5PUcEOwyrPR8ttmK5Gsb0b76D5TrrT4DfECE34409dA3EKFJ4G9N+7lrRA8om1T4X8uZtH+TkW5vxl/I7jcZVspVF1RkXhVLtjPeqRylrrffo8R1zmg9USOY0bjh2xwQnL9ENo7j5FEMBXsZ3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nlMfwmDD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 207C7C4CEC4;
-	Fri, 27 Sep 2024 12:32:07 +0000 (UTC)
+	 MIME-Version; b=E9FwpcsjUYjbXKEnk7A7Gj9vUmyRIcnfAR1f9roY7wnhsxl4lcDZKnl5pK7jUoh4A/CFfio2IGoo5gflPXm7jWAXi0cuWrMpS9uIY8AwgXhjHwUEgegNorx75n8BmMYHOEZSyQJIHe7O9vz33VSsyNMOa/OPRBwjiBp8ThEFloM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dzm0moc9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E8DEC4CEC4;
+	Fri, 27 Sep 2024 12:29:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440328;
-	bh=4geJ6LqHYN6Whkg8FNULT+Ah5Y6CHPtQCUCkS+BpMoE=;
+	s=korg; t=1727440183;
+	bh=Ok5/FAiZoR0VEQ7q6Vhp9Q83Mnykclf49bYV2aCWZKk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nlMfwmDDICYr9AtgpGxHqe5FmPXLYPrY64PpeMCDkhCugp/iO8ouss7B32sdSeDuD
-	 9Un1msjWfzBDEPDhICPXXr7Y24PKPoj5z3ANzNu/YYjTVjbEby4JbG16q4QVGCgsjD
-	 A+7+Iir9hzT62q+eG1VfzV1ON2/iw6GXr8L+quzg=
+	b=Dzm0moc9Q+EN2Wwb/eoaQQn25GlT9TyqAT4FVNlyvM6JqtJF8kIeiHDuFbI2IPld3
+	 6+wYcucpfEky5wcHY94eAINnHqmhfxlHOH48zUz7sjYLB3iwasxaw8H5NvqwGndzBi
+	 QMrq4YJ5onvZJqae0DnHpjt0MPauMs66DeYM45ac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Chinner <dchinner@redhat.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	Dave Chinner <david@fromorbit.com>,
-	Leah Rumancik <leah.rumancik@gmail.com>,
-	Chandan Babu R <chandanbabu@kernel.org>
-Subject: [PATCH 6.1 43/73] xfs: defered work could create precommits
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.10 52/58] netfilter: nft_socket: Fix a NULL vs IS_ERR() bug in nft_socket_cgroup_subtree_level()
 Date: Fri, 27 Sep 2024 14:23:54 +0200
-Message-ID: <20240927121721.677724672@linuxfoundation.org>
+Message-ID: <20240927121720.949712124@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121719.897851549@linuxfoundation.org>
-References: <20240927121719.897851549@linuxfoundation.org>
+In-Reply-To: <20240927121718.789211866@linuxfoundation.org>
+References: <20240927121718.789211866@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,47 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Chinner <dchinner@redhat.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit cb042117488dbf0b3b38b05771639890fada9a52 ]
+commit 7052622fccb1efb850c6b55de477f65d03525a30 upstream.
 
-To fix a AGI-AGF-inode cluster buffer deadlock, we need to move
-inode cluster buffer operations to the ->iop_precommit() method.
-However, this means that deferred operations can require precommits
-to be run on the final transaction that the deferred ops pass back
-to xfs_trans_commit() context. This will be exposed by attribute
-handling, in that the last changes to the inode in the attr set
-state machine "disappear" because the precommit operation is not run.
+The cgroup_get_from_path() function never returns NULL, it returns error
+pointers.  Update the error handling to match.
 
-Signed-off-by: Dave Chinner <dchinner@redhat.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Dave Chinner <david@fromorbit.com>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: Chandan Babu R <chandanbabu@kernel.org>
+Fixes: 7f3287db6543 ("netfilter: nft_socket: make cgroupsv2 matching work with namespaces")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Acked-by: Florian Westphal <fw@strlen.de>
+Acked-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Link: https://patch.msgid.link/bbc0c4e0-05cc-4f44-8797-2f4b3920a820@stanley.mountain
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_trans.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ net/netfilter/nft_socket.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/xfs/xfs_trans.c
-+++ b/fs/xfs/xfs_trans.c
-@@ -970,6 +970,11 @@ __xfs_trans_commit(
- 		error = xfs_defer_finish_noroll(&tp);
- 		if (error)
- 			goto out_unreserve;
-+
-+		/* Run precommits from final tx in defer chain. */
-+		error = xfs_trans_run_precommits(tp);
-+		if (error)
-+			goto out_unreserve;
- 	}
+--- a/net/netfilter/nft_socket.c
++++ b/net/netfilter/nft_socket.c
+@@ -61,8 +61,8 @@ static noinline int nft_socket_cgroup_su
+ 	struct cgroup *cgrp = cgroup_get_from_path("/");
+ 	int level;
  
- 	/*
+-	if (!cgrp)
+-		return -ENOENT;
++	if (IS_ERR(cgrp))
++		return PTR_ERR(cgrp);
+ 
+ 	level = cgrp->level;
+ 
 
 
 
