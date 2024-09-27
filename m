@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-78071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78008-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 649379884F1
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:32:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F78B98849B
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:29:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 954911C2039A
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:32:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5790D1C216E0
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:29:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D42E18C32F;
-	Fri, 27 Sep 2024 12:32:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3A1318BC0D;
+	Fri, 27 Sep 2024 12:29:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="10vcQqSp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eZxLlhfa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CCA53C3C;
-	Fri, 27 Sep 2024 12:32:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63B5417B515;
+	Fri, 27 Sep 2024 12:29:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440342; cv=none; b=lLU6PcFMggfErYi0nzhng3VajtpbO9BbC734P9AcSrLGpJ+/XvmZ1GgSbCCv9qWlIV0anE06y9J6iw4KhIZnvjAiH8fd0iDtd/WnJ3oHrsG2r2bL+XXoeQKZBQ6hyVi+It0vLDrKvxceQSOOFLTGpv2RVscJ94klrNwJssWOm+0=
+	t=1727440167; cv=none; b=G9kXZWZxtjF9ggjaGwIQxDgyhbZZCojzFNsxF0pWCvFkxIRrBQbfyMuJX1eDJQNm/PT/Ky8MzPtdvndUg/iC6KShf+rtXRGa/hCsMa+FIU1GxEpnbXqZWOdtZYo5xAqBrH4CQswPBCrq8V2m9Vz9cznMjIClYeFJiTIjW7JsUl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440342; c=relaxed/simple;
-	bh=QGyVEhJmVC+LhSc+fHbYvM8LCp0jrpScE2GKG+XlWo0=;
+	s=arc-20240116; t=1727440167; c=relaxed/simple;
+	bh=+9ZTZ3wmBPm9NBuLdcExMX2TIMnr24ZsXhHiKZsm3LE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mOUl4ky/M1MvdTCOLzxe5pu/5OBB4NX77JoA+x3Zd/EpGpU10gvvPQbscau47qbPoihF5ZdYgkn5c8gVfgG9YKCtECgB5Ic3e8U7V8sYvnsqJo0u4mRPpdnbCIeETROgNxULyk7MCihCCebmfTy62yuG+4AVBRLtY+eVoSaB/8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=10vcQqSp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF5A1C4CEC4;
-	Fri, 27 Sep 2024 12:32:21 +0000 (UTC)
+	 MIME-Version; b=M5V4ghkC9O/2NJVY9f5XtpEj6Iz0vtlO40cl109sy7sW9LPJulLHft7zJ/+G7cMvh6mchZ8V7in3TWvwqN0BzQeJaNZXcsRvPMWeYZjewMJbr4GJPx7hCH6jgsMCtLFeqVTJiW5oY0SdXcKW818ISWJlnbqKyZ/1oM5Ju9Zqp8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eZxLlhfa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC824C4CEC6;
+	Fri, 27 Sep 2024 12:29:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440342;
-	bh=QGyVEhJmVC+LhSc+fHbYvM8LCp0jrpScE2GKG+XlWo0=;
+	s=korg; t=1727440167;
+	bh=+9ZTZ3wmBPm9NBuLdcExMX2TIMnr24ZsXhHiKZsm3LE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=10vcQqSpLLyXVBvHG6YM4ey7Ezd239x9hC6nQLRtdE38w3DxtFZnPMOfbsLgo8aVe
-	 cpX26ZJQjcl+mHixszCHJ+k0C8JXAxFSnm9937Oax4jIqHsQ6sNoZmQ3fjYdwBdbwB
-	 7DN0O1NaJFn5boPanPSDbMQXsO/sdZuEANL/ntvI=
+	b=eZxLlhfaH1PSrbBRdVWk2Hv2aQFU4cNFYNJvotFz7wVuStJbf+khcAr1S+/eysjcx
+	 XoiM5kyfEu9Se/OmzVmn20JQqXhXcFlM3j4KhOiEy90pl8ct4NC1nQeTSoEc59j8hJ
+	 M2oFXKg8Pd8K35aoglPw/zQEaNAdVJyHck9Z58Co=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shiyang Ruan <ruansy.fnst@fujitsu.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Leah Rumancik <leah.rumancik@gmail.com>,
-	Chandan Babu R <chandanbabu@kernel.org>
-Subject: [PATCH 6.1 48/73] xfs: fix the calculation for "end" and "length"
+	Junhao Xie <bigfoot@classfun.cn>,
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.10 57/58] USB: serial: pl2303: add device id for Macrosilicon MS3020
 Date: Fri, 27 Sep 2024 14:23:59 +0200
-Message-ID: <20240927121721.856647329@linuxfoundation.org>
+Message-ID: <20240927121721.169761256@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121719.897851549@linuxfoundation.org>
-References: <20240927121719.897851549@linuxfoundation.org>
+In-Reply-To: <20240927121718.789211866@linuxfoundation.org>
+References: <20240927121718.789211866@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,58 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shiyang Ruan <ruansy.fnst@fujitsu.com>
+From: Junhao Xie <bigfoot@classfun.cn>
 
-[ Upstream commit 5cf32f63b0f4c520460c1a5dd915dc4f09085f29 ]
+commit 7d47d22444bb7dc1b6d768904a22070ef35e1fc0 upstream.
 
-The value of "end" should be "start + length - 1".
+Add the device id for the Macrosilicon MS3020 which is a
+PL2303HXN based device.
 
-Signed-off-by: Shiyang Ruan <ruansy.fnst@fujitsu.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Junhao Xie <bigfoot@classfun.cn>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/xfs/xfs_notify_failure.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/usb/serial/pl2303.c |    1 +
+ drivers/usb/serial/pl2303.h |    4 ++++
+ 2 files changed, 5 insertions(+)
 
---- a/fs/xfs/xfs_notify_failure.c
-+++ b/fs/xfs/xfs_notify_failure.c
-@@ -114,7 +114,8 @@ xfs_dax_notify_ddev_failure(
- 	int			error = 0;
- 	xfs_fsblock_t		fsbno = XFS_DADDR_TO_FSB(mp, daddr);
- 	xfs_agnumber_t		agno = XFS_FSB_TO_AGNO(mp, fsbno);
--	xfs_fsblock_t		end_fsbno = XFS_DADDR_TO_FSB(mp, daddr + bblen);
-+	xfs_fsblock_t		end_fsbno = XFS_DADDR_TO_FSB(mp,
-+							     daddr + bblen - 1);
- 	xfs_agnumber_t		end_agno = XFS_FSB_TO_AGNO(mp, end_fsbno);
+--- a/drivers/usb/serial/pl2303.c
++++ b/drivers/usb/serial/pl2303.c
+@@ -118,6 +118,7 @@ static const struct usb_device_id id_tab
+ 	{ USB_DEVICE(SMART_VENDOR_ID, SMART_PRODUCT_ID) },
+ 	{ USB_DEVICE(AT_VENDOR_ID, AT_VTKIT3_PRODUCT_ID) },
+ 	{ USB_DEVICE(IBM_VENDOR_ID, IBM_PRODUCT_ID) },
++	{ USB_DEVICE(MACROSILICON_VENDOR_ID, MACROSILICON_MS3020_PRODUCT_ID) },
+ 	{ }					/* Terminating entry */
+ };
  
- 	error = xfs_trans_alloc_empty(mp, &tp);
-@@ -210,7 +211,7 @@ xfs_dax_notify_failure(
- 	ddev_end = ddev_start + bdev_nr_bytes(mp->m_ddev_targp->bt_bdev) - 1;
- 
- 	/* Ignore the range out of filesystem area */
--	if (offset + len < ddev_start)
-+	if (offset + len - 1 < ddev_start)
- 		return -ENXIO;
- 	if (offset > ddev_end)
- 		return -ENXIO;
-@@ -222,8 +223,8 @@ xfs_dax_notify_failure(
- 		len -= ddev_start - offset;
- 		offset = 0;
- 	}
--	if (offset + len > ddev_end)
--		len -= ddev_end - offset;
-+	if (offset + len - 1 > ddev_end)
-+		len = ddev_end - offset + 1;
- 
- 	return xfs_dax_notify_ddev_failure(mp, BTOBB(offset), BTOBB(len),
- 			mf_flags);
+--- a/drivers/usb/serial/pl2303.h
++++ b/drivers/usb/serial/pl2303.h
+@@ -171,3 +171,7 @@
+ /* Allied Telesis VT-Kit3 */
+ #define AT_VENDOR_ID		0x0caa
+ #define AT_VTKIT3_PRODUCT_ID	0x3001
++
++/* Macrosilicon MS3020 */
++#define MACROSILICON_VENDOR_ID		0x345f
++#define MACROSILICON_MS3020_PRODUCT_ID	0x3020
 
 
 
