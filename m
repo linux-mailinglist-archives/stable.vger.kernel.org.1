@@ -1,57 +1,61 @@
-Return-Path: <stable+bounces-77989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78052-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDD3E988488
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:28:36 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F5C39884DD
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:32:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6BBDF2815FA
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:28:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7025B1C226C3
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:32:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1B6A18BC1F;
-	Fri, 27 Sep 2024 12:28:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5117A18C037;
+	Fri, 27 Sep 2024 12:31:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VYwrjahS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FQYKrQcX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8189318BC0D;
-	Fri, 27 Sep 2024 12:28:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A89F1E507;
+	Fri, 27 Sep 2024 12:31:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440114; cv=none; b=rmiOltFwU+DmtxJePj2R9Ld5iLr4iqt/qYdjrYEU0iLl4PNy1M6o1mkb72c9WfN3AGjbv83a2NBZvWYXr3mS+1EfGYNGXP8fUupsYyvAbMOY2f8Rqk/obiphwUqKVCpT2FDzgGbGTri9K2dEZ66Jkb487hirdcjK39gTGjOaWTM=
+	t=1727440290; cv=none; b=ESCwx+HmF28a/2KhXj7FmCyqpEjpfUiylvF2bBj4v5+Mz0PSbsMZSUk2aDp9ce3FWWHIf/Q/Jh96WHSIoup1haCdMB5I/rL8w4T/ayUo8B8pjR66ysiYs01OS87rNEKZRJoMHj6XUtQCc0CviFAJZsZJN+ecqQyqYVkq7Or3gOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440114; c=relaxed/simple;
-	bh=DL9gNP4/VSkOhIC5rqvEH4J2Xh0ZLFd7itwe/kl7E0A=;
+	s=arc-20240116; t=1727440290; c=relaxed/simple;
+	bh=rhPlFMXTLSjpWfQzld0DXsm/1ldEYvzyv+C9uO+FxyU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J1hja809IUElCYDCruUVyZm9N4OK2PYq8bFFWifYfo1NHTn6F+BATYB/jYiUWbfFzbEv2Fu9JwOA1M+OBCWx5fjkcr/BEFnPX4drC2RZL2xZnRI/RVy6PmqCnLMicLIJq0+xovT51toMJgvY5BPg7++a53FoWOfeTSW5qpssZ40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VYwrjahS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CAE9C4CEC4;
-	Fri, 27 Sep 2024 12:28:33 +0000 (UTC)
+	 MIME-Version; b=jo/ZE+/0la3ftUn46zDg3yYs2zVDKablNFC8qPCiogxKQJx3Ss296ArgI1BBagb4I8PQ9n4uZgYqIJoA2Lr3HYOS2t6dpxtTyErxvL88DNvAD0zRUOFWazIBoSr7mGsU5FBpAsJMB6DZxEXoFHWJrZr30ZcnwwcT8TifxrvKJsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FQYKrQcX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BF6AC4CEC4;
+	Fri, 27 Sep 2024 12:31:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440114;
-	bh=DL9gNP4/VSkOhIC5rqvEH4J2Xh0ZLFd7itwe/kl7E0A=;
+	s=korg; t=1727440289;
+	bh=rhPlFMXTLSjpWfQzld0DXsm/1ldEYvzyv+C9uO+FxyU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VYwrjahSG6GTUG3pcyyWcPkuW/V2bPv7Raodp2gKM4iVDNiRvDHzUb3IHKlJZqT9M
-	 H0LN1UZy1UbYoTpodmo+lwBEK7U+KlDZ9Cn61wtHdyb+J5f/lU+JjPvUq0IbM/uUcP
-	 F3OTgXHdw4S6ybNQU5EBGPM/k6d0UbO2nFrKSXWY=
+	b=FQYKrQcXCS1fGv+S/BLnIv/Fr7ZlhfkOK1gIfs94iB2ObBExf4KL4UekXPuW1w5nM
+	 /zijO8WDOP0V7aYM+E66GvQ0AgzR+FoNBNkOvYGXoC90QsbRdqxyxY2A1tTdOuPxi+
+	 9zRp+cETztNdKTzdZlkbwb2rxHqQ5TcEju2fvXes=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rickard Andersson <rickaran@axis.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>,
+	Yibin Ding <yibin.ding@unisoc.com>,
+	Hongyu Jin <hongyu.jin@unisoc.com>,
+	Eric Biggers <ebiggers@google.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 37/58] smb: client: fix hang in wait_for_response() for negproto
+Subject: [PATCH 6.1 28/73] block: Fix where bio IO priority gets set
 Date: Fri, 27 Sep 2024 14:23:39 +0200
-Message-ID: <20240927121720.287693134@linuxfoundation.org>
+Message-ID: <20240927121721.031286364@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121718.789211866@linuxfoundation.org>
-References: <20240927121718.789211866@linuxfoundation.org>
+In-Reply-To: <20240927121719.897851549@linuxfoundation.org>
+References: <20240927121719.897851549@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,63 +67,111 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Hongyu Jin <hongyu.jin@unisoc.com>
 
-[ Upstream commit 7ccc1465465d78e6411b7bd730d06e7435802b5c ]
+[ Upstream commit f3c89983cb4fc00be64eb0d5cbcfcdf2cacb965e ]
 
-Call cifs_reconnect() to wake up processes waiting on negotiate
-protocol to handle the case where server abruptly shut down and had no
-chance to properly close the socket.
+Commit 82b74cac2849 ("blk-ioprio: Convert from rqos policy to direct
+call") pushed setting bio I/O priority down into blk_mq_submit_bio()
+-- which is too low within block core's submit_bio() because it
+skips setting I/O priority for block drivers that implement
+fops->submit_bio() (e.g. DM, MD, etc).
 
-Simple reproducer:
+Fix this by moving bio_set_ioprio() up from blk-mq.c to blk-core.c and
+call it from submit_bio().  This ensures all block drivers call
+bio_set_ioprio() during initial bio submission.
 
-  ssh 192.168.2.100 pkill -STOP smbd
-  mount.cifs //192.168.2.100/test /mnt -o ... [never returns]
-
-Cc: Rickard Andersson <rickaran@axis.com>
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: a78418e6a04c ("block: Always initialize bio IO priority on submit")
+Co-developed-by: Yibin Ding <yibin.ding@unisoc.com>
+Signed-off-by: Yibin Ding <yibin.ding@unisoc.com>
+Signed-off-by: Hongyu Jin <hongyu.jin@unisoc.com>
+Reviewed-by: Eric Biggers <ebiggers@google.com>
+Reviewed-by: Mikulas Patocka <mpatocka@redhat.com>
+[snitzer: revised commit header]
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20240130202638.62600-2-snitzer@kernel.org
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/connect.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ block/blk-core.c | 10 ++++++++++
+ block/blk-mq.c   | 10 ----------
+ 2 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
-index d2307162a2de1..e325e06357ffb 100644
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -656,6 +656,19 @@ allocate_buffers(struct TCP_Server_Info *server)
- static bool
- server_unresponsive(struct TCP_Server_Info *server)
- {
-+	/*
-+	 * If we're in the process of mounting a share or reconnecting a session
-+	 * and the server abruptly shut down (e.g. socket wasn't closed, packet
-+	 * had been ACK'ed but no SMB response), don't wait longer than 20s to
-+	 * negotiate protocol.
-+	 */
-+	spin_lock(&server->srv_lock);
-+	if (server->tcpStatus == CifsInNegotiate &&
-+	    time_after(jiffies, server->lstrp + 20 * HZ)) {
-+		spin_unlock(&server->srv_lock);
-+		cifs_reconnect(server, false);
-+		return true;
-+	}
- 	/*
- 	 * We need to wait 3 echo intervals to make sure we handle such
- 	 * situations right:
-@@ -667,7 +680,6 @@ server_unresponsive(struct TCP_Server_Info *server)
- 	 * 65s kernel_recvmsg times out, and we see that we haven't gotten
- 	 *     a response in >60s.
- 	 */
--	spin_lock(&server->srv_lock);
- 	if ((server->tcpStatus == CifsGood ||
- 	    server->tcpStatus == CifsNeedNegotiate) &&
- 	    (!server->ops->can_echo || server->ops->can_echo(server)) &&
+diff --git a/block/blk-core.c b/block/blk-core.c
+index a4155f123ab38..94941e3ce2194 100644
+--- a/block/blk-core.c
++++ b/block/blk-core.c
+@@ -49,6 +49,7 @@
+ #include "blk-pm.h"
+ #include "blk-cgroup.h"
+ #include "blk-throttle.h"
++#include "blk-ioprio.h"
+ 
+ struct dentry *blk_debugfs_root;
+ 
+@@ -799,6 +800,14 @@ void submit_bio_noacct(struct bio *bio)
+ }
+ EXPORT_SYMBOL(submit_bio_noacct);
+ 
++static void bio_set_ioprio(struct bio *bio)
++{
++	/* Nobody set ioprio so far? Initialize it based on task's nice value */
++	if (IOPRIO_PRIO_CLASS(bio->bi_ioprio) == IOPRIO_CLASS_NONE)
++		bio->bi_ioprio = get_current_ioprio();
++	blkcg_set_ioprio(bio);
++}
++
+ /**
+  * submit_bio - submit a bio to the block device layer for I/O
+  * @bio: The &struct bio which describes the I/O
+@@ -824,6 +833,7 @@ void submit_bio(struct bio *bio)
+ 		count_vm_events(PGPGOUT, bio_sectors(bio));
+ 	}
+ 
++	bio_set_ioprio(bio);
+ 	submit_bio_noacct(bio);
+ }
+ EXPORT_SYMBOL(submit_bio);
+diff --git a/block/blk-mq.c b/block/blk-mq.c
+index daf0e4f3444e7..542b28a2e6b0f 100644
+--- a/block/blk-mq.c
++++ b/block/blk-mq.c
+@@ -42,7 +42,6 @@
+ #include "blk-stat.h"
+ #include "blk-mq-sched.h"
+ #include "blk-rq-qos.h"
+-#include "blk-ioprio.h"
+ 
+ static DEFINE_PER_CPU(struct llist_head, blk_cpu_done);
+ 
+@@ -2949,14 +2948,6 @@ static bool blk_mq_can_use_cached_rq(struct request *rq, struct blk_plug *plug,
+ 	return true;
+ }
+ 
+-static void bio_set_ioprio(struct bio *bio)
+-{
+-	/* Nobody set ioprio so far? Initialize it based on task's nice value */
+-	if (IOPRIO_PRIO_CLASS(bio->bi_ioprio) == IOPRIO_CLASS_NONE)
+-		bio->bi_ioprio = get_current_ioprio();
+-	blkcg_set_ioprio(bio);
+-}
+-
+ /**
+  * blk_mq_submit_bio - Create and send a request to block device.
+  * @bio: Bio pointer.
+@@ -2980,7 +2971,6 @@ void blk_mq_submit_bio(struct bio *bio)
+ 	blk_status_t ret;
+ 
+ 	bio = blk_queue_bounce(bio, q);
+-	bio_set_ioprio(bio);
+ 
+ 	if (plug) {
+ 		rq = rq_list_peek(&plug->cached_rq);
 -- 
 2.43.0
 
