@@ -1,210 +1,134 @@
-Return-Path: <stable+bounces-78165-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9956E988C51
-	for <lists+stable@lfdr.de>; Sat, 28 Sep 2024 00:09:24 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 712FF988CA9
+	for <lists+stable@lfdr.de>; Sat, 28 Sep 2024 00:59:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A7FF2836A7
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 22:09:23 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DE947B21944
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 22:59:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 582971B151E;
-	Fri, 27 Sep 2024 22:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E6B61B6522;
+	Fri, 27 Sep 2024 22:59:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="Tx4j2PFR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O4Qx81rf"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 454741B07BC
-	for <stable@vger.kernel.org>; Fri, 27 Sep 2024 22:09:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C4A91B374C
+	for <stable@vger.kernel.org>; Fri, 27 Sep 2024 22:59:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727474959; cv=none; b=Gc7iE9WbFBub4j+9YDXX8LD043JuZaOONanoWwD63gnwu/1OBSF5J1FVVarUHooWxmsaRYg7fcEISIqlMNf82VoxE/x9V4IMzqqMfItcKG6PE2SQ12P5+MRB42xVutZ0phGkZ5tVr3GzqbpR0qocbUrfNLelmvcBU2X4tQa8U2E=
+	t=1727477965; cv=none; b=VAdPbWbYksUZMlduij92D8lyJ/uDqf7/yniNaoXGb+WftEg7jER0c+9COSmRPUOz/ih9ubwQblWwt6roitgzulARoC+jM274RW/LRJV+CltCJwByNw2BJWJYqzCuBpDuDIuuyvxWFm31llv7sWCkuvv2AtnLQ8AtTZt+lsjLLgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727474959; c=relaxed/simple;
-	bh=CM/qaVXfiW8uBR2C6CyoRxY7SPpnNXAueBczydPEdRQ=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=udK85GnFQM6QEQleB96b36uJ1bFp/cElrpRPryMp8jbiihHjQRN8G8RWLm6XZsQ5cXhD9Ed3Pwg3P9kIsLs2gO5bCR7HHRmTyhi4sL+KD2Pr/oFm5fdxzm2bjp/ZKakoE8fwHhZtNFdyuAHuMXnq+6e5/XaIqODaOsG2A/ThtwQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=Tx4j2PFR; arc=none smtp.client-ip=185.70.43.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1727474955; x=1727734155;
-	bh=IPLRfC8BzQNV6CULWbRBUr4Rw+Tj/CmdqJzBvNMVXNA=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=Tx4j2PFRQxMBNSa4HE+J+OvJiC2rBzmY5mfDRY6pWkhrNteWd6fuhROfKcAuJGCbD
-	 ryjUQ9pYbQoQnHV8EqVfpKuGBHOuHop/+2OCaalB9lxo9gkuy336EC6P3Rey2KDgeJ
-	 ycSmXF93BxAQ7yOyp+h5aAxBIQvaDA4mQFmGXBxPZv/Z+82normoamF02e2fiOTFjY
-	 /+2HDTDMUr4krv4JICNingcQ490pYYIMVrmodqyayceyPpFQ49lf8aVX7rYUJpQ9U/
-	 JcqCksau/RyHrm8W1XYooujmYoseEVGs/RWL5d3mZ0l6mmhl7Q1gEtDEglNB0q51XJ
-	 QhLtnKVLCbrUw==
-Date: Fri, 27 Sep 2024 22:09:10 +0000
-To: linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, akpm@linux-foundation.org, cyphar@cyphar.com, david@readahead.eu, dmitry.torokhov@gmail.com, dverkamp@chromium.org, hughd@google.com, jeffxu@google.com, jorgelo@chromium.org, keescook@chromium.org, skhan@linuxfoundation.org
-From: =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>
-Cc: stable@vger.kernel.org
-Subject: Re: [PATCH v4] memfd: `MFD_NOEXEC_SEAL` should not imply `MFD_ALLOW_SEALING`
-Message-ID: <aOShI37M3MN63hDFOQGncbS8dxBsKGXVaxrwu0a5ubcrTqrPrgZJRXXYBOyiW3cHKFqh61sT4efgRsbJpvnJMDOHsurGYnr454oa3dUW3r8=@protonmail.com>
-In-Reply-To: <20240630184912.37335-1-pobrn@protonmail.com>
-References: <20240630184912.37335-1-pobrn@protonmail.com>
-Feedback-ID: 20568564:user:proton
-X-Pm-Message-ID: 5c0df630e371707472ba21da6e6e8ab3c172f12a
+	s=arc-20240116; t=1727477965; c=relaxed/simple;
+	bh=RETDblGo7fJm9ykfdR5QC0amdMsWUTecNy67KvQxBgo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cXbCulvXHBe0g/LljG57elAE6v3VJCXjR/CO3zq5fZKAqXBw3NWl9vjnWGl/XgnE6n7/BR6pZo8VvpsqIKPJbZ6EBNYug3yKOTbhpXTDOHNA/HUUeikRS49lV6ymi+leJ6e0T+y6bmWdLH4n7rB5gpZPljsTHLnxW1B60wJNErY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O4Qx81rf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFB49C4CEC4
+	for <stable@vger.kernel.org>; Fri, 27 Sep 2024 22:59:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727477965;
+	bh=RETDblGo7fJm9ykfdR5QC0amdMsWUTecNy67KvQxBgo=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=O4Qx81rfrfy7QCHveW2a1LP7n8JIzgcxH4F4PqF8SwFe/FUcZdbgMlRF4rjU95Yr4
+	 uNlT8qIuA3+xKei5eJ2jOk1lCjKPZa60yjWimVEPsNBnpKITRyDzoWIiP/EL9CAGES
+	 wW4u+7UkcfuzXqEIAVwHEFQ6IUwDHssjRL+RWXEAg3npRaBudmYpXeIvs7A/BmqISo
+	 b7VoGDi8JSOiBzlGFderzWZ/RMSb1TjRfirIgoXezEd6N/YAzTi+oy44AtMOtWVmCd
+	 lOSDpWAJeQUIhrspOBM/cOAuv0WX6c4wEYtRChPOj2N+f25oerwXA8q5cPXfdjRVuD
+	 v4A0jGs4tjQ7Q==
+Received: by mail-il1-f181.google.com with SMTP id e9e14a558f8ab-3a1a4f2cc29so32795ab.1
+        for <stable@vger.kernel.org>; Fri, 27 Sep 2024 15:59:24 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUwiXiRG4fieXGEMp1tOWFXKhhAhiV+uK74SPA2KkeWOEyNi8xC1YfHooJA/zCLhbfsSF/IrF8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwcHYwBegF5Op2Bk3KDNlyN5gWDEpaYoJIUCgG90hvl+00vy30b
+	mrmBiGsmIk+XFixeenjMe1lujAUaTNgMLVekGQnqb151FFfrfKo53KJAH6pI6zWgLoN/DCXhj0f
+	ZrGdHIOBqgxm4cZc85fD1+Sw7kFQ1FpisIrOI
+X-Google-Smtp-Source: AGHT+IFsEwYg450S3NeKQn6xBQFs4856zgRTrSXHV+euzXNZKECEPNG2NCRcHPEkRwrNy63oW9OieWa6BqbUgzGKprw=
+X-Received: by 2002:a05:6e02:218c:b0:3a0:9b7c:7885 with SMTP id
+ e9e14a558f8ab-3a34bd82af0mr1249545ab.22.1727477964236; Fri, 27 Sep 2024
+ 15:59:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20240923164843.1117010-1-andrej.skvortzov@gmail.com>
+ <20240924014241.GH38742@google.com> <d22cff1a-701d-4078-867d-d82caa943bab@linux.vnet.ibm.com>
+ <CAF8kJuPEg1yKNmVvPbEYGME8HRoTXdHTANm+OKOZwX9B6uEtmw@mail.gmail.com>
+ <CAF8kJuOs-3WZPQo0Ktyp=7DytWrL9+UrTNUGz+9n9s6urR-rtA@mail.gmail.com>
+ <20240925003718.GA11458@google.com> <CAF8kJuNDzk21jZR1+TkGdMOrXdQcfa+=bxLF6FhyuXzRwT4Y9Q@mail.gmail.com>
+In-Reply-To: <CAF8kJuNDzk21jZR1+TkGdMOrXdQcfa+=bxLF6FhyuXzRwT4Y9Q@mail.gmail.com>
+From: Chris Li <chrisl@kernel.org>
+Date: Fri, 27 Sep 2024 15:59:11 -0700
+X-Gmail-Original-Message-ID: <CAF8kJuMoOZYySOFev46uMxdwvVjFbfCTSKeHywrazN-VUxJyoA@mail.gmail.com>
+Message-ID: <CAF8kJuMoOZYySOFev46uMxdwvVjFbfCTSKeHywrazN-VUxJyoA@mail.gmail.com>
+Subject: Re: [PATCH v3] zram: don't free statically defined names
+To: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Andrey Skvortsov <andrej.skvortzov@gmail.com>, Minchan Kim <minchan@kernel.org>, 
+	Jens Axboe <axboe@kernel.dk>, linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, 
+	stable@vger.kernel.org, Sachin Sant <sachinp@linux.ibm.com>, 
+	linux-mm <linux-mm@kvack.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi
+On Tue, Sep 24, 2024 at 9:04=E2=80=AFPM Chris Li <chrisl@kernel.org> wrote:
+>
+> On Tue, Sep 24, 2024 at 5:37=E2=80=AFPM Sergey Senozhatsky
+> <senozhatsky@chromium.org> wrote:
+> >
+> > On (24/09/24 11:29), Chris Li wrote:
+> > > On Tue, Sep 24, 2024 at 8:56=E2=80=AFAM Chris Li <chrisl@kernel.org> =
+wrote:
+> > [..]
+> > > Given the merge window is closing. I suggest just reverting this
+> > > change. As it is the fix also causing regression in the swap stress
+> > > test for me. It is possible that is my test setup issue, but revertin=
+g
+> > > sounds the safe bet.
+> >
+> > The patch in question is just a kfree() call that is only executed
+> > during zram reset and that fixes tiny memory leaks when zram is
+> > configured with alternative (re-compression) streams.  I cannot
+> > imagine how that can have any impact on runtime, that makes no
+> > sense to me, I'm not sure that revert is justified here.
+> >
+> After some discussion with Sergey, we have more progress on
+> understanding the swap stress test regression.
+> One of the triggering conditions is I don't have zram lz4 config
+> enabled, (the config option name has changed) and the test script
+> tries to set lz4 on zram and fails. It will fall back to the lzo.
+> Anyway, if I have zram lz4 configured, my stress test can pass with
+> the fix. Still I don't understand why disabling lz4 config can trigger
+> it. Need to dig more.
+>
+> Agree that we don't need to revert this.
 
+Turns out that my oom kill is a false alarm. After some debug
+discussion with Sergey, I confirm the fix works. The cause of the oom
+kill is because my bisect script did not apply one of the known fix
+patches after applying Andrey Skvortsov's fix in this thread. Sorry
+about the confusion I created.
 
-Gentle ping. Is there any chance we could move forward with this? I am not =
-aware
-of any breakage it would cause; but longer the wait, the higher the likelih=
-ood.
+Feel free to add:
 
+Tested-by: Chris Li <chrisl@kernel.org>
 
-Regards,
-Barnab=C3=A1s P=C5=91cze
+Hi Andrew,
 
-2024. j=C3=BAnius 30., vas=C3=A1rnap 20:49 keltez=C3=A9ssel, Barnab=C3=
-=A1s P=C5=91cze <pobrn@protonmail.com> =C3=ADrta:
+FYI, the tip of current mm-stable
+abf2050f51fdca0fd146388f83cddd95a57a008d is failing my swap stress
+test, missing the fix in this email thread.
+Adding  this fix 486fd58af7ac1098b68370b1d4d9f94a2a1c7124 to mm-stable
+will make mm-stable pass the stress test.
 
-> `MFD_NOEXEC_SEAL` should remove the executable bits and set `F_SEAL_EXEC`
-> to prevent further modifications to the executable bits as per the commen=
-t
-> in the uapi header file:
->=20
->   not executable and sealed to prevent changing to executable
->=20
-> However, commit 105ff5339f498a ("mm/memfd: add MFD_NOEXEC_SEAL and MFD_EX=
-EC")
-> that introduced this feature made it so that `MFD_NOEXEC_SEAL` unsets
-> `F_SEAL_SEAL`, essentially acting as a superset of `MFD_ALLOW_SEALING`.
->=20
-> Nothing implies that it should be so, and indeed up until the second vers=
-ion
-> of the of the patchset[0] that introduced `MFD_EXEC` and `MFD_NOEXEC_SEAL=
-`,
-> `F_SEAL_SEAL` was not removed, however, it was changed in the third revis=
-ion
-> of the patchset[1] without a clear explanation.
->=20
-> This behaviour is surprising for application developers, there is no
-> documentation that would reveal that `MFD_NOEXEC_SEAL` has the additional
-> effect of `MFD_ALLOW_SEALING`. Additionally, combined with `vm.memfd_noex=
-ec=3D2`
-> it has the effect of making all memfds initially sealable.
->=20
-> So do not remove `F_SEAL_SEAL` when `MFD_NOEXEC_SEAL` is requested,
-> thereby returning to the pre-Linux 6.3 behaviour of only allowing
-> sealing when `MFD_ALLOW_SEALING` is specified.
->=20
-> Now, this is technically a uapi break. However, the damage is expected
-> to be minimal. To trigger user visible change, a program has to do the
-> following steps:
->=20
->  - create memfd:
->    - with `MFD_NOEXEC_SEAL`,
->    - without `MFD_ALLOW_SEALING`;
->  - try to add seals / check the seals.
->=20
-> But that seems unlikely to happen intentionally since this change
-> essentially reverts the kernel's behaviour to that of Linux <6.3,
-> so if a program worked correctly on those older kernels, it will
-> likely work correctly after this change.
->=20
-> I have used Debian Code Search and GitHub to try to find potential
-> breakages, and I could only find a single one. dbus-broker's
-> memfd_create() wrapper is aware of this implicit `MFD_ALLOW_SEALING`
-> behaviour, and tries to work around it[2]. This workaround will
-> break. Luckily, this only affects the test suite, it does not affect
-> the normal operations of dbus-broker. There is a PR with a fix[3].
->=20
-> I also carried out a smoke test by building a kernel with this change
-> and booting an Arch Linux system into GNOME and Plasma sessions.
->=20
-> There was also a previous attempt to address this peculiarity by
-> introducing a new flag[4].
->=20
-> [0]: https://lore.kernel.org/lkml/20220805222126.142525-3-jeffxu@google.c=
-om/
-> [1]: https://lore.kernel.org/lkml/20221202013404.163143-3-jeffxu@google.c=
-om/
-> [2]: https://github.com/bus1/dbus-broker/blob/9eb0b7e5826fc76cad7b025bc46=
-f267d4a8784cb/src/util/misc.c#L114
-> [3]: https://github.com/bus1/dbus-broker/pull/366
-> [4]: https://lore.kernel.org/lkml/20230714114753.170814-1-david@readahead=
-.eu/
->=20
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Barnab=C3=A1s P=C5=91cze <pobrn@protonmail.com>
-> ---
->=20
-> * v3: https://lore.kernel.org/linux-mm/20240611231409.3899809-1-jeffxu@ch=
-romium.org/
-> * v2: https://lore.kernel.org/linux-mm/20240524033933.135049-1-jeffxu@goo=
-gle.com/
-> * v1: https://lore.kernel.org/linux-mm/20240513191544.94754-1-pobrn@proto=
-nmail.com/
->=20
-> This fourth version returns to removing the inconsistency as opposed to d=
-ocumenting
-> its existence, with the same code change as v1 but with a somewhat extend=
-ed commit
-> message. This is sent because I believe it is worth at least a try; it ca=
-n be easily
-> reverted if bigger application breakages are discovered than initially im=
-agined.
->=20
-> ---
->  mm/memfd.c                                 | 9 ++++-----
->  tools/testing/selftests/memfd/memfd_test.c | 2 +-
->  2 files changed, 5 insertions(+), 6 deletions(-)
->=20
-> diff --git a/mm/memfd.c b/mm/memfd.c
-> index 7d8d3ab3fa37..8b7f6afee21d 100644
-> --- a/mm/memfd.c
-> +++ b/mm/memfd.c
-> @@ -356,12 +356,11 @@ SYSCALL_DEFINE2(memfd_create,
-> =20
->  =09=09inode->i_mode &=3D ~0111;
->  =09=09file_seals =3D memfd_file_seals_ptr(file);
-> -=09=09if (file_seals) {
-> -=09=09=09*file_seals &=3D ~F_SEAL_SEAL;
-> +=09=09if (file_seals)
->  =09=09=09*file_seals |=3D F_SEAL_EXEC;
-> -=09=09}
-> -=09} else if (flags & MFD_ALLOW_SEALING) {
-> -=09=09/* MFD_EXEC and MFD_ALLOW_SEALING are set */
-> +=09}
-> +
-> +=09if (flags & MFD_ALLOW_SEALING) {
->  =09=09file_seals =3D memfd_file_seals_ptr(file);
->  =09=09if (file_seals)
->  =09=09=09*file_seals &=3D ~F_SEAL_SEAL;
-> diff --git a/tools/testing/selftests/memfd/memfd_test.c b/tools/testing/s=
-elftests/memfd/memfd_test.c
-> index 95af2d78fd31..7b78329f65b6 100644
-> --- a/tools/testing/selftests/memfd/memfd_test.c
-> +++ b/tools/testing/selftests/memfd/memfd_test.c
-> @@ -1151,7 +1151,7 @@ static void test_noexec_seal(void)
->  =09=09=09    mfd_def_size,
->  =09=09=09    MFD_CLOEXEC | MFD_NOEXEC_SEAL);
->  =09mfd_assert_mode(fd, 0666);
-> -=09mfd_assert_has_seals(fd, F_SEAL_EXEC);
-> +=09mfd_assert_has_seals(fd, F_SEAL_SEAL | F_SEAL_EXEC);
->  =09mfd_fail_chmod(fd, 0777);
->  =09close(fd);
->  }
-> --=20
-> 2.45.2
-> 
+Current tip of mm-unstable 66af62407e82647ec5b44462dc29d50ba03fdb22 is
+passing my swap stress test fine.
+
+Chris
 
