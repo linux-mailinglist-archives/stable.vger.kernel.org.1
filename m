@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-78049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77985-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 058219884DB
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:32:22 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C773988484
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:28:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9F957B2538E
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:32:19 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 01BA8281727
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:28:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F055418C906;
-	Fri, 27 Sep 2024 12:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE03918BC23;
+	Fri, 27 Sep 2024 12:28:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fEP5qhwJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="12Rtmc6T"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE33C18C02E;
-	Fri, 27 Sep 2024 12:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D59718BC1F;
+	Fri, 27 Sep 2024 12:28:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440281; cv=none; b=X3u68nem2zr4tyKytfXKIrcNxk73Y9WqrZK1iyxNumRi9rm+XijZDvOEd7/nuw8PsXlzFIXKXJIEX6rxQdbhaleeR2cXcx3ObHVopWcOpAp5DbjRwnyyXFpNFj2fA/ArJaPb65xodwOJDr5Bqx9MtI2i207mrBYpx4Oq4GD8LkQ=
+	t=1727440103; cv=none; b=A+E8ayzHakjxg5luJxCRqM/cBBawXKNVwWdg5BTz6EbsY7N4NUe0sMnkuKmZGQQ6z32/vYYBWG3Ra9yjWVsyvooYfxv0W2rYxzEN1cTh1Tav2RNuxrduU/37XcWmZTntx+wUCERwy9eda+2YHtVsLKYgZ6sTCuLfst1CIUPnowY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440281; c=relaxed/simple;
-	bh=iR062jz7BZKz7NreMSgpJt91oJ2ZGkihomyxH/GG0Fk=;
+	s=arc-20240116; t=1727440103; c=relaxed/simple;
+	bh=mKOavfI7Bo0IiVAZOKwAbCSd+USO9hkAmLNVMlLQbkY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pMaYurTHBJOajwE5dRk7eHhjOB/v3zTiQNYV4gxlU3VY2u4qRC3o0IpljyI8flw7TtuvkBZdZ2T9eD7Xbu3zUsJ3XwBYM6fYpDgj35bq1s6V4G/6C8o9P8BUYo8+ENNOKMbcSrXk0HWmHPn1Cwxgq+9QcwnTtHiyzc78Rm6rJUU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fEP5qhwJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B525C4CECD;
-	Fri, 27 Sep 2024 12:31:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=c0O/Z9ThQdcQ3gpD0OdDWSshXEBsF2B4+le5iLU7ZGi9Hk7oTg3lvcGIL1teoOWZxNSgBNzg6LkTYmK3NvXxxEGtlgqz7BOY+vB/p4ckpBuc6JsYdRWP8xgvskqI/PD8khKfgMyRYfNjzVw+zzmVDIpXaxHTZNV/ltSTbHLTW4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=12Rtmc6T; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E99D7C4CECE;
+	Fri, 27 Sep 2024 12:28:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440281;
-	bh=iR062jz7BZKz7NreMSgpJt91oJ2ZGkihomyxH/GG0Fk=;
+	s=korg; t=1727440103;
+	bh=mKOavfI7Bo0IiVAZOKwAbCSd+USO9hkAmLNVMlLQbkY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fEP5qhwJ3ug/97o6FjJwoxqFEvPGG/sS/oRJCiRrEfNNMq3g6qQ7pROeBP21g3amx
-	 VF6CFMorai6B07dGspatYiQDVzxLlmKvBHF3BQxIY5dvSDTSIIsop2DuF704E6pb+5
-	 wudj27sL7DBiJ0RNG8wBaZzu/Wg2xD/LeTh6QuX8=
+	b=12Rtmc6ThAHnjV2iDl9YrGtAcAyceJ11rl/MVlAvre4f8YLjCAA2QEufTFWley9gs
+	 EsiKZVFz34XoKDbSiTL5qksmlbOV6UBqyRGRrgVAk8pHeVgKcAhV01kBPNBkNVlM+5
+	 s/+fwAxN8N+XJ3y/7v4spGGYeUtvoWwhybwBegSs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rickard Andersson <rickaran@axis.com>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.com>,
-	Steve French <stfrench@microsoft.com>,
+	Kai Vehmanen <kai.vehmanen@linux.intel.com>,
+	=?UTF-8?q?P=C3=A9ter=20Ujfalusi?= <peter.ujfalusi@linux.intel.com>,
+	Ranjani Sridharan <ranjani.sridharan@linux.intel.com>,
+	Bard Liao <yung-chuan.liao@linux.intel.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 25/73] smb: client: fix hang in wait_for_response() for negproto
+Subject: [PATCH 6.10 34/58] ALSA: hda: add HDMI codec ID for Intel PTL
 Date: Fri, 27 Sep 2024 14:23:36 +0200
-Message-ID: <20240927121720.908927333@linuxfoundation.org>
+Message-ID: <20240927121720.170949888@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121719.897851549@linuxfoundation.org>
-References: <20240927121719.897851549@linuxfoundation.org>
+In-Reply-To: <20240927121718.789211866@linuxfoundation.org>
+References: <20240927121718.789211866@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +63,42 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paulo Alcantara <pc@manguebit.com>
+From: Kai Vehmanen <kai.vehmanen@linux.intel.com>
 
-[ Upstream commit 7ccc1465465d78e6411b7bd730d06e7435802b5c ]
+[ Upstream commit e9481d9b83f8d9b3251aa428b02d8eba89d839ff ]
 
-Call cifs_reconnect() to wake up processes waiting on negotiate
-protocol to handle the case where server abruptly shut down and had no
-chance to properly close the socket.
+Add HDMI codec ID for Intel Panther Lake platform.
 
-Simple reproducer:
-
-  ssh 192.168.2.100 pkill -STOP smbd
-  mount.cifs //192.168.2.100/test /mnt -o ... [never returns]
-
-Cc: Rickard Andersson <rickaran@axis.com>
-Signed-off-by: Paulo Alcantara (Red Hat) <pc@manguebit.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Kai Vehmanen <kai.vehmanen@linux.intel.com>
+Reviewed-by: Péter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Reviewed-by: Ranjani Sridharan <ranjani.sridharan@linux.intel.com>
+Signed-off-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Link: https://patch.msgid.link/20240830072458.110831-1-yung-chuan.liao@linux.intel.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/connect.c | 14 +++++++++++++-
- 1 file changed, 13 insertions(+), 1 deletion(-)
+ sound/pci/hda/patch_hdmi.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/smb/client/connect.c b/fs/smb/client/connect.c
-index 21b344762d0f8..87ce71b39b771 100644
---- a/fs/smb/client/connect.c
-+++ b/fs/smb/client/connect.c
-@@ -673,6 +673,19 @@ allocate_buffers(struct TCP_Server_Info *server)
- static bool
- server_unresponsive(struct TCP_Server_Info *server)
- {
-+	/*
-+	 * If we're in the process of mounting a share or reconnecting a session
-+	 * and the server abruptly shut down (e.g. socket wasn't closed, packet
-+	 * had been ACK'ed but no SMB response), don't wait longer than 20s to
-+	 * negotiate protocol.
-+	 */
-+	spin_lock(&server->srv_lock);
-+	if (server->tcpStatus == CifsInNegotiate &&
-+	    time_after(jiffies, server->lstrp + 20 * HZ)) {
-+		spin_unlock(&server->srv_lock);
-+		cifs_reconnect(server, false);
-+		return true;
-+	}
- 	/*
- 	 * We need to wait 3 echo intervals to make sure we handle such
- 	 * situations right:
-@@ -684,7 +697,6 @@ server_unresponsive(struct TCP_Server_Info *server)
- 	 * 65s kernel_recvmsg times out, and we see that we haven't gotten
- 	 *     a response in >60s.
- 	 */
--	spin_lock(&server->srv_lock);
- 	if ((server->tcpStatus == CifsGood ||
- 	    server->tcpStatus == CifsNeedNegotiate) &&
- 	    (!server->ops->can_echo || server->ops->can_echo(server)) &&
+diff --git a/sound/pci/hda/patch_hdmi.c b/sound/pci/hda/patch_hdmi.c
+index 78042ac2b71f2..643e0496b0936 100644
+--- a/sound/pci/hda/patch_hdmi.c
++++ b/sound/pci/hda/patch_hdmi.c
+@@ -4639,6 +4639,7 @@ HDA_CODEC_ENTRY(0x8086281d, "Meteor Lake HDMI",	patch_i915_adlp_hdmi),
+ HDA_CODEC_ENTRY(0x8086281e, "Battlemage HDMI",	patch_i915_adlp_hdmi),
+ HDA_CODEC_ENTRY(0x8086281f, "Raptor Lake P HDMI",	patch_i915_adlp_hdmi),
+ HDA_CODEC_ENTRY(0x80862820, "Lunar Lake HDMI",	patch_i915_adlp_hdmi),
++HDA_CODEC_ENTRY(0x80862822, "Panther Lake HDMI",	patch_i915_adlp_hdmi),
+ HDA_CODEC_ENTRY(0x80862880, "CedarTrail HDMI",	patch_generic_hdmi),
+ HDA_CODEC_ENTRY(0x80862882, "Valleyview2 HDMI",	patch_i915_byt_hdmi),
+ HDA_CODEC_ENTRY(0x80862883, "Braswell HDMI",	patch_i915_byt_hdmi),
 -- 
 2.43.0
 
