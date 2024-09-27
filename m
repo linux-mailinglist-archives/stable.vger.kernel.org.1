@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-77907-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77918-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1632988427
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:24:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83A35988433
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:25:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 59C611F2281C
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:24:57 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B465B1C22442
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:25:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4CBB18C003;
-	Fri, 27 Sep 2024 12:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E2CD18BC1D;
+	Fri, 27 Sep 2024 12:25:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0b4kiXWA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c3i65SYd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61FD718C004;
-	Fri, 27 Sep 2024 12:24:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C55E1779BD;
+	Fri, 27 Sep 2024 12:25:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727439886; cv=none; b=WKO5u+5qtsZDUV/v53/uRG4XZ16HRI1ILvw7c2rJkAEUzeQCid7ZkJan2Tp0IZUYZm3CTlM0V1Z4jU/HjdhvTIQGgX76fkxH7wHBoS0cg6ViT/XjGsdkckxM23A1mjD4zGpajwaxVLA9dmPYqmS7909CUQjk+SVC2X4Ag185Tkk=
+	t=1727439917; cv=none; b=XCwd/EPIYlreP6ZyQEAI7Au9/GTc+NNvDndQYchbWFPKj6VTwXZDDB+sYP1cwbM8HWFuEUbuK3t+9/2VKY3sUs4Cf5FhS4qPlkPxer8vge4T7wq217ahUr3IjoPjpWNVovj06smhBykBB8YaLJoutDH6nyT22yzxUseVZhVcwls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727439886; c=relaxed/simple;
-	bh=gJvuhv0w5L7EMXJ7UMwbOG87OfCwKF7hYYRG/JkUKLo=;
+	s=arc-20240116; t=1727439917; c=relaxed/simple;
+	bh=3vywFbZsOPiwids/kZUxiDKIzKHchPzHB9MqN5B9wEE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J1CMbPHEHo2anoMNTZSYFaZF+hoEdwdqNcOVgbqhn6MBugrxQw6Dc6I95+sGZRhMpcmOOv86vjlFG9kzc6Tz8g08IxBNZS4UidzFITo2b+7DjrbfXev47NVm0gQoeDAfyZ8mqI5q+Rozwp/+ZI18En3Etq8jM5PWPYpVZQdb8Hs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0b4kiXWA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5A92C4CECD;
-	Fri, 27 Sep 2024 12:24:45 +0000 (UTC)
+	 MIME-Version; b=n4IDDHETIBAW14iKLPKAp9+bjkALEyNfeETtWdKgSaZWJY3gfV3g6wQNo+lVZWq+W60xDpK1YyR2vDYDTcRWxQNMRDl05Fsmg/B7JLCmXRZnDle8rqBFywRliXOJeR5EVO18GEXIDK81BbuMJ135s17wt8QhcL2ncLD6lNisctw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c3i65SYd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D483C4CEC4;
+	Fri, 27 Sep 2024 12:25:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727439886;
-	bh=gJvuhv0w5L7EMXJ7UMwbOG87OfCwKF7hYYRG/JkUKLo=;
+	s=korg; t=1727439916;
+	bh=3vywFbZsOPiwids/kZUxiDKIzKHchPzHB9MqN5B9wEE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0b4kiXWA6wHI3ydVVVwHIhoGmGJgxGmZ1ExVHtTdh+SFC0hvbTv5RKavs6h76+BLV
-	 7o6zywstqREK8S90vNO5UrncdT8tjJCaMHzA11XAOxuModXx547+E4bY/nivEUtVwJ
-	 UVGInO3gTZ66T1KCB2pyPrLv/znATU9nTNwc7lOA=
+	b=c3i65SYd/nf+Yu4Lrhk02OUHurZP9hbrpcwkCp9gYuAvoDZwpOW3hZyDgTB+alih2
+	 kHl3NHThi7+ZV5b3Hac7XOhV3Ls+6HfWAEjzS3zWbZ1s3c5kYTOL/ylt3tf1bWBKvJ
+	 4o/6ibVPIPhgzWwGSuUI3RibHs9pRYXcMV/bsa20=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Hongbo Li <lihongbo22@huawei.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 03/54] ASoC: allow module autoloading for table db1200_pids
-Date: Fri, 27 Sep 2024 14:22:55 +0200
-Message-ID: <20240927121719.855819116@linuxfoundation.org>
+Subject: [PATCH 6.6 04/54] ASoC: allow module autoloading for table board_ids
+Date: Fri, 27 Sep 2024 14:22:56 +0200
+Message-ID: <20240927121719.897227460@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20240927121719.714627278@linuxfoundation.org>
 References: <20240927121719.714627278@linuxfoundation.org>
@@ -68,31 +68,32 @@ Content-Transfer-Encoding: 8bit
 
 From: Hongbo Li <lihongbo22@huawei.com>
 
-[ Upstream commit 0e9fdab1e8df490354562187cdbb8dec643eae2c ]
+[ Upstream commit 5f7c98b7519a3a847d9182bd99d57ea250032ca1 ]
 
 Add MODULE_DEVICE_TABLE(), so modules could be properly
 autoloaded based on the alias from platform_device_id table.
 
 Signed-off-by: Hongbo Li <lihongbo22@huawei.com>
-Link: https://patch.msgid.link/20240821061955.2273782-2-lihongbo22@huawei.com
+Link: https://patch.msgid.link/20240821061955.2273782-3-lihongbo22@huawei.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/au1x/db1200.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/soc/amd/acp/acp-sof-mach.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/soc/au1x/db1200.c b/sound/soc/au1x/db1200.c
-index 400eaf9f8b140..f185711180cb4 100644
---- a/sound/soc/au1x/db1200.c
-+++ b/sound/soc/au1x/db1200.c
-@@ -44,6 +44,7 @@ static const struct platform_device_id db1200_pids[] = {
+diff --git a/sound/soc/amd/acp/acp-sof-mach.c b/sound/soc/amd/acp/acp-sof-mach.c
+index 354d0fc55299b..0c5254c52b794 100644
+--- a/sound/soc/amd/acp/acp-sof-mach.c
++++ b/sound/soc/amd/acp/acp-sof-mach.c
+@@ -162,6 +162,8 @@ static const struct platform_device_id board_ids[] = {
  	},
- 	{},
+ 	{ }
  };
-+MODULE_DEVICE_TABLE(platform, db1200_pids);
- 
- /*-------------------------  AC97 PART  ---------------------------*/
- 
++MODULE_DEVICE_TABLE(platform, board_ids);
++
+ static struct platform_driver acp_asoc_audio = {
+ 	.driver = {
+ 		.name = "sof_mach",
 -- 
 2.43.0
 
