@@ -1,115 +1,185 @@
-Return-Path: <stable+bounces-77870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77871-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65E70987F22
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 09:07:55 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48B04987F3F
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 09:19:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 95DD71C22D54
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 07:07:54 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BF33C1F229B4
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 07:19:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDCE117C9B8;
-	Fri, 27 Sep 2024 07:07:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01FD0177991;
+	Fri, 27 Sep 2024 07:19:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rypwgteq"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PUv5TyLU"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E96486BFC0
-	for <stable@vger.kernel.org>; Fri, 27 Sep 2024 07:07:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 162C7165EED
+	for <stable@vger.kernel.org>; Fri, 27 Sep 2024 07:19:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727420870; cv=none; b=N2pr54PbSWqgTR5QdAJz4ebbqo0lxs1fiD3cmLx7AkR3xBtjt31KzYccVyXF44FlWx08wCGaG4jxVDW+3yvSvMW/fvcRJAKzkm6Miq2F9KHus/dnUs1qcg7H3iUK4J4c443vtri2iS7OsDYIlO8UdSD1JpliHSpPGXOuL4idZIc=
+	t=1727421567; cv=none; b=cDEs4GsHZRTUBu7GXKoo5zpEcCW6WEMUz0EXRyAOobS7MIw/8ZI4sdXMJW1CN5j89hqrvEpUPWGJ1+nVUPTIjNXk1JdvwjSypHOrmsn9Q1pi6qcWVEGSuKSOgUXvSzQG8yPGtdlQiJVJRPC17yJNgtajEhzkoatned1S1da4OeQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727420870; c=relaxed/simple;
-	bh=W70e6iiDaCpib+TE/Ouz8u1gAKPcXJbKo4xZC7JpTPU=;
+	s=arc-20240116; t=1727421567; c=relaxed/simple;
+	bh=+LzaWjPm7GYS4ClcPcZDUGrDO1Ef/UvvMkMUilhTcV8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IFeXmGgTKMH+AFHiyyZ84w7V99oMtG9v9pnB63Dy0E/oJ5/U40qEuPMg6hsO1ICMmSnyqDEcssXXjtgWN4Ik74uLNqWQCuTdL+vzztY9303OuAevFgGyM8zBCqLxx+plYq9osxUNhA1bwpFe9C2bQ5YgFARrCh3z1RcdsfxzXrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rypwgteq; arc=none smtp.client-ip=209.85.128.41
+	 To:Cc:Content-Type; b=qcTQ7cRqMg9zKVvxwDj2+DYy47Ny2zqLcpAcqlyKHcTryZtKVioSa5TczYbE3x8Z/DiU1Fgyp9pP+QDrTYW2dHhTaLmRU0bTwM+ECciO3Xpru6izh9JRD/7wzNCNIazoxp/R29fAjjjr7S8fbFYip6hJBZvnU+o5SFfVNACycP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PUv5TyLU; arc=none smtp.client-ip=209.85.221.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-42cb58d810eso17934775e9.0
-        for <stable@vger.kernel.org>; Fri, 27 Sep 2024 00:07:48 -0700 (PDT)
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-37cdb6ebc1cso56442f8f.1
+        for <stable@vger.kernel.org>; Fri, 27 Sep 2024 00:19:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1727420867; x=1728025667; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1727421564; x=1728026364; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=3TclUmNl+mEJN7UB0vi1aCVc79ZezAtt3jamN25qcvw=;
-        b=rypwgteqVcNziVuorgqa+IpCUe1GahCHmiPg4Pk1s2CXSjdzGWDQAa3gdWwOOthO8h
-         SkRJqNsG2YOnqPXLiaotC8re3wvUUoRE0BDneaM7b4RYtTXVXOjGxrLU3V+kuxpYk4oo
-         cMzMnYWf0OLdlSdzRzWEwAq5YvwxdywusTmPoo6Wvxc9CV1Rdv7pE2tQ0eq5UAHRCKDc
-         jYmwyiTBZXX9JjEv/8PzXE/5Hq0FKjBDWifFoxPQK8zHJLwe07Lf/utfklyXYKmuCaTK
-         azDY/ALj0lDOHAGbQXBIIEPTRrGdmtJM87k3CtKwF4uA3EFam0zWT/+7nOcCy6o4gTKO
-         Ax4w==
+        bh=UsWmxM/pizk5STQ8hxv/SQOUbip6yEiFmeKo7SGjTR0=;
+        b=PUv5TyLUNiQHMWiZbIrCNlxFKQKRoDP3AKTGG0aKZ02hcA2QoNTxxjM3L9BydQkviB
+         t8ioRhNbYjtDPSOV2Onidcp5BRC2+OTkOf4njEtA11SSvTQyVJu0H/KH5TQWl7//u1qz
+         yOQnenZzlv/h6PxBlgXOAyDEELrWI8wb29uSlSTvwT+V5i7yEz/E3QujPOPDADuXnbde
+         ZMm8B8kz4JNzWKz2zCGKcPuRtmQLjYKZ2YysQ8CPJaOCAbkZuoqX7xwW2xBjg9KeAW2W
+         3JsUe7jiSzGZiHEd3gEOz71s7Kbtcwxc+cTQyK32WBhlpKl4vIjkQs9dtoohn5+iD8bn
+         lZGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727420867; x=1728025667;
+        d=1e100.net; s=20230601; t=1727421564; x=1728026364;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=3TclUmNl+mEJN7UB0vi1aCVc79ZezAtt3jamN25qcvw=;
-        b=gk8uvhXhNeZ34Xq5YR0svW0ekMIr2obpHIDb49tJH1HPzMN52tAcwwglDFhI9QXZ6A
-         9Gibwb1hu/Rud8Ynm/3Ut+I8jswtyNAn9CkeJbNidgbHfx2TsVY2NLzHrzjgMLE6cTZW
-         ZPdCBEEgHJw4KNTxs0EY8EiDrHHLqmwiCqLMJE/3xm22Y/chgD4Prkz6NDXzjoaqx4xW
-         8kWbkbHPTniacJf94vLANKXAItToh67nnWtfDD9nF+DjOlsmCyzfLgdihps4Btj1au5s
-         Et3gjRQCgCLq43RAweE663vs2x/6SyqpxNuApGN5wA8jzAnXu37ZKGhc2u2hrehUJJb6
-         /6gg==
-X-Forwarded-Encrypted: i=1; AJvYcCXzbLDueJSfeBbb2klxffq9R+Gg/7i8N1cE0hEqRoi60nQAtw/DVwTeWE1WDQYNX8b6SpKVQXw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwcWj0T2YJ+RZxc1Rk10VnFErq9ucQCd35L1HUr0n8de+IPU8wF
-	oI91CTiW2/LXxEDxd1t90Eb+L1WBMQpv2LoRRpaw8fSlj6Ha23oxGS3t/hGLoka/W3rj3iOkOSt
-	s7n8W0Mf9K+r/i91n8epbSJEP5G7G45e2UeYx
-X-Google-Smtp-Source: AGHT+IEYwN3TOsl+c28IvkDqXwinzUTagPXnNK0vbOUrvdfHpmordLeUXZZYBG6rDRpPb+Qx5kO5KjOTCWGsy4qePog=
-X-Received: by 2002:adf:ee06:0:b0:374:b6e4:16a7 with SMTP id
- ffacd0b85a97d-37ccdb12819mr3587930f8f.8.1727420867114; Fri, 27 Sep 2024
- 00:07:47 -0700 (PDT)
+        bh=UsWmxM/pizk5STQ8hxv/SQOUbip6yEiFmeKo7SGjTR0=;
+        b=paonNxVzqf0NtP37OyjPb71NT+tsyWxi9CduTF5cePeKXlirvfnyB2kBLe0v/c6xy7
+         vpYKQe51J75KUI4DKjvduOulAB/mnPwKMz6FYl4dngjtFwAKW7NNHExNIBlzf3E98A0C
+         gKV4aZ6zsKNeCDJoAUZWlEFRPWfi5OlHdMA6IBuNv3wm1qCss8Irr/w2prZxjguAOift
+         7VDbpYAkvLDq1cKxN9aCkMlof2uxrcNCyKkjGzN963piMjs+Rd/2UsqSoiMfzF8osIGf
+         FkgR057hnrg99gdDCMLWwINAu95qiEnR9XcUQ4AT12IhXOZuHYz2EuQIKfCNqlmZWMXo
+         V+fg==
+X-Forwarded-Encrypted: i=1; AJvYcCUkFvy/SFCnEa1uoU0MP6+ZVyKNIecrZx2oxyVFqkWHtgp9HrPboEG+JTjL8OpuxH78Z3d2x0I=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx8ramcMrc8QFW0lKzkD+ip9ZsUgqUcdhYqUN6zUm2sXxouCpjk
+	w3LmASccGoH94B2TF7R/y6tq5EBL//HkdPLTXsrSdiybbuU7pfq4EK/LykGPumEq1S4DU0UrdRT
+	AC09AMugYJsWWtbaqP8nfASqgnTl6+rLFoFQZ
+X-Google-Smtp-Source: AGHT+IGbqV+7LHAovIbkqm3Kg/XVEY3AlSu4eifPD4xqxKxH0tn1ynrzcwnFRwSXqxMrWZFvOn3GrOfRngqjpnDvIHQ=
+X-Received: by 2002:adf:fed2:0:b0:37c:d174:b056 with SMTP id
+ ffacd0b85a97d-37cd5ad2014mr1211988f8f.23.1727421564232; Fri, 27 Sep 2024
+ 00:19:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240926233632.821189-1-cmllamas@google.com> <20240926233632.821189-5-cmllamas@google.com>
-In-Reply-To: <20240926233632.821189-5-cmllamas@google.com>
+References: <20240926233632.821189-1-cmllamas@google.com> <20240926233632.821189-7-cmllamas@google.com>
+In-Reply-To: <20240926233632.821189-7-cmllamas@google.com>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 27 Sep 2024 09:07:34 +0200
-Message-ID: <CAH5fLghsesAW=wXz86OXUrJtO4So_jYSmOzocJ9RxrrrT=+MaQ@mail.gmail.com>
-Subject: Re: [PATCH v2 4/8] binder: fix BINDER_WORK_FROZEN_BINDER debug logs
+Date: Fri, 27 Sep 2024 09:19:12 +0200
+Message-ID: <CAH5fLggS7C4QdmDFqEy5KARUj+4oNWfstyno3d43joG5haysDw@mail.gmail.com>
+Subject: Re: [PATCH v2 6/8] binder: allow freeze notification for dead nodes
 To: Carlos Llamas <cmllamas@google.com>
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
 	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
 	Joel Fernandes <joel@joelfernandes.org>, Christian Brauner <brauner@kernel.org>, 
 	Suren Baghdasaryan <surenb@google.com>, Yu-Ting Tseng <yutingtseng@google.com>, linux-kernel@vger.kernel.org, 
-	kernel-team@android.com, stable@vger.kernel.org, Todd Kjos <tkjos@google.com>
+	kernel-team@android.com, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 27, 2024 at 1:36=E2=80=AFAM Carlos Llamas <cmllamas@google.com>=
+On Fri, Sep 27, 2024 at 1:37=E2=80=AFAM Carlos Llamas <cmllamas@google.com>=
  wrote:
 >
-> The BINDER_WORK_FROZEN_BINDER type is not handled in the binder_logs
-> entries and it shows up as "unknown work" when logged:
->
->   proc 649
->   context binder-test
->     thread 649: l 00 need_return 0 tr 0
->     ref 13: desc 1 node 8 s 1 w 0 d 0000000053c4c0c3
->     unknown work: type 10
->
-> This patch add the freeze work type and is now logged as such:
->
->   proc 637
->   context binder-test
->     thread 637: l 00 need_return 0 tr 0
->     ref 8: desc 1 node 3 s 1 w 0 d 00000000dc39e9c6
->     has frozen binder
+> Alice points out that binder_request_freeze_notification() should not
+> return EINVAL when the relevant node is dead [1]. The node can die at
+> any point even if the user input is valid. Instead, allow the request
+> to be allocated but skip the initial notification for dead nodes. This
+> avoids propagating unnecessary errors back to userspace.
 >
 > Fixes: d579b04a52a1 ("binder: frozen notification")
 > Cc: stable@vger.kernel.org
-> Acked-by: Todd Kjos <tkjos@google.com>
+> Suggested-by: Alice Ryhl <aliceryhl@google.com>
+> Link: https://lore.kernel.org/all/CAH5fLghapZJ4PbbkC8V5A6Zay-_sgTzwVpwqk6=
+RWWUNKKyJC_Q@mail.gmail.com/ [1]
 > Signed-off-by: Carlos Llamas <cmllamas@google.com>
+> ---
+>  drivers/android/binder.c | 28 +++++++++++++---------------
+>  1 file changed, 13 insertions(+), 15 deletions(-)
+>
+> diff --git a/drivers/android/binder.c b/drivers/android/binder.c
+> index 73dc6cbc1681..415fc9759249 100644
+> --- a/drivers/android/binder.c
+> +++ b/drivers/android/binder.c
+> @@ -3856,7 +3856,6 @@ binder_request_freeze_notification(struct binder_pr=
+oc *proc,
+>  {
+>         struct binder_ref_freeze *freeze;
+>         struct binder_ref *ref;
+> -       bool is_frozen;
+>
+>         freeze =3D kzalloc(sizeof(*freeze), GFP_KERNEL);
+>         if (!freeze)
+> @@ -3872,32 +3871,31 @@ binder_request_freeze_notification(struct binder_=
+proc *proc,
+>         }
+>
+>         binder_node_lock(ref->node);
+> -
+> -       if (ref->freeze || !ref->node->proc) {
+> -               binder_user_error("%d:%d invalid BC_REQUEST_FREEZE_NOTIFI=
+CATION %s\n",
+> -                                 proc->pid, thread->pid,
+> -                                 ref->freeze ? "already set" : "dead nod=
+e");
+> +       if (ref->freeze) {
+> +               binder_user_error("%d:%d BC_REQUEST_FREEZE_NOTIFICATION a=
+lready set\n",
+> +                                 proc->pid, thread->pid);
+>                 binder_node_unlock(ref->node);
+>                 binder_proc_unlock(proc);
+>                 kfree(freeze);
+>                 return -EINVAL;
+>         }
+> -       binder_inner_proc_lock(ref->node->proc);
+> -       is_frozen =3D ref->node->proc->is_frozen;
+> -       binder_inner_proc_unlock(ref->node->proc);
+>
+>         binder_stats_created(BINDER_STAT_FREEZE);
+>         INIT_LIST_HEAD(&freeze->work.entry);
+>         freeze->cookie =3D handle_cookie->cookie;
+>         freeze->work.type =3D BINDER_WORK_FROZEN_BINDER;
+> -       freeze->is_frozen =3D is_frozen;
+> -
+>         ref->freeze =3D freeze;
+>
+> -       binder_inner_proc_lock(proc);
+> -       binder_enqueue_work_ilocked(&ref->freeze->work, &proc->todo);
+> -       binder_wakeup_proc_ilocked(proc);
+> -       binder_inner_proc_unlock(proc);
+> +       if (ref->node->proc) {
+> +               binder_inner_proc_lock(ref->node->proc);
+> +               freeze->is_frozen =3D ref->node->proc->is_frozen;
+> +               binder_inner_proc_unlock(ref->node->proc);
+> +
+> +               binder_inner_proc_lock(proc);
+> +               binder_enqueue_work_ilocked(&freeze->work, &proc->todo);
+> +               binder_wakeup_proc_ilocked(proc);
+> +               binder_inner_proc_unlock(proc);
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+This is not a problem with your change ... but, why exactly are we
+scheduling the BINDER_WORK_FROZEN_BINDER right after creating it? For
+death notications, we only schedule it immediately if the process is
+dead. So shouldn't we only schedule it if the process is not frozen?
+
+And if the answer is that frozen notifications are always sent
+immediately to notify about the current state, then we should also
+send one for a dead process ... maybe. I guess a dead process is not
+frozen?
+
+> +       }
+>
+>         binder_node_unlock(ref->node);
+>         binder_proc_unlock(proc);
+> --
+> 2.46.1.824.gd892dcdcdd-goog
+>
 
