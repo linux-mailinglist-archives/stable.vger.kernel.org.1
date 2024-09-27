@@ -1,141 +1,103 @@
-Return-Path: <stable+bounces-78118-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78116-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A74AB9886CD
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 16:16:23 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id E434D9886BB
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 16:14:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 656F4284923
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:16:22 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7ACF31F21CFC
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:14:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 253E074BED;
-	Fri, 27 Sep 2024 14:16:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C08C74BED;
+	Fri, 27 Sep 2024 14:14:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b="WfN/0X3q"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XDPotEun"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.hugovil.com (mail.hugovil.com [162.243.120.170])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A51778493;
-	Fri, 27 Sep 2024 14:16:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.243.120.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0F5C4D8DA
+	for <stable@vger.kernel.org>; Fri, 27 Sep 2024 14:14:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727446568; cv=none; b=uVlHW3lNHwNXZq/b1YrOoBXiPUwB+mAFRWTPjvbPO3vf7q+MEyakYFORy8vYZIEeSZccSukQD+zIG53E0pMLGmG+L2XC/lX1mYAOXO27Moxi6Eix43WXUt7CV8AStj6GUk10x0uL/wvVaUp2vUQ1jD6B670uRJ17iPgNq4QaqWo=
+	t=1727446482; cv=none; b=GWapGx6YHIE+jDEgRz23U6VFW7Jgkg1EP/MDkrq+wMMxZzjaH0+mo2mTnKGsnzs2CPLHJPpvuOxVgw1VwZucOC0Dbr/zBCMdBE0g0rW4aC92j3lvTussFZEYsi3vQwlQpv9UM+alC4fD7Sck+DhmKvzJ2TvnUH+BGMfliuz3xVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727446568; c=relaxed/simple;
-	bh=Y+KbHIb4oHpeFuLUCsPn+9dosUtmgAlL5hFLy/c3O7c=;
-	h=From:To:Cc:Date:Message-Id:MIME-Version:Subject; b=o++qgoSEtNeCKMkp5V4+zEVtQj1Vo+DuV2Lnf5q0d1D90MAmAUThOkkjYEiAWORzkWt4qybmNUhTkwKoKnjPi3lZh1UDHzgJKJ8HOnJq7xD66aQmlwguKMN2Gp7tlG9y0A73i9hL+PFHZ6gLmQ17sA1pLrLcktCEZoCuMyV2tkA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com; spf=pass smtp.mailfrom=hugovil.com; dkim=pass (1024-bit key) header.d=hugovil.com header.i=@hugovil.com header.b=WfN/0X3q; arc=none smtp.client-ip=162.243.120.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hugovil.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hugovil.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=hugovil.com
-	; s=x; h=Subject:Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Cc:To
-	:From:subject:date:message-id:reply-to;
-	bh=rFY2f6oSwge6XyupmQECSbR1vqc99i87yPhEVwH6LEY=; b=WfN/0X3qoT0Pfn4oZLPNzDrwHD
-	kA1LEpVnfSTZ8ZvHRXwNiwuAkAcQDg25ID4lM82d1DJePJKy02SlN1JVQE8A0KgoSfNKDI2XunotA
-	buyJcTLHjXWT4Zm3RGQEmnFGWmrTpcB24sQs9HXTIfCAhgBkJSZMZRou6wOrA5+K2h8M=;
-Received: from modemcable168.174-80-70.mc.videotron.ca ([70.80.174.168]:54798 helo=pettiford.lan)
-	by mail.hugovil.com with esmtpa (Exim 4.92)
-	(envelope-from <hugo@hugovil.com>)
-	id 1suBQP-0007xB-Uu; Fri, 27 Sep 2024 09:54:26 -0400
-From: Hugo Villeneuve <hugo@hugovil.com>
-To: Jagan Teki <jagan@edgeble.ai>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Jessica Zhang <quic_jesszhan@quicinc.com>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Simona Vetter <simona@ffwll.ch>,
-	Linus Walleij <linus.walleij@linaro.org>
-Cc: hugo@hugovil.com,
-	Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-	stable@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org
-Date: Fri, 27 Sep 2024 09:53:05 -0400
-Message-Id: <20240927135306.857617-1-hugo@hugovil.com>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1727446482; c=relaxed/simple;
+	bh=5BlR4aWwssMWwdjeU3gar3jChwwD7DR4cYmaIk/HF3k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PblKNdMhK5WeXi+eIUadOTyC+S8eVsCQHv+Alnlr6jrQZ4T0WAoATBG1/dQtPyOa7rJgD9BCSERD9Isxq8SDlyebMAgVZrPObE6x3HIu+Eni9TBLsk9xn9KyI7VXQoRM30GmuTKR274SHENu2K5oZEQd+nUGDVpi9FwYetzJcpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XDPotEun; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67C7DC4CEC4;
+	Fri, 27 Sep 2024 14:14:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727446481;
+	bh=5BlR4aWwssMWwdjeU3gar3jChwwD7DR4cYmaIk/HF3k=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=XDPotEunbP5trkLfHcXGbpvoT8uE4nmXsiNg27Kqy4+6KRxCOi/GwoB/5N/dUgTAa
+	 FGkRF51c+S3diKg5Yj/wqn7pWjaToL88NDkIlkahFDZGylgb/YSLfUkFhMYKMtdP3Q
+	 Odqcf/2nfSF0NXozyxlS4kWYCfovLzWca9hq1vdrfYwGkfe31E3nFBix69Pp7NOzhw
+	 x8Q6GWnOsEGRy4G6I11W1Z6NR83yu2DN2K7613l6Z2z93f6w3BZrgpxpr0ZzFcjCLo
+	 udNJW2Vc6ZIqQRbn389guBoQUnAoqpqh7AO9aiSVZHry0P9l3js/tbA8UpqIxzYUlC
+	 6zyDjpvzAykyw==
+Message-ID: <652c0f61-450c-415f-9520-68cc596fabb0@kernel.org>
+Date: Fri, 27 Sep 2024 09:14:40 -0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 70.80.174.168
-X-SA-Exim-Mail-From: hugo@hugovil.com
-X-Spam-Level: 
-X-Spam-Report: 
-	* -1.0 ALL_TRUSTED Passed through trusted hosts only via SMTP
-Subject: [PATCH] drm: panel: jd9365da-h3: fix reset signal polarity
-X-SA-Exim-Version: 4.2.1 (built Wed, 08 May 2019 21:11:16 +0000)
-X-SA-Exim-Scanned: Yes (on mail.hugovil.com)
+User-Agent: Mozilla Thunderbird
+Subject: Re: Fix regression from "drm/amd/display: Fix MST BW calculation
+ Regression"
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+References: <9c551c15-b23d-4911-99ee-352fad143295@kernel.org>
+ <2024092752-taunt-pushing-7654@gregkh>
+Content-Language: en-US
+From: Mario Limonciello <superm1@kernel.org>
+In-Reply-To: <2024092752-taunt-pushing-7654@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+On 9/27/2024 02:41, Greg KH wrote:
+> On Mon, Sep 23, 2024 at 11:23:57PM -0500, Mario Limonciello wrote:
+>> Hello,
+>>
+>> The commit 338567d17627 ("drm/amd/display: Fix MST BW calculation
+>> Regression") caused a regression with some MST displays due to a mistake.
+>>
+>> For 6.11.y here is the series of commits that fixes it:
+>>
+>> commit 4599aef0c97b ("drm/amd/display: Fix Synaptics Cascaded Panamera DSC
+>> Determination")
+> 
+> I don't see this commit in Linus's tree :(
 
-In jadard_prepare() a reset pulse is generated with the following
-statements (delays ommited for clarity):
+Gah; sorry I have a lot of remotes and didn't realize which one I was on 
+when regressing this.  Here's the right hashes.
 
-    gpiod_set_value(jadard->reset, 1); --> Deassert reset
-    gpiod_set_value(jadard->reset, 0); --> Assert reset for 10ms
-    gpiod_set_value(jadard->reset, 1); --> Deassert reset
+4437936c6b69 ("drm/amd/display: Fix Synaptics Cascaded Panamera DSC 
+Determination")
 
-However, specifying second argument of "0" to gpiod_set_value() means to
-deassert the GPIO, and "1" means to assert it. If the reset signal is
-defined as GPIO_ACTIVE_LOW in the DTS, the above statements will
-incorrectly generate the reset pulse (inverted) and leave it asserted
-(LOW) at the end of jadard_prepare().
+> 
+>> commit ecc4038ec1de ("drm/amd/display: Add DSC Debug Log")
+>> commit b2b4afb9cf07 ("drm/amdgpu/display: Fix a mistake in revert commit")
+> 
+> Nor either of these :(
 
-Fix reset behavior by inverting gpiod_set_value() second argument
-in jadard_prepare(). Also modify second argument to devm_gpiod_get()
-in jadard_dsi_probe() to assert the reset when probing.
+commit 3715112c1b35 ("drm/amd/display: Add DSC Debug Log")
+commit 7745a1dee0a6 ("drm/amdgpu/display: Fix a mistake in revert commit")
 
-Do not modify it in jadard_unprepare() as it is already properly
-asserted with "1", which seems to be the intended behavior.
-
-Fixes: 6b818c533dd8 ("drm: panel: Add Jadard JD9365DA-H3 DSI panel")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
----
- drivers/gpu/drm/panel/panel-jadard-jd9365da-h3.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/drivers/gpu/drm/panel/panel-jadard-jd9365da-h3.c b/drivers/gpu/drm/panel/panel-jadard-jd9365da-h3.c
-index 44897e5218a69..6fec99cf4d935 100644
---- a/drivers/gpu/drm/panel/panel-jadard-jd9365da-h3.c
-+++ b/drivers/gpu/drm/panel/panel-jadard-jd9365da-h3.c
-@@ -110,13 +110,13 @@ static int jadard_prepare(struct drm_panel *panel)
- 	if (jadard->desc->lp11_to_reset_delay_ms)
- 		msleep(jadard->desc->lp11_to_reset_delay_ms);
- 
--	gpiod_set_value(jadard->reset, 1);
-+	gpiod_set_value(jadard->reset, 0);
- 	msleep(5);
- 
--	gpiod_set_value(jadard->reset, 0);
-+	gpiod_set_value(jadard->reset, 1);
- 	msleep(10);
- 
--	gpiod_set_value(jadard->reset, 1);
-+	gpiod_set_value(jadard->reset, 0);
- 	msleep(130);
- 
- 	ret = jadard->desc->init(jadard);
-@@ -1131,7 +1131,7 @@ static int jadard_dsi_probe(struct mipi_dsi_device *dsi)
- 	dsi->format = desc->format;
- 	dsi->lanes = desc->lanes;
- 
--	jadard->reset = devm_gpiod_get(dev, "reset", GPIOD_OUT_LOW);
-+	jadard->reset = devm_gpiod_get(dev, "reset", GPIOD_OUT_HIGH);
- 	if (IS_ERR(jadard->reset)) {
- 		DRM_DEV_ERROR(&dsi->dev, "failed to get our reset GPIO\n");
- 		return PTR_ERR(jadard->reset);
-
-base-commit: 18ba6034468e7949a9e2c2cf28e2e123b4fe7a50
--- 
-2.39.5
+> 
+>> Can you please bring them back to 6.11.y?
+> 
+> Are you sure you are looking at the right tree?
+> 
+> thanks,
+> 
+> greg k-h
 
 
