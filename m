@@ -1,91 +1,180 @@
-Return-Path: <stable+bounces-78145-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78146-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B5819889F8
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 20:16:16 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0614D988A0F
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 20:23:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2C4AA1F221CC
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 18:16:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D286A1C22A57
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 18:23:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3891B1C2307;
-	Fri, 27 Sep 2024 18:15:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D12051C0DDC;
+	Fri, 27 Sep 2024 18:23:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YRz4V+y+"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="he9+Knjz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA17D136E28;
-	Fri, 27 Sep 2024 18:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A1BF524B0;
+	Fri, 27 Sep 2024 18:23:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727460959; cv=none; b=efwrvDzLHZYq3XmJevVn2AxDmk13Iale6NwGskKM3+NEYtVAWK2y3wiAiDFm0HuJOsCS6C8Wn9bc7itXQG1GuQHSEAujbZEoA5ZJMls/vvJTY+keqtV76VxvJQpMJNhD3hJvwPmv7P2s5zgmhaMdEO5VQnQ4sN5pJTQsqb3SnGk=
+	t=1727461390; cv=none; b=lc6INFfETYWvoT7Npv4p96PGBMg3ZH6ylSTf1mkOmRF/aAl5Qallwjc+2N4SBSl+8olFWveijUvrGfo+dDzjVgWYmqllmnFB0gMYSllKxAjxiz+D0dZvnh2d/edXv3x6XLXGF4yCZcJTgxQbsVf4pMWkejFc+WrjWg90xEteEFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727460959; c=relaxed/simple;
-	bh=VsXoDAk/3cgXnKaNj9IIe1/ClxMRI1S89qYD1FBDWjI=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=uEgwTD4b8lrmiMDtbn9UFP07Jpw3ZcWjJo1dGkbBz6uv5d6LkpqAHxXSO5+w+ltJKIz8I494LpMPGqoDVs6BydErUswtKTffkmk5Ix7fXLMZyY2LDFg39LRoQj2lXq4TOF3yca8vNFOCb/eR9gDYWaJILfFf1YXkDu5vWLhZl7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YRz4V+y+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BE14C4CEC7;
-	Fri, 27 Sep 2024 18:15:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727460957;
-	bh=VsXoDAk/3cgXnKaNj9IIe1/ClxMRI1S89qYD1FBDWjI=;
-	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
-	b=YRz4V+y+76TPvXCCHF6p3SZH/WWhAjhQ7qHx7bVrEEWS8Z6/orbgNWcRTJr0Iu5iI
-	 bufKra0ucZske2c26x6r3rBd4fJHKBFqXpx/cwCqMTt43gNJ39Dkv2ihArqs24AbhM
-	 s8WeBgV4b0hzYBgNJa5bJyNXkCko0o8koy26xaHhXdqktKdBBPgeQ6Ag2wGcnybI9K
-	 iYmal/+CtFF0raFtVMd6HWdAY0spCP87tJGovzX5hlTFqCugugsIB5kSCngzjAEdSq
-	 dZ4zDs9K5UCjwfGKw85soR2fWAdYvAciwX1Wen48lCfUKS7OeWpemdbDvmJFMGv1Bp
-	 PLf24FhNrssXQ==
-Date: Fri, 27 Sep 2024 20:15:55 +0200 (CEST)
-From: Jiri Kosina <jikos@kernel.org>
-To: Benjamin Tissoires <bentiss@kernel.org>
-cc: linux-input@vger.kernel.org, linux-kernel@vger.kernel.org, 
-    bpf@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH HID] HID: bpf: fix cfi stubs for hid_bpf_ops
-In-Reply-To: <20240927-fix-hid-bpf-stubs-v1-1-5bbf125f247c@kernel.org>
-Message-ID: <nycvar.YFH.7.76.2409272015390.31206@cbobk.fhfr.pm>
-References: <20240927-fix-hid-bpf-stubs-v1-1-5bbf125f247c@kernel.org>
-User-Agent: Alpine 2.21 (LSU 202 2017-01-01)
+	s=arc-20240116; t=1727461390; c=relaxed/simple;
+	bh=nYfhe1qyLkVxhTGavQXlFl3mIst3+pK1yM6ZZ6AGcnM=;
+	h=Date:To:From:Subject:Message-Id; b=ZvzpirMnQP59UTXsxHid5uUSff8OOsy9/SMCZdqPrD0eQhmW5KKm4eWm537avCHF5drAJvZmnKHlyfSNmThmHoQ1PUmHPvmxgNBwg7rRa0mEEWrQoIms5oE7VnKx+1z92BdaVZAVx7HS4hwmqaWfzkb/ZGbRDv4ECi8XhmUvAP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=he9+Knjz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AEE2C4CEC4;
+	Fri, 27 Sep 2024 18:23:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1727461390;
+	bh=nYfhe1qyLkVxhTGavQXlFl3mIst3+pK1yM6ZZ6AGcnM=;
+	h=Date:To:From:Subject:From;
+	b=he9+Knjz5PUXrvI7xmn1az5SgD6a4mJISNCjBo4jGOgaSp9oIzV2gtXbCschQ5ki4
+	 eQ4T+8n48tRjwT//seMx/5woaAulRLvSWoDXwHQdSur6MJAyAjF/VHsB7d2pyjiGoW
+	 TLold/0zCe5nuK3i/SY+1CeqW0bjOKUrShOPprPo=
+Date: Fri, 27 Sep 2024 11:23:09 -0700
+To: mm-commits@vger.kernel.org,yuzhao@google.com,yosryahmed@google.com,ying.huang@intel.com,willy@infradead.org,surenb@google.com,stable@vger.kernel.org,sj@kernel.org,minchan@kernel.org,mhocko@suse.com,liyangouwen1@oppo.com,kasong@tencent.com,kaleshsingh@google.com,hughd@google.com,hannes@cmpxchg.org,david@redhat.com,chrisl@kernel.org,v-songbaohua@oppo.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-avoid-unconditional-one-tick-sleep-when-swapcache_prepare-fails.patch added to mm-hotfixes-unstable branch
+Message-Id: <20240927182310.0AEE2C4CEC4@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
 
-On Fri, 27 Sep 2024, Benjamin Tissoires wrote:
 
-> With the introduction of commit e42ac1418055 ("bpf: Check unsupported ops
-> from the bpf_struct_ops's cfi_stubs"), a HID-BPF struct_ops containing
-> a .hid_hw_request() or a .hid_hw_output_report() was failing to load
-> as the cfi stubs were not defined.
-> 
-> Fix that by defining those simple static functions and restore HID-BPF
-> functionality.
-> 
-> This was detected with the HID selftests suddenly failing on Linus' tree.
-> 
-> Cc: stable@vger.kernel.org # v6.11+
-> Fixes: 9286675a2aed ("HID: bpf: add HID-BPF hooks for hid_hw_output_report")
-> Fixes: 8bd0488b5ea5 ("HID: bpf: add HID-BPF hooks for hid_hw_raw_requests")
-> Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
-> ---
-> Hi,
-> 
-> This commit should directly go in Linus tree before we start creating
-> topic branches for 6.13 given that the CI is now failing on our HID
-> master branch.
+The patch titled
+     Subject: mm: avoid unconditional one-tick sleep when swapcache_prepare fails
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-avoid-unconditional-one-tick-sleep-when-swapcache_prepare-fails.patch
 
-Applied now to for-6.12/upstream-fixes, thanks Benjamin.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-avoid-unconditional-one-tick-sleep-when-swapcache_prepare-fails.patch
 
--- 
-Jiri Kosina
-SUSE Labs
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: Barry Song <v-songbaohua@oppo.com>
+Subject: mm: avoid unconditional one-tick sleep when swapcache_prepare fails
+Date: Fri, 27 Sep 2024 09:19:36 +1200
+
+Commit 13ddaf26be32 ("mm/swap: fix race when skipping swapcache")
+introduced an unconditional one-tick sleep when `swapcache_prepare()`
+fails, which has led to reports of UI stuttering on latency-sensitive
+Android devices.  To address this, we can use a waitqueue to wake up tasks
+that fail `swapcache_prepare()` sooner, instead of always sleeping for a
+full tick.  While tasks may occasionally be woken by an unrelated
+`do_swap_page()`, this method is preferable to two scenarios: rapid
+re-entry into page faults, which can cause livelocks, and multiple
+millisecond sleeps, which visibly degrade user experience.
+
+Oven's testing shows that a single waitqueue resolves the UI stuttering
+issue.  If a 'thundering herd' problem becomes apparent later, a waitqueue
+hash similar to `folio_wait_table[PAGE_WAIT_TABLE_SIZE]` for page bit
+locks can be introduced.
+
+Link: https://lkml.kernel.org/r/20240926211936.75373-1-21cnbao@gmail.com
+Fixes: 13ddaf26be32 ("mm/swap: fix race when skipping swapcache")
+Signed-off-by: Barry Song <v-songbaohua@oppo.com>
+Reported-by: Oven Liyang <liyangouwen1@oppo.com>
+Tested-by: Oven Liyang <liyangouwen1@oppo.com>
+Cc: Kairui Song <kasong@tencent.com>
+Cc: "Huang, Ying" <ying.huang@intel.com>
+Cc: Yu Zhao <yuzhao@google.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Chris Li <chrisl@kernel.org>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: Yosry Ahmed <yosryahmed@google.com>
+Cc: SeongJae Park <sj@kernel.org>
+Cc: Kalesh Singh <kaleshsingh@google.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/memory.c |   13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
+
+--- a/mm/memory.c~mm-avoid-unconditional-one-tick-sleep-when-swapcache_prepare-fails
++++ a/mm/memory.c
+@@ -4192,6 +4192,8 @@ static struct folio *alloc_swap_folio(st
+ }
+ #endif /* CONFIG_TRANSPARENT_HUGEPAGE */
+ 
++static DECLARE_WAIT_QUEUE_HEAD(swapcache_wq);
++
+ /*
+  * We enter with non-exclusive mmap_lock (to exclude vma changes,
+  * but allow concurrent faults), and pte mapped but not yet locked.
+@@ -4204,6 +4206,7 @@ vm_fault_t do_swap_page(struct vm_fault
+ {
+ 	struct vm_area_struct *vma = vmf->vma;
+ 	struct folio *swapcache, *folio = NULL;
++	DECLARE_WAITQUEUE(wait, current);
+ 	struct page *page;
+ 	struct swap_info_struct *si = NULL;
+ 	rmap_t rmap_flags = RMAP_NONE;
+@@ -4302,7 +4305,9 @@ vm_fault_t do_swap_page(struct vm_fault
+ 					 * Relax a bit to prevent rapid
+ 					 * repeated page faults.
+ 					 */
++					add_wait_queue(&swapcache_wq, &wait);
+ 					schedule_timeout_uninterruptible(1);
++					remove_wait_queue(&swapcache_wq, &wait);
+ 					goto out_page;
+ 				}
+ 				need_clear_cache = true;
+@@ -4609,8 +4614,10 @@ unlock:
+ 		pte_unmap_unlock(vmf->pte, vmf->ptl);
+ out:
+ 	/* Clear the swap cache pin for direct swapin after PTL unlock */
+-	if (need_clear_cache)
++	if (need_clear_cache) {
+ 		swapcache_clear(si, entry, nr_pages);
++		wake_up(&swapcache_wq);
++	}
+ 	if (si)
+ 		put_swap_device(si);
+ 	return ret;
+@@ -4625,8 +4632,10 @@ out_release:
+ 		folio_unlock(swapcache);
+ 		folio_put(swapcache);
+ 	}
+-	if (need_clear_cache)
++	if (need_clear_cache) {
+ 		swapcache_clear(si, entry, nr_pages);
++		wake_up(&swapcache_wq);
++	}
+ 	if (si)
+ 		put_swap_device(si);
+ 	return ret;
+_
+
+Patches currently in -mm which might be from v-songbaohua@oppo.com are
+
+mm-avoid-unconditional-one-tick-sleep-when-swapcache_prepare-fails.patch
 
 
