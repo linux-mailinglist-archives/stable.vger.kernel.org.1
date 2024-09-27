@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-78078-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78024-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C083D9884FB
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:33:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF9B09884B5
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:30:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 472531F232B7
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:33:15 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1EB10B218E9
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:30:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F415118BBA0;
-	Fri, 27 Sep 2024 12:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CF7118C341;
+	Fri, 27 Sep 2024 12:30:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y4mFFeqr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jlDzuyhB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B131E3C3C;
-	Fri, 27 Sep 2024 12:32:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDEA618C33C;
+	Fri, 27 Sep 2024 12:30:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440361; cv=none; b=FX7YxotoYwoMmE/P9Xp3z1PlrCRj3txCEyUL1oWyaEuhKNtzbAV+1Ek4V3nkwnlUz+H1vCrjDEmD8w8wpTjQDLBxAg1VSyq82UPHI4jNjmLYMNO34q9LQzxyaloNQJUWXu/BeRKKwM6EKhZPpRDKv788CXA2YRhjbn7DsGIzcnQ=
+	t=1727440212; cv=none; b=NZ974KqBtWz08YWJtPVv8Y337+cny/st75QkU92StzrheqX66FFKmXLncUv9RLKGqJyMtNLr7qNbFbYHMN74mV/6uZZsG4HCE9IsswElwZhiWAMBGIxY3HP6fJpqRfNUjc/jj1PFKD21bjaFyTfyaqSxk+C97ZL5AghJvXwZ2Ho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440361; c=relaxed/simple;
-	bh=q2zdMqNq3u7DwMVt4nABxuVfPDDOiqWpj3CSFZ+a1q0=;
+	s=arc-20240116; t=1727440212; c=relaxed/simple;
+	bh=IuqfRS136alpo8UOMYv9ZGuZNdQs6I2o/WIMwpvKIBc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ooG9UiwDW6dMWVUwMudjqvSuqck9UNwSLNzkJH0232C12mfjFcOrRIcSzAJ8qX2H7Yw6zCImyZgdau7M0ZqFHXsg4OGLvebKwec5b/Y0lKzc6e+PZHL91pz9oow3J8w/pfEnb4E0ErebkHqky9tmeZXyGnHmkmf1BvQRLAHARiA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y4mFFeqr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36D9CC4CEC6;
-	Fri, 27 Sep 2024 12:32:41 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Dq8c4SYYvOhIloDpwaGWkjRVriqTsLLp02l+LWlA7ePqoVdTtBuMUhG7pHrZCOPr9Ka6Qm32YqlRlE4+RrLSzM4tia1CEkCur3NDmsclNDZB61zh1A4Zfs/98CZlMV/d0C0U/hWUR2Q0R4HU+b0Jhwoo+oxc9i9l5YRYu71kFsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jlDzuyhB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 709ECC4CECE;
+	Fri, 27 Sep 2024 12:30:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440361;
-	bh=q2zdMqNq3u7DwMVt4nABxuVfPDDOiqWpj3CSFZ+a1q0=;
+	s=korg; t=1727440211;
+	bh=IuqfRS136alpo8UOMYv9ZGuZNdQs6I2o/WIMwpvKIBc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y4mFFeqr4ju8q07Ra0uXK8bxOyM3YW18GK3z98a9XqS0yvtjMYShlmuE2IAJk6/iE
-	 qHP2/JA95a/FFTbo/17aN+S09vuOC00iHWSwT2+Nfffg/wt7xk8mSyKkBqYWes57dB
-	 x+4N7TSfgoz8sd1F11NHj/yVI5s96Stvn50UPESM=
+	b=jlDzuyhBG6h+TYuyfm1fYOa+jp0rzrH3KnOv3YPFYveClDHW8udPwBCo+Hz+7hxcr
+	 ahdEiLwT95SxCCgkx28SDdJrdHHNwG3Q0hXrNNnrDgUwbbPABdzTWHJyuaD0gL5dDz
+	 L22xdcLTWBjchFLnzEQTleDSsWEwrgGpj9mrZGy0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Leah Rumancik <leah.rumancik@gmail.com>,
-	Chandan Babu R <chandanbabu@kernel.org>
-Subject: [PATCH 6.1 54/73] xfs: reload entire unlinked bucket lists
-Date: Fri, 27 Sep 2024 14:24:05 +0200
-Message-ID: <20240927121722.109533843@linuxfoundation.org>
+	=?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>,
+	James Zhu <James.Zhu@amd.com>,
+	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 03/12] drm: Expand max DRM device number to full MINORBITS
+Date: Fri, 27 Sep 2024 14:24:06 +0200
+Message-ID: <20240927121715.363220876@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121719.897851549@linuxfoundation.org>
-References: <20240927121719.897851549@linuxfoundation.org>
+In-Reply-To: <20240927121715.213013166@linuxfoundation.org>
+References: <20240927121715.213013166@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,225 +61,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Darrick J. Wong" <djwong@kernel.org>
+From: Michał Winiarski <michal.winiarski@intel.com>
 
-[ Upstream commit 83771c50e42b92de6740a63e152c96c052d37736 ]
+[ Upstream commit 071d583e01c88272f6ff216d4f867f8f35e94d7d ]
 
-The previous patch to reload unrecovered unlinked inodes when adding a
-newly created inode to the unlinked list is missing a key piece of
-functionality.  It doesn't handle the case that someone calls xfs_iget
-on an inode that is not the last item in the incore list.  For example,
-if at mount time the ondisk iunlink bucket looks like this:
+Having a limit of 64 DRM devices is not good enough for modern world
+where we have multi-GPU servers, SR-IOV virtual functions and virtual
+devices used for testing.
+Let's utilize full minor range for DRM devices.
+To avoid regressing the existing userspace, we're still maintaining the
+numbering scheme where 0-63 is used for primary, 64-127 is reserved
+(formerly for control) and 128-191 is used for render.
+For minors >= 192, we're allocating minors dynamically on a first-come,
+first-served basis.
 
-AGI -> 7 -> 22 -> 3 -> NULL
-
-None of these three inodes are cached in memory.  Now let's say that
-someone tries to open inode 3 by handle.  We need to walk the list to
-make sure that inodes 7 and 22 get loaded cold, and that the
-i_prev_unlinked of inode 3 gets set to 22.
-
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Michał Winiarski <michal.winiarski@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240823163048.2676257-4-michal.winiarski@intel.com
+Acked-by: James Zhu <James.Zhu@amd.com>
+Acked-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_export.c |    6 +++
- fs/xfs/xfs_inode.c  |  100 ++++++++++++++++++++++++++++++++++++++++++++++++++++
- fs/xfs/xfs_inode.h  |    9 ++++
- fs/xfs/xfs_itable.c |    9 ++++
- fs/xfs/xfs_trace.h  |   20 ++++++++++
- 5 files changed, 144 insertions(+)
+ drivers/gpu/drm/drm_drv.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/fs/xfs/xfs_export.c
-+++ b/fs/xfs/xfs_export.c
-@@ -146,6 +146,12 @@ xfs_nfs_get_inode(
- 		return ERR_PTR(error);
- 	}
- 
-+	error = xfs_inode_reload_unlinked(ip);
-+	if (error) {
-+		xfs_irele(ip);
-+		return ERR_PTR(error);
-+	}
-+
- 	if (VFS_I(ip)->i_generation != generation) {
- 		xfs_irele(ip);
- 		return ERR_PTR(-ESTALE);
---- a/fs/xfs/xfs_inode.c
-+++ b/fs/xfs/xfs_inode.c
-@@ -3622,3 +3622,103 @@ xfs_iunlock2_io_mmap(
- 	if (ip1 != ip2)
- 		inode_unlock(VFS_I(ip1));
+diff --git a/drivers/gpu/drm/drm_drv.c b/drivers/gpu/drm/drm_drv.c
+index 7e0fa5a2a3182..c734e6a1c4ce2 100644
+--- a/drivers/gpu/drm/drm_drv.c
++++ b/drivers/gpu/drm/drm_drv.c
+@@ -121,10 +121,19 @@ static void drm_minor_alloc_release(struct drm_device *dev, void *data)
+ 	xa_erase(drm_minor_get_xa(minor->type), minor->index);
  }
-+
+ 
 +/*
-+ * Reload the incore inode list for this inode.  Caller should ensure that
-+ * the link count cannot change, either by taking ILOCK_SHARED or otherwise
-+ * preventing other threads from executing.
++ * DRM used to support 64 devices, for backwards compatibility we need to maintain the
++ * minor allocation scheme where minors 0-63 are primary nodes, 64-127 are control nodes,
++ * and 128-191 are render nodes.
++ * After reaching the limit, we're allocating minors dynamically - first-come, first-serve.
++ * Accel nodes are using a distinct major, so the minors are allocated in continuous 0-MAX
++ * range.
 + */
-+int
-+xfs_inode_reload_unlinked_bucket(
-+	struct xfs_trans	*tp,
-+	struct xfs_inode	*ip)
-+{
-+	struct xfs_mount	*mp = tp->t_mountp;
-+	struct xfs_buf		*agibp;
-+	struct xfs_agi		*agi;
-+	struct xfs_perag	*pag;
-+	xfs_agnumber_t		agno = XFS_INO_TO_AGNO(mp, ip->i_ino);
-+	xfs_agino_t		agino = XFS_INO_TO_AGINO(mp, ip->i_ino);
-+	xfs_agino_t		prev_agino, next_agino;
-+	unsigned int		bucket;
-+	bool			foundit = false;
-+	int			error;
-+
-+	/* Grab the first inode in the list */
-+	pag = xfs_perag_get(mp, agno);
-+	error = xfs_ialloc_read_agi(pag, tp, &agibp);
-+	xfs_perag_put(pag);
-+	if (error)
-+		return error;
-+
-+	bucket = agino % XFS_AGI_UNLINKED_BUCKETS;
-+	agi = agibp->b_addr;
-+
-+	trace_xfs_inode_reload_unlinked_bucket(ip);
-+
-+	xfs_info_ratelimited(mp,
-+ "Found unrecovered unlinked inode 0x%x in AG 0x%x.  Initiating list recovery.",
-+			agino, agno);
-+
-+	prev_agino = NULLAGINO;
-+	next_agino = be32_to_cpu(agi->agi_unlinked[bucket]);
-+	while (next_agino != NULLAGINO) {
-+		struct xfs_inode	*next_ip = NULL;
-+
-+		if (next_agino == agino) {
-+			/* Found this inode, set its backlink. */
-+			next_ip = ip;
-+			next_ip->i_prev_unlinked = prev_agino;
-+			foundit = true;
-+		}
-+		if (!next_ip) {
-+			/* Inode already in memory. */
-+			next_ip = xfs_iunlink_lookup(pag, next_agino);
-+		}
-+		if (!next_ip) {
-+			/* Inode not in memory, reload. */
-+			error = xfs_iunlink_reload_next(tp, agibp, prev_agino,
-+					next_agino);
-+			if (error)
-+				break;
-+
-+			next_ip = xfs_iunlink_lookup(pag, next_agino);
-+		}
-+		if (!next_ip) {
-+			/* No incore inode at all?  We reloaded it... */
-+			ASSERT(next_ip != NULL);
-+			error = -EFSCORRUPTED;
-+			break;
-+		}
-+
-+		prev_agino = next_agino;
-+		next_agino = next_ip->i_next_unlinked;
-+	}
-+
-+	xfs_trans_brelse(tp, agibp);
-+	/* Should have found this inode somewhere in the iunlinked bucket. */
-+	if (!error && !foundit)
-+		error = -EFSCORRUPTED;
-+	return error;
-+}
-+
-+/* Decide if this inode is missing its unlinked list and reload it. */
-+int
-+xfs_inode_reload_unlinked(
-+	struct xfs_inode	*ip)
-+{
-+	struct xfs_trans	*tp;
-+	int			error;
-+
-+	error = xfs_trans_alloc_empty(ip->i_mount, &tp);
-+	if (error)
-+		return error;
-+
-+	xfs_ilock(ip, XFS_ILOCK_SHARED);
-+	if (xfs_inode_unlinked_incomplete(ip))
-+		error = xfs_inode_reload_unlinked_bucket(tp, ip);
-+	xfs_iunlock(ip, XFS_ILOCK_SHARED);
-+	xfs_trans_cancel(tp);
-+
-+	return error;
-+}
---- a/fs/xfs/xfs_inode.h
-+++ b/fs/xfs/xfs_inode.h
-@@ -593,4 +593,13 @@ void xfs_end_io(struct work_struct *work
- int xfs_ilock2_io_mmap(struct xfs_inode *ip1, struct xfs_inode *ip2);
- void xfs_iunlock2_io_mmap(struct xfs_inode *ip1, struct xfs_inode *ip2);
+ #define DRM_MINOR_LIMIT(t) ({ \
+ 	typeof(t) _t = (t); \
+ 	_t == DRM_MINOR_ACCEL ? XA_LIMIT(0, ACCEL_MAX_MINORS) : XA_LIMIT(64 * _t, 64 * _t + 63); \
+ })
++#define DRM_EXTENDED_MINOR_LIMIT XA_LIMIT(192, (1 << MINORBITS) - 1)
  
-+static inline bool
-+xfs_inode_unlinked_incomplete(
-+	struct xfs_inode	*ip)
-+{
-+	return VFS_I(ip)->i_nlink == 0 && !xfs_inode_on_unlinked_list(ip);
-+}
-+int xfs_inode_reload_unlinked_bucket(struct xfs_trans *tp, struct xfs_inode *ip);
-+int xfs_inode_reload_unlinked(struct xfs_inode *ip);
-+
- #endif	/* __XFS_INODE_H__ */
---- a/fs/xfs/xfs_itable.c
-+++ b/fs/xfs/xfs_itable.c
-@@ -80,6 +80,15 @@ xfs_bulkstat_one_int(
- 	if (error)
- 		goto out;
+ static int drm_minor_alloc(struct drm_device *dev, enum drm_minor_type type)
+ {
+@@ -140,6 +149,9 @@ static int drm_minor_alloc(struct drm_device *dev, enum drm_minor_type type)
  
-+	if (xfs_inode_unlinked_incomplete(ip)) {
-+		error = xfs_inode_reload_unlinked_bucket(tp, ip);
-+		if (error) {
-+			xfs_iunlock(ip, XFS_ILOCK_SHARED);
-+			xfs_irele(ip);
-+			return error;
-+		}
-+	}
-+
- 	ASSERT(ip != NULL);
- 	ASSERT(ip->i_imap.im_blkno != 0);
- 	inode = VFS_I(ip);
---- a/fs/xfs/xfs_trace.h
-+++ b/fs/xfs/xfs_trace.h
-@@ -3704,6 +3704,26 @@ TRACE_EVENT(xfs_iunlink_reload_next,
- 		  __entry->next_agino)
- );
+ 	r = xa_alloc(drm_minor_get_xa(type), &minor->index,
+ 		     NULL, DRM_MINOR_LIMIT(type), GFP_KERNEL);
++	if (r == -EBUSY && (type == DRM_MINOR_PRIMARY || type == DRM_MINOR_RENDER))
++		r = xa_alloc(&drm_minors_xa, &minor->index,
++			     NULL, DRM_EXTENDED_MINOR_LIMIT, GFP_KERNEL);
+ 	if (r < 0)
+ 		return r;
  
-+TRACE_EVENT(xfs_inode_reload_unlinked_bucket,
-+	TP_PROTO(struct xfs_inode *ip),
-+	TP_ARGS(ip),
-+	TP_STRUCT__entry(
-+		__field(dev_t, dev)
-+		__field(xfs_agnumber_t, agno)
-+		__field(xfs_agino_t, agino)
-+	),
-+	TP_fast_assign(
-+		__entry->dev = ip->i_mount->m_super->s_dev;
-+		__entry->agno = XFS_INO_TO_AGNO(ip->i_mount, ip->i_ino);
-+		__entry->agino = XFS_INO_TO_AGINO(ip->i_mount, ip->i_ino);
-+	),
-+	TP_printk("dev %d:%d agno 0x%x agino 0x%x bucket %u",
-+		  MAJOR(__entry->dev), MINOR(__entry->dev),
-+		  __entry->agno,
-+		  __entry->agino,
-+		  __entry->agino % XFS_AGI_UNLINKED_BUCKETS)
-+);
-+
- DECLARE_EVENT_CLASS(xfs_ag_inode_class,
- 	TP_PROTO(struct xfs_inode *ip),
- 	TP_ARGS(ip),
+-- 
+2.43.0
+
 
 
 
