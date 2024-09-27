@@ -1,246 +1,168 @@
-Return-Path: <stable+bounces-78074-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78031-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8F5E9884F7
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:33:02 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BC1B9884C4
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:31:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 566761F23407
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:33:02 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AAB37B23870
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:31:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4BE618C901;
-	Fri, 27 Sep 2024 12:32:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1624618C93F;
+	Fri, 27 Sep 2024 12:30:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JabJs6sL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PhVsUHJU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1B8218C358;
-	Fri, 27 Sep 2024 12:32:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5DF818C33C;
+	Fri, 27 Sep 2024 12:30:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440350; cv=none; b=pXmau9lByCxFmFdoONDvpGsCxG3GchpkdjsfwSw9R3k+ijYW65wguE7VLiPLGpgAxHcKkOfsIv+yGNRSgB+U9HB/iizQJQ/eda4cuy9yBMozHq0UoqKAw6sAJvNDk6f530dzRUxHSAECl33o8L7Ver/eZW5Pj9ToHJpW3NM5Dgw=
+	t=1727440233; cv=none; b=mhMDo2+YuwKIdJ9Ldhru7guBooX08dOS9HnU9Xn3BwRQ1GMK6dDBN53khXgfATle3S3jdjIVHLnvzmXDA1gk5XCOVP8Na/7dKRvZvq+Vm1He9rNkVtEmO70JjTGW9UTomHareJBM0BfFMqXtPT9qqjaXzRqRPkBgOMUI7CPUQp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440350; c=relaxed/simple;
-	bh=+SiVWrNa5OpGieO1KFuJ83gibPidVr9Iz8mAYHQkvMc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HlKhqwDPRpxqsnqDBs2o1KCRM0hNrRQyH1l6ZNul1azMR0j69YFocI5PIICNmO/c+f9WrTK+agK2xcSGpoL/LjhSZu5GfGhrhJKOd9V/6Nx57U10JBMFuXBh46GqMEacwt4fOWQN72yzNh2ZQK0aD57/Zv8DxBje3qm4QkHxwSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JabJs6sL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 288A5C4CEC4;
-	Fri, 27 Sep 2024 12:32:29 +0000 (UTC)
+	s=arc-20240116; t=1727440233; c=relaxed/simple;
+	bh=BkpU5HDKgClJecuAz/1QvgWI1zEZOPsVGHrUna7gqx4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=StdqsR+H0LlBoAu7oPzhAPpJ9QZh+niJAt0hKhZCu19++gKNtZx9fgPx2UIrU/UvlOnt8hCWy05jVpZamnA9zBuZ9pGiIgII+ZPxUHuHZoNFRjCTc+zMvChlDGhAfzfc2EQhadpZxn2az6eQflS8F/Qjiitv8ekDss0UMltIrGE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PhVsUHJU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C50D9C4CEC6;
+	Fri, 27 Sep 2024 12:30:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440350;
-	bh=+SiVWrNa5OpGieO1KFuJ83gibPidVr9Iz8mAYHQkvMc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JabJs6sLTVAolUkisn1zZW2vmvhxyP7Vmj2MwtKQGDd5+mTVdS0CW2WBoqDlhF2CV
-	 Xdn5SB8COgWBKNZSYTp8zPI7T2i2V7kzX5b3TrU2xuMnoRuxY+oERhQDT3V+1HEvqn
-	 3M/sOpIZq6UvNcHK0QxcrJOg382wFN/f6DUQNG4E=
+	s=korg; t=1727440231;
+	bh=BkpU5HDKgClJecuAz/1QvgWI1zEZOPsVGHrUna7gqx4=;
+	h=From:To:Cc:Subject:Date:From;
+	b=PhVsUHJUdRQLuXTuxnbO8QGcII4QFGwgFAERP+GFFVHGiZprunZSnmD+vC6eWPQhZ
+	 k3dlhf0mdiEEjj2r8VNO2muJR2CvvWEtvletg/VEumAl77GsHlZYtVt9B4gJzHXZJj
+	 +DG+ik1z0uc31hFFKNQbJi+cijAosFkTjoZzfi9Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Chinner <dchinner@redhat.com>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Christoph Hellwig <hch@lst.de>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Chandan Babu R <chandanbabu@kernel.org>,
-	Leah Rumancik <leah.rumancik@gmail.com>
-Subject: [PATCH 6.1 51/73] xfs: fix unlink vs cluster buffer instantiation race
-Date: Fri, 27 Sep 2024 14:24:02 +0200
-Message-ID: <20240927121721.977658809@linuxfoundation.org>
+	linux-kernel@vger.kernel.org,
+	torvalds@linux-foundation.org,
+	akpm@linux-foundation.org,
+	linux@roeck-us.net,
+	shuah@kernel.org,
+	patches@kernelci.org,
+	lkft-triage@lists.linaro.org,
+	pavel@denx.de,
+	jonathanh@nvidia.com,
+	f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com,
+	srw@sladewatkins.net,
+	rwarsow@gmx.de,
+	conor@kernel.org,
+	allen.lkml@gmail.com,
+	broonie@kernel.org
+Subject: [PATCH 6.11 00/12] 6.11.1-rc1 review
+Date: Fri, 27 Sep 2024 14:24:03 +0200
+Message-ID: <20240927121715.213013166@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121719.897851549@linuxfoundation.org>
-References: <20240927121719.897851549@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.11.1-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-6.11.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 6.11.1-rc1
+X-KernelTest-Deadline: 2024-09-29T12:17+00:00
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+This is the start of the stable review cycle for the 6.11.1 release.
+There are 12 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-------------------
+Responses should be made by Sun, 29 Sep 2024 12:17:00 +0000.
+Anything received after that time might be too late.
 
-From: Dave Chinner <dchinner@redhat.com>
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.11.1-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.11.y
+and the diffstat can be found below.
 
-[ Upstream commit 348a1983cf4cf5099fc398438a968443af4c9f65 ]
+thanks,
 
-Luis has been reporting an assert failure when freeing an inode
-cluster during inode inactivation for a while. The assert looks
-like:
+greg k-h
 
- XFS: Assertion failed: bp->b_flags & XBF_DONE, file: fs/xfs/xfs_trans_buf.c, line: 241
- ------------[ cut here ]------------
- kernel BUG at fs/xfs/xfs_message.c:102!
- Oops: invalid opcode: 0000 [#1] PREEMPT SMP KASAN NOPTI
- CPU: 4 PID: 73 Comm: kworker/4:1 Not tainted 6.10.0-rc1 #4
- Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
- Workqueue: xfs-inodegc/loop5 xfs_inodegc_worker [xfs]
- RIP: 0010:assfail (fs/xfs/xfs_message.c:102) xfs
- RSP: 0018:ffff88810188f7f0 EFLAGS: 00010202
- RAX: 0000000000000000 RBX: ffff88816e748250 RCX: 1ffffffff844b0e7
- RDX: 0000000000000004 RSI: ffff88810188f558 RDI: ffffffffc2431fa0
- RBP: 1ffff11020311f01 R08: 0000000042431f9f R09: ffffed1020311e9b
- R10: ffff88810188f4df R11: ffffffffac725d70 R12: ffff88817a3f4000
- R13: ffff88812182f000 R14: ffff88810188f998 R15: ffffffffc2423f80
- FS:  0000000000000000(0000) GS:ffff8881c8400000(0000) knlGS:0000000000000000
- CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
- CR2: 000055fe9d0f109c CR3: 000000014426c002 CR4: 0000000000770ef0
- DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
- DR3: 0000000000000000 DR6: 00000000fffe07f0 DR7: 0000000000000400
- PKRU: 55555554
- Call Trace:
-  <TASK>
- xfs_trans_read_buf_map (fs/xfs/xfs_trans_buf.c:241 (discriminator 1)) xfs
- xfs_imap_to_bp (fs/xfs/xfs_trans.h:210 fs/xfs/libxfs/xfs_inode_buf.c:138) xfs
- xfs_inode_item_precommit (fs/xfs/xfs_inode_item.c:145) xfs
- xfs_trans_run_precommits (fs/xfs/xfs_trans.c:931) xfs
- __xfs_trans_commit (fs/xfs/xfs_trans.c:966) xfs
- xfs_inactive_ifree (fs/xfs/xfs_inode.c:1811) xfs
- xfs_inactive (fs/xfs/xfs_inode.c:2013) xfs
- xfs_inodegc_worker (fs/xfs/xfs_icache.c:1841 fs/xfs/xfs_icache.c:1886) xfs
- process_one_work (kernel/workqueue.c:3231)
- worker_thread (kernel/workqueue.c:3306 (discriminator 2) kernel/workqueue.c:3393 (discriminator 2))
- kthread (kernel/kthread.c:389)
- ret_from_fork (arch/x86/kernel/process.c:147)
- ret_from_fork_asm (arch/x86/entry/entry_64.S:257)
-  </TASK>
+-------------
+Pseudo-Shortlog of commits:
 
-And occurs when the the inode precommit handlers is attempt to look
-up the inode cluster buffer to attach the inode for writeback.
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 6.11.1-rc1
 
-The trail of logic that I can reconstruct is as follows.
+Edward Adam Davis <eadavis@qq.com>
+    USB: usbtmc: prevent kernel-usb-infoleak
 
-	1. the inode is clean when inodegc runs, so it is not
-	   attached to a cluster buffer when precommit runs.
+Junhao Xie <bigfoot@classfun.cn>
+    USB: serial: pl2303: add device id for Macrosilicon MS3020
 
-	2. #1 implies the inode cluster buffer may be clean and not
-	   pinned by dirty inodes when inodegc runs.
+Keith Busch <kbusch@kernel.org>
+    nvme-pci: qdepth 1 quirk
 
-	3. #2 implies that the inode cluster buffer can be reclaimed
-	   by memory pressure at any time.
+Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+    ASoC: amd: acp: add ZSC control register programming sequence
 
-	4. The assert failure implies that the cluster buffer was
-	   attached to the transaction, but not marked done. It had
-	   been accessed earlier in the transaction, but not marked
-	   done.
+Kiran K <kiran.k@intel.com>
+    Bluetooth: btintel_pcie: Allocate memory for driver private data
 
-	5. #4 implies the cluster buffer has been invalidated (i.e.
-	   marked stale).
+Dan Carpenter <dan.carpenter@linaro.org>
+    netfilter: nft_socket: Fix a NULL vs IS_ERR() bug in nft_socket_cgroup_subtree_level()
 
-	6. #5 implies that the inode cluster buffer was instantiated
-	   uninitialised in the transaction in xfs_ifree_cluster(),
-	   which only instantiates the buffers to invalidate them
-	   and never marks them as done.
+Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
+    cpufreq/amd-pstate: Add the missing cpufreq_cpu_put()
 
-Given factors 1-3, this issue is highly dependent on timing and
-environmental factors. Hence the issue can be very difficult to
-reproduce in some situations, but highly reliable in others. Luis
-has an environment where it can be reproduced easily by g/531 but,
-OTOH, I've reproduced it only once in ~2000 cycles of g/531.
+Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
+    powercap/intel_rapl: Fix the energy-pkg event for AMD CPUs
 
-I think the fix is to have xfs_ifree_cluster() set the XBF_DONE flag
-on the cluster buffers, even though they may not be initialised. The
-reasons why I think this is safe are:
+Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
+    powercap/intel_rapl: Add support for AMD family 1Ah
 
-	1. A buffer cache lookup hit on a XBF_STALE buffer will
-	   clear the XBF_DONE flag. Hence all future users of the
-	   buffer know they have to re-initialise the contents
-	   before use and mark it done themselves.
+Michał Winiarski <michal.winiarski@intel.com>
+    drm: Expand max DRM device number to full MINORBITS
 
-	2. xfs_trans_binval() sets the XFS_BLI_STALE flag, which
-	   means the buffer remains locked until the journal commit
-	   completes and the buffer is unpinned. Hence once marked
-	   XBF_STALE/XFS_BLI_STALE by xfs_ifree_cluster(), the only
-	   context that can access the freed buffer is the currently
-	   running transaction.
+Michał Winiarski <michal.winiarski@intel.com>
+    accel: Use XArray instead of IDR for minors
 
-	3. #2 implies that future buffer lookups in the currently
-	   running transaction will hit the transaction match code
-	   and not the buffer cache. Hence XBF_STALE and
-	   XFS_BLI_STALE will not be cleared unless the transaction
-	   initialises and logs the buffer with valid contents
-	   again. At which point, the buffer will be marked marked
-	   XBF_DONE again, so having XBF_DONE already set on the
-	   stale buffer is a moot point.
+Michał Winiarski <michal.winiarski@intel.com>
+    drm: Use XArray instead of IDR for minors
 
-	4. #2 also implies that any concurrent access to that
-	   cluster buffer will block waiting on the buffer lock
-	   until the inode cluster has been fully freed and is no
-	   longer an active inode cluster buffer.
 
-	5. #4 + #1 means that any future user of the disk range of
-	   that buffer will always see the range of disk blocks
-	   covered by the cluster buffer as not done, and hence must
-	   initialise the contents themselves.
+-------------
 
-	6. Setting XBF_DONE in xfs_ifree_cluster() then means the
-	   unlinked inode precommit code will see a XBF_DONE buffer
-	   from the transaction match as it expects. It can then
-	   attach the stale but newly dirtied inode to the stale
-	   but newly dirtied cluster buffer without unexpected
-	   failures. The stale buffer will then sail through the
-	   journal and do the right thing with the attached stale
-	   inode during unpin.
+Diffstat:
 
-Hence the fix is just one line of extra code. The explanation of
-why we have to set XBF_DONE in xfs_ifree_cluster, OTOH, is long and
-complex....
-
-Fixes: 82842fee6e59 ("xfs: fix AGF vs inode cluster buffer deadlock")
-Signed-off-by: Dave Chinner <dchinner@redhat.com>
-Tested-by: Luis Chamberlain <mcgrof@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- fs/xfs/xfs_inode.c |   23 +++++++++++++++++++----
- 1 file changed, 19 insertions(+), 4 deletions(-)
-
---- a/fs/xfs/xfs_inode.c
-+++ b/fs/xfs/xfs_inode.c
-@@ -2297,11 +2297,26 @@ xfs_ifree_cluster(
- 		 * This buffer may not have been correctly initialised as we
- 		 * didn't read it from disk. That's not important because we are
- 		 * only using to mark the buffer as stale in the log, and to
--		 * attach stale cached inodes on it. That means it will never be
--		 * dispatched for IO. If it is, we want to know about it, and we
--		 * want it to fail. We can acheive this by adding a write
--		 * verifier to the buffer.
-+		 * attach stale cached inodes on it.
-+		 *
-+		 * For the inode that triggered the cluster freeing, this
-+		 * attachment may occur in xfs_inode_item_precommit() after we
-+		 * have marked this buffer stale.  If this buffer was not in
-+		 * memory before xfs_ifree_cluster() started, it will not be
-+		 * marked XBF_DONE and this will cause problems later in
-+		 * xfs_inode_item_precommit() when we trip over a (stale, !done)
-+		 * buffer to attached to the transaction.
-+		 *
-+		 * Hence we have to mark the buffer as XFS_DONE here. This is
-+		 * safe because we are also marking the buffer as XBF_STALE and
-+		 * XFS_BLI_STALE. That means it will never be dispatched for
-+		 * IO and it won't be unlocked until the cluster freeing has
-+		 * been committed to the journal and the buffer unpinned. If it
-+		 * is written, we want to know about it, and we want it to
-+		 * fail. We can acheive this by adding a write verifier to the
-+		 * buffer.
- 		 */
-+		bp->b_flags |= XBF_DONE;
- 		bp->b_ops = &xfs_inode_buf_ops;
- 
- 		/*
+ Makefile                              |   4 +-
+ drivers/accel/drm_accel.c             | 110 +++-------------------------------
+ drivers/bluetooth/btintel_pcie.c      |   2 +-
+ drivers/cpufreq/amd-pstate.c          |   5 +-
+ drivers/gpu/drm/drm_drv.c             |  97 +++++++++++++++---------------
+ drivers/gpu/drm/drm_file.c            |   2 +-
+ drivers/gpu/drm/drm_internal.h        |   4 --
+ drivers/nvme/host/nvme.h              |   5 ++
+ drivers/nvme/host/pci.c               |  18 +++---
+ drivers/powercap/intel_rapl_common.c  |  35 +++++++++--
+ drivers/usb/class/usbtmc.c            |   2 +-
+ drivers/usb/serial/pl2303.c           |   1 +
+ drivers/usb/serial/pl2303.h           |   4 ++
+ include/drm/drm_accel.h               |  18 +-----
+ include/drm/drm_file.h                |   5 ++
+ net/netfilter/nft_socket.c            |   4 +-
+ sound/soc/amd/acp/acp-legacy-common.c |   5 ++
+ sound/soc/amd/acp/amd.h               |   2 +
+ 18 files changed, 129 insertions(+), 194 deletions(-)
 
 
 
