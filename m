@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-78037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id F414B9884CE
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:32:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E9F398845D
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:27:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 30BD01C21F20
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:32:03 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 09BCCB21AA1
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:27:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA01718C01A;
-	Fri, 27 Sep 2024 12:30:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0661018C33D;
+	Fri, 27 Sep 2024 12:26:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UNq7JERy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R2DPh5UB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89C4D18BC30;
-	Fri, 27 Sep 2024 12:30:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B587218BC0D;
+	Fri, 27 Sep 2024 12:26:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440248; cv=none; b=BHKdRY4P/Pmnl79nihLkBrEgCIxKqvL+JZ9mBWTQM9zNQnAuymj67lIIE1jQ9/qzyTu9ah+7E0ysrQ/2wx18QUOeMn5bVN/kSzkIFmxiWRsdhNWaCKXWJdUILuy5bKmmOjQn0vg2AZs+3hw0Qbt7XjeotAkWzd1KsyyaaYOFRaA=
+	t=1727439997; cv=none; b=uIgTwZtSSVuqRwySPMeCc97EeTsdOM1aAnL7VnnPdlQaqIVG7MPs/Czl8s1n4jDr5IvBQvRgSimUkCAMSzgQjsYVjOvIpZ69OMnYE2nABM7seUeniLjXQbRNkyWg7Ie7NgT4BrNGccGuJ8hA4yNKcc2tRR5BdAUbZIym1GHQp3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440248; c=relaxed/simple;
-	bh=4UA9jdGDicAao8yAJ4LgfuFpqRqEQvlhDcvOEVrOc6w=;
+	s=arc-20240116; t=1727439997; c=relaxed/simple;
+	bh=Wqba/5lLjaWUzG9s5uaLvHWjvo+KxT0KEKbn/c7KOCA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UE+BKQVNwINyYIuyzfaFxfy3D8c9D462a1JTgE6jvyMsxqkMMrqoMmfNcCltYoRAkxBw17BNqY6VKvKG0TJXLH53u0OT4E+pd2AueZi+hZPADa9j450L5kKk+Fs4qEDaPp3eMn23ZH1TCKLyIxJqaZ79qfbooQScJavhZKFF3Hg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UNq7JERy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17A4EC4CEC4;
-	Fri, 27 Sep 2024 12:30:47 +0000 (UTC)
+	 MIME-Version; b=k2uvp2GyfUkDaauMDWjXANeH0O1HOy+CaAUEMIOLc1KeRSDfMPKtNsu3vxDKqqgfcE29EP2SXjiEYG+6j87QlXfjfIApgYnwfqqkU2zTHnujJM20U+t8GvnoNAAaXUmezXwQovx6VyS8ksWQAoJxdE9tCRdsLk3Sdc5/88EyGB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R2DPh5UB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42584C4CECD;
+	Fri, 27 Sep 2024 12:26:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440248;
-	bh=4UA9jdGDicAao8yAJ4LgfuFpqRqEQvlhDcvOEVrOc6w=;
+	s=korg; t=1727439997;
+	bh=Wqba/5lLjaWUzG9s5uaLvHWjvo+KxT0KEKbn/c7KOCA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UNq7JERygoGb62Xf4utvto18Mu/N7eupckSPWtTEq9sLBWL0By/zU52mGLdOchXD5
-	 upxKeZqSXKibFDHdW6wGaJeGTi+fGX0GKOsOzJQj5jWW24bUOSWkXu89t6bC5o1zod
-	 fxjsIiczq2r+/yOsHVY/mRrtRcViE5eQfa/Q6aU0=
+	b=R2DPh5UBCAfmIuowi0j6osjtk9f8XI3lLDkD8HkcwkqbcnhcdVKZWVQN7cs9wOYlP
+	 u1AHNDHhdB9N8oF2yQkHEcOlgEe+AsRkq+114WJe7zLfHTVF+KQkhUZxW/tvpyxg6X
+	 jYkGvcbCPDGoQMQHyugmxV34E84VhUS4NKGhBFWQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Michael Kelley <mhklinux@outlook.com>,
+	Roman Kisel <romank@linux.microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 14/73] wifi: iwlwifi: mvm: pause TCM when the firmware is stopped
+Subject: [PATCH 6.6 33/54] x86/hyperv: Set X86_FEATURE_TSC_KNOWN_FREQ when Hyper-V provides frequency
 Date: Fri, 27 Sep 2024 14:23:25 +0200
-Message-ID: <20240927121720.431518295@linuxfoundation.org>
+Message-ID: <20240927121721.086594316@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121719.897851549@linuxfoundation.org>
-References: <20240927121719.897851549@linuxfoundation.org>
+In-Reply-To: <20240927121719.714627278@linuxfoundation.org>
+References: <20240927121719.714627278@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Michael Kelley <mhklinux@outlook.com>
 
-[ Upstream commit 0668ebc8c2282ca1e7eb96092a347baefffb5fe7 ]
+[ Upstream commit 8fcc514809de41153b43ccbe1a0cdf7f72b78e7e ]
 
-Not doing so will make us send a host command to the transport while the
-firmware is not alive, which will trigger a WARNING.
+A Linux guest on Hyper-V gets the TSC frequency from a synthetic MSR, if
+available. In this case, set X86_FEATURE_TSC_KNOWN_FREQ so that Linux
+doesn't unnecessarily do refined TSC calibration when setting up the TSC
+clocksource.
 
-bad state = 0
-WARNING: CPU: 2 PID: 17434 at drivers/net/wireless/intel/iwlwifi/iwl-trans.c:115 iwl_trans_send_cmd+0x1cb/0x1e0 [iwlwifi]
-RIP: 0010:iwl_trans_send_cmd+0x1cb/0x1e0 [iwlwifi]
-Call Trace:
- <TASK>
- iwl_mvm_send_cmd+0x40/0xc0 [iwlmvm]
- iwl_mvm_config_scan+0x198/0x260 [iwlmvm]
- iwl_mvm_recalc_tcm+0x730/0x11d0 [iwlmvm]
- iwl_mvm_tcm_work+0x1d/0x30 [iwlmvm]
- process_one_work+0x29e/0x640
- worker_thread+0x2df/0x690
- ? rescuer_thread+0x540/0x540
- kthread+0x192/0x1e0
- ? set_kthread_struct+0x90/0x90
- ret_from_fork+0x22/0x30
+With this change, a message such as this is no longer output during boot
+when the TSC is used as the clocksource:
 
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20240825191257.5abe71ca1b6b.I97a968cb8be1f24f94652d9b110ecbf6af73f89e@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+[    1.115141] tsc: Refined TSC clocksource calibration: 2918.408 MHz
+
+Furthermore, the guest and host will have exactly the same view of the
+TSC frequency, which is important for features such as the TSC deadline
+timer that are emulated by the Hyper-V host.
+
+Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+Reviewed-by: Roman Kisel <romank@linux.microsoft.com>
+Link: https://lore.kernel.org/r/20240606025559.1631-1-mhklinux@outlook.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <20240606025559.1631-1-mhklinux@outlook.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/x86/kernel/cpu/mshyperv.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-index 88b6d4e566c40..0a11ee347bf32 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-@@ -1366,6 +1366,8 @@ void iwl_mvm_stop_device(struct iwl_mvm *mvm)
+diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyperv.c
+index fac4b4116efe1..bcb2d640a0cd8 100644
+--- a/arch/x86/kernel/cpu/mshyperv.c
++++ b/arch/x86/kernel/cpu/mshyperv.c
+@@ -423,6 +423,7 @@ static void __init ms_hyperv_init_platform(void)
+ 	    ms_hyperv.misc_features & HV_FEATURE_FREQUENCY_MSRS_AVAILABLE) {
+ 		x86_platform.calibrate_tsc = hv_get_tsc_khz;
+ 		x86_platform.calibrate_cpu = hv_get_tsc_khz;
++		setup_force_cpu_cap(X86_FEATURE_TSC_KNOWN_FREQ);
+ 	}
  
- 	clear_bit(IWL_MVM_STATUS_FIRMWARE_RUNNING, &mvm->status);
- 
-+	iwl_mvm_pause_tcm(mvm, false);
-+
- 	iwl_fw_dbg_stop_sync(&mvm->fwrt);
- 	iwl_trans_stop_device(mvm->trans);
- 	iwl_free_fw_paging(&mvm->fwrt);
+ 	if (ms_hyperv.priv_high & HV_ISOLATION) {
 -- 
 2.43.0
 
