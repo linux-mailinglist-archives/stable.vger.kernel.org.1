@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-77994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78075-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF42898848D
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:28:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A16619884F8
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:33:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8A14928104F
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:28:49 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5F382284072
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:33:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE94B18BC1C;
-	Fri, 27 Sep 2024 12:28:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD84E18C911;
+	Fri, 27 Sep 2024 12:32:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Il+gPFix"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rgBDfYrS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DA3D17B515;
-	Fri, 27 Sep 2024 12:28:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C62E3C3C;
+	Fri, 27 Sep 2024 12:32:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440128; cv=none; b=DnlOZvdcPMyN5cxLiPRupJhlui3pn4J3VwnvDBltSEJmiRKBr133XXRR3XmOYUUGo64BMTpcDYvj9gV96Y8tLakEdMpUfxcdNoipBPVmHRGPaEQSWX2ReiVzI7so+n26szbRz3JKKUXaOOOnt511kTTFw6+WdxDostjAdY/IGiE=
+	t=1727440353; cv=none; b=UpKeJHBu4WLVVGeiGrpT6yMoIfwV+HeFPCObG0JhMkmnW94Qwt8LDkh6SkC4d7fHZrfOv3qL8b68Cs5CPRGLb9D/6PmsQ2ApVpXRYq2GXb/mf01GY2nrUmCezA8csdVOahN5eMgoZlPfAUv/a7xZpw9DA0xpOWspl+e4e9yGrlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440128; c=relaxed/simple;
-	bh=/g4y7/Pjp7PWstRcHvvy3Jg/PXmXLiqCp1CE/hApKKU=;
+	s=arc-20240116; t=1727440353; c=relaxed/simple;
+	bh=vAqqDKQQxKZepyAOgRXtwXFv7AJHu/AWooGjIiPW3fg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=trlhC7tA/kxTcjkMcRmwCnKHpdX9CeRIJgyCk9Drid2t5az7GDaU0r4gn1wmnBoANF2fVjpXgu5e7yKRVN215GNGKjylTucljV71EVs+wEkUwPlSf64WLxoAjcGsgOL/91ZKxWhBlFYebooZToHFAPO4A1DeyQZ+uRN+kIO8nCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Il+gPFix; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6DA3C4CEC4;
-	Fri, 27 Sep 2024 12:28:47 +0000 (UTC)
+	 MIME-Version; b=nfxVTEuNasnwz7BDkHH5eAg5wdLWqW2ffpEx55xfMvT9sGJbNDo+fxuGUG1u+RYYEViYAq4S0imx8P9fP7ML7EF/WPqEQw0IVmJH0x4BjzTY5OIBRHnZs30T1+fWd/8OVgHCA9Gp7UUIBkzbPwmAzyCSdzezSExg3CqKTt4MY4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rgBDfYrS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC3DBC4CEC4;
+	Fri, 27 Sep 2024 12:32:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440128;
-	bh=/g4y7/Pjp7PWstRcHvvy3Jg/PXmXLiqCp1CE/hApKKU=;
+	s=korg; t=1727440353;
+	bh=vAqqDKQQxKZepyAOgRXtwXFv7AJHu/AWooGjIiPW3fg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Il+gPFix6JOco6oeAnN20SbPLoiRtH4KQ0ZDJ7iPT2ypJ7dJ/vrUDyhNTc+vGkhk4
-	 Q3nItFxpnmBZlqYdKj2aZS3OJw+qPEz7OyghrA2gHsnD7pSFm2/urXB8otq2MyiqZy
-	 zysu/r5mJmtsfBBtg65xX5EZnfyh8k8gvaX1aC1Y=
+	b=rgBDfYrS6+5x/vNwjHjbTiZ8N45B74g1P27L9OCzbrxpbnAXPbFWYLzL+1S11HWKM
+	 pzzptFgk8j6CJu7CR+hwP4bBuEdqPF7HrlX93WrvbDPPAsfF+VZySwzqWODU8gtc+f
+	 2mrXgd1ZqdeXearbDxoFp225pqHPX+XrpI+71UzU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kenneth Feng <kenneth.feng@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 42/58] drm/amd/pm: fix the pp_dpm_pcie issue on smu v14.0.2/3
-Date: Fri, 27 Sep 2024 14:23:44 +0200
-Message-ID: <20240927121720.466316940@linuxfoundation.org>
+	Wengang Wang <wen.gang.wang@oracle.com>,
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Leah Rumancik <leah.rumancik@gmail.com>,
+	Chandan Babu R <chandanbabu@kernel.org>
+Subject: [PATCH 6.1 34/73] xfs: fix extent busy updating
+Date: Fri, 27 Sep 2024 14:23:45 +0200
+Message-ID: <20240927121721.287970961@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121718.789211866@linuxfoundation.org>
-References: <20240927121718.789211866@linuxfoundation.org>
+In-Reply-To: <20240927121719.897851549@linuxfoundation.org>
+References: <20240927121719.897851549@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +63,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kenneth Feng <kenneth.feng@amd.com>
+From: Wengang Wang <wen.gang.wang@oracle.com>
 
-[ Upstream commit 7a0982523cf3ff00f35b210fc3405c528a2ce7af ]
+[ Upstream commit 601a27ea09a317d0fe2895df7d875381fb393041 ]
 
-fix the pp_dpm_pcie issue on smu v14.0.2/3 as below:
-0: 2.5GT/s, x4 250Mhz
-1: 8.0GT/s, x4 616Mhz *
-2: 8.0GT/s, x4 1143Mhz *
-the middle level can be removed since it is always skipped on
-smu v14.0.2/3
+In xfs_extent_busy_update_extent() case 6 and 7, whenever bno is modified on
+extent busy, the relavent length has to be modified accordingly.
 
-Signed-off-by: Kenneth Feng <kenneth.feng@amd.com>
-Acked-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit fedf6db3ea9dc5eda0b78cfbbb8f7a88b97e5b24)
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Wengang Wang <wen.gang.wang@oracle.com>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Acked-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/xfs/xfs_extent_busy.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c
-index 06b65159f7b4a..33c7740dd50a7 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c
-@@ -672,6 +672,9 @@ static int smu_v14_0_2_set_default_dpm_table(struct smu_context *smu)
- 		pcie_table->clk_freq[pcie_table->num_of_link_levels] =
- 					skutable->LclkFreq[link_level];
- 		pcie_table->num_of_link_levels++;
-+
-+		if (link_level == 0)
-+			link_level++;
- 	}
- 
- 	return 0;
--- 
-2.43.0
-
+--- a/fs/xfs/xfs_extent_busy.c
++++ b/fs/xfs/xfs_extent_busy.c
+@@ -236,6 +236,7 @@ xfs_extent_busy_update_extent(
+ 		 *
+ 		 */
+ 		busyp->bno = fend;
++		busyp->length = bend - fend;
+ 	} else if (bbno < fbno) {
+ 		/*
+ 		 * Case 8:
 
 
 
