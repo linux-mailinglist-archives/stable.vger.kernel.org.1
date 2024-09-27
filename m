@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-77977-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC69F98847C
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:28:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65F8398843A
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:25:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 37001B218DF
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:28:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 195AC281029
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:25:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88D8518C016;
-	Fri, 27 Sep 2024 12:28:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F61C18BC1D;
+	Fri, 27 Sep 2024 12:25:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WwRu6ewI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q33XraU5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43FE618C003;
-	Fri, 27 Sep 2024 12:28:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FE5C1779BD;
+	Fri, 27 Sep 2024 12:25:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440081; cv=none; b=acuTAfe4dXg9Dy0Bs5ijWZH4TY7LXecMB61vYR+ypM7lUVymXr3RpqVU0bbJ2vpdNCEkt6XM6Ko0GeevZCU7v2zK+NMQfxmSRvCQ8xAg6kWmNkY0iwtK3vZpqk/aY9KresrXADmH6fVyrI4pk3CwI5Hzyapwp2iu/7S6u28L5dk=
+	t=1727439936; cv=none; b=bJd1HkCm0sFK9IszsUAP13i5E8bB7PMLBVx0YMKc7MJDwka+G5X8YNVPKtetmjHpLdYGL38VlfR0M2h6x1dNl01GjBr6etVEjj2xGtJurwcPo8RcWPm9uis4ZlAmxWn7DwOpra2aOmqCUuFZDwANKzYK2SvWi2/vCwSIxRK37lM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440081; c=relaxed/simple;
-	bh=FdTYQHjmrDTg4EIou7bNN6P2T75/kFL7v+wmDyGpiic=;
+	s=arc-20240116; t=1727439936; c=relaxed/simple;
+	bh=kkBfkbHx5qK7JTVmT1mF/AIsBnf8dUlGAJgte0JezF4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ODcIabUjpkDTuGzLXsxMuvd9LZe+xjPbIXzsM471Va3uAcZUJ/Cxk//G9cOm/SXml1+S030xFckWJjWkZSLCVvqltcGal+T0L/xRQtyWxvyDK/mg21F/uYNCosZC/eZjyL576ivUBhnDr8BRh2sAqPsk+OLKtW3RP08gJvQNfAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WwRu6ewI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C180EC4CEC6;
-	Fri, 27 Sep 2024 12:28:00 +0000 (UTC)
+	 MIME-Version; b=AgseUOiVm+E8n+C0Ec1a5LqdFxtGfcKAiFJzJjLaEegYx3iAwRMNGYIR1FojnBqDXMUmG5+jk1ndiIoeOqryvwtBv+AaSnN3Fn3cUywFvROSBX6B1ttuVrfuHQ5Yy7Rm3JTKUtReHREmd2ZNCizbYOjnQi/SdEIgBlODigBxGH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q33XraU5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B14F4C4CEC4;
+	Fri, 27 Sep 2024 12:25:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440081;
-	bh=FdTYQHjmrDTg4EIou7bNN6P2T75/kFL7v+wmDyGpiic=;
+	s=korg; t=1727439936;
+	bh=kkBfkbHx5qK7JTVmT1mF/AIsBnf8dUlGAJgte0JezF4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WwRu6ewIgB3+hUfSqgxla24mcjY6Yvc6L0gcwALmxdyql/hWIxSX4b1LPO9XJ0aqP
-	 pCkeLtJ30bPoQBDvxX5ozU8L4Yr1mWjCx8pnNfbzO4Ft3Up+RatlFh/NXARl8cg3Lp
-	 HNJcnZllcbc/9hYKs2LzFOcJXx7p2Tr2fTdikhmI=
+	b=q33XraU5aULFf1TJz0fQlN1tBxPmQyBa8GgwE1b7jATK0aBkqoOrYyZsQcUVqQRsD
+	 qAl2S4me9q8L+hvseTOXz6tjmT6ED44fK2kxl02S3O+bNmP8oGDoNM5sHXGQuLXbfs
+	 MQbfL5ix2MgGIXvaje7eLRe99v46cduDPStloDI4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Gabay <daniel.gabay@intel.com>,
-	Ilan Peer <ilan.peer@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Markuss Broks <markuss.broks@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 18/58] wifi: iwlwifi: mvm: fix iwl_mvm_max_scan_ie_fw_cmd_room()
+Subject: [PATCH 6.6 28/54] ASoC: amd: yc: Add a quirk for MSI Bravo 17 (D7VEK)
 Date: Fri, 27 Sep 2024 14:23:20 +0200
-Message-ID: <20240927121719.552535622@linuxfoundation.org>
+Message-ID: <20240927121720.868889109@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121718.789211866@linuxfoundation.org>
-References: <20240927121718.789211866@linuxfoundation.org>
+In-Reply-To: <20240927121719.714627278@linuxfoundation.org>
+References: <20240927121719.714627278@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,60 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Gabay <daniel.gabay@intel.com>
+From: Markuss Broks <markuss.broks@gmail.com>
 
-[ Upstream commit 916a5d9c5354c426220a0a6533a5e8ea1287d6ea ]
+[ Upstream commit 283844c35529300c8e10f7a263e35e3c5d3580ac ]
 
-Driver creates also the WFA TPC element, consider that in the
-calculation.
+MSI Bravo 17 (D7VEK), like other laptops from the family,
+has broken ACPI tables and needs a quirk for internal mic
+to work.
 
-Signed-off-by: Daniel Gabay <daniel.gabay@intel.com>
-Reviewed-by: Ilan Peer <ilan.peer@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20240825191257.e710ce446b7f.I2715c6742e9c3d160e2ba41bc4b35de370d2ce34@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Markuss Broks <markuss.broks@gmail.com>
+Link: https://patch.msgid.link/20240829130313.338508-1-markuss.broks@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-index 89adc6421eeee..d7c276237c74e 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
-@@ -48,6 +48,8 @@
- /* Number of iterations on the channel for mei filtered scan */
- #define IWL_MEI_SCAN_NUM_ITER	5U
- 
-+#define WFA_TPC_IE_LEN	9
-+
- struct iwl_mvm_scan_timing_params {
- 	u32 suspend_time;
- 	u32 max_out_time;
-@@ -303,8 +305,8 @@ static int iwl_mvm_max_scan_ie_fw_cmd_room(struct iwl_mvm *mvm)
- 
- 	max_probe_len = SCAN_OFFLOAD_PROBE_REQ_SIZE;
- 
--	/* we create the 802.11 header and SSID element */
--	max_probe_len -= 24 + 2;
-+	/* we create the 802.11 header SSID element and WFA TPC element */
-+	max_probe_len -= 24 + 2 + WFA_TPC_IE_LEN;
- 
- 	/* DS parameter set element is added on 2.4GHZ band if required */
- 	if (iwl_mvm_rrm_scan_needed(mvm))
-@@ -731,8 +733,6 @@ static u8 *iwl_mvm_copy_and_insert_ds_elem(struct iwl_mvm *mvm, const u8 *ies,
- 	return newpos;
- }
- 
--#define WFA_TPC_IE_LEN	9
--
- static void iwl_mvm_add_tpc_report_ie(u8 *pos)
- {
- 	pos[0] = WLAN_EID_VENDOR_SPECIFIC;
+diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
+index f6c1dbd0ebcf5..248e3bcbf386b 100644
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -353,6 +353,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "Bravo 15 C7VF"),
+ 		}
+ 	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "Micro-Star International Co., Ltd."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Bravo 17 D7VEK"),
++		}
++	},
+ 	{
+ 		.driver_data = &acp6x_card,
+ 		.matches = {
 -- 
 2.43.0
 
