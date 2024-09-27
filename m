@@ -1,137 +1,210 @@
-Return-Path: <stable+bounces-78162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BBD7988BEA
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 23:44:39 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9956E988C51
+	for <lists+stable@lfdr.de>; Sat, 28 Sep 2024 00:09:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B1D951F22216
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 21:44:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5A7FF2836A7
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 22:09:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86853171E5F;
-	Fri, 27 Sep 2024 21:44:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 582971B151E;
+	Fri, 27 Sep 2024 22:09:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="ZgkXyV9a"
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="Tx4j2PFR"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42DB716F909;
-	Fri, 27 Sep 2024 21:44:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 454741B07BC
+	for <stable@vger.kernel.org>; Fri, 27 Sep 2024 22:09:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727473474; cv=none; b=pJdT41yC0wUyBPe+p0q3jnMsbZf8gfC48BwY7C6F+48XEiBvwgx74e8NjlRMOyDYiVJ1kUWhWZy8BWRp3+0nwzc4iHrJAWS8t+Q9jyo2lagAb6qIq8i++wkYKAp+kT2kXAgcx+2DOQlKR1c2U3iJiYiFKR9P3+X5Aj7jpHyQu4U=
+	t=1727474959; cv=none; b=Gc7iE9WbFBub4j+9YDXX8LD043JuZaOONanoWwD63gnwu/1OBSF5J1FVVarUHooWxmsaRYg7fcEISIqlMNf82VoxE/x9V4IMzqqMfItcKG6PE2SQ12P5+MRB42xVutZ0phGkZ5tVr3GzqbpR0qocbUrfNLelmvcBU2X4tQa8U2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727473474; c=relaxed/simple;
-	bh=D3oLuwP6Dv6obMJ5odxVQzTAjbaZ9Z+G5xZvfXXWUcY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nPVpqXZu9YgAl6ui/68eeGDpcUwCxlAdGCf3njsPnqRvne8de/Vwo5f9gHfeqnjLpenIYZMy045LQ87cqLW7P6kXnNXoeNJEvIqkJfSDN54bUTEo50AiguAoP9nrWDA3yE6bGhUE7m5mHGy8PF9m4S/5ccwxV367ZqnD8uhBcoM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=ZgkXyV9a; arc=none smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246632.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 48RKVlH9025180;
-	Fri, 27 Sep 2024 21:44:04 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=
-	from:to:cc:subject:date:message-id:in-reply-to:references
-	:mime-version:content-transfer-encoding; s=corp-2023-11-20; bh=n
-	5Wgk42lYzokNmEIlnNyGYK3U2saSL2y5ta9ak5AIJ4=; b=ZgkXyV9absOSVzl0z
-	Pm5ApyoOi9ytxZVv/P8RyrljssnPwfzxhxr+cDUTVIWJg/TYbjU6Ht8dgGsX5BeJ
-	qxVNH0LMySkF91zlIMvWSyGsfP0fpCNBhdF44DTEVNdfdHHZs7SUhRnG4iG1OCpv
-	y7xLqPzRrBtVqc7vKX/E9hyhnXdOtr6czHP/R8NLxq+o89jumkyWPlXhexRFIse9
-	wUQ4tc3PNDXtin3RtYEuZ84SO2JWMH91PtMHTwY5g6OkpG0O10bqazHYDPUL9vn8
-	p2zlSrUNAGyDCv/CoZptGIwrwbanc5bA9j6mtEnpdr3b5VOIO94JX3QWGcXg74ft
-	XR/Jw==
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.appoci.oracle.com [130.35.103.27])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 41snrte5kk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 27 Sep 2024 21:44:04 +0000 (GMT)
-Received: from pps.filterd (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 48RK6MMc025352;
-	Fri, 27 Sep 2024 21:44:03 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTPS id 41smke5afy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 27 Sep 2024 21:44:03 +0000
-Received: from iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 48RLaw36030299;
-	Fri, 27 Sep 2024 21:44:03 GMT
-Received: from ca-dev112.us.oracle.com (ca-dev112.us.oracle.com [10.129.136.47])
-	by iadpaimrmta03.imrmtpd1.prodappiadaev1.oraclevcn.com (PPS) with ESMTP id 41smke5ae0-3;
-	Fri, 27 Sep 2024 21:44:03 +0000
-From: Sherry Yang <sherry.yang@oracle.com>
-To: linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc: rostedt@goodmis.org, mingo@redhat.com, gregkh@linuxfoundation.org,
-        sherry.yang@oracle.com
-Subject: [PATCH 5.4.y 2/2] tracing/kprobes: Fix symbol counting logic by looking at modules as well
-Date: Fri, 27 Sep 2024 14:43:59 -0700
-Message-ID: <20240927214359.7611-3-sherry.yang@oracle.com>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240927214359.7611-1-sherry.yang@oracle.com>
-References: <20240927214359.7611-1-sherry.yang@oracle.com>
+	s=arc-20240116; t=1727474959; c=relaxed/simple;
+	bh=CM/qaVXfiW8uBR2C6CyoRxY7SPpnNXAueBczydPEdRQ=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=udK85GnFQM6QEQleB96b36uJ1bFp/cElrpRPryMp8jbiihHjQRN8G8RWLm6XZsQ5cXhD9Ed3Pwg3P9kIsLs2gO5bCR7HHRmTyhi4sL+KD2Pr/oFm5fdxzm2bjp/ZKakoE8fwHhZtNFdyuAHuMXnq+6e5/XaIqODaOsG2A/ThtwQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=Tx4j2PFR; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1727474955; x=1727734155;
+	bh=IPLRfC8BzQNV6CULWbRBUr4Rw+Tj/CmdqJzBvNMVXNA=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=Tx4j2PFRQxMBNSa4HE+J+OvJiC2rBzmY5mfDRY6pWkhrNteWd6fuhROfKcAuJGCbD
+	 ryjUQ9pYbQoQnHV8EqVfpKuGBHOuHop/+2OCaalB9lxo9gkuy336EC6P3Rey2KDgeJ
+	 ycSmXF93BxAQ7yOyp+h5aAxBIQvaDA4mQFmGXBxPZv/Z+82normoamF02e2fiOTFjY
+	 /+2HDTDMUr4krv4JICNingcQ490pYYIMVrmodqyayceyPpFQ49lf8aVX7rYUJpQ9U/
+	 JcqCksau/RyHrm8W1XYooujmYoseEVGs/RWL5d3mZ0l6mmhl7Q1gEtDEglNB0q51XJ
+	 QhLtnKVLCbrUw==
+Date: Fri, 27 Sep 2024 22:09:10 +0000
+To: linux-mm@kvack.org, linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, akpm@linux-foundation.org, cyphar@cyphar.com, david@readahead.eu, dmitry.torokhov@gmail.com, dverkamp@chromium.org, hughd@google.com, jeffxu@google.com, jorgelo@chromium.org, keescook@chromium.org, skhan@linuxfoundation.org
+From: =?utf-8?Q?Barnab=C3=A1s_P=C5=91cze?= <pobrn@protonmail.com>
+Cc: stable@vger.kernel.org
+Subject: Re: [PATCH v4] memfd: `MFD_NOEXEC_SEAL` should not imply `MFD_ALLOW_SEALING`
+Message-ID: <aOShI37M3MN63hDFOQGncbS8dxBsKGXVaxrwu0a5ubcrTqrPrgZJRXXYBOyiW3cHKFqh61sT4efgRsbJpvnJMDOHsurGYnr454oa3dUW3r8=@protonmail.com>
+In-Reply-To: <20240630184912.37335-1-pobrn@protonmail.com>
+References: <20240630184912.37335-1-pobrn@protonmail.com>
+Feedback-ID: 20568564:user:proton
+X-Pm-Message-ID: 5c0df630e371707472ba21da6e6e8ab3c172f12a
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1051,Hydra:6.0.680,FMLib:17.12.60.29
- definitions=2024-09-27_06,2024-09-27_01,2024-09-02_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 malwarescore=0 suspectscore=0
- mlxlogscore=999 adultscore=0 mlxscore=0 bulkscore=0 spamscore=0
- phishscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2408220000 definitions=main-2409270159
-X-Proofpoint-GUID: TCm0kOeeB55gQJa1Kw68urfico7sQatD
-X-Proofpoint-ORIG-GUID: TCm0kOeeB55gQJa1Kw68urfico7sQatD
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-From: Andrii Nakryiko <andrii@kernel.org>
+Hi
 
-commit 926fe783c8a64b33997fec405cf1af3e61aed441 upstream.
 
-Recent changes to count number of matching symbols when creating
-a kprobe event failed to take into account kernel modules. As such, it
-breaks kprobes on kernel module symbols, by assuming there is no match.
+Gentle ping. Is there any chance we could move forward with this? I am not =
+aware
+of any breakage it would cause; but longer the wait, the higher the likelih=
+ood.
 
-Fix this my calling module_kallsyms_on_each_symbol() in addition to
-kallsyms_on_each_match_symbol() to perform a proper counting.
 
-Link: https://lore.kernel.org/all/20231027233126.2073148-1-andrii@kernel.org/
+Regards,
+Barnab=C3=A1s P=C5=91cze
 
-Cc: Francis Laniel <flaniel@linux.microsoft.com>
-Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Fixes: b022f0c7e404 ("tracing/kprobes: Return EADDRNOTAVAIL when func matches several symbols")
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Song Liu <song@kernel.org>
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Markus Boehme <markubo@amazon.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[Sherry: It's a fix for previous backport, thus backport together to
-5.4.y]
-Signed-off-by: Sherry Yang <sherry.yang@oracle.com>
----
- kernel/trace/trace_kprobe.c | 2 ++
- 1 file changed, 2 insertions(+)
+2024. j=C3=BAnius 30., vas=C3=A1rnap 20:49 keltez=C3=A9ssel, Barnab=C3=
+=A1s P=C5=91cze <pobrn@protonmail.com> =C3=ADrta:
 
-diff --git a/kernel/trace/trace_kprobe.c b/kernel/trace/trace_kprobe.c
-index 80a59dbdd631..2164abe06d84 100644
---- a/kernel/trace/trace_kprobe.c
-+++ b/kernel/trace/trace_kprobe.c
-@@ -741,6 +741,8 @@ static unsigned int number_of_same_symbols(char *func_name)
- 
- 	kallsyms_on_each_symbol(count_symbols, &args);
- 
-+	module_kallsyms_on_each_symbol(count_symbols, &args);
-+
- 	return args.count;
- }
- 
--- 
-2.46.0
-
+> `MFD_NOEXEC_SEAL` should remove the executable bits and set `F_SEAL_EXEC`
+> to prevent further modifications to the executable bits as per the commen=
+t
+> in the uapi header file:
+>=20
+>   not executable and sealed to prevent changing to executable
+>=20
+> However, commit 105ff5339f498a ("mm/memfd: add MFD_NOEXEC_SEAL and MFD_EX=
+EC")
+> that introduced this feature made it so that `MFD_NOEXEC_SEAL` unsets
+> `F_SEAL_SEAL`, essentially acting as a superset of `MFD_ALLOW_SEALING`.
+>=20
+> Nothing implies that it should be so, and indeed up until the second vers=
+ion
+> of the of the patchset[0] that introduced `MFD_EXEC` and `MFD_NOEXEC_SEAL=
+`,
+> `F_SEAL_SEAL` was not removed, however, it was changed in the third revis=
+ion
+> of the patchset[1] without a clear explanation.
+>=20
+> This behaviour is surprising for application developers, there is no
+> documentation that would reveal that `MFD_NOEXEC_SEAL` has the additional
+> effect of `MFD_ALLOW_SEALING`. Additionally, combined with `vm.memfd_noex=
+ec=3D2`
+> it has the effect of making all memfds initially sealable.
+>=20
+> So do not remove `F_SEAL_SEAL` when `MFD_NOEXEC_SEAL` is requested,
+> thereby returning to the pre-Linux 6.3 behaviour of only allowing
+> sealing when `MFD_ALLOW_SEALING` is specified.
+>=20
+> Now, this is technically a uapi break. However, the damage is expected
+> to be minimal. To trigger user visible change, a program has to do the
+> following steps:
+>=20
+>  - create memfd:
+>    - with `MFD_NOEXEC_SEAL`,
+>    - without `MFD_ALLOW_SEALING`;
+>  - try to add seals / check the seals.
+>=20
+> But that seems unlikely to happen intentionally since this change
+> essentially reverts the kernel's behaviour to that of Linux <6.3,
+> so if a program worked correctly on those older kernels, it will
+> likely work correctly after this change.
+>=20
+> I have used Debian Code Search and GitHub to try to find potential
+> breakages, and I could only find a single one. dbus-broker's
+> memfd_create() wrapper is aware of this implicit `MFD_ALLOW_SEALING`
+> behaviour, and tries to work around it[2]. This workaround will
+> break. Luckily, this only affects the test suite, it does not affect
+> the normal operations of dbus-broker. There is a PR with a fix[3].
+>=20
+> I also carried out a smoke test by building a kernel with this change
+> and booting an Arch Linux system into GNOME and Plasma sessions.
+>=20
+> There was also a previous attempt to address this peculiarity by
+> introducing a new flag[4].
+>=20
+> [0]: https://lore.kernel.org/lkml/20220805222126.142525-3-jeffxu@google.c=
+om/
+> [1]: https://lore.kernel.org/lkml/20221202013404.163143-3-jeffxu@google.c=
+om/
+> [2]: https://github.com/bus1/dbus-broker/blob/9eb0b7e5826fc76cad7b025bc46=
+f267d4a8784cb/src/util/misc.c#L114
+> [3]: https://github.com/bus1/dbus-broker/pull/366
+> [4]: https://lore.kernel.org/lkml/20230714114753.170814-1-david@readahead=
+.eu/
+>=20
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Barnab=C3=A1s P=C5=91cze <pobrn@protonmail.com>
+> ---
+>=20
+> * v3: https://lore.kernel.org/linux-mm/20240611231409.3899809-1-jeffxu@ch=
+romium.org/
+> * v2: https://lore.kernel.org/linux-mm/20240524033933.135049-1-jeffxu@goo=
+gle.com/
+> * v1: https://lore.kernel.org/linux-mm/20240513191544.94754-1-pobrn@proto=
+nmail.com/
+>=20
+> This fourth version returns to removing the inconsistency as opposed to d=
+ocumenting
+> its existence, with the same code change as v1 but with a somewhat extend=
+ed commit
+> message. This is sent because I believe it is worth at least a try; it ca=
+n be easily
+> reverted if bigger application breakages are discovered than initially im=
+agined.
+>=20
+> ---
+>  mm/memfd.c                                 | 9 ++++-----
+>  tools/testing/selftests/memfd/memfd_test.c | 2 +-
+>  2 files changed, 5 insertions(+), 6 deletions(-)
+>=20
+> diff --git a/mm/memfd.c b/mm/memfd.c
+> index 7d8d3ab3fa37..8b7f6afee21d 100644
+> --- a/mm/memfd.c
+> +++ b/mm/memfd.c
+> @@ -356,12 +356,11 @@ SYSCALL_DEFINE2(memfd_create,
+> =20
+>  =09=09inode->i_mode &=3D ~0111;
+>  =09=09file_seals =3D memfd_file_seals_ptr(file);
+> -=09=09if (file_seals) {
+> -=09=09=09*file_seals &=3D ~F_SEAL_SEAL;
+> +=09=09if (file_seals)
+>  =09=09=09*file_seals |=3D F_SEAL_EXEC;
+> -=09=09}
+> -=09} else if (flags & MFD_ALLOW_SEALING) {
+> -=09=09/* MFD_EXEC and MFD_ALLOW_SEALING are set */
+> +=09}
+> +
+> +=09if (flags & MFD_ALLOW_SEALING) {
+>  =09=09file_seals =3D memfd_file_seals_ptr(file);
+>  =09=09if (file_seals)
+>  =09=09=09*file_seals &=3D ~F_SEAL_SEAL;
+> diff --git a/tools/testing/selftests/memfd/memfd_test.c b/tools/testing/s=
+elftests/memfd/memfd_test.c
+> index 95af2d78fd31..7b78329f65b6 100644
+> --- a/tools/testing/selftests/memfd/memfd_test.c
+> +++ b/tools/testing/selftests/memfd/memfd_test.c
+> @@ -1151,7 +1151,7 @@ static void test_noexec_seal(void)
+>  =09=09=09    mfd_def_size,
+>  =09=09=09    MFD_CLOEXEC | MFD_NOEXEC_SEAL);
+>  =09mfd_assert_mode(fd, 0666);
+> -=09mfd_assert_has_seals(fd, F_SEAL_EXEC);
+> +=09mfd_assert_has_seals(fd, F_SEAL_SEAL | F_SEAL_EXEC);
+>  =09mfd_fail_chmod(fd, 0777);
+>  =09close(fd);
+>  }
+> --=20
+> 2.45.2
+> 
 
