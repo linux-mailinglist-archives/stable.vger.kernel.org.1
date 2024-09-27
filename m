@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-77988-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36BD7988487
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:28:34 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1701F9884E6
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:32:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id D6BCD1F227D2
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:28:33 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6349281B68
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:32:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DAEF18A955;
-	Fri, 27 Sep 2024 12:28:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2281C187331;
+	Fri, 27 Sep 2024 12:31:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TG9+yxfq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="leWNWVrz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D79617B515;
-	Fri, 27 Sep 2024 12:28:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5F7C1802AB;
+	Fri, 27 Sep 2024 12:31:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440112; cv=none; b=HlTroYUHU/iuSvj1WwLMEXN2DwzsFgE5gQ02iSBQmNkjFdR/9bZcP+HJPAKCs9TIGjb1H7Xi05MJyFrO35dPnpWExAk3iZemZiSyxGBYFcEWsY9Y+Ngn7fUJztetICe8x/Qv9zyBRvJXlFaLjU4vlFUiUjd/LWkqhThiddoaTd4=
+	t=1727440314; cv=none; b=R3QFJvrzykAhxDrX2jas2NXD9i/TrkCYuMN1PJFXLVD984XMRmJqQFA81T+1zukl/cQ0oAIA7BqY+rEm5a2WTCokxhj2ILwAh9In5mML6UsFmJwf3czzsO7IsViWA3UN4ySiJDhchOy2uebql369hlXVdnUux59mkgI+5GMwBa8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440112; c=relaxed/simple;
-	bh=nj2N539WVoabIzyqbgPiQ9dkIhB0QH4nC9BRn91cdBA=;
+	s=arc-20240116; t=1727440314; c=relaxed/simple;
+	bh=thLzb6kuaS2+OuHhD2FEn0w7HPKTQobgcLQy1uiQ6Ac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dAKq7tHSRM6l1/7fcxi4x4ci1HOK+9PSqvqPVrgfC0Z45s9V/S6PZg0Vz155mEtgpRoJt3ZmqNhgmRTkPDo4LCqyizOVGuNwAfNlNjoUX6Oggwv1FzY2xe5ZMHzMWZZlFgOxW3dmZ+08EUJXLBm7q1X0R3yTPhGHIh8pkvS5/3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TG9+yxfq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40238C4CEC4;
-	Fri, 27 Sep 2024 12:28:31 +0000 (UTC)
+	 MIME-Version; b=ADMQctLtvl8caFNDhpUQQnqpAGjS6fJSLpt39cQDbng1/maQCuPGXXI342fo2WemUPXriut/MwB9WQfrL7YvzI544ZQakNY9l2kTS/+BK28WZnOa2S4QSE6r1Ezw0UFaRHwkZF0zOTyi7+8Kq2+MHhT+G6r9pkbZapWe40r3Ii4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=leWNWVrz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65513C4CEC4;
+	Fri, 27 Sep 2024 12:31:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440111;
-	bh=nj2N539WVoabIzyqbgPiQ9dkIhB0QH4nC9BRn91cdBA=;
+	s=korg; t=1727440314;
+	bh=thLzb6kuaS2+OuHhD2FEn0w7HPKTQobgcLQy1uiQ6Ac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TG9+yxfq9kRQ3WcLMhhchLa1/7qRXfVlcmj6yCFLxiQMpasRDg4JCN5RSEBIQm3wG
-	 mzdFJUEQWZMnhb0ph1h9nsSOHvOf9/wbldrrYU/IZzoIQPGi2FYCrsjvx8+8DKo0ym
-	 y8YiWeumi4bGXOR7APbCv8TvylBw0MRSMuDajz1E=
+	b=leWNWVrzyhEFYi8SDQOnyzJ5E8dzOAkV1IIfl0FOaxq4YfXYF/35WOGTVjdpCz4gG
+	 IzpjFBGox40UmHSnZCpVbiWZeWlaP0cVv8Y7ykGbO200wCe1vQ2/ow4CxupBsFHd4f
+	 zjgJ9k9HLP2jp1uA3Oj0EAHtpE0NZhcigCP0Hsls=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Tianyang Zhang <zhangtianyang@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 19/58] wifi: iwlwifi: mvm: pause TCM when the firmware is stopped
-Date: Fri, 27 Sep 2024 14:23:21 +0200
-Message-ID: <20240927121719.594231935@linuxfoundation.org>
+Subject: [PATCH 6.1 11/73] LoongArch: Define ARCH_IRQ_INIT_FLAGS as IRQ_NOPROBE
+Date: Fri, 27 Sep 2024 14:23:22 +0200
+Message-ID: <20240927121720.323285468@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121718.789211866@linuxfoundation.org>
-References: <20240927121718.789211866@linuxfoundation.org>
+In-Reply-To: <20240927121719.897851549@linuxfoundation.org>
+References: <20240927121719.897851549@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,55 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit 0668ebc8c2282ca1e7eb96092a347baefffb5fe7 ]
+[ Upstream commit 274ea3563e5ab9f468c15bfb9d2492803a66d9be ]
 
-Not doing so will make us send a host command to the transport while the
-firmware is not alive, which will trigger a WARNING.
+Currently we call irq_set_noprobe() in a loop for all IRQs, but indeed
+it only works for IRQs below NR_IRQS_LEGACY because at init_IRQ() only
+legacy interrupts have been allocated.
 
-bad state = 0
-WARNING: CPU: 2 PID: 17434 at drivers/net/wireless/intel/iwlwifi/iwl-trans.c:115 iwl_trans_send_cmd+0x1cb/0x1e0 [iwlwifi]
-RIP: 0010:iwl_trans_send_cmd+0x1cb/0x1e0 [iwlwifi]
-Call Trace:
- <TASK>
- iwl_mvm_send_cmd+0x40/0xc0 [iwlmvm]
- iwl_mvm_config_scan+0x198/0x260 [iwlmvm]
- iwl_mvm_recalc_tcm+0x730/0x11d0 [iwlmvm]
- iwl_mvm_tcm_work+0x1d/0x30 [iwlmvm]
- process_one_work+0x29e/0x640
- worker_thread+0x2df/0x690
- ? rescuer_thread+0x540/0x540
- kthread+0x192/0x1e0
- ? set_kthread_struct+0x90/0x90
- ret_from_fork+0x22/0x30
+Instead, we can define ARCH_IRQ_INIT_FLAGS as IRQ_NOPROBE in asm/hwirq.h
+and the core will automatically set the flag for all interrupts.
 
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20240825191257.5abe71ca1b6b.I97a968cb8be1f24f94652d9b110ecbf6af73f89e@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Tianyang Zhang <zhangtianyang@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/intel/iwlwifi/mvm/ops.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/loongarch/include/asm/hw_irq.h | 2 ++
+ arch/loongarch/kernel/irq.c         | 3 ---
+ 2 files changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-index 498afbe4ee6be..6375cc3c48f3c 100644
---- a/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-+++ b/drivers/net/wireless/intel/iwlwifi/mvm/ops.c
-@@ -1521,6 +1521,8 @@ void iwl_mvm_stop_device(struct iwl_mvm *mvm)
+diff --git a/arch/loongarch/include/asm/hw_irq.h b/arch/loongarch/include/asm/hw_irq.h
+index af4f4e8fbd858..8156ffb674159 100644
+--- a/arch/loongarch/include/asm/hw_irq.h
++++ b/arch/loongarch/include/asm/hw_irq.h
+@@ -9,6 +9,8 @@
  
- 	clear_bit(IWL_MVM_STATUS_FIRMWARE_RUNNING, &mvm->status);
+ extern atomic_t irq_err_count;
  
-+	iwl_mvm_pause_tcm(mvm, false);
++#define ARCH_IRQ_INIT_FLAGS	IRQ_NOPROBE
 +
- 	iwl_fw_dbg_stop_sync(&mvm->fwrt);
- 	iwl_trans_stop_device(mvm->trans);
- 	iwl_free_fw_paging(&mvm->fwrt);
+ /*
+  * interrupt-retrigger: NOP for now. This may not be appropriate for all
+  * machines, we'll see ...
+diff --git a/arch/loongarch/kernel/irq.c b/arch/loongarch/kernel/irq.c
+index 0524bf1169b74..4496649c9e68b 100644
+--- a/arch/loongarch/kernel/irq.c
++++ b/arch/loongarch/kernel/irq.c
+@@ -122,9 +122,6 @@ void __init init_IRQ(void)
+ 		panic("IPI IRQ request failed\n");
+ #endif
+ 
+-	for (i = 0; i < NR_IRQS; i++)
+-		irq_set_noprobe(i);
+-
+ 	for_each_possible_cpu(i) {
+ 		page = alloc_pages_node(cpu_to_node(i), GFP_KERNEL, order);
+ 
 -- 
 2.43.0
 
