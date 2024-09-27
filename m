@@ -1,60 +1,64 @@
-Return-Path: <stable+bounces-77991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78054-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3F80998848A
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:28:42 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C80459884DE
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:32:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DCD6C2810F0
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:28:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0508F1C2127F
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:32:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E4AD18BC1C;
-	Fri, 27 Sep 2024 12:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CF5918C02E;
+	Fri, 27 Sep 2024 12:31:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yxefty89"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GCvgqUFM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF3017B515;
-	Fri, 27 Sep 2024 12:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFC251E507;
+	Fri, 27 Sep 2024 12:31:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440120; cv=none; b=frxDL0MN34e8c9Hkx9NDLSgFA01Or7idJrFYKahDLvQtzWt8FDXkHpNzFLX4cS9d2onJqpZ6zNIUJqP2H7wqj7X5DieohbVISWF2VA+ALtFyCC67JOE9LEYnyL2kA6T+T69icKSaHSQ1s77mWka5t1+kijIHi8ooZGUFV1JeMBA=
+	t=1727440296; cv=none; b=lMLKbYQDyihMkAxrmOqReKwrVsv1OA0zq1UIDxoK+ZUJOI1HAj3wEDF+6OZ1qu1AyGU2P9a7wgQycEDJtTdfyNaah4KujOUd0fEziLg7wdrIchx+N5EDlhFEsyXRPwh2T4rKjjRPA0R3QdDgVdpGGvRlKeIAvoz4qKPGcUtobVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440120; c=relaxed/simple;
-	bh=X8PlmX3YpaAplD2XLQnWtxKDkay4w9Vb/cpU/oP9iIM=;
+	s=arc-20240116; t=1727440296; c=relaxed/simple;
+	bh=hrDwlFGknjWuutbffX+TpacnJDj3ypuQnXTd/X9TTXU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h53A0aKBpciMGxx5/mPS6RJJwL9ig+YsHYVQG/UN7BRiCIMoCEeuiP9NwDiy479cgrn3bxEu/PGGoNdL7BBBidKZrlmefQe/Hh/68DYvH8oOY5/N5TULGY5/z+LkYZaxPmUgY59x4yus2Ur+eKn3xydZ/6tWeM4RYwGV6uK73Gs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yxefty89; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9625EC4CEC4;
-	Fri, 27 Sep 2024 12:28:39 +0000 (UTC)
+	 MIME-Version; b=UlDlwkb/6r9o2zRYp+xA3PdSrpiLwVHMn6y1R2kU9aLYjZoXpIHT9OH26YPZUqhIL6lVcxiu8f+jryN9rzGXtKnofhK2WyvIhyiM1erIny8SIXTHz5zD/rMYPLALbg5g0vfi3112RWtWqdyjhl/MWrHfG4TaGXayzM/0G+9cxeM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GCvgqUFM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE3E7C4CEC4;
+	Fri, 27 Sep 2024 12:31:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440120;
-	bh=X8PlmX3YpaAplD2XLQnWtxKDkay4w9Vb/cpU/oP9iIM=;
+	s=korg; t=1727440295;
+	bh=hrDwlFGknjWuutbffX+TpacnJDj3ypuQnXTd/X9TTXU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yxefty89sQ3cTPJvmIbDfuBCz5es7H/1chyG9+OLiWReOV1T3ie4LAbFNDy+3hrGF
-	 PKmyc77mX0UlsEIdnIKMPRLK8rrlhO21hH6l7umSy1hJoUZ3yRhwAhXJzFryCBjaEF
-	 EAZbCSmxzDTu+5kRN9mkY3eKyApJwlFOLse0tmB8=
+	b=GCvgqUFM54v62WgzRi7VWZa8ATPOIOp61POmF75xOKoRt4vcWZUuUtyz0HSz49lpD
+	 ZMX9gJOe4TcgzfdRyua7lzCWSSHupk59Um9aSEFR2jcqwJEcEbPfqu+OBcPyvnWKSs
+	 XwqnJpl3FTElwApZchkvgxEttorFRDeCR/Y20/QE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wojciech Drewek <wojciech.drewek@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Chandan Kumar Rout <chandanx.rout@intel.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Larysa Zaremba <larysa.zaremba@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Ferry Meng <mengferry@linux.alibaba.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	lei lu <llfamsec@gmail.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Gang He <ghe@suse.com>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 39/58] ice: check for XDP rings instead of bpf program when unconfiguring
+Subject: [PATCH 6.1 30/73] ocfs2: add bounds checking to ocfs2_xattr_find_entry()
 Date: Fri, 27 Sep 2024 14:23:41 +0200
-Message-ID: <20240927121720.354350679@linuxfoundation.org>
+Message-ID: <20240927121721.110977637@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121718.789211866@linuxfoundation.org>
-References: <20240927121718.789211866@linuxfoundation.org>
+In-Reply-To: <20240927121719.897851549@linuxfoundation.org>
+References: <20240927121719.897851549@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,112 +70,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Larysa Zaremba <larysa.zaremba@intel.com>
+From: Ferry Meng <mengferry@linux.alibaba.com>
 
-[ Upstream commit f50c68763436bc8f805712a7c5ceaf58cfcf5f07 ]
+[ Upstream commit 9e3041fecdc8f78a5900c3aa51d3d756e73264d6 ]
 
-If VSI rebuild is pending, .ndo_bpf() can attach/detach the XDP program on
-VSI without applying new ring configuration. When unconfiguring the VSI, we
-can encounter the state in which there is an XDP program but no XDP rings
-to destroy or there will be XDP rings that need to be destroyed, but no XDP
-program to indicate their presence.
+Add a paranoia check to make sure it doesn't stray beyond valid memory
+region containing ocfs2 xattr entries when scanning for a match.  It will
+prevent out-of-bound access in case of crafted images.
 
-When unconfiguring, rely on the presence of XDP rings rather then XDP
-program, as they better represent the current state that has to be
-destroyed.
-
-Reviewed-by: Wojciech Drewek <wojciech.drewek@intel.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Tested-by: Chandan Kumar Rout <chandanx.rout@intel.com>
-Acked-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Signed-off-by: Larysa Zaremba <larysa.zaremba@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://lkml.kernel.org/r/20240520024024.1976129-1-joseph.qi@linux.alibaba.com
+Signed-off-by: Ferry Meng <mengferry@linux.alibaba.com>
+Signed-off-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Reported-by: lei lu <llfamsec@gmail.com>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Jun Piao <piaojun@huawei.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: af77c4fc1871 ("ocfs2: strict bound check before memcmp in ocfs2_xattr_find_entry()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/ice/ice_lib.c  | 4 ++--
- drivers/net/ethernet/intel/ice/ice_main.c | 4 ++--
- drivers/net/ethernet/intel/ice/ice_xsk.c  | 6 +++---
- 3 files changed, 7 insertions(+), 7 deletions(-)
+ fs/ocfs2/xattr.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_lib.c b/drivers/net/ethernet/intel/ice/ice_lib.c
-index c2ba586593475..a3ee7697edb56 100644
---- a/drivers/net/ethernet/intel/ice/ice_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_lib.c
-@@ -2419,7 +2419,7 @@ void ice_vsi_decfg(struct ice_vsi *vsi)
- 		dev_err(ice_pf_to_dev(pf), "Failed to remove RDMA scheduler config for VSI %u, err %d\n",
- 			vsi->vsi_num, err);
- 
--	if (ice_is_xdp_ena_vsi(vsi))
-+	if (vsi->xdp_rings)
- 		/* return value check can be skipped here, it always returns
- 		 * 0 if reset is in progress
- 		 */
-@@ -2521,7 +2521,7 @@ static void ice_vsi_release_msix(struct ice_vsi *vsi)
- 		for (q = 0; q < q_vector->num_ring_tx; q++) {
- 			ice_write_itr(&q_vector->tx, 0);
- 			wr32(hw, QINT_TQCTL(vsi->txq_map[txq]), 0);
--			if (ice_is_xdp_ena_vsi(vsi)) {
-+			if (vsi->xdp_rings) {
- 				u32 xdp_txq = txq + vsi->num_xdp_txq;
- 
- 				wr32(hw, QINT_TQCTL(vsi->txq_map[xdp_txq]), 0);
-diff --git a/drivers/net/ethernet/intel/ice/ice_main.c b/drivers/net/ethernet/intel/ice/ice_main.c
-index 766f9a466bc35..c82715eb5b93c 100644
---- a/drivers/net/ethernet/intel/ice/ice_main.c
-+++ b/drivers/net/ethernet/intel/ice/ice_main.c
-@@ -7253,7 +7253,7 @@ int ice_down(struct ice_vsi *vsi)
- 	if (tx_err)
- 		netdev_err(vsi->netdev, "Failed stop Tx rings, VSI %d error %d\n",
- 			   vsi->vsi_num, tx_err);
--	if (!tx_err && ice_is_xdp_ena_vsi(vsi)) {
-+	if (!tx_err && vsi->xdp_rings) {
- 		tx_err = ice_vsi_stop_xdp_tx_rings(vsi);
- 		if (tx_err)
- 			netdev_err(vsi->netdev, "Failed stop XDP rings, VSI %d error %d\n",
-@@ -7270,7 +7270,7 @@ int ice_down(struct ice_vsi *vsi)
- 	ice_for_each_txq(vsi, i)
- 		ice_clean_tx_ring(vsi->tx_rings[i]);
- 
--	if (ice_is_xdp_ena_vsi(vsi))
-+	if (vsi->xdp_rings)
- 		ice_for_each_xdp_txq(vsi, i)
- 			ice_clean_tx_ring(vsi->xdp_rings[i]);
- 
-diff --git a/drivers/net/ethernet/intel/ice/ice_xsk.c b/drivers/net/ethernet/intel/ice/ice_xsk.c
-index 87a5427570d76..5dee829bfc47c 100644
---- a/drivers/net/ethernet/intel/ice/ice_xsk.c
-+++ b/drivers/net/ethernet/intel/ice/ice_xsk.c
-@@ -39,7 +39,7 @@ static void ice_qp_reset_stats(struct ice_vsi *vsi, u16 q_idx)
- 	       sizeof(vsi_stat->rx_ring_stats[q_idx]->rx_stats));
- 	memset(&vsi_stat->tx_ring_stats[q_idx]->stats, 0,
- 	       sizeof(vsi_stat->tx_ring_stats[q_idx]->stats));
--	if (ice_is_xdp_ena_vsi(vsi))
-+	if (vsi->xdp_rings)
- 		memset(&vsi->xdp_rings[q_idx]->ring_stats->stats, 0,
- 		       sizeof(vsi->xdp_rings[q_idx]->ring_stats->stats));
+diff --git a/fs/ocfs2/xattr.c b/fs/ocfs2/xattr.c
+index 55699c5735413..61213b7e4dfbe 100644
+--- a/fs/ocfs2/xattr.c
++++ b/fs/ocfs2/xattr.c
+@@ -1066,7 +1066,7 @@ ssize_t ocfs2_listxattr(struct dentry *dentry,
+ 	return i_ret + b_ret;
  }
-@@ -52,7 +52,7 @@ static void ice_qp_reset_stats(struct ice_vsi *vsi, u16 q_idx)
- static void ice_qp_clean_rings(struct ice_vsi *vsi, u16 q_idx)
+ 
+-static int ocfs2_xattr_find_entry(int name_index,
++static int ocfs2_xattr_find_entry(struct inode *inode, int name_index,
+ 				  const char *name,
+ 				  struct ocfs2_xattr_search *xs)
  {
- 	ice_clean_tx_ring(vsi->tx_rings[q_idx]);
--	if (ice_is_xdp_ena_vsi(vsi))
-+	if (vsi->xdp_rings)
- 		ice_clean_tx_ring(vsi->xdp_rings[q_idx]);
- 	ice_clean_rx_ring(vsi->rx_rings[q_idx]);
- }
-@@ -186,7 +186,7 @@ static int ice_qp_dis(struct ice_vsi *vsi, u16 q_idx)
- 	err = ice_vsi_stop_tx_ring(vsi, ICE_NO_RESET, 0, tx_ring, &txq_meta);
- 	if (!fail)
- 		fail = err;
--	if (ice_is_xdp_ena_vsi(vsi)) {
-+	if (vsi->xdp_rings) {
- 		struct ice_tx_ring *xdp_ring = vsi->xdp_rings[q_idx];
+@@ -1080,6 +1080,10 @@ static int ocfs2_xattr_find_entry(int name_index,
+ 	name_len = strlen(name);
+ 	entry = xs->here;
+ 	for (i = 0; i < le16_to_cpu(xs->header->xh_count); i++) {
++		if ((void *)entry >= xs->end) {
++			ocfs2_error(inode->i_sb, "corrupted xattr entries");
++			return -EFSCORRUPTED;
++		}
+ 		cmp = name_index - ocfs2_xattr_get_type(entry);
+ 		if (!cmp)
+ 			cmp = name_len - entry->xe_name_len;
+@@ -1170,7 +1174,7 @@ static int ocfs2_xattr_ibody_get(struct inode *inode,
+ 	xs->base = (void *)xs->header;
+ 	xs->here = xs->header->xh_entries;
  
- 		memset(&txq_meta, 0, sizeof(txq_meta));
+-	ret = ocfs2_xattr_find_entry(name_index, name, xs);
++	ret = ocfs2_xattr_find_entry(inode, name_index, name, xs);
+ 	if (ret)
+ 		return ret;
+ 	size = le64_to_cpu(xs->here->xe_value_size);
+@@ -2702,7 +2706,7 @@ static int ocfs2_xattr_ibody_find(struct inode *inode,
+ 
+ 	/* Find the named attribute. */
+ 	if (oi->ip_dyn_features & OCFS2_INLINE_XATTR_FL) {
+-		ret = ocfs2_xattr_find_entry(name_index, name, xs);
++		ret = ocfs2_xattr_find_entry(inode, name_index, name, xs);
+ 		if (ret && ret != -ENODATA)
+ 			return ret;
+ 		xs->not_found = ret;
+@@ -2837,7 +2841,7 @@ static int ocfs2_xattr_block_find(struct inode *inode,
+ 		xs->end = (void *)(blk_bh->b_data) + blk_bh->b_size;
+ 		xs->here = xs->header->xh_entries;
+ 
+-		ret = ocfs2_xattr_find_entry(name_index, name, xs);
++		ret = ocfs2_xattr_find_entry(inode, name_index, name, xs);
+ 	} else
+ 		ret = ocfs2_xattr_index_block_find(inode, blk_bh,
+ 						   name_index,
 -- 
 2.43.0
 
