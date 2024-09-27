@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-77954-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77978-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3C8C2988464
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:27:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5023098847D
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:28:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B6E5DB21A6B
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:27:11 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0A2582812AA
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:28:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8950218C000;
-	Fri, 27 Sep 2024 12:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B67918BC23;
+	Fri, 27 Sep 2024 12:28:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Se45hHFN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r0P34cTE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 492B418A95D;
-	Fri, 27 Sep 2024 12:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03F5317B515;
+	Fri, 27 Sep 2024 12:28:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440017; cv=none; b=BIGKPl0eyVXmwk8TgMPUrLA7DDbDrQJ1lIt2dZrkR/YZCQF6gHOgQItliNweMD3TuWS5+4jDphkcvfyZM5PBFbVcPm95Zywh7ojnKOUFkpEmjkGyrFprZSG1SPDmn9RdADJmcdUgjzLcowsWz47Ax5+KbUC4O1kELwUYSHnA1q8=
+	t=1727440084; cv=none; b=lP/ShrNg/hR5RKn0RgCyNeCXRR2AGjQ4kKmRgghmmNA6KAJmKPbySKGQIVbXOgtU2/LAShnQgnP2Ss0dQW8OJAwtxtWBlhlGgZikkKvqze8E/eaePERRKZARG392LvVHPV/4a0LcOq9WXj5sHQ3OTfmf8BSLlAsmNB3X+e5MSKs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440017; c=relaxed/simple;
-	bh=XJ67pSdugKAsh8ZVBhNG6REKgGbBFHCAx5Iq0F+05j8=;
+	s=arc-20240116; t=1727440084; c=relaxed/simple;
+	bh=oAWjfePvNiWGJbz5JYqBxhcHbdiJMV8+V9kKccBwL9U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cA0vYcimbsUkc5pFXaemh1++DzZU05ZGzw7JMosd8jej20Xd4EwghDqdn4Txba5qfJ1+OFxTTpfGL1PkBk8IzSJk53tvMPNnAl3sPQYvvyLn0BTNvHWTe32GAAfdyxIO8cyrai4r1DsLZ5B0oA7Co/afsc66Ok7x0oLesmgT89Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Se45hHFN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C23E2C4CEC4;
-	Fri, 27 Sep 2024 12:26:56 +0000 (UTC)
+	 MIME-Version; b=Suy7MzcsoTKIYjhESaV1GE8Q/fS0KCfhcFUklJ0mqNZRmUhBnKQP6qgbJGMMaDSKqtCypIgW8yVAalXf6VtynFj+BKYwU/THZyqUzCcKqparT5UUvFjs5slTbLszweA5NmVgybbONlYfRRg4tw5biBGcpFGu/EdC7mgmRUErL6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r0P34cTE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88325C4CEC4;
+	Fri, 27 Sep 2024 12:28:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440017;
-	bh=XJ67pSdugKAsh8ZVBhNG6REKgGbBFHCAx5Iq0F+05j8=;
+	s=korg; t=1727440083;
+	bh=oAWjfePvNiWGJbz5JYqBxhcHbdiJMV8+V9kKccBwL9U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Se45hHFNecpu3SDwXIgY1HrtNIhGNfsYPn33OkUc7UjRe23JKip+1p0gWWMJoK1mr
-	 V43q8vq4COAFsM0KTokvtPcIDimq9THc7Kqa1u9WjGFNO5p2KERZ4r8ZE5Co+rLO2t
-	 sSM2TxKexcmXG/1pZPdSrWvZKnmr90CT8Sed8u9M=
+	b=r0P34cTEUccpzcQR5iQyTNWgut+8RLzUtRfGE432rUQtvgKcml5ZbcgHiQBbGHHDD
+	 ZGa+RGT3TcpQsEjXYn42Ghpituuylb2MeZsnqgGpuUip/kSdz5wDPWGXgdhEXCWPdc
+	 +j2XqC+aEGc70RIliknFqtqnIxaCfOh6bjK3+t9Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Liao Chen <liaochen4@huawei.com>,
 	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 36/54] spi: spidev: Add missing spi_device_id for jg10309-01
-Date: Fri, 27 Sep 2024 14:23:28 +0200
-Message-ID: <20240927121721.208855594@linuxfoundation.org>
+Subject: [PATCH 6.10 27/58] ASoC: google: fix module autoloading
+Date: Fri, 27 Sep 2024 14:23:29 +0200
+Message-ID: <20240927121719.905092832@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121719.714627278@linuxfoundation.org>
-References: <20240927121719.714627278@linuxfoundation.org>
+In-Reply-To: <20240927121718.789211866@linuxfoundation.org>
+References: <20240927121718.789211866@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,44 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Liao Chen <liaochen4@huawei.com>
 
-[ Upstream commit 5478a4f7b94414def7b56d2f18bc2ed9b0f3f1f2 ]
+[ Upstream commit 8e1bb4a41aa78d6105e59186af3dcd545fc66e70 ]
 
-When the of_device_id entry for "elgin,jg10309-01" was added, the
-corresponding spi_device_id was forgotten, causing a warning message
-during boot-up:
+Add MODULE_DEVICE_TABLE(), so modules could be properly autoloaded
+based on the alias from of_device_id table.
 
-    SPI driver spidev has no spi_device_id for elgin,jg10309-01
-
-Fix module autoloading and shut up the warning by adding the missing
-entry.
-
-Fixes: 5f3eee1eef5d0edd ("spi: spidev: Add an entry for elgin,jg10309-01")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://patch.msgid.link/54bbb9d8a8db7e52d13e266f2d4a9bcd8b42a98a.1725366625.git.geert+renesas@glider.be
+Signed-off-by: Liao Chen <liaochen4@huawei.com>
+Link: https://patch.msgid.link/20240826084924.368387-3-liaochen4@huawei.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spidev.c | 1 +
+ sound/soc/google/chv3-i2s.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/spi/spidev.c b/drivers/spi/spidev.c
-index edc47a97cbe41..16bb4fc3a4ba9 100644
---- a/drivers/spi/spidev.c
-+++ b/drivers/spi/spidev.c
-@@ -706,6 +706,7 @@ static struct class *spidev_class;
- static const struct spi_device_id spidev_spi_ids[] = {
- 	{ .name = "bh2228fv" },
- 	{ .name = "dh2228fv" },
-+	{ .name = "jg10309-01" },
- 	{ .name = "ltc2488" },
- 	{ .name = "sx1301" },
- 	{ .name = "bk4" },
+diff --git a/sound/soc/google/chv3-i2s.c b/sound/soc/google/chv3-i2s.c
+index 08e558f24af86..0ff24653d49f4 100644
+--- a/sound/soc/google/chv3-i2s.c
++++ b/sound/soc/google/chv3-i2s.c
+@@ -322,6 +322,7 @@ static const struct of_device_id chv3_i2s_of_match[] = {
+ 	{ .compatible = "google,chv3-i2s" },
+ 	{},
+ };
++MODULE_DEVICE_TABLE(of, chv3_i2s_of_match);
+ 
+ static struct platform_driver chv3_i2s_driver = {
+ 	.probe = chv3_i2s_probe,
 -- 
 2.43.0
 
