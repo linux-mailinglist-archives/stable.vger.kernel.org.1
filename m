@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-77884-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A30E598801E
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 10:15:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85B9C98801F
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 10:16:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D2FCD1C226D1
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 08:15:31 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 463362843DB
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 08:16:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0622B176ABB;
-	Fri, 27 Sep 2024 08:15:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E566175D2C;
+	Fri, 27 Sep 2024 08:16:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z6+cIQz2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CgUPagSZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0E0413D638;
-	Fri, 27 Sep 2024 08:15:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 002AF13B58B
+	for <stable@vger.kernel.org>; Fri, 27 Sep 2024 08:16:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727424927; cv=none; b=oqvtpXYV9slT3kssnCJhfosmpJC+ilfIESDXA1zd5VUf/7mQdQzqD/oC6/QB7i641LxmxsNQQbd0rAPCtiAPpDSxZ1ikJVRMvoDCaR95Ps5dwQPy5Vvcck/OhBOiLwkJ+fs3ODLtFFHLhVFd7XubfUpdy1jxxgRs9EjQMM3PpgE=
+	t=1727424976; cv=none; b=XjyLef64rewhKAJ6h3lVrlNFtu0DMiC92lOZHtA5pMwqA5wFp3tbgKsvGrY6LZoGXZpejUZgxLOZIFsggVzGp/Q34Smv0oPJ45JAvoUgzdbBAJv8/tgXZNbdQjvaM2KMlA2Ta+z6v7vusBWAl/1R3P6s4N+UgP488RnMb8+1QlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727424927; c=relaxed/simple;
-	bh=VtmV+oRbi/ADW8lOcIDBwsaCaWYRi2Z97N7wphML/RU=;
+	s=arc-20240116; t=1727424976; c=relaxed/simple;
+	bh=roXz7SvUPZVKaa4gp06k0R/WIEgquAd4f4YtZBIOY8o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZfEg+wEctZ5aqD6ZEvNxpIOwxm5ForI39dtC+9LqGU9P5GreMOEneaReqNtiA7+TfeA+OtO9329KmS4BjXDv73qW2cE5YKqfkS4Alc9FAGtCwgMuw6DJjGy3gmuuXVS3nFsEX1HJyO3+zKwLoNheBddkE5Q9g8rk9k83DxqpsD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z6+cIQz2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC77AC4CEC4;
-	Fri, 27 Sep 2024 08:15:26 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=JToNVt75OpktlMTkYDczXMDAuIRb2ZPxXBxRKQRx9mlzZgpi2OUIgWVO4eeCxxrKctv29F8EmbtXF6QrfMJ0/aqS6ezWDV/6Evlctayeo1CZEInOSU2ZD0cyZ+X/qvqSdJrLIodZy00+lsZMVAgWQzup1VMjslJibmgjoV0pXyU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CgUPagSZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A39FC4CEC4;
+	Fri, 27 Sep 2024 08:16:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727424927;
-	bh=VtmV+oRbi/ADW8lOcIDBwsaCaWYRi2Z97N7wphML/RU=;
+	s=korg; t=1727424975;
+	bh=roXz7SvUPZVKaa4gp06k0R/WIEgquAd4f4YtZBIOY8o=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=z6+cIQz2DFL9ntYFFBDgGsIM1waL7LgMUQjXN7pl0S1+aCKj80nbRx745cFdR8y1B
-	 MPO6KaocL4FkSnlcad4Erb1P5RkoiaTaBXfLYB/w/A50BsRmLljhWPciKydZJlH0eA
-	 Yd22okfvpmvcCYlvIB0Az5x1uXFY1WGCI/5MFgmA=
-Date: Fri, 27 Sep 2024 10:15:24 +0200
+	b=CgUPagSZn0qp5w1HitUcDTAn6+T5H+R+eUS057hlh/Z0XNL3HtsTXFNGjwrd7K7ly
+	 8nC02FouVu05vg4wKQXwIhn4SHU9Qp/BwVyx9agxHie9eoX6SbQOcAFXmKQHdqxw9P
+	 0/smLH+JSAUyhGaFbef3F/83wy6unKeLFeVc64Cg=
+Date: Fri, 27 Sep 2024 10:16:12 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
-Cc: mptcp@lists.linux.dev, stable@vger.kernel.org
-Subject: Re: [PATCH 5.10.y 0/3] Backport of "mptcp: pm: Fix uaf in
- __timer_delete_sync"
-Message-ID: <2024092714-startling-plausibly-3ddc@gregkh>
-References: <2024091330-reps-craftsman-ab67@gregkh>
- <20240917072607.799536-5-matttbe@kernel.org>
+To: Xiangyu Chen <xiangyu.chen@windriver.com>
+Cc: stable@vger.kernel.org
+Subject: Re: [PATCH 6.1] wifi: mac80211: Avoid address calculations via out
+ of bounds array indexing
+Message-ID: <2024092746-strum-unwell-4ac9@gregkh>
+References: <20240919080722.3565234-1-xiangyu.chen@windriver.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,37 +54,17 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240917072607.799536-5-matttbe@kernel.org>
+In-Reply-To: <20240919080722.3565234-1-xiangyu.chen@windriver.com>
 
-On Tue, Sep 17, 2024 at 09:26:08AM +0200, Matthieu Baerts (NGI0) wrote:
-> To ease the inclusion of commit b4cd80b03389 ("mptcp: pm: Fix uaf in 
-> __timer_delete_sync"), commit d88c476f4a7d ("mptcp: export 
-> lookup_anno_list_by_saddr") and commit d58300c3185b ("mptcp: validate 
-> 'id' when stopping the ADD_ADDR retransmit timer") look safe to be 
-> backported as well, even if there was one small conflict, but easy to 
-> resolve. The first one is a refactoring, while the second one is a fix 
-> that is helping to prevent the new issues being fixed here.
+On Thu, Sep 19, 2024 at 04:07:22PM +0800, Xiangyu Chen wrote:
+> From: Kenton Groombridge <concord@gentoo.org>
 > 
-> Davide Caratti (1):
->   mptcp: validate 'id' when stopping the ADD_ADDR retransmit timer
-> 
-> Edward Adam Davis (1):
->   mptcp: pm: Fix uaf in __timer_delete_sync
-> 
-> Geliang Tang (1):
->   mptcp: export lookup_anno_list_by_saddr
-> 
->  net/mptcp/options.c    |  2 +-
->  net/mptcp/pm_netlink.c | 27 ++++++++++++++++-----------
->  net/mptcp/protocol.h   |  5 ++++-
->  3 files changed, 21 insertions(+), 13 deletions(-)
-> 
-> -- 
-> 2.45.2
-> 
-> 
+> [ Upstream commit 2663d0462eb32ae7c9b035300ab6b1523886c718 ]
 
-ALl now queued up, thanks!
+What about 6.6.y?  We can not take older-only patches, you know this :(
+
+Please resend all that are needed, this is now dropped from the review
+queue.
 
 greg k-h
 
