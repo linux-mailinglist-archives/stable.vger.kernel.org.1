@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-78080-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78026-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC0369884FE
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:33:20 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80A6E9884B7
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:30:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 16B4FB24D11
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:33:18 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0715B282FE2
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:30:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7851E18BC23;
-	Fri, 27 Sep 2024 12:32:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 662B018C012;
+	Fri, 27 Sep 2024 12:30:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W4ktQreG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vn+WzaeF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3791B3C3C;
-	Fri, 27 Sep 2024 12:32:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2325518C034;
+	Fri, 27 Sep 2024 12:30:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440367; cv=none; b=PHgVkUOKc6jgVuL6ImOyn3V6FEmMihFxSBnvboFS6QT22TOGIria+4hnDa88I/oPepa2rXgyIR99vslL3T2+/JG1/ZkpaO4U40KfnLijO8ekjWuhS56uFUnh78yXzEB9VzlWJcMfycfmHMUcfbtTwN3Nfzv+fgV+mGEYLtHpSfw=
+	t=1727440218; cv=none; b=TOYFzeZYafO9/oZLPZyRsaMtC1CTKqrSGAf1r+8p4nR2vLNDQFA4F8RdraIOaQcFcsyzSWjiGRqf53ug/VQ34mlzBbGAAfeE/HHv//90sJ0fKsVPGwRWWtLWZzByxrXk1kMxHM89+0jm7bkkJdlGKLU9KZpz+11N54DytB/paRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440367; c=relaxed/simple;
-	bh=FhHW9cavmHNBC+hRbWPAt0GHU/82lJxutnoMloDQ74M=;
+	s=arc-20240116; t=1727440218; c=relaxed/simple;
+	bh=y5BFmTeSe9/AM1d26bEYjjDSnWu3iWDJ6JiKpyZJQJc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dcrst2PS9AU6/CSVEP1ErTIQgFaGPBY1v6VmTasdlaMbdPZTSz/Yf1BgX3VE4k4jEoYKyPY5unw0lVa8fpP+D/ASR+QGc4M7e0XG4I08POsobXUpGj3bl9US381r9Dx+qWt7Xq7S8Gi2rSKQmIgXDeCUzxZha1XBvn8eZ9mGGrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W4ktQreG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BABADC4CEC4;
-	Fri, 27 Sep 2024 12:32:46 +0000 (UTC)
+	 MIME-Version; b=HulINnWhlHDlPoeRpsatP/DDOA0LcRAKrvWtyvZnVhFOV+RvVTOr+wK8OIKIfURsNYpwVguW2f9piEBz3hK0DUgvpXkL7YfGYMQQvLPFDYU0mOnj+7LWDDE8VqaQrilUuC9pCHdM49z+e7Ptj7Pbgx5G9u3yWiE1Z856u08PvAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vn+WzaeF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05D05C4CEC4;
+	Fri, 27 Sep 2024 12:30:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440367;
-	bh=FhHW9cavmHNBC+hRbWPAt0GHU/82lJxutnoMloDQ74M=;
+	s=korg; t=1727440217;
+	bh=y5BFmTeSe9/AM1d26bEYjjDSnWu3iWDJ6JiKpyZJQJc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W4ktQreGDUa0jBaFsDiwbRzF7o2xSmLV9pwIYv+ngnEiJ/FS9dg6LZRb9cPbVpZMI
-	 ERT2pseqIIV6UNbwTEa4O017yPAjcVhjMG6+O28rbQiqu06/ZS59utDuobx272Z9PK
-	 Ai6WgIuFqRpr+PgmmSXDPc/G821RNIDualdIFGQA=
+	b=vn+WzaeFs7138A7qNHUwp1+wOynfbXy7G7yJwaKBs8Am1FWzY2+Jd1jOOiPd/vFzE
+	 kndiRsoKzN5in+ENfNJzzjevJ5aYklFwrfnQZmfc0O2MUoONoHSVye0x+ESXdwXGaq
+	 WHYI+O3goV2sXBL2lXJqYdKOR7iBVWw/r0P69rPA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Dave Chinner <dchinner@redhat.com>,
-	Leah Rumancik <leah.rumancik@gmail.com>,
-	Chandan Babu R <chandanbabu@kernel.org>
-Subject: [PATCH 6.1 56/73] xfs: fix reloading entire unlinked bucket lists
-Date: Fri, 27 Sep 2024 14:24:07 +0200
-Message-ID: <20240927121722.190249350@linuxfoundation.org>
+	Michael Larabel <michael@michaellarabel.com>,
+	Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>,
+	Zhang Rui <rui.zhang@intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 05/12] powercap/intel_rapl: Fix the energy-pkg event for AMD CPUs
+Date: Fri, 27 Sep 2024 14:24:08 +0200
+Message-ID: <20240927121715.461646108@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121719.897851549@linuxfoundation.org>
-References: <20240927121719.897851549@linuxfoundation.org>
+In-Reply-To: <20240927121715.213013166@linuxfoundation.org>
+References: <20240927121715.213013166@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,201 +64,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Darrick J. Wong" <djwong@kernel.org>
+From: Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
 
-[ Upstream commit 537c013b140d373d1ffe6290b841dc00e67effaa ]
+[ Upstream commit 26096aed255fbac9501718174dbb24c935d8854e ]
 
-During review of the patcheset that provided reloading of the incore
-iunlink list, Dave made a few suggestions, and I updated the copy in my
-dev tree.  Unfortunately, I then got distracted by ... who even knows
-what ... and forgot to backport those changes from my dev tree to my
-release candidate branch.  I then sent multiple pull requests with stale
-patches, and that's what was merged into -rc3.
+After commit ("x86/cpu/topology: Add support for the AMD 0x80000026 leaf"),
+on AMD processors that support extended CPUID leaf 0x80000026, the
+topology_logical_die_id() macros, no longer returns package id, instead it
+returns the CCD (Core Complex Die) id. This leads to the energy-pkg
+event scope to be modified to CCD instead of package.
 
-So.
+For more historical context, please refer to commit 32fb480e0a2c
+("powercap/intel_rapl: Support multi-die/package"), which initially changed
+the RAPL scope from package to die for all systems, as Intel systems
+with Die enumeration have RAPL scope as die, and those without die
+enumeration are not affected. So, all systems(Intel, AMD, Hygon), worked
+correctly with topology_logical_die_id() until recently, but this changed
+after the "0x80000026 leaf" commit mentioned above.
 
-This patch re-adds the use of an unlocked iunlink list check to
-determine if we want to allocate the resources to recreate the incore
-list.  Since lost iunlinked inodes are supposed to be rare, this change
-helps us avoid paying the transaction and AGF locking costs every time
-we open any inode.
+Future multi-die Intel systems will have package scope RAPL counters,
+but they will be using TPMI RAPL interface, which is not affected by
+this change.
 
-This also re-adds the shutdowns on failure, and re-applies the
-restructuring of the inner loop in xfs_inode_reload_unlinked_bucket, and
-re-adds a requested comment about the quotachecking code.
+Replacing topology_logical_die_id() with topology_physical_package_id()
+conditionally only for AMD and Hygon fixes the energy-pkg event.
 
-Retain the original RVB tag from Dave since there's no code change from
-the last submission.
+On an AMD 2 socket 8 CCD Zen4 server:
 
-Fixes: 68b957f64fca1 ("xfs: load uncached unlinked inodes into memory on demand")
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Dave Chinner <dchinner@redhat.com>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Before:
+
+linux$ ls /sys/class/powercap/
+intel-rapl      intel-rapl:4    intel-rapl:8:0  intel-rapl:d
+intel-rapl:0    intel-rapl:4:0  intel-rapl:9    intel-rapl:d:0
+intel-rapl:0:0  intel-rapl:5    intel-rapl:9:0  intel-rapl:e
+intel-rapl:1    intel-rapl:5:0  intel-rapl:a    intel-rapl:e:0
+intel-rapl:1:0  intel-rapl:6    intel-rapl:a:0  intel-rapl:f
+intel-rapl:2    intel-rapl:6:0  intel-rapl:b    intel-rapl:f:0
+intel-rapl:2:0  intel-rapl:7    intel-rapl:b:0
+intel-rapl:3    intel-rapl:7:0  intel-rapl:c
+intel-rapl:3:0  intel-rapl:8    intel-rapl:c:0
+
+After:
+
+linux$ ls /sys/class/powercap/
+intel-rapl  intel-rapl:0  intel-rapl:0:0  intel-rapl:1  intel-rapl:1:0
+
+Only one sysfs entry per-event per-package is created after this change.
+
+Fixes: 63edbaa48a57 ("x86/cpu/topology: Add support for the AMD 0x80000026 leaf")
+Reported-by: Michael Larabel <michael@michaellarabel.com>
+Signed-off-by: Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
+Reviewed-by: Zhang Rui <rui.zhang@intel.com>
+Link: https://patch.msgid.link/20240730044917.4680-3-Dhananjay.Ugwekar@amd.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_export.c |   16 ++++++++++++----
- fs/xfs/xfs_inode.c  |   48 +++++++++++++++++++++++++++++++++++-------------
- fs/xfs/xfs_itable.c |    2 ++
- fs/xfs/xfs_qm.c     |   15 ++++++++++++---
- 4 files changed, 61 insertions(+), 20 deletions(-)
+ drivers/powercap/intel_rapl_common.c | 34 ++++++++++++++++++++++++----
+ 1 file changed, 30 insertions(+), 4 deletions(-)
 
---- a/fs/xfs/xfs_export.c
-+++ b/fs/xfs/xfs_export.c
-@@ -146,10 +146,18 @@ xfs_nfs_get_inode(
- 		return ERR_PTR(error);
- 	}
+diff --git a/drivers/powercap/intel_rapl_common.c b/drivers/powercap/intel_rapl_common.c
+index 8b7a5a31e8c17..5a6d05bf847ce 100644
+--- a/drivers/powercap/intel_rapl_common.c
++++ b/drivers/powercap/intel_rapl_common.c
+@@ -2129,6 +2129,21 @@ void rapl_remove_package(struct rapl_package *rp)
+ }
+ EXPORT_SYMBOL_GPL(rapl_remove_package);
  
--	error = xfs_inode_reload_unlinked(ip);
--	if (error) {
--		xfs_irele(ip);
--		return ERR_PTR(error);
-+	/*
-+	 * Reload the incore unlinked list to avoid failure in inodegc.
-+	 * Use an unlocked check here because unrecovered unlinked inodes
-+	 * should be somewhat rare.
-+	 */
-+	if (xfs_inode_unlinked_incomplete(ip)) {
-+		error = xfs_inode_reload_unlinked(ip);
-+		if (error) {
-+			xfs_force_shutdown(mp, SHUTDOWN_CORRUPT_INCORE);
-+			xfs_irele(ip);
-+			return ERR_PTR(error);
-+		}
- 	}
- 
- 	if (VFS_I(ip)->i_generation != generation) {
---- a/fs/xfs/xfs_inode.c
-+++ b/fs/xfs/xfs_inode.c
-@@ -1744,6 +1744,14 @@ xfs_inactive(
- 		truncate = 1;
- 
- 	if (xfs_iflags_test(ip, XFS_IQUOTAUNCHECKED)) {
-+		/*
-+		 * If this inode is being inactivated during a quotacheck and
-+		 * has not yet been scanned by quotacheck, we /must/ remove
-+		 * the dquots from the inode before inactivation changes the
-+		 * block and inode counts.  Most probably this is a result of
-+		 * reloading the incore iunlinked list to purge unrecovered
-+		 * unlinked inodes.
-+		 */
- 		xfs_qm_dqdetach(ip);
- 	} else {
- 		error = xfs_qm_dqattach(ip);
-@@ -3657,6 +3665,16 @@ xfs_inode_reload_unlinked_bucket(
- 	if (error)
- 		return error;
- 
-+	/*
-+	 * We've taken ILOCK_SHARED and the AGI buffer lock to stabilize the
-+	 * incore unlinked list pointers for this inode.  Check once more to
-+	 * see if we raced with anyone else to reload the unlinked list.
-+	 */
-+	if (!xfs_inode_unlinked_incomplete(ip)) {
-+		foundit = true;
-+		goto out_agibp;
-+	}
++/*
++ * RAPL Package energy counter scope:
++ * 1. AMD/HYGON platforms use per-PKG package energy counter
++ * 2. For Intel platforms
++ *	2.1 CLX-AP platform has per-DIE package energy counter
++ *	2.2 Other platforms that uses MSR RAPL are single die systems so the
++ *          package energy counter can be considered as per-PKG/per-DIE,
++ *          here it is considered as per-DIE.
++ *	2.3 New platforms that use TPMI RAPL doesn't care about the
++ *	    scope because they are not MSR/CPU based.
++ */
++#define rapl_msrs_are_pkg_scope()				\
++	(boot_cpu_data.x86_vendor == X86_VENDOR_AMD ||	\
++	 boot_cpu_data.x86_vendor == X86_VENDOR_HYGON)
 +
- 	bucket = agino % XFS_AGI_UNLINKED_BUCKETS;
- 	agi = agibp->b_addr;
+ /* caller to ensure CPU hotplug lock is held */
+ struct rapl_package *rapl_find_package_domain_cpuslocked(int id, struct rapl_if_priv *priv,
+ 							 bool id_is_cpu)
+@@ -2136,8 +2151,14 @@ struct rapl_package *rapl_find_package_domain_cpuslocked(int id, struct rapl_if_
+ 	struct rapl_package *rp;
+ 	int uid;
  
-@@ -3671,25 +3689,27 @@ xfs_inode_reload_unlinked_bucket(
- 	while (next_agino != NULLAGINO) {
- 		struct xfs_inode	*next_ip = NULL;
- 
-+		/* Found this caller's inode, set its backlink. */
- 		if (next_agino == agino) {
--			/* Found this inode, set its backlink. */
- 			next_ip = ip;
- 			next_ip->i_prev_unlinked = prev_agino;
- 			foundit = true;
-+			goto next_inode;
- 		}
--		if (!next_ip) {
--			/* Inode already in memory. */
--			next_ip = xfs_iunlink_lookup(pag, next_agino);
--		}
--		if (!next_ip) {
--			/* Inode not in memory, reload. */
--			error = xfs_iunlink_reload_next(tp, agibp, prev_agino,
--					next_agino);
--			if (error)
--				break;
- 
--			next_ip = xfs_iunlink_lookup(pag, next_agino);
--		}
-+		/* Try in-memory lookup first. */
-+		next_ip = xfs_iunlink_lookup(pag, next_agino);
-+		if (next_ip)
-+			goto next_inode;
-+
-+		/* Inode not in memory, try reloading it. */
-+		error = xfs_iunlink_reload_next(tp, agibp, prev_agino,
-+				next_agino);
-+		if (error)
-+			break;
-+
-+		/* Grab the reloaded inode. */
-+		next_ip = xfs_iunlink_lookup(pag, next_agino);
- 		if (!next_ip) {
- 			/* No incore inode at all?  We reloaded it... */
- 			ASSERT(next_ip != NULL);
-@@ -3697,10 +3717,12 @@ xfs_inode_reload_unlinked_bucket(
- 			break;
- 		}
- 
-+next_inode:
- 		prev_agino = next_agino;
- 		next_agino = next_ip->i_next_unlinked;
- 	}
- 
-+out_agibp:
- 	xfs_trans_brelse(tp, agibp);
- 	/* Should have found this inode somewhere in the iunlinked bucket. */
- 	if (!error && !foundit)
---- a/fs/xfs/xfs_itable.c
-+++ b/fs/xfs/xfs_itable.c
-@@ -80,10 +80,12 @@ xfs_bulkstat_one_int(
- 	if (error)
- 		goto out;
- 
-+	/* Reload the incore unlinked list to avoid failure in inodegc. */
- 	if (xfs_inode_unlinked_incomplete(ip)) {
- 		error = xfs_inode_reload_unlinked_bucket(tp, ip);
- 		if (error) {
- 			xfs_iunlock(ip, XFS_ILOCK_SHARED);
-+			xfs_force_shutdown(mp, SHUTDOWN_CORRUPT_INCORE);
- 			xfs_irele(ip);
- 			return error;
- 		}
---- a/fs/xfs/xfs_qm.c
-+++ b/fs/xfs/xfs_qm.c
-@@ -1160,9 +1160,18 @@ xfs_qm_dqusage_adjust(
- 	if (error)
- 		return error;
- 
--	error = xfs_inode_reload_unlinked(ip);
--	if (error)
--		goto error0;
-+	/*
-+	 * Reload the incore unlinked list to avoid failure in inodegc.
-+	 * Use an unlocked check here because unrecovered unlinked inodes
-+	 * should be somewhat rare.
-+	 */
-+	if (xfs_inode_unlinked_incomplete(ip)) {
-+		error = xfs_inode_reload_unlinked(ip);
-+		if (error) {
-+			xfs_force_shutdown(mp, SHUTDOWN_CORRUPT_INCORE);
-+			goto error0;
+-	if (id_is_cpu)
+-		uid = topology_logical_die_id(id);
++	if (id_is_cpu) {
++		uid = rapl_msrs_are_pkg_scope() ?
++		      topology_physical_package_id(id) : topology_logical_die_id(id);
++		if (uid < 0) {
++			pr_err("topology_logical_(package/die)_id() returned a negative value");
++			return ERR_PTR(-EINVAL);
 +		}
 +	}
+ 	else
+ 		uid = id;
  
- 	ASSERT(ip->i_delayed_blks == 0);
+@@ -2169,9 +2190,14 @@ struct rapl_package *rapl_add_package_cpuslocked(int id, struct rapl_if_priv *pr
+ 		return ERR_PTR(-ENOMEM);
  
+ 	if (id_is_cpu) {
+-		rp->id = topology_logical_die_id(id);
++		rp->id = rapl_msrs_are_pkg_scope() ?
++			 topology_physical_package_id(id) : topology_logical_die_id(id);
++		if ((int)(rp->id) < 0) {
++			pr_err("topology_logical_(package/die)_id() returned a negative value");
++			return ERR_PTR(-EINVAL);
++		}
+ 		rp->lead_cpu = id;
+-		if (topology_max_dies_per_package() > 1)
++		if (!rapl_msrs_are_pkg_scope() && topology_max_dies_per_package() > 1)
+ 			snprintf(rp->name, PACKAGE_DOMAIN_NAME_LENGTH, "package-%d-die-%d",
+ 				 topology_physical_package_id(id), topology_die_id(id));
+ 		else
+-- 
+2.43.0
+
 
 
 
