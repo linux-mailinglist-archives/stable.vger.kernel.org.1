@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-77921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77965-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EC49988436
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:25:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 14BBB98846E
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:27:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B73061F22695
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:25:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BFB2D1F22EED
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:27:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6851118BC0D;
-	Fri, 27 Sep 2024 12:25:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3242518A95D;
+	Fri, 27 Sep 2024 12:27:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IhOpmjTq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OCw4LBbm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 254B61779BD;
-	Fri, 27 Sep 2024 12:25:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4CE017B515;
+	Fri, 27 Sep 2024 12:27:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727439925; cv=none; b=psN1Fkp9DFRolYt9svS28Z1Mv5mA9KeF5fzoLDUhn2YVXvDSf0V3NLjFmgfEjR5iE8TXIX10jxhfv5hYb9mg6Ki6mbOMhf2eqq1uxt4vy8SE7dA2VkyObOzE2EKU/qjIsPpkADYnxnjrCsykb8X4GGb9UYzR8gWe4Y81snQFjzM=
+	t=1727440048; cv=none; b=QrdXCzzP4a5NM1P1f8Qrne8vjVcYChooMVujHe65yDFzWmrw+2MlRKLyNHNLLLwtpwcUMCI4akuMKTpk/pe0kHZoLZWKu1OEL74W6z17ulDk6Nv574Yrx1W910cVjE+MMKR7Cr/piQS2asa1nrvBDmE3KIE8JKMvtdGUJQLtYnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727439925; c=relaxed/simple;
-	bh=20GpBxfWm3eYlsBMdlclgNzKCEyT8d33Ijrjol6kU/4=;
+	s=arc-20240116; t=1727440048; c=relaxed/simple;
+	bh=ETtNj2dNofSHjM/On2PytW5YCpPwX8V4GAbcQbBj6FQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QlnqzQ1ePtJURCZINB1cCxT3jrvnJBmFRs4X+og+t0rzwZMToBtgK59XxkOfl+sOQg3dLEqgw8rOosc4oJZkr2Z5+bXINyYggjYd/18SmIGxCorCjrvvlQV9wYgHVBofE+9cXVhnlKPlhfnEHzTBZYNLiOXxOVb88MUTXgyEcdA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IhOpmjTq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A02BEC4CEC4;
-	Fri, 27 Sep 2024 12:25:24 +0000 (UTC)
+	 MIME-Version; b=riYOI10KovHGN/xaZgwqm5Mon4vthC14EqK9bHErDLvRycCm15h+oKUaTbApm/+GIuU+lPL9Pup5cKV3qQSmKYIihYzhftfHc2QbgFSHxArKd539MjLGm+Z7O4uR7qpJwS4PxIW00fxABneKM9QHNmNuUFB28fCqn/M0jwY9rMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OCw4LBbm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 746CAC4CEC4;
+	Fri, 27 Sep 2024 12:27:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727439925;
-	bh=20GpBxfWm3eYlsBMdlclgNzKCEyT8d33Ijrjol6kU/4=;
+	s=korg; t=1727440047;
+	bh=ETtNj2dNofSHjM/On2PytW5YCpPwX8V4GAbcQbBj6FQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IhOpmjTqXq6NKWQKZAA3PLYY+m8WW9jHNqZkzGPz48f477eShV5skVuBHHYkS3XKE
-	 3Y4Bxs4017A2zJYPZaYBCDYnQL72k+AJJAgLL/mDI3AScy/ZwWmVZqwVy4saZQzeKF
-	 hOso/TUj6CYDgUvQaAz2IAXBmyDJ3CSMxPlFW+0Y=
+	b=OCw4LBbmq9PajvACdhnT7sysZBrp+mr+0ks6WRIxWdXhVTB/wqFoxfLcqvXsC6agP
+	 k7hLNUCL8Q8C8pzNY1KvVWYqeFlMHpZ6DcrpZwhKQTM7nY8HpwWWmGQwo9V3KjPOQD
+	 kioUG+1/XH2qytplIWwn1Ahth7InjGFCKySfJx7E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Liao Chen <liaochen4@huawei.com>,
-	Mark Brown <broonie@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	Tianyang Zhang <zhangtianyang@loongson.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 24/54] ASoC: google: fix module autoloading
+Subject: [PATCH 6.10 14/58] LoongArch: Define ARCH_IRQ_INIT_FLAGS as IRQ_NOPROBE
 Date: Fri, 27 Sep 2024 14:23:16 +0200
-Message-ID: <20240927121720.693695728@linuxfoundation.org>
+Message-ID: <20240927121719.393481803@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121719.714627278@linuxfoundation.org>
-References: <20240927121719.714627278@linuxfoundation.org>
+In-Reply-To: <20240927121718.789211866@linuxfoundation.org>
+References: <20240927121718.789211866@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,37 +63,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liao Chen <liaochen4@huawei.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit 8e1bb4a41aa78d6105e59186af3dcd545fc66e70 ]
+[ Upstream commit 274ea3563e5ab9f468c15bfb9d2492803a66d9be ]
 
-Add MODULE_DEVICE_TABLE(), so modules could be properly autoloaded
-based on the alias from of_device_id table.
+Currently we call irq_set_noprobe() in a loop for all IRQs, but indeed
+it only works for IRQs below NR_IRQS_LEGACY because at init_IRQ() only
+legacy interrupts have been allocated.
 
-Signed-off-by: Liao Chen <liaochen4@huawei.com>
-Link: https://patch.msgid.link/20240826084924.368387-3-liaochen4@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Instead, we can define ARCH_IRQ_INIT_FLAGS as IRQ_NOPROBE in asm/hwirq.h
+and the core will automatically set the flag for all interrupts.
+
+Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Tianyang Zhang <zhangtianyang@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/google/chv3-i2s.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/loongarch/include/asm/hw_irq.h | 2 ++
+ arch/loongarch/kernel/irq.c         | 3 ---
+ 2 files changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/google/chv3-i2s.c b/sound/soc/google/chv3-i2s.c
-index 0f65134449066..462e970b954f1 100644
---- a/sound/soc/google/chv3-i2s.c
-+++ b/sound/soc/google/chv3-i2s.c
-@@ -322,6 +322,7 @@ static const struct of_device_id chv3_i2s_of_match[] = {
- 	{ .compatible = "google,chv3-i2s" },
- 	{},
- };
-+MODULE_DEVICE_TABLE(of, chv3_i2s_of_match);
+diff --git a/arch/loongarch/include/asm/hw_irq.h b/arch/loongarch/include/asm/hw_irq.h
+index af4f4e8fbd858..8156ffb674159 100644
+--- a/arch/loongarch/include/asm/hw_irq.h
++++ b/arch/loongarch/include/asm/hw_irq.h
+@@ -9,6 +9,8 @@
  
- static struct platform_driver chv3_i2s_driver = {
- 	.probe = chv3_i2s_probe,
+ extern atomic_t irq_err_count;
+ 
++#define ARCH_IRQ_INIT_FLAGS	IRQ_NOPROBE
++
+ /*
+  * interrupt-retrigger: NOP for now. This may not be appropriate for all
+  * machines, we'll see ...
+diff --git a/arch/loongarch/kernel/irq.c b/arch/loongarch/kernel/irq.c
+index f4991c03514f4..adac8fcbb2aca 100644
+--- a/arch/loongarch/kernel/irq.c
++++ b/arch/loongarch/kernel/irq.c
+@@ -102,9 +102,6 @@ void __init init_IRQ(void)
+ 	mp_ops.init_ipi();
+ #endif
+ 
+-	for (i = 0; i < NR_IRQS; i++)
+-		irq_set_noprobe(i);
+-
+ 	for_each_possible_cpu(i) {
+ 		page = alloc_pages_node(cpu_to_node(i), GFP_KERNEL, order);
+ 
 -- 
 2.43.0
 
