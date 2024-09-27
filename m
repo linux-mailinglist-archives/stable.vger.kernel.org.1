@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-78058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77977-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 032789884E3
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:32:31 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC69F98847C
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:28:14 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 292A91C22C0E
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:32:30 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 37001B218DF
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:28:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E04E918C922;
-	Fri, 27 Sep 2024 12:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88D8518C016;
+	Fri, 27 Sep 2024 12:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GoOGAWJm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WwRu6ewI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E3E818C02B;
-	Fri, 27 Sep 2024 12:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43FE618C003;
+	Fri, 27 Sep 2024 12:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440306; cv=none; b=D571Y3xttfQ0vcROX25YaKq2DdCym9d+7tZxIRpgpDbc7g/wDHUX8woQ5wzxtWKILPUlUgPGVnjK0zQoMO9PKTlUoqtXrxcKyzC+HK89Dp0hia6vqiTcXmMDQfbBzbeB5inT1HLHa18iVE3Jt1yZzkv/VPzUyaVQxmJT+T+ulAI=
+	t=1727440081; cv=none; b=acuTAfe4dXg9Dy0Bs5ijWZH4TY7LXecMB61vYR+ypM7lUVymXr3RpqVU0bbJ2vpdNCEkt6XM6Ko0GeevZCU7v2zK+NMQfxmSRvCQ8xAg6kWmNkY0iwtK3vZpqk/aY9KresrXADmH6fVyrI4pk3CwI5Hzyapwp2iu/7S6u28L5dk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440306; c=relaxed/simple;
-	bh=unjbsM1e5RW0c4y+kF3MWl7TimJJrPrHqcqg2XV1H9s=;
+	s=arc-20240116; t=1727440081; c=relaxed/simple;
+	bh=FdTYQHjmrDTg4EIou7bNN6P2T75/kFL7v+wmDyGpiic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TcpTTMqknuOnpi1wupfshw5pPQT44NtdEfRTFJZ40194/v+3Hzjtj+Zd/9jHLIp1nll6LKgQvNMMQgkR0oXZAWXr5f+U1k7rHxXyxX/HpYthIF7TjeYzz5J3SpcPq7P3Jbv3Avs7FUHqCKlunc/c/6a8AKir76qKIV6Zly0/lfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GoOGAWJm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27528C4CEC4;
-	Fri, 27 Sep 2024 12:31:45 +0000 (UTC)
+	 MIME-Version; b=ODcIabUjpkDTuGzLXsxMuvd9LZe+xjPbIXzsM471Va3uAcZUJ/Cxk//G9cOm/SXml1+S030xFckWJjWkZSLCVvqltcGal+T0L/xRQtyWxvyDK/mg21F/uYNCosZC/eZjyL576ivUBhnDr8BRh2sAqPsk+OLKtW3RP08gJvQNfAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WwRu6ewI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C180EC4CEC6;
+	Fri, 27 Sep 2024 12:28:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440306;
-	bh=unjbsM1e5RW0c4y+kF3MWl7TimJJrPrHqcqg2XV1H9s=;
+	s=korg; t=1727440081;
+	bh=FdTYQHjmrDTg4EIou7bNN6P2T75/kFL7v+wmDyGpiic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GoOGAWJm/Zq6IquFi4WMuF8yJx9MkgL+5G+jRfpPdlWfQAekOJWjR/y9yjUFIe850
-	 +Bgd0Cms4YcWTs3UIpdoaw0/EuJ6VQQNCT3GAmfkfi4V2G5zrFrmvvSlIn7IrzzQiA
-	 HtVTWNpI02Faa0Oc95FZRXmKT9DBsNA24pfROedQ=
+	b=WwRu6ewIgB3+hUfSqgxla24mcjY6Yvc6L0gcwALmxdyql/hWIxSX4b1LPO9XJ0aqP
+	 pCkeLtJ30bPoQBDvxX5ozU8L4Yr1mWjCx8pnNfbzO4Ft3Up+RatlFh/NXARl8cg3Lp
+	 HNJcnZllcbc/9hYKs2LzFOcJXx7p2Tr2fTdikhmI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ross Brown <true.robot.ross@gmail.com>,
-	Eugene Shalygin <eugene.shalygin@gmail.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Daniel Gabay <daniel.gabay@intel.com>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 08/73] hwmon: (asus-ec-sensors) remove VRM temp X570-E GAMING
-Date: Fri, 27 Sep 2024 14:23:19 +0200
-Message-ID: <20240927121720.220728100@linuxfoundation.org>
+Subject: [PATCH 6.10 18/58] wifi: iwlwifi: mvm: fix iwl_mvm_max_scan_ie_fw_cmd_room()
+Date: Fri, 27 Sep 2024 14:23:20 +0200
+Message-ID: <20240927121719.552535622@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121719.897851549@linuxfoundation.org>
-References: <20240927121719.897851549@linuxfoundation.org>
+In-Reply-To: <20240927121718.789211866@linuxfoundation.org>
+References: <20240927121718.789211866@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ross Brown <true.robot.ross@gmail.com>
+From: Daniel Gabay <daniel.gabay@intel.com>
 
-[ Upstream commit 9efaebc0072b8e95505544bf385c20ee8a29d799 ]
+[ Upstream commit 916a5d9c5354c426220a0a6533a5e8ea1287d6ea ]
 
-X570-E GAMING does not have VRM temperature sensor.
+Driver creates also the WFA TPC element, consider that in the
+calculation.
 
-Signed-off-by: Ross Brown <true.robot.ross@gmail.com>
-Signed-off-by: Eugene Shalygin <eugene.shalygin@gmail.com>
-Link: https://lore.kernel.org/r/20240730062320.5188-2-eugene.shalygin@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Daniel Gabay <daniel.gabay@intel.com>
+Reviewed-by: Ilan Peer <ilan.peer@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20240825191257.e710ce446b7f.I2715c6742e9c3d160e2ba41bc4b35de370d2ce34@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/asus-ec-sensors.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/scan.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/hwmon/asus-ec-sensors.c b/drivers/hwmon/asus-ec-sensors.c
-index b4d65916b3c00..d893cfd1cb829 100644
---- a/drivers/hwmon/asus-ec-sensors.c
-+++ b/drivers/hwmon/asus-ec-sensors.c
-@@ -369,7 +369,7 @@ static const struct ec_board_info board_info_strix_b550_i_gaming = {
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+index 89adc6421eeee..d7c276237c74e 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/scan.c
+@@ -48,6 +48,8 @@
+ /* Number of iterations on the channel for mei filtered scan */
+ #define IWL_MEI_SCAN_NUM_ITER	5U
  
- static const struct ec_board_info board_info_strix_x570_e_gaming = {
- 	.sensors = SENSOR_SET_TEMP_CHIPSET_CPU_MB |
--		SENSOR_TEMP_T_SENSOR | SENSOR_TEMP_VRM |
-+		SENSOR_TEMP_T_SENSOR |
- 		SENSOR_FAN_CHIPSET | SENSOR_CURR_CPU |
- 		SENSOR_IN_CPU_CORE,
- 	.mutex_path = ASUS_HW_ACCESS_MUTEX_ASMX,
++#define WFA_TPC_IE_LEN	9
++
+ struct iwl_mvm_scan_timing_params {
+ 	u32 suspend_time;
+ 	u32 max_out_time;
+@@ -303,8 +305,8 @@ static int iwl_mvm_max_scan_ie_fw_cmd_room(struct iwl_mvm *mvm)
+ 
+ 	max_probe_len = SCAN_OFFLOAD_PROBE_REQ_SIZE;
+ 
+-	/* we create the 802.11 header and SSID element */
+-	max_probe_len -= 24 + 2;
++	/* we create the 802.11 header SSID element and WFA TPC element */
++	max_probe_len -= 24 + 2 + WFA_TPC_IE_LEN;
+ 
+ 	/* DS parameter set element is added on 2.4GHZ band if required */
+ 	if (iwl_mvm_rrm_scan_needed(mvm))
+@@ -731,8 +733,6 @@ static u8 *iwl_mvm_copy_and_insert_ds_elem(struct iwl_mvm *mvm, const u8 *ies,
+ 	return newpos;
+ }
+ 
+-#define WFA_TPC_IE_LEN	9
+-
+ static void iwl_mvm_add_tpc_report_ie(u8 *pos)
+ {
+ 	pos[0] = WLAN_EID_VENDOR_SPECIFIC;
 -- 
 2.43.0
 
