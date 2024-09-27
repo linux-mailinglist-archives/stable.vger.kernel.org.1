@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-78050-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77941-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF6829884DA
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:32:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ED98988455
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:26:52 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EFB1F1C2127F
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:32:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id AEA7E1C22C77
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:26:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B90B918C343;
-	Fri, 27 Sep 2024 12:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5520D18C03A;
+	Fri, 27 Sep 2024 12:26:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ARG8EQ8I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G8H4OnV7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76F3318A95D;
-	Fri, 27 Sep 2024 12:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 108E41779BD;
+	Fri, 27 Sep 2024 12:26:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440284; cv=none; b=nDJT2R+BOb0myWt3SfgnZE4rj8r7Q4NV0ijG4vpb4EGXtinmUCGHXP6537mjeayCIYpw8jnq9Q5cGM/tmmdhHGNmCvOi7LBqTwfFiCUPQ9Wy4DmJu6SmkKS8gGSaldIU9qyvL2A/4TL9C6I6hJwL9u4Q1YBRwegjQF01K8hQauI=
+	t=1727439981; cv=none; b=scLDVboRNMQEsCTOgsuLc6Lc6LYMai0DOIi5wDZdGdG75cCI/gVPtuxE1mK+bDUJLAwZb6qHPXzWvzCxF9sl2o0tTwUbEiPm4S0gFa+EKj99A3A8m5/u8G2lMuO0yOsIjnkqQ+JhxNG5ayMSnakFpjlCZPobXC3zwENCnlAU2CU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440284; c=relaxed/simple;
-	bh=F/GB+J/f/gm7yZNjFVGBBQR8fkGcyUjEqrqMUTiDyZ0=;
+	s=arc-20240116; t=1727439981; c=relaxed/simple;
+	bh=9Q+M9RQlsApJxGY1uSiuDckMtHUi7XSUUYMMeFVQqUA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=b9o9j20jz7yZ5pSKV35AVi0CxQXrFxwyhMCSPXwbj+VAVXFGuetdCETz0tCoc4JXSk/RMXndzBbPS+pkssMM9Wsxd5IDTkaJOnvB0rjpk9sEDGi32nCpgCNo6AscXMnFqz3be1zePv/lAwNB3x47SumWxEapKZQLX/AlxV6Wpfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ARG8EQ8I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01EA1C4CEC4;
-	Fri, 27 Sep 2024 12:31:23 +0000 (UTC)
+	 MIME-Version; b=cJXYiPSm10j8owak0gEmvJ4/b5pCOzz5WsdW919DjOpCCjvQ405BABd7uIK2Awnte1WRi5xM0SHUmOqFirJVbW6vHW+h11ZL0ZPIwabTtL3+E8WY95bftykrvvqJ9Yy9savq3dECAcFJtRIPRzdlFN0V0SHANYQtkubFDPPTVaY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G8H4OnV7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ECA2C4CEC4;
+	Fri, 27 Sep 2024 12:26:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440284;
-	bh=F/GB+J/f/gm7yZNjFVGBBQR8fkGcyUjEqrqMUTiDyZ0=;
+	s=korg; t=1727439980;
+	bh=9Q+M9RQlsApJxGY1uSiuDckMtHUi7XSUUYMMeFVQqUA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ARG8EQ8IN430B139KarE2l8EqtAFGFsT4xIkmtPPU0cBSFiM2USlE4NgGytdKjq+1
-	 BYRwGOx4p/kqGzYuMCzhfVuz3M4XBpiCEvGaOyNZlWTlVLw1DOgcpOD6Puce91pvM0
-	 tYVuQ7WRYbsYsSCdySTcvs+w8kUvZK1CRmdPruxs=
+	b=G8H4OnV7y30ami5lpmZtMat2lLhGzmEAiXzxdrtCDAz1uay9P5V+IMSju5kEWMARN
+	 cVM9LOKn6gnNHprJK+6861z2D4mzwZyD0hvODY3W2rtRGas1/eiDOnDsX7uuLUPBQq
+	 wJp31dpth+Do1meUMw6pjJOaoXZ/VqFRkwBBj4Wc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org
+To: stable@vger.kernel.org,
+	netfilter-devel@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Kelley <mhklinux@outlook.com>,
-	Roman Kisel <romank@linux.microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 26/73] x86/hyperv: Set X86_FEATURE_TSC_KNOWN_FREQ when Hyper-V provides frequency
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 6.6 45/54] netfilter: nft_set_pipapo: walk over current view on netlink dump
 Date: Fri, 27 Sep 2024 14:23:37 +0200
-Message-ID: <20240927121720.951219747@linuxfoundation.org>
+Message-ID: <20240927121721.624073906@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121719.897851549@linuxfoundation.org>
-References: <20240927121719.897851549@linuxfoundation.org>
+In-Reply-To: <20240927121719.714627278@linuxfoundation.org>
+References: <20240927121719.714627278@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +61,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Kelley <mhklinux@outlook.com>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 8fcc514809de41153b43ccbe1a0cdf7f72b78e7e ]
+commit 29b359cf6d95fd60730533f7f10464e95bd17c73 upstream.
 
-A Linux guest on Hyper-V gets the TSC frequency from a synthetic MSR, if
-available. In this case, set X86_FEATURE_TSC_KNOWN_FREQ so that Linux
-doesn't unnecessarily do refined TSC calibration when setting up the TSC
-clocksource.
+The generation mask can be updated while netlink dump is in progress.
+The pipapo set backend walk iterator cannot rely on it to infer what
+view of the datastructure is to be used. Add notation to specify if user
+wants to read/update the set.
 
-With this change, a message such as this is no longer output during boot
-when the TSC is used as the clocksource:
+Based on patch from Florian Westphal.
 
-[    1.115141] tsc: Refined TSC clocksource calibration: 2918.408 MHz
-
-Furthermore, the guest and host will have exactly the same view of the
-TSC frequency, which is important for features such as the TSC deadline
-timer that are emulated by the Hyper-V host.
-
-Signed-off-by: Michael Kelley <mhklinux@outlook.com>
-Reviewed-by: Roman Kisel <romank@linux.microsoft.com>
-Link: https://lore.kernel.org/r/20240606025559.1631-1-mhklinux@outlook.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
-Message-ID: <20240606025559.1631-1-mhklinux@outlook.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2b84e215f874 ("netfilter: nft_set_pipapo: .walk does not deal with generations")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/cpu/mshyperv.c | 1 +
- 1 file changed, 1 insertion(+)
+ include/net/netfilter/nf_tables.h |   13 +++++++++++++
+ net/netfilter/nf_tables_api.c     |    5 +++++
+ net/netfilter/nft_set_pipapo.c    |    5 +++--
+ 3 files changed, 21 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyperv.c
-index 9b039e9635e40..542b818c0d20d 100644
---- a/arch/x86/kernel/cpu/mshyperv.c
-+++ b/arch/x86/kernel/cpu/mshyperv.c
-@@ -324,6 +324,7 @@ static void __init ms_hyperv_init_platform(void)
- 	    ms_hyperv.misc_features & HV_FEATURE_FREQUENCY_MSRS_AVAILABLE) {
- 		x86_platform.calibrate_tsc = hv_get_tsc_khz;
- 		x86_platform.calibrate_cpu = hv_get_tsc_khz;
-+		setup_force_cpu_cap(X86_FEATURE_TSC_KNOWN_FREQ);
- 	}
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -297,9 +297,22 @@ struct nft_set_elem {
+ 	void			*priv;
+ };
  
- 	if (ms_hyperv.priv_high & HV_ISOLATION) {
--- 
-2.43.0
-
++/**
++ * enum nft_iter_type - nftables set iterator type
++ *
++ * @NFT_ITER_READ: read-only iteration over set elements
++ * @NFT_ITER_UPDATE: iteration under mutex to update set element state
++ */
++enum nft_iter_type {
++	NFT_ITER_UNSPEC,
++	NFT_ITER_READ,
++	NFT_ITER_UPDATE,
++};
++
+ struct nft_set;
+ struct nft_set_iter {
+ 	u8		genmask;
++	enum nft_iter_type type:8;
+ 	unsigned int	count;
+ 	unsigned int	skip;
+ 	int		err;
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -628,6 +628,7 @@ static void nft_map_deactivate(const str
+ {
+ 	struct nft_set_iter iter = {
+ 		.genmask	= nft_genmask_next(ctx->net),
++		.type		= NFT_ITER_UPDATE,
+ 		.fn		= nft_mapelem_deactivate,
+ 	};
+ 
+@@ -5392,6 +5393,7 @@ int nf_tables_bind_set(const struct nft_
+ 		}
+ 
+ 		iter.genmask	= nft_genmask_next(ctx->net);
++		iter.type	= NFT_ITER_UPDATE;
+ 		iter.skip 	= 0;
+ 		iter.count	= 0;
+ 		iter.err	= 0;
+@@ -5467,6 +5469,7 @@ static void nft_map_activate(const struc
+ {
+ 	struct nft_set_iter iter = {
+ 		.genmask	= nft_genmask_next(ctx->net),
++		.type		= NFT_ITER_UPDATE,
+ 		.fn		= nft_mapelem_activate,
+ 	};
+ 
+@@ -5845,6 +5848,7 @@ static int nf_tables_dump_set(struct sk_
+ 	args.skb		= skb;
+ 	args.reset		= reset;
+ 	args.iter.genmask	= nft_genmask_cur(net);
++	args.iter.type		= NFT_ITER_READ;
+ 	args.iter.skip		= cb->args[0];
+ 	args.iter.count		= 0;
+ 	args.iter.err		= 0;
+@@ -7246,6 +7250,7 @@ static int nft_set_flush(struct nft_ctx
+ {
+ 	struct nft_set_iter iter = {
+ 		.genmask	= genmask,
++		.type		= NFT_ITER_UPDATE,
+ 		.fn		= nft_setelem_flush,
+ 	};
+ 
+--- a/net/netfilter/nft_set_pipapo.c
++++ b/net/netfilter/nft_set_pipapo.c
+@@ -2037,13 +2037,14 @@ static void nft_pipapo_walk(const struct
+ 			    struct nft_set_iter *iter)
+ {
+ 	struct nft_pipapo *priv = nft_set_priv(set);
+-	struct net *net = read_pnet(&set->net);
+ 	const struct nft_pipapo_match *m;
+ 	const struct nft_pipapo_field *f;
+ 	int i, r;
+ 
++	WARN_ON_ONCE(iter->type == NFT_ITER_UNSPEC);
++
+ 	rcu_read_lock();
+-	if (iter->genmask == nft_genmask_cur(net))
++	if (iter->type == NFT_ITER_READ)
+ 		m = rcu_dereference(priv->match);
+ 	else
+ 		m = priv->clone;
 
 
 
