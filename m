@@ -1,61 +1,56 @@
-Return-Path: <stable+bounces-77953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78039-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C347988461
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:27:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6E069884D0
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:32:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 99E8E1C23274
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:27:09 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A8671281471
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:32:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCBD618BC3A;
-	Fri, 27 Sep 2024 12:26:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E25F18C021;
+	Fri, 27 Sep 2024 12:30:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uhJHzMya"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hn0o/Blf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BFD318A95D;
-	Fri, 27 Sep 2024 12:26:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D79318A6C4;
+	Fri, 27 Sep 2024 12:30:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440014; cv=none; b=gGOH7NsIlHvrgBOFkVfQGrYgpBZV5sFd4V65V4vc07/kdoPzsCUe+0RCD246kydgOEP3QyVDdDw2HZ7Rm14GvV18101vbpoM7bAz1S5TPnFr2BrJdzcWL11rwTkyl0eeJewET2jBnDlIIoLK9wFnNBxb3gSQaNa1Fn8TV/2InXg=
+	t=1727440254; cv=none; b=VJquRxg1FU7L/h/HD4aJ4Z+3TfmlqxA52Ag4DNmF3dNEcVedER56rTqYO65Ay0BHYEaeIsFRYHNNDjY/V3vrS7BkaPjG539+x7HccmtECzQ1zIch9DoY3r1ZJEC8q8rOq6yZOaieoHwhLZic4sdFhAjQjvAxyHMiNNBpgbbzais=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440014; c=relaxed/simple;
-	bh=jHZVW6jPse82CY2XbrfXtYQp+bnb2TCCEEaxYC0n/rg=;
+	s=arc-20240116; t=1727440254; c=relaxed/simple;
+	bh=eVRSUMh4qEB8xzEjyz+2fzjix/LxIEI4R1ki3qGNxtA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lUSLiybIFSUMg7xQM+cc3gV91JcbitbujRZP1XmJr6r66QlYwAKG2LrQm0bBxjrXOEZ+E5GxqS/agvv1FhN9xY6wpCXf51DB8+O1NeMq45SL4qPkhknglEe3VuIIlwqVJxZSVMQ6dJu1txzvrBPAMpSOQPkhs+Vjb4Ok5xsiIus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uhJHzMya; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1114C4CEC4;
-	Fri, 27 Sep 2024 12:26:53 +0000 (UTC)
+	 MIME-Version; b=qTzIhl/NRiiVxx1WmAf1yM1MEaIYhxUlZeQfcwEoJandexnS+hFO+KvBfaluNIZ83xOgWxfCNphKkOdaZ5woqyaLZ/Q13kVgcyqHWzbT1Gdk58kiWcGa1tRwWJYSjC4CZz1L00hjab339AAgz6bXRtJnPR6Erun3zFxq3lWPlAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hn0o/Blf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 979BAC4CEC4;
+	Fri, 27 Sep 2024 12:30:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440014;
-	bh=jHZVW6jPse82CY2XbrfXtYQp+bnb2TCCEEaxYC0n/rg=;
+	s=korg; t=1727440254;
+	bh=eVRSUMh4qEB8xzEjyz+2fzjix/LxIEI4R1ki3qGNxtA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uhJHzMyazsSk9FpJGmF/pFM/2mq/O07kzWdv+kb3ancfYYB55rquAU16XNGRhnIXm
-	 yqvd8bV2kw3i6WrpVFWxJ/JDyLZJWkRMVnARhMQ/kSrLa3m+lGcQqsWhVG1i8w0ify
-	 5Yo8WOQ9v2gC4tpEeKaoNZXJVvDhWYWam/IA1agE=
+	b=hn0o/BlfIZ/qDEfw9q6/u57B6j3J0ol+r4zxFd6AgnVQCBV5kGo4wr9NAn3THg96Q
+	 YRk1sq8LCmznjXjOH4FT5rtNDJsxq9XTsZotMuyxjvXUpAk1XFuxe8S2fpox+l+/ox
+	 kaJXsrIyLKnCpf/QYOqO6yCP/sh8TFM6dKX2ADE0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yibin Ding <yibin.ding@unisoc.com>,
-	Hongyu Jin <hongyu.jin@unisoc.com>,
-	Eric Biggers <ebiggers@google.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 35/54] block: Fix where bio IO priority gets set
+Subject: [PATCH 6.1 16/73] wifi: mac80211: free skb on error path in ieee80211_beacon_get_ap()
 Date: Fri, 27 Sep 2024 14:23:27 +0200
-Message-ID: <20240927121721.162565262@linuxfoundation.org>
+Message-ID: <20240927121720.526167153@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121719.714627278@linuxfoundation.org>
-References: <20240927121719.714627278@linuxfoundation.org>
+In-Reply-To: <20240927121719.897851549@linuxfoundation.org>
+References: <20240927121719.897851549@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,111 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hongyu Jin <hongyu.jin@unisoc.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit f3c89983cb4fc00be64eb0d5cbcfcdf2cacb965e ]
+[ Upstream commit 786c5be9ac29a39b6f37f1fdd2ea59d0fe35d525 ]
 
-Commit 82b74cac2849 ("blk-ioprio: Convert from rqos policy to direct
-call") pushed setting bio I/O priority down into blk_mq_submit_bio()
--- which is too low within block core's submit_bio() because it
-skips setting I/O priority for block drivers that implement
-fops->submit_bio() (e.g. DM, MD, etc).
+In 'ieee80211_beacon_get_ap()', free allocated skb in case of error
+returned by 'ieee80211_beacon_protect()'. Compile tested only.
 
-Fix this by moving bio_set_ioprio() up from blk-mq.c to blk-core.c and
-call it from submit_bio().  This ensures all block drivers call
-bio_set_ioprio() during initial bio submission.
-
-Fixes: a78418e6a04c ("block: Always initialize bio IO priority on submit")
-Co-developed-by: Yibin Ding <yibin.ding@unisoc.com>
-Signed-off-by: Yibin Ding <yibin.ding@unisoc.com>
-Signed-off-by: Hongyu Jin <hongyu.jin@unisoc.com>
-Reviewed-by: Eric Biggers <ebiggers@google.com>
-Reviewed-by: Mikulas Patocka <mpatocka@redhat.com>
-[snitzer: revised commit header]
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20240130202638.62600-2-snitzer@kernel.org
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Link: https://patch.msgid.link/20240805142035.227847-1-dmantipov@yandex.ru
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-core.c | 10 ++++++++++
- block/blk-mq.c   | 10 ----------
- 2 files changed, 10 insertions(+), 10 deletions(-)
+ net/mac80211/tx.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/block/blk-core.c b/block/blk-core.c
-index bf058cea9016a..4f25d2c4bc705 100644
---- a/block/blk-core.c
-+++ b/block/blk-core.c
-@@ -49,6 +49,7 @@
- #include "blk-pm.h"
- #include "blk-cgroup.h"
- #include "blk-throttle.h"
-+#include "blk-ioprio.h"
+diff --git a/net/mac80211/tx.c b/net/mac80211/tx.c
+index 419baf8efddea..0685ae2ea64eb 100644
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -5196,8 +5196,10 @@ ieee80211_beacon_get_ap(struct ieee80211_hw *hw,
+ 	if (beacon->tail)
+ 		skb_put_data(skb, beacon->tail, beacon->tail_len);
  
- struct dentry *blk_debugfs_root;
+-	if (ieee80211_beacon_protect(skb, local, sdata, link) < 0)
++	if (ieee80211_beacon_protect(skb, local, sdata, link) < 0) {
++		dev_kfree_skb(skb);
+ 		return NULL;
++	}
  
-@@ -819,6 +820,14 @@ void submit_bio_noacct(struct bio *bio)
- }
- EXPORT_SYMBOL(submit_bio_noacct);
- 
-+static void bio_set_ioprio(struct bio *bio)
-+{
-+	/* Nobody set ioprio so far? Initialize it based on task's nice value */
-+	if (IOPRIO_PRIO_CLASS(bio->bi_ioprio) == IOPRIO_CLASS_NONE)
-+		bio->bi_ioprio = get_current_ioprio();
-+	blkcg_set_ioprio(bio);
-+}
-+
- /**
-  * submit_bio - submit a bio to the block device layer for I/O
-  * @bio: The &struct bio which describes the I/O
-@@ -841,6 +850,7 @@ void submit_bio(struct bio *bio)
- 		count_vm_events(PGPGOUT, bio_sectors(bio));
- 	}
- 
-+	bio_set_ioprio(bio);
- 	submit_bio_noacct(bio);
- }
- EXPORT_SYMBOL(submit_bio);
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index 7cc315527a44c..733d72f4d1cc9 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -40,7 +40,6 @@
- #include "blk-stat.h"
- #include "blk-mq-sched.h"
- #include "blk-rq-qos.h"
--#include "blk-ioprio.h"
- 
- static DEFINE_PER_CPU(struct llist_head, blk_cpu_done);
- static DEFINE_PER_CPU(call_single_data_t, blk_cpu_csd);
-@@ -2956,14 +2955,6 @@ static bool blk_mq_can_use_cached_rq(struct request *rq, struct blk_plug *plug,
- 	return true;
- }
- 
--static void bio_set_ioprio(struct bio *bio)
--{
--	/* Nobody set ioprio so far? Initialize it based on task's nice value */
--	if (IOPRIO_PRIO_CLASS(bio->bi_ioprio) == IOPRIO_CLASS_NONE)
--		bio->bi_ioprio = get_current_ioprio();
--	blkcg_set_ioprio(bio);
--}
--
- /**
-  * blk_mq_submit_bio - Create and send a request to block device.
-  * @bio: Bio pointer.
-@@ -2988,7 +2979,6 @@ void blk_mq_submit_bio(struct bio *bio)
- 	blk_status_t ret;
- 
- 	bio = blk_queue_bounce(bio, q);
--	bio_set_ioprio(bio);
- 
- 	if (plug) {
- 		rq = rq_list_peek(&plug->cached_rq);
+ 	ieee80211_beacon_get_finish(hw, vif, link, offs, beacon, skb,
+ 				    chanctx_conf, csa_off_base);
 -- 
 2.43.0
 
