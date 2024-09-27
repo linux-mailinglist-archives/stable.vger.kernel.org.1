@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-78024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78079-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF9B09884B5
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:30:32 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15A919884FC
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:33:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 1EB10B218E9
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:30:30 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C7C79283386
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:33:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CF7118C341;
-	Fri, 27 Sep 2024 12:30:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC8DE18B46D;
+	Fri, 27 Sep 2024 12:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jlDzuyhB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cGJqbyht"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDEA618C33C;
-	Fri, 27 Sep 2024 12:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B2CE3C3C;
+	Fri, 27 Sep 2024 12:32:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440212; cv=none; b=NZ974KqBtWz08YWJtPVv8Y337+cny/st75QkU92StzrheqX66FFKmXLncUv9RLKGqJyMtNLr7qNbFbYHMN74mV/6uZZsG4HCE9IsswElwZhiWAMBGIxY3HP6fJpqRfNUjc/jj1PFKD21bjaFyTfyaqSxk+C97ZL5AghJvXwZ2Ho=
+	t=1727440364; cv=none; b=UrekZJ5xYqTWN+DrddA4fF2bP0lWBCMpwbS+3uUgKYVyzl0q8bHmGbUEYGpJ9hF+MTZAJ4hmHYbruo7OhqqEDt+fxGZe9SgdVWigrzlOL8EqDfIze3mKTZqdV11Y6Bng+TEAwVffAEUFcGjmC4HMTHQrHBKo1TmrS9qzLsMQXp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440212; c=relaxed/simple;
-	bh=IuqfRS136alpo8UOMYv9ZGuZNdQs6I2o/WIMwpvKIBc=;
+	s=arc-20240116; t=1727440364; c=relaxed/simple;
+	bh=Ude5mYaAzgjbYQMB1PzSxcGaL4twJuA1C19JGBGOcA8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Dq8c4SYYvOhIloDpwaGWkjRVriqTsLLp02l+LWlA7ePqoVdTtBuMUhG7pHrZCOPr9Ka6Qm32YqlRlE4+RrLSzM4tia1CEkCur3NDmsclNDZB61zh1A4Zfs/98CZlMV/d0C0U/hWUR2Q0R4HU+b0Jhwoo+oxc9i9l5YRYu71kFsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jlDzuyhB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 709ECC4CECE;
-	Fri, 27 Sep 2024 12:30:11 +0000 (UTC)
+	 MIME-Version; b=KF0985fe1UBjagsNLyuZiIG/5CSJMbkGIdX0EjyTQw2/m1AoEwFlDUU/Ej5TuVRK8ro+aSzr3dhQgK1NluSKPKJ4bX+qDPQ9YARQ5EIsnCfkviV2ZZOfFfxBy4CEIUcS2OvIza68cVqbEWkCjs6dNRE+nnwS2qEm+xpE/NnRgLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cGJqbyht; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF615C4CEC4;
+	Fri, 27 Sep 2024 12:32:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440211;
-	bh=IuqfRS136alpo8UOMYv9ZGuZNdQs6I2o/WIMwpvKIBc=;
+	s=korg; t=1727440364;
+	bh=Ude5mYaAzgjbYQMB1PzSxcGaL4twJuA1C19JGBGOcA8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jlDzuyhBG6h+TYuyfm1fYOa+jp0rzrH3KnOv3YPFYveClDHW8udPwBCo+Hz+7hxcr
-	 ahdEiLwT95SxCCgkx28SDdJrdHHNwG3Q0hXrNNnrDgUwbbPABdzTWHJyuaD0gL5dDz
-	 L22xdcLTWBjchFLnzEQTleDSsWEwrgGpj9mrZGy0=
+	b=cGJqbyhtAx8suDufd/bnmaXAK1+SFnH3ydHI6ueOAYZwkbCe9Vhwd2jwnviEY12gO
+	 BLjtcS4t+KO3xjOsEM9SvkKq/FWUuWxEB+e1SA+MdvDxN026q20OUEMlym9rVSW9xU
+	 YJhHYO0WMAy1qeW95mmSvsSfqwiP1zbjpy7E8dAE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Micha=C5=82=20Winiarski?= <michal.winiarski@intel.com>,
-	James Zhu <James.Zhu@amd.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 03/12] drm: Expand max DRM device number to full MINORBITS
+	"Darrick J. Wong" <djwong@kernel.org>,
+	Leah Rumancik <leah.rumancik@gmail.com>,
+	Chandan Babu R <chandanbabu@kernel.org>
+Subject: [PATCH 6.1 55/73] xfs: make inode unlinked bucket recovery work with quotacheck
 Date: Fri, 27 Sep 2024 14:24:06 +0200
-Message-ID: <20240927121715.363220876@linuxfoundation.org>
+Message-ID: <20240927121722.156026232@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121715.213013166@linuxfoundation.org>
-References: <20240927121715.213013166@linuxfoundation.org>
+In-Reply-To: <20240927121719.897851549@linuxfoundation.org>
+References: <20240927121719.897851549@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +60,158 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michał Winiarski <michal.winiarski@intel.com>
+From: "Darrick J. Wong" <djwong@kernel.org>
 
-[ Upstream commit 071d583e01c88272f6ff216d4f867f8f35e94d7d ]
+[ Upstream commit 49813a21ed57895b73ec4ed3b99d4beec931496f ]
 
-Having a limit of 64 DRM devices is not good enough for modern world
-where we have multi-GPU servers, SR-IOV virtual functions and virtual
-devices used for testing.
-Let's utilize full minor range for DRM devices.
-To avoid regressing the existing userspace, we're still maintaining the
-numbering scheme where 0-63 is used for primary, 64-127 is reserved
-(formerly for control) and 128-191 is used for render.
-For minors >= 192, we're allocating minors dynamically on a first-come,
-first-served basis.
+Teach quotacheck to reload the unlinked inode lists when walking the
+inode table.  This requires extra state handling, since it's possible
+that a reloaded inode will get inactivated before quotacheck tries to
+scan it; in this case, we need to ensure that the reloaded inode does
+not have dquots attached when it is freed.
 
-Signed-off-by: Michał Winiarski <michal.winiarski@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240823163048.2676257-4-michal.winiarski@intel.com
-Acked-by: James Zhu <James.Zhu@amd.com>
-Acked-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Darrick J. Wong <djwong@kernel.org>
+Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
+Acked-by: Chandan Babu R <chandanbabu@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/drm_drv.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ fs/xfs/xfs_attr_inactive.c |    1 -
+ fs/xfs/xfs_inode.c         |   12 +++++++++---
+ fs/xfs/xfs_inode.h         |    5 ++++-
+ fs/xfs/xfs_mount.h         |   10 +++++++++-
+ fs/xfs/xfs_qm.c            |    7 +++++++
+ 5 files changed, 29 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/gpu/drm/drm_drv.c b/drivers/gpu/drm/drm_drv.c
-index 7e0fa5a2a3182..c734e6a1c4ce2 100644
---- a/drivers/gpu/drm/drm_drv.c
-+++ b/drivers/gpu/drm/drm_drv.c
-@@ -121,10 +121,19 @@ static void drm_minor_alloc_release(struct drm_device *dev, void *data)
- 	xa_erase(drm_minor_get_xa(minor->type), minor->index);
+--- a/fs/xfs/xfs_attr_inactive.c
++++ b/fs/xfs/xfs_attr_inactive.c
+@@ -333,7 +333,6 @@ xfs_attr_inactive(
+ 	int			error = 0;
+ 
+ 	mp = dp->i_mount;
+-	ASSERT(! XFS_NOT_DQATTACHED(mp, dp));
+ 
+ 	xfs_ilock(dp, lock_mode);
+ 	if (!xfs_inode_has_attr_fork(dp))
+--- a/fs/xfs/xfs_inode.c
++++ b/fs/xfs/xfs_inode.c
+@@ -1743,9 +1743,13 @@ xfs_inactive(
+ 	     ip->i_df.if_nextents > 0 || ip->i_delayed_blks > 0))
+ 		truncate = 1;
+ 
+-	error = xfs_qm_dqattach(ip);
+-	if (error)
+-		goto out;
++	if (xfs_iflags_test(ip, XFS_IQUOTAUNCHECKED)) {
++		xfs_qm_dqdetach(ip);
++	} else {
++		error = xfs_qm_dqattach(ip);
++		if (error)
++			goto out;
++	}
+ 
+ 	if (S_ISLNK(VFS_I(ip)->i_mode))
+ 		error = xfs_inactive_symlink(ip);
+@@ -1963,6 +1967,8 @@ xfs_iunlink_reload_next(
+ 	trace_xfs_iunlink_reload_next(next_ip);
+ rele:
+ 	ASSERT(!(VFS_I(next_ip)->i_state & I_DONTCACHE));
++	if (xfs_is_quotacheck_running(mp) && next_ip)
++		xfs_iflags_set(next_ip, XFS_IQUOTAUNCHECKED);
+ 	xfs_irele(next_ip);
+ 	return error;
  }
+--- a/fs/xfs/xfs_inode.h
++++ b/fs/xfs/xfs_inode.h
+@@ -344,6 +344,9 @@ static inline bool xfs_inode_has_large_e
+  */
+ #define XFS_INACTIVATING	(1 << 13)
  
-+/*
-+ * DRM used to support 64 devices, for backwards compatibility we need to maintain the
-+ * minor allocation scheme where minors 0-63 are primary nodes, 64-127 are control nodes,
-+ * and 128-191 are render nodes.
-+ * After reaching the limit, we're allocating minors dynamically - first-come, first-serve.
-+ * Accel nodes are using a distinct major, so the minors are allocated in continuous 0-MAX
-+ * range.
-+ */
- #define DRM_MINOR_LIMIT(t) ({ \
- 	typeof(t) _t = (t); \
- 	_t == DRM_MINOR_ACCEL ? XA_LIMIT(0, ACCEL_MAX_MINORS) : XA_LIMIT(64 * _t, 64 * _t + 63); \
- })
-+#define DRM_EXTENDED_MINOR_LIMIT XA_LIMIT(192, (1 << MINORBITS) - 1)
++/* Quotacheck is running but inode has not been added to quota counts. */
++#define XFS_IQUOTAUNCHECKED	(1 << 14)
++
+ /* All inode state flags related to inode reclaim. */
+ #define XFS_ALL_IRECLAIM_FLAGS	(XFS_IRECLAIMABLE | \
+ 				 XFS_IRECLAIM | \
+@@ -358,7 +361,7 @@ static inline bool xfs_inode_has_large_e
+ #define XFS_IRECLAIM_RESET_FLAGS	\
+ 	(XFS_IRECLAIMABLE | XFS_IRECLAIM | \
+ 	 XFS_IDIRTY_RELEASE | XFS_ITRUNCATED | XFS_NEED_INACTIVE | \
+-	 XFS_INACTIVATING)
++	 XFS_INACTIVATING | XFS_IQUOTAUNCHECKED)
  
- static int drm_minor_alloc(struct drm_device *dev, enum drm_minor_type type)
- {
-@@ -140,6 +149,9 @@ static int drm_minor_alloc(struct drm_device *dev, enum drm_minor_type type)
+ /*
+  * Flags for inode locking.
+--- a/fs/xfs/xfs_mount.h
++++ b/fs/xfs/xfs_mount.h
+@@ -401,6 +401,8 @@ __XFS_HAS_FEAT(nouuid, NOUUID)
+ #define XFS_OPSTATE_WARNED_SHRINK	8
+ /* Kernel has logged a warning about logged xattr updates being used. */
+ #define XFS_OPSTATE_WARNED_LARP		9
++/* Mount time quotacheck is running */
++#define XFS_OPSTATE_QUOTACHECK_RUNNING	10
  
- 	r = xa_alloc(drm_minor_get_xa(type), &minor->index,
- 		     NULL, DRM_MINOR_LIMIT(type), GFP_KERNEL);
-+	if (r == -EBUSY && (type == DRM_MINOR_PRIMARY || type == DRM_MINOR_RENDER))
-+		r = xa_alloc(&drm_minors_xa, &minor->index,
-+			     NULL, DRM_EXTENDED_MINOR_LIMIT, GFP_KERNEL);
- 	if (r < 0)
- 		return r;
+ #define __XFS_IS_OPSTATE(name, NAME) \
+ static inline bool xfs_is_ ## name (struct xfs_mount *mp) \
+@@ -423,6 +425,11 @@ __XFS_IS_OPSTATE(inode32, INODE32)
+ __XFS_IS_OPSTATE(readonly, READONLY)
+ __XFS_IS_OPSTATE(inodegc_enabled, INODEGC_ENABLED)
+ __XFS_IS_OPSTATE(blockgc_enabled, BLOCKGC_ENABLED)
++#ifdef CONFIG_XFS_QUOTA
++__XFS_IS_OPSTATE(quotacheck_running, QUOTACHECK_RUNNING)
++#else
++# define xfs_is_quotacheck_running(mp)	(false)
++#endif
  
--- 
-2.43.0
-
+ static inline bool
+ xfs_should_warn(struct xfs_mount *mp, long nr)
+@@ -440,7 +447,8 @@ xfs_should_warn(struct xfs_mount *mp, lo
+ 	{ (1UL << XFS_OPSTATE_BLOCKGC_ENABLED),		"blockgc" }, \
+ 	{ (1UL << XFS_OPSTATE_WARNED_SCRUB),		"wscrub" }, \
+ 	{ (1UL << XFS_OPSTATE_WARNED_SHRINK),		"wshrink" }, \
+-	{ (1UL << XFS_OPSTATE_WARNED_LARP),		"wlarp" }
++	{ (1UL << XFS_OPSTATE_WARNED_LARP),		"wlarp" }, \
++	{ (1UL << XFS_OPSTATE_QUOTACHECK_RUNNING),	"quotacheck" }
+ 
+ /*
+  * Max and min values for mount-option defined I/O
+--- a/fs/xfs/xfs_qm.c
++++ b/fs/xfs/xfs_qm.c
+@@ -1160,6 +1160,10 @@ xfs_qm_dqusage_adjust(
+ 	if (error)
+ 		return error;
+ 
++	error = xfs_inode_reload_unlinked(ip);
++	if (error)
++		goto error0;
++
+ 	ASSERT(ip->i_delayed_blks == 0);
+ 
+ 	if (XFS_IS_REALTIME_INODE(ip)) {
+@@ -1173,6 +1177,7 @@ xfs_qm_dqusage_adjust(
+ 	}
+ 
+ 	nblks = (xfs_qcnt_t)ip->i_nblocks - rtblks;
++	xfs_iflags_clear(ip, XFS_IQUOTAUNCHECKED);
+ 
+ 	/*
+ 	 * Add the (disk blocks and inode) resources occupied by this
+@@ -1319,8 +1324,10 @@ xfs_qm_quotacheck(
+ 		flags |= XFS_PQUOTA_CHKD;
+ 	}
+ 
++	xfs_set_quotacheck_running(mp);
+ 	error = xfs_iwalk_threaded(mp, 0, 0, xfs_qm_dqusage_adjust, 0, true,
+ 			NULL);
++	xfs_clear_quotacheck_running(mp);
+ 
+ 	/*
+ 	 * On error, the inode walk may have partially populated the dquot
 
 
 
