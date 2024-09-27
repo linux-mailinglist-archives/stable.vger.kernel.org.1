@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-77940-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77986-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFC2A988452
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:26:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59E7E988485
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:28:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 74414281471
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:26:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8A8D31C2181E
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:28:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84ABE18BC29;
-	Fri, 27 Sep 2024 12:26:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 702E318BC0D;
+	Fri, 27 Sep 2024 12:28:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dwstwC2l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2c65rfiS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4422C18BC1D;
-	Fri, 27 Sep 2024 12:26:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F8B318A955;
+	Fri, 27 Sep 2024 12:28:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727439978; cv=none; b=MK0wVC6NoFt1dCvuhpRSDcfhdfF397GSoj8STuLVmeg5hoYORmDOERJtmFK8icSyF+i0ywHJ8pCacl6+VAxi6kIh8FYd1kmenWumgV4ezl22dcBDWkly9qUZEyWNIXtDqMbhjVpQAg51ZSKQSHRPbiBKK16ELwaY2j3g2V6s6B8=
+	t=1727440106; cv=none; b=NT6Cu2BvZ3vD6AZ7ev0VnIu2W+hu0qO43tISmARRsOSGUPkaixKkQl3zpNOWUS9I5McHAxNMPpgItXYXLozrdxrCX2W48sMMF3c1k0Z4LaCmn5L9oqEn4JtRNsK3FlGGA1hixn59VJ1vDj4IoIG4CU+0XeAbVMu0wrEddYiwiqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727439978; c=relaxed/simple;
-	bh=GDeR6F5rZAzuofEBcDy3FUfmRBYD3XrXsflsIKUNvLo=;
+	s=arc-20240116; t=1727440106; c=relaxed/simple;
+	bh=e90ER/s+y7YCDrWPYZiZ9c/mVmJWpo52q+0Sd/f3qsI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zlgbtm6sZksgIZ+apMqQu8z8spsU7h5AkNt/aSv3JMNZ8aINKOPEnzcV0XclL+YbVKvk+M1Jewm/uzu1j44WOAnqQEX0YcuvrTdpPtysXdmr7GPiwX1SlgsmleQ/C0DA+COchASMoXZjVOvCL6p5IoFIJLcj3+KDIbhYkKBwS18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dwstwC2l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6D60C4CEC4;
-	Fri, 27 Sep 2024 12:26:17 +0000 (UTC)
+	 MIME-Version; b=NMth6+wUI/+qoS40i6kV37DCwJlHx5583mtqUDG8dCHjgcLC6AsgiGz1bC6S3Vga6csi6aQ+YOaTnXQfFRGDJPrXQegxcj6ct2IR/KaL9HVkDMNUFR6Ik4YvYWD/932/yketkMEhNZVymVKkbE22hW4U4rNagNKEXUEexEKLK4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2c65rfiS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B365AC4CECE;
+	Fri, 27 Sep 2024 12:28:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727439978;
-	bh=GDeR6F5rZAzuofEBcDy3FUfmRBYD3XrXsflsIKUNvLo=;
+	s=korg; t=1727440106;
+	bh=e90ER/s+y7YCDrWPYZiZ9c/mVmJWpo52q+0Sd/f3qsI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dwstwC2lhQ3FnznYgV52Ar2FZrH/34v4m2Z4kYSKFIgK5tG7cn1n1DVSmdqQx3BtX
-	 qj1Kvz/eiOVvMzXDPQ0hJOn27/ZsiFJhU0mv5v9woifjpPWgXu2y+Zy3m7XyRhUdXB
-	 wpXzqntKF/9tmE+FfbBolk0C5QKN95Tm6KQHybzU=
+	b=2c65rfiS4sdN6CEhx3E2DTQb/HB1PUlD9ZgtHWY0rYuCPVaFbyf1W6S7Wwd90cRru
+	 TS9YHxlPMEVtV5e/hdWL7V6RP3RAQ04CFusaNHVu0Ish7DXn3FExaVD4u2GziWJw64
+	 3w3ddUaGWIaROvKfaId08JA61/DKGRB7IBt74pDg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 44/54] netfilter: nft_socket: Fix a NULL vs IS_ERR() bug in nft_socket_cgroup_subtree_level()
-Date: Fri, 27 Sep 2024 14:23:36 +0200
-Message-ID: <20240927121721.580894857@linuxfoundation.org>
+	"hongchi.peng" <hongchi.peng@siengine.com>,
+	Liviu Dudau <liviu.dudau@arm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 35/58] drm: komeda: Fix an issue related to normalized zpos
+Date: Fri, 27 Sep 2024 14:23:37 +0200
+Message-ID: <20240927121720.217447376@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121719.714627278@linuxfoundation.org>
-References: <20240927121719.714627278@linuxfoundation.org>
+In-Reply-To: <20240927121718.789211866@linuxfoundation.org>
+References: <20240927121718.789211866@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +62,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: hongchi.peng <hongchi.peng@siengine.com>
 
-commit 7052622fccb1efb850c6b55de477f65d03525a30 upstream.
+[ Upstream commit 258905cb9a6414be5c9ca4aa20ef855f8dc894d4 ]
 
-The cgroup_get_from_path() function never returns NULL, it returns error
-pointers.  Update the error handling to match.
+We use komeda_crtc_normalize_zpos to normalize zpos of affected planes
+to their blending zorder in CU. If there's only one slave plane in
+affected planes and its layer_split property is enabled, order++ for
+its split layer, so that when calculating the normalized_zpos
+of master planes, the split layer of the slave plane is included, but
+the max_slave_zorder does not include the split layer and keep zero
+because there's only one slave plane in affacted planes, although we
+actually use two slave layers in this commit.
 
-Fixes: 7f3287db6543 ("netfilter: nft_socket: make cgroupsv2 matching work with namespaces")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Acked-by: Florian Westphal <fw@strlen.de>
-Acked-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Link: https://patch.msgid.link/bbc0c4e0-05cc-4f44-8797-2f4b3920a820@stanley.mountain
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+In most cases, this bug does not result in a commit failure, but assume
+the following situation:
+    slave_layer 0: zpos = 0, layer split enabled, normalized_zpos =
+    0;(use slave_layer 2 as its split layer)
+    master_layer 0: zpos = 2, layer_split enabled, normalized_zpos =
+    2;(use master_layer 2 as its split layer)
+    master_layer 1: zpos = 4, normalized_zpos = 4;
+    master_layer 3: zpos = 5, normalized_zpos = 5;
+    kcrtc_st->max_slave_zorder = 0;
+When we use master_layer 3 as a input of CU in function
+komeda_compiz_set_input and check it with function
+komeda_component_check_input, the parameter idx is equal to
+normailzed_zpos minus max_slave_zorder, the value of idx is 5
+and is euqal to CU's max_active_inputs, so that
+komeda_component_check_input returns a -EINVAL value.
+
+To fix the bug described above, when calculating the max_slave_zorder
+with the layer_split enabled, count the split layer in this calculation
+directly.
+
+Signed-off-by: hongchi.peng <hongchi.peng@siengine.com>
+Acked-by: Liviu Dudau <liviu.dudau@arm.com>
+Signed-off-by: Liviu Dudau <liviu.dudau@arm.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240826024517.3739-1-hongchi.peng@siengine.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_socket.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/arm/display/komeda/komeda_kms.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
---- a/net/netfilter/nft_socket.c
-+++ b/net/netfilter/nft_socket.c
-@@ -61,8 +61,8 @@ static noinline int nft_socket_cgroup_su
- 	struct cgroup *cgrp = cgroup_get_from_path("/");
- 	int level;
+diff --git a/drivers/gpu/drm/arm/display/komeda/komeda_kms.c b/drivers/gpu/drm/arm/display/komeda/komeda_kms.c
+index fe46b0ebefea3..e5eb5d672bcd7 100644
+--- a/drivers/gpu/drm/arm/display/komeda/komeda_kms.c
++++ b/drivers/gpu/drm/arm/display/komeda/komeda_kms.c
+@@ -160,6 +160,7 @@ static int komeda_crtc_normalize_zpos(struct drm_crtc *crtc,
+ 	struct drm_plane *plane;
+ 	struct list_head zorder_list;
+ 	int order = 0, err;
++	u32 slave_zpos = 0;
  
--	if (!cgrp)
--		return -ENOENT;
-+	if (IS_ERR(cgrp))
-+		return PTR_ERR(cgrp);
+ 	DRM_DEBUG_ATOMIC("[CRTC:%d:%s] calculating normalized zpos values\n",
+ 			 crtc->base.id, crtc->name);
+@@ -199,10 +200,13 @@ static int komeda_crtc_normalize_zpos(struct drm_crtc *crtc,
+ 				 plane_st->zpos, plane_st->normalized_zpos);
  
- 	level = cgrp->level;
+ 		/* calculate max slave zorder */
+-		if (has_bit(drm_plane_index(plane), kcrtc->slave_planes))
++		if (has_bit(drm_plane_index(plane), kcrtc->slave_planes)) {
++			slave_zpos = plane_st->normalized_zpos;
++			if (to_kplane_st(plane_st)->layer_split)
++				slave_zpos++;
+ 			kcrtc_st->max_slave_zorder =
+-				max(plane_st->normalized_zpos,
+-				    kcrtc_st->max_slave_zorder);
++				max(slave_zpos, kcrtc_st->max_slave_zorder);
++		}
+ 	}
  
+ 	crtc_st->zpos_changed = true;
+-- 
+2.43.0
+
 
 
 
