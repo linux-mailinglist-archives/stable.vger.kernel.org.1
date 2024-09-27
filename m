@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-78104-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id DFD74988518
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:33:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id D66C098850D
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:33:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EDC511C22F77
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:33:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7596AB2486A
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:33:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFD9118A6C4;
-	Fri, 27 Sep 2024 12:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F06918C003;
+	Fri, 27 Sep 2024 12:33:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xNjCSRPs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1jZ1K+1f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FEB33C3C;
-	Fri, 27 Sep 2024 12:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E7171E507;
+	Fri, 27 Sep 2024 12:33:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440433; cv=none; b=Kj6pUgLVVw72J/Gl+EySbjorpKfQc4X5D1voB/NQhdRP/9xZo7A8MK25tYkbvN7KSyTOFrE7o1JFvFaRdIvKz9u+ZoHRg8RXGyB0DGg67LRKlg2H2iJxOmarY4fQupZ9d5VxBpiW0greqveBIUS2GNf+TRznw1vzlXWRWMSQ+VY=
+	t=1727440403; cv=none; b=Dz5l/y5NSkbgVMp5lGZIYgwjdOUsTu983jN4TEUMW9llTrnv+bGrR3xNwXOl6BZY2U+ByyhZaPci9UTZIsxHkBaCa4aRv27TleC7sAA60/tupZQYQZZOZOKj6qPY5lu6AiHzdZldqRqTJhPs3yDgHqCWvZIZG7+cvbhx+jJVyRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440433; c=relaxed/simple;
-	bh=8/tJ1CDmBaDq4MJnsWYgjByRf6YEfyeYIO/hpBkwAcY=;
+	s=arc-20240116; t=1727440403; c=relaxed/simple;
+	bh=lVcuh/pdhXqMJDPEnSVS0qleusMwzyPAJtAMP0ow/Nw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ri3RcYZviNn3w5c15gCWcFfbiCW3SKPzda0h+GsiQ2Ong37q2RGA1nSLORAy3jicne30fZeY3CQyy3qnWjYV4+6C6rP8nrkuJfmz9P8C3kiFtcFLwya9lRMqGl3nQVg/k9CC+0vZWDcu2rd2Q2FbCzqrLUxAsEhSPl5iVOG+njI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xNjCSRPs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E2D9C4CEC4;
-	Fri, 27 Sep 2024 12:33:52 +0000 (UTC)
+	 MIME-Version; b=twLvo8X4BrOdX9bz5lYbRjVISsoFY/WTlP7LSH6FIXyd8cb7bIP4tiGTPbTY9WykaP8o0zKucQ5cldzUBRZIre2E+B5OL64IDL7Q8OhZlQPzOKKdsAxdzAnCZPlvegZbswF/MoYDvBhm6J4mZ1cS+16wKzv+vpdj3tXxwl07rAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1jZ1K+1f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF0FBC4CECE;
+	Fri, 27 Sep 2024 12:33:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440433;
-	bh=8/tJ1CDmBaDq4MJnsWYgjByRf6YEfyeYIO/hpBkwAcY=;
+	s=korg; t=1727440403;
+	bh=lVcuh/pdhXqMJDPEnSVS0qleusMwzyPAJtAMP0ow/Nw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xNjCSRPshY54jtG98Q0MxUGA91xCzMV0UcWOrUYaxgzpaw/z7X36Gchc/wJH5NASp
-	 OG5lVSWhWkOB4mYcOWDcIZgGCI/emX2321HUQsUs74/+Z4BVlsQ/O9Dvz+v1xAtVnf
-	 ag4UF21XKKEBTSyI9NXlvA180rdOKXk56KicFzGc=
+	b=1jZ1K+1fhJlBnl/x9MJdQMZMGIGiJKb+OFwP5K99YjYP3fCvPINgXxq4v4UAoTIpl
+	 o5W6aQ+JpkJZ10yOa5T6J90KyV1HXzJ4KptlRWJytPNx1CbjTqoikgq4bpUMHgrqsp
+	 pannzKR5e1C/pN6W6v0oSUd/hRxmwlPy/4b6HR5Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Josef Bacik <josef@toxicpanda.com>,
-	Filipe Manana <fdmanana@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Diogo Jahchan Koike <djahchankoike@gmail.com>
-Subject: [PATCH 6.1 69/73] btrfs: calculate the right space for delayed refs when updating global reserve
-Date: Fri, 27 Sep 2024 14:24:20 +0200
-Message-ID: <20240927121722.628899970@linuxfoundation.org>
+	Dave Hansen <dave.hansen@intel.com>,
+	Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Pawan Gupta <pawan.kumar.gupta@linux.intel.com>,
+	Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+Subject: [PATCH 6.1 70/73] powercap: RAPL: fix invalid initialization for pl4_supported field
+Date: Fri, 27 Sep 2024 14:24:21 +0200
+Message-ID: <20240927121722.666588338@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20240927121719.897851549@linuxfoundation.org>
 References: <20240927121719.897851549@linuxfoundation.org>
@@ -67,114 +68,59 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Filipe Manana <fdmanana@suse.com>
+From: Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>
 
-commit f8f210dc84709804c9f952297f2bfafa6ea6b4bd upstream.
+commit d05b5e0baf424c8c4b4709ac11f66ab726c8deaf upstream.
 
-When updating the global block reserve, we account for the 6 items needed
-by an unlink operation and the 6 delayed references for each one of those
-items. However the calculation for the delayed references is not correct
-in case we have the free space tree enabled, as in that case we need to
-touch the free space tree as well and therefore need twice the number of
-bytes. So use the btrfs_calc_delayed_ref_bytes() helper to calculate the
-number of bytes need for the delayed references at
-btrfs_update_global_block_rsv().
+The current initialization of the struct x86_cpu_id via
+pl4_support_ids[] is partial and wrong. It is initializing
+"stepping" field with "X86_FEATURE_ANY" instead of "feature" field.
 
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-[Diogo: this patch has been cherry-picked from the original commit;
-conflicts included lack of a define (picked from commit 5630e2bcfe223)
-and lack of btrfs_calc_delayed_ref_bytes (picked from commit 0e55a54502b97)
-- changed const struct -> struct for compatibility.]
-Signed-off-by: Diogo Jahchan Koike <djahchankoike@gmail.com>
+Use X86_MATCH_INTEL_FAM6_MODEL macro instead of initializing
+each field of the struct x86_cpu_id for pl4_supported list of CPUs.
+This X86_MATCH_INTEL_FAM6_MODEL macro internally uses another macro
+X86_MATCH_VENDOR_FAM_MODEL_FEATURE for X86 based CPU matching with
+appropriate initialized values.
+
+Reported-by: Dave Hansen <dave.hansen@intel.com>
+Link: https://lore.kernel.org/lkml/28ead36b-2d9e-1a36-6f4e-04684e420260@intel.com
+Fixes: eb52bc2ae5b8 ("powercap: RAPL: Add Power Limit4 support for Meteor Lake SoC")
+Fixes: b08b95cf30f5 ("powercap: RAPL: Add Power Limit4 support for Alder Lake-N and Raptor Lake-P")
+Fixes: 515755906921 ("powercap: RAPL: Add Power Limit4 support for RaptorLake")
+Fixes: 1cc5b9a411e4 ("powercap: Add Power Limit4 support for Alder Lake SoC")
+Fixes: 8365a898fe53 ("powercap: Add Power Limit4 support")
+Signed-off-by: Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Pawan Gupta <pawan.kumar.gupta@linux.intel.com>
+[ Ricardo: I removed METEORLAKE and METEORLAKE_L from pl4_support_ids as
+  they are not included in v6.1. ]
+Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/block-rsv.c   |   14 ++++++++------
- fs/btrfs/block-rsv.h   |   12 ++++++++++++
- fs/btrfs/delayed-ref.h |   21 +++++++++++++++++++++
- 3 files changed, 41 insertions(+), 6 deletions(-)
+ drivers/powercap/intel_rapl_msr.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/fs/btrfs/block-rsv.c
-+++ b/fs/btrfs/block-rsv.c
-@@ -384,17 +384,19 @@ void btrfs_update_global_block_rsv(struc
+--- a/drivers/powercap/intel_rapl_msr.c
++++ b/drivers/powercap/intel_rapl_msr.c
+@@ -136,12 +136,12 @@ static int rapl_msr_write_raw(int cpu, s
  
- 	/*
- 	 * But we also want to reserve enough space so we can do the fallback
--	 * global reserve for an unlink, which is an additional 5 items (see the
--	 * comment in __unlink_start_trans for what we're modifying.)
-+	 * global reserve for an unlink, which is an additional
-+	 * BTRFS_UNLINK_METADATA_UNITS items.
- 	 *
- 	 * But we also need space for the delayed ref updates from the unlink,
--	 * so its 10, 5 for the actual operation, and 5 for the delayed ref
--	 * updates.
-+	 * so add BTRFS_UNLINK_METADATA_UNITS units for delayed refs, one for
-+	 * each unlink metadata item.
- 	 */
--	min_items += 10;
-+	min_items += BTRFS_UNLINK_METADATA_UNITS;
- 
- 	num_bytes = max_t(u64, num_bytes,
--			  btrfs_calc_insert_metadata_size(fs_info, min_items));
-+			  btrfs_calc_insert_metadata_size(fs_info, min_items) +
-+			  btrfs_calc_delayed_ref_bytes(fs_info,
-+					       BTRFS_UNLINK_METADATA_UNITS));
- 
- 	spin_lock(&sinfo->lock);
- 	spin_lock(&block_rsv->lock);
---- a/fs/btrfs/block-rsv.h
-+++ b/fs/btrfs/block-rsv.h
-@@ -50,6 +50,18 @@ struct btrfs_block_rsv {
- 	u64 qgroup_rsv_reserved;
+ /* List of verified CPUs. */
+ static const struct x86_cpu_id pl4_support_ids[] = {
+-	{ X86_VENDOR_INTEL, 6, INTEL_FAM6_TIGERLAKE_L, X86_FEATURE_ANY },
+-	{ X86_VENDOR_INTEL, 6, INTEL_FAM6_ALDERLAKE, X86_FEATURE_ANY },
+-	{ X86_VENDOR_INTEL, 6, INTEL_FAM6_ALDERLAKE_L, X86_FEATURE_ANY },
+-	{ X86_VENDOR_INTEL, 6, INTEL_FAM6_ALDERLAKE_N, X86_FEATURE_ANY },
+-	{ X86_VENDOR_INTEL, 6, INTEL_FAM6_RAPTORLAKE, X86_FEATURE_ANY },
+-	{ X86_VENDOR_INTEL, 6, INTEL_FAM6_RAPTORLAKE_P, X86_FEATURE_ANY },
++	X86_MATCH_INTEL_FAM6_MODEL(TIGERLAKE_L, NULL),
++	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE, NULL),
++	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE_L, NULL),
++	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE_N, NULL),
++	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE, NULL),
++	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_P, NULL),
+ 	{}
  };
  
-+/*
-+ * Number of metadata items necessary for an unlink operation:
-+ *
-+ * 1 for the possible orphan item
-+ * 1 for the dir item
-+ * 1 for the dir index
-+ * 1 for the inode ref
-+ * 1 for the inode
-+ * 1 for the parent inode
-+ */
-+#define BTRFS_UNLINK_METADATA_UNITS		6
-+
- void btrfs_init_block_rsv(struct btrfs_block_rsv *rsv, enum btrfs_rsv_type type);
- void btrfs_init_root_block_rsv(struct btrfs_root *root);
- struct btrfs_block_rsv *btrfs_alloc_block_rsv(struct btrfs_fs_info *fs_info,
---- a/fs/btrfs/delayed-ref.h
-+++ b/fs/btrfs/delayed-ref.h
-@@ -253,6 +253,27 @@ extern struct kmem_cache *btrfs_delayed_
- int __init btrfs_delayed_ref_init(void);
- void __cold btrfs_delayed_ref_exit(void);
- 
-+static inline u64 btrfs_calc_delayed_ref_bytes(struct btrfs_fs_info *fs_info,
-+					       int num_delayed_refs)
-+{
-+	u64 num_bytes;
-+
-+	num_bytes = btrfs_calc_insert_metadata_size(fs_info, num_delayed_refs);
-+
-+	/*
-+	 * We have to check the mount option here because we could be enabling
-+	 * the free space tree for the first time and don't have the compat_ro
-+	 * option set yet.
-+	 *
-+	 * We need extra reservations if we have the free space tree because
-+	 * we'll have to modify that tree as well.
-+	 */
-+	if (btrfs_test_opt(fs_info, FREE_SPACE_TREE))
-+		num_bytes *= 2;
-+
-+	return num_bytes;
-+}
-+
- static inline void btrfs_init_generic_ref(struct btrfs_ref *generic_ref,
- 				int action, u64 bytenr, u64 len, u64 parent)
- {
 
 
 
