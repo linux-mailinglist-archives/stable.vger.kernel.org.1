@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-78088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78011-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 190B9988504
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:33:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D81C19884A0
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:29:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 49A811C22DDD
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:33:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9087D1F229E2
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:29:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B30718C02A;
-	Fri, 27 Sep 2024 12:33:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 041F418A6C3;
+	Fri, 27 Sep 2024 12:29:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ywkV2qb1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dttJLaHT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AB311E507;
-	Fri, 27 Sep 2024 12:33:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B783B18A95D;
+	Fri, 27 Sep 2024 12:29:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440389; cv=none; b=HGI7srPhAoYff4YLV0R7YlGhd+RHgVKljZaz99hsdlgMm6posUpOusa4+E/U/84rqwvFoqxlD8sVYovsB+9JFpOXkg1Cl2Im53VgSIeDPiKoy/cjn6tK264KMELf/kw19wC1BshRHMlsd31sH0r+4d6614nXyKH2UvZfErmM9oE=
+	t=1727440175; cv=none; b=T0t4BFV6H8pcD2B3exrAnEGtPYJmW9/Uj2pVtpUTyeFaLoLnTu1ejuWN5ZDDjJGWI4HBlh2ehXhBqvQgZSD1H+5WxZAt5KHq8UFoRFwtwlxxJJQpPkp4s5Dy9kZCGFPnSKhJZho76//cn6NWNw8IR9IhNnYJotgJdLSp2HbGmJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440389; c=relaxed/simple;
-	bh=0Mt4KK44hctO1cAtfDFWRRWEP5ILeM+AeZ/O1kg5b8Q=;
+	s=arc-20240116; t=1727440175; c=relaxed/simple;
+	bh=pvHZuO8A4kyboMr17HGO4Hsd8bAQ1j/xNV0h4/Rjfuk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RahdigYntmXO353DNoGGQgl6bRagUGHrzFvDhccbSmk4kKNnKEqnMo7CNCOepp34KdW+3jqIylyPTSkM9p5Qf3jEMYlBU45kmirHu57xUz3gI3eXWyoHQgatDx5uJk+RX7ACz/t8yXdEO+5JOcyPX9FMKVy78hR+s5A2MsGyifM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ywkV2qb1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBCBDC4CEC4;
-	Fri, 27 Sep 2024 12:33:08 +0000 (UTC)
+	 MIME-Version; b=sk96C5hPxYPhrnS+VNQ9fr9HvEM/Oq54o6GD8KjnulKDQnC7wqj+sq0J7b20twO/rihyDihvFrkNenyrH2CEST75gGDHEq40GcVnoWSPlt1i1zNLaYlo8O+gKbdcU/ogKeUq8Mx6lF8nbVffLx6jkE6dPb035HPQth4PF1dZF6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dttJLaHT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 457D6C4CEC4;
+	Fri, 27 Sep 2024 12:29:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440389;
-	bh=0Mt4KK44hctO1cAtfDFWRRWEP5ILeM+AeZ/O1kg5b8Q=;
+	s=korg; t=1727440175;
+	bh=pvHZuO8A4kyboMr17HGO4Hsd8bAQ1j/xNV0h4/Rjfuk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ywkV2qb1MOXLaKZ6ibkPYCpl6rA7P5oe2FXXrKyWqmFAPRGPsssclMOJL6mOdOHH2
-	 sKkBUZgKZazVYAGwVxNlda/YR1jjlb5XKhIPYeEiN8Zs1+yjiwaTK0khrD9BWMGI7G
-	 iZ3P0h1PM4vOgms/4YuRApGK1e02fEAFUfc34a6M=
+	b=dttJLaHTF1rEIj6fT7pq97Jl40V6P+l9jv8WMlYIcOG/rSKD76+UXmeA+a6xH87K4
+	 DjOl2LlEpPbmeDd4ZCa+/TQwSWETXS2pgQgnpzZUmpMEd/9kWiExD0nlXYmYkeSynI
+	 Zn0iFBFtpMBqk3uc74xiEhE8IR2/4Z43lebp6/VA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+090ae72d552e6bd93cfe@syzkaller.appspotmail.com,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Leah Rumancik <leah.rumancik@gmail.com>,
-	Chandan Babu R <chandanbabu@kernel.org>
-Subject: [PATCH 6.1 39/73] xfs: fix uninitialized variable access
-Date: Fri, 27 Sep 2024 14:23:50 +0200
-Message-ID: <20240927121721.515184530@linuxfoundation.org>
+	Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>,
+	"Gautham R. Shenoy" <gautham.shenoy@amd.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 49/58] powercap/intel_rapl: Add support for AMD family 1Ah
+Date: Fri, 27 Sep 2024 14:23:51 +0200
+Message-ID: <20240927121720.797730710@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121719.897851549@linuxfoundation.org>
-References: <20240927121719.897851549@linuxfoundation.org>
+In-Reply-To: <20240927121718.789211866@linuxfoundation.org>
+References: <20240927121718.789211866@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,38 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Darrick J. Wong" <djwong@kernel.org>
+From: Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
 
-[ Upstream commit 60b730a40c43fbcc034970d3e77eb0f25b8cc1cf ]
+[ Upstream commit 166df51097a258a14fe9e946e2157f3b75eeb3c2 ]
 
-If the end position of a GETFSMAP query overlaps an allocated space and
-we're using the free space info to generate fsmap info, the akeys
-information gets fed into the fsmap formatter with bad results.
-Zero-init the space.
+AMD Family 1Ah's RAPL MSRs are identical to Family 19h's,
+extend Family 19h's support to Family 1Ah.
 
-Reported-by: syzbot+090ae72d552e6bd93cfe@syzkaller.appspotmail.com
-Signed-off-by: Darrick J. Wong <djwong@kernel.org>
-Signed-off-by: Leah Rumancik <leah.rumancik@gmail.com>
-Acked-by: Chandan Babu R <chandanbabu@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Dhananjay Ugwekar <Dhananjay.Ugwekar@amd.com>
+Reviewed-by: Gautham R. Shenoy <gautham.shenoy@amd.com>
+Link: https://patch.msgid.link/20240719101234.50827-1-Dhananjay.Ugwekar@amd.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/xfs/xfs_fsmap.c |    1 +
+ drivers/powercap/intel_rapl_common.c | 1 +
  1 file changed, 1 insertion(+)
 
---- a/fs/xfs/xfs_fsmap.c
-+++ b/fs/xfs/xfs_fsmap.c
-@@ -761,6 +761,7 @@ xfs_getfsmap_datadev_bnobt(
- {
- 	struct xfs_alloc_rec_incore	akeys[2];
+diff --git a/drivers/powercap/intel_rapl_common.c b/drivers/powercap/intel_rapl_common.c
+index aac0744011a3a..d51d4ec8d707c 100644
+--- a/drivers/powercap/intel_rapl_common.c
++++ b/drivers/powercap/intel_rapl_common.c
+@@ -1285,6 +1285,7 @@ static const struct x86_cpu_id rapl_ids[] __initconst = {
  
-+	memset(akeys, 0, sizeof(akeys));
- 	info->missing_owner = XFS_FMR_OWN_UNKNOWN;
- 	return __xfs_getfsmap_datadev(tp, keys, info,
- 			xfs_getfsmap_datadev_bnobt_query, &akeys[0]);
+ 	X86_MATCH_VENDOR_FAM(AMD, 0x17, &rapl_defaults_amd),
+ 	X86_MATCH_VENDOR_FAM(AMD, 0x19, &rapl_defaults_amd),
++	X86_MATCH_VENDOR_FAM(AMD, 0x1A, &rapl_defaults_amd),
+ 	X86_MATCH_VENDOR_FAM(HYGON, 0x18, &rapl_defaults_amd),
+ 	{}
+ };
+-- 
+2.43.0
+
 
 
 
