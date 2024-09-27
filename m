@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-77970-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77910-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C57E988473
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:27:43 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C33698842B
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:25:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id BD1DE1C20F78
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:27:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9D19A1C22825
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:25:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C42318BB91;
-	Fri, 27 Sep 2024 12:27:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 101AF18BC30;
+	Fri, 27 Sep 2024 12:24:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v0dQnzwA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mpr1/9YH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D779E17B515;
-	Fri, 27 Sep 2024 12:27:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C285D1779BD;
+	Fri, 27 Sep 2024 12:24:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440061; cv=none; b=ENYtSKA5DinT+gt6Yohb3GIoz5Vnt98QJDF2UMwq5EGrBwuVcuJ1pnnEep+H0u3QOPp+dN+eSPYepa2UTk6esZB6SYPE1ezHFvqqDHKwKSVsDqOWAIYPB5qrn5N4ywIcHdHEPw5k289tdbCjq8D8VkTa1JQxYMhNlsR12g0bZAo=
+	t=1727439894; cv=none; b=GAHg8OkRVttffTlgyBr5LSY8cnDrp7OoXOjzDxg4+Ncc6RSflgYLagmkN7aq297NWJwbHejXjU3EKFYpVElyECWMulkIznve9cbf5XGQ0lP9NW3mW3Zu1bfz7QO4qIo15/cFbdyAy2nUhfBnXXuyOHqKaTCh9MWVMwkTvXH5dWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440061; c=relaxed/simple;
-	bh=XK248saLW6TVbvGArg1pqdkixSOz99iJAZn3geksPNQ=;
+	s=arc-20240116; t=1727439894; c=relaxed/simple;
+	bh=t3kteypcZf0ZQulsexH7H/xW3w6+9l4QDN15UhOsRs8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L8AILPgC6GmJCO9Kcs3jUUf02s1dzTG3CjZtXyBYlPjOFitx+AkYHJBIVjTNTpKtbejqvqiLO9JkPJPs+VGqNSLuKhG69gTL5KIe3XXNxdTa16+hHTNMp+WDAsFD99z3KqxzkRIP91Kk++yrnW7X3n6dP2KP3MpjpGb/LZPKLrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v0dQnzwA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63A54C4CEC4;
-	Fri, 27 Sep 2024 12:27:41 +0000 (UTC)
+	 MIME-Version; b=l+9430ToZpp0yjSExICMOBaMMq/MMikN2tptWBo6Av7qJjoHkXT95GY0yQHP/wRWxScJzbanJJCWDY314mCRNc6dQeOCK6G+ZlEZKk7REP9UzWFFwXrgDhxppV/vYFV7vmhlzMqdG0EziRbaT+q9eSf7yowmh4YabwxpqNOQCRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mpr1/9YH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3842C4CEC4;
+	Fri, 27 Sep 2024 12:24:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440061;
-	bh=XK248saLW6TVbvGArg1pqdkixSOz99iJAZn3geksPNQ=;
+	s=korg; t=1727439894;
+	bh=t3kteypcZf0ZQulsexH7H/xW3w6+9l4QDN15UhOsRs8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v0dQnzwAqrR2ljaf/Hw0eVcixRaXr2V0hPpup668T5Rv/ByKcgvmMyNTp2aj8QOhH
-	 Czgk4/oz24gC7x+HzaRCXAWe3GeoiZUcrLNpd3vpxEkqTPF/qM+nfeSBxSUeGdWnR3
-	 NCoZ8SNBL86yt0nQH5kucCNHQhNo5V+hysbQWuRA=
+	b=Mpr1/9YHpJuIxbu25IwNwolBk58v7FaV752Pq4OXTHGb6UJRem7AP0bfxiKitVqTM
+	 R+I/Ds+pfLh1QPLB1fd+9c/BN76hji2jGVrqWZ/FDzhOiHIb20O9urwb+Kb3/Igx/c
+	 QEGP27bept9Vk5ZjLZ+jL3uAQ4j+YuqH+3FDNzxg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hongbo Li <lihongbo22@huawei.com>,
-	Mark Brown <broonie@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 04/58] ASoC: allow module autoloading for table board_ids
+Subject: [PATCH 6.6 14/54] wifi: iwlwifi: lower message level for FW buffer destination
 Date: Fri, 27 Sep 2024 14:23:06 +0200
-Message-ID: <20240927121718.973816111@linuxfoundation.org>
+Message-ID: <20240927121720.281910554@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121718.789211866@linuxfoundation.org>
-References: <20240927121718.789211866@linuxfoundation.org>
+In-Reply-To: <20240927121719.714627278@linuxfoundation.org>
+References: <20240927121719.714627278@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,38 +64,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hongbo Li <lihongbo22@huawei.com>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-[ Upstream commit 5f7c98b7519a3a847d9182bd99d57ea250032ca1 ]
+[ Upstream commit f8a129c1e10256c785164ed5efa5d17d45fbd81b ]
 
-Add MODULE_DEVICE_TABLE(), so modules could be properly
-autoloaded based on the alias from platform_device_id table.
+An invalid buffer destination is not a problem for the driver and it
+does not make sense to report it with the KERN_ERR message level. As
+such, change the message to use IWL_DEBUG_FW.
 
-Signed-off-by: Hongbo Li <lihongbo22@huawei.com>
-Link: https://patch.msgid.link/20240821061955.2273782-3-lihongbo22@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reported-by: Len Brown <lenb@kernel.org>
+Closes: https://lore.kernel.org/r/CAJvTdKkcxJss=DM2sxgv_MR5BeZ4_OC-3ad6tA40TYH2yqHCWw@mail.gmail.com
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20240825191257.20abf78f05bc.Ifbcecc2ae9fb40b9698302507dcba8b922c8d856@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/acp/acp-sof-mach.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/amd/acp/acp-sof-mach.c b/sound/soc/amd/acp/acp-sof-mach.c
-index fc59ea34e687a..b3a702dcd9911 100644
---- a/sound/soc/amd/acp/acp-sof-mach.c
-+++ b/sound/soc/amd/acp/acp-sof-mach.c
-@@ -158,6 +158,8 @@ static const struct platform_device_id board_ids[] = {
- 	},
- 	{ }
- };
-+MODULE_DEVICE_TABLE(platform, board_ids);
-+
- static struct platform_driver acp_asoc_audio = {
- 	.driver = {
- 		.name = "sof_mach",
+diff --git a/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c b/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c
+index fa4a145468601..9be41673650ee 100644
+--- a/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c
++++ b/drivers/net/wireless/intel/iwlwifi/pcie/ctxt-info-gen3.c
+@@ -68,7 +68,8 @@ iwl_pcie_ctxt_info_dbg_enable(struct iwl_trans *trans,
+ 		}
+ 		break;
+ 	default:
+-		IWL_ERR(trans, "WRT: Invalid buffer destination\n");
++		IWL_DEBUG_FW(trans, "WRT: Invalid buffer destination (%d)\n",
++			     le32_to_cpu(fw_mon_cfg->buf_location));
+ 	}
+ out:
+ 	if (dbg_flags)
 -- 
 2.43.0
 
