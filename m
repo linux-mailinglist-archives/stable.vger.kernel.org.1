@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-77974-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77914-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 658C4988477
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:27:57 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73C1398842F
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:25:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 005A2B211F7
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:27:55 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FD481F22642
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:25:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4948418BB91;
-	Fri, 27 Sep 2024 12:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0556118C000;
+	Fri, 27 Sep 2024 12:25:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gJ/YuBpV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LB117zJh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 085CD17B515;
-	Fri, 27 Sep 2024 12:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6A7A18BC1F;
+	Fri, 27 Sep 2024 12:25:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440073; cv=none; b=TnEGC/tQvtgMAi6FvN/ZoZlbzNqpN4gFrm21S62SV3T52TX3+EROtqlnWr7mhd4B+9iSWhCGTnEJs7n1pFWf/5NUB0mJFeA2YprY4WpEuJKyxLRm45QFhGSiVWolhJZNmEZD+bSx+9i9AsM/T9RL87g3OTKFzTjWQ9bY6r8rAP8=
+	t=1727439905; cv=none; b=YA2aV5jkAG0GTRx0O48SByW1HRejeKbgUNqVfzRM2+sB/3aGaPDzO5RuH+8s1vWLjsmsQzDLDQmX5AvexoS/fcKdZzBYv34p9JCqcg5PEaBwHipIN2MwBnKDiWpZA0CUL0zIWe7RPGq9hGjoRxPtEoXLD+2gqXpMzfGjnh0YQk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440073; c=relaxed/simple;
-	bh=NJF4bPA27JM3fnBkScQpgb4SSg0gbq18AL+cr/SAwDI=;
+	s=arc-20240116; t=1727439905; c=relaxed/simple;
+	bh=plNIofQQdLDCc5PVY7KWTWqUPiW0UKdsUy0sOI5GJWg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DyEhoyZmFHhC987oq2+mW2TdBBGbUzLHhfVFmCZyqQWWA4HUTiMy73UNDSoLjR/l641rkcjFq2eyZ3FytxuBKVen2sVPGlCa7Ss3qqQ/3moUxDDgblpvT5safkT71PNOuzwuuZhtk2VEBK5I2Uc3PnEU7TDdWRHF3/Akq7Klcos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gJ/YuBpV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8162BC4CEC4;
-	Fri, 27 Sep 2024 12:27:52 +0000 (UTC)
+	 MIME-Version; b=dLCgBqCYtaN5z606fu24D6e5qZlCZvxsvpNCYlk1Xl7t45R1nhue9lmj0FFovqpGE8fxJKGreWHXSOsyfF3dK7ouTfzNt8WKo2xdl/+CIe+fq/X4qf+qu6HhZ7DjiFwsKXTEs2qNjkg6PG0sz4jMrA8mTeVVQ7J17YFJIDU2Eq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LB117zJh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40B0AC4CECD;
+	Fri, 27 Sep 2024 12:25:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440072;
-	bh=NJF4bPA27JM3fnBkScQpgb4SSg0gbq18AL+cr/SAwDI=;
+	s=korg; t=1727439905;
+	bh=plNIofQQdLDCc5PVY7KWTWqUPiW0UKdsUy0sOI5GJWg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gJ/YuBpVZ3g5lxm5VklRVMMsgBh0OrFYHx789wH7AwkdenWKy80oCjOJE70eNk6pA
-	 rYTTyevfegsx105dpQZkD/2xrgS7NLIxfcTro/fTkR9GMNbs7FsgoQk/9MKyD7rXHH
-	 Yl4W08K8Ma9EDxn4Me00qvNSOCkNsMPGoba6BQso=
+	b=LB117zJhxksBWTxX6A+QxEhjcMEDcuDX7anCpVkDR/7yKi1n55b18i2r6IMcn+mcP
+	 fNi10AID6cTSG+nweIZmYeCcgodmdgsosBSVB2OrnZAaG1OOQ6Z3O11rvnHIPuE2M3
+	 Nv3G7Y8zmkVW7FN9sjNu17aEvNiyz2U1/apWQ2H8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Blocher <thomas.blocher@ek-dev.de>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Miri Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 08/58] pinctrl: at91: make it work with current gpiolib
+Subject: [PATCH 6.6 18/54] wifi: iwlwifi: mvm: dont wait for tx queues if firmware is dead
 Date: Fri, 27 Sep 2024 14:23:10 +0200
-Message-ID: <20240927121719.139907187@linuxfoundation.org>
+Message-ID: <20240927121720.430124022@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121718.789211866@linuxfoundation.org>
-References: <20240927121718.789211866@linuxfoundation.org>
+In-Reply-To: <20240927121719.714627278@linuxfoundation.org>
+References: <20240927121719.714627278@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +63,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Blocher <thomas.blocher@ek-dev.de>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-[ Upstream commit 752f387faaae0ae2e84d3f496922524785e77d60 ]
+[ Upstream commit 3a84454f5204718ca5b4ad2c1f0bf2031e2403d1 ]
 
-pinctrl-at91 currently does not support the gpio-groups devicetree
-property and has no pin-range.
-Because of this at91 gpios stopped working since patch
-commit 2ab73c6d8323fa1e ("gpio: Support GPIO controllers without pin-ranges")
-This was discussed in the patches
-commit fc328a7d1fcce263 ("gpio: Revert regression in sysfs-gpio (gpiolib.c)")
-commit 56e337f2cf132632 ("Revert "gpio: Revert regression in sysfs-gpio (gpiolib.c)"")
+There is a WARNING in iwl_trans_wait_tx_queues_empty() (that was
+recently converted from just a message), that can be hit if we
+wait for TX queues to become empty after firmware died. Clearly,
+we can't expect anything from the firmware after it's declared dead.
 
-As a workaround manually set pin-range via gpiochip_add_pin_range() until
-a) pinctrl-at91 is reworked to support devicetree gpio-groups
-b) another solution as mentioned in
-commit 56e337f2cf132632 ("Revert "gpio: Revert regression in sysfs-gpio (gpiolib.c)"")
-is found
+Don't call iwl_trans_wait_tx_queues_empty() in this case. While it could
+be a good idea to stop the flow earlier, the flush functions do some
+maintenance work that is not related to the firmware, so keep that part
+of the code running even when the firmware is not running.
 
-Signed-off-by: Thomas Blocher <thomas.blocher@ek-dev.de>
-Link: https://lore.kernel.org/5b992862-355d-f0de-cd3d-ff99e67a4ff1@ek-dev.de
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Signed-off-by: Miri Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20240825191257.a7cbd794cee9.I44a739fbd4ffcc46b83844dd1c7b2eb0c7b270f6@changeid
+[edit commit message]
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/pinctrl-at91.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/pinctrl-at91.c b/drivers/pinctrl/pinctrl-at91.c
-index 5aa9d5c533c6a..d7b66928a4e50 100644
---- a/drivers/pinctrl/pinctrl-at91.c
-+++ b/drivers/pinctrl/pinctrl-at91.c
-@@ -1409,8 +1409,11 @@ static int at91_pinctrl_probe(struct platform_device *pdev)
+diff --git a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+index f973efbbc3795..d2daea3b1f38a 100644
+--- a/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
++++ b/drivers/net/wireless/intel/iwlwifi/mvm/mac80211.c
+@@ -5589,6 +5589,10 @@ static void iwl_mvm_flush_no_vif(struct iwl_mvm *mvm, u32 queues, bool drop)
+ 	int i;
  
- 	/* We will handle a range of GPIO pins */
- 	for (i = 0; i < gpio_banks; i++)
--		if (gpio_chips[i])
-+		if (gpio_chips[i]) {
- 			pinctrl_add_gpio_range(info->pctl, &gpio_chips[i]->range);
-+			gpiochip_add_pin_range(&gpio_chips[i]->chip, dev_name(info->pctl->dev), 0,
-+				gpio_chips[i]->range.pin_base, gpio_chips[i]->range.npins);
-+		}
+ 	if (!iwl_mvm_has_new_tx_api(mvm)) {
++		/* we can't ask the firmware anything if it is dead */
++		if (test_bit(IWL_MVM_STATUS_HW_RESTART_REQUESTED,
++			     &mvm->status))
++			return;
+ 		if (drop) {
+ 			mutex_lock(&mvm->mutex);
+ 			iwl_mvm_flush_tx_path(mvm,
+@@ -5673,8 +5677,11 @@ void iwl_mvm_mac_flush(struct ieee80211_hw *hw, struct ieee80211_vif *vif,
  
- 	dev_info(dev, "initialized AT91 pinctrl driver\n");
+ 	/* this can take a while, and we may need/want other operations
+ 	 * to succeed while doing this, so do it without the mutex held
++	 * If the firmware is dead, this can't work...
+ 	 */
+-	if (!drop && !iwl_mvm_has_new_tx_api(mvm))
++	if (!drop && !iwl_mvm_has_new_tx_api(mvm) &&
++	    !test_bit(IWL_MVM_STATUS_HW_RESTART_REQUESTED,
++		      &mvm->status))
+ 		iwl_trans_wait_tx_queues_empty(mvm->trans, msk);
+ }
  
 -- 
 2.43.0
