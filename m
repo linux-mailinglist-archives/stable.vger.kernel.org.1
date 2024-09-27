@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-77945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-77992-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CEB25988459
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:27:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 033E298848B
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:28:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C48D281230
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:26:59 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AF8AE281033
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:28:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7697318C005;
-	Fri, 27 Sep 2024 12:26:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F7B017B515;
+	Fri, 27 Sep 2024 12:28:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QG7mrr8K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tA2/yBDf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 365C218C010;
-	Fri, 27 Sep 2024 12:26:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D457C1865ED;
+	Fri, 27 Sep 2024 12:28:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727439992; cv=none; b=lKBUQXVxFc0sFivsxYJj0aPUA6fOgK5rqgJ37wz4iVqTY4xbRAPC2G7zhoCc+8JLEv7nOfVtrPTtg7TKyD2NcdOj7yygaygXixqV3SRvGJRNr6yLHbAesJOvUlhg+u3nltjRmromQh3wySBwg/Q5Jfso8YVpiLUpihC77GpSzak=
+	t=1727440122; cv=none; b=bNnTGmqPewmyZdHoKu7CEDpgPRdiLQVT2yorORlBGyuprwXBRltOWApsCjrvw0nuZza/NyyhT0epD9inoKeT3gfZpCdPBpJ3fCYelImVF4x4G6g1L2d5QPtKeKNplO2+8KS8GcP/IxqIfk0xV4dVhnEe31/qDvxBHhgfvGmUJac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727439992; c=relaxed/simple;
-	bh=H8vgCAY3ZG1QSy85W6464KrXg0Mefee9w0hBP3vb0OM=;
+	s=arc-20240116; t=1727440122; c=relaxed/simple;
+	bh=Q5RJATS4uWmtpcbOa6T+h6qv/6gdRQCZQYJJ+J+wxio=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fmAx17OJZ9gxcnkyHAs8ZksLdflYIttas533UXcP8NlX1uAEH3186uGY2K40dHILk/3BTmrq+O3s8ArUd4Kr8FjPTy9Jvazcy9qDLrcJdyS1XnZVRkTMbEF+/D/F4VVS78RnaO8D7rPf2h+zZO0yXkqUu0xvpEB7jE7bSRtheWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QG7mrr8K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4811C4CEC4;
-	Fri, 27 Sep 2024 12:26:31 +0000 (UTC)
+	 MIME-Version; b=SDWiuZtR1H6GE8EmfP5iwksVchNeuhMfXxJccdmeQc89aSZOUouMzZ0CbF6tdDCZVP1tWcrvmT6elfW9p9Nrc/RjDcf9LvKOW4+abhJ5ta5u8MMcOb3o2FEqav5e54hZL8AC6NKOJG1tK61k+p6C1rg00uITcQ6+JCaV0gddSX0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tA2/yBDf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61793C4CEC4;
+	Fri, 27 Sep 2024 12:28:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727439992;
-	bh=H8vgCAY3ZG1QSy85W6464KrXg0Mefee9w0hBP3vb0OM=;
+	s=korg; t=1727440122;
+	bh=Q5RJATS4uWmtpcbOa6T+h6qv/6gdRQCZQYJJ+J+wxio=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QG7mrr8KPfmKXncz5mcmve/1TgSQtmyIx4LBOFNmnr5pJHY9I8jXxsx0Caadezyzf
-	 co65bwnuyoQdutpXorN7Lq9CQwdoTKmLUpmD1EeaV5jfVHsd6wT3WxodzNM/QXhBZT
-	 n1rEracG+nMVL8rmOhxLPtVkhNirDdK8ZkY+HEGI=
+	b=tA2/yBDfICxBZLcHWNo4G22/NyjoUsKZMy3PHBY7lOkcQsOWkPcsATBsEVRHTZO6N
+	 1KRuxfhZyrYwe4Mr3eqOOssStov0RHayuYcCdhBPpYQBcfQh1E7jkA3x3AQRie6mh+
+	 sR4u+2a5lsL7y58K+jiwL1BhKKKNSoVj9AR/LxgA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robert Beckett <bob.beckett@collabora.com>,
-	Keith Busch <kbusch@kernel.org>,
-	"Gagniuc, Alexandru" <alexandru.gagniuc@hp.com>
-Subject: [PATCH 6.6 49/54] nvme-pci: qdepth 1 quirk
-Date: Fri, 27 Sep 2024 14:23:41 +0200
-Message-ID: <20240927121721.777083304@linuxfoundation.org>
+	Michael Kelley <mhklinux@outlook.com>,
+	Roman Kisel <romank@linux.microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 40/58] x86/hyperv: Set X86_FEATURE_TSC_KNOWN_FREQ when Hyper-V provides frequency
+Date: Fri, 27 Sep 2024 14:23:42 +0200
+Message-ID: <20240927121720.390541428@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121719.714627278@linuxfoundation.org>
-References: <20240927121719.714627278@linuxfoundation.org>
+In-Reply-To: <20240927121718.789211866@linuxfoundation.org>
+References: <20240927121718.789211866@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,89 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Keith Busch <kbusch@kernel.org>
+From: Michael Kelley <mhklinux@outlook.com>
 
-commit 83bdfcbdbe5d901c5fa432decf12e1725a840a56 upstream.
+[ Upstream commit 8fcc514809de41153b43ccbe1a0cdf7f72b78e7e ]
 
-Another device has been reported to be unreliable if we have more than
-one outstanding command. In this new case, data corruption may occur.
-Since we have two devices now needing this quirky behavior, make a
-generic quirk flag.
+A Linux guest on Hyper-V gets the TSC frequency from a synthetic MSR, if
+available. In this case, set X86_FEATURE_TSC_KNOWN_FREQ so that Linux
+doesn't unnecessarily do refined TSC calibration when setting up the TSC
+clocksource.
 
-The same Apple quirk is clearly not "temporary", so update the comment
-while moving it.
+With this change, a message such as this is no longer output during boot
+when the TSC is used as the clocksource:
 
-Link: https://lore.kernel.org/linux-nvme/191d810a4e3.fcc6066c765804.973611676137075390@collabora.com/
-Reported-by: Robert Beckett <bob.beckett@collabora.com>
-Reviewed-by: Christoph Hellwig hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
-Cc: "Gagniuc, Alexandru" <alexandru.gagniuc@hp.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[    1.115141] tsc: Refined TSC clocksource calibration: 2918.408 MHz
+
+Furthermore, the guest and host will have exactly the same view of the
+TSC frequency, which is important for features such as the TSC deadline
+timer that are emulated by the Hyper-V host.
+
+Signed-off-by: Michael Kelley <mhklinux@outlook.com>
+Reviewed-by: Roman Kisel <romank@linux.microsoft.com>
+Link: https://lore.kernel.org/r/20240606025559.1631-1-mhklinux@outlook.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Message-ID: <20240606025559.1631-1-mhklinux@outlook.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/nvme.h |    5 +++++
- drivers/nvme/host/pci.c  |   18 +++++++++---------
- 2 files changed, 14 insertions(+), 9 deletions(-)
+ arch/x86/kernel/cpu/mshyperv.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/nvme/host/nvme.h
-+++ b/drivers/nvme/host/nvme.h
-@@ -89,6 +89,11 @@ enum nvme_quirks {
- 	NVME_QUIRK_NO_DEEPEST_PS		= (1 << 5),
+diff --git a/arch/x86/kernel/cpu/mshyperv.c b/arch/x86/kernel/cpu/mshyperv.c
+index 41632fb57796d..ead967479fa63 100644
+--- a/arch/x86/kernel/cpu/mshyperv.c
++++ b/arch/x86/kernel/cpu/mshyperv.c
+@@ -424,6 +424,7 @@ static void __init ms_hyperv_init_platform(void)
+ 	    ms_hyperv.misc_features & HV_FEATURE_FREQUENCY_MSRS_AVAILABLE) {
+ 		x86_platform.calibrate_tsc = hv_get_tsc_khz;
+ 		x86_platform.calibrate_cpu = hv_get_tsc_khz;
++		setup_force_cpu_cap(X86_FEATURE_TSC_KNOWN_FREQ);
+ 	}
  
- 	/*
-+	 *  Problems seen with concurrent commands
-+	 */
-+	NVME_QUIRK_QDEPTH_ONE			= (1 << 6),
-+
-+	/*
- 	 * Set MEDIUM priority on SQ creation
- 	 */
- 	NVME_QUIRK_MEDIUM_PRIO_SQ		= (1 << 7),
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -2526,15 +2526,8 @@ static int nvme_pci_enable(struct nvme_d
- 	else
- 		dev->io_sqes = NVME_NVM_IOSQES;
- 
--	/*
--	 * Temporary fix for the Apple controller found in the MacBook8,1 and
--	 * some MacBook7,1 to avoid controller resets and data loss.
--	 */
--	if (pdev->vendor == PCI_VENDOR_ID_APPLE && pdev->device == 0x2001) {
-+	if (dev->ctrl.quirks & NVME_QUIRK_QDEPTH_ONE) {
- 		dev->q_depth = 2;
--		dev_warn(dev->ctrl.device, "detected Apple NVMe controller, "
--			"set queue depth=%u to work around controller resets\n",
--			dev->q_depth);
- 	} else if (pdev->vendor == PCI_VENDOR_ID_SAMSUNG &&
- 		   (pdev->device == 0xa821 || pdev->device == 0xa822) &&
- 		   NVME_CAP_MQES(dev->ctrl.cap) == 0) {
-@@ -3399,6 +3392,8 @@ static const struct pci_device_id nvme_i
- 				NVME_QUIRK_BOGUS_NID, },
- 	{ PCI_VDEVICE(REDHAT, 0x0010),	/* Qemu emulated controller */
- 		.driver_data = NVME_QUIRK_BOGUS_NID, },
-+	{ PCI_DEVICE(0x1217, 0x8760), /* O2 Micro 64GB Steam Deck */
-+		.driver_data = NVME_QUIRK_QDEPTH_ONE },
- 	{ PCI_DEVICE(0x126f, 0x2262),	/* Silicon Motion generic */
- 		.driver_data = NVME_QUIRK_NO_DEEPEST_PS |
- 				NVME_QUIRK_BOGUS_NID, },
-@@ -3531,7 +3526,12 @@ static const struct pci_device_id nvme_i
- 	{ PCI_DEVICE(PCI_VENDOR_ID_AMAZON, 0xcd02),
- 		.driver_data = NVME_QUIRK_DMA_ADDRESS_BITS_48, },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_APPLE, 0x2001),
--		.driver_data = NVME_QUIRK_SINGLE_VECTOR },
-+		/*
-+		 * Fix for the Apple controller found in the MacBook8,1 and
-+		 * some MacBook7,1 to avoid controller resets and data loss.
-+		 */
-+		.driver_data = NVME_QUIRK_SINGLE_VECTOR |
-+				NVME_QUIRK_QDEPTH_ONE },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_APPLE, 0x2003) },
- 	{ PCI_DEVICE(PCI_VENDOR_ID_APPLE, 0x2005),
- 		.driver_data = NVME_QUIRK_SINGLE_VECTOR |
+ 	if (ms_hyperv.priv_high & HV_ISOLATION) {
+-- 
+2.43.0
+
 
 
 
