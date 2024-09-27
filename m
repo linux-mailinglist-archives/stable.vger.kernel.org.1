@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-77964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78046-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E93198846C
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:27:27 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2929F9884D8
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 14:32:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id F027E1F22B5C
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:27:26 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A8DE8B252B0
+	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 12:32:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66D6818BC0D;
-	Fri, 27 Sep 2024 12:27:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CA6C18C033;
+	Fri, 27 Sep 2024 12:31:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mwPs9SKk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l2Fbjiom"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 244E817B515;
-	Fri, 27 Sep 2024 12:27:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFC0018BC30;
+	Fri, 27 Sep 2024 12:31:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727440045; cv=none; b=p3PBN2HZqSoR9WONcG0XMTSNoOE5GaN01D9zmrnPPfpPJhyL/jTYCma1kr6Awzf3AOxYcMhMhzhOwurf9rKkknX0t2Ze4ytoClLK/BnDHrdyjLv80ONFCfNPwnwbz/3vpEiwQmG/CKAebohBOOm8BysPB0c424XWTJtQKc+/huw=
+	t=1727440274; cv=none; b=WjuNJ0TnusHRX7uc+AcuPsaNaCZ1Q7fKd1pr3Hzo0PmKqu8DrjJXiOk8vvcqhOhSSjK5nyT4k4wI713/1jJdL6mdiAovPD39s/+zKNH8ezUWx0j90WTSIdxhCmTcm90neV85beSSR1gTC3oo1JCybwdaY491lU0fraoAHCUPxQE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727440045; c=relaxed/simple;
-	bh=UuQaAJTCvhMUYEJA4g88rzv1sqdX8Y360uwtC1lK/u8=;
+	s=arc-20240116; t=1727440274; c=relaxed/simple;
+	bh=jFpUXRMW+75WhndU1llhx97Gwkb022UDg47RX9I4BxE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LQW5uTYGGbNrSPe7EAtCqibTnmCzdcSzG5sDprLGIDhEbkvFSHsBVZ+Pu9EvXigS0FaizW/Qthkm6GOqafRwnGXtRaXhQCiEX6y3ua0u24w1c2Z6/+V/FNOI2duOz/jUXwvI9xp/921XDiglCPyZQjlEFyZzbjqb/dK1/QWCeLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mwPs9SKk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A641AC4CEC4;
-	Fri, 27 Sep 2024 12:27:24 +0000 (UTC)
+	 MIME-Version; b=f17KsxE76VGq7R9xsH+1I/zEqsDeAxmbgSgw65+1JoPxvUwjdCM28fdlJNB0eGLJ226q0R2A2/n7Yk65gdcBIVRE8Pzqv17yzuyLTLlig+Hy+VW43KoHPjkKV6pFN7MDW0IsTDMbYf9eY+X1d7x+ChGIP4AowvF4MownBcrA4Y0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l2Fbjiom; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC084C4CEC4;
+	Fri, 27 Sep 2024 12:31:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727440045;
-	bh=UuQaAJTCvhMUYEJA4g88rzv1sqdX8Y360uwtC1lK/u8=;
+	s=korg; t=1727440273;
+	bh=jFpUXRMW+75WhndU1llhx97Gwkb022UDg47RX9I4BxE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mwPs9SKkMba74Fz7ydA/owkEpTSCXZKVW6KTESEn809FufnzZkJZPOLbGVEJ0xTjx
-	 Gxk1d60VgN2l0KYz1Tum11735M28oIR0/QcuGcNbuwDvGhHABlAR+AlHX894p++FIz
-	 YLxmM61g2VqgbIfBUQv7PPEiNmogizYtANFyUf1k=
+	b=l2FbjiomeHWJJJ1EAhxrgEGXoZV1SUDeGRSX/O3h/KXb5sECpqq/EITt7du/fvZ8X
+	 Oj465DfnmCFKGnywKuWM5hIDm7DP5zRuXp8piyhjX8ZccjSI3ebvhMUsDwqgSG+sgF
+	 L8vhrmvVvgb9+vIV0sy4TsL5IzfMqAQOxzEVwEwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacky Chou <jacky_chou@aspeedtech.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Kailang Yang <kailang@realtek.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 13/58] net: ftgmac100: Ensure tx descriptor updates are visible
-Date: Fri, 27 Sep 2024 14:23:15 +0200
-Message-ID: <20240927121719.337113027@linuxfoundation.org>
+Subject: [PATCH 6.1 05/73] ALSA: hda/realtek - FIxed ALC285 headphone no sound
+Date: Fri, 27 Sep 2024 14:23:16 +0200
+Message-ID: <20240927121720.103620298@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20240927121718.789211866@linuxfoundation.org>
-References: <20240927121718.789211866@linuxfoundation.org>
+In-Reply-To: <20240927121719.897851549@linuxfoundation.org>
+References: <20240927121719.897851549@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,111 +62,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacky Chou <jacky_chou@aspeedtech.com>
+From: Kailang Yang <kailang@realtek.com>
 
-[ Upstream commit 4186c8d9e6af57bab0687b299df10ebd47534a0a ]
+[ Upstream commit 1fa7b099d60ad64f559bd3b8e3f0d94b2e015514 ]
 
-The driver must ensure TX descriptor updates are visible
-before updating TX pointer and TX clear pointer.
+Dell platform with ALC215 ALC285 ALC289 ALC225 ALC295 ALC299, plug
+headphone or headset.
+It had a chance to get no sound from headphone.
+Replace depop procedure will solve this issue.
 
-This resolves TX hangs observed on AST2600 when running
-iperf3.
-
-Signed-off-by: Jacky Chou <jacky_chou@aspeedtech.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Kailang Yang <kailang@realtek.com>
+Link: https://lore.kernel.org/d0de1b03fd174520945dde216d765223@realtek.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/faraday/ftgmac100.c | 26 ++++++++++++++++--------
- 1 file changed, 18 insertions(+), 8 deletions(-)
+ sound/pci/hda/patch_realtek.c | 26 ++++++++++++++------------
+ 1 file changed, 14 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/net/ethernet/faraday/ftgmac100.c b/drivers/net/ethernet/faraday/ftgmac100.c
-index fddfd1dd50709..4c546c3aef0fe 100644
---- a/drivers/net/ethernet/faraday/ftgmac100.c
-+++ b/drivers/net/ethernet/faraday/ftgmac100.c
-@@ -572,7 +572,7 @@ static bool ftgmac100_rx_packet(struct ftgmac100 *priv, int *processed)
- 	(*processed)++;
- 	return true;
- 
-- drop:
-+drop:
- 	/* Clean rxdes0 (which resets own bit) */
- 	rxdes->rxdes0 = cpu_to_le32(status & priv->rxdes0_edorr_mask);
- 	priv->rx_pointer = ftgmac100_next_rx_pointer(priv, pointer);
-@@ -656,6 +656,11 @@ static bool ftgmac100_tx_complete_packet(struct ftgmac100 *priv)
- 	ftgmac100_free_tx_packet(priv, pointer, skb, txdes, ctl_stat);
- 	txdes->txdes0 = cpu_to_le32(ctl_stat & priv->txdes0_edotr_mask);
- 
-+	/* Ensure the descriptor config is visible before setting the tx
-+	 * pointer.
-+	 */
-+	smp_wmb();
-+
- 	priv->tx_clean_pointer = ftgmac100_next_tx_pointer(priv, pointer);
- 
- 	return true;
-@@ -809,6 +814,11 @@ static netdev_tx_t ftgmac100_hard_start_xmit(struct sk_buff *skb,
- 	dma_wmb();
- 	first->txdes0 = cpu_to_le32(f_ctl_stat);
- 
-+	/* Ensure the descriptor config is visible before setting the tx
-+	 * pointer.
-+	 */
-+	smp_wmb();
-+
- 	/* Update next TX pointer */
- 	priv->tx_pointer = pointer;
- 
-@@ -829,7 +839,7 @@ static netdev_tx_t ftgmac100_hard_start_xmit(struct sk_buff *skb,
- 
- 	return NETDEV_TX_OK;
- 
-- dma_err:
-+dma_err:
- 	if (net_ratelimit())
- 		netdev_err(netdev, "map tx fragment failed\n");
- 
-@@ -851,7 +861,7 @@ static netdev_tx_t ftgmac100_hard_start_xmit(struct sk_buff *skb,
- 	 * last fragment, so we know ftgmac100_free_tx_packet()
- 	 * hasn't freed the skb yet.
- 	 */
-- drop:
-+drop:
- 	/* Drop the packet */
- 	dev_kfree_skb_any(skb);
- 	netdev->stats.tx_dropped++;
-@@ -1344,7 +1354,7 @@ static void ftgmac100_reset(struct ftgmac100 *priv)
- 	ftgmac100_init_all(priv, true);
- 
- 	netdev_dbg(netdev, "Reset done !\n");
-- bail:
-+bail:
- 	if (priv->mii_bus)
- 		mutex_unlock(&priv->mii_bus->mdio_lock);
- 	if (netdev->phydev)
-@@ -1543,15 +1553,15 @@ static int ftgmac100_open(struct net_device *netdev)
- 
- 	return 0;
- 
-- err_ncsi:
-+err_ncsi:
- 	napi_disable(&priv->napi);
- 	netif_stop_queue(netdev);
-- err_alloc:
-+err_alloc:
- 	ftgmac100_free_buffers(priv);
- 	free_irq(netdev->irq, netdev);
-- err_irq:
-+err_irq:
- 	netif_napi_del(&priv->napi);
-- err_hw:
-+err_hw:
- 	iowrite32(0, priv->base + FTGMAC100_OFFSET_IER);
- 	ftgmac100_free_rings(priv);
- 	return err;
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 784dfdf0cd6f4..277303cbe96de 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -5088,6 +5088,7 @@ static void alc_headset_mode_unplugged(struct hda_codec *codec)
+ 	case 0x10ec0295:
+ 	case 0x10ec0289:
+ 	case 0x10ec0299:
++		alc_hp_mute_disable(codec, 75);
+ 		alc_process_coef_fw(codec, alc225_pre_hsmode);
+ 		alc_process_coef_fw(codec, coef0225);
+ 		break;
+@@ -5313,6 +5314,7 @@ static void alc_headset_mode_default(struct hda_codec *codec)
+ 	case 0x10ec0299:
+ 		alc_process_coef_fw(codec, alc225_pre_hsmode);
+ 		alc_process_coef_fw(codec, coef0225);
++		alc_hp_enable_unmute(codec, 75);
+ 		break;
+ 	case 0x10ec0255:
+ 		alc_process_coef_fw(codec, coef0255);
+@@ -5472,6 +5474,7 @@ static void alc_headset_mode_ctia(struct hda_codec *codec)
+ 			alc_process_coef_fw(codec, coef0225_2);
+ 		else
+ 			alc_process_coef_fw(codec, coef0225_1);
++		alc_hp_enable_unmute(codec, 75);
+ 		break;
+ 	case 0x10ec0867:
+ 		alc_update_coefex_idx(codec, 0x57, 0x5, 1<<14, 0);
+@@ -5577,6 +5580,7 @@ static void alc_headset_mode_omtp(struct hda_codec *codec)
+ 	case 0x10ec0289:
+ 	case 0x10ec0299:
+ 		alc_process_coef_fw(codec, coef0225);
++		alc_hp_enable_unmute(codec, 75);
+ 		break;
+ 	}
+ 	codec_dbg(codec, "Headset jack set to Nokia-style headset mode.\n");
+@@ -5736,12 +5740,6 @@ static void alc_determine_headset_type(struct hda_codec *codec)
+ 	case 0x10ec0295:
+ 	case 0x10ec0289:
+ 	case 0x10ec0299:
+-		snd_hda_codec_write(codec, 0x21, 0,
+-			    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_MUTE);
+-		msleep(80);
+-		snd_hda_codec_write(codec, 0x21, 0,
+-			    AC_VERB_SET_PIN_WIDGET_CONTROL, 0x0);
+-
+ 		alc_process_coef_fw(codec, alc225_pre_hsmode);
+ 		alc_update_coef_idx(codec, 0x67, 0xf000, 0x1000);
+ 		val = alc_read_coef_idx(codec, 0x45);
+@@ -5758,15 +5756,19 @@ static void alc_determine_headset_type(struct hda_codec *codec)
+ 			val = alc_read_coef_idx(codec, 0x46);
+ 			is_ctia = (val & 0x00f0) == 0x00f0;
+ 		}
++		if (!is_ctia) {
++			alc_update_coef_idx(codec, 0x45, 0x3f<<10, 0x38<<10);
++			alc_update_coef_idx(codec, 0x49, 3<<8, 1<<8);
++			msleep(100);
++			val = alc_read_coef_idx(codec, 0x46);
++			if ((val & 0x00f0) == 0x00f0)
++				is_ctia = false;
++			else
++				is_ctia = true;
++		}
+ 		alc_update_coef_idx(codec, 0x4a, 7<<6, 7<<6);
+ 		alc_update_coef_idx(codec, 0x4a, 3<<4, 3<<4);
+ 		alc_update_coef_idx(codec, 0x67, 0xf000, 0x3000);
+-
+-		snd_hda_codec_write(codec, 0x21, 0,
+-			    AC_VERB_SET_PIN_WIDGET_CONTROL, PIN_OUT);
+-		msleep(80);
+-		snd_hda_codec_write(codec, 0x21, 0,
+-			    AC_VERB_SET_AMP_GAIN_MUTE, AMP_OUT_UNMUTE);
+ 		break;
+ 	case 0x10ec0867:
+ 		is_ctia = true;
 -- 
 2.43.0
 
