@@ -1,134 +1,173 @@
-Return-Path: <stable+bounces-78166-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78167-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 712FF988CA9
-	for <lists+stable@lfdr.de>; Sat, 28 Sep 2024 00:59:29 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA429988D94
+	for <lists+stable@lfdr.de>; Sat, 28 Sep 2024 04:34:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DE947B21944
-	for <lists+stable@lfdr.de>; Fri, 27 Sep 2024 22:59:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D14891C2118C
+	for <lists+stable@lfdr.de>; Sat, 28 Sep 2024 02:34:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E6B61B6522;
-	Fri, 27 Sep 2024 22:59:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B951413AA47;
+	Sat, 28 Sep 2024 02:34:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O4Qx81rf"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="aMFx2ycW"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C4A91B374C
-	for <stable@vger.kernel.org>; Fri, 27 Sep 2024 22:59:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EAE0171A7
+	for <stable@vger.kernel.org>; Sat, 28 Sep 2024 02:34:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727477965; cv=none; b=VAdPbWbYksUZMlduij92D8lyJ/uDqf7/yniNaoXGb+WftEg7jER0c+9COSmRPUOz/ih9ubwQblWwt6roitgzulARoC+jM274RW/LRJV+CltCJwByNw2BJWJYqzCuBpDuDIuuyvxWFm31llv7sWCkuvv2AtnLQ8AtTZt+lsjLLgc=
+	t=1727490850; cv=none; b=nTN/yiGZFCeFlDTsQztshrDOoqX8DyX+exhLaisjmNwpyctxrVRdqajjQ93dY1VpnM0YK591RGRKTDYHbFZ9ph9mO9ntbxNvMxWN9BV3IuQi4KzG6zTg/LLX/KsLCG79XkKUv1S5bYqUNx7ta053iFWHqKXOgGVwYTFJJI9bJwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727477965; c=relaxed/simple;
-	bh=RETDblGo7fJm9ykfdR5QC0amdMsWUTecNy67KvQxBgo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cXbCulvXHBe0g/LljG57elAE6v3VJCXjR/CO3zq5fZKAqXBw3NWl9vjnWGl/XgnE6n7/BR6pZo8VvpsqIKPJbZ6EBNYug3yKOTbhpXTDOHNA/HUUeikRS49lV6ymi+leJ6e0T+y6bmWdLH4n7rB5gpZPljsTHLnxW1B60wJNErY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O4Qx81rf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFB49C4CEC4
-	for <stable@vger.kernel.org>; Fri, 27 Sep 2024 22:59:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727477965;
-	bh=RETDblGo7fJm9ykfdR5QC0amdMsWUTecNy67KvQxBgo=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=O4Qx81rfrfy7QCHveW2a1LP7n8JIzgcxH4F4PqF8SwFe/FUcZdbgMlRF4rjU95Yr4
-	 uNlT8qIuA3+xKei5eJ2jOk1lCjKPZa60yjWimVEPsNBnpKITRyDzoWIiP/EL9CAGES
-	 wW4u+7UkcfuzXqEIAVwHEFQ6IUwDHssjRL+RWXEAg3npRaBudmYpXeIvs7A/BmqISo
-	 b7VoGDi8JSOiBzlGFderzWZ/RMSb1TjRfirIgoXezEd6N/YAzTi+oy44AtMOtWVmCd
-	 lOSDpWAJeQUIhrspOBM/cOAuv0WX6c4wEYtRChPOj2N+f25oerwXA8q5cPXfdjRVuD
-	 v4A0jGs4tjQ7Q==
-Received: by mail-il1-f181.google.com with SMTP id e9e14a558f8ab-3a1a4f2cc29so32795ab.1
-        for <stable@vger.kernel.org>; Fri, 27 Sep 2024 15:59:24 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUwiXiRG4fieXGEMp1tOWFXKhhAhiV+uK74SPA2KkeWOEyNi8xC1YfHooJA/zCLhbfsSF/IrF8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwcHYwBegF5Op2Bk3KDNlyN5gWDEpaYoJIUCgG90hvl+00vy30b
-	mrmBiGsmIk+XFixeenjMe1lujAUaTNgMLVekGQnqb151FFfrfKo53KJAH6pI6zWgLoN/DCXhj0f
-	ZrGdHIOBqgxm4cZc85fD1+Sw7kFQ1FpisIrOI
-X-Google-Smtp-Source: AGHT+IFsEwYg450S3NeKQn6xBQFs4856zgRTrSXHV+euzXNZKECEPNG2NCRcHPEkRwrNy63oW9OieWa6BqbUgzGKprw=
-X-Received: by 2002:a05:6e02:218c:b0:3a0:9b7c:7885 with SMTP id
- e9e14a558f8ab-3a34bd82af0mr1249545ab.22.1727477964236; Fri, 27 Sep 2024
- 15:59:24 -0700 (PDT)
+	s=arc-20240116; t=1727490850; c=relaxed/simple;
+	bh=7JETgzVlPniE2th61i/1NTROAETK/T9gFI7yNKCepTI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qMwejyWQHpoD34J8VEjiLZ+nEOv9jy0D/7XnQfzpTh6sccorbRaqmAUqFiad2E6hwocmR3diZfhrn8tMSFyckTrud9owESR7SZsPNLPQF3RXG3moSYGR2xr6T/ZCn5l3nV1qt1CVs9A3V6XyMwkH9iIi035VPWygmjS1eYch4vo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=aMFx2ycW; arc=none smtp.client-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-719ba0654f9so2369790b3a.3
+        for <stable@vger.kernel.org>; Fri, 27 Sep 2024 19:34:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1727490847; x=1728095647; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=MI/YrD/lCyZQfuqc6LhwT8YNbgbBZkfv6QDOo41ZKyI=;
+        b=aMFx2ycWAK8bsubMRJIBZ/EjAwqN8pWRyjzUTnJxWPL49P/SyS0iwhHlpFKGYK5R7f
+         ZQjEOyHznmAeoWZVm2DFrbo45q84o6QqSFNJ2js/hkFx5kKYVPfYy9/tvxvd3z7+KVGf
+         xYsvbI2HKiBWNJjObn8HQV3Cvlug3VLhFUF80=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727490847; x=1728095647;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MI/YrD/lCyZQfuqc6LhwT8YNbgbBZkfv6QDOo41ZKyI=;
+        b=mRqX7yZ94E0qpqnmmKHtZAybRfFHoUTIgbgPvzW1T6fjSwRRTh+QQ/r540SLNx/eSH
+         QP8KK2+cFDF3ZDePdRSKg269o1MHmEUfFnj99oRVbtzgqGcHqQUeb5wdlW+i/tQpNjch
+         bUaKolnu8j5P/d6z5MRlO5MRonxxAnM75oCFbCy9JQlvUduuYIHZexguWzDOoz5hX48m
+         tnE8+zYon3ImkWBHV8+G9copW/kgViFvMaW/sbIWeGozfdN6AIyiglNLaan6i5O7FIhn
+         Y0fdi88jBoi94+ZTHHzorVNcODwCCUn1vm+VCwNIKqJzln+glAJN6UbPTpRVnLOnktiB
+         LAXg==
+X-Gm-Message-State: AOJu0YwlCiyZ21hBv6OavPPFzgiJgmWbwH8qZESmVsu3J08hfRqnrYCZ
+	bZj5FJ2YrDOGH+hMmSiXFMm1OxEHbMGSgL+C/DBfIE148ha0RxhFA0LgbgVWnxJERF9xsYNmY8c
+	OJgJjleG2uFy9odzvKNc5pbPSJR0eVj9cjr7Mwxipjom7K0lZUDb5A6nqVQV8FLHdhHT7NgCnNp
+	4IdPsp+ZjB0l259oaRg9repQS3nEtBFC18utc6nRabmq7fYQQ=
+X-Google-Smtp-Source: AGHT+IGTfEyKEUJ1bOxW3m6LmtiOzTr6iqhwVfVJE+TgVQjvrt/Sp9jAPDeJvlAOlFnzYfv9q/kc+A==
+X-Received: by 2002:a05:6a00:3cce:b0:718:cabe:aa8 with SMTP id d2e1a72fcca58-71b26059666mr8670611b3a.18.1727490846779;
+        Fri, 27 Sep 2024 19:34:06 -0700 (PDT)
+Received: from shivania.eng.vmware.com ([66.170.99.1])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71b26516223sm2254154b3a.112.2024.09.27.19.33.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 27 Sep 2024 19:34:06 -0700 (PDT)
+From: Shivani Agarwal <shivani.agarwal@broadcom.com>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: paul@paul-moore.com,
+	stephen.smalley.work@gmail.com,
+	omosnace@redhat.com,
+	casey@schaufler-ca.com,
+	jmorris@namei.org,
+	serge@hallyn.com,
+	selinux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	ajay.kaher@broadcom.com,
+	alexey.makhalov@broadcom.com,
+	vasavi.sirnapalli@broadcom.com,
+	Scott Mayhew <smayhew@redhat.com>,
+	stable@kernel.org,
+	Marek Gresko <marek.gresko@protonmail.com>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Shivani Agarwal <shivani.agarwal@broadcom.com>
+Subject: [PATCH v5.10] selinux,smack: don't bypass permissions check in  inode_setsecctx hook
+Date: Fri, 27 Sep 2024 19:33:49 -0700
+Message-Id: <20240928023349.154389-1-shivani.agarwal@broadcom.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240923164843.1117010-1-andrej.skvortzov@gmail.com>
- <20240924014241.GH38742@google.com> <d22cff1a-701d-4078-867d-d82caa943bab@linux.vnet.ibm.com>
- <CAF8kJuPEg1yKNmVvPbEYGME8HRoTXdHTANm+OKOZwX9B6uEtmw@mail.gmail.com>
- <CAF8kJuOs-3WZPQo0Ktyp=7DytWrL9+UrTNUGz+9n9s6urR-rtA@mail.gmail.com>
- <20240925003718.GA11458@google.com> <CAF8kJuNDzk21jZR1+TkGdMOrXdQcfa+=bxLF6FhyuXzRwT4Y9Q@mail.gmail.com>
-In-Reply-To: <CAF8kJuNDzk21jZR1+TkGdMOrXdQcfa+=bxLF6FhyuXzRwT4Y9Q@mail.gmail.com>
-From: Chris Li <chrisl@kernel.org>
-Date: Fri, 27 Sep 2024 15:59:11 -0700
-X-Gmail-Original-Message-ID: <CAF8kJuMoOZYySOFev46uMxdwvVjFbfCTSKeHywrazN-VUxJyoA@mail.gmail.com>
-Message-ID: <CAF8kJuMoOZYySOFev46uMxdwvVjFbfCTSKeHywrazN-VUxJyoA@mail.gmail.com>
-Subject: Re: [PATCH v3] zram: don't free statically defined names
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Venkat Rao Bagalkote <venkat88@linux.vnet.ibm.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Andrey Skvortsov <andrej.skvortzov@gmail.com>, Minchan Kim <minchan@kernel.org>, 
-	Jens Axboe <axboe@kernel.dk>, linux-kernel@vger.kernel.org, linux-block@vger.kernel.org, 
-	stable@vger.kernel.org, Sachin Sant <sachinp@linux.ibm.com>, 
-	linux-mm <linux-mm@kvack.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Sep 24, 2024 at 9:04=E2=80=AFPM Chris Li <chrisl@kernel.org> wrote:
->
-> On Tue, Sep 24, 2024 at 5:37=E2=80=AFPM Sergey Senozhatsky
-> <senozhatsky@chromium.org> wrote:
-> >
-> > On (24/09/24 11:29), Chris Li wrote:
-> > > On Tue, Sep 24, 2024 at 8:56=E2=80=AFAM Chris Li <chrisl@kernel.org> =
-wrote:
-> > [..]
-> > > Given the merge window is closing. I suggest just reverting this
-> > > change. As it is the fix also causing regression in the swap stress
-> > > test for me. It is possible that is my test setup issue, but revertin=
-g
-> > > sounds the safe bet.
-> >
-> > The patch in question is just a kfree() call that is only executed
-> > during zram reset and that fixes tiny memory leaks when zram is
-> > configured with alternative (re-compression) streams.  I cannot
-> > imagine how that can have any impact on runtime, that makes no
-> > sense to me, I'm not sure that revert is justified here.
-> >
-> After some discussion with Sergey, we have more progress on
-> understanding the swap stress test regression.
-> One of the triggering conditions is I don't have zram lz4 config
-> enabled, (the config option name has changed) and the test script
-> tries to set lz4 on zram and fails. It will fall back to the lzo.
-> Anyway, if I have zram lz4 configured, my stress test can pass with
-> the fix. Still I don't understand why disabling lz4 config can trigger
-> it. Need to dig more.
->
-> Agree that we don't need to revert this.
+From: Scott Mayhew <smayhew@redhat.com>
 
-Turns out that my oom kill is a false alarm. After some debug
-discussion with Sergey, I confirm the fix works. The cause of the oom
-kill is because my bisect script did not apply one of the known fix
-patches after applying Andrey Skvortsov's fix in this thread. Sorry
-about the confusion I created.
+commit 76a0e79bc84f466999fa501fce5bf7a07641b8a7 upstream.
 
-Feel free to add:
+Marek Gresko reports that the root user on an NFS client is able to
+change the security labels on files on an NFS filesystem that is
+exported with root squashing enabled.
 
-Tested-by: Chris Li <chrisl@kernel.org>
+The end of the kerneldoc comment for __vfs_setxattr_noperm() states:
 
-Hi Andrew,
+ *  This function requires the caller to lock the inode's i_mutex before it
+ *  is executed. It also assumes that the caller will make the appropriate
+ *  permission checks.
 
-FYI, the tip of current mm-stable
-abf2050f51fdca0fd146388f83cddd95a57a008d is failing my swap stress
-test, missing the fix in this email thread.
-Adding  this fix 486fd58af7ac1098b68370b1d4d9f94a2a1c7124 to mm-stable
-will make mm-stable pass the stress test.
+nfsd_setattr() does do permissions checking via fh_verify() and
+nfsd_permission(), but those don't do all the same permissions checks
+that are done by security_inode_setxattr() and its related LSM hooks do.
 
-Current tip of mm-unstable 66af62407e82647ec5b44462dc29d50ba03fdb22 is
-passing my swap stress test fine.
+Since nfsd_setattr() is the only consumer of security_inode_setsecctx(),
+simplest solution appears to be to replace the call to
+__vfs_setxattr_noperm() with a call to __vfs_setxattr_locked().  This
+fixes the above issue and has the added benefit of causing nfsd to
+recall conflicting delegations on a file when a client tries to change
+its security label.
 
-Chris
+Cc: stable@kernel.org
+Reported-by: Marek Gresko <marek.gresko@protonmail.com>
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218809
+Signed-off-by: Scott Mayhew <smayhew@redhat.com>
+Tested-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+Reviewed-by: Stephen Smalley <stephen.smalley.work@gmail.com>
+Reviewed-by: Chuck Lever <chuck.lever@oracle.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Acked-by: Casey Schaufler <casey@schaufler-ca.com>
+Signed-off-by: Paul Moore <paul@paul-moore.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[Shivani: Modified to apply on v5.10.y]
+Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
+---
+ security/selinux/hooks.c   | 3 ++-
+ security/smack/smack_lsm.c | 3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/security/selinux/hooks.c b/security/selinux/hooks.c
+index 46c00a68bb4b..90935ed3d8d8 100644
+--- a/security/selinux/hooks.c
++++ b/security/selinux/hooks.c
+@@ -6570,7 +6570,8 @@ static int selinux_inode_notifysecctx(struct inode *inode, void *ctx, u32 ctxlen
+  */
+ static int selinux_inode_setsecctx(struct dentry *dentry, void *ctx, u32 ctxlen)
+ {
+-	return __vfs_setxattr_noperm(dentry, XATTR_NAME_SELINUX, ctx, ctxlen, 0);
++	return __vfs_setxattr_locked(dentry, XATTR_NAME_SELINUX, ctx, ctxlen, 0,
++				     NULL);
+ }
+ 
+ static int selinux_inode_getsecctx(struct inode *inode, void **ctx, u32 *ctxlen)
+diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
+index 92bc6c9d793d..cb4801fcf9a8 100644
+--- a/security/smack/smack_lsm.c
++++ b/security/smack/smack_lsm.c
+@@ -4651,7 +4651,8 @@ static int smack_inode_notifysecctx(struct inode *inode, void *ctx, u32 ctxlen)
+ 
+ static int smack_inode_setsecctx(struct dentry *dentry, void *ctx, u32 ctxlen)
+ {
+-	return __vfs_setxattr_noperm(dentry, XATTR_NAME_SMACK, ctx, ctxlen, 0);
++	return __vfs_setxattr_locked(dentry, XATTR_NAME_SMACK, ctx, ctxlen, 0,
++				     NULL);
+ }
+ 
+ static int smack_inode_getsecctx(struct inode *inode, void **ctx, u32 *ctxlen)
+-- 
+2.39.4
+
 
