@@ -1,132 +1,130 @@
-Return-Path: <stable+bounces-78178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78179-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D975F98901C
-	for <lists+stable@lfdr.de>; Sat, 28 Sep 2024 17:39:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0AB1989031
+	for <lists+stable@lfdr.de>; Sat, 28 Sep 2024 17:59:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 84CB8282056
-	for <lists+stable@lfdr.de>; Sat, 28 Sep 2024 15:39:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0F1361C20C45
+	for <lists+stable@lfdr.de>; Sat, 28 Sep 2024 15:59:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF91522098;
-	Sat, 28 Sep 2024 15:39:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFB7154673;
+	Sat, 28 Sep 2024 15:59:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=futuring-girl-com.20230601.gappssmtp.com header.i=@futuring-girl-com.20230601.gappssmtp.com header.b="g9Wrf6Hn"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="aJbnBfhk"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E02C24204D
-	for <stable@vger.kernel.org>; Sat, 28 Sep 2024 15:39:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C552A1EB39
+	for <stable@vger.kernel.org>; Sat, 28 Sep 2024 15:59:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727537951; cv=none; b=PyMilKA86zsAxk6z0SGls4dsEFN/DxX+rF0lMpNUS5/mpsefi29dKpIbJW2Ibtn5PU8IttLGlxHF9ip7Ps2RIQNDzHRbdnujLQP9SYMLG8YMh8DKzErlJJ6FOWaApmi8aIQ0uNh729FIrZX7zUkb+F19aptykOsgeikJ8lVOTH0=
+	t=1727539178; cv=none; b=LJxYi2NfvukZLVJcRqZIBLBTYdN5/QbbNTrKUlmZYjAEibeck/OrShnDn+Lvy/JbXAsFv1M3DWrFddWjEIQ4iKPY5h9A9uqLHhurflTRUKJCcQsWg0JZQ6vkJVchBmUsiQldASa0kwx+zd9/qNT3LtLpEZi179W6SuHUsEKBh9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727537951; c=relaxed/simple;
-	bh=Jcwgqmrk7hrevC2k2xJQkkfVs640nD7arnhpY4rl8lE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aJD+L8Q0dFmoPtB9Jb8AkdtTuBevtrZzpcbOyqtNCdr31H5aKJJ1L3Yntc+Ed6oglGNBj6v0HoaTNcsfR1VlmY5utheEjl3y2Kc79uP3iPV7m9wFLx1fEgImPIiRkt92/yUmIXCXuOLkbS2+MqRo0S+FUKqUzxhHSZB7u0KRUkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=futuring-girl.com; spf=pass smtp.mailfrom=futuring-girl.com; dkim=pass (2048-bit key) header.d=futuring-girl-com.20230601.gappssmtp.com header.i=@futuring-girl-com.20230601.gappssmtp.com header.b=g9Wrf6Hn; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=futuring-girl.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=futuring-girl.com
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-37ccc597b96so2079869f8f.3
-        for <stable@vger.kernel.org>; Sat, 28 Sep 2024 08:39:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=futuring-girl-com.20230601.gappssmtp.com; s=20230601; t=1727537948; x=1728142748; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=H7aENbVHrbvubesI/cqKrU4sOUEl+g1GzFRVwX3oKYw=;
-        b=g9Wrf6HnAk59KDHLgmmFpIzjj5LgFIIrfThLZvTrqHme3Ptlyd9LtRU4Yc6FeU1HMh
-         pvHJQ2hXLJeL+YDwxApl/746xhCZtujmM2KoEfEDCW0QgvbZncjnd5CaJtMZY7V1K34G
-         pt4iiJATqw47jljVxMf9aYVZu1ew3ynFzYGqdRSe1FummLKtfIThI0p3lSqhaF8Kibjg
-         5am6As4pwPqXYDehXAGSmoHN8t7OEkQEStu6Mnr2ys8SnMgK4mLzH5uKADtSu6bvS86B
-         WcanrsvBt2P8LbpJOpuW9UHh9T49xBhAqzYM+B7cBQwMlPNbH1p7iHyFaznWPLKd4dlO
-         /EEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727537948; x=1728142748;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=H7aENbVHrbvubesI/cqKrU4sOUEl+g1GzFRVwX3oKYw=;
-        b=qDKyptp2AmeJrIk+UeZmuEUFQ137XAqquOFJ9314nfxM0hARVlV0pM5lXuFCFkFaMj
-         0JcqqA3xTFHWLYbtwH1lia3eYXXHSlLwoLTmO9KJuRiBSWvlNWVs3AsMwolpbLQMJ+a5
-         IvgkNTMGHyJ5J5ymOPIegibIlhhthtuxYY0zxEYrgHcjGIqBglkj0psSrdQODDwDurUP
-         7KV+kVXcMnG6cMbA3JHQOcbEA3yXyKTnvIpp//v2v3kU7GD2iEa7BCUzANk/bxKZHTJ3
-         UpNXMLKPyYjq/9ms0A2TM4OwpnF2lq9Ecdw2tEuhHSUJFogbvORBzCevb2/RGmfddY1K
-         A3Zw==
-X-Gm-Message-State: AOJu0YxT+OhK1znIoHE2Xdd4P5vpOuurCQc/HVBqr4QTQNEk1b3p9bni
-	exxtzx5ovUoRZiRWAZLWhwp70N2f8fa5VJeNcjiiNgt/oZVRgwr5veqDH47nCOYflMGy+HKtncn
-	u4rL5o2bESUM4HYWptWokhofTv0cEwEwzzCC7lQ==
-X-Google-Smtp-Source: AGHT+IENz0+ya7bPS4gQ8rnB5EDXaQ9xmNq2ebP8DILfBv1Tj1+FcWPvQW6UPkGkD9Bi3+cHYW6jTXQv0SY+blo+hDQ=
-X-Received: by 2002:a5d:6741:0:b0:378:e8a9:98c5 with SMTP id
- ffacd0b85a97d-37cd5aaa6d4mr4083932f8f.34.1727537948113; Sat, 28 Sep 2024
- 08:39:08 -0700 (PDT)
+	s=arc-20240116; t=1727539178; c=relaxed/simple;
+	bh=sG1JmlTi3eoqBxSHQ67FnVV0AkhYxArgBpojKD5zX0A=;
+	h=From:To:Cc:Subject:Date:Message-Id; b=XQ5rH/KNwix364nQf7U503JEBus0/U2afeNtSA0TpneYNhLhBZpxs8qGmrp1Itiww3khTJFDsXHUjgvDqATFU2mhASV4N8aZm9mkMG6UjgTxROV+9t39ZV18ynNMyMfxqQYXGUd9ZT+OTyWfzeShG/qYa/Nh9twhagU1dnEqN6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=aJbnBfhk; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1727539177; x=1759075177;
+  h=from:to:cc:subject:date:message-id;
+  bh=sG1JmlTi3eoqBxSHQ67FnVV0AkhYxArgBpojKD5zX0A=;
+  b=aJbnBfhkQ4KteC/BbUkGySJRowhqo3TCbreKRJ50qWgWsFx7IbRjwT28
+   3sMmCPxPuiyQwXGuLsAf84YHB19++hSpwGRqzZ+W6gqpfoaJE60QqqvmQ
+   nNEDyZvcpMxV/cfx5iwUsTs05Fe3vHhE+9iHG9JkCtsUky4Oq8ccXuCmE
+   xGTA2Qxe4A2L2dBOFUwbbiSolj+uWMg/UjnC70gkBgkniNYPy5tGJhTDU
+   OfIPoaVzX10+zhljZ3QA1uPoJP7qtVos3xiZMezZiMslLHrfu4vXTVmOH
+   foaaZQAREf8Wk2tRtyjuLHrrN5ia+pEcaxXC2AHFSUDPjQLMWeNlacMPm
+   g==;
+X-CSE-ConnectionGUID: c6+ohI2dS2C4kX58F+LheQ==
+X-CSE-MsgGUID: +RXizH+oT96slj2hbh3zWg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11209"; a="26470455"
+X-IronPort-AV: E=Sophos;i="6.11,160,1725346800"; 
+   d="scan'208";a="26470455"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2024 08:59:36 -0700
+X-CSE-ConnectionGUID: fpW4xRkmQY2S0CKqJGyVUw==
+X-CSE-MsgGUID: NTpSATI+T72eJtVmi/t0WQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,160,1725346800"; 
+   d="scan'208";a="72994555"
+Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
+  by fmviesa008.fm.intel.com with ESMTP; 28 Sep 2024 08:59:35 -0700
+From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+To: stable@vger.kernel.org
+Cc: x86@kernel.org,
+	Tony Luck <tony.luck@intel.com>,
+	"Pawan Kumar Gupta" <pawan.kumar.gupta@intel.com>,
+	Zhang Rui <rui.zhang@intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>,
+	Thomas Lindroth <thomas.lindroth@gmail.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Bastien Nocera <hadess@hadess.net>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Ricardo Neri <ricardo.neri@intel.com>
+Subject: [PATCH 5.15.y 0/3] x86: Complete backports for x86_match_cpu()
+Date: Sat, 28 Sep 2024 09:05:09 -0700
+Message-Id: <20240928160512.21889-1-ricardo.neri-calderon@linux.intel.com>
+X-Mailer: git-send-email 2.17.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240927121719.714627278@linuxfoundation.org>
-In-Reply-To: <20240927121719.714627278@linuxfoundation.org>
-From: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
-Date: Sun, 29 Sep 2024 00:38:57 +0900
-Message-ID: <CAKL4bV6czyU05L2eUMmaE+s_fY_hX8nN6Tim7m4Fgvs2oDXZqQ@mail.gmail.com>
-Subject: Re: [PATCH 6.6 00/54] 6.6.53-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, 
-	broonie@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-Hi Greg
+Hi,
 
-On Fri, Sep 27, 2024 at 9:24=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.6.53 release.
-> There are 54 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sun, 29 Sep 2024 12:17:00 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.6.53-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.6.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+Upstream commit 93022482b294 ("x86/cpu: Fix x86_match_cpu() to match just
+X86_VENDOR_INTEL") introduced a flags member to struct x86_cpu_id. Bit 0
+of x86_cpu.id.flags must be set to 1 for x86_match_cpu() to work correctly.
+This upstream commit has been backported to 5.15.y.
 
-6.6.53-rc1 tested.
+Callers that use the X86_MATCH_*() family of macros to compose the argument
+of x86_match_cpu() function correctly. Callers that use their own custom
+mechanisms may not work if they fail to set x86_cpu_id.flags correctly.
 
-Build successfully completed.
-Boot successfully completed.
-No dmesg regressions.
-Video output normal.
-Sound output normal.
+There are three remaining callers in 5.15.y that use their own mechanisms:
+a) setup_pcid(), b) rapl_msr_probe(), and c) goodix_add_acpi_gpio_
+mappings(). a) caused a regression that Thomas Lindroth reported in [1]. b)
+works by luck but it still populates its x86_cpu_id[] array incorrectly. I
+am not aware of any reports on c), but inspecting the code reveals that it
+will fail to identify INTEL_FAM6_ATOM_SILVERMONT for the reason described
+above.
 
-Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
+I backported three patches that fix these bugs in mainline. Hopefully the
+authors and/or maintainers can ack the backports?
 
-[    0.000000] Linux version 6.6.53-rc1rv
-(takeshi@ThinkPadX1Gen10J0764) (gcc (GCC) 14.2.1 20240910, GNU ld (GNU
-Binutils) 2.43.0) #1 SMP PREEMPT_DYNAMIC Sat Sep 28 23:37:43 JST 2024
+I tested patches 2/3 and 3/3 on Alder Lake, and Meteor Lake systems as the
+two involved callers behave differently on these two systems. I wrote the
+testing details in each patch separately. I could not test patch 1/3
+because I do not have access to Bay Trail hardware.
 
-Thanks
+Thanks and BR,
+Ricardo
+[1]. https://lore.kernel.org/all/eb709d67-2a8d-412f-905d-f3777d897bfa@gmail.com/
 
-Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+Hans de Goede (1):
+  Input: goodix - use the new soc_intel_is_byt() helper
+
+Sumeet Pawnikar (1):
+  powercap: RAPL: fix invalid initialization for pl4_supported field
+
+Tony Luck (1):
+  x86/mm: Switch to new Intel CPU model defines
+
+ arch/x86/mm/init.c                 | 16 ++++++----------
+ drivers/input/touchscreen/goodix.c | 18 ++----------------
+ drivers/powercap/intel_rapl_msr.c  |  6 +++---
+ 3 files changed, 11 insertions(+), 29 deletions(-)
+
+-- 
+2.34.1
+
 
