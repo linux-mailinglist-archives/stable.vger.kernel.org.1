@@ -1,59 +1,60 @@
-Return-Path: <stable+bounces-78184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5C2C989054
-	for <lists+stable@lfdr.de>; Sat, 28 Sep 2024 18:19:01 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5856D989056
+	for <lists+stable@lfdr.de>; Sat, 28 Sep 2024 18:19:24 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1630F1C21246
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC9E0282334
 	for <lists+stable@lfdr.de>; Sat, 28 Sep 2024 16:19:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1921657CBE;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C06771384B3;
 	Sat, 28 Sep 2024 16:18:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JbgkVDlM"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="M4eb1f7/"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C57E28DBC
-	for <stable@vger.kernel.org>; Sat, 28 Sep 2024 16:18:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B820502BE
+	for <stable@vger.kernel.org>; Sat, 28 Sep 2024 16:18:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727540337; cv=none; b=NTwE0/g5/4bkDKUmcpHM7+IO78fdNXv8fKzMoUwvo0YzVYjf3tRaLXaNmVH6lF44jLSBHVlAhICwy7oRoTJ/xkYnhZCM2pUOOpJoALK0Cden5xxkA0cseqG0yr6a4t/di1C8QP+Kcj9NZXHufWEd5ND7Ye+U3ozNZdhUPitAJBg=
+	t=1727540338; cv=none; b=CiK2geuzzfYVJRS7iLxSZPYnKnJyGYRrr3twzPEj467NCkHdxQiyQsvgOdl2FbmzPbcE4R4NEbBjDxZbVhKDyMdCCQiOokVvnXSJItAuf9yjvE/e6tthGnGKloAcDQl+gqNqT0LOZC5v7QqDr5AZb2RqpCnSBr6cl1R/JdUEMdw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727540337; c=relaxed/simple;
-	bh=ThuWmAtpwHJRCgbe5Nhtma53Fz98YAuugZdSVPxbpH0=;
-	h=From:To:Cc:Subject:Date:Message-Id; b=CDRQSrVgNN18plzdTSMUikK8sFug8yjixMIoFe3pYBuKj9953Hejacfl5lmlQmqVwIJyOsvAs0yPee9GSCUUx+pFCophCZk2sPunUKWbKbXpa113F+fYvPXWv6bR2IZuGHCMKzAz6NlAB9Ponpi1KRH9t91JJgQWuH/gI/P86Kc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JbgkVDlM; arc=none smtp.client-ip=192.198.163.15
+	s=arc-20240116; t=1727540338; c=relaxed/simple;
+	bh=S0ZBAYhm7ztFb2pkhC4Xl7/HAUz2f/+PhE5XclH0wPU=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=k0LlEumCyhs/LcSIZoy2owhkE2TjT32o4TmIAdgoXCMOQGVonGV/3UgpMVYaUDie9XJ0BQrPWRK371Lr0q4WAayXFeTYqM9hnGdyu//+WOaNRspxUkFGNt6l3rdTKV8W2i8SZQo+JQY4jH8DKkoS6FHn2D21GKqicqW6rzkINN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=M4eb1f7/; arc=none smtp.client-ip=192.198.163.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1727540336; x=1759076336;
-  h=from:to:cc:subject:date:message-id;
-  bh=ThuWmAtpwHJRCgbe5Nhtma53Fz98YAuugZdSVPxbpH0=;
-  b=JbgkVDlMZpaEe1ukMFDAC6UybsmUclXMZF/K1TSf6fNPb/zR2U1R96At
-   0VJ+BAk7WPFDgBuCCn7H/SZmdwvv6V3sni7IE/m97E5c6X/X56phd8GfM
-   D5TzWRNlsHET/41OWBGoPVld2/CcpCI3NU7olIYye6qyoVRUemy4bbXOp
-   /xfFqMzB8lbr2e5uYahkX3DQj7cCbJhZ8HnFr0o2dLBm3qU9MV4u3l/Bk
-   eLHQtj9lb8+FoEI65czGY354uWuBqRilh7DyuX1Lh3wZCPJMO8mL4F3V/
-   ZAPrJhdkoGBtfKlY7ttKLBSR2DQlzc+5Fc0Ql6SsCe5YlxgIy4AxG1gci
-   w==;
-X-CSE-ConnectionGUID: 7NlvYITARk2sj+PqJB5lRg==
-X-CSE-MsgGUID: 1Xo2SdcCR7WnCOlROve96Q==
-X-IronPort-AV: E=McAfee;i="6700,10204,11209"; a="26834075"
+  t=1727540337; x=1759076337;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references;
+  bh=S0ZBAYhm7ztFb2pkhC4Xl7/HAUz2f/+PhE5XclH0wPU=;
+  b=M4eb1f7/LIZ7f6XnxWX2LW/fMm8genhYnJVSyum7/vLB2xjFfuWSPL83
+   AZyVUqmNcSHWt496G6PPndA4Qf6rkaVZb8XIn/tuF9V5AJidwta45Ctfk
+   mFwYQhgfy4SCgLsLY6UzXw6sfYGXaARm1frYENakrC5zoEJ34mngQpP7D
+   tke1WzS08nkNgpGYKo67nRJR+ffqVyDFjpWj+IkAyNczjypBBS9zg3F9n
+   ZCN3yoVidMn42PUAwqTTb5i8hIsRasdiq8J3Rw/SOe7aciLqwCySDUhpn
+   g8jVBys7TCKQ8ykKlS3SjEjDEEAmACvpo+fir8CO93COIl5gpqa9hfKAF
+   Q==;
+X-CSE-ConnectionGUID: ZghkMlH6TiKOp7MERUgy4A==
+X-CSE-MsgGUID: yaBly+NjTK6egKdb+Lc7Bg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11209"; a="26834080"
 X-IronPort-AV: E=Sophos;i="6.11,160,1725346800"; 
-   d="scan'208";a="26834075"
+   d="scan'208";a="26834080"
 Received: from orviesa007.jf.intel.com ([10.64.159.147])
   by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2024 09:18:55 -0700
-X-CSE-ConnectionGUID: XTOzd1wmTMu9MwlEwR9e+Q==
-X-CSE-MsgGUID: CMr60KTCTQG7CYoEH1SL7g==
+X-CSE-ConnectionGUID: a37TMab1SCin4GLjSWnS4A==
+X-CSE-MsgGUID: dbx/BaZwQRCERVAbwaUJ4A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,160,1725346800"; 
-   d="scan'208";a="73260280"
+   d="scan'208";a="73260284"
 Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
   by orviesa007.jf.intel.com with ESMTP; 28 Sep 2024 09:18:55 -0700
 From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
@@ -69,61 +70,82 @@ Cc: x86@kernel.org,
 	Bastien Nocera <hadess@hadess.net>,
 	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
 	Ricardo Neri <ricardo.neri@intel.com>
-Subject: [PATCH 5.10.y 0/3] x86: Complete backports for x86_match_cpu()
-Date: Sat, 28 Sep 2024 09:24:28 -0700
-Message-Id: <20240928162431.22129-1-ricardo.neri-calderon@linux.intel.com>
+Subject: [PATCH 5.10.y 1/3] Input: goodix - use the new soc_intel_is_byt() helper
+Date: Sat, 28 Sep 2024 09:24:29 -0700
+Message-Id: <20240928162431.22129-2-ricardo.neri-calderon@linux.intel.com>
 X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20240928162431.22129-1-ricardo.neri-calderon@linux.intel.com>
+References: <20240928162431.22129-1-ricardo.neri-calderon@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
-Hi,
+From: Hans de Goede <hdegoede@redhat.com>
 
-Upstream commit 93022482b294 ("x86/cpu: Fix x86_match_cpu() to match just
-X86_VENDOR_INTEL") introduced a flags member to struct x86_cpu_id. Bit 0
-of x86_cpu.id.flags must be set to 1 for x86_match_cpu() to work correctly.
-This upstream commit has been backported to 5.10.y.
+[ Upstream commit: d176708ffc20332d1c730098d2b111e0b77ece82 ]
 
-Callers that use the X86_MATCH_*() family of macros to compose the argument
-of x86_match_cpu() function correctly. Callers that use their own custom
-mechanisms may not work if they fail to set x86_cpu_id.flags correctly.
+Use the new soc_intel_is_byt() helper from linux/platform_data/x86/soc.h.
 
-There are three remaining callers in 5.10.y that use their own mechanisms:
-a) setup_pcid(), b) rapl_msr_probe(), and c) goodix_add_acpi_gpio_
-mappings(). a) caused a regression that Thomas Lindroth reported in [1]. b)
-works by luck but it still populates its x86_cpu_id[] array incorrectly. I
-am not aware of any reports on c), but inspecting the code reveals that it
-will fail to identify INTEL_FAM6_ATOM_SILVERMONT for the reason described
-above.
-
-I backported three patches that fix these bugs in mainline. Hopefully the
-authors and/or maintainers can ack the backports?
-
-I tested patches 2/3 and 3/3 on Tiger Lake, Alder Lake, and Meteor Lake
-systems as the two involved callers behave differently on these systems.
-I wrote the testing details in each patch separately. I could not test
-patch 1/3 because I do not have access to Bay Trail hardware.
-
-Thanks and BR,
-Ricardo
-[1]. https://lore.kernel.org/all/eb709d67-2a8d-412f-905d-f3777d897bfa@gmail.com/
-
-Hans de Goede (1):
-  Input: goodix - use the new soc_intel_is_byt() helper
-
-Sumeet Pawnikar (1):
-  powercap: RAPL: fix invalid initialization for pl4_supported field
-
-Tony Luck (1):
-  x86/mm: Switch to new Intel CPU model defines
-
- arch/x86/mm/init.c                 | 16 ++++++----------
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Link: https://lore.kernel.org/r/20220131143539.109142-5-hdegoede@redhat.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+[Ricardo: Resolved minor cherry-pick conflict. The file linux/regulator/
+ consumer.h is not #included in the upstream version but it is in
+ v5.10.y. ]
+Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+---
+I could not test this patch because I do not have access to Bay Trail
+hardware. I think there is low risk of new bugs as the patch is rather
+trivial.
+---
  drivers/input/touchscreen/goodix.c | 18 ++----------------
- drivers/powercap/intel_rapl_msr.c  |  2 +-
- 3 files changed, 9 insertions(+), 27 deletions(-)
+ 1 file changed, 2 insertions(+), 16 deletions(-)
 
+diff --git a/drivers/input/touchscreen/goodix.c b/drivers/input/touchscreen/goodix.c
+index 53792a1b6ac3..440091064803 100644
+--- a/drivers/input/touchscreen/goodix.c
++++ b/drivers/input/touchscreen/goodix.c
+@@ -23,6 +23,7 @@
+ #include <linux/delay.h>
+ #include <linux/irq.h>
+ #include <linux/interrupt.h>
++#include <linux/platform_data/x86/soc.h>
+ #include <linux/regulator/consumer.h>
+ #include <linux/slab.h>
+ #include <linux/acpi.h>
+@@ -718,21 +719,6 @@ static int goodix_reset(struct goodix_ts_data *ts)
+ }
+ 
+ #ifdef ACPI_GPIO_SUPPORT
+-#include <asm/cpu_device_id.h>
+-#include <asm/intel-family.h>
+-
+-static const struct x86_cpu_id baytrail_cpu_ids[] = {
+-	{ X86_VENDOR_INTEL, 6, INTEL_FAM6_ATOM_SILVERMONT, X86_FEATURE_ANY, },
+-	{}
+-};
+-
+-static inline bool is_byt(void)
+-{
+-	const struct x86_cpu_id *id = x86_match_cpu(baytrail_cpu_ids);
+-
+-	return !!id;
+-}
+-
+ static const struct acpi_gpio_params first_gpio = { 0, 0, false };
+ static const struct acpi_gpio_params second_gpio = { 1, 0, false };
+ 
+@@ -816,7 +802,7 @@ static int goodix_add_acpi_gpio_mappings(struct goodix_ts_data *ts)
+ 		dev_info(dev, "Using ACPI INTI and INTO methods for IRQ pin access\n");
+ 		ts->irq_pin_access_method = IRQ_PIN_ACCESS_ACPI_METHOD;
+ 		gpio_mapping = acpi_goodix_reset_only_gpios;
+-	} else if (is_byt() && ts->gpio_count == 2 && ts->gpio_int_idx == -1) {
++	} else if (soc_intel_is_byt() && ts->gpio_count == 2 && ts->gpio_int_idx == -1) {
+ 		dev_info(dev, "No ACPI GpioInt resource, assuming that the GPIO order is reset, int\n");
+ 		ts->irq_pin_access_method = IRQ_PIN_ACCESS_ACPI_GPIO;
+ 		gpio_mapping = acpi_goodix_int_last_gpios;
 -- 
 2.34.1
 
