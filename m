@@ -1,214 +1,119 @@
-Return-Path: <stable+bounces-78188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B010C98907C
-	for <lists+stable@lfdr.de>; Sat, 28 Sep 2024 18:37:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A6409890AE
+	for <lists+stable@lfdr.de>; Sat, 28 Sep 2024 19:13:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E44E1F21DFC
-	for <lists+stable@lfdr.de>; Sat, 28 Sep 2024 16:37:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4A50A1C2111B
+	for <lists+stable@lfdr.de>; Sat, 28 Sep 2024 17:13:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 254114879B;
-	Sat, 28 Sep 2024 16:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 319F71420B0;
+	Sat, 28 Sep 2024 17:13:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N9SREswQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GHSAICwu"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
+Received: from mail-io1-f47.google.com (mail-io1-f47.google.com [209.85.166.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B73614A96;
-	Sat, 28 Sep 2024 16:37:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B44F47F53
+	for <stable@vger.kernel.org>; Sat, 28 Sep 2024 17:13:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727541439; cv=none; b=oT25tfWz9IE1eimtwCPghD3NfJtq/s8XluWzFSG1Cd3Cov/8+3OXu0OXXHF2GZcJzvQlAYk6N77ACcjwl9DBMdWsJfhomMAzaTvAf1Xk2ekQF/z8eGiVyHDBKvL5TDYmY+mkEB22jdtvRis1yOfDL2zvsN06nrR6SA2899QOaw0=
+	t=1727543628; cv=none; b=E6xvRsgDaogiSb1dMq1DhwPfSxLmO5u92Du4ewvs7M3Dm44OAFg/mThSpfiu9egPTW2l1qwq6iWaPyTl191zEIcmWL6Lom5QRTsPl/OC7j7xLp4AFOb4qss6l3zRLhfnw61SfAAdRr9bCm61nQkYDukysKuiloTc2tCfpnyHxRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727541439; c=relaxed/simple;
-	bh=koVz/ln5F1wiPscG190/9l2/xOw7jSM7KVoWY1j5LXA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OBuRSNiw+1hn7Bola7r72xFzfbV+DyHngE4JbQayg/TI+9Zf3IAwT5G9C4aOArru0Qf+zqBm4SZh57lQPpkRc/7lv5BLap1OAQnOu1uJuiKDgEFHgyqnwb4mMg2fhnQC2vkuB6geU0dtU8YGLvZ1PXO75XU6kuXE/8/ruP5uhKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N9SREswQ; arc=none smtp.client-ip=209.85.219.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yb1-f169.google.com with SMTP id 3f1490d57ef6-e24a2bc0827so2881393276.2;
-        Sat, 28 Sep 2024 09:37:17 -0700 (PDT)
+	s=arc-20240116; t=1727543628; c=relaxed/simple;
+	bh=WIQH7YpKqbnkP4VdBnh61v4Wxod55IsldJm9tOtb6cA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bziLAONmZNzmGvypWkyMEhHC5UlFlQ2xv75Q5qzWl/s5HTuO0w+Ac3dtFB/gFbyJU1wAhlVdCQ3JG4d36o5ercTkEmvXfJRuRbtYYOtqzkG7JFG4L6FpAzZi+ilJJxvEih57JNJoDohGFnKYIa5JPjKF/0P41ATA5QtRceGT7Sk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GHSAICwu; arc=none smtp.client-ip=209.85.166.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-io1-f47.google.com with SMTP id ca18e2360f4ac-82aa7c3b482so116610539f.2
+        for <stable@vger.kernel.org>; Sat, 28 Sep 2024 10:13:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727541436; x=1728146236; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1nl9bgLuzs+y5Hwfh6ZezhQ59+LSYEnB9kHBKOLaIBc=;
-        b=N9SREswQQ1py/1BU43bngXh4fF1z3L8zBmiMmU63i2kfGMO3l0iI12MzjtmTn1g1OX
-         RbsFggDDoo1YiF96spnJOtPbQgkf87XeAPGcn9dL8OOEbTPAYBmcZQCZShtHvRRuRwCa
-         Rcpt787sEL/kpIDC1/oavbjN+QlH7L2scPTO+43vdQ9JajA5zf6GTkg8t7YrPsmHiktw
-         3Mmb0ayqqaWc5F4K0NPlKeWSVIfA594QbZg6ZnTIn4ntfhVlp95k96PYhjeVofVh1259
-         iSK4zCZt7pZQ2OjaW8eQpCYVbgIWzL1sMiJvUDW7Oh7wvMiGrJ2zO0vjO0LOPTwM+4HZ
-         suNg==
+        d=linuxfoundation.org; s=google; t=1727543625; x=1728148425; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=5iMutNFUHSQThjfKn15tCVspMXY8vAnhYmH8RW2rYcs=;
+        b=GHSAICwu6W8knigSqUQEsc+ji7tsr4rsZgXob7oOpJxu0xbwntH2XU/r6ehDUhI0ir
+         K/FMBhtS6kpS7d5U7N7LJ1J7/3OQMKecjw/StYdrePU4Xby2TqP41FCXu7r5WXmQYrCe
+         UKnCGeLtXuL0l+rMD4uVdHY2eFuO+l9U6hAkI=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727541436; x=1728146236;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1nl9bgLuzs+y5Hwfh6ZezhQ59+LSYEnB9kHBKOLaIBc=;
-        b=pAV8v0cwxbqmUlffF+ZRiUlJMHklN4DmeRg70N8KIrUtEvHQl1Eev1ldEHoWRyEdnk
-         hfLrj34vcQ0MCHAwrMr7E8TttWdPRX9ESVcaFmXkVyIzCL7nvimB5Rv/zmcGVKx7PL1I
-         OjEechRgqd0EraUFoHIdpORMsb3poC5F4ke9EE/cXBmvFk8lQexxXmceXolGEqlAH/8V
-         +AFPRxrSGn+Pm2zIgoIY6p8sX/kfgHs3o3A1BFGWTwo9+TE2LJnzz3X8LsPTHJ+koJV+
-         kQ7w7rO712SYgukHlL87kW91GXxXgFcTyUD6M8YzL5ah7hrHPSt6JanF34TNK7NcompU
-         Jc1w==
-X-Forwarded-Encrypted: i=1; AJvYcCU1qXXApOvfNsd7pYusPe5M3D4hsW+LynJeCon3XZ7+j4guB9gINaFWWmouKgY5uxvV2cWtoKyrYb/yRW/1@vger.kernel.org, AJvYcCVq6QW+vYWfyX4cc9TutvEJ5IYkURkK2QyBSDjdMpQE1fgyK7nqV0sXW+BmsXXYboWpy+O4bYsq@vger.kernel.org, AJvYcCXHDjOsSDP2vZGUxvXQNjuEXGCbpds7Fsqu1vGwl88i3/L/+EJhy06/xyKjGJvE/9IvJcIo2Vh6pz6h@vger.kernel.org
-X-Gm-Message-State: AOJu0YzJbyxxSFKz87uwRogQBa9TgplsPI75bxjJUQnPmmlJkxuFhzTH
-	M9GfkByXeDVyh1KTRgbodNMqbs86uE8CYSTajlIvBKD6e7wDNIVInajsb5bX6BfZHzSjYLAUcCX
-	BZnrtrkxn3qFRWq07H2h6U9pK9AM=
-X-Google-Smtp-Source: AGHT+IFqQ7hE0yBezED2+Hc1PgATK5XbX30GW43woqeLiKk3Uuz+M/WZ1ZUUSvfXvI4HMUvTVPcV1g+l4UMjKSLbbpI=
-X-Received: by 2002:a05:6902:cca:b0:e24:9eba:aad0 with SMTP id
- 3f1490d57ef6-e2604b3e6c3mr5956491276.14.1727541436360; Sat, 28 Sep 2024
- 09:37:16 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1727543625; x=1728148425;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=5iMutNFUHSQThjfKn15tCVspMXY8vAnhYmH8RW2rYcs=;
+        b=qZ0l9XLdFGCRhh0u+Z1cds91OXI62682bIDLOQQSNlkoFojvfENmo02jAkjO3wNoeR
+         fONAyzWgCAI2DSm5R8Y5ykoQPKFHREtP7MEmAdBOf79kuuKSoKJlqOxji4FG/5SAYcUn
+         utk1o/58CvO4V4FPcNjsMLY9cL/SK71Od2R8rlOFtusufn4sJVUx00wXAyqw49/sXnHS
+         +Awfvxy/d78cY/aUcL2joY+4+gKdQ24VGjsBxRFI83LkbDB7M43emvC6pE29IWwTuUSd
+         rM8eTe8BCmWhyLo/plZDJKddKJ7K6zFn2V09AOxy1YGNQG2aqnUlz+rHjb7Opm3mMCo2
+         8aFg==
+X-Forwarded-Encrypted: i=1; AJvYcCVAvegsv2eyPPsdFPWhAg17VOJgPtBzWOPzBL3YPJ9wC5ycIMkJD4ia2CvHsRCfr1Wn1b186z8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw4dNlbvx+Pe9xM/Xel9PHdV6TVLOukA5a1RVfbxehtH5OXDlv3
+	qi+htdtkUyR0/WBhO+jhZTTuFltQLbjEeQF0dm52kGTqbvQKnuyk0fpcFZvGXc4=
+X-Google-Smtp-Source: AGHT+IF3yhF7j9IwDBNWhxbVESzMplB1z5HLILKgeANdKoD+YzXDfSJbOVY2WnSlkPZguF2UPU2Rmg==
+X-Received: by 2002:a05:6602:6087:b0:82c:f30d:fc72 with SMTP id ca18e2360f4ac-834931b0142mr528932839f.2.1727543625268;
+        Sat, 28 Sep 2024 10:13:45 -0700 (PDT)
+Received: from [192.168.1.128] ([38.175.170.29])
+        by smtp.gmail.com with ESMTPSA id ca18e2360f4ac-834936b4e97sm126980139f.6.2024.09.28.10.13.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 28 Sep 2024 10:13:44 -0700 (PDT)
+Message-ID: <b13b2120-bde8-41df-8299-37fbaa9bbba3@linuxfoundation.org>
+Date: Sat, 28 Sep 2024 11:13:42 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <DFC1DAC5-5C6C-4DC2-807A-DAF12E4B7882@gmail.com>
- <20240923075527.3B9A.409509F4@e16-tech.com> <CABaPp_iqgUw3TffQHrVYUoVoh03Rx0UjvrNw0ALStF8FxufFrg@mail.gmail.com>
- <CABaPp_hf8haF20YCipL0cdB6NQPMHue45n1fmEUvo_BL_Wuyfg@mail.gmail.com>
-In-Reply-To: <CABaPp_hf8haF20YCipL0cdB6NQPMHue45n1fmEUvo_BL_Wuyfg@mail.gmail.com>
-From: james young <pronoiac@gmail.com>
-Date: Sat, 28 Sep 2024 09:37:04 -0700
-Message-ID: <CABaPp_iLCoCAW=2jHEvgM15UJiwWXq5BXh0rCXtu-80tk6Zuvw@mail.gmail.com>
-Subject: Re: [REGRESSION] Corruption on cifs / smb write on ARM, kernels 6.3-6.9
-To: Wang Yugui <wangyugui@e16-tech.com>
-Cc: pronoiac+kernel@gmail.com, stable@vger.kernel.org, 
-	regressions@lists.linux.dev, linux-cifs@vger.kernel.org, 
-	David Howells <dhowells@redhat.com>, linux-kernel@vger.kernel.org, 
-	Steve French <sfrench@samba.org>, smfrench@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.1 00/73] 6.1.112-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org,
+ Shuah Khan <skhan@linuxfoundation.org>
+References: <20240927121719.897851549@linuxfoundation.org>
+Content-Language: en-US
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <20240927121719.897851549@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-I retraced my steps:
-* looking for the breaking commit, between 6.2 and 6.3-rc1
-* I switched to checksumming the stream and the written file; this can
-save time, compared to decompression
-* I checked for lzop, pigz, and pbzip2
+On 9/27/24 06:23, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.112 release.
+> There are 73 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sun, 29 Sep 2024 12:17:00 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.112-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
+> 
 
-So, breakage. I landed on different commits:
-last working commit. ok: lzop, pigz, pbzip2.
-16541195c6d9 cifs: Add a function to read into an iter from a socket
+Compiled and booted on my test system. No dmesg regressions.
 
-first broken commit. lzop failed.
-d08089f649a0 cifs: Change the I/O paths to use an iterator rather than
-a page list
+Tested-by: Shuah Khan <skhan@linuxfoundation.org>
 
-That broken commit is right before my previous "last good" and "break".
+thanks,
+-- Shuah
 
-I'm seeing some inconsistencies. I'd *thought* I was careful with dtb
-files and .config; I might have dropped the ball occasionally, or
-there's something else, I don't know what, that I'm stumbling over.
-
-To check for marginal hardware, I tried another Raspberry Pi 4. I
-verified baseline 6.6.52 didn't work there, and stopped there. It
-doesn't have any cooling; it *almost certainly* would throttle for
-thermal reasons, but I didn't want to push it.
-
--James
-
-
-On Tue, Sep 24, 2024 at 9:35=E2=80=AFPM james young <pronoiac@gmail.com> wr=
-ote:
->
-> On request:
-> * adding another cc for Steven
-> * I tested 6.6.52, without any extra commits: it was bad.
->
-> -James
->
-> On Mon, Sep 23, 2024 at 12:36=E2=80=AFPM james young <pronoiac@gmail.com>=
- wrote:
-> >
-> > Hey there -
-> >
-> > On Sun, Sep 22, 2024 at 4:55=E2=80=AFPM Wang Yugui <wangyugui@e16-tech.=
-com> wrote:
-> > >
-> > > Hi,
-> > >
-> > > > I was benchmarking some compressors, piping to and from a network s=
-hare on a NAS, and some consistently wrote corrupted data.
-> >
-> > > > Important commits:
-> > > > It looked like both the breakage and the fix came in during rc1 rel=
-eases.
-> > > >
-> > > > Breakage, v6.3-rc1:
-> > > > I manually bisected commits in fs/smb* and fs/cifs.
-> > > >
-> > > > 3d78fe73fa12 cifs: Build the RDMA SGE list directly from an iterato=
-r
-> > > > > lzop and pigz worked. last working. test in progress: pbzip2
-> >
-> > This is a first for me: lzop was fine, but pbzip2 still had issues,
-> > roughly a clock hour into compression. (When lzop has issues, it's
-> > usually within a minute or two.)
-> >
-> >
-> > > > 607aea3cc2a8 cifs: Remove unused code
-> > > > > lzop didn't work. first broken
-> > > >
-> > > >
-> > > > Fix, v6.10-rc1:
-> > > > I manually bisected commits in fs/smb.
-> > > >
-> > > > 69c3c023af25 cifs: Implement netfslib hooks
-> > > > > lzop didn't work. last broken one
-> > > >
-> > > > 3ee1a1fc3981 cifs: Cut over to using netfslib
-> > > > > lzop, pigz, pbzip2, all worked. first fixed one
-> >
-> > > I checked 607aea3cc2a8, it just removed some code in #if 0 ... #endif=
-.
-> > > so this regression is not introduced in 607aea3cc2a8,  but the reprod=
-uce
-> > > frequency is changed here.
-> >
-> > I agree. The pbzip2 results above, regarding the break bisection I
-> > landed on: they mark when it became more of an issue, but not when it
-> > started.
-> >
-> > I could re-run tests and dig into possible false negatives. It'll be
-> > slower going, though.
-> >
-> >
-> > > Another issue in 6.6.y maybe related
-> > > https://lore.kernel.org/linux-fsdevel/9e8f8872-f51b-4a09-a92c-4921874=
-8dd62@meta.com/T/
-> >
-> > In comparison: I'm relieved that my issue is something that can be
-> > tested within hours, on one device.
-> >
-> >
-> > > Do this regression still happen after the following patches are appli=
-ed?
-> > >
-> > > a60cc288a1a2 :Luis Chamberlain: test_xarray: add tests for advanced m=
-ulti-index use
-> > > a08c7193e4f1 :Sidhartha Kumar: mm/filemap: remove hugetlb special cas=
-ing in filemap.c
-> > > 6212eb4d7a63 :Hongbo Li: mm/filemap: avoid type conversion
-> > >
-> > > de60fd8ddeda :Kairui Song: mm/filemap: return early if failed to allo=
-cate memory for split
-> > > b2ebcf9d3d5a :Kairui Song: mm/filemap: clean up hugetlb exclusion cod=
-e
-> > > a4864671ca0b :Kairui Song: lib/xarray: introduce a new helper xas_get=
-_order
-> > > 6758c1128ceb :Kairui Song: mm/filemap: optimize filemap folio adding
-> >
-> > No luck: I cherry-picked those commits into 6.6.52, and upon testing
-> > lzop, the file didn't match the stream, and decompression failed.
-> >
-> > Thank you for investigating, and giving me something to try!
-> >
-> > -James
 
