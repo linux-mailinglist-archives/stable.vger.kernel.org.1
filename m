@@ -1,118 +1,178 @@
-Return-Path: <stable+bounces-78192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D4F59890B5
-	for <lists+stable@lfdr.de>; Sat, 28 Sep 2024 19:15:54 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF3C39890F9
+	for <lists+stable@lfdr.de>; Sat, 28 Sep 2024 19:55:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CE1D1281BA5
-	for <lists+stable@lfdr.de>; Sat, 28 Sep 2024 17:15:52 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E0E151C20D4F
+	for <lists+stable@lfdr.de>; Sat, 28 Sep 2024 17:55:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D750413E41D;
-	Sat, 28 Sep 2024 17:15:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FAEB1494B1;
+	Sat, 28 Sep 2024 17:55:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fblmlo7Y"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LaDf3qJZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f44.google.com (mail-io1-f44.google.com [209.85.166.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 296A5200B5
-	for <stable@vger.kernel.org>; Sat, 28 Sep 2024 17:15:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59F1D5FEE6;
+	Sat, 28 Sep 2024 17:55:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727543748; cv=none; b=gMLmGpuCt6IbW6Sm0NqlBpnE5IzTMvP9Xx3C8mVKWz/ZpqaaqLavmI8VGK4ZdjCIALRC6+yRMj8s57pBOFFGc6/+15GnNOFn6T+IIfeExuFprgLfu6XOT/d3as6v0yS6BON5omRUmgau4gXL06l3R5xTRbezN+yPDDktMkJ18i0=
+	t=1727546126; cv=none; b=nWGwJrtFZZyKgz/fHrxu8M63JDeokBPcaQlQRRo8dL4R7kR+moMYEDXpsARbFdPH2bMjwNm4yrWeLkcfqq5+k9SPTLobvLX3vqWks8+21wxSj43KcyoH1YSfd8IPbI+MzZa3B2WVRrkTAP33QFdy+ZRUGtsY+VeAw6dMtNzIWnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727543748; c=relaxed/simple;
-	bh=brZNRktrqnf16yGsrlDQ5PzC88tuMZ8s8OQMtm/EEgk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uJvRKNkXJDTjs04MxIAS5NxW+XpbDNcrGGnjgfbNoGHKi5us4q4zTIm0olnO9REFmrPRyg87G/OKrtba4SM7cCZtKfqydZQCNqvVe4e/x4mb0mxZkhkwSvJ2CPiQqE3nyyBc1Hpwo7X4/omOgZqUVfSwnncheuhiYXVYQFOpF24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fblmlo7Y; arc=none smtp.client-ip=209.85.166.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
-Received: by mail-io1-f44.google.com with SMTP id ca18e2360f4ac-8323dddfca2so165878439f.2
-        for <stable@vger.kernel.org>; Sat, 28 Sep 2024 10:15:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1727543746; x=1728148546; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=PmV2od697yXP1xZ4Ef9v5IPEDQ6DPMqZn4YDd0qdJKQ=;
-        b=fblmlo7YlOVD+Ihex/krXlcEukuOdGRAPs2sI1EDiVXYbgd3CIuOhVGD5sKQyc7qtI
-         aXitPtbD90e/p7J1B8S1FaIbNia8KdJ8Z+KyTouxoN0bLfx1whcVRQFPaE3lpiVL61Ej
-         LnQxpOH6KlOzvIZKp/AOUt8la807huv+m5qwU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727543746; x=1728148546;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=PmV2od697yXP1xZ4Ef9v5IPEDQ6DPMqZn4YDd0qdJKQ=;
-        b=NUe+C/2siKh8vjXEW7bIFQUJS7X97KKd7BKLwufJtmK6ASEvjaTZJbPDHxZYjup5iB
-         OCr4a5gI15hcxChoLn4MIyMGHfg16SqGrG2CJORA6GYTMN1blNPWxRaH/CShOOnlPe6Z
-         GhC+YqVkMYGlFhrBan78FNTHJ2RthqNuwh/U0Uv/Bmf9ytOBa57yXGCf+YW45p23jUY+
-         KeDHrUJsNtDSUweDmQ9PN2QoajBkZjX6a/Px6AuG8z7QeM7q3pxwlSTi3glFA1cgnpog
-         zJOmKgLt7MOtNxFOHVGBv3tAfUMEtkM11GtdoMh1HORun96Y6lfBxad4sT7xgpStXSJn
-         po8Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUxF16L1LeUxT049LZl7wjVb9+eSUllRyQ/+ts+qaxDu7crW9RmjOjhkE+McWHHQhVRV8JfIOw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzhnEXiXM3gzl717t0dOdCuC1NLwL0ECXidjaaihUXD9eEu1Zbl
-	rifQog0oJknnJa05x3Yg4Z68Rtkk4hjt4D6v6KHdBB/Xemi0W73mACskffyImWE=
-X-Google-Smtp-Source: AGHT+IEm78FTE60MAO3XfTpy9lAnLFdysKd8G1TzyucE3vFDsQjy2E15BmYrkPIUP1n59S8P5BjfNg==
-X-Received: by 2002:a92:ca4f:0:b0:3a0:a21c:d2b2 with SMTP id e9e14a558f8ab-3a34517e868mr68409975ab.11.1727543746145;
-        Sat, 28 Sep 2024 10:15:46 -0700 (PDT)
-Received: from [192.168.1.128] ([38.175.170.29])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4d88885f9aasm1189688173.67.2024.09.28.10.15.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 28 Sep 2024 10:15:45 -0700 (PDT)
-Message-ID: <46033b6b-69c1-4254-8056-6e8ca8061f14@linuxfoundation.org>
-Date: Sat, 28 Sep 2024 11:15:44 -0600
+	s=arc-20240116; t=1727546126; c=relaxed/simple;
+	bh=P5nNqmfCrlk779OH11I9Mg/PvES3kL98o1evTH7Iqnk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=eQd2hnoP4az9Y0Xh+OTqFNJdUZ161Es9awV7/rfDlWZNaaB8jLsSfBdBrI7h8a/Q706GlmEG4Ko5rPHKOTCVBeYfZxhe+ZoXo4Vkq4zwl7NycjqtDiUO9nrcLW+VwKax7lXCi0kkR31/yQy5uI+uMh/BhXEgWXle/HodyQArE0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LaDf3qJZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF8B1C4CEC3;
+	Sat, 28 Sep 2024 17:55:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727546126;
+	bh=P5nNqmfCrlk779OH11I9Mg/PvES3kL98o1evTH7Iqnk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LaDf3qJZ7whPQSrM692hCpZJjRtnxSv9G1JND1aMjP1HzlXLmnu8fjcNIg0OgknsW
+	 hsouFIAjNefUtk8OyIk2qDNq7lNGS8Vj+LztwNTe7FiWKQJTKnkTOtAv5e4Az31y0e
+	 oROxZV2CZt3wQAtXoXhpGGQx9ouA/mAwpIBTZXaMQtAzeQxDG5V47qY5JsZauayzxa
+	 XxaXaJnEmsVbIbTJM2aQy+fYQqJKdX3unyQpkZG3oBVvv5eVZg9CKe/3cujrX9Mipe
+	 Rav42qc5+W36IHfiguFC6xJxcE5eeosCj0aTDJCMRxawgYOVExoQfAHgQENwxigNUn
+	 fsUQ+HumnEXTQ==
+Date: Sat, 28 Sep 2024 10:55:24 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Paolo Abeni <pabeni@redhat.com>,
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+Subject: Re: [PATCH 5.10 247/352] mptcp: fix duplicate data handling
+Message-ID: <20240928175524.GA1713144@thelio-3990X>
+References: <20240815131919.196120297@linuxfoundation.org>
+ <20240815131928.985734907@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.6 00/54] 6.6.53-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
- rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org,
- Shuah Khan <skhan@linuxfoundation.org>
-References: <20240927121719.714627278@linuxfoundation.org>
-Content-Language: en-US
-From: Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20240927121719.714627278@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240815131928.985734907@linuxfoundation.org>
 
-On 9/27/24 06:22, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.6.53 release.
-> There are 54 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Hi all,
+
+On Thu, Aug 15, 2024 at 03:25:13PM +0200, Greg Kroah-Hartman wrote:
+> 5.10-stable review patch.  If anyone has any objections, please let me know.
 > 
-> Responses should be made by Sun, 29 Sep 2024 12:17:00 +0000.
-> Anything received after that time might be too late.
+> ------------------
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.6.53-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.6.y
-> and the diffstat can be found below.
+> From: Paolo Abeni <pabeni@redhat.com>
 > 
-> thanks,
+> commit 68cc924729ffcfe90d0383177192030a9aeb2ee4 upstream.
 > 
-> greg k-h
+> When a subflow receives and discards duplicate data, the mptcp
+> stack assumes that the consumed offset inside the current skb is
+> zero.
+> 
+> With multiple subflows receiving data simultaneously such assertion
+> does not held true. As a result the subflow-level copied_seq will
+> be incorrectly increased and later on the same subflow will observe
+> a bad mapping, leading to subflow reset.
+> 
+> Address the issue taking into account the skb consumed offset in
+> mptcp_subflow_discard_data().
+> 
+> Fixes: 04e4cd4f7ca4 ("mptcp: cleanup mptcp_subflow_discard_data()")
+> Cc: stable@vger.kernel.org
+> Link: https://github.com/multipath-tcp/mptcp_net-next/issues/501
+> Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+> Reviewed-by: Mat Martineau <martineau@kernel.org>
+> Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+> Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+>  net/mptcp/subflow.c |   16 ++++++++++++----
+>  1 file changed, 12 insertions(+), 4 deletions(-)
+> 
+> --- a/net/mptcp/subflow.c
+> +++ b/net/mptcp/subflow.c
+> @@ -863,14 +863,22 @@ static void mptcp_subflow_discard_data(s
+>  {
+>  	struct mptcp_subflow_context *subflow = mptcp_subflow_ctx(ssk);
+>  	bool fin = TCP_SKB_CB(skb)->tcp_flags & TCPHDR_FIN;
+> -	u32 incr;
+> +	struct tcp_sock *tp = tcp_sk(ssk);
+> +	u32 offset, incr, avail_len;
+>  
+> -	incr = limit >= skb->len ? skb->len + fin : limit;
+> +	offset = tp->copied_seq - TCP_SKB_CB(skb)->seq;
+> +	if (WARN_ON_ONCE(offset > skb->len))
+> +		goto out;
+>  
+> -	pr_debug("discarding=%d len=%d seq=%d", incr, skb->len,
+> -		 subflow->map_subflow_seq);
+> +	avail_len = skb->len - offset;
+> +	incr = limit >= avail_len ? avail_len + fin : limit;
+> +
+> +	pr_debug("discarding=%d len=%d offset=%d seq=%d", incr, skb->len,
+> +		 offset, subflow->map_subflow_seq);
+>  	MPTCP_INC_STATS(sock_net(ssk), MPTCP_MIB_DUPDATA);
+>  	tcp_sk(ssk)->copied_seq += incr;
+> +
+> +out:
+>  	if (!before(tcp_sk(ssk)->copied_seq, TCP_SKB_CB(skb)->end_seq))
+>  		sk_eat_skb(ssk, skb);
+>  	if (mptcp_subflow_get_map_offset(subflow) >= subflow->map_data_len)
+> 
 > 
 
-Compiled and booted on my test system. No dmesg regressions.
+This change in 5.10 appears to introduce an instance of
+-Wsometimes-uninitialized because 5.10 does not include
+commit ea4ca586b16f ("mptcp: refine MPTCP-level ack scheduling"), which
+removed the use of incr in the error path added by this change:
 
-Tested-by: Shuah Khan <skhan@linuxfoundation.org>
+  $ make -skj"$(nproc)" ARCH=x86_64 LLVM=1 LLVM_IAS=1 mrproper allmodconfig net/mptcp/subflow.o
+  net/mptcp/subflow.c:877:6: warning: variable 'incr' is used uninitialized whenever 'if' condition is true [-Wsometimes-uninitialized]
+    877 |         if (WARN_ON_ONCE(offset > skb->len))
+        |             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  include/asm-generic/bug.h:101:33: note: expanded from macro 'WARN_ON_ONCE'
+    101 | #define WARN_ON_ONCE(condition) ({                              \
+        |                                 ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    102 |         int __ret_warn_on = !!(condition);                      \
+        |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    103 |         if (unlikely(__ret_warn_on))                            \
+        |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    104 |                 __WARN_FLAGS(BUGFLAG_ONCE |                     \
+        |                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    105 |                              BUGFLAG_TAINT(TAINT_WARN));        \
+        |                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    106 |         unlikely(__ret_warn_on);                                \
+        |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    107 | })
+        | ~~
+  net/mptcp/subflow.c:893:6: note: uninitialized use occurs here
+    893 |         if (incr)
+        |             ^~~~
+  net/mptcp/subflow.c:877:2: note: remove the 'if' if its condition is always false
+    877 |         if (WARN_ON_ONCE(offset > skb->len))
+        |         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    878 |                 goto out;
+        |                 ~~~~~~~~
+  net/mptcp/subflow.c:874:18: note: initialize the variable 'incr' to silence this warning
+    874 |         u32 offset, incr, avail_len;
+        |                         ^
+        |                          = 0
+  1 warning generated.
 
-thanks,
--- Shuah
+That change does not really look suitable for stable (unless folks feel
+otherwise), so maybe a stable only patch to adddress this is in order?
+
+Sorry for the delay in reporting this, I guess I do not build older
+stable releases as often as I should.
+
+Cheers,
+Nathan
 
