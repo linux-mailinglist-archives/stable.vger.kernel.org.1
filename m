@@ -1,146 +1,214 @@
-Return-Path: <stable+bounces-78187-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12E2F989057
-	for <lists+stable@lfdr.de>; Sat, 28 Sep 2024 18:19:25 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B010C98907C
+	for <lists+stable@lfdr.de>; Sat, 28 Sep 2024 18:37:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C6AE7B21A82
-	for <lists+stable@lfdr.de>; Sat, 28 Sep 2024 16:19:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3E44E1F21DFC
+	for <lists+stable@lfdr.de>; Sat, 28 Sep 2024 16:37:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 424E213B298;
-	Sat, 28 Sep 2024 16:19:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 254114879B;
+	Sat, 28 Sep 2024 16:37:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bMP/uybV"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N9SREswQ"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E63A136352
-	for <stable@vger.kernel.org>; Sat, 28 Sep 2024 16:18:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B73614A96;
+	Sat, 28 Sep 2024 16:37:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727540340; cv=none; b=K4Q3kKmPl3pc6jlYOZc2UGd3bqmi4Tvh0ITSvhvvXpOzqDuEyo0uqET1RgmNwYG0S/O7/gju0SWBiGhU5MyZDDVKWtPcBApgq7BQNlXty8x8GUHkNfqM0TVoKgbaPtal0iqnOKJV9n/kdiKck5pPjdjw0PPqRbmEYVxWvh6vBkk=
+	t=1727541439; cv=none; b=oT25tfWz9IE1eimtwCPghD3NfJtq/s8XluWzFSG1Cd3Cov/8+3OXu0OXXHF2GZcJzvQlAYk6N77ACcjwl9DBMdWsJfhomMAzaTvAf1Xk2ekQF/z8eGiVyHDBKvL5TDYmY+mkEB22jdtvRis1yOfDL2zvsN06nrR6SA2899QOaw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727540340; c=relaxed/simple;
-	bh=8GUAFyp0FuhOFL05WB5JhM5xrVYx/xVtkUQXQb64hfI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=QwYm/KO8993P5CpXze9YguI703ipp4Fef1uMDBooaR58ZocUziAWLD1YLqGYqpeJRIRWveRPJcRGB9gtUVM6ziN2hi5opFNdjEssVlXQUgWLrqyUYSfe/B1Ap+mIOpPTDlHsSZjYseBQPJvKp8VZmwpkl+qEOC5TgsyiFCnMrlI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bMP/uybV; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1727540338; x=1759076338;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references;
-  bh=8GUAFyp0FuhOFL05WB5JhM5xrVYx/xVtkUQXQb64hfI=;
-  b=bMP/uybVqZkd2vJmAgWk8IJA01FsLgzjjeTOknOh5Pw0ebGCoah1GW1h
-   /M0IFYrFpqFKCjb6piYN3PVzV9NKZZAi1ksKuJxbNlgneIGdBxisEVXvi
-   ow4YEDZWRva/Y94VwNLRSzSm6pcyDkrWUgxYbFXMKyNunu5WdLlMgQVOB
-   GCY5oAIgHR/XcmKOkau6iLnOwOaM6sUWEibybEmAK7nH3GqgBa+Il2MVl
-   Rx2HQPCoD9gJpUmGbyqmkA4O/ZCznFv0ynTn2RsAxu1PRkdSQMEbaZQKW
-   AB05lJU8C7DF8tK1s+/XvFcn8JWb7VqGfS9Y918yO+xjer8RpJPTldcL1
-   A==;
-X-CSE-ConnectionGUID: X7WrKiCgTqO6VeplwhTGFg==
-X-CSE-MsgGUID: eGtcUoCIRVitA2wBwP/IhQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11209"; a="26834090"
-X-IronPort-AV: E=Sophos;i="6.11,160,1725346800"; 
-   d="scan'208";a="26834090"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Sep 2024 09:18:56 -0700
-X-CSE-ConnectionGUID: +62v0AtSQxm81WZIYaVyqA==
-X-CSE-MsgGUID: aEHiq+kQTZSZqUEatDWUGw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,160,1725346800"; 
-   d="scan'208";a="73260291"
-Received: from ranerica-svr.sc.intel.com ([172.25.110.23])
-  by orviesa007.jf.intel.com with ESMTP; 28 Sep 2024 09:18:56 -0700
-From: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-To: stable@vger.kernel.org
-Cc: x86@kernel.org,
-	Tony Luck <tony.luck@intel.com>,
-	"Pawan Kumar Gupta" <pawan.kumar.gupta@intel.com>,
-	Zhang Rui <rui.zhang@intel.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>,
-	Thomas Lindroth <thomas.lindroth@gmail.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	Bastien Nocera <hadess@hadess.net>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-	Ricardo Neri <ricardo.neri@intel.com>
-Subject: [PATCH 5.10.y 3/3] x86/mm: Switch to new Intel CPU model defines
-Date: Sat, 28 Sep 2024 09:24:31 -0700
-Message-Id: <20240928162431.22129-4-ricardo.neri-calderon@linux.intel.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20240928162431.22129-1-ricardo.neri-calderon@linux.intel.com>
-References: <20240928162431.22129-1-ricardo.neri-calderon@linux.intel.com>
+	s=arc-20240116; t=1727541439; c=relaxed/simple;
+	bh=koVz/ln5F1wiPscG190/9l2/xOw7jSM7KVoWY1j5LXA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OBuRSNiw+1hn7Bola7r72xFzfbV+DyHngE4JbQayg/TI+9Zf3IAwT5G9C4aOArru0Qf+zqBm4SZh57lQPpkRc/7lv5BLap1OAQnOu1uJuiKDgEFHgyqnwb4mMg2fhnQC2vkuB6geU0dtU8YGLvZ1PXO75XU6kuXE/8/ruP5uhKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N9SREswQ; arc=none smtp.client-ip=209.85.219.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yb1-f169.google.com with SMTP id 3f1490d57ef6-e24a2bc0827so2881393276.2;
+        Sat, 28 Sep 2024 09:37:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1727541436; x=1728146236; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1nl9bgLuzs+y5Hwfh6ZezhQ59+LSYEnB9kHBKOLaIBc=;
+        b=N9SREswQQ1py/1BU43bngXh4fF1z3L8zBmiMmU63i2kfGMO3l0iI12MzjtmTn1g1OX
+         RbsFggDDoo1YiF96spnJOtPbQgkf87XeAPGcn9dL8OOEbTPAYBmcZQCZShtHvRRuRwCa
+         Rcpt787sEL/kpIDC1/oavbjN+QlH7L2scPTO+43vdQ9JajA5zf6GTkg8t7YrPsmHiktw
+         3Mmb0ayqqaWc5F4K0NPlKeWSVIfA594QbZg6ZnTIn4ntfhVlp95k96PYhjeVofVh1259
+         iSK4zCZt7pZQ2OjaW8eQpCYVbgIWzL1sMiJvUDW7Oh7wvMiGrJ2zO0vjO0LOPTwM+4HZ
+         suNg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727541436; x=1728146236;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=1nl9bgLuzs+y5Hwfh6ZezhQ59+LSYEnB9kHBKOLaIBc=;
+        b=pAV8v0cwxbqmUlffF+ZRiUlJMHklN4DmeRg70N8KIrUtEvHQl1Eev1ldEHoWRyEdnk
+         hfLrj34vcQ0MCHAwrMr7E8TttWdPRX9ESVcaFmXkVyIzCL7nvimB5Rv/zmcGVKx7PL1I
+         OjEechRgqd0EraUFoHIdpORMsb3poC5F4ke9EE/cXBmvFk8lQexxXmceXolGEqlAH/8V
+         +AFPRxrSGn+Pm2zIgoIY6p8sX/kfgHs3o3A1BFGWTwo9+TE2LJnzz3X8LsPTHJ+koJV+
+         kQ7w7rO712SYgukHlL87kW91GXxXgFcTyUD6M8YzL5ah7hrHPSt6JanF34TNK7NcompU
+         Jc1w==
+X-Forwarded-Encrypted: i=1; AJvYcCU1qXXApOvfNsd7pYusPe5M3D4hsW+LynJeCon3XZ7+j4guB9gINaFWWmouKgY5uxvV2cWtoKyrYb/yRW/1@vger.kernel.org, AJvYcCVq6QW+vYWfyX4cc9TutvEJ5IYkURkK2QyBSDjdMpQE1fgyK7nqV0sXW+BmsXXYboWpy+O4bYsq@vger.kernel.org, AJvYcCXHDjOsSDP2vZGUxvXQNjuEXGCbpds7Fsqu1vGwl88i3/L/+EJhy06/xyKjGJvE/9IvJcIo2Vh6pz6h@vger.kernel.org
+X-Gm-Message-State: AOJu0YzJbyxxSFKz87uwRogQBa9TgplsPI75bxjJUQnPmmlJkxuFhzTH
+	M9GfkByXeDVyh1KTRgbodNMqbs86uE8CYSTajlIvBKD6e7wDNIVInajsb5bX6BfZHzSjYLAUcCX
+	BZnrtrkxn3qFRWq07H2h6U9pK9AM=
+X-Google-Smtp-Source: AGHT+IFqQ7hE0yBezED2+Hc1PgATK5XbX30GW43woqeLiKk3Uuz+M/WZ1ZUUSvfXvI4HMUvTVPcV1g+l4UMjKSLbbpI=
+X-Received: by 2002:a05:6902:cca:b0:e24:9eba:aad0 with SMTP id
+ 3f1490d57ef6-e2604b3e6c3mr5956491276.14.1727541436360; Sat, 28 Sep 2024
+ 09:37:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <DFC1DAC5-5C6C-4DC2-807A-DAF12E4B7882@gmail.com>
+ <20240923075527.3B9A.409509F4@e16-tech.com> <CABaPp_iqgUw3TffQHrVYUoVoh03Rx0UjvrNw0ALStF8FxufFrg@mail.gmail.com>
+ <CABaPp_hf8haF20YCipL0cdB6NQPMHue45n1fmEUvo_BL_Wuyfg@mail.gmail.com>
+In-Reply-To: <CABaPp_hf8haF20YCipL0cdB6NQPMHue45n1fmEUvo_BL_Wuyfg@mail.gmail.com>
+From: james young <pronoiac@gmail.com>
+Date: Sat, 28 Sep 2024 09:37:04 -0700
+Message-ID: <CABaPp_iLCoCAW=2jHEvgM15UJiwWXq5BXh0rCXtu-80tk6Zuvw@mail.gmail.com>
+Subject: Re: [REGRESSION] Corruption on cifs / smb write on ARM, kernels 6.3-6.9
+To: Wang Yugui <wangyugui@e16-tech.com>
+Cc: pronoiac+kernel@gmail.com, stable@vger.kernel.org, 
+	regressions@lists.linux.dev, linux-cifs@vger.kernel.org, 
+	David Howells <dhowells@redhat.com>, linux-kernel@vger.kernel.org, 
+	Steve French <sfrench@samba.org>, smfrench@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Tony Luck <tony.luck@intel.com>
+I retraced my steps:
+* looking for the breaking commit, between 6.2 and 6.3-rc1
+* I switched to checksumming the stream and the written file; this can
+save time, compared to decompression
+* I checked for lzop, pigz, and pbzip2
 
-[ Upstream commit 2eda374e883ad297bd9fe575a16c1dc850346075 ]
+So, breakage. I landed on different commits:
+last working commit. ok: lzop, pigz, pbzip2.
+16541195c6d9 cifs: Add a function to read into an iter from a socket
 
-New CPU #defines encode vendor and family as well as model.
+first broken commit. lzop failed.
+d08089f649a0 cifs: Change the I/O paths to use an iterator rather than
+a page list
 
-[ dhansen: vertically align 0's in invlpg_miss_ids[] ]
+That broken commit is right before my previous "last good" and "break".
 
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/all/20240424181518.41946-1-tony.luck%40intel.com
-[ Ricardo: I used the old match macro X86_MATCH_INTEL_FAM6_MODEL()
-  instead of X86_MATCH_VFM() as in the upstream commit.
-  I also kept the ALDERLAKE_N name instead of ATOM_GRACEMONT. Both refer
-  to the same CPU model. ]
-Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
----
-I tested this backport on an Alder Lake system. Now pr_info("Incomplete
-global flushes, disabling PCID") is back in dmesg. I also tested on a
-Meteor Lake system, which unaffected by the INVLPG issue. The message in
-question is not there before and after the backport, as expected.
----
- arch/x86/mm/init.c | 16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
+I'm seeing some inconsistencies. I'd *thought* I was careful with dtb
+files and .config; I might have dropped the ball occasionally, or
+there's something else, I don't know what, that I'm stumbling over.
 
-diff --git a/arch/x86/mm/init.c b/arch/x86/mm/init.c
-index dd15fdee4536..17f1a89e26fc 100644
---- a/arch/x86/mm/init.c
-+++ b/arch/x86/mm/init.c
-@@ -257,21 +257,17 @@ static void __init probe_page_size_mask(void)
- 	}
- }
- 
--#define INTEL_MATCH(_model) { .vendor  = X86_VENDOR_INTEL,	\
--			      .family  = 6,			\
--			      .model = _model,			\
--			    }
- /*
-  * INVLPG may not properly flush Global entries
-  * on these CPUs when PCIDs are enabled.
-  */
- static const struct x86_cpu_id invlpg_miss_ids[] = {
--	INTEL_MATCH(INTEL_FAM6_ALDERLAKE   ),
--	INTEL_MATCH(INTEL_FAM6_ALDERLAKE_L ),
--	INTEL_MATCH(INTEL_FAM6_ALDERLAKE_N ),
--	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE  ),
--	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE_P),
--	INTEL_MATCH(INTEL_FAM6_RAPTORLAKE_S),
-+	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE,      0),
-+	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE_L,    0),
-+	X86_MATCH_INTEL_FAM6_MODEL(ALDERLAKE_N,    0),
-+	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE,     0),
-+	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_P,   0),
-+	X86_MATCH_INTEL_FAM6_MODEL(RAPTORLAKE_S,   0),
- 	{}
- };
- 
--- 
-2.34.1
+To check for marginal hardware, I tried another Raspberry Pi 4. I
+verified baseline 6.6.52 didn't work there, and stopped there. It
+doesn't have any cooling; it *almost certainly* would throttle for
+thermal reasons, but I didn't want to push it.
 
+-James
+
+
+On Tue, Sep 24, 2024 at 9:35=E2=80=AFPM james young <pronoiac@gmail.com> wr=
+ote:
+>
+> On request:
+> * adding another cc for Steven
+> * I tested 6.6.52, without any extra commits: it was bad.
+>
+> -James
+>
+> On Mon, Sep 23, 2024 at 12:36=E2=80=AFPM james young <pronoiac@gmail.com>=
+ wrote:
+> >
+> > Hey there -
+> >
+> > On Sun, Sep 22, 2024 at 4:55=E2=80=AFPM Wang Yugui <wangyugui@e16-tech.=
+com> wrote:
+> > >
+> > > Hi,
+> > >
+> > > > I was benchmarking some compressors, piping to and from a network s=
+hare on a NAS, and some consistently wrote corrupted data.
+> >
+> > > > Important commits:
+> > > > It looked like both the breakage and the fix came in during rc1 rel=
+eases.
+> > > >
+> > > > Breakage, v6.3-rc1:
+> > > > I manually bisected commits in fs/smb* and fs/cifs.
+> > > >
+> > > > 3d78fe73fa12 cifs: Build the RDMA SGE list directly from an iterato=
+r
+> > > > > lzop and pigz worked. last working. test in progress: pbzip2
+> >
+> > This is a first for me: lzop was fine, but pbzip2 still had issues,
+> > roughly a clock hour into compression. (When lzop has issues, it's
+> > usually within a minute or two.)
+> >
+> >
+> > > > 607aea3cc2a8 cifs: Remove unused code
+> > > > > lzop didn't work. first broken
+> > > >
+> > > >
+> > > > Fix, v6.10-rc1:
+> > > > I manually bisected commits in fs/smb.
+> > > >
+> > > > 69c3c023af25 cifs: Implement netfslib hooks
+> > > > > lzop didn't work. last broken one
+> > > >
+> > > > 3ee1a1fc3981 cifs: Cut over to using netfslib
+> > > > > lzop, pigz, pbzip2, all worked. first fixed one
+> >
+> > > I checked 607aea3cc2a8, it just removed some code in #if 0 ... #endif=
+.
+> > > so this regression is not introduced in 607aea3cc2a8,  but the reprod=
+uce
+> > > frequency is changed here.
+> >
+> > I agree. The pbzip2 results above, regarding the break bisection I
+> > landed on: they mark when it became more of an issue, but not when it
+> > started.
+> >
+> > I could re-run tests and dig into possible false negatives. It'll be
+> > slower going, though.
+> >
+> >
+> > > Another issue in 6.6.y maybe related
+> > > https://lore.kernel.org/linux-fsdevel/9e8f8872-f51b-4a09-a92c-4921874=
+8dd62@meta.com/T/
+> >
+> > In comparison: I'm relieved that my issue is something that can be
+> > tested within hours, on one device.
+> >
+> >
+> > > Do this regression still happen after the following patches are appli=
+ed?
+> > >
+> > > a60cc288a1a2 :Luis Chamberlain: test_xarray: add tests for advanced m=
+ulti-index use
+> > > a08c7193e4f1 :Sidhartha Kumar: mm/filemap: remove hugetlb special cas=
+ing in filemap.c
+> > > 6212eb4d7a63 :Hongbo Li: mm/filemap: avoid type conversion
+> > >
+> > > de60fd8ddeda :Kairui Song: mm/filemap: return early if failed to allo=
+cate memory for split
+> > > b2ebcf9d3d5a :Kairui Song: mm/filemap: clean up hugetlb exclusion cod=
+e
+> > > a4864671ca0b :Kairui Song: lib/xarray: introduce a new helper xas_get=
+_order
+> > > 6758c1128ceb :Kairui Song: mm/filemap: optimize filemap folio adding
+> >
+> > No luck: I cherry-picked those commits into 6.6.52, and upon testing
+> > lzop, the file didn't match the stream, and decompression failed.
+> >
+> > Thank you for investigating, and giving me something to try!
+> >
+> > -James
 
