@@ -1,145 +1,131 @@
-Return-Path: <stable+bounces-78212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id D69CD9894C8
-	for <lists+stable@lfdr.de>; Sun, 29 Sep 2024 12:21:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id DC9809894ED
+	for <lists+stable@lfdr.de>; Sun, 29 Sep 2024 12:56:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8ECCC1F22412
-	for <lists+stable@lfdr.de>; Sun, 29 Sep 2024 10:21:24 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 92A8C1F23A29
+	for <lists+stable@lfdr.de>; Sun, 29 Sep 2024 10:56:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A179B1531F8;
-	Sun, 29 Sep 2024 10:21:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BB9B15C14E;
+	Sun, 29 Sep 2024 10:55:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="boEBA0Qb"
+	dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b="cfOaI+yE"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay5.mymailcheap.com (relay5.mymailcheap.com [159.100.248.207])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED1CA143C49;
-	Sun, 29 Sep 2024 10:21:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC8323FB1B;
+	Sun, 29 Sep 2024 10:55:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.100.248.207
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727605279; cv=none; b=CVeUo3vK5sUy3ui/UETlp+PQ8HHEF8rbjeCGFD9JcnJPsIl7qwMNYH7jYlK4G5cMQ1sVDbrDnan01PSvnXfUj2BVIayMIZfRnK46RofwVvtfxl4sOGCK3blcDFmOQpLlmvz3F+YM2hv5YDBu+Owz2pzGW0yzFXV1vrBNcpSng10=
+	t=1727607358; cv=none; b=VMGQUpeu1sUY8H7MshFdebWdnDIRS0TqXM/1myC8Z6rXcLG8rpBlofTgNzt6qHBetMBmkhWaNdcyr5ofD8Na0XO3mPGKVu7J29K2yRJxCSho3rl94sm24lUZGxdCavbwIJJclbQxjNFOiGjFBuN4jmc7J6GEPxidB4jhVXEpIZ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727605279; c=relaxed/simple;
-	bh=hPtnaW9AxYGdsgYJ++T1Vj846oduxLU672fnSDCjmQ0=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=W/XF+Ti2vMdHT1T8qQHpXt/9F/yhgggQRjaKkGb84cp0S+ti7DaM5uwY1qOZVXbKNY3QDL+Ih3X6u1/HquVAL8T/Slsgd2EnLqqilFEpxVWlqKPPfzNBGscvTOYTKmRHSfrkM6Ylr/lcMhrAtNtzp/EJ+nI/MdmusECJ2BgseCI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=boEBA0Qb; arc=none smtp.client-ip=209.85.219.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-6cb2e5d0104so26046926d6.3;
-        Sun, 29 Sep 2024 03:21:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727605277; x=1728210077; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NzDn66nvfxb/RF8p67v+9ji03REicd7HmvitNQOUA40=;
-        b=boEBA0QbBDKs/Sy8Ww93KwoPMppcpdk0OnANUrwWQF0JwXDw9CdF6rfVX3BrwoCd5f
-         wAS51r8goc8sKsE+tPZS8UTtrfFrfZzNNhlEmsmfQsx3lAd6wOv9SKm5PjDZgPLId+DP
-         PisN0ogiDkGuMwASY82TCSROJtiuUG7BlBPZIQ1QGiYM+4blUhLgnf40vjplROAjr0rT
-         RTQhJhkIn+kjMUg/tzq7QaXe2f1vxz3p29iT9juK57P9UILforLSL1rwA3OOGcmfroxf
-         Ylr2P0XE/ZcE0PuTQnwAglMlfEx/TAiDpIYp6VhlOZiAX64Pr5mVkZ1ugCkB+aKbl6M1
-         ONwQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727605277; x=1728210077;
-        h=content-transfer-encoding:mime-version:subject:references
-         :in-reply-to:message-id:cc:to:from:date:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=NzDn66nvfxb/RF8p67v+9ji03REicd7HmvitNQOUA40=;
-        b=MHAtSvvQEb7gTVbQ3fwcu9xGOqg0pZaupHe5m36PB1ayroOjSaEWQDityCh3Awa2hC
-         dkYHAG879Oau6gpA9OrpHORF13w5L9UkrSaCc/D5w6mKSGuFGirmWAQopo+Tq3T3e/lg
-         KmlW4DLhEPt1PlejWnpvRBtsnlsKvXSK5VYQRFppZud92HOJ7OWKrGEDeIk8OvE7pZbC
-         dZi38YHy++paJ4NHLaT3tR/YF/dP8AenYzoJHZ91QYdabcM0yBM12t2++3Y7xBZJY2HA
-         KQgXSDj21bx4Jw3xjpZboLWy2bq4nZwfHEIAUifeRKuGkP954KJTGK0Pg1gRe8ayjww3
-         Euzg==
-X-Forwarded-Encrypted: i=1; AJvYcCUcq/opxKLQ/nLOeiQIYeWGDwsMJEztYWDFd55Owij6JRy/XAswwvGOgmBXllPRys6h/fh4+ZM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwKSV/6fpVTshLVfEeTCHCcyvM31wP+u12aY0ZVK2Uyb/UNkZxJ
-	kll2d0sg+4+GYSJpzRkwNGSkYNXxLETRF9/npm04q5+0AUi08BU5
-X-Google-Smtp-Source: AGHT+IFemweOiq+ZasIJspHRQ1Hu7H7VreQRyNeGeOYAOiVgnv8JKeAclQ3KHlauwLndqKX4wMUiNA==
-X-Received: by 2002:a05:6214:5f0d:b0:6c5:3122:ffac with SMTP id 6a1803df08f44-6cb3b6497ccmr94720016d6.45.1727605276660;
-        Sun, 29 Sep 2024 03:21:16 -0700 (PDT)
-Received: from localhost (23.67.48.34.bc.googleusercontent.com. [34.48.67.23])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6cb3b5ff1basm28983886d6.12.2024.09.29.03.21.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 29 Sep 2024 03:21:15 -0700 (PDT)
-Date: Sun, 29 Sep 2024 06:21:15 -0400
-From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-To: Ido Schimmel <idosch@nvidia.com>, 
- Willem de Bruijn <willemdebruijn.kernel@gmail.com>
-Cc: netdev@vger.kernel.org, 
- davem@davemloft.net, 
- kuba@kernel.org, 
- edumazet@google.com, 
- pabeni@redhat.com, 
- stable@vger.kernel.org, 
- greearb@candelatech.com, 
- fw@strlen.de, 
- dsahern@kernel.org, 
- Willem de Bruijn <willemb@google.com>
-Message-ID: <66f92a1b7e5d0_13018c29434@willemb.c.googlers.com.notmuch>
-In-Reply-To: <ZvkZ0Ex0k6_G6hNo@shredder.mtl.com>
-References: <20240929061839.1175300-1-willemdebruijn.kernel@gmail.com>
- <ZvkZ0Ex0k6_G6hNo@shredder.mtl.com>
-Subject: Re: [PATCH net] vrf: revert "vrf: Remove unnecessary RCU-bh critical
- section"
+	s=arc-20240116; t=1727607358; c=relaxed/simple;
+	bh=INpojn8xwl9/9PBqz+bvH5ZzcA0YpQJcHGQBZjkSSfU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ee+Nu6Z9faJifVglYGd+8lkjxWtNFyTMJNXzLjA5sdjauf7TcYa9Ien6ijK+PXEGQbEGRe4MR0nRjUApltr8njV0WpAy2yoRXNI6IbQHioDNPpiZs+A+ik1lH8GQD7Qw8AZfF3mLC9O9lAUSpD8rPfQTh21W7EnDaR58/Jcf6NU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io; spf=pass smtp.mailfrom=aosc.io; dkim=pass (1024-bit key) header.d=aosc.io header.i=@aosc.io header.b=cfOaI+yE; arc=none smtp.client-ip=159.100.248.207
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=aosc.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aosc.io
+Received: from relay3.mymailcheap.com (relay3.mymailcheap.com [217.182.119.157])
+	by relay5.mymailcheap.com (Postfix) with ESMTPS id 037EE26042;
+	Sun, 29 Sep 2024 10:55:48 +0000 (UTC)
+Received: from nf2.mymailcheap.com (nf2.mymailcheap.com [54.39.180.165])
+	by relay3.mymailcheap.com (Postfix) with ESMTPS id 690A83E970;
+	Sun, 29 Sep 2024 12:55:40 +0200 (CEST)
+Received: from mail20.mymailcheap.com (mail20.mymailcheap.com [51.83.111.147])
+	by nf2.mymailcheap.com (Postfix) with ESMTPSA id 71ED040099;
+	Sun, 29 Sep 2024 10:55:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=aosc.io; s=default;
+	t=1727607338; bh=INpojn8xwl9/9PBqz+bvH5ZzcA0YpQJcHGQBZjkSSfU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=cfOaI+yEiCVJdNKMe3EMiEP2SKE9qFCJmZ19kttHJd+NGEIQoj+fB1r8m9Lvoph1R
+	 OXnUZT6vrVOl5d94LUuiUHETWLrSb8AqX0RPt/Cog+AQp7eKQmo3End7A54fxozepV
+	 L9ECLByV9KgTqOErKPPwbRkhWsCB8cQitdAUuGDk=
+Received: from [198.18.0.1] (unknown [58.32.43.121])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail20.mymailcheap.com (Postfix) with ESMTPSA id D1760405C6;
+	Sun, 29 Sep 2024 10:55:33 +0000 (UTC)
+Message-ID: <56e4094b-9fc2-42c2-8156-43d547ac204d@aosc.io>
+Date: Sun, 29 Sep 2024 18:55:31 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+MIME-Version: 1.0
+User-Agent: Thunderbird Daily
+Subject: Re: [PATCH 6.10 00/58] 6.10.12-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, srw@sladewatkins.net,
+ rwarsow@gmx.de, conor@kernel.org, allen.lkml@gmail.com, broonie@kernel.org
+References: <20240927121718.789211866@linuxfoundation.org>
+Content-Language: en-US
+From: Kexy Biscuit <kexybiscuit@aosc.io>
+In-Reply-To: <20240927121718.789211866@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Queue-Id: 71ED040099
+X-Rspamd-Server: nf2.mymailcheap.com
+X-Spamd-Result: default: False [1.41 / 10.00];
+	SUSPICIOUS_RECIPS(1.50)[];
+	MIME_GOOD(-0.10)[text/plain];
+	XM_UA_NO_VERSION(0.01)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	TAGGED_RCPT(0.00)[];
+	ARC_NA(0.00)[];
+	RCVD_COUNT_ONE(0.00)[1];
+	ASN(0.00)[asn:16276, ipnet:51.83.0.0/16, country:FR];
+	MIME_TRACE(0.00)[0:+];
+	MID_RHS_MATCH_FROM(0.00)[];
+	URIBL_BLOCKED(0.00)[mail20.mymailcheap.com:rdns,mail20.mymailcheap.com:helo,aosc.io:email];
+	FREEMAIL_CC(0.00)[lists.linux.dev,vger.kernel.org,linux-foundation.org,roeck-us.net,kernel.org,kernelci.org,lists.linaro.org,denx.de,nvidia.com,gmail.com,sladewatkins.net,gmx.de];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com,gmx.de];
+	TO_DN_SOME(0.00)[]
+X-Rspamd-Action: no action
 
-Ido Schimmel wrote:
-> On Sun, Sep 29, 2024 at 02:18:20AM -0400, Willem de Bruijn wrote:
-> > From: Willem de Bruijn <willemb@google.com>
-> > 
-> > This reverts commit 504fc6f4f7f681d2a03aa5f68aad549d90eab853.
-> > 
-> > dev_queue_xmit_nit is expected to be called with BH disabled.
-> > __dev_queue_xmit has the following:
-> > 
-> >         /* Disable soft irqs for various locks below. Also
-> >          * stops preemption for RCU.
-> >          */
-> >         rcu_read_lock_bh();
-> > 
-> > VRF must follow this invariant. The referenced commit removed this
-> > protection. Which triggered a lockdep warning:
+On 9/27/2024 8:23 PM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.10.12 release.
+> There are 58 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> [...]
+> Responses should be made by Sun, 29 Sep 2024 12:17:00 +0000.
+> Anything received after that time might be too late.
 > 
-> > 
-> > Fixes: 504fc6f4f7f6 ("vrf: Remove unnecessary RCU-bh critical section")
-> > Link: https://lore.kernel.org/netdev/20240925185216.1990381-1-greearb@candelatech.com/
-> > Reported-by: Ben Greear <greearb@candelatech.com>
-> > Signed-off-by: Willem de Bruijn <willemb@google.com>
-> > Cc: stable@vger.kernel.org
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.10.12-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.10.y
+> and the diffstat can be found below.
 > 
-> Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-> Tested-by: Ido Schimmel <idosch@nvidia.com>
+> thanks,
 > 
-> Thanks Willem!
+> greg k-h
 
-Thanks for testing immediately and sharing the below context, Ido!
+Building passed on amd64, arm64, loongarch64, ppc64el, and riscv64. 
+Smoke testing passed on 9 amd64 and 1 arm64 test systems.
 
-> The reason my script from 504fc6f4f7f6 did not trigger the problem is
-> that it was pinging the address inside the VRF, so vrf_finish_direct()
-> was only called from the Rx path.
-> 
-> If you ping the address outside of the VRF:
-> 
-> ping -I vrf1 -i 0.1 -c 10 -q 192.0.2.1
-> 
-> Then vrf_finish_direct() is called from process context and the lockdep
-> warning is triggered. Tested that it does not trigger after applying the
-> revert.
+Tested-by: Kexy Biscuit <kexybiscuit@aosc.io>
 
+https://github.com/AOSC-Dev/aosc-os-abbs/pull/8113
+
+-- 
+Best Regards,
+Kexy Biscuit
 
