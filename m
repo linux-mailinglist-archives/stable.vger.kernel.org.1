@@ -1,98 +1,121 @@
-Return-Path: <stable+bounces-78195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 146AD98923C
-	for <lists+stable@lfdr.de>; Sun, 29 Sep 2024 03:02:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FEB698926D
+	for <lists+stable@lfdr.de>; Sun, 29 Sep 2024 03:29:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 474AB285AB5
-	for <lists+stable@lfdr.de>; Sun, 29 Sep 2024 01:02:48 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CF9B01F23AF1
+	for <lists+stable@lfdr.de>; Sun, 29 Sep 2024 01:29:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3C14036D;
-	Sun, 29 Sep 2024 01:02:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Xwfki/Mh"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9387BB676;
+	Sun, 29 Sep 2024 01:29:21 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECF10625
-	for <stable@vger.kernel.org>; Sun, 29 Sep 2024 01:02:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 594D4B65C;
+	Sun, 29 Sep 2024 01:29:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727571765; cv=none; b=WKUkbtUFjiJe3qLb3OLlYxsW4bhsNhdMo/5FKQUd7XrLf2KSzkfLOhbZ5fO3JQMVh6YLGP9Ko6j5Yab8H2uUsZwTFFPZXr/95qjVxmSwrB/uRZKPJlAk1hUlLgSZI7XrO5eR5q6jnYet1koSSSKRUwadLUsZel/4rUA8u4SNwpk=
+	t=1727573361; cv=none; b=LxIYBuS3kJzYBZjmuGvqX7KiNI8SKzmbSX2g4pWO+U1j6yCdMFtm0k9nACvigF7povhi3eDchlvA8myCq0C/thzhyJSt++/596AnJGrhBjLoMHs079ZUL7HGULIXmVZQJOmQyJjpgN3YQxmaStvdU5OrjWFIb8nUQkDy2GXt84k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727571765; c=relaxed/simple;
-	bh=Pj0IxshIJH6Bggjnx49qbtJiJxEhuYQSEgzZl4oKhS0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=furQ1xj5vwURBvHAdWWHwURrzdBIKqb0DEP5m4m/ytTbx8B8SOapbxDdjmWZ9aBdKHrEeG+IrRHvV5SLO145w805SS2+WCWYxYYKjMC4148bYC9lRUmiGn7xXg+xFi3UYaWI+NtzN4a7QFDi4xmrPJvK8hD74fmizKIPOfip8x0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Xwfki/Mh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8952BC4CECD
-	for <stable@vger.kernel.org>; Sun, 29 Sep 2024 01:02:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727571764;
-	bh=Pj0IxshIJH6Bggjnx49qbtJiJxEhuYQSEgzZl4oKhS0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Xwfki/MhV+NFusCevh6/X8WDjnXeQRxIR+09rWdRW1FrmaGYRtCY/2iASS/4J9ZaO
-	 0bdxoMt4Q80YdOU9kv7Drf6hCm7znKfegstHcDL6XcOwKdoJdEaAGlCDvt7lYOqOG/
-	 qXTfqs9XJW8dYrR4dUx10D6R/QVSI2T+Ma4hcXjmg4KvkBoBuH3a9WvZFyWKHgByB7
-	 wjqvzYSeTsm89f0fgcqkaEnu2C8Ts4fS6zkjUQ73pjDWk+xsllfbYapl214HQ89qmj
-	 4VBHfjzYgTBQ89IOG8c7G0S0p6CKhQrKO5TfDRPAY1AuznowBXiF9zv/PIXm78IRHQ
-	 9U+ryU9cUntfA==
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5c876ed9c93so3224904a12.2
-        for <stable@vger.kernel.org>; Sat, 28 Sep 2024 18:02:44 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXAnf9VDuyXgE5tfNyYqZ74MB3skrAF840A0egmHK3z75Gwh48jH6EmWPWG8xR2YgST7d621KM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzpc5TQUBvbeQuIDpoV3cbjMXHTjcQ8/XJzir4S5XaXXiV0z4Y3
-	1QqPAIk9+aQc9aMtruc5qxkUybSoQkGdE2fKzQ+WgrbaV29wHBeJo6LrguV4bL4OUl/VotkqrT6
-	7gAfv4Yn2D24gSgHRrzowyZR5irM=
-X-Google-Smtp-Source: AGHT+IFulUaiTzbDzWhIekoRSyHL9cv4w5EfjVkBn3/A+jBxIi5vo2uzOBESt2XlGAwVDBeydtr2ZzrttRMogE4v5Oo=
-X-Received: by 2002:a17:907:86a5:b0:a7a:b4bd:d0eb with SMTP id
- a640c23a62f3a-a93c492185bmr769522766b.24.1727571763077; Sat, 28 Sep 2024
- 18:02:43 -0700 (PDT)
+	s=arc-20240116; t=1727573361; c=relaxed/simple;
+	bh=ZQxcWdjFQ+Mn5MIS0vO1/UMUtpAiKVNnMUEPDQOTCow=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SaR47aGriQ8NBkO0jVeAseNEqftofO5k+oAboXoWuQXmMY+RH5Ya5jjWqDy3ZjZyggN2Bh3wj1B8DR/mWsSptZy0MjPtrm3U2ehgwBcrfzI1WMie8eKExRczYpPrCtCW6e7Q3KwN91QqHSoL4VbNWID8eMIvYKh2779lswOlg5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.93.142])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4XGRSH3ggtz4f3jkd;
+	Sun, 29 Sep 2024 09:29:03 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id D81FD1A0359;
+	Sun, 29 Sep 2024 09:29:14 +0800 (CST)
+Received: from [10.174.177.174] (unknown [10.174.177.174])
+	by APP4 (Coremail) with SMTP id gCh0CgDH+sZkrfhmMpyPCg--.4259S3;
+	Sun, 29 Sep 2024 09:29:12 +0800 (CST)
+Message-ID: <330ed547-aeab-46d9-84b1-0d0dc0095943@huaweicloud.com>
+Date: Sun, 29 Sep 2024 09:29:08 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CANiq72mHQ0eKJoZeRxB5h1eHza8nERA_DtWUMKecyQuivH7SXw@mail.gmail.com>
-In-Reply-To: <CANiq72mHQ0eKJoZeRxB5h1eHza8nERA_DtWUMKecyQuivH7SXw@mail.gmail.com>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Sun, 29 Sep 2024 09:02:33 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H4WLByJ53oqQgEnVjy4bT0pS77fT5BA4NaCp8AOn+cyJw@mail.gmail.com>
-Message-ID: <CAAhV-H4WLByJ53oqQgEnVjy4bT0pS77fT5BA4NaCp8AOn+cyJw@mail.gmail.com>
-Subject: Re: stable-rc/linux-6.10.y: error: no member named 'st' in 'struct kvm_vcpu_arch'
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Sasha Levin <sashal@kernel.org>, WANG Xuerui <kernel@xen0n.name>, Bibo Mao <maobibo@loongson.cn>, 
-	Greg KH <gregkh@linuxfoundation.org>, loongarch@lists.linux.dev, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] ext4: fix off by one issue in alloc_flex_gd()
+To: Eric Sandeen <sandeen@redhat.com>
+Cc: linux-ext4@vger.kernel.org, tytso@mit.edu, adilger.kernel@dilger.ca,
+ jack@suse.cz, linux-kernel@vger.kernel.org, yi.zhang@huawei.com,
+ yangerkun@huawei.com, Baokun Li <libaokun1@huawei.com>,
+ Wesley Hershberger <wesley.hershberger@canonical.com>,
+ =?UTF-8?Q?St=C3=A9phane_Graber?= <stgraber@stgraber.org>,
+ Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>,
+ stable@vger.kernel.org, Yang Erkun <yangerkun@huawei.com>
+References: <20240927133329.1015041-1-libaokun@huaweicloud.com>
+ <fbe9ed47-b3cc-4c51-8d25-f44838327f89@redhat.com>
+Content-Language: en-US
+From: Baokun Li <libaokun@huaweicloud.com>
+In-Reply-To: <fbe9ed47-b3cc-4c51-8d25-f44838327f89@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:gCh0CgDH+sZkrfhmMpyPCg--.4259S3
+X-Coremail-Antispam: 1UD129KBjvJXoWxJrWxtw1fKr1DGryrKrykZrb_yoW8GF1UpF
+	y3Ka15KFyqgw4xAr9xG3s29ry3XFW8C3WYqrWrX34UZFnrCrnxKr1Ig398WF1DZrnagryY
+	yFZagFyIk3srJaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkEb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k2
+	6cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4
+	vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Xr0_Ar1l84ACjcxK6xIIjxv20xvEc7Cj
+	xVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxV
+	AFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2
+	j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7x
+	kEbVWUJVW8JwACjcxG0xvEwIxGrwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AK
+	xVWUtVW8ZwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F4
+	0E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFyl
+	IxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxV
+	AFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j
+	6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07UAwI
+	DUUUUU=
+X-CM-SenderInfo: 5olet0hnxqqx5xdzvxpfor3voofrz/1tbiAgABBWb3vpwm2gABsI
 
-On Sat, Sep 28, 2024 at 8:29=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
+On 2024/9/27 22:14, Eric Sandeen wrote:
+> On 9/27/24 8:33 AM, libaokun@huaweicloud.com wrote:
+>> From: Baokun Li <libaokun1@huawei.com>
+>>
+> ...
 >
-> Hi Sasha, LoongArch,
->
-> In a stable-rc/linux-6.10.y build-test today, I got:
->
->     arch/loongarch/kvm/vcpu.c:575:15: error: no member named 'st' in
-> 'struct kvm_vcpu_arch'
->       575 |                         vcpu->arch.st.guest_addr =3D 0;
->
-> which I guess is triggered by missing prerequisites for commit
-> 56f7eeae40de ("LoongArch: KVM: Invalidate guest steal time address on
-> vCPU reset").
-Hmm, please drop the backported patch "LoongArch: KVM: Invalidate
-guest steal time address on vCPU reset".
+>> Delete the problematic plus 1 to fix the issue, and add a WARN_ON_ONCE()
+>> to prevent the issue from happening again.
+>>
+>> Reported-by: Wesley Hershberger <wesley.hershberger@canonical.com>
+>> Closes: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2081231
+>> Reported-by: Stéphane Graber <stgraber@stgraber.org>
+>> Closes: https://lore.kernel.org/all/20240925143325.518508-1-aleksandr.mikhalitsyn@canonical.com/
+>> Tested-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
+>> Tested-by: Eric Sandeen <sandeen@redhat.com>
+> The patch has changed a little since I tested, but it still passes my testcase
+> (as expected, no WARN ON etc) so looks good from that POV, thanks!
+> -Eric
 
-Huacai
+Hi Eric,
 
->
-> HTH!
->
-> Cheers,
-> Miguel
+Thanks for testing it again!
+
+The core modification logic remains unchanged from before.
+Just added a max_resize_bg variable for exception fixing.
+
+It is necessary to ensure that flex_gd->resize_bg does not exceed the
+smaller of flexbg_size and MAX_RESIZE_BG before it is used. So we need
+to record max_resize_bg, warn on resize_bg adjustment logic exceptions,
+and use max_resize_bg to avoid subsequent resize complaints.
+
+
+-- 
+With Best Regards,
+Baokun Li
+
 
