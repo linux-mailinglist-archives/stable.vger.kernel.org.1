@@ -1,148 +1,305 @@
-Return-Path: <stable+bounces-78262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78263-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A0BA98A4E2
-	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 15:27:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE21298A508
+	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 15:29:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 50E2F1C2120F
-	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 13:27:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6EBDA1F226D2
+	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 13:29:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B208190075;
-	Mon, 30 Sep 2024 13:25:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B3AB18E351;
+	Mon, 30 Sep 2024 13:28:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="ZjK9Z1Se"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="NntH4iNS"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2055.outbound.protection.outlook.com [40.107.237.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C456118EFE0
-	for <stable@vger.kernel.org>; Mon, 30 Sep 2024 13:25:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727702749; cv=none; b=Y3NwcHA3RITfXJce5Q++2GxClIPxgzvPBQ3v0XquEyw+CdLDYCU+BVXkqDwhqNzW3kZ9NwHNIDLOja1m0kuPNU2QNpoc/BI81sUHqzKEOKHzJWpqv1KZfH0oHSo+ZSm4k7yl469IiwHuIa7wZtW+KIqKX9rq8grL8pGESqFNgv0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727702749; c=relaxed/simple;
-	bh=Av4CXXStWsX6mmH+9S0gi4lUeah9PLWddaSpw7zdhlU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rgTQCLcSeIrBt57eAljuyw9IrmyGfzgnfhqIL7+0eEG3Epq2L3/gybKNI0foau39SNfgEjwVtwXW2QquK3MLtudybtXjBWr3kuIQtl2l0Mlen7wBcENMMz6McGreFupLaq8Hb31EFuuTolia8AUZUX96ktJmkFOCzjXoAALxDfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=ZjK9Z1Se; arc=none smtp.client-ip=209.85.208.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5c5b954c359so4800520a12.1
-        for <stable@vger.kernel.org>; Mon, 30 Sep 2024 06:25:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1727702746; x=1728307546; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=veRGAu1TLItOCjiq+jcFbEtqPkIegH7aVbL6vbBFLow=;
-        b=ZjK9Z1Se8Un5SzLiGASJyUcyhMckAsD9ckmTOlNa+JWLfYKSwj4Ix6a2E5zXpapxAu
-         bUITcbgtxkAQOud14llixwjZ+UQ9iH8f219dymClxyJN2HRWt6xjl5n/WvBNn0Sg5wbR
-         DsJKlCp/C2zknPAjiSGToJ2Mt3TKgyu7WMgM7gW4MxC5JBuqGL4a/BjhlRZzK+Ikqdzg
-         1gBvc0Hsr/XUIbvO/ylFZOJ0v9D2rGWiMaPIzaXssvMtBiw7gMbIFo89sbkrfkzOkn2t
-         QnRb+nK5CBx39ckuPAtgjc2qJedUe8iB/UgGWaF/SIqtoOV/jrPowipbitF0dcyfF0gw
-         0mFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727702746; x=1728307546;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=veRGAu1TLItOCjiq+jcFbEtqPkIegH7aVbL6vbBFLow=;
-        b=TDimAbKG7NkD2VUcT3L7+W68dhhOCPbazvCTNWlXHMfmrQUs/knPzHV07De36bSswk
-         5K9MORZGoTORVy/mTSS9MK4QtSIhZRufUNJjuhdS0laIriTkRYzS5+PsEOJxipYT0EKy
-         hOEdswi7wI1OJsH9tKYVoBwwScYieUjWvtp2LmYqByUh3N8Df/K0miekrsbyptT1rDiU
-         8FfsB4KTloRqfrkjTputMrVXSheqlavKnbAcKIV+rey1YpA19dGLn68eVu42LddDfMi0
-         hCUa4UvsLlK3SkwgqxN1G1mCcotBKqvva1D6xxcT6TVGpcSxxNAimM7eviJP7GvOxYBS
-         FTsA==
-X-Forwarded-Encrypted: i=1; AJvYcCVSjWI9xD4PHGeko8DYFHMEbqqji5zmr9zPESCM7OSBUqk99yR8HlTGLROw/VXF6+OqWVsVJq0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyoXOI9y+QIhxeNmDjk3okUzksPUtR/jznY1n0AjleVjJWkf/g5
-	Rxfiqlu/1YecBWrqgUnxFH5NO8IbeX8sB1IoggSIbmRlZemq5OeClJgh11tgpd8=
-X-Google-Smtp-Source: AGHT+IGfJ8pY2NAzdt7tCd27ZNRhmZSZgXuPiTc3RPYlDQRBLq/UfSZIOYf7teZEQd7GwrAW5brfmg==
-X-Received: by 2002:a17:907:1c17:b0:a86:95ff:f3a0 with SMTP id a640c23a62f3a-a93c48e8ecamr1420825966b.3.1727702745507;
-        Mon, 30 Sep 2024 06:25:45 -0700 (PDT)
-Received: from localhost (p200300de37360a00d7e56139e90929dd.dip0.t-ipconnect.de. [2003:de:3736:a00:d7e5:6139:e909:29dd])
-        by smtp.gmail.com with UTF8SMTPSA id a640c23a62f3a-a93c27c590asm533455966b.71.2024.09.30.06.25.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 30 Sep 2024 06:25:45 -0700 (PDT)
-From: Martin Wilck <martin.wilck@suse.com>
-X-Google-Original-From: Martin Wilck <mwilck@suse.com>
-To: Satish Kharat <satishkh@cisco.com>,
-	Sesidhar Baddela <sebaddel@cisco.com>,
-	Karan Tilak Kumar <kartilak@cisco.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Cc: James Bottomley <jejb@linux.vnet.ibm.com>,
-	Lee Duncan <lduncan@suse.com>,
-	Hannes Reinecke <hare@suse.de>,
-	Martin Wilck <mwilck@suse.de>,
-	stable@vger.kernel.org
-Subject: [PATCH] scsi: fnic: move flush_work initialization out of if block
-Date: Mon, 30 Sep 2024 15:25:17 +0200
-Message-ID: <20240930132517.70837-1-mwilck@suse.com>
-X-Mailer: git-send-email 2.46.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 570291DA3D
+	for <stable@vger.kernel.org>; Mon, 30 Sep 2024 13:28:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.55
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727702886; cv=fail; b=qbU4dpRSLd7adBNea5O0dkiwPnxg2JSa5su1CcdAgHO2ge80tcUbfbjO9tE1rLGtYmKdTEmhS1PrqRTWwFJMJiZ7bFx7I1nxGAjflZdMF6+wzlumeHK1ICEdbQCj/ED2/yr4W901/e9NSEWjCkBbhKyeE/fQEF2o1zX5kvwBbhM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727702886; c=relaxed/simple;
+	bh=ZhS1ZlexqS9jjrMA8wkYWYLy+mWsuicIpHAHsINBA6w=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=EUz1MFgIv3oGxBwd0eoVmDXSSlGp7/HRaXg2GMd16vSZ9q7y/4QuC872hheFE9DRL1a5b8igk3gOephiWVJDVeh++tUoML5pcbKfOTqfV7nutmaedOrU0vCl66uYrh/puus463OainKnOc+NRn8KffnLhUmvg36kX9OpJTH65RE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=NntH4iNS; arc=fail smtp.client-ip=40.107.237.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=q+1x6QeWfEx/RulJTFn1Sg8shkX3sKbqUIzpo4aHTXn7sefZw2mQI5W86oQFGt1PbQJ1JMtRzEC9GEiAIbWhi8LobK/z2xsS6vsY2POF+df5xkSsBdIuDm4r4IbQnk+zMM5EXyhRMebk8hB/Q6jFSvnnpSnEHd6wrNWmcZRusu02fUGiJl77pXcHmdiTNik1aXUOV7qMKpSSxOKcQ34lE2abu9aaV6+yywchKvg8ksVPBPlknu02XpMoFutwUJ7u8iy33Ppb3sKsZkz5uPMI6aMFQ5PIwDPxuc8JROJBbBRiZIW0yjMb+hJuuHDmiKfgHHf5NEW6z8c+Xt/pVQdL0w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=sY3CYkABz7X9kr+IqxWb4V2/izC8K08qr60EwQxvbOI=;
+ b=MLofd0hGuwgaL9OxXWHGGVsZVLRQe0pYu1CpNPgiRBrJ2FI/EDi4S2naJnV74D9h07HqG2DVcpavM24AWZ7beyn9iCsMa3Zlh0T0q+WAY1wrqrghpNIWhzsSLNThVV/c6iR79Rsf8VKpN6MuR57lnWOF6h31t8HrZ4YwMmqVRKk6PWSfNMZGESZW4WwwFfluHkR4jods5q9yTz6h9Kcxqovr0/LmxzH009BLhylfBEnk0h774GqQxME/XdxF+NY3xoqUV0TCde0WDsWFAtQyw2Xe14IuPaffPo9eTdtpuLnoDsgoikI1QHB/CQFaB8c2IUTE3Z0iR5dtdKXm6U9UWQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=sY3CYkABz7X9kr+IqxWb4V2/izC8K08qr60EwQxvbOI=;
+ b=NntH4iNSJ9NCZ0OIywvkpzUt4QfBolkwTsAmweIrzADK1z2IXsOY9BtQ2ROrFBbTEQSa1pRJ45BCSLbnZllCXb+HA8G04jNqKbCK5ZabfXUn9Ebk6L7hLSfJA9xPT4GbHEXE6t7nKVmmPDLcWzA2DEJuS2Kq7wdrwUgsC0gLZZA=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
+ by BL3PR12MB6547.namprd12.prod.outlook.com (2603:10b6:208:38e::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8005.27; Mon, 30 Sep
+ 2024 13:28:01 +0000
+Received: from PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::46fb:96f2:7667:7ca5]) by PH7PR12MB5685.namprd12.prod.outlook.com
+ ([fe80::46fb:96f2:7667:7ca5%2]) with mapi id 15.20.8005.024; Mon, 30 Sep 2024
+ 13:28:00 +0000
+Message-ID: <693dd05a-0537-4be6-9d8c-6cd1b5d31833@amd.com>
+Date: Mon, 30 Sep 2024 15:27:53 +0200
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/8] drm/sched: Always increment correct scheduler score
+To: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
+ Tvrtko Ursulin <tursulin@igalia.com>, amd-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org
+Cc: kernel-dev@igalia.com, Luben Tuikov <ltuikov89@gmail.com>,
+ Matthew Brost <matthew.brost@intel.com>, David Airlie <airlied@gmail.com>,
+ Daniel Vetter <daniel@ffwll.ch>, stable@vger.kernel.org,
+ Nirmoy Das <nirmoy.das@intel.com>
+References: <20240913160559.49054-1-tursulin@igalia.com>
+ <20240913160559.49054-4-tursulin@igalia.com>
+ <8392475d-489e-4aa3-b6c2-7cd15b86dab2@igalia.com>
+ <cf135523-92ca-4d41-9acf-e979c9769ad9@amd.com>
+ <2b0860a2-5ef0-496f-9283-d5056433af58@igalia.com>
+Content-Language: en-US
+From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+In-Reply-To: <2b0860a2-5ef0-496f-9283-d5056433af58@igalia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: FR3P281CA0023.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:1c::7) To PH7PR12MB5685.namprd12.prod.outlook.com
+ (2603:10b6:510:13c::22)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|BL3PR12MB6547:EE_
+X-MS-Office365-Filtering-Correlation-Id: 43878047-4e11-43b4-11c2-08dce153b442
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?UXdpdzRQMGs4R01QcDdhUlBYRUpBRWg1Y0Y2ZHVsVmhSRzFPRysyRnkySWVE?=
+ =?utf-8?B?L3Z0QTRsQ1g2R0pJVlkrM3BlS3NGSm9RUURVNW1LZFBpcmRpUnN2QnFjajJO?=
+ =?utf-8?B?N0lpSUx0alFaNUdrQlpla0N2MkFyNWlBUitudHowcGtoeExSRzNoNzlvOVB5?=
+ =?utf-8?B?TGQ2U08vM3BpZ2Z3eGFvWGZkWm5hRkNIUjYxcjRsZUg5YjI3dlIxckt5aTN6?=
+ =?utf-8?B?bC9OSk83TmZqeGRETHhGbElQT3QrcFpVMUY3S0hYNks5emt2L3oyblpHMWdm?=
+ =?utf-8?B?b3RyazcxRGtjT3pqZGR2MXFiakZHaXVwLzVRaWV1U0J4U0FLTDhzbXhNWHNH?=
+ =?utf-8?B?cThNNDFRRTRIbnpYazM1V0hxczZoZG9CQ3haaXBlSmtkUEttTjZqTWtvZ3JV?=
+ =?utf-8?B?aThvQlIyekZKeXBQTFNHa3J6WWt2U3k4eDF1SE9zRCtkd1pqNkRwckFUOVk5?=
+ =?utf-8?B?UXYzNFhVNDI3VXZkTGJ0KzAxQXBGWDZOaHVYbE9Pa0t2dGE3MFVoTk0zU2Mv?=
+ =?utf-8?B?TkFHdzlKVjRSSXpGWStsaEdCbHNNbEFuMXFzLzU1d2FnSWZzdTBzNHhoYVhF?=
+ =?utf-8?B?NGEwclBoZWNCcko0Tk5rVEFJNWF6RHNaRXZ4SEgxOERTVkE2UlQ2VVJ1Y2Nz?=
+ =?utf-8?B?TU9SS3BDWGdET2JCUWhUR3VhY2Y1SXJ1Snp1QitNU1A1VzhYbXNyL3lXcCtI?=
+ =?utf-8?B?eUxEVitxQVd2aENMYkNzUW5OTXY5cGM2SXVDWXVUNWJSU09uSkFJU1R0Z2Qx?=
+ =?utf-8?B?eHFvdmQyRmlrNVJESmI5M2pVUGJkQVE3ME9nZFJIMm5ENDlIVDVTem9mOU9Y?=
+ =?utf-8?B?TTNCM1FoVGFONnlzSGNZNGp5UHlhU05lWEJjMTZMOHZCM1dJRXBvM25oV3BK?=
+ =?utf-8?B?T3VzYm5CdmErVVkwcndTeEJRTktxTStNNUN6akllcU9XRVBoRXJsdG9Jc3ZN?=
+ =?utf-8?B?MUU0ZktlNmloL0xidEo5MHJwT1oxWXpYbkl4NkFWZEliWWsyb08rditxRWxx?=
+ =?utf-8?B?MXJBWWZFSUorYVhQdVEvVDFjMDdOUFhQTFdCOTU0QnNFVUFrZk1seHJYOVRL?=
+ =?utf-8?B?RHNob1NEQjFkVEVqalBxYW5BZlpoSHUxdGFMWnN2elh3eGRUem5sZjFMS3g5?=
+ =?utf-8?B?bVhwZDJnRzA1VjY2NmFLZ0pDZm9jaElnRzlQRmpJakFvK2prNEtBVjlOWGRs?=
+ =?utf-8?B?SUxrUnlXUVJvcytWcHcyMmlxbERUdzVMLzJNNGFuOG5zczhTN3MyM1ZqakxO?=
+ =?utf-8?B?eDVYSlJsZ3lQelAzY0UvZ1dYdDFSMys4ZVB0MStHR09jV3BvZjEwTWZ4RURo?=
+ =?utf-8?B?NVJBSjR3d01kOEdaWDBKcjVhdXk4R05ETXpleHdaMFJTWFp5TmsvZFQrelRN?=
+ =?utf-8?B?UVlZenZLRU9mb3FyK1k5Rm90enl2Nk5YODNGdEQ0Y29IMlBXSktLNmxxWTJW?=
+ =?utf-8?B?a2tkSm9rVTBjaDR1cjVZQVJsOFczd1lJWWNtMDlMaUdOdmgzRWZjcVFXcGhr?=
+ =?utf-8?B?VkVmUGorbjFDRE1PdzVGYStFcWs4MW9uM09kQ0hmUnAzQTlpT3R6dG0zd2M2?=
+ =?utf-8?B?T0NCZlFndTlCd25JckVFZmZpVG0xVUg4YytDRUQvZ25sZE9oZnh3V0lTMzlx?=
+ =?utf-8?B?eStibHZpamtxMndSdmNpMWp3VVJPNmpZYnAxV2p4SUFPS3JjSm05T3dEclRX?=
+ =?utf-8?B?YURBV3grN0pPdy9Mc0hXUEZQS3NvZ3dmUHFuYzVQSHpSTUhDK3dNUGpQZFJo?=
+ =?utf-8?B?QlR6WWtZdDZ3bVBPYW9FTGtGZHc3eFJVOXR5aDJLUHNGQm9paS9LVVRRd1Fx?=
+ =?utf-8?B?clZJZTViQTB6Z3Q4S0JMdz09?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?S05EUjVCMVA3Y0p4UHNwOEMvVlJ3U2V0QU9vVEk2MDkxYVpYMzZFVzF3eWtq?=
+ =?utf-8?B?bjJCNm5QaE1oY3ZBallQbUd5SFBlYlVYTmt3YnRDVmlrRHBxVHlydGNZK1Nl?=
+ =?utf-8?B?cityYTZHbnE1LzJ0RVVCUHU2d2lwWVltNzNBV1R3dlp0YnAva2RCREpkbklW?=
+ =?utf-8?B?eXMvWHJqendGeTlJL09kWkI2bGF5ZmpSSTNnQWRmTlU1ZzFKRVk0bU1jdXhv?=
+ =?utf-8?B?MVRBOFVCL3VjdUF5R3lUSU5hd3dFWWRodG92TlNnOE82SENDdk5aUFNLUDJG?=
+ =?utf-8?B?MGpFQndtdVNaRU40R1lqeHF4dUo1ZVRJL3pZNHVDdHNQTFFwSlBjZjhyaUl6?=
+ =?utf-8?B?WmxpSEFuNkF5S0VBYkJTeG1WWUt4aGU5cnBqZjdZamV5SUtMSmNHd0o2Ukla?=
+ =?utf-8?B?MTFaRTFpVXhJNFlMZ2k2czliOUExVnBMTlJxdnl1cmQxK1ljdlR6UkdwUXRL?=
+ =?utf-8?B?VUhmYnpROTY5emhkRm81WC83aHBMQ1Y1VkI3RUdiUFUrNnpUaU8zVG04UUU2?=
+ =?utf-8?B?d1ZabER5bGw0OHA4N0d1V0J5dmZhV0ptSm56d0tPakVEa3lnSzkrUkVJNkdW?=
+ =?utf-8?B?SytuZGJmTFYweUVmNDRLY1NHMzRlNkRpdFo2SmJoZUNtY1doaXFralUwdWEr?=
+ =?utf-8?B?WjFBdnlsdUdsOFVDWi9EeEV5bldBWDYxTFRlbGZETzd6N2loT0llY0hOL2NX?=
+ =?utf-8?B?VXNhQ3ZSYSs0ZUVyVEN3Z0lBc1dzYVcveldHQjhTVHFJazR2VVhIbG93ZjlC?=
+ =?utf-8?B?eFB0L1lZMmlaMGNZbnF4Q0sxeVdYNmRxc21GL2RQcE9YTFJmWUhXb3M2T0Nt?=
+ =?utf-8?B?VHQyZjNuOEp3QWxHNEVqaEJSMmFrakZnU0dOV3c5WVE3aWJFb0ltakxBc1FW?=
+ =?utf-8?B?bUtQMjFvemxvRGVEaWw1cFh1c2U5TTZXTmRsTGxzdUFkRjRRNU0xa2xPUGNy?=
+ =?utf-8?B?L0U5ZU1Ob29OL0ZLRkYxWmlCdVYrYng4NC9WTjZsdzkySkI2b3lkcG9ueG1P?=
+ =?utf-8?B?QnJGeU8yaVFTRzFnbzZPYVFxbzhXRVNwNE5kQmpCNXVyYkM3MWZrQkhCQnZp?=
+ =?utf-8?B?SUY3Si9zODlMU2F0M2NkVzlia3luZHV6cWlUL2lVSGNRemtJeTR3aGZMUEsz?=
+ =?utf-8?B?WlJYMDFERUxjQkt6c0JrbzB6empKMzhpZU1LaWNNbTRmaEFWQTJwOGxRUnFK?=
+ =?utf-8?B?U0dHWldZSXdhNzV4VU0zSWJqZHBqSHU0MEJKbi9MRGc3UHU0YWc3SG5aUHB4?=
+ =?utf-8?B?eDFxRk9URERaSnNQb2ZCTm9BNjVqdEdmcW9kcnFjc09RdVhJUnp6ZElJQ3N1?=
+ =?utf-8?B?WHRRNXRTV0s5aU1oWThoZ2NpZWVlVjNDaHkzb3p3Uk9maHZ5d1dvVEdmODUw?=
+ =?utf-8?B?L2VuNjRnemlnQ2YybjBweTNiNkovZzE3cXA0ZE9uTmFmYmNtU0R5K0l3Ni9i?=
+ =?utf-8?B?Y0VpQTlFelRYM3Z4VUdsUWtvaGFJQUQrMkcyMEJzV3labmVtTzJ5TnJKa2Q2?=
+ =?utf-8?B?R0c5V3R6ZHBqdzRNNlF6WDhqUFVjanBJR0picUl3TDhBRCtSWUc1Vlp5dHQ1?=
+ =?utf-8?B?MGk5VFp5WDBDTFZjMHZnRWJtR3VjUDRCdFFaWmN5dllYRDNkSmx0MW0xOFg3?=
+ =?utf-8?B?cW5ieElLTUxDU2VEMEwxV2tCSDZvc3lRZTFHaXM5VEhZTmlkeldTNkh2elFG?=
+ =?utf-8?B?RUNHUGdHdVI3MEsrU2x4Q3dRY3RYdklnSUhYbUhJTFRWaHpWdUY5WUtlMFU1?=
+ =?utf-8?B?d09vL3F4UC8vUUx3K3lqV0sxTG94ZlhaUTlKbGJpRVVPYmR6WkZ5ZmZXRlVH?=
+ =?utf-8?B?TjlJVzhhZi9mQk9EVWRMZTZwajk0RkhBdUNlWVM0cU1sNXJtZFpLcU9hVVBT?=
+ =?utf-8?B?UXNWb0JyZ3piOEU2aVJ1VUYyL0pKRFJIbktKUTNDT29MK2h2MXdpa1BxT3My?=
+ =?utf-8?B?VFRlSEJiUlBzTjNTZGhXU2p6c1cwcFhDYXFYb0toNnRyeENMRjlhaWVqaVZw?=
+ =?utf-8?B?d08rRHJxMUE2ckhjYTl5VGVpb0xpdTgvRlpKVVBici9nUk9wMGtJTVpTU2NH?=
+ =?utf-8?B?UDhScXJIWFBYWUF2eXNXSGdHOGlzelQ3bHVrZzFYQ2pnL3F0VFpzdVliak9n?=
+ =?utf-8?Q?7wgwxb3LZ0/q1F10Dm1zXCtSp?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 43878047-4e11-43b4-11c2-08dce153b442
+X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2024 13:28:00.3666
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: QYj1yzdpsZKJYzOMl34ENv2j0AP3flGV+BBTtLgjPg4Hu0vi/iocdVWXd1YWnGNU
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6547
 
-After commit 379a58caa199 ("scsi: fnic: Move fnic_fnic_flush_tx() to a work
-queue"), it can happen that a work item is sent to an uninitialized work
-queue.  This may has the effect that the item being queued is never
-actually queued, and any further actions depending on it will not proceed.
+Am 30.09.24 um 15:22 schrieb Tvrtko Ursulin:
+>
+> On 30/09/2024 14:07, Christian König wrote:
+>> Am 30.09.24 um 15:01 schrieb Tvrtko Ursulin:
+>>>
+>>> On 13/09/2024 17:05, Tvrtko Ursulin wrote:
+>>>> From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+>>>>
+>>>> Entities run queue can change during drm_sched_entity_push_job() so 
+>>>> make
+>>>> sure to update the score consistently.
+>>>>
+>>>> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+>>>> Fixes: d41a39dda140 ("drm/scheduler: improve job distribution with 
+>>>> multiple queues")
+>>>> Cc: Nirmoy Das <nirmoy.das@amd.com>
+>>>> Cc: Christian König <christian.koenig@amd.com>
+>>>> Cc: Luben Tuikov <ltuikov89@gmail.com>
+>>>> Cc: Matthew Brost <matthew.brost@intel.com>
+>>>> Cc: David Airlie <airlied@gmail.com>
+>>>> Cc: Daniel Vetter <daniel@ffwll.ch>
+>>>> Cc: dri-devel@lists.freedesktop.org
+>>>> Cc: <stable@vger.kernel.org> # v5.9+
+>>>> Reviewed-by: Christian König <christian.koenig@amd.com>
+>>>> Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+>>>> ---
+>>>>   drivers/gpu/drm/scheduler/sched_entity.c | 2 +-
+>>>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/drivers/gpu/drm/scheduler/sched_entity.c 
+>>>> b/drivers/gpu/drm/scheduler/sched_entity.c
+>>>> index 76e422548d40..6645a8524699 100644
+>>>> --- a/drivers/gpu/drm/scheduler/sched_entity.c
+>>>> +++ b/drivers/gpu/drm/scheduler/sched_entity.c
+>>>> @@ -586,7 +586,6 @@ void drm_sched_entity_push_job(struct 
+>>>> drm_sched_job *sched_job)
+>>>>       ktime_t submit_ts;
+>>>>         trace_drm_sched_job(sched_job, entity);
+>>>> -    atomic_inc(entity->rq->sched->score);
+>>>>       WRITE_ONCE(entity->last_user, current->group_leader);
+>>>>         /*
+>>>> @@ -614,6 +613,7 @@ void drm_sched_entity_push_job(struct 
+>>>> drm_sched_job *sched_job)
+>>>>           rq = entity->rq;
+>>>>           sched = rq->sched;
+>>>>   +        atomic_inc(sched->score);
+>>>
+>>> Ugh this is wrong. :(
+>>>
+>>> I was working on some further consolidation and realised this.
+>>>
+>>> It will create an imbalance in score since score is currently 
+>>> supposed to be accounted twice:
+>>>
+>>>  1. +/- 1 for each entity (de-)queued
+>>>  2. +/- 1 for each job queued/completed
+>>>
+>>> By moving it into the "if (first) branch" it unbalances it.
+>>>
+>>> But it is still true the original placement is racy. It looks like 
+>>> what is required is an unconditional entity->lock section after 
+>>> spsc_queue_push. AFAICT that's the only way to be sure entity->rq is 
+>>> set for the submission at hand.
+>>>
+>>> Question also is, why +/- score in entity add/remove and not just 
+>>> for jobs?
+>>>
+>>> In the meantime patch will need to get reverted.
+>>
+>> Ok going to revert that.
+>
+> Thank you, and sorry for the trouble!
+>
+>> I also just realized that we don't need to change anything. The rq 
+>> can't change as soon as there is a job armed for it.
+>>
+>> So having the increment right before pushing the armed job to the 
+>> entity was actually correct in the first place.
+>
+> Are you sure? Two threads racing to arm and push on the same entity?
+>
+>
+>     T1        T2
+>
+>     arm job
+>     rq1 selected
+>     ..
+>     push job    arm job
+>     inc score rq1
+>             spsc_queue_count check passes
+>      ---  just before T1 spsc_queue_push ---
+>             changed to rq2
+>     spsc_queue_push
+>     if (first)
+>       resamples entity->rq
+>       queues rq2
+>
+> Where rq1 and rq2 belong to different schedulers.
 
-The following warning is observed while the fnic driver is loaded:
+arm/push must be protected by an external lock preventing two threads 
+pushing into the same entity at the same time.
 
-kernel: WARNING: CPU: 11 PID: 0 at ../kernel/workqueue.c:1524 __queue_work+0x373/0x410
-kernel:  <IRQ>
-kernel:  queue_work_on+0x3a/0x50
-kernel:  fnic_wq_copy_cmpl_handler+0x54a/0x730 [fnic 62fbff0c42e7fb825c60a55cde2fb91facb2ed24]
-kernel:  fnic_isr_msix_wq_copy+0x2d/0x60 [fnic 62fbff0c42e7fb825c60a55cde2fb91facb2ed24]
-kernel:  __handle_irq_event_percpu+0x36/0x1a0
-kernel:  handle_irq_event_percpu+0x30/0x70
-kernel:  handle_irq_event+0x34/0x60
-kernel:  handle_edge_irq+0x7e/0x1a0
-kernel:  __common_interrupt+0x3b/0xb0
-kernel:  common_interrupt+0x58/0xa0
-kernel:  </IRQ>
+That's what this misleading comment from Sima we already discussed 
+should have meant.
 
-It has been observed that this may break the rediscovery of fibre channel
-devices after a temporary fabric failure.
+Regards,
+Christian.
 
-This patch fixes it by moving the work queue initialization out of
-an if block in fnic_probe().
-
-Signed-off-by: Martin Wilck <mwilck@suse.com>
-
-Fixes: 379a58caa199 ("scsi: fnic: Move fnic_fnic_flush_tx() to a work queue")
-Cc: stable@vger.kernel.org
----
- drivers/scsi/fnic/fnic_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/scsi/fnic/fnic_main.c b/drivers/scsi/fnic/fnic_main.c
-index 0044717d4486..adec0df24bc4 100644
---- a/drivers/scsi/fnic/fnic_main.c
-+++ b/drivers/scsi/fnic/fnic_main.c
-@@ -830,7 +830,6 @@ static int fnic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 		spin_lock_init(&fnic->vlans_lock);
- 		INIT_WORK(&fnic->fip_frame_work, fnic_handle_fip_frame);
- 		INIT_WORK(&fnic->event_work, fnic_handle_event);
--		INIT_WORK(&fnic->flush_work, fnic_flush_tx);
- 		skb_queue_head_init(&fnic->fip_frame_queue);
- 		INIT_LIST_HEAD(&fnic->evlist);
- 		INIT_LIST_HEAD(&fnic->vlans);
-@@ -948,6 +947,7 @@ static int fnic_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 
- 	INIT_WORK(&fnic->link_work, fnic_handle_link);
- 	INIT_WORK(&fnic->frame_work, fnic_handle_frame);
-+	INIT_WORK(&fnic->flush_work, fnic_flush_tx);
- 	skb_queue_head_init(&fnic->frame_queue);
- 	skb_queue_head_init(&fnic->tx_queue);
- 
--- 
-2.46.1
+>
+> Regards,
+>
+> Tvrtko
+>
+>
+>> Regards,
+>> Christian.
+>>
+>>>
+>>> Regards,
+>>>
+>>> Tvrtko
+>>>
+>>>>           drm_sched_rq_add_entity(rq, entity);
+>>>>           spin_unlock(&entity->rq_lock);
+>>
 
 
