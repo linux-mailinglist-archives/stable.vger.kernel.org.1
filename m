@@ -1,143 +1,153 @@
-Return-Path: <stable+bounces-78266-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C51B98A5E1
-	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 15:50:46 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8528598A660
+	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 15:58:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47617282390
-	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 13:50:45 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C1771F24728
+	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 13:58:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5DE318FDB2;
-	Mon, 30 Sep 2024 13:50:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2B22192D7C;
+	Mon, 30 Sep 2024 13:55:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O0KwEj6s"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nrt2KZaH"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70BCA1EB56;
-	Mon, 30 Sep 2024 13:50:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ECAB18FC89
+	for <stable@vger.kernel.org>; Mon, 30 Sep 2024 13:54:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727704241; cv=none; b=HxlCUUEy7MGfqzYL4MFW7ZJgl7h2jkTbe1y0Nnq1uyl8IIfb52BV6WZNX2qP44tQc6WqpGI9s/IOlU3/HIhv3o9Vm1IqrzPK6Xeh710NhP3Uha8xDiiKzP7sSKU9TaA6SwX14mCgqGXN3iDLkAnevdfMoR5tZa2IHiUCg7SgQFs=
+	t=1727704502; cv=none; b=l2zWN5bb2ruy7lgoXNPyfajKX5g2vM3IaowNO7IUvKvMAHTqeCJlNxvr9vcuYcibOnLnnoxYt0c9+iOnsbNJxPpyHB4P6zNZuCoMN1WvEBeAJxebUiYZrHW11K9vUNWOQXxrmm74BF3XnoRRpysJLhzCFaokDKqugNX49X14Yv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727704241; c=relaxed/simple;
-	bh=lKoyRADkcWjiRRXHAbLZJh0byrlozFqRiaV3hRP3foc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GcokflkmJQkQZZuMVLUj8wmwUQGkGvl2F8viEZZiDtIWm4MjVj9aWqgjNjBf0Q0H1I0vqx7KTMMPFObfwMaD49WP7V3Owq79mUgC/KTXkqK3vq1P/P5VIMstygBHVjKx68q5bgAYeeB3MrAfaSx/MhwbTTUYC75H7w8StwRoBts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O0KwEj6s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF7C1C4CEC7;
-	Mon, 30 Sep 2024 13:50:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727704240;
-	bh=lKoyRADkcWjiRRXHAbLZJh0byrlozFqRiaV3hRP3foc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=O0KwEj6sElowAia8rnohtPGSB4x7Bue01ApMw2xH+wGPgEDLbU0kAo+kjDr9BAfaO
-	 Zkk2BSk+DvRXOOztjLhvnfURK4cRSylJocE4tSLlaAvbTZrnHLTz1iKAM9GFrCSrMT
-	 ScnbxzVrZY0FrIY8BreFKIIB/MxuD0Qu6gIkt/vklDC917scw0G/oRsV/83CeZvj6I
-	 Aregw6v/Hfv0NbXcC92KpA8OTX/6M5E8mwpWoNLvPaNe76eu/f6tNyVVytkmmykn4A
-	 hSVIx9eb5NZwRQUqbnOpjGguBujtr04AXySWfWjBUP6+e9IZRBPVRqneLhLnN1rYFC
-	 lL06QBuJDRU5w==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1svGnO-000000004jK-3Cl1;
-	Mon, 30 Sep 2024 15:50:39 +0200
-Date: Mon, 30 Sep 2024 15:50:38 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Qiu-ji Chen <chenqiuji666@gmail.com>
-Cc: dtwlin@gmail.com, elder@kernel.org, gregkh@linuxfoundation.org,
-	greybus-dev@lists.linaro.org, linux-staging@lists.linux.dev,
-	linux-kernel@vger.kernel.org, baijiaju1990@gmail.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] staging: Fix atomicity violation in get_serial_info()
-Message-ID: <Zvqsrj5ee9iNQXsX@hovoldconsulting.com>
-References: <20240930101403.24131-1-chenqiuji666@gmail.com>
+	s=arc-20240116; t=1727704502; c=relaxed/simple;
+	bh=lU9Iw+9fXhpwvJ4aYxm37TuLZEitmM+DZgzjVdKPIuc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Cd+U9KjbU/LI3W52QM/v4JANxc7pYwGLUyze/0H/2ySAZhxbTx7xtOZgtrk1laXZ127UoMT2w4fisgbA/jhvPex0Yls9GefPf00Jm01zOZ+jX4X2W/MtQZvxyZeZZ0WehFw9MiHKHyIf4YTrJxx56A4eOvRrONT3r/ipwctANVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nrt2KZaH; arc=none smtp.client-ip=198.175.65.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1727704500; x=1759240500;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version;
+  bh=lU9Iw+9fXhpwvJ4aYxm37TuLZEitmM+DZgzjVdKPIuc=;
+  b=nrt2KZaHVXOnozIHsw35bwiV7TBfeVlfQHWYbHNBORqBJvAjXIj1onA7
+   gTZufm8JoAgvkVr7JjBhVyzcsYMDMLVvsFF1IKdT9TmLUSPfhdCLlSAFF
+   ljqR2eMVu+pYWF1SPICf66WiHnyi0ovcRJrmdkAVJCtRL7rs5lvezSmvQ
+   nJ9bqcqqrSvsKEu7gQdjjmMsTaHKZ/Obiv1sWOgUM3gqCX9/JWYHenL24
+   o0/ujb8qxGjDeOO5lrO5Q1ZErwHfH2HgrkEvQcqVFM/1U9mWkbSe1ngV/
+   IrWRNHRBO2lMwpk0PjaqhcvfVxDdOz56BsxuAXZYGfcTJ7vzRLALR0W4L
+   g==;
+X-CSE-ConnectionGUID: UpR7sBiwTiqtUGUif4iMyA==
+X-CSE-MsgGUID: PFciiCNoQAC8x3T7BfEHew==
+X-IronPort-AV: E=McAfee;i="6700,10204,11211"; a="44254171"
+X-IronPort-AV: E=Sophos;i="6.11,165,1725346800"; 
+   d="scan'208";a="44254171"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2024 06:54:59 -0700
+X-CSE-ConnectionGUID: DR3IS1+qQaSdtk7Z9NGX/g==
+X-CSE-MsgGUID: IN5vmG/KS8CmYG8id1p+tg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,165,1725346800"; 
+   d="scan'208";a="73361272"
+Received: from sschumil-mobl2.ger.corp.intel.com (HELO localhost) ([10.245.246.136])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2024 06:54:56 -0700
+From: Jani Nikula <jani.nikula@intel.com>
+To: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Cc: intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org, Matthew
+ Auld <matthew.auld@intel.com>, Anshuman Gupta <anshuman.gupta@intel.com>,
+ Andi Shyti <andi.shyti@linux.intel.com>, Nathan
+ Chancellor <nathan@kernel.org>, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/6] drm/i915/gem: fix bitwise and logical AND mixup
+In-Reply-To: <87r095ze2i.fsf@intel.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <cover.1726680898.git.jani.nikula@intel.com>
+ <643cc0a4d12f47fd8403d42581e83b1e9c4543c7.1726680898.git.jani.nikula@intel.com>
+ <ZvXGwFBbOa7-035L@intel.com> <87r095ze2i.fsf@intel.com>
+Date: Mon, 30 Sep 2024 16:54:43 +0300
+Message-ID: <87wmitw8kc.fsf@intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240930101403.24131-1-chenqiuji666@gmail.com>
+Content-Type: text/plain
 
-On Mon, Sep 30, 2024 at 06:14:03PM +0800, Qiu-ji Chen wrote:
-> Atomicity violation occurs during consecutive reads of the members of 
-> gb_tty. Consider a scenario where, because the consecutive reads of gb_tty
-> members are not protected by a lock, the value of gb_tty may still be 
-> changing during the read process. 
-> 
-> gb_tty->port.close_delay and gb_tty->port.closing_wait are updated
-> together, such as in the set_serial_info() function. If during the
-> read process, gb_tty->port.close_delay and gb_tty->port.closing_wait
-> are still being updated, it is possible that gb_tty->port.close_delay
-> is updated while gb_tty->port.closing_wait is not. In this case,
-> the code first reads gb_tty->port.close_delay and then
-> gb_tty->port.closing_wait. A new gb_tty->port.close_delay and an
-> old gb_tty->port.closing_wait could be read. Such values, whether
-> before or after the update, should not coexist as they represent an
-> intermediate state.
-> 
-> This could result in a mismatch of the values read for gb_tty->minor, 
+On Fri, 27 Sep 2024, Jani Nikula <jani.nikula@intel.com> wrote:
+> On Thu, 26 Sep 2024, Rodrigo Vivi <rodrigo.vivi@intel.com> wrote:
+>> On Wed, Sep 18, 2024 at 08:35:43PM +0300, Jani Nikula wrote:
+>>> CONFIG_DRM_I915_USERFAULT_AUTOSUSPEND is an int, defaulting to 250. When
+>>> the wakeref is non-zero, it's either -1 or a dynamically allocated
+>>> pointer, depending on CONFIG_DRM_I915_DEBUG_RUNTIME_PM. It's likely that
+>>> the code works by coincidence with the bitwise AND, but with
+>>> CONFIG_DRM_I915_DEBUG_RUNTIME_PM=y, there's the off chance that the
+>>> condition evaluates to false, and intel_wakeref_auto() doesn't get
+>>> called. Switch to the intended logical AND.
+>>> 
+>>> v2: Use != to avoid clang -Wconstant-logical-operand (Nathan)
+>>
+>> oh, this is ugly!
+>>
+>> Wouldn't it be better then to use IS_ENABLED() macro?
+>
+> It's an int config option, not a bool. (Yes, the name is misleading.)
+>
+> IS_ENABLED(CONFIG_DRM_I915_USERFAULT_AUTOSUSPEND) would be the same as
+> CONFIG_DRM_I915_USERFAULT_AUTOSUSPEND == 1.
+>
+> We're actually checking if the int value != 0, so IMO the patch at hand
+> is fine.
 
-No, gb_tty minor is only set at probe().
+Ping, r-b on this one too?
 
-> gb_tty->port.close_delay, and gb_tty->port.closing_wait, which in turn 
-> could cause ss->close_delay and ss->closing_wait to be mismatched.
+BR,
+Jani.
 
-Sure, but that's a pretty minor issue as Dan already pointed out.
+>
+> BR,
+> Jani.
+>
+>
+>>
+>>> 
+>>> Fixes: ad74457a6b5a ("drm/i915/dgfx: Release mmap on rpm suspend")
+>>> Cc: Matthew Auld <matthew.auld@intel.com>
+>>> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
+>>> Cc: Anshuman Gupta <anshuman.gupta@intel.com>
+>>> Cc: Andi Shyti <andi.shyti@linux.intel.com>
+>>> Cc: Nathan Chancellor <nathan@kernel.org>
+>>> Cc: <stable@vger.kernel.org> # v6.1+
+>>> Reviewed-by: Matthew Auld <matthew.auld@intel.com> # v1
+>>> Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com> # v1
+>>> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+>>> ---
+>>>  drivers/gpu/drm/i915/gem/i915_gem_ttm.c | 2 +-
+>>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>> 
+>>> diff --git a/drivers/gpu/drm/i915/gem/i915_gem_ttm.c b/drivers/gpu/drm/i915/gem/i915_gem_ttm.c
+>>> index 5c72462d1f57..b22e2019768f 100644
+>>> --- a/drivers/gpu/drm/i915/gem/i915_gem_ttm.c
+>>> +++ b/drivers/gpu/drm/i915/gem/i915_gem_ttm.c
+>>> @@ -1131,7 +1131,7 @@ static vm_fault_t vm_fault_ttm(struct vm_fault *vmf)
+>>>  		GEM_WARN_ON(!i915_ttm_cpu_maps_iomem(bo->resource));
+>>>  	}
+>>>  
+>>> -	if (wakeref & CONFIG_DRM_I915_USERFAULT_AUTOSUSPEND)
+>>> +	if (wakeref && CONFIG_DRM_I915_USERFAULT_AUTOSUSPEND != 0)
+>>>  		intel_wakeref_auto(&to_i915(obj->base.dev)->runtime_pm.userfault_wakeref,
+>>>  				   msecs_to_jiffies_timeout(CONFIG_DRM_I915_USERFAULT_AUTOSUSPEND));
+>>>  
+>>> -- 
+>>> 2.39.2
+>>> 
 
-> To address this issue, we have enclosed all sequential read operations of 
-> the gb_tty variable within a lock. This ensures that the value of gb_tty 
-> remains unchanged throughout the process, guaranteeing its validity.
-> 
-> This possible bug is found by an experimental static analysis tool
-> developed by our team. This tool analyzes the locking APIs
-> to extract function pairs that can be concurrently executed, and then
-> analyzes the instructions in the paired functions to identify possible
-> concurrency bugs including data races and atomicity violations.
-> 
-> Fixes: b71e571adaa5 ("staging: greybus: uart: fix TIOCSSERIAL jiffies conversions")
-
-And this obviously isn't the correct commit to blame. Please be more
-careful.
-
-> Cc: stable@vger.kernel.org
-
-Since this is unlikely to cause any issues for a user, I don't think
-stable backport is warranted either.
-
-> Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
-> ---
->  drivers/staging/greybus/uart.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/staging/greybus/uart.c b/drivers/staging/greybus/uart.c
-> index cdf4ebb93b10..8cc18590d97b 100644
-> --- a/drivers/staging/greybus/uart.c
-> +++ b/drivers/staging/greybus/uart.c
-> @@ -595,12 +595,14 @@ static int get_serial_info(struct tty_struct *tty,
->  {
->  	struct gb_tty *gb_tty = tty->driver_data;
->  
-> +	mutex_lock(&gb_tty->port.mutex);
->  	ss->line = gb_tty->minor;
-
-gb_tty is not protected by the port mutex.
-
->  	ss->close_delay = jiffies_to_msecs(gb_tty->port.close_delay) / 10;
->  	ss->closing_wait =
->  		gb_tty->port.closing_wait == ASYNC_CLOSING_WAIT_NONE ?
->  		ASYNC_CLOSING_WAIT_NONE :
->  		jiffies_to_msecs(gb_tty->port.closing_wait) / 10;
-> +	mutex_unlock(&gb_tty->port.mutex);
->  
->  	return 0;
->  }
-
-Johan
+-- 
+Jani Nikula, Intel
 
