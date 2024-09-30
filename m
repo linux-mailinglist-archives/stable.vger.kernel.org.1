@@ -1,428 +1,243 @@
-Return-Path: <stable+bounces-78301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F08298AE7E
-	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 22:36:45 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D53CA98AF9B
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 00:03:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E876283310
-	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 20:36:44 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4795EB20F66
+	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 22:03:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEBF419882F;
-	Mon, 30 Sep 2024 20:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CBB418858D;
+	Mon, 30 Sep 2024 22:02:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FEICyXDK"
+	dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b="Rrwea0qp"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from EUR05-AM6-obe.outbound.protection.outlook.com (mail-am6eur05on2086.outbound.protection.outlook.com [40.107.22.86])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98363199E8E;
-	Mon, 30 Sep 2024 20:36:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727728600; cv=none; b=biAOx2ViTeRcifw0S2bWRx34RECSp3iv5pbV0qFdE8Y+z+ikWFs6jgA7MNeFIkqfD89T8gTN3ZKqZRGI6z4ubF7olYEun3c8nqo1Zt5X2dMeqPtXthtFTPA0OK0MhpMZQU8yfWc3/WeBNLfW9AVEr7XqaWDlteN5kRXLrSum6F0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727728600; c=relaxed/simple;
-	bh=pPEL9qFMRBFDo9j/92QHXmD8ngtQ0WgKVBe+oCpLy60=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PEkkKvf1o9oNp+pe8jRUe4roBhZNfp0DjdgQWMpqWqTzNQxkzvvm9FRJ96dCaVs/xQ18rBdPEPF2c5kY4/i1zXbSQl10ACItrKQUbhsaLywwSJMKRyHD9RROdDAx56ezkA+bZYGJtF3FkReDElnZY91pjaEPcwI37l8LzH2Ld/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FEICyXDK; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1727728599; x=1759264599;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=pPEL9qFMRBFDo9j/92QHXmD8ngtQ0WgKVBe+oCpLy60=;
-  b=FEICyXDKqNLVxe1qQklcH7/Ib4lckSLy9qKt7WKNjRNQfpFPhCwTMYj6
-   k2Nk9UJCYbBS4jWmWPS2fgt18H9wr47ueS4q2QS5h4h69OYctzK8sogR5
-   b6rscS8w4OJ1/qpr05/M2T+lFJDiPZWqAyRhaZMmcKbyKBc4dvAwt+UjQ
-   WSs/JQupEuCAj/iEKWgeMlnlE/zvFTiVifszxUEiLFn8lEtyGsW0cTI4p
-   CxS7tslpGnRk1YumyJMVMx7sgySQPGm2eITvR6fzHkBHGdO61imurJ+0y
-   /FoA9uz1hTpYCwEk8x+MYyK1OY/Tg8se2UpFeOJTDixulCdZxYJmAMNnR
-   A==;
-X-CSE-ConnectionGUID: BuVQY0dwQeeGptSMohUxxg==
-X-CSE-MsgGUID: yYZZw8coSd61K/dULKOBOg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11211"; a="38195565"
-X-IronPort-AV: E=Sophos;i="6.11,166,1725346800"; 
-   d="scan'208";a="38195565"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2024 13:36:38 -0700
-X-CSE-ConnectionGUID: RaQI0/hzQ9mFoLU4o/W7oA==
-X-CSE-MsgGUID: 4V8/bBXiQIO8fjAVGw4jUg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,166,1725346800"; 
-   d="scan'208";a="73689706"
-Received: from lkp-server01.sh.intel.com (HELO 53e96f405c61) ([10.239.97.150])
-  by orviesa006.jf.intel.com with ESMTP; 30 Sep 2024 13:36:33 -0700
-Received: from kbuild by 53e96f405c61 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1svN8B-000Prn-07;
-	Mon, 30 Sep 2024 20:36:31 +0000
-Date: Tue, 1 Oct 2024 04:36:24 +0800
-From: kernel test robot <lkp@intel.com>
-To: Anastasia Belova <abelova@astralinux.ru>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Anastasia Belova <abelova@astralinux.ru>,
-	Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Jerome Brunet <jbrunet@baylibre.com>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	dri-devel@lists.freedesktop.org, linux-amlogic@lists.infradead.org,
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
-	lvc-project@linuxtesting.org, stable@vger.kernel.org
-Subject: Re: [PATCH v3] drm/meson: switch to a managed drm device
-Message-ID: <202410010450.fOkIu1ki-lkp@intel.com>
-References: <20240930082640.129543-1-abelova@astralinux.ru>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEF2C183CCA;
+	Mon, 30 Sep 2024 22:02:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.22.86
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727733777; cv=fail; b=OfdLWmGyfOn0w5Re2TVOY0xhSsBc+dNGWtyQBhYX5DsqYlrJmbUU7YmifmUgaC/n32S1+a7Jo23kYtfsEYLXAGR+Qpr1dIT0WmfJfFAhpZPs4kGIj1T9lyqcDtA7haz5ubw4kCmPaNmGukd1mJEUYhHIK4MrCQfoOjcawQuC72w=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727733777; c=relaxed/simple;
+	bh=a8DVMBAXZ3OLUQNifntCi2WrQeNcUmhNS0WM2Y/HH/A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Acclzpaq1tEmgQNBrYyNZaIrJmLg/lNKGXQi4lbY0Ic4z3U10L0od7SDJX+u8ns5S5QLVRX6y+PxQ1txKTjWfYAjK/itz7n6d6gJnuLI7XIYnt7he5tZ3ueuVldcHCV49jgczhu5nhnmIEkTSrRDkY4msmpHpY0ZTGGrhhwmpcY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com; spf=pass smtp.mailfrom=nxp.com; dkim=pass (2048-bit key) header.d=nxp.com header.i=@nxp.com header.b=Rrwea0qp; arc=fail smtp.client-ip=40.107.22.86
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=nxp.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nxp.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=w5i6r4dQytUzwDDGo3AgRA+oVzFD0CWbGfvJNyyObz2Bb4xkrF8gMffIrclprUMByao2amCxcdbQIZLaevagL8gcYkQHdpwmvPi3fXMBpOJJFR9R/wHtSlVwC9eyMaYv/YdlOzg0uhCIIpjCIKibgDjMe95UJqtXjR61u/4pfgzbiwj6uznAKClm5/PSaQtvlVI+oeu8lTT0xIcAdQVTihy7+f5k2Cbz4VrBtpMjTiPmsMTqVTkkRSnsxDO05tTy2MOKILFHPIpDfeGb58soW0FOS9VdQkee05IC+MbJY+fMthbDK/9/cG+u2XcMRCFMkb5sEO9bfy2/+EY8wb1AjA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=7s+VyxhggzgkLzsPGWCpiqTbSJ+Ug7FKeY4haW+IWfs=;
+ b=hG/+swJPGthCwDxt7AvNvJ8ku28OER0V4MHoonz9Wf6Lk30s3DO4Jvw5USJy/gKP4pqbr+08E6IdOmQzOyJOPlfxEK0U+Sr7NLbC1s0U/tSy2Pbr9RTHtM7Cdr/nUh25QlPjiaqFi9mLPTyy0mf98eQ5Dz4J2npXzjDTNt3y2W/XZqmsrOAViDzgdSkdH+kQ9Z2bbfq/mk8l+ROqpwM39VxdyzoFoxOQSS8fiTQY5l3UOTgaroXb0HIFVYAUQO22n8T5D4WfV5qkhSIdFxjc7cUmxXsB/GNd+uemCSWBof7TFiF0V73fxTsqo2Cc1FbiOLRBS8ttCEb/i/h5E9FjQQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nxp.com; dmarc=pass action=none header.from=nxp.com; dkim=pass
+ header.d=nxp.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nxp.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=7s+VyxhggzgkLzsPGWCpiqTbSJ+Ug7FKeY4haW+IWfs=;
+ b=Rrwea0qpodtPZfEUmJA6uJqS2MpT8VCOC9+La9A6SBQ5RWDoZKaWP0uwQ7aiFmnDT7Wgwiu3XwRf0Y+kziROyGZS3rGYpiepaYu6H2rttzFxT+viLL7k7GKRYbOXzu9mTcd4Fvxv2gI8GxZXqSWnQm/star7Sqy4jAgXAxCfw2mCl3qjWOBSg2VUHZPK1PoJcJ8hxlqz1d0azBp8uhsLVKy9hqv2fT6BoLd0hr9ztsRQ8OL4QaC1Qishn7n5F/nY+oZ+qlZbycJX2Au5jQOc4vlDRjriw0CYVAgwYRdXY2Y9TwNwb+FXwAmgrTCgfGyqeRMLgllg3gi49Hk+3CUzrw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nxp.com;
+Received: from AM8PR04MB7779.eurprd04.prod.outlook.com (2603:10a6:20b:24b::14)
+ by AM9PR04MB7523.eurprd04.prod.outlook.com (2603:10a6:20b:2d6::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8005.27; Mon, 30 Sep
+ 2024 22:02:53 +0000
+Received: from AM8PR04MB7779.eurprd04.prod.outlook.com
+ ([fe80::7417:d17f:8d97:44d2]) by AM8PR04MB7779.eurprd04.prod.outlook.com
+ ([fe80::7417:d17f:8d97:44d2%3]) with mapi id 15.20.7982.033; Mon, 30 Sep 2024
+ 22:02:52 +0000
+Date: Tue, 1 Oct 2024 01:02:49 +0300
+From: Vladimir Oltean <vladimir.oltean@nxp.com>
+To: Wei Fang <wei.fang@nxp.com>
+Cc: davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
+	pabeni@redhat.com, claudiu.manoil@nxp.com, ast@kernel.org,
+	daniel@iogearbox.net, hawk@kernel.org, john.fastabend@gmail.com,
+	linux-kernel@vger.kernel.org, netdev@vger.kernel.org,
+	bpf@vger.kernel.org, stable@vger.kernel.org, imx@lists.linux.dev,
+	rkannoth@marvell.com, maciej.fijalkowski@intel.com,
+	sbhatta@marvell.com
+Subject: Re: [PATCH v2 net 3/3] net: enetc: disable IRQ after Rx and Tx BD
+ rings are disabled
+Message-ID: <20240930220249.dio23fh7mqw4pojn@skbuf>
+References: <20240929024506.1527828-1-wei.fang@nxp.com>
+ <20240929024506.1527828-4-wei.fang@nxp.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240929024506.1527828-4-wei.fang@nxp.com>
+X-ClientProxiedBy: VI1PR07CA0155.eurprd07.prod.outlook.com
+ (2603:10a6:802:16::42) To AM8PR04MB7779.eurprd04.prod.outlook.com
+ (2603:10a6:20b:24b::14)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240930082640.129543-1-abelova@astralinux.ru>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM8PR04MB7779:EE_|AM9PR04MB7523:EE_
+X-MS-Office365-Filtering-Correlation-Id: 4823c819-b0b0-444c-8e9a-08dce19ba151
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|7416014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?CV7SjNzUbZeMSV+0inxkNWCozBQulIcawv5yvcrhuqvpPSKHT7IddOHypaXH?=
+ =?us-ascii?Q?ncfxLR4lel0dq9t8O2KXS91DQrlCm5DN8ywdszVaCXQT0+sjhHzJ/oxQwSVT?=
+ =?us-ascii?Q?XbBF1SPR2wRLgxpfa+pKxNn2Ly+ZnjLeUQazeFgSn2bE70rRNlMlav/9gOLi?=
+ =?us-ascii?Q?0FXFCSsGnBXEE9WUmpm2ul7tKTLa73ofi616V5QHIZqWlDs5kCLsid7MdgRe?=
+ =?us-ascii?Q?OGtRC33lqzk4aTvrlSMvuPhFx2l5opZTLwI9soPtjqJJMhCpJbiFsFLpN7jc?=
+ =?us-ascii?Q?tndF4dIHwLn4qkL6vApy3tZNNnxTKDKg5lkgK25d7O1YY2Pqrpsw1eFpnIWL?=
+ =?us-ascii?Q?KEHZ4UGjy2S0jTuEzyZpR2pJB3iG0ldkp945e7weKFKBkOS9Zhwhzoz5vk3p?=
+ =?us-ascii?Q?XQcYbM8szDSNRuA1Inwmazv4pA9fmgA0sDCldSrZPZ1a81pnIGJBcxyNu5/v?=
+ =?us-ascii?Q?NCMptD+ZVEdAiRYpZJu3JxhIG2ejDJOJRfOari/6DU8DtftSpChqcd46pHPq?=
+ =?us-ascii?Q?89mZmRF+M5YcfN12jP/3eQ0zBA4nGAaYc/xVK+lWlaAuQA48yZJMJ60u8iNB?=
+ =?us-ascii?Q?4dL/TUdWurRh5jIlbkzaqe/Gia5Jk0Y2cY5uw6ulaJDhnfTIUERnXAKkfvIo?=
+ =?us-ascii?Q?2kErkvAt/v2Jpk1KBnnrWN8S4P6+udS4Bu6Anp/IVCNHFPLwERiJV8/jR0AC?=
+ =?us-ascii?Q?C/tSbeJ7o5OjrFzLnHAbjczXQO0k5NTPOeR71b8x3zOFN7Yvd7ATi7cIUTrQ?=
+ =?us-ascii?Q?O8xm4TnE3y6/19goZvWAeabohmkUvgiW0H7rKa8kw977MUFhKBJXRkExTKYp?=
+ =?us-ascii?Q?KBJtOxjcw5cAtFlxBvO89JUYPg+X5/YpGB8xb3dYqONHHVf3WS7xnvP5B1La?=
+ =?us-ascii?Q?Y8MA3/7gIJncieaPw5eOPrdXooEljlQrIm5ey0fzeCvD0g3xeYVI1H6Umwkr?=
+ =?us-ascii?Q?kdtvKd40k4Gah2ZRBcGTCOUO+wcWKob/ke1HcMt9diUJxCzn1rr+ufChtQce?=
+ =?us-ascii?Q?r79xpbfjKW2MCEbBu8ddzy1eVK35fWU1m2Q+S4ynhR1SfcJ89DWh7hTAbv+l?=
+ =?us-ascii?Q?lByCTa/oVNUK4c2lrihHb1fyr4Q6UcZ3Mrox0KRTkmz4IKiirMCLjOxXLfd8?=
+ =?us-ascii?Q?qcRE30FNOjPDxMzNQmp28jUE4+C+ZIxvnY/EEtOn80HUdYET0h9r8/1tLhoQ?=
+ =?us-ascii?Q?mhc2Ok7TflUzusUOv9gTuVaHw1HegVq7u3lWOyzHJFZgDEnW4c4GuylylqMs?=
+ =?us-ascii?Q?jBYVdciaMZ4arjtCSCGlqmu3erertyU8pI+ZrrhA5T2CuUQlMiJw44meempG?=
+ =?us-ascii?Q?ij4ClHjUSpmb8VYW1SnTFWjxdpXLbqp3Xcjm7LeNLTm+Jw=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:AM8PR04MB7779.eurprd04.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?kjMAp1Cvvm3TG6lTmbNIp5uiF/m5EFeJ3gzja07O5toov9Nud7XbXQzeNuU4?=
+ =?us-ascii?Q?MMnxOSRbLOt7IIcBa0b2QDv8Fi9mIry+bIPxI4h2SQfrHNR43mCRzb6F+sfj?=
+ =?us-ascii?Q?m4Xvgtzfr/yU2rFP1NEI+YVK+ZLKH4ya8VOrQaRRDU3rR8KwaJrqZuqnBEOx?=
+ =?us-ascii?Q?b7/uYtC3uaqjPZ4mGzVlxLLFKUhDh0NJlboFDGzkkBesx3Ev3tVcIGPH/oBr?=
+ =?us-ascii?Q?cMF5aYFpnfS/O7ptYpZ8T0SNxLJb7PqPCr29DSn1siEl0gujKiQixMP79bLR?=
+ =?us-ascii?Q?TQDvV+j9VmMwR4kO8r/m0o79xRfcWm/0WQf5BHqZtRZnFcZSN4n6zPvgwpvr?=
+ =?us-ascii?Q?Y2bYiFYBPuC+lNbHBre2sLzjwDFs/OGlucwBKQnokZxJKtsivlc8CfgRrxxR?=
+ =?us-ascii?Q?iqK0K7CRQgzAQP1BPjRPmbPSHBBGnZBNR3TS8oikAr+cDzkbC1P5J9schSCj?=
+ =?us-ascii?Q?NRmS4p5YK38QNztTL1heW6qrPxSMidz943yADEXil+WjguTaUkmFe3/KvuaS?=
+ =?us-ascii?Q?Lo9mMs+d8yPOcbVa5/0lxAV5n/WZFoIVtKEO0rFf8DeWRw8057t6r9UkiMbv?=
+ =?us-ascii?Q?KTtny8Xwrcac2JDbIb0IFrBbFIW6tyxK2zQy+LtxrjJHM+SP2ojt6yws0otF?=
+ =?us-ascii?Q?Dz50cbi5vX06pKUWoOq+YZLp9yXY1/bxod7Nccs0M18BrnfgFND6LNX7OJTU?=
+ =?us-ascii?Q?xS3kpxYjbZkBZ5GcD847cARYfEd5hEgSkqCQzC2xL3fIeoqQusWt1xLh+sE3?=
+ =?us-ascii?Q?E56cOiTaiiPxaW6Bjip6Rt337uXuPVMbOMGAn3awA/o5M1nvyl0QKt5g1fLe?=
+ =?us-ascii?Q?YFdND3koStpYGmVwAG12kdOYhRs4iIS8aLvtKN5ObK29di7POE2FgNM7cL7l?=
+ =?us-ascii?Q?UD3uCeUY+s7BSEEyNKHP3EI7PrWpmiq0jhgBfTcdPUytVVIbEi5nJK8mvL0f?=
+ =?us-ascii?Q?Unlt0ZXuWSfazoJXWWZVck/86s748FSbqRasUhu4H/h/NnWH9/KhCkELJzzo?=
+ =?us-ascii?Q?v3yQeuAk9bZxN0V+BGHSBp5h1k6zLLLoRJKsgRMfOREKUDpAGNzS6P3qGgSs?=
+ =?us-ascii?Q?H43RJzEhh7qqy/bbxlYdhAF+IoMTL3UbTH9jw3sdw8wMkPGo7CL/G0NsIeqA?=
+ =?us-ascii?Q?vsF5ym+sx8K/rzz8b+Pr7sqhVXtsr3MjLd8PSPkvuhI0ygx1q6wJOq/M3P0E?=
+ =?us-ascii?Q?TEjQ9uH1TE5RtMtgEJLtBTQG08g7jNEEnWVo2N5tewwqDrNPonyoKpJ6rmQt?=
+ =?us-ascii?Q?XIVLaceCwVCke9qgpibpbkS60EB1vufjfFVNT0ddder/1oRKjhoNPAIhXHUA?=
+ =?us-ascii?Q?zHmUB05AcKMgTVxUTCChisALgSPHXzkUSCHs+0ElSgZgoOuVTzGHQgf72XqC?=
+ =?us-ascii?Q?dv4lG7hGFFRFys2v18Ky/iQVUguwOR89/ZXcwH9ZukkBUHoFI5soIBg8fhvI?=
+ =?us-ascii?Q?yjZdZhAnqC8eTVKhz6LsBdhjsYF4G5CRNO9F5TEF3zSiIc/sxzReZivjyfb4?=
+ =?us-ascii?Q?+BQQ9bDzK9RVEpPep+6KDU+ZNO+DXT8InjJ6OWHWqwyGvlcp7kYML5XWvVMH?=
+ =?us-ascii?Q?3nd0oU/upBWd3pW/VAQ3ZG1JdyFXFePlQA8EB2odNQXUm8ZxfDLqslTNKYTU?=
+ =?us-ascii?Q?OA=3D=3D?=
+X-OriginatorOrg: nxp.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 4823c819-b0b0-444c-8e9a-08dce19ba151
+X-MS-Exchange-CrossTenant-AuthSource: AM8PR04MB7779.eurprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2024 22:02:52.8887
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 686ea1d3-bc2b-4c6f-a92c-d99c5c301635
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: KlKgf9OXeJfMPlelUzgkmuv7Nj+KkOcCViCbV2IBzXxz2TDopgQeFnFQJBDndRG2cvruSyXsLXtYyw/5UBOJ2w==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AM9PR04MB7523
 
-Hi Anastasia,
+On Sun, Sep 29, 2024 at 10:45:06AM +0800, Wei Fang wrote:
+> When running "xdp-bench tx eno0" to test the XDP_TX feature of ENETC
+> on LS1028A, it was found that if the command was re-run multiple times,
+> Rx could not receive the frames, and the result of xdo-bench showed
+> that the rx rate was 0.
+> 
+> root@ls1028ardb:~# ./xdp-bench tx eno0
+> Hairpinning (XDP_TX) packets on eno0 (ifindex 3; driver fsl_enetc)
+> Summary                      2046 rx/s                  0 err,drop/s
+> Summary                         0 rx/s                  0 err,drop/s
+> Summary                         0 rx/s                  0 err,drop/s
+> Summary                         0 rx/s                  0 err,drop/s
+> 
+> By observing the Rx PIR and CIR registers, we found that CIR is always
+> equal to 0x7FF and PIR is always 0x7FE, which means that the Rx ring
+> is full and can no longer accommodate other Rx frames. Therefore, we
+> can conclude that the problem is caused by the Rx BD ring not being
+> cleaned up.
+> 
+> Further analysis of the code revealed that the Rx BD ring will only
+> be cleaned if the "cleaned_cnt > xdp_tx_in_flight" condition is met.
+> Therefore, some debug logs were added to the driver and the current
+> values of cleaned_cnt and xdp_tx_in_flight were printed when the Rx
+> BD ring was full. The logs are as follows.
+> 
+> [  178.762419] [XDP TX] >> cleaned_cnt:1728, xdp_tx_in_flight:2140
+> [  178.771387] [XDP TX] >> cleaned_cnt:1941, xdp_tx_in_flight:2110
+> [  178.776058] [XDP TX] >> cleaned_cnt:1792, xdp_tx_in_flight:2110
+> 
+> From the results, we can see that the max value of xdp_tx_in_flight
+> has reached 2140. However, the size of the Rx BD ring is only 2048.
+> This is incredible, so we checked the code again and found that
+> xdp_tx_in_flight did not drop to 0 when the bpf program was uninstalled
+> and it was not reset when the bfp program was installed again. The
+> root cause is that the IRQ is disabled too early in enetc_stop(),
+> resulting in enetc_recycle_xdp_tx_buff() not being called, therefore,
+> xdp_tx_in_flight is not cleared.
+> 
+> Fixes: ff58fda09096 ("net: enetc: prioritize ability to go down over packet processing")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Wei Fang <wei.fang@nxp.com>
+> ---
+> v2 changes:
+> 1. Modify the titile and rephrase the commit meesage.
+> 2. Use the new solution as described in the title
+> ---
 
-kernel test robot noticed the following build errors:
+I gave this another test under a bit different set of circumstances this time,
+and I'm confident that there are still problems, which I haven't identified
+though (yet).
 
-[auto build test ERROR on linus/master]
-[also build test ERROR on v6.12-rc1 next-20240930]
-[cannot apply to drm-misc/drm-misc-next]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+With 64 byte frames at 2.5 Gbps, I see this going on:
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Anastasia-Belova/drm-meson-switch-to-a-managed-drm-device/20240930-162755
-base:   linus/master
-patch link:    https://lore.kernel.org/r/20240930082640.129543-1-abelova%40astralinux.ru
-patch subject: [PATCH v3] drm/meson: switch to a managed drm device
-config: arm-randconfig-001-20240930 (https://download.01.org/0day-ci/archive/20241001/202410010450.fOkIu1ki-lkp@intel.com/config)
-compiler: clang version 15.0.7 (https://github.com/llvm/llvm-project 8dfdcc7b7bf66834a761bd8de445840ef68e4d1a)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20241001/202410010450.fOkIu1ki-lkp@intel.com/reproduce)
+$ xdp-bench tx eno0 &
+$ while :; do taskset $((1 << 0)) hwstamp_ctl -i eno0 -r 1 && sleep 1 && taskset $((1 << 0)) hwstamp_ctl -i eno0 -r 0 && sleep 1; done
+current settings:
+tx_type 0
+rx_filter 0
+new settings:
+tx_type 0
+rx_filter 1
+Summary                 1,556,952 rx/s                  0 err,drop/s
+Summary                         0 rx/s                  0 err,drop/s
+Summary                         0 rx/s                  0 err,drop/s
+current settings:
+tx_type 0
+rx_filter 1
+Summary                         0 rx/s                  0 err,drop/s
+[  883.780346] fsl_enetc 0000:00:00.0 eno0: timeout for tx ring #6 clear (its RX ring has 2072 XDP_TX frames in flight)
+new settings:
+tx_type 0
+rx_filter 0
+Summary                     1,027 rx/s                  0 err,drop/s
+current settings:
+tx_type 0
+rx_filter 0
+Summary                         0 rx/s                  0 err,drop/s
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202410010450.fOkIu1ki-lkp@intel.com/
+which looks like the symptoms that the patch tries to solve.
 
-All errors (new ones prefixed by >>):
+My previous testing was with 390 byte frames, and this did not happen.
 
-   In file included from drivers/gpu/drm/meson/meson_osd_afbcd.c:12:
->> drivers/gpu/drm/meson/meson_drv.h:56:20: error: field has incomplete type 'struct drm_device'
-           struct drm_device drm;
-                             ^
-   include/drm/drm_print.h:37:8: note: forward declaration of 'struct drm_device'
-   struct drm_device;
-          ^
-   1 error generated.
---
-   In file included from drivers/gpu/drm/meson/meson_venc.c:14:
->> drivers/gpu/drm/meson/meson_drv.h:56:20: error: field has incomplete type 'struct drm_device'
-           struct drm_device drm;
-                             ^
-   include/drm/drm_lease.h:12:8: note: forward declaration of 'struct drm_device'
-   struct drm_device;
-          ^
-   1 error generated.
---
-   In file included from drivers/gpu/drm/meson/meson_vclk.c:12:
->> drivers/gpu/drm/meson/meson_drv.h:56:20: error: field has incomplete type 'struct drm_device'
-           struct drm_device drm;
-                             ^
-   include/drm/drm_print.h:37:8: note: forward declaration of 'struct drm_device'
-   struct drm_device;
-          ^
-   In file included from drivers/gpu/drm/meson/meson_vclk.c:13:
-   In file included from drivers/gpu/drm/meson/meson_vclk.h:12:
-   In file included from include/drm/drm_modes.h:33:
-   In file included from include/drm/drm_connector.h:32:
-   In file included from include/drm/drm_util.h:36:
-   In file included from include/linux/kgdb.h:19:
-   In file included from include/linux/kprobes.h:28:
-   In file included from include/linux/ftrace.h:13:
-   In file included from include/linux/kallsyms.h:13:
-   In file included from include/linux/mm.h:1120:
-   In file included from include/linux/huge_mm.h:8:
-   In file included from include/linux/fs.h:33:
-   In file included from include/linux/percpu-rwsem.h:7:
-   In file included from include/linux/rcuwait.h:6:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:98:11: warning: array index 3 is past the end of the array (which contains 2 elements) [-Warray-bounds]
-                   return (set->sig[3] | set->sig[2] |
-                           ^        ~
-   arch/arm/include/asm/signal.h:17:2: note: array 'sig' declared here
-           unsigned long sig[_NSIG_WORDS];
-           ^
-   In file included from drivers/gpu/drm/meson/meson_vclk.c:13:
-   In file included from drivers/gpu/drm/meson/meson_vclk.h:12:
-   In file included from include/drm/drm_modes.h:33:
-   In file included from include/drm/drm_connector.h:32:
-   In file included from include/drm/drm_util.h:36:
-   In file included from include/linux/kgdb.h:19:
-   In file included from include/linux/kprobes.h:28:
-   In file included from include/linux/ftrace.h:13:
-   In file included from include/linux/kallsyms.h:13:
-   In file included from include/linux/mm.h:1120:
-   In file included from include/linux/huge_mm.h:8:
-   In file included from include/linux/fs.h:33:
-   In file included from include/linux/percpu-rwsem.h:7:
-   In file included from include/linux/rcuwait.h:6:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:98:25: warning: array index 2 is past the end of the array (which contains 2 elements) [-Warray-bounds]
-                   return (set->sig[3] | set->sig[2] |
-                                         ^        ~
-   arch/arm/include/asm/signal.h:17:2: note: array 'sig' declared here
-           unsigned long sig[_NSIG_WORDS];
-           ^
-   In file included from drivers/gpu/drm/meson/meson_vclk.c:13:
-   In file included from drivers/gpu/drm/meson/meson_vclk.h:12:
-   In file included from include/drm/drm_modes.h:33:
-   In file included from include/drm/drm_connector.h:32:
-   In file included from include/drm/drm_util.h:36:
-   In file included from include/linux/kgdb.h:19:
-   In file included from include/linux/kprobes.h:28:
-   In file included from include/linux/ftrace.h:13:
-   In file included from include/linux/kallsyms.h:13:
-   In file included from include/linux/mm.h:1120:
-   In file included from include/linux/huge_mm.h:8:
-   In file included from include/linux/fs.h:33:
-   In file included from include/linux/percpu-rwsem.h:7:
-   In file included from include/linux/rcuwait.h:6:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:114:11: warning: array index 3 is past the end of the array (which contains 2 elements) [-Warray-bounds]
-                   return  (set1->sig[3] == set2->sig[3]) &&
-                            ^         ~
-   arch/arm/include/asm/signal.h:17:2: note: array 'sig' declared here
-           unsigned long sig[_NSIG_WORDS];
-           ^
-   In file included from drivers/gpu/drm/meson/meson_vclk.c:13:
-   In file included from drivers/gpu/drm/meson/meson_vclk.h:12:
-   In file included from include/drm/drm_modes.h:33:
-   In file included from include/drm/drm_connector.h:32:
-   In file included from include/drm/drm_util.h:36:
-   In file included from include/linux/kgdb.h:19:
-   In file included from include/linux/kprobes.h:28:
-   In file included from include/linux/ftrace.h:13:
-   In file included from include/linux/kallsyms.h:13:
-   In file included from include/linux/mm.h:1120:
-   In file included from include/linux/huge_mm.h:8:
-   In file included from include/linux/fs.h:33:
-   In file included from include/linux/percpu-rwsem.h:7:
-   In file included from include/linux/rcuwait.h:6:
-   In file included from include/linux/sched/signal.h:6:
-   include/linux/signal.h:114:27: warning: array index 3 is past the end of the array (which contains 2 elements) [-Warray-bounds]
-                   return  (set1->sig[3] == set2->sig[3]) &&
-                                            ^         ~
-   arch/arm/include/asm/signal.h:17:2: note: array 'sig' declared here
-           unsigned long sig[_NSIG_WORDS];
-           ^
-   In file included from drivers/gpu/drm/meson/meson_vclk.c:13:
-   In file included from drivers/gpu/drm/meson/meson_vclk.h:12:
-   In file included from include/drm/drm_modes.h:33:
-   In file included from include/drm/drm_connector.h:32:
-   In file included from include/drm/drm_util.h:36:
-   In file included from include/linux/kgdb.h:19:
-   In file included from include/linux/kprobes.h:28:
-   In file included from include/linux/ftrace.h:13:
-   In file included from include/linux/kallsyms.h:13:
-   In file included from include/linux/mm.h:1120:
-   In file included from include/linux/huge_mm.h:8:
---
-   In file included from drivers/gpu/drm/meson/meson_vpp.c:11:
->> drivers/gpu/drm/meson/meson_drv.h:56:20: error: field has incomplete type 'struct drm_device'
-           struct drm_device drm;
-                             ^
-   drivers/gpu/drm/meson/meson_drv.h:15:8: note: forward declaration of 'struct drm_device'
-   struct drm_device;
-          ^
-   1 error generated.
---
->> drivers/gpu/drm/meson/meson_encoder_dsi.c:135:32: error: passing 'struct drm_device' to parameter of incompatible type 'struct drm_device *'; take the address with &
-           ret = drm_simple_encoder_init(priv->drm, &meson_encoder_dsi->encoder,
-                                         ^~~~~~~~~
-                                         &
-   include/drm/drm_simple_kms_helper.h:261:48: note: passing argument to parameter 'dev' here
-   int drm_simple_encoder_init(struct drm_device *dev,
-                                                  ^
-   1 error generated.
---
-   In file included from drivers/gpu/drm/meson/meson_viu.c:14:
->> drivers/gpu/drm/meson/meson_drv.h:56:20: error: field has incomplete type 'struct drm_device'
-           struct drm_device drm;
-                             ^
-   include/drm/drm_fourcc.h:56:8: note: forward declaration of 'struct drm_device'
-   struct drm_device;
-          ^
-   1 error generated.
---
->> drivers/gpu/drm/meson/meson_encoder_hdmi.c:405:32: error: passing 'struct drm_device' to parameter of incompatible type 'struct drm_device *'; take the address with &
-           ret = drm_simple_encoder_init(priv->drm, &meson_encoder_hdmi->encoder,
-                                         ^~~~~~~~~
-                                         &
-   include/drm/drm_simple_kms_helper.h:261:48: note: passing argument to parameter 'dev' here
-   int drm_simple_encoder_init(struct drm_device *dev,
-                                                  ^
-   drivers/gpu/drm/meson/meson_encoder_hdmi.c:423:60: error: passing 'struct drm_device' to parameter of incompatible type 'struct drm_device *'; take the address with &
-           meson_encoder_hdmi->connector = drm_bridge_connector_init(priv->drm,
-                                                                     ^~~~~~~~~
-                                                                     &
-   include/drm/drm_bridge_connector.h:13:68: note: passing argument to parameter 'drm' here
-   struct drm_connector *drm_bridge_connector_init(struct drm_device *drm,
-                                                                      ^
-   2 errors generated.
-
-
-vim +56 drivers/gpu/drm/meson/meson_drv.h
-
-    42	
-    43	struct meson_drm {
-    44		struct device *dev;
-    45		enum vpu_compatible compat;
-    46		void __iomem *io_base;
-    47		struct regmap *hhi;
-    48		int vsync_irq;
-    49	
-    50		struct meson_canvas *canvas;
-    51		u8 canvas_id_osd1;
-    52		u8 canvas_id_vd1_0;
-    53		u8 canvas_id_vd1_1;
-    54		u8 canvas_id_vd1_2;
-    55	
-  > 56		struct drm_device drm;
-    57		struct drm_crtc *crtc;
-    58		struct drm_plane *primary_plane;
-    59		struct drm_plane *overlay_plane;
-    60		void *encoders[MESON_ENC_LAST];
-    61	
-    62		const struct meson_drm_soc_limits *limits;
-    63	
-    64		/* Components Data */
-    65		struct {
-    66			bool osd1_enabled;
-    67			bool osd1_interlace;
-    68			bool osd1_commit;
-    69			bool osd1_afbcd;
-    70			uint32_t osd1_ctrl_stat;
-    71			uint32_t osd1_ctrl_stat2;
-    72			uint32_t osd1_blk0_cfg[5];
-    73			uint32_t osd1_blk1_cfg4;
-    74			uint32_t osd1_blk2_cfg4;
-    75			uint32_t osd1_addr;
-    76			uint32_t osd1_stride;
-    77			uint32_t osd1_height;
-    78			uint32_t osd1_width;
-    79			uint32_t osd_sc_ctrl0;
-    80			uint32_t osd_sc_i_wh_m1;
-    81			uint32_t osd_sc_o_h_start_end;
-    82			uint32_t osd_sc_o_v_start_end;
-    83			uint32_t osd_sc_v_ini_phase;
-    84			uint32_t osd_sc_v_phase_step;
-    85			uint32_t osd_sc_h_ini_phase;
-    86			uint32_t osd_sc_h_phase_step;
-    87			uint32_t osd_sc_h_ctrl0;
-    88			uint32_t osd_sc_v_ctrl0;
-    89			uint32_t osd_blend_din0_scope_h;
-    90			uint32_t osd_blend_din0_scope_v;
-    91			uint32_t osb_blend0_size;
-    92			uint32_t osb_blend1_size;
-    93	
-    94			bool vd1_enabled;
-    95			bool vd1_commit;
-    96			bool vd1_afbc;
-    97			unsigned int vd1_planes;
-    98			uint32_t vd1_if0_gen_reg;
-    99			uint32_t vd1_if0_luma_x0;
-   100			uint32_t vd1_if0_luma_y0;
-   101			uint32_t vd1_if0_chroma_x0;
-   102			uint32_t vd1_if0_chroma_y0;
-   103			uint32_t vd1_if0_repeat_loop;
-   104			uint32_t vd1_if0_luma0_rpt_pat;
-   105			uint32_t vd1_if0_chroma0_rpt_pat;
-   106			uint32_t vd1_range_map_y;
-   107			uint32_t vd1_range_map_cb;
-   108			uint32_t vd1_range_map_cr;
-   109			uint32_t viu_vd1_fmt_w;
-   110			uint32_t vd1_if0_canvas0;
-   111			uint32_t vd1_if0_gen_reg2;
-   112			uint32_t viu_vd1_fmt_ctrl;
-   113			uint32_t vd1_addr0;
-   114			uint32_t vd1_addr1;
-   115			uint32_t vd1_addr2;
-   116			uint32_t vd1_stride0;
-   117			uint32_t vd1_stride1;
-   118			uint32_t vd1_stride2;
-   119			uint32_t vd1_height0;
-   120			uint32_t vd1_height1;
-   121			uint32_t vd1_height2;
-   122			uint32_t vd1_afbc_mode;
-   123			uint32_t vd1_afbc_en;
-   124			uint32_t vd1_afbc_head_addr;
-   125			uint32_t vd1_afbc_body_addr;
-   126			uint32_t vd1_afbc_conv_ctrl;
-   127			uint32_t vd1_afbc_dec_def_color;
-   128			uint32_t vd1_afbc_vd_cfmt_ctrl;
-   129			uint32_t vd1_afbc_vd_cfmt_w;
-   130			uint32_t vd1_afbc_vd_cfmt_h;
-   131			uint32_t vd1_afbc_mif_hor_scope;
-   132			uint32_t vd1_afbc_mif_ver_scope;
-   133			uint32_t vd1_afbc_size_out;
-   134			uint32_t vd1_afbc_pixel_hor_scope;
-   135			uint32_t vd1_afbc_pixel_ver_scope;
-   136			uint32_t vd1_afbc_size_in;
-   137			uint32_t vpp_pic_in_height;
-   138			uint32_t vpp_postblend_vd1_h_start_end;
-   139			uint32_t vpp_postblend_vd1_v_start_end;
-   140			uint32_t vpp_hsc_region12_startp;
-   141			uint32_t vpp_hsc_region34_startp;
-   142			uint32_t vpp_hsc_region4_endp;
-   143			uint32_t vpp_hsc_start_phase_step;
-   144			uint32_t vpp_hsc_region1_phase_slope;
-   145			uint32_t vpp_hsc_region3_phase_slope;
-   146			uint32_t vpp_line_in_length;
-   147			uint32_t vpp_preblend_h_size;
-   148			uint32_t vpp_vsc_region12_startp;
-   149			uint32_t vpp_vsc_region34_startp;
-   150			uint32_t vpp_vsc_region4_endp;
-   151			uint32_t vpp_vsc_start_phase_step;
-   152			uint32_t vpp_vsc_ini_phase;
-   153			uint32_t vpp_vsc_phase_ctrl;
-   154			uint32_t vpp_hsc_phase_ctrl;
-   155			uint32_t vpp_blend_vd2_h_start_end;
-   156			uint32_t vpp_blend_vd2_v_start_end;
-   157		} viu;
-   158	
-   159		struct {
-   160			unsigned int current_mode;
-   161			bool hdmi_repeat;
-   162			bool venc_repeat;
-   163			bool hdmi_use_enci;
-   164		} venc;
-   165	
-   166		struct {
-   167			dma_addr_t addr_dma;
-   168			uint32_t *addr;
-   169			unsigned int offset;
-   170		} rdma;
-   171	
-   172		struct {
-   173			struct meson_afbcd_ops *ops;
-   174			u64 modifier;
-   175			u32 format;
-   176		} afbcd;
-   177	};
-   178	
-
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Please do not merge this.
 
