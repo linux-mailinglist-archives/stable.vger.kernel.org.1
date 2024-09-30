@@ -1,305 +1,244 @@
-Return-Path: <stable+bounces-78263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE21298A508
-	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 15:29:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DC4D98A536
+	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 15:31:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6EBDA1F226D2
-	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 13:29:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9F42D1C202F7
+	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 13:31:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B3AB18E351;
-	Mon, 30 Sep 2024 13:28:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D0E619049E;
+	Mon, 30 Sep 2024 13:30:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="NntH4iNS"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="x4+sO1An"
 X-Original-To: stable@vger.kernel.org
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2055.outbound.protection.outlook.com [40.107.237.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 570291DA3D
-	for <stable@vger.kernel.org>; Mon, 30 Sep 2024 13:28:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.55
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727702886; cv=fail; b=qbU4dpRSLd7adBNea5O0dkiwPnxg2JSa5su1CcdAgHO2ge80tcUbfbjO9tE1rLGtYmKdTEmhS1PrqRTWwFJMJiZ7bFx7I1nxGAjflZdMF6+wzlumeHK1ICEdbQCj/ED2/yr4W901/e9NSEWjCkBbhKyeE/fQEF2o1zX5kvwBbhM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727702886; c=relaxed/simple;
-	bh=ZhS1ZlexqS9jjrMA8wkYWYLy+mWsuicIpHAHsINBA6w=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=EUz1MFgIv3oGxBwd0eoVmDXSSlGp7/HRaXg2GMd16vSZ9q7y/4QuC872hheFE9DRL1a5b8igk3gOephiWVJDVeh++tUoML5pcbKfOTqfV7nutmaedOrU0vCl66uYrh/puus463OainKnOc+NRn8KffnLhUmvg36kX9OpJTH65RE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=NntH4iNS; arc=fail smtp.client-ip=40.107.237.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=q+1x6QeWfEx/RulJTFn1Sg8shkX3sKbqUIzpo4aHTXn7sefZw2mQI5W86oQFGt1PbQJ1JMtRzEC9GEiAIbWhi8LobK/z2xsS6vsY2POF+df5xkSsBdIuDm4r4IbQnk+zMM5EXyhRMebk8hB/Q6jFSvnnpSnEHd6wrNWmcZRusu02fUGiJl77pXcHmdiTNik1aXUOV7qMKpSSxOKcQ34lE2abu9aaV6+yywchKvg8ksVPBPlknu02XpMoFutwUJ7u8iy33Ppb3sKsZkz5uPMI6aMFQ5PIwDPxuc8JROJBbBRiZIW0yjMb+hJuuHDmiKfgHHf5NEW6z8c+Xt/pVQdL0w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=sY3CYkABz7X9kr+IqxWb4V2/izC8K08qr60EwQxvbOI=;
- b=MLofd0hGuwgaL9OxXWHGGVsZVLRQe0pYu1CpNPgiRBrJ2FI/EDi4S2naJnV74D9h07HqG2DVcpavM24AWZ7beyn9iCsMa3Zlh0T0q+WAY1wrqrghpNIWhzsSLNThVV/c6iR79Rsf8VKpN6MuR57lnWOF6h31t8HrZ4YwMmqVRKk6PWSfNMZGESZW4WwwFfluHkR4jods5q9yTz6h9Kcxqovr0/LmxzH009BLhylfBEnk0h774GqQxME/XdxF+NY3xoqUV0TCde0WDsWFAtQyw2Xe14IuPaffPo9eTdtpuLnoDsgoikI1QHB/CQFaB8c2IUTE3Z0iR5dtdKXm6U9UWQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=sY3CYkABz7X9kr+IqxWb4V2/izC8K08qr60EwQxvbOI=;
- b=NntH4iNSJ9NCZ0OIywvkpzUt4QfBolkwTsAmweIrzADK1z2IXsOY9BtQ2ROrFBbTEQSa1pRJ45BCSLbnZllCXb+HA8G04jNqKbCK5ZabfXUn9Ebk6L7hLSfJA9xPT4GbHEXE6t7nKVmmPDLcWzA2DEJuS2Kq7wdrwUgsC0gLZZA=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com (2603:10b6:510:13c::22)
- by BL3PR12MB6547.namprd12.prod.outlook.com (2603:10b6:208:38e::6) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8005.27; Mon, 30 Sep
- 2024 13:28:01 +0000
-Received: from PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::46fb:96f2:7667:7ca5]) by PH7PR12MB5685.namprd12.prod.outlook.com
- ([fe80::46fb:96f2:7667:7ca5%2]) with mapi id 15.20.8005.024; Mon, 30 Sep 2024
- 13:28:00 +0000
-Message-ID: <693dd05a-0537-4be6-9d8c-6cd1b5d31833@amd.com>
-Date: Mon, 30 Sep 2024 15:27:53 +0200
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/8] drm/sched: Always increment correct scheduler score
-To: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>,
- Tvrtko Ursulin <tursulin@igalia.com>, amd-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org
-Cc: kernel-dev@igalia.com, Luben Tuikov <ltuikov89@gmail.com>,
- Matthew Brost <matthew.brost@intel.com>, David Airlie <airlied@gmail.com>,
- Daniel Vetter <daniel@ffwll.ch>, stable@vger.kernel.org,
- Nirmoy Das <nirmoy.das@intel.com>
-References: <20240913160559.49054-1-tursulin@igalia.com>
- <20240913160559.49054-4-tursulin@igalia.com>
- <8392475d-489e-4aa3-b6c2-7cd15b86dab2@igalia.com>
- <cf135523-92ca-4d41-9acf-e979c9769ad9@amd.com>
- <2b0860a2-5ef0-496f-9283-d5056433af58@igalia.com>
-Content-Language: en-US
-From: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
-In-Reply-To: <2b0860a2-5ef0-496f-9283-d5056433af58@igalia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: FR3P281CA0023.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:1c::7) To PH7PR12MB5685.namprd12.prod.outlook.com
- (2603:10b6:510:13c::22)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E57218F2E1
+	for <stable@vger.kernel.org>; Mon, 30 Sep 2024 13:30:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727703019; cv=none; b=asskgn9FYIvhEOznmyM42KD3BQXXcoxJRvHdGEC7IDCSWIzqa38kVyIAKsahL/HEcJIrng8rBafHiu20KMGZqOnE+kfF2h8ePItKGZgvy1dOmQKmHJBz0gA7Y6h9enQOMqwOAj1KdGp5kbGlzxZTcZzmucehWzRvi4Qc/XFN2Uo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727703019; c=relaxed/simple;
+	bh=/n7vQQkZbNkpu/I0FxVHMtWx4dPCOlVBE4e1pK5d2Jo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ETeSnwSKH9Phn9SnIaUBH9MGN7NdQDQ3vJ8NRgpd9eDrfssntZMnXYAz46mwrYD2U49R0zG8kLprmbU0ptlnfeKtgd+4mX37xCVnIH4+yt+GL7nTbJjlh1cC6wSkT1vccij8Pzh61Moy0VT9OSgv//jrxANESZYOOX87T3+wa4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=x4+sO1An; arc=none smtp.client-ip=209.85.221.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-37cc4e718ecso2932829f8f.0
+        for <stable@vger.kernel.org>; Mon, 30 Sep 2024 06:30:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1727703015; x=1728307815; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YKSU0R00wOvVqIyeSh3/UuGidxso/ZEvJ+/PBoO5j/Q=;
+        b=x4+sO1An/3RVOla413bNHdkDd3F8xMn+t6fnz6KcvIgHj5wMQvQytvBZINGvoUyCkm
+         UGp5kxQdVMDIcnEwL94R6X+XrNTgc+enJBzZFbjL8ryyh+oDCsgpEuOeSrze6Hugn175
+         BcJqTAU1JdeMVBoXoa4cLsaZG6IJ0FO6KkrX5mN1AyWrsk1JbQlPpdc6scWyrnNeA7yx
+         VZwy7GuA5BnnX3Ct8osKxMrVPQ2JwUMlWoCQbCLVx6iZCjUJQRSq7e/jwoU4LCKxwOo9
+         H88CwgYjqiIQ2NKQB0YwjDPJfjhAIEVCbQTPRogxLxHs9HlbNoO0HFvY9C2QsalsDir1
+         492Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727703015; x=1728307815;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YKSU0R00wOvVqIyeSh3/UuGidxso/ZEvJ+/PBoO5j/Q=;
+        b=jKCR3taoMgIbgpJJ8J8bj10qCDi/UrwppOPGifNleUh/JVzeKQtHGG/LkmjJCLDkyL
+         y9h6tRrXC/o+8p4R6w1C1KP4gHR/eHynuzKGNCPZOR0hGMcP2OL4FK2WFKQc0RmdatZI
+         yrRTrK/OGB7ymCzvn3twz42P/1emGIENL/uhHZQ0UK+Xy+xLkJw9QSrjpTqKCimeo+Sq
+         IETC1i55JSL8TkTByqpnthuVuxovv3+koTm6ec78JLALRVWLh/OexzQBiDStD7MgZfOg
+         cMFRskY+Pl7fRF6uRWpUb8RYjIjgbv6DB9B1lRHxt8wo/mlcCDYqdv38il74jOeiXuKl
+         n3bA==
+X-Forwarded-Encrypted: i=1; AJvYcCXJk/n3JWXwh7+OPsVC4hXKsaIru47YYwX8pdhek3W6URma6+j57HvnZbZGqf0zZelYpmWzgyo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw8ei6LWamnbIYWR/nKvUx5OCXb0xjNslxQejRS5yZ7ou06iNOV
+	sHwwwD6MKsTDNbLPgfdO0U840PI9mI1QqJwma59BFqnC9a4e3BZZKaA5e4xoMBgW9cU1jzIC+Ht
+	NbG6T3B6cuSg4PYIHdUTJoizzbyufkG2covNV
+X-Google-Smtp-Source: AGHT+IGhG80yy7VmFB5XiKVCMCB2sWXXuBFf/Ku6FQTSbPOTdG1KnvWxsrTZrSgBRyOLV/Ae04GMKwUzxiPFk1dR1Uo=
+X-Received: by 2002:a5d:5145:0:b0:37c:ccc1:17d2 with SMTP id
+ ffacd0b85a97d-37cd5a9d0b6mr6427964f8f.34.1727703015192; Mon, 30 Sep 2024
+ 06:30:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: PH7PR12MB5685:EE_|BL3PR12MB6547:EE_
-X-MS-Office365-Filtering-Correlation-Id: 43878047-4e11-43b4-11c2-08dce153b442
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|7416014|376014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?UXdpdzRQMGs4R01QcDdhUlBYRUpBRWg1Y0Y2ZHVsVmhSRzFPRysyRnkySWVE?=
- =?utf-8?B?L3Z0QTRsQ1g2R0pJVlkrM3BlS3NGSm9RUURVNW1LZFBpcmRpUnN2QnFjajJO?=
- =?utf-8?B?N0lpSUx0alFaNUdrQlpla0N2MkFyNWlBUitudHowcGtoeExSRzNoNzlvOVB5?=
- =?utf-8?B?TGQ2U08vM3BpZ2Z3eGFvWGZkWm5hRkNIUjYxcjRsZUg5YjI3dlIxckt5aTN6?=
- =?utf-8?B?bC9OSk83TmZqeGRETHhGbElQT3QrcFpVMUY3S0hYNks5emt2L3oyblpHMWdm?=
- =?utf-8?B?b3RyazcxRGtjT3pqZGR2MXFiakZHaXVwLzVRaWV1U0J4U0FLTDhzbXhNWHNH?=
- =?utf-8?B?cThNNDFRRTRIbnpYazM1V0hxczZoZG9CQ3haaXBlSmtkUEttTjZqTWtvZ3JV?=
- =?utf-8?B?aThvQlIyekZKeXBQTFNHa3J6WWt2U3k4eDF1SE9zRCtkd1pqNkRwckFUOVk5?=
- =?utf-8?B?UXYzNFhVNDI3VXZkTGJ0KzAxQXBGWDZOaHVYbE9Pa0t2dGE3MFVoTk0zU2Mv?=
- =?utf-8?B?TkFHdzlKVjRSSXpGWStsaEdCbHNNbEFuMXFzLzU1d2FnSWZzdTBzNHhoYVhF?=
- =?utf-8?B?NGEwclBoZWNCcko0Tk5rVEFJNWF6RHNaRXZ4SEgxOERTVkE2UlQ2VVJ1Y2Nz?=
- =?utf-8?B?TU9SS3BDWGdET2JCUWhUR3VhY2Y1SXJ1Snp1QitNU1A1VzhYbXNyL3lXcCtI?=
- =?utf-8?B?eUxEVitxQVd2aENMYkNzUW5OTXY5cGM2SXVDWXVUNWJSU09uSkFJU1R0Z2Qx?=
- =?utf-8?B?eHFvdmQyRmlrNVJESmI5M2pVUGJkQVE3ME9nZFJIMm5ENDlIVDVTem9mOU9Y?=
- =?utf-8?B?TTNCM1FoVGFONnlzSGNZNGp5UHlhU05lWEJjMTZMOHZCM1dJRXBvM25oV3BK?=
- =?utf-8?B?T3VzYm5CdmErVVkwcndTeEJRTktxTStNNUN6akllcU9XRVBoRXJsdG9Jc3ZN?=
- =?utf-8?B?MUU0ZktlNmloL0xidEo5MHJwT1oxWXpYbkl4NkFWZEliWWsyb08rditxRWxx?=
- =?utf-8?B?MXJBWWZFSUorYVhQdVEvVDFjMDdOUFhQTFdCOTU0QnNFVUFrZk1seHJYOVRL?=
- =?utf-8?B?RHNob1NEQjFkVEVqalBxYW5BZlpoSHUxdGFMWnN2elh3eGRUem5sZjFMS3g5?=
- =?utf-8?B?bVhwZDJnRzA1VjY2NmFLZ0pDZm9jaElnRzlQRmpJakFvK2prNEtBVjlOWGRs?=
- =?utf-8?B?SUxrUnlXUVJvcytWcHcyMmlxbERUdzVMLzJNNGFuOG5zczhTN3MyM1ZqakxO?=
- =?utf-8?B?eDVYSlJsZ3lQelAzY0UvZ1dYdDFSMys4ZVB0MStHR09jV3BvZjEwTWZ4RURo?=
- =?utf-8?B?NVJBSjR3d01kOEdaWDBKcjVhdXk4R05ETXpleHdaMFJTWFp5TmsvZFQrelRN?=
- =?utf-8?B?UVlZenZLRU9mb3FyK1k5Rm90enl2Nk5YODNGdEQ0Y29IMlBXSktLNmxxWTJW?=
- =?utf-8?B?a2tkSm9rVTBjaDR1cjVZQVJsOFczd1lJWWNtMDlMaUdOdmgzRWZjcVFXcGhr?=
- =?utf-8?B?VkVmUGorbjFDRE1PdzVGYStFcWs4MW9uM09kQ0hmUnAzQTlpT3R6dG0zd2M2?=
- =?utf-8?B?T0NCZlFndTlCd25JckVFZmZpVG0xVUg4YytDRUQvZ25sZE9oZnh3V0lTMzlx?=
- =?utf-8?B?eStibHZpamtxMndSdmNpMWp3VVJPNmpZYnAxV2p4SUFPS3JjSm05T3dEclRX?=
- =?utf-8?B?YURBV3grN0pPdy9Mc0hXUEZQS3NvZ3dmUHFuYzVQSHpSTUhDK3dNUGpQZFJo?=
- =?utf-8?B?QlR6WWtZdDZ3bVBPYW9FTGtGZHc3eFJVOXR5aDJLUHNGQm9paS9LVVRRd1Fx?=
- =?utf-8?B?clZJZTViQTB6Z3Q4S0JMdz09?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:PH7PR12MB5685.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(7416014)(376014)(1800799024);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?S05EUjVCMVA3Y0p4UHNwOEMvVlJ3U2V0QU9vVEk2MDkxYVpYMzZFVzF3eWtq?=
- =?utf-8?B?bjJCNm5QaE1oY3ZBallQbUd5SFBlYlVYTmt3YnRDVmlrRHBxVHlydGNZK1Nl?=
- =?utf-8?B?cityYTZHbnE1LzJ0RVVCUHU2d2lwWVltNzNBV1R3dlp0YnAva2RCREpkbklW?=
- =?utf-8?B?eXMvWHJqendGeTlJL09kWkI2bGF5ZmpSSTNnQWRmTlU1ZzFKRVk0bU1jdXhv?=
- =?utf-8?B?MVRBOFVCL3VjdUF5R3lUSU5hd3dFWWRodG92TlNnOE82SENDdk5aUFNLUDJG?=
- =?utf-8?B?MGpFQndtdVNaRU40R1lqeHF4dUo1ZVRJL3pZNHVDdHNQTFFwSlBjZjhyaUl6?=
- =?utf-8?B?WmxpSEFuNkF5S0VBYkJTeG1WWUt4aGU5cnBqZjdZamV5SUtMSmNHd0o2Ukla?=
- =?utf-8?B?MTFaRTFpVXhJNFlMZ2k2czliOUExVnBMTlJxdnl1cmQxK1ljdlR6UkdwUXRL?=
- =?utf-8?B?VUhmYnpROTY5emhkRm81WC83aHBMQ1Y1VkI3RUdiUFUrNnpUaU8zVG04UUU2?=
- =?utf-8?B?d1ZabER5bGw0OHA4N0d1V0J5dmZhV0ptSm56d0tPakVEa3lnSzkrUkVJNkdW?=
- =?utf-8?B?SytuZGJmTFYweUVmNDRLY1NHMzRlNkRpdFo2SmJoZUNtY1doaXFralUwdWEr?=
- =?utf-8?B?WjFBdnlsdUdsOFVDWi9EeEV5bldBWDYxTFRlbGZETzd6N2loT0llY0hOL2NX?=
- =?utf-8?B?VXNhQ3ZSYSs0ZUVyVEN3Z0lBc1dzYVcveldHQjhTVHFJazR2VVhIbG93ZjlC?=
- =?utf-8?B?eFB0L1lZMmlaMGNZbnF4Q0sxeVdYNmRxc21GL2RQcE9YTFJmWUhXb3M2T0Nt?=
- =?utf-8?B?VHQyZjNuOEp3QWxHNEVqaEJSMmFrakZnU0dOV3c5WVE3aWJFb0ltakxBc1FW?=
- =?utf-8?B?bUtQMjFvemxvRGVEaWw1cFh1c2U5TTZXTmRsTGxzdUFkRjRRNU0xa2xPUGNy?=
- =?utf-8?B?L0U5ZU1Ob29OL0ZLRkYxWmlCdVYrYng4NC9WTjZsdzkySkI2b3lkcG9ueG1P?=
- =?utf-8?B?QnJGeU8yaVFTRzFnbzZPYVFxbzhXRVNwNE5kQmpCNXVyYkM3MWZrQkhCQnZp?=
- =?utf-8?B?SUY3Si9zODlMU2F0M2NkVzlia3luZHV6cWlUL2lVSGNRemtJeTR3aGZMUEsz?=
- =?utf-8?B?WlJYMDFERUxjQkt6c0JrbzB6empKMzhpZU1LaWNNbTRmaEFWQTJwOGxRUnFK?=
- =?utf-8?B?U0dHWldZSXdhNzV4VU0zSWJqZHBqSHU0MEJKbi9MRGc3UHU0YWc3SG5aUHB4?=
- =?utf-8?B?eDFxRk9URERaSnNQb2ZCTm9BNjVqdEdmcW9kcnFjc09RdVhJUnp6ZElJQ3N1?=
- =?utf-8?B?WHRRNXRTV0s5aU1oWThoZ2NpZWVlVjNDaHkzb3p3Uk9maHZ5d1dvVEdmODUw?=
- =?utf-8?B?L2VuNjRnemlnQ2YybjBweTNiNkovZzE3cXA0ZE9uTmFmYmNtU0R5K0l3Ni9i?=
- =?utf-8?B?Y0VpQTlFelRYM3Z4VUdsUWtvaGFJQUQrMkcyMEJzV3labmVtTzJ5TnJKa2Q2?=
- =?utf-8?B?R0c5V3R6ZHBqdzRNNlF6WDhqUFVjanBJR0picUl3TDhBRCtSWUc1Vlp5dHQ1?=
- =?utf-8?B?MGk5VFp5WDBDTFZjMHZnRWJtR3VjUDRCdFFaWmN5dllYRDNkSmx0MW0xOFg3?=
- =?utf-8?B?cW5ieElLTUxDU2VEMEwxV2tCSDZvc3lRZTFHaXM5VEhZTmlkeldTNkh2elFG?=
- =?utf-8?B?RUNHUGdHdVI3MEsrU2x4Q3dRY3RYdklnSUhYbUhJTFRWaHpWdUY5WUtlMFU1?=
- =?utf-8?B?d09vL3F4UC8vUUx3K3lqV0sxTG94ZlhaUTlKbGJpRVVPYmR6WkZ5ZmZXRlVH?=
- =?utf-8?B?TjlJVzhhZi9mQk9EVWRMZTZwajk0RkhBdUNlWVM0cU1sNXJtZFpLcU9hVVBT?=
- =?utf-8?B?UXNWb0JyZ3piOEU2aVJ1VUYyL0pKRFJIbktKUTNDT29MK2h2MXdpa1BxT3My?=
- =?utf-8?B?VFRlSEJiUlBzTjNTZGhXU2p6c1cwcFhDYXFYb0toNnRyeENMRjlhaWVqaVZw?=
- =?utf-8?B?d08rRHJxMUE2ckhjYTl5VGVpb0xpdTgvRlpKVVBici9nUk9wMGtJTVpTU2NH?=
- =?utf-8?B?UDhScXJIWFBYWUF2eXNXSGdHOGlzelQ3bHVrZzFYQ2pnL3F0VFpzdVliak9n?=
- =?utf-8?Q?7wgwxb3LZ0/q1F10Dm1zXCtSp?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 43878047-4e11-43b4-11c2-08dce153b442
-X-MS-Exchange-CrossTenant-AuthSource: PH7PR12MB5685.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 Sep 2024 13:28:00.3666
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: QYj1yzdpsZKJYzOMl34ENv2j0AP3flGV+BBTtLgjPg4Hu0vi/iocdVWXd1YWnGNU
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BL3PR12MB6547
+References: <20240926233632.821189-1-cmllamas@google.com> <20240926233632.821189-7-cmllamas@google.com>
+ <CAH5fLggS7C4QdmDFqEy5KARUj+4oNWfstyno3d43joG5haysDw@mail.gmail.com>
+ <CAN5Drs3TCGT1rWJjujo3FP3HxnSFUFo5hcWh=4+xhOYzDg4JqQ@mail.gmail.com>
+ <CAH5fLgjnyKtXsnPbvCFz64BBRqvWPwh6reM-myWA9AEBKFhcJg@mail.gmail.com> <ZvbeCg5Ho6p-VU5o@google.com>
+In-Reply-To: <ZvbeCg5Ho6p-VU5o@google.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 30 Sep 2024 15:30:01 +0200
+Message-ID: <CAH5fLgjB-ia+UhE1P8gOxHTdjSJJ1=xKSS0c75AvGA91uo_fEw@mail.gmail.com>
+Subject: Re: [PATCH v2 6/8] binder: allow freeze notification for dead nodes
+To: Carlos Llamas <cmllamas@google.com>
+Cc: Yu-Ting Tseng <yutingtseng@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	=?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Christian Brauner <brauner@kernel.org>, 
+	Suren Baghdasaryan <surenb@google.com>, linux-kernel@vger.kernel.org, kernel-team@android.com, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Am 30.09.24 um 15:22 schrieb Tvrtko Ursulin:
+On Fri, Sep 27, 2024 at 6:32=E2=80=AFPM Carlos Llamas <cmllamas@google.com>=
+ wrote:
 >
-> On 30/09/2024 14:07, Christian König wrote:
->> Am 30.09.24 um 15:01 schrieb Tvrtko Ursulin:
->>>
->>> On 13/09/2024 17:05, Tvrtko Ursulin wrote:
->>>> From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
->>>>
->>>> Entities run queue can change during drm_sched_entity_push_job() so 
->>>> make
->>>> sure to update the score consistently.
->>>>
->>>> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
->>>> Fixes: d41a39dda140 ("drm/scheduler: improve job distribution with 
->>>> multiple queues")
->>>> Cc: Nirmoy Das <nirmoy.das@amd.com>
->>>> Cc: Christian König <christian.koenig@amd.com>
->>>> Cc: Luben Tuikov <ltuikov89@gmail.com>
->>>> Cc: Matthew Brost <matthew.brost@intel.com>
->>>> Cc: David Airlie <airlied@gmail.com>
->>>> Cc: Daniel Vetter <daniel@ffwll.ch>
->>>> Cc: dri-devel@lists.freedesktop.org
->>>> Cc: <stable@vger.kernel.org> # v5.9+
->>>> Reviewed-by: Christian König <christian.koenig@amd.com>
->>>> Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
->>>> ---
->>>>   drivers/gpu/drm/scheduler/sched_entity.c | 2 +-
->>>>   1 file changed, 1 insertion(+), 1 deletion(-)
->>>>
->>>> diff --git a/drivers/gpu/drm/scheduler/sched_entity.c 
->>>> b/drivers/gpu/drm/scheduler/sched_entity.c
->>>> index 76e422548d40..6645a8524699 100644
->>>> --- a/drivers/gpu/drm/scheduler/sched_entity.c
->>>> +++ b/drivers/gpu/drm/scheduler/sched_entity.c
->>>> @@ -586,7 +586,6 @@ void drm_sched_entity_push_job(struct 
->>>> drm_sched_job *sched_job)
->>>>       ktime_t submit_ts;
->>>>         trace_drm_sched_job(sched_job, entity);
->>>> -    atomic_inc(entity->rq->sched->score);
->>>>       WRITE_ONCE(entity->last_user, current->group_leader);
->>>>         /*
->>>> @@ -614,6 +613,7 @@ void drm_sched_entity_push_job(struct 
->>>> drm_sched_job *sched_job)
->>>>           rq = entity->rq;
->>>>           sched = rq->sched;
->>>>   +        atomic_inc(sched->score);
->>>
->>> Ugh this is wrong. :(
->>>
->>> I was working on some further consolidation and realised this.
->>>
->>> It will create an imbalance in score since score is currently 
->>> supposed to be accounted twice:
->>>
->>>  1. +/- 1 for each entity (de-)queued
->>>  2. +/- 1 for each job queued/completed
->>>
->>> By moving it into the "if (first) branch" it unbalances it.
->>>
->>> But it is still true the original placement is racy. It looks like 
->>> what is required is an unconditional entity->lock section after 
->>> spsc_queue_push. AFAICT that's the only way to be sure entity->rq is 
->>> set for the submission at hand.
->>>
->>> Question also is, why +/- score in entity add/remove and not just 
->>> for jobs?
->>>
->>> In the meantime patch will need to get reverted.
->>
->> Ok going to revert that.
+> On Fri, Sep 27, 2024 at 06:15:40PM +0200, Alice Ryhl wrote:
+> > On Fri, Sep 27, 2024 at 6:13=E2=80=AFPM Yu-Ting Tseng <yutingtseng@goog=
+le.com> wrote:
+> > >
+> > > On Fri, Sep 27, 2024 at 12:19=E2=80=AFAM Alice Ryhl <aliceryhl@google=
+.com> wrote:
+> > > >
+> > > > On Fri, Sep 27, 2024 at 1:37=E2=80=AFAM Carlos Llamas <cmllamas@goo=
+gle.com> wrote:
+> > > > >
+> > > > > Alice points out that binder_request_freeze_notification() should=
+ not
+> > > > > return EINVAL when the relevant node is dead [1]. The node can di=
+e at
+> > > > > any point even if the user input is valid. Instead, allow the req=
+uest
+> > > > > to be allocated but skip the initial notification for dead nodes.=
+ This
+> > > > > avoids propagating unnecessary errors back to userspace.
+> > > > >
+> > > > > Fixes: d579b04a52a1 ("binder: frozen notification")
+> > > > > Cc: stable@vger.kernel.org
+> > > > > Suggested-by: Alice Ryhl <aliceryhl@google.com>
+> > > > > Link: https://lore.kernel.org/all/CAH5fLghapZJ4PbbkC8V5A6Zay-_sgT=
+zwVpwqk6RWWUNKKyJC_Q@mail.gmail.com/ [1]
+> > > > > Signed-off-by: Carlos Llamas <cmllamas@google.com>
+> > > > > ---
+> > > > >  drivers/android/binder.c | 28 +++++++++++++---------------
+> > > > >  1 file changed, 13 insertions(+), 15 deletions(-)
+> > > > >
+> > > > > diff --git a/drivers/android/binder.c b/drivers/android/binder.c
+> > > > > index 73dc6cbc1681..415fc9759249 100644
+> > > > > --- a/drivers/android/binder.c
+> > > > > +++ b/drivers/android/binder.c
+> > > > > @@ -3856,7 +3856,6 @@ binder_request_freeze_notification(struct b=
+inder_proc *proc,
+> > > > >  {
+> > > > >         struct binder_ref_freeze *freeze;
+> > > > >         struct binder_ref *ref;
+> > > > > -       bool is_frozen;
+> > > > >
+> > > > >         freeze =3D kzalloc(sizeof(*freeze), GFP_KERNEL);
+> > > > >         if (!freeze)
+> > > > > @@ -3872,32 +3871,31 @@ binder_request_freeze_notification(struct=
+ binder_proc *proc,
+> > > > >         }
+> > > > >
+> > > > >         binder_node_lock(ref->node);
+> > > > > -
+> > > > > -       if (ref->freeze || !ref->node->proc) {
+> > > > > -               binder_user_error("%d:%d invalid BC_REQUEST_FREEZ=
+E_NOTIFICATION %s\n",
+> > > > > -                                 proc->pid, thread->pid,
+> > > > > -                                 ref->freeze ? "already set" : "=
+dead node");
+> > > > > +       if (ref->freeze) {
+> > > > > +               binder_user_error("%d:%d BC_REQUEST_FREEZE_NOTIFI=
+CATION already set\n",
+> > > > > +                                 proc->pid, thread->pid);
+> > > > >                 binder_node_unlock(ref->node);
+> > > > >                 binder_proc_unlock(proc);
+> > > > >                 kfree(freeze);
+> > > > >                 return -EINVAL;
+> > > > >         }
+> > > > > -       binder_inner_proc_lock(ref->node->proc);
+> > > > > -       is_frozen =3D ref->node->proc->is_frozen;
+> > > > > -       binder_inner_proc_unlock(ref->node->proc);
+> > > > >
+> > > > >         binder_stats_created(BINDER_STAT_FREEZE);
+> > > > >         INIT_LIST_HEAD(&freeze->work.entry);
+> > > > >         freeze->cookie =3D handle_cookie->cookie;
+> > > > >         freeze->work.type =3D BINDER_WORK_FROZEN_BINDER;
+> > > > > -       freeze->is_frozen =3D is_frozen;
+> > > > > -
+> > > > >         ref->freeze =3D freeze;
+> > > > >
+> > > > > -       binder_inner_proc_lock(proc);
+> > > > > -       binder_enqueue_work_ilocked(&ref->freeze->work, &proc->to=
+do);
+> > > > > -       binder_wakeup_proc_ilocked(proc);
+> > > > > -       binder_inner_proc_unlock(proc);
+> > > > > +       if (ref->node->proc) {
+> > > > > +               binder_inner_proc_lock(ref->node->proc);
+> > > > > +               freeze->is_frozen =3D ref->node->proc->is_frozen;
+> > > > > +               binder_inner_proc_unlock(ref->node->proc);
+> > > > > +
+> > > > > +               binder_inner_proc_lock(proc);
+> > > > > +               binder_enqueue_work_ilocked(&freeze->work, &proc-=
+>todo);
+> > > > > +               binder_wakeup_proc_ilocked(proc);
+> > > > > +               binder_inner_proc_unlock(proc);
+> > > >
+> > > > This is not a problem with your change ... but, why exactly are we
+> > > > scheduling the BINDER_WORK_FROZEN_BINDER right after creating it? F=
+or
+> > > > death notications, we only schedule it immediately if the process i=
+s
+> > > > dead. So shouldn't we only schedule it if the process is not frozen=
+?
 >
-> Thank you, and sorry for the trouble!
+> For death notifications, we only care about a remote binder's death.
+> Unlike freeze, in which we have a state that can toggle at any point.
+> This is important for suspending and resuming transactions to a node.
 >
->> I also just realized that we don't need to change anything. The rq 
->> can't change as soon as there is a job armed for it.
->>
->> So having the increment right before pushing the armed job to the 
->> entity was actually correct in the first place.
+> Sending the freeze notification immediately allows for (1) userspace
+> knowing the current state of the remote node and (2) avoiding a race
+> with BINDER_FREEZE ioctl in which we could miss a freeze/thaw.
 >
-> Are you sure? Two threads racing to arm and push on the same entity?
+> > > > And if the answer is that frozen notifications are always sent
+> > > > immediately to notify about the current state, then we should also
+> > > > send one for a dead process ... maybe. I guess a dead process is no=
+t
+> > > > frozen?
+> > > Yes this is to immediately notify about the current state (frozen or
+> > > unfrozen). A dead process is in neither state so it feels more correc=
+t
+> > > not to send either?
+> >
+> > Okay.
+> >
+> > On the other hand, I can easily imagine userspace code being written
+> > with the assumption that it'll always get a notification immediately.
+> > That would probably result in deadlocks in the edge case where the
+> > process happens to be dead.
 >
+> There are different ways to proceed with this dead node scenario:
 >
->     T1        T2
+> 1. return ESRCH
+> 2. silently fail and don't allocate a ref->freeze
+> 3. allocate a ref->freeze but don't notify the current state
+> 4. allocate and send a "fake" state notification.
 >
->     arm job
->     rq1 selected
->     ..
->     push job    arm job
->     inc score rq1
->             spsc_queue_count check passes
->      ---  just before T1 spsc_queue_push ---
->             changed to rq2
->     spsc_queue_push
->     if (first)
->       resamples entity->rq
->       queues rq2
+> I like 1 just because it is technically the correct thing to do from the
+> driver's perspective. However, it does complicate things in userspace as
+> we've discussed. Option 2, could work but it would also fail with EINVAL
+> if a "clear notification" is sent later anyway. Option 3 changes the
+> behavior of guaranteeing a notification upon success. Option 4 can cause
+> trouble on how a "not-frozen" notification is handled in userspace e.g
+> start sending transactions.
 >
-> Where rq1 and rq2 belong to different schedulers.
+> As you can see there is no clear winner here, we have to compromise
+> something and option #3 is the best we can do IMO.
 
-arm/push must be protected by an external lock preventing two threads 
-pushing into the same entity at the same time.
+I am happy with both #3 and #4. I think #1 and #2 are problematic
+because they will lead to userspace getting errors on correct use of
+Binder.
 
-That's what this misleading comment from Sima we already discussed 
-should have meant.
-
-Regards,
-Christian.
-
->
-> Regards,
->
-> Tvrtko
->
->
->> Regards,
->> Christian.
->>
->>>
->>> Regards,
->>>
->>> Tvrtko
->>>
->>>>           drm_sched_rq_add_entity(rq, entity);
->>>>           spin_unlock(&entity->rq_lock);
->>
-
+Alice
 
