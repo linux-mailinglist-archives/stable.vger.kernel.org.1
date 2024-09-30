@@ -1,140 +1,190 @@
-Return-Path: <stable+bounces-78260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78261-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4D6D898A491
-	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 15:20:03 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61CC798A4D2
+	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 15:26:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id BDA2F286685
-	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 13:19:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0A649B2282B
+	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 13:24:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEEA018FDC6;
-	Mon, 30 Sep 2024 13:18:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC1B0191F69;
+	Mon, 30 Sep 2024 13:22:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NkaHHwUt"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="hxzHkpfc"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03FE118E36E;
-	Mon, 30 Sep 2024 13:18:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B0CA17C22B
+	for <stable@vger.kernel.org>; Mon, 30 Sep 2024 13:22:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727702320; cv=none; b=M3ylJ8YS9nZ8wE0U3l204ELyj62/bNBo1o3+cIBRJB+reMMv0c+vJKJSoDZInDUhhb3FmNhKTRBkuykRnPX7ZrNdQXl3y0TqnuJcCtitotMvdCuuSnLjxYOoWKlleMna0ruKfMW8GK8UuY67hP+t6tN5EGsSIZwAtBEu5fO9Ka0=
+	t=1727702561; cv=none; b=DPaC7OZIzYwDsV2lKAJg/NXWyGl+o9tDcZpepgGVK6GETx0ttV+zgsQzfgtRCae77n9y7I22527l1YXkDCu5Fv7KPN5ixd8Exuxvrcr/QmFO7m0JemIh2sT43lOnoEAtCYnK0BmUf4iriz8KdT9KLXsmSSGulNmW5UyiYGlavaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727702320; c=relaxed/simple;
-	bh=R/DAKeRK1OrB3Ld3fbwvFPlwIXzPnBdJ3N3gEjoOEhI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=NxSefaG7eDMHuW029asKBhafC0lpAuJO7/Scon+/+FM281TdLWM5ViLVsKp5N3BnY62Fg31zUVX8up2PkciEDRRHzBqr4TzpXDvVe158chdAXRVVka3XTy2I3U0j0cMizslDlhwcSDRd0rS8jkbLMW3AbqUhcM7krSA8/BGhtpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NkaHHwUt; arc=none smtp.client-ip=209.85.222.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-7ac83a98e5eso376837485a.0;
-        Mon, 30 Sep 2024 06:18:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727702318; x=1728307118; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nqb3JtNhWWkOUOy2ElpxqXyhTNuktovVBAPwTw1UTzs=;
-        b=NkaHHwUtvgWfmZQnaQKhyjys0uBRsiIbtDusuJBlJ0PSiTjNPw24EJ1rf9cevZZpif
-         0KhK5UBmhk+OboufoZrI4a3uPZzOkd+Wki55meXsPfe2ShUk52/2Fpul57RdPwScF5I1
-         tQMFJK2BvirBZtn+EqHt4K2DF2WkNPj3o1Dm347rMkvqwnLA23o1+U20DPVkE2c1Nxf+
-         FV8dqZB7bXV5moJtEPm93wszKZd37WfK3fUkDlCivqYHioyfPtVjYfN9AGnXKaUziDc2
-         6C4b4D8PRe3B5l1XhPOI+YVPSU32CNFdAAiO0kdsUXdD3tVgWfhSKm4LtBgfiCd66QE6
-         /oVg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727702318; x=1728307118;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nqb3JtNhWWkOUOy2ElpxqXyhTNuktovVBAPwTw1UTzs=;
-        b=VYDFSOk6ZzqTFW1GWGKAA+qieIAE0AIF1fDEZRXDw2p3LzKrs93+bz9/DVT7klLHhN
-         NKw+E/r1osYLf+pWbgY0KhvtO+H3jjxjK+1/1n7tbLkyFBi6lR31t8iHlkBDLmQjlt1D
-         ZhLFwINW+B120lP19SDs8jl0ZnipTm1OuM2si2uifBv62mYYR2HWVh+oz4ygsst0ARKN
-         r1rBxcd0CQAXk2iQQiMqDCAYYAKVXHWxC5CfKTui//h8zpswuTqYyYj2acTBaQHJirMF
-         l3ql484OXkzb+qkxcSN2QHdVQWu7lwEi4J2DtKvdbpP3WpInJ4xLThA1O9m0+JsNKtjx
-         DTIQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXCqj23n6y1j1CDbL+0oNjXh7SOCeuTbDwDsPOMfNqW4r398n9HAXFEPqXsQBCdLg+JlHaXemoGCqdlzk8=@vger.kernel.org, AJvYcCXrmGdAFLmHa+j2k0RZgvPwjzDw1evbadyeBAi3ACW7ReVp4pud2NZr13ZJ0nyjl4fdSsfxvlp3@vger.kernel.org
-X-Gm-Message-State: AOJu0YxWmb+HiDCe7w/0hZstvMl4do0MDtzXP6mjo+li4QlmE7xeBY6N
-	7a5mKsw2mnd3LR8Ml/RJF+swKVIC/eADPvh+iBxxG9JVpE2QkT3ry/qiyiwjkJHFGsL/FJQXQsC
-	WviNS7+q6wR+1k2xRGPLnjtpz+76QnWhpWKY=
-X-Google-Smtp-Source: AGHT+IF7AXYLFHtLUQIv/Ye2qZCxqhQBuqosJSPFYmJoZ4RLhHt8UrvV495lBQjxZG0qIu5MgMyrS1zc1EeuZTKBLEU=
-X-Received: by 2002:a05:6122:a1c:b0:50a:c52d:6ba6 with SMTP id
- 71dfb90a1353d-50ac52d8005mr853284e0c.7.1727702306292; Mon, 30 Sep 2024
- 06:18:26 -0700 (PDT)
+	s=arc-20240116; t=1727702561; c=relaxed/simple;
+	bh=6mYNLPv4A4NjEWTjJspCE4G6/8GcRhyZZjSFwCP/3IE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GzYVKVi1kqB9sebqtfNghRUvEwPp/afx1YQt9J9RLyzRtu6FjV0Jm685WnjOFFbgEgsjTC3jzxM3OsoVgFgzmifquCePaEQe7yxrAI0R4AzcgoqnMqbxZOzQycPSfKKCEhmVR52El0C0OviB3R8FLrcnT6mcYwnd4SxtRQA2ksg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=hxzHkpfc; arc=none smtp.client-ip=178.60.130.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=Xy8Ha5b/dO5/HqKI95anmi16BefC7jwgdT9CNwJ8M9Q=; b=hxzHkpfcDQnN8mlJq/XrfhGG53
+	M97kza/e+Nx5uyz58sqzHnbJJiCu9JwkhT/tRqMxIMe/WtNsIm5Rr+xD2ZhpdKVOCPRkC9Ps0OEoM
+	JJuSN0TPiLfvnfUNe5O3raNFqj4v4Ut38wX0AMoKMyUU7+DoynupVqxGX6bIAviVORgUMgonDxioz
+	bxReESWF8GTQHdYT5VWZ9W8GCumJ+rs+FWxDhKKaf5pznIkgXQHjjKfwMrQpwIVN4P/mP9yBixDnf
+	u7zHM8DQx4fv4Sb443fzijen0imamX2OrtFj6D7dnclvPjhCnd7nFl2jdLT/QtF0wJ22CvZft3a82
+	pX9+EUew==;
+Received: from [90.241.98.187] (helo=[192.168.0.101])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+	id 1svGM9-002rgQ-J9; Mon, 30 Sep 2024 15:22:29 +0200
+Message-ID: <2b0860a2-5ef0-496f-9283-d5056433af58@igalia.com>
+Date: Mon, 30 Sep 2024 14:22:28 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240926211936.75373-1-21cnbao@gmail.com> <871q13qj2t.fsf@yhuang6-desk2.ccr.corp.intel.com>
-In-Reply-To: <871q13qj2t.fsf@yhuang6-desk2.ccr.corp.intel.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Tue, 1 Oct 2024 02:18:13 +1300
-Message-ID: <CAGsJ_4w2PjN+4DKWM6qvaEUAX=FQW0rp+6Wjx1Qrq=jaAz7wsw@mail.gmail.com>
-Subject: Re: [PATCH] mm: avoid unconditional one-tick sleep when
- swapcache_prepare fails
-To: "Huang, Ying" <ying.huang@intel.com>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Barry Song <v-songbaohua@oppo.com>, 
-	Kairui Song <kasong@tencent.com>, Yu Zhao <yuzhao@google.com>, 
-	David Hildenbrand <david@redhat.com>, Chris Li <chrisl@kernel.org>, Hugh Dickins <hughd@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Matthew Wilcox <willy@infradead.org>, Michal Hocko <mhocko@suse.com>, 
-	Minchan Kim <minchan@kernel.org>, Yosry Ahmed <yosryahmed@google.com>, 
-	SeongJae Park <sj@kernel.org>, Kalesh Singh <kaleshsingh@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, stable@vger.kernel.org, 
-	Oven Liyang <liyangouwen1@oppo.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 3/8] drm/sched: Always increment correct scheduler score
+To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ Tvrtko Ursulin <tursulin@igalia.com>, amd-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org
+Cc: kernel-dev@igalia.com, Luben Tuikov <ltuikov89@gmail.com>,
+ Matthew Brost <matthew.brost@intel.com>, David Airlie <airlied@gmail.com>,
+ Daniel Vetter <daniel@ffwll.ch>, stable@vger.kernel.org,
+ Nirmoy Das <nirmoy.das@intel.com>
+References: <20240913160559.49054-1-tursulin@igalia.com>
+ <20240913160559.49054-4-tursulin@igalia.com>
+ <8392475d-489e-4aa3-b6c2-7cd15b86dab2@igalia.com>
+ <cf135523-92ca-4d41-9acf-e979c9769ad9@amd.com>
+Content-Language: en-GB
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+In-Reply-To: <cf135523-92ca-4d41-9acf-e979c9769ad9@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Sun, Sep 29, 2024 at 3:43=E2=80=AFPM Huang, Ying <ying.huang@intel.com> =
-wrote:
->
-> Hi, Barry,
->
-> Barry Song <21cnbao@gmail.com> writes:
->
-> > From: Barry Song <v-songbaohua@oppo.com>
-> >
-> > Commit 13ddaf26be32 ("mm/swap: fix race when skipping swapcache")
-> > introduced an unconditional one-tick sleep when `swapcache_prepare()`
-> > fails, which has led to reports of UI stuttering on latency-sensitive
-> > Android devices. To address this, we can use a waitqueue to wake up
-> > tasks that fail `swapcache_prepare()` sooner, instead of always
-> > sleeping for a full tick. While tasks may occasionally be woken by an
-> > unrelated `do_swap_page()`, this method is preferable to two scenarios:
-> > rapid re-entry into page faults, which can cause livelocks, and
-> > multiple millisecond sleeps, which visibly degrade user experience.
->
-> In general, I think that this works.  Why not extend the solution to
-> cover schedule_timeout_uninterruptible() in __read_swap_cache_async()
-> too?  We can call wake_up() when we clear SWAP_HAS_CACHE.  To avoid
 
-Hi Ying,
-Thanks for your comments.
-I feel extending the solution to __read_swap_cache_async() should be done
-in a separate patch. On phones, I've never encountered any issues reported
-on that path, so it might be better suited for an optimization rather than =
-a
-hotfix?
+On 30/09/2024 14:07, Christian König wrote:
+> Am 30.09.24 um 15:01 schrieb Tvrtko Ursulin:
+>>
+>> On 13/09/2024 17:05, Tvrtko Ursulin wrote:
+>>> From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+>>>
+>>> Entities run queue can change during drm_sched_entity_push_job() so make
+>>> sure to update the score consistently.
+>>>
+>>> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+>>> Fixes: d41a39dda140 ("drm/scheduler: improve job distribution with 
+>>> multiple queues")
+>>> Cc: Nirmoy Das <nirmoy.das@amd.com>
+>>> Cc: Christian König <christian.koenig@amd.com>
+>>> Cc: Luben Tuikov <ltuikov89@gmail.com>
+>>> Cc: Matthew Brost <matthew.brost@intel.com>
+>>> Cc: David Airlie <airlied@gmail.com>
+>>> Cc: Daniel Vetter <daniel@ffwll.ch>
+>>> Cc: dri-devel@lists.freedesktop.org
+>>> Cc: <stable@vger.kernel.org> # v5.9+
+>>> Reviewed-by: Christian König <christian.koenig@amd.com>
+>>> Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+>>> ---
+>>>   drivers/gpu/drm/scheduler/sched_entity.c | 2 +-
+>>>   1 file changed, 1 insertion(+), 1 deletion(-)
+>>>
+>>> diff --git a/drivers/gpu/drm/scheduler/sched_entity.c 
+>>> b/drivers/gpu/drm/scheduler/sched_entity.c
+>>> index 76e422548d40..6645a8524699 100644
+>>> --- a/drivers/gpu/drm/scheduler/sched_entity.c
+>>> +++ b/drivers/gpu/drm/scheduler/sched_entity.c
+>>> @@ -586,7 +586,6 @@ void drm_sched_entity_push_job(struct 
+>>> drm_sched_job *sched_job)
+>>>       ktime_t submit_ts;
+>>>         trace_drm_sched_job(sched_job, entity);
+>>> -    atomic_inc(entity->rq->sched->score);
+>>>       WRITE_ONCE(entity->last_user, current->group_leader);
+>>>         /*
+>>> @@ -614,6 +613,7 @@ void drm_sched_entity_push_job(struct 
+>>> drm_sched_job *sched_job)
+>>>           rq = entity->rq;
+>>>           sched = rq->sched;
+>>>   +        atomic_inc(sched->score);
+>>
+>> Ugh this is wrong. :(
+>>
+>> I was working on some further consolidation and realised this.
+>>
+>> It will create an imbalance in score since score is currently supposed 
+>> to be accounted twice:
+>>
+>>  1. +/- 1 for each entity (de-)queued
+>>  2. +/- 1 for each job queued/completed
+>>
+>> By moving it into the "if (first) branch" it unbalances it.
+>>
+>> But it is still true the original placement is racy. It looks like 
+>> what is required is an unconditional entity->lock section after 
+>> spsc_queue_push. AFAICT that's the only way to be sure entity->rq is 
+>> set for the submission at hand.
+>>
+>> Question also is, why +/- score in entity add/remove and not just for 
+>> jobs?
+>>
+>> In the meantime patch will need to get reverted.
+> 
+> Ok going to revert that.
 
-> overhead to call wake_up() when there's no task waiting, we can use an
-> atomic to count waiting tasks.
+Thank you, and sorry for the trouble!
 
-I'm not sure it's worth adding the complexity, as wake_up() on an empty
-waitqueue should have a very low cost on its own?
+> I also just realized that we don't need to change anything. The rq can't 
+> change as soon as there is a job armed for it.
+> 
+> So having the increment right before pushing the armed job to the entity 
+> was actually correct in the first place.
 
->
-> [snip]
->
-> --
-> Best Regards,
-> Huang, Ying
+Are you sure? Two threads racing to arm and push on the same entity?
 
-Thanks
-Barry
+	
+	T1		T2
+
+	arm job
+	rq1 selected
+	..
+	push job	arm job
+	inc score rq1
+			spsc_queue_count check passes
+	 ---  just before T1 spsc_queue_push ---
+			changed to rq2
+	spsc_queue_push
+	if (first)
+	  resamples entity->rq
+	  queues rq2
+
+Where rq1 and rq2 belong to different schedulers.	
+
+Regards,
+
+Tvrtko
+
+
+> Regards,
+> Christian.
+> 
+>>
+>> Regards,
+>>
+>> Tvrtko
+>>
+>>>           drm_sched_rq_add_entity(rq, entity);
+>>>           spin_unlock(&entity->rq_lock);
+> 
 
