@@ -1,229 +1,187 @@
-Return-Path: <stable+bounces-78246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35F23989FD3
-	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 12:52:31 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF741989FF1
+	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 12:57:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E5038283446
-	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 10:52:29 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 604D41F23804
+	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 10:57:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A74618D622;
-	Mon, 30 Sep 2024 10:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1A7618F2D6;
+	Mon, 30 Sep 2024 10:56:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="ALVfrWqs"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EJzrVGhr"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC23818BB9E
-	for <stable@vger.kernel.org>; Mon, 30 Sep 2024 10:52:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C931D18D625
+	for <stable@vger.kernel.org>; Mon, 30 Sep 2024 10:56:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727693543; cv=none; b=hA9MRZc1f5x5XaCGNPvqZozY8k+em0MRvBHab/PSqZH8LKsQNOAuAwUHk9lbqZrNA/EeSk8qhd1yvg8qpdZK9IIy2DFnlOJ4p3sjiUdqJO/D672/hw25L0HfJdCxqcUnpcl210w1Zd1vwV8wtgOYLIQcibdiOb1Fc24RPuH6IVg=
+	t=1727693766; cv=none; b=LJTP6VV66rOkPQ+FwOYHNQY3UzAA8HmbKfrm9xoi1YvM4M1zVjg6qDUqDCEiTWkCjLtaGjdqdjMh5/hAdPwN4qG/wl+nPvyWi8cRSi9VuT2y93duS1obg95mO8D/r1CqXzPrNcz0UuqENmpaMFjYcFiWHf6GELMArdYzDgo5Bss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727693543; c=relaxed/simple;
-	bh=qgtXNHUaMC9gvm0ihmJZWKtB+fMuAqQuoPe5R0FlK4I=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=HhAG0wpMG/VykvBFCpFewWaq/blFUBqjqQWbaW2dyaSaqTo/Kys87PgwwgLvpQjHQ9BXXMyBCWKym+sCSZn+7VzqkEQQpK178fSYtTzL1gc2X9ngXFwEhVJl7Ahia5p/1yfsfjCDKQFkP2RwJhh7vugzyyKrD5uvZAnkYwGlOaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=ALVfrWqs; arc=none smtp.client-ip=209.85.167.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
-Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-53991d05416so1263021e87.2
-        for <stable@vger.kernel.org>; Mon, 30 Sep 2024 03:52:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1727693540; x=1728298340; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EzUsANdIoZzXorl2vv0C4CsPY69b8z7/pL6IfXOL+tw=;
-        b=ALVfrWqs6Exok1jgn8uhnvMe5w0KS8YXUKfqG8/WWIsJPlNb3ymlJyYjR0JXvVt5oe
-         MHP3AnkvlJza7ZymckT1i637MaotE25ra8H9S3uzV8O0sg1w//L2JK7oTDW8ByGjQsdw
-         ZZX2xO9GPzQqSrZK9VrfrRKX4HK7LzB7s3bXNm7DEiNO2/3aYene12gfiImR47c7INMY
-         wdor82ArZaeyyEwCMVG4KdDTHUNJqxxwLgCFz7JdFtgeRpkGAZYwunK7bj1q2maYhFJU
-         K8JQ+yfu5ipllmoFBaQg6ccBpxtQgn3zhkP6DlfT3za2hRQ1U+O+1K1h6nTK/L/BbtNM
-         /rog==
+	s=arc-20240116; t=1727693766; c=relaxed/simple;
+	bh=dR9suNrRJ44duM3r1Q6StJC59Z452p8Rii9pMStewp4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=suaOWsOp38BCwzNJ793f+oInbyj0ROQZKG+QM1si5Yog/xlEVQZX/E0TvLPpWG99GsPdOYN7RZFW7gRj9qzb3D1LKc0nQHm5gn0jI5Hg/ZYOKq9aHoAJ0roEeOxscRIbQTIPX7dMyM6gszDHfguHo3JD+CrwlDLmcSy0AP7Emd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EJzrVGhr; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1727693763;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=EtxN+3cHW/MCbFS+sS78zrnOjkifHZNOHgOrxlJNQsM=;
+	b=EJzrVGhrTAPM7Tqtueasq99RKNLxdqzsP+QQRPU911Fu0gzt3zMLTaeUMV3xlY5n1Ovkr3
+	w6kMZE0Z7qF86Y0C9pmy6TaLwM7Z49nJhXlsjeMZj70eyReTRSM3FhcTMLh1AE2ljR9sQh
+	TvGfP6O2CaOaHjypwjOH9lXB5Q3wswI=
+Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
+ [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-657-QsMqEGJZNryxCW_RI3Sklg-1; Mon, 30 Sep 2024 06:56:02 -0400
+X-MC-Unique: QsMqEGJZNryxCW_RI3Sklg-1
+Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-a8a8308cceaso529521566b.0
+        for <stable@vger.kernel.org>; Mon, 30 Sep 2024 03:56:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727693540; x=1728298340;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=EzUsANdIoZzXorl2vv0C4CsPY69b8z7/pL6IfXOL+tw=;
-        b=ZufvOvZov4tnlOJ9xlr2b0AXBQ+SZGAZCP6u5e88nODpDEoCMAgDNwnNXbKI6Ia9Hx
-         7OH/H0VNBgE/d/wtt8LH4e9qhAez1KUngHM2OghcU1vQgth/y53264ROOuindiMfSG30
-         FJ43lbnKKxV1eby6SHVA5RGTXWfawok1U+e2bdQvR+ph2dwB2MMlByk1BxMM9TEzKUWg
-         AnKfOtWvMOJihBQ9JQGpDN86q3g1TFpp6k8ASE+ZL+XqtXSGmLzx/irlXBLQskGSUa5L
-         6SLFu8G+WgZ86U+3mIEtZZJA0X35v5vpvWnyBjeopjSVwDNVBYCvn0IAegQcXTi6THWO
-         7pCg==
-X-Forwarded-Encrypted: i=1; AJvYcCW+0HbYub/bhyFObN9csyibctr/ZHLOvmA8XgJlK0+Sg7q7FAJkObxl9f5cXFiklXvXDP8NKcs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxlsECn08FnkIVhQZD9nrhZQ2QXrRX39UStH+MAnYqCX6HigATM
-	UIpgrYHseKOostvab1Xo45MbWk2ultHdNS04HBxl08wiDrh4wqWKjG/41i9uGS8=
-X-Google-Smtp-Source: AGHT+IGhRweJOPkFGgAuNfktksGfPKXdF/ylFGqi9MZzfaoXda6AfoM5num/meZEhH8NA2EoHz2Tyw==
-X-Received: by 2002:a05:6512:3ca0:b0:539:9767:903d with SMTP id 2adb3069b0e04-539976791e8mr1198960e87.60.1727693539700;
-        Mon, 30 Sep 2024 03:52:19 -0700 (PDT)
-Received: from localhost (dynamic-176-000-009-164.176.0.pool.telefonica.de. [176.0.9.164])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a93c299861bsm511772866b.192.2024.09.30.03.52.17
+        d=1e100.net; s=20230601; t=1727693759; x=1728298559;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=EtxN+3cHW/MCbFS+sS78zrnOjkifHZNOHgOrxlJNQsM=;
+        b=JCYOdcBme7B16lqWaN7NPz/UDd64ckAL+nMkAYQ8xix/JIdIc4bEXqgDU+YGGycg0H
+         oSPwNWt0ecv8NAuYz/MVHGnEzg1s/JieFKOcjMmoNTp914CwPMtFmpHCI/gB/hWcvFb8
+         1qHbHeuwUc62mMHHGQqEOkqVCYyOLAKM3mpSnJnoBf+OifFs1TPug+00oJ6pZ18KAzve
+         OLBdPBcwi4nZwCJGGrT4L1zE1wAJe7XiV6nmCtyS3HQTVaDKajeFifqb578eBMCrFyCx
+         irkHp22VknUeqjeXKjs+vh3k94EiUbTejHXtBWd+hbmlTZfHQROuf+JOFa/WKofk+Jxq
+         jIVQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVTsg6jOqs8YWjdtL9hDRurxSgyLHH3zOiVbJG+gm4E2VH/hRC6KvinFscl2TGfNX3/oa+ySfk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyOLn4Rq1aB1ZUb40J/5UR5+O5b9TkleG5gWja/jpD4ijZA4ZQ+
+	8o1976IsUo1JAmYUPD3V6wHK/4gxi3fOBkOiHOQI6RAsc1clYv3e56BQ/SHu6WqZmfD67jvyyO7
+	/oS/kBFeNEQO2q9KSd/ly1FVNfrMVmqw7iORP8e1t3CFpFxB5j9RfgQ==
+X-Received: by 2002:a17:907:3e1c:b0:a6f:996f:23ea with SMTP id a640c23a62f3a-a93c30f0cccmr1238477266b.15.1727693759577;
+        Mon, 30 Sep 2024 03:55:59 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFi/hs7OEbEIGmJT/V/6dxdvcEhceTNVfUUTlc3IUi2sJzt/o81jkPPQLkXkiAKRM160Y83RA==
+X-Received: by 2002:a17:907:3e1c:b0:a6f:996f:23ea with SMTP id a640c23a62f3a-a93c30f0cccmr1238475466b.15.1727693759184;
+        Mon, 30 Sep 2024 03:55:59 -0700 (PDT)
+Received: from [10.40.98.157] ([78.108.130.194])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a93c2998d5dsm514130166b.199.2024.09.30.03.55.58
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 30 Sep 2024 03:52:19 -0700 (PDT)
+        Mon, 30 Sep 2024 03:55:58 -0700 (PDT)
+Message-ID: <d69af7ad-244d-45e8-ad7e-4a3ebf30d04d@redhat.com>
+Date: Mon, 30 Sep 2024 12:55:58 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/4] ACPI: resource: Loosen the Asus E1404GAB DMI match to
+ also cover the E1404GA
+To: Paul Menzel <pmenzel@molgen.mpg.de>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Ben Mayo <benny1091@gmail.com>,
+ Tamim Khan <tamim@fusetak.com>, linux-acpi@vger.kernel.org,
+ regressions@lists.linux.dev, stable@vger.kernel.org
+References: <20240927141606.66826-1-hdegoede@redhat.com>
+ <20240927141606.66826-2-hdegoede@redhat.com>
+ <2f45a6ac-5bb7-4954-adb5-3bf706363062@molgen.mpg.de>
+Content-Language: en-US
+From: Hans de Goede <hdegoede@redhat.com>
+In-Reply-To: <2f45a6ac-5bb7-4954-adb5-3bf706363062@molgen.mpg.de>
 Content-Type: text/plain; charset=UTF-8
-Date: Mon, 30 Sep 2024 12:52:16 +0200
-Message-Id: <D4JK8TRL7XBL.3TBA1FBF32RXL@fairphone.com>
-Cc: <linux-arm-msm@vger.kernel.org>, <linux-media@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-arm-kernel@lists.infradead.org>, "Suresh Vankadara"
- <quic_svankada@quicinc.com>, "Trishansh Bhardwaj"
- <quic_tbhardwa@quicinc.com>, <stable@vger.kernel.org>, "Hariram
- Purushothaman" <quic_hariramp@quicinc.com>
-Subject: Re: [PATCH 00/10] (no cover subject)
-From: "Luca Weiss" <luca.weiss@fairphone.com>
-To: "Vikram Sharma" <quic_vikramsa@quicinc.com>, "Robert Foss"
- <rfoss@kernel.org>, "Todor Tomov" <todor.too@gmail.com>, "Bryan O'Donoghue"
- <bryan.odonoghue@linaro.org>, "Mauro Carvalho Chehab" <mchehab@kernel.org>,
- "Rob Herring" <robh@kernel.org>, "Krzysztof Kozlowski"
- <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>, "Kapatrala
- Syed" <akapatra@quicinc.com>, "Hariram Purushothaman"
- <hariramp@quicinc.com>, "Bjorn Andersson" <andersson@kernel.org>, "Konrad
- Dybcio" <konradybcio@kernel.org>, "Hans Verkuil"
- <hverkuil-cisco@xs4all.nl>, <cros-qcom-dts-watchers@chromium.org>, "Catalin
- Marinas" <catalin.marinas@arm.com>, "Will Deacon" <will@kernel.org>
-X-Mailer: aerc 0.18.2-0-ge037c095a049
-References: <20240904-camss_on_sc7280_rb3gen2_vision_v2_patches-v1-0-b18ddcd7d9df@quicinc.com>
-In-Reply-To: <20240904-camss_on_sc7280_rb3gen2_vision_v2_patches-v1-0-b18ddcd7d9df@quicinc.com>
+Content-Transfer-Encoding: 8bit
 
-On Wed Sep 4, 2024 at 1:10 PM CEST, Vikram Sharma wrote:
-> SC7280 is a Qualcomm SoC. This series adds support to
-> bring up the CSIPHY, CSID, VFE/RDI interfaces in SC7280.
->
-> SC7280 provides
->
-> - 3 x VFE, 3 RDI per VFE
-> - 2 x VFE Lite, 4 RDI per VFE
-> - 3 x CSID
-> - 2 x CSID Lite
-> - 5 x CSI PHY
+Hi,
 
-Hi Vikram,
+On 30-Sep-24 12:42 PM, Paul Menzel wrote:
+> Dear Hans,
+> 
+> 
+> Thank you for your patch.
+> 
+> Am 27.09.24 um 16:16 schrieb Hans de Goede:
+>> Like other Asus Vivobooks, the Asus Vivobook Go E1404GA has a DSDT
+>> describing IRQ 1 as ActiveLow, while the kernel overrides to Edge_High.
+>>
+>>      $ sudo dmesg | grep DMI:.*BIOS
+>>      [    0.000000] DMI: ASUSTeK COMPUTER INC. Vivobook Go E1404GA_E1404GA/E1404GA, BIOS E1404GA.302 08/23/2023
+>>      $ sudo cp /sys/firmware/acpi/tables/DSDT dsdt.dat
+>>      $ iasl -d dsdt.dat
+>>      $ grep -A 30 PS2K dsdt.dsl | grep IRQ -A 1
+>>                  IRQ (Level, ActiveLow, Exclusive, )
+>>                      {1}
+>>
+>> There already is an entry in the irq1_level_low_skip_override[] DMI match
+>> table for the "E1404GAB", change this to match on "E1404GA" to cover
+>> the E1404GA model as well (DMI_MATCH() does a substring match).
+> 
+> Ah, good to know. Thank you for fixing it.
+> 
+>> Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
+>> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219224
+>> Cc: Tamim Khan <tamim@fusetak.com>
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+>> ---
+>> Note this patch replaces Paul Menzel's patch which added a new entry
+>> for the "E1404GA", instead of loosening the "E1404GAB" match:
+>> https://lore.kernel.org/linux-acpi/20240911081612.3931-1-pmenzel@molgen.mpg.de/
+>> ---
+>>   drivers/acpi/resource.c | 4 ++--
+>>   1 file changed, 2 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+>> index 1ff251fd1901..dfe108e2ccde 100644
+>> --- a/drivers/acpi/resource.c
+>> +++ b/drivers/acpi/resource.c
+>> @@ -504,10 +504,10 @@ static const struct dmi_system_id irq1_level_low_skip_override[] = {
+>>           },
+>>       },
+>>       {
+>> -        /* Asus Vivobook Go E1404GAB */
+>> +        /* Asus Vivobook Go E1404GA* */
+> 
+> I guess people are going to grep for the model, if something does not work, so maybe the known ones should listed. I know it’s not optimal, as the comments are very likely be incomplete, but it’s better than than not having it listed, in my opinion.
 
-I tried this on my QCM6490 Fairphone 5 smartphone.
+That is a valid point, OTOH I don't think we want to take patches later just to update
+the comment if more models show up.
 
-Unfortunately I couldn't get e.g. CSID test pattern out of camss. I've
-tested this patchset on v6.11.
+I guess we could change the comment to:
 
-These commands did work on an older sc7280 camss patchset (which was
-never sent to the lists). Can you please take a look?
+		/* Asus Vivobook Go E1404GA / E1404GAB */
 
-v4l2-ctl -d /dev/v4l-subdev5 -c test_pattern=3D1
-media-ctl -d /dev/media0 -l '"msm_csid0":1->"msm_vfe0_rdi0":0[1]'
-media-ctl -d /dev/media0 -V '"msm_csid0":1[fmt:UYVY8_2X8/1920x1080 field:no=
-ne],"msm_vfe0_rdi0":0[fmt:UYVY8_2X8/1920x1080 field:none]'
-gst-launch-1.0 v4l2src device=3D/dev/video0 num-buffers=3D1 ! 'video/x-raw,=
-format=3DUYVY,width=3D1920,height=3D1080' ! jpegenc ! filesink location=3Di=
-mage01.jpg
+Rafael any preference from you here ?   (1)
 
-The last command just hangs instead of producing a picture in
-image01.jpg. Can you please check if this works for you on your board?
+Regards,
 
-Regards
-Luca
+Hans
 
 
->
-> The changes are verified on SC7280 qcs6490-rb3gen2-vision board,
-> the base dts for qcs6490-rb3gen2 is:
-> https://lore.kernel.org/all/20231103184655.23555-1-quic_kbajaj@quicinc.co=
-m/
->
-> V1 for this series: https://lore.kernel.org/linux-arm-msm/20240629-camss_=
-first_post_linux_next-v1-0-bc798edabc3a@quicinc.com/
->
-> Changes in V2:
-> 1)  Improved indentation/formatting.
-> 2)  Removed _src clocks and misleading code comments.
-> 3)  Added name fields for power domains and csid register offset in DTSI.
-> 4)  Dropped minItems field from YAML file.
-> 5)  Listed changes in alphabetical order.
-> 6)  Updated description and commit text to reflect changes
-> 7)  Changed the compatible string from imx412 to imx577.
-> 8)  Added board-specific enablement changes in the newly created vision
->      board DTSI file.
-> 9)  Fixed bug encountered during testing.
-> 10) Moved logically independent changes to a new/seprate patch.
-> 11) Removed cci0 as no sensor is on this port and MCLK2, which was a
->     copy-paste error from the RB5 board reference.
-> 12) Added power rails, referencing the RB5 board.
-> 13) Discarded Patch 5/6 completely (not required).
-> 14) Removed unused enums.
->
-> To: Robert Foss <rfoss@kernel.org>
-> To: Todor Tomov <todor.too@gmail.com>
-> To: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-> To: Mauro Carvalho Chehab <mchehab@kernel.org>
-> To: Rob Herring <robh@kernel.org>
-> To: Krzysztof Kozlowski <krzk+dt@kernel.org>
-> To: Conor Dooley <conor+dt@kernel.org>
-> To: Kapatrala Syed <akapatra@quicinc.com>
-> To: Hariram Purushothaman <hariramp@quicinc.com>
-> To: Bjorn Andersson <andersson@kernel.org>
-> To: Konrad Dybcio <konradybcio@kernel.org>
-> To: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-> To: cros-qcom-dts-watchers@chromium.org
-> To: Catalin Marinas <catalin.marinas@arm.com>
-> To: Will Deacon <will@kernel.org>
-> Cc: linux-arm-msm@vger.kernel.org
-> Cc: linux-media@vger.kernel.org
-> Cc: devicetree@vger.kernel.org
-> Cc: linux-kernel@vger.kernel.org
-> Cc: linux-arm-kernel@lists.infradead.org
->
-> Test-by: Vikram Sharma <quic_vikramsa@quicinc.com>
-> Signed-off-by: Vikram Sharma <quic_vikramsa@quicinc.com>
-> ---
-> Suresh Vankadara (1):
->       media: qcom: camss: Add support for camss driver on SC7280
->
-> Vikram Sharma (9):
->       media: dt-bindings: media: camss: Add qcom,sc7280-camss binding
->       media: dt-bindings: media: qcs6490-rb3gen2-vision-mezzanine: Add dt=
- bindings
->       media: qcom: camss: Fix potential crash if domain attach fails
->       media: qcom: camss: Sort CAMSS version enums and compatible strings
->       media: qcom: camss: Add camss_link_entities_v2
->       arm64: dts: qcom: sc7280: Add support for camss
->       arm64: dts: qcom: qcs6490-rb3gen2-vision-mezzanine: Enable IMX577 s=
-ensor
->       arm64: dts: qcom: sc7280: Add default and suspend states for GPIO
->       arm64: defconfig: Enable camcc driver for SC7280
->
->  Documentation/devicetree/bindings/arm/qcom.yaml    |   1 +
->  .../bindings/media/qcom,sc7280-camss.yaml          | 441 +++++++++++++++=
-++++++
->  arch/arm64/boot/dts/qcom/Makefile                  |   1 +
->  .../dts/qcom/qcs6490-rb3gen2-vision-mezzanine.dts  |  61 +++
->  arch/arm64/boot/dts/qcom/sc7280.dtsi               | 208 ++++++++++
->  arch/arm64/configs/defconfig                       |   1 +
->  drivers/media/platform/qcom/camss/camss-csid.c     |   1 -
->  .../platform/qcom/camss/camss-csiphy-3ph-1-0.c     |  13 +-
->  drivers/media/platform/qcom/camss/camss-csiphy.c   |   5 +
->  drivers/media/platform/qcom/camss/camss-csiphy.h   |   1 +
->  drivers/media/platform/qcom/camss/camss-vfe.c      |   8 +-
->  drivers/media/platform/qcom/camss/camss.c          | 400 +++++++++++++++=
-+++-
->  drivers/media/platform/qcom/camss/camss.h          |   1 +
->  13 files changed, 1131 insertions(+), 11 deletions(-)
-> ---
-> base-commit: fdadd93817f124fd0ea6ef251d4a1068b7feceba
-> change-id: 20240904-camss_on_sc7280_rb3gen2_vision_v2_patches-15c195fb3f1=
-2
->
-> Best regards,
+
+
+
+1) Other then coming up with a better fix which does not require this quirks at all ...
+
+
+> 
+>>           .matches = {
+>>               DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+>> -            DMI_MATCH(DMI_BOARD_NAME, "E1404GAB"),
+>> +            DMI_MATCH(DMI_BOARD_NAME, "E1404GA"),
+>>           },
+>>       },
+>>       {
+> 
+> 
+> Kind regards,
+> 
+> Paul
+> 
 
 
