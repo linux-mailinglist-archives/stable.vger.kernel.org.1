@@ -1,153 +1,114 @@
-Return-Path: <stable+bounces-78267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8528598A660
-	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 15:58:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA98698A6AA
+	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 16:09:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3C1771F24728
-	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 13:58:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 96D671F234EF
+	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 14:09:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2B22192D7C;
-	Mon, 30 Sep 2024 13:55:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D96CE190079;
+	Mon, 30 Sep 2024 14:09:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nrt2KZaH"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rSTrroLb"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1ECAB18FC89
-	for <stable@vger.kernel.org>; Mon, 30 Sep 2024 13:54:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61C12190052
+	for <stable@vger.kernel.org>; Mon, 30 Sep 2024 14:09:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727704502; cv=none; b=l2zWN5bb2ruy7lgoXNPyfajKX5g2vM3IaowNO7IUvKvMAHTqeCJlNxvr9vcuYcibOnLnnoxYt0c9+iOnsbNJxPpyHB4P6zNZuCoMN1WvEBeAJxebUiYZrHW11K9vUNWOQXxrmm74BF3XnoRRpysJLhzCFaokDKqugNX49X14Yv4=
+	t=1727705382; cv=none; b=Xc/J/GocI/GkCgv+jVHO8O88bcLsQAlLIQwF2vn2fiHI+jRNOA6+MhV8ZxtjBCiSfuE3xUBZKhmcpN6OQ7jqCXhmhK0M+0B59CLfwC2aBVSgXtADouftPLKDX+fmWuvFpVabOc4RWKtG60eqrvam4EAIBwPqh0Fj/hUSAbqLUB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727704502; c=relaxed/simple;
-	bh=lU9Iw+9fXhpwvJ4aYxm37TuLZEitmM+DZgzjVdKPIuc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=Cd+U9KjbU/LI3W52QM/v4JANxc7pYwGLUyze/0H/2ySAZhxbTx7xtOZgtrk1laXZ127UoMT2w4fisgbA/jhvPex0Yls9GefPf00Jm01zOZ+jX4X2W/MtQZvxyZeZZ0WehFw9MiHKHyIf4YTrJxx56A4eOvRrONT3r/ipwctANVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nrt2KZaH; arc=none smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1727704500; x=1759240500;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=lU9Iw+9fXhpwvJ4aYxm37TuLZEitmM+DZgzjVdKPIuc=;
-  b=nrt2KZaHVXOnozIHsw35bwiV7TBfeVlfQHWYbHNBORqBJvAjXIj1onA7
-   gTZufm8JoAgvkVr7JjBhVyzcsYMDMLVvsFF1IKdT9TmLUSPfhdCLlSAFF
-   ljqR2eMVu+pYWF1SPICf66WiHnyi0ovcRJrmdkAVJCtRL7rs5lvezSmvQ
-   nJ9bqcqqrSvsKEu7gQdjjmMsTaHKZ/Obiv1sWOgUM3gqCX9/JWYHenL24
-   o0/ujb8qxGjDeOO5lrO5Q1ZErwHfH2HgrkEvQcqVFM/1U9mWkbSe1ngV/
-   IrWRNHRBO2lMwpk0PjaqhcvfVxDdOz56BsxuAXZYGfcTJ7vzRLALR0W4L
-   g==;
-X-CSE-ConnectionGUID: UpR7sBiwTiqtUGUif4iMyA==
-X-CSE-MsgGUID: PFciiCNoQAC8x3T7BfEHew==
-X-IronPort-AV: E=McAfee;i="6700,10204,11211"; a="44254171"
-X-IronPort-AV: E=Sophos;i="6.11,165,1725346800"; 
-   d="scan'208";a="44254171"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2024 06:54:59 -0700
-X-CSE-ConnectionGUID: DR3IS1+qQaSdtk7Z9NGX/g==
-X-CSE-MsgGUID: IN5vmG/KS8CmYG8id1p+tg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,165,1725346800"; 
-   d="scan'208";a="73361272"
-Received: from sschumil-mobl2.ger.corp.intel.com (HELO localhost) ([10.245.246.136])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2024 06:54:56 -0700
-From: Jani Nikula <jani.nikula@intel.com>
-To: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Cc: intel-gfx@lists.freedesktop.org, intel-xe@lists.freedesktop.org, Matthew
- Auld <matthew.auld@intel.com>, Anshuman Gupta <anshuman.gupta@intel.com>,
- Andi Shyti <andi.shyti@linux.intel.com>, Nathan
- Chancellor <nathan@kernel.org>, stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/6] drm/i915/gem: fix bitwise and logical AND mixup
-In-Reply-To: <87r095ze2i.fsf@intel.com>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <cover.1726680898.git.jani.nikula@intel.com>
- <643cc0a4d12f47fd8403d42581e83b1e9c4543c7.1726680898.git.jani.nikula@intel.com>
- <ZvXGwFBbOa7-035L@intel.com> <87r095ze2i.fsf@intel.com>
-Date: Mon, 30 Sep 2024 16:54:43 +0300
-Message-ID: <87wmitw8kc.fsf@intel.com>
+	s=arc-20240116; t=1727705382; c=relaxed/simple;
+	bh=HeOyOKsf8pRgrkeCQSA1mwUSVi1FuBH5iTWJLa28jwI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fqgXgvhzssYkJqvrDZdpK2jbTjpX5yvcocLrJ6arj0Sqgz97BS6yh77yx5H6CH7w46ZBnlfCfjvb15X5m+KRKyvpXyAPaj8HHFmJ642nM4bFcTOOOeVGhvjP44ZBpi1RRxXmlQk12dQ1mf/CvfhZn9kaxfwUx8Y8XFZqe0R/6wA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rSTrroLb; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-20b4a090f3eso241595ad.1
+        for <stable@vger.kernel.org>; Mon, 30 Sep 2024 07:09:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1727705381; x=1728310181; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=Wqn1/zvUNvgOnZjVoe25EBepMi00YwZEPhcWt2gT9XU=;
+        b=rSTrroLbpQlsDO7bs7PGO1gCdVux4uPzJ7luYhhGujrLLI3lKZD75LcX+MJXp5uu5X
+         ntsoogB7V8CfEvpZEOb9rTm6357nFn5zWPuac5v6u9weJVVuCXoyMRpfGIBsRRz6Xz23
+         h2+SR8OJjvNZbtKOCX0gvub+ZMrB0+HwIFs+4joZh6dGhKrfPF7lAgUl9kaDbf+qFudS
+         9Up3h+MpbgMAVznPuAfp2ta4CbpwSAXTtnNy7hp+bnGNp0wK2ZoQuxDN6ekZt24h6/z+
+         Hbqp9lVDb9CZJIu5R8pABwoPjn0cJTqyw8D4WlNs0qf4tuZv2/4ypIigKUicGWVwKmx7
+         dvuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727705381; x=1728310181;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Wqn1/zvUNvgOnZjVoe25EBepMi00YwZEPhcWt2gT9XU=;
+        b=jej95xvjqZEQRUr27nh1cSnQHfDBJ8ecG0KCyhsmsxZMa7cT5YZXbYLnMePV16WwXa
+         295nRmkb49teSVkF8AMPGmX+QABzloZ+hoeJuJdkJUHWSzgxnpcutahjapUXj9vzR9hB
+         AUYN89w9FN61qCxhU6bkNI4Ko/Bs9HwGFLKs+k2+Vtopdf8krEQDcBrBwnK2c4nZonFI
+         G4Ijtir1vjBLZHtW0Fb72tQB/X0qzP5LKYFKM3CR/PXVlotQpEvnLmlLIWC/8v+1Gbak
+         gcE5YPJ4HbwfH1JHRFkWPSir08UfDGuPn5ghUCdhCR9WgtL5MZv6RTG4eVcIp9SFEfHU
+         qoNw==
+X-Forwarded-Encrypted: i=1; AJvYcCVA/4UM/WGS95zJeJQayzHWHBHLNGguwRaqDBPnUZb/s312zzhm97E22tAXBrYVgThoyM9emjk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzmqQ69Qzbd5nU6BQ/kMTQPcMMm1pDwn7zbjvUoA+SrLYupHvm7
+	xG/5SaB/LHTN8/KBtWyz5UibrBGbpLeiPtdhtUt/kwifQ7j2diXzC12Mpexe2K+UA8DAHRDNltB
+	UQNt52J0dwW04zJBr07dX6W+8n404zOhO81b4
+X-Google-Smtp-Source: AGHT+IF34ciHfAc7kI+eD3PvlZ3/dCHbYxRF1NJ06ceLxk/6js/ELEHY9i+95Fn9r5YkPzQ7SS+RTovk0wDQKN3Q2Z8=
+X-Received: by 2002:a17:902:fb04:b0:20b:428a:3102 with SMTP id
+ d9443c01a7336-20b57f3c63cmr3316265ad.24.1727705380306; Mon, 30 Sep 2024
+ 07:09:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20240929170219.1881536-1-jrife@google.com> <cb613257-75c5-4bcf-9daa-c3f5d9a83186@iogearbox.net>
+In-Reply-To: <cb613257-75c5-4bcf-9daa-c3f5d9a83186@iogearbox.net>
+From: Jordan Rife <jrife@google.com>
+Date: Mon, 30 Sep 2024 07:09:28 -0700
+Message-ID: <CADKFtnS7va+Q5qSd6e+k2Vq+z6Oc+ba_zFoTdLhWmt03TMLu-Q@mail.gmail.com>
+Subject: Re: [PATCH v1] bpf: Prevent infinite loops with bpf_redirect_peer
+To: Daniel Borkmann <daniel@iogearbox.net>
+Cc: bpf@vger.kernel.org, netdev@vger.kernel.org, 
+	Alexei Starovoitov <ast@kernel.org>, Andrii Nakryiko <andrii@kernel.org>, 
+	Martin KaFai Lau <martin.lau@linux.dev>, Kui-Feng Lee <thinker.li@gmail.com>, 
+	Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	"David S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, stable@vger.kernel.org, 
+	John Fastabend <john.fastabend@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, 27 Sep 2024, Jani Nikula <jani.nikula@intel.com> wrote:
-> On Thu, 26 Sep 2024, Rodrigo Vivi <rodrigo.vivi@intel.com> wrote:
->> On Wed, Sep 18, 2024 at 08:35:43PM +0300, Jani Nikula wrote:
->>> CONFIG_DRM_I915_USERFAULT_AUTOSUSPEND is an int, defaulting to 250. When
->>> the wakeref is non-zero, it's either -1 or a dynamically allocated
->>> pointer, depending on CONFIG_DRM_I915_DEBUG_RUNTIME_PM. It's likely that
->>> the code works by coincidence with the bitwise AND, but with
->>> CONFIG_DRM_I915_DEBUG_RUNTIME_PM=y, there's the off chance that the
->>> condition evaluates to false, and intel_wakeref_auto() doesn't get
->>> called. Switch to the intended logical AND.
->>> 
->>> v2: Use != to avoid clang -Wconstant-logical-operand (Nathan)
->>
->> oh, this is ugly!
->>
->> Wouldn't it be better then to use IS_ENABLED() macro?
->
-> It's an int config option, not a bool. (Yes, the name is misleading.)
->
-> IS_ENABLED(CONFIG_DRM_I915_USERFAULT_AUTOSUSPEND) would be the same as
-> CONFIG_DRM_I915_USERFAULT_AUTOSUSPEND == 1.
->
-> We're actually checking if the int value != 0, so IMO the patch at hand
-> is fine.
+> No, as you mentioned, there are plenty of other misconfiguration
+> possibilities in and
+> outside bpf where something can loop in the stack (or where you can lock
+> yourself
+> out e.g. drop-all).
 
-Ping, r-b on this one too?
+I wasn't sure if it should be possible to lock up the kernel with such
+a combination of BPF programs. If this is the view generally, then
+fair enough I suppose. Maybe this is my ignorance showing, but my
+understanding is that with BPF generally we go to great lengths to
+make sure things don't block (e.g. making sure a BPF program
+terminates eventually) to avoid locking up the kernel. By extension,
+should it not also be impossible to block indefinitely in
+__netif_receive_skb_core with a combination of two BPF programs that
+create a cycle with bpf_redirect_peer? It seems like there are other
+provisions in place to avoid misconfiguration or buggy combinations of
+programs from breaking things too badly such as the
+dev_xmit_recursion() check in __bpf_tx_skb().
 
-BR,
-Jani.
+> if (dev_xmit_recursion()) {
+>   net_crit_ratelimited("bpf: recursion limit reached on datapath, buggy bpf program?\n");
+>   kfree_skb(skb);
+>   return -ENETDOWN;
+> }
 
->
-> BR,
-> Jani.
->
->
->>
->>> 
->>> Fixes: ad74457a6b5a ("drm/i915/dgfx: Release mmap on rpm suspend")
->>> Cc: Matthew Auld <matthew.auld@intel.com>
->>> Cc: Rodrigo Vivi <rodrigo.vivi@intel.com>
->>> Cc: Anshuman Gupta <anshuman.gupta@intel.com>
->>> Cc: Andi Shyti <andi.shyti@linux.intel.com>
->>> Cc: Nathan Chancellor <nathan@kernel.org>
->>> Cc: <stable@vger.kernel.org> # v6.1+
->>> Reviewed-by: Matthew Auld <matthew.auld@intel.com> # v1
->>> Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com> # v1
->>> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
->>> ---
->>>  drivers/gpu/drm/i915/gem/i915_gem_ttm.c | 2 +-
->>>  1 file changed, 1 insertion(+), 1 deletion(-)
->>> 
->>> diff --git a/drivers/gpu/drm/i915/gem/i915_gem_ttm.c b/drivers/gpu/drm/i915/gem/i915_gem_ttm.c
->>> index 5c72462d1f57..b22e2019768f 100644
->>> --- a/drivers/gpu/drm/i915/gem/i915_gem_ttm.c
->>> +++ b/drivers/gpu/drm/i915/gem/i915_gem_ttm.c
->>> @@ -1131,7 +1131,7 @@ static vm_fault_t vm_fault_ttm(struct vm_fault *vmf)
->>>  		GEM_WARN_ON(!i915_ttm_cpu_maps_iomem(bo->resource));
->>>  	}
->>>  
->>> -	if (wakeref & CONFIG_DRM_I915_USERFAULT_AUTOSUSPEND)
->>> +	if (wakeref && CONFIG_DRM_I915_USERFAULT_AUTOSUSPEND != 0)
->>>  		intel_wakeref_auto(&to_i915(obj->base.dev)->runtime_pm.userfault_wakeref,
->>>  				   msecs_to_jiffies_timeout(CONFIG_DRM_I915_USERFAULT_AUTOSUSPEND));
->>>  
->>> -- 
->>> 2.39.2
->>> 
-
--- 
-Jani Nikula, Intel
+-Jordan
 
