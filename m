@@ -1,78 +1,79 @@
-Return-Path: <stable+bounces-78304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B56098AFF4
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 00:36:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11F8898B001
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 00:37:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3BCB7283829
-	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 22:36:38 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BAA831F22320
+	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 22:37:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6CEB194C92;
-	Mon, 30 Sep 2024 22:36:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E00AB1A2634;
+	Mon, 30 Sep 2024 22:36:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Z2R+eLd4"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cJhmxLRp"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE86218951C;
-	Mon, 30 Sep 2024 22:36:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3AC51A0BCB;
+	Mon, 30 Sep 2024 22:36:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727735770; cv=none; b=F7IEGgiU50mxEZ9S8EvVx4GOp+VUnLJnFNb5FV/QFqDBH+XN2YXIarwE+3T/meoZHZE1WzrM7CZAmzdDcPhIEkUEoRv20q/rxTWCxZ+cj1kfmMfoK0vZUVoZ46uI1PlgCiGik+aneQIJtfRNSqrKobrZH0Bv/HhZoL7+ewufkj8=
+	t=1727735774; cv=none; b=L/5zkkrmRB0tF+cXULPByZQhHCkATSUATS33YOzcGsK4ThvzVHrjOiRoEeDadgaDNfXbG1jQhPaJH2HIR3O+y7OaZ9/OR+NDm9lUkU2XM+dEIK7UaCPj5F2oJQ/3PJwH1H2wXJ/NzeX+FfozFpF7NS34nzfZCvHqIOuMR4t9dlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727735770; c=relaxed/simple;
-	bh=BqBjza3dVs7RuLhK/O/xvl0SxSraob6n8ODHpbQfFmE=;
+	s=arc-20240116; t=1727735774; c=relaxed/simple;
+	bh=EQagrq8iEetD3afIvCwI9WqOrnNYF4kt2DFH6ckk9WA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h64sg2jAXvEJsy8CdlOddk3wRfSHSz0wpIvgdMT8dSci+RQsJ9nrXd4X+SIm07UaPkpDzDtllGF+u3mj+bcX1toECNr6DnEhSG/U4+CT3NwIBLkDWPKODEhgKOU9U3I8MRNo/fLUvAkAclNu6pv9YNtL5+kWA0UJM1QCCKyVAxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Z2R+eLd4; arc=none smtp.client-ip=192.198.163.12
+	 MIME-Version; b=jzYXK++XggQeqIVSt68BCkLAc/AXeZHnpuuyyVrKCN7NN9wvOaLNiPrns7GLuH66wQf0ptuV0eil+3P1alWPcjkcSBv+TMHhvlaW4LL+fbw9o59n7synk9b5GqpGGencnHTMkfTOk9msmRQGqPGhfGQYjQeIktzCnJHnqfgn9A8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cJhmxLRp; arc=none smtp.client-ip=192.198.163.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1727735769; x=1759271769;
+  t=1727735773; x=1759271773;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=BqBjza3dVs7RuLhK/O/xvl0SxSraob6n8ODHpbQfFmE=;
-  b=Z2R+eLd4KUVhB+GVCVuZtGvJy1eUSFkMM/E7dtxg2jT/+baPgYfhaBay
-   zcaLlB/mLJwpF+D3qmb2rd8ZJRlu8utG7j6RV8Uu+MRJ1X2nX11WO63GG
-   NNfh6LZeFySbc5dJUeIa9laaSJtwaV7OCSRwe9PBTyr/DN80OxIKcSNN3
-   9JA4nufp/9eEUu3K36BvlqU0d0Vb+zoAYSNwu1J68NWYZg+HUliAeaHM+
-   JOHJ25kV4tuecKEQ7schmdEBifkIYaSk1zcp77lu+uhvIewVe59xAn7XG
-   48QRC+3SH+6SpQDJBzZztVG5CY/TD5gjBnF+cerPM5UTyvknOPZNum87M
+  bh=EQagrq8iEetD3afIvCwI9WqOrnNYF4kt2DFH6ckk9WA=;
+  b=cJhmxLRpciIdse/OInFw+vCXiRe4siYmqy7UR/pcI8yKCNK4xng2uFLh
+   Y8376W62VOdPtjsvBngQTXg6Dtw/ZET1S1penNNdlNlb1XBI0UFYkRsGI
+   V0pKHj3Gzt7Y64TgA6/cf4p11IgJHVOAQ9PUnOeMTPmg6qLGmjszoS8vH
+   WKEugBAOuYqGl3XXKWbCsRFJYUHaJVdrZqhU0nMBBuWMnQkLPrQcOxlDW
+   W6C5xurV4+GTPRoeRDFqHz3jVD9HtpKLkVqFPOGs0ZTdJHOXGYGVGcns7
+   2lmVZl3hXunPtZ+IevlSgy3zfwk5nDd49uomTeveedMG7xBAmVvoUZwkr
    Q==;
-X-CSE-ConnectionGUID: RoRvZsR4TLi+QIgl82U6lQ==
-X-CSE-MsgGUID: Wv87B7eRThyCk1UFETTGdA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11211"; a="30734865"
+X-CSE-ConnectionGUID: UQmJfDO9RnSpW5vp7etqyQ==
+X-CSE-MsgGUID: Hu7f0tbQRRS907As69k8pQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11211"; a="30734900"
 X-IronPort-AV: E=Sophos;i="6.11,166,1725346800"; 
-   d="scan'208";a="30734865"
+   d="scan'208";a="30734900"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2024 15:36:06 -0700
-X-CSE-ConnectionGUID: tlEcuuCHQoueWZf29Mwz5Q==
-X-CSE-MsgGUID: c58JJvNIRDuBtZ0mAIXOTw==
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2024 15:36:07 -0700
+X-CSE-ConnectionGUID: vu0kw/eISsCfeXJP1yFqYg==
+X-CSE-MsgGUID: Nh9hUM+VRdCSWL+BqRaMFQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.11,166,1725346800"; 
-   d="scan'208";a="73496614"
+   d="scan'208";a="73496635"
 Received: from anguy11-upstream.jf.intel.com ([10.166.9.133])
-  by orviesa009.jf.intel.com with ESMTP; 30 Sep 2024 15:36:06 -0700
+  by orviesa009.jf.intel.com with ESMTP; 30 Sep 2024 15:36:07 -0700
 From: Tony Nguyen <anthony.l.nguyen@intel.com>
 To: davem@davemloft.net,
 	kuba@kernel.org,
 	pabeni@redhat.com,
 	edumazet@google.com,
 	netdev@vger.kernel.org
-Cc: Gui-Dong Han <hanguidong02@outlook.com>,
+Cc: Joshua Hay <joshua.a.hay@intel.com>,
 	anthony.l.nguyen@intel.com,
-	baijiaju1990@gmail.com,
+	aleksander.lobakin@intel.com,
+	milena.olech@intel.com,
 	stable@vger.kernel.org,
-	Simon Horman <horms@kernel.org>,
-	Rafal Romanowski <rafal.romanowski@intel.com>
-Subject: [PATCH net 03/10] ice: Fix improper handling of refcount in ice_sriov_set_msix_vec_count()
-Date: Mon, 30 Sep 2024 15:35:50 -0700
-Message-ID: <20240930223601.3137464-4-anthony.l.nguyen@intel.com>
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Krishneil Singh <krishneil.k.singh@intel.com>
+Subject: [PATCH net 09/10] idpf: use actual mbx receive payload length
+Date: Mon, 30 Sep 2024 15:35:56 -0700
+Message-ID: <20240930223601.3137464-10-anthony.l.nguyen@intel.com>
 X-Mailer: git-send-email 2.46.0.522.gc50d79eeffbf
 In-Reply-To: <20240930223601.3137464-1-anthony.l.nguyen@intel.com>
 References: <20240930223601.3137464-1-anthony.l.nguyen@intel.com>
@@ -84,71 +85,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Gui-Dong Han <hanguidong02@outlook.com>
+From: Joshua Hay <joshua.a.hay@intel.com>
 
-This patch addresses an issue with improper reference count handling in the
-ice_sriov_set_msix_vec_count() function.
+When a mailbox message is received, the driver is checking for a non 0
+datalen in the controlq descriptor. If it is valid, the payload is
+attached to the ctlq message to give to the upper layer.  However, the
+payload response size given to the upper layer was taken from the buffer
+metadata which is _always_ the max buffer size. This meant the API was
+returning 4K as the payload size for all messages.  This went unnoticed
+since the virtchnl exchange response logic was checking for a response
+size less than 0 (error), not less than exact size, or not greater than
+or equal to the max mailbox buffer size (4K). All of these checks will
+pass in the success case since the size provided is always 4K. However,
+this breaks anyone that wants to validate the exact response size.
 
-First, the function calls ice_get_vf_by_id(), which increments the
-reference count of the vf pointer. If the subsequent call to
-ice_get_vf_vsi() fails, the function currently returns an error without
-decrementing the reference count of the vf pointer, leading to a reference
-count leak. The correct behavior, as implemented in this patch, is to
-decrement the reference count using ice_put_vf(vf) before returning an
-error when vsi is NULL.
+Fetch the actual payload length from the value provided in the
+descriptor data_len field (instead of the buffer metadata).
 
-Second, the function calls ice_sriov_get_irqs(), which sets
-vf->first_vector_idx. If this call returns a negative value, indicating an
-error, the function returns an error without decrementing the reference
-count of the vf pointer, resulting in another reference count leak. The
-patch addresses this by adding a call to ice_put_vf(vf) before returning
-an error when vf->first_vector_idx < 0.
+Unfortunately, this means we lose some extra error parsing for variable
+sized virtchnl responses such as create vport and get ptypes.  However,
+the original checks weren't really helping anyways since the size was
+_always_ 4K.
 
-This bug was identified by an experimental static analysis tool developed
-by our team. The tool specializes in analyzing reference count operations
-and identifying potential mismanagement of reference counts. In this case,
-the tool flagged the missing decrement operation as a potential issue,
-leading to this patch.
-
-Fixes: 4035c72dc1ba ("ice: reconfig host after changing MSI-X on VF")
-Fixes: 4d38cb44bd32 ("ice: manage VFs MSI-X using resource tracking")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gui-Dong Han <hanguidong02@outlook.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Fixes: 34c21fa894a1 ("idpf: implement virtchnl transaction manager")
+Cc: stable@vger.kernel.org # 6.9+
+Signed-off-by: Joshua Hay <joshua.a.hay@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Tested-by: Krishneil Singh <krishneil.k.singh@intel.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 ---
- drivers/net/ethernet/intel/ice/ice_sriov.c | 8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/idpf/idpf_virtchnl.c | 9 +--------
+ 1 file changed, 1 insertion(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_sriov.c b/drivers/net/ethernet/intel/ice/ice_sriov.c
-index e34fe2516ccc..c2d6b2a144e9 100644
---- a/drivers/net/ethernet/intel/ice/ice_sriov.c
-+++ b/drivers/net/ethernet/intel/ice/ice_sriov.c
-@@ -1096,8 +1096,10 @@ int ice_sriov_set_msix_vec_count(struct pci_dev *vf_dev, int msix_vec_count)
- 		return -ENOENT;
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+index 70986e12da28..3c0f97650d72 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_virtchnl.c
+@@ -666,7 +666,7 @@ idpf_vc_xn_forward_reply(struct idpf_adapter *adapter,
  
- 	vsi = ice_get_vf_vsi(vf);
--	if (!vsi)
-+	if (!vsi) {
-+		ice_put_vf(vf);
- 		return -ENOENT;
-+	}
+ 	if (ctlq_msg->data_len) {
+ 		payload = ctlq_msg->ctx.indirect.payload->va;
+-		payload_size = ctlq_msg->ctx.indirect.payload->size;
++		payload_size = ctlq_msg->data_len;
+ 	}
  
- 	prev_msix = vf->num_msix;
- 	prev_queues = vf->num_vf_qs;
-@@ -1142,8 +1144,10 @@ int ice_sriov_set_msix_vec_count(struct pci_dev *vf_dev, int msix_vec_count)
- 	vf->num_msix = prev_msix;
- 	vf->num_vf_qs = prev_queues;
- 	vf->first_vector_idx = ice_sriov_get_irqs(pf, vf->num_msix);
--	if (vf->first_vector_idx < 0)
-+	if (vf->first_vector_idx < 0) {
-+		ice_put_vf(vf);
- 		return -EINVAL;
-+	}
+ 	xn->reply_sz = payload_size;
+@@ -1295,10 +1295,6 @@ int idpf_send_create_vport_msg(struct idpf_adapter *adapter,
+ 		err = reply_sz;
+ 		goto free_vport_params;
+ 	}
+-	if (reply_sz < IDPF_CTLQ_MAX_BUF_LEN) {
+-		err = -EIO;
+-		goto free_vport_params;
+-	}
  
- 	if (needs_rebuild) {
- 		ice_vf_reconfig_vsi(vf);
+ 	return 0;
+ 
+@@ -2602,9 +2598,6 @@ int idpf_send_get_rx_ptype_msg(struct idpf_vport *vport)
+ 		if (reply_sz < 0)
+ 			return reply_sz;
+ 
+-		if (reply_sz < IDPF_CTLQ_MAX_BUF_LEN)
+-			return -EIO;
+-
+ 		ptypes_recvd += le16_to_cpu(ptype_info->num_ptypes);
+ 		if (ptypes_recvd > max_ptype)
+ 			return -EINVAL;
 -- 
 2.42.0
 
