@@ -1,108 +1,125 @@
-Return-Path: <stable+bounces-78227-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17F07989B72
-	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 09:30:37 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 926B6989BA7
+	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 09:36:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C41CB1F211DB
-	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 07:30:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2F741C21675
+	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 07:36:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 826004594C;
-	Mon, 30 Sep 2024 07:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ACAB15B153;
+	Mon, 30 Sep 2024 07:36:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="Nn8leL/q"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpbg150.qq.com (smtpbg150.qq.com [18.132.163.193])
+Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BE8C21105
-	for <stable@vger.kernel.org>; Mon, 30 Sep 2024 07:30:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.132.163.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD29721105;
+	Mon, 30 Sep 2024 07:36:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727681431; cv=none; b=lm0S/1GMRPsgqyNgJfv+KSwwdE1A4cRBuscHcdxOaCseO+qysPgf10KNG6k76AhvsOUelNAgyVGinGdEiiDSZkxTC4uTstYL59kRrBBRKmhQUll4109zJEorWDlhqr4lmqGvSktkPK/CPD2cRcn5DJbX1Civ+dzMBCCmIForLBE=
+	t=1727681813; cv=none; b=Y89Eq+GJjjkfK09ei8ikw3ivkRj9zhlspt0IzJbRvkl8O81+Fei1FoLHKjvLr9qxpW6+LqBx8SC2yrHgCBjVqN+jM79GCmYx1hO23xk+dPPmyjhLaOopBagJ0RUjQXXacgOKxxxgZZwQZp6g2fDyYdKPtupCM7TItuTPouJTn+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727681431; c=relaxed/simple;
-	bh=rP+Su456oKoi+eSL4Q3S2uxRd9c2eaCCMFzD0JPjceM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=p+NrQY8mG1oIFGS6fIbBKzU21Ja4jEUULQJEzvGygOMyn/vt0qF1G2wBSo8Gr85OuW7MlyHiesqKVQieW3eDDx9VNrHmczYLgkbeF/dCSDESpdKOp3/rBZfFVDj2DzI8Xk1qu6zVg/4ij8Omv/8IadrlmeZ4gURYM+dFwpVoJ2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com; spf=pass smtp.mailfrom=net-swift.com; arc=none smtp.client-ip=18.132.163.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=net-swift.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=net-swift.com
-X-QQ-mid: bizesmtp83t1727681380thiorh3y
-X-QQ-Originating-IP: HgM72dOxP7VcC+Y5VmNGWMUpT8C6Zbzd9icOBootQzw=
-Received: from 173-12-12-1-panjde.hfc.comcastb ( [122.233.174.97])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Mon, 30 Sep 2024 15:29:39 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 7099544262465932789
-From: Duanqiang Wen <duanqiangwen@net-swift.com>
-To: stable@vger.kernel.org,
-	patches@lists.linux.dev,
-	gregkh@linuxfoundation.org,
-	davem@davemloft.net,
-	ashal@kernel.org
-Cc: Duanqiang Wen <duanqiangwen@net-swift.com>
-Subject: [PATCH net] Revert "net: libwx: fix alloc msix vectors failed"
-Date: Mon, 30 Sep 2024 15:33:27 +0800
-Message-Id: <20240930073327.130343-1-duanqiangwen@net-swift.com>
-X-Mailer: git-send-email 2.27.0
+	s=arc-20240116; t=1727681813; c=relaxed/simple;
+	bh=um1tO7yPe6lanquOSmonCyC+iddX9cPeHGSY6pn/DDo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=fJqfbF2gnu2bR9HC2kOs241oq0AC69j1c/Mo0mE8aVvBug9YR3zzAARhHvvvCEyPNMWtkgE2FwjEeMlA4qDSdKp1Y9Eljax+9xBbbl4gNEBnhH05S2aDUWj1T6balL8tDDaLhjFn/I5PZawjjFZRqiJY4nGmiQocGaPHKZs9l5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=Nn8leL/q; arc=none smtp.client-ip=213.133.104.62
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
+	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
+	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
+	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
+	bh=wDovo+tFomF7bMi/0L+PtEMdVXxkZUmvFiFypxxGh6E=; b=Nn8leL/qROiP5Yy9Mc7HxdvzRp
+	LepsFPKOC2Yo/cOvBlM6R6rV5nceAx5b4yGz8xLxNcLO5t93vEDsaIa9REFX+zajFy/S1kuvTgtGJ
+	wmpogi78VKaGI+DgQEnbqtl3qKZEKOY3+i78R/l17SQk9u4lUiQ3VqDcoBB217q0aQ/30p6Tj2zrT
+	wgEgqNL5T6YF0Oex1QPhf8YqSf5fe1aD9IlqPDPucgYMjmfnoBcRI0M3LJIvw7+jzOxzk9VxVPFWf
+	sZpeXovzdwrB7JnbLkduWBinK6j+czRoL62cCLkuU3v0yFIyQeQgZEBna55el/dgq86vv6NW/yyTN
+	dhF3pIcQ==;
+Received: from sslproxy02.your-server.de ([78.47.166.47])
+	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.94.2)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1svAxT-000IFU-VQ; Mon, 30 Sep 2024 09:36:39 +0200
+Received: from [178.197.249.44] (helo=[192.168.1.114])
+	by sslproxy02.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <daniel@iogearbox.net>)
+	id 1svAxS-0008Fm-2d;
+	Mon, 30 Sep 2024 09:36:39 +0200
+Message-ID: <cb613257-75c5-4bcf-9daa-c3f5d9a83186@iogearbox.net>
+Date: Mon, 30 Sep 2024 09:36:38 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:net-swift.com:qybglogicsvrgz:qybglogicsvrgz7a-0
-X-QQ-XMAILINFO: M3vv73qU6a4uPinrzsQrLoKMariUq6/miO3ocekKBO8BM4aOTsxoRjX6
-	NWn0hsiNKPE/rM2UBHw+DyeMEVhQhMCeOTuk6yxAXEqMR3cSDtmZQR2N4f+l/0NfFsNv+xX
-	xrmT9xbu+Kllh9wZDCEZg7NPjpkrWhoq5+hNr86lSZ8gtQ3kSeeOxwPeyfCSBaRo5MKcY14
-	dVaU2CSwM+gx4fSeLRMXKb9bOAL1ImLNiUcgpEaE2BRiTMkK2+aL87cR8pzU4c8Tj5E+/pG
-	n+cpd2GPsHTmO0z380TXaiqo0WPZi04I5wXXK1TZGkDHzQUh1ot5/icqhiV3JgSKA9S3PGk
-	B0pXz0wiFN0ecDy6shJ4yJ/pRqQZLUto8wstTiqjp5yLTvw8q5IBE9oW8U/dgCS97GnaUEW
-	ADwhI9TWVjLA71ynXuQUadQD44r3Q8oDkVpclh3ATIeVR2prijS8sZA+TXmoKELYC/9HEc3
-	bIrqL5AjzE56NLhgklA83UaaxD4i/Q++QtFbw1Dq/O8cSg2o9vIdMlNWsN1j51kQaJe1rmJ
-	NzRoHjCOyXlnUTDAI1sJ+NxYuqvGehLSPtGf35Wn0RBWHbVua1PBxWoAVxci/tApcT9uRKq
-	Ekn695IBus95pnhC1sAwt4nKsm8l8y6l46k1DThVXEZ3QKz+fS+u55d25cZ+aiuzBIowzR/
-	LMMxr9FvlXAFDVk2K3wKQl3OB6rwMQDCfa3Xmk4Wq1N2LkpaSmR5QHCfepCaJY8XTYze8pR
-	M5rq7jsp8iePPGMv+p7a/4dMjjCkIIfqd5tbiVUNXupygizwb08q9kMApc7b8ZnoPzRaUXL
-	FuCRQrgSZYBXQr7U5VYTOe361XpbMJ4/jIUFJhl3GRlmFZSXiVEcsaH8ZZ6x3r5sQz97/Ju
-	cHBEmWP1OPhyCTJbkGhn2Yg5X91KFXfeY66HHrnMBptxACO3kk1kOJ6z3rzz4sqr9KUY0bE
-	iIIk=
-X-QQ-XMRINFO: NI4Ajvh11aEj8Xl/2s1/T8w=
-X-QQ-RECHKSPAM: 0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v1] bpf: Prevent infinite loops with bpf_redirect_peer
+To: Jordan Rife <jrife@google.com>, bpf@vger.kernel.org
+Cc: netdev@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>,
+ Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau
+ <martin.lau@linux.dev>, Kui-Feng Lee <thinker.li@gmail.com>,
+ Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
+ "David S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>,
+ stable@vger.kernel.org, John Fastabend <john.fastabend@gmail.com>
+References: <20240929170219.1881536-1-jrife@google.com>
+Content-Language: en-US
+From: Daniel Borkmann <daniel@iogearbox.net>
+In-Reply-To: <20240929170219.1881536-1-jrife@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Authenticated-Sender: daniel@iogearbox.net
+X-Virus-Scanned: Clear (ClamAV 0.103.10/27412/Sun Sep 29 10:48:04 2024)
 
-This reverts commit 69197dfc64007b5292cc960581548f41ccd44828.
-commit 937d46ecc5f9 ("net: wangxun: add ethtool_ops for
-channel number") changed NIC misc irq from most significant
-bit to least significant bit, the former condition is not
-required to apply this patch, because we only need to set
-irq affinity for NIC queue irq vectors.
-this patch is required after commit 937d46ecc5f9 ("net: wangxun:
-add ethtool_ops for channel number") was applied, so this is only
-relevant to 6.6.y branch.
-
-Signed-off-by: Duanqiang Wen <duanqiangwen@net-swift.com>
----
- drivers/net/ethernet/wangxun/libwx/wx_lib.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/drivers/net/ethernet/wangxun/libwx/wx_lib.c b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-index 2b3d6586f44a..fb1caa40da6b 100644
---- a/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-+++ b/drivers/net/ethernet/wangxun/libwx/wx_lib.c
-@@ -1620,7 +1620,7 @@ static void wx_set_num_queues(struct wx *wx)
-  */
- static int wx_acquire_msix_vectors(struct wx *wx)
- {
--	struct irq_affinity affd = { .pre_vectors = 1 };
-+	struct irq_affinity affd = {0, };
- 	int nvecs, i;
- 
- 	/* We start by asking for one vector per queue pair */
--- 
-2.27.0
-
+On 9/29/24 7:02 PM, Jordan Rife wrote:
+> It is possible to create cycles using bpf_redirect_peer which lead to an
+> an infinite loop inside __netif_receive_skb_core. The simplest way to
+> illustrate this is by attaching a TC program to the ingress hook on both
+> sides of a veth or netkit device pair which redirects to its own peer,
+> although other cycles are possible. This patch places an upper limit on
+> the number of iterations allowed inside __netif_receive_skb_core to
+> prevent this.
+>
+> Signed-off-by: Jordan Rife <jrife@google.com>
+> Fixes: 9aa1206e8f48 ("bpf: Add redirect_peer helper")
+> Cc: stable@vger.kernel.org
+> ---
+>   net/core/dev.c                                | 11 +++-
+>   net/core/dev.h                                |  1 +
+>   .../selftests/bpf/prog_tests/tc_redirect.c    | 51 +++++++++++++++++++
+>   .../selftests/bpf/progs/test_tc_peer.c        | 13 +++++
+>   4 files changed, 75 insertions(+), 1 deletion(-)
+>
+> diff --git a/net/core/dev.c b/net/core/dev.c
+> index cd479f5f22f6..753f8d27f47c 100644
+> --- a/net/core/dev.c
+> +++ b/net/core/dev.c
+> @@ -5455,6 +5455,7 @@ static int __netif_receive_skb_core(struct sk_buff **pskb, bool pfmemalloc,
+>   	struct net_device *orig_dev;
+>   	bool deliver_exact = false;
+>   	int ret = NET_RX_DROP;
+> +	int loops = 0;
+>   	__be16 type;
+>   
+>   	net_timestamp_check(!READ_ONCE(net_hotdata.tstamp_prequeue), skb);
+> @@ -5521,8 +5522,16 @@ static int __netif_receive_skb_core(struct sk_buff **pskb, bool pfmemalloc,
+>   		nf_skip_egress(skb, true);
+>   		skb = sch_handle_ingress(skb, &pt_prev, &ret, orig_dev,
+>   					 &another);
+> -		if (another)
+> +		if (another) {
+> +			loops++;
+No, as you mentioned, there are plenty of other misconfiguration 
+possibilities in and
+outside bpf where something can loop in the stack (or where you can lock 
+yourself
+out e.g. drop-all).
 
