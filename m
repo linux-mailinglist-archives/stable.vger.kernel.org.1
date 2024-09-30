@@ -1,48 +1,54 @@
-Return-Path: <stable+bounces-78257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D44F98A29E
-	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 14:35:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19CD998A3DD
+	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 15:02:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9083C1C22A0E
-	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 12:35:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id CF3992815D3
+	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 13:01:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A29F18DF83;
-	Mon, 30 Sep 2024 12:35:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DAAF2AE8E;
+	Mon, 30 Sep 2024 13:01:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aUdDGpt7"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="Dzh9vgy2"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fanzine2.igalia.com (fanzine.igalia.com [178.60.130.6])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C40D18BB97;
-	Mon, 30 Sep 2024 12:35:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6438C18E038
+	for <stable@vger.kernel.org>; Mon, 30 Sep 2024 13:01:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.60.130.6
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727699734; cv=none; b=UZGIts1vodM9slbuPRHMcAVlfMcyyHg/+EcLBVsrUhV26xf6CKdhKgO62CZWtf10sppTSD7SxZLSTPmRzVyYhyQZsjReR6RPiR3p1qGutP5HpsogVIrRjrNBm4WIaBAKW1cw74kGKivznj7PUnLhAWgs4YcygV+dnywAFlDcIuo=
+	t=1727701315; cv=none; b=TYQ4IT70Ajs6NISY8x7xxVPKoQSEF9pZxyowJYewIvUFecPaIwLSFpwZzT3nHb+nD3yz36LFtx88TvFm1L7j56sCRQvwYU/bkA/MmI6j1VBmQW97WRpPe2QUSJCZSzltiNp35cWOIjoAIrnntIQK3vrsOw5FeqR3SDiTD4jalLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727699734; c=relaxed/simple;
-	bh=ev6D9Cf4z2JGtXdgyMN2CvfO9JfUf5sptw/b7/r6nuY=;
+	s=arc-20240116; t=1727701315; c=relaxed/simple;
+	bh=9c/AiGYbUkHNhaHaDuVGS9wQSfpWKgsrOeoB7XoHiGw=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gCTlLoNApQ2HdLxbkp6YUnrRjXTvUuTtfVQqt2EMGRvwCKdakRJFcuZbnWKiqsQhI988AhePc3VO6BgnZekyz9zJfamJgRVcD7WZmxRahprmVdsD1yhg7eVUWP6ds3nyC87zGuPhF1tGepkOS8n2JkCx9qiKC5Z6Ku3J2wabPKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aUdDGpt7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7E37C4CEC7;
-	Mon, 30 Sep 2024 12:35:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727699733;
-	bh=ev6D9Cf4z2JGtXdgyMN2CvfO9JfUf5sptw/b7/r6nuY=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=aUdDGpt7E+ajhkIGlwC3OeCrN01/D8LTUzToc/1VaS+krYhXH1/xa77wmk50aGqw1
-	 +na9Yp8dyE1Y+ZFhM5X7eDdh+Xza443DwrUoHnhiJvl8XJDOsDP1N3iXtlNUsOQPYw
-	 cApxdCnqlbRobmfMN+YsUIQYLSrVbrWTpvEacdLyMq07L0okRRkPM7Om0n5t+56Fgg
-	 T5lxTGTPQxxWSk3pvMmTKCv7WC8hWScqUgLrRWuwHjzoTAQc/DlMYnmxjayIugMYkd
-	 ujCMabwSQlkmgkidp4s3cJUE91QmsKbY4JhIlUt3ih4hdMKNSfWofXMwXRP8hPftp+
-	 AJc6L/E1qeayg==
-Message-ID: <f8b36300-cf7e-4cdc-b1d4-ed4a64453d4e@kernel.org>
-Date: Mon, 30 Sep 2024 14:35:25 +0200
+	 In-Reply-To:Content-Type; b=Nz8tiKrFhc6ESopKxF/82hFpFVoXGJf6pSAla/3nPwS3FyPznCdB1TgA8rnVsg0ADOuUsq2BmUCM+wAHsN8B8R52QrMNbw5VA1sWt6F3MGDQsMe7RTI5rJv93jR65KLW5Cmento7PgWoYlNENggfthkt72N7QgQnHiZ6RMwEU7Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=Dzh9vgy2; arc=none smtp.client-ip=178.60.130.6
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:From:
+	References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
+	List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=IwgILRWQxDEiAPXAZe44pm+PcxfbkeM8mxeAatZZQ6A=; b=Dzh9vgy2NSyCitzAUn8I3ndAVI
+	LQvJCVJi29y/HBvX57ivLzjLUH+UuhibFpjVf/3g9936KYHBwuNmOR6MRg351hqXqw+UumxSWgD3t
+	JnRLyJMKU7OGbx24dwviTd5ULPDIHcVhiRTzc/XnuYn2rUnWbwArhJHlq5zNv9gUxcMlaCmDVcZQi
+	htZCsnTndnDJM8ECwNgqXGZEjeTfFxRUm+lNwi+mP4mCwX8hu0M5w51Fc4RSo0JiMGUUkmn371e7a
+	bUMYgSHjAk4YN1d9LONhM02mnhTwnNpFd71xMGsOgkqWORNIpjTwVjvfg/GRkhW3F3WUSZWvp9qD3
+	WqgxNN1A==;
+Received: from [90.241.98.187] (helo=[192.168.0.101])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
+	id 1svG1o-002qk6-Eq; Mon, 30 Sep 2024 15:01:28 +0200
+Message-ID: <8392475d-489e-4aa3-b6c2-7cd15b86dab2@igalia.com>
+Date: Mon, 30 Sep 2024 14:01:27 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,88 +56,89 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] clk: samsung: Fixes PLL locktime for PLL142XX used on
- FSD platfom
-To: Varada Pavani <v.pavani@samsung.com>, s.nawrocki@samsung.com,
- cw00.choi@samsung.com, alim.akhtar@samsung.com, mturquette@baylibre.com,
- sboyd@kernel.org, linux-samsung-soc@vger.kernel.org,
- linux-clk@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-kernel@vger.kernel.org
-Cc: aswani.reddy@samsung.com, pankaj.dubey@samsung.com, gost.dev@samsung.com,
- stable@vger.kernel.org
-References: <20240930111859.22264-1-v.pavani@samsung.com>
- <CGME20240930112135epcas5p2175ec81bb609da5b166d47341ece2f67@epcas5p2.samsung.com>
- <20240930111859.22264-3-v.pavani@samsung.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20240930111859.22264-3-v.pavani@samsung.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Subject: Re: [PATCH 3/8] drm/sched: Always increment correct scheduler score
+To: Tvrtko Ursulin <tursulin@igalia.com>, amd-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org
+Cc: kernel-dev@igalia.com, =?UTF-8?Q?Christian_K=C3=B6nig?=
+ <christian.koenig@amd.com>, Luben Tuikov <ltuikov89@gmail.com>,
+ Matthew Brost <matthew.brost@intel.com>, David Airlie <airlied@gmail.com>,
+ Daniel Vetter <daniel@ffwll.ch>, stable@vger.kernel.org,
+ Nirmoy Das <nirmoy.das@intel.com>, Nirmoy Das <nirmoy.das@intel.com>
+References: <20240913160559.49054-1-tursulin@igalia.com>
+ <20240913160559.49054-4-tursulin@igalia.com>
+Content-Language: en-GB
+From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+In-Reply-To: <20240913160559.49054-4-tursulin@igalia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 30/09/2024 13:18, Varada Pavani wrote:
-> Add PLL locktime for PLL142XX controller.
+
+On 13/09/2024 17:05, Tvrtko Ursulin wrote:
+> From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
 > 
+> Entities run queue can change during drm_sched_entity_push_job() so make
+> sure to update the score consistently.
+> 
+> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
+> Fixes: d41a39dda140 ("drm/scheduler: improve job distribution with multiple queues")
+> Cc: Nirmoy Das <nirmoy.das@amd.com>
+> Cc: Christian König <christian.koenig@amd.com>
+> Cc: Luben Tuikov <ltuikov89@gmail.com>
+> Cc: Matthew Brost <matthew.brost@intel.com>
+> Cc: David Airlie <airlied@gmail.com>
+> Cc: Daniel Vetter <daniel@ffwll.ch>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: <stable@vger.kernel.org> # v5.9+
+> Reviewed-by: Christian König <christian.koenig@amd.com>
+> Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+> ---
+>   drivers/gpu/drm/scheduler/sched_entity.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/gpu/drm/scheduler/sched_entity.c b/drivers/gpu/drm/scheduler/sched_entity.c
+> index 76e422548d40..6645a8524699 100644
+> --- a/drivers/gpu/drm/scheduler/sched_entity.c
+> +++ b/drivers/gpu/drm/scheduler/sched_entity.c
+> @@ -586,7 +586,6 @@ void drm_sched_entity_push_job(struct drm_sched_job *sched_job)
+>   	ktime_t submit_ts;
+>   
+>   	trace_drm_sched_job(sched_job, entity);
+> -	atomic_inc(entity->rq->sched->score);
+>   	WRITE_ONCE(entity->last_user, current->group_leader);
+>   
+>   	/*
+> @@ -614,6 +613,7 @@ void drm_sched_entity_push_job(struct drm_sched_job *sched_job)
+>   		rq = entity->rq;
+>   		sched = rq->sched;
+>   
+> +		atomic_inc(sched->score);
 
-So you send the same? Or something new? Please provide proper changelog
-and mark patches as v2/v3 or RESEND.
+Ugh this is wrong. :(
 
-But anyway this cannot be RESEND as I explicitly asked for fixing.
+I was working on some further consolidation and realised this.
 
-<form letter>
-This is a friendly reminder during the review process.
+It will create an imbalance in score since score is currently supposed 
+to be accounted twice:
 
-It seems my or other reviewer's previous comments were not fully
-addressed. Maybe the feedback got lost between the quotes, maybe you
-just forgot to apply it. Please go back to the previous discussion and
-either implement all requested changes or keep discussing them.
+  1. +/- 1 for each entity (de-)queued
+  2. +/- 1 for each job queued/completed
 
-Thank you.
-</form letter>
+By moving it into the "if (first) branch" it unbalances it.
 
-Best regards,
-Krzysztof
+But it is still true the original placement is racy. It looks like what 
+is required is an unconditional entity->lock section after 
+spsc_queue_push. AFAICT that's the only way to be sure entity->rq is set 
+for the submission at hand.
 
+Question also is, why +/- score in entity add/remove and not just for jobs?
+
+In the meantime patch will need to get reverted.
+
+Regards,
+
+Tvrtko
+
+>   		drm_sched_rq_add_entity(rq, entity);
+>   		spin_unlock(&entity->rq_lock);
+>   
 
