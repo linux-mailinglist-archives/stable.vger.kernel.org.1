@@ -1,125 +1,145 @@
-Return-Path: <stable+bounces-78228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 926B6989BA7
-	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 09:36:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 706E5989C57
+	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 10:13:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C2F741C21675
-	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 07:36:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A6FC3B232E3
+	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 08:13:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ACAB15B153;
-	Mon, 30 Sep 2024 07:36:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FA2F17BED6;
+	Mon, 30 Sep 2024 08:12:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b="Nn8leL/q"
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="Vsfy2KBR"
 X-Original-To: stable@vger.kernel.org
-Received: from www62.your-server.de (www62.your-server.de [213.133.104.62])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD29721105;
-	Mon, 30 Sep 2024 07:36:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.133.104.62
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7024170A0C;
+	Mon, 30 Sep 2024 08:12:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727681813; cv=none; b=Y89Eq+GJjjkfK09ei8ikw3ivkRj9zhlspt0IzJbRvkl8O81+Fei1FoLHKjvLr9qxpW6+LqBx8SC2yrHgCBjVqN+jM79GCmYx1hO23xk+dPPmyjhLaOopBagJ0RUjQXXacgOKxxxgZZwQZp6g2fDyYdKPtupCM7TItuTPouJTn+c=
+	t=1727683948; cv=none; b=oNliAfpJyqrU5qMokYbi02EHI0ps/mgkOGKIzJaOkeLzrUAE4OkLiP+nl87+c1piOa9alYuEiVxlIFOGEPiXB9CDoTcplp1vyk83v/+0QlylyUWbQnKgzyNMpVvp2qcNru+kYsllCiFeUtoB6o63YV4cj3Dvb3ADiZSDtfv4SP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727681813; c=relaxed/simple;
-	bh=um1tO7yPe6lanquOSmonCyC+iddX9cPeHGSY6pn/DDo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fJqfbF2gnu2bR9HC2kOs241oq0AC69j1c/Mo0mE8aVvBug9YR3zzAARhHvvvCEyPNMWtkgE2FwjEeMlA4qDSdKp1Y9Eljax+9xBbbl4gNEBnhH05S2aDUWj1T6balL8tDDaLhjFn/I5PZawjjFZRqiJY4nGmiQocGaPHKZs9l5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net; spf=pass smtp.mailfrom=iogearbox.net; dkim=pass (2048-bit key) header.d=iogearbox.net header.i=@iogearbox.net header.b=Nn8leL/q; arc=none smtp.client-ip=213.133.104.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=iogearbox.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iogearbox.net
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=iogearbox.net; s=default2302; h=Content-Transfer-Encoding:Content-Type:
-	In-Reply-To:From:References:Cc:To:Subject:MIME-Version:Date:Message-ID:Sender
-	:Reply-To:Content-ID:Content-Description:Resent-Date:Resent-From:
-	Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID;
-	bh=wDovo+tFomF7bMi/0L+PtEMdVXxkZUmvFiFypxxGh6E=; b=Nn8leL/qROiP5Yy9Mc7HxdvzRp
-	LepsFPKOC2Yo/cOvBlM6R6rV5nceAx5b4yGz8xLxNcLO5t93vEDsaIa9REFX+zajFy/S1kuvTgtGJ
-	wmpogi78VKaGI+DgQEnbqtl3qKZEKOY3+i78R/l17SQk9u4lUiQ3VqDcoBB217q0aQ/30p6Tj2zrT
-	wgEgqNL5T6YF0Oex1QPhf8YqSf5fe1aD9IlqPDPucgYMjmfnoBcRI0M3LJIvw7+jzOxzk9VxVPFWf
-	sZpeXovzdwrB7JnbLkduWBinK6j+czRoL62cCLkuU3v0yFIyQeQgZEBna55el/dgq86vv6NW/yyTN
-	dhF3pIcQ==;
-Received: from sslproxy02.your-server.de ([78.47.166.47])
-	by www62.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.94.2)
-	(envelope-from <daniel@iogearbox.net>)
-	id 1svAxT-000IFU-VQ; Mon, 30 Sep 2024 09:36:39 +0200
-Received: from [178.197.249.44] (helo=[192.168.1.114])
-	by sslproxy02.your-server.de with esmtpsa  (TLS1.3) tls TLS_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <daniel@iogearbox.net>)
-	id 1svAxS-0008Fm-2d;
-	Mon, 30 Sep 2024 09:36:39 +0200
-Message-ID: <cb613257-75c5-4bcf-9daa-c3f5d9a83186@iogearbox.net>
-Date: Mon, 30 Sep 2024 09:36:38 +0200
+	s=arc-20240116; t=1727683948; c=relaxed/simple;
+	bh=epttnSj/svbXuL/Wo7pz03EWTfyVueEXmrA9gKplll4=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References; b=Rv28ngc59Im7KH3AbShsFU3GxKURjVUgDsAxVTEyeQIC6dTN5E22CsNxWbLmuHyfmpFHi6gh7PtfWuHlnyr8WVIYcAj9YANo6FYvZL3TQJjWkk2pk8BFpLcJLCIdWV5Ya2aSVYxQmHJjTTT82GomiOW6bTMZm0BtRrzgRUxnY1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=Vsfy2KBR; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+Received: by linux.microsoft.com (Postfix, from userid 1173)
+	id 938F020C8C63; Mon, 30 Sep 2024 01:12:26 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 938F020C8C63
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1727683946;
+	bh=1x51b5CjyVGq6sw/nSMCSAQaFDk9RICsmrEq6BPWdHo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Vsfy2KBRrqecSgctJsj98G+Khx5egUGNNBjVQGMZttbIFLyiKmaR7sEnFb7q/svf3
+	 MoKhaZXXkIHs5F8t2HbhQlvd8oQRBmsSs20wcciJj1u4l/kpxnu3m/qi/QeT90uRj0
+	 tbiIGmKk7RqczqirMCzw/9/A/dmUSad55mdMFkls=
+From: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+To: kys@microsoft.com,
+	haiyangz@microsoft.com,
+	wei.liu@kernel.org,
+	decui@microsoft.com,
+	jikos@kernel.org,
+	bentiss@kernel.org,
+	dmitry.torokhov@gmail.com,
+	mikelley@microsoft.com,
+	linux-hyperv@vger.kernel.org,
+	linux-input@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: ernis@microsoft.com,
+	Erni Sri Satya Vennela <ernis@linux.microsoft.com>,
+	stable@vger.kernel.org,
+	Saurabh Sengar <ssengar@linux.microsoft.com>
+Subject: [PATCH v2 1/3] Drivers: hv: vmbus: Disable Suspend-to-Idle for VMBus
+Date: Mon, 30 Sep 2024 01:11:55 -0700
+Message-Id: <1727683917-31485-2-git-send-email-ernis@linux.microsoft.com>
+X-Mailer: git-send-email 1.8.3.1
+In-Reply-To: <1727683917-31485-1-git-send-email-ernis@linux.microsoft.com>
+References: <1727683917-31485-1-git-send-email-ernis@linux.microsoft.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1] bpf: Prevent infinite loops with bpf_redirect_peer
-To: Jordan Rife <jrife@google.com>, bpf@vger.kernel.org
-Cc: netdev@vger.kernel.org, Alexei Starovoitov <ast@kernel.org>,
- Andrii Nakryiko <andrii@kernel.org>, Martin KaFai Lau
- <martin.lau@linux.dev>, Kui-Feng Lee <thinker.li@gmail.com>,
- Eric Dumazet <edumazet@google.com>, Jakub Kicinski <kuba@kernel.org>,
- "David S. Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>,
- stable@vger.kernel.org, John Fastabend <john.fastabend@gmail.com>
-References: <20240929170219.1881536-1-jrife@google.com>
-Content-Language: en-US
-From: Daniel Borkmann <daniel@iogearbox.net>
-In-Reply-To: <20240929170219.1881536-1-jrife@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Authenticated-Sender: daniel@iogearbox.net
-X-Virus-Scanned: Clear (ClamAV 0.103.10/27412/Sun Sep 29 10:48:04 2024)
 
-On 9/29/24 7:02 PM, Jordan Rife wrote:
-> It is possible to create cycles using bpf_redirect_peer which lead to an
-> an infinite loop inside __netif_receive_skb_core. The simplest way to
-> illustrate this is by attaching a TC program to the ingress hook on both
-> sides of a veth or netkit device pair which redirects to its own peer,
-> although other cycles are possible. This patch places an upper limit on
-> the number of iterations allowed inside __netif_receive_skb_core to
-> prevent this.
->
-> Signed-off-by: Jordan Rife <jrife@google.com>
-> Fixes: 9aa1206e8f48 ("bpf: Add redirect_peer helper")
-> Cc: stable@vger.kernel.org
-> ---
->   net/core/dev.c                                | 11 +++-
->   net/core/dev.h                                |  1 +
->   .../selftests/bpf/prog_tests/tc_redirect.c    | 51 +++++++++++++++++++
->   .../selftests/bpf/progs/test_tc_peer.c        | 13 +++++
->   4 files changed, 75 insertions(+), 1 deletion(-)
->
-> diff --git a/net/core/dev.c b/net/core/dev.c
-> index cd479f5f22f6..753f8d27f47c 100644
-> --- a/net/core/dev.c
-> +++ b/net/core/dev.c
-> @@ -5455,6 +5455,7 @@ static int __netif_receive_skb_core(struct sk_buff **pskb, bool pfmemalloc,
->   	struct net_device *orig_dev;
->   	bool deliver_exact = false;
->   	int ret = NET_RX_DROP;
-> +	int loops = 0;
->   	__be16 type;
->   
->   	net_timestamp_check(!READ_ONCE(net_hotdata.tstamp_prequeue), skb);
-> @@ -5521,8 +5522,16 @@ static int __netif_receive_skb_core(struct sk_buff **pskb, bool pfmemalloc,
->   		nf_skip_egress(skb, true);
->   		skb = sch_handle_ingress(skb, &pt_prev, &ret, orig_dev,
->   					 &another);
-> -		if (another)
-> +		if (another) {
-> +			loops++;
-No, as you mentioned, there are plenty of other misconfiguration 
-possibilities in and
-outside bpf where something can loop in the stack (or where you can lock 
-yourself
-out e.g. drop-all).
+This change is specific to Hyper-V based VMs.
+If the Virtual Machine Connection window is focused,
+a Hyper-V VM user can unintentionally touch the keyboard/mouse
+when the VM is hibernating or resuming, and consequently the
+hibernation or resume operation can be aborted unexpectedly.
+Fix the issue by no longer registering the keyboard/mouse as
+wakeup devices (see the other two patches for the
+changes to drivers/input/serio/hyperv-keyboard.c and
+drivers/hid/hid-hyperv.c).
+
+The keyboard/mouse were registered as wakeup devices because the
+VM needs to be woken up from the Suspend-to-Idle state after
+a user runs "echo freeze > /sys/power/state". It seems like
+the Suspend-to-Idle feature has no real users in practice, so
+let's no longer support that by returning -EOPNOTSUPP if a
+user tries to use that.
+
+$echo freeze > /sys/power/state
+> bash: echo: write error: Operation not supported
+
+Fixes: 1a06d017fb3f ("Drivers: hv: vmbus: Fix Suspend-to-Idle for Generation-2 VM")
+Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Signed-off-by: Erni Sri Satya Vennela <ernis@linux.microsoft.com>
+---
+Changes in v2:
+* Add "#define vmbus_freeze NULL" when CONFIG_PM_SLEEP is not 
+  enabled.
+* Change commit message to clarify that this change is specifc to
+  Hyper-V based VMs.
+---
+ drivers/hv/vmbus_drv.c | 16 +++++++++++++++-
+ 1 file changed, 15 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/hv/vmbus_drv.c b/drivers/hv/vmbus_drv.c
+index 965d2a4efb7e..8f445c849512 100644
+--- a/drivers/hv/vmbus_drv.c
++++ b/drivers/hv/vmbus_drv.c
+@@ -900,6 +900,19 @@ static void vmbus_shutdown(struct device *child_device)
+ }
+ 
+ #ifdef CONFIG_PM_SLEEP
++/*
++ * vmbus_freeze - Suspend-to-Idle
++ */
++static int vmbus_freeze(struct device *child_device)
++{
++/*
++ * Do not support Suspend-to-Idle ("echo freeze > /sys/power/state") as
++ * that would require registering the Hyper-V synthetic mouse/keyboard
++ * devices as wakeup devices, which can abort hibernation/resume unexpectedly.
++ */
++	return -EOPNOTSUPP;
++}
++
+ /*
+  * vmbus_suspend - Suspend a vmbus device
+  */
+@@ -938,6 +951,7 @@ static int vmbus_resume(struct device *child_device)
+ 	return drv->resume(dev);
+ }
+ #else
++#define vmbus_freeze NULL
+ #define vmbus_suspend NULL
+ #define vmbus_resume NULL
+ #endif /* CONFIG_PM_SLEEP */
+@@ -969,7 +983,7 @@ static void vmbus_device_release(struct device *device)
+  */
+ 
+ static const struct dev_pm_ops vmbus_pm = {
+-	.suspend_noirq	= NULL,
++	.suspend_noirq  = vmbus_freeze,
+ 	.resume_noirq	= NULL,
+ 	.freeze_noirq	= vmbus_suspend,
+ 	.thaw_noirq	= vmbus_resume,
+-- 
+2.34.1
 
