@@ -1,139 +1,127 @@
-Return-Path: <stable+bounces-78242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 620A0989F85
-	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 12:37:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E67D989F8B
+	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 12:37:44 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A2FB1F209AB
-	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 10:37:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7AF91F21A80
+	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 10:37:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84F34188006;
-	Mon, 30 Sep 2024 10:37:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C079018B472;
+	Mon, 30 Sep 2024 10:37:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="DcXRJzPq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fp9hWN+Y"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F2F1189B98
-	for <stable@vger.kernel.org>; Mon, 30 Sep 2024 10:37:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7395B188006;
+	Mon, 30 Sep 2024 10:37:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727692622; cv=none; b=oRiLW2Q3Uuq7JJF7mEsAVRpetB0j+bcNLtYtKxl/JxzN4a+HGt1IsfkRL03LpsjZHJ2VaJEMdtFejme2C0IG2HNwO0HUZiQNkh7ITS2VdMlZBIgQbeKoawLgYXGiwxpqFbyt2oOA84akEs07q2drUC2SAQB4kMUGj2HwufGTKUc=
+	t=1727692656; cv=none; b=PuR/en2zN04jmsIRcMr1UPNh7Qs4SDhKs6z1pBje0QeBIKEuww/u7XNQE5uY6Jef0WYy4Oe20v8HibFCg9zUA2BRz/3llvZin4ov3TZN9Q73FxRzUTJBksdksnnFQ5kfsvOT73XDpAafCfsIrKvKUbOKKYZiONeb3vg+5PCeRR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727692622; c=relaxed/simple;
-	bh=VGRUhIz4Vn1P2La+6gVKCXPca/yCRduCeFQ5hZhM0SA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=a05cdqzjoREFhl0COUxCK87guGonolb6G8m530K6HR3BuGn2Oyves8mcNRWNdXcsy9wf+OMcw9uRmDJWZYHZzg+l7pacvaI4N6/Z4yWkXHAcOPi8MgTJKuKWSaZVr1FTPIW/2E6w+qJgR3doeOGVP+POdI8PP1kW8S34lSd4tAs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=DcXRJzPq; arc=none smtp.client-ip=209.85.218.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-a8ce5db8668so747466266b.1
-        for <stable@vger.kernel.org>; Mon, 30 Sep 2024 03:37:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1727692619; x=1728297419; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=wMdMSE9py3RjyD6QCh1eR0VuWp5bQ3RLbcnII21K+jM=;
-        b=DcXRJzPqhXzXMzO7iKfCyTwPxpfo5JFaWANfJIe2ANGUAnUKewf8tCNa2ej3rieLFv
-         l1L7DzWbUSfoGCorWoK5K5K2nr7OivrKYncTYxVWzuB6J3sGqR1rL0WhkfI3MnBwBJdi
-         1N974zioBFgOUPqdTLSHIMI8fDz6DHQxJuRyxRt4dP3FrdKFM2xyuflTxQ6zrDm5IN/O
-         vKUpKXjVA8FD3dUXaG23Ger1e9ejvbBBRzu/bNsZgHN+Z1n4T5hmVX/e58mqMQa1u2/1
-         /PdnuzCR1BvEENZJ13FfcnAuEIx+fohobQpWEYUum79QtfWcSxZSf5+S7lmivZ3l0NOk
-         FpAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727692619; x=1728297419;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wMdMSE9py3RjyD6QCh1eR0VuWp5bQ3RLbcnII21K+jM=;
-        b=ujjixQWNMpCP73KZevVqGLpe4AIeREGkR32oddMUSSXgmjmvkcwj7mpGo3Lfzhi/5d
-         cXbVCwhmxcRgsJF1DsVz6slGft05vj1V0seekai+thD4PgVmSsH5VzTvKO1agRmwCDZ/
-         3RkRqS6zOcUuDeOSjDTfvEaRIPpxWCrVf0GcvlngptC0BGLCv/fnomc4cV2yLw6YaIjW
-         weEzyEn55yt+urt/N219tDmnD7fMc35T0C63TsW/o8d3lEPHmynBpcwIlreREzJqWw08
-         WT5n/aWQEv3cyfRzOd5pDf4rs61lI0U7nj6yYThQ8Tib2NBxeFU1FqAz+Wq3cutQiOWT
-         f1pA==
-X-Forwarded-Encrypted: i=1; AJvYcCUh5LPh1NcNSRsVr/iNQtMAQx0EohGhpeGYKtwTUbwB9rIZCOXrI7cXF3iCnDzJVk/+ciYshHY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwO0ecGd1eGH3erOPorUCM4poI6Mjyqf/N1Kur1nUzB8htVKwih
-	a3XepzmXR05oH95w3qPlZOTFyAAIq1bRynu3NMiRM/Ma9AV73OQfKnmo6s0V7Zo=
-X-Google-Smtp-Source: AGHT+IHQ1cmTo4UbLbfQql8P7BUCjSn6i5rykafHKyXfrRh0KuZAMOMWuZyLvKaN1xkt7Fee6L9LCQ==
-X-Received: by 2002:a17:907:781:b0:a86:894e:cd09 with SMTP id a640c23a62f3a-a93c48e80c8mr1302865466b.9.1727692618860;
-        Mon, 30 Sep 2024 03:36:58 -0700 (PDT)
-Received: from localhost ([196.207.164.177])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a93c2777bc4sm522635966b.14.2024.09.30.03.36.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Sep 2024 03:36:58 -0700 (PDT)
-Date: Mon, 30 Sep 2024 13:36:54 +0300
-From: Dan Carpenter <dan.carpenter@linaro.org>
-To: Qiu-ji Chen <chenqiuji666@gmail.com>
-Cc: dtwlin@gmail.com, johan@kernel.org, elder@kernel.org,
-	gregkh@linuxfoundation.org, greybus-dev@lists.linaro.org,
-	linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
-	baijiaju1990@gmail.com, stable@vger.kernel.org
-Subject: Re: [PATCH] staging: Fix atomicity violation in get_serial_info()
-Message-ID: <bddd479b-8fa3-4e39-8ca5-f7f133a8b298@stanley.mountain>
-References: <20240930101403.24131-1-chenqiuji666@gmail.com>
+	s=arc-20240116; t=1727692656; c=relaxed/simple;
+	bh=F2Vvp+NmQj/IeNOudf2Wx4PHmRHU5jUFSv49IeAJxKM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=PPCAzKmlZQFkIlgcl4dnk6EvSO2RIhGKBZV18qTMJJqh9/6nmWuBuqV9eypSCLToDfyAGG3Pcq11lYU2UIIL8Uvq6zhdnRJp8Fz5FSnQKkaoWMqPIuPmwJMap9AXc+tL3Sk7zIS05yLZkWzthvkK4/US38Uaf48UWC2T6+Vlj0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fp9hWN+Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0B81C4CEC7;
+	Mon, 30 Sep 2024 10:37:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727692655;
+	bh=F2Vvp+NmQj/IeNOudf2Wx4PHmRHU5jUFSv49IeAJxKM=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=Fp9hWN+Y3Ar1LfSJtmua0/ydmprkWyWW123tvhvw/MpHKlGNFrhZwy6rgeUFSJ0u7
+	 7nMRM3peyG0eRXmnhP20spKm+K/29AQ04Y4/i5QJRSZyJKv0RgvkhEvCb3lkaGmeAb
+	 wvMZrJmIOI84X+9takmKHWv/Cnq3yWCnujuiNL0YQg4GMlN/vqBRciSDfkldtcRvCr
+	 8X4CbYIMghk4tnwPS1DSYDauMrzArgepq365jZh6/DLMm/2o64EdM9m82lkM1JmXw3
+	 pNKFmsmgXNR8FEwj0wdlAmeRQf6gJD5fYm2AfCJMok//BBy1y3PJPMJxtSGBAEEmSq
+	 6C5lZWcWoQpLg==
+Message-ID: <ec670e21-91a8-4ba9-96b0-cf641fda3179@kernel.org>
+Date: Mon, 30 Sep 2024 12:37:29 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240930101403.24131-1-chenqiuji666@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] clk: samsung: Fixes PLL locktime for PLL142XX used on
+ FSD platfom
+To: Varada Pavani <v.pavani@samsung.com>, aswani.reddy@samsung.com,
+ pankaj.dubey@samsung.com, s.nawrocki@samsung.com, cw00.choi@samsung.com,
+ alim.akhtar@samsung.com, mturquette@baylibre.com, sboyd@kernel.org,
+ linux-samsung-soc@vger.kernel.org, linux-clk@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Cc: gost.dev@samsung.com, stable@vger.kernel.org
+References: <20240926144513.71349-1-v.pavani@samsung.com>
+ <CGME20240926144743epcas5p2047d01217bf90d6d52ec97c9b3094c82@epcas5p2.samsung.com>
+ <20240926144513.71349-3-v.pavani@samsung.com>
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Content-Language: en-US
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20240926144513.71349-3-v.pavani@samsung.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Sep 30, 2024 at 06:14:03PM +0800, Qiu-ji Chen wrote:
-> Atomicity violation occurs during consecutive reads of the members of 
-> gb_tty. Consider a scenario where, because the consecutive reads of gb_tty
-> members are not protected by a lock, the value of gb_tty may still be 
-> changing during the read process. 
+On 26/09/2024 16:45, Varada Pavani wrote:
+> Add PLL locktime for PLL142XX controller.
+
+You marked it as fixes. Please describe the observable bug and its
+impact. See submitting patches and stable kernel rules.
+
 > 
-> gb_tty->port.close_delay and gb_tty->port.closing_wait are updated
-> together, such as in the set_serial_info() function. If during the
-> read process, gb_tty->port.close_delay and gb_tty->port.closing_wait
-> are still being updated, it is possible that gb_tty->port.close_delay
-> is updated while gb_tty->port.closing_wait is not. In this case,
-> the code first reads gb_tty->port.close_delay and then
-> gb_tty->port.closing_wait. A new gb_tty->port.close_delay and an
-> old gb_tty->port.closing_wait could be read. Such values, whether
-> before or after the update, should not coexist as they represent an
-> intermediate state.
-> 
-> This could result in a mismatch of the values read for gb_tty->minor, 
-> gb_tty->port.close_delay, and gb_tty->port.closing_wait, which in turn 
-> could cause ss->close_delay and ss->closing_wait to be mismatched.
-> 
-> To address this issue, we have enclosed all sequential read operations of 
-> the gb_tty variable within a lock. This ensures that the value of gb_tty 
-> remains unchanged throughout the process, guaranteeing its validity.
-> 
-> This possible bug is found by an experimental static analysis tool
-> developed by our team. This tool analyzes the locking APIs
-> to extract function pairs that can be concurrently executed, and then
-> analyzes the instructions in the paired functions to identify possible
-> concurrency bugs including data races and atomicity violations.
-> 
-
-Ideally a commit message should say what the bug looks like to the user.
-Obviously when you're doing static analysis and not using the code, it's more
-difficult to tell the impact.
-
-I would say that this commit message is confusing and makes it seem like a
-bigger deal than it is.  The "ss" struct is information that we're going to send
-to the user.  It's not used again in the kernel.
-
-Could you re-write the commit message to say something like, "Our static checker
-found a bug where set serial takes a mutex and get serial doesn't.  Fortunately,
-the impact of this is relatively minor.  It doesn't cause a crash or anything.
-If the user races set serial and get serial there is a chance that the get
-serial information will be garbage."
-
-regards,
-dan carpenter
-
+> Fixes: 4f346005aaed ("clk: samsung: fsd: Add initial clock support")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Varada Pavani <v.pavani@samsung.com>
+> ---
+Best regards,
+Krzysztof
 
 
