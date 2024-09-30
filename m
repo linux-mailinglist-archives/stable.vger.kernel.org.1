@@ -1,177 +1,139 @@
-Return-Path: <stable+bounces-78241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id A75CA989F81
-	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 12:36:00 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 620A0989F85
+	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 12:37:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D96B21C22507
-	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 10:35:59 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1A2FB1F209AB
+	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 10:37:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40BA418A954;
-	Mon, 30 Sep 2024 10:35:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84F34188006;
+	Mon, 30 Sep 2024 10:37:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="HnHz5wNO";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Jdctg/1/";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="HnHz5wNO";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="Jdctg/1/"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="DcXRJzPq"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50957189B98;
-	Mon, 30 Sep 2024 10:35:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F2F1189B98
+	for <stable@vger.kernel.org>; Mon, 30 Sep 2024 10:37:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727692547; cv=none; b=We+dSA2+YNkd+fTDWn27Jt0Mzzi3vMetT8gwVs7Kne45lW2nsUVE0EHYuZjwXEMUc7OC3wWovYWyeBEuWnSlXrFTiKh6/C5x/04e5UjpvV9PqgtXdP272tV5+uG7oWypysUbLZBlZEAo/ZQ8SpbVOeJUBLjAliip/khhGColvFY=
+	t=1727692622; cv=none; b=oRiLW2Q3Uuq7JJF7mEsAVRpetB0j+bcNLtYtKxl/JxzN4a+HGt1IsfkRL03LpsjZHJ2VaJEMdtFejme2C0IG2HNwO0HUZiQNkh7ITS2VdMlZBIgQbeKoawLgYXGiwxpqFbyt2oOA84akEs07q2drUC2SAQB4kMUGj2HwufGTKUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727692547; c=relaxed/simple;
-	bh=K2KYdsOr0X5H4XjzzrhlyKfrWbeb2sW3IDbTJRqI184=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lHCgGpNzVWSpakkQA2q6bQXfrax6sO2lhRSewwZwt47ZuS4CQn5Qtv+7NPxgh52RGSbpdZQZwDZ8tCVAmsL/vsoCnTRjqDAeuYHnDBMGM53uBfNNhfHKolqNn7bxDYHp+UNC6C6cIe1Hw7JcUz0LDKg3o2gNi7j6TYeeuCh8pH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=HnHz5wNO; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Jdctg/1/; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=HnHz5wNO; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=Jdctg/1/; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 672D01FB9C;
-	Mon, 30 Sep 2024 10:35:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1727692543; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Qxx1UQrE80LFqs8p40hza8Wbc1XUKLK21rskYeGfvxI=;
-	b=HnHz5wNOEyPG0ycQ0L+fBMoy10bAEJzuvNlg80cSdMiE2C0oba8KzMXGnzxf6K2PTFK+KM
-	yZJqIt1Xl2EA8Wq+cQBGrCrt+X0LZcCmF6lnX2tB+O0zsEK94hIjdnLHs7XvWKhDg+epJA
-	HJXA52JzRKdR02CqrkxnYvuox5eHu7Q=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1727692543;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Qxx1UQrE80LFqs8p40hza8Wbc1XUKLK21rskYeGfvxI=;
-	b=Jdctg/1/e5myV/nqw5H4J0L93YcdniIxpHTLbJCuvaedjWoKrrWEd3aGLQpFM7t1u2MSHU
-	2UrfERVGyBM7mnCQ==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=HnHz5wNO;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="Jdctg/1/"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1727692543; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Qxx1UQrE80LFqs8p40hza8Wbc1XUKLK21rskYeGfvxI=;
-	b=HnHz5wNOEyPG0ycQ0L+fBMoy10bAEJzuvNlg80cSdMiE2C0oba8KzMXGnzxf6K2PTFK+KM
-	yZJqIt1Xl2EA8Wq+cQBGrCrt+X0LZcCmF6lnX2tB+O0zsEK94hIjdnLHs7XvWKhDg+epJA
-	HJXA52JzRKdR02CqrkxnYvuox5eHu7Q=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1727692543;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Qxx1UQrE80LFqs8p40hza8Wbc1XUKLK21rskYeGfvxI=;
-	b=Jdctg/1/e5myV/nqw5H4J0L93YcdniIxpHTLbJCuvaedjWoKrrWEd3aGLQpFM7t1u2MSHU
-	2UrfERVGyBM7mnCQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 2028413A8B;
-	Mon, 30 Sep 2024 10:35:43 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id tU4tBv9++mbaQwAAD6G6ig
-	(envelope-from <tiwai@suse.de>); Mon, 30 Sep 2024 10:35:43 +0000
-Date: Mon, 30 Sep 2024 12:36:36 +0200
-Message-ID: <87ed51ig23.wl-tiwai@suse.de>
-From: Takashi Iwai <tiwai@suse.de>
-To: Salvatore Bonaccorso <carnil@debian.org>
-Cc: Takashi Iwai <tiwai@suse.de>,
-	Jaroslav Kysela <perex@perex.cz>,
-	linux-sound@vger.kernel.org,
-	Eric Degenetais <eric.4.debian@grabatoulnz.fr>,
-	linux-kernel@vger.kernel.org,
-	stable <stable@vger.kernel.org>,
-	regressions@lists.linux.dev,
-	Sasha Levin <sashal@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [regression] Regular "cracks" in HDMI sound during playback since backport to 6.1.y for 92afcc310038 ("ALSA: hda: Conditionally use snooping for AMD HDMI")
-In-Reply-To: <ZvgCdYfKgwHpJXGE@eldamar.lan>
-References: <ZvgCdYfKgwHpJXGE@eldamar.lan>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) Emacs/27.2 Mule/6.0
+	s=arc-20240116; t=1727692622; c=relaxed/simple;
+	bh=VGRUhIz4Vn1P2La+6gVKCXPca/yCRduCeFQ5hZhM0SA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=a05cdqzjoREFhl0COUxCK87guGonolb6G8m530K6HR3BuGn2Oyves8mcNRWNdXcsy9wf+OMcw9uRmDJWZYHZzg+l7pacvaI4N6/Z4yWkXHAcOPi8MgTJKuKWSaZVr1FTPIW/2E6w+qJgR3doeOGVP+POdI8PP1kW8S34lSd4tAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=DcXRJzPq; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-a8ce5db8668so747466266b.1
+        for <stable@vger.kernel.org>; Mon, 30 Sep 2024 03:37:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1727692619; x=1728297419; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=wMdMSE9py3RjyD6QCh1eR0VuWp5bQ3RLbcnII21K+jM=;
+        b=DcXRJzPqhXzXMzO7iKfCyTwPxpfo5JFaWANfJIe2ANGUAnUKewf8tCNa2ej3rieLFv
+         l1L7DzWbUSfoGCorWoK5K5K2nr7OivrKYncTYxVWzuB6J3sGqR1rL0WhkfI3MnBwBJdi
+         1N974zioBFgOUPqdTLSHIMI8fDz6DHQxJuRyxRt4dP3FrdKFM2xyuflTxQ6zrDm5IN/O
+         vKUpKXjVA8FD3dUXaG23Ger1e9ejvbBBRzu/bNsZgHN+Z1n4T5hmVX/e58mqMQa1u2/1
+         /PdnuzCR1BvEENZJ13FfcnAuEIx+fohobQpWEYUum79QtfWcSxZSf5+S7lmivZ3l0NOk
+         FpAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727692619; x=1728297419;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wMdMSE9py3RjyD6QCh1eR0VuWp5bQ3RLbcnII21K+jM=;
+        b=ujjixQWNMpCP73KZevVqGLpe4AIeREGkR32oddMUSSXgmjmvkcwj7mpGo3Lfzhi/5d
+         cXbVCwhmxcRgsJF1DsVz6slGft05vj1V0seekai+thD4PgVmSsH5VzTvKO1agRmwCDZ/
+         3RkRqS6zOcUuDeOSjDTfvEaRIPpxWCrVf0GcvlngptC0BGLCv/fnomc4cV2yLw6YaIjW
+         weEzyEn55yt+urt/N219tDmnD7fMc35T0C63TsW/o8d3lEPHmynBpcwIlreREzJqWw08
+         WT5n/aWQEv3cyfRzOd5pDf4rs61lI0U7nj6yYThQ8Tib2NBxeFU1FqAz+Wq3cutQiOWT
+         f1pA==
+X-Forwarded-Encrypted: i=1; AJvYcCUh5LPh1NcNSRsVr/iNQtMAQx0EohGhpeGYKtwTUbwB9rIZCOXrI7cXF3iCnDzJVk/+ciYshHY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwO0ecGd1eGH3erOPorUCM4poI6Mjyqf/N1Kur1nUzB8htVKwih
+	a3XepzmXR05oH95w3qPlZOTFyAAIq1bRynu3NMiRM/Ma9AV73OQfKnmo6s0V7Zo=
+X-Google-Smtp-Source: AGHT+IHQ1cmTo4UbLbfQql8P7BUCjSn6i5rykafHKyXfrRh0KuZAMOMWuZyLvKaN1xkt7Fee6L9LCQ==
+X-Received: by 2002:a17:907:781:b0:a86:894e:cd09 with SMTP id a640c23a62f3a-a93c48e80c8mr1302865466b.9.1727692618860;
+        Mon, 30 Sep 2024 03:36:58 -0700 (PDT)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a93c2777bc4sm522635966b.14.2024.09.30.03.36.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Sep 2024 03:36:58 -0700 (PDT)
+Date: Mon, 30 Sep 2024 13:36:54 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Qiu-ji Chen <chenqiuji666@gmail.com>
+Cc: dtwlin@gmail.com, johan@kernel.org, elder@kernel.org,
+	gregkh@linuxfoundation.org, greybus-dev@lists.linaro.org,
+	linux-staging@lists.linux.dev, linux-kernel@vger.kernel.org,
+	baijiaju1990@gmail.com, stable@vger.kernel.org
+Subject: Re: [PATCH] staging: Fix atomicity violation in get_serial_info()
+Message-ID: <bddd479b-8fa3-4e39-8ca5-f7f133a8b298@stanley.mountain>
+References: <20240930101403.24131-1-chenqiuji666@gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-Rspamd-Queue-Id: 672D01FB9C
-X-Spam-Score: -3.51
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.51 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_CONTAINS_FROM(1.00)[];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	FROM_HAS_DN(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[10];
-	DKIM_TRACE(0.00)[suse.de:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:dkim]
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Flag: NO
-X-Spam-Level: 
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240930101403.24131-1-chenqiuji666@gmail.com>
 
-On Sat, 28 Sep 2024 15:19:49 +0200,
-Salvatore Bonaccorso wrote:
+On Mon, Sep 30, 2024 at 06:14:03PM +0800, Qiu-ji Chen wrote:
+> Atomicity violation occurs during consecutive reads of the members of 
+> gb_tty. Consider a scenario where, because the consecutive reads of gb_tty
+> members are not protected by a lock, the value of gb_tty may still be 
+> changing during the read process. 
 > 
-> Hi
+> gb_tty->port.close_delay and gb_tty->port.closing_wait are updated
+> together, such as in the set_serial_info() function. If during the
+> read process, gb_tty->port.close_delay and gb_tty->port.closing_wait
+> are still being updated, it is possible that gb_tty->port.close_delay
+> is updated while gb_tty->port.closing_wait is not. In this case,
+> the code first reads gb_tty->port.close_delay and then
+> gb_tty->port.closing_wait. A new gb_tty->port.close_delay and an
+> old gb_tty->port.closing_wait could be read. Such values, whether
+> before or after the update, should not coexist as they represent an
+> intermediate state.
 > 
-> In downstream Debian we got a report from  Eric Degenetais, in
-> https://bugs.debian.org/1081833 that after the update to the 6.1.106
-> based version, there were regular cracks in HDMI sound during
-> playback.
+> This could result in a mismatch of the values read for gb_tty->minor, 
+> gb_tty->port.close_delay, and gb_tty->port.closing_wait, which in turn 
+> could cause ss->close_delay and ss->closing_wait to be mismatched.
 > 
-> Eric was able to bisec the issue down to
-> 92afcc310038ebe5d66c689bb0bf418f5451201c in the v6.1.y series which
-> got applied in 6.1.104.
+> To address this issue, we have enclosed all sequential read operations of 
+> the gb_tty variable within a lock. This ensures that the value of gb_tty 
+> remains unchanged throughout the process, guaranteeing its validity.
 > 
-> Cf. https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1081833#47
+> This possible bug is found by an experimental static analysis tool
+> developed by our team. This tool analyzes the locking APIs
+> to extract function pairs that can be concurrently executed, and then
+> analyzes the instructions in the paired functions to identify possible
+> concurrency bugs including data races and atomicity violations.
 > 
-> #regzbot introduced: 92afcc310038ebe5d66c689bb0bf418f5451201c
-> #regzbot link: https://bugs.debian.org/1081833
-> 
-> It should be noted that Eric as well tried more recent stable series
-> as well, in particular did test as well 6.10.6 based version back on
-> 20th september, and the issue was reproducible there as well.
-> 
-> Is there anything else we can try to provide?
 
-Could you check 6.12-rc1 kernel whether the problem still appears?
-If yes, check with snd_hda_intel.snoop=0 boot option. 
+Ideally a commit message should say what the bug looks like to the user.
+Obviously when you're doing static analysis and not using the code, it's more
+difficult to tell the impact.
 
-I guess we should revert the patch in anyway; for 6.12, it's no longer
-correct to check with get_dma_ops(), and if this causes a problem on
-the older releases, the assumption isn't correct, either.
+I would say that this commit message is confusing and makes it seem like a
+bigger deal than it is.  The "ss" struct is information that we're going to send
+to the user.  It's not used again in the kernel.
+
+Could you re-write the commit message to say something like, "Our static checker
+found a bug where set serial takes a mutex and get serial doesn't.  Fortunately,
+the impact of this is relatively minor.  It doesn't cause a crash or anything.
+If the user races set serial and get serial there is a chance that the get
+serial information will be garbage."
+
+regards,
+dan carpenter
 
 
-thanks,
-
-Takashi
 
