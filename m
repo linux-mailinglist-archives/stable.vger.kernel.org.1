@@ -1,278 +1,145 @@
-Return-Path: <stable+bounces-78238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21AB2989F06
-	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 12:00:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07D38989F24
+	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 12:13:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7183282A0D
-	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 10:00:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 948ED283E3C
+	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 10:13:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2C57189F41;
-	Mon, 30 Sep 2024 09:57:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8635118A6CD;
+	Mon, 30 Sep 2024 10:12:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="H+uoTGau";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="V185848S";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="H+uoTGau";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="V185848S"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gzRVfWC2"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-pl1-f193.google.com (mail-pl1-f193.google.com [209.85.214.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18DF3188006;
-	Mon, 30 Sep 2024 09:57:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E59D418858E;
+	Mon, 30 Sep 2024 10:12:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727690261; cv=none; b=Rtdzd/DDPY00G6544XdMdnIgWN7drjuRNJZlEVGNocOqM9XDnMplLPMVe1qY0Sw2WRNTah1+lWeLRvZ2fwe5aAQZa3U/b0D9qjW6ArNwJ1FeSLCTeaKQhEEzta0a/U7R0pSt87+6Tink6AYiO6zS4NKbgXE54oTTMqG938UBb1s=
+	t=1727691153; cv=none; b=hZ0YQVbNDgjoPa5tz81/9Csp/B06TMBILNXpArFS9sHZMqcryRNfZi5hw7PtN5FjAqR+RfvPLFkOdrZCAF5XPZBORFRsLWSxf9YXQjPPKC0T7/3BBJFPWiBYF/0Wiz0lellCiuFzYFmPZp9nU9YOqExg5TurogInioLVDhI1s00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727690261; c=relaxed/simple;
-	bh=PxlkKXNt4FfW3kXiWThoZjEnjVEpmS3Ec8x/6iM/CQY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OQzXGS2C6Q2KVIku+0L290PntSbB+aDgpZNhj3r0wg3hbG+mVZSTyQdicNQ20NGbbCHWQWJdIoI2fyt1skHjfs3jobE8DEad/XNzYBu3ylfv0xocIOkdMqFPMcSHEqhdcyGHU3LWdfnGfnB78wFhjOzvYenZHyEnuhW1KiUrx0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=H+uoTGau; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=V185848S; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=H+uoTGau; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=V185848S; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 2A3361F7FA;
-	Mon, 30 Sep 2024 09:57:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1727690257; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qIOuWAbizfXdcZdpjzcGy/FAWPITVnjDo6ImDR/caHI=;
-	b=H+uoTGauPC7dL94cP56C7KbODn5HgC91IWmEAppSLx8wt14g1WibocojWLkk3jh1+ySmiE
-	sCHpE1LYyYq4HQ8qqh9Th6sW2r5IQdmWf5TQ5li6Rb1egbTB/oF3kdAKqaqBzt7d03E8V/
-	Cbe5x4wvNYSn4UMZ1tqgGJMqP4bOn1E=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1727690257;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qIOuWAbizfXdcZdpjzcGy/FAWPITVnjDo6ImDR/caHI=;
-	b=V185848SE/ppfD182NHTneVUsa6gsyijJehUqtr7S55klReQT5V0qZTRoT8pbQHIusios5
-	ihUeWNU322wWjiAw==
-Authentication-Results: smtp-out2.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=H+uoTGau;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=V185848S
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1727690257; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qIOuWAbizfXdcZdpjzcGy/FAWPITVnjDo6ImDR/caHI=;
-	b=H+uoTGauPC7dL94cP56C7KbODn5HgC91IWmEAppSLx8wt14g1WibocojWLkk3jh1+ySmiE
-	sCHpE1LYyYq4HQ8qqh9Th6sW2r5IQdmWf5TQ5li6Rb1egbTB/oF3kdAKqaqBzt7d03E8V/
-	Cbe5x4wvNYSn4UMZ1tqgGJMqP4bOn1E=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1727690257;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=qIOuWAbizfXdcZdpjzcGy/FAWPITVnjDo6ImDR/caHI=;
-	b=V185848SE/ppfD182NHTneVUsa6gsyijJehUqtr7S55klReQT5V0qZTRoT8pbQHIusios5
-	ihUeWNU322wWjiAw==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 1AE6813A8B;
-	Mon, 30 Sep 2024 09:57:37 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id GjGJBhF2+mYfOAAAD6G6ig
-	(envelope-from <jack@suse.cz>); Mon, 30 Sep 2024 09:57:37 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-	id C60DBA0845; Mon, 30 Sep 2024 11:57:36 +0200 (CEST)
-Date: Mon, 30 Sep 2024 11:57:36 +0200
-From: Jan Kara <jack@suse.cz>
-To: libaokun@huaweicloud.com
-Cc: linux-ext4@vger.kernel.org, tytso@mit.edu, adilger.kernel@dilger.ca,
-	jack@suse.cz, linux-kernel@vger.kernel.org, yi.zhang@huawei.com,
-	yangerkun@huawei.com, Baokun Li <libaokun1@huawei.com>,
-	Wesley Hershberger <wesley.hershberger@canonical.com>,
-	=?utf-8?B?U3TDqXBoYW5l?= Graber <stgraber@stgraber.org>,
-	Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>,
-	Eric Sandeen <sandeen@redhat.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v2] ext4: fix off by one issue in alloc_flex_gd()
-Message-ID: <20240930095736.63jxu22xfnxrwvar@quack3>
-References: <20240927133329.1015041-1-libaokun@huaweicloud.com>
+	s=arc-20240116; t=1727691153; c=relaxed/simple;
+	bh=AWRGwNAR8HQF5vgW2X9+dExB7v1O+jkA3G5ve2Rc66k=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lrsoplaW8Z1fJZDXZuWY3QFpY7Sp5XS1KR6KrCWnlDeAqDQ7mhLcRMSju4nj7+9/a/JPXP1uFi2rmDmsPan5/0NSlQOk9EdwAcQ0Wy825OIJ+s7MLkDys38o+8pCYnLHHLDEtf0djvXUvHJyrpAktn78KL2L0UGiUYKWHFFkMKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gzRVfWC2; arc=none smtp.client-ip=209.85.214.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f193.google.com with SMTP id d9443c01a7336-20b9b35c7c7so1809235ad.1;
+        Mon, 30 Sep 2024 03:12:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1727691151; x=1728295951; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=IUsTgMCDlYF8NCO+DUyGQXMRDmDOC3gw5dVi9Tj9wRw=;
+        b=gzRVfWC2ePcjjx2zcuxNiAjrUAqqGUIeMvJUg3Pmv+O9eMX8ADlDnPTSaYn4mWrl82
+         Sb5JZrOXUw7a2js8m3GD+oV26KiPT8f5RIhOZSujGhN7YZaHyFwsIS9YHVSHO1x6M2HW
+         XDvkm1eqZNJ1WhJsQ7dIyVv5Bd8yrRjJzWRyXJZh8GYGFSJIM35C4MZGrYFYcmeMkor5
+         MEdJ7yXjEUFjMU2Pnm79aRnuBmB12chLABUlucSgP4Ca9RKdpogUf9GWkTBKuAlRQ/6h
+         +Varl3hFwsQwdsAr2reMD4rfAmNRDdcSt+vxAHp39OOiKTH5tqy+8FugfGSZsBuvuXHJ
+         X57A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727691151; x=1728295951;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=IUsTgMCDlYF8NCO+DUyGQXMRDmDOC3gw5dVi9Tj9wRw=;
+        b=xSPOLrF9D1eXnDwsxsQSmaWcm+jLKzobr/D/sV79+ZOK1fOmEt1c65Dyzzehk0xhFN
+         Kzwc967k3u+m2C/wtuPqrGwsjkeZ1Szb25DndH4yY/RelT64VUNjHlvaqQwg6ypS1NNo
+         qdrG8SHX+tk+dFUZ2Z/vC8qRuCvIYmnfnddcyOjdb/6TZHj2tWmmm1o9HduYA95kTdck
+         K0IzoQeNNVhaVjJl5Ocf4g+X+vi/pwoaPNGD6qMnqBIOszsut54PoOIW2PxQG4PSWV0/
+         NgxD0BFkPKI/SaISLG0bQXeO9PdVromEQy9DeWC/rzwhBR2Izkdi12Jcu///Ppozaujc
+         f8mA==
+X-Forwarded-Encrypted: i=1; AJvYcCUoYGrA8Ff4ug/ooX+rHFhemPcl5/OzxKPclwa0/yKq/LHm97HEDcmSGxGIt09VtpjPh1Ap4KZG@vger.kernel.org, AJvYcCWo/7rIxJ974gSmap2nXPqgHEnybpCil0fMH5tuLr1EeYoNU3VqmTEeYm6H/lvBlrsC34XfF0dpcSSrmfg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyRKUkj9HD84OIWcX10ElgPpWzRIlGysT/peGGbAhPt/nDCHwDr
+	aZLZQtVZIPHVXhmDrwU6OUTOP4QNNvJqE19otJ1vNzVsOUU9CEz6
+X-Google-Smtp-Source: AGHT+IE+XkNU1MrrwGIggtxA53BM40AFHc4Ez/pr2u8o6EBbjl9eIRtRRkKENw2ss5jQQykE7/l9Hg==
+X-Received: by 2002:a17:902:c40f:b0:205:76f3:fc2c with SMTP id d9443c01a7336-20b367ddf1dmr156177005ad.16.1727691151036;
+        Mon, 30 Sep 2024 03:12:31 -0700 (PDT)
+Received: from tom-QiTianM540-A739.. ([106.39.42.164])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20b37e61b00sm51584855ad.275.2024.09.30.03.12.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Sep 2024 03:12:30 -0700 (PDT)
+From: Qiu-ji Chen <chenqiuji666@gmail.com>
+To: support.opensource@diasemi.com,
+	lgirdwood@gmail.com,
+	broonie@kernel.org,
+	perex@perex.cz,
+	tiwai@suse.com
+Cc: linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	baijiaju1990@gmail.com,
+	Qiu-ji Chen <chenqiuji666@gmail.com>,
+	stable@vger.kernel.org
+Subject: [PATCH] ASoC: codecs: Fix atomicity violation in snd_soc_component_get_drvdata()
+Date: Mon, 30 Sep 2024 18:12:16 +0800
+Message-Id: <20240930101216.23723-1-chenqiuji666@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240927133329.1015041-1-libaokun@huaweicloud.com>
-X-Rspamd-Queue-Id: 2A3361F7FA
-X-Spam-Level: 
-X-Spamd-Result: default: False [-4.01 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	MID_RHS_NOT_FQDN(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	MISSING_XM_UA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns,suse.com:email,suse.cz:dkim,suse.cz:email];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_THREE(0.00)[3];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCVD_TLS_LAST(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	DKIM_TRACE(0.00)[suse.cz:+]
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Spam-Score: -4.01
-X-Spam-Flag: NO
 
-On Fri 27-09-24 21:33:29, libaokun@huaweicloud.com wrote:
-> From: Baokun Li <libaokun1@huawei.com>
-> 
-> Wesley reported an issue:
-> 
-> ==================================================================
-> EXT4-fs (dm-5): resizing filesystem from 7168 to 786432 blocks
-> ------------[ cut here ]------------
-> kernel BUG at fs/ext4/resize.c:324!
-> CPU: 9 UID: 0 PID: 3576 Comm: resize2fs Not tainted 6.11.0+ #27
-> RIP: 0010:ext4_resize_fs+0x1212/0x12d0
-> Call Trace:
->  __ext4_ioctl+0x4e0/0x1800
->  ext4_ioctl+0x12/0x20
->  __x64_sys_ioctl+0x99/0xd0
->  x64_sys_call+0x1206/0x20d0
->  do_syscall_64+0x72/0x110
->  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-> ==================================================================
-> 
-> While reviewing the patch, Honza found that when adjusting resize_bg in
-> alloc_flex_gd(), it was possible for flex_gd->resize_bg to be bigger than
-> flexbg_size.
-> 
-> The reproduction of the problem requires the following:
-> 
->  o_group = flexbg_size * 2 * n;
->  o_size = (o_group + 1) * group_size;
->  n_group: [o_group + flexbg_size, o_group + flexbg_size * 2)
->  o_size = (n_group + 1) * group_size;
-> 
-> Take n=0,flexbg_size=16 as an example:
-> 
->               last:15
-> |o---------------|--------------n-|
-> o_group:0    resize to      n_group:30
-> 
-> The corresponding reproducer is:
-> 
-> img=test.img
-> truncate -s 600M $img
-> mkfs.ext4 -F $img -b 1024 -G 16 8M
-> dev=`losetup -f --show $img`
-> mkdir -p /tmp/test
-> mount $dev /tmp/test
-> resize2fs $dev 248M
-> 
-> Delete the problematic plus 1 to fix the issue, and add a WARN_ON_ONCE()
-> to prevent the issue from happening again.
-> 
-> Reported-by: Wesley Hershberger <wesley.hershberger@canonical.com>
-> Closes: https://bugs.launchpad.net/ubuntu/+source/linux/+bug/2081231
-> Reported-by: Stéphane Graber <stgraber@stgraber.org>
-> Closes: https://lore.kernel.org/all/20240925143325.518508-1-aleksandr.mikhalitsyn@canonical.com/
-> Tested-by: Alexander Mikhalitsyn <aleksandr.mikhalitsyn@canonical.com>
-> Tested-by: Eric Sandeen <sandeen@redhat.com>
-> Fixes: 665d3e0af4d3 ("ext4: reduce unnecessary memory allocation in alloc_flex_gd()")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Baokun Li <libaokun1@huawei.com>
+An atomicity violation occurs when the validity of the variables 
+da7219->clk_src and da7219->mclk_rate is being assessed. Since the entire 
+assessment is not protected by a lock, the da7219 variable might still be 
+in flux during the assessment, rendering this check invalid.
 
-Looks good. Feel free to add:
+To fix this issue, we recommend adding a lock before the block 
+if ((da7219->clk_src == clk_id) && (da7219->mclk_rate == freq)) so that 
+the legitimacy check for da7219->clk_src and da7219->mclk_rate is 
+protected by the lock, ensuring the validity of the check.
 
-Reviewed-by: Jan Kara <jack@suse.cz>
+This possible bug is found by an experimental static analysis tool
+developed by our team. This tool analyzes the locking APIs
+to extract function pairs that can be concurrently executed, and then
+analyzes the instructions in the paired functions to identify possible
+concurrency bugs including data races and atomicity violations.
 
-								Honza
+Fixes: 6d817c0e9fd7 ("ASoC: codecs: Add da7219 codec driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Qiu-ji Chen <chenqiuji666@gmail.com>
+---
+ sound/soc/codecs/da7219.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-> ---
-> Changes since v1:
->  * Add missing WARN_ON_ONCE().
->  * Correct the comment of alloc_flex_gd().
-> 
->  fs/ext4/resize.c | 18 ++++++++++--------
->  1 file changed, 10 insertions(+), 8 deletions(-)
-> 
-> diff --git a/fs/ext4/resize.c b/fs/ext4/resize.c
-> index e04eb08b9060..a2704f064361 100644
-> --- a/fs/ext4/resize.c
-> +++ b/fs/ext4/resize.c
-> @@ -230,8 +230,8 @@ struct ext4_new_flex_group_data {
->  #define MAX_RESIZE_BG				16384
->  
->  /*
-> - * alloc_flex_gd() allocates a ext4_new_flex_group_data with size of
-> - * @flexbg_size.
-> + * alloc_flex_gd() allocates an ext4_new_flex_group_data that satisfies the
-> + * resizing from @o_group to @n_group, its size is typically @flexbg_size.
->   *
->   * Returns NULL on failure otherwise address of the allocated structure.
->   */
-> @@ -239,25 +239,27 @@ static struct ext4_new_flex_group_data *alloc_flex_gd(unsigned int flexbg_size,
->  				ext4_group_t o_group, ext4_group_t n_group)
->  {
->  	ext4_group_t last_group;
-> +	unsigned int max_resize_bg;
->  	struct ext4_new_flex_group_data *flex_gd;
->  
->  	flex_gd = kmalloc(sizeof(*flex_gd), GFP_NOFS);
->  	if (flex_gd == NULL)
->  		goto out3;
->  
-> -	if (unlikely(flexbg_size > MAX_RESIZE_BG))
-> -		flex_gd->resize_bg = MAX_RESIZE_BG;
-> -	else
-> -		flex_gd->resize_bg = flexbg_size;
-> +	max_resize_bg = umin(flexbg_size, MAX_RESIZE_BG);
-> +	flex_gd->resize_bg = max_resize_bg;
->  
->  	/* Avoid allocating large 'groups' array if not needed */
->  	last_group = o_group | (flex_gd->resize_bg - 1);
->  	if (n_group <= last_group)
-> -		flex_gd->resize_bg = 1 << fls(n_group - o_group + 1);
-> +		flex_gd->resize_bg = 1 << fls(n_group - o_group);
->  	else if (n_group - last_group < flex_gd->resize_bg)
-> -		flex_gd->resize_bg = 1 << max(fls(last_group - o_group + 1),
-> +		flex_gd->resize_bg = 1 << max(fls(last_group - o_group),
->  					      fls(n_group - last_group));
->  
-> +	if (WARN_ON_ONCE(flex_gd->resize_bg > max_resize_bg))
-> +		flex_gd->resize_bg = max_resize_bg;
-> +
->  	flex_gd->groups = kmalloc_array(flex_gd->resize_bg,
->  					sizeof(struct ext4_new_group_data),
->  					GFP_NOFS);
-> -- 
-> 2.39.2
-> 
+diff --git a/sound/soc/codecs/da7219.c b/sound/soc/codecs/da7219.c
+index 311ea7918b31..e2da3e317b5a 100644
+--- a/sound/soc/codecs/da7219.c
++++ b/sound/soc/codecs/da7219.c
+@@ -1167,17 +1167,20 @@ static int da7219_set_dai_sysclk(struct snd_soc_dai *codec_dai,
+ 	struct da7219_priv *da7219 = snd_soc_component_get_drvdata(component);
+ 	int ret = 0;
+ 
+-	if ((da7219->clk_src == clk_id) && (da7219->mclk_rate == freq))
++	mutex_lock(&da7219->pll_lock);
++
++	if ((da7219->clk_src == clk_id) && (da7219->mclk_rate == freq)) {
++		mutex_unlock(&da7219->pll_lock);
+ 		return 0;
++	}
+ 
+ 	if ((freq < 2000000) || (freq > 54000000)) {
++		mutex_unlock(&da7219->pll_lock);
+ 		dev_err(codec_dai->dev, "Unsupported MCLK value %d\n",
+ 			freq);
+ 		return -EINVAL;
+ 	}
+ 
+-	mutex_lock(&da7219->pll_lock);
+-
+ 	switch (clk_id) {
+ 	case DA7219_CLKSRC_MCLK_SQR:
+ 		snd_soc_component_update_bits(component, DA7219_PLL_CTRL,
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+2.34.1
+
 
