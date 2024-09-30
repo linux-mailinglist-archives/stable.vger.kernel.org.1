@@ -1,48 +1,43 @@
-Return-Path: <stable+bounces-78243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E67D989F8B
-	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 12:37:44 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3BB32989F9C
+	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 12:43:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C7AF91F21A80
-	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 10:37:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C934A1F2211D
+	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 10:43:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C079018B472;
-	Mon, 30 Sep 2024 10:37:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fp9hWN+Y"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D3EA18BBA9;
+	Mon, 30 Sep 2024 10:43:01 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7395B188006;
-	Mon, 30 Sep 2024 10:37:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E369B152E02;
+	Mon, 30 Sep 2024 10:42:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727692656; cv=none; b=PuR/en2zN04jmsIRcMr1UPNh7Qs4SDhKs6z1pBje0QeBIKEuww/u7XNQE5uY6Jef0WYy4Oe20v8HibFCg9zUA2BRz/3llvZin4ov3TZN9Q73FxRzUTJBksdksnnFQ5kfsvOT73XDpAafCfsIrKvKUbOKKYZiONeb3vg+5PCeRR8=
+	t=1727692981; cv=none; b=GN9etOEMMClC8Fu0dvft+JektWc/kS/2YAnuxpHDgznQIO9lbihF91f6CWexdsl0vmmIjZG/DYGWI+RJ9R1CgmoMCGEzShPHptCUguClW5DpocuIbpjCefsrPVUGbRV5UzxV+30rzZPuoueZp/amEcNT4CFPoryiOZxtbUzbmh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727692656; c=relaxed/simple;
-	bh=F2Vvp+NmQj/IeNOudf2Wx4PHmRHU5jUFSv49IeAJxKM=;
+	s=arc-20240116; t=1727692981; c=relaxed/simple;
+	bh=WLm2oImTyJtVZ0s1Fu+l1CRkqh5H5kOEM1GfEnxzJA0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=PPCAzKmlZQFkIlgcl4dnk6EvSO2RIhGKBZV18qTMJJqh9/6nmWuBuqV9eypSCLToDfyAGG3Pcq11lYU2UIIL8Uvq6zhdnRJp8Fz5FSnQKkaoWMqPIuPmwJMap9AXc+tL3Sk7zIS05yLZkWzthvkK4/US38Uaf48UWC2T6+Vlj0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fp9hWN+Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0B81C4CEC7;
-	Mon, 30 Sep 2024 10:37:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727692655;
-	bh=F2Vvp+NmQj/IeNOudf2Wx4PHmRHU5jUFSv49IeAJxKM=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=Fp9hWN+Y3Ar1LfSJtmua0/ydmprkWyWW123tvhvw/MpHKlGNFrhZwy6rgeUFSJ0u7
-	 7nMRM3peyG0eRXmnhP20spKm+K/29AQ04Y4/i5QJRSZyJKv0RgvkhEvCb3lkaGmeAb
-	 wvMZrJmIOI84X+9takmKHWv/Cnq3yWCnujuiNL0YQg4GMlN/vqBRciSDfkldtcRvCr
-	 8X4CbYIMghk4tnwPS1DSYDauMrzArgepq365jZh6/DLMm/2o64EdM9m82lkM1JmXw3
-	 pNKFmsmgXNR8FEwj0wdlAmeRQf6gJD5fYm2AfCJMok//BBy1y3PJPMJxtSGBAEEmSq
-	 6C5lZWcWoQpLg==
-Message-ID: <ec670e21-91a8-4ba9-96b0-cf641fda3179@kernel.org>
-Date: Mon, 30 Sep 2024 12:37:29 +0200
+	 In-Reply-To:Content-Type; b=Z1thHL2Dtt/6PJDKDIXuwuL6Rq+SflCFucFZ3Dy7/2VmIFCLbee755ZLepGawe3kGEc1nstyzao5RQSnZTC8iyeuKXou5fmNyRSVaIlkcNhlXJdpCXvGcHvQSr2Se/Y/XElfobV/Jy6UShPyNTlBAwk//5/uYFPF8ohh21AD9gM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
+Received: from [192.168.100.97] (unknown [147.123.87.154])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: pmenzel)
+	by mx.molgen.mpg.de (Postfix) with ESMTPSA id DEC9161E40639;
+	Mon, 30 Sep 2024 12:42:24 +0200 (CEST)
+Message-ID: <2f45a6ac-5bb7-4954-adb5-3bf706363062@molgen.mpg.de>
+Date: Mon, 30 Sep 2024 12:42:16 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -50,78 +45,82 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] clk: samsung: Fixes PLL locktime for PLL142XX used on
- FSD platfom
-To: Varada Pavani <v.pavani@samsung.com>, aswani.reddy@samsung.com,
- pankaj.dubey@samsung.com, s.nawrocki@samsung.com, cw00.choi@samsung.com,
- alim.akhtar@samsung.com, mturquette@baylibre.com, sboyd@kernel.org,
- linux-samsung-soc@vger.kernel.org, linux-clk@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
-Cc: gost.dev@samsung.com, stable@vger.kernel.org
-References: <20240926144513.71349-1-v.pavani@samsung.com>
- <CGME20240926144743epcas5p2047d01217bf90d6d52ec97c9b3094c82@epcas5p2.samsung.com>
- <20240926144513.71349-3-v.pavani@samsung.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
+Subject: Re: [PATCH 2/4] ACPI: resource: Loosen the Asus E1404GAB DMI match to
+ also cover the E1404GA
+To: Hans de Goede <hdegoede@redhat.com>
+Cc: "Rafael J . Wysocki" <rafael@kernel.org>, Ben Mayo <benny1091@gmail.com>,
+ Tamim Khan <tamim@fusetak.com>, linux-acpi@vger.kernel.org,
+ regressions@lists.linux.dev, stable@vger.kernel.org
+References: <20240927141606.66826-1-hdegoede@redhat.com>
+ <20240927141606.66826-2-hdegoede@redhat.com>
 Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 fv0=
-In-Reply-To: <20240926144513.71349-3-v.pavani@samsung.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+From: Paul Menzel <pmenzel@molgen.mpg.de>
+In-Reply-To: <20240927141606.66826-2-hdegoede@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 26/09/2024 16:45, Varada Pavani wrote:
-> Add PLL locktime for PLL142XX controller.
+Dear Hans,
 
-You marked it as fixes. Please describe the observable bug and its
-impact. See submitting patches and stable kernel rules.
 
+Thank you for your patch.
+
+Am 27.09.24 um 16:16 schrieb Hans de Goede:
+> Like other Asus Vivobooks, the Asus Vivobook Go E1404GA has a DSDT
+> describing IRQ 1 as ActiveLow, while the kernel overrides to Edge_High.
 > 
-> Fixes: 4f346005aaed ("clk: samsung: fsd: Add initial clock support")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Varada Pavani <v.pavani@samsung.com>
-> ---
-Best regards,
-Krzysztof
+>      $ sudo dmesg | grep DMI:.*BIOS
+>      [    0.000000] DMI: ASUSTeK COMPUTER INC. Vivobook Go E1404GA_E1404GA/E1404GA, BIOS E1404GA.302 08/23/2023
+>      $ sudo cp /sys/firmware/acpi/tables/DSDT dsdt.dat
+>      $ iasl -d dsdt.dat
+>      $ grep -A 30 PS2K dsdt.dsl | grep IRQ -A 1
+>                  IRQ (Level, ActiveLow, Exclusive, )
+>                      {1}
+> 
+> There already is an entry in the irq1_level_low_skip_override[] DMI match
+> table for the "E1404GAB", change this to match on "E1404GA" to cover
+> the E1404GA model as well (DMI_MATCH() does a substring match).
 
+Ah, good to know. Thank you for fixing it.
+
+> Reported-by: Paul Menzel <pmenzel@molgen.mpg.de>
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=219224
+> Cc: Tamim Khan <tamim@fusetak.com>
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+> ---
+> Note this patch replaces Paul Menzel's patch which added a new entry
+> for the "E1404GA", instead of loosening the "E1404GAB" match:
+> https://lore.kernel.org/linux-acpi/20240911081612.3931-1-pmenzel@molgen.mpg.de/
+> ---
+>   drivers/acpi/resource.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/acpi/resource.c b/drivers/acpi/resource.c
+> index 1ff251fd1901..dfe108e2ccde 100644
+> --- a/drivers/acpi/resource.c
+> +++ b/drivers/acpi/resource.c
+> @@ -504,10 +504,10 @@ static const struct dmi_system_id irq1_level_low_skip_override[] = {
+>   		},
+>   	},
+>   	{
+> -		/* Asus Vivobook Go E1404GAB */
+> +		/* Asus Vivobook Go E1404GA* */
+
+I guess people are going to grep for the model, if something does not 
+work, so maybe the known ones should listed. I know it’s not optimal, as 
+the comments are very likely be incomplete, but it’s better than than 
+not having it listed, in my opinion.
+
+>   		.matches = {
+>   			DMI_MATCH(DMI_SYS_VENDOR, "ASUSTeK COMPUTER INC."),
+> -			DMI_MATCH(DMI_BOARD_NAME, "E1404GAB"),
+> +			DMI_MATCH(DMI_BOARD_NAME, "E1404GA"),
+>   		},
+>   	},
+>   	{
+
+
+Kind regards,
+
+Paul
 
