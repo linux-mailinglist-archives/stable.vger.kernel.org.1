@@ -1,125 +1,170 @@
-Return-Path: <stable+bounces-78250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA71A98A136
-	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 13:55:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C2F298A23A
+	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 14:24:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9034728173B
-	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 11:54:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A77FE1C22609
+	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 12:24:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D8F418E03D;
-	Mon, 30 Sep 2024 11:54:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45B861917C2;
+	Mon, 30 Sep 2024 12:19:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="j7GfV2CJ"
+	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="gNwuM+EX"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mailout1.samsung.com (mailout1.samsung.com [203.254.224.24])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A870C18DF86
-	for <stable@vger.kernel.org>; Mon, 30 Sep 2024 11:54:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50856190692
+	for <stable@vger.kernel.org>; Mon, 30 Sep 2024 12:19:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=203.254.224.24
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727697291; cv=none; b=iOuxBCuY8B+XAj+CpxWUAAcZyLfwbttKcuVfvviafIwylvL94G7MeCLP6VX4oQGF2ndAtqwDD8SOYd8mcu+nIYkoE+1juarGV+Zp9gsKD2mfM0WqKdjXzUlAMt++hj0gDVckPfc8t4JJ5QRLermXu3pl92jWVmz8QpXNZr3vf+U=
+	t=1727698742; cv=none; b=EzKcKcYOT7KHXzR1mUmStlbfk5HhK0/negH5N/IdANBXioBxcw0qWEFdRmeKrr8bACpUMQ3lETAakFYi8lWpraxHzhlk9sSqufr3DhIyMMd5hLbvUD6qsJyLTyzIXPDQy1ZrFaBFXn2mZRcwhvH4soTUqUZc6IzJCgDBEera0Rg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727697291; c=relaxed/simple;
-	bh=mNwqYJzLtN5eL16XNGqSAixV3zRsqrhuI5IKa/pJ6GE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Km2Y/wIBNVpR+KlucsDimSYewP1gBo6ud2MzRfS0B1123V4Uu7neAQX5L0b1NiM+5vRoxkjhWJ5qKmziiA82uAufh9mOKWd9TzDaV4vKCRRoLRnY5TYeEhZ9iA3SZlrx8VdctRcJsOvPMTO0ei/WWpnvwIs+u4QzaLuzPXGc1Dw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=j7GfV2CJ; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-42cc43454d5so30889625e9.3
-        for <stable@vger.kernel.org>; Mon, 30 Sep 2024 04:54:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1727697288; x=1728302088; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BTlR8GM3OMlqQTYUcqotU0N7INFRb+pVscGx5OHzhZQ=;
-        b=j7GfV2CJexnwy4T9n22tPOi+zHLGlUWT0bC5ztvoPRZGGcQAG8DqugITIVHROXO1k3
-         GFOcMbgIrIVofvN+qof7JLUb/pzXDXlt1XBNBau8XiOhKk0t28spspk39I7z46GmMumT
-         nRk9IvfNNixki34oEQrBzg1GP2/rLh8QkaImGwmK6d/6U7Vw35f7+WaGQ8NCiR9dnNEi
-         huRSDdEuFZqmdZZvP0YEnVy6LJrrFg15AkIGqhWxlEO3waxrwM+3DUMjEg4bIY2IFYzs
-         uf9O5+iqnNvi3LXbmmAetBo6t4lLU64bPDy5cxcXGC2Y6014wq4vQHtFGwJ7ERLYld6P
-         gLjA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727697288; x=1728302088;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=BTlR8GM3OMlqQTYUcqotU0N7INFRb+pVscGx5OHzhZQ=;
-        b=GH5Znl/35Nvqd7qIKEaLeEDKAFINgxzOlJm6FSsh63wzA6WQmaz1b2nvIcO5RGyRkh
-         tlXOpxAE5GD+T+r0vpYt4ey1xjIre1MQ7o0+F2AB9utTFKN/oXZi0fy6xWUyVki6Kiaj
-         oE8AxBwQ1Qe0kPWeYgzjSVQBvX3Y1h68R9CY4ETcdjUmzdhviK//l1ogf50GyyW268kI
-         Zmp0Uw84dbPRx10D9XIgRbCI4at/1MkNJaEcflY/qN09XxSnYpIeMn1cjGbnHeS3DJsh
-         spjYlSbKO7EQhnpVUeY35MuK5NKvL35hIq++4uTsCLwLg+baS0ajxuiqGC6FD/RMEXl3
-         FURw==
-X-Forwarded-Encrypted: i=1; AJvYcCUq/0qyqQNV12qg5kp5iU3p6GdRV3EBGT1fniyAayflWbc4TOk9mV3pLJ8qYIvCXOr8w6DLMrY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YylkdTgO/4XUZTzT20xTqoMDwnQC0v1dYWYsAy56dT9Z96WN0zm
-	35ovrRWhijAWdvuNMDRQGqinWP7JOlqqCzvB11zoNVVIe+ezuj8NXmxXktkeZAk=
-X-Google-Smtp-Source: AGHT+IFNgcBeQKIXQJFnsznAUv8Zr+Mwmef9bf9T9eIEa8b3L+67wwcYC7L/VT1STcZx0/9IpQ//IQ==
-X-Received: by 2002:a05:600c:5127:b0:428:1b0d:8657 with SMTP id 5b1f17b1804b1-42f58464975mr98683375e9.22.1727697287898;
-        Mon, 30 Sep 2024 04:54:47 -0700 (PDT)
-Received: from brgl-uxlite.home ([2a01:cb1d:dc:7e00:8791:e3e5:a9ca:31a6])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37cd5730ecasm8889189f8f.81.2024.09.30.04.54.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Sep 2024 04:54:46 -0700 (PDT)
-From: Bartosz Golaszewski <brgl@bgdev.pl>
-To: Keerthy <j-keerthy@ti.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Bartosz Golaszewski <brgl@bgdev.pl>,
-	Parth Pancholi <parth105105@gmail.com>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
-	linux-gpio@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Parth Pancholi <parth.pancholi@toradex.com>,
+	s=arc-20240116; t=1727698742; c=relaxed/simple;
+	bh=vBy7OFug84v0/K0Vd+HlF324zw+uJF9x+kHFONfOVqg=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:Content-Type:
+	 References; b=uZ7J0viHHE0FmFiR28ameOwXXWvrvApCjzZ/F2l6RKnFx04I2DeDvyWKKuzPjirQt7XRWvyVtbmMD5NOp50ONTxQqtzOBOYHnOKzUNXXfQAEexmV1boCLlnD7OHr/WE0aLIG1H1aM6ZAitT1/hJeZoDrhRHpLlluK0x+u59aoxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=gNwuM+EX; arc=none smtp.client-ip=203.254.224.24
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+Received: from epcas5p2.samsung.com (unknown [182.195.41.40])
+	by mailout1.samsung.com (KnoxPortal) with ESMTP id 20240930121858epoutp0164557d461f5dd78ca5dcaf926ec76374~6BNlPSgMZ1253612536epoutp01O
+	for <stable@vger.kernel.org>; Mon, 30 Sep 2024 12:18:58 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.samsung.com 20240930121858epoutp0164557d461f5dd78ca5dcaf926ec76374~6BNlPSgMZ1253612536epoutp01O
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+	s=mail20170921; t=1727698738;
+	bh=sfSiZshNltBPyKbM7f8L8Q015QrPMyWEOljZ3sJgHEM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=gNwuM+EXvEKRw5E4bJrNQIYsztG+15o5EW5y3q+nBkcQGJNnLF5S3B4TPsJGw4fNO
+	 yfryurxmgs72FwPgugXUI10kJf/PGqq60zvmUdNLDeWmH99V0/C02Jcd5E/D3U6dt7
+	 Tm67ty/70hYKxlmXElaWG7WyjveTo8A+8CO3D/cA=
+Received: from epsnrtp1.localdomain (unknown [182.195.42.162]) by
+	epcas5p4.samsung.com (KnoxPortal) with ESMTP id
+	20240930121857epcas5p49237819634a1a4c2495b41604a0a0916~6BNkuReZ30681106811epcas5p49;
+	Mon, 30 Sep 2024 12:18:57 +0000 (GMT)
+Received: from epsmgec5p1-new.samsung.com (unknown [182.195.38.181]) by
+	epsnrtp1.localdomain (Postfix) with ESMTP id 4XHKqh4z6pz4x9Q2; Mon, 30 Sep
+	2024 12:18:56 +0000 (GMT)
+Received: from epcas5p2.samsung.com ( [182.195.41.40]) by
+	epsmgec5p1-new.samsung.com (Symantec Messaging Gateway) with SMTP id
+	63.7D.18935.0379AF66; Mon, 30 Sep 2024 21:18:56 +0900 (KST)
+Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
+	epcas5p2.samsung.com (KnoxPortal) with ESMTPA id
+	20240930112135epcas5p2175ec81bb609da5b166d47341ece2f67~6AbeqYbyM2495924959epcas5p2O;
+	Mon, 30 Sep 2024 11:21:35 +0000 (GMT)
+Received: from epsmgms1p2new.samsung.com (unknown [182.195.42.42]) by
+	epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
+	20240930112135epsmtrp1743da13a16b4401159e1c7a8d98ca372~6AbepoOGR2631226312epsmtrp1W;
+	Mon, 30 Sep 2024 11:21:35 +0000 (GMT)
+X-AuditID: b6c32a50-cb1f8700000049f7-2c-66fa973031bb
+Received: from epsmtip2.samsung.com ( [182.195.34.31]) by
+	epsmgms1p2new.samsung.com (Symantec Messaging Gateway) with SMTP id
+	F8.57.08227.FB98AF66; Mon, 30 Sep 2024 20:21:35 +0900 (KST)
+Received: from cheetah.sa.corp.samsungelectronics.net (unknown
+	[107.109.115.53]) by epsmtip2.samsung.com (KnoxPortal) with ESMTPA id
+	20240930112133epsmtip2aabb8e0f2086f34c47bdb457a284a90e~6AbcoJIpt3034630346epsmtip2V;
+	Mon, 30 Sep 2024 11:21:33 +0000 (GMT)
+From: Varada Pavani <v.pavani@samsung.com>
+To: krzk@kernel.org, s.nawrocki@samsung.com, cw00.choi@samsung.com,
+	alim.akhtar@samsung.com, mturquette@baylibre.com, sboyd@kernel.org,
+	linux-samsung-soc@vger.kernel.org, linux-clk@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org
+Cc: aswani.reddy@samsung.com, pankaj.dubey@samsung.com,
+	gost.dev@samsung.com, Varada Pavani <v.pavani@samsung.com>,
 	stable@vger.kernel.org
-Subject: Re: [PATCH] gpio: davinci: fix lazy disable
-Date: Mon, 30 Sep 2024 13:54:44 +0200
-Message-ID: <172769721870.54897.1079647441666615985.b4-ty@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240828133207.493961-1-parth105105@gmail.com>
-References: <20240828133207.493961-1-parth105105@gmail.com>
+Subject: [PATCH 2/2] clk: samsung: Fixes PLL locktime for PLL142XX used on
+ FSD platfom
+Date: Mon, 30 Sep 2024 16:48:59 +0530
+Message-Id: <20240930111859.22264-3-v.pavani@samsung.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20240930111859.22264-1-v.pavani@samsung.com>
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFupkk+LIzCtJLcpLzFFi42LZdlhTQ9dg+q80g+V9ahYP5m1jszi0eSu7
+	xfUvz1ktbh7YyWRx/vwGdotNj6+xWnzsucdqcXnXHDaLGef3MVlcPOVqsWjrF3aLw2/aWS3+
+	XdvIYrFg4yNGiw29r9gd+D3e32hl99i0qpPNY/OSeo++LasYPT5vkgtgjcq2yUhNTEktUkjN
+	S85PycxLt1XyDo53jjc1MzDUNbS0MFdSyEvMTbVVcvEJ0HXLzAE6VkmhLDGnFCgUkFhcrKRv
+	Z1OUX1qSqpCRX1xiq5RakJJTYFKgV5yYW1yal66Xl1piZWhgYGQKVJiQnfHl8SK2gs2cFc8v
+	9rM1MD5i72Lk5JAQMJG4ePIPWxcjF4eQwB5GidP/rrBAOJ8YJVauW8kI4XxjlOjY9ZQVpmXl
+	hEusEIm9jBKvn02HamllkpjXsh2sik1AS2L11OVgVSICfUwSd09MYAJxmAX6GCVa2p6DrRcW
+	iJDo6n4BZrMIqErcWXWADcTmFbCUuHnjNdSJ8hKrNxxgBrE5BawkLs35ww4ySEKgkUNi/vZX
+	UEe5SOw8fJkRwhaWeHV8C1SzlMTL/jYgmwPITpZo/8QNEc6RuLR7FROEbS9x4MocFpASZgFN
+	ifW79CHCshJTT60DK2EW4JPo/f0EqpxXYsc8GFtJYueOCVC2hMTT1WvYIGwPiXmT9kCDqJdR
+	YuGP1UwTGOVmIaxYwMi4ilEqtaA4Nz012bTAUDcvtRweccn5uZsYwWlSK2AH4+oNf/UOMTJx
+	MB5ilOBgVhLhvXfoZ5oQb0piZVVqUX58UWlOavEhRlNgAE5klhJNzgcm6rySeEMTSwMTMzMz
+	E0tjM0Mlcd7XrXNThATSE0tSs1NTC1KLYPqYODilGpgqn71W/OJoHKh6prdgXdsdPUHrZcnM
+	M49wse0orBYJyautMjpXq2bxtOSIq0/ytk1ybSz+OXK/xAqnlKtUrLrxKMcl/tvxo5tyLjiL
+	f533K3TuEnXLO/WfXJanaUef+bAysnPb4tc5F6b21VitvXFLoOq5wdnbb1Suv5i84tMPy7SX
+	qmkGTkECvvOfGTzZde/N88kVP5xPlR2f/eNlite8huz7XX+WtKkvmGE6Vfuw0+uD168zr+uK
+	X7t1DXPJhznFmj8rDnzcs0NCf9mMbQfeH5v9sT5+vQPf0gUXpmk2KK8+nxy3ryiFSeSoyFe/
+	O0e6LuWeFtyrYe0m1pf1pndjcmp50Ow9DwJK77rn+LHFKLEUZyQaajEXFScCAI7CFkccBAAA
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrLLMWRmVeSWpSXmKPExsWy7bCSvO7+zl9pBg9nCFg8mLeNzeLQ5q3s
+	Fte/PGe1uHlgJ5PF+fMb2C02Pb7GavGx5x6rxeVdc9gsZpzfx2Rx8ZSrxaKtX9gtDr9pZ7X4
+	d20ji8WCjY8YLTb0vmJ34Pd4f6OV3WPTqk42j81L6j36tqxi9Pi8SS6ANYrLJiU1J7MstUjf
+	LoEr48vjRWwFmzkrnl/sZ2tgfMTexcjJISFgIrFywiXWLkYuDiGB3YwS3y98YYVISEjs/NbK
+	DGELS6z895wdoqiZSeLi9xVg3WwCWhKrpy4H6xYRmMUkMXfJBxYQh1lgEqPEuj/ngao4OIQF
+	wiRWv+cCaWARUJW4s+oAG4jNK2ApcfPGa6gz5CVWbzgAto1TwEri0pw/YK1CIDUvsyYw8i1g
+	ZFjFKJlaUJybnltsWGCUl1quV5yYW1yal66XnJ+7iREcwlpaOxj3rPqgd4iRiYPxEKMEB7OS
+	CO+9Qz/ThHhTEiurUovy44tKc1KLDzFKc7AoifN+e92bIiSQnliSmp2aWpBaBJNl4uCUamBS
+	CC6Yv2LqRpX8CfOMj/xPnmEw+3/K383BnQYelh8+3ur5u2DOnc9xlRLLZia73e/xMerSO3A1
+	zXfK9pmTfwSmTe279iT+BWPWbS99XeE7hfGLfpw1S+3WniedrTbtzrmOCq0vezdzS3FKCKre
+	2mLd+r9Qc7mZ1wTT+sVfrl+t4dGZutlmb4rVkbdvl99LTPlqq8Kw5rl95cyKYyKvuc8sXPuq
+	fF1CBedU8X9b3S96d04Sbnu5TubdgctbVr7R7oze7fak54fli9cBLydf14/4o7y5ztbXMv58
+	4iSPyyFvdcpWc5wxmLWqdgdbaJTSBPsjq5V1CqMLnHJuTp+x2qpVqfEyY83yW/KBPdN7Vq9p
+	VWIpzkg01GIuKk4EAKHIgknQAgAA
+X-CMS-MailID: 20240930112135epcas5p2175ec81bb609da5b166d47341ece2f67
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+X-Sendblock-Type: REQ_APPROVE
+CMS-TYPE: 105P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20240930112135epcas5p2175ec81bb609da5b166d47341ece2f67
+References: <20240930111859.22264-1-v.pavani@samsung.com>
+	<CGME20240930112135epcas5p2175ec81bb609da5b166d47341ece2f67@epcas5p2.samsung.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Add PLL locktime for PLL142XX controller.
 
+Fixes: 4f346005aaed ("clk: samsung: fsd: Add initial clock support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Varada Pavani <v.pavani@samsung.com>
+---
+ drivers/clk/samsung/clk-pll.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-On Wed, 28 Aug 2024 15:32:07 +0200, Parth Pancholi wrote:
-> On a few platforms such as TI's AM69 device, disable_irq()
-> fails to keep track of the interrupts that happen between
-> disable_irq() and enable_irq() and those interrupts are missed.
-> Use the ->irq_unmask() and ->irq_mask() methods instead
-> of ->irq_enable() and ->irq_disable() to correctly keep track of
-> edges when disable_irq is called.
-> This solves the issue of disable_irq() not working as expected
-> on such platforms.
-> 
-> [...]
-
-A couple hints:
-
-Keerthy: Don't quote your tags as b4 will not pick it up.
-Parth: Don't wrap the commit message lines too eagerly as it actually makes
-it less readable.
-
-Applied for fixes, thanks!
-
-[1/1] gpio: davinci: fix lazy disable
-      commit: 3360d41f4ac490282fddc3ccc0b58679aa5c065d
-
-Best regards,
+diff --git a/drivers/clk/samsung/clk-pll.c b/drivers/clk/samsung/clk-pll.c
+index 4be879ab917e..d4c5ae20de4f 100644
+--- a/drivers/clk/samsung/clk-pll.c
++++ b/drivers/clk/samsung/clk-pll.c
+@@ -206,6 +206,7 @@ static const struct clk_ops samsung_pll3000_clk_ops = {
+  */
+ /* Maximum lock time can be 270 * PDIV cycles */
+ #define PLL35XX_LOCK_FACTOR	(270)
++#define PLL142XX_LOCK_FACTOR	(150)
+ 
+ #define PLL35XX_MDIV_MASK       (0x3FF)
+ #define PLL35XX_PDIV_MASK       (0x3F)
+@@ -272,7 +273,11 @@ static int samsung_pll35xx_set_rate(struct clk_hw *hw, unsigned long drate,
+ 	}
+ 
+ 	/* Set PLL lock time. */
+-	writel_relaxed(rate->pdiv * PLL35XX_LOCK_FACTOR,
++	if (pll->type == pll_142xx)
++		writel_relaxed(rate->pdiv * PLL142XX_LOCK_FACTOR,
++			pll->lock_reg);
++	else
++		writel_relaxed(rate->pdiv * PLL35XX_LOCK_FACTOR,
+ 			pll->lock_reg);
+ 
+ 	/* Change PLL PMS values */
 -- 
-Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+2.17.1
+
 
