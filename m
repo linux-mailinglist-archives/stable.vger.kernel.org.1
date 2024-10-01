@@ -1,135 +1,167 @@
-Return-Path: <stable+bounces-78560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3AEF698C3DA
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 18:48:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A7DA998C44D
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 19:18:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6C7221C24171
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 16:48:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3ABB1B223F4
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 17:18:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4B031C6F70;
-	Tue,  1 Oct 2024 16:48:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF1281CB53A;
+	Tue,  1 Oct 2024 17:18:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fYccTxLZ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="a41g3W32"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5EC51C5782
-	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 16:48:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 103CE1C6F54;
+	Tue,  1 Oct 2024 17:17:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727801286; cv=none; b=XCFCnBoUGe1LBxANZc9wHHNRueJBhprddAbOWCvJ6/xoJQETdFmbb531DfbCdOmSGlk3VONdX586tCBkx/TSuxmxnatrWnNAjiHht00zalXNJarOCCEyggi713cYJY0/WLame3o2AMVYcc1b8rZHMiAQkQdbUzwbkGxC8LeW4R0=
+	t=1727803080; cv=none; b=ROEbgYpI3iORtMbplG+hIJ+BMU7rOdmbU49HJzpSRoxBZJHFGwAR59DwiNkzNbF9B1KYddVMLHJzg6GTy57dyOAXiEFPT5k0CjcUQBGVZfBeKmWkNOAP+8Hsml8/gkkOLR9NqbLi01K7gPeOzHX22Jqvihe6ePYJXm7U1WOEuyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727801286; c=relaxed/simple;
-	bh=Mpt8LQ7WFhlR4/npQJ+yd0kFXefhqZaPUR3eB0VzwM0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=AmUe5N+Rgkxo+rGMtCFWpnFSPxveueZTQvqJCN1ROjiY8CEpX+a8KFZosokJPyXkwyahp1TgOf/9RT1jct3yRav7IZI4mqeXYt2cLGeWMLwdIwLOlpot84XYQX6QJiS5x1rPzW0MWTaoksr7kCt1pdDAz/IRu0uWH0NxYVdQuBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--nogikh.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fYccTxLZ; arc=none smtp.client-ip=209.85.208.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--nogikh.bounces.google.com
-Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-5c884bf0025so3520229a12.2
-        for <stable@vger.kernel.org>; Tue, 01 Oct 2024 09:48:04 -0700 (PDT)
+	s=arc-20240116; t=1727803080; c=relaxed/simple;
+	bh=lnkQV2K24nseJignN+AR3Y8VuDdcOEW5Th76AN/3fIs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=b/CQjx4xb6l9idV9xGBeF4PRlsxccfdoK48teLO69M4WG9p0By60EJpjQIbMO3YhVzQAbYgKG8Cz9JykF6W8Ni5dj5bVKh8OxGAMn3u4PbhYM0OycON3MSakQceIOrDz/lJZgdPaJOliA2RhpGWlwa8BrJzc7LFB8MSWXQBEwYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=a41g3W32; arc=none smtp.client-ip=209.85.160.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-45821ebb4e6so48661701cf.2;
+        Tue, 01 Oct 2024 10:17:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1727801283; x=1728406083; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=gaaxnQ+4iOGrqcUqSLfiVLnhl5dSo8V8j76UXEHeXUk=;
-        b=fYccTxLZ1m5jfOASbAbb6m/k48hQ9O+fyzvUaQHTENGHFEagihNYw3M0RIBXqnY+jN
-         7PlXfPojNGQdsHXGVnPVlYjY9QgkkOYYNpHzz9mOx7JkoOJ24UuelsUgQvXhrQc9qI/P
-         Vno8XGCya5XSthxQgiwPAFSRisxQ8eSaC36wxXSsBy/luPk78J/Rc/s01FJ4xNWeIpIF
-         I5GsgGKRsY+XHUaiRXYKEuL8ugvfDYn3sT+rlOR9JqkWN4pMB/lXZvB8IT+O+W9J68s7
-         Sy1TNPrLo9G5inoVgTlN6+NhZGYpvCoYmpHTJTYdpB1aJAyFx2LpDlW25wllVnrarnp7
-         Dy0Q==
+        d=gmail.com; s=20230601; t=1727803078; x=1728407878; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=dL2+jAlecroOKNLX5C3sYaHHGi+H+0q2TzNV+QlzKqk=;
+        b=a41g3W32uqGkWYO+V97YOJuogD7R6yfaBGdl0+GeGfvwJT0/bfw1AcBMPlOvjPPjjQ
+         Y8H2IuL4d+nyT2SvcaOpGn+/j4aFJdOflHLf+9GLQUeezGjZLDEVAdrNsk4Zuu7nVOcU
+         k48ljw+OothBjRPKXxu3sKWqO5apuRlNYM1OG3xpakOpVkztSaXtGlng/wOMRV9SxO3M
+         IEP6UxlxuDKHxvgmcH+0DRaAriCT7shq0lusbjPCeys8Ej2VLMsS+CI/c3/mTD9aeq1a
+         FLtTNQFO7znGC4UX01BIiJT586DNnT2fIMAcaxj4BtPTTHy+qrIU/xjJStipO5sIKo73
+         fYYw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727801283; x=1728406083;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gaaxnQ+4iOGrqcUqSLfiVLnhl5dSo8V8j76UXEHeXUk=;
-        b=bXsUUwTB9KBha1A4qGozpi3BLQbgPmN5+h6Hdi3CeRSOdxYrbHmx14Z3SsN+gq6MSo
-         deNe8bcIIXcKYmkAxb3GKtqJ8IlcUcgMWxZ2tElI7Ng9CLj7qQ8FihCcDv07e8PYSbHL
-         Nh0ptQ/5uAViYLdKNBIxwsH4QtO5X+G+F5lUXzMg+HGg6ukqPM3as1E/lfvJjaACtJ94
-         jbAh7mEMzBzDh4xd/CM2nVoV7UoClWhRuURk6wPPgDEXbYV/90eTPljCOUoxQGjyvl2j
-         afagDtNmtYVAVVzx87h/h52lP5D9jXPuMR22Qr/3E3xbTn/Y/3YWsmI1nBFCaDMmEA7+
-         Wltg==
-X-Forwarded-Encrypted: i=1; AJvYcCW/AwaEVqEu73NvVsJf/kRwW0UkpjlCT57aKYOD+CLBBKPJ5rrlCrTu570hE2n6+BZkeYGZ4oY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy9cuXOGd8V+9ddZFKL+O4s3tLvhVwEgYKSByflieS8ULkeSudc
-	mFe0v273ir0Da8x7QVoFGP2fee2EbrMjVF6g8LHfQaNcXTPA8rjmbyJefcGlE9PICdtUsBzlYFb
-	EjA==
-X-Google-Smtp-Source: AGHT+IErS88qWTF5Vw1ftgVHnBxnAFB1tfct3YAYaMs/p7uJQbbxMDu2TCxWB40z4lYyhvEVHGN+4H8Csr0=
-X-Received: from nogikhp920.muc.corp.google.com ([2a00:79e0:9c:201:64ce:f85c:15cf:a9bd])
- (user=nogikh job=sendgmr) by 2002:a05:6402:5208:b0:5c5:c4ab:8cc8 with SMTP id
- 4fb4d7f45d1cf-5c8b18cda79mr15a12.2.1727801282810; Tue, 01 Oct 2024 09:48:02
- -0700 (PDT)
-Date: Tue,  1 Oct 2024 18:47:59 +0200
-In-Reply-To: <Zvv7X7HgcQuFIVF1@shredder.lan>
+        d=1e100.net; s=20230601; t=1727803078; x=1728407878;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=dL2+jAlecroOKNLX5C3sYaHHGi+H+0q2TzNV+QlzKqk=;
+        b=QM943qgySnCnv5LM37ohfJ0dPxLko8HnTCERd8K5nnbQjTvrWv+D/aaD/aWQe8+Fx9
+         gzoogV9VnPqd+lTSHN0QVJgRZMSEAgPY0nM5z3nJPENUaMG0CsTJP/ewXXeAWuuvkFQs
+         +WwIXG9L9fAS+46WzgkH/AC4KQyoyqzu4GhLz44RBwUpELoPluijRvqBjhLFbXCnOXPr
+         aEix7r+Y1rvC9zCsFeEsNqUN4ZwDMyKqUvPDH4aOqjdVVyW72aZXHW5AehrzO4J+f/SS
+         r3Lhihp4P1VkGBr1zg/8RQdNX7hMdgXkb/uzHwqzAfpwByxfwsWW8rpfqJhkM1gw297K
+         kG3Q==
+X-Forwarded-Encrypted: i=1; AJvYcCV6IJJ6UjycSKnQK7HShPzqpUqb7HfXw6MNC8p3RK5U0JRvNbta2XW7wxBo3hlIUdg+EMx4aCU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw6ksIQw0AVQK45UAvWp+UiKMZx3UmLCSLZBO79tQq6WRoRVm2C
+	4wTQ7y9TSWvqfqQrdN9oAx1er2tgNCzo4lWyg7K0fnRpPeZTZJBhAQmWtA==
+X-Google-Smtp-Source: AGHT+IHspYBcPYnEwwKA/jY0nLvmGsuUwW/p8mdWZwnL0t18eBZVCPbq+8dq6XAdrDfgIi2PXxLPZA==
+X-Received: by 2002:ac8:580a:0:b0:458:23fc:1473 with SMTP id d75a77b69052e-45d80562129mr5281811cf.56.1727803077763;
+        Tue, 01 Oct 2024 10:17:57 -0700 (PDT)
+Received: from willemb.c.googlers.com.com (86.235.150.34.bc.googleusercontent.com. [34.150.235.86])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-45c9f2f2264sm47679021cf.56.2024.10.01.10.17.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Oct 2024 10:17:56 -0700 (PDT)
+From: Willem de Bruijn <willemdebruijn.kernel@gmail.com>
+To: netdev@vger.kernel.org
+Cc: davem@davemloft.net,
+	kuba@kernel.org,
+	edumazet@google.com,
+	pabeni@redhat.com,
+	stable@vger.kernel.org,
+	maze@google.com,
+	shiming.cheng@mediatek.com,
+	daniel@iogearbox.net,
+	lena.wang@mediatek.com,
+	herbert@gondor.apana.org.au,
+	steffen.klassert@secunet.com,
+	Willem de Bruijn <willemb@google.com>
+Subject: [PATCH net v2] gso: fix udp gso fraglist segmentation after pull from frag_list
+Date: Tue,  1 Oct 2024 13:17:46 -0400
+Message-ID: <20241001171752.107580-1-willemdebruijn.kernel@gmail.com>
+X-Mailer: git-send-email 2.46.1.824.gd892dcdcdd-goog
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <Zvv7X7HgcQuFIVF1@shredder.lan>
-X-Mailer: git-send-email 2.46.1.824.gd892dcdcdd-goog
-Message-ID: <20241001164759.469719-1-nogikh@google.com>
-Subject: Re: Re: [PATCH stable 6.1] devlink: Fix RCU stall when unregistering
- a devlink instance
-From: Aleksandr Nogikh <nogikh@google.com>
-To: idosch@nvidia.com
-Cc: davem@davemloft.net, edumazet@google.com, gregkh@linuxfoundation.org, 
-	jiri@nvidia.com, kuba@kernel.org, pabeni@redhat.com, sashal@kernel.org, 
-	stable@vger.kernel.org, vkarri@nvidia.com, dvyukov@google.com
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Hi Ido,
+From: Willem de Bruijn <willemb@google.com>
 
-On Tue, 1 Oct 2024 16:38:39 +0300, Ido Schimmel wrote:
-> 
-> On Tue, Oct 01, 2024 at 02:11:27PM +0200, Greg KH wrote:
-> > On Tue, Oct 01, 2024 at 02:20:35PM +0300, Ido Schimmel wrote:
-> > > I read the stable rules and I am not providing an "upstream commit ID"
-> > > since the code in upstream has been reworked, making this fix
-> > > irrelevant. The only affected stable kernel is 6.1.y.
-> > 
-> > You need to document the heck out of why this is only relevant for this
-> > one specific kernel branch IN the changelog text, so that we understand
-> > what is going on, AND you need to get acks from the relevant maintainers
-> > of this area of the kernel to accept something that is not in Linus's
-> > tree.
-> > 
-> > But first of, why?  Why not just take the upstrema commits instead?
-> 
-> There were a lot of changes as part of the 6.3 cycle to completely
-> rework the semantics of the devlink instance reference count. As part of
-> these changes, commit d77278196441 ("devlink: bump the instance index
-> directly when iterating") inadvertently fixed the bug mentioned in this
-> patch. This commit cannot be applied to 6.1.y as-is because a prior
-> commit (also in 6.3) moved the code to a different file (leftover.c ->
-> core.c). There might be more dependencies that I'm currently unaware of.
-> 
-> The alternative, proposed in this patch, is to provide a minimal and
-> contained fix for the bug introduced in upstream commit c2368b19807a
-> ("net: devlink: introduce "unregistering" mark and use it during
-> devlinks iteration") as part of the 6.0 cycle.
-> 
-> The above explains why the patch is only relevant to 6.1.y.
+Detect gso fraglist skbs with corrupted geometry (see below) and
+pass these to skb_segment instead of skb_segment_list, as the first
+can segment them correctly.
 
-Thanks for bringing up this topic!
+Valid SKB_GSO_FRAGLIST skbs
+- consist of two or more segments
+- the head_skb holds the protocol headers plus first gso_size
+- one or more frag_list skbs hold exactly one segment
+- all but the last must be gso_size
 
-For what it's worth, syzbot would also greatly benefit from your fix:
-https://github.com/google/syzkaller/issues/5328
+Optional datapath hooks such as NAT and BPF (bpf_skb_pull_data) can
+modify these skbs, breaking these invariants.
 
-I've built a kernel locally with your changes, run syzkaller against it,
-and I can confirm that the kernel no longer crashes due to devlink.
+In extreme cases they pull all data into skb linear. For UDP, this
+causes a NULL ptr deref in __udpv4_gso_segment_list_csum at
+udp_hdr(seg->next)->dest.
 
+Detect invalid geometry due to pull, by checking head_skb size.
+Don't just drop, as this may blackhole a destination. Convert to be
+able to pass to regular skb_segment.
+
+Link: https://lore.kernel.org/netdev/20240428142913.18666-1-shiming.cheng@mediatek.com/
+Fixes: 9fd1ff5d2ac7 ("udp: Support UDP fraglist GRO/GSO.")
+Signed-off-by: Willem de Bruijn <willemb@google.com>
+Cc: stable@vger.kernel.org
+
+---
+
+v1->v2
+  - update Fixes tag to point to udp specific patch
+  - reinit uh->check to pseudo csum as required by CHECKSUM_PARTIAL
+---
+ net/ipv4/udp_offload.c | 22 ++++++++++++++++++++--
+ 1 file changed, 20 insertions(+), 2 deletions(-)
+
+diff --git a/net/ipv4/udp_offload.c b/net/ipv4/udp_offload.c
+index d842303587af..a5be6e4ed326 100644
+--- a/net/ipv4/udp_offload.c
++++ b/net/ipv4/udp_offload.c
+@@ -296,8 +296,26 @@ struct sk_buff *__udp_gso_segment(struct sk_buff *gso_skb,
+ 		return NULL;
+ 	}
+ 
+-	if (skb_shinfo(gso_skb)->gso_type & SKB_GSO_FRAGLIST)
+-		return __udp_gso_segment_list(gso_skb, features, is_ipv6);
++	if (skb_shinfo(gso_skb)->gso_type & SKB_GSO_FRAGLIST) {
++		 /* Detect modified geometry and pass those to skb_segment. */
++		if (skb_pagelen(gso_skb) - sizeof(*uh) == skb_shinfo(gso_skb)->gso_size)
++			return __udp_gso_segment_list(gso_skb, features, is_ipv6);
++
++		 /* Setup csum, as fraglist skips this in udp4_gro_receive. */
++		gso_skb->csum_start = skb_transport_header(gso_skb) - gso_skb->head;
++		gso_skb->csum_offset = offsetof(struct udphdr, check);
++		gso_skb->ip_summed = CHECKSUM_PARTIAL;
++
++		uh = udp_hdr(gso_skb);
++		if (is_ipv6)
++			uh->check = ~udp_v6_check(gso_skb->len,
++						  &ipv6_hdr(gso_skb)->saddr,
++						  &ipv6_hdr(gso_skb)->daddr, 0);
++		else
++			uh->check = ~udp_v4_check(gso_skb->len,
++						  ip_hdr(gso_skb)->saddr,
++						  ip_hdr(gso_skb)->daddr, 0);
++	}
+ 
+ 	skb_pull(gso_skb, sizeof(*uh));
+ 
 -- 
-Aleksandr
-
-> 
-> Jakub / Jiri, what is your preference here? This patch or cherry picking
-> a lot of code from 6.3?
+2.46.1.824.gd892dcdcdd-goog
 
 
