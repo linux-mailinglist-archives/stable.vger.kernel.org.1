@@ -1,195 +1,130 @@
-Return-Path: <stable+bounces-78579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADAB398C4FB
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 20:01:26 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 863EB98C630
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 21:45:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5A4371F23CEE
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 18:01:26 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 46C341C22192
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 19:45:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36B7D1CC146;
-	Tue,  1 Oct 2024 18:01:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F25FB1CCEDB;
+	Tue,  1 Oct 2024 19:45:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="lIxuHDCz"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IJ3RKnHn"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 361A91B3725
-	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 18:01:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4051321D;
+	Tue,  1 Oct 2024 19:45:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727805678; cv=none; b=Y1WTxM8FotsoqOiHK39bMz6Dd92djbo0jUe1iLKhldvUfjFwrkPUQY9ZPULsMTOl0RzcqX14XcGXZfczY8AlfpDweC48c3qIDmPksk8ktAIj6R4dTxqI6LCZTiFWDlC5Z85seDFfp/4u5gaKUGCvtP8gtMu+o0oJK+40BkLNYnQ=
+	t=1727811934; cv=none; b=VARoRptDiW0PD9XuCV4rHmRqVPGE2O25oYcK53Z5L00DxS6gnayUl/ROq3h+RhLR5pXpsQ1D8reqTU6p6Hwu421/8dSvN5GiUVc5tK/jabfi3Bwbk3IbYKil3C91CauBxW3hLcsRcUhxVfmkasTa3+zY3HkMnCuRnhgxwUt1mNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727805678; c=relaxed/simple;
-	bh=9opfw5OJisVf3HyMd+OR4HHKd7kdf6Gf9d54RuKdt0k=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=jmx8/QP5MOUC8DQ7Op4YlGkdQGMTeaZUQQj/N1aCEWh6aOqyJcQDEYT4zH6Pq2LM2gLVFx1U8TzN1xtJBehG7SyYYZW5gTZZwSRLIeck8iDZRMNVbk6ZG9tbvV1+4MAjKxP/G5NscB3Bpgz6eJev2FFtZ7kSdGtb977E3DzcN1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=lIxuHDCz; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5c87ab540b3so99125a12.1
-        for <stable@vger.kernel.org>; Tue, 01 Oct 2024 11:01:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1727805674; x=1728410474; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:references
-         :in-reply-to:user-agent:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=jptlZ50vNnkPMBXPAhGWdUP4XKEwnHdYTuJjE+Q5IPM=;
-        b=lIxuHDCzlFUZqYGAAidMwitvHUzvUIZYoX5DhakpIiB/2Ksk+7dUPj6ewKvzIgctw2
-         1rY1y40m1rWwaWxbB2f6Zl6eRXm+Tk6HnHvyhWi3B40xR8B4rTH4WGrfoWjPYgDD15iP
-         CT/grV8gYbAVqUwRKCyLr3hSGp+flQE8+mToC2iSnzyXxrE228EX88CA2nIr2e53Li9K
-         hir76ebOlVneRhKmT96DQB4ztegZ8DerdqamfMAvZtgnLV3AYlRvb+zp3evU2S8Ih22i
-         kFfNKT4pMxY0cmzqxN/kX6JvWhiwX09DlzRUvO3EkCPLfrvgS9dDWoL3hhInbzgfmv7r
-         z11A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727805674; x=1728410474;
-        h=content-transfer-encoding:mime-version:message-id:references
-         :in-reply-to:user-agent:subject:cc:to:from:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=jptlZ50vNnkPMBXPAhGWdUP4XKEwnHdYTuJjE+Q5IPM=;
-        b=kxOljWIwVeCjias5dFeiy76tIROM1kBjwXApMu6Mxnh1VpMoJfH5pfRHWNLNlkhuuo
-         PaoD3CpYD6SfgzQ7OArpLEByLGCFugNbk+5XJn6Y8fxETq62HzLlXShGcmZ7LFsTTAzA
-         ivxkqwf9/m44E4zwIcafjsia26YgJxslYN7dUJ/AUQq5ilJLABFUbYw0WjGOV7gdYwCQ
-         I9jDpqVpvCkmoNH1FwcjulxnG4PHA/cI9oDooA7h0Z6agunmtqeDl472mkgg0wGQRaul
-         ZEgYGIzVJQOl3+Y4s9z8wqXYnqyDypfZf1lnXhi2JIUcY5ffUX86rQ+7tGNxLdUqhMde
-         klTA==
-X-Gm-Message-State: AOJu0YyYg3Dv9c2Hba628eb/Wcp6xMmulx+q7ZcUp7jwzc8XgnRd0/5b
-	z8wq3dXqvtVwtpDXcEe/t+iv2XPDML9iHx6Oj8F11g4w9ZXooH+L6T10fgCWdFM=
-X-Google-Smtp-Source: AGHT+IGCr+0ApwlkapkpKYOKNPQiSoHfsxeAKoCUk5AOKVznJjFx8qEFLq+28yh+N27Q7W7VO79Cpw==
-X-Received: by 2002:a17:907:f1df:b0:a86:9fac:6939 with SMTP id a640c23a62f3a-a98f8387b16mr45918466b.30.1727805674417;
-        Tue, 01 Oct 2024 11:01:14 -0700 (PDT)
-Received: from [127.0.0.1] ([37.155.79.147])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a93c27cafc8sm745435966b.84.2024.10.01.11.01.13
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Oct 2024 11:01:13 -0700 (PDT)
-Date: Tue, 01 Oct 2024 21:01:09 +0300
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To: Sumit Semwal <sumit.semwal@linaro.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC: stable@vger.kernel.org, patches@lists.linux.dev,
- Konrad Dybcio <konrad.dybcio@linaro.org>,
- Bjorn Andersson <andersson@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_6=2E1_033/440=5D_arm64=3A_dts=3A_qcom=3A_sm82?=
- =?US-ASCII?Q?50=3A_switch_UFS_QMP_PHY_to_new_style_of_bindings?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <CAO_48GGH0J9z3NCq=jH5PKQewPdrhUiNk-Bu9yKvX8yhsTWDtQ@mail.gmail.com>
-References: <20240730151615.753688326@linuxfoundation.org> <20240730151617.057892121@linuxfoundation.org> <CAO_48GGH0J9z3NCq=jH5PKQewPdrhUiNk-Bu9yKvX8yhsTWDtQ@mail.gmail.com>
-Message-ID: <F1136AC5-0860-4070-B4FA-86BAEFC070FB@linaro.org>
+	s=arc-20240116; t=1727811934; c=relaxed/simple;
+	bh=0dcHpSThL1HpAZucSpJAzYAzmgO6PumaqA1JSgMYfUc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=pZTwI82qbP4MaU9qpoHj14Jnd0jG5ljYbehUX27Ee5bgWan0q+O56aToXl1DHLQMXelrS+i8YAfyjFaKQNsrkGg0/njqT7HRZffmeNkmNm5j8aWKmaZ5T1BqU3u3ws9xAg76gfQbt7ZdjvIJ8KzZCkbzseU/MmmkrPcRO+LOr40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IJ3RKnHn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72819C4CEC6;
+	Tue,  1 Oct 2024 19:45:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727811934;
+	bh=0dcHpSThL1HpAZucSpJAzYAzmgO6PumaqA1JSgMYfUc=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=IJ3RKnHnFha5a9c1Z6Ev/ZmCKO5XvH5HgGw1In9MtpbauVe1/lPdrLM7FpnL9IbKI
+	 5F6j8MwZBazoM57lPjlEGl0/+9KgQFuIxncfyE7eU1dnBHUU1jIW0cbUh4AUR0acls
+	 LUXbq9Hs9k6VVYt0eWrSCDj7Yfdj7n0keJa5DXekBlbTtJ8Hm8aocue8b/OdcMbZmK
+	 CWvSd7K5dnf49UKUTEYV2yE6wR4m/jmteRDS2YkNIFji6DlS8Llk72d1FOcXk5R8pT
+	 b3QaK1fa2gw7J2xFb6sZUWXMs+Py0TC1VVy6KwqIgqdImv4RPXwavzDkOZxSYwQWY4
+	 FqZwzJBUeNw0Q==
+Message-ID: <a78e1fa4-3e13-466e-a0ae-04912e90c09a@kernel.org>
+Date: Tue, 1 Oct 2024 21:45:27 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] ASoC: qcom: Fix NULL Dereference in
+ asoc_qcom_lpass_cpu_platform_probe()
+To: Gax-c <zichenxie0106@gmail.com>, srinivas.kandagatla@linaro.org,
+ lgirdwood@gmail.com, broonie@kernel.org, perex@perex.cz, tiwai@suse.com,
+ rohitkr@codeaurora.org
+Cc: alsa-devel@alsa-project.org, linux-arm-msm@vger.kernel.org,
+ linux-sound@vger.kernel.org, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org, Zijie Zhao <zzjas98@gmail.com>,
+ Chenyuan Yang <chenyuan0y@gmail.com>
+References: <20241001002409.11989-1-zichenxie0106@gmail.com>
+Content-Language: en-US
+From: Krzysztof Kozlowski <krzk@kernel.org>
+Autocrypt: addr=krzk@kernel.org; keydata=
+ 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 fv0=
+In-Reply-To: <20241001002409.11989-1-zichenxie0106@gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On October 1, 2024 8:27:55 PM GMT+03:00, Sumit Semwal <sumit=2Esemwal@linar=
-o=2Eorg> wrote:
->Hello Greg,
->
->On Tue, 30 Jul 2024 at 21:25, Greg Kroah-Hartman
-><gregkh@linuxfoundation=2Eorg> wrote:
->>
->> 6=2E1-stable review patch=2E  If anyone has any objections, please let =
-me know=2E
->>
->> ------------------
->>
->> From: Dmitry Baryshkov <dmitry=2Ebaryshkov@linaro=2Eorg>
->>
->> [ Upstream commit ba865bdcc688932980b8e5ec2154eaa33cd4a981 ]
->>
->> Change the UFS QMP PHY to use newer style of QMP PHY bindings (single
->> resource region, no per-PHY subnodes)=2E
->
->This patch breaks UFS on RB5 - it got caught on the merge with
->android14-6=2E1-lts=2E
->
->Could we please revert it? [Also on 5=2E15=2E165+ kernels]=2E
+On 01/10/2024 02:24, Gax-c wrote:
+> A devm_kzalloc() in asoc_qcom_lpass_cpu_platform_probe() could possibly return NULL pointer.
+> NULL Pointer Dereference may be triggerred without addtional check.
+> Add a NULL check for the returned pointer.
+> 
+> Fixes: b5022a36d28f ("ASoC: qcom: lpass: Use regmap_field for i2sctl and dmactl registers")
+> Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
+> Reported-by: Zichen Xie <zichenxie0106@gmail.com>
+> Reported-by: Zijie Zhao <zzjas98@gmail.com>
+> Reported-by: Chenyuan Yang <chenyuan0y@gmail.com>
 
-Not just this one=2E All "UFS newer style is bindings" must be reverted fr=
-om these kernels=2E
+Commit still needs improvements.
 
+You ignored also Bjorn's review.
 
->>
->> Reviewed-by: Konrad Dybcio <konrad=2Edybcio@linaro=2Eorg>
->> Signed-off-by: Dmitry Baryshkov <dmitry=2Ebaryshkov@linaro=2Eorg>
->> Link: https://lore=2Ekernel=2Eorg/r/20231205032552=2E1583336-8-dmitry=
-=2Ebaryshkov@linaro=2Eorg
->> Signed-off-by: Bjorn Andersson <andersson@kernel=2Eorg>
->> Stable-dep-of: 154ed5ea328d ("arm64: dts: qcom: sm8250: add power-domai=
-n to UFS PHY")
->> Signed-off-by: Sasha Levin <sashal@kernel=2Eorg>
->> ---
->>  arch/arm64/boot/dts/qcom/sm8250=2Edtsi | 20 ++++++--------------
->>  1 file changed, 6 insertions(+), 14 deletions(-)
->>
->> diff --git a/arch/arm64/boot/dts/qcom/sm8250=2Edtsi b/arch/arm64/boot/d=
-ts/qcom/sm8250=2Edtsi
->> index 3d02adbc0b62f=2E=2E194fb00051d66 100644
->> --- a/arch/arm64/boot/dts/qcom/sm8250=2Edtsi
->> +++ b/arch/arm64/boot/dts/qcom/sm8250=2Edtsi
->> @@ -2125,7 +2125,7 @@ ufs_mem_hc: ufshc@1d84000 {
->>                                      "jedec,ufs-2=2E0";
->>                         reg =3D <0 0x01d84000 0 0x3000>;
->>                         interrupts =3D <GIC_SPI 265 IRQ_TYPE_LEVEL_HIGH=
->;
->> -                       phys =3D <&ufs_mem_phy_lanes>;
->> +                       phys =3D <&ufs_mem_phy>;
->>                         phy-names =3D "ufsphy";
->>                         lanes-per-direction =3D <2>;
->>                         #reset-cells =3D <1>;
->> @@ -2169,10 +2169,8 @@ ufs_mem_hc: ufshc@1d84000 {
->>
->>                 ufs_mem_phy: phy@1d87000 {
->>                         compatible =3D "qcom,sm8250-qmp-ufs-phy";
->> -                       reg =3D <0 0x01d87000 0 0x1c0>;
->> -                       #address-cells =3D <2>;
->> -                       #size-cells =3D <2>;
->> -                       ranges;
->> +                       reg =3D <0 0x01d87000 0 0x1000>;
->> +
->>                         clock-names =3D "ref",
->>                                       "ref_aux";
->>                         clocks =3D <&rpmhcc RPMH_CXO_CLK>,
->> @@ -2180,16 +2178,10 @@ ufs_mem_phy: phy@1d87000 {
->>
->>                         resets =3D <&ufs_mem_hc 0>;
->>                         reset-names =3D "ufsphy";
->> -                       status =3D "disabled";
->>
->> -                       ufs_mem_phy_lanes: phy@1d87400 {
->> -                               reg =3D <0 0x01d87400 0 0x16c>,
->> -                                     <0 0x01d87600 0 0x200>,
->> -                                     <0 0x01d87c00 0 0x200>,
->> -                                     <0 0x01d87800 0 0x16c>,
->> -                                     <0 0x01d87a00 0 0x200>;
->> -                               #phy-cells =3D <0>;
->> -                       };
->> +                       #phy-cells =3D <0>;
->> +
->> +                       status =3D "disabled";
->>                 };
->>
->>                 ipa_virt: interconnect@1e00000 {
->> --
->> 2=2E43=2E0
->>
->>
->>
->>
->
->Best,
->Sumit=2E
+Best regards,
+Krzysztof
 
-
---=20
-With best wishes
-Dmitry
 
