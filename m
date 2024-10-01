@@ -1,60 +1,78 @@
-Return-Path: <stable+bounces-78347-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3F2798B7BD
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 10:58:24 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58D9698B7EF
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 11:07:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 04E851C2219C
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 08:58:24 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 07630286859
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 09:07:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 777B219CC01;
-	Tue,  1 Oct 2024 08:58:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FF6219B587;
+	Tue,  1 Oct 2024 09:07:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LJS/mkti"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A3kQRqU3"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32D1019C565;
-	Tue,  1 Oct 2024 08:58:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94E1819D082;
+	Tue,  1 Oct 2024 09:07:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727773091; cv=none; b=CNvCwf1FJKa4R/tm0ZlTWsuyyfEFCZvk5E3vc5cLLeHolwMCi6NEEta2jcZbNwRPqbNEu/DFb5ZA4UKtW674ewa4gbgWG3U9abplsCjCsTfW5CSvNEaPQbFnUScdBrI3W/cEvPcMseQFpPp54vzQe2JJg5HKiLzjMjF4rjWlDEo=
+	t=1727773647; cv=none; b=kYs5MK+QIed+WW1XXwetz5KVQ2AxnbzCApTv/8hbLGizO8PltE4tZ3Eg3GEMv1QuQHqWTVbqjhSDgdgagVJVi3Tp/rUuBpaEE+2JiF0Kaz2emlVWTg88qVsv5J63/Tj9VmhCSTjWWwTxBL7+3I5GaDWCrjo/7Cukkpmkx7hLqXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727773091; c=relaxed/simple;
-	bh=KHGu4Z0SeqGjTf1xDZyug+1WEM3RQXujUZCjcJPl+2g=;
+	s=arc-20240116; t=1727773647; c=relaxed/simple;
+	bh=t0QjQYuYY+0WPl2rM9b833pgOlO4jJJb/lVE+1yxW+Q=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=njuxOJMiMDOxSkIalH9WZsczbv1hPFf64fR0OhVGCxRw+R129k8gTBMNyf/ZbJIQMa/B7yyduvvNflBYDDYbgQy2ygISNxM3CW1bm6bJIFZVhTwX2eu2I8WHpSTuYHWMiugHnJusBEQ0+OTO9WS0inGVgA3mUcxX3jMqfo0aYsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LJS/mkti; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80E4CC4CEC6;
-	Tue,  1 Oct 2024 08:58:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727773091;
-	bh=KHGu4Z0SeqGjTf1xDZyug+1WEM3RQXujUZCjcJPl+2g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LJS/mktiqnmsGvmlTLsRlyCWHeweWuCbHDaxKaUCs8J6TFj6J1uiTu9TUcEK3qb/Z
-	 AgBkoql0XVmFnhfoERg23gZy2wmSl33c70Y0JJkrq8f47uesTNLsYfOB61dbmAveyy
-	 MaXTFrXaQT/jMDAt5rcwhaTb1Yk9tu9RcZbqEbhYedHJH2hF0Sd9czLprke+XOTEDC
-	 kwLUfgZqeQcny+L7OrDXeZZchszf5fJElZPg1gsmQbNSAjfEwZkSqvq8iHfnYM/Nfh
-	 f9SKwsJ14THolTjB7QZiWIH4Jtx7hrMwuSfH9VSjo5tQnBitE07TWwi4EbLtOZHDE0
-	 y0aH5P2AhJ21Q==
-Date: Tue, 1 Oct 2024 10:58:05 +0200
-From: Lorenzo Pieralisi <lpieralisi@kernel.org>
-To: Alexander Lobakin <aleksander.lobakin@intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>,
-	Kevin Brodsky <kevin.brodsky@arm.com>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>, kernel test robot <lkp@intel.com>,
-	nex.sw.ncis.osdt.itp.upstreaming@intel.com,
-	linux-arm-kernel@lists.infradead.org, stable@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] firmware/psci: fix missing '%u' format literal in
- kthread_create_on_cpu()
-Message-ID: <Zvu5nR50xNc+aAlE@lpieralisi>
-References: <20240930154433.521715-1-aleksander.lobakin@intel.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=b9o8kWOkhYortePGvZXFFVWv5cAHDhZdGjRkt+d2PwjRG6u8u7ggFstR0GNlFOmEEQ4QIXn0S3CIZFJf8/DgnMg2ONx9KdzZFZtPKawz+4x8AVv99Zzf2ZDoM1yulifQlcHzFOSZjp/VYzHfcskzl5NbbyzbzO/TEKNatcqMluE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A3kQRqU3; arc=none smtp.client-ip=209.85.210.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-718d6ad6050so4422595b3a.0;
+        Tue, 01 Oct 2024 02:07:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1727773645; x=1728378445; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ywPE5AaZtgDQQHnYbM9mXQQedD2d2ZGmzizHSTVSQq4=;
+        b=A3kQRqU3ctI9MBDzenlgihcD8rqjF1DEYIK15dWvWmqNy+uGztYIhnwKMHXgvmlSz/
+         x2vCx/fcbuPmrmHyJo//X+fwP4aRgbqpl4DglGxavQUAmh+F9CMaCxRB+wgRWHA5esWw
+         1MZCdqHIf5Sptz3vAvviKxjbfXL+pF2eDKZuRPoBirTKG6YlLNpuQzvEbrjCBJBAQC5R
+         koHCF19lWVP/ZttBNZ9jowjMQAOr7xkGEsvR6oTnjLn1oMIr+jf8V+gnfYeFappTLZRC
+         XGGAIQEi8ti4xrGBTtdbTDv95C4V4aQJk8KT9HtOTC0EDvizTRzSe+ZMIRSHB/uyyYF0
+         7zqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727773645; x=1728378445;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ywPE5AaZtgDQQHnYbM9mXQQedD2d2ZGmzizHSTVSQq4=;
+        b=oMhQSKHj+LvY9Z97WHAiyDxoO134eWZwECCrf0moyV+fMwlhkrNmK7Ycts3yYKff0n
+         rD+rkfIyvOcmt/F1kvcWkMP4mo4xtI5DzBDBGcbKaWMfARz7F1A2EmMQmzRJ8xJiVWU9
+         DV++KY9XkXs4jSJTIWrNVinP9a333niSMyu4eCa2RvLqk/vq+Y61dQf2sH6kkqDgTDMp
+         5Zw2W3DxHMQaeBc9Fld8ubgniezGDlaq3b2H0Xf5842VGISoqYP4nRxjCqHvNADQqtgL
+         5mbOKNt2RrRsGSeUodeqZJpM3UTxycqEJ2LqRQfXOU5PMsh0jhZSa5DCr2KMwyW8oE5K
+         RQ2A==
+X-Gm-Message-State: AOJu0Yx39RZIIn87bGblZfFPkD6Nepg6CDJVW8jMnThhikXf6dGIDHCi
+	45JiDhv3+IrWjQOJqvmDaQfXC1DJDSokg+EHPitPxJYK6GPgIElvNWRDRDw1fIw=
+X-Google-Smtp-Source: AGHT+IGgiYXhGsh0grqiaIRf+G5AmhO0EjlvWLjs3tq97HTv+qtSELgnWzRvm9q1RgLX+hGh3vqzBw==
+X-Received: by 2002:a05:6a00:1304:b0:714:228d:e9f5 with SMTP id d2e1a72fcca58-71b25f008d5mr22021736b3a.2.1727773644558;
+        Tue, 01 Oct 2024 02:07:24 -0700 (PDT)
+Received: from google.com ([2620:15c:9d:2:70a4:8eee:1d3f:e71d])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71b2649bed5sm7572786b3a.24.2024.10.01.02.07.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 01 Oct 2024 02:07:23 -0700 (PDT)
+Date: Tue, 1 Oct 2024 02:07:21 -0700
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+To: stable@vger.kernel.org
+Cc: stable-commits@vger.kernel.org, dlechner@baylibre.com
+Subject: Re: Patch "Input: ims-pcu - fix calling interruptible mutex" has
+ been added to the 6.11-stable tree
+Message-ID: <Zvu7yZx5XW2nXmxU@google.com>
+References: <20240930232429.2569091-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,57 +81,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240930154433.521715-1-aleksander.lobakin@intel.com>
+In-Reply-To: <20240930232429.2569091-1-sashal@kernel.org>
 
-On Mon, Sep 30, 2024 at 05:44:33PM +0200, Alexander Lobakin wrote:
-> kthread_create_on_cpu() always requires format string to contain one
-> '%u' at the end, as it automatically adds the CPU ID when passing it
-> to kthread_create_on_node(). The former isn't marked as __printf()
-> as it's not printf-like itself, which effectively hides this from
-> the compiler.
-> If you convert this function to printf-like, you'll see the following:
+On Mon, Sep 30, 2024 at 07:24:28PM -0400, Sasha Levin wrote:
+> This is a note to let you know that I've just added the patch titled
 > 
-> In file included from drivers/firmware/psci/psci_checker.c:15:
-> drivers/firmware/psci/psci_checker.c: In function 'suspend_tests':
-> drivers/firmware/psci/psci_checker.c:401:48: warning: too many arguments for format [-Wformat-extra-args]
->      401 |                                                "psci_suspend_test");
->          |                                                ^~~~~~~~~~~~~~~~~~~
-> drivers/firmware/psci/psci_checker.c:400:32: warning: data argument not used by format string [-Wformat-extra-args]
->      400 |                                                (void *)(long)cpu, cpu,
->          |                                                                   ^
->      401 |                                                "psci_suspend_test");
->          |                                                ~~~~~~~~~~~~~~~~~~~
+>     Input: ims-pcu - fix calling interruptible mutex
 > 
-> Add the missing format literal to fix this. Now the corresponding
-> kthread will be named as "psci_suspend_test-<cpuid>", as it's meant by
-> kthread_create_on_cpu().
+> to the 6.11-stable tree which can be found at:
+>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 > 
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202408141012.KhvKaxoh-lkp@intel.com
-> Closes: https://lore.kernel.org/oe-kbuild-all/202408141243.eQiEOQQe-lkp@intel.com
-> Fixes: ea8b1c4a6019 ("drivers: psci: PSCI checker module")
-> Cc: stable@vger.kernel.org # 4.10+
-> Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-> ---
->  drivers/firmware/psci/psci_checker.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> The filename of the patch is:
+>      input-ims-pcu-fix-calling-interruptible-mutex.patch
+> and it can be found in the queue-6.11 subdirectory.
+> 
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
+> 
 
-Acked-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Did you manage to pick up 703f12672e1f ("Input: ims-pcu - switch to
+using cleanup functions") for stable? I would love to see the
+justification for that... 
 
-> diff --git a/drivers/firmware/psci/psci_checker.c b/drivers/firmware/psci/psci_checker.c
-> index 116eb465cdb4..ecc511c745ce 100644
-> --- a/drivers/firmware/psci/psci_checker.c
-> +++ b/drivers/firmware/psci/psci_checker.c
-> @@ -398,7 +398,7 @@ static int suspend_tests(void)
+> 
+> 
+> commit c137195362a652adfbc6a538b78a40b043de6eb0
+> Author: David Lechner <dlechner@baylibre.com>
+> Date:   Tue Sep 10 16:58:47 2024 -0500
+> 
+>     Input: ims-pcu - fix calling interruptible mutex
+>     
+>     [ Upstream commit 82abef590eb31d373e632743262ee7c42f49c289 ]
+>     
+>     Fix calling scoped_cond_guard() with mutex instead of mutex_intr.
+>     
+>     scoped_cond_guard(mutex, ...) will call mutex_lock() instead of
+>     mutex_lock_interruptible().
+>     
+>     Fixes: 703f12672e1f ("Input: ims-pcu - switch to using cleanup functions")
+>     Signed-off-by: David Lechner <dlechner@baylibre.com>
+>     Link: https://lore.kernel.org/r/20240910-input-misc-ims-pcu-fix-mutex-intr-v1-1-bdd983685c43@baylibre.com
+>     Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+>     Signed-off-by: Sasha Levin <sashal@kernel.org>
+> 
+> diff --git a/drivers/input/misc/ims-pcu.c b/drivers/input/misc/ims-pcu.c
+> index c086dadb45e3a..058f3470b7ae2 100644
+> --- a/drivers/input/misc/ims-pcu.c
+> +++ b/drivers/input/misc/ims-pcu.c
+> @@ -1067,7 +1067,7 @@ static ssize_t ims_pcu_attribute_store(struct device *dev,
+>  	if (data_len > attr->field_length)
+>  		return -EINVAL;
 >  
->  		thread = kthread_create_on_cpu(suspend_test_thread,
->  					       (void *)(long)cpu, cpu,
-> -					       "psci_suspend_test");
-> +					       "psci_suspend_test-%u");
->  		if (IS_ERR(thread))
->  			pr_err("Failed to create kthread on CPU %d\n", cpu);
->  		else
-> -- 
-> 2.46.2
-> 
+> -	scoped_cond_guard(mutex, return -EINTR, &pcu->cmd_mutex) {
+> +	scoped_cond_guard(mutex_intr, return -EINTR, &pcu->cmd_mutex) {
+>  		memset(field, 0, attr->field_length);
+>  		memcpy(field, buf, data_len);
+>  
+
+-- 
+Dmitry
 
