@@ -1,56 +1,74 @@
-Return-Path: <stable+bounces-78316-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78317-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E7BC98B392
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 07:23:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50D7C98B3EC
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 07:53:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1409C1F25A9C
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 05:23:38 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A00F1B21BB1
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 05:53:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EC74194A43;
-	Tue,  1 Oct 2024 05:23:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D279A1BBBC0;
+	Tue,  1 Oct 2024 05:53:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="Uj5TGdf2"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="UxEnJDbC"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FACD2D052;
-	Tue,  1 Oct 2024 05:23:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D72936AF8
+	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 05:53:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727760212; cv=none; b=DuGawxabJPJnvDVsK/NrZ4PyLaJwatGECjSC486NPOjSE8Fwjg2tKsRT+8qvJkSQeGAONkSRKaG8JqYlI7o4DuEUUUjX7Q1BXrY1hRPShxszw0R7SHk4bRv/CCwLsaqfTy763T8cSCRmT9iD8JjlvuYOZUTdngqhLuer/fTN4uM=
+	t=1727762009; cv=none; b=Vo/v9q0Vw2okqOKFfu2KCGF8matdTIR9xkoxCjQaN8VxhcB/ADGLaLD27JFCicCUzGgy4QvHlfUj4tUo+q6/tuIuWEGrUKz0RLTamunPpnpJoYCqvqtQqAU79ta5kGGNslPmaWiduJZZpFPzBTyrrdELJcZH/KdunCoHAOVzZ/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727760212; c=relaxed/simple;
-	bh=UbYaK+zX2oMloTrfw8WNFQQFeDo7GrlQlpT377Wy90A=;
+	s=arc-20240116; t=1727762009; c=relaxed/simple;
+	bh=xTRZ6PpFIx9FhtoFcP8X+65S3803CJPGPaRndpZhOS4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XpHHM1XPp/Pyb6mPLcY8zl15RhdrGW0iD+dtqA/HPfQlW8MjDjlfKRdrV+/W/hP9FzcFL4O/Wh9uXHPCG95Ojt5srmiuVYit4fpVblEhxb5m637IQYrdjb8wZM7qXHT7inVjEIzmPY6nXXoogySm2bGYIAzd0CWTbfLJlonFzd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=Uj5TGdf2; arc=none smtp.client-ip=212.227.17.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
-	s=s31663417; t=1727760197; x=1728364997; i=wahrenst@gmx.net;
-	bh=vms/8qCUwPUlLxvUeSN5zZsTHMsX0kIYnvjmfjs1vP8=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=Uj5TGdf23AwZ6KFfeeN09wdALroquk5mUr4zNLHmiJRWTSJfF1i45XpiKx+WDfTU
-	 S6m/RmkUHQWqsZCPX8EyNylm6/mj2XNgH468nGY7dTajvPe5G9kx9GoWi6wdZgvFL
-	 8qb+soM7e0AopU7CdOzUk1ZzSi1yazQpP8SJSSRg6OKBmwEjVxq5RGT75B5FbY6o+
-	 S09tt3AdT/p6vk+o/vaHJfS/Kum19J5so3CriPauY0U9/VymWt5bT+gqllJXLmC85
-	 A9goqx6FKKxyFwItxKPFzL2J+pyZxfwkc5nuKdZGoidVcOJAyVSEC++CJ4KJL5dwX
-	 N15yfhTsazASaN+GNQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.1.104] ([37.4.248.43]) by mail.gmx.net (mrgmx105
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MsYqp-1s1cVy1IR1-00ydNQ; Tue, 01
- Oct 2024 07:23:17 +0200
-Message-ID: <17c9e4c6-260a-40c9-be1f-4f67ec6d5e3b@gmx.net>
-Date: Tue, 1 Oct 2024 07:23:16 +0200
+	 In-Reply-To:Content-Type; b=XL0XJbXigCfthh5dub+eN69P9egCqObMkF2I0hYDRmk2g9FmRNiJHHcZNpQEfd31Mt2b4ewKJVLIpt4v3EWNDPFiNSrTfhVieUzK5FARIEB1BqTHzTvypY3KU4mbI0piEMuEsdIIZwvWj/qln6wub3UUAt/SLQQInCUibyD9xfk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=UxEnJDbC; arc=none smtp.client-ip=209.85.128.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-42cba8340beso36050535e9.1
+        for <stable@vger.kernel.org>; Mon, 30 Sep 2024 22:53:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1727762005; x=1728366805; darn=vger.kernel.org;
+        h=in-reply-to:autocrypt:from:content-language:references:cc:to
+         :subject:user-agent:mime-version:date:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=xTRZ6PpFIx9FhtoFcP8X+65S3803CJPGPaRndpZhOS4=;
+        b=UxEnJDbCSVxA2bV3zl9F2MNIqvFl9EkRNdHlyfzRC9SjGUDWCrm8mD+Yit2jyEc0ak
+         IE+g54krVsBgSaarnkzkWfFPsMKF2sqMrofwytPh++4h1Iqy8KjnHfLaMwyeYCyxlDPW
+         9KI9yesb3X1HNNxe3XSAs0yNiHX9OKHWVzASLRnJcAsidj+QqyBF8cl7GNUh7EPqfAf9
+         DdnopLFkeAjvBkr+STDiPt99J722cDcrCybKtm7mIzIsV9U68Y1oERy4LkmmZe2z8COj
+         UQkKFvBYEKmRO6YtvoqBpkdQV6vRbSCit3XcrbqRek6sxG5TAYIVu1UEA9WdTE49gtmS
+         SXhQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727762005; x=1728366805;
+        h=in-reply-to:autocrypt:from:content-language:references:cc:to
+         :subject:user-agent:mime-version:date:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=xTRZ6PpFIx9FhtoFcP8X+65S3803CJPGPaRndpZhOS4=;
+        b=LmYrckW0VeK0az1ZOl5rzEpRXiIWmHpDxxn9aus7fStMGdNC+s5vvL7srwJollqxVP
+         RYJOf5jRlXYICNvTywE7cGZ4cYrKW6oi7KdSVO1Zm7l9DqcOLHsCax1xo45sVRD+z1OT
+         VDum7hwK3uhacZnvkh9QQzfDnnI5plugeh8Ng4tBRbiC6v6dnKZuYU+M40RqH03wjIzL
+         flMwMBnJF2lHD0GTzNR5m/Q878fMew9hKc89pxjoyw+gs39NYRcT4loJrV3Z3b20RAj5
+         trx0Ff4r+huhx8yi7noBWcGMMusTukEAuH+SPDC8yOiv0G+U5bFV/vflFKUFfzgGWp1B
+         EbLw==
+X-Gm-Message-State: AOJu0YxVRy1fB2XUwDIVnverM6G/Okqv1PQ20fQu+HeM9XNCrGwunD9J
+	qC2EweMsyf5L3usqloHy5NAq7ojUldfd+bXqH6eP50DEqrWFSRrHWsqeiw2FsLYz3Dz4m9pqBL4
+	U
+X-Google-Smtp-Source: AGHT+IH8OSSAzfdDGdkz7i2fG1vejGbat/AWOmCzMX2A2ul/Oa3qaYhC0lv4dmCIHGPJ0ieJqh3bQA==
+X-Received: by 2002:a05:600c:5113:b0:42c:b166:913 with SMTP id 5b1f17b1804b1-42f713553aamr9649605e9.11.1727762004685;
+        Mon, 30 Sep 2024 22:53:24 -0700 (PDT)
+Received: from ?IPV6:2003:e5:8714:8700:db3b:60ed:e8b9:cd28? (p200300e587148700db3b60ede8b9cd28.dip0.t-ipconnect.de. [2003:e5:8714:8700:db3b:60ed:e8b9:cd28])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37cd565e669sm10930008f8f.34.2024.09.30.22.53.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 30 Sep 2024 22:53:24 -0700 (PDT)
+Message-ID: <25156641-8cca-4ccd-a1db-3916871929bc@suse.com>
+Date: Tue, 1 Oct 2024 07:53:23 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -58,137 +76,177 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: Patch "usb: dwc2: Skip clock gating on Broadcom SoCs" has been
- added to the 6.11-stable tree
-To: stable@vger.kernel.org, stable-commits@vger.kernel.org,
- Sasha Levin <sashal@kernel.org>
-Cc: Minas Harutyunyan <hminas@synopsys.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-References: <20240930232610.2570738-1-sashal@kernel.org>
+Subject: Re: Patch "xen: tolerate ACPI NVS memory overlapping with Xen
+ allocated memory" has been added to the 6.11-stable tree
+To: stable@vger.kernel.org, stable-commits@vger.kernel.org
+Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
+References: <20240930231559.2561833-1-sashal@kernel.org>
 Content-Language: en-US
-From: Stefan Wahren <wahrenst@gmx.net>
-In-Reply-To: <20240930232610.2570738-1-sashal@kernel.org>
+From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
+Autocrypt: addr=jgross@suse.com; keydata=
+ xsBNBFOMcBYBCACgGjqjoGvbEouQZw/ToiBg9W98AlM2QHV+iNHsEs7kxWhKMjrioyspZKOB
+ ycWxw3ie3j9uvg9EOB3aN4xiTv4qbnGiTr3oJhkB1gsb6ToJQZ8uxGq2kaV2KL9650I1SJve
+ dYm8Of8Zd621lSmoKOwlNClALZNew72NjJLEzTalU1OdT7/i1TXkH09XSSI8mEQ/ouNcMvIJ
+ NwQpd369y9bfIhWUiVXEK7MlRgUG6MvIj6Y3Am/BBLUVbDa4+gmzDC9ezlZkTZG2t14zWPvx
+ XP3FAp2pkW0xqG7/377qptDmrk42GlSKN4z76ELnLxussxc7I2hx18NUcbP8+uty4bMxABEB
+ AAHNH0p1ZXJnZW4gR3Jvc3MgPGpncm9zc0BzdXNlLmNvbT7CwHkEEwECACMFAlOMcK8CGwMH
+ CwkIBwMCAQYVCAIJCgsEFgIDAQIeAQIXgAAKCRCw3p3WKL8TL8eZB/9G0juS/kDY9LhEXseh
+ mE9U+iA1VsLhgDqVbsOtZ/S14LRFHczNd/Lqkn7souCSoyWsBs3/wO+OjPvxf7m+Ef+sMtr0
+ G5lCWEWa9wa0IXx5HRPW/ScL+e4AVUbL7rurYMfwCzco+7TfjhMEOkC+va5gzi1KrErgNRHH
+ kg3PhlnRY0Udyqx++UYkAsN4TQuEhNN32MvN0Np3WlBJOgKcuXpIElmMM5f1BBzJSKBkW0Jc
+ Wy3h2Wy912vHKpPV/Xv7ZwVJ27v7KcuZcErtptDevAljxJtE7aJG6WiBzm+v9EswyWxwMCIO
+ RoVBYuiocc51872tRGywc03xaQydB+9R7BHPzsBNBFOMcBYBCADLMfoA44MwGOB9YT1V4KCy
+ vAfd7E0BTfaAurbG+Olacciz3yd09QOmejFZC6AnoykydyvTFLAWYcSCdISMr88COmmCbJzn
+ sHAogjexXiif6ANUUlHpjxlHCCcELmZUzomNDnEOTxZFeWMTFF9Rf2k2F0Tl4E5kmsNGgtSa
+ aMO0rNZoOEiD/7UfPP3dfh8JCQ1VtUUsQtT1sxos8Eb/HmriJhnaTZ7Hp3jtgTVkV0ybpgFg
+ w6WMaRkrBh17mV0z2ajjmabB7SJxcouSkR0hcpNl4oM74d2/VqoW4BxxxOD1FcNCObCELfIS
+ auZx+XT6s+CE7Qi/c44ibBMR7hyjdzWbABEBAAHCwF8EGAECAAkFAlOMcBYCGwwACgkQsN6d
+ 1ii/Ey9D+Af/WFr3q+bg/8v5tCknCtn92d5lyYTBNt7xgWzDZX8G6/pngzKyWfedArllp0Pn
+ fgIXtMNV+3t8Li1Tg843EXkP7+2+CQ98MB8XvvPLYAfW8nNDV85TyVgWlldNcgdv7nn1Sq8g
+ HwB2BHdIAkYce3hEoDQXt/mKlgEGsLpzJcnLKimtPXQQy9TxUaLBe9PInPd+Ohix0XOlY+Uk
+ QFEx50Ki3rSDl2Zt2tnkNYKUCvTJq7jvOlaPd6d/W0tZqpyy7KVay+K4aMobDsodB3dvEAs6
+ ScCnh03dDAFgIq5nsB11j3KPKdVoPlfucX2c7kGNH+LUMbzqV6beIENfNexkOfxHfw==
+In-Reply-To: <20240930231559.2561833-1-sashal@kernel.org>
+Content-Type: multipart/signed; micalg=pgp-sha256;
+ protocol="application/pgp-signature";
+ boundary="------------FbiUQb904z31QAfGvsS9MhD4"
+
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------------FbiUQb904z31QAfGvsS9MhD4
+Content-Type: multipart/mixed; boundary="------------X01u6zZKvhria0yfy84cia8r";
+ protected-headers="v1"
+From: =?UTF-8?B?SsO8cmdlbiBHcm/Dnw==?= <jgross@suse.com>
+To: stable@vger.kernel.org, stable-commits@vger.kernel.org
+Cc: Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
+Message-ID: <25156641-8cca-4ccd-a1db-3916871929bc@suse.com>
+Subject: Re: Patch "xen: tolerate ACPI NVS memory overlapping with Xen
+ allocated memory" has been added to the 6.11-stable tree
+References: <20240930231559.2561833-1-sashal@kernel.org>
+In-Reply-To: <20240930231559.2561833-1-sashal@kernel.org>
+
+--------------X01u6zZKvhria0yfy84cia8r
+Content-Type: multipart/mixed; boundary="------------dR9VAiZ0XY9bK0fq1hQdPAkT"
+
+--------------dR9VAiZ0XY9bK0fq1hQdPAkT
 Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: base64
+
+T24gMDEuMTAuMjQgMDE6MTUsIFNhc2hhIExldmluIHdyb3RlOg0KPiBUaGlzIGlzIGEgbm90
+ZSB0byBsZXQgeW91IGtub3cgdGhhdCBJJ3ZlIGp1c3QgYWRkZWQgdGhlIHBhdGNoIHRpdGxl
+ZA0KPiANCj4gICAgICB4ZW46IHRvbGVyYXRlIEFDUEkgTlZTIG1lbW9yeSBvdmVybGFwcGlu
+ZyB3aXRoIFhlbiBhbGxvY2F0ZWQgbWVtb3J5DQo+IA0KPiB0byB0aGUgNi4xMS1zdGFibGUg
+dHJlZSB3aGljaCBjYW4gYmUgZm91bmQgYXQ6DQo+ICAgICAgaHR0cDovL3d3dy5rZXJuZWwu
+b3JnL2dpdC8/cD1saW51eC9rZXJuZWwvZ2l0L3N0YWJsZS9zdGFibGUtcXVldWUuZ2l0O2E9
+c3VtbWFyeQ0KPiANCj4gVGhlIGZpbGVuYW1lIG9mIHRoZSBwYXRjaCBpczoNCj4gICAgICAg
+eGVuLXRvbGVyYXRlLWFjcGktbnZzLW1lbW9yeS1vdmVybGFwcGluZy13aXRoLXhlbi1hbC5w
+YXRjaA0KPiBhbmQgaXQgY2FuIGJlIGZvdW5kIGluIHRoZSBxdWV1ZS02LjExIHN1YmRpcmVj
+dG9yeS4NCj4gDQo+IElmIHlvdSwgb3IgYW55b25lIGVsc2UsIGZlZWxzIGl0IHNob3VsZCBu
+b3QgYmUgYWRkZWQgdG8gdGhlIHN0YWJsZSB0cmVlLA0KPiBwbGVhc2UgbGV0IDxzdGFibGVA
+dmdlci5rZXJuZWwub3JnPiBrbm93IGFib3V0IGl0Lg0KPiANCj4gDQo+IA0KPiBjb21taXQg
+ODMwMmFjMjAwZTNmYjJlOGI2NjliOTZkN2MzNmNkYzI2NmU0NzEzOA0KPiBBdXRob3I6IEp1
+ZXJnZW4gR3Jvc3MgPGpncm9zc0BzdXNlLmNvbT4NCj4gRGF0ZTogICBGcmkgQXVnIDIgMjA6
+MTQ6MjIgMjAyNCArMDIwMA0KPiANCj4gICAgICB4ZW46IHRvbGVyYXRlIEFDUEkgTlZTIG1l
+bW9yeSBvdmVybGFwcGluZyB3aXRoIFhlbiBhbGxvY2F0ZWQgbWVtb3J5DQo+ICAgICAgDQo+
+ICAgICAgWyBVcHN0cmVhbSBjb21taXQgYmUzNWQ5MWM4ODgwNjUwNDA0ZjNiZjgxMzU3MzIy
+MmRmYjEwNjkzNSBdDQoNCkZvciB0aGlzIHBhdGNoIHRvIGhhdmUgdGhlIGRlc2lyZWQgZWZm
+ZWN0IHRoZXJlIGFyZSB0aGUgZm9sbG93aW5nDQpwcmVyZXF1aXNpdGUgcGF0Y2hlcyBtaXNz
+aW5nOg0KDQpjNDQ5OGFlMzE2ZGEgKCJ4ZW46IG1vdmUgY2hlY2tzIGZvciBlODIwIGNvbmZs
+aWN0cyBmdXJ0aGVyIHVwIikNCjkyMjEyMjJjNzE3ZCAoInhlbjogYWxsb3cgbWFwcGluZyBB
+Q1BJIGRhdGEgdXNpbmcgYSBkaWZmZXJlbnQgcGh5c2ljYWwgYWRkcmVzcyIpDQoNClBsZWFz
+ZSBhZGQgdGhvc2UgdG8gdGhlIHN0YWJsZSB0cmVlcywgdG9vLg0KDQoNCkp1ZXJnZW4NCg==
+
+--------------dR9VAiZ0XY9bK0fq1hQdPAkT
+Content-Type: application/pgp-keys; name="OpenPGP_0xB0DE9DD628BF132F.asc"
+Content-Disposition: attachment; filename="OpenPGP_0xB0DE9DD628BF132F.asc"
+Content-Description: OpenPGP public key
 Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:5fWxrpOMC2m6X+PwdSs5ePUhHrKG/PCXOt18RTTdBCizfwpYwi+
- +aEKVEeD5M8AogE3jLMPpga2yTrjpMGwqqVP2yd+SiWCuDj44MDEVdRVGmYPuIC5gHdW5NA
- YmFeiiD3AP15Jc7QLtUYTP4PemMFBYhT3xeBbkEUrkWr8UmNA1nkfVhXJ51SmmtD5BsK+Rg
- VditO0spByzGH7fEpSrqg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:aODW5LajeqE=;HYMH1C52+7VGTyzLggxILeM3x+V
- ErmpVxnC5gShrmmmTX/8MAPfkri26P2+B0wwYpmiKXHc5V99G6kPtXUK2iH9DHnSpS/TFEAOh
- oVGK9o02s59Q4XAWVTmH5SuvOrMmJXh0R32r+hJ+fJgt6aHjg5ePJJit13t0jzMHD/UaE8LED
- VUOb3a+3mtZPS5Ggc4V2CX548Uk2/w1ar6+vQquSJrr9oohinU58aZ7zHXv0l7g3QYM/MBTLq
- M9kPcD9YChx9h4Zr9NNFNAoSsVt+IpDO1frv57hSIZw6md8JGgpYx9ScDkhfnudZLPRB36mNd
- aW+hRckUB4bL3TrkYijCPcwif1IwGfh913ShXgAOi7K4eIgN9Cml+Fkz5whEIPTGOHRyhtffX
- Fj1lhAzaBSSJbxMOuxa8LG5Y4CFRfX/DWLTDye4j4hq5nI7LzDr0uxXajVWQU21hNbj3qX1yA
- 85zGedu8zv2DUP/RZw7D7cRfbwH4bRQkMveMpJpiVcdaG+LO2tZlbmGL4BVv1KClSG+9NUJRV
- U7mpTsD6wkHszLcel8TpNtWBf81ETZuIzXGVVBzdQlx0wvteMlkqtwLwhUIgC16Gk2ieqDg13
- 97IvMr3//0OwQXw9zKhX0PCbltJUm4X9gIh+W3hwtANzh8ddrbrtpHYfa2MKub6RqFL7kU8Bp
- dcNvNNPSKbrbycHxZiAHVzuiYLtcxWpnGiclP3ENHTyJc0NcZP2S9CLyHz58bFKODuLVCmGPm
- b2O13+ZSfz2iN2KO+zaSrOZAYs+/2YqrGEM4xBL36TyKrIltTAYTZd7BrwCjNJS8Vu3VG2P3d
- jNrnxOpF1Yinih0q8DmmgA3g==
 
-Hi Sasha,
+-----BEGIN PGP PUBLIC KEY BLOCK-----
 
-Am 01.10.24 um 01:26 schrieb Sasha Levin:
-> This is a note to let you know that I've just added the patch titled
->
->      usb: dwc2: Skip clock gating on Broadcom SoCs
->
-> to the 6.11-stable tree which can be found at:
->      http://www.kernel.org/git/?p=3Dlinux/kernel/git/stable/stable-queue=
-.git;a=3Dsummary
->
-> The filename of the patch is:
->       usb-dwc2-skip-clock-gating-on-broadcom-socs.patch
-> and it can be found in the queue-6.11 subdirectory.
->
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
-please do not apply this patch to any stable branch yet. Recently i
-discovered a critical issue [1] which is revealed by this change. This
-needs to be investigated and fixed before this patch can be applied.
+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
+kt+z4drzFUyEjLM1vVvIMjkUoJs=3D
+=3DeeAB
+-----END PGP PUBLIC KEY BLOCK-----
 
-Regards Stefan
+--------------dR9VAiZ0XY9bK0fq1hQdPAkT--
 
-[1] -
-https://lore.kernel.org/linux-usb/a4cb3fe4-3d0f-4bf9-a2b1-7f422ba277c8@gmx=
-.net/T/#u
->
->
-> commit f2e9c654eb420e15992ef1e6f5e0ceaca92aacbb
-> Author: Stefan Wahren <wahrenst@gmx.net>
-> Date:   Sun Jul 28 15:00:26 2024 +0200
->
->      usb: dwc2: Skip clock gating on Broadcom SoCs
->
->      [ Upstream commit d483f034f03261c8c8450d106aa243837122b5f0 ]
->
->      On resume of the Raspberry Pi the dwc2 driver fails to enable
->      HCD_FLAG_HW_ACCESSIBLE before re-enabling the interrupts.
->      This causes a situation where both handler ignore a incoming port
->      interrupt and force the upper layers to disable the dwc2 interrupt =
-line.
->      This leaves the USB interface in a unusable state:
->
->      irq 66: nobody cared (try booting with the "irqpoll" option)
->      CPU: 0 PID: 0 Comm: swapper/0 Tainted: G W          6.10.0-rc3
->      Hardware name: BCM2835
->      Call trace:
->      unwind_backtrace from show_stack+0x10/0x14
->      show_stack from dump_stack_lvl+0x50/0x64
->      dump_stack_lvl from __report_bad_irq+0x38/0xc0
->      __report_bad_irq from note_interrupt+0x2ac/0x2f4
->      note_interrupt from handle_irq_event+0x88/0x8c
->      handle_irq_event from handle_level_irq+0xb4/0x1ac
->      handle_level_irq from generic_handle_domain_irq+0x24/0x34
->      generic_handle_domain_irq from bcm2836_chained_handle_irq+0x24/0x28
->      bcm2836_chained_handle_irq from generic_handle_domain_irq+0x24/0x34
->      generic_handle_domain_irq from generic_handle_arch_irq+0x34/0x44
->      generic_handle_arch_irq from __irq_svc+0x88/0xb0
->      Exception stack(0xc1b01f20 to 0xc1b01f68)
->      1f20: 0005c0d4 00000001 00000000 00000000 c1b09780 c1d6b32c c1b04e5=
-4 c1a5eae8
->      1f40: c1b04e90 00000000 00000000 00000000 c1d6a8a0 c1b01f70 c11d2da=
-8 c11d4160
->      1f60: 60000013 ffffffff
->      __irq_svc from default_idle_call+0x1c/0xb0
->      default_idle_call from do_idle+0x21c/0x284
->      do_idle from cpu_startup_entry+0x28/0x2c
->      cpu_startup_entry from kernel_init+0x0/0x12c
->      handlers:
->      [<f539e0f4>] dwc2_handle_common_intr
->      [<75cd278b>] usb_hcd_irq
->      Disabling IRQ #66
->
->      Disabling clock gating workaround this issue.
->
->      Fixes: 0112b7ce68ea ("usb: dwc2: Update dwc2_handle_usb_suspend_int=
-r function.")
->      Link: https://lore.kernel.org/linux-usb/3fd0c2fb-4752-45b3-94eb-423=
-52703e1fd@gmx.net/T/
->      Link: https://lore.kernel.org/all/5e8cbce0-3260-2971-484f-fc73a3b2b=
-d28@synopsys.com/
->      Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
->      Acked-by: Minas Harutyunyan <hminas@synopsys.com>
->      Link: https://lore.kernel.org/r/20240728130029.78279-5-wahrenst@gmx=
-.net
->      Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->      Signed-off-by: Sasha Levin <sashal@kernel.org>
->
-> diff --git a/drivers/usb/dwc2/params.c b/drivers/usb/dwc2/params.c
-> index a937eadbc9b3e..214dca7044163 100644
-> --- a/drivers/usb/dwc2/params.c
-> +++ b/drivers/usb/dwc2/params.c
-> @@ -23,6 +23,7 @@ static void dwc2_set_bcm_params(struct dwc2_hsotg *hso=
-tg)
->   	p->max_transfer_size =3D 65535;
->   	p->max_packet_count =3D 511;
->   	p->ahbcfg =3D 0x10;
-> +	p->no_clock_gating =3D true;
->   }
->
->   static void dwc2_set_his_params(struct dwc2_hsotg *hsotg)
+--------------X01u6zZKvhria0yfy84cia8r--
 
+--------------FbiUQb904z31QAfGvsS9MhD4
+Content-Type: application/pgp-signature; name="OpenPGP_signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="OpenPGP_signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+wsB5BAABCAAjFiEEhRJncuj2BJSl0Jf3sN6d1ii/Ey8FAmb7jlMFAwAAAAAACgkQsN6d1ii/Ey8y
+7gf+JlTLKQY+yGDX0jmjzs4xER3eYaAqXb3lLw5CmjjreLztouGRHiyspRB7TTq4D1pOdnThEmPT
+AsPLf+8RKtd8zt9ZJra0UkYt1lQ4M5juvaFZ9zzoleMiNf0/eDUg/8BnLTwb8ZWqkW+7wF9e1MoU
+6pnct92FcnEBQgvNn6qLeaOOzWXJpDytu8YQa1j5C4HfoSHTTtpZTV3gPUArsLvpBnf5utQT+MJj
+wXgbxO4RY6OeTfJd5CXaOXItt/dld1S4h3I4QU/Or7Jlm6Guqu+WPaVSkOOkhLgyjNGN1li+/oJl
+yTMe3HF9dNbQyF2l2UxBdUUUdWPf5RVHLyAbys83sw==
+=73qu
+-----END PGP SIGNATURE-----
+
+--------------FbiUQb904z31QAfGvsS9MhD4--
 
