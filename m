@@ -1,99 +1,102 @@
-Return-Path: <stable+bounces-78540-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78541-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39E6F98C041
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 16:39:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EE7898C095
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 16:45:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id DCB3C1F2159E
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 14:39:33 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3AE53B29FA4
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 14:43:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46ED61C8FC1;
-	Tue,  1 Oct 2024 14:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F339C1C9B71;
+	Tue,  1 Oct 2024 14:43:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CGPnjjqS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cn6ZpmDg"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f50.google.com (mail-io1-f50.google.com [209.85.166.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD121C8FA0;
-	Tue,  1 Oct 2024 14:39:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ED1F1C8FB2
+	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 14:43:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727793568; cv=none; b=q4sgY0BaaliKCgkf1Iv4rysevlXZeVWdzZ7HiKZoCkJbpk/gNy3cVDj0PnN6WJCo3Ywlr1KQMp3J4vQihtXbiTOLNBQ3ArAlHzwIqw7TYTAhHMCtCVyh2R/hUMckaNOqu2OG/46kCUSNDt/lpXl8iP6Z8qnVszOtTbG5ouUW0HA=
+	t=1727793788; cv=none; b=MA2cPaY/DGW3wZFj8zytzIIs3CzLnqZcFRXqa/i6kWrhVAoeLYtyMGiTcz2XiZOWNhl2QCEj2JpC3JpWfArckn5+rdOBK0wBvSD5zmBMoPeNMLZA1lINoCcBY2ymMBV1iELXa+OQQ/rbsR0VzXAD9wGdIBg17Tjtj8T9DCn3UZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727793568; c=relaxed/simple;
-	bh=oZvk3MHVNoX9e05w5PclnvJLZ1cW+m7vI9040iculQY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bl0ov/QK8W9PfwKDOF1kX60iJ9YT9eFNYDf/jKSc4Q4BCEh5Fxt0qIFhD3AKB38Ny2EOB0BtUD7ZgNq4XFOLOYQPyCQcWrASwW8N1zxcojrfQLXRGX3uyeZ68Ogqo9ONmvQs5i1kdIU/dg1foU4bzB2uc/3EdQnorXX+sbzWf9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CGPnjjqS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4307BC4CEC6;
-	Tue,  1 Oct 2024 14:39:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727793567;
-	bh=oZvk3MHVNoX9e05w5PclnvJLZ1cW+m7vI9040iculQY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CGPnjjqSPJoJvPNZYBFWjxOpElKFdtMzS8baTICRRgfkJc+kl6rmmB6lGQ2wcxRvS
-	 8VMKSMHVrqyrcL/Ts1Hc3+lGa/p0Hd9xeCjNF37ZXz1W8cXkxWxxiHTZRddzLpUkyx
-	 gK8qTSU5dA8YPR3zAy5fWzKn1wJavOMArAOkCnoc=
-Date: Tue, 1 Oct 2024 16:38:06 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Guenter Roeck <linux@roeck-us.net>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-	lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-	f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-	srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-	allen.lkml@gmail.com, broonie@kernel.org,
-	Bibo Mao <maobibo@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: Re: [PATCH 6.10 00/58] 6.10.12-rc1 review
-Message-ID: <2024100157-crane-disposal-4896@gregkh>
-References: <20240927121718.789211866@linuxfoundation.org>
- <f1697b65-acd4-4031-ba47-64c587408593@roeck-us.net>
+	s=arc-20240116; t=1727793788; c=relaxed/simple;
+	bh=YqFKGoWQnkufFcN2SEwu0+10kaaUuBMn7cd3+kx5FyY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=arrR90DoNNlJFklahV8xCqCnGolNgTEz4hMRhc0HhfDpVhZw51jr4PBwY2N1tMRI+4FMP8r1Ni2gSm4ktjBkYMBU6Pxhig5W5ijurYCrqQPQRIUuZ/zHOhewS/Sl9qeTacV5XEuPhcBHBWrKYwDHasceOQECmiiYpZmAVpVAAZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cn6ZpmDg; arc=none smtp.client-ip=209.85.166.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-io1-f50.google.com with SMTP id ca18e2360f4ac-82d24e18dfcso281254539f.3
+        for <stable@vger.kernel.org>; Tue, 01 Oct 2024 07:43:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1727793786; x=1728398586; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=YqFKGoWQnkufFcN2SEwu0+10kaaUuBMn7cd3+kx5FyY=;
+        b=Cn6ZpmDgVl8SekWoeN6ozvQj0i0WIKUoiR/TllfJ4TnnmkEjjUMD9hJSHEW1AW/AyY
+         PhEO8rWj8PhTM30ndS05CVfLIClm4BEo8+nBMR6k3kIpXwhjLX7OL1lc/CdUbukdBbwR
+         BquU1kJIobzQPXTFkHYDa7HlYOvIYKI0b46fQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727793786; x=1728398586;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YqFKGoWQnkufFcN2SEwu0+10kaaUuBMn7cd3+kx5FyY=;
+        b=CJWHfMcA64wn2Gw/2onPjLVCbubQXEhXNY9i34I3/Wyd8icsTP2kwlw7od9MGbLEuG
+         j/GSeD6ht0Kx3mUOnulAge/3gSWxXgtFsJl7xaEzW70yzpXrp9opd7R3ScAcu+sof83I
+         mUMmceDG0AGF8pm/HNiJQksOiL/MQluHuccrTxKn4rM08UiX88ZZcbXb0aFtm8rpb1nE
+         5QkCfRkLMKppUHUDq1ewUKcuGcC8tMK9WIPNu7vIINH8KxcgE3Qfe2Zzz6Pkhbb7ye1C
+         4FCNoy/OAOalLimgWSwHLmdLWSV+V9OR4QCZii2xaTGL8CXm2N+Z/jEa0RI8xvsHmIoy
+         60DA==
+X-Forwarded-Encrypted: i=1; AJvYcCXEn1e5/sspbS1dvH1GLNOw7Uw/WjpFtFZXixq+2dHuIeO8mS3zfyLpuj1WNc6ajLaEVdqliaw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy9CVhYCvcIeIrMWdveUQ+mtFLtGnCIRujthd+LVXAnVED6Co4q
+	uCgHUenRQDzWNNSVBysxrJKf0SDXEB0QpYJ3I3z34rhnky/1gEgI+3l9ZRUao4I=
+X-Google-Smtp-Source: AGHT+IH9iQbGNsaiW1M3YgTbNj0WdLULnmrYykCxV/hHL8lSXmOdjXn8BCs/zDd0M4RzR5yGC5bWsg==
+X-Received: by 2002:a05:6e02:168f:b0:3a0:9fa5:8f2 with SMTP id e9e14a558f8ab-3a3451aeefdmr137892965ab.18.1727793786284;
+        Tue, 01 Oct 2024 07:43:06 -0700 (PDT)
+Received: from [192.168.1.128] ([38.175.170.29])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4d888871e92sm2678908173.81.2024.10.01.07.43.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 01 Oct 2024 07:43:05 -0700 (PDT)
+Message-ID: <433ff0ca-92d1-475e-ad8b-d4416601d4ba@linuxfoundation.org>
+Date: Tue, 1 Oct 2024 08:43:05 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f1697b65-acd4-4031-ba47-64c587408593@roeck-us.net>
+User-Agent: Mozilla Thunderbird
+Subject: Re: Patch "selftests: vDSO: skip getrandom test if architecture is
+ unsupported" has been added to the 6.11-stable tree
+To: "Jason A. Donenfeld" <Jason@zx2c4.com>, stable@vger.kernel.org,
+ Sasha Levin <sashal@kernel.org>
+Cc: stable-commits@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+ Shuah Khan <skhan@linuxfoundation.org>
+References: <20240930231443.2560728-1-sashal@kernel.org>
+ <CAHmME9rFjE7nt4j5ZWwh=CrpPmtuZ_UdS5O4bQOgH8cVwEjr0Q@mail.gmail.com>
+Content-Language: en-US
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <CAHmME9rFjE7nt4j5ZWwh=CrpPmtuZ_UdS5O4bQOgH8cVwEjr0Q@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, Oct 01, 2024 at 07:24:27AM -0700, Guenter Roeck wrote:
-> On 9/27/24 05:23, Greg Kroah-Hartman wrote:
-> > This is the start of the stable review cycle for the 6.10.12 release.
-> > There are 58 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> > 
-> > Responses should be made by Sun, 29 Sep 2024 12:17:00 +0000.
-> > Anything received after that time might be too late.
-> > 
-> > The whole patch series can be found in one patch at:
-> > 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.10.12-rc1.gz
-> > or in the git tree and branch at:
-> > 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.10.y
-> > and the diffstat can be found below.
-> > 
-> 
-> Most loongarch builds are broken.
-> 
-> Building loongarch:defconfig ... failed
-> --------------
-> Error log:
-> arch/loongarch/kvm/vcpu.c: In function 'kvm_set_one_reg':
-> arch/loongarch/kvm/vcpu.c:575:35: error: 'struct kvm_vcpu_arch' has no member named 'st'
->   575 |                         vcpu->arch.st.guest_addr = 0;
-> 
-> This is due to commit 05969a694471 ("LoongArch: KVM: Invalidate guest steal time address
-> on vCPU reset"). Note that this commit is not tagged as bug fix. I am copying the author.
+On 9/30/24 21:56, Jason A. Donenfeld wrote:
+> This is not stable material and I didn't mark it as such. Do not backport.
 
-Already reverted in my tree, thanks!
+The way selftest work is they just skip if a feature isn't supported.
+As such this test should run gracefully on stable releases.
 
-greg k-h
+I would say backport unless and skip if the feature isn't supported.
+
+Does this build on stables?
+
+thanks,
+-- Shuah
 
