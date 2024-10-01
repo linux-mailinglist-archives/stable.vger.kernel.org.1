@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-78324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 990B698B56A
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 09:24:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id B014798B56B
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 09:24:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4D4AF1F21C16
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 07:24:49 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 66C751F21D61
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 07:24:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D1571BD009;
-	Tue,  1 Oct 2024 07:24:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B344B1BCA0A;
+	Tue,  1 Oct 2024 07:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mApstDFa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s7vUHXHO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C15DC1BC9F4
-	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 07:24:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DC811ACDE3
+	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 07:24:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727767483; cv=none; b=tHWgsZoHlgmuzxzGN+uMrB79pho5gPLIKsaC9dZcmI9IbzH5fvOgW3gR5UBOGhT+Uk5nnP14/DLfW8jtCUypGCZ4x1wTlVr0GJskHkBZsT2Saux+NItTpSXDE6OVfMfw+OnHyDnRBE4PklrXFVvqI2KZ8YGF4B540UDfHZtwcAY=
+	t=1727767489; cv=none; b=SaOnGZhMogU7ti1zlkRUAma/866FGNgGCK8vPw9Kx/GCv14ovpA5/sJr8BMGRO8KZw1qs/ybylZeM8K2zgsDaJCLRBc7uQ4lB7zxcI1VIWLwwgn25+Zp/YnZA4jsFde73wvUUjLTksw+zXu94CCfYaC4vsLIiJ4bfdaB26ZWZsI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727767483; c=relaxed/simple;
-	bh=JH6MvO5bvZMML0TBdDavwB9OfRhIAA3o3Son99eulcY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=HrtjkuxhH3p8D4Xl3RuBtSK8vW1SobC3vnPczotYDxAusPpzjJHdm9GSS5cP7DyOS2J5AVpvWo+zQBwNrY6D1Vf0Pq7GIbdPVcTE//fUwHY7UM+tgRbOtEpCjkQnN7nIz8k9SU/0awcGi+kF4xFhJBEeFKuAseZLW9hG8xJez3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mApstDFa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A3CCC4CEC6;
-	Tue,  1 Oct 2024 07:24:42 +0000 (UTC)
+	s=arc-20240116; t=1727767489; c=relaxed/simple;
+	bh=1024jBupB8N9ICL+qb9uWTVZrJVxW+V7sm/7aNnPUtg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=uSgoZiIcMMwrBXsTLyzpN6gQOYnfAjaUNccSUS8/Q7YHb2CDx8fcqtGvDdT+To7qr8qIlPd+Lq8DnbboPpPgHYR5jF2d2Vb/i2Gg06oponpZC/nkWX53ZDGPXXpBgAh08Dau9Gc/eRzb/zQhlmenYob2WlioqED/IPpAtq7DyuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s7vUHXHO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CA05C4CEC6;
+	Tue,  1 Oct 2024 07:24:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727767483;
-	bh=JH6MvO5bvZMML0TBdDavwB9OfRhIAA3o3Son99eulcY=;
+	s=korg; t=1727767488;
+	bh=1024jBupB8N9ICL+qb9uWTVZrJVxW+V7sm/7aNnPUtg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=mApstDFaD7BBwGTAYccYWpEe3Z0qWFSFP2nybyTMQ0VLsghCBsZNszGkM6N/VbcAP
-	 mK5hxSOU2o9JK4FX7RYIzudL66OB2w0sqfsnYaY/IQhqKv5ysXOkCut456AZ7ljKY0
-	 skZTnXx1GkqVAkNjt+9kaX0tbfkB33Urxj08YnKs=
-Subject: FAILED: patch "[PATCH] mm: call the security_mmap_file() LSM hook in" failed to apply to 6.1-stable tree
+	b=s7vUHXHOf7Cb/bVPyqIVlEUbk+qOfN6HRsnJe5LJMfx2ir6PUl8zuvVKNvukOACVO
+	 KpO0IMmdSXcq1xvMljJX1MO1d7ovIpheylZnKc6P/4AV7KY2oZ77wnEjHrTQ7hHWDZ
+	 023QQxaflwLsj8M4ymWgyNB/MnQJnvZEgrUk9Bw0=
+Subject: FAILED: patch "[PATCH] mm: call the security_mmap_file() LSM hook in" failed to apply to 5.15-stable tree
 To: ebpqwerty472123@gmail.com,paul@paul-moore.com,stephen.smalley.work@gmail.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 01 Oct 2024 09:24:40 +0200
-Message-ID: <2024100139-mousiness-agreeable-1242@gregkh>
+Date: Tue, 01 Oct 2024 09:24:46 +0200
+Message-ID: <2024100145-gristle-unknotted-af80@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x ea7e2d5e49c05e5db1922387b09ca74aa40f46e2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100139-mousiness-agreeable-1242@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100145-gristle-unknotted-af80@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,6 +77,18 @@ ea7e2d5e49c0 ("mm: call the security_mmap_file() LSM hook in remap_file_pages()"
 baabcfc93d3b ("mm/mmap: fix typo in comment")
 c5d5546ea065 ("maple_tree: remove the parameter entry of mas_preallocate")
 675eaca1f441 ("mm/mmap: properly unaccount memory on mas_preallocate() failure")
+6c28ca6485dd ("mmap: fix do_brk_flags() modifying obviously incorrect VMAs")
+f5ad5083404b ("mm: do not BUG_ON missing brk mapping, because userspace can unmap it")
+cc674ab3c018 ("mm/mmap: fix memory leak in mmap_region()")
+120b116208a0 ("maple_tree: reorganize testing to restore module testing")
+a57b70519d1f ("mm/mmap: fix MAP_FIXED address return on VMA merge")
+5789151e48ac ("mm/mmap: undo ->mmap() when mas_preallocate() fails")
+deb0f6562884 ("mm/mmap: undo ->mmap() when arch_validate_flags() fails")
+28c5609fb236 ("mm/mmap: preallocate maple nodes for brk vma expansion")
+763ecb035029 ("mm: remove the vma linked list")
+8220543df148 ("nommu: remove uses of VMA linked list")
+67e7c16764c3 ("mm/mmap: change do_brk_munmap() to use do_mas_align_munmap()")
+11f9a21ab655 ("mm/mmap: reorganize munmap to use maple states")
 
 thanks,
 
