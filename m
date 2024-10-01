@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-78422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78423-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A293598B991
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 12:25:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C98A598B992
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 12:25:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6846A281426
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 10:25:46 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 880082840E8
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 10:25:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94B3E192D74;
-	Tue,  1 Oct 2024 10:25:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDF5F19DF77;
+	Tue,  1 Oct 2024 10:25:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sF3F8HCP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XyHvlTAv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 569E53209
-	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 10:25:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E4E63209
+	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 10:25:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727778332; cv=none; b=XPwLSNypoZx+HvbfaAfivCQdkpkzC1qGou5VaKlTXCGsRT1zWMPeXOg/WGPYXQ2MBVQED5nMOPlG70NRXUtPiJ0jgqz6dt1/lia5N2G4ilZ8hwQkGgh0Tmi7gaikiIgttz3ZwRDMk2LuFZbEXohTGMQ095sGKBhTo7HqjUEgzUw=
+	t=1727778342; cv=none; b=SUHZfm+0DbBwikPTBMmrYjpKU5VQRvcTPfMzjIJGYnvk+qKyBQXsYklEytTIpe0ymmjudcAMtopUdtcKHFGoE2pQbtitgL1CFd5sIXLTtc40VYQ6EMq2iovvV8ZPbAzn5hhLdC6Yve/s/Ed4oP5pt6MAY//ycSDN+MfQHEiHrls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727778332; c=relaxed/simple;
-	bh=VT5hvuOYxX7chsEjrCD4KbOh20MgdvNlnKEtpQsT1o4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=a2XfkxttbniS/xrBJA2xwPAadSjcSM3O1Z7tLPVlvVmzsj08aYWSLR5A3TauhYJg74sa776sG+/2awIs0Mn/gawHK+Wk4ysD1eOrWSa0yG+39b1iyJAbLIG5evAYABfCAo8BFACqal0q7DLW+iqOKjeuGyjcu9YdPJ7afKE4yh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sF3F8HCP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D24FBC4CEC6;
-	Tue,  1 Oct 2024 10:25:31 +0000 (UTC)
+	s=arc-20240116; t=1727778342; c=relaxed/simple;
+	bh=LhjBRI9gdVNMaiURlC5NAeYZ97BRYqCBAoXEttCWRm0=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=mZUye+9h5rbJMdpXMxaM5HdXUfTndS8pHhTlQUuKe3+0SQiRDBA2ehl9EhtaDl2TF9OD5JPrBMR2XXnfiUuImap7dus6HgR5+0/L4gKsBqPSSDjhUSZ5SVmPLsM1Vr+32XtECJ2/djo38jw1JxajJfALK14RqGY8VUgMoDWEZy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XyHvlTAv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B26E2C4CEC6;
+	Tue,  1 Oct 2024 10:25:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727778332;
-	bh=VT5hvuOYxX7chsEjrCD4KbOh20MgdvNlnKEtpQsT1o4=;
+	s=korg; t=1727778341;
+	bh=LhjBRI9gdVNMaiURlC5NAeYZ97BRYqCBAoXEttCWRm0=;
 	h=Subject:To:Cc:From:Date:From;
-	b=sF3F8HCPH6qZ62YHMIIzFoCwbZZMuU9oPltnhUT6doxSvILp9PivroylfSmGwYdA4
-	 H5RFLNdicBhjD028P5DpR4Ne3coowKXN8yCJDHi6YuShctAXv1+zoiLHoP+nqnZ3zN
-	 XkuBq4kZY6PFfOvNJao81oHqs89WxqitXAquadDo=
-Subject: FAILED: patch "[PATCH] xhci: Set quirky xHC PCI hosts to D3 _after_ stopping and" failed to apply to 5.10-stable tree
+	b=XyHvlTAvCf4FV5bOV8COjeb0CRCvF7ZUpjhybZ+M/ZGZPilLlaJcxHnK8zRWVtGd9
+	 XnSn3xipSz084jq5ke0CXEG2jXvDV2se26whOBx++ODvQ9D4kC3t9CCq6N1ZU+GsiQ
+	 /U4xlhw52ZfrX3MY9/GfllZMr5neq0Zh6JJxtEMA=
+Subject: FAILED: patch "[PATCH] xhci: Set quirky xHC PCI hosts to D3 _after_ stopping and" failed to apply to 5.4-stable tree
 To: mathias.nyman@linux.intel.com,gregkh@linuxfoundation.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 01 Oct 2024 12:25:29 +0200
-Message-ID: <2024100129-user-germicide-1db7@gregkh>
+Date: Tue, 01 Oct 2024 12:25:30 +0200
+Message-ID: <2024100130-footbath-camper-be92@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,28 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x f81dfa3b57c624c56f2bff171c431bc7f5b558f2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100129-user-germicide-1db7@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100130-footbath-camper-be92@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
 f81dfa3b57c6 ("xhci: Set quirky xHC PCI hosts to D3 _after_ stopping and freeing them.")
 884c27440829 ("usb: renesas-xhci: Remove renesas_xhci_pci_exit()")
+78ef1b1ea193 ("usb: xhci: make symbols static")
+a66d21d7dba8 ("usb: xhci: Add support for Renesas controller with memory")
+8bd5741e3145 ("usb: renesas-xhci: Add the renesas xhci driver")
+ff4c65ca48f0 ("usb: hci: add hc_driver as argument for usb_hcd_pci_probe")
 
 thanks,
 
