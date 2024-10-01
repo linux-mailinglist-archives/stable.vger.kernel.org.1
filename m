@@ -1,166 +1,194 @@
-Return-Path: <stable+bounces-78536-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78537-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC53798BFB1
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 16:20:46 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0161998BFD5
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 16:24:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0F73B2852C
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 14:20:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C945EB294BA
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 14:23:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 693651C9B78;
-	Tue,  1 Oct 2024 14:16:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88D551C6F55;
+	Tue,  1 Oct 2024 14:22:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Uau/vZa5"
+	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="1vvqlon/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8D841C9B75;
-	Tue,  1 Oct 2024 14:16:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C72A1C579F
+	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 14:22:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727792217; cv=none; b=gD7WUYnHeECpnWVULjjnlgBFq/esDHgLxsWYQJbHumCRW0qOsL62afYCQ2RlKjPJJtfoxd+E7rQawOK6KyoL89upG1LTETL54zUXFrfqT8rCWEcqHkeZ6zpeRt518tTcrFwtaNxsSE4aleN/gjtm9C6o9M+e5VoiuMYT7elxXGY=
+	t=1727792575; cv=none; b=B7e7TMEVHH6rGQFVThSdatkyO5HRrIYO8JrUc8Eq7se38hHQMxk4C/V9oXVZqXyKcB0zlXBf5yYxZn5FdY4Td8juFSU/bPNHwI+Hhss1WF6gMzLaSUfUP2W59yUHQ0CAmLqoPJF8VGyYKLVRouZDUj3OuWFo8ZCxzSl4fQhO0E8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727792217; c=relaxed/simple;
-	bh=g41OALnsL4wl6u9fk+xYcaWtmMY9YbrmA0fZDhVPSC4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jXJyxVDt7AJL7hLfawhmZOGFGMco7q6RX4dyyic8s7WCgwOU2D2h9qsPIWglLxBBbgctVlncoybMj6B3CDYMQoPQ5xMBCQh66SJuul01jE3YKdMpZXJ/5vVRLPYirKCMdlbpd5pB4IIOWJPoO/ICTB6Nui1p+yVcO6debODFs6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Uau/vZa5; arc=none smtp.client-ip=209.85.210.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-710e489860bso2885275a34.1;
-        Tue, 01 Oct 2024 07:16:55 -0700 (PDT)
+	s=arc-20240116; t=1727792575; c=relaxed/simple;
+	bh=yh036OuWVtZS192RdATSdM1krocVw8uCFUV8hJl9q+c=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=qADbvBAzJdbSsUbD+hwQbjIkzNwbNwwJPTyDQowmRC0eA74D0r9ftCZoV6atdnGzFn6HA/9o5BJiENSSyvBXaT/OdGUzT7uKGa7yZWPoPINymbYbjhxVC+NFoVAeRi/Jv/5i/aJ3lzd7JfpYPQMlvpeCGwbSMEjIzTz9YNACG0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=1vvqlon/; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-42cb6f3a5bcso68507065e9.2
+        for <stable@vger.kernel.org>; Tue, 01 Oct 2024 07:22:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727792214; x=1728397014; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=fairphone.com; s=fair; t=1727792572; x=1728397372; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ph1CXMwrM0Od7OuVQ28Be8BUbBXIPRQeBdm8AFbgkow=;
-        b=Uau/vZa5i4+TDBltpxwIMUhw8yE3fQxLfUhmPjNZLnQCchEPnywKdZXRlj+uQKYRGC
-         WTb2aJPLq1Ky48sJfVEBuD3MmOZvAht1YdD/uQYwQUULjHkF8LSoYh42QrE5e6Zvu7Qq
-         ILkfaYMfrZXILqMX0yRjpLBv7LLibOQ09/K4eM8WawkV7+aF4wEIc7grqV7h9QYz0sEl
-         Vun+mPT5jW5AE9oWz7l4Ylzpo3X8jQ4F339beZuDKXPsQrjHtxqoVHY5Bf2K6WKgsWpX
-         UR1SlhYLQFr/TwBhxOkZXHC6+kZbrYmjN8Zbl9e68KfMZkO6GXP6nnPLgOrSLclgyfAN
-         sd9Q==
+        bh=OUXzWwVynlO2farGmzjCRjampG4QkTOOiMVa306g3F4=;
+        b=1vvqlon/Wb0my+FmrnsCC6P3iwhXdkVqtiqptopuzppGeGW6ElTzwNAH15nCgJehQB
+         Z468l9a8p7mrglnuAyFtlJe37bJPs1dOR8FB8JHEVRuJbl8v+1a6EPLshDLxuDIxmVpE
+         Qw6MEF8nQRsm+73H0xcOufZF1rxKI9RMBpGEOtGwKBdzsTgpC+Pn7svs2KAWchlHx0pS
+         7ysjzFszeDImQUZDmrx/myVWmLm3zZbnhndJ86fjx81QeyP6hamTVV47wjh+n57o7sRU
+         atw7LF8h9EoZjxjmR6PfhtT8EQdYzKKXC0LzmA2HBqlbZTEXwACV1zcbpl7tjnxkeAAW
+         +rEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727792214; x=1728397014;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ph1CXMwrM0Od7OuVQ28Be8BUbBXIPRQeBdm8AFbgkow=;
-        b=TvMQjNBLAwUEU1guf973cTml38Lgz605lYMwe9WDnnmT7+uGVIQMQ2Kbnw6zqvcL0/
-         MFVEr8cfN5oZUTW7BikVePrlJ/T+wxE/JrXOmzGwDcS1RJpUCFNQbdmLCphh3usKGkUh
-         DlYe0Sec2B4QuNqyh7WpuUXC5r6NfHnTxa1iiy5KbvI9fDRA2SgnkHaJT1XwOsX3tS69
-         MVK7mkd/TlYXfwf6YJprlMYUJaN76LhiM6A4V9nwtMdYWcLCs7AeBp9COi4VM2rRDHMt
-         HTMSwqkg9RXgXpl1/+X/jWo0cGeQeZ0Ef/xr8Jg84bH6063kmPzCOcKEAGL93WBLhKA2
-         118g==
-X-Forwarded-Encrypted: i=1; AJvYcCViiJtgOfEpL7CJ7fgniNHWrp5yY6oO4xyxF03qF6RotWIZMZJ1IfCpwV7/2RtNvnx5HEr+cbC0LanQe/o=@vger.kernel.org, AJvYcCX3jl1EmhdRQhc7zhGnY4GPUS7y65b8tWNsiA+ab6LPfdrjblnTraRwpvlXyjrM3NctM68R6PCx@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQ8kuoLFaB9Cfs2qGaOtmRE1/f6EJDGS49hcczWqLdPrc68OAU
-	fBwybOjlU4aM6bZLDrHeWnWYgT1M5PLQvalhUXoGDz0n47iI2dxXkk8Q0fy5Km4Ib9XEy61LSYU
-	3FBp+ZTQpWksnN9WC6DYhhMT2xi0=
-X-Google-Smtp-Source: AGHT+IFfVSlGf0zJL6/ZI6y0JzFNCuskPx0Gyc8YhUaiOcui23/iIxvQOogfzVfOf5Ay4G0kU+eQQi3qHXBu2AsBY/Q=
-X-Received: by 2002:a05:6359:7406:b0:1be:de52:97c3 with SMTP id
- e5c5f4694b2df-1bede52a407mr283920455d.5.1727792214436; Tue, 01 Oct 2024
- 07:16:54 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1727792572; x=1728397372;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=OUXzWwVynlO2farGmzjCRjampG4QkTOOiMVa306g3F4=;
+        b=uYTvl3NbUx8CF0wA9FKQEISqpzC2KIPS9UajLhbFOQ39LQmNQdY0Dgm8PRqbhpHZUA
+         K53wniBQar7YgKIxXDFla5xu9zYrfOnJ0jDxSMrNy0GYbooydxUqvLhZtchqD6582Gn/
+         yty7bjtDtxhFEe4NiAqlMi664a/JlAjf68Jif8EiBo9X9na1NwEYBillkcLs/Hp+FLus
+         iDJwby5D++iUma8METPdY0i5WFygEQ0R6q8ipxR7vKNQtreDJUg3YRxuDNSr1jj8HUwl
+         9jD6STnYdHu0a4c7YodT8NvbMMHsGeyHQnLSb21YNhRL43is+NSE48pZ+B+gZ1sHlQ0I
+         eSFA==
+X-Forwarded-Encrypted: i=1; AJvYcCVWbSI9rpS+8Gd2PEYpwNQopV4uJ92uKXFLwhsLB7/lDlHfNY4e3yG+92dowgdnN3niOP/uK88=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwqUTcCyDnd0w3bwycQdtOOJdmy65R9DGZvHojfj+jtAckWNbhX
+	s2AL1pW9fjkD+wy9BTT16r4NjDLiGTXDbZefJrlHgrC7KKWQO9yXM5fObc0iYd8=
+X-Google-Smtp-Source: AGHT+IE1MDD/pWaftXcta30RJmYNnd36yu433BiXNnM+DOhxjOYYibckt0mh/3U0Wfvp0AGvZHCkkA==
+X-Received: by 2002:a05:600c:4ed3:b0:42c:df29:2366 with SMTP id 5b1f17b1804b1-42f584a1d68mr169077405e9.33.1727792571880;
+        Tue, 01 Oct 2024 07:22:51 -0700 (PDT)
+Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a93c27c7184sm716888766b.83.2024.10.01.07.22.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 01 Oct 2024 07:22:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240926211936.75373-1-21cnbao@gmail.com> <871q13qj2t.fsf@yhuang6-desk2.ccr.corp.intel.com>
- <CAGsJ_4w2PjN+4DKWM6qvaEUAX=FQW0rp+6Wjx1Qrq=jaAz7wsw@mail.gmail.com> <877caspv6u.fsf@yhuang6-desk2.ccr.corp.intel.com>
-In-Reply-To: <877caspv6u.fsf@yhuang6-desk2.ccr.corp.intel.com>
-From: Barry Song <21cnbao@gmail.com>
-Date: Tue, 1 Oct 2024 22:16:40 +0800
-Message-ID: <CAGsJ_4wfjo2-dnGwybx5YR_o+FEzoVG+V=O1mxQ801FdHPSGiA@mail.gmail.com>
-Subject: Re: [PATCH] mm: avoid unconditional one-tick sleep when
- swapcache_prepare fails
-To: "Huang, Ying" <ying.huang@intel.com>
-Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, Barry Song <v-songbaohua@oppo.com>, 
-	Kairui Song <kasong@tencent.com>, Yu Zhao <yuzhao@google.com>, 
-	David Hildenbrand <david@redhat.com>, Chris Li <chrisl@kernel.org>, Hugh Dickins <hughd@google.com>, 
-	Johannes Weiner <hannes@cmpxchg.org>, Matthew Wilcox <willy@infradead.org>, Michal Hocko <mhocko@suse.com>, 
-	Minchan Kim <minchan@kernel.org>, Yosry Ahmed <yosryahmed@google.com>, 
-	SeongJae Park <sj@kernel.org>, Kalesh Singh <kaleshsingh@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, stable@vger.kernel.org, 
-	Oven Liyang <liyangouwen1@oppo.com>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 01 Oct 2024 16:22:50 +0200
+Message-Id: <D4KJCLCDGQ96.251XO3OG6DVB6@fairphone.com>
+Cc: <linux-arm-msm@vger.kernel.org>, <linux-media@vger.kernel.org>,
+ <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <linux-arm-kernel@lists.infradead.org>, "Suresh Vankadara"
+ <quic_svankada@quicinc.com>, "Trishansh Bhardwaj"
+ <quic_tbhardwa@quicinc.com>, <stable@vger.kernel.org>, "Hariram
+ Purushothaman" <quic_hariramp@quicinc.com>
+Subject: Re: [PATCH 00/10] (no cover subject)
+From: "Luca Weiss" <luca.weiss@fairphone.com>
+To: "Bryan O'Donoghue" <bryan.odonoghue@linaro.org>, "Vikram Sharma"
+ <quic_vikramsa@quicinc.com>, "Robert Foss" <rfoss@kernel.org>, "Todor
+ Tomov" <todor.too@gmail.com>, "Mauro Carvalho Chehab" <mchehab@kernel.org>,
+ "Rob Herring" <robh@kernel.org>, "Krzysztof Kozlowski"
+ <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>, "Kapatrala
+ Syed" <akapatra@quicinc.com>, "Hariram Purushothaman"
+ <hariramp@quicinc.com>, "Bjorn Andersson" <andersson@kernel.org>, "Konrad
+ Dybcio" <konradybcio@kernel.org>, "Hans Verkuil"
+ <hverkuil-cisco@xs4all.nl>, <cros-qcom-dts-watchers@chromium.org>, "Catalin
+ Marinas" <catalin.marinas@arm.com>, "Will Deacon" <will@kernel.org>,
+ =?utf-8?q?Matti_Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>
+X-Mailer: aerc 0.18.2-0-ge037c095a049
+References: <20240904-camss_on_sc7280_rb3gen2_vision_v2_patches-v1-0-b18ddcd7d9df@quicinc.com> <D4JK8TRL7XBL.3TBA1FBF32RXL@fairphone.com> <fc0ce5cd-e42a-432b-ad74-01de67ec0d5c@linaro.org> <D4KBQ3ENKF5Y.3D2AK81PELAEZ@fairphone.com> <e7cc5f91-a0a8-48fc-9eb6-b9c46b22dfeb@linaro.org> <D4KFVNV1A4KG.CFLT81CFBDTM@fairphone.com> <c912f2da-519c-4bdc-a5cb-e19c3aa63ea8@linaro.org>
+In-Reply-To: <c912f2da-519c-4bdc-a5cb-e19c3aa63ea8@linaro.org>
 
-On Tue, Oct 1, 2024 at 7:43=E2=80=AFAM Huang, Ying <ying.huang@intel.com> w=
-rote:
+On Tue Oct 1, 2024 at 2:49 PM CEST, Bryan O'Donoghue wrote:
+> On 01/10/2024 12:39, Luca Weiss wrote:
 >
-> Barry Song <21cnbao@gmail.com> writes:
+> > And v4l-subdev5 is msm_csid0 on my device.
 >
-> > On Sun, Sep 29, 2024 at 3:43=E2=80=AFPM Huang, Ying <ying.huang@intel.c=
-om> wrote:
-> >>
-> >> Hi, Barry,
-> >>
-> >> Barry Song <21cnbao@gmail.com> writes:
-> >>
-> >> > From: Barry Song <v-songbaohua@oppo.com>
-> >> >
-> >> > Commit 13ddaf26be32 ("mm/swap: fix race when skipping swapcache")
-> >> > introduced an unconditional one-tick sleep when `swapcache_prepare()=
-`
-> >> > fails, which has led to reports of UI stuttering on latency-sensitiv=
-e
-> >> > Android devices. To address this, we can use a waitqueue to wake up
-> >> > tasks that fail `swapcache_prepare()` sooner, instead of always
-> >> > sleeping for a full tick. While tasks may occasionally be woken by a=
-n
-> >> > unrelated `do_swap_page()`, this method is preferable to two scenari=
-os:
-> >> > rapid re-entry into page faults, which can cause livelocks, and
-> >> > multiple millisecond sleeps, which visibly degrade user experience.
-> >>
-> >> In general, I think that this works.  Why not extend the solution to
-> >> cover schedule_timeout_uninterruptible() in __read_swap_cache_async()
-> >> too?  We can call wake_up() when we clear SWAP_HAS_CACHE.  To avoid
-> >
-> > Hi Ying,
-> > Thanks for your comments.
-> > I feel extending the solution to __read_swap_cache_async() should be do=
-ne
-> > in a separate patch. On phones, I've never encountered any issues repor=
-ted
-> > on that path, so it might be better suited for an optimization rather t=
-han a
-> > hotfix?
+> <snip>
 >
-> Yes.  It's fine to do that in another patch as optimization.
+> >=20
+> > - entity 16: msm_csid0 (5 pads, 22 links, 0 routes)
+> >               type V4L2 subdev subtype Unknown flags 0
+> >               device node name /dev/v4l-subdev5
+> >          pad0: Sink
+> >                  [stream:0 fmt:SRGGB10_1X10/4056x3040 field:none colors=
+pace:srgb]
+> >                  <- "msm_csiphy0":1 []
+> >                  <- "msm_csiphy1":1 []
+> >                  <- "msm_csiphy2":1 []
+> >                  <- "msm_csiphy3":1 []
+> >                  <- "msm_csiphy4":1 []
+> >          pad1: Source
+> >                  [stream:0 fmt:SRGGB10_1X10/4056x3040 field:none colors=
+pace:srgb]
+> >                  -> "msm_vfe0_rdi0":0 [ENABLED]
+> >                  -> "msm_vfe1_rdi0":0 []
+> >                  -> "msm_vfe2_rdi0":0 []
+> >                  -> "msm_vfe3_rdi0":0 []
+> >                  -> "msm_vfe4_rdi0":0 []
+>
+> <snip>
+>
+> media-ctl --reset
+> yavta --no-query -w '0x009f0903 2' /dev/v4l-subdev5
+> yavta --list /dev/v4l-subdev5
+> media-ctl -V '"msm_csid0":0[fmt:SRGGB10/4056x3040]'
+> media-ctl -V '"msm_vfe0_rdi0":0[fmt:SRGGB10/4056x3040]'
+> media-ctl -l '"msm_csid0":1->"msm_vfe0_rdi0":0[1]'
+> media-ctl -d /dev/media0 -p
+>
+> That command list and this
+>
+> yavta -B capture-mplane -c -I -n 5 -f SRGGB10P -s 4056x3040 -F /dev/video=
+0
+>
+> should work.
 
-Ok. I'll prepare a separate patch for optimizing that path.
+Yeah, unfortunately this is still hanging... Let's also see what Vikram
+sees on their board.
+
+fairphone-fp5:~$ yavta -B capture-mplane -c -I -n 5 -f SRGGB10P -s 4056x304=
+0 -F /dev/video0
+Device /dev/video0 opened.
+Device `Qualcomm Camera Subsystem' on `platform:acb3000.camss' (driver 'qco=
+m-camss') supports video, capture, with mplanes.
+Video format set: SRGGB10P (41415270) 4056x3040 field none, 1 planes:=20
+ * Stride 5072, buffer size 15418880
+Video format: SRGGB10P (41415270) 4056x3040 field none, 1 planes:=20
+ * Stride 5072, buffer size 15418880
+5 buffers requested.
+length: 1 offset: 3442938648 timestamp type/source: mono/EoF
+Buffer 0/0 mapped at address 0xffff85e00000.
+length: 1 offset: 3442938648 timestamp type/source: mono/EoF
+Buffer 1/0 mapped at address 0xffff84e08000.
+length: 1 offset: 3442938648 timestamp type/source: mono/EoF
+Buffer 2/0 mapped at address 0xffff83e10000.
+length: 1 offset: 3442938648 timestamp type/source: mono/EoF
+Buffer 3/0 mapped at address 0xffff82e18000.
+length: 1 offset: 3442938648 timestamp type/source: mono/EoF
+Buffer 4/0 mapped at address 0xffff81e20000.
+
+> I have to test Vladimir's two patches. I'll verify rb5 TPG while I'm at=
+=20
+> it, perhaps the error is not sdm670 specific.
+
+FWIW this is not sdm670 but sc7280/qcm6490 here :) But I didn't follow
+the sdm670 thread so maybe you mean something there.
 
 >
-> >> overhead to call wake_up() when there's no task waiting, we can use an
-> >> atomic to count waiting tasks.
-> >
-> > I'm not sure it's worth adding the complexity, as wake_up() on an empty
-> > waitqueue should have a very low cost on its own?
->
-> wake_up() needs to call spin_lock_irqsave() unconditionally on a global
-> shared lock.  On systems with many CPUs (such servers), this may cause
-> severe lock contention.  Even the cache ping-pong may hurt performance
-> much.
+> That said last time I tested it, it worked and no changes have gone in,=
+=20
+> in the meantime.
 
-I understand that cache synchronization was a significant issue before
-qspinlock, but it seems to be less of a concern after its implementation.
-However, using a global atomic variable would still trigger cache broadcast=
-s,
-correct?
+I also had the test pattern working on a 6.8-based kernel on this device
+with camss patches from Matti Lehtim=C3=A4ki.
+
+Regards
+Luca
 
 >
-> --
-> Best Regards,
-> Huang, Ying
+> ---
+> bod
 
-Thanks
-Barry
 
