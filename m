@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-78465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78466-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D61E098BAF3
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 13:24:22 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3FE298BAF4
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 13:24:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8B1ED1F22A51
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 11:24:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5CDB1C22ABD
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 11:24:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DCCC31BF7F5;
-	Tue,  1 Oct 2024 11:24:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53CA51BF7FA;
+	Tue,  1 Oct 2024 11:24:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YpqRCJ9h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M21Qp8W9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C4B719D88B
-	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 11:24:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F431BF7EE
+	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 11:24:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727781857; cv=none; b=Oc53oAh+Ra65Zots1XjXlm+oBhkR4IUeT5CoJE0UM6emfo6DE1/tVHFeNZO48VdsgepzyAqmAvqCtYQYbYH0f6kZ0w7Cb+sZnGmKjJ9YB36cRPN021BAqOQPyJqFhaZvGvdFPpsTZWQtcQbm9OKvmio4e50lYmw/no7+rTn8o2c=
+	t=1727781866; cv=none; b=l28wMDhbiGNbySoHR+Z+e4xy17DaHviWjWxj6N6Bb9/JjqKNlsHftCxt05y161bE8bI6j5jDdO/mn2LxpcZL2PuAFvrX+ud+tzWd71k/p6fAknJx/9CWaI0vxSsBOyexntiokS9D3CEv4f1LQ4diU97VJVW7TeR1gWey/OmbM8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727781857; c=relaxed/simple;
-	bh=x0Dv6LKZpLp2lcgUTxzkZX7yTjPsklLm2/mTgR6oJtM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=rz9/CL9PPJAA/pNJqkZRlnQSI4HMvYBkQDuIovvahNhISEJu+0qireGkr1b0gAxtPOglSmrEuwIkTHxCmp2/F84oboRYmnV37CgFH47XR9dM1XqlE/RET9kCtiWf5ax96cVce9oFnmHPkRDoNlmgZeZrMEH6sqbDP2pMAIAa9ok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YpqRCJ9h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2FAAC4CEC6;
-	Tue,  1 Oct 2024 11:24:16 +0000 (UTC)
+	s=arc-20240116; t=1727781866; c=relaxed/simple;
+	bh=iwAEm2LdV9P+79Ehbyv4DfcSnPkTZ7W0lfOxaH7omE4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=XOgKYXrGzJc+44sM2+4A166HN4EZFlHmtIabmlq0ZFUTUGY17GqiwOyHKuj8KLQyamjAMB1TpWVs0mBg45BjwpgU8O6XAwZNv/PaB7fkaEWDkYet1xk921jByW4lrgPM395A+K4LVxfEKTVYE5WcxzPAq0VvZW109jvlPIDs2tM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M21Qp8W9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88064C4CEC6;
+	Tue,  1 Oct 2024 11:24:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727781857;
-	bh=x0Dv6LKZpLp2lcgUTxzkZX7yTjPsklLm2/mTgR6oJtM=;
+	s=korg; t=1727781865;
+	bh=iwAEm2LdV9P+79Ehbyv4DfcSnPkTZ7W0lfOxaH7omE4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=YpqRCJ9hpQi7MAZ2O+dY4Sh1qsfoF9mwxO/M09yJPfjWEeKG+DISZBs3AdtuJGd9O
-	 X6J76s33z7gbqs1btQn3Q35xlPWkq3yXMHuOx8jMtSim6SEemCWW5H3tlOWOfz+Wt9
-	 E/uHG7KTt6WAklGpJ9Vw5fgoYCCFM1G9i/a3Hvxk=
-Subject: FAILED: patch "[PATCH] thermal: sysfs: Add sanity checks for trip temperature and" failed to apply to 6.11-stable tree
+	b=M21Qp8W92CkHYVbWFXq3LtUIGA0P/AW6uastUk3kwGIdeGHUUTNwAbtLuWuH5x9HF
+	 i+0InPRfKcxis6GwPar4pjsnfEZ9nd9BK2PwsBvPHydYzTtMuHvPqA8WRZ0uBp7T8o
+	 +PozqRExxcTCBzqzjv68s4QCUZaIjQmco4dF4VU0=
+Subject: FAILED: patch "[PATCH] thermal: sysfs: Add sanity checks for trip temperature and" failed to apply to 6.10-stable tree
 To: rafael.j.wysocki@intel.com,lukasz.luba@arm.com,stable@vger.kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 01 Oct 2024 13:24:14 +0200
-Message-ID: <2024100114-compare-delivery-d2c9@gregkh>
+Date: Tue, 01 Oct 2024 13:24:15 +0200
+Message-ID: <2024100115-support-data-8f0e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,25 +53,28 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.11-stable tree.
+The patch below does not apply to the 6.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.11.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 874b6476fa888e79e41daf7653384c8d70927b90
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100114-compare-delivery-d2c9@gregkh' --subject-prefix 'PATCH 6.11.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100115-support-data-8f0e@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
 
 Possible dependencies:
 
 874b6476fa88 ("thermal: sysfs: Add sanity checks for trip temperature and hysteresis")
 107280e1371f ("thermal: sysfs: Refine the handling of trip hysteresis changes")
 afd84fb10ced ("thermal: sysfs: Get to trips via attribute pointers")
+0728c810873e ("thermal: trip: Pass trip pointer to .set_trip_temp() thermal zone callback")
+a52641bc6293 ("thermal: trip: Use READ_ONCE() for lockless access to trip properties")
+f41f23b0cae1 ("thermal: trip: Use common set of trip type names")
 
 thanks,
 
