@@ -1,125 +1,100 @@
-Return-Path: <stable+bounces-78307-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78308-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DF8398B16C
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 02:24:43 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F8B298B174
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 02:27:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 11CDAB21F6F
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 00:24:41 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AC25E281786
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 00:26:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD2B828FF;
-	Tue,  1 Oct 2024 00:24:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03B6433D5;
+	Tue,  1 Oct 2024 00:26:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P8otNILN"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="e/vL7cWp"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f65.google.com (mail-qv1-f65.google.com [209.85.219.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2839173;
-	Tue,  1 Oct 2024 00:24:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D4D415E81
+	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 00:26:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727742274; cv=none; b=Q/VbjaFJi1ppgPLNR1aHcCG4oxx0KG8OWlOr6TXvsvxJinWA8zQR/M7LRe4TmFe5ROF+4v4rTjCgNIfo0X1xegPazSMNwSHzxH734wQr4DLUdd+V/rgbdDAAgeZVqqZ2ByPLWO9JiiPMoixXbOtYFdESzdOtnaiu1JXrE6oxkT8=
+	t=1727742408; cv=none; b=FS3MGC9ZB8+RerQuIWMyssDgYpP30kKT3I2BghvdrJgqC7jf7h/aOVUx+S/R6ZA+oK+O7yENF3KXQ3lWipg8tFk9Ff096qP8LhmbFtuDFHtU0dvhadvgo7TcVt+jmaPnYKHgDOQ1R6DTY1yWdHKNGszmuPsNGwHEyhUHJSQOlHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727742274; c=relaxed/simple;
-	bh=RR4YJEuiCB+s4fOTHaO2fk03o/BIx9b2dGauH/q9zfI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=K86TkI+fkUkOcW5pwhIQdyjvKEXDXO6bGG7rWKkMiwAQ/zpVqnQZHLPS7iNIXX2P2rssQXYRwF6/dj/YetrelnlUhHoM7vq98IBAVQA4FvG/Og6N6dK302nMAUkHYZb4KGpV6KgiSuvvdRHN6RHc39IF47nj9us+mCNN6zSa8m8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P8otNILN; arc=none smtp.client-ip=209.85.219.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f65.google.com with SMTP id 6a1803df08f44-6cb2824ddc2so39531606d6.1;
-        Mon, 30 Sep 2024 17:24:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727742272; x=1728347072; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=UXJNocpNHIaneGGPh7u0gkYrjLLyA3SxEfbfZIWZAYE=;
-        b=P8otNILNZhG1P0cukcyh3sY5jROW69KKkCgThUI04WIqlzcsVPS/0CgsIY7YpYvLXC
-         o7DgI9RBtshoJJrxTBtLk2VhPZH6euFRinmtCrCH34QfS4h3Qa/PsCZ3EETRolZeQfAw
-         /gDGHnJjsbvWND1/J3/8xkMqNoq6GKiSQoPxF2PwOm86xLZQgAgy6w7J7z7J/TW2SkXW
-         Y0hLQcJ04pou+/jk0up+V1bCQdBefXngMEmocWxAYgHQls6ff3T1PxOh7o5G97lqxNwP
-         7oGMfsIgydieDVoy/AFuiQrQIbywdXEn0V2e0JSkRN9HHrdLznSBroYaU3YRK3+h8JW6
-         zTkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727742272; x=1728347072;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=UXJNocpNHIaneGGPh7u0gkYrjLLyA3SxEfbfZIWZAYE=;
-        b=wPg57s3BAIbPHDFDFOMlO63LUFA4mu9YIpKNo1+4ldbnxR8YX+9FVeiVwjSde3em47
-         QS1O9JO2mGwDnFZFWY/zixyHOO7p2SMALzMxXHZy3FfpE7GV4Iyf6gbhUf6ASDcR0LST
-         ASMikCgq30iNfD55MPD2Azcz9oXaPJZA3Zc9KntRYzhevI7sm/ApvfYQJPrhFxu7Mtgi
-         cA1xKdAZqUNBWxyIMJhBmUisEMy23URsqVixpPbgZYKap6MZf2h232DBdf3FncjamHk+
-         PjKcKA/iY/UkQsn0qeBnsvRr8ToIKjGyIAOlyUP2sLOqjZNIuyveTmiTSsJsBhyvPynM
-         GrhA==
-X-Forwarded-Encrypted: i=1; AJvYcCUjBi7QTHLVVJmXSigmeYk81k8LBKrctlr9XVLgrZcDFDt8VuhFTihRayRaidRSxLbDlssRFipz@vger.kernel.org, AJvYcCVA+B1lxVbiG1ZDgBpwHh+Sti8nOeCTv2XwmXicbdW88oufYrAzScQGKewdSCGWapsGhGd8eyauX2qc0/OZ@vger.kernel.org, AJvYcCWlcoqTcDgq4EtFLCTNgr06zWBFd7sJfJ8EITMnFM2caAxPHOkzEf/OypBdiSQQAGZ7Pox3zOCWYNHzCEA=@vger.kernel.org, AJvYcCXYIL8C0mWkBLAV39Yu5vfmea5bJCDnYxlY6jvymm2mP4FWc47RXjgRZlLUnAM0WI5KSvl/H/bhnGD2vGkQ@vger.kernel.org
-X-Gm-Message-State: AOJu0YyWZPndUtEXVZVmrNg1GxeZTuORofl51yhhB3GpB0Xd27aCFE05
-	Ko7coOoFX2WG/onNkNqA7Y8AODj4nVbbs+PFMX+LmMgeqrXTEYFs
-X-Google-Smtp-Source: AGHT+IFqcL3S9UyEKrwwWrFna24JxfP1Qfwil+sI6wQESX1DtQgsUOKRCkTwCI1uJWo3OmH6tjkBtA==
-X-Received: by 2002:a05:6214:4206:b0:6cb:3ba9:b834 with SMTP id 6a1803df08f44-6cb3ba9b883mr186213266d6.24.1727742271738;
-        Mon, 30 Sep 2024 17:24:31 -0700 (PDT)
-Received: from localhost.localdomain (mobile-130-126-255-54.near.illinois.edu. [130.126.255.54])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6cb3b66b5a8sm44361256d6.79.2024.09.30.17.24.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 30 Sep 2024 17:24:30 -0700 (PDT)
-From: Gax-c <zichenxie0106@gmail.com>
-To: srinivas.kandagatla@linaro.org,
-	lgirdwood@gmail.com,
-	broonie@kernel.org,
-	perex@perex.cz,
-	tiwai@suse.com,
-	rohitkr@codeaurora.org
-Cc: alsa-devel@alsa-project.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Gax-c <zichenxie0106@gmail.com>,
-	Zijie Zhao <zzjas98@gmail.com>,
-	Chenyuan Yang <chenyuan0y@gmail.com>
-Subject: [PATCH] ASoC: qcom: Fix NULL Dereference in asoc_qcom_lpass_cpu_platform_probe()
-Date: Mon, 30 Sep 2024 19:24:09 -0500
-Message-Id: <20241001002409.11989-1-zichenxie0106@gmail.com>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1727742408; c=relaxed/simple;
+	bh=GRstGh88CKhWBeZYBvRFmii5LqNpCmTvCKEi1vd9Foo=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition:In-Reply-To; b=rJFih8T0zFdexR1hDTgVfiBe93fNRictXJ/95W65o7hs8CIketpcAs04mjuQcQFk6X9nx71YfZit6XLDO/29W/dkUdLxcK5rvX8F9wl/pclpFp9PZmD1AxuA7faWq4SuN4t2fP2rQqp5AlNK/V3BS/7F9U1yZpoRwCxTp0Y2UWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=e/vL7cWp; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1727742406; x=1759278406;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=GRstGh88CKhWBeZYBvRFmii5LqNpCmTvCKEi1vd9Foo=;
+  b=e/vL7cWpMwuJXyYiimEER/WXq9kYOKtQfunPHWVu740b2yUGNaqqK9Uj
+   eIY3AmX8XTGd69cWX7GZLBSKZWLd2nw04cGrVxIse4WJBJKjn+LpTXpXl
+   5atLuxUH22FwxZy33CwHDHYOGBB2BpUODsWmH7lb5CKtGlPwKMVkrDlst
+   eViT5ksQdOcpocCP+d6M5kOBAIsEnDinkLqd/HIWzriLcRjIZIFkgqA2d
+   xbgHxH3vHwjF58Fi8dQxbrlHkd8Y0zJq5kJBH2ecmHg9SORXBy5JMDaQj
+   rKGhl6Dou5Ba3uEDC26imCyX9Vz2W1PX6uldPcZL91k+hLNbBn+kDSbTY
+   w==;
+X-CSE-ConnectionGUID: TQBQDhPxS4C5qlWSq+ZQAA==
+X-CSE-MsgGUID: 36Ws0cc+RpCfQ3gg2kDuQQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11211"; a="26735110"
+X-IronPort-AV: E=Sophos;i="6.11,166,1725346800"; 
+   d="scan'208";a="26735110"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2024 17:26:45 -0700
+X-CSE-ConnectionGUID: jQqS32JzQkev/KLKzvHVMw==
+X-CSE-MsgGUID: TxpikNV1R56U6alFmZvfBg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,166,1725346800"; 
+   d="scan'208";a="73146325"
+Received: from lkp-server01.sh.intel.com (HELO 53e96f405c61) ([10.239.97.150])
+  by fmviesa007.fm.intel.com with ESMTP; 30 Sep 2024 17:26:44 -0700
+Received: from kbuild by 53e96f405c61 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1svQiw-000Q57-1l;
+	Tue, 01 Oct 2024 00:26:42 +0000
+Date: Tue, 1 Oct 2024 08:26:31 +0800
+From: kernel test robot <lkp@intel.com>
+To: Gax-c <zichenxie0106@gmail.com>
+Cc: stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [PATCH] ASoC: qcom: Fix NULL Dereference in
+ asoc_qcom_lpass_cpu_platform_probe()
+Message-ID: <ZvtBtyJcW30hVXae@5b378fdd06de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241001002409.11989-1-zichenxie0106@gmail.com>
 
-A devm_kzalloc() in asoc_qcom_lpass_cpu_platform_probe() could possibly return NULL pointer.
-NULL Pointer Dereference may be triggerred without addtional check.
-Add a NULL check for the returned pointer.
+Hi,
 
-Fixes: b5022a36d28f ("ASoC: qcom: lpass: Use regmap_field for i2sctl and dmactl registers")
-Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
-Reported-by: Zichen Xie <zichenxie0106@gmail.com>
-Reported-by: Zijie Zhao <zzjas98@gmail.com>
-Reported-by: Chenyuan Yang <chenyuan0y@gmail.com>
----
- sound/soc/qcom/lpass-cpu.c | 3 +++
- 1 file changed, 3 insertions(+)
+Thanks for your patch.
 
-diff --git a/sound/soc/qcom/lpass-cpu.c b/sound/soc/qcom/lpass-cpu.c
-index 5a47f661e0c6..a8e56f47f237 100644
---- a/sound/soc/qcom/lpass-cpu.c
-+++ b/sound/soc/qcom/lpass-cpu.c
-@@ -1243,6 +1243,9 @@ int asoc_qcom_lpass_cpu_platform_probe(struct platform_device *pdev)
- 	drvdata->i2sctl = devm_kzalloc(&pdev->dev, sizeof(struct lpaif_i2sctl),
- 					GFP_KERNEL);
- 
-+	if (!drvdata->i2sctl)
-+		return -ENOMEM;
-+
- 	/* Initialize bitfields for dai I2SCTL register */
- 	ret = lpass_cpu_init_i2sctl_bitfields(dev, drvdata->i2sctl,
- 						drvdata->lpaif_map);
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
+
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html#option-1
+
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [PATCH] ASoC: qcom: Fix NULL Dereference in asoc_qcom_lpass_cpu_platform_probe()
+Link: https://lore.kernel.org/stable/20241001002409.11989-1-zichenxie0106%40gmail.com
+
 -- 
-2.25.1
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
 
