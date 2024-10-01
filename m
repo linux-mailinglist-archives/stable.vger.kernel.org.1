@@ -1,122 +1,184 @@
-Return-Path: <stable+bounces-78552-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C93898C12F
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 17:10:24 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A93498C143
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 17:12:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1376A2839B6
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 15:10:23 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id A5BB71C23B76
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 15:12:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 864FA1CB529;
-	Tue,  1 Oct 2024 15:05:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DEBA1C9B86;
+	Tue,  1 Oct 2024 15:12:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3lyWkIwU"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GhXZBah1"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-il1-f180.google.com (mail-il1-f180.google.com [209.85.166.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D452E1CC8A6
-	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 15:05:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 224601C5782;
+	Tue,  1 Oct 2024 15:12:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727795153; cv=none; b=FHkpZ4VrQk40/vlcexoclaLRlPDdI8Y9wbtcEC7Gg0Gtx+VHGfvclA+ifEp18VLa80fdI0uVjbyskc/tkMUFD/s6Cq7dimJSPoquMndtBV6QjLzd3Gbf59RuHjWzIA+2OlDp2wQKLjaWNmZW7Hyi1b+CoX0HETvAXcuL18NhLoE=
+	t=1727795545; cv=none; b=J3k7cVXB0tjq6SQSVrw5Xf1jWClURgJPxPytafDaNvs7p7eVpvXySHAtwvyZj8zFsraZzWC0A3kI2YuU1QAKWmeoM/kKLRZ3NSKFX1URoVZOVzdWoZeGSmJRnSflRvS7jWdo3GdPa4UiNZiqdPV8q5afoE4LWLwLSth24iJKhWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727795153; c=relaxed/simple;
-	bh=SWgoSI2AYx9jfAkhOX1WH3TK3W9FMDIEL2mAGp/iDWU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EtLccO1b3hhyi5k/DT2BJ8fMU6a658Z8Nnwhlr7jGolohg3jbcp1La503U/iKYQ+konDN3G0I9ZdiEW2rtZ0dIn7hJHlxZ3EVf5i0FMxUlxHCCAXBhpt0VTeImc7ySkcsYV0KdRUQO2iQp+NJuXqRLD5INm7mczQLpnoxmjQU50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3lyWkIwU; arc=none smtp.client-ip=209.85.166.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-il1-f180.google.com with SMTP id e9e14a558f8ab-3a1f1ef7550so28847575ab.1
-        for <stable@vger.kernel.org>; Tue, 01 Oct 2024 08:05:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1727795151; x=1728399951; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SWgoSI2AYx9jfAkhOX1WH3TK3W9FMDIEL2mAGp/iDWU=;
-        b=3lyWkIwU8pI8dir1U4YkYUDhvBQIY/+epyJllubT6x7c9mr/XBH+fE0fZ/SPV7gkhn
-         O0InWa1BV95ZYVGR3qEvwYMi7/VDTwHEtt6qBWj6cu7j+GKFgTa8u4bkjUVGLE0rpUnE
-         QTgma/CZ7CtuM6N4AxvunJx5DBi0BFCHqYOk8T4z1HN4MNfLGO6dfbzTl+OjdPY4HVhh
-         wPSXdDQSQVSbALDt8h2AANY8iOOx6TDeiIFjVjJQbdzUjMRtz1itf42rZsTrUFU8uB+H
-         iFrUvH4ih/HKxQhcJ6u0FlN+xxosX4GCUlUVtzX7s5e/I0yT67D6Cmw1AcHT2AzRrFMA
-         WnYA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727795151; x=1728399951;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SWgoSI2AYx9jfAkhOX1WH3TK3W9FMDIEL2mAGp/iDWU=;
-        b=HNgVvLlgDJEw5ZT3b4th2PPQ1bRfXBEswKGziquLD4oFjh+ll8o2Pkx/+TOhQ1dMHU
-         WQnR83IJrB4dyZqK1PcV9bfkp7HvoYBSAq6YQ6zGfyOiQWdlPWrQq4XtL3p72Xcptsuc
-         aQUEHMEwQjNnC8UGmlhYI9pZ/lkb5h8F55qV22iyVUIsGDR0VFxDRzkRUEgplXvkdQp+
-         uO2k+jCymYyH9EYZQHXIHT4XTczXHTQPFwiraDPEEEU8Gm5HFqIQ7GWfH7AciJ8ky5ob
-         5+FOUMbkTGr84CyvDNtHKK5nN0DGEofwLlP3GsmFb9ZCcUiG7+aWR7YEIq8+UWxHh0S4
-         etGg==
-X-Forwarded-Encrypted: i=1; AJvYcCVVLn0DN72H+mZjMOmNs2TVJyPwT0F54B3lMqYVtS8GsemyrTZcQbIAkRRMNJGveJX4jWv1Wvs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzlG/vb3+KIsNDKo+giH3gPnRv82S0BrF7PyCk4D/k+lKPeVkKG
-	wzCBspHZbcnWuw7GiHb5hfin5vih4SuzK7AW5gw9sZPexPm+NPXlU5sr3Gw/O6+TrSMH4/wqBak
-	67q/tgV5+brtY2pL745OtUTmN7jxah49vERvv
-X-Google-Smtp-Source: AGHT+IFYhGN1/EqXsAmRGJhOLtUtIkXYKysoJ8g6a4JcGZoVUc96KdHyWTnep2+hbuEvm+kWxOb07P6VtxlhlwWD9lU=
-X-Received: by 2002:a05:6e02:164b:b0:3a0:9ea3:8d79 with SMTP id
- e9e14a558f8ab-3a3451bbd54mr155266705ab.16.1727795150688; Tue, 01 Oct 2024
- 08:05:50 -0700 (PDT)
+	s=arc-20240116; t=1727795545; c=relaxed/simple;
+	bh=vOb2cBg3YKOeU1ZQj9lyC4Y3LiyaLbKnBFaVZsWE8tU=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=efReEvhenN6yW4bXJmJIIdgZBu923tfbZVlgcEfode4D2Hb9VSwcmm3ddxdDP7i+FNmg0uabwjLhc3+bbg+pdzY1osQcSb6IfKkkBAGaxWB0wfrxJDUCmOzXMDukfza+8ZxvDEMJt6zjvn0GIWwofO6+YbQ1/+xlwOKRt+KKR9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GhXZBah1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2C3CC4CEC6;
+	Tue,  1 Oct 2024 15:12:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727795544;
+	bh=vOb2cBg3YKOeU1ZQj9lyC4Y3LiyaLbKnBFaVZsWE8tU=;
+	h=From:Date:Subject:To:Cc:From;
+	b=GhXZBah1Y6sKXkPJI7tFDxk20ayMPtxsnaNyUwQeoVsKfqciNGf3JYQKHL7WGbOoG
+	 E+JIbvZcF6g0ido/TbG24JklHmVPopw0iuZ8sMbADdQlsBFUpWyWt7zlbZDsgkXZLX
+	 u69IvToo3r30hSgP+lhik7L/DGTzfPCpqELVAIByURdU698WQMxQm7WiGX0VseyC/e
+	 BlUBl7s17UKGtZw82x0GdjBKVENNfjQ0FKJbu2WS7QiWYv3faisL8A+E6BcqJRGBzC
+	 KWbFSRV3pcweX59QdzEowGU0MiZAua6SSrtvUaBXvhauK0FIlDi8Nt9Ck/1Jx9Kfir
+	 23JK5jbUiDa9Q==
+From: Roger Quadros <rogerq@kernel.org>
+Date: Tue, 01 Oct 2024 18:12:18 +0300
+Subject: [PATCH] usb: dwc3: core: Fix system suspend on TI AM62 platforms
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <2024100127-uninsured-onyx-f79a@gregkh>
-In-Reply-To: <2024100127-uninsured-onyx-f79a@gregkh>
-From: Eric Dumazet <edumazet@google.com>
-Date: Tue, 1 Oct 2024 17:05:36 +0200
-Message-ID: <CANn89iKy0uzynO+0K-H1hiaEx301ZCFcXfgQ3UNRDfpWddMVtQ@mail.gmail.com>
-Subject: Re: FAILED: patch "[PATCH] icmp: change the order of rate limits"
- failed to apply to 6.1-stable tree
-To: gregkh@linuxfoundation.org
-Cc: dsahern@kernel.org, hawk@kernel.org, keyu.man@email.ucr.edu, 
-	kuba@kernel.org, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20241001-am62-lpm-usb-v1-1-9916b71165f7@kernel.org>
+X-B4-Tracking: v=1; b=H4sIAFER/GYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDSyNj3cRcMyPdnIJc3dLiJN00EyMDS0PzpBRzA3MloJaCotS0zAqwcdG
+ xtbUAp0RjS14AAAA=
+To: "Rafael J. Wysocki" <rafael@kernel.org>, 
+ Len Brown <len.brown@intel.com>, Pavel Machek <pavel@ucw.cz>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Nishanth Menon <nm@ti.com>, 
+ Tero Kristo <kristo@kernel.org>, Santosh Shilimkar <ssantosh@kernel.org>, 
+ Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Cc: Dhruva Gole <d-gole@ti.com>, Vishal Mahaveer <vishalm@ti.com>, 
+ msp@baylibre.com, srk@ti.com, linux-pm@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ linux-usb@vger.kernel.org, stable@vger.kernel.org, 
+ Roger Quadros <rogerq@kernel.org>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3335; i=rogerq@kernel.org;
+ h=from:subject:message-id; bh=vOb2cBg3YKOeU1ZQj9lyC4Y3LiyaLbKnBFaVZsWE8tU=;
+ b=owEBbQKS/ZANAwAIAdJaa9O+djCTAcsmYgBm/BFUmouOCKLwG6BHWujLlPbceU+uDh1JXzuaN
+ T5ReiYdaGeJAjMEAAEIAB0WIQRBIWXUTJ9SeA+rEFjSWmvTvnYwkwUCZvwRVAAKCRDSWmvTvnYw
+ k+9iEADHF+B7kkPnLXj5BsQ6N26i2Onk+8W6BI9VD6ucCARaZaNEOAxf+PHo+mo0srj2T3ad+C4
+ eWghHfB0UrOK9uSQ6vW+pGxJFVJttdgx2o+QPMMrQiyVK6vnZ2YMGI8WgPE/EndyWClyuVLCB0Z
+ cdihhJWLOObontSlsdwbjCNTjGMIjdgzSCFMH9x7fFE+ypmXHbJxvaNDH7XwqOMANfjS32db925
+ isHnZvzNcrdJ5lD4IR3HXq2qK+aN2ln6AThY6EVi2qeEd8Db2vZSq6W30BzTjsLLY7Rg2/4qlHz
+ HTQGgHye1in1Yvk4y0D2W6Yr532LcFz0GmlhTt7u4xAKnxkb8dmuNezTsZTUcJpKt7jFP/kJSby
+ eGuykYnZHzKANbAuzBjipu18wYPgNa4hi8zfsyOAyJM15L2MLoK4sEnnkBZTmO/c0UzypUQZUNQ
+ yiokqis4ws4QC4g6XeH3u5awmFEhaKsepnpQyTcsYTuQ6W60Ir8z477YAVEJVSTRJS3dFe+HUyC
+ E6fdGtfrKK6h+Ey7uL0dqxR172US/ToOURzaZLVtzQOQUUkrkCOC4qWUiOZlCiC0vj1/v1sKPRv
+ VbXY0Y3easAjSPRIbur2BAPFqzfQ2mdicU1RxXcqg5hcmqI7LJ9WX9/pD6NBE+UBnCbF+GbTesJ
+ UE802tTXBsx4Rvg==
+X-Developer-Key: i=rogerq@kernel.org; a=openpgp;
+ fpr=412165D44C9F52780FAB1058D25A6BD3BE763093
 
-On Tue, Oct 1, 2024 at 4:02=E2=80=AFPM <gregkh@linuxfoundation.org> wrote:
->
->
-> The patch below does not apply to the 6.1-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
->
-> To reproduce the conflict and resubmit, you may use the following command=
-s:
->
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.gi=
-t/ linux-6.1.y
-> git checkout FETCH_HEAD
-> git cherry-pick -x 8c2bd38b95f75f3d2a08c93e35303e26d480d24e
-> # <resolve conflicts, build, test, etc.>
-> git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100127-=
-uninsured-onyx-f79a@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
->
-> Possible dependencies:
->
-> 8c2bd38b95f7 ("icmp: change the order of rate limits")
-> d0941130c935 ("icmp: Add counters for rate limits")
-> 8032bf1233a7 ("treewide: use get_random_u32_below() instead of deprecated=
- function")
->
-> thanks,
+Since commit 6d735722063a ("usb: dwc3: core: Prevent phy suspend during init"),
+system suspend is broken on AM62 TI platforms.
 
-Hi Greg, I did the backport of two patches :
+Before that commit, both DWC3_GUSB3PIPECTL_SUSPHY and DWC3_GUSB2PHYCFG_SUSPHY
+bits (hence forth called 2 SUSPHY bits) were being set during core
+initialization and even during core re-initialization after a system
+suspend/resume.
 
-d0941130c935 ("icmp: Add counters for rate limits") clean cherry-pick
-8c2bd38b95f7 ("icmp: change the order of rate limits") minor conflict.
+These bits are required to be set for system suspend/resume to work correctly
+on AM62 platforms.
 
-Thanks !
+Since that commit, the 2 SUSPHY bits are not set for DEVICE/OTG mode if gadget
+driver is not loaded and started.
+For Host mode, the 2 SUSPHY bits are set before the first system suspend but
+get cleared at system resume during core re-init and are never set again.
+
+This patch resovles these two issues by ensuring the 2 SUSPHY bits are set
+before system suspend and restored to the original state during system resume.
+
+Cc: stable@vger.kernel.org # v6.9+
+Fixes: 6d735722063a ("usb: dwc3: core: Prevent phy suspend during init")
+Link: https://lore.kernel.org/all/1519dbe7-73b6-4afc-bfe3-23f4f75d772f@kernel.org/
+Signed-off-by: Roger Quadros <rogerq@kernel.org>
+---
+ drivers/usb/dwc3/core.c | 16 ++++++++++++++++
+ drivers/usb/dwc3/core.h |  2 ++
+ 2 files changed, 18 insertions(+)
+
+diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
+index 9eb085f359ce..1233922d4d54 100644
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -2336,6 +2336,9 @@ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
+ 	u32 reg;
+ 	int i;
+ 
++	dwc->susphy_state = !!(dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0)) &
++			    DWC3_GUSB2PHYCFG_SUSPHY);
++
+ 	switch (dwc->current_dr_role) {
+ 	case DWC3_GCTL_PRTCAP_DEVICE:
+ 		if (pm_runtime_suspended(dwc->dev))
+@@ -2387,6 +2390,11 @@ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
+ 		break;
+ 	}
+ 
++	if (!PMSG_IS_AUTO(msg)) {
++		if (!dwc->susphy_state)
++			dwc3_enable_susphy(dwc, true);
++	}
++
+ 	return 0;
+ }
+ 
+@@ -2454,6 +2462,14 @@ static int dwc3_resume_common(struct dwc3 *dwc, pm_message_t msg)
+ 		break;
+ 	}
+ 
++	if (!PMSG_IS_AUTO(msg)) {
++		/* dwc3_core_init_for_resume() disables SUSPHY so just handle
++		 * the enable case
++		 */
++		if (dwc->susphy_state)
++			dwc3_enable_susphy(dwc, true);
++	}
++
+ 	return 0;
+ }
+ 
+diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
+index c71240e8f7c7..b2ed5aba4c72 100644
+--- a/drivers/usb/dwc3/core.h
++++ b/drivers/usb/dwc3/core.h
+@@ -1150,6 +1150,7 @@ struct dwc3_scratchpad_array {
+  * @sys_wakeup: set if the device may do system wakeup.
+  * @wakeup_configured: set if the device is configured for remote wakeup.
+  * @suspended: set to track suspend event due to U3/L2.
++ * @susphy_state: state of DWC3_GUSB2PHYCFG_SUSPHY before PM suspend.
+  * @imod_interval: set the interrupt moderation interval in 250ns
+  *			increments or 0 to disable.
+  * @max_cfg_eps: current max number of IN eps used across all USB configs.
+@@ -1382,6 +1383,7 @@ struct dwc3 {
+ 	unsigned		sys_wakeup:1;
+ 	unsigned		wakeup_configured:1;
+ 	unsigned		suspended:1;
++	unsigned		susphy_state:1;
+ 
+ 	u16			imod_interval;
+ 
+
+---
+base-commit: 9852d85ec9d492ebef56dc5f229416c925758edc
+change-id: 20240923-am62-lpm-usb-f420917bd707
+
+Best regards,
+-- 
+Roger Quadros <rogerq@kernel.org>
+
 
