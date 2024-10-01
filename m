@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-78388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2753098B909
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 12:15:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 320E598B90A
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 12:15:07 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id CBA221F23174
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EC6C32841C1
 	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 10:15:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5CCB1A0739;
-	Tue,  1 Oct 2024 10:15:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94F741A08B8;
+	Tue,  1 Oct 2024 10:15:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="znKluIxy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gvCL9K2g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64AE71A0733
-	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 10:15:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56D491A0737
+	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 10:15:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727777701; cv=none; b=uMTY5t83nnrXNb7pcnBD3e1BsMWG6a3zfg02DUnyKomYmKSF+1Uzq0u9Ra0BTsCML8IdFDzd/KBPGsRAjpEbhwnLGvqT8d9rhsCqBA36hN4JTqESCwzJX4J4SFY2+ilqAOMC1Kevu+x4LbAEMgQ1n04Lx78uZqFhYMcIY306ZEo=
+	t=1727777704; cv=none; b=HXt0apifCi7LqNJ2skoj3DHSLbdPgdMcIt8mNe8u8DKX4+0skldkHsNlKjPFewQmxSOBvI7Ro27MuG7UrknHPA+LzEjdEaxixPbiRZB4FCZJdakDt/VtsMcVCjhEC9kn2nRrKF5hUfrNWrXgMLodUt4M13ics3jZ8uBbNWNssbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727777701; c=relaxed/simple;
-	bh=UasM8A5U1v2k70BKEI20tEwExLiN4Y5nagJMdSP5x1Y=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=AdUBDOHiVRVNTzn0obeqJMSdq5lrAy5rKpXhZXP1L/TTHx1wKPiY+Cs7d49ScF62JntPjlBdd1I0w7LyqY5JYseee0U9HsQFwXKuS/82qO7NXcNwvnulR+VGoZZe9z49x1vYTMoqECdXoIaDJG824ncybNXm3lyp3jes0RqRB0I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=znKluIxy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7732BC4CEC6;
-	Tue,  1 Oct 2024 10:15:00 +0000 (UTC)
+	s=arc-20240116; t=1727777704; c=relaxed/simple;
+	bh=54kscZa4J/ps2i+H2Us7JBMuRtunT/bhWCcuXXxaC6Y=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=F7f/9kF5M15+lQF/FdrjofAL07GFHf2BGzMmgBX8ufi2C9EVMDYiDjP2Ivx2U16W/mPIGy4L4foZHJvA2Q6LaD3aO2qf31vxrAltwHEnwhNapumK0LznWRAwpdSg9p75a0CdkIlglJyi/TBSaa1LHqxW+K5xgA3UVv0x2KqJtxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gvCL9K2g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3EBBC4CEC6;
+	Tue,  1 Oct 2024 10:15:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727777700;
-	bh=UasM8A5U1v2k70BKEI20tEwExLiN4Y5nagJMdSP5x1Y=;
+	s=korg; t=1727777704;
+	bh=54kscZa4J/ps2i+H2Us7JBMuRtunT/bhWCcuXXxaC6Y=;
 	h=Subject:To:Cc:From:Date:From;
-	b=znKluIxyFMIRaOl/bT1V+bUZkEX9kvUOHwj6HjC1KYWWT83ysuQxfTbhsTDrdhGJG
-	 ZCZSvMSv09qR3k6LUEBUIlwb36u/GRb1PcXPQcmV6/yBLZCQtuhWeBSl87sJev5ca/
-	 j9jmjhvmr3JOeRMN4sPND/CASuNIz5iCX+zdWksQ=
-Subject: FAILED: patch "[PATCH] x86/tdx: Fix "in-kernel MMIO" check" failed to apply to 6.10-stable tree
+	b=gvCL9K2g9GNN4Ppxs8ev4BHPNgRAsT+qbw85zch50bTJrDLcEHElXJgK3oxxNP8Qy
+	 AEt4OcTUQLxN5QT2xiU3CdIxRg9MVtEeak4bmGcrvI/C733X0bxRTZEc4+OrjQbatg
+	 eqEMqwVp3SWdgM7I1oJi2iGoXSpU8FXu28scQ2pE=
+Subject: FAILED: patch "[PATCH] x86/tdx: Fix "in-kernel MMIO" check" failed to apply to 6.6-stable tree
 To: legion@kernel.org,dave.hansen@linux.intel.com,kirill.shutemov@linux.intel.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 01 Oct 2024 12:14:57 +0200
-Message-ID: <2024100156-dumping-crib-574c@gregkh>
+Date: Tue, 01 Oct 2024 12:15:01 +0200
+Message-ID: <2024100100-emperor-thespian-397f@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,25 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x d4fc4d01471528da8a9797a065982e05090e1d81
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100156-dumping-crib-574c@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100100-emperor-thespian-397f@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
 d4fc4d014715 ("x86/tdx: Fix "in-kernel MMIO" check")
 859e63b789d6 ("x86/tdx: Convert shared memory back to private on kexec")
+533c67e63584 ("mm/mglru: add dummy pmd_dirty()")
 
 thanks,
 
