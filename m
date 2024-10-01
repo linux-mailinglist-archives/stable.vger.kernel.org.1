@@ -1,132 +1,126 @@
-Return-Path: <stable+bounces-78468-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6662B98BAF6
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 13:25:35 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCAF098BAFA
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 13:27:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 981BB1C227E3
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 11:25:34 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8D0372838CB
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 11:27:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC3341BF7F5;
-	Tue,  1 Oct 2024 11:25:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 877E01BF807;
+	Tue,  1 Oct 2024 11:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o9dbB0Ie"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="Jj+/khYe"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-172.mta0.migadu.com (out-172.mta0.migadu.com [91.218.175.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CEB019AD4F
-	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 11:25:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CCCA19AD4F;
+	Tue,  1 Oct 2024 11:26:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727781931; cv=none; b=apyqyggGgsYI2f98EeZo+Z81pDzxhp6u+2uT4Y3TxocOTNmr0lIQDDG76dVMYhMVsxdSqzHRw/HqzFmZpY/ykPsdAxmkKXl80A45OVbWEqVNWyV/RcYBkTWd+cDQfdPLS6oJpT6bNpI6VGO66YGaFby6GFiFNElldzbz8LJg3aM=
+	t=1727782021; cv=none; b=a4vmZRjvJy9R0afNuiqpUVdXd5SQO7pdXVrwJ+rGSqaqx3JxK8TDhWg2MF5iBPO58ZEZg3Ulu2UZowxAs43YB8e/ODOYHZGX/96SunFzacxPtHR/oAMI+MXN6UzcyK4Vb84eIyto+U/PzKGglXbt4ntTX0BAPFLxgWTi7ywlpC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727781931; c=relaxed/simple;
-	bh=MSvBCI6M2hBoxAumm6YXQ+yq5Ac97aHHjJZqO72Ov2c=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=jALYr17tWiKLCvu2rOtX44ScXaH3QQDMXpqg6Jt/64JKA1Z7dtK6Rq1EPbllPT7YwXZdi8u3gu/Zfjr7ljOHERQLS9fL5MemwRJ9ZxDOUnpedcdPvRkZp21ywkRYAQSTXpmKk2QpVwuGqaI8hIHVAub4mGHVIDYaiIxdGjdih00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o9dbB0Ie; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2515CC4CEC6;
-	Tue,  1 Oct 2024 11:25:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727781931;
-	bh=MSvBCI6M2hBoxAumm6YXQ+yq5Ac97aHHjJZqO72Ov2c=;
-	h=Subject:To:Cc:From:Date:From;
-	b=o9dbB0Ie13ciKByUb3AIdR5Yw2m43yF/BnLBzqjs8DSkDRRwM8++A2yFNeNh5E5Pk
-	 7n4id5xlguOdPzlcs8Z6CJMpPpL5aI6pmeyvgTpNIKvZlK0GYgt24p3F1RulE/007P
-	 8il4YSPdR2V0QSEGJslFIbRnkTvrYZMg7IfJKmEM=
-Subject: FAILED: patch "[PATCH] debugfs show actual source in /proc/mounts" failed to apply to 6.10-stable tree
-To: tsi@tuyoix.net,brauner@kernel.org
-Cc: <stable@vger.kernel.org>
-From: <gregkh@linuxfoundation.org>
-Date: Tue, 01 Oct 2024 13:25:28 +0200
-Message-ID: <2024100128-prison-ploy-dfd6@gregkh>
+	s=arc-20240116; t=1727782021; c=relaxed/simple;
+	bh=pJpo/9nlenGg9LeNsmXdGVa1hJvHzCo9llQzihv+rsQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=dbJLcyRnp/Doy/e5eb9/1hJreT8Gru5yFtAWMPBHlRwPQNq0ZfVzgLOD9BAPufNei1In1WN8HzWFWpmr0GycQ9hqoGIKI4tFc4mhgZB0uxQCCPJvvJmGAoIXH5h68s/VY3ClAH9I2JgOYWne9YygP87ek/+SHNB9c4HZ7ClBpk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=Jj+/khYe; arc=none smtp.client-ip=91.218.175.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Message-ID: <f28f2b21-a829-48c6-a122-4850b7276b8a@linux.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1727782016;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7cBUOWnEConx+IWDW0GCsQ6ijdhHKbEVnoz17VjGz20=;
+	b=Jj+/khYeG5yWFqTqDhKyUDj0TbMLyhL48Gk79bPpczjnogz50Mm6zl9RHAKJVfjQ5K5TZM
+	3fmKBJDYpvqFskZYO46m3ZVGr5Oit2X+0BEUnloTZrGYz3Fau6K7Wjfa4pTk6W8IiajEVO
+	G3SZVxHgbPNfnCT9Prx+QSHSZtxR4Vw=
+Date: Tue, 1 Oct 2024 12:26:47 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net 02/10] ice: Fix improper handling of refcount in
+ ice_dpll_init_rclk_pins()
+To: Tony Nguyen <anthony.l.nguyen@intel.com>, davem@davemloft.net,
+ kuba@kernel.org, pabeni@redhat.com, edumazet@google.com,
+ netdev@vger.kernel.org
+Cc: Gui-Dong Han <hanguidong02@outlook.com>, baijiaju1990@gmail.com,
+ arkadiusz.kubalewski@intel.com, jiri@resnulli.us, stable@vger.kernel.org,
+ Simon Horman <horms@kernel.org>,
+ Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+References: <20240930223601.3137464-1-anthony.l.nguyen@intel.com>
+ <20240930223601.3137464-3-anthony.l.nguyen@intel.com>
+Content-Language: en-US
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+In-Reply-To: <20240930223601.3137464-3-anthony.l.nguyen@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Migadu-Flow: FLOW_OUT
 
+On 30/09/2024 23:35, Tony Nguyen wrote:
+> From: Gui-Dong Han <hanguidong02@outlook.com>
+> 
+> This patch addresses a reference count handling issue in the
+> ice_dpll_init_rclk_pins() function. The function calls ice_dpll_get_pins(),
+> which increments the reference count of the relevant resources. However,
+> if the condition WARN_ON((!vsi || !vsi->netdev)) is met, the function
+> currently returns an error without properly releasing the resources
+> acquired by ice_dpll_get_pins(), leading to a reference count leak.
+> 
+> To resolve this, the check has been moved to the top of the function. This
+> ensures that the function verifies the state before any resources are
+> acquired, avoiding the need for additional resource management in the
+> error path.
+> 
+> This bug was identified by an experimental static analysis tool developed
+> by our team. The tool specializes in analyzing reference count operations
+> and detecting potential issues where resources are not properly managed.
+> In this case, the tool flagged the missing release operation as a
+> potential problem, which led to the development of this patch.
+> 
+> Fixes: d7999f5ea64b ("ice: implement dpll interface to control cgu")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Gui-Dong Han <hanguidong02@outlook.com>
+> Reviewed-by: Simon Horman <horms@kernel.org>
+> Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+> Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+> ---
+>   drivers/net/ethernet/intel/ice/ice_dpll.c | 4 ++--
+>   1 file changed, 2 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/intel/ice/ice_dpll.c b/drivers/net/ethernet/intel/ice/ice_dpll.c
+> index cd95705d1e7f..8b6dc4d54fdc 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_dpll.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_dpll.c
+> @@ -1843,6 +1843,8 @@ ice_dpll_init_rclk_pins(struct ice_pf *pf, struct ice_dpll_pin *pin,
+>   	struct dpll_pin *parent;
+>   	int ret, i;
+>   
+> +	if (WARN_ON((!vsi || !vsi->netdev)))
+> +		return -EINVAL;
+>   	ret = ice_dpll_get_pins(pf, pin, start_idx, ICE_DPLL_RCLK_NUM_PER_PF,
+>   				pf->dplls.clock_id);
+>   	if (ret)
+> @@ -1858,8 +1860,6 @@ ice_dpll_init_rclk_pins(struct ice_pf *pf, struct ice_dpll_pin *pin,
+>   		if (ret)
+>   			goto unregister_pins;
+>   	}
+> -	if (WARN_ON((!vsi || !vsi->netdev)))
+> -		return -EINVAL;
+>   	dpll_netdev_pin_set(vsi->netdev, pf->dplls.rclk.pin);
+>   
+>   	return 0;
 
-The patch below does not apply to the 6.10-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
-git checkout FETCH_HEAD
-git cherry-pick -x 3a987b88a42593875f6345188ca33731c7df728c
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100128-prison-ploy-dfd6@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
-
-Possible dependencies:
-
-3a987b88a425 ("debugfs show actual source in /proc/mounts")
-49abee5991e1 ("debugfs: Convert to new uid/gid option parsing helpers")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 3a987b88a42593875f6345188ca33731c7df728c Mon Sep 17 00:00:00 2001
-From: =?UTF-8?q?Marc=20Aur=C3=A8le=20La=20France?= <tsi@tuyoix.net>
-Date: Sat, 10 Aug 2024 13:25:27 -0600
-Subject: [PATCH] debugfs show actual source in /proc/mounts
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-
-After its conversion to the new mount API, debugfs displays "none" in
-/proc/mounts instead of the actual source.  Fix this by recognising its
-"source" mount option.
-
-Signed-off-by: Marc Aurèle La France <tsi@tuyoix.net>
-Link: https://lore.kernel.org/r/e439fae2-01da-234b-75b9-2a7951671e27@tuyoix.net
-Fixes: a20971c18752 ("vfs: Convert debugfs to use the new mount API")
-Cc: stable@vger.kernel.org # 6.10.x: 49abee5991e1: debugfs: Convert to new uid/gid option parsing helpers
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-
-diff --git a/fs/debugfs/inode.c b/fs/debugfs/inode.c
-index 91521576f500..66d9b3b4c588 100644
---- a/fs/debugfs/inode.c
-+++ b/fs/debugfs/inode.c
-@@ -89,12 +89,14 @@ enum {
- 	Opt_uid,
- 	Opt_gid,
- 	Opt_mode,
-+	Opt_source,
- };
- 
- static const struct fs_parameter_spec debugfs_param_specs[] = {
- 	fsparam_gid	("gid",		Opt_gid),
- 	fsparam_u32oct	("mode",	Opt_mode),
- 	fsparam_uid	("uid",		Opt_uid),
-+	fsparam_string	("source",	Opt_source),
- 	{}
- };
- 
-@@ -126,6 +128,12 @@ static int debugfs_parse_param(struct fs_context *fc, struct fs_parameter *param
- 	case Opt_mode:
- 		opts->mode = result.uint_32 & S_IALLUGO;
- 		break;
-+	case Opt_source:
-+		if (fc->source)
-+			return invalfc(fc, "Multiple sources specified");
-+		fc->source = param->string;
-+		param->string = NULL;
-+		break;
- 	/*
- 	 * We might like to report bad mount options here;
- 	 * but traditionally debugfs has ignored all mount options
-
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
 
