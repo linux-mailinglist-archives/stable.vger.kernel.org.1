@@ -1,154 +1,179 @@
-Return-Path: <stable+bounces-78352-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A072E98B827
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 11:19:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EEBF98B85E
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 11:30:57 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3FE35282E3E
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 09:19:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C10F01F22315
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 09:30:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3251C19D8B2;
-	Tue,  1 Oct 2024 09:19:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 065A919E83F;
+	Tue,  1 Oct 2024 09:30:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b="RZCpSUf4"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Nkvh1YCK"
 X-Original-To: stable@vger.kernel.org
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 105C019D884;
-	Tue,  1 Oct 2024 09:19:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=60.244.123.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F20A62B9B0
+	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 09:30:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727774370; cv=none; b=QovSdldvg6M4c/q9tPbZ1DxdEv6kH+KLBTHBpRqhmpEM9IHz2N/DHBV4F25tkzMZOh6mqavgjMg6Y7RAfoAXTFx1N3nUc6ZRInVXb+g3fmYQ6Q/ef5QrYT1phfLpj2jGnaShJIE2TgWnxUBKD0NeqQx/Y/0sE8TkbvUyvU5M6sU=
+	t=1727775037; cv=none; b=Kp3/c1jEaKGpWnIdxq88SoQ/sGF/L2vE/QjNL3OGHeLeQ4VIWCmTvLwu4FdLfJzkkMic5/AEAfENe+tb/hzGiCzGG+6bfzbBOLAnSr3aUk/lXIJBPLYVFSNc83Iph0nlWT7Dvt95eDEPkclezvkAOOJ5ZBegLDmaYXtTcouMs/o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727774370; c=relaxed/simple;
-	bh=5dQq1TzSEFppC9zkbctYDp3I7MVBPBh/LyWviWygRAs=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=c7BdEAXqDnXTHI1qjFXkmA6FdC6P5LafirvWjItIW9xKr2UXYcCmb4iyXOx+ZdHu0szjuFYSClBsq/Y72in8L5akmGQZ9FZxonm/LW5r+AzazwjzRaEYiOBWhWIsnjVIOr7rxcIFVWyBS5rmJLt4tcJ3qXWSAR21jxlfGIXLFPg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com; spf=pass smtp.mailfrom=mediatek.com; dkim=pass (1024-bit key) header.d=mediatek.com header.i=@mediatek.com header.b=RZCpSUf4; arc=none smtp.client-ip=60.244.123.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=mediatek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mediatek.com
-X-UUID: 3d50f4047fd611efb66947d174671e26-20241001
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-	h=Content-Type:MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:CC:To:From; bh=xg1Al652KQJ+M247bkvj8g9Zbm5oyvV0cpoa//gzt+0=;
-	b=RZCpSUf4CydZsEJ7fZCt8sszYYXCInXxZ/8/8WitfwLcTl34uJ9MhNVq6kwR5hthwwQZUnjEMeZAyNRLSu9rByQ9hjzOPiY9K4oiZVLfczv2L7UpUcsmo6jX4+TaWPn0mw4elT7TFTIM6Y6h8uvgsGuSZH6kgON5Z2zzh+5QHjM=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.41,REQID:c14090e9-467e-4756-a04d-76f4028356b5,IP:0,U
-	RL:0,TC:0,Content:-25,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTIO
-	N:release,TS:-25
-X-CID-META: VersionHash:6dc6a47,CLOUDID:521b8918-b42d-49a6-94d2-a75fa0df01d2,B
-	ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-	RL:11|1,File:nil,RT:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES
-	:1,SPR:NO,DKR:0,DKP:0,BRR:0,BRE:0,ARC:0
-X-CID-BVR: 0,NGT
-X-CID-BAS: 0,NGT,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
-X-UUID: 3d50f4047fd611efb66947d174671e26-20241001
-Received: from mtkmbs14n2.mediatek.inc [(172.21.101.76)] by mailgw01.mediatek.com
-	(envelope-from <peter.wang@mediatek.com>)
-	(Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-	with ESMTP id 1554064018; Tue, 01 Oct 2024 17:19:20 +0800
-Received: from mtkmbs11n2.mediatek.inc (172.21.101.187) by
- MTKMBS09N1.mediatek.inc (172.21.101.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Tue, 1 Oct 2024 17:19:18 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs11n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Tue, 1 Oct 2024 17:19:18 +0800
-From: <peter.wang@mediatek.com>
-To: <linux-scsi@vger.kernel.org>, <martin.petersen@oracle.com>,
-	<avri.altman@wdc.com>, <alim.akhtar@samsung.com>, <jejb@linux.ibm.com>
-CC: <wsd_upstream@mediatek.com>, <linux-mediatek@lists.infradead.org>,
-	<peter.wang@mediatek.com>, <chun-hung.wu@mediatek.com>,
-	<alice.chao@mediatek.com>, <cc.chou@mediatek.com>,
-	<chaotian.jing@mediatek.com>, <jiajie.hao@mediatek.com>,
-	<powen.kao@mediatek.com>, <qilin.tan@mediatek.com>, <lin.gui@mediatek.com>,
-	<tun-yu.yu@mediatek.com>, <eddie.huang@mediatek.com>,
-	<naomi.chu@mediatek.com>, <ed.tsai@mediatek.com>, <bvanassche@acm.org>,
-	<quic_nguyenb@quicinc.com>, <stable@vger.kernel.org>
-Subject: [PATCH v10 2/2] ufs: core: requeue aborted request
-Date: Tue, 1 Oct 2024 17:19:17 +0800
-Message-ID: <20241001091917.6917-3-peter.wang@mediatek.com>
-X-Mailer: git-send-email 2.18.0
-In-Reply-To: <20241001091917.6917-1-peter.wang@mediatek.com>
-References: <20241001091917.6917-1-peter.wang@mediatek.com>
+	s=arc-20240116; t=1727775037; c=relaxed/simple;
+	bh=8utTuVvKi3Xf58YhMlDrfJrqonBjQ0pTKIx6LGEFxfU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=cyIMo5TQRzBnu/QXMAMcHRz8aqFCYfUUdESCcfGkh6pYx+RbOqgDQasiprtwWDN0ou89GYTxxuIde3+B8rYKxWwOchEeJBW/9reEyiCBAozJYjwPAMY/e6kFj4LQI96yevhP+RGASx7rPiXVx4OLKLc9FvLRttaFUH33FEeFOnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Nkvh1YCK; arc=none smtp.client-ip=209.85.218.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a910860e4dcso4566766b.3
+        for <stable@vger.kernel.org>; Tue, 01 Oct 2024 02:30:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1727775034; x=1728379834; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=RgNupkyjKM2ysAGbIsG0gGy1badDoqPKofkUhbyTKoM=;
+        b=Nkvh1YCKRwtaWC3l/arENsaNN7IA22xABk4erWGwFpDLWqvXYhC2Qd6/Ie5pwMtTLq
+         8+U+ZlBMhff26x2MojQEvn3vZUxWrp2IOvG9l6R9UK0kYXGNH2mmNe+thSFvO4o4g0KK
+         mp6QpJpmXlI2IB34CbZJ4ltH+04XaVIFhz+0PAG1OpOrvcVuApHNrn8JLOdhHTHXVl7q
+         mllomKbUqjHeCRi1ObHFyAYqh2pNYOX4E5p2rUBa88RW3wapVsbZgMUWcSgqUDhMQxb5
+         2+E3E39aCgL7Gae28kklasLT7q6wsr7NnRI2r1YTru6j2nuwltBT3yQSIzt4S+7dtMmU
+         qdbw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727775034; x=1728379834;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=RgNupkyjKM2ysAGbIsG0gGy1badDoqPKofkUhbyTKoM=;
+        b=jbE7CewiUVtZgclX7h1TQgOk6FSDnxz8mzqQzMOi9UT9tFw/U6xU8NlYbD4Mo1YzBP
+         KlPvxyZJGl5FTGbGtxEdIAJfuMfkSriC106naqLKhCZhUST7NAAVO2Q7ELxdGAWR8w96
+         EWdq18XQ1Kl1pyb25CI8NC9jNjcSDyG7hlzzVKbpDIyNb8BwIIkzqMP5y0ys8xZxECVo
+         2sTl4B4498aIz35zOm57oy5tR5v1IG0VdnYAK11lJ1Mx+kp4LfxCRxdk3tujoYMaS4Vt
+         TY8mdosIhze/AC2ZaGfnvBmDm5GJlk+wFGcN2JftJkjV4i4z2/RsBee8hFzsePBtXj4b
+         OwgQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW3ioyoC0lz2v0BP0GfMKdHMILXBsJIPIiGygg5ewr7Xkb2llNL418q65iEyNo7kmWcttffAo8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxN5PnZxH8LKrHmZSsLXw/CSSQXisyWpMRt3C3cAhj9hsLZirfp
+	UiNQUPbEu0zg0bANMns9wnxxR1yB5Ayn5MxTeBQX+xsaDazPCpCL0IHBVqUfYWg=
+X-Google-Smtp-Source: AGHT+IGB9dopkczYokJgV8nk4MY0kFdPv5z9uTEesO4k2VaH/NmikSHc794uEgWF3r+nTMZn2extfA==
+X-Received: by 2002:a17:907:a0a:b0:a8d:14e4:f94a with SMTP id a640c23a62f3a-a93c492aafbmr1644389466b.38.1727775034202;
+        Tue, 01 Oct 2024 02:30:34 -0700 (PDT)
+Received: from [192.168.0.15] ([176.61.106.227])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c882493e54sm5913896a12.80.2024.10.01.02.30.32
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 01 Oct 2024 02:30:33 -0700 (PDT)
+Message-ID: <e7cc5f91-a0a8-48fc-9eb6-b9c46b22dfeb@linaro.org>
+Date: Tue, 1 Oct 2024 10:30:31 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-MTK: N
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/10] (no cover subject)
+To: Luca Weiss <luca.weiss@fairphone.com>,
+ Vikram Sharma <quic_vikramsa@quicinc.com>, Robert Foss <rfoss@kernel.org>,
+ Todor Tomov <todor.too@gmail.com>, Mauro Carvalho Chehab
+ <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Kapatrala Syed <akapatra@quicinc.com>,
+ Hariram Purushothaman <hariramp@quicinc.com>,
+ Bjorn Andersson <andersson@kernel.org>,
+ Konrad Dybcio <konradybcio@kernel.org>,
+ Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+ cros-qcom-dts-watchers@chromium.org,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>
+Cc: linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org,
+ devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org,
+ Suresh Vankadara <quic_svankada@quicinc.com>,
+ Trishansh Bhardwaj <quic_tbhardwa@quicinc.com>, stable@vger.kernel.org,
+ Hariram Purushothaman <quic_hariramp@quicinc.com>
+References: <20240904-camss_on_sc7280_rb3gen2_vision_v2_patches-v1-0-b18ddcd7d9df@quicinc.com>
+ <D4JK8TRL7XBL.3TBA1FBF32RXL@fairphone.com>
+ <fc0ce5cd-e42a-432b-ad74-01de67ec0d5c@linaro.org>
+ <D4KBQ3ENKF5Y.3D2AK81PELAEZ@fairphone.com>
+Content-Language: en-US
+From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+In-Reply-To: <D4KBQ3ENKF5Y.3D2AK81PELAEZ@fairphone.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-From: Peter Wang <peter.wang@mediatek.com>
+On 01/10/2024 09:24, Luca Weiss wrote:
+>> media-ctl --reset
+>> yavta --no-query -w '0x009f0903 2' /dev/v4l-subdev5
+>> yavta --list /dev/v4l-subdev5
+>> media-ctl -V '"msm_csid0":0[fmt:SRGGB10/4056x3040]'
+>> media-ctl -V '"msm_vfe0_rdi0":0[fmt:SRGGB10/4056x3040]'
+>> media-ctl -l '"msm_csid0":1->"msm_vfe0_rdi0":0[1]'
+>> media-ctl -d /dev/media0 -p
+> Hi Bryan!
+> 
+> These commands are to set up the pipeline, and what then to grab an
+> image from it?
+> 
+> I tried this, but it also just hangs:
+> 
+> $ yavta -B capture-mplane --capture=3 -n 3 -f SRGGB10P -s 4056x3040 /dev/video0 --file=foo-#.bin
+> Device /dev/video0 opened.
+> Device `Qualcomm Camera Subsystem' on `platform:acb3000.camss' (driver 'qcom-camss') supports video, capture, with mplanes.
+> Video format set: SRGGB10P (41415270) 4056x3040 field none, 1 planes:
+>   * Stride 5072, buffer size 15418880
+> Video format: SRGGB10P (41415270) 4056x3040 field none, 1 planes:
+>   * Stride 5072, buffer size 15418880
+> 3 buffers requested.
+> length: 1 offset: 3326519176 timestamp type/source: mono/EoF
+> Buffer 0/0 mapped at address 0xffffa0c00000.
+> length: 1 offset: 3326519176 timestamp type/source: mono/EoF
+> Buffer 1/0 mapped at address 0xffff9fc08000.
+> length: 1 offset: 3326519176 timestamp type/source: mono/EoF
+> Buffer 2/0 mapped at address 0xffff9ec10000.
 
-After the SQ cleanup fix, the CQ will receive a response with
-the corresponding tag marked as OCS: ABORTED. To align with
-the behavior of Legacy SDB mode, the handling of OCS: ABORTED
-has been changed to match that of OCS_INVALID_COMMAND_STATUS
-(SDB), with both returning a SCSI result of DID_REQUEUE.
+No there's no CSIPHY in that case, it should be the TPG inside of CSID0 
+@ /dev/v4l-subdev5 which generates the data.
 
-Furthermore, the workaround implemented before the SQ cleanup
-fix can be removed.
+Just for verification purposes do a  `media-ctl -d /dev/media0 -p` and 
+confirm that /dev/v4l-subdev5 == csid0
 
-Fixes: ab248643d3d6 ("scsi: ufs: core: Add error handling for MCQ mode")
-Cc: stable@vger.kernel.org
-Signed-off-by: Peter Wang <peter.wang@mediatek.com>
+Rewrite the above as
+
+export csid0=v4l-subdevX
+
+media-ctl --reset
+yavta --no-query -w '0x009f0903 2' /dev/$csid0
+yavta --list /dev/$csid0
+media-ctl -V '"msm_csid0":0[fmt:SRGGB10/4056x3040]'
+media-ctl -V '"msm_vfe0_rdi0":0[fmt:SRGGB10/4056x3040]'
+media-ctl -l '"msm_csid0":1->"msm_vfe0_rdi0":0[1]'
+media-ctl -d /dev/media0 -p
+
+basically you have to make sure you've set the TPG on the correct subdev..
+
+Something like in media-ctl subdev4 in my case.
+
+- entity 13: msm_csid0 (5 pads, 36 links, 0 routes)
+              type V4L2 subdev subtype Unknown flags 0
+              device node name /dev/v4l-subdev4
+
+=>
+
+export csid0=v4l-subdev4
+
+media-ctl --reset
+yavta --no-query -w '0x009f0903 2' /dev/$csid0
+yavta --list /dev/$csid0
+media-ctl -V '"msm_csid0":0[fmt:SRGGB10/4056x3040]'
+media-ctl -V '"msm_vfe0_rdi0":0[fmt:SRGGB10/4056x3040]'
+media-ctl -l '"msm_csid0":1->"msm_vfe0_rdi0":0[1]'
+media-ctl -d /dev/media0 -p
+
+
 ---
- drivers/ufs/core/ufshcd.c | 20 ++++----------------
- 1 file changed, 4 insertions(+), 16 deletions(-)
-
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 24a32e2fd75e..8e2a7889a565 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -5417,10 +5417,12 @@ ufshcd_transfer_rsp_status(struct ufs_hba *hba, struct ufshcd_lrb *lrbp,
- 		}
- 		break;
- 	case OCS_ABORTED:
--		result |= DID_ABORT << 16;
--		break;
- 	case OCS_INVALID_COMMAND_STATUS:
- 		result |= DID_REQUEUE << 16;
-+		dev_warn(hba->dev,
-+				"OCS %s from controller for tag %d\n",
-+				(ocs == OCS_ABORTED? "aborted" : "invalid"),
-+				lrbp->task_tag);
- 		break;
- 	case OCS_INVALID_CMD_TABLE_ATTR:
- 	case OCS_INVALID_PRDT_ATTR:
-@@ -6466,26 +6468,12 @@ static bool ufshcd_abort_one(struct request *rq, void *priv)
- 	struct scsi_device *sdev = cmd->device;
- 	struct Scsi_Host *shost = sdev->host;
- 	struct ufs_hba *hba = shost_priv(shost);
--	struct ufshcd_lrb *lrbp = &hba->lrb[tag];
--	struct ufs_hw_queue *hwq;
--	unsigned long flags;
- 
- 	*ret = ufshcd_try_to_abort_task(hba, tag);
- 	dev_err(hba->dev, "Aborting tag %d / CDB %#02x %s\n", tag,
- 		hba->lrb[tag].cmd ? hba->lrb[tag].cmd->cmnd[0] : -1,
- 		*ret ? "failed" : "succeeded");
- 
--	/* Release cmd in MCQ mode if abort succeeds */
--	if (hba->mcq_enabled && (*ret == 0)) {
--		hwq = ufshcd_mcq_req_to_hwq(hba, scsi_cmd_to_rq(lrbp->cmd));
--		if (!hwq)
--			return 0;
--		spin_lock_irqsave(&hwq->cq_lock, flags);
--		if (ufshcd_cmd_inflight(lrbp->cmd))
--			ufshcd_release_scsi_cmd(hba, lrbp);
--		spin_unlock_irqrestore(&hwq->cq_lock, flags);
--	}
--
- 	return *ret == 0;
- }
- 
--- 
-2.45.2
-
+bod
 
