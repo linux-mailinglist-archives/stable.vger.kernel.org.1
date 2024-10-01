@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-78409-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78410-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FC1A98B976
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 12:22:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id F17D598B978
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 12:22:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 635B91C22B08
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 10:22:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 65AF51F2354F
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 10:22:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6038919DF77;
-	Tue,  1 Oct 2024 10:22:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 552D519CC2D;
+	Tue,  1 Oct 2024 10:22:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vg31PQQg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ttRoMcz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C1F719D060
-	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 10:22:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 174B23209
+	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 10:22:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727778146; cv=none; b=HUDvUXSFT9+S93LsjXNlHZF7AZs/UTnaFrC2pCl/X3/zkYV3EYMec9Jv8jl1oGzHQ358xdpbHsaC1LK0l7hzAiWHYMZseV6ePNopb6sQbarg/lzrkbjng6q3CPtxBJW8uItx9T9dZIoi7HJpveqbsK0UwRgfAYi6YZKG6uEft28=
+	t=1727778149; cv=none; b=VzwZaFDlI0t+H4iv6BIX2uoNeQ4/6dYJwcc0U9MfWStQ1mDYy7f3qVVORImSAd/2uE1sdXoH13gxnwUmQF3tcdTDJtBKbwCsIlddkVp7blaFuKrizMdSHSESnBPedWhJePtdiAYgFyFXyj50T09aOTXA7qOAMsndmfueTiu/lJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727778146; c=relaxed/simple;
-	bh=dBQjt2N+ElOvqMdFKs0wGAJ0ao/yW3XHYjtZqdEnV/o=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=N7yw8jkdql7txe+V2dYp6ygbzz3aDAyMaUYr91kagddxQCqFDnvhaAjhURMLlxdAkG6IA9jHqgw1zztTUCkMMIAY/W+dml/yNbYW1uJgJNrHEc7h4cu8wkhxCemjBZPHm4J4nblAT5EUXLNvwGRRfYL3yJ313qycLlu526NnCrc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vg31PQQg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A0DAC4CEC6;
-	Tue,  1 Oct 2024 10:22:25 +0000 (UTC)
+	s=arc-20240116; t=1727778149; c=relaxed/simple;
+	bh=+jeT4N7mFqVx9RQhcO2TTELc71ewjPS3sW4SQ4N8FXE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ckO/X1a61TkpExby+dnE9S73wXMegL3oDSWuzWrlh7Ntj3Aax4UFGY0HnNRLHRCVZAUz95Xa5ephotJPBAAjtp65uncCkdMV4QeIBWmbCXCwnMrBYUWtpCCVwyE4rJtbcx1mpQGb1RbsFUoem0rG/h9YAKDiEL4jfFvL+NW+xGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ttRoMcz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50D29C4CECE;
+	Tue,  1 Oct 2024 10:22:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727778145;
-	bh=dBQjt2N+ElOvqMdFKs0wGAJ0ao/yW3XHYjtZqdEnV/o=;
+	s=korg; t=1727778148;
+	bh=+jeT4N7mFqVx9RQhcO2TTELc71ewjPS3sW4SQ4N8FXE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Vg31PQQgOqtz9+3kjWCNilbTeTIBIMpQFmwW68V4iXeXjAKkAw1fKFkWQnu4Tjkir
-	 QH/Ihf/+DaRFZajEfGryEX7SfFi/X9175XdwMJldQP3NjTjql5hcjI6p/dfo04RxOj
-	 w56pNFhjXiUy6cHBQW+yXs0SmoyBkSps4ay2trg0=
-Subject: FAILED: patch "[PATCH] usb: xhci: fix loss of data on Cadence xHC" failed to apply to 6.1-stable tree
+	b=1ttRoMczO4+sXmg+46sHL4YPkyfG8RwOTYtj3RiiyWHnXqyEpH+dyYUOyhpzwVkXD
+	 8wb+gGc3rjCFG3iXrkHNqmHlJFSxXj8zt7u7WyVl2ointk/s4KOkfwYD13k9wOiMFj
+	 sX6vDX2lfW1XRRnyyC2sTehTWXEmjgimCJyX0H2Q=
+Subject: FAILED: patch "[PATCH] usb: xhci: fix loss of data on Cadence xHC" failed to apply to 5.15-stable tree
 To: pawell@cadence.com,gregkh@linuxfoundation.org,peter.chen@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 01 Oct 2024 12:22:16 +0200
-Message-ID: <2024100116-trombone-xerox-7d8b@gregkh>
+Date: Tue, 01 Oct 2024 12:22:17 +0200
+Message-ID: <2024100117-bobsled-freely-5b2c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x e5fa8db0be3e8757e8641600c518425a4589b85c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100116-trombone-xerox-7d8b@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100117-bobsled-freely-5b2c@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -79,6 +79,9 @@ f927728186f0 ("xhci: Fix resume issue of some ZHAOXIN hosts")
 b17a57f89f69 ("xhci: Refactor interrupter code for initial multi interrupter support.")
 54f9927dfe22 ("xhci: remove xhci_test_trb_in_td_math early development check")
 8c1cbec9db1a ("xhci: fix event ring segment table related masks and variables in header")
+a611bf473d1f ("xhci-pci: Set runtime PM as default policy on all xHC 1.2 or later devices")
+34cd2db408d5 ("xhci: Add quirk to reset host back to default state at shutdown")
+a956f91247da ("Merge 6.0-rc4 into usb-next")
 
 thanks,
 
