@@ -1,157 +1,144 @@
-Return-Path: <stable+bounces-78491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C4E998BDE1
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 15:35:48 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3711C98BDF5
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 15:37:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 787551C215C2
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 13:35:47 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B5D50B24C63
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 13:37:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DB8A1C461F;
-	Tue,  1 Oct 2024 13:35:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E35A1C3F3D;
+	Tue,  1 Oct 2024 13:37:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="BrFBQV5X"
+	dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b="dOX5FxJO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-io1-f47.google.com (mail-io1-f47.google.com [209.85.166.47])
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE52D1C4612
-	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 13:35:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2446C1BFE02
+	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 13:37:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727789738; cv=none; b=kGQdwW8d0O7Z0/2QAVH4KuAceeRLzJznDRqFS6V+oQS5BSsfj59fPpVya+R/MmEj9DJazO5yafoK99tOJt1efgMPyNuKdc4LqzZaeKVFI3uMLt82q6nNvTF0AxwB7pKdVAtyg+FeBlhbCw4Yl2k6Jw+J2iXwBQOfLmTrga6G45E=
+	t=1727789833; cv=none; b=ZKLq5XgnHMssPPzBLCI7O6ncmLl8N8BHWy6W3192wqfVir+2MTFsn+fBaQ6H/niAiXWJ76niU4yGwBEZwi+W1DkDta5qh2Rw9EZ6kn9fPx7XgqFvo9Tf2g/EDXs/JgAxZJ4KZ5tuuek0/wJ3ANMyEHDZRhM/TP4Hfg2Aqh8fw00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727789738; c=relaxed/simple;
-	bh=+KoryTco6wBMzsWP6v3K3MzAAYCO8/g5hNEdQ/inc2Y=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Z7AlwgApTGyom9gpQ15zgLxLdmf7+Fx1k9XTNJ91721aBzbDUhaTewYa5J/fz2VZAUVT8pqGIp8ZWI2z0lOJ56Yv9+K29OYh8drcXsz6jFxLsKht2c7SuQFNRqptLU+1Kv53nJkq8Ck+d3otOeq1PVPJ+8xYiqlVesSEEpWlVB4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=BrFBQV5X; arc=none smtp.client-ip=209.85.166.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
-Received: by mail-io1-f47.google.com with SMTP id ca18e2360f4ac-82cd93a6617so224343339f.3
-        for <stable@vger.kernel.org>; Tue, 01 Oct 2024 06:35:35 -0700 (PDT)
+	s=arc-20240116; t=1727789833; c=relaxed/simple;
+	bh=l5Wzld97pvTNqpuXXv77vHPpekFjUq/zFH05krcoJrA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hVBo9rcqR3DdexVHXZq+Dab2nbf+kaPuhz3+SRy9X1hSdqCxysNIplw17xpfoPXUU8yEWV2KMNKQOlh04gOsNu/3puoXwp9djhAN09K5sDsXI/jWwW/GL+/jLliVOiUW8NT6vYSByuawC+QDb7sErFfuHzCFiph/QU2aVAO4oJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl; spf=none smtp.mailfrom=bgdev.pl; dkim=pass (2048-bit key) header.d=bgdev-pl.20230601.gappssmtp.com header.i=@bgdev-pl.20230601.gappssmtp.com header.b=dOX5FxJO; arc=none smtp.client-ip=209.85.167.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=bgdev.pl
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bgdev.pl
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-5399041167cso3889004e87.0
+        for <stable@vger.kernel.org>; Tue, 01 Oct 2024 06:37:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1727789735; x=1728394535; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=OgL5rd3KvxVTO/uJOqBplF7gKZBP1S9mwJ5BPmOEOSk=;
-        b=BrFBQV5XgWm016xr/nZni++dQ2KFWys3YAiOKRKmyUFTyf3awNZHP4g40ekH4o5eCO
-         i+9atbHNcDnIBY5x7FS7pURc5SfkXocIcKQRf9ySzxGMprjlfO0r+FB0mYUxgoNs8eDn
-         9rT3PcbwLPA02bqFvB8O5oWsM/Tl+p9EOHsblepMiGeeSkNNuDcrMY4VmtQHw4El8Gbe
-         zsxLm2RvQoz+uKKgoCql2pqxDl+nk44K0JH448y0mucjAn8NeR93vihbIwFYNSH0LRWs
-         0PJbG+t6x13uvPtPlwpjI0D7n24T3jxY4j4n449k8qjihnjNFwGji7ltF1YlezECf6Wz
-         iivA==
+        d=bgdev-pl.20230601.gappssmtp.com; s=20230601; t=1727789829; x=1728394629; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2BxySFYjgMYSgGj7gZxM0J6yslTcBL+xxt/8bGUkQxc=;
+        b=dOX5FxJOnCOn4nCC/bKaZrwyU0qIsJRnJuNlySfTC1t6Xdq4icBRJkVK0JrtpHSjMt
+         /WH23JaKVzS0cIBj1lG1hf1ovKU9nFLDwWH4m/j9vfI9rvDj2dP0zo+BbhOhCMw9vYkW
+         rOgTRvpveUSDMUjV3VjZJBfG2IQIBPjaKhllScKc4+M72n3nCmglvOgugxeD7kNO1Hsx
+         8VhxQgSLtsHALAuaKe4C0re7uYYN9OMUqTdWQIF2vC1BRHmhJbc0Tfu6v1S3Fw4RYtfB
+         Ta4NwODnK5I7qxEFmMir7e9UG6Y60ZeP64nWj+s8teC+iB8QTTmVzmG38vRWZ0yCQQMV
+         /iCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727789735; x=1728394535;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OgL5rd3KvxVTO/uJOqBplF7gKZBP1S9mwJ5BPmOEOSk=;
-        b=XL39gRH4H2IjsMRRSfxMlfJGXy9Pei4XvLoX2E7vfIZXg61RoAOqDBuZOgW/iMXnWd
-         sybOWBKujTleUKf2K5zFb7uynIp11QQuPiTSDzUe8TGVSGPwXYsFZZzpO65dyYWqtRJl
-         3qgJVqZR2ON3l9Eo69un/7VarkjSW85aIYJZpoD4e9F7KUJE8EU8fHCn6shL0eLJeQ10
-         3gwvjDWnGLd4FPbSIlbCGCkFbdlnHP/vomB4Ie2epH40Cy7hqwOhgoi65tZXN8mIxUyE
-         aP9PSuzU99kr/UEpP7OAXHNu356FaFCoUId6EIvTOOAJhWxEE4P6OQCBSF50NDWAp1YP
-         t3pQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWOEVRXMby2CZ3LXtmASlzUmM2jWDqZw3Vb3mzVLqY68JtFNvLd8zhMd71tU4bVmdTz3BTkaJ8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yynkx20jIu3ex6fHA8Zqal0A49A7qHEMmAWPjiGUFL24gt0L7mS
-	x88tJzv9HtkP+1O4AKSaO7o0lD9rdvBbK13l0rOJGOHqs2xXtqhGl85ByN6vzK4=
-X-Google-Smtp-Source: AGHT+IHG5lToJh8LSYS16u7mBh+qtGBfzo1ovi31Kf1FK7684UVjTXOg2EW6WyrZ9o/eP4/O5KtDjg==
-X-Received: by 2002:a05:6602:2b04:b0:82d:96a:84f4 with SMTP id ca18e2360f4ac-8349318d38amr1668545339f.1.1727789734880;
-        Tue, 01 Oct 2024 06:35:34 -0700 (PDT)
-Received: from [192.168.1.116] ([96.43.243.2])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4d88883518bsm2673695173.20.2024.10.01.06.35.33
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Oct 2024 06:35:34 -0700 (PDT)
-Message-ID: <f588a1dc-590f-46aa-8d0c-ac792606c662@kernel.dk>
-Date: Tue, 1 Oct 2024 07:35:32 -0600
+        d=1e100.net; s=20230601; t=1727789829; x=1728394629;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2BxySFYjgMYSgGj7gZxM0J6yslTcBL+xxt/8bGUkQxc=;
+        b=YV183MGjZqX4/Cz6MkitZwQHOh/YXVE+Q/PHwaIV003fjFVxKQHR/HVBo3lSYZ1nBH
+         bcKlc35FqbKqnA0bsqoYJzLJL7pRKaAq5Wstm1s2YT55UiE4Ytw661Gfzj1CdVfKsqZK
+         JlvMBaCIryLETL+IUizNbDdu9nn33y5vfWa85wGQSpujf+SgP+9xpEOoeC8YDDjKhN5b
+         SEJnRW+fb43oK456rcQ+hlx4FAgzP1w/GHcfC3xYGph9zcYdrPcqHlyYNIHECy00ow0S
+         uVyA00X62qGHiNDk5ATAclHbx9cYfspcnezicXR6rjAYo0d2TzGmfj0KcDDycA03932y
+         2+Tw==
+X-Forwarded-Encrypted: i=1; AJvYcCUKONGwWHcy02XFeuUACFt/MVLfr1ftg6py7ycQA89lBRhf9wlOaOfowmyH806uwbRzL/CVirk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz9CEf+OcIYmpJqwm+fxJHEsq5SBBTLKJN8mL2CpdIX/8AOvDek
+	RcRVEKVZi4/zWkV2Grfg0JbxGObsyypddLokmeMnPfb9BHTr0ysci2PhWlwMvWc33i5AFR4ylNw
+	sDprRyC9llQa6gfTJWusU4kS6Q9l1/xbR6UVZPQ==
+X-Google-Smtp-Source: AGHT+IG4QsZVp3c0GwViYHKYsqg+Yr9QOSGNd6d8be6G5dnaCzY4j5yVeg2oaXaLBwwed7H3SV9IsGiP8nhynNtnFfU=
+X-Received: by 2002:a05:6512:39c6:b0:539:94f5:bf with SMTP id
+ 2adb3069b0e04-53994f50221mr6566227e87.59.1727789829000; Tue, 01 Oct 2024
+ 06:37:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1 0/2] io_uring/io-wq: respect cgroup cpusets
-To: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
- "MOESSBAUER, Felix" <felix.moessbauer@siemens.com>
-Cc: "Schmidt, Adriaan" <adriaan.schmidt@siemens.com>,
- "io-uring@vger.kernel.org" <io-uring@vger.kernel.org>,
- "cgroups@vger.kernel.org" <cgroups@vger.kernel.org>,
- "Bezdeka, Florian" <florian.bezdeka@siemens.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "longman@redhat.com" <longman@redhat.com>,
- "asml.silence@gmail.com" <asml.silence@gmail.com>,
- "stable@vger.kernel.org" <stable@vger.kernel.org>,
- "dqminh@cloudflare.com" <dqminh@cloudflare.com>
-References: <20240911162316.516725-1-felix.moessbauer@siemens.com>
- <2024093053-gradient-errant-4f54@gregkh>
- <db8843979322b9a031b5d9523b6b07dca9c13546.camel@siemens.com>
- <2024100108-facing-mobile-1e4a@gregkh>
-Content-Language: en-US
-From: Jens Axboe <axboe@kernel.dk>
-In-Reply-To: <2024100108-facing-mobile-1e4a@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20241001125033.10625-1-johan+linaro@kernel.org> <20241001125033.10625-3-johan+linaro@kernel.org>
+In-Reply-To: <20241001125033.10625-3-johan+linaro@kernel.org>
+From: Bartosz Golaszewski <brgl@bgdev.pl>
+Date: Tue, 1 Oct 2024 15:36:57 +0200
+Message-ID: <CAMRc=MeYSsh+MOrOHSabiHuyGOrZK330WuNXcGDtg-siJFya=g@mail.gmail.com>
+Subject: Re: [PATCH v2 2/7] serial: qcom-geni: fix shutdown race
+To: Johan Hovold <johan+linaro@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby <jirislaby@kernel.org>, 
+	Bjorn Andersson <andersson@kernel.org>, Konrad Dybcio <konradybcio@kernel.org>, 
+	Douglas Anderson <dianders@chromium.org>, linux-arm-msm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org, 
+	stable@vger.kernel.org, Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 10/1/24 1:50 AM, gregkh@linuxfoundation.org wrote:
-> On Tue, Oct 01, 2024 at 07:32:42AM +0000, MOESSBAUER, Felix wrote:
->> On Mon, 2024-09-30 at 21:15 +0200, Greg KH wrote:
->>> On Wed, Sep 11, 2024 at 06:23:14PM +0200, Felix Moessbauer wrote:
->>>> Hi,
->>>>
->>>> as discussed in [1], this is a manual backport of the remaining two
->>>> patches to let the io worker threads respect the affinites defined
->>>> by
->>>> the cgroup of the process.
->>>>
->>>> In 6.1 one worker is created per NUMA node, while in da64d6db3bd3
->>>> ("io_uring: One wqe per wq") this is changed to only have a single
->>>> worker.
->>>> As this patch is pretty invasive, Jens and me agreed to not
->>>> backport it.
->>>>
->>>> Instead we now limit the workers cpuset to the cpus that are in the
->>>> intersection between what the cgroup allows and what the NUMA node
->>>> has.
->>>> This leaves the question what to do in case the intersection is
->>>> empty:
->>>> To be backwarts compatible, we allow this case, but restrict the
->>>> cpumask
->>>> of the poller to the cpuset defined by the cgroup. We further
->>>> believe
->>>> this is a reasonable decision, as da64d6db3bd3 drops the NUMA
->>>> awareness
->>>> anyways.
->>>>
->>>> [1]
->>>> https://lore.kernel.org/lkml/ec01745a-b102-4f6e-abc9-abd636d36319@kernel.dk
->>>
->>> Why was neither of these actually tagged for inclusion in a stable
->>> tree?
->>
->> This is a manual backport of these patches for 6.1, as the subsystem
->> changed significantly between 6.1 and 6.2, making an automated backport
->> impossible. This has been agreed on with Jens in
->> https://lore.kernel.org/lkml/ec01745a-b102-4f6e-abc9-abd636d36319@kernel.dk/
->>
->>> Why just 6.1.y?  Please submit them for all relevent kernel versions.
->>
->> The original patch was tagged stable and got accepted in 6.6, 6.10 and
->> 6.11.
-> 
-> No they were not at all.  Please properly tag them in the future as per
-> the documentation if you wish to have things applied to the stable
-> trees:
->     https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+On Tue, Oct 1, 2024 at 2:51=E2=80=AFPM Johan Hovold <johan+linaro@kernel.or=
+g> wrote:
+>
+> A commit adding back the stopping of tx on port shutdown failed to add
+> back the locking which had also been removed by commit e83766334f96
+> ("tty: serial: qcom_geni_serial: No need to stop tx/rx on UART
+> shutdown").
+>
+> Holding the port lock is needed to serialise against the console code,
+> which may update the interrupt enable register and access the port
+> state.
+>
+> Fixes: d8aca2f96813 ("tty: serial: qcom-geni-serial: stop operations in p=
+rogress at shutdown")
+> Fixes: 947cc4ecc06c ("serial: qcom-geni: fix soft lockup on sw flow contr=
+ol and suspend")
+> Cc: stable@vger.kernel.org      # 6.3
+> Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+> Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+> ---
+>  drivers/tty/serial/qcom_geni_serial.c | 2 ++
+>  1 file changed, 2 insertions(+)
+>
+> diff --git a/drivers/tty/serial/qcom_geni_serial.c b/drivers/tty/serial/q=
+com_geni_serial.c
+> index 9ea6bd09e665..b6a8729cee6d 100644
+> --- a/drivers/tty/serial/qcom_geni_serial.c
+> +++ b/drivers/tty/serial/qcom_geni_serial.c
+> @@ -1096,10 +1096,12 @@ static void qcom_geni_serial_shutdown(struct uart=
+_port *uport)
+>  {
+>         disable_irq(uport->irq);
+>
+> +       uart_port_lock_irq(uport);
+>         qcom_geni_serial_stop_tx(uport);
+>         qcom_geni_serial_stop_rx(uport);
+>
+>         qcom_geni_serial_cancel_tx_cmd(uport);
+> +       uart_port_unlock_irq(uport);
+>  }
+>
+>  static void qcom_geni_serial_flush_buffer(struct uart_port *uport)
+> --
+> 2.45.2
+>
+>
 
-That's my bad, missed that one of them did not get marked for stable,
-the sqpoll one did.
+I already reviewed this[1]. I suggest using b4 for automated tag pickup.
 
--- 
-Jens Axboe
+Bart
+
+Reviewed-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+
+[1] https://lore.kernel.org/all/CAMRc=3DMd-B3MCdjBA6Z03Tn09Qdq_O=3D2Gij=3D0=
+kr8HiLtpp11kVg@mail.gmail.com/#t
 
