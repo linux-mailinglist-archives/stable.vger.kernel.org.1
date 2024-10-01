@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-78367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78368-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A28498B8A3
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 11:48:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C374E98B8A5
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 11:48:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B02C7B2233E
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 09:48:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4F09A1F24274
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 09:48:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C8F919E7C7;
-	Tue,  1 Oct 2024 09:48:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B61FF19F139;
+	Tue,  1 Oct 2024 09:48:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mr5F7OTI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1QXgvlVO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C70719B3C0
-	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 09:48:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 728E119E7F5
+	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 09:48:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727776107; cv=none; b=nA3FmSPvsjtC3bs123NrpO1Co5GtqFQKuG7kvAb85hJyPieOKupJ7H91yzdVGwfdZf7Lj69qpUT/oHdiFORtOGDMPOWyVU2sjEN8VXADU522KxglSjJ/uCwd0ifwwS8CrNG7C9QziA4izqTmHuQnhI1u8fgxovJovmCvunjHNPw=
+	t=1727776114; cv=none; b=bE9xEKDNRjCh16uPmpv52R63nJ+9CwAXpirgNfrrIW8lOwcR4Mkb+2Kpf2hSMP4tFwU9lgl2rN/Z+RjkcjqPh98jxwtuhiiJD/+A/IVP6GZNt0J+i6XYQl4+ad2blEQCScpnGpuTb27taY7j7YaVju02JDRAIhfkA5cY8iAVJSk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727776107; c=relaxed/simple;
-	bh=Sqnf/bLP5ec39ldam8EPxt4j9pns7xx5KKpzi5UAw20=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Efl2GkiSxN05YEMA9wTgsHMfpB0y3d3w9YQCq+iBxAf9cDlzaNuoMXPCBk7bHgj64hDiBVH2aP7Mt4u5AK9m2hPV3YZsAF5kA06Ip9iN3W0dOff5wSrMS7yms3PhCpe9+jryAmO5jqFF7QshCBUivsmZqH7+shDMaz9vOxc+iSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mr5F7OTI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 350DCC4CED1;
-	Tue,  1 Oct 2024 09:48:25 +0000 (UTC)
+	s=arc-20240116; t=1727776114; c=relaxed/simple;
+	bh=xPbXs/DNYef0ItoEk7xyUSSU/jHzrOCyM+hX0UFrwmk=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=KDWU9IS9oZgSiv8lII+7dIOsdpM3m+4eHWLwgKxgYOxr6AtgbGy6JUwEIxJEJHq2kzEBV7vf1f3d4twxY3m334Ma3PRU8Cc5fwVV/cx9O5/q42ZeyxulnQwGS0O81mPFM9O+iny5zp1tcQooDmddMMEDZg0yXcet5Shatz2TveA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1QXgvlVO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E24ACC4CECD;
+	Tue,  1 Oct 2024 09:48:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727776105;
-	bh=Sqnf/bLP5ec39ldam8EPxt4j9pns7xx5KKpzi5UAw20=;
+	s=korg; t=1727776114;
+	bh=xPbXs/DNYef0ItoEk7xyUSSU/jHzrOCyM+hX0UFrwmk=;
 	h=Subject:To:Cc:From:Date:From;
-	b=mr5F7OTIMTsFkLnzi6KGdMx7Us13N8WGirjpiZBCzFFvkagddMxMicTVJwAuaHusj
-	 n69ResmBbkpBikQPg4qphhgQ+C7MP/7fZh0Hu7qBb2XiZWASZa7fDgtYiqmQfRvovX
-	 Y639dGz1nv0ufMF5p1XcHd+xL+oh3JGQA1opDxLo=
-Subject: FAILED: patch "[PATCH] KVM: x86: Re-split x2APIC ICR into ICR+ICR2 for AMD (x2AVIC)" failed to apply to 6.10-stable tree
+	b=1QXgvlVOsOtV/BiecBj+G4y4tkvlPpMn8jb2lMixbjaDJqC2aLdsNzeVhTyr30fm/
+	 yoU9eqvRjkWkY7KUKaH2RSmh2422PMXp7L5UsMQqYej7EmRq1SPUVhemkcuSlLzZU+
+	 1Pupap96SvbPXqkl+s3RJFKpOjLBQ8uReKzffGac=
+Subject: FAILED: patch "[PATCH] KVM: x86: Re-split x2APIC ICR into ICR+ICR2 for AMD (x2AVIC)" failed to apply to 6.6-stable tree
 To: seanjc@google.com,mlevitsk@redhat.com,suravee.suthikulpanit@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 01 Oct 2024 11:48:22 +0200
-Message-ID: <2024100122-prologue-parakeet-0748@gregkh>
+Date: Tue, 01 Oct 2024 11:48:23 +0200
+Message-ID: <2024100123-unreached-enrage-2cb1@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.10-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x 73b42dc69be8564d4951a14d00f827929fe5ef79
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100122-prologue-parakeet-0748@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100123-unreached-enrage-2cb1@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
@@ -74,6 +74,13 @@ d33234342f8b ("KVM: x86: Move x2APIC ICR helper above kvm_apic_write_nodecode()"
 71bf395a276f ("KVM: x86: Enforce x2APIC's must-be-zero reserved ICR bits")
 4b7c3f6d04bd ("KVM: x86: Make x2APIC ID 100% readonly")
 c7d4c5f01961 ("KVM: x86: Drop unused check_apicv_inhibit_reasons() callback definition")
+5f18c642ff7e ("KVM: VMX: Move out vmx_x86_ops to 'main.c' to dispatch VMX and TDX")
+0ec3d6d1f169 ("KVM: x86: Fully defer to vendor code to decide how to force immediate exit")
+bf1a49436ea3 ("KVM: x86: Move handling of is_guest_mode() into fastpath exit handlers")
+11776aa0cfa7 ("KVM: VMX: Handle forced exit due to preemption timer in fastpath")
+e6b5d16bbd2d ("KVM: VMX: Re-enter guest in fastpath for "spurious" preemption timer exits")
+9c9025ea003a ("KVM: x86: Plumb "force_immediate_exit" into kvm_entry() tracepoint")
+8ecb10bcbfa3 ("Merge tag 'kvm-x86-lam-6.8' of https://github.com/kvm-x86/linux into HEAD")
 
 thanks,
 
