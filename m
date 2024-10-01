@@ -1,59 +1,59 @@
-Return-Path: <stable+bounces-78567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D198C98C480
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 19:32:46 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF30798C482
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 19:32:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 50CAB1F24239
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 17:32:46 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 240891C234C7
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 17:32:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8043E1CCB2C;
-	Tue,  1 Oct 2024 17:32:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4CC11CCB42;
+	Tue,  1 Oct 2024 17:32:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=hp.com header.i=@hp.com header.b="CjlJY1up"
+	dkim=pass (1024-bit key) header.d=hp.com header.i=@hp.com header.b="mcMKs5zs"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-162.mimecast.com (us-smtp-delivery-162.mimecast.com [170.10.133.162])
+Received: from us-smtp-delivery-162.mimecast.com (us-smtp-delivery-162.mimecast.com [170.10.129.162])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9317A1CC158
-	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 17:32:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.162
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE38F1CC8B5
+	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 17:32:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.162
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727803931; cv=none; b=ACgjGI2LzcQB73tsvAdL2Fzq6KOyAvLTTw/Nhg45z0z1LrPucQIIEl8NIJQ4fdTa/NfoL98w5DeAtpBA4pLmwz6tkteaKXBjnqZwYYAtKYufB01WUCKS5d/sB6EbM1bncib6c+JIjqIOFlXOkqfRfIM1Jy2yxK+pa3wLOH616eE=
+	t=1727803932; cv=none; b=PdhkGhaw4p9gl2Ta09kw6SxO3FK+uz9A+j8VD2x0c3MXaQcIaARgpWr+61hMNI2GwYdTJvs228ms4AN3HJw8zKqfrDpcxnEJ14XRVhWnhQparPJqQOlYBYuu/SKbzNLu6UxKkfT+s3NhOXYq54yMLmkqPLTeo+Sict2DlDIlR2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727803931; c=relaxed/simple;
-	bh=FAPTaMdSV48f1tF+9Jpob0UOmt1PtaSVTqw0KNCZCAA=;
+	s=arc-20240116; t=1727803932; c=relaxed/simple;
+	bh=mtqObfXgLYJ048H8y2GtYJDqsZj6puboQCx0Bpj5QOQ=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QwGK4266WWeUnnHannp/Y6wphvrJIhKpeW0JzysCDF1lbTp+aenbQJXsw3lgU2hqupBG5xf9OELhPwe/dUecR6W6EQgKSjoN/LyDIc3Be1khWEvh/WQ4Pw3xXeJt/w+DFqE0DmLuuuqNOVEWq6eqZk0iHkJ4CCFAvDOkvAgUo4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hp.com; spf=pass smtp.mailfrom=hp.com; dkim=pass (1024-bit key) header.d=hp.com header.i=@hp.com header.b=CjlJY1up; arc=none smtp.client-ip=170.10.133.162
+	 MIME-Version:Content-Type; b=TKaAWDnmJOPMp6Sh5MY3D9ZLdBJTOMbeK455s0QYQ8WmvC7Y4klmVzyojsEiJHxLl0iBcKM598ElLj9F0Se0p/mmxBIkFic5klrro8TrA/8lf4mQh5p0chAg/ZtXqbAgE+mFql97EH2NZpavJ+vzZie328DkBga5N7YuM8EnVCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hp.com; spf=pass smtp.mailfrom=hp.com; dkim=pass (1024-bit key) header.d=hp.com header.i=@hp.com header.b=mcMKs5zs; arc=none smtp.client-ip=170.10.129.162
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hp.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hp.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=hp.com; s=mimecast20180716;
-	t=1727803928;
+	t=1727803930;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=n5a6zSq0OG6cvfAemvQqxd1Yqrh9eX3QmCO9Ky3kiRs=;
-	b=CjlJY1upt7DsZ49Kdd/KrJZBc1Dsk0swqnSzssa6o5VD0xAzAxX49wCEXeblma4TnWGsUG
-	z0pxEn050f91Z2Hj+4t0f0b502iJhDlKRRfnKWybNsOrRuhKunrnBxigrZeYx+pMPlCNNj
-	leDbUY0/SujYxwlpHHQVWhaQWBj/GF4=
-Received: from g8t13016g.inc.hp.com (hpi-bastion.austin2.mail.core.hp.com
- [15.72.64.134]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=mtqObfXgLYJ048H8y2GtYJDqsZj6puboQCx0Bpj5QOQ=;
+	b=mcMKs5zskf99NgpqAElZz0BHd4yVUggDM+LOprxoJCshygaj3WeB/Rc6IkyAVJk9d4JsqO
+	dhUbSHZzEQI1oP57UooAsD2QG7fOAIUiRMpw1yIszjjOwaCXB4+gucBLdKxp3b86I9TO7c
+	Np8Sk8206J/FtuAKKg7AQZlmHBS4f+E=
+Received: from g8t13017g.inc.hp.com (hpi-bastion.austin2.mail.core.hp.com
+ [15.72.64.135]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-342-UF3Wt5jKM9ucahjbHwHoqg-1; Tue, 01 Oct 2024 13:32:07 -0400
-X-MC-Unique: UF3Wt5jKM9ucahjbHwHoqg-1
+ us-mta-515-zKK06PPyPqWyIvY9Rx75Gg-1; Tue, 01 Oct 2024 13:32:09 -0400
+X-MC-Unique: zKK06PPyPqWyIvY9Rx75Gg-1
 Received: from g7t14407g.inc.hpicorp.net (g7t14407g.inc.hpicorp.net [15.63.19.131])
 	(using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by g8t13016g.inc.hp.com (Postfix) with ESMTPS id 9C7DF6000FE9;
-	Tue,  1 Oct 2024 17:32:06 +0000 (UTC)
+	by g8t13017g.inc.hp.com (Postfix) with ESMTPS id 3E51E60008BE;
+	Tue,  1 Oct 2024 17:32:08 +0000 (UTC)
 Received: from localhost.localdomain (unknown [15.53.255.151])
-	by g7t14407g.inc.hpicorp.net (Postfix) with ESMTP id 236061E;
-	Tue,  1 Oct 2024 17:32:04 +0000 (UTC)
+	by g7t14407g.inc.hpicorp.net (Postfix) with ESMTP id 76B2718;
+	Tue,  1 Oct 2024 17:32:06 +0000 (UTC)
 From: Alexandru Gagniuc <alexandru.gagniuc@hp.com>
 To: gregkh@linuxfoundation.org,
 	stable@vger.kernel.org
@@ -64,10 +64,11 @@ Cc: qin.wan@hp.com,
 	YehezkelShB@gmail.com,
 	linux-usb@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
+	Gil Fine <gil.fine@linux.intel.com>,
 	Alexandru Gagniuc <alexandru.gagniuc@hp.com>
-Subject: [PATCH 6.6 03/14] thunderbolt: Expose tb_tunnel_xxx() log macros to the rest of the driver
-Date: Tue,  1 Oct 2024 17:30:58 +0000
-Message-Id: <20241001173109.1513-4-alexandru.gagniuc@hp.com>
+Subject: [PATCH 6.6 04/14] thunderbolt: Create multiple DisplayPort tunnels if there are more DP IN/OUT pairs
+Date: Tue,  1 Oct 2024 17:30:59 +0000
+Message-Id: <20241001173109.1513-5-alexandru.gagniuc@hp.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20241001173109.1513-1-alexandru.gagniuc@hp.com>
 References: <20241001173109.1513-1-alexandru.gagniuc@hp.com>
@@ -82,98 +83,91 @@ X-Mimecast-Originator: hp.com
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=WINDOWS-1252; x-default=true
 
-From: Mika Westerberg <mika.westerberg@linux.intel.com>
+From: Gil Fine <gil.fine@linux.intel.com>
 
-[ Upstream commit d27bd2c37d4666bce25ec4d9ac8c6b169992f0f0 ]
+[ Upstream commit 8648c6465c025c488e2855c209c0dea1a1a15184 ]
 
-In order to allow more consistent logging of tunnel related information
-make these logging macros available to the rest of the driver.
+Currently we only create one DisplayPort tunnel even if there would be
+more DP IN/OUT pairs available. Specifically this happens when a router
+is unplugged and we check if a new DisplayPort tunnel can be created. To
+cover this create tunnels as long as we find suitable DP IN/OUT pairs.
 
+Signed-off-by: Gil Fine <gil.fine@linux.intel.com>
 Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
 Signed-off-by: Qin Wan <qin.wan@hp.com>
 Signed-off-by: Alexandru Gagniuc <alexandru.gagniuc@hp.com>
 ---
- drivers/thunderbolt/tunnel.c | 26 +++++---------------------
- drivers/thunderbolt/tunnel.h | 24 +++++++++++++++++++++++-
- 2 files changed, 28 insertions(+), 22 deletions(-)
+ drivers/thunderbolt/tb.c | 26 +++++++++++++++++---------
+ 1 file changed, 17 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/thunderbolt/tunnel.c b/drivers/thunderbolt/tunnel.c
-index c0a8142f73f4..389b8dfc2447 100644
---- a/drivers/thunderbolt/tunnel.c
-+++ b/drivers/thunderbolt/tunnel.c
-@@ -58,27 +58,6 @@ MODULE_PARM_DESC(bw_alloc_mode,
+diff --git a/drivers/thunderbolt/tb.c b/drivers/thunderbolt/tb.c
+index 6fc300edad68..e37fb1081420 100644
+--- a/drivers/thunderbolt/tb.c
++++ b/drivers/thunderbolt/tb.c
+@@ -1282,18 +1282,13 @@ static struct tb_port *tb_find_dp_out(struct tb *tb=
+, struct tb_port *in)
+ =09return NULL;
+ }
 =20
- static const char * const tb_tunnel_names[] =3D { "PCI", "DP", "DMA", "USB=
-3" };
-=20
--#define __TB_TUNNEL_PRINT(level, tunnel, fmt, arg...)                   \
--=09do {                                                            \
--=09=09struct tb_tunnel *__tunnel =3D (tunnel);                  \
--=09=09level(__tunnel->tb, "%llx:%u <-> %llx:%u (%s): " fmt,   \
--=09=09      tb_route(__tunnel->src_port->sw),                 \
--=09=09      __tunnel->src_port->port,                         \
--=09=09      tb_route(__tunnel->dst_port->sw),                 \
--=09=09      __tunnel->dst_port->port,                         \
--=09=09      tb_tunnel_names[__tunnel->type],=09=09=09\
--=09=09      ## arg);                                          \
--=09} while (0)
--
--#define tb_tunnel_WARN(tunnel, fmt, arg...) \
--=09__TB_TUNNEL_PRINT(tb_WARN, tunnel, fmt, ##arg)
--#define tb_tunnel_warn(tunnel, fmt, arg...) \
--=09__TB_TUNNEL_PRINT(tb_warn, tunnel, fmt, ##arg)
--#define tb_tunnel_info(tunnel, fmt, arg...) \
--=09__TB_TUNNEL_PRINT(tb_info, tunnel, fmt, ##arg)
--#define tb_tunnel_dbg(tunnel, fmt, arg...) \
--=09__TB_TUNNEL_PRINT(tb_dbg, tunnel, fmt, ##arg)
--
- static inline unsigned int tb_usable_credits(const struct tb_port *port)
+-static void tb_tunnel_dp(struct tb *tb)
++static bool tb_tunnel_one_dp(struct tb *tb)
  {
- =09return port->total_credits - port->ctl_credits;
-@@ -2382,3 +2361,8 @@ void tb_tunnel_reclaim_available_bandwidth(struct tb_=
-tunnel *tunnel,
- =09=09tunnel->reclaim_available_bandwidth(tunnel, available_up,
- =09=09=09=09=09=09    available_down);
- }
+ =09int available_up, available_down, ret, link_nr;
+ =09struct tb_cm *tcm =3D tb_priv(tb);
+ =09struct tb_port *port, *in, *out;
+ =09struct tb_tunnel *tunnel;
+=20
+-=09if (!tb_acpi_may_tunnel_dp()) {
+-=09=09tb_dbg(tb, "DP tunneling disabled, not creating tunnel\n");
+-=09=09return;
+-=09}
+-
+ =09/*
+ =09 * Find pair of inactive DP IN and DP OUT adapters and then
+ =09 * establish a DP tunnel between them.
+@@ -1321,11 +1316,11 @@ static void tb_tunnel_dp(struct tb *tb)
+=20
+ =09if (!in) {
+ =09=09tb_dbg(tb, "no suitable DP IN adapter available, not tunneling\n");
+-=09=09return;
++=09=09return false;
+ =09}
+ =09if (!out) {
+ =09=09tb_dbg(tb, "no suitable DP OUT adapter available, not tunneling\n");
+-=09=09return;
++=09=09return false;
+ =09}
+=20
+ =09/*
+@@ -1398,7 +1393,7 @@ static void tb_tunnel_dp(struct tb *tb)
+ =09 * TMU mode to HiFi for CL0s to work.
+ =09 */
+ =09tb_increase_tmu_accuracy(tunnel);
+-=09return;
++=09return true;
+=20
+ err_free:
+ =09tb_tunnel_free(tunnel);
+@@ -1413,6 +1408,19 @@ static void tb_tunnel_dp(struct tb *tb)
+ =09pm_runtime_put_autosuspend(&out->sw->dev);
+ =09pm_runtime_mark_last_busy(&in->sw->dev);
+ =09pm_runtime_put_autosuspend(&in->sw->dev);
 +
-+const char *tb_tunnel_type_name(const struct tb_tunnel *tunnel)
-+{
-+=09return tb_tunnel_names[tunnel->type];
++=09return false;
 +}
-diff --git a/drivers/thunderbolt/tunnel.h b/drivers/thunderbolt/tunnel.h
-index bf690f7beeee..750ebb570d99 100644
---- a/drivers/thunderbolt/tunnel.h
-+++ b/drivers/thunderbolt/tunnel.h
-@@ -137,5 +137,27 @@ static inline bool tb_tunnel_is_usb3(const struct tb_t=
-unnel *tunnel)
- =09return tunnel->type =3D=3D TB_TUNNEL_USB3;
++
++static void tb_tunnel_dp(struct tb *tb)
++{
++=09if (!tb_acpi_may_tunnel_dp()) {
++=09=09tb_dbg(tb, "DP tunneling disabled, not creating tunnel\n");
++=09=09return;
++=09}
++
++=09while (tb_tunnel_one_dp(tb))
++=09=09;
  }
 =20
--#endif
-+const char *tb_tunnel_type_name(const struct tb_tunnel *tunnel);
-+
-+#define __TB_TUNNEL_PRINT(level, tunnel, fmt, arg...)                   \
-+=09do {                                                            \
-+=09=09struct tb_tunnel *__tunnel =3D (tunnel);                  \
-+=09=09level(__tunnel->tb, "%llx:%u <-> %llx:%u (%s): " fmt,   \
-+=09=09      tb_route(__tunnel->src_port->sw),                 \
-+=09=09      __tunnel->src_port->port,                         \
-+=09=09      tb_route(__tunnel->dst_port->sw),                 \
-+=09=09      __tunnel->dst_port->port,                         \
-+=09=09      tb_tunnel_type_name(__tunnel),=09=09=09\
-+=09=09      ## arg);                                          \
-+=09} while (0)
-=20
-+#define tb_tunnel_WARN(tunnel, fmt, arg...) \
-+=09__TB_TUNNEL_PRINT(tb_WARN, tunnel, fmt, ##arg)
-+#define tb_tunnel_warn(tunnel, fmt, arg...) \
-+=09__TB_TUNNEL_PRINT(tb_warn, tunnel, fmt, ##arg)
-+#define tb_tunnel_info(tunnel, fmt, arg...) \
-+=09__TB_TUNNEL_PRINT(tb_info, tunnel, fmt, ##arg)
-+#define tb_tunnel_dbg(tunnel, fmt, arg...) \
-+=09__TB_TUNNEL_PRINT(tb_dbg, tunnel, fmt, ##arg)
-+
-+#endif
+ static void tb_enter_redrive(struct tb_port *port)
 --=20
 2.45.1
 
