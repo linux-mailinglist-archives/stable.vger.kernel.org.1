@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-78383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD5E198B8EC
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 12:05:07 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B031698B8ED
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 12:05:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0CD721C221B7
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 10:05:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7081A282FB0
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 10:05:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C7E21A0727;
-	Tue,  1 Oct 2024 10:05:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4EEE1A0723;
+	Tue,  1 Oct 2024 10:05:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j4GPu8Fd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OkPweK93"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1E0119F49F
-	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 10:05:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4EA519F49F
+	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 10:05:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727777105; cv=none; b=KV9mNvVt0K+Vf2s+fE1BP1w1hUhkhn9J+WTM5BRzQtWiBIOJwKKQNWHKHjzSurEM5Y/GwsyceRI3BgBAWuIjMaQIsts8DnLS87nGd8ZIr6ByV12lduzZrJU2O+XTa9dbRkxIhSKjcPDfr4a+TE+gRkSA/Ajmn8e3Yz9m7We82hM=
+	t=1727777108; cv=none; b=NvuQp0wPKIs++UDRFEuVf06t2Dt2nDmDmOcGh8UaiHan5U5+TTSOUxn6uTyuk/1uYd+nwe69/FIWjPOEO+23n/V0v8+LJ9nGJuh+vQGhVgZy/rpB+VzqHz1yd/WX94W2M44k1wq86gGpH0A/RTyt3d//LqHXP+k0Af1Qa5Px5SM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727777105; c=relaxed/simple;
-	bh=6IsF/R7iIPwJ/bpkzzo8/THWCdw/agZbcwmtJyW0+E0=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=orTyityeg2+VIRXJcNU0n/Vu8Ib0LR72aIyXrMJ1jRtzJtSwcrYa+Nt4u0QI7L95OE+L6yGrYuHa0JtVhB7VY24+rAeF2Bt4BVPB5M7imG/IH5kAAwzQ6UPCSH8mdq+qp8bCFi5wmrIMPQj1lZUA6kyfmsauZJb+iaMrvRBW3TQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j4GPu8Fd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BD44C4CEC6;
-	Tue,  1 Oct 2024 10:05:05 +0000 (UTC)
+	s=arc-20240116; t=1727777108; c=relaxed/simple;
+	bh=r+O0M1gilYvD6+rBD2OT29uOSRET9W49nsKQ3DTg/zY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=vEMvaKHBENH+2toGozRaOK4Bbj8UVf/BziQs7iJQfCQeP1zqrzEO3KzyKBk5B5VHHj4MPiwjYuIz+kA6dlTST6EJGUw1MABHx9hoxKs2wx2lnxj5FxNmQLZS+Av+gbGHzRN2DIRcU3/m7WGz3D4c1jy5HGHGy+p6lG/yj7poEoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OkPweK93; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F1A9C4CEC6;
+	Tue,  1 Oct 2024 10:05:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727777105;
-	bh=6IsF/R7iIPwJ/bpkzzo8/THWCdw/agZbcwmtJyW0+E0=;
+	s=korg; t=1727777108;
+	bh=r+O0M1gilYvD6+rBD2OT29uOSRET9W49nsKQ3DTg/zY=;
 	h=Subject:To:Cc:From:Date:From;
-	b=j4GPu8FdIyuL+8cWJO59swISKH2pMrC8McoFst7YpzY44nb6o/dm5e43y6F4gfWMN
-	 4fPKEEAX344dsF2AmesTrhJBCFiQ07bUmVDhjI8MQNw1a5ZhweegI6zP0+4sbE4lTD
-	 +2/myamiU6Tk8ml8DI3PUl76DAAy5UG11X1/5Q7Y=
-Subject: FAILED: patch "[PATCH] drm/amd/display: Use SDR white level to calculate matrix" failed to apply to 6.6-stable tree
+	b=OkPweK93Bia66ild8exlbVobJbAaHTmZ1e2qqiW20PNdnnt9pSzA9/H4WXv8wQp9L
+	 x7FPnwY6wqXmhveZ8RHN9ADXcKGqpq8Xyco9e7M/hjz8EUV4UATOuaGrneAjcvs3UB
+	 vyERzmhOthFoJC2/Xhiv3p/B0Bz4aNYz9DQVcOpI=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Use SDR white level to calculate matrix" failed to apply to 6.10-stable tree
 To: Samson.Tam@amd.com,alex.hung@amd.com,alexander.deucher@amd.com,daniel.wheeler@amd.com,jun.lei@amd.com,mario.limonciello@amd.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
 Date: Tue, 01 Oct 2024 12:04:27 +0200
-Message-ID: <2024100127-props-escalator-4772@gregkh>
+Message-ID: <2024100126-uncloak-exception-4276@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x c2ed7002c0614c5eab6c8f62a7a76be5df5805cf
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100127-props-escalator-4772@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100126-uncloak-exception-4276@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
 
 Possible dependencies:
 
@@ -88,7 +88,6 @@ dc2be9c68ffb ("drm/amd/display: Block FPO According to Luminance Delta")
 00c391102abc ("drm/amd/display: Add misc DC changes for DCN401")
 da87132f641e ("drm/amd/display: Add some DCN401 reg name to macro definitions")
 70839da63605 ("drm/amd/display: Add new DCN401 sources")
-ef319dff5475 ("drm/amd/display: add support for chroma offset")
 
 thanks,
 
