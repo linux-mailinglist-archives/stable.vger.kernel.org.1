@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-78467-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8892598BAF5
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 13:25:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6662B98BAF6
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 13:25:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4759C283776
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 11:25:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 981BB1C227E3
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 11:25:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C9751BF7F5;
-	Tue,  1 Oct 2024 11:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC3341BF7F5;
+	Tue,  1 Oct 2024 11:25:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QsIi0W4b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o9dbB0Ie"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DE0419AD4F
-	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 11:25:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CEB019AD4F
+	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 11:25:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727781910; cv=none; b=c1yVDOup6GA5A4rVJaWK/dn0vbav1OWBlVtAs8RpSC4HeSoI8SrQgrzC41dmyzwxVzFkO+exMo9ppawznu9M2c5jTs9lyOCPIJo2GpDhtOvdKgK297hhMq6iRXuL9Hi2d7Rs5CXrztfyaS66oUPh54ACTij4aj7qKRsFoLzanS0=
+	t=1727781931; cv=none; b=apyqyggGgsYI2f98EeZo+Z81pDzxhp6u+2uT4Y3TxocOTNmr0lIQDDG76dVMYhMVsxdSqzHRw/HqzFmZpY/ykPsdAxmkKXl80A45OVbWEqVNWyV/RcYBkTWd+cDQfdPLS6oJpT6bNpI6VGO66YGaFby6GFiFNElldzbz8LJg3aM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727781910; c=relaxed/simple;
-	bh=jonA0JigixndExJea8hbhba9iZT3o4l3aujkQKq+AzM=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=jSKcEA4XEB+HtzG0FXWyXTSbB068OExWnl4L1dL/oLGQS6KHyWGaaH9mZtAMLM8O5Z4GjUnREyIjYqVh0e7VNJGKwj1Brbkfi9TpY0PDIsMG+deOwZ7ddSAZw058zQW2qeQB+qBeFCUwxAbm7VLJe/l9fT+2Ur2XqJPC5yMW3lQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QsIi0W4b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74D22C4CECD;
-	Tue,  1 Oct 2024 11:25:09 +0000 (UTC)
+	s=arc-20240116; t=1727781931; c=relaxed/simple;
+	bh=MSvBCI6M2hBoxAumm6YXQ+yq5Ac97aHHjJZqO72Ov2c=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=jALYr17tWiKLCvu2rOtX44ScXaH3QQDMXpqg6Jt/64JKA1Z7dtK6Rq1EPbllPT7YwXZdi8u3gu/Zfjr7ljOHERQLS9fL5MemwRJ9ZxDOUnpedcdPvRkZp21ywkRYAQSTXpmKk2QpVwuGqaI8hIHVAub4mGHVIDYaiIxdGjdih00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o9dbB0Ie; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2515CC4CEC6;
+	Tue,  1 Oct 2024 11:25:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727781909;
-	bh=jonA0JigixndExJea8hbhba9iZT3o4l3aujkQKq+AzM=;
+	s=korg; t=1727781931;
+	bh=MSvBCI6M2hBoxAumm6YXQ+yq5Ac97aHHjJZqO72Ov2c=;
 	h=Subject:To:Cc:From:Date:From;
-	b=QsIi0W4bgKyBAV47YNRkNE27rQY/FSMqMUikfPHpYvh8DRUGCz5twOlct/Y5QN9Pu
-	 niXnrKbWqEnFau8Apq88Jkl0R+CW+CF5hRUnCA7KOVRpAxAcCnQHEoFToSNISJah9J
-	 usxez+RTqJmzmxDQYnO7eSHakAlEBkj090ldV7LA=
-Subject: FAILED: patch "[PATCH] wifi: mt76: mt7925: fix a potential association failure upon" failed to apply to 6.10-stable tree
-To: michael.lo@mediatek.com,mingyen.hsieh@mediatek.com,nbd@nbd.name
+	b=o9dbB0Ie13ciKByUb3AIdR5Yw2m43yF/BnLBzqjs8DSkDRRwM8++A2yFNeNh5E5Pk
+	 7n4id5xlguOdPzlcs8Z6CJMpPpL5aI6pmeyvgTpNIKvZlK0GYgt24p3F1RulE/007P
+	 8il4YSPdR2V0QSEGJslFIbRnkTvrYZMg7IfJKmEM=
+Subject: FAILED: patch "[PATCH] debugfs show actual source in /proc/mounts" failed to apply to 6.10-stable tree
+To: tsi@tuyoix.net,brauner@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 01 Oct 2024 13:25:07 +0200
-Message-ID: <2024100106-candy-amicably-5df2@gregkh>
+Date: Tue, 01 Oct 2024 13:25:28 +0200
+Message-ID: <2024100128-prison-ploy-dfd6@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 
@@ -62,29 +62,15 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 45064d19fd3af6aeb0887b35b5564927980cf150
+git cherry-pick -x 3a987b88a42593875f6345188ca33731c7df728c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100106-candy-amicably-5df2@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100128-prison-ploy-dfd6@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
 
 Possible dependencies:
 
-45064d19fd3a ("wifi: mt76: mt7925: fix a potential association failure upon resuming")
-5f5b6a745c69 ("wifi: mt76: mt7925: add mt7925_mac_link_sta_remove to remove per-link STA")
-89397bccc882 ("wifi: mt76: mt7925: add mt7925_mac_link_sta_assoc to associate per-link STA")
-064a5955aa27 ("wifi: mt76: mt7925: extend mt7925_mcu_add_bss_info for per-link STA")
-f7cc8944039c ("wifi: mt76: mt7925: extend mt7925_mcu_sta_update for per-link STA")
-21760dcd2ab6 ("wifi: mt76: mt7925: extend mt7925_mcu_bss_basic_tlv for per-link BSS")
-220865160cf6 ("wifi: mt76: mt7925: extend mt7925_mcu_bss_mld_tlv for per-link BSS")
-eff53d6ee11b ("wifi: mt76: mt7925: extend mt7925_mcu_bss_qos_tlv for per-link BSS")
-d62f77e34778 ("wifi: mt76: mt7925: extend mt7925_mcu_bss_ifs_tlv for per-link BSS")
-b8b04b6616ba ("wifi: mt76: mt7925: extend mt7925_mcu_set_timing for per-link BSS")
-fa5f44463f51 ("wifi: mt76: mt7925: extend mt7925_mcu_add_bss_info for per-link BSS")
-acdfc3e79899 ("wifi: mt76: mt7925: extend mt7925_mcu_set_tx with for per-link BSS")
-7cebb6a66ac6 ("wifi: mt76: mt792x: extend mt76_connac_mcu_uni_add_dev for per-link BSS")
-43626f0e0c99 ("wifi: mt76: mt7925: support for split bss_info_changed method")
-4c28c0976ed8 ("wifi: mt76: mt792x: add struct mt792x_link_sta")
-30e89baeb01f ("wifi: mt76: mt792x: add struct mt792x_bss_conf")
+3a987b88a425 ("debugfs show actual source in /proc/mounts")
+49abee5991e1 ("debugfs: Convert to new uid/gid option parsing helpers")
 
 thanks,
 
@@ -92,83 +78,55 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 45064d19fd3af6aeb0887b35b5564927980cf150 Mon Sep 17 00:00:00 2001
-From: Michael Lo <michael.lo@mediatek.com>
-Date: Mon, 2 Sep 2024 17:00:54 +0800
-Subject: [PATCH] wifi: mt76: mt7925: fix a potential association failure upon
- resuming
+From 3a987b88a42593875f6345188ca33731c7df728c Mon Sep 17 00:00:00 2001
+From: =?UTF-8?q?Marc=20Aur=C3=A8le=20La=20France?= <tsi@tuyoix.net>
+Date: Sat, 10 Aug 2024 13:25:27 -0600
+Subject: [PATCH] debugfs show actual source in /proc/mounts
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-In multi-channel scenarios, the granted channel must be aborted before
-suspending. Otherwise, the firmware will be put into a wrong state,
-resulting in an association failure after resuming.
+After its conversion to the new mount API, debugfs displays "none" in
+/proc/mounts instead of the actual source.  Fix this by recognising its
+"source" mount option.
 
-With this patch, the granted channel will be aborted before suspending
-if necessary.
+Signed-off-by: Marc Aurèle La France <tsi@tuyoix.net>
+Link: https://lore.kernel.org/r/e439fae2-01da-234b-75b9-2a7951671e27@tuyoix.net
+Fixes: a20971c18752 ("vfs: Convert debugfs to use the new mount API")
+Cc: stable@vger.kernel.org # 6.10.x: 49abee5991e1: debugfs: Convert to new uid/gid option parsing helpers
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 
-Cc: stable@vger.kernel.org
-Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver for mt7925 chips")
-Signed-off-by: Michael Lo <michael.lo@mediatek.com>
-Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
-Link: https://patch.msgid.link/20240902090054.15806-1-mingyen.hsieh@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
-
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-index 38a301533297..791c8b00e112 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
-@@ -439,6 +439,19 @@ static void mt7925_roc_iter(void *priv, u8 *mac,
- 	mt7925_mcu_abort_roc(phy, &mvif->bss_conf, phy->roc_token_id);
- }
+diff --git a/fs/debugfs/inode.c b/fs/debugfs/inode.c
+index 91521576f500..66d9b3b4c588 100644
+--- a/fs/debugfs/inode.c
++++ b/fs/debugfs/inode.c
+@@ -89,12 +89,14 @@ enum {
+ 	Opt_uid,
+ 	Opt_gid,
+ 	Opt_mode,
++	Opt_source,
+ };
  
-+void mt7925_roc_abort_sync(struct mt792x_dev *dev)
-+{
-+	struct mt792x_phy *phy = &dev->phy;
-+
-+	del_timer_sync(&phy->roc_timer);
-+	cancel_work_sync(&phy->roc_work);
-+	if (test_and_clear_bit(MT76_STATE_ROC, &phy->mt76->state))
-+		ieee80211_iterate_interfaces(mt76_hw(dev),
-+					     IEEE80211_IFACE_ITER_RESUME_ALL,
-+					     mt7925_roc_iter, (void *)phy);
-+}
-+EXPORT_SYMBOL_GPL(mt7925_roc_abort_sync);
-+
- void mt7925_roc_work(struct work_struct *work)
- {
- 	struct mt792x_phy *phy;
-@@ -1112,6 +1125,8 @@ static void mt7925_mac_link_sta_remove(struct mt76_dev *mdev,
- 	msta = (struct mt792x_sta *)link_sta->sta->drv_priv;
- 	mlink = mt792x_sta_to_link(msta, link_id);
+ static const struct fs_parameter_spec debugfs_param_specs[] = {
+ 	fsparam_gid	("gid",		Opt_gid),
+ 	fsparam_u32oct	("mode",	Opt_mode),
+ 	fsparam_uid	("uid",		Opt_uid),
++	fsparam_string	("source",	Opt_source),
+ 	{}
+ };
  
-+	mt7925_roc_abort_sync(dev);
-+
- 	mt76_connac_free_pending_tx_skbs(&dev->pm, &mlink->wcid);
- 	mt76_connac_pm_wake(&dev->mphy, &dev->pm);
- 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h b/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
-index e80824a10b2c..f5c02e5f5066 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
-@@ -307,6 +307,7 @@ int mt7925_mcu_set_roc(struct mt792x_phy *phy, struct mt792x_bss_conf *mconf,
- 		       enum mt7925_roc_req type, u8 token_id);
- int mt7925_mcu_abort_roc(struct mt792x_phy *phy, struct mt792x_bss_conf *mconf,
- 			 u8 token_id);
-+void mt7925_roc_abort_sync(struct mt792x_dev *dev);
- int mt7925_mcu_fill_message(struct mt76_dev *mdev, struct sk_buff *skb,
- 			    int cmd, int *wait_seq);
- int mt7925_mcu_add_key(struct mt76_dev *dev, struct ieee80211_vif *vif,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/pci.c b/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
-index cb25eb50a45b..9aec675450f2 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
-@@ -449,6 +449,8 @@ static int mt7925_pci_suspend(struct device *device)
- 	cancel_delayed_work_sync(&pm->ps_work);
- 	cancel_work_sync(&pm->wake_work);
- 
-+	mt7925_roc_abort_sync(dev);
-+
- 	err = mt792x_mcu_drv_pmctrl(dev);
- 	if (err < 0)
- 		goto restore_suspend;
+@@ -126,6 +128,12 @@ static int debugfs_parse_param(struct fs_context *fc, struct fs_parameter *param
+ 	case Opt_mode:
+ 		opts->mode = result.uint_32 & S_IALLUGO;
+ 		break;
++	case Opt_source:
++		if (fc->source)
++			return invalfc(fc, "Multiple sources specified");
++		fc->source = param->string;
++		param->string = NULL;
++		break;
+ 	/*
+ 	 * We might like to report bad mount options here;
+ 	 * but traditionally debugfs has ignored all mount options
 
 
