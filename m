@@ -1,141 +1,125 @@
-Return-Path: <stable+bounces-78306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D785E98B12B
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 01:46:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DF8398B16C
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 02:24:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 45465B2549B
-	for <lists+stable@lfdr.de>; Mon, 30 Sep 2024 23:46:31 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 11CDAB21F6F
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 00:24:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2EA1199EB1;
-	Mon, 30 Sep 2024 23:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD2B828FF;
+	Tue,  1 Oct 2024 00:24:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KhGA+gIS"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P8otNILN"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f65.google.com (mail-qv1-f65.google.com [209.85.219.65])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 845EC19DF74;
-	Mon, 30 Sep 2024 23:43:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2839173;
+	Tue,  1 Oct 2024 00:24:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727739834; cv=none; b=qp7SmuYCeLT7ZbCtmZOML8b0JagWNKFTFOVAxME6o4totpij5VpVXVm5ZghE6hh7ZqIGISNeOQzWDQvlrCaxrZniwaai2SQ4TtD9G7zpM03jLtb+XV3sZDEYlmj0sTlTSSgasj3dMG4kkLMD9lNWKrZQ1UgaPRoLMazV8mGpJVY=
+	t=1727742274; cv=none; b=Q/VbjaFJi1ppgPLNR1aHcCG4oxx0KG8OWlOr6TXvsvxJinWA8zQR/M7LRe4TmFe5ROF+4v4rTjCgNIfo0X1xegPazSMNwSHzxH734wQr4DLUdd+V/rgbdDAAgeZVqqZ2ByPLWO9JiiPMoixXbOtYFdESzdOtnaiu1JXrE6oxkT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727739834; c=relaxed/simple;
-	bh=6/Anv+xT63yPRfB/N/xPoSruDcxtQ92XNpgYzWAl8mI=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=E85Hsbux+Gyys/mIYhwTde34OQmWHh86Ruub1B4NGQq6WEgrRFjUuulNc+rq+UoxHBUK18DRpdTG+3lu+eA4DGgAQ2kwmfFysrXtWMdfeDxnNdsTzVs0243ZMmr3rtSvL688iGtmd8LfyBK0f3Pc0hQcczOapxVFZaU0juGoM9c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KhGA+gIS; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1727739833; x=1759275833;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version:content-transfer-encoding;
-  bh=6/Anv+xT63yPRfB/N/xPoSruDcxtQ92XNpgYzWAl8mI=;
-  b=KhGA+gISl+ZgoaA3aMIVVp0gwGjTnuye/SjEFsxvzgeRnY2SfcTixZGB
-   oLIQEi89gD36jQ0TJX0Qmet0Eu/sGWxZcvOUOcyKpm+5Vij1UuhcMRZfZ
-   rPeYOr7U1aTgVaLGS3QtjTYdcC/tReu3ScG68TtMXeZ7hAGcjxGpTOHB8
-   k8Q+0bBgkK8WiqzeLp3ygu2WSw6PG8KUdPEdazSnSL3RDsZXEX0lXVzFu
-   lTPo85ayrzPHyI/r9lYLAeRbTtpvA6/80J7wFZRc3uEMBGdXr5xWRpCdO
-   4dap5QVBvhbBs7TNKflwNhqc1whjoAWTdLFD/es7j2oRmpxXqG2nF1Xiw
-   A==;
-X-CSE-ConnectionGUID: +6KI9yxfSJyc7yXXj+H3yw==
-X-CSE-MsgGUID: caJgwAnuRJmEdpFScG2YAA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11211"; a="49375678"
-X-IronPort-AV: E=Sophos;i="6.11,166,1725346800"; 
-   d="scan'208";a="49375678"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2024 16:43:47 -0700
-X-CSE-ConnectionGUID: j99LZzZzT+acawSy+yt8Xg==
-X-CSE-MsgGUID: sU+SB+MVTeaXoQvcp5yjIw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,166,1725346800"; 
-   d="scan'208";a="78201228"
-Received: from yhuang6-desk2.sh.intel.com (HELO yhuang6-desk2.ccr.corp.intel.com) ([10.238.208.55])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2024 16:43:43 -0700
-From: "Huang, Ying" <ying.huang@intel.com>
-To: Barry Song <21cnbao@gmail.com>
-Cc: akpm@linux-foundation.org,  linux-mm@kvack.org,
-  linux-kernel@vger.kernel.org,  Barry Song <v-songbaohua@oppo.com>,
-  Kairui Song <kasong@tencent.com>,  Yu Zhao <yuzhao@google.com>,  David
- Hildenbrand <david@redhat.com>,  Chris Li <chrisl@kernel.org>,  Hugh
- Dickins <hughd@google.com>,  Johannes Weiner <hannes@cmpxchg.org>,
-  Matthew Wilcox <willy@infradead.org>,  Michal Hocko <mhocko@suse.com>,
-  Minchan Kim <minchan@kernel.org>,  Yosry Ahmed <yosryahmed@google.com>,
-  SeongJae Park <sj@kernel.org>,  Kalesh Singh <kaleshsingh@google.com>,
-  Suren Baghdasaryan <surenb@google.com>,  stable@vger.kernel.org,  Oven
- Liyang <liyangouwen1@oppo.com>
-Subject: Re: [PATCH] mm: avoid unconditional one-tick sleep when
- swapcache_prepare fails
-In-Reply-To: <CAGsJ_4w2PjN+4DKWM6qvaEUAX=FQW0rp+6Wjx1Qrq=jaAz7wsw@mail.gmail.com>
-	(Barry Song's message of "Tue, 1 Oct 2024 02:18:13 +1300")
-References: <20240926211936.75373-1-21cnbao@gmail.com>
-	<871q13qj2t.fsf@yhuang6-desk2.ccr.corp.intel.com>
-	<CAGsJ_4w2PjN+4DKWM6qvaEUAX=FQW0rp+6Wjx1Qrq=jaAz7wsw@mail.gmail.com>
-Date: Tue, 01 Oct 2024 07:40:09 +0800
-Message-ID: <877caspv6u.fsf@yhuang6-desk2.ccr.corp.intel.com>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+	s=arc-20240116; t=1727742274; c=relaxed/simple;
+	bh=RR4YJEuiCB+s4fOTHaO2fk03o/BIx9b2dGauH/q9zfI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=K86TkI+fkUkOcW5pwhIQdyjvKEXDXO6bGG7rWKkMiwAQ/zpVqnQZHLPS7iNIXX2P2rssQXYRwF6/dj/YetrelnlUhHoM7vq98IBAVQA4FvG/Og6N6dK302nMAUkHYZb4KGpV6KgiSuvvdRHN6RHc39IF47nj9us+mCNN6zSa8m8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P8otNILN; arc=none smtp.client-ip=209.85.219.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qv1-f65.google.com with SMTP id 6a1803df08f44-6cb2824ddc2so39531606d6.1;
+        Mon, 30 Sep 2024 17:24:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1727742272; x=1728347072; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=UXJNocpNHIaneGGPh7u0gkYrjLLyA3SxEfbfZIWZAYE=;
+        b=P8otNILNZhG1P0cukcyh3sY5jROW69KKkCgThUI04WIqlzcsVPS/0CgsIY7YpYvLXC
+         o7DgI9RBtshoJJrxTBtLk2VhPZH6euFRinmtCrCH34QfS4h3Qa/PsCZ3EETRolZeQfAw
+         /gDGHnJjsbvWND1/J3/8xkMqNoq6GKiSQoPxF2PwOm86xLZQgAgy6w7J7z7J/TW2SkXW
+         Y0hLQcJ04pou+/jk0up+V1bCQdBefXngMEmocWxAYgHQls6ff3T1PxOh7o5G97lqxNwP
+         7oGMfsIgydieDVoy/AFuiQrQIbywdXEn0V2e0JSkRN9HHrdLznSBroYaU3YRK3+h8JW6
+         zTkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727742272; x=1728347072;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=UXJNocpNHIaneGGPh7u0gkYrjLLyA3SxEfbfZIWZAYE=;
+        b=wPg57s3BAIbPHDFDFOMlO63LUFA4mu9YIpKNo1+4ldbnxR8YX+9FVeiVwjSde3em47
+         QS1O9JO2mGwDnFZFWY/zixyHOO7p2SMALzMxXHZy3FfpE7GV4Iyf6gbhUf6ASDcR0LST
+         ASMikCgq30iNfD55MPD2Azcz9oXaPJZA3Zc9KntRYzhevI7sm/ApvfYQJPrhFxu7Mtgi
+         cA1xKdAZqUNBWxyIMJhBmUisEMy23URsqVixpPbgZYKap6MZf2h232DBdf3FncjamHk+
+         PjKcKA/iY/UkQsn0qeBnsvRr8ToIKjGyIAOlyUP2sLOqjZNIuyveTmiTSsJsBhyvPynM
+         GrhA==
+X-Forwarded-Encrypted: i=1; AJvYcCUjBi7QTHLVVJmXSigmeYk81k8LBKrctlr9XVLgrZcDFDt8VuhFTihRayRaidRSxLbDlssRFipz@vger.kernel.org, AJvYcCVA+B1lxVbiG1ZDgBpwHh+Sti8nOeCTv2XwmXicbdW88oufYrAzScQGKewdSCGWapsGhGd8eyauX2qc0/OZ@vger.kernel.org, AJvYcCWlcoqTcDgq4EtFLCTNgr06zWBFd7sJfJ8EITMnFM2caAxPHOkzEf/OypBdiSQQAGZ7Pox3zOCWYNHzCEA=@vger.kernel.org, AJvYcCXYIL8C0mWkBLAV39Yu5vfmea5bJCDnYxlY6jvymm2mP4FWc47RXjgRZlLUnAM0WI5KSvl/H/bhnGD2vGkQ@vger.kernel.org
+X-Gm-Message-State: AOJu0YyWZPndUtEXVZVmrNg1GxeZTuORofl51yhhB3GpB0Xd27aCFE05
+	Ko7coOoFX2WG/onNkNqA7Y8AODj4nVbbs+PFMX+LmMgeqrXTEYFs
+X-Google-Smtp-Source: AGHT+IFqcL3S9UyEKrwwWrFna24JxfP1Qfwil+sI6wQESX1DtQgsUOKRCkTwCI1uJWo3OmH6tjkBtA==
+X-Received: by 2002:a05:6214:4206:b0:6cb:3ba9:b834 with SMTP id 6a1803df08f44-6cb3ba9b883mr186213266d6.24.1727742271738;
+        Mon, 30 Sep 2024 17:24:31 -0700 (PDT)
+Received: from localhost.localdomain (mobile-130-126-255-54.near.illinois.edu. [130.126.255.54])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6cb3b66b5a8sm44361256d6.79.2024.09.30.17.24.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 30 Sep 2024 17:24:30 -0700 (PDT)
+From: Gax-c <zichenxie0106@gmail.com>
+To: srinivas.kandagatla@linaro.org,
+	lgirdwood@gmail.com,
+	broonie@kernel.org,
+	perex@perex.cz,
+	tiwai@suse.com,
+	rohitkr@codeaurora.org
+Cc: alsa-devel@alsa-project.org,
+	linux-arm-msm@vger.kernel.org,
+	linux-sound@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Gax-c <zichenxie0106@gmail.com>,
+	Zijie Zhao <zzjas98@gmail.com>,
+	Chenyuan Yang <chenyuan0y@gmail.com>
+Subject: [PATCH] ASoC: qcom: Fix NULL Dereference in asoc_qcom_lpass_cpu_platform_probe()
+Date: Mon, 30 Sep 2024 19:24:09 -0500
+Message-Id: <20241001002409.11989-1-zichenxie0106@gmail.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Barry Song <21cnbao@gmail.com> writes:
+A devm_kzalloc() in asoc_qcom_lpass_cpu_platform_probe() could possibly return NULL pointer.
+NULL Pointer Dereference may be triggerred without addtional check.
+Add a NULL check for the returned pointer.
 
-> On Sun, Sep 29, 2024 at 3:43=E2=80=AFPM Huang, Ying <ying.huang@intel.com=
-> wrote:
->>
->> Hi, Barry,
->>
->> Barry Song <21cnbao@gmail.com> writes:
->>
->> > From: Barry Song <v-songbaohua@oppo.com>
->> >
->> > Commit 13ddaf26be32 ("mm/swap: fix race when skipping swapcache")
->> > introduced an unconditional one-tick sleep when `swapcache_prepare()`
->> > fails, which has led to reports of UI stuttering on latency-sensitive
->> > Android devices. To address this, we can use a waitqueue to wake up
->> > tasks that fail `swapcache_prepare()` sooner, instead of always
->> > sleeping for a full tick. While tasks may occasionally be woken by an
->> > unrelated `do_swap_page()`, this method is preferable to two scenarios:
->> > rapid re-entry into page faults, which can cause livelocks, and
->> > multiple millisecond sleeps, which visibly degrade user experience.
->>
->> In general, I think that this works.  Why not extend the solution to
->> cover schedule_timeout_uninterruptible() in __read_swap_cache_async()
->> too?  We can call wake_up() when we clear SWAP_HAS_CACHE.  To avoid
->
-> Hi Ying,
-> Thanks for your comments.
-> I feel extending the solution to __read_swap_cache_async() should be done
-> in a separate patch. On phones, I've never encountered any issues reported
-> on that path, so it might be better suited for an optimization rather tha=
-n a
-> hotfix?
+Fixes: b5022a36d28f ("ASoC: qcom: lpass: Use regmap_field for i2sctl and dmactl registers")
+Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
+Reported-by: Zichen Xie <zichenxie0106@gmail.com>
+Reported-by: Zijie Zhao <zzjas98@gmail.com>
+Reported-by: Chenyuan Yang <chenyuan0y@gmail.com>
+---
+ sound/soc/qcom/lpass-cpu.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-Yes.  It's fine to do that in another patch as optimization.
+diff --git a/sound/soc/qcom/lpass-cpu.c b/sound/soc/qcom/lpass-cpu.c
+index 5a47f661e0c6..a8e56f47f237 100644
+--- a/sound/soc/qcom/lpass-cpu.c
++++ b/sound/soc/qcom/lpass-cpu.c
+@@ -1243,6 +1243,9 @@ int asoc_qcom_lpass_cpu_platform_probe(struct platform_device *pdev)
+ 	drvdata->i2sctl = devm_kzalloc(&pdev->dev, sizeof(struct lpaif_i2sctl),
+ 					GFP_KERNEL);
+ 
++	if (!drvdata->i2sctl)
++		return -ENOMEM;
++
+ 	/* Initialize bitfields for dai I2SCTL register */
+ 	ret = lpass_cpu_init_i2sctl_bitfields(dev, drvdata->i2sctl,
+ 						drvdata->lpaif_map);
+-- 
+2.25.1
 
->> overhead to call wake_up() when there's no task waiting, we can use an
->> atomic to count waiting tasks.
->
-> I'm not sure it's worth adding the complexity, as wake_up() on an empty
-> waitqueue should have a very low cost on its own?
-
-wake_up() needs to call spin_lock_irqsave() unconditionally on a global
-shared lock.  On systems with many CPUs (such servers), this may cause
-severe lock contention.  Even the cache ping-pong may hurt performance
-much.
-
---
-Best Regards,
-Huang, Ying
 
