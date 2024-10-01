@@ -1,124 +1,133 @@
-Return-Path: <stable+bounces-78582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78583-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04FFE98C741
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 23:05:51 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73CBC98C750
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 23:09:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4D27FB226EC
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 21:05:48 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E148E286203
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 21:09:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 176711CF2A4;
-	Tue,  1 Oct 2024 21:02:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88D5E1BD00A;
+	Tue,  1 Oct 2024 21:09:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A1P/u8i9"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Bi/3XU+l"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f195.google.com (mail-qk1-f195.google.com [209.85.222.195])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7473A1CDA0D;
-	Tue,  1 Oct 2024 21:02:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0527114B972
+	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 21:09:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727816564; cv=none; b=rr9/X0WBw6uPEIsyJWrANZixB4inwTgPejW/82DokLSQEtmub9sJRG6iwa6DuDMGqH8jrIyM1Y2igjTCJNpVay+TudVCyeSp2OnIg8KbDK1yojqoJb8SLL+i7UeNfPCmRwBmfH8Nn1pdkInzW5B6t7tRqN34DiXh9susNbFwXCY=
+	t=1727816972; cv=none; b=qvJrWoyaxwCANrHklwztwRSWSTsk3abXeL3mFafenq0MWmGm9Z/Fr7a+5WpWLOugCdr1w8/oODxGHyO732EIg4h6YhKAeqbLplG5ZmI+Qw44yhn0HjvYb4A2LuR901E27FFlC6Xkif3jEYh88gO1HfcazSrsBOSQ2Fuc+VTxeJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727816564; c=relaxed/simple;
-	bh=j9nKdkXSYWiIqZC/EjeMLZoVdFKq933DP4Fk2mYbuDc=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=CmRKbN73ruUf8CzsSWgVi1g9+yLsCEo0YVEOiFFfIszrk6/ZfTsPWzs8dX+bsz2ZSs4SsEbdk8ZgTjteRJ9dLrGCs5Yy6kgtoG9ChXxwrxqriB/CfGiyyOzcqPNpmgGMYKvJLLvwT/iyyijbcH9myE77jb4H1XkKsu4Ga+PQeac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A1P/u8i9; arc=none smtp.client-ip=209.85.222.195
+	s=arc-20240116; t=1727816972; c=relaxed/simple;
+	bh=PdoK5q9uudg99L5nTdeisnRuv+3cJb3MgbZm9wA5SrA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=L1VZiEb/q9dA8L607mQ2nliWzJ75pt2EDC9NllK+KLT+Z0SazIxsfA9oRq1+rgwp3W8KIHzcVJK0ZFna6hM+vX6LbIvrUuTyWjoJEVAjW7pAnirCsIXMD2Eus9Ud/faeybtkWL3xnL5OuAPzS2Yp0u62HoYSlKKwcz7WDdPyCnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Bi/3XU+l; arc=none smtp.client-ip=209.85.214.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qk1-f195.google.com with SMTP id af79cd13be357-7acdd65fbceso493604885a.3;
-        Tue, 01 Oct 2024 14:02:43 -0700 (PDT)
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-208cf673b8dso60806035ad.3
+        for <stable@vger.kernel.org>; Tue, 01 Oct 2024 14:09:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727816562; x=1728421362; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=+jYH5NvXI+E7Di+eslBeYdYxG/YksuIt7qvi8S1X1cA=;
-        b=A1P/u8i9w8DH84ZJYr9Oc8ig8TdqJ+VE7yU6co5YApx2zCQr84Wm4OY1IgX2SaLNQh
-         9JUwt+CSaefuQC+VPVa1hGrYIxsYy4byfE5A/WKw/Tvgl8JRClvpskCk0nUc8wzWh2Qg
-         VC0dWEWqw2UfaXXl+c4P6YhZx8UmV8Ms0919FlFVv1+zMddB8iRviFpINur8ZW6ByTAh
-         70zBsqUjjLgoADRxFwRoRU178966FDSIzxsO9TkoRgwvcsJqnq/aCJ9yw/ELa+fl4P3d
-         RQK0O/+Sr5yT07ohhVX711lf0KTpQw781qXeqUaeVTE+0GWx6uLk7nfAZ3t6JJIvafbV
-         lfWg==
+        d=gmail.com; s=20230601; t=1727816970; x=1728421770; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:reply-to:message-id:date
+         :subject:cc:to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=yCCAqs9pJHuT49eiaRee5PgHVSfy9yOd03j2lpWuHmQ=;
+        b=Bi/3XU+lGLT61VxxqyuRpx7hwIdc1TzgkSeXhhHA67G5hocy4aiq+GJ4Os6w/SywTs
+         b9WVje8PPM036bLlLrACscAFnEHXR0+jEQ+Z2JeKKWjbgjKi7/0jtvNRzUOpH9ih2Jp3
+         nZoSlxL5KW0Sfpg6e4O/ab1zvYFAwGTDcpGf6irrP4JbIakRooeQgn3FKAI89kS7q84T
+         0rR0UH3sQn5NN5TftYqcVPOUwkTN0FuVnlxaZV1aFfIbVFQszUrHMedWEKpwe7SNerp1
+         oARTeoVCstLkCocBY49FsOc028qdIjwfAfc8fufLIVvHOEmb1EOVt9vaHKc5Ghvpsuy+
+         YTtg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727816562; x=1728421362;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+jYH5NvXI+E7Di+eslBeYdYxG/YksuIt7qvi8S1X1cA=;
-        b=dOmBOPGyLojjD1wQ5Vvfhvwe7V+oECoq8gkeCV6PTRxtYOGy7cr698JYkUSyNZm88R
-         A8C6PFUI3YsE7ztArhja4Rbc52gKom3SZVrRKRuGP0ZcPdA4E8n+r8GrGYglUeoiBBpy
-         Z7jwXFVfHqDiXLTYDmWnC89GxXYVURUAXP8UDhU0RVrus3jUohH7jU5lyeqTdEl7TZVt
-         bopNALsmyTCMFKeT7Bd02WXTnfiomte7XL/2aZihy1aOqafJL1yjE3wsoYqSsE3UFRdB
-         mpl/a3ndCmeb7ken06o42J2Gk1Af51V0zijdSpCkYC4WKJt8V+DDFPXu8xgrg7FdmpYT
-         jF3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVsBNYUNnTodirSSxp3ZTAWP3vTSpjOwx+K6LnLeCnV+FtsPOaN7RELcHRIzZN97cwv2QHSyS2Z6NpK0vr+@vger.kernel.org, AJvYcCWeiidxs1963OfEOh88GSxg7I74rPmnQA4GGs9Yfwswto6mg2CVPPU4MrWcGuku7XuyaAy/8xTv@vger.kernel.org, AJvYcCWhJ0vmR7Gz4VeKjKvtq6rBdMG6G2Ixhi8Sgd3hikd/XiMJTh5p8czO88n/4EBjJ61dQ0q6RhK1p2aZZzI=@vger.kernel.org, AJvYcCXuIU1tuhDYb3LavJPMgDHgf1Wx8q4lwa12NxKtf/WoTkTACQjhP1ZRLdPA+efu8BoCq8ePnH7GsCzmaCXB@vger.kernel.org
-X-Gm-Message-State: AOJu0YxASC7xnpSFoXvg1cCS4rr5bsjlH/u8PGABb4LOEjqb3vd7TNut
-	+oeP0UTL6E3kLOTizb/fFrVyyed0iCyUo/BLy29pnq59OEU9TQoL
-X-Google-Smtp-Source: AGHT+IH8uerN1xuIll5+jKNYSNyQKKRV3hWcMZLGc4+dVp70EfVbpJdn2EImWBYE6QoIIu3JG79n3g==
-X-Received: by 2002:a05:620a:46a4:b0:7a4:dff8:35e6 with SMTP id af79cd13be357-7ae6274f7e5mr123077585a.62.1727816562236;
-        Tue, 01 Oct 2024 14:02:42 -0700 (PDT)
-Received: from localhost.localdomain (mobile-130-126-255-54.near.illinois.edu. [130.126.255.54])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7ae3783d269sm540615685a.116.2024.10.01.14.02.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 01 Oct 2024 14:02:41 -0700 (PDT)
-From: Gax-c <zichenxie0106@gmail.com>
-To: srinivas.kandagatla@linaro.org,
-	lgirdwood@gmail.com,
-	broonie@kernel.org,
-	perex@perex.cz,
-	tiwai@suse.com,
-	rohitkr@codeaurora.org
-Cc: alsa-devel@alsa-project.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-sound@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	chenyuan0y@gmail.com,
-	zzjas98@gmail.com,
-	Gax-c <zichenxie0106@gmail.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] ASoC: qcom: Fix NULL Dereference in asoc_qcom_lpass_cpu_platform_probe()
-Date: Tue,  1 Oct 2024 16:02:10 -0500
-Message-Id: <20241001210209.2554-1-zichenxie0106@gmail.com>
-X-Mailer: git-send-email 2.25.1
+        d=1e100.net; s=20230601; t=1727816970; x=1728421770;
+        h=content-transfer-encoding:mime-version:reply-to:message-id:date
+         :subject:cc:to:from:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yCCAqs9pJHuT49eiaRee5PgHVSfy9yOd03j2lpWuHmQ=;
+        b=AAHS0AVOpGpL1ER8Hl50BrajhgUIdU0z+ef2sSihOKRdwTgbn+CWhj0nj6Co4K/f5j
+         eJDYOL9MOiuNV+VR+T8X0gyD6BEk/KiZLf2iP5n/blBdwV9p3LN3fh73re2CHauwAJcw
+         PNTMBES5PtPDCo5xycEOLdtdIvD89o7hh9IqEbhfTL0jz+KcbwQj2UTeHh+svZco3kvf
+         7yjPt3GwtWNKwcHCuynTRkJP+zLDyTPF1WcK5qhjdgBs101pK/EzdXQdeQ4u+BPO+ypO
+         aPndlBsgbMAMnbfbix+AAfwKADymBi6qYkYTaXkSj8vdMkOtsDtQAEj/viWHAPEP0Jnq
+         RM7w==
+X-Gm-Message-State: AOJu0YwlYWovlWBLReBRoHQnavjifaMd0lQ4xj2yiAeLGU+R2D/anRwr
+	v4uMp9Ur5uGK8EruHRXy3AwAxVKyA86Q/6TaDcW6Qg0aA/wLs7mdj6gt7ttAg/0=
+X-Google-Smtp-Source: AGHT+IHajQOPWDBkxJzUug8xXA3uwWpDN5SZryzyESz6gH05/7vB3YhFgJ6od3pmXyrdiKmR7a8A5w==
+X-Received: by 2002:a17:90b:104:b0:2d8:b91d:d284 with SMTP id 98e67ed59e1d1-2e18468c3cemr1237842a91.16.1727816969818;
+        Tue, 01 Oct 2024 14:09:29 -0700 (PDT)
+Received: from KASONG-MC4.tencent.com ([106.37.120.18])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2e18f798037sm34307a91.25.2024.10.01.14.09.26
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 01 Oct 2024 14:09:28 -0700 (PDT)
+From: Kairui Song <ryncsn@gmail.com>
+To: stable@vger.kernel.org,
+	Greg KH <gregkh@linuxfoundation.org>
+Cc: Matthew Wilcox <willy@infradead.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	David Howells <dhowells@redhat.com>,
+	Dave Chinner <david@fromorbit.com>,
+	Christian Theune <ct@flyingcircus.io>,
+	Christian Brauner <brauner@kernel.org>,
+	Chris Mason <clm@meta.com>,
+	Sam James <sam@gentoo.org>,
+	Daniel Dao <dqminh@cloudflare.com>,
+	Linus Torvalds <torvalds@linux-foundation.org>,
+	Kairui Song <kasong@tencent.com>
+Subject: [PATCH 6.1.y 6.6.y 0/3] mm/filemap: fix page cache corruption with large folios
+Date: Wed,  2 Oct 2024 05:06:22 +0800
+Message-ID: <20241001210625.95825-1-ryncsn@gmail.com>
+X-Mailer: git-send-email 2.46.1
+Reply-To: Kairui Song <kasong@tencent.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-A devm_kzalloc() in asoc_qcom_lpass_cpu_platform_probe() could
-possibly return NULL pointer. NULL Pointer Dereference may be
-triggerred without addtional check.
-Add a NULL check for the returned pointer.
+From: Kairui Song <kasong@tencent.com>
 
-Fixes: b5022a36d28f ("ASoC: qcom: lpass: Use regmap_field for i2sctl and dmactl registers")
-Signed-off-by: Zichen Xie <zichenxie0106@gmail.com>
-Cc: stable@vger.kernel.org
-Reported-by: Zichen Xie <zichenxie0106@gmail.com>
----
- sound/soc/qcom/lpass-cpu.c | 2 ++
- 1 file changed, 2 insertions(+)
+This series fixes the page cache corruption issue reported by Christian
+Theune [1]. The issue was reported affects kernels back to 5.19.
+Current maintained effected branches includes 6.1 and 6.6 and the fix
+was included in 6.10 already.
 
-diff --git a/sound/soc/qcom/lpass-cpu.c b/sound/soc/qcom/lpass-cpu.c
-index 5a47f661e0c6..242bc16da36d 100644
---- a/sound/soc/qcom/lpass-cpu.c
-+++ b/sound/soc/qcom/lpass-cpu.c
-@@ -1242,6 +1242,8 @@ int asoc_qcom_lpass_cpu_platform_probe(struct platform_device *pdev)
- 	/* Allocation for i2sctl regmap fields */
- 	drvdata->i2sctl = devm_kzalloc(&pdev->dev, sizeof(struct lpaif_i2sctl),
- 					GFP_KERNEL);
-+	if (!drvdata->i2sctl)
-+		return -ENOMEM;
- 
- 	/* Initialize bitfields for dai I2SCTL register */
- 	ret = lpass_cpu_init_i2sctl_bitfields(dev, drvdata->i2sctl,
+This series can be applied for both 6.1 and 6.6.
+
+Patch 3/3 is the fixing patch. It was initially submitted and merge as
+an optimization but found to have fixed the corruption by handling race
+correctly.
+
+Patch 1/3 and 2/3 is required for 3/3.
+
+Patch 3/3 included some unit test code, making the LOC of the backport a
+bit higher, but should be OK to be kept, since they are just test code.
+
+Note there seems still some unresolved problem in Link [1] but that
+should be a different issue, and the commits being backported have been
+well tested, they fix the corruption issue just fine.
+
+Link: https://lore.kernel.org/linux-mm/A5A976CB-DB57-4513-A700-656580488AB6@flyingcircus.io/ [1]
+
+Kairui Song (3):
+  mm/filemap: return early if failed to allocate memory for split
+  lib/xarray: introduce a new helper xas_get_order
+  mm/filemap: optimize filemap folio adding
+
+ include/linux/xarray.h |  6 +++
+ lib/test_xarray.c      | 93 ++++++++++++++++++++++++++++++++++++++++++
+ lib/xarray.c           | 49 ++++++++++++++--------
+ mm/filemap.c           | 50 ++++++++++++++++++-----
+ 4 files changed, 169 insertions(+), 29 deletions(-)
+
 -- 
-2.25.1
+2.46.1
 
 
