@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-78466-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78467-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3FE298BAF4
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 13:24:30 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8892598BAF5
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 13:25:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E5CDB1C22ABD
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 11:24:29 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4759C283776
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 11:25:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53CA51BF7FA;
-	Tue,  1 Oct 2024 11:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C9751BF7F5;
+	Tue,  1 Oct 2024 11:25:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M21Qp8W9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QsIi0W4b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13F431BF7EE
-	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 11:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DE0419AD4F
+	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 11:25:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727781866; cv=none; b=l28wMDhbiGNbySoHR+Z+e4xy17DaHviWjWxj6N6Bb9/JjqKNlsHftCxt05y161bE8bI6j5jDdO/mn2LxpcZL2PuAFvrX+ud+tzWd71k/p6fAknJx/9CWaI0vxSsBOyexntiokS9D3CEv4f1LQ4diU97VJVW7TeR1gWey/OmbM8U=
+	t=1727781910; cv=none; b=c1yVDOup6GA5A4rVJaWK/dn0vbav1OWBlVtAs8RpSC4HeSoI8SrQgrzC41dmyzwxVzFkO+exMo9ppawznu9M2c5jTs9lyOCPIJo2GpDhtOvdKgK297hhMq6iRXuL9Hi2d7Rs5CXrztfyaS66oUPh54ACTij4aj7qKRsFoLzanS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727781866; c=relaxed/simple;
-	bh=iwAEm2LdV9P+79Ehbyv4DfcSnPkTZ7W0lfOxaH7omE4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=XOgKYXrGzJc+44sM2+4A166HN4EZFlHmtIabmlq0ZFUTUGY17GqiwOyHKuj8KLQyamjAMB1TpWVs0mBg45BjwpgU8O6XAwZNv/PaB7fkaEWDkYet1xk921jByW4lrgPM395A+K4LVxfEKTVYE5WcxzPAq0VvZW109jvlPIDs2tM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M21Qp8W9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88064C4CEC6;
-	Tue,  1 Oct 2024 11:24:25 +0000 (UTC)
+	s=arc-20240116; t=1727781910; c=relaxed/simple;
+	bh=jonA0JigixndExJea8hbhba9iZT3o4l3aujkQKq+AzM=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=jSKcEA4XEB+HtzG0FXWyXTSbB068OExWnl4L1dL/oLGQS6KHyWGaaH9mZtAMLM8O5Z4GjUnREyIjYqVh0e7VNJGKwj1Brbkfi9TpY0PDIsMG+deOwZ7ddSAZw058zQW2qeQB+qBeFCUwxAbm7VLJe/l9fT+2Ur2XqJPC5yMW3lQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QsIi0W4b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74D22C4CECD;
+	Tue,  1 Oct 2024 11:25:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727781865;
-	bh=iwAEm2LdV9P+79Ehbyv4DfcSnPkTZ7W0lfOxaH7omE4=;
+	s=korg; t=1727781909;
+	bh=jonA0JigixndExJea8hbhba9iZT3o4l3aujkQKq+AzM=;
 	h=Subject:To:Cc:From:Date:From;
-	b=M21Qp8W92CkHYVbWFXq3LtUIGA0P/AW6uastUk3kwGIdeGHUUTNwAbtLuWuH5x9HF
-	 i+0InPRfKcxis6GwPar4pjsnfEZ9nd9BK2PwsBvPHydYzTtMuHvPqA8WRZ0uBp7T8o
-	 +PozqRExxcTCBzqzjv68s4QCUZaIjQmco4dF4VU0=
-Subject: FAILED: patch "[PATCH] thermal: sysfs: Add sanity checks for trip temperature and" failed to apply to 6.10-stable tree
-To: rafael.j.wysocki@intel.com,lukasz.luba@arm.com,stable@vger.kernel.org
+	b=QsIi0W4bgKyBAV47YNRkNE27rQY/FSMqMUikfPHpYvh8DRUGCz5twOlct/Y5QN9Pu
+	 niXnrKbWqEnFau8Apq88Jkl0R+CW+CF5hRUnCA7KOVRpAxAcCnQHEoFToSNISJah9J
+	 usxez+RTqJmzmxDQYnO7eSHakAlEBkj090ldV7LA=
+Subject: FAILED: patch "[PATCH] wifi: mt76: mt7925: fix a potential association failure upon" failed to apply to 6.10-stable tree
+To: michael.lo@mediatek.com,mingyen.hsieh@mediatek.com,nbd@nbd.name
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 01 Oct 2024 13:24:15 +0200
-Message-ID: <2024100115-support-data-8f0e@gregkh>
+Date: Tue, 01 Oct 2024 13:25:07 +0200
+Message-ID: <2024100106-candy-amicably-5df2@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -62,19 +62,29 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 874b6476fa888e79e41daf7653384c8d70927b90
+git cherry-pick -x 45064d19fd3af6aeb0887b35b5564927980cf150
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100115-support-data-8f0e@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100106-candy-amicably-5df2@gregkh' --subject-prefix 'PATCH 6.10.y' HEAD^..
 
 Possible dependencies:
 
-874b6476fa88 ("thermal: sysfs: Add sanity checks for trip temperature and hysteresis")
-107280e1371f ("thermal: sysfs: Refine the handling of trip hysteresis changes")
-afd84fb10ced ("thermal: sysfs: Get to trips via attribute pointers")
-0728c810873e ("thermal: trip: Pass trip pointer to .set_trip_temp() thermal zone callback")
-a52641bc6293 ("thermal: trip: Use READ_ONCE() for lockless access to trip properties")
-f41f23b0cae1 ("thermal: trip: Use common set of trip type names")
+45064d19fd3a ("wifi: mt76: mt7925: fix a potential association failure upon resuming")
+5f5b6a745c69 ("wifi: mt76: mt7925: add mt7925_mac_link_sta_remove to remove per-link STA")
+89397bccc882 ("wifi: mt76: mt7925: add mt7925_mac_link_sta_assoc to associate per-link STA")
+064a5955aa27 ("wifi: mt76: mt7925: extend mt7925_mcu_add_bss_info for per-link STA")
+f7cc8944039c ("wifi: mt76: mt7925: extend mt7925_mcu_sta_update for per-link STA")
+21760dcd2ab6 ("wifi: mt76: mt7925: extend mt7925_mcu_bss_basic_tlv for per-link BSS")
+220865160cf6 ("wifi: mt76: mt7925: extend mt7925_mcu_bss_mld_tlv for per-link BSS")
+eff53d6ee11b ("wifi: mt76: mt7925: extend mt7925_mcu_bss_qos_tlv for per-link BSS")
+d62f77e34778 ("wifi: mt76: mt7925: extend mt7925_mcu_bss_ifs_tlv for per-link BSS")
+b8b04b6616ba ("wifi: mt76: mt7925: extend mt7925_mcu_set_timing for per-link BSS")
+fa5f44463f51 ("wifi: mt76: mt7925: extend mt7925_mcu_add_bss_info for per-link BSS")
+acdfc3e79899 ("wifi: mt76: mt7925: extend mt7925_mcu_set_tx with for per-link BSS")
+7cebb6a66ac6 ("wifi: mt76: mt792x: extend mt76_connac_mcu_uni_add_dev for per-link BSS")
+43626f0e0c99 ("wifi: mt76: mt7925: support for split bss_info_changed method")
+4c28c0976ed8 ("wifi: mt76: mt792x: add struct mt792x_link_sta")
+30e89baeb01f ("wifi: mt76: mt792x: add struct mt792x_bss_conf")
 
 thanks,
 
@@ -82,107 +92,83 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 874b6476fa888e79e41daf7653384c8d70927b90 Mon Sep 17 00:00:00 2001
-From: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Date: Mon, 26 Aug 2024 18:21:59 +0200
-Subject: [PATCH] thermal: sysfs: Add sanity checks for trip temperature and
- hysteresis
+From 45064d19fd3af6aeb0887b35b5564927980cf150 Mon Sep 17 00:00:00 2001
+From: Michael Lo <michael.lo@mediatek.com>
+Date: Mon, 2 Sep 2024 17:00:54 +0800
+Subject: [PATCH] wifi: mt76: mt7925: fix a potential association failure upon
+ resuming
 
-Add sanity checks for new trip temperature and hysteresis values to
-trip_point_temp_store() and trip_point_hyst_store() to prevent trip
-point threshold from falling below THERMAL_TEMP_INVALID.
+In multi-channel scenarios, the granted channel must be aborted before
+suspending. Otherwise, the firmware will be put into a wrong state,
+resulting in an association failure after resuming.
 
-However, still allow user space to pass THERMAL_TEMP_INVALID as the
-new trip temperature value to invalidate the trip if necessary.
+With this patch, the granted channel will be aborted before suspending
+if necessary.
 
-Also allow the hysteresis to be updated when the temperature is invalid
-to allow user space to avoid having to adjust hysteresis after a valid
-temperature has been set, but in that case just change the value and do
-nothing else.
+Cc: stable@vger.kernel.org
+Fixes: c948b5da6bbe ("wifi: mt76: mt7925: add Mediatek Wi-Fi7 driver for mt7925 chips")
+Signed-off-by: Michael Lo <michael.lo@mediatek.com>
+Signed-off-by: Ming Yen Hsieh <mingyen.hsieh@mediatek.com>
+Link: https://patch.msgid.link/20240902090054.15806-1-mingyen.hsieh@mediatek.com
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 
-Fixes: be0a3600aa1e ("thermal: sysfs: Rework the handling of trip point updates")
-Cc: 6.8+ <stable@vger.kernel.org> # 6.8+
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Reviewed-by: Lukasz Luba <lukasz.luba@arm.com>
-Link: https://patch.msgid.link/12528772.O9o76ZdvQC@rjwysocki.net
-
-diff --git a/drivers/thermal/thermal_sysfs.c b/drivers/thermal/thermal_sysfs.c
-index b740b60032ee..197ae1262466 100644
---- a/drivers/thermal/thermal_sysfs.c
-+++ b/drivers/thermal/thermal_sysfs.c
-@@ -111,18 +111,26 @@ trip_point_temp_store(struct device *dev, struct device_attribute *attr,
- 
- 	mutex_lock(&tz->lock);
- 
--	if (temp != trip->temperature) {
--		if (tz->ops.set_trip_temp) {
--			ret = tz->ops.set_trip_temp(tz, trip, temp);
--			if (ret)
--				goto unlock;
--		}
-+	if (temp == trip->temperature)
-+		goto unlock;
- 
--		thermal_zone_set_trip_temp(tz, trip, temp);
--
--		__thermal_zone_device_update(tz, THERMAL_TRIP_CHANGED);
-+	/* Arrange the condition to avoid integer overflows. */
-+	if (temp != THERMAL_TEMP_INVALID &&
-+	    temp <= trip->hysteresis + THERMAL_TEMP_INVALID) {
-+		ret = -EINVAL;
-+		goto unlock;
- 	}
- 
-+	if (tz->ops.set_trip_temp) {
-+		ret = tz->ops.set_trip_temp(tz, trip, temp);
-+		if (ret)
-+			goto unlock;
-+	}
-+
-+	thermal_zone_set_trip_temp(tz, trip, temp);
-+
-+	__thermal_zone_device_update(tz, THERMAL_TRIP_CHANGED);
-+
- unlock:
- 	mutex_unlock(&tz->lock);
- 
-@@ -152,15 +160,33 @@ trip_point_hyst_store(struct device *dev, struct device_attribute *attr,
- 
- 	mutex_lock(&tz->lock);
- 
--	if (hyst != trip->hysteresis) {
--		thermal_zone_set_trip_hyst(tz, trip, hyst);
-+	if (hyst == trip->hysteresis)
-+		goto unlock;
- 
--		__thermal_zone_device_update(tz, THERMAL_TRIP_CHANGED);
-+	/*
-+	 * Allow the hysteresis to be updated when the temperature is invalid
-+	 * to allow user space to avoid having to adjust hysteresis after a
-+	 * valid temperature has been set, but in that case just change the
-+	 * value and do nothing else.
-+	 */
-+	if (trip->temperature == THERMAL_TEMP_INVALID) {
-+		WRITE_ONCE(trip->hysteresis, hyst);
-+		goto unlock;
- 	}
- 
-+	if (trip->temperature - hyst <= THERMAL_TEMP_INVALID) {
-+		ret = -EINVAL;
-+		goto unlock;
-+	}
-+
-+	thermal_zone_set_trip_hyst(tz, trip, hyst);
-+
-+	__thermal_zone_device_update(tz, THERMAL_TRIP_CHANGED);
-+
-+unlock:
- 	mutex_unlock(&tz->lock);
- 
--	return count;
-+	return ret ? ret : count;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/main.c b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+index 38a301533297..791c8b00e112 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/main.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/main.c
+@@ -439,6 +439,19 @@ static void mt7925_roc_iter(void *priv, u8 *mac,
+ 	mt7925_mcu_abort_roc(phy, &mvif->bss_conf, phy->roc_token_id);
  }
  
- static ssize_t
++void mt7925_roc_abort_sync(struct mt792x_dev *dev)
++{
++	struct mt792x_phy *phy = &dev->phy;
++
++	del_timer_sync(&phy->roc_timer);
++	cancel_work_sync(&phy->roc_work);
++	if (test_and_clear_bit(MT76_STATE_ROC, &phy->mt76->state))
++		ieee80211_iterate_interfaces(mt76_hw(dev),
++					     IEEE80211_IFACE_ITER_RESUME_ALL,
++					     mt7925_roc_iter, (void *)phy);
++}
++EXPORT_SYMBOL_GPL(mt7925_roc_abort_sync);
++
+ void mt7925_roc_work(struct work_struct *work)
+ {
+ 	struct mt792x_phy *phy;
+@@ -1112,6 +1125,8 @@ static void mt7925_mac_link_sta_remove(struct mt76_dev *mdev,
+ 	msta = (struct mt792x_sta *)link_sta->sta->drv_priv;
+ 	mlink = mt792x_sta_to_link(msta, link_id);
+ 
++	mt7925_roc_abort_sync(dev);
++
+ 	mt76_connac_free_pending_tx_skbs(&dev->pm, &mlink->wcid);
+ 	mt76_connac_pm_wake(&dev->mphy, &dev->pm);
+ 
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h b/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
+index e80824a10b2c..f5c02e5f5066 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/mt7925.h
+@@ -307,6 +307,7 @@ int mt7925_mcu_set_roc(struct mt792x_phy *phy, struct mt792x_bss_conf *mconf,
+ 		       enum mt7925_roc_req type, u8 token_id);
+ int mt7925_mcu_abort_roc(struct mt792x_phy *phy, struct mt792x_bss_conf *mconf,
+ 			 u8 token_id);
++void mt7925_roc_abort_sync(struct mt792x_dev *dev);
+ int mt7925_mcu_fill_message(struct mt76_dev *mdev, struct sk_buff *skb,
+ 			    int cmd, int *wait_seq);
+ int mt7925_mcu_add_key(struct mt76_dev *dev, struct ieee80211_vif *vif,
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7925/pci.c b/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
+index cb25eb50a45b..9aec675450f2 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7925/pci.c
+@@ -449,6 +449,8 @@ static int mt7925_pci_suspend(struct device *device)
+ 	cancel_delayed_work_sync(&pm->ps_work);
+ 	cancel_work_sync(&pm->wake_work);
+ 
++	mt7925_roc_abort_sync(dev);
++
+ 	err = mt792x_mcu_drv_pmctrl(dev);
+ 	if (err < 0)
+ 		goto restore_suspend;
 
 
