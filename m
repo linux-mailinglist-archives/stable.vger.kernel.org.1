@@ -1,99 +1,100 @@
-Return-Path: <stable+bounces-78494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C13B98BE1B
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 15:39:18 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A85198BE26
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 15:41:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0CB741F22D9B
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 13:39:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 500881F2294F
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 13:41:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18A061C4601;
-	Tue,  1 Oct 2024 13:39:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A6581C3F2B;
+	Tue,  1 Oct 2024 13:41:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i3LBZkwN"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R6Kb64Xf"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C34BB6AA7;
-	Tue,  1 Oct 2024 13:39:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 653B51A3BAD;
+	Tue,  1 Oct 2024 13:41:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727789952; cv=none; b=NPoPtfLlqljS9MsKl9UhMt5yJRE5tNaMXbzI+MaTkSFH9XT4JZazVoHB/hJAV7Du95hCFcIT9Ng/18HWbNkebxr16r99Wvuus8eNaL6onQOBhvfBz3JgiaN8/Z9c9/mb7jwNbMns19q55h+rKC/29vjr0g1SJSTmYOANx6lnngE=
+	t=1727790078; cv=none; b=pTBj0BcM6fHTw7gKjfz4FEHzdb6LCP5oOIYhNNHAuhewAKlb7RoaSBvv7C6l71wB2PtcIp2b3IBGOOTYSMK0bkE62s9YJ+6rnwPApMRJPzQitTlnU7SiAWC6epyjTvTsTH9xMm7ict5dTEoq2TiUYLBEicsFUQ/ooxgPUU9zCsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727789952; c=relaxed/simple;
-	bh=aw8Zi8+Zmdb80JGksXuvNr/EE6LmzOtQfwjx4i3y3Ms=;
+	s=arc-20240116; t=1727790078; c=relaxed/simple;
+	bh=4v3ujJmrw8t7HXafYzpQ8qHUdGbFJB3gZEk1rs3PORA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=liu1zGlSvtfwtZCH7o1O0Cpuv3b8zLleiXvP0ce22xlqhpvCW4sffoOVvM9w5NxlReUR7J14Bwl6U5ATHcmIsLlEQwhFyO5EVuTTFVuJdvw6UI128M7Mm0V1HaZQIQTMFtJ9nRqkcHmyq2pXUcKREr+2VeL6gJCkNkslPtf3tw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i3LBZkwN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FDD6C4CECD;
-	Tue,  1 Oct 2024 13:39:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727789952;
-	bh=aw8Zi8+Zmdb80JGksXuvNr/EE6LmzOtQfwjx4i3y3Ms=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=i3LBZkwNp5vUpwy3ZnUfzXzvbSGDmnlrmu2dQKB3hn5jfhKJ9Jy0OBNRLV7Z5WacK
-	 01HkNEq4xPZ75IqOXU+ln8/C5A0L4Y91kEMIH0EwkvhA0Uq8FizFbLySDlZeM4b24b
-	 TmVqLHE4Bhe9bhwEBiH4TwIkJb7e+o/vsEHd6oi7Z/YTuM/t6BI8iUN2eCGzsVpN3W
-	 BLHwvdFeD3TAY59ktr3ddvli8I+LtOeU+UQg3xCDgQYg4/cdXB31duDRwMkNPV/Kkz
-	 xOrt8E7opL6XntmLOHI6bMrMtuu+BUp54l7CYDV7dlpPXOKBWwdaLy9q272irAJPUr
-	 A3LmkIiwEKRaA==
-Received: from johan by xi.lan with local (Exim 4.97.1)
-	(envelope-from <johan@kernel.org>)
-	id 1svd5r-000000003nU-21Bx;
-	Tue, 01 Oct 2024 15:39:12 +0200
-Date: Tue, 1 Oct 2024 15:39:11 +0200
-From: Johan Hovold <johan@kernel.org>
-To: Bartosz Golaszewski <brgl@bgdev.pl>
-Cc: Johan Hovold <johan+linaro@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Konrad Dybcio <konradybcio@kernel.org>,
-	Douglas Anderson <dianders@chromium.org>,
-	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org, stable@vger.kernel.org,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Subject: Re: [PATCH v2 2/7] serial: qcom-geni: fix shutdown race
-Message-ID: <Zvv7f-3cQ92YlKik@hovoldconsulting.com>
-References: <20241001125033.10625-1-johan+linaro@kernel.org>
- <20241001125033.10625-3-johan+linaro@kernel.org>
- <CAMRc=MeYSsh+MOrOHSabiHuyGOrZK330WuNXcGDtg-siJFya=g@mail.gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y8PvzXWdeHJiBhxxuR5B/LkcpsarHZxZFq5KvHnWOOrfwfy+4DcE/F8/ec19gqsU2BmFm0TLw23s1FpCrqS9buAfQbX0bsnLJmfzYZVvfs1jpXjwtQbxto0SV36o6+e8L4iI26iAPNfQQHqi3r2wibk7H5auF0YFEbH7GVmpNZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R6Kb64Xf; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1727790077; x=1759326077;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:content-transfer-encoding:in-reply-to;
+  bh=4v3ujJmrw8t7HXafYzpQ8qHUdGbFJB3gZEk1rs3PORA=;
+  b=R6Kb64Xf2+0mB13GgGwRGyf3f2Zh6Ru9/LFQJGVlyxm/XSkWvciR7xjJ
+   CdmMnqlCpCHizl8WigYZ744yr4RVq1svIZZzZFcoxJ5UxB7digaSA6Ixk
+   ve+VpQqi59RRjEDQLaYMrZArWH9Ur39DLXoX2WQS+9sw81QZHf4+vIYhA
+   mJ111TxsVcWYwayUnwHRY2Q+xzbzorSFF0H8AGNJrlSLflxV6Ov6wnsJy
+   sNuPqHXvYl+Mva2chhjZbN/Tm7Ib+wf2oDqDPOoHJn1xMVR+DWcPdixWv
+   ZMy6KyYUTDM0Me/J57jpadufojKpDJIFDcY9sOLo9Jo4qDSL7ZycQho3J
+   g==;
+X-CSE-ConnectionGUID: 2s712ZVaRr2SM2A1ZFlW4Q==
+X-CSE-MsgGUID: nC+2wDWMSGaBCtxBEmMdAg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11212"; a="49446688"
+X-IronPort-AV: E=Sophos;i="6.11,167,1725346800"; 
+   d="scan'208";a="49446688"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2024 06:41:17 -0700
+X-CSE-ConnectionGUID: 3xxN3efdSFaNwoIMKmCtKA==
+X-CSE-MsgGUID: b+H69q+MTd2T66oSkW69Ow==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.11,167,1725346800"; 
+   d="scan'208";a="73790598"
+Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
+  by fmviesa008.fm.intel.com with SMTP; 01 Oct 2024 06:41:14 -0700
+Received: by stinkbox (sSMTP sendmail emulation); Tue, 01 Oct 2024 16:41:13 +0300
+Date: Tue, 1 Oct 2024 16:41:13 +0300
+From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
+To: Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org, stable@vger.kernel.org,
+	Stanislaw Gruszka <stf_xl@wp.pl>
+Subject: Re: [PATCH] iwlegacy: Clear stale interrupts before enabling
+ interrupts
+Message-ID: <Zvv7-YLhJ3EgaxiN@intel.com>
+References: <20240930122924.21865-1-ville.syrjala@linux.intel.com>
+ <87r0908fuf.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAMRc=MeYSsh+MOrOHSabiHuyGOrZK330WuNXcGDtg-siJFya=g@mail.gmail.com>
+In-Reply-To: <87r0908fuf.fsf@kernel.org>
+X-Patchwork-Hint: comment
 
-On Tue, Oct 01, 2024 at 03:36:57PM +0200, Bartosz Golaszewski wrote:
-> On Tue, Oct 1, 2024 at 2:51â€¯PM Johan Hovold <johan+linaro@kernel.org> wrote:
-> >
-> > A commit adding back the stopping of tx on port shutdown failed to add
-> > back the locking which had also been removed by commit e83766334f96
-> > ("tty: serial: qcom_geni_serial: No need to stop tx/rx on UART
-> > shutdown").
-> >
-> > Holding the port lock is needed to serialise against the console code,
-> > which may update the interrupt enable register and access the port
-> > state.
-> >
-> > Fixes: d8aca2f96813 ("tty: serial: qcom-geni-serial: stop operations in progress at shutdown")
-> > Fixes: 947cc4ecc06c ("serial: qcom-geni: fix soft lockup on sw flow control and suspend")
-> > Cc: stable@vger.kernel.org      # 6.3
-> > Cc: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-> > Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+On Tue, Oct 01, 2024 at 10:03:36AM +0300, Kalle Valo wrote:
+> Ville Syrjala <ville.syrjala@linux.intel.com> writes:
+> 
+> > iwl4965 fails upon resume from hibernation on my laptop. The reason
+> > seems to be a stale interrupt which isn't being cleared out before
+> > interrupts are enabled.
+> 
+> Is this a regression? Do you know what version still worked?
 
-> I already reviewed this[1]. I suggest using b4 for automated tag pickup.
+Looks like the oldest kernel I have around on that machine is
+5.0, and a quick test says it's broken exactly in the same way.
+So if it's a regression then it's an old one.
 
-There were changes in v2 so I dropped your tag on purpose.
-
-Johan
+-- 
+Ville Syrjälä
+Intel
 
