@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-78411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78412-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C95D498B982
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 12:23:38 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A33898B984
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 12:23:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F07231C22ED5
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 10:23:37 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id B0F55B22162
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 10:23:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29A8B192D74;
-	Tue,  1 Oct 2024 10:23:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1296B192D74;
+	Tue,  1 Oct 2024 10:23:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UqQMhNXI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0jGqS/T3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DECBE3209
-	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 10:23:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C85A61C693
+	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 10:23:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727778214; cv=none; b=c+ok73YxOAeu27DJ48Wrkchm9yhOWTycI1NV5Hm2ZL0hE0sFbC/+hJZkoxxuQY49sMf7k0tudOZPadPtV8bD03+Bc0FvpT6UarTneYAbj2h+uX/C8gBTgNlzQCICQpUTzG4JlcNv02vM5G3Bcu4FtDCgEFlURODrCxcPnkBlZds=
+	t=1727778222; cv=none; b=IVC6Z9XaEpfFRjWSXkX+D6f6FTSLDWnGp1yBRLJKTIFv3Qv73SJqG4B2X2BH8QZlcu6eDHi7quptZq96X+GGBGn3Vz/hsQfHbE+lM6xCYu/7v8ZZEDKlbJ+WIOoOrbWblGzw7JXVf9SLsKS/LDKnHpwFigi7/fxL6pCImHIhFOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727778214; c=relaxed/simple;
-	bh=aqNh4oa4r0nXxIhE3v2bt5bRXp6JsMo+D1G0wKTDypU=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=jV82H3e5/MSx4BC3AvIYExWZdKyc2DqsmcE6yC+JzGHbidljBhkNwZWiSaENcI8TFZTFQIjtn7y0AiALMVLU1yJ+2vIChZZ+8cmmDYItloBB7fIABcVD2cWmRi4fRDj8/c5coOs38hgOQbBu7N5VQGAgvw615BkIIpFchjou0WM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UqQMhNXI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67BA3C4CEC6;
-	Tue,  1 Oct 2024 10:23:33 +0000 (UTC)
+	s=arc-20240116; t=1727778222; c=relaxed/simple;
+	bh=ShC9DhI9nLqGMFoeHh87M+5Kw0jbcwaSajtZybGnSEg=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=KhimfIhGG334F59KDW75lJZX+7tnXNSB09/Sc+nTg940hJ+vQyjzUiiBcyRxCbdspY80IPkbNyo0rHqpyKvz37zlekkvvZxCBIOh9Nsthwhc+4r9lUb5r+8+CJ7GNN5CY3EYzt7PRc8HPOy1nQahNgHu9T1HvUMmSBXAHnlwi0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0jGqS/T3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F52AC4CEC6;
+	Tue,  1 Oct 2024 10:23:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727778213;
-	bh=aqNh4oa4r0nXxIhE3v2bt5bRXp6JsMo+D1G0wKTDypU=;
+	s=korg; t=1727778222;
+	bh=ShC9DhI9nLqGMFoeHh87M+5Kw0jbcwaSajtZybGnSEg=;
 	h=Subject:To:Cc:From:Date:From;
-	b=UqQMhNXIEJAxJsYUTUQXMyWnJxOhDfo9NZ31kQrCHp9QDFZhtesVxMDiaf3rqpbEt
-	 kx43OxpJeE/YQ3garP9bii0wvc8xfXz7O653HpW9z1gw71Hqa8rZlmL7/GJb9kvr64
-	 yWVzOYQbxC2swLYMpNOEx1zAXkQP4YCFl6/t3+8o=
-Subject: FAILED: patch "[PATCH] usb: typec: ucsi: Fix busy loop on ASUS VivoBooks" failed to apply to 6.11-stable tree
+	b=0jGqS/T3pXkoF9hYhluYETJ2zIa5hPAeX3oMEIPd1Z97NelGAXRAUof2sAXGjfSRw
+	 X6XvecOzHesMW4v/WJBSC3fBcVavVofe+DgUjjXvSFMYfoYpWVP7xDpOtcIxbck4cJ
+	 ph7X8NMAo1hX7UOScWNvkzTtoUj0e6t0Z9yHSpfk=
+Subject: FAILED: patch "[PATCH] usb: typec: ucsi: Fix busy loop on ASUS VivoBooks" failed to apply to 6.6-stable tree
 To: lk@c--e.de,christian@heusel.eu,gregkh@linuxfoundation.org,heikki.krogerus@linux.intel.com,icaliberdev@gmail.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 01 Oct 2024 12:23:31 +0200
-Message-ID: <2024100130-skinhead-glandular-2ffc@gregkh>
+Date: Tue, 01 Oct 2024 12:23:32 +0200
+Message-ID: <2024100132-cake-dribble-27a5@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,32 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.11-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.11.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x 7fa6b25dfb43dafc0e16510e2fcfd63634fc95c2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100130-skinhead-glandular-2ffc@gregkh' --subject-prefix 'PATCH 6.11.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100132-cake-dribble-27a5@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
 7fa6b25dfb43 ("usb: typec: ucsi: Fix busy loop on ASUS VivoBooks")
 4f322657ade1 ("usb: typec: ucsi: Call CANCEL from single location")
+65ba8cef0416 ("usb: typec: ucsi: Fix a deadlock in ucsi_send_command_common()")
+584e8df58942 ("usb: typec: ucsi: extract common code for command handling")
+e1870c17e550 ("usb: typec: ucsi: inline ucsi_read_message_in")
+5e9c1662a89b ("usb: typec: ucsi: rework command execution functions")
+467399d989d7 ("usb: typec: ucsi: split read operation")
+13f2ec3115c8 ("usb: typec: ucsi: simplify command sending API")
+a7d2fa776976 ("usb: typec: ucsi: move ucsi_acknowledge() from ucsi_read_error()")
+f7697db8b1b3 ("Merge 6.10-rc6 into usb-next")
 
 thanks,
 
