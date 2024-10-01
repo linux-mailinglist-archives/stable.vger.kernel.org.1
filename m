@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-78526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4ED5B98BEE2
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 16:04:07 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DB7598BEE3
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 16:04:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 03CEC1F22BA1
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 14:04:07 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5F4371C21F7C
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 14:04:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1CAC1C463C;
-	Tue,  1 Oct 2024 14:03:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF59C1991A3;
+	Tue,  1 Oct 2024 14:04:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HoLx31rh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vqiKpmHF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0ACE1C0DD1
-	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 14:03:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F60E2AF17
+	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 14:04:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727791438; cv=none; b=NmYHPesVV5c4s9inpuiR5UqJbRy0cqCLGvlIY9Zl9DbxMKuSvQSRGipsOJvug9nNtok2sUyos7tfGB3bp4srGpcb2rC1/xziOMIVpuE3H8OuvibjS+DO8GKmDxN3XgTYGic8TaQdPef9KGP+/S8lnBCQBp1Ko4AALORo2mk6YsY=
+	t=1727791453; cv=none; b=YE6vYCDqQ694xkQGojbS1vqEPUA8lMb0awp+w2WWgXaLTvhyS//FA5eyL715SbrtpvJ3j+G/oLFJ20ml0rsn/FapNNpTSZ6nARselMWxERY3pMH9O7s8n0vA4i0bM77n+f8HTTeSaj8rJ96TfwQpZq4G91lwzZgF9OqmRskccoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727791438; c=relaxed/simple;
-	bh=YHbWLW27JnNcs9t87AqSdWPNZJP0I4l0hF2K5inj+wg=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Si0tx7D7+fp1+u9FAKuB7APhcW21YZMCXDdZE9VPL8JEbVxkm2hHq4MBsDl4lCzKBtzhBLklcrEiD5K3QksR7XpBGx54RfmsmiYK6i4t+Z6Eqrkyt7l/KEQnTlbfxpBXmeP2SC+ojvvWURdaGdYoprlzUJvvw8wBCGCPiL38WW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HoLx31rh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2530BC4CEC6;
-	Tue,  1 Oct 2024 14:03:57 +0000 (UTC)
+	s=arc-20240116; t=1727791453; c=relaxed/simple;
+	bh=Kilvgay/knL7/6eAKDpyUo7lNwlHQBmJCzTMYOPQ8Mc=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=XC+jHz+LXhq92vQN1Xbbw8y/vZpvpWWcIxocbgleEJXp5W5lKl8/y9G+IfWR1IqpaeWoX2KBjWfz7Xqqx59bkLqINagt6M5RggtwCVJAqhpHfp1IMWpwu1ai4gUZPvTmNT5dNFEBUMnxe1Dn5uaG/wfWYjYIwOhv0lKdwfp36Gg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vqiKpmHF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A0A7C4CEC6;
+	Tue,  1 Oct 2024 14:04:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727791438;
-	bh=YHbWLW27JnNcs9t87AqSdWPNZJP0I4l0hF2K5inj+wg=;
+	s=korg; t=1727791453;
+	bh=Kilvgay/knL7/6eAKDpyUo7lNwlHQBmJCzTMYOPQ8Mc=;
 	h=Subject:To:Cc:From:Date:From;
-	b=HoLx31rhr61J9Gf7sHmgwZD3/lfywbH48y2Q1UjJIYuWR5vzw1sV7GljU/ak/QTot
-	 iwhkJu6rkYPYAvCoQo44QgAMdzzeTLqCuZ8+n9oLCvEGHbcWfaFItZLAU4qQ+dsBIq
-	 ZOnweBoXRO4wyBqK2zfU8HFlJW4iJ13xet/T2eH8=
-Subject: FAILED: patch "[PATCH] dt-bindings: spi: nxp-fspi: add imx8ulp support" failed to apply to 6.6-stable tree
-To: haibo.chen@nxp.com,Frank.Li@nxp.com,broonie@kernel.org,krzysztof.kozlowski@linaro.org
+	b=vqiKpmHFzidaNcYlHyXwy8XhrQcGWra1B4kewatHCmd418VkBhkkldixVFnMzWzFx
+	 gPrdmhf47v3mvtg8kNuF7gQOAkQmgrOGS5kcPbucdMs2LNWYNGjBjZfYd7jr6/07hq
+	 PkyoZchpD42mT81mi1GMDzNBIUzVV0treBc9PBso=
+Subject: FAILED: patch "[PATCH] ARM: dts: imx6ul-geam: fix fsl,pins property in tscgrp" failed to apply to 6.1-stable tree
+To: krzysztof.kozlowski@linaro.org,michael@amarulasolutions.com,shawnguo@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 01 Oct 2024 16:03:49 +0200
-Message-ID: <2024100148-payday-steadfast-3ba9@gregkh>
+Date: Tue, 01 Oct 2024 16:04:10 +0200
+Message-ID: <2024100110-profane-wriggle-076a@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,23 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 12736adc43b7cd5cb83f274f8f37b0f89d107c97
+git cherry-pick -x 1b0e32753d8550908dff8982410357b5114be78c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100148-payday-steadfast-3ba9@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100110-profane-wriggle-076a@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-12736adc43b7 ("dt-bindings: spi: nxp-fspi: add imx8ulp support")
-18ab9e9e8889 ("dt-bindings: spi: nxp-fspi: support i.MX93 and i.MX95")
+1b0e32753d85 ("ARM: dts: imx6ul-geam: fix fsl,pins property in tscgrp pinctrl")
 
 thanks,
 
@@ -78,33 +77,36 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 12736adc43b7cd5cb83f274f8f37b0f89d107c97 Mon Sep 17 00:00:00 2001
-From: Haibo Chen <haibo.chen@nxp.com>
-Date: Thu, 5 Sep 2024 17:43:35 +0800
-Subject: [PATCH] dt-bindings: spi: nxp-fspi: add imx8ulp support
+From 1b0e32753d8550908dff8982410357b5114be78c Mon Sep 17 00:00:00 2001
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Date: Sat, 31 Aug 2024 12:11:28 +0200
+Subject: [PATCH] ARM: dts: imx6ul-geam: fix fsl,pins property in tscgrp
+ pinctrl
 
-The flexspi on imx8ulp only has 16 number of LUTs, it is different
-with flexspi on other imx SoC which has 32 number of LUTs.
+The property is "fsl,pins", not "fsl,pin".  Wrong property means the pin
+configuration was not applied.  Fixes dtbs_check warnings:
 
-Fixes: ef89fd56bdfc ("arm64: dts: imx8ulp: add flexspi node")
-Cc: stable@kernel.org
-Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20240905094338.1986871-2-haibo.chen@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+  imx6ul-geam.dtb: pinctrl@20e0000: tscgrp: 'fsl,pins' is a required property
+  imx6ul-geam.dtb: pinctrl@20e0000: tscgrp: 'fsl,pin' does not match any of the regexes: 'pinctrl-[0-9]+'
 
-diff --git a/Documentation/devicetree/bindings/spi/spi-nxp-fspi.yaml b/Documentation/devicetree/bindings/spi/spi-nxp-fspi.yaml
-index 4a5f41bde00f..902db92da832 100644
---- a/Documentation/devicetree/bindings/spi/spi-nxp-fspi.yaml
-+++ b/Documentation/devicetree/bindings/spi/spi-nxp-fspi.yaml
-@@ -21,6 +21,7 @@ properties:
-           - nxp,imx8mm-fspi
-           - nxp,imx8mp-fspi
-           - nxp,imx8qxp-fspi
-+          - nxp,imx8ulp-fspi
-           - nxp,lx2160a-fspi
-       - items:
-           - enum:
+Cc: stable@vger.kernel.org
+Fixes: a58e4e608bc8 ("ARM: dts: imx6ul-geam: Add Engicam IMX6UL GEA M6UL initial support")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Michael Trimarchi <michael@amarulasolutions.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ul-geam.dts b/arch/arm/boot/dts/nxp/imx/imx6ul-geam.dts
+index cdbb8c435cd6..601d89b904cd 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6ul-geam.dts
++++ b/arch/arm/boot/dts/nxp/imx/imx6ul-geam.dts
+@@ -365,7 +365,7 @@ MX6UL_PAD_ENET1_RX_ER__PWM8_OUT   0x110b0
+ 	};
+ 
+ 	pinctrl_tsc: tscgrp {
+-		fsl,pin = <
++		fsl,pins = <
+ 			MX6UL_PAD_GPIO1_IO01__GPIO1_IO01	0xb0
+ 			MX6UL_PAD_GPIO1_IO02__GPIO1_IO02	0xb0
+ 			MX6UL_PAD_GPIO1_IO03__GPIO1_IO03	0xb0
 
 
