@@ -1,147 +1,126 @@
-Return-Path: <stable+bounces-78556-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5FD9B98C389
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 18:38:47 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B62BA98C3BB
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 18:45:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D48A6B213CC
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 16:38:44 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 665351F21996
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 16:45:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E04211C9DCD;
-	Tue,  1 Oct 2024 16:38:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E154F1CB523;
+	Tue,  1 Oct 2024 16:44:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="TkeMFdoh"
 X-Original-To: stable@vger.kernel.org
-Received: from omta002.cacentral1.a.cloudfilter.net (omta002.cacentral1.a.cloudfilter.net [3.97.99.33])
+Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AF611C6889
-	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 16:38:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=3.97.99.33
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E78F71CB519
+	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 16:44:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727800719; cv=none; b=hDC4VNBREGVm96VxvzYYqsvDDqEqt2ZnuiF+bD2Muk1ocqp1xOHBpSVqB6Dbwhv+sEW3ua8sgg5ADY/0KyyOvRTUYZDdN4Fa/QviloFzgx81UDLW26MmUqOqnu2Kby5/a0d/iJ7RrfxgR9EXGaIYj57/pLcrmBXQocxXgpBWiqE=
+	t=1727801099; cv=none; b=ioTcf6NiuUu2viAvgWfQcNiijle/GUJCc4jdNV9n3y2afi5CWjmSMbHBX2+LEoFG3oOnhfR5zgWXRspUkOiCi1ls2vBNHrbJrzYd1gdfFdkmtJBdqdPTQE9W6ThjZHAYvBCK0PgQCXcxygxCfrcQcm+oivuoadfvdMjQtIR55fI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727800719; c=relaxed/simple;
-	bh=axzvmKFMV1qOjJQ1jmK6s5cmbWmN93I+vQyZ4Yp+Jxg=;
-	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
-	 MIME-Version:Content-Type; b=GmGgsqlSIiPlq88JlmyeJ2oj3wXCSzYJCfZkrisYJ8MlEWV0G6vR7kP69FvHrXkR8AsK960xoc5J9mCus/VC0Xe5Q48u9ONFHrWryIMpzv0EYgjTvkB99pofjnRSNvuDBhd4pEmXarbTB0If7xKcCeQFkVBKCvkmvaDQ1otz6vI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuyoix.net; spf=pass smtp.mailfrom=tuyoix.net; arc=none smtp.client-ip=3.97.99.33
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tuyoix.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tuyoix.net
-Received: from shw-obgw-4003a.ext.cloudfilter.net ([10.228.9.183])
-	by cmsmtp with ESMTPS
-	id vd3es4xCiMArNvftUsCbQ5; Tue, 01 Oct 2024 16:38:36 +0000
-Received: from fanir.tuyoix.net ([68.150.218.192])
-	by cmsmtp with ESMTP
-	id vftUsPiHfE0IVvftUsVRYU; Tue, 01 Oct 2024 16:38:36 +0000
-X-Authority-Analysis: v=2.4 cv=cI9DsUeN c=1 sm=1 tr=0 ts=66fc258c
- a=LfNn7serMq+1bQZBlMsSfQ==:117 a=LfNn7serMq+1bQZBlMsSfQ==:17
- a=IkcTkHD0fZMA:10 a=DAUX931o1VcA:10 a=M51BFTxLslgA:10 a=ag1SF4gXAAAA:8
- a=VwQbUJbxAAAA:8 a=3I1X_3ewAAAA:8 a=o4h3QDx3z5unFpuNuzIA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10 a=Yupwre4RP9_Eg_Bd0iYG:22 a=VG9N9RgkD3hcbI6YpJ1l:22
-Received: from CLUIJ (cluij.tuyoix.net [192.168.144.15])
-	(authenticated bits=0)
-	by fanir.tuyoix.net (8.18.1/8.18.1) with ESMTPSA id 491GcZ6h009246
-	(version=TLSv1 cipher=ECDHE-RSA-AES256-SHA bits=256 verify=NO);
-	Tue, 1 Oct 2024 10:38:35 -0600
-Date: Tue, 1 Oct 2024 10:38:22 -0600 (Mountain Daylight Time)
-From: =?UTF-8?Q?Marc_Aur=C3=A8le_La_France?= <tsi@tuyoix.net>
-To: gregkh@linuxfoundation.org
-cc: brauner@kernel.org, stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] debugfs show actual source in /proc/mounts"
- failed to apply to 6.10-stable tree
-In-Reply-To: <723a6bec-0c41-a81a-c8f4-b8e1b20dc724@tuyoix.net>
-Message-ID: <alpine.WNT.2.20.2410011036090.3332@CLUIJ>
-References: <2024100128-prison-ploy-dfd6@gregkh> <723a6bec-0c41-a81a-c8f4-b8e1b20dc724@tuyoix.net>
-User-Agent: Alpine 2.20 (WNT 67 2015-01-07)
+	s=arc-20240116; t=1727801099; c=relaxed/simple;
+	bh=O1xxf+LgFXqyD3WL+3jhBGJgRN9DMhnh7oMTmo6XrBs=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DePsBDyI5EM/5uRSb/fyVr42Euxn+4Vlwn2+skEYm4GgxTpa1d+ouY07642LHsM+72d/NYtXMDJ/qYSy7LLxnKrbXzTKf/PGYD+AYYWbvj1e3caaO17KEwR0iKd7WKfKUSnxJaqn24Y2BtO0U97hiXT2bxtgoyGm2i62p0gZ3dg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=TkeMFdoh; arc=none smtp.client-ip=148.251.105.195
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1727801096;
+	bh=O1xxf+LgFXqyD3WL+3jhBGJgRN9DMhnh7oMTmo6XrBs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=TkeMFdohgevVYm+5xCd4Y62PP2XXOnd0d+tkcMH/Ob3czfDgKXLfVHy/KeJNrRRm8
+	 OYlvfNwMITDiOG+7JeGQ7VerbuEJ1rzd6Gia5gx9CQ6Bt8HezAc64WqSxL0kDfy7mU
+	 aBY2NtrVfKSZgnIwHgE68B6vnuITsePJxWjXGp+lW2/PnbiEJBZumkabFpq+CYccmu
+	 haIifhI17bzANKDVhxtWP+TOU6rgIvFFdRqqFngChcHvuMHmukn/ZUrUEEpbM/reTL
+	 supISV7P1/BKq0rxYvCV4kpHT1ycXOIC93pGlF98etQ4tGGqhAJ4O8kRYhqCXPRyzP
+	 qUc6QHkUls7zA==
+Received: from localhost (unknown [IPv6:2a01:e0a:2c:6930:5cf4:84a1:2763:fe0d])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bbrezillon)
+	by bali.collaboradmins.com (Postfix) with ESMTPSA id D046417E1060;
+	Tue,  1 Oct 2024 18:44:55 +0200 (CEST)
+Date: Tue, 1 Oct 2024 18:44:51 +0200
+From: Boris Brezillon <boris.brezillon@collabora.com>
+To: Boris Brezillon <boris.brezillon@collabora.com>, Steven Price
+ <steven.price@arm.com>, Liviu Dudau <liviu.dudau@arm.com>, =?UTF-8?B?QWRy?=
+ =?UTF-8?B?acOhbg==?= Larumbe <adrian.larumbe@collabora.com>
+Cc: dri-devel@lists.freedesktop.org, Julia Lawall <julia.lawall@inria.fr>,
+ kernel@collabora.com, stable@vger.kernel.org, kernel test robot
+ <lkp@intel.com>
+Subject: Re: [PATCH v2] drm/panthor: Fix access to uninitialized variable in
+ tick_ctx_cleanup()
+Message-ID: <20241001184451.041cf02f@collabora.com>
+In-Reply-To: <20240930163742.87036-1-boris.brezillon@collabora.com>
+References: <20240930163742.87036-1-boris.brezillon@collabora.com>
+Organization: Collabora
+X-Mailer: Claws Mail 4.3.0 (GTK 3.24.43; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8BIT
-X-CMAE-Envelope: MS4xfB/2G1rWUei/vaXiaVIapkacbuOYRM+vIp9B11aMinSBKFW0njy4CsuXU0wyS9yTC1cz0GrFSRErd5Dw79b6Y0fHdwEtFA6s1EA9pavV9eMQ+RtokeQh
- XDVIebuhu5G3V7UjnHPDeptaJkKiot4q41YKyiDKA0xZ1t4jnr8nOraeUTtQm+QoUV4Umz4oVQalsF2yG4c/tLlUKMcKgKzwqF653lhoc1fpP8EH6lOPj3Ou
- t6IkIoVudUBGJqnSKAEStR9KT1JTZmS5Gm8Nxri5CyI=
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, 2024-Oct-01, Marc Aurèle La France wrote:
-> On Tue, 2024-Oct-01, gregkh@linuxfoundation.org wrote:
+On Mon, 30 Sep 2024 18:37:42 +0200
+Boris Brezillon <boris.brezillon@collabora.com> wrote:
 
->> The patch below does not apply to the 6.10-stable tree.
->> If someone wants it applied there, or to any other stable or longterm
->> tree, then please email the backport, including the original git commit
->> id to <stable@vger.kernel.org>.
+> The group variable can't be used to retrieve ptdev in our second loop,
+> because it points to the previously iterated list_head, not a valid
+> group. Get the ptdev object from the scheduler instead.
+> 
+> Cc: <stable@vger.kernel.org>
+> Fixes: d72f049087d4 ("drm/panthor: Allow driver compilation")
+> Reported-by: kernel test robot <lkp@intel.com>
+> Reported-by: Julia Lawall <julia.lawall@inria.fr>
+> Closes: https://lore.kernel.org/r/202409302306.UDikqa03-lkp@intel.com/
+> Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
 
->> To reproduce the conflict and resubmit, you may use the following commands:
+Queued to drm-misc-fixes.
 
->> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/
->> linux-6.10.y
->> git checkout FETCH_HEAD
->> git cherry-pick -x 3a987b88a42593875f6345188ca33731c7df728c
->> # <resolve conflicts, build, test, etc.>
->> git commit -s
->> git send-email --to '<stable@vger.kernel.org>' --in-reply-to
->> '2024100128-prison-ploy-dfd6@gregkh' --subject-prefix 'PATCH 6.10.y'
->> HEAD^..
+> ---
+>  drivers/gpu/drm/panthor/panthor_sched.c | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/panthor/panthor_sched.c b/drivers/gpu/drm/panthor/panthor_sched.c
+> index 201d5e7a921e..24ff91c084e4 100644
+> --- a/drivers/gpu/drm/panthor/panthor_sched.c
+> +++ b/drivers/gpu/drm/panthor/panthor_sched.c
+> @@ -2052,6 +2052,7 @@ static void
+>  tick_ctx_cleanup(struct panthor_scheduler *sched,
+>  		 struct panthor_sched_tick_ctx *ctx)
+>  {
+> +	struct panthor_device *ptdev = sched->ptdev;
+>  	struct panthor_group *group, *tmp;
+>  	u32 i;
+>  
+> @@ -2060,7 +2061,7 @@ tick_ctx_cleanup(struct panthor_scheduler *sched,
+>  			/* If everything went fine, we should only have groups
+>  			 * to be terminated in the old_groups lists.
+>  			 */
+> -			drm_WARN_ON(&group->ptdev->base, !ctx->csg_upd_failed_mask &&
+> +			drm_WARN_ON(&ptdev->base, !ctx->csg_upd_failed_mask &&
+>  				    group_can_run(group));
+>  
+>  			if (!group_can_run(group)) {
+> @@ -2083,7 +2084,7 @@ tick_ctx_cleanup(struct panthor_scheduler *sched,
+>  		/* If everything went fine, the groups to schedule lists should
+>  		 * be empty.
+>  		 */
+> -		drm_WARN_ON(&group->ptdev->base,
+> +		drm_WARN_ON(&ptdev->base,
+>  			    !ctx->csg_upd_failed_mask && !list_empty(&ctx->groups[i]));
+>  
+>  		list_for_each_entry_safe(group, tmp, &ctx->groups[i], run_node) {
 
->> Possible dependencies:
-
->> 3a987b88a425 ("debugfs show actual source in /proc/mounts")
->> 49abee5991e1 ("debugfs: Convert to new uid/gid option parsing helpers")
-
->> thanks,
-
->> greg k-h
-
->> ------------------ original commit in Linus's tree ------------------
-
->> From 3a987b88a42593875f6345188ca33731c7df728c Mon Sep 17 00:00:00 2001
->> From: =?UTF-8?q?Marc=20Aur=C3=A8le=20La=20France?= <tsi@tuyoix.net>
->> Date: Sat, 10 Aug 2024 13:25:27 -0600
->> Subject: [PATCH] debugfs show actual source in /proc/mounts
->> MIME-Version: 1.0
->> Content-Type: text/plain; charset=UTF-8
->> Content-Transfer-Encoding: 8bit
-
->> After its conversion to the new mount API, debugfs displays "none" in
->> /proc/mounts instead of the actual source.  Fix this by recognising its
->> "source" mount option.
-
->> Signed-off-by: Marc Aurèle La France <tsi@tuyoix.net>
->> Link:
->> https://lore.kernel.org/r/e439fae2-01da-234b-75b9-2a7951671e27@tuyoix.net
->> Fixes: a20971c18752 ("vfs: Convert debugfs to use the new mount API")
->> Cc: stable@vger.kernel.org # 6.10.x: 49abee5991e1: debugfs: Convert to new
->> uid/gid option parsing helpers
->> Signed-off-by: Christian Brauner <brauner@kernel.org>
-
-> ... elided.
-
-> This is because the commit message should have instead read ...
-
-> After commit 0c07c273a5fe ("debugfs: continue to ignore unknown mount
-> options"), debugfs displays "none" in /proc/mounts instead of the actual
-> source.  Fix this by recognising its "source" mount option.
-
-> Signed-off-by: Marc Aurèle La France <tsi@tuyoix.net>
-> Fixes: 0c07c273a5fe ("debugfs: continue to ignore unknown mount options")
-> Cc: stable@vger.kernel.org # 6.10.x: 9f111059e725: fs_parse: add uid & gid
-> option option parsing helpers
-> Cc: stable@vger.kernel.org # 6.10.x: 49abee5991e1: debugfs: Convert to new
-> uid/gid option parsing helpers
-
-> ... along with ...
-
-> Link:
-> https://lore.kernel.org/r/e439fae2-01da-234b-75b9-2a7951671e27@tuyoix.net
-> Signed-off-by: Christian Brauner <brauner@kernel.org>
-
-Oops.  That link should be ...
-
-Link: https://lore.kernel.org/all/883a7548-9e67-ccf6-23b7-c4e37934f840@tuyoix.net
-
-Marc.
 
