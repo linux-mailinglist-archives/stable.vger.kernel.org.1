@@ -1,126 +1,129 @@
-Return-Path: <stable+bounces-78470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA76298BB05
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 13:28:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8139B98BADB
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 13:19:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7B071C231AF
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 11:28:21 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2AC87B20E9E
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 11:19:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6A871BFDE5;
-	Tue,  1 Oct 2024 11:28:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5F941BF7E7;
+	Tue,  1 Oct 2024 11:19:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=yadro.com header.i=@yadro.com header.b="To/dlGCm";
-	dkim=pass (2048-bit key) header.d=yadro.com header.i=@yadro.com header.b="hr25LAVC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Godm5rbE"
 X-Original-To: stable@vger.kernel.org
-Received: from mta-03.yadro.com (mta-03.yadro.com [89.207.88.253])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 266C21BE844;
-	Tue,  1 Oct 2024 11:28:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=89.207.88.253
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83E121BF7F9;
+	Tue,  1 Oct 2024 11:19:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727782097; cv=none; b=K9EB/DOxx3Qqn3x3IE3NBf8GmdR4uINNpYMv6tgNDMfqBRRtEP8NI5zeg0TS10lgECNwCVwdypPF+jEezyQmZQL22XVZvwjaLzCZjiZOQNGJ9EKVzq5jLhgwWdRcBhXPei0RXpCkxzjSuBmxiW/vSXXz8meFIUHlWkXq7cLXL3o=
+	t=1727781590; cv=none; b=CwFF4/SRxSpSUo0MuUlucU3ThN9nbmt6Ox/kTQX92la1Vj2BHkqeg1TLn//Ow3rlR3f7XWJPtccBBhRG0k5TuxxYIePmRlwxlAWWZb6OoEPFkg5arGV+jzMrO4+fjoK7Abf87n739oCeLg/nXQqz6clULwEInuOd4PrRY1XRCu8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727782097; c=relaxed/simple;
-	bh=bDoNHdGMvOldNnAHOPFZPgGm8ZvgR8+T8X8OFve4coA=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=gL7C/w2DK1Ye5wFXXuB1Gegzq9sY7sLO7zyuGGPKeIxvaUwPyAUeomkwV0ttYPJbtUoqdnfO8Pk/9nyAaznIzGM94o6/W0lUsLK4y1PhbmNTCFJ8ag3kKwNPo6QIII+RVj1Hf3i6aJ7LdE9yZQXc4k2LpXo4/OZd+E53TRomMy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yadro.com; spf=pass smtp.mailfrom=yadro.com; dkim=pass (2048-bit key) header.d=yadro.com header.i=@yadro.com header.b=To/dlGCm; dkim=pass (2048-bit key) header.d=yadro.com header.i=@yadro.com header.b=hr25LAVC; arc=none smtp.client-ip=89.207.88.253
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=yadro.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=yadro.com
-DKIM-Filter: OpenDKIM Filter v2.11.0 mta-03.yadro.com 4EC53E0005
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; s=mta-04;
-	t=1727781537; bh=4WKPhPCzv0PRccHj8E3gU/C6ldhuqZJP/djUeDytt50=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
-	b=To/dlGCmRo5I2ueWSJ1TlL1+Q02GxxSMMkKXGbO+DPWVhwfzSKv+pJUJTrzL7ZC87
-	 MqOgXJwRhSlORRv9IuoIJWAQUOkPlTmFaHMFi7Ep4Ym+qF9PpwmU5eYIkPxfcy64wM
-	 l3CS+0jWxjrMlBYtydD8yktCUmH0FRUVhONP+am3OfpaEELrjvuBJmtWaPXffoiISR
-	 bYIkcKTXxO3dLvwt6D4Y0Xr4W8o7q/x2XAT3LpWCPsc69tOW/hT1uYr/BdZ/03bh5v
-	 /+9LcVVxNlZogPK6xKxQMZIRDh6LNuKo+DMOBgNY9Ad94x+KrbGsOBQ6Ti9qkVemAL
-	 /5K8tYKFSpObg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yadro.com; s=mta-03;
-	t=1727781537; bh=4WKPhPCzv0PRccHj8E3gU/C6ldhuqZJP/djUeDytt50=;
-	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type:From;
-	b=hr25LAVCZr/c5S3a4NzhxQBomrO88Gb5mSCc93zY402/hJDBrRJoulcayiknUmXfT
-	 Ap4dDgyvUfGNNM04JCJzt8fdJAXMvAuALFU3POv/ABS5Us6Ig9D1gd3obH9tDKOeaA
-	 AP+rw9MXvT06m4FPJovaOxl1CzryKYPzv2QILz++VOa1yOBuNJD+3bYwkAXASwPcjI
-	 Bb4bsTCycBI9YjByWKTzx0woKhnv+EWc78/O5hofT7uQPt8/HpVDA+/VnffYZKJ3V6
-	 IirP+PoPBsNCGs3Fr5dutuYNHnXJt6QpPM11+LsegTA5kxQsw4z26HJfYSHAkVtoUW
-	 6FcdqDUfqYIpA==
-From: Anastasia Kovaleva <a.kovaleva@yadro.com>
-To: <netdev@vger.kernel.org>
-CC: <linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>,
-	<linux@yadro.com>
-Subject: [PATCH net] net: Fix an unsafe loop on the list
-Date: Tue, 1 Oct 2024 14:18:40 +0300
-Message-ID: <20241001111840.24810-1-a.kovaleva@yadro.com>
-X-Mailer: git-send-email 2.40.1
+	s=arc-20240116; t=1727781590; c=relaxed/simple;
+	bh=UjAVLKs0KDdXi5voWzIKbUWSHZkg90qQyL9jxLlZnbw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bRxgoYLWJ+6EmOqsLpk2NHjEIB/rrkr3cnFD+W/01pl8Ht63XPWgUO2BMDDzgvTkGXkQipytSZEBBoSwlyeL9y0RMDRL5xqnR8BoIoFrboHFdnXtsuB754YBNcHyqoUhyFc/DkY7WynjuJBeAwoAvuiCAvAu6UJ4WgvUd0b5p+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Godm5rbE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FEF4C4CEC6;
+	Tue,  1 Oct 2024 11:19:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1727781590;
+	bh=UjAVLKs0KDdXi5voWzIKbUWSHZkg90qQyL9jxLlZnbw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Godm5rbES0bkq8Mgf+N4EiNcAvmNr5TD3p+Fg1LWDxsN0By33QjHufRVAb4eWG0e4
+	 IMFpEmbzs5DHAPWaPH80SSm0n339+FCslx681+3bl6j0Y+y500iHxiBtZH8L1isSPv
+	 ELX36+LphrN3gkuydhPDcOXcYe6Ub2DdEi31D29A=
+Date: Tue, 1 Oct 2024 13:19:03 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
+	ruanjinjie@huawei.com
+Subject: Re: Patch "Input: ps2-gpio - use IRQF_NO_AUTOEN flag in
+ request_irq()" has been added to the 5.15-stable tree
+Message-ID: <2024100155-scalded-salon-a744@gregkh>
+References: <20241001002900.2628013-1-sashal@kernel.org>
+ <Zvu8GiY4PxqTQPD0@google.com>
+ <2024100134-talcum-angular-6e20@gregkh>
+ <ZvvIJX1IzHy8DCl7@google.com>
+ <2024100149-repugnant-unrelated-5974@gregkh>
+ <ZvvTJD20aLHgHY7q@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Content-Type: text/plain
-X-ClientProxiedBy: T-EXCH-08.corp.yadro.com (172.17.11.58) To
- T-EXCH-09.corp.yadro.com (172.17.11.59)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZvvTJD20aLHgHY7q@google.com>
 
-The kernel may crash when deleting a genetlink family if there are still
-listeners for that family:
-_______________________________________________________________________
-Oops: Kernel access of bad area, sig: 11 [#1]
-  ...
-  NIP [c000000000c080bc] netlink_update_socket_mc+0x3c/0xc0
-  LR [c000000000c0f764] __netlink_clear_multicast_users+0x74/0xc0
-  Call Trace:
-__netlink_clear_multicast_users+0x74/0xc0
-genl_unregister_family+0xd4/0x2d0
-_______________________________________________________________________
+On Tue, Oct 01, 2024 at 03:47:00AM -0700, Dmitry Torokhov wrote:
+> On Tue, Oct 01, 2024 at 12:05:56PM +0200, Greg KH wrote:
+> > On Tue, Oct 01, 2024 at 03:00:05AM -0700, Dmitry Torokhov wrote:
+> > > On Tue, Oct 01, 2024 at 11:32:16AM +0200, Greg KH wrote:
+> > > > On Tue, Oct 01, 2024 at 02:08:42AM -0700, Dmitry Torokhov wrote:
+> > > > > On Mon, Sep 30, 2024 at 08:28:59PM -0400, Sasha Levin wrote:
+> > > > > > This is a note to let you know that I've just added the patch titled
+> > > > > > 
+> > > > > >     Input: ps2-gpio - use IRQF_NO_AUTOEN flag in request_irq()
+> > > > > > 
+> > > > > > to the 5.15-stable tree which can be found at:
+> > > > > >     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> > > > > > 
+> > > > > > The filename of the patch is:
+> > > > > >      input-ps2-gpio-use-irqf_no_autoen-flag-in-request_ir.patch
+> > > > > > and it can be found in the queue-5.15 subdirectory.
+> > > > > > 
+> > > > > > If you, or anyone else, feels it should not be added to the stable tree,
+> > > > > > please let <stable@vger.kernel.org> know about it.
+> > > > > 
+> > > > > For the love of God, why? Why does this pure cleanup type of change
+> > > > > needs to be in stable?
+> > > > 
+> > > > Because someone said:
+> > > > 
+> > > > > > commit 2d007ddec282076923c4d84d6b12858b9f44594a
+> > > > > > Author: Jinjie Ruan <ruanjinjie@huawei.com>
+> > > > > > Date:   Thu Sep 12 11:30:13 2024 +0800
+> > > > > > 
+> > > > > >     Input: ps2-gpio - use IRQF_NO_AUTOEN flag in request_irq()
+> > > > > >     
+> > > > > >     [ Upstream commit dcd18a3fb1228409dfc24373c5c6868a655810b0 ]
+> > > > > >     
+> > > > > >     disable_irq() after request_irq() still has a time gap in which
+> > > > > >     interrupts can come. request_irq() with IRQF_NO_AUTOEN flag will
+> > > > > >     disable IRQ auto-enable when request IRQ.
+> > > > 
+> > > > Looks like a bug fix, and also:
+> > > > 
+> > > > > >     Fixes: 9ee0a0558819 ("Input: PS/2 gpio bit banging driver for serio bus")
+> > > > 
+> > > > Someone marked it as such.
+> > > > 
+> > > > I'll go drop it, but really, don't mark things as fixes if they really
+> > > > are not.
+> > > 
+> > > They are fixes, they just do not belong to stable and that is why they
+> > > are not marked as such.
+> > 
+> > Ok, if your subsystem will always mark this type of thing properly, we
+> > will be glad to add you to the "don't take any Fixes: only commits" to
+> > the list that we keep.  Here's the subsystems that we currently do this
+> > for:
+> > 	https://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git/tree/ignore_list
+> > 
+> > what regex should we use for this list?
+> 
+> Let's do:
+> 
+> 	drivers/input/*
+> 
+> and see how it goes.
 
-Change the unsafe loop on the list to a safe one, because inside the
-loop there is an element removal from this list.
-
-Fixes: b8273570f802 ("genetlink: fix netns vs. netlink table locking (2)")
-Signed-off-by: Anastasia Kovaleva <a.kovaleva@yadro.com>
-Reviewed-by: Dmitry Bogdanov <d.bogdanov@yadro.com>
----
- include/net/sock.h       | 2 ++
- net/netlink/af_netlink.c | 3 ++-
- 2 files changed, 4 insertions(+), 1 deletion(-)
-
-diff --git a/include/net/sock.h b/include/net/sock.h
-index c58ca8dd561b..eec77a18602a 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -894,6 +894,8 @@ static inline void sk_add_bind_node(struct sock *sk,
- 	hlist_for_each_entry_safe(__sk, tmp, list, sk_node)
- #define sk_for_each_bound(__sk, list) \
- 	hlist_for_each_entry(__sk, list, sk_bind_node)
-+#define sk_for_each_bound_safe(__sk, tmp, list) \
-+        hlist_for_each_entry_safe(__sk, tmp, list, sk_bind_node)
- 
- /**
-  * sk_for_each_entry_offset_rcu - iterate over a list at a given struct offset
-diff --git a/net/netlink/af_netlink.c b/net/netlink/af_netlink.c
-index 0b7a89db3ab7..0a9287fadb47 100644
---- a/net/netlink/af_netlink.c
-+++ b/net/netlink/af_netlink.c
-@@ -2136,8 +2136,9 @@ void __netlink_clear_multicast_users(struct sock *ksk, unsigned int group)
- {
- 	struct sock *sk;
- 	struct netlink_table *tbl = &nl_table[ksk->sk_protocol];
-+	struct hlist_node *tmp;
- 
--	sk_for_each_bound(sk, &tbl->mc_list)
-+	sk_for_each_bound_safe(sk, tmp, &tbl->mc_list)
- 		netlink_update_socket_mc(nlk_sk(sk), group, 0);
- }
- 
--- 
-2.40.1
-
+Ok, now added, thanks!
 
