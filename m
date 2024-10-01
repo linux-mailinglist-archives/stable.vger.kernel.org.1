@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-78397-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20C2098B924
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 12:17:55 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB81B98B92A
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 12:20:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51C5E1C21E1F
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 10:17:54 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 107BFB21E46
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 10:20:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 658E919C561;
-	Tue,  1 Oct 2024 10:17:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EE1119C561;
+	Tue,  1 Oct 2024 10:20:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qEQQ0v3t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qndrm9aQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26D303209
-	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 10:17:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C341F3209
+	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 10:20:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727777870; cv=none; b=KhD8GBq+rYaTMGurmqrnFUnzD+twkyIJ0QKUzQBS87yaUPrViD1Zv7+dLQamCQGN3sJvI0c08Tq77hB7wm2rCv5c4JUosSbyZ0rRXmEMRgl8XPlEadqIY5HtdX4MsKeAuERPqGtn3MhJvu6zSkOIU7GULFNneunVd7apZykKIyg=
+	t=1727778040; cv=none; b=GRsjQ2fSu7vADcJFdUW0gPqqj6laBix8TCm2xU4smrKQGaiQt5g0QYZ+KdcencrNj0kdw1Isz0YgRJKdtRd9ytaFIi3pmIq2VK7pbtXJn8QCPouEr6ZpYDYiqP97kwcfjyXk4qwrQcqk0AMEZIqN9vSavudfDQ2i95HXD+jB9NI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727777870; c=relaxed/simple;
-	bh=qfd9HuoT0aEhS6JIHxqrh+DHi1RmF39ZCNbujIVlk/k=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=Kt7w/EGzm1no5lRempgXfhuYJcmSgvNbOazT/3z5Ch+Z7RZeYNF+PIAaIS955FfMbjwSV42NrjGNtwZW3fr+CRS6HfSz7sK1QWTl8zVOuE3KuFwWuabPA+CiKq051TL7oxM1KHKXSXT53AqA5hIvjn3WYDpCkFBIxGE46NHtHpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qEQQ0v3t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABFE4C4CEC6;
-	Tue,  1 Oct 2024 10:17:49 +0000 (UTC)
+	s=arc-20240116; t=1727778040; c=relaxed/simple;
+	bh=PIawEzuKNKPdNKtphhGezNh+uMaBKujgUy+k2qhQJp4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=CA7EocjElwGMsLZcYEQRVbCpkI1Lg+xCWzsDKqzCkeSF1kQJ0RXsVFU3ZznMdPs0QZoGgnt9PhdKzJMchU/8Y38MIrHR1A95gkc2JGTyaiSUeiHilj9ZqDdJ8SqjeCJefUFIEpwf7yeDFStOdEpo2ZJOqFJ8dWsdOAa+2xDtgMg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qndrm9aQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6CE0C4CECD;
+	Tue,  1 Oct 2024 10:20:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727777870;
-	bh=qfd9HuoT0aEhS6JIHxqrh+DHi1RmF39ZCNbujIVlk/k=;
+	s=korg; t=1727778040;
+	bh=PIawEzuKNKPdNKtphhGezNh+uMaBKujgUy+k2qhQJp4=;
 	h=Subject:To:Cc:From:Date:From;
-	b=qEQQ0v3tiQNmOoCkL4b0XJnM5Tdx/zUCwlCuvjEn1GTxfQuMb5XDAHP44Fa8Yny7P
-	 jnA6kHW1ZxguTy8y9aFJw27JF4K1jhn6hrtBZ77a94noG2eQOD8Zw5loyADET9EoFW
-	 gJwaiJMZ+KSBArpkHdkbjQiSidgb1685+mZVe1Sc=
-Subject: FAILED: patch "[PATCH] ksmbd: handle caseless file creation" failed to apply to 5.15-stable tree
-To: linkinjeon@kernel.org,stfrench@microsoft.com,zhanglei002@gmail.com
+	b=qndrm9aQG8O4F2Of4mgwT+ONeE5ZPQu9BwVvO+O2t/DSSNhlvd0Nm3pJ93h17rBNn
+	 oLfBNfO5ypFWLaiXcklraAm8ZPNx/x2GvLfzHYQSICrWteeCXROF8rtEWzy+sHfzvy
+	 Uw8XKwpLkRRgob0fXBV43PLiaAaPYyXhrRJdL74Y=
+Subject: FAILED: patch "[PATCH] usbnet: fix cyclical race on disconnect with work queue" failed to apply to 5.10-stable tree
+To: oneukum@suse.com,pabeni@redhat.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 01 Oct 2024 12:17:47 +0200
-Message-ID: <2024100147-stipend-vitality-f6cb@gregkh>
+Date: Tue, 01 Oct 2024 12:20:37 +0200
+Message-ID: <2024100137-tiara-corned-9da8@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,42 +53,27 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x c5a709f08d40b1a082e44ffcde1aea4d2822ddd5
+git cherry-pick -x 04e906839a053f092ef53f4fb2d610983412b904
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100147-stipend-vitality-f6cb@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100137-tiara-corned-9da8@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
-c5a709f08d40 ("ksmbd: handle caseless file creation")
-2b57a4322b1b ("ksmbd: check if a mount point is crossed during path lookup")
-6fe55c2799bc ("ksmbd: call putname after using the last component")
-df14afeed2e6 ("ksmbd: fix uninitialized pointer read in smb2_create_link()")
-38c8a9a52082 ("smb: move client and server files to common directory fs/smb")
-74d7970febf7 ("ksmbd: fix racy issue from using ->d_parent and ->d_name")
-211db0ac9e3d ("ksmbd: remove internal.h include")
-4d7ca4090184 ("fs: port vfs{g,u}id helpers to mnt_idmap")
-c14329d39f2d ("fs: port fs{g,u}id helpers to mnt_idmap")
-e67fe63341b8 ("fs: port i_{g,u}id_into_vfs{g,u}id() to mnt_idmap")
-0dbe12f2e49c ("fs: port i_{g,u}id_{needs_}update() to mnt_idmap")
-9452e93e6dae ("fs: port privilege checking helpers to mnt_idmap")
-f2d40141d5d9 ("fs: port inode_init_owner() to mnt_idmap")
-4609e1f18e19 ("fs: port ->permission() to pass mnt_idmap")
-13e83a4923be ("fs: port ->set_acl() to pass mnt_idmap")
-77435322777d ("fs: port ->get_acl() to pass mnt_idmap")
-011e2b717b1b ("fs: port ->tmpfile() to pass mnt_idmap")
-5ebb29bee8d5 ("fs: port ->mknod() to pass mnt_idmap")
-c54bd91e9eab ("fs: port ->mkdir() to pass mnt_idmap")
-7a77db95511c ("fs: port ->symlink() to pass mnt_idmap")
+04e906839a05 ("usbnet: fix cyclical race on disconnect with work queue")
+a69e617e533e ("usbnet: Fix linkwatch use-after-free on disconnect")
+478890682ff7 ("usbnet: add usbnet_event_names[] for kevent")
+956baa99571b ("usbnet: add method for reporting speed without MII")
+77651900cede ("usbnet: add _mii suffix to usbnet_set/get_link_ksettings")
 
 thanks,
 
@@ -96,62 +81,140 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From c5a709f08d40b1a082e44ffcde1aea4d2822ddd5 Mon Sep 17 00:00:00 2001
-From: Namjae Jeon <linkinjeon@kernel.org>
-Date: Sun, 8 Sep 2024 15:23:48 +0900
-Subject: [PATCH] ksmbd: handle caseless file creation
+From 04e906839a053f092ef53f4fb2d610983412b904 Mon Sep 17 00:00:00 2001
+From: Oliver Neukum <oneukum@suse.com>
+Date: Thu, 19 Sep 2024 14:33:42 +0200
+Subject: [PATCH] usbnet: fix cyclical race on disconnect with work queue
 
-Ray Zhang reported ksmbd can not create file if parent filename is
-caseless.
+The work can submit URBs and the URBs can schedule the work.
+This cycle needs to be broken, when a device is to be stopped.
+Use a flag to do so.
+This is a design issue as old as the driver.
 
-Y:\>mkdir A
-Y:\>echo 123 >a\b.txt
-The system cannot find the path specified.
-Y:\>echo 123 >A\b.txt
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+CC: stable@vger.kernel.org
+Link: https://patch.msgid.link/20240919123525.688065-1-oneukum@suse.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 
-This patch convert name obtained by caseless lookup to parent name.
-
-Cc: stable@vger.kernel.org # v5.15+
-Reported-by: Ray Zhang <zhanglei002@gmail.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-
-diff --git a/fs/smb/server/vfs.c b/fs/smb/server/vfs.c
-index 13dad48d950c..7cbd580120d1 100644
---- a/fs/smb/server/vfs.c
-+++ b/fs/smb/server/vfs.c
-@@ -1167,7 +1167,7 @@ static bool __caseless_lookup(struct dir_context *ctx, const char *name,
- 	if (cmp < 0)
- 		cmp = strncasecmp((char *)buf->private, name, namlen);
- 	if (!cmp) {
--		memcpy((char *)buf->private, name, namlen);
-+		memcpy((char *)buf->private, name, buf->used);
- 		buf->dirent_count = 1;
- 		return false;
+diff --git a/drivers/net/usb/usbnet.c b/drivers/net/usb/usbnet.c
+index 18eb5ba436df..2506aa8c603e 100644
+--- a/drivers/net/usb/usbnet.c
++++ b/drivers/net/usb/usbnet.c
+@@ -464,10 +464,15 @@ static enum skb_state defer_bh(struct usbnet *dev, struct sk_buff *skb,
+ void usbnet_defer_kevent (struct usbnet *dev, int work)
+ {
+ 	set_bit (work, &dev->flags);
+-	if (!schedule_work (&dev->kevent))
+-		netdev_dbg(dev->net, "kevent %s may have been dropped\n", usbnet_event_names[work]);
+-	else
+-		netdev_dbg(dev->net, "kevent %s scheduled\n", usbnet_event_names[work]);
++	if (!usbnet_going_away(dev)) {
++		if (!schedule_work(&dev->kevent))
++			netdev_dbg(dev->net,
++				   "kevent %s may have been dropped\n",
++				   usbnet_event_names[work]);
++		else
++			netdev_dbg(dev->net,
++				   "kevent %s scheduled\n", usbnet_event_names[work]);
++	}
+ }
+ EXPORT_SYMBOL_GPL(usbnet_defer_kevent);
+ 
+@@ -535,7 +540,8 @@ static int rx_submit (struct usbnet *dev, struct urb *urb, gfp_t flags)
+ 			tasklet_schedule (&dev->bh);
+ 			break;
+ 		case 0:
+-			__usbnet_queue_skb(&dev->rxq, skb, rx_start);
++			if (!usbnet_going_away(dev))
++				__usbnet_queue_skb(&dev->rxq, skb, rx_start);
+ 		}
+ 	} else {
+ 		netif_dbg(dev, ifdown, dev->net, "rx: stopped\n");
+@@ -843,9 +849,18 @@ int usbnet_stop (struct net_device *net)
+ 
+ 	/* deferred work (timer, softirq, task) must also stop */
+ 	dev->flags = 0;
+-	del_timer_sync (&dev->delay);
+-	tasklet_kill (&dev->bh);
++	del_timer_sync(&dev->delay);
++	tasklet_kill(&dev->bh);
+ 	cancel_work_sync(&dev->kevent);
++
++	/* We have cyclic dependencies. Those calls are needed
++	 * to break a cycle. We cannot fall into the gaps because
++	 * we have a flag
++	 */
++	tasklet_kill(&dev->bh);
++	del_timer_sync(&dev->delay);
++	cancel_work_sync(&dev->kevent);
++
+ 	if (!pm)
+ 		usb_autopm_put_interface(dev->intf);
+ 
+@@ -1171,7 +1186,8 @@ usbnet_deferred_kevent (struct work_struct *work)
+ 					   status);
+ 		} else {
+ 			clear_bit (EVENT_RX_HALT, &dev->flags);
+-			tasklet_schedule (&dev->bh);
++			if (!usbnet_going_away(dev))
++				tasklet_schedule(&dev->bh);
+ 		}
  	}
-@@ -1235,10 +1235,7 @@ int ksmbd_vfs_kern_path_locked(struct ksmbd_work *work, char *name,
- 		char *filepath;
- 		size_t path_len, remain_len;
  
--		filepath = kstrdup(name, GFP_KERNEL);
--		if (!filepath)
--			return -ENOMEM;
--
-+		filepath = name;
- 		path_len = strlen(filepath);
- 		remain_len = path_len;
- 
-@@ -1281,10 +1278,9 @@ int ksmbd_vfs_kern_path_locked(struct ksmbd_work *work, char *name,
- 		err = -EINVAL;
- out2:
- 		path_put(parent_path);
--out1:
--		kfree(filepath);
+@@ -1196,7 +1212,8 @@ usbnet_deferred_kevent (struct work_struct *work)
+ 			usb_autopm_put_interface(dev->intf);
+ fail_lowmem:
+ 			if (resched)
+-				tasklet_schedule (&dev->bh);
++				if (!usbnet_going_away(dev))
++					tasklet_schedule(&dev->bh);
+ 		}
  	}
  
-+out1:
- 	if (!err) {
- 		err = mnt_want_write(parent_path->mnt);
- 		if (err) {
+@@ -1559,6 +1576,7 @@ static void usbnet_bh (struct timer_list *t)
+ 	} else if (netif_running (dev->net) &&
+ 		   netif_device_present (dev->net) &&
+ 		   netif_carrier_ok(dev->net) &&
++		   !usbnet_going_away(dev) &&
+ 		   !timer_pending(&dev->delay) &&
+ 		   !test_bit(EVENT_RX_PAUSED, &dev->flags) &&
+ 		   !test_bit(EVENT_RX_HALT, &dev->flags)) {
+@@ -1606,6 +1624,7 @@ void usbnet_disconnect (struct usb_interface *intf)
+ 	usb_set_intfdata(intf, NULL);
+ 	if (!dev)
+ 		return;
++	usbnet_mark_going_away(dev);
+ 
+ 	xdev = interface_to_usbdev (intf);
+ 
+diff --git a/include/linux/usb/usbnet.h b/include/linux/usb/usbnet.h
+index 9f08a584d707..0b9f1e598e3a 100644
+--- a/include/linux/usb/usbnet.h
++++ b/include/linux/usb/usbnet.h
+@@ -76,8 +76,23 @@ struct usbnet {
+ #		define EVENT_LINK_CHANGE	11
+ #		define EVENT_SET_RX_MODE	12
+ #		define EVENT_NO_IP_ALIGN	13
++/* This one is special, as it indicates that the device is going away
++ * there are cyclic dependencies between tasklet, timer and bh
++ * that must be broken
++ */
++#		define EVENT_UNPLUG		31
+ };
+ 
++static inline bool usbnet_going_away(struct usbnet *ubn)
++{
++	return test_bit(EVENT_UNPLUG, &ubn->flags);
++}
++
++static inline void usbnet_mark_going_away(struct usbnet *ubn)
++{
++	set_bit(EVENT_UNPLUG, &ubn->flags);
++}
++
+ static inline struct usb_driver *driver_of(struct usb_interface *intf)
+ {
+ 	return to_usb_driver(intf->dev.driver);
 
 
