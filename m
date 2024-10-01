@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-78398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB81B98B92A
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 12:20:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id D946D98B92C
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 12:20:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 107BFB21E46
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 10:20:46 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 171B6B22313
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 10:20:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EE1119C561;
-	Tue,  1 Oct 2024 10:20:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9AB719CC2D;
+	Tue,  1 Oct 2024 10:20:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qndrm9aQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O6/NMG+M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C341F3209
-	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 10:20:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC2AD3209
+	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 10:20:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727778040; cv=none; b=GRsjQ2fSu7vADcJFdUW0gPqqj6laBix8TCm2xU4smrKQGaiQt5g0QYZ+KdcencrNj0kdw1Isz0YgRJKdtRd9ytaFIi3pmIq2VK7pbtXJn8QCPouEr6ZpYDYiqP97kwcfjyXk4qwrQcqk0AMEZIqN9vSavudfDQ2i95HXD+jB9NI=
+	t=1727778049; cv=none; b=ILO4UyNuH9aJkRH6tgmSPlhi6GMj7EUU3RXX3PzjpWPiK1Ss+PXVtH3pytvLL7KoAhwLu9CuoHtZGiwmOvjueZ/vYXrAs4dFE1i5PHLZhxb0kqtXPveRqHObz3vb7SVxn9SNtWVr4+I568hIdtqHRDGCQMAabue3IC8rv0ng/WA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727778040; c=relaxed/simple;
-	bh=PIawEzuKNKPdNKtphhGezNh+uMaBKujgUy+k2qhQJp4=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=CA7EocjElwGMsLZcYEQRVbCpkI1Lg+xCWzsDKqzCkeSF1kQJ0RXsVFU3ZznMdPs0QZoGgnt9PhdKzJMchU/8Y38MIrHR1A95gkc2JGTyaiSUeiHilj9ZqDdJ8SqjeCJefUFIEpwf7yeDFStOdEpo2ZJOqFJ8dWsdOAa+2xDtgMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qndrm9aQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6CE0C4CECD;
-	Tue,  1 Oct 2024 10:20:39 +0000 (UTC)
+	s=arc-20240116; t=1727778049; c=relaxed/simple;
+	bh=VWm4TQma3CRjdUXuvcWoB78h7mGR9KzMC1qC549SP1g=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=oPtwnWvpAzmP1cDH7hLk8HlN3BHVCXY3sp+lLc2nFZNTQaVN743H38vxfyB5wL8zD/Ee9MjmYwNTe4cnAy7FqTS2Mw7QH1zB8b+ONBvW1vl7rRuNq03RHN9q1t4ncOZlUC3GU5EiJxvY4JNOGRyrSSUXwumb6bcsuzeSfjMQTjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O6/NMG+M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5687C4CEC6;
+	Tue,  1 Oct 2024 10:20:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727778040;
-	bh=PIawEzuKNKPdNKtphhGezNh+uMaBKujgUy+k2qhQJp4=;
+	s=korg; t=1727778049;
+	bh=VWm4TQma3CRjdUXuvcWoB78h7mGR9KzMC1qC549SP1g=;
 	h=Subject:To:Cc:From:Date:From;
-	b=qndrm9aQG8O4F2Of4mgwT+ONeE5ZPQu9BwVvO+O2t/DSSNhlvd0Nm3pJ93h17rBNn
-	 oLfBNfO5ypFWLaiXcklraAm8ZPNx/x2GvLfzHYQSICrWteeCXROF8rtEWzy+sHfzvy
-	 Uw8XKwpLkRRgob0fXBV43PLiaAaPYyXhrRJdL74Y=
-Subject: FAILED: patch "[PATCH] usbnet: fix cyclical race on disconnect with work queue" failed to apply to 5.10-stable tree
+	b=O6/NMG+MgWl25GHu0YfKoOy8FUaTtovWZLTfhWBs+rq0BH3tFsoGlfsFTjRLgzKQ4
+	 4bRadvAxF8agYu5gTQtYsdVkGqtdpp3K3ss8fk7MNe2FulhCSQJKXzb+h9fbFTo/JV
+	 lOg5zaF5om+eRiWlmf/DX9IpBj9rD0Z6CoXmDJOM=
+Subject: FAILED: patch "[PATCH] usbnet: fix cyclical race on disconnect with work queue" failed to apply to 5.4-stable tree
 To: oneukum@suse.com,pabeni@redhat.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 01 Oct 2024 12:20:37 +0200
-Message-ID: <2024100137-tiara-corned-9da8@gregkh>
+Date: Tue, 01 Oct 2024 12:20:38 +0200
+Message-ID: <2024100138-ramp-unnatural-4b06@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,19 +53,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 04e906839a053f092ef53f4fb2d610983412b904
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100137-tiara-corned-9da8@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100138-ramp-unnatural-4b06@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
