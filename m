@@ -1,155 +1,166 @@
-Return-Path: <stable+bounces-78533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46FA898BF7F
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 16:16:53 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC53798BFB1
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 16:20:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 063F2282298
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 14:16:52 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E0F73B2852C
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 14:20:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 556E91CB52C;
-	Tue,  1 Oct 2024 14:13:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 693651C9B78;
+	Tue,  1 Oct 2024 14:16:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="eauVa5vB"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Uau/vZa5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54F4C1CB519
-	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 14:13:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8D841C9B75;
+	Tue,  1 Oct 2024 14:16:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727791994; cv=none; b=USX+LLYez+U3wNepe5zVx0k5QiihtewkUj26Zs+hqCjB0DUqE1XD2M8aQOnAq+sejDk1WZeppc2FJ+k3M53eC9b7HI/72eXxtRAkCazwYxtfgNw/DAQ13kPf/lZqICnb2i8lYPUl2ucpZhR9Rn0rk43kOu95t2eF3TDQUBAOsZs=
+	t=1727792217; cv=none; b=gD7WUYnHeECpnWVULjjnlgBFq/esDHgLxsWYQJbHumCRW0qOsL62afYCQ2RlKjPJJtfoxd+E7rQawOK6KyoL89upG1LTETL54zUXFrfqT8rCWEcqHkeZ6zpeRt518tTcrFwtaNxsSE4aleN/gjtm9C6o9M+e5VoiuMYT7elxXGY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727791994; c=relaxed/simple;
-	bh=/YEyf3fUIoo/+arxTCsVqbKnfQ6XnGcMlQny5sPFMuc=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=HgFX8ao26vGpFIUSYclto10iBVH74GKc8D+Kf8h7EIhtWwcQZXQtf+yqAOCbjbVxP+zsWakG0/J6JEtWNWVDUsFN++dLHfYvMo6nIYQnI59SJ/rbnp9jwcpGDfWI20Fe/e52KeLj5ppaK+aZFrNXSG/BGeVKQVGga0epccIgQBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=eauVa5vB; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-42cb57f8b41so68613065e9.0
-        for <stable@vger.kernel.org>; Tue, 01 Oct 2024 07:13:12 -0700 (PDT)
+	s=arc-20240116; t=1727792217; c=relaxed/simple;
+	bh=g41OALnsL4wl6u9fk+xYcaWtmMY9YbrmA0fZDhVPSC4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jXJyxVDt7AJL7hLfawhmZOGFGMco7q6RX4dyyic8s7WCgwOU2D2h9qsPIWglLxBBbgctVlncoybMj6B3CDYMQoPQ5xMBCQh66SJuul01jE3YKdMpZXJ/5vVRLPYirKCMdlbpd5pB4IIOWJPoO/ICTB6Nui1p+yVcO6debODFs6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Uau/vZa5; arc=none smtp.client-ip=209.85.210.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-710e489860bso2885275a34.1;
+        Tue, 01 Oct 2024 07:16:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1727791991; x=1728396791; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=a1Cx91VSztN2rJnet5B8fnphU+Ct26TY7sP7XUXBJAE=;
-        b=eauVa5vBD0r2Q7P2Xi2DWjfPMb02bsgr3xrj5hH1H9LfdODCyrSk9R1nJ4SqUKq4TA
-         nSaUKwF2lRO7q59tBf6hEztarPqULaEF5Ry9MXhk0XOh/tMH+RmI2c5DnnzXn9l8hkqK
-         zIxfrvNGMMRRnNSKav0TY9z8KzlSCms9HtJxJr9mc6fdCRxLtdODryN34ynHv2ewaIB7
-         x3JuY13iTf5nu7VorHfE8dNpGGgseO+vYeKa8kfCVnmlJuWN/mze85Gy2QO6AqXyq8vm
-         DbyLEBA0l4N1Fx0g6tSo6ciSCuWx5xQPjwkM9HqtM/yzZQccjnbm9D1Vd8s89yvpmucl
-         XGfg==
+        d=gmail.com; s=20230601; t=1727792214; x=1728397014; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ph1CXMwrM0Od7OuVQ28Be8BUbBXIPRQeBdm8AFbgkow=;
+        b=Uau/vZa5i4+TDBltpxwIMUhw8yE3fQxLfUhmPjNZLnQCchEPnywKdZXRlj+uQKYRGC
+         WTb2aJPLq1Ky48sJfVEBuD3MmOZvAht1YdD/uQYwQUULjHkF8LSoYh42QrE5e6Zvu7Qq
+         ILkfaYMfrZXILqMX0yRjpLBv7LLibOQ09/K4eM8WawkV7+aF4wEIc7grqV7h9QYz0sEl
+         Vun+mPT5jW5AE9oWz7l4Ylzpo3X8jQ4F339beZuDKXPsQrjHtxqoVHY5Bf2K6WKgsWpX
+         UR1SlhYLQFr/TwBhxOkZXHC6+kZbrYmjN8Zbl9e68KfMZkO6GXP6nnPLgOrSLclgyfAN
+         sd9Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727791991; x=1728396791;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:references:cc:to:subject:reply-to:from:user-agent
-         :mime-version:date:message-id:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=a1Cx91VSztN2rJnet5B8fnphU+Ct26TY7sP7XUXBJAE=;
-        b=vU41TQPRKR9ZThVu4S2FGXmmgZKXgGSKho2CZjq9AZiQyHzsEi6G3+5OKtNWCB5WcI
-         p6tquB67G9apsrFKytJG5KepP5SRerjic+QzS368YTtfZ3VjzV5sxholvh68XzwULrai
-         lccE2lQQDdagfJqk5viZb9GYuLtwoULvQhL/OtUrqtKgQttztHmutqb77Eq3R8qi/xj4
-         Q98uml6Dr5bdvejMR0ds45p/AzSmdqF89JhFuAOVAdGkp/uOJOD2NOGUGg4C2AeNVe4h
-         wBFEvDYcy4cjl+BRCJcTGxQjC6MaCm/yzuNzSwTB6Mxh4y0H2bRaoNp/Qe8ECgV6r4Fd
-         FrKQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU9cQYgt58fnmMwuUZ6pX7Ic2itnRh0dcGRL47/2yVy2L8CibR3Yoq6ehc4CAJNr9fsRdRsn0Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzmX4GyYTiz/SUo2SHsUhRyZfwiciMg5Ii1akajqV2msDA8ZvDW
-	oIkKUlCANk9vK2sODH9Ai2FbzJGJOixZ4ye7f9rUn7ppOfVUd7Ss7r6AhxbCSZvypKq6cpY4C0b
-	K
-X-Google-Smtp-Source: AGHT+IEXiTdUkwq0hs5gvz7znC7eRTgwUSQ6YDYbQFzkPBe0ChNgj2UgohJe3Hnz52MtEpTmvXyI3A==
-X-Received: by 2002:a05:600c:4751:b0:42c:de34:34d8 with SMTP id 5b1f17b1804b1-42f5849771fmr149867555e9.27.1727791990540;
-        Tue, 01 Oct 2024 07:13:10 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:982:cbb0:f9b2:9800:19f8:2888? ([2a01:e0a:982:cbb0:f9b2:9800:19f8:2888])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37cd575de73sm11807180f8f.115.2024.10.01.07.13.09
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Oct 2024 07:13:10 -0700 (PDT)
-Message-ID: <e050f066-7c35-463f-8c0d-9061f78e319b@linaro.org>
-Date: Tue, 1 Oct 2024 16:13:09 +0200
+        d=1e100.net; s=20230601; t=1727792214; x=1728397014;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ph1CXMwrM0Od7OuVQ28Be8BUbBXIPRQeBdm8AFbgkow=;
+        b=TvMQjNBLAwUEU1guf973cTml38Lgz605lYMwe9WDnnmT7+uGVIQMQ2Kbnw6zqvcL0/
+         MFVEr8cfN5oZUTW7BikVePrlJ/T+wxE/JrXOmzGwDcS1RJpUCFNQbdmLCphh3usKGkUh
+         DlYe0Sec2B4QuNqyh7WpuUXC5r6NfHnTxa1iiy5KbvI9fDRA2SgnkHaJT1XwOsX3tS69
+         MVK7mkd/TlYXfwf6YJprlMYUJaN76LhiM6A4V9nwtMdYWcLCs7AeBp9COi4VM2rRDHMt
+         HTMSwqkg9RXgXpl1/+X/jWo0cGeQeZ0Ef/xr8Jg84bH6063kmPzCOcKEAGL93WBLhKA2
+         118g==
+X-Forwarded-Encrypted: i=1; AJvYcCViiJtgOfEpL7CJ7fgniNHWrp5yY6oO4xyxF03qF6RotWIZMZJ1IfCpwV7/2RtNvnx5HEr+cbC0LanQe/o=@vger.kernel.org, AJvYcCX3jl1EmhdRQhc7zhGnY4GPUS7y65b8tWNsiA+ab6LPfdrjblnTraRwpvlXyjrM3NctM68R6PCx@vger.kernel.org
+X-Gm-Message-State: AOJu0YxQ8kuoLFaB9Cfs2qGaOtmRE1/f6EJDGS49hcczWqLdPrc68OAU
+	fBwybOjlU4aM6bZLDrHeWnWYgT1M5PLQvalhUXoGDz0n47iI2dxXkk8Q0fy5Km4Ib9XEy61LSYU
+	3FBp+ZTQpWksnN9WC6DYhhMT2xi0=
+X-Google-Smtp-Source: AGHT+IFfVSlGf0zJL6/ZI6y0JzFNCuskPx0Gyc8YhUaiOcui23/iIxvQOogfzVfOf5Ay4G0kU+eQQi3qHXBu2AsBY/Q=
+X-Received: by 2002:a05:6359:7406:b0:1be:de52:97c3 with SMTP id
+ e5c5f4694b2df-1bede52a407mr283920455d.5.1727792214436; Tue, 01 Oct 2024
+ 07:16:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Neil Armstrong <neil.armstrong@linaro.org>
-Reply-To: neil.armstrong@linaro.org
-Subject: Re: [PATCH] drm: panel: jd9365da-h3: Remove unused num_init_cmds
- structure member
-To: Hugo Villeneuve <hugo@hugovil.com>, Jagan Teki <jagan@edgeble.ai>,
- Jessica Zhang <quic_jesszhan@quicinc.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>,
- Zhaoxiong Lv <lvzhaoxiong@huaqin.corp-partner.google.com>,
- Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: Hugo Villeneuve <hvilleneuve@dimonoff.com>, stable@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
-References: <20240930170503.1324560-1-hugo@hugovil.com>
-Content-Language: en-US, fr
-Autocrypt: addr=neil.armstrong@linaro.org; keydata=
- xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
- GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
- BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
- qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
- 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
- AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
- OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
- Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
- YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
- GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
- UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
- GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
- yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
- QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
- SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
- 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
- Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
- oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
- M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
- 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
- KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
- 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
- QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
-Organization: Linaro
-In-Reply-To: <20240930170503.1324560-1-hugo@hugovil.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20240926211936.75373-1-21cnbao@gmail.com> <871q13qj2t.fsf@yhuang6-desk2.ccr.corp.intel.com>
+ <CAGsJ_4w2PjN+4DKWM6qvaEUAX=FQW0rp+6Wjx1Qrq=jaAz7wsw@mail.gmail.com> <877caspv6u.fsf@yhuang6-desk2.ccr.corp.intel.com>
+In-Reply-To: <877caspv6u.fsf@yhuang6-desk2.ccr.corp.intel.com>
+From: Barry Song <21cnbao@gmail.com>
+Date: Tue, 1 Oct 2024 22:16:40 +0800
+Message-ID: <CAGsJ_4wfjo2-dnGwybx5YR_o+FEzoVG+V=O1mxQ801FdHPSGiA@mail.gmail.com>
+Subject: Re: [PATCH] mm: avoid unconditional one-tick sleep when
+ swapcache_prepare fails
+To: "Huang, Ying" <ying.huang@intel.com>
+Cc: akpm@linux-foundation.org, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, Barry Song <v-songbaohua@oppo.com>, 
+	Kairui Song <kasong@tencent.com>, Yu Zhao <yuzhao@google.com>, 
+	David Hildenbrand <david@redhat.com>, Chris Li <chrisl@kernel.org>, Hugh Dickins <hughd@google.com>, 
+	Johannes Weiner <hannes@cmpxchg.org>, Matthew Wilcox <willy@infradead.org>, Michal Hocko <mhocko@suse.com>, 
+	Minchan Kim <minchan@kernel.org>, Yosry Ahmed <yosryahmed@google.com>, 
+	SeongJae Park <sj@kernel.org>, Kalesh Singh <kaleshsingh@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, stable@vger.kernel.org, 
+	Oven Liyang <liyangouwen1@oppo.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 30/09/2024 19:05, Hugo Villeneuve wrote:
-> From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-> 
-> Now that the driver has been converted to use wrapped MIPI DCS functions,
-> the num_init_cmds structure member is no longer needed, so remove it.
-> 
-> Fixes: 35583e129995 ("drm/panel: panel-jadard-jd9365da-h3: use wrapped MIPI DCS functions")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-> ---
->   drivers/gpu/drm/panel/panel-jadard-jd9365da-h3.c | 1 -
->   1 file changed, 1 deletion(-)
-> 
-> diff --git a/drivers/gpu/drm/panel/panel-jadard-jd9365da-h3.c b/drivers/gpu/drm/panel/panel-jadard-jd9365da-h3.c
-> index 44897e5218a6..45d09e6fa667 100644
-> --- a/drivers/gpu/drm/panel/panel-jadard-jd9365da-h3.c
-> +++ b/drivers/gpu/drm/panel/panel-jadard-jd9365da-h3.c
-> @@ -26,7 +26,6 @@ struct jadard_panel_desc {
->   	unsigned int lanes;
->   	enum mipi_dsi_pixel_format format;
->   	int (*init)(struct jadard *jadard);
-> -	u32 num_init_cmds;
->   	bool lp11_before_reset;
->   	bool reset_before_power_off_vcioo;
->   	unsigned int vcioo_to_lp11_delay_ms;
-> 
-> base-commit: 9852d85ec9d492ebef56dc5f229416c925758edc
+On Tue, Oct 1, 2024 at 7:43=E2=80=AFAM Huang, Ying <ying.huang@intel.com> w=
+rote:
+>
+> Barry Song <21cnbao@gmail.com> writes:
+>
+> > On Sun, Sep 29, 2024 at 3:43=E2=80=AFPM Huang, Ying <ying.huang@intel.c=
+om> wrote:
+> >>
+> >> Hi, Barry,
+> >>
+> >> Barry Song <21cnbao@gmail.com> writes:
+> >>
+> >> > From: Barry Song <v-songbaohua@oppo.com>
+> >> >
+> >> > Commit 13ddaf26be32 ("mm/swap: fix race when skipping swapcache")
+> >> > introduced an unconditional one-tick sleep when `swapcache_prepare()=
+`
+> >> > fails, which has led to reports of UI stuttering on latency-sensitiv=
+e
+> >> > Android devices. To address this, we can use a waitqueue to wake up
+> >> > tasks that fail `swapcache_prepare()` sooner, instead of always
+> >> > sleeping for a full tick. While tasks may occasionally be woken by a=
+n
+> >> > unrelated `do_swap_page()`, this method is preferable to two scenari=
+os:
+> >> > rapid re-entry into page faults, which can cause livelocks, and
+> >> > multiple millisecond sleeps, which visibly degrade user experience.
+> >>
+> >> In general, I think that this works.  Why not extend the solution to
+> >> cover schedule_timeout_uninterruptible() in __read_swap_cache_async()
+> >> too?  We can call wake_up() when we clear SWAP_HAS_CACHE.  To avoid
+> >
+> > Hi Ying,
+> > Thanks for your comments.
+> > I feel extending the solution to __read_swap_cache_async() should be do=
+ne
+> > in a separate patch. On phones, I've never encountered any issues repor=
+ted
+> > on that path, so it might be better suited for an optimization rather t=
+han a
+> > hotfix?
+>
+> Yes.  It's fine to do that in another patch as optimization.
 
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Ok. I'll prepare a separate patch for optimizing that path.
+
+>
+> >> overhead to call wake_up() when there's no task waiting, we can use an
+> >> atomic to count waiting tasks.
+> >
+> > I'm not sure it's worth adding the complexity, as wake_up() on an empty
+> > waitqueue should have a very low cost on its own?
+>
+> wake_up() needs to call spin_lock_irqsave() unconditionally on a global
+> shared lock.  On systems with many CPUs (such servers), this may cause
+> severe lock contention.  Even the cache ping-pong may hurt performance
+> much.
+
+I understand that cache synchronization was a significant issue before
+qspinlock, but it seems to be less of a concern after its implementation.
+However, using a global atomic variable would still trigger cache broadcast=
+s,
+correct?
+
+>
+> --
+> Best Regards,
+> Huang, Ying
+
+Thanks
+Barry
 
