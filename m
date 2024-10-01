@@ -1,131 +1,108 @@
-Return-Path: <stable+bounces-78544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78545-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5BE998C0A9
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 16:50:07 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB24898C0DF
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 16:56:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 70D801F22CE5
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 14:50:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 7FD0CB233D9
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 14:56:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FCDE1C6F73;
-	Tue,  1 Oct 2024 14:50:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB0C2199381;
+	Tue,  1 Oct 2024 14:56:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="FPfqZogS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LkD8XUAv"
 X-Original-To: stable@vger.kernel.org
-Received: from out-188.mta0.migadu.com (out-188.mta0.migadu.com [91.218.175.188])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f176.google.com (mail-il1-f176.google.com [209.85.166.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9974519C54A
-	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 14:50:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C1541C1AD9
+	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 14:56:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727794203; cv=none; b=HYcI1hL9af8t+jldqR5HUho9fAHBlAJTGFLBZNlbstaheOIdQXSIj5DlILIOSwhw1gHHjJEGj9bAdMPWL4cneg4Dwel5LmHHkuJygIAplixS8D+tP6emankNNDdcgf5UQ7up1Gzk2dqiZBmQO5ojvlc8KV1m4xnBkrsanEZI+Fs=
+	t=1727794606; cv=none; b=Jn64UR0gNzHvhpPr658yFxWfyqv37Aiz+7sz+3R3ntMnB8lXc2R/VlcEK0LzBnZsjiKAwh7nv+3428SjRg+aJtl1KuCi3al8O4js5QGWfSEsud/zKUcwwEdEWEE7aJ1UvdKYPAwyNbCx5an9MB9YtoTmZRY+Cr1ZJXLiWmIHYOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727794203; c=relaxed/simple;
-	bh=OkoWoXr9GihVOSM9RyliUrxqUfrBVQJ/Y9UwEmJggr4=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Atcv7udCFYKg97QbBfDVjQoofEeWgOX1hq9TKqXxqXcHsadDRVQbfWOu9/8RSr56OYnx8Hf/jrAtvGs8zEQHibzRQVWvIM7znB1cavoVz7mVhVc4qU8DDtxeRHaeVWgt7MbOXf2BMOLLueEkFgXZo/m38LFAB5kEiUGQbKW3fLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=FPfqZogS; arc=none smtp.client-ip=91.218.175.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1727794199;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZHXCPtY/j/HUn+MGyzq96HZ8OKvdaBJBou0BuHk2log=;
-	b=FPfqZogSyZZj6I/8uEpCAEZ71z9mmPRv/RUoCsBDlZb5xF6TmcdwmMS4qODxiSpLj1NJ6w
-	M3GvONbAjOymbRbMbNLlxnICVGDnMT4B/x3rNEo6uTcm96YlsVIXw+dLb+hSHXD9ZW+hcV
-	eZG0OyD+GWcsuK9lKJxPCxMUFCsOiDs=
-From: Sean Anderson <sean.anderson@linux.dev>
-To: stable@vger.kernel.org
-Cc: Sean Anderson <sean.anderson@linux.dev>,
-	Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 5.10.y] PCI: xilinx-nwl: Fix off-by-one in INTx IRQ handler
-Date: Tue,  1 Oct 2024 10:49:28 -0400
-Message-Id: <20241001144929.1098696-1-sean.anderson@linux.dev>
-In-Reply-To: <2024100153-unpaired-charity-9b6f@gregkh>
-References: <2024100153-unpaired-charity-9b6f@gregkh>
+	s=arc-20240116; t=1727794606; c=relaxed/simple;
+	bh=Bi2bgraB+xyUTSQjk7loVE+U53I6BkbjJ1TbVaYAatc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=elFnnbCj0DG7UMOXwEeAfg1QaXZzYetPwv+PK0RJAnwzx5poEcnDSDG3lAwKmaFZeIjOiz7X9fKIRCDZNqMXVYqZJvZVTVQJWoPqNFYoK+vqUzhd04eVXUkciG8+unz5n1vvK9lBweNTvNn8rK276Q4BABLTl1u4JKCsaEZpvCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LkD8XUAv; arc=none smtp.client-ip=209.85.166.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+Received: by mail-il1-f176.google.com with SMTP id e9e14a558f8ab-3a0c9ff90b1so19068085ab.0
+        for <stable@vger.kernel.org>; Tue, 01 Oct 2024 07:56:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1727794604; x=1728399404; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6wpF1duCXeA6WFvNHcb/twA7nXT6yVsEV7PlRWb2HaA=;
+        b=LkD8XUAv5NymYpCF08NW/2Cc0/ghVvHS3BJAVcAadySzfoHPKffjcdT6ooSNq/8Uro
+         EMP1ujwGGy/ZHRuAdo2IN9v4EBN5hy/dBNvrE83FxLCgbk20e1WefXXRfROzGE4m8b/N
+         vrEYZqykslBMuPdFxmyRdR1cNa6c58g7ueYkM=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727794604; x=1728399404;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6wpF1duCXeA6WFvNHcb/twA7nXT6yVsEV7PlRWb2HaA=;
+        b=uipl0Q9rM3DvV9/bwSmjyi0yZmTsD6ImQQCWSuqQV0ba+HKtwovNkP+31ZAU9ZfFhB
+         rs5/oOy96s6H5Z27HbcpBQsCtNPJq5EmwYPhp0mAknpl1PVlkn5KJa4aovRQ8jFTO55J
+         rd3goRUA44NSXYldCx18RzqPoFR7TFAm1LuXFO2lg8yq7hyz3z9tpnD5527RhUte+E9y
+         5c7XkcxGQLe+rfrJK5a185A69d8gtAcAxqI1h94giXEZrVD7y9huK4QCGGMSRmQUqlAN
+         ABwgRBelPksaowTaTyUnvp8uGj70nIyVIXKeGxLbK0G8MsQ8C8kFbtTgrB/Hyeyid4vV
+         +Bew==
+X-Gm-Message-State: AOJu0YwYtRvWjZBM9NJh6pb4Qn8s0hl5JF4Tdsuoun4xLYUnOPD1xIg6
+	jyZ9ULxqVeQtxpCHrd63bZzjdsU208/HW0GwVo0ip0U5WuOTMAoxhO7vmHURoOH/3ZZ+l8TkCnF
+	2
+X-Google-Smtp-Source: AGHT+IFuAuicC+fFc7eWa+mRODktuB+48U8+cjFLakEP3UaxLXMB6jKEHEyLbj1e80jvv95NJtFwZA==
+X-Received: by 2002:a05:6e02:1c24:b0:3a0:8eb3:5160 with SMTP id e9e14a558f8ab-3a34516a29fmr144456705ab.11.1727794604220;
+        Tue, 01 Oct 2024 07:56:44 -0700 (PDT)
+Received: from [192.168.1.128] ([38.175.170.29])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4d888835412sm2653792173.31.2024.10.01.07.56.43
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 01 Oct 2024 07:56:43 -0700 (PDT)
+Message-ID: <279d123d-9a8d-446f-ac72-524979db6f7d@linuxfoundation.org>
+Date: Tue, 1 Oct 2024 08:56:43 -0600
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
+User-Agent: Mozilla Thunderbird
+Subject: Re: Patch "selftests: vDSO: skip getrandom test if architecture is
+ unsupported" has been added to the 6.11-stable tree
+To: "Jason A. Donenfeld" <Jason@zx2c4.com>
+Cc: stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
+ stable-commits@vger.kernel.org, Shuah Khan <shuah@kernel.org>,
+ Shuah Khan <skhan@linuxfoundation.org>
+References: <20240930231443.2560728-1-sashal@kernel.org>
+ <CAHmME9rFjE7nt4j5ZWwh=CrpPmtuZ_UdS5O4bQOgH8cVwEjr0Q@mail.gmail.com>
+ <433ff0ca-92d1-475e-ad8b-d4416601d4ba@linuxfoundation.org>
+ <ZvwLAib3296hIwI_@zx2c4.com>
+Content-Language: en-US
+From: Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <ZvwLAib3296hIwI_@zx2c4.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-commit 0199d2f2bd8cd97b310f7ed82a067247d7456029 upstream.
+On 10/1/24 08:45, Jason A. Donenfeld wrote:
+> On Tue, Oct 01, 2024 at 08:43:05AM -0600, Shuah Khan wrote:
+>> On 9/30/24 21:56, Jason A. Donenfeld wrote:
+>>> This is not stable material and I didn't mark it as such. Do not backport.
+>>
+>> The way selftest work is they just skip if a feature isn't supported.
+>> As such this test should run gracefully on stable releases.
+>>
+>> I would say backport unless and skip if the feature isn't supported.
+> 
+> Nonsense. 6.11 never returns ENOSYS from vDSO. This doesn't make sense.
 
-MSGF_LEG_MASK is laid out with INTA in bit 0, INTB in bit 1, INTC in bit 2,
-and INTD in bit 3. Hardware IRQ numbers start at 0, and we register
-PCI_NUM_INTX IRQs. So to enable INTA (aka hwirq 0) we should set bit 0.
-Remove the subtraction of one.
+Not sure what you mean by Nonsense. ENOSYS can be used to skip??
 
-This bug would cause INTx interrupts not to be delivered, as enabling INTB
-would actually enable INTA, and enabling INTA wouldn't enable anything at
-all. It is likely that this got overlooked for so long since most PCIe
-hardware uses MSIs. This fixes the following UBSAN error:
-
-  UBSAN: shift-out-of-bounds in ../drivers/pci/controller/pcie-xilinx-nwl.c:389:11
-  shift exponent 18446744073709551615 is too large for 32-bit type 'int'
-  CPU: 1 PID: 61 Comm: kworker/u10:1 Not tainted 6.6.20+ #268
-  Hardware name: xlnx,zynqmp (DT)
-  Workqueue: events_unbound deferred_probe_work_func
-  Call trace:
-  dump_backtrace (arch/arm64/kernel/stacktrace.c:235)
-  show_stack (arch/arm64/kernel/stacktrace.c:242)
-  dump_stack_lvl (lib/dump_stack.c:107)
-  dump_stack (lib/dump_stack.c:114)
-  __ubsan_handle_shift_out_of_bounds (lib/ubsan.c:218 lib/ubsan.c:387)
-  nwl_unmask_leg_irq (drivers/pci/controller/pcie-xilinx-nwl.c:389 (discriminator 1))
-  irq_enable (kernel/irq/internals.h:234 kernel/irq/chip.c:170 kernel/irq/chip.c:439 kernel/irq/chip.c:432 kernel/irq/chip.c:345)
-  __irq_startup (kernel/irq/internals.h:239 kernel/irq/chip.c:180 kernel/irq/chip.c:250)
-  irq_startup (kernel/irq/chip.c:270)
-  __setup_irq (kernel/irq/manage.c:1800)
-  request_threaded_irq (kernel/irq/manage.c:2206)
-  pcie_pme_probe (include/linux/interrupt.h:168 drivers/pci/pcie/pme.c:348)
-
-Fixes: 9a181e1093af ("PCI: xilinx-nwl: Modify IRQ chip for legacy interrupts")
-Link: https://lore.kernel.org/r/20240531161337.864994-3-sean.anderson@linux.dev
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Cc: stable@vger.kernel.org
-[ adjusted to apply to v5.10 ]
-Signed-off-by: Sean Anderson <sean.anderson@linux.dev>
----
-
- drivers/pci/controller/pcie-xilinx-nwl.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/pci/controller/pcie-xilinx-nwl.c b/drivers/pci/controller/pcie-xilinx-nwl.c
-index 2a9fe7c3aef9..72ecbc1ea4fe 100644
---- a/drivers/pci/controller/pcie-xilinx-nwl.c
-+++ b/drivers/pci/controller/pcie-xilinx-nwl.c
-@@ -388,7 +388,7 @@ static void nwl_mask_leg_irq(struct irq_data *data)
- 	u32 val;
- 
- 	pcie = irq_desc_get_chip_data(desc);
--	mask = 1 << (data->hwirq - 1);
-+	mask = 1 << data->hwirq;
- 	raw_spin_lock_irqsave(&pcie->leg_mask_lock, flags);
- 	val = nwl_bridge_readl(pcie, MSGF_LEG_MASK);
- 	nwl_bridge_writel(pcie, (val & (~mask)), MSGF_LEG_MASK);
-@@ -404,7 +404,7 @@ static void nwl_unmask_leg_irq(struct irq_data *data)
- 	u32 val;
- 
- 	pcie = irq_desc_get_chip_data(desc);
--	mask = 1 << (data->hwirq - 1);
-+	mask = 1 << data->hwirq;
- 	raw_spin_lock_irqsave(&pcie->leg_mask_lock, flags);
- 	val = nwl_bridge_readl(pcie, MSGF_LEG_MASK);
- 	nwl_bridge_writel(pcie, (val | mask), MSGF_LEG_MASK);
--- 
-2.35.1.1320.gc452695387.dirty
-
+thanks,
+-- Shuah
 
