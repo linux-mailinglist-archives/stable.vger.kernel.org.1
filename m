@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-78334-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78335-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43DD898B63B
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 09:56:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E56298B684
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 10:06:37 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 761FF1C21E76
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 07:56:09 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 083CA1F250DA
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 08:06:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A48B1BDA99;
-	Tue,  1 Oct 2024 07:56:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F2211BD005;
+	Tue,  1 Oct 2024 08:06:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qog9oh6p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vcgkJZBL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6D8D1E4AF;
-	Tue,  1 Oct 2024 07:56:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B5529A1
+	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 08:06:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727769364; cv=none; b=HmHc0XBNelNpA56bcIGIEi2SvLQHmQA4q8ZK4205Els6x3xabrIDReQXU6Bux5Pjsi7kqHWBSESUT7RNktL1+9rbW7PIrrTuijN4CbTFRh5HgG05QdZq34Uf7AQi8dQzccAUuoUowRxawWt1RM2BpMyPTCq00TbB8OrSYOpEiew=
+	t=1727769992; cv=none; b=AqIisu4Ko9s60sJneBenpOFWRLmeVXj157mRyYXsNugwShEBw74Riv/j+gVh8WedLlw3hvAht8xEPxzpba5zP4BehlZrHKA2W1qN5ab4FCmiawn883jnhjQ5JX/nrcQa7CQJ2LmUMTZCnjGSqRI5XCATpnUgVSLjW0utECVwpjI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727769364; c=relaxed/simple;
-	bh=DUSla1FAPzb+LNDyXiPJO2AqdEAllX4YCcHfZCCWlRg=;
+	s=arc-20240116; t=1727769992; c=relaxed/simple;
+	bh=QA4X3VFLvAi3+SvsieLATQWEJOCWS4gatE4bPKf4oUU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XIs+IOx8mH1LJWRaEH1bFwGsHhd6CkRYVcQZlaVpHnkjRzXAa5vBnboFlEFpRzYFTGQRKi7w5u+crSk4ga5BbnKuko8oVPsKFEtDC91/V9mN5l1rbELzsbA8kf5/dItRMCg86fuFRljavAxoYgqEiVg5zcHgJjJGqZHXLXn9o00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qog9oh6p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E604CC4CEC6;
-	Tue,  1 Oct 2024 07:56:03 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=mWbH6Bf7fOJeBVbSNUpO8gkr1uMP7vw8DeOSSJVgJht3gIYjEA/hToTMDSmwB0/D4mIXU7AgWDVjuOHkRYPjjzZo0AA6V1vLSiWghLXGH0c6CrEAYYShazUc2ocg2yAV/+PcOtIfps6HSHR0OGSnPheixtSHMNBRgRa7Lvf9XaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vcgkJZBL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2887C4CEC6;
+	Tue,  1 Oct 2024 08:06:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727769364;
-	bh=DUSla1FAPzb+LNDyXiPJO2AqdEAllX4YCcHfZCCWlRg=;
+	s=korg; t=1727769991;
+	bh=QA4X3VFLvAi3+SvsieLATQWEJOCWS4gatE4bPKf4oUU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Qog9oh6pMmi/iiUp/eg9Hl5FLD8BkWdz7FS4DfcEFy6oLaV6FBPBTYFjW9hP4G/93
-	 c8tM1DpRFoRdYj678AP9PsmMoupzFgIkn3AtG52xqjFquZUni1ulEsqcU3Z09c/cbx
-	 6DxW3R4detlf5A3PsrZmRK+bCFmqNUuZFprCyP64=
-Date: Tue, 1 Oct 2024 09:56:01 +0200
+	b=vcgkJZBLGjfIyekX/h3lH2Zd6Sj/L/cmC+2cQIQ/BBUBk+ZF0MvKlWHhb7HocyP2k
+	 JA3rn2dWdG9bvI01ADxHcbz5w+QJexWT8S0MR51FWQmWt9MWoTa5qqC1+zSMg93lp2
+	 5iGaxA3lqVKR35iSqqCX3do/XWJBFIksmWTrHZNw=
+Date: Tue, 1 Oct 2024 10:06:28 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Huacai Chen <chenhuacai@loongson.cn>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	Sasha Levin <sashal@kernel.org>, Bibo Mao <maobibo@loongson.cn>,
-	loongarch@lists.linux.dev, linux-kernel@vger.kernel.org,
-	Xuerui Wang <kernel@xen0n.name>, stable@vger.kernel.org
-Subject: Re: [PATCH 6.10.y] Revert "LoongArch: KVM: Invalidate guest steal
- time address on vCPU reset"
-Message-ID: <2024100152-ruse-congested-d132@gregkh>
-References: <CAAhV-H4WLByJ53oqQgEnVjy4bT0pS77fT5BA4NaCp8AOn+cyJw@mail.gmail.com>
- <20241001072511.17953-1-chenhuacai@loongson.cn>
+To: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+Cc: stable@vger.kernel.org, x86@kernel.org, Tony Luck <tony.luck@intel.com>,
+	Pawan Kumar Gupta <pawan.kumar.gupta@intel.com>,
+	Zhang Rui <rui.zhang@intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>,
+	Thomas Lindroth <thomas.lindroth@gmail.com>,
+	Hans de Goede <hdegoede@redhat.com>,
+	Bastien Nocera <hadess@hadess.net>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Ricardo Neri <ricardo.neri@intel.com>
+Subject: Re: [PATCH 5.10.y 0/3] x86: Complete backports for x86_match_cpu()
+Message-ID: <2024100115-pessimism-mayday-cbd9@gregkh>
+References: <20240928162431.22129-1-ricardo.neri-calderon@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,15 +62,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20241001072511.17953-1-chenhuacai@loongson.cn>
+In-Reply-To: <20240928162431.22129-1-ricardo.neri-calderon@linux.intel.com>
 
-On Tue, Oct 01, 2024 at 03:25:11PM +0800, Huacai Chen wrote:
-> This reverts commit 05969a6944713f159e8f28be2388500174521818.
+On Sat, Sep 28, 2024 at 09:24:28AM -0700, Ricardo Neri wrote:
+> Hi,
 > 
-> LoongArch's PV steal time support is add after 6.10, so 6.10.y doesn't
-> need this fix.
-> ---
+> Upstream commit 93022482b294 ("x86/cpu: Fix x86_match_cpu() to match just
+> X86_VENDOR_INTEL") introduced a flags member to struct x86_cpu_id. Bit 0
+> of x86_cpu.id.flags must be set to 1 for x86_match_cpu() to work correctly.
+> This upstream commit has been backported to 5.10.y.
+> 
+> Callers that use the X86_MATCH_*() family of macros to compose the argument
+> of x86_match_cpu() function correctly. Callers that use their own custom
+> mechanisms may not work if they fail to set x86_cpu_id.flags correctly.
+> 
+> There are three remaining callers in 5.10.y that use their own mechanisms:
+> a) setup_pcid(), b) rapl_msr_probe(), and c) goodix_add_acpi_gpio_
+> mappings(). a) caused a regression that Thomas Lindroth reported in [1]. b)
+> works by luck but it still populates its x86_cpu_id[] array incorrectly. I
+> am not aware of any reports on c), but inspecting the code reveals that it
+> will fail to identify INTEL_FAM6_ATOM_SILVERMONT for the reason described
+> above.
+> 
+> I backported three patches that fix these bugs in mainline. Hopefully the
+> authors and/or maintainers can ack the backports?
+> 
+> I tested patches 2/3 and 3/3 on Tiger Lake, Alder Lake, and Meteor Lake
+> systems as the two involved callers behave differently on these systems.
+> I wrote the testing details in each patch separately. I could not test
+> patch 1/3 because I do not have access to Bay Trail hardware.
 
-No signed-off-by line :(
+This and the 5.15 series now queued up, thanks.
 
+greg k-h
 
