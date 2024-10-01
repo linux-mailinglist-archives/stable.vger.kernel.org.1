@@ -1,123 +1,190 @@
-Return-Path: <stable+bounces-78332-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 937CE98B61A
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 09:50:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DDD798B62F
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 09:53:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EFC1B2810EB
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 07:50:17 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6254B1C21DB5
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 07:53:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B9611BDA88;
-	Tue,  1 Oct 2024 07:50:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E63B1BDAAD;
+	Tue,  1 Oct 2024 07:53:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DLb2gS3l"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RFEtljCD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43E7063D;
-	Tue,  1 Oct 2024 07:50:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE2891BDA8F;
+	Tue,  1 Oct 2024 07:53:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727769012; cv=none; b=XSx/eiKnhkNJ/XiV4wA0WjHTaUih6YlpbY4lsh3BVUX2fHrEn/ik3SDNeLnEGaK0mDb6YSGROIFRj976dtSbFsS6QgJ/h2aAd01LT7ap6gCY1ZmKLMvIK+uBioDjbIQAFmt/+TzNQEglVoVpXMulmOPaC/KhVP75OB3LuBqdTWE=
+	t=1727769182; cv=none; b=inlGo4ha/Ie15NG8vJf+V2hU2VMWlRPeHc+JnGM5/h5uWRWBXi787LrVmCIVwjmC157u98ts116nnI2+QjfZ87b0GKeRzyI9CMK9giW+C/bAvP4NJRnmfFA+YJ86d9rKSp1T+QZBdC8i0V7Tjm8qsrNDQ6gm69BAptpdizWyedw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727769012; c=relaxed/simple;
-	bh=b45yf7L4WkxZYJGLw7J41JUR3kvqxzDmEvQaBCcHb6o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EAua2HvwAZnc9DcG7PbOX6lELgVS2l1b1aASCwtPJHncdjit79ba8KEFK8i65KOLhRvESf2SIwFzRVwvj6Hd3CFPr3/jAaa8g4BVQCVihPEa7po3ZcRPa/qSpCnC3vgVoljkn1L5InEQnTTs5dyagMh3VyMit0c8wXY7hFheLMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DLb2gS3l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61480C4CECE;
-	Tue,  1 Oct 2024 07:50:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727769011;
-	bh=b45yf7L4WkxZYJGLw7J41JUR3kvqxzDmEvQaBCcHb6o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DLb2gS3l3OOZtE4xKvml4BpO6YzOqYyIyno6XXd9hUC9qgHuLFp8tzEoFAk/wucSx
-	 nFZoSLFigCo1f/ZV7iOV+3Gx5Pmo0mw59gWFFbS2sNG4izwR4qK1PmrFeffwkqlM2w
-	 mW3xkPmKteT4iz26NgbzbJoosDnrYwkzEhWDgXZE=
-Date: Tue, 1 Oct 2024 09:50:09 +0200
-From: "gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>
-To: "MOESSBAUER, Felix" <felix.moessbauer@siemens.com>
-Cc: "Schmidt, Adriaan" <adriaan.schmidt@siemens.com>,
-	"io-uring@vger.kernel.org" <io-uring@vger.kernel.org>,
-	"cgroups@vger.kernel.org" <cgroups@vger.kernel.org>,
-	"Bezdeka, Florian" <florian.bezdeka@siemens.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"axboe@kernel.dk" <axboe@kernel.dk>,
-	"longman@redhat.com" <longman@redhat.com>,
-	"asml.silence@gmail.com" <asml.silence@gmail.com>,
-	"stable@vger.kernel.org" <stable@vger.kernel.org>,
-	"dqminh@cloudflare.com" <dqminh@cloudflare.com>
-Subject: Re: [PATCH 6.1 0/2] io_uring/io-wq: respect cgroup cpusets
-Message-ID: <2024100108-facing-mobile-1e4a@gregkh>
-References: <20240911162316.516725-1-felix.moessbauer@siemens.com>
- <2024093053-gradient-errant-4f54@gregkh>
- <db8843979322b9a031b5d9523b6b07dca9c13546.camel@siemens.com>
+	s=arc-20240116; t=1727769182; c=relaxed/simple;
+	bh=QX21DTYmnkZd7LYTUhC/voBhhqHZz5HJOC2n2hd8m+g=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IDFxo3DU/sb68womyc3q5eghL9eVDvMFGNAFiWfk3JD32ashs6CppMefZwqmbUYtrqDQUeApTJA9hiIsb/kuBy0GLl4QygHRGuyma0Jw74ucHBqCTL+Ppp8HMDASsXOm/5pF8EAPmGtO9LohLvpU9Ct4qXkrgBjz2hZsJxlGCsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RFEtljCD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89A7BC4CEC6;
+	Tue,  1 Oct 2024 07:52:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727769181;
+	bh=QX21DTYmnkZd7LYTUhC/voBhhqHZz5HJOC2n2hd8m+g=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=RFEtljCDpwVIUQNxezB92zYK4WB9hSXfimbCBeVubyQYEDC6Gf4qQfuf9ePUvfhed
+	 ud1uMEzyD2HMGTk6zSSF7hJR3N5TiNEfKjvDeXdOYXs95kMuYjdG4QDmBExgxpiEcE
+	 3Hrj50gjkOVJ2WkKppz+a0C1p5/0yuTaoEhuXsLZ5TupMlZRUo6WD5rSXvKz48DetK
+	 HCPB26QnLqxVl8ODwaoVB/HnT4pUsGFRXPCPCeQDbOsOOKuTtEUf1L/f5VC5C8HZKG
+	 49DNZdFMWWkkVsG97BitpbE0En98977+3TbedU3cKBA0mdpi+vMHmLayGEOoMahAaE
+	 DmcGAQCUIZVRA==
+Message-ID: <2008c020-d011-4999-96f2-5262a3a11da3@kernel.org>
+Date: Tue, 1 Oct 2024 10:52:57 +0300
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <db8843979322b9a031b5d9523b6b07dca9c13546.camel@siemens.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/2] usb: dwc3: core: Prevent phy suspend during init
+To: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ John Youn <John.Youn@synopsys.com>,
+ "linux-usb@vger.kernel.org" <linux-usb@vger.kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ "msp@baylibre.com" <msp@baylibre.com>, "Vardhan, Vibhore" <vibhore@ti.com>,
+ "Govindarajan, Sriramakrishnan" <srk@ti.com>, Dhruva Gole <d-gole@ti.com>,
+ Vishal Mahaveer <vishalm@ti.com>
+References: <cover.1713310411.git.Thinh.Nguyen@synopsys.com>
+ <e8f04e642889b4c865aaf06762cde9386e0ff830.1713310411.git.Thinh.Nguyen@synopsys.com>
+ <1519dbe7-73b6-4afc-bfe3-23f4f75d772f@kernel.org>
+ <20240926215141.6xqngt7my6ffp753@synopsys.com>
+ <8e3e34d3-9034-4701-9fe9-baa43daf23b5@kernel.org>
+ <20241001010029.pr6dqais2qpql7rl@synopsys.com>
+Content-Language: en-US
+From: Roger Quadros <rogerq@kernel.org>
+In-Reply-To: <20241001010029.pr6dqais2qpql7rl@synopsys.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Oct 01, 2024 at 07:32:42AM +0000, MOESSBAUER, Felix wrote:
-> On Mon, 2024-09-30 at 21:15 +0200, Greg KH wrote:
-> > On Wed, Sep 11, 2024 at 06:23:14PM +0200, Felix Moessbauer wrote:
-> > > Hi,
-> > > 
-> > > as discussed in [1], this is a manual backport of the remaining two
-> > > patches to let the io worker threads respect the affinites defined
-> > > by
-> > > the cgroup of the process.
-> > > 
-> > > In 6.1 one worker is created per NUMA node, while in da64d6db3bd3
-> > > ("io_uring: One wqe per wq") this is changed to only have a single
-> > > worker.
-> > > As this patch is pretty invasive, Jens and me agreed to not
-> > > backport it.
-> > > 
-> > > Instead we now limit the workers cpuset to the cpus that are in the
-> > > intersection between what the cgroup allows and what the NUMA node
-> > > has.
-> > > This leaves the question what to do in case the intersection is
-> > > empty:
-> > > To be backwarts compatible, we allow this case, but restrict the
-> > > cpumask
-> > > of the poller to the cpuset defined by the cgroup. We further
-> > > believe
-> > > this is a reasonable decision, as da64d6db3bd3 drops the NUMA
-> > > awareness
-> > > anyways.
-> > > 
-> > > [1]
-> > > https://lore.kernel.org/lkml/ec01745a-b102-4f6e-abc9-abd636d36319@kernel.dk
-> > 
-> > Why was neither of these actually tagged for inclusion in a stable
-> > tree?
+
+
+On 01/10/2024 04:00, Thinh Nguyen wrote:
+> On Fri, Sep 27, 2024, Roger Quadros wrote:
+>>
+>>
+>> On 27/09/2024 00:51, Thinh Nguyen wrote:
+>>> Hi Roger,
+>>>
+>>> On Wed, Sep 25, 2024, Roger Quadros wrote:
+>>>> Hello Thinh,
+>>>>
+>>>> On 17/04/2024 02:41, Thinh Nguyen wrote:
+>>>>> GUSB3PIPECTL.SUSPENDENABLE and GUSB2PHYCFG.SUSPHY should be cleared
+>>>>> during initialization. Suspend during initialization can result in
+>>>>> undefined behavior due to clock synchronization failure, which often
+>>>>> seen as core soft reset timeout.
+>>>>>
+>>>>> The programming guide recommended these bits to be cleared during
+>>>>> initialization for DWC_usb3.0 version 1.94 and above (along with
+>>>>> DWC_usb31 and DWC_usb32). The current check in the driver does not
+>>>>> account if it's set by default setting from coreConsultant.
+>>>>>
+>>>>> This is especially the case for DRD when switching mode to ensure the
+>>>>> phy clocks are available to change mode. Depending on the
+>>>>> platforms/design, some may be affected more than others. This is noted
+>>>>> in the DWC_usb3x programming guide under the above registers.
+>>>>>
+>>>>> Let's just disable them during driver load and mode switching. Restore
+>>>>> them when the controller initialization completes.
+>>>>>
+>>>>> Note that some platforms workaround this issue by disabling phy suspend
+>>>>> through "snps,dis_u3_susphy_quirk" and "snps,dis_u2_susphy_quirk" when
+>>>>> they should not need to.
+>>>>>
+>>>>> Cc: stable@vger.kernel.org
+>>>>> Fixes: 9ba3aca8fe82 ("usb: dwc3: Disable phy suspend after power-on reset")
+>>>>> Signed-off-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+>>>>
+>>>> This patch is causing system suspend failures on TI AM62 platforms [1]
+>>>>
+>>>> I will try to explain why.
+>>>> Before this patch, both DWC3_GUSB3PIPECTL_SUSPHY and DWC3_GUSB2PHYCFG_SUSPHY
+>>>> bits (hence forth called 2 SUSPHY bits) were being set during initialization
+>>>> and even during re-initialization after a system suspend/resume.
+>>>>
+>>>> These bits are required to be set for system suspend/resume to work correctly
+>>>> on AM62 platforms.
+>>>
+>>> Is it only for suspend or both suspend and resume?
+>>
+>> I'm sure about suspend. It is not possible to toggle those bits while in system
+>> suspend so we can't really say if it is required exclusively for system resume or not.
+>>
+>>>
+>>>>
+>>>> After this patch, the bits are only set when Host controller starts or
+>>>> when Gadget driver starts.
+>>>>
+>>>> On AM62 platform we have 2 USB controllers, one in Host and one in Dual role.
+>>>> Just after boot, for the Host controller we have the 2 SUSPHY bits set but
+>>>> for the Dual-Role controller, as no role has started the 2 SUSPHY bits are
+>>>> not set. Thus system suspend resume will fail.
+>>>>
+>>>> On the other hand, if we load a gadget driver just after boot then both
+>>>> controllers have the 2 SUSPHY bits set and system suspend resume works for
+>>>> the first time.
+>>>> However, after system resume, the core is re-initialized so the 2 SUSPHY bits
+>>>> are cleared for both controllers. For host controller it is never set again.
+>>>> For gadget controller as gadget start is called, the 2 SUSPHY bits are set
+>>>> again. The second system suspend resume will still fail as one controller
+>>>> (Host) doesn't have the 2 SUSPHY bits set.
+>>>>
+>>>> To summarize, the existing solution is not sufficient for us to have a
+>>>> reliable behavior. We need the 2 SUSPHY bits to be set regardless of what
+>>>> role we are in or whether the role has started or not.
+>>>>
+>>>> My suggestion is to move back the SUSPHY enable to end of dwc3_core_init().
+>>>> Then if SUSPHY needs to be disabled for DRD role switching, it should be
+>>>> disabled and enabled exactly there.
+>>>>
+>>>> What do you suggest?
+>>>>
+>>>> [1] - https://urldefense.com/v3/__https://lore.kernel.org/linux-arm-kernel/20240904194229.109886-1-msp@baylibre.com/__;!!A4F2R9G_pg!Y10q3gwCzryOoiXpk6DMGn74iFQIg6GloY10J16kWCbqwgS1Algo5HRg05vm38dMw8n47qmKpqJlyXt9Kqlm$ 
+>>>>
+>>>
+>>> Thanks for reporting the issue.
+>>>
+>>> This is quite an interesting behavior. As you said, we will need to
+>>> isolate this change to only during DRD role switch.
+>>>
+>>> We may not necessarily just enable at the end of dwc3_core_init() since
+>>> that would keep the SUSPHY bits on during the DRD role switch. If this
+>>> issue only occurs before suspend, perhaps we can check and set these
+>>> bits during suspend or dwc3_core_exit() instead?
+>>
+>> dwc3_core_exit() is not always called in the system suspend path so it
+>> may not be sufficient.
+>>
+>> Any issues if we set this these bits at the end of dwc3_suspend_common()
+>> irrespective of runtime suspend or system suspend and operating role?
 > 
-> This is a manual backport of these patches for 6.1, as the subsystem
-> changed significantly between 6.1 and 6.2, making an automated backport
-> impossible. This has been agreed on with Jens in
-> https://lore.kernel.org/lkml/ec01745a-b102-4f6e-abc9-abd636d36319@kernel.dk/
+> There should be no issue at this point. The problem occurs during
+> initialization that involves initializing the usb role.
 > 
-> > Why just 6.1.y?  Please submit them for all relevent kernel versions.
+>> And should we restore these bits in dwc3_resume_common() to the state they
+>> were before dwc3_suspend_common()?
+>>
 > 
-> The original patch was tagged stable and got accepted in 6.6, 6.10 and
-> 6.11.
+> Sounds good to me! Would you mind send a fix patch?
 
-No they were not at all.  Please properly tag them in the future as per
-the documentation if you wish to have things applied to the stable
-trees:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+Thanks for your suggestions. Yes, I will send a fix soon.
 
-thanks,
-
-greg k-h
+-- 
+cheers,
+-roger
 
