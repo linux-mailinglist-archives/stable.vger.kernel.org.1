@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-78462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78463-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E86698BAEC
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 13:22:54 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 946FB98BAEE
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 13:23:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C93EB1F22008
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 11:22:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5258F282AAC
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 11:23:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36CAA1BF7FA;
-	Tue,  1 Oct 2024 11:22:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3F561BF814;
+	Tue,  1 Oct 2024 11:22:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TlNyhQoS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AgubRtdF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA7F41BF7EE
-	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 11:22:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A45381BF7FF
+	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 11:22:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727781772; cv=none; b=JSC00DAvqCNNUx8BHrlR7Q6NToSa223eqghdxCSkJek1v5D00TTNaUmSP5K9qDFwrx10M50zYVl2VlgwC+vBDKhoMmhEua4BUc75GAMAH4GoJoG8t/Jgu19nAAZJ7KtCOP7BdSxURAkbO7+XU0wZY328/sTlan1NdzvF8ixr+Fo=
+	t=1727781774; cv=none; b=cyBj4vuYEEiGB5cQ2surZQtFs1Jkez1lznhUS1AxSgt1tdy814TJWMWtWk0ZqQ5h8RL/bEdn6uGGvXqHLw68ZP+gZc/1UrNvtZ54zchPfwDy41Zw26hrECFZszC6YDbHCIPVCZAzp7PFIYBkcARuAJeUcrWJL6JpZqKMEbALdQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727781772; c=relaxed/simple;
-	bh=XtlvONVjxL3DMtmEfEs/bjira7aH6LkqVhh2yluw6Fk=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=mvnZwz10L4J5vfRT4+I37HYhOgYm5kg7uA+x3eOayybbHCMTzno1FCUP6cMbUE+YOAkVY943mAh3g2rPVw3knbKTPyUZJGq4vnxbh/hjeLQY47NfzQ7v0kOpxYC0jBV3uOmEp5WF3YOyin9lFAgbzAZMQp5mpJbDXCSMp6LQVKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TlNyhQoS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1ECFEC4CEC6;
-	Tue,  1 Oct 2024 11:22:50 +0000 (UTC)
+	s=arc-20240116; t=1727781774; c=relaxed/simple;
+	bh=zlGqkRsRwjgQrj5N0FZCSg1bPFK3oAB3I4StHaprYcU=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=kYwmnrhYPsqy4/IzVkNxtBZa+Hj9ten9AApgIeeYyLMBqZ8760xZ4SrbCLp4o3GDb4kKajlqLHo+xJuGMp7hDOTHcfKqHSchqJwlzVtaJ0+V4PdRZv9oEHOZv5nseFW9mYhSz4/U/gpcy4wT/i8LbrIXkuHMVz+dlE4wqVofzhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AgubRtdF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED0C4C4CECE;
+	Tue,  1 Oct 2024 11:22:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727781771;
-	bh=XtlvONVjxL3DMtmEfEs/bjira7aH6LkqVhh2yluw6Fk=;
+	s=korg; t=1727781774;
+	bh=zlGqkRsRwjgQrj5N0FZCSg1bPFK3oAB3I4StHaprYcU=;
 	h=Subject:To:Cc:From:Date:From;
-	b=TlNyhQoSkVOEm/sGm/YW6TwNKSv++uM3iKq9A3VeoOcAKTlzln+6RFNv5SLJSnhas
-	 rkwA2o+djiiYuyQzOdse7l4bdKZfo93Fz52Hy50dXzp0iule6mnhvAGEotAep38Plj
-	 o20vbQ8pZNKeK5E3pPeDQoVWfEVV58EzTUAhBuK8=
-Subject: FAILED: patch "[PATCH] x86/entry: Remove unwanted instrumentation in" failed to apply to 5.15-stable tree
+	b=AgubRtdFlNWqiE5P8fvEiAYFIxIL+arRdkgt23OumHkcFqPFf9gKuX5MZWVvcQr6v
+	 zE2vf2z+IaLxBt331YmLQICSY/LIMTruhGRyn4JTp8SCzgl0jXPDKT4MXm5nRmXrTa
+	 mfMPVYP0H5u7hqWfBDv2N5w1RD1HGPpAtwDoRj7w=
+Subject: FAILED: patch "[PATCH] x86/entry: Remove unwanted instrumentation in" failed to apply to 5.10-stable tree
 To: dvyukov@google.com,glider@google.com,peterz@infradead.org,tglx@linutronix.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 01 Oct 2024 13:22:38 +0200
-Message-ID: <2024100138-marital-stumbling-53bc@gregkh>
+Date: Tue, 01 Oct 2024 13:22:39 +0200
+Message-ID: <2024100139-outfit-agenda-4b7e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,24 +53,30 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 477d81a1c47a1b79b9c08fc92b5dea3c5143800b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100138-marital-stumbling-53bc@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100139-outfit-agenda-4b7e@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
 477d81a1c47a ("x86/entry: Remove unwanted instrumentation in common_interrupt()")
 90f357208200 ("x86/idtentry: Incorporate definitions/declarations of the FRED entries")
+5b51e1db9bdc ("x86/entry: Convert device interrupts to inline stack switching")
+569dd8b4eb7e ("x86/entry: Convert system vectors to irq stack macro")
+a0cfc74d0b00 ("x86/irq: Provide macro for inlining irq stack switching")
+951c2a51ae75 ("x86/irq/64: Adjust the per CPU irq stack pointer by 8")
+e7f890017971 ("x86/irq: Sanitize irq stack tracking")
+b6be002bcd1d ("x86/entry: Move nmi entry/exit into common code")
 
 thanks,
 
