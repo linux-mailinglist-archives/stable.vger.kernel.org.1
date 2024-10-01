@@ -1,279 +1,194 @@
-Return-Path: <stable+bounces-78315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78316-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45D2698B38F
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 07:22:39 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E7BC98B392
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 07:23:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EBF91281190
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 05:22:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1409C1F25A9C
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 05:23:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79E9382498;
-	Tue,  1 Oct 2024 05:22:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8EC74194A43;
+	Tue,  1 Oct 2024 05:23:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kzGSlq1d"
+	dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b="Uj5TGdf2"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BA66653
-	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 05:22:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.11
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727760154; cv=fail; b=XKerCvOFARU1JOhLmNLOm1ABJgXH5Cs9SQ9mRuKt8YJWentvyjfIQCfwlrY2i5Tqkw6CZ5HRbCKyr7nKMTds1oV8VRePA4G0skDOtC+8vLk1a2/x9pPJzXjSeov/hu2EfI2sNI0rKkyPB+UZjZll7rhbjRTY5G77SO6BQRVc0vE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727760154; c=relaxed/simple;
-	bh=ij0OLaCQKE619bcDTfkBRg2dlRgdukzs9O7e5l/62RI=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=oupl6lwimoxQTrm8rP2j+aMUOUvYMW8HNmb9ppKSbED++gITllpBvkTvNqiy4L/LSxaF/FmY+f4Sdlq6LubhjZF6HARvPlZTIp3YrsrOxozdVoBTICQZGnFTnqPgm52skngeTEV9vRP8QMsVWFR8K+rdlcVnvHGIasCRxXaHMVo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kzGSlq1d; arc=fail smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1727760152; x=1759296152;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=ij0OLaCQKE619bcDTfkBRg2dlRgdukzs9O7e5l/62RI=;
-  b=kzGSlq1deDSn7J+Xnrb/JOYghUXJfi68rm9fAnF6qH+bAy2JGy8Miq26
-   UxY21td7T11GQ5KbpVnUFx49shm4TZdF1cP/9kSALg5Ho7H7PutIucK3S
-   uIO2UGYXFgMO/xaFvEsLy/fkp6EGa7cRIZvxvGDzY9nqCzTJA7N9fxjs7
-   tE/UTcRQQZrAlCdS/yg1fvaWw3Q/qHRAjgeuzW9fRQiRbrpRifwSoFJy2
-   2o5EHydHHIiHUKYxqZEWYmI3Lh/BL7XEfPZTjD7gt2+nd7G6dRPXZFQ6m
-   wQ0uBZdhCOb+J+Xyg8gPUGwe0EqLTSrsdfghCuQhHEdrZR5IE4CgpAlbi
-   g==;
-X-CSE-ConnectionGUID: a9MYFoHcREW6BANE+T3YfQ==
-X-CSE-MsgGUID: GMufCY/eTXq5QWQAgnjKkg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11211"; a="37458896"
-X-IronPort-AV: E=Sophos;i="6.11,167,1725346800"; 
-   d="scan'208";a="37458896"
-Received: from orviesa010.jf.intel.com ([10.64.159.150])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Sep 2024 22:22:31 -0700
-X-CSE-ConnectionGUID: XFR2fJZtTlyWNpNX3gCavg==
-X-CSE-MsgGUID: l7KAM+nlSgytVGV56v/BMw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,167,1725346800"; 
-   d="scan'208";a="73443080"
-Received: from orsmsx601.amr.corp.intel.com ([10.22.229.14])
-  by orviesa010.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 30 Sep 2024 22:22:31 -0700
-Received: from orsmsx612.amr.corp.intel.com (10.22.229.25) by
- ORSMSX601.amr.corp.intel.com (10.22.229.14) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Mon, 30 Sep 2024 22:22:31 -0700
-Received: from orsmsx603.amr.corp.intel.com (10.22.229.16) by
- ORSMSX612.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39; Mon, 30 Sep 2024 22:22:30 -0700
-Received: from ORSEDG601.ED.cps.intel.com (10.7.248.6) by
- orsmsx603.amr.corp.intel.com (10.22.229.16) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.39 via Frontend Transport; Mon, 30 Sep 2024 22:22:30 -0700
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (104.47.73.177)
- by edgegateway.intel.com (134.134.137.102) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Mon, 30 Sep 2024 22:22:30 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=xiDJsOibSaiTABFpdmG5VffW944eknrs80JuCmIgS0u3PBHxYwQ+C2NIt1hH3CqZBrT3CNrmreuzWaJzGW8DlbEgnDif5YB/R7PhIFhYrTGJmQTIBPwX9Qd+OJMmjSnUoxlZXmMPVnqGlRoHEDbUJEdr/FeAX8EvCLz9GOMspMsT9aiUKjYsjx/ZDuVlUgNnNkz2DMjyRUOkdEqveRArSkU74nJgG4u/PPniTCmOmMTW0Ayrdywko14mI/ht73/Okn7hlkA0bPj4t+idNQrlAWgWpunXqHs5ZZo8VHCESptQEQHERJmDLHMwS3KEUS4hk0lguTYX0QZj+MzGWwyD/Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2nQqcrV0paeCNfLDEnxj6tC/CY8D8wXCBFM5oM4WelI=;
- b=JWG0Ez0jhTErICNo6u6Dtnpdf8Wgl7UGp64BvsddCDHhSrny58ufvRaqwraV0tDw2e9dMFqjKl6jOdZlBPDvRVz1rODcbiotG7QVThNgt6oblXxACWYSOVFylGcJoNrEhgxPKFed6H/f4zZZnJb1ITHTDiY8ckoRgaEIdYWeZ3URmeSWCLVFTtGNkxaipCYwbbvqmTtPinewmYLOv4R9WB9u8oFDYeH78unaEScibbcUzSdl9dPlkmDNyftbI2LRIzsGvyj/YRJYfBoXA+9RXhaZqn9Bn6O9Mbi3H9oxdfQIyczC4cNF8wW3eyUBtLLd1xThG2LoX8viVOfTMyrKxg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from BN9PR11MB5530.namprd11.prod.outlook.com (2603:10b6:408:103::8)
- by PH0PR11MB5047.namprd11.prod.outlook.com (2603:10b6:510:3c::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8005.27; Tue, 1 Oct
- 2024 05:22:27 +0000
-Received: from BN9PR11MB5530.namprd11.prod.outlook.com
- ([fe80::13bd:eb49:2046:32a9]) by BN9PR11MB5530.namprd11.prod.outlook.com
- ([fe80::13bd:eb49:2046:32a9%5]) with mapi id 15.20.8005.026; Tue, 1 Oct 2024
- 05:22:26 +0000
-Message-ID: <7759ab78-f9e3-4781-a1e1-adebaad57192@intel.com>
-Date: Tue, 1 Oct 2024 10:52:20 +0530
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] drm/xe/ct: prevent UAF in send_recv()
-To: Matthew Auld <matthew.auld@intel.com>, <intel-xe@lists.freedesktop.org>
-CC: Matthew Brost <matthew.brost@intel.com>, <stable@vger.kernel.org>
-References: <20240930122940.65850-3-matthew.auld@intel.com>
-Content-Language: en-US
-From: "Nilawar, Badal" <badal.nilawar@intel.com>
-In-Reply-To: <20240930122940.65850-3-matthew.auld@intel.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: MA1PR01CA0173.INDPRD01.PROD.OUTLOOK.COM
- (2603:1096:a01:d::14) To BN9PR11MB5530.namprd11.prod.outlook.com
- (2603:10b6:408:103::8)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FACD2D052;
+	Tue,  1 Oct 2024 05:23:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727760212; cv=none; b=DuGawxabJPJnvDVsK/NrZ4PyLaJwatGECjSC486NPOjSE8Fwjg2tKsRT+8qvJkSQeGAONkSRKaG8JqYlI7o4DuEUUUjX7Q1BXrY1hRPShxszw0R7SHk4bRv/CCwLsaqfTy763T8cSCRmT9iD8JjlvuYOZUTdngqhLuer/fTN4uM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727760212; c=relaxed/simple;
+	bh=UbYaK+zX2oMloTrfw8WNFQQFeDo7GrlQlpT377Wy90A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XpHHM1XPp/Pyb6mPLcY8zl15RhdrGW0iD+dtqA/HPfQlW8MjDjlfKRdrV+/W/hP9FzcFL4O/Wh9uXHPCG95Ojt5srmiuVYit4fpVblEhxb5m637IQYrdjb8wZM7qXHT7inVjEIzmPY6nXXoogySm2bGYIAzd0CWTbfLJlonFzd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net; spf=pass smtp.mailfrom=gmx.net; dkim=pass (2048-bit key) header.d=gmx.net header.i=wahrenst@gmx.net header.b=Uj5TGdf2; arc=none smtp.client-ip=212.227.17.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.net
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.net;
+	s=s31663417; t=1727760197; x=1728364997; i=wahrenst@gmx.net;
+	bh=vms/8qCUwPUlLxvUeSN5zZsTHMsX0kIYnvjmfjs1vP8=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=Uj5TGdf23AwZ6KFfeeN09wdALroquk5mUr4zNLHmiJRWTSJfF1i45XpiKx+WDfTU
+	 S6m/RmkUHQWqsZCPX8EyNylm6/mj2XNgH468nGY7dTajvPe5G9kx9GoWi6wdZgvFL
+	 8qb+soM7e0AopU7CdOzUk1ZzSi1yazQpP8SJSSRg6OKBmwEjVxq5RGT75B5FbY6o+
+	 S09tt3AdT/p6vk+o/vaHJfS/Kum19J5so3CriPauY0U9/VymWt5bT+gqllJXLmC85
+	 A9goqx6FKKxyFwItxKPFzL2J+pyZxfwkc5nuKdZGoidVcOJAyVSEC++CJ4KJL5dwX
+	 N15yfhTsazASaN+GNQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.1.104] ([37.4.248.43]) by mail.gmx.net (mrgmx105
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MsYqp-1s1cVy1IR1-00ydNQ; Tue, 01
+ Oct 2024 07:23:17 +0200
+Message-ID: <17c9e4c6-260a-40c9-be1f-4f67ec6d5e3b@gmx.net>
+Date: Tue, 1 Oct 2024 07:23:16 +0200
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN9PR11MB5530:EE_|PH0PR11MB5047:EE_
-X-MS-Office365-Filtering-Correlation-Id: ca97d9b8-ff04-4839-862a-08dce1d9099d
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info: =?utf-8?B?UHBXTnBrbTBUZ2Z6Q0pRMGNwWnhuYS9uTDF6VFBUbVRJQWd5UjlpY3VndWsy?=
- =?utf-8?B?ZSt0clRFVi81TWRCSzFRVlJVWlhOYzd5VndoU2x2ZUc2V1dWRE5pK3dJR3Zh?=
- =?utf-8?B?K0NHYjBjdmUzSkxDUEFmMGM2aGNnV0hzU2xZWWgvNTBFTE5Nc3pMd25ZOVVn?=
- =?utf-8?B?SXU3SW9uNUtmai9iTnFmTVozajF6Z0NLOUVJZ0dheUtzeXB6NGo5dGtoMlhK?=
- =?utf-8?B?NDJkMW5tL0p6V004dUJjSWhJSTlFc3pOcFE1REpYVWY0L0duajI0cEJieGw2?=
- =?utf-8?B?bXBrTkE2QVRjNGk4THFaMENZamNMT2JYWk5GS2ZPU1o5TDhYdlJCaUQ4a2M5?=
- =?utf-8?B?d29CeWJUeGdtcjBwQnBKNi94VHQxVUdOZW9lM1E2dTRqblBsRFhLTzJMemw2?=
- =?utf-8?B?dHkwWkxWNENHVXc5UCtOZWxIY05GY3gzOURzTzJxRzIwWWVTZU83WUxrZTlq?=
- =?utf-8?B?SXNVLy94eUlDMUluRTMyV0hFREk2ZEozaS9KSFVOQmlHYkJ3V1YzaDlHUE9q?=
- =?utf-8?B?QkpRaVRnMmQ4ckRhN3BNM2k0TDN4TnMzN3p5UHliSmdXM2VuY1h0Tm5zakpq?=
- =?utf-8?B?VzZEcTFzY3l3YnBpVno5SHNkaHJGbzlRSTllZkRORWl4dGZZTXprOVBnNGUx?=
- =?utf-8?B?T2RMci9UVXlDeU1PNkFDc2lGU0JSTURBNzBqZmpVb0wvWVdIRythM0xiMXZh?=
- =?utf-8?B?VVdtUnRkdEN4bGFGOWxXek5jdEZIUFp5MUNFK1pvY0pCcXBqUnhzdzk4bXBQ?=
- =?utf-8?B?VHRBaUtnYzlGYndzNVE5UzllSVBTWGlNcG5Kb1JTb3BIVEoxWE1zanZYRVZE?=
- =?utf-8?B?QmdPckpxZ1ZvWWF6WWVYUEFOcmx6OC9pbjdoM3JZaXdGS21meGl4SUZvR0dO?=
- =?utf-8?B?NCtyZlV4UVRISjJvd0JsVm5abkFzbUJPVzA0NlpOTmUxT3VTdGxnL2lOaVBy?=
- =?utf-8?B?TmlZUElSZFZLd2h5dkp0UEVwa3NoUW9hbU9VU2hnWENnbUNTMU9zTVV5RmdU?=
- =?utf-8?B?OTRjQnMySnVTRm5GQ0x1MktiU2FUeE0yNzAvUEpodjJyMnZiU0djWGVRckRs?=
- =?utf-8?B?c3V5SmhZMWNFaVBIWkRBZGRBdnZWNGhkMkJGejQzYlB1dUl5NzFyVnFxZHRL?=
- =?utf-8?B?V2dJVVdGUFJMWlorbmZvRmJaVC8rR0lRWFpyczQxVy96N0tycDRKUU5XS2lQ?=
- =?utf-8?B?ci9tOWJ4TVF3TnU0UEVMVHpEdDZnT0ZCcFJIbzVwdEJEYllDVndiL201amc4?=
- =?utf-8?B?ODhZcU5zSnh6ck9JTDAzbHlpZmN4c2hUaFZzRVk4dG9DZWhsaXkvQW9VY05t?=
- =?utf-8?B?eU5yYmdGcVNMdDRJa2RYZ2NrME1YdUpEbHJnY1lnUWQvTmxpRTlDbmVlNjha?=
- =?utf-8?B?WTFOb2czR0RFUVRkVlQvckMzeFoyRG9oVCtSbjBBY2dYeGpRYkJ1WHBIZm0z?=
- =?utf-8?B?UzVyNnh6ZUNvMVRCV1MzVnUyT3J2WDNERmVWWnNPdXJ4OFlMK3kxZ1ZCRmtD?=
- =?utf-8?B?MWhsTUVWV3ZMRDBBMThzSzRkUHVpbm1SUEVKMzMxZ3cwMTRaa0lKQzdhbmlO?=
- =?utf-8?B?MG9vZ0YzcHoweFlJTVpQbm9IckNvSW9ocEtSYW8yZFFyQitzVk4zdlhVcFA1?=
- =?utf-8?B?ZzJoU1JWUWtIVzNUNUpGNFVtYVBVWXFlY1BRTlFtR1pkZ2ZpWU1aNWpTUTdh?=
- =?utf-8?B?cUpEdVFXMUVTK2E3UnhsekZ3VnVNUk5DQUl0eWxPaWk2VVJ4Q1Y3NGMrRzRr?=
- =?utf-8?B?REN6OEhjNXU1WWZwR2grUGZVWFRBSnFMZ3JGS0RkZnJvbFdkWmljSzZQbm81?=
- =?utf-8?B?YklVS2tSUWFKNUR1Qmg3dz09?=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN9PR11MB5530.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?cCtPeWUxcmxmL0xydEdwVEhsWmUvT2NMTXZFYW9aaHFNNnpHK1NqeVQ2WVpH?=
- =?utf-8?B?UDFoN1AveUhNTm1nYVNUWk1YaVBQTkNDUC9xbVpRTHM5clZJNkpHY1A5Y0Jn?=
- =?utf-8?B?Ungwa1hDd0MrN1UzUW50S1A5S0VCTU44SU5vT1EzakpnU3BCTFlrQndOdzYy?=
- =?utf-8?B?MGpucENSdHdNdzNYZEh5L2tTd2NZbEFDZ21vOWlzblJ0WGMzakdXWEUyaGd0?=
- =?utf-8?B?Ungzb0RXcHZzMlhXZzNRMkpoenBtYkcvS2phR1FuTFpiaDNZWVdicGk3bkhC?=
- =?utf-8?B?eCtSKys0THFEV1VCRUVkbXhab2NoVkozMFpoMkpjTHhSc3g5a2h1WGVrYVVZ?=
- =?utf-8?B?emphZmxMUllUQ0UwOElkUThvRFkxODZKZFBYRU9oczFnbFA5QlhsTEhTYlIv?=
- =?utf-8?B?LzF6TnBzL3F0cUJiUVUrME1YemNiVUdiR01kc1E3RXVzRk1mNzlsUHFTVlBq?=
- =?utf-8?B?MUU3aGMzME40c2tIYTAzUWpTZ2pibFJzMjJkTVVMVWh6MytTMVRqbk56WVp0?=
- =?utf-8?B?ZVJiWkk2aFBTVXhiY2RwSlIxWkQvZ3F2TFMwcW5RUUtINEFOcC9ZM3NVM0Jm?=
- =?utf-8?B?cW1UakwrNUQxYTl6eEc4aGtBRnZ3bHNFU0J6Z1VtMmhyWmxuNThtYmRwR1V2?=
- =?utf-8?B?Mm5ndHlQZVY0RjBuWVNJbnpyWm4yMlphSk1uV3JWbkE0emdnSWRtYkFOUnJE?=
- =?utf-8?B?K1JkNVluMHV6VHhtakdKT2g3czl4T0VjNExUWXA4djZhcEV0dFFDZDZWemhk?=
- =?utf-8?B?TXBwcm9DczRGWFkxYzlpc0daUXQ1WW5QWFZCYWVlbEJWRFhXZDlRWHUrbHJ1?=
- =?utf-8?B?eEJucE5ya1REeUU3NkJzTm9jQTkxKy8yMjUzdDhCZEpPSnBTMHNPRFdpT3lx?=
- =?utf-8?B?MHg1amZTbGR4ci9vbzJiNGxnZ3FmcjRPcThRYWpXYytoZnhoM0lneVVRU3Ix?=
- =?utf-8?B?UWdUSkJCOCtOMU5jbVFwbVBZamhPQlkvcVhhTUMwUXFDKy9lUnlBaHZIOVUx?=
- =?utf-8?B?MGN6QWt2bUt4WUpXVTcvZVNSajhQL1ZHSnlmTjNCKzZWMG1ROUlzcXlseVZk?=
- =?utf-8?B?VjZjaG9xQ0tYMk52SkhLWXF6elpkbjZMdXFTV0tYTDJyMzZuSG0xbVVqckhH?=
- =?utf-8?B?OFFFaXpLK1JWbUU3ZGxkR3lKL3lKTmVMekFPVTlCcWFBWnJNTjJtYkYrd05I?=
- =?utf-8?B?aVorZnc1VTdKOXJza0ttOEVlWFZ2Mzd0MzlCeXZPNURCazRTblQ1S2wzaFdr?=
- =?utf-8?B?ZVVWcis5V0U1ZDFzaW1aVFVLdS84L1kwNlphVnA5SWl2K0h2L05nSWV6VWdN?=
- =?utf-8?B?VTZKMTlrcnZyZ2pWWXFFQWJEaGRhK3VVTlNyNlNtU2pPU29VeFRTaURwZjAz?=
- =?utf-8?B?VlIzQS84Ym5xdEYwcTF0YVJ6N2VndHJEZnRPMGE1V3BCRmN4NUlLSm0yR1Rn?=
- =?utf-8?B?YnZVc1VmL2U1Y1pQVG42L3h0NHlzN3RiVXFuNG4wZ3U2VGFvNXRVRlI3TmJx?=
- =?utf-8?B?ZmtTd2lQc0NTNUlXK0pWcnJGS2Fvb0pFNzAzL25acGljWjJqTUM0TFRna1dD?=
- =?utf-8?B?em1iYlZLV0pZZTk5UEdlam5iL1QvRG5iaTFWREtSTFp4WUY2cm9hajRVYTlD?=
- =?utf-8?B?VFpRc09Ic2pwMG5mbHJ3d2Q5QURvczdQMktzY3hOTXN4bHRrY1pFeFk3TUZy?=
- =?utf-8?B?SENzUEVWdi9EZmE0amxXMHpBSEFJS3VkRzVwRkRZbUdYUGcwK3NQdDB4NmZZ?=
- =?utf-8?B?R2dNYTlNUG5CbHRNTUNoQ1lBNWRhdU81eW1XNjFPZ2hPM0tVdEwyT0VSR2d5?=
- =?utf-8?B?ZmpCZnZEVFJ4RFZBdlEva3pBdWVVQ1J1ZEREbHhXbDU1Um1VV1lSbngyWjFQ?=
- =?utf-8?B?RVA3TkRCS1QwdGxrVGcrRHZpQU5HMmkzREs1bDVZajFlTVRrRFh3UGlTTzMr?=
- =?utf-8?B?em56dVhvYzRlQ3pVSytpeFZCOUhiSTJucURlZGhNdEw5czhDMzdZSTl4b3FJ?=
- =?utf-8?B?b2hIOFd5bno4azI5ZGRTR1ZZZ09ob0laeHN3ais1NkJESTRSMzFjbmMyRWh3?=
- =?utf-8?B?SktQdWtQdDg1Y3Q3bU5VUkhwWWNWV2s5UlFXc284ZVFKOXh4V2k2NklkVEtW?=
- =?utf-8?B?SFJBUkxPZnlHMGZkSUh5NTFVVlN4VkJOUEk1YS9KODVOL1czK25aT1JGSDlw?=
- =?utf-8?B?VFE9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: ca97d9b8-ff04-4839-862a-08dce1d9099d
-X-MS-Exchange-CrossTenant-AuthSource: BN9PR11MB5530.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Oct 2024 05:22:26.8724
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: JybZo6JcVxSIR++f7E+nSRiKHdorP00tVFTpuPw65IsI1NII8bBAnXtXZU8QJl8WtiB/TKKEBfa53e6CJYDodQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB5047
-X-OriginatorOrg: intel.com
+User-Agent: Mozilla Thunderbird
+Subject: Re: Patch "usb: dwc2: Skip clock gating on Broadcom SoCs" has been
+ added to the 6.11-stable tree
+To: stable@vger.kernel.org, stable-commits@vger.kernel.org,
+ Sasha Levin <sashal@kernel.org>
+Cc: Minas Harutyunyan <hminas@synopsys.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+References: <20240930232610.2570738-1-sashal@kernel.org>
+Content-Language: en-US
+From: Stefan Wahren <wahrenst@gmx.net>
+In-Reply-To: <20240930232610.2570738-1-sashal@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: quoted-printable
+X-Provags-ID: V03:K1:5fWxrpOMC2m6X+PwdSs5ePUhHrKG/PCXOt18RTTdBCizfwpYwi+
+ +aEKVEeD5M8AogE3jLMPpga2yTrjpMGwqqVP2yd+SiWCuDj44MDEVdRVGmYPuIC5gHdW5NA
+ YmFeiiD3AP15Jc7QLtUYTP4PemMFBYhT3xeBbkEUrkWr8UmNA1nkfVhXJ51SmmtD5BsK+Rg
+ VditO0spByzGH7fEpSrqg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:aODW5LajeqE=;HYMH1C52+7VGTyzLggxILeM3x+V
+ ErmpVxnC5gShrmmmTX/8MAPfkri26P2+B0wwYpmiKXHc5V99G6kPtXUK2iH9DHnSpS/TFEAOh
+ oVGK9o02s59Q4XAWVTmH5SuvOrMmJXh0R32r+hJ+fJgt6aHjg5ePJJit13t0jzMHD/UaE8LED
+ VUOb3a+3mtZPS5Ggc4V2CX548Uk2/w1ar6+vQquSJrr9oohinU58aZ7zHXv0l7g3QYM/MBTLq
+ M9kPcD9YChx9h4Zr9NNFNAoSsVt+IpDO1frv57hSIZw6md8JGgpYx9ScDkhfnudZLPRB36mNd
+ aW+hRckUB4bL3TrkYijCPcwif1IwGfh913ShXgAOi7K4eIgN9Cml+Fkz5whEIPTGOHRyhtffX
+ Fj1lhAzaBSSJbxMOuxa8LG5Y4CFRfX/DWLTDye4j4hq5nI7LzDr0uxXajVWQU21hNbj3qX1yA
+ 85zGedu8zv2DUP/RZw7D7cRfbwH4bRQkMveMpJpiVcdaG+LO2tZlbmGL4BVv1KClSG+9NUJRV
+ U7mpTsD6wkHszLcel8TpNtWBf81ETZuIzXGVVBzdQlx0wvteMlkqtwLwhUIgC16Gk2ieqDg13
+ 97IvMr3//0OwQXw9zKhX0PCbltJUm4X9gIh+W3hwtANzh8ddrbrtpHYfa2MKub6RqFL7kU8Bp
+ dcNvNNPSKbrbycHxZiAHVzuiYLtcxWpnGiclP3ENHTyJc0NcZP2S9CLyHz58bFKODuLVCmGPm
+ b2O13+ZSfz2iN2KO+zaSrOZAYs+/2YqrGEM4xBL36TyKrIltTAYTZd7BrwCjNJS8Vu3VG2P3d
+ jNrnxOpF1Yinih0q8DmmgA3g==
 
-Hi Matthew,
+Hi Sasha,
 
-On 30-09-2024 17:59, Matthew Auld wrote:
-> Ensure we serialize with completion side to prevent UAF with fence going
-> out of scope on the stack, since we have no clue if it will fire after
-> the timeout before we can erase from the xa. Also we have some dependent
-> loads and stores for which we need the correct ordering, and we lack the
-> needed barriers. Fix this by grabbing the ct->lock after the wait, which
-> is also held by the completion side.
-> 
-> Fixes: dd08ebf6c352 ("drm/xe: Introduce a new DRM driver for Intel GPUs")
-> Signed-off-by: Matthew Auld <matthew.auld@intel.com>
-> Cc: Matthew Brost <matthew.brost@intel.com>
-> Cc: Badal Nilawar <badal.nilawar@intel.com>
-> Cc: <stable@vger.kernel.org> # v6.8+
-> ---
->   drivers/gpu/drm/xe/xe_guc_ct.c | 17 ++++++++++++++++-
->   1 file changed, 16 insertions(+), 1 deletion(-)
-> 
-> diff --git a/drivers/gpu/drm/xe/xe_guc_ct.c b/drivers/gpu/drm/xe/xe_guc_ct.c
-> index 4b95f75b1546..232eb69bd8e4 100644
-> --- a/drivers/gpu/drm/xe/xe_guc_ct.c
-> +++ b/drivers/gpu/drm/xe/xe_guc_ct.c
-> @@ -903,16 +903,26 @@ static int guc_ct_send_recv(struct xe_guc_ct *ct, const u32 *action, u32 len,
->   	}
->   
->   	ret = wait_event_timeout(ct->g2h_fence_wq, g2h_fence.done, HZ);
-> +
-> +	/*
-> +	 * Ensure we serialize with completion side to prevent UAF with fence going out of scope on
-> +	 * the stack, since we have no clue if it will fire after the timeout before we can erase
-> +	 * from the xa. Also we have some dependent loads and stores below for which we need the
-> +	 * correct ordering, and we lack the needed barriers.
-> +	 */
+Am 01.10.24 um 01:26 schrieb Sasha Levin:
+> This is a note to let you know that I've just added the patch titled
+>
+>      usb: dwc2: Skip clock gating on Broadcom SoCs
+>
+> to the 6.11-stable tree which can be found at:
+>      http://www.kernel.org/git/?p=3Dlinux/kernel/git/stable/stable-queue=
+.git;a=3Dsummary
+>
+> The filename of the patch is:
+>       usb-dwc2-skip-clock-gating-on-broadcom-socs.patch
+> and it can be found in the queue-6.11 subdirectory.
+>
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
+please do not apply this patch to any stable branch yet. Recently i
+discovered a critical issue [1] which is revealed by this change. This
+needs to be investigated and fixed before this patch can be applied.
 
-Before acquiring lock it is still possible that fence will be fired. To 
-know it it would be good to print g2h_fence.done in error message below.
+Regards Stefan
 
-Regards,
-Badal
-
-> +	mutex_lock(&ct->lock);
->   	if (!ret) {
->   		xe_gt_err(gt, "Timed out wait for G2H, fence %u, action %04x",
->   			  g2h_fence.seqno, action[0]);
->   		xa_erase_irq(&ct->fence_lookup, g2h_fence.seqno);
-> +		mutex_unlock(&ct->lock);
->   		return -ETIME;
->   	}
->   
->   	if (g2h_fence.retry) {
->   		xe_gt_dbg(gt, "H2G action %#x retrying: reason %#x\n",
->   			  action[0], g2h_fence.reason);
-> +		mutex_unlock(&ct->lock);
->   		goto retry;
->   	}
->   	if (g2h_fence.fail) {
-> @@ -921,7 +931,12 @@ static int guc_ct_send_recv(struct xe_guc_ct *ct, const u32 *action, u32 len,
->   		ret = -EIO;
->   	}
->   
-> -	return ret > 0 ? response_buffer ? g2h_fence.response_len : g2h_fence.response_data : ret;
-> +	if (ret > 0)
-> +		ret = response_buffer ? g2h_fence.response_len : g2h_fence.response_data;
-> +
-> +	mutex_unlock(&ct->lock);
-> +
-> +	return ret;
+[1] -
+https://lore.kernel.org/linux-usb/a4cb3fe4-3d0f-4bf9-a2b1-7f422ba277c8@gmx=
+.net/T/#u
+>
+>
+> commit f2e9c654eb420e15992ef1e6f5e0ceaca92aacbb
+> Author: Stefan Wahren <wahrenst@gmx.net>
+> Date:   Sun Jul 28 15:00:26 2024 +0200
+>
+>      usb: dwc2: Skip clock gating on Broadcom SoCs
+>
+>      [ Upstream commit d483f034f03261c8c8450d106aa243837122b5f0 ]
+>
+>      On resume of the Raspberry Pi the dwc2 driver fails to enable
+>      HCD_FLAG_HW_ACCESSIBLE before re-enabling the interrupts.
+>      This causes a situation where both handler ignore a incoming port
+>      interrupt and force the upper layers to disable the dwc2 interrupt =
+line.
+>      This leaves the USB interface in a unusable state:
+>
+>      irq 66: nobody cared (try booting with the "irqpoll" option)
+>      CPU: 0 PID: 0 Comm: swapper/0 Tainted: G W          6.10.0-rc3
+>      Hardware name: BCM2835
+>      Call trace:
+>      unwind_backtrace from show_stack+0x10/0x14
+>      show_stack from dump_stack_lvl+0x50/0x64
+>      dump_stack_lvl from __report_bad_irq+0x38/0xc0
+>      __report_bad_irq from note_interrupt+0x2ac/0x2f4
+>      note_interrupt from handle_irq_event+0x88/0x8c
+>      handle_irq_event from handle_level_irq+0xb4/0x1ac
+>      handle_level_irq from generic_handle_domain_irq+0x24/0x34
+>      generic_handle_domain_irq from bcm2836_chained_handle_irq+0x24/0x28
+>      bcm2836_chained_handle_irq from generic_handle_domain_irq+0x24/0x34
+>      generic_handle_domain_irq from generic_handle_arch_irq+0x34/0x44
+>      generic_handle_arch_irq from __irq_svc+0x88/0xb0
+>      Exception stack(0xc1b01f20 to 0xc1b01f68)
+>      1f20: 0005c0d4 00000001 00000000 00000000 c1b09780 c1d6b32c c1b04e5=
+4 c1a5eae8
+>      1f40: c1b04e90 00000000 00000000 00000000 c1d6a8a0 c1b01f70 c11d2da=
+8 c11d4160
+>      1f60: 60000013 ffffffff
+>      __irq_svc from default_idle_call+0x1c/0xb0
+>      default_idle_call from do_idle+0x21c/0x284
+>      do_idle from cpu_startup_entry+0x28/0x2c
+>      cpu_startup_entry from kernel_init+0x0/0x12c
+>      handlers:
+>      [<f539e0f4>] dwc2_handle_common_intr
+>      [<75cd278b>] usb_hcd_irq
+>      Disabling IRQ #66
+>
+>      Disabling clock gating workaround this issue.
+>
+>      Fixes: 0112b7ce68ea ("usb: dwc2: Update dwc2_handle_usb_suspend_int=
+r function.")
+>      Link: https://lore.kernel.org/linux-usb/3fd0c2fb-4752-45b3-94eb-423=
+52703e1fd@gmx.net/T/
+>      Link: https://lore.kernel.org/all/5e8cbce0-3260-2971-484f-fc73a3b2b=
+d28@synopsys.com/
+>      Signed-off-by: Stefan Wahren <wahrenst@gmx.net>
+>      Acked-by: Minas Harutyunyan <hminas@synopsys.com>
+>      Link: https://lore.kernel.org/r/20240728130029.78279-5-wahrenst@gmx=
+.net
+>      Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+>      Signed-off-by: Sasha Levin <sashal@kernel.org>
+>
+> diff --git a/drivers/usb/dwc2/params.c b/drivers/usb/dwc2/params.c
+> index a937eadbc9b3e..214dca7044163 100644
+> --- a/drivers/usb/dwc2/params.c
+> +++ b/drivers/usb/dwc2/params.c
+> @@ -23,6 +23,7 @@ static void dwc2_set_bcm_params(struct dwc2_hsotg *hso=
+tg)
+>   	p->max_transfer_size =3D 65535;
+>   	p->max_packet_count =3D 511;
+>   	p->ahbcfg =3D 0x10;
+> +	p->no_clock_gating =3D true;
 >   }
->   
->   /**
+>
+>   static void dwc2_set_his_params(struct dwc2_hsotg *hsotg)
 
 
