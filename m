@@ -1,100 +1,93 @@
-Return-Path: <stable+bounces-78496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A85198BE26
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 15:41:23 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id B84A798BE44
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 15:46:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 500881F2294F
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 13:41:23 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6C850281A1C
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 13:46:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A6581C3F2B;
-	Tue,  1 Oct 2024 13:41:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R6Kb64Xf"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 560A61C3F3E;
+	Tue,  1 Oct 2024 13:46:41 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 653B51A3BAD;
-	Tue,  1 Oct 2024 13:41:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 745C017FD;
+	Tue,  1 Oct 2024 13:46:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727790078; cv=none; b=pTBj0BcM6fHTw7gKjfz4FEHzdb6LCP5oOIYhNNHAuhewAKlb7RoaSBvv7C6l71wB2PtcIp2b3IBGOOTYSMK0bkE62s9YJ+6rnwPApMRJPzQitTlnU7SiAWC6epyjTvTsTH9xMm7ict5dTEoq2TiUYLBEicsFUQ/ooxgPUU9zCsk=
+	t=1727790401; cv=none; b=ueij2DIJ/zg0jspruPF99CzTUMp4pGalFdLXJTQDsSSfcK8AZY4gjw96kBC+UV9m4Lj7XHSvk0y5oRF4QrfCIUo8UNc5VroOV6X4nHQkDJWImYlK32CxAmfDe7KFohxt9XazYPxfg2nJ/eWpDeYkG+ycZC19Ggbf5fcAqDxMcnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727790078; c=relaxed/simple;
-	bh=4v3ujJmrw8t7HXafYzpQ8qHUdGbFJB3gZEk1rs3PORA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Y8PvzXWdeHJiBhxxuR5B/LkcpsarHZxZFq5KvHnWOOrfwfy+4DcE/F8/ec19gqsU2BmFm0TLw23s1FpCrqS9buAfQbX0bsnLJmfzYZVvfs1jpXjwtQbxto0SV36o6+e8L4iI26iAPNfQQHqi3r2wibk7H5auF0YFEbH7GVmpNZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=none smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R6Kb64Xf; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1727790077; x=1759326077;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:content-transfer-encoding:in-reply-to;
-  bh=4v3ujJmrw8t7HXafYzpQ8qHUdGbFJB3gZEk1rs3PORA=;
-  b=R6Kb64Xf2+0mB13GgGwRGyf3f2Zh6Ru9/LFQJGVlyxm/XSkWvciR7xjJ
-   CdmMnqlCpCHizl8WigYZ744yr4RVq1svIZZzZFcoxJ5UxB7digaSA6Ixk
-   ve+VpQqi59RRjEDQLaYMrZArWH9Ur39DLXoX2WQS+9sw81QZHf4+vIYhA
-   mJ111TxsVcWYwayUnwHRY2Q+xzbzorSFF0H8AGNJrlSLflxV6Ov6wnsJy
-   sNuPqHXvYl+Mva2chhjZbN/Tm7Ib+wf2oDqDPOoHJn1xMVR+DWcPdixWv
-   ZMy6KyYUTDM0Me/J57jpadufojKpDJIFDcY9sOLo9Jo4qDSL7ZycQho3J
-   g==;
-X-CSE-ConnectionGUID: 2s712ZVaRr2SM2A1ZFlW4Q==
-X-CSE-MsgGUID: nC+2wDWMSGaBCtxBEmMdAg==
-X-IronPort-AV: E=McAfee;i="6700,10204,11212"; a="49446688"
-X-IronPort-AV: E=Sophos;i="6.11,167,1725346800"; 
-   d="scan'208";a="49446688"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Oct 2024 06:41:17 -0700
-X-CSE-ConnectionGUID: 3xxN3efdSFaNwoIMKmCtKA==
-X-CSE-MsgGUID: b+H69q+MTd2T66oSkW69Ow==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.11,167,1725346800"; 
-   d="scan'208";a="73790598"
-Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.74])
-  by fmviesa008.fm.intel.com with SMTP; 01 Oct 2024 06:41:14 -0700
-Received: by stinkbox (sSMTP sendmail emulation); Tue, 01 Oct 2024 16:41:13 +0300
-Date: Tue, 1 Oct 2024 16:41:13 +0300
-From: Ville =?iso-8859-1?Q?Syrj=E4l=E4?= <ville.syrjala@linux.intel.com>
-To: Kalle Valo <kvalo@kernel.org>
-Cc: linux-wireless@vger.kernel.org, stable@vger.kernel.org,
-	Stanislaw Gruszka <stf_xl@wp.pl>
-Subject: Re: [PATCH] iwlegacy: Clear stale interrupts before enabling
- interrupts
-Message-ID: <Zvv7-YLhJ3EgaxiN@intel.com>
-References: <20240930122924.21865-1-ville.syrjala@linux.intel.com>
- <87r0908fuf.fsf@kernel.org>
+	s=arc-20240116; t=1727790401; c=relaxed/simple;
+	bh=TKxnXDkGhATn0FqIrpUz5udTcw+K0UUOvMulDmQ8L8A=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Uaq1PRGkPmMcoAjYSrTeaBCetuXt2jtmPK41PGQ51/b3sMx2UvGzpFLrOa3kGkWd8nM4vmLD5TunaZ6I192D/G+vm5uywT0MmrhLLF5T+RZx7w7o2D+JvCiYBuQ/I4dlTyLgjwTfvfdVWlu4Tt/VQAnjVxjcoLkgn6q6rCP8DVs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 53ED3339;
+	Tue,  1 Oct 2024 06:47:08 -0700 (PDT)
+Received: from e126645.arm.com (unknown [10.57.84.141])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 6F5153F64C;
+	Tue,  1 Oct 2024 06:46:35 -0700 (PDT)
+From: Pierre Gondois <pierre.gondois@arm.com>
+To: linux-kernel@vger.kernel.org
+Cc: Pierre Gondois <pierre.gondois@arm.com>,
+	stable@vger.kernel.org,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Ben Segall <bsegall@google.com>,
+	Mel Gorman <mgorman@suse.de>,
+	Valentin Schneider <vschneid@redhat.com>,
+	Rik van Riel <riel@surriel.com>
+Subject: [PATCH v2] sched/fair: Fix integer underflow
+Date: Tue,  1 Oct 2024 15:46:03 +0200
+Message-Id: <20241001134603.2758480-1-pierre.gondois@arm.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <87r0908fuf.fsf@kernel.org>
-X-Patchwork-Hint: comment
 
-On Tue, Oct 01, 2024 at 10:03:36AM +0300, Kalle Valo wrote:
-> Ville Syrjala <ville.syrjala@linux.intel.com> writes:
-> 
-> > iwl4965 fails upon resume from hibernation on my laptop. The reason
-> > seems to be a stale interrupt which isn't being cleared out before
-> > interrupts are enabled.
-> 
-> Is this a regression? Do you know what version still worked?
+(struct sg_lb_stats).idle_cpus is of type 'unsigned int'.
+(local->idle_cpus - busiest->idle_cpus) can underflow to UINT_MAX
+for instance, and max_t(long, 0, UINT_MAX) will output UINT_MAX.
 
-Looks like the oldest kernel I have around on that machine is
-5.0, and a quick test says it's broken exactly in the same way.
-So if it's a regression then it's an old one.
+Use lsub_positive() instead of max_t().
 
+Fixes: 16b0a7a1a0af ("sched/fair: Ensure tasks spreading in LLC during LB")
+cc: stable@vger.kernel.org
+Signed-off-by: Pierre Gondois <pierre.gondois@arm.com>
+Reviewed-by: Vincent Guittot <vincent.guittot@linaro.org>
+---
+ kernel/sched/fair.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index 9057584ec06d..6d9124499f52 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -10775,8 +10775,8 @@ static inline void calculate_imbalance(struct lb_env *env, struct sd_lb_stats *s
+ 			 * idle CPUs.
+ 			 */
+ 			env->migration_type = migrate_task;
+-			env->imbalance = max_t(long, 0,
+-					       (local->idle_cpus - busiest->idle_cpus));
++			env->imbalance = local->idle_cpus;
++			lsub_positive(&env->imbalance, busiest->idle_cpus);
+ 		}
+ 
+ #ifdef CONFIG_NUMA
 -- 
-Ville Syrjälä
-Intel
+2.25.1
+
 
