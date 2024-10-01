@@ -1,194 +1,170 @@
-Return-Path: <stable+bounces-78537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78538-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0161998BFD5
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 16:24:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0157098BFD3
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 16:24:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id C945EB294BA
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 14:23:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 338171C230E8
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 14:24:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88D551C6F55;
-	Tue,  1 Oct 2024 14:22:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95B6619D06E;
+	Tue,  1 Oct 2024 14:24:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b="1vvqlon/"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hFT6q+fD"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com [209.85.167.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C72A1C579F
-	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 14:22:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C828C1C1733;
+	Tue,  1 Oct 2024 14:24:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727792575; cv=none; b=B7e7TMEVHH6rGQFVThSdatkyO5HRrIYO8JrUc8Eq7se38hHQMxk4C/V9oXVZqXyKcB0zlXBf5yYxZn5FdY4Td8juFSU/bPNHwI+Hhss1WF6gMzLaSUfUP2W59yUHQ0CAmLqoPJF8VGyYKLVRouZDUj3OuWFo8ZCxzSl4fQhO0E8=
+	t=1727792674; cv=none; b=BNxbLJ/IZt1iuAp9nXmZMXmc9GHwWWXchWUyPO/WaMs7kdQIYxqnc8vGHMfqXrQcZb+llOaGe4c7sC8N8x2FIj3e1RpCcPLW2gwtfXzyD9c3qbd1DphnGtXqUE3WUfb+yOzueeWS30WyZun1hRWHHoIpvfoHJ2+HUHAQO1dfR00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727792575; c=relaxed/simple;
-	bh=yh036OuWVtZS192RdATSdM1krocVw8uCFUV8hJl9q+c=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=qADbvBAzJdbSsUbD+hwQbjIkzNwbNwwJPTyDQowmRC0eA74D0r9ftCZoV6atdnGzFn6HA/9o5BJiENSSyvBXaT/OdGUzT7uKGa7yZWPoPINymbYbjhxVC+NFoVAeRi/Jv/5i/aJ3lzd7JfpYPQMlvpeCGwbSMEjIzTz9YNACG0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com; spf=pass smtp.mailfrom=fairphone.com; dkim=pass (2048-bit key) header.d=fairphone.com header.i=@fairphone.com header.b=1vvqlon/; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=fairphone.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fairphone.com
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-42cb6f3a5bcso68507065e9.2
-        for <stable@vger.kernel.org>; Tue, 01 Oct 2024 07:22:53 -0700 (PDT)
+	s=arc-20240116; t=1727792674; c=relaxed/simple;
+	bh=70eG6410+i0BT/i/THI7rpBAxqi9KQYqKmU5W3rFuuc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rK73x6d8D4MNfZAzqjxbEMdezDcosjqppBPMxyB6Wnx55zkZCP1XLQsQvDHzh+nw2yePVAbbNR4da7ckCkamG6kTpV5TFYms15DU1NUvJPE+lL1Xvc/h5ckam52fyP7/22dZzQHumR3C5AdzwzGfnA4nctWU1glLFAMviLiGIBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hFT6q+fD; arc=none smtp.client-ip=209.85.167.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=roeck-us.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-oi1-f171.google.com with SMTP id 5614622812f47-3e04552579cso2127726b6e.2;
+        Tue, 01 Oct 2024 07:24:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fairphone.com; s=fair; t=1727792572; x=1728397372; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OUXzWwVynlO2farGmzjCRjampG4QkTOOiMVa306g3F4=;
-        b=1vvqlon/Wb0my+FmrnsCC6P3iwhXdkVqtiqptopuzppGeGW6ElTzwNAH15nCgJehQB
-         Z468l9a8p7mrglnuAyFtlJe37bJPs1dOR8FB8JHEVRuJbl8v+1a6EPLshDLxuDIxmVpE
-         Qw6MEF8nQRsm+73H0xcOufZF1rxKI9RMBpGEOtGwKBdzsTgpC+Pn7svs2KAWchlHx0pS
-         7ysjzFszeDImQUZDmrx/myVWmLm3zZbnhndJ86fjx81QeyP6hamTVV47wjh+n57o7sRU
-         atw7LF8h9EoZjxjmR6PfhtT8EQdYzKKXC0LzmA2HBqlbZTEXwACV1zcbpl7tjnxkeAAW
-         +rEA==
+        d=gmail.com; s=20230601; t=1727792672; x=1728397472; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=l78t5/g/jURJlT4I/RlROdEpoE/Z1cJzXwwBKfQOD2U=;
+        b=hFT6q+fD0sCtg9p/eN8orGLSuNUoq2S6t7D2MAuVLOla/A4qExlR3JG2+FTAQivemg
+         d/0Aoehnqo9a4pSXyflXEhV1BGasxKfPJQHnUwv3La8lKkEJ5pPZpjpg/OCJcP/PrglH
+         7zaZs5zDjeBVQ4Bfwp1GE5gNDD3hu0WluymBe3D5bGU4zmIHfY7UQKyLrBoGeheY0lmi
+         6a1jCIy2CZW/O6TQqN8ZsdLepYGbwsFO4xaV9hs6C6XwNkoH7mSMmq05LD2WZry5L1Hp
+         5E6vtQL6Oj5/g2WseXKmpwMn1TW4Bn4aw1KNqnpbs1E4bBnXhUoFz+Ljvz+vWRG+9mGN
+         FD1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727792572; x=1728397372;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=OUXzWwVynlO2farGmzjCRjampG4QkTOOiMVa306g3F4=;
-        b=uYTvl3NbUx8CF0wA9FKQEISqpzC2KIPS9UajLhbFOQ39LQmNQdY0Dgm8PRqbhpHZUA
-         K53wniBQar7YgKIxXDFla5xu9zYrfOnJ0jDxSMrNy0GYbooydxUqvLhZtchqD6582Gn/
-         yty7bjtDtxhFEe4NiAqlMi664a/JlAjf68Jif8EiBo9X9na1NwEYBillkcLs/Hp+FLus
-         iDJwby5D++iUma8METPdY0i5WFygEQ0R6q8ipxR7vKNQtreDJUg3YRxuDNSr1jj8HUwl
-         9jD6STnYdHu0a4c7YodT8NvbMMHsGeyHQnLSb21YNhRL43is+NSE48pZ+B+gZ1sHlQ0I
-         eSFA==
-X-Forwarded-Encrypted: i=1; AJvYcCVWbSI9rpS+8Gd2PEYpwNQopV4uJ92uKXFLwhsLB7/lDlHfNY4e3yG+92dowgdnN3niOP/uK88=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwqUTcCyDnd0w3bwycQdtOOJdmy65R9DGZvHojfj+jtAckWNbhX
-	s2AL1pW9fjkD+wy9BTT16r4NjDLiGTXDbZefJrlHgrC7KKWQO9yXM5fObc0iYd8=
-X-Google-Smtp-Source: AGHT+IE1MDD/pWaftXcta30RJmYNnd36yu433BiXNnM+DOhxjOYYibckt0mh/3U0Wfvp0AGvZHCkkA==
-X-Received: by 2002:a05:600c:4ed3:b0:42c:df29:2366 with SMTP id 5b1f17b1804b1-42f584a1d68mr169077405e9.33.1727792571880;
-        Tue, 01 Oct 2024 07:22:51 -0700 (PDT)
-Received: from localhost (144-178-202-138.static.ef-service.nl. [144.178.202.138])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a93c27c7184sm716888766b.83.2024.10.01.07.22.51
+        d=1e100.net; s=20230601; t=1727792672; x=1728397472;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:sender:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=l78t5/g/jURJlT4I/RlROdEpoE/Z1cJzXwwBKfQOD2U=;
+        b=f+ZBKqtjdROk8NKLnyPcrhxviTWqByxLoxuWmYQcFK+h6Xj74aZTHOER91ZS2/rpfZ
+         rh+BaEEJfsXufcIGpXipmKNl4l/b8Kr9n/KlYTwHbmBYX71B2GrZGHZ7h+mxTuZG05Ep
+         llh42YOLbtxXHjhvFr0d/Q3OH7yiTrmIA31jGaAmHPjiGOO4TTsds6RqwH7LNIwUI3Zc
+         4rRGNj3Ljjb3IYfPqx8HI9qCzWXOlcHvnhWyvv626Ikkx1G2Bhkm7iU2JPNJbkxF6sNL
+         Fqg0ycTF4MpPWEElKIv05DZFE41QMk/uQYWpHa9LXhKdsMqisXiYlFUA0FgfPH176zzg
+         7khA==
+X-Forwarded-Encrypted: i=1; AJvYcCUaBLCUUKp6VkFR30BJdtvqEp+UXcOLzq5nr9mMJ9swShHcORvq96Oq3OCzTdS65xZ9vF7YPCO2PVKljx0=@vger.kernel.org, AJvYcCVbog4QMgmV0ThzzKW8HO1OnNuwQ3e/pP5PA6/3AS+o0Lg2kfmInpcPSvlPJ6YFN6L04jM7PicN@vger.kernel.org
+X-Gm-Message-State: AOJu0YwvQtFYc5DyeMc25Z8kqRYffKLV3VOeo/0kjsP94hBvqNgtZLN7
+	+qXvN9Bq3NfYPAOrpsHcYzSg8aw7nHnznU4l9wBHiZ20vi/rfURy
+X-Google-Smtp-Source: AGHT+IE5yA8eD0WkA4kTUaSxlc3LiVO1OliJ1sTFpgEOgMG4AK90nVXmqp6REQTSxnV8yLhTwTMegw==
+X-Received: by 2002:a05:6808:648f:b0:3e0:6ae1:3e8f with SMTP id 5614622812f47-3e3939d49ebmr8503870b6e.29.1727792671806;
+        Tue, 01 Oct 2024 07:24:31 -0700 (PDT)
+Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7e6db2ba169sm8474679a12.31.2024.10.01.07.24.28
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Oct 2024 07:22:51 -0700 (PDT)
+        Tue, 01 Oct 2024 07:24:30 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Message-ID: <f1697b65-acd4-4031-ba47-64c587408593@roeck-us.net>
+Date: Tue, 1 Oct 2024 07:24:27 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 01 Oct 2024 16:22:50 +0200
-Message-Id: <D4KJCLCDGQ96.251XO3OG6DVB6@fairphone.com>
-Cc: <linux-arm-msm@vger.kernel.org>, <linux-media@vger.kernel.org>,
- <devicetree@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-arm-kernel@lists.infradead.org>, "Suresh Vankadara"
- <quic_svankada@quicinc.com>, "Trishansh Bhardwaj"
- <quic_tbhardwa@quicinc.com>, <stable@vger.kernel.org>, "Hariram
- Purushothaman" <quic_hariramp@quicinc.com>
-Subject: Re: [PATCH 00/10] (no cover subject)
-From: "Luca Weiss" <luca.weiss@fairphone.com>
-To: "Bryan O'Donoghue" <bryan.odonoghue@linaro.org>, "Vikram Sharma"
- <quic_vikramsa@quicinc.com>, "Robert Foss" <rfoss@kernel.org>, "Todor
- Tomov" <todor.too@gmail.com>, "Mauro Carvalho Chehab" <mchehab@kernel.org>,
- "Rob Herring" <robh@kernel.org>, "Krzysztof Kozlowski"
- <krzk+dt@kernel.org>, "Conor Dooley" <conor+dt@kernel.org>, "Kapatrala
- Syed" <akapatra@quicinc.com>, "Hariram Purushothaman"
- <hariramp@quicinc.com>, "Bjorn Andersson" <andersson@kernel.org>, "Konrad
- Dybcio" <konradybcio@kernel.org>, "Hans Verkuil"
- <hverkuil-cisco@xs4all.nl>, <cros-qcom-dts-watchers@chromium.org>, "Catalin
- Marinas" <catalin.marinas@arm.com>, "Will Deacon" <will@kernel.org>,
- =?utf-8?q?Matti_Lehtim=C3=A4ki?= <matti.lehtimaki@gmail.com>
-X-Mailer: aerc 0.18.2-0-ge037c095a049
-References: <20240904-camss_on_sc7280_rb3gen2_vision_v2_patches-v1-0-b18ddcd7d9df@quicinc.com> <D4JK8TRL7XBL.3TBA1FBF32RXL@fairphone.com> <fc0ce5cd-e42a-432b-ad74-01de67ec0d5c@linaro.org> <D4KBQ3ENKF5Y.3D2AK81PELAEZ@fairphone.com> <e7cc5f91-a0a8-48fc-9eb6-b9c46b22dfeb@linaro.org> <D4KFVNV1A4KG.CFLT81CFBDTM@fairphone.com> <c912f2da-519c-4bdc-a5cb-e19c3aa63ea8@linaro.org>
-In-Reply-To: <c912f2da-519c-4bdc-a5cb-e19c3aa63ea8@linaro.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.10 00/58] 6.10.12-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org, shuah@kernel.org,
+ patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+ jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+ srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+ allen.lkml@gmail.com, broonie@kernel.org, Bibo Mao <maobibo@loongson.cn>,
+ Huacai Chen <chenhuacai@loongson.cn>
+References: <20240927121718.789211866@linuxfoundation.org>
+Content-Language: en-US
+From: Guenter Roeck <linux@roeck-us.net>
+Autocrypt: addr=linux@roeck-us.net; keydata=
+ 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
+ mDW4+i+XlNFUPUYMrIKi9joBhu18ssf5i5Q=
+In-Reply-To: <20240927121718.789211866@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue Oct 1, 2024 at 2:49 PM CEST, Bryan O'Donoghue wrote:
-> On 01/10/2024 12:39, Luca Weiss wrote:
->
-> > And v4l-subdev5 is msm_csid0 on my device.
->
-> <snip>
->
-> >=20
-> > - entity 16: msm_csid0 (5 pads, 22 links, 0 routes)
-> >               type V4L2 subdev subtype Unknown flags 0
-> >               device node name /dev/v4l-subdev5
-> >          pad0: Sink
-> >                  [stream:0 fmt:SRGGB10_1X10/4056x3040 field:none colors=
-pace:srgb]
-> >                  <- "msm_csiphy0":1 []
-> >                  <- "msm_csiphy1":1 []
-> >                  <- "msm_csiphy2":1 []
-> >                  <- "msm_csiphy3":1 []
-> >                  <- "msm_csiphy4":1 []
-> >          pad1: Source
-> >                  [stream:0 fmt:SRGGB10_1X10/4056x3040 field:none colors=
-pace:srgb]
-> >                  -> "msm_vfe0_rdi0":0 [ENABLED]
-> >                  -> "msm_vfe1_rdi0":0 []
-> >                  -> "msm_vfe2_rdi0":0 []
-> >                  -> "msm_vfe3_rdi0":0 []
-> >                  -> "msm_vfe4_rdi0":0 []
->
-> <snip>
->
-> media-ctl --reset
-> yavta --no-query -w '0x009f0903 2' /dev/v4l-subdev5
-> yavta --list /dev/v4l-subdev5
-> media-ctl -V '"msm_csid0":0[fmt:SRGGB10/4056x3040]'
-> media-ctl -V '"msm_vfe0_rdi0":0[fmt:SRGGB10/4056x3040]'
-> media-ctl -l '"msm_csid0":1->"msm_vfe0_rdi0":0[1]'
-> media-ctl -d /dev/media0 -p
->
-> That command list and this
->
-> yavta -B capture-mplane -c -I -n 5 -f SRGGB10P -s 4056x3040 -F /dev/video=
-0
->
-> should work.
+On 9/27/24 05:23, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.10.12 release.
+> There are 58 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sun, 29 Sep 2024 12:17:00 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.10.12-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.10.y
+> and the diffstat can be found below.
+> 
 
-Yeah, unfortunately this is still hanging... Let's also see what Vikram
-sees on their board.
+Most loongarch builds are broken.
 
-fairphone-fp5:~$ yavta -B capture-mplane -c -I -n 5 -f SRGGB10P -s 4056x304=
-0 -F /dev/video0
-Device /dev/video0 opened.
-Device `Qualcomm Camera Subsystem' on `platform:acb3000.camss' (driver 'qco=
-m-camss') supports video, capture, with mplanes.
-Video format set: SRGGB10P (41415270) 4056x3040 field none, 1 planes:=20
- * Stride 5072, buffer size 15418880
-Video format: SRGGB10P (41415270) 4056x3040 field none, 1 planes:=20
- * Stride 5072, buffer size 15418880
-5 buffers requested.
-length: 1 offset: 3442938648 timestamp type/source: mono/EoF
-Buffer 0/0 mapped at address 0xffff85e00000.
-length: 1 offset: 3442938648 timestamp type/source: mono/EoF
-Buffer 1/0 mapped at address 0xffff84e08000.
-length: 1 offset: 3442938648 timestamp type/source: mono/EoF
-Buffer 2/0 mapped at address 0xffff83e10000.
-length: 1 offset: 3442938648 timestamp type/source: mono/EoF
-Buffer 3/0 mapped at address 0xffff82e18000.
-length: 1 offset: 3442938648 timestamp type/source: mono/EoF
-Buffer 4/0 mapped at address 0xffff81e20000.
+Building loongarch:defconfig ... failed
+--------------
+Error log:
+arch/loongarch/kvm/vcpu.c: In function 'kvm_set_one_reg':
+arch/loongarch/kvm/vcpu.c:575:35: error: 'struct kvm_vcpu_arch' has no member named 'st'
+   575 |                         vcpu->arch.st.guest_addr = 0;
 
-> I have to test Vladimir's two patches. I'll verify rb5 TPG while I'm at=
-=20
-> it, perhaps the error is not sdm670 specific.
+This is due to commit 05969a694471 ("LoongArch: KVM: Invalidate guest steal time address
+on vCPU reset"). Note that this commit is not tagged as bug fix. I am copying the author.
 
-FWIW this is not sdm670 but sc7280/qcm6490 here :) But I didn't follow
-the sdm670 thread so maybe you mean something there.
-
->
-> That said last time I tested it, it worked and no changes have gone in,=
-=20
-> in the meantime.
-
-I also had the test pattern working on a 6.8-based kernel on this device
-with camss patches from Matti Lehtim=C3=A4ki.
-
-Regards
-Luca
-
->
-> ---
-> bod
+Guenter
 
 
