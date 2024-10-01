@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-78354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DB7698B867
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 11:32:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DEEA98B869
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 11:33:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF4EA1C22171
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 09:32:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6F43D1C2221D
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 09:33:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92A7E19CC32;
-	Tue,  1 Oct 2024 09:32:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43B4219CD07;
+	Tue,  1 Oct 2024 09:33:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JFWdheH5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HQxheXCs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BF332B9B0;
-	Tue,  1 Oct 2024 09:32:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EED712B9B0;
+	Tue,  1 Oct 2024 09:33:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727775139; cv=none; b=WoPB4tNC0GKWhqKtezNzAfxsYKrYyywj6046XGy93ak8qL+/bre7y3d0C5ifduZMWi1eGtruYTNGi5gaa4DmqLL9VWXk11wpGX2N1/Q1eEZoyt7o/zIP07BCBNYYjS9ngzlnAeBjPDhvjudY2t3AAilogi5mIhHmp0i7PXK2ws4=
+	t=1727775196; cv=none; b=s1zLDHDV+9982tH6wS6xK56nAV+D9rEZGKPyTLuDHAaAeVMasHRjTC5nEXJjk6lmyudGddz9C/+PG7S4wmwDVBWblx+g9E2LdBd/tJFRoNvwZaNmQa0L5h2TmyEjZwMS2TkJbX8I1tsSEK1170qP8TjWxvK70hhpmBLHnZ3IY7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727775139; c=relaxed/simple;
-	bh=A277t4MvCLhx6tJFdzkWn5fv1UpPOKHjwo9fuI2GPUc=;
+	s=arc-20240116; t=1727775196; c=relaxed/simple;
+	bh=o1g2izY7Kq/8+XP4SFkp5bIDshCnrC+GUgg6QlSgQnw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bn8EGpQxdAz4FlgrrXe95/+YP6nTR9BRKeg5B8ooxvXW9nRccB/FA9IZ77OrPeeUMRlAtyHan3FNxo+9MBzWOyrKGyPM50xxicr59NuzriEcD4dA3u/j/bwIrTbBRNQF6+LcFHz9Rl5nndTg7EGj7dj4qrGMwp5tlXy187ETMms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JFWdheH5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7108CC4CEC6;
-	Tue,  1 Oct 2024 09:32:18 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=LXM1XHPpjJXXjQWwN6oPFkJwzPOIXv52D+QhY93MBz/t3xnq7LqMFzaFqqEEb5J+4An3gowCmt302h6+a74IoIWykX/14vgsZ7CFzaxRKmpK10cs80ETLFcIC/vukMo35vV+JhPv6qZbbOHQHfCAx3Upc4LHBR9e0xVGsAaZdyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HQxheXCs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13358C4CEC6;
+	Tue,  1 Oct 2024 09:33:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727775138;
-	bh=A277t4MvCLhx6tJFdzkWn5fv1UpPOKHjwo9fuI2GPUc=;
+	s=korg; t=1727775195;
+	bh=o1g2izY7Kq/8+XP4SFkp5bIDshCnrC+GUgg6QlSgQnw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=JFWdheH56Cshy2M0WEMignyUOiVPwTF5zUk6+ZlXflF4twVhOrIO8w1gY4UEa+9gO
-	 E5k4b+qayUeFrR6ukJiec5yxF0JRaYyh3r53Ctc09JtHI8GSSL/tVhcS8/0/TrsMMJ
-	 BGyoQl1p/RHxVD91B1exK/qobTyA4kvvawCAgZt8=
-Date: Tue, 1 Oct 2024 11:32:16 +0200
+	b=HQxheXCsdj0qDrnfbPlluDiYy8ntzrNEEbaxsPtXw45Dq0P6wOvz+WBqqtt6LO4S8
+	 I+IPJT1AZ0KSNHSwQcmnkaWFsYMihfyVDXXUClYMdgDyCUWDDsI5CEYvtxxhr++Q5m
+	 7W7LS7PDWFfYdk1mOT0kNllc4XmrQ+Tk7qji+WNQ=
+Date: Tue, 1 Oct 2024 11:33:12 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
 To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
-	ruanjinjie@huawei.com
-Subject: Re: Patch "Input: ps2-gpio - use IRQF_NO_AUTOEN flag in
- request_irq()" has been added to the 5.15-stable tree
-Message-ID: <2024100134-talcum-angular-6e20@gregkh>
-References: <20241001002900.2628013-1-sashal@kernel.org>
- <Zvu8GiY4PxqTQPD0@google.com>
+	dlechner@baylibre.com
+Subject: Re: Patch "Input: ims-pcu - fix calling interruptible mutex" has
+ been added to the 6.11-stable tree
+Message-ID: <2024100130-stereo-diner-11ba@gregkh>
+References: <20240930232429.2569091-1-sashal@kernel.org>
+ <Zvu7yZx5XW2nXmxU@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -56,49 +56,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Zvu8GiY4PxqTQPD0@google.com>
+In-Reply-To: <Zvu7yZx5XW2nXmxU@google.com>
 
-On Tue, Oct 01, 2024 at 02:08:42AM -0700, Dmitry Torokhov wrote:
-> On Mon, Sep 30, 2024 at 08:28:59PM -0400, Sasha Levin wrote:
+On Tue, Oct 01, 2024 at 02:07:21AM -0700, Dmitry Torokhov wrote:
+> On Mon, Sep 30, 2024 at 07:24:28PM -0400, Sasha Levin wrote:
 > > This is a note to let you know that I've just added the patch titled
 > > 
-> >     Input: ps2-gpio - use IRQF_NO_AUTOEN flag in request_irq()
+> >     Input: ims-pcu - fix calling interruptible mutex
 > > 
-> > to the 5.15-stable tree which can be found at:
+> > to the 6.11-stable tree which can be found at:
 > >     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
 > > 
 > > The filename of the patch is:
-> >      input-ps2-gpio-use-irqf_no_autoen-flag-in-request_ir.patch
-> > and it can be found in the queue-5.15 subdirectory.
+> >      input-ims-pcu-fix-calling-interruptible-mutex.patch
+> > and it can be found in the queue-6.11 subdirectory.
 > > 
 > > If you, or anyone else, feels it should not be added to the stable tree,
 > > please let <stable@vger.kernel.org> know about it.
-> 
-> For the love of God, why? Why does this pure cleanup type of change
-> needs to be in stable?
-
-Because someone said:
-
-> > commit 2d007ddec282076923c4d84d6b12858b9f44594a
-> > Author: Jinjie Ruan <ruanjinjie@huawei.com>
-> > Date:   Thu Sep 12 11:30:13 2024 +0800
 > > 
-> >     Input: ps2-gpio - use IRQF_NO_AUTOEN flag in request_irq()
+> 
+> Did you manage to pick up 703f12672e1f ("Input: ims-pcu - switch to
+> using cleanup functions") for stable? I would love to see the
+> justification for that... 
+
+It already is in the 6.11 kernel tree, so why would this fix, which
+says:
+
+> > commit c137195362a652adfbc6a538b78a40b043de6eb0
+> > Author: David Lechner <dlechner@baylibre.com>
+> > Date:   Tue Sep 10 16:58:47 2024 -0500
+> > 
+> >     Input: ims-pcu - fix calling interruptible mutex
 > >     
-> >     [ Upstream commit dcd18a3fb1228409dfc24373c5c6868a655810b0 ]
+> >     [ Upstream commit 82abef590eb31d373e632743262ee7c42f49c289 ]
 > >     
-> >     disable_irq() after request_irq() still has a time gap in which
-> >     interrupts can come. request_irq() with IRQF_NO_AUTOEN flag will
-> >     disable IRQ auto-enable when request IRQ.
+> >     Fix calling scoped_cond_guard() with mutex instead of mutex_intr.
+> >     
+> >     scoped_cond_guard(mutex, ...) will call mutex_lock() instead of
+> >     mutex_lock_interruptible().
+> >     
+> >     Fixes: 703f12672e1f ("Input: ims-pcu - switch to using cleanup functions")
 
-Looks like a bug fix, and also:
-
-> >     Fixes: 9ee0a0558819 ("Input: PS/2 gpio bit banging driver for serio bus")
-
-Someone marked it as such.
-
-I'll go drop it, but really, don't mark things as fixes if they really
-are not.
+This is a bugfix for the 6.11 tree, not be applicable to the 6.11.y
+releases?
 
 thanks,
 
