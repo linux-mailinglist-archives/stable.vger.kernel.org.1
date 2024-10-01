@@ -1,88 +1,76 @@
-Return-Path: <stable+bounces-78320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78321-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE81A98B4E8
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 08:52:36 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id A90A598B51C
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 09:03:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E19C41C23506
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 06:52:35 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3C916B21BC8
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 07:03:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 869C663D;
-	Tue,  1 Oct 2024 06:52:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 364D41BC9F9;
+	Tue,  1 Oct 2024 07:03:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CHjLvkD9"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="isbcCBHc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43709192D65
-	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 06:52:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6E2A197512;
+	Tue,  1 Oct 2024 07:03:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727765552; cv=none; b=OU3W6fbB7xUXX96gKDK0G13wxRqZ+4Eym0QbQ2s07qhLuiTnNYZXogW4hkxKHCZDwfmMkS0/3ZvN2s+v5cu8hfJSQRVtc7bISbCbACTSfGZgclBZlhAjGVIQhDXNrsOdtcJUa6vr6S9BgRotsXU1Q/o1KuNiP1k8IEJAidQRtK0=
+	t=1727766220; cv=none; b=tAPyImmAEIbDsq2SfvT3Z8WSll0m5+Pao7jm7mMufGmlLxDECzjSBtEcCOfUwnjlx2CTz4XZ8AE5wYKu9yCk66rBcLbRnibYcpx9zqKkVCRmyx6Bp/WuzpZPtUzB9b3K/T/g79PXoLhg/EpatekcCGYdrBzB5LpKjqF8uWWaE0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727765552; c=relaxed/simple;
-	bh=QN0Hn69HMSkjEUv1OGdqOX3Bjlq35lE6Ios0VBR7bq0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T92dPXCOo1rKJCyaJtd9SyRJ1u6GjNmzTpY6dfIDsGju29G819hCmnucmrt/RZ1Pnv+/shMk4qAxpNytlYP09WjO64N1+aJiEXRtngqmh7JxIFePa5IdHP5HFSioE3uTOVKObMVrbQ2kUMCmCl84zVKfOSsD5uRgrw3ONkeBroo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CHjLvkD9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4781CC4CEC6;
-	Tue,  1 Oct 2024 06:52:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727765551;
-	bh=QN0Hn69HMSkjEUv1OGdqOX3Bjlq35lE6Ios0VBR7bq0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CHjLvkD9WnJrrtrlgkd0y2sthyj2Pa1pUnpJ4w3LHADyLrWxPfrFZiGQzQuSorR9L
-	 SuOmGS0Uhico7vjFW6pR3qU9HLoA9XGsr26c0+1AZUbSl1hzW+cykaKcp4XY3tk70T
-	 snpoImamqZv3/Z1ydw07XVgcxTve2HQ5vExg1vaI=
-Date: Tue, 1 Oct 2024 08:52:28 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Cc: Sasha Levin <sashal@kernel.org>, stable <stable@vger.kernel.org>
-Subject: Re: patches sent up to 6.13-rc1 that shouldn't be backported
-Message-ID: <2024100107-womb-share-931a@gregkh>
-References: <CAHmME9rtJ1YZGjYkWR10Wc24bVoJ4yZ-uQn0eTWjpfKxngBvvA@mail.gmail.com>
+	s=arc-20240116; t=1727766220; c=relaxed/simple;
+	bh=qtWWEMIRVQbFedJW6zmbbSRjrfDiTDpXpl0KrqnKuzk=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=YtUs0+T8j+zLPHZVRP+NQRIZTpZ2cDwKBUMwPzE/t372I1+TmTFcODkz8uvGbeBex8Dd8dkfRqX69Lo+bcOXt3MV8y549WO6vsNs5ldZLnp5FaXXEGix+IjgBITg3+EKI60ygdqJto7ZXcftnemEkrrMpqRIb4Ob9fUy7IKALH4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=isbcCBHc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 754ADC4CEC6;
+	Tue,  1 Oct 2024 07:03:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727766219;
+	bh=qtWWEMIRVQbFedJW6zmbbSRjrfDiTDpXpl0KrqnKuzk=;
+	h=From:To:Cc:Subject:References:Date:In-Reply-To:From;
+	b=isbcCBHcHOn96TPzAVTE2ebdhPQ98xsT0KvRD5KudGgI1Yl1czAuWvusNP9HUfL6w
+	 5kzShwNhmQzVinvs5aH/r8dwj+9ExXrrS+8ODgC0E08NustleMA9r7cfxeIgnkIQG9
+	 h3LVHpllJffiNvaYv17MGDKvvHo1nkFBxEgtW6YJu1CQbtXn+W1XJps4D5ahv/3ftt
+	 zAjH+OcAudDGoKgJ3f1L27O9qZpYNoUnavHgJ005DGI0+C6umNWPlp/QmKXi/YPbou
+	 GmU2eCbFJh2UMhNc84FidwluxEOdFul7pfRbd6O7vkh9t5iTKcrmfGk3JmnbywM0hS
+	 adiYJu/D+3frQ==
+From: Kalle Valo <kvalo@kernel.org>
+To: Ville Syrjala <ville.syrjala@linux.intel.com>
+Cc: linux-wireless@vger.kernel.org,  stable@vger.kernel.org,  Stanislaw
+ Gruszka <stf_xl@wp.pl>
+Subject: Re: [PATCH] iwlegacy: Clear stale interrupts before enabling
+ interrupts
+References: <20240930122924.21865-1-ville.syrjala@linux.intel.com>
+Date: Tue, 01 Oct 2024 10:03:36 +0300
+In-Reply-To: <20240930122924.21865-1-ville.syrjala@linux.intel.com> (Ville
+	Syrjala's message of "Mon, 30 Sep 2024 15:29:24 +0300")
+Message-ID: <87r0908fuf.fsf@kernel.org>
+User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHmME9rtJ1YZGjYkWR10Wc24bVoJ4yZ-uQn0eTWjpfKxngBvvA@mail.gmail.com>
+Content-Type: text/plain
 
-On Tue, Oct 01, 2024 at 06:02:45AM +0200, Jason A. Donenfeld wrote:
-> Hi Sasha,
-> 
-> I've been getting emails from your bots...
-> 
-> I sent two pulls to Linus for 6.13-rc1:
-> 
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=4a39ac5b7d62679c07a3e3d12b0f6982377d8a7d
-> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=34e1a5d43c5deec563b94f3330b690dde9d1de53
-> 
-> In these, I'm not sure there's actually much valid stable material. I
-> didn't mark anything as Cc: stable@vger.kernel.org, I don't think.
-> 
-> As such, can you make sure none of those get backported?
-> 
-> Alternatively, if you do have reason to want to pick some of these,
-> can you be clear with what and why, and actually carefully decide
-> which ones and which dependencies are required as such in a
-> non-automated way?
+Ville Syrjala <ville.syrjala@linux.intel.com> writes:
 
-They say so directly in the commit, i.e.:
-	Stable-dep-of: 6eda706a535c ("selftests: vDSO: fix the way vDSO functions are called for powerpc")
+> iwl4965 fails upon resume from hibernation on my laptop. The reason
+> seems to be a stale interrupt which isn't being cleared out before
+> interrupts are enabled.
 
-in each one.  So this seem to be needed to fix up the powerpc stuff.
+Is this a regression? Do you know what version still worked?
 
-I'll drop them all if you feel these should not be applied.
+-- 
+https://patchwork.kernel.org/project/linux-wireless/list/
 
-thanks,
-
-greg k-h
+https://wireless.wiki.kernel.org/en/developers/documentation/submittingpatches
 
