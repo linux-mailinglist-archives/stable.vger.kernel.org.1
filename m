@@ -1,179 +1,106 @@
-Return-Path: <stable+bounces-78353-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78354-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EEBF98B85E
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 11:30:57 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9DB7698B867
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 11:32:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id C10F01F22315
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 09:30:56 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CF4EA1C22171
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 09:32:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 065A919E83F;
-	Tue,  1 Oct 2024 09:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 92A7E19CC32;
+	Tue,  1 Oct 2024 09:32:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Nkvh1YCK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JFWdheH5"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f53.google.com (mail-ej1-f53.google.com [209.85.218.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F20A62B9B0
-	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 09:30:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BF332B9B0;
+	Tue,  1 Oct 2024 09:32:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727775037; cv=none; b=Kp3/c1jEaKGpWnIdxq88SoQ/sGF/L2vE/QjNL3OGHeLeQ4VIWCmTvLwu4FdLfJzkkMic5/AEAfENe+tb/hzGiCzGG+6bfzbBOLAnSr3aUk/lXIJBPLYVFSNc83Iph0nlWT7Dvt95eDEPkclezvkAOOJ5ZBegLDmaYXtTcouMs/o=
+	t=1727775139; cv=none; b=WoPB4tNC0GKWhqKtezNzAfxsYKrYyywj6046XGy93ak8qL+/bre7y3d0C5ifduZMWi1eGtruYTNGi5gaa4DmqLL9VWXk11wpGX2N1/Q1eEZoyt7o/zIP07BCBNYYjS9ngzlnAeBjPDhvjudY2t3AAilogi5mIhHmp0i7PXK2ws4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727775037; c=relaxed/simple;
-	bh=8utTuVvKi3Xf58YhMlDrfJrqonBjQ0pTKIx6LGEFxfU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cyIMo5TQRzBnu/QXMAMcHRz8aqFCYfUUdESCcfGkh6pYx+RbOqgDQasiprtwWDN0ou89GYTxxuIde3+B8rYKxWwOchEeJBW/9reEyiCBAozJYjwPAMY/e6kFj4LQI96yevhP+RGASx7rPiXVx4OLKLc9FvLRttaFUH33FEeFOnc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Nkvh1YCK; arc=none smtp.client-ip=209.85.218.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-a910860e4dcso4566766b.3
-        for <stable@vger.kernel.org>; Tue, 01 Oct 2024 02:30:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1727775034; x=1728379834; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=RgNupkyjKM2ysAGbIsG0gGy1badDoqPKofkUhbyTKoM=;
-        b=Nkvh1YCKRwtaWC3l/arENsaNN7IA22xABk4erWGwFpDLWqvXYhC2Qd6/Ie5pwMtTLq
-         8+U+ZlBMhff26x2MojQEvn3vZUxWrp2IOvG9l6R9UK0kYXGNH2mmNe+thSFvO4o4g0KK
-         mp6QpJpmXlI2IB34CbZJ4ltH+04XaVIFhz+0PAG1OpOrvcVuApHNrn8JLOdhHTHXVl7q
-         mllomKbUqjHeCRi1ObHFyAYqh2pNYOX4E5p2rUBa88RW3wapVsbZgMUWcSgqUDhMQxb5
-         2+E3E39aCgL7Gae28kklasLT7q6wsr7NnRI2r1YTru6j2nuwltBT3yQSIzt4S+7dtMmU
-         qdbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727775034; x=1728379834;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RgNupkyjKM2ysAGbIsG0gGy1badDoqPKofkUhbyTKoM=;
-        b=jbE7CewiUVtZgclX7h1TQgOk6FSDnxz8mzqQzMOi9UT9tFw/U6xU8NlYbD4Mo1YzBP
-         KlPvxyZJGl5FTGbGtxEdIAJfuMfkSriC106naqLKhCZhUST7NAAVO2Q7ELxdGAWR8w96
-         EWdq18XQ1Kl1pyb25CI8NC9jNjcSDyG7hlzzVKbpDIyNb8BwIIkzqMP5y0ys8xZxECVo
-         2sTl4B4498aIz35zOm57oy5tR5v1IG0VdnYAK11lJ1Mx+kp4LfxCRxdk3tujoYMaS4Vt
-         TY8mdosIhze/AC2ZaGfnvBmDm5GJlk+wFGcN2JftJkjV4i4z2/RsBee8hFzsePBtXj4b
-         OwgQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW3ioyoC0lz2v0BP0GfMKdHMILXBsJIPIiGygg5ewr7Xkb2llNL418q65iEyNo7kmWcttffAo8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxN5PnZxH8LKrHmZSsLXw/CSSQXisyWpMRt3C3cAhj9hsLZirfp
-	UiNQUPbEu0zg0bANMns9wnxxR1yB5Ayn5MxTeBQX+xsaDazPCpCL0IHBVqUfYWg=
-X-Google-Smtp-Source: AGHT+IGB9dopkczYokJgV8nk4MY0kFdPv5z9uTEesO4k2VaH/NmikSHc794uEgWF3r+nTMZn2extfA==
-X-Received: by 2002:a17:907:a0a:b0:a8d:14e4:f94a with SMTP id a640c23a62f3a-a93c492aafbmr1644389466b.38.1727775034202;
-        Tue, 01 Oct 2024 02:30:34 -0700 (PDT)
-Received: from [192.168.0.15] ([176.61.106.227])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c882493e54sm5913896a12.80.2024.10.01.02.30.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 01 Oct 2024 02:30:33 -0700 (PDT)
-Message-ID: <e7cc5f91-a0a8-48fc-9eb6-b9c46b22dfeb@linaro.org>
-Date: Tue, 1 Oct 2024 10:30:31 +0100
+	s=arc-20240116; t=1727775139; c=relaxed/simple;
+	bh=A277t4MvCLhx6tJFdzkWn5fv1UpPOKHjwo9fuI2GPUc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bn8EGpQxdAz4FlgrrXe95/+YP6nTR9BRKeg5B8ooxvXW9nRccB/FA9IZ77OrPeeUMRlAtyHan3FNxo+9MBzWOyrKGyPM50xxicr59NuzriEcD4dA3u/j/bwIrTbBRNQF6+LcFHz9Rl5nndTg7EGj7dj4qrGMwp5tlXy187ETMms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JFWdheH5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7108CC4CEC6;
+	Tue,  1 Oct 2024 09:32:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1727775138;
+	bh=A277t4MvCLhx6tJFdzkWn5fv1UpPOKHjwo9fuI2GPUc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JFWdheH56Cshy2M0WEMignyUOiVPwTF5zUk6+ZlXflF4twVhOrIO8w1gY4UEa+9gO
+	 E5k4b+qayUeFrR6ukJiec5yxF0JRaYyh3r53Ctc09JtHI8GSSL/tVhcS8/0/TrsMMJ
+	 BGyoQl1p/RHxVD91B1exK/qobTyA4kvvawCAgZt8=
+Date: Tue, 1 Oct 2024 11:32:16 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: stable@vger.kernel.org, stable-commits@vger.kernel.org,
+	ruanjinjie@huawei.com
+Subject: Re: Patch "Input: ps2-gpio - use IRQF_NO_AUTOEN flag in
+ request_irq()" has been added to the 5.15-stable tree
+Message-ID: <2024100134-talcum-angular-6e20@gregkh>
+References: <20241001002900.2628013-1-sashal@kernel.org>
+ <Zvu8GiY4PxqTQPD0@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/10] (no cover subject)
-To: Luca Weiss <luca.weiss@fairphone.com>,
- Vikram Sharma <quic_vikramsa@quicinc.com>, Robert Foss <rfoss@kernel.org>,
- Todor Tomov <todor.too@gmail.com>, Mauro Carvalho Chehab
- <mchehab@kernel.org>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Kapatrala Syed <akapatra@quicinc.com>,
- Hariram Purushothaman <hariramp@quicinc.com>,
- Bjorn Andersson <andersson@kernel.org>,
- Konrad Dybcio <konradybcio@kernel.org>,
- Hans Verkuil <hverkuil-cisco@xs4all.nl>,
- cros-qcom-dts-watchers@chromium.org,
- Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>
-Cc: linux-arm-msm@vger.kernel.org, linux-media@vger.kernel.org,
- devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org,
- Suresh Vankadara <quic_svankada@quicinc.com>,
- Trishansh Bhardwaj <quic_tbhardwa@quicinc.com>, stable@vger.kernel.org,
- Hariram Purushothaman <quic_hariramp@quicinc.com>
-References: <20240904-camss_on_sc7280_rb3gen2_vision_v2_patches-v1-0-b18ddcd7d9df@quicinc.com>
- <D4JK8TRL7XBL.3TBA1FBF32RXL@fairphone.com>
- <fc0ce5cd-e42a-432b-ad74-01de67ec0d5c@linaro.org>
- <D4KBQ3ENKF5Y.3D2AK81PELAEZ@fairphone.com>
-Content-Language: en-US
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-In-Reply-To: <D4KBQ3ENKF5Y.3D2AK81PELAEZ@fairphone.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Zvu8GiY4PxqTQPD0@google.com>
 
-On 01/10/2024 09:24, Luca Weiss wrote:
->> media-ctl --reset
->> yavta --no-query -w '0x009f0903 2' /dev/v4l-subdev5
->> yavta --list /dev/v4l-subdev5
->> media-ctl -V '"msm_csid0":0[fmt:SRGGB10/4056x3040]'
->> media-ctl -V '"msm_vfe0_rdi0":0[fmt:SRGGB10/4056x3040]'
->> media-ctl -l '"msm_csid0":1->"msm_vfe0_rdi0":0[1]'
->> media-ctl -d /dev/media0 -p
-> Hi Bryan!
+On Tue, Oct 01, 2024 at 02:08:42AM -0700, Dmitry Torokhov wrote:
+> On Mon, Sep 30, 2024 at 08:28:59PM -0400, Sasha Levin wrote:
+> > This is a note to let you know that I've just added the patch titled
+> > 
+> >     Input: ps2-gpio - use IRQF_NO_AUTOEN flag in request_irq()
+> > 
+> > to the 5.15-stable tree which can be found at:
+> >     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> > 
+> > The filename of the patch is:
+> >      input-ps2-gpio-use-irqf_no_autoen-flag-in-request_ir.patch
+> > and it can be found in the queue-5.15 subdirectory.
+> > 
+> > If you, or anyone else, feels it should not be added to the stable tree,
+> > please let <stable@vger.kernel.org> know about it.
 > 
-> These commands are to set up the pipeline, and what then to grab an
-> image from it?
-> 
-> I tried this, but it also just hangs:
-> 
-> $ yavta -B capture-mplane --capture=3 -n 3 -f SRGGB10P -s 4056x3040 /dev/video0 --file=foo-#.bin
-> Device /dev/video0 opened.
-> Device `Qualcomm Camera Subsystem' on `platform:acb3000.camss' (driver 'qcom-camss') supports video, capture, with mplanes.
-> Video format set: SRGGB10P (41415270) 4056x3040 field none, 1 planes:
->   * Stride 5072, buffer size 15418880
-> Video format: SRGGB10P (41415270) 4056x3040 field none, 1 planes:
->   * Stride 5072, buffer size 15418880
-> 3 buffers requested.
-> length: 1 offset: 3326519176 timestamp type/source: mono/EoF
-> Buffer 0/0 mapped at address 0xffffa0c00000.
-> length: 1 offset: 3326519176 timestamp type/source: mono/EoF
-> Buffer 1/0 mapped at address 0xffff9fc08000.
-> length: 1 offset: 3326519176 timestamp type/source: mono/EoF
-> Buffer 2/0 mapped at address 0xffff9ec10000.
+> For the love of God, why? Why does this pure cleanup type of change
+> needs to be in stable?
 
-No there's no CSIPHY in that case, it should be the TPG inside of CSID0 
-@ /dev/v4l-subdev5 which generates the data.
+Because someone said:
 
-Just for verification purposes do a  `media-ctl -d /dev/media0 -p` and 
-confirm that /dev/v4l-subdev5 == csid0
+> > commit 2d007ddec282076923c4d84d6b12858b9f44594a
+> > Author: Jinjie Ruan <ruanjinjie@huawei.com>
+> > Date:   Thu Sep 12 11:30:13 2024 +0800
+> > 
+> >     Input: ps2-gpio - use IRQF_NO_AUTOEN flag in request_irq()
+> >     
+> >     [ Upstream commit dcd18a3fb1228409dfc24373c5c6868a655810b0 ]
+> >     
+> >     disable_irq() after request_irq() still has a time gap in which
+> >     interrupts can come. request_irq() with IRQF_NO_AUTOEN flag will
+> >     disable IRQ auto-enable when request IRQ.
 
-Rewrite the above as
+Looks like a bug fix, and also:
 
-export csid0=v4l-subdevX
+> >     Fixes: 9ee0a0558819 ("Input: PS/2 gpio bit banging driver for serio bus")
 
-media-ctl --reset
-yavta --no-query -w '0x009f0903 2' /dev/$csid0
-yavta --list /dev/$csid0
-media-ctl -V '"msm_csid0":0[fmt:SRGGB10/4056x3040]'
-media-ctl -V '"msm_vfe0_rdi0":0[fmt:SRGGB10/4056x3040]'
-media-ctl -l '"msm_csid0":1->"msm_vfe0_rdi0":0[1]'
-media-ctl -d /dev/media0 -p
+Someone marked it as such.
 
-basically you have to make sure you've set the TPG on the correct subdev..
+I'll go drop it, but really, don't mark things as fixes if they really
+are not.
 
-Something like in media-ctl subdev4 in my case.
+thanks,
 
-- entity 13: msm_csid0 (5 pads, 36 links, 0 routes)
-              type V4L2 subdev subtype Unknown flags 0
-              device node name /dev/v4l-subdev4
-
-=>
-
-export csid0=v4l-subdev4
-
-media-ctl --reset
-yavta --no-query -w '0x009f0903 2' /dev/$csid0
-yavta --list /dev/$csid0
-media-ctl -V '"msm_csid0":0[fmt:SRGGB10/4056x3040]'
-media-ctl -V '"msm_vfe0_rdi0":0[fmt:SRGGB10/4056x3040]'
-media-ctl -l '"msm_csid0":1->"msm_vfe0_rdi0":0[1]'
-media-ctl -d /dev/media0 -p
-
-
----
-bod
+greg k-h
 
