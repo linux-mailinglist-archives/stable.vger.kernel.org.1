@@ -1,99 +1,50 @@
-Return-Path: <stable+bounces-78319-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DE4A98B4E6
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 08:51:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id CE81A98B4E8
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 08:52:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E6C14282FC0
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 06:51:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E19C41C23506
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 06:52:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E2D4197512;
-	Tue,  1 Oct 2024 06:51:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 869C663D;
+	Tue,  1 Oct 2024 06:52:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="BMxgAj9/";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Xb0ejPtP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CHjLvkD9"
 X-Original-To: stable@vger.kernel.org
-Received: from fout-a8-smtp.messagingengine.com (fout-a8-smtp.messagingengine.com [103.168.172.151])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5729863D;
-	Tue,  1 Oct 2024 06:51:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43709192D65
+	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 06:52:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727765469; cv=none; b=X+fWcYOKsNpGGlECAy4hhGljbyIjjlhZi8jrIkbCv00GuG+dZ3ZzC+8Q6g95DExNZ7AlspGZMy8P9EMD1k+v0sJisptwwGetOLduvCTfCZFwC4wvPEpWUW5zfYzEOvEDzIgFHsQclroDSV0Imel5AJR6W5mAxvXx2s6OPeCIiO0=
+	t=1727765552; cv=none; b=OU3W6fbB7xUXX96gKDK0G13wxRqZ+4Eym0QbQ2s07qhLuiTnNYZXogW4hkxKHCZDwfmMkS0/3ZvN2s+v5cu8hfJSQRVtc7bISbCbACTSfGZgclBZlhAjGVIQhDXNrsOdtcJUa6vr6S9BgRotsXU1Q/o1KuNiP1k8IEJAidQRtK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727765469; c=relaxed/simple;
-	bh=E+0X28JRGcE8U5QB+inWSNqwqpnRiWrIeRY7OAEj5VY=;
+	s=arc-20240116; t=1727765552; c=relaxed/simple;
+	bh=QN0Hn69HMSkjEUv1OGdqOX3Bjlq35lE6Ios0VBR7bq0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=j9Fqkf1JUKLbt0ZEEx7UdPjV/PQwAANLD0CyOtcsVIGG6wCnwhKSEFln/bL2NImYY+45vu6BPclsrx6rZeGvDsqVByYod7O0V6R3WOQEQe7xc4Rk9PJXRtMdEsaCCF25thd+gY+0DnXoNB5HoSAUH8SPFbZdc2oBR0Kkgq2bAdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=BMxgAj9/; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Xb0ejPtP; arc=none smtp.client-ip=103.168.172.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
-Received: from phl-compute-08.internal (phl-compute-08.phl.internal [10.202.2.48])
-	by mailfout.phl.internal (Postfix) with ESMTP id 304B21381EE9;
-	Tue,  1 Oct 2024 02:51:05 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-08.internal (MEProxy); Tue, 01 Oct 2024 02:51:05 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1727765465; x=1727851865; bh=E+0X28JRGc
-	E8U5QB+inWSNqwqpnRiWrIeRY7OAEj5VY=; b=BMxgAj9/ZVnik9GC8JiVKdNByG
-	1gixrPcIsbJ4RJ6mw0Am30a90KZQJQB8X0xT38bXihLeJJcw1hQRYGhpC9vVkABK
-	ultR/rf/2OvAgtSqMdMtzmAlo4oNOUEvn8xW/77y+v6PeaRIPoLEo7ZcR0T1LSr7
-	v/5GNriU/+WkMqQrXe1WXR0y3uWQIwge1KLczq9EqV8ih3R07YAh9k8KrwBPpfu6
-	Rx7s0ni7j99VcUbkqjDR7SugtwIGt1G0FsSlgL8lbTsmeAg93A6GW1HLTxUhdjSb
-	OjAE+Ail9okcI8SqZ4zPBpGLeFTXh48ti1IWdhOw3CWidiRMFk0WjC9oQS7Q==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1727765465; x=1727851865; bh=E+0X28JRGcE8U5QB+inWSNqwqpnR
-	iWrIeRY7OAEj5VY=; b=Xb0ejPtP6IuUiECwCZDhle+7k2KGNU0Xraec9nwthcIU
-	Hty3AN0LtnT780s85oTmQaBmVjeMlcKh6j0Kll3bIdYIQgDpgXzLYH8Q7LUr5HKy
-	GoqFkcAIa8OmE9vUmPFDT5z7lKMLtSg6vC2G+tMeG9rdB2QtF8tQTICM7bM4QMeT
-	NYKinuBo9fBqJXPf030Lt1xhaiTJsdXJKYbvjmZPpNBqMHw+7skYZASrVSMbiQmZ
-	2cf2NH9zzEOjPMQFPrZ5gDJXXXnxmm5aGlm+smv9iRtcRWw4zaVDuYc/q3tLS90U
-	vCkg6gqnoiWae6/JFDSGgcQr30M14GOGvmGNjmN7xQ==
-X-ME-Sender: <xms:2Jv7ZrK3aM5nD8CtnWxQmE9QgFis9RiCKB6tNDRPjdIZ4Bs3ZkqIZg>
-    <xme:2Jv7ZvI-rvPtHaPE7xiVy7RpQnplJLKJOUcVOgSXwQcDYZUVVRZyu9l6FyX8RJphU
-    jMt3Cn2QfcMGg>
-X-ME-Received: <xmr:2Jv7ZjuRNijZHdDLOnKnghl441cxNbUN7H9Ou6ptVNZ1Scq9oME_B0l49avs0EZ7An729FT0r1qL5sJjf3DEjGVxs_YWj5NFj0BG2g>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdduiedguddufecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
-    necuhfhrohhmpefirhgvghcumffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtf
-    frrghtthgvrhhnpeehgedvvedvleejuefgtdduudfhkeeltdeihfevjeekjeeuhfdtueef
-    hffgheekteenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhroh
-    hmpehgrhgvgheskhhrohgrhhdrtghomhdpnhgspghrtghpthhtohepuddtpdhmohguvgep
-    shhmthhpohhuthdprhgtphhtthhopehjrghsohhnseiigidvtgegrdgtohhmpdhrtghpth
-    htohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshgr
-    shhhrghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsthgrsghlvgdqtghomhhmih
-    htshesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehshhhurghhsehkvghr
-    nhgvlhdrohhrgh
-X-ME-Proxy: <xmx:2Jv7ZkZE_nZYogjxcizGp4XrdaaWOcr4MghsQ27ozELjVGJw7bV_xA>
-    <xmx:2Jv7Zia6Zfwvztmk449wmAvD7jPmNBX1o3G00MgYdVf-Zn0nvAPRng>
-    <xmx:2Jv7ZoACfex0LBskdsHf2heSv7WYb3GoCm2RhuZ-gBUsz6SVkWWa-Q>
-    <xmx:2Jv7ZgaiFsLkEeVMwPYdlLaJ4QlyXMCkZ-UZfyPFXR-FG34FMoUHrw>
-    <xmx:2Zv7ZvQh5wqVjMsP5yakXXUxXviJI7lmsRmT11cN4dYj1vaNJpxpBxta>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 1 Oct 2024 02:51:04 -0400 (EDT)
-Date: Tue, 1 Oct 2024 08:51:02 +0200
-From: Greg KH <greg@kroah.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=T92dPXCOo1rKJCyaJtd9SyRJ1u6GjNmzTpY6dfIDsGju29G819hCmnucmrt/RZ1Pnv+/shMk4qAxpNytlYP09WjO64N1+aJiEXRtngqmh7JxIFePa5IdHP5HFSioE3uTOVKObMVrbQ2kUMCmCl84zVKfOSsD5uRgrw3ONkeBroo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CHjLvkD9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4781CC4CEC6;
+	Tue,  1 Oct 2024 06:52:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1727765551;
+	bh=QN0Hn69HMSkjEUv1OGdqOX3Bjlq35lE6Ios0VBR7bq0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=CHjLvkD9WnJrrtrlgkd0y2sthyj2Pa1pUnpJ4w3LHADyLrWxPfrFZiGQzQuSorR9L
+	 SuOmGS0Uhico7vjFW6pR3qU9HLoA9XGsr26c0+1AZUbSl1hzW+cykaKcp4XY3tk70T
+	 snpoImamqZv3/Z1ydw07XVgcxTve2HQ5vExg1vaI=
+Date: Tue, 1 Oct 2024 08:52:28 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: "Jason A. Donenfeld" <Jason@zx2c4.com>
-Cc: stable@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
-	stable-commits@vger.kernel.org, Shuah Khan <shuah@kernel.org>
-Subject: Re: Patch "selftests: vDSO: simplify getrandom thread local storage
- and structs" has been added to the 6.11-stable tree
-Message-ID: <2024100144-aloe-acronym-f34c@gregkh>
-References: <20240930231438.2560642-1-sashal@kernel.org>
- <CAHmME9pBufdO91FK8A_ywNhOcpxSjvZJA3_pBCbhPf+1qHZaMw@mail.gmail.com>
+Cc: Sasha Levin <sashal@kernel.org>, stable <stable@vger.kernel.org>
+Subject: Re: patches sent up to 6.13-rc1 that shouldn't be backported
+Message-ID: <2024100107-womb-share-931a@gregkh>
+References: <CAHmME9rtJ1YZGjYkWR10Wc24bVoJ4yZ-uQn0eTWjpfKxngBvvA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -102,13 +53,34 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAHmME9pBufdO91FK8A_ywNhOcpxSjvZJA3_pBCbhPf+1qHZaMw@mail.gmail.com>
+In-Reply-To: <CAHmME9rtJ1YZGjYkWR10Wc24bVoJ4yZ-uQn0eTWjpfKxngBvvA@mail.gmail.com>
 
-On Tue, Oct 01, 2024 at 05:56:12AM +0200, Jason A. Donenfeld wrote:
-> This is not stable material and I didn't mark it as such. Do not backport.
+On Tue, Oct 01, 2024 at 06:02:45AM +0200, Jason A. Donenfeld wrote:
+> Hi Sasha,
+> 
+> I've been getting emails from your bots...
+> 
+> I sent two pulls to Linus for 6.13-rc1:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=4a39ac5b7d62679c07a3e3d12b0f6982377d8a7d
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=34e1a5d43c5deec563b94f3330b690dde9d1de53
+> 
+> In these, I'm not sure there's actually much valid stable material. I
+> didn't mark anything as Cc: stable@vger.kernel.org, I don't think.
+> 
+> As such, can you make sure none of those get backported?
+> 
+> Alternatively, if you do have reason to want to pick some of these,
+> can you be clear with what and why, and actually carefully decide
+> which ones and which dependencies are required as such in a
+> non-automated way?
 
-It was taken as a dependancy of another patch, but I'll go drop them and
-see how it goes...
+They say so directly in the commit, i.e.:
+	Stable-dep-of: 6eda706a535c ("selftests: vDSO: fix the way vDSO functions are called for powerpc")
+
+in each one.  So this seem to be needed to fix up the powerpc stuff.
+
+I'll drop them all if you feel these should not be applied.
 
 thanks,
 
