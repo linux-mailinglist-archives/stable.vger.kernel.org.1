@@ -1,48 +1,48 @@
-Return-Path: <stable+bounces-78391-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78392-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12FB198B91D
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 12:17:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92E8098B91E
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 12:17:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3A49F1C21E3B
-	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 10:17:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 4774B1F23542
+	for <lists+stable@lfdr.de>; Tue,  1 Oct 2024 10:17:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 921B3192D74;
-	Tue,  1 Oct 2024 10:17:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9AB019DF77;
+	Tue,  1 Oct 2024 10:17:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bc/z7ZTu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="se9VO736"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5353F3209
-	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 10:17:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9986619CC2D
+	for <stable@vger.kernel.org>; Tue,  1 Oct 2024 10:17:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727777831; cv=none; b=lSxgH+bGvQuqsck7yPP97UY4LwDdwB2ZC+XDPq3tSRMxUielnKE+LSIzQIzRz6UFbxbOyG93R7Wz230ZuPqhAV9ylZeg0qNq/1EnAsPm+GvEUPVeRm4dtO36Vuo6P7a3yOy/+x8nmUPuw9T/nRh610BV3G9ahoOiADuTiiPBo+o=
+	t=1727777834; cv=none; b=UigvG4lWLIMGxFF94eMVCYERAjquyVyft46tNzCQFoDdhoo3QZevsQLRw2gCn+4JI/cIn52cWQrNt+tMTLjoXZrtHytQimRvaYhRmwx5Iz1n3q4/e5d7sFZgZuAHaCBC9B9JE5xw6Yzevh/xEsUTjzMmu4RaoguFroLNsSyDKuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727777831; c=relaxed/simple;
-	bh=nFyreWwkpTCitW00lAWZ7+flUOGHO06GNUZITAjg/7k=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=e3ojrpTToxJ6FY8ds4PTZ4sHQBT+FQHjXg1QMaxZYbkM6JNghQYpyxBgJ8vSoo2McosS2+LpcG9ACVkuP35Wtq3KY/yGyIgJTyfg537cexvHUwrHdas1yLng6cGhDVBjc4s7Gx7y/sRRQ7LY8yESMhl2I4HZLl30JZ1gDpr5aec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bc/z7ZTu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8294EC4CEC6;
-	Tue,  1 Oct 2024 10:17:10 +0000 (UTC)
+	s=arc-20240116; t=1727777834; c=relaxed/simple;
+	bh=AjsgvtC6xY7kAsJhjbcQps001bSOIVVspeDKZ/M5y8Y=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ulj1zEylws+Otk7c2QHHcTi6TNN1waVho+6AZ+hNVh2HDIf6Ig6TsGYUjSz2kBq7Wyoj6hqP+2KwR6GLmSduEs8GO6mJumkPcbcoI8qiSJ2JOb3OFLbpwsEYkWcuf48dy8zzc2gzMV0wT1+Z3X2//AWKJkGhKCAqciAPyVdKcoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=se9VO736; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAF3CC4CEC6;
+	Tue,  1 Oct 2024 10:17:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727777830;
-	bh=nFyreWwkpTCitW00lAWZ7+flUOGHO06GNUZITAjg/7k=;
+	s=korg; t=1727777834;
+	bh=AjsgvtC6xY7kAsJhjbcQps001bSOIVVspeDKZ/M5y8Y=;
 	h=Subject:To:Cc:From:Date:From;
-	b=Bc/z7ZTu1dLM/x5SK/hrFuai+vVzqGRfl0CbWzRqLQ2fBIZEsl4qCXbDDWA/mF10d
-	 0jXMh1mTP9BPca6saQ2ok47IzDjH0jWwnXxJrWCA8vKTq8Q/WQAHLaHW4Eo36OxvOV
-	 QDEii8qNI9NhlVPJlWCcRxsRfu5NRzpc79WRHfbc=
-Subject: FAILED: patch "[PATCH] powerpc/atomic: Use YZ constraints for DS-form instructions" failed to apply to 6.1-stable tree
+	b=se9VO736SqzpodVSoDCzhXWMWLayk5oXfl21WBMu+LNVsmM0CvL2AyQaQ2jmPCc5K
+	 6yymioLmdjdGPYhw0Mh2/lYpc7qho5BsRqQCHyNbjGsxGCVo+7TCECIxfwCm0lu4Db
+	 qe5QyZutlsyqujfhBF+dt11Cw631B3exYUakau/U=
+Subject: FAILED: patch "[PATCH] powerpc/atomic: Use YZ constraints for DS-form instructions" failed to apply to 5.15-stable tree
 To: mpe@ellerman.id.au,almasrymina@google.com,segher@kernel.crashing.org,sfr@canb.auug.org.au
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Tue, 01 Oct 2024 12:17:08 +0200
-Message-ID: <2024100108-entail-slicing-6f85@gregkh>
+Date: Tue, 01 Oct 2024 12:17:09 +0200
+Message-ID: <2024100109-reference-stillness-ee9e@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -53,25 +53,42 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 39190ac7cff1fd15135fa8e658030d9646fdb5f2
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100108-entail-slicing-6f85@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2024100109-reference-stillness-ee9e@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
 39190ac7cff1 ("powerpc/atomic: Use YZ constraints for DS-form instructions")
 dc5dac748af9 ("powerpc/64: Add support to build with prefixed instructions")
 5017b4594672 ("powerpc/64: Option to build big-endian with ELFv2 ABI")
+4b2a9315f20d ("powerpc/64s: POWER10 CPU Kconfig build option")
+ff27d9200a98 ("powerpc/405: Fix build failure with GCC 12 (unrecognized opcode: `wrteei')")
+446cda1b21d9 ("powerpc/32: Don't always pass -mcpu=powerpc to the compiler")
+661aa880398a ("powerpc: Add CONFIG_PPC64_ELF_ABI_V1 and CONFIG_PPC64_ELF_ABI_V2")
+dede19be5163 ("powerpc: Remove CONFIG_PPC_HAVE_KUAP and CONFIG_PPC_HAVE_KUEP")
+fcf9bb6d32f8 ("powerpc/kuap: Wire-up KUAP on 40x")
+25ae981fafaa ("powerpc/nohash: Move setup_kuap out of 8xx.c")
+6754862249d3 ("powerpc/kuep: Remove 'nosmep' boot time parameter except for book3s/64")
+70428da94c7a ("powerpc/32s: Save content of sr0 to avoid 'mfsr'")
+526d4a4c77ae ("powerpc/32s: Do kuep_lock() and kuep_unlock() in assembly")
+df415cd75826 ("powerpc/32s: Remove capability to disable KUEP at boottime")
+dc3a0e5b83a8 ("powerpc/book3e: Activate KUEP at all time")
+ee2631603fdb ("powerpc/44x: Activate KUEP at all time")
+13dac4e31e75 ("powerpc/8xx: Activate KUEP at all time")
+6c1fa60d368e ("Revert "powerpc: Inline setup_kup()"")
+c28573744b74 ("powerpc/64s: Make hash MMU support configurable")
+7ebc49031d04 ("powerpc: Rename PPC_NATIVE to PPC_HASH_MMU_NATIVE")
 
 thanks,
 
