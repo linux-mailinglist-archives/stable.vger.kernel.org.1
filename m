@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-79989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F14798DB3C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:29:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA74A98DDB9
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:51:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CC8EFB25237
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:29:25 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 37A5C1F23D68
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:51:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A6C01D1501;
-	Wed,  2 Oct 2024 14:24:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FCD61D0F44;
+	Wed,  2 Oct 2024 14:49:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nd/Cdye9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nbIv+2kJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 396F31D0940;
-	Wed,  2 Oct 2024 14:24:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D1D81D1E68;
+	Wed,  2 Oct 2024 14:49:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879060; cv=none; b=L1AeTvAgbAyFpW6bdrnJqqOhzd+DWlORMBVV8Zxo1KKAlBmzBAMTuLBbQ8J6vBirkV23ktRtnJMXyIILxsoTG0psC0uyfJCwt+Rwas2dHAh5SLDa0AurczFIQ0u+KPO9pmN/x0/NNv9N+Gg7WRSYaXeZbC83/om8yIHVxTRAPJg=
+	t=1727880548; cv=none; b=s/ZbDet/abjs5sSOS6IASreOFcpkZIQ7lFrPCWSJ6MMMPYjMmUfvWTsnDVmcVMx3LZPlYqIl0sgEbH51KMLnhs3cmhyfvygdojnW9C/8W+QeE93i7VbSEXMsEnYGsIqiHnH1vx5W6yQEvUA32eLjwDxWZ7tIj9pvyBq9v45mUSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879060; c=relaxed/simple;
-	bh=jidoTkf2NxQNQxtu1HcA+kLx5WtXJUsAbTDeJSbxb/k=;
+	s=arc-20240116; t=1727880548; c=relaxed/simple;
+	bh=FkfVtVAYzEfwOQhqQ1kXT9EHjdMWCXdCdeqGxy4JCF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nwKzltLAc15jlVKQJSUynpoIdEoNrn7p5UOJ4bM6AdSdoBaiParDqKz0Tx5FydxZSJzf3MkkI7PUX6ZFe7pFQL3z/hkCY+G0Rmq/9mjvHQONtgnNhLIKtZHIN5I7BNmJBH9MpMYWlxVaP35M5AuIEX/8dWtGVkkmrh2BUHMz2BU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nd/Cdye9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48323C4CEC2;
-	Wed,  2 Oct 2024 14:24:19 +0000 (UTC)
+	 MIME-Version; b=qirPDRWV06iNkIIyS5TRlU85RMktGvk/RvChmPqGCPEVKCYOt+yKfIJkhDoJPbJGGGgP/GqoA2D7gTYXifYfIec6a742rI1C2GZhcfB0gJLPQRD8Ky6LilxB6z5tSWIDLd774ooXaL73aWh59yhOF4U5Kj0+izQ1l+fx6V+yITo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nbIv+2kJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CA12C4CEC2;
+	Wed,  2 Oct 2024 14:49:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879059;
-	bh=jidoTkf2NxQNQxtu1HcA+kLx5WtXJUsAbTDeJSbxb/k=;
+	s=korg; t=1727880547;
+	bh=FkfVtVAYzEfwOQhqQ1kXT9EHjdMWCXdCdeqGxy4JCF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nd/Cdye9U+fqn1Sj2ltSECVZoDHcL86OhlYP6m5SalmxDR7M9P7wtoYRapjv8Jiih
-	 LNuniNfzW16ATr24890FAYVQ465qFwEb0p7alisSPyzUMEgt08x6xUUjCHgZ4Ikvit
-	 tKBWjfWm5tqU8KsWZNNpcZaX2HJsMkRN46AETXIA=
+	b=nbIv+2kJ4y/7ywv7AidS7hR8zpl2L36+DfI9E04E2qd8YpPxnWVoRB2fqoSA0KK2C
+	 uqCljSlTkjnOoNnGTK+39n+4XGL3ao5hnQw6vZRT2r0iKquMm17+IlPVtT2hWjUSfG
+	 X46vHojxR4EF2++6ieu9INZMRxVaV3mpMF4RWdAQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Mina Almasry <almasrymina@google.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 607/634] idpf: stop using macros for accessing queue descriptors
-Date: Wed,  2 Oct 2024 15:01:47 +0200
-Message-ID: <20241002125835.074332398@linuxfoundation.org>
+	Anastasia Belova <abelova@astralinux.ru>,
+	Marc Zyngier <maz@kernel.org>,
+	Will Deacon <will@kernel.org>
+Subject: [PATCH 6.6 469/538] arm64: esr: Define ESR_ELx_EC_* constants as UL
+Date: Wed,  2 Oct 2024 15:01:48 +0200
+Message-ID: <20241002125810.955908377@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,379 +62,147 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Lobakin <aleksander.lobakin@intel.com>
+From: Anastasia Belova <abelova@astralinux.ru>
 
-[ Upstream commit 66c27e3b19d5aae58d7f0145113de61d6fba5e09 ]
+commit b6db3eb6c373b97d9e433530d748590421bbeea7 upstream.
 
-In C, we have structures and unions.
-Casting `void *` via macros is not only error-prone, but also looks
-confusing and awful in general.
-In preparation for splitting the queue structs, replace it with a
-union and direct array dereferences.
+Add explicit casting to prevent expantion of 32th bit of
+u32 into highest half of u64 in several places.
 
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Mina Almasry <almasrymina@google.com>
-Signed-off-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Stable-dep-of: e4b398dd82f5 ("idpf: fix netdev Tx queue stop/wake")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+For example, in inject_abt64:
+ESR_ELx_EC_DABT_LOW << ESR_ELx_EC_SHIFT = 0x24 << 26.
+This operation's result is int with 1 in 32th bit.
+While casting this value into u64 (esr is u64) 1
+fills 32 highest bits.
+
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Cc: <stable@vger.kernel.org>
+Fixes: aa8eff9bfbd5 ("arm64: KVM: fault injection into a guest")
+Signed-off-by: Anastasia Belova <abelova@astralinux.ru>
+Acked-by: Marc Zyngier <maz@kernel.org>
+Link: https://lore.kernel.org/stable/20240910085016.32120-1-abelova%40astralinux.ru
+Link: https://lore.kernel.org/r/20240910085016.32120-1-abelova@astralinux.ru
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/idpf/idpf.h        |  1 -
- .../net/ethernet/intel/idpf/idpf_lan_txrx.h   |  2 +
- .../ethernet/intel/idpf/idpf_singleq_txrx.c   | 20 ++++----
- drivers/net/ethernet/intel/idpf/idpf_txrx.c   | 32 ++++++-------
- drivers/net/ethernet/intel/idpf/idpf_txrx.h   | 47 ++++++++++---------
- 5 files changed, 52 insertions(+), 50 deletions(-)
+ arch/arm64/include/asm/esr.h |   88 +++++++++++++++++++++----------------------
+ 1 file changed, 44 insertions(+), 44 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf.h b/drivers/net/ethernet/intel/idpf/idpf.h
-index e7a0365382465..0b26dd9b8a512 100644
---- a/drivers/net/ethernet/intel/idpf/idpf.h
-+++ b/drivers/net/ethernet/intel/idpf/idpf.h
-@@ -20,7 +20,6 @@ struct idpf_vport_max_q;
- #include <linux/dim.h>
+--- a/arch/arm64/include/asm/esr.h
++++ b/arch/arm64/include/asm/esr.h
+@@ -10,63 +10,63 @@
+ #include <asm/memory.h>
+ #include <asm/sysreg.h>
  
- #include "virtchnl2.h"
--#include "idpf_lan_txrx.h"
- #include "idpf_txrx.h"
- #include "idpf_controlq.h"
+-#define ESR_ELx_EC_UNKNOWN	(0x00)
+-#define ESR_ELx_EC_WFx		(0x01)
++#define ESR_ELx_EC_UNKNOWN	UL(0x00)
++#define ESR_ELx_EC_WFx		UL(0x01)
+ /* Unallocated EC: 0x02 */
+-#define ESR_ELx_EC_CP15_32	(0x03)
+-#define ESR_ELx_EC_CP15_64	(0x04)
+-#define ESR_ELx_EC_CP14_MR	(0x05)
+-#define ESR_ELx_EC_CP14_LS	(0x06)
+-#define ESR_ELx_EC_FP_ASIMD	(0x07)
+-#define ESR_ELx_EC_CP10_ID	(0x08)	/* EL2 only */
+-#define ESR_ELx_EC_PAC		(0x09)	/* EL2 and above */
++#define ESR_ELx_EC_CP15_32	UL(0x03)
++#define ESR_ELx_EC_CP15_64	UL(0x04)
++#define ESR_ELx_EC_CP14_MR	UL(0x05)
++#define ESR_ELx_EC_CP14_LS	UL(0x06)
++#define ESR_ELx_EC_FP_ASIMD	UL(0x07)
++#define ESR_ELx_EC_CP10_ID	UL(0x08)	/* EL2 only */
++#define ESR_ELx_EC_PAC		UL(0x09)	/* EL2 and above */
+ /* Unallocated EC: 0x0A - 0x0B */
+-#define ESR_ELx_EC_CP14_64	(0x0C)
+-#define ESR_ELx_EC_BTI		(0x0D)
+-#define ESR_ELx_EC_ILL		(0x0E)
++#define ESR_ELx_EC_CP14_64	UL(0x0C)
++#define ESR_ELx_EC_BTI		UL(0x0D)
++#define ESR_ELx_EC_ILL		UL(0x0E)
+ /* Unallocated EC: 0x0F - 0x10 */
+-#define ESR_ELx_EC_SVC32	(0x11)
+-#define ESR_ELx_EC_HVC32	(0x12)	/* EL2 only */
+-#define ESR_ELx_EC_SMC32	(0x13)	/* EL2 and above */
++#define ESR_ELx_EC_SVC32	UL(0x11)
++#define ESR_ELx_EC_HVC32	UL(0x12)	/* EL2 only */
++#define ESR_ELx_EC_SMC32	UL(0x13)	/* EL2 and above */
+ /* Unallocated EC: 0x14 */
+-#define ESR_ELx_EC_SVC64	(0x15)
+-#define ESR_ELx_EC_HVC64	(0x16)	/* EL2 and above */
+-#define ESR_ELx_EC_SMC64	(0x17)	/* EL2 and above */
+-#define ESR_ELx_EC_SYS64	(0x18)
+-#define ESR_ELx_EC_SVE		(0x19)
+-#define ESR_ELx_EC_ERET		(0x1a)	/* EL2 only */
++#define ESR_ELx_EC_SVC64	UL(0x15)
++#define ESR_ELx_EC_HVC64	UL(0x16)	/* EL2 and above */
++#define ESR_ELx_EC_SMC64	UL(0x17)	/* EL2 and above */
++#define ESR_ELx_EC_SYS64	UL(0x18)
++#define ESR_ELx_EC_SVE		UL(0x19)
++#define ESR_ELx_EC_ERET		UL(0x1a)	/* EL2 only */
+ /* Unallocated EC: 0x1B */
+-#define ESR_ELx_EC_FPAC		(0x1C)	/* EL1 and above */
+-#define ESR_ELx_EC_SME		(0x1D)
++#define ESR_ELx_EC_FPAC		UL(0x1C)	/* EL1 and above */
++#define ESR_ELx_EC_SME		UL(0x1D)
+ /* Unallocated EC: 0x1E */
+-#define ESR_ELx_EC_IMP_DEF	(0x1f)	/* EL3 only */
+-#define ESR_ELx_EC_IABT_LOW	(0x20)
+-#define ESR_ELx_EC_IABT_CUR	(0x21)
+-#define ESR_ELx_EC_PC_ALIGN	(0x22)
++#define ESR_ELx_EC_IMP_DEF	UL(0x1f)	/* EL3 only */
++#define ESR_ELx_EC_IABT_LOW	UL(0x20)
++#define ESR_ELx_EC_IABT_CUR	UL(0x21)
++#define ESR_ELx_EC_PC_ALIGN	UL(0x22)
+ /* Unallocated EC: 0x23 */
+-#define ESR_ELx_EC_DABT_LOW	(0x24)
+-#define ESR_ELx_EC_DABT_CUR	(0x25)
+-#define ESR_ELx_EC_SP_ALIGN	(0x26)
+-#define ESR_ELx_EC_MOPS		(0x27)
+-#define ESR_ELx_EC_FP_EXC32	(0x28)
++#define ESR_ELx_EC_DABT_LOW	UL(0x24)
++#define ESR_ELx_EC_DABT_CUR	UL(0x25)
++#define ESR_ELx_EC_SP_ALIGN	UL(0x26)
++#define ESR_ELx_EC_MOPS		UL(0x27)
++#define ESR_ELx_EC_FP_EXC32	UL(0x28)
+ /* Unallocated EC: 0x29 - 0x2B */
+-#define ESR_ELx_EC_FP_EXC64	(0x2C)
++#define ESR_ELx_EC_FP_EXC64	UL(0x2C)
+ /* Unallocated EC: 0x2D - 0x2E */
+-#define ESR_ELx_EC_SERROR	(0x2F)
+-#define ESR_ELx_EC_BREAKPT_LOW	(0x30)
+-#define ESR_ELx_EC_BREAKPT_CUR	(0x31)
+-#define ESR_ELx_EC_SOFTSTP_LOW	(0x32)
+-#define ESR_ELx_EC_SOFTSTP_CUR	(0x33)
+-#define ESR_ELx_EC_WATCHPT_LOW	(0x34)
+-#define ESR_ELx_EC_WATCHPT_CUR	(0x35)
++#define ESR_ELx_EC_SERROR	UL(0x2F)
++#define ESR_ELx_EC_BREAKPT_LOW	UL(0x30)
++#define ESR_ELx_EC_BREAKPT_CUR	UL(0x31)
++#define ESR_ELx_EC_SOFTSTP_LOW	UL(0x32)
++#define ESR_ELx_EC_SOFTSTP_CUR	UL(0x33)
++#define ESR_ELx_EC_WATCHPT_LOW	UL(0x34)
++#define ESR_ELx_EC_WATCHPT_CUR	UL(0x35)
+ /* Unallocated EC: 0x36 - 0x37 */
+-#define ESR_ELx_EC_BKPT32	(0x38)
++#define ESR_ELx_EC_BKPT32	UL(0x38)
+ /* Unallocated EC: 0x39 */
+-#define ESR_ELx_EC_VECTOR32	(0x3A)	/* EL2 only */
++#define ESR_ELx_EC_VECTOR32	UL(0x3A)	/* EL2 only */
+ /* Unallocated EC: 0x3B */
+-#define ESR_ELx_EC_BRK64	(0x3C)
++#define ESR_ELx_EC_BRK64	UL(0x3C)
+ /* Unallocated EC: 0x3D - 0x3F */
+-#define ESR_ELx_EC_MAX		(0x3F)
++#define ESR_ELx_EC_MAX		UL(0x3F)
  
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_lan_txrx.h b/drivers/net/ethernet/intel/idpf/idpf_lan_txrx.h
-index a5752dcab8887..8c7f8ef8f1a15 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_lan_txrx.h
-+++ b/drivers/net/ethernet/intel/idpf/idpf_lan_txrx.h
-@@ -4,6 +4,8 @@
- #ifndef _IDPF_LAN_TXRX_H_
- #define _IDPF_LAN_TXRX_H_
- 
-+#include <linux/bits.h>
-+
- enum idpf_rss_hash {
- 	IDPF_HASH_INVALID			= 0,
- 	/* Values 1 - 28 are reserved for future use */
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c
-index 27b93592c4bab..b17d88e150006 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_singleq_txrx.c
-@@ -205,7 +205,7 @@ static void idpf_tx_singleq_map(struct idpf_queue *tx_q,
- 	data_len = skb->data_len;
- 	size = skb_headlen(skb);
- 
--	tx_desc = IDPF_BASE_TX_DESC(tx_q, i);
-+	tx_desc = &tx_q->base_tx[i];
- 
- 	dma = dma_map_single(tx_q->dev, skb->data, size, DMA_TO_DEVICE);
- 
-@@ -239,7 +239,7 @@ static void idpf_tx_singleq_map(struct idpf_queue *tx_q,
- 			i++;
- 
- 			if (i == tx_q->desc_count) {
--				tx_desc = IDPF_BASE_TX_DESC(tx_q, 0);
-+				tx_desc = &tx_q->base_tx[0];
- 				i = 0;
- 			}
- 
-@@ -259,7 +259,7 @@ static void idpf_tx_singleq_map(struct idpf_queue *tx_q,
- 		i++;
- 
- 		if (i == tx_q->desc_count) {
--			tx_desc = IDPF_BASE_TX_DESC(tx_q, 0);
-+			tx_desc = &tx_q->base_tx[0];
- 			i = 0;
- 		}
- 
-@@ -307,7 +307,7 @@ idpf_tx_singleq_get_ctx_desc(struct idpf_queue *txq)
- 	memset(&txq->tx_buf[ntu], 0, sizeof(struct idpf_tx_buf));
- 	txq->tx_buf[ntu].ctx_entry = true;
- 
--	ctx_desc = IDPF_BASE_TX_CTX_DESC(txq, ntu);
-+	ctx_desc = &txq->base_ctx[ntu];
- 
- 	IDPF_SINGLEQ_BUMP_RING_IDX(txq, ntu);
- 	txq->next_to_use = ntu;
-@@ -455,7 +455,7 @@ static bool idpf_tx_singleq_clean(struct idpf_queue *tx_q, int napi_budget,
- 	struct netdev_queue *nq;
- 	bool dont_wake;
- 
--	tx_desc = IDPF_BASE_TX_DESC(tx_q, ntc);
-+	tx_desc = &tx_q->base_tx[ntc];
- 	tx_buf = &tx_q->tx_buf[ntc];
- 	ntc -= tx_q->desc_count;
- 
-@@ -517,7 +517,7 @@ static bool idpf_tx_singleq_clean(struct idpf_queue *tx_q, int napi_budget,
- 			if (unlikely(!ntc)) {
- 				ntc -= tx_q->desc_count;
- 				tx_buf = tx_q->tx_buf;
--				tx_desc = IDPF_BASE_TX_DESC(tx_q, 0);
-+				tx_desc = &tx_q->base_tx[0];
- 			}
- 
- 			/* unmap any remaining paged data */
-@@ -540,7 +540,7 @@ static bool idpf_tx_singleq_clean(struct idpf_queue *tx_q, int napi_budget,
- 		if (unlikely(!ntc)) {
- 			ntc -= tx_q->desc_count;
- 			tx_buf = tx_q->tx_buf;
--			tx_desc = IDPF_BASE_TX_DESC(tx_q, 0);
-+			tx_desc = &tx_q->base_tx[0];
- 		}
- 	} while (likely(budget));
- 
-@@ -895,7 +895,7 @@ bool idpf_rx_singleq_buf_hw_alloc_all(struct idpf_queue *rx_q,
- 	if (!cleaned_count)
- 		return false;
- 
--	desc = IDPF_SINGLEQ_RX_BUF_DESC(rx_q, nta);
-+	desc = &rx_q->single_buf[nta];
- 	buf = &rx_q->rx_buf.buf[nta];
- 
- 	do {
-@@ -915,7 +915,7 @@ bool idpf_rx_singleq_buf_hw_alloc_all(struct idpf_queue *rx_q,
- 		buf++;
- 		nta++;
- 		if (unlikely(nta == rx_q->desc_count)) {
--			desc = IDPF_SINGLEQ_RX_BUF_DESC(rx_q, 0);
-+			desc = &rx_q->single_buf[0];
- 			buf = rx_q->rx_buf.buf;
- 			nta = 0;
- 		}
-@@ -1016,7 +1016,7 @@ static int idpf_rx_singleq_clean(struct idpf_queue *rx_q, int budget)
- 		struct idpf_rx_buf *rx_buf;
- 
- 		/* get the Rx desc from Rx queue based on 'next_to_clean' */
--		rx_desc = IDPF_RX_DESC(rx_q, ntc);
-+		rx_desc = &rx_q->rx[ntc];
- 
- 		/* status_error_ptype_len will always be zero for unused
- 		 * descriptors because it's cleared in cleanup, and overlaps
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-index 20ca04320d4bd..948b485da539c 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-@@ -531,7 +531,7 @@ static bool idpf_rx_post_buf_desc(struct idpf_queue *bufq, u16 buf_id)
- 	struct idpf_rx_buf *buf;
- 	dma_addr_t addr;
- 
--	splitq_rx_desc = IDPF_SPLITQ_RX_BUF_DESC(bufq, nta);
-+	splitq_rx_desc = &bufq->split_buf[nta];
- 	buf = &bufq->rx_buf.buf[buf_id];
- 
- 	if (bufq->rx_hsplit_en) {
-@@ -1584,7 +1584,7 @@ do {								\
- 	if (unlikely(!(ntc))) {					\
- 		ntc -= (txq)->desc_count;			\
- 		buf = (txq)->tx_buf;				\
--		desc = IDPF_FLEX_TX_DESC(txq, 0);		\
-+		desc = &(txq)->flex_tx[0];			\
- 	} else {						\
- 		(buf)++;					\
- 		(desc)++;					\
-@@ -1617,8 +1617,8 @@ static void idpf_tx_splitq_clean(struct idpf_queue *tx_q, u16 end,
- 	s16 ntc = tx_q->next_to_clean;
- 	struct idpf_tx_buf *tx_buf;
- 
--	tx_desc = IDPF_FLEX_TX_DESC(tx_q, ntc);
--	next_pending_desc = IDPF_FLEX_TX_DESC(tx_q, end);
-+	tx_desc = &tx_q->flex_tx[ntc];
-+	next_pending_desc = &tx_q->flex_tx[end];
- 	tx_buf = &tx_q->tx_buf[ntc];
- 	ntc -= tx_q->desc_count;
- 
-@@ -1814,7 +1814,7 @@ static bool idpf_tx_clean_complq(struct idpf_queue *complq, int budget,
- 	int i;
- 
- 	complq_budget = vport->compln_clean_budget;
--	tx_desc = IDPF_SPLITQ_TX_COMPLQ_DESC(complq, ntc);
-+	tx_desc = &complq->comp[ntc];
- 	ntc -= complq->desc_count;
- 
- 	do {
-@@ -1879,7 +1879,7 @@ static bool idpf_tx_clean_complq(struct idpf_queue *complq, int budget,
- 		ntc++;
- 		if (unlikely(!ntc)) {
- 			ntc -= complq->desc_count;
--			tx_desc = IDPF_SPLITQ_TX_COMPLQ_DESC(complq, 0);
-+			tx_desc = &complq->comp[0];
- 			change_bit(__IDPF_Q_GEN_CHK, complq->flags);
- 		}
- 
-@@ -2143,7 +2143,7 @@ void idpf_tx_dma_map_error(struct idpf_queue *txq, struct sk_buff *skb,
- 		 * used one additional descriptor for a context
- 		 * descriptor. Reset that here.
- 		 */
--		tx_desc = IDPF_FLEX_TX_DESC(txq, idx);
-+		tx_desc = &txq->flex_tx[idx];
- 		memset(tx_desc, 0, sizeof(struct idpf_flex_tx_ctx_desc));
- 		if (idx == 0)
- 			idx = txq->desc_count;
-@@ -2202,7 +2202,7 @@ static void idpf_tx_splitq_map(struct idpf_queue *tx_q,
- 	data_len = skb->data_len;
- 	size = skb_headlen(skb);
- 
--	tx_desc = IDPF_FLEX_TX_DESC(tx_q, i);
-+	tx_desc = &tx_q->flex_tx[i];
- 
- 	dma = dma_map_single(tx_q->dev, skb->data, size, DMA_TO_DEVICE);
- 
-@@ -2275,7 +2275,7 @@ static void idpf_tx_splitq_map(struct idpf_queue *tx_q,
- 			i++;
- 
- 			if (i == tx_q->desc_count) {
--				tx_desc = IDPF_FLEX_TX_DESC(tx_q, 0);
-+				tx_desc = &tx_q->flex_tx[0];
- 				i = 0;
- 				tx_q->compl_tag_cur_gen =
- 					IDPF_TX_ADJ_COMPL_TAG_GEN(tx_q);
-@@ -2320,7 +2320,7 @@ static void idpf_tx_splitq_map(struct idpf_queue *tx_q,
- 		i++;
- 
- 		if (i == tx_q->desc_count) {
--			tx_desc = IDPF_FLEX_TX_DESC(tx_q, 0);
-+			tx_desc = &tx_q->flex_tx[0];
- 			i = 0;
- 			tx_q->compl_tag_cur_gen = IDPF_TX_ADJ_COMPL_TAG_GEN(tx_q);
- 		}
-@@ -2553,7 +2553,7 @@ idpf_tx_splitq_get_ctx_desc(struct idpf_queue *txq)
- 	txq->tx_buf[i].compl_tag = IDPF_SPLITQ_TX_INVAL_COMPL_TAG;
- 
- 	/* grab the next descriptor */
--	desc = IDPF_FLEX_TX_CTX_DESC(txq, i);
-+	desc = &txq->flex_ctx[i];
- 	txq->next_to_use = idpf_tx_splitq_bump_ntu(txq, i);
- 
- 	return desc;
-@@ -3128,7 +3128,6 @@ static int idpf_rx_splitq_clean(struct idpf_queue *rxq, int budget)
- 		struct idpf_sw_queue *refillq = NULL;
- 		struct idpf_rxq_set *rxq_set = NULL;
- 		struct idpf_rx_buf *rx_buf = NULL;
--		union virtchnl2_rx_desc *desc;
- 		unsigned int pkt_len = 0;
- 		unsigned int hdr_len = 0;
- 		u16 gen_id, buf_id = 0;
-@@ -3138,8 +3137,7 @@ static int idpf_rx_splitq_clean(struct idpf_queue *rxq, int budget)
- 		u8 rxdid;
- 
- 		/* get the Rx desc from Rx queue based on 'next_to_clean' */
--		desc = IDPF_RX_DESC(rxq, ntc);
--		rx_desc = (struct virtchnl2_rx_flex_desc_adv_nic_3 *)desc;
-+		rx_desc = &rxq->rx[ntc].flex_adv_nic_3_wb;
- 
- 		/* This memory barrier is needed to keep us from reading
- 		 * any other fields out of the rx_desc
-@@ -3320,11 +3318,11 @@ static void idpf_rx_clean_refillq(struct idpf_queue *bufq,
- 	int cleaned = 0;
- 	u16 gen;
- 
--	buf_desc = IDPF_SPLITQ_RX_BUF_DESC(bufq, bufq_nta);
-+	buf_desc = &bufq->split_buf[bufq_nta];
- 
- 	/* make sure we stop at ring wrap in the unlikely case ring is full */
- 	while (likely(cleaned < refillq->desc_count)) {
--		u16 refill_desc = IDPF_SPLITQ_RX_BI_DESC(refillq, ntc);
-+		u16 refill_desc = refillq->ring[ntc];
- 		bool failure;
- 
- 		gen = FIELD_GET(IDPF_RX_BI_GEN_M, refill_desc);
-@@ -3342,7 +3340,7 @@ static void idpf_rx_clean_refillq(struct idpf_queue *bufq,
- 		}
- 
- 		if (unlikely(++bufq_nta == bufq->desc_count)) {
--			buf_desc = IDPF_SPLITQ_RX_BUF_DESC(bufq, 0);
-+			buf_desc = &bufq->split_buf[0];
- 			bufq_nta = 0;
- 		} else {
- 			buf_desc++;
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.h b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-index 551391e204647..6dce14483215f 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-@@ -8,6 +8,7 @@
- #include <net/tcp.h>
- #include <net/netdev_queues.h>
- 
-+#include "idpf_lan_txrx.h"
- #include "virtchnl2_lan_desc.h"
- 
- #define IDPF_LARGE_MAX_Q			256
-@@ -117,24 +118,6 @@ do {								\
- #define IDPF_RXD_EOF_SPLITQ		VIRTCHNL2_RX_FLEX_DESC_ADV_STATUS0_EOF_M
- #define IDPF_RXD_EOF_SINGLEQ		VIRTCHNL2_RX_BASE_DESC_STATUS_EOF_M
- 
--#define IDPF_SINGLEQ_RX_BUF_DESC(rxq, i)	\
--	(&(((struct virtchnl2_singleq_rx_buf_desc *)((rxq)->desc_ring))[i]))
--#define IDPF_SPLITQ_RX_BUF_DESC(rxq, i)	\
--	(&(((struct virtchnl2_splitq_rx_buf_desc *)((rxq)->desc_ring))[i]))
--#define IDPF_SPLITQ_RX_BI_DESC(rxq, i) ((((rxq)->ring))[i])
--
--#define IDPF_BASE_TX_DESC(txq, i)	\
--	(&(((struct idpf_base_tx_desc *)((txq)->desc_ring))[i]))
--#define IDPF_BASE_TX_CTX_DESC(txq, i) \
--	(&(((struct idpf_base_tx_ctx_desc *)((txq)->desc_ring))[i]))
--#define IDPF_SPLITQ_TX_COMPLQ_DESC(txcq, i)	\
--	(&(((struct idpf_splitq_tx_compl_desc *)((txcq)->desc_ring))[i]))
--
--#define IDPF_FLEX_TX_DESC(txq, i) \
--	(&(((union idpf_tx_flex_desc *)((txq)->desc_ring))[i]))
--#define IDPF_FLEX_TX_CTX_DESC(txq, i)	\
--	(&(((struct idpf_flex_tx_ctx_desc *)((txq)->desc_ring))[i]))
--
- #define IDPF_DESC_UNUSED(txq)     \
- 	((((txq)->next_to_clean > (txq)->next_to_use) ? 0 : (txq)->desc_count) + \
- 	(txq)->next_to_clean - (txq)->next_to_use - 1)
-@@ -317,8 +300,6 @@ struct idpf_rx_extracted {
- 
- #define IDPF_RX_DMA_ATTR \
- 	(DMA_ATTR_SKIP_CPU_SYNC | DMA_ATTR_WEAK_ORDERING)
--#define IDPF_RX_DESC(rxq, i)	\
--	(&(((union virtchnl2_rx_desc *)((rxq)->desc_ring))[i]))
- 
- struct idpf_rx_buf {
- 	struct page *page;
-@@ -655,7 +636,15 @@ union idpf_queue_stats {
-  * @q_vector: Backreference to associated vector
-  * @size: Length of descriptor ring in bytes
-  * @dma: Physical address of ring
-- * @desc_ring: Descriptor ring memory
-+ * @rx: universal receive descriptor array
-+ * @single_buf: Rx buffer descriptor array in singleq
-+ * @split_buf: Rx buffer descriptor array in splitq
-+ * @base_tx: basic Tx descriptor array
-+ * @base_ctx: basic Tx context descriptor array
-+ * @flex_tx: flex Tx descriptor array
-+ * @flex_ctx: flex Tx context descriptor array
-+ * @comp: completion descriptor array
-+ * @desc_ring: virtual descriptor ring address
-  * @tx_max_bufs: Max buffers that can be transmitted with scatter-gather
-  * @tx_min_pkt_len: Min supported packet length
-  * @num_completions: Only relevant for TX completion queue. It tracks the
-@@ -733,7 +722,21 @@ struct idpf_queue {
- 	struct idpf_q_vector *q_vector;
- 	unsigned int size;
- 	dma_addr_t dma;
--	void *desc_ring;
-+	union {
-+		union virtchnl2_rx_desc *rx;
-+
-+		struct virtchnl2_singleq_rx_buf_desc *single_buf;
-+		struct virtchnl2_splitq_rx_buf_desc *split_buf;
-+
-+		struct idpf_base_tx_desc *base_tx;
-+		struct idpf_base_tx_ctx_desc *base_ctx;
-+		union idpf_tx_flex_desc *flex_tx;
-+		struct idpf_flex_tx_ctx_desc *flex_ctx;
-+
-+		struct idpf_splitq_tx_compl_desc *comp;
-+
-+		void *desc_ring;
-+	};
- 
- 	u16 tx_max_bufs;
- 	u8 tx_min_pkt_len;
--- 
-2.43.0
-
+ #define ESR_ELx_EC_SHIFT	(26)
+ #define ESR_ELx_EC_WIDTH	(6)
 
 
 
