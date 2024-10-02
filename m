@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-79725-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79727-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8585998D9E5
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:15:33 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id E55B698D9E8
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:15:45 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 47378283536
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:15:32 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 232091C231DA
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:15:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E7C61D0E2C;
-	Wed,  2 Oct 2024 14:11:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33EAD1CFEB3;
+	Wed,  2 Oct 2024 14:11:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BSzYVsDw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UQn0g0cJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B9181D094C;
-	Wed,  2 Oct 2024 14:11:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5EB51D0B94;
+	Wed,  2 Oct 2024 14:11:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878291; cv=none; b=D1BGkm/1+mDjlXRilGBn77Jgdxr6fJsmTCzESBxQpbZ89g+1mxl7XXA0TSta829nAek+zHU1h6xOVvKxlPqc53dR1m5HvT36t4bi/gYEf/zGEL4lxkBPHl4DnxOkBsmFE9HrUKHEzTD1PmKWpjKXwOX9RQC3Ecvw8pTHhiswB74=
+	t=1727878297; cv=none; b=nqxWR/hYmn6qW+omBW1IiSKFUid17fpxzV4ZseiX/Ux6byrprSUsj3f5TPqJg4JmzSPGUnD+Ofva3omEfpHr2ePA7q23rAeh+NHDnCfamRv6B6nrVEsSkqtYKglB/sr1BAafI+wdk5V9uT8JgF0ljs8mMxUGkAkk/6Trsj+o0Ms=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878291; c=relaxed/simple;
-	bh=J48q6aa0fIEyoHNkpgTSEUiGgZNh0QmVgxKAi0y2wzg=;
+	s=arc-20240116; t=1727878297; c=relaxed/simple;
+	bh=BE9nzc/ReFYIib1RqDZjaVKvqrfgMkS9GOPHiKuzQgo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PrvQQIL9nEML4q2s/MqcH/z2wPNWNTUqDcER1Fzsjk8kq3J8NPvacf4I6nKC4HxXR/D86cN2s6baeQLZgI9UQf3qumtyibK+fR7e6UypzyGDEBY+Tk7ajMgX/4RdbnmpopTYPXEmZ999nUXvHIIABlrdXJEarOgqLU6xj21G1A4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BSzYVsDw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96A0FC4CECD;
-	Wed,  2 Oct 2024 14:11:30 +0000 (UTC)
+	 MIME-Version:Content-Type; b=PMTw39szyGdZ+XhHt8n1zYDt+oUSfqUtggKM92m4Nji9c2sY+RgAgjciRxtsnISJUlCy6Ljd3apML1lSdyWlbOmlI15pFNGNrk067a5GV1E8vGDDz+z6yuqPs97nWwamZeCeF2fQhEx2dkC3RqTxmZeDoEVKchfiR7y2yoNKQXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UQn0g0cJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E60DC4CEC2;
+	Wed,  2 Oct 2024 14:11:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878291;
-	bh=J48q6aa0fIEyoHNkpgTSEUiGgZNh0QmVgxKAi0y2wzg=;
+	s=korg; t=1727878296;
+	bh=BE9nzc/ReFYIib1RqDZjaVKvqrfgMkS9GOPHiKuzQgo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BSzYVsDw9ceZ8CVElXWmeh7u0FF1YTcP4+Ox/c+LCJM2ygQIUy/w13hWtsUULISKB
-	 h4OJo1pNn5uh1vHw1HyhFA9sEMGNtSpFFn6fvi3ezodfrKgrGHU0YbR+XvW9Zr27NA
-	 y6NLFV/rSwR4Q6Nh8yFMJU49pwed04GTB4Va2nzY=
+	b=UQn0g0cJX05qnht9M52AcpuzMeUzX0DYFC1JZ4KofzgFfsCV5+xriqD/sJN5qj9lm
+	 dZz67fHQqUpQFpgtn2S+lUM/Kj+ZUEiN3QcHiPqXEJ4odJ5u/96OGk4CiqftR67pzY
+	 s1hrF4ao6FgRLakf5aGd0zhnOIe2H4hWG+le7Lws=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patrisious Haddad <phaddad@nvidia.com>,
-	Maher Sanalla <msanalla@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	"Rob Herring (Arm)" <robh@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 363/634] IB/core: Fix ib_cache_setup_one error flow cleanup
-Date: Wed,  2 Oct 2024 14:57:43 +0200
-Message-ID: <20241002125825.424873364@linuxfoundation.org>
+Subject: [PATCH 6.10 364/634] dt-bindings: PCI: layerscape-pci: Replace fsl,lx2160a-pcie with fsl,lx2160ar2-pcie
+Date: Wed,  2 Oct 2024 14:57:44 +0200
+Message-ID: <20241002125825.463812305@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
 References: <20241002125811.070689334@linuxfoundation.org>
@@ -61,106 +61,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Patrisious Haddad <phaddad@nvidia.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-[ Upstream commit 1403c8b14765eab805377dd3b75e96ace8747aed ]
+[ Upstream commit 1a1bf58897d20fc38b454dfecd2771e142d36966 ]
 
-When ib_cache_update return an error, we exit ib_cache_setup_one
-instantly with no proper cleanup, even though before this we had
-already successfully done gid_table_setup_one, that results in
-the kernel WARN below.
+The fsl,lx2160a-pcie compatible is used for mobivel according to the
+Documentation/devicetree/bindings/pci/layerscape-pcie-gen4.txt file.
 
-Do proper cleanup using gid_table_cleanup_one before returning
-the err in order to fix the issue.
+Whereas the fsl,layerscape-pcie is used for DesignWare PCIe controller binding.
 
-WARNING: CPU: 4 PID: 922 at drivers/infiniband/core/cache.c:806 gid_table_release_one+0x181/0x1a0
-Modules linked in:
-CPU: 4 UID: 0 PID: 922 Comm: c_repro Not tainted 6.11.0-rc1+ #3
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
-RIP: 0010:gid_table_release_one+0x181/0x1a0
-Code: 44 8b 38 75 0c e8 2f cb 34 ff 4d 8b b5 28 05 00 00 e8 23 cb 34 ff 44 89 f9 89 da 4c 89 f6 48 c7 c7 d0 58 14 83 e8 4f de 21 ff <0f> 0b 4c 8b 75 30 e9 54 ff ff ff 48 8    3 c4 10 5b 5d 41 5c 41 5d 41
-RSP: 0018:ffffc90002b835b0 EFLAGS: 00010286
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffffffff811c8527
-RDX: 0000000000000000 RSI: ffffffff811c8534 RDI: 0000000000000001
-RBP: ffff8881011b3d00 R08: ffff88810b3abe00 R09: 205d303839303631
-R10: 666572207972746e R11: 72746e6520444947 R12: 0000000000000001
-R13: ffff888106390000 R14: ffff8881011f2110 R15: 0000000000000001
-FS:  00007fecc3b70800(0000) GS:ffff88813bd00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000020000340 CR3: 000000010435a001 CR4: 00000000003706b0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- ? show_regs+0x94/0xa0
- ? __warn+0x9e/0x1c0
- ? gid_table_release_one+0x181/0x1a0
- ? report_bug+0x1f9/0x340
- ? gid_table_release_one+0x181/0x1a0
- ? handle_bug+0xa2/0x110
- ? exc_invalid_op+0x31/0xa0
- ? asm_exc_invalid_op+0x16/0x20
- ? __warn_printk+0xc7/0x180
- ? __warn_printk+0xd4/0x180
- ? gid_table_release_one+0x181/0x1a0
- ib_device_release+0x71/0xe0
- ? __pfx_ib_device_release+0x10/0x10
- device_release+0x44/0xd0
- kobject_put+0x135/0x3d0
- put_device+0x20/0x30
- rxe_net_add+0x7d/0xa0
- rxe_newlink+0xd7/0x190
- nldev_newlink+0x1b0/0x2a0
- ? __pfx_nldev_newlink+0x10/0x10
- rdma_nl_rcv_msg+0x1ad/0x2e0
- rdma_nl_rcv_skb.constprop.0+0x176/0x210
- netlink_unicast+0x2de/0x400
- netlink_sendmsg+0x306/0x660
- __sock_sendmsg+0x110/0x120
- ____sys_sendmsg+0x30e/0x390
- ___sys_sendmsg+0x9b/0xf0
- ? kstrtouint+0x6e/0xa0
- ? kstrtouint_from_user+0x7c/0xb0
- ? get_pid_task+0xb0/0xd0
- ? proc_fail_nth_write+0x5b/0x140
- ? __fget_light+0x9a/0x200
- ? preempt_count_add+0x47/0xa0
- __sys_sendmsg+0x61/0xd0
- do_syscall_64+0x50/0x110
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
+So change it to fsl,lx2160ar2-pcie and allow a fall back to fsl,ls2088a-pcie.
 
-Fixes: 1901b91f9982 ("IB/core: Fix potential NULL pointer dereference in pkey cache")
-Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
-Reviewed-by: Maher Sanalla <msanalla@nvidia.com>
-Link: https://patch.msgid.link/79137687d829899b0b1c9835fcb4b258004c439a.1725273354.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+While at it, sort compatible string.
+
+Fixes: 24cd7ecb3886 ("dt-bindings: PCI: layerscape-pci: Convert to YAML format")
+Link: https://lore.kernel.org/linux-pci/20240826-2160r2-v1-1-106340d538d6@nxp.com
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Rob Herring (Arm) <robh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/cache.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ .../bindings/pci/fsl,layerscape-pcie.yaml     | 26 ++++++++++---------
+ 1 file changed, 14 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/infiniband/core/cache.c b/drivers/infiniband/core/cache.c
-index 6791df64a5fe0..b7c078b7f7cfd 100644
---- a/drivers/infiniband/core/cache.c
-+++ b/drivers/infiniband/core/cache.c
-@@ -1640,8 +1640,10 @@ int ib_cache_setup_one(struct ib_device *device)
+diff --git a/Documentation/devicetree/bindings/pci/fsl,layerscape-pcie.yaml b/Documentation/devicetree/bindings/pci/fsl,layerscape-pcie.yaml
+index 793986c5af7ff..daeab5c0758d1 100644
+--- a/Documentation/devicetree/bindings/pci/fsl,layerscape-pcie.yaml
++++ b/Documentation/devicetree/bindings/pci/fsl,layerscape-pcie.yaml
+@@ -22,18 +22,20 @@ description:
  
- 	rdma_for_each_port (device, p) {
- 		err = ib_cache_update(device, p, true, true, true);
--		if (err)
-+		if (err) {
-+			gid_table_cleanup_one(device);
- 			return err;
-+		}
- 	}
+ properties:
+   compatible:
+-    enum:
+-      - fsl,ls1021a-pcie
+-      - fsl,ls2080a-pcie
+-      - fsl,ls2085a-pcie
+-      - fsl,ls2088a-pcie
+-      - fsl,ls1088a-pcie
+-      - fsl,ls1046a-pcie
+-      - fsl,ls1043a-pcie
+-      - fsl,ls1012a-pcie
+-      - fsl,ls1028a-pcie
+-      - fsl,lx2160a-pcie
+-
++    oneOf:
++      - enum:
++          - fsl,ls1012a-pcie
++          - fsl,ls1021a-pcie
++          - fsl,ls1028a-pcie
++          - fsl,ls1043a-pcie
++          - fsl,ls1046a-pcie
++          - fsl,ls1088a-pcie
++          - fsl,ls2080a-pcie
++          - fsl,ls2085a-pcie
++          - fsl,ls2088a-pcie
++      - items:
++          - const: fsl,lx2160ar2-pcie
++          - const: fsl,ls2088a-pcie
+   reg:
+     maxItems: 2
  
- 	return 0;
 -- 
 2.43.0
 
