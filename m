@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-80504-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80003-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C19EF98DDBF
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:52:10 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 61C8E98DB4B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:30:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E247E1C23156
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:52:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id C935E1F20C85
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:30:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D94931D0F5D;
-	Wed,  2 Oct 2024 14:49:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD8111D1729;
+	Wed,  2 Oct 2024 14:25:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2DdzmI7C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HhONMudu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 848E61D0F5A;
-	Wed,  2 Oct 2024 14:49:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AFE71CCEDA;
+	Wed,  2 Oct 2024 14:25:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880565; cv=none; b=a92MaHJKUDN4XMERMU5tIQ33YnRajGCuGlSD/fNaSJhpdZ3RQ/GLMDm49HUxvPcA25W+CLovkt95F9eoQ3qw60DXEuzYm9rOxn9iod/qKB5gDFjE3jZNLJjLXB0wL5vHeYjLf8XiWsGvxVYcd8WoKVc1TnYTdKnh8tf6/wVJafY=
+	t=1727879101; cv=none; b=VDho113SFGPIQqR3/dlvZfKSI9Y3VBpsaTRlccbILMbeHnDyIsKhc0/VOSJ49JsqKcJbR3HUiiKVOZT3KixsoUuaNxnyZG3NcdaHEgzfxKcOVWPdUSWT8wKtHeR7mJcKlUCPGQnOhfJMaDxCIVC5oG06rjGx6uR4jt8sU8Ue2co=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880565; c=relaxed/simple;
-	bh=Z/MBlxx08emoqCyEF0INVVvFPsKFTTdhdMwpl0Sy0jg=;
+	s=arc-20240116; t=1727879101; c=relaxed/simple;
+	bh=4Rx/ymzpGp24IiWa7ymDal4rPSCEH6PO3EBXIpkh9zQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pjLENjFzcJfZzDtiobvX/MCwSEnWVc9e3YR9thr/s3Ogy64KOhpaoljKJ1onmsnc2oNLhARWYW1oXD0x3FGZn7gNse2XgLLLGjBODneHNgUlddWIKY9J3sCU6esyMG2M69BdWsYLP3dy9QNkP6mIOF7xVaLc4EVbwSvUyKEOJsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2DdzmI7C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F709C4CEC2;
-	Wed,  2 Oct 2024 14:49:24 +0000 (UTC)
+	 MIME-Version; b=u7PURV/GlYVcAiLMC45MSQiFk1Fa534ynh1O4aUsvuxwV5PXe19081tCQBriUay8Yo5+bQcr3bhR/EalhQBZ4tgV1C8u9qBCYQt8boS1EWcfEgg3LtzSfjl/i3cvhKxYADlTpSt9Ye9WrgW5yxFmd+He2KIxgPq8WJ3RzvP5t2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HhONMudu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6953C4CEC5;
+	Wed,  2 Oct 2024 14:25:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880565;
-	bh=Z/MBlxx08emoqCyEF0INVVvFPsKFTTdhdMwpl0Sy0jg=;
+	s=korg; t=1727879101;
+	bh=4Rx/ymzpGp24IiWa7ymDal4rPSCEH6PO3EBXIpkh9zQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2DdzmI7CcUw+cIeH9/zMM2aF6C8oiUPbxPeSQPMd1v9jJ9L7bJfqlpCFsA7Cd88OV
-	 ndqaiSDRxqa6kB5MUrbbx6YA1x6QgpStNutW9VL7MHm7t02ZsTyoUvlsmcDyftrnRU
-	 cSzJR4yafWv51jONLzlgBN6CLf/xkBnwFPRwOz0E=
+	b=HhONMudua0BGS10AtE08XOep4w+XU/1w61/oZmIZNgtl+XwSW4LXnszQhsmwdvgNf
+	 PFQQK6X6R3pVbQ1R/ugOKnfwT5yfJlTN5LozMBWir1+Uh5EF2QZIBxZtQqMZTTZgHu
+	 1nYAB+C7pCJoSrMrJHf9wAxLqQXO9FuPc3H3dwQo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Qingqing Zhou <quic_qqzhou@quicinc.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 6.6 472/538] arm64: dts: qcom: sa8775p: Mark APPS and PCIe SMMUs as DMA coherent
+	Eric Sandeen <sandeen@sandeen.net>,
+	Christian Brauner <brauner@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 611/634] fs_parse: add uid & gid option option parsing helpers
 Date: Wed,  2 Oct 2024 15:01:51 +0200
-Message-ID: <20241002125811.075519340@linuxfoundation.org>
+Message-ID: <20241002125835.235591914@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,148 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qingqing Zhou <quic_qqzhou@quicinc.com>
+From: Eric Sandeen <sandeen@redhat.com>
 
-commit 421688265d7f5d3ff4211982e7231765378bb64f upstream.
+[ Upstream commit 9f111059e725f7ca79a136bfc734da3c8c1838b4 ]
 
-The SMMUs on sa8775p are cache-coherent. GPU SMMU is marked as such,
-mark the APPS and PCIe ones as well.
+Multiple filesystems take uid and gid as options, and the code to
+create the ID from an integer and validate it is standard boilerplate
+that can be moved into common helper functions, so do that for
+consistency and less cut&paste.
 
-Fixes: 603f96d4c9d0 ("arm64: dts: qcom: add initial support for qcom sa8775p-ride")
-Fixes: 2dba7a613a6e ("arm64: dts: qcom: sa8775p: add the pcie smmu node")
-Cc: stable@vger.kernel.org
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Qingqing Zhou <quic_qqzhou@quicinc.com>
-Rule: add
-Link: https://lore.kernel.org/stable/20240723075948.9545-1-quic_qqzhou%40quicinc.com
-Link: https://lore.kernel.org/r/20240725072117.22425-1-quic_qqzhou@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This also helps avoid the buggy pattern noted by Seth Jenkins at
+https://lore.kernel.org/lkml/CALxfFW4BXhEwxR0Q5LSkg-8Vb4r2MONKCcUCVioehXQKr35eHg@mail.gmail.com/
+because uid/gid parsing will fail before any assignment in most
+filesystems.
+
+Signed-off-by: Eric Sandeen <sandeen@sandeen.net>
+Link: https://lore.kernel.org/r/de859d0a-feb9-473d-a5e2-c195a3d47abb@redhat.com
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Stable-dep-of: 3a987b88a425 ("debugfs show actual source in /proc/mounts")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sa8775p.dtsi |    2 ++
- 1 file changed, 2 insertions(+)
+ Documentation/filesystems/mount_api.rst |  9 +++++--
+ fs/fs_parser.c                          | 34 +++++++++++++++++++++++++
+ include/linux/fs_parser.h               |  6 ++++-
+ 3 files changed, 46 insertions(+), 3 deletions(-)
 
---- a/arch/arm64/boot/dts/qcom/sa8775p.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sa8775p.dtsi
-@@ -1951,6 +1951,7 @@
- 			reg = <0x0 0x15000000 0x0 0x100000>;
- 			#iommu-cells = <2>;
- 			#global-interrupts = <2>;
-+			dma-coherent;
+diff --git a/Documentation/filesystems/mount_api.rst b/Documentation/filesystems/mount_api.rst
+index 9aaf6ef75eb53..317934c9e8fca 100644
+--- a/Documentation/filesystems/mount_api.rst
++++ b/Documentation/filesystems/mount_api.rst
+@@ -645,6 +645,8 @@ The members are as follows:
+ 	fs_param_is_blockdev	Blockdev path		* Needs lookup
+ 	fs_param_is_path	Path			* Needs lookup
+ 	fs_param_is_fd		File descriptor		result->int_32
++	fs_param_is_uid		User ID (u32)           result->uid
++	fs_param_is_gid		Group ID (u32)          result->gid
+ 	=======================	=======================	=====================
  
- 			interrupts = <GIC_SPI 119 IRQ_TYPE_LEVEL_HIGH>,
- 				     <GIC_SPI 120 IRQ_TYPE_LEVEL_HIGH>,
-@@ -2089,6 +2090,7 @@
- 			reg = <0x0 0x15200000 0x0 0x80000>;
- 			#iommu-cells = <2>;
- 			#global-interrupts = <2>;
-+			dma-coherent;
+      Note that if the value is of fs_param_is_bool type, fs_parse() will try
+@@ -678,6 +680,8 @@ The members are as follows:
+ 	fsparam_bdev()		fs_param_is_blockdev
+ 	fsparam_path()		fs_param_is_path
+ 	fsparam_fd()		fs_param_is_fd
++	fsparam_uid()		fs_param_is_uid
++	fsparam_gid()		fs_param_is_gid
+ 	=======================	===============================================
  
- 			interrupts = <GIC_SPI 920 IRQ_TYPE_LEVEL_HIGH>,
- 				     <GIC_SPI 921 IRQ_TYPE_LEVEL_HIGH>,
+      all of which take two arguments, name string and option number - for
+@@ -784,8 +788,9 @@ process the parameters it is given.
+      option number (which it returns).
+ 
+      If successful, and if the parameter type indicates the result is a
+-     boolean, integer or enum type, the value is converted by this function and
+-     the result stored in result->{boolean,int_32,uint_32,uint_64}.
++     boolean, integer, enum, uid, or gid type, the value is converted by this
++     function and the result stored in
++     result->{boolean,int_32,uint_32,uint_64,uid,gid}.
+ 
+      If a match isn't initially made, the key is prefixed with "no" and no
+      value is present then an attempt will be made to look up the key with the
+diff --git a/fs/fs_parser.c b/fs/fs_parser.c
+index a4d6ca0b8971e..24727ec34e5aa 100644
+--- a/fs/fs_parser.c
++++ b/fs/fs_parser.c
+@@ -308,6 +308,40 @@ int fs_param_is_fd(struct p_log *log, const struct fs_parameter_spec *p,
+ }
+ EXPORT_SYMBOL(fs_param_is_fd);
+ 
++int fs_param_is_uid(struct p_log *log, const struct fs_parameter_spec *p,
++		    struct fs_parameter *param, struct fs_parse_result *result)
++{
++	kuid_t uid;
++
++	if (fs_param_is_u32(log, p, param, result) != 0)
++		return fs_param_bad_value(log, param);
++
++	uid = make_kuid(current_user_ns(), result->uint_32);
++	if (!uid_valid(uid))
++		return inval_plog(log, "Invalid uid '%s'", param->string);
++
++	result->uid = uid;
++	return 0;
++}
++EXPORT_SYMBOL(fs_param_is_uid);
++
++int fs_param_is_gid(struct p_log *log, const struct fs_parameter_spec *p,
++		    struct fs_parameter *param, struct fs_parse_result *result)
++{
++	kgid_t gid;
++
++	if (fs_param_is_u32(log, p, param, result) != 0)
++		return fs_param_bad_value(log, param);
++
++	gid = make_kgid(current_user_ns(), result->uint_32);
++	if (!gid_valid(gid))
++		return inval_plog(log, "Invalid gid '%s'", param->string);
++
++	result->gid = gid;
++	return 0;
++}
++EXPORT_SYMBOL(fs_param_is_gid);
++
+ int fs_param_is_blockdev(struct p_log *log, const struct fs_parameter_spec *p,
+ 		  struct fs_parameter *param, struct fs_parse_result *result)
+ {
+diff --git a/include/linux/fs_parser.h b/include/linux/fs_parser.h
+index d3350979115f0..6cf713a7e6c6f 100644
+--- a/include/linux/fs_parser.h
++++ b/include/linux/fs_parser.h
+@@ -28,7 +28,7 @@ typedef int fs_param_type(struct p_log *,
+  */
+ fs_param_type fs_param_is_bool, fs_param_is_u32, fs_param_is_s32, fs_param_is_u64,
+ 	fs_param_is_enum, fs_param_is_string, fs_param_is_blob, fs_param_is_blockdev,
+-	fs_param_is_path, fs_param_is_fd;
++	fs_param_is_path, fs_param_is_fd, fs_param_is_uid, fs_param_is_gid;
+ 
+ /*
+  * Specification of the type of value a parameter wants.
+@@ -57,6 +57,8 @@ struct fs_parse_result {
+ 		int		int_32;		/* For spec_s32/spec_enum */
+ 		unsigned int	uint_32;	/* For spec_u32{,_octal,_hex}/spec_enum */
+ 		u64		uint_64;	/* For spec_u64 */
++		kuid_t		uid;
++		kgid_t		gid;
+ 	};
+ };
+ 
+@@ -131,6 +133,8 @@ static inline bool fs_validate_description(const char *name,
+ #define fsparam_bdev(NAME, OPT)	__fsparam(fs_param_is_blockdev, NAME, OPT, 0, NULL)
+ #define fsparam_path(NAME, OPT)	__fsparam(fs_param_is_path, NAME, OPT, 0, NULL)
+ #define fsparam_fd(NAME, OPT)	__fsparam(fs_param_is_fd, NAME, OPT, 0, NULL)
++#define fsparam_uid(NAME, OPT) __fsparam(fs_param_is_uid, NAME, OPT, 0, NULL)
++#define fsparam_gid(NAME, OPT) __fsparam(fs_param_is_gid, NAME, OPT, 0, NULL)
+ 
+ /* String parameter that allows empty argument */
+ #define fsparam_string_empty(NAME, OPT) \
+-- 
+2.43.0
+
 
 
 
