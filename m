@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-80239-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C6A198DC97
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:43:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C2A398D9FA
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:16:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7E81C1C2091E
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:43:02 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 0F4612866C1
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:16:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 036BF1D174B;
-	Wed,  2 Oct 2024 14:36:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 457BD1D0DDF;
+	Wed,  2 Oct 2024 14:12:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZGu2Qy7D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d6H0BixU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6E3C1CF7D4;
-	Wed,  2 Oct 2024 14:36:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F16DE1D0412;
+	Wed,  2 Oct 2024 14:12:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879787; cv=none; b=AcfqPokqqQ+N34OoNmQIiHpyJMBnBkrHOmTubdS71vEuvm1wUb4Uda+sMy4FtEnDhA8x+fnUlSDYvpIo4BgqAOCDdItVzQD/HJA9Rr4uAmZxRDaF8DjgPocjehTtH7dKWjNla5qSbS1P1LDwCJYbh2B9KeBlqDgVn6ePrk2ZaFs=
+	t=1727878335; cv=none; b=mCtHIsHfjs9mrM8aQ1a5VtZVohYGQH4r5sVb71btnHcezzgWuZqKCF2KWBnDn5MREQnu57qE1BMpViiIizJwnI4iGjtcmmbGG3SGSFVQotcokm3TYJyzed4AnV19nIRqw9vzoYTewlSNQ+VimEySYEEtNNgAPjd7VppCDvmh8Gs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879787; c=relaxed/simple;
-	bh=oRD5dnKDm7D41oAQtfzV0Nh/ZULD9hb32Ok3q/DLB1U=;
+	s=arc-20240116; t=1727878335; c=relaxed/simple;
+	bh=ccK/WnBL5HMxknVm6j1RWdird7K9sUi7hF3ifhsVxiQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OVJ8Mu29tA1mujueAftI9q3QYpuHSRgu1nEA/widDXVpTKvdELeSiHiZvKo+/rk5H0ynNdwJaIzbQha7ls0wtblODCq0LF09MvuSr0sBQAI1m915s+OsRKbRJ6H7/e1J0KLXOXuJxa2T+mAj3sR23ErTcg6QWUii56bn7C6dFhc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZGu2Qy7D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DE1EC4CEC2;
-	Wed,  2 Oct 2024 14:36:27 +0000 (UTC)
+	 MIME-Version; b=HSMDcQJPE7MKMk8Q//vv3gciiQbfh7yfHqGcKoj2hhYrP7XTAXplHd+FVgdOob5+RW+CTxkLcUJA/PbBPs6A20PcfUMrj1Fm2sL6YWRUJF1sG/Ep35tZ3q70tR1bemknANJ5a2wFNAqwImYNFtu0GlpzhlkgaKE/CPN9KbffbXA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d6H0BixU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D69AC4CEC2;
+	Wed,  2 Oct 2024 14:12:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879787;
-	bh=oRD5dnKDm7D41oAQtfzV0Nh/ZULD9hb32Ok3q/DLB1U=;
+	s=korg; t=1727878334;
+	bh=ccK/WnBL5HMxknVm6j1RWdird7K9sUi7hF3ifhsVxiQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZGu2Qy7DkfamNe+0gG1zYxDmopE5Pk8kzCY5tO2qqPZjuI7kiqGRLOhsbRhvyMqeb
-	 94rwdSIbLaP7JJYIiOLzyNVgRwCT8g+zoJERjNKyHqLyilzxGD2ktq8zZIR0Y//ZA/
-	 64m/EVriXwqB4du3abNBhYrMaetyQ2O/DfzE/Ghg=
+	b=d6H0BixUwnS850795UU8IcTriQvC98RjMMpFfYN9R6mzv2BdFPmebT9bQT+BLaaXX
+	 pMUBi5dXNMaDS8TlAAm418txukpDn1sTaT+PK/OhY722pTYZr+bntxZY8pCnXlUjvC
+	 Brya8taDBA6lCybxGE9W3V9ZKAbMEoxetyd3MXsc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-	syzbot+9bff4c7b992038a7409f@syzkaller.appspotmail.com,
-	Lizhi Xu <lizhi.xu@windriver.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Junxian Huang <huangjunxian6@hisilicon.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 239/538] nilfs2: fix potential null-ptr-deref in nilfs_btree_insert()
-Date: Wed,  2 Oct 2024 14:57:58 +0200
-Message-ID: <20241002125801.684440077@linuxfoundation.org>
+Subject: [PATCH 6.10 379/634] RDMA/hns: Optimize hem allocation performance
+Date: Wed,  2 Oct 2024 14:57:59 +0200
+Message-ID: <20241002125826.058540633@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Junxian Huang <huangjunxian6@hisilicon.com>
 
-[ Upstream commit 9403001ad65ae4f4c5de368bdda3a0636b51d51a ]
+[ Upstream commit fe51f6254d81f5a69c31df16353d6539b2b51630 ]
 
-Patch series "nilfs2: fix potential issues with empty b-tree nodes".
+When allocating MTT hem, for each hop level of each hem that is being
+allocated, the driver iterates the hem list to find out whether the
+bt page has been allocated in this hop level. If not, allocate a new
+one and splice it to the list. The time complexity is O(n^2) in worst
+cases.
 
-This series addresses three potential issues with empty b-tree nodes that
-can occur with corrupted filesystem images, including one recently
-discovered by syzbot.
+Currently the allocation for-loop uses 'unit' as the step size. This
+actually has taken into account the reuse of last-hop-level MTT bt
+pages by multiple buffer pages. Thus pages of last hop level will
+never have been allocated, so there is no need to iterate the hem list
+in last hop level.
 
-This patch (of 3):
+Removing this unnecessary iteration can reduce the time complexity to
+O(n).
 
-If a b-tree is broken on the device, and the b-tree height is greater than
-2 (the level of the root node is greater than 1) even if the number of
-child nodes of the b-tree root is 0, a NULL pointer dereference occurs in
-nilfs_btree_prepare_insert(), which is called from nilfs_btree_insert().
-
-This is because, when the number of child nodes of the b-tree root is 0,
-nilfs_btree_do_lookup() does not set the block buffer head in any of
-path[x].bp_bh, leaving it as the initial value of NULL, but if the level
-of the b-tree root node is greater than 1, nilfs_btree_get_nonroot_node(),
-which accesses the buffer memory of path[x].bp_bh, is called.
-
-Fix this issue by adding a check to nilfs_btree_root_broken(), which
-performs sanity checks when reading the root node from the device, to
-detect this inconsistency.
-
-Thanks to Lizhi Xu for trying to solve the bug and clarifying the cause
-early on.
-
-Link: https://lkml.kernel.org/r/20240904081401.16682-1-konishi.ryusuke@gmail.com
-Link: https://lkml.kernel.org/r/20240902084101.138971-1-lizhi.xu@windriver.com
-Link: https://lkml.kernel.org/r/20240904081401.16682-2-konishi.ryusuke@gmail.com
-Fixes: 17c76b0104e4 ("nilfs2: B-tree based block mapping")
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+9bff4c7b992038a7409f@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=9bff4c7b992038a7409f
-Cc: Lizhi Xu <lizhi.xu@windriver.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 38389eaa4db1 ("RDMA/hns: Add mtr support for mixed multihop addressing")
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://patch.msgid.link/20240906093444.3571619-9-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nilfs2/btree.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/hns/hns_roce_hem.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/fs/nilfs2/btree.c b/fs/nilfs2/btree.c
-index 598f058670595..fa51ed649968e 100644
---- a/fs/nilfs2/btree.c
-+++ b/fs/nilfs2/btree.c
-@@ -381,7 +381,8 @@ static int nilfs_btree_root_broken(const struct nilfs_btree_node *node,
- 	if (unlikely(level < NILFS_BTREE_LEVEL_NODE_MIN ||
- 		     level >= NILFS_BTREE_LEVEL_MAX ||
- 		     nchildren < 0 ||
--		     nchildren > NILFS_BTREE_ROOT_NCHILDREN_MAX)) {
-+		     nchildren > NILFS_BTREE_ROOT_NCHILDREN_MAX ||
-+		     (nchildren == 0 && level > NILFS_BTREE_LEVEL_NODE_MIN))) {
- 		nilfs_crit(inode->i_sb,
- 			   "bad btree root (ino=%lu): level = %d, flags = 0x%x, nchildren = %d",
- 			   inode->i_ino, level, flags, nchildren);
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hem.c b/drivers/infiniband/hw/hns/hns_roce_hem.c
+index 42111f31b3715..c7c167e2a0451 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hem.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hem.c
+@@ -1134,10 +1134,12 @@ static int hem_list_alloc_mid_bt(struct hns_roce_dev *hr_dev,
+ 
+ 	/* config L1 bt to last bt and link them to corresponding parent */
+ 	for (level = 1; level < hopnum; level++) {
+-		cur = hem_list_search_item(&mid_bt[level], offset);
+-		if (cur) {
+-			hem_ptrs[level] = cur;
+-			continue;
++		if (!hem_list_is_bottom_bt(hopnum, level)) {
++			cur = hem_list_search_item(&mid_bt[level], offset);
++			if (cur) {
++				hem_ptrs[level] = cur;
++				continue;
++			}
+ 		}
+ 
+ 		step = hem_list_calc_ba_range(hopnum, level, unit);
 -- 
 2.43.0
 
