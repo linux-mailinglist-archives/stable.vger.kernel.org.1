@@ -1,188 +1,294 @@
-Return-Path: <stable+bounces-80606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80607-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8A33F98E593
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 23:53:02 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 824D698E634
+	for <lists+stable@lfdr.de>; Thu,  3 Oct 2024 00:44:23 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 42F0F28A280
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 21:53:01 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 12B041F24F89
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 22:44:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B488419924A;
-	Wed,  2 Oct 2024 21:52:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B9A9199936;
+	Wed,  2 Oct 2024 22:44:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Wwvz+5C9"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="N6cNK/x8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-oi1-f170.google.com (mail-oi1-f170.google.com [209.85.167.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5FC119412A;
-	Wed,  2 Oct 2024 21:52:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC975197545;
+	Wed,  2 Oct 2024 22:44:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727905938; cv=none; b=ZTzO8/MvAGXuz3eTA5SUs0oMp8VI/1urPwRKu0M2Zgwkd0Dmr2ppMviEyJU4dOVuxOGcyw2c4R4z0FhL6xk5VbDM5D5gwLiw7BlqDJmBW2gmUaXwL5qWkLqaUyuLH94lCHG/Vy9KSwX6J1qwUfwMzMt2cbCdI0CvkHFRcc/FnnE=
+	t=1727909056; cv=none; b=mpoB+rdRJkoTR2hUD9G1UCZQORVKCyPDWEQaHPwceU1JCEZxgSEUagl+6lb4uxoqDQ7RbY3g9dvOozUubhJwmPzHZ17+9m6CjUn+tFz1JdxFY33B5T50tDRwJnwS59pQTq/a3a94u2gTyX4OY0Qra4wC+IC9IA4NWkYYtuxrz1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727905938; c=relaxed/simple;
-	bh=dz8doS85JXKLKBaXk37DuCfj4dlruqU8Rfvq/fE5MhI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=G8WC7ciCe3hKyZ6ly2QgCokprhOTcASMLZoCcZ28tmrWxcOpYIHLSUehIAz6SIO9ctLxA+reZo821jaGbbfMLmp0gxV+MgcR1Z6YEaOI7F2NtJCqEybNECULYj6X5OiP9FceQk3dcsXTmIfs/jHAFyafm20lHAJPOtziJ+PeBQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Wwvz+5C9; arc=none smtp.client-ip=209.85.167.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-oi1-f170.google.com with SMTP id 5614622812f47-3e0438e81aaso222951b6e.3;
-        Wed, 02 Oct 2024 14:52:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727905936; x=1728510736; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uU/MdWpSsfY9txOsca4vvM4K0KOZtCPC7D1wIi4Vl3Y=;
-        b=Wwvz+5C95LKVMDGn5o9mEV4py0H9VD/fYLlDSHkxQ5i39hl6lFFUawBzYzqXBeILzp
-         o9u5nuUTtfjXkpHPzLoVOD5BtuyHmvIxhHjELQluj0yHbR2hFsG2mX24cz9HFhfslOiT
-         tLzCYTsIMbLclX4I2PquRsGmkTgOsbUWVRl0WQ8+2wDBibOoa0uB51+RLSg/uX6Ol42u
-         O4CgvpUgLcgBa9p5kT8QXa9r0DNajwOr5nPXB8OsF9AlTLpP6hgVBJFhtS9qOr28BFon
-         tUKhdHCJD/0lk6TmO5h9cRaodosgYaa5jRywYawP7O3xcNBc7Y7JPz1Kaf9lETI7dYPJ
-         ij7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727905936; x=1728510736;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uU/MdWpSsfY9txOsca4vvM4K0KOZtCPC7D1wIi4Vl3Y=;
-        b=YWXtbwdgoKVqANbD3dK6ovOkf8/vIqPbns49xaOyrFwYrJ1FprvlLnuvGmWm/xGM34
-         ZphWv8ztAE2zsA/8J4AaTIKLROXslHpbIHbaZrHYcHGHLlL9z0Rp7jOzzGLUqRagyt4R
-         i5dv78luapq6dGq0bb0drmW8tNonH+mCj4u37UPH/yc/+T/YYl+fyqwFq0q8Tk96IGfK
-         IUzMLx1FN8ztvo1bgy+JFH53Eo0v7All5QTMvCM/l3xosMkukj5JKMOJtJLHfGhTfwF+
-         OvSc59Zt2Xce3KXE+ats5u1C+WJe35CSdIT+Ph2+hOuhJcThdOeWqxlXRIuGDwo/2CSf
-         Pedg==
-X-Forwarded-Encrypted: i=1; AJvYcCUi+sLjnxfAi2DTDHZPs1U05g/SoxHrbMnXwyOLtsFaxFf+1ugqcHRMETx2ssNTzVmfLmFfubNcuimf@vger.kernel.org, AJvYcCVqqHe4EdLHZ9PpCHfwwNahB6tgFC09qordwivZwgriEti+pAH0GgOrM50zRnjtV1Pc2GOLAFjo@vger.kernel.org, AJvYcCWUk8p2xNuB4y/fAyKduwR/D/k1yfQlmP2I3rZ1FgBafZQNvrCDd+6tiEVpnJ5vM9i1OMcQ66QGBTFOw6GV@vger.kernel.org
-X-Gm-Message-State: AOJu0YzbZLUiAdkOqweed4zp59u8SGMUdtpHQibak9st296uA2freVWC
-	mQ5r5PxX8nMxZ2N9fE1UontCfU/es0W0KdVlW0hUXwWsai02mNDUM6RLun1gawOqUdE3ZLvMXtu
-	ICxVxtYq/vDFCYIX+hK1jQw82wa0xMV+9
-X-Google-Smtp-Source: AGHT+IEcehJAO0OI+eU3ENs1384djIrYf5xm/4Fovksttd2IqeGQTrEgu6YlTdxAWST8ny475DsiqHdRmzXhkO8OnNU=
-X-Received: by 2002:a05:6808:22ac:b0:3e3:98fd:dc42 with SMTP id
- 5614622812f47-3e3b40eaccemr4770438b6e.7.1727905936024; Wed, 02 Oct 2024
- 14:52:16 -0700 (PDT)
+	s=arc-20240116; t=1727909056; c=relaxed/simple;
+	bh=pToLLVV8W99znYBfp6X9vCzQHNB2pTAPAYeI+hQal1E=;
+	h=Date:To:From:Subject:Message-Id; b=iZVngi6M0jm4xlbidCoKEh9nw0NGCG1c5j0PO8vlEjW4Tn2r7/wkX8bGajJyrZABf+iGopuyb4yIMzdwOvKrfZkpd56QxYx61bIEe6Uo24cyyPYRSpoKNsP7hA0Z6wBJ2xFSv1WqN7bujgZeqXhu/7Jtomeio2oViPZv+sIbEgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=N6cNK/x8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42F20C4CEC2;
+	Wed,  2 Oct 2024 22:44:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1727909056;
+	bh=pToLLVV8W99znYBfp6X9vCzQHNB2pTAPAYeI+hQal1E=;
+	h=Date:To:From:Subject:From;
+	b=N6cNK/x8Hnf2adS7ixvJADbUP7WGI1eptkwRrtubsTJGcF11EgiDhIdkcqYkKREwh
+	 v4butk8zNFFxc3jnrmB/JGiEGKy12MEqJigiDvvz14sZCf7pTlVXW/ED33f8Af324G
+	 WZ/EBQumEeAuQM0BrzjCHXHE03L+MJjNZhZdpoJY=
+Date: Wed, 02 Oct 2024 15:44:15 -0700
+To: mm-commits@vger.kernel.org,willy@infradead.org,stable@vger.kernel.org,hughd@google.com,david@redhat.com,jannh@google.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-mremap-prevent-racing-change-of-old-pmd-type.patch added to mm-hotfixes-unstable branch
+Message-Id: <20241002224416.42F20C4CEC2@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20241002200805.34376-1-batrick@batbytes.com>
-In-Reply-To: <20241002200805.34376-1-batrick@batbytes.com>
-From: Ilya Dryomov <idryomov@gmail.com>
-Date: Wed, 2 Oct 2024 23:52:04 +0200
-Message-ID: <CAOi1vP_Y0BDxNR9_y_1aMtqKovf5zz8h65b1U+vserFgoc4heA@mail.gmail.com>
-Subject: Re: [PATCH] ceph: fix cap ref leak via netfs init_request
-To: Patrick Donnelly <batrick@batbytes.com>
-Cc: Xiubo Li <xiubli@redhat.com>, David Howells <dhowells@redhat.com>, 
-	Patrick Donnelly <pdonnell@redhat.com>, stable@vger.kernel.org, ceph-devel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, Oct 2, 2024 at 10:08=E2=80=AFPM Patrick Donnelly <batrick@batbytes.=
-com> wrote:
->
-> From: Patrick Donnelly <pdonnell@redhat.com>
->
-> Log recovered from a user's cluster:
->
->     <7>[ 5413.970692] ceph:  get_cap_refs 00000000958c114b ret 1 got Fr
->     <7>[ 5413.970695] ceph:  start_read 00000000958c114b, no cache cap
 
-Hi Patrick,
+The patch titled
+     Subject: mm/mremap: prevent racing change of old pmd type
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-mremap-prevent-racing-change-of-old-pmd-type.patch
 
-Noting that start_read() was removed in kernel 5.13 in commit
-49870056005c ("ceph: convert ceph_readpages to ceph_readahead").
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-mremap-prevent-racing-change-of-old-pmd-type.patch
 
->     ...
->     <7>[ 5473.934609] ceph:   my wanted =3D Fr, used =3D Fr, dirty -
->     <7>[ 5473.934616] ceph:  revocation: pAsLsXsFr -> pAsLsXs (revoking F=
-r)
->     <7>[ 5473.934632] ceph:  __ceph_caps_issued 00000000958c114b cap 0000=
-0000f7784259 issued pAsLsXs
->     <7>[ 5473.934638] ceph:  check_caps 10000000e68.fffffffffffffffe file=
-_want - used Fr dirty - flushing - issued pAsLsXs revoking Fr retain pAsLsX=
-sFsr  AUTHONLY NOINVAL FLUSH_FORCE
->
-> The MDS subsequently complains that the kernel client is late releasing c=
-aps.
->
-> Closes: https://tracker.ceph.com/issues/67008
-> Fixes: a5c9dc4451394b2854493944dcc0ff71af9705a3 ("ceph: Make ceph_init_re=
-quest() check caps on readahead")
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-I think it's worth going into a bit more detail here because
-superficially this commit just replaced
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-    ret =3D ceph_try_get_caps(inode, CEPH_CAP_FILE_RD, want, true, &got);
-    if (ret < 0)
-            dout("start_read %p, error getting cap\n", inode);
-    else if (!(got & want))
-            dout("start_read %p, no cache cap\n", inode);
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-    if (ret <=3D 0)
-            return;
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
 
-in ceph_readahead() with
+------------------------------------------------------
+From: Jann Horn <jannh@google.com>
+Subject: mm/mremap: prevent racing change of old pmd type
+Date: Wed, 02 Oct 2024 23:07:06 +0200
 
-    ret =3D ceph_try_get_caps(inode, CEPH_CAP_FILE_RD, want, true, &got);
-    if (ret < 0) {
-            dout("start_read %p, error getting cap\n", inode);
-            return ret;
-    }
+Prevent move_normal_pmd() in mremap() from racing with
+retract_page_tables() in MADVISE_COLLAPSE such that
 
-    if (!(got & want)) {
-            dout("start_read %p, no cache cap\n", inode);
-            return -EACCES;
-    }
-    if (ret =3D=3D 0)
-            return -EACCES;
+    pmd_populate(mm, new_pmd, pmd_pgtable(pmd))
 
-in ceph_init_request().  Neither called ceph_put_cap_refs() before
-bailing.  It was commit 49870056005c ("ceph: convert ceph_readpages to
-ceph_readahead") that turned a direct call to ceph_put_cap_refs() in
-start_read() to one in ceph_readahead_cleanup() (later renamed to
-ceph_netfs_free_request()).
+operates on an empty source pmd, causing creation of a new pmd which maps
+physical address 0 as a page table.
 
-The actual problem is that netfs_alloc_request() just frees rreq if
-init_request() callout fails and ceph_netfs_free_request() is never
-called, right?  If so, I'd mention that explicitly and possibly also
-reference commit 2de160417315 ("netfs: Change ->init_request() to
-return an error code") which introduced that.
+This bug is only reachable if either CONFIG_READ_ONLY_THP_FOR_FS is set or
+THP shmem is usable.  (Unprivileged namespaces can be used to set up a
+tmpfs that can contain THP shmem pages with "huge=advise".)
 
-> Signed-off-by: Patrick Donnelly <pdonnell@redhat.com>
-> Cc: stable@vger.kernel.org
-> ---
->  fs/ceph/addr.c | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
->
-> diff --git a/fs/ceph/addr.c b/fs/ceph/addr.c
-> index 53fef258c2bc..702c6a730b70 100644
-> --- a/fs/ceph/addr.c
-> +++ b/fs/ceph/addr.c
-> @@ -489,8 +489,11 @@ static int ceph_init_request(struct netfs_io_request=
- *rreq, struct file *file)
->         rreq->io_streams[0].sreq_max_len =3D fsc->mount_options->rsize;
->
->  out:
-> -       if (ret < 0)
-> +       if (ret < 0) {
-> +               if (got)
-> +                       ceph_put_cap_refs(ceph_inode(inode), got);
->                 kfree(priv);
-> +       }
->
->         return ret;
->  }
+If userspace triggers this bug *in multiple processes*, this could likely
+be used to create stale TLB entries pointing to freed pages or cause
+kernel UAF by breaking an invariant the rmap code relies on.
 
-The change itself looks fine.  Great catch!
+Fix it by moving the rmap locking up so that it covers the span from
+reading the PMD entry to moving the page table.
 
-Thanks,
+Link: https://lkml.kernel.org/r/20241002-move_normal_pmd-vs-collapse-fix-v1-1-78290e5dece6@google.com
+Fixes: 1d65b771bc08 ("mm/khugepaged: retract_page_tables() without mmap or vma lock")
+Signed-off-by: Jann Horn <jannh@google.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Hugh Dickins <hughd@google.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
 
-                Ilya
+ mm/mremap.c |   68 +++++++++++++++++++++++++++-----------------------
+ 1 file changed, 38 insertions(+), 30 deletions(-)
+
+--- a/mm/mremap.c~mm-mremap-prevent-racing-change-of-old-pmd-type
++++ a/mm/mremap.c
+@@ -136,17 +136,17 @@ static pte_t move_soft_dirty_pte(pte_t p
+ static int move_ptes(struct vm_area_struct *vma, pmd_t *old_pmd,
+ 		unsigned long old_addr, unsigned long old_end,
+ 		struct vm_area_struct *new_vma, pmd_t *new_pmd,
+-		unsigned long new_addr, bool need_rmap_locks)
++		unsigned long new_addr)
+ {
+ 	struct mm_struct *mm = vma->vm_mm;
+ 	pte_t *old_pte, *new_pte, pte;
+ 	spinlock_t *old_ptl, *new_ptl;
+ 	bool force_flush = false;
+ 	unsigned long len = old_end - old_addr;
+-	int err = 0;
+ 
+ 	/*
+-	 * When need_rmap_locks is true, we take the i_mmap_rwsem and anon_vma
++	 * When need_rmap_locks is true in the caller, we are holding the
++	 * i_mmap_rwsem and anon_vma
+ 	 * locks to ensure that rmap will always observe either the old or the
+ 	 * new ptes. This is the easiest way to avoid races with
+ 	 * truncate_pagecache(), page migration, etc...
+@@ -163,23 +163,18 @@ static int move_ptes(struct vm_area_stru
+ 	 *   serialize access to individual ptes, but only rmap traversal
+ 	 *   order guarantees that we won't miss both the old and new ptes).
+ 	 */
+-	if (need_rmap_locks)
+-		take_rmap_locks(vma);
+ 
+ 	/*
+ 	 * We don't have to worry about the ordering of src and dst
+ 	 * pte locks because exclusive mmap_lock prevents deadlock.
+ 	 */
+ 	old_pte = pte_offset_map_lock(mm, old_pmd, old_addr, &old_ptl);
+-	if (!old_pte) {
+-		err = -EAGAIN;
+-		goto out;
+-	}
++	if (!old_pte)
++		return -EAGAIN;
+ 	new_pte = pte_offset_map_nolock(mm, new_pmd, new_addr, &new_ptl);
+ 	if (!new_pte) {
+ 		pte_unmap_unlock(old_pte, old_ptl);
+-		err = -EAGAIN;
+-		goto out;
++		return -EAGAIN;
+ 	}
+ 	if (new_ptl != old_ptl)
+ 		spin_lock_nested(new_ptl, SINGLE_DEPTH_NESTING);
+@@ -217,10 +212,7 @@ static int move_ptes(struct vm_area_stru
+ 		spin_unlock(new_ptl);
+ 	pte_unmap(new_pte - 1);
+ 	pte_unmap_unlock(old_pte - 1, old_ptl);
+-out:
+-	if (need_rmap_locks)
+-		drop_rmap_locks(vma);
+-	return err;
++	return 0;
+ }
+ 
+ #ifndef arch_supports_page_table_move
+@@ -447,17 +439,14 @@ static __always_inline unsigned long get
+ /*
+  * Attempts to speedup the move by moving entry at the level corresponding to
+  * pgt_entry. Returns true if the move was successful, else false.
++ * rmap locks are held by the caller.
+  */
+ static bool move_pgt_entry(enum pgt_entry entry, struct vm_area_struct *vma,
+ 			unsigned long old_addr, unsigned long new_addr,
+-			void *old_entry, void *new_entry, bool need_rmap_locks)
++			void *old_entry, void *new_entry)
+ {
+ 	bool moved = false;
+ 
+-	/* See comment in move_ptes() */
+-	if (need_rmap_locks)
+-		take_rmap_locks(vma);
+-
+ 	switch (entry) {
+ 	case NORMAL_PMD:
+ 		moved = move_normal_pmd(vma, old_addr, new_addr, old_entry,
+@@ -483,9 +472,6 @@ static bool move_pgt_entry(enum pgt_entr
+ 		break;
+ 	}
+ 
+-	if (need_rmap_locks)
+-		drop_rmap_locks(vma);
+-
+ 	return moved;
+ }
+ 
+@@ -550,6 +536,7 @@ unsigned long move_page_tables(struct vm
+ 	struct mmu_notifier_range range;
+ 	pmd_t *old_pmd, *new_pmd;
+ 	pud_t *old_pud, *new_pud;
++	int move_res;
+ 
+ 	if (!len)
+ 		return 0;
+@@ -573,6 +560,12 @@ unsigned long move_page_tables(struct vm
+ 				old_addr, old_end);
+ 	mmu_notifier_invalidate_range_start(&range);
+ 
++	/*
++	 * Hold rmap locks to ensure the type of the old PUD/PMD entry doesn't
++	 * change under us due to khugepaged or folio splitting.
++	 */
++	take_rmap_locks(vma);
++
+ 	for (; old_addr < old_end; old_addr += extent, new_addr += extent) {
+ 		cond_resched();
+ 		/*
+@@ -590,14 +583,14 @@ unsigned long move_page_tables(struct vm
+ 		if (pud_trans_huge(*old_pud) || pud_devmap(*old_pud)) {
+ 			if (extent == HPAGE_PUD_SIZE) {
+ 				move_pgt_entry(HPAGE_PUD, vma, old_addr, new_addr,
+-					       old_pud, new_pud, need_rmap_locks);
++					       old_pud, new_pud);
+ 				/* We ignore and continue on error? */
+ 				continue;
+ 			}
+ 		} else if (IS_ENABLED(CONFIG_HAVE_MOVE_PUD) && extent == PUD_SIZE) {
+ 
+ 			if (move_pgt_entry(NORMAL_PUD, vma, old_addr, new_addr,
+-					   old_pud, new_pud, true))
++					   old_pud, new_pud))
+ 				continue;
+ 		}
+ 
+@@ -613,7 +606,7 @@ again:
+ 		    pmd_devmap(*old_pmd)) {
+ 			if (extent == HPAGE_PMD_SIZE &&
+ 			    move_pgt_entry(HPAGE_PMD, vma, old_addr, new_addr,
+-					   old_pmd, new_pmd, need_rmap_locks))
++					   old_pmd, new_pmd))
+ 				continue;
+ 			split_huge_pmd(vma, old_pmd, old_addr);
+ 		} else if (IS_ENABLED(CONFIG_HAVE_MOVE_PMD) &&
+@@ -623,17 +616,32 @@ again:
+ 			 * moving at the PMD level if possible.
+ 			 */
+ 			if (move_pgt_entry(NORMAL_PMD, vma, old_addr, new_addr,
+-					   old_pmd, new_pmd, true))
++					   old_pmd, new_pmd))
+ 				continue;
+ 		}
+ 		if (pmd_none(*old_pmd))
+ 			continue;
+-		if (pte_alloc(new_vma->vm_mm, new_pmd))
++
++		/*
++		 * Temporarily drop the rmap locks while we do a potentially
++		 * slow move_ptes() operation, unless move_ptes() wants them
++		 * held (see comment inside there).
++		 */
++		if (!need_rmap_locks)
++			drop_rmap_locks(vma);
++		if (pte_alloc(new_vma->vm_mm, new_pmd)) {
++			if (!need_rmap_locks)
++				take_rmap_locks(vma);
+ 			break;
+-		if (move_ptes(vma, old_pmd, old_addr, old_addr + extent,
+-			      new_vma, new_pmd, new_addr, need_rmap_locks) < 0)
++		}
++		move_res = move_ptes(vma, old_pmd, old_addr, old_addr + extent,
++				     new_vma, new_pmd, new_addr);
++		if (!need_rmap_locks)
++			take_rmap_locks(vma);
++		if (move_res < 0)
+ 			goto again;
+ 	}
++	drop_rmap_locks(vma);
+ 
+ 	mmu_notifier_invalidate_range_end(&range);
+ 
+_
+
+Patches currently in -mm which might be from jannh@google.com are
+
+mm-mremap-prevent-racing-change-of-old-pmd-type.patch
+
 
