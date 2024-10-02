@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-79830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6BB6E98DA7D
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:22:22 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3031A98DCF5
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:46:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E3BE286B0F
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:22:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CE4B91F22BBE
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:45:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B88F01D2F5F;
-	Wed,  2 Oct 2024 14:16:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 110671D0F7C;
+	Wed,  2 Oct 2024 14:40:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BqrY2Ld/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H4v/WX2u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77B1F1D0E38;
-	Wed,  2 Oct 2024 14:16:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C07361D0F74;
+	Wed,  2 Oct 2024 14:40:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878589; cv=none; b=gno+ebBWpNQ+Y/3YdGei+N2KgwEefr1iCS6s7744oX7GxPaht0zSAzXaCryJGIIT7w9PIweRl1FsM8DTw5p+oQFh7j/xj9CxIoOkrDeSFGAEGMQnKWsk/TAkvtV8C98h9Zoj2+cSwov9fTw3kdQsKTtLa2kBfl2cQ/AYbs40dPE=
+	t=1727880055; cv=none; b=f1Ovb2t6RcxW7Ur40YDQbVQgEoA/eoJhwxp0kFLx06groXgEsO6+G+J71hZDsbO/B7iET1No7duK4+xTIg+gxAkBoJYLYHYULcesqpeujvufDdHN32T9/8wSsZyV7UxlE98zw7oxqXmuUA3Bx94s3cE6MsMGOcYUZtMqRhBKn4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878589; c=relaxed/simple;
-	bh=h7Myg3Le0wjLz5yu1MpFC0y4AfMcApowqb+yWZwFlEI=;
+	s=arc-20240116; t=1727880055; c=relaxed/simple;
+	bh=pYw/1rUmoaUuSXzwY7JG/A8wbKYbp0CU2bFt95fuYDc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qftw/Oo8tBmIXxANv4O8PupCzHOKOQaMRP6+eX4LHGUa+a4KrbK3iH6YNQkh7taAO+AugNuIsM/WOfTq3Eh7QadTSnZPtEZMUDmlyn74LaKBWz542gmTcnEnnbpHWWMOEvcKZLQuv2HJ0sHvI/RojmiE2a88UhIzPWcsyQgWN7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BqrY2Ld/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F15FCC4CEC2;
-	Wed,  2 Oct 2024 14:16:28 +0000 (UTC)
+	 MIME-Version; b=hRuIa1nFbreRDnMmmTF4XWmg4XgpLFHC7h7k9nkQJ7ciMIXUZBF5Kk++VVNYPuFsK/Lr/GrpsKCBgXRnp43S0YZgoalNIAkDo+pNLjYrVxJ4MoD6NZ/5apCs+4Gx6OB3En2ezOm7S7htgdoHd8gG2SmobPvMxBd5gBDiSfq1tK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H4v/WX2u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46C32C4CEC2;
+	Wed,  2 Oct 2024 14:40:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878589;
-	bh=h7Myg3Le0wjLz5yu1MpFC0y4AfMcApowqb+yWZwFlEI=;
+	s=korg; t=1727880055;
+	bh=pYw/1rUmoaUuSXzwY7JG/A8wbKYbp0CU2bFt95fuYDc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BqrY2Ld/JQmxYgWZaNwmoePiDM/ttk356P3ezYgH9UzOMjhZH4Yu7MnyWEUa97mPG
-	 kL0/tUKXspLLwetbgNT1MWbcMROgTDQGwGnOWJ8Ke1zuCdoUNePvNWZSWhrLJ2eL7o
-	 U9O3jtE3W8KKYqxNDB9pI9SAaEv+5FjmiNgjL2tU=
+	b=H4v/WX2uJD3m5CrQbLkPZYWEe77sLSHhSp91lyVoIAiRImP2GzGgktJoH7a23PT29
+	 3PCV1daOIYNz4q99KMq1+Y+gbZ6LxHG9FRUH+ChABFffntaaSTCXYYqmGQQ/CKEIG1
+	 G92LwfrLUeMmpDfUMLnZoN/oJ3hPYDS4InwElYZU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Udit Kumar <u-kumar1@ti.com>,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Subject: [PATCH 6.10 465/634] PCI: dra7xx: Fix threaded IRQ request for "dra7xx-pcie-main" IRQ
-Date: Wed,  2 Oct 2024 14:59:25 +0200
-Message-ID: <20241002125829.459256583@linuxfoundation.org>
+	Jinjie Ruan <ruanjinjie@huawei.com>,
+	Dave Jiang <dave.jiang@intel.com>,
+	Jon Mason <jdmason@kudzu.us>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 327/538] ntb: intel: Fix the NULL vs IS_ERR() bug for debugfs_create_dir()
+Date: Wed,  2 Oct 2024 14:59:26 +0200
+Message-ID: <20241002125805.338450666@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +61,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
+From: Jinjie Ruan <ruanjinjie@huawei.com>
 
-commit 03f84b3baba7836bdfc162c19288d5ce1aa92890 upstream.
+[ Upstream commit e229897d373a87ee09ec5cc4ecd4bb2f895fc16b ]
 
-Commit da87d35a6e51 ("PCI: dra7xx: Use threaded IRQ handler for
-"dra7xx-pcie-main" IRQ") switched from devm_request_irq() to
-devm_request_threaded_irq() for the "dra7xx-pcie-main" interrupt.
+The debugfs_create_dir() function returns error pointers.
+It never returns NULL. So use IS_ERR() to check it.
 
-Since the primary handler was set to NULL, the "IRQF_ONESHOT" flag
-should have also been set. Fix this.
-
-Fixes: da87d35a6e51 ("PCI: dra7xx: Use threaded IRQ handler for "dra7xx-pcie-main" IRQ")
-Suggested-by: Vignesh Raghavendra <vigneshr@ti.com>
-Link: https://lore.kernel.org/linux-pci/20240827122422.985547-2-s-vadapalli@ti.com
-Reported-by: Udit Kumar <u-kumar1@ti.com>
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Kevin Hilman <khilman@baylibre.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e26a5843f7f5 ("NTB: Split ntb_hw_intel and ntb_transport drivers")
+Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Jon Mason <jdmason@kudzu.us>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pci-dra7xx.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/ntb/hw/intel/ntb_hw_gen1.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pci/controller/dwc/pci-dra7xx.c
-+++ b/drivers/pci/controller/dwc/pci-dra7xx.c
-@@ -850,7 +850,8 @@ static int dra7xx_pcie_probe(struct plat
- 	dra7xx->mode = mode;
- 
- 	ret = devm_request_threaded_irq(dev, irq, NULL, dra7xx_pcie_irq_handler,
--			       IRQF_SHARED, "dra7xx-pcie-main", dra7xx);
-+					IRQF_SHARED | IRQF_ONESHOT,
-+					"dra7xx-pcie-main", dra7xx);
- 	if (ret) {
- 		dev_err(dev, "failed to request irq\n");
- 		goto err_gpio;
+diff --git a/drivers/ntb/hw/intel/ntb_hw_gen1.c b/drivers/ntb/hw/intel/ntb_hw_gen1.c
+index 9ab836d0d4f12..079b8cd797857 100644
+--- a/drivers/ntb/hw/intel/ntb_hw_gen1.c
++++ b/drivers/ntb/hw/intel/ntb_hw_gen1.c
+@@ -778,7 +778,7 @@ static void ndev_init_debugfs(struct intel_ntb_dev *ndev)
+ 		ndev->debugfs_dir =
+ 			debugfs_create_dir(pci_name(ndev->ntb.pdev),
+ 					   debugfs_dir);
+-		if (!ndev->debugfs_dir)
++		if (IS_ERR(ndev->debugfs_dir))
+ 			ndev->debugfs_info = NULL;
+ 		else
+ 			ndev->debugfs_info =
+-- 
+2.43.0
+
 
 
 
