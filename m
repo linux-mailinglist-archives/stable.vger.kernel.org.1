@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-79622-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80121-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3905A98D968
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:11:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 474DD98DBF1
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:36:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB5612895BC
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:11:38 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02EF92817E5
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:36:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3E351D0F59;
-	Wed,  2 Oct 2024 14:06:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0097F1D174A;
+	Wed,  2 Oct 2024 14:30:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O0CSXdfj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RPd8zTJH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A31011D0F4F;
-	Wed,  2 Oct 2024 14:06:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0BAE1EB21;
+	Wed,  2 Oct 2024 14:30:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877980; cv=none; b=I2RLxSS2rabyHm7OJ4WQJ4ScwSa1QfqXm+m3TCSOQLqD/Ur1Ig3aaD1evMyHZ6OtyARxL4j+4DGi1d1+iay0ka+MuKxVwr03ONWbksabUl5da6ioeFh1/T+PIxqk+aQaiPp4aF6JHOdwdbxG9ZwhNyvJEr9bvbRA4pvSdgsl72M=
+	t=1727879446; cv=none; b=S3TzFDqPoRBKj4uOaDRUzuWSSX8QZYmooSP2e4+Hw4FnuMnt1Qm9yXFssj8qrAi5JvyfmbrE/rnF6WDjloupVvoTcoLn3FRCNTAIKYQFNN9wHYNH9fm+pMCP2liYiEMrZ+baxpkUBOzDGCW+StGOfi0oSQ6a06+8+s0PASZQB50=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877980; c=relaxed/simple;
-	bh=6hn8D/7eDYl5xliP30EF4c1vUJxLsCSRidV5sa1Tlzg=;
+	s=arc-20240116; t=1727879446; c=relaxed/simple;
+	bh=quGQa+qaHKulB8MrVDQ1w81Juhf4Dr22zilv3bWzUlc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XYKy2SxdHxAMHbVwPVcbEW+jCS+itQKC6jDqzmroV7REQHsxVkScL3fHSh85eNKI6nBe8ke/p8AodAKQW2RgsHvkkz9wJjgGyvudhtVLSUHZon6zcvpekLk3v9x7XOUF7ox7gPMtMea9+h2yF1jAKwoiFLFu+Y9vWFPlaWbZRy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O0CSXdfj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C58A3C4CECD;
-	Wed,  2 Oct 2024 14:06:19 +0000 (UTC)
+	 MIME-Version; b=lFwbKFpwHeyTqeOMWaG3ZrveDYpsZbZhgoa3oibvGCQ6Q8GUiW3iMViZCXVKP7vDMpVR1iAu4+jzRkYhFOhHALqg89EHdal1qJw26xm1OJclaSbuppDL3FVnxxaGJDTVLWBU4dewtqcPflT58DnkK2dYHcy+BHGe7rPGLaOvrLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RPd8zTJH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22B8EC4CEC2;
+	Wed,  2 Oct 2024 14:30:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877980;
-	bh=6hn8D/7eDYl5xliP30EF4c1vUJxLsCSRidV5sa1Tlzg=;
+	s=korg; t=1727879445;
+	bh=quGQa+qaHKulB8MrVDQ1w81Juhf4Dr22zilv3bWzUlc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O0CSXdfjiuVTdl9dTmkhR8EbLEqs4TbeJm1uBOX+94Ihbk8OSSIeKBX6eip+Ie5ij
-	 ugw1jjd2V/U/Su4Ne5cl/NfxWshJ2Qu1rUYvNxbJ+k7aY3/iRrVL4vmHSTkcuDVduG
-	 PdC0k491GkmRhxb2i+EWkoA9nS+Nwssp7YMD7/jY=
+	b=RPd8zTJHGi5p24vogNnMSUW1u1q53UPWrSVS23lLIXiPD4Ijp9L+jO0M7SNGaHwNQ
+	 1fl/07MrPDPYugjRI1eJi3gi7HpENqWletcGyGhA7/SwqGJIuZG1e/Wc/7ag58knCd
+	 KL14uBhldfPGUQmsArd+mLNwrY/ON7xLeFSYXuFY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Ambardar <tony.ambardar@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Andrew Davis <afd@ti.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 260/634] selftests/bpf: Fix error compiling tc_redirect.c with musl libc
+Subject: [PATCH 6.6 121/538] hwmon: (max16065) Remove use of i2c_match_id()
 Date: Wed,  2 Oct 2024 14:56:00 +0200
-Message-ID: <20241002125821.363412064@linuxfoundation.org>
+Message-ID: <20241002125757.022270684@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,108 +62,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Ambardar <tony.ambardar@gmail.com>
+From: Andrew Davis <afd@ti.com>
 
-[ Upstream commit 21c5f4f55da759c7444a1ef13e90b6e6f674eeeb ]
+[ Upstream commit 5a71654b398e3471f0169c266a3587cf09e1200c ]
 
-Linux 5.1 implemented 64-bit time types and related syscalls to address the
-Y2038 problem generally across archs. Userspace handling of Y2038 varies
-with the libc however. While musl libc uses 64-bit time across all 32-bit
-and 64-bit platforms, GNU glibc uses 64-bit time on 64-bit platforms but
-defaults to 32-bit time on 32-bit platforms unless they "opt-in" to 64-bit
-time or explicitly use 64-bit syscalls and time structures.
+The function i2c_match_id() is used to fetch the matching ID from
+the i2c_device_id table. This is often used to then retrieve the
+matching driver_data. This can be done in one step with the helper
+i2c_get_match_data().
 
-One specific area is the standard setsockopt() call, SO_TIMESTAMPNS option
-used for timestamping, and the related output 'struct timespec'. GNU glibc
-defaults as above, also exposing the SO_TIMESTAMPNS_NEW flag to explicitly
-use a 64-bit call and 'struct __kernel_timespec'. Since these are not
-exposed or needed with musl libc, their use in tc_redirect.c leads to
-compile errors building for mips64el/musl:
+This helper has a couple other benefits:
+ * It doesn't need the i2c_device_id passed in so we do not need
+   to have that forward declared, allowing us to remove those or
+   move the i2c_device_id table down to its more natural spot
+   with the other module info.
+ * It also checks for device match data, which allows for OF and
+   ACPI based probing. That means we do not have to manually check
+   those first and can remove those checks.
 
-  tc_redirect.c: In function 'rcv_tstamp':
-  tc_redirect.c:425:32: error: 'SO_TIMESTAMPNS_NEW' undeclared (first use in this function); did you mean 'SO_TIMESTAMPNS'?
-    425 |             cmsg->cmsg_type == SO_TIMESTAMPNS_NEW)
-        |                                ^~~~~~~~~~~~~~~~~~
-        |                                SO_TIMESTAMPNS
-  tc_redirect.c:425:32: note: each undeclared identifier is reported only once for each function it appears in
-  tc_redirect.c: In function 'test_inet_dtime':
-  tc_redirect.c:491:49: error: 'SO_TIMESTAMPNS_NEW' undeclared (first use in this function); did you mean 'SO_TIMESTAMPNS'?
-    491 |         err = setsockopt(listen_fd, SOL_SOCKET, SO_TIMESTAMPNS_NEW,
-        |                                                 ^~~~~~~~~~~~~~~~~~
-        |                                                 SO_TIMESTAMPNS
-
-However, using SO_TIMESTAMPNS_NEW isn't strictly needed, nor is Y2038 being
-explicitly tested. The timestamp checks in tc_redirect.c are simple: the
-packet receive timestamp is non-zero and processed/handled in less than 5
-seconds.
-
-Switch to using the standard setsockopt() call and SO_TIMESTAMPNS option to
-ensure compatibility across glibc and musl libc. In the worst-case, there
-is a 5-second window 14 years from now where tc_redirect tests may fail on
-32-bit systems. However, we should reasonably expect glibc to adopt a
-64-bit mandate rather than the current "opt-in" policy before the Y2038
-roll-over.
-
-Fixes: ce6f6cffaeaa ("selftests/bpf: Wait for the netstamp_needed_key static key to be turned on")
-Fixes: c803475fd8dd ("bpf: selftests: test skb->tstamp in redirect_neigh")
-Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/031d656c058b4e55ceae56ef49c4e1729b5090f3.1722244708.git.tony.ambardar@gmail.com
+Signed-off-by: Andrew Davis <afd@ti.com>
+Link: https://lore.kernel.org/r/20240403203633.914389-20-afd@ti.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Stable-dep-of: 119abf7d1815 ("hwmon: (max16065) Fix alarm attributes")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/tc_redirect.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/hwmon/max16065.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/tc_redirect.c b/tools/testing/selftests/bpf/prog_tests/tc_redirect.c
-index b1073d36d77ac..a80a83e0440e3 100644
---- a/tools/testing/selftests/bpf/prog_tests/tc_redirect.c
-+++ b/tools/testing/selftests/bpf/prog_tests/tc_redirect.c
-@@ -471,7 +471,7 @@ static int set_forwarding(bool enable)
+diff --git a/drivers/hwmon/max16065.c b/drivers/hwmon/max16065.c
+index e392529de098e..5b2a174c6bad3 100644
+--- a/drivers/hwmon/max16065.c
++++ b/drivers/hwmon/max16065.c
+@@ -494,8 +494,6 @@ static const struct attribute_group max16065_max_group = {
+ 	.is_visible = max16065_secondary_is_visible,
+ };
  
- static int __rcv_tstamp(int fd, const char *expected, size_t s, __u64 *tstamp)
+-static const struct i2c_device_id max16065_id[];
+-
+ static int max16065_probe(struct i2c_client *client)
  {
--	struct __kernel_timespec pkt_ts = {};
-+	struct timespec pkt_ts = {};
- 	char ctl[CMSG_SPACE(sizeof(pkt_ts))];
- 	struct timespec now_ts;
- 	struct msghdr msg = {};
-@@ -495,7 +495,7 @@ static int __rcv_tstamp(int fd, const char *expected, size_t s, __u64 *tstamp)
+ 	struct i2c_adapter *adapter = client->adapter;
+@@ -506,7 +504,7 @@ static int max16065_probe(struct i2c_client *client)
+ 	bool have_secondary;		/* true if chip has secondary limits */
+ 	bool secondary_is_max = false;	/* secondary limits reflect max */
+ 	int groups = 0;
+-	const struct i2c_device_id *id = i2c_match_id(max16065_id, client);
++	enum chips chip = (uintptr_t)i2c_get_match_data(client);
  
- 	cmsg = CMSG_FIRSTHDR(&msg);
- 	if (cmsg && cmsg->cmsg_level == SOL_SOCKET &&
--	    cmsg->cmsg_type == SO_TIMESTAMPNS_NEW)
-+	    cmsg->cmsg_type == SO_TIMESTAMPNS)
- 		memcpy(&pkt_ts, CMSG_DATA(cmsg), sizeof(pkt_ts));
+ 	if (!i2c_check_functionality(adapter, I2C_FUNC_SMBUS_BYTE_DATA
+ 				     | I2C_FUNC_SMBUS_READ_WORD_DATA))
+@@ -519,9 +517,9 @@ static int max16065_probe(struct i2c_client *client)
+ 	data->client = client;
+ 	mutex_init(&data->update_lock);
  
- 	pkt_ns = pkt_ts.tv_sec * NSEC_PER_SEC + pkt_ts.tv_nsec;
-@@ -537,9 +537,9 @@ static int wait_netstamp_needed_key(void)
- 	if (!ASSERT_GE(srv_fd, 0, "start_server"))
- 		goto done;
+-	data->num_adc = max16065_num_adc[id->driver_data];
+-	data->have_current = max16065_have_current[id->driver_data];
+-	have_secondary = max16065_have_secondary[id->driver_data];
++	data->num_adc = max16065_num_adc[chip];
++	data->have_current = max16065_have_current[chip];
++	have_secondary = max16065_have_secondary[chip];
  
--	err = setsockopt(srv_fd, SOL_SOCKET, SO_TIMESTAMPNS_NEW,
-+	err = setsockopt(srv_fd, SOL_SOCKET, SO_TIMESTAMPNS,
- 			 &opt, sizeof(opt));
--	if (!ASSERT_OK(err, "setsockopt(SO_TIMESTAMPNS_NEW)"))
-+	if (!ASSERT_OK(err, "setsockopt(SO_TIMESTAMPNS)"))
- 		goto done;
- 
- 	cli_fd = connect_to_fd(srv_fd, TIMEOUT_MILLIS);
-@@ -621,9 +621,9 @@ static void test_inet_dtime(int family, int type, const char *addr, __u16 port)
- 		return;
- 
- 	/* Ensure the kernel puts the (rcv) timestamp for all skb */
--	err = setsockopt(listen_fd, SOL_SOCKET, SO_TIMESTAMPNS_NEW,
-+	err = setsockopt(listen_fd, SOL_SOCKET, SO_TIMESTAMPNS,
- 			 &opt, sizeof(opt));
--	if (!ASSERT_OK(err, "setsockopt(SO_TIMESTAMPNS_NEW)"))
-+	if (!ASSERT_OK(err, "setsockopt(SO_TIMESTAMPNS)"))
- 		goto done;
- 
- 	if (type == SOCK_STREAM) {
+ 	if (have_secondary) {
+ 		val = i2c_smbus_read_byte_data(client, MAX16065_SW_ENABLE);
 -- 
 2.43.0
 
