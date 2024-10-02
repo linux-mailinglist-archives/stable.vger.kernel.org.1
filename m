@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-79434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1DAB398D83C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:58:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FADA98D539
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:28:15 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C6A0828046B
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:58:17 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB41B1F22F36
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:28:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F2D31D0798;
-	Wed,  2 Oct 2024 13:57:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9281A1CFECF;
+	Wed,  2 Oct 2024 13:28:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EjrMjDQy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AjJzIggf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2734198837;
-	Wed,  2 Oct 2024 13:57:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51EBC1D0403;
+	Wed,  2 Oct 2024 13:28:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877447; cv=none; b=HH/uUYqrhGIdF+nkuUtaBWnaGD+ckpF+XKRGfO3XtR4nAuh9aiySAlb33qxxwPIzWjeH1nJbZOOgAQN5YnCTTd+/Z/0N63RrKO5M8cAoXxQiFyo2VgNTDp0Le+PdWR6ghTspY6izRTj8I4yJ9AaLudPlTiHWp73i/O0O2DGcOvk=
+	t=1727875684; cv=none; b=TKddQCbhalaXhWm1hNvN+lY9LTbr5tkel7ugrlqPe5bffH0yBqCrpjFKLnLDPLN5RZD2WvqslBoHJg1njbSXHMSrsRFi6YMbmJMgxCij8UHJZExmZreOiqO6ItobS/FKauzRMIG31HxBdwAbFG9+6DaJD7NZ0cSxYe9husBqRt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877447; c=relaxed/simple;
-	bh=RRH5zolsG2/AJC6HOJwq+zoRtUcnj564GLsOlBtNur8=;
+	s=arc-20240116; t=1727875684; c=relaxed/simple;
+	bh=d+cXDuR3CCMN814CMZRwZGn5p4smm1ImNX2+Nr/Q+oY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hb/NT30aI3ktp9vv3hALmwdsNrset0myy1VuRtlmGAy5oJgEE9gv1N7zEOtdJ7GTI5wu0NwEbwc/g7TbAHFQ/HaK61K4zTrBDU/8hrSMZELH0/Kg298o16KRJma/+fJBkEL5bmP8oWnHEAiOA+YQukrFZTFw/kSdm2Ow5Dsk9Lc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EjrMjDQy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BBE3C4AF0B;
-	Wed,  2 Oct 2024 13:57:27 +0000 (UTC)
+	 MIME-Version; b=SXCJ4GPZi88jjPePIra7gE0JaWCmWHS1e0hc6BnsOzN9W5RwgTveb5BgQLziBguoD6nKm3Gr2ZE/qEuNgI+5x96+pSI+Zq9jZP+WPPVtQkraUCOvDcHYnRqoslqrzHchkj0W5MQS7LGNWSX+92oKuWCvKJ+A83v9ZCga3elJQUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AjJzIggf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD170C4CEC5;
+	Wed,  2 Oct 2024 13:28:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877447;
-	bh=RRH5zolsG2/AJC6HOJwq+zoRtUcnj564GLsOlBtNur8=;
+	s=korg; t=1727875684;
+	bh=d+cXDuR3CCMN814CMZRwZGn5p4smm1ImNX2+Nr/Q+oY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EjrMjDQyyecwB7+lN3Ncu0t3IVEtwpaMh8HiJYq46Xnjd9Gjix/Hh273bM42xHm1d
-	 T2A9ickMX6jHdYXWEUTyYvwS2vB28dkuhEA/wmKH2ggZNAS+PPEFfljNq/HMuSH8aw
-	 bAzLX6BGsgV+nJwXbhQyf/Hni5GM3ESIo4aFO2kw=
+	b=AjJzIggfdR8cWiMPimITTf5r10MVixZgMncg1vOfKb4IwgQdaCDXcCld2GyFmjfSA
+	 cwr1u3aS3Rucu/OZqbyqh7faWn9pGy3y5mEJjO9OMjgW/zK7uWkZZZclCAgyj0tY5e
+	 o5XrtjiESLNRVeXfjiVOZPQEPqddXSdB8p4uvEUY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 082/634] wifi: cfg80211: fix two more possible UBSAN-detected off-by-one errors
+Subject: [PATCH 6.11 184/695] iommu/amd: Allocate the page table root using GFP_KERNEL
 Date: Wed,  2 Oct 2024 14:53:02 +0200
-Message-ID: <20241002125814.348924505@linuxfoundation.org>
+Message-ID: <20241002125829.814867174@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-[ Upstream commit 15ea13b1b1fbf6364d4cd568e65e4c8479632999 ]
+[ Upstream commit b0a6c883bcd42eeb0850135e529b34b64d57673c ]
 
-Although not reproduced in practice, these two cases may be
-considered by UBSAN as off-by-one errors. So fix them in the
-same way as in commit a26a5107bc52 ("wifi: cfg80211: fix UBSAN
-noise in cfg80211_wext_siwscan()").
+Domain allocation is always done under a sleepable context, the v1 path
+and other drivers use GFP_KERNEL already. Fix the v2 path to also use
+GFP_KERNEL.
 
-Fixes: 807f8a8c3004 ("cfg80211/nl80211: add support for scheduled scans")
-Fixes: 5ba63533bbf6 ("cfg80211: fix alignment problem in scan request")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Link: https://patch.msgid.link/20240909090806.1091956-1-dmantipov@yandex.ru
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 0d571dcbe7c6 ("iommu/amd: Allocate page table using numa locality info")
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/2-v2-831cdc4d00f3+1a315-amd_iopgtbl_jgg@nvidia.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/nl80211.c | 3 ++-
- net/wireless/sme.c     | 3 ++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ drivers/iommu/amd/io_pgtable_v2.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 967bc4935b4ed..e3bf14e489c5d 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -9658,7 +9658,8 @@ nl80211_parse_sched_scan(struct wiphy *wiphy, struct wireless_dev *wdev,
- 		return ERR_PTR(-ENOMEM);
+diff --git a/drivers/iommu/amd/io_pgtable_v2.c b/drivers/iommu/amd/io_pgtable_v2.c
+index 664e91c88748e..6088822180e1e 100644
+--- a/drivers/iommu/amd/io_pgtable_v2.c
++++ b/drivers/iommu/amd/io_pgtable_v2.c
+@@ -362,7 +362,7 @@ static struct io_pgtable *v2_alloc_pgtable(struct io_pgtable_cfg *cfg, void *coo
+ 	struct protection_domain *pdom = (struct protection_domain *)cookie;
+ 	int ias = IOMMU_IN_ADDR_BIT_SIZE;
  
- 	if (n_ssids)
--		request->ssids = (void *)&request->channels[n_channels];
-+		request->ssids = (void *)request +
-+			struct_size(request, channels, n_channels);
- 	request->n_ssids = n_ssids;
- 	if (ie_len) {
- 		if (n_ssids)
-diff --git a/net/wireless/sme.c b/net/wireless/sme.c
-index 1cfe673bc52f3..4b80af0edbe97 100644
---- a/net/wireless/sme.c
-+++ b/net/wireless/sme.c
-@@ -115,7 +115,8 @@ static int cfg80211_conn_scan(struct wireless_dev *wdev)
- 		n_channels = i;
- 	}
- 	request->n_channels = n_channels;
--	request->ssids = (void *)&request->channels[n_channels];
-+	request->ssids = (void *)request +
-+		struct_size(request, channels, n_channels);
- 	request->n_ssids = 1;
+-	pgtable->pgd = iommu_alloc_page_node(pdom->nid, GFP_ATOMIC);
++	pgtable->pgd = iommu_alloc_page_node(pdom->nid, GFP_KERNEL);
+ 	if (!pgtable->pgd)
+ 		return NULL;
  
- 	memcpy(request->ssids[0].ssid, wdev->conn->params.ssid,
 -- 
 2.43.0
 
