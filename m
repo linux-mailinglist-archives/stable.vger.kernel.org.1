@@ -1,59 +1,58 @@
-Return-Path: <stable+bounces-79837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 921FF98DA83
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:22:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0590798DCF8
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:46:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3A331C226C3
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:22:30 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2D59B1C21A23
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:46:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A9C91D048B;
-	Wed,  2 Oct 2024 14:16:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A2AA1D12E3;
+	Wed,  2 Oct 2024 14:41:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rBe6wQ3+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bFFpLwA8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB47B19F411;
-	Wed,  2 Oct 2024 14:16:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 391091D0DE9;
+	Wed,  2 Oct 2024 14:41:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878610; cv=none; b=MdlMhZfugoTJ80Qkn4dtnEExuHPCcKyjoSWVt+4yL5aWwIELYN2KcOcR2ZLGp6AbPR28NWxTVZ1r/BRr12iiCh05r+O4tQL3L2ZjVGArz+5GetE06PAFk8LdB8UH3wns2FSImaVY829lwFuueKAuzgeqtihSiGuG2q0+KeQVjF4=
+	t=1727880070; cv=none; b=WYKoLT123+LELtyjPf8vczGrsxtoH4P5sMHwiI3WM9bqnXJunvB7/7OglKkDc1ZF9mu1a5k08AHZjTJ8QP9GssIzUQSx4yUn7HOUp59S9yj2Qm4oyqaTTT8TBKjJyXjvBCFRhyopcuOSXgAiLdytJv0XTjVwWYkYBx/26rCbZB0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878610; c=relaxed/simple;
-	bh=rV1raTofhcTLb2++INFv7n/oau5aKjOc6tWF9zCDDpM=;
+	s=arc-20240116; t=1727880070; c=relaxed/simple;
+	bh=88qp9JKaxJWa6pQ5ru4iaVFv5/wPmupTWvkpxfZvmMA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WUsN+ep/KLrBds3xocQwjwP48gW5gTT3AFT/Ub5TcG4W7cVJtnyP93Ge/PE8RDTyk7eUsegEmpbl7LgChYaW6B9z+1WlScAMj/jcApQLt4/lRtxBluhD/VozmYk4tjHZeCjb77+XE79ptTuG6954+i+mQnEeptfABb1Y3Wbqxbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rBe6wQ3+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61465C4CEC2;
-	Wed,  2 Oct 2024 14:16:49 +0000 (UTC)
+	 MIME-Version; b=hKotBcqz5041VPI856SLHklf1czr9YLQultBJ1E3hGisiVil5DrlmloGplU9GC7vKecRL+1nJjmzAWaW17mz4w02CvvFm5hSL5bS8w41S/NC50Dk9N2qjBICXjal7dN7GvmXRsbVlseOAvCoBYmWhtmNQka797yLstSzfAaREwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bFFpLwA8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4FD0C4CEC2;
+	Wed,  2 Oct 2024 14:41:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878609;
-	bh=rV1raTofhcTLb2++INFv7n/oau5aKjOc6tWF9zCDDpM=;
+	s=korg; t=1727880070;
+	bh=88qp9JKaxJWa6pQ5ru4iaVFv5/wPmupTWvkpxfZvmMA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rBe6wQ3+5vQAOPTdFAVoHVB8PKmwI7VIBQ26VNppzTaDP7d8Kh1fgeKPUgMW4zV3H
-	 P3M4F/3OyRKmTLACekmDQkelzRrL9XOQYVhRa6Xsllwrj9XhpQNF1aN5wlMcnuYnT+
-	 PbwzDkherUUlw1uHbESueqnOc8A7IvwmllC38zck=
+	b=bFFpLwA8IzUuGGR4VrxSWigiAl7Sm+eDkkvfc9pk1psG0JNJD5vOXUX2BJgdPMyVm
+	 EpYOpYbCqwft0J7iDPZX3XZ48MHIH5vQg4XGtaK9Gxcis33xBUBTEbXszM6KoJAe/Q
+	 baCeZrs2lgc6RL7P9nnFoiKuQvXboWA1L3txyFjg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	=?UTF-8?q?Niklas=20S=C3=B6derlund?= <niklas.soderlund+renesas@ragnatech.se>,
-	Paul Barker <paul.barker.ct@bp.renesas.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Md Haris Iqbal <haris.iqbal@ionos.com>,
+	Jack Wang <jinpu.wang@ionos.com>,
+	Grzegorz Prajsner <grzegorz.prajsner@ionos.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 441/634] net: ravb: Fix R-Car RX frame size limit
-Date: Wed,  2 Oct 2024 14:59:01 +0200
-Message-ID: <20241002125828.508698654@linuxfoundation.org>
+Subject: [PATCH 6.6 303/538] RDMA/rtrs-clt: Reset cid to con_num - 1 to stay in bounds
+Date: Wed,  2 Oct 2024 14:59:02 +0200
+Message-ID: <20241002125804.376956355@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,57 +62,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Barker <paul.barker.ct@bp.renesas.com>
+From: Md Haris Iqbal <haris.iqbal@ionos.com>
 
-[ Upstream commit ec8234717db8589078d08b17efa528a235c61f4f ]
+[ Upstream commit 3e4289b29e216a55d08a89e126bc0b37cbad9f38 ]
 
-The RX frame size limit should not be based on the current MTU setting.
-Instead it should be based on the hardware capabilities.
+In the function init_conns(), after the create_con() and create_cm() for
+loop if something fails. In the cleanup for loop after the destroy tag, we
+access out of bound memory because cid is set to clt_path->s.con_num.
 
-While we're here, improve the description of the receive frame length
-setting as suggested by Niklas.
+This commits resets the cid to clt_path->s.con_num - 1, to stay in bounds
+in the cleanup loop later.
 
-Fixes: c156633f1353 ("Renesas Ethernet AVB driver proper")
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Reviewed-by: Niklas Söderlund <niklas.soderlund+renesas@ragnatech.se>
-Signed-off-by: Paul Barker <paul.barker.ct@bp.renesas.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 6a98d71daea1 ("RDMA/rtrs: client: main functionality")
+Signed-off-by: Md Haris Iqbal <haris.iqbal@ionos.com>
+Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
+Signed-off-by: Grzegorz Prajsner <grzegorz.prajsner@ionos.com>
+Link: https://patch.msgid.link/20240821112217.41827-7-haris.iqbal@ionos.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/renesas/ravb_main.c | 12 ++++++++++--
- 1 file changed, 10 insertions(+), 2 deletions(-)
+ drivers/infiniband/ulp/rtrs/rtrs-clt.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/ethernet/renesas/ravb_main.c b/drivers/net/ethernet/renesas/ravb_main.c
-index 4d100283c30fb..067357b2495cd 100644
---- a/drivers/net/ethernet/renesas/ravb_main.c
-+++ b/drivers/net/ethernet/renesas/ravb_main.c
-@@ -530,8 +530,16 @@ static void ravb_emac_init_gbeth(struct net_device *ndev)
- 
- static void ravb_emac_init_rcar(struct net_device *ndev)
- {
--	/* Receive frame limit set register */
--	ravb_write(ndev, ndev->mtu + ETH_HLEN + VLAN_HLEN + ETH_FCS_LEN, RFLR);
-+	struct ravb_private *priv = netdev_priv(ndev);
+diff --git a/drivers/infiniband/ulp/rtrs/rtrs-clt.c b/drivers/infiniband/ulp/rtrs/rtrs-clt.c
+index 75d3a27dea9a0..82aa47efb8078 100644
+--- a/drivers/infiniband/ulp/rtrs/rtrs-clt.c
++++ b/drivers/infiniband/ulp/rtrs/rtrs-clt.c
+@@ -2342,6 +2342,12 @@ static int init_conns(struct rtrs_clt_path *clt_path)
+ 		if (err)
+ 			goto destroy;
+ 	}
 +
-+	/* Set receive frame length
-+	 *
-+	 * The length set here describes the frame from the destination address
-+	 * up to and including the CRC data. However only the frame data,
-+	 * excluding the CRC, are transferred to memory. To allow for the
-+	 * largest frames add the CRC length to the maximum Rx descriptor size.
++	/*
++	 * Set the cid to con_num - 1, since if we fail later, we want to stay in bounds.
 +	 */
-+	ravb_write(ndev, priv->info->rx_max_frame_size + ETH_FCS_LEN, RFLR);
- 
- 	/* EMAC Mode: PAUSE prohibition; Duplex; RX Checksum; TX; RX */
- 	ravb_write(ndev, ECMR_ZPF | ECMR_DM |
++	cid = clt_path->s.con_num - 1;
++
+ 	err = alloc_path_reqs(clt_path);
+ 	if (err)
+ 		goto destroy;
 -- 
 2.43.0
 
