@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-80338-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79835-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46D2D98DCFC
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:46:11 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9285498DA84
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:22:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09F01286336
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:46:10 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0C49EB25C84
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:22:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DD0A1D12F9;
-	Wed,  2 Oct 2024 14:41:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4CB451D0965;
+	Wed,  2 Oct 2024 14:16:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cftdh03w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K0iHWURd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F00431D12F0;
-	Wed,  2 Oct 2024 14:41:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09E1319F411;
+	Wed,  2 Oct 2024 14:16:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880082; cv=none; b=eJ97oTQQDUP7/G1caBHgZLb3OvwJfEN2T1emgTEgc6f9bHBKaM+jE0YhscrUTXgacVVgBbQBO4DCygUGl4VHXuG/jXcjlV9dhZMOczicWHw2soY1aN7xyHdgEuKHBN0gydVnoSIXcID7aL8tRwdN6p/saOJVG2Qe/YeuSR7te/4=
+	t=1727878604; cv=none; b=eZEvhAxaSHquv/kj9cszTtEyHnK3mt2CYLFFmjoo0LlSv2QFWAPp2HKWlza70jLZbwAFi36s3fjV9ZprFjp6voYKTBZc381cgpiO05bg/DuSnBHrDRRBHjn7V6eZuJVn0KJrPZPeeXJO28x4D8x/y5O5Gu3cNy0QlOw5VunvO4A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880082; c=relaxed/simple;
-	bh=XW85F5RZSzNj4blBEpGXVZnlwlXA52G+pBgI/0JxQTY=;
+	s=arc-20240116; t=1727878604; c=relaxed/simple;
+	bh=G0tLt1KB5+pbuYAiPNmRDM3crTTRUNjOVerQDa9ZMsY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AuqFTC2PNxqxWZZLslfyZoj0Q6qDfdNPz+jHYRKv9FHmcxH9MresZee5/OyhCmXCdbwsTlpZjhLWW/HFTru0yX7MNAtkEoLtK6B7oXTlsat+QhmwOif+l/Uc1Aq/irKxz14yrTkWOHjlSePGdAKHK+hIDsKF/5DG48RG3V69d40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cftdh03w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 755B8C4CEC2;
-	Wed,  2 Oct 2024 14:41:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jL7RK7e/M5xsWuGcty0PtRE3/SUay/3Jo7R5cfjBn8zgaIAb+9PRLQsRyzdTqK2hptsz7YUR3VBmNldxgxIc1vWmfa26DzL1gAq74rumW7EYpOxVPLFOquPmvLkqQyEEpTR8UTwA3//QeCN1fvU4MKYbU772Yuzj26YV6hpkUcw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K0iHWURd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 852D2C4CEC2;
+	Wed,  2 Oct 2024 14:16:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880081;
-	bh=XW85F5RZSzNj4blBEpGXVZnlwlXA52G+pBgI/0JxQTY=;
+	s=korg; t=1727878603;
+	bh=G0tLt1KB5+pbuYAiPNmRDM3crTTRUNjOVerQDa9ZMsY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cftdh03wGG5bgW+KXw6gEtn2FXHcuOCbPVI1e3fhs6dFOTh51bc2eW2OfZY5TrGlV
-	 mJ1++n2S77wzSBlhT3jg7JQcxSBVSjYNXSH+SRc1Bqj0jYQAf6euVIDfHNJICqGSIo
-	 B4wNHhlMMmrFI35NomAS43jjrl++90jVIb29zG9E=
+	b=K0iHWURd4/mAn8WpzjrXFC/jkpK7w6PdW3DuaiS4T1Kr9oe/5p7PfGky4U0W0oblA
+	 l1JP6cvWMvBMnQsf/+RarOTJ/MDL6s0tuV/Vrr/NlxqalxxvA42uVGwYgb1K8sDx3J
+	 FuEV3ifArTBS/+apFuJZAKevB8w9XGNkuILg7a/k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guoqing Jiang <guoqing.jiang@linux.dev>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Jeff Layton <jlayton@kernel.org>
-Subject: [PATCH 6.6 330/538] nfsd: call cache_put if xdr_reserve_space returns NULL
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	"Maciej W. Rozycki" <macro@orcam.me.uk>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
+Subject: [PATCH 6.10 469/634] PCI: Correct error reporting with PCIe failed link retraining
 Date: Wed,  2 Oct 2024 14:59:29 +0200
-Message-ID: <20241002125805.456417329@linuxfoundation.org>
+Message-ID: <20241002125829.620188561@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +61,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guoqing Jiang <guoqing.jiang@linux.dev>
+From: Maciej W. Rozycki <macro@orcam.me.uk>
 
-[ Upstream commit d078cbf5c38de83bc31f83c47dcd2184c04a50c7 ]
+commit 712e49c967064a3a7a5738c6f65ac540a3f6a1df upstream.
 
-If not enough buffer space available, but idmap_lookup has triggered
-lookup_fn which calls cache_get and returns successfully. Then we
-missed to call cache_put here which pairs with cache_get.
+Only return successful completion status from pcie_failed_link_retrain() if
+retraining has actually been done, preventing excessive delays from being
+triggered at call sites in a hope that communication will finally be
+established with the downstream device where in fact nothing has been done
+about the link in question that would justify such a hope.
 
-Fixes: ddd1ea563672 ("nfsd4: use xdr_reserve_space in attribute encoding")
-Signed-off-by: Guoqing Jiang <guoqing.jiang@linux.dev>
-Reviwed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a89c82249c37 ("PCI: Work around PCIe link training failures")
+Link: https://lore.kernel.org/r/alpine.DEB.2.21.2408091133260.61955@angie.orcam.me.uk
+Reported-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/aa2d1c4e-9961-d54a-00c7-ddf8e858a9b0@linux.intel.com/
+Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Cc: <stable@vger.kernel.org> # v6.5+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4idmap.c | 13 +++++++++----
- 1 file changed, 9 insertions(+), 4 deletions(-)
+ drivers/pci/quirks.c |   12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/fs/nfsd/nfs4idmap.c b/fs/nfsd/nfs4idmap.c
-index 7a806ac13e317..8cca1329f3485 100644
---- a/fs/nfsd/nfs4idmap.c
-+++ b/fs/nfsd/nfs4idmap.c
-@@ -581,6 +581,7 @@ static __be32 idmap_id_to_name(struct xdr_stream *xdr,
- 		.id = id,
- 		.type = type,
+--- a/drivers/pci/quirks.c
++++ b/drivers/pci/quirks.c
+@@ -78,7 +78,8 @@
+  * again to remove any residual state, ignoring the result as it's supposed
+  * to fail anyway.
+  *
+- * Return TRUE if the link has been successfully retrained, otherwise FALSE.
++ * Return TRUE if the link has been successfully retrained.  Return FALSE
++ * if retraining was not needed or we attempted a retrain and it failed.
+  */
+ bool pcie_failed_link_retrain(struct pci_dev *dev)
+ {
+@@ -87,6 +88,7 @@ bool pcie_failed_link_retrain(struct pci
+ 		{}
  	};
-+	__be32 status = nfs_ok;
- 	__be32 *p;
- 	int ret;
- 	struct nfsd_net *nn = net_generic(SVC_NET(rqstp), nfsd_net_id);
-@@ -593,12 +594,16 @@ static __be32 idmap_id_to_name(struct xdr_stream *xdr,
- 		return nfserrno(ret);
- 	ret = strlen(item->name);
- 	WARN_ON_ONCE(ret > IDMAP_NAMESZ);
-+
- 	p = xdr_reserve_space(xdr, ret + 4);
--	if (!p)
--		return nfserr_resource;
--	p = xdr_encode_opaque(p, item->name, ret);
-+	if (unlikely(!p)) {
-+		status = nfserr_resource;
-+		goto out_put;
-+	}
-+	xdr_encode_opaque(p, item->name, ret);
-+out_put:
- 	cache_put(&item->h, nn->idtoname_cache);
--	return 0;
-+	return status;
+ 	u16 lnksta, lnkctl2;
++	bool ret = false;
+ 
+ 	if (!pci_is_pcie(dev) || !pcie_downstream_port(dev) ||
+ 	    !pcie_cap_has_lnkctl2(dev) || !dev->link_active_reporting)
+@@ -104,7 +106,8 @@ bool pcie_failed_link_retrain(struct pci
+ 		lnkctl2 |= PCI_EXP_LNKCTL2_TLS_2_5GT;
+ 		pcie_capability_write_word(dev, PCI_EXP_LNKCTL2, lnkctl2);
+ 
+-		if (pcie_retrain_link(dev, false)) {
++		ret = pcie_retrain_link(dev, false) == 0;
++		if (!ret) {
+ 			pci_info(dev, "retraining failed\n");
+ 			pcie_capability_write_word(dev, PCI_EXP_LNKCTL2,
+ 						   oldlnkctl2);
+@@ -126,13 +129,14 @@ bool pcie_failed_link_retrain(struct pci
+ 		lnkctl2 |= lnkcap & PCI_EXP_LNKCAP_SLS;
+ 		pcie_capability_write_word(dev, PCI_EXP_LNKCTL2, lnkctl2);
+ 
+-		if (pcie_retrain_link(dev, false)) {
++		ret = pcie_retrain_link(dev, false) == 0;
++		if (!ret) {
+ 			pci_info(dev, "retraining failed\n");
+ 			return false;
+ 		}
+ 	}
+ 
+-	return true;
++	return ret;
  }
  
- static bool
--- 
-2.43.0
-
+ static ktime_t fixup_debug_start(struct pci_dev *dev,
 
 
 
