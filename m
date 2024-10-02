@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-79650-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80149-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 622E198D988
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:12:45 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD14D98DC2B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:39:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 0D8CB1F21748
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:12:45 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DF5D61C23F2A
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:39:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69DB11D1505;
-	Wed,  2 Oct 2024 14:07:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11B8F1D2712;
+	Wed,  2 Oct 2024 14:32:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y3fDQW7M"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UvZTYcyc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28E171D14F8;
-	Wed,  2 Oct 2024 14:07:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3E691474BC;
+	Wed,  2 Oct 2024 14:32:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878062; cv=none; b=GwxCLw4huW3nAW1VXhqEMDO65ZKT0Af2tMXJTBjl/m+ccgOyTRWYq6wDoo2m3v6fV6tF3sQ/XHlYFXHiL0bmRQJr6BMF8K0yCmPGK7Gw/bQsgBPswMdfh2boJn/0J6n9wIz471h897spLB0TBIoCPduQcM8Y2uIy61W+vrS9spM=
+	t=1727879526; cv=none; b=MCjNKn4zNHsrgyJxyLg/BDTMhU2bVLOERIuSluEoSn89AWbOxwhNW+Vzthv5hnzGDAwr21BJ+Qa/iht7e1jdurpuPmG0YkO8WLvII8F4vYC7i3oqFx7wPQVf+Kt+tHP4flROtO9XDomHUebX4y5DEs9p3SGpc0GMko71mMqC1A4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878062; c=relaxed/simple;
-	bh=P8Tu+dTEvq5/AqIIT3a+CRmXgavXcrLcXR49KHXkpyg=;
+	s=arc-20240116; t=1727879526; c=relaxed/simple;
+	bh=Ry+RnAG/FsM3VA8Aq6FSBvoL2NIAigWvk9EySoH6BWQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XgxUopNxXCDNY/G0bYmtCorgozt2qYfGzzMn1D52tu5jvU4g39DBDY7ufbRJ/427kTyb6Og/VZC2OOCAiVFRRTURnbsp0kuwlH76KeEbfOk18fl898GefX07BXexSl9pOVJ6K0rIMRdU4Frlpg2ENBDSiWaTB4DvRehshzSX58Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y3fDQW7M; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A80BAC4CEC2;
-	Wed,  2 Oct 2024 14:07:41 +0000 (UTC)
+	 MIME-Version; b=Evu4nOZ1CVv4tdOX3edZjCefahr4E7sxdipD5JcXcXut34NQbu1XQ08+9rG1C2w0zr88OdB4mbR02slnR9lgluvEdWWd1wq/mIv8sEmvOTqcaHhEaqTJ+gv7rEK1i638dmrUkWGWJJHFvu9zTbwmZH0svuAVfurZFz0V5avjWe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UvZTYcyc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F3A3C4CEC2;
+	Wed,  2 Oct 2024 14:32:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878062;
-	bh=P8Tu+dTEvq5/AqIIT3a+CRmXgavXcrLcXR49KHXkpyg=;
+	s=korg; t=1727879526;
+	bh=Ry+RnAG/FsM3VA8Aq6FSBvoL2NIAigWvk9EySoH6BWQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y3fDQW7MNwnRGHL8Nhq+40v3GrwNQC0VSTAO7RkdDk+rMAhIx5dqAX1fA3essm3lj
-	 0atdrIGu437x8Nw3+AvbG9UHUTOZ25YbL+vVRGoq+3bEZJGw9k9+wet6KBoAzPw/ej
-	 LUFDX+wI7eRi5EwLS+KBwjqNSp7M5ETFEJwCa3Sw=
+	b=UvZTYcycoSP4A361Qii6yULdAUt/1nklkmMmEJqPSSsuvQ3pN/ZxxBFqf9E9pYxeH
+	 ol+isN3tD11dBspv3jzogu5ijDGzn/msM9O+WfxIjvNOhSY82/IeNHEQ63RRoEXoai
+	 C07WH7aZ9fS85h5X7TFHuWH85LRHanssnvHQn5nM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexei Starovoitov <ast@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Liu Ying <victor.liu@nxp.com>,
+	Robert Foss <rfoss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 288/634] bpf: Fix bpf_strtol and bpf_strtoul helpers for 32bit
+Subject: [PATCH 6.6 149/538] drm/bridge: lontium-lt8912b: Validate mode in drm_bridge_funcs::mode_valid()
 Date: Wed,  2 Oct 2024 14:56:28 +0200
-Message-ID: <20241002125822.476966965@linuxfoundation.org>
+Message-ID: <20241002125758.135904111@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,76 +62,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Borkmann <daniel@iogearbox.net>
+From: Liu Ying <victor.liu@nxp.com>
 
-[ Upstream commit cfe69c50b05510b24e26ccb427c7cc70beafd6c1 ]
+[ Upstream commit fe828fbd87786238b30f44cafd698d975d956c97 ]
 
-The bpf_strtol() and bpf_strtoul() helpers are currently broken on 32bit:
+If the bridge is attached with the DRM_BRIDGE_ATTACH_NO_CONNECTOR flag set,
+this driver won't initialize a connector and hence display mode won't be
+validated in drm_connector_helper_funcs::mode_valid().  So, move the mode
+validation from drm_connector_helper_funcs::mode_valid() to
+drm_bridge_funcs::mode_valid(), because the mode validation is always done
+for the bridge.
 
-The argument type ARG_PTR_TO_LONG is BPF-side "long", not kernel-side "long"
-and therefore always considered fixed 64bit no matter if 64 or 32bit underlying
-architecture.
-
-This contract breaks in case of the two mentioned helpers since their BPF_CALL
-definition for the helpers was added with {unsigned,}long *res. Meaning, the
-transition from BPF-side "long" (BPF program) to kernel-side "long" (BPF helper)
-breaks here.
-
-Both helpers call __bpf_strtoll() with "long long" correctly, but later assigning
-the result into 32-bit "*(long *)" on 32bit architectures. From a BPF program
-point of view, this means upper bits will be seen as uninitialised.
-
-Therefore, fix both BPF_CALL signatures to {s,u}64 types to fix this situation.
-
-Now, changing also uapi/bpf.h helper documentation which generates bpf_helper_defs.h
-for BPF programs is tricky: Changing signatures there to __{s,u}64 would trigger
-compiler warnings (incompatible pointer types passing 'long *' to parameter of type
-'__s64 *' (aka 'long long *')) for existing BPF programs.
-
-Leaving the signatures as-is would be fine as from BPF program point of view it is
-still BPF-side "long" and thus equivalent to __{s,u}64 on 64 or 32bit underlying
-architectures.
-
-Note that bpf_strtol() and bpf_strtoul() are the only helpers with this issue.
-
-Fixes: d7a4cb9b6705 ("bpf: Introduce bpf_strtol and bpf_strtoul helpers")
-Reported-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/481fcec8-c12c-9abb-8ecb-76c71c009959@iogearbox.net
-Link: https://lore.kernel.org/r/20240913191754.13290-1-daniel@iogearbox.net
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 30e2ae943c26 ("drm/bridge: Introduce LT8912B DSI to HDMI bridge")
+Signed-off-by: Liu Ying <victor.liu@nxp.com>
+Reviewed-by: Robert Foss <rfoss@kernel.org>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240813091637.1054586-1-victor.liu@nxp.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/helpers.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/bridge/lontium-lt8912b.c | 35 ++++++++++++------------
+ 1 file changed, 18 insertions(+), 17 deletions(-)
 
-diff --git a/kernel/bpf/helpers.c b/kernel/bpf/helpers.c
-index 7268370600f6e..ffabd06be1240 100644
---- a/kernel/bpf/helpers.c
-+++ b/kernel/bpf/helpers.c
-@@ -517,7 +517,7 @@ static int __bpf_strtoll(const char *buf, size_t buf_len, u64 flags,
- }
- 
- BPF_CALL_4(bpf_strtol, const char *, buf, size_t, buf_len, u64, flags,
--	   long *, res)
-+	   s64 *, res)
- {
- 	long long _res;
- 	int err;
-@@ -542,7 +542,7 @@ const struct bpf_func_proto bpf_strtol_proto = {
+diff --git a/drivers/gpu/drm/bridge/lontium-lt8912b.c b/drivers/gpu/drm/bridge/lontium-lt8912b.c
+index 0efcbc73f2a43..5e43a40a5d522 100644
+--- a/drivers/gpu/drm/bridge/lontium-lt8912b.c
++++ b/drivers/gpu/drm/bridge/lontium-lt8912b.c
+@@ -411,22 +411,6 @@ static const struct drm_connector_funcs lt8912_connector_funcs = {
+ 	.atomic_destroy_state = drm_atomic_helper_connector_destroy_state,
  };
  
- BPF_CALL_4(bpf_strtoul, const char *, buf, size_t, buf_len, u64, flags,
--	   unsigned long *, res)
-+	   u64 *, res)
+-static enum drm_mode_status
+-lt8912_connector_mode_valid(struct drm_connector *connector,
+-			    struct drm_display_mode *mode)
+-{
+-	if (mode->clock > 150000)
+-		return MODE_CLOCK_HIGH;
+-
+-	if (mode->hdisplay > 1920)
+-		return MODE_BAD_HVALUE;
+-
+-	if (mode->vdisplay > 1080)
+-		return MODE_BAD_VVALUE;
+-
+-	return MODE_OK;
+-}
+-
+ static int lt8912_connector_get_modes(struct drm_connector *connector)
  {
- 	unsigned long long _res;
- 	bool is_negative;
+ 	const struct drm_edid *drm_edid;
+@@ -452,7 +436,6 @@ static int lt8912_connector_get_modes(struct drm_connector *connector)
+ 
+ static const struct drm_connector_helper_funcs lt8912_connector_helper_funcs = {
+ 	.get_modes = lt8912_connector_get_modes,
+-	.mode_valid = lt8912_connector_mode_valid,
+ };
+ 
+ static void lt8912_bridge_mode_set(struct drm_bridge *bridge,
+@@ -594,6 +577,23 @@ static void lt8912_bridge_detach(struct drm_bridge *bridge)
+ 		drm_bridge_hpd_disable(lt->hdmi_port);
+ }
+ 
++static enum drm_mode_status
++lt8912_bridge_mode_valid(struct drm_bridge *bridge,
++			 const struct drm_display_info *info,
++			 const struct drm_display_mode *mode)
++{
++	if (mode->clock > 150000)
++		return MODE_CLOCK_HIGH;
++
++	if (mode->hdisplay > 1920)
++		return MODE_BAD_HVALUE;
++
++	if (mode->vdisplay > 1080)
++		return MODE_BAD_VVALUE;
++
++	return MODE_OK;
++}
++
+ static enum drm_connector_status
+ lt8912_bridge_detect(struct drm_bridge *bridge)
+ {
+@@ -624,6 +624,7 @@ static struct edid *lt8912_bridge_get_edid(struct drm_bridge *bridge,
+ static const struct drm_bridge_funcs lt8912_bridge_funcs = {
+ 	.attach = lt8912_bridge_attach,
+ 	.detach = lt8912_bridge_detach,
++	.mode_valid = lt8912_bridge_mode_valid,
+ 	.mode_set = lt8912_bridge_mode_set,
+ 	.enable = lt8912_bridge_enable,
+ 	.detect = lt8912_bridge_detect,
 -- 
 2.43.0
 
