@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-80451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79953-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CBF698DD7C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:49:55 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 94D0B98DB0E
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:27:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9DA4D1C230E9
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:49:54 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C68561C211AC
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:27:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0825A1D0BB7;
-	Wed,  2 Oct 2024 14:46:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCF171D048E;
+	Wed,  2 Oct 2024 14:22:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2O2VdDpB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c1SjI+/N"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA1C91D0B8C;
-	Wed,  2 Oct 2024 14:46:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B7AF1D0412;
+	Wed,  2 Oct 2024 14:22:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880410; cv=none; b=BJrXXsp8HTl1P+s+eX7I3wsoNHv4W5tvhofk2RboqgYNDIH019ZkMcQZkgjyWbmLyBXnqXxyrdnyLkKiAHR3+lQ7IcpfPPblxk8XhLE54RLMD5PqsF8N0RCDdppBcoQN9f5MBkF6J7SVoBh7yGNTFozYuuXNSXYAEEGfR212NOQ=
+	t=1727878952; cv=none; b=Te9pu2EAneUbas8YvvT2w+oEAVUc9MMzTiP5UofcVGoFH+Hxz4bGaFp6a6phrXpi7RAXK9EjHzKQyWTaO5NYVk6V0VEhwoJca8E8Ek9PwGW9k9JKQIF/3/olKV1VTymFL5gCN+Mu7ym08ylmuWJsBcd9Sy5ZADWeg80r305zhSE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880410; c=relaxed/simple;
-	bh=wN61Zv6wNqkHEe/xZiDUNPcybQigv2OHVLQko/VquJM=;
+	s=arc-20240116; t=1727878952; c=relaxed/simple;
+	bh=ebdABd7XazoCiDK4pfQdqxjvKOCf0HbORPfi6bIMmGk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=foAiSZkNWGutVCzo+52d4U4PY90Q+V6eRF0yPxJFOvNmckFhMXNFFaClcGQtIqOdkFRtjgZlHeKQ7h2YBsC2puv0lGBTJYNJufyUdCOqp6GQbbxXQn/RquFNnkQzIw3I2lmU0mr+ExOl9uuoTgPdVU3C3ikGOJzQTpXS4NS8P2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2O2VdDpB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44DF8C4CEC2;
-	Wed,  2 Oct 2024 14:46:50 +0000 (UTC)
+	 MIME-Version; b=B1VtyYXSqZGFxZhVIaxuvVCrgY8GquKdF5Tnn8/sJmwmcTxa9xVyO52R7ZZzN5Kprp04wT5GHxCfGKRBLl1hvO+JnImalvz4medleMeVCotOb2URdz7a1yATmSgubrUmZO7E7HO9U/1ApfrZqoNKmAy9Uzf+iKjEV+5967t3CVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c1SjI+/N; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1387EC4CEC2;
+	Wed,  2 Oct 2024 14:22:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880410;
-	bh=wN61Zv6wNqkHEe/xZiDUNPcybQigv2OHVLQko/VquJM=;
+	s=korg; t=1727878952;
+	bh=ebdABd7XazoCiDK4pfQdqxjvKOCf0HbORPfi6bIMmGk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2O2VdDpB7PNoL9gptW4gk/pZI5Dq9t43B5+OywAmjniGTJj1DN+UZrc3JaidvNuuE
-	 ufgGJoQYxJJofh+aZLpxfXePKwUTsO5mWicgLSe6GMJd+xNwz7MUe8xkHFmrnF0otv
-	 dYAgr/AKAPhbuzhdV/8Z4z2T7D4BefQQ6XRv7W/U=
+	b=c1SjI+/NRKFtjXdtSLKum2Hblc4Cn06YQ0Nbk6TtKfesUgHCWEsMKpvU0v34ITnxL
+	 FsYBzueRvUtU7xjsg/zVinM6abTN2jrheg9xLBrSHS4W66O3r/xlwxFDJYUY95IPdN
+	 u0uadxC8wSk2DViSoa98rgs2rhcRvxcJRDpeGaz0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Breno Leitao <leitao@debian.org>,
-	Usama Arif <usamaarif642@gmail.com>,
-	Ilias Apalodimas <ilias.apalodimas@linaro.org>,
-	Ard Biesheuvel <ardb@kernel.org>
-Subject: [PATCH 6.6 450/538] efistub/tpm: Use ACPI reclaim memory for event log to avoid corruption
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Parthiban Nallathambi <parthiban@linumiz.com>,
+	Shawn Guo <shawnguo@kernel.org>
+Subject: [PATCH 6.10 589/634] ARM: dts: imx6ull-seeed-npi: fix fsl,pins property in tscgrp pinctrl
 Date: Wed,  2 Oct 2024 15:01:29 +0200
-Message-ID: <20241002125810.204256876@linuxfoundation.org>
+Message-ID: <20241002125834.364080177@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +62,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit 77d48d39e99170b528e4f2e9fc5d1d64cdedd386 upstream.
+commit 3dedd4889cfc2851444a1f7626b293c0bfd1e42c upstream.
 
-The TPM event log table is a Linux specific construct, where the data
-produced by the GetEventLog() boot service is cached in memory, and
-passed on to the OS using an EFI configuration table.
+The property is "fsl,pins", not "fsl,pin".  Wrong property means the pin
+configuration was not applied.  Fixes dtbs_check warnings:
 
-The use of EFI_LOADER_DATA here results in the region being left
-unreserved in the E820 memory map constructed by the EFI stub, and this
-is the memory description that is passed on to the incoming kernel by
-kexec, which is therefore unaware that the region should be reserved.
+  imx6ull-seeed-npi-dev-board-emmc.dtb: pinctrl@20e0000: uart1grp: 'fsl,pins' is a required property
+  imx6ull-seeed-npi-dev-board-emmc.dtb: pinctrl@20e0000: uart1grp: 'fsl,pin' does not match any of the regexes: 'pinctrl-[0-9]+'
 
-Even though the utility of the TPM2 event log after a kexec is
-questionable, any corruption might send the parsing code off into the
-weeds and crash the kernel. So let's use EFI_ACPI_RECLAIM_MEMORY
-instead, which is always treated as reserved by the E820 conversion
-logic.
-
-Cc: <stable@vger.kernel.org>
-Reported-by: Breno Leitao <leitao@debian.org>
-Tested-by: Usama Arif <usamaarif642@gmail.com>
-Reviewed-by: Ilias Apalodimas <ilias.apalodimas@linaro.org>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: e3b5697195c8 ("ARM: dts: imx6ull: add seeed studio NPi dev board")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Parthiban Nallathambi <parthiban@linumiz.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/efi/libstub/tpm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../dts/nxp/imx/imx6ull-seeed-npi-dev-board.dtsi     | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/firmware/efi/libstub/tpm.c
-+++ b/drivers/firmware/efi/libstub/tpm.c
-@@ -115,7 +115,7 @@ void efi_retrieve_tpm2_eventlog(void)
- 	}
+diff --git a/arch/arm/boot/dts/nxp/imx/imx6ull-seeed-npi-dev-board.dtsi b/arch/arm/boot/dts/nxp/imx/imx6ull-seeed-npi-dev-board.dtsi
+index 6bb12e0bbc7e..50654dbf62e0 100644
+--- a/arch/arm/boot/dts/nxp/imx/imx6ull-seeed-npi-dev-board.dtsi
++++ b/arch/arm/boot/dts/nxp/imx/imx6ull-seeed-npi-dev-board.dtsi
+@@ -339,14 +339,14 @@ MX6UL_PAD_JTAG_TRST_B__SAI2_TX_DATA	0x120b0
+ 	};
  
- 	/* Allocate space for the logs and copy them. */
--	status = efi_bs_call(allocate_pool, EFI_LOADER_DATA,
-+	status = efi_bs_call(allocate_pool, EFI_ACPI_RECLAIM_MEMORY,
- 			     sizeof(*log_tbl) + log_size, (void **)&log_tbl);
+ 	pinctrl_uart1: uart1grp {
+-		fsl,pin = <
++		fsl,pins = <
+ 			MX6UL_PAD_UART1_TX_DATA__UART1_DCE_TX	0x1b0b1
+ 			MX6UL_PAD_UART1_RX_DATA__UART1_DCE_RX	0x1b0b1
+ 		>;
+ 	};
  
- 	if (status != EFI_SUCCESS) {
+ 	pinctrl_uart2: uart2grp {
+-		fsl,pin = <
++		fsl,pins = <
+ 			MX6UL_PAD_UART2_TX_DATA__UART2_DCE_TX	0x1b0b1
+ 			MX6UL_PAD_UART2_RX_DATA__UART2_DCE_RX	0x1b0b1
+ 			MX6UL_PAD_UART2_CTS_B__UART2_DCE_CTS	0x1b0b1
+@@ -355,7 +355,7 @@ MX6UL_PAD_UART2_RTS_B__UART2_DCE_RTS	0x1b0b1
+ 	};
+ 
+ 	pinctrl_uart3: uart3grp {
+-		fsl,pin = <
++		fsl,pins = <
+ 			MX6UL_PAD_UART3_TX_DATA__UART3_DCE_TX	0x1b0b1
+ 			MX6UL_PAD_UART3_RX_DATA__UART3_DCE_RX	0x1b0b1
+ 			MX6UL_PAD_UART3_CTS_B__UART3_DCE_CTS	0x1b0b1
+@@ -364,21 +364,21 @@ MX6UL_PAD_UART3_RTS_B__UART3_DCE_RTS	0x1b0b1
+ 	};
+ 
+ 	pinctrl_uart4: uart4grp {
+-		fsl,pin = <
++		fsl,pins = <
+ 			MX6UL_PAD_UART4_TX_DATA__UART4_DCE_TX	0x1b0b1
+ 			MX6UL_PAD_UART4_RX_DATA__UART4_DCE_RX	0x1b0b1
+ 		>;
+ 	};
+ 
+ 	pinctrl_uart5: uart5grp {
+-		fsl,pin = <
++		fsl,pins = <
+ 			MX6UL_PAD_UART5_TX_DATA__UART5_DCE_TX	0x1b0b1
+ 			MX6UL_PAD_UART5_RX_DATA__UART5_DCE_RX	0x1b0b1
+ 		>;
+ 	};
+ 
+ 	pinctrl_usb_otg1_id: usbotg1idgrp {
+-		fsl,pin = <
++		fsl,pins = <
+ 			MX6UL_PAD_GPIO1_IO00__ANATOP_OTG1_ID	0x17059
+ 		>;
+ 	};
+-- 
+2.46.2
+
 
 
 
