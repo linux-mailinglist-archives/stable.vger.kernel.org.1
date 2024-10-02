@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-78799-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79394-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE0D498D50A
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:26:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A7A298D807
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:56:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id A50901F22F67
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:26:50 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF27B1F22036
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:55:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DD661D0493;
-	Wed,  2 Oct 2024 13:26:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E5241D07BD;
+	Wed,  2 Oct 2024 13:55:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DmtDXMzJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bOxm+2RV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDD051D043C;
-	Wed,  2 Oct 2024 13:26:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C24EA1D0795;
+	Wed,  2 Oct 2024 13:55:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875564; cv=none; b=ONjbgLEFrXJkUdNOcMbqE15O1oCbxm7ojYRHvGc5eIw22e2W9q9pNH7LCgiaKiRH0iioMZE3LTvRZczDa1aqfqpcUD3+NyULz2LRN7g0+MK0mo18+P2QnoX5lTjyEpUqQITvXLpwfuob2emL3gfaWx5QdUL0t9JIGIVYhs50eEk=
+	t=1727877320; cv=none; b=YQtghP2es/xbGqF+bVg0aLPlO1qNUg2dKTn+zeXazYHvo+3fLcyjX9KfYM9JdOvBVeZmvEq8DUa8icv0IxFL0Kdw7vEfoxi7Abz4xxo+M4ZLGHBM+Vr8RcNkzIE7JYzp6vXNc/MBN2z3H3glJW50IcJlBfzDNO2wOumEoC5LA2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875564; c=relaxed/simple;
-	bh=r2tU+QP6MFaTAtf69PmoH3yS+wwaneaSDZAFp4jByY8=;
+	s=arc-20240116; t=1727877320; c=relaxed/simple;
+	bh=Uo8Fegrp8DDxcO3oCtopQVdCemE3b+cVA/r5Vg0SKpc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bMdqx9OdHgeBsHVmuhGYDvVRraAM6JwTbIGfrqfzD5t6t/98pish0oJXdqo8mtCgya7JZcaXbIheFOYKzQLWfObmvz/vVSRbfeoXXYmdS5E2GFCMk7fIP7KembZaChIRhfcgMk+PeagzYfl34n4/q+3ZcmeGHMLemZB4P6NdGzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DmtDXMzJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E086C4CEC5;
-	Wed,  2 Oct 2024 13:26:04 +0000 (UTC)
+	 MIME-Version; b=QCfihiz4tiiZ2dUe6behuopIl7JBmxZs67oQScax4a1HVsXdfE9Vft1NBq1d9Z76ze+cQMCC5ui7cZuZ4ZM0s57AmqfFEzmWSvNeSjCEYZRikKx9ea449sGtu5Igvus92SD5zxPkCfESCmluhZPA9LVuaQ74pg9xD344zqceyug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bOxm+2RV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48229C4CED6;
+	Wed,  2 Oct 2024 13:55:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875564;
-	bh=r2tU+QP6MFaTAtf69PmoH3yS+wwaneaSDZAFp4jByY8=;
+	s=korg; t=1727877320;
+	bh=Uo8Fegrp8DDxcO3oCtopQVdCemE3b+cVA/r5Vg0SKpc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DmtDXMzJuzI/yh0jCCqnXJDX7MGzXAB/hWSbXRioSCBUTuqrRFJnKiC4pzc8pyUxF
-	 FysbnNLVwA8WezNmar0GZf8SKmEF3nLTduJwIvGDOEscnTpwO/8gZbyLQVRSsA48x+
-	 ISUJLd3lUfyVy1DFjkDCeTCVh8xSKegNp/r1OpKk=
+	b=bOxm+2RVbiuzFZRR2POYKvkK3U28Eg65pvFVnFeksuk1P2PnNBbHB9bPywaqhdcHp
+	 pFIori0yT+yDV6ATolzxYw5OIWhy+r+4N8FDJoi1vxCtcd8D9++UiFD1EniN4q6cdp
+	 lPQkmLEDWfSSYgQofiI8HCHfX0U1L7ba6yUgMvAo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Dahl <ada@thorsis.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 144/695] ARM: dts: microchip: sam9x60: Fix rtc/rtt clocks
+Subject: [PATCH 6.10 042/634] wifi: mac80211: fix the comeback long retry times
 Date: Wed,  2 Oct 2024 14:52:22 +0200
-Message-ID: <20241002125828.232136736@linuxfoundation.org>
+Message-ID: <20241002125812.761939028@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Dahl <ada@thorsis.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-[ Upstream commit d355c895fa4ddd8bec15569eee540baeed7df8c5 ]
+[ Upstream commit 1524173a3745899612c71d9e83ff8fe29dbb2cfb ]
 
-The RTC and RTT peripherals use the timing domain slow clock (TD_SLCK),
-sourced from the 32.768 kHz crystal oscillator or slow rc oscillator.
+When we had a comeback, we will never use the default timeout values
+again because comeback is never cleared.
+Clear comeback if we send another association request which will allow
+to start a default timer after Tx status.
 
-The previously used Monitoring domain slow clock (MD_SLCK) is sourced
-from an internal RC oscillator which is most probably not precise enough
-for real time clock purposes.
+The problem was seen with iwlwifi where the tx_status on the association
+request is handled before the association response frame (which is the
+usual case).
 
-Fixes: 1e5f532c2737 ("ARM: dts: at91: sam9x60: add device tree for soc and board")
-Fixes: 5f6b33f46346 ("ARM: dts: sam9x60: add rtt")
-Signed-off-by: Alexander Dahl <ada@thorsis.com>
-Link: https://lore.kernel.org/r/20240821055136.6858-1-ada@thorsis.com
-[claudiu.beznea: removed () around the last commit description paragraph,
- removed " in front of "timing domain slow clock", described that
- TD_SLCK can also be sourced from slow rc oscillator]
-Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+1) Tx assoc request 1/3
+2) Rx assoc response (comeback, timeout = 1 second)
+3) wait 1 second
+4) Tx assoc request 2/3
+5) Set timer to IEEE80211_ASSOC_TIMEOUT_LONG = 500ms (1 second after
+   round_up)
+6) tx_status on frame sent in 4) is ignored because comeback is still
+   true
+7) AP does not reply with assoc response
+8) wait 1s <= This is where the bug is felt
+9) Tx assoc request 3/3
+
+With this fix, in step 6 we will reset the timer to
+IEEE80211_ASSOC_TIMEOUT_SHORT = 100ms and we will wait only 100ms in
+step 8.
+
+Fixes: b133fdf07db8 ("wifi: mac80211: Skip association timeout update after comeback rejection")
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Link: https://patch.msgid.link/20240808085916.23519-1-emmanuel.grumbach@intel.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/microchip/sam9x60.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/mac80211/mlme.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/arm/boot/dts/microchip/sam9x60.dtsi b/arch/arm/boot/dts/microchip/sam9x60.dtsi
-index 291540e5d81e7..d077afd5024db 100644
---- a/arch/arm/boot/dts/microchip/sam9x60.dtsi
-+++ b/arch/arm/boot/dts/microchip/sam9x60.dtsi
-@@ -1312,7 +1312,7 @@
- 				compatible = "microchip,sam9x60-rtt", "atmel,at91sam9260-rtt";
- 				reg = <0xfffffe20 0x20>;
- 				interrupts = <1 IRQ_TYPE_LEVEL_HIGH 7>;
--				clocks = <&clk32k 0>;
-+				clocks = <&clk32k 1>;
- 			};
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index ad2ce9c92ba8a..51b00ff7edf15 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -7121,6 +7121,7 @@ static int ieee80211_do_assoc(struct ieee80211_sub_if_data *sdata)
+ 	lockdep_assert_wiphy(sdata->local->hw.wiphy);
  
- 			pit: timer@fffffe40 {
-@@ -1338,7 +1338,7 @@
- 				compatible = "microchip,sam9x60-rtc", "atmel,at91sam9x5-rtc";
- 				reg = <0xfffffea8 0x100>;
- 				interrupts = <1 IRQ_TYPE_LEVEL_HIGH 7>;
--				clocks = <&clk32k 0>;
-+				clocks = <&clk32k 1>;
- 			};
- 
- 			watchdog: watchdog@ffffff80 {
+ 	assoc_data->tries++;
++	assoc_data->comeback = false;
+ 	if (assoc_data->tries > IEEE80211_ASSOC_MAX_TRIES) {
+ 		sdata_info(sdata, "association with %pM timed out\n",
+ 			   assoc_data->ap_addr);
 -- 
 2.43.0
 
