@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-79990-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80488-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FDFD98DB3B
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:29:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E99E98DDA5
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:51:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 718DE1C236EB
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:29:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id B95711F2415C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:51:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 688AC1D1504;
-	Wed,  2 Oct 2024 14:24:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC2121D07B7;
+	Wed,  2 Oct 2024 14:48:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O8/Gv7Jn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oomI6qSz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 257B41D0949;
-	Wed,  2 Oct 2024 14:24:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 960BE2F44;
+	Wed,  2 Oct 2024 14:48:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879063; cv=none; b=rRJNNFpPHkpkEiZAbR9Clm5f9uH1+YB2XtYJKfYMHDaQCjVv3UC6Ul6TuaDOSSPrZrz2kk3F/8alcZuk5r2MJx0WN9rPq0GduleMkBjLHn7O5E7m2K4eB6hRqkNESpRAawdnimGzYOHQJ6BecM39v/D4/vaYHn/pA0Ein2KasnQ=
+	t=1727880518; cv=none; b=L2+b14TJIPlQetDsBjNhr7gaoh1dU/DenIhUgHs61f6v7z8wsoJyrpslHxbzSERgkesx1Rbb6tciN9bQbywC1IzvaO5ZFiTe1i1W1BTSFH9XaCSE0/VizQfhqcUjXvjRsX+eckW80kzXxG2TZJgfDqr1U571qd4Fjq4EPtHaA7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879063; c=relaxed/simple;
-	bh=NaGPaQnC3AgrPjPpnS0XRac76bHNxWgzWf/UxuUKnQY=;
+	s=arc-20240116; t=1727880518; c=relaxed/simple;
+	bh=BABd0vStzH3wkQXX5Q9v3tAD04WjjCefaz4HkwzG9Ck=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dQGwGKOlHrx9XE9N0T08HR5HfFxSzJC5Nh8pIaOKilcINo8IjR0OcY1SicOI1amVPbGhQKDUQzK+yoS+5baWH0kk7paxyfxB3s/ojpTA7YKwexRbtVOJeUS70CrNy3epVo1z1sKx1qte4Rzyo5EV03oC9LPwC75z7S2GZ74zehc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O8/Gv7Jn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63A04C4CECD;
-	Wed,  2 Oct 2024 14:24:22 +0000 (UTC)
+	 MIME-Version; b=QFHeY8VXHJne1tHPTHawRTBhwD7dPYZJy81a2wgbprmWSvaZG993K/NQXrz427lZ2wkDaa/oSJIZUJEcW9Lds1qBrRcsQPUncrRBulX0nuajZz+wFnOyfq1FiFa93LN+8zvt+648AWoUYU9iqLujLbuppgo0IasATwWxmU+a69k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oomI6qSz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B734C4CEC2;
+	Wed,  2 Oct 2024 14:48:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879062;
-	bh=NaGPaQnC3AgrPjPpnS0XRac76bHNxWgzWf/UxuUKnQY=;
+	s=korg; t=1727880518;
+	bh=BABd0vStzH3wkQXX5Q9v3tAD04WjjCefaz4HkwzG9Ck=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O8/Gv7Jn6HBwY6aDOyzVIEMogwdxQOAqmkQtBvYV6FH3KqhmEjN8a+JqKWZxb+gtb
-	 3vpi/dRxV481LIwrAVECHWUdJmBUBq2+pojSZDA7lBaqzPT0M32kz7irYtVKYxbCvC
-	 Jj/F1GnrwJdN+yvVCesvVhQqlGW2wAPnjqbhleRQ=
+	b=oomI6qSzQbTli3lwVRP+dCy9JpAJuMykJA/Jh/roOqIokcGl7peiwukIx300st1uC
+	 VZ7uPC8J7p+29kygk9BKXq7THF0xEbor3rZERaDX9yLrniLaH3gzaEhCHIN1i2CXvm
+	 pqdxeIsxD93ssQ4DkAA8k6WdgnSAEsr2W3DFiug0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Arthur Borsboom <arthurborsboom@gmail.com>,
-	Jason Andryuk <jason.andryuk@amd.com>,
-	=?UTF-8?q?Roger=20Pau=20Monn=C3=A9?= <roger.pau@citrix.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.10 625/634] fbdev: xen-fbfront: Assign fb_info->device
+	Oliver Neukum <oneukum@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 486/538] USB: misc: yurex: fix race between read and write
 Date: Wed,  2 Oct 2024 15:02:05 +0200
-Message-ID: <20241002125835.795329165@linuxfoundation.org>
+Message-ID: <20241002125811.625631976@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +59,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Andryuk <jason.andryuk@amd.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit c2af2a45560bd4046c2e109152acde029ed0acc2 upstream.
+[ Upstream commit 93907620b308609c72ba4b95b09a6aa2658bb553 ]
 
-Probing xen-fbfront faults in video_is_primary_device().  The passed-in
-struct device is NULL since xen-fbfront doesn't assign it and the
-memory is kzalloc()-ed.  Assign fb_info->device to avoid this.
+The write code path touches the bbu member in a non atomic manner
+without taking the spinlock. Fix it.
 
-This was exposed by the conversion of fb_is_primary_device() to
-video_is_primary_device() which dropped a NULL check for struct device.
+The bug is as old as the driver.
 
-Fixes: f178e96de7f0 ("arch: Remove struct fb_info from video helpers")
-Reported-by: Arthur Borsboom <arthurborsboom@gmail.com>
-Closes: https://lore.kernel.org/xen-devel/CALUcmUncX=LkXWeiSiTKsDY-cOe8QksWhFvcCneOKfrKd0ZajA@mail.gmail.com/
-Tested-by: Arthur Borsboom <arthurborsboom@gmail.com>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
 CC: stable@vger.kernel.org
-Signed-off-by: Jason Andryuk <jason.andryuk@amd.com>
-Reviewed-by: Roger Pau Monné <roger.pau@citrix.com>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Link: https://lore.kernel.org/r/20240912132126.1034743-1-oneukum@suse.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/xen-fbfront.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/misc/yurex.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/video/fbdev/xen-fbfront.c b/drivers/video/fbdev/xen-fbfront.c
-index 66d4628a96ae..c90f48ebb15e 100644
---- a/drivers/video/fbdev/xen-fbfront.c
-+++ b/drivers/video/fbdev/xen-fbfront.c
-@@ -407,6 +407,7 @@ static int xenfb_probe(struct xenbus_device *dev,
- 	/* complete the abuse: */
- 	fb_info->pseudo_palette = fb_info->par;
- 	fb_info->par = info;
-+	fb_info->device = &dev->dev;
+diff --git a/drivers/usb/misc/yurex.c b/drivers/usb/misc/yurex.c
+index 5a13cddace0e6..44136989f6c6a 100644
+--- a/drivers/usb/misc/yurex.c
++++ b/drivers/usb/misc/yurex.c
+@@ -404,7 +404,6 @@ static ssize_t yurex_read(struct file *file, char __user *buffer, size_t count,
+ 	struct usb_yurex *dev;
+ 	int len = 0;
+ 	char in_buffer[MAX_S64_STRLEN];
+-	unsigned long flags;
  
- 	fb_info->screen_buffer = info->fb;
+ 	dev = file->private_data;
  
+@@ -417,9 +416,9 @@ static ssize_t yurex_read(struct file *file, char __user *buffer, size_t count,
+ 	if (WARN_ON_ONCE(dev->bbu > S64_MAX || dev->bbu < S64_MIN))
+ 		return -EIO;
+ 
+-	spin_lock_irqsave(&dev->lock, flags);
++	spin_lock_irq(&dev->lock);
+ 	scnprintf(in_buffer, MAX_S64_STRLEN, "%lld\n", dev->bbu);
+-	spin_unlock_irqrestore(&dev->lock, flags);
++	spin_unlock_irq(&dev->lock);
+ 	mutex_unlock(&dev->io_mutex);
+ 
+ 	return simple_read_from_buffer(buffer, count, ppos, in_buffer, len);
+@@ -509,8 +508,11 @@ static ssize_t yurex_write(struct file *file, const char __user *user_buffer,
+ 			__func__, retval);
+ 		goto error;
+ 	}
+-	if (set && timeout)
++	if (set && timeout) {
++		spin_lock_irq(&dev->lock);
+ 		dev->bbu = c2;
++		spin_unlock_irq(&dev->lock);
++	}
+ 	return timeout ? count : -EIO;
+ 
+ error:
 -- 
-2.46.2
+2.43.0
 
 
 
