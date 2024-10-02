@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-78771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79365-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C27998D4E7
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:25:56 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id F229C98D7DA
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:54:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id D9522B2102B
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:25:53 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B95FC2838C6
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:54:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 892851D0BA2;
-	Wed,  2 Oct 2024 13:24:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD1E41D042F;
+	Wed,  2 Oct 2024 13:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C8umlkmN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WESxv3qw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 464841D0943;
-	Wed,  2 Oct 2024 13:24:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 600F51D0797;
+	Wed,  2 Oct 2024 13:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875483; cv=none; b=hacQ79SpenV1sAnuY40raG++QamOGXaVHKHRj6t6JB4llWZylxghtqQkxI0eA0I+k4+5OTX8Fn0TCz/RqqZR+hLi1tine8eknYcK1n5r6N46iCTIr/3ltNPteKVjCGbNtipLdr5EcMWZeYwatZ/Vpx1Vrk9V/JvPiPgSPzynb1g=
+	t=1727877230; cv=none; b=pJFBn6fm8kn71DeDvn8Jo48lL3CDPvxFBwJSBg/jq/Yreibk8Zwt++PSTmHetqMzy4vwtngsWWKR1opjMcX7jfwEFp/LcS2IECE0h/c7Fdd63ucMgJuDOX8KoG3N1WlguOLyO65rVY63snAhqL9skrS7q0HQ2MMgODhMnKoRgVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875483; c=relaxed/simple;
-	bh=a+sr3X4GMEpSe19x8RfLxh0ZluH8zwfdXnsObGbl6ds=;
+	s=arc-20240116; t=1727877230; c=relaxed/simple;
+	bh=IH5G0wn9ZO6+ijL3Dq0MgqENY2KpvChGd/SY3khDeYI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bGq0IzDzWT/wloHK1Ta+9iRvTfklg3zvUOiSSjZrsQVWS1y2VH+2ym6YhEcW4nbkn0/Yq+cX5iqmipKNmCayCa8h/zhahr1obnmj3Oaw4b5/L+nC7TjB+bv8oklHl9+onqRWQYwSxKuSlvyC7dQnErrJv8pTlyezE56yMkNTszM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C8umlkmN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1A5CC4CEC5;
-	Wed,  2 Oct 2024 13:24:42 +0000 (UTC)
+	 MIME-Version; b=ngJOrpX35G/uPXiaSm5y0O47v4lhWz2d5Byezx6BmliWr2Y06PmmGYjr29ADEeTk8u7baa31X2aNcq7xGRV/GrUr8bJFVz/wPSp0IIsLtKA3c6LOLZAvdhzs0R8THhVgbL1OI1Ie0Q86ESHZMtm+cKzX4oSu5OKNDFpoB3s+1T0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WESxv3qw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6C02C4CED5;
+	Wed,  2 Oct 2024 13:53:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875483;
-	bh=a+sr3X4GMEpSe19x8RfLxh0ZluH8zwfdXnsObGbl6ds=;
+	s=korg; t=1727877230;
+	bh=IH5G0wn9ZO6+ijL3Dq0MgqENY2KpvChGd/SY3khDeYI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C8umlkmNdH832QhX1p1VGPWEFmfCvwwmuOfW2k6MvUlsBw7Io+tKMT1CMwj83hmdI
-	 cIxK2TGBwJnc7FCeGmiXTAIamgBla10RadFJjYn2Srmc57fZ+Wl7ZOrpXCm37oIiGg
-	 k6rDCUaSYXuD4NTGbbs/PEJ+M9LICKWv0++GHBaQ=
+	b=WESxv3qwZ9Ak1x346GcrW7TW+zNYbL8cpR23I61O2x2AYIA6xyPbsC092CIgdN3QB
+	 Vpq+V8R0LI37tUP7IoNySQeiFzR0dL0IlG5ar3747DrkiISfaRhPa/q78NZbxHKH0c
+	 BMENHItW5sFN4gQBfg+v5WbUlEaBV2c1B83XLFWA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brett Creeley <brett.creeley@amd.com>,
-	Joe Damato <jdamato@fastly.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
+	P Praneesh <quic_ppranees@quicinc.com>,
+	Karthikeyan Kathirvel <quic_kathirve@quicinc.com>,
+	Jeff Johnson <quic_jjohnson@quicinc.com>,
+	Kalle Valo <quic_kvalo@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 115/695] fbnic: Set napi irq value after calling netif_napi_add
+Subject: [PATCH 6.10 013/634] wifi: ath12k: match WMI BSS chan info structure with firmware definition
 Date: Wed,  2 Oct 2024 14:51:53 +0200
-Message-ID: <20241002125827.063212667@linuxfoundation.org>
+Message-ID: <20241002125811.617331543@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,57 +64,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brett Creeley <brett.creeley@amd.com>
+From: P Praneesh <quic_ppranees@quicinc.com>
 
-[ Upstream commit 9f3e7f11f21ac83cd99428390165177d4953b005 ]
+[ Upstream commit dd98d54db29fb553839f43ade5f547baa93392c8 ]
 
-The driver calls netif_napi_set_irq() and then calls netif_napi_add(),
-which calls netif_napi_add_weight(). At the end of
-netif_napi_add_weight() is a call to netif_napi_set_irq(napi, -1), which
-clears the previously set napi->irq value. Fix this by calling
-netif_napi_set_irq() after calling netif_napi_add().
+struct wmi_pdev_bss_chan_info_event is not similar to the firmware
+struct definition, this will cause some random failures.
 
-This was found when reviewing another patch and I have no way to test
-this, but the fix seemed relatively straight forward.
+Fix by matching the struct wmi_pdev_bss_chan_info_event with the
+firmware structure definition.
 
-Fixes: bc6107771bb4 ("eth: fbnic: Allocate a netdevice and napi vectors with queues")
-Signed-off-by: Brett Creeley <brett.creeley@amd.com>
-Reviewed-by: Joe Damato <jdamato@fastly.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Link: https://patch.msgid.link/20240912174922.10550-1-brett.creeley@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Tested-on: QCN9274 hw2.0 PCI WLAN.WBE.1.0.1-00029-QCAHKSWPL_SILICONZ-1
+
+Fixes: d889913205cf ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
+Signed-off-by: P Praneesh <quic_ppranees@quicinc.com>
+Signed-off-by: Karthikeyan Kathirvel <quic_kathirve@quicinc.com>
+Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://patch.msgid.link/20240331183232.2158756-3-quic_kathirve@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/meta/fbnic/fbnic_txrx.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/wireless/ath/ath12k/wmi.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
-index 0ed4c9fff5d80..72f88ae7815f4 100644
---- a/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
-+++ b/drivers/net/ethernet/meta/fbnic/fbnic_txrx.c
-@@ -1012,14 +1012,14 @@ static int fbnic_alloc_napi_vector(struct fbnic_dev *fbd, struct fbnic_net *fbn,
- 	nv->fbd = fbd;
- 	nv->v_idx = v_idx;
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.h b/drivers/net/wireless/ath/ath12k/wmi.h
+index e26fe504ce28b..e947d646353c3 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.h
++++ b/drivers/net/wireless/ath/ath12k/wmi.h
+@@ -4054,7 +4054,6 @@ struct wmi_vdev_stopped_event {
+ } __packed;
  
--	/* Record IRQ to NAPI struct */
--	netif_napi_set_irq(&nv->napi,
--			   pci_irq_vector(to_pci_dev(fbd->dev), nv->v_idx));
--
- 	/* Tie napi to netdev */
- 	list_add(&nv->napis, &fbn->napis);
- 	netif_napi_add(fbn->netdev, &nv->napi, fbnic_poll);
+ struct wmi_pdev_bss_chan_info_event {
+-	__le32 pdev_id;
+ 	__le32 freq;	/* Units in MHz */
+ 	__le32 noise_floor;	/* units are dBm */
+ 	/* rx clear - how often the channel was unused */
+@@ -4072,6 +4071,7 @@ struct wmi_pdev_bss_chan_info_event {
+ 	/*rx_cycle cnt for my bss in 64bits format */
+ 	__le32 rx_bss_cycle_count_low;
+ 	__le32 rx_bss_cycle_count_high;
++	__le32 pdev_id;
+ } __packed;
  
-+	/* Record IRQ to NAPI struct */
-+	netif_napi_set_irq(&nv->napi,
-+			   pci_irq_vector(to_pci_dev(fbd->dev), nv->v_idx));
-+
- 	/* Tie nv back to PCIe dev */
- 	nv->dev = fbd->dev;
- 
+ #define WMI_VDEV_INSTALL_KEY_COMPL_STATUS_SUCCESS 0
 -- 
 2.43.0
 
