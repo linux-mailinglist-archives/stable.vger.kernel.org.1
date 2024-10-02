@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-79605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 41D4198D956
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:11:17 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8421D98D957
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:11:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id EB47F1F233F4
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:11:16 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2BA761F2169B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:11:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D0DD1D0E26;
-	Wed,  2 Oct 2024 14:05:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD3261D0DDA;
+	Wed,  2 Oct 2024 14:05:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cY3laI3d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qwH3qLun"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B760F1D07AD;
-	Wed,  2 Oct 2024 14:05:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AA551D07AD;
+	Wed,  2 Oct 2024 14:05:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877930; cv=none; b=X9Da/dUp9UdXKlCBumIsdZ3qQ4Zu1/p4ekjt+JOButnvP1EM228nXvu6yvYJL4UVui5V7jOUN+leoKyxAxtH2NIVfT9yS5MdjtmHnFy6oauL/iIp6uTA1VEc6wwjM09sUq4j8aBbBymilSvGhRU+Jw+cu/zjTUo4VgB66ChNdgE=
+	t=1727877933; cv=none; b=U0//bWta7x0jC7kxTIlAxr8RyP9vLMtQtpV5CIGfIqbB2M4iDmR/0o2CnA75I4TjJpp7GRid1k+sELDJP/pxG/cdNpa2BzF1/mPmlPXQ6MzQVHoeLXRANl1Ag+6b3amsS9JeQggUZXzVZnxyHcgixZ1L2pFREZd2JMrTgcdKNrI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877930; c=relaxed/simple;
-	bh=TpFGVXto75isKiCOTgDu+BolKifgNj7KJ/5aIvarQXs=;
+	s=arc-20240116; t=1727877933; c=relaxed/simple;
+	bh=MMQSqZpBsxShg8nwKpkSHG5GAaMFma7xgNdqNypbBis=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hWlV0fXHVgPXtEZwHQu+3W+RZ/1qSPWU01aHjeGndLXa/QAE9WyvW+Y6LQm/bOO4WZEwYYPr5Z7utTGhhIwuaOEw8aX4foIBnUtFMYBXD82fBkyZAScjmdPxxYo/X7ayq4GIhZUcsxn5wEwgIACYS5sSMcENXodqBKQ5CFw8u38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cY3laI3d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 360C0C4CEC2;
-	Wed,  2 Oct 2024 14:05:30 +0000 (UTC)
+	 MIME-Version; b=ZxxcvSsNK0+liHFOnKcuSzPqeNczngbk7SEpqtm7EKDFbzDg3vXSD/gS/yd6VV+0J+5Rcemm8YmSPXpH+BsXuK75RNQMyN45xdBuiaSPZKbyFxL9GUzCsDQu8KaLEKtmEkBuRa2Bcy933qRIJpoXgbQv15BLir1VtMpx/VUcRAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qwH3qLun; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2294EC4CEC5;
+	Wed,  2 Oct 2024 14:05:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877930;
-	bh=TpFGVXto75isKiCOTgDu+BolKifgNj7KJ/5aIvarQXs=;
+	s=korg; t=1727877933;
+	bh=MMQSqZpBsxShg8nwKpkSHG5GAaMFma7xgNdqNypbBis=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cY3laI3dywodAMkA8c1cRI/00PQ7yzgH094TL4LuA23zx4OTRgcFCP4KfYQOqCiPS
-	 Hu7shC5LBFDOiSot0sXfJrgsohy33Jf+3h8wNTVuuaB16VMVP2u0h3QXQ/7LYJhUdC
-	 8ZMx/GKUpWeCjjrz8hs+bdVAnyeCihv8zRT2w9pw=
+	b=qwH3qLunzUzbQW6AtdT/VHZScgkGop3Px9zzFXCc7inMEZUcalz/xQhxETbN6SAT2
+	 O3ZjwHGXEvsf1X6G52LWU6a61xc7Gz36hU+5Nb90zdPCRz5VIL7yYSGP5t54qBytvX
+	 ejdndxDUE/3MlHCL4xEF6rAiCpsPgM6MnjCmOqKE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Tony Ambardar <tony.ambardar@gmail.com>,
 	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 244/634] selftests/bpf: Fix include of <sys/fcntl.h>
-Date: Wed,  2 Oct 2024 14:55:44 +0200
-Message-ID: <20241002125820.729815944@linuxfoundation.org>
+Subject: [PATCH 6.10 245/634] selftests/bpf: Fix compiling parse_tcp_hdr_opt.c with musl-libc
+Date: Wed,  2 Oct 2024 14:55:45 +0200
+Message-ID: <20241002125820.769262051@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
 References: <20241002125811.070689334@linuxfoundation.org>
@@ -68,39 +68,40 @@ Content-Transfer-Encoding: 8bit
 
 From: Tony Ambardar <tony.ambardar@gmail.com>
 
-[ Upstream commit 21f0b0af977203220ad58aff95e372151288ec47 ]
+[ Upstream commit 4c329b99ef9c118343379bde9f97e8ce5cac9fc9 ]
 
-Update ns_current_pid_tgid.c to use '#include <fcntl.h>' and avoid compile
-error against mips64el/musl libc:
+The GNU version of 'struct tcphdr', with members 'doff' and 'urg_ptr', is
+not exposed by musl headers unless _GNU_SOURCE is defined.
 
-  In file included from .../prog_tests/ns_current_pid_tgid.c:14:
-  .../include/sys/fcntl.h:1:2: error: #warning redirecting incorrect #include <sys/fcntl.h> to <fcntl.h> [-Werror=cpp]
-      1 | #warning redirecting incorrect #include <sys/fcntl.h> to <fcntl.h>
-        |  ^~~~~~~
-  cc1: all warnings being treated as errors
+Add this definition to fix errors seen compiling for mips64el/musl-libc:
 
-Fixes: 09c02d553c49 ("bpf, selftests: Fold test_current_pid_tgid_new_ns into test_progs.")
+  parse_tcp_hdr_opt.c:18:21: error: 'struct tcphdr' has no member named 'urg_ptr'
+     18 |         .pk6_v6.tcp.urg_ptr = 123,
+        |                     ^~~~~~~
+  parse_tcp_hdr_opt.c:19:21: error: 'struct tcphdr' has no member named 'doff'
+     19 |         .pk6_v6.tcp.doff = 9, /* 16 bytes of options */
+        |                     ^~~~
+
+Fixes: cfa7b011894d ("selftests/bpf: tests for using dynptrs to parse skb and xdp buffers")
 Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
 Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/8bdc869749177b575025bf69600a4ce591822609.1721713597.git.tony.ambardar@gmail.com
+Link: https://lore.kernel.org/bpf/ac5440213c242c62cb4e0d9e0a9cd5058b6a31f6.1721713597.git.tony.ambardar@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/ns_current_pid_tgid.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/bpf/prog_tests/parse_tcp_hdr_opt.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/ns_current_pid_tgid.c b/tools/testing/selftests/bpf/prog_tests/ns_current_pid_tgid.c
-index e72d75d6baa71..c29787e092d66 100644
---- a/tools/testing/selftests/bpf/prog_tests/ns_current_pid_tgid.c
-+++ b/tools/testing/selftests/bpf/prog_tests/ns_current_pid_tgid.c
-@@ -11,7 +11,7 @@
- #include <sched.h>
- #include <sys/wait.h>
- #include <sys/mount.h>
--#include <sys/fcntl.h>
-+#include <fcntl.h>
- #include "network_helpers.h"
+diff --git a/tools/testing/selftests/bpf/prog_tests/parse_tcp_hdr_opt.c b/tools/testing/selftests/bpf/prog_tests/parse_tcp_hdr_opt.c
+index daa952711d8fd..e9c07d561ded6 100644
+--- a/tools/testing/selftests/bpf/prog_tests/parse_tcp_hdr_opt.c
++++ b/tools/testing/selftests/bpf/prog_tests/parse_tcp_hdr_opt.c
+@@ -1,5 +1,6 @@
+ // SPDX-License-Identifier: GPL-2.0
  
- #define STACK_SIZE (1024 * 1024)
++#define _GNU_SOURCE
+ #include <test_progs.h>
+ #include <network_helpers.h>
+ #include "test_parse_tcp_hdr_opt.skel.h"
 -- 
 2.43.0
 
