@@ -1,73 +1,175 @@
-Return-Path: <stable+bounces-78657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA00498D3C5
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:55:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E073398D5FF
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:35:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 90EF428251C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 12:55:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 153191C2229C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:35:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70E1D1D0156;
-	Wed,  2 Oct 2024 12:55:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC80529CE7;
+	Wed,  2 Oct 2024 13:35:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KS8snWKQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P0RRyH6r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 230541D0141
-	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 12:55:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 791161CDFBC;
+	Wed,  2 Oct 2024 13:35:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727873739; cv=none; b=YrVdiY1me5WTlIeJISRhpag8lMBFuwlSakjhQiN+FiUb3WINipBiu/WxU7ZTiexl/n0QK79c9lbvSMrIZ/8FhcjxZA9wRku8US9V+oiJ5lXbtr86xe9/Tt4P5CDUx7Em/kFuwWgP69vZqEkGQSIPWsoc6wlNLQ+phRgv/0dF4ok=
+	t=1727876127; cv=none; b=bKkFbbHPN/zPOMbGI1DTRjHp2ql8k5PkXTM5uiDggo/YCFMSc1+cIVa/VXyr/uM3cBRWk6bH449vQFySdw6y8DnFrNhy2aaENdosbJmDDnJypSywXTPsbnhqcMc9bBia5wMLNI7cg9u4AJjNiJ3sGdmr/oRj3a6L9n8moUrt3Zk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727873739; c=relaxed/simple;
-	bh=NEm7yL1tY+z8OyLIg67x8nN2SXHaA3+9XqrxKRl2XHQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rx/d58LNTMpEJyI1EGUNicZZ43m4+m/q5DsKlWgO6KfVhqhpr75S2t6s6h6FFFYETzFK9ZeycLO7GEilRuUsxd6sS0sF0WMPiJWf7gYh7gy5ONrM/wEsAOxPAXlterQFFD55B3KUKgyYSS2u19oVDWHVh7rfLoV2O+84le/MlQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KS8snWKQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55192C4CEC5;
-	Wed,  2 Oct 2024 12:55:38 +0000 (UTC)
+	s=arc-20240116; t=1727876127; c=relaxed/simple;
+	bh=ISDnL+Sk4kwHkkycC7K/Az6V3HNuSREiz/T3VSzAOhM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=JnHdcbwM5kiT5dVH+tB+NXv047DVFNUFggoxuvKueXkZ5JeMao2S7DTAJawk2ExgOmI5vI3sV+337aoBz8qkC3EwzI91XzqgVeTOU9NouA5QpMEx1sosvFBQIVVOAaUApxlOYvVcZEsawL6VWfFVddnNUULPJQz6De1gQTyXWoM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P0RRyH6r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9A85C4CECD;
+	Wed,  2 Oct 2024 13:35:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727873738;
-	bh=NEm7yL1tY+z8OyLIg67x8nN2SXHaA3+9XqrxKRl2XHQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=KS8snWKQcifTgbnPXZFgXbP7GivAI8q8/a5UToOtdG4voaBDEUWSiMHdMlLc+GXz7
-	 4JobqJJMaN9iEZFNc0SMU0hAnOX/USrP1zt7vLaeudpfgsXbRPo2vIQffJWEwLU2I8
-	 kKfbukL0B86hthtDuilKjLw3jGtdHOBlXlLIZ6jo=
-Date: Wed, 2 Oct 2024 14:55:36 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Georg =?iso-8859-1?Q?M=FCller?= <georgmueller@gmx.net>
-Cc: stable@vger.kernel.org, Lorenzo Bianconi <lorenzo@kernel.org>,
-	Stuart Hayhurst <stuart.a.hayhurst@gmail.com>,
-	Helmut Grohne <helmut@freexian.com>, Kalle Valo <kvalo@kernel.org>
-Subject: Re: [PATCH] wifi: mt76: do not run mt76_unregister_device() on
- unregistered hw
-Message-ID: <2024100229-washcloth-unworldly-e913@gregkh>
-References: <2024100221-flight-whenever-eedb@gregkh>
- <20241002120721.1324759-1-georgmueller@gmx.net>
- <2024100217-sighing-rehab-b6fd@gregkh>
- <d039eb47-d41e-48d3-a51f-1a0cb6c0ebb9@gmx.net>
+	s=korg; t=1727876127;
+	bh=ISDnL+Sk4kwHkkycC7K/Az6V3HNuSREiz/T3VSzAOhM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=P0RRyH6rvn36ROtZVp/A2eQWu23iuJkBX+dyQSBd6N8CzI1zcCPinIsD9yLwb4P5L
+	 8U2EcyD1Wnjln+qPZXZ+k6TLhPEX/Ui/FHVri//6MZ/e201UgRCVRNS7LAdlG2IlnE
+	 TfjHGlvA6f1jZ6eDJ5wk0Rhg9OZYXY5N9TNxeNf0=
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: stable@vger.kernel.org
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	patches@lists.linux.dev,
+	Yang Jihong <yangjihong@bytedance.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	David Ahern <dsa@cumulusnetworks.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	James Clark <james.clark@arm.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.11 338/695] perf sched timehist: Fixed timestamp error when unable to confirm event sched_in time
+Date: Wed,  2 Oct 2024 14:55:36 +0200
+Message-ID: <20241002125835.942261459@linuxfoundation.org>
+X-Mailer: git-send-email 2.46.2
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <d039eb47-d41e-48d3-a51f-1a0cb6c0ebb9@gmx.net>
 
-On Wed, Oct 02, 2024 at 02:41:21PM +0200, Georg Müller wrote:
-> > What kernel tree(s) do you want this applied to?
-> 
-> linux-6.1.y, please.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
-Now queued up, thanks.
+------------------
 
-greg k-h
+From: Yang Jihong <yangjihong@bytedance.com>
+
+[ Upstream commit 39c243411bdb8fb35777adf49ee32549633c4e12 ]
+
+If sched_in event for current task is not recorded, sched_in timestamp
+will be set to end_time of time window interest, causing an error in
+timestamp show. In this case, we choose to ignore this event.
+
+Test scenario:
+
+  perf[1229608] does not record the first sched_in event, run time and sch delay are both 0
+
+  # perf sched timehist
+  Samples of sched_switch event do not have callchains.
+             time    cpu  task name                       wait time  sch delay   run time
+                          [tid/pid]                          (msec)     (msec)     (msec)
+  --------------- ------  ------------------------------  ---------  ---------  ---------
+   2090450.763231 [0000]  perf[1229608]                       0.000      0.000      0.000
+   2090450.763235 [0000]  migration/0[15]                     0.000      0.001      0.003
+   2090450.763263 [0001]  perf[1229608]                       0.000      0.000      0.000
+   2090450.763268 [0001]  migration/1[21]                     0.000      0.001      0.004
+   2090450.763302 [0002]  perf[1229608]                       0.000      0.000      0.000
+   2090450.763309 [0002]  migration/2[27]                     0.000      0.001      0.007
+   2090450.763338 [0003]  perf[1229608]                       0.000      0.000      0.000
+   2090450.763343 [0003]  migration/3[33]                     0.000      0.001      0.004
+
+Before:
+
+  arbitrarily specify a time window of interest, timestamp will be set to an incorrect value
+
+  # perf sched timehist --time 100,200
+  Samples of sched_switch event do not have callchains.
+             time    cpu  task name                       wait time  sch delay   run time
+                          [tid/pid]                          (msec)     (msec)     (msec)
+  --------------- ------  ------------------------------  ---------  ---------  ---------
+       200.000000 [0000]  perf[1229608]                       0.000      0.000      0.000
+       200.000000 [0001]  perf[1229608]                       0.000      0.000      0.000
+       200.000000 [0002]  perf[1229608]                       0.000      0.000      0.000
+       200.000000 [0003]  perf[1229608]                       0.000      0.000      0.000
+       200.000000 [0004]  perf[1229608]                       0.000      0.000      0.000
+       200.000000 [0005]  perf[1229608]                       0.000      0.000      0.000
+       200.000000 [0006]  perf[1229608]                       0.000      0.000      0.000
+       200.000000 [0007]  perf[1229608]                       0.000      0.000      0.000
+
+ After:
+
+  # perf sched timehist --time 100,200
+  Samples of sched_switch event do not have callchains.
+             time    cpu  task name                       wait time  sch delay   run time
+                          [tid/pid]                          (msec)     (msec)     (msec)
+  --------------- ------  ------------------------------  ---------  ---------  ---------
+
+Fixes: 853b74071110bed3 ("perf sched timehist: Add option to specify time window of interest")
+Signed-off-by: Yang Jihong <yangjihong@bytedance.com>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: David Ahern <dsa@cumulusnetworks.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: James Clark <james.clark@arm.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20240819024720.2405244-1-yangjihong@bytedance.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ tools/perf/builtin-sched.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/tools/perf/builtin-sched.c b/tools/perf/builtin-sched.c
+index 928b9041535d3..d0c44f6116ed4 100644
+--- a/tools/perf/builtin-sched.c
++++ b/tools/perf/builtin-sched.c
+@@ -2683,9 +2683,12 @@ static int timehist_sched_change_event(struct perf_tool *tool,
+ 	 * - previous sched event is out of window - we are done
+ 	 * - sample time is beyond window user cares about - reset it
+ 	 *   to close out stats for time window interest
++	 * - If tprev is 0, that is, sched_in event for current task is
++	 *   not recorded, cannot determine whether sched_in event is
++	 *   within time window interest - ignore it
+ 	 */
+ 	if (ptime->end) {
+-		if (tprev > ptime->end)
++		if (!tprev || tprev > ptime->end)
+ 			goto out;
+ 
+ 		if (t > ptime->end)
+-- 
+2.43.0
+
+
+
 
