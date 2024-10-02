@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-80156-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id C55AD98DC31
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:39:21 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2B3998DC37
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:39:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 8C895286547
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:39:20 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 004C71C23E4D
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:39:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F6AC1D2713;
-	Wed,  2 Oct 2024 14:32:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E14791D0DCE;
+	Wed,  2 Oct 2024 14:32:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C/xS3x0f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ru/gezyU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D9511474BC;
-	Wed,  2 Oct 2024 14:32:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EE671D0487;
+	Wed,  2 Oct 2024 14:32:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879547; cv=none; b=OexKwLmu63oazFiW+yrScROxcf+7+HOs730OJTUR+lUpF0q+krqLs3OTRyYdxN/H9oQLRsWzAgQegc9E6kT+FFanhiEW+LuvGIKMtLWwuoNvcs371X0MW31/hlEi1qjcAGD2fXCvggJtjnUOtYMTUnA+tIf6e07CUZ7LXJvJaGs=
+	t=1727879561; cv=none; b=U8sibBTYRPlMng6cmS5M07a91LIpAsJ5SxtAgN1i5qXuESJEWZg4cD9DBWU6aKmyPmMULLvu3BOw4YOCOOSDIgOOB9jkAOWQ3mwcf14ycOYDs4WgkIWjiL0oEp1sNk+ghGVqg+RsYKRH5JaEsT4nJUr036ri5eBzndgyYnqLV2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879547; c=relaxed/simple;
-	bh=Ou78rOEFoWGf8dOKNVNvvDDxdV+gErF3IZZM2dSEPpU=;
+	s=arc-20240116; t=1727879561; c=relaxed/simple;
+	bh=UnNGZL4dOuw/jLlKBmvoe1g3dxTw79DpGvR9I2gHV7k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BNQe9Ytw5+LuO+yawbHxKtVpp6jmedH4DsoW+Xb5/GXcu2FgUU3E82gPJebEnh8Y894rhsbfQanfWlgrZjrB3udYeltBgWgu+1tpZwOodsiOXD/jd1a8jJbtJLrHnr+AOd8D9SFu80MaO6dgAoSB+KPXOQrp9X409W8vmaUl78E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C/xS3x0f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F76FC4CEC2;
-	Wed,  2 Oct 2024 14:32:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=e2vOSPdlwI7pkLNjgfXjAK9c13NDHY9pI4Nzk/IuxVxsavMc4p7PmEd3+R/GBk7knNqKPzsyOTGHNoP9wOaxP2daEdADsKse5bhJ2egzAvem5Vl0Ccd8xjLXFPQlnrh6uT8fh6yCRVEXdZ0S3Wbv/PiusKIEHxEwsHH7wdpWYHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ru/gezyU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2566AC4CEC2;
+	Wed,  2 Oct 2024 14:32:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879546;
-	bh=Ou78rOEFoWGf8dOKNVNvvDDxdV+gErF3IZZM2dSEPpU=;
+	s=korg; t=1727879561;
+	bh=UnNGZL4dOuw/jLlKBmvoe1g3dxTw79DpGvR9I2gHV7k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C/xS3x0fL4ttws3DutnhJBaKLtO6iwdYJvO2JSQdXWw6Rl1i3De1/rlWIUkbfe+BH
-	 73xUIpqyIopcoBHkKYZ/coMd5I758MUJpwYTvk2CWQ6B7NIyjxoHyCf1I+nm+Ro1uD
-	 EjvXCysGJz+cAv6XSwdY5FLgDNrVxNSI9+uwcrAg=
+	b=ru/gezyUz+On9eMvt/78DTOLcYfiCB/bEP6DQOVYoJJuKASyX8NbVH+t/8KuNMv1E
+	 tbCq7cOP2LL4E/fVLmIzrC5wFSRmrkx5U/z7CqaftPZuZtCkhV+i3TB1LaWyDtS6ZM
+	 SnnS9qPAg8evwNOkJJs6PMxKoZBvp2bsEN0NCzgI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Charles Han <hanchunchao@inspur.com>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	=?UTF-8?q?Cheng-Jui=20Wang=20 ?= <Cheng-Jui.Wang@mediatek.com>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Neeraj Upadhyay <neeraj.upadhyay@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 129/538] mtd: powernv: Add check devm_kasprintf() returned value
-Date: Wed,  2 Oct 2024 14:56:08 +0200
-Message-ID: <20241002125757.334456165@linuxfoundation.org>
+Subject: [PATCH 6.6 130/538] rcu/nocb: Fix RT throttling hrtimer armed from offline CPU
+Date: Wed,  2 Oct 2024 14:56:09 +0200
+Message-ID: <20241002125757.373570874@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
 References: <20241002125751.964700919@linuxfoundation.org>
@@ -60,42 +61,75 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charles Han <hanchunchao@inspur.com>
+From: Frederic Weisbecker <frederic@kernel.org>
 
-[ Upstream commit 395999829880a106bb95f0ce34e6e4c2b43c6a5d ]
+[ Upstream commit 9139f93209d1ffd7f489ab19dee01b7c3a1a43d2 ]
 
-devm_kasprintf() can return a NULL pointer on failure but this
-returned value is not checked.
+After a CPU is marked offline and until it reaches its final trip to
+idle, rcuo has several opportunities to be woken up, either because
+a callback has been queued in the meantime or because
+rcutree_report_cpu_dead() has issued the final deferred NOCB wake up.
 
-Fixes: acfe63ec1c59 ("mtd: Convert to using %pOFn instead of device_node.name")
-Signed-off-by: Charles Han <hanchunchao@inspur.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20240828092427.128177-1-hanchunchao@inspur.com
+If RCU-boosting is enabled, RCU kthreads are set to SCHED_FIFO policy.
+And if RT-bandwidth is enabled, the related hrtimer might be armed.
+However this then happens after hrtimers have been migrated at the
+CPUHP_AP_HRTIMERS_DYING stage, which is broken as reported by the
+following warning:
+
+ Call trace:
+  enqueue_hrtimer+0x7c/0xf8
+  hrtimer_start_range_ns+0x2b8/0x300
+  enqueue_task_rt+0x298/0x3f0
+  enqueue_task+0x94/0x188
+  ttwu_do_activate+0xb4/0x27c
+  try_to_wake_up+0x2d8/0x79c
+  wake_up_process+0x18/0x28
+  __wake_nocb_gp+0x80/0x1a0
+  do_nocb_deferred_wakeup_common+0x3c/0xcc
+  rcu_report_dead+0x68/0x1ac
+  cpuhp_report_idle_dead+0x48/0x9c
+  do_idle+0x288/0x294
+  cpu_startup_entry+0x34/0x3c
+  secondary_start_kernel+0x138/0x158
+
+Fix this with waking up rcuo using an IPI if necessary. Since the
+existing API to deal with this situation only handles swait queue, rcuo
+is only woken up from offline CPUs if it's not already waiting on a
+grace period. In the worst case some callbacks will just wait for a
+grace period to complete before being assigned to a subsequent one.
+
+Reported-by: "Cheng-Jui Wang (王正睿)" <Cheng-Jui.Wang@mediatek.com>
+Fixes: 5c0930ccaad5 ("hrtimers: Push pending hrtimers away from outgoing CPU earlier")
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Neeraj Upadhyay <neeraj.upadhyay@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/devices/powernv_flash.c | 3 +++
- 1 file changed, 3 insertions(+)
+ kernel/rcu/tree_nocb.h | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/devices/powernv_flash.c b/drivers/mtd/devices/powernv_flash.c
-index 36e060386e59d..59e1b3a4406ed 100644
---- a/drivers/mtd/devices/powernv_flash.c
-+++ b/drivers/mtd/devices/powernv_flash.c
-@@ -207,6 +207,9 @@ static int powernv_flash_set_driver_info(struct device *dev,
- 	 * get them
- 	 */
- 	mtd->name = devm_kasprintf(dev, GFP_KERNEL, "%pOFP", dev->of_node);
-+	if (!mtd->name)
-+		return -ENOMEM;
-+
- 	mtd->type = MTD_NORFLASH;
- 	mtd->flags = MTD_WRITEABLE;
- 	mtd->size = size;
+diff --git a/kernel/rcu/tree_nocb.h b/kernel/rcu/tree_nocb.h
+index 30b34f215ca35..e019f166daa61 100644
+--- a/kernel/rcu/tree_nocb.h
++++ b/kernel/rcu/tree_nocb.h
+@@ -220,7 +220,10 @@ static bool __wake_nocb_gp(struct rcu_data *rdp_gp,
+ 	raw_spin_unlock_irqrestore(&rdp_gp->nocb_gp_lock, flags);
+ 	if (needwake) {
+ 		trace_rcu_nocb_wake(rcu_state.name, rdp->cpu, TPS("DoWake"));
+-		wake_up_process(rdp_gp->nocb_gp_kthread);
++		if (cpu_is_offline(raw_smp_processor_id()))
++			swake_up_one_online(&rdp_gp->nocb_gp_wq);
++		else
++			wake_up_process(rdp_gp->nocb_gp_kthread);
+ 	}
+ 
+ 	return needwake;
 -- 
 2.43.0
 
