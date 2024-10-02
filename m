@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-80084-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0B8C98DBBE
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:34:30 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id B318F98D93F
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:10:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E479B25D8A
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:34:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3B9F31F223BF
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:10:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7227A1D14EF;
-	Wed,  2 Oct 2024 14:28:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12D611D1F4D;
+	Wed,  2 Oct 2024 14:04:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QCl9J2u+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h5tbRNZi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E17B1D1312;
-	Wed,  2 Oct 2024 14:28:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFB7E1D1E9D;
+	Wed,  2 Oct 2024 14:04:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879338; cv=none; b=k5CBeWdR8ihXdbyWqjcrHdhKIS0GwFgiodRdaoPms9G8gfcoalQDz0/afDZ2KW1UKkzR98voI+ukwj/YvXRlQ+rYJj937IVJzC0jhWYqoLOQvVO8fGaP4C8kqG3/ZlInEN8pI7hzvPcl/47htjfAYSSBBuGc38Xx00jm9h/NKW8=
+	t=1727877872; cv=none; b=RzkCwmH4FpfrQJJXTErQuHdx7Bdd4tqdN8tMSjxtT5UujNxNGU7l4DoVdUCSJ+/Mi87t31lHl6l4nRPQnyac9APs/2NfyVevA25FTvRcoAbff0VNbBMlXqxlERqdnsqHLngaWxjZdG1n1ctYX1X7nvXUjFNTaTHKim/vG0+By0o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879338; c=relaxed/simple;
-	bh=G14WpiAUEgLIW7r16TkynPFntKfUw0UQp9btvpb5UQQ=;
+	s=arc-20240116; t=1727877872; c=relaxed/simple;
+	bh=tzCx+U0DNyDWOEXXSl/aQfAC5eUU3JTxtP269siRKaw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Tmfxia3yArvz43bBmNKpe7Xq4miFMLzBCmPv22f+bNpqouUEW+PQYdnO2OWkbSbZtI1ZeZDg7uoDROPA3naywlr3YEXTiM3/Uhf9kZti4VkPleUViws2SCcibcMt1jzM3LI9g5f9CW/GpKot4VtbJbQOjL2tHT/2FLhGvWFP8VM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QCl9J2u+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3DD5C4CECD;
-	Wed,  2 Oct 2024 14:28:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Bfr/FPqFpqoRalauVlRoEGJVXeemD2th4MnA8uVd2Zuq9gA3n9SkXYcnjONCWtrMWjXtkg15pfVQfxRuhlWx3Xk8w7/8d7XZTYJmZubkogxQmu4QbtEHAnjEM9gFhm8EtJrwDDXMLLF53N7hvRh1qEzegzApxy1fhM1xbJ9L2IY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h5tbRNZi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E96E4C4CEC2;
+	Wed,  2 Oct 2024 14:04:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879338;
-	bh=G14WpiAUEgLIW7r16TkynPFntKfUw0UQp9btvpb5UQQ=;
+	s=korg; t=1727877872;
+	bh=tzCx+U0DNyDWOEXXSl/aQfAC5eUU3JTxtP269siRKaw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QCl9J2u+UKQPit4/gXUs2WebC0FYC7LLvDbLswHJbzkK4OAVyOr1uIUQM63VAdXKc
-	 5CHZKygI1ZPrarynWo3qil5/TwUjk04d3A8eBJgp7IAHsaqMBmfMi/4n48Kt3suTO4
-	 Ex5+ssZ3GPX9drC46DFJN5cu+Ue9V/wvJRU52h4M=
+	b=h5tbRNZiHJkiuefNowx5lhHFH8m5tFxwBEonJGyEUc8UyCR7hWcB6jS6NcgQyercF
+	 80QxMsv3hIUZ4LHGr08urxD5e2TQqwYgFbMS8nWiTPyj+iWgJSSQeb9/vS6P6FxKRE
+	 eCjbvNW4twrjQMmqoHP0dBxXmhqn/T0Onh5mt/yk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Juergen Gross <jgross@suse.com>,
+	=?UTF-8?q?Marek=20Marczykowski-G=C3=B3recki?= <marmarek@invisiblethingslab.com>,
+	Jan Beulich <jbeulich@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 084/538] block, bfq: fix procress reference leakage for bfqq in merge chain
+Subject: [PATCH 6.10 223/634] xen: tolerate ACPI NVS memory overlapping with Xen allocated memory
 Date: Wed,  2 Oct 2024 14:55:23 +0200
-Message-ID: <20241002125755.537292416@linuxfoundation.org>
+Message-ID: <20241002125819.902260037@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,158 +64,160 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Juergen Gross <jgross@suse.com>
 
-[ Upstream commit 73aeab373557fa6ee4ae0b742c6211ccd9859280 ]
+[ Upstream commit be35d91c8880650404f3bf813573222dfb106935 ]
 
-Original state:
+In order to minimize required special handling for running as Xen PV
+dom0, the memory layout is modified to match that of the host. This
+requires to have only RAM at the locations where Xen allocated memory
+is living. Unfortunately there seem to be some machines, where ACPI
+NVS is located at 64 MB, resulting in a conflict with the loaded
+kernel or the initial page tables built by Xen.
 
-        Process 1       Process 2       Process 3       Process 4
-         (BIC1)          (BIC2)          (BIC3)          (BIC4)
-          Λ                |               |               |
-           \--------------\ \-------------\ \-------------\|
-                           V               V               V
-          bfqq1--------->bfqq2---------->bfqq3----------->bfqq4
-    ref    0               1               2               4
+Avoid this conflict by swapping the ACPI NVS area in the memory map
+with unused RAM. This is possible via modification of the dom0 P2M map.
+Accesses to the ACPI NVS area are done either for saving and restoring
+it across suspend operations (this will work the same way as before),
+or by ACPI code when NVS memory is referenced from other ACPI tables.
+The latter case is handled by a Xen specific indirection of
+acpi_os_ioremap().
 
-After commit 0e456dba86c7 ("block, bfq: choose the last bfqq from merge
-chain in bfq_setup_cooperator()"), if P1 issues a new IO:
+While the E820 map can (and should) be modified right away, the P2M
+map can be updated only after memory allocation is working, as the P2M
+map might need to be extended.
 
-Without the patch:
-
-        Process 1       Process 2       Process 3       Process 4
-         (BIC1)          (BIC2)          (BIC3)          (BIC4)
-          Λ                |               |               |
-           \------------------------------\ \-------------\|
-                                           V               V
-          bfqq1--------->bfqq2---------->bfqq3----------->bfqq4
-    ref    0               0               2               4
-
-bfqq3 will be used to handle IO from P1, this is not expected, IO
-should be redirected to bfqq4;
-
-With the patch:
-
-          -------------------------------------------
-          |                                         |
-        Process 1       Process 2       Process 3   |   Process 4
-         (BIC1)          (BIC2)          (BIC3)     |    (BIC4)
-                           |               |        |      |
-                            \-------------\ \-------------\|
-                                           V               V
-          bfqq1--------->bfqq2---------->bfqq3----------->bfqq4
-    ref    0               0               2               4
-
-IO is redirected to bfqq4, however, procress reference of bfqq3 is still
-2, while there is only P2 using it.
-
-Fix the problem by calling bfq_merge_bfqqs() for each bfqq in the merge
-chain. Also change bfqq_merge_bfqqs() to return new_bfqq to simplify
-code.
-
-Fixes: 0e456dba86c7 ("block, bfq: choose the last bfqq from merge chain in bfq_setup_cooperator()")
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Link: https://lore.kernel.org/r/20240909134154.954924-3-yukuai1@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 808fdb71936c ("xen: check for kernel memory conflicting with memory layout")
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Tested-by: Marek Marczykowski-Górecki <marmarek@invisiblethingslab.com>
+Reviewed-by: Jan Beulich <jbeulich@suse.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/bfq-iosched.c | 37 +++++++++++++++++--------------------
- 1 file changed, 17 insertions(+), 20 deletions(-)
+ arch/x86/xen/setup.c | 92 +++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 91 insertions(+), 1 deletion(-)
 
-diff --git a/block/bfq-iosched.c b/block/bfq-iosched.c
-index 055ba1f98009d..7e0dcded5713a 100644
---- a/block/bfq-iosched.c
-+++ b/block/bfq-iosched.c
-@@ -3129,10 +3129,12 @@ void bfq_release_process_ref(struct bfq_data *bfqd, struct bfq_queue *bfqq)
- 	bfq_put_queue(bfqq);
- }
+diff --git a/arch/x86/xen/setup.c b/arch/x86/xen/setup.c
+index 112b071bac9d4..989c14b1ff6c8 100644
+--- a/arch/x86/xen/setup.c
++++ b/arch/x86/xen/setup.c
+@@ -496,6 +496,8 @@ void __init xen_remap_memory(void)
+ 	set_pte_mfn(buf, mfn_save, PAGE_KERNEL);
  
--static void
--bfq_merge_bfqqs(struct bfq_data *bfqd, struct bfq_io_cq *bic,
--		struct bfq_queue *bfqq, struct bfq_queue *new_bfqq)
-+static struct bfq_queue *bfq_merge_bfqqs(struct bfq_data *bfqd,
-+					 struct bfq_io_cq *bic,
-+					 struct bfq_queue *bfqq)
- {
-+	struct bfq_queue *new_bfqq = bfqq->new_bfqq;
+ 	pr_info("Remapped %ld page(s)\n", remapped);
 +
- 	bfq_log_bfqq(bfqd, bfqq, "merging with queue %lu",
- 		(unsigned long)new_bfqq->pid);
- 	/* Save weight raising and idle window of the merged queues */
-@@ -3226,6 +3228,8 @@ bfq_merge_bfqqs(struct bfq_data *bfqd, struct bfq_io_cq *bic,
- 	bfq_reassign_last_bfqq(bfqq, new_bfqq);
++	xen_do_remap_nonram();
+ }
  
- 	bfq_release_process_ref(bfqd, bfqq);
+ static unsigned long __init xen_get_pages_limit(void)
+@@ -626,14 +628,102 @@ phys_addr_t __init xen_find_free_area(phys_addr_t size)
+ 	return 0;
+ }
+ 
++/*
++ * Swap a non-RAM E820 map entry with RAM above ini_nr_pages.
++ * Note that the E820 map is modified accordingly, but the P2M map isn't yet.
++ * The adaption of the P2M must be deferred until page allocation is possible.
++ */
++static void __init xen_e820_swap_entry_with_ram(struct e820_entry *swap_entry)
++{
++	struct e820_entry *entry;
++	unsigned int mapcnt;
++	phys_addr_t mem_end = PFN_PHYS(ini_nr_pages);
++	phys_addr_t swap_addr, swap_size, entry_end;
 +
-+	return new_bfqq;
- }
- 
- static bool bfq_allow_bio_merge(struct request_queue *q, struct request *rq,
-@@ -3261,14 +3265,8 @@ static bool bfq_allow_bio_merge(struct request_queue *q, struct request *rq,
- 		 * fulfilled, i.e., bic can be redirected to new_bfqq
- 		 * and bfqq can be put.
- 		 */
--		bfq_merge_bfqqs(bfqd, bfqd->bio_bic, bfqq,
--				new_bfqq);
--		/*
--		 * If we get here, bio will be queued into new_queue,
--		 * so use new_bfqq to decide whether bio and rq can be
--		 * merged.
--		 */
--		bfqq = new_bfqq;
-+		while (bfqq != new_bfqq)
-+			bfqq = bfq_merge_bfqqs(bfqd, bfqd->bio_bic, bfqq);
- 
- 		/*
- 		 * Change also bqfd->bio_bfqq, as
-@@ -5703,9 +5701,7 @@ bfq_do_early_stable_merge(struct bfq_data *bfqd, struct bfq_queue *bfqq,
- 	 * state before killing it.
- 	 */
- 	bfqq->bic = bic;
--	bfq_merge_bfqqs(bfqd, bic, bfqq, new_bfqq);
--
--	return new_bfqq;
-+	return bfq_merge_bfqqs(bfqd, bic, bfqq);
- }
- 
- /*
-@@ -6160,6 +6156,7 @@ static bool __bfq_insert_request(struct bfq_data *bfqd, struct request *rq)
- 	bool waiting, idle_timer_disabled = false;
- 
- 	if (new_bfqq) {
-+		struct bfq_queue *old_bfqq = bfqq;
- 		/*
- 		 * Release the request's reference to the old bfqq
- 		 * and make sure one is taken to the shared queue.
-@@ -6176,18 +6173,18 @@ static bool __bfq_insert_request(struct bfq_data *bfqd, struct request *rq)
- 		 * new_bfqq.
- 		 */
- 		if (bic_to_bfqq(RQ_BIC(rq), true,
--				bfq_actuator_index(bfqd, rq->bio)) == bfqq)
--			bfq_merge_bfqqs(bfqd, RQ_BIC(rq),
--					bfqq, new_bfqq);
-+				bfq_actuator_index(bfqd, rq->bio)) == bfqq) {
-+			while (bfqq != new_bfqq)
-+				bfqq = bfq_merge_bfqqs(bfqd, RQ_BIC(rq), bfqq);
++	swap_addr = PAGE_ALIGN_DOWN(swap_entry->addr);
++	swap_size = PAGE_ALIGN(swap_entry->addr - swap_addr + swap_entry->size);
++	entry = xen_e820_table.entries;
++
++	for (mapcnt = 0; mapcnt < xen_e820_table.nr_entries; mapcnt++) {
++		entry_end = entry->addr + entry->size;
++		if (entry->type == E820_TYPE_RAM && entry->size >= swap_size &&
++		    entry_end - swap_size >= mem_end) {
++			/* Reduce RAM entry by needed space (whole pages). */
++			entry->size -= swap_size;
++
++			/* Add new entry at the end of E820 map. */
++			entry = xen_e820_table.entries +
++				xen_e820_table.nr_entries;
++			xen_e820_table.nr_entries++;
++
++			/* Fill new entry (keep size and page offset). */
++			entry->type = swap_entry->type;
++			entry->addr = entry_end - swap_size +
++				      swap_addr - swap_entry->addr;
++			entry->size = swap_entry->size;
++
++			/* Convert old entry to RAM, align to pages. */
++			swap_entry->type = E820_TYPE_RAM;
++			swap_entry->addr = swap_addr;
++			swap_entry->size = swap_size;
++
++			/* Remember PFN<->MFN relation for P2M update. */
++			xen_add_remap_nonram(swap_addr, entry_end - swap_size,
++					     swap_size);
++
++			/* Order E820 table and merge entries. */
++			e820__update_table(&xen_e820_table);
++
++			return;
 +		}
++
++		entry++;
++	}
++
++	xen_raw_console_write("No suitable area found for required E820 entry remapping action\n");
++	BUG();
++}
++
++/*
++ * Look for non-RAM memory types in a specific guest physical area and move
++ * those away if possible (ACPI NVS only for now).
++ */
++static void __init xen_e820_resolve_conflicts(phys_addr_t start,
++					      phys_addr_t size)
++{
++	struct e820_entry *entry;
++	unsigned int mapcnt;
++	phys_addr_t end;
++
++	if (!size)
++		return;
++
++	end = start + size;
++	entry = xen_e820_table.entries;
++
++	for (mapcnt = 0; mapcnt < xen_e820_table.nr_entries; mapcnt++) {
++		if (entry->addr >= end)
++			return;
++
++		if (entry->addr + entry->size > start &&
++		    entry->type == E820_TYPE_NVS)
++			xen_e820_swap_entry_with_ram(entry);
++
++		entry++;
++	}
++}
++
+ /*
+  * Check for an area in physical memory to be usable for non-movable purposes.
+- * An area is considered to usable if the used E820 map lists it to be RAM.
++ * An area is considered to usable if the used E820 map lists it to be RAM or
++ * some other type which can be moved to higher PFNs while keeping the MFNs.
+  * In case the area is not usable, crash the system with an error message.
+  */
+ void __init xen_chk_is_e820_usable(phys_addr_t start, phys_addr_t size,
+ 				   const char *component)
+ {
++	xen_e820_resolve_conflicts(start, size);
++
+ 	if (!xen_is_e820_reserved(start, size))
+ 		return;
  
--		bfq_clear_bfqq_just_created(bfqq);
-+		bfq_clear_bfqq_just_created(old_bfqq);
- 		/*
- 		 * rq is about to be enqueued into new_bfqq,
- 		 * release rq reference on bfqq
- 		 */
--		bfq_put_queue(bfqq);
-+		bfq_put_queue(old_bfqq);
- 		rq->elv.priv[1] = new_bfqq;
--		bfqq = new_bfqq;
- 	}
- 
- 	bfq_update_io_thinktime(bfqd, bfqq);
 -- 
 2.43.0
 
