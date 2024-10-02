@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-78811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A11198D517
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:27:09 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5A8C98D7ED
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:54:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78C9DB21C79
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:27:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 701681F21FD8
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:54:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05C271D0793;
-	Wed,  2 Oct 2024 13:26:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7B261D0788;
+	Wed,  2 Oct 2024 13:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wWEFmu6e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fhqnV7p1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4DE21D04BD;
-	Wed,  2 Oct 2024 13:26:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9558C1CFECF;
+	Wed,  2 Oct 2024 13:54:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875599; cv=none; b=u3iuvKOM3AiN6lRvmpx4EWDgZiBylFIzClwIMOnOzkAZlWNWOUGWknY06v3zo/1GNvR+/SaJQRh3MwobDJZitgDexCxk08iaczi5GVTUxGEOaEqDcCl6xWpFkOLWRHrIUnkqWS5jfewJSe27RKF3/j4SEqxFOuPxQWaz4pp3lCs=
+	t=1727877262; cv=none; b=ZkpC7csMRw4i4EpVLwclR3ZD2fgkig18/8Fp7Y0C7ZjoyD4KzVZkXMOevdtYwAPqlpt7hsO1DoVpyk/ERYeqNEvlM3tE9UHqWErLscOrRKVikYG7gZ+71B2xiBf9wcGosKJ0FXl+G25yrHF+XkdtpSGwro6LQoq07mH/6ckJYVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875599; c=relaxed/simple;
-	bh=XY+9xTf0MCX2kMKeIoNg2Yoxi9cA0dSVadLIBk7eMIg=;
+	s=arc-20240116; t=1727877262; c=relaxed/simple;
+	bh=3on5HHU7qOcfEs+MCp2ov+1iyztjd4+Y6nt2EhjRrN4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=H+1sd/Pk5PyPCuPQWF+HlJng1HSaL4EkqymCHiEemfjsPntAXOWDnulxuySoKV/8WQKFenIS8Ub4ita4ia7XlkarpFFNpC/w58wObX7G8eFEX9YXrPSz+ctnAXjp2xwc/iDfIH54hGkS6qzbMbZsKnBPAcbq4OhQu560VHujVF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wWEFmu6e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CF50C4CEC5;
-	Wed,  2 Oct 2024 13:26:39 +0000 (UTC)
+	 MIME-Version; b=VkeGiE49p/p/8uEEHEooxpFci0cdELeWgB6HMB1nUb6IacVd5Ijus0A0HfYsC8CBI8j3cTRiBAwgjJgDXF8nuq+JWIFpPm4JKTKRUssnZi8mwAlTqbdmRfxxmWmgsLa2kINS3Tg5pRWK9j2Kh0fw3znQJ94EeagG1XwhfL/RamI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fhqnV7p1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A10FC4CEED;
+	Wed,  2 Oct 2024 13:54:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875599;
-	bh=XY+9xTf0MCX2kMKeIoNg2Yoxi9cA0dSVadLIBk7eMIg=;
+	s=korg; t=1727877262;
+	bh=3on5HHU7qOcfEs+MCp2ov+1iyztjd4+Y6nt2EhjRrN4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wWEFmu6eRhgFUF5br4/QTC5rOyoNsi43KfgkRbX/Ca4TpYtppMm/L8uenY+EWnQak
-	 RfPvJNnBi5K1GjwCLBcgxuD28AY2yydoYlTz6AMPAKyMP+OFrSpFrIGPXlPJdq0tfW
-	 2RbIjuOMocnlCPw20lCyNYi2bbNLV+oQiR1+nD2E=
+	b=fhqnV7p1PbEZdYeGahTHznAmpNNbV5TwEBnu8OV0w9WfinDiUsLaWQg9EP60SaI4J
+	 gymKcCwqWefqnEpUR9POtX2ttWmByqVOYNvSly45bO2Jg8/znSwunQT6M6l4O1t5Xf
+	 W8bKgHFG+alWvDCvm5/leVrqeJSjGGecpRCSj5Mc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Colin Walters <walters@verbum.org>,
-	Gao Xiang <hsiangkao@linux.alibaba.com>,
+	Olaf Hering <olaf@aepfle.de>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 125/695] erofs: fix incorrect symlink detection in fast symlink
+Subject: [PATCH 6.10 023/634] mount: handle OOM on mnt_warn_timestamp_expiry
 Date: Wed,  2 Oct 2024 14:52:03 +0200
-Message-ID: <20241002125827.461913262@linuxfoundation.org>
+Message-ID: <20241002125812.011225839@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,78 +60,64 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
+From: Olaf Hering <olaf@aepfle.de>
 
-[ Upstream commit 9ed50b8231e37b1ae863f5dec8153b98d9f389b4 ]
+[ Upstream commit 4bcda1eaf184e308f07f9c61d3a535f9ce477ce8 ]
 
-Fast symlink can be used if the on-disk symlink data is stored
-in the same block as the on-disk inode, so we don’t need to trigger
-another I/O for symlink data.  However, currently fs correction could be
-reported _incorrectly_ if inode xattrs are too large.
+If no page could be allocated, an error pointer was used as format
+string in pr_warn.
 
-In fact, these should be valid images although they cannot be handled as
-fast symlinks.
+Rearrange the code to return early in case of OOM. Also add a check
+for the return value of d_path.
 
-Many thanks to Colin for reporting this!
-
-Reported-by: Colin Walters <walters@verbum.org>
-Reported-by: https://honggfuzz.dev/
-Link: https://lore.kernel.org/r/bb2dd430-7de0-47da-ae5b-82ab2dd4d945@app.fastmail.com
-Fixes: 431339ba9042 ("staging: erofs: add inode operations")
-[ Note that it's a runtime misbehavior instead of a security issue. ]
-Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20240909031911.1174718-1-hsiangkao@linux.alibaba.com
+Fixes: f8b92ba67c5d ("mount: Add mount warning for impending timestamp expiry")
+Signed-off-by: Olaf Hering <olaf@aepfle.de>
+Link: https://lore.kernel.org/r/20240730085856.32385-1-olaf@aepfle.de
+[brauner: rewrite commit and commit message]
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/erofs/inode.c | 20 ++++++--------------
- 1 file changed, 6 insertions(+), 14 deletions(-)
+ fs/namespace.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
-diff --git a/fs/erofs/inode.c b/fs/erofs/inode.c
-index 419432be3223b..4e3ea6689cb4e 100644
---- a/fs/erofs/inode.c
-+++ b/fs/erofs/inode.c
-@@ -178,12 +178,14 @@ static int erofs_fill_symlink(struct inode *inode, void *kaddr,
- 			      unsigned int m_pofs)
- {
- 	struct erofs_inode *vi = EROFS_I(inode);
--	unsigned int bsz = i_blocksize(inode);
-+	loff_t off;
- 	char *lnk;
+diff --git a/fs/namespace.c b/fs/namespace.c
+index e1ced589d8357..a6675c2a23839 100644
+--- a/fs/namespace.c
++++ b/fs/namespace.c
+@@ -2801,8 +2801,15 @@ static void mnt_warn_timestamp_expiry(struct path *mountpoint, struct vfsmount *
+ 	if (!__mnt_is_readonly(mnt) &&
+ 	   (!(sb->s_iflags & SB_I_TS_EXPIRY_WARNED)) &&
+ 	   (ktime_get_real_seconds() + TIME_UPTIME_SEC_MAX > sb->s_time_max)) {
+-		char *buf = (char *)__get_free_page(GFP_KERNEL);
+-		char *mntpath = buf ? d_path(mountpoint, buf, PAGE_SIZE) : ERR_PTR(-ENOMEM);
++		char *buf, *mntpath;
++
++		buf = (char *)__get_free_page(GFP_KERNEL);
++		if (buf)
++			mntpath = d_path(mountpoint, buf, PAGE_SIZE);
++		else
++			mntpath = ERR_PTR(-ENOMEM);
++		if (IS_ERR(mntpath))
++			mntpath = "(unknown)";
  
--	/* if it cannot be handled with fast symlink scheme */
--	if (vi->datalayout != EROFS_INODE_FLAT_INLINE ||
--	    inode->i_size >= bsz || inode->i_size < 0) {
-+	m_pofs += vi->xattr_isize;
-+	/* check if it cannot be handled with fast symlink scheme */
-+	if (vi->datalayout != EROFS_INODE_FLAT_INLINE || inode->i_size < 0 ||
-+	    check_add_overflow(m_pofs, inode->i_size, &off) ||
-+	    off > i_blocksize(inode)) {
- 		inode->i_op = &erofs_symlink_iops;
- 		return 0;
+ 		pr_warn("%s filesystem being %s at %s supports timestamps until %ptTd (0x%llx)\n",
+ 			sb->s_type->name,
+@@ -2810,8 +2817,9 @@ static void mnt_warn_timestamp_expiry(struct path *mountpoint, struct vfsmount *
+ 			mntpath, &sb->s_time_max,
+ 			(unsigned long long)sb->s_time_max);
+ 
+-		free_page((unsigned long)buf);
+ 		sb->s_iflags |= SB_I_TS_EXPIRY_WARNED;
++		if (buf)
++			free_page((unsigned long)buf);
  	}
-@@ -192,16 +194,6 @@ static int erofs_fill_symlink(struct inode *inode, void *kaddr,
- 	if (!lnk)
- 		return -ENOMEM;
- 
--	m_pofs += vi->xattr_isize;
--	/* inline symlink data shouldn't cross block boundary */
--	if (m_pofs + inode->i_size > bsz) {
--		kfree(lnk);
--		erofs_err(inode->i_sb,
--			  "inline data cross block boundary @ nid %llu",
--			  vi->nid);
--		DBG_BUGON(1);
--		return -EFSCORRUPTED;
--	}
- 	memcpy(lnk, kaddr + m_pofs, inode->i_size);
- 	lnk[inode->i_size] = '\0';
+ }
  
 -- 
 2.43.0
