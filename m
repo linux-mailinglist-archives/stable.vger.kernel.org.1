@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-79900-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2341D98DAD0
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:25:30 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3C8E98DD3C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:47:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id BEC851F25678
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:25:29 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 01C0B1C22065
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:47:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 651451D1E8C;
-	Wed,  2 Oct 2024 14:19:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69EC51D1E77;
+	Wed,  2 Oct 2024 14:44:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aIuroV/X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HpihXCQv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 203961D1E86;
-	Wed,  2 Oct 2024 14:19:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288021D1E65;
+	Wed,  2 Oct 2024 14:44:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878797; cv=none; b=ExvdVSX6MN75KRlMOtFUYln5k+Gqhmnm+ZxHYvzQEDi0oshuhpTnVbjt8mtuqwJJJq/VCnfFVt+gLpJaB9K/pArNv5/jnv3f4TXOPlM16ETviA1j/CE/ypwyDGBTusF6SzTazXBNRrxOK79uFhFLWR6BMVY1GbZ+spYv3C+ikkY=
+	t=1727880258; cv=none; b=CqSDBmsXvXjvTUZenT00th1A+QnGbU+igXcPTKaZTTx6AAoskM/r3mdftI52Ty0QpfY+WRC3dYWYbcZKYS4UlARLCStIVlMavw4BIhiyHQd4yO0ulMKKb5/HqYRFhVEHENNJ8BTR5lt4Ket7sc4/fbE/qVz+CZwvMREHIn5vDEE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878797; c=relaxed/simple;
-	bh=8mQ/Tk9OdpdTxCG7x+aPNutvtIUTaqHdoCbIJ5+iAO0=;
+	s=arc-20240116; t=1727880258; c=relaxed/simple;
+	bh=JpCYMIVt+rC7Hnr5zYSih3CJs6cH5XjX4mgJTKrMHn8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OPPDxiBQF6bmBwOg4Xhl+gJKzOT+h/cf9gD5VrZ7ILThUwwLKyNJB21UFvvjStpMhcJH6ga7x9ivtqusrnRyA9AJDoSJrcVOIdrNYg1k9pKKqU57PxCimzd4H2oDDvqlgD8QkFB8NoMudez0Qe7+Y4PZ9Z2VpLIiJIzxMrall40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aIuroV/X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8ED60C4CECE;
-	Wed,  2 Oct 2024 14:19:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=oA7+jV0FUfEyWGxQHekY1vCdbFxWX70VkXpadfgjeYwFywsI1mFQrze1VA+1KHNX/VEYr0Z9lmGdTKo0RtyCDemQgROQA8ZkdSImwUd0FlnjSI4jgrT1bi0T9xBAs68NJUBXKqEWhRq2tJNbRNQ2bKcy9fe8mlD9VoVf0xzY1HI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HpihXCQv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A154FC4CECD;
+	Wed,  2 Oct 2024 14:44:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878797;
-	bh=8mQ/Tk9OdpdTxCG7x+aPNutvtIUTaqHdoCbIJ5+iAO0=;
+	s=korg; t=1727880258;
+	bh=JpCYMIVt+rC7Hnr5zYSih3CJs6cH5XjX4mgJTKrMHn8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aIuroV/XqKyjHZ6GuwIds5EGpLfouNN8aD2qaxdgZfUbuNV3eqP/aawRrwUH0SzLS
-	 DGJHpuUwA6rh3Qdnhnc3kqGmZzxj5cGHFZLbhlMQaLWnTTEU7Oud7+AAQWwrlthQ7n
-	 NqMOqimXUnYankNMrZNU5auTrCdshhEZ/AHmoVBs=
+	b=HpihXCQvzhsAh63Bt8WJGiBfqJYfQ1lKmnUqIh1lhzV5us+aHTB+jYz9YU+bcXjA2
+	 Ekj79vLAmRAEBlLLtWJErX/jCCNL0huh+MfLvQNTUDuvmgBtg/D4SfiM19NrzZbz/H
+	 bJ8Sb2E0GQfrcYLdQjLQCPdoW01jXu3V5vAFvQJs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Douglas Anderson <dianders@chromium.org>,
-	"=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" <nfraprado@collabora.com>,
-	Johan Hovold <johan+linaro@kernel.org>
-Subject: [PATCH 6.10 534/634] serial: qcom-geni: fix fifo polling timeout
-Date: Wed,  2 Oct 2024 15:00:34 +0200
-Message-ID: <20241002125832.185593827@linuxfoundation.org>
+	Frank Li <Frank.Li@nxp.com>,
+	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Subject: [PATCH 6.6 396/538] PCI: imx6: Fix missing call to phy_power_off() in error handling
+Date: Wed,  2 Oct 2024 15:00:35 +0200
+Message-ID: <20241002125808.065790304@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,121 +63,53 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Frank Li <Frank.Li@nxp.com>
 
-commit c80ee36ac8f9e9c27d8e097a2eaaf198e7534c83 upstream.
+commit 5b04d44d5c74e4d8aab1678496b84700b4b343fe upstream.
 
-The qcom_geni_serial_poll_bit() can be used to wait for events like
-command completion and is supposed to wait for the time it takes to
-clear a full fifo before timing out.
+Fix missing call to phy_power_off() in the error path of
+imx6_pcie_host_init(). Remove unnecessary check for imx6_pcie->phy
+as the PHY API already handles NULL pointers.
 
-As noted by Doug, the current implementation does not account for start,
-stop and parity bits when determining the timeout. The helper also does
-not currently account for the shift register and the two-word
-intermediate transfer register.
-
-A too short timeout can specifically lead to lost characters when
-waiting for a transfer to complete as the transfer is cancelled on
-timeout.
-
-Instead of determining the poll timeout on every call, store the fifo
-timeout when updating it in set_termios() and make sure to take the
-shift and intermediate registers into account. Note that serial core has
-already added a 20 ms margin to the fifo timeout.
-
-Also note that the current uart_fifo_timeout() interface does
-unnecessary calculations on every call and did not exist in earlier
-kernels so only store its result once. This facilitates backports too as
-earlier kernels can derive the timeout from uport->timeout, which has
-since been removed.
-
-Fixes: c4f528795d1a ("tty: serial: msm_geni_serial: Add serial driver support for GENI based QUP")
-Cc: stable@vger.kernel.org	# 4.17
-Reported-by: Douglas Anderson <dianders@chromium.org>
-Tested-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Link: https://lore.kernel.org/r/20240906131336.23625-2-johan+linaro@kernel.org
+Fixes: cbcf8722b523 ("phy: freescale: imx8m-pcie: Fix the wrong order of phy_init() and phy_power_on()")
+Link: https://lore.kernel.org/linux-pci/20240729-pci2_upstream-v8-3-b68ee5ef2b4d@nxp.com
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+[kwilczynski: commit log]
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: <stable@vger.kernel.org> # 6.1+
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/qcom_geni_serial.c |   31 +++++++++++++++++--------------
- 1 file changed, 17 insertions(+), 14 deletions(-)
+ drivers/pci/controller/dwc/pci-imx6.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/tty/serial/qcom_geni_serial.c
-+++ b/drivers/tty/serial/qcom_geni_serial.c
-@@ -124,7 +124,7 @@ struct qcom_geni_serial_port {
- 	dma_addr_t tx_dma_addr;
- 	dma_addr_t rx_dma_addr;
- 	bool setup;
--	unsigned int baud;
-+	unsigned long poll_timeout_us;
- 	unsigned long clk_rate;
- 	void *rx_buf;
- 	u32 loopback;
-@@ -270,22 +270,13 @@ static bool qcom_geni_serial_poll_bit(st
- {
- 	u32 reg;
- 	struct qcom_geni_serial_port *port;
--	unsigned int baud;
--	unsigned int fifo_bits;
- 	unsigned long timeout_us = 20000;
- 	struct qcom_geni_private_data *private_data = uport->private_data;
- 
- 	if (private_data->drv) {
- 		port = to_dev_port(uport);
--		baud = port->baud;
--		if (!baud)
--			baud = 115200;
--		fifo_bits = port->tx_fifo_depth * port->tx_fifo_width;
--		/*
--		 * Total polling iterations based on FIFO worth of bytes to be
--		 * sent at current baud. Add a little fluff to the wait.
--		 */
--		timeout_us = ((fifo_bits * USEC_PER_SEC) / baud) + 500;
-+		if (port->poll_timeout_us)
-+			timeout_us = port->poll_timeout_us;
+--- a/drivers/pci/controller/dwc/pci-imx6.c
++++ b/drivers/pci/controller/dwc/pci-imx6.c
+@@ -997,7 +997,7 @@ static int imx6_pcie_host_init(struct dw
+ 		ret = phy_power_on(imx6_pcie->phy);
+ 		if (ret) {
+ 			dev_err(dev, "waiting for PHY ready timeout!\n");
+-			goto err_phy_off;
++			goto err_phy_exit;
+ 		}
  	}
  
- 	/*
-@@ -1244,11 +1235,11 @@ static void qcom_geni_serial_set_termios
- 	unsigned long clk_rate;
- 	u32 ver, sampling_rate;
- 	unsigned int avg_bw_core;
-+	unsigned long timeout;
+@@ -1012,8 +1012,9 @@ static int imx6_pcie_host_init(struct dw
+ 	return 0;
  
- 	qcom_geni_serial_stop_rx(uport);
- 	/* baud rate */
- 	baud = uart_get_baud_rate(uport, termios, old, 300, 4000000);
--	port->baud = baud;
- 
- 	sampling_rate = UART_OVERSAMPLING;
- 	/* Sampling rate is halved for IP versions >= 2.5 */
-@@ -1326,9 +1317,21 @@ static void qcom_geni_serial_set_termios
- 	else
- 		tx_trans_cfg |= UART_CTS_MASK;
- 
--	if (baud)
-+	if (baud) {
- 		uart_update_timeout(uport, termios->c_cflag, baud);
- 
-+		/*
-+		 * Make sure that qcom_geni_serial_poll_bitfield() waits for
-+		 * the FIFO, two-word intermediate transfer register and shift
-+		 * register to clear.
-+		 *
-+		 * Note that uart_fifo_timeout() also adds a 20 ms margin.
-+		 */
-+		timeout = jiffies_to_usecs(uart_fifo_timeout(uport));
-+		timeout += 3 * timeout / port->tx_fifo_depth;
-+		WRITE_ONCE(port->poll_timeout_us, timeout);
-+	}
-+
- 	if (!uart_console(uport))
- 		writel(port->loopback,
- 				uport->membase + SE_UART_LOOPBACK_CFG);
+ err_phy_off:
+-	if (imx6_pcie->phy)
+-		phy_exit(imx6_pcie->phy);
++	phy_power_off(imx6_pcie->phy);
++err_phy_exit:
++	phy_exit(imx6_pcie->phy);
+ err_clk_disable:
+ 	imx6_pcie_clk_disable(imx6_pcie);
+ err_reg_disable:
 
 
 
