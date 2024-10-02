@@ -1,74 +1,56 @@
-Return-Path: <stable+bounces-80257-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63F3298DCAA
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:43:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C7B8E98DA11
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:17:03 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 958991C21C2D
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:43:40 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id F06911C2115E
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:17:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB95B1D279E;
-	Wed,  2 Oct 2024 14:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E02C1D14EC;
+	Wed,  2 Oct 2024 14:13:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yU1P8wHS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MwJuIDym"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 788BB1D26E3;
-	Wed,  2 Oct 2024 14:37:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B3AA1D14E5;
+	Wed,  2 Oct 2024 14:13:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879840; cv=none; b=CVRMQswTATxGnLT+TVY2+waO9chntUtDp/Nb+xXik3cEm28Dg8mphdSD1n4/445tjCgW4C+tQ6Sc9SpDMDcNigVVJmeOAHKmuihLLw4qm1nhwBtTRqdac1bZtGEdh7NbYZewlj3ww3IbvL9eRKmRUsvVa6WX/FLl+7MMxQXr23Q=
+	t=1727878385; cv=none; b=uMR6tMJO/2XiYECbRV5KnL5zcy/B4fu1xQGUMV5gVxAhGYXPdr2cLIaoGs6sD4QCNDdIKGUvRQzcC2MtFvFU11rLlMIGFBUP6mTu/SqGfyhtXcpqI39kvdhQMfG22cV9Z705Y4BsVZVYbUIkjWSuKXTf8O91IanNN22dsBX7J9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879840; c=relaxed/simple;
-	bh=f32Fkn9uy5RYS1/H79l+tpJGpByw8ELLikoAOCkTHOI=;
+	s=arc-20240116; t=1727878385; c=relaxed/simple;
+	bh=w3AzHHK+TM/LzW6+7OlUC9wbRtah86zvaYQaUxsFHfc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uOO0gwFyD/tw4qkfx2eZNS0b3qx2lzuy6DKcXMBQCgSGe+Q2Wpp0F82Mj79YxT85fIRCc6N0493ptwUcYQe3bJQa/GmyLROTdBT+TzIZ+eKXQVZercQUJDKACtCCc3fO5ExizeX5ZOOk/F16MwNvqbk5QoQyKZeV1zulLucAbr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yU1P8wHS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA8A8C4CEC2;
-	Wed,  2 Oct 2024 14:37:19 +0000 (UTC)
+	 MIME-Version; b=MKiD3tuU/7R+IRvfksJZouc3U0gQG/ijosSrZVDvPElBqWRgqvkIV4+g05dIeloN4T8QjMBqaXVZt3rXLvYWm1AVA6Ju5ZyItnT5q1AEdOeFsXHmwUCyHlmmc1vJ7enNoYqOyyt6AWfw7OKDHCRt8YZGd0i/17A2zYwz3k+sFZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MwJuIDym; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8C4EC4CEC5;
+	Wed,  2 Oct 2024 14:13:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879840;
-	bh=f32Fkn9uy5RYS1/H79l+tpJGpByw8ELLikoAOCkTHOI=;
+	s=korg; t=1727878385;
+	bh=w3AzHHK+TM/LzW6+7OlUC9wbRtah86zvaYQaUxsFHfc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yU1P8wHSdQM3nDj7LF1iEl4MnedBACck7X73KsXC5vOA4Mou6tGsvMAzHy/0AnI3y
-	 Ne/9eNMtUFJSril55DG60cvOFkZDVVUSwb0hMWkMcZSBgkrk/NNRPnSWWW2KC8eTbb
-	 SQzAuAn0Es/fv0nC72RnwU85R1jR/seCH+qpvOSc=
+	b=MwJuIDymxC+PTZTlvOQ0wB1YHxigT41LyMQD5khd5MuSXMAFqdx5iH6VKMY4mJR2D
+	 bszDMM62oxjrN8VZzk6PZ0LtWzhchnTpla4ohe90BtDs/UYeBMD4BbBvTONwT3VWnM
+	 mgWP3I2FgDc8RDKrKtnnZhtfSmWPe53/2qZLy0fU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-	Chaitanya S Prakash <chaitanyas.prakash@arm.com>,
-	Colin Ian King <colin.i.king@gmail.com>,
-	David Ahern <dsa@cumulusnetworks.com>,
-	Dominique Martinet <asmadeus@codewreck.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	James Clark <james.clark@linaro.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	John Garry <john.g.garry@oracle.com>,
-	Junhao He <hejunhao3@huawei.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Yang Jihong <yangjihong@bytedance.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Danny Tsen <dtsen@linux.ibm.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 256/538] perf time-utils: Fix 32-bit nsec parsing
+Subject: [PATCH 6.10 395/634] crypto: powerpc/p10-aes-gcm - Disable CRYPTO_AES_GCM_P10
 Date: Wed,  2 Oct 2024 14:58:15 +0200
-Message-ID: <20241002125802.362280458@linuxfoundation.org>
+Message-ID: <20241002125826.695014223@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -80,72 +62,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Danny Tsen <dtsen@linux.ibm.com>
 
-[ Upstream commit 38e2648a81204c9fc5b4c87a8ffce93a6ed91b65 ]
+[ Upstream commit 44ac4625ea002deecd0c227336c95b724206c698 ]
 
-The "time utils" test fails in 32-bit builds:
-  ...
-  parse_nsec_time("18446744073.709551615")
-  Failed. ptime 4294967295709551615 expected 18446744073709551615
-  ...
+Data mismatch found when testing ipsec tunnel with AES/GCM crypto.
+Disabling CRYPTO_AES_GCM_P10 in Kconfig for this feature.
 
-Switch strtoul to strtoull as an unsigned long in 32-bit build isn't
-64-bits.
-
-Fixes: c284d669a20d408b ("perf tools: Move parse_nsec_time to time-utils.c")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: Chaitanya S Prakash <chaitanyas.prakash@arm.com>
-Cc: Colin Ian King <colin.i.king@gmail.com>
-Cc: David Ahern <dsa@cumulusnetworks.com>
-Cc: Dominique Martinet <asmadeus@codewreck.org>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: James Clark <james.clark@linaro.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: John Garry <john.g.garry@oracle.com>
-Cc: Junhao He <hejunhao3@huawei.com>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Namhyung Kim <namhyung@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Yang Jihong <yangjihong@bytedance.com>
-Link: https://lore.kernel.org/r/20240831070415.506194-3-irogers@google.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: fd0e9b3e2ee6 ("crypto: p10-aes-gcm - An accelerated AES/GCM stitched implementation")
+Fixes: cdcecfd9991f ("crypto: p10-aes-gcm - Glue code for AES/GCM stitched implementation")
+Fixes: 45a4672b9a6e2 ("crypto: p10-aes-gcm - Update Kconfig and Makefile")
+Signed-off-by: Danny Tsen <dtsen@linux.ibm.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/util/time-utils.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/powerpc/crypto/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/perf/util/time-utils.c b/tools/perf/util/time-utils.c
-index 3024439216816..1b91ccd4d5234 100644
---- a/tools/perf/util/time-utils.c
-+++ b/tools/perf/util/time-utils.c
-@@ -20,7 +20,7 @@ int parse_nsec_time(const char *str, u64 *ptime)
- 	u64 time_sec, time_nsec;
- 	char *end;
+diff --git a/arch/powerpc/crypto/Kconfig b/arch/powerpc/crypto/Kconfig
+index 1e201b7ae2fc6..bd9d77b0c92ec 100644
+--- a/arch/powerpc/crypto/Kconfig
++++ b/arch/powerpc/crypto/Kconfig
+@@ -96,6 +96,7 @@ config CRYPTO_AES_PPC_SPE
  
--	time_sec = strtoul(str, &end, 10);
-+	time_sec = strtoull(str, &end, 10);
- 	if (*end != '.' && *end != '\0')
- 		return -1;
- 
-@@ -38,7 +38,7 @@ int parse_nsec_time(const char *str, u64 *ptime)
- 		for (i = strlen(nsec_buf); i < 9; i++)
- 			nsec_buf[i] = '0';
- 
--		time_nsec = strtoul(nsec_buf, &end, 10);
-+		time_nsec = strtoull(nsec_buf, &end, 10);
- 		if (*end != '\0')
- 			return -1;
- 	} else
+ config CRYPTO_AES_GCM_P10
+ 	tristate "Stitched AES/GCM acceleration support on P10 or later CPU (PPC)"
++	depends on BROKEN
+ 	depends on PPC64 && CPU_LITTLE_ENDIAN && VSX
+ 	select CRYPTO_LIB_AES
+ 	select CRYPTO_ALGAPI
 -- 
 2.43.0
 
