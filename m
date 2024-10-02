@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-79834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3689198DA81
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:22:28 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 46D2D98DCFC
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:46:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DA65B286211
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:22:26 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 09F01286336
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:46:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5CE081D0DE6;
-	Wed,  2 Oct 2024 14:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DD0A1D12F9;
+	Wed,  2 Oct 2024 14:41:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PchfRvRB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cftdh03w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AD0E1D0965;
-	Wed,  2 Oct 2024 14:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F00431D12F0;
+	Wed,  2 Oct 2024 14:41:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878601; cv=none; b=DTIHXmp6gcmC6BuEPA4ms9NsKzrLWbBlXR3ZPx4WhdALsxIwO5oT5lwB75UXyyv3WVLc/jQGKGQEvNycOQMbTbtFmUm1Izz7OYZRTCiane9+9xup6Ax2lWL0JgG2nq6HAaqiMNKrqAa4xbgOI/fV2Y8m6M0M5Zfllum8kHACMK4=
+	t=1727880082; cv=none; b=eJ97oTQQDUP7/G1caBHgZLb3OvwJfEN2T1emgTEgc6f9bHBKaM+jE0YhscrUTXgacVVgBbQBO4DCygUGl4VHXuG/jXcjlV9dhZMOczicWHw2soY1aN7xyHdgEuKHBN0gydVnoSIXcID7aL8tRwdN6p/saOJVG2Qe/YeuSR7te/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878601; c=relaxed/simple;
-	bh=4WB8j2YjHdE84+darz1ffniTZYYp/nWm6p7oHyfMMuc=;
+	s=arc-20240116; t=1727880082; c=relaxed/simple;
+	bh=XW85F5RZSzNj4blBEpGXVZnlwlXA52G+pBgI/0JxQTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=coOC+Fdn3omI74F90Xic1BaIfQBpzwcsdV2HwqKjzPLxEbyjEmSj/IKGVW/mcXuqcWBSmQkSkS5DKU7MHfRAZdCVO46F2yd6zfI/aQB9quukawbQ5o5XoiYYqxEwTVpVyDp66/Bqo4Dts9b4KgnLeLdNSW7G2cbd2iqDevTB2kA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PchfRvRB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99194C4CEC2;
-	Wed,  2 Oct 2024 14:16:40 +0000 (UTC)
+	 MIME-Version; b=AuqFTC2PNxqxWZZLslfyZoj0Q6qDfdNPz+jHYRKv9FHmcxH9MresZee5/OyhCmXCdbwsTlpZjhLWW/HFTru0yX7MNAtkEoLtK6B7oXTlsat+QhmwOif+l/Uc1Aq/irKxz14yrTkWOHjlSePGdAKHK+hIDsKF/5DG48RG3V69d40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cftdh03w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 755B8C4CEC2;
+	Wed,  2 Oct 2024 14:41:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878601;
-	bh=4WB8j2YjHdE84+darz1ffniTZYYp/nWm6p7oHyfMMuc=;
+	s=korg; t=1727880081;
+	bh=XW85F5RZSzNj4blBEpGXVZnlwlXA52G+pBgI/0JxQTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PchfRvRBssi2gvLglTpFBUQAHVRTLonv1nsPtn4maodEoGEP1R0elUaCVkrJyQNvR
-	 GAZJQsfvKpzeaKR4MpSeFGaFOyngOzEOEr7Q8x45ZxXoVXEMRQFs4Fa3iMxQRjfvK2
-	 hIxxQ5YWfm13Njm575CTCK08/JvYGhm7IoUZvxCo=
+	b=Cftdh03wGG5bgW+KXw6gEtn2FXHcuOCbPVI1e3fhs6dFOTh51bc2eW2OfZY5TrGlV
+	 mJ1++n2S77wzSBlhT3jg7JQcxSBVSjYNXSH+SRc1Bqj0jYQAf6euVIDfHNJICqGSIo
+	 B4wNHhlMMmrFI35NomAS43jjrl++90jVIb29zG9E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Richard Zhu <hongxing.zhu@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-	Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-	Jason Liu <jason.hui.liu@nxp.com>
-Subject: [PATCH 6.10 468/634] PCI: imx6: Fix i.MX8MP PCIe EPs occasional failure to trigger MSI
-Date: Wed,  2 Oct 2024 14:59:28 +0200
-Message-ID: <20241002125829.579519842@linuxfoundation.org>
+	Guoqing Jiang <guoqing.jiang@linux.dev>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>
+Subject: [PATCH 6.6 330/538] nfsd: call cache_put if xdr_reserve_space returns NULL
+Date: Wed,  2 Oct 2024 14:59:29 +0200
+Message-ID: <20241002125805.456417329@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +61,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Richard Zhu <hongxing.zhu@nxp.com>
+From: Guoqing Jiang <guoqing.jiang@linux.dev>
 
-commit 5cb3aa92c7cf182940ae575c3f450d3708af087c upstream.
+[ Upstream commit d078cbf5c38de83bc31f83c47dcd2184c04a50c7 ]
 
-Correct occasional MSI triggering failures in i.MX8MP PCIe EP by applying
-the correct hardware outbound alignment requirement.
+If not enough buffer space available, but idmap_lookup has triggered
+lookup_fn which calls cache_get and returns successfully. Then we
+missed to call cache_put here which pairs with cache_get.
 
-The i.MX platform has a restriction about outbound address translation. The
-pci-epc-mem uses page_size to manage it. Set the correct page_size for i.MX
-platform to meet the hardware requirement, which is the same as inbound
-address alignment.
-
-Thus, align it with epc_features::align.
-
-Fixes: 1bd0d43dcf3b ("PCI: imx6: Clean up addr_space retrieval code")
-Link: https://lore.kernel.org/linux-pci/20240729-pci2_upstream-v8-2-b68ee5ef2b4d@nxp.com
-Signed-off-by: Richard Zhu <hongxing.zhu@nxp.com>
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-[kwilczynski: commit log]
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Acked-by: Jason Liu <jason.hui.liu@nxp.com>
-Cc: <stable@vger.kernel.org> # 6.9+
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ddd1ea563672 ("nfsd4: use xdr_reserve_space in attribute encoding")
+Signed-off-by: Guoqing Jiang <guoqing.jiang@linux.dev>
+Reviwed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pci-imx6.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/nfsd/nfs4idmap.c | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
---- a/drivers/pci/controller/dwc/pci-imx6.c
-+++ b/drivers/pci/controller/dwc/pci-imx6.c
-@@ -1119,6 +1119,8 @@ static int imx6_add_pcie_ep(struct imx6_
- 	if (imx6_check_flag(imx6_pcie, IMX6_PCIE_FLAG_SUPPORT_64BIT))
- 		dma_set_mask_and_coherent(dev, DMA_BIT_MASK(64));
- 
-+	ep->page_size = imx6_pcie->drvdata->epc_features->align;
+diff --git a/fs/nfsd/nfs4idmap.c b/fs/nfsd/nfs4idmap.c
+index 7a806ac13e317..8cca1329f3485 100644
+--- a/fs/nfsd/nfs4idmap.c
++++ b/fs/nfsd/nfs4idmap.c
+@@ -581,6 +581,7 @@ static __be32 idmap_id_to_name(struct xdr_stream *xdr,
+ 		.id = id,
+ 		.type = type,
+ 	};
++	__be32 status = nfs_ok;
+ 	__be32 *p;
+ 	int ret;
+ 	struct nfsd_net *nn = net_generic(SVC_NET(rqstp), nfsd_net_id);
+@@ -593,12 +594,16 @@ static __be32 idmap_id_to_name(struct xdr_stream *xdr,
+ 		return nfserrno(ret);
+ 	ret = strlen(item->name);
+ 	WARN_ON_ONCE(ret > IDMAP_NAMESZ);
 +
- 	ret = dw_pcie_ep_init(ep);
- 	if (ret) {
- 		dev_err(dev, "failed to initialize endpoint\n");
+ 	p = xdr_reserve_space(xdr, ret + 4);
+-	if (!p)
+-		return nfserr_resource;
+-	p = xdr_encode_opaque(p, item->name, ret);
++	if (unlikely(!p)) {
++		status = nfserr_resource;
++		goto out_put;
++	}
++	xdr_encode_opaque(p, item->name, ret);
++out_put:
+ 	cache_put(&item->h, nn->idtoname_cache);
+-	return 0;
++	return status;
+ }
+ 
+ static bool
+-- 
+2.43.0
+
 
 
 
