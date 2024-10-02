@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-78661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9112298D455
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:19:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA19E98D45B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:19:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id E55C9B20ABF
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:19:16 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 042F91C214B1
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:19:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84F6E1CFEB0;
-	Wed,  2 Oct 2024 13:19:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2EE01CFEB0;
+	Wed,  2 Oct 2024 13:19:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a1u2BiFB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NwsP3K9E"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3ABE525771;
-	Wed,  2 Oct 2024 13:19:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F17225771;
+	Wed,  2 Oct 2024 13:19:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875152; cv=none; b=R7U1E1ju9WsvbI0X6zni7BO2vgjs1qDhcMJIAdJA64u411EanTjP9w6iQwktYZbAI7ZA+NvjZgX/ca2dOQWJhoWWiDUn1i1gmi7d7MB+JIBFEHYxeStWCCrmwrLyHoGDqAq6Dd9nWKrnYqLD8RN68JzfDS0glEKNBqqFv+VIoHo=
+	t=1727875167; cv=none; b=ei2EH8QUXej/n72kssiloDgfZEp8Ga3dBNHanZfK9+h2jrVAxGuv1x5xNL2Vc8j9BHctfm13BygWfacXolCNk9/8/cK1e/YDZXvuAcdeRn1DYH7UeGKQjxAJ/2M/nbEX2Rbs97MWzg279+hwpnLN4AJZV4h+BpJH+iryXSX41E8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875152; c=relaxed/simple;
-	bh=sgVPBe/qnah6B+gy5i4jRmDSEA4H1+m/LM3zc8fMZbY=;
+	s=arc-20240116; t=1727875167; c=relaxed/simple;
+	bh=CI2SSz8aTZA+Tfthr2J70M8qpeNJ2PCXtaulDEo2oAs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Dd2NxTD7scEf12XbfZiKZxHrOUFvQ8Y5jneUvjch+gq6HfeeEGNLdabOwJGQwqt9VwJyODYNgUi2/Vyrkp3YEWAMW9XMvikhCSRrIkSSutm/sGVjI5+78gq/XA72mxqi4RcNC+Qscz101wqwsUlPMJowZNqAOzS9zFb4u2Pw5gM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a1u2BiFB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 393C1C4CEC5;
-	Wed,  2 Oct 2024 13:19:11 +0000 (UTC)
+	 MIME-Version; b=cf4IGwXey/92a2qdHa5xzlqrPHk96xbVbXVJx9XPitJ1HxUqF1uzA72HhcDdWvvYE0JkV9QbKJICFXjV7AfrlOgerP7LkJNnDIzOXNVCp5lHiC/a3QS/yjnKQMaVdRYI/J7CXzq3AxW2rjGXbE111oDBYz0qGiusVBCCNqmdJr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NwsP3K9E; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 802F2C4CEC5;
+	Wed,  2 Oct 2024 13:19:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875151;
-	bh=sgVPBe/qnah6B+gy5i4jRmDSEA4H1+m/LM3zc8fMZbY=;
+	s=korg; t=1727875167;
+	bh=CI2SSz8aTZA+Tfthr2J70M8qpeNJ2PCXtaulDEo2oAs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a1u2BiFBAnMikwF38dHqbUDeB1Xpsh6j+gDnbin8o0gpNgQGPaR/zg9snY9bl7kSd
-	 gtu3AajgXMVD2TgOs24xGtyScgtLTnoviHKvzQY6rPfFUpfYBEGx2NU8XxkjSeb7iA
-	 QZvylqL36bcck+ht2qRJzvLzeA1Sc2Z4N7AwcCkQ=
+	b=NwsP3K9EjaNmTm1+XERKsvQhrMahZoIlkx2bTKxvh0Yc/Q0qmlxtihev7ZdGSQ5Bk
+	 BFyUvSE9PyYuLOUGVERYJCDFFBIw9tFMHIGhxeTzQnykZMK1H1xylza/GcRlhT8zQ8
+	 hOqoEXPtNNru+WPrBTLqvjDB5u9ASrSSV+1OCzZs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Kang Yang <quic_kangyang@quicinc.com>,
-	Jeff Johnson <quic_jjohnson@quicinc.com>,
-	Kalle Valo <quic_kvalo@quicinc.com>,
+	Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 001/695] wifi: ath11k: use work queue to process beacon tx event
-Date: Wed,  2 Oct 2024 14:49:59 +0200
-Message-ID: <20241002125822.537328147@linuxfoundation.org>
+Subject: [PATCH 6.11 002/695] EDAC/synopsys: Fix error injection on Zynq UltraScale+
+Date: Wed,  2 Oct 2024 14:50:00 +0200
+Message-ID: <20241002125822.578856450@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
 References: <20241002125822.467776898@linuxfoundation.org>
@@ -62,127 +60,117 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kang Yang <quic_kangyang@quicinc.com>
+From: Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>
 
-[ Upstream commit 177b49dbf9c1d8f9f25a22ffafa416fc2c8aa6a3 ]
+[ Upstream commit 35e6dbfe1846caeafabb49b7575adb36b0aa2269 ]
 
-Commit 3a415daa3e8b ("wifi: ath11k: add P2P IE in beacon template")
-from Feb 28, 2024 (linux-next), leads to the following Smatch static
-checker warning:
+The Zynq UltraScale+ MPSoC DDR has a disjoint memory from 2GB to 32GB.
+The DDR host interface has a contiguous memory so while injecting
+errors, the driver should remove the hole else the injection fails as
+the address translation is incorrect.
 
-drivers/net/wireless/ath/ath11k/wmi.c:1742 ath11k_wmi_p2p_go_bcn_ie()
-warn: sleeping in atomic context
+Introduce a get_mem_info() function pointer and set it for Zynq
+UltraScale+ platform to return host address.
 
-The reason is that ath11k_bcn_tx_status_event() will directly call might
-sleep function ath11k_wmi_cmd_send() during RCU read-side critical
-sections. The call trace is like:
-
-ath11k_bcn_tx_status_event()
--> rcu_read_lock()
--> ath11k_mac_bcn_tx_event()
-	-> ath11k_mac_setup_bcn_tmpl()
-	……
-		-> ath11k_wmi_bcn_tmpl()
-			-> ath11k_wmi_cmd_send()
--> rcu_read_unlock()
-
-Commit 886433a98425 ("ath11k: add support for BSS color change") added the
-ath11k_mac_bcn_tx_event(), commit 01e782c89108 ("ath11k: fix warning
-of RCU usage for ath11k_mac_get_arvif_by_vdev_id()") added the RCU lock
-to avoid warning but also introduced this BUG.
-
-Use work queue to avoid directly calling ath11k_mac_bcn_tx_event()
-during RCU critical sections. No need to worry about the deletion of vif
-because cancel_work_sync() will drop the work if it doesn't start or
-block vif deletion until the running work is done.
-
-Tested-on: WCN6855 hw2.0 PCI WLAN.HSP.1.1-03125-QCAHSPSWPL_V1_V2_SILICONZ_LITE-3.6510.30
-
-Fixes: 3a415daa3e8b ("wifi: ath11k: add P2P IE in beacon template")
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Closes: https://lore.kernel.org/all/2d277abd-5e7b-4da0-80e0-52bd96337f6e@moroto.mountain/
-Signed-off-by: Kang Yang <quic_kangyang@quicinc.com>
-Acked-by: Jeff Johnson <quic_jjohnson@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://patch.msgid.link/20240626053543.1946-1-quic_kangyang@quicinc.com
+Fixes: 1a81361f75d8 ("EDAC, synopsys: Add Error Injection support for ZynqMP DDR controller")
+Signed-off-by: Shubhrajyoti Datta <shubhrajyoti.datta@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20240711100656.31376-1-shubhrajyoti.datta@amd.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/core.h |  1 +
- drivers/net/wireless/ath/ath11k/mac.c  | 12 ++++++++++++
- drivers/net/wireless/ath/ath11k/wmi.c  |  4 +++-
- 3 files changed, 16 insertions(+), 1 deletion(-)
+ drivers/edac/synopsys_edac.c | 35 ++++++++++++++++++++++++++++++++++-
+ 1 file changed, 34 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/core.h b/drivers/net/wireless/ath/ath11k/core.h
-index b655967a465bb..76faa55fd0f3a 100644
---- a/drivers/net/wireless/ath/ath11k/core.h
-+++ b/drivers/net/wireless/ath/ath11k/core.h
-@@ -399,6 +399,7 @@ struct ath11k_vif {
- 	u8 bssid[ETH_ALEN];
- 	struct cfg80211_bitrate_mask bitrate_mask;
- 	struct delayed_work connection_loss_work;
-+	struct work_struct bcn_tx_work;
- 	int num_legacy_stations;
- 	int rtscts_prot_mode;
- 	int txpower;
-diff --git a/drivers/net/wireless/ath/ath11k/mac.c b/drivers/net/wireless/ath/ath11k/mac.c
-index 7c0ef6916dd25..f8068d2e848c3 100644
---- a/drivers/net/wireless/ath/ath11k/mac.c
-+++ b/drivers/net/wireless/ath/ath11k/mac.c
-@@ -6599,6 +6599,16 @@ static int ath11k_mac_vdev_delete(struct ath11k *ar, struct ath11k_vif *arvif)
- 	return ret;
+diff --git a/drivers/edac/synopsys_edac.c b/drivers/edac/synopsys_edac.c
+index ea7a9a342dd30..d7416166fd8a4 100644
+--- a/drivers/edac/synopsys_edac.c
++++ b/drivers/edac/synopsys_edac.c
+@@ -10,6 +10,7 @@
+ #include <linux/module.h>
+ #include <linux/platform_device.h>
+ #include <linux/spinlock.h>
++#include <linux/sizes.h>
+ #include <linux/interrupt.h>
+ #include <linux/of.h>
+ 
+@@ -337,6 +338,7 @@ struct synps_edac_priv {
+  * @get_mtype:		Get mtype.
+  * @get_dtype:		Get dtype.
+  * @get_ecc_state:	Get ECC state.
++ * @get_mem_info:	Get EDAC memory info
+  * @quirks:		To differentiate IPs.
+  */
+ struct synps_platform_data {
+@@ -344,6 +346,9 @@ struct synps_platform_data {
+ 	enum mem_type (*get_mtype)(const void __iomem *base);
+ 	enum dev_type (*get_dtype)(const void __iomem *base);
+ 	bool (*get_ecc_state)(void __iomem *base);
++#ifdef CONFIG_EDAC_DEBUG
++	u64 (*get_mem_info)(struct synps_edac_priv *priv);
++#endif
+ 	int quirks;
+ };
+ 
+@@ -402,6 +407,25 @@ static int zynq_get_error_info(struct synps_edac_priv *priv)
+ 	return 0;
  }
  
-+static void ath11k_mac_bcn_tx_work(struct work_struct *work)
++#ifdef CONFIG_EDAC_DEBUG
++/**
++ * zynqmp_get_mem_info - Get the current memory info.
++ * @priv:	DDR memory controller private instance data.
++ *
++ * Return: host interface address.
++ */
++static u64 zynqmp_get_mem_info(struct synps_edac_priv *priv)
 +{
-+	struct ath11k_vif *arvif = container_of(work, struct ath11k_vif,
-+						bcn_tx_work);
++	u64 hif_addr = 0, linear_addr;
 +
-+	mutex_lock(&arvif->ar->conf_mutex);
-+	ath11k_mac_bcn_tx_event(arvif);
-+	mutex_unlock(&arvif->ar->conf_mutex);
++	linear_addr = priv->poison_addr;
++	if (linear_addr >= SZ_32G)
++		linear_addr = linear_addr - SZ_32G + SZ_2G;
++	hif_addr = linear_addr >> 3;
++	return hif_addr;
 +}
++#endif
 +
- static int ath11k_mac_op_add_interface(struct ieee80211_hw *hw,
- 				       struct ieee80211_vif *vif)
+ /**
+  * zynqmp_get_error_info - Get the current ECC error info.
+  * @priv:	DDR memory controller private instance data.
+@@ -922,6 +946,9 @@ static const struct synps_platform_data zynqmp_edac_def = {
+ 	.get_mtype	= zynqmp_get_mtype,
+ 	.get_dtype	= zynqmp_get_dtype,
+ 	.get_ecc_state	= zynqmp_get_ecc_state,
++#ifdef CONFIG_EDAC_DEBUG
++	.get_mem_info	= zynqmp_get_mem_info,
++#endif
+ 	.quirks         = (DDR_ECC_INTR_SUPPORT
+ #ifdef CONFIG_EDAC_DEBUG
+ 			  | DDR_ECC_DATA_POISON_SUPPORT
+@@ -975,10 +1002,16 @@ MODULE_DEVICE_TABLE(of, synps_edac_match);
+ static void ddr_poison_setup(struct synps_edac_priv *priv)
  {
-@@ -6637,6 +6647,7 @@ static int ath11k_mac_op_add_interface(struct ieee80211_hw *hw,
- 	arvif->vif = vif;
+ 	int col = 0, row = 0, bank = 0, bankgrp = 0, rank = 0, regval;
++	const struct synps_platform_data *p_data;
+ 	int index;
+ 	ulong hif_addr = 0;
  
- 	INIT_LIST_HEAD(&arvif->list);
-+	INIT_WORK(&arvif->bcn_tx_work, ath11k_mac_bcn_tx_work);
- 	INIT_DELAYED_WORK(&arvif->connection_loss_work,
- 			  ath11k_mac_vif_sta_connection_loss_work);
- 
-@@ -6879,6 +6890,7 @@ static void ath11k_mac_op_remove_interface(struct ieee80211_hw *hw,
- 	int i;
- 
- 	cancel_delayed_work_sync(&arvif->connection_loss_work);
-+	cancel_work_sync(&arvif->bcn_tx_work);
- 
- 	mutex_lock(&ar->conf_mutex);
- 
-diff --git a/drivers/net/wireless/ath/ath11k/wmi.c b/drivers/net/wireless/ath/ath11k/wmi.c
-index 38f175dd15578..2662092ee00a9 100644
---- a/drivers/net/wireless/ath/ath11k/wmi.c
-+++ b/drivers/net/wireless/ath/ath11k/wmi.c
-@@ -7404,7 +7404,9 @@ static void ath11k_bcn_tx_status_event(struct ath11k_base *ab, struct sk_buff *s
- 		rcu_read_unlock();
- 		return;
- 	}
--	ath11k_mac_bcn_tx_event(arvif);
+-	hif_addr = priv->poison_addr >> 3;
++	p_data = priv->p_data;
 +
-+	queue_work(ab->workqueue, &arvif->bcn_tx_work);
-+
- 	rcu_read_unlock();
- }
++	if (p_data->get_mem_info)
++		hif_addr = p_data->get_mem_info(priv);
++	else
++		hif_addr = priv->poison_addr >> 3;
  
+ 	for (index = 0; index < DDR_MAX_ROW_SHIFT; index++) {
+ 		if (priv->row_shift[index])
 -- 
 2.43.0
 
