@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-78743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94F9898D4B7
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:23:20 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4172B98D495
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:22:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C20281C21B8B
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:23:19 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 681191C217F4
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:22:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECD641D040E;
-	Wed,  2 Oct 2024 13:23:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 680671D0424;
+	Wed,  2 Oct 2024 13:21:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EKdpu5+P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qhbwGxap"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD37516F84F;
-	Wed,  2 Oct 2024 13:23:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 269431D0436;
+	Wed,  2 Oct 2024 13:21:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875398; cv=none; b=HdNqBDKAk33FfCqruNTMU3qAoa19loR+uFDsB1rC4r/FEwZmNpoWlpv9T8w5utjWlL84CAT9lgqeSy+5ftZktLDrpw7Aum5dDcHwk38btsljsmzcuffavadv2DbEAHGMn4BgE0CAADbMnHFe/6prbFsOrHGCmGZc6rYTwaECUAo=
+	t=1727875307; cv=none; b=u5GX66gptwgcCDZDFKBh37Ooh1EHWxY4tLI5kzKStYrIPQr6LBNVNuq+Xz1YUYOsOUtDUiTG2qq75/TWaN1jMVAg9SD0qmaWs6zpQassC5tyC2fSE3vh6HlGlVF5E/AiKMHPkYLYunaurH33vFR4uOyx4aua81KN0qFIMrQxArM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875398; c=relaxed/simple;
-	bh=N5HnkUCJnNSCAftSfYIDEPvNM43CRkAudgZmrgCXfOQ=;
+	s=arc-20240116; t=1727875307; c=relaxed/simple;
+	bh=j6XgMFf4VEEpPIv4GyThfVPxD7yKSYOOPkJZZarAZ4M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f3WCTVFNY2s6PByBqTUpoiiOPAA2Rw5O/Hn/jMFraDjPn3mfEn/zyHmaYN5pfYLf+12izq/lJHxnUOdbi5Jn8mpJP9dLIbi6jOPPDGFN6TaOknc0hxsglGYNJmzmpWUfWupGl+4C9Yx4G+G01FUrS1rAIdiVFbGy2Z3DpBl4lHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EKdpu5+P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35F67C4CECE;
-	Wed,  2 Oct 2024 13:23:18 +0000 (UTC)
+	 MIME-Version; b=ZJw75UruSj2yDQwSEcAXU2JE2+jQpVxEfTiiUT9vOO4u3WdYtt6eKTkelrOjFIvIRoh7BmU1g5Z5CRoABEvKzf2JaGAwGvuOwwwFQxSKIZlraqdkoH5nUS7SdFkH6i5BiBOQGPW1Lc9745TmC6rhu0nKGRX1tHEyy8mw9mo/FCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qhbwGxap; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4120FC4CEC5;
+	Wed,  2 Oct 2024 13:21:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875398;
-	bh=N5HnkUCJnNSCAftSfYIDEPvNM43CRkAudgZmrgCXfOQ=;
+	s=korg; t=1727875306;
+	bh=j6XgMFf4VEEpPIv4GyThfVPxD7yKSYOOPkJZZarAZ4M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EKdpu5+P+BNudSQfl3vvfoJkkbO0slrykVHRMWD7m7x4aOV/i5CLyVAz6fdRywPld
-	 628ElzsVaw0iicY5kQhOhMy0OGPz/uX5CROuCPjJSFhhTb8j0AfcypZN5G9jG5RS+0
-	 W80tjQl8yYF5sUTTmddL5OV1Nzypfn13cU+E8P1g=
+	b=qhbwGxapY8ufcniq9RtDGIlVTkLHhS3kq9/IVQvo8aCAm6DXhpZFn6cRoQsKugKNZ
+	 rBVmPsS8rTmUQ4b0oJkRvmRnwL/yDlXWsnp5jgiMybWdewoKqwXRirpCeVWdJ0WQbF
+	 zG7k9FHDTGqUd7UH9sxS7t9QTLub+AFvqaIkTtwo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -46,9 +46,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Will Deacon <will@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 057/695] drivers/perf: hisi_pcie: Record hardware counts correctly
-Date: Wed,  2 Oct 2024 14:50:55 +0200
-Message-ID: <20241002125824.761762019@linuxfoundation.org>
+Subject: [PATCH 6.11 058/695] drivers/perf: hisi_pcie: Fix TLP headers bandwidth counting
+Date: Wed,  2 Oct 2024 14:50:56 +0200
+Message-ID: <20241002125824.800748729@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
 References: <20241002125822.467776898@linuxfoundation.org>
@@ -69,62 +69,37 @@ Content-Transfer-Encoding: 8bit
 
 From: Yicong Yang <yangyicong@hisilicon.com>
 
-[ Upstream commit daecd3373a16a039ad241086e30a1ec46fc9d61f ]
+[ Upstream commit 17bf68aeb3642221e3e770399b5a52f370747ac1 ]
 
-Currently we set the period and record it as the initial value of the
-counter without checking it's set to the hardware successfully or not.
-However the counter maybe unwritable if the target event is unsupported
-by the device. In such case we will pass user a wrong count:
+We make the initial value of event ctrl register as HISI_PCIE_INIT_SET
+and modify according to the user options. This will make TLP headers
+bandwidth only counting never take effect since HISI_PCIE_INIT_SET
+configures to count the TLP payloads bandwidth. Fix this by making
+the initial value of event ctrl register as 0.
 
-[start counts when setting the period]
-hwc->prev_count = 0x8000000000000000
-device.counter_value = 0 // the counter is not set as the period
-[when user reads the counter]
-event->count = device.counter_value - hwc->prev_count
-             = 0x8000000000000000 // wrong. should be 0.
-
-Fix this by record the hardware counter counts correctly when setting
-the period.
-
-Fixes: 8404b0fbc7fb ("drivers/perf: hisi: Add driver for HiSilicon PCIe PMU")
+Fixes: 17d573984d4d ("drivers/perf: hisi: Add TLP filter support")
 Signed-off-by: Yicong Yang <yangyicong@hisilicon.com>
 Acked-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Link: https://lore.kernel.org/r/20240829090332.28756-2-yangyicong@huawei.com
+Link: https://lore.kernel.org/r/20240829090332.28756-3-yangyicong@huawei.com
 Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/hisilicon/hisi_pcie_pmu.c | 14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/perf/hisilicon/hisi_pcie_pmu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/drivers/perf/hisilicon/hisi_pcie_pmu.c b/drivers/perf/hisilicon/hisi_pcie_pmu.c
-index f06027574a241..fba569a8640cf 100644
+index fba569a8640cf..f7d6c59d99301 100644
 --- a/drivers/perf/hisilicon/hisi_pcie_pmu.c
 +++ b/drivers/perf/hisilicon/hisi_pcie_pmu.c
-@@ -452,10 +452,24 @@ static void hisi_pcie_pmu_set_period(struct perf_event *event)
- 	struct hisi_pcie_pmu *pcie_pmu = to_pcie_pmu(event->pmu);
- 	struct hw_perf_event *hwc = &event->hw;
- 	int idx = hwc->idx;
-+	u64 orig_cnt, cnt;
-+
-+	orig_cnt = hisi_pcie_pmu_read_counter(event);
+@@ -208,7 +208,7 @@ static void hisi_pcie_pmu_writeq(struct hisi_pcie_pmu *pcie_pmu, u32 reg_offset,
+ static u64 hisi_pcie_pmu_get_event_ctrl_val(struct perf_event *event)
+ {
+ 	u64 port, trig_len, thr_len, len_mode;
+-	u64 reg = HISI_PCIE_INIT_SET;
++	u64 reg = 0;
  
- 	local64_set(&hwc->prev_count, HISI_PCIE_INIT_VAL);
- 	hisi_pcie_pmu_writeq(pcie_pmu, HISI_PCIE_CNT, idx, HISI_PCIE_INIT_VAL);
- 	hisi_pcie_pmu_writeq(pcie_pmu, HISI_PCIE_EXT_CNT, idx, HISI_PCIE_INIT_VAL);
-+
-+	/*
-+	 * The counter maybe unwritable if the target event is unsupported.
-+	 * Check this by comparing the counts after setting the period. If
-+	 * the counts stay unchanged after setting the period then update
-+	 * the hwc->prev_count correctly. Otherwise the final counts user
-+	 * get maybe totally wrong.
-+	 */
-+	cnt = hisi_pcie_pmu_read_counter(event);
-+	if (orig_cnt == cnt)
-+		local64_set(&hwc->prev_count, cnt);
- }
- 
- static void hisi_pcie_pmu_enable_counter(struct hisi_pcie_pmu *pcie_pmu, struct hw_perf_event *hwc)
+ 	/* Config HISI_PCIE_EVENT_CTRL according to event. */
+ 	reg |= FIELD_PREP(HISI_PCIE_EVENT_M, hisi_pcie_get_real_event(event));
 -- 
 2.43.0
 
