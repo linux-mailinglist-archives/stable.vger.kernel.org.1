@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-79221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98BC598D72C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:47:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 478BF98D739
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:47:27 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CB8BB1C223F6
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:46:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7A8B21C227CF
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:47:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20D561D0499;
-	Wed,  2 Oct 2024 13:46:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6921A1D0499;
+	Wed,  2 Oct 2024 13:47:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FfJVQ04L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sk3wZOnm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3DD81CF5FB;
-	Wed,  2 Oct 2024 13:46:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2632C1D041D;
+	Wed,  2 Oct 2024 13:47:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727876799; cv=none; b=MKApgRrEL1k96t7f1FQKDA771gwR78uDZU0C6kDrsE3uUrSlPf+EYXH882RIvlJ6PpDitoUXDWT391dwYm13a4wJ+rBaShBtE3B9ICwL3EJDBCra2jIIVDe9E3g5u/edbmHmXWkSz6zEsKotMgE/Ld0W3A+IFhfgMaY5yAtHEso=
+	t=1727876837; cv=none; b=OGG3MfVoygp1x+QAiCY+JXdFxgPNhn8B9LjnT0mmHrEJT6nnkKqatLL8XR63NPARwhYy2eACINtbBKEmdiakyurwSjmIkfUrjtiEc0/StphZkp/E8gyA2N0Abo0ciN+/aGov8aw48EDM21ESXdOrBYcwo1GX6DNZVn6qxNhgBqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727876799; c=relaxed/simple;
-	bh=JALP9xdxWXmXIcpYtRtim5JToUHjSRaVnzuZTVT2D9c=;
+	s=arc-20240116; t=1727876837; c=relaxed/simple;
+	bh=iyKe4uTZLc2/Ls4cNlKix8cffdDLDdM7Gqkfn9hrBc8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LUnVkj9QbcS7sfYibJDk9gi1JCx17K1Hk+VZmd3xRNFjHVTcXkDKvH4Fn0kpFchfpHT5WUeoMPXLGMKyW3MJWJvdKJC7Du9CIPk6sRsWZxwmZk44oy1Y6PG+DK2j41GgEX+5xk+oxueifckEF0sO3AWoJokPAIFK7ynzIFo761c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FfJVQ04L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C24DC4CEC2;
-	Wed,  2 Oct 2024 13:46:39 +0000 (UTC)
+	 MIME-Version; b=iZQS/HcS/aiNTkOvlZax+lrsF5gONo+dmACUdnfj8qn9TVTZcRtb83Z6wNaCjOH+H+Slh65fTjIAA4gw0dn3KzoNu3LY5vhH4UvfCF/M9WkMesWGRfEioEFtxUqXQKbbalfyF4XRnzXbkMJ7jXuD2U8BACdzmh1WOh4n0T2dX5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sk3wZOnm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A48ABC4CEC2;
+	Wed,  2 Oct 2024 13:47:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727876799;
-	bh=JALP9xdxWXmXIcpYtRtim5JToUHjSRaVnzuZTVT2D9c=;
+	s=korg; t=1727876837;
+	bh=iyKe4uTZLc2/Ls4cNlKix8cffdDLDdM7Gqkfn9hrBc8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FfJVQ04LZGqKanFjDFOWeFZ75O9d4fvlTGsfLjogbfHB127Fe5fgZrGzqA6sfvuiz
-	 4hBE/4prsO7IaXOYQPk3VxHx5gqxgdyqSldw172gpXC1kdaPKMELNGuT1XXN/PSz/e
-	 fQ4W6A8Xgc0So3o6wzyQ/8jYnbjyvfurkvaN8HTY=
+	b=sk3wZOnmPXxTrunigyC4zrQexvds2MBVy6stIFX3qnspB9ieiFTamy5xPLmL6v5/o
+	 Hl218SqcYq+YP63xWSlYTK2xSKqem81LwvGEdPCmrFTpYKa6dwAeKluuwrkYJX6mNX
+	 SeL03FuX0WA0n7gdYLm0aN6uVYvaU6qkYRyfPEzk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Mario Limonciello <mario.limonciello@amd.com>,
 	Alex Deucher <alexander.deucher@amd.com>,
-	Roman Li <roman.li@amd.com>,
-	Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-	Yihan Zhu <Yihan.Zhu@amd.com>,
+	Wenjing Liu <wenjing.liu@amd.com>,
+	Zhikai Zhai <zhikai.zhai@amd.com>,
 	Alex Hung <alex.hung@amd.com>,
 	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.11 558/695] drm/amd/display: Enable DML2 override_det_buffer_size_kbytes
-Date: Wed,  2 Oct 2024 14:59:16 +0200
-Message-ID: <20241002125844.775778025@linuxfoundation.org>
+Subject: [PATCH 6.11 559/695] drm/amd/display: Skip to enable dsc if it has been off
+Date: Wed,  2 Oct 2024 14:59:17 +0200
+Message-ID: <20241002125844.815407721@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
 References: <20241002125822.467776898@linuxfoundation.org>
@@ -70,52 +69,82 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Yihan Zhu <Yihan.Zhu@amd.com>
+From: Zhikai Zhai <zhikai.zhai@amd.com>
 
-commit f57b77d667dc6bd2b114d08d04b03869539209f6 upstream.
+commit 4bdc5b504af7de1f649004cfdd37445d36db6703 upstream.
 
 [WHY]
-Corrupted screen will be observed when 4k144 DP/HDMI display and
-4k144 eDP are connected, changing eDP refresh rate from 60Hz to 144Hz.
+It makes DSC enable when we commit the stream which need
+keep power off, and then it will skip to disable DSC if
+pipe reset at this situation as power has been off. It may
+cause the DSC unexpected enable on the pipe with the
+next new stream which doesn't support DSC.
 
 [HOW]
-override_det_buffer_size_kbytes should be true for DCN35/DCN351.
+Check the DSC used on current pipe status when update stream.
+Skip to enable if it has been off. The operation enable
+DSC should happen when set power on.
 
 Cc: Mario Limonciello <mario.limonciello@amd.com>
 Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Roman Li <roman.li@amd.com>
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Signed-off-by: Yihan Zhu <Yihan.Zhu@amd.com>
+Reviewed-by: Wenjing Liu <wenjing.liu@amd.com>
+Signed-off-by: Zhikai Zhai <zhikai.zhai@amd.com>
 Signed-off-by: Alex Hung <alex.hung@amd.com>
 Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
 Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c   |    1 +
- drivers/gpu/drm/amd/display/dc/resource/dcn351/dcn351_resource.c |    1 +
- 2 files changed, 2 insertions(+)
+ drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c |   14 ++++++++++++++
+ drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c |   13 +++++++++++++
+ 2 files changed, 27 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn35/dcn35_resource.c
-@@ -2153,6 +2153,7 @@ static bool dcn35_resource_construct(
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn32/dcn32_hwseq.c
+@@ -1029,6 +1029,20 @@ void dcn32_update_dsc_on_stream(struct p
+ 		struct dsc_config dsc_cfg;
+ 		struct dsc_optc_config dsc_optc_cfg = {0};
+ 		enum optc_dsc_mode optc_dsc_mode;
++		struct dcn_dsc_state dsc_state = {0};
++
++		if (!dsc) {
++			DC_LOG_DSC("DSC is NULL for tg instance %d:", pipe_ctx->stream_res.tg->inst);
++			return;
++		}
++
++		if (dsc->funcs->dsc_read_state) {
++			dsc->funcs->dsc_read_state(dsc, &dsc_state);
++			if (!dsc_state.dsc_fw_en) {
++				DC_LOG_DSC("DSC has been disabled for tg instance %d:", pipe_ctx->stream_res.tg->inst);
++				return;
++			}
++		}
  
- 	dc->dml2_options.max_segments_per_hubp = 24;
- 	dc->dml2_options.det_segment_size = DCN3_2_DET_SEG_SIZE;/*todo*/
-+	dc->dml2_options.override_det_buffer_size_kbytes = true;
+ 		/* Enable DSC hw block */
+ 		dsc_cfg.pic_width = (stream->timing.h_addressable + stream->timing.h_border_left + stream->timing.h_border_right) / opp_cnt;
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn35/dcn35_hwseq.c
+@@ -375,7 +375,20 @@ static void update_dsc_on_stream(struct
+ 		struct dsc_config dsc_cfg;
+ 		struct dsc_optc_config dsc_optc_cfg = {0};
+ 		enum optc_dsc_mode optc_dsc_mode;
++		struct dcn_dsc_state dsc_state = {0};
  
- 	if (dc->config.sdpif_request_limit_words_per_umc == 0)
- 		dc->config.sdpif_request_limit_words_per_umc = 16;/*todo*/
---- a/drivers/gpu/drm/amd/display/dc/resource/dcn351/dcn351_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/resource/dcn351/dcn351_resource.c
-@@ -2133,6 +2133,7 @@ static bool dcn351_resource_construct(
- 
- 	dc->dml2_options.max_segments_per_hubp = 24;
- 	dc->dml2_options.det_segment_size = DCN3_2_DET_SEG_SIZE;/*todo*/
-+	dc->dml2_options.override_det_buffer_size_kbytes = true;
- 
- 	if (dc->config.sdpif_request_limit_words_per_umc == 0)
- 		dc->config.sdpif_request_limit_words_per_umc = 16;/*todo*/
++		if (!dsc) {
++			DC_LOG_DSC("DSC is NULL for tg instance %d:", pipe_ctx->stream_res.tg->inst);
++			return;
++		}
++
++		if (dsc->funcs->dsc_read_state) {
++			dsc->funcs->dsc_read_state(dsc, &dsc_state);
++			if (!dsc_state.dsc_fw_en) {
++				DC_LOG_DSC("DSC has been disabled for tg instance %d:", pipe_ctx->stream_res.tg->inst);
++				return;
++			}
++		}
+ 		/* Enable DSC hw block */
+ 		dsc_cfg.pic_width = (stream->timing.h_addressable + stream->timing.h_border_left + stream->timing.h_border_right) / opp_cnt;
+ 		dsc_cfg.pic_height = stream->timing.v_addressable + stream->timing.v_border_top + stream->timing.v_border_bottom;
 
 
 
