@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-80383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B16398DD2F
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:47:28 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6C6798DAC2
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:25:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id E697F1F22F45
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:47:27 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 247E91C22FCB
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:25:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FE701D1742;
-	Wed,  2 Oct 2024 14:43:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5A351D175A;
+	Wed,  2 Oct 2024 14:19:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v1DnKo0d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y3LGzErg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0DC71974F4;
-	Wed,  2 Oct 2024 14:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64EB31CF7D4;
+	Wed,  2 Oct 2024 14:19:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880214; cv=none; b=k/391gDGR2rBnTak+s3Eraa0cVrulJt+c/hiMxCwJQ9FgI49sHsltRjB6sJXT+DbxhPCvDq/I2EzPXv4sg0CA+h9HAnD2wVOVRMnbBKcKbjm7p2BoUDThQb/6jBT4Bm5ABhE4qG2fKOnSxm/8jQ/PJULrDtrxwU9pvY49Tzv4b0=
+	t=1727878755; cv=none; b=DeH6lWjNtn899QtdrkphIzgYfAmnupk9B1r4wz15Gstmh2uti1GUwQk+ItAG5bz/VVGOfzbTl9aUKtJIVvZNYg0EpBdbO8TyS9fBplsjpxWuoCmhSNM+VIdlOYF7L7KiYfF8yagKi+5KNblMXdWqjms6wjeUslFm2ov0Ipjyi/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880214; c=relaxed/simple;
-	bh=kS5mLZ/Zv7cKL7Ky5OGIJss0rXoz8LbWhuRAs7DnyHs=;
+	s=arc-20240116; t=1727878755; c=relaxed/simple;
+	bh=1KRMTPn5bdeTg0a8KxKjhGLdStyLBXMrbsTqdDlkt74=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QeQYVnWIJDL1XpAG/yBE6A8c5pa5Sv2SlB8G12MCEMddNLXw8HaRP5bwzCGqaBkgQbifRSEqTerBMaxVOtuISk95Mv6sCqw5OJtDxu7VEf0TOwBmWiO/LsuyPNuE/g3sj4ef7Xkoa9T7+eXluaUuoeBIWyZLuq8C/5Kbppdu/NA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v1DnKo0d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C47DC4CEC2;
-	Wed,  2 Oct 2024 14:43:33 +0000 (UTC)
+	 MIME-Version; b=giWi4PEkp1vmsMhEM3dYHBzXy7FW1umAP/S65dxofGQ5xb0kYOUNvE3m0Jic+Q1Apac71BOJ9WxtWdavv86/dWEeizRUWRdOfXej9UUyMlgarHpwdsLLoVL1UFkWZ7tOkaIeBdldM48hN86MxpVbD/FUTfF9D0eX4BawD9qnuYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y3LGzErg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E28F9C4CEC2;
+	Wed,  2 Oct 2024 14:19:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880213;
-	bh=kS5mLZ/Zv7cKL7Ky5OGIJss0rXoz8LbWhuRAs7DnyHs=;
+	s=korg; t=1727878755;
+	bh=1KRMTPn5bdeTg0a8KxKjhGLdStyLBXMrbsTqdDlkt74=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v1DnKo0dNUDGRCeT/+cpIKalMpWgnFuxyIkQKFPgo8uT1ZOPPMi9q6Osjz8VbMZAQ
-	 1IPfCZ/x7gYUZo/JX+bNO1L/ev4CQAlYUJ+0zNOSQEWKd46vz6aODohlZ1/glBwiFW
-	 +PKmLAst8cwtodkpjy7bps3ZMbhxY3G2UKjDX3Nw=
+	b=y3LGzErgjQosWkcnMpkC+yNA8uddvvph0QT6rvZP4OHrDF02FAR6LxEek+kagcWMa
+	 AomRuvtafVosY7JQWCD/0zYVOWt1INGNAYs2I+pXJaJpqM2nwdAuZEnZ9AGwOcv0qm
+	 KAuizhE4aq1GSdFrlNHX+nTaln4xqCIHNXefNkY8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jan Hendrik Farr <kernel@jfarr.cc>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 383/538] io_uring: check for presence of task_work rather than TIF_NOTIFY_SIGNAL
+	Oliver Neukum <oneukum@suse.com>
+Subject: [PATCH 6.10 522/634] USB: misc: yurex: fix race between read and write
 Date: Wed,  2 Oct 2024 15:00:22 +0200
-Message-ID: <20241002125807.549575663@linuxfoundation.org>
+Message-ID: <20241002125831.710867399@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +60,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Oliver Neukum <oneukum@suse.com>
 
-commit 04beb6e0e08c30c6f845f50afb7d7953603d7a6f upstream.
+commit 93907620b308609c72ba4b95b09a6aa2658bb553 upstream.
 
-If some part of the kernel adds task_work that needs executing, in terms
-of signaling it'll generally use TWA_SIGNAL or TWA_RESUME. Those two
-directly translate to TIF_NOTIFY_SIGNAL or TIF_NOTIFY_RESUME, and can
-be used for a variety of use case outside of task_work.
+The write code path touches the bbu member in a non atomic manner
+without taking the spinlock. Fix it.
 
-However, io_cqring_wait_schedule() only tests explicitly for
-TIF_NOTIFY_SIGNAL. This means it can miss if task_work got added for
-the task, but used a different kind of signaling mechanism (or none at
-all). Normally this doesn't matter as any task_work will be run once
-the task exits to userspace, except if:
+The bug is as old as the driver.
 
-1) The ring is setup with DEFER_TASKRUN
-2) The local work item may generate normal task_work
-
-For condition 2, this can happen when closing a file and it's the final
-put of that file, for example. This can cause stalls where a task is
-waiting to make progress inside io_cqring_wait(), but there's nothing else
-that will wake it up. Hence change the "should we schedule or loop around"
-check to check for the presence of task_work explicitly, rather than just
-TIF_NOTIFY_SIGNAL as the mechanism. While in there, also change the
-ordering of what type of task_work first in terms of ordering, to both
-make it consistent with other task_work runs in io_uring, but also to
-better handle the case of defer task_work generating normal task_work,
-like in the above example.
-
-Reported-by: Jan Hendrik Farr <kernel@jfarr.cc>
-Link: https://github.com/axboe/liburing/issues/1235
-Cc: stable@vger.kernel.org
-Fixes: 846072f16eed ("io_uring: mimimise io_cqring_wait_schedule")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+CC: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20240912132126.1034743-1-oneukum@suse.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/io_uring.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/misc/yurex.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -2514,7 +2514,7 @@ static inline int io_cqring_wait_schedul
- 		return 1;
- 	if (unlikely(!llist_empty(&ctx->work_llist)))
- 		return 1;
--	if (unlikely(test_thread_flag(TIF_NOTIFY_SIGNAL)))
-+	if (unlikely(task_work_pending(current)))
- 		return 1;
- 	if (unlikely(task_sigpending(current)))
- 		return -EINTR;
-@@ -2610,9 +2610,9 @@ static int io_cqring_wait(struct io_ring
- 		 * If we got woken because of task_work being processed, run it
- 		 * now rather than let the caller do another wait loop.
- 		 */
--		io_run_task_work();
- 		if (!llist_empty(&ctx->work_llist))
- 			io_run_local_work(ctx, nr_wait);
-+		io_run_task_work();
+--- a/drivers/usb/misc/yurex.c
++++ b/drivers/usb/misc/yurex.c
+@@ -404,7 +404,6 @@ static ssize_t yurex_read(struct file *f
+ 	struct usb_yurex *dev;
+ 	int len = 0;
+ 	char in_buffer[MAX_S64_STRLEN];
+-	unsigned long flags;
  
- 		/*
- 		 * Non-local task_work will be run on exit to userspace, but
+ 	dev = file->private_data;
+ 
+@@ -419,9 +418,9 @@ static ssize_t yurex_read(struct file *f
+ 		return -EIO;
+ 	}
+ 
+-	spin_lock_irqsave(&dev->lock, flags);
++	spin_lock_irq(&dev->lock);
+ 	scnprintf(in_buffer, MAX_S64_STRLEN, "%lld\n", dev->bbu);
+-	spin_unlock_irqrestore(&dev->lock, flags);
++	spin_unlock_irq(&dev->lock);
+ 	mutex_unlock(&dev->io_mutex);
+ 
+ 	return simple_read_from_buffer(buffer, count, ppos, in_buffer, len);
+@@ -511,8 +510,11 @@ static ssize_t yurex_write(struct file *
+ 			__func__, retval);
+ 		goto error;
+ 	}
+-	if (set && timeout)
++	if (set && timeout) {
++		spin_lock_irq(&dev->lock);
+ 		dev->bbu = c2;
++		spin_unlock_irq(&dev->lock);
++	}
+ 	return timeout ? count : -EIO;
+ 
+ error:
 
 
 
