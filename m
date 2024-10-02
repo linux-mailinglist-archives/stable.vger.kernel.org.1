@@ -1,56 +1,67 @@
-Return-Path: <stable+bounces-80195-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69AC598DC5D
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:40:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B08498D9C5
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:14:50 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1D1C91F269A7
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:40:43 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 28D641F26532
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:14:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0CA0A1D1309;
-	Wed,  2 Oct 2024 14:34:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83E411D0E19;
+	Wed,  2 Oct 2024 14:10:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wbI4zauC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hZLen5Uy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF7791D1302;
-	Wed,  2 Oct 2024 14:34:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 425AE1D0797;
+	Wed,  2 Oct 2024 14:10:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879661; cv=none; b=n9UmSLXChKKQbLqHQnldsTyLfLIJ/KwKiKftjo8V8qnuWBJ31dSgrLEIn6LWx+zKLuOm6NGOKbxpLAk/fu9M25Us/MdHldzrh/B5dPhnNS5gzCq8GRzM5sRVvT8kT5ODE+vV08QAILBJ5i6tdm7cETyPeQHexA5WFq6wd6fmTW8=
+	t=1727878210; cv=none; b=XrxeyersmkbqZaFN/msGrvcnHElU8WKnxaj1kbFnGb6+vcZxELbLo/sWNy0G1HvgTfGz4wmYs47tJG7EeXUjDMp1pLgrj8+j/9Z0nYG326WyWqVAIAo2hRktwf1ILedPJMkD8qHYAGAbssS85PIJztCKZfr33gRgeyZbAeLsgek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879661; c=relaxed/simple;
-	bh=3n6oSA7WKHEPEX/tnwG7gY8+flshe/6kOqG2XOMKZzM=;
+	s=arc-20240116; t=1727878210; c=relaxed/simple;
+	bh=HYLdqcTvIfE1nqj2i0IESdxEc7bgcL24nt5rgfwXNWw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WEOMR0g4pSX5TXoR4xjkc0Ra0lJNBNJ9BgHkcD9D6L2Do9+x9U3Sceb8JRMvmv6qNGLfR45zhLtFBC7TVqYcBpR5m5ngavoCfFQJCc7OqhbjRzFHTiZ8uTHr6FHC6N5Of5lFU8o0e6RHN+qVphBN2SFZAzT4s9oj+ewRZtTDTW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wbI4zauC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 479FAC4CEC2;
-	Wed,  2 Oct 2024 14:34:21 +0000 (UTC)
+	 MIME-Version; b=C3Cb8YtqfT3JQQzBSUBTGuo0s+UDhwUsRv+Yo+uRfFStXIxpfNgGlX5aGbmtnllAm4e/tZktJTPx1j43hTZUJuTFm2uT3sW/k+y1XvXUwj1It+voFrNxc3KwfQegFPuF4IsN45XBTJjT4yQ2bxbfTUXPWYTZ6h2KQJdC4UDjezA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hZLen5Uy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 438CFC4CEC2;
+	Wed,  2 Oct 2024 14:10:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879661;
-	bh=3n6oSA7WKHEPEX/tnwG7gY8+flshe/6kOqG2XOMKZzM=;
+	s=korg; t=1727878209;
+	bh=HYLdqcTvIfE1nqj2i0IESdxEc7bgcL24nt5rgfwXNWw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wbI4zauCWsJccs6pUf4Jubs7whhLhRDUiKgd1U/Ysd6H7bWnZc5IFyVtWn67xWrwT
-	 aetgVchI46NNeC7WQ5MWpTblB6PCtnvjsKM5CcSlbYKz8NMTx7lnCY0y1bkcsaNv69
-	 kBXW3X2nrJRsBdEbgJBbP4D8zlEHS2cx6UcD1Ooo=
+	b=hZLen5UyruYU32VEJg7BTOpo7VhB7E3mfcrzdOI9vIl849VQrvyq+PtfZyfqr2gcU
+	 ZiOgipnBxRs0kDjfenmxDQS6KJMMxKf+GCJTbqmn03bNenr++fTBSgcgSRTNGwBa6Z
+	 lWiQ+o3shFjA5FMooToI+fOYlQZ9gJ9Rb/JQMBT4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Abhinav Kumar <quic_abhinavk@quicinc.com>,
+	Yang Jihong <yangjihong@bytedance.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	David Ahern <dsa@cumulusnetworks.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	James Clark <james.clark@arm.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 164/538] drm/msm/dsi: correct programming sequence for SM8350 / SM8450
-Date: Wed,  2 Oct 2024 14:56:43 +0200
-Message-ID: <20241002125758.727700148@linuxfoundation.org>
+Subject: [PATCH 6.10 304/634] perf sched timehist: Fixed timestamp error when unable to confirm event sched_in time
+Date: Wed,  2 Oct 2024 14:56:44 +0200
+Message-ID: <20241002125823.108257690@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +73,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Yang Jihong <yangjihong@bytedance.com>
 
-[ Upstream commit 1328cb7c34bf6d056df9ff694ee5194537548258 ]
+[ Upstream commit 39c243411bdb8fb35777adf49ee32549633c4e12 ]
 
-According to the display-drivers, 5nm DSI PLL (v4.2, v4.3) have
-different boundaries for pll_clock_inverters programming. Follow the
-vendor code and use correct values.
+If sched_in event for current task is not recorded, sched_in timestamp
+will be set to end_time of time window interest, causing an error in
+timestamp show. In this case, we choose to ignore this event.
 
-Fixes: 2f9ae4e395ed ("drm/msm/dsi: add support for DSI-PHY on SM8350 and SM8450")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/606947/
-Link: https://lore.kernel.org/r/20240804-sm8350-fixes-v1-3-1149dd8399fe@linaro.org
+Test scenario:
+
+  perf[1229608] does not record the first sched_in event, run time and sch delay are both 0
+
+  # perf sched timehist
+  Samples of sched_switch event do not have callchains.
+             time    cpu  task name                       wait time  sch delay   run time
+                          [tid/pid]                          (msec)     (msec)     (msec)
+  --------------- ------  ------------------------------  ---------  ---------  ---------
+   2090450.763231 [0000]  perf[1229608]                       0.000      0.000      0.000
+   2090450.763235 [0000]  migration/0[15]                     0.000      0.001      0.003
+   2090450.763263 [0001]  perf[1229608]                       0.000      0.000      0.000
+   2090450.763268 [0001]  migration/1[21]                     0.000      0.001      0.004
+   2090450.763302 [0002]  perf[1229608]                       0.000      0.000      0.000
+   2090450.763309 [0002]  migration/2[27]                     0.000      0.001      0.007
+   2090450.763338 [0003]  perf[1229608]                       0.000      0.000      0.000
+   2090450.763343 [0003]  migration/3[33]                     0.000      0.001      0.004
+
+Before:
+
+  arbitrarily specify a time window of interest, timestamp will be set to an incorrect value
+
+  # perf sched timehist --time 100,200
+  Samples of sched_switch event do not have callchains.
+             time    cpu  task name                       wait time  sch delay   run time
+                          [tid/pid]                          (msec)     (msec)     (msec)
+  --------------- ------  ------------------------------  ---------  ---------  ---------
+       200.000000 [0000]  perf[1229608]                       0.000      0.000      0.000
+       200.000000 [0001]  perf[1229608]                       0.000      0.000      0.000
+       200.000000 [0002]  perf[1229608]                       0.000      0.000      0.000
+       200.000000 [0003]  perf[1229608]                       0.000      0.000      0.000
+       200.000000 [0004]  perf[1229608]                       0.000      0.000      0.000
+       200.000000 [0005]  perf[1229608]                       0.000      0.000      0.000
+       200.000000 [0006]  perf[1229608]                       0.000      0.000      0.000
+       200.000000 [0007]  perf[1229608]                       0.000      0.000      0.000
+
+ After:
+
+  # perf sched timehist --time 100,200
+  Samples of sched_switch event do not have callchains.
+             time    cpu  task name                       wait time  sch delay   run time
+                          [tid/pid]                          (msec)     (msec)     (msec)
+  --------------- ------  ------------------------------  ---------  ---------  ---------
+
+Fixes: 853b74071110bed3 ("perf sched timehist: Add option to specify time window of interest")
+Signed-off-by: Yang Jihong <yangjihong@bytedance.com>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: David Ahern <dsa@cumulusnetworks.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: James Clark <james.clark@arm.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Kan Liang <kan.liang@linux.intel.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Link: https://lore.kernel.org/r/20240819024720.2405244-1-yangjihong@bytedance.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ tools/perf/builtin-sched.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
-index 89a6344bc8653..f72ce6a3c456d 100644
---- a/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
-+++ b/drivers/gpu/drm/msm/dsi/phy/dsi_phy_7nm.c
-@@ -135,7 +135,7 @@ static void dsi_pll_calc_dec_frac(struct dsi_pll_7nm *pll, struct dsi_pll_config
- 			config->pll_clock_inverters = 0x00;
- 		else
- 			config->pll_clock_inverters = 0x40;
--	} else {
-+	} else if (pll->phy->cfg->quirks & DSI_PHY_7NM_QUIRK_V4_1) {
- 		if (pll_freq <= 1000000000ULL)
- 			config->pll_clock_inverters = 0xa0;
- 		else if (pll_freq <= 2500000000ULL)
-@@ -144,6 +144,16 @@ static void dsi_pll_calc_dec_frac(struct dsi_pll_7nm *pll, struct dsi_pll_config
- 			config->pll_clock_inverters = 0x00;
- 		else
- 			config->pll_clock_inverters = 0x40;
-+	} else {
-+		/* 4.2, 4.3 */
-+		if (pll_freq <= 1000000000ULL)
-+			config->pll_clock_inverters = 0xa0;
-+		else if (pll_freq <= 2500000000ULL)
-+			config->pll_clock_inverters = 0x20;
-+		else if (pll_freq <= 3500000000ULL)
-+			config->pll_clock_inverters = 0x00;
-+		else
-+			config->pll_clock_inverters = 0x40;
- 	}
+diff --git a/tools/perf/builtin-sched.c b/tools/perf/builtin-sched.c
+index bb173de716578..ed11a20bc1493 100644
+--- a/tools/perf/builtin-sched.c
++++ b/tools/perf/builtin-sched.c
+@@ -2596,9 +2596,12 @@ static int timehist_sched_change_event(struct perf_tool *tool,
+ 	 * - previous sched event is out of window - we are done
+ 	 * - sample time is beyond window user cares about - reset it
+ 	 *   to close out stats for time window interest
++	 * - If tprev is 0, that is, sched_in event for current task is
++	 *   not recorded, cannot determine whether sched_in event is
++	 *   within time window interest - ignore it
+ 	 */
+ 	if (ptime->end) {
+-		if (tprev > ptime->end)
++		if (!tprev || tprev > ptime->end)
+ 			goto out;
  
- 	config->decimal_div_start = dec;
+ 		if (t > ptime->end)
 -- 
 2.43.0
 
