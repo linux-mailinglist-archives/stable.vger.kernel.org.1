@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-80209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70C2098DC72
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:41:35 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68E1A98D9D4
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:15:13 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id F38B3B265B3
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:41:32 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1FCF51F26776
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:15:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1915E1D1508;
-	Wed,  2 Oct 2024 14:35:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4FD31D1F57;
+	Wed,  2 Oct 2024 14:10:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wuz2Us/z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZPgu/UYf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5C541D1502;
-	Wed,  2 Oct 2024 14:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8328C1D0E16;
+	Wed,  2 Oct 2024 14:10:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879702; cv=none; b=t5j2WS0SHL77CckjTOe7N2yTXiCZVWvwcuqV2eAdD7p/BE1BS6SWnS7KxhuaNblrXkghaN1E74AFSYiGj6vzSc7VHom/gy/k2l3dHDEETknEuzTQZGxwhpZFIqrkgY81oqomThYdo0cW05yxJbApUQJkNrsiCVhcqGzu9XHTiPg=
+	t=1727878250; cv=none; b=pbNCcLnjFoXcRjJTn5ncI3AB254HG+XGDZnzfOu3V2VHVhP82+5OvByMo9LvrDlp6SD04L3/9KH0zG+B/LbltfjOyvfmeasZ8JJkpbb6VIxnK/U/ZjyGiwgS39h8kqD/+9S7V1N5KqsUtnUAWlG7cXY+a69LHBvU3RwsTjXMsuw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879702; c=relaxed/simple;
-	bh=SqRTbXYWot76thI9jp86UWwzFcuBPt5qUIFD/1viHiI=;
+	s=arc-20240116; t=1727878250; c=relaxed/simple;
+	bh=E7RbdtDAl7A5ddyHn9ZgpKcYBx40eM/QPi9SAsoBwZc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DYeC9V5cjHfFZriKDG0tCMUA2h8UJSmcr+wDpiOmY4vN/pNrejqhUJZtg31y2T+kBLsGaZLjr2wLjuL01bHUzgL0kXY1BNcFKujBunyA1xiyLZH4fb7ILlYjr4BD3lBTeYY1Cx6aObMz7q6m/BTrfrYfiYIjLmlqLh8C1J4ccPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wuz2Us/z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FBA4C4CED4;
-	Wed,  2 Oct 2024 14:35:02 +0000 (UTC)
+	 MIME-Version; b=UbhBtngS+s50vDpclxN0HhVHe58bNPJGtJ6cnSyZDiUxV++GmbhMopaK45PrQzu0BGdHigAMJwEubhGEb0/peMfwqpSqnMV1xFbYc7C6vAKfVaJOd+HyH3QtNdSDdEdTUpJqyjw2ISmA97c36S2ACq130T6ESpywX1MdGpSX61Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZPgu/UYf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BF23C4CEC2;
+	Wed,  2 Oct 2024 14:10:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879702;
-	bh=SqRTbXYWot76thI9jp86UWwzFcuBPt5qUIFD/1viHiI=;
+	s=korg; t=1727878250;
+	bh=E7RbdtDAl7A5ddyHn9ZgpKcYBx40eM/QPi9SAsoBwZc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wuz2Us/zi0GhzT8WJGPsMuB3+ihzNW4simdOLagbOfDWy6WcN7GeLs1Exh359yETQ
-	 TPctbyDl1KVIax071vihDiXt5tKwko2h86jzlkX7uUzwJUz1PY9gvdKOf0b7AZku71
-	 AixGtX/hpYliExsu2J0yr3XX2RPkYcm3o9U21po0=
+	b=ZPgu/UYf2eseWumAMESEBZNrIdNRK4JQTjD6ipT92OE9zQEZuK8EtsE9PCExw9fm5
+	 ODNoDKVmS/BOzeVPjzVOwCdOK9clC/kzVV2bjQM7tQM44PLPJC/tKlKPh6kQfbYlx2
+	 OFmHW+aC/7CiB2bEhI9wUcHVYEEy2qO0/R4UlZxU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kui-Feng Lee <thinker.li@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 210/538] libbpf: Convert st_ops->data to shadow type.
-Date: Wed,  2 Oct 2024 14:57:29 +0200
-Message-ID: <20241002125800.546913355@linuxfoundation.org>
+Subject: [PATCH 6.10 350/634] clk: at91: sama7g5: Allocate only the needed amount of memory for PLLs
+Date: Wed,  2 Oct 2024 14:57:30 +0200
+Message-ID: <20241002125824.914703731@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,119 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kui-Feng Lee <thinker.li@gmail.com>
+From: Claudiu Beznea <claudiu.beznea@tuxon.dev>
 
-[ Upstream commit 69e4a9d2b3f5adf5af4feeab0a9f505da971265a ]
+[ Upstream commit 2d6e9ee7cb3e79b1713783c633b13af9aeffc90c ]
 
-Convert st_ops->data to the shadow type of the struct_ops map. The shadow
-type of a struct_ops type is a variant of the original struct type
-providing a way to access/change the values in the maps of the struct_ops
-type.
+The maximum number of PLL components on SAMA7G5 is 3 (one fractional
+part and 2 dividers). Allocate the needed amount of memory for
+sama7g5_plls 2d array. Previous code used to allocate 7 array entries for
+each PLL. While at it, replace 3 with PLL_COMPID_MAX in the loop which
+parses the sama7g5_plls 2d array.
 
-bpf_map__initial_value() will return st_ops->data for struct_ops types. The
-skeleton is going to use it as the pointer to the shadow type of the
-original struct type.
-
-One of the main differences between the original struct type and the shadow
-type is that all function pointers of the shadow type are converted to
-pointers of struct bpf_program. Users can replace these bpf_program
-pointers with other BPF programs. The st_ops->progs[] will be updated
-before updating the value of a map to reflect the changes made by users.
-
-Signed-off-by: Kui-Feng Lee <thinker.li@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20240229064523.2091270-3-thinker.li@gmail.com
-Stable-dep-of: 04a94133f1b3 ("libbpf: Don't take direct pointers into BTF data from st_ops")
+Fixes: cb783bbbcf54 ("clk: at91: sama7g5: add clock support for sama7g5")
+Acked-by: Stephen Boyd <sboyd@kernel.org>
+Link: https://lore.kernel.org/r/20240714141315.19480-1-claudiu.beznea@tuxon.dev
+Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/libbpf.c | 40 ++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 38 insertions(+), 2 deletions(-)
+ drivers/clk/at91/sama7g5.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/tools/lib/bpf/libbpf.c b/tools/lib/bpf/libbpf.c
-index a2b765e419c16..c91917868b557 100644
---- a/tools/lib/bpf/libbpf.c
-+++ b/tools/lib/bpf/libbpf.c
-@@ -994,6 +994,19 @@ static bool bpf_map__is_struct_ops(const struct bpf_map *map)
- 	return map->def.type == BPF_MAP_TYPE_STRUCT_OPS;
- }
+diff --git a/drivers/clk/at91/sama7g5.c b/drivers/clk/at91/sama7g5.c
+index 91b5c6f148196..4e9594714b142 100644
+--- a/drivers/clk/at91/sama7g5.c
++++ b/drivers/clk/at91/sama7g5.c
+@@ -66,6 +66,7 @@ enum pll_component_id {
+ 	PLL_COMPID_FRAC,
+ 	PLL_COMPID_DIV0,
+ 	PLL_COMPID_DIV1,
++	PLL_COMPID_MAX,
+ };
  
-+static bool is_valid_st_ops_program(struct bpf_object *obj,
-+				    const struct bpf_program *prog)
-+{
-+	int i;
-+
-+	for (i = 0; i < obj->nr_programs; i++) {
-+		if (&obj->programs[i] == prog)
-+			return prog->type == BPF_PROG_TYPE_STRUCT_OPS;
-+	}
-+
-+	return false;
-+}
-+
- /* Init the map's fields that depend on kern_btf */
- static int bpf_map__init_kern_struct_ops(struct bpf_map *map)
- {
-@@ -1082,9 +1095,16 @@ static int bpf_map__init_kern_struct_ops(struct bpf_map *map)
- 		if (btf_is_ptr(mtype)) {
- 			struct bpf_program *prog;
+ /*
+@@ -165,7 +166,7 @@ static struct sama7g5_pll {
+ 	u8 t;
+ 	u8 eid;
+ 	u8 safe_div;
+-} sama7g5_plls[][PLL_ID_MAX] = {
++} sama7g5_plls[][PLL_COMPID_MAX] = {
+ 	[PLL_ID_CPU] = {
+ 		[PLL_COMPID_FRAC] = {
+ 			.n = "cpupll_fracck",
+@@ -1038,7 +1039,7 @@ static void __init sama7g5_pmc_setup(struct device_node *np)
+ 	sama7g5_pmc->chws[PMC_MAIN] = hw;
  
--			prog = st_ops->progs[i];
-+			/* Update the value from the shadow type */
-+			prog = *(void **)mdata;
-+			st_ops->progs[i] = prog;
- 			if (!prog)
- 				continue;
-+			if (!is_valid_st_ops_program(obj, prog)) {
-+				pr_warn("struct_ops init_kern %s: member %s is not a struct_ops program\n",
-+					map->name, mname);
-+				return -ENOTSUP;
-+			}
+ 	for (i = 0; i < PLL_ID_MAX; i++) {
+-		for (j = 0; j < 3; j++) {
++		for (j = 0; j < PLL_COMPID_MAX; j++) {
+ 			struct clk_hw *parent_hw;
  
- 			kern_mtype = skip_mods_and_typedefs(kern_btf,
- 							    kern_mtype->type,
-@@ -9165,7 +9185,9 @@ static struct bpf_map *find_struct_ops_map_by_offset(struct bpf_object *obj,
- 	return NULL;
- }
- 
--/* Collect the reloc from ELF and populate the st_ops->progs[] */
-+/* Collect the reloc from ELF, populate the st_ops->progs[], and update
-+ * st_ops->data for shadow type.
-+ */
- static int bpf_object__collect_st_ops_relos(struct bpf_object *obj,
- 					    Elf64_Shdr *shdr, Elf_Data *data)
- {
-@@ -9279,6 +9301,14 @@ static int bpf_object__collect_st_ops_relos(struct bpf_object *obj,
- 		}
- 
- 		st_ops->progs[member_idx] = prog;
-+
-+		/* st_ops->data will be exposed to users, being returned by
-+		 * bpf_map__initial_value() as a pointer to the shadow
-+		 * type. All function pointers in the original struct type
-+		 * should be converted to a pointer to struct bpf_program
-+		 * in the shadow type.
-+		 */
-+		*((struct bpf_program **)(st_ops->data + moff)) = prog;
- 	}
- 
- 	return 0;
-@@ -9730,6 +9760,12 @@ int bpf_map__set_initial_value(struct bpf_map *map,
- 
- void *bpf_map__initial_value(struct bpf_map *map, size_t *psize)
- {
-+	if (bpf_map__is_struct_ops(map)) {
-+		if (psize)
-+			*psize = map->def.value_size;
-+		return map->st_ops->data;
-+	}
-+
- 	if (!map->mmaped)
- 		return NULL;
- 	*psize = map->def.value_size;
+ 			if (!sama7g5_plls[i][j].n)
 -- 
 2.43.0
 
