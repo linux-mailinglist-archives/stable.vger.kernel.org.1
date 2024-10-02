@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-80193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF8C698DC5C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:40:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id B611E98D9C2
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:14:46 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 76D3B286782
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:40:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 6111A1F264C1
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:14:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2FBFE1D12FF;
-	Wed,  2 Oct 2024 14:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 897B11D1E8D;
+	Wed,  2 Oct 2024 14:09:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hwv8VP1O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VT3FAP5R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2BD11D12F0;
-	Wed,  2 Oct 2024 14:34:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 487A11D07BD;
+	Wed,  2 Oct 2024 14:09:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879656; cv=none; b=BChliYqw/nq4miNP35bZwzCQEKjqJzOmd4OZqWYa42W7F8HwkZq9bz2p7/MFaJNMSK8kwnAu9cyDQ3BueLUptVGHyNalAmUYnTKu7kijInl4PsmY3YklbDrZxNqvGrh/LxQD0wkOL9dZ9YJOdt70oom450K6AEXPMBnZJ+QX5kY=
+	t=1727878196; cv=none; b=UdfX+6qCcYyvTAZOLu0XXVftNyuZS8dPSzRjWzW1izNiPRL+wQxdu+uDL1BrywJFgEtNgJn9+ciC6uCTwuwY6ZzfkLl5Kba/walZvSAbNbwsGUBoJf38fQLtpvslzNQSoTz8IGAv+zMe3Auy0deR3RCL0dG9Bhzi8WrqiQmRgvo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879656; c=relaxed/simple;
-	bh=+KFuDCn7F+kt1/DSPeobm0e9bgj15RD/K5W+XShCpzU=;
+	s=arc-20240116; t=1727878196; c=relaxed/simple;
+	bh=SR5QCr+DE3lQYwKDOpP1AkfSE1nkDJJ4dTYUFrErAN0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kSy42fXYi8P/KIHyN70p+cA0JPYLQalaHsr8mOdBB9mT+FrfqtZ4Z8EJixkDeUAA2fKfCMTsMr4e277DuMKeW0Yi8BKE1hC8oFfYoFGa7ZlKNbEgfUFkosi6TxIOr0/oDauZEnWbFzeQlB6mELim7ai0GicQGqB6KbDnRRuQjUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hwv8VP1O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 606A1C4CEC2;
-	Wed,  2 Oct 2024 14:34:15 +0000 (UTC)
+	 MIME-Version; b=djGsPmpIuWJ6g/U4w5yCc1zqNrfsC1SR4wqQOyuaGcOm57iGtW4/FaH2ocIKHHMumztOGLTxydoVfGzaNDmQ1fSgFDYz0yIEJWVYf+vYuZULoVjB/bSoqpZCVX+Z7qRlrMFzt7U71K9G7DlrwC8E1P8JJSRnw/EWjp/x2RK90Vk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VT3FAP5R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6D75C4CEC2;
+	Wed,  2 Oct 2024 14:09:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879655;
-	bh=+KFuDCn7F+kt1/DSPeobm0e9bgj15RD/K5W+XShCpzU=;
+	s=korg; t=1727878196;
+	bh=SR5QCr+DE3lQYwKDOpP1AkfSE1nkDJJ4dTYUFrErAN0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hwv8VP1OIGay9eR4/FYzjxgkkgeoHR4XkN/CChDNGl9iYWmK9WF22uksPaG0FZaZd
-	 L6BZv3Lgs56ioZXST11XDdtzkhHJin5qPdghssDepCCeD32grAVt/TODSzOOOLHtUZ
-	 mpCSBkVQZdsjsLI6QGi6hVTOEAT47o8Olscxa9pA=
+	b=VT3FAP5R/xXVk4uyVPyFRCsKMZGLY0PU9jasnUJfn1yZEF7tv5N3ppUq6RJPCPMoK
+	 Urf3KBjCLOw/BLwIOxBB/YYWtLXd8UdCJyeIN3MHrybeWD6KFlqwqVgQLa0YxgXnqs
+	 hPA2wo9i8P0ArAYtiTa8Nwvbv737XimQSfnjwuRo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Ambardar <tony.ambardar@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Junlin Li <make24@iscas.ac.cn>,
+	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 192/538] selftests/bpf: Drop unneeded error.h includes
+Subject: [PATCH 6.10 331/634] drivers: media: dvb-frontends/rtl2832: fix an out-of-bounds write error
 Date: Wed,  2 Oct 2024 14:57:11 +0200
-Message-ID: <20241002125759.835768963@linuxfoundation.org>
+Message-ID: <20241002125824.169309274@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Ambardar <tony.ambardar@gmail.com>
+From: Junlin Li <make24@iscas.ac.cn>
 
-[ Upstream commit 69f409469c9b1515a5db40d5a36fda372376fa2d ]
+[ Upstream commit 8ae06f360cfaca2b88b98ca89144548b3186aab1 ]
 
-The addition of general support for unprivileged tests in test_loader.c
-breaks building test_verifier on non-glibc (e.g. musl) systems, due to the
-inclusion of glibc extension '<error.h>' in 'unpriv_helpers.c'. However,
-the header is actually not needed, so remove it to restore building.
+Ensure index in rtl2832_pid_filter does not exceed 31 to prevent
+out-of-bounds access.
 
-Similarly for sk_lookup.c and flow_dissector.c, error.h is not necessary
-and causes problems, so drop them.
+dev->filters is a 32-bit value, so set_bit and clear_bit functions should
+only operate on indices from 0 to 31. If index is 32, it will attempt to
+access a non-existent 33rd bit, leading to out-of-bounds access.
+Change the boundary check from index > 32 to index >= 32 to resolve this
+issue.
 
-Fixes: 1d56ade032a4 ("selftests/bpf: Unprivileged tests for test_loader.c")
-Fixes: 0ab5539f8584 ("selftests/bpf: Tests for BPF_SK_LOOKUP attach point")
-Fixes: 0905beec9f52 ("selftests/bpf: run flow dissector tests in skb-less mode")
-Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/5664367edf5fea4f3f4b4aec3b182bcfc6edff9c.1721713597.git.tony.ambardar@gmail.com
+Signed-off-by: Junlin Li <make24@iscas.ac.cn>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 4b01e01a81b6 ("[media] rtl2832: implement PID filter")
+[hverkuil: added fixes tag, rtl2830_pid_filter -> rtl2832_pid_filter in logmsg]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/flow_dissector.c | 1 -
- tools/testing/selftests/bpf/prog_tests/sk_lookup.c      | 1 -
- tools/testing/selftests/bpf/unpriv_helpers.c            | 1 -
- 3 files changed, 3 deletions(-)
+ drivers/media/dvb-frontends/rtl2832.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/flow_dissector.c b/tools/testing/selftests/bpf/prog_tests/flow_dissector.c
-index 9e5f38739104b..9625e6d217913 100644
---- a/tools/testing/selftests/bpf/prog_tests/flow_dissector.c
-+++ b/tools/testing/selftests/bpf/prog_tests/flow_dissector.c
-@@ -1,7 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0
- #include <test_progs.h>
- #include <network_helpers.h>
--#include <error.h>
- #include <linux/if_tun.h>
- #include <sys/uio.h>
+diff --git a/drivers/media/dvb-frontends/rtl2832.c b/drivers/media/dvb-frontends/rtl2832.c
+index 5142820b1b3d9..76c3f40443b2c 100644
+--- a/drivers/media/dvb-frontends/rtl2832.c
++++ b/drivers/media/dvb-frontends/rtl2832.c
+@@ -983,7 +983,7 @@ static int rtl2832_pid_filter(struct dvb_frontend *fe, u8 index, u16 pid,
+ 		index, pid, onoff, dev->slave_ts);
  
-diff --git a/tools/testing/selftests/bpf/prog_tests/sk_lookup.c b/tools/testing/selftests/bpf/prog_tests/sk_lookup.c
-index de2466547efe0..a1ab0af004549 100644
---- a/tools/testing/selftests/bpf/prog_tests/sk_lookup.c
-+++ b/tools/testing/selftests/bpf/prog_tests/sk_lookup.c
-@@ -18,7 +18,6 @@
- #include <arpa/inet.h>
- #include <assert.h>
- #include <errno.h>
--#include <error.h>
- #include <fcntl.h>
- #include <sched.h>
- #include <stdio.h>
-diff --git a/tools/testing/selftests/bpf/unpriv_helpers.c b/tools/testing/selftests/bpf/unpriv_helpers.c
-index 2a6efbd0401e5..762e4b5ec9557 100644
---- a/tools/testing/selftests/bpf/unpriv_helpers.c
-+++ b/tools/testing/selftests/bpf/unpriv_helpers.c
-@@ -2,7 +2,6 @@
+ 	/* skip invalid PIDs (0x2000) */
+-	if (pid > 0x1fff || index > 32)
++	if (pid > 0x1fff || index >= 32)
+ 		return 0;
  
- #include <stdbool.h>
- #include <stdlib.h>
--#include <error.h>
- #include <stdio.h>
- 
- #include "unpriv_helpers.h"
+ 	if (onoff)
 -- 
 2.43.0
 
