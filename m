@@ -1,43 +1,43 @@
-Return-Path: <stable+bounces-79773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC82698DA20
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:17:28 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id EFACE98D9F8
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:16:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 187C5B24987
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:17:26 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9284D1F27301
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:16:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74D9E1D0786;
-	Wed,  2 Oct 2024 14:13:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15D1D1D0F7F;
+	Wed,  2 Oct 2024 14:12:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wkYTc/YC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TV54YBwG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 339D21D04B4;
-	Wed,  2 Oct 2024 14:13:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C68CB1D0DCB;
+	Wed,  2 Oct 2024 14:12:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878426; cv=none; b=FLn1UDCSnG1NR1yy2pGEv3VLjumfTup1dD7jL3uqTt7qpDrSTuKuNm9nRqBwjEk1r7jBF400bsrgJaf/aWaG6CleqioytVm6dwGkQnFxlwXMMlJdhO5WhDITzMpjKdIS/UQvRpi39dTm4a8RG/v4pZzo3/koaf459G4Fja6/WxE=
+	t=1727878328; cv=none; b=Y2n1rIbn1dYbU2ZEnDvQxEyWxW2FP3b5z3bXnYIRiiTMjGhvzKLVG1eiAkTHZrxW26K203mBo2Wc0rUUGcamh4QXrJK2kgSdC04i9Nu9UfKElG+lZFsr9LKefmS/awGNoZ1QsbaLDC5wnE+WNUAmv7dHoQ3VNfO2RhgqJEPjS80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878426; c=relaxed/simple;
-	bh=b7OfM2A2nME7ke3pfTH8aLsnv2uhXjiCkuczSx62fB0=;
+	s=arc-20240116; t=1727878328; c=relaxed/simple;
+	bh=98p8Qf0r2iH12SFzyREdY3Hp6ncnKSqX6u3Ix9J/WRk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VZ4B0Y4Dx4wqITVgJ3ZQfIYJf4hYSrqQGdfPIcT9crZxhW5F/14PASkXIgWOQO+KYGONAHf2ZbHBrSNI/LyPERQP2ZCB/GkGErdfTsvYUQGHZ5+VG2T0BBcjCNBSq/VsTDhgSUq9MJyBLoxRk2vZ9MmIIEeIE3f/6TCZFe3hMb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wkYTc/YC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE330C4CEC2;
-	Wed,  2 Oct 2024 14:13:45 +0000 (UTC)
+	 MIME-Version; b=Q2w7yiioGzgfL+MpV7UN0U+CUKjBLymqhW1f+hilURYGLgl0p0jH0EO3fnNJ/YxvlV8Z0d6IwWAn7ETQuONk3T74mDsF7JOVTUNyprNQb/wyK9Mq9h96FS2Rj8vv6Ec64oFHJW5hCkdH9NBkHwCyBSBaWX/0TdTQSi6cisdHVWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TV54YBwG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D804C4CEC2;
+	Wed,  2 Oct 2024 14:12:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878426;
-	bh=b7OfM2A2nME7ke3pfTH8aLsnv2uhXjiCkuczSx62fB0=;
+	s=korg; t=1727878328;
+	bh=98p8Qf0r2iH12SFzyREdY3Hp6ncnKSqX6u3Ix9J/WRk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wkYTc/YCBgezU9+D4BGIEGI07diQ7HJE/peUz2jkzbEG0yK3dszZul6/bQNU8MhZW
-	 dRWlHnReDanYCRDO+Ko8ysltEZoPTguj19Exesh8PDgGywYCZek5cdwymADyhCybcR
-	 Mm5me+oa4LM7nY8X7bqGl4L/a54ooDInVs+cj/PQ=
+	b=TV54YBwGQ4ht6FZcmyL8gdO8vFukAD/2IwqCpiKNJwItSdI5eNa2Zi/vttrwlWf8l
+	 rK6pdIlq1s1nwTU99f5vJLoXTis4VtJ8gDH2N3TOvFyzTupqZiafxX2iCCPU3LAVUJ
+	 om9w5hCDG+GyFa3B8OqnAmFtFVF5yDlLG04JMgDU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Michael Guralnik <michaelgur@nvidia.com>,
 	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 368/634] RDMA/mlx5: Fix counter update on MR cache mkey creation
-Date: Wed,  2 Oct 2024 14:57:48 +0200
-Message-ID: <20241002125825.621849333@linuxfoundation.org>
+Subject: [PATCH 6.10 369/634] RDMA/mlx5: Limit usage of over-sized mkeys from the MR cache
+Date: Wed,  2 Oct 2024 14:57:49 +0200
+Message-ID: <20241002125825.661691567@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
 References: <20241002125811.070689334@linuxfoundation.org>
@@ -68,42 +68,93 @@ Content-Transfer-Encoding: 8bit
 
 From: Michael Guralnik <michaelgur@nvidia.com>
 
-[ Upstream commit 6f5cd6ac9a4201e4ba6f10b76a9da8044d6e38b0 ]
+[ Upstream commit ee6d57a2e13d11ce9050cfc3e3b69ef707a44a63 ]
 
-After an mkey is created, update the counter for pending mkeys before
-reshceduling the work that is filling the cache.
+When searching the MR cache for suitable cache entries, don't use mkeys
+larger than twice the size required for the MR.
+This should ensure the usage of mkeys closer to the minimal required size
+and reduce memory waste.
 
-Rescheduling the work with a full MR cache entry and a wrong 'pending'
-counter will cause us to miss disabling the fill_to_high_water flag.
-Thus leaving the cache full but with an indication that it's still
-needs to be filled up to it's full size (2 * limit).
-Next time an mkey will be taken from the cache, we'll unnecessarily
-continue the process of filling the cache to it's full size.
+On driver init we create entries for mkeys with clear attributes and
+powers of 2 sizes from 4 to the max supported size.
+This solves the issue for anyone using mkeys that fit these
+requirements.
 
-Fixes: 57e7071683ef ("RDMA/mlx5: Implement mkeys management via LIFO queue")
+In the use case where an MR is registered with different attributes,
+like an access flag we can't UMR, we'll create a new cache entry to store
+it upon dereg.
+Without this fix, any later registration with same attributes and smaller
+size will use the newly created cache entry and it's mkeys, disregarding
+the memory waste of using mkeys larger than required.
+
+For example, one worst-case scenario can be when registering and
+deregistering a 1GB mkey with ATS enabled which will cause the creation of
+a new cache entry to hold those type of mkeys. A user registering a 4k MR
+with ATS will end up using the new cache entry and an mkey that can
+support a 1GB MR, thus wasting x250k memory than actually needed in the HW.
+
+Additionally, allow all small registration to use the smallest size
+cache entry that is initialized on driver load even if size is larger
+than twice the required size.
+
+Fixes: 73d09b2fe833 ("RDMA/mlx5: Introduce mlx5r_cache_rb_key")
 Signed-off-by: Michael Guralnik <michaelgur@nvidia.com>
-Link: https://patch.msgid.link/0f44f462ba22e45f72cb3d0ec6a748634086b8d0.1725362530.git.leon@kernel.org
+Link: https://patch.msgid.link/8ba3a6e3748aace2026de8b83da03aba084f78f4.1725362530.git.leon@kernel.org
 Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/mr.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/mlx5/mr.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
 diff --git a/drivers/infiniband/hw/mlx5/mr.c b/drivers/infiniband/hw/mlx5/mr.c
-index d3c1f63791a2b..a03557c8416e8 100644
+index a03557c8416e8..b3a8dc9465c04 100644
 --- a/drivers/infiniband/hw/mlx5/mr.c
 +++ b/drivers/infiniband/hw/mlx5/mr.c
-@@ -211,9 +211,9 @@ static void create_mkey_callback(int status, struct mlx5_async_work *context)
+@@ -48,6 +48,7 @@ enum {
+ 	MAX_PENDING_REG_MR = 8,
+ };
  
- 	spin_lock_irqsave(&ent->mkeys_queue.lock, flags);
- 	push_mkey_locked(ent, mkey_out->mkey);
-+	ent->pending--;
- 	/* If we are doing fill_to_high_water then keep going. */
- 	queue_adjust_cache_locked(ent);
--	ent->pending--;
- 	spin_unlock_irqrestore(&ent->mkeys_queue.lock, flags);
- 	kfree(mkey_out);
++#define MLX5_MR_CACHE_PERSISTENT_ENTRY_MIN_DESCS 4
+ #define MLX5_UMR_ALIGN 2048
+ 
+ static void
+@@ -659,6 +660,7 @@ mkey_cache_ent_from_rb_key(struct mlx5_ib_dev *dev,
+ {
+ 	struct rb_node *node = dev->cache.rb_root.rb_node;
+ 	struct mlx5_cache_ent *cur, *smallest = NULL;
++	u64 ndescs_limit;
+ 	int cmp;
+ 
+ 	/*
+@@ -677,10 +679,18 @@ mkey_cache_ent_from_rb_key(struct mlx5_ib_dev *dev,
+ 			return cur;
+ 	}
+ 
++	/*
++	 * Limit the usage of mkeys larger than twice the required size while
++	 * also allowing the usage of smallest cache entry for small MRs.
++	 */
++	ndescs_limit = max_t(u64, rb_key.ndescs * 2,
++			     MLX5_MR_CACHE_PERSISTENT_ENTRY_MIN_DESCS);
++
+ 	return (smallest &&
+ 		smallest->rb_key.access_mode == rb_key.access_mode &&
+ 		smallest->rb_key.access_flags == rb_key.access_flags &&
+-		smallest->rb_key.ats == rb_key.ats) ?
++		smallest->rb_key.ats == rb_key.ats &&
++		smallest->rb_key.ndescs <= ndescs_limit) ?
+ 		       smallest :
+ 		       NULL;
  }
+@@ -962,7 +972,7 @@ int mlx5_mkey_cache_init(struct mlx5_ib_dev *dev)
+ 	mlx5_mkey_cache_debugfs_init(dev);
+ 	mutex_lock(&cache->rb_lock);
+ 	for (i = 0; i <= mkey_cache_max_order(dev); i++) {
+-		rb_key.ndescs = 1 << (i + 2);
++		rb_key.ndescs = MLX5_MR_CACHE_PERSISTENT_ENTRY_MIN_DESCS << i;
+ 		ent = mlx5r_cache_create_ent_locked(dev, rb_key, true);
+ 		if (IS_ERR(ent)) {
+ 			ret = PTR_ERR(ent);
 -- 
 2.43.0
 
