@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-79451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8BAE98D85B
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:59:21 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 22C5598D522
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:27:20 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 274F31C22D91
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:59:21 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id BD27E1F22E51
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:27:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C08FA1D078B;
-	Wed,  2 Oct 2024 13:58:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E29F01D0403;
+	Wed,  2 Oct 2024 13:27:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O3OWTprS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1eevuugG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F90D1D04BE;
-	Wed,  2 Oct 2024 13:58:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1FCA16F84F;
+	Wed,  2 Oct 2024 13:27:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877497; cv=none; b=q/7ructnr5a7HO4QcLQvUDkdMqWuNAO1AQG0hvoW6MViY3Ku5Rv2ncSvob30X+XluPtk5pnB0XQpAxK1GCmtzVDDEcWLUc99pnYcHilfuBCFzd7pHwlgvokav/NYpzIesgGPdrgCur3O/X6cRe+9KIg2bKtsLHhq0YVuaJYDMA8=
+	t=1727875634; cv=none; b=qOlPVhkOGX4UIEO6Xo0KU3ENQeb8Pd6wgJA2Gjyf1vuddDi+R/gost55tMesQuB4U2t2thyJr4QoVPRa4mt2LCOWJQv1Uqi7WBuOeRld9GGr3KikI4dP4WK9ngTxceL69ey31cpFB77PpCt9V9lL0lgFjBoaGJVhsFAb3Jtk3mg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877497; c=relaxed/simple;
-	bh=98cl1fIcAdQjQEpUQmUUUYM2cjGZqqBDD1ab9YMph54=;
+	s=arc-20240116; t=1727875634; c=relaxed/simple;
+	bh=pd2ejXK13iaH8BWA6ltT/ZK29R6qOPFY833CUDAvusM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=en56J4MLcP3ukOH6wgtveSwQY31qpqehLvbkZmkQWGSOni8mmaREDBpLwkUGls+l2CVlCObAn9NdPUZp6HWLqpJkkCX4Vs71HZ3iUWHCxgHjYfdET1tj8JSiNdJWC6ChzyUGZ9/CgS++Ak4JwOEfc4ymEW6+XO/9f8J6hsoTmR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O3OWTprS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08741C4CEC2;
-	Wed,  2 Oct 2024 13:58:16 +0000 (UTC)
+	 MIME-Version; b=IkSvSpDZ/P5Ms1YLZgDz5zq8zx3JhbnzHXAYvXnmljTN4mRNJSPK+IG3KDeR21bkKmn+Et1EN/ScMl9G2J+NGaA8V766xNoTYnYZ4UZ8JlkR+QuqgloCLQ6kYzYR4PX/eaZIMAU6VPCHZYCp75F1jyTOLBiWjnmE3fAhMOkVNJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1eevuugG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2935AC4CEC5;
+	Wed,  2 Oct 2024 13:27:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877497;
-	bh=98cl1fIcAdQjQEpUQmUUUYM2cjGZqqBDD1ab9YMph54=;
+	s=korg; t=1727875634;
+	bh=pd2ejXK13iaH8BWA6ltT/ZK29R6qOPFY833CUDAvusM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O3OWTprS2ShmgERwZcCSI9Xhp0PQ2GPD9aE3klTHK0RuLgDA3ES/wybF6A8GJ4zem
-	 g+m5817JQn4oThbl6BubjvoQAM+FQR0K8mcdtG2vEwDcMyrP4Rbr+eem+N/OoJ9d2j
-	 mhfJkbjyokn/C+rhhZOOP9IC560u0SYNs8xWozLY=
+	b=1eevuugGSqPeKD0f/VelldqxiSx1yvgy9tGq/qFEbX60exm4H8b7NX48SiBskHUTn
+	 uKDuUfIAfqOrj4mdvYjZlUNIDTULdGCnCfUhrXrb0gP9oMkTSPesKbm5Kejr5rnQWG
+	 7vGwZaDKqv6Aluhf2hNfaiM3XcF0ReOOGlCHpMQo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Chiu <chui-hao.chiu@mediatek.com>,
-	Shayne Chen <shayne.chen@mediatek.com>,
-	Felix Fietkau <nbd@nbd.name>,
+	Stan Johnson <userm57@yahoo.com>,
+	Finn Thain <fthain@linux-m68k.org>,
+	Geert Uytterhoeven <geert@linux-m68k.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 067/634] wifi: mt76: mt7996: fix wmm set of station interface to 3
+Subject: [PATCH 6.11 169/695] m68k: Fix kernel_clone_args.flags in m68k_clone()
 Date: Wed,  2 Oct 2024 14:52:47 +0200
-Message-ID: <20241002125813.751520685@linuxfoundation.org>
+Message-ID: <20241002125829.220057997@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,40 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Chiu <chui-hao.chiu@mediatek.com>
+From: Finn Thain <fthain@linux-m68k.org>
 
-[ Upstream commit 9265397caacf5c0c2d10c40b2958a474664ebd9e ]
+[ Upstream commit 09b3d870faa7bc3e96c0978ab3cf4e96e4b15571 ]
 
-According to connac3 HW design, the WMM index of AP and STA interface
-should be 0 and 3, respectively.
+Stan Johnson recently reported a failure from the 'dump' command:
 
-Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
-Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Link: https://patch.msgid.link/20240816094635.2391-3-shayne.chen@mediatek.com
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+  DUMP: Date of this level 0 dump: Fri Aug  9 23:37:15 2024
+  DUMP: Dumping /dev/sda (an unlisted file system) to /dev/null
+  DUMP: Label: none
+  DUMP: Writing 10 Kilobyte records
+  DUMP: mapping (Pass I) [regular files]
+  DUMP: mapping (Pass II) [directories]
+  DUMP: estimated 3595695 blocks.
+  DUMP: Context save fork fails in parent 671
+
+The dump program uses the clone syscall with the CLONE_IO flag, that is,
+flags == 0x80000000. When that value is promoted from long int to u64 by
+m68k_clone(), it undergoes sign-extension. The new value includes
+CLONE_INTO_CGROUP so the validation in cgroup_css_set_fork() fails and
+the syscall returns -EBADF. Avoid sign-extension by casting to u32.
+
+Reported-by: Stan Johnson <userm57@yahoo.com>
+Closes: https://lists.debian.org/debian-68k/2024/08/msg00000.html
+Fixes: 6aabc1facdb2 ("m68k: Implement copy_thread_tls()")
+Signed-off-by: Finn Thain <fthain@linux-m68k.org>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Link: https://lore.kernel.org/3463f1e5d4e95468dc9f3368f2b78ffa7b72199b.1723335149.git.fthain@linux-m68k.org
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/main.c | 2 +-
+ arch/m68k/kernel/process.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/main.c b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-index 15d880ef0d922..2b094b33ba31a 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/main.c
-@@ -206,7 +206,7 @@ static int mt7996_add_interface(struct ieee80211_hw *hw,
- 	mvif->mt76.omac_idx = idx;
- 	mvif->phy = phy;
- 	mvif->mt76.band_idx = band_idx;
--	mvif->mt76.wmm_idx = vif->type != NL80211_IFTYPE_AP;
-+	mvif->mt76.wmm_idx = vif->type == NL80211_IFTYPE_AP ? 0 : 3;
- 
- 	ret = mt7996_mcu_add_dev_info(phy, vif, true);
- 	if (ret)
+diff --git a/arch/m68k/kernel/process.c b/arch/m68k/kernel/process.c
+index 2584e94e21346..fda7eac23f872 100644
+--- a/arch/m68k/kernel/process.c
++++ b/arch/m68k/kernel/process.c
+@@ -117,7 +117,7 @@ asmlinkage int m68k_clone(struct pt_regs *regs)
+ {
+ 	/* regs will be equal to current_pt_regs() */
+ 	struct kernel_clone_args args = {
+-		.flags		= regs->d1 & ~CSIGNAL,
++		.flags		= (u32)(regs->d1) & ~CSIGNAL,
+ 		.pidfd		= (int __user *)regs->d3,
+ 		.child_tid	= (int __user *)regs->d4,
+ 		.parent_tid	= (int __user *)regs->d3,
 -- 
 2.43.0
 
