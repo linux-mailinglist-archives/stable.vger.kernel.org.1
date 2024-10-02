@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-79735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80235-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E600698D9F5
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:16:22 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8867498DC9C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:43:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 91A3B1F272B7
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:16:22 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 2D35CB28CBE
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:42:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 479D41D0F74;
-	Wed,  2 Oct 2024 14:12:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D92DE1D2F49;
+	Wed,  2 Oct 2024 14:36:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DuzIE+ld"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l5g5lDFs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 074EF1D0F69;
-	Wed,  2 Oct 2024 14:12:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 973E71D2F46;
+	Wed,  2 Oct 2024 14:36:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878320; cv=none; b=B/N6aeZjF7fzV0a7e1ArSMVIDjv/6F7YF5qubdrnHvalibAzokfW6GL6YL7RBhsZqvkDMIlOe6wR/GhFijz1H7BszOtvMI0JoiG5cvdwem76Xe8B8F+25cUZ1rvESelXuYrm3uFz7CW2AmGL5B2RjGq2I0dfpodLNryuCAPFttM=
+	t=1727879775; cv=none; b=Ub2EstHdSSL/lJab8pSN+7fdipdw8Pgh4qnkY40B6jlx9yGYrMJNxmuZEi1xL2qmUweCqcoL6AKyxqZoi04em4mxrh4rNJEuodRk4GM3q8t2jP4MgxZMZPlzia10cdbtlsjL4AgHFl/axjcNIib90coC9XvcGfa9Feh1B9GCd14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878320; c=relaxed/simple;
-	bh=mOoBD6NWXVNY6zPjQU6q0ZnTjb7RLqNPGtT+SFoW7Gk=;
+	s=arc-20240116; t=1727879775; c=relaxed/simple;
+	bh=h/uJX0WXnzVhidEQBArBUbu01slYCev4f13nAoJKP7k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DhiZfXP4BIm219Y8V0Ik0aVc5ZdV8jozltJTfRcAltASJ+8gQH22e44UETR/BIlvFHtPw/HFs22yVT1bcQX2rrTV0B8WMJrZVr8PjtyoRHiGEFs9h8wenPjTCqBrIuQ4qNdkQBUDiZGTN81crqn/OGhLk1HDw1YbxoAFawKoJHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DuzIE+ld; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85DDAC4CEC2;
-	Wed,  2 Oct 2024 14:11:59 +0000 (UTC)
+	 MIME-Version; b=iViDwrMfOSzCDPTOc0nOO/wV3KiFgntM3K5P7aG/dVWsDz3Ck0yk5OQsUcGFrYOKeafyyqkuAWEPI7FwYS72OmWESfZYQMqlEaJElpfU0Qw2lSvVM9CUimHo+/DnlKSe2Q5sOpOH2lHvY/sqeLjbNGcFc0PC18yZkQNLfqzAa/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l5g5lDFs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23711C4CEC2;
+	Wed,  2 Oct 2024 14:36:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878319;
-	bh=mOoBD6NWXVNY6zPjQU6q0ZnTjb7RLqNPGtT+SFoW7Gk=;
+	s=korg; t=1727879775;
+	bh=h/uJX0WXnzVhidEQBArBUbu01slYCev4f13nAoJKP7k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DuzIE+ld5xfzn6Ekc5ROWa6jqOfE8GZZTjBBpe72OLlS9II7MgrGd+bU8BErbqe5d
-	 5byW8mouR1+1eBYETckvIOdOTxg9mUca8Fe73LwBYYffhKuumLQNPnZxjVyxdCoERX
-	 GNc/sfI0odxq+oEIFTWlT2BYV7lX+vPy1mCN/yQI=
+	b=l5g5lDFsnNPf8AEXuj9i97ZN71FAPYPhwJgdvgb7qYqS8ycuXwoBsXNxppn78KQWx
+	 /uOjrEBInhpgv/OAHXUnDFuglY84uQkDy48Zkkp1sMZ0wO5Az54481p7c/jMZ/9Voy
+	 erR2jgjjqccD64Iup60mKFqmdYwPlSciGpqPHPEw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Samasth Norway Ananda <samasth.norway.ananda@oracle.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Mario Limonciello <mario.limonciello@amd.com>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 342/634] x86/PCI: Check pcie_find_root_port() return for NULL
+Subject: [PATCH 6.6 203/538] selftests/bpf: Fix compiling tcp_rtt.c with musl-libc
 Date: Wed,  2 Oct 2024 14:57:22 +0200
-Message-ID: <20241002125824.600624462@linuxfoundation.org>
+Message-ID: <20241002125800.266583544@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,53 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
+From: Tony Ambardar <tony.ambardar@gmail.com>
 
-[ Upstream commit dbc3171194403d0d40e4bdeae666f6e76e428b53 ]
+[ Upstream commit 18826fb0b79c3c3cd1fe765d85f9c6f1a902c722 ]
 
-If pcie_find_root_port() is unable to locate a Root Port, it will return
-NULL. Check the pointer for NULL before dereferencing it.
+The GNU version of 'struct tcp_info' in 'netinet/tcp.h' is not exposed by
+musl headers unless _GNU_SOURCE is defined.
 
-This particular case is in a quirk for devices that are always below a Root
-Port, so this won't avoid a problem and doesn't need to be backported, but
-check as a matter of style and to prevent copy/paste mistakes.
+Add this definition to fix errors seen compiling for mips64el/musl-libc:
 
-Link: https://lore.kernel.org/r/20240812202659.1649121-1-samasth.norway.ananda@oracle.com
-Signed-off-by: Samasth Norway Ananda <samasth.norway.ananda@oracle.com>
-[bhelgaas: drop Fixes: and explain why there's no problem in this case]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
+  tcp_rtt.c: In function 'wait_for_ack':
+  tcp_rtt.c:24:25: error: storage size of 'info' isn't known
+     24 |         struct tcp_info info;
+        |                         ^~~~
+  tcp_rtt.c:24:25: error: unused variable 'info' [-Werror=unused-variable]
+  cc1: all warnings being treated as errors
+
+Fixes: 1f4f80fed217 ("selftests/bpf: test_progs: convert test_tcp_rtt")
+Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/f2329767b15df206f08a5776d35a47c37da855ae.1721713597.git.tony.ambardar@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/pci/fixup.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/bpf/prog_tests/tcp_rtt.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/pci/fixup.c b/arch/x86/pci/fixup.c
-index b33afb240601b..98a9bb92d75c8 100644
---- a/arch/x86/pci/fixup.c
-+++ b/arch/x86/pci/fixup.c
-@@ -980,7 +980,7 @@ static void amd_rp_pme_suspend(struct pci_dev *dev)
- 		return;
- 
- 	rp = pcie_find_root_port(dev);
--	if (!rp->pm_cap)
-+	if (!rp || !rp->pm_cap)
- 		return;
- 
- 	rp->pme_support &= ~((PCI_PM_CAP_PME_D3hot|PCI_PM_CAP_PME_D3cold) >>
-@@ -994,7 +994,7 @@ static void amd_rp_pme_resume(struct pci_dev *dev)
- 	u16 pmc;
- 
- 	rp = pcie_find_root_port(dev);
--	if (!rp->pm_cap)
-+	if (!rp || !rp->pm_cap)
- 		return;
- 
- 	pci_read_config_word(rp, rp->pm_cap + PCI_PM_PMC, &pmc);
+diff --git a/tools/testing/selftests/bpf/prog_tests/tcp_rtt.c b/tools/testing/selftests/bpf/prog_tests/tcp_rtt.c
+index 8fe84da1b9b49..6a2da7a64419a 100644
+--- a/tools/testing/selftests/bpf/prog_tests/tcp_rtt.c
++++ b/tools/testing/selftests/bpf/prog_tests/tcp_rtt.c
+@@ -1,4 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0
++#define _GNU_SOURCE
+ #include <test_progs.h>
+ #include "cgroup_helpers.h"
+ #include "network_helpers.h"
 -- 
 2.43.0
 
