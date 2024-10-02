@@ -1,64 +1,56 @@
-Return-Path: <stable+bounces-79655-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E5BD98D98F
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:13:04 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 876CE98DC30
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:39:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 1137F1F24C02
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:13:04 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 30D4BB247B4
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:39:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 212631D172E;
-	Wed,  2 Oct 2024 14:07:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E6B21D04BA;
+	Wed,  2 Oct 2024 14:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gDKOLPO8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SjtKwyH8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2987198A1A;
-	Wed,  2 Oct 2024 14:07:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AB861474BC;
+	Wed,  2 Oct 2024 14:32:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878076; cv=none; b=a+tlpuYnvyRMlg6cpwc31khY5/oShxGfKfzvLG4LGbGY846fRSfw5GE6K+GvF8oAr0nU/FyfbtkP5k3m2q6nM7g7X5VAzmcEZ2hdfYzztURI9UBCWZseGgAzWujmWUgCFwDloVtWsW+RCrcH94/dJD7ZHXgfFW76mLKgwBgLxOQ=
+	t=1727879541; cv=none; b=aiyKpEg8a5ylfppM/lLLVDSaaxE1kKvOlhkkLrzVrckZq7Ymdf2w+Ktd0C/aDnoMyO08zdUBdK2wbobGjMYaXjXoGPUj/y9p6KMJVfqtyeP4oy+am9xVzDeYPwKbVtxkgaKDqxPbAop6jH6f9n6Q9OfeMhD1WF2/yO/9zjYR1E4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878076; c=relaxed/simple;
-	bh=gp3WtIYJWMFUMkipk9J6lnPaNy5gGxlAykaLsPEAIm0=;
+	s=arc-20240116; t=1727879541; c=relaxed/simple;
+	bh=x8bIje8Q/FQw7eKMSU494be7wqaIruLit8g1tKgdix4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GRe/WOKjGsCndhXUp3FzjLipR4iNRZXWUxbiWt35QUuqKrMNh0rNK/VVRYmnpTmSKQ+4e9veNQfgg8b0c09T6GZZu8nT64WtoQR2M74ZEuOEV18jrMVzMkn2eFvof+iI7AoXPUea6RhVpJRNgJC/tV3kRb3RAVKV0Y2YdkcTjOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gDKOLPO8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1E78C4CEC2;
-	Wed,  2 Oct 2024 14:07:55 +0000 (UTC)
+	 MIME-Version; b=TWKSH3/ZoGg8paG30rtnKbs2h+zpjqR9QvimUMQsj/oCE0IBDbGP4jBjKo074TmilCnDJ9bBojwFFnOywNsdqU3+KvxLDWenvR4qN16oaxJVH7/dh8sjEs5C9wOBmHdavqgicSb2NioEOJmu91iglQY8c6IKZmQC5eHpf8s15Go=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SjtKwyH8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C12A5C4CEC2;
+	Wed,  2 Oct 2024 14:32:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878076;
-	bh=gp3WtIYJWMFUMkipk9J6lnPaNy5gGxlAykaLsPEAIm0=;
+	s=korg; t=1727879541;
+	bh=x8bIje8Q/FQw7eKMSU494be7wqaIruLit8g1tKgdix4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gDKOLPO8s2Xrp6xKEn5Qxv20tcof85jcSmqt4luQDKbkgTGwE2+rdS2gIJrJoW7QE
-	 vpDvckQL0roTwUktuEcRUWffZGZpe2zTBNy7u/scB1o+rsbFWrihq66Iv14NZh82KR
-	 z5N6x2zGf43DANjbrRC5ZaiZTrfwo/OeReHmqS2w=
+	b=SjtKwyH806/KSdxIQLowo38/qlVmyxtK5jMKPrL8ZbaDw2oQcYOouIRjcxVpp8uVf
+	 7bAPqlzh3UnBAv/5PMBj0ridacHDpIqlQy45F+1coLdIiD5VN+SpvYscnDk8bWuL4O
+	 oLm1JavCB9o3ZxmF5+idfXUNbwiRU4hnM4RjhaWQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Namhyung Kim <namhyung@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Athira Rajeev <atrajeev@linux.vnet.ibm.com>,
-	Ian Rogers <irogers@google.com>,
-	Ingo Molnar <mingo@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Stephane Eranian <eranian@google.com>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Fei Shao <fshao@chromium.org>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 293/634] perf mem: Free the allocated sort string, fixing a leak
+Subject: [PATCH 6.6 154/538] drm/mediatek: Use spin_lock_irqsave() for CRTC event lock
 Date: Wed,  2 Oct 2024 14:56:33 +0200
-Message-ID: <20241002125822.676863363@linuxfoundation.org>
+Message-ID: <20241002125758.333055928@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -70,47 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Fei Shao <fshao@chromium.org>
 
-[ Upstream commit 3da209bb1177462b6fe8e3021a5527a5a49a9336 ]
+[ Upstream commit be03b30b7aa99aca876fbc7c1c1b73b2d0339321 ]
 
-The get_sort_order() returns either a new string (from strdup) or NULL
-but it never gets freed.
+Use the state-aware spin_lock_irqsave() and spin_unlock_irqrestore()
+to avoid unconditionally re-enabling the local interrupts.
 
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Fixes: 2e7f545096f954a9 ("perf mem: Factor out a function to generate sort order")
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Athira Rajeev <atrajeev@linux.vnet.ibm.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@kernel.org>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Stephane Eranian <eranian@google.com>
-Link: https://lore.kernel.org/r/20240731235505.710436-3-namhyung@kernel.org
-[ Added Fixes tag ]
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 411f5c1eacfe ("drm/mediatek: handle events when enabling/disabling crtc")
+Signed-off-by: Fei Shao <fshao@chromium.org>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20240828101511.3269822-1-fshao@chromium.org/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-mem.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpu/drm/mediatek/mtk_drm_crtc.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/builtin-mem.c b/tools/perf/builtin-mem.c
-index 863fcd735daee..93413cfcd585a 100644
---- a/tools/perf/builtin-mem.c
-+++ b/tools/perf/builtin-mem.c
-@@ -372,6 +372,7 @@ static int report_events(int argc, const char **argv, struct perf_mem *mem)
- 		rep_argv[i] = argv[j];
+diff --git a/drivers/gpu/drm/mediatek/mtk_drm_crtc.c b/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
+index 5a1c8b26f1bb1..659112da47b69 100644
+--- a/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
++++ b/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
+@@ -450,6 +450,7 @@ static void mtk_crtc_ddp_hw_fini(struct mtk_drm_crtc *mtk_crtc)
+ {
+ 	struct drm_device *drm = mtk_crtc->base.dev;
+ 	struct drm_crtc *crtc = &mtk_crtc->base;
++	unsigned long flags;
+ 	int i;
  
- 	ret = cmd_report(i, rep_argv);
-+	free(new_sort_order);
- 	free(rep_argv);
- 	return ret;
+ 	for (i = 0; i < mtk_crtc->ddp_comp_nr; i++) {
+@@ -481,10 +482,10 @@ static void mtk_crtc_ddp_hw_fini(struct mtk_drm_crtc *mtk_crtc)
+ 	pm_runtime_put(drm->dev);
+ 
+ 	if (crtc->state->event && !crtc->state->active) {
+-		spin_lock_irq(&crtc->dev->event_lock);
++		spin_lock_irqsave(&crtc->dev->event_lock, flags);
+ 		drm_crtc_send_vblank_event(crtc, crtc->state->event);
+ 		crtc->state->event = NULL;
+-		spin_unlock_irq(&crtc->dev->event_lock);
++		spin_unlock_irqrestore(&crtc->dev->event_lock, flags);
+ 	}
  }
+ 
 -- 
 2.43.0
 
