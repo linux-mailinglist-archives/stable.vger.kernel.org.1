@@ -1,66 +1,57 @@
-Return-Path: <stable+bounces-79658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27B5A98D992
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:13:08 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D98998DC35
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:39:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id D7FF8289872
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:13:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 458541F25FBA
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:39:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB26C1D0DEF;
-	Wed,  2 Oct 2024 14:08:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F8E31D0DDA;
+	Wed,  2 Oct 2024 14:32:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JvS5uSpL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rOdn8o02"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A50F11D0954;
-	Wed,  2 Oct 2024 14:08:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D30BC1CFED1;
+	Wed,  2 Oct 2024 14:32:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878085; cv=none; b=HGqJn3O94HxK/pO498PwUMhHSSq7Axg2RrJoo78ML+Cf3SXkKo0EKI6KPoMdhCFjuW39JDs/NsgcAd6s6ixyDqdPiuQdudlin/CbAtbWsn004TtXxXzgmFNFAxlWLQzQh6BqfKNOZtgmffhz6qErkKPItde6uxADoKcayW3sQ7Y=
+	t=1727879555; cv=none; b=IE4NwWjfGT5++DejCRxy8Uwqnk/Wt8ZaVFA7wSqnXQ9g6+wV1qk/zcuW8gT9oNLGuyVyvZ/4Xq1sEtoTfoCiJHcY4ggp7v+LXGViAgA6iDvosNp0QmcSgG11qL0+RP63GXfMr7kq0ECrClJFORk6D6ORGyUMeHZLIp2cTkyD6cM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878085; c=relaxed/simple;
-	bh=G7nfEtc9nTjuHJv4z0SBXLNqsQuz3xUIl/Vv0QclGrk=;
+	s=arc-20240116; t=1727879555; c=relaxed/simple;
+	bh=Cd9eMAAiMjui9gPwJi5cuWDhS0S2y2X+JR6HQNDhM5g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QwgvKGtG1clcMGJC+g7hSAlbFYrsraXXeNkrj3+MUuw6MXN0wnQmQ6x9Fz5x4hh+Qfv9M9ZITE8xrTYghPyKJhST/Mj0Q7agm46x/iN7sgNg4HiOAa/H3Zx/cWQUQ6FA6+oUbJB3BYUUJTR22cC5+kjHFVt//8LOhykiQvtOT8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JvS5uSpL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1760C4CED4;
-	Wed,  2 Oct 2024 14:08:04 +0000 (UTC)
+	 MIME-Version; b=NeUl5q+btPslbKcvXk5heOW/So8ATcrKV3FyXGpS1yNg4zJddc+pJllHWIejqupIC5yLOHJ2kD5ZiXfJcmG3POog8ZCp1LL2OcIQWRdIBEW/COmR6VOP65wmfrAHIR/lYGT6+73J6GdUdyxZlCc0Ve2cfOAbm47e3GcWTmWdy5Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rOdn8o02; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D9B4C4CEC2;
+	Wed,  2 Oct 2024 14:32:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878085;
-	bh=G7nfEtc9nTjuHJv4z0SBXLNqsQuz3xUIl/Vv0QclGrk=;
+	s=korg; t=1727879555;
+	bh=Cd9eMAAiMjui9gPwJi5cuWDhS0S2y2X+JR6HQNDhM5g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JvS5uSpL4DqWL62FruQMlnov64KB35Bh7q2PqTEjt/cNKi+EvqipDmbnvoXPJZmXu
-	 Q+qOx8r97tuqAnrdeTcDvhZ/VXPVst/rZMp6LmyuHZ9HbDHl0q/EZxYgg7/iYaCGtg
-	 YwBpJ0H9N2yJVqzT6xM280AUANSMeYbLoy1yu508=
+	b=rOdn8o02wBpFzOla7qrRH67UwsxehJHLPAHvNH3rXwrrsnQLIgOO214SXMOLwnyas
+	 j3WjPTPhzaOb4C8v8iQLf7RM8wIkAOddZQAAefTPeqSScsrPggYVETdnUfXeMCL/Vy
+	 Igjo0TdD4rfc5AMlBHnRmeHrtbO3BfM3JYm1rHs0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Andi Kleen <ak@linux.intel.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Jiri Olsa <jolsa@redhat.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Aleksandr Mishin <amishin@t-argos.ru>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Rob Clark <robdclark@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 296/634] perf inject: Fix leader sampling inserting additional samples
-Date: Wed,  2 Oct 2024 14:56:36 +0200
-Message-ID: <20241002125822.796315576@linuxfoundation.org>
+Subject: [PATCH 6.6 158/538] drm/msm: Fix incorrect file name output in adreno_request_fw()
+Date: Wed,  2 Oct 2024 14:56:37 +0200
+Message-ID: <20241002125758.490604758@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -72,131 +63,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Rogers <irogers@google.com>
+From: Aleksandr Mishin <amishin@t-argos.ru>
 
-[ Upstream commit 79bcd34e0f3da39fda841406ccc957405e724852 ]
+[ Upstream commit e19366911340c2313a1abbb09c54eaf9bdea4f58 ]
 
-The processing of leader samples would turn an individual sample with
-a group of read values into multiple samples. 'perf inject' would pass
-through the additional samples increasing the output data file size:
+In adreno_request_fw() when debugging information is printed to the log
+after firmware load, an incorrect filename is printed. 'newname' is used
+instead of 'fwname', so prefix "qcom/" is being added to filename.
+Looks like "copy-paste" mistake.
 
-  $ perf record -g -e "{instructions,cycles}:S" -o perf.orig.data true
-  $ perf script -D -i perf.orig.data | sed -e 's/perf.orig.data/perf.data/g' > orig.txt
-  $ perf inject -i perf.orig.data -o perf.new.data
-  $ perf script -D -i perf.new.data | sed -e 's/perf.new.data/perf.data/g' > new.txt
-  $ diff -u orig.txt new.txt
-  --- orig.txt    2024-07-29 14:29:40.606576769 -0700
-  +++ new.txt     2024-07-29 14:30:04.142737434 -0700
-  ...
-  -0xc550@perf.data [0x30]: event: 3
-  +0xc550@perf.data [0xd0]: event: 9
-  +.
-  +. ... raw event: size 208 bytes
-  +.  0000:  09 00 00 00 01 00 d0 00 fc 72 01 86 ff ff ff ff  .........r......
-  +.  0010:  74 7d 2c 00 74 7d 2c 00 fb c3 79 f9 ba d5 05 00  t},.t},...y.....
-  +.  0020:  e6 cb 1a 00 00 00 00 00 01 00 00 00 00 00 00 00  ................
-  +.  0030:  02 00 00 00 00 00 00 00 76 01 00 00 00 00 00 00  ........v.......
-  +.  0040:  e6 cb 1a 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-  +.  0050:  62 18 00 00 00 00 00 00 f6 cb 1a 00 00 00 00 00  b...............
-  +.  0060:  00 00 00 00 00 00 00 00 0c 00 00 00 00 00 00 00  ................
-  +.  0070:  80 ff ff ff ff ff ff ff fc 72 01 86 ff ff ff ff  .........r......
-  +.  0080:  f3 0e 6e 85 ff ff ff ff 0c cb 7f 85 ff ff ff ff  ..n.............
-  +.  0090:  bc f2 87 85 ff ff ff ff 44 af 7f 85 ff ff ff ff  ........D.......
-  +.  00a0:  bd be 7f 85 ff ff ff ff 26 d0 7f 85 ff ff ff ff  ........&.......
-  +.  00b0:  6d a4 ff 85 ff ff ff ff ea 00 20 86 ff ff ff ff  m......... .....
-  +.  00c0:  00 fe ff ff ff ff ff ff 57 14 4f 43 fc 7e 00 00  ........W.OC.~..
-  +
-  +1642373909693435 0xc550 [0xd0]: PERF_RECORD_SAMPLE(IP, 0x1): 2915700/2915700: 0xffffffff860172fc period: 1 addr: 0
-  +... FP chain: nr:12
-  +.....  0: ffffffffffffff80
-  +.....  1: ffffffff860172fc
-  +.....  2: ffffffff856e0ef3
-  +.....  3: ffffffff857fcb0c
-  +.....  4: ffffffff8587f2bc
-  +.....  5: ffffffff857faf44
-  +.....  6: ffffffff857fbebd
-  +.....  7: ffffffff857fd026
-  +.....  8: ffffffff85ffa46d
-  +.....  9: ffffffff862000ea
-  +..... 10: fffffffffffffe00
-  +..... 11: 00007efc434f1457
-  +... sample_read:
-  +.... group nr 2
-  +..... id 00000000001acbe6, value 0000000000000176, lost 0
-  +..... id 00000000001acbf6, value 0000000000001862, lost 0
-  +
-  +0xc620@perf.data [0x30]: event: 3
-  ...
+Fix this mistake by replacing 'newname' with 'fwname'.
 
-This behavior is incorrect as in the case above 'perf inject' should
-have done nothing. Fix this behavior by disabling separating samples
-for a tool that requests it. Only request this for `perf inject` so as
-to not affect other perf tools. With the patch and the test above
-there are no differences between the orig.txt and new.txt.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: e4caec0d1af3d608 ("perf evsel: Add PERF_SAMPLE_READ sample related processing")
-Signed-off-by: Ian Rogers <irogers@google.com>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: Andi Kleen <ak@linux.intel.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Jiri Olsa <jolsa@redhat.com>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20240729220620.2957754-1-irogers@google.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Fixes: 2c41ef1b6f7d ("drm/msm/adreno: deal with linux-firmware fw paths")
+Signed-off-by: Aleksandr Mishin <amishin@t-argos.ru>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/602382/
+Signed-off-by: Rob Clark <robdclark@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-inject.c | 1 +
- tools/perf/util/session.c   | 3 +++
- tools/perf/util/tool.h      | 1 +
- 3 files changed, 5 insertions(+)
+ drivers/gpu/drm/msm/adreno/adreno_gpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/perf/builtin-inject.c b/tools/perf/builtin-inject.c
-index a212678d47beb..c80fb0f60e611 100644
---- a/tools/perf/builtin-inject.c
-+++ b/tools/perf/builtin-inject.c
-@@ -2204,6 +2204,7 @@ int cmd_inject(int argc, const char **argv)
- 			.finished_init	= perf_event__repipe_op2_synth,
- 			.compressed	= perf_event__repipe_op4_synth,
- 			.auxtrace	= perf_event__repipe_auxtrace,
-+			.dont_split_sample_group = true,
- 		},
- 		.input_name  = "-",
- 		.samples = LIST_HEAD_INIT(inject.samples),
-diff --git a/tools/perf/util/session.c b/tools/perf/util/session.c
-index a10343b9dcd41..1457cd5288abc 100644
---- a/tools/perf/util/session.c
-+++ b/tools/perf/util/session.c
-@@ -1511,6 +1511,9 @@ static int deliver_sample_group(struct evlist *evlist,
- 	int ret = -EINVAL;
- 	struct sample_read_value *v = sample->read.group.values;
- 
-+	if (tool->dont_split_sample_group)
-+		return deliver_sample_value(evlist, tool, event, sample, v, machine);
-+
- 	sample_read_group__for_each(v, sample->read.group.nr, read_format) {
- 		ret = deliver_sample_value(evlist, tool, event, sample, v,
- 					   machine);
-diff --git a/tools/perf/util/tool.h b/tools/perf/util/tool.h
-index c957fb849ac63..62bbc9cec151b 100644
---- a/tools/perf/util/tool.h
-+++ b/tools/perf/util/tool.h
-@@ -85,6 +85,7 @@ struct perf_tool {
- 	bool		namespace_events;
- 	bool		cgroup_events;
- 	bool		no_warn;
-+	bool		dont_split_sample_group;
- 	enum show_feature_header show_feat_hdr;
- };
- 
+diff --git a/drivers/gpu/drm/msm/adreno/adreno_gpu.c b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
+index 96deaf85c0cd2..4127e2762dcd1 100644
+--- a/drivers/gpu/drm/msm/adreno/adreno_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/adreno_gpu.c
+@@ -468,7 +468,7 @@ adreno_request_fw(struct adreno_gpu *adreno_gpu, const char *fwname)
+ 		ret = request_firmware_direct(&fw, fwname, drm->dev);
+ 		if (!ret) {
+ 			DRM_DEV_INFO(drm->dev, "loaded %s from legacy location\n",
+-				newname);
++				fwname);
+ 			adreno_gpu->fwloc = FW_LOCATION_LEGACY;
+ 			goto out;
+ 		} else if (adreno_gpu->fwloc != FW_LOCATION_UNKNOWN) {
 -- 
 2.43.0
 
