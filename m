@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-80288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1527198DCEA
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:45:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id C5EEA98DA3B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:18:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id A3BE5B27029
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:44:43 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 3B6D2B22B69
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:18:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DF871D049A;
-	Wed,  2 Oct 2024 14:38:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 899DE1D0E0D;
+	Wed,  2 Oct 2024 14:14:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lakEJqcS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rSXakabb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C1E31D551;
-	Wed,  2 Oct 2024 14:38:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489E81D1E6E;
+	Wed,  2 Oct 2024 14:14:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879932; cv=none; b=DJdupRbd8r+HMOr2htrAKrhPR4JZr1KrnPs1I/9QcyH3BZoIjVvvMSBGNsz1/1NcbD4FjWRUl+J7mBCPBHbiR/KDnuz81uVbFi5gzAmyYSzcXMQ5ecRAdxpi7lDMHbnVibgOULcn6L7DbrCDveDM04k+DVUPulC6f3bPtPzW1rg=
+	t=1727878476; cv=none; b=KesSsKdS65pl5okrXvI6alokkYhBuNb/kOYMSVsfIL1X43KSmY+K4fsjihAcTi/jlLOAGlJnoiEQQ6+oNotc0naP4L9F2w08U6l3WCWapNBW53Gt4ecpXUwanO8BMXcVAlD7b9DXhUz21t2ywCVlw56CiNhq00COCrRyDr/wCcY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879932; c=relaxed/simple;
-	bh=qTjxyBRyOp1H5Lk8UUcWecKRouMbemmjZ5R1T0qP/lM=;
+	s=arc-20240116; t=1727878476; c=relaxed/simple;
+	bh=E3S0mun4hEKotrlZyJys5R8+pPYU86oAn1p+efhSmCs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hlB4F8h4VJeBVMiKD7wih3GhMCLx4IVCqq40odh5quELOD5mKXQUa0MHUy5bvcDjDlzwJg/BeHkQ12CJGo6aJmHmLlKo2/0FOUTIWdgCW/hwxd14XJEsq7x3P4TCbppqonrKfkjoQp+lZ1VeXpI1z2+paaIX1T5W6B8+6WRylRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lakEJqcS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96196C4CEC2;
-	Wed,  2 Oct 2024 14:38:51 +0000 (UTC)
+	 MIME-Version; b=ppX+ps5TwYytghTRGpKl9mhiwgxOKvm71dYghpEo0tx5cwSdGe6XVpNYDclOFs+F6Pv+a2X6YrlUoY4EvIwqe9DdCjm5U2ayZKl9C2Sc1UbLAVvbSAjdV9xgIozUShq24+qEKF1nC/qy3G2FqF1dUDI2OntKFY31NP40H2D/qx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rSXakabb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B571C4CEC2;
+	Wed,  2 Oct 2024 14:14:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879932;
-	bh=qTjxyBRyOp1H5Lk8UUcWecKRouMbemmjZ5R1T0qP/lM=;
+	s=korg; t=1727878475;
+	bh=E3S0mun4hEKotrlZyJys5R8+pPYU86oAn1p+efhSmCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lakEJqcSqFB5qLdk9Mwv9bWJVf0hcRqHx/2zQN7e/mC1+wPzoeIdm8ZHdl/cfSL3T
-	 vXNqu4KXz3AfTsOZp6Rzl98sZRkO8SZPJ39vcY/Wl0uTUMP6Yoi57V8akLqM5r4WkQ
-	 zYuSruoDVA9y/aQj9CMPLvu85rVMqBvNLSDkQqRA=
+	b=rSXakabbyjBfvgK3UR9fcBpJVNrxDWGF6xOZbAoCzibf2PpSPzZbfBGNVJuIHNsTy
+	 FF/x5m9Iygwc9CxZ8znpF00LednJolullD6WxI8Zco8usGcEu/DhGKHUtM6OatM7vD
+	 TZAqj2yJALrFsh+eQ6zG9KRsUQoOU6daVBSGiGOw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Mike Leach <mike.leach@linaro.org>,
+	James Clark <james.clark@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 287/538] clk: qcom: dispcc-sm8250: use special function for Lucid 5LPE PLL
+Subject: [PATCH 6.10 426/634] coresight: tmc: sg: Do not leak sg_table
 Date: Wed,  2 Oct 2024 14:58:46 +0200
-Message-ID: <20241002125803.584417717@linuxfoundation.org>
+Message-ID: <20241002125827.917322422@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,126 +64,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
 
-[ Upstream commit 362be5cbaec2a663eb86b7105313368b4a71fc1e ]
+[ Upstream commit c58dc5a1f886f2fcc1133746d0cbaa1fe7fd44ff ]
 
-According to msm-5.10 the lucid 5lpe PLLs have require slightly
-different configuration that trion / lucid PLLs, it doesn't set
-PLL_UPDATE_BYPASS bit. Add corresponding function and use it for the
-display clock controller on Qualcomm SM8350 platform.
+Running perf with cs_etm on Juno triggers the following kmemleak warning !
 
-Fixes: 205737fe3345 ("clk: qcom: add support for SM8350 DISPCC")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20240804-sm8350-fixes-v1-2-1149dd8399fe@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+:~# cat /sys/kernel/debug/kmemleak
+ unreferenced object 0xffffff8806b6d720 (size 96):
+ comm "perf", pid 562, jiffies 4297810960
+ hex dump (first 32 bytes):
+ 38 d8 13 07 88 ff ff ff 00 d0 9e 85 c0 ff ff ff  8...............
+ 00 10 00 88 c0 ff ff ff 00 f0 ff f7 ff 00 00 00  ................
+ backtrace (crc 1dbf6e00):
+ [<ffffffc08107381c>] kmemleak_alloc+0xbc/0xd8
+ [<ffffffc0802f9798>] kmalloc_trace_noprof+0x220/0x2e8
+ [<ffffffc07bb71948>] tmc_alloc_sg_table+0x48/0x208 [coresight_tmc]
+ [<ffffffc07bb71cbc>] tmc_etr_alloc_sg_buf+0xac/0x240 [coresight_tmc]
+ [<ffffffc07bb72538>] tmc_alloc_etr_buf.constprop.0+0x1f0/0x260 [coresight_tmc]
+ [<ffffffc07bb7280c>] alloc_etr_buf.constprop.0.isra.0+0x74/0xa8 [coresight_tmc]
+ [<ffffffc07bb72950>] tmc_alloc_etr_buffer+0x110/0x260 [coresight_tmc]
+ [<ffffffc07bb38afc>] etm_setup_aux+0x204/0x3b0 [coresight]
+ [<ffffffc08025837c>] rb_alloc_aux+0x20c/0x318
+ [<ffffffc08024dd84>] perf_mmap+0x2e4/0x7a0
+ [<ffffffc0802cceb0>] mmap_region+0x3b0/0xa08
+ [<ffffffc0802cd8a8>] do_mmap+0x3a0/0x500
+ [<ffffffc080295328>] vm_mmap_pgoff+0x100/0x1d0
+ [<ffffffc0802cadf8>] ksys_mmap_pgoff+0xb8/0x110
+ [<ffffffc080020688>] __arm64_sys_mmap+0x38/0x58
+ [<ffffffc080028fc0>] invoke_syscall.constprop.0+0x58/0x100
+
+This due to the fact that we do not free the "sg_table" itself while
+freeing up  the SG table and data pages. Fix this by freeing the sg_table
+in tmc_free_sg_table().
+
+Fixes: 99443ea19e8b ("coresight: Add generic TMC sg table framework")
+Cc: Mike Leach <mike.leach@linaro.org>
+Cc: James Clark <james.clark@arm.com>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Link: https://lore.kernel.org/r/20240702132846.1677261-1-suzuki.poulose@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/clk-alpha-pll.c | 52 ++++++++++++++++++++++++++++++++
- drivers/clk/qcom/clk-alpha-pll.h |  2 ++
- drivers/clk/qcom/dispcc-sm8250.c |  9 ++++--
- 3 files changed, 61 insertions(+), 2 deletions(-)
+ drivers/hwtracing/coresight/coresight-tmc-etr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/clk-alpha-pll.c b/drivers/clk/qcom/clk-alpha-pll.c
-index 1701cce74df79..7464cf64803fd 100644
---- a/drivers/clk/qcom/clk-alpha-pll.c
-+++ b/drivers/clk/qcom/clk-alpha-pll.c
-@@ -1757,6 +1757,58 @@ const struct clk_ops clk_alpha_pll_agera_ops = {
- };
- EXPORT_SYMBOL_GPL(clk_alpha_pll_agera_ops);
- 
-+/**
-+ * clk_lucid_5lpe_pll_configure - configure the lucid 5lpe pll
-+ *
-+ * @pll: clk alpha pll
-+ * @regmap: register map
-+ * @config: configuration to apply for pll
-+ */
-+void clk_lucid_5lpe_pll_configure(struct clk_alpha_pll *pll, struct regmap *regmap,
-+				  const struct alpha_pll_config *config)
-+{
-+	/*
-+	 * If the bootloader left the PLL enabled it's likely that there are
-+	 * RCGs that will lock up if we disable the PLL below.
-+	 */
-+	if (trion_pll_is_enabled(pll, regmap)) {
-+		pr_debug("Lucid 5LPE PLL is already enabled, skipping configuration\n");
-+		return;
-+	}
-+
-+	clk_alpha_pll_write_config(regmap, PLL_L_VAL(pll), config->l);
-+	regmap_write(regmap, PLL_CAL_L_VAL(pll), TRION_PLL_CAL_VAL);
-+	clk_alpha_pll_write_config(regmap, PLL_ALPHA_VAL(pll), config->alpha);
-+	clk_alpha_pll_write_config(regmap, PLL_CONFIG_CTL(pll),
-+				     config->config_ctl_val);
-+	clk_alpha_pll_write_config(regmap, PLL_CONFIG_CTL_U(pll),
-+				     config->config_ctl_hi_val);
-+	clk_alpha_pll_write_config(regmap, PLL_CONFIG_CTL_U1(pll),
-+				     config->config_ctl_hi1_val);
-+	clk_alpha_pll_write_config(regmap, PLL_USER_CTL(pll),
-+					config->user_ctl_val);
-+	clk_alpha_pll_write_config(regmap, PLL_USER_CTL_U(pll),
-+					config->user_ctl_hi_val);
-+	clk_alpha_pll_write_config(regmap, PLL_USER_CTL_U1(pll),
-+					config->user_ctl_hi1_val);
-+	clk_alpha_pll_write_config(regmap, PLL_TEST_CTL(pll),
-+					config->test_ctl_val);
-+	clk_alpha_pll_write_config(regmap, PLL_TEST_CTL_U(pll),
-+					config->test_ctl_hi_val);
-+	clk_alpha_pll_write_config(regmap, PLL_TEST_CTL_U1(pll),
-+					config->test_ctl_hi1_val);
-+
-+	/* Disable PLL output */
-+	regmap_update_bits(regmap, PLL_MODE(pll),  PLL_OUTCTRL, 0);
-+
-+	/* Set operation mode to OFF */
-+	regmap_write(regmap, PLL_OPMODE(pll), PLL_STANDBY);
-+
-+	/* Place the PLL in STANDBY mode */
-+	regmap_update_bits(regmap, PLL_MODE(pll), PLL_RESET_N, PLL_RESET_N);
-+}
-+EXPORT_SYMBOL_GPL(clk_lucid_5lpe_pll_configure);
-+
- static int alpha_pll_lucid_5lpe_enable(struct clk_hw *hw)
+diff --git a/drivers/hwtracing/coresight/coresight-tmc-etr.c b/drivers/hwtracing/coresight/coresight-tmc-etr.c
+index e75428fa1592a..610ad51cda656 100644
+--- a/drivers/hwtracing/coresight/coresight-tmc-etr.c
++++ b/drivers/hwtracing/coresight/coresight-tmc-etr.c
+@@ -261,6 +261,7 @@ void tmc_free_sg_table(struct tmc_sg_table *sg_table)
  {
- 	struct clk_alpha_pll *pll = to_clk_alpha_pll(hw);
-diff --git a/drivers/clk/qcom/clk-alpha-pll.h b/drivers/clk/qcom/clk-alpha-pll.h
-index 903fbab9b58e9..3fd0ef41c72c8 100644
---- a/drivers/clk/qcom/clk-alpha-pll.h
-+++ b/drivers/clk/qcom/clk-alpha-pll.h
-@@ -198,6 +198,8 @@ void clk_agera_pll_configure(struct clk_alpha_pll *pll, struct regmap *regmap,
+ 	tmc_free_table_pages(sg_table);
+ 	tmc_free_data_pages(sg_table);
++	kfree(sg_table);
+ }
+ EXPORT_SYMBOL_GPL(tmc_free_sg_table);
  
- void clk_zonda_pll_configure(struct clk_alpha_pll *pll, struct regmap *regmap,
- 			     const struct alpha_pll_config *config);
-+void clk_lucid_5lpe_pll_configure(struct clk_alpha_pll *pll, struct regmap *regmap,
-+				  const struct alpha_pll_config *config);
- void clk_lucid_evo_pll_configure(struct clk_alpha_pll *pll, struct regmap *regmap,
- 				 const struct alpha_pll_config *config);
- void clk_rivian_evo_pll_configure(struct clk_alpha_pll *pll, struct regmap *regmap,
-diff --git a/drivers/clk/qcom/dispcc-sm8250.c b/drivers/clk/qcom/dispcc-sm8250.c
-index e17bb8b543b51..9a9e0852c91f2 100644
---- a/drivers/clk/qcom/dispcc-sm8250.c
-+++ b/drivers/clk/qcom/dispcc-sm8250.c
-@@ -1359,8 +1359,13 @@ static int disp_cc_sm8250_probe(struct platform_device *pdev)
- 		disp_cc_sm8250_clocks[DISP_CC_MDSS_EDP_GTC_CLK_SRC] = NULL;
+@@ -342,7 +343,6 @@ struct tmc_sg_table *tmc_alloc_sg_table(struct device *dev,
+ 		rc = tmc_alloc_table_pages(sg_table);
+ 	if (rc) {
+ 		tmc_free_sg_table(sg_table);
+-		kfree(sg_table);
+ 		return ERR_PTR(rc);
  	}
  
--	clk_lucid_pll_configure(&disp_cc_pll0, regmap, &disp_cc_pll0_config);
--	clk_lucid_pll_configure(&disp_cc_pll1, regmap, &disp_cc_pll1_config);
-+	if (of_device_is_compatible(pdev->dev.of_node, "qcom,sm8350-dispcc")) {
-+		clk_lucid_5lpe_pll_configure(&disp_cc_pll0, regmap, &disp_cc_pll0_config);
-+		clk_lucid_5lpe_pll_configure(&disp_cc_pll1, regmap, &disp_cc_pll1_config);
-+	} else {
-+		clk_lucid_pll_configure(&disp_cc_pll0, regmap, &disp_cc_pll0_config);
-+		clk_lucid_pll_configure(&disp_cc_pll1, regmap, &disp_cc_pll1_config);
-+	}
- 
- 	/* Enable clock gating for MDP clocks */
- 	regmap_update_bits(regmap, 0x8000, 0x10, 0x10);
 -- 
 2.43.0
 
