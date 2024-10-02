@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-80116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79618-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96CEB98DBEC
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:36:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A583998D965
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:11:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C94F01C23D0B
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:36:11 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 11884B246DC
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:11:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79BD31D1737;
-	Wed,  2 Oct 2024 14:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4D791D0F4B;
+	Wed,  2 Oct 2024 14:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PhXvYFMH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t+HC5GUT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 371E01EB21;
-	Wed,  2 Oct 2024 14:30:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A163A1D07B8;
+	Wed,  2 Oct 2024 14:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879431; cv=none; b=GTQ15S5ShqnH8aqULG3lAiVnN7bZKDKt8fsEcP7xENmhmKuMtZtG+KEpDtLKGGoOBZ/H94H+mTNpupVFjDWTKHmLmr1BYmWJnjGn32s3/txMvM3XYaGJpTbNlm6yGW8ojtA049rJf8GZ88X51YRJ4LkRCfyadfBKh3vn8ocS80Y=
+	t=1727877968; cv=none; b=HcPpU9FOGnVtG2H1CEpjW2ZeGVENBFfX0uBEhQu3ktEcgxvWInrKNF4k68wcJJemfCBqkEjNbgib4G98W44P4p92TvD0/eeidTXZNjGHYIgolsxWRUozlQ1gfJAyUXFFY3IjmUcAnsJInwXSdLe9x9L5u8COKyddnIMLiBYisYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879431; c=relaxed/simple;
-	bh=GxWmguJpx7mAtkXXyul4G0qrYaFDP+ZnWMQXxpBJU7Q=;
+	s=arc-20240116; t=1727877968; c=relaxed/simple;
+	bh=TiyaweSHWFD2/cylcHyVIjW4u45108vbuY2pO4oDta4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=acaFCaswO2hv9xrtwI8iO+p5NWzznghY3tCn2HYZkqiJ67yPSbVwJnfNXw8SKGRIvyyAdgHMxcGw50qKrE+2CLsyLpels2GNjmD6Sjfh/9JFiSv39eXdeBjpxDJZsUgK4Yk/sHRtHL7L7kj2mY5P+YqnRHp/s9NL9yYuCHASNyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PhXvYFMH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B21ECC4CEC2;
-	Wed,  2 Oct 2024 14:30:30 +0000 (UTC)
+	 MIME-Version; b=VbD8PFjTpmRhGW3wZ399UJ8gZ5RpYzvBKZEJ9IpDpz91P1j9a08Sz0TiKoxIDmWfS/8BDYmLgkrZSBhmtq9LmErOQfV+Cd78pObJqrP4z14k/sYzowe83miarYQmYe5Rpphv8Pen+Wb1o46yhRcmysZ/Z+W3z3AdmsX4O+geLs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t+HC5GUT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29280C4CEC2;
+	Wed,  2 Oct 2024 14:06:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879431;
-	bh=GxWmguJpx7mAtkXXyul4G0qrYaFDP+ZnWMQXxpBJU7Q=;
+	s=korg; t=1727877968;
+	bh=TiyaweSHWFD2/cylcHyVIjW4u45108vbuY2pO4oDta4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PhXvYFMHXtQtQ6HCQwOiyBwGZ29pUILaDQIAMsoaTSYIvKhgYeZOHO7oqgENqqqSV
-	 0QAcrwlqtI/OydLRph/5TVC8JYPIY4nodq6Dt5BRZQ0hdaXGhAujEQQRVLMggOaC6s
-	 dJsaDhuaJoVgxe9JFSkBW9ZBX7J4W+5wg1gCPj9w=
+	b=t+HC5GUTGWiE9nuLak/zJ+AVBC6iEFfeehGeZeYXQFfXEqsYMkR6eh9aJwy2266LG
+	 WxnMcHa1HetlyZPCVXKQqDwzU79sGB1sY7LbjX2RTK2G59dfiLlnvfK4Jlk6CPzJIB
+	 iV5oizAH02lhbr7ptv8ibwPIkKthUe4wUEtaumLM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 116/538] selftests/ftrace: Add required dependency for kprobe tests
-Date: Wed,  2 Oct 2024 14:55:55 +0200
-Message-ID: <20241002125756.824435952@linuxfoundation.org>
+Subject: [PATCH 6.10 256/634] selftests/bpf: Fix error compiling test_lru_map.c
+Date: Wed,  2 Oct 2024 14:55:56 +0200
+Message-ID: <20241002125821.204369483@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+From: Tony Ambardar <tony.ambardar@gmail.com>
 
-[ Upstream commit 41f37c852ac3fbfd072a00281b60dc7ba056be8c ]
+[ Upstream commit cacf2a5a78cd1f5f616eae043ebc6f024104b721 ]
 
-kprobe_args_{char,string}.tc are using available_filter_functions file
-which is provided by function tracer. Thus if function tracer is disabled,
-these tests are failed on recent kernels because tracefs_create_dir is
-not raised events by adding a dynamic event.
-Add available_filter_functions to requires line.
+Although the post-increment in macro 'CPU_SET(next++, &cpuset)' seems safe,
+the sequencing can raise compile errors, so move the increment outside the
+macro. This avoids an error seen using gcc 12.3.0 for mips64el/musl-libc:
 
-Fixes: 7c1130ea5cae ("test: ftrace: Fix kprobe test for eventfs")
-Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+  In file included from test_lru_map.c:11:
+  test_lru_map.c: In function 'sched_next_online':
+  test_lru_map.c:129:29: error: operation on 'next' may be undefined [-Werror=sequence-point]
+    129 |                 CPU_SET(next++, &cpuset);
+        |                             ^
+  cc1: all warnings being treated as errors
+
+Fixes: 3fbfadce6012 ("bpf: Fix test_lru_sanity5() in test_lru_map.c")
+Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/22993dfb11ccf27925a626b32672fd3324cb76c4.1722244708.git.tony.ambardar@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../testing/selftests/ftrace/test.d/kprobe/kprobe_args_char.tc  | 2 +-
- .../selftests/ftrace/test.d/kprobe/kprobe_args_string.tc        | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/bpf/test_lru_map.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_char.tc b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_char.tc
-index ff7499eb98d6d..ce5d2e62731f3 100644
---- a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_char.tc
-+++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_char.tc
-@@ -1,7 +1,7 @@
- #!/bin/sh
- # SPDX-License-Identifier: GPL-2.0
- # description: Kprobe event char type argument
--# requires: kprobe_events
-+# requires: kprobe_events available_filter_functions
+diff --git a/tools/testing/selftests/bpf/test_lru_map.c b/tools/testing/selftests/bpf/test_lru_map.c
+index 4d0650cfb5cd8..fda7589c50236 100644
+--- a/tools/testing/selftests/bpf/test_lru_map.c
++++ b/tools/testing/selftests/bpf/test_lru_map.c
+@@ -126,7 +126,8 @@ static int sched_next_online(int pid, int *next_to_try)
  
- case `uname -m` in
- x86_64)
-diff --git a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_string.tc b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_string.tc
-index a202b2ea4baf9..4f72c2875f6b9 100644
---- a/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_string.tc
-+++ b/tools/testing/selftests/ftrace/test.d/kprobe/kprobe_args_string.tc
-@@ -1,7 +1,7 @@
- #!/bin/sh
- # SPDX-License-Identifier: GPL-2.0
- # description: Kprobe event string type argument
--# requires: kprobe_events
-+# requires: kprobe_events available_filter_functions
- 
- case `uname -m` in
- x86_64)
+ 	while (next < nr_cpus) {
+ 		CPU_ZERO(&cpuset);
+-		CPU_SET(next++, &cpuset);
++		CPU_SET(next, &cpuset);
++		next++;
+ 		if (!sched_setaffinity(pid, sizeof(cpuset), &cpuset)) {
+ 			ret = 0;
+ 			break;
 -- 
 2.43.0
 
