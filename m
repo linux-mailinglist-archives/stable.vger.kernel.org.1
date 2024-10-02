@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-78981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9EA498D5F1
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:35:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id E448598D91D
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:09:10 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9E7F9288EB0
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:35:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id AD22B287A64
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:09:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F05F1D0480;
-	Wed,  2 Oct 2024 13:34:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90BAE1D1E67;
+	Wed,  2 Oct 2024 14:03:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W+eYu43F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g1IwC9gx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BB311D0173;
-	Wed,  2 Oct 2024 13:34:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E24C1D04BE;
+	Wed,  2 Oct 2024 14:03:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727876092; cv=none; b=hGfO5PtC18Ie/+UbKtAfa8rviAARBee4zlV3qnKGF+cfeWHSDHx7iNsb3EtgnwKWL6bWAJzkXN35bmX5Dnys7TIO6pQFg4ylxwCB4jhDWOFJOUfxNziEWW+jeHhsblLz2Fi6FBnRY7ETBa5GUzprA6YwWjaNE7hEvS48ozgWXq8=
+	t=1727877785; cv=none; b=tNWGZvCFNXizwbaWGBCYUoljQTyi8AwbGsHXaQzKMeyHnjxNc8BPg8qM1S7lhs/wS14wdt5iH44HKaT3HAWfybck+/Lom9y4vx74/V93GZ5ZLYOyKLpKIfEt9jlYR4NHcup/SDCbhrtfY71jIj9scBnca5NST3yqC0m6iYQaP/s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727876092; c=relaxed/simple;
-	bh=L7AkP0FruNefo3JdjcwGYss9wLqLQ59O5jtj6vOCLAE=;
+	s=arc-20240116; t=1727877785; c=relaxed/simple;
+	bh=W/VsAF18/Gz1pjNiRRpZFmSip3NWgw/mRjlT8aSGDY0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a/YZG+wenf7gpKcFuaXdxS6HQ0T7YrPC4BRBgjq5sU/vxl1jIozl6iYz8SWj3iw9wNNWmSU4fC0l0K1xxK804HwylEDPXlQTFutl48OZ5kS4KaCtA04Th4J90KN7KveQhsN+lm02GjLwBZlQ0heA2w9IniLlGu10+E7z7uXNw/0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W+eYu43F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7818C4CECD;
-	Wed,  2 Oct 2024 13:34:51 +0000 (UTC)
+	 MIME-Version; b=kNDvCv6iR8oz2170nZWJPeAvONFOzEZUQ4q4BkUVAfTmJEvod2zdue5Sri32S6QKxsLRCJZ2uImkbcbTP0oVUUOAjL/qtVJ6PCEvDGkBmV+7vM47f0LfZIRsgHfrYuLjNrYm23FX+LrE7VFmdvkbIPJ6wWR6KKdZJ0CE6oomY2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g1IwC9gx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBFD4C4CEC2;
+	Wed,  2 Oct 2024 14:03:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727876092;
-	bh=L7AkP0FruNefo3JdjcwGYss9wLqLQ59O5jtj6vOCLAE=;
+	s=korg; t=1727877785;
+	bh=W/VsAF18/Gz1pjNiRRpZFmSip3NWgw/mRjlT8aSGDY0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W+eYu43FAli0XopCy55STUqh8nDCzKroLoYBBl8o40VtwmUGErZelQ6cIJD0fhw0t
-	 k1lNruXa5NA9fkO1yxurYVSJU+JYalgEK3zNGQ312zkrKSwv/GtvR3OnSGa9KRg3Hi
-	 kJObgjBhRYDx8lEXuh555qVYnn/2PWW7dPRICemc=
+	b=g1IwC9gxNjMKoQPxirAlgCvbjxs5/yVbTVD/YMdl0XBHfRQWC6LbaM2X6sxTycRQC
+	 TzibdeP9L/SeLCyFrMhuVIfR5H24kwgqw1QDFZYBi9jXxhSBa1z4s7qmqmYJVr7ag3
+	 zItoOekGk5ziafgj1CvENSUvQt/jLyyKXwnl6ODY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Jeongjun Park <aha310510@gmail.com>,
+	Dave Kleikamp <dave.kleikamp@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 295/695] selftests/bpf: __arch_* macro to limit test cases to specific archs
+Subject: [PATCH 6.10 193/634] jfs: fix out-of-bounds in dbNextAG() and diAlloc()
 Date: Wed,  2 Oct 2024 14:54:53 +0200
-Message-ID: <20241002125834.216187071@linuxfoundation.org>
+Message-ID: <20241002125818.723577196@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,184 +62,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eduard Zingerman <eddyz87@gmail.com>
+From: Jeongjun Park <aha310510@gmail.com>
 
-[ Upstream commit ee7fe84468b1732fe65c5af3836437d54ac4c419 ]
+[ Upstream commit e63866a475562810500ea7f784099bfe341e761a ]
 
-Add annotations __arch_x86_64, __arch_arm64, __arch_riscv64
-to specify on which architecture the test case should be tested.
-Several __arch_* annotations could be specified at once.
-When test case is not run on current arch it is marked as skipped.
+In dbNextAG() , there is no check for the case where bmp->db_numag is
+greater or same than MAXAG due to a polluted image, which causes an
+out-of-bounds. Therefore, a bounds check should be added in dbMount().
 
-For example, the following would be tested only on arm64 and riscv64:
+And in dbNextAG(), a check for the case where agpref is greater than
+bmp->db_numag should be added, so an out-of-bounds exception should be
+prevented.
 
-  SEC("raw_tp")
-  __arch_arm64
-  __arch_riscv64
-  __xlated("1: *(u64 *)(r10 - 16) = r1")
-  __xlated("2: call")
-  __xlated("3: r1 = *(u64 *)(r10 - 16);")
-  __success
-  __naked void canary_arm64_riscv64(void)
-  {
-  	asm volatile (
-  	"r1 = 1;"
-  	"*(u64 *)(r10 - 16) = r1;"
-  	"call %[bpf_get_smp_processor_id];"
-  	"r1 = *(u64 *)(r10 - 16);"
-  	"exit;"
-  	:
-  	: __imm(bpf_get_smp_processor_id)
-  	: __clobber_all);
-  }
+Additionally, a check for the case where agno is greater or same than
+MAXAG should be added in diAlloc() to prevent out-of-bounds.
 
-On x86 it would be skipped:
-
-  #467/2   verifier_nocsr/canary_arm64_riscv64:SKIP
-
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/r/20240722233844.1406874-10-eddyz87@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Stable-dep-of: f00bb757ed63 ("selftests/bpf: fix to avoid __msg tag de-duplication by clang")
+Reported-by: Jeongjun Park <aha310510@gmail.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/progs/bpf_misc.h |  8 ++++
- tools/testing/selftests/bpf/test_loader.c    | 43 ++++++++++++++++++++
- 2 files changed, 51 insertions(+)
+ fs/jfs/jfs_dmap.c | 4 ++--
+ fs/jfs/jfs_imap.c | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/progs/bpf_misc.h b/tools/testing/selftests/bpf/progs/bpf_misc.h
-index a70939c7bc26b..a225cd87897c4 100644
---- a/tools/testing/selftests/bpf/progs/bpf_misc.h
-+++ b/tools/testing/selftests/bpf/progs/bpf_misc.h
-@@ -63,6 +63,10 @@
-  * __auxiliary         Annotated program is not a separate test, but used as auxiliary
-  *                     for some other test cases and should always be loaded.
-  * __auxiliary_unpriv  Same, but load program in unprivileged mode.
-+ *
-+ * __arch_*          Specify on which architecture the test case should be tested.
-+ *                   Several __arch_* annotations could be specified at once.
-+ *                   When test case is not run on current arch it is marked as skipped.
-  */
- #define __msg(msg)		__attribute__((btf_decl_tag("comment:test_expect_msg=" msg)))
- #define __regex(regex)		__attribute__((btf_decl_tag("comment:test_expect_regex=" regex)))
-@@ -82,6 +86,10 @@
- #define __auxiliary		__attribute__((btf_decl_tag("comment:test_auxiliary")))
- #define __auxiliary_unpriv	__attribute__((btf_decl_tag("comment:test_auxiliary_unpriv")))
- #define __btf_path(path)	__attribute__((btf_decl_tag("comment:test_btf_path=" path)))
-+#define __arch(arch)		__attribute__((btf_decl_tag("comment:test_arch=" arch)))
-+#define __arch_x86_64		__arch("X86_64")
-+#define __arch_arm64		__arch("ARM64")
-+#define __arch_riscv64		__arch("RISCV64")
- 
- /* Convenience macro for use with 'asm volatile' blocks */
- #define __naked __attribute__((naked))
-diff --git a/tools/testing/selftests/bpf/test_loader.c b/tools/testing/selftests/bpf/test_loader.c
-index b44b6a2fc82ce..12b0c41e8d64c 100644
---- a/tools/testing/selftests/bpf/test_loader.c
-+++ b/tools/testing/selftests/bpf/test_loader.c
-@@ -34,6 +34,7 @@
- #define TEST_TAG_AUXILIARY "comment:test_auxiliary"
- #define TEST_TAG_AUXILIARY_UNPRIV "comment:test_auxiliary_unpriv"
- #define TEST_BTF_PATH "comment:test_btf_path="
-+#define TEST_TAG_ARCH "comment:test_arch="
- 
- /* Warning: duplicated in bpf_misc.h */
- #define POINTER_VALUE	0xcafe4all
-@@ -80,6 +81,7 @@ struct test_spec {
- 	int log_level;
- 	int prog_flags;
- 	int mode_mask;
-+	int arch_mask;
- 	bool auxiliary;
- 	bool valid;
- };
-@@ -213,6 +215,12 @@ static void update_flags(int *flags, int flag, bool clear)
- 		*flags |= flag;
- }
- 
-+enum arch {
-+	ARCH_X86_64	= 0x1,
-+	ARCH_ARM64	= 0x2,
-+	ARCH_RISCV64	= 0x4,
-+};
-+
- /* Uses btf_decl_tag attributes to describe the expected test
-  * behavior, see bpf_misc.h for detailed description of each attribute
-  * and attribute combinations.
-@@ -226,6 +234,7 @@ static int parse_test_spec(struct test_loader *tester,
- 	bool has_unpriv_result = false;
- 	bool has_unpriv_retval = false;
- 	int func_id, i, err = 0;
-+	u32 arch_mask = 0;
- 	struct btf *btf;
- 
- 	memset(spec, 0, sizeof(*spec));
-@@ -364,11 +373,26 @@ static int parse_test_spec(struct test_loader *tester,
- 					goto cleanup;
- 				update_flags(&spec->prog_flags, flags, clear);
- 			}
-+		} else if (str_has_pfx(s, TEST_TAG_ARCH)) {
-+			val = s + sizeof(TEST_TAG_ARCH) - 1;
-+			if (strcmp(val, "X86_64") == 0) {
-+				arch_mask |= ARCH_X86_64;
-+			} else if (strcmp(val, "ARM64") == 0) {
-+				arch_mask |= ARCH_ARM64;
-+			} else if (strcmp(val, "RISCV64") == 0) {
-+				arch_mask |= ARCH_RISCV64;
-+			} else {
-+				PRINT_FAIL("bad arch spec: '%s'", val);
-+				err = -EINVAL;
-+				goto cleanup;
-+			}
- 		} else if (str_has_pfx(s, TEST_BTF_PATH)) {
- 			spec->btf_custom_path = s + sizeof(TEST_BTF_PATH) - 1;
- 		}
+diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+index 5713994328cbc..0625d1c0d0649 100644
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -187,7 +187,7 @@ int dbMount(struct inode *ipbmap)
  	}
  
-+	spec->arch_mask = arch_mask;
-+
- 	if (spec->mode_mask == 0)
- 		spec->mode_mask = PRIV;
+ 	bmp->db_numag = le32_to_cpu(dbmp_le->dn_numag);
+-	if (!bmp->db_numag) {
++	if (!bmp->db_numag || bmp->db_numag >= MAXAG) {
+ 		err = -EINVAL;
+ 		goto err_release_metapage;
+ 	}
+@@ -652,7 +652,7 @@ int dbNextAG(struct inode *ipbmap)
+ 	 * average free space.
+ 	 */
+ 	for (i = 0 ; i < bmp->db_numag; i++, agpref++) {
+-		if (agpref == bmp->db_numag)
++		if (agpref >= bmp->db_numag)
+ 			agpref = 0;
  
-@@ -677,6 +701,20 @@ static int get_xlated_program_text(int prog_fd, char *text, size_t text_sz)
- 	return err;
- }
+ 		if (atomic_read(&bmp->db_active[agpref]))
+diff --git a/fs/jfs/jfs_imap.c b/fs/jfs/jfs_imap.c
+index 1407feccbc2d0..a360b24ed320c 100644
+--- a/fs/jfs/jfs_imap.c
++++ b/fs/jfs/jfs_imap.c
+@@ -1360,7 +1360,7 @@ int diAlloc(struct inode *pip, bool dir, struct inode *ip)
+ 	/* get the ag number of this iag */
+ 	agno = BLKTOAG(JFS_IP(pip)->agstart, JFS_SBI(pip->i_sb));
+ 	dn_numag = JFS_SBI(pip->i_sb)->bmap->db_numag;
+-	if (agno < 0 || agno > dn_numag)
++	if (agno < 0 || agno > dn_numag || agno >= MAXAG)
+ 		return -EIO;
  
-+static bool run_on_current_arch(int arch_mask)
-+{
-+	if (arch_mask == 0)
-+		return true;
-+#if defined(__x86_64__)
-+	return arch_mask & ARCH_X86_64;
-+#elif defined(__aarch64__)
-+	return arch_mask & ARCH_ARM64;
-+#elif defined(__riscv) && __riscv_xlen == 64
-+	return arch_mask & ARCH_RISCV64;
-+#endif
-+	return false;
-+}
-+
- /* this function is forced noinline and has short generic name to look better
-  * in test_progs output (in case of a failure)
-  */
-@@ -701,6 +739,11 @@ void run_subtest(struct test_loader *tester,
- 	if (!test__start_subtest(subspec->name))
- 		return;
- 
-+	if (!run_on_current_arch(spec->arch_mask)) {
-+		test__skip();
-+		return;
-+	}
-+
- 	if (unpriv) {
- 		if (!can_execute_unpriv(tester, spec)) {
- 			test__skip();
+ 	if (atomic_read(&JFS_SBI(pip->i_sb)->bmap->db_active[agno])) {
 -- 
 2.43.0
 
