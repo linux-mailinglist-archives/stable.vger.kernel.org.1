@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-80392-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79895-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B020B98DD35
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:47:39 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09D6E98DACB
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:25:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 596F61F2270F
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:47:39 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 979B9B26240
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:25:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB4EE1D1E61;
-	Wed,  2 Oct 2024 14:44:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA9AC1D1E7B;
+	Wed,  2 Oct 2024 14:19:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sVpHxDQY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z2Vw9tGO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99B2D1EA80;
-	Wed,  2 Oct 2024 14:44:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76EF51D0E18;
+	Wed,  2 Oct 2024 14:19:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880240; cv=none; b=OTjvicco3X5D6HLyythfjLwa1xpjPeWbUitDpCiV81bLy9U0lElCJPu/p8WsNzkbyCBqELUSHzvznPtyVaAsXPk9+Fm81DSWfTLX9mRrt9sJFlZYs/8qSRhSMLBpmB3n3xoDaVXudvRqof8BJTNQJv4iPp8/F0AJbgjrs/OWUQo=
+	t=1727878782; cv=none; b=QmzXYcCLj3s8L5uxyAv+f+RD8uhWh6Go7xFI7+RCj5+CnRqLloZMmCvBSbV5f/DbfsPLGX26sg3ZN9KMm1Faw8oqtlHyPhS3wel74fddGL0nRf/Al9iRia5QXvdipvLTQNbRZHTpS/wrTs+/OG4ON9xMZCIHLRvKEUQcnVmSEow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880240; c=relaxed/simple;
-	bh=yJjjfylSHtK1Hv5fxIOimrVPSj5tdsoj8gFp3tIgSZA=;
+	s=arc-20240116; t=1727878782; c=relaxed/simple;
+	bh=kU2QIW1iOCsfPNiBXP5y7DAw+YEBJefEN/qRDT6bPmo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J480qm1aJAP/hvxOmwovnZpEDZfl3w5Mg0m2kDetS8v2iM+ImyiEoX0DmT9S/2v9Y2fS0ybrXhJw/ixGVBOehJYmQYXa4i315QpOsBYVsQ9TMB2s9kdno/KKk7hLBDkh/nAzny+IcOnXYUuhRWSFOTwQPmFN1HM/gS2OypAYjN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sVpHxDQY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AA3BC4CEC2;
-	Wed,  2 Oct 2024 14:43:59 +0000 (UTC)
+	 MIME-Version; b=TjFKB/DRJX51l2vRZaCfZNYqrlSvefKSLUT3IY46e/LtOly4ODrukj/KJr+LZ6ZmdC7Px2BlGYOKbm8/y5blQhrn6GtqDEC4O1+QGa6g0UOeXuLF+3pKYyU7918e+kZGy78noNiH/zChYpt2XyOP8oC4TeBTzF8lsn79FI8Fk5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z2Vw9tGO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00995C4CEC2;
+	Wed,  2 Oct 2024 14:19:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880240;
-	bh=yJjjfylSHtK1Hv5fxIOimrVPSj5tdsoj8gFp3tIgSZA=;
+	s=korg; t=1727878782;
+	bh=kU2QIW1iOCsfPNiBXP5y7DAw+YEBJefEN/qRDT6bPmo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sVpHxDQYsmb8vjDCdBh2LAicJgz0FAXX47tTlUQwbV5whU0JZ7Fr3R2QiPvUXdYXV
-	 pUC4r3cm6/DLjicfQ8gR4aeT1YUt6nakWOfYlsTTfcVS7mq3uOEMi/eln5pKY+tQ9f
-	 uLW+x9HLrjafNFS2dEHnStruQ9mfBzPlx+0Gh+ys=
+	b=Z2Vw9tGOOafsT0lHfDYAjxiH7rG5W8gtPvdS9wCGB61fdiZuSubHNc+1gxpAzT4T9
+	 Fidde5XPOZE1N+AdWoehpfiix6pPgHy5SzJs0EVYhLm0FC0ByNcgJXhw1Ur9+FJeQS
+	 85sx6yRaZBoHLZrRQA32d/5R0nfYx/moDoD6RvGs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Moessbauer <felix.moessbauer@siemens.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 391/538] io_uring/sqpoll: do not put cpumask on stack
+	stable <stable@kernel.org>,
+	Jim Quinlan <james.quinlan@broadcom.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>
+Subject: [PATCH 6.10 530/634] tty: rp2: Fix reset with non forgiving PCIe host bridges
 Date: Wed,  2 Oct 2024 15:00:30 +0200
-Message-ID: <20241002125807.866403362@linuxfoundation.org>
+Message-ID: <20241002125832.026496346@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Moessbauer <felix.moessbauer@siemens.com>
+From: Florian Fainelli <florian.fainelli@broadcom.com>
 
-commit 7f44beadcc11adb98220556d2ddbe9c97aa6d42d upstream.
+commit f16dd10ba342c429b1e36ada545fb36d4d1f0e63 upstream.
 
-Putting the cpumask on the stack is deprecated for a long time (since
-2d3854a37e8), as these can be big. Given that, change the on-stack
-allocation of allowed_mask to be dynamically allocated.
+The write to RP2_GLOBAL_CMD followed by an immediate read of
+RP2_GLOBAL_CMD in rp2_reset_asic() is intented to flush out the write,
+however by then the device is already in reset and cannot respond to a
+memory cycle access.
 
-Fixes: f011c9cf04c0 ("io_uring/sqpoll: do not allow pinning outside of cpuset")
-Signed-off-by: Felix Moessbauer <felix.moessbauer@siemens.com>
-Link: https://lore.kernel.org/r/20240916111150.1266191-1-felix.moessbauer@siemens.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+On platforms such as the Raspberry Pi 4 and others using the
+pcie-brcmstb.c driver, any memory access to a device that cannot respond
+is met with a fatal system error, rather than being substituted with all
+1s as is usually the case on PC platforms.
+
+Swapping the delay and the read ensures that the device has finished
+resetting before we attempt to read from it.
+
+Fixes: 7d9f49afa451 ("serial: rp2: New driver for Comtrol RocketPort 2 cards")
+Cc: stable <stable@kernel.org>
+Suggested-by: Jim Quinlan <james.quinlan@broadcom.com>
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://lore.kernel.org/r/20240906225435.707837-1-florian.fainelli@broadcom.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/sqpoll.c |   13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/tty/serial/rp2.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/io_uring/sqpoll.c
-+++ b/io_uring/sqpoll.c
-@@ -402,15 +402,22 @@ __cold int io_sq_offload_create(struct i
- 			return 0;
+--- a/drivers/tty/serial/rp2.c
++++ b/drivers/tty/serial/rp2.c
+@@ -577,8 +577,8 @@ static void rp2_reset_asic(struct rp2_ca
+ 	u32 clk_cfg;
  
- 		if (p->flags & IORING_SETUP_SQ_AFF) {
--			struct cpumask allowed_mask;
-+			cpumask_var_t allowed_mask;
- 			int cpu = p->sq_thread_cpu;
+ 	writew(1, base + RP2_GLOBAL_CMD);
+-	readw(base + RP2_GLOBAL_CMD);
+ 	msleep(100);
++	readw(base + RP2_GLOBAL_CMD);
+ 	writel(0, base + RP2_CLK_PRESCALER);
  
- 			ret = -EINVAL;
- 			if (cpu >= nr_cpu_ids || !cpu_online(cpu))
- 				goto err_sqpoll;
--			cpuset_cpus_allowed(current, &allowed_mask);
--			if (!cpumask_test_cpu(cpu, &allowed_mask))
-+			ret = -ENOMEM;
-+			if (!alloc_cpumask_var(&allowed_mask, GFP_KERNEL))
- 				goto err_sqpoll;
-+			ret = -EINVAL;
-+			cpuset_cpus_allowed(current, allowed_mask);
-+			if (!cpumask_test_cpu(cpu, allowed_mask)) {
-+				free_cpumask_var(allowed_mask);
-+				goto err_sqpoll;
-+			}
-+			free_cpumask_var(allowed_mask);
- 			sqd->sq_cpu = cpu;
- 		} else {
- 			sqd->sq_cpu = -1;
+ 	/* TDM clock configuration */
 
 
 
