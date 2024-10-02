@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-79375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8F0498D7EC
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:54:34 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A11198D517
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:27:09 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 609EE1F2362A
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:54:34 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 78C9DB21C79
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:27:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6ED41D079A;
-	Wed,  2 Oct 2024 13:54:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05C271D0793;
+	Wed,  2 Oct 2024 13:26:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QJaFYAGN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wWEFmu6e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A59FA29CE7;
-	Wed,  2 Oct 2024 13:54:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4DE21D04BD;
+	Wed,  2 Oct 2024 13:26:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877259; cv=none; b=Enb+uX4DaJ1jqDFD5mAA1gW/jTVGUteW5DiDBa80zFp9uWeryhIGfEVjw71VG+6Mfz7/Sk7y1g4kuviMDMfdHWePEDtUPwryXsE0zao5xLqEV3RzvZ5zXokMZav4fm1hy5EfAzpNlLpdTc0CRKkBuvmiepyqtqAULsQAhM2UMHc=
+	t=1727875599; cv=none; b=u3iuvKOM3AiN6lRvmpx4EWDgZiBylFIzClwIMOnOzkAZlWNWOUGWknY06v3zo/1GNvR+/SaJQRh3MwobDJZitgDexCxk08iaczi5GVTUxGEOaEqDcCl6xWpFkOLWRHrIUnkqWS5jfewJSe27RKF3/j4SEqxFOuPxQWaz4pp3lCs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877259; c=relaxed/simple;
-	bh=U2aPQl6AsAocRNTHpHEQ4uwano3lgQw5hP9r6MQFUXI=;
+	s=arc-20240116; t=1727875599; c=relaxed/simple;
+	bh=XY+9xTf0MCX2kMKeIoNg2Yoxi9cA0dSVadLIBk7eMIg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HFonBucCg4oga7ZEfFRf67moxBkMPchbFaUpercy2nZI7gxSOgTjCeXP1t4hXgVq8TE0VxXGTV2HhIMG3O+Lx6gFgP+TozTOMHzkfg2/M4W50b2eO4w2X63ALCvVqpREhaC/km6ugTOo3hQRxs1gJKgiANKuA40vZQmAnoYcX9A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QJaFYAGN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E806C4CEE6;
-	Wed,  2 Oct 2024 13:54:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=H+1sd/Pk5PyPCuPQWF+HlJng1HSaL4EkqymCHiEemfjsPntAXOWDnulxuySoKV/8WQKFenIS8Ub4ita4ia7XlkarpFFNpC/w58wObX7G8eFEX9YXrPSz+ctnAXjp2xwc/iDfIH54hGkS6qzbMbZsKnBPAcbq4OhQu560VHujVF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wWEFmu6e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CF50C4CEC5;
+	Wed,  2 Oct 2024 13:26:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877259;
-	bh=U2aPQl6AsAocRNTHpHEQ4uwano3lgQw5hP9r6MQFUXI=;
+	s=korg; t=1727875599;
+	bh=XY+9xTf0MCX2kMKeIoNg2Yoxi9cA0dSVadLIBk7eMIg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QJaFYAGNdXJZNiQfsgu2osecGVObRU9E94CNONx6xZjem3riYYFACoitwdwt9hAru
-	 TS1xmjB1xBqU6JyYZHoi7xZaXY9kXKZ07BhL2pnlGpQe+Ze/qJOJJp8cvDEYJMu6P9
-	 4gpzueS2Opd1GuHjbeX/gfSjrgMy66VfbdmyKo3U=
+	b=wWEFmu6eRhgFUF5br4/QTC5rOyoNsi43KfgkRbX/Ca4TpYtppMm/L8uenY+EWnQak
+	 RfPvJNnBi5K1GjwCLBcgxuD28AY2yydoYlTz6AMPAKyMP+OFrSpFrIGPXlPJdq0tfW
+	 2RbIjuOMocnlCPw20lCyNYi2bbNLV+oQiR1+nD2E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Atish Patra <atishp@rivosinc.com>,
-	Anup Patel <anup@brainfault.org>,
+	Colin Walters <walters@verbum.org>,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 022/634] RISC-V: KVM: Fix to allow hpmcounter31 from the guest
-Date: Wed,  2 Oct 2024 14:52:02 +0200
-Message-ID: <20241002125811.970968348@linuxfoundation.org>
+Subject: [PATCH 6.11 125/695] erofs: fix incorrect symlink detection in fast symlink
+Date: Wed,  2 Oct 2024 14:52:03 +0200
+Message-ID: <20241002125827.461913262@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +60,79 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Atish Patra <atishp@rivosinc.com>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit 5aa09297a3dcc798d038bd7436f8c90f664045a6 ]
+[ Upstream commit 9ed50b8231e37b1ae863f5dec8153b98d9f389b4 ]
 
-The csr_fun defines a count parameter which defines the total number
-CSRs emulated in KVM starting from the base. This value should be
-equal to total number of counters possible for trap/emulation (32).
+Fast symlink can be used if the on-disk symlink data is stored
+in the same block as the on-disk inode, so we don’t need to trigger
+another I/O for symlink data.  However, currently fs correction could be
+reported _incorrectly_ if inode xattrs are too large.
 
-Fixes: a9ac6c37521f ("RISC-V: KVM: Implement trap & emulate for hpmcounters")
-Signed-off-by: Atish Patra <atishp@rivosinc.com>
-Link: https://lore.kernel.org/r/20240816-kvm_pmu_fixes-v1-2-cdfce386dd93@rivosinc.com
-Signed-off-by: Anup Patel <anup@brainfault.org>
+In fact, these should be valid images although they cannot be handled as
+fast symlinks.
+
+Many thanks to Colin for reporting this!
+
+Reported-by: Colin Walters <walters@verbum.org>
+Reported-by: https://honggfuzz.dev/
+Link: https://lore.kernel.org/r/bb2dd430-7de0-47da-ae5b-82ab2dd4d945@app.fastmail.com
+Fixes: 431339ba9042 ("staging: erofs: add inode operations")
+[ Note that it's a runtime misbehavior instead of a security issue. ]
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20240909031911.1174718-1-hsiangkao@linux.alibaba.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/include/asm/kvm_vcpu_pmu.h | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/erofs/inode.c | 20 ++++++--------------
+ 1 file changed, 6 insertions(+), 14 deletions(-)
 
-diff --git a/arch/riscv/include/asm/kvm_vcpu_pmu.h b/arch/riscv/include/asm/kvm_vcpu_pmu.h
-index c309daa2d75a8..1d85b66175088 100644
---- a/arch/riscv/include/asm/kvm_vcpu_pmu.h
-+++ b/arch/riscv/include/asm/kvm_vcpu_pmu.h
-@@ -65,11 +65,11 @@ struct kvm_pmu {
+diff --git a/fs/erofs/inode.c b/fs/erofs/inode.c
+index 419432be3223b..4e3ea6689cb4e 100644
+--- a/fs/erofs/inode.c
++++ b/fs/erofs/inode.c
+@@ -178,12 +178,14 @@ static int erofs_fill_symlink(struct inode *inode, void *kaddr,
+ 			      unsigned int m_pofs)
+ {
+ 	struct erofs_inode *vi = EROFS_I(inode);
+-	unsigned int bsz = i_blocksize(inode);
++	loff_t off;
+ 	char *lnk;
  
- #if defined(CONFIG_32BIT)
- #define KVM_RISCV_VCPU_HPMCOUNTER_CSR_FUNCS \
--{.base = CSR_CYCLEH,	.count = 31,	.func = kvm_riscv_vcpu_pmu_read_hpm }, \
--{.base = CSR_CYCLE,	.count = 31,	.func = kvm_riscv_vcpu_pmu_read_hpm },
-+{.base = CSR_CYCLEH,	.count = 32,	.func = kvm_riscv_vcpu_pmu_read_hpm }, \
-+{.base = CSR_CYCLE,	.count = 32,	.func = kvm_riscv_vcpu_pmu_read_hpm },
- #else
- #define KVM_RISCV_VCPU_HPMCOUNTER_CSR_FUNCS \
--{.base = CSR_CYCLE,	.count = 31,	.func = kvm_riscv_vcpu_pmu_read_hpm },
-+{.base = CSR_CYCLE,	.count = 32,	.func = kvm_riscv_vcpu_pmu_read_hpm },
- #endif
+-	/* if it cannot be handled with fast symlink scheme */
+-	if (vi->datalayout != EROFS_INODE_FLAT_INLINE ||
+-	    inode->i_size >= bsz || inode->i_size < 0) {
++	m_pofs += vi->xattr_isize;
++	/* check if it cannot be handled with fast symlink scheme */
++	if (vi->datalayout != EROFS_INODE_FLAT_INLINE || inode->i_size < 0 ||
++	    check_add_overflow(m_pofs, inode->i_size, &off) ||
++	    off > i_blocksize(inode)) {
+ 		inode->i_op = &erofs_symlink_iops;
+ 		return 0;
+ 	}
+@@ -192,16 +194,6 @@ static int erofs_fill_symlink(struct inode *inode, void *kaddr,
+ 	if (!lnk)
+ 		return -ENOMEM;
  
- int kvm_riscv_vcpu_pmu_incr_fw(struct kvm_vcpu *vcpu, unsigned long fid);
+-	m_pofs += vi->xattr_isize;
+-	/* inline symlink data shouldn't cross block boundary */
+-	if (m_pofs + inode->i_size > bsz) {
+-		kfree(lnk);
+-		erofs_err(inode->i_sb,
+-			  "inline data cross block boundary @ nid %llu",
+-			  vi->nid);
+-		DBG_BUGON(1);
+-		return -EFSCORRUPTED;
+-	}
+ 	memcpy(lnk, kaddr + m_pofs, inode->i_size);
+ 	lnk[inode->i_size] = '\0';
+ 
 -- 
 2.43.0
 
