@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-79277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD70698D772
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:49:39 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45CED98D777
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:49:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 1B9721C2291F
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:49:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7861C1C22475
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:49:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 193F41D0488;
-	Wed,  2 Oct 2024 13:49:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBE3E1D0164;
+	Wed,  2 Oct 2024 13:49:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AhyMBb6P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p+xRERlb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBA391D0164;
-	Wed,  2 Oct 2024 13:49:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C3F91BDA95;
+	Wed,  2 Oct 2024 13:49:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727876969; cv=none; b=YARS6QrwgTPmDKilAycdjvHE55GoZ1boOrK45IcJ1bFT3CUrGoL78a9aPtRxi0ugHcBad49OJsqgc7PLrBHPj5VJuYbP0rgpEtmcCOs/E8f8gcX5KokYI8gkJA6bikoFh4KPaY+eCWxISwt5LYW8bEahPK+SLJruQqiB7pleKWE=
+	t=1727876989; cv=none; b=n80BHG/tIRg/8kEmvrCsnXLAwvi3V9NmUopC8lntB6xIdza38nSMdts0P3A+JuezlhaHxZZIJ/wXAQii75dWdERi2QQKlIz28FZxNj1ihijc4WZSo5SFrLNU0CRQ1GqWgzzZaBbfwn6jMWxeknt1CqJRMHO94kO/seieK8d7Hvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727876969; c=relaxed/simple;
-	bh=KC1SE+4P3gJxStMMca+PmUZby+2zSXRwPwEu5aM8Egc=;
+	s=arc-20240116; t=1727876989; c=relaxed/simple;
+	bh=0Kql4L1RZSAZzOWcB7nvlFEJwyytydj6PYZ9ctGMc1Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=anxEYkwIAe8f9xxAVlHu6C+3sakuW8sAXdJP5UX27fL+uwGwQbpBDUaUoBMl6YkF/+MoC0P5WmOa1w//Cp3xd3vMMgHGdjHKOwwNDSs6WDOupVX4EKOEhvUIKn+OMaDURlK2e50/bq4GipRCpIWzmeK96dMmFuI/FHG/EedjU8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AhyMBb6P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C2ACC4CEC2;
-	Wed,  2 Oct 2024 13:49:28 +0000 (UTC)
+	 MIME-Version; b=NVS1W0DFC4YveH5X7iRMR8zrPBvb4qFCcmJE6lZ66IZKNxjSyWlAp7aKHa1ETpxEYGMv3FlbpLVyseveEDKTd+JlQYnWRgSc4YsmNoUFSPV50H6KhcPbi1v2QMORicIlfo6l2Y7QzMMyNWEF+o1i30E2tR4cPa2DloiiaMYLma8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p+xRERlb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D39C0C4CEC2;
+	Wed,  2 Oct 2024 13:49:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727876969;
-	bh=KC1SE+4P3gJxStMMca+PmUZby+2zSXRwPwEu5aM8Egc=;
+	s=korg; t=1727876989;
+	bh=0Kql4L1RZSAZzOWcB7nvlFEJwyytydj6PYZ9ctGMc1Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AhyMBb6PudpThiPGCe1JlfrNvGM3whpXfnMnT3RQGHTi20I4+TTqLKiKTl7+omyw/
-	 CPnwlCcoOFvswuYqTC7akzHeDEwSiG8EMO4yyesL43ijpPwNEdHWgyG4ySBAHx/MX7
-	 z+ifIQ4sNulaPtyJHDdGg8B6m/ZqEch6VudvpvBg=
+	b=p+xRERlbjfWyJX822VzOsIXVF8TP14xNm+M/VChIYBvu8Pve/F2GowDrA1GYNtMQd
+	 9U4o7ke53IWSv//qO8pbShA5xxSrqYZcPAdJ2vIKmGL/zzeWehEZVNFB18Qs5v2M7i
+	 a6WJEpy46ucv9Vw+M8SnCCv3+Ry25EkSqgull+C0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Jim Quinlan <james.quinlan@broadcom.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>
-Subject: [PATCH 6.11 594/695] tty: rp2: Fix reset with non forgiving PCIe host bridges
-Date: Wed,  2 Oct 2024 14:59:52 +0200
-Message-ID: <20241002125846.221868271@linuxfoundation.org>
+	Ma Ke <make24@iscas.ac.cn>,
+	Rodolfo Giometti <giometti@enneenne.com>
+Subject: [PATCH 6.11 595/695] pps: add an error check in parport_attach
+Date: Wed,  2 Oct 2024 14:59:53 +0200
+Message-ID: <20241002125846.261531926@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
 References: <20241002125822.467776898@linuxfoundation.org>
@@ -66,45 +65,60 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Florian Fainelli <florian.fainelli@broadcom.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-commit f16dd10ba342c429b1e36ada545fb36d4d1f0e63 upstream.
+commit 62c5a01a5711c8e4be8ae7b6f0db663094615d48 upstream.
 
-The write to RP2_GLOBAL_CMD followed by an immediate read of
-RP2_GLOBAL_CMD in rp2_reset_asic() is intented to flush out the write,
-however by then the device is already in reset and cannot respond to a
-memory cycle access.
+In parport_attach, the return value of ida_alloc is unchecked, witch leads
+to the use of an invalid index value.
 
-On platforms such as the Raspberry Pi 4 and others using the
-pcie-brcmstb.c driver, any memory access to a device that cannot respond
-is met with a fatal system error, rather than being substituted with all
-1s as is usually the case on PC platforms.
+To address this issue, index should be checked. When the index value is
+abnormal, the device should be freed.
 
-Swapping the delay and the read ensures that the device has finished
-resetting before we attempt to read from it.
+Found by code review, compile tested only.
 
-Fixes: 7d9f49afa451 ("serial: rp2: New driver for Comtrol RocketPort 2 cards")
-Cc: stable <stable@kernel.org>
-Suggested-by: Jim Quinlan <james.quinlan@broadcom.com>
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://lore.kernel.org/r/20240906225435.707837-1-florian.fainelli@broadcom.com
+Cc: stable@vger.kernel.org
+Fixes: fb56d97df70e ("pps: client: use new parport device model")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Acked-by: Rodolfo Giometti <giometti@enneenne.com>
+Link: https://lore.kernel.org/r/20240828131814.3034338-1-make24@iscas.ac.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/rp2.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pps/clients/pps_parport.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/drivers/tty/serial/rp2.c
-+++ b/drivers/tty/serial/rp2.c
-@@ -577,8 +577,8 @@ static void rp2_reset_asic(struct rp2_ca
- 	u32 clk_cfg;
+--- a/drivers/pps/clients/pps_parport.c
++++ b/drivers/pps/clients/pps_parport.c
+@@ -149,6 +149,9 @@ static void parport_attach(struct parpor
+ 	}
  
- 	writew(1, base + RP2_GLOBAL_CMD);
--	readw(base + RP2_GLOBAL_CMD);
- 	msleep(100);
-+	readw(base + RP2_GLOBAL_CMD);
- 	writel(0, base + RP2_CLK_PRESCALER);
+ 	index = ida_alloc(&pps_client_index, GFP_KERNEL);
++	if (index < 0)
++		goto err_free_device;
++
+ 	memset(&pps_client_cb, 0, sizeof(pps_client_cb));
+ 	pps_client_cb.private = device;
+ 	pps_client_cb.irq_func = parport_irq;
+@@ -159,7 +162,7 @@ static void parport_attach(struct parpor
+ 						    index);
+ 	if (!device->pardev) {
+ 		pr_err("couldn't register with %s\n", port->name);
+-		goto err_free;
++		goto err_free_ida;
+ 	}
  
- 	/* TDM clock configuration */
+ 	if (parport_claim_or_block(device->pardev) < 0) {
+@@ -187,8 +190,9 @@ err_release_dev:
+ 	parport_release(device->pardev);
+ err_unregister_dev:
+ 	parport_unregister_device(device->pardev);
+-err_free:
++err_free_ida:
+ 	ida_free(&pps_client_index, index);
++err_free_device:
+ 	kfree(device);
+ }
+ 
 
 
 
