@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-80373-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79876-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7676198DD24
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:47:15 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CF0B98DAB8
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:24:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F3F728593C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:47:14 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81EA5B24A37
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:24:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 569091D1512;
-	Wed,  2 Oct 2024 14:43:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 374F81CCEDA;
+	Wed,  2 Oct 2024 14:18:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C5EGuXOg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A79q5u22"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AC511D0DD7;
-	Wed,  2 Oct 2024 14:43:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3C4F1D0E0D;
+	Wed,  2 Oct 2024 14:18:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880185; cv=none; b=Q4seS420N/8/8+SW4dDGv5PO5rayu2cx9ugTrWOunI1at3ovYHrzUcjARBVlKU6M49SJWc7AxhiJZGgE+mXjGB2In91ojZ90I/qbwgWPNNvUSI8PhwS7b4lEYVS8/OP7p20JKdJUKfFzhd/HKZUTgILUQZ6KLUZjIWwW9Flmh+A=
+	t=1727878726; cv=none; b=X6SDee8FpOqT1Kp5rFlypfCPE32Ta43e1PuyolOV/AZsKbb7sjaJ4Htkjq+wuRMxRGbYKwfl/n7HvuhFtbuNYo4oMGfesz/F9rrt6c0kYS5SNV8U4jDKurSBsoe8HC2tQRg2+VulPINzlshEeBcuDcCsgHLT3Vc3g4Rbc4NTwiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880185; c=relaxed/simple;
-	bh=QMSB7HXiafFRnF2HKMZEQZxDlgUDmGKHl1+VkXcawnc=;
+	s=arc-20240116; t=1727878726; c=relaxed/simple;
+	bh=IxtVWT0K+2fcjPpdZyWqadhNEnfyBCTprQPEpQBPArI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bfw0x66tKTKkdW0k974GdB/y1qOYxlTGWGdygXHhFT2Kk/Ykw5R6vGt0O72YBe95n+0zKnzItpIQmSwSLpSI72Hkyy4Gp4pH6G4S+spWUvuFnbfibpFltFMdCYHJEO44df/JK2voXxUclvz80B4nVtnl81o6Z/qp73eVTYjj8A8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C5EGuXOg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32A84C4CEC5;
-	Wed,  2 Oct 2024 14:43:04 +0000 (UTC)
+	 MIME-Version; b=UK+JrHqKHencaAgNSNzibXqEESCj9+uv6ajb0qxBFxtbk5KVTW/zwfiZ4g/X8Q1uJHqVlTwuEoJ4o/TU2T4ZyDtGuyObT1KFGFyrsO9joSbkweJ+1fIoaNf7Wmvu2gPtoL8KorUmC7+oet/J7OeGHsE2wDObxjFo7p49ySQbaD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A79q5u22; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2358BC4CEC2;
+	Wed,  2 Oct 2024 14:18:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880184;
-	bh=QMSB7HXiafFRnF2HKMZEQZxDlgUDmGKHl1+VkXcawnc=;
+	s=korg; t=1727878725;
+	bh=IxtVWT0K+2fcjPpdZyWqadhNEnfyBCTprQPEpQBPArI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C5EGuXOg2bwpoM8AujimJfkG5/jqR1Ge7Sk8GUJ/YsZoGhf5pA5gXDQsCjCGWsj6l
-	 uIiPHhbA327UjyeD84X59NFTD28TX0WhhY+gfI8vyyDl08AO0Ec84l/iumYQ92SPGh
-	 rgjaX8/Dl7HH4zELtSAmblayuNESoxERL6Pfj5CY=
+	b=A79q5u22yXa6iun5D/emb2j5jTyGiLLRCInuteVUkzAq+Q1+rXcVhCcg4WDj5+pTw
+	 WnrovHNe7A48Yf1eandyBkl0KFelZyqgFqSvfu5636PyvkvWQSazrD3GuW6Iq2QRQj
+	 1yzda7mRKTOx8kFJR9JmQr9S/w77FS09kdY1DU8w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Yanfei Xu <yanfei.xu@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 365/538] cxl/pci: Fix to record only non-zero ranges
+	Hobin Woo <hobin.woo@samsung.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.10 504/634] ksmbd: make __dir_empty() compatible with POSIX
 Date: Wed,  2 Oct 2024 15:00:04 +0200
-Message-ID: <20241002125806.834472510@linuxfoundation.org>
+Message-ID: <20241002125830.995271785@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,71 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yanfei Xu <yanfei.xu@intel.com>
+From: Hobin Woo <hobin.woo@samsung.com>
 
-[ Upstream commit 55e268694e8b07026c88191f9b6949b6887d9ce3 ]
+commit ca4974ca954561e79f8871d220bb08f14f64f57c upstream.
 
-The function cxl_dvsec_rr_decode() retrieves and records DVSEC ranges
-into info->dvsec_range[], regardless of whether it is non-zero range,
-and the variable info->ranges indicates the number of non-zero ranges.
-However, in cxl_hdm_decode_init(), the validation for
-info->dvsec_range[] occurs in a for loop that iterates based on
-info->ranges. It may result in zero range to be validated but non-zero
-range not be validated, in turn, the number of allowed ranges is to be
-0. Address it by only record non-zero ranges.
+Some file systems may not provide dot (.) and dot-dot (..) as they are
+optional in POSIX. ksmbd can misjudge emptiness of a directory in those
+file systems, since it assumes there are always at least two entries:
+dot and dot-dot.
+Just don't count dot and dot-dot.
 
-This fix is not urgent as it requires a configuration that zeroes out
-the first dvsec range while populating the second. This has not been
-observed, but it is theoretically possible. If this gets picked up for
--stable, no harm done, but there is no urgency to backport.
-
-Fixes: 560f78559006 ("cxl/pci: Retrieve CXL DVSEC memory info")
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Yanfei Xu <yanfei.xu@intel.com>
-Reviewed-by: Alison Schofield <alison.schofield@intel.com>
-Link: https://patch.msgid.link/20240828084231.1378789-2-yanfei.xu@intel.com
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # v6.1+
+Signed-off-by: Hobin Woo <hobin.woo@samsung.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cxl/core/pci.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ fs/smb/server/vfs.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/cxl/core/pci.c b/drivers/cxl/core/pci.c
-index c963cd9e88d16..6edfd05466737 100644
---- a/drivers/cxl/core/pci.c
-+++ b/drivers/cxl/core/pci.c
-@@ -388,10 +388,6 @@ int cxl_dvsec_rr_decode(struct device *dev, int d,
+--- a/fs/smb/server/vfs.c
++++ b/fs/smb/server/vfs.c
+@@ -1115,9 +1115,10 @@ static bool __dir_empty(struct dir_conte
+ 	struct ksmbd_readdir_data *buf;
  
- 		size |= temp & CXL_DVSEC_MEM_SIZE_LOW_MASK;
- 		if (!size) {
--			info->dvsec_range[i] = (struct range) {
--				.start = 0,
--				.end = CXL_RESOURCE_NONE,
--			};
- 			continue;
- 		}
+ 	buf = container_of(ctx, struct ksmbd_readdir_data, ctx);
+-	buf->dirent_count++;
++	if (!is_dot_dotdot(name, namlen))
++		buf->dirent_count++;
  
-@@ -409,12 +405,10 @@ int cxl_dvsec_rr_decode(struct device *dev, int d,
+-	return buf->dirent_count <= 2;
++	return !buf->dirent_count;
+ }
  
- 		base |= temp & CXL_DVSEC_MEM_BASE_LOW_MASK;
+ /**
+@@ -1137,7 +1138,7 @@ int ksmbd_vfs_empty_dir(struct ksmbd_fil
+ 	readdir_data.dirent_count = 0;
  
--		info->dvsec_range[i] = (struct range) {
-+		info->dvsec_range[ranges++] = (struct range) {
- 			.start = base,
- 			.end = base + size - 1
- 		};
--
--		ranges++;
- 	}
- 
- 	info->ranges = ranges;
--- 
-2.43.0
-
+ 	err = iterate_dir(fp->filp, &readdir_data.ctx);
+-	if (readdir_data.dirent_count > 2)
++	if (readdir_data.dirent_count)
+ 		err = -ENOTEMPTY;
+ 	else
+ 		err = 0;
 
 
 
