@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-78881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79445-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEA2898D569
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:30:06 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5556498D853
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:58:58 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 430C7B212E5
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:30:04 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 006D01F23E81
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:58:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EB221D0412;
-	Wed,  2 Oct 2024 13:30:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00C5D1D095C;
+	Wed,  2 Oct 2024 13:58:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PfEtQnrz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VbMwl1W+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BC6216F84F;
-	Wed,  2 Oct 2024 13:30:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B20D51D0954;
+	Wed,  2 Oct 2024 13:57:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875801; cv=none; b=XaSv+xXMsazyHLJQ7mWpWQOp+q9Qd4hF5452ol6UmWvNge5yqlN6ndGZNp8CTlKTbPWIHmSA1tmRjSlSyLfUMOVfSotTf9VhX1B7sVpjtlIIfKNKYN7GIFbnTelOtJKrUuE0F1h1ZrlChF961fpiMQ1nle59sFOezOto6SkNmrc=
+	t=1727877479; cv=none; b=US0qp9/W8JQz4MKGv/RcrO15tQcnnUa6OKf4TMWst9G/n5gsrBAHG49h7sWgoDdo2Z30uETVNh+y1EfIzoIR4spuw/OfMgdh6Je4b/MbOEGYUjrDD12XcfztV+Bu9wptMbwsocqLodDldyTrXAGkjOrZPIl2NOu22m9HIEaEUYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875801; c=relaxed/simple;
-	bh=AZaRzDPi8jwmP0P12UoGPTj+3eISPS9qkHCAoI6ITeI=;
+	s=arc-20240116; t=1727877479; c=relaxed/simple;
+	bh=zyGGevShtUrF6s+tnF29MPGnM6LTtStaSEmuhl1a1eY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WQa6dw3GmiW55v+ky+T2e6ifsgemjUE7et3prYVcnoJC6epWl003MsTJqtWSZ223L8OZzUyrBA0MTK2/mB0ZXy8AIlY7zTFp5EjawU5HXTYKflwgaciJMUv0SonXNVgwNkWP9qaqnaABT7VWRLquX9sOFWSI6fC1Ox9A4udfFIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PfEtQnrz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62B5FC4CEC5;
-	Wed,  2 Oct 2024 13:30:00 +0000 (UTC)
+	 MIME-Version; b=XmQhq3z3TJtXBukrJofIqM40m2yZflRGa4wJZESpbfHwMJaMOJHnwqaIUyqTdvsPPn0S4+IO2QDVSqENQWA9OTfMtoaL0arwTu50So385YSS5wIZ7v+MZLt9VT+nvSjx/3aE07d/HkCKpKU2vbaWsWcflKI1EFb5LE8JeLaj82k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VbMwl1W+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EBC0C4AF55;
+	Wed,  2 Oct 2024 13:57:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875800;
-	bh=AZaRzDPi8jwmP0P12UoGPTj+3eISPS9qkHCAoI6ITeI=;
+	s=korg; t=1727877479;
+	bh=zyGGevShtUrF6s+tnF29MPGnM6LTtStaSEmuhl1a1eY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PfEtQnrzlrvHivK143f86CCLYvV7TiWD6sX5PbSuEEuwklVGkrwJfCustUogcxWDG
-	 0VQbsbX4z6Vkz61FPjEqcwuSQnluDxN0HElVU3aygXPbblWZPl1jGWIYJjICY0A/wQ
-	 2xh6RxDwOzjS5fD+m00vzO888cJDXgv4+3jxkK5I=
+	b=VbMwl1W+PXY/SNDIgOwDmd2wNnlCrnS3xGR3eZ4ilESINQDssjtOb/yPr32///N3e
+	 P3qP1D8qj1hNuzXqZJ8JwGoyPBJpoIPX4WcW5uPlKyJAi8P6VIirNsSDTJ7P1tR92g
+	 DW2jVMPtnbp2NJqZ5Xu0hFsRVgFrEEmASz6sdw68=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Will Deacon <will@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Kiran K <kiran.k@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 194/695] iommu/arm-smmu-qcom: Work around SDM845 Adreno SMMU w/ 16K pages
+Subject: [PATCH 6.10 092/634] Bluetooth: btusb: Fix not handling ZPL/short-transfer
 Date: Wed,  2 Oct 2024 14:53:12 +0200
-Message-ID: <20241002125830.211308474@linuxfoundation.org>
+Message-ID: <20241002125814.741771967@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,72 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 2d42d3ba443706c9164fa0bef4e5fd1c36bc1bd9 ]
+[ Upstream commit 7b05933340f4490ef5b09e84d644d12484b05fdf ]
 
-SDM845's Adreno SMMU is unique in that it actually advertizes support
-for 16K (and 32M) pages, which doesn't hold for newer SoCs.
+Requesting transfers of the exact same size of wMaxPacketSize may result
+in ZPL/short-transfer since the USB stack cannot handle it as we are
+limiting the buffer size to be the same as wMaxPacketSize.
 
-This however, seems either broken in the hardware implementation, the
-hypervisor middleware that abstracts the SMMU, or there's a bug in the
-Linux kernel somewhere down the line that nobody managed to track down.
+Also, in terms of throughput this change has the same effect to
+interrupt endpoint as 290ba200815f "Bluetooth: Improve USB driver throughput
+by increasing the frame size" had for the bulk endpoint, so users of the
+advertisement bearer (e.g. BT Mesh) may benefit from this change.
 
-Booting SDM845 with 16K page sizes and drm/msm results in:
-
-*** gpu fault: ttbr0=0000000000000000 iova=000100000000c000 dir=READ
-type=TRANSLATION source=CP (0,0,0,0)
-
-right after loading the firmware. The GPU then starts spitting out
-illegal intstruction errors, as it's quite obvious that it got a
-bogus pointer.
-
-Moreover, it seems like this issue also concerns other implementations
-of SMMUv2 on Qualcomm SoCs, such as the one on SC7180.
-
-Hide 16K support on such instances to work around this.
-
-Reported-by: Sumit Semwal <sumit.semwal@linaro.org>
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20240824-topic-845_gpu_smmu-v2-1-a302b8acc052@quicinc.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Stable-dep-of: 19eb465c969f ("iommu/arm-smmu-qcom: apply num_context_bank fixes for SDM630 / SDM660")
+Fixes: 5e23b923da03 ("[Bluetooth] Add generic driver for Bluetooth USB devices")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Tested-by: Kiran K <kiran.k@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/bluetooth/btusb.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-index b981ff25a983d..087fb4f6f4d3d 100644
---- a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-+++ b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-@@ -345,6 +345,14 @@ static int qcom_smmu_cfg_probe(struct arm_smmu_device *smmu)
- 	return 0;
- }
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index 0927f51867c26..c41b86608ba86 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -1393,7 +1393,10 @@ static int btusb_submit_intr_urb(struct hci_dev *hdev, gfp_t mem_flags)
+ 	if (!urb)
+ 		return -ENOMEM;
  
-+static int qcom_adreno_smmuv2_cfg_probe(struct arm_smmu_device *smmu)
-+{
-+	/* Support for 16K pages is advertised on some SoCs, but it doesn't seem to work */
-+	smmu->features &= ~ARM_SMMU_FEAT_FMT_AARCH64_16K;
-+
-+	return 0;
-+}
-+
- static void qcom_smmu_write_s2cr(struct arm_smmu_device *smmu, int idx)
- {
- 	struct arm_smmu_s2cr *s2cr = smmu->s2crs + idx;
-@@ -443,6 +451,7 @@ static const struct arm_smmu_impl sdm845_smmu_500_impl = {
+-	size = le16_to_cpu(data->intr_ep->wMaxPacketSize);
++	/* Use maximum HCI Event size so the USB stack handles
++	 * ZPL/short-transfer automatically.
++	 */
++	size = HCI_MAX_EVENT_SIZE;
  
- static const struct arm_smmu_impl qcom_adreno_smmu_v2_impl = {
- 	.init_context = qcom_adreno_smmu_init_context,
-+	.cfg_probe = qcom_adreno_smmuv2_cfg_probe,
- 	.def_domain_type = qcom_smmu_def_domain_type,
- 	.alloc_context_bank = qcom_adreno_smmu_alloc_context_bank,
- 	.write_sctlr = qcom_adreno_smmu_write_sctlr,
+ 	buf = kmalloc(size, mem_flags);
+ 	if (!buf) {
 -- 
 2.43.0
 
