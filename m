@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-80395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79903-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E8F298DD38
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:47:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A654198DAD3
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:25:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 510F61C21E78
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:47:42 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7FAD1C232E8
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:25:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDF6B1D1E68;
-	Wed,  2 Oct 2024 14:44:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B81C1D0E1A;
+	Wed,  2 Oct 2024 14:20:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sfEGeTju"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kS30DdHi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7478D1D1E65;
-	Wed,  2 Oct 2024 14:44:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D371D0797;
+	Wed,  2 Oct 2024 14:20:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880249; cv=none; b=sTXHSJvUrClA5T3A09cmC6jCLHkx7iW1h7LkeOZy+V8qhDKeaWGEEBjYGCDvwlSzrRgzr0TmTC3GZx3POS95RbWnXP7DwmXZiVwN18wzwK/CulMn0AukMFuu35G1NiVkuifuPvG7eAlm0oo66QjMUcxMfP3oFm1HIwEmqNR5vCE=
+	t=1727878805; cv=none; b=T/3NHpg+0Kx9497zzVRKA1J1ObzLjbchHhcOpV3/bZlSTdApYFxITIcLT8k7oUFwX9ywDENhs8Q3lCm8fO/j6wQtyAB4lIBKWE4pcy1Lg/WPfnTpyYRIkKTaRPn7FOAOITlkd6BV723Yv9Zn04HQvNJBRpAlScMRLhinkD4M5xY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880249; c=relaxed/simple;
-	bh=6pHXlCp/QhNlWyXuy5DYQZidTQI77NRR5sYqnTgeH7g=;
+	s=arc-20240116; t=1727878805; c=relaxed/simple;
+	bh=wjvZ2u0o39eHTVxvZfp1yjupEv591zuAntKsrcSsOEg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bm+LKOjicH2n0navfOv3KtQmop7vJcl865NeLSaW1CoQl5rUkIJCHs3FNj7w2IAD8e595j0Qaqh3o0q50DH58JI/trNjh/2zetEvYsBOCJXTA1Kr5DHtEvlm7nbelDp1azWyu1iGQWbQgzbZx86UwFC7AWOLQ9WmG/Wr77IWXdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sfEGeTju; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5A3DC4CEC2;
-	Wed,  2 Oct 2024 14:44:08 +0000 (UTC)
+	 MIME-Version; b=jUvBIl2LTagmRIamS9av5w8wGzSKuandK+WegHIOwpNWEkPtklB7tBKZWJmMmLo9QsVUxl21pax5z7W64k0+O1ICDcDh4lt0TRqwWCuvsSswskNsxkqiQFRswE5OJ2n+MoRBwqnTE1v7Fwv1kjVe6Fp7I50PSjgSyH+yoSnjSXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kS30DdHi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 532E0C4CEC2;
+	Wed,  2 Oct 2024 14:20:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880249;
-	bh=6pHXlCp/QhNlWyXuy5DYQZidTQI77NRR5sYqnTgeH7g=;
+	s=korg; t=1727878805;
+	bh=wjvZ2u0o39eHTVxvZfp1yjupEv591zuAntKsrcSsOEg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sfEGeTjuhyDg9u3zexCTJWP/iOk5XE9PGaQ4o2ekw5P0CoqTd7p9MyVyQO5erlNR2
-	 CDmwzqYz1c7tNqvtbzqiVwhUfdrp5L2MVliLyw9W76SXBbZNeMQ6stYj6d57GVUxxF
-	 YEa7E9L2LTMQRTSDcqgDzcbGXeWrvfVwVLLSryEg=
+	b=kS30DdHi1GNpeuWY+90pKn8XVAOgd9P+8g9johB63TWu8gWE874IpL94K+MXG5Jeb
+	 zLVNqVkeyG6V6+dd2uNVhnJahulAfFV6amtS2ur384d/IKfy6w8XT2GFyZOJ76RMfC
+	 8b7rMsEnBU9rQChjn+f5YUa69xcDnpqCogjeNBZs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Alexander Sverdlin <alexander.sverdlin@gmail.com>,
-	Nikita Shubin <nikita.shubin@maquefel.me>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 367/538] ep93xx: clock: Fix off by one in ep93xx_div_recalc_rate()
-Date: Wed,  2 Oct 2024 15:00:06 +0200
-Message-ID: <20241002125806.914516786@linuxfoundation.org>
+	Damien Le Moal <dlemoal@kernel.org>,
+	Hannes Reinecke <hare@suse.de>
+Subject: [PATCH 6.10 507/634] ata: libata-scsi: Fix ata_msense_control() CDL page reporting
+Date: Wed,  2 Oct 2024 15:00:07 +0200
+Message-ID: <20241002125831.117949197@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,47 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <alexander.sverdlin@gmail.com>
+From: Damien Le Moal <dlemoal@kernel.org>
 
-[ Upstream commit c7f06284a6427475e3df742215535ec3f6cd9662 ]
+commit 0e9a2990a93f27daa643b6fa73cfa47b128947a7 upstream.
 
-The psc->div[] array has psc->num_div elements.  These values come from
-when we call clk_hw_register_div().  It's adc_divisors and
-ARRAY_SIZE(adc_divisors)) and so on.  So this condition needs to be >=
-instead of > to prevent an out of bounds read.
+When the user requests the ALL_SUB_MPAGES mode sense page,
+ata_msense_control() adds the CDL_T2A_SUB_MPAGE twice instead of adding
+the CDL_T2A_SUB_MPAGE and CDL_T2B_SUB_MPAGE pages information. Correct
+the second call to ata_msense_control_spgt2() to report the
+CDL_T2B_SUB_MPAGE page.
 
-Fixes: 9645ccc7bd7a ("ep93xx: clock: convert in-place to COMMON_CLK")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Acked-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
-Reviewed-by: Nikita Shubin <nikita.shubin@maquefel.me>
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@gmail.com>
-Link: https://lore.kernel.org/r/1caf01ad4c0a8069535813c26c7f0b8ea011155e.camel@linaro.org
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 673b2fe6ff1d ("scsi: ata: libata-scsi: Add support for CDL pages mode sense")
+Cc: stable@vger.kernel.org
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Hannes Reinecke <hare@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/mach-ep93xx/clock.c | 2 +-
+ drivers/ata/libata-scsi.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/mach-ep93xx/clock.c b/arch/arm/mach-ep93xx/clock.c
-index 85a496ddc6197..e9f72a529b508 100644
---- a/arch/arm/mach-ep93xx/clock.c
-+++ b/arch/arm/mach-ep93xx/clock.c
-@@ -359,7 +359,7 @@ static unsigned long ep93xx_div_recalc_rate(struct clk_hw *hw,
- 	u32 val = __raw_readl(psc->reg);
- 	u8 index = (val & psc->mask) >> psc->shift;
- 
--	if (index > psc->num_div)
-+	if (index >= psc->num_div)
- 		return 0;
- 
- 	return DIV_ROUND_UP_ULL(parent_rate, psc->div[index]);
--- 
-2.43.0
-
+--- a/drivers/ata/libata-scsi.c
++++ b/drivers/ata/libata-scsi.c
+@@ -2358,7 +2358,7 @@ static unsigned int ata_msense_control(s
+ 	case ALL_SUB_MPAGES:
+ 		n = ata_msense_control_spg0(dev, buf, changeable);
+ 		n += ata_msense_control_spgt2(dev, buf + n, CDL_T2A_SUB_MPAGE);
+-		n += ata_msense_control_spgt2(dev, buf + n, CDL_T2A_SUB_MPAGE);
++		n += ata_msense_control_spgt2(dev, buf + n, CDL_T2B_SUB_MPAGE);
+ 		n += ata_msense_control_ata_feature(dev, buf + n);
+ 		return n;
+ 	default:
 
 
 
