@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-80233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DF5298DC8D
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:42:25 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 577A598D9F4
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:16:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AD9241F27765
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:42:24 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 890501C233B9
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:16:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 124A51CF7AA;
-	Wed,  2 Oct 2024 14:36:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C23B1D0F71;
+	Wed,  2 Oct 2024 14:11:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vPdUTA9A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HIEGZ0Ww"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30D119CD16;
-	Wed,  2 Oct 2024 14:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 299541D0DE5;
+	Wed,  2 Oct 2024 14:11:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879769; cv=none; b=QEVn5sQmRyLOCy7JQ8CuIsAsUjljEcwnArkH25QChwHGpkBzELp8VOzC4Mzzdyt60BLnE1yyagCzyyxNMjvneYe8CYezRnlcAjeaAlOBxxpaceYnF3D/MjSvgxc9ydC5itGeZMNb+mZbxTjoRWz4KUKt/o58CfaiTX6KmP1hw3k=
+	t=1727878317; cv=none; b=MyJ228vqnenVbSmIkXdUZgD7IFH/isOHUV7QLaT/cdP6qfhN/9KwGpcWHAyGSAmu56ylDZHcTCBcvadK45rcJSN86XUNwDu2J9jOq7AHvwEi44dGEpxXQnpfoIfBWTlUsrmE//86UD8FghDYjFRc0HVvCQWJG1cDaeCP/wAkWoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879769; c=relaxed/simple;
-	bh=Se+8PSvQPKa8bp202bKqcStPBqd97FdhCtpNSxzrWwk=;
+	s=arc-20240116; t=1727878317; c=relaxed/simple;
+	bh=8ADutXtxHiHB8ZwwOcKMpKy4BWOucnvlvJEWN+kjtm0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f1JOHDy8OFr+8laDX4sdwqhtbCH7EuxnPkvZajQ9Hrv1mV1BtgZzc4UD7p2IyxFTB+d+84QVG+T3wtxB1SvnimchxUTnqHijgrKiDhE1yFaFm8bpEnGSpMD2pOUvM640ieHXdqj411i8Rrh381qSx2/XM7xUyJxO05l+Ux8WXW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vPdUTA9A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48F03C4CEC2;
-	Wed,  2 Oct 2024 14:36:09 +0000 (UTC)
+	 MIME-Version; b=QMyZnjUKOVoCluvRa/K+svJeIhRemaV0SRMQUHLY5mvMbG/Ma4MTy3N2rT7ms6eOfTwn+NFhU5y+r50sXmOLQUVfIJMKCPLrfY8aWky6DumOAJbpCGurB2/wLsTg+2NMNKqI6nJJrvJp13EfGhjEmXLwwJXfJTaHtB4Ex8wF0ec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HIEGZ0Ww; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4BC7C4CEC2;
+	Wed,  2 Oct 2024 14:11:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879769;
-	bh=Se+8PSvQPKa8bp202bKqcStPBqd97FdhCtpNSxzrWwk=;
+	s=korg; t=1727878317;
+	bh=8ADutXtxHiHB8ZwwOcKMpKy4BWOucnvlvJEWN+kjtm0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vPdUTA9ACO6Fydi/kVAdXfSeENTLaA3qxDBuR4vy86IWAqOlvE2NlTaD4tUvVFRgp
-	 W6nVr4nNszcUwyxXIrataTL+ne8/Z6nC4uUVLcD/ou0edtpT9+876YFHiQyxgg6cl1
-	 /LH47kN8bkMGD3oPsMDEU7L92nrtOLDkXP+lbyh0=
+	b=HIEGZ0WwguD2vCWoW33ugHNVbPjuN2jub9bj/Hr/h4I57ZRLc5WMdgmvGQst1rABf
+	 fVQZnA6eG39tMKrPyRSeooG7jQXPhBRN3e9LvK0t8+fL3hYCPBE4TB/jc9/EDCwixu
+	 vfZK39RckKgUp9pBhkOfdeDA/VqTMobcTcSvG/W4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Ambardar <tony.ambardar@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 201/538] selftests/bpf: Fix compiling kfree_skb.c with musl-libc
-Date: Wed,  2 Oct 2024 14:57:20 +0200
-Message-ID: <20241002125800.188158296@linuxfoundation.org>
+Subject: [PATCH 6.10 341/634] leds: pca995x: Fix device child node usage in pca995x_probe()
+Date: Wed,  2 Oct 2024 14:57:21 +0200
+Message-ID: <20241002125824.561477943@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Ambardar <tony.ambardar@gmail.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-[ Upstream commit bae9a5ce7d3a9b3a9e07b31ab9e9c58450e3e9fd ]
+[ Upstream commit 82c5ada1f9d05902a4ccb926c7ce34e2fe699283 ]
 
-The GNU version of 'struct tcphdr' with member 'doff' is not exposed by
-musl headers unless _GNU_SOURCE is defined. Add this definition to fix
-errors seen compiling for mips64el/musl-libc:
+The current implementation accesses the `child` fwnode handle outside of
+device_for_each_child_node() without incrementing its refcount.
 
-  In file included from kfree_skb.c:2:
-  kfree_skb.c: In function 'on_sample':
-  kfree_skb.c:45:30: error: 'struct tcphdr' has no member named 'doff'
-     45 |         if (CHECK(pkt_v6->tcp.doff != 5, "check_tcp",
-        |                              ^
+Add the missing call to `fwnode_handle_get(child)`.
 
-Fixes: 580d656d80cf ("selftests/bpf: Add kfree_skb raw_tp test")
-Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/e2d8cedc790959c10d6822a51f01a7a3616bea1b.1721713597.git.tony.ambardar@gmail.com
+The cleanup process where `child` is accessed is not right either
+because a single call to `fwnode_handle_put()` is carried out in case of
+an error, ignoring unasigned nodes at the point when the error happens.
+
+Keep `child` inside of the first loop, and use the helper pointer that
+receives references via `fwnode_handle_get()` to handle the child nodes
+within the second loop. Keeping `child` inside the first node has also
+the advantage that the scoped version of the loop can be used.
+
+Fixes: ee4e80b2962e ("leds: pca995x: Add support for PCA995X chips")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://lore.kernel.org/r/20240807-leds-pca995x-fix-fwnode-usage-v1-1-8057c84dc583@gmail.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/kfree_skb.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/leds/leds-pca995x.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/kfree_skb.c b/tools/testing/selftests/bpf/prog_tests/kfree_skb.c
-index c07991544a789..34f8822fd2219 100644
---- a/tools/testing/selftests/bpf/prog_tests/kfree_skb.c
-+++ b/tools/testing/selftests/bpf/prog_tests/kfree_skb.c
-@@ -1,4 +1,5 @@
- // SPDX-License-Identifier: GPL-2.0
-+#define _GNU_SOURCE
- #include <test_progs.h>
- #include <network_helpers.h>
- #include "kfree_skb.skel.h"
+diff --git a/drivers/leds/leds-pca995x.c b/drivers/leds/leds-pca995x.c
+index 83bc9669544c3..11c7bb69573e8 100644
+--- a/drivers/leds/leds-pca995x.c
++++ b/drivers/leds/leds-pca995x.c
+@@ -120,12 +120,11 @@ static const struct regmap_config pca995x_regmap = {
+ static int pca995x_probe(struct i2c_client *client)
+ {
+ 	struct fwnode_handle *led_fwnodes[PCA995X_MAX_OUTPUTS] = { 0 };
+-	struct fwnode_handle *child;
+ 	struct device *dev = &client->dev;
+ 	const struct pca995x_chipdef *chipdef;
+ 	struct pca995x_chip *chip;
+ 	struct pca995x_led *led;
+-	int i, reg, ret;
++	int i, j, reg, ret;
+ 
+ 	chipdef = device_get_match_data(&client->dev);
+ 
+@@ -143,7 +142,7 @@ static int pca995x_probe(struct i2c_client *client)
+ 
+ 	i2c_set_clientdata(client, chip);
+ 
+-	device_for_each_child_node(dev, child) {
++	device_for_each_child_node_scoped(dev, child) {
+ 		ret = fwnode_property_read_u32(child, "reg", &reg);
+ 		if (ret)
+ 			return ret;
+@@ -152,7 +151,7 @@ static int pca995x_probe(struct i2c_client *client)
+ 			return -EINVAL;
+ 
+ 		led = &chip->leds[reg];
+-		led_fwnodes[reg] = child;
++		led_fwnodes[reg] = fwnode_handle_get(child);
+ 		led->chip = chip;
+ 		led->led_no = reg;
+ 		led->ldev.brightness_set_blocking = pca995x_brightness_set;
+@@ -171,7 +170,8 @@ static int pca995x_probe(struct i2c_client *client)
+ 						     &chip->leds[i].ldev,
+ 						     &init_data);
+ 		if (ret < 0) {
+-			fwnode_handle_put(child);
++			for (j = i; j < PCA995X_MAX_OUTPUTS; j++)
++				fwnode_handle_put(led_fwnodes[j]);
+ 			return dev_err_probe(dev, ret,
+ 					     "Could not register LED %s\n",
+ 					     chip->leds[i].ldev.name);
 -- 
 2.43.0
 
