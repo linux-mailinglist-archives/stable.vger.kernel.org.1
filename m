@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-79903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A654198DAD3
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:25:33 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9121998DD56
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:48:31 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D7FAD1C232E8
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:25:32 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 29204B296C0
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:47:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B81C1D0E1A;
-	Wed,  2 Oct 2024 14:20:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55FC61D1E73;
+	Wed,  2 Oct 2024 14:44:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kS30DdHi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gyn5KGuZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6D371D0797;
-	Wed,  2 Oct 2024 14:20:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 152FB1D1E69;
+	Wed,  2 Oct 2024 14:44:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878805; cv=none; b=T/3NHpg+0Kx9497zzVRKA1J1ObzLjbchHhcOpV3/bZlSTdApYFxITIcLT8k7oUFwX9ywDENhs8Q3lCm8fO/j6wQtyAB4lIBKWE4pcy1Lg/WPfnTpyYRIkKTaRPn7FOAOITlkd6BV723Yv9Zn04HQvNJBRpAlScMRLhinkD4M5xY=
+	t=1727880261; cv=none; b=qqGW9pg/Mez8ODy0+tfC2SyeOvbgx/uE9ANOGcTfYT3PWv3Kr+HEg4xWxmlTcuLZLqA+epzCbJwC6K1ikaW7SEWwiJ65XhaY8DYUF2urRBWQyvsq7kBOuu866yUkbPBr6Al5rZYoJ8Vtm/AEvU/Yf2KRrM+5MRw4QmnnGrB1TvI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878805; c=relaxed/simple;
-	bh=wjvZ2u0o39eHTVxvZfp1yjupEv591zuAntKsrcSsOEg=;
+	s=arc-20240116; t=1727880261; c=relaxed/simple;
+	bh=zckAbYWN/tI2HjtC5p559FPKlJto0oCmxQSYWJwVtxw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jUvBIl2LTagmRIamS9av5w8wGzSKuandK+WegHIOwpNWEkPtklB7tBKZWJmMmLo9QsVUxl21pax5z7W64k0+O1ICDcDh4lt0TRqwWCuvsSswskNsxkqiQFRswE5OJ2n+MoRBwqnTE1v7Fwv1kjVe6Fp7I50PSjgSyH+yoSnjSXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kS30DdHi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 532E0C4CEC2;
-	Wed,  2 Oct 2024 14:20:05 +0000 (UTC)
+	 MIME-Version; b=UBjthRM/xAH4rEVoY//UozGGwg++V/yrsKDIgDVCtPnY+1PccxdOqV+wJ0/HOldzMMmQxr7TGdsdew2cJmAaaSV53FQyswv0gdemGDq+ESzx34OHHV/va8bQFfIsELOWDEOh6Sju4+AZ+3dz4u6GuM6Zqht5jRGKhijSykTivtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gyn5KGuZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92315C4CEC2;
+	Wed,  2 Oct 2024 14:44:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878805;
-	bh=wjvZ2u0o39eHTVxvZfp1yjupEv591zuAntKsrcSsOEg=;
+	s=korg; t=1727880261;
+	bh=zckAbYWN/tI2HjtC5p559FPKlJto0oCmxQSYWJwVtxw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kS30DdHi1GNpeuWY+90pKn8XVAOgd9P+8g9johB63TWu8gWE874IpL94K+MXG5Jeb
-	 zLVNqVkeyG6V6+dd2uNVhnJahulAfFV6amtS2ur384d/IKfy6w8XT2GFyZOJ76RMfC
-	 8b7rMsEnBU9rQChjn+f5YUa69xcDnpqCogjeNBZs=
+	b=gyn5KGuZOZ6b3pd5oZYf8eg7Xn1fjaNVvbkYcQNZKPXQ0NrWmh7VhJELiJdKsgaS0
+	 8Q6OC2Kr3v8HV48MOZyRzJi5HZvmkOtBOBSPkc4MOFKzBdeAeODub9NFh1gIKGrAkj
+	 1NiJunRTHgg3/aw6GEVTlEuJTV1VU3CvQ2wYHWrE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Hannes Reinecke <hare@suse.de>
-Subject: [PATCH 6.10 507/634] ata: libata-scsi: Fix ata_msense_control() CDL page reporting
+	Zdenek Kabelac <zkabelac@redhat.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 368/538] Revert "dm: requeue IO if mapping table not yet available"
 Date: Wed,  2 Oct 2024 15:00:07 +0200
-Message-ID: <20241002125831.117949197@linuxfoundation.org>
+Message-ID: <20241002125806.954064302@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +62,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Damien Le Moal <dlemoal@kernel.org>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-commit 0e9a2990a93f27daa643b6fa73cfa47b128947a7 upstream.
+[ Upstream commit c8691cd0fc11197515ed148de0780d927bfca38b ]
 
-When the user requests the ALL_SUB_MPAGES mode sense page,
-ata_msense_control() adds the CDL_T2A_SUB_MPAGE twice instead of adding
-the CDL_T2A_SUB_MPAGE and CDL_T2B_SUB_MPAGE pages information. Correct
-the second call to ata_msense_control_spgt2() to report the
-CDL_T2B_SUB_MPAGE page.
+This reverts commit fa247089de9936a46e290d4724cb5f0b845600f5.
 
-Fixes: 673b2fe6ff1d ("scsi: ata: libata-scsi: Add support for CDL pages mode sense")
-Cc: stable@vger.kernel.org
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Reviewed-by: Hannes Reinecke <hare@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The following sequence of commands causes a livelock - there will be
+workqueue process looping and consuming 100% CPU:
+
+dmsetup create --notable test
+truncate -s 1MiB testdata
+losetup /dev/loop0 testdata
+dmsetup load test --table '0 2048 linear /dev/loop0 0'
+dd if=/dev/zero of=/dev/dm-0 bs=16k count=1 conv=fdatasync
+
+The livelock is caused by the commit fa247089de99. The commit claims that
+it fixes a race condition, however, it is unknown what the actual race
+condition is and what program is involved in the race condition.
+
+When the inactive table is loaded, the nodes /dev/dm-0 and
+/sys/block/dm-0 are created. /dev/dm-0 has zero size at this point. When
+the device is suspended and resumed, the nodes /dev/mapper/test and
+/dev/disk/* are created.
+
+If some program opens a block device before it is created by dmsetup or
+lvm, the program is buggy, so dm could just report an error as it used to
+do before.
+
+Reported-by: Zdenek Kabelac <zkabelac@redhat.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: fa247089de99 ("dm: requeue IO if mapping table not yet available")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ata/libata-scsi.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/md/dm-rq.c |  4 +++-
+ drivers/md/dm.c    | 11 ++++++++---
+ 2 files changed, 11 insertions(+), 4 deletions(-)
 
---- a/drivers/ata/libata-scsi.c
-+++ b/drivers/ata/libata-scsi.c
-@@ -2358,7 +2358,7 @@ static unsigned int ata_msense_control(s
- 	case ALL_SUB_MPAGES:
- 		n = ata_msense_control_spg0(dev, buf, changeable);
- 		n += ata_msense_control_spgt2(dev, buf + n, CDL_T2A_SUB_MPAGE);
--		n += ata_msense_control_spgt2(dev, buf + n, CDL_T2A_SUB_MPAGE);
-+		n += ata_msense_control_spgt2(dev, buf + n, CDL_T2B_SUB_MPAGE);
- 		n += ata_msense_control_ata_feature(dev, buf + n);
- 		return n;
- 	default:
+diff --git a/drivers/md/dm-rq.c b/drivers/md/dm-rq.c
+index f7e9a3632eb3d..499f8cc8a39fb 100644
+--- a/drivers/md/dm-rq.c
++++ b/drivers/md/dm-rq.c
+@@ -496,8 +496,10 @@ static blk_status_t dm_mq_queue_rq(struct blk_mq_hw_ctx *hctx,
+ 
+ 		map = dm_get_live_table(md, &srcu_idx);
+ 		if (unlikely(!map)) {
++			DMERR_LIMIT("%s: mapping table unavailable, erroring io",
++				    dm_device_name(md));
+ 			dm_put_live_table(md, srcu_idx);
+-			return BLK_STS_RESOURCE;
++			return BLK_STS_IOERR;
+ 		}
+ 		ti = dm_table_find_target(map, 0);
+ 		dm_put_live_table(md, srcu_idx);
+diff --git a/drivers/md/dm.c b/drivers/md/dm.c
+index 8ec0a263744a5..5dd0a42463a2b 100644
+--- a/drivers/md/dm.c
++++ b/drivers/md/dm.c
+@@ -1817,10 +1817,15 @@ static void dm_submit_bio(struct bio *bio)
+ 	struct dm_table *map;
+ 
+ 	map = dm_get_live_table(md, &srcu_idx);
++	if (unlikely(!map)) {
++		DMERR_LIMIT("%s: mapping table unavailable, erroring io",
++			    dm_device_name(md));
++		bio_io_error(bio);
++		goto out;
++	}
+ 
+-	/* If suspended, or map not yet available, queue this IO for later */
+-	if (unlikely(test_bit(DMF_BLOCK_IO_FOR_SUSPEND, &md->flags)) ||
+-	    unlikely(!map)) {
++	/* If suspended, queue this IO for later */
++	if (unlikely(test_bit(DMF_BLOCK_IO_FOR_SUSPEND, &md->flags))) {
+ 		if (bio->bi_opf & REQ_NOWAIT)
+ 			bio_wouldblock_error(bio);
+ 		else if (bio->bi_opf & REQ_RAHEAD)
+-- 
+2.43.0
+
 
 
 
