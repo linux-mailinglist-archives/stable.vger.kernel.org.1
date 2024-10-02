@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-78886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2255898D56E
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:30:26 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97E6E98D8AF
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:04:39 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DF9772888DA
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:30:24 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0BE42B20ACC
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:04:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6C671D048C;
-	Wed,  2 Oct 2024 13:30:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3322A1D26E0;
+	Wed,  2 Oct 2024 14:00:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mSANRQoV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TUTUv23A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 722891CB32E;
-	Wed,  2 Oct 2024 13:30:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE9441D2238;
+	Wed,  2 Oct 2024 14:00:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875815; cv=none; b=Gaszw/aAmXVz72pxu/Z3ALMxPJs9Mq1ui6uQGnluMUzCXdjTWQHWqI11dLSYIvyL7Mc2aA+2AznQt28XwGtY/k0VOULQuvorXHfxv8wACFXLCJTYL6Q8M+tEV7xzmrhv2bfBmdzrS6LrYO4AUzFP5C9ZQ6W2iDR1eFAW/AaJ8hI=
+	t=1727877602; cv=none; b=MzIEk/Rbt8293vExuImuqKlsg5a4pGu1eTcXYr/aojq3CHnA0Bxtgyo48QaliVV0i2p9aVdeG6Qy6V48ArpqXwPCS59iGXW2ymbMssruHk7OPNRXRv0MDzetcYMwWUEFZH9/hN2DsaSt8Pg8dN6AT73ci/Gh6y4HotJtMboGdk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875815; c=relaxed/simple;
-	bh=MNFY+238xGWWe/sUMx+Sl4y1d4d76Px0t6s1fdgOvqo=;
+	s=arc-20240116; t=1727877602; c=relaxed/simple;
+	bh=4FToqmGSC4jYghxtThe1Om225Ze4iK0MMY0bfaOsEYI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rcrRc3mhrIwzf7wD9srNzs1cdyOXuogSINieEhEWIPwpirz58EeH7Sc35nW1zrTx0U8GpVJY8O3ad1UvWIbO2NMSUJ12wJQkmYhZqrVDXq4bplw/hiGoXE3eTMqgTTw6l7HShH+3XgHSRkWBcFKDQPc4fXTPlXP1eFi3kEwF8ec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mSANRQoV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE91EC4CEC5;
-	Wed,  2 Oct 2024 13:30:14 +0000 (UTC)
+	 MIME-Version; b=c2QwFTg7gX/Ltms3X9XaXcF7qdVWa3oOgRpyUKaOx3xowy2XwX0cUHdmBPsxlrYhy9ebANCvuQwl8CjyBiRbU8hZVOpHoVw2+B8s8LzfaYy0W1Y03sDcA2qAtzvkDWIzRPntgm9wQakLwBfg7q20T04IqUSud/BTAsu5U6l0XjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TUTUv23A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3038AC4CECD;
+	Wed,  2 Oct 2024 14:00:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875815;
-	bh=MNFY+238xGWWe/sUMx+Sl4y1d4d76Px0t6s1fdgOvqo=;
+	s=korg; t=1727877601;
+	bh=4FToqmGSC4jYghxtThe1Om225Ze4iK0MMY0bfaOsEYI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mSANRQoVX54zMX/cbs1d/rWs/fczb8cBWmsfjG+STJDydyV02c0dsS4UBOL0Fbfid
-	 Q+F8C6yD+Fy3GQPJi3XUa7YkgtB9yf3+sexpnmcwbC+rzdG7VYGE7PG2stuJn1vhi8
-	 WBU9/WrK5E2WPo0n7GzKXI5zhJKZNWnoiaL0BGi0=
+	b=TUTUv23Aq28sW4N5TUD0fby9hc6OlLmDpIZPG3g6yAeuGBjEsKbAvbtcqRFftbXVP
+	 wtgiok1Gi6zFEuJ1urna6fJmHHPq5cJJN5Jw/HIrzAp/QnnES6tF6WqUuFQ/0NXuQ3
+	 5PCFqElNkxKakhCnEgBZuHQq7ClureSD8H+KGKhw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Lypak <vladimir.lypak@gmail.com>,
-	Konrad Dybcio <konrad.dybcio@linaro.org>,
-	Rob Clark <robdclark@chromium.org>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 231/695] drm/msm/a5xx: properly clear preemption records on resume
+Subject: [PATCH 6.10 129/634] arm64: tegra: Correct location of power-sensors for IGX Orin
 Date: Wed,  2 Oct 2024 14:53:49 +0200
-Message-ID: <20241002125831.673017999@linuxfoundation.org>
+Message-ID: <20241002125816.202963445@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,43 +62,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vladimir Lypak <vladimir.lypak@gmail.com>
+From: Jon Hunter <jonathanh@nvidia.com>
 
-[ Upstream commit 64fd6d01a52904bdbda0ce810a45a428c995a4ca ]
+[ Upstream commit b93679b8f165467e1584f9b23055db83f45c32ce ]
 
-Two fields of preempt_record which are used by CP aren't reset on
-resume: "data" and "info". This is the reason behind faults which happen
-when we try to switch to the ring that was active last before suspend.
-In addition those faults can't be recovered from because we use suspend
-and resume to do so (keeping values of those fields again).
+The power-sensors are located on the carrier board and not the
+module board and so update the IGX Orin device-tree files to fix this.
 
-Fixes: b1fc2839d2f9 ("drm/msm: Implement preemption for A5XX targets")
-Signed-off-by: Vladimir Lypak <vladimir.lypak@gmail.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Patchwork: https://patchwork.freedesktop.org/patch/612043/
-Signed-off-by: Rob Clark <robdclark@chromium.org>
+Fixes: 9152ed09309d ("arm64: tegra: Add power-sensors for Tegra234 boards")
+Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a5xx_preempt.c | 2 ++
- 1 file changed, 2 insertions(+)
+ .../boot/dts/nvidia/tegra234-p3701-0008.dtsi  | 33 -------------------
+ .../boot/dts/nvidia/tegra234-p3740-0002.dtsi  | 33 +++++++++++++++++++
+ 2 files changed, 33 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a5xx_preempt.c b/drivers/gpu/drm/msm/adreno/a5xx_preempt.c
-index f58dd564d122b..67a8ef4adf6b6 100644
---- a/drivers/gpu/drm/msm/adreno/a5xx_preempt.c
-+++ b/drivers/gpu/drm/msm/adreno/a5xx_preempt.c
-@@ -204,6 +204,8 @@ void a5xx_preempt_hw_init(struct msm_gpu *gpu)
- 		return;
+diff --git a/arch/arm64/boot/dts/nvidia/tegra234-p3701-0008.dtsi b/arch/arm64/boot/dts/nvidia/tegra234-p3701-0008.dtsi
+index 553fa4ba1cd48..62c4fdad0b600 100644
+--- a/arch/arm64/boot/dts/nvidia/tegra234-p3701-0008.dtsi
++++ b/arch/arm64/boot/dts/nvidia/tegra234-p3701-0008.dtsi
+@@ -44,39 +44,6 @@
+ 			status = "okay";
+ 		};
  
- 	for (i = 0; i < gpu->nr_rings; i++) {
-+		a5xx_gpu->preempt[i]->data = 0;
-+		a5xx_gpu->preempt[i]->info = 0;
- 		a5xx_gpu->preempt[i]->wptr = 0;
- 		a5xx_gpu->preempt[i]->rptr = 0;
- 		a5xx_gpu->preempt[i]->rbase = gpu->rb[i]->iova;
+-		i2c@c250000 {
+-			power-sensor@41 {
+-				compatible = "ti,ina3221";
+-				reg = <0x41>;
+-				#address-cells = <1>;
+-				#size-cells = <0>;
+-
+-				input@0 {
+-					reg = <0x0>;
+-					label = "CVB_ATX_12V";
+-					shunt-resistor-micro-ohms = <2000>;
+-				};
+-
+-				input@1 {
+-					reg = <0x1>;
+-					label = "CVB_ATX_3V3";
+-					shunt-resistor-micro-ohms = <2000>;
+-				};
+-
+-				input@2 {
+-					reg = <0x2>;
+-					label = "CVB_ATX_5V";
+-					shunt-resistor-micro-ohms = <2000>;
+-				};
+-			};
+-
+-			power-sensor@44 {
+-				compatible = "ti,ina219";
+-				reg = <0x44>;
+-				shunt-resistor = <2000>;
+-			};
+-		};
+-
+ 		rtc@c2a0000 {
+ 			status = "okay";
+ 		};
+diff --git a/arch/arm64/boot/dts/nvidia/tegra234-p3740-0002.dtsi b/arch/arm64/boot/dts/nvidia/tegra234-p3740-0002.dtsi
+index 527f2f3aee3ad..377f518bd3e57 100644
+--- a/arch/arm64/boot/dts/nvidia/tegra234-p3740-0002.dtsi
++++ b/arch/arm64/boot/dts/nvidia/tegra234-p3740-0002.dtsi
+@@ -183,6 +183,39 @@
+ 			phy-names = "usb2-0", "usb2-1", "usb2-2", "usb2-3",
+ 				"usb3-0", "usb3-1", "usb3-2";
+ 		};
++
++		i2c@c250000 {
++			power-sensor@41 {
++				compatible = "ti,ina3221";
++				reg = <0x41>;
++				#address-cells = <1>;
++				#size-cells = <0>;
++
++				input@0 {
++					reg = <0x0>;
++					label = "CVB_ATX_12V";
++					shunt-resistor-micro-ohms = <2000>;
++				};
++
++				input@1 {
++					reg = <0x1>;
++					label = "CVB_ATX_3V3";
++					shunt-resistor-micro-ohms = <2000>;
++				};
++
++				input@2 {
++					reg = <0x2>;
++					label = "CVB_ATX_5V";
++					shunt-resistor-micro-ohms = <2000>;
++				};
++			};
++
++			power-sensor@44 {
++				compatible = "ti,ina219";
++				reg = <0x44>;
++				shunt-resistor = <2000>;
++			};
++		};
+ 	};
+ 
+ 	vdd_3v3_dp: regulator-vdd-3v3-dp {
 -- 
 2.43.0
 
