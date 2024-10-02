@@ -1,59 +1,56 @@
-Return-Path: <stable+bounces-79859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id CC12F98DAA9
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:24:35 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D6DA98DD14
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:46:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 4926BB25F51
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:24:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B5491C23559
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:46:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 349691D319C;
-	Wed,  2 Oct 2024 14:17:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 518731D1504;
+	Wed,  2 Oct 2024 14:42:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0VU0o0Vn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x3ZqIfYv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E53F81D04BE;
-	Wed,  2 Oct 2024 14:17:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11A6E1D0BBC;
+	Wed,  2 Oct 2024 14:42:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878676; cv=none; b=ky32cU2gydSLl2rgup3nHk8hx9NaWUwIaG89ILKUgBbyJ/wnxluIOTzSjpzSiE+RNJIIjqG/8wxNr/CpECL0aRI8RwMqVCGn6+UF7CNQyf5RxemuB/17INe43p+9LSfZbGZYQsn0Bditpj4UOijSPTYQfUAvufMzHqVKDsaZv5A=
+	t=1727880138; cv=none; b=PonHW/IVfKwDcmXUMQMC5TBGKJ1QfaxgmZxbGfvC6+SdijFHzMMW7bs9oIJziHQ0eEgrrtEvOzgs5d0uOS+5qS5owS2BMaMk+yQ6sqoki0e5bT7vm0QcWJeM1HP8puJPMmcmI2GNWPiRHfQrpl/lIX5kQ6xzH6ilWQlBGXmXLTA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878676; c=relaxed/simple;
-	bh=0G8U+Mu2Z2h92jB3UMyyqIaw4GLPzzOtJqyGomq+YyE=;
+	s=arc-20240116; t=1727880138; c=relaxed/simple;
+	bh=Svv0sFwkeUP+gI6UhtJVb165L6fNcpsi0bFZC35Xvmo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bVwbDARnncLkj0FkfZp70Oz1DMKv/t+z+Y3259f3C+W342IMz/dN3fn+luUpp0H6pMXJJ90Aya7ALsM9xcQOAZIYvdejPiytn7YGzBSmaCIILUBGeaSBk6mvYubXFBgzHda1XddwZgTT5A13Shsy0cic7f4/d/+XmhpFs1kqIc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0VU0o0Vn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F397C4CEC2;
-	Wed,  2 Oct 2024 14:17:55 +0000 (UTC)
+	 MIME-Version; b=SFZEwJin1vDyDoAMZVIlTwi1XVgeu1J8XJzNkUJ+1c45vlp7UEYolzMGCiUos9O17KlQcadceUfhuJG2D3ODmgW5hKBRxzdaVhiWy3YE00hSwTdgprrC8oaxZ6sxMQ4vmWPjze2R9CS4K73EPvB8P1466qfcna3jr7GnAF0ZeaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x3ZqIfYv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A4B0C4CEC2;
+	Wed,  2 Oct 2024 14:42:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878675;
-	bh=0G8U+Mu2Z2h92jB3UMyyqIaw4GLPzzOtJqyGomq+YyE=;
+	s=korg; t=1727880137;
+	bh=Svv0sFwkeUP+gI6UhtJVb165L6fNcpsi0bFZC35Xvmo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0VU0o0Vn6/zKndyV1vMPen8gDDzGEZ7LFnSg7l8WNhJfq53KstE7Hqp3hdUSgiCWR
-	 UyYkabr08LZbHt3D+fmw/wwvQ1Tp0PU3aye5/uWL7XJtDYE/+O3WeqpEIx8seT8TSw
-	 54JacOR6bb71aeX82+X4ZthLnlalxtPcAVWWvrRo=
+	b=x3ZqIfYvl3dMulwx7fcAczSQg7T9Nzs4uf6sAfFR6zLpwdDuA3COH4iUl5IeH/C2R
+	 R/0/JaaT20v/sLQT1pwSdwSUq7atQcywYMTYSFhKgM4vwi5QjtM4cTdQc2aw1N1BP7
+	 DRcZ++aHWX8zWON6AusifCcs/HbIykO7qjBqCK2E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Charlene Liu <charlene.liu@amd.com>,
-	Martin Tsai <martin.tsai@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.10 494/634] drm/amd/display: Clean up dsc blocks in accelerated mode
-Date: Wed,  2 Oct 2024 14:59:54 +0200
-Message-ID: <20241002125830.598855756@linuxfoundation.org>
+	Antoniu Miclaus <antoniu.miclaus@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 356/538] ABI: testing: fix admv8818 attr description
+Date: Wed,  2 Oct 2024 14:59:55 +0200
+Message-ID: <20241002125806.479083027@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,113 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Tsai <martin.tsai@amd.com>
+From: Antoniu Miclaus <antoniu.miclaus@analog.com>
 
-commit 3766a840e093d30e1a2522f650d8a6ac892a8719 upstream.
+[ Upstream commit 7d34b4ad8cd2867b130b5b8d7d76d0d6092bd019 ]
 
-[WHY]
-DSC on eDP could be enabled during VBIOS post. The enabled
-DSC may not be disabled when enter to OS, once the system was
-in second screen only mode before entering to S4. In this
-case, OS will not send setTimings to reset eDP path again.
+Fix description of the filter_mode_available attribute by pointing to
+the correct name of the attribute that can be written with valid values.
 
-The enabled DSC HW will make a new stream without DSC cannot
-output normally if it reused this pipe with enabled DSC.
-
-[HOW]
-In accelerated mode, to clean up DSC blocks if eDP is on link
-but not active when we are not in fast boot and seamless boot.
-
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Charlene Liu <charlene.liu@amd.com>
-Signed-off-by: Martin Tsai <martin.tsai@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: bf92d87d7c67 ("iio:filter:admv8818: Add sysfs ABI documentation")
+Signed-off-by: Antoniu Miclaus <antoniu.miclaus@analog.com>
+Link: https://patch.msgid.link/20240702081851.4663-1-antoniu.miclaus@analog.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c |   50 ++++++++++++++
- 1 file changed, 50 insertions(+)
+ Documentation/ABI/testing/sysfs-bus-iio-filter-admv8818 | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
-@@ -57,6 +57,7 @@
- #include "panel_cntl.h"
- #include "dc_state_priv.h"
- #include "dpcd_defs.h"
-+#include "dsc.h"
- /* include DCE11 register header files */
- #include "dce/dce_11_0_d.h"
- #include "dce/dce_11_0_sh_mask.h"
-@@ -1768,6 +1769,48 @@ static void get_edp_links_with_sink(
- 	}
- }
+diff --git a/Documentation/ABI/testing/sysfs-bus-iio-filter-admv8818 b/Documentation/ABI/testing/sysfs-bus-iio-filter-admv8818
+index 31dbb390573ff..c431f0a13cf50 100644
+--- a/Documentation/ABI/testing/sysfs-bus-iio-filter-admv8818
++++ b/Documentation/ABI/testing/sysfs-bus-iio-filter-admv8818
+@@ -3,7 +3,7 @@ KernelVersion:
+ Contact:	linux-iio@vger.kernel.org
+ Description:
+ 		Reading this returns the valid values that can be written to the
+-		on_altvoltage0_mode attribute:
++		filter_mode attribute:
  
-+static void clean_up_dsc_blocks(struct dc *dc)
-+{
-+	struct display_stream_compressor *dsc = NULL;
-+	struct timing_generator *tg = NULL;
-+	struct stream_encoder *se = NULL;
-+	struct dccg *dccg = dc->res_pool->dccg;
-+	struct pg_cntl *pg_cntl = dc->res_pool->pg_cntl;
-+	int i;
-+
-+	if (dc->ctx->dce_version != DCN_VERSION_3_5 &&
-+		dc->ctx->dce_version != DCN_VERSION_3_51)
-+		return;
-+
-+	for (i = 0; i < dc->res_pool->res_cap->num_dsc; i++) {
-+		struct dcn_dsc_state s  = {0};
-+
-+		dsc = dc->res_pool->dscs[i];
-+		dsc->funcs->dsc_read_state(dsc, &s);
-+		if (s.dsc_fw_en) {
-+			/* disable DSC in OPTC */
-+			if (i < dc->res_pool->timing_generator_count) {
-+				tg = dc->res_pool->timing_generators[i];
-+				tg->funcs->set_dsc_config(tg, OPTC_DSC_DISABLED, 0, 0);
-+			}
-+			/* disable DSC in stream encoder */
-+			if (i < dc->res_pool->stream_enc_count) {
-+				se = dc->res_pool->stream_enc[i];
-+				se->funcs->dp_set_dsc_config(se, OPTC_DSC_DISABLED, 0, 0);
-+				se->funcs->dp_set_dsc_pps_info_packet(se, false, NULL, true);
-+			}
-+			/* disable DSC block */
-+			if (dccg->funcs->set_ref_dscclk)
-+				dccg->funcs->set_ref_dscclk(dccg, dsc->inst);
-+			dsc->funcs->dsc_disable(dsc);
-+
-+			/* power down DSC */
-+			if (pg_cntl != NULL)
-+				pg_cntl->funcs->dsc_pg_control(pg_cntl, dsc->inst, false);
-+		}
-+	}
-+}
-+
- /*
-  * When ASIC goes from VBIOS/VGA mode to driver/accelerated mode we need:
-  *  1. Power down all DC HW blocks
-@@ -1852,6 +1895,13 @@ void dce110_enable_accelerated_mode(stru
- 		clk_mgr_exit_optimized_pwr_state(dc, dc->clk_mgr);
- 
- 		power_down_all_hw_blocks(dc);
-+
-+		/* DSC could be enabled on eDP during VBIOS post.
-+		 * To clean up dsc blocks if eDP is in link but not active.
-+		 */
-+		if (edp_link_with_sink && (edp_stream_num == 0))
-+			clean_up_dsc_blocks(dc);
-+
- 		disable_vga_and_power_gate_all_controllers(dc);
- 		if (edp_link_with_sink && !keep_edp_vdd_on)
- 			dc->hwss.edp_power_control(edp_link_with_sink, false);
+ 		- auto -> Adjust bandpass filter to track changes in input clock rate.
+ 		- manual -> disable/unregister the clock rate notifier / input clock tracking.
+-- 
+2.43.0
+
 
 
 
