@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-80439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79902-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id DDD7B98DD6F
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:49:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id A53F898DAD2
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:25:32 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 951051F23B5D
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:49:30 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5D10F1F23453
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:25:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D7AC1D0E06;
-	Wed,  2 Oct 2024 14:46:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39F671D223C;
+	Wed,  2 Oct 2024 14:20:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zn+e2Q+h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q78jvqtb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B5F21D016D;
-	Wed,  2 Oct 2024 14:46:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC34E1D0E1A;
+	Wed,  2 Oct 2024 14:20:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880378; cv=none; b=fusOyL6C3IA5kWYWcyaw/gseAap/SrymEEM4YzStNh8ScdxabeQEC0m1d6pWz5mb6zVYXMOpMpdWDo++tUyHCvvABn4ZCowbQf6tFKW+Gq3jn4vUIEGNrJJ21seHjcT//JwExOvOvDH0A6xLueRgMytoYXaFCgydjhitdABJoT4=
+	t=1727878803; cv=none; b=swIGePcZLO5uSoAcqzo6HxAA9VFA0K1UIRPjwQhutRSjRO0d9pDLktFb3FA7QbI3Mv0tAiI5Qdpa3ryFG39IkXeZvLlOpy+Zcw2JUvvJBLe96S9+Cuqh7X9ZbutKHrVD+FTxtnds7FJK+0u5+JaiUdXBtHUsYJvCd448wJ7ixI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880378; c=relaxed/simple;
-	bh=11FPwlqi8go07Sqb3ohxRkI8WlOpWS1zsjlquWCdscM=;
+	s=arc-20240116; t=1727878803; c=relaxed/simple;
+	bh=0lY4y5+3boCg4QWH14f3OgnBHUHpwfZTWURwXRdNpUI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mZHFt+xdLocH4TWasjgm4/M4fXVs8WG23vdCRuN8RYrarmgZrdhG9Lu3Hh+gbLfSTFgtVaI/lAOyIGqJ+zZaXO8uIdiSKYfx39+yHXjvr4yQLkpRfkmLr+ys9s+cJuOw7coMKEDsp4Mdw6tufoFj2dXkMXGHYHPEVItlPzP7+cQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zn+e2Q+h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B26BFC4CEC2;
-	Wed,  2 Oct 2024 14:46:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NMTsBp92LRhE6JeXClRnHjRcY0EmcjcDs1AaoMfOYIQvPwrfWpa4Lzfih+UV7y4WlQhfY0Oi1eG/FUc239JYLnr/1XRieIaLeOQSAeDo0Co9rI4jivP8PNLxeBAN8MsAWjuxMDIRzUq73bleUPYUp3jogZS7PlBj2XOTcjGcqOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q78jvqtb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B426C4CEC2;
+	Wed,  2 Oct 2024 14:20:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880378;
-	bh=11FPwlqi8go07Sqb3ohxRkI8WlOpWS1zsjlquWCdscM=;
+	s=korg; t=1727878802;
+	bh=0lY4y5+3boCg4QWH14f3OgnBHUHpwfZTWURwXRdNpUI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Zn+e2Q+h2alMUr/Bxcs68FL/LGXkfGtqEBtTodSbY8aMV7V7Bo7uVEQqqy7cTERK6
-	 3F/JuoxudwUyE9ps5BEeO84JrCEYtUkyDZCuZvu/HnV5OlwBLkkZUkIzzMRUd4Ksl8
-	 EwlrQi17TNaWmNKirwahHCP8CxZuX+xDVHfLpotQ=
+	b=Q78jvqtbbsn0Sf7AnoWsAOz067qKZACT/nLM9YErcyMtutRYU9MjkdLYoCUNmwTJT
+	 LH7MhFwWDzAr4qhrsEmpmR4uacgUnGxU3I/eV7LLnQym2/HV5Og01mI8qFOtZ7ZfQt
+	 6cWQA0OzRT3vRAlItlZtUt04nVdx5X53ahSf0M+Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	"Maciej W. Rozycki" <macro@orcam.me.uk>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	=?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>
-Subject: [PATCH 6.6 397/538] PCI: Correct error reporting with PCIe failed link retraining
+	"=?UTF-8?q?Ernesto=20A . =20Fern=C3=A1ndez?=" <ernesto.mnd.fernandez@gmail.com>,
+	Brian Masney <bmasney@redhat.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>
+Subject: [PATCH 6.10 536/634] crypto: qcom-rng - fix support for ACPI-based systems
 Date: Wed,  2 Oct 2024 15:00:36 +0200
-Message-ID: <20241002125808.106403763@linuxfoundation.org>
+Message-ID: <20241002125832.265869611@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,81 +64,61 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej W. Rozycki <macro@orcam.me.uk>
+From: Brian Masney <bmasney@redhat.com>
 
-commit 712e49c967064a3a7a5738c6f65ac540a3f6a1df upstream.
+commit 3e87031a6ce68f13722155497cd511a00b56a2ae upstream.
 
-Only return successful completion status from pcie_failed_link_retrain() if
-retraining has actually been done, preventing excessive delays from being
-triggered at call sites in a hope that communication will finally be
-established with the downstream device where in fact nothing has been done
-about the link in question that would justify such a hope.
+The qcom-rng driver supports both ACPI and device tree-based systems.
+ACPI support was broken when the hw_random interface support was added.
+Let's go ahead and fix this by adding the appropriate driver data to the
+ACPI match table, and change the of_device_get_match_data() call to
+device_get_match_data() so that it will also work on ACPI-based systems.
 
-Fixes: a89c82249c37 ("PCI: Work around PCIe link training failures")
-Link: https://lore.kernel.org/r/alpine.DEB.2.21.2408091133260.61955@angie.orcam.me.uk
-Reported-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://lore.kernel.org/r/aa2d1c4e-9961-d54a-00c7-ddf8e858a9b0@linux.intel.com/
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Cc: <stable@vger.kernel.org> # v6.5+
+This fix was boot tested on a Qualcomm Amberwing server (ACPI based) and
+on a Qualcomm SA8775p Automotive Development Board (DT based). I also
+verified that qcom-rng shows up in /proc/crypto on both systems.
+
+Fixes: f29cd5bb64c2 ("crypto: qcom-rng - Add hw_random interface support")
+Reported-by: Ernesto A. Fernández <ernesto.mnd.fernandez@gmail.com>
+Closes: https://lore.kernel.org/linux-arm-msm/20240828184019.GA21181@eaf/
+Cc: stable@vger.kernel.org
+Signed-off-by: Brian Masney <bmasney@redhat.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/quirks.c |   12 ++++++++----
- 1 file changed, 8 insertions(+), 4 deletions(-)
+ drivers/crypto/qcom-rng.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -78,7 +78,8 @@
-  * again to remove any residual state, ignoring the result as it's supposed
-  * to fail anyway.
-  *
-- * Return TRUE if the link has been successfully retrained, otherwise FALSE.
-+ * Return TRUE if the link has been successfully retrained.  Return FALSE
-+ * if retraining was not needed or we attempted a retrain and it failed.
-  */
- bool pcie_failed_link_retrain(struct pci_dev *dev)
- {
-@@ -87,6 +88,7 @@ bool pcie_failed_link_retrain(struct pci
- 		{}
- 	};
- 	u16 lnksta, lnkctl2;
-+	bool ret = false;
+diff --git a/drivers/crypto/qcom-rng.c b/drivers/crypto/qcom-rng.c
+index c670d7d0c11e..6496b075a48d 100644
+--- a/drivers/crypto/qcom-rng.c
++++ b/drivers/crypto/qcom-rng.c
+@@ -196,7 +196,7 @@ static int qcom_rng_probe(struct platform_device *pdev)
+ 	if (IS_ERR(rng->clk))
+ 		return PTR_ERR(rng->clk);
  
- 	if (!pci_is_pcie(dev) || !pcie_downstream_port(dev) ||
- 	    !pcie_cap_has_lnkctl2(dev) || !dev->link_active_reporting)
-@@ -104,7 +106,8 @@ bool pcie_failed_link_retrain(struct pci
- 		lnkctl2 |= PCI_EXP_LNKCTL2_TLS_2_5GT;
- 		pcie_capability_write_word(dev, PCI_EXP_LNKCTL2, lnkctl2);
+-	rng->of_data = (struct qcom_rng_of_data *)of_device_get_match_data(&pdev->dev);
++	rng->of_data = (struct qcom_rng_of_data *)device_get_match_data(&pdev->dev);
  
--		if (pcie_retrain_link(dev, false)) {
-+		ret = pcie_retrain_link(dev, false) == 0;
-+		if (!ret) {
- 			pci_info(dev, "retraining failed\n");
- 			pcie_capability_write_word(dev, PCI_EXP_LNKCTL2,
- 						   oldlnkctl2);
-@@ -126,13 +129,14 @@ bool pcie_failed_link_retrain(struct pci
- 		lnkctl2 |= lnkcap & PCI_EXP_LNKCAP_SLS;
- 		pcie_capability_write_word(dev, PCI_EXP_LNKCTL2, lnkctl2);
+ 	qcom_rng_dev = rng;
+ 	ret = crypto_register_rng(&qcom_rng_alg);
+@@ -247,7 +247,7 @@ static struct qcom_rng_of_data qcom_trng_of_data = {
+ };
  
--		if (pcie_retrain_link(dev, false)) {
-+		ret = pcie_retrain_link(dev, false) == 0;
-+		if (!ret) {
- 			pci_info(dev, "retraining failed\n");
- 			return false;
- 		}
- 	}
- 
--	return true;
-+	return ret;
- }
- 
- static ktime_t fixup_debug_start(struct pci_dev *dev,
+ static const struct acpi_device_id __maybe_unused qcom_rng_acpi_match[] = {
+-	{ .id = "QCOM8160", .driver_data = 1 },
++	{ .id = "QCOM8160", .driver_data = (kernel_ulong_t)&qcom_prng_ee_of_data },
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(acpi, qcom_rng_acpi_match);
+-- 
+2.46.2
+
 
 
 
