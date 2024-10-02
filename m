@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-79941-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80438-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD1AC98DAFF
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:26:58 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA49598DD81
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:50:05 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 57E671F24252
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:26:58 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 965D4B24F47
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:49:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BAFCE1D0F50;
-	Wed,  2 Oct 2024 14:21:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B68F1D0DE9;
+	Wed,  2 Oct 2024 14:46:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kAUtKygC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wPRUywKx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72F1B1D0F46;
-	Wed,  2 Oct 2024 14:21:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56A111E892;
+	Wed,  2 Oct 2024 14:46:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878917; cv=none; b=nh30wuGCNVWOS3kCm0wviPtXEj08kcq6dH86rKdUMzbFze4p71Ghz0TWBF/BbQZEs+u8US+mV8f2H8qQmPUjZ0vi0VYwfG1UWCPjx6HBm8jr1SdrOMltTDcWjGn6YMavGPeA0M84UlB53NrG08ZzV42MfrsrsWFpTzKsWJ2BX1k=
+	t=1727880375; cv=none; b=K3SSvNuoVnYsSHsJR1HJP2Ho6l3APbGZwsn0cwt2PBG7fvW/VxuVHyMnxJRiT6g4gbqvBH6zjkbywqp1t4e5wfedaDp5riFeB5RQdPU4GNHqvNqORlRIDDDwil9Daa3FjhsXSuwHVOsyvD0tsj1oUHL15Npjb4cEwfRK1DdfRMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878917; c=relaxed/simple;
-	bh=b3kL94vaT015T6POcEaNWIouC54DJmMw/YxMUXWjHLg=;
+	s=arc-20240116; t=1727880375; c=relaxed/simple;
+	bh=gHt8nUA8dkQk/Hx/36J2KCQl+zGG41+bPI/nthl9GB8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W2Mn358fln+l1F4VUcJj8McTlbwt0aZLi0giGWbyf3X2oNUEJryOZ5ln/LhnUOAcFsl2U0xTB1TWI3LLVruTuirJYOAJxj2tSvjb8HBNV/1uVeP/a6Px6GeRL8fnN2gAOlHWs3AT7POpzHSvH4p5JT828Fr0wOOb/MaDDsU6PrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kAUtKygC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F26BCC4CEC2;
-	Wed,  2 Oct 2024 14:21:56 +0000 (UTC)
+	 MIME-Version; b=E8Amp2OfRIzBrgrxyL0KgKeupEUmxQ6ZlJOKek/tVWWuSr54Ie4Hn1jv/oj3y21XFVLJzSN0EMP+ZE1wy7X8fqUyZxI+H9YuoSg+wbfiYWpMU4bWuCSPhTRssHdt4OoK8StdyXh8d4LFScGBvywK8ebh/zRrbh53PQVxe71a5fw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wPRUywKx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2E88C4CEC2;
+	Wed,  2 Oct 2024 14:46:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878917;
-	bh=b3kL94vaT015T6POcEaNWIouC54DJmMw/YxMUXWjHLg=;
+	s=korg; t=1727880375;
+	bh=gHt8nUA8dkQk/Hx/36J2KCQl+zGG41+bPI/nthl9GB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kAUtKygCxq3kWHoG0MFgPmFh1KxKRS9YUFFO8qAbrn2VZcUdfnuT2uNtBe/qQeMA+
-	 eR4f6miDtocXLI3BnLYm4yX1+mpzeFxzlxfZliwMF6fWxhY5rezYOJH2+tdXqjUvh0
-	 /HvwOn6sozDh/dBrGUsHc46Vy12HfOvLGrE+h4G0=
+	b=wPRUywKxLigRxd2CQwSfbx8x3krHTJwV6lubIqhCjH0X/YX73keQArUTiCOLgQcjN
+	 DyGH2ueGUwx8qVva7g9oUY7fpAA6s7H5JsH2QAJ7GbAJKU7xXJvmlfo8RU0jsJNnOD
+	 kbRBgqHGqJL50rDne0xn2OzYO6Ec2rt0Xa+OJ2d4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrii Nakryiko <andrii.nakryiko@gmail.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Andrii Nakryiko <andrii@kernel.org>
-Subject: [PATCH 6.10 545/634] perf/x86/intel: Allow to setup LBR for counting event for BPF
+	Nuno Sa <nuno.sa@analog.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.6 406/538] Input: adp5588-keys - fix check on return code
 Date: Wed,  2 Oct 2024 15:00:45 +0200
-Message-ID: <20241002125832.621627303@linuxfoundation.org>
+Message-ID: <20241002125808.462205513@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,69 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kan Liang <kan.liang@linux.intel.com>
+From: Nuno Sa <nuno.sa@analog.com>
 
-commit ef493f4b122d6b14a6de111d1acac1eab1d673b0 upstream.
+commit eb017f4ea13b1a5ad7f4332279f2e4c67b44bdea upstream.
 
-The BPF subsystem may capture LBR data on a counting event. However, the
-current implementation assumes that LBR can/should only be used with
-sampling events.
+During adp5588_setup(), we read all the events to clear the event FIFO.
+However, adp5588_read() just calls i2c_smbus_read_byte_data() which
+returns the byte read in case everything goes well. Hence, we need to
+explicitly check for a negative error code instead of checking for
+something different than 0.
 
-For instance, retsnoop tool ([0]) makes an extensive use of this
-functionality and sets up perf event as follows:
-
-	struct perf_event_attr attr;
-
-	memset(&attr, 0, sizeof(attr));
-	attr.size = sizeof(attr);
-	attr.type = PERF_TYPE_HARDWARE;
-	attr.config = PERF_COUNT_HW_CPU_CYCLES;
-	attr.sample_type = PERF_SAMPLE_BRANCH_STACK;
-	attr.branch_sample_type = PERF_SAMPLE_BRANCH_KERNEL;
-
-To limit the LBR for a sampling event is to avoid unnecessary branch
-stack setup for a counting event in the sample read. Because LBR is only
-read in the sampling event's overflow.
-
-Although in most cases LBR is used in sampling, there is no HW limit to
-bind LBR to the sampling mode. Allow an LBR setup for a counting event
-unless in the sample read mode.
-
-Fixes: 85846b27072d ("perf/x86: Add PERF_X86_EVENT_NEEDS_BRANCH_STACK flag")
-Closes: https://lore.kernel.org/lkml/20240905180055.1221620-1-andrii@kernel.org/
-Reported-by: Andrii Nakryiko <andrii.nakryiko@gmail.com>
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Tested-by: Andrii Nakryiko <andrii@kernel.org>
+Fixes: e960309ce318 ("Input: adp5588-keys - bail out on returned error")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240909155848.326640-1-kan.liang@linux.intel.com
+Signed-off-by: Nuno Sa <nuno.sa@analog.com>
+Link: https://lore.kernel.org/r/20240920-fix-adp5588-err-check-v1-1-81f6e957ef24@analog.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/events/intel/core.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ drivers/input/keyboard/adp5588-keys.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -3912,8 +3912,12 @@ static int intel_pmu_hw_config(struct pe
- 			x86_pmu.pebs_aliases(event);
+--- a/drivers/input/keyboard/adp5588-keys.c
++++ b/drivers/input/keyboard/adp5588-keys.c
+@@ -627,7 +627,7 @@ static int adp5588_setup(struct adp5588_
+ 
+ 	for (i = 0; i < KEYP_MAX_EVENT; i++) {
+ 		ret = adp5588_read(client, KEY_EVENTA);
+-		if (ret)
++		if (ret < 0)
+ 			return ret;
  	}
  
--	if (needs_branch_stack(event) && is_sampling_event(event))
--		event->hw.flags  |= PERF_X86_EVENT_NEEDS_BRANCH_STACK;
-+	if (needs_branch_stack(event)) {
-+		/* Avoid branch stack setup for counting events in SAMPLE READ */
-+		if (is_sampling_event(event) ||
-+		    !(event->attr.sample_type & PERF_SAMPLE_READ))
-+			event->hw.flags |= PERF_X86_EVENT_NEEDS_BRANCH_STACK;
-+	}
- 
- 	if (branch_sample_counters(event)) {
- 		struct perf_event *leader, *sibling;
 
 
 
