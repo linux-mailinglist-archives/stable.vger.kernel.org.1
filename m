@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-79999-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB59698DB47
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:29:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id B23BF98DDBB
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:51:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id DDC401C233E4
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:29:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F645283981
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:51:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 762541D172D;
-	Wed,  2 Oct 2024 14:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36A7E1D0F4C;
+	Wed,  2 Oct 2024 14:49:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U4V5+Mzp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MFhzq9GW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32A151D1728;
-	Wed,  2 Oct 2024 14:24:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA5581D0F48;
+	Wed,  2 Oct 2024 14:49:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879089; cv=none; b=YPom9s9URh8WpUQkguG0HluYViVDFtMIE1mg8kRUm9LgWA7KgZV5sTtb4saZudrxcI32cuO1941rpSapMPE4U8Myf2/b2otNPJxC7VUhQI85sRHkQq/mmAOU4IIyT4lBXo1qnz0E2XJ4w05ILfMfCVWwVJTcFEZLRQGIEKCEU4g=
+	t=1727880551; cv=none; b=PoPxG7ENuBO26BVFi3c6f7D7Z11uKj+RGyTW1/J336018pQUnKMQYZIF764UxKhbsSAgPDFtGjq34PssNl6sBM8ggQ2YiZNad3kQUNRWvEFRBAd3Vq/IG8XvuHwJMZjR47Sp3pSyJxPnuIKbDpjpIQjgT9W2ys3fzW0/+BFvIAk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879089; c=relaxed/simple;
-	bh=dEyvKHbR5V+nG1g3oybRYcCTqbEw6JkHwe9hRFm0bo8=;
+	s=arc-20240116; t=1727880551; c=relaxed/simple;
+	bh=MufoUWZoz4iwCqcpOvjlbCea8PIeSz42LMHXlBQh2Ns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=W1n46r5HcbxZfxPNMP+3daZy7zh9B0OXiBRdQebJcZkCjvtyYdkA0bErO2i0qfMyitcHk5/UqYs/pwAfCb6a1w8LTgZkMV+dSlfc8OKzlK4TsbOrRbq8B2kD04gwu28y1O6d+UMLr+DDdIsFWB1/s+qKj1ElyHr3j99r9oLtUMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U4V5+Mzp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82312C4CEC2;
-	Wed,  2 Oct 2024 14:24:48 +0000 (UTC)
+	 MIME-Version; b=BlZ+GQapXlN30Rs/dqB2x9zOJdeHhUKmUryGtmtEl49qYWcBiwexy3kLsNOQsf8z7CFd/7mjfv7yb/s0PxaBWdZW7FvGN/j8EGX9tmqFXXR0lCGTJ36wuV5CWMibSNVknUy5tLvDtngfFomlWxTO8c0iT8i3kROLakiJ4q+LA4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MFhzq9GW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6942AC4CEC2;
+	Wed,  2 Oct 2024 14:49:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879089;
-	bh=dEyvKHbR5V+nG1g3oybRYcCTqbEw6JkHwe9hRFm0bo8=;
+	s=korg; t=1727880550;
+	bh=MufoUWZoz4iwCqcpOvjlbCea8PIeSz42LMHXlBQh2Ns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U4V5+Mzp/BqbR8dO0O4k91AP1Qoby/8cYdN7AsPNDHvKXG05Sf4r4iiGnoR9IqG0e
-	 F2sPvflksnTXGCE2c2Vj+oUrekp53PDYXv+uYdJK2q06CpS6LjL4DgnuU8GCe06Voi
-	 h0VZz0gzEC5YkEa0eh5vxzmnok/CCd/1R5X9oWqo=
+	b=MFhzq9GWgOEllvGdJ61Q7cT79rplomtEL61f7gMaLZeBNFxE0L1gxghA81XODSZHJ
+	 imHaD95L2uFxsUlXkXeDD0zC04Kq4D2U5N6CAYbM4L1R8tYQizbs7+dxTcGA84LveK
+	 v3uhL6bd3ZWfsxC4upyiNyyH60ZAdjs9iSoDpfhw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+f7a1c2c2711e4a780f19@syzkaller.appspotmail.com,
-	Oleg Nesterov <oleg@redhat.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>
-Subject: [PATCH 6.10 634/634] bpf: Fix use-after-free in bpf_uprobe_multi_link_attach()
-Date: Wed,  2 Oct 2024 15:02:14 +0200
-Message-ID: <20241002125836.151680672@linuxfoundation.org>
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 496/538] btrfs: subpage: fix the bitmap dump which can cause bitmap corruption
+Date: Wed,  2 Oct 2024 15:02:15 +0200
+Message-ID: <20241002125812.017741445@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleg Nesterov <oleg@redhat.com>
+From: Qu Wenruo <wqu@suse.com>
 
-commit 5fe6e308abaea082c20fbf2aa5df8e14495622cf upstream.
+[ Upstream commit 77b0b98bb743f5d04d8f995ba1936e1143689d4a ]
 
-If bpf_link_prime() fails, bpf_uprobe_multi_link_attach() goes to the
-error_free label and frees the array of bpf_uprobe's without calling
-bpf_uprobe_unregister().
+In commit 75258f20fb70 ("btrfs: subpage: dump extra subpage bitmaps for
+debug") an internal macro GET_SUBPAGE_BITMAP() is introduced to grab the
+bitmap of each attribute.
 
-This leaks bpf_uprobe->uprobe and worse, this frees bpf_uprobe->consumer
-without removing it from the uprobe->consumers list.
+But that commit is using bitmap_cut() which will do the left shift of
+the larger bitmap, causing incorrect values.
 
-Fixes: 89ae89f53d20 ("bpf: Add multi uprobe link")
-Closes: https://lore.kernel.org/all/000000000000382d39061f59f2dd@google.com/
-Reported-by: syzbot+f7a1c2c2711e4a780f19@syzkaller.appspotmail.com
-Signed-off-by: Oleg Nesterov <oleg@redhat.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Tested-by: syzbot+f7a1c2c2711e4a780f19@syzkaller.appspotmail.com
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240813152524.GA7292@redhat.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Thankfully this bitmap_cut() is only called for debug usage, and so far
+it's not yet causing problem.
+
+Fix it to use bitmap_read() to only grab the desired sub-bitmap.
+
+Fixes: 75258f20fb70 ("btrfs: subpage: dump extra subpage bitmaps for debug")
+CC: stable@vger.kernel.org # 6.6+
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/bpf_trace.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ fs/btrfs/subpage.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/kernel/trace/bpf_trace.c
-+++ b/kernel/trace/bpf_trace.c
-@@ -3484,17 +3484,20 @@ int bpf_uprobe_multi_link_attach(const u
- 					     uprobes[i].ref_ctr_offset,
- 					     &uprobes[i].consumer);
- 		if (err) {
--			bpf_uprobe_unregister(&path, uprobes, i);
--			goto error_free;
-+			link->cnt = i;
-+			goto error_unregister;
- 		}
- 	}
+diff --git a/fs/btrfs/subpage.c b/fs/btrfs/subpage.c
+index 1b999c6e41930..b98d42ca55647 100644
+--- a/fs/btrfs/subpage.c
++++ b/fs/btrfs/subpage.c
+@@ -713,8 +713,14 @@ void btrfs_page_unlock_writer(struct btrfs_fs_info *fs_info, struct page *page,
+ }
  
- 	err = bpf_link_prime(&link->link, &link_primer);
- 	if (err)
--		goto error_free;
-+		goto error_unregister;
+ #define GET_SUBPAGE_BITMAP(subpage, subpage_info, name, dst)		\
+-	bitmap_cut(dst, subpage->bitmaps, 0,				\
+-		   subpage_info->name##_offset, subpage_info->bitmap_nr_bits)
++{									\
++	const int bitmap_nr_bits = subpage_info->bitmap_nr_bits;	\
++									\
++	ASSERT(bitmap_nr_bits < BITS_PER_LONG);				\
++	*dst = bitmap_read(subpage->bitmaps,				\
++			   subpage_info->name##_offset,			\
++			   bitmap_nr_bits);				\
++}
  
- 	return bpf_link_settle(&link_primer);
- 
-+error_unregister:
-+	bpf_uprobe_unregister(&path, uprobes, link->cnt);
-+
- error_free:
- 	kvfree(uprobes);
- 	kfree(link);
+ void __cold btrfs_subpage_dump_bitmap(const struct btrfs_fs_info *fs_info,
+ 				      struct page *page, u64 start, u32 len)
+-- 
+2.43.0
+
 
 
 
