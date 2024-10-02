@@ -1,244 +1,197 @@
-Return-Path: <stable+bounces-80593-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80594-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3516198E285
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 20:31:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8645E98E295
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 20:33:22 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E4BDA28719A
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 18:31:07 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 4A678283758
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 18:33:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53C0C2141B6;
-	Wed,  2 Oct 2024 18:30:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE312212F0F;
+	Wed,  2 Oct 2024 18:33:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="P3gYsRiA"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="J+c4JxlC"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2082.outbound.protection.outlook.com [40.107.243.82])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35C612141BF;
-	Wed,  2 Oct 2024 18:30:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727893850; cv=none; b=W7jlShf293vNJAOfsu3rK6BZ97XMJwnstFfE/bws3PyPOUe3rM9ifWsyVLYDV4Z1XZh9OU+JLB6SYwBrmtDrbAVM/mBK1C0619lbaNqgwlZQhkrll6Rn3MMaSDnYfvsEyWWJFRXfLaMDvNfLAcrqB/lleOMuI5Lr6ALBh7nz5AI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727893850; c=relaxed/simple;
-	bh=fM8zcIN6ZzgFzJMi8vX85wRIXm/I6mt/k2t8S8BjaWE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=r1S3eO/yTbpd9sAWQTV5I0y8cg7nxLveHUreUOdZm370SbbMN+D4IXR8UE+lyXMFdEH7OA+PhbLbNBDq4v4Jtnd+ZfsCu2i4lu+gmsVzfVSQKpIcbYJONVoYcU5ukJM5k181d2E08DjWq3hECWTztgrnbXqNBqCKY95QqvOV6Ts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=P3gYsRiA; arc=none smtp.client-ip=209.85.208.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2fabb837ddbso1459181fa.1;
-        Wed, 02 Oct 2024 11:30:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727893846; x=1728498646; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=nCJKQj92YUp9lYjcAYVWHDwb92zO+RIIleVkehLxHkk=;
-        b=P3gYsRiAtUVVXAR/FICWNFJf17M+FZZnMPwpEUw7V78TR7+OfpS7X4cCd10rjhlOik
-         D9tM6+SNVXAxytYdB2+e6oYx8r6C9YleH+53gm343roBBpodBIUmH5It5Zkc0SEV1dWo
-         qDG9/Mr0U0IIUbRaJP3tMDAAtlfr2Kvr8W5uylvoGWqIxG8HefLLmDkjGNPpH2sIKup1
-         8ZdJ4EhLTWe7JdrojlXypjXtGPe4f82gkAxXfDBtZZSgxcTh0thfQ/9vRD18QEBnbuHt
-         W9IxyypVg8R5AAqjPhnOUpCvghUz4c1M2UDPoeFltkgEBNxWAnqOe9fcbk2lsP7eXkqk
-         Gi9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727893846; x=1728498646;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=nCJKQj92YUp9lYjcAYVWHDwb92zO+RIIleVkehLxHkk=;
-        b=OKuXh9eWDA693AuJes+9c496BHbXq/Ush6DLpkmoBqjcfr7spfATBjK2it8ZtZAqRu
-         CGincM7FR98TtKFbA9wttI5uYdP7k/TSQoIOOIlBqUEGA6NeTuLWtu1W29l8ZeJH7GVx
-         wuKqkfYMu2eu0x8DyWa3FmgkJgLftaUDyMYJnYnZh+DQuft/A4b2Ej6QyAHaFCG08iIF
-         hRACPRAE/l6gDkiJ4wMgjRmYYMVgo4C04YeQiK6g/PcaUEkStz+1/zQglW1amw08J8EE
-         wlgerAZljhwNyVWBJbb6sdifkhiRBgLd19qfrv8EJcbDu1bxs/cDuNc0ir+VZZ/JaLS6
-         bOlQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVFlr2Mk2dxLw+enenJWqRxwXb7lCpmBffcPyp6G11Ppuo46yYgT7AfdGDhiCzw1KVcYbistY6+Xsl/100=@vger.kernel.org, AJvYcCVgeMNqA88kIn2r2Z3GJzgleEdnXGoaiLeAWCfe+lgokhqgr39BBlLbNx9tEO4aUU+9Og/SIy4w@vger.kernel.org
-X-Gm-Message-State: AOJu0YzAIjruae/gt6Z7kYZombpMBxcvn1ROjNwV3gzyqbaQPH4tKfUL
-	Cdc+aLYi3niepGmucNIhRQ1cnKZu98puXNrWH3lxVpGMJg9m47Q9MQbfHqFmZs9O/0xWLk5mGb2
-	hzMuBlvJM5NhuLDStthOdtghCACA=
-X-Google-Smtp-Source: AGHT+IGejH4I7ojpQ9eTpLEzvNUqv6TXekoWAianOs0i1fVMU1e8y3mYHlllAqf3VecKFG7Of/ZhNSRZbPNVMb8b5yo=
-X-Received: by 2002:a05:651c:2105:b0:2fa:c0c2:d311 with SMTP id
- 38308e7fff4ca-2fae10226e4mr37736171fa.5.1727893845890; Wed, 02 Oct 2024
- 11:30:45 -0700 (PDT)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25C8F1CF2BA;
+	Wed,  2 Oct 2024 18:33:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.243.82
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727893996; cv=fail; b=k1wO/c3vHvkifN2AmVQCE55SCFpKG4nIrJKZMQhoVySf+nngLl16N0sQhsfWU5D3vN9s3HZ2vh/OEjc3OXgkosuBs09rjg5qK9xmf3fPgDL2SGk0FWJQmWlHTQ5VaiBOoVk9340e5YJz+mXHvwaO86LINaEPkgNbl+JQ2QpdqSg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727893996; c=relaxed/simple;
+	bh=g50vwNbRE3nVLvuz7WzF3HbJsTd2S1Hjl7QbRAeugig=;
+	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID:Date; b=cSuzF4mv04SlIjHG16rE5VZPIj72Eej6cBo3CZCRte1fbgXV0JxHRmEqS9ERr/QC0rS0qg07TJ2BZ4pdVunu9xqCDaVftYz4dAdiZNB7mliqe1dHUol9FQMEVIIQwPiTzuoLIjM3V2Jgc1eAbLgxgIoRC+3VgTYe1KR5zBFxGVQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=J+c4JxlC; arc=fail smtp.client-ip=40.107.243.82
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=exNJtmiWZuyTdrhAyRbOatcVhy8vDIAhOve56ucWynUrgMk46v9p4VVn0l2+4Nd1mkS1U2qdUPWwSd/gDxAH8Gv6ESB2ST/MqqWZR3DbXnyToiyaoKsmUR/OWFsMtHv8mABCFcw6fEl3kvOeEer3vcLwOIrq9dGM3iJCdfmRNqf+NqvW//MH7Y5XCfjOe51YcVCFFgLwO14o2QVCMeImXnsiaj0eeX5TsBTrc4H81pr/zAGyDvG6TFWZKt0F5aRQ/+Beg0U93TjrpSFiZsuD9h5kbXeeIQyAVyFKB4MfDGeWoVablwEcMkIklJTVCO5gr5NmvISbMKpQAbMgkZ9wcg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=WkdN+5bnisouiUnU01m618YJKluN+axn7pSfJDM090Y=;
+ b=Dsl9QqmmjlSrcb6hWBtS9nHgCV1dX/Z8AALnTnXRP90hm/6JMkrfTr8C1jR6PYoxtCO6AokwN2ctUi0aA4UWE6mjyUF8x3tcgA0M1MSrnfteK6oJjUJ2j+mL7P9ky7LfC9XBKjnDOxT7/Z/ndw1RNoyXCOPEr44RLlcAq+Re/KBV/eVeMrs9XZTqrFjU616N7/tx/y+O2FiTxVU0mk2wwPiVWRA9+hXCosJ6weqa0VJhkT9gX1jLIRDPgkOfU+I/cFvq8o1rI2133bu7YgwPRuHc7Ei0YoSqrJbBLRwZzGBHNCdC3ORVVU5VsY1OQifAZEO+/gSrRmPfdGbWZcO3EA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.232) smtp.rcpttodomain=linuxfoundation.org
+ smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=WkdN+5bnisouiUnU01m618YJKluN+axn7pSfJDM090Y=;
+ b=J+c4JxlCN02nfRUS94mPp9QvLjEeO01w40L2q/Z+QhIYHWpWsm7MkRZwLDejukwkIRnLxS4E6fVsq0cFX0oXMidFDQL3kK08zw1v41FXn0t/4eGMvxkKMerK6qpXe2uJ2fcIsHKf6RJPfkGtK28Q2VrTdXWwy/BInDSrYYJlAl6UYteZ2BZH3hM4IJ4Y8QgEgWSYPMwhhGclHmULSqmKZ4Zcr5oI58+TCgTYfGZ6N2oq/pAt1rSnDq6uP9eHDMa9MN46T8+Eaiszo4QM8RUGHZZOIQPa2l/hJlAeyKpLFCz3xRwFfOQJgw0MSeMQ2etPi7DGLWvh+NtYRnZJLB8Rig==
+Received: from SJ0PR03CA0069.namprd03.prod.outlook.com (2603:10b6:a03:331::14)
+ by DM6PR12MB4386.namprd12.prod.outlook.com (2603:10b6:5:28f::21) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8026.16; Wed, 2 Oct
+ 2024 18:33:08 +0000
+Received: from SJ1PEPF000023CE.namprd02.prod.outlook.com
+ (2603:10b6:a03:331:cafe::4f) by SJ0PR03CA0069.outlook.office365.com
+ (2603:10b6:a03:331::14) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.8005.27 via Frontend
+ Transport; Wed, 2 Oct 2024 18:33:07 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.232) by
+ SJ1PEPF000023CE.mail.protection.outlook.com (10.167.244.10) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.8026.11 via Frontend Transport; Wed, 2 Oct 2024 18:33:07 +0000
+Received: from drhqmail203.nvidia.com (10.126.190.182) by mail.nvidia.com
+ (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Wed, 2 Oct 2024
+ 11:32:52 -0700
+Received: from drhqmail202.nvidia.com (10.126.190.181) by
+ drhqmail203.nvidia.com (10.126.190.182) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.4; Wed, 2 Oct 2024 11:32:51 -0700
+Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
+ (10.126.190.181) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4 via Frontend
+ Transport; Wed, 2 Oct 2024 11:32:51 -0700
+From: Jon Hunter <jonathanh@nvidia.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
+	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
+	<lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
+	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
+	<rwarsow@gmx.de>, <conor@kernel.org>, <allen.lkml@gmail.com>,
+	<broonie@kernel.org>, <linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH 6.10 000/634] 6.10.13-rc1 review
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
+X-NVConfidentiality: public
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <87y137nxqs.fsf@yhuang6-desk2.ccr.corp.intel.com> <20241002015754.969-1-21cnbao@gmail.com>
-In-Reply-To: <20241002015754.969-1-21cnbao@gmail.com>
-From: Kairui Song <ryncsn@gmail.com>
-Date: Thu, 3 Oct 2024 02:30:29 +0800
-Message-ID: <CAMgjq7D5qoFEK9Omvd5_Zqs6M+TEoG03+2i_mhuP5CQPSOPrmQ@mail.gmail.com>
-Subject: Re: [PATCH] mm: avoid unconditional one-tick sleep when
- swapcache_prepare fails
-To: Barry Song <21cnbao@gmail.com>
-Cc: ying.huang@intel.com, akpm@linux-foundation.org, chrisl@kernel.org, 
-	david@redhat.com, hannes@cmpxchg.org, hughd@google.com, 
-	kaleshsingh@google.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	liyangouwen1@oppo.com, mhocko@suse.com, minchan@kernel.org, sj@kernel.org, 
-	stable@vger.kernel.org, surenb@google.com, v-songbaohua@oppo.com, 
-	willy@infradead.org, yosryahmed@google.com, yuzhao@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Message-ID: <895bae68-60b9-435b-9c37-99ac45020a4d@drhqmail202.nvidia.com>
+Date: Wed, 2 Oct 2024 11:32:51 -0700
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF000023CE:EE_|DM6PR12MB4386:EE_
+X-MS-Office365-Filtering-Correlation-Id: 94b5b991-7fc1-45eb-f69a-08dce310a8e6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|36860700013|1800799024|82310400026;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?ZDk3MXQzOEJhb1ZWaWNTcGt3WW1VSDRnRnhNWjhCZG9Wb0VQa2tLSHkwcWtK?=
+ =?utf-8?B?c1NGdVFBNFdOQlA1VXNrcG9MdEZaUE81ZUZvaWV2WVZGVmVEQy9ZeGJTaGd0?=
+ =?utf-8?B?elN6S3V6RnNqVEUrbEJ4UjhHNURLcDFIOFFDUlZJTzZjT25kcy9RREIza1Uv?=
+ =?utf-8?B?TTREQnkvcjJQMUxWdmQ2MXMweldaSDNsVUZqZmhBc1I0cDB4VDhLQnVHUGUv?=
+ =?utf-8?B?M1lTOHdHVFVMQWRYM0NZWlczdWN6YUJCeTRLNksvY01VOEYxMmdQQ3RXMTVO?=
+ =?utf-8?B?ZzN3SzB6d3Qvam1rRmZoSG5zSDlqYXUyVlhRT3F4SWZFM1lTUHRTcmMyeUVy?=
+ =?utf-8?B?KzJGTFFaUlM3WDViQ0ZkMXJLZFZ0MHo5VDd0ckJzUW83eE5kOG5HcHlGc2RF?=
+ =?utf-8?B?ZmZia3loVkthVzFzV09ibWkyTkxPR0tFbjVadVUzeTBMV1RmT3hFcXhUbmd4?=
+ =?utf-8?B?WkVPSU54cmJuT3NQNldXSm4zVDR1S0xVbThtNWVITk1QUXhDV2VSN2dsUjFY?=
+ =?utf-8?B?WGM0OWFjWFFLT0doNFk4SjI5djVxSkdJNzFGcDAwZ1V3Ui9aZlV5YTN5TlRj?=
+ =?utf-8?B?QU5zeFcxRkp3TEhZQ0diMFdHS0NsQWErN0doSzY2NjVaU2V6clpaQVNZTWFt?=
+ =?utf-8?B?VDFCM3lRdXljUTI4SEVucmpwbHpPSnZ3cFdjSXZKVVNtUzJhcDhGK1ZpRFBr?=
+ =?utf-8?B?aFkzdFB1aHB0N1RnWDlqNFlia3ZjaWhwMWE3azg0U0E1NWVST1VJQUVOTXJw?=
+ =?utf-8?B?aXR2RWtaUzNyVndCUEo5dkw1NGczM2lWb3Y0SEtFN1hhbjJVRjlyUzc1aklz?=
+ =?utf-8?B?NHc5U3lvTmZMa2d6OHdRYXRiemExd0VUT1U1OG83WWMwMUIwS3NpWUR2OUtM?=
+ =?utf-8?B?YzJHYXptRktqSlF2NHQ4SmJ3S1lWbWsyeEtuamRrYWlkNytpQ3NxS21zOFQ0?=
+ =?utf-8?B?dDU0Q1hDdmcwV09FSFNSeGhTVklyODN3dEFTdmdqRVRacXVTSHVMVldSQ0xK?=
+ =?utf-8?B?Ym1yS2VUWU80cFZpWVlpY0crNlJqWkRjdmU0RU8vZ3hndHdXUU1yT1ZkeEJa?=
+ =?utf-8?B?QjdjZFA4VmRXeCtUTXVLRUVlakZHbTZHZUdQQ0pvZGZTRGJycjVUWG1uQ1Zk?=
+ =?utf-8?B?bmZmdWxFdnc2Y25sdmpKVzM4cFJYR29sZDNhZTZja1AvRWNRRGtCbTYvN0NC?=
+ =?utf-8?B?b2NZeFVGZ2ZlcWhTNk1qQjdVUCtrcis1aVVibnVSbnpEb0hlaGlYSXEvUUFL?=
+ =?utf-8?B?Mzdnek41V1ZMNURLUWJjeFZzWHlkd0crMGsyQnVPYVJDeThKNzAzWHpFajla?=
+ =?utf-8?B?ZW54YTJZcnZ6Wnh6WUFvZ1lRbk5rZmEzaWxsMmVSakF0OWVOTlhleGtJb2Ux?=
+ =?utf-8?B?UjF4VTFSa2NuYjlKQmluTW9nMjlEZVgzK056WFByRElJOEhrZ1U0UVU0MEs1?=
+ =?utf-8?B?UDhYYnlhcVpIM2Flc245M0lmdTB0SVdib0FqWFBSM2NSbHJINFJvdTgveTNF?=
+ =?utf-8?B?WHNzWmFJWnJwemxOSEEya0hVelkvUGcwVGV1RUNJQ1ZIa2xEUGhMVmNialBE?=
+ =?utf-8?B?ZTUrUHVLeVNiQWkwdHBIVEZFb3UvMWFQczRVT0tHYlhheDJkQldxZms4N01Z?=
+ =?utf-8?B?U05XbGxiRVVmK3JNSHJ3UXdJaCtubDNhalk3cmlXRUJHclhtKzFVY3VKeVdC?=
+ =?utf-8?B?Y0RnMTBiMHJsUFpjY2hVa0lyejYxYmdYZERMbTZmR3Rxd3Rvd05XVmd0YVho?=
+ =?utf-8?B?TkpzRmtURThlK3VWNUN4Z2RRUXJpK3pwQlNvYUY3QzIvUC9Qa1VQVlloaytP?=
+ =?utf-8?B?Q0dGR2J6UDB0VklCWEQ0OHg3eFUyTFk0MVlzMlRRV2RUdzlzNXhhbDRZNTZn?=
+ =?utf-8?Q?2x4qsmeTi1JPG?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230040)(376014)(7416014)(36860700013)(1800799024)(82310400026);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 Oct 2024 18:33:07.2145
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 94b5b991-7fc1-45eb-f69a-08dce310a8e6
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF000023CE.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM6PR12MB4386
 
-On Wed, Oct 2, 2024 at 10:02=E2=80=AFAM Barry Song <21cnbao@gmail.com> wrot=
-e:
->
-> On Wed, Oct 2, 2024 at 8:43=E2=80=AFAM Huang, Ying <ying.huang@intel.com>=
- wrote:
-> >
-> > Barry Song <21cnbao@gmail.com> writes:
-> >
-> > > On Tue, Oct 1, 2024 at 7:43=E2=80=AFAM Huang, Ying <ying.huang@intel.=
-com> wrote:
-> > >>
-> > >> Barry Song <21cnbao@gmail.com> writes:
-> > >>
-> > >> > On Sun, Sep 29, 2024 at 3:43=E2=80=AFPM Huang, Ying <ying.huang@in=
-tel.com> wrote:
-> > >> >>
-> > >> >> Hi, Barry,
-> > >> >>
-> > >> >> Barry Song <21cnbao@gmail.com> writes:
-> > >> >>
-> > >> >> > From: Barry Song <v-songbaohua@oppo.com>
-> > >> >> >
-> > >> >> > Commit 13ddaf26be32 ("mm/swap: fix race when skipping swapcache=
-")
-> > >> >> > introduced an unconditional one-tick sleep when `swapcache_prep=
-are()`
-> > >> >> > fails, which has led to reports of UI stuttering on latency-sen=
-sitive
-> > >> >> > Android devices. To address this, we can use a waitqueue to wak=
-e up
-> > >> >> > tasks that fail `swapcache_prepare()` sooner, instead of always
-> > >> >> > sleeping for a full tick. While tasks may occasionally be woken=
- by an
-> > >> >> > unrelated `do_swap_page()`, this method is preferable to two sc=
-enarios:
-> > >> >> > rapid re-entry into page faults, which can cause livelocks, and
-> > >> >> > multiple millisecond sleeps, which visibly degrade user experie=
-nce.
-> > >> >>
-> > >> >> In general, I think that this works.  Why not extend the solution=
- to
-> > >> >> cover schedule_timeout_uninterruptible() in __read_swap_cache_asy=
-nc()
-> > >> >> too?  We can call wake_up() when we clear SWAP_HAS_CACHE.  To avo=
-id
-> > >> >
-> > >> > Hi Ying,
-> > >> > Thanks for your comments.
-> > >> > I feel extending the solution to __read_swap_cache_async() should =
-be done
-> > >> > in a separate patch. On phones, I've never encountered any issues =
-reported
-> > >> > on that path, so it might be better suited for an optimization rat=
-her than a
-> > >> > hotfix?
+On Wed, 02 Oct 2024 14:51:40 +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.10.13 release.
+> There are 634 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Fri, 04 Oct 2024 12:56:13 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.10.13-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.10.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Hi Barry and Ying,
+All tests passing for Tegra ...
 
-For the __read_swap_cache_async case, I'm not really against adding a
-similar workqueue, but if no one is really suffering from it, and if
-the workqueue do causes extra overhead, maybe we can ignore it for the
-__read_swap_cache_async case now, and I plan to resent the following
-patch:
-https://lore.kernel.org/linux-mm/20240326185032.72159-9-ryncsn@gmail.com/#r
+Test results for stable-v6.10:
+    10 builds:	10 pass, 0 fail
+    26 boots:	26 pass, 0 fail
+    106 tests:	106 pass, 0 fail
 
-It removed all schedule_timeout_uninterruptible workaround and other
-similar things, and the performance will go even higher.
+Linux version:	6.10.13-rc1-gf5f9dc8965d5
+Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
+                tegra194-p2972-0000, tegra194-p3509-0000+p3668-0000,
+                tegra20-ventana, tegra210-p2371-2180,
+                tegra210-p3450-0000, tegra30-cardhu-a04
 
-> > >>
-> > >> Yes.  It's fine to do that in another patch as optimization.
-> > >
-> > > Ok. I'll prepare a separate patch for optimizing that path.
-> >
-> > Thanks!
-> >
-> > >>
-> > >> >> overhead to call wake_up() when there's no task waiting, we can u=
-se an
-> > >> >> atomic to count waiting tasks.
-> > >> >
-> > >> > I'm not sure it's worth adding the complexity, as wake_up() on an =
-empty
-> > >> > waitqueue should have a very low cost on its own?
-> > >>
-> > >> wake_up() needs to call spin_lock_irqsave() unconditionally on a glo=
-bal
-> > >> shared lock.  On systems with many CPUs (such servers), this may cau=
-se
-> > >> severe lock contention.  Even the cache ping-pong may hurt performan=
-ce
-> > >> much.
-> > >
-> > > I understand that cache synchronization was a significant issue befor=
-e
-> > > qspinlock, but it seems to be less of a concern after its implementat=
-ion.
-> >
-> > Unfortunately, qspinlock cannot eliminate cache ping-pong issue, as
-> > discussed in the following thread.
-> >
-> > https://lore.kernel.org/lkml/20220510192708.GQ76023@worktop.programming=
-.kicks-ass.net/
-> >
-> > > However, using a global atomic variable would still trigger cache bro=
-adcasts,
-> > > correct?
-> >
-> > We can only change the atomic variable to non-zero when
-> > swapcache_prepare() returns non-zero, and call wake_up() when the atomi=
-c
-> > variable is non-zero.  Because swapcache_prepare() returns 0 most times=
-,
-> > the atomic variable is 0 most times.  If we don't change the value of
-> > atomic variable, cache ping-pong will not be triggered.
->
-> yes. this can be implemented by adding another atomic variable.
->
-> >
-> > Hi, Kairui,
-> >
-> > Do you have some test cases to test parallel zram swap-in?  If so, that
-> > can be used to verify whether cache ping-pong is an issue and whether i=
-t
-> > can be fixed via a global atomic variable.
-> >
->
-> Yes, Kairui please run a test on your machine with lots of cores before
-> and after adding a global atomic variable as suggested by Ying. I am
-> sorry I don't have a server machine.
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
 
-I just had a try with the build kernel test which I used for the
-allocator patch series, with -j64, 1G memcg on my local branch:
-
-Without the patch:
-2677.63user 9100.43system 3:33.15elapsed 5452%CPU (0avgtext+0avgdata
-863284maxresident)k
-2671.40user 8969.07system 3:33.67elapsed 5447%CPU (0avgtext+0avgdata
-863316maxresident)k
-2673.66user 8973.90system 3:33.18elapsed 5463%CPU (0avgtext+0avgdata
-863284maxresident)k
-
-With the patch:
-2655.05user 9134.21system 3:35.63elapsed 5467%CPU (0avgtext+0avgdata
-863288maxresident)k
-2652.57user 9104.87system 3:35.07elapsed 5466%CPU (0avgtext+0avgdata
-863272maxresident)k
-2665.44user 9155.97system 3:35.92elapsed 5474%CPU (0avgtext+0avgdata
-863316maxresident)k
-
-Only three test runs, the main bottleneck for the test is still some
-other locks (list_lru lock, swap cgroup lock etc), but it does show
-the performance seems a bit lower. Could be considered a trivial
-amount of overhead so I think it's acceptable for the SYNC_IO path.
+Jon
 
