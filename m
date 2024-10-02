@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-80112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79612-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id A3D6698DBE8
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:36:07 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id D916C98D95D
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:11:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 580B1284D3A
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:36:06 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 8C0261F22CF6
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:11:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 355C71EA80;
-	Wed,  2 Oct 2024 14:30:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 511E71D0E34;
+	Wed,  2 Oct 2024 14:05:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="se3/7P3m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jhPqmOzu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E90B579D0;
-	Wed,  2 Oct 2024 14:30:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DD221CFEA9;
+	Wed,  2 Oct 2024 14:05:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879420; cv=none; b=Rz/QH6p2H/QDgQGUAaR2KFbJK2VG4VJ6aFF63d5SH3HPEolQ5bPHhGkvfYilNC3mOu8LJEws6U3yUWY+BtUQV+wyfnh/D+Kwy32DRmKBgNMMB2HD4C9oyqWge753PaStWWKPuK79OvT1o0hXwgz0FUeIGDO+V4dJQF6B8TzNp3Q=
+	t=1727877951; cv=none; b=Omb52Ws6jKyB81XdkWDG9INeSSIu+rytQm58WQfkrdKeLumlr5+zjsm2XB62Kd7s+JoQ45KDgEiIfdSz7LNfuHe2RQ1ZfjEI+dpUAKo+iOgEveaPUhyD8P171gBLa4OnuTaYJ6KZJa6/3xfpDZXaz7xnNIsjr18p3+k6pK9bAnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879420; c=relaxed/simple;
-	bh=Z6Vh+qtj5cYpBebTB4hBdJE8+DFXKrNjOPBCPNnFmAs=;
+	s=arc-20240116; t=1727877951; c=relaxed/simple;
+	bh=YXwPDGLxx5/S9QV2cLHXVuny536eiScaN4SLLBK1iuE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O4LDgFTZ5UQ34KqdcUJk05IseoiIBH+LtGXteX1JbNuxc2WbQdJabdkKO1OGMoIvk+a/M7XtcDFLQGg3fgTTdT2OT7G0lw0mi0TxlCHpBTwEPap49bbF/8bMOqgq6wgmh4nBM8dU7X2IfkOnnrWVuFfKg562iXTrTKOHVjytaJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=se3/7P3m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AAE3C4CEC2;
-	Wed,  2 Oct 2024 14:30:18 +0000 (UTC)
+	 MIME-Version; b=AN9r8K2f1gAc8QnWo7iDdHSCU0f6VlaOHygNThgDxvXd7P6XdkrbbH7+y9oEX4WJrt2t3bk7yVXoQpmf+LVohoCVjvpJvJqmowrvmLXWYkKY338IxbyLa5D1Pc1dIcJ7arbHCuBCjyxnPD3wkPdj3UAOke5jOv1MZhVSDVKft+0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jhPqmOzu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88F7BC4CEC2;
+	Wed,  2 Oct 2024 14:05:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879419;
-	bh=Z6Vh+qtj5cYpBebTB4hBdJE8+DFXKrNjOPBCPNnFmAs=;
+	s=korg; t=1727877950;
+	bh=YXwPDGLxx5/S9QV2cLHXVuny536eiScaN4SLLBK1iuE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=se3/7P3mXYqPgsh7P4srPEcKQ7eOxqfD+AAQwUd3CHRJ707fAlgdSSkQYry9W/RqD
-	 BTtG6QxS9GBuA1yLr/MFmxQRjXgSZ33o4kIOruGKLj6kvzV6xwM7es9kKh26DfUR9M
-	 XhOyDOhDpzZ+iyMDObLBpjkRMD64P7AMaI6rqUYk=
+	b=jhPqmOzuSVILWEhgsGy9lz7+/ApMwJSIhObJcTntvgAGUEKSQ0hexZkmK4W4MJQc5
+	 C3hU3t3xntXO2mELcCAmAzAOcTBTP7Fs2YHe6rg8L3oFF55GO1NhMjFE6TMZmfuMVJ
+	 PnP8hEHI1AlC3PnyqjKjrrf2kPX1RyH2w5Fd1a/8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gergo Koteles <soyer@irl.hu>,
-	Mark Brown <broonie@kernel.org>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 112/538] ASoC: tas2781: remove unused acpi_subysystem_id
+Subject: [PATCH 6.10 251/634] selftests/bpf: Fix errors compiling decap_sanity.c with musl libc
 Date: Wed,  2 Oct 2024 14:55:51 +0200
-Message-ID: <20241002125756.657960534@linuxfoundation.org>
+Message-ID: <20241002125821.005395929@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,85 +62,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gergo Koteles <soyer@irl.hu>
+From: Tony Ambardar <tony.ambardar@gmail.com>
 
-[ Upstream commit 4089d82e67a9967fc5bf2b4e5ef820d67fe73924 ]
+[ Upstream commit 1b00f355130a5dfc38a01ad02458ae2cb2ebe609 ]
 
-The acpi_subysystem_id is only written and freed, not read, so
-unnecessary.
+Remove a redundant include of '<linux/in6.h>', whose needed definitions are
+already provided by 'test_progs.h'. This avoids errors seen compiling for
+mips64el/musl-libc:
 
-Signed-off-by: Gergo Koteles <soyer@irl.hu>
-Link: https://lore.kernel.org/r/454639336be28d2b50343e9c8366a56b0975e31d.1707456753.git.soyer@irl.hu
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: c2c0b67dca3c ("ASoC: tas2781-i2c: Drop weird GPIO code")
+  In file included from .../arpa/inet.h:9,
+                   from ./test_progs.h:17,
+                   from prog_tests/decap_sanity.c:9:
+  .../netinet/in.h:23:8: error: redefinition of 'struct in6_addr'
+     23 | struct in6_addr {
+        |        ^~~~~~~~
+  In file included from decap_sanity.c:7:
+  .../linux/in6.h:33:8: note: originally defined here
+     33 | struct in6_addr {
+        |        ^~~~~~~~
+  .../netinet/in.h:34:8: error: redefinition of 'struct sockaddr_in6'
+     34 | struct sockaddr_in6 {
+        |        ^~~~~~~~~~~~
+  .../linux/in6.h:50:8: note: originally defined here
+     50 | struct sockaddr_in6 {
+        |        ^~~~~~~~~~~~
+  .../netinet/in.h:42:8: error: redefinition of 'struct ipv6_mreq'
+     42 | struct ipv6_mreq {
+        |        ^~~~~~~~~
+  .../linux/in6.h:60:8: note: originally defined here
+     60 | struct ipv6_mreq {
+        |        ^~~~~~~~~
+
+Fixes: 70a00e2f1dba ("selftests/bpf: Test bpf_skb_adjust_room on CHECKSUM_PARTIAL")
+Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/e986ba2d7edccd254b54f7cd049b98f10bafa8c3.1721713597.git.tony.ambardar@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/sound/tas2781.h           |  1 -
- sound/pci/hda/tas2781_hda_i2c.c   | 12 ------------
- sound/soc/codecs/tas2781-comlib.c |  1 -
- 3 files changed, 14 deletions(-)
+ tools/testing/selftests/bpf/prog_tests/decap_sanity.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/include/sound/tas2781.h b/include/sound/tas2781.h
-index be58d870505a4..be6f70dd54f93 100644
---- a/include/sound/tas2781.h
-+++ b/include/sound/tas2781.h
-@@ -101,7 +101,6 @@ struct tasdevice_priv {
- 	struct tm tm;
+diff --git a/tools/testing/selftests/bpf/prog_tests/decap_sanity.c b/tools/testing/selftests/bpf/prog_tests/decap_sanity.c
+index dcb9e5070cc3d..d79f398ec6b7c 100644
+--- a/tools/testing/selftests/bpf/prog_tests/decap_sanity.c
++++ b/tools/testing/selftests/bpf/prog_tests/decap_sanity.c
+@@ -4,7 +4,6 @@
+ #include <sys/types.h>
+ #include <sys/socket.h>
+ #include <net/if.h>
+-#include <linux/in6.h>
  
- 	enum device_catlog_id catlog_id;
--	const char *acpi_subsystem_id;
- 	unsigned char cal_binaryname[TASDEVICE_MAX_CHANNELS][64];
- 	unsigned char crc8_lkp_tbl[CRC8_TABLE_SIZE];
- 	unsigned char coef_binaryname[64];
-diff --git a/sound/pci/hda/tas2781_hda_i2c.c b/sound/pci/hda/tas2781_hda_i2c.c
-index e5bb1fed26a0c..0a587f55583ff 100644
---- a/sound/pci/hda/tas2781_hda_i2c.c
-+++ b/sound/pci/hda/tas2781_hda_i2c.c
-@@ -95,9 +95,7 @@ static int tas2781_get_i2c_res(struct acpi_resource *ares, void *data)
- static int tas2781_read_acpi(struct tasdevice_priv *p, const char *hid)
- {
- 	struct acpi_device *adev;
--	struct device *physdev;
- 	LIST_HEAD(resources);
--	const char *sub;
- 	int ret;
- 
- 	adev = acpi_dev_get_first_match_dev(hid, NULL, -1);
-@@ -113,18 +111,8 @@ static int tas2781_read_acpi(struct tasdevice_priv *p, const char *hid)
- 
- 	acpi_dev_free_resource_list(&resources);
- 	strscpy(p->dev_name, hid, sizeof(p->dev_name));
--	physdev = get_device(acpi_get_first_physical_node(adev));
- 	acpi_dev_put(adev);
- 
--	/* No side-effect to the playback even if subsystem_id is NULL*/
--	sub = acpi_get_subsystem_id(ACPI_HANDLE(physdev));
--	if (IS_ERR(sub))
--		sub = NULL;
--
--	p->acpi_subsystem_id = sub;
--
--	put_device(physdev);
--
- 	return 0;
- 
- err:
-diff --git a/sound/soc/codecs/tas2781-comlib.c b/sound/soc/codecs/tas2781-comlib.c
-index 5d0e5348b361a..3aa81514dad76 100644
---- a/sound/soc/codecs/tas2781-comlib.c
-+++ b/sound/soc/codecs/tas2781-comlib.c
-@@ -408,7 +408,6 @@ void tasdevice_remove(struct tasdevice_priv *tas_priv)
- {
- 	if (gpio_is_valid(tas_priv->irq_info.irq_gpio))
- 		gpio_free(tas_priv->irq_info.irq_gpio);
--	kfree(tas_priv->acpi_subsystem_id);
- 	mutex_destroy(&tas_priv->codec_lock);
- }
- EXPORT_SYMBOL_GPL(tasdevice_remove);
+ #include "test_progs.h"
+ #include "network_helpers.h"
 -- 
 2.43.0
 
