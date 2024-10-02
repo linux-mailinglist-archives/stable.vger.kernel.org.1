@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-79908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80404-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9181A98DAD8
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:25:40 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15ED698DD40
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:47:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 56F18283532
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:25:39 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 475E41C21FEF
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:47:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B88631D1E92;
-	Wed,  2 Oct 2024 14:20:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D76841D1E84;
+	Wed,  2 Oct 2024 14:44:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SplvdZc2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iOOMl4ht"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75B841D0E17;
-	Wed,  2 Oct 2024 14:20:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9519D19752C;
+	Wed,  2 Oct 2024 14:44:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878820; cv=none; b=nE8gfK69lBAfKLlkfkeFRWXWWv/U9vu3wOvHIc39UrphIyaSqWBYZbmWjckZvGE3wZh0f5hMiyJmhwLmTiIffRuhiP5edPDlerVxURas6Ldx5hSPPbDYHI7pG1W/1RcMNy0mF5k//TaAlD75Zu2zWWJySXSV6oblQ/uyVpdOwto=
+	t=1727880275; cv=none; b=bAE1bic2EiKbR7LGAw5+nwLjCvvz25O/lBk37cA0PLk1/0OgwEsPL2m/+df7ga5vRxSuSqTD8wuy1eQTv5i15kuu2TMM2sEC38Z+f+PO9ixVU3dtQOW335zgOv0QraTDGT9v4ZEdIrZm5ifrU7RJ3LqNVIYsGjh9FIibcBK8ckg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878820; c=relaxed/simple;
-	bh=emoxkLko99186gYkA+xb/qAwTQL2c2FUmlF22axZo+k=;
+	s=arc-20240116; t=1727880275; c=relaxed/simple;
+	bh=qR4mFNSZPgAtycAUgnATYkQt7VYAb1zB23DR3GxDpYw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hOUoqd702vTBOA0RCgWZc4bZ0VybeC6M3XDNrSkzxZpO8DpneC/PYZr6Ym1ynt8hWat4IFZmLb0MzrZH9haqbC2BmJKettv24No2eajwXeOVeCajq5EGr9fsO8FHm5NIpbU/0ta39OqMYmwGTQOZGQ2IolCXLP2wgiUDThPS80I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SplvdZc2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9E12C4CEC2;
-	Wed,  2 Oct 2024 14:20:19 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gi+evY0SSRidHEi1j749EIHXVsHxTcS4lb+e6e0X/xAbseslmSYNFT+brmEy0lIJn44lbaUeIQX9aZKznVBrfCIVmFxJYrPn/p0Hb2dBzJJ+AYJteNrVTZL1vOvZG82JlMrrtIzwUZQkbDvdJZpIqw771wGI39/x7XeomNKJCUM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iOOMl4ht; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CFCDC4CEC2;
+	Wed,  2 Oct 2024 14:44:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878820;
-	bh=emoxkLko99186gYkA+xb/qAwTQL2c2FUmlF22axZo+k=;
+	s=korg; t=1727880275;
+	bh=qR4mFNSZPgAtycAUgnATYkQt7VYAb1zB23DR3GxDpYw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SplvdZc22mPbhJ2pcwN1aq9+FNygIX3gngG1QBWzSOkRZQdhxAn73Xgi3CLB++Cb8
-	 +M+JpNheEqVIjfRC9adcn6Uw8V1wZu/NIRbGg8klSPUK5KozjxsT9d+3mf/HDvNOIw
-	 T+9gU6ktzfqVhFawsbPT6Z2HEooHIcPkrGze4a34=
+	b=iOOMl4hth97wgMC9X8ggNFQYKEvQWzMk3fbgrIA0G0Zv+H8RV+ZifNlUu/LjIZCCN
+	 XNfEw3CEJ0apwiP8szf1UfcmRtjmulsHqqXTBgeYin7XgXocBA4X1SRHBVDO5UEqRo
+	 /ddYVsE0oZUxcviSxur+f9rFVXlG5Hs27Oe3933s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stan Johnson <userm57@yahoo.com>,
-	Finn Thain <fthain@linux-m68k.org>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.10 512/634] scsi: mac_scsi: Refactor polling loop
+	=?UTF-8?q?Thomas=20Wei=C3=9Fschuh?= <thomas.weissschuh@linutronix.de>,
+	Simon Horman <horms@kernel.org>,
+	"David S. Miller" <davem@davemloft.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 373/538] net: ipv6: select DST_CACHE from IPV6_RPL_LWTUNNEL
 Date: Wed,  2 Oct 2024 15:00:12 +0200
-Message-ID: <20241002125831.316742933@linuxfoundation.org>
+Message-ID: <20241002125807.153749881@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,187 +61,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Finn Thain <fthain@linux-m68k.org>
+From: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
 
-commit 5545c3165cbc98615fe65a44f41167cbb557e410 upstream.
+[ Upstream commit 93c21077bb9ba08807c459982d440dbbee4c7af3 ]
 
-Before the error handling can be revised, some preparation is needed.
-Refactor the polling loop with a new function, macscsi_wait_for_drq().
-This function will gain more call sites in the next patch.
+The rpl sr tunnel code contains calls to dst_cache_*() which are
+only present when the dst cache is built.
+Select DST_CACHE to build the dst cache, similar to other kconfig
+options in the same file.
+Compiling the rpl sr tunnel without DST_CACHE will lead to linker
+errors.
 
-Cc: stable@vger.kernel.org # 5.15+
-Tested-by: Stan Johnson <userm57@yahoo.com>
-Signed-off-by: Finn Thain <fthain@linux-m68k.org>
-Link: https://lore.kernel.org/r/6a5ffabb4290c0d138c6d285fda8fa3902e926f0.1723001788.git.fthain@linux-m68k.org
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a7a29f9c361f ("net: ipv6: add rpl sr tunnel")
+Signed-off-by: Thomas Weißschuh <thomas.weissschuh@linutronix.de>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Simon Horman <horms@kernel.org> # build-tested
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/mac_scsi.c |   80 +++++++++++++++++++++++++-----------------------
- 1 file changed, 42 insertions(+), 38 deletions(-)
+ net/ipv6/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/scsi/mac_scsi.c
-+++ b/drivers/scsi/mac_scsi.c
-@@ -208,8 +208,6 @@ __setup("mac5380=", mac_scsi_setup);
- 		".previous                     \n" \
- 		: "+a" (addr), "+r" (n), "+r" (result) : "a" (io))
- 
--#define MAC_PDMA_DELAY		32
--
- static inline int mac_pdma_recv(void __iomem *io, unsigned char *start, int n)
- {
- 	unsigned char *addr = start;
-@@ -274,6 +272,36 @@ static inline void write_ctrl_reg(struct
- 	out_be32(hostdata->io + (CTRL_REG << 4), value);
- }
- 
-+static inline int macscsi_wait_for_drq(struct NCR5380_hostdata *hostdata)
-+{
-+	unsigned int n = 1; /* effectively multiplies NCR5380_REG_POLL_TIME */
-+	unsigned char basr;
-+
-+again:
-+	basr = NCR5380_read(BUS_AND_STATUS_REG);
-+
-+	if (!(basr & BASR_PHASE_MATCH))
-+		return 1;
-+
-+	if (basr & BASR_IRQ)
-+		return -1;
-+
-+	if (basr & BASR_DRQ)
-+		return 0;
-+
-+	if (n-- == 0) {
-+		NCR5380_dprint(NDEBUG_PSEUDO_DMA, hostdata->host);
-+		dsprintk(NDEBUG_PSEUDO_DMA, hostdata->host,
-+			 "%s: DRQ timeout\n", __func__);
-+		return -1;
-+	}
-+
-+	NCR5380_poll_politely2(hostdata,
-+			       BUS_AND_STATUS_REG, BASR_DRQ, BASR_DRQ,
-+			       BUS_AND_STATUS_REG, BASR_PHASE_MATCH, 0, 0);
-+	goto again;
-+}
-+
- static inline int macscsi_pread(struct NCR5380_hostdata *hostdata,
-                                 unsigned char *dst, int len)
- {
-@@ -283,9 +311,7 @@ static inline int macscsi_pread(struct N
- 
- 	hostdata->pdma_residual = len;
- 
--	while (!NCR5380_poll_politely(hostdata, BUS_AND_STATUS_REG,
--	                              BASR_DRQ | BASR_PHASE_MATCH,
--	                              BASR_DRQ | BASR_PHASE_MATCH, 0)) {
-+	while (macscsi_wait_for_drq(hostdata) == 0) {
- 		int bytes, chunk_bytes;
- 
- 		if (macintosh_config->ident == MAC_MODEL_IIFX)
-@@ -295,19 +321,16 @@ static inline int macscsi_pread(struct N
- 		chunk_bytes = min(hostdata->pdma_residual, 512);
- 		bytes = mac_pdma_recv(s, d, chunk_bytes);
- 
-+		if (macintosh_config->ident == MAC_MODEL_IIFX)
-+			write_ctrl_reg(hostdata, CTRL_INTERRUPTS_ENABLE);
-+
- 		if (bytes > 0) {
- 			d += bytes;
- 			hostdata->pdma_residual -= bytes;
- 		}
- 
- 		if (hostdata->pdma_residual == 0)
--			goto out;
--
--		if (!(NCR5380_read(BUS_AND_STATUS_REG) & BASR_PHASE_MATCH))
--			goto out;
--
--		if (bytes == 0)
--			udelay(MAC_PDMA_DELAY);
-+			break;
- 
- 		if (bytes > 0)
- 			continue;
-@@ -321,16 +344,9 @@ static inline int macscsi_pread(struct N
- 			continue;
- 
- 		result = -1;
--		goto out;
-+		break;
- 	}
- 
--	scmd_printk(KERN_ERR, hostdata->connected,
--	            "%s: phase mismatch or !DRQ\n", __func__);
--	NCR5380_dprint(NDEBUG_PSEUDO_DMA, hostdata->host);
--	result = -1;
--out:
--	if (macintosh_config->ident == MAC_MODEL_IIFX)
--		write_ctrl_reg(hostdata, CTRL_INTERRUPTS_ENABLE);
- 	return result;
- }
- 
-@@ -343,9 +359,7 @@ static inline int macscsi_pwrite(struct
- 
- 	hostdata->pdma_residual = len;
- 
--	while (!NCR5380_poll_politely(hostdata, BUS_AND_STATUS_REG,
--	                              BASR_DRQ | BASR_PHASE_MATCH,
--	                              BASR_DRQ | BASR_PHASE_MATCH, 0)) {
-+	while (macscsi_wait_for_drq(hostdata) == 0) {
- 		int bytes, chunk_bytes;
- 
- 		if (macintosh_config->ident == MAC_MODEL_IIFX)
-@@ -355,6 +369,9 @@ static inline int macscsi_pwrite(struct
- 		chunk_bytes = min(hostdata->pdma_residual, 512);
- 		bytes = mac_pdma_send(s, d, chunk_bytes);
- 
-+		if (macintosh_config->ident == MAC_MODEL_IIFX)
-+			write_ctrl_reg(hostdata, CTRL_INTERRUPTS_ENABLE);
-+
- 		if (bytes > 0) {
- 			s += bytes;
- 			hostdata->pdma_residual -= bytes;
-@@ -369,15 +386,9 @@ static inline int macscsi_pwrite(struct
- 				            "%s: Last Byte Sent timeout\n", __func__);
- 				result = -1;
- 			}
--			goto out;
-+			break;
- 		}
- 
--		if (!(NCR5380_read(BUS_AND_STATUS_REG) & BASR_PHASE_MATCH))
--			goto out;
--
--		if (bytes == 0)
--			udelay(MAC_PDMA_DELAY);
--
- 		if (bytes > 0)
- 			continue;
- 
-@@ -390,16 +401,9 @@ static inline int macscsi_pwrite(struct
- 			continue;
- 
- 		result = -1;
--		goto out;
-+		break;
- 	}
- 
--	scmd_printk(KERN_ERR, hostdata->connected,
--	            "%s: phase mismatch or !DRQ\n", __func__);
--	NCR5380_dprint(NDEBUG_PSEUDO_DMA, hostdata->host);
--	result = -1;
--out:
--	if (macintosh_config->ident == MAC_MODEL_IIFX)
--		write_ctrl_reg(hostdata, CTRL_INTERRUPTS_ENABLE);
- 	return result;
- }
- 
+diff --git a/net/ipv6/Kconfig b/net/ipv6/Kconfig
+index 08d4b7132d4c4..1c9c686d9522f 100644
+--- a/net/ipv6/Kconfig
++++ b/net/ipv6/Kconfig
+@@ -323,6 +323,7 @@ config IPV6_RPL_LWTUNNEL
+ 	bool "IPv6: RPL Source Routing Header support"
+ 	depends on IPV6
+ 	select LWTUNNEL
++	select DST_CACHE
+ 	help
+ 	  Support for RFC6554 RPL Source Routing Header using the lightweight
+ 	  tunnels mechanism.
+-- 
+2.43.0
+
 
 
 
