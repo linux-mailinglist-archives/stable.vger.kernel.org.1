@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-80109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5829598DBE3
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:36:03 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44BBF98D95C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:11:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 7C01B1C23D48
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:36:02 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id CA06B1F22E07
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:11:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 219E210E9;
-	Wed,  2 Oct 2024 14:30:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8CD2A1D094C;
+	Wed,  2 Oct 2024 14:05:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H8CI6Tml"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O7iP9RMo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D27041D043B;
-	Wed,  2 Oct 2024 14:30:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D1301D07AD;
+	Wed,  2 Oct 2024 14:05:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879410; cv=none; b=D+ylDGMLsKOy2W8ccqncSWozNKQD/+V+0OtijsMwWzdMd32REVOxGydEhQrk4YIzZFYMcCFf8tdRJOqPDWFH9Lo8oM+iyXF1cprRa5y/jp5xSLEb9fYyepkqo1OLEjcQMXJPmWgyUeXYxsjVgF/Iy7AtWeyEeG7Kj5ystW38aV8=
+	t=1727877945; cv=none; b=qtmHXIXqK/1j2EymHmcIVjXub8WsTiRdZqMV0VYB76iWovj/ifx6kfaYovcgRohXstvPydZ+TrtyqGUO7v7OsL6pcqamXv5QjnLedqrgwR0wv4sUWMpNXfgUyT7DNa/D1Gtm1sxBDsT1Ktr7Q/FbUDVejPiS71s+XmelYbEquNI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879410; c=relaxed/simple;
-	bh=Zim/qLekzb1gOcH4MbDNtIxHpMwCq+DbVlihyyF4hzY=;
+	s=arc-20240116; t=1727877945; c=relaxed/simple;
+	bh=0L+lUWGbzSbuoy5sUloEMyt1UR+69W0wPAS+Qr9TluE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bt7EQYDXD0xJFCXtoJwOk1W2WWRWibkgKBQlD4BMAulnFWvNUvxT2uDgproU/Xqoj4vNjGnpL2F/XX2W3LjWBBET/p9WQ20FWV6fqqrpqG5f6nOzKpJprtr8BXxdyc5u5rt4uHYB6HDbqD1UbkMieZAlXEVS2Fz0HYO4/KX6HBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H8CI6Tml; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52A56C4CEC2;
-	Wed,  2 Oct 2024 14:30:10 +0000 (UTC)
+	 MIME-Version; b=ZIgV74xtJnCYIY9+O8pjQtdJ1ZPn4nxvm7jg2APdqEpFyPZzJtlgxHVQIV/WjE9OAZLJ8xakyfhnR63QnQssj4ZKWSPi5R8MVSFOU4t7EDo/ozpTDKJOvuoGE8FVTfMVHGr4eMyV6W0fWDHwwYFYb1ShpLQ+10ccTXZiRedShMI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O7iP9RMo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C89E9C4CEC2;
+	Wed,  2 Oct 2024 14:05:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879410;
-	bh=Zim/qLekzb1gOcH4MbDNtIxHpMwCq+DbVlihyyF4hzY=;
+	s=korg; t=1727877945;
+	bh=0L+lUWGbzSbuoy5sUloEMyt1UR+69W0wPAS+Qr9TluE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H8CI6Tml9ItBx6DHncnYSbKsBP3FH1ZkIlPMR+FDTsgMSiB6U75Upk+O7Z5ifCy0z
-	 izVv/KBgaG4XL/7vd4YMVIkQTllHPxDTdD+MnSCbmNKRKhPh6xJ2p5KeW7WwVWHW1l
-	 ieIqW6aJpYWdjAznNVPJiCewuTer3pTAwtPS90qk=
+	b=O7iP9RMoctldIArxygsKAWTQ4BqAVAL7egmO5fP2Zkz+Hczw9yGuct3A4Cur5jCoY
+	 r8IwOEE+I0S9fPGeRwLsyBDE4Ql5NG2u4SX60mL26N6/zqnD4cr34ZGgqohHc9r4RS
+	 52i+VgS5k2TtgTkcUIKTXSI2ueuCmZfn7hLqQ9mg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Lutomirski <luto@kernel.org>,
-	Yosry Ahmed <yosryahmed@google.com>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 110/538] x86/mm: Use IPIs to synchronize LAM enablement
+Subject: [PATCH 6.10 249/634] selftests/bpf: Fix compiling core_reloc.c with musl-libc
 Date: Wed,  2 Oct 2024 14:55:49 +0200
-Message-ID: <20241002125756.575458524@linuxfoundation.org>
+Message-ID: <20241002125820.926823282@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,153 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yosry Ahmed <yosryahmed@google.com>
+From: Tony Ambardar <tony.ambardar@gmail.com>
 
-[ Upstream commit 3b299b99556c1753923f8d9bbd9304bcd139282f ]
+[ Upstream commit debfa4f628f271f72933bf38d581cc53cfe1def5 ]
 
-LAM can only be enabled when a process is single-threaded.  But _kernel_
-threads can temporarily use a single-threaded process's mm.
+The type 'loff_t' is a GNU extension and not exposed by the musl 'fcntl.h'
+header unless _GNU_SOURCE is defined. Add this definition to fix errors
+seen compiling for mips64el/musl-libc:
 
-If LAM is enabled by a userspace process while a kthread is using its
-mm, the kthread will not observe LAM enablement (i.e.  LAM will be
-disabled in CR3). This could be fine for the kthread itself, as LAM only
-affects userspace addresses. However, if the kthread context switches to
-a thread in the same userspace process, CR3 may or may not be updated
-because the mm_struct doesn't change (based on pending TLB flushes). If
-CR3 is not updated, the userspace thread will run incorrectly with LAM
-disabled, which may cause page faults when using tagged addresses.
-Example scenario:
+  In file included from tools/testing/selftests/bpf/prog_tests/core_reloc.c:4:
+  ./bpf_testmod/bpf_testmod.h:10:9: error: unknown type name 'loff_t'
+     10 |         loff_t off;
+        |         ^~~~~~
+  ./bpf_testmod/bpf_testmod.h:16:9: error: unknown type name 'loff_t'
+     16 |         loff_t off;
+        |         ^~~~~~
 
-CPU 1                                   CPU 2
-/* kthread */
-kthread_use_mm()
-                                        /* user thread */
-                                        prctl_enable_tagged_addr()
-                                        /* LAM enabled on CPU 2 */
-/* LAM disabled on CPU 1 */
-                                        context_switch() /* to CPU 1 */
-/* Switching to user thread */
-switch_mm_irqs_off()
-/* CR3 not updated */
-/* LAM is still disabled on CPU 1 */
-
-Synchronize LAM enablement by sending an IPI to all CPUs running with
-the mm_struct to enable LAM. This makes sure LAM is enabled on CPU 1
-in the above scenario before prctl_enable_tagged_addr() returns and
-userspace starts using tagged addresses, and before it's possible to
-run the userspace process on CPU 1.
-
-In switch_mm_irqs_off(), move reading the LAM mask until after
-mm_cpumask() is updated. This ensures that if an outdated LAM mask is
-written to CR3, an IPI is received to update it right after IRQs are
-re-enabled.
-
-[ dhansen: Add a LAM enabling helper and comment it ]
-
-Fixes: 82721d8b25d7 ("x86/mm: Handle LAM on context switch")
-Suggested-by: Andy Lutomirski <luto@kernel.org>
-Signed-off-by: Yosry Ahmed <yosryahmed@google.com>
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Reviewed-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Link: https://lore.kernel.org/all/20240702132139.3332013-2-yosryahmed%40google.com
+Fixes: 6bcd39d366b6 ("selftests/bpf: Add CO-RE relocs selftest relying on kernel module BTF")
+Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/11c3af75a7eb6bcb7ad9acfae6a6f470c572eb82.1721713597.git.tony.ambardar@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/process_64.c | 29 ++++++++++++++++++++++++++---
- arch/x86/mm/tlb.c            |  7 +++----
- 2 files changed, 29 insertions(+), 7 deletions(-)
+ tools/testing/selftests/bpf/prog_tests/core_reloc.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/kernel/process_64.c b/arch/x86/kernel/process_64.c
-index 4989095ab7696..d595ef7c1de05 100644
---- a/arch/x86/kernel/process_64.c
-+++ b/arch/x86/kernel/process_64.c
-@@ -750,6 +750,27 @@ static long prctl_map_vdso(const struct vdso_image *image, unsigned long addr)
- 
- #define LAM_U57_BITS 6
- 
-+static void enable_lam_func(void *__mm)
-+{
-+	struct mm_struct *mm = __mm;
-+
-+	if (this_cpu_read(cpu_tlbstate.loaded_mm) == mm) {
-+		write_cr3(__read_cr3() | mm->context.lam_cr3_mask);
-+		set_tlbstate_lam_mode(mm);
-+	}
-+}
-+
-+static void mm_enable_lam(struct mm_struct *mm)
-+{
-+	/*
-+	 * Even though the process must still be single-threaded at this
-+	 * point, kernel threads may be using the mm.  IPI those kernel
-+	 * threads if they exist.
-+	 */
-+	on_each_cpu_mask(mm_cpumask(mm), enable_lam_func, mm, true);
-+	set_bit(MM_CONTEXT_LOCK_LAM, &mm->context.flags);
-+}
-+
- static int prctl_enable_tagged_addr(struct mm_struct *mm, unsigned long nr_bits)
- {
- 	if (!cpu_feature_enabled(X86_FEATURE_LAM))
-@@ -766,6 +787,10 @@ static int prctl_enable_tagged_addr(struct mm_struct *mm, unsigned long nr_bits)
- 	if (mmap_write_lock_killable(mm))
- 		return -EINTR;
- 
-+	/*
-+	 * MM_CONTEXT_LOCK_LAM is set on clone.  Prevent LAM from
-+	 * being enabled unless the process is single threaded:
-+	 */
- 	if (test_bit(MM_CONTEXT_LOCK_LAM, &mm->context.flags)) {
- 		mmap_write_unlock(mm);
- 		return -EBUSY;
-@@ -782,9 +807,7 @@ static int prctl_enable_tagged_addr(struct mm_struct *mm, unsigned long nr_bits)
- 		return -EINVAL;
- 	}
- 
--	write_cr3(__read_cr3() | mm->context.lam_cr3_mask);
--	set_tlbstate_lam_mode(mm);
--	set_bit(MM_CONTEXT_LOCK_LAM, &mm->context.flags);
-+	mm_enable_lam(mm);
- 
- 	mmap_write_unlock(mm);
- 
-diff --git a/arch/x86/mm/tlb.c b/arch/x86/mm/tlb.c
-index 453ea95b667da..2fbae48f0b470 100644
---- a/arch/x86/mm/tlb.c
-+++ b/arch/x86/mm/tlb.c
-@@ -497,9 +497,9 @@ void switch_mm_irqs_off(struct mm_struct *prev, struct mm_struct *next,
- {
- 	struct mm_struct *real_prev = this_cpu_read(cpu_tlbstate.loaded_mm);
- 	u16 prev_asid = this_cpu_read(cpu_tlbstate.loaded_mm_asid);
--	unsigned long new_lam = mm_lam_cr3_mask(next);
- 	bool was_lazy = this_cpu_read(cpu_tlbstate_shared.is_lazy);
- 	unsigned cpu = smp_processor_id();
-+	unsigned long new_lam;
- 	u64 next_tlb_gen;
- 	bool need_flush;
- 	u16 new_asid;
-@@ -622,9 +622,7 @@ void switch_mm_irqs_off(struct mm_struct *prev, struct mm_struct *next,
- 			cpumask_clear_cpu(cpu, mm_cpumask(real_prev));
- 		}
- 
--		/*
--		 * Start remote flushes and then read tlb_gen.
--		 */
-+		/* Start receiving IPIs and then read tlb_gen (and LAM below) */
- 		if (next != &init_mm)
- 			cpumask_set_cpu(cpu, mm_cpumask(next));
- 		next_tlb_gen = atomic64_read(&next->context.tlb_gen);
-@@ -636,6 +634,7 @@ void switch_mm_irqs_off(struct mm_struct *prev, struct mm_struct *next,
- 		barrier();
- 	}
- 
-+	new_lam = mm_lam_cr3_mask(next);
- 	set_tlbstate_lam_mode(next);
- 	if (need_flush) {
- 		this_cpu_write(cpu_tlbstate.ctxs[new_asid].ctx_id, next->context.ctx_id);
+diff --git a/tools/testing/selftests/bpf/prog_tests/core_reloc.c b/tools/testing/selftests/bpf/prog_tests/core_reloc.c
+index 47f42e6801056..26019313e1fc2 100644
+--- a/tools/testing/selftests/bpf/prog_tests/core_reloc.c
++++ b/tools/testing/selftests/bpf/prog_tests/core_reloc.c
+@@ -1,4 +1,5 @@
+ // SPDX-License-Identifier: GPL-2.0
++#define _GNU_SOURCE
+ #include <test_progs.h>
+ #include "progs/core_reloc_types.h"
+ #include "bpf_testmod/bpf_testmod.h"
 -- 
 2.43.0
 
