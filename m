@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-79957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 435DA98DB12
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:27:36 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68EAE98DD83
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:50:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EF91828093C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:27:34 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 163D11F25ECF
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:50:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85A401D0DCB;
-	Wed,  2 Oct 2024 14:22:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BEB21CFEA3;
+	Wed,  2 Oct 2024 14:47:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r7njuz3w"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Iu//lDW/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 453B31D0412;
-	Wed,  2 Oct 2024 14:22:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55D8E1EEE6;
+	Wed,  2 Oct 2024 14:47:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878964; cv=none; b=JoNBBCk9dkAYtHq2Np4DH/7NFD7idfV1t4WRER0ewznx2wH9OwM6kVelT1R41fdRL0Hwm6vqLsuAgUwlcGcpeSpEpvCWUbBawvNx6fbJ6vJcpyawtCRfTKG6segGeBL8nmtgQaBx/YhNC8jSWKjASg0KIQc0ABGxc0dLQqixX2o=
+	t=1727880422; cv=none; b=G2/AtjduTu7sA59ZSd6n1LxFhfz7uCj/ECXWwQmR7Ymrmb+dyRjQsNjIOS3wxkSjg+Za/qCTtcvdQrj1R8jj+kJXb00Q8MT7pKLeza5vYdZyKzcA3Hj11s7G0eyi/ig6qd18HTn7iBrIFM1/FV1sl7j9OlGnlWzUU+pFye4P1Aw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878964; c=relaxed/simple;
-	bh=8S69Tdgj/n8Yifx3bfJqTfKwWPejSoMwmjf5C3KPihc=;
+	s=arc-20240116; t=1727880422; c=relaxed/simple;
+	bh=yoUKgQc7HtJdSTztEUpjxi/k6s1GeR9Kvyxb4YD7qDA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jSpHCXoK7uAmNCxegHYqEw9N+1x5omlXIXE8JNZjX7dKqyr3FQHx+1dS9uNPHzoZWlCsdQxYjFbZ7fCtvkwRx5Ip4/xUAh7Ehiph2zS2xbMYZzTS+Dc6xlbcaaSUlc9QMiAhm+YYtXDAq5LSkItouwi0RtQXGr61D2Djn2aF9Fw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r7njuz3w; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C04DBC4CEC2;
-	Wed,  2 Oct 2024 14:22:43 +0000 (UTC)
+	 MIME-Version; b=FXsZObwQSUgwSXTHxBdMiddaQkk19Vry1OPEqXwsNOP5saFgqcp/ouHRE2+nxLzzU0fsKsCjdz9ab0+aRUKUDii4M1Dj0KbA3/Fztqw77pvYWaNmNu/rq0mvu6FRS+WnTat1rRzj35q4EJcC7tz/MJXYtVUeHcAx/gYCl3ZrFYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Iu//lDW/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3F99C4CECD;
+	Wed,  2 Oct 2024 14:47:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878964;
-	bh=8S69Tdgj/n8Yifx3bfJqTfKwWPejSoMwmjf5C3KPihc=;
+	s=korg; t=1727880422;
+	bh=yoUKgQc7HtJdSTztEUpjxi/k6s1GeR9Kvyxb4YD7qDA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r7njuz3wHBkuwcF6OPlWKDDK0mKVv8JpeZKuD5NKujpneZBHZ1/z67rx8y21HQF+2
-	 5sCcc08/CyTPE4by96OJ0YvDZ67lKY6L+M/t1ChrenVVbGeB4o1w+l+aOdYbbSNc8G
-	 2MJSiV1Hs8ssLguT+kXNSEVg8CL/I6DH9PVo0wNY=
+	b=Iu//lDW/AYHGhTb2sBL/vfn4m2mlj1u1s1Do29qt6e2nZh9umeg10KwZxn39DR3bH
+	 ubkWgnHkXMlnoOXHk62TwikU94ay4dX+4UB10as2ugl+0JX6UPLAYhnmeX6T1xLXp2
+	 IuOaUDDOWYeJrjkW1P1TM2OBI9peL9K/xy0IEiKI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 592/634] soc: versatile: realview: fix soc_dev leak during device remove
+	Ma Ke <make24@iscas.ac.cn>,
+	Matthias Brugger <matthias.bgg@gmail.com>,
+	Felix Fietkau <nbd@nbd.name>
+Subject: [PATCH 6.6 453/538] wifi: mt76: mt7915: check devm_kasprintf() returned value
 Date: Wed,  2 Oct 2024 15:01:32 +0200
-Message-ID: <20241002125834.481771094@linuxfoundation.org>
+Message-ID: <20241002125810.323790659@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit c774f2564c0086c23f5269fd4691f233756bf075 ]
+commit 267efeda8c55f30e0e7c5b7fd03dea4efec6916c upstream.
 
-If device is unbound, the soc_dev should be unregistered to prevent
-memory leak.
+devm_kasprintf() can return a NULL pointer on failure but this returned
+value is not checked. Fix this lack and check the returned value.
 
-Fixes: a2974c9c1f83 ("soc: add driver for the ARM RealView")
+Found by code review.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/20240825-soc-dev-fixes-v1-3-ff4b35abed83@linaro.org
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 6ae39b7c7ed4 ("wifi: mt76: mt7921: Support temp sensor")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Reviewed-by: Matthias Brugger <matthias.bgg@gmail.com>
+Link: https://patch.msgid.link/20240903014955.4145423-1-make24@iscas.ac.cn
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/versatile/soc-realview.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mt7915/init.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/soc/versatile/soc-realview.c b/drivers/soc/versatile/soc-realview.c
-index d304ee69287af..cf91abe07d38d 100644
---- a/drivers/soc/versatile/soc-realview.c
-+++ b/drivers/soc/versatile/soc-realview.c
-@@ -4,6 +4,7 @@
-  *
-  * Author: Linus Walleij <linus.walleij@linaro.org>
-  */
-+#include <linux/device.h>
- #include <linux/init.h>
- #include <linux/io.h>
- #include <linux/slab.h>
-@@ -81,6 +82,13 @@ static struct attribute *realview_attrs[] = {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/init.c b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+index 511e0d04eb95..6bef96e3d2a3 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/init.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/init.c
+@@ -194,6 +194,8 @@ static int mt7915_thermal_init(struct mt7915_phy *phy)
  
- ATTRIBUTE_GROUPS(realview);
+ 	name = devm_kasprintf(&wiphy->dev, GFP_KERNEL, "mt7915_%s",
+ 			      wiphy_name(wiphy));
++	if (!name)
++		return -ENOMEM;
  
-+static void realview_soc_socdev_release(void *data)
-+{
-+	struct soc_device *soc_dev = data;
-+
-+	soc_device_unregister(soc_dev);
-+}
-+
- static int realview_soc_probe(struct platform_device *pdev)
- {
- 	struct regmap *syscon_regmap;
-@@ -109,6 +117,11 @@ static int realview_soc_probe(struct platform_device *pdev)
- 	if (IS_ERR(soc_dev))
- 		return -ENODEV;
- 
-+	ret = devm_add_action_or_reset(&pdev->dev, realview_soc_socdev_release,
-+				       soc_dev);
-+	if (ret)
-+		return ret;
-+
- 	ret = regmap_read(syscon_regmap, REALVIEW_SYS_ID_OFFSET,
- 			  &realview_coreid);
- 	if (ret)
+ 	cdev = thermal_cooling_device_register(name, phy, &mt7915_thermal_ops);
+ 	if (!IS_ERR(cdev)) {
 -- 
-2.43.0
+2.46.2
 
 
 
