@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-80379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79882-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5931F98DD2A
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:47:23 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id A663F98DABE
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:25:04 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8B1DA1C230F4
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:47:22 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id D86A21C22B02
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:25:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F6531D043E;
-	Wed,  2 Oct 2024 14:43:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E14E1D174F;
+	Wed,  2 Oct 2024 14:19:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TXo1K1sj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lw2eD4o6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C3121D172B;
-	Wed,  2 Oct 2024 14:43:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF8871D07AC;
+	Wed,  2 Oct 2024 14:19:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880202; cv=none; b=f40k9v4faXByJlpVHLquTdUweExXx1iVXw0+psvwXX0gTBymZBOdA3yx+WX87qXgwqzySxFPR1o4DFWlZXAVfW0dFemda0pM6/ctXVZPvbClssJV2x78Xcf/IuiZ+Mjt9n8jEDXl50eIuJZ9KOjZuPyNRrIaYDWreDxEp20nMx8=
+	t=1727878743; cv=none; b=gXt6TuNmQhi1oGeb5AtRkU5h5a4BWwHTKs1AwWHgRbfat71EJ5hNsFs0I9+jO0AOxN8jm72fqicifxC3gX4fQD7uFFb3Toj7CwrSweB7LvzPhqLNAXXaepspuEpB3kHHrM4x9JQpE7h1le5eth6rZ7BWE10aI5qCcTWdZJobDaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880202; c=relaxed/simple;
-	bh=eKcb/qe3V8zO0g5TfZqWygzTuNtGqidhWF6Dr47bQ84=;
+	s=arc-20240116; t=1727878743; c=relaxed/simple;
+	bh=NY1Y9yiGB73o3Bf9NUP0IDRvKkNgevbLSs4H1eyxFsY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T8GQ1yUuMGk0tk16GEAIVLXf+JhnRycBVjOfIgWCWXeyh3Xml6U2JLlUxbEiO2ezkBMaHR7Xdx41h0jHeGqjtSJFjbhFF91O3WVjrN1A49qAfQhDFSsVfsaUMDFgXtRVY3RrZ1ooeugAMBC2Nlqfjd4l9k7l+pB7XbllRe9K4z0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TXo1K1sj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B94D6C4CEC2;
-	Wed,  2 Oct 2024 14:43:21 +0000 (UTC)
+	 MIME-Version; b=YoougkdMkKXTo3B09V0rXZiTgQfqSqsQTMirBoJ/r3DX3in+yY4l35DRa0h5IYxIQfZrRHxQNcZp1mYfKRf2C9+uZ+92Uv/XoI5S1Iu4ktIeAmmHUBng9UMn2zm/XznabCaaZ5SOzpe/WH/hcD6XecbafZaKsPS3HvG+mI4vMms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lw2eD4o6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E069C4CEC2;
+	Wed,  2 Oct 2024 14:19:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880202;
-	bh=eKcb/qe3V8zO0g5TfZqWygzTuNtGqidhWF6Dr47bQ84=;
+	s=korg; t=1727878743;
+	bh=NY1Y9yiGB73o3Bf9NUP0IDRvKkNgevbLSs4H1eyxFsY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TXo1K1sjNYmAQhkv36DNmWkn70I3B6JWIsF3b52H5q3SOHWSrMMJXuH6LnzUE3hpV
-	 +f/KE9KGFHSS8+wrF8V2R9nHuZqHroF4KGU9SalkNL5sJme6UHzUSSLonbmxbmOC+T
-	 pU+LJm6Pln6EueSvv2sHeTB3Xwd+nY2EKFr0+Xe4=
+	b=lw2eD4o6My1TFkj5q87aC4tLHL1WxXUXgSCl+gZvvUdzEkUzH872jybmmZdKzXpkO
+	 gR5xsJmCSzRDJ8/gfJIlVQSzacd1sZ1bO7FmPX38EKGGmAgkQ1mIT7Gq1aWVJ3IBod
+	 WdXUnaHQjSyR5Ldj0rDG4EkJUAFDBwxADju/KMJ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Phil Sutter <phil@nwl.cc>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 379/538] netfilter: nf_tables: Keep deleted flowtable hooks until after RCU
+	Chen-Yu Tsai <wenst@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Subject: [PATCH 6.10 518/634] arm64: dts: mediatek: mt8395-nio-12l: Mark USB 3.0 on xhci1 as disabled
 Date: Wed,  2 Oct 2024 15:00:18 +0200
-Message-ID: <20241002125807.391493967@linuxfoundation.org>
+Message-ID: <20241002125831.556240537@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Phil Sutter <phil@nwl.cc>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit 642c89c475419b4d0c0d90e29d9c1a0e4351f379 ]
+commit be985531a5dd9ca50fc9f3f85b8adeb2a4a75a58 upstream.
 
-Documentation of list_del_rcu() warns callers to not immediately free
-the deleted list item. While it seems not necessary to use the
-RCU-variant of list_del() here in the first place, doing so seems to
-require calling kfree_rcu() on the deleted item as well.
+USB 3.0 on xhci1 is not used, as the controller shares the same PHY as
+pcie1. The latter is enabled to support the M.2 PCIe WLAN card on this
+design.
 
-Fixes: 3f0465a9ef02 ("netfilter: nf_tables: dynamically allocate hooks per net_device in flowtables")
-Signed-off-by: Phil Sutter <phil@nwl.cc>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Mark USB 3.0 as disabled on this controller using the
+"mediatek,u3p-dis-msk" property.
+
+Fixes: 96564b1e2ea4 ("arm64: dts: mediatek: Introduce the MT8395 Radxa NIO 12L board")
+Cc: stable@vger.kernel.org
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Link: https://lore.kernel.org/r/20240731034411.371178-3-wenst@chromium.org
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/mediatek/mt8395-radxa-nio-12l.dts |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 6b6c16c5fc9ae..935e953b8e1bf 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -8943,7 +8943,7 @@ static void nf_tables_flowtable_destroy(struct nft_flowtable *flowtable)
- 		flowtable->data.type->setup(&flowtable->data, hook->ops.dev,
- 					    FLOW_BLOCK_UNBIND);
- 		list_del_rcu(&hook->list);
--		kfree(hook);
-+		kfree_rcu(hook, rcu);
- 	}
- 	kfree(flowtable->name);
- 	module_put(flowtable->data.type->owner);
--- 
-2.43.0
-
+--- a/arch/arm64/boot/dts/mediatek/mt8395-radxa-nio-12l.dts
++++ b/arch/arm64/boot/dts/mediatek/mt8395-radxa-nio-12l.dts
+@@ -816,6 +816,7 @@
+ 	usb2-lpm-disable;
+ 	vusb33-supply = <&mt6359_vusb_ldo_reg>;
+ 	vbus-supply = <&vsys>;
++	mediatek,u3p-dis-msk = <1>;
+ 	status = "okay";
+ };
+ 
 
 
 
