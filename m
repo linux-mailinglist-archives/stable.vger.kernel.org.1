@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-79806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80272-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B62B98DA5A
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:21:02 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E4BA98DCBB
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:44:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3CD1C283640
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:21:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 9C80C1C2166B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:44:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 539F41D1F5A;
-	Wed,  2 Oct 2024 14:15:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C56141D2F4E;
+	Wed,  2 Oct 2024 14:38:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m5aC5wNK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h+EoL/QS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FC7C1D0B93;
-	Wed,  2 Oct 2024 14:15:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8254A1D2B1E;
+	Wed,  2 Oct 2024 14:38:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878520; cv=none; b=UEc7Rpeet+qdFo7IudYreN4AiZMP9W5hDOJybOj16a0yM8LnZU8GO4bZ8ggmf86u8Chb+vrdEz3G4D4qsaUhrzSBXJQ0nvFGxqxq+6a4JIxnF6e2rtmyw9wPy9zE37VZ6fPUJeAIxNjCN+ej9zXhfnxsV1Mr7MdGXmFsU38SPR0=
+	t=1727879885; cv=none; b=hw7AphyfAXWZyWGrYhdKBDvntbi19hF5VM7fHWiO+VCS5KwVQqYLijt8BfU9oKiTtYvzjOSyU+VT0M8D76/UlbABdTZBhnd33YjzY/N2d4xOdeScTOIypLoTk+VNEy7P84qx8wE/LcbtLL/T373z9kJG/HwqZ7F2yOP31+WPxH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878520; c=relaxed/simple;
-	bh=JjSqfnKDXxqf/K2MzrUrm2ASpa5xfAj5beNgNc+V3UA=;
+	s=arc-20240116; t=1727879885; c=relaxed/simple;
+	bh=KxhOdn1cgVFxex8rXFHlWOLq2jV8hW8hbw7nrKIwcOs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iuz4EK3EjDp9TCWl1liHLoq2jgccY6+xUv2C3Yrv/eMB1swOMNN37FWheYKW0TncNhlBIORZjQbjcu07oXwxAiz5nbRcuK52zB1CuUbhSJDviqMRZnsZSApvCVEqPCpeUjGXez9YMd1soDqmT1UgSyJ5UWadLoJjVqCn4JfxDvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m5aC5wNK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56AA9C4CEC2;
-	Wed,  2 Oct 2024 14:15:19 +0000 (UTC)
+	 MIME-Version; b=aBKijrGfIlOPc8DBM+kDo3w4IHToTWELXICPCpfUYzPbl162SKBMosSbXBJHM+RSCaX046sptrfenWLMagNkmlEOaNyBVHklu0uxrMsvjW/f5k6RCFL5fQvPq9POCPrw/uuVNlGHdajBCy3jR6VSEMaedbAwTumT2o0i+iz+kcg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h+EoL/QS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0995EC4CEC2;
+	Wed,  2 Oct 2024 14:38:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878519;
-	bh=JjSqfnKDXxqf/K2MzrUrm2ASpa5xfAj5beNgNc+V3UA=;
+	s=korg; t=1727879885;
+	bh=KxhOdn1cgVFxex8rXFHlWOLq2jV8hW8hbw7nrKIwcOs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m5aC5wNK22xFF/XlCc9ZTbztWL2nDzjcqxVP8IbO2lZNKurZvOUAN+VEk4/W5yuzc
-	 NhFCp+auUBBZek4mHbDsiE4aiT+YGvb3nP+eFSGyEKSFswODPHgGtPr2TMdDa8FbT3
-	 d6NnawOuvbNl+f6aSXpiwN9TydD4kDyIMO8Bd3qs=
+	b=h+EoL/QSWeJmQxmDC9QWpVfItyCRlmithDp0bYRanpKI3D40XlAS3P8ibxkb6AH0V
+	 6rxKhC/G8vdoZ7P2T/kaf3a32BLWXYne0b5ikOtY7WaBviVkkQEpprfnkUSdh9z3ig
+	 +Wnx38ed1Ut0fsxWJBFIYpNdSMjnBTmXjNi53e+4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinjie Ruan <ruanjinjie@huawei.com>,
-	Mark Brown <broonie@kernel.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 410/634] spi: spi-fsl-lpspi: Undo runtime PM changes at driver exit time
-Date: Wed,  2 Oct 2024 14:58:30 +0200
-Message-ID: <20241002125827.290402747@linuxfoundation.org>
+Subject: [PATCH 6.6 272/538] clk: qcom: dispcc-sm8650: Update the GDSC flags
+Date: Wed,  2 Oct 2024 14:58:31 +0200
+Message-ID: <20241002125802.993610222@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +63,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 3b577de206d52dbde9428664b6d823d35a803d75 ]
+[ Upstream commit 7de10ddbdb9d03651cff5fbdc8cf01837c698526 ]
 
-It's important to undo pm_runtime_use_autosuspend() with
-pm_runtime_dont_use_autosuspend() at driver exit time unless driver
-initially enabled pm_runtime with devm_pm_runtime_enable()
-(which handles it for you).
+Add missing POLL_CFG_GDSCR to the MDSS GDSC flags.
 
-Hence, call pm_runtime_dont_use_autosuspend() at driver exit time
-to fix it.
-
-Fixes: 944c01a889d9 ("spi: lpspi: enable runtime pm for lpspi")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Link: https://patch.msgid.link/20240906021251.610462-1-ruanjinjie@huawei.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 90114ca11476 ("clk: qcom: add SM8550 DISPCC driver")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20240717-dispcc-sm8550-fixes-v2-4-5c4a3128c40b@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-fsl-lpspi.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/clk/qcom/dispcc-sm8550.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/spi/spi-fsl-lpspi.c b/drivers/spi/spi-fsl-lpspi.c
-index d2f603e1014cf..e235df4177f96 100644
---- a/drivers/spi/spi-fsl-lpspi.c
-+++ b/drivers/spi/spi-fsl-lpspi.c
-@@ -986,6 +986,7 @@ static void fsl_lpspi_remove(struct platform_device *pdev)
+diff --git a/drivers/clk/qcom/dispcc-sm8550.c b/drivers/clk/qcom/dispcc-sm8550.c
+index 72558ef25e9e8..9b63d62057ed5 100644
+--- a/drivers/clk/qcom/dispcc-sm8550.c
++++ b/drivers/clk/qcom/dispcc-sm8550.c
+@@ -1611,7 +1611,7 @@ static struct gdsc mdss_gdsc = {
+ 		.name = "mdss_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
+-	.flags = HW_CTRL | RETAIN_FF_ENABLE,
++	.flags = POLL_CFG_GDSCR | HW_CTRL | RETAIN_FF_ENABLE,
+ };
  
- 	fsl_lpspi_dma_exit(controller);
+ static struct gdsc mdss_int2_gdsc = {
+@@ -1620,7 +1620,7 @@ static struct gdsc mdss_int2_gdsc = {
+ 		.name = "mdss_int2_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
+-	.flags = HW_CTRL | RETAIN_FF_ENABLE,
++	.flags = POLL_CFG_GDSCR | HW_CTRL | RETAIN_FF_ENABLE,
+ };
  
-+	pm_runtime_dont_use_autosuspend(fsl_lpspi->dev);
- 	pm_runtime_disable(fsl_lpspi->dev);
- }
- 
+ static struct clk_regmap *disp_cc_sm8550_clocks[] = {
 -- 
 2.43.0
 
