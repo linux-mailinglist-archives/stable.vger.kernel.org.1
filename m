@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-80121-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79623-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 474DD98DBF1
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:36:19 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id A074698D969
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:11:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 02EF92817E5
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:36:18 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 588C11F23127
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:11:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0097F1D174A;
-	Wed,  2 Oct 2024 14:30:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8153A1D0E39;
+	Wed,  2 Oct 2024 14:06:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RPd8zTJH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eWXHD14R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0BAE1EB21;
-	Wed,  2 Oct 2024 14:30:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E9C61D07B8;
+	Wed,  2 Oct 2024 14:06:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879446; cv=none; b=S3TzFDqPoRBKj4uOaDRUzuWSSX8QZYmooSP2e4+Hw4FnuMnt1Qm9yXFssj8qrAi5JvyfmbrE/rnF6WDjloupVvoTcoLn3FRCNTAIKYQFNN9wHYNH9fm+pMCP2liYiEMrZ+baxpkUBOzDGCW+StGOfi0oSQ6a06+8+s0PASZQB50=
+	t=1727877983; cv=none; b=gbCsDAVjc07hjCvGlk+cQMchC89lM2xbmxFeoLCfooH2Sg/mp3rxbxnJbI8R9T/ryUsCrfGUbARBh5ILs8DaGOw4pcoN5IFYXNtFnpQdLzRHkPAoLybw7MrO/OdK3UkTU7sQapLDnQnA/4D1qbUs83zORX1itg3BT7Dbs6c7reg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879446; c=relaxed/simple;
-	bh=quGQa+qaHKulB8MrVDQ1w81Juhf4Dr22zilv3bWzUlc=;
+	s=arc-20240116; t=1727877983; c=relaxed/simple;
+	bh=56xr5caJ3IpxOQgiakeORtYs6+N9XykFhV4J4GiU4bE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lFwbKFpwHeyTqeOMWaG3ZrveDYpsZbZhgoa3oibvGCQ6Q8GUiW3iMViZCXVKP7vDMpVR1iAu4+jzRkYhFOhHALqg89EHdal1qJw26xm1OJclaSbuppDL3FVnxxaGJDTVLWBU4dewtqcPflT58DnkK2dYHcy+BHGe7rPGLaOvrLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RPd8zTJH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22B8EC4CEC2;
-	Wed,  2 Oct 2024 14:30:44 +0000 (UTC)
+	 MIME-Version; b=rERPpEJzaQZfSEIMz1vaTtbhgUpC65jrtz9cmJwbZrIbBG3iaRMGAiGjTkOHj6LOjU2N9i6RPhPOlxjocNr7zAqLvKBjhI9r7j3rVTFj+YCFNhvTCW1bK5/Fx7jPIbfsZEe9RfBiPfFzJeEMZEH3LPRtPI1TNs+45uPO1M/PAd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eWXHD14R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7093C4CEC2;
+	Wed,  2 Oct 2024 14:06:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879445;
-	bh=quGQa+qaHKulB8MrVDQ1w81Juhf4Dr22zilv3bWzUlc=;
+	s=korg; t=1727877983;
+	bh=56xr5caJ3IpxOQgiakeORtYs6+N9XykFhV4J4GiU4bE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RPd8zTJHGi5p24vogNnMSUW1u1q53UPWrSVS23lLIXiPD4Ijp9L+jO0M7SNGaHwNQ
-	 1fl/07MrPDPYugjRI1eJi3gi7HpENqWletcGyGhA7/SwqGJIuZG1e/Wc/7ag58knCd
-	 KL14uBhldfPGUQmsArd+mLNwrY/ON7xLeFSYXuFY=
+	b=eWXHD14RA9uh7EjMUWRozFCYaIT12blXuiQ9q4dKlJ1HJtEnyadB238K+3/6PXUM4
+	 oDr7ZtFSFnlIXIl2xbCA1dAaQDWAWTWSOwGdmJJHlRAka0TQ0G2UDzkVM5WTww1s0I
+	 k3WEIMjiqiYzBXipvYnuJBuUbjQ2ocQeD/JSxUTE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Davis <afd@ti.com>,
-	Guenter Roeck <linux@roeck-us.net>,
+	Jiangshan Yi <yijiangshan@kylinos.cn>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Qiang Wang <wangqiang1@kylinos.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 121/538] hwmon: (max16065) Remove use of i2c_match_id()
-Date: Wed,  2 Oct 2024 14:56:00 +0200
-Message-ID: <20241002125757.022270684@linuxfoundation.org>
+Subject: [PATCH 6.10 261/634] samples/bpf: Fix compilation errors with cf-protection option
+Date: Wed,  2 Oct 2024 14:56:01 +0200
+Message-ID: <20241002125821.403322078@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,72 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Davis <afd@ti.com>
+From: Jiangshan Yi <yijiangshan@kylinos.cn>
 
-[ Upstream commit 5a71654b398e3471f0169c266a3587cf09e1200c ]
+[ Upstream commit fdf1c728fac541891ef1aa773bfd42728626769c ]
 
-The function i2c_match_id() is used to fetch the matching ID from
-the i2c_device_id table. This is often used to then retrieve the
-matching driver_data. This can be done in one step with the helper
-i2c_get_match_data().
+Currently, compiling the bpf programs will result the compilation errors
+with the cf-protection option as follows in arm64 and loongarch64 machine
+when using gcc 12.3.1 and clang 17.0.6. This commit fixes the compilation
+errors by limited the cf-protection option only used in x86 platform.
 
-This helper has a couple other benefits:
- * It doesn't need the i2c_device_id passed in so we do not need
-   to have that forward declared, allowing us to remove those or
-   move the i2c_device_id table down to its more natural spot
-   with the other module info.
- * It also checks for device match data, which allows for OF and
-   ACPI based probing. That means we do not have to manually check
-   those first and can remove those checks.
+[root@localhost linux]# make M=samples/bpf
+	......
+  CLANG-bpf  samples/bpf/xdp2skb_meta_kern.o
+error: option 'cf-protection=return' cannot be specified on this target
+error: option 'cf-protection=branch' cannot be specified on this target
+2 errors generated.
+  CLANG-bpf  samples/bpf/syscall_tp_kern.o
+error: option 'cf-protection=return' cannot be specified on this target
+error: option 'cf-protection=branch' cannot be specified on this target
+2 errors generated.
+	......
 
-Signed-off-by: Andrew Davis <afd@ti.com>
-Link: https://lore.kernel.org/r/20240403203633.914389-20-afd@ti.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Stable-dep-of: 119abf7d1815 ("hwmon: (max16065) Fix alarm attributes")
+Fixes: 34f6e38f58db ("samples/bpf: fix warning with ignored-attributes")
+Reported-by: Jiangshan Yi <yijiangshan@kylinos.cn>
+Signed-off-by: Jiangshan Yi <yijiangshan@kylinos.cn>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Tested-by: Qiang Wang <wangqiang1@kylinos.cn>
+Link: https://lore.kernel.org/bpf/20240815135524.140675-1-13667453960@163.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/max16065.c | 10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ samples/bpf/Makefile | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/max16065.c b/drivers/hwmon/max16065.c
-index e392529de098e..5b2a174c6bad3 100644
---- a/drivers/hwmon/max16065.c
-+++ b/drivers/hwmon/max16065.c
-@@ -494,8 +494,6 @@ static const struct attribute_group max16065_max_group = {
- 	.is_visible = max16065_secondary_is_visible,
- };
+diff --git a/samples/bpf/Makefile b/samples/bpf/Makefile
+index 3e003dd6bea09..dca56aa360ff3 100644
+--- a/samples/bpf/Makefile
++++ b/samples/bpf/Makefile
+@@ -169,6 +169,10 @@ BPF_EXTRA_CFLAGS += -I$(srctree)/arch/mips/include/asm/mach-generic
+ endif
+ endif
  
--static const struct i2c_device_id max16065_id[];
--
- static int max16065_probe(struct i2c_client *client)
- {
- 	struct i2c_adapter *adapter = client->adapter;
-@@ -506,7 +504,7 @@ static int max16065_probe(struct i2c_client *client)
- 	bool have_secondary;		/* true if chip has secondary limits */
- 	bool secondary_is_max = false;	/* secondary limits reflect max */
- 	int groups = 0;
--	const struct i2c_device_id *id = i2c_match_id(max16065_id, client);
-+	enum chips chip = (uintptr_t)i2c_get_match_data(client);
- 
- 	if (!i2c_check_functionality(adapter, I2C_FUNC_SMBUS_BYTE_DATA
- 				     | I2C_FUNC_SMBUS_READ_WORD_DATA))
-@@ -519,9 +517,9 @@ static int max16065_probe(struct i2c_client *client)
- 	data->client = client;
- 	mutex_init(&data->update_lock);
- 
--	data->num_adc = max16065_num_adc[id->driver_data];
--	data->have_current = max16065_have_current[id->driver_data];
--	have_secondary = max16065_have_secondary[id->driver_data];
-+	data->num_adc = max16065_num_adc[chip];
-+	data->have_current = max16065_have_current[chip];
-+	have_secondary = max16065_have_secondary[chip];
- 
- 	if (have_secondary) {
- 		val = i2c_smbus_read_byte_data(client, MAX16065_SW_ENABLE);
++ifeq ($(ARCH), x86)
++BPF_EXTRA_CFLAGS += -fcf-protection
++endif
++
+ TPROGS_CFLAGS += -Wall -O2
+ TPROGS_CFLAGS += -Wmissing-prototypes
+ TPROGS_CFLAGS += -Wstrict-prototypes
+@@ -405,7 +409,7 @@ $(obj)/%.o: $(src)/%.c
+ 		-Wno-gnu-variable-sized-type-not-at-end \
+ 		-Wno-address-of-packed-member -Wno-tautological-compare \
+ 		-Wno-unknown-warning-option $(CLANG_ARCH_ARGS) \
+-		-fno-asynchronous-unwind-tables -fcf-protection \
++		-fno-asynchronous-unwind-tables \
+ 		-I$(srctree)/samples/bpf/ -include asm_goto_workaround.h \
+ 		-O2 -emit-llvm -Xclang -disable-llvm-passes -c $< -o - | \
+ 		$(OPT) -O2 -mtriple=bpf-pc-linux | $(LLVM_DIS) | \
 -- 
 2.43.0
 
