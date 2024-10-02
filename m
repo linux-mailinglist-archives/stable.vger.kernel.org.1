@@ -1,57 +1,65 @@
-Return-Path: <stable+bounces-79483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4F9B398D8A6
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:04:03 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id C533498D550
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:29:33 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F0D1C28498B
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:04:01 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E93641C21E20
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:29:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 251B61D1F63;
-	Wed,  2 Oct 2024 13:59:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 455E41D04B6;
+	Wed,  2 Oct 2024 13:28:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TPoTjlPX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aimbytvc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D68461D1F5F;
-	Wed,  2 Oct 2024 13:59:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 038B81D043B;
+	Wed,  2 Oct 2024 13:28:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877592; cv=none; b=NBAuoMoWJMRwbECZi0kFsC6y7p3GWjTEGhA0DJdUiK+LKOYp83r0vnrYHefxx90S+gPIHPNOOrMYkZZnNzmFzVARBKw2hZLHyX3f0Y1ZBr2M6bcFKBcd4Xd2OWQakmcd6PfYJq63cTDSPi8TZZIKGu/h2x4qb9VBX8T1k4a2wwY=
+	t=1727875731; cv=none; b=hUNEExrXdw6EMlOmtz4MFyAh5kEAexjM5Pmwl294f9J+uFtdmEh6rZ0LawxTseRVj8aVe7bAPwULPKI3PUNZnft0jdqgQhMQw7LslJWN4okfwHoy2Cfp1Uormqz6Q4prDZSvYoCI1IOBpR57HnAyirTjYXd2l7Gl7yqYPIO/kwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877592; c=relaxed/simple;
-	bh=wranJ9BPq022etCBDP9ddSuT8G9SZtJln+XSANJxMGs=;
+	s=arc-20240116; t=1727875731; c=relaxed/simple;
+	bh=8xud3t4biiMbTx+ck+3bi+pvYxnc8NezGz4dFqylpvU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GO/edxkz9I51BEb2IhNbLQzrypKdZjyJMe+jllVFd/yirsN6y9nOx8QYGDhf6zzrPpVzy4rOJJJtCGxEz/71nABt2S4wUe0wfBpXTff/CqMvUhzn9al7sK3L78muattve8bvE9J0NyrBMKZR0QBpDXcFxiloa/IVHfFxrFdsPus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TPoTjlPX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60824C4CECD;
-	Wed,  2 Oct 2024 13:59:52 +0000 (UTC)
+	 MIME-Version; b=rMkKB86km7O+fRY4EAsmfXJPH8/OUEgaldElXb72egmO293/RBF+1m0DtVwyqdr+LTgHPZSuh0NKpzprMtNFZnRNFOVqH+r6DTK6Uq/lI98i57PQi30pWdgLh9jX74vtZL7fwonPX/OJrJFxZPP6HfqqeZg91D/gUUnW9w9LB0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aimbytvc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E721C4CECD;
+	Wed,  2 Oct 2024 13:28:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877592;
-	bh=wranJ9BPq022etCBDP9ddSuT8G9SZtJln+XSANJxMGs=;
+	s=korg; t=1727875730;
+	bh=8xud3t4biiMbTx+ck+3bi+pvYxnc8NezGz4dFqylpvU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TPoTjlPXhKVQOgw6maBQXDMlgmLcnOIgNuGOS4rIdwtW9MeJ0dNaQkvWxfWZ52CfY
-	 JkcQQwkEF+wMB8MqL35WOc/d6Hbw+57Epv0fqx39sHalQi3WrbfNRx7tjGLFJ8LusV
-	 jLjxeuLWjrmzQgY/Y5kMJBQW7GK8fJRLUMqBxQ+A=
+	b=aimbytvcRJcKiGcquXbrrRf4dcaW0+RmipjrObbLUuMNny34/W/OJTGyZsHo4EMFm
+	 2Z3sF4qmNPE+XFGZCoPTba1QE3y73SdpC+fwRKIKPSYZ8YFus5cYrKsfXOsNW1FCTW
+	 CpIbxbDWenRhKj6QW90bNdI9cyXOZ4YU8iDWCFgY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Justin Stitt <justinstitt@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Tom Chung <chiahsuan.chung@amd.com>,
+	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+	Roman Li <roman.li@amd.com>,
+	Hersen Wu <hersenxs.wu@amd.com>,
+	Alex Hung <alex.hung@amd.com>,
+	Aurabindo Pillai <aurabindo.pillai@amd.com>,
+	Harry Wentland <harry.wentland@amd.com>,
+	Hamza Mahfooz <hamza.mahfooz@amd.com>,
+	Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 100/634] net: tipc: avoid possible garbage value
+Subject: [PATCH 6.11 202/695] drm/amd/display: Add null check for set_output_gamma in dcn30_set_output_transfer_func
 Date: Wed,  2 Oct 2024 14:53:20 +0200
-Message-ID: <20241002125815.061740945@linuxfoundation.org>
+Message-ID: <20241002125830.525654892@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +71,104 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
 
-[ Upstream commit 99655a304e450baaae6b396cb942b9e47659d644 ]
+[ Upstream commit 08ae395ea22fb3d9b318c8bde28c0dfd2f5fa4d2 ]
 
-Clang static checker (scan-build) warning:
-net/tipc/bcast.c:305:4:
-The expression is an uninitialized value. The computed value will also
-be garbage [core.uninitialized.Assign]
-  305 |                         (*cong_link_cnt)++;
-      |                         ^~~~~~~~~~~~~~~~~~
+This commit adds a null check for the set_output_gamma function pointer
+in the  dcn30_set_output_transfer_func function. Previously,
+set_output_gamma was being checked for nullity at line 386, but then it
+was being dereferenced without any nullity check at line 401. This
+could potentially lead to a null pointer dereference error if
+set_output_gamma is indeed null.
 
-tipc_rcast_xmit() will increase cong_link_cnt's value, but cong_link_cnt
-is uninitialized. Although it won't really cause a problem, it's better
-to fix it.
+To fix this, we now ensure that set_output_gamma is not null before
+dereferencing it. We do this by adding a nullity check for
+set_output_gamma before the call to set_output_gamma at line 401. If
+set_output_gamma is null, we log an error message and do not call the
+function.
 
-Fixes: dca4a17d24ee ("tipc: fix potential hanging after b/rcast changing")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Reviewed-by: Justin Stitt <justinstitt@google.com>
-Link: https://patch.msgid.link/20240912110119.2025503-1-suhui@nfschina.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+This fix prevents a potential null pointer dereference error.
+
+drivers/gpu/drm/amd/amdgpu/../display/dc/hwss/dcn30/dcn30_hwseq.c:401 dcn30_set_output_transfer_func()
+error: we previously assumed 'mpc->funcs->set_output_gamma' could be null (see line 386)
+
+drivers/gpu/drm/amd/amdgpu/../display/dc/hwss/dcn30/dcn30_hwseq.c
+    373 bool dcn30_set_output_transfer_func(struct dc *dc,
+    374                                 struct pipe_ctx *pipe_ctx,
+    375                                 const struct dc_stream_state *stream)
+    376 {
+    377         int mpcc_id = pipe_ctx->plane_res.hubp->inst;
+    378         struct mpc *mpc = pipe_ctx->stream_res.opp->ctx->dc->res_pool->mpc;
+    379         const struct pwl_params *params = NULL;
+    380         bool ret = false;
+    381
+    382         /* program OGAM or 3DLUT only for the top pipe*/
+    383         if (pipe_ctx->top_pipe == NULL) {
+    384                 /*program rmu shaper and 3dlut in MPC*/
+    385                 ret = dcn30_set_mpc_shaper_3dlut(pipe_ctx, stream);
+    386                 if (ret == false && mpc->funcs->set_output_gamma) {
+                                            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ If this is NULL
+
+    387                         if (stream->out_transfer_func.type == TF_TYPE_HWPWL)
+    388                                 params = &stream->out_transfer_func.pwl;
+    389                         else if (pipe_ctx->stream->out_transfer_func.type ==
+    390                                         TF_TYPE_DISTRIBUTED_POINTS &&
+    391                                         cm3_helper_translate_curve_to_hw_format(
+    392                                         &stream->out_transfer_func,
+    393                                         &mpc->blender_params, false))
+    394                                 params = &mpc->blender_params;
+    395                          /* there are no ROM LUTs in OUTGAM */
+    396                         if (stream->out_transfer_func.type == TF_TYPE_PREDEFINED)
+    397                                 BREAK_TO_DEBUGGER();
+    398                 }
+    399         }
+    400
+--> 401         mpc->funcs->set_output_gamma(mpc, mpcc_id, params);
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ Then it will crash
+
+    402         return ret;
+    403 }
+
+Fixes: d99f13878d6f ("drm/amd/display: Add DCN3 HWSEQ")
+Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
+Cc: Tom Chung <chiahsuan.chung@amd.com>
+Cc: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
+Cc: Roman Li <roman.li@amd.com>
+Cc: Hersen Wu <hersenxs.wu@amd.com>
+Cc: Alex Hung <alex.hung@amd.com>
+Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
+Cc: Harry Wentland <harry.wentland@amd.com>
+Cc: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>
+Reviewed-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/tipc/bcast.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/net/tipc/bcast.c b/net/tipc/bcast.c
-index 593846d252143..114fef65f92ea 100644
---- a/net/tipc/bcast.c
-+++ b/net/tipc/bcast.c
-@@ -320,8 +320,8 @@ static int tipc_mcast_send_sync(struct net *net, struct sk_buff *skb,
- {
- 	struct tipc_msg *hdr, *_hdr;
- 	struct sk_buff_head tmpq;
-+	u16 cong_link_cnt = 0;
- 	struct sk_buff *_skb;
--	u16 cong_link_cnt;
- 	int rc = 0;
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c
+index eaeeade31ed74..2b4dae2d4b0c1 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dcn30/dcn30_hwseq.c
+@@ -398,7 +398,11 @@ bool dcn30_set_output_transfer_func(struct dc *dc,
+ 		}
+ 	}
  
- 	/* Is a cluster supporting with new capabilities ? */
+-	mpc->funcs->set_output_gamma(mpc, mpcc_id, params);
++	if (mpc->funcs->set_output_gamma)
++		mpc->funcs->set_output_gamma(mpc, mpcc_id, params);
++	else
++		DC_LOG_ERROR("%s: set_output_gamma function pointer is NULL.\n", __func__);
++
+ 	return ret;
+ }
+ 
 -- 
 2.43.0
 
