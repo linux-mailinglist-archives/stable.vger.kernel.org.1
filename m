@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-78722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3658998D4A1
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:22:18 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CA5C98D4AD
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:22:49 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id F278228279F
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:22:16 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6572B2830C1
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:22:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B2941CFEBA;
-	Wed,  2 Oct 2024 13:22:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 194031CFEBA;
+	Wed,  2 Oct 2024 13:22:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ouWElaVT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NEFZcL3q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B77425771;
-	Wed,  2 Oct 2024 13:22:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB96F16F84F;
+	Wed,  2 Oct 2024 13:22:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875336; cv=none; b=B1YuMAskdAVWZknhzTySfFDIZkE5d/6PfX2eYQcY2nbhzD9al9TD4QmDaj+tsKkhh5eWiGP1tPeTRnQZZh2l2jdDaAS881cpHdcRs70MahvG28xW9LbWVGbLkGHFPFnQvXkJIXhHF2Vy6V0HFcyzK/vg+NqEo9y1eOAUAE9Bpmk=
+	t=1727875367; cv=none; b=M84rcvjefrUFQJcv6fAmb8vhNs6+6hhzBwG1mEL4tcl3MvnsS2AgNLdE6GKEpsvv8ny+Ub3ypB5u6LXH2x24WGSPlx80LubJwC3tqvCTSXJYeQ1jxB+DQtHjmnW3TWX17135M8BasEyeZ8TukkNTpWcameEX/5K2ANXPoTeJNoI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875336; c=relaxed/simple;
-	bh=EHpqAAj7chMRrVfZtB52gg2UYA/9jshacE48ZINU0W0=;
+	s=arc-20240116; t=1727875367; c=relaxed/simple;
+	bh=aXG/LVX7SrfbZ3VMc/FrEJuIZTGaOzyMT7AylcgZwVw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HWaxzhJpYTnCk4VtKiOsp0k+wOzifDfYKyO/uwIu/SRoR2/EGrhlbmF83P7L/0hR5bAOCQKoM1kxdWFIteguiKmZ5yy4xGfkBhH8D8IeDMhtViuX2ZAa6jptSUvyPv0oLd3hZTVG4OpkFKNku+Qak4rxYBWWwRQoLzy2VbT/JLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ouWElaVT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 457C9C4CEC5;
-	Wed,  2 Oct 2024 13:22:15 +0000 (UTC)
+	 MIME-Version; b=IphoHFM9fbXtEAwfmNy3nWSOYNggKU8QafSYoUMEyYRz0kD/kxAfDeusdO/4ZIuRup7zKXKn7LyifHcQCYPSTMSvtXLsJ7/bt9CYtt4BS+evpE0t5lZUqJu4JmIljAeJVtEcW6J0dSL8M5t1DlEkrn6HfdPx/bt9cNrWQeMuL5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NEFZcL3q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 551E4C4CEC5;
+	Wed,  2 Oct 2024 13:22:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875335;
-	bh=EHpqAAj7chMRrVfZtB52gg2UYA/9jshacE48ZINU0W0=;
+	s=korg; t=1727875367;
+	bh=aXG/LVX7SrfbZ3VMc/FrEJuIZTGaOzyMT7AylcgZwVw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ouWElaVTBFno04cZQVarzcebq/kONlDd4bqkyuWslI+rHYOIrOnPvrsOSytEumXqq
-	 mL9ceJhdrNTKpfrLdA4PFSGDhgLlOayXOwDKuf/sGDYi99w38wJuIc2WPNwQghaf7H
-	 eIywBMC1W8biVxR2GL0fysZn/bGiPExP9x+zBWfU=
+	b=NEFZcL3qtkctktZYgF6gYSeMkSKnOOFStrORQ1zY6+fq0S/NFOKROA/hIuKb5f/9q
+	 QHYMqPEKQvodfRuONQ3zxw2vz9ELUnkTjwnT0mfneT1B9ygHRJH4i1dltBUEHUfafZ
+	 IlH8ezQI0XqoOTWQp4kLI8SGxORp1PffdwrL/G50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	hhorace <hhoracehsu@gmail.com>,
-	Guillaume Nault <gnault@redhat.com>,
-	Ido Schimmel <idosch@nvidia.com>,
+	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
 	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 050/695] wifi: cfg80211: fix bug of mapping AF3x to incorrect User Priority
-Date: Wed,  2 Oct 2024 14:50:48 +0200
-Message-ID: <20241002125824.485779507@linuxfoundation.org>
+Subject: [PATCH 6.11 051/695] wifi: mac80211: fix the comeback long retry times
+Date: Wed,  2 Oct 2024 14:50:49 +0200
+Message-ID: <20241002125824.525068745@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
 References: <20241002125822.467776898@linuxfoundation.org>
@@ -68,60 +66,56 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: hhorace <hhoracehsu@gmail.com>
+From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
 
-[ Upstream commit a68b22e2905b04f376e2fa116be5e48b948f81c8 ]
+[ Upstream commit 1524173a3745899612c71d9e83ff8fe29dbb2cfb ]
 
-According to RFC8325 4.3, Multimedia Streaming: AF31(011010, 26),
-AF32(011100, 28), AF33(011110, 30) maps to User Priority = 4
-and AC_VI (Video).
+When we had a comeback, we will never use the default timeout values
+again because comeback is never cleared.
+Clear comeback if we send another association request which will allow
+to start a default timer after Tx status.
 
-However, the original code remain the default three Most Significant
-Bits (MSBs) of the DSCP, which makes AF3x map to User Priority = 3
-and AC_BE (Best Effort).
+The problem was seen with iwlwifi where the tx_status on the association
+request is handled before the association response frame (which is the
+usual case).
 
-Fixes: 6fdb8b8781d5 ("wifi: cfg80211: Update the default DSCP-to-UP mapping")
-Signed-off-by: hhorace <hhoracehsu@gmail.com>
-Reviewed-by: Guillaume Nault <gnault@redhat.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20240807082205.1369-1-hhoracehsu@gmail.com
+1) Tx assoc request 1/3
+2) Rx assoc response (comeback, timeout = 1 second)
+3) wait 1 second
+4) Tx assoc request 2/3
+5) Set timer to IEEE80211_ASSOC_TIMEOUT_LONG = 500ms (1 second after
+   round_up)
+6) tx_status on frame sent in 4) is ignored because comeback is still
+   true
+7) AP does not reply with assoc response
+8) wait 1s <= This is where the bug is felt
+9) Tx assoc request 3/3
+
+With this fix, in step 6 we will reset the timer to
+IEEE80211_ASSOC_TIMEOUT_SHORT = 100ms and we will wait only 100ms in
+step 8.
+
+Fixes: b133fdf07db8 ("wifi: mac80211: Skip association timeout update after comeback rejection")
+Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+Link: https://patch.msgid.link/20240808085916.23519-1-emmanuel.grumbach@intel.com
 Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/util.c | 10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ net/mac80211/mlme.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/wireless/util.c b/net/wireless/util.c
-index 9a7c3adc8a3bf..edeeb056fe4da 100644
---- a/net/wireless/util.c
-+++ b/net/wireless/util.c
-@@ -998,10 +998,10 @@ unsigned int cfg80211_classify8021d(struct sk_buff *skb,
- 	 * Diffserv Service Classes no update is needed:
- 	 * - Standard: DF
- 	 * - Low Priority Data: CS1
--	 * - Multimedia Streaming: AF31, AF32, AF33
- 	 * - Multimedia Conferencing: AF41, AF42, AF43
- 	 * - Network Control Traffic: CS7
- 	 * - Real-Time Interactive: CS4
-+	 * - Signaling: CS5
- 	 */
- 	switch (dscp >> 2) {
- 	case 10:
-@@ -1026,9 +1026,11 @@ unsigned int cfg80211_classify8021d(struct sk_buff *skb,
- 		/* Broadcasting video: CS3 */
- 		ret = 4;
- 		break;
--	case 40:
--		/* Signaling: CS5 */
--		ret = 5;
-+	case 26:
-+	case 28:
-+	case 30:
-+		/* Multimedia Streaming: AF31, AF32, AF33 */
-+		ret = 4;
- 		break;
- 	case 44:
- 		/* Voice Admit: VA */
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index f9526bbc36337..0a4a25a10eaea 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -7660,6 +7660,7 @@ static int ieee80211_do_assoc(struct ieee80211_sub_if_data *sdata)
+ 	lockdep_assert_wiphy(sdata->local->hw.wiphy);
+ 
+ 	assoc_data->tries++;
++	assoc_data->comeback = false;
+ 	if (assoc_data->tries > IEEE80211_ASSOC_MAX_TRIES) {
+ 		sdata_info(sdata, "association with %pM timed out\n",
+ 			   assoc_data->ap_addr);
 -- 
 2.43.0
 
