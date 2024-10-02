@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-80496-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79998-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id F05C998DDB6
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:51:38 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 552D198DB46
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:29:48 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A6844282DD8
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:51:37 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id F11C21F21F6A
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:29:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A3D71D0794;
-	Wed,  2 Oct 2024 14:49:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58A581D0B9E;
+	Wed,  2 Oct 2024 14:24:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g8yXzxch"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EHPO5aBi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05D0B1D04BA;
-	Wed,  2 Oct 2024 14:49:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17B6C1D1510;
+	Wed,  2 Oct 2024 14:24:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880542; cv=none; b=B559Q6i6/Q+qgynfAEy6wfxsSgIoCMd+4+n42gApof3s67d0MVU2zPWrSfApn2XV34Ei+GJ9ibaEkCzYd9m2+nj6o1ETrgV7NwjkMxPI4DdP2AD/3+c1MPCqlWwC19m5gNdt4Ju1eZQZPOCJ2ZToNdQz3fAsRCS3t7oN2j/92cY=
+	t=1727879086; cv=none; b=fHgW6QWJf5pO4YiMx0Kx5wLaGmGfI3U6q0lD8Ru9HY3D6GjoXwynCGT2ajJm+BwgjviFPw2fxdv/9IjodhtdcduiNvGGkzVQknSCtcsJIpbDuLg9dKx6XM/StCHcSbXiWeU1uTayoCWt6kLh41dzFkJiEzIewwbZwfc8Qb2wF5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880542; c=relaxed/simple;
-	bh=CQCiDmV3/aTYmfJRhG7WiFLluN/eGJabtfqYsislgrU=;
+	s=arc-20240116; t=1727879086; c=relaxed/simple;
+	bh=o+ScdfwVI18bBf1zH9L+idOi8TYdRYGPArw2Ah3jBpU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JNfqajvm4lrfpu4cTv8EtBZK3APm8Pd9OS1oS3oJeB+JuXhSt417A/R5SVD/xMqiyrxeKep9bjg3G/n6gGM7BccxQZSTdtuKL5jqeo2uDFaPCOKQYxNr+8RgDeXGGnpLhNMdn0Nx+TAFBsWV+EjTu1MeqFc5gEH59EYNiXdeutg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g8yXzxch; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76205C4CEC2;
-	Wed,  2 Oct 2024 14:49:01 +0000 (UTC)
+	 MIME-Version; b=YXI31ea4x5EVB80QtKMgJdzxkes92AvjZEivyoVc4UbklHVYaFUrA+np4P9pEADWgwBCH5bfdgvSU8Lv0UrzSltmg3nM7EYfXBp9QEFBqRima5dZHlOMzhpHd/hrvpkqXkc9OGvWYMNmUxyYyNt4JfEamOK1xjYFwAIlVUKCaAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EHPO5aBi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92BC0C4CEC2;
+	Wed,  2 Oct 2024 14:24:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880541;
-	bh=CQCiDmV3/aTYmfJRhG7WiFLluN/eGJabtfqYsislgrU=;
+	s=korg; t=1727879086;
+	bh=o+ScdfwVI18bBf1zH9L+idOi8TYdRYGPArw2Ah3jBpU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g8yXzxch69GfbEvAVTL8gDlyhMqBCku0qJC+/nw5Wt6D9c5UHojJuBH7yr5t2yx5t
-	 vUibx7H3N2+qpXMgATVXPGRoi4upOMSxNkPdhPtCzPWPA7FviltlFsxoeJtGOt3S/2
-	 U/pgkuYeEzJDOy38LmzUZl5F35Qf3omqcT5QcLvg=
+	b=EHPO5aBi9O4gIj8LNim1vNN0/NC5mZoZoLCZwaL6DNNbnwDxZUwvgHzLgTz3jtr8/
+	 Lhp9fisrviRPqf2CODRQvTTr97NlkgML0seLczS4GlYlznUJI4CQhIAzSSkZSDdKUx
+	 5Rv6Jk5+K4QBJGmzEdwRhnkjVUjlbVONBXHx0PgQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Alexander Potapenko <glider@google.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 494/538] x86/entry: Remove unwanted instrumentation in common_interrupt()
+	Paolo Bonzini <pbonzini@redhat.com>
+Subject: [PATCH 6.10 633/634] Documentation: KVM: fix warning in "make htmldocs"
 Date: Wed,  2 Oct 2024 15:02:13 +0200
-Message-ID: <20241002125811.939707594@linuxfoundation.org>
+Message-ID: <20241002125836.112711911@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,117 +60,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Vyukov <dvyukov@google.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
 
-[ Upstream commit 477d81a1c47a1b79b9c08fc92b5dea3c5143800b ]
+commit efbc6bd090f48ccf64f7a8dd5daea775821d57ec upstream.
 
-common_interrupt() and related variants call kvm_set_cpu_l1tf_flush_l1d(),
-which is neither marked noinstr nor __always_inline.
+The warning
 
-So compiler puts it out of line and adds instrumentation to it.  Since the
-call is inside of instrumentation_begin/end(), objtool does not warn about
-it.
+ Documentation/virt/kvm/locking.rst:31: ERROR: Unexpected indentation.
 
-The manifestation is that KCOV produces spurious coverage in
-kvm_set_cpu_l1tf_flush_l1d() in random places because the call happens when
-preempt count is not yet updated to say that the kernel is in an interrupt.
+is caused by incorrectly treating a line as the continuation of a paragraph,
+rather than as the first line in a bullet list.
 
-Mark kvm_set_cpu_l1tf_flush_l1d() as __always_inline and move it out of the
-instrumentation_begin/end() section.  It only calls __this_cpu_write()
-which is already safe to call in noinstr contexts.
-
-Fixes: 6368558c3710 ("x86/entry: Provide IDTENTRY_SYSVEC")
-Signed-off-by: Dmitry Vyukov <dvyukov@google.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Reviewed-by: Alexander Potapenko <glider@google.com>
-Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/3f9a1de9e415fcb53d07dc9e19fa8481bb021b1b.1718092070.git.dvyukov@google.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixed: 44d174596260 ("KVM: Use dedicated mutex to protect kvm_usage_count to avoid deadlock")
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/include/asm/hardirq.h  | 8 ++++++--
- arch/x86/include/asm/idtentry.h | 6 +++---
- 2 files changed, 9 insertions(+), 5 deletions(-)
+ Documentation/virt/kvm/locking.rst |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/include/asm/hardirq.h b/arch/x86/include/asm/hardirq.h
-index 66837b8c67f1a..f2e245741afc2 100644
---- a/arch/x86/include/asm/hardirq.h
-+++ b/arch/x86/include/asm/hardirq.h
-@@ -63,7 +63,11 @@ extern u64 arch_irq_stat(void);
- #define local_softirq_pending_ref       pcpu_hot.softirq_pending
+--- a/Documentation/virt/kvm/locking.rst
++++ b/Documentation/virt/kvm/locking.rst
+@@ -25,6 +25,7 @@ The acquisition orders for mutexes are a
+   must not take either kvm->slots_lock or kvm->slots_arch_lock.
  
- #if IS_ENABLED(CONFIG_KVM_INTEL)
--static inline void kvm_set_cpu_l1tf_flush_l1d(void)
-+/*
-+ * This function is called from noinstr interrupt contexts
-+ * and must be inlined to not get instrumentation.
-+ */
-+static __always_inline void kvm_set_cpu_l1tf_flush_l1d(void)
- {
- 	__this_cpu_write(irq_stat.kvm_cpu_l1tf_flush_l1d, 1);
- }
-@@ -78,7 +82,7 @@ static __always_inline bool kvm_get_cpu_l1tf_flush_l1d(void)
- 	return __this_cpu_read(irq_stat.kvm_cpu_l1tf_flush_l1d);
- }
- #else /* !IS_ENABLED(CONFIG_KVM_INTEL) */
--static inline void kvm_set_cpu_l1tf_flush_l1d(void) { }
-+static __always_inline void kvm_set_cpu_l1tf_flush_l1d(void) { }
- #endif /* IS_ENABLED(CONFIG_KVM_INTEL) */
- 
- #endif /* _ASM_X86_HARDIRQ_H */
-diff --git a/arch/x86/include/asm/idtentry.h b/arch/x86/include/asm/idtentry.h
-index e2585f61082cd..10603e185111d 100644
---- a/arch/x86/include/asm/idtentry.h
-+++ b/arch/x86/include/asm/idtentry.h
-@@ -212,8 +212,8 @@ __visible noinstr void func(struct pt_regs *regs,			\
- 	irqentry_state_t state = irqentry_enter(regs);			\
- 	u32 vector = (u32)(u8)error_code;				\
- 									\
-+	kvm_set_cpu_l1tf_flush_l1d();                                   \
- 	instrumentation_begin();					\
--	kvm_set_cpu_l1tf_flush_l1d();					\
- 	run_irq_on_irqstack_cond(__##func, regs, vector);		\
- 	instrumentation_end();						\
- 	irqentry_exit(regs, state);					\
-@@ -250,7 +250,6 @@ static void __##func(struct pt_regs *regs);				\
- 									\
- static __always_inline void instr_##func(struct pt_regs *regs)		\
- {									\
--	kvm_set_cpu_l1tf_flush_l1d();					\
- 	run_sysvec_on_irqstack_cond(__##func, regs);			\
- }									\
- 									\
-@@ -258,6 +257,7 @@ __visible noinstr void func(struct pt_regs *regs)			\
- {									\
- 	irqentry_state_t state = irqentry_enter(regs);			\
- 									\
-+	kvm_set_cpu_l1tf_flush_l1d();                                   \
- 	instrumentation_begin();					\
- 	instr_##func (regs);						\
- 	instrumentation_end();						\
-@@ -288,7 +288,6 @@ static __always_inline void __##func(struct pt_regs *regs);		\
- static __always_inline void instr_##func(struct pt_regs *regs)		\
- {									\
- 	__irq_enter_raw();						\
--	kvm_set_cpu_l1tf_flush_l1d();					\
- 	__##func (regs);						\
- 	__irq_exit_raw();						\
- }									\
-@@ -297,6 +296,7 @@ __visible noinstr void func(struct pt_regs *regs)			\
- {									\
- 	irqentry_state_t state = irqentry_enter(regs);			\
- 									\
-+	kvm_set_cpu_l1tf_flush_l1d();                                   \
- 	instrumentation_begin();					\
- 	instr_##func (regs);						\
- 	instrumentation_end();						\
--- 
-2.43.0
-
+ cpus_read_lock() vs kvm_lock:
++
+ - Taking cpus_read_lock() outside of kvm_lock is problematic, despite that
+   being the official ordering, as it is quite easy to unknowingly trigger
+   cpus_read_lock() while holding kvm_lock.  Use caution when walking vm_list,
 
 
 
