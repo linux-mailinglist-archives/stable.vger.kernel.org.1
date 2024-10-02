@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-78973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79550-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 417E398D5E9
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:35:03 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24BC098D910
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:08:42 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id CEBA5B2221C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:35:00 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B3A8A2874F3
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:08:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86F081D0782;
-	Wed,  2 Oct 2024 13:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 501BB1D1756;
+	Wed,  2 Oct 2024 14:02:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="abIXnKsu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l5ugapE2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 461931D04A0;
-	Wed,  2 Oct 2024 13:34:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E5EE1D043E;
+	Wed,  2 Oct 2024 14:02:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727876069; cv=none; b=D4ji5R45kCIsgXBTRC16t+ZF5mHlCJRUGFQleU00n82y19KeD5/HIVxxSioE0wrIvu/anwqHl77VnKyp7EmcCEr2HiPzucSnlCWW5wgfUaIgCMPf5yYY4EMwtpn11FdvIdP+fxTwU1py27jGxbgtc0+am1ofw/MzOjHzLoEwyzs=
+	t=1727877771; cv=none; b=OvwvpqCRj8S4w2txYjisJ8LGveb/kYV1uViYva+WZpyZ+qJcxNyCQStzpIXGPJmiKD+jfxWfMIQs02FCNqeGETQh0pBq1u6R9R/HA6S78s0GD+zvfkOH7naxV6cWsx3cnx/REGd3XeFsG8t5uA43T3E7pVwpODMspgciIKmWdlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727876069; c=relaxed/simple;
-	bh=NIh/5i+66Duw2S50jyI3fTaqKkSbyvhUavdMaY2V7Fc=;
+	s=arc-20240116; t=1727877771; c=relaxed/simple;
+	bh=EwTO7CfBZ9tBsA0/hCvguoorqmpQv1EjtXQ2LvaOqDA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XqmKNi5Oi+wjE/O0yBL0nAh2Gtp0kUDg3S/cX4jRFbRvG0iBvLjdJxlJTt30SrXDOQ+/t7mGte8H5DIjqFwsgBmDwnUXDlCZipJeQ9ZNfFLvZD02VISgPCk3/7pKlT8P2QVCSdD/TRoGgFFVIzPd0YxDBfH08MkLsg/xBxl7qo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=abIXnKsu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83140C4CEC5;
-	Wed,  2 Oct 2024 13:34:28 +0000 (UTC)
+	 MIME-Version; b=DkDJbe5tzSJ9sjIiocsrJKx1Tw8OTUKr57O6Rsgy33gTb048dEpley7RY7qYItS1muxhp1ToJIgSc0MGXsAAMIR704q8snpcD8IsHVnO4f1ctSRBy0UgF47ifWEwbY75Wl/GyUrQdOUi9HDt/CnYQkT+QocUPo2QRQTsSPaCwIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l5ugapE2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FA2FC4CED3;
+	Wed,  2 Oct 2024 14:02:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727876068;
-	bh=NIh/5i+66Duw2S50jyI3fTaqKkSbyvhUavdMaY2V7Fc=;
+	s=korg; t=1727877770;
+	bh=EwTO7CfBZ9tBsA0/hCvguoorqmpQv1EjtXQ2LvaOqDA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=abIXnKsudhRetzGc+mB87Gc3CY285X+RUXnvp2QZYuizb2ckfMKkqAx9ZNAQu8nju
-	 QeE5QhhhbHM6O6RHqFVwCkPHSwwkAbHS1NH7c53G0x36vRB7irIE1RJo97RYVn9HxY
-	 8i2srQoJlJM2qt/wVap0dRCDL+eepza6qaSCZ1kk=
+	b=l5ugapE2D9BNgzmYsM2F3JCb2vMkLOl/skCCrkNfM99YIOHPK0L0osykKrlntdzVW
+	 4GMrc4QzdCWDYD+xAnKz8bBcPIj+PE355qj1l2sDRgH3lfH+ITJeDjwyEsvzhfxfuU
+	 mZoixgs9kHspC+ECl5J9apwbIMa+xANtQZ/nknfQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neill Kapron <nkapron@google.com>,
-	Alan Maguire <alan.maguire@oracle.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Yonghong Song <yonghong.song@linux.dev>,
+	Jonas Karlman <jonas@kwiboo.se>,
+	Heiko Stuebner <heiko@sntech.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 290/695] libbpf: Fix license for btf_relocate.c
+Subject: [PATCH 6.10 188/634] drm/rockchip: dw_hdmi: Fix reading EDID when using a forced mode
 Date: Wed,  2 Oct 2024 14:54:48 +0200
-Message-ID: <20241002125834.016270462@linuxfoundation.org>
+Message-ID: <20241002125818.527246513@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,41 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Maguire <alan.maguire@oracle.com>
+From: Jonas Karlman <jonas@kwiboo.se>
 
-[ Upstream commit 4a4c013d3385b0db85dc361203dc42ff048b6fd6 ]
+[ Upstream commit a5d024541ec466f428e6c514577d511a40779c7b ]
 
-License should be
+EDID cannot be read on RK3328 until after read_hpd has been called and
+correct io voltage has been configured based on connection status.
 
-// SPDX-License-Identifier: (LGPL-2.1 OR BSD-2-Clause)
+When a forced mode is used, e.g. video=1920x1080@60e, the connector
+detect ops, that in turn normally calls the read_hpd, never gets called.
 
-...as with other libbpf files.
+This result in reading EDID to fail in connector get_modes ops.
 
-Fixes: 19e00c897d50 ("libbpf: Split BTF relocation")
-Reported-by: Neill Kapron <nkapron@google.com>
-Signed-off-by: Alan Maguire <alan.maguire@oracle.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Link: https://lore.kernel.org/bpf/20240810093504.2111134-1-alan.maguire@oracle.com
+Call dw_hdmi_rk3328_read_hpd at end of dw_hdmi_rk3328_setup_hpd to
+correct io voltage and allow reading EDID after setup_hpd.
+
+Fixes: 1c53ba8f22a1 ("drm/rockchip: dw_hdmi: add dw-hdmi support for the rk3328")
+Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20240615170417.3134517-5-jonas@kwiboo.se
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/lib/bpf/btf_relocate.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/tools/lib/bpf/btf_relocate.c b/tools/lib/bpf/btf_relocate.c
-index 17f8b32f94a08..4f7399d85eab3 100644
---- a/tools/lib/bpf/btf_relocate.c
-+++ b/tools/lib/bpf/btf_relocate.c
-@@ -1,4 +1,4 @@
--// SPDX-License-Identifier: GPL-2.0
-+// SPDX-License-Identifier: (LGPL-2.1 OR BSD-2-Clause)
- /* Copyright (c) 2024, Oracle and/or its affiliates. */
+diff --git a/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c b/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c
+index fe33092abbe7d..aae48e906af11 100644
+--- a/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c
++++ b/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c
+@@ -434,6 +434,8 @@ static void dw_hdmi_rk3328_setup_hpd(struct dw_hdmi *dw_hdmi, void *data)
+ 		HIWORD_UPDATE(RK3328_HDMI_SDAIN_MSK | RK3328_HDMI_SCLIN_MSK,
+ 			      RK3328_HDMI_SDAIN_MSK | RK3328_HDMI_SCLIN_MSK |
+ 			      RK3328_HDMI_HPD_IOE));
++
++	dw_hdmi_rk3328_read_hpd(dw_hdmi, data);
+ }
  
- #ifndef _GNU_SOURCE
+ static const struct dw_hdmi_phy_ops rk3228_hdmi_phy_ops = {
 -- 
 2.43.0
 
