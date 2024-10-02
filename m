@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-78869-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0349198D55C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:29:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F8DE98D886
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:01:59 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 2DD5F1C21F15
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:29:47 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 51FA71C21DE6
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:01:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6627D1D04BE;
-	Wed,  2 Oct 2024 13:29:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8EA91D1721;
+	Wed,  2 Oct 2024 13:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A52IaBqD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DPgTALtK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22F531D0434;
-	Wed,  2 Oct 2024 13:29:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941FC1D1517;
+	Wed,  2 Oct 2024 13:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875766; cv=none; b=baALik6XtbCy3RGEqarOnozMUWX5LHQ5duqztyFnjlLB2igp69gLXIZ3e84IGNKioiyGK1CFgBT/bugtHcCcH+QippU69GwTVGxcSatBhfR0FYBK4ZHa0AGrnVn+e1dw062RwBoZIKg7SCuv6ol+jGhX7a88Dr5mCcRzDhRkYvY=
+	t=1727877538; cv=none; b=RDI+vocYe9j4kziLJU/leBxjoxRnLeFWpo8OStWPPePvsGShOujVi3FLFndnqTG+GnwfuClV6VLDG2TJ0WOM2dsyhcOOqsaf8K0Qq/x/448e32QFe4Hig5ktOjn4iBe+BTxpjJG1c+Rfn7xghdCOXqx5uTo5rpNBihorI4BhqEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875766; c=relaxed/simple;
-	bh=2wyHWscCWaos7MiR3p3BVBlMDB0pKMOoCOxDnuVxkxM=;
+	s=arc-20240116; t=1727877538; c=relaxed/simple;
+	bh=fi34C3MJf5xLmHB1Q8lO/dvw23J9ehefXBIyOmLbl74=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Kuv0CWLop5Q/0D1N/jNV4I1Xoy9XYQhbnUd7viSC6A1tuWAJwZMzgc5GHFrBGXsNc4NbA5sUaOIWKx3sCwGE4IIGO4igSjXm2Q40GXprOsYDCMfc5AH83UY7nwU7xKKfjD2+QAgwJiciHQc+HVQehFjZHNR02idcvcZ6xzV8P08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A52IaBqD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A287EC4CEC5;
-	Wed,  2 Oct 2024 13:29:25 +0000 (UTC)
+	 MIME-Version; b=terYMzTbK2SUlxZ3Ak1mZVSsNH65Z5vrYiddUT8luTnZ5HYKbgmuhNS6gZ/QdnddUWb+bSdMEay3toWfW3hdVqWQU70z/nZT5AHhNvox3p5WYXkFR82R20yRF3AUppbFw8EqNH+UYD/wxAlYx7cT4Z8jzXQQjeYwe4W74N083nI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DPgTALtK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDA23C4CECD;
+	Wed,  2 Oct 2024 13:58:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875766;
-	bh=2wyHWscCWaos7MiR3p3BVBlMDB0pKMOoCOxDnuVxkxM=;
+	s=korg; t=1727877538;
+	bh=fi34C3MJf5xLmHB1Q8lO/dvw23J9ehefXBIyOmLbl74=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A52IaBqDKwXJ+fnmfn82SxVnUoN3k2ri5/VPplI0n7nrSZzQBJp7zIR5kO6cs9x3c
-	 NvL0Rl0qsfdjXX8obQ4szC1wjLEpxCPRJa0JsV36Dt3mMUTLj4GVhC0CxuE/Rg66Eo
-	 tvBICZqP29qJ4N9IJqsIrDGIvy3HIAYheHl9+55w=
+	b=DPgTALtKl3XCVCBRknAFgolKlf7YJog1gP/2NoYTpIyeINE4fUvBdcDkROQF+rUKX
+	 CCVeUOiXVR/EooxQbuMkbid7tfTmElhDeqLY/D+QPS34N3Jxb8axy6PVGwD7QsCwhW
+	 Ae/Ivl3GNguJVXRlZBXwkrfuIj8M3h0qsgJxJcPA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Karlman <jonas@kwiboo.se>,
-	Heiko Stuebner <heiko@sntech.de>,
+	syzbot+4fc98ed414ae63d1ada2@syzkaller.appspotmail.com,
+	syzbot+de04e06b28cfecf2281c@syzkaller.appspotmail.com,
+	syzbot+c8c8238b394be4a1087d@syzkaller.appspotmail.com,
+	Gao Xiang <hsiangkao@linux.alibaba.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 213/695] drm/rockchip: dw_hdmi: Fix reading EDID when using a forced mode
+Subject: [PATCH 6.10 111/634] erofs: handle overlapped pclusters out of crafted images properly
 Date: Wed,  2 Oct 2024 14:53:31 +0200
-Message-ID: <20241002125830.965323863@linuxfoundation.org>
+Message-ID: <20241002125815.495527286@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +64,203 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Karlman <jonas@kwiboo.se>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-[ Upstream commit a5d024541ec466f428e6c514577d511a40779c7b ]
+[ Upstream commit 9e2f9d34dd12e6e5b244ec488bcebd0c2d566c50 ]
 
-EDID cannot be read on RK3328 until after read_hpd has been called and
-correct io voltage has been configured based on connection status.
+syzbot reported a task hang issue due to a deadlock case where it is
+waiting for the folio lock of a cached folio that will be used for
+cache I/Os.
 
-When a forced mode is used, e.g. video=1920x1080@60e, the connector
-detect ops, that in turn normally calls the read_hpd, never gets called.
+After looking into the crafted fuzzed image, I found it's formed with
+several overlapped big pclusters as below:
 
-This result in reading EDID to fail in connector get_modes ops.
+ Ext:   logical offset   |  length :     physical offset    |  length
+   0:        0..   16384 |   16384 :     151552..    167936 |   16384
+   1:    16384..   32768 |   16384 :     155648..    172032 |   16384
+   2:    32768..   49152 |   16384 :  537223168.. 537239552 |   16384
+...
 
-Call dw_hdmi_rk3328_read_hpd at end of dw_hdmi_rk3328_setup_hpd to
-correct io voltage and allow reading EDID after setup_hpd.
+Here, extent 0/1 are physically overlapped although it's entirely
+_impossible_ for normal filesystem images generated by mkfs.
 
-Fixes: 1c53ba8f22a1 ("drm/rockchip: dw_hdmi: add dw-hdmi support for the rk3328")
-Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20240615170417.3134517-5-jonas@kwiboo.se
+First, managed folios containing compressed data will be marked as
+up-to-date and then unlocked immediately (unlike in-place folios) when
+compressed I/Os are complete.  If physical blocks are not submitted in
+the incremental order, there should be separate BIOs to avoid dependency
+issues.  However, the current code mis-arranges z_erofs_fill_bio_vec()
+and BIO submission which causes unexpected BIO waits.
+
+Second, managed folios will be connected to their own pclusters for
+efficient inter-queries.  However, this is somewhat hard to implement
+easily if overlapped big pclusters exist.  Again, these only appear in
+fuzzed images so let's simply fall back to temporary short-lived pages
+for correctness.
+
+Additionally, it justifies that referenced managed folios cannot be
+truncated for now and reverts part of commit 2080ca1ed3e4 ("erofs: tidy
+up `struct z_erofs_bvec`") for simplicity although it shouldn't be any
+difference.
+
+Reported-by: syzbot+4fc98ed414ae63d1ada2@syzkaller.appspotmail.com
+Reported-by: syzbot+de04e06b28cfecf2281c@syzkaller.appspotmail.com
+Reported-by: syzbot+c8c8238b394be4a1087d@syzkaller.appspotmail.com
+Tested-by: syzbot+4fc98ed414ae63d1ada2@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/r/0000000000002fda01061e334873@google.com
+Fixes: 8e6c8fa9f2e9 ("erofs: enable big pcluster feature")
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20240910070847.3356592-1-hsiangkao@linux.alibaba.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/erofs/zdata.c | 71 ++++++++++++++++++++++++++----------------------
+ 1 file changed, 38 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c b/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c
-index fe33092abbe7d..aae48e906af11 100644
---- a/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c
-+++ b/drivers/gpu/drm/rockchip/dw_hdmi-rockchip.c
-@@ -434,6 +434,8 @@ static void dw_hdmi_rk3328_setup_hpd(struct dw_hdmi *dw_hdmi, void *data)
- 		HIWORD_UPDATE(RK3328_HDMI_SDAIN_MSK | RK3328_HDMI_SCLIN_MSK,
- 			      RK3328_HDMI_SDAIN_MSK | RK3328_HDMI_SCLIN_MSK |
- 			      RK3328_HDMI_HPD_IOE));
-+
-+	dw_hdmi_rk3328_read_hpd(dw_hdmi, data);
- }
+diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
+index d269b092c477f..2535479fb82db 100644
+--- a/fs/erofs/zdata.c
++++ b/fs/erofs/zdata.c
+@@ -1416,6 +1416,7 @@ static void z_erofs_fill_bio_vec(struct bio_vec *bvec,
+ 	struct z_erofs_bvec zbv;
+ 	struct address_space *mapping;
+ 	struct folio *folio;
++	struct page *page;
+ 	int bs = i_blocksize(f->inode);
  
- static const struct dw_hdmi_phy_ops rk3228_hdmi_phy_ops = {
+ 	/* Except for inplace folios, the entire folio can be used for I/Os */
+@@ -1438,7 +1439,6 @@ static void z_erofs_fill_bio_vec(struct bio_vec *bvec,
+ 	 * file-backed folios will be used instead.
+ 	 */
+ 	if (folio->private == (void *)Z_EROFS_PREALLOCATED_PAGE) {
+-		folio->private = 0;
+ 		tocache = true;
+ 		goto out_tocache;
+ 	}
+@@ -1456,7 +1456,7 @@ static void z_erofs_fill_bio_vec(struct bio_vec *bvec,
+ 	}
+ 
+ 	folio_lock(folio);
+-	if (folio->mapping == mc) {
++	if (likely(folio->mapping == mc)) {
+ 		/*
+ 		 * The cached folio is still in managed cache but without
+ 		 * a valid `->private` pcluster hint.  Let's reconnect them.
+@@ -1466,41 +1466,44 @@ static void z_erofs_fill_bio_vec(struct bio_vec *bvec,
+ 			/* compressed_bvecs[] already takes a ref before */
+ 			folio_put(folio);
+ 		}
+-
+-		/* no need to submit if it is already up-to-date */
+-		if (folio_test_uptodate(folio)) {
+-			folio_unlock(folio);
+-			bvec->bv_page = NULL;
++		if (likely(folio->private == pcl))  {
++			/* don't submit cache I/Os again if already uptodate */
++			if (folio_test_uptodate(folio)) {
++				folio_unlock(folio);
++				bvec->bv_page = NULL;
++			}
++			return;
+ 		}
+-		return;
++		/*
++		 * Already linked with another pcluster, which only appears in
++		 * crafted images by fuzzers for now.  But handle this anyway.
++		 */
++		tocache = false;	/* use temporary short-lived pages */
++	} else {
++		DBG_BUGON(1); /* referenced managed folios can't be truncated */
++		tocache = true;
+ 	}
+-
+-	/*
+-	 * It has been truncated, so it's unsafe to reuse this one. Let's
+-	 * allocate a new page for compressed data.
+-	 */
+-	DBG_BUGON(folio->mapping);
+-	tocache = true;
+ 	folio_unlock(folio);
+ 	folio_put(folio);
+ out_allocfolio:
+-	zbv.page = erofs_allocpage(&f->pagepool, gfp | __GFP_NOFAIL);
++	page = erofs_allocpage(&f->pagepool, gfp | __GFP_NOFAIL);
+ 	spin_lock(&pcl->obj.lockref.lock);
+-	if (pcl->compressed_bvecs[nr].page) {
+-		erofs_pagepool_add(&f->pagepool, zbv.page);
++	if (unlikely(pcl->compressed_bvecs[nr].page != zbv.page)) {
++		erofs_pagepool_add(&f->pagepool, page);
+ 		spin_unlock(&pcl->obj.lockref.lock);
+ 		cond_resched();
+ 		goto repeat;
+ 	}
+-	bvec->bv_page = pcl->compressed_bvecs[nr].page = zbv.page;
+-	folio = page_folio(zbv.page);
+-	/* first mark it as a temporary shortlived folio (now 1 ref) */
+-	folio->private = (void *)Z_EROFS_SHORTLIVED_PAGE;
++	bvec->bv_page = pcl->compressed_bvecs[nr].page = page;
++	folio = page_folio(page);
+ 	spin_unlock(&pcl->obj.lockref.lock);
+ out_tocache:
+ 	if (!tocache || bs != PAGE_SIZE ||
+-	    filemap_add_folio(mc, folio, pcl->obj.index + nr, gfp))
++	    filemap_add_folio(mc, folio, pcl->obj.index + nr, gfp)) {
++		/* turn into a temporary shortlived folio (1 ref) */
++		folio->private = (void *)Z_EROFS_SHORTLIVED_PAGE;
+ 		return;
++	}
+ 	folio_attach_private(folio, pcl);
+ 	/* drop a refcount added by allocpage (then 2 refs in total here) */
+ 	folio_put(folio);
+@@ -1635,13 +1638,10 @@ static void z_erofs_submit_queue(struct z_erofs_decompress_frontend *f,
+ 		cur = mdev.m_pa;
+ 		end = cur + pcl->pclustersize;
+ 		do {
+-			z_erofs_fill_bio_vec(&bvec, f, pcl, i++, mc);
+-			if (!bvec.bv_page)
+-				continue;
+-
++			bvec.bv_page = NULL;
+ 			if (bio && (cur != last_pa ||
+ 				    bio->bi_bdev != mdev.m_bdev)) {
+-io_retry:
++drain_io:
+ 				if (!erofs_is_fscache_mode(sb))
+ 					submit_bio(bio);
+ 				else
+@@ -1654,6 +1654,15 @@ static void z_erofs_submit_queue(struct z_erofs_decompress_frontend *f,
+ 				bio = NULL;
+ 			}
+ 
++			if (!bvec.bv_page) {
++				z_erofs_fill_bio_vec(&bvec, f, pcl, i++, mc);
++				if (!bvec.bv_page)
++					continue;
++				if (cur + bvec.bv_len > end)
++					bvec.bv_len = end - cur;
++				DBG_BUGON(bvec.bv_len < sb->s_blocksize);
++			}
++
+ 			if (unlikely(PageWorkingset(bvec.bv_page)) &&
+ 			    !memstall) {
+ 				psi_memstall_enter(&pflags);
+@@ -1673,13 +1682,9 @@ static void z_erofs_submit_queue(struct z_erofs_decompress_frontend *f,
+ 				++nr_bios;
+ 			}
+ 
+-			if (cur + bvec.bv_len > end)
+-				bvec.bv_len = end - cur;
+-			DBG_BUGON(bvec.bv_len < sb->s_blocksize);
+ 			if (!bio_add_page(bio, bvec.bv_page, bvec.bv_len,
+ 					  bvec.bv_offset))
+-				goto io_retry;
+-
++				goto drain_io;
+ 			last_pa = cur + bvec.bv_len;
+ 			bypass = false;
+ 		} while ((cur += bvec.bv_len) < end);
 -- 
 2.43.0
 
