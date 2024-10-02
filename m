@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-80114-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79615-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31FFA98DBEA
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:36:10 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FE8A98D95F
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:11:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EB42B283171
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:36:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 3F64B289474
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:11:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A7AC1D0E1F;
-	Wed,  2 Oct 2024 14:30:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E1571D0F45;
+	Wed,  2 Oct 2024 14:06:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FdE3WFQO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BzHXQIZp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC3281D0DC1;
-	Wed,  2 Oct 2024 14:30:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0B5E1D0F44;
+	Wed,  2 Oct 2024 14:05:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879425; cv=none; b=Z0vlhuOj5A/fYi0eX4yxRj/6XbubhX47z06vHZeGMJH6p7ss3wVAbddYCyc4N3vMZbE0ROjDclVlknjRJbRKGlTYLR4NKWg3KCDAD9f7Nqc4MetYQyFzzX2XxSjcG3iG+OwnrnOfwmdJbA4R7dM3cz0MAV4GLUa4lTKEfBMuUf0=
+	t=1727877960; cv=none; b=pyP2vJ8B4//1NLYR+Qv9sNSV4bNEm7oo53BVc8hz/glnY2bXv+3PgD6xsWddtXK3wrkaGn30TEkXr8mzmurdY3q6vLVgLORIRtGCMuJM1BpVGjJLSzaXxnma3qKeY7wUxNzTEG/EXtlINZzGfRsDCAp4qQVOHa/7/Ghc8EDfrcE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879425; c=relaxed/simple;
-	bh=+VWOLxRYihFCBjBBQbE0PxN/l+xylG6qfz9pqTIoj3U=;
+	s=arc-20240116; t=1727877960; c=relaxed/simple;
+	bh=EZ2BAjk3tO36NTgdw1b+PMdPwhuguQ5wPB27mi4KPUs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tem6ADmDRse349jLbzpNnoKZBDuSb0YSEDnR7JF6tV7W3Jes6exxAGX8eTFqXgX6gjW4epkXo8L7Gjm8ud23WBJPuVExiOfRQXoO7khtENA8ZVSdLfKNLQtPu28MEL+zoIWCiI0U1dX6brzNSISX/AiWvZQqo2NGxIgvSsPc9lM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FdE3WFQO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1953C4CEC2;
-	Wed,  2 Oct 2024 14:30:24 +0000 (UTC)
+	 MIME-Version; b=bGXUcvLmAwN3GtQlR8bhRLWOOyRep8FCW7l6OyWoJxQpASLxt9OzoYU6c0ym+9ydz6Y7NPKKh1uafBUyxybnwYk0grt6Yv3rcLF1tLqeDr7nPz3uCnkMjrfx3d8wxCAEMqU7JJ3UYGAwlaYNmeDC7RdDtQYJKjTvRJNzoXMKfbk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BzHXQIZp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6872EC4CEC2;
+	Wed,  2 Oct 2024 14:05:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879425;
-	bh=+VWOLxRYihFCBjBBQbE0PxN/l+xylG6qfz9pqTIoj3U=;
+	s=korg; t=1727877959;
+	bh=EZ2BAjk3tO36NTgdw1b+PMdPwhuguQ5wPB27mi4KPUs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FdE3WFQOUYoKEQDqZnfzmKIxVHXZB32Pd870terHfpfviN7m9TGI2rOl7F9SRLcsc
-	 kAHC+cr+OkYhPgjl6IYz0SZ4xLx4goWXipcGaHBRnL/k1uJccaMI3lEfPVTqALvJEW
-	 ETqOE62LqiXjPP5JiV9YWuUp81cpNEeuKYRpKf+o=
+	b=BzHXQIZpWQpTsaQxWEYzxX2nPhyDiszQzSqKdzGuShsKxZODa1pGE61k6K8CIXGtC
+	 QTlPJmGWZeaR13niXoBDiLj2/DKpZhUMbK1vCo//18OU1sTku0Q92dnjCkNdcBGg4X
+	 HVlTospI8/ITC/69pODNNmPKtVe2/vvEzcKqc+yk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 114/538] ASoC: tas2781-i2c: Drop weird GPIO code
+Subject: [PATCH 6.10 253/634] selftests/bpf: Fix errors compiling cg_storage_multi.h with musl libc
 Date: Wed,  2 Oct 2024 14:55:53 +0200
-Message-ID: <20241002125756.744653264@linuxfoundation.org>
+Message-ID: <20241002125821.085048628@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,194 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Tony Ambardar <tony.ambardar@gmail.com>
 
-[ Upstream commit c2c0b67dca3cb3b3cea0dd60075a1c5ba77e2fcd ]
+[ Upstream commit 730561d3c08d4a327cceaabf11365958a1c00cec ]
 
-The tas2781-i2c driver gets an IRQ from either ACPI or device tree,
-then proceeds to check if the IRQ has a corresponding GPIO and in
-case it does enforce the GPIO as input and set a label on it.
+Remove a redundant include of '<asm/types.h>', whose needed definitions are
+already included (via '<linux/types.h>') in cg_storage_multi_egress_only.c,
+cg_storage_multi_isolated.c, and cg_storage_multi_shared.c. This avoids
+redefinition errors seen compiling for mips64el/musl-libc like:
 
-This is abuse of the API:
+  In file included from progs/cg_storage_multi_egress_only.c:13:
+  In file included from progs/cg_storage_multi.h:6:
+  In file included from /usr/mips64el-linux-gnuabi64/include/asm/types.h:23:
+  /usr/include/asm-generic/int-l64.h:29:25: error: typedef redefinition with different types ('long' vs 'long long')
+     29 | typedef __signed__ long __s64;
+        |                         ^
+  /usr/include/asm-generic/int-ll64.h:30:44: note: previous definition is here
+     30 | __extension__ typedef __signed__ long long __s64;
+        |                                            ^
 
-- First we cannot guarantee that the numberspaces of the GPIOs and
-  the IRQs are the same, i.e that an IRQ number corresponds to
-  a GPIO number like that.
-
-- Second, GPIO chips and IRQ chips should be treated as orthogonal
-  APIs, the irqchip needs to ascertain that the backing GPIO line
-  is set to input etc just using the irqchip.
-
-- Third it is using the legacy <linux/gpio.h> API which should not
-  be used in new code yet this was added just a year ago.
-
-Delete the offending code.
-
-If this creates problems the GPIO and irqchip maintainers can help
-to fix the issues.
-
-It *should* not create any problems, because the irq isn't
-used anywhere in the driver, it's just obtained and then
-left unused.
-
-Fixes: ef3bcde75d06 ("ASoC: tas2781: Add tas2781 driver")
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://patch.msgid.link/20240807-asoc-tas-gpios-v2-1-bd0f2705d58b@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 9e5bd1f7633b ("selftests/bpf: Test CGROUP_STORAGE map can't be used by multiple progs")
+Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/4f4702e9f6115b7f84fea01b2326ca24c6df7ba8.1721713597.git.tony.ambardar@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/sound/tas2781.h           |  7 +------
- sound/pci/hda/tas2781_hda_i2c.c   |  2 +-
- sound/soc/codecs/tas2781-comlib.c |  3 ---
- sound/soc/codecs/tas2781-fmwlib.c |  1 -
- sound/soc/codecs/tas2781-i2c.c    | 24 +++---------------------
- 5 files changed, 5 insertions(+), 32 deletions(-)
+ tools/testing/selftests/bpf/progs/cg_storage_multi.h | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/include/sound/tas2781.h b/include/sound/tas2781.h
-index be6f70dd54f93..f97f386e5a55a 100644
---- a/include/sound/tas2781.h
-+++ b/include/sound/tas2781.h
-@@ -78,11 +78,6 @@ struct tasdevice {
- 	bool is_loaderr;
- };
+diff --git a/tools/testing/selftests/bpf/progs/cg_storage_multi.h b/tools/testing/selftests/bpf/progs/cg_storage_multi.h
+index a0778fe7857a1..41d59f0ee606c 100644
+--- a/tools/testing/selftests/bpf/progs/cg_storage_multi.h
++++ b/tools/testing/selftests/bpf/progs/cg_storage_multi.h
+@@ -3,8 +3,6 @@
+ #ifndef __PROGS_CG_STORAGE_MULTI_H
+ #define __PROGS_CG_STORAGE_MULTI_H
  
--struct tasdevice_irqinfo {
--	int irq_gpio;
--	int irq;
--};
+-#include <asm/types.h>
 -
- struct calidata {
- 	unsigned char *data;
- 	unsigned long total_sz;
-@@ -90,7 +85,6 @@ struct calidata {
- 
- struct tasdevice_priv {
- 	struct tasdevice tasdevice[TASDEVICE_MAX_CHANNELS];
--	struct tasdevice_irqinfo irq_info;
- 	struct tasdevice_rca rcabin;
- 	struct calidata cali_data;
- 	struct tasdevice_fw *fmw;
-@@ -111,6 +105,7 @@ struct tasdevice_priv {
- 	unsigned int chip_id;
- 	unsigned int sysclk;
- 
-+	int irq;
- 	int cur_prog;
- 	int cur_conf;
- 	int fw_state;
-diff --git a/sound/pci/hda/tas2781_hda_i2c.c b/sound/pci/hda/tas2781_hda_i2c.c
-index 0a587f55583ff..980e6104c2f3f 100644
---- a/sound/pci/hda/tas2781_hda_i2c.c
-+++ b/sound/pci/hda/tas2781_hda_i2c.c
-@@ -710,7 +710,7 @@ static int tas2781_hda_i2c_probe(struct i2c_client *clt)
- 	} else
- 		return -ENODEV;
- 
--	tas_hda->priv->irq_info.irq = clt->irq;
-+	tas_hda->priv->irq = clt->irq;
- 	ret = tas2781_read_acpi(tas_hda->priv, device_name);
- 	if (ret)
- 		return dev_err_probe(tas_hda->dev, ret,
-diff --git a/sound/soc/codecs/tas2781-comlib.c b/sound/soc/codecs/tas2781-comlib.c
-index 3aa81514dad76..0444cf90c5119 100644
---- a/sound/soc/codecs/tas2781-comlib.c
-+++ b/sound/soc/codecs/tas2781-comlib.c
-@@ -14,7 +14,6 @@
- #include <linux/interrupt.h>
- #include <linux/module.h>
- #include <linux/of.h>
--#include <linux/of_gpio.h>
- #include <linux/of_irq.h>
- #include <linux/regmap.h>
- #include <linux/slab.h>
-@@ -406,8 +405,6 @@ EXPORT_SYMBOL_GPL(tasdevice_dsp_remove);
- 
- void tasdevice_remove(struct tasdevice_priv *tas_priv)
- {
--	if (gpio_is_valid(tas_priv->irq_info.irq_gpio))
--		gpio_free(tas_priv->irq_info.irq_gpio);
- 	mutex_destroy(&tas_priv->codec_lock);
- }
- EXPORT_SYMBOL_GPL(tasdevice_remove);
-diff --git a/sound/soc/codecs/tas2781-fmwlib.c b/sound/soc/codecs/tas2781-fmwlib.c
-index 3639dcd0bbb2b..629e2195a890b 100644
---- a/sound/soc/codecs/tas2781-fmwlib.c
-+++ b/sound/soc/codecs/tas2781-fmwlib.c
-@@ -13,7 +13,6 @@
- #include <linux/interrupt.h>
- #include <linux/module.h>
- #include <linux/of.h>
--#include <linux/of_gpio.h>
- #include <linux/of_irq.h>
- #include <linux/regmap.h>
- #include <linux/slab.h>
-diff --git a/sound/soc/codecs/tas2781-i2c.c b/sound/soc/codecs/tas2781-i2c.c
-index 61a64d18a7d55..b25978f01cd2a 100644
---- a/sound/soc/codecs/tas2781-i2c.c
-+++ b/sound/soc/codecs/tas2781-i2c.c
-@@ -22,7 +22,6 @@
- #include <linux/module.h>
- #include <linux/of.h>
- #include <linux/of_address.h>
--#include <linux/of_gpio.h>
- #include <linux/of_irq.h>
- #include <linux/regmap.h>
- #include <linux/slab.h>
-@@ -617,7 +616,7 @@ static void tasdevice_parse_dt(struct tasdevice_priv *tas_priv)
- {
- 	struct i2c_client *client = (struct i2c_client *)tas_priv->client;
- 	unsigned int dev_addrs[TASDEVICE_MAX_CHANNELS];
--	int rc, i, ndev = 0;
-+	int i, ndev = 0;
- 
- 	if (tas_priv->isacpi) {
- 		ndev = device_property_read_u32_array(&client->dev,
-@@ -632,7 +631,7 @@ static void tasdevice_parse_dt(struct tasdevice_priv *tas_priv)
- 				"ti,audio-slots", dev_addrs, ndev);
- 		}
- 
--		tas_priv->irq_info.irq_gpio =
-+		tas_priv->irq =
- 			acpi_dev_gpio_irq_get(ACPI_COMPANION(&client->dev), 0);
- 	} else if (IS_ENABLED(CONFIG_OF)) {
- 		struct device_node *np = tas_priv->dev->of_node;
-@@ -644,7 +643,7 @@ static void tasdevice_parse_dt(struct tasdevice_priv *tas_priv)
- 			dev_addrs[ndev++] = addr;
- 		}
- 
--		tas_priv->irq_info.irq_gpio = of_irq_get(np, 0);
-+		tas_priv->irq = of_irq_get(np, 0);
- 	} else {
- 		ndev = 1;
- 		dev_addrs[0] = client->addr;
-@@ -660,23 +659,6 @@ static void tasdevice_parse_dt(struct tasdevice_priv *tas_priv)
- 			__func__);
- 
- 	strcpy(tas_priv->dev_name, tasdevice_id[tas_priv->chip_id].name);
--
--	if (gpio_is_valid(tas_priv->irq_info.irq_gpio)) {
--		rc = gpio_request(tas_priv->irq_info.irq_gpio,
--				"AUDEV-IRQ");
--		if (!rc) {
--			gpio_direction_input(
--				tas_priv->irq_info.irq_gpio);
--
--			tas_priv->irq_info.irq =
--				gpio_to_irq(tas_priv->irq_info.irq_gpio);
--		} else
--			dev_err(tas_priv->dev, "%s: GPIO %d request error\n",
--				__func__, tas_priv->irq_info.irq_gpio);
--	} else
--		dev_err(tas_priv->dev,
--			"Looking up irq-gpio property failed %d\n",
--			tas_priv->irq_info.irq_gpio);
- }
- 
- static int tasdevice_i2c_probe(struct i2c_client *i2c)
+ struct cgroup_value {
+ 	__u32 egress_pkts;
+ 	__u32 ingress_pkts;
 -- 
 2.43.0
 
