@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-79945-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26A7498DB02
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:27:04 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDD5398DD73
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:49:35 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 47A321C2308A
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:27:03 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7653E1F229B2
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:49:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99F021D0F5B;
-	Wed,  2 Oct 2024 14:22:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E7031D0977;
+	Wed,  2 Oct 2024 14:46:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S/VtM1D5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tEjpt158"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 583431D07BC;
-	Wed,  2 Oct 2024 14:22:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFC501D096B;
+	Wed,  2 Oct 2024 14:46:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878929; cv=none; b=T6m3IVtBvj3xeHp2Mv+J7+W+aBapb6k4e65azvgeOLG8KS8bSJ4SebZ9KCoQw8SW+Cf8+uelx7R6cC66OvhZLdA+5usczSN30aSPcAGenZNZ0aPHquWi47A/kqjnsTAzFl+2yaLl1mPM9GLdYERUEgiaIHVUoW0I+OOlBaUr1yI=
+	t=1727880390; cv=none; b=Rl7sYTWzS0GH2tlk4beEr0UUFL5/jiDz8oMftb1d+DxBBRtpmgaTusw/HM+HPDYWgSDfKcAqHbEL0szjWW43BGfqiE/q4gQREQZklWJkWDtLO7c+V5NZmu73s+237XOSBGfTDMZUqwE8X2ZMwTOHbLefaM9SFtnrJFa+48URmjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878929; c=relaxed/simple;
-	bh=8K+sl8h0yWRTy8U/t4iCP7//WBbRT+HVRTXpOxjFDLw=;
+	s=arc-20240116; t=1727880390; c=relaxed/simple;
+	bh=9mIvHmxda1j/4oOqn83C16RYwoy8sXze5RE/4OAJOQQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aq3GNuzos6EJ1QA34JIgQBxzO0W8t+N6auYsKs8nphTk8GrxWx35+ZSDc0Beuf/egnt/sztkS8ppOQcPW9G5H2tpFpzckQVb/htuHI5xi9nY+j2bjllb684C3O5oHA8Avlo2sxONAXJyEZlQW3BBZWKJ0RLRjSYsdePD/D3UtRE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S/VtM1D5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A71A5C4CEC2;
-	Wed,  2 Oct 2024 14:22:08 +0000 (UTC)
+	 MIME-Version; b=ZjlwySPH3EpbpyDsZLh1/v6yN5SIduTN4hS9Phs65DG2a/Ds4BpgMBt4NEU49Vh0zOK3z3ir7qqC306IgMchtGZEt++ajAmQcDA8phk5Nt6HNvlnkNmwYSDNddioq0QpKVetSfOHKHx8UaavZZHQNap8GKDidwyE3x2u5/WTa1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tEjpt158; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF441C4CEC2;
+	Wed,  2 Oct 2024 14:46:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878929;
-	bh=8K+sl8h0yWRTy8U/t4iCP7//WBbRT+HVRTXpOxjFDLw=;
+	s=korg; t=1727880390;
+	bh=9mIvHmxda1j/4oOqn83C16RYwoy8sXze5RE/4OAJOQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S/VtM1D5RV45/XJP6XIFKp7K7PM3gY3gB40Xsu0a//gzG7lrx2TPJNWJdt4x3f04h
-	 3L+mBPTbUjylfH+l3dmyIak2IDFt1Mz8TGxE0d3kxRdscx8hW4Z9sKr8vuMh9BMTiP
-	 RDeg+DlZRI7J0P95Gmio8lLeWKWu3c5nTOtiwjt0=
+	b=tEjpt1585GFY6+qVBDvh5CYTMXn3P9A44InKwtW6MuBLYM3ZGuGKpYxSY1rwt8Z8G
+	 aFcQBVd4M56kVDTB9aDUak/cXAfPrr/+oWd0NZIcZhV01C+rPZf03Q2kV1dWAQJUAZ
+	 6N6pbPv2fTMmJx7AI3MbDKKDBAw4ySBU+lISP+6k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Karsten <mkarsten@uwaterloo.ca>,
-	Joe Damato <jdamato@fastly.com>,
-	Christian Brauner <brauner@kernel.org>
-Subject: [PATCH 6.10 581/634] eventpoll: Annotate data-race of busy_poll_usecs
-Date: Wed,  2 Oct 2024 15:01:21 +0200
-Message-ID: <20241002125834.049870160@linuxfoundation.org>
+	Mathias Nyman <mathias.nyman@linux.intel.com>
+Subject: [PATCH 6.6 443/538] xhci: Set quirky xHC PCI hosts to D3 _after_ stopping and freeing them.
+Date: Wed,  2 Oct 2024 15:01:22 +0200
+Message-ID: <20241002125809.926995043@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +60,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Karsten <mkarsten@uwaterloo.ca>
+From: Mathias Nyman <mathias.nyman@linux.intel.com>
 
-commit b9ca079dd6b09e08863aa998edf5c47597806c05 upstream.
+commit f81dfa3b57c624c56f2bff171c431bc7f5b558f2 upstream.
 
-A struct eventpoll's busy_poll_usecs field can be modified via a user
-ioctl at any time. All reads of this field should be annotated with
-READ_ONCE.
+PCI xHC host should be stopped and xhci driver memory freed before putting
+host to PCI D3 state during PCI remove callback.
 
-Fixes: 85455c795c07 ("eventpoll: support busy poll per epoll instance")
+Hosts with XHCI_SPURIOUS_WAKEUP quirk did this the wrong way around
+and set the host to D3 before calling usb_hcd_pci_remove(dev), which will
+access the host to stop it, and then free xhci.
+
+Fixes: f1f6d9a8b540 ("xhci: don't dereference a xhci member after removing xhci")
 Cc: stable@vger.kernel.org
-Signed-off-by: Martin Karsten <mkarsten@uwaterloo.ca>
-Link: https://lore.kernel.org/r/20240806123301.167557-1-jdamato@fastly.com
-Reviewed-by: Joe Damato <jdamato@fastly.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20240905143300.1959279-12-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/eventpoll.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/host/xhci-pci.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/fs/eventpoll.c b/fs/eventpoll.c
-index 6c0a1e9715ea..145f5349c612 100644
---- a/fs/eventpoll.c
-+++ b/fs/eventpoll.c
-@@ -420,7 +420,7 @@ static bool busy_loop_ep_timeout(unsigned long start_time,
- 
- static bool ep_busy_loop_on(struct eventpoll *ep)
+--- a/drivers/usb/host/xhci-pci.c
++++ b/drivers/usb/host/xhci-pci.c
+@@ -721,8 +721,10 @@ put_runtime_pm:
+ static void xhci_pci_remove(struct pci_dev *dev)
  {
--	return !!ep->busy_poll_usecs || net_busy_loop_on();
-+	return !!READ_ONCE(ep->busy_poll_usecs) || net_busy_loop_on();
+ 	struct xhci_hcd *xhci;
++	bool set_power_d3;
+ 
+ 	xhci = hcd_to_xhci(pci_get_drvdata(dev));
++	set_power_d3 = xhci->quirks & XHCI_SPURIOUS_WAKEUP;
+ 
+ 	xhci->xhc_state |= XHCI_STATE_REMOVING;
+ 
+@@ -735,11 +737,11 @@ static void xhci_pci_remove(struct pci_d
+ 		xhci->shared_hcd = NULL;
+ 	}
+ 
++	usb_hcd_pci_remove(dev);
++
+ 	/* Workaround for spurious wakeups at shutdown with HSW */
+-	if (xhci->quirks & XHCI_SPURIOUS_WAKEUP)
++	if (set_power_d3)
+ 		pci_set_power_state(dev, PCI_D3hot);
+-
+-	usb_hcd_pci_remove(dev);
  }
  
- static bool ep_busy_loop_end(void *p, unsigned long start_time)
--- 
-2.46.2
-
+ /*
 
 
 
