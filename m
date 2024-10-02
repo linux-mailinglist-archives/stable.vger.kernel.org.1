@@ -1,54 +1,62 @@
-Return-Path: <stable+bounces-80269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9F8098DCB6
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:43:58 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36A3398DC96
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:43:02 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5F9891F28312
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:43:58 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id E7E1728254C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:43:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B03601D2B0D;
-	Wed,  2 Oct 2024 14:37:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 931A61D0E19;
+	Wed,  2 Oct 2024 14:36:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="npaK1UA8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CK5i4xAY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FBCA1D0E25;
-	Wed,  2 Oct 2024 14:37:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EF7C1D014D;
+	Wed,  2 Oct 2024 14:36:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879876; cv=none; b=gqXZhnOi9Kl/yO7cVTMMul5S1kqIVUqk3FObzY2ckdqG+trNGwu2fxqko2BXD7gIflK3MJllultErOD+9lcz9QpUzWAr4TyhrA3CxH+c38XiJCg3iCIvtD/3mvK0LebjNQT0RV8tZtCg4p5dBf/Ng+cbN6dM69qH9/JIr9Ov5hk=
+	t=1727879784; cv=none; b=iuJs7g/vPjSuCBQpIT0RAx9dE7cx3FSBRT7xxVRR39VbUtSF6Y6Lsfu8o5whHtacU6l5DJgKaAnKMvcP5FcrbT0KwugccU52Tu9W7bYiqtfRQqNDGV2OF4GG54u6VlLqEcizCBUMdRsEZ6n/p5TQ0X5cmebZ+psVRzh2D2bW+GM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879876; c=relaxed/simple;
-	bh=NxCAYQvJwS2tyX5WzaajR1K/Pt84FW98MV2YQxit70I=;
+	s=arc-20240116; t=1727879784; c=relaxed/simple;
+	bh=oSYIbnA5+GKJzNtF2WykNZjQ0DZQQKDl+7kJf7cRoYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Skz80ppSWZhAyhCSIuJZB5goukEfn/vgQSangTDht4bZ3Rk0JGqeI1//VaWZr4hBEIrwFA3+3O8r1g6RlgNICtglybDm0Ea/otEXuV/FgOViDBpoKJmg2Kx0hZRiMW/3kWoTvEB6JDmltLSypjFW2UcRof3v/hVEQv8rfI+05Io=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=npaK1UA8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 378DDC4CEC5;
-	Wed,  2 Oct 2024 14:37:55 +0000 (UTC)
+	 MIME-Version; b=e4Y+0UgPh7XvrfUExFWF6rmi0M0LsQmXq1jebMc7NmXg0dUyzQLrRCZ4qgIxFWIbM7EbtWO+D8mjw22kBNu5OCI3vMcMpv3lTeb1woVp3QE/jrXTp4UrtrhCLVuViB47z98Tt6KvR8x9ocUlCr2vFQgQFSiBAvKh2Y/EnXaEyws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CK5i4xAY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A15D7C4CEC2;
+	Wed,  2 Oct 2024 14:36:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879875;
-	bh=NxCAYQvJwS2tyX5WzaajR1K/Pt84FW98MV2YQxit70I=;
+	s=korg; t=1727879784;
+	bh=oSYIbnA5+GKJzNtF2WykNZjQ0DZQQKDl+7kJf7cRoYo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=npaK1UA8DnXo5jhhdn8hFxgfkKUjIEmV2UqPFvbP1UJ51xHKTK2JL7pVPfSr3Zw3c
-	 iiP3e8xOkiWNlAWn3Vq/35iqRgS16jOQd67mAT6Ech+XRT16u9Ag9eEg4NX6p+vqpF
-	 V4qcABNfUcckbqmjPRtW15b/bXsbb8ajw9398k14=
+	b=CK5i4xAYJSDS0LfrD9KDrRvu9H/Ofd5fq+BIKF9F54yUM56Jx/9zXD3IXxwUL8WgB
+	 Z8VJzWaFgUVYASEndufpWlLIq7CzsTjnZsY5b6yzvfYqVMRDI7DShK7SqRPe8Vy1iD
+	 xkMpWWUyCBrXuc6A4iTIIG9mHq1sYqOEZWtoc6ac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Chen Yu <yu.c.chen@intel.com>,
+	Yujie Liu <yujie.liu@intel.com>,
+	Xiaoping Zhou <xiaoping.zhou@intel.com>,
 	Mel Gorman <mgorman@techsingularity.net>,
-	Ingo Molnar <mingo@kernel.org>,
+	"Chen, Tim C" <tim.c.chen@intel.com>,
+	Ingo Molnar <mingo@redhat.com>,
+	Juri Lelli <juri.lelli@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
 	Raghavendra K T <raghavendra.kt@amd.com>,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 237/538] sched/numa: Complete scanning of inactive VMAs when there is no alternative
-Date: Wed,  2 Oct 2024 14:57:56 +0200
-Message-ID: <20241002125801.606054199@linuxfoundation.org>
+Subject: [PATCH 6.6 238/538] sched/numa: Fix the vma scan starving issue
+Date: Wed,  2 Oct 2024 14:57:57 +0200
+Message-ID: <20241002125801.645629525@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
 References: <20241002125751.964700919@linuxfoundation.org>
@@ -67,259 +75,138 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mel Gorman <mgorman@techsingularity.net>
+From: Yujie Liu <yujie.liu@intel.com>
 
-[ Upstream commit f169c62ff7cd1acf8bac8ae17bfeafa307d9e6fa ]
+[ Upstream commit f22cde4371f3c624e947a35b075c06c771442a43 ]
 
-VMAs are skipped if there is no recent fault activity but this represents
-a chicken-and-egg problem as there may be no fault activity if the PTEs
-are never updated to trap NUMA hints. There is an indirect reliance on
-scanning to be forced early in the lifetime of a task but this may fail
-to detect changes in phase behaviour. Force inactive VMAs to be scanned
-when all other eligible VMAs have been updated within the same scan
-sequence.
+Problem statement:
+Since commit fc137c0ddab2 ("sched/numa: enhance vma scanning logic"), the
+Numa vma scan overhead has been reduced a lot.  Meanwhile, the reducing of
+the vma scan might create less Numa page fault information.  The
+insufficient information makes it harder for the Numa balancer to make
+decision.  Later, commit b7a5b537c55c08 ("sched/numa: Complete scanning of
+partial VMAs regardless of PID activity") and commit 84db47ca7146d7
+("sched/numa: Fix mm numa_scan_seq based unconditional scan") are found to
+bring back part of the performance.
 
-Test results in general look good with some changes in performance, both
-negative and positive, depending on whether the additional scanning and
-faulting was beneficial or not to the workload. The autonuma benchmark
-workload NUMA01_THREADLOCAL was picked for closer examination. The workload
-creates two processes with numerous threads and thread-local storage that
-is zero-filled in a loop. It exercises the corner case where unrelated
-threads may skip VMAs that are thread-local to another thread and still
-has some VMAs that inactive while the workload executes.
+Recently when running SPECcpu omnetpp_r on a 320 CPUs/2 Sockets system, a
+long duration of remote Numa node read was observed by PMU events: A few
+cores having ~500MB/s remote memory access for ~20 seconds.  It causes
+high core-to-core variance and performance penalty.  After the
+investigation, it is found that many vmas are skipped due to the active
+PID check.  According to the trace events, in most cases,
+vma_is_accessed() returns false because the history access info stored in
+pids_active array has been cleared.
 
-The VMA skipping activity frequency with and without the patch:
+Proposal:
+The main idea is to adjust vma_is_accessed() to let it return true easier.
+Thus compare the diff between mm->numa_scan_seq and
+vma->numab_state->prev_scan_seq.  If the diff has exceeded the threshold,
+scan the vma.
 
-	6.6.0-rc2-sched-numabtrace-v1
-	=============================
-	    649 reason=scan_delay
-	  9,094 reason=unsuitable
-	 48,915 reason=shared_ro
-	143,919 reason=inaccessible
-	193,050 reason=pid_inactive
+This patch especially helps the cases where there are small number of
+threads, like the process-based SPECcpu.  Without this patch, if the
+SPECcpu process access the vma at the beginning, then sleeps for a long
+time, the pid_active array will be cleared.  A a result, if this process
+is woken up again, it never has a chance to set prot_none anymore.
+Because only the first 2 times of access is granted for vma scan:
+(current->mm->numa_scan_seq) - vma->numab_state->start_scan_seq) < 2 to be
+worse, no other threads within the task can help set the prot_none.  This
+causes information lost.
 
-	6.6.0-rc2-sched-numabselective-v1
-	=============================
-	    146 reason=seq_completed
-	    622 reason=ignore_pid_inactive
+Raghavendra helped test current patch and got the positive result
+on the AMD platform:
 
-	    624 reason=scan_delay
-	  6,570 reason=unsuitable
-	 16,101 reason=shared_ro
-	 27,608 reason=inaccessible
-	 41,939 reason=pid_inactive
+autonumabench NUMA01
+                            base                  patched
+Amean     syst-NUMA01      194.05 (   0.00%)      165.11 *  14.92%*
+Amean     elsp-NUMA01      324.86 (   0.00%)      315.58 *   2.86%*
 
-Note that with the patch applied, the PID activity is ignored
-(ignore_pid_inactive) to ensure a VMA with some activity is completely
-scanned. In addition, a small number of VMAs are scanned when no other
-eligible VMA is available during a single scan window (seq_completed).
-The number of times a VMA is skipped due to no PID activity from the
-scanning task (pid_inactive) drops dramatically. It is expected that
-this will increase the number of PTEs updated for NUMA hinting faults
-as well as hinting faults but these represent PTEs that would otherwise
-have been missed. The tradeoff is scan+fault overhead versus improving
-locality due to migration.
+Duration User      380345.36   368252.04
+Duration System      1358.89     1156.23
+Duration Elapsed     2277.45     2213.25
 
-On a 2-socket Cascade Lake test machine, the time to complete the
-workload is as follows;
+autonumabench NUMA02
 
-                                                 6.6.0-rc2              6.6.0-rc2
-                                       sched-numabtrace-v1 sched-numabselective-v1
-  Min       elsp-NUMA01_THREADLOCAL      174.22 (   0.00%)      117.64 (  32.48%)
-  Amean     elsp-NUMA01_THREADLOCAL      175.68 (   0.00%)      123.34 *  29.79%*
-  Stddev    elsp-NUMA01_THREADLOCAL        1.20 (   0.00%)        4.06 (-238.20%)
-  CoeffVar  elsp-NUMA01_THREADLOCAL        0.68 (   0.00%)        3.29 (-381.70%)
-  Max       elsp-NUMA01_THREADLOCAL      177.18 (   0.00%)      128.03 (  27.74%)
+Amean     syst-NUMA02        1.12 (   0.00%)        1.09 *   2.93%*
+Amean     elsp-NUMA02        3.50 (   0.00%)        3.56 *  -1.84%*
 
-The time to complete the workload is reduced by almost 30%:
+Duration User        1513.23     1575.48
+Duration System         8.33        8.13
+Duration Elapsed       28.59       29.71
 
-                     6.6.0-rc2   6.6.0-rc2
-                  sched-numabtrace-v1 sched-numabselective-v1 /
-  Duration User       91201.80    63506.64
-  Duration System      2015.53     1819.78
-  Duration Elapsed     1234.77      868.37
+kernbench
 
-In this specific case, system CPU time was not increased but it's not
-universally true.
+Amean     user-256    22935.42 (   0.00%)    22535.19 *   1.75%*
+Amean     syst-256     7284.16 (   0.00%)     7608.72 *  -4.46%*
+Amean     elsp-256      159.01 (   0.00%)      158.17 *   0.53%*
 
->From vmstat, the NUMA scanning and fault activity is as follows;
+Duration User       68816.41    67615.74
+Duration System     21873.94    22848.08
+Duration Elapsed      506.66      504.55
 
-                                        6.6.0-rc2      6.6.0-rc2
-                              sched-numabtrace-v1 sched-numabselective-v1
-  Ops NUMA base-page range updates       64272.00    26374386.00
-  Ops NUMA PTE updates                   36624.00       55538.00
-  Ops NUMA PMD updates                      54.00       51404.00
-  Ops NUMA hint faults                   15504.00       75786.00
-  Ops NUMA hint local faults %           14860.00       56763.00
-  Ops NUMA hint local percent               95.85          74.90
-  Ops NUMA pages migrated                 1629.00     6469222.00
+Intel 256 CPUs/2 Sockets:
+autonuma benchmark also shows improvements:
 
-Both the number of PTE updates and hint faults is dramatically
-increased. While this is superficially unfortunate, it represents
-ranges that were simply skipped without the patch. As a result
-of the scanning and hinting faults, many more pages were also
-migrated but as the time to completion is reduced, the overhead
-is offset by the gain.
+                                               v6.10-rc5              v6.10-rc5
+                                                                         +patch
+Amean     syst-NUMA01                  245.85 (   0.00%)      230.84 *   6.11%*
+Amean     syst-NUMA01_THREADLOCAL      205.27 (   0.00%)      191.86 *   6.53%*
+Amean     syst-NUMA02                   18.57 (   0.00%)       18.09 *   2.58%*
+Amean     syst-NUMA02_SMT                2.63 (   0.00%)        2.54 *   3.47%*
+Amean     elsp-NUMA01                  517.17 (   0.00%)      526.34 *  -1.77%*
+Amean     elsp-NUMA01_THREADLOCAL       99.92 (   0.00%)      100.59 *  -0.67%*
+Amean     elsp-NUMA02                   15.81 (   0.00%)       15.72 *   0.59%*
+Amean     elsp-NUMA02_SMT               13.23 (   0.00%)       12.89 *   2.53%*
 
-Signed-off-by: Mel Gorman <mgorman@techsingularity.net>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Raghavendra K T <raghavendra.kt@amd.com>
-Link: https://lore.kernel.org/r/20231010083143.19593-7-mgorman@techsingularity.net
-Stable-dep-of: f22cde4371f3 ("sched/numa: Fix the vma scan starving issue")
+                   v6.10-rc5   v6.10-rc5
+                                  +patch
+Duration User     1064010.16  1075416.23
+Duration System      3307.64     3104.66
+Duration Elapsed     4537.54     4604.73
+
+The SPECcpu remote node access issue disappears with the patch applied.
+
+Link: https://lkml.kernel.org/r/20240827112958.181388-1-yu.c.chen@intel.com
+Fixes: fc137c0ddab2 ("sched/numa: enhance vma scanning logic")
+Signed-off-by: Chen Yu <yu.c.chen@intel.com>
+Co-developed-by: Chen Yu <yu.c.chen@intel.com>
+Signed-off-by: Yujie Liu <yujie.liu@intel.com>
+Reported-by: Xiaoping Zhou <xiaoping.zhou@intel.com>
+Reviewed-and-tested-by: Raghavendra K T <raghavendra.kt@amd.com>
+Acked-by: Mel Gorman <mgorman@techsingularity.net>
+Cc: "Chen, Tim C" <tim.c.chen@intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Juri Lelli <juri.lelli@redhat.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Raghavendra K T <raghavendra.kt@amd.com>
+Cc: Vincent Guittot <vincent.guittot@linaro.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/mm_types.h             |  6 +++
- include/linux/sched/numa_balancing.h |  1 +
- include/trace/events/sched.h         |  3 +-
- kernel/sched/fair.c                  | 55 ++++++++++++++++++++++++++--
- 4 files changed, 61 insertions(+), 4 deletions(-)
+ kernel/sched/fair.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
-index 80d9d1b7685c6..43c19d85dfe7f 100644
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -575,6 +575,12 @@ struct vma_numab_state {
- 	 * every VMA_PID_RESET_PERIOD jiffies:
- 	 */
- 	unsigned long pids_active[2];
-+
-+	/*
-+	 * MM scan sequence ID when the VMA was last completely scanned.
-+	 * A VMA is not eligible for scanning if prev_scan_seq == numa_scan_seq
-+	 */
-+	int prev_scan_seq;
- };
- 
- /*
-diff --git a/include/linux/sched/numa_balancing.h b/include/linux/sched/numa_balancing.h
-index 7dcc0bdfddbbf..b69afb8630db4 100644
---- a/include/linux/sched/numa_balancing.h
-+++ b/include/linux/sched/numa_balancing.h
-@@ -22,6 +22,7 @@ enum numa_vmaskip_reason {
- 	NUMAB_SKIP_SCAN_DELAY,
- 	NUMAB_SKIP_PID_INACTIVE,
- 	NUMAB_SKIP_IGNORE_PID,
-+	NUMAB_SKIP_SEQ_COMPLETED,
- };
- 
- #ifdef CONFIG_NUMA_BALANCING
-diff --git a/include/trace/events/sched.h b/include/trace/events/sched.h
-index 27b51c81b1067..010ba1b7cb0ea 100644
---- a/include/trace/events/sched.h
-+++ b/include/trace/events/sched.h
-@@ -671,7 +671,8 @@ DEFINE_EVENT(sched_numa_pair_template, sched_swap_numa,
- 	EM( NUMAB_SKIP_INACCESSIBLE,		"inaccessible" )	\
- 	EM( NUMAB_SKIP_SCAN_DELAY,		"scan_delay" )	\
- 	EM( NUMAB_SKIP_PID_INACTIVE,		"pid_inactive" )	\
--	EMe(NUMAB_SKIP_IGNORE_PID,		"ignore_pid_inactive" )
-+	EM( NUMAB_SKIP_IGNORE_PID,		"ignore_pid_inactive" )		\
-+	EMe(NUMAB_SKIP_SEQ_COMPLETED,		"seq_completed" )
- 
- /* Redefine for export. */
- #undef EM
 diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 03eb1cab320d8..0af2be3ee849e 100644
+index 0af2be3ee849e..5eb4807bad209 100644
 --- a/kernel/sched/fair.c
 +++ b/kernel/sched/fair.c
-@@ -3233,6 +3233,8 @@ static void task_numa_work(struct callback_head *work)
- 	unsigned long nr_pte_updates = 0;
- 	long pages, virtpages;
- 	struct vma_iterator vmi;
-+	bool vma_pids_skipped;
-+	bool vma_pids_forced = false;
- 
- 	SCHED_WARN_ON(p != container_of(work, struct task_struct, numa_work));
- 
-@@ -3275,7 +3277,6 @@ static void task_numa_work(struct callback_head *work)
- 	 */
- 	p->node_stamp += 2 * TICK_NSEC;
- 
--	start = mm->numa_scan_offset;
- 	pages = sysctl_numa_balancing_scan_size;
- 	pages <<= 20 - PAGE_SHIFT; /* MB in pages */
- 	virtpages = pages * 8;	   /* Scan up to this much virtual space */
-@@ -3285,6 +3286,16 @@ static void task_numa_work(struct callback_head *work)
- 
- 	if (!mmap_read_trylock(mm))
- 		return;
-+
-+	/*
-+	 * VMAs are skipped if the current PID has not trapped a fault within
-+	 * the VMA recently. Allow scanning to be forced if there is no
-+	 * suitable VMA remaining.
-+	 */
-+	vma_pids_skipped = false;
-+
-+retry_pids:
-+	start = mm->numa_scan_offset;
- 	vma_iter_init(&vmi, mm, start);
- 	vma = vma_next(&vmi);
- 	if (!vma) {
-@@ -3335,6 +3346,13 @@ static void task_numa_work(struct callback_head *work)
- 			/* Reset happens after 4 times scan delay of scan start */
- 			vma->numab_state->pids_active_reset =  vma->numab_state->next_scan +
- 				msecs_to_jiffies(VMA_PID_RESET_PERIOD);
-+
-+			/*
-+			 * Ensure prev_scan_seq does not match numa_scan_seq,
-+			 * to prevent VMAs being skipped prematurely on the
-+			 * first scan:
-+			 */
-+			 vma->numab_state->prev_scan_seq = mm->numa_scan_seq - 1;
- 		}
- 
- 		/*
-@@ -3356,8 +3374,19 @@ static void task_numa_work(struct callback_head *work)
- 			vma->numab_state->pids_active[1] = 0;
- 		}
- 
--		/* Do not scan the VMA if task has not accessed */
--		if (!vma_is_accessed(mm, vma)) {
-+		/* Do not rescan VMAs twice within the same sequence. */
-+		if (vma->numab_state->prev_scan_seq == mm->numa_scan_seq) {
-+			mm->numa_scan_offset = vma->vm_end;
-+			trace_sched_skip_vma_numa(mm, vma, NUMAB_SKIP_SEQ_COMPLETED);
-+			continue;
-+		}
-+
-+		/*
-+		 * Do not scan the VMA if task has not accessed it, unless no other
-+		 * VMA candidate exists.
-+		 */
-+		if (!vma_pids_forced && !vma_is_accessed(mm, vma)) {
-+			vma_pids_skipped = true;
- 			trace_sched_skip_vma_numa(mm, vma, NUMAB_SKIP_PID_INACTIVE);
- 			continue;
- 		}
-@@ -3386,8 +3415,28 @@ static void task_numa_work(struct callback_head *work)
- 
- 			cond_resched();
- 		} while (end != vma->vm_end);
-+
-+		/* VMA scan is complete, do not scan until next sequence. */
-+		vma->numab_state->prev_scan_seq = mm->numa_scan_seq;
-+
-+		/*
-+		 * Only force scan within one VMA at a time, to limit the
-+		 * cost of scanning a potentially uninteresting VMA.
-+		 */
-+		if (vma_pids_forced)
-+			break;
- 	} for_each_vma(vmi, vma);
+@@ -3213,6 +3213,15 @@ static bool vma_is_accessed(struct mm_struct *mm, struct vm_area_struct *vma)
+ 		return true;
+ 	}
  
 +	/*
-+	 * If no VMAs are remaining and VMAs were skipped due to the PID
-+	 * not accessing the VMA previously, then force a scan to ensure
-+	 * forward progress:
++	 * This vma has not been accessed for a while, and if the number
++	 * the threads in the same process is low, which means no other
++	 * threads can help scan this vma, force a vma scan.
 +	 */
-+	if (!vma && !vma_pids_forced && vma_pids_skipped) {
-+		vma_pids_forced = true;
-+		goto retry_pids;
-+	}
++	if (READ_ONCE(mm->numa_scan_seq) >
++	   (vma->numab_state->prev_scan_seq + get_nr_threads(current)))
++		return true;
 +
- out:
- 	/*
- 	 * It is possible to reach the end of the VMA list but the last few
+ 	return false;
+ }
+ 
 -- 
 2.43.0
 
