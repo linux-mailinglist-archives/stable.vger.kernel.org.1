@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-79219-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 890DB98D72A
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:46:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0453B98D702
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:46:06 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 402901F24A0B
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:46:58 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF7891F2455B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:46:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E3991D040F;
-	Wed,  2 Oct 2024 13:46:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D4821D0B95;
+	Wed,  2 Oct 2024 13:44:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f7IQ4WO7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P2l8trlz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0DAF1CF5FB;
-	Wed,  2 Oct 2024 13:46:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD0DC1D07B1;
+	Wed,  2 Oct 2024 13:44:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727876793; cv=none; b=Ha5U9xo0MbRzEln7c4dydtZFwyM1pdRxIUYDUoc8/rPF0blkiljG6hdnJfRwz9gyq+xIkCLbs34aRKLe7tMHu83iBvoVIbzaExgUcv1fA+fkin22pjSB09dr0TbcI8WCR8MUZZmGLFPX0YRldMqW4h7MohFnYjq+e/Ujdt5kT18=
+	t=1727876698; cv=none; b=kjfTLTAdGaKOnTpq26pfIz+MpjPq50fRugymjDSCPp1dj3ltQcOjtCcS/0YiO8JziZBmTJo50cOt1cWSwFxx5KBYL+O+iySjhD1MieRBw0GDOxwJtaGxT4fw+cKUG8A2igSqFzcJjMqSFcFfyqj/1V7GiQbPsyCqxSi47M/vwUw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727876793; c=relaxed/simple;
-	bh=4+KEffUu3bOrTTDO6tuQ0+xbhSc/4SidAi4iQMary3A=;
+	s=arc-20240116; t=1727876698; c=relaxed/simple;
+	bh=jQ/lMNifQcUH925wABrmBMXCXup8/0jrpo7dwamkQnA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UU1v0FV9TvUOs+yHrrlfJo2RnbR1cfPb1s+B2vDx1jJPp54aEfP2uHW8VoWlMYBjLJ3+XflJ3hJ55wXAW44WCTCTK+95u8u/0VEqiRcBgBJEJmg4LqQff6QUK7XiuymiEA21CRbJENVgpZAqwGM0jf4lsiG2GmHDFNiXiLg8qS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f7IQ4WO7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 501B4C4CEC2;
-	Wed,  2 Oct 2024 13:46:33 +0000 (UTC)
+	 MIME-Version; b=Izfphwn44jxC6kYKZSZy9uR7QGkCF+M5Rp7Q8ESXJ2kfk3N7jvi5euclEkK9K3uBG3HFsJEgUpVY+ormUGJm6x4iu1T5JNEkedSwKCFgvpWY6dGo2CPUG+02mRSssxdLSRYT7L2EnxBP7YMfaA7hjqZ0/ibIplRd/9OwLfvoyXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P2l8trlz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D79BC4CECD;
+	Wed,  2 Oct 2024 13:44:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727876793;
-	bh=4+KEffUu3bOrTTDO6tuQ0+xbhSc/4SidAi4iQMary3A=;
+	s=korg; t=1727876697;
+	bh=jQ/lMNifQcUH925wABrmBMXCXup8/0jrpo7dwamkQnA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f7IQ4WO74a9V3HNM/ICxoCn4zGVNKyuYs983Ek/uap7WiBZypj/0Q4sbt6/pRR+ms
-	 K+2zRmD6O/HiEnf91MVRZT2Q+971Jftg3Wd5I9dtxf5d8dG8Fb3OFbIjPXIpAEdCCd
-	 ejoEWaPtcwjAKE7puUxokR92s1TNSiHQa7jODKEQ=
+	b=P2l8trlzSdL0a67UV2TimenXUWZPeOz/J0gA/JmNJ02RC+FABD8Z3UDegxfnfqn/+
+	 TyE9yRusQUjmHfz3KDdl0znDf4wJImy7GojekhehI3UTITfRRxEsm+GAjMdwsT7oOi
+	 NWTu8Fwm+VC/7ZPWwXDoSEiV0B0U9MLOMyVFm/wY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Werner Sembach <wse@tuxedocomputers.com>,
 	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.11 532/695] Input: i8042 - add TUXEDO Stellaris 15 Slim Gen6 AMD to i8042 quirk table
-Date: Wed,  2 Oct 2024 14:58:50 +0200
-Message-ID: <20241002125843.735330456@linuxfoundation.org>
+Subject: [PATCH 6.11 533/695] Input: i8042 - add another board name for TUXEDO Stellaris Gen5 AMD line
+Date: Wed,  2 Oct 2024 14:58:51 +0200
+Message-ID: <20241002125843.776559661@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
 References: <20241002125822.467776898@linuxfoundation.org>
@@ -67,23 +67,16 @@ Content-Transfer-Encoding: 8bit
 
 From: Werner Sembach <wse@tuxedocomputers.com>
 
-commit 3870e2850b56306d1d1e435c5a1ccbccd7c59291 upstream.
+commit 01eed86d50af9fab27d876fd677b86259ebe9de3 upstream.
 
-The Gen6 devices have the same problem and the same Solution as the Gen5
-ones.
+There might be devices out in the wild where the board name is GMxXGxx
+instead of GMxXGxX.
 
-Some TongFang barebones have touchpad and/or keyboard issues after
-suspend, fixable with nomux + reset + noloop + nopnp. Luckily, none of
-them have an external PS/2 port so this can safely be set for all of
-them.
-
-I'm not entirely sure if every device listed really needs all four quirks,
-but after testing and production use, no negative effects could be
-observed when setting all four.
+Adding both to be on the safe side.
 
 Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240910094008.1601230-3-wse@tuxedocomputers.com
+Link: https://lore.kernel.org/r/20240910094008.1601230-2-wse@tuxedocomputers.com
 Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
@@ -92,20 +85,20 @@ Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
 --- a/drivers/input/serio/i8042-acpipnpio.h
 +++ b/drivers/input/serio/i8042-acpipnpio.h
-@@ -1143,6 +1143,13 @@ static const struct dmi_system_id i8042_
- 		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
- 					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
+@@ -1138,6 +1138,13 @@ static const struct dmi_system_id i8042_
  	},
-+	{
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "GMxHGxx"),
+ 	{
+ 		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "GMxXGxx"),
 +		},
 +		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
 +					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
 +	},
- 	/*
- 	 * A lot of modern Clevo barebones have touchpad and/or keyboard issues
- 	 * after suspend fixable with nomux + reset + noloop + nopnp. Luckily,
++	{
++		.matches = {
+ 			DMI_MATCH(DMI_BOARD_NAME, "GMxXGxX"),
+ 		},
+ 		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
 
 
 
