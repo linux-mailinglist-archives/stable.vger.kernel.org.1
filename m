@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-80465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79967-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id D422198DDA4
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:51:04 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD58698DB1D
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:27:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8AD23B27428
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:50:35 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B9061C22E6F
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:27:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6BDE1D1513;
-	Wed,  2 Oct 2024 14:47:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D9411D12FF;
+	Wed,  2 Oct 2024 14:23:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qq+4NdvD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w5QiHLNk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75D1A1D0493;
-	Wed,  2 Oct 2024 14:47:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE4A1D0DED;
+	Wed,  2 Oct 2024 14:23:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880451; cv=none; b=aG8kVN3vjO9OvbZa+xAvmDQbRBFQ0Y8KQNUKTobJGjh7BfmPCVlIyr7E6lEhQhly5JPMxuPoKnhwR4c2XkuS4kM40qolRHLxIWyoGKABupPCyHwm7Yr4P1KY/tFonl+1APbaARb5xwEGqGvHvEeiyi6ssfuoaVIqv88TvAaYHmM=
+	t=1727878994; cv=none; b=upnfcod0ZzeBBsTu+YDrA/v1gcSPe+mYflC1lTNSM4lJgY0NX1JY7PAobRilj5HuttMaBTrhvMH0EZu58cjwhMoF+vdFfgkMdIdLIRAwyCzzrfrgMGpXl3plphwRn773UstZbTPYXRJNLLwDqrn5/3dytWA9iv1JXAPu3hQWlJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880451; c=relaxed/simple;
-	bh=2ft3TVbKs2IC9R5Jyo12htJC0wnhhZMZTv1hbYnyAoU=;
+	s=arc-20240116; t=1727878994; c=relaxed/simple;
+	bh=ug4z2XiRMC1Y5eGGhnFVtnmbAiA3dqSPJ41rPdW+5HY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jIat29Ga+RsVRNaGN/pQEK9JuWUpMIlBvHjjzSQz0ikpCDsOTaYncX2xpJLHlf/Ar8xHcuGxcA4gCq9cuiaKAllK58iz1FNjvbFj4eCXXgfwRYq6dTB2RvsBoEndXXCdplMTOibgiuqXKUrKrDXZqZVfZjDRZm5NHueklDMKQjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qq+4NdvD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F27FEC4CEC2;
-	Wed,  2 Oct 2024 14:47:30 +0000 (UTC)
+	 MIME-Version; b=BXEFVZu9/hdDrlSCwRhczEEdxOHgSasTfOnjjOwQOZVD+t9+ZpZ33zyXZde4PA2EJOETAE2G6xNLPHC+Sc+HSoIWcEC/5VsFS/FV9JWs25hwTdTMyiLTFxpW7G/eOH0rf1rR1druisvv381aERuIq5kRGrqSbYkg/AIF8vZ0AVY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w5QiHLNk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED601C4CEC2;
+	Wed,  2 Oct 2024 14:23:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880451;
-	bh=2ft3TVbKs2IC9R5Jyo12htJC0wnhhZMZTv1hbYnyAoU=;
+	s=korg; t=1727878994;
+	bh=ug4z2XiRMC1Y5eGGhnFVtnmbAiA3dqSPJ41rPdW+5HY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qq+4NdvD/pxfD0gLMbWEYHEHegIdqZ9tKtgMbcPKWGzu2w33XnnMHqQ6aEEm3JTWw
-	 zb8jMu5Ol2k2IBzxDSRreiuu9GlMxCrnqiDh4QMJPqufRZLdZ58OSAJIBD8HYlwCnX
-	 3NWAFBcwwPKtzYDVpR0HYLldAj4EI+3USUwcmWmg=
+	b=w5QiHLNksR1/XaC63hp1rgLZzu7c9rOkRP0RvceAd5ff5TsVIGyRFX4M8MzDiGqe3
+	 /97rCLiaH91bHKWqzUsA5STMTbyXHjX6bWTgPl3JTHcpZZypPHytdXonjRkswsiqkS
+	 S0IyqkymWwv3jDdoOy3oCueX54Qh0UThfCgx5oEc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.6 462/538] f2fs: prevent possible int overflow in dir_block_index()
+	Daehwan Jung <dh10.jung@samsung.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 601/634] xhci: Add a quirk for writing ERST in high-low order
 Date: Wed,  2 Oct 2024 15:01:41 +0200
-Message-ID: <20241002125810.680925979@linuxfoundation.org>
+Message-ID: <20241002125834.838706907@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +61,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Daehwan Jung <dh10.jung@samsung.com>
 
-commit 47f268f33dff4a5e31541a990dc09f116f80e61c upstream.
+[ Upstream commit bc162403e33e1d57e40994977acaf19f1434e460 ]
 
-The result of multiplication between values derived from functions
-dir_buckets() and bucket_blocks() *could* technically reach
-2^30 * 2^2 = 2^32.
+This quirk is for the controller that has a limitation in supporting
+separate ERSTBA_HI and ERSTBA_LO programming. It's supported when
+the ERSTBA is programmed ERSTBA_HI before ERSTBA_LO. That's because
+the internal initialization of event ring fetches the
+"Event Ring Segment Table Entry" based on the indication of ERSTBA_LO
+written.
 
-While unlikely to happen, it is prudent to ensure that it will not
-lead to integer overflow. Thus, use mul_u32_u32() as it's more
-appropriate to mitigate the issue.
-
-Found by Linux Verification Center (linuxtesting.org) with static
-analysis tool SVACE.
-
-Fixes: 3843154598a0 ("f2fs: introduce large directory support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Daehwan Jung <dh10.jung@samsung.com>
+Link: https://lore.kernel.org/r/1718019553-111939-3-git-send-email-dh10.jung@samsung.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: e5fa8db0be3e ("usb: xhci: fix loss of data on Cadence xHC")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/dir.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/host/xhci-mem.c | 5 ++++-
+ drivers/usb/host/xhci.h     | 2 ++
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
---- a/fs/f2fs/dir.c
-+++ b/fs/f2fs/dir.c
-@@ -157,7 +157,8 @@ static unsigned long dir_block_index(uns
- 	unsigned long bidx = 0;
+diff --git a/drivers/usb/host/xhci-mem.c b/drivers/usb/host/xhci-mem.c
+index f591ddd086627..fa3ee53df0ecc 100644
+--- a/drivers/usb/host/xhci-mem.c
++++ b/drivers/usb/host/xhci-mem.c
+@@ -2325,7 +2325,10 @@ xhci_add_interrupter(struct xhci_hcd *xhci, struct xhci_interrupter *ir,
+ 	erst_base = xhci_read_64(xhci, &ir->ir_set->erst_base);
+ 	erst_base &= ERST_BASE_RSVDP;
+ 	erst_base |= ir->erst.erst_dma_addr & ~ERST_BASE_RSVDP;
+-	xhci_write_64(xhci, erst_base, &ir->ir_set->erst_base);
++	if (xhci->quirks & XHCI_WRITE_64_HI_LO)
++		hi_lo_writeq(erst_base, &ir->ir_set->erst_base);
++	else
++		xhci_write_64(xhci, erst_base, &ir->ir_set->erst_base);
  
- 	for (i = 0; i < level; i++)
--		bidx += dir_buckets(i, dir_level) * bucket_blocks(i);
-+		bidx += mul_u32_u32(dir_buckets(i, dir_level),
-+				    bucket_blocks(i));
- 	bidx += idx * bucket_blocks(level);
- 	return bidx;
- }
+ 	/* Set the event ring dequeue address of this interrupter */
+ 	xhci_set_hc_event_deq(xhci, ir);
+diff --git a/drivers/usb/host/xhci.h b/drivers/usb/host/xhci.h
+index 78d014c4d884a..5a8925474176d 100644
+--- a/drivers/usb/host/xhci.h
++++ b/drivers/usb/host/xhci.h
+@@ -17,6 +17,7 @@
+ #include <linux/kernel.h>
+ #include <linux/usb/hcd.h>
+ #include <linux/io-64-nonatomic-lo-hi.h>
++#include <linux/io-64-nonatomic-hi-lo.h>
+ 
+ /* Code sharing between pci-quirks and xhci hcd */
+ #include	"xhci-ext-caps.h"
+@@ -1628,6 +1629,7 @@ struct xhci_hcd {
+ #define XHCI_RESET_TO_DEFAULT	BIT_ULL(44)
+ #define XHCI_ZHAOXIN_TRB_FETCH	BIT_ULL(45)
+ #define XHCI_ZHAOXIN_HOST	BIT_ULL(46)
++#define XHCI_WRITE_64_HI_LO	BIT_ULL(47)
+ 
+ 	unsigned int		num_active_eps;
+ 	unsigned int		limit_active_eps;
+-- 
+2.43.0
+
 
 
 
