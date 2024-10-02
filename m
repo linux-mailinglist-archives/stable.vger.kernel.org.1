@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-80393-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7D9D98DD36
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:47:40 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FDB498DACC
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:25:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 9AC70284EA4
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:47:39 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 234ED1F25600
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:25:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFDE71D175F;
-	Wed,  2 Oct 2024 14:44:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 928201CF7D4;
+	Wed,  2 Oct 2024 14:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q2rEulHC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g/JTLv41"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 901251EA80;
-	Wed,  2 Oct 2024 14:44:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 512BF1D1E80;
+	Wed,  2 Oct 2024 14:19:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880243; cv=none; b=s9ZdsGJTpp7FGpaR3qE2JCuoWwN2wgrF4Li2vn3mZM+obaeK72mZlqRc6xeIt54Kic+tBZ4L3KYms7zDxdASLl8rXQ0Xs/vQRWy4t4M2ueyw9NpA5t7KV2PyyinSlSqspgWzJrrHMMmFXVkTtbIlQKiOZxstxfSH6Fa6zFNVDoQ=
+	t=1727878788; cv=none; b=db0K2PX40qZP2wjBDtR/tT9uc8KM9Sh7a8ytYwg6Ahnoj5pPNshZROdA2zGEg/JlQpwmfoczhtMo3H086Crt2/rexC2I0KheGQZA3+6m59QuY6exTZ2eILDQ6wrPLotcvAUj0sL36pWbRAfrru1yVhOhKscPV081qaOkEpYuyps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880243; c=relaxed/simple;
-	bh=g3ikejaAL49Vv3UrD+y3n4RbEhMUZbZSKw64ylCMhgw=;
+	s=arc-20240116; t=1727878788; c=relaxed/simple;
+	bh=3HZBIve7Fiz27oj78pZ+9832C2+PrI5kL4zvm2TJbZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jyecGh/H4jI8EHnyd+OPUs36Ez8Wj1tm/KIbt5SxYJQs2swXaiWuhiz1uxDiIwHYVbBplu6k5NeGLAl6xrJ+QTMr0s0+L2gWBddltZflJ0d8JcOmnViAWWESftmw1WfPjtNA4ts/5+VbISNJveBpvRdc2NEhixJxqFJ+ejAoF1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q2rEulHC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AC48C4CEC2;
-	Wed,  2 Oct 2024 14:44:02 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BrW2fNYH0QGNgFZisSE0viIMr/PQf+B6c7W3u9hP49SRlTsWQoiXjuyk4uenGmTAHv0Fr3yhZ5gQpDbrNsP5UhcQhnPYcZ4J2QZmJurQgF4tmGbnK+oLdyXREd6+Rd8EIyXHDJkoW9Zb1aD4+UVhvuhub+yQyXOC+r4SG7w9jMA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g/JTLv41; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE711C4CEC2;
+	Wed,  2 Oct 2024 14:19:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880243;
-	bh=g3ikejaAL49Vv3UrD+y3n4RbEhMUZbZSKw64ylCMhgw=;
+	s=korg; t=1727878788;
+	bh=3HZBIve7Fiz27oj78pZ+9832C2+PrI5kL4zvm2TJbZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Q2rEulHCzD8D1phEl+fLopUaI89u8Tz32l6s5pyZlWw0/T9B+el7uAVb1VrBzevpO
-	 22d9CPNk7YIKdThmOw7p7xt3xd3Uvvj0IjCp7lmXJuNrTA1iidGskGrBnJtn2rFkxF
-	 AqtpzMaGAQeHIeTIEVLPD3elYVQUXCNm8hTeXkc8=
+	b=g/JTLv41Y0DhH2wQKceUmEspcr6maLi9OAjIOLkvpPC8paIn9KwiOWC6QC5gnsoa4
+	 JIOceeN1eLwui+HY6r3z5ypeoulGgNcqahQC6vNarnKtmgb19T4IMLvqQQfEUFFvuZ
+	 4/1i+H5rlhxTANbwPu97AorM68QCw7c2451K/q0o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Masahiro Yamada <masahiroy@kernel.org>
-Subject: [PATCH 6.6 392/538] Remove *.orig pattern from .gitignore
-Date: Wed,  2 Oct 2024 15:00:31 +0200
-Message-ID: <20241002125807.906205677@linuxfoundation.org>
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 6.10 532/634] serial: dont use uninitialized value in uart_poll_init()
+Date: Wed,  2 Oct 2024 15:00:32 +0200
+Message-ID: <20241002125832.107421617@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,63 +60,71 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 
-commit 76be4f5a784533c71afbbb1b8f2963ef9e2ee258 upstream.
+commit d0009a32c9e4e083358092f3c97e3c6e803a8930 upstream.
 
-Commit 3f1b0e1f2875 (".gitignore update") added *.orig and *.rej
-patterns to .gitignore in v2.6.23. The commit message didn't give a
-rationale. Later on, commit 1f5d3a6b6532 ("Remove *.rej pattern from
-.gitignore") removed the *.rej pattern in v2.6.26, on the rationale that
-*.rej files indicated something went really wrong and should not be
-ignored.
+Coverity reports (as CID 1536978) that uart_poll_init() passes
+uninitialized pm_state to uart_change_pm(). It is in case the first 'if'
+takes the true branch (does "goto out;").
 
-The *.rej files are now shown by `git status`, which helps located
-conflicts when applying patches and lowers the probability that they
-will go unnoticed. It is however still easy to overlook the *.orig files
-which slowly polute the source tree. That's not as big of a deal as not
-noticing a conflict, but it's still not nice.
+Fix this and simplify the function by simple guard(mutex). The code
+needs no labels after this at all. And it is pretty clear that the code
+has not fiddled with pm_state at that point.
 
-Drop the *.orig pattern from .gitignore to avoid this and help keep the
-source tree clean.
-
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-[masahiroy@kernel.org:
-I do not have a strong opinion about this. Perhaps some people may have
-a different opinion.
-
-If you are someone who wants to ignore *.orig, it is likely you would
-want to do so across all projects. Then, $XDG_CONFIG_HOME/git/ignore
-would be more suitable for your needs. gitignore(5) suggests, "Patterns
-which a user wants Git to ignore in all situations generally go into a
-file specified by core.excludesFile in the user's ~/.gitconfig".
-
-Please note that you cannot do the opposite; if *.orig is ignored by
-the project's .gitignore, you cannot override the decision because
-$XDG_CONFIG_HOME/git/ignore has a lower priority.
-
-If *.orig is sitting on the fence, I'd leave it to the users. ]
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+Signed-off-by: Jiri Slaby (SUSE) <jirislaby@kernel.org>
+Fixes: 5e227ef2aa38 (serial: uart_poll_init() should power on the UART)
+Cc: stable@vger.kernel.org
+Cc: Douglas Anderson <dianders@chromium.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Link: https://lore.kernel.org/r/20240805102046.307511-4-jirislaby@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .gitignore |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/tty/serial/serial_core.c |   13 ++++++-------
+ 1 file changed, 6 insertions(+), 7 deletions(-)
 
---- a/.gitignore
-+++ b/.gitignore
-@@ -135,7 +135,6 @@ GTAGS
- # id-utils files
- ID
+--- a/drivers/tty/serial/serial_core.c
++++ b/drivers/tty/serial/serial_core.c
+@@ -2696,14 +2696,13 @@ static int uart_poll_init(struct tty_dri
+ 	int ret = 0;
  
--*.orig
- *~
- \#*#
+ 	tport = &state->port;
+-	mutex_lock(&tport->mutex);
++
++	guard(mutex)(&tport->mutex);
+ 
+ 	port = uart_port_check(state);
+ 	if (!port || port->type == PORT_UNKNOWN ||
+-	    !(port->ops->poll_get_char && port->ops->poll_put_char)) {
+-		ret = -1;
+-		goto out;
+-	}
++	    !(port->ops->poll_get_char && port->ops->poll_put_char))
++		return -1;
+ 
+ 	pm_state = state->pm_state;
+ 	uart_change_pm(state, UART_PM_STATE_ON);
+@@ -2723,10 +2722,10 @@ static int uart_poll_init(struct tty_dri
+ 		ret = uart_set_options(port, NULL, baud, parity, bits, flow);
+ 		console_list_unlock();
+ 	}
+-out:
++
+ 	if (ret)
+ 		uart_change_pm(state, pm_state);
+-	mutex_unlock(&tport->mutex);
++
+ 	return ret;
+ }
  
 
 
