@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-78803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79398-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A4CC98D50E
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:26:55 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6BD298D80E
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:56:28 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 4337F1C2169E
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:26:54 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 6F1B4284A3F
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:56:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC0F91D043C;
-	Wed,  2 Oct 2024 13:26:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAD561D0793;
+	Wed,  2 Oct 2024 13:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P/bndJdj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ju2AC8/L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A0AA16F84F;
-	Wed,  2 Oct 2024 13:26:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5B7E1D0BAA;
+	Wed,  2 Oct 2024 13:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875576; cv=none; b=VfnOL2u4Tf45oc6m3hCjmX3xqo4mUWoaj6rZWN1h5DVXGnkyz/I/Tc3o1vNd2HMmfFRVRK6fvt0DQ7nXpcMumK5iKOLR7GPzhv7sKylAYYYfhLGgejGbPhNS2Nz+pm2R5A4sChK5EtSavg22RZ93G6CvBHfpkbLXVbH9W0Oq9e4=
+	t=1727877332; cv=none; b=fElY27yFRQopmP0LOjntPKMqzb5Lgvv2hyi1PzYUrtzEwnczKqKIznSYMuQ+c2Hk2oWX0yGFrWARKy0lRiYCeAKo4u4+swaTsgXrxcfkhXAlKNOKgGBbYxhlvLtTRVnCJx6wCzp269g3o9XP2rxNy1H/1EGKyqit4DxHEwhe1Gk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875576; c=relaxed/simple;
-	bh=Dig//kOnpeCTXvDP3PS6jQqoJw0Q0irWuy1rjkcGDY8=;
+	s=arc-20240116; t=1727877332; c=relaxed/simple;
+	bh=xtMwLtW6ciToUjki9pM2gaE/P7Q8nb1I/gT/mLAb9qs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r7IjGtvZdyH3hit4u2i+lOy6w5kb1dUqOdUm1D/I0pXu/EGZHEXR+EoSiekvtiU+6EKJT0OjPIMvUTJXt+gHtV1npYNOVTE9oniqIdihDGHYRSotc4OHaSe1PyjWW5nhqPdbYSodmT8o8bHpM+9wW40jgSU1Gv1lmiqDkBLwR5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P/bndJdj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00BD5C4CEC5;
-	Wed,  2 Oct 2024 13:26:15 +0000 (UTC)
+	 MIME-Version; b=rUivnP0kQsDOz7KexSrei8Layea4pIIixsSc/URYBSLGqV9LiD+Fr/dvoUrd+MSTbFz0phEDsZepcQLpKtUHk06Rsm2ml1cVWKHwKxHMijzgdD5+1Q5tx5znNwyePv5dACITFBpeL/ItZmsxQdAfOHxNhghmg+Ltv5ZuLGB9WTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ju2AC8/L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC507C4CECE;
+	Wed,  2 Oct 2024 13:55:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875576;
-	bh=Dig//kOnpeCTXvDP3PS6jQqoJw0Q0irWuy1rjkcGDY8=;
+	s=korg; t=1727877332;
+	bh=xtMwLtW6ciToUjki9pM2gaE/P7Q8nb1I/gT/mLAb9qs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P/bndJdjUuDR187897qdIaqEeH1Lp3DFO73URaAeTs3ZXJZXI29goALgSFjUGLe1P
-	 9/5oEWJMT73vV7Xd8vMf0BQzRexNoyAqGMWWjYE5odM8Hegyo+p25G5nfHzPY4FssX
-	 F75eVgt7tPLOMxtwbGU8xjRRGVuFEIiHM4lqbklY=
+	b=Ju2AC8/LXe4cbnCEKFsTllRIUdoD0b9y/gVc/Unq1qVX76go6kDHulr4hHN8/vN0W
+	 4bxz86zAlRsF//lUOSS6ON7HadzoKhiAP2l43LTgDiphVFKrCMOe0ZsqpBvHKqxlT4
+	 MJNrO3pmK/Bk1+zSooMAoZhlx5L5vp3QbtLe/40E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Davis <afd@ti.com>,
-	Nishanth Menon <nm@ti.com>,
+	Vasily Khoruzhick <anarsoul@gmail.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 147/695] arm64: dts: ti: k3-j721e-sk: Fix reversed C6x carveout locations
-Date: Wed,  2 Oct 2024 14:52:25 +0200
-Message-ID: <20241002125828.351556671@linuxfoundation.org>
+Subject: [PATCH 6.10 046/634] ACPICA: executer/exsystem: Dont nag user about every Stall() violating the spec
+Date: Wed,  2 Oct 2024 14:52:26 +0200
+Message-ID: <20241002125812.921536304@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Davis <afd@ti.com>
+From: Vasily Khoruzhick <anarsoul@gmail.com>
 
-[ Upstream commit 9f3814a7c06b7c7296cf8c1622078ad71820454b ]
+[ Upstream commit c82c507126c9c9db350be28f14c83fad1c7969ae ]
 
-The DMA carveout for the C6x core 0 is at 0xa6000000 and core 1 is at
-0xa7000000. These are reversed in DT. While both C6x can access either
-region, so this is not normally a problem, but if we start restricting
-the memory each core can access (such as with firewalls) the cores
-accessing the regions for the wrong core will not work. Fix this here.
+ACPICA commit 129b75516fc49fe1fd6b8c5798f86c13854630b3
 
-Fixes: f46d16cf5b43 ("arm64: dts: ti: k3-j721e-sk: Add DDR carveout memory nodes")
-Signed-off-by: Andrew Davis <afd@ti.com>
-Link: https://lore.kernel.org/r/20240801181232.55027-1-afd@ti.com
-Signed-off-by: Nishanth Menon <nm@ti.com>
+Stop nagging user about every Stall() that violates the spec
+
+On my Dell XPS 15 7590 I get hundreds of these warnings after few hours of
+uptime:
+
+$ dmesg | grep "fix the firmware" | wc -l
+261
+
+I cannot fix the firmware and I doubt that Dell cares about 4 year old
+laptop either
+
+Fixes: ace8f1c54a02 ("ACPICA: executer/exsystem: Inform users about ACPI spec violation")
+Link: https://github.com/acpica/acpica/commit/129b7551
+Signed-off-by: Vasily Khoruzhick <anarsoul@gmail.com>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/k3-j721e-sk.dts | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/acpi/acpica/exsystem.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/ti/k3-j721e-sk.dts b/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
-index 89fbfb21e5d3b..e709edeb95cf7 100644
---- a/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
-+++ b/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
-@@ -120,7 +120,7 @@
- 			no-map;
- 		};
- 
--		c66_1_dma_memory_region: c66-dma-memory@a6000000 {
-+		c66_0_dma_memory_region: c66-dma-memory@a6000000 {
- 			compatible = "shared-dma-pool";
- 			reg = <0x00 0xa6000000 0x00 0x100000>;
- 			no-map;
-@@ -132,7 +132,7 @@
- 			no-map;
- 		};
- 
--		c66_0_dma_memory_region: c66-dma-memory@a7000000 {
-+		c66_1_dma_memory_region: c66-dma-memory@a7000000 {
- 			compatible = "shared-dma-pool";
- 			reg = <0x00 0xa7000000 0x00 0x100000>;
- 			no-map;
+diff --git a/drivers/acpi/acpica/exsystem.c b/drivers/acpi/acpica/exsystem.c
+index f665ffd9a396c..2c384bd52b9c4 100644
+--- a/drivers/acpi/acpica/exsystem.c
++++ b/drivers/acpi/acpica/exsystem.c
+@@ -133,14 +133,15 @@ acpi_status acpi_ex_system_do_stall(u32 how_long_us)
+ 		 * (ACPI specifies 100 usec as max, but this gives some slack in
+ 		 * order to support existing BIOSs)
+ 		 */
+-		ACPI_ERROR((AE_INFO,
+-			    "Time parameter is too large (%u)", how_long_us));
++		ACPI_ERROR_ONCE((AE_INFO,
++				 "Time parameter is too large (%u)",
++				 how_long_us));
+ 		status = AE_AML_OPERAND_VALUE;
+ 	} else {
+ 		if (how_long_us > 100) {
+-			ACPI_WARNING((AE_INFO,
+-				      "Time parameter %u us > 100 us violating ACPI spec, please fix the firmware.",
+-				      how_long_us));
++			ACPI_WARNING_ONCE((AE_INFO,
++					   "Time parameter %u us > 100 us violating ACPI spec, please fix the firmware.",
++					   how_long_us));
+ 		}
+ 		acpi_os_stall(how_long_us);
+ 	}
 -- 
 2.43.0
 
