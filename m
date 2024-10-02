@@ -1,177 +1,168 @@
-Return-Path: <stable+bounces-79463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84DAC98D871
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:00:27 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
+	by mail.lfdr.de (Postfix) with ESMTPS id CBD5298D898
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:03:12 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 013571F214AC
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:00:27 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DCA41F2417E
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:03:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02DE01D0F4C;
-	Wed,  2 Oct 2024 13:58:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 507151D1E7A;
+	Wed,  2 Oct 2024 13:59:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="oERhoMRU"
+	dkim=pass (2048-bit key) header.d=thorsis.com header.i=@thorsis.com header.b="eZp4W4TY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.thorsis.com (mail.thorsis.com [217.92.40.78])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF9091D094C
-	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 13:58:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 280FF1D1E6C
+	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 13:59:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.92.40.78
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877530; cv=none; b=Hhl6zTFJPvtU/UJArCf/HRF0ChDyzRK/ZkPSQV7iXrAlfMEqeHrv9hLwxIV29D6q2q8IehP3Vfx1zAFHgxw8IH9Ynj+DpFGRIUIBMJCukR9/o50bkb6E4qE/RmWufWy1KEVcG8vLKX3qQwVBuBr24XMOGTjYmE8hbqwXPcBLqNk=
+	t=1727877574; cv=none; b=CtMiqjvzVNUDhTcwCfePQSVNLa/7PDAx4N3XtE2nY0WnQSMfV68byQsSCElaA5Zwfty63qoTOgvIvxfgBjjvxcusFv8R3C8/aW710GhbeCYmJiyJJ8HsmbO414DqA1Nyv+pjryv33pGOkE/fZbgJ9bad5QSXoTTORJqBYGQ81ys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877530; c=relaxed/simple;
-	bh=vTwVvG8iZlHzHza+YS67mEwp2zyunt+kNzBDYWtFYWc=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=kLaegB/TmeXz+mCqquRAic1DmJjBsirg0amuzGTsCBWmx78rz5g2lzXtZvR6QGtanJP84/DAGgY/UvaNeEudsY4fRgpYs5rkApe4TT+Htiya1+kIvSOGLTvVhL0tUoX4QmMBSNkohX1D33+7BEOdXcg8Rcpzas0EsxoYrxO5Hns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=oERhoMRU; arc=none smtp.client-ip=209.85.208.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2fac49b17ebso31475701fa.0
-        for <stable@vger.kernel.org>; Wed, 02 Oct 2024 06:58:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1727877527; x=1728482327; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=E7nKjwcfTxwC0PwN6GrPgJAgBaaTNk6QSx4URpDS/gc=;
-        b=oERhoMRUNxjEaPh+A1eUzygiomkUAcQkBs/hl4Q8jCBsDhWVkvq86L3FZ1sCyRYEeE
-         8WjMT3P0ZNuCbV9c8m3uwqavc9Yqvcao/A1BlKssJ7ew41ZUaqyi9RD0DEXs8ZYLV42X
-         kvdHIZgFc9zuNQb3TTu86GdPm2fwXaFPssnUwerjpSL9PnqNHjOg+ETDGWi6zs9RhcZJ
-         Nv3wH7OHOFsXoo8DGhBT96vqXe2TCHgCBJ66El4+H3QynUd4WxwLORmoAUFxMdHtCnq/
-         3UzEdoLLZrRKQ7MBZVqHTPtgm+WztVG40fks5Dm1b3sobOtkmiAnnqa+keiSQbYkPFL6
-         65gg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727877527; x=1728482327;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=E7nKjwcfTxwC0PwN6GrPgJAgBaaTNk6QSx4URpDS/gc=;
-        b=VMZqy1Ary0OsoSo2SIoQgkNnJ+/WAD8gLRnIDCxenzU+1FwlPsNVeDaB5DGg1vF4Br
-         wURByW7UZQiU2humYC5CPY1upXTxygZQVw1ARhKmfx4TSiwQyrjXrxkvQFgb8bVclbqF
-         q2GisWaFo/Dt7mQu+Qsa/Dk6Ui1mXhDjD2uUqYeVkTavvyja2kAEtdAFTsSxV/VlJ0Io
-         9n3bpDbgmKMkrajZGq5hmRntZeX+jlODGm9CBc8GcolgYnB5srBCNJcYferuh8WRX+ec
-         TmLkTVT3Wuuvy31Eh2S42n/Ix9FIO2MZpzD8Dx6F9rplheWpixohAVcSZ/CDu5ZgA6WT
-         0mdg==
-X-Forwarded-Encrypted: i=1; AJvYcCXFuUQ5uUD5UPqpwKfn2rdqwFnOM7CUg0dr9UlSeWm6v1wkwg5dRc2PJDXg2Ru6Rr0W76qGMuU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywqebbu0Q+JdxbBX9joETyh73R8OO4VIAk1o6fySILqO1nGrd7Y
-	d6Bu++bF5aML81BMkiGyB6U1A+PArNDwXTundoRs1HFBfOMDxlKzwPeWgQWvr5s=
-X-Google-Smtp-Source: AGHT+IHw9KJJ4jKUtIw0HbXWpy5zod4qe3AGMUGvrOu/5zZkhX4Sj/h2kA+sotMO5YI0x7xXSCBSOA==
-X-Received: by 2002:a05:6512:10d6:b0:535:6aa9:9868 with SMTP id 2adb3069b0e04-539a06637cdmr1877282e87.19.1727877526868;
-        Wed, 02 Oct 2024 06:58:46 -0700 (PDT)
-Received: from [127.0.0.1] ([176.61.106.227])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c882405b19sm7577346a12.11.2024.10.02.06.58.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 02 Oct 2024 06:58:46 -0700 (PDT)
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Date: Wed, 02 Oct 2024 14:58:43 +0100
-Subject: [PATCH v3 1/4] media: ov08x40: Fix burst write sequence
+	s=arc-20240116; t=1727877574; c=relaxed/simple;
+	bh=IaNMjnZJy0z1wxvhoru6iUhYjySK8Jt/5xB/5jNuul8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=njPD0kohIRuC5zLfXVr0Hj58Xe90UIMFfU9m0h1ILPr+voqdSQeoF0KDzeFjlrqKod44K7yTCpESz/VjMGFAbGw2BitDYwkgNdIkkpJjaeXkGFpr226QS5B4nEHYIGOKNbmH9n6NrIv4/oIIHZgmWJvgxD6NTSQ7CpF8k/ZGvsM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=thorsis.com; spf=pass smtp.mailfrom=thorsis.com; dkim=pass (2048-bit key) header.d=thorsis.com header.i=@thorsis.com header.b=eZp4W4TY; arc=none smtp.client-ip=217.92.40.78
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=thorsis.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=thorsis.com
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 52A321483606;
+	Wed,  2 Oct 2024 15:59:27 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=thorsis.com; s=dkim;
+	t=1727877569; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 in-reply-to:references; bh=+liSgV+9gvc3i9IzqEkP6EiXi0aKY8uKnmPTc1RyS4Q=;
+	b=eZp4W4TYnSJotbI46XjT/VQg8nN0BskkGvTfxbvrOiWJ0fFInp4NqQ/j+rh8PZI1dpg24c
+	PCpHhn8P3JUjh3ZF8vnXrjN0SAv/1GZimEQ9qUT1qhYyjhmPc+pq1iIxKZrjxWFdVu7V/f
+	hz2Xa+YucDCvZ+17nFLbP/22gKtsO237gVtGybSUFCtjTyzp/OwcQa7Ho1iV12DQj9rqSO
+	wllfrj/mWiwtG3Z3Z755DWHWnv1YEuiw8qnB8vE3tQ4ibvdeVI2raFWc/WIEaRib6z2oOj
+	IBic+SHzMUud6IcxEiMIwnn+ivGJZhkjP2Uibo472gZPbNido+aVso/nScO5Dw==
+Date: Wed, 2 Oct 2024 15:59:26 +0200
+From: Alexander Dahl <ada@thorsis.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	Alexander Dahl <ada@thorsis.com>, Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.11 451/695] spi: atmel-quadspi: Avoid overwriting delay
+ register settings
+Message-ID: <20241002-alarm-freedom-16ab0ea3305f@thorsis.com>
+Mail-Followup-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	stable@vger.kernel.org, patches@lists.linux.dev,
+	Mark Brown <broonie@kernel.org>, Sasha Levin <sashal@kernel.org>
+References: <20241002125822.467776898@linuxfoundation.org>
+ <20241002125840.462311087@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20241002-b4-master-24-11-25-ov08x40-v3-1-483bcdcf8886@linaro.org>
-References: <20241002-b4-master-24-11-25-ov08x40-v3-0-483bcdcf8886@linaro.org>
-In-Reply-To: <20241002-b4-master-24-11-25-ov08x40-v3-0-483bcdcf8886@linaro.org>
-To: Sakari Ailus <sakari.ailus@linux.intel.com>, 
- Jason Chen <jason.z.chen@intel.com>, 
- Mauro Carvalho Chehab <mchehab@kernel.org>, 
- Sergey Senozhatsky <senozhatsky@chromium.org>, 
- Hans Verkuil <hverkuil-cisco@xs4all.nl>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>
-Cc: linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
- devicetree@vger.kernel.org, Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.15-dev-dedf8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20241002125840.462311087@linuxfoundation.org>
+User-Agent: Mutt/2.2.12 (2023-09-09)
+X-Last-TLS-Session-Version: TLSv1.3
 
-It is necessary to account for I2C quirks in the burst mode path of this
-driver. Not all I2C controllers can accept arbitrarily long writes and this
-is represented in the quirks field of the adapter structure.
+Hello Greg,
 
-Prior to this patch the following error message is seen on a Qualcomm
-X1E80100 CRD.
+Am Wed, Oct 02, 2024 at 02:57:29PM +0200 schrieb Greg Kroah-Hartman:
+> 6.11-stable review patch.  If anyone has any objections, please let me know.
+> 
+> ------------------
+> 
+> From: Alexander Dahl <ada@thorsis.com>
+> 
+> [ Upstream commit 329ca3eed4a9a161515a8714be6ba182321385c7 ]
+> 
+> Previously the MR and SCR registers were just set with the supposedly
+> required values, from cached register values (cached reg content
+> initialized to zero).
+> 
+> All parts fixed here did not consider the current register (cache)
+> content, which would make future support of cs_setup, cs_hold, and
+> cs_inactive impossible.
+> 
+> Setting SCBR in atmel_qspi_setup() erases a possible DLYBS setting from
+> atmel_qspi_set_cs_timing().  The DLYBS setting is applied by ORing over
+> the current setting, without resetting the bits first.  All writes to MR
+> did not consider possible settings of DLYCS and DLYBCT.
+> 
+> Signed-off-by: Alexander Dahl <ada@thorsis.com>
+> Fixes: f732646d0ccd ("spi: atmel-quadspi: Add support for configuring CS timing")
+> Link: https://patch.msgid.link/20240918082744.379610-2-ada@thorsis.com
+> Signed-off-by: Mark Brown <broonie@kernel.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  drivers/spi/atmel-quadspi.c | 14 ++++++++------
+>  1 file changed, 8 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
+> index 466c01b31123b..b557ce94da209 100644
+> --- a/drivers/spi/atmel-quadspi.c
+> +++ b/drivers/spi/atmel-quadspi.c
+> @@ -375,9 +375,9 @@ static int atmel_qspi_set_cfg(struct atmel_qspi *aq,
+>  	 * If the QSPI controller is set in regular SPI mode, set it in
+>  	 * Serial Memory Mode (SMM).
+>  	 */
+> -	if (aq->mr != QSPI_MR_SMM) {
+> -		atmel_qspi_write(QSPI_MR_SMM, aq, QSPI_MR);
+> -		aq->mr = QSPI_MR_SMM;
+> +	if (!(aq->mr & QSPI_MR_SMM)) {
+> +		aq->mr |= QSPI_MR_SMM;
+> +		atmel_qspi_write(aq->scr, aq, QSPI_MR);
 
-[   38.773524] i2c i2c-2: adapter quirk: msg too long (addr 0x0036, size 290, write)
-[   38.781454] ov08x40 2-0036: Failed regs transferred: -95
-[   38.787076] ov08x40 2-0036: ov08x40_start_streaming failed to set regs
+This is a write to a wrong register, it was already fixed with
+<20240926090356.105789-1-ada@thorsis.com> [1] which was taken by Mark
+into the spi for-next tree.  If you take this patch, please also take
+the fixup!  Sorry for messing this up, that was my fault.
 
-Fix the error by breaking up the write sequence into the advertised maximum
-write size of the quirks field if the quirks field is populated.
+(Note: I'm AFK from tomorrow until October 13th.)
 
-Fixes: 8f667d202384 ("media: ov08x40: Reduce start streaming time")
-Cc: stable@vger.kernel.org # v6.9+
-Tested-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org> # x1e80100-crd
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
----
- drivers/media/i2c/ov08x40.c | 33 ++++++++++++++++++++++++++++-----
- 1 file changed, 28 insertions(+), 5 deletions(-)
+Thanks
+Alex
 
-diff --git a/drivers/media/i2c/ov08x40.c b/drivers/media/i2c/ov08x40.c
-index 48df077522ad0bb2b5f64a6def8844c02af6a193..be25e45175b1322145dca428e845242d8fea2698 100644
---- a/drivers/media/i2c/ov08x40.c
-+++ b/drivers/media/i2c/ov08x40.c
-@@ -1339,15 +1339,13 @@ static int ov08x40_read_reg(struct ov08x40 *ov08x,
- 	return 0;
- }
- 
--static int ov08x40_burst_fill_regs(struct ov08x40 *ov08x, u16 first_reg,
--				   u16 last_reg,  u8 val)
-+static int __ov08x40_burst_fill_regs(struct i2c_client *client, u16 first_reg,
-+				     u16 last_reg, size_t num_regs, u8 val)
- {
--	struct i2c_client *client = v4l2_get_subdevdata(&ov08x->sd);
- 	struct i2c_msg msgs;
--	size_t i, num_regs;
-+	size_t i;
- 	int ret;
- 
--	num_regs = last_reg - first_reg + 1;
- 	msgs.addr = client->addr;
- 	msgs.flags = 0;
- 	msgs.len = 2 + num_regs;
-@@ -1373,6 +1371,31 @@ static int ov08x40_burst_fill_regs(struct ov08x40 *ov08x, u16 first_reg,
- 	return 0;
- }
- 
-+static int ov08x40_burst_fill_regs(struct ov08x40 *ov08x, u16 first_reg,
-+				   u16 last_reg,  u8 val)
-+{
-+	struct i2c_client *client = v4l2_get_subdevdata(&ov08x->sd);
-+	size_t num_regs, num_write_regs;
-+	int ret;
-+
-+	num_regs = last_reg - first_reg + 1;
-+	num_write_regs = num_regs;
-+
-+	if (client->adapter->quirks && client->adapter->quirks->max_write_len)
-+		num_write_regs = client->adapter->quirks->max_write_len - 2;
-+
-+	while (first_reg < last_reg) {
-+		ret = __ov08x40_burst_fill_regs(client, first_reg, last_reg,
-+						num_write_regs, val);
-+		if (ret)
-+			return ret;
-+
-+		first_reg += num_write_regs;
-+	}
-+
-+	return 0;
-+}
-+
- /* Write registers up to 4 at a time */
- static int ov08x40_write_reg(struct ov08x40 *ov08x,
- 			     u16 reg, u32 len, u32 __val)
+[1] https://lore.kernel.org/linux-spi/20240926090356.105789-1-ada@thorsis.com/T/#u
 
--- 
-2.46.2
-
+>  	}
+>  
+>  	/* Clear pending interrupts */
+> @@ -501,7 +501,8 @@ static int atmel_qspi_setup(struct spi_device *spi)
+>  	if (ret < 0)
+>  		return ret;
+>  
+> -	aq->scr = QSPI_SCR_SCBR(scbr);
+> +	aq->scr &= ~QSPI_SCR_SCBR_MASK;
+> +	aq->scr |= QSPI_SCR_SCBR(scbr);
+>  	atmel_qspi_write(aq->scr, aq, QSPI_SCR);
+>  
+>  	pm_runtime_mark_last_busy(ctrl->dev.parent);
+> @@ -534,6 +535,7 @@ static int atmel_qspi_set_cs_timing(struct spi_device *spi)
+>  	if (ret < 0)
+>  		return ret;
+>  
+> +	aq->scr &= ~QSPI_SCR_DLYBS_MASK;
+>  	aq->scr |= QSPI_SCR_DLYBS(cs_setup);
+>  	atmel_qspi_write(aq->scr, aq, QSPI_SCR);
+>  
+> @@ -549,8 +551,8 @@ static void atmel_qspi_init(struct atmel_qspi *aq)
+>  	atmel_qspi_write(QSPI_CR_SWRST, aq, QSPI_CR);
+>  
+>  	/* Set the QSPI controller by default in Serial Memory Mode */
+> -	atmel_qspi_write(QSPI_MR_SMM, aq, QSPI_MR);
+> -	aq->mr = QSPI_MR_SMM;
+> +	aq->mr |= QSPI_MR_SMM;
+> +	atmel_qspi_write(aq->mr, aq, QSPI_MR);
+>  
+>  	/* Enable the QSPI controller */
+>  	atmel_qspi_write(QSPI_CR_QSPIEN, aq, QSPI_CR);
+> -- 
+> 2.43.0
+> 
+> 
+> 
+> 
 
