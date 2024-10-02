@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-79383-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7DB2B98D7F5
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:54:48 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 288A998D4CB
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:24:25 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 114E31F21136
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:54:48 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 5A2D11C20FBA
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:24:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 793081D04AD;
-	Wed,  2 Oct 2024 13:54:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CDD61D0433;
+	Wed,  2 Oct 2024 13:24:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NbQqGTmm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X1GkACcK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3814C1D0493;
-	Wed,  2 Oct 2024 13:54:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFF801D040E;
+	Wed,  2 Oct 2024 13:24:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877283; cv=none; b=HMDvybdEh1CyVGt3tK22HkfwUdyjtFyKJy1M+295KLcn3mArIOubWl1V29Ix8cQE5pYeRR9oqHOPtcRQvJ/ivuzRTpVG24ByCiLW16c1fGijZKFpbzVrWtiulH+F8b35tKRW2Jp5bk8C2oCCv5KcPo1JSCgnvN7tyOJXU3DwXBM=
+	t=1727875452; cv=none; b=rcsf3Aw5dYeGJwJ53Fo930D8ySnZJU3Y762p2/SE80cictt2kWzD1WNtII5pu5aSX2w8rm+Y7n9IDmQZBDRjlQgA9qxZ+lfIJC5IkP5o1cqGoXwhZDQZJ4gQ/nDbfz32nuR5/dhH6gNxZ/2/clKWCDJ6jeDkMV8cLCcKHob2oFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877283; c=relaxed/simple;
-	bh=HKFlpBqNFDfDPWL7XKOYDmKA1kOiAuRhjdhAUtUrgNw=;
+	s=arc-20240116; t=1727875452; c=relaxed/simple;
+	bh=sYCDW8lAUPJMLA8UM+JJArlq8YtkaRw2t4Y6ftJmNmA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HpPjoOwUsUpciIs30VPtUmPYlHjmsIVZWh6DXSY+8kVpwXzgy+a0wSqFny08vNQr6FV7u52h7JvnJmpo02QyUAxpzXk/AN0AAGN24xcENnpVq9wq3LJWowhseEaOUyNrbjiRs6/WDo4lZLB4zAwZoxi65a4/qRYN243W9Cm7vM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NbQqGTmm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7DC3C4AF14;
-	Wed,  2 Oct 2024 13:54:42 +0000 (UTC)
+	 MIME-Version; b=rD8Gh2BQmfsC2N5uFlG7zJmNc+y2PiBuemI2oEicLwnNPRrp3OiJjkqcrkRBY/oDlyK7dw8bYplzNdbgKEWxglIC2XNU3XC3YLeFmlTwhTF93QtWm+pZFUursBvDd9pz8DG7T1AMtOPGg1SG2XH7GfCCEJz44V6GaGGXGjto3Wc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X1GkACcK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56E56C4CEC5;
+	Wed,  2 Oct 2024 13:24:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877283;
-	bh=HKFlpBqNFDfDPWL7XKOYDmKA1kOiAuRhjdhAUtUrgNw=;
+	s=korg; t=1727875452;
+	bh=sYCDW8lAUPJMLA8UM+JJArlq8YtkaRw2t4Y6ftJmNmA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NbQqGTmm7/fyJRso3SQErlpLGtEwT3dZDoRXec1hqocGN2xxKUYzDve2e8KaVMZms
-	 a8ohNle3M77rKoEy2O5DuLpXlMjngS4rRanLZ3maIuyqNGsg89Gi8ZxPhS8km5OBRr
-	 ShsZEkvYh9er1++GbGwgI8IJuSshuOhKYKRrKWZI=
+	b=X1GkACcK9nlV46l9eU/DpQyntC1BJZiwE+BLs8Z/5hcCW26ZEKzOTIcGlqFUvUXRL
+	 DdFuQ4KpZt6KURB1RaQIKIpZgtQzUtq4C2X1SL4W4xplFSEwbRuzCxjmnXoNlbawBL
+	 al69yo9+k2OdBW59TvASkJqux8ubsxg4+MXkXrok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>,
-	John David Anglin <dave.anglin@bell.net>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Kiran K <kiran.k@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 004/634] crypto: xor - fix template benchmarking
+Subject: [PATCH 6.11 106/695] Bluetooth: btusb: Fix not handling ZPL/short-transfer
 Date: Wed,  2 Oct 2024 14:51:44 +0200
-Message-ID: <20241002125811.256482739@linuxfoundation.org>
+Message-ID: <20241002125826.705268482@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,107 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@kernel.org>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit ab9a244c396aae4aaa34b2399b82fc15ec2df8c1 ]
+[ Upstream commit 7b05933340f4490ef5b09e84d644d12484b05fdf ]
 
-Commit c055e3eae0f1 ("crypto: xor - use ktime for template benchmarking")
-switched from using jiffies to ktime-based performance benchmarking.
+Requesting transfers of the exact same size of wMaxPacketSize may result
+in ZPL/short-transfer since the USB stack cannot handle it as we are
+limiting the buffer size to be the same as wMaxPacketSize.
 
-This works nicely on machines which have a fine-grained ktime()
-clocksource as e.g. x86 machines with TSC.
-But other machines, e.g. my 4-way HP PARISC server, don't have such
-fine-grained clocksources, which is why it seems that 800 xor loops
-take zero seconds, which then shows up in the logs as:
+Also, in terms of throughput this change has the same effect to
+interrupt endpoint as 290ba200815f "Bluetooth: Improve USB driver throughput
+by increasing the frame size" had for the bulk endpoint, so users of the
+advertisement bearer (e.g. BT Mesh) may benefit from this change.
 
- xor: measuring software checksum speed
-    8regs           : -1018167296 MB/sec
-    8regs_prefetch  : -1018167296 MB/sec
-    32regs          : -1018167296 MB/sec
-    32regs_prefetch : -1018167296 MB/sec
-
-Fix this with some small modifications to the existing code to improve
-the algorithm to always produce correct results without introducing
-major delays for architectures with a fine-grained ktime()
-clocksource:
-a) Delay start of the timing until ktime() just advanced. On machines
-with a fast ktime() this should be just one additional ktime() call.
-b) Count the number of loops. Run at minimum 800 loops and finish
-earliest when the ktime() counter has progressed.
-
-With that the throughput can now be calculated more accurately under all
-conditions.
-
-Fixes: c055e3eae0f1 ("crypto: xor - use ktime for template benchmarking")
-Signed-off-by: Helge Deller <deller@gmx.de>
-Tested-by: John David Anglin <dave.anglin@bell.net>
-
-v2:
-- clean up coding style (noticed & suggested by Herbert Xu)
-- rephrased & fixed typo in commit message
-
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 5e23b923da03 ("[Bluetooth] Add generic driver for Bluetooth USB devices")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Tested-by: Kiran K <kiran.k@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/xor.c | 31 ++++++++++++++-----------------
- 1 file changed, 14 insertions(+), 17 deletions(-)
+ drivers/bluetooth/btusb.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/crypto/xor.c b/crypto/xor.c
-index 8e72e5d5db0de..56aa3169e8717 100644
---- a/crypto/xor.c
-+++ b/crypto/xor.c
-@@ -83,33 +83,30 @@ static void __init
- do_xor_speed(struct xor_block_template *tmpl, void *b1, void *b2)
- {
- 	int speed;
--	int i, j;
--	ktime_t min, start, diff;
-+	unsigned long reps;
-+	ktime_t min, start, t0;
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index 51d9d4532dda4..1ec71a2fb63ea 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -1397,7 +1397,10 @@ static int btusb_submit_intr_urb(struct hci_dev *hdev, gfp_t mem_flags)
+ 	if (!urb)
+ 		return -ENOMEM;
  
- 	tmpl->next = template_list;
- 	template_list = tmpl;
+-	size = le16_to_cpu(data->intr_ep->wMaxPacketSize);
++	/* Use maximum HCI Event size so the USB stack handles
++	 * ZPL/short-transfer automatically.
++	 */
++	size = HCI_MAX_EVENT_SIZE;
  
- 	preempt_disable();
- 
--	min = (ktime_t)S64_MAX;
--	for (i = 0; i < 3; i++) {
--		start = ktime_get();
--		for (j = 0; j < REPS; j++) {
--			mb(); /* prevent loop optimization */
--			tmpl->do_2(BENCH_SIZE, b1, b2);
--			mb();
--		}
--		diff = ktime_sub(ktime_get(), start);
--		if (diff < min)
--			min = diff;
--	}
-+	reps = 0;
-+	t0 = ktime_get();
-+	/* delay start until time has advanced */
-+	while ((start = ktime_get()) == t0)
-+		cpu_relax();
-+	do {
-+		mb(); /* prevent loop optimization */
-+		tmpl->do_2(BENCH_SIZE, b1, b2);
-+		mb();
-+	} while (reps++ < REPS || (t0 = ktime_get()) == start);
-+	min = ktime_sub(t0, start);
- 
- 	preempt_enable();
- 
- 	// bytes/ns == GB/s, multiply by 1000 to get MB/s [not MiB/s]
--	if (!min)
--		min = 1;
--	speed = (1000 * REPS * BENCH_SIZE) / (unsigned int)ktime_to_ns(min);
-+	speed = (1000 * reps * BENCH_SIZE) / (unsigned int)ktime_to_ns(min);
- 	tmpl->speed = speed;
- 
- 	pr_info("   %-16s: %5d MB/sec\n", tmpl->name, speed);
+ 	buf = kmalloc(size, mem_flags);
+ 	if (!buf) {
 -- 
 2.43.0
 
