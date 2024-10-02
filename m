@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-79876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80384-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CF0B98DAB8
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:24:59 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC64F98DD54
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:48:26 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 81EA5B24A37
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:24:56 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 85B56B22BE8
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:47:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 374F81CCEDA;
-	Wed,  2 Oct 2024 14:18:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F67A1D0BA5;
+	Wed,  2 Oct 2024 14:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A79q5u22"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B+C0SW+K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3C4F1D0E0D;
-	Wed,  2 Oct 2024 14:18:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C1B71EA80;
+	Wed,  2 Oct 2024 14:43:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878726; cv=none; b=X6SDee8FpOqT1Kp5rFlypfCPE32Ta43e1PuyolOV/AZsKbb7sjaJ4Htkjq+wuRMxRGbYKwfl/n7HvuhFtbuNYo4oMGfesz/F9rrt6c0kYS5SNV8U4jDKurSBsoe8HC2tQRg2+VulPINzlshEeBcuDcCsgHLT3Vc3g4Rbc4NTwiY=
+	t=1727880217; cv=none; b=B7MfpAj7rBxOxYFXgvX6H0oMmye6imekmLM+cJJdt1uekHz13hK+huoGwAG7VL25E9c+XW15qEtqLzTT0PpDYClRV9FzAhA2jkI8eUDjR/A0HknVg8i7grU+q1JCAyDEnnHMJCkAK1IkS7An03xbD/umlOMz9xRxnyFSxvgKia0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878726; c=relaxed/simple;
-	bh=IxtVWT0K+2fcjPpdZyWqadhNEnfyBCTprQPEpQBPArI=;
+	s=arc-20240116; t=1727880217; c=relaxed/simple;
+	bh=+SUV2XJTd8mOc7AgHswa3p9/8JrsT2UWVfEhMextCFk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UK+JrHqKHencaAgNSNzibXqEESCj9+uv6ajb0qxBFxtbk5KVTW/zwfiZ4g/X8Q1uJHqVlTwuEoJ4o/TU2T4ZyDtGuyObT1KFGFyrsO9joSbkweJ+1fIoaNf7Wmvu2gPtoL8KorUmC7+oet/J7OeGHsE2wDObxjFo7p49ySQbaD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A79q5u22; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2358BC4CEC2;
-	Wed,  2 Oct 2024 14:18:44 +0000 (UTC)
+	 MIME-Version; b=nQLvDjalQRxamxTODIXq8DWZHAhTv1OnMJZWZ8JrqXZLm8mc/xadvqndtFCkXZD1HTSaODfoRVcDX0e5P/rdUEdl7gEqxHSaOY7ikRupaXME88kz9hDEGkTWWOJDOplzx/uMAAk9V3rOz/hku3nXlMKKgULw4pUjK4uCCRP6lcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B+C0SW+K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 673D9C4CEC2;
+	Wed,  2 Oct 2024 14:43:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878725;
-	bh=IxtVWT0K+2fcjPpdZyWqadhNEnfyBCTprQPEpQBPArI=;
+	s=korg; t=1727880216;
+	bh=+SUV2XJTd8mOc7AgHswa3p9/8JrsT2UWVfEhMextCFk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A79q5u22yXa6iun5D/emb2j5jTyGiLLRCInuteVUkzAq+Q1+rXcVhCcg4WDj5+pTw
-	 WnrovHNe7A48Yf1eandyBkl0KFelZyqgFqSvfu5636PyvkvWQSazrD3GuW6Iq2QRQj
-	 1yzda7mRKTOx8kFJR9JmQr9S/w77FS09kdY1DU8w=
+	b=B+C0SW+KK3nBKVyt0M6xUmioXmI6rA1F8adLDDJ30kwzMQnbr6AYWawALLr27SiBh
+	 P4v7ZzrlFiePxbq6K/EmJgHqMZrMaF/NnHMIvVtVjN6M/Di0tdm54NITeLIc/GCHhb
+	 aYdvVSZR3/0O171ka9NXHhpVehU8UyCqGvQeaeeE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hobin Woo <hobin.woo@samsung.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.10 504/634] ksmbd: make __dir_empty() compatible with POSIX
-Date: Wed,  2 Oct 2024 15:00:04 +0200
-Message-ID: <20241002125830.995271785@linuxfoundation.org>
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Jason Wang <jasowang@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 366/538] vhost_vdpa: assign irq bypass producer token correctly
+Date: Wed,  2 Oct 2024 15:00:05 +0200
+Message-ID: <20241002125806.874568612@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +63,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hobin Woo <hobin.woo@samsung.com>
+From: Jason Wang <jasowang@redhat.com>
 
-commit ca4974ca954561e79f8871d220bb08f14f64f57c upstream.
+[ Upstream commit 02e9e9366fefe461719da5d173385b6685f70319 ]
 
-Some file systems may not provide dot (.) and dot-dot (..) as they are
-optional in POSIX. ksmbd can misjudge emptiness of a directory in those
-file systems, since it assumes there are always at least two entries:
-dot and dot-dot.
-Just don't count dot and dot-dot.
+We used to call irq_bypass_unregister_producer() in
+vhost_vdpa_setup_vq_irq() which is problematic as we don't know if the
+token pointer is still valid or not.
 
-Cc: stable@vger.kernel.org # v6.1+
-Signed-off-by: Hobin Woo <hobin.woo@samsung.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Actually, we use the eventfd_ctx as the token so the life cycle of the
+token should be bound to the VHOST_SET_VRING_CALL instead of
+vhost_vdpa_setup_vq_irq() which could be called by set_status().
+
+Fixing this by setting up irq bypass producer's token when handling
+VHOST_SET_VRING_CALL and un-registering the producer before calling
+vhost_vring_ioctl() to prevent a possible use after free as eventfd
+could have been released in vhost_vring_ioctl(). And such registering
+and unregistering will only be done if DRIVER_OK is set.
+
+Reported-by: Dragos Tatulea <dtatulea@nvidia.com>
+Tested-by: Dragos Tatulea <dtatulea@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Fixes: 2cf1ba9a4d15 ("vhost_vdpa: implement IRQ offloading in vhost_vdpa")
+Signed-off-by: Jason Wang <jasowang@redhat.com>
+Message-Id: <20240816031900.18013-1-jasowang@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/vfs.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/vhost/vdpa.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
---- a/fs/smb/server/vfs.c
-+++ b/fs/smb/server/vfs.c
-@@ -1115,9 +1115,10 @@ static bool __dir_empty(struct dir_conte
- 	struct ksmbd_readdir_data *buf;
+diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
+index da2c31ccc1380..c29a195a0175c 100644
+--- a/drivers/vhost/vdpa.c
++++ b/drivers/vhost/vdpa.c
+@@ -191,11 +191,9 @@ static void vhost_vdpa_setup_vq_irq(struct vhost_vdpa *v, u16 qid)
+ 	if (irq < 0)
+ 		return;
  
- 	buf = container_of(ctx, struct ksmbd_readdir_data, ctx);
--	buf->dirent_count++;
-+	if (!is_dot_dotdot(name, namlen))
-+		buf->dirent_count++;
+-	irq_bypass_unregister_producer(&vq->call_ctx.producer);
+ 	if (!vq->call_ctx.ctx)
+ 		return;
  
--	return buf->dirent_count <= 2;
-+	return !buf->dirent_count;
- }
+-	vq->call_ctx.producer.token = vq->call_ctx.ctx;
+ 	vq->call_ctx.producer.irq = irq;
+ 	ret = irq_bypass_register_producer(&vq->call_ctx.producer);
+ 	if (unlikely(ret))
+@@ -627,6 +625,14 @@ static long vhost_vdpa_vring_ioctl(struct vhost_vdpa *v, unsigned int cmd,
+ 			vq->last_avail_idx = vq_state.split.avail_index;
+ 		}
+ 		break;
++	case VHOST_SET_VRING_CALL:
++		if (vq->call_ctx.ctx) {
++			if (ops->get_status(vdpa) &
++			    VIRTIO_CONFIG_S_DRIVER_OK)
++				vhost_vdpa_unsetup_vq_irq(v, idx);
++			vq->call_ctx.producer.token = NULL;
++		}
++		break;
+ 	}
  
- /**
-@@ -1137,7 +1138,7 @@ int ksmbd_vfs_empty_dir(struct ksmbd_fil
- 	readdir_data.dirent_count = 0;
+ 	r = vhost_vring_ioctl(&v->vdev, cmd, argp);
+@@ -659,13 +665,16 @@ static long vhost_vdpa_vring_ioctl(struct vhost_vdpa *v, unsigned int cmd,
+ 			cb.callback = vhost_vdpa_virtqueue_cb;
+ 			cb.private = vq;
+ 			cb.trigger = vq->call_ctx.ctx;
++			vq->call_ctx.producer.token = vq->call_ctx.ctx;
++			if (ops->get_status(vdpa) &
++			    VIRTIO_CONFIG_S_DRIVER_OK)
++				vhost_vdpa_setup_vq_irq(v, idx);
+ 		} else {
+ 			cb.callback = NULL;
+ 			cb.private = NULL;
+ 			cb.trigger = NULL;
+ 		}
+ 		ops->set_vq_cb(vdpa, idx, &cb);
+-		vhost_vdpa_setup_vq_irq(v, idx);
+ 		break;
  
- 	err = iterate_dir(fp->filp, &readdir_data.ctx);
--	if (readdir_data.dirent_count > 2)
-+	if (readdir_data.dirent_count)
- 		err = -ENOTEMPTY;
- 	else
- 		err = 0;
+ 	case VHOST_SET_VRING_NUM:
+@@ -1316,6 +1325,7 @@ static int vhost_vdpa_open(struct inode *inode, struct file *filep)
+ 	for (i = 0; i < nvqs; i++) {
+ 		vqs[i] = &v->vqs[i];
+ 		vqs[i]->handle_kick = handle_vq_kick;
++		vqs[i]->call_ctx.ctx = NULL;
+ 	}
+ 	vhost_dev_init(dev, vqs, nvqs, 0, 0, 0, false,
+ 		       vhost_vdpa_process_iotlb_msg);
+-- 
+2.43.0
+
 
 
 
