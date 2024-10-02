@@ -1,58 +1,64 @@
-Return-Path: <stable+bounces-79755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80253-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 09FD498DA0A
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:16:53 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 068FB98DCA6
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:43:36 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 8DF8FB2338E
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:16:50 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id ADA6B281BAE
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:43:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB2321D0975;
-	Wed,  2 Oct 2024 14:12:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15DBF1D223B;
+	Wed,  2 Oct 2024 14:37:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HFofSMMc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x1TqqB3z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7987C1CF5FB;
-	Wed,  2 Oct 2024 14:12:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C87EA1D1E9A;
+	Wed,  2 Oct 2024 14:37:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878373; cv=none; b=tAe2jOFYY37hYixIu3x7vdL62LpSRKtCRd1ZfHGv556BurmLrpC7q67ueZsJh3lwRr9BPaiCgQT+/DNaEP23bH9usXPbTOczXAkJWCQPKt5ZjfQisUXeFdvUBmQRxueDhvaUkDZjZHIhwv7a/geaeHGl8rJSrkALGzbYKcfYdF4=
+	t=1727879828; cv=none; b=mnAwtpWL0yxiuMXPE0wZ1lHMvPND6WdsFW5Gzya7V1Bh2VdO/qydUsXHP2FCCxlIJIqgLbnRN7oPbKqNbVDaCek8/5cGQafpPDF6fDXI7zpKEDV+I3b4pVL4XjyXJa+Jiiip8cDlAdHcM4qbj4LLpmqJp9i2RQz9EtfAGmHraHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878373; c=relaxed/simple;
-	bh=XPUI30QGk9VwBW09OOvoZ+A3tVn0F69GtrcZDqMRe3M=;
+	s=arc-20240116; t=1727879828; c=relaxed/simple;
+	bh=Fmc5EazjXyPnT0Sm87SCiI13nA0gCxqiQp7pB5CYoWU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s27rI2aFRgXxkligFVIIgmm1uoUVY4MYYgWMtjpkmVRduZN5K+tgNAvgfav5QZXzvpwjuxcSy1Ku9I2Q4ojOMGGaB/QS1WAt7HAiIOUwo1uhwG9o4YOnbP3Oqbv81RwlMBrlvswKR3LQ3paqwjq6i6s+mJlTAO8eQtjHxSlAiWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HFofSMMc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA25DC4CEC2;
-	Wed,  2 Oct 2024 14:12:52 +0000 (UTC)
+	 MIME-Version; b=igDrv904gGRQC+tVSvo9jC9toc8mphbXZ481rXw5Fldz9yfQE78uleVtkB2p+oRPyaPl9t7XNWlgWch75gwiYTDIDFZJq4Kr65amJsbQEhi7ab3HvPsIHduGQcLvOU5vpZRh3W7yNclGuFVKmLrZaAAPwSuk525UpneFSTh85l4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x1TqqB3z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 243D4C4CEC5;
+	Wed,  2 Oct 2024 14:37:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878373;
-	bh=XPUI30QGk9VwBW09OOvoZ+A3tVn0F69GtrcZDqMRe3M=;
+	s=korg; t=1727879828;
+	bh=Fmc5EazjXyPnT0Sm87SCiI13nA0gCxqiQp7pB5CYoWU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HFofSMMcULD4CT2qggp0REk0ztzo8q+Thq5cx1wmJhONuVy261pjfAK7fKmycHwq7
-	 wtfJbk+61Z+2mKJjZLztt+3OzYjYSN/vMCBDzk0M9n6Azlk83u1XeEFwnDOgqDPjE7
-	 5xL2rPCg0cklXAbyj5sF94IjEVFnk26Iq9IHHBgE=
+	b=x1TqqB3zTg8zVu0rYQRasS5C3Vru8ftNTFq0tWPHMO6KYqpLQ1gRkZRpI/DMm4HVt
+	 Cp4WvP9BRCuMj/a49ztTg5gPLHGqwLr5i9x13FtSs8GHUazY0CBmPnlxA6H78UsMrd
+	 rlgdWUhHFkyF/2uTlfvKVrzq1WsZ5pD7mCcz4f90=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Lingfeng <lilingfeng3@huawei.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Scott Mayhew <smayhew@redhat.com>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Andi Kleen <ak@linux.intel.com>,
+	Kan Liang <kan.liang@linux.intel.com>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ian Rogers <irogers@google.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Jin Yao <yao.jin@linux.intel.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Stephane Eranian <eranian@google.com>,
+	Arnaldo Carvalho de Melo <acme@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 391/634] nfsd: return -EINVAL when namelen is 0
+Subject: [PATCH 6.6 252/538] perf report: Fix --total-cycles --stdio output error
 Date: Wed,  2 Oct 2024 14:58:11 +0200
-Message-ID: <20241002125826.537428773@linuxfoundation.org>
+Message-ID: <20241002125802.205212056@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,97 +70,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Lingfeng <lilingfeng3@huawei.com>
+From: Kan Liang <kan.liang@linux.intel.com>
 
-[ Upstream commit 22451a16b7ab7debefce660672566be887db1637 ]
+[ Upstream commit 3ef44458071a19e5b5832cdfe6f75273aa521b6e ]
 
-When we have a corrupted main.sqlite in /var/lib/nfs/nfsdcld/, it may
-result in namelen being 0, which will cause memdup_user() to return
-ZERO_SIZE_PTR.
-When we access the name.data that has been assigned the value of
-ZERO_SIZE_PTR in nfs4_client_to_reclaim(), null pointer dereference is
-triggered.
+The --total-cycles may output wrong information with the --stdio.
 
-[ T1205] ==================================================================
-[ T1205] BUG: KASAN: null-ptr-deref in nfs4_client_to_reclaim+0xe9/0x260
-[ T1205] Read of size 1 at addr 0000000000000010 by task nfsdcld/1205
-[ T1205]
-[ T1205] CPU: 11 PID: 1205 Comm: nfsdcld Not tainted 5.10.0-00003-g2c1423731b8d #406
-[ T1205] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS ?-20190727_073836-buildvm-ppc64le-16.ppc.fedoraproject.org-3.fc31 04/01/2014
-[ T1205] Call Trace:
-[ T1205]  dump_stack+0x9a/0xd0
-[ T1205]  ? nfs4_client_to_reclaim+0xe9/0x260
-[ T1205]  __kasan_report.cold+0x34/0x84
-[ T1205]  ? nfs4_client_to_reclaim+0xe9/0x260
-[ T1205]  kasan_report+0x3a/0x50
-[ T1205]  nfs4_client_to_reclaim+0xe9/0x260
-[ T1205]  ? nfsd4_release_lockowner+0x410/0x410
-[ T1205]  cld_pipe_downcall+0x5ca/0x760
-[ T1205]  ? nfsd4_cld_tracking_exit+0x1d0/0x1d0
-[ T1205]  ? down_write_killable_nested+0x170/0x170
-[ T1205]  ? avc_policy_seqno+0x28/0x40
-[ T1205]  ? selinux_file_permission+0x1b4/0x1e0
-[ T1205]  rpc_pipe_write+0x84/0xb0
-[ T1205]  vfs_write+0x143/0x520
-[ T1205]  ksys_write+0xc9/0x170
-[ T1205]  ? __ia32_sys_read+0x50/0x50
-[ T1205]  ? ktime_get_coarse_real_ts64+0xfe/0x110
-[ T1205]  ? ktime_get_coarse_real_ts64+0xa2/0x110
-[ T1205]  do_syscall_64+0x33/0x40
-[ T1205]  entry_SYSCALL_64_after_hwframe+0x67/0xd1
-[ T1205] RIP: 0033:0x7fdbdb761bc7
-[ T1205] Code: 0f 00 f7 d8 64 89 02 48 c7 c0 ff ff ff ff eb b7 0f 1f 00 f3 0f 1e fa 64 8b 04 25 18 00 00 00 85 c0 75 10 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 514
-[ T1205] RSP: 002b:00007fff8c4b7248 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-[ T1205] RAX: ffffffffffffffda RBX: 000000000000042b RCX: 00007fdbdb761bc7
-[ T1205] RDX: 000000000000042b RSI: 00007fff8c4b75f0 RDI: 0000000000000008
-[ T1205] RBP: 00007fdbdb761bb0 R08: 0000000000000000 R09: 0000000000000001
-[ T1205] R10: 0000000000000000 R11: 0000000000000246 R12: 000000000000042b
-[ T1205] R13: 0000000000000008 R14: 00007fff8c4b75f0 R15: 0000000000000000
-[ T1205] ==================================================================
+For example:
 
-Fix it by checking namelen.
+  # perf record -e "{cycles,instructions}",cache-misses -b sleep 1
+  # perf report --total-cycles --stdio
 
-Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
-Fixes: 74725959c33c ("nfsd: un-deprecate nfsdcld")
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: Scott Mayhew <smayhew@redhat.com>
-Tested-by: Scott Mayhew <smayhew@redhat.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+The total cycles output of {cycles,instructions} and cache-misses are
+almost the same.
+
+  # Samples: 938  of events 'anon group { cycles, instructions }'
+  # Event count (approx.): 938
+  #
+  # Sampled Cycles%  Sampled Cycles  Avg Cycles%  Avg Cycles  [Program Block Range]
+  # ...............  ..............  ...........  ..........  ..................................................>
+  #
+            11.19%            2.6K        0.10%           21  [perf_iterate_ctx+48 -> >
+             5.79%            1.4K        0.45%           97  [__intel_pmu_enable_all.constprop.0+80 -> __intel_>
+             5.11%            1.2K        0.33%           71  [native_write_msr+0 ->>
+
+  # Samples: 293  of event 'cache-misses'
+  # Event count (approx.): 293
+  #
+  # Sampled Cycles%  Sampled Cycles  Avg Cycles%  Avg Cycles  [Program Block Range]
+  # ...............  ..............  ...........  ..........  ..................................................>
+  #
+            11.19%            2.6K        0.13%           21  [perf_iterate_ctx+48 -> >
+             5.79%            1.4K        0.59%           97  [__intel_pmu_enable_all.constprop.0+80 -> __intel_>
+             5.11%            1.2K        0.43%           71  [native_write_msr+0 ->>
+
+With the symbol_conf.event_group, the 'perf report' should only report the
+block information of the leader event in a group.
+
+However, the current implementation retrieves the next event's block
+information, rather than the next group leader's block information.
+
+Make sure the index is updated even if the event is skipped.
+
+With the patch,
+
+  # Samples: 293  of event 'cache-misses'
+  # Event count (approx.): 293
+  #
+  # Sampled Cycles%  Sampled Cycles  Avg Cycles%  Avg Cycles  [Program Block Range]
+  # ...............  ..............  ...........  ..........  ..................................................>
+  #
+           37.98%            9.0K        4.05%           299  [perf_event_addr_filters_exec+0 -> perf_event_a>
+           11.19%            2.6K        0.28%            21  [perf_iterate_ctx+48 -> >
+            5.79%            1.4K        1.32%            97  [__intel_pmu_enable_all.constprop.0+80 -> __intel_>
+
+Fixes: 6f7164fa231a5f36 ("perf report: Sort by sampled cycles percent per block for stdio")
+Reviewed-by: Andi Kleen <ak@linux.intel.com>
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Acked-by: Namhyung Kim <namhyung@kernel.org>
+Cc: Adrian Hunter <adrian.hunter@intel.com>
+Cc: Ian Rogers <irogers@google.com>
+Cc: Ingo Molnar <mingo@kernel.org>
+Cc: Jin Yao <yao.jin@linux.intel.com>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Stephane Eranian <eranian@google.com>
+Link: https://lore.kernel.org/r/20240813160208.2493643-2-kan.liang@linux.intel.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4recover.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ tools/perf/builtin-report.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfsd/nfs4recover.c b/fs/nfsd/nfs4recover.c
-index 67d8673a9391c..69a3a84e159e6 100644
---- a/fs/nfsd/nfs4recover.c
-+++ b/fs/nfsd/nfs4recover.c
-@@ -809,6 +809,10 @@ __cld_pipe_inprogress_downcall(const struct cld_msg_v2 __user *cmsg,
- 			ci = &cmsg->cm_u.cm_clntinfo;
- 			if (get_user(namelen, &ci->cc_name.cn_len))
- 				return -EFAULT;
-+			if (!namelen) {
-+				dprintk("%s: namelen should not be zero", __func__);
-+				return -EINVAL;
-+			}
- 			name.data = memdup_user(&ci->cc_name.cn_id, namelen);
- 			if (IS_ERR(name.data))
- 				return PTR_ERR(name.data);
-@@ -831,6 +835,10 @@ __cld_pipe_inprogress_downcall(const struct cld_msg_v2 __user *cmsg,
- 			cnm = &cmsg->cm_u.cm_name;
- 			if (get_user(namelen, &cnm->cn_len))
- 				return -EFAULT;
-+			if (!namelen) {
-+				dprintk("%s: namelen should not be zero", __func__);
-+				return -EINVAL;
-+			}
- 			name.data = memdup_user(&cnm->cn_id, namelen);
- 			if (IS_ERR(name.data))
- 				return PTR_ERR(name.data);
+diff --git a/tools/perf/builtin-report.c b/tools/perf/builtin-report.c
+index 212760e4dd166..cd2f3f1a75633 100644
+--- a/tools/perf/builtin-report.c
++++ b/tools/perf/builtin-report.c
+@@ -562,6 +562,7 @@ static int evlist__tty_browse_hists(struct evlist *evlist, struct report *rep, c
+ 		struct hists *hists = evsel__hists(pos);
+ 		const char *evname = evsel__name(pos);
+ 
++		i++;
+ 		if (symbol_conf.event_group && !evsel__is_group_leader(pos))
+ 			continue;
+ 
+@@ -571,7 +572,7 @@ static int evlist__tty_browse_hists(struct evlist *evlist, struct report *rep, c
+ 		hists__fprintf_nr_sample_events(hists, rep, evname, stdout);
+ 
+ 		if (rep->total_cycles_mode) {
+-			report__browse_block_hists(&rep->block_reports[i++].hist,
++			report__browse_block_hists(&rep->block_reports[i - 1].hist,
+ 						   rep->min_percent, pos, NULL);
+ 			continue;
+ 		}
 -- 
 2.43.0
 
