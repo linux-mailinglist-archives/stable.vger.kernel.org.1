@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-79807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2022298DA5C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:21:06 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0489C98DCBC
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:44:19 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 9B8CBB22338
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:21:03 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id B9471282567
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:44:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 625E81D1F5C;
-	Wed,  2 Oct 2024 14:15:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04D051D2B1E;
+	Wed,  2 Oct 2024 14:38:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Smp8LZUM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mjiZMgHy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17AA51CFED1;
-	Wed,  2 Oct 2024 14:15:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7F8419752C;
+	Wed,  2 Oct 2024 14:38:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878523; cv=none; b=OEEdtBxfLoErC7L/5fp/c5hGTU+rxo+kak6jq+5gMT9CZAUnS3BcdfdvQ7ukIyOhBSmfLanwIYss6sRsePIyykqlZ4O5bTP6Bg9Q+fUeZueLTChtPBLGQK2ECTGOHdBzgh+nAb7w8l07UCZZ8NqRn453T+syW4V/AGvCmXQ9GkY=
+	t=1727879888; cv=none; b=N3v14TiMi/WyZqhyAFHxEDXscTvoD1lwpqNaUqfqvd+WeaMyMQgB/IXpNHJ6xOSb24YJe9+9zxqKc2+VVL3s6VWizuzYcUNOO7XeLU2q/aBfbMdzbwydJrAkN/dtVLcEWZsfUeaQTWSnQjoMX8ObLRfeA5sEw+NRGtIbXzFPwF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878523; c=relaxed/simple;
-	bh=YOaZX12Fz4+/eWIPQXGcZln4zR1gpZ52esVU3fHmKzs=;
+	s=arc-20240116; t=1727879888; c=relaxed/simple;
+	bh=ZMZc+7+lErbOM7ZLzTJPmc6baGPtE6vw7Ve6CFEuydg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J55vpPm7AWSRWuivYVJgaJ53bgSTJpaA4wCVe1kEywyZkChkIUbULPdAUmtsdmn1sPMGmr98zKihvA6vF9SU3NWrAS8Gk8ehevJzMzjCWK1HMI8TqPJXBzZcKcf9f5Z+X61cQJNn+nk7ivERK0f/4KoAOSW9YBRxWXI47v0w/Jc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Smp8LZUM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44F9BC4CEC5;
-	Wed,  2 Oct 2024 14:15:22 +0000 (UTC)
+	 MIME-Version; b=Q8CxS587uvDZ0W8ffm+ehbUVj+NFX0ST3EDnUrQ76GRRM+ae9IKtb5V6bNhHFh+aLWf6OQWEpUpkHSOUziywuSYv/S/9Eao0uBr2D8+kI8zBNglH/QykXmcnKuTP1L2vfeZLJSI0n9KiCcVDQgkjOqI4Lb6JThRHNteO+WUZYMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mjiZMgHy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA20DC4CEC2;
+	Wed,  2 Oct 2024 14:38:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878522;
-	bh=YOaZX12Fz4+/eWIPQXGcZln4zR1gpZ52esVU3fHmKzs=;
+	s=korg; t=1727879888;
+	bh=ZMZc+7+lErbOM7ZLzTJPmc6baGPtE6vw7Ve6CFEuydg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Smp8LZUMyAvC7OuYcWfgummiDnOgSkyVGDFqlqpjM63t6VBNxtA3VS63+OTBAZmCZ
-	 xYZXsC23arsYCbvfNtfkYa9zC3UHpyUS2Abx5XsHU3bDDZmbunLvouRDBhBaw9PruM
-	 dixgy0k5kSfjWbfaOvU8glh7ELLYTY1DA6KPRw1k=
+	b=mjiZMgHymZFwpAvlWGFlZsNF3ao7GRjboOvBbELoh/2DKoXf9aBrkm4xar36MLkEq
+	 BK5+PH9Xv1zNGdRZc9dec3aRm3aAfatZ8rHm/ETaiACvmqzPnyR5AndmVPUbNyhv3F
+	 lasqagSRv+x1NxbX6d08pFmwsg9WTBdRaXBA69E0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Yang <yang.yang@vivo.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 411/634] lib/sbitmap: define swap_lock as raw_spinlock_t
-Date: Wed,  2 Oct 2024 14:58:31 +0200
-Message-ID: <20241002125827.329353287@linuxfoundation.org>
+Subject: [PATCH 6.6 273/538] clk: qcom: dispcc-sm8550: use rcg2_shared_ops for ESC RCGs
+Date: Wed,  2 Oct 2024 14:58:32 +0200
+Message-ID: <20241002125803.032585043@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 65f666c6203600053478ce8e34a1db269a8701c9 ]
+[ Upstream commit c8bee3ff6c9220092b646ff929f9c832c1adab6d ]
 
-When called from sbitmap_queue_get(), sbitmap_deferred_clear() may be run
-with preempt disabled. In RT kernel, spin_lock() can sleep, then warning
-of "BUG: sleeping function called from invalid context" can be triggered.
+Follow the recommendations and park disp_cc_mdss_esc[01]_clk_src to the
+XO instead of disabling the clocks by using the clk_rcg2_shared_ops.
 
-Fix it by replacing it with raw_spin_lock.
-
-Cc: Yang Yang <yang.yang@vivo.com>
-Fixes: 72d04bdcf3f7 ("sbitmap: fix io hung due to race on sbitmap_word::cleared")
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Reviewed-by: Yang Yang <yang.yang@vivo.com>
-Link: https://lore.kernel.org/r/20240919021709.511329-1-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 90114ca11476 ("clk: qcom: add SM8550 DISPCC driver")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://lore.kernel.org/r/20240717-dispcc-sm8550-fixes-v2-5-5c4a3128c40b@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/sbitmap.h | 2 +-
- lib/sbitmap.c           | 4 ++--
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/clk/qcom/dispcc-sm8550.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/sbitmap.h b/include/linux/sbitmap.h
-index c09cdcc99471e..189140bf11fc4 100644
---- a/include/linux/sbitmap.h
-+++ b/include/linux/sbitmap.h
-@@ -40,7 +40,7 @@ struct sbitmap_word {
- 	/**
- 	 * @swap_lock: serializes simultaneous updates of ->word and ->cleared
- 	 */
--	spinlock_t swap_lock;
-+	raw_spinlock_t swap_lock;
- } ____cacheline_aligned_in_smp;
+diff --git a/drivers/clk/qcom/dispcc-sm8550.c b/drivers/clk/qcom/dispcc-sm8550.c
+index 9b63d62057ed5..95b4c0548f50d 100644
+--- a/drivers/clk/qcom/dispcc-sm8550.c
++++ b/drivers/clk/qcom/dispcc-sm8550.c
+@@ -562,7 +562,7 @@ static struct clk_rcg2 disp_cc_mdss_esc0_clk_src = {
+ 		.parent_data = disp_cc_parent_data_5,
+ 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_5),
+ 		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_ops,
++		.ops = &clk_rcg2_shared_ops,
+ 	},
+ };
  
- /**
-diff --git a/lib/sbitmap.c b/lib/sbitmap.c
-index 5e2e93307f0d0..d3412984170c0 100644
---- a/lib/sbitmap.c
-+++ b/lib/sbitmap.c
-@@ -65,7 +65,7 @@ static inline bool sbitmap_deferred_clear(struct sbitmap_word *map,
- {
- 	unsigned long mask, word_mask;
+@@ -577,7 +577,7 @@ static struct clk_rcg2 disp_cc_mdss_esc1_clk_src = {
+ 		.parent_data = disp_cc_parent_data_5,
+ 		.num_parents = ARRAY_SIZE(disp_cc_parent_data_5),
+ 		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_ops,
++		.ops = &clk_rcg2_shared_ops,
+ 	},
+ };
  
--	guard(spinlock_irqsave)(&map->swap_lock);
-+	guard(raw_spinlock_irqsave)(&map->swap_lock);
- 
- 	if (!map->cleared) {
- 		if (depth == 0)
-@@ -136,7 +136,7 @@ int sbitmap_init_node(struct sbitmap *sb, unsigned int depth, int shift,
- 	}
- 
- 	for (i = 0; i < sb->map_nr; i++)
--		spin_lock_init(&sb->map[i].swap_lock);
-+		raw_spin_lock_init(&sb->map[i].swap_lock);
- 
- 	return 0;
- }
 -- 
 2.43.0
 
