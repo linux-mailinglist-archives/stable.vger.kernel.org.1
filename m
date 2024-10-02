@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-79584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80084-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9F0C98D93E
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:10:08 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0B8C98DBBE
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:34:30 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id EC6641C231E1
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:10:07 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 0E479B25D8A
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:34:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D304F1D1F44;
-	Wed,  2 Oct 2024 14:04:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7227A1D14EF;
+	Wed,  2 Oct 2024 14:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lahOHIku"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QCl9J2u+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 875561D0DC3;
-	Wed,  2 Oct 2024 14:04:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E17B1D1312;
+	Wed,  2 Oct 2024 14:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877869; cv=none; b=bHn+cm5WzqbQeWwGVnfEaPq9UUqm4nrt1PFGFg1GK4TCOdeCVoKfRg7d9tc/FJti5WJsNftOcZn87nAmFI1CmrkUu548vw3yqmbSnwaXnG4FaTDc0NUnyuYaD+7MKLCwna4kq85Bna9I3BjTuUyni+JRGnqS2i/yieA+DFSjmnA=
+	t=1727879338; cv=none; b=k5CBeWdR8ihXdbyWqjcrHdhKIS0GwFgiodRdaoPms9G8gfcoalQDz0/afDZ2KW1UKkzR98voI+ukwj/YvXRlQ+rYJj937IVJzC0jhWYqoLOQvVO8fGaP4C8kqG3/ZlInEN8pI7hzvPcl/47htjfAYSSBBuGc38Xx00jm9h/NKW8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877869; c=relaxed/simple;
-	bh=2iblJSfDhavLNlcFc8pxKyWHrvSri+qlUOhY9PRevvY=;
+	s=arc-20240116; t=1727879338; c=relaxed/simple;
+	bh=G14WpiAUEgLIW7r16TkynPFntKfUw0UQp9btvpb5UQQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iJBSVFL5iuxAScye6aXiHtgyYoHoyNUGLLkVVXdgr0Vq5yo97TmQAgif+Ok+RlF9+5GW05tKO7glY1SPrHx1yMW7h/YsET86gOMhclJNK43vQS82QciZwll1VsGwtdX1UMu8eaTUiMkKyw/qBHofvaLRQI2aH3CfrQD7DNh4f4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lahOHIku; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F4C0C4CEC2;
-	Wed,  2 Oct 2024 14:04:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Tmfxia3yArvz43bBmNKpe7Xq4miFMLzBCmPv22f+bNpqouUEW+PQYdnO2OWkbSbZtI1ZeZDg7uoDROPA3naywlr3YEXTiM3/Uhf9kZti4VkPleUViws2SCcibcMt1jzM3LI9g5f9CW/GpKot4VtbJbQOjL2tHT/2FLhGvWFP8VM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QCl9J2u+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3DD5C4CECD;
+	Wed,  2 Oct 2024 14:28:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877869;
-	bh=2iblJSfDhavLNlcFc8pxKyWHrvSri+qlUOhY9PRevvY=;
+	s=korg; t=1727879338;
+	bh=G14WpiAUEgLIW7r16TkynPFntKfUw0UQp9btvpb5UQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lahOHIkuhA4mBFOH2XEBGCrjmrEXjKfpkcQ/ltiq1/Gtdldl3YKu02+NjySnNgU8N
-	 wqq+jbirkJx1DHnZT5EsIXtbXJpISzhW074UvgWlgZRn2Ov9R4sipIeOjAcCxrRGw6
-	 kGO1NigKTRTLlgpFWqouvCfD7gH07JtHzdIgJKPQ=
+	b=QCl9J2u+UKQPit4/gXUs2WebC0FYC7LLvDbLswHJbzkK4OAVyOr1uIUQM63VAdXKc
+	 5CHZKygI1ZPrarynWo3qil5/TwUjk04d3A8eBJgp7IAHsaqMBmfMi/4n48Kt3suTO4
+	 Ex5+ssZ3GPX9drC46DFJN5cu+Ue9V/wvJRU52h4M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Juergen Gross <jgross@suse.com>,
-	Jan Beulich <jbeulich@suse.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 222/634] xen: add capability to remap non-RAM pages to different PFNs
-Date: Wed,  2 Oct 2024 14:55:22 +0200
-Message-ID: <20241002125819.863191886@linuxfoundation.org>
+Subject: [PATCH 6.6 084/538] block, bfq: fix procress reference leakage for bfqq in merge chain
+Date: Wed,  2 Oct 2024 14:55:23 +0200
+Message-ID: <20241002125755.537292416@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,134 +60,161 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit d05208cf7f05420ad10cc7f9550f91d485523659 ]
+[ Upstream commit 73aeab373557fa6ee4ae0b742c6211ccd9859280 ]
 
-When running as a Xen PV dom0 it can happen that the kernel is being
-loaded to a guest physical address conflicting with the host memory
-map.
+Original state:
 
-In order to be able to resolve this conflict, add the capability to
-remap non-RAM areas to different guest PFNs. A function to use this
-remapping information for other purposes than doing the remap will be
-added when needed.
+        Process 1       Process 2       Process 3       Process 4
+         (BIC1)          (BIC2)          (BIC3)          (BIC4)
+          Λ                |               |               |
+           \--------------\ \-------------\ \-------------\|
+                           V               V               V
+          bfqq1--------->bfqq2---------->bfqq3----------->bfqq4
+    ref    0               1               2               4
 
-As the number of conflicts should be rather low (currently only
-machines with max. 1 conflict are known), save the remap data in a
-small statically allocated array.
+After commit 0e456dba86c7 ("block, bfq: choose the last bfqq from merge
+chain in bfq_setup_cooperator()"), if P1 issues a new IO:
 
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Reviewed-by: Jan Beulich <jbeulich@suse.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Stable-dep-of: be35d91c8880 ("xen: tolerate ACPI NVS memory overlapping with Xen allocated memory")
+Without the patch:
+
+        Process 1       Process 2       Process 3       Process 4
+         (BIC1)          (BIC2)          (BIC3)          (BIC4)
+          Λ                |               |               |
+           \------------------------------\ \-------------\|
+                                           V               V
+          bfqq1--------->bfqq2---------->bfqq3----------->bfqq4
+    ref    0               0               2               4
+
+bfqq3 will be used to handle IO from P1, this is not expected, IO
+should be redirected to bfqq4;
+
+With the patch:
+
+          -------------------------------------------
+          |                                         |
+        Process 1       Process 2       Process 3   |   Process 4
+         (BIC1)          (BIC2)          (BIC3)     |    (BIC4)
+                           |               |        |      |
+                            \-------------\ \-------------\|
+                                           V               V
+          bfqq1--------->bfqq2---------->bfqq3----------->bfqq4
+    ref    0               0               2               4
+
+IO is redirected to bfqq4, however, procress reference of bfqq3 is still
+2, while there is only P2 using it.
+
+Fix the problem by calling bfq_merge_bfqqs() for each bfqq in the merge
+chain. Also change bfqq_merge_bfqqs() to return new_bfqq to simplify
+code.
+
+Fixes: 0e456dba86c7 ("block, bfq: choose the last bfqq from merge chain in bfq_setup_cooperator()")
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/20240909134154.954924-3-yukuai1@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/xen/p2m.c     | 63 ++++++++++++++++++++++++++++++++++++++++++
- arch/x86/xen/xen-ops.h |  3 ++
- 2 files changed, 66 insertions(+)
+ block/bfq-iosched.c | 37 +++++++++++++++++--------------------
+ 1 file changed, 17 insertions(+), 20 deletions(-)
 
-diff --git a/arch/x86/xen/p2m.c b/arch/x86/xen/p2m.c
-index 6bcbdf3b7999f..9a5e6a7c0729e 100644
---- a/arch/x86/xen/p2m.c
-+++ b/arch/x86/xen/p2m.c
-@@ -80,6 +80,7 @@
- #include <asm/xen/hypervisor.h>
- #include <xen/balloon.h>
- #include <xen/grant_table.h>
-+#include <xen/hvc-console.h>
- 
- #include "multicalls.h"
- #include "xen-ops.h"
-@@ -793,6 +794,68 @@ int clear_foreign_p2m_mapping(struct gnttab_unmap_grant_ref *unmap_ops,
- 	return ret;
+diff --git a/block/bfq-iosched.c b/block/bfq-iosched.c
+index 055ba1f98009d..7e0dcded5713a 100644
+--- a/block/bfq-iosched.c
++++ b/block/bfq-iosched.c
+@@ -3129,10 +3129,12 @@ void bfq_release_process_ref(struct bfq_data *bfqd, struct bfq_queue *bfqq)
+ 	bfq_put_queue(bfqq);
  }
  
-+/* Remapped non-RAM areas */
-+#define NR_NONRAM_REMAP 4
-+static struct nonram_remap {
-+	phys_addr_t maddr;
-+	phys_addr_t paddr;
-+	size_t size;
-+} xen_nonram_remap[NR_NONRAM_REMAP] __ro_after_init;
-+static unsigned int nr_nonram_remap __ro_after_init;
+-static void
+-bfq_merge_bfqqs(struct bfq_data *bfqd, struct bfq_io_cq *bic,
+-		struct bfq_queue *bfqq, struct bfq_queue *new_bfqq)
++static struct bfq_queue *bfq_merge_bfqqs(struct bfq_data *bfqd,
++					 struct bfq_io_cq *bic,
++					 struct bfq_queue *bfqq)
+ {
++	struct bfq_queue *new_bfqq = bfqq->new_bfqq;
 +
-+/*
-+ * Do the real remapping of non-RAM regions as specified in the
-+ * xen_nonram_remap[] array.
-+ * In case of an error just crash the system.
-+ */
-+void __init xen_do_remap_nonram(void)
-+{
-+	unsigned int i;
-+	unsigned int remapped = 0;
-+	const struct nonram_remap *remap = xen_nonram_remap;
-+	unsigned long pfn, mfn, end_pfn;
-+
-+	for (i = 0; i < nr_nonram_remap; i++) {
-+		end_pfn = PFN_UP(remap->paddr + remap->size);
-+		pfn = PFN_DOWN(remap->paddr);
-+		mfn = PFN_DOWN(remap->maddr);
-+		while (pfn < end_pfn) {
-+			if (!set_phys_to_machine(pfn, mfn))
-+				panic("Failed to set p2m mapping for pfn=%lx mfn=%lx\n",
-+				       pfn, mfn);
-+
-+			pfn++;
-+			mfn++;
-+			remapped++;
-+		}
-+
-+		remap++;
-+	}
-+
-+	pr_info("Remapped %u non-RAM page(s)\n", remapped);
-+}
-+
-+/*
-+ * Add a new non-RAM remap entry.
-+ * In case of no free entry found, just crash the system.
-+ */
-+void __init xen_add_remap_nonram(phys_addr_t maddr, phys_addr_t paddr,
-+				 unsigned long size)
-+{
-+	BUG_ON((maddr & ~PAGE_MASK) != (paddr & ~PAGE_MASK));
-+
-+	if (nr_nonram_remap == NR_NONRAM_REMAP) {
-+		xen_raw_console_write("Number of required E820 entry remapping actions exceed maximum value\n");
-+		BUG();
-+	}
-+
-+	xen_nonram_remap[nr_nonram_remap].maddr = maddr;
-+	xen_nonram_remap[nr_nonram_remap].paddr = paddr;
-+	xen_nonram_remap[nr_nonram_remap].size = size;
-+
-+	nr_nonram_remap++;
-+}
-+
- #ifdef CONFIG_XEN_DEBUG_FS
- #include <linux/debugfs.h>
- #include "debugfs.h"
-diff --git a/arch/x86/xen/xen-ops.h b/arch/x86/xen/xen-ops.h
-index f46a1dd3624da..a6a21dd055270 100644
---- a/arch/x86/xen/xen-ops.h
-+++ b/arch/x86/xen/xen-ops.h
-@@ -43,6 +43,9 @@ void xen_mm_unpin_all(void);
- #ifdef CONFIG_X86_64
- void __init xen_relocate_p2m(void);
- #endif
-+void __init xen_do_remap_nonram(void);
-+void __init xen_add_remap_nonram(phys_addr_t maddr, phys_addr_t paddr,
-+				 unsigned long size);
+ 	bfq_log_bfqq(bfqd, bfqq, "merging with queue %lu",
+ 		(unsigned long)new_bfqq->pid);
+ 	/* Save weight raising and idle window of the merged queues */
+@@ -3226,6 +3228,8 @@ bfq_merge_bfqqs(struct bfq_data *bfqd, struct bfq_io_cq *bic,
+ 	bfq_reassign_last_bfqq(bfqq, new_bfqq);
  
- void __init xen_chk_is_e820_usable(phys_addr_t start, phys_addr_t size,
- 				   const char *component);
+ 	bfq_release_process_ref(bfqd, bfqq);
++
++	return new_bfqq;
+ }
+ 
+ static bool bfq_allow_bio_merge(struct request_queue *q, struct request *rq,
+@@ -3261,14 +3265,8 @@ static bool bfq_allow_bio_merge(struct request_queue *q, struct request *rq,
+ 		 * fulfilled, i.e., bic can be redirected to new_bfqq
+ 		 * and bfqq can be put.
+ 		 */
+-		bfq_merge_bfqqs(bfqd, bfqd->bio_bic, bfqq,
+-				new_bfqq);
+-		/*
+-		 * If we get here, bio will be queued into new_queue,
+-		 * so use new_bfqq to decide whether bio and rq can be
+-		 * merged.
+-		 */
+-		bfqq = new_bfqq;
++		while (bfqq != new_bfqq)
++			bfqq = bfq_merge_bfqqs(bfqd, bfqd->bio_bic, bfqq);
+ 
+ 		/*
+ 		 * Change also bqfd->bio_bfqq, as
+@@ -5703,9 +5701,7 @@ bfq_do_early_stable_merge(struct bfq_data *bfqd, struct bfq_queue *bfqq,
+ 	 * state before killing it.
+ 	 */
+ 	bfqq->bic = bic;
+-	bfq_merge_bfqqs(bfqd, bic, bfqq, new_bfqq);
+-
+-	return new_bfqq;
++	return bfq_merge_bfqqs(bfqd, bic, bfqq);
+ }
+ 
+ /*
+@@ -6160,6 +6156,7 @@ static bool __bfq_insert_request(struct bfq_data *bfqd, struct request *rq)
+ 	bool waiting, idle_timer_disabled = false;
+ 
+ 	if (new_bfqq) {
++		struct bfq_queue *old_bfqq = bfqq;
+ 		/*
+ 		 * Release the request's reference to the old bfqq
+ 		 * and make sure one is taken to the shared queue.
+@@ -6176,18 +6173,18 @@ static bool __bfq_insert_request(struct bfq_data *bfqd, struct request *rq)
+ 		 * new_bfqq.
+ 		 */
+ 		if (bic_to_bfqq(RQ_BIC(rq), true,
+-				bfq_actuator_index(bfqd, rq->bio)) == bfqq)
+-			bfq_merge_bfqqs(bfqd, RQ_BIC(rq),
+-					bfqq, new_bfqq);
++				bfq_actuator_index(bfqd, rq->bio)) == bfqq) {
++			while (bfqq != new_bfqq)
++				bfqq = bfq_merge_bfqqs(bfqd, RQ_BIC(rq), bfqq);
++		}
+ 
+-		bfq_clear_bfqq_just_created(bfqq);
++		bfq_clear_bfqq_just_created(old_bfqq);
+ 		/*
+ 		 * rq is about to be enqueued into new_bfqq,
+ 		 * release rq reference on bfqq
+ 		 */
+-		bfq_put_queue(bfqq);
++		bfq_put_queue(old_bfqq);
+ 		rq->elv.priv[1] = new_bfqq;
+-		bfqq = new_bfqq;
+ 	}
+ 
+ 	bfq_update_io_thinktime(bfqd, bfqq);
 -- 
 2.43.0
 
