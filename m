@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-79516-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78949-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 392A598D8D9
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:06:29 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id ECB0D98D5C4
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:34:08 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6B5AD1C230D8
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:06:28 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 94BE01F237DF
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:34:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 242061D1309;
-	Wed,  2 Oct 2024 14:01:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E3E91D0792;
+	Wed,  2 Oct 2024 13:33:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RkNIpYgR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="piGWh4jN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5B091D1305;
-	Wed,  2 Oct 2024 14:01:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1F1E1D04A8;
+	Wed,  2 Oct 2024 13:33:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877686; cv=none; b=OYSfnvwHRmws1O3OHNIh3Dry5rx9uRrojr8B/a2cFvts+2Bi110VCGCpB5yz/fVa/C7+UQbaL5qjtXzeM7P2VMnmiL+Zw4fHNxSdURFRfGxQgKbJHEMtKfaL6JG8RSXmhrij9GqnjKesG+8VENVHSfeDm/v6BX88r5Z+AbNcuac=
+	t=1727875998; cv=none; b=HfL70wNIGOhJj0VaBU519ep90XRbQvUNf7tKt6e7r6SFpasDn0IxF9KChhlXGGglBW1Pk2Nr/3H7YgntIeDC/mcoAEZzXLQ57eJRpA/RRx5piJVWmrPmwUxxU6xI9lL7sNaUUl9HhnjAoobFvIRQJVEz6sJhlmqQ0n/2EXSYVMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877686; c=relaxed/simple;
-	bh=Ya1g/I6gRjrOqcYBLn1RWbaQsMWxcpKZMt2JB2H4PT8=;
+	s=arc-20240116; t=1727875998; c=relaxed/simple;
+	bh=lyB2KRcrpflU3+anIJTaHTbz5w+r/VmCR1bxZOkgVWI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nK4vgDuMdg5T7mACKSNABB9J8mtQVjQkmEmdcqv5oO8+Whe//D3LMmr578yIDmxMid/Bd2kP0wX6w56F6FoaVXky+F8F6U1aMaNQfJgXX9LtjqDDy6CxOMVvQSqFxcoWjlsPmvOio02Kqv0ITjUTpRIiv5ZhZCfjXrJNTyCm3uQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RkNIpYgR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09318C4CEC2;
-	Wed,  2 Oct 2024 14:01:25 +0000 (UTC)
+	 MIME-Version; b=mf9Ag6Zr9VBYAW187dmiIrSA/ZdE6V+wDhQTDWdOFiGBcGEzk+SEai5Pj5zd8vAmqNDvIyisekOUEDmRlAodLJS10vcCQmi2ENInPLzwX8jr5aH0QpqXz2IkLJi8Z7bVe5M1fb/6zBeoZ/iQXDZZtM0fYkm1GZ+chvtyhim+8gM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=piGWh4jN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD510C4CEC5;
+	Wed,  2 Oct 2024 13:33:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877686;
-	bh=Ya1g/I6gRjrOqcYBLn1RWbaQsMWxcpKZMt2JB2H4PT8=;
+	s=korg; t=1727875998;
+	bh=lyB2KRcrpflU3+anIJTaHTbz5w+r/VmCR1bxZOkgVWI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RkNIpYgRdH0FxOmTAjoi1SxvViN/0DJJE58ySopqY/qgnunpXTW1lB1C+FP3k3uBf
-	 4e2vm/yepSn8iUuA8oXSwXRVA6/fa/2BGPiApmGWbo2eb9CeZiD92vE4BwcXWNuVgl
-	 dmyNIBy+R/L3+KcKxuz53du4rlWebUwmhg6Vhdmw=
+	b=piGWh4jNXy1kUoVm4IPxTpe7CwkFFfbZLJXFEvbHQ2tonSzA3aN8PUqBRPTaCV8rK
+	 EzUG18izOEJREQ8ustHE+lDi61UkQ0A6bnyYe7+ryfIaDZQ04yPgoNRSJU3c9vJd3u
+	 B2wOuUu0m2Ob2fz49VOeSvjMXxpzUQcBdvStXbsA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
-	Richard Weinberger <richard@nod.at>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	linux-mtd@lists.infradead.org,
-	Mirsad Todorovac <mtodorovac69@gmail.com>,
+	Tony Ambardar <tony.ambardar@gmail.com>,
+	Andrii Nakryiko <andrii@kernel.org>,
+	Ilya Leoshkevich <iii@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 159/634] mtd: slram: insert break after errors in parsing the map
-Date: Wed,  2 Oct 2024 14:54:19 +0200
-Message-ID: <20241002125817.388116329@linuxfoundation.org>
+Subject: [PATCH 6.11 262/695] tools/runqslower: Fix LDFLAGS and add LDLIBS support
+Date: Wed,  2 Oct 2024 14:54:20 +0200
+Message-ID: <20241002125832.904893835@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,74 +61,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mirsad Todorovac <mtodorovac69@gmail.com>
+From: Tony Ambardar <tony.ambardar@gmail.com>
 
-[ Upstream commit 336c218dd7f0588ed8a7345f367975a00a4f003f ]
+[ Upstream commit f86601c3661946721e8f260bdd812b759854ac22 ]
 
-GCC 12.3.0 compiler on linux-next next-20240709 tree found the execution
-path in which, due to lazy evaluation, devlength isn't initialised with the
-parsed string:
+Actually use previously defined LDFLAGS during build and add support for
+LDLIBS to link extra standalone libraries e.g. 'argp' which is not provided
+by musl libc.
 
-   289		while (map) {
-   290			devname = devstart = devlength = NULL;
-   291
-   292			if (!(devname = strsep(&map, ","))) {
-   293				E("slram: No devicename specified.\n");
-   294				break;
-   295			}
-   296			T("slram: devname = %s\n", devname);
-   297			if ((!map) || (!(devstart = strsep(&map, ",")))) {
-   298				E("slram: No devicestart specified.\n");
-   299			}
-   300			T("slram: devstart = %s\n", devstart);
- → 301			if ((!map) || (!(devlength = strsep(&map, ",")))) {
-   302				E("slram: No devicelength / -end specified.\n");
-   303			}
- → 304			T("slram: devlength = %s\n", devlength);
-   305			if (parse_cmdline(devname, devstart, devlength) != 0) {
-   306				return(-EINVAL);
-   307			}
-
-Parsing should be finished after map == NULL, so a break is best inserted after
-each E("slram: ... \n") error message.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: Miquel Raynal <miquel.raynal@bootlin.com>
-Cc: Richard Weinberger <richard@nod.at>
-Cc: Vignesh Raghavendra <vigneshr@ti.com>
-Cc: linux-mtd@lists.infradead.org
-Signed-off-by: Mirsad Todorovac <mtodorovac69@gmail.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20240711234319.637824-1-mtodorovac69@gmail.com
+Fixes: 585bf4640ebe ("tools: runqslower: Add EXTRA_CFLAGS and EXTRA_LDFLAGS support")
+Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Acked-by: Ilya Leoshkevich <iii@linux.ibm.com>
+Link: https://lore.kernel.org/bpf/20240723003045.2273499-1-tony.ambardar@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/devices/slram.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/bpf/runqslower/Makefile | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/devices/slram.c b/drivers/mtd/devices/slram.c
-index 28131a127d065..8297b366a0669 100644
---- a/drivers/mtd/devices/slram.c
-+++ b/drivers/mtd/devices/slram.c
-@@ -296,10 +296,12 @@ static int __init init_slram(void)
- 		T("slram: devname = %s\n", devname);
- 		if ((!map) || (!(devstart = strsep(&map, ",")))) {
- 			E("slram: No devicestart specified.\n");
-+			break;
- 		}
- 		T("slram: devstart = %s\n", devstart);
- 		if ((!map) || (!(devlength = strsep(&map, ",")))) {
- 			E("slram: No devicelength / -end specified.\n");
-+			break;
- 		}
- 		T("slram: devlength = %s\n", devlength);
- 		if (parse_cmdline(devname, devstart, devlength) != 0) {
+diff --git a/tools/bpf/runqslower/Makefile b/tools/bpf/runqslower/Makefile
+index d8288936c9120..c4f1f1735af65 100644
+--- a/tools/bpf/runqslower/Makefile
++++ b/tools/bpf/runqslower/Makefile
+@@ -15,6 +15,7 @@ INCLUDES := -I$(OUTPUT) -I$(BPF_INCLUDE) -I$(abspath ../../include/uapi)
+ CFLAGS := -g -Wall $(CLANG_CROSS_FLAGS)
+ CFLAGS += $(EXTRA_CFLAGS)
+ LDFLAGS += $(EXTRA_LDFLAGS)
++LDLIBS += -lelf -lz
+ 
+ # Try to detect best kernel BTF source
+ KERNEL_REL := $(shell uname -r)
+@@ -51,7 +52,7 @@ clean:
+ libbpf_hdrs: $(BPFOBJ)
+ 
+ $(OUTPUT)/runqslower: $(OUTPUT)/runqslower.o $(BPFOBJ)
+-	$(QUIET_LINK)$(CC) $(CFLAGS) $^ -lelf -lz -o $@
++	$(QUIET_LINK)$(CC) $(CFLAGS) $(LDFLAGS) $^ $(LDLIBS) -o $@
+ 
+ $(OUTPUT)/runqslower.o: runqslower.h $(OUTPUT)/runqslower.skel.h	      \
+ 			$(OUTPUT)/runqslower.bpf.o | libbpf_hdrs
 -- 
 2.43.0
 
