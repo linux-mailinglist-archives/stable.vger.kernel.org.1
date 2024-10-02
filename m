@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-80280-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18F1798DCC3
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:44:33 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3346498DA31
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:18:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B4E291F220ED
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:44:32 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id EE5CF2837A1
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:18:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 146531D2F6F;
-	Wed,  2 Oct 2024 14:38:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCAD21D1732;
+	Wed,  2 Oct 2024 14:14:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yE4cTCMo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J/pZeUXZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6F431D2F5A;
-	Wed,  2 Oct 2024 14:38:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BB511D0B8C;
+	Wed,  2 Oct 2024 14:14:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879908; cv=none; b=OPY7QbmS8KGq/MFoznV963YEhkyt6orIPaOOEHOA/Hf/rXevjeBb0mIl95IeXNDWokUq2rGT3LdWOzjXQDHVHsCTZO5Eb/0/pQ/zT3Bb1uH3/JECvea+FFJddjxHmnow+izeruI42f75P4KjHbyCSFJ/ENlPCUYmLhkzts6yiO0=
+	t=1727878455; cv=none; b=NulfvBewyYGH/gny1Z/pBLN17rWCcNtaiu71HEeXxIJdH+hOPgGJ0QOLlgjJgtSkFZhmGX9cJf74sgv2bv5G5BEcZZ//P9sCaucHmyJANq1fagvOkr7CnUfFnhBaYORM6pUaXqGGxPbUPjgWK31UHzZO0mt2yrSzwKDbEIOb4m4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879908; c=relaxed/simple;
-	bh=nYn0vwjqi3rycosunMplcXJ8VTRYHKUJJ6SEjQg2vLo=;
+	s=arc-20240116; t=1727878455; c=relaxed/simple;
+	bh=oZTYDCsutgOItnwIW7tsiJYfmg4FJrhljbqSHsjJ314=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V+aR92bSpg4whcIKHnRCzwsejlBkwbcy1jFESelO1YzxPhyHZ9ZMsa2ayY4U+Y4zJZXXzymPEawF70yharbR2BQ1zFdh7zEPwBCC8qzk2pghOv+j4Ki4hDLIBjwatYM+HIIUHccxPMTgb2ucCwbY790Ir1mDNnYwa/y3IoPAEFk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yE4cTCMo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 500C2C4CEC2;
-	Wed,  2 Oct 2024 14:38:28 +0000 (UTC)
+	 MIME-Version; b=jI8B3rbzMAI7Z3PZCL6jSiCTxaGpvGnJOdv/bUd58Xb1hw68sz7xrriQFOkVwtLM4Yg6URL/UW26gDvM1vWAjOOPQyYErQtWH94zACgWYUvCYp3ve/hnbbPCe5+Gksr1b7jFK9w4f3222FJ6uPRWQ9UyCLyhtpK7oQ7gwu5DCNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J/pZeUXZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1492CC4CEC2;
+	Wed,  2 Oct 2024 14:14:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879908;
-	bh=nYn0vwjqi3rycosunMplcXJ8VTRYHKUJJ6SEjQg2vLo=;
+	s=korg; t=1727878455;
+	bh=oZTYDCsutgOItnwIW7tsiJYfmg4FJrhljbqSHsjJ314=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yE4cTCMoDPMHto2qe5shBeUcIgcHCjorlO6N9pA5fJuUY+SNbfeuueVBqAQNS0Flw
-	 lfErDfHBguIl0df4ILkuNNDRgkY0MISIbXKhSlGiKXGpUhrSfyl2Y96hbeelufA/29
-	 Tha8YPp7aIVEMBV/S/qVpcJJCEAag6kkaFe1I+uo=
+	b=J/pZeUXZ2+DiDWXdtkm3D5x33Hik8ojkwAVlFoSqrlstrYqtEdjQEmdP+pOH+wFI+
+	 enAABoa8ml9/pX1B8NA4UOanIafQFIMaoxTyG5cbt9n7y/7wVgUBjCcQ6cGlx3zNSQ
+	 dPejpkwSqtvqGwIltxIYT3ixLuiPMtaAHdUG3Nyw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emanuele Ghidoli <emanuele.ghidoli@toradex.com>,
-	Francesco Dolcini <francesco.dolcini@toradex.com>,
-	Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 280/538] Input: ilitek_ts_i2c - add report id message validation
-Date: Wed,  2 Oct 2024 14:58:39 +0200
-Message-ID: <20241002125803.309164330@linuxfoundation.org>
+Subject: [PATCH 6.10 420/634] iio: magnetometer: ak8975: drop incorrect AK09116 compatible
+Date: Wed,  2 Oct 2024 14:58:40 +0200
+Message-ID: <20241002125827.681258804@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 208989744a6f01bed86968473312d4e650e600b3 ]
+[ Upstream commit da6e3160df230692bbd48a6d52318035f19595e2 ]
 
-Ensure that the touchscreen response has correct "report id" byte
-before processing the touch data and discard other messages.
+All compatibles in this binding without prefixes were deprecated, so
+adding a new deprecated one after some time is not allowed, because it
+defies the core logic of deprecating things.
 
-Fixes: 42370681bd46 ("Input: Add support for ILITEK Lego Series")
-Signed-off-by: Emanuele Ghidoli <emanuele.ghidoli@toradex.com>
-Signed-off-by: Francesco Dolcini <francesco.dolcini@toradex.com>
-Link: https://lore.kernel.org/r/20240805085511.43955-3-francesco@dolcini.it
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Drop the AK09916 vendorless compatible.
+
+Fixes: 76e28aa97fa0 ("iio: magnetometer: ak8975: add AK09116 support")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://patch.msgid.link/20240806053016.6401-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/touchscreen/ilitek_ts_i2c.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/iio/magnetometer/ak8975.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/input/touchscreen/ilitek_ts_i2c.c b/drivers/input/touchscreen/ilitek_ts_i2c.c
-index f70af5a173b34..e719f5da68bf5 100644
---- a/drivers/input/touchscreen/ilitek_ts_i2c.c
-+++ b/drivers/input/touchscreen/ilitek_ts_i2c.c
-@@ -37,6 +37,8 @@
- #define ILITEK_TP_CMD_GET_MCU_VER			0x61
- #define ILITEK_TP_CMD_GET_IC_MODE			0xC0
- 
-+#define ILITEK_TP_I2C_REPORT_ID				0x48
-+
- #define REPORT_COUNT_ADDRESS				61
- #define ILITEK_SUPPORT_MAX_POINT			40
- 
-@@ -163,6 +165,11 @@ static int ilitek_process_and_report_v6(struct ilitek_ts_data *ts)
- 		return error;
- 	}
- 
-+	if (buf[0] != ILITEK_TP_I2C_REPORT_ID) {
-+		dev_err(dev, "get touch info failed. Wrong id: 0x%02X\n", buf[0]);
-+		return -EINVAL;
-+	}
-+
- 	report_max_point = buf[REPORT_COUNT_ADDRESS];
- 	if (report_max_point > ts->max_tp) {
- 		dev_err(dev, "FW report max point:%d > panel info. max:%d\n",
+diff --git a/drivers/iio/magnetometer/ak8975.c b/drivers/iio/magnetometer/ak8975.c
+index dd466c5fa6214..ccbebe5b66cde 100644
+--- a/drivers/iio/magnetometer/ak8975.c
++++ b/drivers/iio/magnetometer/ak8975.c
+@@ -1081,7 +1081,6 @@ static const struct of_device_id ak8975_of_match[] = {
+ 	{ .compatible = "asahi-kasei,ak09912", .data = &ak_def_array[AK09912] },
+ 	{ .compatible = "ak09912", .data = &ak_def_array[AK09912] },
+ 	{ .compatible = "asahi-kasei,ak09916", .data = &ak_def_array[AK09916] },
+-	{ .compatible = "ak09916", .data = &ak_def_array[AK09916] },
+ 	{}
+ };
+ MODULE_DEVICE_TABLE(of, ak8975_of_match);
 -- 
 2.43.0
 
