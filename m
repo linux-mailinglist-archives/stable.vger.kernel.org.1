@@ -1,163 +1,114 @@
-Return-Path: <stable+bounces-80550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1386498DE1B
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:58:17 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B1B398DE29
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 17:00:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 468AFB21087
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:55:36 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C3FD91C2318C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:00:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35C581D0E01;
-	Wed,  2 Oct 2024 14:52:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03C7D155346;
+	Wed,  2 Oct 2024 15:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=thorsis.com header.i=@thorsis.com header.b="Ree+tzjP"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YSmBAS0p"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.thorsis.com (mail.thorsis.com [217.92.40.78])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 625889475
-	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 14:52:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.92.40.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6F067489
+	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 15:00:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880727; cv=none; b=tLcn739yMVRyYAAn8oOW1CvT3nDvdIzL4fdGAgQIjZU2VVC+FJa1XE3mNcOlUWmvrHqu7XSDYY6NfhiPes5LQkm7b7fJJJlHE+DTxONoQJ7kfWDM/5OVBP1lydynVP+WiaDKZ+Qe2iNcseejPggN/G2cj4F0ZMau9J15GmXjXH0=
+	t=1727881221; cv=none; b=lZNB/TPI8B9UgJ+Z4gDJRo+h+j0n0v55mW17XcVSXoelVJHyOxUOXf09rVfD7ko7HGyA+cqNk2hj2EMNP7kQPDPmm2SSTCyY59MiUjavbxDupKNd1ebNBe6c4vNQZpKVYLGqDUxCqabA5uJRTcHQPFGzNm3NcU9+vtNBczs5hOE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880727; c=relaxed/simple;
-	bh=Pz+iIK6kOT0FvoM+Z59k2196gumJybUoqTaA3U1GMCA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MxaCYEReTcHudyGBkc5SsaAQ4yobtzIoE2ygbaKddK48CaSkoAo6HAGP0tl8k1E+2k8XKAwWyGHPqCueMDcQqewHkqEdcA9eNdd8vOxdTuvwjjUHnaqnCVPOV8+qL7JwEwZpfRpHV1DMdU4mUyEoAb0clEScLXk4l8VLww0byEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=thorsis.com; spf=pass smtp.mailfrom=thorsis.com; dkim=pass (2048-bit key) header.d=thorsis.com header.i=@thorsis.com header.b=Ree+tzjP; arc=none smtp.client-ip=217.92.40.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=thorsis.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=thorsis.com
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 5CC911483738;
-	Wed,  2 Oct 2024 16:52:03 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=thorsis.com; s=dkim;
-	t=1727880723; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=ynEun/P3ScZRmDQsi1Oi/THxnBWlwS83j9p4SMuVfk4=;
-	b=Ree+tzjP5nAyTRRkC/GvUqRJV2OTLRSo+DV3utWRU/NhUqIYj2rFpyPn2l4J9fbjfViPzk
-	L8mgWZwfMgJ3peCowWQcHu0yvaRVkcpXxKPN7DEZpbaCogsdK4DsM1nqlYaM6hcXqferc4
-	nTPpY7FQhr5JUrTSQKqDletd02F8GuPPJTxxZIq3JanAKMjMmwzPfUNHkD9XlByEu6uule
-	gtIwWAwMF745AK8O4ISIQkCXC5YV0OStDvAyzGK+6Lhfn9MrEyfJx22yV44dnmZ+wPXWR2
-	07B38q2ndGlMC2f1Ca9ItzMKDoMedZ88wyBHCtD33e2thNW2vGRaOjZKiBXt3A==
-Date: Wed, 2 Oct 2024 16:52:02 +0200
-From: Alexander Dahl <ada@thorsis.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Alexander Dahl <ada@thorsis.com>, Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.6 351/538] spi: atmel-quadspi: Avoid overwriting delay
- register settings
-Message-ID: <20241002-payable-gaffe-54f97e7b8e5c@thorsis.com>
-Mail-Followup-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	stable@vger.kernel.org, patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>, Sasha Levin <sashal@kernel.org>
-References: <20241002125751.964700919@linuxfoundation.org>
- <20241002125806.283289301@linuxfoundation.org>
+	s=arc-20240116; t=1727881221; c=relaxed/simple;
+	bh=+AJkmTFdksUy0oAao+z6NP1TJ2wJ5ZtSc3ktA87gHPY=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=bnOf1blTHyrv9gZnetKKPtEOLPkj5XU4PJdBTMcUv6raAM3QKoPSVNAfBP9+g4bfEwZsHi8cVhiDsganrqojNzdjouB+zwjJkULKz8b48BgDAfpglrvsl825mXpIvV3YpcjCtA2akp+TQHvCFjR6t3127CNTvjVMU4SvVB76xHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YSmBAS0p; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1727881217;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NoyJhybhiBGXeteZUIUN27Tgv0sQeZpS4X+sfVBeVQM=;
+	b=YSmBAS0pniXS9BgRtIAK1x9Z98th6aD/o+2cVZqYeMAy7PxFRBDOWwqe6hsE13edwCrgso
+	ewkLxRY4cVIwV5hHn09zze0LZzus55tjXsG4COW7OEKGCOR0QiMnMFcSCqtgfPLAcynDdn
+	Nnd+wOLdVY+Dnu5JYUcFjCFF5BpAsTw=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-99-Zm8NP9iGMLmncAKZLmR9HQ-1; Wed,
+ 02 Oct 2024 11:00:14 -0400
+X-MC-Unique: Zm8NP9iGMLmncAKZLmR9HQ-1
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0F56F19560A3;
+	Wed,  2 Oct 2024 15:00:13 +0000 (UTC)
+Received: from [10.45.225.58] (unknown [10.45.225.58])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id DD51D300019B;
+	Wed,  2 Oct 2024 15:00:10 +0000 (UTC)
+Date: Wed, 2 Oct 2024 17:00:03 +0200 (CEST)
+From: Mikulas Patocka <mpatocka@redhat.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+cc: dfirblog@gmail.com, stable@vger.kernel.org, 
+    Sami Tolvanen <samitolvanen@google.com>, Will Drewry <wad@chromium.org>
+Subject: Re: FAILED: patch "[PATCH] dm-verity: restart or panic on an I/O
+ error" failed to apply to 6.1-stable tree
+In-Reply-To: <2024100204-mammogram-clumsily-4e70@gregkh>
+Message-ID: <7192501b-2b7a-7b3f-85a5-50ebff3694d1@redhat.com>
+References: <2024100247-friction-answering-6c42@gregkh> <93f37f10-e291-5c88-f633-9a61833a7103@redhat.com> <2024100204-mammogram-clumsily-4e70@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241002125806.283289301@linuxfoundation.org>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=US-ASCII
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-Hello Greg,
 
-Am Wed, Oct 02, 2024 at 02:59:50PM +0200 schrieb Greg Kroah-Hartman:
-> 6.6-stable review patch.  If anyone has any objections, please let me know.
 
-Same as for 6.11, if you take this, please also take
-<20240926090356.105789-1-ada@thorsis.com>.
+On Wed, 2 Oct 2024, Greg KH wrote:
 
-Thanks
-Alex
+> On Wed, Oct 02, 2024 at 12:25:11PM +0200, Mikulas Patocka wrote:
+> > Hi Greg
+> > 
+> > I would like to as you to drop this patch (drop it also from from 6.6, 
+> > 6.11 and others, if you already apllied it there).
+> > 
+> > Google engineeres said that they do not want to change the default 
+> > behavior.
+> 
+> Is it reverted somewhere?  I'd prefer to take the revert otherwise our
+> scripts will continue to want to apply this over time.
+> 
+> If there is no revert, well, we are just mirroring what is in Linus's
+> tree :)
+> 
+> thanks,
+> 
+> greg k-h
 
-Link: https://lore.kernel.org/linux-spi/20240926090356.105789-1-ada@thorsis.com/T/#u
+I've just sent a revert pull request to Linus - see 
+https://marc.info/?l=dm-devel&m=172788030731700&w=2
 
-> 
-> ------------------
-> 
-> From: Alexander Dahl <ada@thorsis.com>
-> 
-> [ Upstream commit 329ca3eed4a9a161515a8714be6ba182321385c7 ]
-> 
-> Previously the MR and SCR registers were just set with the supposedly
-> required values, from cached register values (cached reg content
-> initialized to zero).
-> 
-> All parts fixed here did not consider the current register (cache)
-> content, which would make future support of cs_setup, cs_hold, and
-> cs_inactive impossible.
-> 
-> Setting SCBR in atmel_qspi_setup() erases a possible DLYBS setting from
-> atmel_qspi_set_cs_timing().  The DLYBS setting is applied by ORing over
-> the current setting, without resetting the bits first.  All writes to MR
-> did not consider possible settings of DLYCS and DLYBCT.
-> 
-> Signed-off-by: Alexander Dahl <ada@thorsis.com>
-> Fixes: f732646d0ccd ("spi: atmel-quadspi: Add support for configuring CS timing")
-> Link: https://patch.msgid.link/20240918082744.379610-2-ada@thorsis.com
-> Signed-off-by: Mark Brown <broonie@kernel.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
-> ---
->  drivers/spi/atmel-quadspi.c | 14 ++++++++------
->  1 file changed, 8 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
-> index af0464999af1f..bf7999ac22c80 100644
-> --- a/drivers/spi/atmel-quadspi.c
-> +++ b/drivers/spi/atmel-quadspi.c
-> @@ -375,9 +375,9 @@ static int atmel_qspi_set_cfg(struct atmel_qspi *aq,
->  	 * If the QSPI controller is set in regular SPI mode, set it in
->  	 * Serial Memory Mode (SMM).
->  	 */
-> -	if (aq->mr != QSPI_MR_SMM) {
-> -		atmel_qspi_write(QSPI_MR_SMM, aq, QSPI_MR);
-> -		aq->mr = QSPI_MR_SMM;
-> +	if (!(aq->mr & QSPI_MR_SMM)) {
-> +		aq->mr |= QSPI_MR_SMM;
-> +		atmel_qspi_write(aq->scr, aq, QSPI_MR);
->  	}
->  
->  	/* Clear pending interrupts */
-> @@ -501,7 +501,8 @@ static int atmel_qspi_setup(struct spi_device *spi)
->  	if (ret < 0)
->  		return ret;
->  
-> -	aq->scr = QSPI_SCR_SCBR(scbr);
-> +	aq->scr &= ~QSPI_SCR_SCBR_MASK;
-> +	aq->scr |= QSPI_SCR_SCBR(scbr);
->  	atmel_qspi_write(aq->scr, aq, QSPI_SCR);
->  
->  	pm_runtime_mark_last_busy(ctrl->dev.parent);
-> @@ -534,6 +535,7 @@ static int atmel_qspi_set_cs_timing(struct spi_device *spi)
->  	if (ret < 0)
->  		return ret;
->  
-> +	aq->scr &= ~QSPI_SCR_DLYBS_MASK;
->  	aq->scr |= QSPI_SCR_DLYBS(cs_setup);
->  	atmel_qspi_write(aq->scr, aq, QSPI_SCR);
->  
-> @@ -549,8 +551,8 @@ static void atmel_qspi_init(struct atmel_qspi *aq)
->  	atmel_qspi_write(QSPI_CR_SWRST, aq, QSPI_CR);
->  
->  	/* Set the QSPI controller by default in Serial Memory Mode */
-> -	atmel_qspi_write(QSPI_MR_SMM, aq, QSPI_MR);
-> -	aq->mr = QSPI_MR_SMM;
-> +	aq->mr |= QSPI_MR_SMM;
-> +	atmel_qspi_write(aq->mr, aq, QSPI_MR);
->  
->  	/* Enable the QSPI controller */
->  	atmel_qspi_write(QSPI_CR_QSPIEN, aq, QSPI_CR);
-> -- 
-> 2.43.0
-> 
-> 
-> 
+The revert's commit ID is 462763212dd71c41f092b48eaa352bc1f5ed5d66.
+
+I've seen that you already applied the commit 
+e6a3531dd542cb127c8de32ab1e54a48ae19962b ("dm-verity: restart or panic on 
+an I/O error") to 6.6, 6.10 and 6.11.
+
+So, please apply the revert to 6.6, 6.10 and 6.11 as well, before you 
+release them.
+
+Mikulas
+
 
