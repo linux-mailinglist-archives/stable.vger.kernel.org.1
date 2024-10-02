@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-79430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A95298D838
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:58:14 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9275D98D537
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:28:11 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 1E5E328126C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:58:13 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 5C45528707E
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:28:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 596911D0787;
-	Wed,  2 Oct 2024 13:57:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA7111D0491;
+	Wed,  2 Oct 2024 13:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xp/++obO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2p+tpphZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18B831D043E;
-	Wed,  2 Oct 2024 13:57:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A88B16F84F;
+	Wed,  2 Oct 2024 13:27:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877436; cv=none; b=uxBXLbf4Wcwu9wZqCCwQz6uAfFZm162QQSOYn2x0oY2aG0aEpCLKIz9FHBG6Nr/ngp+vMDukGHQmUe1NhrspohTDzRs1EsqhBzyJhxsJ72j/JIhIOpVFlHo4ZlU92Nh/KiaSVh+lLm5OMZ4X36vE3EzC9Cqfz4P2wpbzlKnAo78=
+	t=1727875675; cv=none; b=tCYo/G345JELQ0xbk7W3i08uV8l7KVMahre5i92vxncmwmH+JdLotFetizM1TZcZuYU1Pqlm2tC+VKPTSP9Nfpmiua1N4GAwZS27R9jhGUBYSXCzuYQJ/It46p0Fyx2S7f3Ox3Ek2Ug1/kqr4GYATvmXavMVe9rclAPPj9/cRgM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877436; c=relaxed/simple;
-	bh=zTHochUoKGAxUx2TfTrPJI56pJ8JYpowpa4TdF7shc4=;
+	s=arc-20240116; t=1727875675; c=relaxed/simple;
+	bh=fUCf49a+zYVbid/Z2vcWtVE9YpkPepgQPMJp1o7pa6w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d3553JZEDJw4cnFW/8kDx4CoDc294dsPmSlhwo72FqlU9MPDLF5pXajZyr8n/cEQg0DrTT3ZtimJda7iWJWXn8J7ICgR4c2TrpRbbVF7J4S2QZ15sveSnzLGScMd/RdSNfSyGSBYu9soQDElB6wSe43xNRdOPmahigTLvxkgE2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xp/++obO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90353C4CEC2;
-	Wed,  2 Oct 2024 13:57:15 +0000 (UTC)
+	 MIME-Version; b=c7cADK+S4qr6zd2RjYpLX1KF5/uilO5gNNVvO4gIcGfIv7Tcjo8r1uf16/NhSUfCqx48pUyJIlEgOAnGlU5stJWMpxWF7ZW+ZHwrw/tpA+nQkFO1ZtIdQPdLFKB4M6UMvJKg4dkjqd2g+b/jrRQYh+7D/NH8jeA+ZGE3MTWJ6RU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2p+tpphZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2477CC4CECD;
+	Wed,  2 Oct 2024 13:27:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877436;
-	bh=zTHochUoKGAxUx2TfTrPJI56pJ8JYpowpa4TdF7shc4=;
+	s=korg; t=1727875675;
+	bh=fUCf49a+zYVbid/Z2vcWtVE9YpkPepgQPMJp1o7pa6w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xp/++obOuvk+jXepyccWUCOXDLPC9RdgHAsKUJxwjA+990vh894nqANhjxNNQRJbg
-	 t1KbloTKfOGvv2Fw9WEkC4W6f/0SP1wN0k7tw2OfW8zeNvRfQ3vlT9v5m3bdyuMQMq
-	 OFMwPfXyqauJP/XGq0PFzenwiVHZEcCZiOrv/Wd4=
+	b=2p+tpphZxvJl9DyP0U8Tu851tTLk8/Nirt+Ze/RqqWuvu9E8GT/MytnP7xQjp3Rx/
+	 DTzRgAYeU/lnh1jizSmIIwLnDc09zRvG/2jScrgLCpi/kbhGNUUPB1OrGI6wjJOexw
+	 jPbN9gfAeG0h1fMRKygaupN24h9YMXflNEI69IDc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Felix Fietkau <nbd@nbd.name>,
+	Artur Weber <aweber.kernel@gmail.com>,
+	Henrik Grimler <henrik@grimler.se>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 078/634] wifi: mt76: mt7603: fix mixed declarations and code
-Date: Wed,  2 Oct 2024 14:52:58 +0200
-Message-ID: <20241002125814.188120907@linuxfoundation.org>
+Subject: [PATCH 6.11 181/695] power: supply: max17042_battery: Fix SOC threshold calc w/ no current sense
+Date: Wed,  2 Oct 2024 14:52:59 +0200
+Message-ID: <20241002125829.696254025@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +64,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Felix Fietkau <nbd@nbd.name>
+From: Artur Weber <aweber.kernel@gmail.com>
 
-[ Upstream commit 9b8d932053b8b45d650360b36f701cf0f9b6470e ]
+[ Upstream commit 3a3acf839b2cedf092bdd1ff65b0e9895df1656b ]
 
-Move the qid variable declaration further up
+Commit 223a3b82834f ("power: supply: max17042_battery: use VFSOC for
+capacity when no rsns") made it so that capacity on systems without
+current sensing would be read from VFSOC instead of RepSOC. However,
+the SOC threshold calculation still read RepSOC to get the SOC
+regardless of the current sensing option state.
 
-Fixes: b473c0e47f04 ("wifi: mt76: mt7603: fix tx queue of loopback packets")
-Link: https://patch.msgid.link/20240827093011.18621-1-nbd@nbd.name
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fix this by applying the same conditional to determine which register
+should be read.
+
+This also seems to be the intended behavior as per the datasheet - SOC
+alert config value in MiscCFG on setups without current sensing is set
+to a value of 0b11, indicating SOC alerts being generated based on
+VFSOC, instead of 0b00 which indicates SOC alerts being generated based
+on RepSOC.
+
+This fixes an issue on the Galaxy S3/Midas boards, where the alert
+interrupt would be constantly retriggered, causing high CPU usage
+on idle (around ~12%-15%).
+
+Fixes: e5f3872d2044 ("max17042: Add support for signalling change in SOC")
+Signed-off-by: Artur Weber <aweber.kernel@gmail.com>
+Reviewed-by: Henrik Grimler <henrik@grimler.se>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20240817-max17042-soc-threshold-fix-v1-1-72b45899c3cc@gmail.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7603/dma.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/power/supply/max17042_battery.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7603/dma.c b/drivers/net/wireless/mediatek/mt76/mt7603/dma.c
-index 14304b0637158..e238161dfaa97 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7603/dma.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7603/dma.c
-@@ -29,7 +29,7 @@ mt7603_rx_loopback_skb(struct mt7603_dev *dev, struct sk_buff *skb)
- 	struct ieee80211_sta *sta;
- 	struct mt7603_sta *msta;
- 	struct mt76_wcid *wcid;
--	u8 tid = 0, hwq = 0;
-+	u8 qid, tid = 0, hwq = 0;
- 	void *priv;
- 	int idx;
- 	u32 val;
-@@ -57,7 +57,7 @@ mt7603_rx_loopback_skb(struct mt7603_dev *dev, struct sk_buff *skb)
- 	if (ieee80211_is_data_qos(hdr->frame_control)) {
- 		tid = *ieee80211_get_qos_ctl(hdr) &
- 			 IEEE80211_QOS_CTL_TAG1D_MASK;
--		u8 qid = tid_to_ac[tid];
-+		qid = tid_to_ac[tid];
- 		hwq = wmm_queue_map[qid];
- 		skb_set_queue_mapping(skb, qid);
- 	} else if (ieee80211_is_data(hdr->frame_control)) {
+diff --git a/drivers/power/supply/max17042_battery.c b/drivers/power/supply/max17042_battery.c
+index e7d37e422c3f6..496c3e1f2ee6d 100644
+--- a/drivers/power/supply/max17042_battery.c
++++ b/drivers/power/supply/max17042_battery.c
+@@ -853,7 +853,10 @@ static void max17042_set_soc_threshold(struct max17042_chip *chip, u16 off)
+ 	/* program interrupt thresholds such that we should
+ 	 * get interrupt for every 'off' perc change in the soc
+ 	 */
+-	regmap_read(map, MAX17042_RepSOC, &soc);
++	if (chip->pdata->enable_current_sense)
++		regmap_read(map, MAX17042_RepSOC, &soc);
++	else
++		regmap_read(map, MAX17042_VFSOC, &soc);
+ 	soc >>= 8;
+ 	soc_tr = (soc + off) << 8;
+ 	if (off < soc)
 -- 
 2.43.0
 
