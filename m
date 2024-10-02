@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-80470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E24E98DD91
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:50:41 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 617FF98DB24
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:28:21 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6107F1C239EF
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:50:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 2975C28138B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:28:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 560021D151E;
-	Wed,  2 Oct 2024 14:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0E181D0DFE;
+	Wed,  2 Oct 2024 14:23:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jlMKLOGo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iWG/Ob4p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1572A1D0799;
-	Wed,  2 Oct 2024 14:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D3101D096F;
+	Wed,  2 Oct 2024 14:23:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880466; cv=none; b=NZeYWXq1M6h7FUFHgk9BYPDcF9O6myTJsoZiG+CrrR5hbXEoqok6qv9hEHLMn7uQyIIWfe+ZR8TzhymD0BY8CTx/77FhYtv+6eddE2lTCLx06XZE9egDtckBoJYHL/y9t4sjeQUiwYTDWgWrJApOvyDQPRvhuiIsy3e62HcAqJc=
+	t=1727879009; cv=none; b=ZKqlSmp1fOxCB0Xel0WEu4q/yUd9lMCm3bfJxokosngEcKKkAI4Daoi/F4tyl15MIwOfPsmxPe3Oo4HvWiJVy8X7NO+g00FNgDunVqSFvHVpXmx13CKiSm9Dw7/bdUV8UaeW1YYo/Vyc/WSVQmLRwf7KYE38B3QQclBxfdGfhaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880466; c=relaxed/simple;
-	bh=p9ERjc5xT2JWmcwFExmXHuh1fD+kRle6aonBzSKfL0Y=;
+	s=arc-20240116; t=1727879009; c=relaxed/simple;
+	bh=QsD05c/kY0XfHpOA4kaKT2NOnbFWmJsYmJHuxz3tRbs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NFRf84klDrW8oz1NKdfkZyWhxSm2i89df63KJdGmfeNSe9CTn8VA+azOeg05Qk7UCoh8s/LhUjmyLPahJwexmK1Fla8WHrkLKvG+lt7MRmLt3HaCMvwZXYAZa6KhYMh4VS0oeVB3+2LAVt4XtZLnoJlizpi3OI75t8p+Pj+uSuM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jlMKLOGo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F27BC4CEC2;
-	Wed,  2 Oct 2024 14:47:45 +0000 (UTC)
+	 MIME-Version; b=Uk92pv4vmVqNLQwnPTh8clgl+FeeCkYiYDNJr1+k0I3IC09OR+T8jghpRFFT0pbMkysGjZcjNXFxxI6AxI7GpDVgTOMrLrerZoGJapKL81XVaJ16i27yT8xkyssLW8O6IjhHEEH8n+gf/csyjXFkXeucHKIMkqFEmI5fIy1apo8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iWG/Ob4p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9D1FC4CEC2;
+	Wed,  2 Oct 2024 14:23:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880466;
-	bh=p9ERjc5xT2JWmcwFExmXHuh1fD+kRle6aonBzSKfL0Y=;
+	s=korg; t=1727879009;
+	bh=QsD05c/kY0XfHpOA4kaKT2NOnbFWmJsYmJHuxz3tRbs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jlMKLOGoPZ2tncc4gXnceDmsFHeBnP/QpIlJYMOKE71HMDqAB87sJvc6MpDwwHVp8
-	 NRdGn/3yM8ZPtkusKUGPQmYEWg9zNoJDO1Nd4DEzYsinIpGlVaetUmxMQz4l88+6yP
-	 6W3mhI/9uysRiSOOwveIZ7nPBNCkseJWt5gyd9VU=
+	b=iWG/Ob4pPKzlwsEAxbPdOHnZQMO6tLHuxGXU8k2nNOSs3U1OXH+SSDNI8Hb0Oj8t0
+	 0D2iQsKZr1j//oRfOrJrBzjv37IMVzvJXDCrYVU/hsKbsiNC5b91ZsKZGYVg0BP78y
+	 90CxaTyXe7XsjLfJG8jbWAS+8NAKWfqLeegr9JgE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.6 436/538] USB: class: CDC-ACM: fix race between get_serial and set_serial
-Date: Wed,  2 Oct 2024 15:01:15 +0200
-Message-ID: <20241002125809.650230187@linuxfoundation.org>
+	stable@kernel.org,
+	Baokun Li <libaokun1@huawei.com>,
+	David Howells <dhowells@redhat.com>,
+	Christian Brauner <brauner@kernel.org>
+Subject: [PATCH 6.10 576/634] netfs: Delete subtree of fs/netfs when netfs module exits
+Date: Wed,  2 Oct 2024 15:01:16 +0200
+Message-ID: <20241002125833.850186790@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-commit b41c1fa155ba56d125885b0191aabaf3c508d0a3 upstream.
+commit 3c58a9575e02c2b90a3180007d57105ceaa7c246 upstream.
 
-TIOCGSERIAL is an ioctl. Thus it must be atomic. It returns
-two values. Racing with set_serial it can return an inconsistent
-result. The mutex must be taken.
+In netfs_init() or fscache_proc_init(), we create dentry under 'fs/netfs',
+but in netfs_exit(), we only delete the proc entry of 'fs/netfs' without
+deleting its subtree. This triggers the following WARNING:
 
-In terms of logic the bug is as old as the driver. In terms of
-code it goes back to the conversion to the get_serial and
-set_serial methods.
+==================================================================
+remove_proc_entry: removing non-empty directory 'fs/netfs', leaking at least 'requests'
+WARNING: CPU: 4 PID: 566 at fs/proc/generic.c:717 remove_proc_entry+0x160/0x1c0
+Modules linked in: netfs(-)
+CPU: 4 UID: 0 PID: 566 Comm: rmmod Not tainted 6.11.0-rc3 #860
+RIP: 0010:remove_proc_entry+0x160/0x1c0
+Call Trace:
+ <TASK>
+ netfs_exit+0x12/0x620 [netfs]
+ __do_sys_delete_module.isra.0+0x14c/0x2e0
+ do_syscall_64+0x4b/0x110
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+==================================================================
 
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Cc: stable <stable@kernel.org>
-Fixes: 99f75a1fcd865 ("cdc-acm: switch to ->[sg]et_serial()")
-Link: https://lore.kernel.org/r/20240912141916.1044393-1-oneukum@suse.com
+Therefore use remove_proc_subtree() instead of remove_proc_entry() to
+fix the above problem.
+
+Fixes: 7eb5b3e3a0a5 ("netfs, fscache: Move /proc/fs/fscache to /proc/fs/netfs and put in a symlink")
+Cc: stable@kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Link: https://lore.kernel.org/r/20240826113404.3214786-1-libaokun@huaweicloud.com
+Acked-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/class/cdc-acm.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/netfs/main.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/class/cdc-acm.c
-+++ b/drivers/usb/class/cdc-acm.c
-@@ -962,10 +962,12 @@ static int get_serial_info(struct tty_st
- 	struct acm *acm = tty->driver_data;
+--- a/fs/netfs/main.c
++++ b/fs/netfs/main.c
+@@ -138,7 +138,7 @@ static int __init netfs_init(void)
  
- 	ss->line = acm->minor;
-+	mutex_lock(&acm->port.mutex);
- 	ss->close_delay	= jiffies_to_msecs(acm->port.close_delay) / 10;
- 	ss->closing_wait = acm->port.closing_wait == ASYNC_CLOSING_WAIT_NONE ?
- 				ASYNC_CLOSING_WAIT_NONE :
- 				jiffies_to_msecs(acm->port.closing_wait) / 10;
-+	mutex_unlock(&acm->port.mutex);
- 	return 0;
- }
- 
+ error_fscache:
+ error_procfile:
+-	remove_proc_entry("fs/netfs", NULL);
++	remove_proc_subtree("fs/netfs", NULL);
+ error_proc:
+ 	mempool_exit(&netfs_subrequest_pool);
+ error_subreqpool:
+@@ -155,7 +155,7 @@ fs_initcall(netfs_init);
+ static void __exit netfs_exit(void)
+ {
+ 	fscache_exit();
+-	remove_proc_entry("fs/netfs", NULL);
++	remove_proc_subtree("fs/netfs", NULL);
+ 	mempool_exit(&netfs_subrequest_pool);
+ 	kmem_cache_destroy(netfs_subrequest_slab);
+ 	mempool_exit(&netfs_request_pool);
 
 
 
