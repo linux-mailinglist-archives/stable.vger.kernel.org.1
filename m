@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-78921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B61498D5A5
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:33:15 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25B3A98D92B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:09:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ADCADB221B0
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:33:12 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 57B761C2300C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:09:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B954E1D0BB1;
-	Wed,  2 Oct 2024 13:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB02E1D1E77;
+	Wed,  2 Oct 2024 14:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S/Ldf4Fz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q0Nwz9rC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E451D0786;
-	Wed,  2 Oct 2024 13:31:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68CB71D0B90;
+	Wed,  2 Oct 2024 14:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875917; cv=none; b=C6aPK2p6kEu6vbbZu4ydFiBoczXfkP+BoQ9Bepw+CgWHbEPdFarIaNI/bhTM3ozZ3BXQ2c9LY+SgEqP9zcEfmha2tKLO4M9iC4GgIKSwOhB5MvzSel6bzJRuB5KKUyxhnCeavHeBpZot824ywZYqgg1JOmJJGyYdygGgHRd+WTk=
+	t=1727877823; cv=none; b=oXVyFNNuVPFKyH14Nhc/QDM6nBxk6m9ifPFFtABLYk5e5//XIrplK5mzEBOVCCxmXSSL4HDTqmHI4ZNHEBMva03vhgqx5DMfiDbEK09py/fFuJOvGkDnCeL02fOe28f5DDs54hUjX8uoALEa4UhXY+xMXtdbQ5109cIgmgMb4GI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875917; c=relaxed/simple;
-	bh=tl8DgMf4GU1l7+tGjc4AzVmp/V7ICp6nQ6yj6XzWOtE=;
+	s=arc-20240116; t=1727877823; c=relaxed/simple;
+	bh=PtLEVSJoWZxw70scaMHKn5kg0VBeAA4VgXHH7CP3Kkg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Igb1ZWp0OfUuhwfVPMnyzF2zV6nidLUMmLc+CMXgoa9Gy8S/rDS4MtSLTPeAdqshOcZFKl3tBvx9iqVH4QavAJmyDQnPZxV7Bhs8Qi0n1fpsFoU+oQ2IZ8PUg7TwpLXrocfm1exc9REua5yJEL3MGfzUnP7bfrM6xjHSljd9Vvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S/Ldf4Fz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2C13C4CEC5;
-	Wed,  2 Oct 2024 13:31:56 +0000 (UTC)
+	 MIME-Version; b=tRYpqmAwR2WcSR+jSHKd+WbLkWUYTFyBbkgkekhRQ7NyW4hESM4GtHen9niUJCGRBQ5YKrIWqIGOdtLs+EpsfID3LGjQ4SWrWyPcqawgWXXGnd/Hb1usF4pG+eeEZGVITplo0Vrtvq2PhXAM0EXh3YOcp7ronaqnUKuvWIITyAQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q0Nwz9rC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88A2AC4CEC2;
+	Wed,  2 Oct 2024 14:03:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875917;
-	bh=tl8DgMf4GU1l7+tGjc4AzVmp/V7ICp6nQ6yj6XzWOtE=;
+	s=korg; t=1727877822;
+	bh=PtLEVSJoWZxw70scaMHKn5kg0VBeAA4VgXHH7CP3Kkg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S/Ldf4Fz3ibAPMPPTLE2bVjui3aHbd8T2BxhnDfxWKoJteQAdEwNblpvsxgSh2W9i
-	 YSE8xqwi8AUyDCrVG+qebPe4gsS7ubBVJ55ed/39CRfsdSW1aW0NjChaSt9sW67euR
-	 PHnQ1RwPrhhQOfbOjHU836sxqgg1gRKqAMBIKjEE=
+	b=Q0Nwz9rC4jURRSdTotRAS9I9SskSJd5vckpuULJaDsRCjpqc2o5huy/n9YgGJbsKV
+	 B7gfaHbn6DwaEMgyCy5Ky4PvYdEuawFEvJJdMteFfI9Qnm5Iw9rUrGZigO77oTTo9X
+	 aUr4AkUFpF0rTVQEj82MxLcyuJcdgPdphURP4+j8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Ambardar <tony.ambardar@gmail.com>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Geliang Tang <geliang@kernel.org>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Jason Gunthorpe <jgg@nvidia.com>,
+	Joerg Roedel <jroedel@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 266/695] selftests/bpf: Fix error compiling bpf_iter_setsockopt.c with musl libc
-Date: Wed,  2 Oct 2024 14:54:24 +0200
-Message-ID: <20241002125833.065562563@linuxfoundation.org>
+Subject: [PATCH 6.10 165/634] iommu/amd: Allocate the page table root using GFP_KERNEL
+Date: Wed,  2 Oct 2024 14:54:25 +0200
+Message-ID: <20241002125817.624369376@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,60 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Ambardar <tony.ambardar@gmail.com>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-[ Upstream commit 7b10f0c227ce3fa055d601f058dc411092a62a78 ]
+[ Upstream commit b0a6c883bcd42eeb0850135e529b34b64d57673c ]
 
-Existing code calls getsockname() with a 'struct sockaddr_in6 *' argument
-where a 'struct sockaddr *' argument is declared, yielding compile errors
-when building for mips64el/musl-libc:
+Domain allocation is always done under a sleepable context, the v1 path
+and other drivers use GFP_KERNEL already. Fix the v2 path to also use
+GFP_KERNEL.
 
-  bpf_iter_setsockopt.c: In function 'get_local_port':
-  bpf_iter_setsockopt.c:98:30: error: passing argument 2 of 'getsockname' from incompatible pointer type [-Werror=incompatible-pointer-types]
-     98 |         if (!getsockname(fd, &addr, &addrlen))
-        |                              ^~~~~
-        |                              |
-        |                              struct sockaddr_in6 *
-  In file included from .../netinet/in.h:10,
-                   from .../arpa/inet.h:9,
-                   from ./test_progs.h:17,
-                   from bpf_iter_setsockopt.c:5:
-  .../sys/socket.h:391:23: note: expected 'struct sockaddr * restrict' but argument is of type 'struct sockaddr_in6 *'
-    391 | int getsockname (int, struct sockaddr *__restrict, socklen_t *__restrict);
-        |                       ^
-  cc1: all warnings being treated as errors
-
-This compiled under glibc only because the argument is declared to be a
-"funky" transparent union which includes both types above. Explicitly cast
-the argument to allow compiling for both musl and glibc.
-
-Fixes: eed92afdd14c ("bpf: selftest: Test batching and bpf_(get|set)sockopt in bpf tcp iter")
-Signed-off-by: Tony Ambardar <tony.ambardar@gmail.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Geliang Tang <geliang@kernel.org>
-Link: https://lore.kernel.org/bpf/f41def0f17b27a23b1709080e4e3f37f4cc11ca9.1721713597.git.tony.ambardar@gmail.com
+Fixes: 0d571dcbe7c6 ("iommu/amd: Allocate page table using numa locality info")
+Reviewed-by: Vasant Hegde <vasant.hegde@amd.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lore.kernel.org/r/2-v2-831cdc4d00f3+1a315-amd_iopgtbl_jgg@nvidia.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/bpf_iter_setsockopt.c | 2 +-
+ drivers/iommu/amd/io_pgtable_v2.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/bpf_iter_setsockopt.c b/tools/testing/selftests/bpf/prog_tests/bpf_iter_setsockopt.c
-index b52ff8ce34db8..16bed9dd8e6a3 100644
---- a/tools/testing/selftests/bpf/prog_tests/bpf_iter_setsockopt.c
-+++ b/tools/testing/selftests/bpf/prog_tests/bpf_iter_setsockopt.c
-@@ -95,7 +95,7 @@ static unsigned short get_local_port(int fd)
- 	struct sockaddr_in6 addr;
- 	socklen_t addrlen = sizeof(addr);
+diff --git a/drivers/iommu/amd/io_pgtable_v2.c b/drivers/iommu/amd/io_pgtable_v2.c
+index 78ac37c5ccc1e..acfe79b326293 100644
+--- a/drivers/iommu/amd/io_pgtable_v2.c
++++ b/drivers/iommu/amd/io_pgtable_v2.c
+@@ -362,7 +362,7 @@ static struct io_pgtable *v2_alloc_pgtable(struct io_pgtable_cfg *cfg, void *coo
+ 	struct protection_domain *pdom = (struct protection_domain *)cookie;
+ 	int ias = IOMMU_IN_ADDR_BIT_SIZE;
  
--	if (!getsockname(fd, &addr, &addrlen))
-+	if (!getsockname(fd, (struct sockaddr *)&addr, &addrlen))
- 		return ntohs(addr.sin6_port);
+-	pgtable->pgd = iommu_alloc_page_node(pdom->nid, GFP_ATOMIC);
++	pgtable->pgd = iommu_alloc_page_node(pdom->nid, GFP_KERNEL);
+ 	if (!pgtable->pgd)
+ 		return NULL;
  
- 	return 0;
 -- 
 2.43.0
 
