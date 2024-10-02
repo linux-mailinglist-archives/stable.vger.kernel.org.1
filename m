@@ -1,128 +1,111 @@
-Return-Path: <stable+bounces-80586-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8641098E0CD
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 18:33:19 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A49198E0CC
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 18:33:17 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B74571C23D35
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:33:18 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 8C2E01C23E14
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:33:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ED241D0F6F;
-	Wed,  2 Oct 2024 16:29:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72A601D0F63;
+	Wed,  2 Oct 2024 16:29:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.co.uk header.i=andrew.shadura@collabora.co.uk header.b="HW86Wa3q"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="KjW9tEqU"
 X-Original-To: stable@vger.kernel.org
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EC4F747F;
-	Wed,  2 Oct 2024 16:29:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727886584; cv=pass; b=OyRLwn2ITvTVMJ07XJrfki0GEHSSsJMWOynfe2Vh6XT4LKd6VSqQmsd28Thukim2AMENiLyeoG0SzVAe7yrdx9+eW0ACFDDlW7RQKZW3m8sereFLutPAsKwdL4ThVLEsM82lKWPyTrvkx83hs/9sJ5Ek86pzC9WGBVpLbbfCqRM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727886584; c=relaxed/simple;
-	bh=J7Oty3o/K3RrC/jrJ9NeNcBCMFHtxP3Bq1EaNprdJ/M=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=uh2Apt8zELb1XE3jcciGRX8jChsWUL9xHYf+DKgowql59Gn9LS1QxMCWU2AIOLL60zJ/i0ecCHrpY/jj2XQyAJwtybjkOvVRPU+XDWV5hPJ16XShCLMB1sRGgxWM1g47L6YDMQOYOcMZBPdQ3kN35D7liFXpueHmE+hJ9vtP54Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.co.uk; spf=pass smtp.mailfrom=collabora.co.uk; dkim=pass (1024-bit key) header.d=collabora.co.uk header.i=andrew.shadura@collabora.co.uk header.b=HW86Wa3q; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.co.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.co.uk
-ARC-Seal: i=1; a=rsa-sha256; t=1727886564; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=EzOUeQicp6nxxQhp8BIUW2/cQFmML5GpWG66Fyi8va5IA+GNHqpnH3zLUocTfVkH4cksEXCXdXn/37x+PTfZZIv3dDqSd/8Aj90LAnVaux41dhRmS/yeZXbb/Wv9rNJEnLGI7Ekyn8oIrtuKyTWY8kH6hy1S7lWqTdEGOvoDV78=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1727886564; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=GD6WWExqoFLh8h4694B5y/62qjyl+p80bzUUEQu9+3g=; 
-	b=NdiTSMePjq0KiJSbLY9s1msX0rqSuSUOS4S+I3aXs1Z+EJyheeMn6nk/Pd5+Lf8CD7uON6c7TcImNM2pEwz6msfIWC0bfKGIhHpH54v72h/yUZAyvPCRXEbUV2HUFmsdYFpyrnqCwJU0NDc2xs8RcNHeeTHO/gP35LVqKdyQYwk=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.co.uk;
-	spf=pass  smtp.mailfrom=andrew.shadura@collabora.co.uk;
-	dmarc=pass header.from=<andrew.shadura@collabora.co.uk>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1727886564;
-	s=zoho; d=collabora.co.uk; i=andrew.shadura@collabora.co.uk;
-	h=Date:Date:From:From:To:To:Cc:Cc:Message-ID:In-Reply-To:References:Subject:Subject:MIME-Version:Content-Type:Content-Transfer-Encoding:Message-Id:Reply-To;
-	bh=GD6WWExqoFLh8h4694B5y/62qjyl+p80bzUUEQu9+3g=;
-	b=HW86Wa3qNg1aINouSYeGWLTtx1Dohez/BEZV3EudFYycK/UgLrjogPfyGuVkABs2
-	6gmx77o7IHkTj1810zz5T6AvXe+SCsDgnERleDkQe5jKYCrW0gd2NEcBsKYryJwtQM2
-	haPW4C/qlZtmf3Dxng9MVC1zDW8yNJnDhcMnAbPA=
-Received: from mail.zoho.com by mx.zohomail.com
-	with SMTP id 172788656284725.120871860829993; Wed, 2 Oct 2024 09:29:22 -0700 (PDT)
-Date: Wed, 02 Oct 2024 18:29:22 +0200
-From: Andrej Shadura <andrew.shadura@collabora.co.uk>
-To: "Nathan Chancellor" <nathan@kernel.org>
-Cc: "linux-bluetooth" <linux-bluetooth@vger.kernel.org>,
-	"Justin Stitt" <justinstitt@google.com>,
-	"llvm" <llvm@lists.linux.dev>, "kernel" <kernel@collabora.com>,
-	"George Burgess" <gbiv@chromium.org>,
-	"stable" <stable@vger.kernel.org>
-Message-ID: <1924e1095d0.c47411862290357.1483149348602527002@collabora.co.uk>
-In-Reply-To: <20241002152227.GA3292493@thelio-3990X>
-References: <20241002141217.663070-1-andrew.shadura@collabora.co.uk>
- <20241002152227.GA3292493@thelio-3990X>
-Subject: Re: [PATCH] Bluetooth: Fix type of len in
- rfcomm_sock_{bind,getsockopt_old}()
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 775271D0DC8
+	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 16:29:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727886583; cv=none; b=hpYoV0+mVBmbgW/8bdZbl42DNPXq0EHMQoG+SlnhDumhollzRah+E5zThytT6QkEcs5C0F1iez9iLgVjg28Okx9c2A2nvOO9kLQA5OfyzWZuuTvk4P6q61hvkelmR8LX1vGGhb2F3oR66iIYNO0MqX2AQdRFgD/Q8MHyQ6T+2FY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727886583; c=relaxed/simple;
+	bh=CMoKwG8R8J2MsM+C4uVX32WVizbzLVZfFLmQ54wp2qs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Aq/53E+JkTjAApmt+O28issFAAjfNjE/Sfk20STb5okQg2JtsXxnoBlL3B8YYS5qMSQv8P3d1tfSOlKrWrX8ZTATQy59RlOfvAVp3BMEpJ//LFxkZf3GKUl3nN/V3V09FVCUAFteETWK7oA+MwtBegpFec0WTdTehVljU1YjJu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=KjW9tEqU; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-37ccfba5df5so14345f8f.0
+        for <stable@vger.kernel.org>; Wed, 02 Oct 2024 09:29:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1727886579; x=1728491379; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=fg+/e9YtHNEG6y+1vE7Oi7vo7y3TqWerLMYj22PqEog=;
+        b=KjW9tEqUGW9dIDu4EPg5OxxA2zEQEN6pN7WgTSxhawpQj6KMxtnJ+a4e4ktzTOa06m
+         jVxT9HRWxGdrOWkkDdJkCWIOpaP0M+ESzUXHw9lj+/tcpecxuMOfrAfPFGjjZ954cX0B
+         oZqtMgWFwjsA3uS7ZvOnRcYAel4s2z9Ilu/1fk5wofseda4GUwN1wUi8Yxwrk9JeLSI0
+         rX2sZN9XkVMr1XAB6QRb/qwJo2gONSadKNNT55pM7Hz3sNNZZUwUISEMNEcSyZkfmQLv
+         kLkWr3mTyzMc+kvEUBDfgBg8bakPLuPzqNNJ/m4i3JBLTWLC5stOwNKDUFcjPNzAzCQi
+         lIXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727886579; x=1728491379;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fg+/e9YtHNEG6y+1vE7Oi7vo7y3TqWerLMYj22PqEog=;
+        b=kwZaCrYzXgvpRRVojsLJAPjUx/zYpA0oFScQ3fUqCBI8ymWDYG1rDjkuuPFy/hx77J
+         RkKL8JX09H4I7I3NgSo0a5TNueQbAWB8KitvYJ2tMbsarGSkGlMLSOHSbjz+eqjlmexu
+         uamXsHPNeStzzO3/ompOGzVwkjbEMGcAgP376pfmSTVK+N4f9Nm3QPIPeBrrS7Z/4fDu
+         xWLHC3ocogXbIYp1UuCD9t9Vl0j7nxHHN98moT+4pD/3zHDqsk4AG0J7ofue4ugIXJq5
+         chmg6FSKZZQzk7VEGhrNGUjG2MkHFJnM6eNq/Eb6sZb7Duadu00ZTek9z4O/d9aJnrF7
+         1jhg==
+X-Forwarded-Encrypted: i=1; AJvYcCVwcYP0gGesaqdiheOq9ZoSU44VijMZiKXfV5vcTkFU5u/ivLOkGhftDiY3rWGBLwDp4VgTQVM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzWFAqvQccJtjnSNgpTFMNhnaELARzhhKvuWcfxzTqORj+Jf8af
+	MZA9mqxOGsp1GhLL5uJiYtVHp14YBXwyFpUvuwH1NAO6GcU2NzVKAWdqsONr1Pg=
+X-Google-Smtp-Source: AGHT+IEM/qsAOpJxeBhxttCpk9GhkMAPV6cHAEtnkEsKZXgSRahxzIEONhMhcRG+3l48Mk5OA8r1Tw==
+X-Received: by 2002:adf:ef06:0:b0:374:c6af:165f with SMTP id ffacd0b85a97d-37cfb8b18b9mr2498980f8f.12.1727886579549;
+        Wed, 02 Oct 2024 09:29:39 -0700 (PDT)
+Received: from localhost ([196.207.164.177])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42f79eac7casm23168045e9.11.2024.10.02.09.29.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 02 Oct 2024 09:29:39 -0700 (PDT)
+Date: Wed, 2 Oct 2024 19:29:35 +0300
+From: Dan Carpenter <dan.carpenter@linaro.org>
+To: Vegard Nossum <vegard.nossum@oracle.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org,
+	pavel@denx.de, cengiz.can@canonical.com, mheyne@amazon.de,
+	mngyadam@amazon.com, kuntal.nayak@broadcom.com,
+	ajay.kaher@broadcom.com, zsm@chromium.org,
+	shivani.agarwal@broadcom.com,
+	Zhihao Cheng <chengzhihao1@huawei.com>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Eric Biggers <ebiggers@google.com>,
+	Richard Weinberger <richard@nod.at>
+Subject: Re: [PATCH RFC 6.6.y 01/15] ubifs: ubifs_symlink: Fix memleak of
+ inode->i_link in error path
+Message-ID: <58274759-8f53-475a-b80d-c3dc0740ade0@stanley.mountain>
+References: <20241002150606.11385-1-vegard.nossum@oracle.com>
+ <20241002150606.11385-2-vegard.nossum@oracle.com>
+ <5095e302-333e-4b8f-a6a5-c9ffc002c023@stanley.mountain>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-Importance: Medium
-User-Agent: Zoho Mail
-X-Mailer: Zoho Mail
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5095e302-333e-4b8f-a6a5-c9ffc002c023@stanley.mountain>
 
-Hi Nathan,
+On Wed, Oct 02, 2024 at 07:26:06PM +0300, Dan Carpenter wrote:
+> > Signed-off-by: Richard Weinberger <richard@nod.at>
+> > (cherry picked from commit 6379b44cdcd67f5f5d986b73953e99700591edfa)
+> 
+> There isn't really a point to doing a cherry-pick -x if the information is
+> already included at the top.  I am surprised that you're on cherry-picking from
 
-On 02/10/2024 17:22, Nathan Chancellor wrote:
-> Hi Andrej,
->=20
-> On Wed, Oct 02, 2024 at 04:12:17PM +0200, Andrej Shadura wrote:
->> Commit 9bf4e919ccad worked around an issue introduced after an innocuous
->> optimisation change in LLVM main:
->>
->>> len is defined as an 'int' because it is assigned from
->>> '__user int *optlen'. However, it is clamped against the result of
->>> sizeof(), which has a type of 'size_t' ('unsigned long' for 64-bit
->>> platforms). This is done with min_t() because min() requires compatible
->>> types, which results in both len and the result of sizeof() being caste=
-d
->>> to 'unsigned int', meaning len changes signs and the result of sizeof()
->>> is truncated. From there, len is passed to copy_to_user(), which has a
->>> third parameter type of 'unsigned long', so it is widened and changes
->>> signs again. This excessive casting in combination with the KCSAN
->>> instrumentation causes LLVM to fail to eliminate the __bad_copy_from()
->>> call, failing the build.
->>
->> The same issue occurs in rfcomm in functions rfcomm_sock_bind and
->> rfcomm_sock_getsockopt_old.
+s/on/not/
 
-> Was this found by inspection or is there an actual instance of the same
-> warning? For what it's worth, I haven't seen a warning from this file in
-> any of my build tests.
-
-We=E2=80=99ve seen build errors in rfcomm in the Chromium OS 4.14 kernel.
-
->> Change the type of len to size_t in both rfcomm_sock_bind and
->> rfcomm_sock_getsockopt_old and replace min_t() with min().
->>
->> Cc: stable@vger.kernel.org
->> Fixes: 9bf4e919ccad ("Bluetooth: Fix type of len in {l2cap,sco}_sock_get=
-sockopt_old()")
-
-> I am not sure that I totally agree with this Fixes tag since I did not
-> have a warning to fix but I guess it makes sense to help with
-> backporting.
-
-It=E2=80=99s a shame there isn=E2=80=99t a Complements: or Improves: tag :)
-
---=20
-Cheers,
-   Andrej
-
+> the 6.10.y tree, though.  Most stable patches are clean backports so it mostly
+> doesn't matter either way.
+> 
+> regards,
+> dan carpenter
 
