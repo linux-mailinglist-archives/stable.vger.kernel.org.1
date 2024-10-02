@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-79533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78899-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D93C98D8F1
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:07:09 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C4BD98D57C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:30:55 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B059C1F2492F
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:07:08 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C86AC288B7B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:30:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD7D71D151B;
-	Wed,  2 Oct 2024 14:02:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BD481CFECF;
+	Wed,  2 Oct 2024 13:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gW0yHPQg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UdZXqejw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C3A81D14F5;
-	Wed,  2 Oct 2024 14:02:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3949B29CE7;
+	Wed,  2 Oct 2024 13:30:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877721; cv=none; b=RB8K9GEw7v/9sxWl0qYZd9XiYcREEJhOoZ6pH74uDb8chmqWDb58SP5UiavRnQrjKvgw1h4oFBOP/tZSXS07XR02scLYkRRk3P3x/r/ba5Vnj0kKkikxO4U8a5Ab5OgMtipv79f8e7e/u/L1N1vywSaqzrKmsQcLcscWeFPdGEw=
+	t=1727875853; cv=none; b=dZ9nzCFndsamNh7RMb3BzHYU+4wZZjAeMDdLMzzv+gybG5Z/HcSBhDHvgLeWurasYM/bKjKttzmq+dp3fsyPLCQo1yStw64xtrpV6z5wwCLH3zMMKatl1lQrGdOTIwqb0PASCiXnTeD7WeAmoaCcxv+cHZAgQovJtL9D5xHGWiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877721; c=relaxed/simple;
-	bh=AveDACVDP6SeBeBWjvWhjg/RyktFIhmuVXJ58ztPOT8=;
+	s=arc-20240116; t=1727875853; c=relaxed/simple;
+	bh=vbhOrktH7oqk1Nv+9Me969dioR8tRjHt+qVGCdGMZZg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UxEV05SDAqEkZkcuyg+/E1Pyv4/FsPwexYDBDYqScLsb/QAX+MeLhuFwHtkwfThGznCOtKjsndOmQObquZIZqiPFHVLmka0QAx8W/2F1ndiWIkc0xa/pX3Tj5Kem8oCH+A3ZxwZxMwhbmJ3bkP+6Btjne0exUd+dIhSUyFv7EOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gW0yHPQg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 159EAC4CEC2;
-	Wed,  2 Oct 2024 14:02:00 +0000 (UTC)
+	 MIME-Version; b=sNDcVa+Mkqu1AOy29ia0U93U0eX62p4jYpplflT1EZu2a8SScd3myiV1Etoc/KOI/1Cy4kj77d5N+7MPPDcgIe7EQwNgikbWrBgx18ZiKS8L4LoVaVHz6p338jRe3OegbkqM2a/zE67FGv8HVgsaUwnjRcpPjwxc49Eo0St47Ow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UdZXqejw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B32C1C4CEC5;
+	Wed,  2 Oct 2024 13:30:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877721;
-	bh=AveDACVDP6SeBeBWjvWhjg/RyktFIhmuVXJ58ztPOT8=;
+	s=korg; t=1727875853;
+	bh=vbhOrktH7oqk1Nv+9Me969dioR8tRjHt+qVGCdGMZZg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gW0yHPQgowrhhJgQivqy/RvDZPKiBEV3QarMZMDhwQPqAdqnlk1lx2kKR6ErY+y20
-	 y+f/DiZV2WgM7iDxG8i8EpLGf8L++CescWuY2xMFR/tUoKZGlUERz/1a8qtBgEMjYR
-	 XkHOBk9n6zvGR6fhLdaqlEjreDau7Tp2355cv4bQ=
+	b=UdZXqejwk5Q4pB9d1uS5vhOnSqjNKPkPbQlm984NkbqJpoFfLDVYg/4YC+m3g/75A
+	 lHz+WFK6stjMVeoMpOeWbOrEwT5ul8xGQ1rfQeGufFQ4sC1rtbaySk9zw65Mg/hu+q
+	 Jb892cQ57TSjyvrCO7FPtDs1ysu1fST+1StU76XI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
+	Jason Gerecke <jason.gerecke@wacom.com>,
+	Joshua Dickens <joshua.dickens@wacom.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 140/634] reset: k210: fix OF node leak in probe() error path
-Date: Wed,  2 Oct 2024 14:54:00 +0200
-Message-ID: <20241002125816.632900162@linuxfoundation.org>
+Subject: [PATCH 6.11 243/695] HID: wacom: Support sequence numbers smaller than 16-bit
+Date: Wed,  2 Oct 2024 14:54:01 +0200
+Message-ID: <20241002125832.152772153@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Jason Gerecke <jason.gerecke@wacom.com>
 
-[ Upstream commit b14e40f5dc7cd0dd7e958010e6ca9ad32ff2ddad ]
+[ Upstream commit 359673ea3a203611b4f6d0f28922a4b9d2cfbcc8 ]
 
-Driver is leaking OF node reference on memory allocation failure.
-Acquire the OF node reference after memory allocation to fix this and
-keep it simple.
+The current dropped packet reporting assumes that all sequence numbers
+are 16 bits in length. This results in misleading "Dropped" messages if
+the hardware uses fewer bits. For example, if a tablet uses only 8 bits
+to store its sequence number, once it rolls over from 255 -> 0, the
+driver will still be expecting a packet "256". This patch adjusts the
+logic to reset the next expected packet to logical_minimum whenever
+it overflows beyond logical_maximum.
 
-Fixes: 5a2308da9f60 ("riscv: Add Canaan Kendryte K210 reset controller")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Link: https://lore.kernel.org/r/20240825-reset-cleanup-scoped-v1-2-03f6d834f8c0@linaro.org
-Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+Signed-off-by: Jason Gerecke <jason.gerecke@wacom.com>
+Tested-by: Joshua Dickens <joshua.dickens@wacom.com>
+Fixes: 6d09085b38e5 ("HID: wacom: Adding Support for new usages")
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/reset/reset-k210.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/hid/wacom_wac.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/reset/reset-k210.c b/drivers/reset/reset-k210.c
-index b62a2fd44e4e4..e77e4cca377dc 100644
---- a/drivers/reset/reset-k210.c
-+++ b/drivers/reset/reset-k210.c
-@@ -90,7 +90,7 @@ static const struct reset_control_ops k210_rst_ops = {
- static int k210_rst_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
--	struct device_node *parent_np = of_get_parent(dev->of_node);
-+	struct device_node *parent_np;
- 	struct k210_rst *ksr;
+diff --git a/drivers/hid/wacom_wac.c b/drivers/hid/wacom_wac.c
+index 2541fa2e0fa3b..0c8713fe0d179 100644
+--- a/drivers/hid/wacom_wac.c
++++ b/drivers/hid/wacom_wac.c
+@@ -2446,9 +2446,14 @@ static void wacom_wac_pen_event(struct hid_device *hdev, struct hid_field *field
+ 		wacom_wac->hid_data.barrelswitch3 = value;
+ 		return;
+ 	case WACOM_HID_WD_SEQUENCENUMBER:
+-		if (wacom_wac->hid_data.sequence_number != value)
+-			hid_warn(hdev, "Dropped %hu packets", (unsigned short)(value - wacom_wac->hid_data.sequence_number));
++		if (wacom_wac->hid_data.sequence_number != value) {
++			int sequence_size = field->logical_maximum - field->logical_minimum + 1;
++			int drop_count = (value - wacom_wac->hid_data.sequence_number) % sequence_size;
++			hid_warn(hdev, "Dropped %d packets", drop_count);
++		}
+ 		wacom_wac->hid_data.sequence_number = value + 1;
++		if (wacom_wac->hid_data.sequence_number > field->logical_maximum)
++			wacom_wac->hid_data.sequence_number = field->logical_minimum;
+ 		return;
+ 	}
  
- 	dev_info(dev, "K210 reset controller\n");
-@@ -99,6 +99,7 @@ static int k210_rst_probe(struct platform_device *pdev)
- 	if (!ksr)
- 		return -ENOMEM;
- 
-+	parent_np = of_get_parent(dev->of_node);
- 	ksr->map = syscon_node_to_regmap(parent_np);
- 	of_node_put(parent_np);
- 	if (IS_ERR(ksr->map))
 -- 
 2.43.0
 
