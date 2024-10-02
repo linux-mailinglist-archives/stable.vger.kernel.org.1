@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-80458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79960-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id B88CE98DD86
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:50:15 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2678D98DB15
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:27:41 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7ACD8283A66
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:50:14 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id A04491F20F6D
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:27:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57FCE1D0BAD;
-	Wed,  2 Oct 2024 14:47:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60BF41D12E0;
+	Wed,  2 Oct 2024 14:22:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jcE/H78x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UiS361Mj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16F076FB0;
-	Wed,  2 Oct 2024 14:47:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E7E21D097D;
+	Wed,  2 Oct 2024 14:22:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727880431; cv=none; b=Z1rePkfroWwwmjJuTlel5TG2FXJ6v5IUBPNpfFBWD5kDPz2tKCp/M9AJ2+X9rFQY5lMk1Bs+j8PFEdrD8xcch5DCsa3Wt13iNmkh7dgUorCNQxiuqL+Ftu2r34ToevKjNVc7U4F2Z6F4R+/ZLTr8WtX3Jgilde0hvATr0dzmd4Y=
+	t=1727878973; cv=none; b=gL0eM8Mu9RNxk21p8w+a+1Re8H5URIbr2s/2ZCWccoPFUXWMEzTfzg3CdfrYNE7+iKbwV9cBybgCuA258BODZ312O5pBPNwtdOoPTakE8B37ZsHlIeZzi76dc78jeRLAry9dmXxfluV2qaisLTkwhODdHDPYmX6wy3zxu5J0eno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727880431; c=relaxed/simple;
-	bh=cHn8HLwEXq6+zdLJj95QIx/voRjgDU/unaJqVFuDV/w=;
+	s=arc-20240116; t=1727878973; c=relaxed/simple;
+	bh=vnT2eGOaFD2H+9LFAtJxuKlHLvdxT+TIRmtctTJ9yJY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fpVKQhw3JZMnwjGFzGNYTL9+PW7w03MiYJTwTmXqnPVnXldoPdSxJchJvpG5bpKgXIU1qE4sPZGovwTKdYyFnatIRoAf79iVKWMNwL6wdEiKxMK+OBQnmSDpQFceLTDhtyv0KndmDhN7+kcHsfU+4bYFRXaEGANR7fKBzxqUgwE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jcE/H78x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97B0EC4CEC2;
-	Wed,  2 Oct 2024 14:47:10 +0000 (UTC)
+	 MIME-Version; b=KuV4cMfE20HXufO3e0rGNN99qkiyxaK8GOAd5zNXCkM1ui8eX0Y9rakgQBH8mPsGjNYhSfWXod6X7wfe/7wdPz8tv5ajiFfB1oCsflmJje7bT3eaW98hKkPCzMANt8pUHjoUMQtbjR5nOet05uUFhgUBn0lP8RGhIGOuCME6i2s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UiS361Mj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96CE5C4CEC2;
+	Wed,  2 Oct 2024 14:22:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727880431;
-	bh=cHn8HLwEXq6+zdLJj95QIx/voRjgDU/unaJqVFuDV/w=;
+	s=korg; t=1727878973;
+	bh=vnT2eGOaFD2H+9LFAtJxuKlHLvdxT+TIRmtctTJ9yJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jcE/H78x5wXMiLZo5XLWg7zZdP2PvSH8mQIucLyAc0DJhlJlUpbZDs6VaOcgE7Gm/
-	 vJQNWMJQXmGxj+lsgh4l+e9b+qGbSDWcwktrnPcM9apXi3k650KxQqX9UaTM1Yj7ip
-	 CGZ/LFk8GHE0DHQWnywme1k5Q2VyDO7NJ2AnZilk=
+	b=UiS361MjXGw8g6XgU1VBHrXRluRDGcTYXqN9SsLEBt8dEEKU+KTNnqIehrDlVoXd5
+	 invqGoQ0fZQYFfPkoClQUNNRskTWpC/497jqzD8qUC0ySactUvW9dCL4IVfITzktRC
+	 jvWkcAB1mlh6Bd9192YXOmzGqWFTU4tvVpJ1/Ihs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bitterblue Smith <rtl8821cerfe2@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>
-Subject: [PATCH 6.6 456/538] wifi: rtw88: 8822c: Fix reported RX band width
+	Maxim Levitsky <mlevitsk@redhat.com>,
+	Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.10 595/634] KVM: x86: Re-split x2APIC ICR into ICR+ICR2 for AMD (x2AVIC)
 Date: Wed,  2 Oct 2024 15:01:35 +0200
-Message-ID: <20241002125810.442472768@linuxfoundation.org>
+Message-ID: <20241002125834.598255189@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +63,165 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bitterblue Smith <rtl8821cerfe2@gmail.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit a71ed5898dfae68262f79277915d1dfe34586bc6 upstream.
+[ Upstream commit 73b42dc69be8564d4951a14d00f827929fe5ef79 ]
 
-"iw dev wlp2s0 station dump" shows incorrect rx bitrate:
+Re-introduce the "split" x2APIC ICR storage that KVM used prior to Intel's
+IPI virtualization support, but only for AMD.  While not stated anywhere
+in the APM, despite stating the ICR is a single 64-bit register, AMD CPUs
+store the 64-bit ICR as two separate 32-bit values in ICR and ICR2.  When
+IPI virtualization (IPIv on Intel, all AVIC flavors on AMD) is enabled,
+KVM needs to match CPU behavior as some ICR ICR writes will be handled by
+the CPU, not by KVM.
 
-tx bitrate:     866.7 MBit/s VHT-MCS 9 80MHz short GI VHT-NSS 2
-rx bitrate:     86.7 MBit/s VHT-MCS 9 VHT-NSS 1
+Add a kvm_x86_ops knob to control the underlying format used by the CPU to
+store the x2APIC ICR, and tune it to AMD vs. Intel regardless of whether
+or not x2AVIC is enabled.  If KVM is handling all ICR writes, the storage
+format for x2APIC mode doesn't matter, and having the behavior follow AMD
+versus Intel will provide better test coverage and ease debugging.
 
-This is because the RX band width is calculated incorrectly. Fix the
-calculation according to the phydm_rxsc_2_bw() function from the
-official drivers.
-
-After:
-
-tx bitrate:     866.7 MBit/s VHT-MCS 9 80MHz short GI VHT-NSS 2
-rx bitrate:     390.0 MBit/s VHT-MCS 9 80MHz VHT-NSS 1
-
-It also works correctly with the AP configured for 20 MHz and 40 MHz.
-
-Tested with RTL8822CE.
-
+Fixes: 4d1d7942e36a ("KVM: SVM: Introduce logic to (de)activate x2AVIC mode")
 Cc: stable@vger.kernel.org
-Fixes: e3037485c68e ("rtw88: new Realtek 802.11ac driver")
-Signed-off-by: Bitterblue Smith <rtl8821cerfe2@gmail.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/bca8949b-e2bd-4515-98fd-70d3049a0097@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Maxim Levitsky <mlevitsk@redhat.com>
+Cc: Suravee Suthikulpanit <suravee.suthikulpanit@amd.com>
+Link: https://lore.kernel.org/r/20240719235107.3023592-4-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw88/rtw8822c.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ arch/x86/include/asm/kvm_host.h |  2 ++
+ arch/x86/kvm/lapic.c            | 42 +++++++++++++++++++++++----------
+ arch/x86/kvm/svm/svm.c          |  2 ++
+ arch/x86/kvm/vmx/main.c         |  2 ++
+ 4 files changed, 36 insertions(+), 12 deletions(-)
 
---- a/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8822c.c
-@@ -2611,12 +2611,14 @@ static void query_phy_status_page1(struc
- 	else
- 		rxsc = GET_PHY_STAT_P1_HT_RXSC(phy_status);
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index a571f89db6977..e18399d08fb17 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1708,6 +1708,8 @@ struct kvm_x86_ops {
+ 	void (*enable_nmi_window)(struct kvm_vcpu *vcpu);
+ 	void (*enable_irq_window)(struct kvm_vcpu *vcpu);
+ 	void (*update_cr8_intercept)(struct kvm_vcpu *vcpu, int tpr, int irr);
++
++	const bool x2apic_icr_is_split;
+ 	const unsigned long required_apicv_inhibits;
+ 	bool allow_apicv_in_x2apic_without_x2apic_virtualization;
+ 	void (*refresh_apicv_exec_ctrl)(struct kvm_vcpu *vcpu);
+diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
+index 9392d6e3d8e37..523d02c50562f 100644
+--- a/arch/x86/kvm/lapic.c
++++ b/arch/x86/kvm/lapic.c
+@@ -2469,11 +2469,25 @@ int kvm_x2apic_icr_write(struct kvm_lapic *apic, u64 data)
+ 	data &= ~APIC_ICR_BUSY;
  
--	if (rxsc >= 9 && rxsc <= 12)
-+	if (rxsc == 0)
-+		bw = rtwdev->hal.current_band_width;
-+	else if (rxsc >= 1 && rxsc <= 8)
-+		bw = RTW_CHANNEL_WIDTH_20;
-+	else if (rxsc >= 9 && rxsc <= 12)
- 		bw = RTW_CHANNEL_WIDTH_40;
--	else if (rxsc >= 13)
--		bw = RTW_CHANNEL_WIDTH_80;
- 	else
--		bw = RTW_CHANNEL_WIDTH_20;
-+		bw = RTW_CHANNEL_WIDTH_80;
+ 	kvm_apic_send_ipi(apic, (u32)data, (u32)(data >> 32));
+-	kvm_lapic_set_reg64(apic, APIC_ICR, data);
++	if (kvm_x86_ops.x2apic_icr_is_split) {
++		kvm_lapic_set_reg(apic, APIC_ICR, data);
++		kvm_lapic_set_reg(apic, APIC_ICR2, data >> 32);
++	} else {
++		kvm_lapic_set_reg64(apic, APIC_ICR, data);
++	}
+ 	trace_kvm_apic_write(APIC_ICR, data);
+ 	return 0;
+ }
  
- 	channel = GET_PHY_STAT_P1_CHANNEL(phy_status);
- 	rtw_set_rx_freq_band(pkt_stat, channel);
++static u64 kvm_x2apic_icr_read(struct kvm_lapic *apic)
++{
++	if (kvm_x86_ops.x2apic_icr_is_split)
++		return (u64)kvm_lapic_get_reg(apic, APIC_ICR) |
++		       (u64)kvm_lapic_get_reg(apic, APIC_ICR2) << 32;
++
++	return kvm_lapic_get_reg64(apic, APIC_ICR);
++}
++
+ /* emulate APIC access in a trap manner */
+ void kvm_apic_write_nodecode(struct kvm_vcpu *vcpu, u32 offset)
+ {
+@@ -2491,7 +2505,7 @@ void kvm_apic_write_nodecode(struct kvm_vcpu *vcpu, u32 offset)
+ 	 * maybe-unecessary write, and both are in the noise anyways.
+ 	 */
+ 	if (apic_x2apic_mode(apic) && offset == APIC_ICR)
+-		WARN_ON_ONCE(kvm_x2apic_icr_write(apic, kvm_lapic_get_reg64(apic, APIC_ICR)));
++		WARN_ON_ONCE(kvm_x2apic_icr_write(apic, kvm_x2apic_icr_read(apic)));
+ 	else
+ 		kvm_lapic_reg_write(apic, offset, kvm_lapic_get_reg(apic, offset));
+ }
+@@ -3011,18 +3025,22 @@ static int kvm_apic_state_fixup(struct kvm_vcpu *vcpu,
+ 
+ 		/*
+ 		 * In x2APIC mode, the LDR is fixed and based on the id.  And
+-		 * ICR is internally a single 64-bit register, but needs to be
+-		 * split to ICR+ICR2 in userspace for backwards compatibility.
++		 * if the ICR is _not_ split, ICR is internally a single 64-bit
++		 * register, but needs to be split to ICR+ICR2 in userspace for
++		 * backwards compatibility.
+ 		 */
+-		if (set) {
++		if (set)
+ 			*ldr = kvm_apic_calc_x2apic_ldr(x2apic_id);
+ 
+-			icr = __kvm_lapic_get_reg(s->regs, APIC_ICR) |
+-			      (u64)__kvm_lapic_get_reg(s->regs, APIC_ICR2) << 32;
+-			__kvm_lapic_set_reg64(s->regs, APIC_ICR, icr);
+-		} else {
+-			icr = __kvm_lapic_get_reg64(s->regs, APIC_ICR);
+-			__kvm_lapic_set_reg(s->regs, APIC_ICR2, icr >> 32);
++		if (!kvm_x86_ops.x2apic_icr_is_split) {
++			if (set) {
++				icr = __kvm_lapic_get_reg(s->regs, APIC_ICR) |
++				      (u64)__kvm_lapic_get_reg(s->regs, APIC_ICR2) << 32;
++				__kvm_lapic_set_reg64(s->regs, APIC_ICR, icr);
++			} else {
++				icr = __kvm_lapic_get_reg64(s->regs, APIC_ICR);
++				__kvm_lapic_set_reg(s->regs, APIC_ICR2, icr >> 32);
++			}
+ 		}
+ 	}
+ 
+@@ -3219,7 +3237,7 @@ static int kvm_lapic_msr_read(struct kvm_lapic *apic, u32 reg, u64 *data)
+ 	u32 low;
+ 
+ 	if (reg == APIC_ICR) {
+-		*data = kvm_lapic_get_reg64(apic, APIC_ICR);
++		*data = kvm_x2apic_icr_read(apic);
+ 		return 0;
+ 	}
+ 
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index 0357f7af55966..6d5da700268a5 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -5051,6 +5051,8 @@ static struct kvm_x86_ops svm_x86_ops __initdata = {
+ 	.enable_nmi_window = svm_enable_nmi_window,
+ 	.enable_irq_window = svm_enable_irq_window,
+ 	.update_cr8_intercept = svm_update_cr8_intercept,
++
++	.x2apic_icr_is_split = true,
+ 	.set_virtual_apic_mode = avic_refresh_virtual_apic_mode,
+ 	.refresh_apicv_exec_ctrl = avic_refresh_apicv_exec_ctrl,
+ 	.apicv_post_state_restore = avic_apicv_post_state_restore,
+diff --git a/arch/x86/kvm/vmx/main.c b/arch/x86/kvm/vmx/main.c
+index 547fca3709feb..35c2c004dacd2 100644
+--- a/arch/x86/kvm/vmx/main.c
++++ b/arch/x86/kvm/vmx/main.c
+@@ -89,6 +89,8 @@ struct kvm_x86_ops vt_x86_ops __initdata = {
+ 	.enable_nmi_window = vmx_enable_nmi_window,
+ 	.enable_irq_window = vmx_enable_irq_window,
+ 	.update_cr8_intercept = vmx_update_cr8_intercept,
++
++	.x2apic_icr_is_split = false,
+ 	.set_virtual_apic_mode = vmx_set_virtual_apic_mode,
+ 	.set_apic_access_page_addr = vmx_set_apic_access_page_addr,
+ 	.refresh_apicv_exec_ctrl = vmx_refresh_apicv_exec_ctrl,
+-- 
+2.43.0
+
 
 
 
