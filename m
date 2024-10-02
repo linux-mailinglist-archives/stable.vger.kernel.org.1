@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-79750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CF0298DA05
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:16:44 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5352798DCB1
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:43:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 3FF601F27603
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:16:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 162A9282449
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:43:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9486E1D07BA;
-	Wed,  2 Oct 2024 14:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3201B1D26F0;
+	Wed,  2 Oct 2024 14:37:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SNua77rV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aSkb02zT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 529021D0414;
-	Wed,  2 Oct 2024 14:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E42E41D0E25;
+	Wed,  2 Oct 2024 14:37:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878361; cv=none; b=WPB5m+mep6QCGidaISxx64zdutre83Roz8lWY804GUoU9HCgY6P3VFVWl/CWR4uXy2bx9D7OOhCpRMmJDdYPGlzVacYIGi/znBjVUAiGs61H2DQuFGJ4f3r/cGEyGBf3rie10ghNNCHzNb2YooAzKnsFIBVK2iBs0FLqU98ZV6g=
+	t=1727879861; cv=none; b=jI4NiJbmrB205niEFFqlsiqm8aRlUgKYAJZbJxfcT0XWJlfuIAb5PGOEAjrbf089ruiEBDQ5mYs+BBQZSUiQz0T8p0iCIZviEHocvW4iPysGE9NxeD0hH7swsPruAd8KvR+9oVSgexS3zva80/EoSVtch/AJ29qEW3LA49eKUTc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878361; c=relaxed/simple;
-	bh=xPy/4wr9dze7gcPA45YFxNKEluRy5zZNlpmLOTBXZG8=;
+	s=arc-20240116; t=1727879861; c=relaxed/simple;
+	bh=kUjyTd0E2bexkUFSrz/NQSQIt4IHBxEeBJhxfC9LH5Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p7Y9ipHWC3Ah+VkD+wl9W24quI9UDAVez5xRM9bS1vCVfq/5uTZDQS73IPm1LdNPUiMm4R+fmAEBYrLejiWvUoFXzoszgYclsoBAximPH0/qC0pafBPAiKQ0aMNt+hk105ugHkrR+EtHMmakZb6Aw7R+NJMFKffize+PuOf/D+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SNua77rV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D18DFC4CEC2;
-	Wed,  2 Oct 2024 14:12:40 +0000 (UTC)
+	 MIME-Version; b=oZP8/sCRG8Eh5k4g8OA0mhFtSS2GUeANrcu2Qp3bN69+U1ZqNw7AtsL9T9o/JqLXfXZJukPhbUI8EHqghgpU3PorfebAp16kURgVaOvjQMfWkS/mh+/RgdCcNHF3HMmc1ySUYcIn0DINjISGdyu16dBbJjXwfJn06OUlD34Q+Vc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aSkb02zT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DBAEC4CEC2;
+	Wed,  2 Oct 2024 14:37:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878361;
-	bh=xPy/4wr9dze7gcPA45YFxNKEluRy5zZNlpmLOTBXZG8=;
+	s=korg; t=1727879860;
+	bh=kUjyTd0E2bexkUFSrz/NQSQIt4IHBxEeBJhxfC9LH5Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SNua77rV4dy/5AJADEXD0L8PSd+j3X97J4b6WnO+1bq8cHUE+jR2ZvzpIGXSZkkR0
-	 5S8sjV2AZP+99oxqGKXNNtNdUo0XX9QheXRW2NE0QYKpf+v1IqwKtje88loSmZnlpY
-	 IxokD5QLImAtaH0ormMkOJGvWuzn4jLYdbnAp7Ag=
+	b=aSkb02zTQFRNAag6DSWEvIaRp+/9WG3JtIWgtPdiUr+Nbs3WFM/E1b4gSL9qI4akI
+	 SN0Lehn3UstpBCFLNzy06sTYeIq8SIjiiq65BDluDA5VnulFXWGH1dQZfNU5QCtuIW
+	 Dc9qTyZq+6knyPqVraCk7JJ5FYyNdELWLuv5j0kU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michael Guralnik <michaelgur@nvidia.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Mel Gorman <mgorman@techsingularity.net>,
+	Ingo Molnar <mingo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 370/634] RDMA/mlx5: Drop redundant work canceling from clean_keys()
-Date: Wed,  2 Oct 2024 14:57:50 +0200
-Message-ID: <20241002125825.702836192@linuxfoundation.org>
+Subject: [PATCH 6.6 232/538] sched/numa: Document vma_numab_state fields
+Date: Wed,  2 Oct 2024 14:57:51 +0200
+Message-ID: <20241002125801.410016025@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Guralnik <michaelgur@nvidia.com>
+From: Mel Gorman <mgorman@techsingularity.net>
 
-[ Upstream commit 30e6bd8d3b5639f8f4261e5e6c0917ce264b8dc2 ]
+[ Upstream commit 9ae5c00ea2e600a8b823f9b95606dd244f3096bf ]
 
-The canceling of dealyed work in clean_keys() is a leftover from years
-back and was added to prevent races in the cleanup process of MR cache.
-The cleanup process was rewritten a few years ago and the canceling of
-delayed work and flushing of workqueue was added before the call to
-clean_keys().
+Document the intended usage of the fields.
 
-Signed-off-by: Michael Guralnik <michaelgur@nvidia.com>
-Link: https://patch.msgid.link/943d21f5a9dba7b98a3e1d531e3561ffe9745d71.1725362530.git.leon@kernel.org
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Stable-dep-of: 7ebb00cea49d ("RDMA/mlx5: Fix MR cache temp entries cleanup")
+[ mingo: Reformatted to take less vertical space & tidied it up. ]
+
+Signed-off-by: Mel Gorman <mgorman@techsingularity.net>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://lore.kernel.org/r/20231010083143.19593-2-mgorman@techsingularity.net
+Stable-dep-of: f22cde4371f3 ("sched/numa: Fix the vma scan starving issue")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/mlx5/mr.c | 1 -
- 1 file changed, 1 deletion(-)
+ include/linux/mm_types.h | 21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
-diff --git a/drivers/infiniband/hw/mlx5/mr.c b/drivers/infiniband/hw/mlx5/mr.c
-index b3a8dc9465c04..842e218cd0b5e 100644
---- a/drivers/infiniband/hw/mlx5/mr.c
-+++ b/drivers/infiniband/hw/mlx5/mr.c
-@@ -779,7 +779,6 @@ static void clean_keys(struct mlx5_ib_dev *dev, struct mlx5_cache_ent *ent)
- {
- 	u32 mkey;
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index ba25777ec0a71..b53a13d15bbae 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -551,8 +551,29 @@ struct vma_lock {
+ };
  
--	cancel_delayed_work(&ent->dwork);
- 	spin_lock_irq(&ent->mkeys_queue.lock);
- 	while (ent->mkeys_queue.ci) {
- 		mkey = pop_mkey_locked(ent);
+ struct vma_numab_state {
++	/*
++	 * Initialised as time in 'jiffies' after which VMA
++	 * should be scanned.  Delays first scan of new VMA by at
++	 * least sysctl_numa_balancing_scan_delay:
++	 */
+ 	unsigned long next_scan;
++
++	/*
++	 * Time in jiffies when access_pids[] is reset to
++	 * detect phase change behaviour:
++	 */
+ 	unsigned long next_pid_reset;
++
++	/*
++	 * Approximate tracking of PIDs that trapped a NUMA hinting
++	 * fault. May produce false positives due to hash collisions.
++	 *
++	 *   [0] Previous PID tracking
++	 *   [1] Current PID tracking
++	 *
++	 * Window moves after next_pid_reset has expired approximately
++	 * every VMA_PID_RESET_PERIOD jiffies:
++	 */
+ 	unsigned long access_pids[2];
+ };
+ 
 -- 
 2.43.0
 
