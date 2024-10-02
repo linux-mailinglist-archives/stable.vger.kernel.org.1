@@ -1,67 +1,56 @@
-Return-Path: <stable+bounces-80256-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 756A698DCA9
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:43:40 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7331F98DA0C
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:16:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 044E61F2813E
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:43:40 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 35A3A286AF0
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:16:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D14191D26E7;
-	Wed,  2 Oct 2024 14:37:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C93361D097D;
+	Wed,  2 Oct 2024 14:13:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tzuPaIa7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t4tagYUU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F4A71D0B99;
-	Wed,  2 Oct 2024 14:37:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A0A21CF5FB;
+	Wed,  2 Oct 2024 14:13:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879837; cv=none; b=ZRtqwW96k0weNbnPSain9YD0JBm6yn98YfhBCUWFSko8uBxsmEFqzi9kaKjQ6wd/SwvttJOhWMIfGaJeodcI/7vjqhJzSblGe3+G/fnZ6W6VJenOyRYWGBjs1aVp2GBgj9tZ5cReHOvugYprA+x3JsPjgxiEKU6iKASmG82hz4s=
+	t=1727878382; cv=none; b=EFPNjcN+xh/YH1bG+ppPR896mJ4cUarTFhF7DsZuGagW8f77C4esfxnXOUMZW2+Ps93xc9FyDURm0UYb1VP72MUraWSGjiLG7BTKQeJ2jzfGSiYt0imtFzMXXFXA8DA/77m33YoaRXt8hNVs/qiz2GRr2GvaOqeVgs43LknFeQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879837; c=relaxed/simple;
-	bh=ZTj4a74VmxmBlFmSLE6t2dTMkRM+y7mY+NIzzMSb+Iw=;
+	s=arc-20240116; t=1727878382; c=relaxed/simple;
+	bh=IX7FOI7w/CsS9RnBEP1WfHdtnBPeVdUVK5+4B+QXWf0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RsvMjODLjzYXNJsRfE2onTCQpNcxJQMfXZEF18Z2anV2nj7+MhNfq7pUW/q9j2DAiMC81iaBR/+7I/aB1/kvi5rJC8k+iromgwyi5ws/GXqjRTbXbt0krMofwab7Z6rW9izLajhE2/rp56b1OszXFLSqZQ0p3okkUlw5EMDjKMo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tzuPaIa7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCDADC4CEC2;
-	Wed,  2 Oct 2024 14:37:16 +0000 (UTC)
+	 MIME-Version; b=q3fusiIEKy0k5l836Y0XGzW5N5XJvXVuYl0L6adFKaTKzBs/bPTfo2E4PodPJLDjXvqB0AKR2AYU2KR1qsBUQdqKdOLE4ROzDV37ZX3/Jxa+RcchDvb31oT04VRA2IfF/+kwBVOzMhJqSEe28qqxUgAJBVuUFgYH23g6RHIhQ5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t4tagYUU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEA6FC4CEC2;
+	Wed,  2 Oct 2024 14:13:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879837;
-	bh=ZTj4a74VmxmBlFmSLE6t2dTMkRM+y7mY+NIzzMSb+Iw=;
+	s=korg; t=1727878382;
+	bh=IX7FOI7w/CsS9RnBEP1WfHdtnBPeVdUVK5+4B+QXWf0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tzuPaIa7NkuKZM70wp23MNrsn9Yw+YlaHXvIkllBOMmJFUJwVv3iQDbmeW0lHCERl
-	 0/0yZLJE8XiHoHtuarl6EeQY56dHcNueDzQ8PpjvRUps6+6BJAs9ZyseGH5poIRf6z
-	 TVU2dyuR/IfUtHrP5Z0kzrvB1/VRTwUfmu39DuUw=
+	b=t4tagYUUaTbajuGYBIsQQGDeSHYW+nJLsQMoVMuaJhbMrWaYYEHj5aUvFxz4RKGAS
+	 W7+0lZseSen8hBrcB5RlqG8yMGZj8UOWMeKJoYkR9saku+NXkrNcW28Q9HYpVKblxL
+	 q7e+rYE7sPrqQ8IYB+GvMW2QKuTTKvpfDFPBYG08=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Jihong <yangjihong@bytedance.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	David Ahern <dsa@cumulusnetworks.com>,
-	Ian Rogers <irogers@google.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	James Clark <james.clark@arm.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Arnaldo Carvalho de Melo <acme@redhat.com>,
+	Guangwu Zhang <guazhang@redhat.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 255/538] perf sched timehist: Fixed timestamp error when unable to confirm event sched_in time
+Subject: [PATCH 6.10 394/634] crypto: caam - Pad SG length when allocating hash edesc
 Date: Wed,  2 Oct 2024 14:58:14 +0200
-Message-ID: <20241002125802.323179149@linuxfoundation.org>
+Message-ID: <20241002125826.656025713@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -73,100 +62,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Jihong <yangjihong@bytedance.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 39c243411bdb8fb35777adf49ee32549633c4e12 ]
+[ Upstream commit 5124bc96162667766f6120b19f57a640c2eccb2a ]
 
-If sched_in event for current task is not recorded, sched_in timestamp
-will be set to end_time of time window interest, causing an error in
-timestamp show. In this case, we choose to ignore this event.
+Because hardware will read in multiples of 4 SG entries, ensure
+the allocated length is always padded.  This was already done
+by some callers of ahash_edesc_alloc, but ahash_digest was conspicuously
+missing.
 
-Test scenario:
+In any case, doing it in the allocation function ensures that the
+memory is always there.
 
-  perf[1229608] does not record the first sched_in event, run time and sch delay are both 0
-
-  # perf sched timehist
-  Samples of sched_switch event do not have callchains.
-             time    cpu  task name                       wait time  sch delay   run time
-                          [tid/pid]                          (msec)     (msec)     (msec)
-  --------------- ------  ------------------------------  ---------  ---------  ---------
-   2090450.763231 [0000]  perf[1229608]                       0.000      0.000      0.000
-   2090450.763235 [0000]  migration/0[15]                     0.000      0.001      0.003
-   2090450.763263 [0001]  perf[1229608]                       0.000      0.000      0.000
-   2090450.763268 [0001]  migration/1[21]                     0.000      0.001      0.004
-   2090450.763302 [0002]  perf[1229608]                       0.000      0.000      0.000
-   2090450.763309 [0002]  migration/2[27]                     0.000      0.001      0.007
-   2090450.763338 [0003]  perf[1229608]                       0.000      0.000      0.000
-   2090450.763343 [0003]  migration/3[33]                     0.000      0.001      0.004
-
-Before:
-
-  arbitrarily specify a time window of interest, timestamp will be set to an incorrect value
-
-  # perf sched timehist --time 100,200
-  Samples of sched_switch event do not have callchains.
-             time    cpu  task name                       wait time  sch delay   run time
-                          [tid/pid]                          (msec)     (msec)     (msec)
-  --------------- ------  ------------------------------  ---------  ---------  ---------
-       200.000000 [0000]  perf[1229608]                       0.000      0.000      0.000
-       200.000000 [0001]  perf[1229608]                       0.000      0.000      0.000
-       200.000000 [0002]  perf[1229608]                       0.000      0.000      0.000
-       200.000000 [0003]  perf[1229608]                       0.000      0.000      0.000
-       200.000000 [0004]  perf[1229608]                       0.000      0.000      0.000
-       200.000000 [0005]  perf[1229608]                       0.000      0.000      0.000
-       200.000000 [0006]  perf[1229608]                       0.000      0.000      0.000
-       200.000000 [0007]  perf[1229608]                       0.000      0.000      0.000
-
- After:
-
-  # perf sched timehist --time 100,200
-  Samples of sched_switch event do not have callchains.
-             time    cpu  task name                       wait time  sch delay   run time
-                          [tid/pid]                          (msec)     (msec)     (msec)
-  --------------- ------  ------------------------------  ---------  ---------  ---------
-
-Fixes: 853b74071110bed3 ("perf sched timehist: Add option to specify time window of interest")
-Signed-off-by: Yang Jihong <yangjihong@bytedance.com>
-Acked-by: Namhyung Kim <namhyung@kernel.org>
-Cc: Adrian Hunter <adrian.hunter@intel.com>
-Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
-Cc: David Ahern <dsa@cumulusnetworks.com>
-Cc: Ian Rogers <irogers@google.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: James Clark <james.clark@arm.com>
-Cc: Jiri Olsa <jolsa@kernel.org>
-Cc: Kan Liang <kan.liang@linux.intel.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Link: https://lore.kernel.org/r/20240819024720.2405244-1-yangjihong@bytedance.com
-Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Reported-by: Guangwu Zhang <guazhang@redhat.com>
+Fixes: a5e5c13398f3 ("crypto: caam - fix S/G table passing page boundary")
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/perf/builtin-sched.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/crypto/caam/caamhash.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/perf/builtin-sched.c b/tools/perf/builtin-sched.c
-index 489a5ef2a25de..42185da0f000a 100644
---- a/tools/perf/builtin-sched.c
-+++ b/tools/perf/builtin-sched.c
-@@ -2633,9 +2633,12 @@ static int timehist_sched_change_event(struct perf_tool *tool,
- 	 * - previous sched event is out of window - we are done
- 	 * - sample time is beyond window user cares about - reset it
- 	 *   to close out stats for time window interest
-+	 * - If tprev is 0, that is, sched_in event for current task is
-+	 *   not recorded, cannot determine whether sched_in event is
-+	 *   within time window interest - ignore it
- 	 */
- 	if (ptime->end) {
--		if (tprev > ptime->end)
-+		if (!tprev || tprev > ptime->end)
- 			goto out;
+diff --git a/drivers/crypto/caam/caamhash.c b/drivers/crypto/caam/caamhash.c
+index fdd724228c2fa..25c02e2672585 100644
+--- a/drivers/crypto/caam/caamhash.c
++++ b/drivers/crypto/caam/caamhash.c
+@@ -708,6 +708,7 @@ static struct ahash_edesc *ahash_edesc_alloc(struct ahash_request *req,
+ 		       GFP_KERNEL : GFP_ATOMIC;
+ 	struct ahash_edesc *edesc;
  
- 		if (t > ptime->end)
++	sg_num = pad_sg_nents(sg_num);
+ 	edesc = kzalloc(struct_size(edesc, sec4_sg, sg_num), flags);
+ 	if (!edesc)
+ 		return NULL;
 -- 
 2.43.0
 
