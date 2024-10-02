@@ -1,56 +1,74 @@
-Return-Path: <stable+bounces-79569-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9AA898D92E
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:09:41 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7CDE98D5CC
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:34:18 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 969E21F23301
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:09:41 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 261461C221F6
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:34:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 733961D0B97;
-	Wed,  2 Oct 2024 14:03:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49EC61D0480;
+	Wed,  2 Oct 2024 13:33:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u/Uv2aGq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k1Ew9tg1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31CB91D0499;
-	Wed,  2 Oct 2024 14:03:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 087BB29CE7;
+	Wed,  2 Oct 2024 13:33:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877826; cv=none; b=Tf+tevFf3/AhFZARdnfAZ/YX7Q9k2ODIAgflE3idecm2mFmUmMHmdh468o8lkgWvNtu1O09To2BZtw+haO5zNWrZxW/qkz+FtsIFvO7ZS5RDtZ/+mu9DT0h5AgEEPMI98MENTvV+rg1q8Q5qwXS6y66/kFBUYXSO/oaqKMZ/MFM=
+	t=1727876022; cv=none; b=WI7iScrAHDqTOqQD3+XTXJXqn+nZ4u4qzlROjiyuRBAoYoItAE2XCgX8zAKArG+7uNKm7gbn39i+k0RO52nxjhz0XcCvVlQJ4mr93PpuSR/LzzkvXbtXk44TXUw9BBKYab0HYLlVF4XP1QAq76by7tJevxuX7p+g+pwkKVs4IMM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877826; c=relaxed/simple;
-	bh=vk3q1Szd9z+x6abnbe789c1Vitk7h/XqF3crGm2GBEk=;
+	s=arc-20240116; t=1727876022; c=relaxed/simple;
+	bh=VfHZmFZwdpKcGs1RWlWtUPja4H7FiI02TcDeywRLvkc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WdZ5WbciNG+BzttIp0QkCGuJxO7C0nl0zoXDkNzyq4D3laemdvQqAObPhh4o1zkLropx+Q+6hLkzRTDalFE6KVZtBlyBrA4ECxFAzpHnRPmkGFevpADCNEAQuu038hCwPEFk4vHGFu+0Hy0IbFuP5PYTq+9IGYDOfyTRzL3Mq1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u/Uv2aGq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72708C4CEC2;
-	Wed,  2 Oct 2024 14:03:45 +0000 (UTC)
+	 MIME-Version; b=gs8WMYIv1G5e9LUKHSof4HjBWq3PstF++N+E6HpAX/K8iqTdpKYfw4J21YR97M1jM60u3+4pkgHv8AvICancpEd73a/NdelXWB02q10dySLSBZyC/76rZO4QL2tC+HnOpfnYv8jl6dFzotcWz2DaAb6n9hmLnZBaK2KABZcZ2y4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k1Ew9tg1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55D1DC4CEC5;
+	Wed,  2 Oct 2024 13:33:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877825;
-	bh=vk3q1Szd9z+x6abnbe789c1Vitk7h/XqF3crGm2GBEk=;
+	s=korg; t=1727876021;
+	bh=VfHZmFZwdpKcGs1RWlWtUPja4H7FiI02TcDeywRLvkc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=u/Uv2aGqo44OeIomZV78U/LpiZhHDCPVqzaP11qHEG7Y17uS7W08RWqG1s/a9n5gj
-	 zi30iuxoUzX/KrT3Bkb0pO59LlOqEBxohBZCXx2+8bqqBKtfkuXOAyImOJ0kc7KPDj
-	 BWiG2SrIvd29hkREmk08YYYzXu2kxvfLLH0mDESE=
+	b=k1Ew9tg1yEQMnvaXnqbBZQqLo6ZbRHHLo7WbYc04d9fslulD5Ap6p7QuUbfLvQt8Q
+	 Zv8YmwZaLfytvRnKDEDCKAL5gZR52J5FMUqY6PITz6xAboTywOk7yNJ3vxnZrt3wNR
+	 gFevdZTK0jl4r+M6GQESNTjpuhdkwbRKYYexW/CY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Connor Abbott <cwabbott0@gmail.com>,
-	Rob Clark <robdclark@chromium.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 200/634] drm/msm: Dump correct dbgahb clusters on a750
+	Lasse Collin <lasse.collin@tukaani.org>,
+	Sam James <sam@gentoo.org>,
+	Krzysztof Kozlowski <krzk@kernel.org>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Joel Stanley <joel@jms.id.au>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Emil Renner Berthing <emil.renner.berthing@canonical.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Jubin Zhong <zhongjubin@huawei.com>,
+	Jules Maselbas <jmaselbas@zdiv.net>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Rui Li <me@lirui.org>,
+	Simon Glass <sjg@chromium.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Will Deacon <will@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 6.11 302/695] xz: cleanup CRC32 edits from 2018
 Date: Wed,  2 Oct 2024 14:55:00 +0200
-Message-ID: <20241002125818.999798826@linuxfoundation.org>
+Message-ID: <20241002125834.493577643@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,45 +80,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Connor Abbott <cwabbott0@gmail.com>
+From: Lasse Collin <lasse.collin@tukaani.org>
 
-[ Upstream commit d8c17d7aadc2463a395f9340f44c7c34399f1d48 ]
+[ Upstream commit 2ee96abef214550d9e92f5143ee3ac1fd1323e67 ]
 
-This was missed thanks to the family mixup fixed in the previous commit.
+In 2018, a dependency on <linux/crc32poly.h> was added to avoid
+duplicating the same constant in multiple files.  Two months later it was
+found to be a bad idea and the definition of CRC32_POLY_LE macro was moved
+into xz_private.h to avoid including <linux/crc32poly.h>.
 
-Fixes: f3f8207d8aed ("drm/msm: Add devcoredump support for a750")
-Signed-off-by: Connor Abbott <cwabbott0@gmail.com>
-Patchwork: https://patchwork.freedesktop.org/patch/607393/
-Signed-off-by: Rob Clark <robdclark@chromium.org>
+xz_private.h is a wrong place for it too.  Revert back to the upstream
+version which has the poly in xz_crc32_init() in xz_crc32.c.
+
+Link: https://lkml.kernel.org/r/20240721133633.47721-10-lasse.collin@tukaani.org
+Fixes: faa16bc404d7 ("lib: Use existing define with polynomial")
+Fixes: 242cdad873a7 ("lib/xz: Put CRC32_POLY_LE in xz_private.h")
+Signed-off-by: Lasse Collin <lasse.collin@tukaani.org>
+Reviewed-by: Sam James <sam@gentoo.org>
+Tested-by: Michael Ellerman <mpe@ellerman.id.au> (powerpc)
+Cc: Krzysztof Kozlowski <krzk@kernel.org>
+Cc: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: Joel Stanley <joel@jms.id.au>
+Cc: Albert Ou <aou@eecs.berkeley.edu>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Emil Renner Berthing <emil.renner.berthing@canonical.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Jubin Zhong <zhongjubin@huawei.com>
+Cc: Jules Maselbas <jmaselbas@zdiv.net>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>
+Cc: Paul Walmsley <paul.walmsley@sifive.com>
+Cc: Randy Dunlap <rdunlap@infradead.org>
+Cc: Rui Li <me@lirui.org>
+Cc: Simon Glass <sjg@chromium.org>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Will Deacon <will@kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ lib/xz/xz_crc32.c   | 2 +-
+ lib/xz/xz_private.h | 4 ----
+ 2 files changed, 1 insertion(+), 5 deletions(-)
 
-diff --git a/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c b/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
-index f2030e521a03a..0fcae53c0b140 100644
---- a/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
-@@ -663,10 +663,13 @@ static void a7xx_get_dbgahb_clusters(struct msm_gpu *gpu,
- 	if (adreno_gpu->info->family == ADRENO_7XX_GEN1) {
- 		dbgahb_clusters = gen7_0_0_sptp_clusters;
- 		dbgahb_clusters_size = ARRAY_SIZE(gen7_0_0_sptp_clusters);
--	} else {
--		BUG_ON(adreno_gpu->info->family > ADRENO_7XX_GEN3);
-+	} else if (adreno_gpu->info->family == ADRENO_7XX_GEN2) {
- 		dbgahb_clusters = gen7_2_0_sptp_clusters;
- 		dbgahb_clusters_size = ARRAY_SIZE(gen7_2_0_sptp_clusters);
-+	} else {
-+		BUG_ON(adreno_gpu->info->family != ADRENO_7XX_GEN3);
-+		dbgahb_clusters = gen7_9_0_sptp_clusters;
-+		dbgahb_clusters_size = ARRAY_SIZE(gen7_9_0_sptp_clusters);
- 	}
+diff --git a/lib/xz/xz_crc32.c b/lib/xz/xz_crc32.c
+index 88a2c35e1b597..5627b00fca296 100644
+--- a/lib/xz/xz_crc32.c
++++ b/lib/xz/xz_crc32.c
+@@ -29,7 +29,7 @@ STATIC_RW_DATA uint32_t xz_crc32_table[256];
  
- 	a6xx_state->dbgahb_clusters = state_kcalloc(a6xx_state,
+ XZ_EXTERN void xz_crc32_init(void)
+ {
+-	const uint32_t poly = CRC32_POLY_LE;
++	const uint32_t poly = 0xEDB88320;
+ 
+ 	uint32_t i;
+ 	uint32_t j;
+diff --git a/lib/xz/xz_private.h b/lib/xz/xz_private.h
+index bf1e94ec7873c..d9fd49b45fd75 100644
+--- a/lib/xz/xz_private.h
++++ b/lib/xz/xz_private.h
+@@ -105,10 +105,6 @@
+ #	endif
+ #endif
+ 
+-#ifndef CRC32_POLY_LE
+-#define CRC32_POLY_LE 0xedb88320
+-#endif
+-
+ /*
+  * Allocate memory for LZMA2 decoder. xz_dec_lzma2_reset() must be used
+  * before calling xz_dec_lzma2_run().
 -- 
 2.43.0
 
