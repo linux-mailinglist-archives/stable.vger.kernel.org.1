@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-80300-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79803-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id EAE1698DCD4
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:45:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E42698DA54
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:20:38 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 9D26D1F25A3D
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:45:00 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 159311F23465
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:20:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EBED1D07AD;
-	Wed,  2 Oct 2024 14:39:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4D9A1D0434;
+	Wed,  2 Oct 2024 14:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XPjo6yCi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a2txCbMI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF0731474BC;
-	Wed,  2 Oct 2024 14:39:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 624C61D1F4C;
+	Wed,  2 Oct 2024 14:15:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879969; cv=none; b=SpDAylu+vBAd6Zzf0cSUNSRJR5jvTWbgGVFJpMwDVrdNA0mapsFacqFkeu07tXWCh5JsztCswq46JfblXnPOX7LKxnlTFOVa2pJycS6fwXHG3j2Yem6O/Kj+0wI7t4Is0q3Uv0AyBgbXgf8nNBzs9pgDA1VX2dWXQSv3Pg/r8Mw=
+	t=1727878511; cv=none; b=gDoZykf73obzoHAwnoWGiGmjv1o7LnTlRDHppFCLohs/UI3dH845WyIJ+0T8OUpRcYTrUV5Lq1V78qNZyQTz1bA1I5QaDYi+8tqcHdAhAYGnnJo/gD1uSPVE5BoSHdRcwOAxzGsM9INDWLw4mw19e8Rr7P1/gdAbVX9886VyS7Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879969; c=relaxed/simple;
-	bh=eLrUp+KzKG5d1hJgcjuL0RAd6+ORZGOSXjPVfZHSieU=;
+	s=arc-20240116; t=1727878511; c=relaxed/simple;
+	bh=NQbJTZBTKNTTv/7t3bfk8Firio3m9GtAkr8jRWu433k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=deWhSZlR/1UVUUMqVlrYURpZpB3fBCfLOoqYczNyRFn0vxUzx4vUXJ4idxwPuM0GMSpKM8BSSi30zkzMR/BTANCCRpD6e03MP16U1jN6VKCIaI/nnz1ZaAEeq2Gkcx50y4EyzE6nmIQFU9SqE7NSIrDMlD+jHhoCPKgRstz/NdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XPjo6yCi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 761D1C4CEC2;
-	Wed,  2 Oct 2024 14:39:28 +0000 (UTC)
+	 MIME-Version; b=L7Ri7nGPeWw4ReEVXVAi7QCfwXSHpVc/cuCHKLGDkIbrNf1dtFqmrjv7t/ARLOshP7tS9emtO/GHMESdHcq6nA8Nyuu5BfzJKpl5U7tgmmzd3vUEIFvbt1vo2RXaT6WUk0VbR3ocXGDCJUkXBZMWsSd52ECuq3i7I5baVX1dLU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a2txCbMI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7639C4CECD;
+	Wed,  2 Oct 2024 14:15:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879968;
-	bh=eLrUp+KzKG5d1hJgcjuL0RAd6+ORZGOSXjPVfZHSieU=;
+	s=korg; t=1727878511;
+	bh=NQbJTZBTKNTTv/7t3bfk8Firio3m9GtAkr8jRWu433k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XPjo6yCil7ZC94FGG8JdHm46NMaCRqzjDx+Z42KnsQqwsgYJAbt4p4FcSxFjON52l
-	 2VgsXtKjqoHG59vdllPeh9NKNs02yUwIiTWBFgd71MFrtmdh8WLIY9MArQM4fEPQ6+
-	 UB3rwYURrOjfDwDxpYeb6ky2oqxoF81mhMYVzxNM=
+	b=a2txCbMIW650EDRscQFx+YHgS1HKWc96+NjiXOpUx7AuBGwpY+x2OjzS4yGGovcRM
+	 Fxn0bB/1z7njrLNFFzgobZ3ui8D9EpFstFsoPOORMycN3R/hB2zoap1hP8FDAUzm9t
+	 ke+rihbmJ+Sy67qomjdx6sUaAKz5urP9HQTZ+R2Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peng Fan <peng.fan@nxp.com>,
-	Daniel Baluta <daniel.baluta@nxp.com>,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
+	Christian Marangi <ansuelsmth@gmail.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 268/538] remoteproc: imx_rproc: Initialize workqueue earlier
+Subject: [PATCH 6.10 407/634] spi: airoha: fix dirmap_{read,write} operations
 Date: Wed,  2 Oct 2024 14:58:27 +0200
-Message-ID: <20241002125802.835977063@linuxfoundation.org>
+Message-ID: <20241002125827.174053501@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
-References: <20241002125751.964700919@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit 858e57c1d3dd7b92cc0fa692ba130a0a5d57e49d ]
+[ Upstream commit 2e6bbfe7b0c0607001b784082c2685b134174fac ]
 
-Initialize workqueue before requesting mailbox channel, otherwise if
-mailbox interrupt comes before workqueue ready, the imx_rproc_rx_callback
-will trigger issue.
+SPI_NFI_READ_FROM_CACHE_DONE bit must be written at the end of
+dirmap_read operation even if it is already set.
+In the same way, SPI_NFI_LOAD_TO_CACHE_DONE bit must be written at the
+end of dirmap_write operation even if it is already set.
+For this reason use regmap_write_bits() instead of regmap_set_bits().
+This patch fixes mtd_pagetest kernel module test.
 
-Fixes: 2df7062002d0 ("remoteproc: imx_proc: enable virtio/mailbox")
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Daniel Baluta <daniel.baluta@nxp.com>
-Link: https://lore.kernel.org/r/20240719-imx_rproc-v2-3-10d0268c7eb1@nxp.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Fixes: a403997c1201 ("spi: airoha: add SPI-NAND Flash controller driver")
+Tested-by: Christian Marangi <ansuelsmth@gmail.com>
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20240913-airoha-spi-fixes-v1-1-de2e74ed4664@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/imx_rproc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/spi/spi-airoha-snfi.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/remoteproc/imx_rproc.c b/drivers/remoteproc/imx_rproc.c
-index ac32b46b4e0f8..d68d4b22f528e 100644
---- a/drivers/remoteproc/imx_rproc.c
-+++ b/drivers/remoteproc/imx_rproc.c
-@@ -1134,6 +1134,8 @@ static int imx_rproc_probe(struct platform_device *pdev)
- 		goto err_put_rproc;
- 	}
+diff --git a/drivers/spi/spi-airoha-snfi.c b/drivers/spi/spi-airoha-snfi.c
+index 9d97ec98881cc..be3e4ac42153e 100644
+--- a/drivers/spi/spi-airoha-snfi.c
++++ b/drivers/spi/spi-airoha-snfi.c
+@@ -739,8 +739,13 @@ static ssize_t airoha_snand_dirmap_read(struct spi_mem_dirmap_desc *desc,
+ 	if (err)
+ 		return err;
  
-+	INIT_WORK(&priv->rproc_work, imx_rproc_vq_work);
-+
- 	ret = imx_rproc_xtr_mbox_init(rproc);
- 	if (ret)
- 		goto err_put_wkq;
-@@ -1152,8 +1154,6 @@ static int imx_rproc_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto err_put_scu;
+-	err = regmap_set_bits(as_ctrl->regmap_nfi, REG_SPI_NFI_SNF_STA_CTL1,
+-			      SPI_NFI_READ_FROM_CACHE_DONE);
++	/*
++	 * SPI_NFI_READ_FROM_CACHE_DONE bit must be written at the end
++	 * of dirmap_read operation even if it is already set.
++	 */
++	err = regmap_write_bits(as_ctrl->regmap_nfi, REG_SPI_NFI_SNF_STA_CTL1,
++				SPI_NFI_READ_FROM_CACHE_DONE,
++				SPI_NFI_READ_FROM_CACHE_DONE);
+ 	if (err)
+ 		return err;
  
--	INIT_WORK(&priv->rproc_work, imx_rproc_vq_work);
--
- 	if (rproc->state != RPROC_DETACHED)
- 		rproc->auto_boot = of_property_read_bool(np, "fsl,auto-boot");
+@@ -870,8 +875,13 @@ static ssize_t airoha_snand_dirmap_write(struct spi_mem_dirmap_desc *desc,
+ 	if (err)
+ 		return err;
+ 
+-	err = regmap_set_bits(as_ctrl->regmap_nfi, REG_SPI_NFI_SNF_STA_CTL1,
+-			      SPI_NFI_LOAD_TO_CACHE_DONE);
++	/*
++	 * SPI_NFI_LOAD_TO_CACHE_DONE bit must be written at the end
++	 * of dirmap_write operation even if it is already set.
++	 */
++	err = regmap_write_bits(as_ctrl->regmap_nfi, REG_SPI_NFI_SNF_STA_CTL1,
++				SPI_NFI_LOAD_TO_CACHE_DONE,
++				SPI_NFI_LOAD_TO_CACHE_DONE);
+ 	if (err)
+ 		return err;
  
 -- 
 2.43.0
