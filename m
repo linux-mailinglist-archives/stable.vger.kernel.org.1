@@ -1,59 +1,57 @@
-Return-Path: <stable+bounces-79857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80355-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0423898DAA1
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:24:14 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B34D98DD5D
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:48:53 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id C17F3282676
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:24:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id ED392B27428
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:46:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6183D1D07A0;
-	Wed,  2 Oct 2024 14:17:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C5611D14F7;
+	Wed,  2 Oct 2024 14:42:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QZVk/nob"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xqriVk1L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BBE81D1504;
-	Wed,  2 Oct 2024 14:17:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38C3E1D14F8;
+	Wed,  2 Oct 2024 14:42:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878670; cv=none; b=AxjcGCFNud3WLQ2ptlCbp6Wj1awlVUtiZZj0rk6/FstcHwSMgUUcDO5G4Y0dakvPlLEBiE9oRIvi/nxxHImzetK9QVj6OahCXSSs8Q6hnY+5hSIBzOcCX8WLt4/t4rXvg8pQ+2opGqAu0Dz3e/tSNXEr/XLORq0L9DY4y3iELRU=
+	t=1727880132; cv=none; b=akDqxLP8KHcvCqBRgW46aJ05pZtLLrBDURqNhl8y1DklqYcIiJoSzNy5G5Xu3FU8cuZ7mChydIsjeUIx50F+EyhIE8T1g6ctIxotcJxhSfq5DJjXspnxGCQNplC2jvYD0r807DkVOUkVFzE0+nGM90ubYYxJuNNyR547mM9Q5KY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878670; c=relaxed/simple;
-	bh=7ThO5c/c+qRVzEAvAGvxZOTiLCRCN6+3hyGlpc1NmwA=;
+	s=arc-20240116; t=1727880132; c=relaxed/simple;
+	bh=aNUfL5iJ20FvS6+iZohuwFWRq7wWyYLhwq1un2MZfwc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uhUCxk0L1xNxI5ImfYb6dz01C1MaiItM0W5PUukfvzKlcR+GtoRnHtr4PDO6QJ1idYgBscIU8bTOPGlxf4qd7jMjEU84XK9Rw2QICBR+Vb8WIpow/yt0plGeqy0eTETWhi2sCisfZ8uhzhcK4m7TWgnYF7NmIZVdtANgAbNpunY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QZVk/nob; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9695CC4CEC2;
-	Wed,  2 Oct 2024 14:17:49 +0000 (UTC)
+	 MIME-Version; b=u16BWr2B2IcUpK9PqKtTf9dakNYsNP98TZhnqGVFekWJdvzWO/zulX71UdMlzTEJaw0vd3OQtDn6xmk8MQlK4KSL75dJYkANp1KI2zkSwJmk96pOgV8ejNBhe8VQPTdXEZVIoySwmfYj+oYHf+GAfi8phnMsUu7rlCOK8xSFOco=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xqriVk1L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B389CC4CEC2;
+	Wed,  2 Oct 2024 14:42:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878670;
-	bh=7ThO5c/c+qRVzEAvAGvxZOTiLCRCN6+3hyGlpc1NmwA=;
+	s=korg; t=1727880132;
+	bh=aNUfL5iJ20FvS6+iZohuwFWRq7wWyYLhwq1un2MZfwc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QZVk/nob8xkNzV6xa0lyoDiKIKHbQnuYUsBDpi31OB82dLkMOgHl7aA4An1vRWpeI
-	 KYkGUPJoqQZ0T8uQ3uu7pc955nLsamzXmMf1iJyuMOtGAGzAgsUjfhWqqCD5m22Sru
-	 IMwQE8E1PUlxlSLBaPzL1rAjnBD7qc0bQ62yLwak=
+	b=xqriVk1LeOulyS5WG0dtHOcJxTTuQVz3fSSIlYBcRcyPAPWSx91yBUh4tsYJgD2f3
+	 Iwu6Kogw73hgMoz7Xp8fJdHK0QdpK/iEuqKlI2DEgcZscTjqp2tea3ZHac+aF1kN3l
+	 ooHY9xRwz3nf7M1hPLFNomkUYxjuMC6qFJ348eLA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mario Limonciello <mario.limonciello@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Chris Park <chris.park@amd.com>,
-	Leo Ma <hanghong.ma@amd.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>
-Subject: [PATCH 6.10 492/634] drm/amd/display: Add HDMI DSC native YCbCr422 support
-Date: Wed,  2 Oct 2024 14:59:52 +0200
-Message-ID: <20241002125830.520858054@linuxfoundation.org>
+	Guillaume Stols <gstols@baylibre.com>,
+	Nuno Sa <nuno.sa@analog.com>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 354/538] iio: adc: ad7606: fix standby gpio state to match the documentation
+Date: Wed,  2 Oct 2024 14:59:53 +0200
+Message-ID: <20241002125806.400978117@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,87 +63,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Ma <hanghong.ma@amd.com>
+From: Guillaume Stols <gstols@baylibre.com>
 
-commit 07bfa9cdbf3cd2daadfaaba0601f126f45951ffa upstream.
+[ Upstream commit 059fe4f8bbdf5cad212e1aeeb3e8968c80b9ff3b ]
 
-[WHY && HOW]
-For some HDMI OVT timing, YCbCr422 encoding fails at the DSC
-bandwidth check. The root cause is our DSC policy for timing
-doesn't account for HDMI YCbCr422 native support.
+The binding's documentation specifies that "As the line is active low, it
+should be marked GPIO_ACTIVE_LOW". However, in the driver, it was handled
+the opposite way. This commit sets the driver's behaviour in sync with the
+documentation
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Chris Park <chris.park@amd.com>
-Signed-off-by: Leo Ma <hanghong.ma@amd.com>
-Signed-off-by: Alex Hung <alex.hung@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 722407a4e8c0 ("staging:iio:ad7606: Use GPIO descriptor API")
+Signed-off-by: Guillaume Stols <gstols@baylibre.com>
+Reviewed-by: Nuno Sa <nuno.sa@analog.com>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c |    4 ++--
- drivers/gpu/drm/amd/display/dc/dc_dsc.h                     |    3 ++-
- drivers/gpu/drm/amd/display/dc/dsc/dc_dsc.c                 |    5 +++--
- 3 files changed, 7 insertions(+), 5 deletions(-)
+ drivers/iio/adc/ad7606.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
-@@ -1111,7 +1111,7 @@ static int compute_mst_dsc_configs_for_l
- 		params[count].num_slices_v = aconnector->dsc_settings.dsc_num_slices_v;
- 		params[count].bpp_overwrite = aconnector->dsc_settings.dsc_bits_per_pixel;
- 		params[count].compression_possible = stream->sink->dsc_caps.dsc_dec_caps.is_dsc_supported;
--		dc_dsc_get_policy_for_timing(params[count].timing, 0, &dsc_policy);
-+		dc_dsc_get_policy_for_timing(params[count].timing, 0, &dsc_policy, dc_link_get_highest_encoding_format(stream->link));
- 		if (!dc_dsc_compute_bandwidth_range(
- 				stream->sink->ctx->dc->res_pool->dscs[0],
- 				stream->sink->ctx->dc->debug.dsc_min_slice_height_override,
-@@ -1586,7 +1586,7 @@ static bool is_dsc_common_config_possibl
- {
- 	struct dc_dsc_policy dsc_policy = {0};
+diff --git a/drivers/iio/adc/ad7606.c b/drivers/iio/adc/ad7606.c
+index 8c66b1e364014..4d755ffc3f414 100644
+--- a/drivers/iio/adc/ad7606.c
++++ b/drivers/iio/adc/ad7606.c
+@@ -422,7 +422,7 @@ static int ad7606_request_gpios(struct ad7606_state *st)
+ 		return PTR_ERR(st->gpio_range);
  
--	dc_dsc_get_policy_for_timing(&stream->timing, 0, &dsc_policy);
-+	dc_dsc_get_policy_for_timing(&stream->timing, 0, &dsc_policy, dc_link_get_highest_encoding_format(stream->link));
- 	dc_dsc_compute_bandwidth_range(stream->sink->ctx->dc->res_pool->dscs[0],
- 				       stream->sink->ctx->dc->debug.dsc_min_slice_height_override,
- 				       dsc_policy.min_target_bpp * 16,
---- a/drivers/gpu/drm/amd/display/dc/dc_dsc.h
-+++ b/drivers/gpu/drm/amd/display/dc/dc_dsc.h
-@@ -100,7 +100,8 @@ uint32_t dc_dsc_stream_bandwidth_overhea
-  */
- void dc_dsc_get_policy_for_timing(const struct dc_crtc_timing *timing,
- 		uint32_t max_target_bpp_limit_override_x16,
--		struct dc_dsc_policy *policy);
-+		struct dc_dsc_policy *policy,
-+		const enum dc_link_encoding_format link_encoding);
+ 	st->gpio_standby = devm_gpiod_get_optional(dev, "standby",
+-						   GPIOD_OUT_HIGH);
++						   GPIOD_OUT_LOW);
+ 	if (IS_ERR(st->gpio_standby))
+ 		return PTR_ERR(st->gpio_standby);
  
- void dc_dsc_policy_set_max_target_bpp_limit(uint32_t limit);
+@@ -665,7 +665,7 @@ static int ad7606_suspend(struct device *dev)
  
---- a/drivers/gpu/drm/amd/display/dc/dsc/dc_dsc.c
-+++ b/drivers/gpu/drm/amd/display/dc/dsc/dc_dsc.c
-@@ -883,7 +883,7 @@ static bool setup_dsc_config(
+ 	if (st->gpio_standby) {
+ 		gpiod_set_value(st->gpio_range, 1);
+-		gpiod_set_value(st->gpio_standby, 0);
++		gpiod_set_value(st->gpio_standby, 1);
+ 	}
  
- 	memset(dsc_cfg, 0, sizeof(struct dc_dsc_config));
- 
--	dc_dsc_get_policy_for_timing(timing, options->max_target_bpp_limit_override_x16, &policy);
-+	dc_dsc_get_policy_for_timing(timing, options->max_target_bpp_limit_override_x16, &policy, link_encoding);
- 	pic_width = timing->h_addressable + timing->h_border_left + timing->h_border_right;
- 	pic_height = timing->v_addressable + timing->v_border_top + timing->v_border_bottom;
- 
-@@ -1156,7 +1156,8 @@ uint32_t dc_dsc_stream_bandwidth_overhea
- 
- void dc_dsc_get_policy_for_timing(const struct dc_crtc_timing *timing,
- 		uint32_t max_target_bpp_limit_override_x16,
--		struct dc_dsc_policy *policy)
-+		struct dc_dsc_policy *policy,
-+		const enum dc_link_encoding_format link_encoding)
- {
- 	uint32_t bpc = 0;
- 
+ 	return 0;
+-- 
+2.43.0
+
 
 
 
