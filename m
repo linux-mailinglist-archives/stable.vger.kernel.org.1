@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-78883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id B032D98D56A
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:30:08 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8AF598D892
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:02:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 67D2A1F21794
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:30:08 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 146251C22705
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:02:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB99D1D0436;
-	Wed,  2 Oct 2024 13:30:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E58091D1751;
+	Wed,  2 Oct 2024 13:59:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="buzDdNRi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VcUXefRb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A83451D0487;
-	Wed,  2 Oct 2024 13:30:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A49311D0786;
+	Wed,  2 Oct 2024 13:59:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875806; cv=none; b=sW4L5B3yqvH69Csg1EUlSUM3lriDFrlu3DGqIa0nXEYOnw/fjTNr2fhB8IHvXdN9Zho0KHOZR8dwQU2XYN+Q37X2uiGl5fk+rQ6H+1YKlOdu5xW7X9Y3sMvbgs1O0FazOBOjIJajt3ts3PZkoh4W78b81IVue34KcqyRUe8mx6E=
+	t=1727877566; cv=none; b=O0XlaNWXOvSaRbhPr/DlrZ0NsgB1pMdmFZ/e7Z8EbDyclMyhg2+Y7AAwBx9rZu8RVzzSW+dJ+uNQxBs+btLUh3/xwDrY2W4SBtckX/43b/arzD+YWexTyHdrZ4Q7Xx7usRm6ElbwYW/TjJflMmpgq40d0quT36NNZ/NHLxYq49w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875806; c=relaxed/simple;
-	bh=h1I6zwv5R7Qku4Up5vqcFx19fJpGwY5mZ+2SwUNOvjM=;
+	s=arc-20240116; t=1727877566; c=relaxed/simple;
+	bh=QZZRzQ+eNUCSlc9VDz+tf55kP2I/PWOsnVBdgsNEHBQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aQa6tQ0glVLq42DLJmUX5sc0qSAudKyQAoPH/j0ONY2YJime9wiSU0gd+pqSInmzWgpuiWFv9MUjJKhpVqC97HxFCz+9HlBNthTwxqJl9M+elcwXvTx3kMp/3QtUG1bAVe3UTabmgfN4rIS1D+pqgwH8yHcLbpF6DKKn/b0ljXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=buzDdNRi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2665DC4CEC5;
-	Wed,  2 Oct 2024 13:30:05 +0000 (UTC)
+	 MIME-Version; b=dERfXvJr/wY3s+iMtVzBDcO4cyf3suPx//ChRJ97LV0DQjXNMhV4BS2MHAOorICNmpFvXwerIz2lmfNd43z8blQQ9wHT9sngzU4plEk0Q8Rv8Th1/ssXVXQggtZnsgmG4oO5UhVSmY/50W+aMzmP6TOh4UG/ayehn6MQKiE5Rx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VcUXefRb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30984C4CEC2;
+	Wed,  2 Oct 2024 13:59:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875806;
-	bh=h1I6zwv5R7Qku4Up5vqcFx19fJpGwY5mZ+2SwUNOvjM=;
+	s=korg; t=1727877566;
+	bh=QZZRzQ+eNUCSlc9VDz+tf55kP2I/PWOsnVBdgsNEHBQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=buzDdNRii3V/i6tc5dRpy/VNfANblB4bluQQbcgfDQ8+JqpxLnWazD4qZG+/EVfGV
-	 gejYFDNux+JnZFLSWTg1w6sV0YwcbPCViQjIbl1VaEsmzlNL5ddf3elgxTsHuPFwXo
-	 0ouzYYkQ8/Ozel2pY7ssgCFWQJ7QIOKit7ooSmis=
+	b=VcUXefRbVdgWKl5G4tSpY91GHt8j/hLvYxqlCfgKKdHcq7UqjOjQ9m8/x/t+CLv7r
+	 OeuKiFWo6tjK6PaD/OnkEhmhiS6TzCUfLc04auoUul7MaD0kpn3irPVyp1g1QExye0
+	 W8t4nLWQCPLJZIaneBDW1xlhAyWE9HWLRE9TrXlY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeongjun Park <aha310510@gmail.com>,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
+	David Virag <virag.david003@gmail.com>,
+	Sam Protsenko <semen.protsenko@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 220/695] jfs: fix out-of-bounds in dbNextAG() and diAlloc()
+Subject: [PATCH 6.10 118/634] arm64: dts: exynos: exynos7885-jackpotlte: Correct RAM amount to 4GB
 Date: Wed,  2 Oct 2024 14:53:38 +0200
-Message-ID: <20241002125831.241671152@linuxfoundation.org>
+Message-ID: <20241002125815.770275836@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,70 +63,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: David Virag <virag.david003@gmail.com>
 
-[ Upstream commit e63866a475562810500ea7f784099bfe341e761a ]
+[ Upstream commit d281814b8f7a710a75258da883fb0dfe1329c031 ]
 
-In dbNextAG() , there is no check for the case where bmp->db_numag is
-greater or same than MAXAG due to a polluted image, which causes an
-out-of-bounds. Therefore, a bounds check should be added in dbMount().
+All known jackpotlte variants have 4GB of RAM, let's use it all.
+RAM was set to 3GB from a mistake in the vendor provided DTS file.
 
-And in dbNextAG(), a check for the case where agpref is greater than
-bmp->db_numag should be added, so an out-of-bounds exception should be
-prevented.
-
-Additionally, a check for the case where agno is greater or same than
-MAXAG should be added in diAlloc() to prevent out-of-bounds.
-
-Reported-by: Jeongjun Park <aha310510@gmail.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Fixes: 06874015327b ("arm64: dts: exynos: Add initial device tree support for Exynos7885 SoC")
+Signed-off-by: David Virag <virag.david003@gmail.com>
+Reviewed-by: Sam Protsenko <semen.protsenko@linaro.org>
+Link: https://lore.kernel.org/r/20240713180607.147942-3-virag.david003@gmail.com
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jfs/jfs_dmap.c | 4 ++--
- fs/jfs/jfs_imap.c | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ arch/arm64/boot/dts/exynos/exynos7885-jackpotlte.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
-index 5713994328cbc..0625d1c0d0649 100644
---- a/fs/jfs/jfs_dmap.c
-+++ b/fs/jfs/jfs_dmap.c
-@@ -187,7 +187,7 @@ int dbMount(struct inode *ipbmap)
- 	}
+diff --git a/arch/arm64/boot/dts/exynos/exynos7885-jackpotlte.dts b/arch/arm64/boot/dts/exynos/exynos7885-jackpotlte.dts
+index 47a389d9ff7d7..9d74fa6bfed9f 100644
+--- a/arch/arm64/boot/dts/exynos/exynos7885-jackpotlte.dts
++++ b/arch/arm64/boot/dts/exynos/exynos7885-jackpotlte.dts
+@@ -32,7 +32,7 @@
+ 		device_type = "memory";
+ 		reg = <0x0 0x80000000 0x3da00000>,
+ 		      <0x0 0xc0000000 0x40000000>,
+-		      <0x8 0x80000000 0x40000000>;
++		      <0x8 0x80000000 0x80000000>;
+ 	};
  
- 	bmp->db_numag = le32_to_cpu(dbmp_le->dn_numag);
--	if (!bmp->db_numag) {
-+	if (!bmp->db_numag || bmp->db_numag >= MAXAG) {
- 		err = -EINVAL;
- 		goto err_release_metapage;
- 	}
-@@ -652,7 +652,7 @@ int dbNextAG(struct inode *ipbmap)
- 	 * average free space.
- 	 */
- 	for (i = 0 ; i < bmp->db_numag; i++, agpref++) {
--		if (agpref == bmp->db_numag)
-+		if (agpref >= bmp->db_numag)
- 			agpref = 0;
- 
- 		if (atomic_read(&bmp->db_active[agpref]))
-diff --git a/fs/jfs/jfs_imap.c b/fs/jfs/jfs_imap.c
-index 1407feccbc2d0..a360b24ed320c 100644
---- a/fs/jfs/jfs_imap.c
-+++ b/fs/jfs/jfs_imap.c
-@@ -1360,7 +1360,7 @@ int diAlloc(struct inode *pip, bool dir, struct inode *ip)
- 	/* get the ag number of this iag */
- 	agno = BLKTOAG(JFS_IP(pip)->agstart, JFS_SBI(pip->i_sb));
- 	dn_numag = JFS_SBI(pip->i_sb)->bmap->db_numag;
--	if (agno < 0 || agno > dn_numag)
-+	if (agno < 0 || agno > dn_numag || agno >= MAXAG)
- 		return -EIO;
- 
- 	if (atomic_read(&JFS_SBI(pip->i_sb)->bmap->db_active[agno])) {
+ 	gpio-keys {
 -- 
 2.43.0
 
