@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-78766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB2EF98D4D5
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:24:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id AAC3498D4D9
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:24:56 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 72038284587
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:24:43 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 7164D28471D
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:24:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C39AD1D043E;
-	Wed,  2 Oct 2024 13:24:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E60A1D078D;
+	Wed,  2 Oct 2024 13:24:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l3fI3VtK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X00d+fEa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BF331D0434;
-	Wed,  2 Oct 2024 13:24:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B09161D0794;
+	Wed,  2 Oct 2024 13:24:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875468; cv=none; b=hVAAoFCem0X7g4AtgeUYjusLrZhxoyn+8WXBv/9JVPOSeSwKjNkOSq1KIg3jnfW7DzKSyCJjuVEGGqGzC9wwXkVRaBdRH/ZGaHP3UQDj7xxNgQ72XdpyrU9FEaKBOAA6nB7I+73gzxW3KDMF60vx8MJvwXdkk/bkYEt8bZgc+T4=
+	t=1727875474; cv=none; b=XBWIyRM3zxcrwNdSXm5myZ8XDTwAxQcY2sMI3IkAP0SaySg85fRnXFCAQWchKzNcDfNTgYLEMtKIo98VvUyzHFPLwHpY07f2EZkhkrlCCWzxoaIZZTqx1ENf38hEW3B/BajHGfDGe3cWEOWXhr1mgio2r4eUDB7XFyyq42f8IyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875468; c=relaxed/simple;
-	bh=Dv8K2/rC2JDN0N85iUXd6wcs6IunTrc8gSh8kedn858=;
+	s=arc-20240116; t=1727875474; c=relaxed/simple;
+	bh=w8NuzBhNwe8FyJeXm+JUYXqpiBRCG1UQ98+TgzLPt/w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OfhYssOayPHBWMRnrgcKT82WrccPkXpMKU9JXPpdOe4rVMQauIgYRHUP9y5txpWJ8OrF9vH49bA0myCA3H1VmGno7fE/XFORBlP8+enw3deT+vIf8ssmiSirtzROWoBQ6sqehqN1W17ROAeQQar0EnpDB2oqxctdk1AIu4g4DoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l3fI3VtK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0482FC4CECD;
-	Wed,  2 Oct 2024 13:24:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=mST9BQTtxuyk/YrQ+oTHxspf93eu6zUpza4/2tmu4thWPhcxRs/EhnAtTZneLVVT693Ric7cz51+i144amtrXuoN1jYuLrz0oviy/uPN8k+LUkIiCwCdXyzbdigFtoLkv/fszIRtzwY2D1OOOPzQUDjEsAf6M3Z2X7pxx+slC7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X00d+fEa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D369FC4CEC5;
+	Wed,  2 Oct 2024 13:24:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875468;
-	bh=Dv8K2/rC2JDN0N85iUXd6wcs6IunTrc8gSh8kedn858=;
+	s=korg; t=1727875474;
+	bh=w8NuzBhNwe8FyJeXm+JUYXqpiBRCG1UQ98+TgzLPt/w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l3fI3VtKvUuK0UmE0U8kNuBXQGIhlTI8yS5tk0Xk8cPBacmNzalDrr9r8DxEucSEo
-	 IQeVj7oVNj+yNa3NmNYyMt4B3C7zDcq5q9Lksu2ImvlPPYbwrSF6BhJRhiw6s0aC9A
-	 bwUK1kWvt6JQPUfPxVGU8M+6qfopmiPkKVg14vvY=
+	b=X00d+fEa3pJ79NDtmaGOwoym/0tmT27kkZlgXhwzVqFm1xFx2Z462TfRGr0Sc9zKG
+	 AOPcbWaOb9tPs7hPrrpAGQE6upHyOr/sghoEm1ygbBZ3ESguewJgEOwFtsZt3o8puh
+	 Bey2USPmRtsYHKNaseUXghFFx6nFL9guNzfi48VM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dries De Winter <ddewinter@synamedia.com>,
-	Maciej Fijalkowski <maciej.fijalkowski@intel.com>,
-	Magnus Karlsson <magnus.karlsson@intel.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Breno Leitao <leitao@debian.org>,
+	Daniel Borkmann <daniel@iogearbox.net>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 111/695] xsk: fix batch alloc API on non-coherent systems
-Date: Wed,  2 Oct 2024 14:51:49 +0200
-Message-ID: <20241002125826.903891059@linuxfoundation.org>
+Subject: [PATCH 6.11 112/695] netkit: Assign missing bpf_net_context
+Date: Wed,  2 Oct 2024 14:51:50 +0200
+Message-ID: <20241002125826.943560475@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
 References: <20241002125822.467776898@linuxfoundation.org>
@@ -63,86 +65,72 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
+From: Breno Leitao <leitao@debian.org>
 
-[ Upstream commit 4144a1059b47e821c82c3c82eb23a4c7312dce3a ]
+[ Upstream commit 157f29152b61ca41809dd7ead29f5733adeced19 ]
 
-In cases when synchronizing DMA operations is necessary,
-xsk_buff_alloc_batch() returns a single buffer instead of the requested
-count. This puts the pressure on drivers that use batch API as they have
-to check for this corner case on their side and take care of allocations
-by themselves, which feels counter productive. Let us improve the core
-by looping over xp_alloc() @max times when slow path needs to be taken.
+During the introduction of struct bpf_net_context handling for
+XDP-redirect, the netkit driver has been missed, which also requires it
+because NETKIT_REDIRECT invokes skb_do_redirect() which is accessing the
+per-CPU variables. Otherwise we see the following crash:
 
-Another issue with current interface, as spotted and fixed by Dries, was
-that when driver called xsk_buff_alloc_batch() with @max == 0, for slow
-path case it still allocated and returned a single buffer, which should
-not happen. By introducing the logic from first paragraph we kill two
-birds with one stone and address this problem as well.
+	BUG: kernel NULL pointer dereference, address: 0000000000000038
+	bpf_redirect()
+	netkit_xmit()
+	dev_hard_start_xmit()
 
-Fixes: 47e4075df300 ("xsk: Batched buffer allocation for the pool")
-Reported-and-tested-by: Dries De Winter <ddewinter@synamedia.com>
-Co-developed-by: Dries De Winter <ddewinter@synamedia.com>
-Signed-off-by: Dries De Winter <ddewinter@synamedia.com>
-Signed-off-by: Maciej Fijalkowski <maciej.fijalkowski@intel.com>
-Acked-by: Magnus Karlsson <magnus.karlsson@intel.com>
-Acked-by: Alexei Starovoitov <ast@kernel.org>
-Link: https://patch.msgid.link/20240911191019.296480-1-maciej.fijalkowski@intel.com
+Set the bpf_net_context before invoking netkit_xmit() program within the
+netkit driver.
+
+Fixes: 401cb7dae813 ("net: Reference bpf_redirect_info via task_struct on PREEMPT_RT.")
+Signed-off-by: Breno Leitao <leitao@debian.org>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Acked-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://patch.msgid.link/20240912155620.1334587-1-leitao@debian.org
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xdp/xsk_buff_pool.c | 25 ++++++++++++++++++-------
- 1 file changed, 18 insertions(+), 7 deletions(-)
+ drivers/net/netkit.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/xdp/xsk_buff_pool.c b/net/xdp/xsk_buff_pool.c
-index c0e0204b96304..b0f24ebd05f0b 100644
---- a/net/xdp/xsk_buff_pool.c
-+++ b/net/xdp/xsk_buff_pool.c
-@@ -623,20 +623,31 @@ static u32 xp_alloc_reused(struct xsk_buff_pool *pool, struct xdp_buff **xdp, u3
- 	return nb_entries;
+diff --git a/drivers/net/netkit.c b/drivers/net/netkit.c
+index 16789cd446e9e..3f4187102e773 100644
+--- a/drivers/net/netkit.c
++++ b/drivers/net/netkit.c
+@@ -65,6 +65,7 @@ static struct netkit *netkit_priv(const struct net_device *dev)
+ 
+ static netdev_tx_t netkit_xmit(struct sk_buff *skb, struct net_device *dev)
+ {
++	struct bpf_net_context __bpf_net_ctx, *bpf_net_ctx;
+ 	struct netkit *nk = netkit_priv(dev);
+ 	enum netkit_action ret = READ_ONCE(nk->policy);
+ 	netdev_tx_t ret_dev = NET_XMIT_SUCCESS;
+@@ -72,6 +73,7 @@ static netdev_tx_t netkit_xmit(struct sk_buff *skb, struct net_device *dev)
+ 	struct net_device *peer;
+ 	int len = skb->len;
+ 
++	bpf_net_ctx = bpf_net_ctx_set(&__bpf_net_ctx);
+ 	rcu_read_lock();
+ 	peer = rcu_dereference(nk->peer);
+ 	if (unlikely(!peer || !(peer->flags & IFF_UP) ||
+@@ -110,6 +112,7 @@ static netdev_tx_t netkit_xmit(struct sk_buff *skb, struct net_device *dev)
+ 		break;
+ 	}
+ 	rcu_read_unlock();
++	bpf_net_ctx_clear(bpf_net_ctx);
+ 	return ret_dev;
  }
  
--u32 xp_alloc_batch(struct xsk_buff_pool *pool, struct xdp_buff **xdp, u32 max)
-+static u32 xp_alloc_slow(struct xsk_buff_pool *pool, struct xdp_buff **xdp,
-+			 u32 max)
- {
--	u32 nb_entries1 = 0, nb_entries2;
-+	int i;
- 
--	if (unlikely(pool->dev && dma_dev_need_sync(pool->dev))) {
-+	for (i = 0; i < max; i++) {
- 		struct xdp_buff *buff;
- 
--		/* Slow path */
- 		buff = xp_alloc(pool);
--		if (buff)
--			*xdp = buff;
--		return !!buff;
-+		if (unlikely(!buff))
-+			return i;
-+		*xdp = buff;
-+		xdp++;
- 	}
- 
-+	return max;
-+}
-+
-+u32 xp_alloc_batch(struct xsk_buff_pool *pool, struct xdp_buff **xdp, u32 max)
-+{
-+	u32 nb_entries1 = 0, nb_entries2;
-+
-+	if (unlikely(pool->dev && dma_dev_need_sync(pool->dev)))
-+		return xp_alloc_slow(pool, xdp, max);
-+
- 	if (unlikely(pool->free_list_cnt)) {
- 		nb_entries1 = xp_alloc_reused(pool, xdp, max);
- 		if (nb_entries1 == max)
 -- 
 2.43.0
 
