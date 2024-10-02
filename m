@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-79794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80291-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37F5298DA3E
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:18:50 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F41998DCCB
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:44:47 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 6A4F11C2370C
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:18:49 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id C0F021C224B3
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:44:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DFFA1D26E0;
-	Wed,  2 Oct 2024 14:14:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C8E51D26F5;
+	Wed,  2 Oct 2024 14:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XiiizT7g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HqO3w3Qx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF7A31D26E3;
-	Wed,  2 Oct 2024 14:14:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3877F1D07B9;
+	Wed,  2 Oct 2024 14:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878484; cv=none; b=Y/rnJF5/FJVxFvv+mRs2glP5oy0UNljGdMjk7oTDj5NlaTStkCbV966iC2OOwnweAmSVvEGlxcGG7T3UtZXzQw8gVuH3oIO5BXnVTD/aIGlErLmb6pluIJsXineR5z9tHZ+v+PQch6QyXGcCra/S44Dus8Olpx0dFCKHYVIf5bc=
+	t=1727879941; cv=none; b=MsqaTLuFb4vTWwogHIsWhwUywORWHvNU+V1EUIWR2Xth9Vi3scOGjHPAiTjNnh2eBKi1qpqp63cvBz0+1ZRj+xUYZhGdEl3DNGKpGKVVfmvVR0BoW7jF8R/OlQoiezK8gR4nSmI+NQVIid71tcdrP5PV/BZH+a+yL1yowfdcENg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878484; c=relaxed/simple;
-	bh=Nu2XMGq6YKS5WrHQkuAvkYmrffSt/RHLGls796CqHbU=;
+	s=arc-20240116; t=1727879941; c=relaxed/simple;
+	bh=1CWD6j7vY4sqKQgWsRhMfCX1RY7eO6pTFqvJcSuLXJI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GnCLu+MNcG8WjMiMnMnZlCzAA1DyJH6kKfumlUsGa0ihN+R9rtApdYZ5DCuiD1RuANFJ7vn0zXPabYABRd84SW8+PiGqL8/ELW8e7mMV+we/BD0p+qyAAVrmx0+RtTePgb+IX3tJmi66fG6vabUQsHUibeKz3ye3FgJlJnjruKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XiiizT7g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 426EEC4CECD;
-	Wed,  2 Oct 2024 14:14:44 +0000 (UTC)
+	 MIME-Version; b=uqqoLIaVWbNrVrmcKZEnNWr6BvUpVChoAa7nLzIrXGr141CZtHzHPQPFAny3171crSls7akKYCMxCSOo4Fww15ff+vpKTNvaSpxxBPZc1aQJ4/j2NECgsDV+x1lrvojCykETjDVkh2ppNrTSUj2hr2JvGcWGIcYHgtdj6UZk6YA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HqO3w3Qx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88B32C4CEC2;
+	Wed,  2 Oct 2024 14:39:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878484;
-	bh=Nu2XMGq6YKS5WrHQkuAvkYmrffSt/RHLGls796CqHbU=;
+	s=korg; t=1727879941;
+	bh=1CWD6j7vY4sqKQgWsRhMfCX1RY7eO6pTFqvJcSuLXJI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XiiizT7gbX1artDUmPcV0yd/htKNWEa60y8A/iTPH8nsBS0ROZ/aPrC1AAuupPU3j
-	 wliYOHSzw69M53j0U9LjJt/n3AWYoloo1Nd86JbeJNKOCWSBsDPWGCJ+0PBCU9+qH9
-	 ALG9NvGpW2hSDMcK68ZurOal6ovTRV1pWVfCwkmA=
+	b=HqO3w3QxaN5BWPcS2/v/HONkX9qn5yGktLp/SKxdBs9ICDxqh7aMPn/Y1+de6xq6Q
+	 V0rN664pTxAbV9SjN95No89ipzWcoeUoUi9iAPlmg29zSPOrhqiDJ+bAiP/Yfe0rLV
+	 pxh3ph7S8AkGAmSNhOycSV1KubDAsETBViZQa7TA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	Yanfei Xu <yanfei.xu@intel.com>,
-	Alison Schofield <alison.schofield@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>,
+	Javier Carrasco <javier.carrasco.cruz@gmail.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 429/634] cxl/pci: Fix to record only non-zero ranges
+Subject: [PATCH 6.6 290/538] leds: pca995x: Fix device child node usage in pca995x_probe()
 Date: Wed,  2 Oct 2024 14:58:49 +0200
-Message-ID: <20241002125828.034721451@linuxfoundation.org>
+Message-ID: <20241002125803.704160018@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,68 +62,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yanfei Xu <yanfei.xu@intel.com>
+From: Javier Carrasco <javier.carrasco.cruz@gmail.com>
 
-[ Upstream commit 55e268694e8b07026c88191f9b6949b6887d9ce3 ]
+[ Upstream commit 82c5ada1f9d05902a4ccb926c7ce34e2fe699283 ]
 
-The function cxl_dvsec_rr_decode() retrieves and records DVSEC ranges
-into info->dvsec_range[], regardless of whether it is non-zero range,
-and the variable info->ranges indicates the number of non-zero ranges.
-However, in cxl_hdm_decode_init(), the validation for
-info->dvsec_range[] occurs in a for loop that iterates based on
-info->ranges. It may result in zero range to be validated but non-zero
-range not be validated, in turn, the number of allowed ranges is to be
-0. Address it by only record non-zero ranges.
+The current implementation accesses the `child` fwnode handle outside of
+device_for_each_child_node() without incrementing its refcount.
 
-This fix is not urgent as it requires a configuration that zeroes out
-the first dvsec range while populating the second. This has not been
-observed, but it is theoretically possible. If this gets picked up for
--stable, no harm done, but there is no urgency to backport.
+Add the missing call to `fwnode_handle_get(child)`.
 
-Fixes: 560f78559006 ("cxl/pci: Retrieve CXL DVSEC memory info")
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Signed-off-by: Yanfei Xu <yanfei.xu@intel.com>
-Reviewed-by: Alison Schofield <alison.schofield@intel.com>
-Link: https://patch.msgid.link/20240828084231.1378789-2-yanfei.xu@intel.com
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+The cleanup process where `child` is accessed is not right either
+because a single call to `fwnode_handle_put()` is carried out in case of
+an error, ignoring unasigned nodes at the point when the error happens.
+
+Keep `child` inside of the first loop, and use the helper pointer that
+receives references via `fwnode_handle_get()` to handle the child nodes
+within the second loop. Keeping `child` inside the first node has also
+the advantage that the scoped version of the loop can be used.
+
+Fixes: ee4e80b2962e ("leds: pca995x: Add support for PCA995X chips")
+Signed-off-by: Javier Carrasco <javier.carrasco.cruz@gmail.com>
+Link: https://lore.kernel.org/r/20240807-leds-pca995x-fix-fwnode-usage-v1-1-8057c84dc583@gmail.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cxl/core/pci.c | 8 +-------
- 1 file changed, 1 insertion(+), 7 deletions(-)
+ drivers/leds/leds-pca995x.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/cxl/core/pci.c b/drivers/cxl/core/pci.c
-index 8567dd11eaac7..205085ccf12c3 100644
---- a/drivers/cxl/core/pci.c
-+++ b/drivers/cxl/core/pci.c
-@@ -390,10 +390,6 @@ int cxl_dvsec_rr_decode(struct device *dev, int d,
+diff --git a/drivers/leds/leds-pca995x.c b/drivers/leds/leds-pca995x.c
+index 83bc9669544c3..11c7bb69573e8 100644
+--- a/drivers/leds/leds-pca995x.c
++++ b/drivers/leds/leds-pca995x.c
+@@ -120,12 +120,11 @@ static const struct regmap_config pca995x_regmap = {
+ static int pca995x_probe(struct i2c_client *client)
+ {
+ 	struct fwnode_handle *led_fwnodes[PCA995X_MAX_OUTPUTS] = { 0 };
+-	struct fwnode_handle *child;
+ 	struct device *dev = &client->dev;
+ 	const struct pca995x_chipdef *chipdef;
+ 	struct pca995x_chip *chip;
+ 	struct pca995x_led *led;
+-	int i, reg, ret;
++	int i, j, reg, ret;
  
- 		size |= temp & CXL_DVSEC_MEM_SIZE_LOW_MASK;
- 		if (!size) {
--			info->dvsec_range[i] = (struct range) {
--				.start = 0,
--				.end = CXL_RESOURCE_NONE,
--			};
- 			continue;
- 		}
+ 	chipdef = device_get_match_data(&client->dev);
  
-@@ -411,12 +407,10 @@ int cxl_dvsec_rr_decode(struct device *dev, int d,
+@@ -143,7 +142,7 @@ static int pca995x_probe(struct i2c_client *client)
  
- 		base |= temp & CXL_DVSEC_MEM_BASE_LOW_MASK;
+ 	i2c_set_clientdata(client, chip);
  
--		info->dvsec_range[i] = (struct range) {
-+		info->dvsec_range[ranges++] = (struct range) {
- 			.start = base,
- 			.end = base + size - 1
- 		};
--
--		ranges++;
- 	}
+-	device_for_each_child_node(dev, child) {
++	device_for_each_child_node_scoped(dev, child) {
+ 		ret = fwnode_property_read_u32(child, "reg", &reg);
+ 		if (ret)
+ 			return ret;
+@@ -152,7 +151,7 @@ static int pca995x_probe(struct i2c_client *client)
+ 			return -EINVAL;
  
- 	info->ranges = ranges;
+ 		led = &chip->leds[reg];
+-		led_fwnodes[reg] = child;
++		led_fwnodes[reg] = fwnode_handle_get(child);
+ 		led->chip = chip;
+ 		led->led_no = reg;
+ 		led->ldev.brightness_set_blocking = pca995x_brightness_set;
+@@ -171,7 +170,8 @@ static int pca995x_probe(struct i2c_client *client)
+ 						     &chip->leds[i].ldev,
+ 						     &init_data);
+ 		if (ret < 0) {
+-			fwnode_handle_put(child);
++			for (j = i; j < PCA995X_MAX_OUTPUTS; j++)
++				fwnode_handle_put(led_fwnodes[j]);
+ 			return dev_err_probe(dev, ret,
+ 					     "Could not register LED %s\n",
+ 					     chip->leds[i].ldev.name);
 -- 
 2.43.0
 
