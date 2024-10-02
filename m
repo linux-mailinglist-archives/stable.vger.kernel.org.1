@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-80088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [IPv6:2604:1380:40f1:3f00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 375F198DBC2
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:34:50 +0200 (CEST)
+Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [IPv6:2604:1380:4601:e00::3])
+	by mail.lfdr.de (Postfix) with ESMTPS id D161F98DBC6
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:34:54 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sy.mirrors.kernel.org (Postfix) with ESMTPS id AFA98B27A08
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:34:47 +0000 (UTC)
+	by am.mirrors.kernel.org (Postfix) with ESMTPS id 5721B1F2145D
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:34:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2342C1D2790;
-	Wed,  2 Oct 2024 14:29:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A48A41D0E06;
+	Wed,  2 Oct 2024 14:29:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C+nKoawl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vd4Znv+S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7B511D2789;
-	Wed,  2 Oct 2024 14:29:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63C231D0BB4;
+	Wed,  2 Oct 2024 14:29:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727879349; cv=none; b=a93Eu4i733GbjMNzhr6fsPGkAsm35Ba7eflXAi0o1heC81+fki7qVsguz/8imoNpceMWJio5yzmefye7CNnw/JNNRpIi9h51ujTo90fm+lrQYlYSnqpGaBBauD8RhAfCor463oqfm9ebOO30Mo6BP3XmH7fIjlpu5Ftyfxy1MCI=
+	t=1727879364; cv=none; b=Bg2djH0tvd2I6LzuAfejMVDHCbV6lFQwHw7qAVqXdqvbIq/DRnI5l4gFVrVW8MGm2V0hRdBoIUlKdQDZLS2XG8o4IvhaKnaadm7IjU+/PrKrmSOl7NXjn/ydFivNbwSIowmhAE7nketfGF/PAAVzMOoF990aJLQgFHsZ2Xoa2aM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727879349; c=relaxed/simple;
-	bh=/7KJkOMSnlsE9Ge/3tRbJpaZhDquOuPMC2xG5z0Qsxc=;
+	s=arc-20240116; t=1727879364; c=relaxed/simple;
+	bh=BHjS//TiHLU+teKB8bAQw9OUZu3gnK0yjX56Pnw0VYA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Rjc+KQhBRApkHc+D9l9bT8NUKdj5Nye18HlRSch5KwVbobgnBjnYRP+2pX/U6f+Tdeo5ZifIrTNStr/ZMgU0/uwLyj23O2dPs3GKX0KxDbbZEF2r37W52wNMlo20YdkalGyQxRfPdhG5TJQQjblvUlZdijPXjrWtZ9MbpmYvCWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C+nKoawl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64693C4CEC2;
-	Wed,  2 Oct 2024 14:29:09 +0000 (UTC)
+	 MIME-Version; b=t3m04iPLUsMaZfD8PAzOt4PQ3nxPJRiDhaMGL/ypvLbPEYhhSJJRtlabZUpRSKiQZPuabOcd7i2+Lbdq8xuAJQwwftGvSueRuBSRb61S1vQXdtQ2kAvWlai2JdqwHUJQgOtB+ajn8tiJuzEFEL7mKVJV42XBnwOj2efXK/gm/0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vd4Znv+S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0BAEC4CEC2;
+	Wed,  2 Oct 2024 14:29:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727879349;
-	bh=/7KJkOMSnlsE9Ge/3tRbJpaZhDquOuPMC2xG5z0Qsxc=;
+	s=korg; t=1727879364;
+	bh=BHjS//TiHLU+teKB8bAQw9OUZu3gnK0yjX56Pnw0VYA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C+nKoawlJsch97qAutE4qMMqqfi9g4aHOEniscjLxd8cWEY5NEEd8bAlURCZ83kQ7
-	 IQVP3YJKLikl3O167sAMTSRQFZOUE8ZbhU37v1f7RmDDj5opO6ILqHNFl3iVYjQxog
-	 1RjOzGtEJN+vJC7UZRGI6g8aILQd49zLepuWwBm0=
+	b=vd4Znv+ScB3z2ayyiJbS31Hl5DTyrCumuJNsqKLk6HLoJ9O2CoMI0nK0jiw877GEg
+	 0SCJOtSHm3HetyJznR42kjbFdKZZU+cdu7Ff9mYAe/aI4rNj3E5gB2OjM8Yc0shlOT
+	 yr3RVJguUgC7uPpw1omr+HntWLe0qhQknUwrjgJw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiawei Ye <jiawei.ye@foxmail.com>,
-	=?UTF-8?q?Alexis=20Lothor=C3=A9?= <alexis.lothore@bootlin.com>,
-	Kalle Valo <kvalo@kernel.org>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 061/538] wifi: wilc1000: fix potential RCU dereference issue in wilc_parse_join_bss_param
-Date: Wed,  2 Oct 2024 14:55:00 +0200
-Message-ID: <20241002125754.616939342@linuxfoundation.org>
+Subject: [PATCH 6.6 062/538] Bluetooth: hci_core: Fix sending MGMT_EV_CONNECT_FAILED
+Date: Wed,  2 Oct 2024 14:55:01 +0200
+Message-ID: <20241002125754.657823260@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
 References: <20241002125751.964700919@linuxfoundation.org>
@@ -61,70 +59,94 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiawei Ye <jiawei.ye@foxmail.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 6d7c6ae1efb1ff68bc01d79d94fdf0388f86cdd8 ]
+[ Upstream commit d47da6bd4cfa982fe903f33423b9e2ec541e9496 ]
 
-In the `wilc_parse_join_bss_param` function, the TSF field of the `ies`
-structure is accessed after the RCU read-side critical section is
-unlocked. According to RCU usage rules, this is illegal. Reusing this
-pointer can lead to unpredictable behavior, including accessing memory
-that has been updated or causing use-after-free issues.
+If HCI_CONN_MGMT_CONNECTED has been set then the event shall be
+HCI_CONN_MGMT_DISCONNECTED.
 
-This possible bug was identified using a static analysis tool developed
-by myself, specifically designed to detect RCU-related issues.
-
-To address this, the TSF value is now stored in a local variable
-`ies_tsf` before the RCU lock is released. The `param->tsf_lo` field is
-then assigned using this local variable, ensuring that the TSF value is
-safely accessed.
-
-Fixes: 205c50306acf ("wifi: wilc1000: fix RCU usage in connect path")
-Signed-off-by: Jiawei Ye <jiawei.ye@foxmail.com>
-Reviewed-by: Alexis Lothoré <alexis.lothore@bootlin.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://patch.msgid.link/tencent_466225AA599BA49627FB26F707EE17BC5407@qq.com
+Fixes: b644ba336997 ("Bluetooth: Update device_connected and device_found events to latest API")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/microchip/wilc1000/hif.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ include/net/bluetooth/hci_core.h |  4 ++--
+ net/bluetooth/hci_conn.c         |  6 ++----
+ net/bluetooth/mgmt.c             | 13 +++++++++----
+ 3 files changed, 13 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/wireless/microchip/wilc1000/hif.c b/drivers/net/wireless/microchip/wilc1000/hif.c
-index e4bb3ea6e2267..25e881ee727cd 100644
---- a/drivers/net/wireless/microchip/wilc1000/hif.c
-+++ b/drivers/net/wireless/microchip/wilc1000/hif.c
-@@ -381,6 +381,7 @@ void *wilc_parse_join_bss_param(struct cfg80211_bss *bss,
- 	struct wilc_join_bss_param *param;
- 	u8 rates_len = 0;
- 	int ies_len;
-+	u64 ies_tsf;
- 	int ret;
+diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
+index 29f1549ee1114..0f50c0cefcb7d 100644
+--- a/include/net/bluetooth/hci_core.h
++++ b/include/net/bluetooth/hci_core.h
+@@ -2224,8 +2224,8 @@ void mgmt_device_disconnected(struct hci_dev *hdev, bdaddr_t *bdaddr,
+ 			      bool mgmt_connected);
+ void mgmt_disconnect_failed(struct hci_dev *hdev, bdaddr_t *bdaddr,
+ 			    u8 link_type, u8 addr_type, u8 status);
+-void mgmt_connect_failed(struct hci_dev *hdev, bdaddr_t *bdaddr, u8 link_type,
+-			 u8 addr_type, u8 status);
++void mgmt_connect_failed(struct hci_dev *hdev, struct hci_conn *conn,
++			 u8 status);
+ void mgmt_pin_code_request(struct hci_dev *hdev, bdaddr_t *bdaddr, u8 secure);
+ void mgmt_pin_code_reply_complete(struct hci_dev *hdev, bdaddr_t *bdaddr,
+ 				  u8 status);
+diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
+index d8a01eb016ad0..ed95a87ef9ab6 100644
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -107,8 +107,7 @@ void hci_connect_le_scan_cleanup(struct hci_conn *conn, u8 status)
+ 	 * where a timeout + cancel does indicate an actual failure.
+ 	 */
+ 	if (status && status != HCI_ERROR_UNKNOWN_CONN_ID)
+-		mgmt_connect_failed(hdev, &conn->dst, conn->type,
+-				    conn->dst_type, status);
++		mgmt_connect_failed(hdev, conn, status);
  
- 	param = kzalloc(sizeof(*param), GFP_KERNEL);
-@@ -396,6 +397,7 @@ void *wilc_parse_join_bss_param(struct cfg80211_bss *bss,
- 		return NULL;
+ 	/* The connection attempt was doing scan for new RPA, and is
+ 	 * in scan phase. If params are not associated with any other
+@@ -1233,8 +1232,7 @@ void hci_conn_failed(struct hci_conn *conn, u8 status)
+ 		hci_le_conn_failed(conn, status);
+ 		break;
+ 	case ACL_LINK:
+-		mgmt_connect_failed(hdev, &conn->dst, conn->type,
+-				    conn->dst_type, status);
++		mgmt_connect_failed(hdev, conn, status);
+ 		break;
  	}
- 	ies_len = ies->len;
-+	ies_tsf = ies->tsf;
- 	rcu_read_unlock();
  
- 	param->beacon_period = cpu_to_le16(bss->beacon_interval);
-@@ -451,7 +453,7 @@ void *wilc_parse_join_bss_param(struct cfg80211_bss *bss,
- 				    IEEE80211_P2P_ATTR_ABSENCE_NOTICE,
- 				    (u8 *)&noa_attr, sizeof(noa_attr));
- 	if (ret > 0) {
--		param->tsf_lo = cpu_to_le32(ies->tsf);
-+		param->tsf_lo = cpu_to_le32(ies_tsf);
- 		param->noa_enabled = 1;
- 		param->idx = noa_attr.index;
- 		if (noa_attr.oppps_ctwindow & IEEE80211_P2P_OPPPS_ENABLE_BIT) {
+diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
+index 4ae9029b5785f..149aff29e5646 100644
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -9724,13 +9724,18 @@ void mgmt_disconnect_failed(struct hci_dev *hdev, bdaddr_t *bdaddr,
+ 	mgmt_pending_remove(cmd);
+ }
+ 
+-void mgmt_connect_failed(struct hci_dev *hdev, bdaddr_t *bdaddr, u8 link_type,
+-			 u8 addr_type, u8 status)
++void mgmt_connect_failed(struct hci_dev *hdev, struct hci_conn *conn, u8 status)
+ {
+ 	struct mgmt_ev_connect_failed ev;
+ 
+-	bacpy(&ev.addr.bdaddr, bdaddr);
+-	ev.addr.type = link_to_bdaddr(link_type, addr_type);
++	if (test_and_clear_bit(HCI_CONN_MGMT_CONNECTED, &conn->flags)) {
++		mgmt_device_disconnected(hdev, &conn->dst, conn->type,
++					 conn->dst_type, status, true);
++		return;
++	}
++
++	bacpy(&ev.addr.bdaddr, &conn->dst);
++	ev.addr.type = link_to_bdaddr(conn->type, conn->dst_type);
+ 	ev.status = mgmt_status(status);
+ 
+ 	mgmt_event(MGMT_EV_CONNECT_FAILED, hdev, &ev, sizeof(ev), NULL);
 -- 
 2.43.0
 
