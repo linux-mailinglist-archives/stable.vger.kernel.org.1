@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-79921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80428-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75B3D98DAE7
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:26:14 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8428598DD63
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:49:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 2D9061F25C69
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:26:14 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id B69DE1C22B7D
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:49:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B4481D2713;
-	Wed,  2 Oct 2024 14:20:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 607D71D0DEB;
+	Wed,  2 Oct 2024 14:45:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ok9bq3o/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TcVu2JTy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9BE81D1E98;
-	Wed,  2 Oct 2024 14:20:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FA821D0786;
+	Wed,  2 Oct 2024 14:45:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878858; cv=none; b=cu7g13xOKe9TrYLlD4mfZsU9o+OABswUm2BqJQtm8eKJzIz2qOKOSWbH5OdTwwsFodhSkbbJ78KQ0dAdiPH5N+Wr06HrL0uLdWRgerjp3MyuUKuihPxC7RaHo7Qil0BB0jSOHrpiMA3LTRaQNnJQShI3ngjCInBzmmT0QgsaD/8=
+	t=1727880346; cv=none; b=BEdJaUjBJCxuDB+NyBaczN27Sa0lMdAFe7/IRs8Q4IBR7lWMRQ+Z+idK00stGV1/9Dp5T4mlENAd+A9XQ0NjkY7g1O40VGA4fSuB3mLk87Za+8hfw651OmdMxJrgtuc0hKOd0gJoRGNzONHlDvBX2tRCD1hVkte+YwZrk+ArJ/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878858; c=relaxed/simple;
-	bh=rfRJnGAajvbk2RAYz3TwezmoWFwp7AX6iTv0veb01uY=;
+	s=arc-20240116; t=1727880346; c=relaxed/simple;
+	bh=VXCG2c71jhwpDWMlIP+FG1TM83U8ZHRzMGadoYqCLMg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I8TWckE+Dc49YLm8GvLvCaYeQBj/qJVXIh0RW1DIHaK4kqNioUP5BRWV8FjEPoUIb9yakI8kDT9DJFRvv02f9AqTFWj4XHyY/sUXcqSLQDiemstMsEx4+jEYb8TrbjOJ9/V+m6Rl3pmXNCR7xYNp8YVHKk6o8y+tQ2I5kUGLMLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ok9bq3o/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36810C4CEC5;
-	Wed,  2 Oct 2024 14:20:58 +0000 (UTC)
+	 MIME-Version; b=YNk+UMy7Rfcpn11MgJLg1rrQiNfvF4JyWQQJzdTO66RYmZ5K5YzVWtW7EzLilUaufnftNGH9kE9HMaSFWQvFegRKRtHuENh+uGPcsqyHW6pqRHgP5B4IqaiUhLJt5Rodv6Kj6Gv4FazTIpgPBXjNIDb7hZVA+FkerIXWa06b+e0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TcVu2JTy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AEDDC4CEC2;
+	Wed,  2 Oct 2024 14:45:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878858;
-	bh=rfRJnGAajvbk2RAYz3TwezmoWFwp7AX6iTv0veb01uY=;
+	s=korg; t=1727880346;
+	bh=VXCG2c71jhwpDWMlIP+FG1TM83U8ZHRzMGadoYqCLMg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ok9bq3o/PtwbuB24+pANauEM81wZUbCTMJeE1EAWyJjrWZnPEQuTyiIvoG5U+BJfk
-	 HJalxUyCDA26+Dxm5W3yz0wtpSjhhZfbz/W9oEmGDlRrvwcfldHU4M/NgH1Rdx6Vpw
-	 IJoi7A3AbTANF4dXArg0nq6Ceq5q4OfmP63hcb0w=
+	b=TcVu2JTyiKYCMYg02S+ITbol4AC1d0IXnwgKghJELbKU0jwUHIdd19Huww+7Ry/Ev
+	 g5r5xE6O/ahDJK7MUTs+BmRzLUkG6NmeBKwriUIdGHJHImUIgV5RIILusKp8Xz5y+B
+	 MRGa+EdEKUNvb8Js5P8AlGR5I2/7uyuylWOJL1ck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikhail Lobanov <m.lobanov@rosalinux.ru>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.10 539/634] drbd: Add NULL check for net_conf to prevent dereference in state validation
+	Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.6 400/538] Revert "soc: qcom: smd-rpm: Match rpmsg channel instead of compatible"
 Date: Wed,  2 Oct 2024 15:00:39 +0200
-Message-ID: <20241002125832.383658078@linuxfoundation.org>
+Message-ID: <20241002125808.227384977@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +61,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikhail Lobanov <m.lobanov@rosalinux.ru>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-commit a5e61b50c9f44c5edb6e134ede6fee8806ffafa9 upstream.
+commit b17155133391d7f6dd18d3fb94a7d492fdec18fa upstream.
 
-If the net_conf pointer is NULL and the code attempts to access its
-fields without a check, it will lead to a null pointer dereference.
-Add a NULL check before dereferencing the pointer.
+The rpm_requests device nodes have the compatible node. As such the
+rpmsg core uses OF modalias instead of a native rpmsg modalias. Thus if
+smd-rpm is built as a module, it doesn't get autoloaded for the device.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Revert the commit bcabe1e09135 ("soc: qcom: smd-rpm: Match rpmsg channel
+instead of compatible")
 
-Fixes: 44ed167da748 ("drbd: rcu_read_lock() and rcu_dereference() for tconn->net_conf")
+Fixes: bcabe1e09135 ("soc: qcom: smd-rpm: Match rpmsg channel instead of compatible")
 Cc: stable@vger.kernel.org
-Signed-off-by: Mikhail Lobanov <m.lobanov@rosalinux.ru>
-Link: https://lore.kernel.org/r/20240909133740.84297-1-m.lobanov@rosalinux.ru
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20240729-fix-smd-rpm-v2-1-0776408a94c5@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/drbd/drbd_state.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/soc/qcom/smd-rpm.c | 35 ++++++++++++++++++++++++++---------
+ 1 file changed, 26 insertions(+), 9 deletions(-)
 
---- a/drivers/block/drbd/drbd_state.c
-+++ b/drivers/block/drbd/drbd_state.c
-@@ -876,7 +876,7 @@ is_valid_state(struct drbd_device *devic
- 		  ns.disk == D_OUTDATED)
- 		rv = SS_CONNECTED_OUTDATES;
+diff --git a/drivers/soc/qcom/smd-rpm.c b/drivers/soc/qcom/smd-rpm.c
+index b7056aed4c7d..9d64283d2125 100644
+--- a/drivers/soc/qcom/smd-rpm.c
++++ b/drivers/soc/qcom/smd-rpm.c
+@@ -196,9 +196,6 @@ static int qcom_smd_rpm_probe(struct rpmsg_device *rpdev)
+ {
+ 	struct qcom_smd_rpm *rpm;
  
--	else if ((ns.conn == C_VERIFY_S || ns.conn == C_VERIFY_T) &&
-+	else if (nc && (ns.conn == C_VERIFY_S || ns.conn == C_VERIFY_T) &&
- 		 (nc->verify_alg[0] == 0))
- 		rv = SS_NO_VERIFY_ALG;
+-	if (!rpdev->dev.of_node)
+-		return -EINVAL;
+-
+ 	rpm = devm_kzalloc(&rpdev->dev, sizeof(*rpm), GFP_KERNEL);
+ 	if (!rpm)
+ 		return -ENOMEM;
+@@ -218,18 +215,38 @@ static void qcom_smd_rpm_remove(struct rpmsg_device *rpdev)
+ 	of_platform_depopulate(&rpdev->dev);
+ }
  
+-static const struct rpmsg_device_id qcom_smd_rpm_id_table[] = {
+-	{ .name = "rpm_requests", },
+-	{ /* sentinel */ }
++static const struct of_device_id qcom_smd_rpm_of_match[] = {
++	{ .compatible = "qcom,rpm-apq8084" },
++	{ .compatible = "qcom,rpm-ipq6018" },
++	{ .compatible = "qcom,rpm-ipq9574" },
++	{ .compatible = "qcom,rpm-msm8226" },
++	{ .compatible = "qcom,rpm-msm8909" },
++	{ .compatible = "qcom,rpm-msm8916" },
++	{ .compatible = "qcom,rpm-msm8936" },
++	{ .compatible = "qcom,rpm-msm8953" },
++	{ .compatible = "qcom,rpm-msm8974" },
++	{ .compatible = "qcom,rpm-msm8976" },
++	{ .compatible = "qcom,rpm-msm8994" },
++	{ .compatible = "qcom,rpm-msm8996" },
++	{ .compatible = "qcom,rpm-msm8998" },
++	{ .compatible = "qcom,rpm-sdm660" },
++	{ .compatible = "qcom,rpm-sm6115" },
++	{ .compatible = "qcom,rpm-sm6125" },
++	{ .compatible = "qcom,rpm-sm6375" },
++	{ .compatible = "qcom,rpm-qcm2290" },
++	{ .compatible = "qcom,rpm-qcs404" },
++	{}
+ };
+-MODULE_DEVICE_TABLE(rpmsg, qcom_smd_rpm_id_table);
++MODULE_DEVICE_TABLE(of, qcom_smd_rpm_of_match);
+ 
+ static struct rpmsg_driver qcom_smd_rpm_driver = {
+ 	.probe = qcom_smd_rpm_probe,
+ 	.remove = qcom_smd_rpm_remove,
+ 	.callback = qcom_smd_rpm_callback,
+-	.id_table = qcom_smd_rpm_id_table,
+-	.drv.name = "qcom_smd_rpm",
++	.drv  = {
++		.name  = "qcom_smd_rpm",
++		.of_match_table = qcom_smd_rpm_of_match,
++	},
+ };
+ 
+ static int __init qcom_smd_rpm_init(void)
+-- 
+2.46.2
+
 
 
 
