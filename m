@@ -1,58 +1,58 @@
-Return-Path: <stable+bounces-79418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DE8698D826
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:57:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id CD89098D4FE
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:26:40 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id CFF741C22001
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:57:33 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 0B8A91C21DED
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:26:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B6AB1D0BA5;
-	Wed,  2 Oct 2024 13:56:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E2F11D04B0;
+	Wed,  2 Oct 2024 13:25:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UfE1hxnn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CQ+YH5KR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD1BB198A1A;
-	Wed,  2 Oct 2024 13:56:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 007EB1D014A;
+	Wed,  2 Oct 2024 13:25:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877390; cv=none; b=hnEuGfpfxZ9PIYYb1DiQ/i4rVDVpL9fZGAyJsuaZpLxLe9u5qdpeUMVMCSMrfD17w7+2pa46WPAGoEYyg5a18B1JZtjcmb+BrhJYHW/FVHMSuKPvV5JKMbRUcyA1rdXPGGRXzb/3+AbYgWveFYRnzPek7CxILgd+5pOylMW6TpM=
+	t=1727875539; cv=none; b=hOxhd0vk06BhEF1v2ohrw1gjJ5jmFOUJtF4Q97UMcjyqc+ttVnnu0BcwwjOYPG79BvXHsiDHJa1Y2ji6zhHkD9lR41CEDsOY7jnnTUe4dzb7pMMLzZGxuS5SXtpkvAQlmsKQnmiNkWZh08lZpum21Y98HguvdVx8k5WUlyx6/4w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877390; c=relaxed/simple;
-	bh=blGiKQktssYj6zCH3mZrRZFGnAXgv+IM4Z8q684gKUA=;
+	s=arc-20240116; t=1727875539; c=relaxed/simple;
+	bh=CXaxs7Msd3gLpBsPDcDCcGOzFXA16s1muTFEiwpA6cQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uc3lxpr9xF5MTWwwIzy2UJw5+4C6zAfR0PwaTwKrlw0U24iMVHH7s2KvNAiQYTSmyIYoSApjSznD7haUjuDYAbID4RABVS4dPKfSkuvTsDxjblRg34RDikU9Hu4xCDQ0vwnkqquj5QVyP1NdVKv6s4R3Ap44oc1pW3T3+FqjDTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UfE1hxnn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64808C4CEC5;
-	Wed,  2 Oct 2024 13:56:30 +0000 (UTC)
+	 MIME-Version; b=uVPEWkIOIJ5u1rSBQ0ywz5VkCoQvG5myIrcjvIWsQ2ViQQj6GAQYGQZher41RgAIFmAVSBNxywno8wiCadpCfBEObfCCmvvYVcgtwN7yF6s/Cdqzgb+a39mHv2xt00OcVDSfZZOjIYrjkSflpB9sPghtrm2ybehLbqZPhdeNvjM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CQ+YH5KR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F216C4CEC5;
+	Wed,  2 Oct 2024 13:25:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877390;
-	bh=blGiKQktssYj6zCH3mZrRZFGnAXgv+IM4Z8q684gKUA=;
+	s=korg; t=1727875538;
+	bh=CXaxs7Msd3gLpBsPDcDCcGOzFXA16s1muTFEiwpA6cQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UfE1hxnn4ow/t6suGY22YA0c/26lR/jVXcF/kuMJ1xfY2bZDBsFDZk0YDN+cfDYfl
-	 rhsNI+EQFFNxKu1xhGzrTQcttiCuQ3c31TkDupefwzmArhDCqV8Ai71nGwljtTwhAd
-	 ulDsfS8nNmfHihsGc2lZK3Fxze2JEXjaindsS3vI=
+	b=CQ+YH5KRhDQdd3EAicw1L0MydMq6Le+vaHyrgrk56R1fspABhYzQsRt1v9iHIevgu
+	 M9GtsdypJOXy6psvepa63L+jYgwv43UajYsSr0Gf96qfj8dwUx8K4rBhpM1op+9AFX
+	 n86klIN+wHW+aJUJLbNzLfMogTdgfJZVpSrRkMEE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Svyatoslav Pankratov <svyatoslav.pankratov@intel.com>,
-	Xin Zeng <xin.zeng@intel.com>,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Sudeep Holla <sudeep.holla@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 034/634] crypto: qat - fix "Full Going True" macro definition
+Subject: [PATCH 6.11 136/695] firmware: arm_scmi: Fix double free in OPTEE transport
 Date: Wed,  2 Oct 2024 14:52:14 +0200
-Message-ID: <20241002125812.444156846@linuxfoundation.org>
+Message-ID: <20241002125827.915238137@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,44 +64,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Svyatoslav Pankratov <svyatoslav.pankratov@intel.com>
+From: Cristian Marussi <cristian.marussi@arm.com>
 
-[ Upstream commit 694a6f594817462942acbb1a35b1f7d61e2d49e7 ]
+[ Upstream commit e98dba934b2fc587eafb83f47ad64d9053b18ae0 ]
 
-The macro `ADF_RP_INT_SRC_SEL_F_RISE_MASK` is currently set to the value
-`0100b` which means "Empty Going False". This might cause an incorrect
-restore of the bank state during live migration.
+Channels can be shared between protocols, avoid freeing the same channel
+descriptors twice when unloading the stack.
 
-Fix the definition of the macro to properly represent the "Full Going
-True" state which is encoded as `0011b`.
-
-Fixes: bbfdde7d195f ("crypto: qat - add bank save and restore flows")
-Signed-off-by: Svyatoslav Pankratov <svyatoslav.pankratov@intel.com>
-Reviewed-by: Xin Zeng <xin.zeng@intel.com>
-Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 5f90f189a052 ("firmware: arm_scmi: Add optee transport")
+Signed-off-by: Cristian Marussi <cristian.marussi@arm.com>
+Tested-by: Peng Fan <peng.fan@nxp.com>  #i.MX95 19x19 EVK
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Message-Id: <20240812173340.3912830-2-cristian.marussi@arm.com>
+Signed-off-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/intel/qat/qat_common/adf_gen4_hw_data.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/firmware/arm_scmi/optee.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/crypto/intel/qat/qat_common/adf_gen4_hw_data.h b/drivers/crypto/intel/qat/qat_common/adf_gen4_hw_data.h
-index 8b10926cedbac..e8c53bd76f1bd 100644
---- a/drivers/crypto/intel/qat/qat_common/adf_gen4_hw_data.h
-+++ b/drivers/crypto/intel/qat/qat_common/adf_gen4_hw_data.h
-@@ -83,7 +83,7 @@
- #define ADF_WQM_CSR_RPRESETSTS(bank)	(ADF_WQM_CSR_RPRESETCTL(bank) + 4)
+diff --git a/drivers/firmware/arm_scmi/optee.c b/drivers/firmware/arm_scmi/optee.c
+index 4e7944b91e385..0c8908d3b1d67 100644
+--- a/drivers/firmware/arm_scmi/optee.c
++++ b/drivers/firmware/arm_scmi/optee.c
+@@ -473,6 +473,13 @@ static int scmi_optee_chan_free(int id, void *p, void *data)
+ 	struct scmi_chan_info *cinfo = p;
+ 	struct scmi_optee_channel *channel = cinfo->transport_info;
  
- /* Ring interrupt */
--#define ADF_RP_INT_SRC_SEL_F_RISE_MASK	BIT(2)
-+#define ADF_RP_INT_SRC_SEL_F_RISE_MASK	GENMASK(1, 0)
- #define ADF_RP_INT_SRC_SEL_F_FALL_MASK	GENMASK(2, 0)
- #define ADF_RP_INT_SRC_SEL_RANGE_WIDTH	4
- #define ADF_COALESCED_POLL_TIMEOUT_US	(1 * USEC_PER_SEC)
++	/*
++	 * Different protocols might share the same chan info, so a previous
++	 * call might have already freed the structure.
++	 */
++	if (!channel)
++		return 0;
++
+ 	mutex_lock(&scmi_optee_private->mu);
+ 	list_del(&channel->link);
+ 	mutex_unlock(&scmi_optee_private->mu);
 -- 
 2.43.0
 
