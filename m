@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-79419-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78792-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16C7F98D829
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:57:45 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [139.178.88.99])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F4D298D502
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:26:43 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id B61DC1F21EEC
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:57:44 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DE6FB2854F3
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:26:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25F431D0DE2;
-	Wed,  2 Oct 2024 13:56:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A85111D0958;
+	Wed,  2 Oct 2024 13:25:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sfxpfLbt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0jppCjiA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3F0D1D0DF2;
-	Wed,  2 Oct 2024 13:56:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 649CD1D014A;
+	Wed,  2 Oct 2024 13:25:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877393; cv=none; b=O0mlIz97SMK4ztphdcdUjYqFuCqqj0NaxWm0B2MFhhB28in4FIJ99x76f8vkTxskYu1p7QE1UgVWnS17ShmT7JAivyaG1ZW3w++Hiyto3zSezTRo/1ic0MHN7B867WAevb4t1yZHPZ//WFEnUd4BzdOAl4+E/hqjkocL1cNuLtU=
+	t=1727875544; cv=none; b=nePeKv+mdPTxewPHpSAxUNQO7QyrRVhhS160yESF+fVIo/xQH/SmUdNQx0S3xIg9QNTBLGcN89Ur2hacO2WXHSbqPlOqc0dPXSrmBukvKzIYATzDZ1zXZdhiFxBRdLWuVwL5lYhmqjUFVdUMhQifFApoSod4D0ZNcusUp75VH3g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877393; c=relaxed/simple;
-	bh=SS0WrtwyRv8DLAQT6OTT1RhU4jZxhhg2v7FqKOAlToA=;
+	s=arc-20240116; t=1727875544; c=relaxed/simple;
+	bh=FRKEkPZp8NkN75e1uzX//YFZOLBe+kVKIf/D07SE2nw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cRttJ/HVsAskZIa0AU9J35+1RgVUqAZLtwPyDwBY0TGAcF79RhPGovB4TkfWv2NUxfYs2Uch7PNCWNDyVy+HDugfHHh+jROP4TkADc17H1pqUlZ1P3505oXtelUa7NLVd7nzuRpj627w2KS9LxEeYpoHnk4q3SZ8ZbVmSeoueBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sfxpfLbt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59CB7C4CECD;
-	Wed,  2 Oct 2024 13:56:33 +0000 (UTC)
+	 MIME-Version; b=qXVfPsBALcaHF02hVtNC1MtQN4b1DqRWp8F3e9roR8EZNRO7pTHaJ/LnUyX0W7wQWzJ7ZNfRsSGM71SG8hBZWpQ45ZfbzNeKaXlj/hkUrSLnxsjECdEt3rapGdBL6uGfhMKdpoOlScltMhIC5pzguMH1OjOz5MnBonI1m8usbqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0jppCjiA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCE1DC4CEC5;
+	Wed,  2 Oct 2024 13:25:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877393;
-	bh=SS0WrtwyRv8DLAQT6OTT1RhU4jZxhhg2v7FqKOAlToA=;
+	s=korg; t=1727875544;
+	bh=FRKEkPZp8NkN75e1uzX//YFZOLBe+kVKIf/D07SE2nw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sfxpfLbt8qXh1QD5P7SLTeIWoC7eTUBESwfI31RPgPrkOEKjvRIQH9liZI9r76hem
-	 F6Wn6ikAZzSoGrHvUktElP+2WKqUeHdGHG9zDIPFISoyQ0hpLxWaRtDpraaT9MJZ4f
-	 q1v0OJ6pcWvPCSKW9Q7b7PXmjPdzurIAmcba+cYM=
+	b=0jppCjiAkCVBQ0CSCbTwL6AYjJrl9F1NrwCXWzaX4aO34O+vz3rpcPfcmTy6FaHWX
+	 ylCCZqKrD6XWNS5cobSyeER7zRbJhhtQFSHsF6rGdvaBRJBJRHmZcQ+GLoLg8AftDo
+	 1eGUloUGqS7dkyFUIJyUK8VOlBx101PXtqqujPZ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Orlando Chamberlain <orlandoch.dev@gmail.com>,
-	Aditya Garg <gargaditya08@live.com>,
-	Hans de Goede <hdegoede@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 035/634] ACPI: video: force native for some T2 macbooks
+Subject: [PATCH 6.11 137/695] spi: ppc4xx: Avoid returning 0 when failed to parse and map IRQ
 Date: Wed,  2 Oct 2024 14:52:15 +0200
-Message-ID: <20241002125812.483620513@linuxfoundation.org>
+Message-ID: <20241002125827.956224134@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,62 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Orlando Chamberlain <orlandoch.dev@gmail.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit d010a0282e045f02895f88299e5442506585b46c ]
+[ Upstream commit 7781f1d120fec8624fc654eda900fc8748262082 ]
 
-The intel backlight is needed for these, previously users had nothing in
-/sys/class/backlight.
+0 is incorrect error code when failed to parse and map IRQ.
+Replace OF specific old API for IRQ retrieval with a generic
+one to fix this issue.
 
-Signed-off-by: Orlando Chamberlain <orlandoch.dev@gmail.com>
-Signed-off-by: Aditya Garg <gargaditya08@live.com>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Link: https://patch.msgid.link/3DA0EAE3-9EB7-492B-96FC-988503BBDCCC@live.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Stable-dep-of: 7dc918daaf29 ("ACPI: video: force native for Apple MacbookPro9,2")
+Fixes: 0f245463b01e ("spi: ppc4xx: handle irq_of_parse_and_map() errors")
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://patch.msgid.link/20240814144525.2648450-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/video_detect.c | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/spi/spi-ppc4xx.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/acpi/video_detect.c b/drivers/acpi/video_detect.c
-index ff6f260433a11..674b9db7a1ef8 100644
---- a/drivers/acpi/video_detect.c
-+++ b/drivers/acpi/video_detect.c
-@@ -541,6 +541,14 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
- 		DMI_MATCH(DMI_PRODUCT_NAME, "iMac12,2"),
- 		},
- 	},
-+	{
-+	 .callback = video_detect_force_native,
-+	 /* Apple MacBook Air 9,1 */
-+	 .matches = {
-+		DMI_MATCH(DMI_SYS_VENDOR, "Apple Inc."),
-+		DMI_MATCH(DMI_PRODUCT_NAME, "MacBookAir9,1"),
-+		},
-+	},
- 	{
- 	 /* https://bugzilla.redhat.com/show_bug.cgi?id=1217249 */
- 	 .callback = video_detect_force_native,
-@@ -550,6 +558,14 @@ static const struct dmi_system_id video_detect_dmi_table[] = {
- 		DMI_MATCH(DMI_PRODUCT_NAME, "MacBookPro12,1"),
- 		},
- 	},
-+	{
-+	 .callback = video_detect_force_native,
-+	 /* Apple MacBook Pro 16,2 */
-+	 .matches = {
-+		DMI_MATCH(DMI_SYS_VENDOR, "Apple Inc."),
-+		DMI_MATCH(DMI_PRODUCT_NAME, "MacBookPro16,2"),
-+		},
-+	},
- 	{
- 	 .callback = video_detect_force_native,
- 	 /* Dell Inspiron N4010 */
+diff --git a/drivers/spi/spi-ppc4xx.c b/drivers/spi/spi-ppc4xx.c
+index 01fdecbf132d6..8f6309f32de0b 100644
+--- a/drivers/spi/spi-ppc4xx.c
++++ b/drivers/spi/spi-ppc4xx.c
+@@ -27,7 +27,6 @@
+ #include <linux/wait.h>
+ #include <linux/platform_device.h>
+ #include <linux/of_address.h>
+-#include <linux/of_irq.h>
+ #include <linux/of_platform.h>
+ #include <linux/interrupt.h>
+ #include <linux/delay.h>
+@@ -412,9 +411,10 @@ static int spi_ppc4xx_of_probe(struct platform_device *op)
+ 	}
+ 
+ 	/* Request IRQ */
+-	hw->irqnum = irq_of_parse_and_map(np, 0);
+-	if (hw->irqnum <= 0)
++	ret = platform_get_irq(op, 0);
++	if (ret < 0)
+ 		goto free_host;
++	hw->irqnum = ret;
+ 
+ 	ret = request_irq(hw->irqnum, spi_ppc4xx_int,
+ 			  0, "spi_ppc4xx_of", (void *)hw);
 -- 
 2.43.0
 
