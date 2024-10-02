@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-78817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1AB4D98D51D
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:27:13 +0200 (CEST)
+Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C3F398D822
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:57:16 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 3FCF01C2039A
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:27:12 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id DB1FD280EE9
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:57:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 785731CF284;
-	Wed,  2 Oct 2024 13:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C8F91D0798;
+	Wed,  2 Oct 2024 13:56:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JHAnBrXT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YgNuZKBB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 370081CF28B;
-	Wed,  2 Oct 2024 13:26:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BFF2198837;
+	Wed,  2 Oct 2024 13:56:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727875617; cv=none; b=qfGu19xOjRasE7zL3qS74qkDlYUrsbe5cwwBloyg6GHeOUO3p4W9iyN4u8cJvbgKgv8/TEnskWwlHoKrWnGmXbM2dFntR74sskPugMhY5gLdQONCNcJhqlCQIf3Ag4mYTj24TjsRq+r2JNHOWouORC75kCuwV9+d2H1ZkuayfOc=
+	t=1727877382; cv=none; b=F4/pA45jWRrkeaFZobqAbSP//Q8HViKcnSST+8Cfq8la0qbNJrkbDU+kjYpDZUoEaX7I3QlTLn7Sar2Unmh+4CB/BDmzsPqgOD3RE6wyMcelRKPijdp0ftivc6AojcTBhu0zO2mcJy6fFbpzIWpAbGDFGJdDknBd/lAXDh8gN/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727875617; c=relaxed/simple;
-	bh=6GasvonWjp5bIetq1snWvv9pubs6buN8cl+0yTBk4No=;
+	s=arc-20240116; t=1727877382; c=relaxed/simple;
+	bh=03o5QSYw5MArjI42GN8wgMhiDi2iU6iOJUkfu9NmN2A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jV/GVCk5cNQLOMXFeHNHDKfXJhlCopXq1h3rzHxniLfncuaOqzKa0djV2pSFvGqxuGl1CBXNqL3vBJgD5x44cPamkSj2BTOaeg5MMtRr7TmMwFRwjdqSDoFOgXWhxlwLEqDAgAX75OzTDgc82D27B2iig2IfTT3anVHf300nr4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JHAnBrXT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B20C0C4CEC5;
-	Wed,  2 Oct 2024 13:26:56 +0000 (UTC)
+	 MIME-Version; b=cKOIyfqDMuRBCWYi/deaAz+k6FW1oKHWu85rQX8/5Gums6yrknbDAdQ8CB9VtBW5lg/5Oj/xnbM8BEAP8Rj7Mj2WibkW/ae9+eD8Mwdn1WXh54oydbQMk8s4m/Y6gJ6VLEqpP5CL10ajzMj3YE4CK6N6ih8vLFgCZdX0f8FEPrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YgNuZKBB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A85C8C4CEC5;
+	Wed,  2 Oct 2024 13:56:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727875617;
-	bh=6GasvonWjp5bIetq1snWvv9pubs6buN8cl+0yTBk4No=;
+	s=korg; t=1727877382;
+	bh=03o5QSYw5MArjI42GN8wgMhiDi2iU6iOJUkfu9NmN2A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JHAnBrXTILXH8fihU/UqUVd4OgBp62zGXg9amNUDwhvh4NbFjgcpPir8Prx9IlJpK
-	 RnK7tP5A8aV8ct04aFYE07Q55x60U60UxHVJ2rSqh1RhdnYRaJ2lJ2mEwmEPomhTj5
-	 jTye4kZ0FLX9VrPF40ghakfT8f3b5ChC72RQ1TYg=
+	b=YgNuZKBBWaOWAycl1RChxCFpG+T4DkdP+t6ZH7pvjaPa6GyXrbfKUseCc83PIr74E
+	 Kv51NCjDV+lAWcEJiP0zeVocOM//qSMbTPWtiHMrwmh+s7Ah7Z/XJL+dByorWrMZrP
+	 DnmG74El5PcBD6F+o5UbYTF9H+pFZK7LDdWeAwGs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Mark Brown <broonie@kernel.org>,
+	Nishanth Menon <nm@ti.com>,
+	Dhruva Gole <d-gole@ti.com>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.11 163/695] ASoC: tas2781-i2c: Drop weird GPIO code
+Subject: [PATCH 6.10 061/634] cpufreq: ti-cpufreq: Introduce quirks to handle syscon fails appropriately
 Date: Wed,  2 Oct 2024 14:52:41 +0200
-Message-ID: <20241002125828.981788664@linuxfoundation.org>
+Message-ID: <20241002125813.515517367@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
-References: <20241002125822.467776898@linuxfoundation.org>
+In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
+References: <20241002125811.070689334@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,194 +64,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.11-stable review patch.  If anyone has any objections, please let me know.
+6.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Walleij <linus.walleij@linaro.org>
+From: Nishanth Menon <nm@ti.com>
 
-[ Upstream commit c2c0b67dca3cb3b3cea0dd60075a1c5ba77e2fcd ]
+[ Upstream commit abc00ffda43bd4ba85896713464c7510c39f8165 ]
 
-The tas2781-i2c driver gets an IRQ from either ACPI or device tree,
-then proceeds to check if the IRQ has a corresponding GPIO and in
-case it does enforce the GPIO as input and set a label on it.
+Commit b4bc9f9e27ed ("cpufreq: ti-cpufreq: add support for omap34xx
+and omap36xx") introduced special handling for OMAP3 class devices
+where syscon node may not be present. However, this also creates a bug
+where the syscon node is present, however the offset used to read
+is beyond the syscon defined range.
 
-This is abuse of the API:
+Fix this by providing a quirk option that is populated when such
+special handling is required. This allows proper failure for all other
+platforms when the syscon node and efuse offsets are mismatched.
 
-- First we cannot guarantee that the numberspaces of the GPIOs and
-  the IRQs are the same, i.e that an IRQ number corresponds to
-  a GPIO number like that.
-
-- Second, GPIO chips and IRQ chips should be treated as orthogonal
-  APIs, the irqchip needs to ascertain that the backing GPIO line
-  is set to input etc just using the irqchip.
-
-- Third it is using the legacy <linux/gpio.h> API which should not
-  be used in new code yet this was added just a year ago.
-
-Delete the offending code.
-
-If this creates problems the GPIO and irqchip maintainers can help
-to fix the issues.
-
-It *should* not create any problems, because the irq isn't
-used anywhere in the driver, it's just obtained and then
-left unused.
-
-Fixes: ef3bcde75d06 ("ASoC: tas2781: Add tas2781 driver")
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://patch.msgid.link/20240807-asoc-tas-gpios-v2-1-bd0f2705d58b@linaro.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: b4bc9f9e27ed ("cpufreq: ti-cpufreq: add support for omap34xx and omap36xx")
+Signed-off-by: Nishanth Menon <nm@ti.com>
+Tested-by: Dhruva Gole <d-gole@ti.com>
+Reviewed-by: Kevin Hilman <khilman@baylibre.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/sound/tas2781.h           |  7 +------
- sound/pci/hda/tas2781_hda_i2c.c   |  2 +-
- sound/soc/codecs/tas2781-comlib.c |  3 ---
- sound/soc/codecs/tas2781-fmwlib.c |  1 -
- sound/soc/codecs/tas2781-i2c.c    | 24 +++---------------------
- 5 files changed, 5 insertions(+), 32 deletions(-)
+ drivers/cpufreq/ti-cpufreq.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/include/sound/tas2781.h b/include/sound/tas2781.h
-index 18161d02a96f7..dbda552398b5b 100644
---- a/include/sound/tas2781.h
-+++ b/include/sound/tas2781.h
-@@ -81,11 +81,6 @@ struct tasdevice {
- 	bool is_loaderr;
+diff --git a/drivers/cpufreq/ti-cpufreq.c b/drivers/cpufreq/ti-cpufreq.c
+index 5af85c4cbad0c..f8e6dc3c14d35 100644
+--- a/drivers/cpufreq/ti-cpufreq.c
++++ b/drivers/cpufreq/ti-cpufreq.c
+@@ -61,6 +61,9 @@ struct ti_cpufreq_soc_data {
+ 	unsigned long efuse_shift;
+ 	unsigned long rev_offset;
+ 	bool multi_regulator;
++/* Backward compatibility hack: Might have missing syscon */
++#define TI_QUIRK_SYSCON_MAY_BE_MISSING	0x1
++	u8 quirks;
  };
  
--struct tasdevice_irqinfo {
--	int irq_gpio;
--	int irq;
--};
--
- struct calidata {
- 	unsigned char *data;
- 	unsigned long total_sz;
-@@ -93,7 +88,6 @@ struct calidata {
+ struct ti_cpufreq_data {
+@@ -182,6 +185,7 @@ static struct ti_cpufreq_soc_data omap34xx_soc_data = {
+ 	.efuse_mask = BIT(3),
+ 	.rev_offset = OMAP3_CONTROL_IDCODE - OMAP3_SYSCON_BASE,
+ 	.multi_regulator = false,
++	.quirks = TI_QUIRK_SYSCON_MAY_BE_MISSING,
+ };
  
- struct tasdevice_priv {
- 	struct tasdevice tasdevice[TASDEVICE_MAX_CHANNELS];
--	struct tasdevice_irqinfo irq_info;
- 	struct tasdevice_rca rcabin;
- 	struct calidata cali_data;
- 	struct tasdevice_fw *fmw;
-@@ -115,6 +109,7 @@ struct tasdevice_priv {
- 	unsigned int chip_id;
- 	unsigned int sysclk;
+ /*
+@@ -209,6 +213,7 @@ static struct ti_cpufreq_soc_data omap36xx_soc_data = {
+ 	.efuse_mask = BIT(9),
+ 	.rev_offset = OMAP3_CONTROL_IDCODE - OMAP3_SYSCON_BASE,
+ 	.multi_regulator = true,
++	.quirks = TI_QUIRK_SYSCON_MAY_BE_MISSING,
+ };
  
-+	int irq;
- 	int cur_prog;
- 	int cur_conf;
- 	int fw_state;
-diff --git a/sound/pci/hda/tas2781_hda_i2c.c b/sound/pci/hda/tas2781_hda_i2c.c
-index 89d8235537cd3..f58f434e7110e 100644
---- a/sound/pci/hda/tas2781_hda_i2c.c
-+++ b/sound/pci/hda/tas2781_hda_i2c.c
-@@ -818,7 +818,7 @@ static int tas2781_hda_i2c_probe(struct i2c_client *clt)
- 	} else
- 		return -ENODEV;
+ /*
+@@ -223,6 +228,7 @@ static struct ti_cpufreq_soc_data am3517_soc_data = {
+ 	.efuse_mask = 0,
+ 	.rev_offset = OMAP3_CONTROL_IDCODE - OMAP3_SYSCON_BASE,
+ 	.multi_regulator = false,
++	.quirks = TI_QUIRK_SYSCON_MAY_BE_MISSING,
+ };
  
--	tas_hda->priv->irq_info.irq = clt->irq;
-+	tas_hda->priv->irq = clt->irq;
- 	ret = tas2781_read_acpi(tas_hda->priv, device_name);
- 	if (ret)
- 		return dev_err_probe(tas_hda->dev, ret,
-diff --git a/sound/soc/codecs/tas2781-comlib.c b/sound/soc/codecs/tas2781-comlib.c
-index 1fbf4560f5cc2..28d8b4d7b9855 100644
---- a/sound/soc/codecs/tas2781-comlib.c
-+++ b/sound/soc/codecs/tas2781-comlib.c
-@@ -14,7 +14,6 @@
- #include <linux/interrupt.h>
- #include <linux/module.h>
- #include <linux/of.h>
--#include <linux/of_gpio.h>
- #include <linux/of_irq.h>
- #include <linux/regmap.h>
- #include <linux/slab.h>
-@@ -411,8 +410,6 @@ EXPORT_SYMBOL_GPL(tasdevice_dsp_remove);
+ static struct ti_cpufreq_soc_data am625_soc_data = {
+@@ -250,7 +256,7 @@ static int ti_cpufreq_get_efuse(struct ti_cpufreq_data *opp_data,
  
- void tasdevice_remove(struct tasdevice_priv *tas_priv)
- {
--	if (gpio_is_valid(tas_priv->irq_info.irq_gpio))
--		gpio_free(tas_priv->irq_info.irq_gpio);
- 	mutex_destroy(&tas_priv->codec_lock);
- }
- EXPORT_SYMBOL_GPL(tasdevice_remove);
-diff --git a/sound/soc/codecs/tas2781-fmwlib.c b/sound/soc/codecs/tas2781-fmwlib.c
-index 8f9a3ae7153e9..f3a7605f07104 100644
---- a/sound/soc/codecs/tas2781-fmwlib.c
-+++ b/sound/soc/codecs/tas2781-fmwlib.c
-@@ -13,7 +13,6 @@
- #include <linux/interrupt.h>
- #include <linux/module.h>
- #include <linux/of.h>
--#include <linux/of_gpio.h>
- #include <linux/of_irq.h>
- #include <linux/regmap.h>
- #include <linux/slab.h>
-diff --git a/sound/soc/codecs/tas2781-i2c.c b/sound/soc/codecs/tas2781-i2c.c
-index 01b0e1820b38f..5856a68d60d39 100644
---- a/sound/soc/codecs/tas2781-i2c.c
-+++ b/sound/soc/codecs/tas2781-i2c.c
-@@ -22,7 +22,6 @@
- #include <linux/module.h>
- #include <linux/of.h>
- #include <linux/of_address.h>
--#include <linux/of_gpio.h>
- #include <linux/of_irq.h>
- #include <linux/regmap.h>
- #include <linux/slab.h>
-@@ -758,7 +757,7 @@ static void tasdevice_parse_dt(struct tasdevice_priv *tas_priv)
- {
- 	struct i2c_client *client = (struct i2c_client *)tas_priv->client;
- 	unsigned int dev_addrs[TASDEVICE_MAX_CHANNELS];
--	int rc, i, ndev = 0;
-+	int i, ndev = 0;
+ 	ret = regmap_read(opp_data->syscon, opp_data->soc_data->efuse_offset,
+ 			  &efuse);
+-	if (ret == -EIO) {
++	if (opp_data->soc_data->quirks & TI_QUIRK_SYSCON_MAY_BE_MISSING && ret == -EIO) {
+ 		/* not a syscon register! */
+ 		void __iomem *regs = ioremap(OMAP3_SYSCON_BASE +
+ 				opp_data->soc_data->efuse_offset, 4);
+@@ -291,7 +297,7 @@ static int ti_cpufreq_get_rev(struct ti_cpufreq_data *opp_data,
  
- 	if (tas_priv->isacpi) {
- 		ndev = device_property_read_u32_array(&client->dev,
-@@ -773,7 +772,7 @@ static void tasdevice_parse_dt(struct tasdevice_priv *tas_priv)
- 				"ti,audio-slots", dev_addrs, ndev);
- 		}
- 
--		tas_priv->irq_info.irq_gpio =
-+		tas_priv->irq =
- 			acpi_dev_gpio_irq_get(ACPI_COMPANION(&client->dev), 0);
- 	} else if (IS_ENABLED(CONFIG_OF)) {
- 		struct device_node *np = tas_priv->dev->of_node;
-@@ -785,7 +784,7 @@ static void tasdevice_parse_dt(struct tasdevice_priv *tas_priv)
- 			dev_addrs[ndev++] = addr;
- 		}
- 
--		tas_priv->irq_info.irq_gpio = of_irq_get(np, 0);
-+		tas_priv->irq = of_irq_get(np, 0);
- 	} else {
- 		ndev = 1;
- 		dev_addrs[0] = client->addr;
-@@ -801,23 +800,6 @@ static void tasdevice_parse_dt(struct tasdevice_priv *tas_priv)
- 			__func__);
- 
- 	strcpy(tas_priv->dev_name, tasdevice_id[tas_priv->chip_id].name);
--
--	if (gpio_is_valid(tas_priv->irq_info.irq_gpio)) {
--		rc = gpio_request(tas_priv->irq_info.irq_gpio,
--				"AUDEV-IRQ");
--		if (!rc) {
--			gpio_direction_input(
--				tas_priv->irq_info.irq_gpio);
--
--			tas_priv->irq_info.irq =
--				gpio_to_irq(tas_priv->irq_info.irq_gpio);
--		} else
--			dev_err(tas_priv->dev, "%s: GPIO %d request error\n",
--				__func__, tas_priv->irq_info.irq_gpio);
--	} else
--		dev_err(tas_priv->dev,
--			"Looking up irq-gpio property failed %d\n",
--			tas_priv->irq_info.irq_gpio);
- }
- 
- static int tasdevice_i2c_probe(struct i2c_client *i2c)
+ 	ret = regmap_read(opp_data->syscon, opp_data->soc_data->rev_offset,
+ 			  &revision);
+-	if (ret == -EIO) {
++	if (opp_data->soc_data->quirks & TI_QUIRK_SYSCON_MAY_BE_MISSING && ret == -EIO) {
+ 		/* not a syscon register! */
+ 		void __iomem *regs = ioremap(OMAP3_SYSCON_BASE +
+ 				opp_data->soc_data->rev_offset, 4);
 -- 
 2.43.0
 
