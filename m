@@ -1,168 +1,117 @@
-Return-Path: <stable+bounces-79476-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id CBD5298D898
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:03:12 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F4FD98D8C1
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:05:29 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id 7DCA41F2417E
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:03:12 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id 04ACBB23EAC
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:05:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 507151D1E7A;
-	Wed,  2 Oct 2024 13:59:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 087761D0E30;
+	Wed,  2 Oct 2024 14:00:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=thorsis.com header.i=@thorsis.com header.b="eZp4W4TY"
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="DMPKIGAq";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="JaO7MgLB"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.thorsis.com (mail.thorsis.com [217.92.40.78])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 280FF1D1E6C
-	for <stable@vger.kernel.org>; Wed,  2 Oct 2024 13:59:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.92.40.78
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57DA41CFEB3;
+	Wed,  2 Oct 2024 14:00:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877574; cv=none; b=CtMiqjvzVNUDhTcwCfePQSVNLa/7PDAx4N3XtE2nY0WnQSMfV68byQsSCElaA5Zwfty63qoTOgvIvxfgBjjvxcusFv8R3C8/aW710GhbeCYmJiyJJ8HsmbO414DqA1Nyv+pjryv33pGOkE/fZbgJ9bad5QSXoTTORJqBYGQ81ys=
+	t=1727877625; cv=none; b=aTqGnxiPpkv/uOifYvG3U8DZFPXO5MYufPUzFHGDjXaOYW1XNNBoXPrypazHbw4ZR5JEmtjiu7o0rlplIpt9xaZqUTItcVSqPDw8hISu28l6cpWwBxUOF5wJyNDn4ZWkOtELOWF2u0M7T5AX1mUZSg7hPQNkWoyb7EqKiibBk1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877574; c=relaxed/simple;
-	bh=IaNMjnZJy0z1wxvhoru6iUhYjySK8Jt/5xB/5jNuul8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=njPD0kohIRuC5zLfXVr0Hj58Xe90UIMFfU9m0h1ILPr+voqdSQeoF0KDzeFjlrqKod44K7yTCpESz/VjMGFAbGw2BitDYwkgNdIkkpJjaeXkGFpr226QS5B4nEHYIGOKNbmH9n6NrIv4/oIIHZgmWJvgxD6NTSQ7CpF8k/ZGvsM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=thorsis.com; spf=pass smtp.mailfrom=thorsis.com; dkim=pass (2048-bit key) header.d=thorsis.com header.i=@thorsis.com header.b=eZp4W4TY; arc=none smtp.client-ip=217.92.40.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=thorsis.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=thorsis.com
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 52A321483606;
-	Wed,  2 Oct 2024 15:59:27 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=thorsis.com; s=dkim;
-	t=1727877569; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=+liSgV+9gvc3i9IzqEkP6EiXi0aKY8uKnmPTc1RyS4Q=;
-	b=eZp4W4TYnSJotbI46XjT/VQg8nN0BskkGvTfxbvrOiWJ0fFInp4NqQ/j+rh8PZI1dpg24c
-	PCpHhn8P3JUjh3ZF8vnXrjN0SAv/1GZimEQ9qUT1qhYyjhmPc+pq1iIxKZrjxWFdVu7V/f
-	hz2Xa+YucDCvZ+17nFLbP/22gKtsO237gVtGybSUFCtjTyzp/OwcQa7Ho1iV12DQj9rqSO
-	wllfrj/mWiwtG3Z3Z755DWHWnv1YEuiw8qnB8vE3tQ4ibvdeVI2raFWc/WIEaRib6z2oOj
-	IBic+SHzMUud6IcxEiMIwnn+ivGJZhkjP2Uibo472gZPbNido+aVso/nScO5Dw==
-Date: Wed, 2 Oct 2024 15:59:26 +0200
-From: Alexander Dahl <ada@thorsis.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	Alexander Dahl <ada@thorsis.com>, Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.11 451/695] spi: atmel-quadspi: Avoid overwriting delay
- register settings
-Message-ID: <20241002-alarm-freedom-16ab0ea3305f@thorsis.com>
-Mail-Followup-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	stable@vger.kernel.org, patches@lists.linux.dev,
-	Mark Brown <broonie@kernel.org>, Sasha Levin <sashal@kernel.org>
-References: <20241002125822.467776898@linuxfoundation.org>
- <20241002125840.462311087@linuxfoundation.org>
+	s=arc-20240116; t=1727877625; c=relaxed/simple;
+	bh=LK3sIX6c8Vp5zH1p2Nl9RVDOvCjNChQGjpJ+XZwcNhQ=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=a3HYMQ5FgpuCK/bkKK71MLb5R0ZtyYcCR/FkutuN6BJjwiHxj7QwG6xHCDem5nsC0yesAaeYEzYMyqmKmdcndH2IhIfy93HGkUCg6nNFTilaIzkyVBJauDMtnm2iqu/Bu4LaY6cyEm6YRh8etEWwLbfeMDjkTlF1UCf027Dj55M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=DMPKIGAq; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=JaO7MgLB; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+From: Thomas Gleixner <tglx@linutronix.de>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1727877621;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NRWdOmFvwEuoklANot4NPcQH4x73VoxrUIuRqMWDH3c=;
+	b=DMPKIGAqsUTAW20USYZF3yfL7A3b9ZbzMIRj5R+loWuFbVexkhUIb2WkGexh8cppeFz5Vo
+	7tPnOt3qsndBid6nKw+63o3CdSiocnNayBiC93xmG3rgYku9SvYIVb0AZ94PaAe74z1vLG
+	C7Ms55qBeE96wKbqkRMsI3cGt5MSmGEOw8pBPeV2IEFJvGvZ6XQVQ3mg1ekkVniyCcret6
+	YF7qOmU3XtKprpOt62mkXcTeJyiFf8HQXVB++GsA5y6bn1l0/hHcHfojOU26GSxDBZ5Ia+
+	lqpRcJN1fXkCQ52lkpRAMi+5AxfcfH7dGFl2rbxUx2cuexywv5N4G0X5q3Qwtw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1727877621;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=NRWdOmFvwEuoklANot4NPcQH4x73VoxrUIuRqMWDH3c=;
+	b=JaO7MgLB3H615K0Pzsbh8rfsVoTA2xO2TsWkNm5mtJt6tUU+Gh3VB1ssGHUnCODTSBjmkE
+	ru/i/N4t+YrgcnAg==
+To: Nam Cao <namcao@linutronix.de>, Paul Walmsley
+ <paul.walmsley@sifive.com>, Samuel Holland <samuel.holland@sifive.com>,
+ Marc Zyngier <maz@kernel.org>, linux-kernel@vger.kernel.org,
+ linux-riscv@lists.infradead.org
+Cc: Nam Cao <namcao@linutronix.de>, stable@vger.kernel.org
+Subject: Re: [PATCH] irqchip/sifive-plic: Unmask interrupt in plic_irq_enable()
+In-Reply-To: <20240926154315.1244200-1-namcao@linutronix.de>
+References: <20240926154315.1244200-1-namcao@linutronix.de>
+Date: Wed, 02 Oct 2024 16:00:21 +0200
+Message-ID: <8734ley58q.ffs@tglx>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20241002125840.462311087@linuxfoundation.org>
-User-Agent: Mutt/2.2.12 (2023-09-09)
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain
 
-Hello Greg,
+On Thu, Sep 26 2024 at 17:43, Nam Cao wrote:
+> If another task disables the interrupt in the middle of the above steps,
+> the interrupt will not get unmasked, and will remain masked when it is
+> enabled in the future.
+>
+> The problem is occasionally observed when PREEMPT_RT is enabled, because
+> PREEMPT_RT add the IRQS_ONESHOT flag. But PREEMPT_RT only makes the
+> problem more likely to appear, the bug has been around since
+> commit a1706a1c5062 ("irqchip/sifive-plic: Separate the enable and mask
+> operations").
 
-Am Wed, Oct 02, 2024 at 02:57:29PM +0200 schrieb Greg Kroah-Hartman:
-> 6.11-stable review patch.  If anyone has any objections, please let me know.
-> 
-> ------------------
-> 
-> From: Alexander Dahl <ada@thorsis.com>
-> 
-> [ Upstream commit 329ca3eed4a9a161515a8714be6ba182321385c7 ]
-> 
-> Previously the MR and SCR registers were just set with the supposedly
-> required values, from cached register values (cached reg content
-> initialized to zero).
-> 
-> All parts fixed here did not consider the current register (cache)
-> content, which would make future support of cs_setup, cs_hold, and
-> cs_inactive impossible.
-> 
-> Setting SCBR in atmel_qspi_setup() erases a possible DLYBS setting from
-> atmel_qspi_set_cs_timing().  The DLYBS setting is applied by ORing over
-> the current setting, without resetting the bits first.  All writes to MR
-> did not consider possible settings of DLYCS and DLYBCT.
-> 
-> Signed-off-by: Alexander Dahl <ada@thorsis.com>
-> Fixes: f732646d0ccd ("spi: atmel-quadspi: Add support for configuring CS timing")
-> Link: https://patch.msgid.link/20240918082744.379610-2-ada@thorsis.com
-> Signed-off-by: Mark Brown <broonie@kernel.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+Correct. It's a general problem independent of RT.
+
+> Fix it by unmasking interrupt in plic_irq_enable().
+>
+> Fixes: a1706a1c5062 ("irqchip/sifive-plic: Separate the enable and mask operations").
+> Signed-off-by: Nam Cao <namcao@linutronix.de>
+> Cc: stable@vger.kernel.org
 > ---
->  drivers/spi/atmel-quadspi.c | 14 ++++++++------
->  1 file changed, 8 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/spi/atmel-quadspi.c b/drivers/spi/atmel-quadspi.c
-> index 466c01b31123b..b557ce94da209 100644
-> --- a/drivers/spi/atmel-quadspi.c
-> +++ b/drivers/spi/atmel-quadspi.c
-> @@ -375,9 +375,9 @@ static int atmel_qspi_set_cfg(struct atmel_qspi *aq,
->  	 * If the QSPI controller is set in regular SPI mode, set it in
->  	 * Serial Memory Mode (SMM).
->  	 */
-> -	if (aq->mr != QSPI_MR_SMM) {
-> -		atmel_qspi_write(QSPI_MR_SMM, aq, QSPI_MR);
-> -		aq->mr = QSPI_MR_SMM;
-> +	if (!(aq->mr & QSPI_MR_SMM)) {
-> +		aq->mr |= QSPI_MR_SMM;
-> +		atmel_qspi_write(aq->scr, aq, QSPI_MR);
+>  drivers/irqchip/irq-sifive-plic.c | 3 +++
+>  1 file changed, 3 insertions(+)
+>
+> diff --git a/drivers/irqchip/irq-sifive-plic.c b/drivers/irqchip/irq-sifive-plic.c
+> index 2f6ef5c495bd..0efbf14ec9fa 100644
+> --- a/drivers/irqchip/irq-sifive-plic.c
+> +++ b/drivers/irqchip/irq-sifive-plic.c
+> @@ -128,6 +128,9 @@ static inline void plic_irq_toggle(const struct cpumask *mask,
+>  
+>  static void plic_irq_enable(struct irq_data *d)
+>  {
+> +	struct plic_priv *priv = irq_data_get_irq_chip_data(d);
+> +
+> +	writel(1, priv->regs + PRIORITY_BASE + d->hwirq * PRIORITY_PER_ID);
+>  	plic_irq_toggle(irq_data_get_effective_affinity_mask(d), d, 1);
 
-This is a write to a wrong register, it was already fixed with
-<20240926090356.105789-1-ada@thorsis.com> [1] which was taken by Mark
-into the spi for-next tree.  If you take this patch, please also take
-the fixup!  Sorry for messing this up, that was my fault.
+Can you please move plic_irq_enable() below plic_irq_unmask() and invoke
+the latter instead of duplicating the code?
 
-(Note: I'm AFK from tomorrow until October 13th.)
+Also usually unmask() is done after enable(), but the ordering probably
+does not matter here.
 
-Thanks
-Alex
+Thanks,
 
-[1] https://lore.kernel.org/linux-spi/20240926090356.105789-1-ada@thorsis.com/T/#u
-
->  	}
->  
->  	/* Clear pending interrupts */
-> @@ -501,7 +501,8 @@ static int atmel_qspi_setup(struct spi_device *spi)
->  	if (ret < 0)
->  		return ret;
->  
-> -	aq->scr = QSPI_SCR_SCBR(scbr);
-> +	aq->scr &= ~QSPI_SCR_SCBR_MASK;
-> +	aq->scr |= QSPI_SCR_SCBR(scbr);
->  	atmel_qspi_write(aq->scr, aq, QSPI_SCR);
->  
->  	pm_runtime_mark_last_busy(ctrl->dev.parent);
-> @@ -534,6 +535,7 @@ static int atmel_qspi_set_cs_timing(struct spi_device *spi)
->  	if (ret < 0)
->  		return ret;
->  
-> +	aq->scr &= ~QSPI_SCR_DLYBS_MASK;
->  	aq->scr |= QSPI_SCR_DLYBS(cs_setup);
->  	atmel_qspi_write(aq->scr, aq, QSPI_SCR);
->  
-> @@ -549,8 +551,8 @@ static void atmel_qspi_init(struct atmel_qspi *aq)
->  	atmel_qspi_write(QSPI_CR_SWRST, aq, QSPI_CR);
->  
->  	/* Set the QSPI controller by default in Serial Memory Mode */
-> -	atmel_qspi_write(QSPI_MR_SMM, aq, QSPI_MR);
-> -	aq->mr = QSPI_MR_SMM;
-> +	aq->mr |= QSPI_MR_SMM;
-> +	atmel_qspi_write(aq->mr, aq, QSPI_MR);
->  
->  	/* Enable the QSPI controller */
->  	atmel_qspi_write(QSPI_CR_QSPIEN, aq, QSPI_CR);
-> -- 
-> 2.43.0
-> 
-> 
-> 
-> 
+        tglx
 
