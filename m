@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-79394-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-78800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from am.mirrors.kernel.org (am.mirrors.kernel.org [147.75.80.249])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A7A298D807
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:56:00 +0200 (CEST)
+Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [147.75.199.223])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD6DA98D50B
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:26:51 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by am.mirrors.kernel.org (Postfix) with ESMTPS id AF27B1F22036
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:55:59 +0000 (UTC)
+	by ny.mirrors.kernel.org (Postfix) with ESMTPS id E617D1C20FB2
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:26:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E5241D07BD;
-	Wed,  2 Oct 2024 13:55:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 058F81D040E;
+	Wed,  2 Oct 2024 13:26:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bOxm+2RV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y1EPq9ke"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C24EA1D0795;
-	Wed,  2 Oct 2024 13:55:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6BC01D0412;
+	Wed,  2 Oct 2024 13:26:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727877320; cv=none; b=YQtghP2es/xbGqF+bVg0aLPlO1qNUg2dKTn+zeXazYHvo+3fLcyjX9KfYM9JdOvBVeZmvEq8DUa8icv0IxFL0Kdw7vEfoxi7Abz4xxo+M4ZLGHBM+Vr8RcNkzIE7JYzp6vXNc/MBN2z3H3glJW50IcJlBfzDNO2wOumEoC5LA2M=
+	t=1727875567; cv=none; b=CDvj7eULiOU9sUBII0eQOOwLc8nhNLx8SFPe+5IqcH++Ngm/d0bSZ1Neb/mMOhFqB16wq8ehSUc07A6+MSFXvsjOYAJmVYTkdWdJHjLy63j7owyHuTWg+imfuFzjQcWMZyPBQCvXaPfZuDSoOaVG/XfbGMv2DtDwxFtnGhR4m1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727877320; c=relaxed/simple;
-	bh=Uo8Fegrp8DDxcO3oCtopQVdCemE3b+cVA/r5Vg0SKpc=;
+	s=arc-20240116; t=1727875567; c=relaxed/simple;
+	bh=ng+8nlro/RSCGzMCAD8bchblk/qRS2vLM2HSyJIgc14=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QCfihiz4tiiZ2dUe6behuopIl7JBmxZs67oQScax4a1HVsXdfE9Vft1NBq1d9Z76ze+cQMCC5ui7cZuZ4ZM0s57AmqfFEzmWSvNeSjCEYZRikKx9ea449sGtu5Igvus92SD5zxPkCfESCmluhZPA9LVuaQ74pg9xD344zqceyug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bOxm+2RV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48229C4CED6;
-	Wed,  2 Oct 2024 13:55:20 +0000 (UTC)
+	 MIME-Version; b=fzWWqdWee8PVKA//MNysg/kPuz33jNTlgVBaLFh7Hkhc4BKEKdDx1qDRlQUrwRSufPR6pKQ9GFoRJydhr0RyT9/RHijPNwby6Y9gvgUnz1H9x8vQ24nYWd2qHR6WuGFWefSGSQQNBSEyrh/KIzif4y+ft1pT5hxGy+cksiWz6dE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y1EPq9ke; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A047C4CECE;
+	Wed,  2 Oct 2024 13:26:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727877320;
-	bh=Uo8Fegrp8DDxcO3oCtopQVdCemE3b+cVA/r5Vg0SKpc=;
+	s=korg; t=1727875567;
+	bh=ng+8nlro/RSCGzMCAD8bchblk/qRS2vLM2HSyJIgc14=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bOxm+2RVbiuzFZRR2POYKvkK3U28Eg65pvFVnFeksuk1P2PnNBbHB9bPywaqhdcHp
-	 pFIori0yT+yDV6ATolzxYw5OIWhy+r+4N8FDJoi1vxCtcd8D9++UiFD1EniN4q6cdp
-	 lPQkmLEDWfSSYgQofiI8HCHfX0U1L7ba6yUgMvAo=
+	b=Y1EPq9keBjJQNDdqqErm9LuMFA8U9p0nguJUCju3aR5U51/xwExJ6KloFvW8vU8GS
+	 +4GPVGlfyD7/lhVoJl+rFHHCc3iMMLYt7U6ZwG9MEittZOCxuJsXHYjalKyyFjiePq
+	 X+CSzY3mRDR2vwnKK7OX6Cb7IEvaptEV9s2RUTfQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emmanuel Grumbach <emmanuel.grumbach@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Jon Hunter <jonathanh@nvidia.com>,
+	Thierry Reding <treding@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.10 042/634] wifi: mac80211: fix the comeback long retry times
-Date: Wed,  2 Oct 2024 14:52:22 +0200
-Message-ID: <20241002125812.761939028@linuxfoundation.org>
+Subject: [PATCH 6.11 145/695] arm64: tegra: Correct location of power-sensors for IGX Orin
+Date: Wed,  2 Oct 2024 14:52:23 +0200
+Message-ID: <20241002125828.272247439@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
+References: <20241002125822.467776898@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +62,114 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.11-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
+From: Jon Hunter <jonathanh@nvidia.com>
 
-[ Upstream commit 1524173a3745899612c71d9e83ff8fe29dbb2cfb ]
+[ Upstream commit b93679b8f165467e1584f9b23055db83f45c32ce ]
 
-When we had a comeback, we will never use the default timeout values
-again because comeback is never cleared.
-Clear comeback if we send another association request which will allow
-to start a default timer after Tx status.
+The power-sensors are located on the carrier board and not the
+module board and so update the IGX Orin device-tree files to fix this.
 
-The problem was seen with iwlwifi where the tx_status on the association
-request is handled before the association response frame (which is the
-usual case).
-
-1) Tx assoc request 1/3
-2) Rx assoc response (comeback, timeout = 1 second)
-3) wait 1 second
-4) Tx assoc request 2/3
-5) Set timer to IEEE80211_ASSOC_TIMEOUT_LONG = 500ms (1 second after
-   round_up)
-6) tx_status on frame sent in 4) is ignored because comeback is still
-   true
-7) AP does not reply with assoc response
-8) wait 1s <= This is where the bug is felt
-9) Tx assoc request 3/3
-
-With this fix, in step 6 we will reset the timer to
-IEEE80211_ASSOC_TIMEOUT_SHORT = 100ms and we will wait only 100ms in
-step 8.
-
-Fixes: b133fdf07db8 ("wifi: mac80211: Skip association timeout update after comeback rejection")
-Signed-off-by: Emmanuel Grumbach <emmanuel.grumbach@intel.com>
-Link: https://patch.msgid.link/20240808085916.23519-1-emmanuel.grumbach@intel.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 9152ed09309d ("arm64: tegra: Add power-sensors for Tegra234 boards")
+Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/mac80211/mlme.c | 1 +
- 1 file changed, 1 insertion(+)
+ .../boot/dts/nvidia/tegra234-p3701-0008.dtsi  | 33 -------------------
+ .../boot/dts/nvidia/tegra234-p3740-0002.dtsi  | 33 +++++++++++++++++++
+ 2 files changed, 33 insertions(+), 33 deletions(-)
 
-diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
-index ad2ce9c92ba8a..51b00ff7edf15 100644
---- a/net/mac80211/mlme.c
-+++ b/net/mac80211/mlme.c
-@@ -7121,6 +7121,7 @@ static int ieee80211_do_assoc(struct ieee80211_sub_if_data *sdata)
- 	lockdep_assert_wiphy(sdata->local->hw.wiphy);
+diff --git a/arch/arm64/boot/dts/nvidia/tegra234-p3701-0008.dtsi b/arch/arm64/boot/dts/nvidia/tegra234-p3701-0008.dtsi
+index 553fa4ba1cd48..62c4fdad0b600 100644
+--- a/arch/arm64/boot/dts/nvidia/tegra234-p3701-0008.dtsi
++++ b/arch/arm64/boot/dts/nvidia/tegra234-p3701-0008.dtsi
+@@ -44,39 +44,6 @@
+ 			status = "okay";
+ 		};
  
- 	assoc_data->tries++;
-+	assoc_data->comeback = false;
- 	if (assoc_data->tries > IEEE80211_ASSOC_MAX_TRIES) {
- 		sdata_info(sdata, "association with %pM timed out\n",
- 			   assoc_data->ap_addr);
+-		i2c@c250000 {
+-			power-sensor@41 {
+-				compatible = "ti,ina3221";
+-				reg = <0x41>;
+-				#address-cells = <1>;
+-				#size-cells = <0>;
+-
+-				input@0 {
+-					reg = <0x0>;
+-					label = "CVB_ATX_12V";
+-					shunt-resistor-micro-ohms = <2000>;
+-				};
+-
+-				input@1 {
+-					reg = <0x1>;
+-					label = "CVB_ATX_3V3";
+-					shunt-resistor-micro-ohms = <2000>;
+-				};
+-
+-				input@2 {
+-					reg = <0x2>;
+-					label = "CVB_ATX_5V";
+-					shunt-resistor-micro-ohms = <2000>;
+-				};
+-			};
+-
+-			power-sensor@44 {
+-				compatible = "ti,ina219";
+-				reg = <0x44>;
+-				shunt-resistor = <2000>;
+-			};
+-		};
+-
+ 		rtc@c2a0000 {
+ 			status = "okay";
+ 		};
+diff --git a/arch/arm64/boot/dts/nvidia/tegra234-p3740-0002.dtsi b/arch/arm64/boot/dts/nvidia/tegra234-p3740-0002.dtsi
+index 527f2f3aee3ad..377f518bd3e57 100644
+--- a/arch/arm64/boot/dts/nvidia/tegra234-p3740-0002.dtsi
++++ b/arch/arm64/boot/dts/nvidia/tegra234-p3740-0002.dtsi
+@@ -183,6 +183,39 @@
+ 			phy-names = "usb2-0", "usb2-1", "usb2-2", "usb2-3",
+ 				"usb3-0", "usb3-1", "usb3-2";
+ 		};
++
++		i2c@c250000 {
++			power-sensor@41 {
++				compatible = "ti,ina3221";
++				reg = <0x41>;
++				#address-cells = <1>;
++				#size-cells = <0>;
++
++				input@0 {
++					reg = <0x0>;
++					label = "CVB_ATX_12V";
++					shunt-resistor-micro-ohms = <2000>;
++				};
++
++				input@1 {
++					reg = <0x1>;
++					label = "CVB_ATX_3V3";
++					shunt-resistor-micro-ohms = <2000>;
++				};
++
++				input@2 {
++					reg = <0x2>;
++					label = "CVB_ATX_5V";
++					shunt-resistor-micro-ohms = <2000>;
++				};
++			};
++
++			power-sensor@44 {
++				compatible = "ti,ina219";
++				reg = <0x44>;
++				shunt-resistor = <2000>;
++			};
++		};
+ 	};
+ 
+ 	vdd_3v3_dp: regulator-vdd-3v3-dp {
 -- 
 2.43.0
 
