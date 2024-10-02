@@ -1,58 +1,57 @@
-Return-Path: <stable+bounces-79923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-80420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from ny.mirrors.kernel.org (ny.mirrors.kernel.org [IPv6:2604:1380:45d1:ec00::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F90598DAE9
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:26:17 +0200 (CEST)
+Received: from sy.mirrors.kernel.org (sy.mirrors.kernel.org [147.75.48.161])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32E5298DD80
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 16:50:00 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by ny.mirrors.kernel.org (Postfix) with ESMTPS id 58B1B1C23796
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:26:16 +0000 (UTC)
+	by sy.mirrors.kernel.org (Postfix) with ESMTPS id DDA73B27681
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 14:48:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5D0A1D1F59;
-	Wed,  2 Oct 2024 14:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0152F1D0953;
+	Wed,  2 Oct 2024 14:45:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F2RrPMPI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HcwZLXLh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82FEB1D0E27;
-	Wed,  2 Oct 2024 14:21:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B048E8F40;
+	Wed,  2 Oct 2024 14:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727878864; cv=none; b=Ys/sEli3W/jmQ72f+qUP/wIu8lGROcD2gLV4B0cnECbwyVmxK8V/0XWlBdOEgrBia5QUolACtVHPdgr1mP07i7uEGAkrrnvnrM2FE5zxQQOZrxOrONhua2Qkxx80dVDS+I5cHVyvhNp9CutZKLr64hpEDaP3M3Hzl2x4jzt0qP8=
+	t=1727880322; cv=none; b=QmVmvFT2Hr70fHTDV/CGa+OzEX4YXN/pGMN1X9X80nC0WCd7Rvhbi8mqaPw+9tGctqvODwEviJO0NaTow/tiHIBSJhfAdMFW/bBIFdaXxYw5QnbGUi1PKfchZoC3qqSfUoo1i3Pudio2VG76uGXTDjVbQWJkn0HxEFaf0SV3XwI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727878864; c=relaxed/simple;
-	bh=ASMvqSDp5gUcZDE2weiJUQ/+skGiIVhvYS5JLRECzAo=;
+	s=arc-20240116; t=1727880322; c=relaxed/simple;
+	bh=Z3jY6t8gQ9muyEEmk0ERc3dQLuCncxgGcwQ5WJ0LpIE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gSp/jIWu7P1BZPXfk8TGc8ftQ7oRXz0Sp0QzntxMcq4oOgNr8zGntDbYC+Xy5PqM4tMdPlr48r+FiA9cgi52o6fzEDwiYfPk2Fm//ZGZA2oH3S8HNAxNdUwlfACMhBibn999OZfv+AyvEFY1d0VSbdirSGjnRtwKf9V7K8DBOmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F2RrPMPI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B4A3C4CECD;
-	Wed,  2 Oct 2024 14:21:03 +0000 (UTC)
+	 MIME-Version; b=rRrWCQ7dnDdRos1BXWi531o8kuoqsZwhrJjJhp+pMBLe5iksV3YOuhhmESl/ez0rVDUc+1yzz89074g8ke1rGWsKL++rgei/WsZYx5T80M18J9VAyLZE7BF/rEPl9Qd/7TQRlQ5oHPv2mVwTqE9/05fNWFeokrCYqKlToNpvLq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HcwZLXLh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3851FC4CECE;
+	Wed,  2 Oct 2024 14:45:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727878864;
-	bh=ASMvqSDp5gUcZDE2weiJUQ/+skGiIVhvYS5JLRECzAo=;
+	s=korg; t=1727880322;
+	bh=Z3jY6t8gQ9muyEEmk0ERc3dQLuCncxgGcwQ5WJ0LpIE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F2RrPMPIakNESFqlYmsaqRHQEfKxMlLiaQceVz7aP2TOp9g4OhqdkSodwzb5ENg8F
-	 MTHh6ESULyDM6tjAQBU7edaZhuYsafF83jn5N6Dd51Y/lgk9HHEIfEQDhr4fY4Haih
-	 OIJVhY0aVwR5fsnfflnQvW50Pkj5GNpDJzE5XhIo=
+	b=HcwZLXLhWaJz66L3yt1kDv1T4MKWXa2XT1jQts/Dmg1BnsyeL3tcofXQQfmXfMz2m
+	 lweL7XXgIRyxg4YQsdZ2lDGx53PI/lkiGcSCOfXzw9NL/yReVJmyz+c7294T6Lop0I
+	 JTUYfAqfXKVRFNZk2PRDVOSZ7ZlmBA1NRVXJrLI4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Parton <njparton@gmail.com>,
-	Archange <archange@archlinux.org>,
-	Filipe Manana <fdmanana@suse.com>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>
-Subject: [PATCH 6.10 558/634] btrfs: tree-checker: fix the wrong output of data backref objectid
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Mina Almasry <almasrymina@google.com>,
+	Segher Boessenkool <segher@kernel.crashing.org>,
+	Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 6.6 419/538] powerpc/atomic: Use YZ constraints for DS-form instructions
 Date: Wed,  2 Oct 2024 15:00:58 +0200
-Message-ID: <20241002125833.137347327@linuxfoundation.org>
+Message-ID: <20241002125808.972756782@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
-In-Reply-To: <20241002125811.070689334@linuxfoundation.org>
-References: <20241002125811.070689334@linuxfoundation.org>
+In-Reply-To: <20241002125751.964700919@linuxfoundation.org>
+References: <20241002125751.964700919@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,64 +63,117 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Michael Ellerman <mpe@ellerman.id.au>
 
-commit b0b595e61d97de61c15b379b754b2caa90e83e5c upstream.
+commit 39190ac7cff1fd15135fa8e658030d9646fdb5f2 upstream.
 
-[BUG]
-There are some reports about invalid data backref objectids, the report
-looks like this:
+The 'ld' and 'std' instructions require a 4-byte aligned displacement
+because they are DS-form instructions. But the "m" asm constraint
+doesn't enforce that.
 
-  BTRFS critical (device sda): corrupt leaf: block=333654787489792 slot=110 extent bytenr=333413935558656 len=65536 invalid data ref objectid value 2543
+That can lead to build errors if the compiler chooses a non-aligned
+displacement, as seen with GCC 14:
 
-The data ref objectid is the inode number inside the subvolume.
+  /tmp/ccuSzwiR.s: Assembler messages:
+  /tmp/ccuSzwiR.s:2579: Error: operand out of domain (39 is not a multiple of 4)
+  make[5]: *** [scripts/Makefile.build:229: net/core/page_pool.o] Error 1
 
-But in above case, the value is completely sane, not really showing the
-problem.
+Dumping the generated assembler shows:
 
-[CAUSE]
-The root cause of the problem is the deprecated feature, inode cache.
+  ld 8,39(8)       # MEM[(const struct atomic64_t *)_29].counter, t
 
-This feature results a special inode number, -12ULL, and it's no longer
-recognized by tree-checker, triggering the error.
+Use the YZ constraints to tell the compiler either to generate a DS-form
+displacement, or use an X-form instruction, either of which prevents the
+build error.
 
-The direct problem here is the output of data ref objectid. The value
-shown is in fact the dref_root (subvolume id), not the dref_objectid
-(inode number).
+See commit 2d43cc701b96 ("powerpc/uaccess: Fix build errors seen with
+GCC 13/14") for more details on the constraint letters.
 
-[FIX]
-Fix the output to use dref_objectid instead.
-
-Reported-by: Neil Parton <njparton@gmail.com>
-Reported-by: Archange <archange@archlinux.org>
-Link: https://lore.kernel.org/linux-btrfs/CAAYHqBbrrgmh6UmW3ANbysJX9qG9Pbg3ZwnKsV=5mOpv_qix_Q@mail.gmail.com/
-Link: https://lore.kernel.org/linux-btrfs/9541deea-9056-406e-be16-a996b549614d@archlinux.org/
-Fixes: f333a3c7e832 ("btrfs: tree-checker: validate dref root and objectid")
-CC: stable@vger.kernel.org # 6.11
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 9f0cbea0d8cc ("[POWERPC] Implement atomic{, 64}_{read, write}() without volatile")
+Cc: stable@vger.kernel.org # v2.6.24+
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Closes: https://lore.kernel.org/all/20240913125302.0a06b4c7@canb.auug.org.au
+Tested-by: Mina Almasry <almasrymina@google.com>
+Reviewed-by: Segher Boessenkool <segher@kernel.crashing.org>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20240916120510.2017749-1-mpe@ellerman.id.au
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/tree-checker.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/include/asm/asm-compat.h |    6 ++++++
+ arch/powerpc/include/asm/atomic.h     |    5 +++--
+ arch/powerpc/include/asm/uaccess.h    |    7 +------
+ 3 files changed, 10 insertions(+), 8 deletions(-)
 
---- a/fs/btrfs/tree-checker.c
-+++ b/fs/btrfs/tree-checker.c
-@@ -1499,7 +1499,7 @@ static int check_extent_item(struct exte
- 				     dref_objectid > BTRFS_LAST_FREE_OBJECTID)) {
- 				extent_err(leaf, slot,
- 					   "invalid data ref objectid value %llu",
--					   dref_root);
-+					   dref_objectid);
- 				return -EUCLEAN;
- 			}
- 			if (unlikely(!IS_ALIGNED(dref_offset,
+--- a/arch/powerpc/include/asm/asm-compat.h
++++ b/arch/powerpc/include/asm/asm-compat.h
+@@ -39,6 +39,12 @@
+ #define STDX_BE	stringify_in_c(stdbrx)
+ #endif
+ 
++#ifdef CONFIG_CC_IS_CLANG
++#define DS_FORM_CONSTRAINT "Z<>"
++#else
++#define DS_FORM_CONSTRAINT "YZ<>"
++#endif
++
+ #else /* 32-bit */
+ 
+ /* operations for longs and pointers */
+--- a/arch/powerpc/include/asm/atomic.h
++++ b/arch/powerpc/include/asm/atomic.h
+@@ -11,6 +11,7 @@
+ #include <asm/cmpxchg.h>
+ #include <asm/barrier.h>
+ #include <asm/asm-const.h>
++#include <asm/asm-compat.h>
+ 
+ /*
+  * Since *_return_relaxed and {cmp}xchg_relaxed are implemented with
+@@ -197,7 +198,7 @@ static __inline__ s64 arch_atomic64_read
+ 	if (IS_ENABLED(CONFIG_PPC_KERNEL_PREFIXED))
+ 		__asm__ __volatile__("ld %0,0(%1)" : "=r"(t) : "b"(&v->counter));
+ 	else
+-		__asm__ __volatile__("ld%U1%X1 %0,%1" : "=r"(t) : "m<>"(v->counter));
++		__asm__ __volatile__("ld%U1%X1 %0,%1" : "=r"(t) : DS_FORM_CONSTRAINT (v->counter));
+ 
+ 	return t;
+ }
+@@ -208,7 +209,7 @@ static __inline__ void arch_atomic64_set
+ 	if (IS_ENABLED(CONFIG_PPC_KERNEL_PREFIXED))
+ 		__asm__ __volatile__("std %1,0(%2)" : "=m"(v->counter) : "r"(i), "b"(&v->counter));
+ 	else
+-		__asm__ __volatile__("std%U0%X0 %1,%0" : "=m<>"(v->counter) : "r"(i));
++		__asm__ __volatile__("std%U0%X0 %1,%0" : "=" DS_FORM_CONSTRAINT (v->counter) : "r"(i));
+ }
+ 
+ #define ATOMIC64_OP(op, asm_op)						\
+--- a/arch/powerpc/include/asm/uaccess.h
++++ b/arch/powerpc/include/asm/uaccess.h
+@@ -6,6 +6,7 @@
+ #include <asm/page.h>
+ #include <asm/extable.h>
+ #include <asm/kup.h>
++#include <asm/asm-compat.h>
+ 
+ #ifdef __powerpc64__
+ /* We use TASK_SIZE_USER64 as TASK_SIZE is not constant */
+@@ -92,12 +93,6 @@ __pu_failed:							\
+ 		: label)
+ #endif
+ 
+-#ifdef CONFIG_CC_IS_CLANG
+-#define DS_FORM_CONSTRAINT "Z<>"
+-#else
+-#define DS_FORM_CONSTRAINT "YZ<>"
+-#endif
+-
+ #ifdef __powerpc64__
+ #ifdef CONFIG_PPC_KERNEL_PREFIXED
+ #define __put_user_asm2_goto(x, ptr, label)			\
 
 
 
