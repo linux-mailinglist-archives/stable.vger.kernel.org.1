@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-79253-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-79222-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sv.mirrors.kernel.org (sv.mirrors.kernel.org [IPv6:2604:1380:45e3:2400::1])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6135698D753
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:48:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTPS id E6D8598D72D
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 15:47:01 +0200 (CEST)
 Received: from smtp.subspace.kernel.org (wormhole.subspace.kernel.org [52.25.139.140])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by sv.mirrors.kernel.org (Postfix) with ESMTPS id 29E91281DAB
-	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:48:37 +0000 (UTC)
+	by sv.mirrors.kernel.org (Postfix) with ESMTPS id A19B7285119
+	for <lists+stable@lfdr.de>; Wed,  2 Oct 2024 13:47:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6C451D079E;
-	Wed,  2 Oct 2024 13:48:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11B471C9B91;
+	Wed,  2 Oct 2024 13:46:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NW50Ahfl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z0EBtbwg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 830961D0799;
-	Wed,  2 Oct 2024 13:48:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C227916F84F;
+	Wed,  2 Oct 2024 13:46:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727876898; cv=none; b=DTIsrXUlokkAJ5Vae4YuyKB0A+mDsD0/shBtWfBuzvvS1KhC48CuajtcabOgW1i8as6mWRkLo1xeCakCoodaD3tSnMB47xfopPqhyyPWOoVEr0r63n4CHJ34AS9UzofskHPb3DVe3+fqgZnjOqFSJHCxHhU7OEbyn2X4R4CJkPQ=
+	t=1727876802; cv=none; b=jqYfLgBsC/BBiIMEMYzomcJS0V3hSrqYSmvuOr0VYVD2Y4pg0eEPpq9scooxuPv/yYKkaXDswVLpYJFZLqy0WYNJam7jI0Fc9gJo2N+F5/d65Ucm/tT144Wmn6zRyqTFdEhxTsM6hB1ktoWvhuHYYsu/aUmsLQYoL64WUchsn10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727876898; c=relaxed/simple;
-	bh=MHn7C3JdTRz6RNXi/BRd34SeS5Dl2Ph5cVPjuFB7U50=;
+	s=arc-20240116; t=1727876802; c=relaxed/simple;
+	bh=MWB28fb43WxBodkxFlNH/dPlEumOLkWkmDYPnhbv48k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AJGzIwvSU8IetdjtBvn0Qx0/k0OzAfOM9rO64VcDkRh7lfkkGehCsu/3VRjsaOG1mIHOCi9g6Qf7ZzybF6Jm8bxHg5yvo0XcOJYum6h7tHHgyvBOfqubkyGBDKrU8ljUjyG0HXlb9LLZTKDvSKN1tyjYy2Tlm15Rb280Kt6GdFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NW50Ahfl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E913C4CEC2;
-	Wed,  2 Oct 2024 13:48:17 +0000 (UTC)
+	 MIME-Version; b=npyHZ3tRCpOkQbB+uLh9wKJCI7ClmOtyOji5QRPw5S+Zn4HSb0Z/eRZfst5+9YnLdZXPEOdjnPmkZWOxn5mLWU8L8dyb0U7fORb4H9hmMPZuqPb+N+SBCH5Z/jtZHb98OvfoHZJXCi5W1KnrH80hhpdtUSgbrrQIjJ/h5drY3/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z0EBtbwg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47A5DC4CECD;
+	Wed,  2 Oct 2024 13:46:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1727876898;
-	bh=MHn7C3JdTRz6RNXi/BRd34SeS5Dl2Ph5cVPjuFB7U50=;
+	s=korg; t=1727876802;
+	bh=MWB28fb43WxBodkxFlNH/dPlEumOLkWkmDYPnhbv48k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NW50AhflhO1k9iYbKPTfN/xLRqVHDSYHnoIoKVSj2f2WPsJsNF1xBdhM4Js7Y54+2
-	 Yjrh0AXO6kDyh+S50vGPVqldT3Fm/UlToISVB3AM9f9oPNNJFoO7eYBD0nJD43HJ8B
-	 uqjWiGaM5iVym7S9tgLMN2yuj0m4u2sgayXWUTJs=
+	b=z0EBtbwg+R+P3+4dQcI64S6tec5S7eNeX+20b6sQgnLEeR2/TA/EFqa55o9AqrvlG
+	 HMZt+UspI8PqBjAL/rbKk/ie3eecp1ujrXK6j2/b8MYkinsgEZxMA7MLEOpZ0yXmIE
+	 tR4OzfDO0zNEFCVA/9axAVsBowgK5leVBoyXoh6Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hobin Woo <hobin.woo@samsung.com>,
 	Namjae Jeon <linkinjeon@kernel.org>,
 	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.11 566/695] ksmbd: make __dir_empty() compatible with POSIX
-Date: Wed,  2 Oct 2024 14:59:24 +0200
-Message-ID: <20241002125845.098833952@linuxfoundation.org>
+Subject: [PATCH 6.11 567/695] ksmbd: allow write with FILE_APPEND_DATA
+Date: Wed,  2 Oct 2024 14:59:25 +0200
+Message-ID: <20241002125845.139689860@linuxfoundation.org>
 X-Mailer: git-send-email 2.46.2
 In-Reply-To: <20241002125822.467776898@linuxfoundation.org>
 References: <20241002125822.467776898@linuxfoundation.org>
@@ -66,49 +65,37 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Hobin Woo <hobin.woo@samsung.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit ca4974ca954561e79f8871d220bb08f14f64f57c upstream.
+commit 2fb9b5dc80cabcee636a6ccd020740dd925b4580 upstream.
 
-Some file systems may not provide dot (.) and dot-dot (..) as they are
-optional in POSIX. ksmbd can misjudge emptiness of a directory in those
-file systems, since it assumes there are always at least two entries:
-dot and dot-dot.
-Just don't count dot and dot-dot.
+Windows client write with FILE_APPEND_DATA when using git.
+ksmbd should allow write it with this flags.
 
-Cc: stable@vger.kernel.org # v6.1+
-Signed-off-by: Hobin Woo <hobin.woo@samsung.com>
-Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Z:\test>git commit -m "test"
+fatal: cannot update the ref 'HEAD': unable to append to
+ '.git/logs/HEAD': Bad file descriptor
+
+Fixes: 0626e6641f6b ("cifsd: add server handler for central processing and tranport layers")
+Cc: stable@vger.kernel.org # v5.15+
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/vfs.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ fs/smb/server/vfs.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 --- a/fs/smb/server/vfs.c
 +++ b/fs/smb/server/vfs.c
-@@ -1115,9 +1115,10 @@ static bool __dir_empty(struct dir_conte
- 	struct ksmbd_readdir_data *buf;
+@@ -496,7 +496,7 @@ int ksmbd_vfs_write(struct ksmbd_work *w
+ 	int err = 0;
  
- 	buf = container_of(ctx, struct ksmbd_readdir_data, ctx);
--	buf->dirent_count++;
-+	if (!is_dot_dotdot(name, namlen))
-+		buf->dirent_count++;
- 
--	return buf->dirent_count <= 2;
-+	return !buf->dirent_count;
- }
- 
- /**
-@@ -1137,7 +1138,7 @@ int ksmbd_vfs_empty_dir(struct ksmbd_fil
- 	readdir_data.dirent_count = 0;
- 
- 	err = iterate_dir(fp->filp, &readdir_data.ctx);
--	if (readdir_data.dirent_count > 2)
-+	if (readdir_data.dirent_count)
- 		err = -ENOTEMPTY;
- 	else
- 		err = 0;
+ 	if (work->conn->connection_type) {
+-		if (!(fp->daccess & FILE_WRITE_DATA_LE)) {
++		if (!(fp->daccess & (FILE_WRITE_DATA_LE | FILE_APPEND_DATA_LE))) {
+ 			pr_err("no right to write(%pD)\n", fp->filp);
+ 			err = -EACCES;
+ 			goto out;
 
 
 
